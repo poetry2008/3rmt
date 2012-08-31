@@ -1505,27 +1505,6 @@ $shipping_fee = $order->info['shipping_fee'] != $shipping_fee ? $shipping_fee : 
 <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
 <script language="javascript" src="includes/jquery.form.js"></script>
 <script language="javascript">
-
-function submit_check(){
-
-    var options = {
-    url: 'ajax_orders_weight.php?action=edit_orders',
-    type:  'POST',
-    success: function(data) {
-      if(data != ''){
-        if(confirm(data)){
-
-          update_price2();
-        }
-      }else{
-
-        update_price2();
-      } 
-    }
-  };
-  $('#edit_order_id').ajaxSubmit(options);
-}
-
 function submit_check_con(){
 
     var options = {
@@ -2627,7 +2606,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <td class="main" bgcolor="#FBE2C8" width="10">&nbsp;</td>
     <td class="main" bgcolor="#FFCC99" width="10">&nbsp;</td>
     <td class="main" bgcolor="#F8B061" width="10">&nbsp;</td>
-    <td class="main" bgcolor="#FF9933" width="120" align="center">&nbsp;</td>
+    <td class="main" bgcolor="#FF9933" width="120" align="center"><INPUT type="button" value="<?php echo TEXT_FOOTER_CHECK_SAVE;?>" onClick="submit_check_con();"></td>
     </tr>
     </table>
     <!-- End Update Block -->
@@ -3348,29 +3327,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     </tr>
     <!-- End Order Total Block -->
     <!-- Begin Update Block -->
-    <!-- Improvement: more "Update" buttons (Michel Haase, 2005-02-18) -->
-    <tr>
-    <td>
-    <table width="100%" border="0" cellpadding="2" cellspacing="1">
-    <tr>
-    <td class="main" bgcolor="#FAEDDE" height="25"><?php echo EDIT_ORDERS_CONFIRMATION_READ;?></td>
-    <td class="main" bgcolor="#FBE2C8" width="10">&nbsp;</td>
-    <td class="main" bgcolor="#FFCC99" width="10">&nbsp;</td>
-    <td class="main" bgcolor="#F8B061" width="10">&nbsp;</td>
-    <td class="main" bgcolor="#FF9933" width="120" align="center">
-    <?php if (tep_is_oroshi($order->customer['id'])) { ?>
-      <INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON;?>" onClick="update_price()">
-        <?php } else { ?>
-          <INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON;?>" onClick="submit_check();">
-            <?php } ?>
-            </td>
-            </tr>
-            </table>
-            </td>
-            </tr>
-            <tr>
-            <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-            </tr>   
+    <!-- Improvement: more "Update" buttons (Michel Haase, 2005-02-18) -->   
             <!-- End of Update Block -->
             <!-- Begin Status Block -->
             <tr>
@@ -3535,7 +3492,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <td class="main" bgcolor="#FBE2C8" width="10">&nbsp;</td>
     <td class="main" bgcolor="#FFCC99" width="10">&nbsp;</td>
     <td class="main" bgcolor="#F8B061" width="10">&nbsp;</td>
-    <td class="main" bgcolor="#FF9933" width="120" align="center"><INPUT type="button" value="<?php echo IMAGE_UPDATE;?>" onClick="submit_check_con();"></td>
+    <td class="main" bgcolor="#FF9933" width="120" align="center"><INPUT type="button" value="<?php echo TEXT_FOOTER_CHECK_SAVE;?>" onClick="submit_check_con();"></td>
     </tr>
     </table>
     </td>

@@ -1042,31 +1042,6 @@ function submit_order_check(products_id,op_id){
 
         if(confirm(data)){
 
-          pre_update_price2();
-        }
-      }else{
-
-        pre_update_price2();
-      }
-    }
-  });
-    
-}
-
-function submit_order_check_one(products_id,op_id){
-  var qty = document.getElementById('update_products_new_qty_'+op_id).value;
-
-  $.ajax({
-    dataType: 'text',
-    url: 'ajax_orders_weight.php?action=edit_new_preorder',
-    data: 'qty='+qty+'&products_id='+products_id, 
-    type:'POST',
-    async: false,
-    success: function(data) {
-      if(data != ''){
-
-        if(confirm(data)){
-
           check_mail_product_status('<?php echo $_GET['oID'];?>');
           
         }
@@ -1639,7 +1614,7 @@ float:left;
                 <td class="main" bgcolor="#FBE2C8" width="10">&nbsp;</td>
                 <td class="main" bgcolor="#FFCC99" width="10">&nbsp;</td>
                 <td class="main" bgcolor="#F8B061" width="10">&nbsp;</td>
-                <td class="main" bgcolor="#FF9933" width="120" align="center">&nbsp;</td>
+                <td class="main" bgcolor="#FF9933" width="120" align="center"><?php echo tep_html_element_button(TEXT_FOOTER_CHECK_SAVE, 'onclick="submit_order_check('.$order->products[0]['products_id'].','.$order->products[0]['orders_products_id'].');"');?></td>
               </tr>
             </table>
             <!-- End Update Block -->
@@ -2250,25 +2225,7 @@ float:left;
       </tr>
   <!-- End Order Total Block -->
   <!-- Begin Update Block -->
-<!-- Improvement: more "Update" buttons (Michel Haase, 2005-02-18) -->
-      <tr>
-        <td>
-          <table width="100%" border="0" cellpadding="2" cellspacing="1">
-            <tr>
-              <td class="main" bgcolor="#FAEDDE" height="25"><?php echo EDIT_ORDERS_CONFIRMATION_READ;?></td>
-              <td class="main" bgcolor="#FBE2C8" width="10">&nbsp;</td>
-              <td class="main" bgcolor="#FFCC99" width="10">&nbsp;</td>
-              <td class="main" bgcolor="#F8B061" width="10">&nbsp;</td>
-              <td class="main" bgcolor="#FF9933" width="120" align="center">
-                <INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON;?>" onClick="submit_order_check(<?php echo $order->products[0]['products_id'];?>,<?php echo $order->products[0]['orders_products_id'];?>);">
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-      </tr>   
+<!-- Improvement: more "Update" buttons (Michel Haase, 2005-02-18) -->   
   <!-- End of Update Block -->
   <!-- Begin Status Block -->
       <tr>
@@ -2404,7 +2361,7 @@ if (tep_db_num_rows($orders_history_query)) {
               <td class="main" bgcolor="#FFCC99" width="10">&nbsp;</td>
               <td class="main" bgcolor="#F8B061" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FF9933" width="120" align="center">
-              <?php echo tep_html_element_button(IMAGE_UPDATE, 'onclick="submit_order_check_one('.$order->products[0]['products_id'].','.$order->products[0]['orders_products_id'].');"');?> 
+              <?php echo tep_html_element_button(TEXT_FOOTER_CHECK_SAVE, 'onclick="submit_order_check('.$order->products[0]['products_id'].','.$order->products[0]['orders_products_id'].');"');?> 
               </td>
           </tr>
           </table>

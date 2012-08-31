@@ -100,16 +100,16 @@
     if (!tep_session_is_registered('comments')) tep_session_register('comments');
 
     if (!tep_session_is_registered('shipping')) tep_session_register('shipping');
-  $date = tep_db_prepare_input($_POST['date']);
-  $hour = tep_db_prepare_input($_POST['hour']);
-  $min = tep_db_prepare_input($_POST['min']);
-  $start_hour = tep_db_prepare_input($_POST['start_hour']);
-  $start_min = tep_db_prepare_input($_POST['start_min']);
-  $end_hour = tep_db_prepare_input($_POST['end_hour']);
-  $end_min = tep_db_prepare_input($_POST['end_min']);
+  $shipping_date = tep_db_prepare_input($_POST['date']);
+  $shipping_hour = tep_db_prepare_input($_POST['hour']);
+  $shipping_min = tep_db_prepare_input($_POST['min']);
+  $shipping_start_hour = tep_db_prepare_input($_POST['start_hour']);
+  $shipping_start_min = tep_db_prepare_input($_POST['start_min']);
+  $shipping_end_hour = tep_db_prepare_input($_POST['end_hour']);
+  $shipping_end_min = tep_db_prepare_input($_POST['end_min']);
   $address_option_value = tep_db_prepare_input($_POST['address_option']);
-  $ele = tep_db_prepare_input($_POST['ele']);
-  $address_show_list = $_POST['address_show_list'];
+  $shipping_ele = tep_db_prepare_input($_POST['ele']);
+  $shipping_address_show_list = $_POST['address_show_list'];
 
   //住所
   $options_required = array();
@@ -146,24 +146,24 @@
   }else{
     $error_str = true;
   }
+
+  
+  $shipping_insert_torihiki_date = $shipping_date . ' ' . $shipping_start_hour . ':' . $shipping_start_min . ':00';
+  $shipping_insert_torihiki_date_end = $shipping_date . ' ' . $shipping_end_hour . ':' . $shipping_end_min . ':00';
   
   
-  $insert_torihiki_date = $date . ' ' . $start_hour . ':' . $start_min . ':00';
-  $insert_torihiki_date_end = $date . ' ' . $end_hour . ':' . $end_min . ':00';
   
-  
-  
-  if($date == '') {
+  if($shipping_date == '') {
     $error = true;
     $date_error = TEXT_ERROR_DATE;
   }else{
   
-    if($hour == '') {
+    if($shipping_hour == '') {
       $error = true;
       $time_error = TEXT_ERROR_TIME;
     }
   
-    if($min == '') {
+    if($shipping_min == '') {
       $error = true;
       $time_error = TEXT_ERROR_TIME;
     }
@@ -191,19 +191,19 @@
         $h_point = $order->info['subtotal']; 
       }
       tep_session_register('h_point');
-    }
-    tep_session_register('date');
-    tep_session_register('hour');
-    tep_session_register('min');
-    tep_session_register('start_hour');
-    tep_session_register('start_min');
-    tep_session_register('end_hour');
-    tep_session_register('end_min');
-    tep_session_register('ele');
-    tep_session_register('address_show_list');
+    } 
+    $_SESSION['date'] = $shipping_date;
+    $_SESSION['hour'] = $shipping_hour;
+    $_SESSION['min'] = $shipping_min;
+    $_SESSION['start_hour'] = $shipping_start_hour;
+    $_SESSION['start_min'] = $shipping_start_min;
+    $_SESSION['end_hour'] = $shipping_end_hour;
+    $_SESSION['end_min'] = $shipping_end_min;
+    $_SESSION['ele'] = $shipping_ele;
+    $_SESSION['address_show_list'] = $shipping_address_show_list; 
     $_SESSION['address_option'] = $address_option_value;
-    tep_session_register('insert_torihiki_date');
-    tep_session_register('insert_torihiki_date_end');
+    $_SESSION['insert_torihiki_date'] = $shipping_insert_torihiki_date;
+    $_SESSION['insert_torihiki_date_end'] = $shipping_insert_torihiki_date_end; 
     //住所信息 session
     
     $options = array();
@@ -1452,7 +1452,7 @@ function check_point(point_num) {
      if(!(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year))== $now_time_date && date('Hi') >= $now_time_hour)){
       if(isset($_POST['date']) && $_POST['date'] != ""){
         $selected_str = date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_POST['date'] ? 'selected' : ''; 
-      }elseif(isset($_SESSION['date']) && $_SESSION['date'] != ''){
+      }elseif(isset($_SESSION['date']) && $_SESSION['date'] != '' && !isset($date_error)){
         $selected_str = date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_SESSION['date'] ? 'selected' : '';
       }
       if(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_SESSION['date']){
@@ -1470,7 +1470,7 @@ function check_point(point_num) {
      if(date('Y-m-d',$j_shipping) == $now_time_date && $min_time_end_str != ''){
        if(isset($_POST['date']) && $_POST['date'] != ""){
          $selected_str = date('Y-m-d',$j_shipping) == $_POST['date'] ? 'selected' : ''; 
-       }elseif(isset($_SESSION['date']) && $_SESSION['date'] != ''){
+       }elseif(isset($_SESSION['date']) && $_SESSION['date'] != '' && !isset($date_error)){
          $selected_str = date('Y-m-d',$j_shipping) == $_SESSION['date'] ? 'selected' : '';
        }
        if(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_SESSION['date']){
@@ -1512,10 +1512,11 @@ function check_point(point_num) {
 </table>
 <table>
 <?php
-  if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) && $_SESSION['date'] != '' && $date_session_flag == true)){
+if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) && $_SESSION['date'] != '' && $date_session_flag == true&& !isset($time_error) && !isset($date_error))){
+
     $post_date = isset($_POST['date']) ? $_POST['date'] : $_SESSION['date'];
     echo '<script>selectDate(\''. $work_start .' \', \''. $work_end .'\',\''.$post_date.'\',\''. $work_start_old .' \', \''. $work_end_old .'\',\''.date('Y-m-d').'\',\''.$work_start_exit.'\',\''.$work_end_exit.'\',\''.$now_time_date.'\');$("#shipping_list").show();</script>';
-  }
+}
   if((isset($_POST['min']) && $_POST['min'] != '') || (isset($_SESSION['min']) && $_SESSION['min'] != '' && $date_session_flag == true)){
     $post_hour = isset($_SESSION['hour']) && $_SESSION['hour'] != '' ? $_SESSION['hour'] : $_POST['hour'];
     $post_min = isset($_SESSION['min']) && $_SESSION['min'] != '' ? $_SESSION['min'] : $_POST['min'];
@@ -1534,7 +1535,8 @@ function check_point(point_num) {
 
       $hour_show_flag = true;
     }
-    if($hour_show_flag == false){
+    if($hour_show_flag == false && !isset($time_error) && !isset($date_error)){
+ 
       echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $post_hour .'\','. $post_min .',\''.$ele.'\');$("#shipping_list_min").show();$("#h_c_'.$post_hour.'").val('.$post_min.');</script>';
     }
   }

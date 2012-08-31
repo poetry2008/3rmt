@@ -105,16 +105,8 @@ if (tep_not_null($action)) {
     $comments = tep_db_input($_POST['comments']);
     $comments_text = tep_db_input($_POST['comments_text']);
     $payment_method = tep_db_prepare_input($_POST['payment_method']); 
-    $save_flag = $_POST['save_flag'];
     $comment_arr = $payment_modules->dealComment($payment_method,$comments_text);    
-    if($save_flag == 1){
-      $comment_array = $payment_modules->dealComment($payment_method,$comments_text);
-      $_SESSION['payment_method_flag'] = $payment_method;
-      $_SESSION['pay_comment_flag'] = $comment_array['comment'];
-      $_SESSION['torihiki_date_flag'] = tep_db_input($_POST['date_orders'].' '.$_POST['start_hour'].':'.$_POST['start_min'].$_POST['start_min_1'].':00');
-      $_SESSION['torihiki_date_end_flag'] = tep_db_input($_POST['date_orders'].' '.$_POST['end_hour'].':'.$_POST['end_min'].$_POST['end_min_1'].':00');
-    }
-    
+     
     $error = false;
     $options_info_array = array(); 
       if (!$ad_option->check()) {
@@ -165,7 +157,7 @@ if (tep_not_null($action)) {
 
     //创建订单
     $orders_query = tep_db_query("select orders_id from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
-    if (!tep_db_num_rows($orders_query) && $save_flag == 0) {
+    if (!tep_db_num_rows($orders_query)) {
       $currency_text  = DEFAULT_CURRENCY . ",1";
       //if(isset($_SESSION['Currency']) && !empty($_SESSION['Currency']))  {
         //$currency_text = tep_db_prepare_input($_SESSION['Currency']);
@@ -280,11 +272,9 @@ if($orders_exit_flag == true){
      */ 
     
     if ($check_status['orders_status'] != $status || $comments != '' || $orders_exit_flag == false) {
-      if($save_flag == 0){
         tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
         orders_updated(tep_db_input($oID));
         orders_wait_flag(tep_db_input($oID));
-      }
       $customer_notified = '0';
 
       if ($_POST['notify'] == 'on' && $os_result['nomail'] == 0) {
@@ -351,13 +341,11 @@ if($orders_exit_flag == true){
                 get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
                 date('Y'.TEXT_DATE_YEAR.'n'.TEXT_DATE_MONTH.'j'.TEXT_DATE_DAY,strtotime(tep_get_pay_day()))
               ),$comments);
-      if($save_flag == 0){
         if (!tep_is_oroshi($check_status['customers_id'])) {
 
           tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
         }
         tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
-      }
         $customer_notified = '1';
       }
 
@@ -517,10 +505,7 @@ if($orders_exit_flag == true){
     }
 
     $shipping_fee = $shipping_money_total > $free_value ? 0 : $weight_fee;
-    $shipping_fee = $products_weight_total == 0 ? 0 : $shipping_fee; 
-    if($save_flag == 1){
-      $shipping_fee = 0; 
-    }
+    $shipping_fee = $products_weight_total == 0 ? 0 : $shipping_fee;  
       // end
 
       //更新订单
@@ -538,7 +523,6 @@ if($orders_exit_flag == true){
        */
       
       // 1.1 UPDATE ORDER INFO #####
-  if($save_flag == 0){
       $UpdateOrders = "update " . TABLE_ORDERS . " set 
         customers_name = '" . tep_db_input(stripslashes($update_customer_name)) . "',
                        customers_name_f = '" . tep_db_input(stripslashes($update_customer_name_f)) . "',
@@ -675,7 +659,6 @@ if($address_error == false){
       tep_db_free_result($address_history_add_query);
   }
 }
- }
 
 
      //作所信息入库结束
@@ -726,12 +709,10 @@ if($address_error == false){
           } else {
             $pr_quantity -= $tmp_quantity;
           } 
-          if ($save_flag == '0') {
             if(!tep_is_oroshi($check_status['customers_id']))
               tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = ".$pr_quantity.", products_virtual_quantity = ".$pv_quantity.", products_ordered = products_ordered + " . $tmp_quantity . " where products_id = '" . (int)$order['products_id'] . "'");
             tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
             tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
-          }
         } else {
           if ($products_details["qty"] != $order['products_quantity'] ) {
             $quantity_difference = ($products_details["qty"] - $order['products_quantity']);
@@ -758,12 +739,10 @@ if($address_error == false){
               }
             }
             // 如果是业者，不更新
-            if ($save_flag == '0') {
               if(!tep_is_oroshi($check_status['customers_id']))
                 tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = ".$pr_quantity.", products_virtual_quantity = ".$pv_quantity.", products_ordered = products_ordered + " . $quantity_difference . " where products_id = '" . (int)$order['products_id'] . "'");
               tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
               tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
-            } 
           }
         }
         
@@ -801,10 +780,8 @@ if($address_error == false){
         }
       }
  
-      if($save_flag == 0){
         $orders_type_str = tep_get_order_type_info($oID);
         tep_db_query("update `".TABLE_ORDERS."` set `orders_type` = '".$orders_type_str."' where orders_id = '".tep_db_input($oID)."'"); 
-      }
 
       // 1.4. UPDATE SHIPPING, DISCOUNT & CUSTOM TAXES #####
 
@@ -889,9 +866,7 @@ if($address_error == false){
           $before_point = 0;
           if ($customer_guest['customers_guest_chk'] == 0 && $ot_class == "ot_point" && $ot_value != $before_point) { //会員ならポントの増減
             $point_difference = ($ot_value - $before_point);
-            if($save_flag == 0){
-              tep_db_query("update " . TABLE_CUSTOMERS . " set point = point - " . $point_difference . " where customers_id = '" . $order->customer['id'] . "'"); 
-            }
+            tep_db_query("update " . TABLE_CUSTOMERS . " set point = point - " . $point_difference . " where customers_id = '" . $order->customer['id'] . "'"); 
           }
 
           $ot_text = $currencies->format($ot_value, true, $order->info['currency'], $order->info['currency_value']);
@@ -1008,17 +983,13 @@ if($address_error == false){
       $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '" . intval(floor($newtotal)) . "' where class='ot_total' and orders_id = '" . $oID . "'";
       tep_db_query($totals);
 
-      if($save_flag == 0){
-        $update_orders_sql = "update ".TABLE_ORDERS." set code_fee = '".$handle_fee."' where orders_id = '".$oID."'";
-        tep_db_query($update_orders_sql);
-      }
+      $update_orders_sql = "update ".TABLE_ORDERS." set code_fee = '".$handle_fee."' where orders_id = '".$oID."'";
+      tep_db_query($update_orders_sql);
 
       // 最終処理（更新およびメール送信）
       if ($products_delete == false) {
-        if($save_flag == 0){
-          tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
-          orders_updated(tep_db_input($oID));
-        }
+        tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
+        orders_updated(tep_db_input($oID));
         $notify_comments = '';
         $notify_comments_mail = $comments;
         $customer_notified = '0';
@@ -1227,20 +1198,16 @@ if($address_error == false){
           }
               //$email_order = $payment_class->getOrderMailString($mailoption);  
             //bobhero end}}}  
-          if($save_flag == 0){
             tep_mail($check_status['customers_name'], $check_status['customers_email_address'], TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
           }
-          }
-          if($save_flag == 0){
             tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
-          }
           $customer_notified = '1';
           
           // 支払方法がクレジットなら決済URLを送る
           $email_credit =  $payment_modules->admin_process_pay_email(
                   payment::changeRomaji($payment_method,PAYMENT_RETURN_TYPE_CODE),
                 $order,$total_price_mail);
-          if($email_credit && $save_flag == 0){
+          if($email_credit){
             if ($customer_guest['customers_guest_chk'] != 9){
                 tep_mail($check_status['customers_name'], $check_status['customers_email_address'], TEXT_CARD_PAYMENT . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email_credit, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']), $order->info['site_id']);
             }
@@ -1255,7 +1222,7 @@ if($address_error == false){
       $pcount_query = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS_STATUS_HISTORY." where orders_status_id = '".MODULE_ORDER_TOTAL_POINT_ADD_STATUS."' and orders_id = '".$oID."'");
       $pcount = tep_db_fetch_array($pcount_query);
       if($pcount['cnt'] == 0 && $status == MODULE_ORDER_TOTAL_POINT_ADD_STATUS) {
-        if($save_flag == 0 || $orders_exit_flag == true){
+        if($orders_exit_flag == true){
           $query1 = tep_db_query("select customers_id from " . TABLE_ORDERS . " where orders_id = '".$oID."'");
           $result1 = tep_db_fetch_array($query1);
         }else{
@@ -1325,15 +1292,13 @@ if($address_error == false){
           $get_point = $payment_modules->admin_get_fetch_point(payment::changeRomaji($payment_method,'code'),$result3['value']);
         }
         //$plus = $result4['point'] + $get_point;
-        if($save_flag == 0){ 
           $payment_modules->admin_get_customer_point(payment::changeRomaji($payment_method,'code'),intval($get_point),$result1['customers_id']); 
-        }
         
       }else{
         $os_query = tep_db_query("select orders_status_name,nomail from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
         $os_result = tep_db_fetch_array($os_query);
         if($os_result['orders_status_name']==TEXT_NOTICE_PAYMENT){
-          if($save_flag == 0 || $orders_exit_flag == true){
+          if($orders_exit_flag == true){
             $query1 = tep_db_query("select customers_id from " . TABLE_ORDERS . " where orders_id = '".$oID."'");
             $result1 = tep_db_fetch_array($query1);
           }else{
@@ -1345,17 +1310,15 @@ if($address_error == false){
               ".TABLE_ORDERS_STATUS_HISTORY." where orders_status_id = '".$status."' and 
               orders_id = '".tep_db_input($oID)."'");
           $point_done_row  =  tep_db_fetch_array($point_done_query);
-          if($point_done_row['cnt'] <1 && $save_flag == 0){
+          if($point_done_row['cnt'] <1){
             tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  intval($get_point) . " where customers_id = '" . $result1['customers_id']."' and customers_guest_chk = '0'");
           }
         }
       }
     }
       if ($check_status['orders_status'] != $status || $comments != '' || $orders_exit_flag == false) {
-        if($save_flag == 0){
           $comment_str = is_array($comment_arr) ? $comment_arr['comment'] : $comments_text;
           tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '".$comment_str."')");
-        }
       }
         if ($order_updated && !$products_delete && $order_updated_2) {
           if($message_success == false){
@@ -1367,7 +1330,6 @@ if($address_error == false){
           $messageStack->add_session(TEXT_ERROR_NO_SUCCESS, 'error');
         }
         
-if($save_flag == 0){
   $payment_name_key = 'MODULE_PAYMENT_'.strtoupper($_POST['payment_method']).'_PRINT_MAILSTRING';
   $payment_name_key_title = 'MODULE_PAYMENT_'.strtoupper($_POST['payment_method']).'_PRINT_MAILSTRING_TITLE';
 
@@ -1566,12 +1528,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
        unset($_SESSION['pay_comment_flag']);
        unset($_SESSION['torihiki_date_flag']);
        unset($_SESSION['torihiki_date_end_flag']);
-}
-        if ($save_flag == 0) {
-          tep_redirect(tep_href_link("orders.php", 'keywords='.$oID.'&search_type=orders_id'));
-        } else {
-          tep_redirect(tep_href_link("edit_new_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
-        }
+       tep_redirect(tep_href_link("orders.php", 'keywords='.$oID.'&search_type=orders_id'));
         
         break;
 
@@ -1827,32 +1784,8 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
   <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
   <script language="javascript" src="includes/jquery.form.js"></script>
   <script type="text/javascript"> 
-  function submit_check(){
-
-    var save_flag = document.getElementById("save_flag");
-    save_flag.value = 1;
-    var options = {
-    url: 'ajax_orders_weight.php?action=create_new_orders',
-    type:  'POST',
-    success: function(data) {
-      if(data != ''){
-        if(confirm(data)){
-
-          update_price2();
-        }
-      }else{
-
-          update_price2();
-      } 
-    }
-  };
-  $('#edit_order_id').ajaxSubmit(options);
-  }
-
   function submit_check_con(){
 
-    var save_flag = document.getElementById("save_flag");
-    save_flag.value = 0;
     var options = {
     url: 'ajax_orders_weight.php?action=create_new_orders',
     type:  'POST',
@@ -2962,6 +2895,7 @@ a.dpicker {
         <td width="100%" valign="top">
         <table border="0" width="96%" cellspacing="0" cellpadding="2">
         <?php
+        $email_address_flag = $orders_exit_flag == true ? $order->customer['email_address'] : $_SESSION['email_address'];
         if ($action == 'edit') {
           if($orders_exit_flag == true){
             $order = new order($oID);
@@ -2973,7 +2907,7 @@ a.dpicker {
             <tr>
             <td class="pageHeading"><?php echo EDIT_NEW_ORDERS_CREATE_TITLE;?></td>
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
-            <td class="pageHeading" align="right">&nbsp;</td>
+            <td class="pageHeading" align="right"><?php echo '<a href="create_order.php?oID=' . $oID . '&Customer_mail='.$email_address_flag.'&site_id='.$site_id_flag.'">' . tep_html_element_button(IMAGE_BACK) . '</a>'; ?></td>
             </tr>
             <tr>
             <td colspan="3"><font color="red"><?php echo EDIT_NEW_ORDERS_CREATE_READ;?></font></td>
@@ -2992,7 +2926,7 @@ a.dpicker {
             <td class="main" bgcolor="#FFBBFF" width="10">&nbsp;</td>
             <td class="main" bgcolor="#FF99FF" width="10">&nbsp;</td>
             <td class="main" bgcolor="#FF77FF" width="10">&nbsp;</td>
-            <td class="main" bgcolor="#FF55FF" width="120" align="center">&nbsp;</td>
+            <td class="main" bgcolor="#FF55FF" width="120" align="center"><INPUT type="button" value="<?php echo TEXT_FOOTER_CHECK_SAVE;?>" onClick="submit_check_con();"></td>
             </tr>
             </table>
             <!-- End Update Block -->
@@ -3067,7 +3001,6 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
                 tep_db_free_result($products_weight_query);
               }
               tep_db_free_result($products_address_query);
-      $email_address_flag = $orders_exit_flag == true ? $order->customer['email_address'] : $_SESSION['email_address'];
       $cpayment = payment::getInstance();
       $payment_array = payment::getPaymentList();
       $pay_info_array = array();
@@ -3942,7 +3875,6 @@ if($orders_exit_flag == true){
             <tr>
             <td class="main">
             <?php echo $orders_exit_flag == true ? $order->tori['houhou'] : '';?>             
-            <input type="hidden" name="save_flag" id="save_flag" value="0">
             <input type="hidden" name="update_viladate" value="true">
             <input type="hidden" name="update_customer_name" size="25" value="<?php echo $orders_exit_flag == true ? tep_html_quotes($order->customer['name']) : tep_html_quotes($_SESSION['lastname'].' '.$_SESSION['firstname']); ?>">
             <input type="hidden" name="update_customer_email_address" size="45" value="<?php echo $orders_exit_flag == true ? $order->customer['email_address'] : $_SESSION['email_address']; ?>">
@@ -4113,7 +4045,7 @@ if($orders_exit_flag == true){
             <td>
             <table width="100%" cellpadding="0" cellspacing="0">
             <tr>
-            <td valign="top"><?php echo "<span class='smalltext'>" .  HINT_DELETE_POSITION . "</span>"; ?></td> <td align="right"><?php echo '<a href="create_order.php?oID=' . $oID . '&Customer_mail='.$email_address_flag.'&site_id=1">' . tep_html_element_button(ADDING_TITLE) . '</a>'; ?></td>
+            <td valign="top"><?php echo "<span class='smalltext'>" .  HINT_DELETE_POSITION . "</span>"; ?></td> <td align="right"><?php echo '<a href="create_order.php?oID=' . $oID . '&Customer_mail='.$email_address_flag.'&site_id='.$site_id_flag.'">' . tep_html_element_button(ADDING_TITLE) . '</a>'; ?></td>
             <!--
             <td valign="top"><?php echo "<span class='smalltext'>" .  HINT_DELETE_POSITION . EDIT_ORDERS_ADD_PRO_READ . "</span>"; ?></td> <td align="right"><?php echo '<a href="' . $PHP_SELF . '?oID=' . $oID . '&action=add_product&step=1">' . tep_html_element_button(ADDING_TITLE) . '</a>'; ?></td>
             -->
@@ -4286,29 +4218,7 @@ if($orders_exit_flag == true){
             </tr>
             <!-- End Order Total Block -->
             <!-- Begin Update Block -->
-            <!-- Improvement: more "Update" buttons (Michel Haase, 2005-02-18) -->
-            <tr>
-            <td>
-            <table width="100%" border="0" cellpadding="2" cellspacing="1">
-            <tr>
-            <td class="main" bgcolor="#FFDDFF" height="25"><?php echo EDIT_ORDERS_CONFIRMATION_READ;?></td>
-            <td class="main" bgcolor="#FFBBFF" width="10">&nbsp;</td>
-            <td class="main" bgcolor="#FF99FF" width="10">&nbsp;</td>
-            <td class="main" bgcolor="#FF77FF" width="10">&nbsp;</td>
-            <td class="main" bgcolor="#FF55FF" width="120" align="center">
-            <?php if (tep_is_oroshi($order->customer['id'])) { ?>
-              <INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON;?>" onClick="update_price()">
-                <?php } else { ?>
-                  <INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON;?>" onClick="submit_check();">
-                    <?php } ?>
-                    </td>
-                    </tr>
-                    </table>
-                    </td>
-                    </tr>
-                    <tr>
-                    <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-                    </tr>   
+            <!-- Improvement: more "Update" buttons (Michel Haase, 2005-02-18) -->    
                     <!-- End of Update Block -->
                     <!-- Begin Status Block -->
                     <tr>
@@ -4476,7 +4386,7 @@ if($orders_exit_flag == true){
             <td class="main" bgcolor="#FFBBFF" width="10">&nbsp;</td>
             <td class="main" bgcolor="#FF99FF" width="10">&nbsp;</td>
             <td class="main" bgcolor="#FF77FF" width="10">&nbsp;</td>
-            <td class="main" bgcolor="#FF55FF" width="120" align="center"><INPUT type="button" value="<?php echo IMAGE_UPDATE;?>" onClick="submit_check_con();"></td>
+            <td class="main" bgcolor="#FF55FF" width="120" align="center"><INPUT type="button" value="<?php echo TEXT_FOOTER_CHECK_SAVE;?>" onClick="submit_check_con();"></td>
             </tr>
             </table>
             </td>
