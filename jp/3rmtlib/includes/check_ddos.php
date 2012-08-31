@@ -39,12 +39,12 @@ function is_at_ban_list($pdo_con, $ip_info)
 
 function write_vlog($pdo_con, $ip_info, $host_info)
 {
-   $pdo_con->exec("insert into vlog set id= 'NULL', ip = '".$ip_info."',vtime='".date('Y-m-d H:i:s', time())."', site='".$host_info."'");
+   $pdo_con->exec("insert into accesslog set id= 'NULL', ip = '".$ip_info."',vtime='".date('Y-m-d H:i:s', time())."', site='".$host_info."'");
 }
 
 function is_large_visit($pdo_con, $ip_info, $unit_time, $unit_total)
 {
-  $res = $pdo_con->query("select count(*) from vlog where ip = '".$ip_info."' and vtime <= '".date('Y-m-d H:i:s', time())."' and vtime >= '".date('Y-m-d H:i:s', time()-$unit_time)."'"); 
+  $res = $pdo_con->query("select count(*) from accesslog where ip = '".$ip_info."' and vtime <= '".date('Y-m-d H:i:s', time())."' and vtime >= '".date('Y-m-d H:i:s', time()-$unit_time)."'"); 
   if ($res) {
     $total_num = $res->fetchColumn(); 
     if ($total_num > 0) {
@@ -59,13 +59,13 @@ function is_large_visit($pdo_con, $ip_info, $unit_time, $unit_total)
 
 function analyze_ban_log($pdo_con, $ip_info)
 {
-  $res = $pdo_con->query("select count(*) from banlog where ip = '".$ip_info."'"); 
+  $res = $pdo_con->query("select count(*) from preban where ip = '".$ip_info."'"); 
   $pdo_con->exec("delete from banlist where ip = '".$ip_info."'"); 
   if ($res->fetchColumn() > 0) {
     $pdo_con->exec("insert into banlist SET id= 'NULL', ip = '".$ip_info."', betime='".date('Y-m-d H:i:s', time()+60*60*24)."'");
   } else {
     $pdo_con->exec("insert into banlist SET id= 'NULL', ip = '".$ip_info."', betime='".date('Y-m-d H:i:s', time()+60*60)."'");
   }
-  $pdo_con->exec("insert into banlog SET id= 'NULL', ip = '".$ip_info."', bstime='".date('Y-m-d H:i:s', time())."'");
-  $pdo_con->exec("delete from vlog where ip = '".$ip_info."'"); 
+  $pdo_con->exec("insert into preban SET id= 'NULL', ip = '".$ip_info."', bstime='".date('Y-m-d H:i:s', time())."'");
+  $pdo_con->exec("delete from accesslog where ip = '".$ip_info."'"); 
 }
