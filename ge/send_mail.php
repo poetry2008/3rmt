@@ -64,11 +64,11 @@
 ?>
       <table class="login" width="100%">
         <tr>
-          <td valign="top"><b><?php echo INPUT_SEND_MAIL; ?>:</b></td>
+          <td><b><?php echo INPUT_SEND_MAIL; ?>:</b></td>
           <td class="login_text" valign="top">
             <input type="text" name="email_address">
           </td>
-          <td class="td_submit" align="right" style="padding:0 10px 25px 0;">
+          <td class="td_submit" align="right" style="padding:0 10px 0 0;">
             <?php echo tep_image_submit('button_send_mail.gif', SENDMAIL_BUTTON); ?>
           </td>
         </tr>
