@@ -77,7 +77,7 @@
                   <td class="main">
 				  <table border="0" cellspacing="0" cellpadding="2">
                     <tr>
-                      <td class="main">&nbsp;<?php echo TEXT_POINT_ADD; ?></td>
+                      <td class="main" width="120" >&nbsp;<?php echo TEXT_POINT_ADD; ?></td>
                       <td class="main">&nbsp;<?php echo $point['point'] . " P"; ?></td>
                     </tr>
                   </table></td>

@@ -272,7 +272,7 @@ $(document).ready(function(){
             <table class="box_des" border="0" cellspacing="0" cellpadding="2" width="100%">
               <tr>
                 <td class="main" width="120">&nbsp;<?php echo ENTRY_NEWSLETTER; ?></td>
-                <td class="main" style="padding-left:10px;">
+                <td class="main">
                   <?php
   if ($is_read_only == true) {
     if ($account['customers_newsletter'] == '1') {
