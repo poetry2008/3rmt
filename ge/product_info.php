@@ -294,7 +294,7 @@ function showimage($1) {
                       if(!empty($data4[0])){
                       ?>
                     <tr>
-                      <td class="main"><?php echo $data4[0] ; ?><</td>
+                      <td class="main"><?php echo $data4[0] ; ?></td>
                       <td class="main"><?php echo $data4[1] ; ?></td>
                     </tr>
                     <?php } ?>
