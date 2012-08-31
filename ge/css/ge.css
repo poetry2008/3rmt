@@ -62,9 +62,6 @@ dd {
     padding-bottom:5px;
     line-height:120%;
 }
-.bold {
-    font-weight:bold;
-}
 .redtext {
     color:#ff4500;
 }
@@ -208,13 +205,14 @@ div.headerNavigation {
 TABLE：information box
 --------------------------- */
 .infoBox {
-    background: #CCC;
+	border:1px solid #ccc;
 }
 /* ---------------------------
 TABLE：information box（context
 --------------------------- */
 .infoBoxContents {
     background:#000;
+	padding-left:8px;
 }
 /* ---------------------------
 searching
@@ -935,7 +933,7 @@ checkbox・mouse over
 checkbox select row
 --------------------------- */
 .moduleRowSelected {background-color: #666;}
-.bold {font-weight:bold; margin:0; padding:0 0 5px 20px;}
+.bold {font-weight:bold; margin:0; padding:0 0 0 20px; margin:10px 0;}
 .contact_us_warpper{ clear:both;}
 .tcol{ clear:both; border-bottom:1px dotted #444; width:96%;}
 .lcol{ clear:both; padding:10px 0; overflow:hidden; border-bottom:1px dotted #444; width:96%;}
@@ -1042,7 +1040,7 @@ width:418px;
 .checkout_s_link{ margin:0 0 8px 0; *margin:13px 0 5px 0;}
 .c_shipping{ margin-left:10px; margin-top:3px;}
 .stockWarning{ color: #CC0033;}
-.markProductOutOfStock a{color: #CC0033;}
+.markProductOutOfStock a{color: #339966;}
 #caemail p{ height:280px;*height:290px;}
 #caemail p img { position:relative; margin-top:10px\9;}
 .box_des02 {
@@ -1532,15 +1530,6 @@ TEXTAREA {
 .box_des_size{
 	line-height:18px;
 }
-.box_des_size b{
-	margin-bottom:10px;
-}
-.box_des_size h4{
-	margin:5px 0;
-	padding:0;
-	font-weight:bold;
-}
-h3.bold {font-weight:bold; margin:0; padding:0 0 0 20px; margin:10px 0;}
 #form_error{
 	*margin:0px 0 5px 3px;
 	margin-left:3px;
