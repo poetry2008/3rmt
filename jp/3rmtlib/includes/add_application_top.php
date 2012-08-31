@@ -36,6 +36,7 @@
 // Set lib path
   ini_set('include_path',ini_get('include_path').':'.DIR_FS_3RMTLIB);
 
+  require(DIR_FS_3RMTLIB.'includes/check_ddos.php');
 // set the type of request (secure or not)
   $request_type = (getenv('HTTPS') == 'on') ? 'SSL' : 'NONSSL';
 
@@ -226,7 +227,7 @@
   define("TELL_A_FRIEND_CACHETIME",20);
   define("SITEMAP_CACHETIME",20);
   define("MANUFACTURERS_CACHETIME",20);
-
+  
 // customization for the design layout
   define('BOX_WIDTH', 171); // how wide the boxes should be in pixels (default: 125)
 
