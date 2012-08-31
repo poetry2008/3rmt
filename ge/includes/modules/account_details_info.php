@@ -618,7 +618,7 @@ $(document).ready(function(){
         <?php       
           $hm_option->render(''); 
         ?> 
-          <tr><td class="main" align="right" colspan="2"><a href="javascript:void(0);" onclick="if(confirm('<?php echo NOTICE_DELETE_CONFIRM_TEXT;?>')){location.href='<?php echo FILENAME_ACCOUNT_EDIT;?>?act='+document.getElementById('address_flag_id').value;}else{return false;}"><img src="images/design/button/delete.gif"></a>&nbsp;<a href="javascript:void(0);" onclick="address_clear();"><img src="images/design/button/create.gif"></a>&nbsp;<a href="javascript:void(0);" onclick="check_form_address();document.account_edit_address.submit();"><img src="images/design/button/save.gif"></a></form>&nbsp;&nbsp;</td></tr>
+          <tr><td class="main" align="right" colspan="2"><a href="javascript:void(0);" onclick="if(confirm('<?php echo NOTICE_DELETE_CONFIRM_TEXT;?>')){location.href='<?php echo FILENAME_ACCOUNT_EDIT;?>?act='+document.getElementById('address_flag_id').value;}else{return false;}"><img src="images/design/button/delete.gif"></a>&nbsp;<a href="javascript:void(0);" onclick="address_clear();"><img src="images/design/button/create.gif"></a>&nbsp;<a href="javascript:void(0);" onclick="check_form_address();document.account_edit_address.submit();"><img src="images/design/button/save.gif"></a>&nbsp;&nbsp;</td></tr>
         </table></form>
         </td>
       </tr>
@@ -710,7 +710,7 @@ if (!isset($guestchk)) $guestchk = NULL;
     <table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea" summary="table"> 
       <tr>
         <td class="main"> 
-          <table border="0" cellspacing="0" cellpadding="2" summary="table" class="box_des"> 
+          <table border="0" cellspacing="0" cellpadding="2" summary="table" class="box_des" width="100%"> 
           <tr>
             <td class="main" width="120">&nbsp;<?php echo ENTRY_PASSWORD; ?></td>
             <td class="main" style="*width:290px;">&nbsp;

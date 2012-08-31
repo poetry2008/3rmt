@@ -1,5 +1,6 @@
 <?php
 /*
+  test
   $Id$
 */
   $GLOBALS['HTTP_GET_VARS']    = $_GET;

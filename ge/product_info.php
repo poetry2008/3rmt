@@ -88,6 +88,9 @@ function select_item_radio(i_obj, t_str, o_str, p_str, r_price)
 function change_num(ob,targ, quan, a_quan)
 {
   var product_quantity = document.getElementById(ob);
+  if(isNaN(parseInt(product_quantity.value))){
+	  product_quantity.value = quan;
+  }
   var product_quantity_num = parseInt(product_quantity.value);
   if (targ == 'up')
   { 
@@ -234,7 +237,7 @@ function showimage($1) {
                       if(!empty($data2[0])){
                       ?>
                     <tr>
-                      <td class="main"><?php echo $data2[0] ; ?><</td>
+                      <td class="main"><?php echo $data2[0] ; ?></td>
                       <td class="main"><?php echo $data2[1] ; ?></td>
                     </tr>
                     <?php } ?>
