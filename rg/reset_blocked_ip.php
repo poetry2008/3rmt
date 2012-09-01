@@ -18,6 +18,6 @@ if($clear_banlist){
   exit;
 }else{
   header('http/1.1 503 Service Unavailable');
-  require(DIR_FS_DOCUMENT_ROOT.'503-service-unavailable.html');
+  require(DIR_FS_DOCUMENT_ROOT.'error/503-service-unavailable.html');
   exit;
 }

@@ -10,14 +10,14 @@ $unit_total = 5;
 if ($pdo_con) {
   if (is_at_ban_list($pdo_con, $source_ip)) {
     header('http/1.1 503 Service Unavailable');
-    require(DIR_FS_DOCUMENT_ROOT.'503-service-unavailable.html');
+    require(DIR_FS_DOCUMENT_ROOT.'error/503-service-unavailable.html');
     exit;
   } else {
     write_vlog($pdo_con, $source_ip, $source_host);    
     if (is_large_visit($pdo_con, $source_ip, $unit_time, $unit_total)) {
       analyze_ban_log($pdo_con, $source_ip);
       header('http/1.1 503 Service Unavailable');
-      require(DIR_FS_DOCUMENT_ROOT.'503-service-unavailable.html');
+      require(DIR_FS_DOCUMENT_ROOT.'error/503-service-unavailable.html');
       exit;
     }
   }
