@@ -5,8 +5,8 @@ $pdo_con = new PDO($dsn, DB_SERVER_USERNAME, DB_SERVER_PASSWORD);
 
 $source_ip = $_SERVER['REMOTE_ADDR'];
 $source_host = $_SERVER['HTTP_HOST'];
-$unit_time = 10;
-$unit_total = 3;
+$unit_time = 3;
+$unit_total = 5;
 if ($pdo_con) {
   if (is_at_ban_list($pdo_con, $source_ip)) {
     header('http/1.1 503 Service Unavailable');
