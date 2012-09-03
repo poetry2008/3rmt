@@ -1177,12 +1177,8 @@ function UserInfor_execute() {
   PageBody('t', PAGE_TITLE_USERINFO);   // ユーザ管理画面のタイトル部表示（ユーザ情報）
 
   // 氏名 の入力チェック
-  require('includes/step-by-step/new_application_top.php');
   $ret_err = checkNotnull($GLOBALS['aval']['name']);
-  $email_err = tep_validate_email($GLOBALS['aval']['email']);
   if ($ret_err != "") set_errmsg_array($aerror, '<b>' . TABLE_HEADING_NAME . '</b>:' . $ret_err);   // 氏名
-  if (!$email_err) set_errmsg_array($aerror, '<b>' . TABLE_HEADING_EMAIL . '</b>:'
-      .USER_EMAIL_ERROR);  
 
   echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));      // <form>タグの出力
 
@@ -1472,7 +1468,7 @@ function formConfirm(type) {
   if (rtn) return true;
   else return false;
 }
-//-->
+-->
 </script>
 ';
 
@@ -1513,9 +1509,9 @@ function PageHeader() {
       </script>";
   }
 
-  echo '<!-- header //-->' . "\n";
+  echo '<!-- header -->' . "\n";
   require(DIR_WS_INCLUDES . 'header.php');
-  echo '<!-- header_eof //-->' . "\n";
+  echo '<!-- header_eof -->' . "\n";
 }
 
 /*--------------------------------------
@@ -1527,7 +1523,7 @@ function PageBodyTable($mode='t') {
   global $ocertify;
   switch ($mode) {
   case 't':
-    echo '<!-- body //-->' . "\n";
+    echo '<!-- body -->' . "\n";
     echo '<table border="0" width="100%" cellspacing="2" cellpadding="2">' . "\n";
     echo '  <tr>' . "\n";
     if($GLOBALS['ocertify']->npermission >= 10){
@@ -1537,7 +1533,7 @@ function PageBodyTable($mode='t') {
   case 'u':
     echo '  </tr>' . "\n";
     echo '</table>' . "\n";
-    echo '<!-- body_eof //-->' . "\n";
+    echo '<!-- body_eof -->' . "\n";
     break;
   } 
 }
@@ -1551,8 +1547,8 @@ function PageBodyTable($mode='t') {
 function PageBody($mode='t', $stitle = "") {
   switch ($mode) {
   case 't':
-    echo '<!-- body_text //-->' . "\n";
-    echo '    <td width="100%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">' . "\n";
+    echo '<!-- body_text -->' . "\n";
+    echo '    <td width="100%" valign="top" class="box"><table border="0" width="100%" cellspacing="0" cellpadding="2">' . "\n";
     echo '      <tr>' . "\n";
     echo '        <td><table border="0" width="100%" cellspacing="0" cellpadding="0">' . "\n";
     echo '          <tr>' . "\n";
@@ -1570,7 +1566,7 @@ function PageBody($mode='t', $stitle = "") {
     echo '        </td>' . "\n";
     echo '      </tr>' . "\n";
     echo '    </table></td>' . "\n";
-    echo '<!-- body_text_eof //-->' . "\n";
+    echo '<!-- body_text_eof -->' . "\n";
     break;
   } 
 }
@@ -1581,9 +1577,9 @@ function PageBody($mode='t', $stitle = "") {
   戻り値 : なし
  --------------------------------------*/
 function PageFooter() {
-  echo "<!-- footer //-->\n";
+  echo "<!-- footer -->\n";
   require(DIR_WS_INCLUDES . 'footer.php');
-  echo "\n<!-- footer_eof //-->\n";
+  echo "\n<!-- footer_eof -->\n";
   echo "<br>\n";
   echo "</body>\n";
   echo "</html>\n";
@@ -1689,9 +1685,9 @@ if (isset($execute_password) && $execute_password) {
 
   // 左ナビゲーションボックスの表示
   if($ocertify->npermission >= 10){
-  echo "<!-- left_navigation //-->\n";    // 
+  echo "<!-- left_navigation -->\n";    // 
   include_once(DIR_WS_INCLUDES . 'column_left.php');
-  echo "\n<!-- left_navigation_eof //-->\n";
+  echo "\n<!-- left_navigation_eof -->\n";
   echo "    </table></td>\n";
   }
 

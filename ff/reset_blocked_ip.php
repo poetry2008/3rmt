@@ -23,7 +23,6 @@ if($clear_banlist){
     require(DIR_FS_DOCUMENT_ROOT.'error/503-service-unavailable.html');
     exit;
   }else{
-    $pdo_con->exec("delete from banlist where ip = '".$source_ip."'");
     header('Location:'.HTTP_SERVER);
     exit;
   }
