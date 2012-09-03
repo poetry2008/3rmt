@@ -15,10 +15,9 @@ $source_host = $_SERVER['HTTP_HOST'];
 // config time 
 $unit_time = 1;
 // confi total
-$dos_email_address = DDOS_SEND_MAIL;
-$dos_email_title = 'ddos info';
-$dos_email_msg = $source_ip."\r\n".date('Y-m-d H:i:s');
 $unit_total = 5;
+// ddos text
+$dos_email_msg = $source_ip."\r\n".date('Y-m-d H:i:s');
 if ($pdo_con) {
   if (is_at_ban_list($pdo_con, $source_ip)) {
     // go to 503
@@ -32,7 +31,7 @@ if ($pdo_con) {
       // write ip to banlist prebanlist
       analyze_ban_log($pdo_con, $source_ip);
       // send email
-      send_mail($dos_email_address,$dos_email_title,$dos_email_msg);
+      send_mail(DDOS_SEND_MAIL,DDOS_SEND_MAIL_TITLE,$dos_email_msg);
       // go to 503
       header('http/1.1 503 Service Unavailable');
       require(DIR_FS_DOCUMENT_ROOT.'error/503-service-unavailable.html');
