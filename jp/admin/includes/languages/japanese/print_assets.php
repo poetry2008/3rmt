@@ -1,4 +1,5 @@
 <?php
+define('TEXT_TOP','トップ');
 define('ASSETS_TITLE', '資産管理');
 define('TEXT_PRODUCTS_NAME','カテゴリー/商品');
 define('TEXT_PRODUCTS_QUANTITY','実在庫数');
