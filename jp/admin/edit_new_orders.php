@@ -1523,10 +1523,6 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
        unset($_SESSION['temp_amount']);
        unset($_SESSION['currency']); 
        unset($_SESSION['currency_value']);
-       unset($_SESSION['payment_method_flag']);
-       unset($_SESSION['pay_comment_flag']);
-       unset($_SESSION['torihiki_date_flag']);
-       unset($_SESSION['torihiki_date_end_flag']);
        tep_redirect(tep_href_link("orders.php", 'keywords='.$oID.'&search_type=orders_id'));
         
         break;
@@ -3112,11 +3108,7 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
             }
             tep_db_free_result($orders_status_history_query); 
           }
-          if(isset($_SESSION['payment_method_flag'])){
-            $code_payment_method = payment::changeRomaji($_SESSION['payment_method_flag'],'code');
-            $pay_method = payment::changeRomaji($_SESSION['payment_method_flag'],'code');
-            $pay_comment = $_SESSION['pay_comment_flag'];
-          }
+          
           $pay_method = isset($_POST['payment_method']) ? $_POST['payment_method'] : $pay_method;
           if($pay_method == ''){
             if($products_money_total > 0){
@@ -3135,9 +3127,7 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
 
             $pay_method = $pay_method;
           }
-          $pay_info_array[0] = payment::changeRomaji($_SESSION['payment_method_flag'],'code') == $pay_type_array[0] ? $_SESSION['pay_comment_flag'] : $pay_info_array[0];
-          $pay_info_array[1] = payment::changeRomaji($_SESSION['payment_method_flag'],'code') == $pay_type_array[1] ? $_SESSION['pay_comment_flag'] : $pay_info_array[1];
-          $pay_info_array[2] = payment::changeRomaji($_SESSION['payment_method_flag'],'code') == $pay_type_array[2] ? $_SESSION['pay_comment_flag'] : $pay_info_array[2]; 
+           
           echo payment::makePaymentListPullDownMenu(payment::changeRomaji($pay_method,'code'));
           
           
@@ -3660,15 +3650,7 @@ if($orders_exit_flag == true){
     $date_orders = date('Y-m-d',strtotime("+ ".$db_set_day."minute"));
 
   }
-
-  if(isset($_SESSION['torihiki_date_flag']) && isset($_SESSION['torihiki_date_end_flag'])){
-    $orders_temp_time_start = explode(' ',$_SESSION['torihiki_date_flag']);
-    $work_start = substr($orders_temp_time_start[1],0,5);
-    $orders_temp_time_end = explode(' ',$_SESSION['torihiki_date_end_flag']);
-    $work_end = substr($orders_temp_time_end[1],0,5);
-    $date_orders = date('Y-m-d',strtotime($_SESSION['torihiki_date_flag'])); 
-  }
-  
+ 
   $work_start_array = explode(':',$work_start);
   $work_end_array = explode(':',$work_end);
   $work_start_hour = $work_start_array[0]; //开始时
