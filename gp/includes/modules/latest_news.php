@@ -17,6 +17,7 @@
 //ccdd
     if(preg_match('/^[0-9][0-9][0-9][0-9]\/[0-9][0-9]\/[0-9][0-9]$/',trim(SITE_OPTN_TIME))){
       $start_open_time = str_replace('/','-',trim(SITE_OPTN_TIME));
+      $start_open_time = date($start_open_time,'Y-m-d');
     }else{
       $start_open_time = '';
     }
@@ -24,8 +25,8 @@
       SELECT * 
       from " . TABLE_LATEST_NEWS . " 
       WHERE status = 1 
-        AND (site_id = '".SITE_ID."' or site_id='0')
-      AND date_added > '".$start_open_time."'
+      AND (site_id = '".SITE_ID."' or site_id='0')
+      AND UNIX_TIMESTAMP(date_added) > '".$start_open_time."'
       ORDER BY isfirst DESC, date_added DESC LIMIT 5");
     if (!tep_db_num_rows($latest_news_query)) { // there is no news
       echo '<!-- ' . TEXT_NO_LATEST_NEWS . ' -->';

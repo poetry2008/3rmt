@@ -12,6 +12,7 @@
 
 if(preg_match('/^[0-9][0-9][0-9][0-9]\/[0-9][0-9]\/[0-9][0-9]$/',trim(SITE_OPTN_TIME))){
   $start_open_time = str_replace('/','-',trim(SITE_OPTN_TIME));
+  $start_open_time = date($start_open_time,'Y-m-d');
 }else{
   $start_open_time = '';
 }
@@ -21,7 +22,7 @@ $check_array = array();
 $check_news_id_query = tep_db_query("SELECT * FROM " . TABLE_LATEST_NEWS . 
     " WHERE status = 1 
     AND (site_id = '" . SITE_ID . "' or site_id =0 ) 
-    AND date_added > '".$start_open_time."'
+    AND UNIX_TIMESTAMP(date_added) > '".$start_open_time."'
     ORDER BY isfirst DESC, date_added DESC");
 while($check_news_id_array = tep_db_fetch_array($check_news_id_query)){
 $check_array[] = $check_news_id_array['news_id'];
@@ -45,7 +46,7 @@ forward404Unless($latest_news);
         FROM " . TABLE_LATEST_NEWS . " 
         WHERE status = 1 
           AND (site_id = '" . SITE_ID . "' or site_id =0 )
-        AND date_added > '".$start_open_time."'
+        AND UNIX_TIMESTAMP(date_added) > '".$start_open_time."'
         ORDER BY isfirst DESC, date_added DESC
       ";
     $latest_news_split = new splitPageResults($_GET['page'], MAX_DISPLAY_LATEST_NEWS, $latest_news_query_raw, $latest_news_numrows);
