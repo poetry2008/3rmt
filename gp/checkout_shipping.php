@@ -1116,10 +1116,7 @@ function check_point(point_num) {
    }
 
   }
- 
-
-
-  
+   
   $ship_new_array = array(); 
   $shipp_array = array();
   foreach($shipp_time_array as $shipp_time_k=>$shpp_time_v){
@@ -1171,25 +1168,42 @@ function check_point(point_num) {
   $shipp_end_array = array();
   $shipp_end_array = $shipp_array;
 
-
   foreach($ship_new_array as $s_k=>$s_v){
-    $ss_array = array();
-    $ss_array = explode(',',$s_v);
-    $ss_start = str_replace(':','',$ss_array[0]);
-    $ss_end = str_replace(':','',$ss_array[1]);
+    $s_array = array();
+    $s_array = explode('|',$s_v);
+    $s_new_end_array = $s_array;
+    $s_new_array = $s_array;
+    foreach($s_array as $_key=>$_value){
+      $ss_array = array();
+      $ss_array = explode(',',$_value);
+      $ss_start = str_replace(':','',$ss_array[0]);
+      $ss_end = str_replace(':','',$ss_array[1]);
 
-    if($ss_end > $now_time_hour){
+      if($ss_end > $now_time_hour){
 
-      unset($ship_new_end_array[$s_k]);
-      unset($shipp_end_array[$s_k]);
+        unset($s_new_end_array[$_key]);
+        unset($s_end_array[$_key]);
+      }
+      if($ss_start > $ss_end || $ss_start < $now_time || ($now_flag == true && $ss_end > $now_time_end)){
+         
+        unset($s_new_array[$_key]);
+        unset($s_array[$_key]);
+      }
     }
-    if($ss_start > $ss_end || $ss_start < $now_time || ($now_flag == true && $ss_end > $now_time_end)){
+    if(!empty($s_new_end_array)){
+      $ship_new_end_array[$s_k] = implode('|',$s_new_end_array);
+    }else{
+      unset($ship_new_end_array[$s_k]); 
+      unset($shipp_end_array[$s_k]);
+    } 
+    if(!empty($s_new_array)){
+      $ship_new_array[$s_k] = implode('|',$s_new_array);
+    }else{
 
       unset($ship_new_array[$s_k]);
       unset($shipp_array[$s_k]);
-    }
+    } 
   }
-
   $max_time_str = implode('||',$shipp_array);
   $min_time_str = implode('||',$ship_new_array);
   $max_time_end_str = implode('||',$shipp_end_array);
