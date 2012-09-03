@@ -2589,7 +2589,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
     <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
     <td class="pageHeading" align="right">
-    <INPUT type="button" value="<?php echo TEXT_FOOTER_CHECK_SAVE;?>" onClick="submit_check_con();">&nbsp;
+    <INPUT type="button" class="element_button" value="<?php echo TEXT_FOOTER_CHECK_SAVE;?>" onClick="submit_check_con();">&nbsp;
     <?php echo '<a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params()) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; ?>
     </td>
     </tr>
