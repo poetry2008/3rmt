@@ -890,31 +890,6 @@ function submit_order_check(products_id,op_id){
 
         if(confirm(data)){
 
-          create_preorder_price();
-        }
-      }else{
-
-         create_preorder_price();
-      }
-    }
-  });
-    
-}
-
-function submit_order_check_one(products_id,op_id){
-  var qty = document.getElementById('p_'+op_id).value;
-
-  $.ajax({
-    dataType: 'text',
-    url: 'ajax_orders_weight.php?action=edit_preorder',
-    data: 'qty='+qty+'&products_id='+products_id, 
-    type:'POST',
-    async: false,
-    success: function(data) {
-      if(data != ''){
-
-        if(confirm(data)){
-
           createPreorderChk();
           document.edit_order.submit();
         }
@@ -1600,26 +1575,8 @@ if (($action == 'edit') && ($order_exists == true)) {
       </tr>
   <!-- End Order Total Block -->
   <!-- Begin Update Block -->
-<!-- Improvement: more "Update" buttons (Michel Haase, 2005-02-18) -->
-      <tr>
-        <td>
-          <table width="100%" border="0" cellpadding="2" cellspacing="1">
-            <tr>
-              <td class="main" bgcolor="#FFDDFF" height="25"><?php echo EDIT_ORDERS_CONFIRMATION_READ; ?></td>
-              <td class="main" bgcolor="#FFBBFF" width="10">&nbsp;</td>
-              <td class="main" bgcolor="#FF99FF" width="10">&nbsp;</td>
-              <td class="main" bgcolor="#FF77FF" width="10">&nbsp;</td>
-              <td class="main" bgcolor="#FF55FF" width="120" align="center"><INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON; ?>" onClick="submit_order_check(<?php echo $pid;?>,<?php echo $pid;?>);"></td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-      </tr>   
-  <!-- End of Update Block -->
-  
-  
+<!-- Improvement: more "Update" buttons (Michel Haase, 2005-02-18) -->   
+  <!-- End of Update Block --> 
   <!-- Begin Status Block -->
       <tr>
         <td class="SubTitle"><?php echo EDIT_ORDERS_ITEM_FOUR_TITLE; ?></td>
@@ -1710,7 +1667,7 @@ if (($action == 'edit') && ($order_exists == true)) {
               <td class="main" bgcolor="#FF55FF" width="120" align="center">
               <input type="hidden" name="x" value="43"> 
               <input type="hidden" name="y" value="12"> 
-              <INPUT type="button" value="<?php echo IMAGE_UPDATE; ?>" onClick="submit_order_check_one(<?php echo $pid;?>,<?php echo $pid;?>);">
+              <INPUT type="button" value="<?php echo TEXT_FOOTER_CHECK_SAVE; ?>" onClick="submit_order_check(<?php echo $pid;?>,<?php echo $pid;?>);">
               </td>
           </tr>
           </table>

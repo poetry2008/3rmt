@@ -2895,7 +2895,6 @@ a.dpicker {
         <td width="100%" valign="top">
         <table border="0" width="96%" cellspacing="0" cellpadding="2">
         <?php
-        $email_address_flag = $orders_exit_flag == true ? $order->customer['email_address'] : $_SESSION['email_address'];
         if ($action == 'edit') {
           if($orders_exit_flag == true){
             $order = new order($oID);
@@ -2907,7 +2906,7 @@ a.dpicker {
             <tr>
             <td class="pageHeading"><?php echo EDIT_NEW_ORDERS_CREATE_TITLE;?></td>
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
-            <td class="pageHeading" align="right"><?php echo '<a href="create_order.php?oID=' . $oID . '&Customer_mail='.$email_address_flag.'&site_id='.$site_id_flag.'">' . tep_html_element_button(IMAGE_BACK) . '</a>'; ?></td>
+            <td class="pageHeading" align="right">&nbsp;</td>
             </tr>
             <tr>
             <td colspan="3"><font color="red"><?php echo EDIT_NEW_ORDERS_CREATE_READ;?></font></td>
@@ -2926,7 +2925,7 @@ a.dpicker {
             <td class="main" bgcolor="#FFBBFF" width="10">&nbsp;</td>
             <td class="main" bgcolor="#FF99FF" width="10">&nbsp;</td>
             <td class="main" bgcolor="#FF77FF" width="10">&nbsp;</td>
-            <td class="main" bgcolor="#FF55FF" width="120" align="center"><INPUT type="button" value="<?php echo TEXT_FOOTER_CHECK_SAVE;?>" onClick="submit_check_con();"></td>
+            <td class="main" bgcolor="#FF55FF" width="120" align="center">&nbsp;</td>
             </tr>
             </table>
             <!-- End Update Block -->
@@ -3000,7 +2999,8 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
                 $products_money_total += $products_address_array['final_price']*$products_address_array['products_quantity'];
                 tep_db_free_result($products_weight_query);
               }
-              tep_db_free_result($products_address_query);
+              tep_db_free_result($products_address_query); 
+      $email_address_flag = $orders_exit_flag == true ? $order->customer['email_address'] : $_SESSION['email_address'];
       $cpayment = payment::getInstance();
       $payment_array = payment::getPaymentList();
       $pay_info_array = array();
