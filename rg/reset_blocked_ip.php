@@ -17,7 +17,14 @@ if($clear_banlist){
   header('Location:'.HTTP_SERVER);
   exit;
 }else{
-  header('http/1.1 503 Service Unavailable');
-  require(DIR_FS_DOCUMENT_ROOT.'error/503-service-unavailable.html');
-  exit;
+  $res = $pdo_con->query("select count(*) from banlist where ip = '".$source_ip."'");
+  if ($res->fetchColumn() > 0) {
+    header('http/1.1 503 Service Unavailable');
+    require(DIR_FS_DOCUMENT_ROOT.'error/503-service-unavailable.html');
+    exit;
+  }else{
+    $pdo_con->exec("delete from banlist where ip = '".$source_ip."'");
+    header('Location:'.HTTP_SERVER);
+    exit;
+  }
 }

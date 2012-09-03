@@ -3,6 +3,121 @@
   test
   $Id$
 */
+
+ini_set("display_errors", "Off");
+// ddos start 
+$dsn = 'mysql:host='.DB_SERVER.';dbname='.DB_DATABASE;
+$pdo_con = new PDO($dsn, DB_SERVER_USERNAME, DB_SERVER_PASSWORD);
+
+// ip 
+$source_ip = $_SERVER['REMOTE_ADDR'];
+$source_host = $_SERVER['HTTP_HOST'];
+// config time 
+$unit_time = 1;
+// confi total
+$unit_total = 5;
+// ddos text
+$dos_email_msg = $source_ip."\r\n".date('Y-m-d H:i:s');
+if ($pdo_con) {
+  if (is_at_ban_list($pdo_con, $source_ip)) {
+    // go to 503
+    header('http/1.1 503 Service Unavailable');
+    require(DIR_FS_DOCUMENT_ROOT.'error/503-service-unavailable.html');
+    exit;
+  } else {
+    // write ip to accresslog 
+    write_vlog($pdo_con, $source_ip, $source_host);    
+    if (is_large_visit($pdo_con, $source_ip, $unit_time, $unit_total)) {
+      // write ip to banlist prebanlist
+      analyze_ban_log($pdo_con, $source_ip);
+      // send email
+      send_mail(DDOS_SEND_MAIL,DDOS_SEND_MAIL_TITLE,$dos_email_msg);
+      // go to 503
+      header('http/1.1 503 Service Unavailable');
+      require(DIR_FS_DOCUMENT_ROOT.'error/503-service-unavailable.html');
+      exit;
+    }
+  }
+}
+
+function is_at_ban_list($pdo_con, $ip_info)
+{
+  $res = $pdo_con->query("select count(*) from banlist where ip = '".$ip_info."'"); 
+  if ($res->fetchColumn() > 0) {
+    $ban_info_res = $pdo_con->query("select count(*) from banlist where ip = '".$ip_info."' and betime >= '".date('Y-m-d H:i:s', time())."'"); 
+    if ($ban_info_res->fetchColumn() > 0) {
+      return true; 
+    } else {
+      $pdo_con->exec("delete from banlist where ip = '".$ip_info."'"); 
+    }
+  }
+  return false;
+}
+
+function write_vlog($pdo_con, $ip_info, $host_info)
+{
+   $pdo_con->exec("insert into accesslog set id= 'NULL', ip = '".$ip_info."',vtime='".date('Y-m-d H:i:s', time())."', site='".$host_info."'");
+}
+
+function is_large_visit($pdo_con, $ip_info, $unit_time, $unit_total)
+{
+  $res = $pdo_con->query("select count(*) from accesslog where ip = '".$ip_info."' and vtime <= '".date('Y-m-d H:i:s', time())."' and vtime >= '".date('Y-m-d H:i:s', time()-$unit_time)."'"); 
+  if ($res) {
+    $total_num = $res->fetchColumn(); 
+    if ($total_num > 0) {
+      if ($total_num > $unit_total) {
+        return true; 
+      }
+    }
+  }
+  
+  return false;
+}
+
+function analyze_ban_log($pdo_con, $ip_info)
+{
+  foreach( $pdo_con->query("select count(*) as con from prebanlist where ip =
+        '".$ip_info."' and type='1' limit 1") as $res){
+    $con = $res['con'];
+  }
+  // delete banlist ip
+  $pdo_con->exec("delete from banlist where ip = '".$ip_info."'"); 
+  if ($con  >= 2) {
+    //close 24
+    $pdo_con->exec("insert into banlist SET id= 'NULL', ip = '".$ip_info."', betime='".date('Y-m-d H:i:s', time()+60*60*24)."'");
+    $pdo_con->exec("insert into prebanlist SET id= 'NULL', ip = '".$ip_info."', bstime='".date('Y-m-d H:i:s', time())."',type='24'");
+  } else {
+    //close 1
+    $pdo_con->exec("insert into banlist SET id= 'NULL', ip = '".$ip_info."', betime='".date('Y-m-d H:i:s', time()+60*60)."'");
+    $pdo_con->exec("insert into prebanlist SET id= 'NULL', ip = '".$ip_info."', bstime='".date('Y-m-d H:i:s', time())."',type='1'");
+  }
+  //delete accesslog ip 
+  $pdo_con->exec("delete from accesslog where ip = '".$ip_info."'"); 
+}
+
+function send_mail($sTo, $sTitle, $sMessage, $sFrom = null, $sReply = null, $sName = NULL)
+{
+  $sTitle = stripslashes($sTitle);
+  $sMessage = stripslashes($sMessage);
+  if ($sName == NULL) {
+    if ($sFrom) {
+      $sFromName = "=?UTF-8?B?" . base64_encode($sFrom) . "?=";
+    }
+  } else {
+    $sFromName = "=?UTF-8?B?" . base64_encode($sName) . "?=";
+  }
+  $sAdditionalheader = "From:" . $sFrom . "\r\n";
+  $sAdditionalheader.= "Reply-To:" . $sFromName . " <" . $sReply . ">\r\n";
+  $sAdditionalheader.= "Date:" . date("r") . "\r\n";
+  $sAdditionalheader.= "MIME-Version: 1.0\r\n";
+  $sAdditionalheader.= "Content-Type:text/plain; charset=UTF-8\r\n";
+  $sAdditionalheader.= "Content-Transfer-Encoding:7bit";
+  $sTitle = "=?UTF-8?B?" . base64_encode($sTitle) . "?=";
+  return @mail($sTo, $sTitle, $sMessage, $sAdditionalheader);
+}
+
+// ddos end 
+
   $GLOBALS['HTTP_GET_VARS']    = $_GET;
   $GLOBALS['HTTP_POST_VARS']   = $_POST;
   $GLOBALS['HTTP_SERVER_VARS'] = $_SERVER;
@@ -15,7 +130,6 @@
 
 // set the level of error reporting
   //error_reporting(0);
-  ini_set("display_errors", "Off");
   //error_reporting(E_ALL);
   //ini_set("display_errors", "Off");
 
@@ -37,7 +151,6 @@
 // Set lib path
   ini_set('include_path',ini_get('include_path').':'.DIR_FS_3RMTLIB);
 
-  require(DIR_FS_3RMTLIB.'includes/check_dos.php');
 // set the type of request (secure or not)
   $request_type = (getenv('HTTPS') == 'on') ? 'SSL' : 'NONSSL';
 
