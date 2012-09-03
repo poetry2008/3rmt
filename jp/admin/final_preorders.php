@@ -1587,8 +1587,12 @@ float:left;
 <?php
   if (($action == 'edit') && ($order_exists == true)) {
     $order = new preorder($oID);
+    $preorders_products_query = tep_db_query("select orders_products_id from ". TABLE_PREORDERS_PRODUCTS . " where orders_id='".$oID."'");
+    $preorders_products_array = tep_db_fetch_array($preorders_products_query);
+    $order_products_id = $preorders_products_array['orders_products_id'];
+    tep_db_free_result($preorders_products_query);
 ?>
-        <tr>
+        <tr><?php echo tep_draw_form('edit_order', FILENAME_FINAL_PREORDERS, tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post','onSubmit="return presubmitChk();"'); ?>
           <td width="100%">
             <table border="0" width="100%" cellspacing="0" cellpadding="0">
               <tr>
@@ -1597,6 +1601,8 @@ float:left;
                 <td class="pageHeading" align="right">
     <?php echo '<a href="' . tep_href_link('handle_new_preorder.php', 'oID='.$_GET['oID']) . '">' . tep_html_element_button(BUTTON_WRITE_PREORDER) . '</a>'; ?>
     &nbsp; 
+    <?php echo tep_html_element_button(TEXT_FOOTER_CHECK_SAVE, 'onclick="submit_order_check('.$order->products[0]['id'].','.$order_products_id.');"');?>
+    &nbsp;
     <?php echo '<a href="' . tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params()) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; ?>
                 </td>
               </tr>
@@ -1604,8 +1610,7 @@ float:left;
             <?php echo tep_draw_separator(); ?>
           </td>
         </tr> 
-        <tr><?php echo tep_draw_form('edit_order', FILENAME_FINAL_PREORDERS, tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post','onSubmit="return presubmitChk();"'); ?>
-          
+        <tr> 
           <td>
             <!-- Begin Update Block -->
             <table width="100%" border="0" cellpadding="2" cellspacing="1">
@@ -1614,7 +1619,7 @@ float:left;
                 <td class="main" bgcolor="#FBE2C8" width="10">&nbsp;</td>
                 <td class="main" bgcolor="#FFCC99" width="10">&nbsp;</td>
                 <td class="main" bgcolor="#F8B061" width="10">&nbsp;</td>
-                <td class="main" bgcolor="#FF9933" width="120" align="center"><?php echo tep_html_element_button(TEXT_FOOTER_CHECK_SAVE, 'onclick="submit_order_check('.$order->products[0]['products_id'].','.$order->products[0]['orders_products_id'].');"');?></td>
+                <td class="main" bgcolor="#FF9933" width="120" align="center">&nbsp;</td>
               </tr>
             </table>
             <!-- End Update Block -->

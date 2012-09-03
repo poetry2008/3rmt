@@ -2582,13 +2582,14 @@ a.dpicker {
 if (($action == 'edit') && ($order_exists == true)) {
   $order = new order($oID);
   ?>
-    <tr>
+    <tr><?php echo tep_draw_form('edit_order', "edit_orders.php", tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post', 'id="edit_order_id"'); ?>
     <td width="100%">
     <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
     <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
     <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
     <td class="pageHeading" align="right">
+    <INPUT type="button" class="element_button" value="<?php echo TEXT_FOOTER_CHECK_SAVE;?>" onClick="submit_check_con();">&nbsp;
     <?php echo '<a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params()) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; ?>
     </td>
     </tr>
@@ -2596,8 +2597,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <?php echo tep_draw_separator(); ?>
     </td>
     </tr> 
-    <tr><?php echo tep_draw_form('edit_order', "edit_orders.php", tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post', 'id="edit_order_id"'); ?>
-
+    <tr>
     <td>
     <!-- Begin Update Block -->
     <table width="100%" border="0" cellpadding="2" cellspacing="1">
@@ -2606,7 +2606,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <td class="main" bgcolor="#FBE2C8" width="10">&nbsp;</td>
     <td class="main" bgcolor="#FFCC99" width="10">&nbsp;</td>
     <td class="main" bgcolor="#F8B061" width="10">&nbsp;</td>
-    <td class="main" bgcolor="#FF9933" width="120" align="center"><INPUT type="button" value="<?php echo TEXT_FOOTER_CHECK_SAVE;?>" onClick="submit_check_con();"></td>
+    <td class="main" bgcolor="#FF9933" width="120" align="center">&nbsp;</td>
     </tr>
     </table>
     <!-- End Update Block -->
