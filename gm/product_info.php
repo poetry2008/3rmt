@@ -114,7 +114,12 @@ function select_item_radio(i_obj, t_str, o_str, p_str, r_price)
 
 function change_num(ob,targ, quan, a_quan)
 {
+
+
   var product_quantity = document.getElementById(ob);
+  if(isNaN(parseInt(product_quantity.value))){
+  product_quantity.value = quan;
+  }
   var product_quantity_num = parseInt(product_quantity.value);
   if (targ == 'up')
   { 
@@ -143,7 +148,7 @@ function change_num(ob,targ, quan, a_quan)
   actiontime =new Date().getTime();  
    setTimeout( function() {
       timeline_action("<?php echo (int)$_GET['products_id'];?>"); 
-       }, 1000);   
+       }, 300);   
 
 }
 function get_current_ts(){
@@ -154,7 +159,7 @@ function get_current_ts(){
 
 function timeline_action(p){
 
-  if (get_current_ts()-actiontime>=980){
+  if (get_current_ts()-actiontime>=290){
   calc_product_final_price(p);
   }; 
 //calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");

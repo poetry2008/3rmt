@@ -1,5 +1,6 @@
 <?php
 /*
+  test
   $Id$
 */
   $GLOBALS['HTTP_GET_VARS']    = $_GET;
@@ -36,7 +37,7 @@
 // Set lib path
   ini_set('include_path',ini_get('include_path').':'.DIR_FS_3RMTLIB);
 
-  require(DIR_FS_3RMTLIB.'includes/check_ddos.php');
+  require(DIR_FS_3RMTLIB.'includes/check_dos.php');
 // set the type of request (secure or not)
   $request_type = (getenv('HTTPS') == 'on') ? 'SSL' : 'NONSSL';
 

@@ -139,7 +139,7 @@ if(!isset($email_error)||$email_error == true){?>
  }?></span></td>
  </tr>
  <tr>
-  <td width='120'>お届け日時</td>
+  <td width='120' valign="top">お届け日時</td>
   <td>
    <select name='date' id='new_date' onChange="selectDate('<?php echo date('H');?>', '<?php echo date('i');?>')">
     <option value=''>--</option>
