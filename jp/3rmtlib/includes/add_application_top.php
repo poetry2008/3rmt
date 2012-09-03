@@ -15,7 +15,7 @@ $source_host = $_SERVER['HTTP_HOST'];
 // config time 
 $unit_time = 1;
 // confi total
-$dos_email_address = 'sznforwork@gmail.com';
+$dos_email_address = DDOS_SEND_MAIL;
 $dos_email_title = 'ddos info';
 $dos_email_msg = $source_ip."\r\n".date('Y-m-d H:i:s');
 $unit_total = 5;
