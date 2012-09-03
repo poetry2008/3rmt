@@ -1389,3 +1389,19 @@ a.s_column_bar {
 font-size:14px;
 }
 .option_input_width{ width:75%;}
+.box{
+	height:650px;
+	overflow:hidden;
+}
+.show_left_menu{
+	height:650px;
+}
+.footer_copyright{
+	text-align:center;
+	font-size:12px;
+	border-top:1px solid #000;
+	padding:20px 0;
+	background-color:#F0F1F1;
+	margin-top:10px;
+
+}

@@ -159,7 +159,7 @@ function popupWindow(url) {
             </tr> 
             <tr> 
               <td> <?php
-  $options_box = '<table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">' . "\n" .
+  $options_box = '<table class="box_des" border="0" width="96%" cellspacing="0" cellpadding="2">' . "\n" .
                  '  <tr>' . "\n" .
                  '    <td class="fieldKey">' . ENTRY_CATEGORIES . '</td>' . "\n" .
                  '    <td class="fieldValue">' . tep_draw_pull_down_menu('categories_id', tep_get_categories(array(array('id' => '', 'text' => TEXT_ALL_CATEGORIES)))) . '<br></td>' . "\n" .
