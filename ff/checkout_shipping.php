@@ -1513,7 +1513,7 @@ function check_point(point_num) {
   } 
 ?>
   <tr id="shipping_list" style="display:none;">
-  <td class="main"><?php echo TEXT_EXPECT_TRADE_TIME; ?></td>
+  <td class="main" valign="top"><?php echo TEXT_EXPECT_TRADE_TIME; ?></td>
     <td class="main" id="shipping_list_show">
   </td>
   </tr>
@@ -1577,7 +1577,7 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
           ?> 
           <tr> 
             <td>
-              <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+              <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                 <tr> 
                   <td class="main">
                   <b><?php echo TEXT_POINT_OR_CAMPAION; ?></b>
@@ -1629,7 +1629,7 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
           ?>
           <tr> 
             <td>
-              <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+              <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                 <tr> 
                   <td class="main">
                   <b><?php echo TEXT_POINT_OR_CAMPAION; ?></b>

@@ -1524,7 +1524,7 @@ function check_point(point_num) {
 ?>
   <tr id="shipping_list" style="display:none;">
     <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main"><?php echo TEXT_EXPECT_TRADE_TIME; ?></td>
+  <td class="main" valign="top"><?php echo TEXT_EXPECT_TRADE_TIME; ?></td>
     <td class="main" id="shipping_list_show">
     </td>
   </tr>
