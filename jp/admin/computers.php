@@ -18,7 +18,6 @@ if (isset($_GET['action']) and $_GET['action']) {
           $messageStack->add_session(TEXT_COMPUTERS_NAME_EXISTS, 'error');
           tep_redirect(tep_href_link(FILENAME_COMPUTERS, 'cPath=&action=new'));
         }
-echo "insert into " . TABLE_COMPUTERS . " (computers_name, sort_order,user_added,date_added,user_update,date_update) values ('" . tep_db_input($computers_name) . "','" . tep_db_input($sort_order) . "','".$_POST['user_added']."',now(),'".$_POST['user_update']."',now())";exit;
         tep_db_query("insert into " . TABLE_COMPUTERS . " (computers_name, sort_order,user_added,date_added,user_update,date_update) values ('" . tep_db_input($computers_name) . "','" . tep_db_input($sort_order) . "','".$_POST['user_added']."',now(),'".$_POST['user_update']."',now())");
         tep_redirect(tep_href_link(FILENAME_COMPUTERS));
         break;
