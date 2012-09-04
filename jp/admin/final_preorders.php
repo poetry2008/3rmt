@@ -1993,7 +1993,7 @@ float:left;
       foreach($all_show_option_id as $t_item_id){
         $orders_products_attributes_id = $all_show_option[$t_item_id]['id'];
         if(is_array($all_show_option[$t_item_id]['option_info'])){
-        echo '<br><div><small>&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' .  "<input type='text' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' value='" .  tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;")) . "'>: " . 
+        echo '<br><div class="order_option_width"><small>&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' .  "<input type='text' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' value='" .  tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;")) . "'>: " . 
            '</div><div class="order_option_value">' . 
            "<input type='text' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' value='" .  tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;"));
         //if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
@@ -2011,7 +2011,7 @@ float:left;
       }
       
     } else {
-       echo '<br><div><small>&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' ."<input name='new_update_products_op_title' type='text'  class='option_input_width' value=''>: " . 
+       echo '<br><div class="order_option_width"><small>&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' ."<input name='new_update_products_op_title' type='text'  class='option_input_width' value=''>: " . 
            '</div><div class="order_option_value">' . 
            "<input name='new_update_products_op_value' type='text' class='option_input_width' value=''>";
         echo "</div></div>";
@@ -2315,7 +2315,7 @@ if (tep_db_num_rows($orders_history_query)) {
           </td>
         </tr>
         <tr>
-          <td class="main"><b><?php echo EDIT_ORDERS_SEND_MAIL_TEXT;?></b></td>
+          <td class="main" width="80"><b><?php echo EDIT_ORDERS_SEND_MAIL_TEXT;?></b></td>
           <td class="main"><table bgcolor="red" cellspacing="5"><tr><td><?php echo tep_draw_checkbox_field('notify', '', true); ?></td></tr></table></td>
         </tr>
         <?php if($CommentsWithStatus) { ?>
@@ -2325,7 +2325,7 @@ if (tep_db_num_rows($orders_history_query)) {
         </tr>
         <tr>
           <td class="main" valign="top"><b><?php echo TABLE_HEADING_COMMENTS;?>:</b></td>
-          <td class="main"><?php echo tep_draw_textarea_field('comments_text', 'hard', '74', '5', '', 'style="font-family:monospace; font-size:12px; width:400px;"');?></td> 
+          <td class="main"><?php echo tep_draw_textarea_field('comments_text', 'hard', '74', '5', '', 'style="font-family:monospace; font-size:12px; width:100%;"');?></td> 
         </tr>
         <?php } ?>
       </table>
@@ -2337,10 +2337,10 @@ if (tep_db_num_rows($orders_history_query)) {
       $mail_sele = tep_db_query($ma_se); 
       $mail_sql = tep_db_fetch_array($mail_sele); 
     ?>
-    <?php echo '<b>'.ENTRY_EMAIL_TITLE.'</b>'.tep_draw_input_field('etitle', $mail_sql['orders_status_title'],' style="width:315px;"');?> 
+    <?php echo '<b>'.ENTRY_EMAIL_TITLE.'</b>'.tep_draw_input_field('etitle', $mail_sql['orders_status_title'],' style="width:50%;"');?> 
     <br> 
     <br> 
-    <textarea style="font-family:monospace; font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}', preorders_a($order->info['orders_id']), $mail_sql['orders_status_mail']);?></textarea> 
+    <textarea style="font-family:monospace; font-size:12px; width:70%;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}', preorders_a($order->info['orders_id']), $mail_sql['orders_status_mail']);?></textarea> 
   </td>
   </tr>
 </table>

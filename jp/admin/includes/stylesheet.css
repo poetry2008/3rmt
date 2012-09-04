@@ -1405,3 +1405,6 @@ font-size:14px;
 	margin-top:10px;
 
 }
+.order_option_width{
+	min-width:240px;
+}
