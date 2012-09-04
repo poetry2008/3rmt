@@ -26,6 +26,7 @@ switch ($HTTP_GET_VARS['action']){
 <meta http-equiv="Content-Type" content="text/html;charset=<?php echo CHARSET; ?>">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<link rel="stylesheet" type="text/css" href="includes/stylesheet.css" />
 <title><?php echo SET_COMMENT_TITLE?></title>
 </head>
 <?php 
@@ -49,7 +50,7 @@ $cID;?>&cPath=<?php echo $cPath;?>"  onsubmit="alert('<?php echo SET_COMMENT_UPD
 <p><?php echo SET_COMMENT_COMMENT_TEXT;?></p>
 <p><textarea cols='60' rows='12' name='comment'><?php echo $col['comment'];?></textarea></p>
 <p><input type="submit" value="<?php echo SET_COMMENT_TITLE;?>"><p>
-<?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 </form>
+<?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 </body>
 </html>
