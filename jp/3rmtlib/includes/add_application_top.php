@@ -1,12 +1,12 @@
 <?php
 /*
-  test
   $Id$
 */
 
-ini_set("display_errors", "Off");
+  ini_set("display_errors", "Off");
+  error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING ^ E_DEPRECATED);
 // ddos start 
-require(DIR_WS_FUNCTIONS . 'ddos.php');
+require(DIR_WS_FUNCTIONS . 'dos.php');
 // connect db
 $dsn = 'mysql:host='.DB_SERVER.';dbname='.DB_DATABASE;
 $pdo_con = new PDO($dsn, DB_SERVER_USERNAME, DB_SERVER_PASSWORD);
@@ -16,13 +16,11 @@ $source_ip = $_SERVER['REMOTE_ADDR'];
 // host
 $source_host = $_SERVER['HTTP_HOST'];
 // config time 
-$unit_time = 1;
+$unit_time = 3;
 // confi total
-$unit_total = 5;
-// ddos text
-$dos_email_msg = $source_ip."\r\n".date('Y-m-d H:i:s');
+$unit_total = 15;
 if ($pdo_con) {
-  if (is_at_ban_list($pdo_con, $source_ip)) {
+  if(is_reset_blocked_ip($pdo_con, $source_ip)){
     // go to 503
     header('http/1.1 503 Service Unavailable');
     require(DIR_FS_DOCUMENT_ROOT.'error/503-service-unavailable.html');
@@ -33,8 +31,6 @@ if ($pdo_con) {
     if (is_large_visit($pdo_con, $source_ip, $unit_time, $unit_total)) {
       // write ip to banlist prebanlist
       analyze_ban_log($pdo_con, $source_ip);
-      // send email
-      send_mail(DDOS_SEND_MAIL,DDOS_SEND_MAIL_TITLE,$dos_email_msg);
       // go to 503
       header('http/1.1 503 Service Unavailable');
       require(DIR_FS_DOCUMENT_ROOT.'error/503-service-unavailable.html');
@@ -57,8 +53,7 @@ if ($pdo_con) {
 
 // set the level of error reporting
   //error_reporting(0);
-  //error_reporting(E_ALL);
-  //ini_set("display_errors", "Off");
+//  ini_set("display_errors", "On");
 
 // check if register_globals is enabled.
 // since this is a temporary measure this message is hardcoded. The requirement will be removed before 2.2 is finalized.
@@ -268,7 +263,6 @@ if ($pdo_con) {
   define("TELL_A_FRIEND_CACHETIME",20);
   define("SITEMAP_CACHETIME",20);
   define("MANUFACTURERS_CACHETIME",20);
-  
 // customization for the design layout
   define('BOX_WIDTH', 171); // how wide the boxes should be in pixels (default: 125)
 
