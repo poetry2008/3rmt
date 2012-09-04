@@ -1510,7 +1510,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
   } 
 ?>
   <tr id="shipping_list" style="display:none;">
-    <td class="main" colspan="2"><?php echo TEXT_EXPECT_TRADE_TIME; ?></td>
+    <td class="main" colspan="2" valign="top"><?php echo TEXT_EXPECT_TRADE_TIME; ?></td>
     <td class="main" id="shipping_list_show">
     </td>
   </tr>
