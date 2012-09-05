@@ -872,7 +872,18 @@ success: function(msg) {
 });
 }
 
-function recalc_order_price(oid, opd, o_str, op_str)
+function fmoney(s)
+{
+   s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(0) + "";
+    var l = s.split(".")[0].split("").reverse();
+     var t = '';
+      for(i = 0; i < l.length; i ++ ){
+            t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+              }
+       return t.split("").reverse().join("");
+}
+
+function recalc_order_price(oid, opd, o_str, op_str,opd_str)
 {
   var op_array = op_str.split('|||');
   var p_op_info = 0; 
@@ -883,23 +894,142 @@ function recalc_order_price(oid, opd, o_str, op_str)
   }
   pro_num = document.getElementById('update_products_new_qty_'+opd).value;
   p_price = document.getElementsByName('update_products['+opd+'][p_price]')[0].value;
+  p_final_price = document.getElementsByName('update_products['+opd+'][final_price]')[0].value;
   
   $.ajax({
     type: "POST",
-    data:'oid='+oid+'&opd='+opd+'&o_str='+o_str+'&op_price='+p_op_info+'&p_num='+pro_num+'&p_price='+p_price,
+    data:'oid='+oid+'&opd='+opd+'&o_str='+o_str+'&op_price='+p_op_info+'&p_num='+pro_num+'&p_price='+p_price+'&p_final_price='+p_final_price,
     async:false,
     url: 'ajax_orders.php?action=recalc_price',
-    success: function(msg) {
+    success: function(msg) { 
       msg_info = msg.split('|||');
-      document.getElementsByName('update_products['+opd+'][final_price]')[0].value = msg_info[0];
-      document.getElementById('update_products['+opd+'][a_price]').innerHTML = msg_info[1];
-      document.getElementById('update_products['+opd+'][b_price]').innerHTML = msg_info[2];
-      document.getElementById('update_products['+opd+'][c_price]').innerHTML = '<b>'+msg_info[3]+'</b>';
+      if(o_str != 3){
+        document.getElementsByName('update_products['+opd+'][final_price]')[0].value = msg_info[0];
+      }
+      if(o_str != 3){
+        document.getElementById('update_products['+opd+'][a_price]').innerHTML = msg_info[1];
+      }else{
+        document.getElementById('update_products['+opd+'][a_price]').innerHTML = msg_info[7]; 
+      }
+      if(o_str != 3){
+        document.getElementById('update_products['+opd+'][b_price]').innerHTML = msg_info[2];
+      }else{
+        document.getElementById('update_products['+opd+'][b_price]').innerHTML = msg_info[8]; 
+      }
+      if(o_str != 3){
+        document.getElementById('update_products['+opd+'][c_price]').innerHTML = '<b>'+msg_info[3]+'</b>';
+      }else{
+        document.getElementById('update_products['+opd+'][c_price]').innerHTML = '<b>'+msg_info[9]+'</b>'; 
+      }
+      var opd_str_array = opd_str.split('|||');
+      var opd_str_value = '';
+      var opd_str_total = 0;
+      var opd_str_temp = '';
+      for(x in opd_str_array){
+        opd_str_temp = ''; 
+        opd_str_value = document.getElementById('update_products['+opd_str_array[x]+'][c_price]').innerHTML;
+        opd_str_temp = opd_str_value;
+        opd_str_value = opd_str_value.replace(/<.*?>/g,'');
+        opd_str_value = opd_str_value.replace(/,/g,'');
+        opd_str_value = opd_str_value.replace(msg_info[10],'');
+        opd_str_value = parseFloat(opd_str_value);
+        if(opd_str_temp.indexOf('color') > 0){
+          opd_str_total -= opd_str_value;
+        }else{
+          opd_str_total += opd_str_value; 
+        }
+      }
+      var ot_total = '';
+      var handle_fee_id = document.getElementById('handle_fee_id').innerHTML; 
+      handle_fee_id = handle_fee_id.replace(/<.*?>/g,'');
+      handle_fee_id = handle_fee_id.replace(/,/g,'');
+      handle_fee_id = handle_fee_id.replace(msg_info[10],'');
+      handle_fee_id = parseInt(handle_fee_id); 
+      var shipping_fee_id = document.getElementById('shipping_fee_id').innerHTML;
+      shipping_fee_id= shipping_fee_id.replace(/<.*?>/g,'');
+      shipping_fee_id = shipping_fee_id.replace(/,/g,'');
+      shipping_fee_id = shipping_fee_id.replace(msg_info[10],'');
+      shipping_fee_id = parseInt(shipping_fee_id); 
+      var point_id = document.getElementById('point_id').value; 
+      var update_total_temp;
+      var update_total_num = 0;
+      for(var i = 1;i <= 20;i++){
+     
+        if(document.getElementById('update_total_'+i)){
+          update_total_temp = document.getElementById('update_total_'+i).value; 
+          if(update_total_temp == ''){update_total_temp = 0;}
+          update_total_temp = parseInt(update_total_temp);
+          update_total_num += update_total_temp;
+        }
+      }
+ 
+      ot_total = opd_str_total+handle_fee_id+shipping_fee_id-point_id+update_total_num;
+      
+      if(opd_str_total < 0){
+        opd_str_total = Math.abs(opd_str_total);
+        document.getElementById('ot_subtotal_id').innerHTML = '<font color="#FF0000">'+fmoney(opd_str_total)+'</font>'+msg_info[10];
+      }else{
+        document.getElementById('ot_subtotal_id').innerHTML = fmoney(opd_str_total)+msg_info[10]; 
+      }
+      if(ot_total < 0){
+        ot_total = Math.abs(ot_total);
+        document.getElementById('ot_total_id').innerHTML = '<font color="#FF0000">'+fmoney(ot_total)+'</font>'+msg_info[10];
+      }else{
+        document.getElementById('ot_total_id').innerHTML = fmoney(ot_total)+msg_info[10]; 
+      }
       document.getElementById('update_products['+opd+'][ah_price]').value = msg_info[4];
       document.getElementById('update_products['+opd+'][bh_price]').value = msg_info[5];
       document.getElementById('update_products['+opd+'][ch_price]').value = msg_info[6];
     }
   });
+}
+
+function price_total(str)
+{
+      var ot_total = '';
+      var ot_total_flag = false;
+      var ot_subtotal_id = document.getElementById('ot_subtotal_id').innerHTML; 
+      if(ot_subtotal_id.indexOf('color') > 0){
+        ot_total_flag = true; 
+      }
+      ot_subtotal_id = ot_subtotal_id.replace(/<.*?>/g,'');
+      ot_subtotal_id = ot_subtotal_id.replace(/,/g,'');
+      ot_subtotal_id = ot_subtotal_id.replace(str,'');
+      ot_subtotal_id= parseInt(ot_subtotal_id);
+      var handle_fee_id = document.getElementById('handle_fee_id').innerHTML; 
+      handle_fee_id = handle_fee_id.replace(/<.*?>/g,'');
+      handle_fee_id = handle_fee_id.replace(/,/g,'');
+      handle_fee_id = handle_fee_id.replace(str,'');
+      handle_fee_id = parseInt(handle_fee_id); 
+      var shipping_fee_id = document.getElementById('shipping_fee_id').innerHTML;
+      shipping_fee_id= shipping_fee_id.replace(/<.*?>/g,'');
+      shipping_fee_id = shipping_fee_id.replace(/,/g,'');
+      shipping_fee_id = shipping_fee_id.replace(str,'');
+      shipping_fee_id = parseInt(shipping_fee_id); 
+      var point_id = document.getElementById('point_id').value; 
+      var update_total_temp;
+      var update_total_num = 0;
+      for(var i = 1;i <= 20;i++){
+     
+        if(document.getElementById('update_total_'+i)){
+          update_total_temp = document.getElementById('update_total_'+i).value; 
+          if(update_total_temp == ''){update_total_temp = 0;}
+          update_total_temp = parseInt(update_total_temp);
+          update_total_num += update_total_temp;
+        }
+      }
+ 
+      if(ot_total_flag == false){
+        ot_total = ot_subtotal_id+handle_fee_id+shipping_fee_id-point_id+update_total_num;
+      }else{
+        ot_total = handle_fee_id+shipping_fee_id-point_id+update_total_num-ot_subtotal_id; 
+      }
+      if(ot_total < 0){
+        ot_total = Math.abs(ot_total);
+        document.getElementById('ot_total_id').innerHTML = '<font color="#FF0000">'+fmoney(ot_total)+'</font>'+str;
+      }else{
+        document.getElementById('ot_total_id').innerHTML = fmoney(ot_total)+str; 
+      } 
 }
 
 function recalc_all_product_price(oid, or_str)

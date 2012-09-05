@@ -903,6 +903,135 @@ function submit_order_check(products_id,op_id){
     
 }
 
+function fmoney(s)
+{
+   s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(0) + "";
+    var l = s.split(".")[0].split("").reverse();
+     var t = '';
+      for(i = 0; i < l.length; i ++ ){
+            t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+              }
+       return t.split("").reverse().join("");
+}
+
+function recalc_preorder_price(oid, opd, o_str, oid_price, op_price)
+{
+  
+  pro_num = document.getElementById('p_'+opd).value;
+  p_price = oid_price; 
+  p_final_price = document.getElementsByName('update_products['+opd+'][final_price]')[0].value;  
+  p_op_info = op_price;  
+
+  $.ajax({
+    type: "POST",
+    data:'oid='+oid+'&opd='+opd+'&o_str='+o_str+'&op_price='+p_op_info+'&p_num='+pro_num+'&p_price='+p_price+'&p_final_price='+p_final_price,
+    async:false,
+    url: 'ajax_preorders.php?action=recalc_price',
+    success: function(msg) {
+      msg_info = msg.split('|||');
+      if(o_str != 1){
+        document.getElementsByName('update_products['+opd+'][final_price]')[0].value = msg_info[0];
+      }
+      if(o_str != 1){
+        document.getElementById('update_products['+opd+'][a_price]').innerHTML = msg_info[1];
+      }else{
+        document.getElementById('update_products['+opd+'][a_price]').innerHTML = msg_info[4]; 
+      }
+      if(o_str != 1){
+        document.getElementById('update_products['+opd+'][b_price]').innerHTML = msg_info[2];
+      }else{
+        document.getElementById('update_products['+opd+'][b_price]').innerHTML = msg_info[5]; 
+      }
+      if(o_str != 1){
+        document.getElementById('update_products['+opd+'][c_price]').innerHTML = '<b>'+msg_info[3]+'</b>';
+      }else{
+        document.getElementById('update_products['+opd+'][c_price]').innerHTML = '<b>'+msg_info[6]+'</b>'; 
+      }
+      document.getElementById('ot_subtotal_id').innerHTML = document.getElementById('update_products['+opd+'][c_price]').innerHTML;
+      var opd_str_value = document.getElementById('ot_subtotal_id').innerHTML;
+      var opd_str_temp = opd_str_value;
+      opd_str_value = opd_str_value.replace(/<.*?>/g,'');
+      opd_str_value = opd_str_value.replace(/,/g,'');
+      opd_str_value = opd_str_value.replace('<?php echo TEXT_MONEY_SYMBOL;?>','');
+      opd_str_value = parseFloat(opd_str_value);
+      var ot_total = 0;
+      var handle_fee_id = document.getElementById('handle_fee_id').innerHTML; 
+      handle_fee_id = handle_fee_id.replace(/<.*?>/g,'');
+      handle_fee_id = handle_fee_id.replace(/,/g,'');
+      handle_fee_id = handle_fee_id.replace('<?php echo TEXT_MONEY_SYMBOL;?>','');
+      handle_fee_id = parseInt(handle_fee_id);  
+
+      var update_total_temp;
+      var update_total_num = 0;
+      for(var i = 1;i <= 20;i++){
+     
+        if(document.getElementById('update_totals_'+i)){
+          update_total_temp = document.getElementById('update_totals_'+i).value; 
+          if(update_total_temp == ''){update_total_temp = 0;}
+          update_total_temp = parseInt(update_total_temp);
+          update_total_num += update_total_temp;
+        }
+      }
+      if(opd_str_temp.indexOf('color') > 0){
+         
+         ot_total = handle_fee_id+update_total_num-opd_str_value;
+      }else{
+         
+         ot_total = opd_str_value+handle_fee_id+update_total_num;
+      } 
+       
+      if(ot_total < 0){
+        ot_total = Math.abs(ot_total);
+        document.getElementById('ot_total_id').innerHTML = '<font color="#FF0000">'+fmoney(ot_total)+'</font><?php echo TEXT_MONEY_SYMBOL;?>';
+      }else{
+        document.getElementById('ot_total_id').innerHTML = fmoney(ot_total)+'<?php echo TEXT_MONEY_SYMBOL;?>'; 
+      } 
+    }
+  });
+}
+
+function price_total()
+{
+      var ot_total = '';
+      var ot_total_flag = false;
+      var ot_subtotal_id = document.getElementById('ot_subtotal_id').innerHTML; 
+      if(ot_subtotal_id.indexOf('color') > 0){
+        ot_total_flag = true; 
+      }
+      ot_subtotal_id = ot_subtotal_id.replace(/<.*?>/g,'');
+      ot_subtotal_id = ot_subtotal_id.replace(/,/g,'');
+      ot_subtotal_id = ot_subtotal_id.replace('<?php echo TEXT_MONEY_SYMBOL;?>','');
+      ot_subtotal_id= parseInt(ot_subtotal_id);
+      var handle_fee_id = document.getElementById('handle_fee_id').innerHTML; 
+      handle_fee_id = handle_fee_id.replace(/<.*?>/g,'');
+      handle_fee_id = handle_fee_id.replace(/,/g,'');
+      handle_fee_id = handle_fee_id.replace('<?php echo TEXT_MONEY_SYMBOL;?>','');
+      handle_fee_id = parseInt(handle_fee_id);  
+      var update_total_temp;
+      var update_total_num = 0;
+      for(var i = 1;i <= 20;i++){
+     
+        if(document.getElementById('update_totals_'+i)){
+          update_total_temp = document.getElementById('update_totals_'+i).value; 
+          if(update_total_temp == ''){update_total_temp = 0;}
+          update_total_temp = parseInt(update_total_temp);
+          update_total_num += update_total_temp;
+        }
+      }
+ 
+      if(ot_total_flag == false){
+        ot_total = ot_subtotal_id+handle_fee_id+update_total_num;
+      }else{
+        ot_total = handle_fee_id+update_total_num-ot_subtotal_id; 
+      }
+      if(ot_total < 0){
+        ot_total = Math.abs(ot_total);
+        document.getElementById('ot_total_id').innerHTML = '<font color="#FF0000">'+fmoney(ot_total)+'</font><?php echo TEXT_MONEY_SYMBOL;?>';
+      }else{
+        document.getElementById('ot_total_id').innerHTML = fmoney(ot_total)+'<?php echo TEXT_MONEY_SYMBOL;?>'; 
+      } 
+}
+
 function check_add(){
   price = document.getElementById('add_product_price').value;
   if(price != '' && price != 0  && price > 0){
@@ -1350,13 +1479,20 @@ if (($action == 'edit') && ($order_exists == true)) {
     <input type="hidden" name="update_viladate" value="true">
   </tr>
   
-<?php
-  foreach ($order_products as $pid => $orders_products) {
+<?php 
+  foreach ($order_products as $pid => $orders_products) { 
+    $products_id = '';
+    $orders_price = $orders_products['price'];
+    $op_price = 0;
+    foreach($create_preorder['orders_products_attributes'][$pid] as $orders_att_key=>$orders_att_value){
+
+      $op_price += $orders_att_value['options_values_price'];
+    }
     $RowStyle = "dataTableContent";
     $orders_products_num = isset($_POST['update_products'][$pid]['qty']) ? $_POST['update_products'][$pid]['qty'] : $order_products[$pid]['qty'];
     echo '    <tr class="dataTableRow">' . "\n" .
          '      <td class="' . $RowStyle . '" align="left" valign="top" width="6%">'
-         . "<input name='update_products[$pid][qty]' id='p_".$pid."' size='2' value='" . $orders_products_num . "' onkeyup='clearLibNum(this);' class='update_products_qty'>&nbsp;x</td>\n" . 
+         . "<input name='update_products[$pid][qty]' id='p_".$pid."' size='2' value='" . $orders_products_num . "' onkeyup='clearLibNum(this);recalc_preorder_price(\"".$oID."\", \"".$pid."\", \"0\", \"".$orders_price."\", \"".$op_price."\");' class='update_products_qty'>&nbsp;x</td>\n" . 
          '      <td class="' . $RowStyle . '" width="35%">' . $order_products[$pid]['name'] . "<input name='update_products[$pid][name]' size='64' type='hidden' value='" . $order_products[$pid]['name'] . "'>\n" . 
        '      &nbsp;&nbsp;';
     // Has Attributes?
@@ -1375,32 +1511,32 @@ if (($action == 'edit') && ($order_exists == true)) {
     echo '      </td>' . "\n" .
          '      <td class="' . $RowStyle . '">' . $order_products[$pid]['model'] . "<input name='update_products[$pid][model]' size='12' type='hidden' value='" . $order_products[$pid]['model'] . "'>" . '</td>' . "\n" .
          '      <td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($order_products[$pid]['tax']) . "<input name='update_products[$pid][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order_products[$pid]['tax']) . "'>" . '%</td>' . "\n" .
-         '      <td class="' . $RowStyle . '" align="right">' . "<input type='text' name='update_products[$pid][final_price]' size='9' style='text-align:right;' value='" . tep_display_currency(number_format(abs($order_products[$pid]['final_price']),2)) 
+         '      <td class="' . $RowStyle . '" align="right">' . "<input type='text' name='update_products[$pid][final_price]' onkeyup='clearLibNum(this);recalc_preorder_price(\"".$oID."\", \"".$pid."\", \"1\", \"".$orders_price."\", \"".$op_price."\");' size='9' style='text-align:right;' value='" . tep_display_currency(number_format(abs($order_products[$pid]['final_price']),2)) 
          . "'  onkeyup='clearNoNum(this)' class='once_pwd' >" . 
          '<input type="hidden" name="op_id_'.$pid.'" 
           value="'.tep_get_pre_product_by_op_id($pid,'pid').'">' .TEXT_MONEY_SYMBOL. "\n" .
            '</td>' . "\n" .
-         '      <td class="' . $RowStyle . '" align="right">';
+         '      <td class="' . $RowStyle . '" align="right"><div id="update_products['.$pid.'][a_price]">';
     if ($order_products[$pid]['final_price'] < 0) {
       echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order_products[$pid]['final_price'], $order_products[$pid]['tax']), true, $order['currency'], $order['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
     } else {
       echo $currencies->format(tep_add_tax($order_products[$pid]['final_price'], $order_products[$pid]['tax']), true, $order['currency'], $order['currency_value']);
     }
-    echo '</td>' . "\n" . 
-         '      <td class="' . $RowStyle . '" align="right">';
+    echo '</div></td>' . "\n" . 
+         '      <td class="' . $RowStyle . '" align="right"><div id="update_products['.$pid.'][b_price]">';
     if ($order_products[$pid]['final_price'] < 0) {
       echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($order_products[$pid]['final_price'] * $order_products[$pid]['qty'], true, $order['currency'], $order['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
     } else {
       echo $currencies->format($order_products[$pid]['final_price'] * $order_products[$pid]['qty'], true, $order['currency'], $order['currency_value']);
     }
-    echo '</td>' . "\n" . 
-         '      <td class="' . $RowStyle . '" align="right"><b>';
+    echo '</div></td>' . "\n" . 
+         '      <td class="' . $RowStyle . '" align="right"><div id="update_products['.$pid.'][c_price]"><b>';
     if ($order_products[$pid]['final_price'] < 0) {
       echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order_products[$pid]['final_price'], $order_products[$pid]['tax']) * $order_products[$pid]['qty'], true, $order['currency'], $order['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
     } else {
       echo $currencies->format(tep_add_tax($order_products[$pid]['final_price'], $order_products[$pid]['tax']) * $order_products[$pid]['qty'], true, $order['currency'], $order['currency_value']);
     }
-    echo '</b></td>' . "\n" . 
+    echo '</b></div></td>' . "\n" . 
          '    </tr>' . "\n";
   }
     
@@ -1480,14 +1616,14 @@ if (($action == 'edit') && ($order_exists == true)) {
       echo '  <tr>' . "\n" .
            '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_OTTOTAL_READ.'</td>' . 
            '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' . 
-           '    <td align="right" class="' . $TotalStyle . '"><b>';
+           '    <td align="right" class="' . $TotalStyle . '"><b><div id="ot_total_id">';
                 if($TotalDetails["Price"]>=0){
                   echo  $currencies->ot_total_format($TotalDetails["Price"], true,
                       $order['currency'], $order['currency_value']);
                 }else{
                   echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->ot_total_format($TotalDetails["Price"], true, $order['currency'], $order['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
                 }
-                  echo '</b>' . 
+                  echo '</div></b>' . 
                 "<input name='update_totals[$TotalIndex][title]' type='hidden' value='" . trim($TotalDetails["Name"]) . "' size='" . strlen($TotalDetails["Name"]) . "' >" . 
                 "<input name='update_totals[$TotalIndex][value]' type='hidden' value='" . $TotalDetails["Price"] . "' size='6' >" . 
                 "<input name='update_totals[$TotalIndex][class]' type='hidden' value='" . $TotalDetails["Class"] . "'>\n" . 
@@ -1498,14 +1634,14 @@ if (($action == 'edit') && ($order_exists == true)) {
       echo '  <tr>' . "\n" .
            '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_OTSUBTOTAL_READ.'</td>' . 
            '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' .
-           '    <td align="right" class="' . $TotalStyle . '"><b>';
+           '    <td align="right" class="' . $TotalStyle . '"><b><div id="ot_subtotal_id">';
            if($TotalDetails["Price"]>=0){
                   echo  $currencies->ot_total_format($TotalDetails["Price"], true,
                       $order['currency'], $order['currency_value']);
            }else{
              echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($TotalDetails["Price"], true, $order['currency'], $order['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
            }
-            echo '</b>' . 
+            echo '</div></b>' . 
                 "<input name='update_totals[$TotalIndex][title]' type='hidden' value='" . trim($TotalDetails["Name"]) . "' size='" . strlen($TotalDetails["Name"]) . "' >" . 
                 "<input name='update_totals[$TotalIndex][value]' type='hidden' value='" . $TotalDetails["Price"] . "' size='6' >" . 
                 "<input name='update_totals[$TotalIndex][class]' type='hidden' value='" . $TotalDetails["Class"] . "'>\n" . 
@@ -1515,7 +1651,7 @@ if (($action == 'edit') && ($order_exists == true)) {
            '  <tr>' . "\n" .
            '    <td align="left" class="' . $TotalStyle . '">&nbsp;</td>' . 
            '    <td align="right" class="' . $TotalStyle . '"><b>'.TEXT_CODE_HANDLE_FEE.'</b></td>' .
-           '    <td align="right" class="' . $TotalStyle . '"><b>' . $currencies->format($order["code_fee"]) . '</b><input type="hidden" name="payment_code_fee" value="'.$order["code_fee"].'">' . 
+           '    <td align="right" class="' . $TotalStyle . '"><b><div id="handle_fee_id">' . $currencies->format($order["code_fee"]) . '</div></b><input type="hidden" name="payment_code_fee" value="'.$order["code_fee"].'">' . 
                 '</td>' . 
            '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
            '  </tr>' . "\n";
@@ -1557,7 +1693,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       echo '  <tr>' . "\n" .
            '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_TOTALDETAIL_READ_ONE.'</td>' . 
            '    <td align="right" class="' . $TotalStyle . '">' . "<input name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
-           '    <td align="right" class="' . $TotalStyle . '">' . "<input name='update_totals[$TotalIndex][value]' size='6' value='" . $TotalDetails["Price"] . "'>" . 
+           '    <td align="right" class="' . $TotalStyle . '">' . "<input name='update_totals[$TotalIndex][value]' id='update_totals_$TotalIndex' onkeyup='clearNoNum(this);price_total();' size='6' value='" . $TotalDetails["Price"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . 
            '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 

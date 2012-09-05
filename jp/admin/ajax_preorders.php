@@ -675,6 +675,7 @@ if ($_POST['orders_id'] &&
 } else if (isset($_GET['action'])&&$_GET['action']=='recalc_price') {
   $orders_info_raw = tep_db_query("select currency, currency_value from ".TABLE_PREORDERS." where orders_id = '".$_POST['oid']."'");
   $orders_info = tep_db_fetch_array($orders_info_raw);
+  $orders_info_num_rows = tep_db_fetch_array($orders_info_raw);
   
   $orders_p_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_products_id = '".$_POST['opd']."'");
   $orders_p = tep_db_fetch_array($orders_p_raw);
@@ -690,18 +691,29 @@ if ($_POST['orders_id'] &&
   $price_array[] = tep_display_currency(number_format(abs($final_price), 2));
   
   if ($final_price < 0) {
-    $price_array[] = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($final_price, $orders_p['products_tax']), true, $orders_info['currency'], $orders_info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL; 
+    $price_array[] = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($final_price, $orders_p['products_tax']), true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['create_preorder']['orders']['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['create_preorder']['orders']['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL; 
     
-    $price_array[] = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($final_price*tep_replace_full_character($_POST['p_num']), true, $orders_info['currency'], $orders_info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL; 
+    $price_array[] = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($final_price*tep_replace_full_character($_POST['p_num']), true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['create_preorder']['orders']['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['create_preorder']['orders']['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL; 
     
-    $price_array[] = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($final_price, $orders_p['products_tax'])*tep_replace_full_character($_POST['p_num']), true, $orders_info['currency'], $orders_info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL; 
-  
+    $price_array[] = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($final_price, $orders_p['products_tax'])*tep_replace_full_character($_POST['p_num']), true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['create_preorder']['orders']['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['create_preorder']['orders']['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL; 
+
+    $price_array[] = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($_POST['p_final_price'], $orders_p['products_tax']), true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['create_preorder']['orders']['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['create_preorder']['orders']['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+
+    $price_array[] = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($_POST['p_final_price']*tep_replace_full_character($_POST['p_num']), true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['create_preorder']['orders']['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['create_preorder']['orders']['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+
+    $price_array[] = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($_POST['p_final_price'], $orders_p['products_tax'])*tep_replace_full_character($_POST['p_num']), true,$orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['create_preorder']['orders']['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['create_preorder']['orders']['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
   } else {
-    $price_array[] = $currencies->format(tep_add_tax($final_price, $orders_p['products_tax']), true, $orders_info['currency'], $orders_info['currency_value']); 
+    $price_array[] = $currencies->format(tep_add_tax($final_price, $orders_p['products_tax']), true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['create_preorder']['orders']['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['create_preorder']['orders']['currency_value']); 
     
-    $price_array[] = $currencies->format($final_price*tep_replace_full_character($_POST['p_num']), true, $orders_info['currency'], $orders_info['currency_value']); 
+    $price_array[] = $currencies->format($final_price*tep_replace_full_character($_POST['p_num']), true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['create_preorder']['orders']['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['create_preorder']['orders']['currency_value']); 
     
-    $price_array[] = $currencies->format(tep_add_tax($final_price, $orders_p['products_tax'])*tep_replace_full_character($_POST['p_num']), true, $orders_info['currency'], $orders_info['currency_value']); 
+    $price_array[] = $currencies->format(tep_add_tax($final_price, $orders_p['products_tax'])*tep_replace_full_character($_POST['p_num']), true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['create_preorder']['orders']['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['create_preorder']['orders']['currency_value']); 
+
+    $price_array[] = $currencies->format(tep_add_tax($_POST['p_final_price'], $orders_p['products_tax']), true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['create_preorder']['orders']['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['create_preorder']['orders']['currency_value']); 
+    
+    $price_array[] = $currencies->format($_POST['p_final_price']*tep_replace_full_character($_POST['p_num']), true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['create_preorder']['orders']['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['create_preorder']['orders']['currency_value']); 
+    
+    $price_array[] = $currencies->format(tep_add_tax($_POST['p_final_price'], $orders_p['products_tax'])*tep_replace_full_character($_POST['p_num']), true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['create_preorder']['orders']['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['create_preorder']['orders']['currency_value']);
   }
   
   echo implode('|||', $price_array);
