@@ -1476,7 +1476,7 @@ function check_point(point_num) {
      if(date('Y-m-d',$j_shipping) == $now_time_date && $min_time_end_str != ''){
        if(isset($_POST['date']) && $_POST['date'] != ""){
          $selected_str = date('Y-m-d',$j_shipping) == $_POST['date'] ? 'selected' : ''; 
-       }elseif(isset($_SESSION['date']) && $_SESSION['date'] != ''){
+       }elseif(isset($_SESSION['date']) && $_SESSION['date'] != '' && !isset($date_error)){
          $selected_str = date('Y-m-d',$j_shipping) == $_SESSION['date'] ? 'selected' : '';
        }
        if(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_SESSION['date']){
