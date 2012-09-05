@@ -1572,7 +1572,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() > 0) {
         }
       ?>
       <input type="text" value="<?php echo $default_point_value;?>" name="point" id="input_text_short" style="text-align:right"> 
-      <div><?php echo isset($current_point['point'])?$current_point['point']:$point['point']; ?><?php echo TEXT_POINT_READ;?> 
+      <div><?php echo $point['point']; ?><?php echo TEXT_POINT_READ;?> 
       <?php
       if ($campaign_error) {
         echo '&nbsp;<font color="#ff0000">'.CAMPAIGN_ERROR_TEXT.'</font>'; 

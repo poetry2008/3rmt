@@ -1610,7 +1610,7 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
                         <input type="text" value="<?php echo $default_point_value;?>" name="point" size="24" style="text-align:right"> 
                         </td> 
                         <td class="main" align="right"> 
-                          <?php echo isset($current_point['point'])?$current_point['point']:$point['point']; ?><?php echo TEXT_POINT_READ;?>
+                          <?php echo $point['point']; ?><?php echo TEXT_POINT_READ;?>
                         </td>
                       </tr> 
                     </table>

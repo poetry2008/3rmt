@@ -1963,6 +1963,11 @@ echo json_encode($json_array);
     
     $price_array[] = '-'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($final_price*tep_replace_full_character($_POST['p_num']), true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['currency_value'])); 
     $price_array[] = '-'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($final_price, $orders_p['products_tax'])*tep_replace_full_character($_POST['p_num']), true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['currency_value'])); 
+    
+    $price_array[] = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($_POST['p_final_price'], $orders_p['products_tax']), true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+    $price_array[] = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($_POST['p_final_price']*tep_replace_full_character($_POST['p_num']), true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+    $price_array[] = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($_POST['p_final_price'], $orders_p['products_tax'])*tep_replace_full_character($_POST['p_num']), true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+    $price_array[] = TEXT_MONEY_SYMBOL;
   } else {
     $price_array[] = $currencies->format(tep_add_tax($final_price, $orders_p['products_tax']), true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['currency_value']); 
     
@@ -1973,6 +1978,11 @@ echo json_encode($json_array);
     
     $price_array[] = '+'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($final_price*tep_replace_full_character($_POST['p_num']), true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['currency_value'])); 
     $price_array[] = '+'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($final_price, $orders_p['products_tax'])*tep_replace_full_character($_POST['p_num']), true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['currency_value'])); 
+
+    $price_array[] = str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($_POST['p_final_price'], $orders_p['products_tax']), true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['currency_value'])).TEXT_MONEY_SYMBOL;
+    $price_array[] = str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($_POST['p_final_price']*tep_replace_full_character($_POST['p_num']), true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['currency_value'])).TEXT_MONEY_SYMBOL;
+    $price_array[] = str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($_POST['p_final_price'], $orders_p['products_tax'])*tep_replace_full_character($_POST['p_num']), true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['currency_value'])).TEXT_MONEY_SYMBOL;
+    $price_array[] = TEXT_MONEY_SYMBOL;
   }
   
   echo implode('|||', $price_array);
