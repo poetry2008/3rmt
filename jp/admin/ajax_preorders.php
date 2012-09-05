@@ -675,7 +675,7 @@ if ($_POST['orders_id'] &&
 } else if (isset($_GET['action'])&&$_GET['action']=='recalc_price') {
   $orders_info_raw = tep_db_query("select currency, currency_value from ".TABLE_PREORDERS." where orders_id = '".$_POST['oid']."'");
   $orders_info = tep_db_fetch_array($orders_info_raw);
-  $orders_info_num_rows = tep_db_fetch_array($orders_info_raw);
+  $orders_info_num_rows = tep_db_num_rows($orders_info_raw);
   
   $orders_p_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_products_id = '".$_POST['opd']."'");
   $orders_p = tep_db_fetch_array($orders_p_raw);
