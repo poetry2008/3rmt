@@ -2,7 +2,7 @@
 header("Cache-Control:");
 header("Pragma:");
 header("Expires:".date("D, d M Y H:i:s",0)." GMT");
-ini_set("display_errors", "On");
+ini_set("display_errors", "Off");
 error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING ^ E_DEPRECATED);
 include('includes/configure.php');
 $dsn = 'mysql:host='.DB_SERVER.';dbname='.DB_DATABASE;
