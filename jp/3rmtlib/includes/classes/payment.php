@@ -784,5 +784,16 @@ class payment {
     }
     return '';
   }
+
+  function is_get_point($payment)
+  {
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'is_get_point')) {
+        return $module->is_get_point(); 
+      }
+    }
+    return false; 
+  }
 }
 ?>

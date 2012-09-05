@@ -249,5 +249,10 @@ function getMailString($option=''){
  
     return array(4);
    }
+   
+   function is_get_point()
+   {
+     return true; 
+   }
 }
 ?>
