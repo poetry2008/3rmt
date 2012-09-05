@@ -557,5 +557,10 @@ class buying extends basePayment  implements paymentInterface  {
     $orders_id = $orders_status_history_num_rows == 1 ? $ordres_status_history_array['orders_id'] : '';
     return array(0,$orders_id);
   }
+  
+  function is_get_point()
+  {
+    return true; 
+  }
 }
 ?>
