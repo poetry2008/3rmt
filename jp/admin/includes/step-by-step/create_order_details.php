@@ -852,9 +852,8 @@ echo tep_draw_input_field('telephone', $telephone) . '&nbsp;' . ENTRY_TELEPHONE_
 <?php
 echo CREATE_ORDER_COMMUNITY_SEARCH_TEXT;?></td>
 <td class="main">&nbsp;
-<?php
-echo tep_draw_input_field('fax_1', $fax, 'id="fax" size="60" maxlength="255"');
-?>&nbsp;&nbsp;
+<textarea id='fax' name='fax_1' style='width:400px;height:45px;'><?php echo $fax;?></textarea>
+&nbsp;&nbsp;
 <?php
 echo CREATE_ORDER_COMMUNITY_SEARCH_READ;?></td>
 </tr>

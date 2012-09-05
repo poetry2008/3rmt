@@ -1476,7 +1476,7 @@ function check_point(point_num) {
      if(date('Y-m-d',$j_shipping) == $now_time_date && $min_time_end_str != ''){
        if(isset($_POST['date']) && $_POST['date'] != ""){
          $selected_str = date('Y-m-d',$j_shipping) == $_POST['date'] ? 'selected' : ''; 
-       }elseif(isset($_SESSION['date']) && $_SESSION['date'] != ''){
+       }elseif(isset($_SESSION['date']) && $_SESSION['date'] != '' && !isset($date_error)){
          $selected_str = date('Y-m-d',$j_shipping) == $_SESSION['date'] ? 'selected' : '';
        }
        if(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_SESSION['date']){
@@ -1503,7 +1503,7 @@ function check_point(point_num) {
   } 
 ?>
   <tr id="shipping_list" style="display:none;">
-  <td class="main"><?php echo TEXT_EXPECT_TRADE_TIME; ?></td>
+  <td class="main" valign="top"><?php echo TEXT_EXPECT_TRADE_TIME; ?></td>
     <td class="main" id="shipping_list_show">
   </td>
   </tr>
@@ -1571,7 +1571,7 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
           ?> 
           <tr> 
             <td>
-              <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+              <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                 <tr> 
                   <td class="main">
                   <b><?php echo TEXT_POINT_OR_CAMPAION; ?></b>
@@ -1604,7 +1604,7 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
                         <input type="text" value="<?php echo $default_point_value;?>" name="point" size="24" style="text-align:right"> 
                         </td> 
                         <td class="main" align="right">
-                        <?php echo isset($current_point['point'])?$current_point['point']:$point['point']; ?><?php echo TEXT_POINT_READ;?>
+                        <?php echo $point['point']; ?><?php echo TEXT_POINT_READ;?>
                         </td>
                       </tr> 
                     </table>
@@ -1623,7 +1623,7 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
           ?>
           <tr> 
             <td>
-              <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+              <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                 <tr> 
                   <td class="main">
                   <b><?php echo TEXT_POINT_OR_CAMPAION; ?></b>

@@ -754,6 +754,12 @@ padding-right:20px;
 }
 .show_latest_news li{
 *padding:1px;
+list-style-type:none;
+clear:both;
+}
+.show_latest_news li span,.show_latest_news li a{
+float:left;
+margin-right:8px;
 }
 .link_more_news01 {
 text-align:right;

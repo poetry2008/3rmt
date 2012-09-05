@@ -1482,8 +1482,7 @@ function check_point(point_num) {
       if(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $now_time_date && $min_time_end_str == ''){
         break;
       }
-      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'"
-        '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT."（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
+      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT."（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
       }
     }
      $j_shipping += 86400;
@@ -1520,7 +1519,7 @@ function check_point(point_num) {
 ?>
   <tr id="shipping_list" style="display:none;">
     <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main"><?php echo TEXT_EXPECT_TRADE_TIME; ?></td>
+  <td class="main" valign="top"><?php echo TEXT_EXPECT_TRADE_TIME; ?></td>
     <td class="main" id="shipping_list_show">
     </td>
   </tr>
@@ -1607,8 +1606,8 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
           </tr> 
           <tr> 
             <td>
-              <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
-                <tr class="infoBoxContents"> 
+              <table border="0" width="100%" cellspacing="0" cellpadding="0" class="infoBox"> 
+                <tr> 
                   <td>
                     <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                       <tr> 
@@ -1623,7 +1622,7 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
                         <input type="text" value="<?php echo $default_point_value;?>" name="point" size="24" style="text-align:right"> 
                         </td> 
                         <td class="main" align="right"> 
-                          <?php echo isset($current_point['point'])?$current_point['point']:$point['point']; ?><?php echo TEXT_POINT_READ;?>
+                          <?php echo $point['point']; ?><?php echo TEXT_POINT_READ;?>
                         </td>
                       </tr> 
                     </table>
@@ -1662,8 +1661,8 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
            </tr> 
            <tr> 
               <td>
-                <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
-                  <tr class="infoBoxContents"> 
+                <table border="0" width="100%" cellspacing="0" cellpadding="0" class="infoBox"> 
+                  <tr> 
                     <td>
                       <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                         <tr> 

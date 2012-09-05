@@ -916,9 +916,10 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                   <table width="100%" border="0" cellspacing="2" cellpadding="2">
                     <tr>
                       <td>&nbsp;</td>
-                      <td width="100" align="center" id="work_a" class='<?php echo $order->info['orders_work'] == 'a' ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="preorders_work(this, 'a', '<?php echo $order->info['orders_id'];?>')">A</td>
-                      <td width="100" align="center" id="work_b" class='<?php echo $order->info['orders_work'] == 'b' ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="preorders_work(this, 'b', '<?php echo $order->info['orders_id'];?>')">B</td>
-                      <td width="100" align="center" id="work_c" class='<?php echo $order->info['orders_work'] == 'c' ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="preorders_work(this, 'c', '<?php echo $order->info['orders_id'];?>')">C</td>
+                      <td width="75" align="center" id="work_a" class='<?php echo $order->info['orders_work'] == 'a' ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="preorders_work(this, 'a', '<?php echo $order->info['orders_id'];?>')">A</td>
+                      <td width="75" align="center" id="work_b" class='<?php echo $order->info['orders_work'] == 'b' ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="preorders_work(this, 'b', '<?php echo $order->info['orders_id'];?>')">B</td>
+                      <td width="75" align="center" id="work_c" class='<?php echo $order->info['orders_work'] == 'c' ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="preorders_work(this, 'c', '<?php echo $order->info['orders_id'];?>')">C</td>
+                      <td width="75" align="center" id="work_d" class='<?php echo $order->info['orders_work'] == 'd' ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="preorders_work(this, 'd', '<?php echo $order->info['orders_id'];?>')">D</td>
                     <tr>
                   </table>
                 </td>
@@ -1342,7 +1343,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               <tr>
                 <!--<td class="main" valign="top" width="30%"><b>信用調査:</b></td>-->
             <form action="ajax_preorders.php?orders_id=<?php echo $order->info['orders_id'];?>" id='form_orders_credit' method="post">
-                <td class="main"><input type="text" name="orders_credit" style="width:100%" value="<?php echo tep_get_customers_fax_by_id($order->customer['id']);?>" >
+                <td class="main"><textarea name="orders_credit" style="width:100%; height:45px;"><?php echo tep_get_customers_fax_by_id($order->customer['id']);?></textarea>
                 <input type="hidden" name="orders_id" value="<?php echo $order->info['orders_id'];?>">
                 <input type="hidden" name="page" value="<?php echo $_GET['page'];?>">
                 </td>

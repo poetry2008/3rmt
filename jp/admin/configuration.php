@@ -4,6 +4,11 @@
 */
 require('includes/application_top.php');
 
+if (!isset($_GET['gID'])) {
+  $first_configuration_group_query = tep_db_query("select * from ".TABLE_CONFIGURATION_GROUP." where visible = '1' order by sort_order limit 1"); 
+  $first_configuration_group = tep_db_fetch_array($first_configuration_group_query);
+  tep_redirect(tep_href_link(FILENAME_CONFIGURATION, 'gID='.$first_configuration_group['configuration_group_id']));
+}
 if (isset($_GET['action']) && $_GET['action']) {
 if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];//权限判断
          else $site_arr="";

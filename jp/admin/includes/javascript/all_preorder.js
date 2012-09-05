@@ -741,6 +741,7 @@ function preorders_work(ele, work, oid) {
   document.getElementById('work_a').className = 'orders_flag_unchecked';
   document.getElementById('work_b').className = 'orders_flag_unchecked';
   document.getElementById('work_c').className = 'orders_flag_unchecked';
+  document.getElementById('work_d').className = 'orders_flag_unchecked';
   $.ajax({
 dataType: 'text',
 url: 'ajax_preorders.php?orders_id='+oid+'&work='+work,

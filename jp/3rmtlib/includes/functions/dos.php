@@ -23,10 +23,15 @@ function is_large_visit($pdo_con, $ip_info, $unit_time, $unit_total)
   $res = $pdo_con->query("select count(*) from accesslog where ip = '".$ip_info."' and vtime <= '".date('Y-m-d H:i:s', time())."' and vtime >= '".date('Y-m-d H:i:s', time()-$unit_time)."'"); 
   if ($res) {
     $total_num = $res->fetchColumn(); 
-    if ($total_num > 0) {
-      if ($total_num > $unit_total) {
-        return true; 
-      }
+    if ($total_num > 0 && $total_num > $unit_total) {
+      //send mail
+      $dos_email_msg = 'Prebanlist '.date('Y-m-d H:i:s')."  ".$ip_info;
+      send_mail(DDOS_SEND_MAIL,DDOS_SEND_MAIL_TITLE,$dos_email_msg);
+      return true; 
+    }else{
+      $pdo_con->exec("delete from accesslog where ip = '".$ip_info."' 
+          and vtime<= '".date('Y-m-d H:i:s', time()-$unit_time)."'"); 
+      return false;
     }
   }
   
@@ -45,10 +50,16 @@ function analyze_ban_log($pdo_con, $ip_info)
     //close 24
     $pdo_con->exec("insert into banlist SET id= 'NULL', ip = '".$ip_info."', betime='".date('Y-m-d H:i:s', time()+60*60*24)."'");
     $pdo_con->exec("insert into prebanlist SET id= 'NULL', ip = '".$ip_info."', bstime='".date('Y-m-d H:i:s', time())."',type='24'");
+    //send mail
+    $dos_email_msg = 'Banlist '.date('Y-m-d H:i:s')."  ".$ip_info;
+    send_mail(DDOS_SEND_MAIL,DDOS_SEND_MAIL_TITLE,$dos_email_msg);
   } else {
     //close 1
     $pdo_con->exec("insert into banlist SET id= 'NULL', ip = '".$ip_info."', betime='".date('Y-m-d H:i:s', time()+60*60)."'");
     $pdo_con->exec("insert into prebanlist SET id= 'NULL', ip = '".$ip_info."', bstime='".date('Y-m-d H:i:s', time())."',type='1'");
+    //send mail
+    $dos_email_msg = 'Prebanlist '.date('Y-m-d H:i:s')."  ".$ip_info;
+    send_mail(DDOS_SEND_MAIL,DDOS_SEND_MAIL_TITLE,$dos_email_msg);
   }
   //delete accesslog ip 
   $pdo_con->exec("delete from accesslog where ip = '".$ip_info."'"); 
@@ -75,4 +86,18 @@ function send_mail($sTo, $sTitle, $sMessage, $sFrom = null, $sReply = null, $sNa
   return @mail($sTo, $sTitle, $sMessage, $sAdditionalheader);
 }
 
+function is_reset_blocked_ip($pdo_con, $ip_info){
+  $res = $pdo_con->query("select count(*) from banlist where ip = '".$ip_info."' 
+    and betime < '".date('Y-m-d H:i:s', time())."'"); 
+  if ($res) {
+    $total_num = $res->fetchColumn(); 
+    if($total_num > 0){
+      $pdo_con->exec("delete from banlist where ip = '".$ip_info."'"); 
+      $pdo_con->exec("delete from prebanlist where ip = '".$ip_info."'"); 
+      return false;
+    }else{
+      return is_at_ban_list($pdo_con, $ip_info);
+    }
+  }
+}
 

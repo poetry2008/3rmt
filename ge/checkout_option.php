@@ -33,6 +33,7 @@ unset($_SESSION['shipping_session_flag']);
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
         <!-- left_navigation_eof //--> </div> 
       <!-- body_text //--> 
+      <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
       <div id="content"> <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1>
         <div class="comment"> 
         <form action="<?php echo tep_href_link(FILENAME_CHECKOUT_OPTION, '', 'SSL'); ?>" method="post" >

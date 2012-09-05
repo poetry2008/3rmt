@@ -91,7 +91,10 @@ function popupWindow(url) {
         $latest_news_new = '';
       }
     
-    echo '<li class="news_list"><span>'.tep_date_short($latest_news['date_added']) . '</span><a href="' .tep_href_link(FILENAME_LATEST_NEWS ,'news_id=' . $latest_news['news_id']).'">' . replace_store_name($latest_news['headline']) . '&nbsp;&nbsp;' . $latest_news_image . $latest_news_new .'</a></li>'."\n";
+    echo '<li class="news_list"><span>'.tep_date_short($latest_news['date_added']) .
+      '</span><a href="' .tep_href_link(FILENAME_LATEST_NEWS ,'news_id=' .
+      $latest_news['news_id']).'">' .
+      replace_store_name(strip_tags($latest_news['headline'])) . '&nbsp;&nbsp;' . $latest_news_image . $latest_news_new .'</a></li>'."\n";
     
     }
     echo '</ul>' . "\n";
