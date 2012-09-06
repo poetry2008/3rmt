@@ -12,7 +12,7 @@ $source_ip = $_SERVER['REMOTE_ADDR'];
 $source_host = $_SERVER['HTTP_HOST'];
 $clear_banlist = false;
 foreach( $pdo_con->query("select type from prebanlist where ip = '".$source_ip."'
-      order by id desc limit 1") as $row){
+      order by bstime desc limit 1") as $row){
 if( $row['type'] == '1'){
   $clear_banlist = true;
 }

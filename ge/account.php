@@ -68,7 +68,7 @@
           <td>
 		  <table border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr>
-              <td class="formAreaTitle_both">
+              <td class="formAreaTitle">
               <?php echo TEXT_POINT_NOW; ?></td>
             </tr>
 			<tr>
@@ -87,9 +87,6 @@
           </table></td>
         </tr>
         <?php } ?>
-        <tr>
-          <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-        </tr>
         <tr>
           <td><table border="0" width="100%" cellspacing="0" cellpadding="2">
             <tr>

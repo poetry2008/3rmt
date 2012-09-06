@@ -595,13 +595,10 @@ if($_POST['num_rows'] > 0){
 </td> 
             </tr> 
             <tr> 
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-            </tr> 
-            <tr> 
               <td><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2" align="center"> 
                   <tr> 
-                    <td class="main"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
-                    <td class="main" align="right"><a href="javascript:void(0);" onClick="check_form();"><img src="images/design/button/all_save.gif"></a></td>
+                    <td><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
+                    <td align="right"><a href="javascript:void(0);" onClick="check_form();"><img src="images/design/button/all_save.gif"></a></td>
                   </tr> 
                 </table></td> 
             </tr> 

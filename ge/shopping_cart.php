@@ -349,11 +349,8 @@ function change_num(ob,targ, quan,a_quan, origin_qty, origin_small)
           </table></td> 
         </tr> 
         <tr> 
-          <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-        </tr> 
-        <tr> 
-          <td align="right" class="main"><b><?php echo SUB_TITLE_SUB_TOTAL; ?>
-          <span id="sub_total"><?php echo $currencies->format_total($cart->show_total()); ?></span></b></td> 
+          <td align="right" class="main"><div class="box_spacing"><b><?php echo SUB_TITLE_SUB_TOTAL; ?> <span id="sub_total"><?php echo
+          $currencies->format_total($cart->show_total()); ?></span></b></div></td> 
         </tr> 
 <?php   
     // 买取200以下提示
@@ -463,7 +460,7 @@ B:ポイントの加算（<?php echo STORE_NAME;?>会員でなければ表示さ
     }
 ?> 
         <tr> 
-          <td><br> 
+          <td>
           <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2"> 
             <tr> 
               <td width="20%" align="left" class="main">
@@ -508,7 +505,8 @@ if (!empty($_SESSION['history_url'])) {
 ?>
   <h3 class="pageHeading">こちらの商品もオススメ！！</h3>
 <?php } ?>
-  <div style="text-align:center;padding:10px 0;">
+<?php if (!empty($cart_products)) {?>
+  <div style="text-align:center;padding:8px 0;">
 <?php
       foreach($cart_products as $cp){
         $cp = tep_get_product_by_id($cp, SITE_ID, 4, true, 'shopping_cart', true);
@@ -528,6 +526,7 @@ if (!empty($_SESSION['history_url'])) {
 ?>
   </div>
 <?php
+      }
     }
   ?>
        <?php require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_INFO_SHOPPING_CART);?>

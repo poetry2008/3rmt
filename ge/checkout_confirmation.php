@@ -660,6 +660,16 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
   if ($guestchk == '1') {
     $get_point = 0;
   }
+
+  }
+?>
+                </table>
+              </td>
+            </tr>
+            <tr>
+             <td colspan="2" align="right">
+ <?php
+  echo "<table>";
   tep_session_register('get_point');
   if(isset($customer_id)&&tep_is_member_customer($customer_id)){
   echo '<tr>' . "\n";
@@ -675,10 +685,9 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
   echo '<td align="right" class="main">'.(int)$get_point.'&nbsp;P</td>' . "\n";
   echo '</tr>' . "\n";
   }
-  }
-?>
-                </table>
-              </td>
+  echo "</table>";
+                ?>
+             </td> 
             </tr>
           </table>
         </td>

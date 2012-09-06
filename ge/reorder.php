@@ -883,7 +883,6 @@ function orderConfirmPage(){
               -
               <input type='text' name='order_id_2' class="input_text" maxlength='8' style='width:80px' >
               <a href="/reorder2.php">注文番号忘れた?</a>
-              <br >
 			  <div class="reorder_clear">
               <font color='red'>例：20******-********<br >
               注文書に記載された20から始まる8桁の数字-8桁の数字をご入力ください。</font>
@@ -899,8 +898,10 @@ function orderConfirmPage(){
           <tr>
 		  <td width="110">&nbsp;</td>
             <td align="left">
-              <input type='image' src="includes/languages/japanese/images/buttons/button_continue.gif" alt="次へ進む" title="次へ進む" >
-              <input type='image' src="includes/languages/japanese/images/buttons/button_reset_01.gif" alt="クリア" title="クリア" onClick="javascript:document.order.reset();return false;" >
+              <div class="box_spacing"> 
+                <input type='image' src="includes/languages/japanese/images/buttons/button_continue.gif" alt="次へ進む" title="次へ進む" >
+                <input type='image' src="includes/languages/japanese/images/buttons/button_reset_01.gif" alt="クリア" title="クリア" onClick="javascript:document.order.reset();return false;" >
+              </div> 
             </td>
           </tr>
         </table>
