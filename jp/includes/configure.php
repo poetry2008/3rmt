@@ -7,7 +7,7 @@
 // * DIR_FS_* = Filesystem directories (local/physical)
 // * DIR_WS_* = Webserver directories (virtual/URL)
 //  define('HTTP_SERVER', 'http://3jp.bobhero.200.com'); // eg, http://localhost - should not be empty for productive servers
-  define('HTTP_SERVER', 'http://3jp.szn.200.com'); // eg, http://localhost - should not be empty for productive servers
+  define('HTTP_SERVER', 'http://jp_latest_news.hm1002.200.com'); // eg, http://localhost - should not be empty for productive servers
 //  define('HTTP_SERVER', 'http://hmtest9.3322.org');
 
   define('HTTPS_SERVER', 'https://cchm.vicp.net'); // eg, https://localhost - should not be empty for productive servers
@@ -24,12 +24,12 @@
   define('DIR_WS_LANGUAGES', DIR_WS_INCLUDES . 'languages/');
 
   define('DIR_WS_DOWNLOAD_PUBLIC', DIR_WS_CATALOG . 'pub/');
-  define('DIR_FS_DOCUMENT_ROOT', '/home/szn/project/3rmt/jp/');
-  define('DIR_FS_CATALOG', '/home/szn/project/3rmt/jp/');
+  define('DIR_FS_DOCUMENT_ROOT', '/home/hm1002/latest_news_3rmt/jp/');
+  define('DIR_FS_CATALOG', '/home/hm1002/latest_news_3rmt/jp/');
   define('DIR_FS_DOWNLOAD', DIR_FS_CATALOG . 'download/');
   define('DIR_FS_DOWNLOAD_PUBLIC', DIR_FS_CATALOG . 'pub/');
 //$libpath = "/home/szn/project/3rmt/3rmtlib/";
-  define('DIR_FS_3RMTLIB', '/home/szn/project/3rmt/jp/3rmtlib/');
+  define('DIR_FS_3RMTLIB', '/home/hm1002/latest_news_3rmt/jp/3rmtlib/');
 
 // define our database connection
   define('DB_SERVER', 'localhost'); // eg, localhost - should not be empty for productive servers
