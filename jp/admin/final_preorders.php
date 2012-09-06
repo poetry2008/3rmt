@@ -1054,6 +1054,25 @@ function submit_order_check(products_id,op_id){
   });
     
 }
+
+function add_option(){
+    var add_num = $("#button_add_id").val();
+    add_num = parseInt(add_num);
+    $("#button_add_id").val(add_num+1);
+    var add_option_total_str = $("#add_option_total").html();
+    $("#add_option_total").remove();
+    $("#button_add").remove();
+    add_num++;
+    var add_str = '';
+
+    add_str += '<tr><td class="smallText" align="left"><?php echo EDIT_ORDERS_TOTALDETAIL_READ_ONE;?></td>'
+            +'<td class="smallText" align="right"><INPUT type="button" id="button_add" value="<?php echo TEXT_BUTTON_ADD;?>" onClick="add_option();">&nbsp;<input value="" size="7" name="update_totals['+add_num+'][title]">'
+            +'</td><td class="smallText" align="right"><input id="update_totals_'+add_num+'" value="" size="6" onkeyup="clearNoNum(this);price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');" name="update_totals['+add_num+'][value]"><input type="hidden" name="update_totals['+add_num+'][class]" value="ot_custom"><input type="hidden" name="update_totals['+add_num+'][total_id]" value="0"></td>'
+            +'<td><b><img height="17" width="1" border="0" alt="" src="images/pixel_trans.gif"></b></td></tr>'
+            +'<tr id="add_option_total">'+add_option_total_str+'</tr>';
+
+    $("#add_option").append(add_str);
+  }
 //todo:修改通性用
   function hidden_payment(){
      var idx = document.edit_order.elements["payment_method"].selectedIndex;
@@ -1679,6 +1698,7 @@ float:left;
 </style>
 <!-- header_eof //-->
 <!-- body //-->
+<?php echo tep_draw_form('edit_order', FILENAME_FINAL_PREORDERS, tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post','onSubmit="return presubmitChk();"'); ?>
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top">
@@ -1699,7 +1719,7 @@ float:left;
     $order_products_id = $preorders_products_array['orders_products_id'];
     tep_db_free_result($preorders_products_query);
 ?>
-        <tr><?php echo tep_draw_form('edit_order', FILENAME_FINAL_PREORDERS, tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post','onSubmit="return presubmitChk();"'); ?>
+        <tr>
           <td width="100%">
             <table border="0" width="100%" cellspacing="0" cellpadding="0">
               <tr>
@@ -2209,7 +2229,7 @@ float:left;
       <tr>
         <td>
 
-<table width="100%" border="0" cellspacing="0" cellpadding="2" class="dataTableRow">
+<table width="100%" border="0" cellspacing="0" cellpadding="2" class="dataTableRow" id="add_option">
   <tr class="dataTableHeadingRow">
     <td class="dataTableHeadingContent" align="left" width="75%"><?php echo TABLE_HEADING_FEE_MUST?></td>
     <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_MODULE; ?></td>
@@ -2245,10 +2265,26 @@ float:left;
   }
   
   array_pop($TotalsArray);
+  $sum_num = count($TotalsArray)-1;
+  $show_num = 0;
+  $ot_custom_num = 0;
+  foreach ($TotalsArray as $TotalIndex => $TotalDetails) {
+    if(trim($TotalDetails['Name']) != '' && $TotalDetails['Class'] == 'ot_custom'){
+      $ot_custom_num++;
+    }
+  }
+  foreach ($TotalsArray as $TotalIndex => $TotalDetails) {
+    if(trim($TotalDetails['Name']) == '' && $TotalDetails['Class'] == 'ot_custom' && $ot_custom_num >= 2){
+       unset($TotalsArray[$TotalIndex]);
+    }
+  }
+  $sum_array = array_keys($TotalsArray);
+  array_pop($sum_array);
+  $show_num = end($sum_array);
   foreach ($TotalsArray as $TotalIndex => $TotalDetails) {
     $TotalStyle = "smallText";
     if ($TotalDetails["Class"] == "ot_total") {
-      echo '  <tr>' . "\n" .
+      echo '  <tr id="add_option_total">' . "\n" .
            '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_OTTOTAL_READ.'</td>' . 
            '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' . 
            '    <td align="right" class="' . $TotalStyle . '"><b><div id="ot_total_id">';
@@ -2325,9 +2361,10 @@ float:left;
              '  </tr>' . "\n";
       }
     } else {
+      $button_add = $TotalIndex == $show_num ? '<INPUT type="button" id="button_add" value="'.TEXT_BUTTON_ADD.'" onClick="add_option();"><input type="hidden" id="button_add_id" value="'.$sum_num.'">&nbsp;' : '';
       echo '  <tr>' . "\n" .
            '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_TOTALDETAIL_READ_ONE.'</td>' . 
-           '    <td align="right" class="' . $TotalStyle . '">' . "<input name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
+           '    <td align="right" class="' . $TotalStyle . '">' . $button_add ."<input name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
            '    <td align="right" class="' . $TotalStyle . '">' . "<input name='update_totals[$TotalIndex][value]' id='update_totals_$TotalIndex' onkeyup='clearNoNum(this);price_total();' size='6' value='" . $TotalDetails["Price"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . 
@@ -2494,7 +2531,6 @@ if (tep_db_num_rows($orders_history_query)) {
       </td>
     </tr>
   <!-- End of Update Block -->
-      </form>
 <?php
 }
 if($action == "add_product")
@@ -2686,6 +2722,7 @@ if($action == "add_product")
 <!-- body_text_eof //-->
   </tr>
 </table>
+</form>
 <!-- body_eof //-->
 
 <!-- footer //-->
@@ -2695,7 +2732,5 @@ if($action == "add_product")
 </body>
 </html>
 <?php
-
-
 require(DIR_WS_INCLUDES . 'application_bottom.php');
 ?>

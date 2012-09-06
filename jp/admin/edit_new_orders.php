@@ -1776,9 +1776,9 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
     <script language="javascript" src="includes/javascript/jquery_include.js"></script>
     <script language="javascript" src="includes/javascript/all_orders.js"></script>
     <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
-  <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
-  <script language="javascript" src="includes/jquery.form.js"></script>
-  <script type="text/javascript"> 
+    <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
+    <script language="javascript" src="includes/jquery.form.js"></script>
+    <script type="text/javascript"> 
   function submit_check_con(){
 
     var options = {
@@ -1797,6 +1797,25 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
     }
   };
   $('#edit_order_id').ajaxSubmit(options);
+  }
+
+  function add_option(){
+    var add_num = $("#button_add_id").val();
+    add_num = parseInt(add_num);
+    $("#button_add_id").val(add_num+1);
+    var add_option_total_str = $("#add_option_total").html();
+    $("#add_option_total").remove();
+    $("#button_add").remove();
+    add_num++;
+    var add_str = '';
+
+    add_str += '<tr><td class="smallText" align="left"><?php echo EDIT_ORDERS_TOTALDETAIL_READ_ONE;?></td>'
+            +'<td class="smallText" align="right"><INPUT type="button" id="button_add" value="<?php echo TEXT_BUTTON_ADD;?>" onClick="add_option();">&nbsp;<input value="" size="7" name="update_totals['+add_num+'][title]">'
+            +'</td><td class="smallText" align="right"><input id="update_total_'+add_num+'" value="" size="6" onkeyup="clearNoNum(this);price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');" name="update_totals['+add_num+'][value]"><input type="hidden" name="update_totals['+add_num+'][class]" value="ot_custom"><input type="hidden" name="update_totals['+add_num+'][total_id]" value="0"></td>'
+            +'<td><b><img height="17" width="1" border="0" alt="" src="images/pixel_trans.gif"></b></td></tr>'
+            +'<tr id="add_option_total">'+add_option_total_str+'</tr>';
+
+    $("#add_option").append(add_str);
   }
 <?php
 if($p_weight_total > 0){
@@ -2877,6 +2896,7 @@ a.dpicker {
       </style>
         <!-- header_eof //-->
         <!-- body //-->
+        <?php echo tep_draw_form('edit_order', "edit_new_orders.php", tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post', 'id="edit_order_id"'); ?> 
         <table border="0" width="100%" cellspacing="2" cellpadding="2">
         <tr>
         <td width="<?php echo BOX_WIDTH; ?>" valign="top">
@@ -2910,8 +2930,7 @@ a.dpicker {
             <?php echo tep_draw_separator(); ?>
             </td>
             </tr> 
-            <tr><?php echo tep_draw_form('edit_order', "edit_new_orders.php", tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post', 'id="edit_order_id"'); ?>
-
+            <tr>
             <td>
             <!-- Begin Update Block -->
             <table width="100%" border="0" cellpadding="2" cellspacing="1">
@@ -4060,7 +4079,7 @@ if($orders_exit_flag == true){
             <tr>
             <td>
 
-            <table width="100%" border="0" cellspacing="0" cellpadding="2" class="dataTableRow">
+            <table width="100%" border="0" cellspacing="0" cellpadding="2" class="dataTableRow" id="add_option">
             <tr class="dataTableHeadingRow">
             <td class="dataTableHeadingContent" align="left" width="75%"><?php echo TABLE_HEADING_FEE_MUST?></td>
             <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_MODULE; ?></td>
@@ -4103,7 +4122,7 @@ if($orders_exit_flag == true){
             if ($TotalDetails["Class"] == "ot_total") {
               $shipping_fee_total = ($shipping_ot_subtotal+$shipping_fee+$shipping_ot_tax+$order->info["code_fee"]-$shipping_ot_point) != $TotalDetails["Price"] ? $shipping_fee : 0;
               $shipping_fee_total += ($shipping_ot_subtotal+$shipping_fee+$shipping_ot_tax+$handle_fee_code-$shipping_ot_point) != $TotalDetails["Price"] ? $handle_fee_code : 0;
-              echo '  <tr>' . "\n" .
+              echo '  <tr id="add_option_total">' . "\n" .
                 '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_OTTOTAL_READ.'</td>' . 
                 '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' . 
                 '    <td align="right" class="' . $TotalStyle . '"><b><div id="ot_total_id">' ;
@@ -4193,15 +4212,16 @@ if($orders_exit_flag == true){
                   '  </tr>' . "\n";
               }
             } else {
+              $button_add = $TotalIndex == 3 ? '<INPUT type="button" id="button_add" value="'.TEXT_BUTTON_ADD.'" onClick="add_option();"><input type="hidden" id="button_add_id" value="4">&nbsp;' : '';
               echo '  <tr>' . "\n" .
                 '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_TOTALDETAIL_READ_ONE.'</td>' . 
-                '    <td align="right" class="' . $TotalStyle . '">' . "<input name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
+                '    <td align="right" class="' . $TotalStyle . '">' . $button_add ."<input name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
                 '    <td align="right" class="' . $TotalStyle . '">' . "<input name='update_totals[$TotalIndex][value]' id='update_total_".$TotalIndex."' onkeyup='clearNoNum(this);price_total(\"".TEXT_MONEY_SYMBOL."\");' size='6' value='" . $TotalDetails["Price"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . 
                 '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
                 '   </td>' . "\n" .
-                '  </tr>' . "\n";
+                '  </tr>' . "\n"; 
             }
           }
           ?>
@@ -4393,7 +4413,6 @@ if($orders_exit_flag == true){
             </td>
             </tr>
             <!-- End of Update Block -->
-            </form>
             <?php
         }
       if ($action == "add_product") {
@@ -4573,6 +4592,7 @@ if($orders_exit_flag == true){
         <!-- body_text_eof //-->
         </tr>
         </table>
+        </form>
         <!-- body_eof //-->
 
         <!-- footer //-->

@@ -876,6 +876,25 @@ function submit_check(){
     
 }
 
+function add_option(){
+    var add_num = $("#button_add_id").val();
+    add_num = parseInt(add_num);
+    $("#button_add_id").val(add_num+1);
+    var add_option_total_str = $("#add_option_total").html();
+    $("#add_option_total").remove();
+    $("#button_add").remove();
+    add_num++;
+    var add_str = '';
+
+    add_str += '<tr><td class="smallText" align="left"><?php echo EDIT_ORDERS_TOTALDETAIL_READ_ONE;?></td>'
+            +'<td class="smallText" align="right"><INPUT type="button" id="button_add" value="<?php echo TEXT_BUTTON_ADD;?>" onClick="add_option();">&nbsp;<input value="" size="7" name="update_totals['+add_num+'][title]">'
+            +'</td><td class="smallText" align="right"><input id="update_total_'+add_num+'" value="" size="6" onkeyup="clearNoNum(this);price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');" name="update_totals['+add_num+'][value]"><input type="hidden" name="update_totals['+add_num+'][class]" value="ot_custom"><input type="hidden" name="update_totals['+add_num+'][total_id]" value="0"></td>'
+            +'<td><b><img height="17" width="1" border="0" alt="" src="images/pixel_trans.gif"></b></td></tr>'
+            +'<tr id="add_option_total">'+add_option_total_str+'</tr>';
+
+    $("#add_option").append(add_str);
+}
+
 function submit_order_check(products_id,op_id){
   var qty = document.getElementById('p_'+op_id).value;
 
@@ -1305,6 +1324,11 @@ float:left;
 </style>
 <!-- header_eof //-->
 <!-- body //-->
+<?php 
+if($_GET['action'] != 'add_product'){
+  echo tep_draw_form('edit_order', "edit_new_preorders.php", tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post', 'id="edit_order_id_one"'); 
+}
+?>
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top">
@@ -1336,7 +1360,7 @@ if (($action == 'edit') && ($order_exists == true)) {
             <?php echo tep_draw_separator(); ?>
           </td>
         </tr> 
-        <tr><?php echo tep_draw_form('edit_order', "edit_new_preorders.php", tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post', 'id="edit_order_id_one"'); ?>
+        <tr>
           <td>
             <!-- Begin Update Block -->
             <table width="100%" border="0" cellpadding="2" cellspacing="1">
@@ -1569,7 +1593,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       <tr>
         <td>
 
-<table width="100%" border="0" cellspacing="0" cellpadding="2" class="dataTableRow">
+<table width="100%" border="0" cellspacing="0" cellpadding="2" class="dataTableRow" id="add_option">
   <tr class="dataTableHeadingRow">
     <td class="dataTableHeadingContent" align="left" width="75%"><?php echo TABLE_HEADING_FEE_MUST;?></td>
     <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_MODULE; ?></td>
@@ -1608,12 +1632,11 @@ if (($action == 'edit') && ($order_exists == true)) {
   }
   
   array_pop($TotalsArray);
-  //print_r($TotalsArray);
   
   foreach ($TotalsArray as $TotalIndex => $TotalDetails) {
     $TotalStyle = "smallText";
     if ($TotalDetails["Class"] == "ot_total") {
-      echo '  <tr>' . "\n" .
+      echo '  <tr id="add_option_total">' . "\n" .
            '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_OTTOTAL_READ.'</td>' . 
            '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' . 
            '    <td align="right" class="' . $TotalStyle . '"><b><div id="ot_total_id">';
@@ -1690,9 +1713,10 @@ if (($action == 'edit') && ($order_exists == true)) {
              '  </tr>' . "\n";
       }
     } else {
+      $button_add = $TotalIndex == 3 ? '<INPUT type="button" id="button_add" value="'.TEXT_BUTTON_ADD.'" onClick="add_option();"><input type="hidden" id="button_add_id" value="4">&nbsp;' : '';
       echo '  <tr>' . "\n" .
            '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_TOTALDETAIL_READ_ONE.'</td>' . 
-           '    <td align="right" class="' . $TotalStyle . '">' . "<input name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
+           '    <td align="right" class="' . $TotalStyle . '">' . $button_add ."<input name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
            '    <td align="right" class="' . $TotalStyle . '">' . "<input name='update_totals[$TotalIndex][value]' id='update_totals_$TotalIndex' onkeyup='clearNoNum(this);price_total();' size='6' value='" . $TotalDetails["Price"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . 
@@ -1815,7 +1839,6 @@ if (($action == 'edit') && ($order_exists == true)) {
       </td>
     </tr>
   <!-- End of Update Block -->
-      </form>
 <?php
   }
   if ($action == "add_product") {
@@ -2005,6 +2028,13 @@ if (($action == 'edit') && ($order_exists == true)) {
 <!-- body_text_eof //-->
   </tr>
 </table>
+<?php
+if($action != 'add_product'){
+?>
+</form>
+<?php
+}
+?>
 <!-- body_eof //-->
 
 <!-- footer //-->
