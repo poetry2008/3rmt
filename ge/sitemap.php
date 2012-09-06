@@ -28,10 +28,7 @@
 <h2 class="pageHeading"><?php echo HEADING_TITLE; ?></h2>
  
         
-     
-     <table border="0" width="95%" cellspacing="0" cellpadding="0">
-      <tr>
-        <td><table border="0" width="100%" cellspacing="1" cellpadding="2">
+<table border="0" width="95%" cellspacing="0" cellpadding="0">
           <tr>
             <td width="50%" class="box_des sitemap" valign="top"><?php require DIR_WS_CLASSES . 'category_tree.php'; $osC_CategoryTree = new osC_CategoryTree; echo $osC_CategoryTree->buildTree(); ?></td>
             <td width="50%" class="box_des sitemap" valign="top">
@@ -82,9 +79,7 @@
               </ul>
             </td>
           </tr>
-        </table></td>
-      </tr>
-    </table></div>
+        </table></div>
       <!-- body_text_eof --> 
 <!-- right_navigation --> 
 <div id="r_menu">

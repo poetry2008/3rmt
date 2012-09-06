@@ -226,7 +226,7 @@ $(document).ready(function(){
   if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != '' && isset($account['customers_email_address']) && $account['customers_email_address'] != '' && $address_history_num > 0){
 ?>
   <tr>
-    <td class="formAreaTitle"><br><?php echo TITLE_ADDRESS; ?></td>
+    <td class="formAreaTitle"><?php echo TITLE_ADDRESS; ?></td>
   </tr>
   <tr>
     <td class="main">
@@ -261,7 +261,7 @@ $(document).ready(function(){
   }
 ?>
   <tr>
-    <td class="formAreaTitle_both_top">
+    <td class="formAreaTitle">
       <?php echo CATEGORY_OPTIONS; ?></td>
   </tr>
   <tr>
@@ -330,7 +330,7 @@ $(document).ready(function(){
   if ($is_read_only == false) {
 ?>
   <tr id="trpass1">
-    <td class="formAreaTitle"><br>
+    <td class="formAreaTitle">
       <?php echo CATEGORY_PASSWORD; ?></td>
   </tr>
   <tr id="trpass2">
@@ -417,7 +417,7 @@ $(document).ready(function(){
     }
 ?>
   <tr>
-    <td class="formAreaTitle"><br>
+    <td class="formAreaTitle">
       <?php echo CATEGORY_AGREEMENT; ?></td>
   </tr>
   <tr>

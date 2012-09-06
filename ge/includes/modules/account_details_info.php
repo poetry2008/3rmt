@@ -587,7 +587,7 @@ $(document).ready(function(){
   }
 ?>
 <tr style="display:<?php echo $style_display;?>">
-    <td class="formAreaTitle"><br><?php echo TITLE_ADDRESS; ?></td>
+    <td class="formAreaTitle"><?php echo TITLE_ADDRESS; ?></td>
   </tr>
   <tr style="display:<?php echo $style_display;?>">
     <td class="main">
@@ -627,7 +627,7 @@ $(document).ready(function(){
  </tr>
 
   <tr>
-    <td class="formAreaTitle"><br><?php echo CATEGORY_OPTIONS; ?></td>
+    <td class="formAreaTitle"><?php echo CATEGORY_OPTIONS; ?></td>
   </tr>
   <tr>
     <td class="main">
@@ -639,8 +639,8 @@ $(document).ready(function(){
         <td class="main"> 
         <table border="0" cellspacing="0" cellpadding="2" summary="table" class="box_des">
           <tr>
-            <td class="main" width="120">&nbsp;<?php echo ENTRY_NEWSLETTER; ?></td>
-            <td class="main">&nbsp;
+            <td width="120">&nbsp;<?php echo ENTRY_NEWSLETTER; ?></td>
+            <td >&nbsp;
 <?php
   if ($is_read_only == true) {
     if ($account['customers_newsletter'] == '1') {
@@ -683,7 +683,7 @@ $(document).ready(function(){
 </table>
 </td>
 </tr>
-<tr><td>&nbsp;</td><td class="main" align="right"><input type="image" src="images/design/button/save.gif">&nbsp;&nbsp;</td></tr>
+<tr><td>&nbsp;</td><td align="right"><input type="image" src="images/design/button/save.gif">&nbsp;&nbsp;</td></tr>
 </form>
 </table>
 </td>
@@ -700,7 +700,7 @@ if (!isset($guestchk)) $guestchk = NULL;
 ?>
 
   <tr id="trpass1">
-    <td class="formAreaTitle"><br><?php echo CATEGORY_PASSWORD; ?></td>
+    <td class="formAreaTitle"><?php echo CATEGORY_PASSWORD; ?></td>
   </tr> 
   <tr id="trpass2">
     <td class="main">
@@ -745,28 +745,51 @@ if (!isset($guestchk)) $guestchk = NULL;
 <?php
     }
 ?> 
-          <tr>
-           <td class="main">&nbsp;</td>
-           <td class="main" style="padding-left:10px;">
   <?php
     if ($error_pwd == true) {
       if ($entry_password_english_error == true) { 
-        echo '<font color="red">' . ENTRY_PASSWORD_ENGLISH .'</font>';
+      ?>
+      <tr>
+        <td class="main">&nbsp;</td>
+        <td class="main" style="padding-left:10px;">
+        <?php echo '<font color="red">' . ENTRY_PASSWORD_ENGLISH .'</font>';?>
+        </td>
+      </tr>
+      <?php
       } else if($entry_password_error == true) {
-        echo ENTRY_PASSWORD_ERROR;
+      ?>
+      <tr>
+        <td class="main">&nbsp;</td>
+        <td class="main" style="padding-left:10px;">
+        <?php echo ENTRY_PASSWORD_ERROR;?>
+        </td>
+      </tr>
+      <?php
       } else if($entry_password_confirmation_error == true){
-        echo '<font color="red">'.NOTICE_PASSWORD_NOT_SAME.'</font>';
+      ?>
+      <tr>
+        <td class="main">&nbsp;</td>
+        <td class="main" style="padding-left:10px;">
+        <?php echo '<font color="red">'.NOTICE_PASSWORD_NOT_SAME.'</font>';?>
+        </td>
+      </tr>
+      <?php
       } else if($entry_password_old_error == true){
-         echo '<font color="red">'.NOTICE_SET_NEW_PASSWORD.'</font>';
+      ?>
+      <tr>
+        <td class="main">&nbsp;</td>
+        <td class="main" style="padding-left:10px;">
+      <?php echo '<font color="red">'.NOTICE_SET_NEW_PASSWORD.'</font>';?>
+        </td>
+      </tr>
+      <?php
       }     
     }  
   ?> 
-           </td>
-          </tr> 
         <tr>
-        <td class="main" colspan="2"><?php echo ENTRY_PASSWORD_INFORM_READ_TEXT;?></td>
+        <td colspan="2"><?php echo ENTRY_PASSWORD_INFORM_READ_TEXT;?></td>
         </tr>
-        <tr><td>&nbsp;</td><td class="main" align="right"><input type="image" src="images/design/button/save.gif">&nbsp;&nbsp;</td></tr>
+        <tr><td>&nbsp;</td><td align="right"><input type="image" src="images/design/button/save.gif">&nbsp;&nbsp;</td></tr>
     </table>
       </td>
       </tr> 
@@ -789,7 +812,7 @@ if (!isset($guestchk)) $guestchk = NULL;
 ?>
 
   <tr>
-    <td class="formAreaTitle"><br><?php echo CATEGORY_AGREEMENT; ?></td>
+    <td class="formAreaTitle"><?php echo CATEGORY_AGREEMENT; ?></td>
   </tr>
 
   <tr>

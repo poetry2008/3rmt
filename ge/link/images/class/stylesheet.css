@@ -1,7 +1,7 @@
 /* 全体構造
 ---------------------------------------------------- */
 body {
-    font-family:Arial, sans-serif;
+    font-family: "MS PGothic", "Osaka", Arial, sans-serif;
     font-size:12px;
     color:#ffffff;
     margin:0px;
@@ -36,7 +36,7 @@ h3 {
     font-size:14px;
     border-color:#444444;
     border-bottom-style:dotted;
-    margin:0px;
+    margin: 0 0 10px 0px;
     padding:5px;
 }
 h4 {
@@ -47,9 +47,9 @@ h4 {
 }
 p {
     font-size:14px;
-    line-height:120%;
+    line-height:1.5;
     margin:0px;
-    padding:10px;
+    padding:0 10px;
 }
 strong {
     font-style:normal;
@@ -93,15 +93,16 @@ position:absolute;
 width:770px;
 }
 .header1 {
-float:left;
-display: inline;
+	float:left;
+	display: inline;
     font-weight:normal;
     margin:0px 0px 15px 0px;
     padding:0px 0px 0px 10px;
     *padding:1px 0 0 10px;
+	*line-height:12px;
 }
 .header2 {
-float:right;
+	float:right;
 	padding:0;
 	*line-height:13px;
 }

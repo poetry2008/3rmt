@@ -99,7 +99,7 @@
         <div> 
           <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
             <tr> 
-              <td><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0">
+              <td><table class="box_des_size" border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td class="main"><?php echo TEXT_PRODUCT_NOTIFICATIONS_INTRODUCTION; ?></td>
           </tr>
@@ -115,16 +115,20 @@
           <tr>
             <td class="main"><?php echo TEXT_GLOBAL_PRODUCT_NOTIFICATIONS_DESCRIPTION_ENABLED; ?></td>
           </tr>
+          </table>
           <?php echo tep_draw_form('global', tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, 'action=global_notify', 'SSL')); ?>
+          <table width="100%" class="box_des_size" cellspacing="0" cellpadding="0" border="0">
           <tr>
             <td class="main"><?php echo tep_draw_checkbox_field('global', 'enable', true) . '&nbsp;' . TEXT_ENABLE_GLOBAL_NOTIFICATIONS; ?></td>
           </tr>
+          </table> 
+          <table width="100%" class="box_des_size" cellspacing="0" cellpadding="0" border="0">
           <tr>
             <td class="main"><?php echo tep_image_submit('button_update.gif', IMAGE_BUTTON_UPDATE); ?></td>
           </tr>
           </table>
           </form>
-          <table width="100%" class="box_des_size">
+          <table width="100%" class="box_des_size" cellspacing="0" cellpadding="0" border="0">
 <?php
   } else {
 ?>
@@ -139,16 +143,18 @@
           </tr>
           </table>
           <?php echo tep_draw_form('global', tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, 'action=global_notify', 'SSL')); ?>
-          <table width="100%" class="box_des_size">
+          <table width="100%" class="box_des_size" cellspacing="0" cellpadding="0" border="0">
           <tr>
             <td class="main"><?php echo tep_draw_checkbox_field('global', 'enable') . '&nbsp;' . TEXT_ENABLE_GLOBAL_NOTIFICATIONS; ?></td>
           </tr>
+          </table>
+          <table width="100%" class="box_des_size" cellspacing="0" cellpadding="0" border="0">
           <tr>
             <td class="main"><?php echo tep_image_submit('button_update.gif', IMAGE_BUTTON_UPDATE); ?></td>
           </tr>
           </table>
           </form>
-          <table class="box_des_size">
+          <table class="box_des_size" cellspacing="0" cellpadding="0" border="0">
           <tr>
             <td class="main"><b><?php echo HEADING_PRODUCT_NOTIFICATIONS; ?></b></td>
           </tr>
@@ -157,7 +163,7 @@
           </tr>
           </table>
           <?php echo tep_draw_form('notifications', tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, 'action=update_notifications', 'SSL')); ?>
-          <table width="100%" class="box_des_size">
+          <table width="100%" class="box_des_size" cellspacing="0" cellpadding="0" border="0">
 <?php
     // ccdd
     $products_query = tep_db_query("

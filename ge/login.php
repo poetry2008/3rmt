@@ -495,13 +495,7 @@ if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){
                 <tr>
                   <td><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
                     <tr>
-                      <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-                    </tr>
-                    <tr>
                       <td class="main" colspan="2"><?php echo TEXT_RETURNING_CUSTOMER; ?></td>
-                    </tr>
-                    <tr>
-                      <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
                     </tr>
                     <tr>
                       <td class="main"><?php echo ENTRY_EMAIL_ADDRESS; ?></td>
@@ -512,9 +506,6 @@ if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){
                       <td class="main main_input"><?php echo tep_draw_password_field('password'); ?></td>
                     </tr>
                     <tr>
-                      <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-                    </tr>
-                    <tr>
                       <td class="smallText" colspan="2"><?php echo '<a href="' . tep_href_link(FILENAME_PASSWORD_FORGOTTEN, '', 'SSL') . '">' . TEXT_PASSWORD_FORGOTTEN . '</a>'; ?></td>
                     </tr>
                     <tr align="right">
@@ -523,12 +514,6 @@ if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){
                   </table></td>
                 </tr>
               </table></td>
-            </tr>
-      <tr>
-        <td colspan="2"><div class="sep">&nbsp;</div></td>
-      </tr>
-            <tr>
-              <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
             </tr>
             <tr>
               <td colspan="2" valign="top" class="main">
@@ -570,19 +555,11 @@ if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){
               </td>
             </tr>
             <?php }?> 
-            <tr>
-              <td width="50%" align="right" valign="top"></td>
-              <td width="50%" align="right" valign="top"></td>
-            </tr>
-            <tr>
-              <td align="right" valign="top"></td>
-              <td align="right" valign="top"></td>
-            </tr>
           </table>
           </td>
         </tr>
       </table>
-  <p class="box_des" style="margin-right:5px;">
+  <p class="box_des">
   <?php echo TEXT_LOGIN_SSL_READ;?>
   </p>
   <p align="center">
