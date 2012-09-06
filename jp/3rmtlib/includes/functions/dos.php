@@ -15,7 +15,7 @@ function is_at_ban_list($pdo_con, $ip_info)
 
 function write_vlog($pdo_con, $ip_info, $host_info)
 {
-   $pdo_con->exec("insert into accesslog set id= 'NULL', ip = '".$ip_info."',vtime='".date('Y-m-d H:i:s', time())."', site='".$host_info."'");
+   $pdo_con->exec("insert into accesslog set ip = '".$ip_info."',vtime='".date('Y-m-d H:i:s', time())."', site='".$host_info."'");
 }
 
 function is_large_visit($pdo_con, $ip_info, $unit_time, $unit_total)
@@ -29,7 +29,7 @@ function is_large_visit($pdo_con, $ip_info, $unit_time, $unit_total)
       send_mail(DOS_SEND_MAIL,'DoS Alert !',$dos_email_msg);
       return true; 
     }else{
-      $pdo_con->exec("delete from accesslog where vtime<= '".date('Y-m-d H:i:s', time()-$unit_time)."'"); 
+      $pdo_con->exec("delete from accesslog where vtime< '".date('Y-m-d H:i:s', time()-$unit_time)."'"); 
       return false;
     }
   }
@@ -47,15 +47,15 @@ function analyze_ban_log($pdo_con, $ip_info)
   $pdo_con->exec("delete from banlist where ip = '".$ip_info."'"); 
   if ($con  >= 2) {
     //close 24
-    $pdo_con->exec("insert into banlist SET id= 'NULL', ip = '".$ip_info."', betime='".date('Y-m-d H:i:s', time()+60*60*24)."'");
-    $pdo_con->exec("insert into prebanlist SET id= 'NULL', ip = '".$ip_info."', bstime='".date('Y-m-d H:i:s', time())."',type='24'");
+    $pdo_con->exec("insert into banlist SET ip = '".$ip_info."', betime='".date('Y-m-d H:i:s', time()+60*60*24)."'");
+    $pdo_con->exec("insert into prebanlist SET ip = '".$ip_info."', bstime='".date('Y-m-d H:i:s', time())."',type='24'");
     //send mail
     $dos_email_msg = 'Banlist '.date('Y-m-d H:i:s')."  ".$ip_info;
     send_mail(DOS_SEND_MAIL,'DoS Alert !',$dos_email_msg);
   } else {
     //close 1
-    $pdo_con->exec("insert into banlist SET id= 'NULL', ip = '".$ip_info."', betime='".date('Y-m-d H:i:s', time()+60*60)."'");
-    $pdo_con->exec("insert into prebanlist SET id= 'NULL', ip = '".$ip_info."', bstime='".date('Y-m-d H:i:s', time())."',type='1'");
+    $pdo_con->exec("insert into banlist SET ip = '".$ip_info."', betime='".date('Y-m-d H:i:s', time()+60*60)."'");
+    $pdo_con->exec("insert into prebanlist SET ip = '".$ip_info."', bstime='".date('Y-m-d H:i:s', time())."',type='1'");
     //send mail
     $dos_email_msg = 'Prebanlist '.date('Y-m-d H:i:s')."  ".$ip_info;
     send_mail(DOS_SEND_MAIL,'DoS Alert !',$dos_email_msg);
