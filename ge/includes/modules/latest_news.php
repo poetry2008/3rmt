@@ -63,7 +63,7 @@ $info_box_contents[$row] = array('align' => 'left',
 echo'   
           <li class="news_list" onmouseover="rowNewsEffect(this)" onmouseout="outNewsEffect(this)"> 
             <span class="news_date01">'.tep_date_short($latest_news['date_added']).'</span> 
-            <a class="latest_news_link" href="' .  tep_href_link(FILENAME_LATEST_NEWS, 'news_id=' .  $latest_news['news_id']) . '">' .  strip_tags(replace_store_name($latest_news['headline'])) . $latest_news_image . $latest_news_new . '</a> 
+            <a class="latest_news_link" href="' .  tep_href_link(FILENAME_LATEST_NEWS, 'news_id=' .  $latest_news['news_id']) . '">' .  replace_store_name($latest_news['headline']) . $latest_news_image . $latest_news_new . '</a> 
           </li>
 ';      
 }

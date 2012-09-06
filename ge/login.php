@@ -527,11 +527,8 @@ if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){
               <td height="50%" colspan="2" valign="top"><table class="formArea" border="0" width="100%" cellspacing="0" cellpadding="1">
                 <tr>
                   <td><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
-				   <tr>
-              <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-            </tr>
                     <tr>
-                      <td class="main" valign="top"><?php echo TEXT_NEW_CUSTOMER . '<br><br><div class="des_both">' . TEXT_NEW_CUSTOMER_INTRODUCTION; ?></div></td>
+                      <td class="main" valign="top"><?php echo TEXT_NEW_CUSTOMER . '<div class="des_both">' . TEXT_NEW_CUSTOMER_INTRODUCTION; ?></div></td>
                     </tr>
                     <tr>
                       <td align="right">
@@ -546,7 +543,7 @@ if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){
                     </tr>
                    <tr>
                       <td align="right">
-                      <a href="<?php echo tep_href_link('send_mail.php', '', 'SSL');?>">メール受信テストをする</a> 
+                      <div class="box_link_clear"><a href="<?php echo tep_href_link('send_mail.php', '', 'SSL');?>">メール受信テストをする</a></div>
                       </td>
                    </tr>
                   </table></td>

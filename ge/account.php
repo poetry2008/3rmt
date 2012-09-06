@@ -69,7 +69,7 @@
 		  <table border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr>
               <td class="formAreaTitle">
-              <?php echo TEXT_POINT_NOW; ?></td>
+              <div class="box_link_clear"><?php echo TEXT_POINT_NOW; ?></div></td>
             </tr>
 			<tr>
            <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="0" class="formArea">
