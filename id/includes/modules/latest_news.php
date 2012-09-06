@@ -37,7 +37,7 @@
     $row = 0;
     while ($latest_news = tep_db_fetch_array($latest_news_query)) {
       if($latest_news['news_image'] != '') { 
-      $latest_news_image = '&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'infobox/photo.gif', replace_store_name($latest_news['headline']), '28', '14');
+      $latest_news_image = '&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES .  'infobox/photo.gif', strip_tags(replace_store_name($latest_news['headline'])), '28', '14');
     } else {
       $latest_news_image = '';
     }
@@ -46,7 +46,7 @@
                 } else {
                     $latest_news_new = '';
                 }
-echo '        <li class="news_list"><a class="news_list_link" href="' . tep_href_link(FILENAME_LATEST_NEWS, 'news_id=' . $latest_news['news_id']) . '">' . replace_store_name($latest_news['headline']) . $latest_news_new .'</a><span>'.tep_date_short($latest_news['date_added']).'</span></li>'."\n";          
+echo '        <li class="news_list"><a class="news_list_link" href="' .  tep_href_link(FILENAME_LATEST_NEWS, 'news_id=' . $latest_news['news_id']) . '">' .  replace_store_name($latest_news['headline']) . $latest_news_new .'</a><span>'.tep_date_short($latest_news['date_added']).'</span></li>'."\n";          
 $row++;
 }
 }

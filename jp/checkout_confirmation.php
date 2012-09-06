@@ -572,7 +572,11 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
   if(@$_SESSION['h_point'] < $order->info['subtotal']) {
     $point = isset($_SESSION['h_point'])?$_SESSION['h_point']:0;
   } else {
-    $point = $order->info['subtotal'];
+    if ($payment_modules->is_get_point(payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE))) {
+      $point = 0; 
+    } else {
+      $point = $order->info['subtotal'];
+    }
   }
   // add new sesssion for point named real_point
   $real_point = $point;
