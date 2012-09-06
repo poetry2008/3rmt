@@ -953,7 +953,8 @@ function recalc_order_price(oid, opd, o_str, op_str,opd_str)
       var point_id = document.getElementById('point_id').value; 
       var update_total_temp;
       var update_total_num = 0;
-      for(var i = 1;i <= 20;i++){
+      var sum_num = document.getElementById('button_add_id').value;
+      for(var i = 1;i <= sum_num;i++){
      
         if(document.getElementById('update_total_'+i)){
           update_total_temp = document.getElementById('update_total_'+i).value; 
@@ -1009,7 +1010,8 @@ function price_total(str)
       var point_id = document.getElementById('point_id').value; 
       var update_total_temp;
       var update_total_num = 0;
-      for(var i = 1;i <= 20;i++){
+      var sum_num = document.getElementById('button_add_id').value;
+      for(var i = 1;i <= sum_num;i++){
      
         if(document.getElementById('update_total_'+i)){
           update_total_temp = document.getElementById('update_total_'+i).value; 
