@@ -1289,7 +1289,8 @@ function recalc_preorder_price(oid, opd, o_str, op_str)
 
       var update_total_temp;
       var update_total_num = 0;
-      for(var i = 1;i <= 20;i++){
+      var add_num = $("#button_add_id").val();
+      for(var i = 1;i <= add_num;i++){
      
         if(document.getElementById('update_totals_'+i)){
           update_total_temp = document.getElementById('update_totals_'+i).value; 
@@ -1335,7 +1336,8 @@ function price_total()
       handle_fee_id = parseInt(handle_fee_id);  
       var update_total_temp;
       var update_total_num = 0;
-      for(var i = 1;i <= 20;i++){
+      var add_num = $("#button_add_id").val();
+      for(var i = 1;i <= add_num;i++){
      
         if(document.getElementById('update_totals_'+i)){
           update_total_temp = document.getElementById('update_totals_'+i).value; 

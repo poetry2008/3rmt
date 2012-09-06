@@ -888,7 +888,7 @@ function add_option(){
 
     add_str += '<tr><td class="smallText" align="left"><?php echo EDIT_ORDERS_TOTALDETAIL_READ_ONE;?></td>'
             +'<td class="smallText" align="right"><INPUT type="button" id="button_add" value="<?php echo TEXT_BUTTON_ADD;?>" onClick="add_option();">&nbsp;<input value="" size="7" name="update_totals['+add_num+'][title]">'
-            +'</td><td class="smallText" align="right"><input id="update_total_'+add_num+'" value="" size="6" onkeyup="clearNoNum(this);price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');" name="update_totals['+add_num+'][value]"><input type="hidden" name="update_totals['+add_num+'][class]" value="ot_custom"><input type="hidden" name="update_totals['+add_num+'][total_id]" value="0"></td>'
+            +'</td><td class="smallText" align="right"><input id="update_totals_'+add_num+'" value="" size="6" onkeyup="clearNoNum(this);price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');" name="update_totals['+add_num+'][value]"><input type="hidden" name="update_totals['+add_num+'][class]" value="ot_custom"><input type="hidden" name="update_totals['+add_num+'][total_id]" value="0"></td>'
             +'<td><b><img height="17" width="1" border="0" alt="" src="images/pixel_trans.gif"></b></td></tr>'
             +'<tr id="add_option_total">'+add_option_total_str+'</tr>';
 
@@ -982,7 +982,8 @@ function recalc_preorder_price(oid, opd, o_str, oid_price, op_price)
 
       var update_total_temp;
       var update_total_num = 0;
-      for(var i = 1;i <= 20;i++){
+      var add_num = $("#button_add_id").val();
+      for(var i = 1;i <= add_num;i++){
      
         if(document.getElementById('update_totals_'+i)){
           update_total_temp = document.getElementById('update_totals_'+i).value; 
@@ -1028,7 +1029,8 @@ function price_total()
       handle_fee_id = parseInt(handle_fee_id);  
       var update_total_temp;
       var update_total_num = 0;
-      for(var i = 1;i <= 20;i++){
+      var add_num = $("#button_add_id").val();
+      for(var i = 1;i <= add_num;i++){
      
         if(document.getElementById('update_totals_'+i)){
           update_total_temp = document.getElementById('update_totals_'+i).value; 
