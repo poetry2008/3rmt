@@ -159,14 +159,8 @@ function popupWindow(url) {
                  '    <td class="smallText">' . tep_draw_checkbox_field('inc_subcat', '1', true) . ' ' . ENTRY_INCLUDE_SUBCATEGORIES . '</td>' . "\n" .
                  '  </tr>' . "\n" .
                  '  <tr>' . "\n" .
-                 '    <td colspan="2">' . tep_draw_separator('pixel_trans.gif', '100%', '10') . '</td>' . "\n" .
-                 '  </tr>' . "\n" .
-                 '  <tr>' . "\n" .
                  '    <td class="fieldKey">' . ENTRY_MANUFACTURERS . '</td>' . "\n" .
                  '    <td class="fieldValue">' . tep_draw_pull_down_menu('manufacturers_id', tep_get_manufacturers(array(array('id' => '', 'text' => TEXT_ALL_MANUFACTURERS)))) . '</td>' . "\n" .
-                 '  </tr>' . "\n" .
-                 '  <tr>' . "\n" .
-                 '    <td colspan="2">' . tep_draw_separator('pixel_trans.gif', '100%', '10') . '</td>' . "\n" .
                  '  </tr>' . "\n" .
                  '  <tr>' . "\n" .
                  '    <td class="fieldKey">' . ENTRY_PRICE_FROM . '</td>' . "\n" .
@@ -175,9 +169,6 @@ function popupWindow(url) {
                  '  <tr>' . "\n" .
                  '    <td class="fieldKey">' . ENTRY_PRICE_TO . '</td>' . "\n" .
                  '    <td class="fieldValue">' . tep_draw_input_field('pto') . '</td>' . "\n" .
-                 '  </tr>' . "\n" .
-                 '  <tr>' . "\n" .
-                 '    <td colspan="2">' . tep_draw_separator('pixel_trans.gif', '100%', '10') . '</td>' . "\n" .
                  '  </tr>' . "\n" .
                  '  <tr>' . "\n" .
                  '    <td class="fieldKey">' . ENTRY_DATE_FROM . '</td>' . "\n" .

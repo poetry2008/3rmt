@@ -208,7 +208,7 @@ function showimage($1) {
       <table class="box_des" width="98%"  border="0" cellpadding="0" cellspacing="0">
         <tr>
           <td valign="top">
-                  <table width="100%" border="0" cellpadding="0" cellspacing="1" class="box_des">
+                  <table width="100%" border="0" cellpadding="1" cellspacing="1" class="box_des">
                     <tr>
                       <td width="85">商品コード</td>
                       <td>

@@ -120,7 +120,7 @@ dd {
 	margin-top:8px;
 	line-height:1.5;
 }
-.box_spacing{ margin-top:8px;}
+.box_spacing{ margin-top:4px;}
 #l_menu #box .categories_tree {
     margin:0px;
     padding-left:6px;
@@ -178,7 +178,7 @@ TABLE： form eria（boundary line）
 --------------------------- */
 TABLE.formArea {                           
 	border:1px solid #ccc;
-	margin:6px 0 6px 0;   
+	margin:7px 0;   
 	*margin-top:5px;                      
 }
 /* ---------------------------
@@ -205,6 +205,7 @@ SPAN.smallText, P.smallText {
 .smallText {
     line-height: 1.5;
 }
+.smallText img{ overflow:hidden; margin-top:5px;}
 .smallText h3{ border:0;}
 div.headerNavigation {
     font-size: 14px;
@@ -411,9 +412,6 @@ padding-left:21px;
     margin:0px;
     padding:10px 0px;
     text-align:left;
-}
-.box_des {
-    padding-left: 0px;
 }
 .box_des td p{
 	margin:0 10px 4px 10px;
@@ -1077,7 +1075,7 @@ padding:10px;
 background:#000;
 width:418px;
 }
-.c_pay_info {padding:3px; border:1px solid #fff; margin:5px 0 0 0;*margin-bottom:0;}
+.c_pay_info {padding:3px; border:1px solid #fff; margin:5px 0 7px 0;}
 .checkout_s_link{ margin:0 0 8px 0; *margin:13px 0 5px 0;}
 .c_shipping{ margin-left:10px; margin-top:3px;}
 .stockWarning{ color: #CC0033;}
@@ -1109,7 +1107,6 @@ searching
     height: 20px;
     width: 112px;
 	*width:105px;
-	*margin-left:8px;
 }
 .payment_comment{ 
  word-wrap:break-word;
@@ -1517,8 +1514,7 @@ TEXTAREA {
 .line{ margin-top:10px;}
 .des_both{ line-height:20px; margin-top:2px;}
 .reorder_clear{
-	margin:5px 0 0 5px;
-	*margin-left:7px;
+	margin:5px 0 0 0;
 }
 .formAreaTitle_both{
 	font-size: 14px;                             
