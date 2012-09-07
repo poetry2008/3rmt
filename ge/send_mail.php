@@ -79,12 +79,12 @@
     echo SENDMAIL_SUCCESS_TEXT; 
   }
   ?>
+       <div class="box_text"> 
        <?php
        if ($success_single) { 
        ?>
-       <?php echo '<br>'.SENDMAIL_SUCCESS_COMMENT_TEXT;?> 
+       <?php echo SENDMAIL_SUCCESS_COMMENT_TEXT;?> 
        <?php
-          echo '<br>'; 
       echo '<br>';
           echo SENDMAIL_TROUBLE_PRE;  
        ?> 
@@ -93,10 +93,9 @@
           echo SENDMAIL_TROUBLE_END;  
         ?>
        <?php } else {?> 
-       <?php echo '<br>'.SENDMAIL_READ_TEXT;?> 
+       <?php echo SENDMAIL_READ_TEXT;?> 
        <?php
           echo '<br>'; 
-      echo '<br>';
           echo SENDMAIL_TROUBLE_PRE;  
        ?> 
           <a href="<?php echo tep_href_link('email_trouble.php');?>"><?php echo SENDMAIL_TROUBLE_LINK;?></a>  
@@ -104,6 +103,7 @@
           echo SENDMAIL_TROUBLE_END;  
         ?>
         <?php }?> 
+        </div> 
         <?php 
       if ($success_single == true) {  
          echo '<div style="width:100%;text-align:left;padding:10px 0 0 0;"><a href="'.tep_href_link(FILENAME_DEFAULT).'"><img src="includes/languages/japanese/images/buttons/button_back.gif"></a></div>';

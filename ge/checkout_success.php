@@ -150,10 +150,8 @@
               <td><table border="0" width="100%" cellspacing="4" cellpadding="2" class="box_des"> 
                   <tr> 
                     <!--<td valign="top"><?php echo tep_image(DIR_WS_IMAGES . 'table_background_man_on_board.gif', HEADING_TITLE); ?></td> -->
-                    <td valign="top" class="main"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?> 
-                      <br> 
-                      <?php echo TEXT_SUCCESS; ?><br> 
-                      <br> 
+                    <td valign="top" class="main">
+                      <?php echo TEXT_SUCCESS; ?> 
                       <?php
   if ($global['global_product_notifications'] != '1') {
     echo TEXT_NOTIFY_PRODUCTS . '<br><p class="productsNotifications">';
@@ -174,9 +172,6 @@
                       <h2><?php echo TEXT_THANKS_FOR_SHOPPING; ?></h2></td> 
                   </tr> 
                 </table></td> 
-            </tr> 
-            <tr> 
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
             </tr> 
             <tr> 
               <td align="right" class="main"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 

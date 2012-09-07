@@ -102,17 +102,12 @@ unset($_SESSION['shipping_session_flag']);
           ?>
           </td>
         </tr>
-        </table>
-        <table border="0" width="100%" cellspacing="1" cellpadding="2"> 
-            <tr> 
-              <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
+        </table><table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
                 <tr> 
                   <td class="main"><?php echo CHECKOUT_OPTION_BUTTON_TEXT;?></td> 
                   <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
                 </tr> 
-              </table></td> 
-            </tr> 
-          </table>
+              </table>
         </td>
       </tr>
       </table>

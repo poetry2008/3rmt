@@ -1403,7 +1403,6 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
   <?php 
      }
   ?>
-  <tr><td height="6"></td></tr>
                       <tr>
                         <td>
                           <table border="0" width="100%" cellspacing="0" cellpadding="2" id="address_show" class="size_body">
@@ -1427,10 +1426,9 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
 <?php
   }
 ?>
-          <tr><td>&nbsp;</td></tr>
           <tr> 
             <td>
-            <table class="box_des"><tr><td class="main"><b><?php echo TABLE_HEADING_SHIPPING_ADDRESS; ?></b></td></tr></table>
+            <table class="box_des" border="0" cellpadding="0" cellspacing="0"><tr><td class="main"><b><?php echo TABLE_HEADING_SHIPPING_ADDRESS; ?></b></td></tr></table>
             <table class="formArea" border="0" width="100%" cellspacing="1"> 
                 <tr> 
                   <td>
@@ -1571,9 +1569,6 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
     </table>
   </td> 
 </tr> 
-<tr>
-  <td>&nbsp;</td>
-</tr>
 <?php
 if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() > 0) {
   if($guestchk == '1') {

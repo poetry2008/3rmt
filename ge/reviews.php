@@ -26,7 +26,7 @@
           <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
 <?php if (($reviews_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3'))) { ?>
       <tr>
-        <td><br><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
+        <td><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
           <tr>
             <td class="smallText"><?php echo $reviews_split->display_count($reviews_numrows, MAX_DISPLAY_NEW_REVIEWS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_REVIEWS); ?></td>
             <td align="right" class="smallText"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $reviews_split->display_links($reviews_numrows, MAX_DISPLAY_NEW_REVIEWS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
@@ -41,7 +41,7 @@
       </tr>
 <?php if (($reviews_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '2') || (PREV_NEXT_BAR_LOCATION == '3'))) { ?>
       <tr>
-        <td><br><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
+        <td><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
           <tr>
             <td class="smallText"><?php echo $reviews_split->display_count($reviews_numrows, MAX_DISPLAY_NEW_REVIEWS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_REVIEWS); ?></td>
             <td align="right" class="smallText"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $reviews_split->display_links($reviews_numrows, MAX_DISPLAY_NEW_REVIEWS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>

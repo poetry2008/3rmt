@@ -113,6 +113,13 @@ dd {
     padding-top: 5px;
     padding-left: 10px;
 }
+.box_both{
+	padding-right:15px;
+}
+.box_text{
+	margin-top:8px;
+	line-height:1.5;
+}
 .box_spacing{ margin-top:8px;}
 #l_menu #box .categories_tree {
     margin:0px;
@@ -171,7 +178,7 @@ TABLE： form eria（boundary line）
 --------------------------- */
 TABLE.formArea {                           
 	border:1px solid #ccc;
-	margin:6px 0;   
+	margin:6px 0 6px 0;   
 	*margin-top:5px;                      
 }
 /* ---------------------------
@@ -198,9 +205,10 @@ SPAN.smallText, P.smallText {
 .smallText {
     line-height: 1.5;
 }
+.smallText h3{ border:0;}
 div.headerNavigation {
-    margin-top: 10px;
-    font-size: 14px;                                                             
+    font-size: 14px;
+	margin-top:8px;                                                         
 }
 /* ---------------------------
 TABLE：information box
@@ -321,6 +329,10 @@ SPAN.errorText {
 #body_text h2{
 padding-right:10px;
 *+padding-right:0px;
+margin-bottom:6px;
+}
+#body_text h3{
+	margin-bottom:5px;
 }
 #information {
     width:460px;
@@ -377,8 +389,17 @@ padding:0 15px 0 35px;
 .sub_menu td{
 line-height:18px;
 }
-.sub_menu h4 {
+.sub_menu h4{
     padding:0px 0px 0px 10px;
+}
+.sub_menu h3 {
+    padding-left:10px;
+	margin:0 0 5px 0;
+}
+.sub_menu ul{
+	padding:0 0 0 15px;
+	margin:0;
+	
 }
 .sub_menu p {
 padding-left:21px;
@@ -416,7 +437,8 @@ p.box_des{
 }
 .underline {
     border-top: 1px solid #5E5E5E;
-    margin-top: 15px;
+	height:1px;
+	margin:5px 0;
 }
 /* footer
 */
@@ -497,6 +519,9 @@ form {
 }
 .dot {
     background: url(../images/design/box/dot.gif) repeat-x;
+	margin:5px 0;
+	padding:0;
+	height:1px;
 }
 .product_listing_content {
     width:100%;
@@ -535,7 +560,7 @@ form {
 *+height:26px;
     overflow:hidden;
 	padding:0 0 5px 12px;
-	margin-bottom:12px;
+	margin:5px 0;
 }
 .news_title_02 .news_list {
 	display:block;
@@ -651,7 +676,7 @@ width:125px;
 height:39px;
 padding:0;
 border:0;
-margin:10px 40px 3px 60px;
+margin:10px 40px 3px 80px;
 background-image: url(../includes/languages/japanese/images/buttons/button_continue_shopping.gif);
 }
 .shopping_cart_checkout{
@@ -663,6 +688,9 @@ padding:0;
 border:0;
 background-image: url(../includes/languages/japanese/images/buttons/button_checkout02.gif);
 margin-top:7px;
+}
+.checkoutBarCurrent,.checkoutBarTo{
+	padding-top:5px;
 }
 .game_news_index01 {
 padding-left:10px;
@@ -1049,8 +1077,7 @@ padding:10px;
 background:#000;
 width:418px;
 }
-.c_pay_info {padding:3px; border:1px solid #fff; margin:15px 0 5px 0;*margin-bottom:0;}
-.main03{ padding:20px 0 0 0;*padding:15px 0 0 8px; }
+.c_pay_info {padding:3px; border:1px solid #fff; margin:5px 0 0 0;*margin-bottom:0;}
 .checkout_s_link{ margin:0 0 8px 0; *margin:13px 0 5px 0;}
 .c_shipping{ margin-left:10px; margin-top:3px;}
 .stockWarning{ color: #CC0033;}
@@ -1142,7 +1169,7 @@ searching
 .information_color{background-color: #FDEBAC; color: #000000; padding:5px; margin:5px; width:100%;}
 .checkout_payment_info{
 	border:1px solid #ccc;
-	margin-top:15px;   
+	margin:5px 0;   
 	*margin-top:0px; 
 	padding:5px;
 	line-height:1.5;
@@ -1261,6 +1288,8 @@ searching
 }
 .option_name{
 	width:85px;
+	padding:0;
+	margin:0;
 }
 .option_input{
 	width:75%;
@@ -1271,14 +1300,15 @@ searching
 	line-height:1.5;
 }
 .option_product_title{
-	line-height:25px;
-	
+	line-height:1.5;	
 }
 .option_render{
-	padding:5px;
+	padding:5px 5px 0 5px;
 }
 .option_render table{
 	*width:98%;
+	margin:0;
+	padding:0;
 }
 .preorder_option_name{
 	width:150px;
@@ -1314,12 +1344,6 @@ searching
 	float:left;
 	line-height:18px;
 }
-.option_show_border a{ 
-	/*display:block;*/
-	text-decoration:none;
-	display:block;
-}
-
 .option_hide_border {
 	float:left;
 	margin-right:5px;
@@ -1338,10 +1362,6 @@ searching
 	display:inline-block;
 	text-align:right;
 }
-.option_hide_border .option_conent a:hover, .option_show_border .option_conent a:hover{
-	text-decoration:none;
-	cursor:pointer;	
-}
 .option_hide_border .option_conent{
 	border:1px solid #ccc;
 	overflow:hidden;
@@ -1352,16 +1372,7 @@ searching
 	margin:2px;
 }
 .option_hide_border span{ float:left; overflow:hidden;}
-.option_hide_border a{
-	color:#000000; 
-	display:block;
-	text-decoration:none;
-	
-}
-/*.option_hide_border a:hover{
-	border:2px solid #2864B4;
-}
-*/.option_radio_img img{ float:left;}
+.option_radio_img img{ float:left;}
 .option_product_default_radio{
 	clear:both;
 	overflow:hidden;
@@ -1384,9 +1395,7 @@ searching
 	margin-bottom:5px;
 }
 .option_dot{
-	margin-top:18px;
 	margin-right:3px;
-	padding-top:20px;
 	background:url(../images/design/box/dot.gif) repeat-x;
 	overflow:hidden; 
 }
@@ -1476,7 +1485,7 @@ searching
 .popup_notice_button a{
 	margin:0 20px;
 }
-.table_a_spacing{ margin-bottom:10px;}
+.table_a_spacing{ padding-top:5px;}
 TEXTAREA {
     width: 100%;
 	font-size:12px;
@@ -1488,8 +1497,9 @@ TEXTAREA {
 }
 #new_date{ margin-left:3px; *margin-left:7px;}
 .clear_box{*margin-left:7px;}
-#wrapper_kiyaku p{ padding:0; margin:10px 5px;}
-#wrapper_kiyaku ul{ padding:0; margin:10px 0 10px 20px;}
+#wrapper_kiyaku p{ padding:0; margin:0 5px 8px 5px; overflow:hidden;}
+#wrapper_kiyaku ul{ padding:0; margin:4px 0 4px 20px;}
+#wrapper_kiyaku h3{ margin:8px 0;}
 
 /*info*/
 .sub_clear td{

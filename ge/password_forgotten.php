@@ -88,7 +88,7 @@
             <td class="main"><?php echo tep_draw_input_field('email_address', '', 'maxlength="96" size="32"'); ?></td>
           </tr>
           <tr>
-            <td colspan="2"><br><table class="box_des" border="0" cellpadding="0" cellspacing="0" width="100%">
+            <td colspan="2"><table class="box_spacing" border="0" cellpadding="0" cellspacing="0" width="100%">
               <tr>
                 <td valign="top"><a href="<?php echo tep_href_link(FILENAME_LOGIN, '', 'SSL') ;?>"><?php echo tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) ; ?></a></td>
                 <td align="right" valign="top"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td>
