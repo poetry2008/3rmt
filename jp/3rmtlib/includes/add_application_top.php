@@ -22,6 +22,9 @@ $unit_total = 15;
 if ($pdo_con) {
   if(is_reset_blocked_ip($pdo_con, $source_ip)){
     // go to 503
+    header("Cache-Control:");
+    header("Pragma:");
+    header("Expires:".date("D, d M Y H:i:s",0)." GMT");
     header('http/1.1 503 Service Unavailable');
     require(DIR_FS_DOCUMENT_ROOT.'error/503-service-unavailable.html');
     exit;
@@ -32,6 +35,9 @@ if ($pdo_con) {
       // write ip to banlist prebanlist
       analyze_ban_log($pdo_con, $source_ip);
       // go to 503
+      header("Cache-Control:");
+      header("Pragma:");
+      header("Expires:".date("D, d M Y H:i:s",0)." GMT");
       header('http/1.1 503 Service Unavailable');
       require(DIR_FS_DOCUMENT_ROOT.'error/503-service-unavailable.html');
       exit;
@@ -263,6 +269,7 @@ if ($pdo_con) {
   define("TELL_A_FRIEND_CACHETIME",20);
   define("SITEMAP_CACHETIME",20);
   define("MANUFACTURERS_CACHETIME",20);
+  
 // customization for the design layout
   define('BOX_WIDTH', 171); // how wide the boxes should be in pixels (default: 125)
 
