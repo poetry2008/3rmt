@@ -1343,7 +1343,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               <tr>
                 <!--<td class="main" valign="top" width="30%"><b>信用調査:</b></td>-->
             <form action="ajax_preorders.php?orders_id=<?php echo $order->info['orders_id'];?>" id='form_orders_credit' method="post">
-                <td class="main"><textarea name="orders_credit" style="width:100%; height:45px;"><?php echo tep_get_customers_fax_by_id($order->customer['id']);?></textarea>
+                <td class="main"><textarea name="orders_credit" style="width:98%;height:42px;*height:40px;"><?php echo tep_get_customers_fax_by_id($order->customer['id']);?></textarea>
                 <input type="hidden" name="orders_id" value="<?php echo $order->info['orders_id'];?>">
                 <input type="hidden" name="page" value="<?php echo $_GET['page'];?>">
                 </td>
