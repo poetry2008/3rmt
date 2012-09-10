@@ -99,7 +99,7 @@
         <div> 
           <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
             <tr> 
-              <td><table class="box_des_size" border="0" width="100%" cellspacing="0" cellpadding="0">
+              <td><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td class="main"><?php echo TEXT_PRODUCT_NOTIFICATIONS_INTRODUCTION; ?></td>
           </tr>
@@ -154,7 +154,7 @@
           </tr>
           </table>
           </form>
-          <table class="box_des_size" cellspacing="0" cellpadding="0" border="0">
+          <table class="box_des" cellspacing="0" cellpadding="0" border="0">
           <tr>
             <td class="main"><b><?php echo HEADING_PRODUCT_NOTIFICATIONS; ?></b></td>
           </tr>

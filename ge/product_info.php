@@ -205,14 +205,13 @@ function showimage($1) {
         <?php echo ds_tep_get_categories((int)$_GET['products_id'],2) ; ?>
       </div>
       <h2><?php echo $product_info['products_name']; ?></h2>
-      <br>
       <table class="box_des" width="98%"  border="0" cellpadding="0" cellspacing="0">
         <tr>
           <td valign="top">
-                  <table width="100%" border="0" cellpadding="3" cellspacing="1" class="box_des_size">
+                  <table width="100%" border="0" cellpadding="1" cellspacing="1" class="box_des">
                     <tr>
-                      <td class="main" width="85">商品コード</td>
-                      <td class="main">
+                      <td width="85">商品コード</td>
+                      <td>
                         <?php if (PRODUCT_LIST_MODEL > 0){ echo $product_info['products_model'] ; }else{ echo '-' ; } ?>
                       </td>
                     </tr>
@@ -220,8 +219,8 @@ function showimage($1) {
                       if(!empty($product_info['products_attention_1_1']) && !empty($product_info['products_attention_1_3'])){
                       ?>
                     <tr>
-                      <td class="main"><?php echo $product_info['products_attention_1_1'] ; ?></td>
-                      <td class="main"><?php echo $product_info['products_attention_1_2'] .'&nbsp;&nbsp;'.tep_display_attention_1_3($product_info['products_attention_1_3']) . $product_info['products_attention_1_4'] ; ?></td>
+                      <td><?php echo $product_info['products_attention_1_1'] ; ?></td>
+                      <td><?php echo $product_info['products_attention_1_2'] .'&nbsp;&nbsp;'.tep_display_attention_1_3($product_info['products_attention_1_3']) . $product_info['products_attention_1_4'] ; ?></td>
                     </tr>
                     <?php } ?>
 
@@ -229,33 +228,33 @@ function showimage($1) {
                       if(!empty($data1[0])){
                       ?>
                     <tr>
-                      <td class="main"><?php echo $data1[0] ; ?></td>
-                      <td class="main"><?php echo $data1[1] ; ?></td>
+                      <td><?php echo $data1[0] ; ?></td>
+                      <td><?php echo $data1[1] ; ?></td>
                     </tr>
                     <?php } ?>
                     <?php 
                       if(!empty($data2[0])){
                       ?>
                     <tr>
-                      <td class="main"><?php echo $data2[0] ; ?></td>
-                      <td class="main"><?php echo $data2[1] ; ?></td>
+                      <td><?php echo $data2[0] ; ?></td>
+                      <td><?php echo $data2[1] ; ?></td>
                     </tr>
                     <?php } ?>
                     <tr>
-                      <td class="main">メーカー名</td>
-                      <td class="main">
+                      <td>メーカー名</td>
+                      <td>
                         <?php include(DIR_WS_BOXES.'manufacturer_info.php') ; ?>
                       </td>
                     </tr>
                     <tr>
-                      <td class="main">価格</td>
-                      <td class="main">
+                      <td>価格</td>
+                      <td>
                         <?php
                                   # 追加スタート ---------------------------------------
                                   # -- 注文数量と単価のリスト --------------------------
                                   if(tep_not_null($product_info['products_small_sum'])) {
                                     $wari_array = array();
-                                    echo '<span class="smallText">単位は1個あたりの価格となります</span><table border="0" cellpadding="0" cellspacing="0" class="box_des_size">';
+                                    echo '<span class="smallText">単位は1個あたりの価格となります</span><table border="0" cellpadding="0" cellspacing="0" class="box_des">';
                                     $parray = explode(",", $product_info['products_small_sum']);
                                     for($i=0; $i<sizeof($parray); $i++) {
                                       $tt = explode(':', $parray[$i]);
@@ -398,7 +397,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
         </tr>
       </table>
       <table width="99%" border="0" cellpadding="0" cellspacing="0">
-         <tr class="header">
+         <tr>
            <td height="30" class="main">
            <div class="option_dot">
 <?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_PRODUCT_INFO, tep_get_all_get_params(array('action')) . 'action=process')); ?>
@@ -460,12 +459,12 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
 </div>
           </td>
         </tr>
-        <tr class="header">
-          <td height="40" align="right" valign="bottom" class="smallText">
+        <tr>
+          <td height="40" align="right" valign="bottom">
                   <div class="option_dot">
-                  <table class="table_a_spacing"><tr><td>
+                  <table class="table_a_spacing"><tr><td valign="top">
                   <a  href="<?php echo tep_href_link(FILENAME_TELL_A_FRIEND,'products_id='.(int)$_GET['products_id']) ;  ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/tellafriend.jpg',BOX_HEADING_TELL_A_FRIEND);?></a>
-                  &nbsp;</td><td>
+                  &nbsp;</td><td valign="top">
                   <a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE,'products_id='.(int)$_GET['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/review.jpg',BOX_REVIEWS_WRITE_REVIEW);?></a>
                   &nbsp;</td><td valign="top">
                   <?php echo tep_draw_form('open',tep_href_link('open.php','','SSL'),'get');?><input type="image" style="padding-bottom:3px;" src="<?php echo DIR_WS_IMAGES;?>design/button/contact_us.jpg"><?php echo tep_draw_hidden_field('products', $product_info['products_name']) ; ?></form>
@@ -530,11 +529,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
       <?php
         }
  ?>
-      <div class="sep">
-        &nbsp;
-      </div>
       <h3><?php echo $product_info['products_name']; ?>について</h3>
-      <br>
       <!-- 説明文　-->
       <div class="box_des">
         <?php 
@@ -571,7 +566,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
       <?php
       if (tep_session_is_registered('affiliate_id')) {
 ?>
-      <h1 class="pageHeading_long"><?php echo 'アフィリエイト広告用タグ' ; ?>
+      <h1><?php echo 'アフィリエイト広告用タグ' ; ?>
       </h1>
       <p class="box_des"><b>この商品の広告を登録することができます！！</b><br>
         あなたのホームページにこの商品を表示させるには以下のソースコードをコピーしてホームページにペースとしてください。この商品の画像が表示されます。</p>

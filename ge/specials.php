@@ -67,7 +67,6 @@
 ?>
         <tr>
           <td>
-            <br>
               <table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr>
             <td class="smallText"><?php echo $specials_split->display_count($specials_numrows, MAX_DISPLAY_SPECIAL_PRODUCTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_SPECIALS); ?></td>
@@ -98,9 +97,6 @@
         if ((($row / 3) == floor($row / 3))) {
 ?>
                                 </tr>
-                                <tr>
-              <td>&nbsp;</td>
-            </tr>
             <tr>
 <?php
         }    
@@ -115,7 +111,6 @@
 ?>
                     <tr>
                         <td>
-                            <br>
                             <table border="0" width="100%" cellspacing="0" cellpadding="2">
                                 <tr>
                                     <td class="smallText" width="100%"><?php echo $specials_split->display_count($specials_numrows, MAX_DISPLAY_SPECIAL_PRODUCTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_SPECIALS); ?></td>

@@ -19,7 +19,7 @@ if( $row['type'] == '1'){
 }
 if($clear_banlist){
   $pdo_con->exec("delete from banlist where ip = '".$source_ip."'");
-  header('Location:'.HTTP_SERVER.'/?reset_blocked_ip='.rand(0,time()));
+  header('Location:'.HTTP_SERVER);
   exit;
 }else{
   $res = $pdo_con->query("select count(*) from banlist where ip = '".$source_ip."'");
@@ -28,7 +28,7 @@ if($clear_banlist){
     require(DIR_FS_DOCUMENT_ROOT.'error/503-service-unavailable.html');
     exit;
   }else{
-    header('Location:'.HTTP_SERVER.'/?reset_blocked_ip='.rand(0,time()));
+    header('Location:'.HTTP_SERVER);
     exit;
   }
 }

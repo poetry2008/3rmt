@@ -542,8 +542,8 @@ if (!empty($_SESSION['history_url'])) {
           <td class="main"><?php echo TEXT_CART_EMPTY; ?></td> 
         </tr> 
         <tr> 
-          <td align="right" class="main"><br> 
-          <a href="<?php echo tep_href_link(FILENAME_DEFAULT); ?>"><?php echo tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></a></td> 
+          <td align="right" class="main">
+          <div class="box_link"><a href="<?php echo tep_href_link(FILENAME_DEFAULT); ?>"><?php echo tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></a></div></td> 
         </tr> 
         <?php
   }

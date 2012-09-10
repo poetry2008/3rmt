@@ -100,7 +100,6 @@
 ?> 
         </tr> 
       </table>
-    <br>
     <?php
     if (!empty($seo_category['categories_footer_text'])) { 
     ?>
@@ -110,7 +109,6 @@
     <?php
     } 
     ?>
-    <br>
       <?php 
       $new_products_category_id = $current_category_id; 
       $exone_single = false; 
@@ -124,7 +122,6 @@
         include(DIR_WS_MODULES .'new_products.php'); 
       }
       ?>
-    <br>
     <?php
       if (!empty($seo_category['seo_description'])) {
     ?>
@@ -139,14 +136,13 @@
     <?php
       }
     ?>
-    <br>
       <?php
       if (isset($cPath) && !ereg('_', $cPath)) { 
       $all_game_news = tep_get_categories_rss($current_category_id);
       if ($all_game_news) {
       ?>
-<div class="background_news01" style="margin-top:10px;">
-  <table width="95%" style="border-top:#444 dotted 3px;" class="news_title_03">
+<div class="background_news01">
+  <table width="95%" class="news_title_03">
   <tr>
     <td>
       <h3 style="border-bottom:none; font-size:14px; color:#fff; padding-left:10px; margin-top:2px;font-weight:bold;">ONLINE GAME NEWS for 4Gamer.net</h3>

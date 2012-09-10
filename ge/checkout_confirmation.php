@@ -550,7 +550,6 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
 <?php
 }
 ?>
-     <tr><td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td></tr>             
       <tr>
         <td><b><?php echo HEADING_BILLING_INFORMATION; ?></b></td>
       </tr>
@@ -696,7 +695,6 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
   if (is_array($payment_modules->modules)) {
     if ($confirmation = $payment_modules->confirmation($payment)) {
 ?>
-     <tr><td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td></tr>             
      <tr>
         <td><b><?php echo HEADING_PAYMENT_INFORMATION; ?></b></td>
       </tr>
