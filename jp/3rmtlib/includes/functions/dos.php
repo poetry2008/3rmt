@@ -24,11 +24,9 @@ function is_large_visit($pdo_con, $ip_info, $unit_time, $unit_total)
   if ($res) {
     $total_num = $res->fetchColumn(); 
     if ($total_num > 0 && $total_num > $unit_total) {
-      //send mail
-      $dos_email_msg = 'Prebanlist '.date('Y-m-d H:i:s')."  ".$ip_info;
-      send_mail(DOS_SEND_MAIL,'DoS Alert !',$dos_email_msg);
       return true; 
     }else{
+      // delete  accesslog  rows by time
       $pdo_con->exec("delete from accesslog where vtime< '".date('Y-m-d H:i:s', time()-$unit_time)."'"); 
       return false;
     }
