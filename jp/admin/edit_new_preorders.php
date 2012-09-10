@@ -112,6 +112,14 @@
     tep_redirect(tep_href_link("edit_new_preorders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
     break;
   }
+  $date_time = $_POST['predate_year'].$_POST['predate_month'].$_POST['predate_day'];
+  $date_now = date('Ymd');
+  if((int)$date_time < (int)$date_now){
+
+        $messageStack->add(TEXT_DATE_NUM_ERROR, 'error');
+        $action = 'edit';
+        break; 
+  }
     $oID = tep_db_prepare_input($_GET['oID']);
     
     $_SESSION['create_preorder']['orders']['payment_method'] = payment::changeRomaji($_POST['payment_method'], PAYMENT_RETURN_TYPE_TITLE); 
@@ -954,6 +962,7 @@ function recalc_preorder_price(oid, opd, o_str, oid_price, op_price)
       msg_info = msg.split('|||');
       if(o_str != 1){
         document.getElementsByName('update_products['+opd+'][final_price]')[0].value = msg_info[0];
+        document.getElementById('update_products['+opd+'][final_price]').innerHTML = msg_info[7];
       }
       if(o_str != 1){
         document.getElementById('update_products['+opd+'][a_price]').innerHTML = msg_info[1];
@@ -1541,11 +1550,16 @@ if (($action == 'edit') && ($order_exists == true)) {
     echo '      </td>' . "\n" .
          '      <td class="' . $RowStyle . '">' . $order_products[$pid]['model'] . "<input name='update_products[$pid][model]' size='12' type='hidden' value='" . $order_products[$pid]['model'] . "'>" . '</td>' . "\n" .
          '      <td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($order_products[$pid]['tax']) . "<input name='update_products[$pid][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order_products[$pid]['tax']) . "'>" . '%</td>' . "\n" .
-         '      <td class="' . $RowStyle . '" align="right">' . "<input type='text' name='update_products[$pid][final_price]' onkeyup='clearLibNum(this);recalc_preorder_price(\"".$oID."\", \"".$pid."\", \"1\", \"".$orders_price."\", \"".$op_price."\");' size='9' style='text-align:right;' value='" . tep_display_currency(number_format(abs($order_products[$pid]['final_price']),2)) 
+         '      <td class="' . $RowStyle . '" align="right">' . "<input type='hidden' name='update_products[$pid][final_price]' onkeyup='clearLibNum(this);recalc_preorder_price(\"".$oID."\", \"".$pid."\", \"1\", \"".$orders_price."\", \"".$op_price."\");' size='9' style='text-align:right;' value='" . tep_display_currency(number_format(abs($order_products[$pid]['final_price']),2)) 
          . "'  onkeyup='clearNoNum(this)' class='once_pwd' >" . 
          '<input type="hidden" name="op_id_'.$pid.'" 
-          value="'.tep_get_pre_product_by_op_id($pid,'pid').'">' .TEXT_MONEY_SYMBOL. "\n" .
-           '</td>' . "\n" .
+         value="'.tep_get_pre_product_by_op_id($pid,'pid').'"><div id="update_products['.$pid.'][final_price]">'; 
+     if ($order_products[$pid]['final_price'] < 0) {
+      echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($order_products[$pid]['final_price'], true, $order['currency'], $order['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+    } else {
+      echo $currencies->format($order_products[$pid]['final_price'], true, $order['currency'], $order['currency_value']);
+    }
+         echo "</div>\n" .'</td>' . "\n" .
          '      <td class="' . $RowStyle . '" align="right"><div id="update_products['.$pid.'][a_price]">';
     if ($order_products[$pid]['final_price'] < 0) {
       echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order_products[$pid]['final_price'], $order_products[$pid]['tax']), true, $order['currency'], $order['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
@@ -1722,7 +1736,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       $button_add = $TotalIndex == 3 ? '<INPUT type="button" id="button_add" value="'.TEXT_BUTTON_ADD.'" onClick="add_option();"><input type="hidden" id="button_add_id" value="4">&nbsp;' : '';
       echo '  <tr>' . "\n" .
            '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_TOTALDETAIL_READ_ONE.'</td>' . 
-           '    <td align="right" class="' . $TotalStyle . '">' . $button_add ."<input name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
+           '    <td style="min-width:180px;" align="right" class="' . $TotalStyle . '">' . $button_add ."<input name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
            '    <td align="right" class="' . $TotalStyle . '">' . "<input name='update_totals[$TotalIndex][value]' id='update_totals_$TotalIndex' onkeyup='clearNoNum(this);price_total();' size='6' value='" . $TotalDetails["Price"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . 
@@ -1763,7 +1777,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <td valign="top">
       <table border="0" cellspacing="0" cellpadding="2">
         <tr>
-          <td class="main"><b><?php echo ENTRY_STATUS; ?></b></td>
+          <td class="main" width="80"><b><?php echo ENTRY_STATUS; ?></b></td>
           <td class="main">
           <?php
           $is_select_query = tep_db_query(" select orders_status_id, orders_status_name from " . TABLE_PREORDERS_STATUS . " where language_id = '" . (int)$languages_id . "' limit 1");
@@ -1793,7 +1807,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     $mail_sql = tep_db_fetch_array($mail_sele);
     ?>
     <?php   
-    echo '<b>'.TEXT_EMAIL_TITLE.'</b>'.tep_draw_input_field('etitle', $mail_sql['orders_status_title'],'style="width:315px;"'); 
+    echo '<b>'.TEXT_EMAIL_TITLE.'</b>'.tep_draw_input_field('etitle', $mail_sql['orders_status_title'],'style="width:55%;"'); 
     ?> 
     <br>
     <br>
@@ -1804,7 +1818,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       $order_a_str .= $ovalue['character']."\n"; 
     }
     ?>
-    <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments"
+    <textarea style="font-family:monospace;font-size:12px; width:70%;" name="comments"
     wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}', $order_a_str, $mail_sql['orders_status_mail']);?></textarea>
     </td>
   </tr>

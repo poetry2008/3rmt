@@ -1078,6 +1078,22 @@ function add_option(){
     $("#add_option").append(add_str);
   }
 //todo:修改通性用
+<?php
+      $cpayment = payment::getInstance();
+      $payment_array = payment::getPaymentList();
+      foreach($payment_array[0] as $pay_key=>$pay_value){ 
+        $payment_info = $cpayment->admin_get_payment_info_comment($pay_value,'',$site_id_flag);
+        if(is_array($payment_info)){
+
+          switch($payment_info[0]){
+          case 1: 
+            $handle_fee_code = $cpayment->handle_calc_fee( payment::changeRomaji($pay_value,PAYMENT_RETURN_TYPE_CODE), 0);
+            $pay_type_str = $pay_value;
+            break;  
+          }
+        } 
+      }
+?>
   function hidden_payment(){
      var idx = document.edit_order.elements["payment_method"].selectedIndex;
      var CI =  document.edit_order.elements["payment_method"].options[idx].value;
@@ -1085,6 +1101,12 @@ function add_option(){
      $(".rowHide").find("input").attr("disabled","true");
      $(".rowHide_"+CI).show();
      $(".rowHide_"+CI).find("input").removeAttr("disabled");
+     if(CI == '<?php echo $pay_type_str;?>'){
+       $("#handle_fee_id").html('<?php echo $handle_fee_code.TEXT_MONEY_SYMBOL;?>');
+     }else{
+       $("#handle_fee_id").html(0+'<?php echo TEXT_MONEY_SYMBOL;?>'); 
+     }
+     price_total('<?php echo TEXT_MONEY_SYMBOL;?>');
   }
 $(document).ready(function(){
   hidden_payment();
@@ -1261,6 +1283,7 @@ function recalc_preorder_price(oid, opd, o_str, op_str)
       msg_info = msg.split('|||');
       if(o_str != 3){
         document.getElementsByName('update_products['+opd+'][final_price]')[0].value = msg_info[0];
+        document.getElementById('update_products['+opd+'][final_price]').innerHTML = msg_info[7];
       }
       if(o_str != 3){
         document.getElementById('update_products['+opd+'][a_price]').innerHTML = msg_info[1];
@@ -2172,12 +2195,18 @@ float:left;
     
     echo '<td class="' . $RowStyle . '" align="right">';
     //if ($ocertify->npermission == 7) {
-      echo "<input type='text' style='text-align:right;' class='once_pwd' name='update_products[$orders_products_id][final_price]' size='9' value='" .  tep_display_currency(number_format(abs($order->products[$i]['final_price']),2)) .  "'" .' onkeyup="clearNoNum(this);recalc_preorder_price(\''.$oID.'\', \''.$orders_products_id.'\', \'3\', \''.$op_info_str.'\');" >';
+      echo "<input type='hidden' style='text-align:right;' class='once_pwd' name='update_products[$orders_products_id][final_price]' size='9' value='" .  tep_display_currency(number_format(abs($order->products[$i]['final_price']),2)) .  "'" .' onkeyup="clearNoNum(this);recalc_preorder_price(\''.$oID.'\', \''.$orders_products_id.'\', \'3\', \''.$op_info_str.'\');" >';
     //} else {
       //echo "<input type='hidden' name='update_products[$orders_products_id][final_price]' value='" .  tep_display_currency(number_format(abs($order->products[$i]['final_price']),2)) .  "'" .'>'.tep_display_currency(number_format(abs($order->products[$i]['final_price']),2));
     //}
     echo '<input type="hidden" name="op_id_'.$orders_products_id.'" 
-         value="'.tep_get_pre_product_by_op_id($orders_products_id).'">' .TEXT_MONEY_SYMBOL. '</td>' . "\n" . 
+      value="'.tep_get_pre_product_by_op_id($orders_products_id).'"><div id="update_products['.$orders_products_id.'][final_price]">'; 
+    if ($order->products[$i]['final_price'] < 0) {
+      echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($order->products[$i]['final_price'], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+    } else {
+      echo $currencies->format($order->products[$i]['final_price'], true, $order->info['currency'], $order->info['currency_value']);
+    }
+    echo '</div></td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right">';
     echo '<div id="update_products['.$orders_products_id.'][a_price]">'; 
     if ($order->products[$i]['final_price'] < 0) {
@@ -2370,7 +2399,7 @@ float:left;
       $button_add = $TotalIndex == $show_num ? '<INPUT type="button" id="button_add" value="'.TEXT_BUTTON_ADD.'" onClick="add_option();"><input type="hidden" id="button_add_id" value="'.$sum_num.'">&nbsp;' : '';
       echo '  <tr>' . "\n" .
            '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_TOTALDETAIL_READ_ONE.'</td>' . 
-           '    <td align="right" class="' . $TotalStyle . '">' . $button_add ."<input name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
+           '    <td style="min-width:180px;" align="right" class="' . $TotalStyle . '">' . $button_add ."<input name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
            '    <td align="right" class="' . $TotalStyle . '">' . "<input name='update_totals[$TotalIndex][value]' id='update_totals_$TotalIndex' onkeyup='clearNoNum(this);price_total();' size='6' value='" . $TotalDetails["Price"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . 
