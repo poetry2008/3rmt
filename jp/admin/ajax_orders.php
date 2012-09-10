@@ -1935,6 +1935,21 @@ echo json_encode($json_array);
   }
   echo json_encode($json_array); 
 } else if (isset($_GET['action'])&&$_GET['action']=='recalc_price') {
+  $op_str = $_POST['op_str'];
+  $op_string = $_POST['op_string'];
+  $op_string_title = $_POST['op_string_title'];
+  $op_string_val = $_POST['op_string_val'];
+  $op_array = explode('|||',$op_str);
+  $op_string_array = explode('|||',$op_string);
+  $op_string_title_array = explode('|||',$op_string_title);
+  $op_string_val_array = explode('|||',$op_string_val);
+  foreach($op_array as $op_key=>$op_value){
+
+    $_SESSION['orders_update_products'][$_POST['opd']]['attributes'][$op_value]['price'] = $op_string_array[$op_key];
+    $_SESSION['orders_update_products'][$_POST['opd']]['attributes'][$op_value]['option_info']['title'] = $op_string_title_array[$op_key];
+    $_SESSION['orders_update_products'][$_POST['opd']]['attributes'][$op_value]['option_info']['value'] = $op_string_val_array[$op_key];
+  }
+  $_SESSION['orders_update_products'][$_POST['opd']]['qty'] = $_POST['p_num'];
   $orders_info_raw = tep_db_query("select currency, currency_value from ".TABLE_ORDERS." where orders_id = '".$_POST['oid']."'");
   $orders_info_num_rows = tep_db_num_rows($orders_info_raw);
   $orders_info = tep_db_fetch_array($orders_info_raw);
@@ -1947,11 +1962,11 @@ echo json_encode($json_array);
   } else {
     $p_price = tep_replace_full_character($_POST['p_price']); 
   }
-  
+  $_SESSION['orders_update_products'][$_POST['opd']]['p_price'] = $p_price; 
   $final_price = $p_price + tep_replace_full_character($_POST['op_price']);
-   
+  $_SESSION['orders_update_products'][$_POST['opd']]['final_price'] = $final_price;  
   $price_array[] = tep_display_currency(number_format(abs($final_price), 2));
-  
+   
   if ($final_price < 0) {
     $price_array[] = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($final_price, $orders_p['products_tax']), true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL; 
     
@@ -1968,6 +1983,7 @@ echo json_encode($json_array);
     $price_array[] = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($_POST['p_final_price']*tep_replace_full_character($_POST['p_num']), true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
     $price_array[] = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($_POST['p_final_price'], $orders_p['products_tax'])*tep_replace_full_character($_POST['p_num']), true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
     $price_array[] = TEXT_MONEY_SYMBOL;
+    $price_array[] = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($final_price, true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
   } else {
     $price_array[] = $currencies->format(tep_add_tax($final_price, $orders_p['products_tax']), true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['currency_value']); 
     
@@ -1983,6 +1999,7 @@ echo json_encode($json_array);
     $price_array[] = str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($_POST['p_final_price']*tep_replace_full_character($_POST['p_num']), true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['currency_value'])).TEXT_MONEY_SYMBOL;
     $price_array[] = str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($_POST['p_final_price'], $orders_p['products_tax'])*tep_replace_full_character($_POST['p_num']), true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['currency_value'])).TEXT_MONEY_SYMBOL;
     $price_array[] = TEXT_MONEY_SYMBOL;
+    $price_array[] = str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($final_price, true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['currency_value'])).TEXT_MONEY_SYMBOL;
   }
   
   echo implode('|||', $price_array);
@@ -2049,4 +2066,26 @@ echo json_encode($json_array);
   if(tep_validate_email($email)){
     echo "true";
   }
+}else if($_GET['action'] == 'delete_products'){
+
+  $delete_products_query =tep_db_query("delete from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='".$_POST['orders_products_id']."'");
+  if($delete_products_query){
+    echo 'true';
+  }
+}else if($_GET['action'] == 'price_total'){
+
+  $total_value = $_POST['total_value'];
+  $point_value = $_POST['point_value'];
+  $total_title = $_POST['total_title'];
+  $total_key_array = explode('|||',$_POST['total_key']);
+  $total_value_array = explode('|||',$total_value);
+  $total_title_array = explode('|||',$total_title);
+  $_SESSION['orders_update_products']['point'] = $point_value;
+  foreach($total_value_array as $total_key=>$total_val){
+
+    $_SESSION['orders_update_products'][$total_key_array[$total_key]]['value'] = $total_val;
+    $_SESSION['orders_update_products'][$total_key_array[$total_key]]['title'] = $total_title_array[$total_key];
+  }
+  $_SESSION['orders_update_products']['ot_subtotal'] = $_POST['ot_subtotal'];
+  $_SESSION['orders_update_products']['ot_total'] = $_POST['ot_total'];
 }

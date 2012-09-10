@@ -25,7 +25,7 @@ function submitChk() {
   var date_order = document.getElementById("date_order");
   date_order.value = date_orders.value;
   /* 確認ダイアログ表示 */ 
-  var flag = confirm ( "確認はしましたか？\n\n【 重要 】価格構成要素を変更した場合は、先に「注文内容確認」ボタンを押す必要があります。\n\n戻る場合は [キャンセル] ボタンをクリックしてください。"); 
+  var flag = confirm ( "確認はしましたか？"); 
   /* send_flg が TRUEなら送信、FALSEなら送信しない */ 
   if(flag){
     $.ajax({

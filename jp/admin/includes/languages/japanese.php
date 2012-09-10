@@ -589,3 +589,9 @@ define('TEXT_DATE_STATURDAY', '土曜日');
 define('TEXT_DATE_SUNDAY', '日曜日');
 define('ERROR_INPUT_RIGHT_DATE', '正しく日付を入力してください。');
 define('TEXT_BUTTON_ADD','入力フォームを追加');
+define('TEXT_ONE_TIME_CONFIG_SAVE','保存成功');
+define('TEXT_ONE_TIME_ERROR','エラー');
+define('TEXT_ONE_TIME_CONFIRM','チェックがありません。チェックを入れてください');
+define('TEXT_ONE_TIME_ADMIN_CONFIRM','Adminのチェックを入れてください');
+define('TEXT_SITE_COPYRIGHT' ,'Copyright © %s Haomai');
+

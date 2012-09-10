@@ -263,6 +263,8 @@ case 'add_product':
           // shipping total
           $update_orders_sql = "update ".TABLE_ORDERS." set code_fee = '".$handle_fee."' where orders_id = '".$oID."'";
           tep_db_query($update_orders_sql);
+          $_SESSION['orders_update_products']['ot_subtotal'] += tep_add_tax(($p_products_price + $AddedOptionsPrice)*(int)$add_product_quantity,$ProductsTax);
+          $_SESSION['orders_update_products']['ot_total'] += tep_add_tax(($p_products_price + $AddedOptionsPrice)*(int)$add_product_quantity,$ProductsTax);
           tep_redirect(tep_href_link("create_order.php?oID=$oID$param_str",''));
         }
         break;
