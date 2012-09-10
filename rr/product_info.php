@@ -34,6 +34,24 @@ var jq = jQuery.noConflict();
 <script type="text/javascript" src="js/lightbox.js"></script>
 <link rel="stylesheet" href="css/lightbox.css" type="text/css" media="screen">
 <script type="text/javascript">
+function dbc2sbc(str){   
+  var result = '';   
+  for (i=0 ; i<str.length; i++)   {   
+   code = str.charCodeAt(i);
+<?php //获取当前字符的unicode编码   ?>
+   if (code >= 65281 && code <= 65373){
+<?php //在这个unicode编码范围中的是所有的英文字母已及各种字符   ?>
+    result += String.fromCharCode(str.charCodeAt(i) - 65248);
+<?php //把全角字符的unicode编码转换为对应半角字符的unicode码   ?>
+   }else if (code == 12288){
+<?php //空格   ?>
+    result += String.fromCharCode(str.charCodeAt(i) - 12288 + 32);   
+   }else  {   
+    result += str.charAt(i);   
+   }   
+  }   
+  return result;   
+}
 jq(document).ready(function () {
    calc_product_final_price("<?php echo (int)$_GET['products_id'];?>"); 
    var actiontime =new Date().getTime();  
@@ -101,30 +119,27 @@ function change_num(ob,targ, quan, a_quan)
 {
   var product_quantity = document.getElementById(ob);
   if(isNaN(parseInt(product_quantity.value))){
-	  product_quantity.value = quan;
+    if(isNaN(parseInt(dbc2sbc(product_quantity.value)))){
+      product_quantity.value = quan;
+    }else{
+      product_quantity.value = dbc2sbc(product_quantity.value);
+    }
   }
   var product_quantity_num = parseInt(product_quantity.value);
-  if (targ == 'up')
-  { 
-    if (product_quantity_num >= a_quan)
-    {
+  if (targ == 'up') { 
+    if (product_quantity_num >= a_quan) {
       num_value = product_quantity_num;
-    }
-    else
-    {
+    } else {
       num_value = product_quantity_num + quan; 
     }
-  }
-  else
-  {
-    if (product_quantity_num <= 1)
-    {
+  } else if(targ == 'down') {
+    if (product_quantity_num <= 1) {
       num_value = product_quantity_num;
-    }
-    else
-    { 
+    } else { 
       num_value = product_quantity_num - quan;
     }
+  }else {
+    num_value = product_quantity.value;
   }
 
   product_quantity.value = num_value;
