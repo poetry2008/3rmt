@@ -204,7 +204,7 @@
 
               <tr>
                 <td class="main">&nbsp;<?php echo CREATE_ORDER_COMMUNITY_SEARCH_TEXT;?></td>
-                <td class="main">&nbsp;<textarea name='fax' style='width:400px;height:45px;'><?php echo $fax;?></textarea>&nbsp;&nbsp;<?php echo CREATE_ORDER_COMMUNITY_SEARCH_READ;?></td>
+                <td class="main">&nbsp;<textarea name='fax' style='width:400px;' rows='3'><?php echo $fax;?></textarea>&nbsp;&nbsp;<?php echo CREATE_ORDER_COMMUNITY_SEARCH_READ;?></td>
               </tr>
         <tr>
           <td class="main" colspan="2">&nbsp;<?php echo CREATE_ORDER_COMMUNITY_SEARCH_READ_ONE;?></td>
