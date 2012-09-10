@@ -501,7 +501,7 @@ function check_form() {
         <td class="formArea"><table border="0" cellspacing="2" cellpadding="2">
           <tr>
             <td class="main"><?php echo CUSTOMER_COMMUNITY_SEARCH_TEXT;?></td>
-            <td class="main"><textarea name='customers_fax' rows="3" style='width:400px;'><?php echo isset($_POST['customers_fax'])?$_POST['customers_fax']:$cInfo->customers_fax;?></textarea>&nbsp;&nbsp;<?php echo CUSTOMER_COMMUNITY_SEARCH_ONE_TEXT;?></td>
+            <td class="main"><textarea name='customers_fax' style='width:400px;height:42px;*height:40px;'><?php echo isset($_POST['customers_fax'])?$_POST['customers_fax']:$cInfo->customers_fax;?></textarea>&nbsp;&nbsp;<?php echo CUSTOMER_COMMUNITY_SEARCH_ONE_TEXT;?></td>
           </tr>
       <tr>
             <td class="main" colspan="2"><?php echo CUSTOMER_COMMUNITY_SEARCH_TWO_TEXT;?></td>
