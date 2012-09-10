@@ -460,11 +460,11 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
           </td>
         </tr>
         <tr>
-          <td height="40" align="right" valign="bottom" class="smallText">
+          <td height="40" align="right" valign="bottom">
                   <div class="option_dot">
-                  <table class="table_a_spacing"><tr><td>
+                  <table class="table_a_spacing"><tr><td valign="top">
                   <a  href="<?php echo tep_href_link(FILENAME_TELL_A_FRIEND,'products_id='.(int)$_GET['products_id']) ;  ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/tellafriend.jpg',BOX_HEADING_TELL_A_FRIEND);?></a>
-                  &nbsp;</td><td>
+                  &nbsp;</td><td valign="top">
                   <a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE,'products_id='.(int)$_GET['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/review.jpg',BOX_REVIEWS_WRITE_REVIEW);?></a>
                   &nbsp;</td><td valign="top">
                   <?php echo tep_draw_form('open',tep_href_link('open.php','','SSL'),'get');?><input type="image" style="padding-bottom:3px;" src="<?php echo DIR_WS_IMAGES;?>design/button/contact_us.jpg"><?php echo tep_draw_hidden_field('products', $product_info['products_name']) ; ?></form>

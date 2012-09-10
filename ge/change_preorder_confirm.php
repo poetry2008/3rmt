@@ -503,7 +503,7 @@ foreach($all_show_option_id as $t_item_id){
           <br> 
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
-              <td class="main" width="30%" valign="top">
+              <td class="main" width="50%" valign="top">
                 <table width="100%" cellpadding="2" cellspacing="2" border="0" class="font_size14"> 
                   <tr>
                     <td class="main" colspan="2"><b><?php echo CHANGE_ORDER_CONFIRM_PAYMENT;?></b></td>                  
@@ -516,7 +516,7 @@ foreach($all_show_option_id as $t_item_id){
                   </tr>
                 </table> 
               </td>
-              <td width="70%" align="right" valign="top">
+              <td width="50%" align="right" valign="top">
                 <table border="0" cellpadding="2" cellspacing="0" class="font_size14"> 
                   <?php
                   $total_param = '0'; 
