@@ -30,6 +30,24 @@
 ?>
 <?php page_head();?>
 <script type="text/javascript">
+function dbc2sbc(str){   
+  var result = '';   
+  for (i=0 ; i<str.length; i++)   {   
+   code = str.charCodeAt(i);
+<?php //获取当前字符的unicode编码   ?>
+   if (code >= 65281 && code <= 65373){
+<?php //在这个unicode编码范围中的是所有的英文字母已及各种字符   ?>
+    result += String.fromCharCode(str.charCodeAt(i) - 65248);
+<?php //把全角字符的unicode编码转换为对应半角字符的unicode码   ?>
+   }else if (code == 12288){
+<?php //空格   ?>
+    result += String.fromCharCode(str.charCodeAt(i) - 12288 + 32);   
+   }else  {   
+    result += str.charAt(i);   
+   }   
+  }   
+  return result;   
+}
 function key(e)
 {
   if(window.event) {
@@ -159,7 +177,11 @@ function money_blur_update(objid, o_num, old_small)
   var old_price_total  = document.getElementById("pri_" + product_id);
      
   if(isNaN(parseInt(obj.value))){
-    obj.value = o_num;
+    if(isNaN(parseInt(dbc2sbc(obj.value)))){
+      obj.value = o_num;
+    }else{
+      obj.value = dbc2sbc(obj.value);
+    }
   }
     
   var small_sum = document.getElementById("small_sum_" + product_id);
