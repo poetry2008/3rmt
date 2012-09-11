@@ -739,7 +739,7 @@ table.menu01 {
 	font-size:100%;
 	position:absolute;
 	visibility:hidden;
-	z-index:100;
+	z-index:10000;
 }
 #tutorials td {
 	background:#000;
