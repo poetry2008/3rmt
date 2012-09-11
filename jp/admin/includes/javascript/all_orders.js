@@ -1040,12 +1040,15 @@ function price_total(str)
           total_title += total_title_temp+'|||';
         }
       }
+      var ot_subtotal_id_temp;
       if(ot_total_flag == false){
         ot_total = ot_subtotal_id+handle_fee_id+shipping_fee_id-point_id+update_total_num;
+        ot_subtotal_id_temp = ot_subtotal_id;
       }else{
         ot_total = handle_fee_id+shipping_fee_id-point_id+update_total_num-ot_subtotal_id; 
         ot_subtotal_id_temp = 0-ot_subtotal_id;
       }
+      var ot_total_temp;
       ot_total_temp = ot_total;
       if(ot_total < 0){
         ot_total = Math.abs(ot_total);
