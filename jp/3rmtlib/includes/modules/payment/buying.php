@@ -497,7 +497,7 @@ class buying extends basePayment  implements paymentInterface  {
    $bank_kouza_num[1] = isset($_POST['bank_kouza_num']) ? $_POST['bank_kouza_num'] : $bank_kouza_num[1];
    echo 'document.getElementsByName("bank_kouza_num")[0].value = "'.$bank_kouza_num[1].'";'."\n";
    $bank_kouza_name = explode(':',$pay_array[4]);
-   $bank_kouza_name[1] = isset($_POST['"bank_kouza_name']) ? $_POST['"bank_kouza_name'] : $bank_kouza_name[1];
+   $bank_kouza_name[1] = isset($_POST['bank_kouza_name']) ? $_POST['bank_kouza_name'] : $bank_kouza_name[1];
    echo 'document.getElementsByName("bank_kouza_name")[0].value = "'.$bank_kouza_name[1].'";'."\n";
    $pay_array = explode("\n",trim($pay_info_array[1]));
    $con_email = explode(":",trim($pay_array[0]));
