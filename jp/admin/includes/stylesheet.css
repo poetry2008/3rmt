@@ -739,7 +739,7 @@ table.menu01 {
 	font-size:100%;
 	position:absolute;
 	visibility:hidden;
-	z-index:100;
+	z-index:10000;
 }
 #tutorials td {
 	background:#000;
@@ -1407,5 +1407,5 @@ font-size:14px;
 
 }
 .order_option_width{
-	min-width:240px;
+	min-width:260px;
 }
