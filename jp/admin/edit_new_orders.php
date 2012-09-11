@@ -714,7 +714,7 @@ if($address_error == false){
             ");
         $order = tep_db_fetch_array($op_query);
         if (!$is_history) {
-          $tmp_quantity = $order['products_quantity']; 
+          $tmp_quantity = $products_details["qty"]; 
           $p = tep_db_fetch_array(tep_db_query("select * from products where products_id='".$order['products_id']."'"));
           $pr_quantity = $p['products_real_quantity'];
           $pv_quantity = $p['products_virtual_quantity'];
@@ -3204,6 +3204,7 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
           } 
           echo '<tr><td class="main"></td><td class="main"><table>';
           foreach ($selections as $se){
+            $pay_k = 0;
             foreach($se['fields'] as $field ){
               echo '<tr class="rowHide rowHide_'.$se['id'].'">';
               echo '<td class="main">';
@@ -3219,13 +3220,14 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
                   $field['message'] = $field['message'] != '' ? ADDRESS_ERROR_OPTION_ITEM_TEXT_TYPE_WRONG : ''; 
                 }
               }else{
-                if(!$cpayment->admin_get_payment_buying_type(payment::changeRomaji($pay_method, 'code'),$field['title'])){
+                if(!$cpayment->admin_get_payment_buying_type(payment::changeRomaji($pay_method, 'code'),$field['title']) && $pay_k != 2){
                   $field['message'] = TEXT_REQUIRE;
                 }
               }
               echo "<font color='red'>&nbsp;".$field['message']."</font>";
               echo "</td>";
               echo "</tr>";
+              $pay_k++;
            } 
          }
          echo '</table></td></tr>';
