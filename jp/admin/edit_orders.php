@@ -88,7 +88,26 @@ if (tep_not_null($action)) {
 
     // 1. UPDATE ORDER ###############################################################################################
   case 'update_order':
-    
+
+      $year = $_POST['fetch_year']; 
+      $month = $_POST['fetch_month'];
+      $day = $_POST['fetch_day'];
+      $start_hour = $_POST['start_hour'];
+      $start_min = $_POST['start_min'];
+      $start_min_1 = $_POST['start_min_1'];
+      $end_hour = $_POST['end_hour'];
+      $end_min = $_POST['end_min'];
+      $end_min_1 = $_POST['end_min_1'];
+      $date_time = $year.$month.$day;
+      $date_now = date('Ymd');
+      $date_start_hour = $start_hour.$start_min.$start_min_1;
+      $date_end_hour = $end_hour.$end_min.$end_min_1;
+      if((int)$date_time < (int)$date_now || (int)$date_end_hour < (int)$date_start_hour){
+
+        $messageStack->add(TEXT_DATE_NUM_ERROR, 'error');
+        $action = 'edit';
+        break; 
+      } 
     $shipping_array = array();
     foreach($update_products as $products_key=>$products_value){
 
@@ -3457,6 +3476,7 @@ if (($action == 'edit') && ($order_exists == true)) {
                 <?php
                 $orders_history_query = tep_db_query("select * from " . TABLE_ORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($oID) . "' order by date_added");
   if (tep_db_num_rows($orders_history_query)) {
+    $orders_status_history_str = '';
     while ($orders_history = tep_db_fetch_array($orders_history_query)) {
       echo '  <tr>' . "\n" .
         '    <td class="smallText" align="center">' . tep_datetime_short($orders_history['date_added']) . '</td>' . "\n" .
@@ -3469,11 +3489,34 @@ if (($action == 'edit') && ($order_exists == true)) {
       }
       echo '    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>' . "\n" .
         '    <td class="smallText" align="left">' . $orders_status_array[$orders_history['orders_status_id']] . '</td>' . "\n";
-      if ($CommentsWithStatus) {
+      $orders_explode_array = array();
+      $orders_explode_all_array = explode("\n",$orders_history['comments']);
+      $orders_explode_array = explode(':',$orders_explode_all_array[0]);
+      if(count($orders_explode_all_array) > 1){
+
+       if(strlen(trim($orders_explode_array[1])) == 0){ 
+         unset($orders_explode_all_array[0]);
+         $orders_history_comment = implode("\n",$orders_explode_all_array); 
+       }else{ 
+         $orders_temp_str = end($orders_explode_all_array);
+         array_pop($orders_explode_all_array);
+         $orders_comments_old_str = implode("\n",$orders_explode_all_array);
+         if(trim($orders_comments_old_str) == trim($orders_status_history_str) && $orders_status_history_str != ''){
+
+           $orders_history_comment = $orders_temp_str;
+         }else{
+           $orders_history_comment = $orders_history['comments']; 
+         }
+       }
+      }else{
+        $orders_history_comment = $orders_history['comments'];
+      }
+      if ($CommentsWithStatus && $orders_history['comments'] != $orders_status_history_str) {
         echo '    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>' . "\n" .
-          '    <td class="smallText" align="left">' . nl2br(tep_db_output($orders_history['comments'])) . '&nbsp;</td>' . "\n";
+          '    <td class="smallText" align="left">' . nl2br(tep_db_output($orders_history_comment)) . '&nbsp;</td>' . "\n";
       }
       echo '  </tr>' . "\n";
+      $orders_status_history_str = $orders_history['comments'];
     }
   } else {
     echo '  <tr>' . "\n" .
