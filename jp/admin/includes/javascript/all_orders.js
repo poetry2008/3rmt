@@ -1025,13 +1025,15 @@ function price_total(str)
       var total_key = '';
       var total_title_temp = '';
       var total_title = '';
+      var temp_flag = false;
       for(var i = 1;i <= sum_num;i++){
      
         if(document.getElementById('update_total_'+i)){
           update_total_temp = document.getElementById('update_total_'+i).value; 
-          if(update_total_temp == ''){update_total_temp = 0;}
+          if(update_total_temp == ''){update_total_temp = 0;temp_flag = true;}
           update_total_temp = parseInt(update_total_temp);
           update_total_num += update_total_temp;
+          if(temp_flag == true){update_total_temp = '';temp_flag == false}
           total_value += update_total_temp+'|||';
           total_key += i+'|||';
           total_title_temp = document.getElementsByName('update_totals['+i+'][title]')[0].value;
@@ -1042,7 +1044,9 @@ function price_total(str)
         ot_total = ot_subtotal_id+handle_fee_id+shipping_fee_id-point_id+update_total_num;
       }else{
         ot_total = handle_fee_id+shipping_fee_id-point_id+update_total_num-ot_subtotal_id; 
+        ot_subtotal_id_temp = 0-ot_subtotal_id;
       }
+      ot_total_temp = ot_total;
       if(ot_total < 0){
         ot_total = Math.abs(ot_total);
         document.getElementById('ot_total_id').innerHTML = '<font color="#FF0000">'+fmoney(ot_total)+'</font>'+str;
@@ -1052,7 +1056,7 @@ function price_total(str)
 
   $.ajax({
     type: "POST",
-    data: 'total_title='+total_title+'&total_value='+total_value+'&point_value='+point_id+'&total_key='+total_key+'&ot_total='+ot_total+'&ot_subtotal='+ot_subtotal_id,
+    data: 'total_title='+total_title+'&total_value='+total_value+'&point_value='+point_id+'&total_key='+total_key+'&ot_total='+ot_total_temp+'&ot_subtotal='+ot_subtotal_id_temp,
     async:false,
     url: 'ajax_orders.php?action=price_total',
     success: function(msg) {
