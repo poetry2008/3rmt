@@ -536,11 +536,16 @@ class convenience_store extends basePayment  implements paymentInterface  {
   }
 
   function admin_get_payment_info_comment($customers_email,$site_id){
-
-    $orders_status_history_query = tep_db_query("select payment_method,orders_id from ". TABLE_ORDERS ." where customers_email_address='". $customers_email ."' and site_id='".$site_id."' and payment_method='".TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_TITLE."' order by orders_id desc limit 0,1");
-    $ordres_status_history_array = tep_db_fetch_array($orders_status_history_query);
-    $orders_status_history_num_rows = tep_db_num_rows($orders_status_history_query);
-    tep_db_free_result($orders_status_history_query);
+    
+    $orders_status_history_temp_query = tep_db_query("select payment_method,orders_id from ". TABLE_ORDERS ." where customers_email_address='". $customers_email ."' and site_id='".$site_id."' and payment_method='".TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_TITLE."'");
+    $orders_num_rows = tep_db_num_rows($orders_status_history_temp_query);
+    tep_db_free_result($orders_status_history_temp_query);
+    if($orders_num_rows > 0){
+      $orders_status_history_query = tep_db_query("select payment_method,orders_id from ". TABLE_ORDERS ." where customers_email_address='". $customers_email ."' and site_id='".$site_id."' and payment_method='".TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_TITLE."' order by orders_id desc limit 0,1");
+      $ordres_status_history_array = tep_db_fetch_array($orders_status_history_query);
+      $orders_status_history_num_rows = tep_db_num_rows($orders_status_history_query);
+      tep_db_free_result($orders_status_history_query);
+    }
     $orders_id = $orders_status_history_num_rows == 1 ? $ordres_status_history_array['orders_id'] : '';
     return array(1,$orders_id);
   }
