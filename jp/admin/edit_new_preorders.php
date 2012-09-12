@@ -612,6 +612,35 @@
           
           tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), $email_title, $email, $order->customer['name'], $order->customer['email_address'], $order->info['site_id']);
         }
+        
+        $preorder_email_subject = str_replace('${SITE_NAME}', get_configuration_by_site_id('STORE_NAME', $order->info['site_id']), get_configuration_by_site_id('PREORDER_MAIL_SUBJECT', $order->info['site_id'])); 
+        $preorder_email_text = get_configuration_by_site_id('PREORDER_MAIL_CONTENT', $order->info['site_id']); 
+        
+        $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${EFFECTIVE_TIME}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}');
+        
+        $max_op_len = 0;
+        $max_op_array = array();
+        $mail_option_str = '';
+        if (!empty($order->products[0]['attributes'])) {
+          foreach($order->products[0]['attributes'] as $o_key => $o_value) {
+            $max_op_array[] = mb_strlen($o_value['option_info']['title'], 'utf-8'); 
+          }
+        }
+        if (!empty($max_op_array)) {
+          $max_op_len = max($max_op_array); 
+        }
+        if (!empty($order->products[0]['attributes'])) {
+          foreach($order->products[0]['attributes'] as $o_at_key => $o_at_value) {
+            $mail_option_str .= $o_at_value['option_info']['title'].str_repeat('　', intval($max_op_len - mb_strlen($o_at_value['option_info']['title'], 'utf-8'))).':'.str_replace(array("<br>", "<BR>", "\r", "\n", "\r\n"), "", $o_at_value['option_info']['value'])."\n"; 
+          }
+        }
+        $pre_replace_info_arr = array($num_product_res['products_name'], $num_product, date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT,strtotime($order->info['predate'])), $order->info['payment_method'], $order->customer['name'], get_configuration_by_site_id('STORE_NAME', $order->info['site_id']), $site_url_res['url'], $order->info['orders_id'], '', $mail_option_str);
+        
+        $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
+        
+        tep_mail($order->customer['name'], $order->customer['email_address'], $preorder_email_subject, $preorder_email_text, get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']), $order->info['site_id']);
+        
+        tep_mail('', get_configuration_by_site_id('SENTMAIL_ADDRESS', $order->info['site_id']), $preorder_email_subject, $preorder_email_text, $order->customer['name'], $order->customer['email_address'], $order->info['site_id']); 
       }
       $customer_notified = '1';
     }
