@@ -2528,6 +2528,14 @@ $(document).ready(function(){
     notify_comments = notify_comments == true ? 1 : 0;
     orders_session('notify_comments',notify_comments);
   });
+  $("input[name='update_customer_name']").blur(function(){
+    var update_customer_name = document.getElementsByName("update_customer_name")[0].value;
+    orders_session('update_customer_name',update_customer_name);
+  });
+  $("input[name='update_customer_email_address']").blur(function(){
+    var update_customer_email_address = document.getElementsByName("update_customer_email_address")[0].value;
+    orders_session('update_customer_email_address',update_customer_email_address);
+  });
 });
 $(document).ready(function(){
   //$.datePicker.setDateFormat('ymd', '-');
@@ -2834,13 +2842,13 @@ if (($action == 'edit') && ($order_exists == true)) {
     <tr>
     <td class="main" valign="top"><b><?php echo EDIT_ORDERS_CUSTOMER_NAME;?></b></td>
     <td class="main">
-    <input name="update_customer_name" size="25" value="<?php echo tep_html_quotes($order->customer['name']); ?>">
+    <input name="update_customer_name" size="25" value="<?php echo tep_html_quotes(isset($_SESSION['orders_update_products']['update_customer_name']) ? $_SESSION['orders_update_products']['update_customer_name']: $order->customer['name']); ?>">
     <span class="smalltext"><?php echo EDIT_ORDERS_CUSTOMER_NAME_READ;?></span>
     </td>
     </tr>
     <tr>
     <td class="main" valign="top"><b><?php echo EDIT_ORDERS_EMAIL;?></b></td>
-    <td class="main"><input name="update_customer_email_address" size="45" value="<?php echo $order->customer['email_address']; ?>"></td>
+    <td class="main"><input name="update_customer_email_address" size="45" value="<?php echo isset($_SESSION['orders_update_products']['update_customer_email_address']) ? $_SESSION['orders_update_products']['update_customer_email_address'] : $order->customer['email_address']; ?>"></td>
     </tr>
     <!-- End Addresses Block -->
     <!-- Begin Payment Block -->
