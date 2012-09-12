@@ -1526,6 +1526,23 @@ $shipping_fee = $order->info['shipping_fee'] != $shipping_fee ? $shipping_fee : 
 <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
 <script language="javascript" src="includes/jquery.form.js"></script>
 <script language="javascript">
+function date_time(){
+    var fetch_year = document.getElementById('fetch_year').value; 
+    var fetch_month = document.getElementById('fetch_month').value;
+    var fetch_day = document.getElementById('fetch_day').value;
+    var date_time = parseInt('<?php echo date('Ymd');?>');
+    var date_hour = parseInt('<?php echo date('Hi');?>');
+    var date_time_value = parseInt(fetch_year+fetch_month+fetch_day);
+    var start_hour = document.getElementById('hour').value;
+    var start_min = document.getElementById('min').value;
+    var end_min = document.getElementById('min_1').value;
+    var start_hour_str = parseInt(start_hour+start_min+end_min);
+    if(date_time_value < date_time || (date_time_value == date_time && start_hour_str < date_hour)){
+      alert('<?php echo TEXT_DATE_NUM_ERROR;?>');
+      return false;
+    }
+    return true;
+}
 function submit_check_con(){
 
     var options = {
@@ -2660,7 +2677,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
     <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
     <td class="pageHeading" align="right">
-    <INPUT type="button" class="element_button" value="<?php echo TEXT_FOOTER_CHECK_SAVE;?>" onClick="submit_check_con();">&nbsp;
+    <INPUT type="button" class="element_button" value="<?php echo TEXT_FOOTER_CHECK_SAVE;?>" onClick="if(date_time()){submit_check_con();}">&nbsp;
     <?php echo '<a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params()) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; ?>
     </td>
     </tr>
@@ -3638,7 +3655,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <td class="main" bgcolor="#FBE2C8" width="10">&nbsp;</td>
     <td class="main" bgcolor="#FFCC99" width="10">&nbsp;</td>
     <td class="main" bgcolor="#F8B061" width="10">&nbsp;</td>
-    <td class="main" bgcolor="#FF9933" width="120" align="center"><INPUT type="button" value="<?php echo TEXT_FOOTER_CHECK_SAVE;?>" onClick="submit_check_con();"></td>
+    <td class="main" bgcolor="#FF9933" width="120" align="center"><INPUT type="button" value="<?php echo TEXT_FOOTER_CHECK_SAVE;?>" onClick="if(date_time()){submit_check_con();}"></td>
     </tr>
     </table>
     </td>
