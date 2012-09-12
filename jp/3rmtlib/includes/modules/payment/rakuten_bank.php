@@ -478,6 +478,7 @@ function getMailString($option=''){
    echo 'document.getElementsByName("con_email")[0].value = "'.$con_email[1].'";'."\n";
    $pay_array = explode("\n",trim($pay_info_array[2]));
    $rak_tel = explode(":",trim($pay_array[0]));
+   $rak_tel[1] = isset($_SESSION['orders_update_products']['rak_tel']) ? $_SESSION['orders_update_products']['rak_tel'] : $rak_tel[1];
    $rak_tel[1] = isset($_POST['rak_tel']) ? $_POST['rak_tel'] : $rak_tel[1];
    echo 'document.getElementsByName("rak_tel")[0].value = "'.$rak_tel[1].'";'."\n";
   }

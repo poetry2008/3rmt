@@ -517,6 +517,7 @@ class convenience_store extends basePayment  implements paymentInterface  {
    echo 'document.getElementsByName("bank_kouza_name")[0].value = "'.$bank_kouza_name[1].'";'."\n";
    $pay_array = explode("\n",trim($pay_info_array[1]));
    $con_email = explode(":",trim($pay_array[0]));
+   $con_email[1] = isset($_SESSION['orders_update_products']['con_email']) ? $_SESSION['orders_update_products']['con_email'] : $con_email[1];
    $con_email[1] = isset($_POST['con_email']) ? $_POST['con_email'] : $con_email[1];
    echo 'document.getElementsByName("con_email")[0].value = "'.$con_email[1].'";'."\n";
    $pay_array = explode("\n",trim($pay_info_array[2]));

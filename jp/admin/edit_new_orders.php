@@ -2446,16 +2446,21 @@ var address_select = '';
       h_i_str = h_i < 10 ? '0'+h_i : h_i;
       hour_1.options[hour_1.options.length]=new Option(h_i_str,h_i_str,h_i_str==value); 
     }
-    min_end.options.length = 0;
-    min_value = parseInt(min_value);
-    for(m_i = min_value;m_i <= 5;m_i++){
-      min_end.options[min_end.options.length]=new Option(m_i,m_i,m_i==min_value); 
+    
+    if(parseInt(min_end_value) < parseInt(min_value)){
+      min_end.options.length = 0;
+      min_value = parseInt(min_value);
+      for(m_i = min_value;m_i <= 5;m_i++){
+        min_end.options[min_end.options.length]=new Option(m_i,m_i,m_i==min_value); 
+      }
     }
-
-    min_end_1.options.length = 0;
-    min_1_value = parseInt(min_1_value);
-    for(m_i_1 = min_1_value;m_i_1 <= 9;m_i_1++){
-      min_end_1.options[min_end_1.options.length]=new Option(m_i_1,m_i_1,m_i_1==min_1_value); 
+    
+    if(parseInt(min_end_1_value) < parseInt(min_1_value)){
+      min_end_1.options.length = 0;
+      min_1_value = parseInt(min_1_value);
+      for(m_i_1 = min_1_value;m_i_1 <= 9;m_i_1++){
+        min_end_1.options[min_end_1.options.length]=new Option(m_i_1,m_i_1,m_i_1==min_1_value); 
+      }
     }
   }else{
 
@@ -2678,7 +2683,119 @@ $(function() {
   price_total('<?php echo TEXT_MONEY_SYMBOL;?>');
 
  }
-   $(document).ready(function(){hidden_payment()});
+$(document).ready(function(){
+  hidden_payment();
+  $("input[name='con_email']").blur(function(){
+    var con_email = document.getElementsByName("con_email")[0].value;
+    orders_session('con_email',con_email);
+  });
+  $("input[name='bank_name']").blur(function(){
+    var payment_value = document.getElementsByName("bank_name")[0].value;
+    orders_session('bank_name',payment_value);
+  });
+  $("input[name='bank_shiten']").blur(function(){
+    var payment_value = document.getElementsByName("bank_shiten")[0].value;
+    orders_session('bank_shiten',payment_value);
+  });
+  $("input[name='bank_kamoku']").click(function(){
+    if(document.getElementsByName("bank_kamoku")[0].checked == true){
+      var payment_value = document.getElementsByName("bank_kamoku")[0].value;
+    }else{
+      var payment_value = document.getElementsByName("bank_kamoku")[1].value; 
+    }
+    orders_session('bank_kamoku',payment_value);
+  });
+  $("input[name='bank_kouza_num']").blur(function(){
+    var payment_value = document.getElementsByName("bank_kouza_num")[0].value;
+    orders_session('bank_kouza_num',payment_value);
+  });
+  $("input[name='bank_kouza_name']").blur(function(){
+    var payment_value = document.getElementsByName("bank_kouza_name")[0].value;
+    orders_session('bank_kouza_name',payment_value);
+  });
+  $("input[name='rak_tel']").blur(function(){
+    var payment_value = document.getElementsByName("rak_tel")[0].value;
+    orders_session('rak_tel',payment_value);
+  });
+  $("#fetch_year").change(function(){
+    var date_value = document.getElementById("fetch_year").value;
+    orders_session('fetch_year',date_value);
+  });
+  $("#fetch_month").change(function(){
+    var date_value = document.getElementById("fetch_month").value;
+    orders_session('fetch_month',date_value);
+  });
+  $("#fetch_day").change(function(){
+    var date_value = document.getElementById("fetch_day").value;
+    orders_session('fetch_day',date_value);
+  });
+  $("#hour").change(function(){
+    var date_value = document.getElementById("hour").value;
+    orders_session('hour',date_value);
+    var date_value = document.getElementById("hour_1").value;
+    orders_session('hour_1',date_value);
+    var date_value = document.getElementById("min_end").value;
+    orders_session('min_end',date_value);
+    var date_value = document.getElementById("min_end_1").value;
+    orders_session('min_end_1',date_value);
+  });
+  $("#min").change(function(){
+    var date_value = document.getElementById("min").value;
+    orders_session('min',date_value);
+    var date_value = document.getElementById("min_end").value;
+    orders_session('min_end',date_value);
+    var date_value = document.getElementById("min_end_1").value;
+    orders_session('min_end_1',date_value);
+  });
+  $("#min_1").change(function(){
+    var date_value = document.getElementById("min_1").value;
+    orders_session('min_1',date_value);
+    var date_value = document.getElementById("min_end_1").value;
+    orders_session('min_end_1',date_value);
+  });
+  $("#hour_1").change(function(){
+    var date_value = document.getElementById("hour_1").value;
+    orders_session('hour_1',date_value);
+  });
+  $("#min_end").change(function(){
+    var date_value = document.getElementById("min_end").value;
+    orders_session('min_end',date_value);
+  });
+  $("#min_end_1").change(function(){
+    var date_value = document.getElementById("min_end_1").value;
+    orders_session('min_end_1',date_value);
+  });
+  $("select[name='s_status']").change(function(){
+    var s_status = document.getElementsByName("s_status")[0].value;
+    orders_session('s_status',s_status);
+    var title = document.getElementsByName("title")[0].value;
+    orders_session('title',title);
+    var comments = document.getElementsByName("comments")[0].value;
+    orders_session('comments',comments);
+  }); 
+  $("input[name='title']").blur(function(){
+    var title = document.getElementsByName("title")[0].value;
+    orders_session('title',title);
+  });
+  $("textarea[name='comments']").blur(function(){
+    var comments = document.getElementsByName("comments")[0].value;
+    orders_session('comments',comments);
+  });
+  $("textarea[name='comments_text']").blur(function(){
+    var comments_text = document.getElementsByName("comments_text")[0].value;
+    orders_session('comments_text',comments_text);
+  });
+  $("input[name='notify']").click(function(){
+    var notify = document.getElementsByName("notify")[0].checked;
+    notify = notify == true ? 1 : 0;
+    orders_session('notify',notify);
+  });
+  $("input[name='notify_comments']").click(function(){
+    var notify_comments = document.getElementsByName("notify_comments")[0].checked;
+    notify_comments = notify_comments == true ? 1 : 0;
+    orders_session('notify_comments',notify_comments);
+  });
+});
 <?php
 if($p_weight_total > 0){
 ?>
@@ -3184,7 +3301,7 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
             }
             tep_db_free_result($orders_status_history_query); 
           }
-          
+          $pay_method = isset($_SESSION['orders_update_products']['payment_method']) ? $_SESSION['orders_update_products']['payment_method'] : $pay_method; 
           $pay_method = isset($_POST['payment_method']) ? $_POST['payment_method'] : $pay_method;
           if($pay_method == ''){
             if($products_money_total > 0){
@@ -3202,8 +3319,7 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
           }else{
 
             $pay_method = $pay_method;
-          }
-           
+          } 
           echo payment::makePaymentListPullDownMenu(payment::changeRomaji($pay_method,'code'));
           
           
@@ -3732,8 +3848,10 @@ if($orders_exit_flag == true){
   $work_start_array = explode(':',$work_start);
   $work_end_array = explode(':',$work_end);
   $work_start_hour = $work_start_array[0]; //开始时
+  $work_start_hour = isset($_SESSION['orders_update_products']['hour']) ? $_SESSION['orders_update_products']['hour'] : $work_start_hour;
   $work_start_min = $work_start_array[1]; //开始分
   $work_end_hour = $work_end_array[0]; //结束时
+  $work_end_hour = isset($_SESSION['orders_update_products']['hour_1']) ? $_SESSION['orders_update_products']['hour_1'] : $work_end_hour;
   $work_end_min = $work_end_array[1]; //结束分
 
   //可选收货期限
@@ -3753,11 +3871,12 @@ if($orders_exit_flag == true){
     $hour_str .= '<option value="'.$h_str.'"'.$selected.'>'.$h_str.'</option>';
   } 
   $hour_str .= '</select>';
-
+  $work_min_temp = substr($work_start_min,0,1);
+  $work_min_temp = isset($_SESSION['orders_update_products']['min']) ? $_SESSION['orders_update_products']['min'] : $work_min_temp;
   $min_str = '<select name="start_min" id="min" onchange="check_min(this.value);">';
   for($m_i = 0;$m_i <= 5;$m_i++){
 
-    if($m_i == substr($work_start_min,0,1)){
+    if($m_i == $work_min_temp){
 
       $selected = ' selected';
     }else{
@@ -3767,10 +3886,12 @@ if($orders_exit_flag == true){
     $min_str .= '<option value="'.$m_i.'"'.$selected.'>'.$m_i.'</option>';
   } 
   $min_str .= '</select>';
+  $min_str_temp = substr($work_start_min,1,1);;
+  $min_str_temp = isset($_SESSION['orders_update_products']['min_1']) ? $_SESSION['orders_update_products']['min_1'] : $min_str_temp;
   $min_str_start = '<select name="start_min_1" id="min_1" onchange="check_min_1(this.value);">';
   for($m_i_1 = 0;$m_i_1 <= 9;$m_i_1++){
 
-    if($m_i_1 == substr($work_start_min,1,1)){
+    if($m_i_1 == $min_str_temp){
 
       $selected = ' selected';
     }else{
@@ -3780,7 +3901,7 @@ if($orders_exit_flag == true){
     $min_str_start .= '<option value="'.$m_i_1.'"'.$selected.'>'.$m_i_1.'</option>';
   } 
   $min_str_start .= '</select>';
-
+  
   $hour_str_1 = '<select name="end_hour" id="hour_1" onchange="check_hour_1(this.value);">';
   if(strlen($work_start_hour) == 2 && substr($work_start_hour,0,1) == 0){
    
@@ -3803,10 +3924,13 @@ if($orders_exit_flag == true){
   } 
   $hour_str_1 .= '</select>';
 
+  $min_str_1_temp = substr($work_end_min,0,1); 
+  $min_str_1_temp = isset($_SESSION['orders_update_products']['min_end']) ? $_SESSION['orders_update_products']['min_end'] : $min_str_1_temp;
   $min_str_1 = '<select name="end_min" id="min_end" onchange="check_end_min(this.value);">';
-  for($m1_i = substr($work_start_min,0,1);$m1_i <= 5;$m1_i++){
+  $work_min_temp = $work_start_hour < $work_end_hour ? 0 : $work_min_temp;
+  for($m1_i = $work_min_temp;$m1_i <= 5;$m1_i++){
 
-    if($m1_i == substr($work_end_min,0,1)){
+    if($m1_i == $min_str_1_temp){
 
       $selected = ' selected';
     }else{
@@ -3816,10 +3940,14 @@ if($orders_exit_flag == true){
     $min_str_1 .= '<option value="'.$m1_i.'"'.$selected.'>'.$m1_i.'</option>';
   } 
   $min_str_1 .= '</select>';
+  $min_str_end_temp = substr($work_end_min,1,1);
+  $min_str_end_temp = isset($_SESSION['orders_update_products']['min_end_1']) ? $_SESSION['orders_update_products']['min_end_1'] : $min_str_end_temp;
   $min_str_end = '<select name="end_min_1" id="min_end_1">';
-  for($m1_i_1 = substr($work_start_min,1,1);$m1_i_1 <= 9;$m1_i_1++){
+  $work_start_min_temp = $min_str_1_temp == $work_min_temp ? $min_str_temp : 0;
+  $work_start_min_temp = $work_start_hour < $work_end_hour ? 0 : $work_start_min_temp;
+  for($m1_i_1 = $work_start_min_temp;$m1_i_1 <= 9;$m1_i_1++){
 
-    if($m1_i_1 == substr($work_end_min,1,1)){
+    if($m1_i_1 == $min_str_end_temp){
 
       $selected = ' selected';
     }else{
@@ -3840,7 +3968,8 @@ if($orders_exit_flag == true){
             <td class="main"> 
             <div style="float:left;"> 
               <select name="fetch_year" id="fetch_year" onchange="change_fetch_date();">
-              <?php
+             <?php
+                $fetch_date_array[0] = isset($_SESSION['orders_update_products']['fetch_year']) ? $_SESSION['orders_update_products']['fetch_year'] : $fetch_date_array[0];
                 $default_fetch_year = (isset($_POST['fetch_year']))?$_POST['fetch_year']:$fetch_date_array[0]; 
                 for ($f_num = 2006; $f_num <= 2050; $f_num++) {
                   echo '<option value="'.$f_num.'"'.(($default_fetch_year == $f_num)?' selected':'').'>'.$f_num.'</option>'; 
@@ -3850,6 +3979,7 @@ if($orders_exit_flag == true){
               <select name="fetch_month" id="fetch_month" onchange="change_fetch_date();">
               <?php
                 for ($f_num = 1; $f_num <= 12; $f_num++) {
+                  $fetch_date_array[1] = isset($_SESSION['orders_update_products']['fetch_month']) ? $_SESSION['orders_update_products']['fetch_month'] : $fetch_date_array[1];
                   $default_fetch_month = (isset($_POST['fetch_month']))?$_POST['fetch_month']:$fetch_date_array[1]; 
                   $tmp_fetch_month = sprintf('%02d', $f_num); 
                   echo '<option value="'.$tmp_fetch_month.'"'.(($default_fetch_month == $tmp_fetch_month)?' selected':'').'>'.$tmp_fetch_month.'</option>'; 
@@ -3859,6 +3989,7 @@ if($orders_exit_flag == true){
               <select name="fetch_day" id="fetch_day" onchange="change_fetch_date();">
               <?php
                 for ($f_num = 1; $f_num <= 31; $f_num++) {
+                  $fetch_date_array[2] = isset($_SESSION['orders_update_products']['fetch_day']) ? $_SESSION['orders_update_products']['fetch_day'] : $fetch_date_array[2];
                   $default_fetch_day = (isset($_POST['fetch_day']))?$_POST['fetch_day']:$fetch_date_array[2]; 
                   $tmp_fetch_day = sprintf('%02d', $f_num); 
                   echo '<option value="'.$tmp_fetch_day.'"'.(($default_fetch_day == $tmp_fetch_day)?' selected':'').'>'.$tmp_fetch_day.'</option>'; 
@@ -4393,10 +4524,12 @@ if($orders_exit_flag == true){
           $customer_notified = $order_status_array['customer_notified'];           
           $customer_notified = isset($customer_notified) ? $customer_notified : true;
           $customer_notified = $select_status == 31 ? 0 : $customer_notified;
+          $customer_notified = isset($_SESSION['orders_update_products']['notify']) ? $_SESSION['orders_update_products']['notify'] : $customer_notified;
+          $select_status = isset($_SESSION['orders_update_products']['s_status']) ? $_SESSION['orders_update_products']['s_status'] : $select_status;
           
 ?>
             <td class="main" width="80"><b><?php echo ENTRY_STATUS; ?></b></td>
-            <td class="main"><?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_status, 'onChange="new_mail_text_orders(this, \'s_status\',\'comments\',\'title\')"');?>&nbsp;&nbsp;<?php echo EDIT_ORDERS_ORIGIN_VALUE_TEXT;?></td>
+            <td class="main"><?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_status, 'onChange="new_mail_text_orders(this, \'s_status\',\'comments\',\'title\');"');?>&nbsp;&nbsp;<?php echo EDIT_ORDERS_ORIGIN_VALUE_TEXT;?></td>
             </tr>
             <?php
 
@@ -4422,6 +4555,8 @@ if($orders_exit_flag == true){
           $mail_sele = tep_db_query($ma_se);
           $mail_sql  = tep_db_fetch_array($mail_sele);
           $sta       = isset($_GET['status'])?$_GET['status']:'';
+          $mail_sql['orders_status_title'] = isset($_SESSION['orders_update_products']['title']) ? $_SESSION['orders_update_products']['title'] : $mail_sql['orders_status_title'];
+          $notify_comments_checked = isset($_SESSION['orders_update_products']['notify_comments']) ? $_SESSION['orders_update_products']['notify_comments'] == 1 ? true : false : false;
           ?>
 
             <tr>
@@ -4435,11 +4570,11 @@ if($orders_exit_flag == true){
             <?php if($CommentsWithStatus) { ?>
               <tr>
                 <td class="main"><b><?php echo EDIT_ORDERS_RECORD_TEXT;?></b></td>
-                <td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', false); ?>&nbsp;&nbsp;<b style="color:#FF0000;"><?php echo EDIT_ORDERS_RECORD_READ;?></b></td>
+                <td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', $notify_comments_checked); ?>&nbsp;&nbsp;<b style="color:#FF0000;"><?php echo EDIT_ORDERS_RECORD_READ;?></b></td>
                 </tr>
               <tr>
                 <td class="main" valign="top"><b><?php echo TABLE_HEADING_COMMENTS;?>:</b></td>
-                <td class="main"><?php echo tep_draw_textarea_field('comments_text', 'hard', '74', '5', '','style=" font-family:monospace; font-size:12px; width:100%;"'); ?></td>
+                <td class="main"><?php echo tep_draw_textarea_field('comments_text', 'hard', '74', '5', $_SESSION['orders_update_products']['comments_text'],'style=" font-family:monospace; font-size:12px; width:100%;"'); ?></td>
                 </tr>
                 <?php } ?>
                 </table>
@@ -4447,7 +4582,8 @@ if($orders_exit_flag == true){
                 <td class="main" width="10">&nbsp;</td>
                 <td class="main">
                 <?php echo EDIT_ORDERS_RECORD_ARTICLE;?><br>
-                <?
+                <?php
+                $mail_sql['orders_status_mail'] = isset($_SESSION['orders_update_products']['comments']) ? $_SESSION['orders_update_products']['comments'] : $mail_sql['orders_status_mail'];
                 if($CommentsWithStatus) {
 
                   //<textarea style="font-family:monospace;font-size:x-small" name="comments" wrap="hard" rows="30" cols="74"></textarea>

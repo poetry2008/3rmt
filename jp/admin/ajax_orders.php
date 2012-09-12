@@ -2088,4 +2088,10 @@ echo json_encode($json_array);
   }
   $_SESSION['orders_update_products']['ot_subtotal'] = $_POST['ot_subtotal'];
   $_SESSION['orders_update_products']['ot_total'] = $_POST['ot_total'];
+  $_SESSION['orders_update_products']['payment_method'] = $_POST['payment_value'];
+}else if($_GET['action'] == 'orders_session'){
+
+  $session_type = $_POST['orders_session_type'];
+  $session_value = $_POST['orders_session_value'];
+  $_SESSION['orders_update_products'][$session_type] = $session_value;
 }
