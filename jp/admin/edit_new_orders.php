@@ -2656,7 +2656,7 @@ $(function() {
       $cpayment = payment::getInstance();
       $payment_array = payment::getPaymentList();
       foreach($payment_array[0] as $pay_key=>$pay_value){ 
-        $payment_info = $cpayment->admin_get_payment_info_comment($pay_value,'',$site_id_flag);
+        $payment_info = $cpayment->admin_get_payment_info_comment($pay_value,$_SESSION['email_address'],$site_id_flag);
         if(is_array($payment_info)){
 
           switch($payment_info[0]){
