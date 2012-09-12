@@ -1796,6 +1796,23 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
     <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
     <script language="javascript" src="includes/jquery.form.js"></script>
     <script type="text/javascript"> 
+  function date_time(){
+    var fetch_year = document.getElementById('fetch_year').value; 
+    var fetch_month = document.getElementById('fetch_month').value;
+    var fetch_day = document.getElementById('fetch_day').value;
+    var date_time = parseInt('<?php echo date('Ymd');?>');
+    var date_hour = parseInt('<?php echo date('Hi');?>');
+    var date_time_value = parseInt(fetch_year+fetch_month+fetch_day);
+    var start_hour = document.getElementById('hour').value;
+    var start_min = document.getElementById('min').value;
+    var end_min = document.getElementById('min_1').value;
+    var start_hour_str = parseInt(start_hour+start_min+end_min); 
+    if(date_time_value < date_time || (date_time_value == date_time && start_hour_str < date_hour)){
+      alert('<?php echo TEXT_DATE_NUM_ERROR;?>');
+      return false;
+    }
+    return true;
+  }
   function submit_check_con(){
 
     var options = {
@@ -4465,7 +4482,7 @@ if($orders_exit_flag == true){
             <td class="main" bgcolor="#FFBBFF" width="10">&nbsp;</td>
             <td class="main" bgcolor="#FF99FF" width="10">&nbsp;</td>
             <td class="main" bgcolor="#FF77FF" width="10">&nbsp;</td>
-            <td class="main" bgcolor="#FF55FF" width="120" align="center"><INPUT type="button" value="<?php echo TEXT_FOOTER_CHECK_SAVE;?>" onClick="submit_check_con();"></td>
+            <td class="main" bgcolor="#FF55FF" width="120" align="center"><INPUT type="button" value="<?php echo TEXT_FOOTER_CHECK_SAVE;?>" onClick="if(date_time()){submit_check_con();}"></td>
             </tr>
             </table>
             </td>
