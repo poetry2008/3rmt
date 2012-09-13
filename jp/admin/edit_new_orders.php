@@ -903,7 +903,7 @@ if($address_error == false){
             //change text to "" 
             $Query = 'INSERT INTO ' . TABLE_ORDERS_TOTAL . ' SET
               orders_id = "' . $oID . '",
-                        title = "' . $ot_title . '",
+                        title = "' . $ot_title . ':",
                         text = "",
                         value = "' . tep_insert_currency_value($ot_value) . '",
                         class = "' . $ot_class . '",
@@ -1882,6 +1882,39 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
     }
     return true;
   }
+
+  function products_num_check(orders_products_list_id,products_name,products_list_id){
+
+    var products_error = true;
+    var products_array = new Array();
+    products_array = orders_products_list_id.split('|||');
+    var products_list_str = '';
+    var products_temp;
+    for(var x in products_array){
+      products_temp = $("#update_products_new_qty_"+products_array[x]).val(); 
+      products_list_str += products_temp+'|||';
+    }
+    $.ajax({
+    type: "POST",
+    data: 'products_list_id='+products_list_id+'&products_list_str='+products_list_str+'&products_name='+products_name,
+    async:false,
+    url: 'ajax_orders.php?action=products_num',
+    success: function(msg) {
+      if(msg != ''){
+
+        if(confirm(msg+"\n\n<?php echo TEXT_PRODUCTS_NUM;?>")){
+
+          products_error = true;
+        }else{
+          products_error = false;
+        }
+      }else{  
+        products_error = true;
+      }         
+    }
+    }); 
+    return products_error;
+  }
  
   function submit_check_con(){
 
@@ -1914,7 +1947,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
     var add_str = '';
 
     add_str += '<tr><td class="smallText" align="left"><?php echo EDIT_ORDERS_TOTALDETAIL_READ_ONE;?></td>'
-            +'<td class="smallText" align="right"><INPUT type="button" id="button_add" value="<?php echo TEXT_BUTTON_ADD;?>" onClick="add_option();">&nbsp;<input value="" size="7" name="update_totals['+add_num+'][title]">'
+            +'<td class="smallText" align="right"><INPUT type="button" id="button_add" value="<?php echo TEXT_BUTTON_ADD;?>" onClick="add_option();">&nbsp;<input value="" onkeyup="price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');" size="7" name="update_totals['+add_num+'][title]">'
             +'</td><td class="smallText" align="right"><input id="update_total_'+add_num+'" value="" size="6" onkeyup="clearNoNum(this);price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');" name="update_totals['+add_num+'][value]"><input type="hidden" name="update_totals['+add_num+'][class]" value="ot_custom"><input type="hidden" name="update_totals['+add_num+'][total_id]" value="0"></td>'
             +'<td><b><img height="17" width="1" border="0" alt="" src="images/pixel_trans.gif"></b></td></tr>'
             +'<tr id="add_option_total">'+add_option_total_str+'</tr>';
@@ -4219,6 +4252,8 @@ if($orders_exit_flag == true){
 
 <?php
           $only_buy= true;
+          $products_name_array = array();
+          $products_id_array = array();
           $orders_products_array = array();
           $orders_products_list = '';
           for ($k=0; $k<sizeof($order->products); $k++) {
@@ -4254,6 +4289,8 @@ if($orders_exit_flag == true){
               $op_info_str = implode('|||', $op_info_array);
             }
             $RowStyle = "dataTableContent";
+            $products_name_array[] = $order->products[$i]['name'];
+            $products_id_array[] = $orders_weight_array['products_id'];
             echo '    <tr class="dataTableRow" id="products_list_'.$orders_products_id.'">' . "\n" .
               '      <td class="' . $RowStyle . '" align="left" valign="top" width="8%" style="min-width:100px;">'
               . "<input type='hidden' id='update_products_qty_$orders_products_id' value='" . $products_qty_num . "'><input class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" . $products_qty_num . "' onkeyup=\"clearLibNum(this);recalc_order_price('".$oID."', '".$orders_products_id."', '2', '".$op_info_str."','".$orders_products_list."');price_total('".TEXT_MONEY_SYMBOL."');\">&nbsp;<input type='button' value='".IMAGE_DELETE."' onclick=\"delete_products( '".$orders_products_id."', '".TEXT_MONEY_SYMBOL."');\">&nbsp;x</td>\n" . 
@@ -4329,6 +4366,8 @@ if($orders_exit_flag == true){
             echo '</b></div></td>' . "\n" . 
               '    </tr>' . "\n";
           }
+          $products_name_str = implode('|||',$products_name_array);
+          $products_id_str = implode('|||',$products_id_array);
           ?>
             </table>
 
@@ -4688,7 +4727,7 @@ if($orders_exit_flag == true){
             <td class="main" bgcolor="#FFBBFF" width="10">&nbsp;</td>
             <td class="main" bgcolor="#FF99FF" width="10">&nbsp;</td>
             <td class="main" bgcolor="#FF77FF" width="10">&nbsp;</td>
-            <td class="main" bgcolor="#FF55FF" width="120" align="center"><INPUT type="button" value="<?php echo TEXT_FOOTER_CHECK_SAVE;?>" onClick="if(date_time()){submit_check_con();}"></td>
+            <td class="main" bgcolor="#FF55FF" width="120" align="center"><INPUT type="button" value="<?php echo TEXT_FOOTER_CHECK_SAVE;?>" onClick="if(date_time()){if(products_num_check('<?php echo $orders_products_list;?>','<?php echo $products_name_str;?>','<?php echo $products_id_str;?>')){submit_check_con();}}"></td>
             </tr>
             </table>
             </td>
