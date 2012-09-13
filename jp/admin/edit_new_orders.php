@@ -1807,12 +1807,82 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
     var start_min = document.getElementById('min').value;
     var end_min = document.getElementById('min_1').value;
     var start_hour_str = parseInt(start_hour+start_min+end_min); 
-    if(date_time_value < date_time || (date_time_value == date_time && start_hour_str < date_hour)){
-      alert('<?php echo TEXT_DATE_NUM_ERROR;?>');
+
+    var payment_error = false;
+    var error_str = '';
+    var payment_method = document.getElementsByName("payment_method")[0].value;
+    var con_email = document.getElementsByName("con_email")[0];
+    if(!con_email.disabled){
+      var reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/; 
+      if(!reg.test(con_email.value)){
+        payment_error = true;
+        error_str += '<?php echo TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE;?>'+"\n\n";
+      }
+    }
+    var b_name = document.getElementsByName("bank_name")[0];
+    if(!b_name.disabled){
+      var b_name_value = b_name.value;
+      if(b_name_value.replace(/[ ]/g,"") == ''){
+        payment_error = true;
+        error_str += '<?php echo TS_TEXT_BANK_ERROR_NAME;?>'+"\n\n";
+      }
+    }
+    var b_pay_name = document.getElementsByName("bank_shiten")[0]; 
+    if(!b_pay_name.disabled){
+      var b_pay_name_value = b_pay_name.value;
+      if(b_pay_name_value.replace(/[ ]/g,"") == ''){
+        payment_error = true;
+        error_str += '<?php echo TS_TEXT_BANK_ERROR_SHITEN;?>'+"\n\n";
+      }
+    }
+    var b_num = document.getElementsByName("bank_kouza_num")[0];
+    if(!b_num.disabled){
+      var b_num_value = b_num.value;
+      if(b_num_value.replace(/[ ]/g,"") == ''){
+        payment_error = true;
+        error_str += '<?php echo TS_TEXT_BANK_ERROR_KOUZA_NUM;?>'+"\n\n";
+      }else{
+        var reg = /^[\x00-\xff]+$/; 
+        var reg_num = /^[0-9]+$/;
+        if(!reg.test(b_num_value) || !reg_num.test(b_num_value)){
+          payment_error = true;
+          error_str += '<?php echo TS_TEXT_BANK_ERROR_KOUZA_NUM2;?>'+"\n\n";
+        }
+      }
+    }
+    var b_account = document.getElementsByName("bank_kouza_name")[0];
+    if(!b_account.disabled){
+      var b_account_value = b_account.value;
+      if(b_account_value.replace(/[ ]/g,"") == ''){
+        payment_error = true;
+        error_str += '<?php echo TS_TEXT_BANK_ERROR_KOUZA_NAME;?>'+"\n\n";
+      }
+    } 
+    var rak_tel = document.getElementsByName("rak_tel")[0];
+    if(!rak_tel.disabled){
+      var reg = /^[0-9]+$/;
+      var strlen;
+      strlen = rak_tel.value;
+      strlen = strlen.length;
+      if(!reg.test(rak_tel.value) || strlen > 11 || strlen < 10){
+        payment_error = true;
+        error_str += '<?php echo TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE;?>'+"\n\n";
+      }
+    }
+
+    var date_time_error = false;
+    date_time_error = date_time_value < date_time || (date_time_value == date_time && start_hour_str < date_hour);
+    if(date_time_error == true){
+
+        error_str += '<?php echo TEXT_DATE_NUM_ERROR;?>'+"\n\n";
+    }
+    if(date_time_error == true || payment_error == true){ 
+      alert(error_str);
       return false;
     }
     return true;
   }
+ 
   function submit_check_con(){
 
     var options = {
