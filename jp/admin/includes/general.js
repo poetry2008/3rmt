@@ -1101,7 +1101,6 @@ function clearLibNum(obj)
 }
 
 function createPreorderChk() { 
-  document.getElementById("h_predate").value = document.getElementById("predate").value; 
   var flag2 = true;
   $.ajax({
 url: 'edit_new_preorders.php?action=check_session',

@@ -130,23 +130,6 @@
     }
     */
     //valadate email 
-  if (isset($_POST['h_predate'])) { //日時が有効かチェック
-      if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d)$/', $_POST['h_predate'], $m)) { // check the date format
-        $messageStack->add(EDIT_ORDERS_NOTICE_DATE_WRONG_TEXT, 'error');
-        $action = 'edit';
-        break;
-      } elseif (!checkdate($m[2], $m[3], $m[1])) { // make sure the date provided is a validate date
-        if ($_POST['h_predate'] != '0000-00-00') {
-          $messageStack->add(EDIT_ORDERS_NOTICE_NOUSE_DATE_TEXT, 'error');
-          $action = 'edit';
-          break;
-        }
-      }
-    } else {
-      $messageStack->add(EDIT_ORDERS_NOTICE_MUST_INPUT_DATE_TEXT, 'error');
-      $action = 'edit';
-      break;
-    }
     if (isset($_POST['h_deadline'])) { //日時が有効かチェック
       if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d)$/', $_POST['h_deadline'], $m1)) { // check the date format
         $messageStack->add(EDIT_ORDERS_NOTICE_DATE_WRONG_TEXT, 'error');
@@ -218,7 +201,6 @@
       payment_method = '" . tep_db_input($payment_method_info) . "',
       torihiki_date = '" . tep_db_input($update_tori_torihiki_date) . "',
       torihiki_houhou = '" . tep_db_input($update_tori_torihiki_houhou) . "',
-      predate = '" . tep_db_input($_POST['h_predate']) . " 00:00:00',
       ensure_deadline = '" . tep_db_input($_POST['h_deadline']) . " 00:00:00',
       cc_type = '" . tep_db_input($update_info_cc_type) . "',
       cc_owner = '" . tep_db_input($update_info_cc_owner) . "',";
@@ -707,7 +689,6 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         '${PAY_DATE}',
         '${ENSURE_TIME}',
         '${PRODUCTS_QUANTITY}',
-        '${EFFECTIVE_TIME}',
         '${PRODUCTS_NAME}',
         '${PRODUCTS_PRICE}',
         '${SUB_TOTAL}'
@@ -725,7 +706,6 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
         $ensure_date_arr[0],
         $num_product.PREORDER_PRODUCT_UNIT_TEXT,
-        date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT,strtotime($select_products_res['predate'])),
         $num_product_res['products_name'],
         $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']),
         $ot_sub_total
@@ -767,7 +747,6 @@ while ($totals = tep_db_fetch_array($totals_query)) {
             '${PAY_DATE}',
             '${ENSURE_TIME}',
             '${PRODUCTS_QUANTITY}',
-            '${EFFECTIVE_TIME}',
             '${PRODUCTS_NAME}', 
             '${PRODUCTS_PRICE}',
             '${SUB_TOTAL}'
@@ -785,7 +764,6 @@ while ($totals = tep_db_fetch_array($totals_query)) {
             date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
             $ensure_date_arr[0],
             $num_product.PREORDER_PRODUCT_UNIT_TEXT,
-            date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT,strtotime($select_products_res['predate'])),
             $num_product_res['products_name'],
             $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']),
             $ot_sub_total
@@ -1082,7 +1060,7 @@ function add_option(){
       $cpayment = payment::getInstance();
       $payment_array = payment::getPaymentList();
       foreach($payment_array[0] as $pay_key=>$pay_value){ 
-        $payment_info = $cpayment->admin_get_payment_info_comment($pay_value,'',$site_id_flag);
+        $payment_info = $cpayment->admin_get_payment_info_comment($pay_value,$order->customer['email_address'],$order->info['site_id']);
         if(is_array($payment_info)){
 
           switch($payment_info[0]){
@@ -1134,7 +1112,6 @@ function check_mail_product_status(pid)
    var isruhe_value = document.getElementById('isruhe').value;  
    var ensure_date = document.getElementById('date_ensure_deadline').value; 
    ensure_date = ensure_date.replace(/(^\s*)|(\s*$)/g, ""); 
-   document.getElementById("h_predate").value = document.getElementById("date_predate").value; 
    document.getElementById("h_deadline").value = document.getElementById("date_ensure_deadline").value; 
    if (select_status == 32) {
      if (ensure_date == '' || ensure_date == '0000-00-00') {
@@ -1938,75 +1915,6 @@ float:left;
               </tr>
               <?php }?> 
               <tr>
-                <td class="main" valign="top"><b><?php echo EDIT_ORDERS_FETCHTIME;?></b></td>
-                <td class="main">
-                  <?php
-                    $predate_arr = explode(' ', $order->info['predate']); 
-                    $update_predate_array = explode('-', $predate_arr[0]); 
-                  ?>
-                  <div style="float:left;"> 
-                    <select name="update_predate_year" id="update_predate_year" onchange="change_predate_date();">
-                    <?php
-                      $default_update_predate_year = (isset($_POST['update_predate_year']))?$_POST['update_predate_year']:$update_predate_array[0]; 
-                      for ($f_num = 2006; $f_num <= 2050; $f_num++) {
-                        echo '<option value="'.$f_num.'"'.(($default_update_predate_year == $f_num)?' selected':'').'>'.$f_num.'</option>'; 
-                      }
-                    ?>
-                    </select>
-                    <select name="update_predate_month" id="update_predate_month" onchange="change_predate_date();">
-                    <?php
-                      for ($f_num = 1; $f_num <= 12; $f_num++) {
-                        $default_update_predate_month = (isset($_POST['update_predate_month']))?$_POST['update_predate_month']:$update_predate_array[1]; 
-                        $tmp_update_predate_month = sprintf('%02d', $f_num); 
-                        echo '<option value="'.$tmp_update_predate_month.'"'.(($default_update_predate_month == $tmp_update_predate_month)?' selected':'').'>'.$tmp_update_predate_month.'</option>'; 
-                      }
-                    ?>
-                    </select>
-                    <select name="update_predate_day" id="update_predate_day" onchange="change_predate_date();">
-                    <?php
-                      for ($f_num = 1; $f_num <= 31; $f_num++) {
-                        $default_update_predate_day = (isset($_POST['update_predate_day']))?$_POST['update_predate_day']:$update_predate_array[2]; 
-                        $tmp_update_predate_day = sprintf('%02d', $f_num); 
-                        echo '<option value="'.$tmp_update_predate_day.'"'.(($default_update_predate_day == $tmp_update_predate_day)?' selected':'').'>'.$tmp_update_predate_day.'</option>'; 
-                      }
-                    ?>
-                    </select>
-                  </div>
-                  <div class="yui3-skin-sam yui3-g" style="overflow:hidden">
-                    <input id="date_predate" type="hidden" name='update_predate' value='<?php echo $predate_arr[0]; ?>'>
-                    <a href="javascript:void(0);" onclick="open_calendar();" class="dpicker"></a> 
-                    <input type="hidden" name="toggle_open" value="0" id="toggle_open"> 
-                    <div class="yui3-u" id="new_yui3">
-                    <div id="mycalendar"></div> 
-                    </div>
-                  </div>
-                  <span class="smalltext"><?php echo EDIT_ORDERS_FETCHTIME_READ;?></span>
-                  <input type="hidden" name='update_tori_torihiki_date' size='25' value='<?php echo $order->tori['date']; ?>'>
-                  <input type="hidden" name='update_tori_torihiki_houhou' size='45' value='<?php echo $order->tori['houhou']; ?>'>
-<input type="hidden" name="update_viladate" value="true">
-<input name="update_customer_company" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['company']); ?>">
-<input name="update_delivery_company" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['company']); ?>">
-<input name="update_delivery_name" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['name']); ?>">
-<input name="update_customer_name_f" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['name_f']); ?>">
-<input name="update_delivery_name_f" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['name_f']); ?>">
-<input name="update_customer_street_address" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['street_address']); ?>">
-<input name="update_delivery_street_address" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['street_address']); ?>">
-<input name="update_customer_suburb" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['suburb']); ?>">
-<input name="update_delivery_suburb" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['suburb']); ?>">
-<input name="update_customer_city" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['city']); ?>">
-<input name="update_delivery_city" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['city']); ?>">
-<input name="update_customer_state" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['state']); ?>">
-<input name="update_delivery_state" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['state']); ?>">
-<input name="update_customer_postcode" size="25" type='hidden' value="<?php echo $order->customer['postcode']; ?>">
-<input name="update_delivery_postcode" size="25" type='hidden' value="<?php echo $order->delivery['postcode']; ?>">
-<input name="update_customer_country" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['country']); ?>">
-<input name="update_delivery_country" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['country']); ?>">
-<input name="update_customer_telephone" size="25" type='hidden' value="<?php echo $order->customer['telephone']; ?>">
-<input type='hidden' id="h_predate" name="h_predate"> 
-<input type='hidden' id="h_deadline" name="h_deadline"> 
-                </td>
-              </tr>
-              <tr>
                 <td class="main" valign="top"><b><?php echo EDIT_ORDERS_ENSUREDATE;?></b></td>
                 <td class="main">
                   <?php
@@ -2055,6 +1963,28 @@ float:left;
                     </div>
                   </div>
                   <span class="smalltext"><?php echo EDIT_ORDERS_FETCHTIME_READ;?></span>
+                  <input type="hidden" name='update_tori_torihiki_date' size='25' value='<?php echo $order->tori['date']; ?>'>
+                  <input type="hidden" name='update_tori_torihiki_houhou' size='45' value='<?php echo $order->tori['houhou']; ?>'>
+                  <input type="hidden" name="update_viladate" value="true">
+                  <input name="update_customer_company" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['company']); ?>">
+                  <input name="update_delivery_company" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['company']); ?>">
+                  <input name="update_delivery_name" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['name']); ?>">
+                  <input name="update_customer_name_f" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['name_f']); ?>">
+                  <input name="update_delivery_name_f" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['name_f']); ?>">
+                  <input name="update_customer_street_address" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['street_address']); ?>">
+                  <input name="update_delivery_street_address" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['street_address']); ?>">
+                  <input name="update_customer_suburb" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['suburb']); ?>">
+                  <input name="update_delivery_suburb" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['suburb']); ?>">
+                  <input name="update_customer_city" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['city']); ?>">
+                  <input name="update_delivery_city" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['city']); ?>">
+                  <input name="update_customer_state" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['state']); ?>">
+                  <input name="update_delivery_state" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['state']); ?>">
+                  <input name="update_customer_postcode" size="25" type='hidden' value="<?php echo $order->customer['postcode']; ?>">
+                  <input name="update_delivery_postcode" size="25" type='hidden' value="<?php echo $order->delivery['postcode']; ?>">
+                  <input name="update_customer_country" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['country']); ?>">
+                  <input name="update_delivery_country" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['country']); ?>">
+                  <input name="update_customer_telephone" size="25" type='hidden' value="<?php echo $order->customer['telephone']; ?>">
+                  <input type='hidden' id="h_deadline" name="h_deadline">
               </tr>
             </table>
             <!-- End Trade Date Block -->

@@ -27,7 +27,6 @@
 
   
   $customer_id    = tep_db_prepare_input($_POST['customers_id']);
-  $predate        = tep_db_prepare_input($_POST['predate']);
   $payment_method = tep_db_prepare_input($_POST['payment_method']);
   $firstname      = tep_db_prepare_input($_POST['firstname']);
   $lastname       = tep_db_prepare_input($_POST['lastname']);
@@ -102,14 +101,6 @@
   } else {
     $entry_payment_method_error = false;
   }
-  
-  if ($predate == '') {
-    $error = true;
-    $entry_predate_error = true;
-  } else {
-    $entry_predate_error = false;
-  }
-  
   
   $selection = $cpayment->admin_selection();
   if (!empty($_POST['payment_method'])) {
@@ -571,7 +562,6 @@ float:left;
             'currency_value'              => $currency_value,
             'payment_method'              => $payment_method_info,
             'site_id'                     => $site_id,
-            'predate'                     => $predate,
             'is_active'                     => '1',
             'orders_wait_flag'            => '1'
             ); 

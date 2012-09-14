@@ -166,7 +166,6 @@
           '${PAY_DATE}',
           '${ENSURE_TIME}',
           '${PRODUCTS_QUANTITY}',
-          '${EFFECTIVE_TIME}',
           '${PRODUCTS_NAME}',
           '${PRODUCTS_PRICE}',
           '${SUB_TOTAL}'
@@ -183,7 +182,6 @@
           date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
           $ensure_date_arr[0],
           $num_product.PREORDER_PRODUCT_UNIT_TEXT,
-          date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['predate'])),
           $num_product_res['products_name'],
           $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']),
           $ot_sub_total
@@ -203,7 +201,6 @@
           '${PAY_DATE}',
           '${ENSURE_TIME}', 
           '${PRODUCTS_QUANTITY}',
-          '${EFFECTIVE_TIME}',
           '${PRODUCTS_NAME}',
           '${PRODUCTS_PRICE}',
           '${SUB_TOTAL}'
@@ -221,7 +218,6 @@
           date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
           $ensure_date_arr[0],
           $num_product.PREORDER_PRODUCT_UNIT_TEXT,
-          date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['predate'])),
           $num_product_res['products_name'],
           $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']),
           $ot_sub_total
@@ -459,7 +455,6 @@
         '${PAY_DATE}',
         '${ENSURE_TIME}', 
         '${PRODUCTS_QUANTITY}',
-        '${EFFECTIVE_TIME}',
         '${PRODUCTS_NAME}',
         '${PRODUCTS_PRICE}',
         '${SUB_TOTAL}'
@@ -477,7 +472,6 @@
         date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
         $ensure_date_arr[0], 
         $num_product.PREORDER_PRODUCT_UNIT_TEXT,
-        date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['predate'])),
         $num_product_res['products_name'], 
         $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']),
         $ot_sub_total
@@ -497,7 +491,6 @@
         '${PAY_DATE}',
         '${ENSURE_TIME}', 
         '${PRODUCTS_QUANTITY}',
-        '${EFFECTIVE_TIME}',
         '${PRODUCTS_NAME}',
         '${PRODUCTS_PRICE}',
         '${SUB_TOTAL}'
@@ -515,7 +508,6 @@
         date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
         $ensure_date_arr[0], 
         $num_product.PREORDER_PRODUCT_UNIT_TEXT,
-        date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['predate'])),
         $num_product_res['products_name'], 
         $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']),
         $ot_sub_total
@@ -939,10 +931,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                 <tr>
                   <td class="main" valign="top" width="30%"><b><?php echo TEXT_ORDER_SITE_TEXT;?>:</b></td>
                   <td class="main"><b style=" color:#FF0000"><?php echo tep_get_pre_site_name_by_order_id($oID);?></b></td>
-                </tr>
-                <tr>
-                  <td class="main" valign="top" width="30%"><b><?php echo TEXT_ORDER_DATE_LONG;?></b></td>
-                  <td class="main"><b style=" color:#0000FF"><?php echo $order->info['predate'];?></b></td>
                 </tr>
                 <tr>
                   <td class="main"><b><?php echo ENTRY_ENSURE_DATE;?></b></td> 
@@ -1915,37 +1903,6 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
       echo "</a>";
       ?>
       </td>
-      <td class="dataTableHeadingContent_order" align="center">
-      <?php 
-      if ($HTTP_GET_VARS['order_sort'] == 'predate'){
-        echo "<a class='head_sort_order_select' href='".tep_href_link(FILENAME_PREORDERS,
-            tep_get_all_get_params(array('x', 'y', 'order_type',
-                'order_sort')).'order_sort=predate&order_type='.$type_str)."'>";
-        echo TEXT_ORDER_ORDER_DATE;
-        if($type_str == 'asc'){
-          echo "<font color='#c0c0c0'>";
-          echo TEXT_SORT_ASC;
-          echo "</font>";
-          echo "<font color='#facb9c'>";
-          echo TEXT_SORT_DESC;
-          echo "</font>";
-        }else{
-          echo "<font color='#facb9c'>";
-          echo TEXT_SORT_ASC;
-          echo "</font>";
-          echo "<font color='#c0c0c0'>";
-          echo TEXT_SORT_DESC;
-          echo "</font>";
-        }
-      }else{
-        echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_PREORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
-                'order_sort')).
-                'order_sort=predate&order_type=asc')."'>";
-        echo TEXT_ORDER_ORDER_DATE;
-      }
-      echo "</a>";
-      ?>
-      </td>
       <td class="dataTableHeadingContent">&nbsp;</td>
       <td class="dataTableHeadingContent">&nbsp;</td>
       <td class="dataTableHeadingContent_order" align="center">
@@ -2697,19 +2654,6 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
       </span> 
       <?php }?> 
       <?php }?>
-    </td>
-    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) .  'oID='.$orders['orders_id']);?>';"><?php echo $next_mark; ?>
-    <?php
-    if ($orders['is_active'] == '0') {
-    ?>
-    <span style="color:#999999;"><?php echo str_replace('-', '/', substr($orders['predate'], 0, 10)); ?></span>
-    <?php
-    } else {
-    ?>
-    <font color="<?php echo !$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)?'#999':$today_color; ?>" id="tori_<?php echo $orders['orders_id']; ?>"><?php echo str_replace('-', '/', substr($orders['predate'], 0, 10)); ?></font>
-    <?php
-    }
-    ?>
     </td>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="left" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><?php
     if ($orders['orders_wait_flag']) { echo tep_image(DIR_WS_IMAGES .

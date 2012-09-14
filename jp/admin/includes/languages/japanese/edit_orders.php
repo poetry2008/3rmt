@@ -230,4 +230,5 @@ define('TEXT_ADDRESS_INFO_LEFT','▼住所情報');
 define('TEXT_ORDERS_SEND_MAIL','ご注文ありがとうございます【');
 define('TEXT_CARD_PAYMENT','クレジットカード決済について【');
 define('TEXT_SEND_MAIL_CARD_PAYMENT','送信済：クレジットカード決済について【');
+define('TEXT_PRODUCTS_NUM','商品の数量が足りません。注文を作成しますか？');
 ?>
