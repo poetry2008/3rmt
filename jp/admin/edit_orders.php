@@ -707,7 +707,7 @@ if($address_error == false){
              */
             $Query = 'INSERT INTO ' . TABLE_ORDERS_TOTAL . ' SET
               orders_id = "' . $oID . '",
-                        title = "' . $ot_title . ':",
+                        title = "' . $ot_title . '",
                         text = "",
                         value = "' . tep_insert_currency_value($ot_value) . '",
                         class = "' . $ot_class . '",
@@ -1608,7 +1608,7 @@ function add_option(){
     var add_str = '';
 
     add_str += '<tr><td class="smallText" align="left"><?php echo EDIT_ORDERS_TOTALDETAIL_READ_ONE;?></td>'
-            +'<td class="smallText" align="right"><INPUT type="button" id="button_add" value="<?php echo TEXT_BUTTON_ADD;?>" onClick="add_option();">&nbsp;<input value="" size="7" name="update_totals['+add_num+'][title]">'
+      +'<td class="smallText" align="right"><INPUT type="button" id="button_add" value="<?php echo TEXT_BUTTON_ADD;?>" onclick="add_option();orders_session(\'orders_totals\','+(add_num+1)+');">&nbsp;<input value="" size="7" name="update_totals['+add_num+'][title]" onkeyup="price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');">'
             +'</td><td class="smallText" align="right"><input id="update_total_'+add_num+'" value="" size="6" onkeyup="clearNoNum(this);price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');" name="update_totals['+add_num+'][value]"><input type="hidden" name="update_totals['+add_num+'][class]" value="ot_custom"><input type="hidden" name="update_totals['+add_num+'][total_id]" value="0"></td>'
             +'<td><b><img height="17" width="1" border="0" alt="" src="images/pixel_trans.gif"></b></td></tr>'
             +'<tr id="add_option_total">'+add_option_total_str+'</tr>';
@@ -2569,7 +2569,7 @@ $(document).ready(function(){
   $("input[name='update_customer_email_address']").blur(function(){
     var update_customer_email_address = document.getElementsByName("update_customer_email_address")[0].value;
     orders_session('update_customer_email_address',update_customer_email_address);
-  });
+  }); 
 });
 $(document).ready(function(){
   //$.datePicker.setDateFormat('ymd', '-');
@@ -3510,7 +3510,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     $TotalsArray[] = array("Name" => "          ", "Price" => "", "Class" => "ot_custom", "TotalID" => "0");
   }
   
-  array_pop($TotalsArray);
+  array_pop($TotalsArray); 
   $shipping_fee_subtotal = 0; //小计
   $shipping_fee_tax = 0; //税
   $shipping_fee_point = 0; //折点
@@ -3530,6 +3530,16 @@ if (($action == 'edit') && ($order_exists == true)) {
   $sum_array = array_keys($TotalsArray);
   array_pop($sum_array);
   $show_num = end($sum_array);
+  $totals_end_value = end($TotalsArray);
+  array_pop($TotalsArray);
+  $total_num = $_SESSION['orders_update_products']['orders_totals'];
+  for($totals_i = $sum_num+1;$totals_i <= $total_num;$totals_i++){
+    $TotalsArray[$totals_i]['Name'] = '';
+    $TotalsArray[$totals_i]['Price'] = '';
+    $TotalsArray[$totals_i]['Class'] = 'ot_custom';
+    $TotalsArray[$totals_i]['TotalID'] = 0;
+  }
+  $TotalsArray[$show_num+1] = $totals_end_value;
   foreach ($TotalsArray as $TotalIndex => $TotalDetails) {
     $TotalStyle = "smallText";
     if ($TotalDetails["Class"] == "ot_total") {
@@ -3635,7 +3645,9 @@ if (($action == 'edit') && ($order_exists == true)) {
           '  </tr>' . "\n";
       }
     } else {
-      $button_add = $TotalIndex == $show_num ? '<INPUT type="button" id="button_add" value="'.TEXT_BUTTON_ADD.'" onClick="add_option();"><input type="hidden" id="button_add_id" value="'.$sum_num.'">&nbsp;' : '';
+      $sum_num = isset($_SESSION['orders_update_products']['orders_totals']) ? $_SESSION['orders_update_products']['orders_totals'] : $sum_num;
+      $show_num = isset($_SESSION['orders_update_products']['orders_totals']) ? $_SESSION['orders_update_products']['orders_totals'] : $show_num;
+      $button_add = $TotalIndex == $show_num ? '<INPUT type="button" id="button_add" value="'.TEXT_BUTTON_ADD.'" onclick="add_option();orders_session(\'orders_totals\','.($sum_num+1).');"><input type="hidden" id="button_add_id" value="'.$sum_num.'">&nbsp;' : '';
       $TotalDetails["Price"] = isset($_SESSION['orders_update_products'][$TotalIndex]['value']) ? $_SESSION['orders_update_products'][$TotalIndex]['value'] : $TotalDetails["Price"];
       $TotalDetails["Name"] = isset($_SESSION['orders_update_products'][$TotalIndex]['title']) ? $_SESSION['orders_update_products'][$TotalIndex]['title'] : $TotalDetails["Name"];
       echo '  <tr>' . "\n" .
