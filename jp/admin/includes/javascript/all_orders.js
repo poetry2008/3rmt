@@ -960,7 +960,11 @@ function recalc_order_price(oid, opd, o_str, op_str,opd_str)
       shipping_fee_id = shipping_fee_id.replace(/,/g,'');
       shipping_fee_id = shipping_fee_id.replace(msg_info[10],'');
       shipping_fee_id = parseInt(shipping_fee_id); 
-      var point_id = document.getElementById('point_id').value; 
+      if(document.getElementById('point_id')){
+        var point_id = document.getElementById('point_id').value; 
+      }else{
+        var point_id = 0; 
+      }
       var update_total_temp;
       var update_total_num = 0;
       var sum_num = document.getElementById('button_add_id').value;
@@ -1017,7 +1021,11 @@ function price_total(str)
       shipping_fee_id = shipping_fee_id.replace(/,/g,'');
       shipping_fee_id = shipping_fee_id.replace(str,'');
       shipping_fee_id = parseInt(shipping_fee_id); 
-      var point_id = document.getElementById('point_id').value; 
+      if(document.getElementById('point_id')){
+        var point_id = document.getElementById('point_id').value; 
+      }else{
+        var point_id = 0;
+      }
       var update_total_temp;
       var update_total_num = 0;
       var sum_num = document.getElementById('button_add_id').value;
