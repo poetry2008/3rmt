@@ -1242,3 +1242,4 @@ a img {
 	padding-left:185px;
 }
 .web-link{ float:left; width:95px;}
+.back_button a:hover{ text-decoration:none;}

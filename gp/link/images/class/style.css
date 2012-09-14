@@ -232,6 +232,8 @@ display:block;
 width:47px;
 height:17px;
 background:url(images/button02.gif) no-repeat;
+float:left;
+margin-right:15px;
 }
 #sites_add a { font-size:12px;}
 .web-ico {
@@ -249,3 +251,14 @@ background:url(images/button02.gif) no-repeat;
 	margin-top:5px;
 }
 .web-box a{ font-size:12px;}
+.back_button_input{ 
+	cursor:pointer;
+	text-indent:-2500px;
+	border:none;
+	display:block;
+	width:57px;
+	height:21px;
+	background:url(images/button_back.gif) no-repeat;
+}
+.back_button{ float:left;}
+.back_button a:hover{ text-decoration:none;}

@@ -234,6 +234,19 @@ display:block;
 width:57px;
 height:21px;
 background:url(images/button02.gif) no-repeat;
+float:left;
+margin-right:15px;
 }
 .sitemap{ margin:10px 0 0 10px;}
 .web-link{  padding-left:5px; float:left; width:95px;}
+.back_button_input{ 
+	cursor:pointer;
+	text-indent:-2500px;
+	border:none;
+	display:block;
+	width:57px;
+	height:21px;
+	background:url(images/button_back.gif) no-repeat;
+}
+.back_button{ float:left;}
+.back_button a:hover{ text-decoration:none;}
