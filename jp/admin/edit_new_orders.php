@@ -903,7 +903,7 @@ if($address_error == false){
             //change text to "" 
             $Query = 'INSERT INTO ' . TABLE_ORDERS_TOTAL . ' SET
               orders_id = "' . $oID . '",
-                        title = "' . $ot_title . ':",
+                        title = "' . $ot_title . '",
                         text = "",
                         value = "' . tep_insert_currency_value($ot_value) . '",
                         class = "' . $ot_class . '",
@@ -1947,7 +1947,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
     var add_str = '';
 
     add_str += '<tr><td class="smallText" align="left"><?php echo EDIT_ORDERS_TOTALDETAIL_READ_ONE;?></td>'
-            +'<td class="smallText" align="right"><INPUT type="button" id="button_add" value="<?php echo TEXT_BUTTON_ADD;?>" onClick="add_option();">&nbsp;<input value="" onkeyup="price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');" size="7" name="update_totals['+add_num+'][title]">'
+            +'<td class="smallText" align="right"><INPUT type="button" id="button_add" value="<?php echo TEXT_BUTTON_ADD;?>" onclick="add_option();orders_session(\'orders_totals\','+(add_num+1)+');">&nbsp;<input value="" onkeyup="price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');" size="7" name="update_totals['+add_num+'][title]">'
             +'</td><td class="smallText" align="right"><input id="update_total_'+add_num+'" value="" size="6" onkeyup="clearNoNum(this);price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');" name="update_totals['+add_num+'][value]"><input type="hidden" name="update_totals['+add_num+'][class]" value="ot_custom"><input type="hidden" name="update_totals['+add_num+'][total_id]" value="0"></td>'
             +'<td><b><img height="17" width="1" border="0" alt="" src="images/pixel_trans.gif"></b></td></tr>'
             +'<tr id="add_option_total">'+add_option_total_str+'</tr>';
@@ -2897,7 +2897,7 @@ $(document).ready(function(){
     var notify_comments = document.getElementsByName("notify_comments")[0].checked;
     notify_comments = notify_comments == true ? 1 : 0;
     orders_session('notify_comments',notify_comments);
-  });
+  }); 
 });
 <?php
 if($p_weight_total > 0){
@@ -4432,7 +4432,17 @@ if($orders_exit_flag == true){
           }
 
           array_pop($TotalsArray);
-          
+          $totals_end_value = end($TotalsArray);
+          array_pop($TotalsArray);
+          $total_num = $_SESSION['orders_update_products']['orders_totals'];
+          for($totals_i = 5;$totals_i <= $total_num;$totals_i++){
+
+            $TotalsArray[$totals_i]['Name'] = '';
+            $TotalsArray[$totals_i]['Price'] = '';
+            $TotalsArray[$totals_i]['Class'] = 'ot_custom';
+            $TotalsArray[$totals_i]['TotalID'] = 0;
+          }
+          $TotalsArray[4] = $totals_end_value;
           foreach ($TotalsArray as $TotalIndex => $TotalDetails) {
             $TotalStyle = "smallText";
             if ($TotalDetails["Class"] == "ot_total") {
@@ -4530,7 +4540,9 @@ if($orders_exit_flag == true){
                   '  </tr>' . "\n";
               }
             } else {
-              $button_add = $TotalIndex == 3 ? '<INPUT type="button" id="button_add" value="'.TEXT_BUTTON_ADD.'" onClick="add_option();"><input type="hidden" id="button_add_id" value="4">&nbsp;' : '';
+              $totals_sum = isset($_SESSION['orders_update_products']['orders_totals']) ? $_SESSION['orders_update_products']['orders_totals'] : 4;
+              $totals_num = isset($_SESSION['orders_update_products']['orders_totals']) ? $_SESSION['orders_update_products']['orders_totals'] : 3;
+              $button_add = $TotalIndex == $totals_num ? '<INPUT type="button" id="button_add" value="'.TEXT_BUTTON_ADD.'" onclick="add_option();orders_session(\'orders_totals\','.($totals_sum+1).');"><input type="hidden" id="button_add_id" value="'. $totals_sum.'">&nbsp;' : '';
               $TotalDetails["Price"] = isset($_SESSION['orders_update_products'][$TotalIndex]['value']) ? $_SESSION['orders_update_products'][$TotalIndex]['value'] : $TotalDetails["Price"];
               $TotalDetails["Name"] = isset($_SESSION['orders_update_products'][$TotalIndex]['title']) ? $_SESSION['orders_update_products'][$TotalIndex]['title'] : $TotalDetails["Name"];
               echo '  <tr>' . "\n" .

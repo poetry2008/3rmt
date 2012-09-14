@@ -2763,9 +2763,10 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
                   }
                 }
               }
+              $totals_str = $order->totals[$i]['class'] == 'ot_custom' ? ':' : '';
               echo 
                 '    <tr>' . "\n" .
-                '      <td align="right" class="smallText">' . $order->totals[$i]['title'] . '</td>' . "\n" .
+                '      <td align="right" class="smallText">' . $order->totals[$i]['title'] . $totals_str .'</td>' . "\n" .
                 '      <td align="right" class="smallText">';
               // add font color for '-' value
               /*

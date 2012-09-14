@@ -1168,7 +1168,7 @@ $(".once_pwd").each(function(index) {
   $("input[name=update_viladate]").val('_false');
   $("input[name=x]").val('43');
   $("input[name=y]").val('12');
-  document.edit_order.submit();
+  //document.edit_order.submit();
   return false;
   }
   }else{
