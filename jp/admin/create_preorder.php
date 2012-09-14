@@ -496,67 +496,6 @@ float:left;
   </td>
   </tr>
   <tr>
-    <td class="formAreaTitle"><br><?php echo CREATE_PREORDER_PREDATE;?></td>
-  </tr>
-  <tr>
-    <td class="main">
-    <table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
-      <tr>
-        <td class="main">
-        <table border="0" cellspacing="0" cellpadding="2">
-          <tr>
-            <td class="main">
-            &nbsp;<?php echo CREATE_PREORDER_PREDATE;?>: 
-            </td>
-            <td class="main">
-            <?php
-              $predate_array = explode('-', date('Y-m-d', time())); 
-            ?>
-            <div style="float:left;"> 
-              <select name="predate_year" id="predate_year" onchange="change_predate_date();">
-              <?php
-                $default_predate_year = (isset($_POST['predate_year']))?$_POST['predate_year']:$predate_array[0]; 
-                for ($f_num = 2006; $f_num <= 2050; $f_num++) {
-                  echo '<option value="'.$f_num.'"'.(($default_predate_year == $f_num)?' selected':'').'>'.$f_num.'</option>'; 
-                }
-              ?>
-              </select>
-              <select name="predate_month" id="predate_month" onchange="change_predate_date();">
-              <?php
-                for ($f_num = 1; $f_num <= 12; $f_num++) {
-                  $default_predate_month = (isset($_POST['predate_month']))?$_POST['predate_month']:$predate_array[1]; 
-                  $tmp_predate_month = sprintf('%02d', $f_num); 
-                  echo '<option value="'.$tmp_predate_month.'"'.(($default_predate_month == $tmp_predate_month)?' selected':'').'>'.$tmp_predate_month.'</option>'; 
-                }
-              ?>
-              </select>
-              <select name="predate_day" id="predate_day" onchange="change_predate_date();">
-              <?php
-                for ($f_num = 1; $f_num <= 31; $f_num++) {
-                  $default_predate_day = (isset($_POST['predate_day']))?$_POST['predate_day']:$predate_array[2]; 
-                  $tmp_predate_day = sprintf('%02d', $f_num); 
-                  echo '<option value="'.$tmp_predate_day.'"'.(($default_predate_day == $tmp_predate_day)?' selected':'').'>'.$tmp_predate_day.'</option>'; 
-                }
-              ?>
-              </select>
-            </div>
-            <div class="yui3-skin-sam yui3-g">
-            <input type="hidden" name="predate" id="predate" value="<?php echo date('Y-m-d', time());?>"> 
-            <a href="javascript:void(0);" onclick="open_calendar();" class="dpicker"></a>
-            <input type="hidden" name="toggle_open" value="0" id="toggle_open">
-            <div class="yui3-u" id="new_yui3">
-            <div id="mycalendar"></div> 
-            </div>
-            </div>
-            </td>
-          </tr>
-        </table>
-        </td>
-      </tr>
-    </table> 
-    </td>
-  </tr>
-  <tr>
     <td class="formAreaTitle"><br><?php echo CREATE_ORDER_COMMUNITY_TITLE_TEXT;?></td>
   </tr>
   <tr>

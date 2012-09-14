@@ -216,3 +216,4 @@ body .main {
 	position:absolute;
 	font-size:12px;
 }
+.back_button a, .back_button a:hover{ text-decoration:none;}

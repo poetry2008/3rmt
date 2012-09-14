@@ -212,12 +212,6 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
         $firstname_error = false;
       }
     } 
-    if (isset($_POST['action']) && ($_POST['action'] == 'process') && empty($_POST['predate'])) {
-      $predate_error = true;
-      $error = true;
-    } else {
-      $predate_error = false;
-    }
     
     if (isset($_POST['action']) && ($_POST['action'] == 'process')) {
       if ($hm_option->check()) {
@@ -427,38 +421,6 @@ if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
           </td>
         </tr>
         <?php }?> 
-        <tr>
-          <td class="main"><?php echo FORM_FIELD_PREORDER_FIXDAY; ?></td>
-          <td class="formArea_td_info">
-<?php
-    $today = getdate();
-      $m_num = $today['mon'];
-      $d_num = $today['mday'];
-      $year = $today['year'];
-    
-    $hours = date('H');
-    $mimutes = date('i');
-?>
-  <select name="predate">
-    <option value=""><?php echo PREORDER_SELECT_EMPTY_OPTION;?></option>
-    <?php
-          $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
-          $newarr = array(TEXT_DATE_MONDAY, TEXT_DATE_TUESDAY, TEXT_DATE_WEDNESDAY, TEXT_DATE_THURSDAY, TEXT_DATE_FRIDAY, TEXT_DATE_STATURDAY, TEXT_DATE_SUNDAY);
-    for($i=0; $i<7; $i++) {
-      if ($_POST['predate'] == date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$i,$year))) {
-        $check_str = 'selected'; 
-      } else {
-        $check_str = ''; 
-      }
-      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$i,$year)).'" '.$check_str.'>'.str_replace($oarr, $newarr,date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT."（l）", mktime(0,0,0,$m_num,$d_num+$i,$year))).'</option>' . "\n";
-    }
-    ?>
-  </select>
-          <?php
-          if ($predate_error == true) echo '&nbsp;<span class="errorText">' . PREORDER_TEXT_REQUIRED . '</span>';
-          ?>
-          </td>
-        </tr>
         <?php
         if($products_weight_error == true){
         ?>

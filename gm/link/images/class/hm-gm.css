@@ -330,3 +330,4 @@ td,th{ border:0; padding:3px; vertical-align:top;}
 .web-box-middle{ margin-top:10px;}
 .lc_attention{ line-height:22px;}
 .web a{ font-size:14px;}
+.back_button a:link, .back_button a:hover{ text-decoration:none;}

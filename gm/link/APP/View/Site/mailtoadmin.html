@@ -48,11 +48,16 @@ name="mailtoadmin" method="post"  onsubmit="return checkForm()">
 <input type="text" class="input_text" name="femail" id="to_admin_femail"/>
 </td></tr>
 <tr><td>&nbsp;
-<input class="button02" type="submit" value="<!--{_t key=send_email}-->" />
+<input class="button02" type="submit" value="<!--{_t key=send_email}-->" />&nbsp;&nbsp;<span class="back_button"><a href="javascript:void(0)" >
+<input type="button" value="<!--{_t key="table_return"}-->" onclick="go_page('<!--{url controller=site action=recommend}-->')"/>
+</a></span>
 </td></tr>
 </table>
 </form>
 <script type="text/javascript">
+function go_page(url){
+  window.location.href = url;
+}
 function checkForm()
 { 
   var error = false;
@@ -95,7 +100,7 @@ function checkForm()
 }
 </script>
 </div> <!-- end of .mail_form -->
-<a class="send_mail" href="<!--{url controller=site action=sitelist}-->" >
+<a class="send_mail" href="<!--{url controller=site action=recommend}-->" >
 </a>
 </div>
 </div>

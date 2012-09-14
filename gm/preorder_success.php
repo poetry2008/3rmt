@@ -128,14 +128,6 @@
             </td>
             </tr>
             <tr>
-            <td>
-            <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_DATE;?>
-            </td>
-            <td>
-            <?php echo date('Y'.PREORDER_SUCCESS_YEAR_TEXT.'m'.PREORDER_SUCCESS_MONTH_TEXT.'d'.PREORDER_SUCCESS_DAY_TEXT, strtotime($preorder['predate']));?>
-            </td>
-            </tr>
-            <tr>
               <td>
               <?php echo PREORDER_SUCCESS_APPOINT_PAYMENT_NAME;?>
               </td>

@@ -112,14 +112,7 @@
     tep_redirect(tep_href_link("edit_new_preorders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
     break;
   }
-  $date_time = $_POST['predate_year'].$_POST['predate_month'].$_POST['predate_day'];
-  $date_now = date('Ymd');
-  if((int)$date_time < (int)$date_now){
-
-        $messageStack->add(TEXT_DATE_NUM_ERROR, 'error');
-        $action = 'edit';
-        break; 
-  }
+  
     $oID = tep_db_prepare_input($_GET['oID']);
     
     $_SESSION['create_preorder']['orders']['payment_method'] = payment::changeRomaji($_POST['payment_method'], PAYMENT_RETURN_TYPE_TITLE); 
@@ -437,7 +430,6 @@
       $new_orders2_id = '';
       $_SESSION['create_preorder']['orders']['orders_id']= date("Ymd") . '-' .  date("His") . tep_get_preorder_end_num();
       $new_orders2_id = $_SESSION['create_preorder']['orders']['orders_id'];
-      $_SESSION['create_preorder']['orders']['predate'] = $_POST['h_predate'].' 00:00:00'; 
       tep_db_perform(TABLE_PREORDERS, $_SESSION['create_preorder']['orders']);
       preorder_last_customer_action();
       preorders_updated($_SESSION['create_preorder']['orders']['orders_id']);
@@ -537,7 +529,6 @@
               '${PAY_DATE}',
               '${ENSURE_TIME}',
               '${PRODUCTS_QUANTITY}',
-              '${EFFECTIVE_TIME}',
               '${PRODUCTS_NAME}' 
             ),array(
               $order->customer['name'],
@@ -553,7 +544,6 @@
               date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
               $_POST['update_ensure_deadline'],
               $num_product.EDIT_ORDERS_NUM_UNIT,
-              date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT,strtotime($order->info['predate'])),
               $num_product_res['products_name'] 
             ),$email);
 
@@ -585,7 +575,6 @@
               '${PAY_DATE}',
               '${ENSURE_TIME}',
               '${PRODUCTS_QUANTITY}',
-              '${EFFECTIVE_TIME}',
               '${PRODUCTS_NAME}' 
             ),array(
               $order->customer['name'],
@@ -601,7 +590,6 @@
               date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
               $_POST['update_ensure_deadline'],
               $num_product.EDIT_ORDERS_NUM_UNIT,
-              date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT,strtotime($order->info['predate'])),
               $num_product_res['products_name'] 
             ),$email_title);
         
@@ -616,7 +604,7 @@
         $preorder_email_subject = str_replace('${SITE_NAME}', get_configuration_by_site_id('STORE_NAME', $order->info['site_id']), get_configuration_by_site_id('PREORDER_MAIL_SUBJECT', $order->info['site_id'])); 
         $preorder_email_text = get_configuration_by_site_id('PREORDER_MAIL_CONTENT', $order->info['site_id']); 
         
-        $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${EFFECTIVE_TIME}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}');
+        $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}');
         
         $max_op_len = 0;
         $max_op_array = array();
@@ -634,7 +622,7 @@
             $mail_option_str .= $o_at_value['option_info']['title'].str_repeat('　', intval($max_op_len - mb_strlen($o_at_value['option_info']['title'], 'utf-8'))).':'.str_replace(array("<br>", "<BR>", "\r", "\n", "\r\n"), "", $o_at_value['option_info']['value'])."\n"; 
           }
         }
-        $pre_replace_info_arr = array($num_product_res['products_name'], $num_product, date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT,strtotime($order->info['predate'])), $order->info['payment_method'], $order->customer['name'], get_configuration_by_site_id('STORE_NAME', $order->info['site_id']), $site_url_res['url'], $order->info['orders_id'], '', $mail_option_str);
+        $pre_replace_info_arr = array($num_product_res['products_name'], $num_product, $order->info['payment_method'], $order->customer['name'], get_configuration_by_site_id('STORE_NAME', $order->info['site_id']), $site_url_res['url'], $order->info['orders_id'], '', $mail_option_str);
         
         $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
         
@@ -1453,54 +1441,7 @@ if (($action == 'edit') && ($order_exists == true)) {
                 </td>
               </tr>
               <!-- End Payment Block -->
-              <!-- Begin Trade Date Block -->
-              <tr>
-                <td class="main" valign="top"><b><?php echo EDIT_ORDERS_PREDATE_TEXT;?></b></td>
-                <td class="main">
-                <?php
-                  $predate_array = explode('-', $order['predate']); 
-                ?>
-                <div style="float:left;"> 
-                  <select name="predate_year" id="predate_year" onchange="change_predate_date();">
-                  <?php
-                    $default_predate_year = (isset($_POST['predate_year']))?$_POST['predate_year']:$predate_array[0]; 
-                    for ($f_num = 2006; $f_num <= 2050; $f_num++) {
-                      echo '<option value="'.$f_num.'"'.(($default_predate_year == $f_num)?' selected':'').'>'.$f_num.'</option>'; 
-                    }
-                  ?>
-                  </select>
-                  <select name="predate_month" id="predate_month" onchange="change_predate_date();">
-                  <?php
-                    for ($f_num = 1; $f_num <= 12; $f_num++) {
-                      $default_predate_month = (isset($_POST['predate_month']))?$_POST['predate_month']:$predate_array[1]; 
-                      $tmp_predate_month = sprintf('%02d', $f_num); 
-                      echo '<option value="'.$tmp_predate_month.'"'.(($default_predate_month == $tmp_predate_month)?' selected':'').'>'.$tmp_predate_month.'</option>'; 
-                    }
-                  ?>
-                  </select>
-                  <select name="predate_day" id="predate_day" onchange="change_predate_date();">
-                  <?php
-                    for ($f_num = 1; $f_num <= 31; $f_num++) {
-                      $default_predate_day = (isset($_POST['predate_day']))?$_POST['predate_day']:$predate_array[2]; 
-                      $tmp_predate_day = sprintf('%02d', $f_num); 
-                      echo '<option value="'.$tmp_predate_day.'"'.(($default_predate_day == $tmp_predate_day)?' selected':'').'>'.$tmp_predate_day.'</option>'; 
-                    }
-                  ?>
-                  </select>
-                </div>
-                <div class="yui3-skin-sam yui3-g">
-                <input type="hidden" id="predate" name="predate" value="<?php echo $order['predate']?>"> 
-                <input type="hidden" id="h_predate" name="h_predate"> 
-                <a href="javascript:void(0);" onclick="open_calendar();" class="dpicker"></a> 
-                <input type="hidden" name="toggle_open" value="0" id="toggle_open"> 
-                <div class="yui3-u" id="new_yui3">
-                <div id="mycalendar"></div> 
-                </div>
-                </div>
-                </td>
-              </tr>
             </table>
-            <!-- End Trade Date Block -->
           </td>
         </tr>
         <!-- Begin Products Listing Block -->
