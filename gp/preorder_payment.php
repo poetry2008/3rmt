@@ -212,12 +212,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
         $firstname_error = false;
       }
     } 
-    if (isset($_GET['action']) && ($_GET['action'] == 'process') && empty($_POST['predate'])) {
-      $predate_error = true;
-      $error = true;
-    } else {
-      $predate_error = false;
-    }
+    
     if (isset($_GET['action']) && ($_GET['action'] == 'process') && empty($_POST['pre_payment'])) {
       $payment_error = true;
       $error = true;
@@ -274,14 +269,12 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       if (tep_session_is_registered('customer_id')) {
           $preorder_email_text = PREORDER_MAIL_CONTENT; 
           
-          $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${EFFECTIVE_TIME}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}'); 
-          $predate_str_arr = explode('-', $_POST['predate']);
-          $predate_str = $predate_str_arr[0].DATE_YEAR_TEXT.$predate_str_arr[1].DATE_MONTH_TEXT.$predate_str_arr[2].DATE_MONTH_TEXT;
+          $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}'); 
         
           $payment_name_class = new $_POST['pre_payment'];
           $payment_name_str = $payment_name_class->title;
           
-          $pre_replace_info_arr = array($_POST['products_name'], $_POST['quantity'], $predate_str, $payment_name_str, tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']), STORE_NAME, HTTP_SERVER, $preorder_id, $_POST['yourmessage'], $mail_option_str);
+          $pre_replace_info_arr = array($_POST['products_name'], $_POST['quantity'], $payment_name_str, tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']), STORE_NAME, HTTP_SERVER, $preorder_id, $_POST['yourmessage'], $mail_option_str);
           
           $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
           
@@ -313,14 +306,12 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
           } else {
             $preorder_email_text = PREORDER_MAIL_CONTENT; 
             
-            $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${EFFECTIVE_TIME}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}'); 
-            $predate_str_arr = explode('-', $_POST['predate']);
-            $predate_str = $predate_str_arr[0].DATE_YEAR_TEXT.$predate_str_arr[1].DATE_MONTH_TEXT.$predate_str_arr[2].DATE_MONTH_TEXT;
+            $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}'); 
             
             $payment_name_class = new $_POST['pre_payment'];
             $payment_name_str = $payment_name_class->title;
               
-            $pre_replace_info_arr = array($_POST['products_name'], $_POST['quantity'], $predate_str, $payment_name_str, $from_name, STORE_NAME, HTTP_SERVER, $preorder_id, $_POST['yourmessage'], $mail_option_str);
+            $pre_replace_info_arr = array($_POST['products_name'], $_POST['quantity'], $payment_name_str, $from_name, STORE_NAME, HTTP_SERVER, $preorder_id, $_POST['yourmessage'], $mail_option_str);
             
             $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
             
@@ -478,7 +469,6 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
                 echo tep_draw_hidden_field('from', $_POST['from']); 
               }
               echo tep_draw_hidden_field('quantity', $_POST['quantity']); 
-              echo tep_draw_hidden_field('predate', $_POST['predate']); 
               echo tep_draw_hidden_field('preorder_subtotal', $_POST['preorder_subtotal']); 
               foreach ($_POST as $op_s_key => $op_s_value) {
                 $ops_single_str = substr($op_s_key, 0, 3);
@@ -500,7 +490,6 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
          echo tep_draw_hidden_field('from', $_POST['from']); 
        }
        echo tep_draw_hidden_field('quantity', $_POST['quantity']); 
-       echo tep_draw_hidden_field('predate', $_POST['predate']); 
        foreach ($_POST as $op_key => $op_value) {
          $op_single_str = substr($op_key, 0, 3);
          if ($op_single_str == 'op_') {

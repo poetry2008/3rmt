@@ -52,7 +52,6 @@
       $preorder_email_text = PREORDER_MAIL_CONTENT;
       $pre_name = '';
       $pre_num = 0;
-      $pre_date = '';
       $max_op_len = 0;
       $max_op_array = array();
       $attr_list_array = array();
@@ -73,11 +72,8 @@
           $mail_option_str .= $ar_value['title'].str_repeat('　', intval($max_op_len - mb_strlen($ar_value['title'], 'utf-8'))).'：'.str_replace(array("<br>", "<BR>", "\r", "\n", "\r\n"), "", stripslashes($ar_value['value']))."\n"; 
         }
       }
-      $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${EFFECTIVE_TIME}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}'); 
+      $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}'); 
       
-      $pre_date_str = strtotime($preorder_res['predate']); 
-      $pre_date = date('Y', $pre_date_str).DATE_YEAR_TEXT.date('m', $pre_date_str).DATE_MONTH_TEXT.date('d', $pre_date_str).DATE_DAY_TEXT; 
-
       $preorder_products_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$pid."'");
       $preorder_products_res = tep_db_fetch_array($preorder_products_raw);
       
@@ -86,7 +82,7 @@
         $pre_num = $preorder_products_res['products_quantity']; 
       }
      
-      $pre_replace_info_arr = array($pre_name, $pre_num, $pre_date, $preorder_res['payment_method'], $preorder_res['customers_name'], STORE_NAME, HTTP_SERVER, $preorder_res['orders_id'], $preorder_res['comment_msg'], $mail_option_str);
+      $pre_replace_info_arr = array($pre_name, $pre_num, $preorder_res['payment_method'], $preorder_res['customers_name'], STORE_NAME, HTTP_SERVER, $preorder_res['orders_id'], $preorder_res['comment_msg'], $mail_option_str);
      
       $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
       $pre_email_text = str_replace('${SITE_NAME}', STORE_NAME, PREORDER_MAIL_SUBJECT);
