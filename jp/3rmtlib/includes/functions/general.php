@@ -1928,6 +1928,9 @@ header("Expires:".date("D, d M Y H:i:s",0)." GMT");
     if ($script_name == 'latest_news' && $_GET['news_id']) {
       $script_name = 'a_'.$script_name;
     }
+    if ($script_name == 'non-member_auth') {
+      $script_name = str_replace('-','_',$script_name);
+    }
 
     $title_const_name       = strtoupper('module_metaseo_' . $script_name . '_title');
     $keywords_const_name    = strtoupper('module_metaseo_' . $script_name . '_keywords');

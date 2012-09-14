@@ -1,0 +1,9 @@
+<?php
+/*
+  JP、GM共通ファイル
+*/
+
+  define('MODULE_METASEO_CHANGE_PREORDER_SUCCESS_TEXT_TITLE', '予約ご注文の手続きが完了');
+  define('MODULE_METASEO_CHANGE_PREORDER_SUCCESS_TEXT_EXPLAIN', '説明');
+  define('MODULE_METASEO_CHANGE_PREORDER_SUCCESS_TEXT_DESCRIPTION', '予約ご注文の手続きが完了ージのSEO');
+?>
