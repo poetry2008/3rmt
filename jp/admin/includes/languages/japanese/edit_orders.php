@@ -187,7 +187,7 @@ define('PRODUCTS_WEIGHT_ERROR_THREE','商品を削除するか、または個数
 define('PRODUCTS_WEIGHT_ERROR_FOUR','）kg以内にしてください。');
 define('TEXT_CANCEL_UPDATE','更新をキャンセルしました。');
 define('TEXT_DATE_ERROR','日時フォーマットが間違っています。 ');
-define('TEXT_DATE_NUM_ERROR','お届け日時を正しく入力してください。 ');
+define('TEXT_DATE_NUM_ERROR','お届け日時を正しく入力してください');
 define('TEXT_INPUT_DATE_ERROR','日時が入力されていません。');
 define('TEXT_NO_ENOUGH_POINT','ポイントが足りません。入力可能なポイントは ');
 define('TEXT_LS',' です。');
@@ -230,4 +230,5 @@ define('TEXT_ADDRESS_INFO_LEFT','▼住所情報');
 define('TEXT_ORDERS_SEND_MAIL','ご注文ありがとうございます【');
 define('TEXT_CARD_PAYMENT','クレジットカード決済について【');
 define('TEXT_SEND_MAIL_CARD_PAYMENT','送信済：クレジットカード決済について【');
+define('TEXT_PRODUCTS_NUM','商品の数量が足りません。注文を作成しますか？');
 ?>

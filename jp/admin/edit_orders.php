@@ -707,7 +707,7 @@ if($address_error == false){
              */
             $Query = 'INSERT INTO ' . TABLE_ORDERS_TOTAL . ' SET
               orders_id = "' . $oID . '",
-                        title = "' . $ot_title . '",
+                        title = "' . $ot_title . ':",
                         text = "",
                         value = "' . tep_insert_currency_value($ot_value) . '",
                         class = "' . $ot_class . '",
@@ -1543,6 +1543,40 @@ function date_time(){
     }
     return true;
 }
+
+function products_num_check(orders_products_list_id,products_name,products_list_id){
+
+    var products_error = true;
+    var products_array = new Array();
+    products_array = orders_products_list_id.split('|||');
+    var products_list_str = '';
+    var products_temp;
+    for(var x in products_array){
+      products_temp = $("#update_products_new_qty_"+products_array[x]).val(); 
+      products_list_str += products_temp+'|||';
+    }
+    $.ajax({
+    type: "POST",
+    data: 'products_list_id='+products_list_id+'&products_list_str='+products_list_str+'&products_name='+products_name+'&orders_products_list_id='+orders_products_list_id+'&products_diff=1',
+    async:false,
+    url: 'ajax_orders.php?action=products_num',
+    success: function(msg) {
+      if(msg != ''){
+
+        if(confirm(msg+"\n\n<?php echo TEXT_PRODUCTS_NUM;?>")){
+
+          products_error = true;
+        }else{
+          products_error = false;
+        }
+      }else{  
+        products_error = true;
+      }         
+    }
+    }); 
+    return products_error;
+}
+
 function submit_check_con(){
 
     var options = {
@@ -2385,7 +2419,7 @@ $(document).ready(function(){
       $cpayment = payment::getInstance();
       $payment_array = payment::getPaymentList();
       foreach($payment_array[0] as $pay_key=>$pay_value){ 
-        $payment_info = $cpayment->admin_get_payment_info_comment($pay_value,'',$site_id_flag);
+        $payment_info = $cpayment->admin_get_payment_info_comment($pay_value,$order->customer['email_address'],$order->info['site_id']);
         if(is_array($payment_info)){
 
           switch($payment_info[0]){
@@ -2527,6 +2561,14 @@ $(document).ready(function(){
     var notify_comments = document.getElementsByName("notify_comments")[0].checked;
     notify_comments = notify_comments == true ? 1 : 0;
     orders_session('notify_comments',notify_comments);
+  });
+  $("input[name='update_customer_name']").blur(function(){
+    var update_customer_name = document.getElementsByName("update_customer_name")[0].value;
+    orders_session('update_customer_name',update_customer_name);
+  });
+  $("input[name='update_customer_email_address']").blur(function(){
+    var update_customer_email_address = document.getElementsByName("update_customer_email_address")[0].value;
+    orders_session('update_customer_email_address',update_customer_email_address);
   });
 });
 $(document).ready(function(){
@@ -2786,6 +2828,23 @@ if($action != "add_product"){
 <?php
 if (($action == 'edit') && ($order_exists == true)) {
   $order = new order($oID);
+  $products_id_array = array();
+  $products_name_array = array();
+  $products_orders_id_array = array();
+  $products_orders_list_query = tep_db_query("select * from " . TABLE_ORDERS_PRODUCTS . " where orders_id = '" . tep_db_input($oID) . "'");
+  while($products_orders_list_array = tep_db_fetch_array($products_orders_list_query)){
+
+    $products_orders_id_array[] = $products_orders_list_array['orders_products_id'];
+  }
+  tep_db_free_result($products_orders_list_query);
+  foreach($order->products as $order_key=>$order_val){
+
+    $products_id_array[] = $order_val['id'];
+    $products_name_array[] = $order_val['name']; 
+  }
+  $products_name_str = implode('|||',$products_name_array);
+  $products_id_str = implode('|||',$products_id_array);
+  $products_orders_id_str = implode('|||',$products_orders_id_array );
   ?>
     <tr>
     <td width="100%">
@@ -2794,7 +2853,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
     <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
     <td class="pageHeading" align="right">
-    <INPUT type="button" class="element_button" value="<?php echo TEXT_FOOTER_CHECK_SAVE;?>" onClick="if(date_time()){submit_check_con();}">&nbsp;
+    <INPUT type="button" class="element_button" value="<?php echo TEXT_FOOTER_CHECK_SAVE;?>" onClick="if(date_time()){if(products_num_check('<?php echo $products_orders_id_str;?>','<?php echo $products_name_str;?>','<?php echo $products_id_str;?>')){submit_check_con();}}">&nbsp;
     <?php echo '<a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params()) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; ?>
     </td>
     </tr>
@@ -2834,13 +2893,13 @@ if (($action == 'edit') && ($order_exists == true)) {
     <tr>
     <td class="main" valign="top"><b><?php echo EDIT_ORDERS_CUSTOMER_NAME;?></b></td>
     <td class="main">
-    <input name="update_customer_name" size="25" value="<?php echo tep_html_quotes($order->customer['name']); ?>">
+    <input name="update_customer_name" size="25" value="<?php echo tep_html_quotes(isset($_SESSION['orders_update_products']['update_customer_name']) ? $_SESSION['orders_update_products']['update_customer_name']: $order->customer['name']); ?>">
     <span class="smalltext"><?php echo EDIT_ORDERS_CUSTOMER_NAME_READ;?></span>
     </td>
     </tr>
     <tr>
     <td class="main" valign="top"><b><?php echo EDIT_ORDERS_EMAIL;?></b></td>
-    <td class="main"><input name="update_customer_email_address" size="45" value="<?php echo $order->customer['email_address']; ?>"></td>
+    <td class="main"><input name="update_customer_email_address" size="45" value="<?php echo isset($_SESSION['orders_update_products']['update_customer_email_address']) ? $_SESSION['orders_update_products']['update_customer_email_address'] : $order->customer['email_address']; ?>"></td>
     </tr>
     <!-- End Addresses Block -->
     <!-- Begin Payment Block -->
@@ -3219,7 +3278,7 @@ if (($action == 'edit') && ($order_exists == true)) {
 
     <?php
     $all_p_info_array = array(); 
-    $orders_products_array = array();
+    $orders_products_array = array(); 
     $orders_products_list = '';
     for ($k=0; $k<sizeof($order->products); $k++) {
        $orders_products_array[] = $order->products[$k]['orders_products_id']; 
@@ -3235,7 +3294,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         $op_info_str = implode('|||', $op_info_array);
       }
       $orders_products_id = $order->products[$i]['orders_products_id'];
-      $all_p_info_array[] = $orders_products_id; 
+      $all_p_info_array[] = $orders_products_id;  
       $RowStyle = "dataTableContent";
       $order->products[$i]['qty'] = isset($_SESSION['orders_update_products'][$orders_products_id]['qty']) ? $_SESSION['orders_update_products'][$orders_products_id]['qty'] : $order->products[$i]['qty']; 
       echo '    <tr class="dataTableRow" id="products_list_'.$orders_products_id.'">' . "\n" .
@@ -3388,7 +3447,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       
       echo '</td>' . "\n" . 
         '    </tr>' . "\n";
-    }
+    } 
   ?>
     </table>
 
@@ -3794,7 +3853,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <td class="main" bgcolor="#FBE2C8" width="10">&nbsp;</td>
     <td class="main" bgcolor="#FFCC99" width="10">&nbsp;</td>
     <td class="main" bgcolor="#F8B061" width="10">&nbsp;</td>
-    <td class="main" bgcolor="#FF9933" width="120" align="center"><INPUT type="button" value="<?php echo TEXT_FOOTER_CHECK_SAVE;?>" onClick="if(date_time()){submit_check_con();}"></td>
+    <td class="main" bgcolor="#FF9933" width="120" align="center"><INPUT type="button" value="<?php echo TEXT_FOOTER_CHECK_SAVE;?>" onClick="if(date_time()){if(products_num_check('<?php echo $orders_products_list;?>','<?php echo $products_name_str;?>','<?php echo $products_id_str;?>')){submit_check_con();}}"></td>
     </tr>
     </table>
     </td>
