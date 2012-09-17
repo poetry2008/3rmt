@@ -1568,13 +1568,14 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
           </td> 
                 </tr> 
               </table></td> 
-          </tr>  
+          </tr> 
           <?php
           if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() > 0) {
             if($guestchk == '1') {
               echo '<input type="hidden" name="point" value="0">';
             } else {
           ?> 
+          <tr><td height="80"></td></tr> 
           <tr> 
             <td>
               <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
@@ -1627,6 +1628,7 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
           } else if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) { 
             if($guestchk != '1') {
           ?>
+          <tr><td height="80"></td></tr> 
           <tr> 
             <td>
               <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
