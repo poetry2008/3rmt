@@ -1485,3 +1485,7 @@ top:70px;
 	padding-right:80px;
 	width:20%;
 }
+.prompt_box{
+	font-size:12px;
+	margin:5px 0 80px 1px;
+}

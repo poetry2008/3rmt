@@ -1443,7 +1443,7 @@ function check_point(point_num) {
           <td width="10" height="5"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
           </tr>
           <tr> 
-            <td><table border="0" width="100%" cellspacing="1" cellpadding="2"> 
+            <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                 <tr> 
                   <td>
           
@@ -1581,9 +1581,17 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
   }
 ?>
 </table>
+<noscript>
+<table cellpadding="0" cellspacing="0" border="0" width="100%" class="prompt_box">
+<tr>
+<td><?php echo TEXT_NOSCRIPT_INFO;?></td>
+</tr>
+</table>
+</noscript>
           </td> 
                 </tr> 
-              </table></td> 
+              </table>
+			  </td> 
           </tr>  
           <?php
           if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() > 0) {
