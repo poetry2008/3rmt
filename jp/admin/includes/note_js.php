@@ -5,6 +5,7 @@ $top='';
 $zindex='';  
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
 $belong = preg_replace('/\?XSID=[^&]+/','',$belong);
+$belong = preg_replace('/\??&cID=[^&]+/','',$belong);
 $belong = str_replace('&','|||',$belong);
 $user_info = tep_get_user_info($ocertify->auth_user);
 $query = tep_db_query("select * from notes where belong='".$belong."' and (attribute='1' or (attribute='0' and author='".$user_info['name']."'))  order by id desc");
