@@ -137,7 +137,7 @@ td,th{ border:0; padding:2px; font-size:14px;}
 #header-nav{
 	width:100%;
 	background:url(../images/header_nav.png) no-repeat center 0;
-	height:156px;
+	height:155px;
 	*height:176px;
 	padding-top:20px;
 	min-width:900px;
@@ -592,7 +592,7 @@ td,th{ border:0; padding:2px; font-size:14px;}
 	margin-left:40px;
 	background:url(../images/seach_right.png) no-repeat;
 	width:295px;
-	height:75px;
+	height:74px;
 	float:left;
 	position:relative;
 	z-index:90;

@@ -5,6 +5,8 @@ $top='';
 $zindex='';  
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
 $belong = preg_replace('/\?XSID=[^&]+/','',$belong);
+$belong = preg_replace('/\??&cID=[^&]+/','',$belong);
+$belong = str_replace('&','|||',$belong);
 $user_info = tep_get_user_info($ocertify->auth_user);
 $query = tep_db_query("select * from notes where belong='".$belong."' and (attribute='1' or (attribute='0' and author='".$user_info['name']."'))  order by id desc");
 $note_arr = array();
@@ -33,14 +35,12 @@ while($row=tep_db_fetch_array($query)){
     </div>';
 }
 ?>
-<script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script type="text/javascript" src="includes/jquery.fancybox-1.3.1.pack.js"></script>
 <script type="text/javascript" src="includes/global.js"></script>
 <script type='text/javascript' src='includes/javascript/ui/jquery-ui-1.8.16.custom.min.js'></script>
 <script type='text/javascript' src='includes/javascript/ui/jquery.ui.resizable.js'></script>
 <link rel="stylesheet" type="text/css" href="includes/note_style.css" />
 <link rel="stylesheet" type="text/css" href="includes/fancybox.css" />
-<link rel="stylesheet" type="text/css" href="includes/stylesheet.css" />
 <link rel="stylesheet" type="text/css" href="includes/base/jquery.ui.all.css" />
 <?php if(!empty($height_arr)){?>
 <script language="javascript">
