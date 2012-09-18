@@ -1443,10 +1443,6 @@ ranking
 	border-left:1px solid #cccccc;
 	padding: 5px;
 }
-#contents {
-	font-size: 12px;
-	padding:0 13px 20px 13px;
-}
 .contents {
 	font-size: 12px;
 	padding:0 13px 20px 13px;
@@ -2785,3 +2781,11 @@ searching
 }
 .sort img{ margin:-5px 0 0 5px;}
 .sort td{ width:25%;}
+.prompt_box{
+	font-size:12px;
+	line-height:14px;
+	margin:5px 0 80px 1px;
+	border:1px solid #ff8e90;
+	background-color:#FFE9E9;
+	padding:5px;
+}
