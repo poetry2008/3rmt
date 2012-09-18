@@ -541,6 +541,9 @@ define('TEXT_ADD_NOTE','メモ追加');
 define('TEXT_COMMENT_NOTE','内容');
 define('TEXT_COLOR','メモの色');
 define('TEXT_TITLE_NOTE','タイトル');
+define('TEXT_ATTRIBUTE','プロパティ');
+define('TEXT_ATTRIBUTE_PUBLIC','公共');
+define('TEXT_ATTRIBUTE_PRIVATE','プライベート');
 define('HEADER_TEXT_CREATE_PREORDER', '予約作成');
 
 define('TEXT_TORIHIKI_REPLACE_STR','～');

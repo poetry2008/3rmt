@@ -3903,6 +3903,7 @@ tep_display_google_results(FILENAME_CATEGORIES);
               $_GET['pID'].'&page='.$_GET['page'].($_GET['search']?'&search='.$_GET['search']:'')). '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
         break;
       default:
+        unset($_SESSION['product_history']);
         if ($rows > 0) {
           if (isset($cInfo) && is_object($cInfo)) { // category info box contents
             $heading[] = array('text' => '<b>' . $cInfo->categories_name . '</b>');
