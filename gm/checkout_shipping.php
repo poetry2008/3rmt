@@ -259,11 +259,11 @@
 ?>
 <?php page_head();?>
 <?php
-header( 'Expires: Mon, 26 Jul 1997 05:00:00 GMT' );
-header( 'Last-Modified: ' . gmdate('D, d M Y H:i:s') . 'GMT' );
-header( 'Cache-Control: no-store, no-cache, must-revalidate' );
-header( 'Cache-Control: post-check=0, pre-check=0', false );
-header( 'Pragma: no-cache' );
+header('Expires:'.date('D, d M Y H:i:s',0).' GMT');
+header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . 'GMT');
+header('Cache-Control: no-store, no-cache, must-revalidate');
+header('Cache-Control: post-check=0, pre-check=0', false);
+header('Pragma: no-cache');
 ?>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript"><!--
@@ -1569,6 +1569,11 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() > 0) {
     echo '<input type="hidden" name="point" value="0">';
   } else {
 ?> 
+  <table>
+  <tr>
+    <td height="45"></td>
+  </tr>
+  </table>
   <h3><b><?php echo TEXT_POINT_OR_CAMPAION; ?></b></h3>
     <div class="payment-content">
       <?php
@@ -1592,6 +1597,11 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() > 0) {
 } else if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) { 
   if($guestchk != '1') {
 ?>
+   <table>
+   <tr>
+     <td height="45"></td>
+   </tr>
+   </table>
    <h3><b><?php echo TEXT_POINT_OR_CAMPAION; ?></b></h3>
      <div>
      <?php
