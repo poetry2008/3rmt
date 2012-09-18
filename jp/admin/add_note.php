@@ -13,6 +13,18 @@
 <td><input type="text" class="input" name="title" id="title"/></td>
 </tr>
 <tr>
+<td ><?php echo TEXT_ATTRIBUTE;?>&nbsp;&nbsp;&nbsp;<span id="msg_title"></span></td>
+</tr>
+<tr>
+<tr>
+<td>
+<select name="attribute" id="attribute">
+<option value="1"><?php echo TEXT_ATTRIBUTE_PUBLIC;?></option>
+<option value="0"><?php echo TEXT_ATTRIBUTE_PRIVATE;?></option>
+</select>
+</td>
+</tr>
+<tr>
 <td ><?php echo TEXT_COMMENT_NOTE;?>&nbsp;&nbsp;&nbsp;<span id="msg_txt"></span></td>
 </tr>
 <tr>
@@ -28,7 +40,10 @@
 <li class="red"></li>
 <li class="blue"></li>
 <li class="yellow"></li>
-</ul><input type="hidden" id="mycolor" value="white" /></td>
+</ul><input type="hidden" id="mycolor" value="white" />
+<input type="hidden" id="author" value="<?php echo $_GET['author']?>" />
+<input type="hidden" id="belong" value="<?php echo $_GET['belong']?>" />
+</td>
 </tr>
 <tr>
 <td height="36" colspan="2" align="center"><input type="submit" id="addbtn"

@@ -42,15 +42,23 @@ if(!in_array('onetime',$request_one_time_arr)&&$_SESSION['user_permission']!=15)
 if ($_SERVER["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest") {
 $txt = stripslashes(trim($_POST['content']));
 $title = stripslashes(trim($_POST['title']));
+$author = stripslashes(trim($_POST['author']));
+$belong = stripslashes(trim($_POST['belong']));
+$attribute = $_POST['attribute'];
 
 $color = $_POST['color'];
 $time = date('Y-m-d H:i:s');
 $zIndex = $_POST['zIndex'];
-$xyz = '0|0|'.$zIndex;
+if($_COOKIE['tarrow']=="close" ){
+$xyz = '20|104|'.$zIndex;
+}else{
+$xyz = '145|104|'.$zIndex;
+}
+$xyz = $belong == FILENAME_DEFAULT ? '0|0|'.$zIndex : $xyz;
 $xlen = '150';
 $ylen = '150';
-$query = tep_db_query("insert into notes(title,content,color,xyz,addtime)values
-    ('".$title."','".$txt."','".$color."','".$xyz."|".$xlen."|".$ylen."','".$time."')");
+$query = tep_db_query("insert into notes(title,content,color,xyz,addtime,attribute,author,belong)values
+    ('".$title."','".$txt."','".$color."','".$xyz."|".$xlen."|".$ylen."','".$time."','".$attribute."','".$author."','".$belong."')");
 if($query){
   echo tep_db_insert_id()."||".$time;
 }else{
