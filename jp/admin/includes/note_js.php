@@ -1,18 +1,12 @@
 <?php
-/*
-  $Id$
-*/
-
-  require('includes/application_top.php');
-  require(DIR_WS_CLASSES . 'currencies.php');
-
-//notes
 $notes = '';  
 $left='';  
 $top='';  
 $zindex='';  
-$belong = str_replace('/admin/','',$_SERVER['PHP_SELF']);
-$query = tep_db_query("select * from notes where (belong='".$belong."' or belong='') and (attribute='1' or (attribute='0' and (author='".$ocertify->auth_user."' or author='')))  order by id desc");
+$belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
+$belong = preg_replace('/\?XSID=[^&]+/','',$belong);
+$user_info = tep_get_user_info($ocertify->auth_user);
+$query = tep_db_query("select * from notes where belong='".$belong."' and (attribute='1' or (attribute='0' and author='".$user_info['name']."'))  order by id desc");
 $note_arr = array();
 $height_arr = array();
 while($row=tep_db_fetch_array($query)){
@@ -38,14 +32,8 @@ while($row=tep_db_fetch_array($query)){
     .trim(htmlspecialchars($row['content'])).'</textarea></div>
     </div>';
 }
-//end nodes
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html <?php echo HTML_PARAMS; ?>>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <script type="text/javascript" src="includes/jquery.fancybox-1.3.1.pack.js"></script>
 <script type="text/javascript" src="includes/global.js"></script>
 <script type='text/javascript' src='includes/javascript/ui/jquery-ui-1.8.16.custom.min.js'></script>
@@ -56,8 +44,8 @@ while($row=tep_db_fetch_array($query)){
 <link rel="stylesheet" type="text/css" href="includes/base/jquery.ui.all.css" />
 <?php if(!empty($height_arr)){?>
 <script language="javascript">
-$().ready(function() { 
-$('.demo').height(<?php echo max($height_arr);?>);
+$(document).ready(function() { 
+$('.demo').height($('#main_table').height());
 <?php
 foreach($note_arr as $note_row){
   echo "$('#note_".$note_row."').resizable({ 
@@ -96,49 +84,4 @@ function changeLayer(obj) {
 }
 </script>
 <?php }?>
-<title><?php echo TITLE; ?></title>
-</head>
-<body>
-<?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
-  <script language='javascript'>
-    one_time_pwd('<?php echo $page_name;?>');
-    </script>
-    <?php }?>
-    <div class='header'>
-    <?php
-    require(DIR_WS_INCLUDES . 'header.php');
-    ?>
-    </div>
-    <table border="0" width="100%" cellspacing="2" cellpadding="2">
-    <tr>
-    <?php
-    if ($ocertify->npermission >= 10) {
-      echo '<td width="' . BOX_WIDTH . '" valign="top">';
-      echo '<table border="0" width="' . BOX_WIDTH . '" cellspacing="1" cellpadding="1" class="columnLeft">';
-      require(DIR_WS_INCLUDES . 'column_left.php');
-      echo '</table>';
-      echo '</td>';
-    } else {
-      echo '<td>&nbsp;</td>';
-    }
-?>
-<td width="100%" valign="top">
-<table width="100%"><tr>
-<td align="rignt" height="20px">
-<div id="add"><a href="add_note.php?author=<?php echo $ocertify->auth_user;?>&belong=<?php echo str_replace('/admin/','',$_SERVER['PHP_SELF']);?>" id="fancy">
-<?php echo "<input type='button' value='".TEXT_ADD_NOTE."'>";?></a></div>
-</td>
-</tr>
-<tr><td>
-<div class="demo">
-<?php echo $notes;?>
-</div>
-</td></tr>
-</table>
-</td>
-</tr>
-</table>
-<?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<br>
-</body>
-</html>
+

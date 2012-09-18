@@ -26,6 +26,9 @@ $(function(){
     $("#addbtn").live('click',function(e){
         var txt = $("#note_txt").val();
         var title = $("#title").val();
+        var attribute= $("#attribute").val();
+        var author= $("#author").val();
+        var belong= $("#belong").val();
         var color = $("#mycolor").val();
         if(txt==""){
         $("#msg_txt").html("内容を入力してください");
@@ -42,12 +45,14 @@ $(function(){
         'zIndex': ++zIndex,
         'content': txt,
         'title': title,
+        'attribute': attribute,
+	'author':author,
+        'belong':belong,
         'color': color
         };
 
         $.post('posts.php',data,function(msg){
           zIndex = zIndex++;
-          //alert(zIndex);
           msg = msg.split('||');
           if(parseInt(msg[0])){
           var str = "<div id='note_"+msg[0]+"' class='note "+color+"' style='left:0;top:0;z-index:"+zIndex+",width:150px,height:150px'><div class='note_head' ><div class='title'><input type='button' onclick=\"note_save_text(\'"+msg[0]+"\')\" value='保存'>"+title+"&nbsp;&nbsp;"+msg[1]+"</div><div class='note_clost'><input type='hidden' value='"+msg[0]+"' class='hidden'><input type='image' onclick=\"note_desplay_none(\'"+msg[0]+"\')\" alt='close' src='images/icons/note_close.gif'></div></div><div id='note_text_"+msg[0]+"' class='note_textarea' style='height:120px'><textarea style='resize: none;overflow;auto;font-size:11px;'>"+txt+"</textarea></div></div>";

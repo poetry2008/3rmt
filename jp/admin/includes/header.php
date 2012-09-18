@@ -364,7 +364,14 @@ if (isset($ocertify->npermission) || $ocertify->npermission) {
 if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
   echo '
     <table>
-    <tr>
+    <tr>';
+  $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
+  $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
+  $belong = preg_replace('/\?XSID=[^&]+/','',$belong);
+  if($href_url == FILENAME_CATEGORIES_ADMIN){
+    echo '<td><a class="headerLink" href="add_note.php?author='.$user_info['name'].'&belong='.$belong.'" id="fancy">'.TEXT_ADD_NOTE.'</a>&nbsp;|</td>';
+  }
+  echo '
     <td><a class="headerLink" href="javascript:void(0);" onclick="toggle_header_menu(\'headerorder\')">'.HEADER_TEXT_ORDER_INFO.'</a>&nbsp;|<br>
     <table class="menu01" id="headerorder" cellpadding="0" cellspacing="0">
     <tr>

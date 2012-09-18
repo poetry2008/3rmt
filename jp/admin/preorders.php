@@ -1978,7 +1978,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
   $sort_where = '';
  
   if (!isset($_GET['order_sort']) || $_GET['order_sort'] == '') {
-    $order_str = 'o.predate DESC'; 
+    $order_str = 'o.date_purchased DESC'; 
   } else {
     if($_GET['order_sort'] == 'site_romaji'){
       $sort_table = " ,".TABLE_SITES." s ";
