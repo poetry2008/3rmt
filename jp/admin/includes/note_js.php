@@ -34,14 +34,12 @@ while($row=tep_db_fetch_array($query)){
     </div>';
 }
 ?>
-<script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script type="text/javascript" src="includes/jquery.fancybox-1.3.1.pack.js"></script>
 <script type="text/javascript" src="includes/global.js"></script>
 <script type='text/javascript' src='includes/javascript/ui/jquery-ui-1.8.16.custom.min.js'></script>
 <script type='text/javascript' src='includes/javascript/ui/jquery.ui.resizable.js'></script>
 <link rel="stylesheet" type="text/css" href="includes/note_style.css" />
 <link rel="stylesheet" type="text/css" href="includes/fancybox.css" />
-<link rel="stylesheet" type="text/css" href="includes/stylesheet.css" />
 <link rel="stylesheet" type="text/css" href="includes/base/jquery.ui.all.css" />
 <?php if(!empty($height_arr)){?>
 <script language="javascript">

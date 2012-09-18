@@ -105,7 +105,7 @@ $(window).resize(function (){
     }
   })
   </script>
-<?php require("includes/note_js.php")?>
+<?php require("includes/note_js.php");?>
   </head>
   <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" >
   <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
@@ -129,7 +129,7 @@ $(window).resize(function (){
   </td>
   <!-- body_text //-->
   <td width="100%" valign="top" id='categories_right_td'>
-  <?php echo $notes?>
+  <?php echo $notes;?>
   <table border="0" width="100%" cellspacing="0" cellpadding="2">
   <tr>
   <td>
