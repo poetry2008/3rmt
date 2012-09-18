@@ -1555,3 +1555,11 @@ TEXTAREA {
 	margin-left:3px;
 }
 .form_error{margin:0px 0 6px 3px;}
+.prompt_box{
+	font-size:12px;
+	line-height:14px;
+	margin:5px 0 80px 1px;
+	border:1px solid #ff8e90;
+	background-color:#FFE9E9;
+	padding:5px;
+}

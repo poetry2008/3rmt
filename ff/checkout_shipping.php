@@ -1572,6 +1572,13 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
   }
 ?>
 </table>
+<noscript>
+<table cellpadding="0" cellspacing="0" border="0" width="100%" class="prompt_box">
+<tr>
+<td><?php echo TEXT_NOSCRIPT_INFO;?></td>
+</tr>
+</table>
+</noscript>
           </td> 
                 </tr> 
               </table></td> 

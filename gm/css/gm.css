@@ -592,7 +592,7 @@ td,th{ border:0; padding:2px; font-size:14px;}
 	margin-left:40px;
 	background:url(../images/seach_right.png) no-repeat;
 	width:295px;
-	height:74px;
+	height:75px;
 	float:left;
 	position:relative;
 	z-index:90;
@@ -1484,4 +1484,8 @@ top:70px;
 .confirmation_product_num_info{ 
 	padding-right:80px;
 	width:20%;
+}
+.prompt_box{
+	font-size:12px;
+	margin:5px 0 80px 1px;
 }
