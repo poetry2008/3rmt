@@ -44,21 +44,21 @@ if (isset($body_option)) {
       TEXT_FAQ_TITLE.'</h2><br><font style="margin-left:18px;">'.TEXT_FAQ_TITLE_END.'</font>';?>
     <?php } ?>
     <div class="comment_faq">
-    <table class="faq_question_row">
-    	<tr><td><div>
-    <img src="images/design/ask.gif" alt="question"></div><div class="faq_question_row_div"><span><a href="<?php echo
+    <table class="faq_question">
+    	<tr><td valign="top">
+    <img src="images/design/ask.gif" alt="question"></td>
+    <td class="faq_question_row"><span><a href="<?php echo
     HTTP_SERVER.'/'.$link_url.'/'.urlencode($c_row['romaji']).'/';?>">
       <?php echo $c_row['title'];?>
-    </a></span></div></td></tr>
+    </a></span></td></tr>
     </table>
     <?php while($c_row = tep_db_fetch_array($faq_category_query)){ ?>
-    <table class="faq_question_row"><tr><td>
-    	<div><img src="images/design/ask.gif" alt="question"></div>
-   		<div class="faq_question_row_div"><span><a href="<?php echo
+    <table class="faq_question"><tr><td valign="top">
+    	<img src="images/design/ask.gif" alt="question"></td>
+   		<td class="faq_question_row"><span><a href="<?php echo
      HTTP_SERVER.'/'.$link_url.'/'.urlencode($c_row['romaji']).'/';?>">
           <?php echo $c_row['title'];?>
         </a></span>
-        </div>
         </td></tr>
     </table>
     <?php } ?>
@@ -73,24 +73,22 @@ if (isset($body_option)) {
     <?php if($q_row = tep_db_fetch_array($faq_question_query)){ ?>
     <h2 class="pageHeading"><?php echo $parent_info['title'].TEXT_QUESTION_TITLE;?></h2>
     <div class="comment_faq">
-    <table class="faq_question_row"><tr><td>
-    <div>
-    <img src="images/design/ask.gif" alt="question"></div>
-    <div class="faq_question_row_div"><span><a href="<?php echo
+    <table class="faq_question"><tr><td valign="top">
+    <img src="images/design/ask.gif" alt="question"></td>
+    <td class="faq_question_row"><span><a href="<?php echo
      HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['romaji']).'.html';?>">
       <?php echo $q_row['ask'];?>
-    </a></span></div>
+    </a></span>
     </td></tr>
     </table>
     <?php 
     while($q_row = tep_db_fetch_array($faq_question_query)){ 
     ?>
-    <table class="faq_question_row"><tr><td>
-    <div><img src="images/design/ask.gif" alt="question"></div><div class="faq_question_row_div"><span><a href="<?php echo
+    <table class="faq_question"><tr><td valign="top">
+    <img src="images/design/ask.gif" alt="question"></td><td class="faq_question_row"><span><a href="<?php echo
       HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['romaji']).'.html';?>">
         <?php echo $q_row['ask'];?>
       </a></span>
-      </div>
       </td></tr></table>
     <?php
     } 
@@ -124,23 +122,22 @@ if (isset($body_option)) {
     <?php }else {?>
     <h2 class="pageHeading"><?php echo TEXT_FAQ_TITLE_LAST;?></h2>
     <?php } ?>
-    <div  style="border-bottom-style:dotted; width:94%; margin-top:10px; color:#444; margin-left:2px;"></div>
     <div class="comment_faq">
-    <table class="faq_question_row">
-    	<tr><td><div>
-    <img src="images/design/ask.gif" alt="question"></div><div class="faq_question_row_div"><span><a href="<?php echo
+    <div  style="border-bottom-style:dotted; width:98%; margin-top:10px; color:#444; margin-left:2px;"></div>
+    <table class="faq_question">
+    	<tr><td valign="top">
+    <img src="images/design/ask.gif" alt="question"></td><td class="faq_question_row"><span><a href="<?php echo
     HTTP_SERVER.'/'.$last_link_url.'/'.urlencode($last_row['romaji']).'/';?>">
       <?php echo $last_row['title'];?>
-    </a></span></div></td></tr>
+    </a></span></td></tr>
     </table>
     <?php while($last_row = tep_db_fetch_array($last_faq_category_query)){ ?>
-    <table class="faq_question_row"><tr><td>
-    	<div><img src="images/design/ask.gif" alt="question"></div>
-   		<div class="faq_question_row_div"><span><a href="<?php echo
+    <table class="faq_question"><tr><td valign="top">
+    	<img src="images/design/ask.gif" alt="question"></td>
+   		<td class="faq_question_row"><span><a href="<?php echo
      HTTP_SERVER.'/'.$last_link_url.'/'.urlencode($last_row['romaji']).'/';?>">
           <?php echo $last_row['title'];?>
         </a></span>
-        </div>
         </td></tr>
     </table>
     <?php } ?>
