@@ -77,7 +77,7 @@ $customer_point_query = tep_db_query("
 $customer_point = tep_db_fetch_array($customer_point_query);
 // ゲストチェック
 $customer_guest_query = tep_db_query("
-    select customers_guest_chk 
+    select customers_guest_chk,is_send_mail,is_calc_quantity 
     from " . TABLE_CUSTOMERS . " 
     where customers_id = '" . $order->customer['id'] . "'");
 $customer_guest = tep_db_fetch_array($customer_guest_query);
@@ -550,10 +550,9 @@ if($address_error == false){
               $pr_quantity -= $quantity_difference;
             }
           }
-          // 如果是业者，不更新
-          if(!tep_is_oroshi($check_status['customers_id']))
+          if($customer_guest['is_calc_quantity'] != '1') {
             tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = ".$pr_quantity.", products_virtual_quantity = ".$pv_quantity.", products_ordered = products_ordered + " . $quantity_difference . " where products_id = '" . (int)$order['products_id'] . "'");
-
+          }
           tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
           tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
         }
@@ -1009,7 +1008,7 @@ if($address_error == false){
           
           $email = str_replace('${SHIPPING_TIME}', $fetch_time_str, $email); 
           $title = str_replace('${SHIPPING_TIME}', $fetch_time_str, $title); 
-          if ($customer_guest['customers_guest_chk'] != 9)
+          if ($customer_guest['is_send_mail'] != '1')
             tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $email, get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
 
           tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS', $order->info['site_id']), $title, $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
@@ -1203,27 +1202,29 @@ if($address_error == false){
 
         // 2.2.1 Update inventory Quantity
         $p = tep_db_fetch_array(tep_db_query("select * from products where products_id='".$add_product_products_id."'"));
-        if ((int)$add_product_quantity > $p['products_real_quantity']) {
-          // 买取商品大于实数
-          tep_db_perform('products',array(
-                'products_real_quantity' => 0,
-                //'products_virtual_quantity' => 0,
-                //'products_virtual_quantity' => $p['products_virtual_quantity'] - ((int)$add_product_quantity + $p['products_real_quantity'])
-                'products_virtual_quantity' => $p['products_virtual_quantity'] - (int)$add_product_quantity + $p['products_real_quantity']
-                ),
-              'update',
-              "products_id = '" . $add_product_products_id . "'");
-        } else {
-          tep_db_perform('products',array(
-                'products_real_quantity' =>$p['products_real_quantity']  - (int)$add_product_quantity
-                // 'products_real_quantity' =>$p['products_real_quantity']+ $p['products_virtual_quantity'] - (int)$add_product_quantity
-                ),
-              'update',
-              "products_id = '" . $add_product_products_id . "'");
+        if ($customer_guest['is_calc_quantity'] != '1') {
+          if ((int)$add_product_quantity > $p['products_real_quantity']) {
+            // 买取商品大于实数
+            tep_db_perform('products',array(
+                  'products_real_quantity' => 0,
+                  //'products_virtual_quantity' => 0,
+                  //'products_virtual_quantity' => $p['products_virtual_quantity'] - ((int)$add_product_quantity + $p['products_real_quantity'])
+                  'products_virtual_quantity' => $p['products_virtual_quantity'] - (int)$add_product_quantity + $p['products_real_quantity']
+                  ),
+                'update',
+                "products_id = '" . $add_product_products_id . "'");
+          } else {
+            tep_db_perform('products',array(
+                  'products_real_quantity' =>$p['products_real_quantity']  - (int)$add_product_quantity
+                  // 'products_real_quantity' =>$p['products_real_quantity']+ $p['products_virtual_quantity'] - (int)$add_product_quantity
+                  ),
+                'update',
+                "products_id = '" . $add_product_products_id . "'");
+          }
+          // 增加销售量
+          tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . (int)$add_product_quantity . " where products_id = '" . $add_product_products_id . "'");
+          // 处理负数问题
         }
-        // 增加销售量
-        tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . (int)$add_product_quantity . " where products_id = '" . $add_product_products_id . "'");
-        // 处理负数问题
         tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . $add_product_products_id . "'");
         tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . $add_product_products_id . "'");
         /*

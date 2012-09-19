@@ -1409,3 +1409,13 @@ font-size:14px;
 .order_option_width{
 	min-width:260px;
 }
+.table_img_list{
+	list-style:none;
+}
+.table_img_list li{
+	float:left;
+	width:12%;
+}
+.table_img_list  img{
+	margin-bottom:7px;
+}
