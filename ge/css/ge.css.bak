@@ -208,7 +208,7 @@ SPAN.smallText, P.smallText {
 .smallText img{ overflow:hidden; margin-top:5px;}
 .smallText h3{ border:0;}
 div.headerNavigation {
-    font-size: 12px;
+    font-size: 14px;
 	padding-top:10px;                                                       
 }
 /* ---------------------------
@@ -551,7 +551,6 @@ form {
 }
 .comment {
     width:95%;
-	line-height:1.5
 }
 .main h3 {
     height:12px;
@@ -1159,17 +1158,18 @@ searching
 }
 .faq_back { 
 	margin-left:380px; 
-	margin-bottom:10px;
-	*margin:5px 0 5px 380px;
+	margin-bottom:20px;
 }
 .header_Navigation { margin:5px; color:#339966; padding-top:10px; width:450px; line-height:20px; font-size:14px; float:left; word-wrap:break-word;}
 .header_Navigation a { color:#339966;}
 .cemail_input_01 { float:left; width:150px;}
 .comment_preoder { width:95%;}
-.preorder_active_info{ background-color:#ccc; line-height:20px; font-size:14px; margin:8px 0 12px 0;}
+.preorder_active_info{ background-color:#ccc; line-height:20px; font-size:14px;}
 .preorder_active_info td{ background-color:#000; padding-left:2px;}
 .preorder_active_line { border-bottom:1px dashed #fff; margin:0 0 15px 0;}
-.preorderBarcurrent,.preorderBarTo,.preorderBarFrom{ font-size:12px; padding-top:5px;}
+.preorderBarcurrent{ font-size:12px;}
+.preorderBarTo{ font-size:12px;}
+.preorderBarFrom { font-size:12px;}
 .input_text_short{   
 	height: 20px;
     text-align: right;
@@ -1577,21 +1577,11 @@ TEXTAREA {
 	margin-left:3px;
 }
 .form_error{margin:0px 0 6px 3px;}
-.red_border{
+.prompt_box{
 	font-size:12px;
 	line-height:14px;
-	margin:5px 0 85px 0;
+	margin:5px 0 80px 1px;
 	border:1px solid #ff8e90;
 	background-color:#FFE9E9;
 	padding:5px;
-	color:#656565;
-}
-.red_box{
-	font-size:12px;
-	line-height:14px;
-	margin:5px 0 -15px 0;
-	*margin:5px 0 -12px 0;
-	border:1px solid #ff8e90;
-	background-color:#FFE9E9;
-	color:#656565;
 }

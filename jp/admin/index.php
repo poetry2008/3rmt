@@ -20,22 +20,25 @@ while($row=tep_db_fetch_array($query)){
   $note_arr[] = $row['id'];
   $height_arr[] = $ylen+$top+10;
   $time = strtotime($row['addtime']);
+  $attribute = $row['attribute'];
+  $attribute_image = $attribute == 1 ? '<image id="image_id_'.$row['id'].'" alt="'.TEXT_ATTRIBUTE_PUBLIC.'" src="images/icons/public.gif">' : '<image id="image_id_'.$row['id'].'" alt="'.TEXT_ATTRIBUTE_PRIVATE.'" src="images/icons/private.gif">';
   $notes.= '
     <div id="note_'.$row['id'].'" ondblclick="changeLayer(this);" class="note '.$row['color'].'" 
     style="left:'.$left.'px;top:'.$top.'px;z-index:'.$zindex.';height:'.$ylen.'px;width:'.$xlen.'px">
     <div class="note_head">
     <div id="note_title_'.$row['id'].'" class="note_title">
-    <input type="button" onclick="note_save_text(\''.$row['id'].'\')"
-     value=" '.IMAGE_SAVE.'" >&nbsp;&nbsp;'.$row['title'].'&nbsp;&nbsp;
+    '.$attribute_image.'&nbsp;&nbsp;'.$row['title'].'<br>
     '.substr($row['addtime'],0,strlen($row['addtime'])-3).'
     </div><div class="note_close">
     <input type="hidden" value="'.$row['id'].'" class="hidden">
     <input type="image" onclick="note_desplay_none(\''.$row['id'].'\')" alt="close"
     src="images/icons/note_close.gif"></div>
     </div><div id="note_text_'.$row['id'].'" class="note_textarea"
-    style="height:'.($ylen-37).'px">'
+    style="height:'.($ylen-71).'px">'
     .'<textarea style="overflow:auto;resize: none;font-size:11px;" id="note_textarea_'.$row['id'].'">'
-    .trim(htmlspecialchars($row['content'])).'</textarea></div>
+    .trim(htmlspecialchars($row['content'])).'</textarea>
+    <br><div class="note_save"><input type="button" onclick="note_save_text(\''.$row['id'].'\')" value=" '.IMAGE_SAVE.'" ></div>
+    </div>
     </div>';
 }
 //end nodes

@@ -368,7 +368,14 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
   $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
   $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
   $belong = preg_replace('/\?XSID=[^&]+/','',$belong);
-  $belong = preg_replace('/\??&cID=[^&]+/','',$belong);
+  //$belong = preg_replace('/\??&cID=[^&]+/','',$belong);
+  preg_match_all('/\??&?cPath=[^&]+/',$belong,$belong_array);
+  if($belong_array[0][0] != ''){
+
+    $belong = $href_url.$belong_array[0][0];
+  }else{
+    $belong = $href_url;
+  }
   $belong = str_replace('&','|||',$belong);
   if($href_url == FILENAME_CATEGORIES_ADMIN || $href_url == FILENAME_CATEGORIES){
     echo '<td><a class="headerLink" href="add_note.php?author='.$user_info['name'].'&belong='.$belong.'" id="fancy">'.TEXT_ADD_NOTE.'</a>&nbsp;|</td>';
