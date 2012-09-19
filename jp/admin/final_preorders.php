@@ -78,7 +78,7 @@
   $customer_point = tep_db_fetch_array($customer_point_query);
   // ゲストチェック
   $customer_guest_query = tep_db_query("
-      select customers_guest_chk 
+      select customers_guest_chk, is_send_mail, is_calc_quantity 
       from " . TABLE_CUSTOMERS . " 
       where customers_id = '" . $order->customer['id'] . "'");
   $customer_guest = tep_db_fetch_array($customer_guest_query);
@@ -711,7 +711,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         $ot_sub_total
       ),$email);
       
-      if ($customer_guest['customers_guest_chk'] != 9) {
+      if ($customer_guest['is_send_mail'] != '1') {
         if ($status == 32) {
           $site_url_raw = tep_db_query("select * from sites where id = '".$order->info['site_id']."'"); 
           $site_url_res = tep_db_fetch_array($site_url_raw); 

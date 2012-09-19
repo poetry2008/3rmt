@@ -223,7 +223,9 @@
           $ot_sub_total
         ),$comments
         );
-        if (!tep_is_oroshi($check_status['customers_id'])) {
+        $customer_info_raw = tep_db_query("select is_send_mail from ".TABLE_CUSTOMERS." where customers_id = '".$check_status['customers_id']."'"); 
+        $customer_info_res = tep_db_fetch_array($customer_info_raw); 
+        if ($customer_info_res['is_send_mail'] != '1') {
           if ($status == 32) {
             $site_url_raw = tep_db_query("select * from sites where id = '".$site_id."'"); 
             $site_url_res = tep_db_fetch_array($site_url_raw); 
@@ -512,7 +514,9 @@
         $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']),
         $ot_sub_total
       ),$comments);
-      if (!tep_is_oroshi($check_status['customers_id'])) {
+      $customer_info_raw = tep_db_query("select is_send_mail from ".TABLE_CUSTOMERS." where customers_id = '".$check_status['customers_id']."'"); 
+      $customer_info_res = tep_db_fetch_array($customer_info_raw); 
+      if ($customer_info_res['is_send_mail'] != '1') {
         if ($status == 32) {
           $site_url_raw = tep_db_query("select * from sites where id = '".$site_id."'"); 
           $site_url_res = tep_db_fetch_array($site_url_raw); 
