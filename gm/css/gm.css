@@ -1488,7 +1488,12 @@ top:70px;
 .red_border{
 	font-size:12px;
 	margin:5px 0 80px 1px;
+	background-color: #FFE9E9;
+    border: 1px solid #FF8E90;
+    font-size: 11px;
+	width:100%;
 }
+#main-content .red_border{ color:#656565; line-height:18px;}
 .red_box{
 	font-size:12px;
 	margin-top:5px;
