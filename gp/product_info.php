@@ -104,12 +104,9 @@ function select_item_radio(i_obj, t_str, o_str, p_str, r_price)
 function change_num(ob,targ, quan, a_quan)
 {
   var product_quantity = document.getElementById(ob);
-  if(isNaN(parseInt(product_quantity.value))){
-    if(isNaN(parseInt(dbc2sbc(product_quantity.value)))){
-      product_quantity.value = quan;
-    }else{
-      product_quantity.value = dbc2sbc(product_quantity.value);
-    }
+  product_quantity.value = dbc2sbc(product_quantity.value);
+  if(isNaN(product_quantity.value)||product_quantity.value==''){
+    product_quantity.value = 0;
   }
   var product_quantity_num = parseInt(product_quantity.value);
   if (targ == 'up') { 
@@ -118,13 +115,13 @@ function change_num(ob,targ, quan, a_quan)
     } else {
       num_value = product_quantity_num + quan; 
     }
-  } else if(targ == 'down'){
+  } else if(targ == 'down') {
     if (product_quantity_num <= 1) {
       num_value = product_quantity_num;
     } else { 
       num_value = product_quantity_num - quan;
     }
-  } else {
+  }else {
     num_value = product_quantity.value;
   }
 
@@ -438,12 +435,12 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
     ?>
                         <table width="100%"  border="0" cellpadding="3" cellspacing="1" summary="rmt_text">
                           <tr>
+                          <?php $p_a_quan = $product_info['products_quantity'];?>
                           <td class="main" valign="middle" width="85"><b><?php echo TEXT_PRODUCTS_QTY;?></b></td>
                             <td colspan="2"><table background="0" cellpadding="0" cellspacing="0"><tr>
-                            <td class="main" valign="middle"><input name="quantity" type="text" id="quantity" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1)?>" class="input_text_short"></td>
+                            <td class="main" valign="middle"><input name="quantity" type="text" id="quantity" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1)?>" class="input_text_short" onchange="change_num('quantity','','',<?php echo $p_a_quan;?>)"></td>
                             <td valign="middle">
                               <div style="*margin-top:-3px;">
-              <?php $p_a_quan = $product_info['products_quantity'];?>
                                 <a style="display:block;" href="javascript:void(0)" onClick="change_num('quantity','up',1,<?php echo $p_a_quan;?>);return false;"><img src="images/ico/nup.gif" alt="+"></a>
                                 <a style="display:block;" href="javascript:void(0)" onClick="change_num('quantity','down', 1,<?php echo $p_a_quan;?>);return false;"><img src="images/ico/ndown.gif" alt="-"></a>
                               </div>

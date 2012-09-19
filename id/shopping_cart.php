@@ -167,12 +167,12 @@ function money_blur_update(objid, o_num, old_small)
   
   var old_price_total  = document.getElementById("pri_" + product_id);
      
+  obj.value = dbc2sbc(obj.value);
+  if(obj.value==''){
+    obj.value = 0;
+  }
   if(isNaN(parseInt(obj.value))){
-    if(isNaN(parseInt(dbc2sbc(obj.value)))){
-      obj.value = o_num;
-    }else{
-      obj.value = dbc2sbc(obj.value);
-    }
+    obj.value = o_num;
   }
     
   var small_sum = document.getElementById("small_sum_" + product_id);
