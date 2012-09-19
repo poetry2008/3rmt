@@ -38,5 +38,5 @@ define('PRODUCTS_WEIGHT_ERROR_THREE','商品を削除するか、または個数
 define('PRODUCTS_WEIGHT_ERROR_FOUR','）kg以内にしてください。');
 define('PREORDER_SELECT_EMPTY_OPTION', '希望日を選択してください');
 define('PREORDER_CONFIRM_LINE_TITLE', '最終確認');
-define('PREORDER_FINISH_LINE_TITLE', '手続き完了！');
-
+define('PREORDER_FINISH_LINE_TITLE', '手続完了！');
+define('TEXT_NOSCRIPT_INFO','<font color="red"><b>JavaScriptを有効に設定してからご利用ください。</b></font><br>セキュリティソフトの誤操作等により、お客様が意図しない設定に変更される事もあります。操作に覚えが無い場合でも設定をご確認ください。<br>設定方法がわからない場合は、FirefoxやChromeなどのブラウザをダウンロードしてご利用ください。当ショッピングシステムは、ブラウザの初期設定のままで動作するように作られております。');

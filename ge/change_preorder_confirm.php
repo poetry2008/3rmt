@@ -176,6 +176,9 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
         <!-- left_navigation_eof --> </div> 
       <!-- body_text --> 
       <div id="content"> 
+      <div class="headerNavigation">
+      <?php echo $breadcrumb->trail(' &raquo; ');?>
+      </div>
           <h1 class="pageHeading"><?php echo NAVBAR_CHANGE_PREORDER_TITLE;?></h1> 
           <div class="comment">
           <table border="0" cellspacing="0" cellpadding="0" border="0" width="90%" align="center">
@@ -402,7 +405,6 @@ foreach($all_show_option_id as $t_item_id){
               </td>
             </tr>
           </table>
-          <br>
 <?php
                     if($weight_total > 0){
 ?>
@@ -435,7 +437,6 @@ foreach($all_show_option_id as $t_item_id){
               </td>
             </tr>
           </table>
-          <br> 
 <?php
 }
 ?>
@@ -500,7 +501,6 @@ foreach($all_show_option_id as $t_item_id){
               </td>
             </tr>
           </table>
-          <br> 
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main" width="50%" valign="top">
@@ -727,7 +727,6 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
               </td>
             </tr>
           </table>
-          <br> 
           <table width="100%" cellpadding="0" cellspacing="0" border="0" class="c_pay_info">
             <tr>
               <td class="main">
