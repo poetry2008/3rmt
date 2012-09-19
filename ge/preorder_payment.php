@@ -138,6 +138,9 @@ $(document).ready(function(){
 <?php
   } else {
 ?>
+      <div class="headerNavigation">
+      <?php echo $breadcrumb->trail(' &raquo; ');?>
+      </div>
       <h1 class="pageHeading"><?php echo $po_game_c . '&nbsp;' . $product_info['products_name'].TEXT_PREORDER_BOOK; ?></h1>
             <div class="comment">
       <p>

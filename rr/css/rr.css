@@ -1398,7 +1398,6 @@ TABLE：Info Box
 	padding:2px;
 	color:#fff;
 }
-.product_info_box table{ color:#fff;}
 .order_details{
 	width:100%;
 	margin:5px auto;
@@ -2291,11 +2290,20 @@ border:1px solid #CAC6BE;
 }
 .sort img{ margin:-2px 0 0 5px;}
 .sort td{ width:25%;}
-.prompt_box{
+.red_border{
 	font-size:12px;
 	line-height:14px;
-	margin:5px 0 80px 1px;
+	margin:5px 0 64px 0;
 	border:1px solid #ff8e90;
 	background-color:#F8C2C2;
 	padding:5px;
+	color:#656565;
+}
+.red_box{
+	font-size:12px;
+	line-height:14px;
+	margin:5px 0 -10px 0;
+	border:1px solid #ff8e90;
+	background-color:#F8C2C2;
+	color:#656565;
 }

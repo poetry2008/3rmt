@@ -2481,11 +2481,19 @@ line-height:21px;
 }
 .sort img{ margin:-5px 0 0 5px;}
 .sort td{ width:25%;}
-.prompt_box{
+.red_border{
 	font-size:12px;
 	line-height:14px;
-	margin:5px 0 80px 1px;
+	margin:5px 0 50px 0;
 	border:1px solid #ff8e90;
 	background-color:#FFE9E9;
 	padding:5px;
+}
+.red_box{
+	font-size:12px;
+	line-height:14px;
+	margin:5px 0 -10px 0;
+	*margin:5px 0 -6px 0;
+	border:1px solid #ff8e90;
+	background-color:#FFE9E9;
 }

@@ -1369,6 +1369,17 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
     $orders_query_raw = " select distinct op.orders_id from " . TABLE_ORDERS_PRODUCTS . " op ".$sort_table." where ".$sort_where." op.products_id='".$_GET['products_id']."'";
 
     $orders_query_raw .= (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and op.site_id = '" . intval($_GET['site_id']) . "' " : '') . " order by op.torihiki_date DESC";
+  }  elseif (isset($_GET['keywords']) && isset($_GET['search_type']) && $_GET['search_type'] == 'sproducts_id' ) {
+    $orders_query_raw = " select distinct op.orders_id from " . TABLE_ORDERS_PRODUCTS . " op
+      ,".TABLE_ORDERS." o 
+      ".$sort_table." where ".$sort_where." 
+      o.orders_id = op.orders_id and op.products_id ";
+    $orders_query_raw .=  "= '".$_GET['keywords']."' " ;
+    $orders_query_raw .= " and o.finished = '0' and date(o.date_purchased) >
+      '".date('Y-m-d',strtotime('-8day'))."' ";
+    $orders_query_raw .= (isset($_GET['site_id']) &&
+        intval($_GET['site_id']) ? " and op.site_id = '" . intval($_GET['site_id'])
+        . "' " : '') . " order by op.torihiki_date DESC";
   } elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && preg_match('/^os_\d+$/', $_GET['search_type'])))) {
     if (!empty($_GET['keywords'])) {
       $orders_query_raw = "

@@ -1964,11 +1964,17 @@ searching
 .font-size12{ font-size:12px;}
 .sort img{ margin:-2px 0 0 5px;}
 .sort td{ width:25%;}
-.prompt_box{
-	font-size:12px;
-	line-height:14px;
-	margin:5px 0 80px 1px;
+.red_border{
+	font-size:11px;
+	margin:5px 0 0 0;
 	border:1px solid #ff8e90;
 	background-color:#FFE9E9;
 	padding:5px;
 }
+.red_box{
+	font-size:11px;
+	margin:5px 0 -7px 0;
+	border:1px solid #ff8e90;
+	background-color:#FFE9E9;
+}
+

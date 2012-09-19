@@ -44,7 +44,7 @@
       );
       if (tep_db_num_rows($categories_query) > 0) {
         $categories_info = tep_db_fetch_array($categories_query); 
-        
+
         if ($cnum == 0) {
           $categories_name = $categories_info['categories_name']; 
         }
@@ -69,6 +69,9 @@
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
       </div>
       <div id="content">
+      <div class="headerNavigation">
+      <?php echo $breadcrumb->trail(' &raquo; ');?>
+      </div>
         <h1 class="pageHeading">
         <?php 
           echo PREORDER_SUCCESS_ACTIVE_HEAD_TITLE;
@@ -77,8 +80,8 @@
         <div class="comment">
         <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-          <td style="font-size:15px; color:#ff0000;">
-            <br><?php echo PREORDER_ACTIVE_SUCCESS_READ_HEAD.'<br><br>';?> 
+          <td style="color:#ff0000;">
+            <?php echo PREORDER_ACTIVE_SUCCESS_READ_HEAD.'<br>';?> 
           </td>
           </tr>
           <tr>
@@ -144,7 +147,6 @@
               </td>
             </tr>
             </table>
-            <br>
             </td>
           </tr>
           <tr>
@@ -155,7 +157,7 @@
             </td>
           </tr>
           <tr>
-            <td><br>
+            <td>
                   <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                     <tr> 
                       <td class="main" align="right"><?php echo '<a href="' .tep_href_link(FILENAME_DEFAULT). '">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td> 

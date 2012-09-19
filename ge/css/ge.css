@@ -208,7 +208,7 @@ SPAN.smallText, P.smallText {
 .smallText img{ overflow:hidden; margin-top:5px;}
 .smallText h3{ border:0;}
 div.headerNavigation {
-    font-size: 14px;
+    font-size: 12px;
 	padding-top:10px;                                                       
 }
 /* ---------------------------
@@ -551,6 +551,7 @@ form {
 }
 .comment {
     width:95%;
+	line-height:1.5
 }
 .main h3 {
     height:12px;
@@ -1120,7 +1121,6 @@ searching
 }
 .active_email_name{ width:80px;}
 .active_email input{ width:300px; width:220px\9;}
-/*faq*/
 .comment_faq {
     font-size: 14px;
 	font-weight:bold;
@@ -1129,47 +1129,24 @@ searching
     padding: 5px 5px 0;
     width: 450px;
 }
-.faq_question{
-	padding:5px;
-}
 .faq_question_row {
-   width:400px;  
-   word-wrap:break-word; 
-   word-break:break-all; 
-   overflow:hidden; 
-   display:block; 
-   float:left;
-   font-size:14px;
-   line-height:21px;
+    margin-bottom: 5px;
 }
+.faq_question_row_div { width:420px; width:410px\9;}
+.faq_question_row div { float:left;}
+.faq_question_row div span a { color:#FF4500; line-height:21px; font-size:14px;  width:280px; width:400px\9;}
+.faq_back { margin-left:380px; margin-bottom:20px;}
 .faq_answer { padding:5px;}
-.faq_answer_row { 
-	width:400px;  
-	word-wrap:break-word; 
-	word-break:break-all; 
-	overflow:hidden; 
-	display:block; 
-	float:left;
-	font-size:14px;
-    line-height:21px;
-}
-.faq_answer img, .faq_question img{
-	margin-top:3px;
-}
-.faq_back { 
-	margin-left:380px; 
-	margin-bottom:20px;
-}
+.faq_answer div { float:left;}
+.faq_answer_row { width:400px;  word-wrap:break-word; word-break:break-all; overflow:hidden; display:block; float:left;}
 .header_Navigation { margin:5px; color:#339966; padding-top:10px; width:450px; line-height:20px; font-size:14px; float:left; word-wrap:break-word;}
 .header_Navigation a { color:#339966;}
 .cemail_input_01 { float:left; width:150px;}
 .comment_preoder { width:95%;}
-.preorder_active_info{ background-color:#ccc; line-height:20px; font-size:14px;}
+.preorder_active_info{ background-color:#ccc; line-height:20px; font-size:14px; margin:8px 0 12px 0;}
 .preorder_active_info td{ background-color:#000; padding-left:2px;}
 .preorder_active_line { border-bottom:1px dashed #fff; margin:0 0 15px 0;}
-.preorderBarcurrent{ font-size:12px;}
-.preorderBarTo{ font-size:12px;}
-.preorderBarFrom { font-size:12px;}
+.preorderBarcurrent,.preorderBarTo,.preorderBarFrom{ font-size:12px; padding-top:5px;}
 .input_text_short{   
 	height: 20px;
     text-align: right;
@@ -1577,11 +1554,21 @@ TEXTAREA {
 	margin-left:3px;
 }
 .form_error{margin:0px 0 6px 3px;}
-.prompt_box{
+.red_border{
 	font-size:12px;
 	line-height:14px;
-	margin:5px 0 80px 1px;
+	margin:5px 0 85px 0;
 	border:1px solid #ff8e90;
 	background-color:#FFE9E9;
 	padding:5px;
+	color:#656565;
+}
+.red_box{
+	font-size:12px;
+	line-height:14px;
+	margin:5px 0 -15px 0;
+	*margin:5px 0 -12px 0;
+	border:1px solid #ff8e90;
+	background-color:#FFE9E9;
+	color:#656565;
 }

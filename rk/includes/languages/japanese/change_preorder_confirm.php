@@ -21,4 +21,4 @@ define('TEXT_SHIPPING_FEE','配送料:');
 define('TEXT_SHIPPING_FEE_FREE','無料');
 define('PREORDER_TRADER_LINE_TITLE', '配送方法');
 define('PREORDER_CONFIRM_LINE_TITLE', '最終確認');
-define('PREORDER_FINISH_LINE_TITLE', '手続き完了！');
+define('PREORDER_FINISH_LINE_TITLE', '手続完了！');

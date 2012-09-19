@@ -1,5 +1,7 @@
 <?php
-define('HEADING_TITLE', 'パスワード再発行手続き');
+define('HEADING_TITLE', 'パスワード再発行メール送信完了');
+define('NAVBAR_TITLE_1', 'ログイン');
+define('NAVBAR_TITLE_2', 'パスワード再発行手続き');
 define('NOTICE_SEND_TO_EMAIL_TEXT', '<b>%sにメールを送信しました</b>');
 define('ACTIVE_INFO_FRONT_COMMENT', '<font color="red">メールアドレスに間違いがあった場合は、下記フォームより正しいメールアドレスに修正後「送信」ボタンをクリックしてください。</font>');
 define('ACTIVE_INFO_END_COMMENT', 'メールが届きましたら、メールの本文の「パスワード再発行URL」をクリックしてください。<br>URLをクリックしても、画面が正しく表示されないときは、メール内のURLをコピーしブラウザのアドレス入力欄に貼り付けてください。');

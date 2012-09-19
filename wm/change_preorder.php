@@ -1181,14 +1181,26 @@ document.forms.order1.submit();
               <td class="main" id="shipping_list_show">
 </td>
 </tr>
-<tr><td class="main">&nbsp;</td><td class="main">
-             <?php  
-             if (isset($time_error)) {
-                echo '<font id="time_error" color="#ff0000">'.$time_error.'</font>'; 
-             } 
-             ?> 
+<?php
+if (isset($time_error)) {
+?>
+<tr id="time_error_id"><td class="main">&nbsp;</td><td class="main">
+<?php
+  echo '<font id="time_error" color="#ff0000">'.$time_error.'</font>'; 
+?>
 </td></tr>
-          </table>  
+<?php
+}
+?>
+          </table> 
+<noscript>
+              <table cellpadding="2" cellspacing="2" border="0" class="red_box">
+              <tr>
+              <td><?php echo TEXT_NOSCRIPT_INFO;?></td>
+              </tr>
+              </table>
+              </noscript>
+
 <table border="0" cellpadding="2" cellspacing="2" style=" position:absolute; width:500px;">
             <tr id="shipping_list_min" style="display:none;">
               <td class="main" width="150">&nbsp;<input type="hidden" id="ele_id" name="ele" value=""></td> 
