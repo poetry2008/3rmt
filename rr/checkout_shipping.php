@@ -1529,7 +1529,7 @@ function check_point(point_num) {
 ?>
 </table>
 <noscript>
-<table cellpadding="0" cellspacing="0" border="0" width="100%" class="prompt_box">
+<table cellpadding="0" cellspacing="0" border="0" width="100%" class="red_border">
 <tr>
 <td><?php echo TEXT_NOSCRIPT_INFO;?></td>
 </tr>

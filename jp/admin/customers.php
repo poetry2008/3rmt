@@ -27,6 +27,10 @@
         $customers_gender        = tep_db_prepare_input($_POST['customers_gender']);
         $customers_dob           = tep_db_prepare_input($_POST['customers_dob']);
         $customers_is_seal           = tep_db_prepare_input($_POST['is_seal']);
+        
+        $customers_pic_icon           = tep_db_prepare_input($_POST['pic_icon']);
+        $customers_is_send_mail           = tep_db_prepare_input($_POST['is_send_mail']);
+        $customers_is_calc_quantity          = tep_db_prepare_input($_POST['is_calc_quantity']);
         if ($_POST['reset_flag'] == 'on') {
 	$reset_flag = 1;
         $reset_success = 0;
@@ -44,7 +48,11 @@
                                 'reset_flag'           => $reset_flag,
                                 'reset_success'           => $reset_success,
                                 'customers_newsletter'    => $customers_newsletter,
-                                'is_seal' => $customers_is_seal);
+                                'is_seal' => $customers_is_seal,
+                                'pic_icon' => $customers_pic_icon,
+                                'is_send_mail' => $customers_is_send_mail,
+                                'is_calc_quantity' => $customers_is_calc_quantity,
+                                );
 
         if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $customers_gender;
         if (ACCOUNT_DOB    == 'true') $sql_data_array['customers_dob']    = tep_date_raw($customers_dob);
@@ -323,6 +331,9 @@ function check_form() {
                c.is_seal,
 	       c.is_quited,
 	       c.quited_date,
+	       c.pic_icon,
+	       c.is_send_mail,
+	       c.is_calc_quantity,
                s.romaji,
                s.name as site_name
         from " . TABLE_CUSTOMERS . " c 
@@ -567,7 +578,56 @@ function check_form() {
           </tr>
         </table></td>
       </tr>
-
+      <tr>
+        <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+      </tr>   
+      <tr>
+        <td class="formArea"><table border="0" cellspacing="2" cellpadding="2">
+          <tr>
+            <td class="main"><?php echo CUSTOMER_PIC_TEXT; ?></td>
+            <td class="main">
+            <?php
+            $dh = opendir(DIR_FS_DOCUMENT_ROOT.DIR_WS_CATALOG_IMAGES.'icon_list'); 
+            echo '<ul class="table_img_list">'; 
+            if ($dh) {
+              while (($file_str = readdir($dh)) !== false) {
+                if ($file_str != '.' && $file_str != '..') {
+                  echo '<li><input type="radio" name="pic_icon" value="'.$file_str.'"'.(($cInfo->pic_icon == $file_str)?' checked':'').'><img src="images/icon_list/'.$file_str.'" alt="pic"></li>'; 
+                }
+              }
+            }
+            echo '</ul>'; 
+            ?>
+            </td>
+          </tr>
+        </table></td>
+      </tr>
+      <tr>
+        <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+      </tr>   
+      <tr>
+        <td class="formArea"><table border="0" cellspacing="2" cellpadding="2">
+          <tr>
+            <td class="main"><?php echo CUSTOMER_NO_SEND_MAIL_TEXT; ?></td>
+            <td class="main">
+            <input type="checkbox" name="is_send_mail" value="1"<?php echo ($cInfo->is_send_mail)?' checked':'';?>> 
+            </td>
+          </tr>
+        </table></td>
+      </tr>
+      <tr>
+        <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+      </tr>   
+      <tr>
+        <td class="formArea"><table border="0" cellspacing="2" cellpadding="2">
+          <tr>
+            <td class="main"><?php echo CUSTOMER_CALC_QUANTITY_TEXT; ?></td>
+            <td class="main">
+            <input type="checkbox" name="is_calc_quantity" value="1"<?php echo ($cInfo->is_calc_quantity)?' checked':'';?>> 
+            </td>
+          </tr>
+        </table></td>
+      </tr>
       <tr>
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
       </tr>   

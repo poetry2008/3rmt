@@ -1573,16 +1573,17 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
   }
 ?>
 </table>
-<noscript>
-<table cellpadding="0" cellspacing="0" border="0" width="100%" class="prompt_box">
+          </td> 
+                </tr> 
+              </table>
+			  <noscript>
+<table cellpadding="0" cellspacing="0" border="0" width="100%" class="red_border">
 <tr>
 <td><?php echo TEXT_NOSCRIPT_INFO;?></td>
 </tr>
 </table>
 </noscript>
-          </td> 
-                </tr> 
-              </table></td> 
+			  </td> 
           </tr>  
           <?php
           if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true'  && $cart->show_total() > 0) {

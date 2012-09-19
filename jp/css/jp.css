@@ -2477,7 +2477,7 @@ searching
 	background: url(../images/q.gif) left 4px no-repeat;
 	padding-left:28px;
 	padding-left:8px\9;
-	line-height:21px;
+	line-height:25px;
 }
 .faq_li_question a{
 	margin-left:5px\9;
@@ -2493,7 +2493,7 @@ searching
 	list-style-type:none;
 	background: url(../images/a.gif) no-repeat left 4px;
 	padding-left:28px;
-	line-height:21px;
+	line-height:25px;
 	*width:100%;
 }
 .faq_info_li_question{
@@ -2501,7 +2501,7 @@ searching
 	background: url(../images/q.gif) left 4px no-repeat;
 	padding-left:28px;
 	padding-left:15px\9;
-	line-height:21px;
+	line-height:25px;
 }
 .faq_empty{
 	margin-left:12px;
@@ -2781,11 +2781,21 @@ searching
 }
 .sort img{ margin:-5px 0 0 5px;}
 .sort td{ width:25%;}
-.prompt_box{
+.red_border{
 	font-size:12px;
 	line-height:14px;
-	margin:5px 0 80px 1px;
+	margin:5px 0 4px 0;
 	border:1px solid #ff8e90;
 	background-color:#FFE9E9;
 	padding:5px;
+	width:100%;
+}
+.red_box{
+	font-size:12px;
+	line-height:14px;
+	margin:5px 0 -8px 0;
+	*margin:5px 0 -10px 0;
+	border:1px solid #ff8e90;
+	background-color:#FFE9E9;
+	width:100%;
 }

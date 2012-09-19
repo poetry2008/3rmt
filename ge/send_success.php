@@ -8,6 +8,8 @@
   require('includes/application_top.php');
   
   require(DIR_WS_LANGUAGES . $language . '/send_success.php');
+  $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_LOGIN, '', 'SSL'));
+  $breadcrumb->add(NAVBAR_TITLE_2, tep_href_link(FILENAME_PASSWORD_FORGOTTEN, '', 'SSL'));
   $breadcrumb->add(HEADING_TITLE);
 ?>
 <?php page_head();?>

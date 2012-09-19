@@ -43,3 +43,6 @@ define('CUSTOMER_RESET', 'パスワード変更依頼');
 define('TEXT_USER_ADDED','アカウント作成者:');
 define('TEXT_USER_UPDATE','アカウント更新者:');
 define('CUSTOMER_IS_SEAL','注文禁止');
+define('CUSTOMER_PIC_TEXT', '画像');
+define('CUSTOMER_NO_SEND_MAIL_TEXT', 'メールを送信しない');
+define('CUSTOMER_CALC_QUANTITY_TEXT', '在庫数量の増減を自動計算しない');

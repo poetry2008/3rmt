@@ -87,7 +87,7 @@ $customer_point = tep_db_fetch_array($customer_point_query);
 // ゲストチェック
 // 获取客户 是否为注册用户
 $customer_guest_query = tep_db_query("
-    select customers_guest_chk 
+    select customers_guest_chk, is_send_mail, is_calc_quantity  
     from " . TABLE_CUSTOMERS . " 
     where customers_id = '" . $customer_id_flag . "'");
 $customer_guest = tep_db_fetch_array($customer_guest_query);
@@ -357,7 +357,7 @@ if($orders_exit_flag == true){
                 get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
                 date('Y'.TEXT_DATE_YEAR.'n'.TEXT_DATE_MONTH.'j'.TEXT_DATE_DAY,strtotime(tep_get_pay_day()))
               ),$comments);
-        if (!tep_is_oroshi($check_status['customers_id'])) {
+        if ($customer_guest['is_send_mail'] != '1') {
 
           tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
         }
@@ -725,8 +725,9 @@ if($address_error == false){
           } else {
             $pr_quantity -= $tmp_quantity;
           } 
-            if(!tep_is_oroshi($check_status['customers_id']))
+            if($customer_guest['is_calc_quantity'] != '1') {
               tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = ".$pr_quantity.", products_virtual_quantity = ".$pv_quantity.", products_ordered = products_ordered + " . $tmp_quantity . " where products_id = '" . (int)$order['products_id'] . "'");
+            }
             tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
             tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
         } else {
@@ -755,8 +756,9 @@ if($address_error == false){
               }
             }
             // 如果是业者，不更新
-              if(!tep_is_oroshi($check_status['customers_id']))
+              if($customer_guest['is_calc_quantity'] != '1') {
                 tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = ".$pr_quantity.", products_virtual_quantity = ".$pv_quantity.", products_ordered = products_ordered + " . $quantity_difference . " where products_id = '" . (int)$order['products_id'] . "'");
+              } 
               tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
               tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
           }
@@ -1126,7 +1128,7 @@ if($address_error == false){
 
 
 
-          if ($customer_guest['customers_guest_chk'] != 9)
+          if ($customer_guest['is_send_mail'] != '1')
           {
           $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
           $newarr = array(TEXT_DATE_MONDAY, TEXT_DATE_TUESDAY, TEXT_DATE_WEDNESDAY, TEXT_DATE_THURSDAY, TEXT_DATE_FRIDAY, TEXT_DATE_STATURDAY, TEXT_DATE_SUNDAY);
@@ -1223,7 +1225,7 @@ if($address_error == false){
                   payment::changeRomaji($payment_method,PAYMENT_RETURN_TYPE_CODE),
                 $order,$total_price_mail);
           if($email_credit){
-            if ($customer_guest['customers_guest_chk'] != 9){
+            if ($customer_guest['is_send_mail'] != '1'){
                 tep_mail($check_status['customers_name'], $check_status['customers_email_address'], TEXT_CARD_PAYMENT . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email_credit, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']), $order->info['site_id']);
             }
               tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), TEXT_SEND_MAIL_CARD_PAYMENT . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email_credit, $check_status['customers_name'], $check_status['customers_email_address'], $order->info['site_id']);

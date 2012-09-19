@@ -572,6 +572,7 @@ padding-top:5px;
 .header_Navigation {
 	height: 22px;
 	background: url(../images/design/header/header_navigation_content_bg.gif) repeat-x;
+	font-size:12px;
 }
 .header_navigation_left {
 	width: 49px;
@@ -2606,11 +2607,19 @@ searching
 .input_box input,.input_box span{
   float:left;
 }
-.prompt_box{
+.red_border{
 	font-size:12px;
 	line-height:14px;
-	margin:5px 0 80px 1px;
+	margin:5px 0 65px 0;
 	border:1px solid #ff8e90;
 	background-color:#FFE9E9;
 	padding:5px;
+}
+.red_box{
+	font-size:12px;
+	line-height:14px;
+	margin:5px 0 -9px 0;
+	*margin:5px 0 -7px 0;
+	border:1px solid #ff8e90;
+	background-color:#FFE9E9;
 }

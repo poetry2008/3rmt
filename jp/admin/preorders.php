@@ -223,7 +223,9 @@
           $ot_sub_total
         ),$comments
         );
-        if (!tep_is_oroshi($check_status['customers_id'])) {
+        $customer_info_raw = tep_db_query("select is_send_mail from ".TABLE_CUSTOMERS." where customers_id = '".$check_status['customers_id']."'"); 
+        $customer_info_res = tep_db_fetch_array($customer_info_raw); 
+        if ($customer_info_res['is_send_mail'] != '1') {
           if ($status == 32) {
             $site_url_raw = tep_db_query("select * from sites where id = '".$site_id."'"); 
             $site_url_res = tep_db_fetch_array($site_url_raw); 
@@ -512,7 +514,9 @@
         $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']),
         $ot_sub_total
       ),$comments);
-      if (!tep_is_oroshi($check_status['customers_id'])) {
+      $customer_info_raw = tep_db_query("select is_send_mail from ".TABLE_CUSTOMERS." where customers_id = '".$check_status['customers_id']."'"); 
+      $customer_info_res = tep_db_fetch_array($customer_info_raw); 
+      if ($customer_info_res['is_send_mail'] != '1') {
         if ($status == 32) {
           $site_url_raw = tep_db_query("select * from sites where id = '".$site_id."'"); 
           $site_url_res = tep_db_fetch_array($site_url_raw); 
@@ -2096,7 +2100,15 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
         order by ".$order_str;
     }  elseif (isset($_GET['keywords']) && isset($_GET['search_type']) && $_GET['search_type'] == 'products_name' && !$_GET['type'] && !$payment) {
       $orders_query_raw = " select distinct op.orders_id from " .  TABLE_PREORDERS_PRODUCTS . " op, ".TABLE_PREORDERS." o ".$sort_table." where ".$sort_where." op.orders_id = o.orders_id and op.products_name like '%".$_GET['keywords']."%' " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and op.site_id = '" . intval($_GET['site_id']) . "' " : '') . " order by ".$order_str;
-    } elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && preg_match('/^os_\d+$/', $_GET['search_type'])))) {
+    }  elseif (isset($_GET['keywords']) && isset($_GET['search_type']) &&
+        $_GET['search_type'] == 'sproducts_id' && !$_GET['type'] && !$payment) {
+      $orders_query_raw = " select distinct op.orders_id from " .  
+        TABLE_PREORDERS_PRODUCTS . " op, ".TABLE_PREORDERS." o ".
+        $sort_table." where ".$sort_where." op.orders_id = o.orders_id 
+        and op.products_id = '".$_GET['keywords']."' " .
+        (isset($_GET['site_id']) && intval($_GET['site_id']) ? " 
+         and op.site_id = '" . intval($_GET['site_id']) . "' " : '') . " order by ".$order_str;
+    }elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && preg_match('/^os_\d+$/', $_GET['search_type'])))) {
     if (!empty($_GET['keywords'])) {
       $orders_query_raw = "
           select distinct(o.orders_id), 
