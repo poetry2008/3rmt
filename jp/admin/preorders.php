@@ -2096,7 +2096,15 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
         order by ".$order_str;
     }  elseif (isset($_GET['keywords']) && isset($_GET['search_type']) && $_GET['search_type'] == 'products_name' && !$_GET['type'] && !$payment) {
       $orders_query_raw = " select distinct op.orders_id from " .  TABLE_PREORDERS_PRODUCTS . " op, ".TABLE_PREORDERS." o ".$sort_table." where ".$sort_where." op.orders_id = o.orders_id and op.products_name like '%".$_GET['keywords']."%' " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and op.site_id = '" . intval($_GET['site_id']) . "' " : '') . " order by ".$order_str;
-    } elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && preg_match('/^os_\d+$/', $_GET['search_type'])))) {
+    }  elseif (isset($_GET['keywords']) && isset($_GET['search_type']) &&
+        $_GET['search_type'] == 'sproducts_id' && !$_GET['type'] && !$payment) {
+      $orders_query_raw = " select distinct op.orders_id from " .  
+        TABLE_PREORDERS_PRODUCTS . " op, ".TABLE_PREORDERS." o ".
+        $sort_table." where ".$sort_where." op.orders_id = o.orders_id 
+        and op.products_id = '".$_GET['keywords']."' " .
+        (isset($_GET['site_id']) && intval($_GET['site_id']) ? " 
+         and op.site_id = '" . intval($_GET['site_id']) . "' " : '') . " order by ".$order_str;
+    }elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && preg_match('/^os_\d+$/', $_GET['search_type'])))) {
     if (!empty($_GET['keywords'])) {
       $orders_query_raw = "
           select distinct(o.orders_id), 
