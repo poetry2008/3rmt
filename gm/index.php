@@ -169,7 +169,7 @@ if ($category_depth == 'nested') {
 ?>
   <!--content-->
 <div class="space_top">
-  <table width="100%" style="border-top:#444 dashed 1px;" class="table_border">
+  <table width="100%" class="table_border">
     <tr>
       <td align="left" width="70">
         <?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']);?>
