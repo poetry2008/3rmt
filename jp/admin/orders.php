@@ -5,7 +5,9 @@
 //ob_start();
 require('includes/application_top.php');
 require_once(DIR_WS_CLASSES . 'payment.php');
-
+if (isset($_GET['keywords'])) {
+  $_GET['keywords'] = tep_db_prepare_input($_GET['keywords']);
+}
 // action ajax order 
 if ($_POST['orders_id'] && ($_POST['orders_comment']||$_POST['orders_comment_flag']=='true') && $_POST['action']=='ajax_orders') {
   // update orders_comment
