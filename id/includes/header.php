@@ -37,7 +37,9 @@
     }
   }
 ?>
-
+<noscript>
+<?php tep_output_warning(TEXT_JAVASCRIPT_ERROR);?> 
+</noscript>
 <script type="text/javascript" src="../Scripts/swfobject_modified.js"></script>
 <script type="text/javascript" src="../Scripts/swfobject_modified.js"></script>
 <script type="text/javascript" src="DWConfiguration/ActiveContent/IncludeFiles/AC_RunActiveContent.js"></script>

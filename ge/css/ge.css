@@ -1595,3 +1595,9 @@ TEXTAREA {
 	background-color:#FFE9E9;
 	color:#656565;
 }
+.errorBox {
+	font-size : 10px;
+	background: #ffb3b5;
+	color:#656565;
+	font-weight:bold;
+}
