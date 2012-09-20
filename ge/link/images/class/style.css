@@ -70,7 +70,6 @@ body .main {
 .content {
 	padding:10px 20px 10px 0;
 	line-height:1.5;
-	float:left;
 }
 .content a {
 }
@@ -89,6 +88,7 @@ body .main {
 }
 #sitemap{
 	padding-left:5px;
+	margin-left:160px;
 }
 .web-box{
 	border-bottom:dotted #444444 2px;

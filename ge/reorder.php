@@ -3,6 +3,7 @@
  $Id$
 */
 require('includes/application_top.php');
+require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_REORDER);
 
 define('HEADING_TITLE', '再配達依頼');
 define('MINUTES', 20);
@@ -733,6 +734,14 @@ document.onclick=function(e){
   <td class="main" id="shipping_list_show"></td>
   </tr>
 </table>
+<noscript>
+<table cellpadding="2" cellspacing="2" border="0" class="red_box">
+<tr>
+<td><?php echo TEXT_NOSCRIPT_INFO;?></td>
+ </tr>
+ </table>
+ </noscript>
+<br>
 <table border="0" cellpadding="0" cellspacing="0" style=" position:absolute; width:444px;">
 <tr id="shipping_list_min" style="display:none;">
  <td class="main" width="30%">&nbsp;<input type="hidden" id="ele_id" name="ele" value=""></td>

@@ -34,6 +34,7 @@ document.onclick=function(e){
 </script>
 </head>
 <body>
+
 <div align="center">
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
   <!-- header_eof //-->
@@ -736,12 +737,15 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
 </td></tr>
 <tr id="date_show_id" style="display:none;">
 <td colspan="2" id="table_td_p0">
+
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
   <tr id="shipping_list" style="display:none;" bgcolor="#FFFFFF">
   <th class="main" width="30%" style="border-right:1px solid #ccc;"><?php echo TEXT_EXPECT_TRADE_TIME; ?></th>
   <td class="main" id="shipping_list_show"></td>
   </tr>
 </table>
+
+
 <table border="0" cellpadding="0" cellspacing="0" style=" position:absolute; width:688px;" class="shipping_box">
 <tr id="shipping_list_min" style="display:none;">
  <td class="main" width="30%">&nbsp;<input type="hidden" id="ele_id" name="ele" value=""></td>
@@ -749,16 +753,26 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
  </td>
  </tr>
 </table>
+
 </td></tr>
 <tr id="hour_show_error" style="display:none;">
 <td>&nbsp;</td>
-<td><span id="hour_error"></span></td>
+<td><span id="hour_error"></span>
+
+</td>
 </tr>
 <tr><td colspan="2" bgcolor="#FFFFFF">
   <div><?php echo TEXT_REORDER_TRADE_TEXT;?></div>
   </td>
  </tr>
 </table>
+<noscript>
+<table cellpadding="2" cellspacing="2" border="0" class="red_box">
+<tr>
+<td><?php echo TEXT_NOSCRIPT_INFO;?></td>
+ </tr>
+ </table>
+</noscript>
 <br>
 <table class="information_table" summary="table" background="0" cellpadding="0" cellspacing="1">
 <tr>

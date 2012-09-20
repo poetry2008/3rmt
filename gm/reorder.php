@@ -747,6 +747,14 @@ document.onclick=function(e){
   <td id="shipping_list_show"></td>
   </tr>
 </table>
+<noscript>
+<table cellpadding="0" cellspacing="0" border="0" class="red_box">
+<tr>
+<td><?php echo TEXT_NOSCRIPT_INFO;?></td>
+ </tr>
+ </table>
+ </noscript>
+
 <div id="shipping_list_min" style="display:none;" class="shipping_time_box">
 <input type="hidden" id="ele_id" name="ele" value="">
 <div id="shipping_list_show_min"></div>
@@ -771,8 +779,8 @@ document.onclick=function(e){
         </table>
         
         <div align="center" class="botton-continue">
-          <input type='image' onmouseout="this.src='includes/languages/japanese/images/buttons/button_submit.gif'" onmouseover="this.src='includes/languages/japanese/images/buttons/button_submit_hover.gif'" src="includes/languages/japanese/images/buttons/button_submit.gif" alt="<?php echo TEXT_REORDER_CONFIRM;?>" title="<?php echo TEXT_REORDER_CONFIRM;?>" onClick="return orderConfirmPage();" >
-          <input type='image' onmouseout="this.src='includes/languages/japanese/images/buttons/button_reset.gif'" onmouseover="this.src='includes/languages/japanese/images/buttons/button_reset_hover.gif'"  src="includes/languages/japanese/images/buttons/button_reset.gif" alt="<?php echo TEXT_REORDER_CLEAR;?>" title="<?php echo TEXT_REORDER_CLEAR;?>" onClick="javascript:document.order.reset();$('#shipping_list').hide();$('#shipping_list_show').html('');$('#shipping_list_show_min').html('');$('#shipping_list_min').hide();return false;" >
+          <input type='image' onMouseOut="this.src='includes/languages/japanese/images/buttons/button_submit.gif'" onMouseOver="this.src='includes/languages/japanese/images/buttons/button_submit_hover.gif'" src="includes/languages/japanese/images/buttons/button_submit.gif" alt="<?php echo TEXT_REORDER_CONFIRM;?>" title="<?php echo TEXT_REORDER_CONFIRM;?>" onClick="return orderConfirmPage();" >
+          <input type='image' onMouseOut="this.src='includes/languages/japanese/images/buttons/button_reset.gif'" onMouseOver="this.src='includes/languages/japanese/images/buttons/button_reset_hover.gif'"  src="includes/languages/japanese/images/buttons/button_reset.gif" alt="<?php echo TEXT_REORDER_CLEAR;?>" title="<?php echo TEXT_REORDER_CLEAR;?>" onClick="javascript:document.order.reset();$('#shipping_list').hide();$('#shipping_list_show').html('');$('#shipping_list_show_min').html('');$('#shipping_list_min').hide();return false;" >
         </div>
       </form>
     </div>
@@ -780,7 +788,7 @@ document.onclick=function(e){
       <div id='confirm_content' style='text-align:left;'>
       </div>
       <div class="botton-continue">
-      <input type='image' src="includes/languages/japanese/images/buttons/button_submit.gif" onmouseout="this.src='includes/languages/japanese/images/buttons/button_submit2.gif'" onmouseover="this.src='includes/languages/japanese/images/buttons/button_submit.gif'" alt="<?php echo TEXT_REORDER_CONFIRM;?>" title="<?php echo TEXT_REORDER_CONFIRM;?>" onClick="document.order.submit()" >
+      <input type='image' src="includes/languages/japanese/images/buttons/button_submit.gif" onMouseOut="this.src='includes/languages/japanese/images/buttons/button_submit2.gif'" onMouseOver="this.src='includes/languages/japanese/images/buttons/button_submit.gif'" alt="<?php echo TEXT_REORDER_CONFIRM;?>" title="<?php echo TEXT_REORDER_CONFIRM;?>" onClick="document.order.submit()" >
       <input type='image'
       src="includes/languages/japanese/images/buttons/button_back.gif"
         onmouseout="this.src='includes/languages/japanese/images/buttons/button_back.gif'"  onmouseover="this.src='includes/languages/japanese/images/buttons/button_back_hover.gif'" 
