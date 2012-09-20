@@ -82,7 +82,7 @@ td,th{ border:0; padding:2px; font-size:14px;}
 }
 @media screen and (-webkit-min-device-pixel-ratio:0) {
 #logo{
-	position:relative;
+	position: absolute;
 	z-index:121;
 	top:0;
 	text-align:center;
@@ -998,9 +998,10 @@ img {
 
 /*error*/
 .errorBox, .headerError{
-	color:#FF0000;
-	font-size:14px;
-	line-height:25px;
+	font-size:12px;
+	background: #ffb3b5;
+	font-weight:bold;
+	color:#656565;
 }
 .headerError{
 	position:absolute;
