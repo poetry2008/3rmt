@@ -1503,3 +1503,9 @@ top:70px;
 	width:100%;
 }
 #main-content .red_box{ color:#656565; line-height:18px;}
+.table_border{
+  border-top:#444 dashed 1px;
+}
+.space_top{
+  margin-top:10px;
+}
