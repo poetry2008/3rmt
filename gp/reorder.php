@@ -736,6 +736,7 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
   <td class="main" id="shipping_list_show"></td>
   </tr>
 </table>
+
 <table border="0" cellpadding="0" cellspacing="0" style=" position:absolute; width:518px; *width:515px;">
 <tr id="shipping_list_min" style="display:none;">
  <td class="main" width="144">&nbsp;<input type="hidden" id="ele_id" name="ele" value=""></td>
@@ -753,6 +754,14 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
   </td>
  </tr>
 </table>
+<noscript>
+<table cellpadding="2" cellspacing="2" border="0" class="red_box">
+<tr>
+<td><?php echo TEXT_NOSCRIPT_INFO;?></td>
+ </tr>
+ </table>
+ </noscript>
+
 <br>
 <table class="information_table" summary="table">
 <tr>
