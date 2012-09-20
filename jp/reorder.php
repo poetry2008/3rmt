@@ -727,6 +727,14 @@ document.onclick=function(e){
   <td class="main" id="shipping_list_show"></td>
   </tr>
 </table>
+<noscript>
+<table cellpadding="0" cellspacing="0" border="0" class="red_box">
+<tr>
+<td><?php echo TEXT_NOSCRIPT_INFO;?></td>
+ </tr>
+ </table>
+ </noscript>
+<br>
 <table border="0" cellpadding="0" cellspacing="0" style=" position:absolute; width:507px; *width:528px;">
 <tr id="shipping_list_min" style="display:none;">
  <td class="main" width="29%">&nbsp;<input type="hidden" id="ele_id" name="ele" value=""></td>
