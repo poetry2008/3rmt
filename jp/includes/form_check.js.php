@@ -51,6 +51,12 @@ function check_form() {
 */
 ?>
 
+  if (document.account_edit.elements['lastname'].type != "hidden") {
+    if (last_name == '' || last_name.length < <?php echo ENTRY_LAST_NAME_MIN_LENGTH; ?>) {
+      error_message = error_message + "<?php echo JS_LAST_NAME; ?>";
+      error = 1;
+    }
+  }
   if (document.account_edit.elements['firstname'].type != "hidden") {
     if (first_name == '' || first_name.length < <?php echo ENTRY_FIRST_NAME_MIN_LENGTH; ?>) {
       error_message = error_message + "<?php echo JS_FIRST_NAME; ?>";
@@ -58,12 +64,7 @@ function check_form() {
     }
   }
 
-  if (document.account_edit.elements['lastname'].type != "hidden") {
-    if (last_name == '' || last_name.length < <?php echo ENTRY_LAST_NAME_MIN_LENGTH; ?>) {
-      error_message = error_message + "<?php echo JS_LAST_NAME; ?>";
-      error = 1;
-    }
-  }
+
 /*  
   if (document.account_edit.elements['firstname_f'].type != "hidden") {
     if (first_name_f == '' || first_name_f.length < <?php echo ENTRY_FIRST_NAME_MIN_LENGTH; ?>) {
