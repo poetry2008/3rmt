@@ -1378,7 +1378,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
       o.orders_id = op.orders_id and op.products_id ";
     $orders_query_raw .=  "= '".$_GET['keywords']."' " ;
     $orders_query_raw .= " and o.finished = '0' and date(o.date_purchased) >
-      '".date('Y-m-d',strtotime('-8day'))."' ";
+      '".date('Y-m-d',strtotime('-'.get_configuration_by_site_id('ORDER_EFFECTIVE_DATE').'day'))."' ";
     $orders_query_raw .= (isset($_GET['site_id']) &&
         intval($_GET['site_id']) ? " and op.site_id = '" . intval($_GET['site_id'])
         . "' " : '') . " order by op.torihiki_date DESC";
