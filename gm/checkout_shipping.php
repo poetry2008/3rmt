@@ -1576,6 +1576,11 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() > 0) {
     echo '<input type="hidden" name="point" value="0">';
   } else {
 ?> 
+  <table>
+    <tr>
+      <td height="45"></td>
+    </tr>
+  </table>
   <h3><b><?php echo TEXT_POINT_OR_CAMPAION; ?></b></h3>
     <div class="payment-content">
       <?php

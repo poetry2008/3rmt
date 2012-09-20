@@ -79,7 +79,7 @@ if (isset($body_option)) {
     <h2 class="pageHeading"><?php echo $temp_category_info['title'].
       TEXT_OTHER_QUESTION;?></h2>
     <div class="comment_faq">
-    <div  style="border-bottom-style:dotted; width:98%; margin-top:10px; color:#444; margin-left:2px;"></div>
+    <div  style="border-bottom-style:dotted; width:98%; margin-top:10px; *margin-top:-6px; color:#444; margin-left:2px;"></div>
     <table class="faq_question"><tr><td valign="top">
     <img src="images/design/ask.gif" alt="question">
     </td>

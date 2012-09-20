@@ -123,7 +123,7 @@ if (isset($body_option)) {
     <h2 class="pageHeading"><?php echo TEXT_FAQ_TITLE_LAST;?></h2>
     <?php } ?>
     <div class="comment_faq">
-    <div  style="border-bottom-style:dotted; width:98%; margin-top:10px; color:#444; margin-left:2px;"></div>
+    <div  style="border-bottom-style:dotted; width:98%; margin-top:10px; *margin-top:-6px; color:#444; margin-left:2px;"></div>
     <table class="faq_question">
     	<tr><td valign="top">
     <img src="images/design/ask.gif" alt="question"></td><td class="faq_question_row"><span><a href="<?php echo

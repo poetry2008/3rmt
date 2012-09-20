@@ -9,6 +9,9 @@
   require(DIR_WS_FUNCTIONS . 'visites.php');
   require(DIR_WS_CLASSES . 'currencies.php');
   require(DIR_WS_CLASSES . 'payment.php');
+  if (isset($_GET['keywords'])) {
+    $_GET['keywords'] = tep_db_prepare_input($_GET['keywords']);
+  }
   $currencies          = new currencies(2);
   $orders_statuses     = $all_orders_statuses = $orders_status_array = array();
   $all_preorders_status = array();
