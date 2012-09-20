@@ -39,6 +39,9 @@
     }
   }
 ?>
+<noscript>
+<?php tep_output_warning(TEXT_JAVASCRIPT_ERROR);?> 
+</noscript>
 <div id="header">
 <div id="out_id" style="display:none;">
     <div class="seach-close"><img onclick="search_close_header()" alt="close" src="images/seach_close.png" width="48" height="44"></div>     

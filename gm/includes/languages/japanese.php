@@ -503,4 +503,5 @@ define('BROWSER_LANGUAGE','ブラウザの言語:');
 define('BROWSER_PC_LANGUAGE','パソコンの言語環境:');
 define('BROWSER_USER_LANGUAGE','ユーザーの言語環境:');
 define('TEXT_TIME_LINK', 'から');
+define('TEXT_JAVASCRIPT_ERROR','JavaScriptまたはCookieの設定がオンになっていません。お手数ですが設定を「オン」にして、ご利用ください。<br>※ 設定がオフになっていますと、ご利用いただけないサービスがあります。');
 ?>

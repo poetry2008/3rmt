@@ -108,7 +108,7 @@ var res_arr = date.split("|||");
 var image_id = document.getElementById("image_id_"+id);
 image_id = image_id.src;
 if(res_arr[0]=='true'){
-  title = '<image id="image_id_'+id+'" src="'+image_id+'">&nbsp;&nbsp;'+res_arr[1]+'<br>'+res_arr[2];
+  title = '<input type="button" onclick="note_save_text(\''+id+'\')" value="保存">&nbsp;<image id="image_id_'+id+'" src="'+image_id+'">&nbsp;&nbsp;'+res_arr[1]+'&nbsp;&nbsp;'+res_arr[2];
   content = res_arr[3];
   $('#note_title_'+id).html(title);
   $('#note_textarea_'+id).val(content);

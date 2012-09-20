@@ -168,6 +168,15 @@ if ($category_depth == 'nested') {
    }
 ?>
   <!--content-->
+<div class="space_top">
+  <table width="100%" class="table_border">
+    <tr>
+      <td align="left" width="70">
+        <?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']);?>
+      </td>
+    </tr>
+  </table>
+</div>
 <?php
   if (isset($_GET['cPath'])) {
     $new_products_category_id = $current_category_id;

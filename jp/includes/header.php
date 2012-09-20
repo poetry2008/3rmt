@@ -37,6 +37,9 @@
     }
   }
 ?>
+<noscript>
+<?php tep_output_warning(TEXT_JAVASCRIPT_ERROR);?> 
+</noscript>
 <div id="title">
 <?php
   if (isset($_GET['cPath']) && $_GET['cPath']) {
