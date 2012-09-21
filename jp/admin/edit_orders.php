@@ -101,14 +101,8 @@ if (tep_not_null($action)) {
       $date_time = $year.$month.$day;
       $date_now = date('Ymd');
       $date_start_hour = $start_hour.$start_min.$start_min_1;
-      $date_end_hour = $end_hour.$end_min.$end_min_1;
-      if((int)$date_time < (int)$date_now || (int)$date_end_hour < (int)$date_start_hour){
-
-        $messageStack->add(TEXT_DATE_NUM_ERROR, 'error');
-        $action = 'edit';
-        break; 
-      } 
-    $shipping_array = array();
+      $date_end_hour = $end_hour.$end_min.$end_min_1; 
+      $shipping_array = array();
     foreach($update_products as $products_key=>$products_value){
 
       $shipping_products_query = tep_db_query("select * from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='". $products_key."'");
@@ -1539,8 +1533,11 @@ function date_time(){
     var end_min = document.getElementById('min_1').value;
     var start_hour_str = parseInt(start_hour+start_min+end_min);
     if(date_time_value < date_time || (date_time_value == date_time && start_hour_str < date_hour)){
-      alert('<?php echo TEXT_DATE_NUM_ERROR;?>');
-      return false;
+      if(confirm('<?php echo TEXT_DATE_TIME_ERROR;?>')){
+        return true;
+      }else{
+        return false; 
+      }
     }
     return true;
 }
