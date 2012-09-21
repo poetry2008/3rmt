@@ -30,7 +30,7 @@
 #msg{padding:2px; margin-left:10px; color:#f30}
 .red{background:#f63b3b; color:#ff0000;}
 ul { list-style:none;}
-.note_close { float:right; padding:1px 1px 0 0;}
+.note_close { float:right; padding:1px 1px 0 0; position: absolute; right: 0;}
 .note_close input{ position:relative; float:left; margin-left:2px;}
 .note_move input { float:right;}
 textarea{ width:100%; position:relative;height:100%;}
