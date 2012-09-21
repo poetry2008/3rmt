@@ -1216,8 +1216,8 @@ if($address_error == false){
               //$email_order = $payment_class->getOrderMailString($mailoption);  
             //bobhero end}}}  
             tep_mail($check_status['customers_name'], $check_status['customers_email_address'], TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
-          }
             tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
+          }
           $customer_notified = '1';
           
           // 支払方法がクレジットなら決済URLを送る
