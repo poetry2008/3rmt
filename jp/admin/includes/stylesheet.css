@@ -1416,7 +1416,7 @@ font-size:14px;
 }
 .table_img_list li{
 	float:left;
-	width:17%;
+	width:10%;
 }
 .table_img_list  img{
 	margin-bottom:7px;
@@ -1425,4 +1425,9 @@ font-size:14px;
 	margin-left:3px;
 	*margin-left:2px;
 	margin-left:2px\9;
+}
+.left_title_width{
+	min-width:200px;
+	font-size: 12px;
+    line-height: 14px;
 }

@@ -342,6 +342,7 @@ function check_form() {
           and s.id = c.site_id
           and c.customers_id = '" . (int)$_GET['cID'] . "'
     ");
+            
     $customers = tep_db_fetch_array($customers_query);
     $cInfo = new objectInfo($customers);
 
@@ -541,31 +542,31 @@ function check_form() {
         <td class="formArea">
           <table border="0" cellspacing="2" cellpadding="2">
             <tr>
-              <td class="main"><?php echo CUSTOMER_RESET; ?></td>
+              <td class="left_title_width"><?php echo CUSTOMER_RESET; ?></td>
               <td class="main"><?php echo tep_draw_checkbox_field('reset_flag', 'on', $cpoint['reset_flag']==1 and $cpoint['reset_success']!=1 ) ?></td>
             </tr>
             <tr>
-            <td class="main"><?php echo CUSTOMER_IS_SEAL; ?></td>
+            <td class="left_title_width"><?php echo CUSTOMER_IS_SEAL; ?></td>
             <td class="main"><?php echo tep_draw_checkbox_field('is_seal', '1', $cInfo->is_seal );?></td>
             </tr> 
             <tr>
-              <td class="main"><?php echo CUSTOMER_NO_SEND_MAIL_TEXT; ?></td>
+              <td class="left_title_width"><?php echo CUSTOMER_NO_SEND_MAIL_TEXT; ?></td>
               <td class="main">
                 <input type="checkbox" name="is_send_mail" value="1"<?php echo ($cInfo->is_send_mail)?' checked':'';?>> 
               </td>
             </tr>
             <tr>
-              <td class="main"><?php echo CUSTOMER_CALC_QUANTITY_TEXT; ?></td>
+              <td class="left_title_width"><?php echo CUSTOMER_CALC_QUANTITY_TEXT; ?></td>
               <td class="main">
                 <input type="checkbox" name="is_calc_quantity" value="1"<?php echo ($cInfo->is_calc_quantity)?' checked':'';?>> 
               </td>
             </tr>
             <tr>
-              <td class="main" width="200"><?php echo ENTRY_POINT; ?></td>
+              <td class="left_title_width" width="200"><?php echo ENTRY_POINT; ?></td>
               <td class="main"><span class="table_space_left"></span><?php echo tep_draw_input_field('point', $cpoint['point'], 'maxlength="32" size="4" style="text-align:right"'); ?> P</td>
             </tr>
             <tr>
-              <td class="main"><?php echo CUSTOMER_PIC_TEXT; ?></td>
+              <td class="left_title_width"><?php echo CUSTOMER_PIC_TEXT; ?></td>
               <td class="main">
               <?php
               $dh = opendir(DIR_FS_DOCUMENT_ROOT.DIR_WS_CATALOG_IMAGES.'icon_list'); 
@@ -582,7 +583,7 @@ function check_form() {
               </td>
             </tr>
             <tr>
-              <td class="main"><?php echo CUSTOMER_COMMUNITY_SEARCH_TEXT;?></td>
+              <td class="left_title_width"><?php echo CUSTOMER_COMMUNITY_SEARCH_TEXT;?></td>
               <td class="main"><span class="table_space_left"></span><textarea name='customers_fax' style='width:400px;height:42px;*height:40px;'><?php echo isset($_POST['customers_fax'])?$_POST['customers_fax']:$cInfo->customers_fax;?></textarea>&nbsp;&nbsp;<?php echo CUSTOMER_COMMUNITY_SEARCH_ONE_TEXT;?></td>
             </tr>
             <tr>
