@@ -169,7 +169,7 @@ define('JS_REVIEW_TEXT', '* レビューの文章は少なくても ' . REVIEW_T
 define('JS_REVIEW_RATING', '* 商品の採点をしてください。\n');
 
 define('JS_GENDER', '* \'性別\' が選択されていません。\n');
-define('JS_FIRST_NAME', '* \'名前\' は少なくても ' . ENTRY_FIRST_NAME_MIN_LENGTH . ' 文字以上必要です。\n');
+define('JS_FIRST_NAME', '* \'名\' は少なくても ' . ENTRY_FIRST_NAME_MIN_LENGTH . ' 文字以上必要です。\n');
 define('JS_LAST_NAME', '* \'姓\' は少なくても ' . ENTRY_LAST_NAME_MIN_LENGTH . ' 文字以上必要です。\n');
 
 define('JS_FIRST_NAME_F', '* \'名前(フリガナ)\' は少なくても ' . ENTRY_FIRST_NAME_MIN_LENGTH . ' 文字以上必要です。\n');
@@ -184,7 +184,7 @@ define('JS_STATE', '* \'都道府県\' を選択または入力してくださ�
 define('JS_COUNTRY', '* \'国\' を選択してください。');
 define('JS_TELEPHONE', '* \'電話番号\' は少なくても ' . ENTRY_TELEPHONE_MIN_LENGTH . ' 文字以上必要です。\n');
 define('JS_PASSWORD', '* \'パスワード\' と \'パスワードを再入力\' は一致していて ' . ENTRY_PASSWORD_MIN_LENGTH . ' 文字以上必要です。\n');
-define('JS_AGREEMENT', '* \'利用規約\' を同意してください。');
+define('JS_AGREEMENT', '* \'利用規約\' に同意してください。');
 
 define('JS_ERROR_NO_PAYMENT_MODULE_SELECTED', '* ご注文商品のお支払方法を選択してください。\n');
 define('JS_ERROR_SUBMITTED', 'このフォームは既に送信されています。Okボタンを押し処理が完了するまでもうしばらくお待ちください。');
