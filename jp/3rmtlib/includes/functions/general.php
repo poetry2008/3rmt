@@ -2275,6 +2275,7 @@ if($_SERVER['HTTPS'] == 'on'){
 <?php }else { ?>
 <link rel="shortcut icon" type="image/ico" href="<?php echo HTTP_SERVER;?>/favicon.ico">
 <?
+}
     switch (str_replace('/', '', $_SERVER['SCRIPT_NAME'])) {
       case FILENAME_CATEGORY:
         if (isset($cPath) && $cPath || isset($_GET['tags_id']) || isset($_GET['manufacturers_id'])) {
