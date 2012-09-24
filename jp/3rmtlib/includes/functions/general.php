@@ -2268,8 +2268,13 @@ if ($oconfig_res) {
 <script type="text/javascript" src="js/search_include.js"></script>
 <?php } ?>
 <link rel="stylesheet" type="text/css" href="<?php echo 'css/'.$site_romaji.'.css?v='.$css_random_str;?>"> 
-<link rel="shortcut icon" type="image/ico" href="<?php echo HTTPS_SERVER;?>/favicon.ico">
 <?php
+if($_SERVER['HTTPS'] == 'on'){
+?>
+<link rel="shortcut icon" type="image/ico" href="<?php echo HTTPS_SERVER;?>/favicon.ico">
+<?php }else { ?>
+<link rel="shortcut icon" type="image/ico" href="<?php echo HTTP_SERVER;?>/favicon.ico">
+<?
     switch (str_replace('/', '', $_SERVER['SCRIPT_NAME'])) {
       case FILENAME_CATEGORY:
         if (isset($cPath) && $cPath || isset($_GET['tags_id']) || isset($_GET['manufacturers_id'])) {
