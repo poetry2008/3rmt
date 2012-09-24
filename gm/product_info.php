@@ -133,12 +133,9 @@ function select_item_radio(i_obj, t_str, o_str, p_str, r_price)
 function change_num(ob,targ, quan, a_quan)
 {
   var product_quantity = document.getElementById(ob);
-  if(isNaN(parseInt(product_quantity.value))){
-    if(isNaN(parseInt(dbc2sbc(product_quantity.value)))){
-      product_quantity.value = quan;
-    }else{
-      product_quantity.value = dbc2sbc(product_quantity.value);
-    }
+  product_quantity.value = dbc2sbc(product_quantity.value);
+  if(isNaN(product_quantity.value)||product_quantity.value==''){
+    product_quantity.value = 0;
   }
   var product_quantity_num = parseInt(product_quantity.value);
   if (targ == 'up') { 
@@ -411,8 +408,8 @@ if (!$product_info) { // product not found in database
         <tr>
         <td width="20%"><?php echo TEXT_PRODUCTS_QTY;?></td>
         <td colspan="2">
-        <input name="quantity" type="text" id="quantity" style="text-align:right;" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1);?>" size="4" maxlength="4">                  
         <?php $p_a_quan = $product_info['products_quantity'];?>
+        <input name="quantity" type="text" id="quantity" style="text-align:right;" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1);?>" size="4" maxlength="4" onchange="change_num('quantity','','',<?php echo $p_a_quan;?>)">                  
         <div id="calculation-add">
         <a style="display:block;" <?php echo $void_href;?> onClick="change_num('quantity','up',1,<?php echo $p_a_quan;?>);return false;"><img src="images/ico/nup.gif" alt="+"></a>
         <a style="display:block;" <?php echo $void_href;?> onClick="change_num('quantity','down', 1,<?php echo $p_a_quan;?>);return false;"><img src="images/ico/ndown.gif" alt="-"></a>

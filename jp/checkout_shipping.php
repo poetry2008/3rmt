@@ -255,11 +255,11 @@
 ?>
 <?php page_head();?>
 <?php
-header( 'Expires: Mon, 26 Jul 1997 05:00:00 GMT' );
-header( 'Last-Modified: ' . gmdate('D, d M Y H:i:s') . 'GMT' );
-header( 'Cache-Control: no-store, no-cache, must-revalidate' );
-header( 'Cache-Control: post-check=0, pre-check=0', false );
-header( 'Pragma: no-cache' );
+header('Expires:'.date('D, d M Y H:i:s',0).' GMT');
+header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . 'GMT');
+header('Cache-Control: no-store, no-cache, must-revalidate');
+header('Cache-Control: post-check=0, pre-check=0', false);
+header('Pragma: no-cache');
 ?>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript"><!--
@@ -1450,7 +1450,7 @@ function check_point(point_num) {
           <td width="10" height="5"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
           </tr>
           <tr> 
-            <td><table border="0" width="100%" cellspacing="1" cellpadding="2"> 
+            <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                 <tr> 
                   <td>
           
@@ -1588,6 +1588,13 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
   }
 ?>
 </table>
+<noscript>
+<table cellpadding="0" cellspacing="0" border="0" class="red_border">
+<tr>
+<td><?php echo TEXT_NOSCRIPT_INFO;?></td>
+</tr>
+</table>
+</noscript>
           </td> 
                 </tr> 
               </table></td> 

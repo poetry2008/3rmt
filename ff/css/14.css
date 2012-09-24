@@ -2227,3 +2227,19 @@ line-height:16px;
 }
 .sort img{ margin:-3px 0 0 5px;}
 .sort td{ width:25%;}
+.red_border{
+	font-size:11px;
+	line-height:12px;
+	margin:5px 0 74px 0;
+	border:1px solid #ff8e90;
+	background-color:#FFE9E9;
+	padding:5px;
+}
+.red_box{
+	font-size:11px;
+	line-height:12px;
+	margin:5px 0 -10px 0;
+	*margin:5px 0 0 0;
+	border:1px solid #ff8e90;
+	background-color:#FFE9E9;
+}

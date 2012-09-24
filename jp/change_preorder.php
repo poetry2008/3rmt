@@ -1179,6 +1179,7 @@ document.forms.order1.submit();
             <tr id="shipping_list" style="display:none;">
               <td class="main"><?php echo CHANGE_ORDER_FETCH_DATE;?></td> 
               <td class="main" id="shipping_list_show">
+              
 </td>
 </tr>
 <?php
@@ -1192,7 +1193,16 @@ if (isset($time_error)) {
 <?php
 }
 ?>
-          </table>  
+</table>  
+<noscript>
+<table width="100%" cellspacing="2" cellpadding="2" border="0" class="red_box">
+<tr>
+<td>
+	<?php echo TEXT_NOSCRIPT_INFO;?>
+</td>
+</tr>
+</table>
+</noscript>
 <table border="0" cellpadding="0" cellspacing="0" style=" position:absolute; width:503px; *width:524px;">
 <tr id="shipping_list_min" style="display:none;">
               <td class="main" width="160">&nbsp;<input type="hidden" id="ele_id" name="ele" value=""></td> 

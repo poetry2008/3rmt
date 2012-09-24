@@ -53,11 +53,63 @@ function toggle_leftColumn()
 {
     
   var arrow_status = $('.columnLeft').css('display');
-  
+<?php 
+if($belong == "" || $user_info == ""){
+$belong = str_replace("/admin/","",$_SERVER['REQUEST_URI']);
+$user_info['name'] = tep_get_user_info($ocertify->auth_user);
+}
+?>
   if (arrow_status == 'none') {
     document.cookie = 'tarrow=open'; 
+    $.ajax({
+url: 'ajax_memo.php',
+data: 'tarrow=open&belong=<?php echo $belong;?>&author=<?php echo $user_info['name'];?>',		    
+type: 'POST',
+dataType: 'text',
+async: 'false',
+success :function(data){
+<?php 
+$query = tep_db_query("select * from notes where belong='".$belong."' and (attribute='1' or (attribute='0' and author='".$user_info['name']."'))  order by id desc");
+
+while($array = tep_db_fetch_array($query)){
+?>
+var left = $("#note_<?php echo $array['id']?>").css("left"); 
+left = left.replace("px","");
+left = parseInt(left);
+    $("#note_<?php echo $array['id']?>").css("left",(left+125)+"px");
+
+<?php
+}
+
+?>
+
+}
+    });
   } else {
     document.cookie = 'tarrow=close'; 
+    $.ajax({
+url: 'ajax_memo.php',
+data: 'tarrow=close&belong=<?php echo $belong;?>&author=<?php echo $user_info['name'];?>',		    
+type: 'POST',
+dataType: 'text',
+async: 'false',
+success :function(data){
+<?php 
+$query = tep_db_query("select * from notes where belong='".$belong."' and (attribute='1' or (attribute='0' and author='".$user_info['name']."'))  order by id desc");
+
+while($array = tep_db_fetch_array($query)){
+?>
+var left = $("#note_<?php echo $array['id']?>").css("left"); 
+left = left.replace("px","");
+left = parseInt(left);
+    $("#note_<?php echo $array['id']?>").css("left",(left-125)+"px");
+
+<?php
+}
+?>
+
+}
+    });
   }
   
   $('.columnLeft').toggle();

@@ -1183,6 +1183,16 @@ document.forms.order1.submit();
               <td class="main" id="shipping_list_show">
 </td>
 </tr>
+<tr>
+<td colspan="2"><noscript>
+              <table cellpadding="0" cellspacing="0" border="0" class="red_box">
+              <tr>
+              <td><?php echo TEXT_NOSCRIPT_INFO;?></td>
+              </tr>
+              </table>
+              </noscript>
+</td>
+</tr>
           </table>  
 <table border="0" cellpadding="0" cellspacing="0" style=" position:absolute;" width="100%">
 <tr id="shipping_list_min" style="display:none;">

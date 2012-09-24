@@ -11,7 +11,8 @@ $notes = '';
 $left='';  
 $top='';  
 $zindex='';  
-$query = tep_db_query("select * from notes order by id desc");
+$belong = str_replace('/admin/','',$_SERVER['PHP_SELF']);
+$query = tep_db_query("select * from notes where (belong='".$belong."' or belong='') and (attribute='1' or (attribute='0' and (author='".$ocertify->auth_user."' or author='')))  order by id desc");
 $note_arr = array();
 $height_arr = array();
 while($row=tep_db_fetch_array($query)){
@@ -19,13 +20,15 @@ while($row=tep_db_fetch_array($query)){
   $note_arr[] = $row['id'];
   $height_arr[] = $ylen+$top+10;
   $time = strtotime($row['addtime']);
+  $attribute = $row['attribute'];
+  $attribute_image = $attribute == 1 ? '<image id="image_id_'.$row['id'].'" alt="'.TEXT_ATTRIBUTE_PUBLIC.'" src="images/icons/public.gif">' : '<image id="image_id_'.$row['id'].'" alt="'.TEXT_ATTRIBUTE_PRIVATE.'" src="images/icons/private.gif">';
   $notes.= '
     <div id="note_'.$row['id'].'" ondblclick="changeLayer(this);" class="note '.$row['color'].'" 
     style="left:'.$left.'px;top:'.$top.'px;z-index:'.$zindex.';height:'.$ylen.'px;width:'.$xlen.'px">
     <div class="note_head">
     <div id="note_title_'.$row['id'].'" class="note_title">
     <input type="button" onclick="note_save_text(\''.$row['id'].'\')"
-     value=" '.IMAGE_SAVE.'" >&nbsp;&nbsp;'.$row['title'].'&nbsp;&nbsp;
+     value=" '.IMAGE_SAVE.'" >&nbsp;'.$attribute_image.'&nbsp;'.$row['title'].'&nbsp;&nbsp;
     '.substr($row['addtime'],0,strlen($row['addtime'])-3).'
     </div><div class="note_close">
     <input type="hidden" value="'.$row['id'].'" class="hidden">
@@ -124,7 +127,7 @@ function changeLayer(obj) {
 <td width="100%" valign="top">
 <table width="100%"><tr>
 <td align="rignt" height="20px">
-<div id="add"><a href="add_note.php" id="fancy">
+<div id="add"><a href="add_note.php?author=<?php echo $ocertify->auth_user;?>&belong=<?php echo str_replace('/admin/','',$_SERVER['PHP_SELF']);?>" id="fancy">
 <?php echo "<input type='button' value='".TEXT_ADD_NOTE."'>";?></a></div>
 </td>
 </tr>

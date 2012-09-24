@@ -25,7 +25,8 @@
       <div id="content"> 
         <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
         <h1 class="pageHeading"><?php echo CPREORDER_SUCCESS_HEADING_TITLE ; ?></h1> 
-        <div class="comment">
+        <table width="95%" cellspacing="0" cellpadding="0" border="0" class="box_des"> 
+		<tr><td>
           <table border="0" cellspacing="0" cellpadding="0" border="0" width="90%" align="center">
             <tr>
               <td width="20%">
@@ -58,7 +59,7 @@
               <td align="right" width="22%" class="preorderBarCurrent"><?php echo PREORDER_FINISH_LINE_TITLE;?></td> 
             </tr>
           </table>
-          <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size:12px;">
+          <table border="0" width="100%" cellspacing="0" cellpadding="0" style=" line-height:1.5">
           <tr>
             <td>
             <?php echo tep_draw_separator('pixel_trans.gif', '100%', '10');?> 
@@ -85,7 +86,7 @@
                   </table></td> 
           </tr>
         </table>
-        </div>
+        </td></tr></table>
        <p class="pageBottom"></p>
       </div> 
       <!-- body_text_eof --> 

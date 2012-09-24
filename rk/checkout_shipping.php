@@ -260,11 +260,11 @@
 ?>
 <?php page_head();?>
 <?php
-header( 'Expires: Mon, 26 Jul 1997 05:00:00 GMT' );
-header( 'Last-Modified: ' . gmdate('D, d M Y H:i:s') . 'GMT' );
-header( 'Cache-Control: no-store, no-cache, must-revalidate' );
-header( 'Cache-Control: post-check=0, pre-check=0', false );
-header( 'Pragma: no-cache' );
+header('Expires:'.date('D, d M Y H:i:s',0).' GMT');
+header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . 'GMT');
+header('Cache-Control: no-store, no-cache, must-revalidate');
+header('Cache-Control: post-check=0, pre-check=0', false);
+header('Pragma: no-cache');
 ?>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript"><!--
@@ -1443,11 +1443,11 @@ function check_point(point_num) {
 ?>
 			<tr><td class="main"><b><?php echo TABLE_HEADING_SHIPPING_ADDRESS; ?></b></td></tr>
           <tr> 
-            <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
+            <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="infoBox"> 
                 <tr class="infoBoxContents"> 
                   <td>
           
-<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
   <td class="main" width="30%"><?php echo TEXT_EXPECT_TRADE_DATE; ?></td>
     <td class="main" width="70%">
@@ -1574,7 +1574,15 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
 </table>
           </td> 
                 </tr> 
-              </table></td> 
+              </table>
+			  <noscript>
+<table cellpadding="0" cellspacing="0" border="0" width="100%" class="red_border">
+<tr>
+<td><?php echo TEXT_NOSCRIPT_INFO;?></td>
+</tr>
+</table>
+</noscript>
+			  </td> 
           </tr> 
           <?php
           if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() > 0) {
@@ -1582,7 +1590,6 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
               echo '<input type="hidden" name="point" value="0">';
             } else {
           ?> 
-          <tr><td height="80"></td></tr> 
           <tr> 
             <td>
               <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
@@ -1602,10 +1609,10 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
           </tr> 
           <tr> 
             <td>
-              <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
+              <table border="0" width="100%" cellspacing="0" cellpadding="0" class="infoBox"> 
                 <tr class="infoBoxContents"> 
                   <td>
-                    <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+                    <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                       <tr> 
                         <td class="main">
                         <?php
@@ -1635,7 +1642,6 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
           } else if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) { 
             if($guestchk != '1') {
           ?>
-          <tr><td height="80"></td></tr> 
           <tr> 
             <td>
               <table border="0" width="100%" cellspacing="0" cellpadding="0"> 

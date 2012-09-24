@@ -8,7 +8,6 @@
   require(DIR_WS_ACTIONS.'latest_news.php');
 ?>
 <?php page_head();?>
-<script type="text/javascript" src="js/emailProtector.js"></script>
 <script type="text/javascript"><!--
 function popupWindow(url) {
   window.open(url,'popupWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=100,height=100,screenX=150,screenY=150,top=150,left=150')
@@ -88,7 +87,7 @@ function popupWindow(url) {
     echo '<li class="news_list">'.tep_date_short($latest_news['date_added']) .
       '&nbsp;&nbsp;&nbsp;&nbsp;<a href="' .tep_href_link(FILENAME_LATEST_NEWS
       ,'news_id=' . $latest_news['news_id']).'">' .
-      replace_store_name($latest_news['headline'])). '&nbsp;&nbsp;' . $latest_news_image . $latest_news_new .'</a></li>'."\n";
+      replace_store_name($latest_news['headline']). '&nbsp;&nbsp;' . $latest_news_image . $latest_news_new .'</a></li>'."\n";
     
     }
     echo '</ul>' . "\n";

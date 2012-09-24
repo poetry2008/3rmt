@@ -41,4 +41,4 @@ define('CPREORDER_SUCCESS_TEXT', '<span class="red"><b>「注文受付」メー�
 <div class="dot">&nbsp;</div>');
 define('PREORDER_TRADER_LINE_TITLE', '配送方法');
 define('PREORDER_CONFIRM_LINE_TITLE', '最終確認');
-define('PREORDER_FINISH_LINE_TITLE', '手続き完了！');
+define('PREORDER_FINISH_LINE_TITLE', '手続完了！');

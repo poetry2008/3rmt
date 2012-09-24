@@ -27,6 +27,10 @@
         $customers_gender        = tep_db_prepare_input($_POST['customers_gender']);
         $customers_dob           = tep_db_prepare_input($_POST['customers_dob']);
         $customers_is_seal           = tep_db_prepare_input($_POST['is_seal']);
+        
+        $customers_pic_icon           = tep_db_prepare_input($_POST['pic_icon']);
+        $customers_is_send_mail           = tep_db_prepare_input($_POST['is_send_mail']);
+        $customers_is_calc_quantity          = tep_db_prepare_input($_POST['is_calc_quantity']);
         if ($_POST['reset_flag'] == 'on') {
 	$reset_flag = 1;
         $reset_success = 0;
@@ -44,7 +48,11 @@
                                 'reset_flag'           => $reset_flag,
                                 'reset_success'           => $reset_success,
                                 'customers_newsletter'    => $customers_newsletter,
-                                'is_seal' => $customers_is_seal);
+                                'is_seal' => $customers_is_seal,
+                                'pic_icon' => $customers_pic_icon,
+                                'is_send_mail' => $customers_is_send_mail,
+                                'is_calc_quantity' => $customers_is_calc_quantity,
+                                );
 
         if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $customers_gender;
         if (ACCOUNT_DOB    == 'true') $sql_data_array['customers_dob']    = tep_date_raw($customers_dob);
@@ -323,6 +331,9 @@ function check_form() {
                c.is_seal,
 	       c.is_quited,
 	       c.quited_date,
+	       c.pic_icon,
+	       c.is_send_mail,
+	       c.is_calc_quantity,
                s.romaji,
                s.name as site_name
         from " . TABLE_CUSTOMERS . " c 
@@ -331,6 +342,7 @@ function check_form() {
           and s.id = c.site_id
           and c.customers_id = '" . (int)$_GET['cID'] . "'
     ");
+            
     $customers = tep_db_fetch_array($customers_query);
     $cInfo = new objectInfo($customers);
 
@@ -437,12 +449,40 @@ function check_form() {
         <td class="formAreaTitle"><?php echo CATEGORY_PERSONAL; ?></td>
       </tr>
       <tr>
-        <td class="formArea"><table border="0" cellspacing="2" cellpadding="2">
-<?php
-    $address_form->printCategoryPersonal();
-    
-?>
-        </table></td>
+        <td class="formArea">
+          <table border="0" cellspacing="2" cellpadding="2">
+            <tr>
+              <td class="main" width="200"><?php echo ENTRY_FIRST_NAME; ?></td>
+              <td class="main"><span class="table_space_left"></span><?php echo tep_draw_input_field('customers_firstname', $cInfo->customers_firstname, 'maxlength="32"', false);?></td>
+            </tr>
+            <tr>
+              <td class="main" width="200"><?php echo ENTRY_LAST_NAME; ?></td>
+              <td class="main"><span class="table_space_left"></span><?php echo tep_draw_input_field('customers_lastname', $cInfo->customers_lastname, 'maxlength="32"', false);?></td>
+            </tr>
+            <tr>
+              <td class="main" width="200"><?php echo ENTRY_FIRST_NAME_F; ?></td>
+              <td class="main"><span class="table_space_left"></span><?php echo tep_draw_input_field('customers_firstname_f', $cInfo->customers_firstname_f, 'maxlength="32"', false);?></td>
+            </tr>
+            <tr>
+              <td class="main" width="200"><?php echo ENTRY_LAST_NAME_F; ?></td>
+              <td class="main"><span class="table_space_left"></span><?php echo tep_draw_input_field('customers_lastname_f', $cInfo->customers_lastname_f, 'maxlength="32"', false);?></td>
+            </tr>
+            <tr>
+              <td class="main" width="200"><?php echo ENTRY_EMAIL_ADDRESS; ?></td>
+              <td class="main"><span class="table_space_left"></span><?php echo tep_draw_input_field('customers_email_address', $cInfo->customers_email_address, 'maxlength="96"', false);?></td>
+            </tr>
+            <tr>
+              <td class="main" width="200"><?php echo ENTRY_NEWSLETTER; ?></td>
+              <td class="main"><span class="table_space_left"></span><?php echo tep_draw_pull_down_menu('customers_newsletter', $newsletter_array, $cInfo->customers_newsletter); ?></td>
+            </tr>
+            <?php if ($cInfo->is_quited == 1) {?> 
+            <tr>
+              <td class="main" width="200"><?php echo ENTRY_QUITED_DATE; ?></td>
+              <td class="main"><span class="table_space_left"></span><?php echo date("Y/m/d H:i", strtotime($cInfo->quited_date)); ?></td>
+            </tr>
+            <?php }?> 
+          </table>
+        </td>
       </tr>
 <?php
     // 应日本要求不显示
@@ -491,86 +531,70 @@ function check_form() {
           </tr>
         </table></td>
       </tr> -->
-    <tr>
-        <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-      </tr>
-      <tr>
-        <td class="formAreaTitle"><?php echo CUSTOMER_COMMUNITY_TEXT;?></td>
-      </tr>
-      <tr>
-        <td class="formArea"><table border="0" cellspacing="2" cellpadding="2">
-          <tr>
-            <td class="main"><?php echo CUSTOMER_COMMUNITY_SEARCH_TEXT;?></td>
-            <td class="main"><textarea name='customers_fax' style='width:400px;height:42px;*height:40px;'><?php echo isset($_POST['customers_fax'])?$_POST['customers_fax']:$cInfo->customers_fax;?></textarea>&nbsp;&nbsp;<?php echo CUSTOMER_COMMUNITY_SEARCH_ONE_TEXT;?></td>
-          </tr>
-      <tr>
-            <td class="main" colspan="2"><?php echo CUSTOMER_COMMUNITY_SEARCH_TWO_TEXT;?></td>
-          </tr>
-      <tr>
-            <td class="main" colspan="2"><b><?php echo CUSTOMER_COMMUNITY_SEARCH_THREE_TEXT;?></b></td>
-          </tr>
-        </table></td>
-      </tr>
-      <tr>
-        <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-      </tr>
-      <tr>
-        <td class="formAreaTitle"><?php echo CATEGORY_OPTIONS; ?></td>
-      </tr>
-      <tr>
-        <td class="formArea"><table border="0" cellspacing="2" cellpadding="2">
-          <tr>
-            <td class="main"><?php echo ENTRY_NEWSLETTER; ?></td>
-            <td class="main"><?php echo tep_draw_pull_down_menu('customers_newsletter', $newsletter_array, $cInfo->customers_newsletter); ?></td>
-          </tr>
-        </table></td>
-      </tr>
-      <tr>
-        <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-      </tr>
     <?php if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {//Add Point System 
     $cpoint_query = tep_db_query("select point ,reset_flag,reset_success from " . TABLE_CUSTOMERS . " where customers_id = '".$_GET['cID']."'");
     $cpoint = tep_db_fetch_array($cpoint_query);
     ?>
       <tr>
-        <td class="formAreaTitle"><?php echo CATEGORY_POINT; ?></td>
+        <td class="formAreaTitle"><?php echo CATEGORY_OPTIONS; ?></td>
       </tr>
       <tr>
-        <td class="formArea"><table border="0" cellspacing="2" cellpadding="2">
-          <tr>
-            <td class="main"><?php echo ENTRY_POINT; ?></td>
-            <td class="main"><?php echo tep_draw_input_field('point', $cpoint['point'], 'maxlength="32" size="4" style="text-align:right"'); ?> P</td>
-          </tr>
-        </table></td>
+        <td class="formArea">
+          <table border="0" cellspacing="2" cellpadding="2">
+            <tr>
+              <td class="left_title_width"><?php echo CUSTOMER_RESET; ?></td>
+              <td class="main"><?php echo tep_draw_checkbox_field('reset_flag', 'on', $cpoint['reset_flag']==1 and $cpoint['reset_success']!=1 ) ?></td>
+            </tr>
+            <tr>
+            <td class="left_title_width"><?php echo CUSTOMER_IS_SEAL; ?></td>
+            <td class="main"><?php echo tep_draw_checkbox_field('is_seal', '1', $cInfo->is_seal );?></td>
+            </tr> 
+            <tr>
+              <td class="left_title_width"><?php echo CUSTOMER_NO_SEND_MAIL_TEXT; ?></td>
+              <td class="main">
+                <input type="checkbox" name="is_send_mail" value="1"<?php echo ($cInfo->is_send_mail)?' checked':'';?>> 
+              </td>
+            </tr>
+            <tr>
+              <td class="left_title_width"><?php echo CUSTOMER_CALC_QUANTITY_TEXT; ?></td>
+              <td class="main">
+                <input type="checkbox" name="is_calc_quantity" value="1"<?php echo ($cInfo->is_calc_quantity)?' checked':'';?>> 
+              </td>
+            </tr>
+            <tr>
+              <td class="left_title_width" width="200"><?php echo ENTRY_POINT; ?></td>
+              <td class="main"><span class="table_space_left"></span><?php echo tep_draw_input_field('point', $cpoint['point'], 'maxlength="32" size="4" style="text-align:right"'); ?> P</td>
+            </tr>
+            <tr>
+              <td class="left_title_width"><?php echo CUSTOMER_PIC_TEXT; ?></td>
+              <td class="main">
+              <?php
+              $dh = opendir(DIR_FS_DOCUMENT_ROOT.DIR_WS_CATALOG_IMAGES.'icon_list'); 
+              echo '<ul class="table_img_list">'; 
+              if ($dh) {
+                while (($file_str = readdir($dh)) !== false) {
+                  if ($file_str != '.' && $file_str != '..') {
+                    echo '<li><input type="radio" name="pic_icon" value="'.$file_str.'"'.(($cInfo->pic_icon == $file_str)?' checked':'').'><img src="images/icon_list/'.$file_str.'" alt="pic"></li>'; 
+                  }
+                }
+              }
+              echo '</ul>'; 
+              ?>
+              </td>
+            </tr>
+            <tr>
+              <td class="left_title_width"><?php echo CUSTOMER_COMMUNITY_SEARCH_TEXT;?></td>
+              <td class="main"><span class="table_space_left"></span><textarea name='customers_fax' style='width:400px;height:42px;*height:40px;'><?php echo isset($_POST['customers_fax'])?$_POST['customers_fax']:$cInfo->customers_fax;?></textarea>&nbsp;&nbsp;<?php echo CUSTOMER_COMMUNITY_SEARCH_ONE_TEXT;?></td>
+            </tr>
+            <tr>
+              <td class="main" colspan="2"><?php echo CUSTOMER_COMMUNITY_SEARCH_TWO_TEXT;?></td>
+            </tr>
+            <tr>
+              <td class="main" colspan="2"><b><?php echo CUSTOMER_COMMUNITY_SEARCH_THREE_TEXT;?></b></td>
+            </tr>
+          </table>
+        </td>
       </tr>
-      <tr>
-        <td class="formAreaTitle"><?php echo CUSTOMER_RESET; ?></td>
-      </tr>
-      <tr>
-        <td class="formArea"><table border="0" cellspacing="2" cellpadding="2">
-          <tr>
-            <td class="main"><?php echo CUSTOMER_RESET; ?></td>
-            <td class="main"><?php echo tep_draw_checkbox_field('reset_flag', 'on',
-                $cpoint['reset_flag']==1 and $cpoint['reset_success']!=1 ) ?></td>
-          </tr>
-        </table></td>
-      </tr>
-      <tr>
-        <td class="formAreaTitle"><?php echo CUSTOMER_IS_SEAL; ?></td>
-      </tr>
-      <tr>
-        <td class="formArea"><table border="0" cellspacing="2" cellpadding="2">
-          <tr>
-            <td class="main"><?php echo CUSTOMER_IS_SEAL; ?></td>
-            <td class="main"><?php echo tep_draw_checkbox_field('is_seal', '1',
-                $cInfo->is_seal );?></td>
-          </tr>
-        </table></td>
-      </tr>
-
-      <tr>
-        <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-      </tr>   
     <?php } ?>
       <tr>
       <td align="right" class="main"><?php echo tep_html_element_submit(IMAGE_SAVE) . '&nbsp;&nbsp;<a href="' .  tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action'))) .'">' . tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?><input type="hidden" name="user_update" value="<?php echo $user_info['name'];?>"></td>

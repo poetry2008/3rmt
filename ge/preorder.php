@@ -308,9 +308,12 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
     </div>
     <!-- body_text //-->
     <div id="content">
+      <div class="headerNavigation">
+      <?php echo $breadcrumb->trail(' &raquo; ');?>
+      </div>
       <h1 class="pageHeading"><?php echo $po_game_c . '&nbsp;' . $product_info['products_name'].TEXT_PREORDER_BOOK; ?></h1>
             <div class="comment">
-      <br><div>
+      <div>
         <?php echo STORE_NAME.TEXT_PREORDER_IN;?><?php echo $po_game_c.TEXT_PREORDER_BOOK_INFO; ?>
         <?php 
         if ($product_info['products_status'] == 0 || $product_info['products_status'] == 3)  {
@@ -320,13 +323,12 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
         }
         echo TEXT_PREORDER_BOOK_INFO_END;
         ?>
-      </div><br>
+      </div>
       <?php echo tep_draw_form('preorder_product', tep_preorder_href_link($product_info['products_id'], $product_info['romaji'])) .  tep_draw_hidden_field('products_id', $product_info['products_id']).tep_draw_hidden_field('action', 'process'); ?>
       <div>
         <?php echo TEXT_PREORDER_BOOK_TEXT;?>
       </div>
-      	  <br>
-      <div class="red"><b><?php echo TEXT_PREORDER_BOOK_TEXT_END;?></b></div><br>
+      <div class="red"><b><?php echo TEXT_PREORDER_BOOK_TEXT_END;?></b></div>
 <?php
       if($error == true) {
         echo '<span class="errorText"><b>'.TEXT_INPUT_ERROR_INFO.'</span></b><br><br>';
@@ -349,7 +351,7 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
         <tr> 
         <td colspan="2" class="main"><?php echo PREORDER_FINAL_EAMIL;?></td>
         </tr>
-      </table><br>
+      </table>
       <div class="formAreaTitle"><b><?php echo FORM_TITLE_FRIEND_DETAILS; ?></b></div>
       <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
         <tr>

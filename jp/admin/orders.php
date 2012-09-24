@@ -5,7 +5,9 @@
 //ob_start();
 require('includes/application_top.php');
 require_once(DIR_WS_CLASSES . 'payment.php');
-
+if (isset($_GET['keywords'])) {
+  $_GET['keywords'] = tep_db_prepare_input($_GET['keywords']);
+}
 // action ajax order 
 if ($_POST['orders_id'] && ($_POST['orders_comment']||$_POST['orders_comment_flag']=='true') && $_POST['action']=='ajax_orders') {
   // update orders_comment
@@ -759,7 +761,9 @@ switch ($_GET['action']) {
           
           $comments = str_replace('${SHIPPING_TIME}', $fetch_time_str, $comments); 
           $title = str_replace('${SHIPPING_TIME}', $fetch_time_str, $title); 
-          if (!tep_is_oroshi($check_status['customers_id'])) {
+          $customer_info_raw = tep_db_query("select is_send_mail from ".TABLE_CUSTOMERS." where customers_id = '".$check_status['customers_id']."'"); 
+          $customer_info_res = tep_db_fetch_array($customer_info_raw); 
+          if ($customer_info_res['is_send_mail'] != '1') {
             tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
           } 
           tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), $title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
@@ -1092,7 +1096,9 @@ switch ($_GET['action']) {
         
         $comments = str_replace('${SHIPPING_TIME}', $fetch_time_str, $comments); 
         $title = str_replace('${SHIPPING_TIME}', $fetch_time_str, $title); 
-        if (!tep_is_oroshi($check_status['customers_id'])) {
+        $customer_info_raw = tep_db_query("select is_send_mail from ".TABLE_CUSTOMERS." where customers_id = '".$check_status['customers_id']."'"); 
+        $customer_info_res = tep_db_fetch_array($customer_info_raw); 
+        if ($customer_info_res['is_send_mail'] != '1') {
           tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
         }
         tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), $title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
@@ -1362,9 +1368,20 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         . "' " : '') . " order by op.torihiki_date DESC";
     //op.torihiki_date desc";
   } elseif (isset($_GET['products_id']) && isset($_GET['search_type']) && $_GET['search_type'] == 'products_id' ) {
-    $orders_query_raw = " select distinct op.orders_id from " . TABLE_ORDERS_PRODUCTS . " op ".$sort_table." where ".$sort_where." op.products_id='".$_GET['products_id']."'";
+    $orders_query_raw = " select distinct op.orders_id from " .  TABLE_ORDERS_PRODUCTS . " op, ".TABLE_ORDERS." o ".$sort_table." where ".$sort_where." op.orders_id = o.orders_id and op.products_id='".$_GET['products_id']."'";
 
-    $orders_query_raw .= (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and op.site_id = '" . intval($_GET['site_id']) . "' " : '') . " order by op.torihiki_date DESC";
+    $orders_query_raw .= (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and op.site_id = '" . intval($_GET['site_id']) . "' " : '') . " order by ".str_replace('torihiki_date_error desc,date_purchased_error desc,', '', $order_str);
+  }  elseif (isset($_GET['keywords']) && isset($_GET['search_type']) && $_GET['search_type'] == 'sproducts_id' ) {
+    $orders_query_raw = " select distinct op.orders_id from " . TABLE_ORDERS_PRODUCTS . " op
+      ,".TABLE_ORDERS." o 
+      ".$sort_table." where ".$sort_where." 
+      o.orders_id = op.orders_id and op.products_id ";
+    $orders_query_raw .=  "= '".$_GET['keywords']."' " ;
+    $orders_query_raw .= " and o.finished = '0' and date(o.date_purchased) >=
+      '".date('Y-m-d 00:00:00',strtotime('-'.((get_configuration_by_site_id('ORDER_EFFECTIVE_DATE') != '0')?(get_configuration_by_site_id('ORDER_EFFECTIVE_DATE')-1):'0').'day'))."' ";
+    $orders_query_raw .= (isset($_GET['site_id']) &&
+        intval($_GET['site_id']) ? " and op.site_id = '" . intval($_GET['site_id'])
+        . "' " : '') . " order by ".str_replace('torihiki_date_error desc,date_purchased_error desc,', '', $order_str);
   } elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && preg_match('/^os_\d+$/', $_GET['search_type'])))) {
     if (!empty($_GET['keywords'])) {
       $orders_query_raw = "
@@ -2940,7 +2957,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
             </tr>
             <tr>
             <td class="main">
-            <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']); ?></textarea>
+            <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="off" rows="30" cols="74"><?php echo str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']); ?></textarea>
             </td>
             </tr>
             <tr>
@@ -4540,9 +4557,17 @@ if($c_parent_array['parent_id'] == 0){
                     <a style="text-decoration:underline;" href="<?php echo tep_href_link('customers.php', 'page=1&cID=' .  tep_output_string_protected($orders['customers_id']) .  '&action=edit');?>"><b><?php echo tep_output_string_protected($orders['customers_name']);?></b></a>
                     <input type="hidden" id="cid_<?php echo $orders['orders_id'];?>" name="cid[]" value="<?php echo $orders['customers_id'];?>" />
                     </font>
-                    <?php if (tep_is_oroshi($orders['customers_id'])) { ?>
-                      <?php echo tep_image(DIR_WS_ICONS . 'oroshi.gif', TEXT_ORDER_OROSHI);?>
-                        <?php }?>
+                    <?php 
+                    $customers_info_raw = tep_db_query("select pic_icon from ".TABLE_CUSTOMERS." where customers_id = '".$orders['customers_id']."'"); 
+                    $customers_info_res = tep_db_fetch_array($customers_info_raw);
+                    if ($customers_info_res) {
+                      if (!empty($customers_info_res['pic_icon'])) {
+                        if (file_exists(DIR_FS_DOCUMENT_ROOT.DIR_WS_IMAGES.'icon_list/'.$customers_info_res['pic_icon'])) {
+                          echo tep_image(DIR_WS_IMAGES.'icon_list/'.$customers_info_res['pic_icon']); 
+                        }
+                      }
+                    }
+                    ?>
                         <?php if ($orders['orders_care_flag']) { ?>
                           <?php echo tep_image(DIR_WS_ICONS . 'care.gif', TEXT_ORDER_CARE);?>
                             <?php }?>
@@ -4704,7 +4729,7 @@ if($c_parent_array['parent_id'] == 0){
                   color="red">※</font>&nbsp;<?php echo TEXT_ORDER_COPY;?></td><td>
                   <?php echo TEXT_ORDER_LOGIN;?></td></tr></table>
                   <br>
-                  <?php echo tep_draw_textarea_field('comments', 'hard', '74', '30',
+                  <?php echo tep_draw_textarea_field('comments', 'off', '74', '30',
                       $select_text, 'style="font-family:monospace;font-size:12px; width:400px;"'); ?>
                   </td>
                   </tr>

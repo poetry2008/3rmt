@@ -58,7 +58,7 @@
   } else {
 
   $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_LOGIN, '', 'SSL'));
-  $breadcrumb->add(NAVBAR_TITLE_2, tep_href_link(FILENAME_PASSWORD_FORGOTTEN, '', 'SSL'));
+  $breadcrumb->add(HEADING_TITLE, tep_href_link(FILENAME_PASSWORD_FORGOTTEN, '', 'SSL'));
 ?>
 <?php page_head();?>
 </head>
@@ -84,7 +84,7 @@
               <td colspan="2"></td>
             <tr>
               <td width="150" class="main"><?php echo ENTRY_FORGOTTEN_EMAIL_ADDRESS; // 2003.03.06 nagata Edit Japanese osCommerce ?></td>
-              <td class="main"><?php echo tep_draw_input_field('email_address', '', 'maxlength="96" size="40"'); ?></td>
+              <td class="main"><?php echo tep_draw_input_field('email_address', '', 'maxlength="96" class="input_width"'); ?></td>
             </tr>
             <tr>
               <td colspan="2"><br>

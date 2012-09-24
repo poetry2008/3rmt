@@ -60,7 +60,7 @@ tep_date_short($latest_news['date_added']) . '&nbsp;&nbsp;&nbsp;&nbsp;<a href="'
 
    echo'  <li onmouseover="rowNewsEffect(this)" onmouseout="outNewsEffect(this)"> 
             <div class="news_date">'.tep_date_short($latest_news['date_added']).'</div>
-            <div class="latest_news_link"><a  href="' .  tep_href_link(FILENAME_LATEST_NEWS, 'news_id=' .  $latest_news['news_id']) . '">' .  strip_tags(replace_store_name($latest_news['headline'])) . '' . $latest_news_image . $latest_news_new . '</a></div></li>
+            <div class="latest_news_link"><a  href="' .  tep_href_link(FILENAME_LATEST_NEWS, 'news_id=' .  $latest_news['news_id']) . '">' .  replace_store_name($latest_news['headline']) . '' . $latest_news_image . $latest_news_new . '</a></div></li>
 ';
 
 if($n % 2 ==0){

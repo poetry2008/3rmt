@@ -37,6 +37,9 @@
     }
   }
 ?>
+<noscript>
+<?php tep_output_warning(TEXT_JAVASCRIPT_ERROR);?> 
+</noscript>
 <script src="../Scripts/swfobject_modified.js" type="text/javascript"></script>
 <div id="title">
   <?php

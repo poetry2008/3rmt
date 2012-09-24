@@ -672,6 +672,9 @@ document.forms.order1.submit();
         <!-- left_navigation_eof --> </div> 
       <!-- body_text --> 
       <div id="content"> 
+      <div class="headerNavigation">
+      <?php echo $breadcrumb->trail(' &raquo; ');?>
+      </div>
           <h1 class="pageHeading"><?php echo NAVBAR_CHANGE_PREORDER_TITLE;?></h1> 
           <div class="comment">
           <table border="0" cellspacing="0" cellpadding="0" border="0" width="90%" align="center">
@@ -738,7 +741,6 @@ document.forms.order1.submit();
               </td>
             </tr>
           </table>
-          <br> 
           <?php
             $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$preorder_id."'"); 
             $preorder_product_res = tep_db_fetch_array($preorder_product_raw); 
@@ -801,7 +803,6 @@ document.forms.order1.submit();
               </td>
             </tr>
         </table> 
-        <br>
         <?php
         //计算商品的总价格及总重量
         $shipping_preorders_query = tep_db_query("select * from ".TABLE_PREORDERS." where check_preorder_str = '".$_GET['pid']."'");
@@ -1114,7 +1115,6 @@ document.forms.order1.submit();
           $ad_option->render('');  
         ?>
         </table>
-        <br>
         <?php 
         }
         ?>
@@ -1190,7 +1190,15 @@ if (isset($time_error)) {
 <?php
 }
 ?>
-          </table>  
+          </table>
+<noscript>
+              <table cellpadding="2" cellspacing="2" border="0" class="red_box">
+              <tr>
+              <td><?php echo TEXT_NOSCRIPT_INFO;?></td>
+              </tr>
+              </table>
+              </noscript>
+ 
 <table border="0" cellpadding="0" cellspacing="0" style=" position:absolute; width:446px; *width:445px;">
 <tr id="shipping_list_min" style="display:none;">
               <td class="main" width="160">&nbsp;<input type="hidden" id="ele_id" name="ele" value=""></td> 
@@ -1198,7 +1206,6 @@ if (isset($time_error)) {
               </td> 
             </tr>
 </table>
-<table>
              <?php   
              if(isset($_POST['date']) && $_POST['date'] != ''){
 
@@ -1233,7 +1240,6 @@ if (isset($time_error)) {
           <?php
           if ($hm_option->preorder_whether_show($product_info_res['belong_to_option'], (int)$product_info_res['products_cflag'])) { 
           ?>
-          <br>
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
           <tr>
             <td style="padding:0;">
@@ -1245,7 +1251,6 @@ if (isset($time_error)) {
           </tr>
           </table> 
           <?php }?> 
-          <br>
           <?php
           $preorder_total = 0;
           $preorder_total_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$preorder_res['orders_id']."' and class = 'ot_subtotal'");
@@ -1269,7 +1274,6 @@ if (isset($time_error)) {
               </td> 
             </tr>
           </table>
-          <br>
           <?php } else if ($is_member_single && MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && ($preorder_total < 0)) { 
           ?>
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">

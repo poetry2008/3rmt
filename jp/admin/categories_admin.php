@@ -105,6 +105,7 @@ $(window).resize(function (){
     }
   })
   </script>
+<?php require("includes/note_js.php");?>
   </head>
   <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" >
   <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
@@ -128,6 +129,7 @@ $(window).resize(function (){
   </td>
   <!-- body_text //-->
   <td width="100%" valign="top" id='categories_right_td'>
+  <?php echo $notes;?>
   <table border="0" width="100%" cellspacing="0" cellpadding="2">
   <tr>
   <td>
@@ -480,14 +482,23 @@ echo '<a style="margin-left:-4px;" href="orders.php?search_type=products_id&prod
     $preorder_products_res = tep_db_fetch_array($preorder_products_raw);
     if ($preorder_products_res) {
       if ($preorder_products_res['pre_total']) {
+        echo '<a href="preorders.php?keywords='.urlencode($products['products_id']).'&search_type=sproducts_id" target="_blank" style="text-decoration:underline;">';
         echo $preorder_products_res['pre_total'];
+        echo '</a>';
       } else {
         echo ''; 
       }
     } 
     ?>
   </td>
-  <td class="dataTableContent6" align='right'><?php echo tep_get_order_cnt_by_pid($products['products_id']);?></td>
+  <td class="dataTableContent6" align='right'>
+<?php
+  if(tep_get_order_cnt_by_pid($products['products_id'])){
+    echo '<a href="orders.php?keywords='.urlencode($products['products_id']).'&search_type=sproducts_id" target="_blank" style="text-decoration:underline;">';
+    echo tep_get_order_cnt_by_pid($products['products_id']);
+    echo '</a>';  
+  } 
+  ?></td>
   <?php //個数架空 ?>
   <td class="dataTableContent6" align='right' onmouseover='this.style.cursor="pointer"'  id='virtual_quantity_<?php echo $products['products_id']; ?>' onclick="update_virtual_quantity(<?php echo $products['products_id']; ?>)"><?php echo $imaginary;?></td>
 <?php //数量 ?>

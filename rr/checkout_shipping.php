@@ -262,11 +262,11 @@
 ?>
 <?php page_head();?>
 <?php
-header( 'Expires: Mon, 26 Jul 1997 05:00:00 GMT' );
-header( 'Last-Modified: ' . gmdate('D, d M Y H:i:s') . 'GMT' );
-header( 'Cache-Control: no-store, no-cache, must-revalidate' );
-header( 'Cache-Control: post-check=0, pre-check=0', false );
-header( 'Pragma: no-cache' );
+header('Expires:'.date('D, d M Y H:i:s',0).' GMT');
+header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . 'GMT');
+header('Cache-Control: no-store, no-cache, must-revalidate');
+header('Cache-Control: post-check=0, pre-check=0', false);
+header('Pragma: no-cache');
 ?>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript"><!--
@@ -1528,6 +1528,13 @@ function check_point(point_num) {
   }
 ?>
 </table>
+<noscript>
+<table cellpadding="0" cellspacing="0" border="0" width="100%" class="red_border">
+<tr>
+<td><?php echo TEXT_NOSCRIPT_INFO;?></td>
+</tr>
+</table>
+</noscript>
 <table border="0" cellpadding="2" cellspacing="0" style=" position:absolute; width:675px;">
 <tr id="shipping_list_min" style="display:none;">
  <td class="main" width="199">&nbsp;</td>

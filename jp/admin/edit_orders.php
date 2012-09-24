@@ -77,7 +77,7 @@ $customer_point_query = tep_db_query("
 $customer_point = tep_db_fetch_array($customer_point_query);
 // ゲストチェック
 $customer_guest_query = tep_db_query("
-    select customers_guest_chk 
+    select customers_guest_chk,is_send_mail,is_calc_quantity 
     from " . TABLE_CUSTOMERS . " 
     where customers_id = '" . $order->customer['id'] . "'");
 $customer_guest = tep_db_fetch_array($customer_guest_query);
@@ -101,14 +101,8 @@ if (tep_not_null($action)) {
       $date_time = $year.$month.$day;
       $date_now = date('Ymd');
       $date_start_hour = $start_hour.$start_min.$start_min_1;
-      $date_end_hour = $end_hour.$end_min.$end_min_1;
-      if((int)$date_time < (int)$date_now || (int)$date_end_hour < (int)$date_start_hour){
-
-        $messageStack->add(TEXT_DATE_NUM_ERROR, 'error');
-        $action = 'edit';
-        break; 
-      } 
-    $shipping_array = array();
+      $date_end_hour = $end_hour.$end_min.$end_min_1; 
+      $shipping_array = array();
     foreach($update_products as $products_key=>$products_value){
 
       $shipping_products_query = tep_db_query("select * from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='". $products_key."'");
@@ -550,10 +544,9 @@ if($address_error == false){
               $pr_quantity -= $quantity_difference;
             }
           }
-          // 如果是业者，不更新
-          if(!tep_is_oroshi($check_status['customers_id']))
+          if($customer_guest['is_calc_quantity'] != '1') {
             tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = ".$pr_quantity.", products_virtual_quantity = ".$pv_quantity.", products_ordered = products_ordered + " . $quantity_difference . " where products_id = '" . (int)$order['products_id'] . "'");
-
+          }
           tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
           tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
         }
@@ -1009,7 +1002,7 @@ if($address_error == false){
           
           $email = str_replace('${SHIPPING_TIME}', $fetch_time_str, $email); 
           $title = str_replace('${SHIPPING_TIME}', $fetch_time_str, $title); 
-          if ($customer_guest['customers_guest_chk'] != 9)
+          if ($customer_guest['is_send_mail'] != '1')
             tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $email, get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
 
           tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS', $order->info['site_id']), $title, $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
@@ -1538,8 +1531,11 @@ function date_time(){
     var end_min = document.getElementById('min_1').value;
     var start_hour_str = parseInt(start_hour+start_min+end_min);
     if(date_time_value < date_time || (date_time_value == date_time && start_hour_str < date_hour)){
-      alert('<?php echo TEXT_DATE_NUM_ERROR;?>');
-      return false;
+      if(confirm('<?php echo TEXT_DATE_TIME_ERROR;?>')){
+        return true;
+      }else{
+        return false; 
+      }
     }
     return true;
 }
@@ -3835,10 +3831,10 @@ if (($action == 'edit') && ($order_exists == true)) {
 
           //<textarea style="font-family:monospace;font-size:x-small" name="comments" wrap="hard" rows="30" cols="74"></textarea>
 
-          echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:70%;"');
+          echo tep_draw_textarea_field('comments', 'off', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:70%;"');
           //    echo tep_draw_textarea_field('comments', 'soft', '40', '5');
         } else {
-          echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:70%;"');
+          echo tep_draw_textarea_field('comments', 'off', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:70%;"');
         }
   ?>
     </td>

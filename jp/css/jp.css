@@ -1443,10 +1443,6 @@ ranking
 	border-left:1px solid #cccccc;
 	padding: 5px;
 }
-#contents {
-	font-size: 12px;
-	padding:0 13px 20px 13px;
-}
 .contents {
 	font-size: 12px;
 	padding:0 13px 20px 13px;
@@ -2454,7 +2450,7 @@ searching
 	font-size:12px;
 	font-weight:bold;
 }
-.faq_back{ text-align:right;}
+.faq_back{ text-align:right; margin-top:10px;}
 .faq_ul_question_all{
 	padding:0;
 	margin:5px 0 0 40px;
@@ -2481,7 +2477,7 @@ searching
 	background: url(../images/q.gif) left 4px no-repeat;
 	padding-left:28px;
 	padding-left:8px\9;
-	line-height:21px;
+	line-height:25px;
 }
 .faq_li_question a{
 	margin-left:5px\9;
@@ -2492,12 +2488,13 @@ searching
 	margin-left:4px;
 	padding:0;
 	*margin:0 0 0 -10px;
+	margin-bottom:0;
 }
 .faq_info_li_answer{
 	list-style-type:none;
 	background: url(../images/a.gif) no-repeat left 4px;
 	padding-left:28px;
-	line-height:21px;
+	line-height:25px;
 	*width:100%;
 }
 .faq_info_li_question{
@@ -2505,7 +2502,7 @@ searching
 	background: url(../images/q.gif) left 4px no-repeat;
 	padding-left:28px;
 	padding-left:15px\9;
-	line-height:21px;
+	line-height:25px;
 }
 .faq_empty{
 	margin-left:12px;
@@ -2785,3 +2782,21 @@ searching
 }
 .sort img{ margin:-5px 0 0 5px;}
 .sort td{ width:25%;}
+.red_border{
+	font-size:12px;
+	line-height:14px;
+	margin:5px 0 4px 0;
+	border:1px solid #ff8e90;
+	background-color:#FFE9E9;
+	padding:5px;
+	width:100%;
+}
+.red_box{
+	font-size:12px;
+	line-height:14px;
+	margin:5px 0 -8px 0;
+	*margin:5px 0 -10px 0;
+	border:1px solid #ff8e90;
+	background-color:#FFE9E9;
+	width:100%;
+}

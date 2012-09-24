@@ -73,7 +73,7 @@
 
   // ゲストチェック
   $customer_guest_query = tep_db_query("
-      select customers_guest_chk 
+      select customers_guest_chk, is_send_mail, is_calc_quantity 
       from " . TABLE_CUSTOMERS . " 
       where customers_id = '" . $order['customers_id'] . "'");
   $customer_guest = tep_db_fetch_array($customer_guest_query);
@@ -547,7 +547,7 @@
               $num_product_res['products_name'] 
             ),$email);
 
-      if ($customer_guest['customers_guest_chk'] != 9) {
+      if ($customer_guest['is_send_mail'] != '1') {
         $site_url_raw = tep_db_query("select * from sites where id = '".$order->info['site_id']."'"); 
         $site_url_res = tep_db_fetch_array($site_url_raw); 
         if ($_POST['status'] == 32) {
@@ -1679,7 +1679,7 @@ if (($action == 'edit') && ($order_exists == true)) {
            '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
            '  </tr>' . "\n";
     } elseif ($TotalDetails["Class"] == "ot_point") {
-      if ($customer_guest['customers_guest_chk'] == 0 || $customer_guest['customers_guest_chk'] == 9) { //会員
+      if ($customer_guest['customers_guest_chk']) { //会員
         $current_point = $customer_point['point'] + $TotalDetails["Price"];
         echo '  <tr>' . "\n" .
              '    <td colspan="4">' . "<input type='hidden' name='update_totals[$TotalIndex][value]' size='6' value='" . $TotalDetails["Price"] . "'>" . 
@@ -1789,7 +1789,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     }
     ?>
     <textarea style="font-family:monospace;font-size:12px; width:70%;" name="comments"
-    wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}', $order_a_str, $mail_sql['orders_status_mail']);?></textarea>
+    wrap="off" rows="30" cols="74"><?php echo str_replace('${ORDER_A}', $order_a_str, $mail_sql['orders_status_mail']);?></textarea>
     </td>
   </tr>
 </table>

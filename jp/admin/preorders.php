@@ -9,6 +9,9 @@
   require(DIR_WS_FUNCTIONS . 'visites.php');
   require(DIR_WS_CLASSES . 'currencies.php');
   require(DIR_WS_CLASSES . 'payment.php');
+  if (isset($_GET['keywords'])) {
+    $_GET['keywords'] = tep_db_prepare_input($_GET['keywords']);
+  }
   $currencies          = new currencies(2);
   $orders_statuses     = $all_orders_statuses = $orders_status_array = array();
   $all_preorders_status = array();
@@ -223,7 +226,9 @@
           $ot_sub_total
         ),$comments
         );
-        if (!tep_is_oroshi($check_status['customers_id'])) {
+        $customer_info_raw = tep_db_query("select is_send_mail from ".TABLE_CUSTOMERS." where customers_id = '".$check_status['customers_id']."'"); 
+        $customer_info_res = tep_db_fetch_array($customer_info_raw); 
+        if ($customer_info_res['is_send_mail'] != '1') {
           if ($status == 32) {
             $site_url_raw = tep_db_query("select * from sites where id = '".$site_id."'"); 
             $site_url_res = tep_db_fetch_array($site_url_raw); 
@@ -512,7 +517,9 @@
         $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']),
         $ot_sub_total
       ),$comments);
-      if (!tep_is_oroshi($check_status['customers_id'])) {
+      $customer_info_raw = tep_db_query("select is_send_mail from ".TABLE_CUSTOMERS." where customers_id = '".$check_status['customers_id']."'"); 
+      $customer_info_res = tep_db_fetch_array($customer_info_raw); 
+      if ($customer_info_res['is_send_mail'] != '1') {
         if ($status == 32) {
           $site_url_raw = tep_db_query("select * from sites where id = '".$site_id."'"); 
           $site_url_res = tep_db_fetch_array($site_url_raw); 
@@ -1595,7 +1602,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       </tr>
       <tr>
         <td class="main">
-          <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}',preorders_a($order->info['orders_id']),$mail_sql['orders_status_mail']); ?></textarea>
+          <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="off" rows="30" cols="74"><?php echo str_replace('${ORDER_A}',preorders_a($order->info['orders_id']),$mail_sql['orders_status_mail']); ?></textarea>
         </td>
       </tr>
       <tr>
@@ -1978,7 +1985,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
   $sort_where = '';
  
   if (!isset($_GET['order_sort']) || $_GET['order_sort'] == '') {
-    $order_str = 'o.predate DESC'; 
+    $order_str = 'o.date_purchased DESC'; 
   } else {
     if($_GET['order_sort'] == 'site_romaji'){
       $sort_table = " ,".TABLE_SITES." s ";
@@ -2096,7 +2103,15 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
         order by ".$order_str;
     }  elseif (isset($_GET['keywords']) && isset($_GET['search_type']) && $_GET['search_type'] == 'products_name' && !$_GET['type'] && !$payment) {
       $orders_query_raw = " select distinct op.orders_id from " .  TABLE_PREORDERS_PRODUCTS . " op, ".TABLE_PREORDERS." o ".$sort_table." where ".$sort_where." op.orders_id = o.orders_id and op.products_name like '%".$_GET['keywords']."%' " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and op.site_id = '" . intval($_GET['site_id']) . "' " : '') . " order by ".$order_str;
-    } elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && preg_match('/^os_\d+$/', $_GET['search_type'])))) {
+    }  elseif (isset($_GET['keywords']) && isset($_GET['search_type']) &&
+        $_GET['search_type'] == 'sproducts_id' && !$_GET['type'] && !$payment) {
+      $orders_query_raw = " select distinct op.orders_id from " .  
+        TABLE_PREORDERS_PRODUCTS . " op, ".TABLE_PREORDERS." o ".
+        $sort_table." where ".$sort_where." op.orders_id = o.orders_id 
+        and op.products_id = '".$_GET['keywords']."' " .
+        (isset($_GET['site_id']) && intval($_GET['site_id']) ? " 
+         and op.site_id = '" . intval($_GET['site_id']) . "' " : '') . " order by ".$order_str;
+    }elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && preg_match('/^os_\d+$/', $_GET['search_type'])))) {
     if (!empty($_GET['keywords'])) {
       $orders_query_raw = "
           select distinct(o.orders_id), 
@@ -2792,7 +2807,7 @@ function submit_confirm()
           color="red">※</font>&nbsp;<?php echo TEXT_ORDER_COPY;?></td><td>
           <?php echo TEXT_ORDER_LOGIN;?></td></tr></table>
           <br>
-          <?php echo tep_draw_textarea_field('comments', 'hard', '74', '30', $select_text, 'style="font-family:monospace;font-size:12px; width:400px;"'); ?>
+          <?php echo tep_draw_textarea_field('comments', 'off', '74', '30', $select_text, 'style="font-family:monospace;font-size:12px; width:400px;"'); ?>
         </td>
         </tr>
         <tr>

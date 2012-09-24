@@ -43,15 +43,16 @@ if (isset($body_option)) {
     if(isset($faq_question_id)&&$faq_question_id!=''){
       $faq_question_info = tep_get_faq_question_info($faq_question_id);
     ?>
-      <table class="redtext"><tr>
-        <td style="float:left; padding-left:5px;"><img src="images/design/ask.gif" alt="question"></td>
-        <td style="float:left; width:400px;"><?php echo
+      <table class="faq_question"><tr>
+        <td valign="top"><img src="images/design/ask.gif" alt="question"></td>
+        <td class="faq_question_row"><?php echo
         $faq_question_info['ask'];?></td>
       </tr></table>
-      <div style=" border-bottom-style:dotted; width:98%; margin-top:10px; color:#444; margin-left:2px;"></div>
+      <div style=" border-bottom-style:dotted; width:98%; color:#444; margin-left:2px; *margin:0 0 10px 2px;"></div>
       <table class="faq_answer"><tr>
-      <td valign="top" style="float:left;">
-       <img src="images/design/answer.gif" alt="ask"></td><td class="faq_answer_row"><span>
+      <td valign="top">
+       <img src="images/design/answer.gif" alt="ask"></td>
+       <td class="faq_answer_row"><span>
        <?php 
         $question_answer =
         str_replace('#STORE_NAME#',STORE_NAME,$faq_question_info['answer']);
@@ -77,26 +78,27 @@ if (isset($body_option)) {
     <?php if($q_row = tep_db_fetch_array($last_faq_question_query)){ ?>
     <h2 class="pageHeading"><?php echo $temp_category_info['title'].
       TEXT_OTHER_QUESTION;?></h2>
-    <div  style="border-bottom-style:dotted; width:94%; margin-top:10px; color:#444; margin-left:2px;"></div>
     <div class="comment_faq">
-    <table class="faq_question_row"><tr><td>
-    <div>
-    <img src="images/design/ask.gif" alt="question"></div>
-    <div class="faq_question_row_div"><span><a href="<?php echo
+    <div  style="border-bottom-style:dotted; width:98%; margin-top:10px; *margin-top:-6px; color:#444; margin-left:2px;"></div>
+    <table class="faq_question"><tr><td valign="top">
+    <img src="images/design/ask.gif" alt="question">
+    </td>
+    <td class="faq_question_row"><span><a href="<?php echo
      HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['romaji']).'.html';?>">
       <?php echo $q_row['ask'];?>
-    </a></span></div>
+    </a></span>
     </td></tr>
     </table>
     <?php 
     while($q_row = tep_db_fetch_array($last_faq_question_query)){ 
     ?>
-    <table class="faq_question_row"><tr><td>
-    <div><img src="images/design/ask.gif" alt="question"></div><div class="faq_question_row_div"><span><a href="<?php echo
+    <table class="faq_question"><tr><td valign="top">
+    <img src="images/design/ask.gif" alt="question">
+    </td>
+    <td class="faq_question_row"><span><a href="<?php echo
       HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['romaji']).'.html';?>">
         <?php echo $q_row['ask'];?>
       </a></span>
-      </div>
       </td></tr></table>
     <?php
     } 

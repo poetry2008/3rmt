@@ -259,11 +259,11 @@
 ?>
 <?php page_head();?>
 <?php
-header( 'Expires: Mon, 26 Jul 1997 05:00:00 GMT' );
-header( 'Last-Modified: ' . gmdate('D, d M Y H:i:s') . 'GMT' );
-header( 'Cache-Control: no-store, no-cache, must-revalidate' );
-header( 'Cache-Control: post-check=0, pre-check=0', false );
-header( 'Pragma: no-cache' );
+header('Expires:'.date('D, d M Y H:i:s',0).' GMT');
+header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . 'GMT');
+header('Cache-Control: no-store, no-cache, must-revalidate');
+header('Cache-Control: post-check=0, pre-check=0', false);
+header('Pragma: no-cache');
 ?>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript"><!--
@@ -1521,7 +1521,6 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
  </td>
  </tr>
 </table>
-<table width="100%">
 <?php
 if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) && $_SESSION['date'] != '' && $date_session_flag == true && !isset($time_error) && !isset($date_error))){
 
@@ -1555,14 +1554,22 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
 <?php
   if(isset($time_error) && $time_error != '') {
 ?>
+<table width="100%">
   <tr id="time_error">
   <td class="main" width="20%">&nbsp;</td>
     <td class="main"><?php echo $time_error; ?></td>
   </tr>
+</table>
 <?php
   }
 ?> 
+<noscript>
+<table cellpadding="0" cellspacing="0" border="0" width="100%" class="red_border">
+<tr>
+<td><?php echo TEXT_NOSCRIPT_INFO;?></td>
+</tr>
 </table>
+</noscript>
 <?php
 if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() > 0) {
   if($guestchk == '1') {
@@ -1570,9 +1577,9 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() > 0) {
   } else {
 ?> 
   <table>
-  <tr>
-    <td height="45"></td>
-  </tr>
+    <tr>
+      <td height="45"></td>
+    </tr>
   </table>
   <h3><b><?php echo TEXT_POINT_OR_CAMPAION; ?></b></h3>
     <div class="payment-content">

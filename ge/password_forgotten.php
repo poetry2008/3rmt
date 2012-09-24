@@ -58,7 +58,7 @@
   } else {
 
   $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_LOGIN, '', 'SSL'));
-  $breadcrumb->add(NAVBAR_TITLE_2, tep_href_link(FILENAME_PASSWORD_FORGOTTEN, '', 'SSL'));
+  $breadcrumb->add(HEADING_TITLE, tep_href_link(FILENAME_PASSWORD_FORGOTTEN, '', 'SSL'));
 ?>
 <?php page_head();?>
 </head>
