@@ -4319,7 +4319,6 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
                            'orders_wait_flag'  => 1, 
                            'orders_http_accept_language' => $_SERVER['HTTP_ACCEPT_LANGUAGE'],
                            'code_fee' => 0, 
-                           'predate' => $pInfo['predate'].' 00:00:00',
                            'is_active' => $is_active,
                            'delivery_name'  => tep_get_fullname($shipping_address['entry_firstname'],$shipping_address['entry_lastname']), 
                            'delivery_company' => $shipping_address['entry_company'],
