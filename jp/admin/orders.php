@@ -2957,7 +2957,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
             </tr>
             <tr>
             <td class="main">
-            <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']); ?></textarea>
+            <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="off" rows="30" cols="74"><?php echo str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']); ?></textarea>
             </td>
             </tr>
             <tr>
@@ -4729,7 +4729,7 @@ if($c_parent_array['parent_id'] == 0){
                   color="red">※</font>&nbsp;<?php echo TEXT_ORDER_COPY;?></td><td>
                   <?php echo TEXT_ORDER_LOGIN;?></td></tr></table>
                   <br>
-                  <?php echo tep_draw_textarea_field('comments', 'hard', '74', '30',
+                  <?php echo tep_draw_textarea_field('comments', 'off', '74', '30',
                       $select_text, 'style="font-family:monospace;font-size:12px; width:400px;"'); ?>
                   </td>
                   </tr>

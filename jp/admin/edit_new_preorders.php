@@ -1789,7 +1789,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     }
     ?>
     <textarea style="font-family:monospace;font-size:12px; width:70%;" name="comments"
-    wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}', $order_a_str, $mail_sql['orders_status_mail']);?></textarea>
+    wrap="off" rows="30" cols="74"><?php echo str_replace('${ORDER_A}', $order_a_str, $mail_sql['orders_status_mail']);?></textarea>
     </td>
   </tr>
 </table>

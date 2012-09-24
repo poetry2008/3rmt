@@ -4711,10 +4711,10 @@ if($orders_exit_flag == true){
 
                   //<textarea style="font-family:monospace;font-size:x-small" name="comments" wrap="hard" rows="30" cols="74"></textarea>
 
-                  echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('     ${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:70%;"');
+                  echo tep_draw_textarea_field('comments', 'off', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('     ${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:70%;"');
                   //    echo tep_draw_textarea_field('comments', 'soft', '40', '5');
                 } else {
-                  echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('     ${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:70%;"');
+                  echo tep_draw_textarea_field('comments', 'off', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('     ${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:70%;"');
                 } 
           ?>
             </td>

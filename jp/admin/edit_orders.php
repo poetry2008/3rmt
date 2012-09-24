@@ -1196,29 +1196,27 @@ if($address_error == false){
 
         // 2.2.1 Update inventory Quantity
         $p = tep_db_fetch_array(tep_db_query("select * from products where products_id='".$add_product_products_id."'"));
-        if ($customer_guest['is_calc_quantity'] != '1') {
-          if ((int)$add_product_quantity > $p['products_real_quantity']) {
-            // 买取商品大于实数
-            tep_db_perform('products',array(
-                  'products_real_quantity' => 0,
-                  //'products_virtual_quantity' => 0,
-                  //'products_virtual_quantity' => $p['products_virtual_quantity'] - ((int)$add_product_quantity + $p['products_real_quantity'])
-                  'products_virtual_quantity' => $p['products_virtual_quantity'] - (int)$add_product_quantity + $p['products_real_quantity']
-                  ),
-                'update',
-                "products_id = '" . $add_product_products_id . "'");
-          } else {
-            tep_db_perform('products',array(
-                  'products_real_quantity' =>$p['products_real_quantity']  - (int)$add_product_quantity
-                  // 'products_real_quantity' =>$p['products_real_quantity']+ $p['products_virtual_quantity'] - (int)$add_product_quantity
-                  ),
-                'update',
-                "products_id = '" . $add_product_products_id . "'");
-          }
-          // 增加销售量
-          tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . (int)$add_product_quantity . " where products_id = '" . $add_product_products_id . "'");
-          // 处理负数问题
+        if ((int)$add_product_quantity > $p['products_real_quantity']) {
+          // 买取商品大于实数
+          tep_db_perform('products',array(
+                'products_real_quantity' => 0,
+                //'products_virtual_quantity' => 0,
+                //'products_virtual_quantity' => $p['products_virtual_quantity'] - ((int)$add_product_quantity + $p['products_real_quantity'])
+                'products_virtual_quantity' => $p['products_virtual_quantity'] - (int)$add_product_quantity + $p['products_real_quantity']
+                ),
+              'update',
+              "products_id = '" . $add_product_products_id . "'");
+        } else {
+          tep_db_perform('products',array(
+                'products_real_quantity' =>$p['products_real_quantity']  - (int)$add_product_quantity
+                // 'products_real_quantity' =>$p['products_real_quantity']+ $p['products_virtual_quantity'] - (int)$add_product_quantity
+                ),
+              'update',
+              "products_id = '" . $add_product_products_id . "'");
         }
+        // 增加销售量
+        tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . (int)$add_product_quantity . " where products_id = '" . $add_product_products_id . "'");
+        // 处理负数问题
         tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . $add_product_products_id . "'");
         tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . $add_product_products_id . "'");
         /*
@@ -3833,10 +3831,10 @@ if (($action == 'edit') && ($order_exists == true)) {
 
           //<textarea style="font-family:monospace;font-size:x-small" name="comments" wrap="hard" rows="30" cols="74"></textarea>
 
-          echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:70%;"');
+          echo tep_draw_textarea_field('comments', 'off', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:70%;"');
           //    echo tep_draw_textarea_field('comments', 'soft', '40', '5');
         } else {
-          echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:70%;"');
+          echo tep_draw_textarea_field('comments', 'off', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:70%;"');
         }
   ?>
     </td>
