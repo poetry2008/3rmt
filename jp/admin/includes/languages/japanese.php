@@ -597,9 +597,5 @@ define('TEXT_ONE_TIME_ERROR','エラー');
 define('TEXT_ONE_TIME_CONFIRM','チェックがありません。チェックを入れてください');
 define('TEXT_ONE_TIME_ADMIN_CONFIRM','Adminのチェックを入れてください');
 define('TEXT_SITE_COPYRIGHT' ,'Copyright © %s Haomai');
-<<<<<<< HEAD
 define('HELP_INFO_TITLE','ヘルプ情報管理');
-=======
 define('TEXT_JAVASCRIPT_ERROR','JavaScriptまたはCookieの設定がオンになっていません。お手数ですが設定を「オン」にして、ご利用ください。<br>※ 設定がオフになっていますと、ご利用いただけないサービスがあります。');
-
->>>>>>> 99e92110b431685072ed7206eea3c3d7e332d507
