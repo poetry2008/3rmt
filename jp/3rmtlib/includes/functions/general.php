@@ -2192,6 +2192,7 @@ header("Expires:".date("D, d M Y H:i:s",0)." GMT");
       $bread_num = count($breadcrumb_arr); 
       $breadcrumb_lat = trim($breadcrumb_arr[$bread_num-1]);  
     }
+
     $search  = array_merge(array('#STORE_NAME#','#BREADCRUMB#', '#PAGE_TITLE#', '#BREADCRUMB_KEYWORD#', '#BREADCRUMB_FIRST#'), $search);
     $replace = array_merge(array(STORE_NAME, $breadcrumb_str, $breadcrumb_lat, str_replace(' &raquo; ', ',', $breadcrumb_str), trim($breadcrumb_arr[1])), $replace);
     if (!in_array('#SEO_PAGE#', $search)) {
@@ -2267,6 +2268,7 @@ if ($oconfig_res) {
 <script type="text/javascript" src="js/search_include.js"></script>
 <?php } ?>
 <link rel="stylesheet" type="text/css" href="<?php echo 'css/'.$site_romaji.'.css?v='.$css_random_str;?>"> 
+<link rel="shortcut icon" type="image/ico" href="<?php echo HTTPS_SERVER;?>/favicon.ico">
 <?php
     switch (str_replace('/', '', $_SERVER['SCRIPT_NAME'])) {
       case FILENAME_CATEGORY:
@@ -4311,6 +4313,7 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
                            'orders_wait_flag'  => 1, 
                            'orders_http_accept_language' => $_SERVER['HTTP_ACCEPT_LANGUAGE'],
                            'code_fee' => 0, 
+                           'predate' => $pInfo['predate'].' 00:00:00',
                            'is_active' => $is_active,
                            'delivery_name'  => tep_get_fullname($shipping_address['entry_firstname'],$shipping_address['entry_lastname']), 
                            'delivery_company' => $shipping_address['entry_company'],
