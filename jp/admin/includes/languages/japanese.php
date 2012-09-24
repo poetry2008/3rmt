@@ -594,4 +594,4 @@ define('TEXT_ONE_TIME_ERROR','エラー');
 define('TEXT_ONE_TIME_CONFIRM','チェックがありません。チェックを入れてください');
 define('TEXT_ONE_TIME_ADMIN_CONFIRM','Adminのチェックを入れてください');
 define('TEXT_SITE_COPYRIGHT' ,'Copyright © %s Haomai');
-
+define('HELP_INFO_TITLE','ヘルプ情報管理');

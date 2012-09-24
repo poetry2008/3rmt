@@ -90,8 +90,8 @@
                    '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_CONTENTS) . '">' . BOX_TOOLS_CONTENTS . '</a><br>' .
                    '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_PRESENT) . '" class="menuBoxContent_Link">' . BOX_TOOLS_PRESENT . '</a><br>' . 
                    '<a class="menuBoxContent_Link" href="' .  tep_href_link(FILENAME_CAMPAIGN) . '" class="menuBoxContent_Link">' . BOX_TOOLS_CAMPAIGN . '</a><br>' . 
-                   '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_FAQ) . '">' . BOX_TOOLS_FAQ . '</a>' . 
-                     
+                   '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_FAQ) . '">' . BOX_TOOLS_FAQ . '</a><br>' . 
+                   '<a class="menuBoxContent_Link" href="' .  tep_href_link('help_info.php', '', 'NONSSL') .  '">'.HELP_INFO_TITLE.'</a>'.
                    '<hr size="1">' . 
                    '<a class="menuBoxContent_Link" href="' .
                    tep_href_link('mag_up.php', '', 'NONSSL') .

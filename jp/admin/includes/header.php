@@ -355,8 +355,21 @@ if(preg_match("/".FILENAME_ORDERS."/",$PHP_SELF)){
 <table width="100%">
 <tr>
 <td class="headerBarContent">&nbsp;&nbsp;<?php 
+$current_page_tp = split('\?', basename($_SERVER['SCRIPT_NAME'])); $current_page_tp = $current_page_tp[0];
+if($current_page_tp == "modules.php"){
+  preg_match("#set=[^&]+#",$_SERVER["REQUEST_URI"],$set_mod_array);
+ $current_page_tp .= "?".$set_mod_array[0];
+}
+if($current_page_tp == "configuration.php") {
+  preg_match("#gID=[^&]+#",$_SERVER["REQUEST_URI"],$set_mod_array);
+ $current_page_tp .= "?".$set_mod_array[0];
+}
 if (isset($ocertify->npermission) || $ocertify->npermission) {
-  echo '<a href="' . tep_href_link(FILENAME_DEFAULT, '', 'NONSSL') . '" class="headerLink">' . HEADER_TITLE_TOP . '</a>';
+	echo '<a href="' . tep_href_link(FILENAME_DEFAULT, '', 'NONSSL') . '" class="headerLink">' . HEADER_TITLE_TOP . '</a>';
+
+  echo '<a href="' . tep_href_link('help.php', 'info_romaji='.urlencode(str_replace('/admin/','',$current_page_tp)), 'NONSSL') . '" class="headerLink"  target="_blank"><img src="images/icon_help_info.gif" alt="img"></a>&nbsp;&nbsp;&nbsp;';
+  echo '<a href="' . tep_href_link('help_info.php', 'action=info_edit&info_romaji='.urlencode(str_replace('/admin/','',$current_page_tp)).'&opa='.urlencode(tep_get_all_get_params()) , 'NONSSL') . '" class="headerLink"  target="_blank">edit</a>';
+
 }
 ?></td>
 <td class="headerBarContent" align="right">
