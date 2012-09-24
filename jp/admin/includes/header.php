@@ -371,7 +371,7 @@ if (isset($ocertify->npermission) || $ocertify->npermission) {
 	echo '<a href="' . tep_href_link(FILENAME_DEFAULT, '', 'NONSSL') . '" class="headerLink">' . HEADER_TITLE_TOP . '</a>';
 
   echo '<a href="' . tep_href_link('help.php', 'info_romaji='.urlencode(str_replace('/admin/','',$current_page_tp)), 'NONSSL') . '" class="headerLink"  target="_blank"><img src="images/icon_help_info.gif" alt="img"></a>&nbsp;&nbsp;&nbsp;';
-  echo '<a href="' . tep_href_link('help_info.php', 'action=info_edit&info_romaji='.urlencode(str_replace('/admin/','',$current_page_tp)).'&opa='.urlencode(tep_get_all_get_params()) , 'NONSSL') . '" class="headerLink"  target="_blank">edit</a>';
+  //echo '<a href="' . tep_href_link('help_info.php', 'action=info_edit&info_romaji='.urlencode(str_replace('/admin/','',$current_page_tp)).'&opa='.urlencode(tep_get_all_get_params()) , 'NONSSL') . '" class="headerLink"  target="_blank">edit</a>';
 
 }
 ?></td>
