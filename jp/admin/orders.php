@@ -1368,9 +1368,9 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         . "' " : '') . " order by op.torihiki_date DESC";
     //op.torihiki_date desc";
   } elseif (isset($_GET['products_id']) && isset($_GET['search_type']) && $_GET['search_type'] == 'products_id' ) {
-    $orders_query_raw = " select distinct op.orders_id from " . TABLE_ORDERS_PRODUCTS . " op ".$sort_table." where ".$sort_where." op.products_id='".$_GET['products_id']."'";
+    $orders_query_raw = " select distinct op.orders_id from " .  TABLE_ORDERS_PRODUCTS . " op, ".TABLE_ORDERS." o ".$sort_table." where ".$sort_where." op.orders_id = o.orders_id and op.products_id='".$_GET['products_id']."'";
 
-    $orders_query_raw .= (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and op.site_id = '" . intval($_GET['site_id']) . "' " : '') . " order by op.torihiki_date DESC";
+    $orders_query_raw .= (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and op.site_id = '" . intval($_GET['site_id']) . "' " : '') . " order by ".str_replace('torihiki_date_error desc,date_purchased_error desc,', '', $order_str);
   }  elseif (isset($_GET['keywords']) && isset($_GET['search_type']) && $_GET['search_type'] == 'sproducts_id' ) {
     $orders_query_raw = " select distinct op.orders_id from " . TABLE_ORDERS_PRODUCTS . " op
       ,".TABLE_ORDERS." o 
@@ -1381,7 +1381,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
       '".date('Y-m-d 00:00:00',strtotime('-'.((get_configuration_by_site_id('ORDER_EFFECTIVE_DATE') != '0')?(get_configuration_by_site_id('ORDER_EFFECTIVE_DATE')-1):'0').'day'))."' ";
     $orders_query_raw .= (isset($_GET['site_id']) &&
         intval($_GET['site_id']) ? " and op.site_id = '" . intval($_GET['site_id'])
-        . "' " : '') . " order by op.torihiki_date DESC";
+        . "' " : '') . " order by ".str_replace('torihiki_date_error desc,date_purchased_error desc,', '', $order_str);
   } elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && preg_match('/^os_\d+$/', $_GET['search_type'])))) {
     if (!empty($_GET['keywords'])) {
       $orders_query_raw = "

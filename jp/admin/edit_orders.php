@@ -101,14 +101,8 @@ if (tep_not_null($action)) {
       $date_time = $year.$month.$day;
       $date_now = date('Ymd');
       $date_start_hour = $start_hour.$start_min.$start_min_1;
-      $date_end_hour = $end_hour.$end_min.$end_min_1;
-      if((int)$date_time < (int)$date_now || (int)$date_end_hour < (int)$date_start_hour){
-
-        $messageStack->add(TEXT_DATE_NUM_ERROR, 'error');
-        $action = 'edit';
-        break; 
-      } 
-    $shipping_array = array();
+      $date_end_hour = $end_hour.$end_min.$end_min_1; 
+      $shipping_array = array();
     foreach($update_products as $products_key=>$products_value){
 
       $shipping_products_query = tep_db_query("select * from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='". $products_key."'");
@@ -1202,29 +1196,27 @@ if($address_error == false){
 
         // 2.2.1 Update inventory Quantity
         $p = tep_db_fetch_array(tep_db_query("select * from products where products_id='".$add_product_products_id."'"));
-        if ($customer_guest['is_calc_quantity'] != '1') {
-          if ((int)$add_product_quantity > $p['products_real_quantity']) {
-            // 买取商品大于实数
-            tep_db_perform('products',array(
-                  'products_real_quantity' => 0,
-                  //'products_virtual_quantity' => 0,
-                  //'products_virtual_quantity' => $p['products_virtual_quantity'] - ((int)$add_product_quantity + $p['products_real_quantity'])
-                  'products_virtual_quantity' => $p['products_virtual_quantity'] - (int)$add_product_quantity + $p['products_real_quantity']
-                  ),
-                'update',
-                "products_id = '" . $add_product_products_id . "'");
-          } else {
-            tep_db_perform('products',array(
-                  'products_real_quantity' =>$p['products_real_quantity']  - (int)$add_product_quantity
-                  // 'products_real_quantity' =>$p['products_real_quantity']+ $p['products_virtual_quantity'] - (int)$add_product_quantity
-                  ),
-                'update',
-                "products_id = '" . $add_product_products_id . "'");
-          }
-          // 增加销售量
-          tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . (int)$add_product_quantity . " where products_id = '" . $add_product_products_id . "'");
-          // 处理负数问题
+        if ((int)$add_product_quantity > $p['products_real_quantity']) {
+          // 买取商品大于实数
+          tep_db_perform('products',array(
+                'products_real_quantity' => 0,
+                //'products_virtual_quantity' => 0,
+                //'products_virtual_quantity' => $p['products_virtual_quantity'] - ((int)$add_product_quantity + $p['products_real_quantity'])
+                'products_virtual_quantity' => $p['products_virtual_quantity'] - (int)$add_product_quantity + $p['products_real_quantity']
+                ),
+              'update',
+              "products_id = '" . $add_product_products_id . "'");
+        } else {
+          tep_db_perform('products',array(
+                'products_real_quantity' =>$p['products_real_quantity']  - (int)$add_product_quantity
+                // 'products_real_quantity' =>$p['products_real_quantity']+ $p['products_virtual_quantity'] - (int)$add_product_quantity
+                ),
+              'update',
+              "products_id = '" . $add_product_products_id . "'");
         }
+        // 增加销售量
+        tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . (int)$add_product_quantity . " where products_id = '" . $add_product_products_id . "'");
+        // 处理负数问题
         tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . $add_product_products_id . "'");
         tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . $add_product_products_id . "'");
         /*
@@ -1539,8 +1531,11 @@ function date_time(){
     var end_min = document.getElementById('min_1').value;
     var start_hour_str = parseInt(start_hour+start_min+end_min);
     if(date_time_value < date_time || (date_time_value == date_time && start_hour_str < date_hour)){
-      alert('<?php echo TEXT_DATE_NUM_ERROR;?>');
-      return false;
+      if(confirm('<?php echo TEXT_DATE_TIME_ERROR;?>')){
+        return true;
+      }else{
+        return false; 
+      }
     }
     return true;
 }
