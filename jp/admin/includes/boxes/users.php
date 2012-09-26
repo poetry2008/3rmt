@@ -49,11 +49,11 @@ define('FILENAME_ONCE_PWD_LOG', 'pwd_log.php');
   echo $box->menuBox($heading, $contents);
   */
 ?>
-            <table cellspacing="0" cellpadding="2" border="0" width="100%"> 
+            <table cellspacing="0" cellpadding="2" border="0" width="150"> 
               <tr>
               <td onmouseover="this.style.cursor='hand'" class="menuBoxHeading">
               &nbsp; 
-              <a class="menuBoxHeading_Link" href="javascript:void(0);" onclick="toggle_lan('col8');"><?php echo BOX_HEADING_USER;?></a> 
+						 <?php echo tep_image(DIR_WS_IMAGES . 'img/user.gif');?> <a class="menuBoxHeading_Link" href="javascript:void(0);" onclick="toggle_lan('col8');"><?php echo BOX_HEADING_USER;?></a> 
               &nbsp; 
               </td>
               </tr>
@@ -73,12 +73,13 @@ define('FILENAME_ONCE_PWD_LOG', 'pwd_log.php');
               <tr>
                 <td class="menuBoxContent">
     <?php  
-        if ($ocertify->npermission == 15) $loginlog = '<a href="' . tep_href_link(FILENAME_USERS_LOGINLOG, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_USER_LOG . '</a>';
+        if ($ocertify->npermission == 15) $loginlog = '<span class="menuBoxContent_image">'.tep_image(DIR_WS_IMAGES . 'img/link_visit.gif').'</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_USERS_LOGINLOG, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_USER_LOG . '</a></span>';
 	else $loginlog = '';
-        echo '<a href="' . tep_href_link(FILENAME_USERS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_USER_ADMIN . '</a><br>' .  '<a href="' . tep_href_link(basename($PHP_SELF), '', 'NONSSL') . '?execute_logout_user=1" class="menuBoxContent_Link">' . BOX_USER_LOGOUT . '</a><br>' . 
-        $loginlog."<br>".
-       '<a href="'.tep_href_link(FILENAME_ONCE_PWD_LOG).'"
-       class="menuBoxContent_Link">'.BOX_ONCE_PWD_LOG."</a>"; 
+        echo '<span class="menuBoxContent_image">'.tep_image(DIR_WS_IMAGES . 'img/user_manage.gif').'</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_USERS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_USER_ADMIN . '</a></span><br><span class="menuBoxContent_image">' .tep_image(DIR_WS_IMAGES . 'img/exit.gif').  '</span><span class="menuBoxContent_span"<a href="' . tep_href_link(basename($PHP_SELF), '', 'NONSSL') . '?execute_logout_user=1" class="menuBoxContent_Link">' . BOX_USER_LOGOUT . '</a></span><br>' . 
+					$loginlog."<br><span class='menuBoxContent_image'>".
+					tep_image(DIR_WS_IMAGES . 'img/login.gif').
+       '</span><span class="menuBoxContent_span"><a href="'.tep_href_link(FILENAME_ONCE_PWD_LOG).'"
+       class="menuBoxContent_Link">'.BOX_ONCE_PWD_LOG."</a></span>"; 
     ?>
                 </td>
               </tr>

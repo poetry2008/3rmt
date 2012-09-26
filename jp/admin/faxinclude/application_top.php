@@ -173,7 +173,7 @@ setlocale (LC_ALL, 'ja_JP.eucJP');
   define('TABLE_CALENDER', 'iimy_calendar');
 
 // customization for the design layout
-  define('BOX_WIDTH', 125); // how wide the boxes should be in pixels (default: 125)
+  define('BOX_WIDTH', 160); // how wide the boxes should be in pixels (default: 125)
 
 // Define how do we update currency exchange rates
 // Possible values are 'oanda' 'xe' or ''

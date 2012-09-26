@@ -192,13 +192,27 @@ a.splitPageLink:hover {
 --------------------------- */
 .menuBoxHeading {
 	color: #000;                                 /* フォントカラー */
-	background-color: #ffffff;                      /* 背景色 */
+	background-color: #ffffff;
+	line-height:18px;                      /* 背景色 */
+}
+.menuBoxHeading img{
+	margin:0 5px 3px 0;
 }
 /* ---------------------------
 .[TD]：メニューボックスコンテンツ
 --------------------------- */
 .menuBoxContent {
 	color: #616060;                                 /* フォントカラー */
+}
+.menuBoxContent_image{
+	margin-right:5px;
+	float:left;
+	line-height:18px;
+}
+.menuBoxContent_span{
+	width:125px;
+	float:left;
+	line-height:18px;
 }
 /* page */
 /* ---------------------------
@@ -224,6 +238,9 @@ body {
 	color: #ffffff;                                 /* フォントカラー */
 	font-weight: bold;                              /* フォント太さ */
 	padding:2px;                               /* 境界線と内容との間の空間 */
+}
+.headerBarContent img{
+	margin-bottom:3px;
 }
 /* ---------------------------
 .[TABLE]：メニューボックスを統括するテーブル
@@ -1430,4 +1447,7 @@ font-size:14px;
 	min-width:200px;
 	font-size: 12px;
     line-height: 14px;
+}
+.float_left{
+	float:left;
 }
