@@ -138,11 +138,11 @@
   
         $ot_query = tep_db_query("select value from " . TABLE_PREORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_total'");
         $ot_result = tep_db_fetch_array($ot_query);
-        $otm = (int)$ot_result['value'] . TEXT_MONEY_SYMBOL;
+        $otm = (int)$ot_result['value'] . SENDMAIL_EDIT_ORDERS_PRICE_UNIT;
         
         $ot_sub_query = tep_db_query("select value from " . TABLE_PREORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_subtotal'");
         $ot_sub_result = tep_db_fetch_array($ot_sub_query);
-        $ot_sub_total = abs((int)$ot_sub_result['value']).TEXT_MONEY_SYMBOL;
+        $ot_sub_total = abs((int)$ot_sub_result['value']).SENDMAIL_EDIT_ORDERS_PRICE_UNIT;
 
         $os_query = tep_db_query("select orders_status_name from " . TABLE_PREORDERS_STATUS . " where orders_status_id = '".$status."'");
         $os_result = tep_db_fetch_array($os_query);
@@ -179,9 +179,9 @@
           $os_result['orders_status_name'],
           get_configuration_by_site_id('STORE_NAME', $site_id),
           get_url_by_site_id($site_id),
-          date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
+          date('Y'.SENDMAIL_TEXT_DATE_YEAR.'n'.SENDMAIL_TEXT_DATE_MONTH.'j'.SENDMAIL_TEXT_DATE_DAY,strtotime(tep_get_pay_day())),
           $ensure_date_arr[0],
-          $num_product.PREORDER_PRODUCT_UNIT_TEXT,
+          $num_product.SENDMAIL_EDIT_ORDERS_NUM_UNIT,
           $num_product_res['products_name'],
           $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']),
           $ot_sub_total
@@ -215,9 +215,9 @@
           get_configuration_by_site_id('STORE_NAME', $site_id),
           get_url_by_site_id($site_id),
           get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
-          date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
+          date('Y'.SENDMAIL_TEXT_DATE_YEAR.'n'.SENDMAIL_TEXT_DATE_MONTH.'j'.SENDMAIL_TEXT_DATE_DAY,strtotime(tep_get_pay_day())),
           $ensure_date_arr[0],
-          $num_product.PREORDER_PRODUCT_UNIT_TEXT,
+          $num_product.SENDMAIL_EDIT_ORDERS_NUM_UNIT,
           $num_product_res['products_name'],
           $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']),
           $ot_sub_total
@@ -427,11 +427,11 @@
 
       $ot_query = tep_db_query("select value from " . TABLE_PREORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_total'");
       $ot_result = tep_db_fetch_array($ot_query);
-      $otm = (int)$ot_result['value'] . TEXT_MONEY_SYMBOL;
+      $otm = (int)$ot_result['value'] . SENDMAIL_EDIT_ORDERS_PRICE_UNIT;
       
       $ot_sub_query = tep_db_query("select value from " . TABLE_PREORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_subtotal'");
       $ot_sub_result = tep_db_fetch_array($ot_sub_query);
-      $ot_sub_total = abs((int)$ot_sub_result['value']).TEXT_MONEY_SYMBOL;
+      $ot_sub_total = abs((int)$ot_sub_result['value']).SENDMAIL_EDIT_ORDERS_PRICE_UNIT;
       
       $os_query = tep_db_query("select orders_status_name from " . TABLE_PREORDERS_STATUS . " where orders_status_id = '".$status."'");
       $os_result = tep_db_fetch_array($os_query);
@@ -471,9 +471,9 @@
         get_configuration_by_site_id('STORE_NAME', $site_id),
         get_url_by_site_id($site_id),
         get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
-        date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
+        date('Y'.SENDMAIL_TEXT_DATE_YEAR.'n'.SENDMAIL_TEXT_DATE_MONTH.'j'.SENDMAIL_TEXT_DATE_DAY,strtotime(tep_get_pay_day())),
         $ensure_date_arr[0], 
-        $num_product.PREORDER_PRODUCT_UNIT_TEXT,
+        $num_product.SENDMAIL_EDIT_ORDERS_NUM_UNIT,
         $num_product_res['products_name'], 
         $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']),
         $ot_sub_total
@@ -507,9 +507,9 @@
         get_configuration_by_site_id('STORE_NAME', $site_id),
         get_url_by_site_id($site_id),
         get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
-        date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
+        date('Y'.SENDMAIL_TEXT_DATE_YEAR.'n'.SENDMAIL_TEXT_DATE_MONTH.'j'.SENDMAIL_TEXT_DATE_DAY,strtotime(tep_get_pay_day())),
         $ensure_date_arr[0], 
-        $num_product.PREORDER_PRODUCT_UNIT_TEXT,
+        $num_product.SENDMAIL_EDIT_ORDERS_NUM_UNIT,
         $num_product_res['products_name'], 
         $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']),
         $ot_sub_total

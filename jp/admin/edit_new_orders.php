@@ -7,7 +7,8 @@
 
 require('includes/application_top.php');
 require('includes/step-by-step/new_application_top.php');
-ini_set("display_errors","Off");
+ini_set("display_errors","On");
+include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .  '/default.php');
 include(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/' . FILENAME_EDIT_ORDERS);
 require(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_EDIT_ORDERS);
 if(!isset($_SESSION['sites_id_flag']) || !isset($_SESSION['customer_id']) || !isset($_SESSION['email_address']) || !isset($_SESSION['firstname']) || !isset($_SESSION['lastname'])){
@@ -1036,7 +1037,7 @@ if($address_error == false){
           }
           for ($i=0; $i<sizeof($order->products); $i++) {
             //$orders_products_id = $order->products[$i]['orders_products_id'];
-            $products_ordered_mail .= ORDERS_PRODUCTS.str_repeat('　', intval($max_c_len - mb_strlen(ORDERS_PRODUCTS, 'utf-8'))).'：' . $order->products[$i]['name'] . '（' . $order->products[$i]['model'] . '）';
+            $products_ordered_mail .= SENDMAIL_ORDERS_PRODUCTS.str_repeat('　', intval($max_c_len - mb_strlen(SENDMAIL_ORDERS_PRODUCTS, 'utf-8'))).'：' . $order->products[$i]['name'] . '（' . $order->products[$i]['model'] . '）';
             if ($order->products[$i]['price'] != '0') {
               $products_ordered_mail .= '（'.$currencies->display_price($order->products[$i]['price'], $order->products[$i]['tax']).'）'; 
             }
@@ -1088,16 +1089,16 @@ if($address_error == false){
             $product_info = tep_db_fetch_array($_product_info_query);
             $data1 = explode("//", $product_info['products_attention_1']);
 
-            $products_ordered_mail .= QTY_NUM.str_repeat('　', intval($max_c_len - mb_strlen(QTY_NUM, 'utf-8'))).'：' . $order->products[$i]['qty'] . EDIT_ORDERS_NUM_UNIT . tep_get_full_count2($order->products[$i]['qty'], $order->products[$i]['id']) . "\n";
-            $products_ordered_mail .= TABLE_HEADING_PRODUCTS_PRICE.str_repeat('　', intval($max_c_len - mb_strlen(TABLE_HEADING_PRODUCTS_PRICE, 'utf-8'))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
-            $products_ordered_mail .= ENTRY_SUB_TOTAL.str_repeat('　', intval($max_c_len - mb_strlen(ENTRY_SUB_TOTAL, 'utf-8'))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
+            $products_ordered_mail .= SENDMAIL_QTY_NUM.str_repeat('　', intval($max_c_len - mb_strlen(SENDMAIL_QTY_NUM, 'utf-8'))).'：' . $order->products[$i]['qty'] . SENDMAIL_EDIT_ORDERS_NUM_UNIT . tep_get_full_count2($order->products[$i]['qty'], $order->products[$i]['id']) . "\n";
+            $products_ordered_mail .= SENDMAIL_TABLE_HEADING_PRODUCTS_PRICE.str_repeat('　', intval($max_c_len - mb_strlen(SENDMAIL_TABLE_HEADING_PRODUCTS_PRICE, 'utf-8'))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
+            $products_ordered_mail .= SENDMAIL_ENTRY_SUB_TOTAL.str_repeat('　', intval($max_c_len - mb_strlen(SENDMAIL_ENTRY_SUB_TOTAL, 'utf-8'))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
             //$products_ordered_mail .= 'キャラクター名　　：' . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($order->products[$i]['character']) : $order->products[$i]['character']) . "\n";
             $products_ordered_mail .= "------------------------------------------\n";
             if (tep_get_cflag_by_product_id($order->products[$i]['id'])) {
               if (tep_get_bflag_by_product_id($order->products[$i]['id'])) {
-                $products_ordered_mail .= TEXT_CHARACTER_NAME_SEND_MAIL."\n\n";
+                $products_ordered_mail .= SENDMAIL_TEXT_CHARACTER_NAME_SEND_MAIL."\n\n";
               } else {
-                $products_ordered_mail .= TEXT_CHARACTER_NAME_CONFIRM_SEND_MAIL."\n\n";
+                $products_ordered_mail .= SENDMAIL_TEXT_CHARACTER_NAME_CONFIRM_SEND_MAIL."\n\n";
               }
             }
           }
@@ -1110,14 +1111,14 @@ if($address_error == false){
 
             if ($totals['class'] == "ot_point" || $totals['class'] == "ot_subtotal") {
               if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
-                $total_details_mail .= TEXT_POINT_ONE . $currencies->format($totals['value']) . "\n";
-                $mailpoint = str_replace(EDIT_ORDERS_PRICE_UNIT,'',$currencies->format($totals['value']));
+                $total_details_mail .= SENDMAIL_TEXT_POINT_ONE . $currencies->format($totals['value']) . "\n";
+                $mailpoint = str_replace(SENDMAIL_EDIT_ORDERS_PRICE_UNIT,'',$currencies->format($totals['value']));
               }
             } elseif ($totals['class'] == "ot_total") {
               if($handle_fee) {
-                $total_details_mail .= TEXT_HANDLE_FEE_ONE.$currencies->format($handle_fee)."\n";
+                $total_details_mail .= SENDMAIL_TEXT_HANDLE_FEE_ONE.$currencies->format($handle_fee)."\n";
               }
-              $total_details_mail .= TEXT_PAYMENT_AMOUNT_ONE . $currencies->format($totals['value']) . "\n";
+              $total_details_mail .= SENDMAIL_TEXT_PAYMENT_AMOUNT_ONE . $currencies->format($totals['value']) . "\n";
               $mailtotal = $totals['value'];
               $total_price_mail = round($totals['value']);
             } else {
@@ -1131,7 +1132,7 @@ if($address_error == false){
           if ($customer_guest['is_send_mail'] != '1')
           {
           $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
-          $newarr = array(TEXT_DATE_MONDAY, TEXT_DATE_TUESDAY, TEXT_DATE_WEDNESDAY, TEXT_DATE_THURSDAY, TEXT_DATE_FRIDAY, TEXT_DATE_STATURDAY, TEXT_DATE_SUNDAY);
+          $newarr = array(SENDMAIL_TEXT_DATE_MONDAY, SENDMAIL_TEXT_DATE_TUESDAY, SENDMAIL_TEXT_DATE_WEDNESDAY, SENDMAIL_TEXT_DATE_THURSDAY, SENDMAIL_TEXT_DATE_FRIDAY, SENDMAIL_TEXT_DATE_STATURDAY, SENDMAIL_TEXT_DATE_SUNDAY);
             //bobhero start{{{
             $mailoption['ORDER_ID']         = $oID;                         //d
             $mailoption['ORDER_DATE']       = tep_date_long(time())  ;      //d 
@@ -1142,9 +1143,10 @@ if($address_error == false){
 
             $mailoption['TORIHIKIHOUHOU']   =  $order->tori['houhou'];      //?
             $mailoption['ORDER_PAYMENT']    = $order->info['payment_method'] ;  //d
-            $trade_time = str_replace($oarr, $newarr,date('Y'.TEXT_DATE_YEAR.'m'.TEXT_DATE_MONTH.'d'.TEXT_DATE_DAY.'（l）H'.TEXT_HOUR.'i'.TEXT_MIN, strtotime($_POST['date_orders'].' '.$_POST['start_hour'].':'.$_POST['start_min'].':00'))); 
+            $trade_time = str_replace($oarr,
+                $newarr,date('Y'.SENDMAIL_TEXT_DATE_YEAR.'m'.SENDMAIL_TEXT_DATE_MONTH.'d'.SENDMAIL_TEXT_DATE_DAY.'（l）H'.SENDMAIL_TEXT_HOUR.'i'.SENDMAIL_TEXT_MIN, strtotime($_POST['date_orders'].' '.$_POST['start_hour'].':'.$_POST['start_min'].':00'))); 
             $trade_time_1 = date('H時i分',strtotime($_POST['date_orders'].' '.$_POST['end_hour'].':'.$_POST['end_min'].':00'));
-            $mailoption['ORDER_TTIME']      = $trade_time . TEXT_TIME_LINK . $trade_time_1 .TEXT_TWENTY_FOUR_HOUR;//d
+            $mailoption['ORDER_TTIME']      = $trade_time . SENDMAIL_TEXT_TIME_LINK . $trade_time_1 .SENDMAIL_TEXT_TWENTY_FOUR_HOUR;//d
             //$mailoption['ORDER_COMMENT']    = $notify_comments_mail;// = $comments;
             $mailoption['ORDER_COMMENT']    = isset($comment_arr['payment_bank_info']['add_info'])?$comment_arr['comment']:$_POST['comments_text'];// = $comments;
             $mailoption['ORDER_PRODUCTS']   = $products_ordered_mail;//?
@@ -1184,12 +1186,12 @@ if($address_error == false){
               $email = str_replace('${'.strtoupper($key).'}',$value,$email);
               }
             
-            $email_temp = TEXT_POINT_DISCOUNT;
-            $email_temp_str = TEXT_POINT_DISCOUNT_ONE;
-            $email_shipping_fee = TEXT_SHIPPING_FEE_ONE.$shipping_fee.EDIT_ORDERS_PRICE_UNIT."\n".$email_temp;
+            $email_temp = SENDMAIL_TEXT_POINT_DISCOUNT;
+            $email_temp_str = SENDMAIL_TEXT_POINT_DISCOUNT_ONE;
+            $email_shipping_fee = SENDMAIL_TEXT_SHIPPING_FEE_ONE.$shipping_fee.SENDMAIL_EDIT_ORDERS_PRICE_UNIT."\n".$email_temp;
             $email = str_replace($email_temp,$email_shipping_fee,$email);
             $email = str_replace($email_temp_str,$email_shipping_fee,$email);
-            $email_address = ORDERS_PRODUCTS_ONE;
+            $email_address = SENDMAIL_ORDERS_PRODUCTS_ONE;
             //zhusuo
             if(isset($options_info_array) && !empty($options_info_array)){
               $address_len_array = array();
@@ -1198,7 +1200,7 @@ if($address_error == false){
                 $address_len_array[] = strlen($address_value);
               }
               $maxlen = max($address_len_array);
-              $email_address_str = TEXT_ADDRESS_INFO_LEFT."\n";
+              $email_address_str = SENDMAIL_TEXT_ADDRESS_INFO_LEFT."\n";
               $email_address_str .= '------------------------------------------'."\n";
               $maxlen = 9;
               foreach($options_info_array as $ad_key=>$ad_value){
@@ -1215,9 +1217,9 @@ if($address_error == false){
           }
               //$email_order = $payment_class->getOrderMailString($mailoption);  
             //bobhero end}}}  
-            tep_mail($check_status['customers_name'], $check_status['customers_email_address'], TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
+            tep_mail($check_status['customers_name'], $check_status['customers_email_address'], SENDMAIL_TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
           }
-            tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
+            tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), SENDMAIL_TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
           $customer_notified = '1';
           
           // 支払方法がクレジットなら決済URLを送る
@@ -1226,9 +1228,9 @@ if($address_error == false){
                 $order,$total_price_mail);
           if($email_credit){
             if ($customer_guest['is_send_mail'] != '1'){
-                tep_mail($check_status['customers_name'], $check_status['customers_email_address'], TEXT_CARD_PAYMENT . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email_credit, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']), $order->info['site_id']);
+                tep_mail($check_status['customers_name'], $check_status['customers_email_address'], SENDMAIL_TEXT_CARD_PAYMENT . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email_credit, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']), $order->info['site_id']);
             }
-              tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), TEXT_SEND_MAIL_CARD_PAYMENT . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email_credit, $check_status['customers_name'], $check_status['customers_email_address'], $order->info['site_id']);
+              tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), SENDMAIL_TEXT_SEND_MAIL_CARD_PAYMENT . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email_credit, $check_status['customers_name'], $check_status['customers_email_address'], $order->info['site_id']);
           }
           }
           $order_updated_2 = true;

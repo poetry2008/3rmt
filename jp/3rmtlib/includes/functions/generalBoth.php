@@ -61,3 +61,25 @@ function tep_get_torihiki_format($date='',$time=''){
 }
 
 //判断订单的产品有几种配送方法
+
+// set default language to languages id 
+function tep_get_default_language_id(){
+    $language_id_query = tep_db_query("select languages_id, directory from " .
+        TABLE_LANGUAGES . " where code = '" . DEFAULT_LANGUAGE . "'");
+    if(tep_db_num_rows($language_id_query)){
+      $lan_id_row = tep_db_fetch_array($language_id_query);
+      $languages_id = $lan_id_row['languages_id'];
+    }
+    return $languages_id;
+}
+
+// set default language to language
+function tep_get_default_language(){
+    $language_id_query = tep_db_query("select languages_id, directory from " .
+        TABLE_LANGUAGES . " where code = '" . DEFAULT_LANGUAGE . "'");
+    if(tep_db_num_rows($language_id_query)){
+      $lan_id_row = tep_db_fetch_array($language_id_query);
+      $languages_dir = $lan_id_row['directory'];
+    }
+    return $languages_dir;
+}

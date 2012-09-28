@@ -195,14 +195,14 @@ function w_close(){
     var o_name = document.getElementsByName('set_oroshi[]');
       o_cid = document.getElementsByName('ocid[0][]');
       if(o_name[0].value == null||o_name[0].value == ''){
-        alert('業者名はご記入ください');
+        alert('<?php echo PLEASE_INPUT_PEER_NAME; ?>');
         return false;
       }else {
         var ex_name =  document.getElementsByName('exist_name[]');
         var z;
         for(z=0;z<ex_name.length;z++){
           if(ex_name[z].value==o_name[0].value){
-            alert(o_name[0].value+'はもう存在しています');
+            alert(o_name[0].value+'<?php echo TEXT_ALREADY_EXISTS; ?>');
             return false;
           }
         }
@@ -213,7 +213,7 @@ function w_close(){
           }
         }
         if (test == j) {
-          alert('ゲームタイトルを一つ選択してください');
+          alert('<?php echo TEXT_PLEASE_GAME_TITLE; ?>');
           return false;
         }
       }
@@ -225,7 +225,7 @@ function w_close(){
     var ocid = document.getElementsByName('ocid[]');
     var test = 0;
     if (o_name == ''||o_name == null){
-      alert('業者名はご記入ください');
+      alert('<?php echo PLEASE_INPUT_PEER_NAME; ?>');
       return false;
     }else{
         var ex_name =  document.getElementsByName('exist_name[]');
@@ -235,7 +235,7 @@ function w_close(){
             continue;
           }
           if(ex_name[z].value==o_name){
-            alert(o_name+'はもう存在しています');
+            alert(o_name+'<?php echo TEXT_ALREADY_EXISTS; ?>');
             return false;
           }
         }
@@ -245,7 +245,7 @@ function w_close(){
          }
        }
        if (test == x){
-          alert('ゲームタイトルを一つ選択してください');
+          alert('<?php echo TEXT_PLEASE_GAME_TITLE; ?>');
           return false;
        }
     }
@@ -261,7 +261,7 @@ function w_close(){
             if(o_name[le].value != null&&o_name[le].value != ''){
                for(z=0;z<ex_name.length;z++){
                 if(ex_name[z].value==o_name[le].value){
-                  alert(o_name[le].value+'はもう存在しています');
+                  alert(o_name[le].value+'<?php echo TEXT_ALREADY_EXISTS;?>');
                   return false;
                 }
                }
@@ -274,13 +274,13 @@ function w_close(){
               continue;
             }
             if (nary[ii-1]==nary[ii]){
-              alert("入力された内容は同じになってはいけません");
+              alert("<?php echo TEXT_CONTENT_MUST_BE_THE_SAME; ?>");
               return false;
             }
           }
         }
   if(!document.getElementsByName('set_oroshi[]')[0]&&!document.getElementById("orrshi_id")){
-    alert('まず、入力フォーム追加してください');
+	  alert('<?php echo CLEATE_DOUGYOUSYA_ALERT;?>');
     return false;
   }
   }
@@ -293,7 +293,7 @@ function show_history(id){
 }
 
 function del_oroshi(id){
-  var flg=confirm('削除しますか？');
+  var flg=confirm('<?php echo TEXT_OK_TO_DELETE; ?>');
   if(flg){
     location.href="cleate_dougyousya.php?action=delete&id="+id;
   }else{

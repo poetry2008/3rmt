@@ -1,0 +1,9 @@
+<?php
+/*
+	JP、GM共通ファイル
+*/
+
+  define('MODULE_METASEO_SPECIALS_TEXT_TITLE', '特价商品');
+  define('MODULE_METASEO_SPECIALS_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_SPECIALS_TEXT_DESCRIPTION', '特价商品页的SEO');
+?>

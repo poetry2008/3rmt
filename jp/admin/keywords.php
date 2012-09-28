@@ -71,11 +71,11 @@
         }
       } ?>
       </select>
-      年
+       <?php echo YEAR_TEXT;?> 
       <select name="s_m">
       <?php for($i=1; $i<13; $i++) { if((isset($_GET['s_m']) && $i == $_GET['s_m']) or (!isset($_GET['s_m']) && $i == date('m')-1)){ echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'" selected>'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n"; }else{ echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'">'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n"; }  } ?>    
       </select>
-      月
+      <?php echo MONTH_TEXT;?> 
       <select name="s_d">
       <?php
       for($i=1; $i<32; $i++) {
@@ -87,7 +87,7 @@
       }
       ?>    
       </select>
-      日 </td>
+      <?php echo DAY_TEXT;?> </td>
       <td width="80" align="center">～</td>
       <td class="smallText">
       <?php echo KEYWORDS_SEARCH_END_TEXT;?> 
@@ -102,7 +102,7 @@
       }
       ?>    
       </select>
-      年
+      <?php echo YEAR_TEXT;?> 
       <select name="e_m">
       <?php
       for($i=1; $i<13; $i++) {
@@ -114,7 +114,7 @@
       }
       ?>    
       </select>
-      月
+      <?php echo MONTH_TEXT;?> 
       <select name="e_d">
       <?php
       for($i=1; $i<32; $i++) {
@@ -126,7 +126,7 @@
       }
       ?>    
       </select>
-      日 </td>
+      <?php echo DAY_TEXT;?> </td>
         <td>&nbsp;</td>
         <td><input type="submit" value="検索"></td>
       </tr>
