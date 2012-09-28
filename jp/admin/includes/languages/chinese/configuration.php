@@ -28,6 +28,7 @@ define('HEADING_TITLE_100','设置评论安全');
 define('HEADING_TITLE_30','警告字符串设置');
 define('HEADING_TITLE_2030','简易订单信息');
 define('HEADING_TITLE_3000','混合图表设置');
+define('HEADING_TITLE_900','联盟计划');
 define('TEXT_USER_ADDED','创建者:');
 define('TEXT_USER_UPDATE','更新者:');
 //=======================================================
