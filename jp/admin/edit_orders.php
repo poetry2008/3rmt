@@ -3074,23 +3074,23 @@ if (($action == 'edit') && ($order_exists == true)) {
       }
       $hour_str .= '</select>&nbsp;'.TEXT_HOUR;
       echo $hour_str;
-      $work_min_temp = substr((int)$start_temp[1],0,1);
+      $work_min_temp = substr($start_temp[1],0,1);
       $work_min_temp = isset($_SESSION['orders_update_products']['min']) ? $_SESSION['orders_update_products']['min'] : $work_min_temp;
       $min_str_1 = '&nbsp;<select name="start_min_1" id="min" onchange="check_min(this.value);">';
       for($m_1 = 0;$m_1 <= 5;$m_1++){
         
-        $selected = $work_min_temp == $m_1 ? ' selected' : '';
+        $selected = (int)$work_min_temp == $m_1 ? ' selected' : '';
         $min_str_1 .= '<option value="'.$m_1.'"'.$selected.'>'.$m_1.'</option>';
 
       }
       $min_str_1 .= '</select>';
       echo $min_str_1;
-      $min_str_temp = substr((int)$start_temp[1],1,1);
+      $min_str_temp = substr($start_temp[1],1,1);
       $min_str_temp = isset($_SESSION['orders_update_products']['min_1']) ? $_SESSION['orders_update_products']['min_1'] : $min_str_temp;
       $min_str_2 = '<select name="start_min_2" id="min_1" onchange="check_min_1(this.value);">';
       for($m_2 = 0;$m_2 <= 9;$m_2++){
         
-        $selected = $min_str_temp == $m_2 ? ' selected' : '';
+        $selected = (int)$min_str_temp == $m_2 ? ' selected' : '';
         $min_str_2 .= '<option value="'.$m_2.'"'.$selected.'>'.$m_2.'</option>';
 
       }
@@ -3109,20 +3109,20 @@ if (($action == 'edit') && ($order_exists == true)) {
       }
       $hour_str_1 .= '</select>&nbsp;'.TEXT_HOUR;
       echo $hour_str_1;
-      $min_str_1_temp = substr((int)$end_temp[1],0,1);
+      $min_str_1_temp = substr($end_temp[1],0,1);
       $min_str_1_temp = isset($_SESSION['orders_update_products']['min_end']) ? $_SESSION['orders_update_products']['min_end'] : $min_str_1_temp;
       $min_str_1_end = '&nbsp;<select name="end_min_1" id="min_end" onchange="check_end_min(this.value);">';
       $min_start = (int)$work_min_temp; 
       $min_start = $start_temp[0] < $end_temp[0] ? 0 : $min_start;
       for($m_1_end = $min_start;$m_1_end <= 5;$m_1_end++){
         
-        $selected = $min_str_1_temp == $m_1_end ? ' selected' : '';
+        $selected = (int)$min_str_1_temp == $m_1_end ? ' selected' : '';
         $min_str_1_end .= '<option value="'.$m_1_end.'"'.$selected.'>'.$m_1_end.'</option>';
 
       }
       $min_str_1_end .= '</select>';
       echo $min_str_1_end;
-      $min_str_end_temp = substr((int)$end_temp[1],1,1);
+      $min_str_end_temp = substr($end_temp[1],1,1);
       $min_str_end_temp = isset($_SESSION['orders_update_products']['min_end_1']) ? $_SESSION['orders_update_products']['min_end_1'] : $min_str_end_temp;
       $min_str_2_end = '<select name="end_min_2" id="min_end_1">';
       $min_end = (int)$min_str_end_temp;
@@ -3130,7 +3130,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       $min_end = $start_temp[0] < $end_temp[0] ? 0 : $min_end;
       for($m_2_end = $min_end;$m_2_end <= 9;$m_2_end++){
         
-        $selected = $min_str_end_temp == $m_2_end ? ' selected' : '';
+        $selected = (int)$min_str_end_temp == $m_2_end ? ' selected' : '';
         $min_str_2_end .= '<option value="'.$m_2_end.'"'.$selected.'>'.$m_2_end.'</option>';
 
       }
