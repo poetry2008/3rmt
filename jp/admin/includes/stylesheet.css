@@ -512,22 +512,9 @@ legend {
 }
 #tep_site_filter {
 	/*width:100%;*/
-  width: 62.6%;
-  height:14px;
-  float: left;
+  width: 63%;
+  height:14px;/*float: left*/
 }
-@media all and(min-width:0){ 
-#tep_site_filter{
-  width: 62.6%;
-  height:14px;
-  float: left;
-}}
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-#tep_site_filter{
-  width: 62.2%;
-  height:14px;
-  float: left;
-}}
 #order_icons {
 	/*float: right;*/
   text-align: right;

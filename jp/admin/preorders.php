@@ -1796,20 +1796,20 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
       <tr>
         <td>
         <?php tep_site_filter(FILENAME_PREORDERS);?>
-        <?php
-          $get_mark_info = explode('-', $_GET['mark']);
-          ?>
-          <table border="0" width="8%" cellpadding="1" cellspacing="1">
-            <tr>
-              <td id="mark_o" class="<?php echo (in_array('0', $get_mark_info) || !isset($_GET['mark']))?'mark_flag_checked':'mark_flag_unchecked';?>" align="center" onclick="mark_work(this,'0','<?php echo $_GET['mark'];?>')">&nbsp;</td> 
-              <td id="mark_a" class="<?php echo (in_array('1', $get_mark_info) || !isset($_GET['mark']))?'mark_flag_checked':'mark_flag_unchecked';?>" align="center" onclick="mark_work(this,'1','<?php echo $_GET['mark'];?>')">A</td> 
-              <td id="mark_b" class="<?php echo (in_array('2', $get_mark_info) || !isset($_GET['mark']))?'mark_flag_checked':'mark_flag_unchecked';?>" align="center" onclick="mark_work(this,'2','<?php echo $_GET['mark'];?>')">B</td> 
-              <td id="mark_c" class="<?php echo (in_array('3', $get_mark_info) || !isset($_GET['mark']))?'mark_flag_checked':'mark_flag_unchecked';?>" align="center" onclick="mark_work(this,'3','<?php echo $_GET['mark'];?>')">C</td> 
-              <td id="mark_d" class="<?php echo (in_array('4', $get_mark_info) || !isset($_GET['mark']))?'mark_flag_checked':'mark_flag_unchecked';?>" align="center" onclick="mark_work(this,'4','<?php echo $_GET['mark'];?>')">D</td> 
-            </tr>
-          </table>
         </td>
         <td align="right">
+          <?php
+            $get_mark_info = explode('-', $_GET['mark']);
+          ?>
+          <table border="0" width="100%" cellpadding="1" cellspacing="1">
+            <tr>
+              <td id="mark_o" class="<?php echo (in_array('0', $get_mark_info) || !isset($_GET['mark']))?'mark_flag_checked':'mark_flag_unchecked';?>" align="center" onclick="mark_work(this,'0','<?php echo $_GET['mark'];?>', '<?php echo $_GET['site_id'];?>')">&nbsp;</td> 
+              <td id="mark_a" class="<?php echo (in_array('1', $get_mark_info) || !isset($_GET['mark']))?'mark_flag_checked':'mark_flag_unchecked';?>" align="center" onclick="mark_work(this,'1','<?php echo $_GET['mark'];?>', '<?php echo $_GET['site_id'];?>')">A</td> 
+              <td id="mark_b" class="<?php echo (in_array('2', $get_mark_info) || !isset($_GET['mark']))?'mark_flag_checked':'mark_flag_unchecked';?>" align="center" onclick="mark_work(this,'2','<?php echo $_GET['mark'];?>', '<?php echo $_GET['site_id'];?>')">B</td> 
+              <td id="mark_c" class="<?php echo (in_array('3', $get_mark_info) || !isset($_GET['mark']))?'mark_flag_checked':'mark_flag_unchecked';?>" align="center" onclick="mark_work(this,'3','<?php echo $_GET['mark'];?>', '<?php echo $_GET['site_id'];?>')">C</td> 
+              <td id="mark_d" class="<?php echo (in_array('4', $get_mark_info) || !isset($_GET['mark']))?'mark_flag_checked':'mark_flag_unchecked';?>" align="center" onclick="mark_work(this,'4','<?php echo $_GET['mark'];?>', '<?php echo $_GET['site_id'];?>')">D</td> 
+            </tr>
+          </table>
         </td>
       </tr>
     </table>
