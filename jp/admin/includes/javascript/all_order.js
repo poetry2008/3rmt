@@ -936,3 +936,22 @@ function recalc_all_product_price(oid, or_str)
     }
   }); 
 }
+
+function mark_work(ele, mark_symbol, select_mark)
+{
+  $.ajax({
+    dataType: 'text',
+    url: 'ajax_orders.php?action=handle_mark&mark_symbol='+mark_symbol+'&select_mark='+select_mark,
+    success: function(data) {
+      data_array = data.split('|||'); 
+      if (data_array[0] == 'success') {
+        if (ele.className == 'mark_flag_checked') {
+          ele.className='mark_flag_unchecked';
+        } else {
+          ele.className='mark_flag_checked';
+        }
+        window.location.href = data_array[1]; 
+      }
+    }
+  });
+}

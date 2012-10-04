@@ -707,4 +707,37 @@ if ($_POST['orders_id'] &&
   }
   
   echo implode('|||', $price_array);
+} else if ($_GET['action'] == 'handle_mark') {
+  $return_array = array();
+  $select_mark = $_GET['select_mark'];
+  $mark_symbol = $_GET['mark_symbol'];
+  if ($select_mark == '') {
+    $select_mark = '0-1-2-3-4'; 
+  }
+  if ($select_mark != '') {
+    $select_mark_array = explode('-', $select_mark);    
+    $return_array[] = 'success';
+    if (in_array($mark_symbol, $select_mark_array)) {
+      $mark_array = array(); 
+      foreach ($select_mark_array as $m_key => $m_value) {
+        if ($m_value != $mark_symbol) {
+          $mark_array[] = $m_value;  
+        }
+      }
+      if (!empty($mark_array)) {
+        $return_array[] = tep_href_link(FILENAME_PREORDERS, 'mark='.implode('-', $mark_array));
+      } else {
+        $return_array[] = tep_href_link(FILENAME_PREORDERS);
+      }
+    } else {
+      $mark_array = $select_mark_array; 
+      $mark_array[] = $mark_symbol;
+      sort($mark_array);
+      $return_array[] = tep_href_link(FILENAME_PREORDERS, 'mark='.implode('-', $mark_array));
+    }
+  } else {
+    $return_array[] = 'success';
+    $return_array[] = tep_href_link(FILENAME_PREORDERS, 'mark='.$_GET['mark_symbol']);
+  }
+  echo implode('|||', $return_array);
 }

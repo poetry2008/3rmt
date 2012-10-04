@@ -512,9 +512,22 @@ legend {
 }
 #tep_site_filter {
 	/*width:100%;*/
-  width: 63%;
-  height:14px;/*float: left;*/
+  width: 62.6%;
+  height:14px;
+  float: left;
 }
+@media all and(min-width:0){ 
+#tep_site_filter{
+  width: 62.6%;
+  height:14px;
+  float: left;
+}}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+#tep_site_filter{
+  width: 62.2%;
+  height:14px;
+  float: left;
+}}
 #order_icons {
 	/*float: right;*/
   text-align: right;
@@ -1450,4 +1463,26 @@ font-size:14px;
 }
 .float_left{
 	float:left;
+}
+.mark_flag_checked {
+	color: #fff;
+	background: #ff0000;
+	font-size:12px;
+	cursor:pointer;
+	border: 1px solid #000;
+	border-top: 2px solid #000;
+	border-left: 2px solid #000;
+	font-weight:bold;
+        width:10px;
+}
+.mark_flag_unchecked {
+	color: #000;
+	background: #fff;
+	font-size:12px;
+	cursor:pointer;
+	border: 1px solid #000;
+	border-bottom: 2px solid #000;
+	border-right: 2px solid #000;
+	font-weight:bold;
+        width:10px;
 }
