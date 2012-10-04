@@ -728,9 +728,9 @@ if ($_POST['orders_id'] &&
         $return_array[] = tep_href_link(FILENAME_PREORDERS, 'mark='.implode('-', $mark_array).((!empty($_GET['c_site']))?'&site_id='.$_GET['c_site']:''));
       } else {
         if (!empty($_GET['c_site'])) {
-          $return_array[] = tep_href_link(FILENAME_ORDERS, 'site_id='.$_GET['c_site']);
+          $return_array[] = tep_href_link(FILENAME_PREORDERS, 'site_id='.$_GET['c_site']);
         } else {
-          $return_array[] = tep_href_link(FILENAME_ORDERS);
+          $return_array[] = tep_href_link(FILENAME_PREORDERS);
         }
       }
     } else {
