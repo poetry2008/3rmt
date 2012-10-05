@@ -1809,9 +1809,21 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
     <table width="100%">
       <tr>
         <td>
-    <?php tep_site_filter(FILENAME_PREORDERS);?>
+        <?php tep_site_filter(FILENAME_PREORDERS);?>
         </td>
         <td align="right">
+          <?php
+            $get_mark_info = explode('-', $_GET['mark']);
+          ?>
+          <table border="0" width="100%" cellpadding="1" cellspacing="1">
+            <tr>
+              <td id="mark_o" class="<?php echo (in_array('0', $get_mark_info) || !isset($_GET['mark']))?'mark_flag_checked':'mark_flag_unchecked';?>" align="center" onclick="mark_work(this,'0','<?php echo $_GET['mark'];?>', '<?php echo $_GET['site_id'];?>')">&nbsp;</td> 
+              <td id="mark_a" class="<?php echo (in_array('1', $get_mark_info) || !isset($_GET['mark']))?'mark_flag_checked':'mark_flag_unchecked';?>" align="center" onclick="mark_work(this,'1','<?php echo $_GET['mark'];?>', '<?php echo $_GET['site_id'];?>')">A</td> 
+              <td id="mark_b" class="<?php echo (in_array('2', $get_mark_info) || !isset($_GET['mark']))?'mark_flag_checked':'mark_flag_unchecked';?>" align="center" onclick="mark_work(this,'2','<?php echo $_GET['mark'];?>', '<?php echo $_GET['site_id'];?>')">B</td> 
+              <td id="mark_c" class="<?php echo (in_array('3', $get_mark_info) || !isset($_GET['mark']))?'mark_flag_checked':'mark_flag_unchecked';?>" align="center" onclick="mark_work(this,'3','<?php echo $_GET['mark'];?>', '<?php echo $_GET['site_id'];?>')">C</td> 
+              <td id="mark_d" class="<?php echo (in_array('4', $get_mark_info) || !isset($_GET['mark']))?'mark_flag_checked':'mark_flag_unchecked';?>" align="center" onclick="mark_work(this,'4','<?php echo $_GET['mark'];?>', '<?php echo $_GET['site_id'];?>')">D</td> 
+            </tr>
+          </table>
         </td>
       </tr>
     </table>
@@ -2455,6 +2467,76 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
     }
     
     $orders_query_raw .= "order by ".$order_str;
+  } elseif (isset($_GET['mark'])) {
+    $mark_info = explode('-', $_GET['mark']); 
+    $mark_sql_str = ''; 
+    if (in_array('0', $mark_info)) {
+      if (count($mark_info) == 1) {
+        $mark_sql_str = "((o.orders_work is null) or (o.orders_work = ''))"; 
+      } else {
+        $mark_str = ''; 
+        foreach ($mark_info as $m_key => $m_value) {
+          if ($m_value == '1') {
+            $mark_str .= '\'a\','; 
+          } else if ($m_value == '2') {
+            $mark_str .= '\'b\','; 
+          } else if ($m_value == '3') {
+            $mark_str .= '\'c\','; 
+          } else if ($m_value == '4') {
+            $mark_str .= '\'d\','; 
+          } 
+        }
+        $mark_str = substr($mark_str, 0, -1);
+        $mark_sql_str = "((o.orders_work is null) or (o.orders_work = '') or (o.orders_work in (".$mark_str.")))"; 
+      }
+    } else {
+      $mark_str = ''; 
+      foreach ($mark_info as $m_key => $m_value) {
+        if ($m_value == '1') {
+          $mark_str .= '\'a\','; 
+        } else if ($m_value == '2') {
+          $mark_str .= '\'b\','; 
+        } else if ($m_value == '3') {
+          $mark_str .= '\'c\','; 
+        } else if ($m_value == '4') {
+          $mark_str .= '\'d\','; 
+        }
+      }
+      $mark_str = substr($mark_str, 0, -1);
+      $mark_sql_str = "o.orders_work in (".$mark_str.")"; 
+    }
+    $orders_query_raw = "
+        select distinct o.orders_status as orders_status_id, 
+               o.orders_id, 
+               o.torihiki_date, 
+               IF(o.torihiki_date = '0000-00-00 00:00:00',1,0) as torihiki_date_error,
+               o.customers_id, 
+               o.customers_name, 
+               o.payment_method, 
+               o.date_purchased, 
+               o.last_modified, 
+               o.currency, 
+               o.currency_value, 
+               o.orders_status, 
+               o.orders_status_name, 
+               o.orders_status_image,
+               o.orders_important_flag,
+               o.orders_care_flag,
+               o.orders_wait_flag,
+               o.orders_inputed_flag,
+               o.orders_work,
+               o.predate, 
+               o.customers_email_address,
+               o.orders_comment,
+               o.torihiki_houhou,
+               o.confirm_payment_time, 
+               o.is_active, 
+               o.site_id
+         from " . TABLE_PREORDERS . " o " . $from_payment . $sort_table ."
+         where ".$sort_where." 
+          o.flag_qaf = 0 and ".$mark_sql_str." 
+          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . $where_payment . $where_type . "
+         order by ".$order_str;
   } else {
       // orders_list 隐藏 「キャンセル」と「注文取消」
       $orders_query_raw = "

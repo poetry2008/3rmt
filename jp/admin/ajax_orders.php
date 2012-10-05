@@ -2130,4 +2130,41 @@ echo json_encode($json_array);
     $products_num_error_str = implode('、',$products_num_error_array);
     echo $products_num_error_str;
   }
+} else if ($_GET['action'] == 'handle_mark') {
+  $return_array = array();
+  $select_mark = $_GET['select_mark'];
+  $mark_symbol = $_GET['mark_symbol'];
+  if ($select_mark == '') {
+    $select_mark = '0-1-2-3-4'; 
+  }
+  if ($select_mark != '') {
+    $select_mark_array = explode('-', $select_mark);    
+    $return_array[] = 'success';
+    if (in_array($mark_symbol, $select_mark_array)) {
+      $mark_array = array(); 
+      foreach ($select_mark_array as $m_key => $m_value) {
+        if ($m_value != $mark_symbol) {
+          $mark_array[] = $m_value;  
+        }
+      }
+      if (!empty($mark_array)) {
+        $return_array[] = tep_href_link(FILENAME_ORDERS, 'mark='.implode('-', $mark_array).((!empty($_GET['c_site']))?'&site_id='.$_GET['c_site']:''));
+      } else {
+        if (!empty($_GET['c_site'])) {
+          $return_array[] = tep_href_link(FILENAME_ORDERS, 'site_id='.$_GET['c_site']);
+        } else {
+          $return_array[] = tep_href_link(FILENAME_ORDERS);
+        }
+      }
+    } else {
+      $mark_array = $select_mark_array; 
+      $mark_array[] = $mark_symbol;
+      sort($mark_array);
+      $return_array[] = tep_href_link(FILENAME_ORDERS, 'mark='.implode('-', $mark_array).((!empty($_GET['c_site']))?'&site_id='.$_GET['c_site']:''));
+    }
+  } else {
+    $return_array[] = 'success';
+    $return_array[] = tep_href_link(FILENAME_ORDERS, 'mark='.$_GET['mark_symbol'].((!empty($_GET['c_site']))?'&site_id='.$_GET['c_site']:''));
+  }
+  echo implode('|||', $return_array);
 }
