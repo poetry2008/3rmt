@@ -744,4 +744,30 @@ if ($_POST['orders_id'] &&
     $return_array[] = tep_href_link(FILENAME_PREORDERS, $_POST['param_other'].'mark='.$_GET['mark_symbol'].((!empty($_GET['c_site']))?'&site_id='.$_GET['c_site']:''));
   }
   echo implode('|||', $return_array);
+} else if ($_GET['action'] == 'read_flag') {
+
+  $users_name = $_POST['user'];
+  $read_flag = $_POST['flag'];
+  $orders_id = $_POST['oid'];
+  $read_flag_query = tep_db_query("select read_flag from ". TABLE_PREORDERS ." where orders_id='".$orders_id."'");
+  $read_flag_array = tep_db_fetch_array($read_flag_query);
+  tep_db_free_result($read_flag_query);
+  if($read_flag_array['read_flag'] == ''){
+
+    if($read_flag == 0){
+      tep_db_query("update ". TABLE_PREORDERS ." set read_flag='".$users_name."' where orders_id='".$orders_id."'"); 
+    }
+  }else{
+
+    $read_flag_str_array = explode('|||',$read_flag_array['read_flag']);
+    if(!in_array($users_name,$read_flag_str_array) && $read_flag == 0){
+      $read_flag_add = $read_flag_array['read_flag'].'|||'.$users_name;
+      tep_db_query("update ". TABLE_PREORDERS ." set read_flag='".$read_flag_add."' where orders_id='".$orders_id."'");
+    }else{
+
+      unset($read_flag_str_array[array_search($users_name,$read_flag_str_array)]);
+      $read_flag_string = implode('|||',$read_flag_str_array);
+      tep_db_query("update ". TABLE_PREORDERS ." set read_flag='".$read_flag_string."' where orders_id='".$orders_id."'");
+    }
+  }
 }
