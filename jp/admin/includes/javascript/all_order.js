@@ -937,10 +937,13 @@ function recalc_all_product_price(oid, or_str)
   }); 
 }
 
-function mark_work(ele, mark_symbol, select_mark, c_site)
+function mark_work(ele, mark_symbol, select_mark, c_site, param_other)
 {
   $.ajax({
     dataType: 'text',
+    type:"POST",
+    data:'param_other=' + param_other,
+    async:false, 
     url: 'ajax_orders.php?action=handle_mark&mark_symbol='+mark_symbol+'&select_mark='+select_mark+'&c_site='+c_site,
     success: function(data) {
       data_array = data.split('|||'); 
