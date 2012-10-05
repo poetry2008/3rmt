@@ -2148,23 +2148,23 @@ echo json_encode($json_array);
         }
       }
       if (!empty($mark_array)) {
-        $return_array[] = tep_href_link(FILENAME_ORDERS, 'mark='.implode('-', $mark_array).((!empty($_GET['c_site']))?'&site_id='.$_GET['c_site']:''));
+        $return_array[] = tep_href_link(FILENAME_ORDERS, $_POST['param_other'].'mark='.implode('-', $mark_array).((!empty($_GET['c_site']))?'&site_id='.$_GET['c_site']:''));
       } else {
         if (!empty($_GET['c_site'])) {
-          $return_array[] = tep_href_link(FILENAME_ORDERS, 'site_id='.$_GET['c_site']);
+          $return_array[] = tep_href_link(FILENAME_ORDERS, $_POST['param_other'].'site_id='.$_GET['c_site']);
         } else {
-          $return_array[] = tep_href_link(FILENAME_ORDERS);
+          $return_array[] = tep_href_link(FILENAME_ORDERS, $_POST['param_other']);
         }
       }
     } else {
       $mark_array = $select_mark_array; 
       $mark_array[] = $mark_symbol;
       sort($mark_array);
-      $return_array[] = tep_href_link(FILENAME_ORDERS, 'mark='.implode('-', $mark_array).((!empty($_GET['c_site']))?'&site_id='.$_GET['c_site']:''));
+      $return_array[] = tep_href_link(FILENAME_ORDERS, $_POST['param_other'].'mark='.implode('-', $mark_array).((!empty($_GET['c_site']))?'&site_id='.$_GET['c_site']:''));
     }
   } else {
     $return_array[] = 'success';
-    $return_array[] = tep_href_link(FILENAME_ORDERS, 'mark='.$_GET['mark_symbol'].((!empty($_GET['c_site']))?'&site_id='.$_GET['c_site']:''));
+    $return_array[] = tep_href_link(FILENAME_ORDERS, $_POST['param_other'].'mark='.$_GET['mark_symbol'].((!empty($_GET['c_site']))?'&site_id='.$_GET['c_site']:''));
   }
   echo implode('|||', $return_array);
 }
