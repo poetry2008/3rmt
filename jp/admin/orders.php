@@ -1142,7 +1142,21 @@ switch ($_GET['action']) {
 
 if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($_GET['oID']) ) {
   $oID = tep_db_prepare_input($_GET['oID']);
+  $read_flag_query = tep_db_query("select read_flag from ". TABLE_ORDERS ." where orders_id='".$oID."'");
+  $read_flag_array = tep_db_fetch_array($read_flag_query);
+  tep_db_free_result($read_flag_query);
+  $user_info = tep_get_user_info($ocertify->auth_user);
+  if($read_flag_array['read_flag'] == ''){
 
+    tep_db_query("update ". TABLE_ORDERS ." set read_flag='".$user_info['name']."' where orders_id='".$oID."'"); 
+  }else{
+
+    $read_flag_str_array = explode('|||',$read_flag_array['read_flag']);
+    if(!in_array($user_info['name'],$read_flag_str_array)){
+      $read_flag_add = $read_flag_array['read_flag'].'|||'.$user_info['name'];
+      tep_db_query("update ". TABLE_ORDERS ." set read_flag='".$read_flag_add."' where orders_id='".$oID."'");
+    }
+  }
   $orders_query = tep_db_query("
       select orders_id 
       from " . TABLE_ORDERS . " 
@@ -1280,7 +1294,8 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
              o.torihiki_houhou,
              o.confirm_payment_time, 
              o.torihiki_date_end, 
-             o.site_id
+             o.site_id,
+             o.read_flag
                from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                where ".$sort_where." o.customers_email_address = '" . tep_db_input($cEmail) . "' 
                " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
@@ -1314,7 +1329,8 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
              o.orders_comment,
              o.confirm_payment_time, 
              o.torihiki_date_end, 
-             o.site_id
+             o.site_id,
+             o.read_flag
                from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                where ".$sort_where." o.customers_id = '" . tep_db_input($cID) . "' 
                " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
@@ -1348,7 +1364,8 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
              o.orders_comment,
              o.confirm_payment_time, 
              o.torihiki_date_end, 
-             o.site_id
+             o.site_id,
+             o.read_flag
                from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                where ".$sort_where."
                o.orders_status = '" . tep_db_input($status) . "' 
@@ -1410,7 +1427,8 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                o.orders_comment,
                o.confirm_payment_time, 
                o.torihiki_date_end, 
-               o.site_id
+               o.site_id,
+               o.read_flag
                  from " . TABLE_ORDERS . " o " . $from_payment . " ,
                ".TABLE_ORDERS_PRODUCTS." op ".$sort_table." where ".$sort_where .
                  (isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
@@ -1449,7 +1467,8 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                   o.orders_comment,
                   o.confirm_payment_time, 
                   o.torihiki_date_end, 
-                  o.site_id
+                  o.site_id,
+                  o.read_flag
                     from " . TABLE_ORDERS . " o " . $from_payment . $sort_table." where 
                     ".$sort_where .
                     (isset($_GET['site_id']) && intval($_GET['site_id']) ? "
@@ -1485,7 +1504,8 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                      o.orders_comment,
                      o.confirm_payment_time, 
                      o.torihiki_date_end, 
-                     o.site_id
+                     o.site_id,
+                     o.read_flag
                        from " . TABLE_ORDERS . " o " . $from_payment .$sort_table ."
                        where " . $sort_where.
                        (isset($_GET['site_id']) &&
@@ -1521,7 +1541,8 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                 o.orders_comment,
                                 o.confirm_payment_time, 
                                 o.torihiki_date_end, 
-                                o.site_id
+                                o.site_id,
+                                o.read_flag
                                   from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                                   where   
                                   " .$sort_where . " 1=1 ".
@@ -1606,7 +1627,8 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
 	     o.orders_comment,
 	     o.confirm_payment_time, 
              o.torihiki_date_end, 
-	     o.site_id
+             o.site_id,
+             o.read_flag
 	       from " . TABLE_ORDERS . " o " . $from_payment .$sort_table ."
 	       where " . $sort_where.
 	       (isset($_GET['site_id']) &&
@@ -1648,7 +1670,8 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                   o.orders_comment,
                                   o.confirm_payment_time, 
                                   o.torihiki_date_end, 
-                                  o.site_id
+                                  o.site_id,
+                                  o.read_flag
                                     from " . TABLE_ORDERS . " o " . $from_payment . " ,
                                   ".TABLE_ORDERS_PRODUCTS." op ".$sort_table." where ".$sort_where .
                                     (isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
@@ -1686,7 +1709,8 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                      o.orders_comment,
                                      o.confirm_payment_time, 
                                      o.torihiki_date_end, 
-                                     o.site_id
+                                     o.site_id,
+                                     o.read_flag
                                        from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                                        where ".$sort_where.(isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
                                        '" . intval($_GET['site_id']) . "' and " : '') ." o.payment_method like '".$payment_m[1]."'";
@@ -1733,7 +1757,8 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                   o.orders_comment,
                                   o.confirm_payment_time, 
                                   o.torihiki_date_end, 
-                                  o.site_id
+                                  o.site_id,
+                                  o.read_flag
                                     from " . TABLE_ORDERS . " o, " .TABLE_ORDERS_PRODUCTS." op ". $f_payment . $sort_table."
                                     where ".$sort_where.(isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
                                     '" . intval($_GET['site_id']) . "' and " : '') ." ".$w_type. " and o.orders_id = op.orders_id and (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like '%".$_GET['keywords']."%' or o.customers_email_address like '%".$_GET['keywords']."%' or op.products_name like '%".$_GET['keywords']."%') ";
@@ -1765,7 +1790,8 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                   o.orders_comment,
                                   o.confirm_payment_time, 
                                   o.torihiki_date_end, 
-                                  o.site_id
+                                  o.site_id,
+                                  o.read_flag
                                     from " . TABLE_ORDERS . " o " . $f_payment . $sort_table."
                                     where ".$sort_where.(isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
                                     '" . intval($_GET['site_id']) . "' and " : '') ." ".$w_type;
@@ -1798,7 +1824,8 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                 o.orders_comment,
                                 o.confirm_payment_time, 
                                 o.torihiki_date_end, 
-                                o.site_id
+                                o.site_id,
+                                o.read_flag
                                   from " . TABLE_ORDERS . " o " . $from_payment . ", " . TABLE_ORDERS_PRODUCTS . " op 
                                   ".$sort_table."
                                   where ".$sort_where." o.orders_id = op.orders_id
@@ -1863,7 +1890,8 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                 o.torihiki_houhou,
                                 o.confirm_payment_time, 
                                 o.torihiki_date_end, 
-                                o.site_id
+                                o.site_id,
+                                o.read_flag
                                   from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                                   where 
                                   ".$sort_where."
@@ -4588,7 +4616,23 @@ if($c_parent_array['parent_id'] == 0){
                                     $tmp_date_end = explode(' ', $orders['torihiki_date_end']); 
                                     echo TEXT_TIME_LINK.$tmp_date_end[1]; 
                                     ?>
-                                    </font></td>
+                                    </font>
+<?php
+  $read_flag_str_array = explode('|||',$orders['read_flag']);
+  if($orders['read_flag'] == ''){
+    echo '<img border="0" title=" '.TEXT_READ_FLAG_UNREAD.' " alt="'.TEXT_READ_FLAG_UNREAD.'" src="images/icons/gray_right.gif">'; 
+  }else{
+
+    if(in_array($user_info['name'],$read_flag_str_array)){
+
+      echo '<img border="0" title=" '.TEXT_READ_FLAG_READ.' " alt="'.TEXT_READ_FLAG_READ.'" src="images/icons/green_right.gif">';
+    }else{
+
+      echo '<img border="0" title=" '.TEXT_READ_FLAG_UNREAD.' " alt="'.TEXT_READ_FLAG_UNREAD.'" src="images/icons/gray_right.gif">';
+    }
+  }
+?>
+</td>
                                     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="left" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><?php
                                     if ($orders['orders_wait_flag']) { echo tep_image(DIR_WS_IMAGES .
                                         'icon_hand.gif', TEXT_ORDER_WAIT); } else { echo '&nbsp;'; } ?></td>
