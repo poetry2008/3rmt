@@ -2531,7 +2531,8 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
                o.torihiki_houhou,
                o.confirm_payment_time, 
                o.is_active, 
-               o.site_id
+               o.site_id,
+               o.read_flag
          from " . TABLE_PREORDERS . " o " . $from_payment . $sort_table ."
          where ".$sort_where." 
           o.flag_qaf = 0 and ".$mark_sql_str." 

@@ -1926,7 +1926,8 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                   o.torihiki_houhou,
                                   o.confirm_payment_time, 
                                   o.torihiki_date_end, 
-                                  o.site_id
+                                  o.site_id,
+                                  o.read_flag
                                     from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                                     where 
                                     ".$sort_where."
