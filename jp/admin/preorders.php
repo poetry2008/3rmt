@@ -686,14 +686,33 @@
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <script language="javascript">
-  function change_read(oid,user,flag){
+  function change_read(oid,user){
+          var orders_id = document.getElementById("oid_"+oid); 
+          var orders_id_src = orders_id.src;
+          var orders_id_src_array = new Array();
+          var flag = 0;
+          orders_id_src_array = orders_id_src.split("/"); 
+          if(orders_id_src_array[orders_id_src_array.length-1] == 'green_right.gif'){
+
+            flag = 1;
+          }
           $.ajax({
                   type: "POST",
                   data: 'oid='+oid+'&user='+user+'&flag='+flag,
+                  beforeSend: function(){$('body').css('cursor','wait');$("#wait").show()},
                   async:false,
                   url: 'ajax_preorders.php?action=read_flag',
                   success: function(msg) {
-               
+                    if(flag == 0){
+                      orders_id.src="images/icons/green_right.gif";
+                      orders_id.title=" <?php echo TEXT_READ_FLAG_READ;?> ";
+                      orders_id.alt="<?php echo TEXT_READ_FLAG_READ;?>";
+                    }else{
+                      orders_id.src="images/icons/gray_right.gif";
+                      orders_id.title=" <?php echo TEXT_READ_FLAG_UNREAD;?> ";
+                      orders_id.alt="<?php echo TEXT_READ_FLAG_UNREAD;?>";
+                    }
+                    $("#wait").hide(); 
                   }
                }); 
   }
@@ -1933,6 +1952,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
       </td>
       <td class="dataTableHeadingContent">&nbsp;</td>
       <td class="dataTableHeadingContent">&nbsp;</td>
+      <td class="dataTableHeadingContent">&nbsp;</td>
       <td class="dataTableHeadingContent_order" align="center">
       <?php 
       if ($HTTP_GET_VARS['order_sort'] == 'date_purchased'){
@@ -2773,22 +2793,24 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
       </span> 
       <?php }?> 
       <?php }?>
+    </td>
+<td style="border-bottom:1px solid #000000;" class="dataTableContent" align="left">
 <?php
   $read_flag_str_array = explode('|||',$orders['read_flag']);
   if($orders['read_flag'] == ''){
-    echo '<img border="0" title=" '.TEXT_READ_FLAG_UNREAD.' " alt="'.TEXT_READ_FLAG_UNREAD.'" src="images/icons/gray_right.gif" onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\',0);">'; 
+    echo '<a onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\');" href="javascript:void(0);"><img id="oid_'.$orders['orders_id'].'" border="0" title=" '.TEXT_READ_FLAG_UNREAD.' " alt="'.TEXT_READ_FLAG_UNREAD.'" src="images/icons/gray_right.gif"></a>'; 
   }else{
 
     if(in_array($user_info['name'],$read_flag_str_array)){
 
-      echo '<img border="0" title=" '.TEXT_READ_FLAG_READ.' " alt="'.TEXT_READ_FLAG_READ.'" src="images/icons/green_right.gif" onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\',0);">';
+      echo '<a onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\');" href="javascript:void(0);"><img id="oid_'.$orders['orders_id'].'" border="0" title=" '.TEXT_READ_FLAG_READ.' " alt="'.TEXT_READ_FLAG_READ.'" src="images/icons/green_right.gif"></a>';
     }else{
 
-      echo '<img border="0" title=" '.TEXT_READ_FLAG_UNREAD.' " alt="'.TEXT_READ_FLAG_UNREAD.'" src="images/icons/gray_right.gif" onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\',0);">';
+      echo '<a onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\');" href="javascript:void(0);"><img id="oid_'.$orders['orders_id'].'" border="0" title=" '.TEXT_READ_FLAG_UNREAD.' " alt="'.TEXT_READ_FLAG_UNREAD.'" src="images/icons/gray_right.gif"></a>';
     }
   }
 ?>
-    </td>
+</td>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="left" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><?php
     if ($orders['orders_wait_flag']) { echo tep_image(DIR_WS_IMAGES .
         'icon_hand.gif', TEXT_ORDER_WAIT); } else { echo '&nbsp;'; } ?></td>
