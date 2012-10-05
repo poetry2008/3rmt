@@ -227,6 +227,6 @@ define('TEXT_FUNCTION_ENSURE_DATE','確保期限：');
 define('TEXT_FUNCTION_ORDER_FROM_INFO', '予約注文書サイト：');
 define('TEXT_ORDER_HISTORY_FROM_ORDER', '注文');
 define('TEXT_ORDER_HISTORY_FROM_PREORDER', '予約');
-define('TEXT_READ_FLAG_READ','確認済');
-define('TEXT_READ_FLAG_UNREAD','未確認');
+define('TEXT_FLAG_CHECKED','確認済');
+define('TEXT_FLAG_UNCHECK','未確認');
 ?>

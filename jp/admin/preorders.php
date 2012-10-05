@@ -709,12 +709,12 @@
                   success: function(msg) {
                     if(flag == 0){
                       orders_id.src="images/icons/green_right.gif";
-                      orders_id.title=" <?php echo TEXT_READ_FLAG_READ;?> ";
-                      orders_id.alt="<?php echo TEXT_READ_FLAG_READ;?>";
+                      orders_id.title=" <?php echo TEXT_FLAG_CHECKED;?> ";
+                      orders_id.alt="<?php echo TEXT_FLAG_CHECKED;?>";
                     }else{
                       orders_id.src="images/icons/gray_right.gif";
-                      orders_id.title=" <?php echo TEXT_READ_FLAG_UNREAD;?> ";
-                      orders_id.alt="<?php echo TEXT_READ_FLAG_UNREAD;?>";
+                      orders_id.title=" <?php echo TEXT_FLAG_UNCHECK;?> ";
+                      orders_id.alt="<?php echo TEXT_FLAG_UNCHECK;?>";
                     }
                     $('body').css('cursor','');
                     setTimeout('read_time()',500);
@@ -2774,15 +2774,15 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
 <?php
   $read_flag_str_array = explode('|||',$orders['read_flag']);
   if($orders['read_flag'] == ''){
-    echo '<a onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\');" href="javascript:void(0);"><img id="oid_'.$orders['orders_id'].'" border="0" title=" '.TEXT_READ_FLAG_UNREAD.' " alt="'.TEXT_READ_FLAG_UNREAD.'" src="images/icons/gray_right.gif"></a>'; 
+    echo '<a onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\');" href="javascript:void(0);"><img id="oid_'.$orders['orders_id'].'" border="0" title=" '.TEXT_FLAG_UNCHECK.' " alt="'.TEXT_FLAG_UNCHECK.'" src="images/icons/gray_right.gif"></a>'; 
   }else{
 
     if(in_array($user_info['name'],$read_flag_str_array)){
 
-      echo '<a onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\');" href="javascript:void(0);"><img id="oid_'.$orders['orders_id'].'" border="0" title=" '.TEXT_READ_FLAG_READ.' " alt="'.TEXT_READ_FLAG_READ.'" src="images/icons/green_right.gif"></a>';
+      echo '<a onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\');" href="javascript:void(0);"><img id="oid_'.$orders['orders_id'].'" border="0" title=" '.TEXT_FLAG_CHECKED.' " alt="'.TEXT_FLAG_CHECKED.'" src="images/icons/green_right.gif"></a>';
     }else{
 
-      echo '<a onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\');" href="javascript:void(0);"><img id="oid_'.$orders['orders_id'].'" border="0" title=" '.TEXT_READ_FLAG_UNREAD.' " alt="'.TEXT_READ_FLAG_UNREAD.'" src="images/icons/gray_right.gif"></a>';
+      echo '<a onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\');" href="javascript:void(0);"><img id="oid_'.$orders['orders_id'].'" border="0" title=" '.TEXT_FLAG_UNCHECK.' " alt="'.TEXT_FLAG_UNCHECK.'" src="images/icons/gray_right.gif"></a>';
     }
   }
 ?>
