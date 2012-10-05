@@ -1141,22 +1141,7 @@ switch ($_GET['action']) {
 }
 
 if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($_GET['oID']) ) {
-  $oID = tep_db_prepare_input($_GET['oID']);
-  $read_flag_query = tep_db_query("select read_flag from ". TABLE_ORDERS ." where orders_id='".$oID."'");
-  $read_flag_array = tep_db_fetch_array($read_flag_query);
-  tep_db_free_result($read_flag_query);
-  $user_info = tep_get_user_info($ocertify->auth_user);
-  if($read_flag_array['read_flag'] == ''){
-
-    tep_db_query("update ". TABLE_ORDERS ." set read_flag='".$user_info['name']."' where orders_id='".$oID."'"); 
-  }else{
-
-    $read_flag_str_array = explode('|||',$read_flag_array['read_flag']);
-    if(!in_array($user_info['name'],$read_flag_str_array)){
-      $read_flag_add = $read_flag_array['read_flag'].'|||'.$user_info['name'];
-      tep_db_query("update ". TABLE_ORDERS ." set read_flag='".$read_flag_add."' where orders_id='".$oID."'");
-    }
-  }
+  $oID = tep_db_prepare_input($_GET['oID']); 
   $orders_query = tep_db_query("
       select orders_id 
       from " . TABLE_ORDERS . " 
@@ -2055,6 +2040,17 @@ else { ?>
         <script language="javascript" src="includes/javascript/jquery_include.js"></script>
         <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
         <script language="javascript">
+        function change_read(oid,user,flag){
+          $.ajax({
+                  type: "POST",
+                  data: 'oid='+oid+'&user='+user+'&flag='+flag,
+                  async:false,
+                  url: 'ajax_orders.php?action=read_flag',
+                  success: function(msg) {
+               
+                  }
+               }); 
+        }
         // 用作跳转
         var base_url = '<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('questions_type')));?>';
         // 非完成状态的订单不显示最终确认
@@ -4706,15 +4702,15 @@ if($c_parent_array['parent_id'] == 0){
 <?php
   $read_flag_str_array = explode('|||',$orders['read_flag']);
   if($orders['read_flag'] == ''){
-    echo '<img border="0" title=" '.TEXT_READ_FLAG_UNREAD.' " alt="'.TEXT_READ_FLAG_UNREAD.'" src="images/icons/gray_right.gif">'; 
+    echo '<img border="0" title=" '.TEXT_READ_FLAG_UNREAD.' " alt="'.TEXT_READ_FLAG_UNREAD.'" src="images/icons/gray_right.gif" onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\',0);">'; 
   }else{
 
     if(in_array($user_info['name'],$read_flag_str_array)){
 
-      echo '<img border="0" title=" '.TEXT_READ_FLAG_READ.' " alt="'.TEXT_READ_FLAG_READ.'" src="images/icons/green_right.gif">';
+      echo '<img border="0" title=" '.TEXT_READ_FLAG_READ.' " alt="'.TEXT_READ_FLAG_READ.'" src="images/icons/green_right.gif" onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\',1);">';
     }else{
 
-      echo '<img border="0" title=" '.TEXT_READ_FLAG_UNREAD.' " alt="'.TEXT_READ_FLAG_UNREAD.'" src="images/icons/gray_right.gif">';
+      echo '<img border="0" title=" '.TEXT_READ_FLAG_UNREAD.' " alt="'.TEXT_READ_FLAG_UNREAD.'" src="images/icons/gray_right.gif" onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\',0);">';
     }
   }
 ?>
