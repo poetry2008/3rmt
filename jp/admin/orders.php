@@ -2005,6 +2005,10 @@ else { ?>
         <script language="javascript" src="includes/javascript/jquery_include.js"></script>
         <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
         <script language="javascript">
+        function read_time(){
+    
+          $("#wait").hide();
+        }
         function change_read(oid,user){
           var orders_id = document.getElementById("oid_"+oid); 
           var orders_id_src = orders_id.src;
@@ -2031,7 +2035,8 @@ else { ?>
                       orders_id.title=" <?php echo TEXT_READ_FLAG_UNREAD;?> ";
                       orders_id.alt="<?php echo TEXT_READ_FLAG_UNREAD;?>";
                     }
-                    $("#wait").hide();
+                    $('body').css('cursor','');
+                    setTimeout('read_time()',500);
                   }
                }); 
         }
