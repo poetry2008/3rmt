@@ -208,6 +208,24 @@ if ($_POST['orders_id'] &&
 $tmp_date_end = explode(' ',$orders['torihiki_date_end']); 
 echo TEXT_TIME_LINK.$tmp_date_end[1]; 
 ?></font></td>
+<td style="border-bottom:1px solid #000000;background-color: darkred;" class="dataTableContent" align="left">
+<?php
+  $read_flag_str_array = explode('|||',$orders['read_flag']);
+  $user_info = tep_get_user_info($ocertify->auth_user);
+  if($orders['read_flag'] == ''){
+    echo '<a onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\');" href="javascript:void(0);"><img id="oid_'.$orders['orders_id'].'" border="0" title=" '.TEXT_FLAG_UNCHECK.' " alt="'.TEXT_FLAG_UNCHECK.'" src="images/icons/gray_right.gif"></a>'; 
+  }else{
+
+    if(in_array($user_info['name'],$read_flag_str_array)){
+
+      echo '<a onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\');" href="javascript:void(0);"><img id="oid_'.$orders['orders_id'].'" border="0" title=" '.TEXT_FLAG_CHECKED.' " alt="'.TEXT_FLAG_CHECKED.'" src="images/icons/green_right.gif"></a>';
+    }else{
+
+      echo '<a onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\');" href="javascript:void(0);"><img id="oid_'.$orders['orders_id'].'" border="0" title=" '.TEXT_FLAG_UNCHECK.' " alt="'.TEXT_FLAG_UNCHECK.'" src="images/icons/gray_right.gif"></a>';
+    }
+  }
+?>
+</td>
                                                                                                                                                                                                                                                                                              <td style="border-bottom:1px solid
 #000000;background-color: darkred;" class="dataTableContent" align="left"
                                                                                                                                                                                                                                                                                              onClick="chg_td_color(<?php echo $orders['orders_id'];?>);

@@ -600,3 +600,5 @@ define('TEXT_SITE_COPYRIGHT' ,'Copyright © %s Haomai');
 define('HELP_INFO_TITLE','ヘルプ情報管理');
 define('TEXT_JAVASCRIPT_ERROR','JavaScriptまたはCookieの設定がオンになっていません。お手数ですが設定を「オン」にして、ご利用ください。<br>※ 設定がオフになっていますと、ご利用いただけないサービスがあります。');
 define('TEXT_HEADER_HELP','ヘルプ');
+define('TEXT_FLAG_CHECKED','確認済');
+define('TEXT_FLAG_UNCHECK','未確認');
