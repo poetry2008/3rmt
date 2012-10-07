@@ -41,3 +41,4 @@ define('TEXT_REORDER_JS_DATE_ERROR','取引時間は現在時刻より20分後�
 define('TEXT_REORDER_TREADE_TEXT', 'ご希望のお時間に添えない場合は、弊社より「取引時間」をご連絡させていただきます。');
 define('EXPECT_DATE_SELECT', '希望日を選択してください');
 define('TEXT_EXPECT_TRADE_TIME', 'お届け希望時間:');
+define('TEXT_NOSCRIPT_INFO','<font color="red"><b>JavaScriptを有効に設定してからご利用ください。</b></font><br>セキュリティソフトの誤操作等により、お客様が意図しない設定に変更される事もあります。操作に覚えが無い場合でも設定をご確認ください。<br>設定方法がわからない場合は、FirefoxやChromeなどのブラウザをダウンロードしてご利用ください。当ショッピングシステムは、ブラウザの初期設定のままで動作するように作られております。');

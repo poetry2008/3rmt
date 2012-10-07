@@ -369,6 +369,7 @@ case 'edit':
             'DB_CALC_PRICE_HISTORY_DATE',
             'ORDERS_EMPTY_EMAIL_TITLE',
             'ORDERS_EMPTY_EMAIL_TEXT',
+            'ORDER_EFFECTIVE_DATE',
             ))) 
     while($site = tep_db_fetch_array($select_site_configure)) {
   $site_romaji[] = $site['romaji'];

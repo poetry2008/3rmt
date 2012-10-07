@@ -2,7 +2,15 @@
 /*
    $Id$
  */
+
 ?>
+<?php echo tep_draw_form('changepwd', FILENAME_CHANGEPWD,'','post','
+    id=\'changepwd_form\'');
+echo tep_draw_hidden_field("execute_password",TEXT_ECECUTE_PASSWORD_USER);
+echo tep_draw_hidden_field("userslist",$ocertify->auth_user);
+echo "</form>";
+?>
+
 <script type="text/javascript">
 function redirect_new_url(new_object)
 {
@@ -82,13 +90,13 @@ if($_SESSION['user_permission'] == 15 ){
         async : false,
         success: function(data) {
           if(data == "noall"){
-            alert("チェックがありません。チェックを入れてください");
+            alert("<?php echo TEXT_ONE_TIME_CONFIRM;?>");
           }else if(data == "noadmin"){
-            alert("Adminのチェックを入れてください");
+            alert("<?php echo TEXT_ONE_TIME_ADMIN_CONFIRM;?>");
           }else if(data == "true"){
-            alert("保存成功");
+            alert("<?php echo TEXT_ONE_TIME_CONFIG_SAVE;?>");
           }else{
-            alert("エラー");
+            alert("<?php echo TEXT_ONE_TIME_ERROR;?>");
           }
         }
       });
@@ -96,40 +104,36 @@ if($_SESSION['user_permission'] == 15 ){
   </script>
     <?
 }
+echo '<div class="footer_copyright">';
+echo sprintf(TEXT_SITE_COPYRIGHT,date('Y'));
+echo '</div>';
 $page_name = $_SERVER['PHP_SELF'];
 if($_SESSION['last_page']!= $page_name){
     unset($_SESSION[$_SESSION['last_page']]);
     $_SESSION['last_page'] = $page_name;
 }
 
+
+// 显示SQL执行记录
+if (STORE_DB_TRANSACTIONS == 'true'&& false) {?>
+<?php
 //for sql_log
 $logNumber = 0;
 tep_db_query('select * from cache');
 $testArray = array();
 //end for sql_log
+?>
 
-// 显示SQL执行记录
-if (STORE_DB_TRANSACTIONS == 'true' ) {?>
   <div id="debug_info">
     <pre>
-    <?php 
-    if(isset($logger)){
+    <?php if(isset($logger)){
       foreach ($logger->queries as $qk => $qv) {
         echo '[' . $logger->times[$qk] . ']' . $qk . "\t=>\t" . $qv."\n";
       }
     }
-  
   print_r($_SESSION);
   ?>
     <?php //print_r($logger->times);?>
     </pre>
     </div>
-    <?php
-    /*
-    $query = tep_db_query("show variables like '%timeout'");
-while($value = tep_db_fetch_array($query)){
-    var_dump($value);
-    }
-    */
-    ?>
     <?php }?>

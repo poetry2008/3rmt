@@ -129,7 +129,6 @@
       <?php
       if (isset($cPath) && !ereg('_', $cPath)) { 
       $all_game_news = tep_get_categories_rss($current_category_id);
-      if ($all_game_news) {
       ?>
 <div class="background_news01" style="margin-top:10px;">
   <table width="100%" style="border-top:#444 dashed 1px;" class="news_title_03">
@@ -144,7 +143,6 @@
  </div>
       <?php
       #echo '</div>'; 
-      } 
 ?>
 
 

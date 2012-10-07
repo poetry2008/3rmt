@@ -136,6 +136,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('FILENAME_SHOW_USELESS_OPTION','show_useless_option.php');
   define('FILENAME_SHOW_USELESS_ITEM','show_useless_item.php');
   define('FILENAME_CUSTOMERS_EXIT','customers_exit.php');
+  define('FILENAME_HELP_INFO','help_info.php');
 
 // define the database table names used in the project
   define('TABLE_CUSTOMERS_BASKET_OPTIONS', 'customers_basket_options');
@@ -269,7 +270,7 @@ define('TABLE_PERMISSIONS','permissions');
   define('TABLE_OCONFIG',  'other_config');
   
 // customization for the design layout
-  define('BOX_WIDTH', 125); // how wide the boxes should be in pixels (default: 125)
+  define('BOX_WIDTH', 160); // how wide the boxes should be in pixels (default: 125)
 
 // Define how do we update currency exchange rates
 // Possible values are 'oanda' 'xe' or ''

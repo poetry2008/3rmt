@@ -9,6 +9,9 @@
   require(DIR_WS_FUNCTIONS . 'visites.php');
   require(DIR_WS_CLASSES . 'currencies.php');
   require(DIR_WS_CLASSES . 'payment.php');
+  if (isset($_GET['keywords'])) {
+    $_GET['keywords'] = tep_db_prepare_input($_GET['keywords']);
+  }
   $currencies          = new currencies(2);
   $orders_statuses     = $all_orders_statuses = $orders_status_array = array();
   $all_preorders_status = array();
@@ -565,8 +568,7 @@
   }
 
   if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($_GET['oID']) ) {
-    $oID = tep_db_prepare_input($_GET['oID']);
-
+    $oID = tep_db_prepare_input($_GET['oID']); 
     $orders_query = tep_db_query("
         select orders_id 
         from " . TABLE_PREORDERS . " 
@@ -684,7 +686,41 @@
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <script language="javascript">
+  function read_time(){
+    
+    $("#wait").hide();
+  }
+  function change_read(oid,user){
+          var orders_id = document.getElementById("oid_"+oid); 
+          var orders_id_src = orders_id.src;
+          var orders_id_src_array = new Array();
+          var flag = 0;
+          orders_id_src_array = orders_id_src.split("/"); 
+          if(orders_id_src_array[orders_id_src_array.length-1] == 'green_right.gif'){
 
+            flag = 1;
+          }
+          $.ajax({
+                  type: "POST",
+                  data: 'oid='+oid+'&user='+user+'&flag='+flag,
+                  beforeSend: function(){$('body').css('cursor','wait');$("#wait").show()},
+                  async:false,
+                  url: 'ajax_preorders.php?action=read_flag',
+                  success: function(msg) {
+                    if(flag == 0){
+                      orders_id.src="images/icons/green_right.gif";
+                      orders_id.title=" <?php echo TEXT_FLAG_CHECKED;?> ";
+                      orders_id.alt="<?php echo TEXT_FLAG_CHECKED;?>";
+                    }else{
+                      orders_id.src="images/icons/gray_right.gif";
+                      orders_id.title=" <?php echo TEXT_FLAG_UNCHECK;?> ";
+                      orders_id.alt="<?php echo TEXT_FLAG_UNCHECK;?>";
+                    }
+                    $('body').css('cursor','');
+                    setTimeout('read_time()',500);
+                  }
+               }); 
+  }
   // 用作跳转
   var base_url = '<?php echo tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('questions_type')));?>';
   
@@ -1599,7 +1635,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       </tr>
       <tr>
         <td class="main">
-          <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}',preorders_a($order->info['orders_id']),$mail_sql['orders_status_mail']); ?></textarea>
+          <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="off" rows="30" cols="74"><?php echo str_replace('${ORDER_A}',preorders_a($order->info['orders_id']),$mail_sql['orders_status_mail']); ?></textarea>
         </td>
       </tr>
       <tr>
@@ -1709,6 +1745,9 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               if (isset($_GET['site_id'])) {
                 echo tep_draw_hidden_field('site_id', $_GET['site_id']); 
               }
+              if (isset($_GET['mark'])) {
+                echo tep_draw_hidden_field('mark', $_GET['mark']); 
+              }
               ?>
               </form>
             </td>
@@ -1792,9 +1831,21 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
     <table width="100%">
       <tr>
         <td>
-    <?php tep_site_filter(FILENAME_PREORDERS);?>
+        <?php tep_site_filter(FILENAME_PREORDERS);?>
         </td>
         <td align="right">
+          <?php
+            $get_mark_info = explode('-', $_GET['mark']);
+          ?>
+          <table border="0" width="100%" cellpadding="1" cellspacing="1">
+            <tr>
+              <td id="mark_o" class="<?php echo (in_array('0', $get_mark_info) || !isset($_GET['mark']))?'mark_flag_checked':'mark_flag_unchecked';?>" align="center" onclick="mark_work(this,'0','<?php echo $_GET['mark'];?>', '<?php echo $_GET['site_id'];?>', '<?php echo urlencode(tep_get_all_get_params(array('page', 'oID', 'action', 'mark', 'site_id')));?>')">&nbsp;</td> 
+              <td id="mark_a" class="<?php echo (in_array('1', $get_mark_info) || !isset($_GET['mark']))?'mark_flag_checked':'mark_flag_unchecked';?>" align="center" onclick="mark_work(this,'1','<?php echo $_GET['mark'];?>', '<?php echo $_GET['site_id'];?>', '<?php echo urlencode(tep_get_all_get_params(array('page', 'oID', 'action', 'mark', 'site_id')));?>')">A</td> 
+              <td id="mark_b" class="<?php echo (in_array('2', $get_mark_info) || !isset($_GET['mark']))?'mark_flag_checked':'mark_flag_unchecked';?>" align="center" onclick="mark_work(this,'2','<?php echo $_GET['mark'];?>', '<?php echo $_GET['site_id'];?>', '<?php echo urlencode(tep_get_all_get_params(array('page', 'oID', 'action', 'mark', 'site_id')));?>')">B</td> 
+              <td id="mark_c" class="<?php echo (in_array('3', $get_mark_info) || !isset($_GET['mark']))?'mark_flag_checked':'mark_flag_unchecked';?>" align="center" onclick="mark_work(this,'3','<?php echo $_GET['mark'];?>', '<?php echo $_GET['site_id'];?>', '<?php echo urlencode(tep_get_all_get_params(array('page', 'oID', 'action', 'mark', 'site_id')));?>')">C</td> 
+              <td id="mark_d" class="<?php echo (in_array('4', $get_mark_info) || !isset($_GET['mark']))?'mark_flag_checked':'mark_flag_unchecked';?>" align="center" onclick="mark_work(this,'4','<?php echo $_GET['mark'];?>', '<?php echo $_GET['site_id'];?>', '<?php echo urlencode(tep_get_all_get_params(array('page', 'oID', 'action', 'mark', 'site_id')));?>')">D</td> 
+            </tr>
+          </table>
         </td>
       </tr>
     </table>
@@ -1909,6 +1960,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
       </td>
       <td class="dataTableHeadingContent">&nbsp;</td>
       <td class="dataTableHeadingContent">&nbsp;</td>
+      <td class="dataTableHeadingContent">&nbsp;</td>
       <td class="dataTableHeadingContent_order" align="center">
       <?php 
       if ($HTTP_GET_VARS['order_sort'] == 'date_purchased'){
@@ -2003,6 +2055,45 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
     }
   }
   
+  $mark_sql_str = ''; 
+  if (isset($_GET['mark'])) { 
+    $mark_info = explode('-', $_GET['mark']); 
+    if (in_array('0', $mark_info)) {
+      if (count($mark_info) == 1) {
+        $mark_sql_str = "((o.orders_work is null) or (o.orders_work = ''))"; 
+      } else {
+        $mark_str = ''; 
+        foreach ($mark_info as $m_key => $m_value) {
+          if ($m_value == '1') {
+            $mark_str .= '\'a\','; 
+          } else if ($m_value == '2') {
+            $mark_str .= '\'b\','; 
+          } else if ($m_value == '3') {
+            $mark_str .= '\'c\','; 
+          } else if ($m_value == '4') {
+            $mark_str .= '\'d\','; 
+          } 
+        }
+        $mark_str = substr($mark_str, 0, -1);
+        $mark_sql_str = "((o.orders_work is null) or (o.orders_work = '') or (o.orders_work in (".$mark_str.")))"; 
+      }
+    } else {
+      $mark_str = ''; 
+      foreach ($mark_info as $m_key => $m_value) {
+        if ($m_value == '1') {
+          $mark_str .= '\'a\','; 
+        } else if ($m_value == '2') {
+          $mark_str .= '\'b\','; 
+        } else if ($m_value == '3') {
+          $mark_str .= '\'c\','; 
+        } else if ($m_value == '4') {
+          $mark_str .= '\'d\','; 
+        }
+      }
+      $mark_str = substr($mark_str, 0, -1);
+      $mark_sql_str = "o.orders_work in (".$mark_str.")"; 
+    }
+  }
   
   if (isset($_GET['cEmail']) && $_GET['cEmail']) {
       $cEmail = tep_db_prepare_input($_GET['cEmail']);
@@ -2030,11 +2121,12 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                o.torihiki_houhou,
                o.confirm_payment_time, 
                o.is_active, 
-               o.site_id
+               o.site_id,
+               o.read_flag
         from " . TABLE_PREORDERS . " o " . $from_payment .$sort_table. "
         where ".$sort_where." o.customers_email_address = '" . tep_db_input($cEmail) . "' 
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id
-          = '" . intval($_GET['site_id']) . "' " : '') . $where_payment . $where_type . "
+          = '" . intval($_GET['site_id']) . "' " : '') . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . $where_payment . $where_type . "
         order by ".$order_str;
     } else if (isset($_GET['cID']) && $_GET['cID']) {
       $cID = tep_db_prepare_input($_GET['cID']);
@@ -2062,10 +2154,11 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                o.orders_comment,
                o.confirm_payment_time, 
                o.is_active, 
-               o.site_id
+               o.site_id,
+               o.read_flag
         from " . TABLE_PREORDERS . " o " . $from_payment .$sort_table. "
         where ".$sort_where." o.customers_id = '" . tep_db_input($cID) . "' 
-          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . $where_payment . $where_type . "
+          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . $where_payment . $where_type . "
         order by ".$order_str;
     } elseif (isset($_GET['status']) && $_GET['status']) {
       $status = tep_db_prepare_input($_GET['status']);
@@ -2093,13 +2186,14 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                o.orders_comment,
                o.confirm_payment_time, 
                o.is_active, 
-               o.site_id
+               o.site_id,
+               o.read_flag
         from " . TABLE_PREORDERS . " o " . $from_payment .$sort_table. "
         where ".$sort_where." o.orders_status = '" . tep_db_input($status) . "' 
-          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . $where_payment . $where_type . "
+          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . $where_payment . $where_type . "
         order by ".$order_str;
     }  elseif (isset($_GET['keywords']) && isset($_GET['search_type']) && $_GET['search_type'] == 'products_name' && !$_GET['type'] && !$payment) {
-      $orders_query_raw = " select distinct op.orders_id from " .  TABLE_PREORDERS_PRODUCTS . " op, ".TABLE_PREORDERS." o ".$sort_table." where ".$sort_where." op.orders_id = o.orders_id and op.products_name like '%".$_GET['keywords']."%' " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and op.site_id = '" . intval($_GET['site_id']) . "' " : '') . " order by ".$order_str;
+      $orders_query_raw = " select distinct op.orders_id from " .  TABLE_PREORDERS_PRODUCTS . " op, ".TABLE_PREORDERS." o ".$sort_table." where ".$sort_where." op.orders_id = o.orders_id and op.products_name like '%".$_GET['keywords']."%' " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and op.site_id = '" . intval($_GET['site_id']) . "' " : '') . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".$order_str;
     }  elseif (isset($_GET['keywords']) && isset($_GET['search_type']) &&
         $_GET['search_type'] == 'sproducts_id' && !$_GET['type'] && !$payment) {
       $orders_query_raw = " select distinct op.orders_id from " .  
@@ -2107,7 +2201,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
         $sort_table." where ".$sort_where." op.orders_id = o.orders_id 
         and op.products_id = '".$_GET['keywords']."' " .
         (isset($_GET['site_id']) && intval($_GET['site_id']) ? " 
-         and op.site_id = '" . intval($_GET['site_id']) . "' " : '') . " order by ".$order_str;
+         and op.site_id = '" . intval($_GET['site_id']) . "' " : '') . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".$order_str;
     }elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && preg_match('/^os_\d+$/', $_GET['search_type'])))) {
     if (!empty($_GET['keywords'])) {
       $orders_query_raw = "
@@ -2134,8 +2228,9 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                  o.orders_comment,
                  o.confirm_payment_time, 
                  o.is_active, 
-                 o.site_id
-          from " . TABLE_PREORDERS . " o " . $from_payment . " , ".TABLE_PREORDERS_PRODUCTS." op ".$sort_table." where ".$sort_where." 1=1 " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . " and o.orders_status = '".substr($_GET['search_type'], 3)."' and o.orders_id = op.orders_id and (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like '%".$_GET['keywords']."%' or o.customers_email_address like '%".$_GET['keywords']."%' or op.products_name like '%".$_GET['keywords']."%') " .  $where_payment . $where_type.' order by '.$order_str;
+                 o.site_id,
+                 o.read_flag
+          from " . TABLE_PREORDERS . " o " . $from_payment . " , ".TABLE_PREORDERS_PRODUCTS." op ".$sort_table." where ".$sort_where." 1=1 " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " and o.orders_status = '".substr($_GET['search_type'], 3)."' and o.orders_id = op.orders_id and (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like '%".$_GET['keywords']."%' or o.customers_email_address like '%".$_GET['keywords']."%' or op.products_name like '%".$_GET['keywords']."%') " .  $where_payment . $where_type.' order by '.$order_str;
     } else {
       $orders_query_raw = "
           select distinct(o.orders_id), 
@@ -2161,8 +2256,9 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                  o.orders_comment,
                  o.confirm_payment_time, 
                  o.is_active, 
-                 o.site_id
-          from " . TABLE_PREORDERS . " o " . $from_payment .$sort_table ." where ".$sort_where." 1=1 " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . " and o.orders_status = '".substr($_GET['search_type'], 3)."'" .  $where_payment . $where_type.' order by '.$order_str;
+                 o.site_id,
+                 o.read_flag
+          from " . TABLE_PREORDERS . " o " . $from_payment .$sort_table ." where ".$sort_where." 1=1 " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " and o.orders_status = '".substr($_GET['search_type'], 3)."'" .  $where_payment . $where_type.' order by '.$order_str;
     }
     }elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['search_type'] == 'orders_id'))) {
     $orders_query_raw = "
@@ -2189,11 +2285,12 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                o.orders_comment,
                o.confirm_payment_time, 
                o.is_active, 
-               o.site_id
+               o.site_id,
+               o.read_flag
         from " . TABLE_PREORDERS . " o " . $from_payment . $sort_table."
         where ".$sort_where." 1=1 
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id
-          = '" . intval($_GET['site_id']) . "' " : '') . " and o.orders_id like '%".$_GET['keywords']."%'" . $where_payment . $where_type .' order by '.$order_str;
+          = '" . intval($_GET['site_id']) . "' " : '') . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " and o.orders_id like '%".$_GET['keywords']."%'" . $where_payment . $where_type .' order by '.$order_str;
     }elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['search_type'] == 'customers_name') || (isset($_GET['search_type']) && $_GET['search_type'] == 'email'))
   ) {
     $orders_query_raw = "
@@ -2220,10 +2317,11 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                o.orders_comment,
                o.confirm_payment_time, 
                o.is_active, 
-               o.site_id
+               o.site_id,
+               o.read_flag
         from " . TABLE_PREORDERS . " o " . $from_payment .$sort_table."
         where ".$sort_where." 1=1 
-          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . $where_payment . $where_type ;
+          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . (($mark_sql_str != '')?' and '.$mark_sql_str:''). $where_payment . $where_type ;
 
     $keywords = str_replace('　', ' ', $_GET['keywords']);
     tep_parse_search_string($keywords, $search_keywords);
@@ -2289,8 +2387,9 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                  o.orders_comment,
                  o.confirm_payment_time, 
                  o.is_active, 
-                 o.site_id
-          from " . TABLE_PREORDERS . " o " . $from_payment . " , ".TABLE_PREORDERS_PRODUCTS." op ".$sort_table." where ".$sort_where." 1=1 " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . " and o.payment_method = '".$payment_m[1]."' and o.orders_id = op.orders_id and (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like '%".$_GET['keywords']."%' or o.customers_email_address like '%".$_GET['keywords']."%' or op.products_name like '%".$_GET['keywords']."%') " .  $where_payment . $where_type.' order by '.$order_str;
+                 o.site_id,
+                 o.read_flag
+          from " . TABLE_PREORDERS . " o " . $from_payment . " , ".TABLE_PREORDERS_PRODUCTS." op ".$sort_table." where ".$sort_where." 1=1 " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " and o.payment_method = '".$payment_m[1]."' and o.orders_id = op.orders_id and (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like '%".$_GET['keywords']."%' or o.customers_email_address like '%".$_GET['keywords']."%' or op.products_name like '%".$_GET['keywords']."%') " .  $where_payment . $where_type.' order by '.$order_str;
     } else {
       $orders_query_raw = "
           select distinct(o.orders_id), 
@@ -2316,10 +2415,11 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                  o.orders_comment,
                  o.confirm_payment_time, 
                  o.is_active, 
-                 o.site_id
+                 o.site_id,
+                 o.read_flag
           from " . TABLE_PREORDERS . " o " . $from_payment . $sort_table ."
           where ".$sort_where." 1=1 " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and
-          o.site_id = '" . intval($_GET['site_id']) . "' " : '') . " and o.payment_method = '".$payment_m[1]."'" .  $where_payment .  $where_type.' order by '.$order_str;
+          o.site_id = '" . intval($_GET['site_id']) . "' " : '') . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " and o.payment_method = '".$payment_m[1]."'" .  $where_payment .  $where_type.' order by '.$order_str;
     }
   } 
   
@@ -2362,12 +2462,13 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
                o.orders_comment,
                o.confirm_payment_time, 
                o.is_active, 
-               o.site_id
+               o.site_id,
+               o.read_flag
            from " . TABLE_PREORDERS . " o " . $from_payment .$sort_table ."
 	       where " . $sort_where.
 	       (isset($_GET['site_id']) &&
 		intval($_GET['site_id']) ? " o.site_id = '" . intval($_GET['site_id']) .
-		"' and " : '') . " o.orders_id" .$orders_str.
+		"' and " : '') . (($mark_sql_str != '')?' '.$mark_sql_str.' and ':'') . " o.orders_id" .$orders_str.
 	       $where_payment . $where_type.' order by '.$order_str; 
               }
 
@@ -2397,8 +2498,9 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
                o.orders_comment,
                o.confirm_payment_time, 
                o.is_active, 
-               o.site_id
-        from " . TABLE_PREORDERS . " o " . $from_payment . ", " .  TABLE_PREORDERS_PRODUCTS . " op ".$sort_table." where ".$sort_where." o.orders_id = op.orders_id " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . $where_payment . $where_type ;
+               o.site_id,
+               o.read_flag
+        from " . TABLE_PREORDERS . " o " . $from_payment . ", " .  TABLE_PREORDERS_PRODUCTS . " op ".$sort_table." where ".$sort_where." o.orders_id = op.orders_id " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) .  "' " : '') . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . $where_payment . $where_type ;
     $keywords = str_replace('　', ' ', $_GET['keywords']);
     tep_parse_search_string($keywords, $search_keywords);
     if (isset($search_keywords) && (sizeof($search_keywords) > 0)) {
@@ -2455,10 +2557,11 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
                o.torihiki_houhou,
                o.confirm_payment_time, 
                o.is_active, 
-               o.site_id
+               o.site_id,
+               o.read_flag
          from " . TABLE_PREORDERS . " o " . $from_payment . $sort_table ."
          where ".$sort_where." 
-          o.flag_qaf = 0 
+          o.flag_qaf = 0".(($mark_sql_str != '')?' and '.$mark_sql_str:'')." 
           -- and o.orders_status != '6'
           -- and o.orders_status != '8'
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . $where_payment . $where_type . "
@@ -2667,6 +2770,23 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
       <?php }?> 
       <?php }?>
     </td>
+<td style="border-bottom:1px solid #000000;" class="dataTableContent" align="left">
+<?php
+  $read_flag_str_array = explode('|||',$orders['read_flag']);
+  if($orders['read_flag'] == ''){
+    echo '<a onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\');" href="javascript:void(0);"><img id="oid_'.$orders['orders_id'].'" border="0" title=" '.TEXT_FLAG_UNCHECK.' " alt="'.TEXT_FLAG_UNCHECK.'" src="images/icons/gray_right.gif"></a>'; 
+  }else{
+
+    if(in_array($user_info['name'],$read_flag_str_array)){
+
+      echo '<a onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\');" href="javascript:void(0);"><img id="oid_'.$orders['orders_id'].'" border="0" title=" '.TEXT_FLAG_CHECKED.' " alt="'.TEXT_FLAG_CHECKED.'" src="images/icons/green_right.gif"></a>';
+    }else{
+
+      echo '<a onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\');" href="javascript:void(0);"><img id="oid_'.$orders['orders_id'].'" border="0" title=" '.TEXT_FLAG_UNCHECK.' " alt="'.TEXT_FLAG_UNCHECK.'" src="images/icons/gray_right.gif"></a>';
+    }
+  }
+?>
+</td>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="left" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><?php
     if ($orders['orders_wait_flag']) { echo tep_image(DIR_WS_IMAGES .
         'icon_hand.gif', TEXT_ORDER_WAIT); } else { echo '&nbsp;'; } ?></td>
@@ -2804,7 +2924,7 @@ function submit_confirm()
           color="red">※</font>&nbsp;<?php echo TEXT_ORDER_COPY;?></td><td>
           <?php echo TEXT_ORDER_LOGIN;?></td></tr></table>
           <br>
-          <?php echo tep_draw_textarea_field('comments', 'hard', '74', '30', $select_text, 'style="font-family:monospace;font-size:12px; width:400px;"'); ?>
+          <?php echo tep_draw_textarea_field('comments', 'off', '74', '30', $select_text, 'style="font-family:monospace;font-size:12px; width:400px;"'); ?>
         </td>
         </tr>
         <tr>

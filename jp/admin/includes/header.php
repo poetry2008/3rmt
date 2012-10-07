@@ -307,6 +307,9 @@ $(function(){
 }
 ?>
 </script>
+<noscript>
+<div class="messageStackError"><?php echo TEXT_JAVASCRIPT_ERROR;?></div> 
+</noscript>
 <table border="0" width="100%" cellspacing="0" cellpadding="0" class="preorder_head">
 <tr>
   <td colspan="2">
@@ -371,8 +374,21 @@ if(preg_match("/".FILENAME_ORDERS."/",$PHP_SELF)){
 <table width="100%">
 <tr>
 <td class="headerBarContent">&nbsp;&nbsp;<?php 
+$current_page_tp = split('\?', basename($_SERVER['SCRIPT_NAME'])); $current_page_tp = $current_page_tp[0];
+if($current_page_tp == "modules.php"){
+  preg_match("#set=[^&]+#",$_SERVER["REQUEST_URI"],$set_mod_array);
+ $current_page_tp .= "?".$set_mod_array[0];
+}
+if($current_page_tp == "configuration.php") {
+  preg_match("#gID=[^&]+#",$_SERVER["REQUEST_URI"],$set_mod_array);
+ $current_page_tp .= "?".$set_mod_array[0];
+}
 if (isset($ocertify->npermission) || $ocertify->npermission) {
-  echo '<a href="' . tep_href_link(FILENAME_DEFAULT, '', 'NONSSL') . '" class="headerLink">' . HEADER_TITLE_TOP . '</a>';
+	echo tep_image(DIR_WS_IMAGES . 'img/home_page.gif').'&nbsp<a href="' . tep_href_link(FILENAME_DEFAULT, '', 'NONSSL') . '" class="headerLink">' . HEADER_TITLE_TOP . '</a>&nbsp;&nbsp;&nbsp;&nbsp';
+
+  echo '<a href="' . tep_href_link('help.php', 'info_romaji='.urlencode(str_replace('/admin/','',$current_page_tp)), 'NONSSL') . '" class="headerLink"  target="_blank"><img src="images/icon_help_info.gif" alt="img">&nbsp;'.TEXT_HEADER_HELP.'</a>&nbsp;&nbsp;&nbsp;';
+  //echo '<a href="' . tep_href_link('help_info.php', 'action=info_edit&info_romaji='.urlencode(str_replace('/admin/','',$current_page_tp)).'&opa='.urlencode(tep_get_all_get_params()) , 'NONSSL') . '" class="headerLink"  target="_blank">edit</a>';
+
 }
 ?></td>
 <td class="headerBarContent" align="right">
@@ -384,80 +400,87 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
   $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
   $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
   $belong = preg_replace('/\?XSID=[^&]+/','',$belong);
-  $belong = preg_replace('/\??&cID=[^&]+/','',$belong);
+  //$belong = preg_replace('/\??&cID=[^&]+/','',$belong);
+  preg_match_all('/\??&?cPath=[^&]+/',$belong,$belong_array);
+  if($belong_array[0][0] != ''){
+
+    $belong = $href_url.$belong_array[0][0];
+  }else{
+    $belong = $href_url;
+  }
   $belong = str_replace('&','|||',$belong);
   if($href_url == FILENAME_CATEGORIES_ADMIN || $href_url == FILENAME_CATEGORIES){
     echo '<td><a class="headerLink" href="add_note.php?author='.$user_info['name'].'&belong='.$belong.'" id="fancy">'.TEXT_ADD_NOTE.'</a>&nbsp;|</td>';
   }
   echo '
-    <td><a class="headerLink" href="javascript:void(0);" onclick="toggle_header_menu(\'headerorder\')">'.HEADER_TEXT_ORDER_INFO.'</a>&nbsp;|<br>
+    <td>'.tep_image(DIR_WS_IMAGES . 'img/order.gif').'&nbsp;<a class="headerLink" href="javascript:void(0);" onclick="toggle_header_menu(\'headerorder\')">'.HEADER_TEXT_ORDER_INFO.'</a>&nbsp;|<br>
     <table class="menu01" id="headerorder" cellpadding="0" cellspacing="0">
     <tr>
-      <td class="menu01"><a class="t_link01" href="'.tep_href_link(FILENAME_ORDERS, '', 'NONSSL').'">'.HEADER_TEXT_ORDERS.'</a></td> 
+      <td class="menu01"><span class="float_left">'.tep_image(DIR_WS_IMAGES . 'img/order_info.gif').'</span>&nbsp;<span class="float_left"><a class="t_link01" href="'.tep_href_link(FILENAME_ORDERS, '', 'NONSSL').'">'.HEADER_TEXT_ORDERS.'</a></span></td> 
     </tr>
     <tr>
-      <td class="menu01"><a class="t_link01" href="'.tep_href_link(FILENAME_PREORDERS, '', 'NONSSL').'">'.HEADER_TEXT_PREORDERS.'</a></td> 
+      <td class="menu01"><span class="float_left">'.tep_image(DIR_WS_IMAGES . 'img/subscribe_info.gif').'</span>&nbsp;<span class="float_left"><a class="t_link01" href="'.tep_href_link(FILENAME_PREORDERS, '', 'NONSSL').'">'.HEADER_TEXT_PREORDERS.'</a></span></td> 
     </tr>
     </table> 
     </td>
-    <td><a href="' . tep_href_link('telecom_unknow.php', '', 'NONSSL') . '" class="headerLink"
+    <td>'.tep_image(DIR_WS_IMAGES . 'img/final.gif').'&nbsp;<a href="' . tep_href_link('telecom_unknow.php', '', 'NONSSL') . '" class="headerLink"
     >'.HEADER_TEXT_TELECOM_UNKNOW.'</a>&nbsp;|</td>
     <td align="left">
-    &nbsp;<a class="headerLink" href="javascript:void(0);" onclick="toggle_header_menu(\'tutorials\')"
+    &nbsp;'.tep_image(DIR_WS_IMAGES . 'img/shopping_set.gif').'&nbsp;<a class="headerLink" href="javascript:void(0);" onclick="toggle_header_menu(\'tutorials\')"
     >'.HEADER_TEXT_TUTORIALS.'</a>&nbsp;|<br>
     <table class="menu01" id="tutorials" cellpadding="0" cellspacing="0">
     <tr>
-    <td class="menu01"><a class="t_link01"
+    <td class="menu01"><span class="float_left">'.tep_image(DIR_WS_IMAGES . 'img/shopping_login.gif').'</span>&nbsp;<span class="float_left"><a class="t_link01"
     href="'.tep_href_link(FILENAME_CATEGORIES, '',
-    'NONSSL').'">'.HEADER_TEXT_CATEGORIES.'</a></td>
+    'NONSSL').'">'.HEADER_TEXT_CATEGORIES.'</a></span></td>
       </tr>
       <tr>
-      <td class="menu01"><a class="t_link01"
+      <td class="menu01"><span class="float_left">'.tep_image(DIR_WS_IMAGES . 'img/price_set.gif').'</span>&nbsp;<span class="float_left"><a class="t_link01"
       href="'.tep_href_link(FILENAME_CATEGORIES_ADMIN, '',
-    'NONSSL').'">'.HEADER_TEXT_CATEGORIES_ADMIN.'</a></td>
+    'NONSSL').'">'.HEADER_TEXT_CATEGORIES_ADMIN.'</a></span></td>
       </tr>
       <tr>
-      <td class="menu01"><a class="t_link01"
+      <td class="menu01"><span class="float_left">'.tep_image(DIR_WS_IMAGES . 'img/stock_level.gif').'</span>&nbsp;<span class="float_left"><a class="t_link01"
       href="'.tep_href_link(FILENAME_INVENTORY, '',
-    'NONSSL').'">'.HEADER_TEXT_INVENTORY.'</a></td>
+    'NONSSL').'">'.HEADER_TEXT_INVENTORY.'</a></span></td>
       </tr>       
       </table>
       </td>
-      <td align="left"> &nbsp;<a class="headerLink" href="javascript:void(0);"
+      <td align="left"> &nbsp;'.tep_image(DIR_WS_IMAGES . 'img/order_form.gif').'&nbsp;<a class="headerLink" href="javascript:void(0);"
       onclick="toggle_header_menu(\'ordermenu\')">'.HEADER_TEXT_ORDERMENU.'</a>&nbsp;|<br>
       <table class="menu01" id="ordermenu" cellpadding="0" cellspacing="0">
       <tr>
-      <td class="menu01"><a class="t_link01"
+      <td class="menu01"><span class="float_left">'.tep_image(DIR_WS_IMAGES . 'img/order_list.gif').'</span>&nbsp;<span class="float_left"><a class="t_link01"
       href="'.tep_href_link('create_order.php', '',
-    'NONSSL').'">'.HEADER_TEXT_CREATE_ORDER.'</a></td>
+    'NONSSL').'">'.HEADER_TEXT_CREATE_ORDER.'</a></span></td>
       </tr>
       <tr>
-      <td class="menu01"><a class="t_link01" href="'.tep_href_link('create_preorder.php',
-    '', 'NONSSL').'">'.HEADER_TEXT_CREATE_PREORDER.'</a></td>
+      <td class="menu01"><span class="float_left">'.tep_image(DIR_WS_IMAGES . 'img/subscribe_list.gif').'</span>&nbsp;<span class="float_left"><a class="t_link01" href="'.tep_href_link('create_preorder.php',
+    '', 'NONSSL').'">'.HEADER_TEXT_CREATE_PREORDER.'</a></span></td>
       </tr> 
       </table>
       </td>
-      <td><a href="' . tep_href_link(FILENAME_CUSTOMERS, '', 'NONSSL') . '" 
+      <td>'.tep_image(DIR_WS_IMAGES . 'img/customer_list.gif').'&nbsp;<a href="' . tep_href_link(FILENAME_CUSTOMERS, '', 'NONSSL') . '" 
       class="headerLink">'.HEADER_TEXT_CUSTOMERS.'</a>&nbsp;|</td>
-      <td>&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS, '', 'NONSSL') .
+      <td>&nbsp;'.tep_image(DIR_WS_IMAGES . 'img/news.gif').'&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS, '', 'NONSSL') .
       '" class="headerLink">'.HEADER_TEXT_LATEST_NEWS.'</a>&nbsp;|</td>
-      <td>&nbsp;<a href="' . tep_href_link('micro_log.php', '', 'NONSSL') . '" class="headerLink"
+      <td>&nbsp;'.tep_image(DIR_WS_IMAGES . 'img/handover_notes.gif').'&nbsp;<a href="' . tep_href_link('micro_log.php', '', 'NONSSL') . '" class="headerLink"
       >'.HEADER_TEXT_MICRO_LOG.'</a>&nbsp;|</td>
 
 
       <td align="left">
-      &nbsp;<a class="headerLink" href="javascript:void(0);"
+      &nbsp;'.tep_image(DIR_WS_IMAGES . 'img/tool_set.gif').'&nbsp;<a class="headerLink" href="javascript:void(0);"
       onclick="toggle_header_menu(\'managermenu\')">'.HEADER_TEXT_MANAGERMENU.'</a>&nbsp;|<br>
       <table class="menu01" id="managermenu" cellpadding="0" cellspacing="0">
       <tr>
-      <td class="menu01"><a class="t_link01"
+      <td class="menu01"><span class="float_left">'.tep_image(DIR_WS_IMAGES . 'img/ID.gif').'</span>&nbsp;<span class="float_left"><a class="t_link01"
       href="'.tep_href_link(FILENAME_PW_MANAGER, '',
-    'NONSSL').'">'.HEADER_TEXT_PW_MANAGER.'</a></td>
+    'NONSSL').'">'.HEADER_TEXT_PW_MANAGER.'</a></span></td>
       </tr>
       <tr>
-      <td class="menu01"><a class="t_link01"
+      <td class="menu01"><span class="float_left">'.tep_image(DIR_WS_IMAGES . 'img/chang_password.gif').'</span>&nbsp;<span class="float_left"><a class="t_link01"
       onclick="javascript:goto_changepwd(\'changepwd_form\')"
-      href="javascript:void(0);">'.HEADER_TEXT_USERS.'</a>';
+      href="javascript:void(0);">'.HEADER_TEXT_USERS.'</a></span>';
 if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {
 ?>
 <embed id="head_sound" src="images/presound.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
@@ -482,18 +505,31 @@ if ($_SERVER['PHP_SELF'] != '/admin/orders.php') {
 
       <td align="left">
       ';
-  echo '&nbsp;<a href="javascript:void(0);" class="headerLink"
+  echo '&nbsp;'.tep_image(DIR_WS_IMAGES . 'img/network_move.gif').'&nbsp;<a href="javascript:void(0);" class="headerLink"
     onclick="toggle_header_menu(\'redirecturl\')">'.HEADER_TEXT_REDIRECTURL.'</a>&nbsp;|<br>'; 
   $site_link_query = tep_db_query('select * from '.TABLE_SITES);
-  echo '<table id="redirecturl" cellspacing="0" cellpadding="0" class="menu01" style="visibility: hidden;">'; 
+echo '<table id="redirecturl" cellspacing="0" cellpadding="0" class="menu01" style="visibility: hidden;">'; 
+$site_img = array();
+$site_img = array('jp'=>'jp_favicon.gif',
+	'gm'=>'gm_favicon.gif',
+	'wm'=>'wm_favicon.gif',
+	'id'=>'id_favicon.gif',
+	'rk'=>'rk_favicon.gif',
+	'rg'=>'rg_favicon.gif',
+	'14'=>'14_favicon.gif',
+	'rr'=>'rr_favicon.gif',
+	'gp'=>'gp_favicon.gif',
+	'ge'=>'ge_favicon.gif'
+);
   while ($site_link = tep_db_fetch_array($site_link_query)) {
     echo '<tr><td class="menu01">'; 
-    echo '<a href="'.$site_link['url'].'" target="_blank" class="t_link01">'.$site_link['name'].'</a>'; 
+    echo '<span class="float_left">'.tep_image(DIR_WS_IMAGES . 'img/'.$site_img[$site_link['romaji']].'').'</span>&nbsp;<span class="float_left"><a href="'.$site_link['url'].'" target="_blank" class="t_link01">'.$site_link['name'].'</a></span>'; 
     echo '</td></tr>'; 
   }
   echo '</table></td>';
   echo ' 
-    <td>&nbsp;
+		<td>&nbsp;
+'.tep_image(DIR_WS_IMAGES . 'img/exit.gif').'
   <a href="' . tep_href_link(basename($GLOBALS['PHP_SELF']), '', 'NONSSL') .
     '?execute_logout_user=1" class="headerLink">'.HEADER_TEXT_LOGOUT.'</a></td></tr></table>';
 } else {

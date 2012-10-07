@@ -102,14 +102,8 @@ if (tep_not_null($action)) {
       $date_time = $year.$month.$day;
       $date_now = date('Ymd');
       $date_start_hour = $start_hour.$start_min.$start_min_1;
-      $date_end_hour = $end_hour.$end_min.$end_min_1;
-      if((int)$date_time < (int)$date_now || (int)$date_end_hour < (int)$date_start_hour){
-
-        $messageStack->add(TEXT_DATE_NUM_ERROR, 'error');
-        $action = 'edit';
-        break; 
-      } 
-    $shipping_array = array();
+      $date_end_hour = $end_hour.$end_min.$end_min_1; 
+      $shipping_array = array();
     foreach($update_products as $products_key=>$products_value){
 
       $shipping_products_query = tep_db_query("select * from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='". $products_key."'");
@@ -1203,29 +1197,27 @@ if($address_error == false){
 
         // 2.2.1 Update inventory Quantity
         $p = tep_db_fetch_array(tep_db_query("select * from products where products_id='".$add_product_products_id."'"));
-        if ($customer_guest['is_calc_quantity'] != '1') {
-          if ((int)$add_product_quantity > $p['products_real_quantity']) {
-            // 买取商品大于实数
-            tep_db_perform('products',array(
-                  'products_real_quantity' => 0,
-                  //'products_virtual_quantity' => 0,
-                  //'products_virtual_quantity' => $p['products_virtual_quantity'] - ((int)$add_product_quantity + $p['products_real_quantity'])
-                  'products_virtual_quantity' => $p['products_virtual_quantity'] - (int)$add_product_quantity + $p['products_real_quantity']
-                  ),
-                'update',
-                "products_id = '" . $add_product_products_id . "'");
-          } else {
-            tep_db_perform('products',array(
-                  'products_real_quantity' =>$p['products_real_quantity']  - (int)$add_product_quantity
-                  // 'products_real_quantity' =>$p['products_real_quantity']+ $p['products_virtual_quantity'] - (int)$add_product_quantity
-                  ),
-                'update',
-                "products_id = '" . $add_product_products_id . "'");
-          }
-          // 增加销售量
-          tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . (int)$add_product_quantity . " where products_id = '" . $add_product_products_id . "'");
-          // 处理负数问题
+        if ((int)$add_product_quantity > $p['products_real_quantity']) {
+          // 买取商品大于实数
+          tep_db_perform('products',array(
+                'products_real_quantity' => 0,
+                //'products_virtual_quantity' => 0,
+                //'products_virtual_quantity' => $p['products_virtual_quantity'] - ((int)$add_product_quantity + $p['products_real_quantity'])
+                'products_virtual_quantity' => $p['products_virtual_quantity'] - (int)$add_product_quantity + $p['products_real_quantity']
+                ),
+              'update',
+              "products_id = '" . $add_product_products_id . "'");
+        } else {
+          tep_db_perform('products',array(
+                'products_real_quantity' =>$p['products_real_quantity']  - (int)$add_product_quantity
+                // 'products_real_quantity' =>$p['products_real_quantity']+ $p['products_virtual_quantity'] - (int)$add_product_quantity
+                ),
+              'update',
+              "products_id = '" . $add_product_products_id . "'");
         }
+        // 增加销售量
+        tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . (int)$add_product_quantity . " where products_id = '" . $add_product_products_id . "'");
+        // 处理负数问题
         tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . $add_product_products_id . "'");
         tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . $add_product_products_id . "'");
         /*
@@ -1540,8 +1532,11 @@ function date_time(){
     var end_min = document.getElementById('min_1').value;
     var start_hour_str = parseInt(start_hour+start_min+end_min);
     if(date_time_value < date_time || (date_time_value == date_time && start_hour_str < date_hour)){
-      alert('<?php echo TEXT_DATE_NUM_ERROR;?>');
-      return false;
+      if(confirm('<?php echo TEXT_DATE_TIME_ERROR;?>')){
+        return true;
+      }else{
+        return false; 
+      }
     }
     return true;
 }
@@ -3080,23 +3075,23 @@ if (($action == 'edit') && ($order_exists == true)) {
       }
       $hour_str .= '</select>&nbsp;'.TEXT_HOUR;
       echo $hour_str;
-      $work_min_temp = substr((int)$start_temp[1],0,1);
+      $work_min_temp = substr($start_temp[1],0,1);
       $work_min_temp = isset($_SESSION['orders_update_products']['min']) ? $_SESSION['orders_update_products']['min'] : $work_min_temp;
       $min_str_1 = '&nbsp;<select name="start_min_1" id="min" onchange="check_min(this.value);">';
       for($m_1 = 0;$m_1 <= 5;$m_1++){
         
-        $selected = $work_min_temp == $m_1 ? ' selected' : '';
+        $selected = (int)$work_min_temp == $m_1 ? ' selected' : '';
         $min_str_1 .= '<option value="'.$m_1.'"'.$selected.'>'.$m_1.'</option>';
 
       }
       $min_str_1 .= '</select>';
       echo $min_str_1;
-      $min_str_temp = substr((int)$start_temp[1],1,1);
+      $min_str_temp = substr($start_temp[1],1,1);
       $min_str_temp = isset($_SESSION['orders_update_products']['min_1']) ? $_SESSION['orders_update_products']['min_1'] : $min_str_temp;
       $min_str_2 = '<select name="start_min_2" id="min_1" onchange="check_min_1(this.value);">';
       for($m_2 = 0;$m_2 <= 9;$m_2++){
         
-        $selected = $min_str_temp == $m_2 ? ' selected' : '';
+        $selected = (int)$min_str_temp == $m_2 ? ' selected' : '';
         $min_str_2 .= '<option value="'.$m_2.'"'.$selected.'>'.$m_2.'</option>';
 
       }
@@ -3115,20 +3110,20 @@ if (($action == 'edit') && ($order_exists == true)) {
       }
       $hour_str_1 .= '</select>&nbsp;'.TEXT_HOUR;
       echo $hour_str_1;
-      $min_str_1_temp = substr((int)$end_temp[1],0,1);
+      $min_str_1_temp = substr($end_temp[1],0,1);
       $min_str_1_temp = isset($_SESSION['orders_update_products']['min_end']) ? $_SESSION['orders_update_products']['min_end'] : $min_str_1_temp;
       $min_str_1_end = '&nbsp;<select name="end_min_1" id="min_end" onchange="check_end_min(this.value);">';
       $min_start = (int)$work_min_temp; 
       $min_start = $start_temp[0] < $end_temp[0] ? 0 : $min_start;
       for($m_1_end = $min_start;$m_1_end <= 5;$m_1_end++){
         
-        $selected = $min_str_1_temp == $m_1_end ? ' selected' : '';
+        $selected = (int)$min_str_1_temp == $m_1_end ? ' selected' : '';
         $min_str_1_end .= '<option value="'.$m_1_end.'"'.$selected.'>'.$m_1_end.'</option>';
 
       }
       $min_str_1_end .= '</select>';
       echo $min_str_1_end;
-      $min_str_end_temp = substr((int)$end_temp[1],1,1);
+      $min_str_end_temp = substr($end_temp[1],1,1);
       $min_str_end_temp = isset($_SESSION['orders_update_products']['min_end_1']) ? $_SESSION['orders_update_products']['min_end_1'] : $min_str_end_temp;
       $min_str_2_end = '<select name="end_min_2" id="min_end_1">';
       $min_end = (int)$min_str_end_temp;
@@ -3136,7 +3131,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       $min_end = $start_temp[0] < $end_temp[0] ? 0 : $min_end;
       for($m_2_end = $min_end;$m_2_end <= 9;$m_2_end++){
         
-        $selected = $min_str_end_temp == $m_2_end ? ' selected' : '';
+        $selected = (int)$min_str_end_temp == $m_2_end ? ' selected' : '';
         $min_str_2_end .= '<option value="'.$m_2_end.'"'.$selected.'>'.$m_2_end.'</option>';
 
       }
@@ -3837,10 +3832,10 @@ if (($action == 'edit') && ($order_exists == true)) {
 
           //<textarea style="font-family:monospace;font-size:x-small" name="comments" wrap="hard" rows="30" cols="74"></textarea>
 
-          echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:70%;"');
+          echo tep_draw_textarea_field('comments', 'off', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:70%;"');
           //    echo tep_draw_textarea_field('comments', 'soft', '40', '5');
         } else {
-          echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:70%;"');
+          echo tep_draw_textarea_field('comments', 'off', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:70%;"');
         }
   ?>
     </td>

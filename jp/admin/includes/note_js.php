@@ -3,12 +3,22 @@ $notes = '';
 $left='';  
 $top='';  
 $zindex='';  
+$href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
 $belong = preg_replace('/\?XSID=[^&]+/','',$belong);
-$belong = preg_replace('/\??&cID=[^&]+/','',$belong);
-$belong = str_replace('&','|||',$belong);
+//$belong = preg_replace('/\??&cID=[^&]+/','',$belong);
+preg_match_all('/cPath=[^&]+/',$belong,$belong_array);
+if($belong_array[0][0] != ''){
+
+  $belong = $href_url.'?'.$belong_array[0][0];
+}else{
+
+  $belong = $href_url;
+}
+$belong_flag = $belong; 
+$belong = str_replace('?','|||',$belong);
 $user_info = tep_get_user_info($ocertify->auth_user);
-$query = tep_db_query("select * from notes where belong='".$belong."' and (attribute='1' or (attribute='0' and author='".$user_info['name']."'))  order by id desc");
+$query = tep_db_query("select * from notes where (belong='".$belong."' or belong='".$belong_flag."') and (attribute='1' or (attribute='0' and author='".$user_info['name']."'))  order by id desc");
 $note_arr = array();
 $height_arr = array();
 while($row=tep_db_fetch_array($query)){
@@ -16,13 +26,15 @@ while($row=tep_db_fetch_array($query)){
   $note_arr[] = $row['id'];
   $height_arr[] = $ylen+$top+10;
   $time = strtotime($row['addtime']);
+  $attribute = $row['attribute'];
+  $attribute_image = $attribute == 1 ? '<image id="image_id_'.$row['id'].'" alt="'.TEXT_ATTRIBUTE_PUBLIC.'" src="images/icons/public.gif">' : '<image id="image_id_'.$row['id'].'" alt="'.TEXT_ATTRIBUTE_PRIVATE.'" src="images/icons/private.gif">';
   $notes.= '
     <div id="note_'.$row['id'].'" ondblclick="changeLayer(this);" class="note '.$row['color'].'" 
     style="left:'.$left.'px;top:'.$top.'px;z-index:'.$zindex.';height:'.$ylen.'px;width:'.$xlen.'px">
     <div class="note_head">
     <div id="note_title_'.$row['id'].'" class="note_title">
     <input type="button" onclick="note_save_text(\''.$row['id'].'\')"
-     value=" '.IMAGE_SAVE.'" >&nbsp;&nbsp;'.$row['title'].'&nbsp;&nbsp;
+     value=" '.IMAGE_SAVE.'" >&nbsp;'.$attribute_image.'&nbsp;'.$row['title'].'&nbsp;&nbsp;
     '.substr($row['addtime'],0,strlen($row['addtime'])-3).'
     </div><div class="note_close">
     <input type="hidden" value="'.$row['id'].'" class="hidden">

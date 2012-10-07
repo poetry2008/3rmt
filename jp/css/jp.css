@@ -2450,7 +2450,7 @@ searching
 	font-size:12px;
 	font-weight:bold;
 }
-.faq_back{ text-align:right;}
+.faq_back{ text-align:right; margin-top:10px;}
 .faq_ul_question_all{
 	padding:0;
 	margin:5px 0 0 40px;
@@ -2488,6 +2488,7 @@ searching
 	margin-left:4px;
 	padding:0;
 	*margin:0 0 0 -10px;
+	margin-bottom:0;
 }
 .faq_info_li_answer{
 	list-style-type:none;

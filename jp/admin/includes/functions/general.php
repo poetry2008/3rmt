@@ -4868,8 +4868,8 @@ function tep_display_google_results($from_url=''){
     $r = tep_db_fetch_array(tep_db_query("select
           sum(orders_products.products_quantity) as cnt from orders_products left join
           orders on orders.orders_id=orders_products.orders_id where
-          products_id='".$pid."' and finished = '0' and date(orders.date_purchased) >
-          '".date('Y-m-d',strtotime('-8day'))."'"));
+          products_id='".$pid."' and finished = '0' and date(orders.date_purchased) >=
+          '".date('Y-m-d 00:00:00',strtotime('-'.((get_configuration_by_site_id('ORDER_EFFECTIVE_DATE') != '0')?(get_configuration_by_site_id('ORDER_EFFECTIVE_DATE')-1):'0').'day'))."'"));
     //$r = tep_db_fetch_array(tep_db_query("select count(orders_products.orders_id) as cnt from orders_products left join orders on orders.orders_id=orders_products.orders_id where products_id='".$pid."' and finished = '1'"));
     return $r['cnt'];
   }
