@@ -283,7 +283,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   echo '                  <tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $configuration['configuration_id']) . '\'">' . "\n";
     }
 ?>
-    <td class="dataTableContent"><?php echo constant($configuration['configuration_title']); ?></td>
+    <td class="dataTableContent"><?php echo $configuration['configuration_title']; ?></td>
                          <td class="dataTableContent"><?php echo mb_substr(htmlspecialchars($cfgValue),0,50); ?></td>
                                               <td class="dataTableContent" align="right"><?php if ( (isset($cInfo) && is_object($cInfo)) && ($configuration['configuration_id'] == $cInfo->configuration_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $configuration['configuration_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
     </tr>
@@ -296,7 +296,7 @@ $heading = array();
 $contents = array();
 switch (isset($_GET['action']) && $_GET['action']) {
 case 'edit':
-    $heading[] = array('text' => '<b>' . constant($cInfo->configuration_title) . '</b>');
+    $heading[] = array('text' => '<b>' . $cInfo->configuration_title . '</b>');
 
     if ($cInfo->set_function) {
   eval('$value_field = ' . $cInfo->set_function . '\'' .  htmlspecialchars(addcslashes($cInfo->configuration_value, '\'')) . '\');');
@@ -317,7 +317,7 @@ case 'edit':
     }
     $contents[] = array('text' => '<input type="hidden" name="user_update" value="'.$user_info['name'].'">');
     $contents[] = array('text' => TEXT_INFO_EDIT_INTRO);
-    $contents[] = array('text' => '<br><b>' . constant($cInfo->configuration_title) . '</b><br>' . constant($cInfo->configuration_description) . '<br>' . $value_field);
+    $contents[] = array('text' => '<br><b>' . $cInfo->configuration_title . '</b><br>' . $cInfo->configuration_description . '<br>' . $value_field);
   
     $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_UPDATE) . '&nbsp;<a class="new_product_reset" href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] .  '&cID=' . $cInfo->configuration_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
 
@@ -399,7 +399,7 @@ case 'edit':
       $contents_site = array('form' => tep_draw_form('configuration', FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $fetch_result['configuration_id'] . '&action=save'));
   }
 //  $contents_site[] = array('text' => TEXT_INFO_EDIT_INTRO); 
-  $contents_site[] = array('text' => '<br><b>' . constant($fetch_result['configuration_title']) . '</b><br>' . constant($fetch_result['configuration_description']) . '<br>' . $value_field);
+  $contents_site[] = array('text' => '<br><b>' . $fetch_result['configuration_title'] . '</b><br>' . $fetch_result['configuration_description'] . '<br>' . $value_field);
   //if exists ,can be delete ,or  can not 
   if (is_numeric($fetch_result['configuration_id'])){
   $contents_site[] = array(
@@ -418,10 +418,10 @@ case 'edit':
 default:
     if (isset($cInfo) && is_object($cInfo)) {
 
-        $heading[] = array('text' => '<b>' . constant($cInfo->configuration_title) . '</b>');
+        $heading[] = array('text' => '<b>' . $cInfo->configuration_title . '</b>');
 
         $contents[] = array('align' => 'center', 'text' => '<a href="' .  tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' .  $cInfo->configuration_id . '&action=edit') . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a>');
-        $contents[] = array('text' => '<br>' . constant($cInfo->configuration_description));
+        $contents[] = array('text' => '<br>' . $cInfo->configuration_description);
 $contents[] = array('text' => '<br>' . TEXT_USER_ADDED . ' ' . $cInfo->user_added);
 $contents[] = array('text' => '<br>' . TEXT_INFO_DATE_ADDED . ' ' . tep_datetime_short($cInfo->date_added));
 
