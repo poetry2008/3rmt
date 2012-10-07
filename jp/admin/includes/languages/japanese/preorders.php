@@ -1,13 +1,6 @@
 <?php
 /*
-  $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 osCommerce
-
-  Released under the GNU General Public License
+  $Id$ 
 */
 
 define('HEADING_TITLE', '予約管理');
@@ -30,6 +23,8 @@ define('TABLE_HEADING_PRICE_EXCLUDING_TAX', '価格(税別)');
 define('TABLE_HEADING_PRICE_INCLUDING_TAX', '価格(税込)');
 define('TABLE_HEADING_TOTAL_EXCLUDING_TAX', '合計(税別)');
 define('TABLE_HEADING_TOTAL_INCLUDING_TAX', '合計(税込)');
+define('TEXT_PREORDER_AMOUNT_SEARCH','注文金額検索');
+
 
 define('TABLE_HEADING_CUSTOMER_NOTIFIED', '顧客に通知');
 define('TABLE_HEADING_DATE_ADDED', '処理日');
@@ -63,7 +58,6 @@ define('ENTRY_DATE_LAST_UPDATED', '更新日:');
 define('ENTRY_NOTIFY_CUSTOMER', '処理状況を通知:');
 define('ENTRY_NOTIFY_COMMENTS', 'コメントを追加:');
 define('ENTRY_PRINTABLE', '納品書をプリント');
-define('TEXT_PREORDER_AMOUNT_SEARCH','注文金額検索');
 
 define('TEXT_INFO_HEADING_DELETE_ORDER', '注文を削除');
 define('TEXT_INFO_DELETE_INTRO', '本当にこの注文を削除しますか?');

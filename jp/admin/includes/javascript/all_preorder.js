@@ -862,3 +862,25 @@ success: function(msg) {
 }
 });
 }
+
+function mark_work(ele, mark_symbol, select_mark, c_site, param_other)
+{
+  $.ajax({
+    dataType: 'text',
+    type:"POST",
+    data:'param_other=' + param_other,
+    async:false, 
+    url: 'ajax_preorders.php?action=handle_mark&mark_symbol='+mark_symbol+'&select_mark='+select_mark+'&c_site='+c_site,
+    success: function(data) {
+      data_array = data.split('|||'); 
+      if (data_array[0] == 'success') {
+        if (ele.className == 'mark_flag_checked') {
+          ele.className='mark_flag_unchecked';
+        } else {
+          ele.className='mark_flag_checked';
+        }
+        window.location.href = data_array[1]; 
+      }
+    }
+  });
+}
