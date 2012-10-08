@@ -16,7 +16,6 @@ define('TABLE_HEADING_ACTION', '操作');
 define('TABLE_HEADING_QUANTITY', '数量');
 define('TABLE_HEADING_PRODUCTS_MODEL', '型番');
 define('TABLE_HEADING_PRODUCTS', '数量 / 商品名');
-define('TABLE_HEADING_CHARACTER', 'キャラクター名');
 define('TABLE_HEADING_TAX', '税率');
 define('TABLE_HEADING_TOTAL', '合計');
 define('TABLE_HEADING_PRICE_EXCLUDING_TAX', '価格(税別)');
@@ -220,11 +219,21 @@ define('TEXT_FUNCTION_FINISH','「入」');
 define('TEXT_FUNCTION_UNFINISH','「未」');
 define('TEXT_FUNCTION_NUMBER','個数：');
 define('TEXT_FUNCTION_NUM','個');
-define('TEXT_FUNCTION_GAME_NAME','キャラ名：');
 define('TEXT_FUNCTION_PC','PC：');
 define('TEXT_FUNCTION_PREDATE','有効期限：');
 define('TEXT_FUNCTION_ENSURE_DATE','確保期限：');
 define('TEXT_FUNCTION_ORDER_FROM_INFO', '予約注文書サイト：');
 define('TEXT_ORDER_HISTORY_FROM_ORDER', '注文');
 define('TEXT_ORDER_HISTORY_FROM_PREORDER', '予約');
+
+define('TEXT_ORDER_NOT_CHOOSE','複数の選択はできません。');
+define('TEXT_NO_OPTION_ORDER','注文書はまだ選択していません。')    ;
+define('TEXT_COMPLETION_TRANSACTION','取引完了');
+define('TEXT_PRESERVATION','保存');
+define('TEXT_SAVE_FINISHED','の保存が完了しました');
+define('TEXT_BROWER_REJECTED','ブラウザに拒絶されました！\nブラウザのアドレス欄に"about:config"を入力してEnterキーを押します\nそれと"signed.applets.codebase_principal_support"数を"true"にしてください');
+define('TEXT_COPY_TO_CLIPBOARD','クリップボードにコピーしました！');
+define('TEXT_PLEASE_PASSWORD','ワンタイムパスワードを入力してください\r\n');
+define('TEXT_PASSWORD_NOT','パスワードが違います');
+
 ?>

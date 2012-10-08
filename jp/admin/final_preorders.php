@@ -7,6 +7,7 @@
 
   require('includes/application_top.php');
   require('includes/step-by-step/new_application_top.php');
+  include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .  '/default.php');
   require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_EDIT_ORDERS);
  
   $active_order_raw = tep_db_query("select is_active from ".TABLE_PREORDERS." where orders_id = '".$_GET['oID']."'");

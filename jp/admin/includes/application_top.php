@@ -12,7 +12,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
 
 // Set the level of error reporting
   //error_reporting(E_ALL & ~E_NOTICE);
-  error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
+  error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_WARNING);
   ini_set("display_errors", "Off");
 
 // Check if register_globals is enabled.
@@ -346,8 +346,14 @@ while($userslist= tep_db_fetch_array($sites_id)){
   $_SESSION['user_permission']=$userslist['permission'];
 }
 
+// define our general functions used application-wide
+  require(DIR_WS_FUNCTIONS . 'general.php');
+  require(DIR_WS_FUNCTIONS . 'generalBoth.php');
+  require(DIR_WS_FUNCTIONS . 'preorder_general.php');
+  require(DIR_WS_FUNCTIONS . 'html_output.php');
 
 // language
+  // 'text_language' for default show language
   require(DIR_WS_FUNCTIONS . 'languages.php');
   if ( (!isset($language) || !$language) || (isset($_GET['language']) && $_GET['language']) ) {
     if (!isset($language) || !$language) {
@@ -356,7 +362,18 @@ while($userslist= tep_db_fetch_array($sites_id)){
     }
 
     $language = tep_get_languages_directory(isset($_GET['language'])?$_GET['language']:'');
-    if (!$language) $language = tep_get_languages_directory(DEFAULT_LANGUAGE);
+    if (!$language) {
+      if(isset($_SESSION['text_language'])&&$_SESSION['text_language']){
+        $language = $_SESSION['text_language'];
+      }else{
+        $language = tep_get_languages_directory(DEFAULT_LANGUAGE);
+      }
+    }else {
+      $_SESSION['text_language'] = $language;
+    }
+  }
+  if(isset($_SESSION['text_language'])&&$_SESSION['text_language']){
+    $language = $_SESSION['text_language'];
   }
 
 // include the language translations
@@ -366,11 +383,6 @@ while($userslist= tep_db_fetch_array($sites_id)){
     include(DIR_WS_LANGUAGES . $language . '/' . $current_page);
   }
 
-// define our general functions used application-wide
-  require(DIR_WS_FUNCTIONS . 'general.php');
-  require(DIR_WS_FUNCTIONS . 'generalBoth.php');
-  require(DIR_WS_FUNCTIONS . 'preorder_general.php');
-  require(DIR_WS_FUNCTIONS . 'html_output.php');
 
 
 // define our authenticate functions 2003/04/16

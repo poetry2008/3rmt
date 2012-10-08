@@ -590,7 +590,7 @@ function PageHeader() {
   echo '<html ' . HTML_PARAMS . '>' . "\n";
   echo '<head>' . "\n";
   echo '<meta http-equiv="Content-Type" content="text/html; charset=' . CHARSET . '">' . "\n";
-  echo '<title> ユーザ管理 (パスワード変更)  </title>' . "\n";
+  echo '<title>'.HEADING_TITLE.'  </title>' . "\n";
   echo '<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">' . "\n";
 
   // ユーザ情報、パスワード変更、管理者権限のとき確認メッセージ JavaScript 出力

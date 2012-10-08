@@ -1,0 +1,9 @@
+<?php
+/*
+	JP、GM共通ファイル
+*/
+
+  define('MODULE_METASEO_PREORDER_TEXT_TITLE', '预约');
+  define('MODULE_METASEO_PREORDER_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_PREORDER_TEXT_DESCRIPTION', '预约页的SEO');
+?>

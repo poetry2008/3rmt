@@ -25,7 +25,7 @@ charset=<?php echo CHARSET; ?>">
       location.href=link;
     }
     function delete_one_data(){
-      return confirm('削除しますか？');
+      return confirm('<?php echo TEXT_OK_TO_DELETE; ?>');
     }
 $(function() {
     $("#saveorder1").bind('click',function(){
@@ -60,7 +60,7 @@ $(function() {
         }
         if(key_sum>4){
            key_sum=0;
-          alert('数字とドット「.」でご入力ください');
+          alert('<?php echo TEXT_PLEASE_INPUT; ?>');
         }
     });
 });
@@ -97,7 +97,7 @@ $(function() {
         }
         if(key_sum>4){
            key_sum=0;
-          alert('数字とドット「.」でご入力ください');
+          alert('<?php echo TEXT_PLEASE_INPUT; ?>');
         }
     });
 });
@@ -168,7 +168,7 @@ function ex(id,tr_len){
     echo HISTORY_TITLE_ONE; 
   }
   ?>
-  <input type="button" onClick = "goto()" value='戻る'>
+	  <input type="button" onClick = "goto()" value='<?php echo IMAGE_BACK;?>'>
                  </td>
               </tr>
               <tr>
@@ -203,7 +203,7 @@ case 'oroshi':
         'history.php?action=oroshi_c&cPath=".$gid."&oid=".$oid."'>履歴詳細</a></td>";
       echo "<td class='dataTableHeadingContent'><a href=
         'cleate_list.php?action=prelist&cid=".$game[0]['categories_id']."&oid=".$oid."&src_id=his'
-        >データ作成</a></td>";
+        >'.TEXT_CREATE_DATA.'</a></td>";
       echo "</tr>";
     foreach ($game as $key=>$value){
       echo "<tr class='dataTableRow'>";

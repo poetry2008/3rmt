@@ -105,12 +105,12 @@
   }
     echo '</P>';
     fclose($file);
-    echo "<font color='#CC0000'><b>".$cnt."件をアップロードしました。</b></font>";
+    echo "<font color='#CC0000'><b>".$cnt.NUMBERS_UP."</b></font>";
   }else{
-    echo "<font color='#CC0000'><b>アップロードできませんでした。<br>所定のCSVファイルを参照してください。</b></font>";
+    echo "<font color='#CC0000'><b>".UNABLE_UP."<br>".REFERENCE_CSV."</b></font>";
   }
   
-  echo '<br><br><br><a href="mag_up.php">戻る</a>';
+  echo '<br><br><br><a href="mag_up.php">'.BUTTON_BACK.'</a>';
   } else {
 ?>
 <!-- body //-->
@@ -148,7 +148,7 @@
                 <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '5'); ?></td>
               </tr>
               <tr>
-                <td colspan="2" align="left"><input type=submit name=download value="アップロード"></td>
+	      <td colspan="2" align="left"><input type=submit name=download value="<?php echo BUTTON_MAG_UP;?>"></td>
               </tr>
             </table></td>
       <input type="hidden" name="max_file_size" value="1000000">

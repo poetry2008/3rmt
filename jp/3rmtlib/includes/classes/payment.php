@@ -32,6 +32,7 @@ class payment {
   { //如果对象实例还没有被创建，则创建一个新的实例
 
     global $language;
+    $language = tep_get_default_language();
     if(self::$instance == NULL)
       {
         self::$instance =new payment($site_id);
@@ -472,6 +473,7 @@ class payment {
     $payment_method_array = array();
     for ($i = 0, $n = sizeof($payment_array); $i < $n; $i++) {
       $payment_filename = $payment_array[$i]; 
+      $language = tep_get_default_language();
       require_once DIR_WS_LANGUAGES . $language . '/modules/payment/' . $payment_filename; 
       require_once $payment_directory . $payment_filename; 
       $payment_class = substr($payment_filename, 0, strrpos($payment_filename, '.'));

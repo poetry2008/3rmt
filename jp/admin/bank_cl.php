@@ -277,8 +277,8 @@ if($_GET['action'] == 'success') {
       <td align="right">
         <table border="0">
           <tr>
-            <td><a href="<?php echo tep_href_link('bank_cl.php', 'date='.date('Y-m',mktime(0,0,0,$m_num-1,1,$year)));?>">前へ</a></td>
-            <td><a href="<?php echo tep_href_link('bank_cl.php', 'date='.date('Y-m',mktime(0,0,0,$m_num+7,1,$year)));?>">次へ</a></td>
+  <td><a href="<?php echo tep_href_link('bank_cl.php', 'date='.date('Y-m',mktime(0,0,0,$m_num-1,1,$year)));?>"><?php echo BUTTON_PREV;?></a></td>
+            <td><a href="<?php echo tep_href_link('bank_cl.php', 'date='.date('Y-m',mktime(0,0,0,$m_num+7,1,$year)));?>"><?php echo BUTTON_NEXT;?></a></td>
             <td>
               <select name="year" id="year">
               <?php for($i=date('Y');$i<date('Y')+20;$i++) { ?>

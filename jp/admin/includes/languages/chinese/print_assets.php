@@ -1,0 +1,42 @@
+<?php
+define('ASSETS_TITLE', '资产管理');
+define('TEXT_PRODUCTS_NAME','分类/商品');
+define('TEXT_PRODUCTS_QUANTITY','实际库存');
+define('TEXT_PRODUCTS_PRICE','平均单价');
+define('TEXT_PRODUCTS_PRICE_SUM','总额');
+
+define('TEXT_ORDER_PRODUCTS_DATE','订购日期');
+define('TEXT_ORDER_PRODUCTS_NAME','商品名');
+define('TEXT_ORDER_PRODUCTS_QUANTITY','数量');
+define('TEXT_ORDER_PRODUCTS_PRICE','单价');
+define('TEXT_SHOW_ALL', '全部');
+define('TEXT_SELL', '卖出');
+define('TEXT_BUY', '买入'); 
+define('TEXT_SEARCH', '搜索');
+define('TEXT_INFO', '详细');
+define('TEXT_BACK', '返回');
+define('TEXT_ASSETS_PRINT', '打印');
+define('ASSETS_YEAR_TEXT', '年');
+define('ASSETS_MONTH_TEXT', '月');
+define('ASSETS_DAY_TEXT', '日');
+define('TEXT_ASSETS_NO_DATA','缺乏有效数据');
+define('TEXT_SORT_DATE','最近');
+define('TEXT_SORT_PRICE_ASC','最低价');
+define('TEXT_SORT_PRICE_DESC','最高价');
+define('TEXT_PRODUCTS_DATE','交货日期');
+define('TEXT_STATUS_EASY','简单');
+define('TEXT_STATUS_INFO','详细');
+define('TEXT_SUM_PRODUCT','合计库存');
+define('TEXT_AVG_PRICE','平均单价');
+define('TEXT_SUM_PRICE','合计金额');
+define('TEXT_NO_RESULT','缺乏有效数据');
+define('TEXT_SEARCH_ORDER','並び順');
+define('TEXT_SEARCH_CATEGORY','分类');
+define('TEXT_SEARCH_SITE','网站');
+define('TEXT_SEARCH_WHERE','搜索条件');
+define('TEXT_SEARCH_DATE','集計期間');
+define('TEXT_SEARCH_DATE_START','开始日期');
+define('TEXT_SEARCH_DATE_END','结束日期');
+define('TEXT_ASSETS_INFO','请设置资产计算条件点击搜索按钮<br>资产计算缺乏必要数据时、改行显示为红色');
+define('TEXT_ROW','个');
+?>

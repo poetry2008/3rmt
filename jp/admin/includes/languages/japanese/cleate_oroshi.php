@@ -1,0 +1,9 @@
+<?php
+define('WHOLESALERS','卸業者:');
+define('CREATE_INPUT_BOX','まず、入力フォーム追加してください');
+define('TRADE_NAME','業者名はご記入ください');
+define('ALREADY_EXISTS','はもう存在しています');
+define('PLEASE_GAME_TITLE','ゲームタイトルを一つ選択してください');
+define('CONTENT_NOT_SAME','入力された内容は同じになってはいけません');
+define('DELETE','削除しますか？');
+?>

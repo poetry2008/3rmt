@@ -211,7 +211,7 @@ if(isset($action) && $action != ''){
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
-<title><?php echo TITLE; ?></title>
+<title><?php echo HEADING_TITLE; ?></title>
 <style type="text/css">
 div#show {
   left:18%;
@@ -231,17 +231,17 @@ div#show {
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
-<!-- header //-->
+<!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
+<!-- header_eof -->
 
-<!-- body //-->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft"><tr><td>
-<!-- left_navigation //--> <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> <!-- left_navigation_eof //-->
+<!-- left_navigation --> <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> <!-- left_navigation_eof -->
     </td></tr></table></td>
-<!-- body_text //-->
+<!-- body_text -->
     <td width="100%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -348,14 +348,14 @@ tep_db_close();
 </table></td>
 </tr>
 </table></td>
-<!-- body_text_eof //-->
+<!-- body_text_eof -->
 </tr>
 </table>
 
-<!-- body_eof //-->
-<!-- footer //-->
+<!-- body_eof -->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 </body>
 </html>

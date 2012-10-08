@@ -189,7 +189,7 @@ require(DIR_WS_CLASSES . 'order_total.php');
 $order_total_modules = new order_total;
 
 $order_totals = $order_total_modules->process();
-$customers_referer_query = tep_db_query("select referer from ".TABLE_CUSTOMERS." where customers_id='".$customer_id."'");
+$customers_referer_query = tep_db_query("select referer, is_send_mail, is_calc_quantity from ".TABLE_CUSTOMERS." where customers_id='".$customer_id."'");
 $customers_referer_array = tep_db_fetch_array($customers_referer_query);
 $referer = $customers_referer_array['referer'];
 # Select
@@ -423,36 +423,39 @@ $total_tax = 0;
 for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
   // Stock Update - Joao Correia
   if (STOCK_LIMITED == 'true') {
-    $stock_query = tep_db_query("select products_real_quantity,products_virtual_quantity from " . TABLE_PRODUCTS .  " where products_id = '" . (int)$order->products[$i]['id'] . "'");
-    if (tep_db_num_rows($stock_query) > 0) {
-      $stock_values = tep_db_fetch_array($stock_query);
-      if ($order->products[$i]['qty'] > $stock_values['products_real_quantity']) {
-        tep_db_perform(
-                       'products',
-                       array(
-                             'products_virtual_quantity' => $stock_values['products_virtual_quantity'] - ($order->products[$i]['qty'] - $stock_values['products_real_quantity']),
-                             'products_real_quantity'    => 0
-                             ),
-                       'update',
-                       "products_id = '" . (int)$order->products[$i]['id'] . "'"
-                       );
-      } else {
-        tep_db_perform(
-                       'products',
-                       array(
-                             'products_real_quantity' => $stock_values['products_real_quantity'] - $order->products[$i]['qty'],
-                             ),
-                       'update',
-                       "products_id = '" . (int)$order->products[$i]['id'] . "'"
-                       );
+    if ($customers_referer_array['is_calc_quantity'] != '1') {
+      $stock_query = tep_db_query("select products_real_quantity,products_virtual_quantity from " . TABLE_PRODUCTS .  " where products_id = '" . (int)$order->products[$i]['id'] . "'");
+      if (tep_db_num_rows($stock_query) > 0) {
+        $stock_values = tep_db_fetch_array($stock_query);
+        if ($order->products[$i]['qty'] > $stock_values['products_real_quantity']) {
+          tep_db_perform(
+                         'products',
+                         array(
+                               'products_virtual_quantity' => $stock_values['products_virtual_quantity'] - ($order->products[$i]['qty'] - $stock_values['products_real_quantity']),
+                               'products_real_quantity'    => 0
+                               ),
+                         'update',
+                         "products_id = '" . (int)$order->products[$i]['id'] . "'"
+                         );
+        } else {
+          tep_db_perform(
+                         'products',
+                         array(
+                               'products_real_quantity' => $stock_values['products_real_quantity'] - $order->products[$i]['qty'],
+                               ),
+                         'update',
+                         "products_id = '" . (int)$order->products[$i]['id'] . "'"
+                         );
+        }
       }
     }
   }
 
   // Update products_ordered (for bestsellers list)
   //ccdd
-  tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . sprintf('%d', $order->products[$i]['qty']) . " where products_id = '" . (int)$order->products[$i]['id'] . "'");
-
+  if ($customers_referer_array['is_calc_quantity'] != '1') {
+    tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . sprintf('%d', $order->products[$i]['qty']) . " where products_id = '" . (int)$order->products[$i]['id'] . "'");
+  }
   $chara = '';
   //$character_id = $order->products[$i]['id'];
   /* 
@@ -765,7 +768,9 @@ if(isset($_SESSION['options']) && !empty($_SESSION['options'])){
   $email_address_str .= $email_address;
   $email_order = str_replace($email_address,$email_address_str,$email_order);
 }
-tep_mail(tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], EMAIL_TEXT_SUBJECT, $email_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
+if ($customers_referer_array['is_send_mail'] != '1') {
+  tep_mail(tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], EMAIL_TEXT_SUBJECT, $email_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
+}
   
 if (SENTMAIL_ADDRESS != '') {
   tep_mail('', SENTMAIL_ADDRESS, EMAIL_TEXT_SUBJECT2, $email_order, tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], '');

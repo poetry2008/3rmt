@@ -3,7 +3,7 @@
   $Id$
 */
 ?>
-<!-- customers //-->
+<!-- customers -->
           <tr>
             <td>
 <?php
@@ -30,7 +30,7 @@
               <tr>
               <td onmouseover="this.style.cursor='hand'" class="menuBoxHeading">
               &nbsp; 
-							<?php echo tep_image(DIR_WS_IMAGES . 'img/customer.gif'); ?>&nbsp;<a class="menuBoxHeading_Link" href="javascript:void(0);" onclick="toggle_lan('col4');"><?php echo BOX_HEADING_CUSTOMERS;?></a> 
+							<?php echo tep_image(DIR_WS_MENU_ICON . 'icon_customer.gif'); ?>&nbsp;<a class="menuBoxHeading_Link" href="javascript:void(0);" onclick="toggle_lan('col4');"><?php echo BOX_HEADING_CUSTOMERS;?></a> 
               &nbsp; 
               </td>
               </tr>
@@ -50,14 +50,14 @@
               <tr>
                 <td class="menuBoxContent">
     <?php
-    echo '<span class="menuBoxContent_image">'.tep_image(DIR_WS_IMAGES . 'img/customer.gif').'</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_CUSTOMERS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CUSTOMERS_CUSTOMERS . '</a></span><br><span class="menuBoxContent_image">'. 
-      tep_image(DIR_WS_IMAGES . 'img/list.gif').'</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_ORDERS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CUSTOMERS_ORDERS . '</a></span><br><span class="menuBoxContent_image">'.
-      tep_image(DIR_WS_IMAGES . 'img/settle_accounts.gif').'</span><span class="menuBoxContent_span"><a href="' . tep_href_link('telecom_unknow.php') . '"
+    echo '<span class="menuBoxContent_image">'.tep_image(DIR_WS_MENU_ICON . 'icon_customer.gif').'</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_CUSTOMERS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CUSTOMERS_CUSTOMERS . '</a></span><br><span class="menuBoxContent_image">'. 
+      tep_image(DIR_WS_MENU_ICON . 'icon_orders.gif').'</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_ORDERS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CUSTOMERS_ORDERS . '</a></span><br><span class="menuBoxContent_image">'.
+      tep_image(DIR_WS_MENU_ICON . 'icon_payment_settings.gif').'</span><span class="menuBoxContent_span"><a href="' . tep_href_link('telecom_unknow.php') . '"
       class="menuBoxContent_Link">'.FILENAME_TELECOM_UNKNOW_TEXT.'</a></span><br><span class="menuBoxContent_image">' . 
       
-      tep_image(DIR_WS_IMAGES . 'img/reset_password.gif').'</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_RESET_PWD) . '"
+      tep_image(DIR_WS_MENU_ICON . 'icon_password_reset.gif').'</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_RESET_PWD) . '"
 			class="menuBoxContent_Link">'.FILENAME_FILENAME_RESET_PWD_TEXT.'</a></span><br><span class="menuBoxContent_image">' .
-			 tep_image(DIR_WS_IMAGES . 'img/list_masterplate.gif').	
+			 tep_image(DIR_WS_MENU_ICON . 'icon_template.gif').	
       '</span><span class="menuBoxContent_span"><a href="' . tep_href_link('bill_templates.php') . '"
       class="menuBoxContent_Link">'.FILENAME_BILL_TEMPLATES_TEXT.'</a></span><br>';?> 
                 </td>
@@ -66,4 +66,4 @@
             </div>
             </td>
           </tr>
-<!-- customers_eof //-->
+<!-- customers_eof -->

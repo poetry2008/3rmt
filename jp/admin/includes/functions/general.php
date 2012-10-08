@@ -669,7 +669,14 @@ function tep_get_prid($uprid) {
 }
 
 function tep_get_languages() {
-  $languages_query = tep_db_query("select languages_id, name, code, image, directory from " . TABLE_LANGUAGES . " order by sort_order");
+  global $languages_id;
+  if(isset($languages_id)&&$languages_id){
+    $languages_query = tep_db_query("select languages_id, name, code, image,
+        directory from " . TABLE_LANGUAGES . " where languages_id ='".$languages_id
+        ."' order by sort_order");
+  }else{
+    $languages_query = tep_db_query("select languages_id, name, code, image, directory from " . TABLE_LANGUAGES . " order by sort_order");
+  }
   while ($languages = tep_db_fetch_array($languages_query)) {
     $languages_array[] = array('id' => $languages['languages_id'],
         'name' => $languages['name'],

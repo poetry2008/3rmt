@@ -649,7 +649,7 @@ switch ($_GET['action']) {
                   get_configuration_by_site_id('STORE_NAME', $site_id),
                   get_url_by_site_id($site_id),
                   get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
-                  date('Y'.TEXT_ORDER_YEAR.'n'.TEXT_ORDER_MONTH.'j'.TEXT_ORDER_DAY,strtotime(tep_get_pay_day()))
+                  date('Y'.SENDMAIL_TEXT_DATE_YEAR.'n'.SENDMAIL_TEXT_DATE_MONTH.'j'.SENDMAIL_TEXT_DATE_DAY,strtotime(tep_get_pay_day()))
                   ),$comments
                 );
           $products_ordered_mail = '';
@@ -689,9 +689,9 @@ switch ($_GET['action']) {
                  $products_ordered_mail .= "\n"; 
                }
              }
-             $products_ordered_mail .= QTY_NUM.str_repeat('　', intval($max_c_len - mb_strlen(QTY_NUM, 'utf-8'))).'：' .  $order_pro_list_res['products_quantity']. ORDERS_NUM_UNIT .  tep_get_full_count2($order_pro_list_res['products_quantity'], $order_pro_list_res['products_id']) . "\n";
-             $products_ordered_mail .= PRODUCT_SINGLE_PRICE.str_repeat('　', intval($max_c_len - mb_strlen(PRODUCT_SINGLE_PRICE, 'utf-8'))).'：' .  $currencies->display_price($order_pro_list_res['final_price'], $order_pro_list_res['products_tax']) . "\n";
-             $products_ordered_mail .= str_replace(':', '', ENTRY_SUB_TOTAL).str_repeat('　', intval($max_c_len - mb_strlen(str_replace(':', '', ENTRY_SUB_TOTAL), 'utf-8'))).'：' .  $currencies->display_price($order_pro_list_res['final_price'], $order_pro_list_res['products_tax'], $order_pro_list_res['products_quantity']) . "\n";
+             $products_ordered_mail .= SENDMAIL_QTY_NUM.str_repeat('　', intval($max_c_len - mb_strlen(SENDMAIL_QTY_NUM, 'utf-8'))).'：' .  $order_pro_list_res['products_quantity']. SENDMAIL_EDIT_ORDERS_NUM_UNIT .  tep_get_full_count2($order_pro_list_res['products_quantity'], $order_pro_list_res['products_id']) . "\n";
+             $products_ordered_mail .= SENDMAIL_TABLE_HEADING_PRODUCTS_PRICE.str_repeat('　', intval($max_c_len - mb_strlen(SENDMAIL_TABLE_HEADING_PRODUCTS_PRICE, 'utf-8'))).'：' .  $currencies->display_price($order_pro_list_res['final_price'], $order_pro_list_res['products_tax']) . "\n";
+             $products_ordered_mail .= str_replace(':', '',SENDMAIL_ENTRY_SUB_TOTAL).str_repeat('　', intval($max_c_len - mb_strlen(str_replace(':', '', SENDMAIL_ENTRY_SUB_TOTAL), 'utf-8'))).'：' .  $currencies->display_price($order_pro_list_res['final_price'], $order_pro_list_res['products_tax'], $order_pro_list_res['products_quantity']) . "\n";
              $products_ordered_mail .= '------------------------------------------' . "\n";
           }
           
@@ -703,23 +703,23 @@ switch ($_GET['action']) {
               if ($totals['class'] == "ot_point") {
                 $camp_exists_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$oID."' and site_id = '".$site_id."'"); 
                 if (tep_db_num_rows($camp_exists_query)) {
-                  $total_details_mail .= TEXT_POINT . $currencies->format(abs($campaign_fee)) . "\n";
+                  $total_details_mail .= SENDMAIL_TEXT_POINT . $currencies->format(abs($campaign_fee)) . "\n";
                 } else {
                   if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
-                    $total_details_mail .= TEXT_POINT .  $currencies->format($totals['value']) . "\n";
+                    $total_details_mail .= SENDMAIL_TEXT_POINT .  $currencies->format($totals['value']) . "\n";
                   }
                 }
               } else {
                 if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
-                  $total_details_mail .= TEXT_POINT .  $currencies->format($totals['value']) . "\n";
+                  $total_details_mail .= SENDMAIL_TEXT_POINT .  $currencies->format($totals['value']) . "\n";
                 }
               }
             } elseif ($totals['class'] == "ot_total") {
               if($handle_fee)
-                $total_details_mail .= TEXT_HANDLE_FEE.$currencies->format($handle_fee)."\n";
-              $total_details_mail .= TEXT_PAYMENT_AMOUNT . $currencies->format($totals['value']);
+                $total_details_mail .= SENDMAIL_TEXT_HANDLE_FEE.$currencies->format($handle_fee)."\n";
+              $total_details_mail .= SENDMAIL_TEXT_PAYMENT_AMOUNT . $currencies->format($totals['value']);
             } else {
-              $totals['title'] = str_replace(TEXT_TRANSACTION_FEE, TEXT_REPLACE_HANDLE_FEE, $totals['title']);
+              $totals['title'] = str_replace(SENDMAIL_TEXT_TRANSACTION_FEE, SENDMAIL_TEXT_REPLACE_HANDLE_FEE, $totals['title']);
               $total_details_mail .= $totals['title'] . str_repeat('　', intval((16 - strlen($totals['title']))/2)) . '：' . $currencies->format($totals['value']) . "\n";
             }
           }
@@ -734,31 +734,33 @@ switch ($_GET['action']) {
           $tmp_date = date('D', strtotime($check_status['torihiki_date'])); 
           switch(strtolower($tmp_date)) {
             case 'mon':
-             $week_str = '（'.TEXT_DATE_MONDAY.'）'; 
+             $week_str = '（'.SENDMAIL_TEXT_DATE_MONDAY.'）'; 
              break;
             case 'tue':
-             $week_str =  '（'.TEXT_DATE_TUESDAY.'）'; 
+             $week_str =  '（'.SENDMAIL_TEXT_DATE_TUESDAY.'）'; 
              break;
             case 'wed':
-             $week_str =  '（'.TEXT_DATE_WEDNESDAY.'）'; 
+             $week_str =  '（'.SENDMAIL_TEXT_DATE_WEDNESDAY.'）'; 
              break;
            case 'thu':
-             $week_str =  '（'.TEXT_DATE_THURSDAY.'）'; 
+             $week_str =  '（'.SENDMAIL_TEXT_DATE_THURSDAY.'）'; 
              break;
            case 'fri':
-             $week_str =  '（'.TEXT_DATE_FRIDAY.'）'; 
+             $week_str =  '（'.SENDMAIL_TEXT_DATE_FRIDAY.'）'; 
              break;
            case 'sat':
-             $week_str =  '（'.TEXT_DATE_STATURDAY.'）'; 
+             $week_str =  '（'.SENDMAIL_TEXT_DATE_STATURDAY.'）'; 
              break;
            case 'sun':
-             $week_str =  '（'.TEXT_DATE_SUNDAY.'）'; 
+             $week_str =  '（'.SENDMAIL_TEXT_DATE_SUNDAY.'）'; 
              break;
            default:
              break;
           }
-          $fetch_time_str = date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['torihiki_date'])).$week_str.$fetch_time_start_array[1].' '.TEXT_TIME_LINK.' '.$fetch_time_end_array[1];
-          
+          $fetch_time_str =
+            date('Y'.SENDMAIL_TEXT_DATE_YEAR.'m'.SENDMAIL_TEXT_DATE_MONTH.'d'.SENDMAIL_TEXT_DATE_DAY,
+                strtotime($check_status['torihiki_date'])).$week_str.$fetch_time_start_array[1].'
+            '.SENDMAIL_TEXT_TIME_LINK.' '.$fetch_time_end_array[1]; 
           $comments = str_replace('${SHIPPING_TIME}', $fetch_time_str, $comments); 
           $title = str_replace('${SHIPPING_TIME}', $fetch_time_str, $title); 
           $customer_info_raw = tep_db_query("select is_send_mail from ".TABLE_CUSTOMERS." where customers_id = '".$check_status['customers_id']."'"); 
@@ -957,7 +959,7 @@ switch ($_GET['action']) {
                 get_configuration_by_site_id('STORE_NAME', $site_id),
                 get_url_by_site_id($site_id),
                 get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
-                date('Y'.TEXT_ORDER_YEAR.'n'.TEXT_ORDER_MONTH.'j'.TEXT_ORDER_DAY,strtotime(tep_get_pay_day()))
+                date('Y'.SENDMAIL_TEXT_DATE_YEAR.'n'.SENDMAIL_TEXT_DATE_MONTH.'j'.SENDMAIL_TEXT_DATE_DAY,strtotime(tep_get_pay_day()))
                 ),$title);
 
         $comments = str_replace(array(
@@ -983,7 +985,7 @@ switch ($_GET['action']) {
                 get_configuration_by_site_id('STORE_NAME', $site_id),
                 get_url_by_site_id($site_id),
                 get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
-                date('Y'.TEXT_ORDER_YEAR.'n'.TEXT_ORDER_MONTH.'j'.TEXT_ORDER_DAY,strtotime(tep_get_pay_day()))
+                date('Y'.SENDMAIL_TEXT_DATE_YEAR.'n'.SENDMAIL_TEXT_DATE_MONTH.'j'.SENDMAIL_TEXT_DATE_DAY,strtotime(tep_get_pay_day()))
                 ),$comments);
           
         $products_ordered_mail = '';
@@ -1006,7 +1008,7 @@ switch ($_GET['action']) {
              $max_c_len = 4; 
            }
            
-           $products_ordered_mail .= ORDERS_PRODUCTS.str_repeat('　', intval($max_c_len - mb_strlen(ORDERS_PRODUCTS, 'utf-8'))).'：' .  $order_pro_list_res['products_name'] . '（' .  $order_pro_list_res['products_model'] . '）';
+           $products_ordered_mail .= SENDMAIL_ORDERS_PRODUCTS.str_repeat('　', intval($max_c_len - mb_strlen(SENDMAIL_ORDERS_PRODUCTS, 'utf-8'))).'：' .  $order_pro_list_res['products_name'] . '（' .  $order_pro_list_res['products_model'] . '）';
            if ($order_pro_list_res['products_price'] != '0') {
              $products_ordered_mail .= '（'.$currencies->display_price($order_pro_list_res['products_price'], $order_pro_list_res['products_tax']).'）'; 
            }
@@ -1024,9 +1026,11 @@ switch ($_GET['action']) {
              }
            }
           
-           $products_ordered_mail .= QTY_NUM.str_repeat('　', intval($max_c_len - mb_strlen(QTY_NUM, 'utf-8'))).'：' .  $order_pro_list_res['products_quantity']. ORDERS_NUM_UNIT .  tep_get_full_count2($order_pro_list_res['products_quantity'], $order_pro_list_res['products_id']) . "\n";
-           $products_ordered_mail .= PRODUCT_SINGLE_PRICE.str_repeat('　', intval($max_c_len - mb_strlen(PRODUCT_SINGLE_PRICE, 'utf-8'))).'：' .  $currencies->display_price($order_pro_list_res['final_price'], $order_pro_list_res['products_tax']) . "\n";
-           $products_ordered_mail .= str_replace(':', '', ENTRY_SUB_TOTAL).str_repeat('　', intval($max_c_len - mb_strlen(str_replace(':', '', ENTRY_SUB_TOTAL), 'utf-8'))).'：' .  $currencies->display_price($order_pro_list_res['final_price'], $order_pro_list_res['products_tax'], $order_pro_list_res['products_quantity']) . "\n";
+           $products_ordered_mail .= SENDMAIL_QTY_NUM.str_repeat('　',
+               intval($max_c_len - mb_strlen(SENDMAIL_QTY_NUM, 'utf-8'))).'：' .
+             $order_pro_list_res['products_quantity']. SENDMAIL_EDIT_ORDERS_NUM_UNIT. tep_get_full_count2($order_pro_list_res['products_quantity'], $order_pro_list_res['products_id']) . "\n";
+           $products_ordered_mail .= SENDMAIL_TABLE_HEADING_PRODUCTS_PRICE.str_repeat('　', intval($max_c_len - mb_strlen(SENDMAIL_TABLE_HEADING_PRODUCTS_PRICE, 'utf-8'))).'：' .  $currencies->display_price($order_pro_list_res['final_price'], $order_pro_list_res['products_tax']) . "\n";
+           $products_ordered_mail .= str_replace(':', '', SENDMAIL_ENTRY_SUB_TOTAL).str_repeat('　', intval($max_c_len - mb_strlen(str_replace(':', '', SENDMAIL_ENTRY_SUB_TOTAL), 'utf-8'))).'：' .  $currencies->display_price($order_pro_list_res['final_price'], $order_pro_list_res['products_tax'], $order_pro_list_res['products_quantity']) . "\n";
            $products_ordered_mail .= '------------------------------------------' . "\n";
         }
         
@@ -1038,23 +1042,23 @@ switch ($_GET['action']) {
             if ($totals['class'] == "ot_point") {
               $camp_exists_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$oID."' and site_id = '".$site_id."'"); 
               if (tep_db_num_rows($camp_exists_query)) {
-                $total_details_mail .= TEXT_POINT . $currencies->format(abs($campaign_fee)) . "\n";
+                $total_details_mail .= SENDMAIL_TEXT_POINT . $currencies->format(abs($campaign_fee)) . "\n";
               } else {
                 if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
-                  $total_details_mail .= TEXT_POINT .  $currencies->format($totals['value']) . "\n";
+                  $total_details_mail .= SENDMAIL_TEXT_POINT .  $currencies->format($totals['value']) . "\n";
                 }
               }
             } else {
               if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
-                $total_details_mail .= TEXT_POINT .  $currencies->format($totals['value']) . "\n";
+                $total_details_mail .= SENDMAIL_TEXT_POINT .  $currencies->format($totals['value']) . "\n";
               }
             }
           } elseif ($totals['class'] == "ot_total") {
             if($handle_fee)
-              $total_details_mail .= TEXT_HANDLE_FEE.$currencies->format($handle_fee)."\n";
-            $total_details_mail .= TEXT_PAYMENT_AMOUNT . $currencies->format($totals['value']);
+              $total_details_mail .= SENDMAIL_TEXT_HANDLE_FEE.$currencies->format($handle_fee)."\n";
+            $total_details_mail .= SENDMAIL_TEXT_PAYMENT_AMOUNT . $currencies->format($totals['value']);
           } else {
-            $totals['title'] = str_replace(TEXT_TRANSACTION_FEE, TEXT_REPLACE_HANDLE_FEE, $totals['title']);
+            $totals['title'] = str_replace(SENDMAIL_TEXT_TRANSACTION_FEE, SENDMAIL_TEXT_REPLACE_HANDLE_FEE, $totals['title']);
             $total_details_mail .= $totals['title'] . str_repeat('　', intval((16 - strlen($totals['title']))/2)) . '：' . $currencies->format($totals['value']) . "\n";
           }
         }
@@ -1069,30 +1073,30 @@ switch ($_GET['action']) {
         $tmp_date = date('D', strtotime($check_status['torihiki_date'])); 
         switch(strtolower($tmp_date)) {
           case 'mon':
-           $week_str = '（'.TEXT_DATE_MONDAY.'）'; 
+           $week_str = '（'.SENDMAIL_TEXT_DATE_MONDAY.'）'; 
            break;
           case 'tue':
-           $week_str =  '（'.TEXT_DATE_TUESDAY.'）'; 
+           $week_str =  '（'.SENDMAIL_TEXT_DATE_TUESDAY.'）'; 
            break;
           case 'wed':
-           $week_str =  '（'.TEXT_DATE_WEDNESDAY.'）'; 
+           $week_str =  '（'.SENDMAIL_TEXT_DATE_WEDNESDAY.'）'; 
            break;
          case 'thu':
-           $week_str =  '（'.TEXT_DATE_THURSDAY.'）'; 
+           $week_str =  '（'.SENDMAIL_TEXT_DATE_THURSDAY.'）'; 
            break;
          case 'fri':
-           $week_str =  '（'.TEXT_DATE_FRIDAY.'）'; 
+           $week_str =  '（'.SENDMAIL_TEXT_DATE_FRIDAY.'）'; 
            break;
          case 'sat':
-           $week_str =  '（'.TEXT_DATE_STATURDAY.'）'; 
+           $week_str =  '（'.SENDMAIL_TEXT_DATE_STATURDAY.'）'; 
            break;
          case 'sun':
-           $week_str =  '（'.TEXT_DATE_SUNDAY.'）'; 
+           $week_str =  '（'.SENDMAIL_TEXT_DATE_SUNDAY.'）'; 
            break;
          default:
            break;
         }
-        $fetch_time_str = date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['torihiki_date'])).$week_str.$fetch_time_start_array[1].' '.TEXT_TIME_LINK.' '.$fetch_time_end_array[1];
+        $fetch_time_str = date('Y'.SENDMAIL_TEXT_DATE_YEAR.'m'.SENDMAIL_TEXT_DATE_MONTH.'d'.SENDMAIL_TEXT_DATE_DAY, strtotime($check_status['torihiki_date'])).$week_str.$fetch_time_start_array[1].' '.SENDMAIL_TEXT_TIME_LINK.' '.$fetch_time_end_array[1];
         
         $comments = str_replace('${SHIPPING_TIME}', $fetch_time_str, $comments); 
         $title = str_replace('${SHIPPING_TIME}', $fetch_time_str, $title); 

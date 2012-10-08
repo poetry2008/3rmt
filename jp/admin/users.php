@@ -690,8 +690,8 @@ putJavaScript_ConfirmMsg();
   echo "<table>";
   echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
     echo "<tr>\n";
-    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . 'ユーザー' . '</td>' . "\n"; 
-    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . "サイト権限" . '</td>' . "\n";
+  echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' .USER. '</td>' . "\n"; 
+    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' .SITE_PREM. '</td>' . "\n";
     echo "</tr>\n";
 while($userslist= tep_db_fetch_array($result)){
   /*

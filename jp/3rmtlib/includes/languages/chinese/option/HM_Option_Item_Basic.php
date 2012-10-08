@@ -1,0 +1,31 @@
+<?php
+define('TEXT_MUSTBE','必须项目');
+define('TEXT_ITEM_TEXT_HEAD', '初始值');
+define('TEXT_ITEM_TEXTAREA_HEAD', '文本内容');
+define('TEXT_ITEM_SELECT_HEAD', '选择项');
+define('TEXT_ITEM_DEL_LINK', '删除');
+define('TEXT_ITEM_ADD_SELECT', '再添加5行');
+define('TEXT_ITEM_SELECT_COMMENT', '注释');
+define('TEXT_ITEM_TEXT_COMMENT_HEAD', '注释');
+define('TEXT_ITEM_TEXT_LINE_HEAD', '行数');
+define('TEXT_ITEM_TEXT_CHECK_TYPE_HEAD', '文字类型');
+define('TEXT_ITEM_TEXT_MAX_NUM_HEAD', '字数上限');
+define('TEXT_MUSTBE_INPUT', '必须');
+define('TEXT_MUSTBE_NOT_INPUT', '任意');
+define('TEXT_ITEM_LINE_UNIT', '行');
+define('TEXT_ITEM_CHARACTER_UNIT', '文字');
+define('TEXT_ITEM_CHECK_READ', '可输入的文字类型');
+define('TEXT_ITEM_INPUT_MAX_READ', '可输入字数的上限');
+define('TEXT_ITEM_CHECK_TYPE_ALL', '全部');
+define('TEXT_ITEM_CHECK_TYPE_JAP', '假名');
+define('TEXT_ITEM_CHECK_TYPE_ALPHA_NUM', '字母数字');
+define('TEXT_ITEM_CHECK_TYPE_ALPHA', '字母');
+define('TEXT_ITEM_CHECK_TYPE_NUM', '数字');
+define('TEXT_ITEM_RADIO_DEFAULT_SELECT', '非选择');
+define('TEXT_ITEM_PIC_NAME', '图片');
+define('TEXT_ITEM_MONEY_NAME', '金额');
+define('TEXT_ITEM_DELETE_PIC', '清除');
+define('TEXT_ITEM_ADD_PIC', '添加');
+define('TEXT_ITEM_MONEY_UNIT', '日元');
+define('TEXT_ITEM_SELECT_DEFAULT', '非选择');
+?>
