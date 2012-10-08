@@ -28,7 +28,8 @@ ini_set('include_path',ini_get('include_path').':'.$libpath);
 
   define('DIR_WS_CATALOG', '/'); // absolute path required
   define('DIR_FS_CATALOG', '/home/szn/project/cnrmt/jp/admin/'); // absolute path required
-  define('DIR_WS_IMAGES', 'images/');
+	define('DIR_WS_IMAGES', 'images/');
+	define('DIR_WS_MENU_ICON', DIR_WS_IMAGES . 'menu_icon/');
   define('DIR_WS_ICONS', DIR_WS_IMAGES . 'icons/');
 
   define('DIR_WS_CATALOG_IMAGES', DIR_WS_CATALOG . 'images/');
