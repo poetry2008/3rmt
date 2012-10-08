@@ -584,9 +584,7 @@ function check_form() {
             </tr>
             <tr>
               <td class="left_title_width"><?php echo CUSTOMER_COMMUNITY_SEARCH_TEXT;?></td>
-              <td class="main"><span class="table_space_left"></span><textarea
-              name='customers_fax'
-              style='width:400px;height:42px;*height:40px;'><?php echo isset($_POST['customers_fax'])?$_POST['customers_fax']:$cInfo->customers_fax;?></textarea>&nbsp;&nbsp;<?php echo CUSTOMER_COMMUNITY_SEARCH_OLD_CUSTOMER_TEXT;?></td>
+              <td class="main"><span class="table_space_left"></span><textarea name='customers_fax' style='width:400px;height:42px;*height:40px;'><?php echo isset($_POST['customers_fax'])?$_POST['customers_fax']:$cInfo->customers_fax;?></textarea>&nbsp;&nbsp;<?php echo CUSTOMER_COMMUNITY_SEARCH_OLD_CUSTOMER_TEXT;?></td>
             </tr>
             <tr>
               <td class="main" colspan="2"><?php echo CUSTOMER_COMMUNITY_SEARCH_CREDIT_TEXT;?></td>
