@@ -22,7 +22,7 @@ $preorder_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id 
 $preorder = tep_db_fetch_array($preorder_raw);
 
 if ($preorder) {
-  $seal_user_sql = "select is_seal from ".TABLE_CUSTOMERS." where customers_id ='".$preorder['customers_id']."' limit 1";
+  $seal_user_sql = "select is_seal, is_send_mail from ".TABLE_CUSTOMERS." where customers_id ='".$preorder['customers_id']."' limit 1";
   $seal_user_query = tep_db_query($seal_user_sql);
   if ($seal_user_row = tep_db_fetch_array($seal_user_query)){
     if($seal_user_row['is_seal']){
@@ -557,7 +557,9 @@ if(!empty($add_list)){
   $email_order_text = str_replace($email_address,$email_address_str,$email_order_text);
 }
 
-tep_mail($preorder['customers_name'], $preorder['customers_email_address'], EMAIL_TEXT_SUBJECT, $email_order_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
+if ($seal_user_row['is_send_mail'] != '1') {
+  tep_mail($preorder['customers_name'], $preorder['customers_email_address'], EMAIL_TEXT_SUBJECT, $email_order_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
+}
   
 if (SENTMAIL_ADDRESS != '') {
     tep_mail('', SENTMAIL_ADDRESS, EMAIL_TEXT_SUBJECT2, $email_order_text, $preorder['customers_name'], $preorder['customers_email_address'], '');
