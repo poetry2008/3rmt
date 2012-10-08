@@ -660,6 +660,11 @@ define('DB_CONFIGURATION_DESCRIPTION_INITIAL_SETTING_SHOP','主页的初期设�
 define('DB_CONFIGURATION_DESCRIPTION_BUSINESS_CALENDAR','营业日历设置');
 define('DB_CONFIGURATION_DESCRIPTION_SEO','Options for Ultimate SEO URLs by Chemo');
 
+define('TEXT_TIME_LINK','到');
+define('TEXT_ATTRIBUTE','属性');
+define('TEXT_ATTRIBUTE_PUBLIC','公有');
+define('TEXT_ATTRIBUTE_PRIVATE','私有');
+define('TEXT_HEADER_HELP','帮助');
 define('TEXT_KEYWORD','关键词');
 define('TEXT_GOOGLE_SEARCH','用GOOGLE搜%s关键词的结果');
 define('TEXT_RENAME','重命名');

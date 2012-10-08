@@ -1,0 +1,9 @@
+<?php
+/*
+  JP、GM共通ファイル
+*/
+
+  define('MODULE_METASEO_NON_MEMBER_AUTH_TEXT_TITLE', '邮件认证(游客)');
+  define('MODULE_METASEO_NON_MEMBER_AUTH_TEXT_EXPLAIN', '说明');
+  define('MODULE_METASEO_NON_MEMBER_AUTH_TEXT_DESCRIPTION', '邮件认证(游客)页的SEO');
+?>

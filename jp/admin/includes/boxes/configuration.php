@@ -83,7 +83,13 @@ $configuration_groups_img = array("901"=>"icon_shop_settings.gif",
 );
                 $configuration_groups_query = tep_db_query("select configuration_group_id as cgID, configuration_group_title as cgTitle from " . TABLE_CONFIGURATION_GROUP . " where visible = '1' order by sort_order");
                 while ($configuration_groups = tep_db_fetch_array($configuration_groups_query)) {
-                  echo '<span class="menuBoxContent_image">'.tep_image(DIR_WS_MENU_ICON.$configuration_groups_img[$configuration_groups['cgID']]).'</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $configuration_groups['cgID'], 'NONSSL') . '" class="menuBoxContent_Link">' . $configuration_groups['cgTitle'] . '</a></span><br>';
+                  echo '<span class="menuBoxContent_image">'.tep_image(DIR_WS_MENU_ICON.$configuration_groups_img[$configuration_groups['cgID']]).'</span><span class="menuBoxContent_span"><a href="' .  tep_href_link(FILENAME_CONFIGURATION, 'gID=' .  $configuration_groups['cgID'], 'NONSSL') . '" class="menuBoxContent_Link">';
+                  if(constant($configuration_groups['cgTitle'])){
+                    echo constant($configuration_groups['cgTitle']);
+                  }else{
+                    echo $configuration_groups['cgTitle']; 
+                  }
+                  echo '</a></span><br>';
                 ?>
                 <?php
                 }
