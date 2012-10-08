@@ -2211,4 +2211,32 @@ echo json_encode($json_array);
       tep_db_query("update ". TABLE_ORDERS ." set read_flag='".$read_flag_string."' where orders_id='".$orders_id."'");
     }
   }
+} else if ($_GET['action'] == 'select_site') {
+  if($_POST['site_list'] == ''){
+ 
+    $site_array = array();
+    $site_array = explode('|',PERSONAL_SETTING_ORDERS_SITE);
+
+    if($_POST['flag'] == 0){
+
+      unset($site_array[array_search($_POST['site_id'],$site_array)]);
+    }else{
+      $site_array[] = $_POST['site_id']; 
+    }
+  }else{
+
+    $site_array = explode('-',$_POST['site_list']);
+    if($_POST['flag'] == 0){
+
+      unset($site_array[array_search($_POST['site_id'],$site_array)]);
+    }else{
+      $site_array[] = $_POST['site_id']; 
+    }
+  }
+  sort($site_array);
+  if(!empty($site_array)){
+    echo tep_href_link(FILENAME_ORDERS, $_POST['param_url'].'site_id='.implode('-',$site_array));
+  }else{
+    echo tep_href_link(FILENAME_ORDERS, $_POST['param_url']); 
+  }
 }

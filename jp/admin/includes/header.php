@@ -482,6 +482,11 @@ if ($_SERVER['PHP_SELF'] != '/admin/orders.php') {
 <?php 
   echo '</td>
       </tr>
+      <tr>
+      <td class="menu01"><span class="float_left">'.tep_image(DIR_WS_IMAGES . 'img/ID.gif').'</span>&nbsp;<span class="float_left"><a class="t_link01"
+      href="'.tep_href_link(FILENAME_PERSONAL_SETTING, '',
+    'NONSSL').'">'.HEADER_TEXT_PERSONAL_SETTING.'</a></span></td>
+      </tr>
       </table>
       </td>
 
