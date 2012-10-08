@@ -79,10 +79,10 @@ define('FILENAME_ONCE_PWD_LOG', 'pwd_log.php');
 					$loginlog."<br><span class='menuBoxContent_image'>".
 					tep_image(DIR_WS_MENU_ICON . 'icon_log.gif').
        '</span><span class="menuBoxContent_span"><a href="'.tep_href_link(FILENAME_ONCE_PWD_LOG).'"
-       class="menuBoxContent_Link">'.BOX_ONCE_PWD_LOG."</a><br><span class='menuBoxContent_image'>".
+       class="menuBoxContent_Link">'.BOX_ONCE_PWD_LOG."</a></span><br><span class='menuBoxContent_image'>".
 					tep_image(DIR_WS_MENU_ICON . 'icon_log.gif').
        '</span><span class="menuBoxContent_span"><a href="'.tep_href_link(FILENAME_PERSONAL_SETTING).'"
-       class="menuBoxContent_Link">'.HEADER_TEXT_PERSONAL_SETTING."</a></span></span>"; 
+       class="menuBoxContent_Link">'.HEADER_TEXT_PERSONAL_SETTING."</a></span>"; 
     ?>
                 </td>
               </tr>
