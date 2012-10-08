@@ -3,7 +3,7 @@
   $Id$
 */
 ?>
-<!-- modules //-->
+<!-- modules -->
           <tr>
             <td>
 <?php
@@ -30,7 +30,7 @@
               <tr>
               <td onmouseover="this.style.cursor='hand'" class="menuBoxHeading">
               &nbsp; 
-						 <?php echo tep_image(DIR_WS_IMAGES . 'img/module.gif');?> <a class="menuBoxHeading_Link" href="javascript:void(0);" onclick="toggle_lan('col3');"><?php echo BOX_HEADING_MODULES;?></a> 
+						 <?php echo tep_image(DIR_WS_MENU_ICON . 'icon_module.gif');?> <a class="menuBoxHeading_Link" href="javascript:void(0);" onclick="toggle_lan('col3');"><?php echo BOX_HEADING_MODULES;?></a> 
               &nbsp; 
               </td>
               </tr>
@@ -50,8 +50,8 @@
               <tr>
                 <td class="menuBoxContent">
     <?php 
-echo '<span class="menuBoxContent_image">'.tep_image(DIR_WS_IMAGES . 'img/payment.gif').'</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_MODULES, 'set=payment', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_MODULES_PAYMENT . '</a></span><br><span class="menuBoxContent_image">' .
-	tep_image(DIR_WS_IMAGES . 'img/amount.gif').'</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_MODULES, 'set=order_total', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_MODULES_ORDER_TOTAL . '</a></span><br><span class="menuBoxContent_image">'.tep_image(DIR_WS_IMAGES . 'img/Meta-SEO.gif').  '</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_MODULES, 'set=metaseo', 'NONSSL') . '" class="menuBoxContent_Link">' .  BOX_MODULES_METASEO . '</a></span><br>'; ?>
+echo '<span class="menuBoxContent_image">'.tep_image(DIR_WS_MENU_ICON . 'icon_payment.gif').'</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_MODULES, 'set=payment', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_MODULES_PAYMENT . '</a></span><br><span class="menuBoxContent_image">' .
+	tep_image(DIR_WS_MENU_ICON . 'icon_calculation.gif').'</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_MODULES, 'set=order_total', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_MODULES_ORDER_TOTAL . '</a></span><br><span class="menuBoxContent_image">'.tep_image(DIR_WS_MENU_ICON . 'icon_seo.gif').  '</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_MODULES, 'set=metaseo', 'NONSSL') . '" class="menuBoxContent_Link">' .  BOX_MODULES_METASEO . '</a></span><br>'; ?>
 
                 </td>
               </tr>
@@ -59,4 +59,4 @@ echo '<span class="menuBoxContent_image">'.tep_image(DIR_WS_IMAGES . 'img/paymen
             </div>
             </td>
           </tr>
-<!-- modules_eof //-->
+<!-- modules_eof -->
