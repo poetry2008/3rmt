@@ -178,6 +178,17 @@ if ($_POST['orders_id'] &&
                                                                                                                                                                                                            <font color="#999">
       <?php }?>
       <a style="text-decoration:underline;" href="<?php echo tep_href_link('customers.php', 'page=1&cID='.tep_output_string_protected($orders['customers_id']).'&action=edit');?>"><b><?php echo tep_output_string_protected($orders['customers_name']);?></b></a>
+                    <?php 
+                    $customers_info_raw = tep_db_query("select pic_icon from ".TABLE_CUSTOMERS." where customers_id = '".$orders['customers_id']."'"); 
+                    $customers_info_res = tep_db_fetch_array($customers_info_raw);
+                    if ($customers_info_res) {
+                      if (!empty($customers_info_res['pic_icon'])) {
+                        if (file_exists(DIR_FS_DOCUMENT_ROOT.DIR_WS_IMAGES.'icon_list/'.$customers_info_res['pic_icon'])) {
+                          echo tep_image(DIR_WS_IMAGES.'icon_list/'.$customers_info_res['pic_icon']); 
+                        }
+                      }
+                    }
+                    ?>
                                                                                  <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
                                                                                  </font>
       <?php }?>
