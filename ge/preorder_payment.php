@@ -15,7 +15,8 @@
     $account = tep_db_query("
         select customers_firstname, 
                customers_lastname, 
-               customers_email_address 
+               customers_email_address,
+               is_send_mail
         from " .  TABLE_CUSTOMERS . " 
         where customers_id = '" . $customer_id . "' 
           and site_id = '".SITE_ID."'
@@ -278,8 +279,10 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
           $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
           
           $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, PREORDER_MAIL_SUBJECT); 
-          tep_mail(tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']), $account_values['customers_email_address'], $preorder_email_subject, $preorder_email_text, STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS); 
-          tep_mail('', SENTMAIL_ADDRESS, $preorder_email_subject, $preorder_email_text, tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']), $account_values['customers_email_address']); 
+          if ($account_values['is_send_mail'] != '1') {
+            tep_mail(tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']), $account_values['customers_email_address'], $preorder_email_subject, $preorder_email_text, STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS); 
+            tep_mail('', SENTMAIL_ADDRESS, $preorder_email_subject, $preorder_email_text, tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']), $account_values['customers_email_address']); 
+          }
       } else {
         $exists_customer_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_email_address = '".$_POST['from']."' and site_id = '".SITE_ID."'");    
         if (tep_db_num_rows($exists_customer_raw)) {
@@ -316,6 +319,10 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
             
             $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, PREORDER_MAIL_SUBJECT); 
             $exists_email_single = true;     
+          
+            if ($exists_customer_res['is_send_mail'] == '1') {
+              $c_is_send_mail = true; 
+            }
           }
         } else {
           $tmp_customer_id = tep_create_tmp_guest($_POST['from'], $_POST['lastname'], $_POST['firstname']); 
@@ -335,7 +342,10 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
           $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, PREORDER_MAIL_ACTIVE_SUBJECT); 
           tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$encode_param_str."' where customers_id = '".$tmp_customer_id."'");  
         }
-        tep_mail($from_name, $_POST['from'], $preorder_email_subject, $preorder_email_text, STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS); 
+        
+        if (!isset($c_is_send_mail)) {
+          tep_mail($from_name, $_POST['from'], $preorder_email_subject, $preorder_email_text, STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS); 
+        }
         
         if (isset($send_to_owner)) {
           tep_mail('', SENTMAIL_ADDRESS, $preorder_email_subject, $preorder_email_text, $from_name, $_POST['from']); 

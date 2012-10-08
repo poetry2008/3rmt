@@ -2711,10 +2711,17 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
   ?>
           </a>
           <input type="hidden" id="cid_<?php echo $orders['orders_id'];?>" name="cid[]" value="<?php echo $orders['customers_id'];?>" />
-  
-  <?php if (tep_is_oroshi($orders['customers_id'])) { ?>
-  <?php echo tep_image(DIR_WS_ICONS . 'oroshi.gif', TEXT_ORDER_OROSHI);?>
-  <?php }?>
+  <?php 
+  $customers_info_raw = tep_db_query("select pic_icon from ".TABLE_CUSTOMERS." where customers_id = '".$orders['customers_id']."'"); 
+  $customers_info_res = tep_db_fetch_array($customers_info_raw);
+  if ($customers_info_res) {
+    if (!empty($customers_info_res['pic_icon'])) {
+      if (file_exists(DIR_FS_DOCUMENT_ROOT.DIR_WS_IMAGES.'icon_list/'.$customers_info_res['pic_icon'])) {
+        echo tep_image(DIR_WS_IMAGES.'icon_list/'.$customers_info_res['pic_icon']); 
+      }
+    }
+  }
+  ?>
   <?php if ($orders['orders_care_flag']) { ?>
   <?php echo tep_image(DIR_WS_ICONS . 'care.gif', TEXT_ORDER_CARE);?>
   <?php }?>
