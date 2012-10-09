@@ -118,6 +118,7 @@ if($_GET['action'] == 'update'){
       $preorders_sort_str = serialize($preorders_sort_temp_array); 
     } 
     tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$preorders_sort_str."' where configuration_key='PERSONAL_SETTING_PREORDERS_SORT'"); 
+    $messageStack->add_session(TEXT_ONE_TIME_CONFIG_SAVE, 'success');
     tep_redirect(tep_href_link(FILENAME_PERSONAL_SETTING,''));
   }
 }
@@ -169,11 +170,9 @@ if($_GET['action'] == 'update'){
               <tr>
               <?php
                $orders_site_array = array();
-               $orders_site_query = tep_db_query("select id,romaji from ". TABLE_SITES);
-               while($orders_site_rows = tep_db_fetch_array($orders_site_query)){
-                 $orders_site_array[$orders_site_rows['id']] = $orders_site_rows['romaji'];
+               foreach(tep_get_sites() as $site_value){
+                  $orders_site_array[$site_value['id']] = $site_value['romaji'];               
                }
-               tep_db_free_result($orders_site_query);  
                if(!isset($_POST['orders_site']) && !isset($_GET['action'])){
                  $orders_site_default = implode('|',array_keys($orders_site_array)); 
                  if(PERSONAL_SETTING_ORDERS_SITE != ''){
