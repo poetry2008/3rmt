@@ -480,6 +480,14 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
       <td class="menu01"><a class="t_link01"
       onclick="javascript:goto_changepwd(\'changepwd_form\')"
       href="javascript:void(0);">'.HEADER_TEXT_USERS.'</a>';
+?>
+<?php 
+  echo '</td>
+      </tr>
+      <tr>
+      <td class="menu01"><a class="t_link01"
+      href="'.tep_href_link(FILENAME_PERSONAL_SETTING, '',
+        'NONSSL').'">'.HEADER_TEXT_PERSONAL_SETTING.'</a>';
 if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {
 ?>
 <embed id="head_sound" src="images/presound.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
@@ -494,13 +502,9 @@ if ($_SERVER['PHP_SELF'] != '/admin/orders.php') {
 }
 ?>
 <embed id="head_notice" src="images/notice.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
-<?php 
-  echo '</td>
-      </tr>
-      <tr>
-      <td class="menu01"><span class="float_left">'.tep_image(DIR_WS_IMAGES . 'img/ID.gif').'</span>&nbsp;<span class="float_left"><a class="t_link01"
-      href="'.tep_href_link(FILENAME_PERSONAL_SETTING, '',
-    'NONSSL').'">'.HEADER_TEXT_PERSONAL_SETTING.'</a></span></td>
+<?php
+        
+ echo '</td>
       </tr>
       </table>
       </td>
