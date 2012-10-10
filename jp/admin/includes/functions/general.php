@@ -2368,14 +2368,43 @@ function tep_get_sites_id() {
 }
 
 function tep_site_filter($filename, $ca_single = false){
-  global $_GET, $_POST;
-  if($filename == FILENAME_ORDERS){ 
+  global $_GET, $_POST, $ocertify;
+  $orders_site_array = array();
+  $orders_site_query = tep_db_query("select id from ". TABLE_SITES);
+  while($orders_site_rows = tep_db_fetch_array($orders_site_query)){
+    $orders_site_array[] = $orders_site_rows['id'];
+  }
+  tep_db_free_result($orders_site_query);
+  $user_info = tep_get_user_info($ocertify->auth_user);
+  if($filename == FILENAME_ORDERS){  
+    if(PERSONAL_SETTING_ORDERS_SITE != ''){
+      $site_setting_array = unserialize(PERSONAL_SETTING_ORDERS_SITE);
+      if(array_key_exists($user_info['name'],$site_setting_array)){
+
+        $site_setting_str = $site_setting_array[$user_info['name']];
+      }else{
+        $site_setting_str = implode('|',$orders_site_array); 
+      }
+    }else{
+      $site_setting_str = implode('|',$orders_site_array); 
+    }
     $site_array = array();
-    $site_array = explode('|',PERSONAL_SETTING_ORDERS_SITE);
+    $site_array = explode('|',$site_setting_str);
   }
   if($filename == FILENAME_PREORDERS){ 
+    if(PERSONAL_SETTING_PREORDERS_SITE != ''){
+      $site_setting_array = unserialize(PERSONAL_SETTING_PREORDERS_SITE);
+      if(array_key_exists($user_info['name'],$site_setting_array)){
+
+        $site_setting_str = $site_setting_array[$user_info['name']];
+      }else{
+        $site_setting_str = implode('|',$orders_site_array); 
+      }
+    }else{
+      $site_setting_str = implode('|',$orders_site_array); 
+    }
     $site_array = array();
-    $site_array = explode('|',PERSONAL_SETTING_PREORDERS_SITE);
+    $site_array = explode('|',$site_setting_str);
   }
   ?>
     <div id="tep_site_filter">

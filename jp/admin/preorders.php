@@ -1761,22 +1761,41 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                 }
                 ?>
               </select>
-             <?php
-             if(!isset($_GET['site_id'])){ 
-               $site_array = array();
-               $site_array = explode('|',PERSONAL_SETTING_PREORDERS_SITE);
-               $site_list_str = implode(',',$site_array);
-             }else{
-               $site_array = array();
-               $site_array = explode('-',$_GET['site_id']);
-               $site_list_str = implode(',',$site_array);
-             }
-             $site_list_string = implode('-',$site_array);
-              echo tep_draw_hidden_field('site_id', $site_list_string); 
-              if (isset($_GET['mark'])) {
-                echo tep_draw_hidden_field('mark', $_GET['mark']); 
-              }
-              ?>
+<?php
+  if(!isset($_GET['site_id'])){ 
+    $site_array = array();
+    $orders_site_array = array();
+    $orders_site_query = tep_db_query("select id from ". TABLE_SITES);
+    while($orders_site_rows = tep_db_fetch_array($orders_site_query)){
+      $orders_site_array[] = $orders_site_rows['id'];
+    }
+    tep_db_free_result($orders_site_query);
+    $site_default = implode('|',$orders_site_array);
+    if(PERSONAL_SETTING_PREORDERS_SITE != ''){
+      $site_setting_array = unserialize(PERSONAL_SETTING_PREORDERS_SITE);
+      if(array_key_exists($user_info['name'],$site_setting_array)){
+
+        $site_setting_str = $site_setting_array[$user_info['name']];
+      }else{
+        $site_setting_str = $site_default; 
+      } 
+    }else{
+
+      $site_setting_str = $site_default;
+    }
+    $site_array = explode('|',$site_setting_str);
+    $site_list_str = implode(',',$site_array);
+  }else{
+    $site_array = array();
+    $site_array = explode('-',$_GET['site_id']);
+    $site_list_str = implode(',',$site_array);
+  }
+  $site_list_string = implode('-',$site_array);
+  echo tep_draw_hidden_field('site_id', $site_list_string); 
+  if (isset($_GET['mark'])) {
+    echo tep_draw_hidden_field('mark', $_GET['mark']); 
+  }
+?>
               </form>
             </td>
           </tr>
@@ -1865,9 +1884,20 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
             
             $get_mark_info = explode('-', $_GET['mark']);
           }else{
- 
+            $work_default = '0|1|2|3|4';
+            if(PERSONAL_SETTING_PREORDERS_WORK != ''){
+              $work_setting_array = unserialize(PERSONAL_SETTING_PREORDERS_WORK);
+              if(array_key_exists($user_info['name'],$work_setting_array)){
+
+                $work_setting_str = $work_setting_array[$user_info['name']];
+              }else{
+                $work_setting_str = $work_default; 
+              }
+            }else{
+              $work_setting_str = $work_default; 
+            }  
             $work_array = array();
-            $work_array = explode('|',PERSONAL_SETTING_PREORDERS_WORK); 
+            $work_array = explode('|',$work_setting_str); 
             $work_str = implode('-',$work_array);
           }
           ?>
@@ -1901,6 +1931,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
 ?>
       <td class="dataTableHeadingContent_order">
 <?php  
+  $sort_setting_flag = false;
   if(PERSONAL_SETTING_PREORDERS_SORT != ''){
     $sort_list_array = array("0"=>"site_romaji",
                              "1"=>"customers_name",
@@ -1908,13 +1939,19 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                              "3"=>"date_purchased",
                              "4"=>"orders_status_name"
                            );
-    $sort_type_array = array("0"=>"ASC",
-                             "1"=>"DESC"
+    $sort_type_array = array("0"=>"asc",
+                             "1"=>"desc"
                            );
     $sort_array = array();
-    $sort_array = explode('|',PERSONAL_SETTING_PREORDERS_SORT);
-    $orders_sort = $sort_list_array[$sort_array[0]];
-    $orders_type = $sort_type_array[$sort_array[1]];
+    $sort_setting_array = unserialize(PERSONAL_SETTING_PREORDERS_SORT);
+    if(array_key_exists($user_info['name'],$sort_setting_array)){
+      $sort_setting_str = $sort_setting_array[$user_info['name']]; 
+      $sort_array = explode('|',$sort_setting_str);
+      $orders_sort = $sort_list_array[$sort_array[0]];
+      $orders_type = $sort_type_array[$sort_array[1]];
+    }else{
+      $sort_setting_flag = true; 
+    } 
   }
       if ($HTTP_GET_VARS['order_sort'] == 'site_romaji'){
         echo "<a class='head_sort_order_select' href='".tep_href_link(FILENAME_PREORDERS,
@@ -1938,12 +1975,12 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
         }
       }else{
         if($orders_sort == 'site_romaji' && !isset($_GET['order_sort'])){
-          $orders_type_str = $orders_type == 'ASC' ? 'DESC' : 'ASC';
+          $orders_type_str = $orders_type == 'asc' ? 'desc' : 'asc';
           echo "<a class='head_sort_order_select' href='".tep_href_link(FILENAME_PREORDERS,
             tep_get_all_get_params(array('x', 'y', 'order_type',
                 'order_sort')).'order_sort=site_romaji&order_type='.$orders_type_str)."'>";
           echo TABLE_HEADING_SITE;
-        if($orders_type == 'DESC'){
+        if($orders_type == 'desc'){
           echo "<font color='#c0c0c0'>";
           echo TEXT_SORT_ASC;
           echo "</font>";
@@ -1992,12 +2029,12 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
         }
       }else{
         if($orders_sort == 'customers_name' && !isset($_GET['order_sort'])){
-          $orders_type_str = $orders_type == 'ASC' ? 'DESC' : 'ASC';
+          $orders_type_str = $orders_type == 'asc' ? 'desc' : 'asc';
           echo "<a class='head_sort_order_select' href='".tep_href_link(FILENAME_PREORDERS,
             tep_get_all_get_params(array('x', 'y', 'order_type',
                 'order_sort')).'order_sort=customers_name&order_type='.$orders_type_str)."'>";
           echo TABLE_HEADING_CUSTOMERS; 
-        if($orders_type == 'DESC'){
+        if($orders_type == 'desc'){
           echo "<font color='#c0c0c0'>";
           echo TEXT_SORT_ASC;
           echo "</font>";
@@ -2046,12 +2083,12 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
         }
       }else{
         if($orders_sort == 'ot_total' && !isset($_GET['order_sort'])){
-          $orders_type_str = $orders_type == 'ASC' ? 'DESC' : 'ASC';
+          $orders_type_str = $orders_type == 'asc' ? 'desc' : 'asc';
           echo "<a class='head_sort_order_select' href='".tep_href_link(FILENAME_PREORDERS,
             tep_get_all_get_params(array('x', 'y', 'order_type',
                 'order_sort')).'order_sort=ot_total&order_type='.$orders_type_str)."'>";
           echo TABLE_HEADING_ORDER_TOTAL; 
-        if($orders_type == 'DESC'){
+        if($orders_type == 'desc'){
           echo "<font color='#c0c0c0'>";
           echo TEXT_SORT_ASC;
           echo "</font>";
@@ -2103,12 +2140,12 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
         }
       }else{
         if($orders_sort == 'date_purchased' && !isset($_GET['order_sort'])){
-          $orders_type_str = $orders_type == 'ASC' ? 'DESC' : 'ASC';
+          $orders_type_str = $orders_type == 'asc' ? 'desc' : 'asc';
           echo "<a class='head_sort_order_select' href='".tep_href_link(FILENAME_PREORDERS,
             tep_get_all_get_params(array('x', 'y', 'order_type',
                 'order_sort')).'order_sort=date_purchased&order_type='.$orders_type_str)."'>";
           echo TABLE_HEADING_DATE_PURCHASED; 
-        if($orders_type == 'DESC'){
+        if($orders_type == 'desc'){
           echo "<font color='#c0c0c0'>";
           echo TEXT_SORT_ASC;
           echo "</font>";
@@ -2158,12 +2195,12 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
         }
       }else{
         if($orders_sort == 'orders_status_name' && !isset($_GET['order_sort'])){
-          $orders_type_str = $orders_type == 'ASC' ? 'DESC' : 'ASC';
+          $orders_type_str = $orders_type == 'asc' ? 'desc' : 'asc';
           echo "<a class='head_sort_order_select' href='".tep_href_link(FILENAME_PREORDERS,
             tep_get_all_get_params(array('x', 'y', 'order_type',
                 'order_sort')).'order_sort=orders_status_name&order_type='.$orders_type_str)."'>";
           echo TABLE_HEADING_STATUS; 
-        if($orders_type == 'DESC'){
+        if($orders_type == 'desc'){
           echo "<font color='#c0c0c0'>";
           echo TEXT_SORT_ASC;
           echo "</font>";
@@ -2197,7 +2234,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
   $sort_table = '';
   $sort_where = ''; 
   if (!isset($_GET['order_sort']) || $_GET['order_sort'] == '') {
-    if(PERSONAL_SETTING_PREORDERS_SORT == ''){
+    if(PERSONAL_SETTING_PREORDERS_SORT == '' || $sort_setting_flag == true){
       $order_str = 'o.date_purchased DESC'; 
     }else{
       if($orders_sort == 'site_romaji'){
