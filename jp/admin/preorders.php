@@ -1762,6 +1762,28 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                 ?>
               </select>
 <?php
+  $sort_setting_flag = false;
+  if(PERSONAL_SETTING_PREORDERS_SORT != ''){
+    $sort_list_array = array("0"=>"site_romaji",
+                             "1"=>"customers_name",
+                             "2"=>"ot_total",
+                             "3"=>"date_purchased",
+                             "4"=>"orders_status_name"
+                           );
+    $sort_type_array = array("0"=>"asc",
+                             "1"=>"desc"
+                           );
+    $sort_array = array();
+    $sort_setting_array = unserialize(PERSONAL_SETTING_PREORDERS_SORT);
+    if(array_key_exists($user_info['name'],$sort_setting_array)){
+      $sort_setting_str = $sort_setting_array[$user_info['name']]; 
+      $sort_array = explode('|',$sort_setting_str);
+      $orders_sort = $sort_list_array[$sort_array[0]];
+      $orders_type = $sort_type_array[$sort_array[1]];
+    }else{
+      $sort_setting_flag = true; 
+    } 
+  }
   if(!isset($_GET['site_id'])){ 
     $site_array = array();
     $orders_site_array = array();
@@ -1794,6 +1816,16 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
   echo tep_draw_hidden_field('site_id', $site_list_string); 
   if (isset($_GET['mark'])) {
     echo tep_draw_hidden_field('mark', $_GET['mark']); 
+  }
+  if(isset($_GET['order_sort'])){
+    echo tep_draw_hidden_field('order_sort', $_GET['order_sort']); 
+  }else{
+    echo tep_draw_hidden_field('order_sort', $orders_sort); 
+  }
+  if(isset($_GET['order_type'])){
+    echo tep_draw_hidden_field('order_type', $_GET['order_type']); 
+  }else{
+    echo tep_draw_hidden_field('order_type', $orders_type); 
   }
 ?>
               </form>
@@ -1930,29 +1962,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
   }
 ?>
       <td class="dataTableHeadingContent_order">
-<?php  
-  $sort_setting_flag = false;
-  if(PERSONAL_SETTING_PREORDERS_SORT != ''){
-    $sort_list_array = array("0"=>"site_romaji",
-                             "1"=>"customers_name",
-                             "2"=>"ot_total",
-                             "3"=>"date_purchased",
-                             "4"=>"orders_status_name"
-                           );
-    $sort_type_array = array("0"=>"asc",
-                             "1"=>"desc"
-                           );
-    $sort_array = array();
-    $sort_setting_array = unserialize(PERSONAL_SETTING_PREORDERS_SORT);
-    if(array_key_exists($user_info['name'],$sort_setting_array)){
-      $sort_setting_str = $sort_setting_array[$user_info['name']]; 
-      $sort_array = explode('|',$sort_setting_str);
-      $orders_sort = $sort_list_array[$sort_array[0]];
-      $orders_type = $sort_type_array[$sort_array[1]];
-    }else{
-      $sort_setting_flag = true; 
-    } 
-  }
+<?php   
       if ($HTTP_GET_VARS['order_sort'] == 'site_romaji'){
         echo "<a class='head_sort_order_select' href='".tep_href_link(FILENAME_PREORDERS,
             tep_get_all_get_params(array('x', 'y', 'order_type',
@@ -2278,6 +2288,43 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
   $mark_sql_str = ''; 
   if (isset($_GET['mark'])) { 
     $mark_info = explode('-', $_GET['mark']); 
+    if (in_array('0', $mark_info)) {
+      if (count($mark_info) == 1) {
+        $mark_sql_str = "((o.orders_work is null) or (o.orders_work = ''))"; 
+      } else {
+        $mark_str = ''; 
+        foreach ($mark_info as $m_key => $m_value) {
+          if ($m_value == '1') {
+            $mark_str .= '\'a\','; 
+          } else if ($m_value == '2') {
+            $mark_str .= '\'b\','; 
+          } else if ($m_value == '3') {
+            $mark_str .= '\'c\','; 
+          } else if ($m_value == '4') {
+            $mark_str .= '\'d\','; 
+          } 
+        }
+        $mark_str = substr($mark_str, 0, -1);
+        $mark_sql_str = "((o.orders_work is null) or (o.orders_work = '') or (o.orders_work in (".$mark_str.")))"; 
+      }
+    } else {
+      $mark_str = ''; 
+      foreach ($mark_info as $m_key => $m_value) {
+        if ($m_value == '1') {
+          $mark_str .= '\'a\','; 
+        } else if ($m_value == '2') {
+          $mark_str .= '\'b\','; 
+        } else if ($m_value == '3') {
+          $mark_str .= '\'c\','; 
+        } else if ($m_value == '4') {
+          $mark_str .= '\'d\','; 
+        }
+      }
+      $mark_str = substr($mark_str, 0, -1);
+      $mark_sql_str = "o.orders_work in (".$mark_str.")"; 
+    }
+  }else{
+    $mark_info = explode('-', $work_str); 
     if (in_array('0', $mark_info)) {
       if (count($mark_info) == 1) {
         $mark_sql_str = "((o.orders_work is null) or (o.orders_work = ''))"; 
