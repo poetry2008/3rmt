@@ -1532,7 +1532,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
     }else{
       $orders_query_raw .=  "like '%".$_GET['keywords']."%' " ;
     }
-    $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by op.torihiki_date DESC";
+    $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".str_replace('torihiki_date_error desc,date_purchased_error desc,', '', $order_str);
     //op.torihiki_date desc";
   } elseif (isset($_GET['products_id']) && isset($_GET['search_type']) && $_GET['search_type'] == 'products_id' ) {
     $orders_query_raw = " select distinct op.orders_id from " .  TABLE_ORDERS_PRODUCTS . " op, ".TABLE_ORDERS." o ".$sort_table." where ".$sort_where." op.orders_id = o.orders_id and op.products_id='".$_GET['products_id']."'";
@@ -4301,6 +4301,16 @@ if($c_parent_array['parent_id'] == 0){
                 echo tep_draw_hidden_field('site_id', $site_list_string); 
                 if (isset($_GET['mark'])) {
                   echo tep_draw_hidden_field('mark', $_GET['mark']); 
+                }
+                if(isset($_GET['order_sort'])){
+                  echo tep_draw_hidden_field('order_sort', $_GET['order_sort']); 
+                }else{
+                  echo tep_draw_hidden_field('order_sort', $orders_sort); 
+                }
+                if(isset($_GET['order_type'])){
+                  echo tep_draw_hidden_field('order_type', $_GET['order_type']); 
+                }else{
+                  echo tep_draw_hidden_field('order_type', $orders_type); 
                 }
             ?>
             </form>
