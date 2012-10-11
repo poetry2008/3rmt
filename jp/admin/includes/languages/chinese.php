@@ -539,7 +539,7 @@ define('TEXT_TEP_CFG_PAYMENT_CHECKBOX_OPTION_MEMBER','会员');
 define('TEXT_TEP_CFG_PAYMENT_CHECKBOX_OPTION_CUSTOMER','非会员');
 
 
-define('TEXT_MONEY_SYMBOL','元');
+define('TEXT_MONEY_SYMBOL','日元');
 
 define('FILENAME_ORDER_DOWNLOPAD','订单数据导出');
 define('FRONT_CONFIGURATION_TITLE_TEXT', '前台：');
@@ -660,7 +660,9 @@ define('DB_CONFIGURATION_DESCRIPTION_INITIAL_SETTING_SHOP','主页的初期设�
 define('DB_CONFIGURATION_DESCRIPTION_BUSINESS_CALENDAR','营业日历设置');
 define('DB_CONFIGURATION_DESCRIPTION_SEO','Options for Ultimate SEO URLs by Chemo');
 
+define('HELP_INFO_TITLE','帮助信息管理');
 define('TEXT_TIME_LINK','到');
+define('TEXT_BUTTON_ADD','添加输入框');
 define('TEXT_ATTRIBUTE','属性');
 define('TEXT_ATTRIBUTE_PUBLIC','公有');
 define('TEXT_ATTRIBUTE_PRIVATE','私有');
@@ -674,3 +676,10 @@ define('TEXT_NO_DATA','找不到符合的信息');
 define('TEXT_LAST_SEARCH_DATA','&nbsp;%s&nbsp;个检索结果');
 define('TEXT_FIND_DATA_STOP','检索%s但是显示停止。');
 define('TEXT_NOT_ENOUGH_DATA','从前面&nbsp;50&nbsp;个检索结果中不重复的检索结果有&nbsp;%s&nbsp;个');
+
+define('BOX_HEADING_USER', '用户');
+define('BOX_USER_ADMIN', '用户管理');
+define('BOX_USER_LOG', '访问日志');
+define('BOX_USER_LOGOUT', '退出');
+
+define('TEXT_SITE_COPYRIGHT' ,'Copyright © %s Haomai');

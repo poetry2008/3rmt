@@ -261,4 +261,5 @@ define('TEXT_BROWER_REJECTED','浏览器被拒绝！\n在浏览器地址栏输�
 define('TEXT_COPY_TO_CLIPBOARD','已经复制到剪贴板！');
 define('TEXT_PLEASE_PASSWORD','请输入一次性口令\r\n');
 define('TEXT_PASSWORD_NOT','密码不一致');
+define('TEXT_DATE_TIME_ERROR','选择时间已过期，确认无误吗？');
 ?>

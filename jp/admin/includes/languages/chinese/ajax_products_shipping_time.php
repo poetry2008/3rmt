@@ -17,11 +17,12 @@ define('TABLE_LIST_5','到货时间限制');
 define('TABLE_LIST_6','排列顺序');
 define('TABLE_NEW','新项目');
 define('TABLE_MIN','分');
-define('TABLE_DAY','天');
+define('TABLE_DAY','分后');
 define('TABLE_BUTTON_UNSET','取消');
 define('TABLE_REQUIRED','*必须');
 define('TABLE_ADD','追加');
 define('TABLE_BUTTON_DEL','删除');
 define('TEXT_CLOSE','X');
 define('TEXT_WANT_DELETE','确定删除这个数据吗？');
+define('TABLE_DAY_END','分前');
 ?>
