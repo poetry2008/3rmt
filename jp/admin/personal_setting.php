@@ -43,25 +43,82 @@ if($_GET['action'] == 'update'){
   }
 
   if($error == false){
-    $orders_site_str = implode('|',$orders_site);
+    $user_info = tep_get_user_info($ocertify->auth_user);
+    $orders_site_temp_array = array();
+    $orders_site_setting_str = implode('|',$orders_site);
+    if(PERSONAL_SETTING_ORDERS_SITE == ''){
+      $orders_site_temp_array = array($user_info['name']=>$orders_site_setting_str);
+    }else{
+      $orders_site_setting_array = unserialize(PERSONAL_SETTING_ORDERS_SITE);
+      $orders_site_setting_array[$user_info['name']] = $orders_site_setting_str;      
+      $orders_site_temp_array = $orders_site_setting_array;
+    }
+    $orders_site_str = serialize($orders_site_temp_array);
     tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$orders_site_str."' where configuration_key='PERSONAL_SETTING_ORDERS_SITE'");
-    $orders_work_str = implode('|',$orders_work);
+    $orders_work_temp_array = array();
+    $orders_work_setting_str = implode('|',$orders_work);
+    if(PERSONAL_SETTING_ORDERS_WORK == ''){
+      $orders_work_temp_array = array($user_info['name']=>$orders_work_setting_str);
+    }else{
+      $orders_work_setting_array = unserialize(PERSONAL_SETTING_ORDERS_WORK);
+      $orders_work_setting_array[$user_info['name']] = $orders_work_setting_str;      
+      $orders_work_temp_array = $orders_work_setting_array;
+    }
+    $orders_work_str = serialize($orders_work_temp_array);
     tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$orders_work_str."' where configuration_key='PERSONAL_SETTING_ORDERS_WORK'");
-    $orders_sort_str = $orders_sort_list.'|'.$orders_sort;
     if($orders_sort_list == '' && $orders_sort == ''){
       $orders_sort_str = ''; 
+    }else{
+      $orders_sort_temp_array = array();
+      $orders_sort_setting_str = $orders_sort_list.'|'.$orders_sort;
+      if(PERSONAL_SETTING_ORDERS_SORT == ''){
+        $orders_sort_temp_array = array($user_info['name']=>$orders_sort_setting_str);
+      }else{
+        $orders_sort_setting_array = unserialize(PERSONAL_SETTING_ORDERS_SORT);
+        $orders_sort_setting_array[$user_info['name']] = $orders_sort_setting_str;      
+        $orders_sort_temp_array = $orders_sort_setting_array;
+      }
+      $orders_sort_str = serialize($orders_sort_temp_array); 
     }
     tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$orders_sort_str."' where configuration_key='PERSONAL_SETTING_ORDERS_SORT'");
-
-    $preorders_site_str = implode('|',$preorders_site);
+    $preorders_site_temp_array = array();
+    $preorders_site_setting_str = implode('|',$preorders_site);
+    if(PERSONAL_SETTING_PREORDERS_SITE == ''){
+      $preorders_site_temp_array = array($user_info['name']=>$preorders_site_setting_str);
+    }else{
+      $preorders_site_setting_array = unserialize(PERSONAL_SETTING_PREORDERS_SITE);
+      $preorders_site_setting_array[$user_info['name']] = $preorders_site_setting_str;      
+      $preorders_site_temp_array = $preorders_site_setting_array;
+    }
+    $preorders_site_str = serialize($preorders_site_temp_array);
     tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$preorders_site_str."' where configuration_key='PERSONAL_SETTING_PREORDERS_SITE'");
-    $preorders_work_str = implode('|',$preorders_work);
+    $preorders_work_temp_array = array();
+    $preorders_work_setting_str = implode('|',$preorders_work);
+    if(PERSONAL_SETTING_PREORDERS_WORK == ''){
+      $preorders_work_temp_array = array($user_info['name']=>$preorders_work_setting_str);
+    }else{
+      $preorders_work_setting_array = unserialize(PERSONAL_SETTING_PREORDERS_WORK);
+      $preorders_work_setting_array[$user_info['name']] = $preorders_work_setting_str;      
+      $preorders_work_temp_array = $preorders_work_setting_array;
+    }
+    $preorders_work_str = serialize($preorders_work_temp_array);
     tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$preorders_work_str."' where configuration_key='PERSONAL_SETTING_PREORDERS_WORK'");
-    $preorders_sort_str = $preorders_sort_list.'|'.$preorders_sort;
     if($preorders_sort_list == '' && $preorders_sort == ''){
       $preorders_sort_str = ''; 
+    }else{
+      $preorders_sort_temp_array = array();
+      $preorders_sort_setting_str = $preorders_sort_list.'|'.$preorders_sort;
+      if(PERSONAL_SETTING_PREORDERS_SORT == ''){
+        $preorders_sort_temp_array = array($user_info['name']=>$preorders_sort_setting_str);
+      }else{
+        $preorders_sort_setting_array = unserialize(PERSONAL_SETTING_PREORDERS_SORT);
+        $preorders_sort_setting_array[$user_info['name']] = $preorders_sort_setting_str;      
+        $preorders_sort_temp_array = $preorders_sort_setting_array;
+      }
+      $preorders_sort_str = serialize($preorders_sort_temp_array); 
     } 
     tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$preorders_sort_str."' where configuration_key='PERSONAL_SETTING_PREORDERS_SORT'"); 
+    $messageStack->add_session(TEXT_ONE_TIME_CONFIG_SAVE, 'success');
     tep_redirect(tep_href_link(FILENAME_PERSONAL_SETTING,''));
   }
 }
@@ -113,13 +170,22 @@ if($_GET['action'] == 'update'){
               <tr>
               <?php
                $orders_site_array = array();
-               $orders_site_query = tep_db_query("select id,romaji from ". TABLE_SITES);
-               while($orders_site_rows = tep_db_fetch_array($orders_site_query)){
-                 $orders_site_array[$orders_site_rows['id']] = $orders_site_rows['romaji'];
+               foreach(tep_get_sites() as $site_value){
+                  $orders_site_array[$site_value['id']] = $site_value['romaji'];               
                }
-               tep_db_free_result($orders_site_query);  
                if(!isset($_POST['orders_site']) && !isset($_GET['action'])){
-                 $orders_site_str = PERSONAL_SETTING_ORDERS_SITE;
+                 $orders_site_default = implode('|',array_keys($orders_site_array)); 
+                 if(PERSONAL_SETTING_ORDERS_SITE != ''){
+                   $orders_site_setting_array = unserialize(PERSONAL_SETTING_ORDERS_SITE);
+                   if(array_key_exists($user_info['name'],$orders_site_setting_array)){
+
+                     $orders_site_str = $orders_site_setting_array[$user_info['name']]; 
+                   }else{
+                     $orders_site_str = $orders_site_default; 
+                   }
+                 }else{
+                   $orders_site_str = $orders_site_default;
+                 }
                }else{
                  $orders_site_str = implode('|',$_POST['orders_site']); 
                }
@@ -141,8 +207,19 @@ if($_GET['action'] == 'update'){
               </tr>
               <tr>
               <?php
+                 $orders_work_default = '0|1|2|3|4';
                  if(!isset($_POST['orders_work']) && !isset($_GET['action'])){
-                   $orders_work_str = PERSONAL_SETTING_ORDERS_WORK;
+                   if(PERSONAL_SETTING_ORDERS_WORK != ''){
+                     $orders_work_setting_array = unserialize(PERSONAL_SETTING_ORDERS_WORK);
+                     if(array_key_exists($user_info['name'],$orders_work_setting_array)){
+
+                       $orders_work_str = $orders_work_setting_array[$user_info['name']];
+                     }else{
+                       $orders_work_str = $orders_work_default; 
+                     }
+                   }else{
+                     $orders_work_str = $orders_work_default; 
+                   }
                  }else{
                    $orders_work_str = implode('|',$_POST['orders_work']); 
                  }
@@ -173,7 +250,16 @@ if($_GET['action'] == 'update'){
               <tr>
                <td>
                <?php
-                 $orders_sort_str = PERSONAL_SETTING_ORDERS_SORT;
+                 if(PERSONAL_SETTING_ORDERS_SORT != ''){
+                   $orders_sort_setting_array = unserialize(PERSONAL_SETTING_ORDERS_SORT);
+                   if(array_key_exists($user_info['name'],$orders_sort_setting_array)){
+                     $orders_sort_str = $orders_sort_setting_array[$user_info['name']];
+                   }else{
+                     $orders_sort_str = ''; 
+                   }
+                 }else{
+                   $orders_sort_str = '';
+                 }
                  $sort_list = '';
                  $sort = '';
                  if(isset($_POST['orders_sort_list']) && isset($_POST['orders_sort'])){
@@ -212,7 +298,18 @@ if($_GET['action'] == 'update'){
               <tr>
               <?php  
                if(!isset($_POST['preorders_site']) && !isset($_GET['action'])){
-                 $preorders_site_str = PERSONAL_SETTING_PREORDERS_SITE;
+                 $preorders_site_default = $orders_site_default; 
+                 if(PERSONAL_SETTING_PREORDERS_SITE != ''){
+                   $preorders_site_setting_array = unserialize(PERSONAL_SETTING_PREORDERS_SITE);
+                   if(array_key_exists($user_info['name'],$preorders_site_setting_array)){
+
+                     $preorders_site_str = $preorders_site_setting_array[$user_info['name']]; 
+                   }else{
+                     $preorders_site_str = $preorders_site_default; 
+                   }
+                 }else{
+                   $preorders_site_str = $preorders_site_default;
+                 } 
                }else{
                  $preorders_site_str = implode('|',$_POST['preorders_site']); 
                }
@@ -234,8 +331,19 @@ if($_GET['action'] == 'update'){
               </tr>
               <tr>
               <?php
+                 $preorders_work_default = '0|1|2|3|4'; 
                  if(!isset($_POST['preorders_work']) && !isset($_GET['action'])){
-                   $preorders_work_str = PERSONAL_SETTING_PREORDERS_WORK;
+                   if(PERSONAL_SETTING_PREORDERS_WORK != ''){
+                     $preorders_work_setting_array = unserialize(PERSONAL_SETTING_PREORDERS_WORK);
+                     if(array_key_exists($user_info['name'],$preorders_work_setting_array)){
+
+                       $preorders_work_str = $preorders_work_setting_array[$user_info['name']];
+                     }else{
+                       $preorders_work_str = $preorders_work_default; 
+                     }
+                   }else{
+                     $preorders_work_str = $preorders_work_default; 
+                   } 
                  }else{
                    $preorders_work_str = implode('|',$_POST['preorders_work']); 
                  }
@@ -259,7 +367,16 @@ if($_GET['action'] == 'update'){
               <tr>
                <td>
                <?php
-                 $preorders_sort_str = PERSONAL_SETTING_PREORDERS_SORT;
+                 if(PERSONAL_SETTING_PREORDERS_SORT != ''){
+                   $preorders_sort_setting_array = unserialize(PERSONAL_SETTING_PREORDERS_SORT);
+                   if(array_key_exists($user_info['name'],$preorders_sort_setting_array)){
+                     $preorders_sort_str = $preorders_sort_setting_array[$user_info['name']];
+                   }else{
+                     $preorders_sort_str = ''; 
+                   }
+                 }else{
+                   $preorders_sort_str = '';
+                 }
                  $preorders_sort_list = '';
                  $preorders_sort = '';
                  if(isset($_POST['preorders_sort_list']) && isset($_POST['preorders_sort'])){

@@ -147,5 +147,5 @@ $form_action_url = tep_href_link('change_preorder_process.php');
 if (isset($payment_modules->modules[strtoupper($con_payment_code)]->form_action_url) && $payment_modules->modules[strtoupper($con_payment_code)]->form_action_url) {
   $form_action_url = $payment_modules->modules[strtoupper($con_payment_code)]->form_action_url; 
 }
-
+$_SESSION['preorder_option'] = date('Ymd-His'). ds_makeRandStr(2);
 

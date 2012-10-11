@@ -251,6 +251,7 @@ if($address_error == false){
     //if ($preorder_total_res['class'] == 'ot_subtotal') {
       //$preorder_subtotal_num = $preorder_total_res['value']; 
     //}
+    $_SESSION['insert_id'] = $insert_id;
     $sql_data_array = array('orders_id' => $orders_id,
                             'title' => $preorder_total_res['title'], 
                             'text' => $preorder_total_res['text'], 
@@ -728,6 +729,7 @@ if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
   tep_session_unregister('preorder_get_point');
 }
 
+unset($_SESSION['insert_id']);
 unset($_SESSION['preorder_option']);
 unset($_SESSION['referer_adurl']);
 
