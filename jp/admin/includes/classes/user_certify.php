@@ -1,15 +1,4 @@
 <?php
-/* *********************************************************
- * クラス名: user_certify.php
- * 管理サイトのユーザ認証を行い、アクセスログに記録する。
- * Naomi Suzukawa <suzukawa@bitscope.co.jp>
- *
- * 2001/05/29 作成
- * 2002/05/10 osCommers 用に変更
- * 2002/05/21 osCommers IE5.01で動作が不正になるため大幅に変更
- *            PHP HTTP(Basic)認証 を PHPセッション管理+パスワード認証に変更
- * 2004/03/19 replace get_cfg_var() with ini_get()
-********************************************************* */
 class user_certify {
     // ユーザ権限
     var $apermissions = array('read'=>0, 'write'=>0, 'config'=>0, 'users'=>0);
