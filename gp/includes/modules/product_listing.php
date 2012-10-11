@@ -38,7 +38,7 @@ if ($tmp_sort_str == '4') {
 ?>
 <table border="0" width="100%" cellspacing="0" cellpadding="2" class="product_list_page">
   <tr>
-    <td align="left">
+    <td align="left" width="30%">
   <?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?>
     </td>
     <td align="right">
@@ -165,7 +165,7 @@ if (!isset($listing['products_cflag'])) $listing['products_cflag'] = NULL;//del 
 </table>
       <table border="0" width="100%" cellspacing="0" cellpadding="2" class="product_list_page">
         <tr>
-          <td align="left"><?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
+          <td align="left" width="30%"><?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
           <td align="right">&nbsp;<?php echo TEXT_RESULT_PAGE; ?> <?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('sort', 'page', 'info', 'x', 'y'))); ?>&nbsp;</td>
         </tr>
       </table>
