@@ -2250,4 +2250,6 @@ echo json_encode($json_array);
   }else{
     echo tep_href_link(FILENAME_ORDERS, $_POST['param_url']); 
   }
+} else if ($_GET['action'] == 'handle_split') {
+  tep_redirect(tep_href_link($_POST['current_file_info'], $_POST['split_param'].(($_POST['j_page'] != '1')?'page='.$_POST['j_page']:'')));
 }

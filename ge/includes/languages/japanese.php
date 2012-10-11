@@ -265,7 +265,7 @@ define('PASSWORD_HIDDEN', '********');
 define('ENTRY_AGREEMENT_TEXT', '同意する');
 
 // constants for use in tep_prev_next_display function
-define('TEXT_RESULT_PAGE', 'ページ:');
+define('TEXT_RESULT_PAGE', '');
 define('TEXT_DISPLAY_NUMBER_OF_PRODUCTS', '<b>%d</b> - <b>%d</b> 番目を表示 (<b>%d</b> ある商品のうち)');
 define('TEXT_DISPLAY_NUMBER_OF_ORDERS', '<b>%d</b> - <b>%d</b> 番目を表示 (<b>%d</b> ある注文のうち)');
 define('TEXT_DISPLAY_NUMBER_OF_REVIEWS', '<b>%d</b> - <b>%d</b> 番目を表示 (<b>%d</b> あるレビューのうち)');
@@ -281,8 +281,8 @@ define('PREVNEXT_TITLE_PAGE_NO', 'ページ %d');
 define('PREVNEXT_TITLE_PREV_SET_OF_NO_PAGE', '前 %d ページ');
 define('PREVNEXT_TITLE_NEXT_SET_OF_NO_PAGE', '次 %d ページ');
 define('PREVNEXT_BUTTON_FIRST', '&lt;&lt;最初');
-define('PREVNEXT_BUTTON_PREV', '前のページ');
-define('PREVNEXT_BUTTON_NEXT', '次のページ');
+define('PREVNEXT_BUTTON_PREV', '前へ');
+define('PREVNEXT_BUTTON_NEXT', '次へ');
 define('PREVNEXT_BUTTON_LAST', '最後&gt;&gt;');
 
 define('IMAGE_BUTTON_ADD_ADDRESS', 'アドレスを追加');
@@ -481,4 +481,6 @@ define('TEXT_OST_THANKYOU_INFO_TEXT',
 ＜それでも届かないときは、メールアドレス変更＞<br>
 別のメールアドレスをご入力いただき、お問い合わせをお願いいたします。');
 define('TEXT_JAVASCRIPT_ERROR','JavaScriptまたはCookieの設定がオンになっていません。お手数ですが設定を「オン」にして、ご利用ください。<br>※ 設定がオフになっていますと、ご利用いただけないサービスがあります。');
+define('JUMP_PAGE_TEXT', 'ページへ');
+define('JUMP_PAGE_BUTTON_TEXT', '移動');
 ?>

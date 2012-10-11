@@ -692,3 +692,5 @@ define('TEXT_HEADER_HELP','ヘルプ');
 define('HEADER_TEXT_PERSONAL_SETTING','個人設定');
 define('TEXT_FLAG_CHECKED','確認済');
 define('TEXT_FLAG_UNCHECK','未確認');
+define('JUMP_PAGE_TEXT', 'ページへ');
+define('JUMP_PAGE_BUTTON_TEXT', '移動');

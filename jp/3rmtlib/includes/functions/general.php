@@ -2285,6 +2285,9 @@ if($_SERVER['HTTPS'] == 'on'){
         }
         break;
     }
+?>
+<script type="text/javascript" src="js/split_page.js"></script> 
+<?php
   }
 
   function tep_get_metas_by_manufacturers_id($manufacturers_id)
