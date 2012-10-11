@@ -1473,3 +1473,6 @@ font-size:14px;
 	font-weight:bold;
         width:10px;
 }
+.float_right{
+	float:right;
+}

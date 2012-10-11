@@ -195,6 +195,7 @@ $referer = $customers_referer_array['referer'];
 # Select
 //$cnt = strlen($NewOid);
 // 2003-06-06 add_telephone
+$_SESSION['insert_id'] = $insert_id;
 $sql_data_array = array('orders_id'         => $insert_id,
                         'customers_id'      => $customer_id,
                         'customers_name'    => tep_get_fullname($order->customer['firstname'],$order->customer['lastname']),
@@ -926,6 +927,7 @@ tep_session_unregister('bank_kouza_num');
 tep_session_unregister('bank_kouza_name');
 */
 #convenience_store
+unset($_SESSION['insert_id']);
 unset($_SESSION['character']);
 unset($_SESSION['option']);
 unset($_SESSION['referer_adurl']);

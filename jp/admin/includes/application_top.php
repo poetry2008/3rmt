@@ -137,6 +137,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('FILENAME_SHOW_USELESS_ITEM','show_useless_item.php');
   define('FILENAME_CUSTOMERS_EXIT','customers_exit.php');
   define('FILENAME_HELP_INFO','help_info.php');
+  define('FILENAME_PERSONAL_SETTING','personal_setting.php');
 
 // define the database table names used in the project
   define('TABLE_CUSTOMERS_BASKET_OPTIONS', 'customers_basket_options');

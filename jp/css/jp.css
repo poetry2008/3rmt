@@ -2367,6 +2367,10 @@ searching
 .float_right{
 	float:right;
 }
+.float_right_box{
+	float:right;
+	width:160px;
+}
 .txt_input_box{
 	overflow:hidden;
 	clear:both;

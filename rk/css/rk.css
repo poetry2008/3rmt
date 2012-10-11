@@ -1975,6 +1975,10 @@ display:block;
 .float_right{
 	float:right;
 }
+.float_right_box{
+	float:right;
+	width:160px;
+}
 .cp_content{
 	padding:0 20px;
 }

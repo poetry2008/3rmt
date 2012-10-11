@@ -1,15 +1,4 @@
 <?php
-/* *********************************************************
- * クラス名: user_certify.php
- * 管理サイトのユーザ認証を行い、アクセスログに記録する。
- * Naomi Suzukawa <suzukawa@bitscope.co.jp>
- *
- * 2001/05/29 作成
- * 2002/05/10 osCommers 用に変更
- * 2002/05/21 osCommers IE5.01で動作が不正になるため大幅に変更
- *            PHP HTTP(Basic)認証 を PHPセッション管理+パスワード認証に変更
- * 2004/03/19 replace get_cfg_var() with ini_get()
-********************************************************* */
 class user_certify {
     // ユーザ権限
     var $apermissions = array('read'=>0, 'write'=>0, 'config'=>0, 'users'=>0);
@@ -206,7 +195,14 @@ class user_certify {
         if (!$user) {       // 初回ログインのとき処理を抜ける
             $this->isFirstTime = TRUE;
         } else {
-            // ユーザＩＤチェック
+          // ユーザＩＤチェック
+            $login_flag = false;
+            $login_query = tep_db_query("select * from users where userid = '" . $user . "'");
+            $login_array = tep_db_fetch_array($login_query); 
+            tep_db_free_result($login_query);
+            if($login_array['userid'] != $user){
+              $login_flag = true; 
+            }
             $oresult = tep_db_query("select * from users where userid = '" . $user . "'");
             if (!$oresult) {                 // DBエラーだったとき
                 $this->putCertifyLog($s_sid,'e',$user);
@@ -214,7 +210,7 @@ class user_certify {
                 die('<br>'.TEXT_ERRINFO_DBERROR);
             }
             $nrow = tep_db_num_rows($oresult); // レコード件数の取得
-            if ($nrow == 1) {  // 入力された UID のユーザが登録されているとき
+            if ($nrow == 1 && $login_flag == false) {  // 入力された UID のユーザが登録されているとき
                 $arec = tep_db_fetch_array($oresult); // レコードを取得
                 $pret = $this->password_check($s_sid,$arec['password'],$user); // パスワード検査
                 $aret = $this->user_parmission($s_sid,$user); // ユーザ権限を取得

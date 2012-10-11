@@ -162,9 +162,13 @@ class telecom  extends basePayment  implements paymentInterface  {
     
     $today = date("YmdHis");
     // telecom_option 文档中的$ID
+    /*
     if (!isset($_SESSION['option'])) {
+    */
       $_SESSION['option'] = date('Ymd-His'). ds_makeRandStr(2);
+    /*
     }
+    */
     $process_button_string = tep_draw_hidden_field('option', $_SESSION['option']) .
       tep_draw_hidden_field('clientip', MODULE_PAYMENT_TELECOM_KID) .
       tep_draw_hidden_field('money', $total) .
@@ -189,6 +193,34 @@ class telecom  extends basePayment  implements paymentInterface  {
   }
 
   function after_process() {
+    //update telecom_unknow table by order telecom_option
+    if(isset($_SESSION['insert_id'])){
+      $new_insert_id = $_SESSION['insert_id'];
+      $t_otq = tep_db_query("select * from ".TABLE_ORDERS_TOTAL." where class =
+          'ot_total' and orders_id = '".$new_insert_id."' limit 1");
+      $t_ot = tep_db_fetch_array($t_otq);
+      $t_total = abs($t_ot['value']);
+      $t_orderq = tep_db_query("select telecom_option  from ".TABLE_ORDERS." 
+          where orders_id = '".$new_insert_id."' limit 1");
+      $t_order = tep_db_fetch_array($t_orderq);
+      tep_db_query("update `telecom_unknow` set type='hide' where `option`='".
+          $t_order['telecom_option']."' and rel='yes' ");
+      $t_query = tep_db_query("select * from `telecom_unknow` where `option`='".
+          $t_order['telecom_option']."' and rel='yes' order by date_added");
+      while($t_row = tep_db_fetch_array($t_query)){
+        if($t_row['money'] == $t_total){
+          if(tep_db_query("update `telecom_unknow` set type='success' where id =
+                '".$t_row['id']."'")){
+            tep_db_query("update ".TABLE_ORDERS." set 
+                telecom_name = '".$t_row['username']."',
+                telecom_tel = '".$t_row['telno']."',
+                telecom_email = '".$t_row['email']."' 
+                where orders_id = '".$new_insert_id."'");
+            break;
+          }
+        }
+      }
+    }
     return false;
   }
 
