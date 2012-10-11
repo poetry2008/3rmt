@@ -1982,6 +1982,10 @@ border:1px solid #CAC6BE;
 .float_right{
 	float:right;
 }
+.float_right_box{
+	float:right;
+	width:160px;
+}
 .cp_content{
 	padding:0 20px;
 }
