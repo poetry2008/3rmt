@@ -1292,7 +1292,98 @@ function UserDelete_execute() {
   echo "</form>\n";                 // フォームのフッター
 
   if ($oresult) @tep_db_free_result($oresult);    // 結果オブジェクトを開放する
+  
+  $orders_users_query = tep_db_query("select orders_id,read_flag from ". TABLE_ORDERS ." where read_flag != ''");
+  while($orders_users_array = tep_db_fetch_array($orders_users_query)){
 
+    $orders_users_info_array = explode('|||',$orders_users_array['read_flag']);   
+    if(in_array($GLOBALS['userid'],$orders_users_info_array)){
+
+      unset($orders_users_info_array[array_search($GLOBALS['userid'],$orders_users_info_array)]);
+      $orders_users_info_str = implode('|||',$orders_users_info_array);
+      tep_db_query("update ". TABLE_ORDERS ." set read_flag='".$orders_users_info_str."' where orders_id='".$orders_users_array['orders_id']."'");
+    }
+  }
+  tep_db_free_result($orders_users_query);
+
+  $preorders_users_query = tep_db_query("select orders_id,read_flag from ". TABLE_PREORDERS ." where read_flag != ''");
+  while($preorders_users_array = tep_db_fetch_array($preorders_users_query)){
+
+    $preorders_users_info_array = explode('|||',$preorders_users_array['read_flag']);   
+    if(in_array($GLOBALS['userid'],$preorders_users_info_array)){
+
+      unset($preorders_users_info_array[array_search($GLOBALS['userid'],$preorders_users_info_array)]);
+      $preorders_users_info_str = implode('|||',$preorders_users_info_array);
+      tep_db_query("update ". TABLE_PREORDERS ." set read_flag='".$preorders_users_info_str."' where orders_id='".$preorders_users_array['orders_id']."'");
+    }
+  }
+  tep_db_free_result($preorders_users_query);
+
+  if(PERSONAL_SETTING_ORDERS_SITE != ''){
+
+    $orders_site_array = unserialize(PERSONAL_SETTING_ORDERS_SITE);
+    if(array_key_exists($GLOBALS['userid'],$orders_site_array)){
+
+      unset($orders_site_array[$GLOBALS['userid']]);
+      $orders_site_str = serialize($orders_site_array);
+      tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$orders_site_str."' where configuration_key='PERSONAL_SETTING_ORDERS_SITE'");
+    }
+  }
+
+  if(PERSONAL_SETTING_ORDERS_WORK != ''){
+
+    $orders_work_array = unserialize(PERSONAL_SETTING_ORDERS_WORK);
+    if(array_key_exists($GLOBALS['userid'],$orders_work_array)){
+
+      unset($orders_work_array[$GLOBALS['userid']]);
+      $orders_work_str = serialize($orders_work_array);
+      tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$orders_work_str."' where configuration_key='PERSONAL_SETTING_ORDERS_WORK'");
+    }
+  }
+
+  if(PERSONAL_SETTING_ORDERS_SORT != ''){
+
+    $orders_sort_array = unserialize(PERSONAL_SETTING_ORDERS_SORT);
+    if(array_key_exists($GLOBALS['userid'],$orders_sort_array)){
+
+      unset($orders_sort_array[$GLOBALS['userid']]);
+      $orders_sort_str = serialize($orders_sort_array);
+      tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$orders_sort_str."' where configuration_key='PERSONAL_SETTING_ORDERS_SORT'");
+    }
+  }
+
+  if(PERSONAL_SETTING_PREORDERS_SITE != ''){
+
+    $preorders_site_array = unserialize(PERSONAL_SETTING_PREORDERS_SITE);
+    if(array_key_exists($GLOBALS['userid'],$preorders_site_array)){
+
+      unset($preorders_site_array[$GLOBALS['userid']]);
+      $preorders_site_str = serialize($preorders_site_array);
+      tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$preorders_site_str."' where configuration_key='PERSONAL_SETTING_PREORDERS_SITE'");
+    }
+  }
+
+  if(PERSONAL_SETTING_PREORDERS_WORK != ''){
+
+    $preorders_work_array = unserialize(PERSONAL_SETTING_PREORDERS_WORK);
+    if(array_key_exists($GLOBALS['userid'],$preorders_work_array)){
+
+      unset($preorders_work_array[$GLOBALS['userid']]);
+      $preorders_work_str = serialize($preorders_work_array);
+      tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$preorders_work_str."' where configuration_key='PERSONAL_SETTING_PREORDERS_WORK'");
+    }
+  }
+
+  if(PERSONAL_SETTING_PREORDERS_SORT != ''){
+
+    $preorders_sort_array = unserialize(PERSONAL_SETTING_PREORDERS_SORT);
+    if(array_key_exists($GLOBALS['userid'],$preorders_sort_array)){
+
+      unset($preorders_sort_array[$GLOBALS['userid']]);
+      $preorders_sort_str = serialize($preorders_sort_array);
+      tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$preorders_sort_str."' where configuration_key='PERSONAL_SETTING_PREORDERS_SORT'");
+    }
+  }
   return TRUE;
 
 }
