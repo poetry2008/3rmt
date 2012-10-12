@@ -1420,7 +1420,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
   <?php
       for ($i = 0, $n = sizeof($order->products); $i < $n; $i++) {
         echo '    <tr class="dataTableRow">' . "\n" . 
-       '      <td class="dataTableContent" valign="top" align="right">' . $order->products[$i]['qty']. tep_get_full_count2($order->products[$i]['qty'], $order->products[$i]['id'], $order->products[$i]['rate']) . '&nbsp;x</td>' . "\n" .
+       '      <td class="dataTableContent" valign="top" align="right" nowrap>' . $order->products[$i]['qty']. tep_get_full_count2($order->products[$i]['qty'], $order->products[$i]['id'], $order->products[$i]['rate']) . '&nbsp;x</td>' . "\n" .
        '      <td class="dataTableContent" valign="top">' . $order->products[$i]['name'];
 
         if (isset($order->products[$i]['attributes']) && $order->products[$i]['attributes'] && ($k = sizeof($order->products[$i]['attributes'])) > 0) {
@@ -1449,8 +1449,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
           // new option list 
           foreach($all_show_option_id as $t_item_id){
             if (is_array($all_show_option[$t_item_id]['option_info'])) {
-            echo '<br><nobr>&nbsp; - ' .  $all_show_option[$t_item_id]['option_info']['title'] . ': ' .  str_replace(array("<br>", "<BR>"), "",$all_show_option[$t_item_id]['option_info']['value']);
-            echo '</nobr>';
+            echo '<table><tr><td valign="top">-&nbsp; </td><td>' .  $all_show_option[$t_item_id]['option_info']['title'] . ': ' .  str_replace(array("<br>", "<BR>"), "",$all_show_option[$t_item_id]['option_info']['value']).'</td></tr></table>';
             }
           }
 
@@ -1471,7 +1470,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       }
 
         echo '      </td>' . "\n" .
-       '      <td class="dataTableContent" valign="top">' . $order->products[$i]['model'] . '</td>' . "\n" .
+       '      <td class="dataTableContent" valign="top" nowrap>' . $order->products[$i]['model'] . '</td>' . "\n" .
        '      <td class="dataTableContent" align="right" valign="top">' . tep_display_tax_value($order->products[$i]['tax']) . '%</td>' . "\n" .
        '      <!--<td class="dataTableContent" align="right" valign="top"><b>' . $currencies->format($order->products[$i]['final_price'], true, $order->info['currency'], $order->info['currency_value']) . '</b></td>-->' . "\n" .
        '      <td class="dataTableContent" align="right" valign="top"><b>';
