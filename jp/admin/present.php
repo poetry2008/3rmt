@@ -136,6 +136,29 @@ now(),
 <script language="javascript" src="includes/general.js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<?php 
+$href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
+$belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
+$belong = preg_replace('/\?XSID=[^&]+/','',$belong);
+preg_match_all('/action=[^&]+/',$belong,$belong_temp_array);
+if($belong_temp_array[0][0] != ''){
+  preg_match_all('/cID=[^&]+/',$belong,$belong_array);
+  if($belong_array[0][0] != '' && $belong_temp_array[0][0] != 'action=deleform'){
+
+    $belong = $href_url.'?'.$belong_array[0][0].'|||'.$belong_temp_array[0][0];
+  }else{
+    if($belong_temp_array[0][0] == 'action=input'){
+      $belong = $href_url.'?'.$belong_temp_array[0][0];
+    }else{
+      $belong = $href_url;
+    }
+  }
+}else{
+
+  $belong = $href_url;
+}
+require("includes/note_js.php");
+?>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onLoad="SetFocus();">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
@@ -194,7 +217,7 @@ function msg2(){
         <!-- left_navigation_eof //-->
       </table></td>
     <!-- body_text //-->
-    <td width="100%" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="1" align="center">
+    <td width="100%" valign="top"><?php echo $notes;?><table width="100%" border="0" cellspacing="0" cellpadding="1" align="center">
         <tr>
           <td><!-- insert -->
             <?php
@@ -222,7 +245,7 @@ case 'input' :
                               <td class="main" width="630" bgcolor="#FFFFFF"><input name="title" type="text"></td>
                             </tr>
                             <tr>
-                              <td class="main" width="150" bgcolor="#FFFFFF"><?php echo PRESENT_PIC_TEXT;?></td>
+                              <td class="main" width="150" bgcolor="#FFFFFF"><?php echo PRESENT_IMAGE_TEXT;?></td>
                               <td class="main" width="630" bgcolor="#FFFFFF"><input type="file" name="file"></td>
                             </tr>
                             <tr>
@@ -405,7 +428,7 @@ $sele_lid = substr($sql1['limit_date'],8,2);
                               <td class="main" width="630" bgcolor="#FFFFFF"><input name="title" type="text" value="<?php echo $sql1['title'] ;?>"></td>
                             </tr>
                             <tr>
-                              <td class="main" width="150" bgcolor="#FFFFFF"><?php echo PRESENT_PIC_TEXT;?></td>
+                              <td class="main" width="150" bgcolor="#FFFFFF"><?php echo PRESENT_IMAGE_TEXT;?></td>
                               <td class="main" width="630" bgcolor="#FFFFFF">
                 <?php 
                 if($sql1['image']){

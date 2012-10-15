@@ -2092,6 +2092,26 @@ if (!isset($_GET['action'])) {
 ?>
 var popup_num = 1;
 </script>
+<?php 
+$href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
+$belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
+$belong = preg_replace('/\?XSID=[^&]+/','',$belong);
+preg_match_all('/action=[^&]+/',$belong,$belong_temp_array);
+if($belong_temp_array[0][0] != ''){
+  preg_match_all('/oID=[^&]+/',$belong,$belong_array);
+  if($belong_array[0][0] != ''){
+
+    $belong = $href_url.'?'.$belong_array[0][0];
+  }else{
+
+    $belong = $href_url;
+  }
+}else{
+
+  $belong = $href_url;
+}
+require("includes/note_js.php");
+?>
 </head>
 <body>
 <?php
@@ -2122,7 +2142,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     }
 ?>
 <!-- body_text //-->
-<td width="100%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+<td width="100%" valign="top"><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
 if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) {
   // edit start

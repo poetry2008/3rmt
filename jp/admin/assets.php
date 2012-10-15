@@ -82,6 +82,10 @@ charset=<?php echo CHARSET; ?>">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <title><?php echo ASSETS_TITLE;?></title>
+<?php 
+$belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
+require("includes/note_js.php");
+?>
 </head>
 <body>
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
@@ -107,7 +111,7 @@ charset=<?php echo CHARSET; ?>">
       echo '<td>&nbsp;</td>';
     }
 ?>
-<td width="100%" valign="top">
+<td width="100%" valign="top"><?php echo $notes;?>
 <?php
 if(isset($_GET['pid'])&&$_GET['pid']!=''){
   echo "<div class = 'title_breadcreumb_div'>";

@@ -598,6 +598,11 @@ function clear_all(ele,cid) {
   });
 }
 </script>
+<?php 
+$belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
+$belong = str_replace('&','|||',$belong);
+require("includes/note_js.php");
+?>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
 <!-- header //-->
@@ -613,7 +618,7 @@ function clear_all(ele,cid) {
 <!-- left_navigation_eof //-->
     </table>
     </td>
-    <td valign="top"  width="100%">   
+    <td valign="top"  width="100%"><?php echo $notes;?>   
       <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
               <td class="pageHeading"><?php echo HEADING_TITLE;?></td> 

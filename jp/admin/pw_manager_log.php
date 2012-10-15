@@ -66,6 +66,10 @@ function delete_all(){
   }
 }
 </script>
+<?php 
+$belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
+require("includes/note_js.php");
+?>
 </head>
 <body>
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
@@ -95,7 +99,7 @@ function delete_all(){
   }
 ?>
 <!-- body_text //-->
-    <td width="100%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="0">
+<td width="100%" valign="top"><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
       <td width="100%" colspan='2'>
   

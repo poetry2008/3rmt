@@ -156,7 +156,10 @@ function show_option_group_ajax( id, pos , end)
   });
 }	
   </script>
-
+<?php 
+$belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
+require("includes/note_js.php");
+?>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onload="SetFocus();">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
@@ -176,7 +179,7 @@ function show_option_group_ajax( id, pos , end)
 <!-- left_navigation //--> <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> <!-- left_navigation_eof //-->
     </td></tr></table></td>
 <!-- body_text //-->
-    <td width="100%" valign="top"><table border="0" id="group_list_box" width="100%" cellspacing="0" cellpadding="2">
+    <td width="100%" valign="top"><?php echo $notes;?><table border="0" id="group_list_box" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td><table   border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>

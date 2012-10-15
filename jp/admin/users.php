@@ -1480,7 +1480,7 @@ function formConfirm(type) {
   戻り値 : なし
  --------------------------------------*/
 function PageHeader() {
-  global $ocertify,$page_name;
+  global $ocertify,$page_name,$notes;
   echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">' . "\n";
   echo '<html ' . HTML_PARAMS . '>' . "\n";
   echo '<head>' . "\n";
@@ -1500,7 +1500,8 @@ function PageHeader() {
 
   echo '<script language="javascript" src="includes/javascript/jquery_include.js"></script>'."\n";
   echo '<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>'."\n";
-
+  $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
+  require("includes/note_js.php");
   echo '</head>' . "\n";
   echo '<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">' . "\n";
   if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){
@@ -1545,10 +1546,11 @@ function PageBodyTable($mode='t') {
   戻り値 : なし
  --------------------------------------*/
 function PageBody($mode='t', $stitle = "") {
+  global $notes;
   switch ($mode) {
   case 't':
     echo '<!-- body_text -->' . "\n";
-    echo '    <td width="100%" valign="top" class="box"><table border="0" width="100%" cellspacing="0" cellpadding="2">' . "\n";
+    echo '    <td width="100%" valign="top" class="box">'. $notes.'<table border="0" width="100%" cellspacing="0" cellpadding="2">' . "\n";
     echo '      <tr>' . "\n";
     echo '        <td><table border="0" width="100%" cellspacing="0" cellpadding="0">' . "\n";
     echo '          <tr>' . "\n";

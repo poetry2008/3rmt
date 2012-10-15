@@ -1335,6 +1335,10 @@ overflow:hidden;
 float:left;
 }
 </style>
+<?php 
+$belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
+require("includes/note_js.php");
+?>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
@@ -1371,7 +1375,7 @@ if($_GET['action'] != 'add_product'){
       </table>
     </td>
     <!-- body_text //-->
-    <td width="100%" valign="top">
+    <td width="100%" valign="top"><?php echo $notes;?>
       <table border="0" width="96%" cellspacing="0" cellpadding="2">
 <?php
 if (($action == 'edit') && ($order_exists == true)) {

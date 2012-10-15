@@ -3,22 +3,8 @@ $notes = '';
 $left='';  
 $top='';  
 $zindex='';  
-$href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
-$belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
-$belong = preg_replace('/\?XSID=[^&]+/','',$belong);
-//$belong = preg_replace('/\??&cID=[^&]+/','',$belong);
-preg_match_all('/cPath=[^&]+/',$belong,$belong_array);
-if($belong_array[0][0] != ''){
-
-  $belong = $href_url.'?'.$belong_array[0][0];
-}else{
-
-  $belong = $href_url;
-}
-$belong_flag = $belong; 
-$belong = str_replace('?','|||',$belong);
 $user_info = tep_get_user_info($ocertify->auth_user);
-$query = tep_db_query("select * from notes where (belong='".$belong."' or belong='".$belong_flag."') and (attribute='1' or (attribute='0' and author='".$user_info['name']."'))  order by id desc");
+$query = tep_db_query("select * from notes where belong='".$belong."' and (attribute='1' or (attribute='0' and author='".$user_info['name']."'))  order by id desc");
 $note_arr = array();
 $height_arr = array();
 while($row=tep_db_fetch_array($query)){
@@ -57,9 +43,22 @@ while($row=tep_db_fetch_array($query)){
 <?php if(!empty($height_arr)){?>
 <script language="javascript">
 $(document).ready(function() { 
+var scroll_width = document.body.scrollWidth;  
+var note_width;
+var note_left;
 $('.demo').height($('#main_table').height());
 <?php
 foreach($note_arr as $note_row){
+?>
+note_width = $("#note_<?php echo $note_row;?>").width();
+note_width = parseInt(note_width);
+note_left = $("#note_<?php echo $note_row;?>").css("left");
+note_left = note_left.replace('px','');
+note_left = parseInt(note_left);
+if((note_left+note_width) > scroll_width){
+  $("#note_<?php echo $note_row;?>").css("left",scroll_width-note_width);
+}
+<?php
   echo "$('#note_".$note_row."').resizable({ 
     alsoResize: '#note_text_".$note_row."',
     stop: function(e) {

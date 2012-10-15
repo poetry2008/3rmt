@@ -10,6 +10,10 @@
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<?php 
+$belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
+require("includes/note_js.php");
+?>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
@@ -28,6 +32,12 @@
     $dat[2] => 姓名
   */
     // CSVファイルのチェック
+    echo '<table border="0" width="100%" cellspacing="2" cellpadding="2">';
+    echo '<tr>';
+    echo '<td width="'.BOX_WIDTH.'" valign="top"><table border="0" width="'.BOX_WIDTH.'" cellspacing="1" cellpadding="1" class="columnLeft">';
+    require(DIR_WS_INCLUDES . 'column_left.php');
+    echo '</table></td>';
+    echo '<td width="100%" valign="top">';
     $chk_csv = true;
     $filename = isset($HTTP_POST_FILES['products_csv']['name'])?$HTTP_POST_FILES['products_csv']['name']:'';
     if(substr($filename, strrpos($filename,".")+1)!="csv") $chk_csv = false;
@@ -110,7 +120,8 @@
     echo "<font color='#CC0000'><b>アップロードできませんでした。<br>所定のCSVファイルを参照してください。</b></font>";
   }
   
-  echo '<br><br><br><a href="mag_up.php">戻る</a>';
+    echo '<br><br><br><a href="mag_up.php">戻る</a>';
+    echo '</td></tr></table>';
   } else {
 ?>
 <!-- body //-->
@@ -122,7 +133,7 @@
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-    <td width="100%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="0">
+    <td width="100%" valign="top"><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="0">
       <tr>
         <td width="100%"><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>

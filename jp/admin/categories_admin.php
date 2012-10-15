@@ -105,7 +105,25 @@ $(window).resize(function (){
     }
   })
   </script>
-<?php require("includes/note_js.php");?>
+<?php 
+$href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
+$belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
+$belong = preg_replace('/\?XSID=[^&]+/','',$belong);
+preg_match_all('/cPath=[^&]+/',$belong,$belong_array);
+if($belong_array[0][0] != ''){
+
+  if($belong_array[0][0] != 'cPath=0'){
+    $belong = $href_url.'?'.$belong_array[0][0];
+  }else{
+    $belong = $href_url;
+  }
+}else{
+
+  $belong = $href_url;
+}
+$belong = str_replace('0_','',$belong);
+require("includes/note_js.php");
+?>
   </head>
   <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" >
   <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
