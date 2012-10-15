@@ -76,7 +76,7 @@ while($array = tep_db_fetch_array($query)){
 var left = $("#note_<?php echo $array['id']?>").css("left"); 
 left = left.replace("px","");
 left = parseInt(left);
-    $("#note_<?php echo $array['id']?>").css("left",(left+125)+"px");
+    $("#note_<?php echo $array['id']?>").css("left",(left+160)+"px");
 
 <?php
 }
@@ -102,7 +102,7 @@ while($array = tep_db_fetch_array($query)){
 var left = $("#note_<?php echo $array['id']?>").css("left"); 
 left = left.replace("px","");
 left = parseInt(left);
-    $("#note_<?php echo $array['id']?>").css("left",(left-125)+"px");
+    $("#note_<?php echo $array['id']?>").css("left",(left-160)+"px");
 
 <?php
 }
