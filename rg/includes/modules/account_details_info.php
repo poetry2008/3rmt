@@ -611,7 +611,7 @@ $(document).ready(function(){
         <input type="hidden" id="first_name" name="lastname" value="">
         <input type="hidden" id="end_name" name="firstname" value="">
         <input type="hidden" id="email" name="email_address" value="">
-        <input type="hidden" id="old_email" name="old_email_id" value="">
+        <input type="hidden" id="old_email_id" name="old_email" value="">
         <input type="hidden" id="options" name="newsletter" value="">
         <input type="hidden" id="pwd" name="password" value="">
         <input type="hidden" id="pwd_1" name="confirmation" value="">
