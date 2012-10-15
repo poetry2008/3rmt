@@ -395,22 +395,8 @@ if (isset($ocertify->npermission) || $ocertify->npermission) {
 if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
   echo '
     <table>
-    <tr>';
-  $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
-  $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
-  $belong = preg_replace('/\?XSID=[^&]+/','',$belong);
-  //$belong = preg_replace('/\??&cID=[^&]+/','',$belong);
-  preg_match_all('/\??&?cPath=[^&]+/',$belong,$belong_array);
-  if($belong_array[0][0] != ''){
-
-    $belong = $href_url.$belong_array[0][0];
-  }else{
-    $belong = $href_url;
-  }
-  $belong = str_replace('&','|||',$belong);
-  if($href_url == FILENAME_CATEGORIES_ADMIN || $href_url == FILENAME_CATEGORIES){
-    echo '<td><a class="headerLink" href="add_note.php?author='.$user_info['name'].'&belong='.$belong.'" id="fancy">'.TEXT_ADD_NOTE.'</a>&nbsp;|</td>';
-  }
+    <tr>'; 
+  echo '<td><a class="headerLink" href="add_note.php?author='.$user_info['name'].'&belong='.$belong.'" id="fancy">'.TEXT_ADD_NOTE.'</a>&nbsp;|</td>';
   echo '
     <td><a class="headerLink" href="javascript:void(0);" onclick="toggle_header_menu(\'headerorder\')">'.HEADER_TEXT_ORDER_INFO.'</a>&nbsp;|<br>
     <table class="menu01" id="headerorder" cellpadding="0" cellspacing="0">

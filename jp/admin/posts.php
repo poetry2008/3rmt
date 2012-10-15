@@ -54,7 +54,6 @@ $xyz = '20|104|'.$zIndex;
 }else{
 $xyz = '145|104|'.$zIndex;
 }
-$xyz = $belong == FILENAME_DEFAULT ? '0|0|'.$zIndex : $xyz;
 $xlen = '460';
 $ylen = '150';
 $query = tep_db_query("insert into notes(title,content,color,xyz,addtime,attribute,author,belong)values

@@ -592,7 +592,22 @@ $("#xhe0_iframe").attr("style","width:100%;height:1000px");
 
 });
 </script>
+<?php 
+$href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
+$belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
+$belong = preg_replace('/\?XSID=[^&]+/','',$belong);
+preg_match_all('/action=[^&]+/',$belong,$belong_array);
+if($belong_array[0][0] != ''){
 
+  $belong = preg_replace('/&site_id=[^&]*/','',$belong); 
+  $belong = preg_replace('/&page=[^&]*/','',$belong);
+}else{
+
+  $belong = $href_url;
+}
+$belong = str_replace('&','|||',$belong);
+require("includes/note_js.php");
+?>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onload="SetFocus();">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
@@ -611,7 +626,7 @@ $("#xhe0_iframe").attr("style","width:100%;height:1000px");
 <!-- left_navigation --> <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> <!-- left_navigation_eof -->
     </td></tr></table>
 <!-- body_text //-->
-<td width="100%" valign = "top" id='categories_right_td'><table border="0" width="100%" cellspacing="0" cellpadding="2">
+<td width="100%" valign = "top" id='categories_right_td'><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="2">
 <tr>
 
 <td class="pageHeading"><?php echo $title_char;  ?></td>
@@ -623,7 +638,7 @@ $("#xhe0_iframe").attr("style","width:100%;height:1000px");
 <table width="100%">
 
 <tr><td id="emd" >
-<textarea id="elm1" class="" cols="207" rows="20" name="manual" ><?php echo stripcslashes($manual_content);?></textarea>
+<textarea id="elm1" class="" cols="207" rows="20" name="manual" style="width:100%;height:100%;"><?php echo stripcslashes($manual_content);?></textarea>
 
 
 <td></tr>

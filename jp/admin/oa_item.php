@@ -218,6 +218,13 @@ function deltr(index)
   $("tr[id=\'"+index+"\']").remove();
 }
 </script>
+<?php 
+$belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
+$belong = preg_replace('/\?XSID=[^&]+/','',$belong);
+$belong = str_replace('&','|||',$belong);
+require("includes/note_js.php");
+$belong = urlencode($belong);
+?>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onload="SetFocus();">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
@@ -237,7 +244,7 @@ function deltr(index)
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-    <td width="100%" valign="top">
+<td width="100%" valign="top"><?php echo $notes;?>
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
     <tr>
     	<td class="pageHeading" height="40"><?php echo TEXT_ITEM_MANAGE;?></td>

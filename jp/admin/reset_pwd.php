@@ -138,6 +138,10 @@ function reset_customers_pwd() {
 	position:absolute;
 }
 </style>
+<?php 
+$belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
+require("includes/note_js.php");
+?>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onload="SetFocus();">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
@@ -160,7 +164,7 @@ function reset_customers_pwd() {
     </table></td>
     <!-- body_text //-->
 
-    <td width="100%" valign="top">
+    <td width="100%" valign="top"><?php echo $notes;?>
     <table border="0" cellpadding="2" cellspacing="0" width="100%">
     <tr><td height="40" class="pageHeading"><?php echo TEXT_RESET_PWD_TITLE;?></td></tr>
     <tr>
