@@ -772,6 +772,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         }
         $s_status_raw = tep_db_query("select nomail from ".TABLE_PREORDERS_STATUS." where orders_status_id = '".$status."'");  
         $s_status_res = tep_db_fetch_array($s_status_raw);
+        $email = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$email);
         if ($s_status_res['nomail'] != 1) {
           tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $preorder_email_title, $email, get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
           
@@ -1684,6 +1685,20 @@ float:left;
 	position:absolute;
 }
 </style>
+<?php 
+$href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
+$belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
+$belong = preg_replace('/\?XSID=[^&]+/','',$belong);
+preg_match_all('/oID=[^&]+/',$belong,$belong_array);
+if($belong_array[0][0] != ''){
+
+  $belong = $href_url.'?'.$belong_array[0][0];
+}else{
+
+  $belong = $href_url;
+}
+require("includes/note_js.php");
+?>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
@@ -1716,7 +1731,7 @@ float:left;
       </table>
     </td>
     <!-- body_text //-->
-    <td width="100%" valign="top">
+    <td width="100%" valign="top"><?php echo $notes;?>
       <table border="0" width="96%" cellspacing="0" cellpadding="2">
 <?php
   if (($action == 'edit') && ($order_exists == true)) {

@@ -140,6 +140,12 @@ function ex(id,tr_len){
   ?>
 
 </title>
+<?php 
+$belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
+$belong = preg_replace('/\?XSID=[^&]+/','',$belong);
+$belong = str_replace('&','|||',$belong);
+require("includes/note_js.php");
+?>
   </head>
   <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" >
   <a name="top"></a>
@@ -152,7 +158,7 @@ function ex(id,tr_len){
               <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
            </table>
         </td>
-        <td width="100%" valign="top">
+        <td width="100%" valign="top"><?php echo $notes;?>
            <table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr>
                  <td class = "pageHeading">

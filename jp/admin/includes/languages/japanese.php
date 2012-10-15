@@ -685,12 +685,16 @@ define('TEXT_FIND_DATA_STOP','%sをさがしましたが、表示を停止しま
 define('TEXT_NOT_ENOUGH_DATA','前からの&nbsp;50&nbsp;件検索結果に不重複な結果は&nbsp;%s&nbsp;件があります');
 define('CLEATE_DOUGYOUSYA_ALERT', 'まず、入力フォーム追加してください');
 define('BUTTON_MANUAL','マニュアル');
-define('TEXT_BUTTON_ADD','入力フォームを追加');
 define('HELP_INFO_TITLE','ヘルプ情報管理');
 define('TEXT_JAVASCRIPT_ERROR','JavaScriptまたはCookieの設定がオンになっていません。お手数ですが設定を「オン」にして、ご利用ください。<br>※ 設定がオフになっていますと、ご利用いただけないサービスがあります。');
 define('TEXT_HEADER_HELP','ヘルプ');
 define('HEADER_TEXT_PERSONAL_SETTING','個人設定');
 define('TEXT_FLAG_CHECKED','確認済');
 define('TEXT_FLAG_UNCHECK','未確認');
+
+define('BOX_HEADING_USER', 'ユーザ');
+define('BOX_USER_ADMIN', 'ユーザ管理');
+define('BOX_USER_LOG', 'アクセスログ');
+define('BOX_USER_LOGOUT', 'ログアウト');
 define('JUMP_PAGE_TEXT', 'ページへ');
 define('JUMP_PAGE_BUTTON_TEXT', '移動');

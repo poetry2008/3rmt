@@ -105,7 +105,25 @@ $(window).resize(function (){
     }
   })
   </script>
-<?php require("includes/note_js.php");?>
+<?php 
+$href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
+$belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
+$belong = preg_replace('/\?XSID=[^&]+/','',$belong);
+preg_match_all('/cPath=[^&]+/',$belong,$belong_array);
+if($belong_array[0][0] != ''){
+
+  if($belong_array[0][0] != 'cPath=0'){
+    $belong = $href_url.'?'.$belong_array[0][0];
+  }else{
+    $belong = $href_url;
+  }
+}else{
+
+  $belong = $href_url;
+}
+$belong = str_replace('0_','',$belong);
+require("includes/note_js.php");
+?>
   </head>
   <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" >
   <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
@@ -676,7 +694,7 @@ if(empty($cPath_back)&&empty($cID)&&isset($cPath)){
 </tr>
 <!--dataTableRowSelected end-->
 <tr>
-  <td class="smallText" valign="top"><?php echo $products_split->display_count($products_query_numrows, MAX_DISPLAY_PRODUCTS_ADMIN, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?></td>
+  <td class="smallText" valign="top"><?php echo $products_split->display_count($products_query_numrows, MAX_DISPLAY_PRODUCTS_ADMIN, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CATEGORIES); ?></td>
   <td class="smallText" align="right" colspan="<?php echo 10 + $count_dougyousya['cnt'];?>"><?php echo $products_split->display_links($products_query_numrows, MAX_DISPLAY_PRODUCTS_ADMIN, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'pID'))); ?> </td>
 </tr>
 <tr>

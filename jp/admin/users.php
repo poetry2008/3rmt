@@ -1,17 +1,4 @@
 <?php
-/* *********************************************************
-  モジュール名: users.php
- * 2001/5/29
- *   modi 2002-05-10
- * Naomi Suzukawa
- * suzukawa@bitscope.co.jp
-  ----------------------------------------------------------
-ユーザ管理
-
-  ■変更履歴
-  2003-04-07 add  $HTTP_POST_VERS に対応させる（PHP スーパーグローバル変数[$_POST]への対応は次回とする）
-********************************************************* */
-
 /* ===============================================
   global 定数
  ============================================== */
@@ -1292,7 +1279,98 @@ function UserDelete_execute() {
   echo "</form>\n";                 // フォームのフッター
 
   if ($oresult) @tep_db_free_result($oresult);    // 結果オブジェクトを開放する
+  
+  $orders_users_query = tep_db_query("select orders_id,read_flag from ". TABLE_ORDERS ." where read_flag != ''");
+  while($orders_users_array = tep_db_fetch_array($orders_users_query)){
 
+    $orders_users_info_array = explode('|||',$orders_users_array['read_flag']);   
+    if(in_array($GLOBALS['userid'],$orders_users_info_array)){
+
+      unset($orders_users_info_array[array_search($GLOBALS['userid'],$orders_users_info_array)]);
+      $orders_users_info_str = implode('|||',$orders_users_info_array);
+      tep_db_query("update ". TABLE_ORDERS ." set read_flag='".$orders_users_info_str."' where orders_id='".$orders_users_array['orders_id']."'");
+    }
+  }
+  tep_db_free_result($orders_users_query);
+
+  $preorders_users_query = tep_db_query("select orders_id,read_flag from ". TABLE_PREORDERS ." where read_flag != ''");
+  while($preorders_users_array = tep_db_fetch_array($preorders_users_query)){
+
+    $preorders_users_info_array = explode('|||',$preorders_users_array['read_flag']);   
+    if(in_array($GLOBALS['userid'],$preorders_users_info_array)){
+
+      unset($preorders_users_info_array[array_search($GLOBALS['userid'],$preorders_users_info_array)]);
+      $preorders_users_info_str = implode('|||',$preorders_users_info_array);
+      tep_db_query("update ". TABLE_PREORDERS ." set read_flag='".$preorders_users_info_str."' where orders_id='".$preorders_users_array['orders_id']."'");
+    }
+  }
+  tep_db_free_result($preorders_users_query);
+
+  if(PERSONAL_SETTING_ORDERS_SITE != ''){
+
+    $orders_site_array = unserialize(PERSONAL_SETTING_ORDERS_SITE);
+    if(array_key_exists($GLOBALS['userid'],$orders_site_array)){
+
+      unset($orders_site_array[$GLOBALS['userid']]);
+      $orders_site_str = serialize($orders_site_array);
+      tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$orders_site_str."' where configuration_key='PERSONAL_SETTING_ORDERS_SITE'");
+    }
+  }
+
+  if(PERSONAL_SETTING_ORDERS_WORK != ''){
+
+    $orders_work_array = unserialize(PERSONAL_SETTING_ORDERS_WORK);
+    if(array_key_exists($GLOBALS['userid'],$orders_work_array)){
+
+      unset($orders_work_array[$GLOBALS['userid']]);
+      $orders_work_str = serialize($orders_work_array);
+      tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$orders_work_str."' where configuration_key='PERSONAL_SETTING_ORDERS_WORK'");
+    }
+  }
+
+  if(PERSONAL_SETTING_ORDERS_SORT != ''){
+
+    $orders_sort_array = unserialize(PERSONAL_SETTING_ORDERS_SORT);
+    if(array_key_exists($GLOBALS['userid'],$orders_sort_array)){
+
+      unset($orders_sort_array[$GLOBALS['userid']]);
+      $orders_sort_str = serialize($orders_sort_array);
+      tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$orders_sort_str."' where configuration_key='PERSONAL_SETTING_ORDERS_SORT'");
+    }
+  }
+
+  if(PERSONAL_SETTING_PREORDERS_SITE != ''){
+
+    $preorders_site_array = unserialize(PERSONAL_SETTING_PREORDERS_SITE);
+    if(array_key_exists($GLOBALS['userid'],$preorders_site_array)){
+
+      unset($preorders_site_array[$GLOBALS['userid']]);
+      $preorders_site_str = serialize($preorders_site_array);
+      tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$preorders_site_str."' where configuration_key='PERSONAL_SETTING_PREORDERS_SITE'");
+    }
+  }
+
+  if(PERSONAL_SETTING_PREORDERS_WORK != ''){
+
+    $preorders_work_array = unserialize(PERSONAL_SETTING_PREORDERS_WORK);
+    if(array_key_exists($GLOBALS['userid'],$preorders_work_array)){
+
+      unset($preorders_work_array[$GLOBALS['userid']]);
+      $preorders_work_str = serialize($preorders_work_array);
+      tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$preorders_work_str."' where configuration_key='PERSONAL_SETTING_PREORDERS_WORK'");
+    }
+  }
+
+  if(PERSONAL_SETTING_PREORDERS_SORT != ''){
+
+    $preorders_sort_array = unserialize(PERSONAL_SETTING_PREORDERS_SORT);
+    if(array_key_exists($GLOBALS['userid'],$preorders_sort_array)){
+
+      unset($preorders_sort_array[$GLOBALS['userid']]);
+      $preorders_sort_str = serialize($preorders_sort_array);
+      tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$preorders_sort_str."' where configuration_key='PERSONAL_SETTING_PREORDERS_SORT'");
+    }
+  }
   return TRUE;
 
 }
@@ -1480,7 +1558,7 @@ function formConfirm(type) {
   戻り値 : なし
  --------------------------------------*/
 function PageHeader() {
-  global $ocertify,$page_name;
+  global $ocertify,$page_name,$notes;
   echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">' . "\n";
   echo '<html ' . HTML_PARAMS . '>' . "\n";
   echo '<head>' . "\n";
@@ -1500,7 +1578,8 @@ function PageHeader() {
 
   echo '<script language="javascript" src="includes/javascript/jquery_include.js"></script>'."\n";
   echo '<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>'."\n";
-
+  $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
+  require("includes/note_js.php");
   echo '</head>' . "\n";
   echo '<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">' . "\n";
   if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){
@@ -1545,10 +1624,11 @@ function PageBodyTable($mode='t') {
   戻り値 : なし
  --------------------------------------*/
 function PageBody($mode='t', $stitle = "") {
+  global $notes;
   switch ($mode) {
   case 't':
     echo '<!-- body_text -->' . "\n";
-    echo '    <td width="100%" valign="top" class="box"><table border="0" width="100%" cellspacing="0" cellpadding="2">' . "\n";
+    echo '    <td width="100%" valign="top" class="box">'. $notes.'<table border="0" width="100%" cellspacing="0" cellpadding="2">' . "\n";
     echo '      <tr>' . "\n";
     echo '        <td><table border="0" width="100%" cellspacing="0" cellpadding="0">' . "\n";
     echo '          <tr>' . "\n";

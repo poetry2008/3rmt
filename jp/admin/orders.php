@@ -2312,6 +2312,26 @@ if (!isset($_GET['action'])) {
 ?>
 var popup_num = 1;
 </script>
+<?php 
+$href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
+$belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
+$belong = preg_replace('/\?XSID=[^&]+/','',$belong);
+preg_match_all('/action=[^&]+/',$belong,$belong_temp_array);
+if($belong_temp_array[0][0] != ''){
+  preg_match_all('/oID=[^&]+/',$belong,$belong_array);
+  if($belong_array[0][0] != ''){
+
+    $belong = $href_url.'?'.$belong_array[0][0];
+  }else{
+
+    $belong = $href_url;
+  }
+}else{
+
+  $belong = $href_url;
+}
+require("includes/note_js.php");
+?>
 </head>
 <body>
 <?php
@@ -2342,7 +2362,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     }
 ?>
 <!-- body_text //-->
-<td width="100%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+<td width="100%" valign="top"><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
 if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) {
   // edit start
@@ -2885,7 +2905,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
   <?php
       for ($i = 0, $n = sizeof($order->products); $i < $n; $i++) {
         echo '    <tr class="dataTableRow">' . "\n" . 
-       '      <td class="dataTableContent" valign="top" align="right">' . $order->products[$i]['qty']. tep_get_full_count2($order->products[$i]['qty'], $order->products[$i]['id'], $order->products[$i]['rate']) . '&nbsp;x</td>' . "\n" .
+       '      <td class="dataTableContent" valign="top" align="right" nowrap>' . $order->products[$i]['qty']. tep_get_full_count2($order->products[$i]['qty'], $order->products[$i]['id'], $order->products[$i]['rate']) . '&nbsp;x</td>' . "\n" .
        '      <td class="dataTableContent" valign="top">' . $order->products[$i]['name'];
         if ($order->products[$i]['price'] != '0') {
           if ($order->products[$i]['price'] < 0) {
@@ -2926,14 +2946,16 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
           }
       foreach($all_show_option_id as $t_item_id){
             if (is_array($all_show_option[$t_item_id]['option_info'])) {
-              echo '<br><nobr>&nbsp; - ' .  $all_show_option[$t_item_id]['option_info']['title'] . ': ' .  str_replace(array("<br>", "<BR>"), "",$all_show_option[$t_item_id]['option_info']['value']);
-            }
-            if ($all_show_option[$t_item_id]['price'] != '0'){
-              echo ' (' .$currencies->format($all_show_option[$t_item_id]['price'], true, $order->info['currency'], $order->info['currency_value']) . ')';
-            }
-            if (is_array($all_show_option[$t_item_id]['option_info'])) {
-              echo '</nobr>';
-            }
+              echo '<table><tr><td valign="top">-&nbsp; </td><td>' .  $all_show_option[$t_item_id]['option_info']['title'] . ': ' .  str_replace(array("<br>", "<BR>"), "",$all_show_option[$t_item_id]['option_info']['value']);
+			  if ($all_show_option[$t_item_id]['price'] != '0'){
+                echo ' (' .$currencies->format($all_show_option[$t_item_id]['price'], true, $order->info['currency'], $order->info['currency_value']) . ')';
+              }
+			  echo '</td></tr>';
+            }  
+			       
+			if (is_array($all_show_option[$t_item_id]['option_info'])) {
+			  echo '</table>';
+			}
       }
 }
               
@@ -2952,7 +2974,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
               }
 
               echo '      </td>' . "\n" .
-                '      <td class="dataTableContent" valign="top">' . $order->products[$i]['model'] . '</td>' . "\n" .
+                '      <td class="dataTableContent" valign="top" nowrap>' . $order->products[$i]['model'] . '</td>' . "\n" .
                 '      <td class="dataTableContent" align="right" valign="top">' . tep_display_tax_value($order->products[$i]['tax']) . '%</td>' . "\n" .
                 '      <!--<td class="dataTableContent" align="right" valign="top"><b>' . $currencies->format($order->products[$i]['final_price'], true, $order->info['currency'], $order->info['currency_value']) . '</b></td>-->' . "\n" .
                 '      <td class="dataTableContent" align="right" valign="top"><b>';

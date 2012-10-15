@@ -1353,7 +1353,50 @@ function handle_option()
    } 
 }
 </script>
-<?php require("includes/note_js.php");?>
+<?php 
+$href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
+$belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
+$belong = preg_replace('/\?XSID=[^&]+/','',$belong);
+preg_match_all('/cPath=[^&]+/',$belong,$belong_array);
+preg_match_all('/pID=[^&]+/',$belong,$belong_pid_array);
+if($belong_array[0][0] != ''){
+
+  if(preg_match('/action=new_product_preview/',$belong)){
+    if(preg_match('/read=only/',$belong)){
+      $belong = $href_url.'?'.$belong_array[0][0].'|||'.$belong_pid_array[0][0];
+    }else{
+      if($belong_pid_array[0][0] != ''){
+        $belong = $href_url.'?'.$belong_array[0][0].'|||action=new_product|||'.$belong_pid_array[0][0]; 
+      }else{
+        $belong = $href_url.'?'.$belong_array[0][0].'|||action=new_product'; 
+      }
+    }
+  }else{
+    if($belong_array[0][0] != 'cPath=0'){
+      if(preg_match('/action=new_product/',$belong)){
+        if($belong_pid_array[0][0] != ''){
+          $belong = $href_url.'?'.$belong_array[0][0].'|||action=new_product|||'.$belong_pid_array[0][0];
+        }else{
+          $belong = $href_url.'?'.$belong_array[0][0].'|||action=new_product'; 
+        }
+      }else{
+        $belong = $href_url.'?'.$belong_array[0][0]; 
+      }
+    }else{
+      $belong = $href_url; 
+    }
+  }
+}else{
+
+  if(preg_match('/action=new_product_preview/',$belong)){
+    $belong = $href_url.'?'.$belong_pid_array[0][0];
+  }else{
+    $belong = $href_url; 
+  }
+}
+$belong = str_replace('0_','',$belong);
+require("includes/note_js.php");
+?>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" >
 <?php
@@ -3627,7 +3670,7 @@ $unaccept_pro_edit_single = false;
     $cPath_back = isset($cPath_back) && $cPath_back ? 'cPath=' . $cPath_back : '';
 ?>
   <tr>
-    <td class="smallText" valign="top"><?php echo $products_split->display_count($products_query_numrows, MAX_DISPLAY_PRODUCTS_ADMIN, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?></td>
+    <td class="smallText" valign="top"><?php echo $products_split->display_count($products_query_numrows, MAX_DISPLAY_PRODUCTS_ADMIN, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CATEGORIES); ?></td>
     <td class="smallText" align="right" colspan="4">
       <?php echo $products_split->display_links($products_query_numrows, MAX_DISPLAY_PRODUCTS_ADMIN, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'pID'))); ?>
     </td>

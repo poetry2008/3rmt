@@ -185,7 +185,6 @@
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <script language="javascript" src="includes/javascript/jquery.form.js"></script>
-<script language="javascript" src="includes/javascript/jquery.autocomplete.js"></script>
 <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
 <script type="text/javascript">
 $(function() {
@@ -445,6 +444,15 @@ overflow:hidden;
 float:left;
 }
 </style>
+<?php 
+$belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
+if($belong == 'create_preorder_process.php'){
+
+  $belong = 'create_preorder.php';
+}
+require("includes/note_js.php");
+?>
+<script language="javascript" src="includes/javascript/jquery.autocomplete.js"></script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
@@ -466,7 +474,7 @@ float:left;
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-    <td width="100%" valign="top">
+<td width="100%" valign="top"><?php echo $notes;?>
   <table border='0' bgcolor='#7c6bce' width='100%'>
       <tr>
         <td class="main"><font color="#ffffff"><b><?php echo TEXT_STEP_1 ?></b></font></td>

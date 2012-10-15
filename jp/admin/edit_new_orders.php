@@ -358,6 +358,7 @@ if($orders_exit_flag == true){
                 get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
                 date('Y'.TEXT_DATE_YEAR.'n'.TEXT_DATE_MONTH.'j'.TEXT_DATE_DAY,strtotime(tep_get_pay_day()))
               ),$comments);
+        $comments = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL, $comments);
         if ($customer_guest['is_send_mail'] != '1') {
 
           tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
@@ -1218,6 +1219,7 @@ if($address_error == false){
               //$email_order = $payment_class->getOrderMailString($mailoption);  
             //bobhero end}}}  
   // new send mail 
+            $email = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$email);
             tep_mail($check_status['customers_name'], $check_status['customers_email_address'], SENDMAIL_TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
           }
             tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), SENDMAIL_TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
@@ -1232,6 +1234,7 @@ if($address_error == false){
           $email_credit =  $payment_modules->admin_process_pay_email(
                   payment::changeRomaji($payment_method,PAYMENT_RETURN_TYPE_CODE),
                 $order,$total_price_mail);
+          $email_credit = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$email_credit);
           if($email_credit){
             if ($customer_guest['is_send_mail'] != '1'){
                 tep_mail($check_status['customers_name'], $check_status['customers_email_address'], SENDMAIL_TEXT_CARD_PAYMENT . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email_credit, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']), $order->info['site_id']);
@@ -1518,6 +1521,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
   $payment_name_string = str_replace($payment_mode,$payment_replace,$payment_name_string);  
   $email_printing_order = $payment_name_string; 
   $email_printing_order_title = str_replace('${SITE_NAME}',$orders_site_name_array['name'],$payment_name_string_title);
+  $email_printing_order = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL, $email_printing_order);
   # ------------------------------------------
   if($payment_name_num_rows_flag > 0){
   tep_mail('',
@@ -3140,6 +3144,10 @@ function change_fetch_date() {
   }
 }
 </script>
+<?php 
+$belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
+require("includes/note_js.php");
+?>
     </head>
     <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
     <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
@@ -3194,7 +3202,7 @@ a.dpicker {
         </table>
         </td>
         <!-- body_text //-->
-        <td width="100%" valign="top">
+        <td width="100%" valign="top"><?php echo $notes;?>
         <table border="0" width="96%" cellspacing="0" cellpadding="2">
         <?php
         if ($action == 'edit') {

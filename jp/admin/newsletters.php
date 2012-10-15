@@ -109,6 +109,37 @@ function check_send_mail()
    alert('<?php echo NOTICE_SEND_ZERO_MAIL_TEXT;?>');
 }
 </script>
+<?php 
+$href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
+$belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
+$belong = preg_replace('/\?XSID=[^&]+/','',$belong);
+preg_match_all('/action=[^&]+/',$belong,$belong_temp_array);
+if($belong_temp_array[0][0] != ''){
+  preg_match_all('/nID=[^&]+/',$belong,$belong_array);
+  if($belong_array[0][0] != '' && $belong_temp_array[0][0] != 'action=delete'){
+
+    $belong = $href_url.'?'.$belong_array[0][0].'|||'.$belong_temp_array[0][0];
+  }else{
+    if($belong_temp_array[0][0] != '' && $belong_temp_array[0][0] != 'action=delete'){
+      if($belong_temp_array[0][0] != 'action=update'){
+        if($belong_temp_array[0][0] != 'action=insert'){
+          $belong = $href_url.'?'.$belong_temp_array[0][0];
+        }else{
+          $belong = $href_url.'?action=new'; 
+        }
+      }else{
+        $belong = $href_url.'?'.'nID='.$_POST['newsletter_id'].'|||action=new'; 
+      }
+    }else{
+      $belong = $href_url; 
+    }
+  }
+}else{
+
+  $belong = $href_url;
+}
+require("includes/note_js.php");
+?>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
@@ -130,7 +161,7 @@ function check_send_mail()
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-    <td width="100%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <td width="100%" valign="top"><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>

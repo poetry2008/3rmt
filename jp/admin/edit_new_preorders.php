@@ -596,6 +596,7 @@
         
         $s_status_raw = tep_db_query("select nomail from ".TABLE_PREORDERS_STATUS." where orders_status_id = '".$_POST['status']."'");  
         $s_status_res = tep_db_fetch_array($s_status_raw);
+        $email = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$email);
         if ($s_status_res['nomail'] != 1) {
           tep_mail($order->customer['name'], $order->customer['email_address'], $email_title, $email, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
           
@@ -627,6 +628,7 @@
         
         $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
         
+        $preorder_email_text = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$preorder_email_text);
         tep_mail($order->customer['name'], $order->customer['email_address'], $preorder_email_subject, $preorder_email_text, get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']), $order->info['site_id']);
         
         tep_mail('', get_configuration_by_site_id('SENTMAIL_ADDRESS', $order->info['site_id']), $preorder_email_subject, $preorder_email_text, $order->customer['name'], $order->customer['email_address'], $order->info['site_id']); 
@@ -1336,6 +1338,10 @@ overflow:hidden;
 float:left;
 }
 </style>
+<?php 
+$belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
+require("includes/note_js.php");
+?>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
@@ -1372,7 +1378,7 @@ if($_GET['action'] != 'add_product'){
       </table>
     </td>
     <!-- body_text //-->
-    <td width="100%" valign="top">
+    <td width="100%" valign="top"><?php echo $notes;?>
       <table border="0" width="96%" cellspacing="0" cellpadding="2">
 <?php
 if (($action == 'edit') && ($order_exists == true)) {
