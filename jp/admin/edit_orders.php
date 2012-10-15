@@ -1003,6 +1003,7 @@ if($address_error == false){
           
           $email = str_replace('${SHIPPING_TIME}', $fetch_time_str, $email); 
           $title = str_replace('${SHIPPING_TIME}', $fetch_time_str, $title); 
+          $email = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$email);
           if ($customer_guest['is_send_mail'] != '1')
             tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $email, get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
 
