@@ -2,7 +2,7 @@
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
-<title>売上管理 </title>
+<title><?php echo SR_HEADING_TITLE;?> </title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
@@ -56,7 +56,7 @@ require("includes/note_js.php");
               <?php echo SR_REPORT_TYPE_DAILY; ?><br>
               </td>
               <td align="left" class="menuBoxHeading">
-  サイト<br>
+ <?php echo SR_SITE;?> <br>
                 <?php echo tep_site_pull_down_menu_with_all($_GET['site_id'], false, 'すべて');?><br>
               </td>
               <td class="menuBoxHeading"><?php echo SR_REPORT_START_DATE; ?><br>
@@ -107,10 +107,10 @@ require("includes/note_js.php");
                 </tr>
               </table>
               </td>
-              <td align="left" class="menuBoxHeading">集計方法<br>
+              <td align="left" class="menuBoxHeading"><?php echo SR_TITLE_FUNCTION;?><br>
               <select name="method" size="1">
-                <option value="0"<?php if ($srMethod == 0) echo " selected"; ?>>取引日</option>
-                <option value="1"<?php if ($srMethod == 1) echo " selected"; ?>>注文日</option>
+                <option value="0"<?php if ($srMethod == 0) echo " selected"; ?>><?php echo SR_TITLE_DEAL_DAY;?></option>
+                <option value="1"<?php if ($srMethod == 1) echo " selected"; ?>><?php echo SR_TITLE_ORDER_DAY;?></option>
               </select>
               </td>
               <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_DETAIL; ?><br>
@@ -122,7 +122,7 @@ require("includes/note_js.php");
               </td>
               <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_STATUS_FILTER; ?><br>
               <select name="status" size="1">
-                <option value="2,5">成約済</option>
+                <option value="2,5"><?php echo SR_TITLE_ORDER_FINISH;?></option>
                 <option value="0"<?php if ($srStatus == 0) echo " selected";?>><?php echo SR_REPORT_ALL; ?></option>
                 <?php
                         foreach ($sr->status as $value) {
@@ -143,11 +143,11 @@ require("includes/note_js.php");
             </tr>
             <tr>
               <td class="menuBoxHeading">
-  カテゴリー<br>
+ <?php echo SR_TITLE_CATEGORY;?><br>
   <select name="bflag">
-    <option value="0"<?php if(!$_GET['bflag']){?> selected<?php }?>>すべて</option>
-    <option value="1"<?php if($_GET['bflag'] == '1'){?> selected<?php }?>>販売</option>
-    <option value="2"<?php if($_GET['bflag'] == '2'){?> selected<?php }?>>買取</option>
+    <option value="0"<?php if(!$_GET['bflag']){?> selected<?php }?>><?php echo SR_SELECT_ALL;?></option>
+    <option value="1"<?php if($_GET['bflag'] == '1'){?> selected<?php }?>><?php echo SR_OPTION_SALE;?></option>
+    <option value="2"<?php if($_GET['bflag'] == '2'){?> selected<?php }?>><?php echo SR_OPTION_BUY;?></option>
   </select>
               </td>
               <td class="menuBoxHeading"><?php echo SR_REPORT_END_DATE; ?><br>

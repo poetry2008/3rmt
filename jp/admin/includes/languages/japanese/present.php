@@ -53,5 +53,15 @@ define('TEXT_USER_ADDED','作成者:');
 define('TEXT_USER_UPDATE','更新者:');
 define('TEXT_DATE_ADDED','作成日:');
 define('TEXT_DATE_UPDATE','更新日:');
+define('PRESENT_BACK','戻る');
+define('PRESENT_SAVE','保存');
+define('DATA_APPEND_ERROR','データ追加エラー');
+define('PRESENT_SHOW','表示');
+define('PRESENT_LIST','リスト');
+define('PRESENT_PLEASE_INPUT_TEXT','タイトルを入力して下さい');
+define('PRESENT_PLEASE_ENTER_TITLE','本文を入力して下さい');
+define('PRESENT_PLEASE_START_DATE_END_DATE','開始日と終了日を正しく設定してください。');
+
+
 
 ?>

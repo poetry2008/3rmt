@@ -322,6 +322,22 @@ $(function(){
 <tr>
 <td><?php echo tep_image(DIR_WS_CATALOG .DIR_WS_IMAGES . ADMINPAGE_LOGO_IMAGE, STORE_NAME, '', ''); ?></td>
 <td align="right" valign="bottom" width="60%">
+<div style="padding-bottom:35px;">
+<?php
+$languages = tep_get_languages();
+$cur_page = split('\?', basename($_SERVER['SCRIPT_NAME'])); $cur_page = $cur_page[0];
+/*
+foreach($languages as $key => $val){
+echo "<a href=".tep_href_link($cur_page,tep_get_all_get_params(array('language'))."language=".$val['code'])."><font size=3px><b>".strtoupper($val['code']=='ja'?'jp':$val['code'])."</b></font></a>&nbsp;";
+}
+*/
+echo "<a href=".tep_href_link($cur_page,tep_get_all_get_params(array('language')).
+    "language=".'ja')."><font size=3px><b>JP</b></font></a>&nbsp;";
+echo "<a href=".tep_href_link($cur_page,tep_get_all_get_params(array('language')).
+    "language=".'ch')."><font size=3px><b>CH</b></font></a>&nbsp;";
+?>
+</div>
+
 <?php echo tep_draw_form('changepwd', FILENAME_CHANGEPWD,'','post','
     id=\'changepwd_form\'');
 echo tep_draw_hidden_field("execute_password",TEXT_ECECUTE_PASSWORD_USER);
@@ -354,12 +370,24 @@ if(preg_match("/".FILENAME_ORDERS."/",$PHP_SELF)){
 ?>
 
 <tr class="headerBar">
-<td colspan='2'>
+<td colspan='3'>
 <table width="100%">
 <tr>
 <td class="headerBarContent">&nbsp;&nbsp;<?php 
+$current_page_tp = split('\?', basename($_SERVER['SCRIPT_NAME'])); $current_page_tp = $current_page_tp[0];
+if($current_page_tp == "modules.php"){
+  preg_match("#set=[^&]+#",$_SERVER["REQUEST_URI"],$set_mod_array);
+ $current_page_tp .= "?".$set_mod_array[0];
+}
+if($current_page_tp == "configuration.php") {
+  preg_match("#gID=[^&]+#",$_SERVER["REQUEST_URI"],$set_mod_array);
+ $current_page_tp .= "?".$set_mod_array[0];
+}
 if (isset($ocertify->npermission) || $ocertify->npermission) {
-  echo '<a href="' . tep_href_link(FILENAME_DEFAULT, '', 'NONSSL') . '" class="headerLink">' . HEADER_TITLE_TOP . '</a>';
+  echo '&nbsp<a href="' . tep_href_link(FILENAME_DEFAULT, '', 'NONSSL') . '" class="headerLink">' . HEADER_TITLE_TOP . '</a>&nbsp;&nbsp;&nbsp;&nbsp';
+
+  echo '<a href="' . tep_href_link('help.php', 'info_romaji='.urlencode(str_replace('/admin/','',$current_page_tp)), 'NONSSL') . '" class="headerLink"  target="_blank"><img src="images/icon_help_info.gif" alt="img">&nbsp;'.TEXT_HEADER_HELP.'</a>&nbsp;&nbsp;&nbsp;';
+ 
 }
 ?></td>
 <td class="headerBarContent" align="right">
@@ -438,6 +466,14 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
       <td class="menu01"><a class="t_link01"
       onclick="javascript:goto_changepwd(\'changepwd_form\')"
       href="javascript:void(0);">'.HEADER_TEXT_USERS.'</a>';
+?>
+<?php 
+  echo '</td>
+      </tr>
+      <tr>
+      <td class="menu01"><a class="t_link01"
+      href="'.tep_href_link(FILENAME_PERSONAL_SETTING, '',
+        'NONSSL').'">'.HEADER_TEXT_PERSONAL_SETTING.'</a>';
 if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {
 ?>
 <embed id="head_sound" src="images/presound.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
@@ -452,8 +488,9 @@ if ($_SERVER['PHP_SELF'] != '/admin/orders.php') {
 }
 ?>
 <embed id="head_notice" src="images/notice.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
-<?php 
-  echo '</td>
+<?php
+        
+ echo '</td>
       </tr>
       </table>
       </td>

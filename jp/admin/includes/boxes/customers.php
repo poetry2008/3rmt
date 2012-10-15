@@ -3,7 +3,7 @@
   $Id$
 */
 ?>
-<!-- customers //-->
+<!-- customers -->
           <tr>
             <td>
 <?php
@@ -26,11 +26,11 @@
   echo $box->menuBox($heading, $contents);
   */
 ?>
-            <table cellspacing="0" cellpadding="2" border="0" width="100%"> 
+            <table cellspacing="0" cellpadding="2" border="0" width="150"> 
               <tr>
               <td onmouseover="this.style.cursor='hand'" class="menuBoxHeading">
               &nbsp; 
-              <a class="menuBoxHeading_Link" href="javascript:void(0);" onclick="toggle_lan('col4');"><?php echo BOX_HEADING_CUSTOMERS;?></a> 
+							<?php echo tep_image(DIR_WS_MENU_ICON . 'icon_customer.gif'); ?>&nbsp;<a class="menuBoxHeading_Link" href="javascript:void(0);" onclick="toggle_lan('col4');"><?php echo BOX_HEADING_CUSTOMERS;?></a> 
               &nbsp; 
               </td>
               </tr>
@@ -50,19 +50,20 @@
               <tr>
                 <td class="menuBoxContent">
     <?php
-    echo '<a href="' . tep_href_link(FILENAME_CUSTOMERS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CUSTOMERS_CUSTOMERS . '</a><br>'. 
-      '<a href="' . tep_href_link(FILENAME_ORDERS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CUSTOMERS_ORDERS . '</a><br>'.
-      '<a href="' . tep_href_link('telecom_unknow.php') . '"
-      class="menuBoxContent_Link">'.FILENAME_TELECOM_UNKNOW_TEXT.'</a><br>' . 
+    echo '<span class="menuBoxContent_image">'.tep_image(DIR_WS_MENU_ICON . 'icon_customer.gif').'</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_CUSTOMERS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CUSTOMERS_CUSTOMERS . '</a></span><br><span class="menuBoxContent_image">'. 
+      tep_image(DIR_WS_MENU_ICON . 'icon_orders.gif').'</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_ORDERS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CUSTOMERS_ORDERS . '</a></span><br><span class="menuBoxContent_image">'.
+      tep_image(DIR_WS_MENU_ICON . 'icon_payment_settings.gif').'</span><span class="menuBoxContent_span"><a href="' . tep_href_link('telecom_unknow.php') . '"
+      class="menuBoxContent_Link">'.FILENAME_TELECOM_UNKNOW_TEXT.'</a></span><br><span class="menuBoxContent_image">' . 
       
-      '<a href="' . tep_href_link(FILENAME_RESET_PWD) . '"
-      class="menuBoxContent_Link">'.FILENAME_FILENAME_RESET_PWD_TEXT.'</a><br>' . 
-      '<a href="' . tep_href_link('bill_templates.php') . '"
-      class="menuBoxContent_Link">'.FILENAME_BILL_TEMPLATES_TEXT.'</a><br>';?> 
+      tep_image(DIR_WS_MENU_ICON . 'icon_password_reset.gif').'</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_RESET_PWD) . '"
+			class="menuBoxContent_Link">'.FILENAME_FILENAME_RESET_PWD_TEXT.'</a></span><br><span class="menuBoxContent_image">' .
+			 tep_image(DIR_WS_MENU_ICON . 'icon_template.gif').	
+      '</span><span class="menuBoxContent_span"><a href="' . tep_href_link('bill_templates.php') . '"
+      class="menuBoxContent_Link">'.FILENAME_BILL_TEMPLATES_TEXT.'</a></span><br>';?> 
                 </td>
               </tr>
             </table>
             </div>
             </td>
           </tr>
-<!-- customers_eof //-->
+<!-- customers_eof -->

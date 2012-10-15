@@ -9,6 +9,7 @@
     {
       return preg_replace('/order by [a-z0-9A-Z\.\_]+ \w*$/','',trim($sql));
     }
+    
     function splitPageResults(&$current_page_number, $max_rows_per_page, &$sql_query, &$query_num_rows, $sql_count_query = null) {
       if (empty($current_page_number)) $current_page_number = 1;
       $offset = ($max_rows_per_page * ($current_page_number - 1));
@@ -28,60 +29,144 @@
 /* class functions */
 
 // display split-page-number-links
-    function display_links($query_numrows, $max_rows_per_page, $max_page_links, $current_page_number, $parameters = '',$event = '') {
+    function display_links($query_numrows, $max_rows_per_page, $max_page_links, $current_page_number, $parameters = '') {
       global $PHP_SELF;
 
       $class = 'class="pageResults"';
 
       if ( tep_not_null($parameters) && (substr($parameters, -1) != '&') ) $parameters .= '&';
 
-// calculate number of pages needing links 
       $num_pages = intval($query_numrows / $max_rows_per_page);
-
-// $num_pages now contains int of pages needed unless there is a remainder from division 
-      if ($query_numrows % $max_rows_per_page) $num_pages++; // has remainder so add one page 
-
-// first button - not displayed on first page
-//      if ($current_page_number > 1) echo '<a href="' . tep_href_link(basename($PHP_SELF),  $parameters . 'page=1') . '" ' . $class . ' title=" ' . PREVNEXT_TITLE_FIRST_PAGE . ' ">' . PREVNEXT_BUTTON_FIRST . '</a>&nbsp;';
-
-// previous button - not displayed on first page
+      
+      if ($query_numrows % $max_rows_per_page) $num_pages++; 
+     
+      echo '<div class="float_right">'; 
       if ($current_page_number > 1) {
         if ($current_page_number == 2) {
-          echo '<a '.$event.' href="' . tep_href_link(basename($PHP_SELF), $parameters) . '" ' . $class . ' title=" ' . PREVNEXT_TITLE_PREVIOUS_PAGE . ' "><u>' . PREVNEXT_BUTTON_PREV . '</u></a>&nbsp;&nbsp;';
+          $prev_url_str = str_replace('\'', '||||', tep_href_link(basename($PHP_SELF), $parameters)); 
+          $prev_url_str = str_replace('"', '>>>>', $prev_url_str); 
+          echo '<input type="button" value="'.(defined('DIR_WS_ADMIN')?BUTTON_PREV:PREVNEXT_BUTTON_PREV).'" onclick="page_change(\''.$prev_url_str.'\')">&nbsp;&nbsp;'; 
         } else {
-          echo '<a '.$event.' href="' . tep_href_link(basename($PHP_SELF), $parameters . 'page=' . ($current_page_number - 1)) . '" ' . $class . ' title=" ' . PREVNEXT_TITLE_PREVIOUS_PAGE . ' "><u>' . PREVNEXT_BUTTON_PREV . '</u></a>&nbsp;&nbsp;';
+          $prev_url_str = str_replace('\'', '||||', tep_href_link(basename($PHP_SELF), $parameters.'page='.($current_page_number - 1))); 
+          $prev_url_str = str_replace('"', '>>>>', $prev_url_str); 
+          echo '<input type="button" value="'.(defined('DIR_WS_ADMIN')?BUTTON_PREV:PREVNEXT_BUTTON_PREV).'" onclick="page_change(\''.$prev_url_str.'\')">&nbsp;&nbsp;'; 
         }
       }
+      
+      if ($num_pages <= 11) {
+        for ($i = 1; $i <= $num_pages; $i++) {
+          if ($i == $current_page_number) {
+            if ($num_pages > 1) {
+              echo '&nbsp;<b>'.$i.'</b>&nbsp;'; 
+            }
+          } else {
+            echo '&nbsp;<a '.$class.' href="'.tep_href_link(basename($PHP_SELF), $parameters.(($i != 1)?'page='.$i:'')).'">'.$i.'</a>&nbsp;'; 
+          }
+        }
+      } else if (($current_page_number + 5) >= $num_pages) {
+        $diff_num = $num_pages - $current_page_number;  
+        
+        if (($current_page_number - (10 - $diff_num)) > 1) {
+          echo '&nbsp;<a '.$class.' href="'.tep_href_link(basename($PHP_SELF), $parameters).'">1...</a>&nbsp;&nbsp;'; 
+        }
+        
+        for ($i = 10 - $diff_num; $i > 0; $i--) {
+          $front_start = $current_page_number - $i; 
+          echo '&nbsp;<a '.$class.' href="'.tep_href_link(basename($PHP_SELF), $parameters.(($front_start != 1)?'page='.$front_start:'')).'">'.$front_start.'</a>&nbsp;'; 
+        }
+        
+        echo '&nbsp;<b>'.$current_page_number.'</b>&nbsp;';
+        
+        for ($j = 1; $j <= $diff_num; $j++) {
+          $end_start = $current_page_number + $j;
+          echo '&nbsp;<a '.$class.' href="'.tep_href_link(basename($PHP_SELF), $parameters.(($end_start != 1)?'page='.$end_start:'')).'">'.$end_start.'</a>&nbsp;'; 
+        }
+      } else if (($current_page_number - 5) <= 1) {
+        $diff_num = $current_page_number - 1;
+        
+        for ($i = $diff_num; $i > 0; $i--) {
+          $front_start = $current_page_number - $i;
+          echo '&nbsp;<a '.$class.' href="'.tep_href_link(basename($PHP_SELF), $parameters.(($front_start != 1)?'page='.$front_start:'')).'">'.$front_start.'</a>&nbsp;'; 
+        }
+        
+        echo '&nbsp;<b>'.$current_page_number.'</b>&nbsp;';
+        
+        for ($j = 1; $j <= (10 - $diff_num); $j++) {
+          $end_start = $current_page_number + $j;
+          echo '&nbsp;<a '.$class.' href="'.tep_href_link(basename($PHP_SELF), $parameters.(($end_start != 1)?'page='.$end_start:'')).'">'.$end_start.'</a>&nbsp;'; 
+        }
+        
+        if ($end_start < $num_pages) {
+          echo '&nbsp;<a '.$class.' href="'.tep_href_link(basename($PHP_SELF), $parameters.(($num_pages != 1)?'page='.$num_pages:'')).'">...'.$num_pages.'</a>&nbsp;'; 
+        }
+      } else {
+        $front_start = 1;
+        
+        if ($current_page_number > 5) {
+          $front_start = $current_page_number - 5; 
+        }
+        
+        if ($front_start > 1) {
+          echo '<a '.$class.' href="'.tep_href_link(basename($PHP_SELF), $parameters).'">1...</a>&nbsp;&nbsp;'; 
+        }
+        
+        for ($i = $front_start; $i < $current_page_number; $i++) {
+          echo '&nbsp;<a '.$class.' href="'.tep_href_link(basename($PHP_SELF), $parameters.(($i != 1)?'page='.$i:'')).'">'.$i.'</a>&nbsp;'; 
+        }
 
-// check if num_pages > $max_page_links
-      $cur_window_num = intval($current_page_number / $max_page_links);
-      if ($current_page_number % $max_page_links) $cur_window_num++;
-
-      $max_window_num = intval($num_pages / $max_page_links);
-      if ($num_pages % $max_page_links) $max_window_num++;
-
-// previous window of pages
-      if ($cur_window_num > 1) echo '<a '.$event.' href="' . tep_href_link(basename($PHP_SELF), $parameters . 'page=' . (($cur_window_num - 1) * $max_page_links)) . '" ' . $class . ' title=" ' . sprintf(PREVNEXT_TITLE_PREV_SET_OF_NO_PAGE, $max_page_links) . ' ">...</a>';
-
-// page nn button
-      for ($jump_to_page = 1 + (($cur_window_num - 1) * $max_page_links); ($jump_to_page <= ($cur_window_num * $max_page_links)) && ($jump_to_page <= $num_pages); $jump_to_page++) {
-        if ($jump_to_page == $current_page_number) {
-          echo '&nbsp;<b>' . $jump_to_page . '</b>&nbsp;';
-        } elseif ($jump_to_page == 1) {
-          echo '&nbsp;<a '.$event.' href="' . tep_href_link(basename($PHP_SELF), $parameters) . '" ' . $class . ' title=" ' . sprintf(PREVNEXT_TITLE_PAGE_NO, $jump_to_page) . ' "><u>' . $jump_to_page . '</u></a>&nbsp;';
+        echo '&nbsp;<b>'.$current_page_number.'</b>&nbsp;';
+      
+        $end_start = 5;
+        if ($num_pages > $end_start && ($current_page_number + $end_start) < $num_pages) {
+          $end_start = $current_page_number + $end_start; 
         } else {
-          echo '&nbsp;<a '.$event.' href="' . tep_href_link(basename($PHP_SELF), $parameters . 'page=' . $jump_to_page) . '" ' . $class . ' title=" ' . sprintf(PREVNEXT_TITLE_PAGE_NO, $jump_to_page) . ' "><u>' . $jump_to_page . '</u></a>&nbsp;';
+          $end_start = $num_pages; 
+        }
+      
+        for ($j = $current_page_number + 1; $j <= $end_start; $j++) {
+          echo '&nbsp;<a '.$class.' href="'.tep_href_link(basename($PHP_SELF), $parameters.(($j != 1)?'page='.$j:'')).'">'.$j.'</a>&nbsp;'; 
+        }
+        
+        if ($end_start < $num_pages) {
+          echo '&nbsp;<a '.$class.' href="'.tep_href_link(basename($PHP_SELF), $parameters.(($num_pages != 1)?'page='.$num_pages:'')).'">...'.$num_pages.'</a>&nbsp;'; 
         }
       }
-
-// next window of pages
-      if ($cur_window_num < $max_window_num) echo '<a '.$event.' href="' . tep_href_link(basename($PHP_SELF), $parameters . 'page=' . (($cur_window_num) * $max_page_links + 1)) . '" ' . $class . ' title=" ' . sprintf(PREVNEXT_TITLE_NEXT_SET_OF_NO_PAGE, $max_page_links) . ' ">...</a>&nbsp;';
-
-// next button
-      if (($current_page_number < $num_pages) && ($num_pages != 1)) echo '&nbsp;<a '.$event.' href="' . tep_href_link(basename($PHP_SELF), $parameters . 'page=' . ($current_page_number + 1)) . '" ' . $class . ' title=" ' . PREVNEXT_TITLE_NEXT_PAGE . ' "><u>' . PREVNEXT_BUTTON_NEXT . '</u></a>&nbsp;';
-
-// last button
-//      if (($current_page_number < $num_pages) && ($num_pages != 1)) echo '<a href="' . tep_href_link(basename($PHP_SELF), $parameters . 'page=' . $num_pages) . '" ' . $class . ' title=" ' . PREVNEXT_TITLE_LAST_PAGE . ' ">' . PREVNEXT_BUTTON_LAST . '</a>&nbsp;';
+    
+      if ($current_page_number < $num_pages) {
+        $next_url_str = str_replace('\'', '||||', tep_href_link(basename($PHP_SELF), $parameters.'page='.($current_page_number + 1))); 
+        $next_url_str = str_replace('"', '>>>>', $next_url_str); 
+        echo '&nbsp;&nbsp;<input type="button" value="'.(defined('DIR_WS_ADMIN')?BUTTON_NEXT:PREVNEXT_BUTTON_NEXT).'" onclick="page_change(\''.$next_url_str.'\');">&nbsp;'; 
+      }
+      echo '</div>'; 
+    
+      if ($num_pages > 0) {
+        if (defined('DIR_WS_ADMIN')) {
+          echo '<div class="float_right">'; 
+        } else {
+          if (defined('NEW_STYLE_WEB')) {
+            echo '<div class="float_right">'; 
+          } else {
+            echo '<div class="float_right_box">'; 
+          }
+        }
+        if (defined('DIR_WS_ADMIN')) {
+          echo '<form method="post" action="'.tep_href_link('ajax_orders.php', 'action=handle_split').'">'; 
+        } else {
+          echo '<form method="post" action="'.tep_href_link('handle_split.php').'">'; 
+        }
+        if ($current_page_number) {
+          echo '&nbsp;<input type="text" class="input_box" name="j_page" value="'.$current_page_number.'" size="2">'; 
+        } else {
+          echo '&nbsp;<input type="text" class="input_box" name="j_page" value="1" size="2">'; 
+        }
+        echo '<input type="hidden" name="split_param" value="'.$parameters.'">'; 
+        echo '<input type="hidden" name="current_file_info" value="'.basename($PHP_SELF).'">'; 
+        echo '<input type="hidden" name="split_total_page" value="'.$num_pages.'">'; 
+        echo '&nbsp;'.JUMP_PAGE_TEXT.'&nbsp;'; 
+        echo '<input type="button" value="'.JUMP_PAGE_BUTTON_TEXT.'" onclick="jump_page(this, \''.$num_pages.'\',\''.(isset($current_page_number)?$current_page_number:'1').'\')">&nbsp;&nbsp;';
+        echo '</form>'; 
+        echo '</div>'; 
+      }
     }
 
 // display number of total products found

@@ -7,6 +7,7 @@
 
   require('includes/application_top.php');
   require('includes/step-by-step/new_application_top.php');
+  include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .  '/default.php');
   include(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/edit_preorders.php');
   require(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/step-by-step/edit_preorders.php');
 
@@ -506,7 +507,7 @@
       $preorder_total_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$order->info['orders_id']."' and class='ot_total'"); 
       $preorder_total_res = tep_db_fetch_array($preorder_total_raw);
       if ($preorder_total_res) {
-        $pre_otm = number_format($preorder_total_res['value'], 0, '.', '').TEXT_MONEY_SYMBOL; 
+        $pre_otm = number_format($preorder_total_res['value'], 0, '.', '').SENDMAIL_EDIT_ORDERS_PRICE_UNIT; 
       }
       $num_product = 0;
       $num_product_raw = tep_db_query("select products_name, products_quantity from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$order->info['orders_id']."'");
@@ -541,9 +542,9 @@
               get_configuration_by_site_id('STORE_NAME', $order->info['site_id']),
               get_url_by_site_id($order->info['site_id']),
               get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $order->info['site_id']),
-              date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
+              date('Y'.SENDMAIL_TEXT_DATE_YEAR.'n'.SENDMAIL_TEXT_DATE_MONTH.'j'.SENDMAIL_TEXT_DATE_DAY,strtotime(tep_get_pay_day())),
               $_POST['update_ensure_deadline'],
-              $num_product.EDIT_ORDERS_NUM_UNIT,
+              $num_product.SENDMAIL_EDIT_ORDERS_NUM_UNIT,
               $num_product_res['products_name'] 
             ),$email);
 
@@ -587,9 +588,9 @@
               get_configuration_by_site_id('STORE_NAME', $order->info['site_id']),
               get_url_by_site_id($order->info['site_id']),
               get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $order->info['site_id']),
-              date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
+              date('Y'.SENDMAIL_TEXT_DATE_YEAR.'n'.SENDMAIL_TEXT_DATE_MONTH.'j'.SENDMAIL_TEXT_DATE_DAY,strtotime(tep_get_pay_day())),
               $_POST['update_ensure_deadline'],
-              $num_product.EDIT_ORDERS_NUM_UNIT,
+              $num_product.SENDMAIL_EDIT_ORDERS_NUM_UNIT,
               $num_product_res['products_name'] 
             ),$email_title);
         
@@ -1683,7 +1684,7 @@ if (($action == 'edit') && ($order_exists == true)) {
            '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
            '  </tr>' . "\n";
     } elseif ($TotalDetails["Class"] == "ot_point") {
-      if ($customer_guest['customers_guest_chk']) { //会員
+      if ($customer_guest['customers_guest_chk'] == 0) { //会員
         $current_point = $customer_point['point'] + $TotalDetails["Price"];
         echo '  <tr>' . "\n" .
              '    <td colspan="4">' . "<input type='hidden' name='update_totals[$TotalIndex][value]' size='6' value='" . $TotalDetails["Price"] . "'>" . 
@@ -1793,7 +1794,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     }
     ?>
     <textarea style="font-family:monospace;font-size:12px; width:70%;" name="comments"
-    wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}', $order_a_str, $mail_sql['orders_status_mail']);?></textarea>
+    wrap="off" rows="30" cols="74"><?php echo str_replace('${ORDER_A}', $order_a_str, $mail_sql['orders_status_mail']);?></textarea>
     </td>
   </tr>
 </table>

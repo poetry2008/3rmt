@@ -1,0 +1,9 @@
+<?php
+/*
+	JP、GM共通ファイル
+*/
+
+  define('MODULE_METASEO_LOGOFF_TEXT_TITLE', '退出');
+  define('MODULE_METASEO_LOGOFF_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_LOGOFF_TEXT_DESCRIPTION', '退出页的SEO');
+?>

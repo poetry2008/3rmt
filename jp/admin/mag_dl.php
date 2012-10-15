@@ -19,7 +19,7 @@
           order by mag_id");
 
 
-      $CsvFields = array("ＩＤ","メールアドレス","姓名");
+      $CsvFields = array("ＩＤ",".TEXT_MAILBOX.",".TEXT_NAME.");
     for($i=0;$i<count($CsvFields);$i++){
       print $CsvFields[$i] . ",";
     }
@@ -100,7 +100,7 @@ require("includes/note_js.php");
                 <td colspan="2" align="right">
                   <form action="mag_dl.php" method="get">
                     <?php echo tep_site_pull_down_menu('', false);?>
-                    <input type="submit" value="ダウンロード">
+    <input type="submit" value="<?php echo BUTTON_MAG_DL; ?>">
                     <input type="hidden" name="action" value="download">
                   </form>
                 </td>

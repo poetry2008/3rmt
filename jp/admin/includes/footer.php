@@ -11,6 +11,7 @@ echo tep_draw_hidden_field("userslist",$ocertify->auth_user);
 echo "</form>";
 ?>
 
+<script type="text/javascript" src="includes/javascript/split_page.js"></script>
 <script type="text/javascript">
 function redirect_new_url(new_object)
 {

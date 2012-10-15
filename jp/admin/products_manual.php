@@ -544,7 +544,7 @@ $site_id = 0;
 if((isset($_GET['cPath']) && $_GET['cPath']=="") && (isset($_GET['cID']) && $_GET['cID']!="") && (isset($_GET['action']) && $_GET['action']=="show_categories_manual")){
 $categories_query = tep_db_query("select categories_name from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$_GET['cID']."' and site_id='0'");
 $categories_array = tep_db_fetch_array($categories_query);
-echo $categories_array['categories_name']."のマニュアル作成";
+echo $categories_array['categories_name'].MANUAL_TITLE;
 }else if((isset($_GET['cPath']) && $_GET['cPath']!="") && (isset($_GET['cID']) && $_GET['cID']!="") && (isset($_GET['action']) && $_GET['action']=="show_categories_manual")){
 $parent_categories_query = tep_db_query("select categories_name from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$_GET['cPath']."' and site_id='0'");
 $parent_categories_array = tep_db_fetch_array($parent_categories_query);
@@ -564,7 +564,7 @@ $products_array = tep_db_fetch_array($products_query);
 foreach($tmp_categories_array as $key1=>$val1){
 $title_str .= $val1['categories_name']."/";
 }
-$title_str .= $products_array['products_name']."のマニュアル作成";
+$title_str .= $products_array['products_name'].MANUAL_TITLE;
 echo $title_str;
 }
 ?>
@@ -623,7 +623,7 @@ require("includes/note_js.php");
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft"><tr><td>
-<!-- left_navigation //--> <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> <!-- left_navigation_eof //-->
+<!-- left_navigation --> <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> <!-- left_navigation_eof -->
     </td></tr></table>
 <!-- body_text //-->
 <td width="100%" valign = "top" id='categories_right_td'><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="2">

@@ -3,7 +3,7 @@
   $Id$
 */
 ?>
-<!-- modules //-->
+<!-- modules -->
           <tr>
             <td>
 <?php
@@ -26,11 +26,11 @@
   echo $box->menuBox($heading, $contents);
   */
 ?>
-            <table cellspacing="0" cellpadding="2" border="0" width="100%"> 
+            <table cellspacing="0" cellpadding="2" border="0" width="150"> 
               <tr>
               <td onmouseover="this.style.cursor='hand'" class="menuBoxHeading">
               &nbsp; 
-              <a class="menuBoxHeading_Link" href="javascript:void(0);" onclick="toggle_lan('col3');"><?php echo BOX_HEADING_MODULES;?></a> 
+						 <?php echo tep_image(DIR_WS_MENU_ICON . 'icon_module.gif');?> <a class="menuBoxHeading_Link" href="javascript:void(0);" onclick="toggle_lan('col3');"><?php echo BOX_HEADING_MODULES;?></a> 
               &nbsp; 
               </td>
               </tr>
@@ -50,12 +50,13 @@
               <tr>
                 <td class="menuBoxContent">
     <?php 
-    echo '<a href="' . tep_href_link(FILENAME_MODULES, 'set=payment', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_MODULES_PAYMENT . '</a><br>' .
-                                   '<a href="' . tep_href_link(FILENAME_MODULES, 'set=order_total', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_MODULES_ORDER_TOTAL . '</a><br>'.  '<a href="' . tep_href_link(FILENAME_MODULES, 'set=metaseo', 'NONSSL') . '" class="menuBoxContent_Link">' .  BOX_MODULES_METASEO . '</a><br>'; ?>
+echo '<span class="menuBoxContent_image">'.tep_image(DIR_WS_MENU_ICON . 'icon_payment.gif').'</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_MODULES, 'set=payment', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_MODULES_PAYMENT . '</a></span><br><span class="menuBoxContent_image">' .
+	tep_image(DIR_WS_MENU_ICON . 'icon_calculation.gif').'</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_MODULES, 'set=order_total', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_MODULES_ORDER_TOTAL . '</a></span><br><span class="menuBoxContent_image">'.tep_image(DIR_WS_MENU_ICON . 'icon_seo.gif').  '</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_MODULES, 'set=metaseo', 'NONSSL') . '" class="menuBoxContent_Link">' .  BOX_MODULES_METASEO . '</a></span><br>'; ?>
+
                 </td>
               </tr>
             </table>
             </div>
             </td>
           </tr>
-<!-- modules_eof //-->
+<!-- modules_eof -->

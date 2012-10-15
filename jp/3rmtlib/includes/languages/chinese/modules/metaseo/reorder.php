@@ -1,0 +1,9 @@
+<?php
+/*
+	JP、GM共通ファイル
+*/
+
+  define('MODULE_METASEO_REORDER_TEXT_TITLE', '再投递');
+  define('MODULE_METASEO_REORDER_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_REORDER_TEXT_DESCRIPTION', '再投递页的SEO');
+?>

@@ -10,7 +10,7 @@
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
-<?php 
+<?php
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 require("includes/note_js.php");
 ?>
@@ -32,12 +32,6 @@ require("includes/note_js.php");
     $dat[2] => 姓名
   */
     // CSVファイルのチェック
-    echo '<table border="0" width="100%" cellspacing="2" cellpadding="2">';
-    echo '<tr>';
-    echo '<td width="'.BOX_WIDTH.'" valign="top"><table border="0" width="'.BOX_WIDTH.'" cellspacing="1" cellpadding="1" class="columnLeft">';
-    require(DIR_WS_INCLUDES . 'column_left.php');
-    echo '</table></td>';
-    echo '<td width="100%" valign="top">';
     $chk_csv = true;
     $filename = isset($HTTP_POST_FILES['products_csv']['name'])?$HTTP_POST_FILES['products_csv']['name']:'';
     if(substr($filename, strrpos($filename,".")+1)!="csv") $chk_csv = false;
@@ -115,13 +109,12 @@ require("includes/note_js.php");
   }
     echo '</P>';
     fclose($file);
-    echo "<font color='#CC0000'><b>".$cnt."件をアップロードしました。</b></font>";
+    echo "<font color='#CC0000'><b>".$cnt.NUMBERS_UP."</b></font>";
   }else{
-    echo "<font color='#CC0000'><b>アップロードできませんでした。<br>所定のCSVファイルを参照してください。</b></font>";
+    echo "<font color='#CC0000'><b>".UNABLE_UP."<br>".REFERENCE_CSV."</b></font>";
   }
   
-    echo '<br><br><br><a href="mag_up.php">戻る</a>';
-    echo '</td></tr></table>';
+  echo '<br><br><br><a href="mag_up.php">'.BUTTON_BACK.'</a>';
   } else {
 ?>
 <!-- body //-->
@@ -133,7 +126,7 @@ require("includes/note_js.php");
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-    <td width="100%" valign="top"><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="0">
+<td width="100%" valign="top"><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="0">
       <tr>
         <td width="100%"><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
@@ -159,7 +152,7 @@ require("includes/note_js.php");
                 <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '5'); ?></td>
               </tr>
               <tr>
-                <td colspan="2" align="left"><input type=submit name=download value="アップロード"></td>
+	      <td colspan="2" align="left"><input type=submit name=download value="<?php echo BUTTON_MAG_UP;?>"></td>
               </tr>
             </table></td>
       <input type="hidden" name="max_file_size" value="1000000">

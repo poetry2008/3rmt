@@ -64,7 +64,7 @@ now(),
               '".$site_id."')";
 
           
-    $mess = mysql_query($ins) or die("データ追加エラー");
+    $mess = mysql_query($ins) or die(DATA_APPEND_ERROR);
     if($mess == true){
     }
     header("location: present.php");
@@ -98,7 +98,7 @@ now(),
       }else{
       echo $up = "update ".TABLE_PRESENT_GOODS." set title='".$up_title."', html_check='".$up_ht."', image='".$filepath2."',text='".$up_text."',start_date='".$up_period1."',limit_date='".$up_period2."',user_update='".$_POST['user_update']."',date_update=now() where goods_id='".$up_id."'";
       }
-    $mess = mysql_query($up) or die("データ追加エラー");
+    $mess = mysql_query($up) or die(DATA_APPEND_ERROR);
       if($mess == true){
       }
     header("location: present.php");
@@ -109,7 +109,7 @@ now(),
     $dele_id = tep_db_prepare_input($_GET['cID']);
 
     $dele = "delete from ".TABLE_PRESENT_GOODS." where goods_id = '".$dele_id."'";
-    $mess = mysql_query($dele) or die("データ追加エラー");
+    $mess = mysql_query($dele) or die(DATA_APPEND_ERROR);
       if($mess == true){
       }
     header("location: present.php");
@@ -169,17 +169,17 @@ require("includes/note_js.php");
 <script language="javascript">
 function msg(){
   if(document.apply.title.value == ""){
-    alert("タイトルを入力して下さい");
+	  alert("<?php echo PRESENT_PLEASE_INPUT_TEXT; ?>");
     document.apply.title.focus();
     return false;
   }
   if(document.apply.text.value == ""){
-    alert("本文を入力して下さい");
+	  alert("<?php echo PRESENT_PLEASE_ENTER_TITLE; ?>");
     document.apply.text.focus();
     return false;
   }
   if((document.apply.start_y.value + document.apply.start_m.value + document.apply.start_d.value) > (document.apply.limit_y.value + document.apply.limit_m.value +document.apply.limit_d.value)){
-    alert("開始日＞終了日になっています");
+	  alert("<?php echo PRESENT_PLEASE_START_DATE_END_DATE; ?>");
     document.apply.start_y.focus();
     return false;
   }
@@ -187,17 +187,17 @@ function msg(){
 
 function msg2(){
   if(document.view.title.value == ""){
-    alert("タイトルを入力して下さい");
+	  alert("<?php echo PRESENT_PLEASE_INPUT_TEXT; ?>");
     document.view.title.focus();
     return false;
   }
   if(document.view.text.value == ""){
-    alert("本文を入力して下さい");
+	  alert("<?php echo PRESENT_PLEASE_ENTER_TITLE; ?>");
     document.view.text.focus();
     return false;
   }
   if((document.view.start_y.value + document.view.start_m.value + document.view.start_d.value) > (document.view.limit_y.value + document.view.limit_m.value +document.view.limit_d.value)){
-    alert("開始日＞終了日になっています");
+	  alert("<?php echo PRESENT_PLEASE_START_DATE_END_DATE; ?>");
     document.view.start_y.focus();
     return false;
   }
@@ -370,8 +370,8 @@ case 'input' :
                     <div align="right">
             <a class="new_product_reset" href=
             <?php echo tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action'))); ?>
-            ><?php echo tep_html_element_button('戻る'); ?></a>
-            <?php echo tep_html_element_submit('保存'); ?>
+	    ><?php echo tep_html_element_button(PRESENT_BACK); ?></a>
+            <?php echo tep_html_element_submit(PRESENT_SAVE); ?>
                     </div></td>
                 </tr>
               </table>
@@ -631,7 +631,7 @@ $sql2 = tep_db_fetch_array($sele2);
           <div align="right">
             <a href=
             <?php echo tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action')). '&action=list'); ?>
-            ><?php echo tep_html_element_button('戻る'); ?></a>
+            ><?php echo tep_html_element_button(PRESENT_BACK); ?></a>
                     </div>
           </td>
                 </tr>

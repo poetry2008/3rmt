@@ -22,7 +22,7 @@ $preorder_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id 
 $preorder = tep_db_fetch_array($preorder_raw);
 
 if ($preorder) {
-  $seal_user_sql = "select is_seal from ".TABLE_CUSTOMERS." where customers_id ='".$preorder['customers_id']."' limit 1";
+  $seal_user_sql = "select is_seal, is_send_mail from ".TABLE_CUSTOMERS." where customers_id ='".$preorder['customers_id']."' limit 1";
   $seal_user_query = tep_db_query($seal_user_sql);
   if ($seal_user_row = tep_db_fetch_array($seal_user_query)){
     if($seal_user_row['is_seal']){
@@ -251,6 +251,7 @@ if($address_error == false){
     //if ($preorder_total_res['class'] == 'ot_subtotal') {
       //$preorder_subtotal_num = $preorder_total_res['value']; 
     //}
+    $_SESSION['insert_id'] = $insert_id;
     $sql_data_array = array('orders_id' => $orders_id,
                             'title' => $preorder_total_res['title'], 
                             'text' => $preorder_total_res['text'], 
@@ -557,7 +558,9 @@ if(!empty($add_list)){
   $email_order_text = str_replace($email_address,$email_address_str,$email_order_text);
 }
 
-tep_mail($preorder['customers_name'], $preorder['customers_email_address'], EMAIL_TEXT_SUBJECT, $email_order_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
+if ($seal_user_row['is_send_mail'] != '1') {
+  tep_mail($preorder['customers_name'], $preorder['customers_email_address'], EMAIL_TEXT_SUBJECT, $email_order_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
+}
   
 if (SENTMAIL_ADDRESS != '') {
     tep_mail('', SENTMAIL_ADDRESS, EMAIL_TEXT_SUBJECT2, $email_order_text, $preorder['customers_name'], $preorder['customers_email_address'], '');
@@ -726,6 +729,7 @@ if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
   tep_session_unregister('preorder_get_point');
 }
 
+unset($_SESSION['insert_id']);
 unset($_SESSION['preorder_option']);
 unset($_SESSION['referer_adurl']);
 

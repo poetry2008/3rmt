@@ -182,14 +182,14 @@ function w_close(){
     var o_name = document.getElementsByName('set_oroshi[]');
       o_cid = document.getElementsByName('ocid[0][]');
       if(o_name[0].value == null||o_name[0].value == ''){
-        alert('業者名はご記入ください');
+      alert('<?php echo TRADE_NAME; ?>');
         return false;
       }else {
         var ex_name =  document.getElementsByName('exist_name[]');
         var z;
         for(z=0;z<ex_name.length;z++){
           if(ex_name[z].value==o_name[0].value){
-            alert(o_name[0].value+'はもう存在しています');
+             alert(o_name[0].value+'<?php echo ALREADY_EXISTS; ?>');
             return false;
           }
         }
@@ -200,7 +200,7 @@ function w_close(){
           }
         }
         if (test == j) {
-          alert('ゲームタイトルを一つ選択してください');
+          alert('<?php echo PLEASE_GAME_TITLE; ?>');
           return false;
         }
       }
@@ -212,7 +212,7 @@ function w_close(){
     var ocid = document.getElementsByName('ocid[]');
     var test = 0;
     if (o_name == ''||o_name == null){
-      alert('業者名はご記入ください');
+      alert('<?php echo TRADE_NAME; ?>');
       return false;
     }else{
         var ex_name =  document.getElementsByName('exist_name[]');
@@ -222,7 +222,7 @@ function w_close(){
             continue;
           }
           if(ex_name[z].value==o_name){
-            alert(o_name+'はもう存在しています');
+            alert(o_name+'<?php echo TRADE_NAME; ?>');
             return false;
           }
         }
@@ -232,7 +232,7 @@ function w_close(){
       }
     }
     if (test == x){
-       alert('ゲームタイトルを一つ選択してください');
+       alert('<?php echo PLEASE_GAME_TITLE; ?>');
        return false;
     }
     }
@@ -248,7 +248,7 @@ function w_close(){
             if(o_name[le].value != null&&o_name[le].value != ''){
                for(z=0;z<ex_name.length;z++){
                 if(ex_name[z].value==o_name[le].value){
-                  alert(o_name[le].value+'はもう存在しています');
+                  alert(o_name[le].value+'<?php echo ALREADY_EXISTS; ?>');
                   return false;
                 }
                }
@@ -261,13 +261,13 @@ function w_close(){
               continue;
             }
             if (nary[ii-1]==nary[ii]){
-              alert("入力された内容は同じになってはいけません");
+              alert("<?php echo CONTENT_NOT_SAME; ?>");
               return false;
             }
           }
         }
   if(!document.getElementsByName('set_oroshi[]')[0]&&!document.getElementById("orrshi_id")){
-    alert('まず、入力フォーム追加してください');
+    alert('<?php echo CREATE_INPUT_BOX; ?>');
     return false;
   }
   }
@@ -276,7 +276,7 @@ function w_close(){
 }
     
 function del_oroshi(id){
-  var flg=confirm('削除しますか？');
+  var flg=confirm('<?php echo DELETE;?>');
   if(flg){
     location.href="cleate_oroshi.php?action=delete&id="+id;
     //    location.href="cleate_oroshi.php?action=delete&id="+id+"&cpath="+path;
@@ -362,7 +362,7 @@ require("includes/note_js.php");
   <td width="10"><?php if ($i) {?><a href="javascript:void(0);" onclick="ex(<?php echo $i;?>)">↑</a><?php }?></td>
   <td id="tr_<?php echo $i;?>_1">
     <input type="hidden" name="sort_order[<?php echo $col['oroshi_id'];?>]" value="<?php echo $i;?>" class="sort_order_input">
-    卸業者：<?php echo $col['oroshi_name'];?><input type="hidden" name="exist_name[]" value='<?php echo $col['oroshi_name'];?>'>
+   <?php echo WHOLESALERS.$col['oroshi_name'];?><input type="hidden" name="exist_name[]" value='<?php echo $col['oroshi_name'];?>'>
   </td>
   <td id="tr_<?php echo $i;?>_2" width='50'><a href='cleate_oroshi.php?action=edit_oroshi&id=<?php echo $col['oroshi_id'];?>'><?php echo CLEATE_DOUGYOUSYA_EDIT;?></a></td>
   <td id="tr_<?php echo $i;?>_3" width='50'><a href='javascript:void(0);' onclick='del_oroshi(<?php echo $col['oroshi_id'];?>)'><?php echo CLEATE_DOUGYOUSYA_DEL;?></a></td>

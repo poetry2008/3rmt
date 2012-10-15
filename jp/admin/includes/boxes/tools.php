@@ -3,7 +3,7 @@
   $Id$
 */
 ?>
-<!-- tools //-->
+<!-- tools -->
           <tr>
             <td>
 <?php
@@ -46,11 +46,11 @@
   echo $box->menuBox($heading, $contents);
   */
 ?>
-            <table cellspacing="0" cellpadding="2" border="0" width="100%"> 
+            <table cellspacing="0" cellpadding="2" border="0" width="150"> 
               <tr>
               <td onmouseover="this.style.cursor='hand'" class="menuBoxHeading">
               &nbsp; 
-              <a class="menuBoxHeading_Link" href="javascript:void(0);" onclick="toggle_lan('col7');"><?php echo BOX_HEADING_TOOLS;?></a> 
+						 <?php echo tep_image(DIR_WS_MENU_ICON . 'icon_tool.gif');?> <a class="menuBoxHeading_Link" href="javascript:void(0);" onclick="toggle_lan('col7');"><?php echo BOX_HEADING_TOOLS;?></a> 
               &nbsp; 
               </td>
               </tr>
@@ -71,37 +71,37 @@
                 <td class="menuBoxContent">
     <?php 
     echo 
-                   '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_BANNER_MANAGER) . '">' . BOX_TOOLS_BANNER_MANAGER . '</a><br>' .
-                   '<a class="menuBoxContent_Link" href="' .
-                   tep_href_link('bank_cl.php') . '">'.FILENAME_BANK_CL_TEXT.'</a><br>' .
-                   '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_CACHE) . '">' . BOX_TOOLS_CACHE . '</a><br>' .
-                   '<a class="menuBoxContent_Link" href="' .
+                   '<span class="menuBoxContent_image">'.tep_image(DIR_WS_MENU_ICON . 'icon_banner.gif').'</span><span class="menuBoxContent_span"><a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_BANNER_MANAGER) . '">' . BOX_TOOLS_BANNER_MANAGER . '</a></span><br><span class="menuBoxContent_image">' .
+                   tep_image(DIR_WS_MENU_ICON . 'icon_business_day.gif').'</span><span class="menuBoxContent_span"><a class="menuBoxContent_Link" href="' .
+                   tep_href_link('bank_cl.php') . '">'.FILENAME_BANK_CL_TEXT.'</a></span><br><span class="menuBoxContent_image">' .
+                   tep_image(DIR_WS_MENU_ICON . 'icon_cache_control.gif').'</span><span class="menuBoxContent_span"><a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_CACHE) . '">' . BOX_TOOLS_CACHE . '</a></span><br><span class="menuBoxContent_image">' .
+                   tep_image(DIR_WS_MENU_ICON . 'icon_identity.gif').'</span><span class="menuBoxContent_span"><a class="menuBoxContent_Link" href="' .
                    tep_href_link(FILENAME_PW_MANAGER) . '">'
-                   .FILENAME_PW_MANAGER_TEXT. '</a><br>' .
-                   '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_DEFINE_LANGUAGE) . '">' . BOX_TOOLS_DEFINE_LANGUAGE . '</a><br>' .
-                   '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_MAIL) . '">' . BOX_TOOLS_MAIL . '</a><br>' .
-                   '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_NEWSLETTERS) . '">' . BOX_TOOLS_NEWSLETTER_MANAGER . '</a><br>' .
-                   '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_POINT_EMAIL) . '">' . BOX_TOOLS_POINT_EMAIL_MANAGER . '</a><br>' .
-                   '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_WHOS_ONLINE) . '">' . BOX_TOOLS_WHOS_ONLINE . '</a><br>' . 
-                   '<a class="menuBoxContent_Link" href="' .
-                   tep_href_link(FILENAME_COMPUTERS) . '">'.FILENAME_COMPUTERS_TEXT.'</a><br>' . 
+                   .FILENAME_PW_MANAGER_TEXT. '</a></span><br><span class="menuBoxContent_image">' .
+                   tep_image(DIR_WS_MENU_ICON . 'icon_language_file.gif').'</span><span class="menuBoxContent_span"> <a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_DEFINE_LANGUAGE) . '">' . BOX_TOOLS_DEFINE_LANGUAGE . '</a></span><br><span class="menuBoxContent_image">' .
+                   tep_image(DIR_WS_MENU_ICON . 'icon_email.gif').'</span><span class="menuBoxContent_span"><a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_MAIL) . '">' . BOX_TOOLS_MAIL . '</a></span><br><span class="menuBoxContent_image">' .
+                   tep_image(DIR_WS_MENU_ICON . 'icon_magazine.gif').'</span><span class="menuBoxContent_span"><a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_NEWSLETTERS) . '">' . BOX_TOOLS_NEWSLETTER_MANAGER . '</a></span><br><span class="menuBoxContent_image">' .
+                   tep_image(DIR_WS_MENU_ICON . 'icon_points.gif').'</span><span class="menuBoxContent_span"><a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_POINT_EMAIL) . '">' . BOX_TOOLS_POINT_EMAIL_MANAGER . '</a></span><br><span class="menuBoxContent_image">' .
+                   tep_image(DIR_WS_MENU_ICON . 'icon_online_user.gif').'</span><span class="menuBoxContent_span"><a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_WHOS_ONLINE) . '">' . BOX_TOOLS_WHOS_ONLINE . '</a></span><br><span class="menuBoxContent_image">' . 
+                   tep_image(DIR_WS_MENU_ICON . 'icon_button.gif').'</span><span class="menuBoxContent_span"><a class="menuBoxContent_Link" href="' .
+                   tep_href_link(FILENAME_COMPUTERS) . '">'.FILENAME_COMPUTERS_TEXT.'</a></span><br><span class="menuBoxContent_image">' . 
                    
-                   '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_LATEST_NEWS) . '">' . BOX_TOOLS_LATEST_NEWS . '</a><br>' . 
-                   '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_CONTENTS) . '">' . BOX_TOOLS_CONTENTS . '</a><br>' .
-                   '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_PRESENT) . '" class="menuBoxContent_Link">' . BOX_TOOLS_PRESENT . '</a><br>' . 
-                   '<a class="menuBoxContent_Link" href="' .  tep_href_link(FILENAME_CAMPAIGN) . '" class="menuBoxContent_Link">' . BOX_TOOLS_CAMPAIGN . '</a><br>' . 
-                   '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_FAQ) . '">' . BOX_TOOLS_FAQ . '</a>' . 
-                     
-                   '<hr size="1">' . 
-                   '<a class="menuBoxContent_Link" href="' .
+                   tep_image(DIR_WS_MENU_ICON . 'icon_new_info.gif').'</span><span class="menuBoxContent_span" ><a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_LATEST_NEWS) . '">' . BOX_TOOLS_LATEST_NEWS . '</a></span><br><span class="menuBoxContent_image">' . 
+                   tep_image(DIR_WS_MENU_ICON . 'icon_contents.gif').'</span><span class="menuBoxContent_span"><a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_CONTENTS) . '">' . BOX_TOOLS_CONTENTS . '</a></span><br><span class="menuBoxContent_image">' .
+                   tep_image(DIR_WS_MENU_ICON . 'icon_present.gif').'</span><span class="menuBoxContent_span"><a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_PRESENT) . '" class="menuBoxContent_Link">' . BOX_TOOLS_PRESENT . '</a></span><br><span class="menuBoxContent_image">' . 
+                   tep_image(DIR_WS_MENU_ICON . 'icon_campaign_code.gif').'</span><span class="menuBoxContent_span"><a class="menuBoxContent_Link" href="' .  tep_href_link(FILENAME_CAMPAIGN) . '" class="menuBoxContent_Link">' . BOX_TOOLS_CAMPAIGN . '</a></span><br><span class="menuBoxContent_image">' . 
+                   tep_image(DIR_WS_MENU_ICON . 'icon_faq.gif').'</span><span class="menuBoxContent_span"><a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_FAQ) . '">' . BOX_TOOLS_FAQ . '</a></span><br><span class="menuBoxContent_image">' . 
+									 tep_image(DIR_WS_MENU_ICON . 'icon_magazine_register.gif').'</span><span class="menuBoxContent_span"><a class="menuBoxContent_Link" href="' .  tep_href_link('help_info.php', '', 'NONSSL') .  '">'.HELP_INFO_TITLE.'</a></span>'.
+                   '<hr size="1"><span class="menuBoxContent_image">' . 
+                   tep_image(DIR_WS_MENU_ICON . 'icon_help_info.gif').'</span><span class="menuBoxContent_span"><a class="menuBoxContent_Link" href="' .
                    tep_href_link('mag_up.php', '', 'NONSSL') .
-                   '">'.FILENAME_MAG_UP_TEXT.'</a><br>' . 
-                   '<a class="menuBoxContent_Link" href="' .
+                   '">'.FILENAME_MAG_UP_TEXT.'</a></span><br><span class="menuBoxContent_image">' . 
+                   tep_image(DIR_WS_MENU_ICON . 'icon_magazine_data.gif').'</span><span class="menuBoxContent_span"><a class="menuBoxContent_Link" href="' .
                    tep_href_link('mag_dl.php', '', 'NONSSL') .
-                   '">'.FILENAME_MAG_DL_TEXT.'</a><br>'.
-                   '<a class="menuBoxContent_Link" href="' .
+                   '">'.FILENAME_MAG_DL_TEXT.'</a></span><br><span class="menuBoxContent_image">'.
+                   tep_image(DIR_WS_MENU_ICON . 'icon_date_export.gif').'</span><span class="menuBoxContent_span"><a class="menuBoxContent_Link" href="' .
                    tep_href_link(FILENAME_ORDERS_DOWNLOAD, '', 'NONSSL') .
-                   '">'.FILENAME_ORDER_DOWNLOAD.'</a>';
+                   '">'.FILENAME_ORDER_DOWNLOAD.'</a></span>';
               ?> 
                 </td>
               </tr>
@@ -109,4 +109,4 @@
             </div> 
             </td>
           </tr>
-<!-- tools_eof //-->
+<!-- tools_eof -->

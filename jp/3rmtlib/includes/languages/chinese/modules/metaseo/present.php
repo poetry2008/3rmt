@@ -1,0 +1,9 @@
+<?php
+/*
+	JP、GM共通ファイル
+*/
+
+  define('MODULE_METASEO_PRESENT_TEXT_TITLE', '赠品');
+  define('MODULE_METASEO_PRESENT_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_PRESENT_TEXT_DESCRIPTION', '赠品页的SEO');
+?>

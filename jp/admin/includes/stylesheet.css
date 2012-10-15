@@ -192,13 +192,27 @@ a.splitPageLink:hover {
 --------------------------- */
 .menuBoxHeading {
 	color: #000;                                 /* フォントカラー */
-	background-color: #ffffff;                      /* 背景色 */
+	background-color: #ffffff;
+	line-height:18px;                      /* 背景色 */
+}
+.menuBoxHeading img{
+	margin:0 5px 3px 0;
 }
 /* ---------------------------
 .[TD]：メニューボックスコンテンツ
 --------------------------- */
 .menuBoxContent {
 	color: #616060;                                 /* フォントカラー */
+}
+.menuBoxContent_image{
+	margin-right:5px;
+	float:left;
+	line-height:18px;
+}
+.menuBoxContent_span{
+	width:125px;
+	float:left;
+	line-height:18px;
 }
 /* page */
 /* ---------------------------
@@ -224,6 +238,9 @@ body {
 	color: #ffffff;                                 /* フォントカラー */
 	font-weight: bold;                              /* フォント太さ */
 	padding:2px;                               /* 境界線と内容との間の空間 */
+}
+.headerBarContent img{
+	margin-bottom:3px;
 }
 /* ---------------------------
 .[TABLE]：メニューボックスを統括するテーブル
@@ -1411,11 +1428,51 @@ font-size:14px;
 }
 .table_img_list{
 	list-style:none;
+	margin:0;
+	padding:0;
 }
 .table_img_list li{
 	float:left;
-	width:12%;
+	width:10%;
 }
 .table_img_list  img{
 	margin-bottom:7px;
+}
+.table_space_left{
+	margin-left:3px;
+	*margin-left:2px;
+	margin-left:2px\9;
+}
+.left_title_width{
+	min-width:200px;
+	font-size: 12px;
+    line-height: 14px;
+}
+.float_left{
+	float:left;
+}
+.mark_flag_checked {
+	color: #fff;
+	background: #ff0000;
+	font-size:12px;
+	cursor:pointer;
+	border: 1px solid #000;
+	border-top: 2px solid #000;
+	border-left: 2px solid #000;
+	font-weight:bold;
+        width:10px;
+}
+.mark_flag_unchecked {
+	color: #000;
+	background: #fff;
+	font-size:12px;
+	cursor:pointer;
+	border: 1px solid #000;
+	border-bottom: 2px solid #000;
+	border-right: 2px solid #000;
+	font-weight:bold;
+        width:10px;
+}
+.float_right{
+	float:right;
 }

@@ -12,6 +12,8 @@
   ■変更履歴
 ********************************************************* */
 
+  error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_WARNING);
+  ini_set("display_errors", "Off");
   define('TABLE_CONFIGURATION', 'configuration');
   define('TABLE_LANGUAGES',     'languages');
   define('FILENAME_DEFAULT',    'index.php');
@@ -59,6 +61,15 @@
   }
 
 // language
+function tep_get_default_language_id(){
+    $language_id_query = mysql_query("select languages_id, directory from 
+        language where code = '" . DEFAULT_LANGUAGE . "'");
+    if(mysql_num_rows($language_id_query)){
+      $lan_id_row = mysql_fetch_array($language_id_query);
+      $languages_id = $lan_id_row['languages_id'];
+    }
+    return $languages_id;
+}
   require(DIR_WS_FUNCTIONS . 'languages.php');
   $language = tep_get_languages_directory(DEFAULT_LANGUAGE);
 

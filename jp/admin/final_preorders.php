@@ -7,6 +7,7 @@
 
   require('includes/application_top.php');
   require('includes/step-by-step/new_application_top.php');
+  include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .  '/default.php');
   require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_EDIT_ORDERS);
  
   $active_order_raw = tep_db_query("select is_active from ".TABLE_PREORDERS." where orders_id = '".$_GET['oID']."'");
@@ -2472,7 +2473,7 @@ if (tep_db_num_rows($orders_history_query)) {
     <?php echo '<b>'.ENTRY_EMAIL_TITLE.'</b>'.tep_draw_input_field('etitle', $mail_sql['orders_status_title'],' style="width:50%;"');?> 
     <br> 
     <br> 
-    <textarea style="font-family:monospace; font-size:12px; width:70%;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}', preorders_a($order->info['orders_id']), $mail_sql['orders_status_mail']);?></textarea> 
+    <textarea style="font-family:monospace; font-size:12px; width:70%;" name="comments" wrap="off" rows="30" cols="74"><?php echo str_replace('${ORDER_A}', preorders_a($order->info['orders_id']), $mail_sql['orders_status_mail']);?></textarea> 
   </td>
   </tr>
 </table>

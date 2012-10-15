@@ -1666,6 +1666,10 @@ searching
 .float_right{
 	float:right;
 }
+.float_right_box{
+	float:right;
+	width:160px;
+}
 .cp_content{
 	padding:0 20px;
 }
@@ -1977,4 +1981,13 @@ searching
 	border:1px solid #ff8e90;
 	background-color:#FFE9E9;
 }
-
+.box_list_title{
+margin-top:10px;
+background: url(../images/design/box/product_listing_page.gif) repeat-x; 
+height: 23px; 
+color: #005c69;
+}
+.box_list_title .float_right, .box_list_title .float_right_box{
+ margin-top:-2px; 
+ *margin-top:-17px;
+}

@@ -10,7 +10,7 @@
   Released under the GNU General Public License
 */
 ?>
-<!-- localization //-->
+<!-- localization -->
           <tr>
             <td>
 <?php
@@ -32,11 +32,11 @@
   echo $box->menuBox($heading, $contents);
   */
 ?>
-            <table cellspacing="0" cellpadding="2" border="0" width="100%"> 
+            <table cellspacing="0" cellpadding="2" border="0" width="150"> 
               <tr>
               <td onmouseover="this.style.cursor='hand'" class="menuBoxHeading">
               &nbsp; 
-              <a class="menuBoxHeading_Link" href="javascript:void(0);" onclick="toggle_lan('col5');"><?php echo BOX_HEADING_LOCALIZATION;?></a> 
+						<?php echo tep_image(DIR_WS_MENU_ICON . 'icon_localize.gif');?>  <a class="menuBoxHeading_Link" href="javascript:void(0);" onclick="toggle_lan('col5');"><?php echo BOX_HEADING_LOCALIZATION;?></a> 
               &nbsp; 
               </td>
               </tr>
@@ -55,13 +55,14 @@
             <table cellspacing="0" cellpadding="2" border="0" width="100%"> 
               <tr>
                 <td class="menuBoxContent">
-                 <?php echo '<a href="' . tep_href_link(FILENAME_ORDERS_STATUS, '', 'NONSSL') . '" class="menuBoxContent_Link">' .  BOX_LOCALIZATION_ORDERS_STATUS . '</a>';?>
+                 <?php echo '<span class="menuBoxContent_image">'.tep_image(DIR_WS_MENU_ICON . 'icon_order_status.gif').'</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_ORDERS_STATUS, '', 'NONSSL') . '" class="menuBoxContent_Link">' .  BOX_LOCALIZATION_ORDERS_STATUS . '</a></span>';?>
                  <br> 
-                 <?php echo '<a href="' . tep_href_link(FILENAME_PREORDERS_STATUS, '', 'NONSSL') . '" class="menuBoxContent_Link">' .  BOX_LOCALIZATION_PREORDERS_STATUS . '</a>';?>
+                 <?php echo '<span class="menuBoxContent_image">'.tep_image(DIR_WS_MENU_ICON . 'icon_preorder_status.gif').'</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_PREORDERS_STATUS, '', 'NONSSL') . '" class="menuBoxContent_Link">' .  BOX_LOCALIZATION_PREORDERS_STATUS . '</a></span>';?>
+
                 </td>
               </tr>
             </table>
             </div>
             </td>
           </tr>
-<!-- localization_eof //-->
+<!-- localization_eof -->

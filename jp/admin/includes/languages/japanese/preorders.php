@@ -1,13 +1,6 @@
 <?php
 /*
-  $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 osCommerce
-
-  Released under the GNU General Public License
+  $Id$ 
 */
 
 define('HEADING_TITLE', '予約管理');
@@ -23,13 +16,14 @@ define('TABLE_HEADING_ACTION', '操作');
 define('TABLE_HEADING_QUANTITY', '数量');
 define('TABLE_HEADING_PRODUCTS_MODEL', '型番');
 define('TABLE_HEADING_PRODUCTS', '数量 / 商品名');
-define('TABLE_HEADING_CHARACTER', 'キャラクター名');
 define('TABLE_HEADING_TAX', '税率');
 define('TABLE_HEADING_TOTAL', '合計');
 define('TABLE_HEADING_PRICE_EXCLUDING_TAX', '価格(税別)');
 define('TABLE_HEADING_PRICE_INCLUDING_TAX', '価格(税込)');
 define('TABLE_HEADING_TOTAL_EXCLUDING_TAX', '合計(税別)');
 define('TABLE_HEADING_TOTAL_INCLUDING_TAX', '合計(税込)');
+define('TEXT_PREORDER_AMOUNT_SEARCH','注文金額検索');
+
 
 define('TABLE_HEADING_CUSTOMER_NOTIFIED', '顧客に通知');
 define('TABLE_HEADING_DATE_ADDED', '処理日');
@@ -63,7 +57,6 @@ define('ENTRY_DATE_LAST_UPDATED', '更新日:');
 define('ENTRY_NOTIFY_CUSTOMER', '処理状況を通知:');
 define('ENTRY_NOTIFY_COMMENTS', 'コメントを追加:');
 define('ENTRY_PRINTABLE', '納品書をプリント');
-define('TEXT_PREORDER_AMOUNT_SEARCH','注文金額検索');
 
 define('TEXT_INFO_HEADING_DELETE_ORDER', '注文を削除');
 define('TEXT_INFO_DELETE_INTRO', '本当にこの注文を削除しますか?');
@@ -226,11 +219,21 @@ define('TEXT_FUNCTION_FINISH','「入」');
 define('TEXT_FUNCTION_UNFINISH','「未」');
 define('TEXT_FUNCTION_NUMBER','個数：');
 define('TEXT_FUNCTION_NUM','個');
-define('TEXT_FUNCTION_GAME_NAME','キャラ名：');
 define('TEXT_FUNCTION_PC','PC：');
 define('TEXT_FUNCTION_PREDATE','有効期限：');
 define('TEXT_FUNCTION_ENSURE_DATE','確保期限：');
 define('TEXT_FUNCTION_ORDER_FROM_INFO', '予約注文書サイト：');
 define('TEXT_ORDER_HISTORY_FROM_ORDER', '注文');
 define('TEXT_ORDER_HISTORY_FROM_PREORDER', '予約');
+
+define('TEXT_ORDER_NOT_CHOOSE','複数の選択はできません。');
+define('TEXT_NO_OPTION_ORDER','注文書はまだ選択していません。')    ;
+define('TEXT_COMPLETION_TRANSACTION','取引完了');
+define('TEXT_PRESERVATION','保存');
+define('TEXT_SAVE_FINISHED','の保存が完了しました');
+define('TEXT_BROWER_REJECTED','ブラウザに拒絶されました！\nブラウザのアドレス欄に"about:config"を入力してEnterキーを押します\nそれと"signed.applets.codebase_principal_support"数を"true"にしてください');
+define('TEXT_COPY_TO_CLIPBOARD','クリップボードにコピーしました！');
+define('TEXT_PLEASE_PASSWORD','ワンタイムパスワードを入力してください\r\n');
+define('TEXT_PASSWORD_NOT','パスワードが違います');
+
 ?>

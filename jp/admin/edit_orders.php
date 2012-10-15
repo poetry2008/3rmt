@@ -10,6 +10,7 @@ require('includes/application_top.php');
 require('includes/step-by-step/new_application_top.php');
 require('includes/address/AD_Option.php');
 require('includes/address/AD_Option_Group.php');
+include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .  '/default.php');
 $ad_option = new AD_Option();
 require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_EDIT_ORDERS);
 
@@ -101,14 +102,8 @@ if (tep_not_null($action)) {
       $date_time = $year.$month.$day;
       $date_now = date('Ymd');
       $date_start_hour = $start_hour.$start_min.$start_min_1;
-      $date_end_hour = $end_hour.$end_min.$end_min_1;
-      if((int)$date_time < (int)$date_now || (int)$date_end_hour < (int)$date_start_hour){
-
-        $messageStack->add(TEXT_DATE_NUM_ERROR, 'error');
-        $action = 'edit';
-        break; 
-      } 
-    $shipping_array = array();
+      $date_end_hour = $end_hour.$end_min.$end_min_1; 
+      $shipping_array = array();
     foreach($update_products as $products_key=>$products_value){
 
       $shipping_products_query = tep_db_query("select * from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='". $products_key."'");
@@ -827,7 +822,7 @@ if($address_error == false){
         
         $ot_query = tep_db_query("select value from " . TABLE_ORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_total'");
         $ot_result = tep_db_fetch_array($ot_query);
-        $otm = (int)$ot_result['value'] . EDIT_ORDERS_PRICE_UNIT;
+        $otm = (int)$ot_result['value'] . SENDMAIL_EDIT_ORDERS_PRICE_UNIT;
 
         $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
         $os_result = tep_db_fetch_array($os_query);
@@ -855,7 +850,7 @@ if($address_error == false){
                 get_configuration_by_site_id('STORE_NAME', $order->info['site_id']),
                 get_url_by_site_id($order->info['site_id']),
                 get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $order->info['site_id']),
-                date('Y'.TEXT_DATE_YEAR.'n'.TEXT_DATE_MONTH.'j'.TEXT_DATE_DAY,strtotime(tep_get_pay_day()))
+                date('Y'.SENDMAIL_TEXT_DATE_YEAR.'n'.SENDMAIL_TEXT_DATE_MONTH.'j'.SENDMAIL_TEXT_DATE_DAY,strtotime(tep_get_pay_day()))
                 ),$title);
 
         $comments = str_replace(array(
@@ -881,7 +876,7 @@ if($address_error == false){
                 get_configuration_by_site_id('STORE_NAME', $order->info['site_id']),
                 get_url_by_site_id($order->info['site_id']),
                 get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $order->info['site_id']),
-                date('Y'.TEXT_DATE_YEAR.'n'.TEXT_DATE_MONTH.'j'.TEXT_DATE_DAY,strtotime(tep_get_pay_day()))
+                date('Y'.SENDMAIL_TEXT_DATE_YEAR.'n'.SENDMAIL_TEXT_DATE_MONTH.'j'.SENDMAIL_TEXT_DATE_DAY,strtotime(tep_get_pay_day()))
                 ),$comments);
         tep_order_status_change($oID,$status);
         tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
@@ -914,7 +909,7 @@ if($address_error == false){
           }
           for ($i=0; $i<sizeof($order->products); $i++) {
             //$orders_products_id = $order->products[$i]['orders_products_id'];
-            $products_ordered_mail .= ORDERS_PRODUCTS.str_repeat('　', intval($max_c_len - mb_strlen(ORDERS_PRODUCTS, 'utf-8'))).'：' . $order->products[$i]['name'] . '（' . $order->products[$i]['model'] . '）';
+            $products_ordered_mail .= SENDMAIL_ORDERS_PRODUCTS.str_repeat('　', intval($max_c_len - mb_strlen(SENDMAIL_ORDERS_PRODUCTS, 'utf-8'))).'：' . $order->products[$i]['name'] . '（' . $order->products[$i]['model'] . '）';
             if ($order->products[$i]['price'] != '0') {
               $products_ordered_mail .= '（'.$currencies->display_price($order->products[$i]['price'], $order->products[$i]['tax']).'）'; 
             }
@@ -932,9 +927,9 @@ if($address_error == false){
               }
             }
 
-            $products_ordered_mail .= QTY_NUM.str_repeat('　', intval($max_c_len - mb_strlen(QTY_NUM, 'utf-8'))).'：' . $order->products[$i]['qty'] . EDIT_ORDERS_NUM_UNIT . tep_get_full_count2($order->products[$i]['qty'], $order->products[$i]['id']) . "\n";
-            $products_ordered_mail .= TABLE_HEADING_UNIT_PRICE.str_repeat('　', intval($max_c_len - mb_strlen(TABLE_HEADING_UNIT_PRICE, 'utf-8'))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
-            $products_ordered_mail .= str_replace(':', '', ENTRY_SUB_TOTAL).str_repeat('　', intval($max_c_len - mb_strlen(str_replace(':', '', ENTRY_SUB_TOTAL), 'utf-8'))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
+            $products_ordered_mail .= SENDMAIL_QTY_NUM.str_repeat('　', intval($max_c_len - mb_strlen(SENDMAIL_QTY_NUM, 'utf-8'))).'：' . $order->products[$i]['qty'] . SENDMAIL_EDIT_ORDERS_NUM_UNIT . tep_get_full_count2($order->products[$i]['qty'], $order->products[$i]['id']) . "\n";
+            $products_ordered_mail .= SENDMAIL_TABLE_HEADING_PRODUCTS_PRICE.str_repeat('　', intval($max_c_len - mb_strlen(SENDMAIL_TABLE_HEADING_PRODUCTS_PRICE, 'utf-8'))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
+            $products_ordered_mail .= str_replace(':', '', SENDMAIL_ENTRY_SUB_TOTAL).str_repeat('　', intval($max_c_len - mb_strlen(str_replace(':', '', SENDMAIL_ENTRY_SUB_TOTAL), 'utf-8'))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
             //$products_ordered_mail .= "\t" . 'キャラクター名　　：' . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($order->products[$i]['character']) : $order->products[$i]['character']) . "\n";
             $products_ordered_mail .= '------------------------------------------' . "\n";
           }
@@ -947,24 +942,24 @@ if($address_error == false){
               if ($totals['class'] == "ot_point") {
                 $camp_exists_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$oID."' and site_id = '".$order->info['site_id']."'"); 
                 if (tep_db_num_rows($camp_exists_query)) {
-                  $total_details_mail .= TEXT_POINT . $currencies->format(abs($campaign_fee)) . "\n";
+                  $total_details_mail .= SENDMAIL_TEXT_POINT_ONE . $currencies->format(abs($campaign_fee)) . "\n";
                 } else {
                   if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
-                    $total_details_mail .= TEXT_POINT .  $currencies->format($totals['value']) . "\n";
+                    $total_details_mail .= SENDMAIL_TEXT_POINT_ONE .  $currencies->format($totals['value']) . "\n";
                   }
                 }
               } else {
                 if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
-                  $total_details_mail .= TEXT_POINT .  $currencies->format($totals['value']) . "\n";
+                  $total_details_mail .= SENDMAIL_TEXT_POINT_ONE .  $currencies->format($totals['value']) . "\n";
                 }
               }
             } elseif ($totals['class'] == "ot_total") {
               if($handle_fee)
-                $total_details_mail .= TEXT_HANDLE_FEE.$currencies->format($handle_fee)."\n";
-              $total_details_mail .= TEXT_PAYMENT_AMOUNT . $currencies->format($totals['value']);
+                $total_details_mail .= SENDMAIL_TEXT_HANDLE_FEE.$currencies->format($handle_fee)."\n";
+              $total_details_mail .= SENDMAIL_TEXT_PAYMENT_AMOUNT . $currencies->format($totals['value']);
             } else {
               // 去掉 決済手数料 消費税
-              $totals['title'] = str_replace(TEXT_TRANSACTION_FEE, TEXT_HANDLE_FEE_ONE, $totals['title']);
+              $totals['title'] = str_replace(SENDMAIL_TEXT_TRANSACTION_FEE, SENDMAIL_TEXT_HANDLE_FEE_ONE, $totals['title']);
               $total_details_mail .= $totals['title'] . str_repeat('　', intval((16 - strlen($totals['title']))/2)) . '：' . $currencies->format($totals['value']) . "\n";
             }
           }
@@ -980,31 +975,31 @@ if($address_error == false){
           $tmp_date = date('D', strtotime($check_status['torihiki_date'])); 
           switch(strtolower($tmp_date)) {
             case 'mon':
-             $week_str = '（'.TEXT_DATE_MONDAY.'）'; 
+             $week_str = '（'.SENDMAIL_TEXT_DATE_MONDAY.'）'; 
              break;
             case 'tue':
-             $week_str =  '（'.TEXT_DATE_TUESDAY.'）'; 
+             $week_str =  '（'.SENDMAIL_TEXT_DATE_TUESDAY.'）'; 
              break;
             case 'wed':
-             $week_str =  '（'.TEXT_DATE_WEDNESDAY.'）'; 
+             $week_str =  '（'.SENDMAIL_TEXT_DATE_WEDNESDAY.'）'; 
              break;
            case 'thu':
-             $week_str =  '（'.TEXT_DATE_THURSDAY.'）'; 
+             $week_str =  '（'.SENDMAIL_TEXT_DATE_THURSDAY.'）'; 
              break;
            case 'fri':
-             $week_str =  '（'.TEXT_DATE_FRIDAY.'）'; 
+             $week_str =  '（'.SENDMAIL_TEXT_DATE_FRIDAY.'）'; 
              break;
            case 'sat':
-             $week_str =  '（'.TEXT_DATE_STATURDAY.'）'; 
+             $week_str =  '（'.SENDMAIL_TEXT_DATE_STATURDAY.'）'; 
              break;
            case 'sun':
-             $week_str =  '（'.TEXT_DATE_SUNDAY.'）'; 
+             $week_str =  '（'.SENDMAIL_TEXT_DATE_SUNDAY.'）'; 
              break;
            default:
              break;
           }
           
-          $fetch_time_str = date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['torihiki_date'])).$week_str.$fetch_time_start_array[1].' '.TEXT_TIME_LINK.' '.$fetch_time_end_array[1];
+          $fetch_time_str = date('Y'.SENDMAIL_TEXT_DATE_YEAR.'m'.SENDMAIL_TEXT_DATE_MONTH.'d'.SENDMAIL_TEXT_DATE_DAY, strtotime($check_status['torihiki_date'])).$week_str.$fetch_time_start_array[1].' '.SENDMAIL_TEXT_TIME_LINK.' '.$fetch_time_end_array[1];
           
           $email = str_replace('${SHIPPING_TIME}', $fetch_time_str, $email); 
           $title = str_replace('${SHIPPING_TIME}', $fetch_time_str, $title); 
@@ -1202,29 +1197,27 @@ if($address_error == false){
 
         // 2.2.1 Update inventory Quantity
         $p = tep_db_fetch_array(tep_db_query("select * from products where products_id='".$add_product_products_id."'"));
-        if ($customer_guest['is_calc_quantity'] != '1') {
-          if ((int)$add_product_quantity > $p['products_real_quantity']) {
-            // 买取商品大于实数
-            tep_db_perform('products',array(
-                  'products_real_quantity' => 0,
-                  //'products_virtual_quantity' => 0,
-                  //'products_virtual_quantity' => $p['products_virtual_quantity'] - ((int)$add_product_quantity + $p['products_real_quantity'])
-                  'products_virtual_quantity' => $p['products_virtual_quantity'] - (int)$add_product_quantity + $p['products_real_quantity']
-                  ),
-                'update',
-                "products_id = '" . $add_product_products_id . "'");
-          } else {
-            tep_db_perform('products',array(
-                  'products_real_quantity' =>$p['products_real_quantity']  - (int)$add_product_quantity
-                  // 'products_real_quantity' =>$p['products_real_quantity']+ $p['products_virtual_quantity'] - (int)$add_product_quantity
-                  ),
-                'update',
-                "products_id = '" . $add_product_products_id . "'");
-          }
-          // 增加销售量
-          tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . (int)$add_product_quantity . " where products_id = '" . $add_product_products_id . "'");
-          // 处理负数问题
+        if ((int)$add_product_quantity > $p['products_real_quantity']) {
+          // 买取商品大于实数
+          tep_db_perform('products',array(
+                'products_real_quantity' => 0,
+                //'products_virtual_quantity' => 0,
+                //'products_virtual_quantity' => $p['products_virtual_quantity'] - ((int)$add_product_quantity + $p['products_real_quantity'])
+                'products_virtual_quantity' => $p['products_virtual_quantity'] - (int)$add_product_quantity + $p['products_real_quantity']
+                ),
+              'update',
+              "products_id = '" . $add_product_products_id . "'");
+        } else {
+          tep_db_perform('products',array(
+                'products_real_quantity' =>$p['products_real_quantity']  - (int)$add_product_quantity
+                // 'products_real_quantity' =>$p['products_real_quantity']+ $p['products_virtual_quantity'] - (int)$add_product_quantity
+                ),
+              'update',
+              "products_id = '" . $add_product_products_id . "'");
         }
+        // 增加销售量
+        tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . (int)$add_product_quantity . " where products_id = '" . $add_product_products_id . "'");
+        // 处理负数问题
         tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . $add_product_products_id . "'");
         tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . $add_product_products_id . "'");
         /*
@@ -1539,8 +1532,11 @@ function date_time(){
     var end_min = document.getElementById('min_1').value;
     var start_hour_str = parseInt(start_hour+start_min+end_min);
     if(date_time_value < date_time || (date_time_value == date_time && start_hour_str < date_hour)){
-      alert('<?php echo TEXT_DATE_NUM_ERROR;?>');
-      return false;
+      if(confirm('<?php echo TEXT_DATE_TIME_ERROR;?>')){
+        return true;
+      }else{
+        return false; 
+      }
     }
     return true;
 }
@@ -3093,23 +3089,23 @@ if (($action == 'edit') && ($order_exists == true)) {
       }
       $hour_str .= '</select>&nbsp;'.TEXT_HOUR;
       echo $hour_str;
-      $work_min_temp = substr((int)$start_temp[1],0,1);
+      $work_min_temp = substr($start_temp[1],0,1);
       $work_min_temp = isset($_SESSION['orders_update_products']['min']) ? $_SESSION['orders_update_products']['min'] : $work_min_temp;
       $min_str_1 = '&nbsp;<select name="start_min_1" id="min" onchange="check_min(this.value);">';
       for($m_1 = 0;$m_1 <= 5;$m_1++){
         
-        $selected = $work_min_temp == $m_1 ? ' selected' : '';
+        $selected = (int)$work_min_temp == $m_1 ? ' selected' : '';
         $min_str_1 .= '<option value="'.$m_1.'"'.$selected.'>'.$m_1.'</option>';
 
       }
       $min_str_1 .= '</select>';
       echo $min_str_1;
-      $min_str_temp = substr((int)$start_temp[1],1,1);
+      $min_str_temp = substr($start_temp[1],1,1);
       $min_str_temp = isset($_SESSION['orders_update_products']['min_1']) ? $_SESSION['orders_update_products']['min_1'] : $min_str_temp;
       $min_str_2 = '<select name="start_min_2" id="min_1" onchange="check_min_1(this.value);">';
       for($m_2 = 0;$m_2 <= 9;$m_2++){
         
-        $selected = $min_str_temp == $m_2 ? ' selected' : '';
+        $selected = (int)$min_str_temp == $m_2 ? ' selected' : '';
         $min_str_2 .= '<option value="'.$m_2.'"'.$selected.'>'.$m_2.'</option>';
 
       }
@@ -3128,20 +3124,20 @@ if (($action == 'edit') && ($order_exists == true)) {
       }
       $hour_str_1 .= '</select>&nbsp;'.TEXT_HOUR;
       echo $hour_str_1;
-      $min_str_1_temp = substr((int)$end_temp[1],0,1);
+      $min_str_1_temp = substr($end_temp[1],0,1);
       $min_str_1_temp = isset($_SESSION['orders_update_products']['min_end']) ? $_SESSION['orders_update_products']['min_end'] : $min_str_1_temp;
       $min_str_1_end = '&nbsp;<select name="end_min_1" id="min_end" onchange="check_end_min(this.value);">';
       $min_start = (int)$work_min_temp; 
       $min_start = $start_temp[0] < $end_temp[0] ? 0 : $min_start;
       for($m_1_end = $min_start;$m_1_end <= 5;$m_1_end++){
         
-        $selected = $min_str_1_temp == $m_1_end ? ' selected' : '';
+        $selected = (int)$min_str_1_temp == $m_1_end ? ' selected' : '';
         $min_str_1_end .= '<option value="'.$m_1_end.'"'.$selected.'>'.$m_1_end.'</option>';
 
       }
       $min_str_1_end .= '</select>';
       echo $min_str_1_end;
-      $min_str_end_temp = substr((int)$end_temp[1],1,1);
+      $min_str_end_temp = substr($end_temp[1],1,1);
       $min_str_end_temp = isset($_SESSION['orders_update_products']['min_end_1']) ? $_SESSION['orders_update_products']['min_end_1'] : $min_str_end_temp;
       $min_str_2_end = '<select name="end_min_2" id="min_end_1">';
       $min_end = (int)$min_str_end_temp;
@@ -3149,7 +3145,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       $min_end = $start_temp[0] < $end_temp[0] ? 0 : $min_end;
       for($m_2_end = $min_end;$m_2_end <= 9;$m_2_end++){
         
-        $selected = $min_str_end_temp == $m_2_end ? ' selected' : '';
+        $selected = (int)$min_str_end_temp == $m_2_end ? ' selected' : '';
         $min_str_2_end .= '<option value="'.$m_2_end.'"'.$selected.'>'.$m_2_end.'</option>';
 
       }
@@ -3850,10 +3846,10 @@ if (($action == 'edit') && ($order_exists == true)) {
 
           //<textarea style="font-family:monospace;font-size:x-small" name="comments" wrap="hard" rows="30" cols="74"></textarea>
 
-          echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:70%;"');
+          echo tep_draw_textarea_field('comments', 'off', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:70%;"');
           //    echo tep_draw_textarea_field('comments', 'soft', '40', '5');
         } else {
-          echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:70%;"');
+          echo tep_draw_textarea_field('comments', 'off', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:70%;"');
         }
   ?>
     </td>

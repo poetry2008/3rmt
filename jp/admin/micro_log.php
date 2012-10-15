@@ -157,7 +157,7 @@
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
-<title><?php echo 引継メモ; ?></title>
+<title><?php echo HEADING_TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 
 <script language="javascript" src="includes/javascript/jquery.js"></script>
@@ -324,7 +324,7 @@ require("includes/note_js.php");
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td class="pageHeading">引継メモ</td>
+	  <td class="pageHeading"><?php echo HEADING_TITLE;?></td>
             <td class="pageHeading" align="right"></td>
           </tr>
         </table></td>
@@ -351,7 +351,7 @@ require("includes/note_js.php");
             </div> 
             </div>
             </td>
-            <td align="right"><input type="submit" value="メモ保存" /></td>
+	    <td align="right"><input type="submit" value="<?php echo SAVE_BUTTON;?>" /></td>
           </tr>
           </table>
           </form>
@@ -567,7 +567,7 @@ function refresh()
 */
 function delete_log(id)
 {
-  if (confirm("このメモを削除しますか？")) {
+  if (confirm("<?php echo DELETE_CONFIRMATION;?>")) {
     url = 'micro_log.php?id='+id+'&action=delete';
     $.ajax({
       url: url,
@@ -643,7 +643,7 @@ function more_log(){
 
           <div id="div_logs"></div>
               <!--
-          <div id="div_more"><button onClick="more_log()">さらに表示</button></div>
+	      <div id="div_more"><button onClick="more_log()"><?php echo FURTHER_STATED; ?></button></div>
               -->
         </td>
       </tr>

@@ -179,6 +179,17 @@ if ($_POST['orders_id'] &&
                                                                                                                                                                                                            <font color="#999">
       <?php }?>
       <a style="text-decoration:underline;" href="<?php echo tep_href_link('customers.php', 'page=1&cID='.tep_output_string_protected($orders['customers_id']).'&action=edit');?>"><b><?php echo tep_output_string_protected($orders['customers_name']);?></b></a>
+                    <?php 
+                    $customers_info_raw = tep_db_query("select pic_icon from ".TABLE_CUSTOMERS." where customers_id = '".$orders['customers_id']."'"); 
+                    $customers_info_res = tep_db_fetch_array($customers_info_raw);
+                    if ($customers_info_res) {
+                      if (!empty($customers_info_res['pic_icon'])) {
+                        if (file_exists(DIR_FS_DOCUMENT_ROOT.DIR_WS_IMAGES.'icon_list/'.$customers_info_res['pic_icon'])) {
+                          echo tep_image(DIR_WS_IMAGES.'icon_list/'.$customers_info_res['pic_icon']); 
+                        }
+                      }
+                    }
+                    ?>
                                                                                  <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
                                                                                  </font>
       <?php }?>
@@ -208,6 +219,24 @@ if ($_POST['orders_id'] &&
 $tmp_date_end = explode(' ',$orders['torihiki_date_end']); 
 echo TEXT_TIME_LINK.$tmp_date_end[1]; 
 ?></font></td>
+<td style="border-bottom:1px solid #000000;background-color: darkred;" class="dataTableContent" align="left">
+<?php
+  $read_flag_str_array = explode('|||',$orders['read_flag']);
+  $user_info = tep_get_user_info($ocertify->auth_user);
+  if($orders['read_flag'] == ''){
+    echo '<a onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\');" href="javascript:void(0);"><img id="oid_'.$orders['orders_id'].'" border="0" title=" '.TEXT_FLAG_UNCHECK.' " alt="'.TEXT_FLAG_UNCHECK.'" src="images/icons/gray_right.gif"></a>'; 
+  }else{
+
+    if(in_array($user_info['name'],$read_flag_str_array)){
+
+      echo '<a onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\');" href="javascript:void(0);"><img id="oid_'.$orders['orders_id'].'" border="0" title=" '.TEXT_FLAG_CHECKED.' " alt="'.TEXT_FLAG_CHECKED.'" src="images/icons/green_right.gif"></a>';
+    }else{
+
+      echo '<a onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\');" href="javascript:void(0);"><img id="oid_'.$orders['orders_id'].'" border="0" title=" '.TEXT_FLAG_UNCHECK.' " alt="'.TEXT_FLAG_UNCHECK.'" src="images/icons/gray_right.gif"></a>';
+    }
+  }
+?>
+</td>
                                                                                                                                                                                                                                                                                              <td style="border-bottom:1px solid
 #000000;background-color: darkred;" class="dataTableContent" align="left"
                                                                                                                                                                                                                                                                                              onClick="chg_td_color(<?php echo $orders['orders_id'];?>);
@@ -2130,4 +2159,119 @@ echo json_encode($json_array);
     $products_num_error_str = implode('、',$products_num_error_array);
     echo $products_num_error_str;
   }
+} else if ($_GET['action'] == 'handle_mark') {
+  $return_array = array();
+  $select_mark = $_GET['select_mark'];
+  $mark_symbol = $_GET['mark_symbol'];
+  if ($select_mark == '') {
+    $select_mark = '0-1-2-3-4'; 
+  }
+  if ($select_mark != '') {
+    $select_mark_array = explode('-', $select_mark);    
+    $return_array[] = 'success';
+    if (in_array($mark_symbol, $select_mark_array)) {
+      $mark_array = array(); 
+      foreach ($select_mark_array as $m_key => $m_value) {
+        if ($m_value != $mark_symbol) {
+          $mark_array[] = $m_value;  
+        }
+      }
+      if (!empty($mark_array)) {
+        $return_array[] = tep_href_link(FILENAME_ORDERS, $_POST['param_other'].'mark='.implode('-', $mark_array).((!empty($_GET['c_site']))?'&site_id='.$_GET['c_site']:''));
+      } else {
+        if (!empty($_GET['c_site'])) {
+          $return_array[] = tep_href_link(FILENAME_ORDERS, $_POST['param_other'].'site_id='.$_GET['c_site']);
+        } else {
+          $return_array[] = tep_href_link(FILENAME_ORDERS, $_POST['param_other']);
+        }
+      }
+    } else {
+      $mark_array = $select_mark_array; 
+      $mark_array[] = $mark_symbol;
+      sort($mark_array);
+      $return_array[] = tep_href_link(FILENAME_ORDERS, $_POST['param_other'].'mark='.implode('-', $mark_array).((!empty($_GET['c_site']))?'&site_id='.$_GET['c_site']:''));
+    }
+  } else {
+    $return_array[] = 'success';
+    $return_array[] = tep_href_link(FILENAME_ORDERS, $_POST['param_other'].'mark='.$_GET['mark_symbol'].((!empty($_GET['c_site']))?'&site_id='.$_GET['c_site']:''));
+  }
+  echo implode('|||', $return_array);
+} else if ($_GET['action'] == 'read_flag') {
+
+  $users_name = $_POST['user'];
+  $read_flag = $_POST['flag'];
+  $orders_id = $_POST['oid'];
+  $read_flag_query = tep_db_query("select read_flag from ". TABLE_ORDERS ." where orders_id='".$orders_id."'");
+  $read_flag_array = tep_db_fetch_array($read_flag_query);
+  tep_db_free_result($read_flag_query);
+  if($read_flag_array['read_flag'] == ''){
+
+    if($read_flag == 0){
+      tep_db_query("update ". TABLE_ORDERS ." set read_flag='".$users_name."' where orders_id='".$orders_id."'"); 
+    }
+  }else{
+
+    $read_flag_str_array = explode('|||',$read_flag_array['read_flag']);
+    if(!in_array($users_name,$read_flag_str_array) && $read_flag == 0){
+      $read_flag_add = $read_flag_array['read_flag'].'|||'.$users_name;
+      tep_db_query("update ". TABLE_ORDERS ." set read_flag='".$read_flag_add."' where orders_id='".$orders_id."'");
+    }else{
+
+      unset($read_flag_str_array[array_search($users_name,$read_flag_str_array)]);
+      $read_flag_string = implode('|||',$read_flag_str_array);
+      tep_db_query("update ". TABLE_ORDERS ." set read_flag='".$read_flag_string."' where orders_id='".$orders_id."'");
+    }
+  }
+} else if ($_GET['action'] == 'select_site') {
+  if($_POST['site_list'] == ''){
+    $orders_site_array = array();
+    $orders_site_query = tep_db_query("select id from ". TABLE_SITES);
+    while($orders_site_rows = tep_db_fetch_array($orders_site_query)){
+      $orders_site_array[] = $orders_site_rows['id'];
+    }
+    tep_db_free_result($orders_site_query);
+    $user_info = tep_get_user_info($ocertify->auth_user); 
+    if(PERSONAL_SETTING_ORDERS_SITE != ''){
+      $site_setting_array = unserialize(PERSONAL_SETTING_ORDERS_SITE);
+      if(array_key_exists($user_info['name'],$site_setting_array)){
+
+        $site_setting_str = $site_setting_array[$user_info['name']];
+      }else{
+        $site_setting_str = implode('|',$orders_site_array); 
+      }
+    }else{
+      $site_setting_str = implode('|',$orders_site_array); 
+    }
+    $site_array = array();
+    $site_array = explode('|',$site_setting_str);
+
+    if($_POST['flag'] == 0){
+
+      unset($site_array[array_search($_POST['site_id'],$site_array)]);
+    }else{
+      $site_array[] = $_POST['site_id']; 
+    }
+  }else{
+
+    $site_array = explode('-',$_POST['site_list']);
+    if($_POST['flag'] == 0){
+
+      unset($site_array[array_search($_POST['site_id'],$site_array)]);
+    }else{
+      $site_array[] = $_POST['site_id']; 
+    }
+  }
+  sort($site_array);
+  if(!empty($site_array)){
+    echo tep_href_link(FILENAME_ORDERS, $_POST['param_url'].'site_id='.implode('-',$site_array));
+  }else{
+    echo tep_href_link(FILENAME_ORDERS, $_POST['param_url']); 
+  }
+} else if ($_GET['action'] == 'handle_split') {
+  if ($_POST['j_page'] > $_POST['split_total_page']) {
+    $_POST['j_page'] = $_POST['split_total_page']; 
+  } else if ($_POST['j_page'] == 0) {
+    $_POST['j_page'] = 1; 
+  }
+  tep_redirect(tep_href_link($_POST['current_file_info'], $_POST['split_param'].(($_POST['j_page'] != '1')?'page='.$_POST['j_page']:'')));
 }
