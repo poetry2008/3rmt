@@ -46,6 +46,6 @@ define('PAGE_TITLE_MENU_IP','ロックされたIPリスト');
 define('TABLE_HEADING_PERMISSIONS','管理者権限');
 define('TABLE_HEADING_OPERATE','操作');
 define('TEXT_IP_UNLOCK','ロック解除');
-define('TEXT_DELETE_CONFIRM','本当にこのIPアドレスを削除しますか？');
+define('TEXT_DELETE_CONFIRM','本当にこのIPアドレスのロックを解除しますか？');
 define('TEXT_IP_UNLOCK_NOTES','<font color="#FF0000">※</font>&nbsp;同じIPで管理者権限のAdmin,Staff,Chiefのユーザはロックされたとき、先にAdminを解除してください。');
 ?>

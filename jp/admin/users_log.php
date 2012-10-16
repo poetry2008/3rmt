@@ -245,7 +245,7 @@ function UserLoginIp_list(){
         echo '<td>'.implode(',',$user_name_array).'</td>';
         echo '<td>';
         if(empty($user_admin_name_array)){
-          echo '<a href="javascript:void(0);" onclick="if(confirm(\''.TEXT_DELETE_CONFIRM.'\')){ip_unlock(\''.$user_login_array['address'].'\','.$j.',\'\');}">'.TEXT_IP_UNLOCK.'</a>';
+          echo '<a href="javascript:void(0);" onclick="if(confirm(\''.TEXT_DELETE_CONFIRM.'\')){ip_unlock(\''.$user_login_array['address'].'\','.$j.',\'\');}"><u>'.TEXT_IP_UNLOCK.'</u></a>';
         }
         echo '</td>';
         echo '</tr>';
@@ -262,7 +262,7 @@ function UserLoginIp_list(){
         echo '<td>'.$user_time_temp_array[$admin_value].'</td>'; 
         echo '<td>Admin</td>';
         echo '<td>'.$admin_value.'</td>';
-        echo '<td><a href="javascript:void(0);" onclick="if(confirm(\''.TEXT_DELETE_CONFIRM.'\')){ip_unlock(\''.$user_login_array['address'].'\','.($j+$k).',\''.$admin_value.'\');}">'.TEXT_IP_UNLOCK.'</a></td>';
+        echo '<td><a href="javascript:void(0);" onclick="if(confirm(\''.TEXT_DELETE_CONFIRM.'\')){ip_unlock(\''.$user_login_array['address'].'\','.($j+$k).',\''.$admin_value.'\');}"><u>'.TEXT_IP_UNLOCK.'</u></a></td>';
         echo '</tr>';   
         $k++;
       }
