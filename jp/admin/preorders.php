@@ -2483,8 +2483,9 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
       $orders_query_raw = " select distinct op.orders_id from " .  
         TABLE_PREORDERS_PRODUCTS . " op, ".TABLE_PREORDERS." o ".
         $sort_table." where ".$sort_where." op.orders_id = o.orders_id 
-        and op.products_id = '".$_GET['keywords']."' " .
-        " and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".$order_str;
+        and op.products_id = '".$_GET['keywords']."' " . " 
+        and o.finished != '1' 
+        and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".$order_str;
     }elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && preg_match('/^os_\d+$/', $_GET['search_type'])))) {
     if (!empty($_GET['keywords'])) {
       $orders_query_raw = "

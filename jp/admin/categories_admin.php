@@ -496,7 +496,11 @@ echo '<a style="margin-left:-4px;" href="orders.php?search_type=products_id&prod
   ?>
   <td class="dataTableContent6" align='right'>
   <?php
-    $preorder_products_raw = tep_db_query("select sum(products_quantity) as pre_total from ".TABLE_PREORDERS_PRODUCTS." where products_id = '".$products['products_id']."'"); 
+    $preorder_products_raw = tep_db_query("select sum(prep.products_quantity) as pre_total from 
+        ".TABLE_PREORDERS_PRODUCTS." prep ,".TABLE_PREORDERS." pre 
+        where  prep.products_id = '".$products['products_id']."'
+        and prep.orders_id = pre.orders_id 
+        and pre.finished !='1' "); 
     $preorder_products_res = tep_db_fetch_array($preorder_products_raw);
     if ($preorder_products_res) {
       if ($preorder_products_res['pre_total']) {
