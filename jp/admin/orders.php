@@ -2947,15 +2947,14 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
       foreach($all_show_option_id as $t_item_id){
             if (is_array($all_show_option[$t_item_id]['option_info'])) {
               echo '<table><tr><td valign="top">-&nbsp; </td><td>' .  $all_show_option[$t_item_id]['option_info']['title'] . ': ' .  str_replace(array("<br>", "<BR>"), "",$all_show_option[$t_item_id]['option_info']['value']);
-			  if ($all_show_option[$t_item_id]['price'] != '0'){
+              if ($all_show_option[$t_item_id]['price'] != '0'){
                 echo ' (' .$currencies->format($all_show_option[$t_item_id]['price'], true, $order->info['currency'], $order->info['currency_value']) . ')';
               }
-			  echo '</td></tr>';
+              echo '</td></tr>';
             }  
-			       
-			if (is_array($all_show_option[$t_item_id]['option_info'])) {
-			  echo '</table>';
-			}
+            if (is_array($all_show_option[$t_item_id]['option_info'])) {
+              echo '</table>';
+            }
       }
 }
               

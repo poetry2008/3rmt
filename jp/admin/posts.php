@@ -50,9 +50,9 @@ $color = $_POST['color'];
 $time = date('Y-m-d H:i:s');
 $zIndex = $_POST['zIndex'];
 if($_COOKIE['tarrow']=="close" ){
-$xyz = '20|104|'.$zIndex;
+$xyz = '20|106|'.$zIndex;
 }else{
-$xyz = '145|104|'.$zIndex;
+$xyz = '180|106|'.$zIndex;
 }
 $xlen = '460';
 $ylen = '150';

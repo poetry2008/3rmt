@@ -175,7 +175,7 @@ function check_form(){
   var pwd_1 = document.getElementById("pwd_1");
   pwd_1.value = confirmation[1].value;
   var old_email_1 = document.getElementsByName("old_email_1");
-  var old_email = document.getElementById("old_email");
+  var old_email = document.getElementById("old_email_id");
   old_email.value = old_email_1[0].value;
   var action_flag = document.getElementById("action_flag");
   action_flag.value = 1;
@@ -611,7 +611,7 @@ $(document).ready(function(){
         <input type="hidden" id="first_name" name="lastname" value="">
         <input type="hidden" id="end_name" name="firstname" value="">
         <input type="hidden" id="email" name="email_address" value="">
-        <input type="hidden" id="old_email" name="old_email" value="">
+        <input type="hidden" id="old_email_id" name="old_email" value="">
         <input type="hidden" id="options" name="newsletter" value="">
         <input type="hidden" id="pwd" name="password" value="">
         <input type="hidden" id="pwd_1" name="confirmation" value="">

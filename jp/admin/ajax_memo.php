@@ -13,12 +13,12 @@ $height_arr = array();
 while($row=tep_db_fetch_array($query)){
   list($left,$top,$zindex,$xlen,$ylen) = explode('|',$row['xyz']); 
   if($tarrow == 'open'){
-  $left = (int)$left+125;
+  $left = (int)$left+160;
   $left = (string)$left;
  $xyz= $left."|".$top."|".$zindex."|".$xlen."|".$ylen;
  $update_query = tep_db_query("update notes set xyz='".$xyz."' where id='".$row['id']."'");
   }else{
-  $left = (int)$left-125;
+  $left = (int)$left-160;
   $left = (string)$left;
  $xyz= $left."|".$top."|".$zindex."|".$xlen."|".$ylen;
  $update_query = tep_db_query("update notes set xyz='".$xyz."' where id='".$row['id']."'");
