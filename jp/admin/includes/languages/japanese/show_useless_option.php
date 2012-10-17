@@ -1,4 +1,5 @@
 <?php
+define('HEADING_TITLE', '未使用オプション削除');
 define('HEADING_USELESS_OPTION_TITLE', '未使用オプション削除');
 define('SHOW_USELESS_OPTION_GROUP_NAME','タイトル');
 define('SHOW_USELESS_OPTION_GROUP_TITLE','表示名');

@@ -15,7 +15,7 @@ define('TEXT_INFO_HEADING_EDIT_TAG', 'タグを編集');
 define('TEXT_INFO_HEADING_DELETE_TAG', 'タグを削除');
 define('TEXT_TAGS_NAME_EXISTS', 'タグはもう存在しています');
 //define('TEXT_DISPLAY_NUMBER_OF_TAGS', 'Displaying <b>%d</b> to <b>%d</b> (of <b>%d</b> Tags)');
-define('TEXT_DISPLAY_NUMBER_OF_TAGS', '<b>%d</b>~<b>%d</b>番目を表示（<b>%d</b>タグのうち） ');
+define('TEXT_DISPLAY_NUMBER_OF_TAGS', '<b>%d</b> &sim; <b>%d</b>番目を表示（<b>%d</b> のタグのうち） ');
 define('TEXT_CONFIRM_DELETE_TAG', 'アイコンを削除');
 define('LISTING_TITLE_A_TO_Z','タイトル Ａ～Ｚ');
 define('LISTING_TITLE_Z_TO_A','タイトル Ｚ～Ａ');

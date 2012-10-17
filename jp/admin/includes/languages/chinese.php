@@ -241,7 +241,7 @@ define('IMAGE_PREVIEW', '预览');
 define('IMAGE_RESTORE', '恢复');
 define('IMAGE_RESET', '重置');
 define('IMAGE_SAVE', '保存');
-define('IMAGE_SEARCH', '检索');
+define('IMAGE_SEARCH', '搜索');
 define('IMAGE_SELECT', '选择');
 define('IMAGE_SEND', '发送');
 define('IMAGE_SEND_EMAIL', '发送E-Mail');
@@ -270,28 +270,43 @@ define('ICON_WARNING', '警告');
 
 // constants for use in tep_prev_next_display function
 define('TEXT_RESULT_PAGE', ' %s / %d 页');
-define('TEXT_DISPLAY_NUMBER_OF_BANNERS', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 条广告)');
-define('TEXT_DISPLAY_NUMBER_OF_COUNTRIES', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 个国家)');
-define('TEXT_DISPLAY_NUMBER_OF_CUSTOMERS', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 名顾客)');
-define('TEXT_DISPLAY_NUMBER_OF_FAQ', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 条FAQ)');
-define('TEXT_DISPLAY_NUMBER_OF_CURRENCIES', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 种货币 )');
-define('TEXT_DISPLAY_NUMBER_OF_LANGUAGES', '当前显示<b>%d</b> &sim; <b>%d</b>  ( 共<b>%d</b>  种语言)');
-define('TEXT_DISPLAY_NUMBER_OF_MANUFACTURERS', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 个制造商)');
-define('TEXT_DISPLAY_NUMBER_OF_NEWSLETTERS', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 封电子杂志)');
-define('TEXT_DISPLAY_NUMBER_OF_ORDERS', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 个订单)');
-define('TEXT_DISPLAY_NUMBER_OF_PW_MANAGERS', '当前显示<b>%d</b> &sim; <b>%d</b> (共<b>%d</b> 个密码)');
-define('TEXT_DISPLAY_NUMBER_OF_MAIL', '当前显示<b>%d</b> &sim; <b>%d</b> (共<b>%d</b> 个页面)');
-define('TEXT_DISPLAY_NUMBER_OF_PW_MANAGER_LOG', '当前显示<b>%d</b> &sim; <b>%d</b> (共<b>%d</b> 条密码历史记录)');
-define('TEXT_DISPLAY_NUMBER_OF_NIVENTORY', '当前显示<b>%d</b> &sim; <b>%d</b>  ( 综合： <b>%d</b> )');
-define('TEXT_DISPLAY_NUMBER_OF_ORDERS_STATUS', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 条订单)');
-define('TEXT_DISPLAY_NUMBER_OF_PRODUCTS', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 个商品)');
-define('TEXT_DISPLAY_NUMBER_OF_PRODUCTS_EXPECTED', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 个商品)');
-define('TEXT_DISPLAY_NUMBER_OF_REVIEWS', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 条评论)');
-define('TEXT_DISPLAY_NUMBER_OF_SPECIALS', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 个商品)');
-define('TEXT_DISPLAY_NUMBER_OF_TAX_CLASSES', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 种分类)');
-define('TEXT_DISPLAY_NUMBER_OF_TAX_ZONES', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 个地区)');
-define('TEXT_DISPLAY_NUMBER_OF_TAX_RATES', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 种税率)');
-define('TEXT_DISPLAY_NUMBER_OF_ZONES', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 个地域)');
+define('TEXT_DISPLAY_NUMBER_OF_USELESS_ITEM', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b>项 )');
+define('TEXT_DISPLAY_NUMBER_OF_USELESS_OPTION', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b>项 )');
+define('TEXT_DISPLAY_NUMBER_OF_OPTION_GROUP', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b>项)');
+define('TEXT_DISPLAY_NUMBER_OF_OPTION_ITEM', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b>项)');
+define('TEXT_DISPLAY_NUMBER_OF_ADDRESS', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b>项 )');
+define('TEXT_DISPLAY_NUMBER_OF_COUNTRY_FEE', '当前显示<b>%d</b> &sim; <b>%d</b> (共<b>%d</b>项 )');
+define('TEXT_DISPLAY_NUMBER_OF_COUNTRY_AREA', '当前显示<b>%d</b> &sim; <b>%d</b> (共<b>%d</b>项 )');
+define('TEXT_DISPLAY_NUMBER_OF_COUNTRY_CITY', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b>项)');
+define('TEXT_DISPLAY_NUMBER_OF_SHIPPING_TIME', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b>项)');
+define('TEXT_DISPLAY_NUMBER_OF_PREORDERS_STATUS', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b>项 )');
+define('TEXT_DISPLAY_NUMBER_OF_PREORDERS', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b>项 )');
+define('TEXT_DISPLAY_NUMBER_OF_LATEST_NEWS', '当前显示<b>%d</b> &sim; <b>%d</b> (共<b>%d</b>项 )');
+define('TEXT_DISPLAY_NUMBER_OF_CAMPAIGN', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b>项 )');
+define('TEXT_DISPLAY_NUMBER_OF_HELP_INFO', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b>项 )');
+define('TEXT_DISPLAY_NUMBER_OF_CATEGORIES', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b>项)');
+define('TEXT_DISPLAY_NUMBER_OF_BANNERS', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 项)');
+define('TEXT_DISPLAY_NUMBER_OF_COUNTRIES', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 项)');
+define('TEXT_DISPLAY_NUMBER_OF_CUSTOMERS', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 项)');
+define('TEXT_DISPLAY_NUMBER_OF_FAQ', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 项)');
+define('TEXT_DISPLAY_NUMBER_OF_CURRENCIES', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 项 )');
+define('TEXT_DISPLAY_NUMBER_OF_LANGUAGES', '当前显示<b>%d</b> &sim; <b>%d</b>  ( 共<b>%d</b>  项)');
+define('TEXT_DISPLAY_NUMBER_OF_MANUFACTURERS', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 项)');
+define('TEXT_DISPLAY_NUMBER_OF_NEWSLETTERS', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 项)');
+define('TEXT_DISPLAY_NUMBER_OF_ORDERS', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 项)');
+define('TEXT_DISPLAY_NUMBER_OF_PW_MANAGERS', '当前显示<b>%d</b> &sim; <b>%d</b> (共<b>%d</b> 项)');
+define('TEXT_DISPLAY_NUMBER_OF_MAIL', '当前显示<b>%d</b> &sim; <b>%d</b> (共<b>%d</b> 项)');
+define('TEXT_DISPLAY_NUMBER_OF_PW_MANAGER_LOG', '当前显示<b>%d</b> &sim; <b>%d</b> (共<b>%d</b> 项)');
+define('TEXT_DISPLAY_NUMBER_OF_NIVENTORY', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 项)');
+define('TEXT_DISPLAY_NUMBER_OF_ORDERS_STATUS', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 项)');
+define('TEXT_DISPLAY_NUMBER_OF_PRODUCTS', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 项)');
+define('TEXT_DISPLAY_NUMBER_OF_PRODUCTS_EXPECTED', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 项)');
+define('TEXT_DISPLAY_NUMBER_OF_REVIEWS', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 项)');
+define('TEXT_DISPLAY_NUMBER_OF_SPECIALS', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 项)');
+define('TEXT_DISPLAY_NUMBER_OF_TAX_CLASSES', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 项)');
+define('TEXT_DISPLAY_NUMBER_OF_TAX_ZONES', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 项)');
+define('TEXT_DISPLAY_NUMBER_OF_TAX_RATES', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 项)');
+define('TEXT_DISPLAY_NUMBER_OF_ZONES', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 项)');
 
 define('PREVNEXT_BUTTON_PREV', '&lt;&lt;');
 define('PREVNEXT_BUTTON_NEXT', '&gt;&gt;');
@@ -329,7 +344,7 @@ define('EMAIL_SIGNATURE',C_EMAIL_FOOTER);  //Add Japanese osCommerce
 //------------------------
 //contents
 define('BOX_TOOLS_CONTENTS', '内容管理');
-define('TEXT_DISPLAY_NUMBER_OF_CONTENS', '显示<b>%d</b> &sim; <b>%d</b>  ( 共计 <b>%d</b> )');
+define('TEXT_DISPLAY_NUMBER_OF_CONTENS', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 项)');
 
 //latest news
 define('BOX_TOOLS_LATEST_NEWS', '最新信息管理');
@@ -583,8 +598,7 @@ define('MINUTE_TEXT', '分');
 define('NOTICE_EXTEND_TITLE', '移交记录');
 define('NOTICE_ALARM_TITLE', '警报');
 define('NOTICE_DIFF_TIME_TEXT', '剩余');
-define('TEXT_DISPLAY_NUMBER_OF_MANUAL', '当前显示<b>%d</b> &sim; <b>%d</b>
-    (共<b>%d</b> 个)');
+define('TEXT_DISPLAY_NUMBER_OF_MANUAL', '当前显示<b>%d</b> &sim; <b>%d</b> (共<b>%d</b> 项)');
 define('FILENAME_FILENAME_RESET_PWD_TEXT','统一重置密码');
 define('FILENAME_CUSTOMERS_EXIT_TEXT','退会客户管理');
 define('OPTION_CHARACTER_NAME', '客户的交易人物名');
@@ -677,9 +691,14 @@ define('TEXT_LAST_SEARCH_DATA','&nbsp;%s&nbsp;个检索结果');
 define('TEXT_FIND_DATA_STOP','检索%s但是显示停止。');
 define('TEXT_NOT_ENOUGH_DATA','从前面&nbsp;50&nbsp;个检索结果中不重复的检索结果有&nbsp;%s&nbsp;个');
 
+define('HEADER_TEXT_PERSONAL_SETTING','个人设定');
 define('BOX_HEADING_USER', '用户');
 define('BOX_USER_ADMIN', '用户管理');
 define('BOX_USER_LOG', '访问日志');
 define('BOX_USER_LOGOUT', '退出');
 
 define('TEXT_SITE_COPYRIGHT' ,'Copyright © %s Haomai');
+
+define('JUMP_PAGE_TEXT', '跳页');
+define('JUMP_PAGE_BUTTON_TEXT', '移动');
+

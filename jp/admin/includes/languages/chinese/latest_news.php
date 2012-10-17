@@ -15,7 +15,7 @@ define('TEXT_NEWS_ITEMS', '新闻:');
 define('TEXT_INFO_HEADING_DELETE_ITEM', '删除');
 define('TEXT_DELETE_ITEM_INTRO', '确定要删除这个新闻吗？');
 
-define('TEXT_LATEST_NEWS_HEADLINE', 'headline（标题）');
+define('TEXT_LATEST_NEWS_HEADLINE', '标题');
 define('TEXT_LATEST_NEWS_SITE', 'SITE');
 define('TEXT_LATEST_NEWS_CONTENT', '记事内容');
 define('TEXT_LATEST_NEWS_IMAGE', '关联图像');

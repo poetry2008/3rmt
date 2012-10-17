@@ -24,6 +24,7 @@ case 'add_product':
           $oID = tep_db_prepare_input($_GET['oID']);
           $order = new order($oID);
           $payment_modules = payment::getInstance($order->info['site_id']);
+
           $AddedOptionsPrice = 0;
                     
           foreach ($_POST as $op_key => $op_value) {

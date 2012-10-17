@@ -15,7 +15,7 @@ define('TEXT_INFO_HEADING_EDIT_BILL_TEMPLATE', '编辑账单模板');
 define('TEXT_INFO_HEADING_DELETE_BILL_TEMPLATE', '删除账单模板');
 define('TEXT_BILL_TEMPLATES_NAME_EXISTS', '账单模板已存在');
 //define('TEXT_DISPLAY_NUMBER_OF_BILL_TEMPLATES', 'Displaying <b>%d</b> to <b>%d</b> (of <b>%d</b> Tags)');
-define('TEXT_DISPLAY_NUMBER_OF_BILL_TEMPLATES', '显示<b>%d</b>~<b>%d</b>（共<b>%d</b>条） ');
+define('TEXT_DISPLAY_NUMBER_OF_BILL_TEMPLATES', '当前显示<b>%d</b> &sim; <b>%d</b> (共<b>%d</b>项 )');
 define('TEXT_CONFIRM_DELETE_BILL_TEMPLATE', '删除图标');
 
 

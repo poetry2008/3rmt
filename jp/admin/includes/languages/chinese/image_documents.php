@@ -26,7 +26,7 @@
   
   define ('TEXT_TYPES_TOTAL', '类型数:');
   define ('TEXT_FILE_DOES_NOT_EXIST', '没有文件.');
-  define ('TEXT_DISPLAY_NUMBER_OF_DOCUMENTS', '用<b>%d</b>  表示<b>%d</b>　（共<b>%d</b>个）');
+  define ('TEXT_DISPLAY_NUMBER_OF_DOCUMENTS', '当前显示从<b>%d</b> 到<b>%d</b>　（共<b>%d</b>项）');
 
   define ('TEXT_INFO_HEADING_DOC_TYPES', '文件类型');
   

@@ -270,6 +270,21 @@ define('ICON_WARNING', '警告');
 
 // constants for use in tep_prev_next_display function
 define('TEXT_RESULT_PAGE', ' %s / %d ページ');
+define('TEXT_DISPLAY_NUMBER_OF_USELESS_ITEM', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> の未使用項目のうち)');
+define('TEXT_DISPLAY_NUMBER_OF_USELESS_OPTION', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> の未使用オプションのうち)');
+define('TEXT_DISPLAY_NUMBER_OF_OPTION_GROUP', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> のオプションのうち)');
+define('TEXT_DISPLAY_NUMBER_OF_OPTION_ITEM', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> の項目のうち)');
+define('TEXT_DISPLAY_NUMBER_OF_ADDRESS', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> の項目のうち)');
+define('TEXT_DISPLAY_NUMBER_OF_COUNTRY_FEE', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> の国名のうち)');
+define('TEXT_DISPLAY_NUMBER_OF_COUNTRY_AREA', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> の地域のうち)');
+define('TEXT_DISPLAY_NUMBER_OF_COUNTRY_CITY', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> の都道府県のうち)');
+define('TEXT_DISPLAY_NUMBER_OF_SHIPPING_TIME', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> の項目のうち)');
+define('TEXT_DISPLAY_NUMBER_OF_PREORDERS_STATUS', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> の予約状況のうち)');
+define('TEXT_DISPLAY_NUMBER_OF_PREORDERS', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> の予約のうち)');
+define('TEXT_DISPLAY_NUMBER_OF_LATEST_NEWS', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> の最新情報のうち)');
+define('TEXT_DISPLAY_NUMBER_OF_CAMPAIGN', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> のキャンペーンコードのうち)');
+define('TEXT_DISPLAY_NUMBER_OF_HELP_INFO', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> のコンテンツのうち)');
+define('TEXT_DISPLAY_NUMBER_OF_CATEGORIES', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> の商品のうち)');
 define('TEXT_DISPLAY_NUMBER_OF_BANNERS', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> のバナーのうち)');
 define('TEXT_DISPLAY_NUMBER_OF_COUNTRIES', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> の国のうち)');
 define('TEXT_DISPLAY_NUMBER_OF_CUSTOMERS', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> の顧客のうち)');

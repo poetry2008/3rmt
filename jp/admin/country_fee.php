@@ -230,7 +230,7 @@ tep_db_close();
 ?>
 <tr>
 <td colspan="4">
-<?php echo $country_fee_page->display_count($country_fee_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?>
+<?php echo $country_fee_page->display_count($country_fee_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_COUNTRY_FEE); ?>
 </td>
 <td colspan="5" align="right">
 <?php echo $country_fee_page->display_links($country_fee_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page'))); ?>
