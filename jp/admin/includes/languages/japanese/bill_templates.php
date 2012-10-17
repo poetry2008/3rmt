@@ -15,7 +15,7 @@ define('TEXT_INFO_HEADING_EDIT_BILL_TEMPLATE', '請求書のテンプレート�
 define('TEXT_INFO_HEADING_DELETE_BILL_TEMPLATE', '請求書のテンプレートを削除');
 define('TEXT_BILL_TEMPLATES_NAME_EXISTS', '請求書のテンプレートはもう存在しています');
 //define('TEXT_DISPLAY_NUMBER_OF_BILL_TEMPLATES', 'Displaying <b>%d</b> to <b>%d</b> (of <b>%d</b> Tags)');
-define('TEXT_DISPLAY_NUMBER_OF_BILL_TEMPLATES', '<b>%d</b>~<b>%d</b>番目を表示（<b>%d</b>請求書のテンプレートのうち） ');
+define('TEXT_DISPLAY_NUMBER_OF_BILL_TEMPLATES', '<b>%d</b> &sim; <b>%d</b>番目を表示 (<b>%d</b>の請求書のテンプレートのうち)');
 define('TEXT_CONFIRM_DELETE_BILL_TEMPLATE', 'アイコンを削除');
 
 

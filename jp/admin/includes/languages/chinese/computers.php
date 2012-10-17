@@ -15,7 +15,7 @@ define('TEXT_INFO_HEADING_EDIT_COMPUTER', '编辑按钮');
 define('TEXT_INFO_HEADING_DELETE_COMPUTER', '删除按钮');
 define('TEXT_COMPUTERS_NAME_EXISTS', '按钮已经存在');
 //define('TEXT_DISPLAY_NUMBER_OF_COMPUTERS', 'Displaying <b>%d</b> to <b>%d</b> (of <b>%d</b> Tags)');
-define('TEXT_DISPLAY_NUMBER_OF_COMPUTERS', '当前显示<b>%d</b>~<b>%d</b>（共<b>%d</b>个） ');
+define('TEXT_DISPLAY_NUMBER_OF_COMPUTERS', '当前显示<b>%d</b> &sim; <b>%d</b>（共<b>%d</b>项） ');
 define('TEXT_CONFIRM_DELETE_COMPUTER', '删除标志');
 define('TABLE_HEADING_COMPUTER_ORDER', '排列顺序');
 define('TEXT_USER_ADDED','创建者:');

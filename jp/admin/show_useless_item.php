@@ -338,7 +338,8 @@ $class_check++;
 <table width="100%">
 <tr>
 <td class="smallText">&nbsp;&nbsp;&nbsp;
-<?php echo $item_split->display_count($num_rows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS);?>
+<?php echo $item_split->display_count($num_rows, MAX_DISPLAY_SEARCH_RESULTS,
+    $_GET['page'], TEXT_DISPLAY_NUMBER_OF_USELESS_ITEM);?>
 </td>
 <td align="right" class="smallText">
 <?php

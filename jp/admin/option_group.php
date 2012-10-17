@@ -301,7 +301,8 @@ echo '<a href="javascript:void(0);" onclick="show_group_info(this, \''.$group['i
               <tr>
                 <td colspan="10"><table border="0" width="100%" cellspacing="0" cellpadding="2">
                   <tr>
-                    <td class="smallText" valign="top"><?php echo $group_split->display_count($group_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?></td>
+                    <td class="smallText" valign="top"><?php echo
+                    $group_split->display_count($group_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_OPTION_GROUP); ?></td>
                     <td class="smallText" align="right"><?php echo $group_split->display_links($group_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'group_id'))); ?></td>
                   </tr>
                   <tr>

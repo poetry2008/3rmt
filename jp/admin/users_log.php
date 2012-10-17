@@ -158,6 +158,120 @@ function makeSelectLoginLog() {
 
 }
 
+function UserLoginIp_list(){
+
+  PageBody('t', PAGE_TITLE_MENU_IP);
+  if (isset($GLOBALS['jp']) && $GLOBALS['jp']) $GLOBALS['lm'] = (int)$GLOBALS['sp'];
+  if (isset($GLOBALS['pp']) && $GLOBALS['pp']) (int)$GLOBALS['lm'] -= LOGIN_LOG_MAX_LINE;
+  if (isset($GLOBALS['np']) && $GLOBALS['np']) (int)$GLOBALS['lm'] += LOGIN_LOG_MAX_LINE; 
+    echo TEXT_IP_UNLOCK_NOTES.'</td>';
+    echo '</tr><tr><td>';
+    echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
+    echo "<tr>\n";
+    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_ADDRESS . '</td>' . "\n";    
+    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_LOGINTIME . '</td>' . "\n";
+    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_PERMISSIONS . '</td>' . "\n";
+    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_USER . '</td>' . "\n";
+    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_OPERATE . '</td>' . "\n";
+    echo "</tr>\n";
+    $j = 1;
+    $user_login_query = tep_db_query("select address,count(*) as num from ". TABLE_LOGIN ." where loginstatus='p' and time_format(timediff(now(),logintime),'%H')<24 and status='0' group by address having num>=5 order by logintime desc");
+    while($user_login_array = tep_db_fetch_array($user_login_query)){
+
+      $user_name_array = array();
+      $user_time_array = array();
+      $user_time_temp_array = array();
+      $user_login_list_query = tep_db_query("select * from ". TABLE_LOGIN ." where loginstatus='p' and time_format(timediff(now(),logintime),'%H')<24 and address='". $user_login_array['address'] ."' and status='0' order by logintime asc");
+      while($user_login_list_array = tep_db_fetch_array($user_login_list_query)){
+
+        $user_name_array[] = $user_login_list_array['account'];
+        $user_time_temp_array[$user_login_list_array['account']] = $user_login_list_array['logintime']; 
+        $user_time_array[] = $user_login_list_array['logintime'];
+      }
+      array_pop($user_name_array);
+      foreach($user_name_array as $key=>$value){
+
+        if(trim($value) == ''){
+          unset($user_name_array[$key]); 
+        } 
+      }
+      $user_name_temp_array = array_count_values($user_name_array);
+      $user_admin_name_array = array();
+      $user_admin_name_temp_array = array();
+      foreach($user_name_temp_array as $k=>$v){
+
+        $per_query = tep_db_query("select userid,permission from ". TABLE_PERMISSIONS ." where userid='".$k."'");
+        $per_array = tep_db_fetch_array($per_query);
+        tep_db_query($per_query);
+        if($v >= 5){ 
+          if($per_array['userid'] == $k && $per_array['permission'] == 15){
+
+            $user_admin_name_array[] = $k;
+          }
+        }else{
+          if($per_array['userid'] == $k && $per_array['permission'] == 15){
+            $user_admin_name_temp_array[] = $k; 
+          } 
+        }
+      }
+      $user_name_array = array_unique($user_name_array);
+      foreach($user_name_array as $user_key=>$user_value){
+
+        if(in_array($user_value,$user_admin_name_array)){
+
+          unset($user_name_array[$user_key]);
+        }
+        if(in_array($user_value,$user_admin_name_temp_array)){
+
+          unset($user_name_array[$user_key]);
+        }
+      }
+      $naddress = (int)$user_login_array['address'];    // IPアドレス復元
+      $saddress = '';
+      for ($i=0; $i<4; $i++) {
+        if ($i) $saddress = ($naddress & 0xff) . '.' . $saddress;
+        else $saddress = (string)($naddress & 0xff);
+        $naddress >>= 8;
+      }
+      
+      if ($j % 2){ 
+        echo "<tr " . $GLOBALS['TdnBgcolor'] . " id='ip_".$j."'>\n";
+      }else{
+        echo '<tr id="ip_'.$j.'">'; 
+      }
+        echo '<td>'.$saddress.'</td>';
+        echo '<td>'.max($user_time_array).'</td>'; 
+        echo '<td>Staff,Chief</td>';
+        echo '<td>'.implode(',',$user_name_array).'</td>';
+        echo '<td>';
+        if(empty($user_admin_name_array)){
+          echo '<a href="javascript:void(0);" onclick="if(confirm(\''.TEXT_DELETE_CONFIRM.'\')){ip_unlock(\''.$user_login_array['address'].'\','.$j.',\'\');}"><u>'.TEXT_IP_UNLOCK.'</u></a>';
+        }
+        echo '</td>';
+        echo '</tr>';
+      tep_db_free_result($user_login_list_query);
+      $k = 1; 
+      foreach($user_admin_name_array as $admin_key=>$admin_value){
+       
+        if (($j+$k) % 2){ 
+          echo "<tr " . $GLOBALS['TdnBgcolor'] . " id='ip_".($j+$k)."'>\n";
+        }else{
+          echo '<tr id="ip_'.($j+$k).'">'; 
+        }
+        echo '<td>'.$saddress.'</td>';
+        echo '<td>'.$user_time_temp_array[$admin_value].'</td>'; 
+        echo '<td>Admin</td>';
+        echo '<td>'.$admin_value.'</td>';
+        echo '<td><a href="javascript:void(0);" onclick="if(confirm(\''.TEXT_DELETE_CONFIRM.'\')){ip_unlock(\''.$user_login_array['address'].'\','.($j+$k).',\''.$admin_value.'\');}"><u>'.TEXT_IP_UNLOCK.'</u></a></td>';
+        echo '</tr>';   
+        $k++;
+      }
+      $j += $k-1;
+      $j++;
+    }
+    tep_db_free_result($user_login_query);
+    echo "</table>\n</td></tr><tr>";
+}
 /* ==============================================
   画面表示関数（メイン）
  ============================================= */
@@ -170,7 +284,7 @@ function UserLoginLog_list() {
 
   global $ocertify;           // ユーザ認証オブジェクト
 
-  PageBody('t', PAGE_TITLE_MENU_USER);  // ユーザ管理画面のタイトル部表示（ユーザ管理メニュー）
+  PageBody('t', HEADING_TITLE);  // ユーザ管理画面のタイトル部表示（ユーザ管理メニュー）
 
   // 現在のページ（レコード取得開始位置）
   if (isset($GLOBALS['jp']) && $GLOBALS['jp']) $GLOBALS['lm'] = (int)$GLOBALS['sp'];
@@ -259,6 +373,22 @@ function putJavaScript_ConfirmMsg() {
 echo '
 <script language="JavaScript1.1">
 <!--
+function ip_unlock(ip,num,user){
+
+  $.ajax({
+          dataType: "text",
+          type:"POST",
+          data:"ip="+ip+"&user="+user,
+          async:false, 
+          url: "ajax_users_log.php?action=ip_unlock",
+          success: function(data) {
+            if (data == "success") {
+              //$("#ip_"+num).remove();   
+              location.href="users_log.php";
+            }
+          }
+  });
+}
 function formConfirm(type) {
   if (type == "delete") {
       rtn = confirm("'. JAVA_SCRIPT_INFO_DELETE . '");
@@ -338,7 +468,7 @@ function PageBody($mode='t', $stitle = "") {
     echo '      <tr>' . "\n";
     echo '        <td><table border="0" width="100%" cellspacing="0" cellpadding="0">' . "\n";
     echo '          <tr>' . "\n";
-    echo '            <td class="pageHeading">' . HEADING_TITLE . '</td>' . "\n";
+    echo '            <td class="pageHeading">' . $stitle . '</td>' . "\n";
     echo '            <td class="pageHeading" align="right">';
     echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT);
     echo '</td>' . "\n";
@@ -410,6 +540,8 @@ function PageFooter() {
     }
   }
 
+  //IP 
+  UserLoginIp_list();
   // 画面表示
   UserLoginLog_list();    // アクセスログ表示
 

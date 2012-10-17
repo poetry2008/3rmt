@@ -116,7 +116,7 @@ if($_SESSION['last_page']!= $page_name){
 
 
 // 显示SQL执行记录
-if (STORE_DB_TRANSACTIONS == 'true'&& false) {?>
+if (STORE_DB_TRANSACTIONS == 'true') {?>
 <?php
 //for sql_log
 $logNumber = 0;

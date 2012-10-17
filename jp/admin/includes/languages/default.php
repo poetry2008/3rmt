@@ -67,4 +67,4 @@ define('FORDERS_MAIL_UPDATE_CONTENT_FINISH', '予約内容の変更を承りま�
 define('FORDERS_MAIL_UPDATE_CONTENT_MAIL', '送信済：予約内容の変更を承りました');
 define('FORDERS_MAIL_REPLACE_TRAN_HANDLE_FEE', '決済手数料');
 define('FORDERS_MAIL_REPLACE_HANDLE_FEE', '手数料');
-
+define('SENDMAIL_TEXT_MONEY_SYMBOL','円');

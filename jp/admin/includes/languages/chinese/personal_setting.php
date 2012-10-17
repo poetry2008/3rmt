@@ -1,0 +1,15 @@
+<?php
+define('TEXT_ORDERS_SETTING','设置订单管理的显示方法');
+define('TEXT_PREORDERS_SETTING','设置预约管理的显示方法');
+define('TEXT_ORDERS_SELECT_SITE','网站');
+define('TEXT_ORDERS_SELECT_PRICE','订单总额');
+define('TEXT_ORDERS_SELECT_TIME','送达时间');
+define('TEXT_ORDERS_SELECT_DATE','订购日期');
+define('TEXT_ORDERS_SELECT_STATUS','状态');
+define('TEXT_SELECT_ASC','升序');
+define('TEXT_SELECT_DESC','降序');
+define('TEXT_SAVE','保存');
+define('TEXT_PREORDERS_SELECT_CUSTOMER','顾客名');
+define('TEXT_PREORDERS_SELECT_DATE','预约日期');
+define('TEXT_PERSONAL_SETTING_SITE_ERROR','请至少选择一个。');
+define('TEXT_PERSONAL_SETTING_SORT_ERROR','请正确选择。');

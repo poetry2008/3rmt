@@ -15,7 +15,7 @@ define('TEXT_INFO_HEADING_EDIT_TAG', '编辑标签');
 define('TEXT_INFO_HEADING_DELETE_TAG', '删除标签');
 define('TEXT_TAGS_NAME_EXISTS', '标签已存在');
 //define('TEXT_DISPLAY_NUMBER_OF_TAGS', 'Displaying <b>%d</b> to <b>%d</b> (of <b>%d</b> Tags)');
-define('TEXT_DISPLAY_NUMBER_OF_TAGS', '当前显示<b>%d</b>~<b>%d</b>（共<b>%d</b>个） ');
+define('TEXT_DISPLAY_NUMBER_OF_TAGS', '当前显示<b>%d</b> &sim; <b>%d</b>（共<b>%d</b>项） ');
 define('TEXT_CONFIRM_DELETE_TAG', '删除图标');
 define('LISTING_TITLE_A_TO_Z','标题 Ａ～Ｚ');
 define('LISTING_TITLE_Z_TO_A','标题 Ｚ～Ａ');

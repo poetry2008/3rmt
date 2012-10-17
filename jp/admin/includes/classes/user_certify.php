@@ -84,17 +84,17 @@ class user_certify {
           tep_db_free_result($per_query);
         }
         if($per_flag == true){   
-          $user_time_query = tep_db_query("select max(logintime) as max_time from login where address='{$user_ip4}' and loginstatus='p' and account='".$admin_name."'");
+          $user_time_query = tep_db_query("select max(logintime) as max_time from login where address='{$user_ip4}' and loginstatus='p' and account='".$admin_name."' and status='0'");
         }else{
-          $user_time_query = tep_db_query("select max(logintime) as max_time from login where address='{$user_ip4}' and loginstatus='p'");
+          $user_time_query = tep_db_query("select max(logintime) as max_time from login where address='{$user_ip4}' and loginstatus='p' and status='0'");
         }
         $user_time_array = tep_db_fetch_array($user_time_query);
         $user_max_time = $user_time_array['max_time'];
         tep_db_free_result($user_time_query);
         if($per_flag == true){
-          $user_query = tep_db_query("select * from login where address='{$user_ip4}' and loginstatus='p' and account='".$admin_name."' and time_format(timediff(now(),logintime),'%H')<24 order by logintime desc");
+          $user_query = tep_db_query("select * from login where address='{$user_ip4}' and loginstatus='p' and account='".$admin_name."' and time_format(timediff(now(),logintime),'%H')<24 and status='0' order by logintime desc");
         }else{
-          $user_query = tep_db_query("select * from login where address='{$user_ip4}' and loginstatus='p' and time_format(timediff(now(),logintime),'%H')<24 order by logintime desc");
+          $user_query = tep_db_query("select * from login where address='{$user_ip4}' and loginstatus='p' and time_format(timediff(now(),logintime),'%H')<24 and status='0' order by logintime desc");
         }
         $user_num_rows = tep_db_num_rows($user_query);
         if($user_num_rows >= 5){
@@ -508,17 +508,17 @@ if (!tep_session_is_registered('user_permission')) {
           tep_db_free_result($per_query);
         } 
         if($per_flag == true){
-          $user_time_query = tep_db_query("select max(logintime) as max_time from login where address='{$user_ip4}' and loginstatus='p' and account='".$admin_name."'");
+          $user_time_query = tep_db_query("select max(logintime) as max_time from login where address='{$user_ip4}' and loginstatus='p' and account='".$admin_name."' and status='0'");
         }else{
-          $user_time_query = tep_db_query("select max(logintime) as max_time from login where address='{$user_ip4}' and loginstatus='p'");
+          $user_time_query = tep_db_query("select max(logintime) as max_time from login where address='{$user_ip4}' and loginstatus='p' and status='0'");
         }
         $user_time_array = tep_db_fetch_array($user_time_query);
         $user_max_time = $user_time_array['max_time'];
         tep_db_free_result($user_time_query);
         if($per_flag == true){
-          $user_query = tep_db_query("select * from login where address='{$user_ip4}' and loginstatus='p' and account='".$admin_name."' and time_format(timediff(now(),logintime),'%H')<24 order by logintime desc");
+          $user_query = tep_db_query("select * from login where address='{$user_ip4}' and loginstatus='p' and account='".$admin_name."' and time_format(timediff(now(),logintime),'%H')<24 and status='0' order by logintime desc");
         }else{
-          $user_query = tep_db_query("select * from login where address='{$user_ip4}' and loginstatus='p' and time_format(timediff(now(),logintime),'%H')<24 order by logintime desc");
+          $user_query = tep_db_query("select * from login where address='{$user_ip4}' and loginstatus='p' and time_format(timediff(now(),logintime),'%H')<24 and status='0' order by logintime desc");
         }
         $user_num_rows = tep_db_num_rows($user_query);
 
