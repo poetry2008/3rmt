@@ -2277,7 +2277,7 @@ searching
 	float:left;
 	padding-left:10px;
 }
-.float_right{
+.float_right, .float_right_box{
 	float:right;
 }
 .box_text{

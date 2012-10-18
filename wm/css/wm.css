@@ -1663,7 +1663,7 @@ searching
 	padding-left:10px;
 	font-size:11px\9;
 }
-.float_right{
+.float_right, .float_right_box{
 	float:right;
 }
 .box_text{
@@ -1984,7 +1984,7 @@ searching
 }
 .box_list_title{
 margin-top:10px;
-background: url(../images/design/box/product_listing_page.gif) repeat-x; 
+/*background: url(../images/design/box/product_listing_page.gif) repeat-x; */
 height: 23px; 
 color: #005c69;
 }

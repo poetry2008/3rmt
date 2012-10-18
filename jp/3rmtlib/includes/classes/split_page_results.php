@@ -146,10 +146,11 @@
       echo '</div>'; 
     
       if ($num_pages > 0) {
-        echo '<div class="float_right">'; 
         if (defined('DIR_WS_ADMIN')) {
+          echo '<div class="float_right">'; 
           echo '<form method="post" action="'.tep_href_link('ajax_orders.php', 'action=handle_split').'">'; 
         } else {
+          echo '<div class="float_right_box">'; 
           echo '<form method="post" action="'.tep_href_link('handle_split.php').'">'; 
         }
         if ($current_page_number) {
