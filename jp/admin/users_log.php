@@ -160,7 +160,7 @@ function makeSelectLoginLog() {
 
 function UserLoginIp_list(){
 
-  PageBody('t', PAGE_TITLE_MENU_IP);
+  PageBody('t', PAGE_TITLE_MENU_IP,true);
   if (isset($GLOBALS['jp']) && $GLOBALS['jp']) $GLOBALS['lm'] = (int)$GLOBALS['sp'];
   if (isset($GLOBALS['pp']) && $GLOBALS['pp']) (int)$GLOBALS['lm'] -= LOGIN_LOG_MAX_LINE;
   if (isset($GLOBALS['np']) && $GLOBALS['np']) (int)$GLOBALS['lm'] += LOGIN_LOG_MAX_LINE; 
@@ -459,8 +459,11 @@ function PageBodyTable($mode='t') {
        $stitle  -(i)  文字列：ボディのタイトル
   戻り値 : なし
  --------------------------------------*/
-function PageBody($mode='t', $stitle = "") {
+function PageBody($mode='t', $stitle = "", $notes_flag='') {
   global $notes;
+  if($notes_flag == ''){
+    $notes = ''; 
+  }
   switch ($mode) {
   case 't':
     echo '<!-- body_text //-->' . "\n";
