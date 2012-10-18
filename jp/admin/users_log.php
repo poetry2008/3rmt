@@ -77,11 +77,11 @@ function show_loginlog_list($oresult) {
     // ユーザ
     echo '<td class="main" >' . $arec['account'] . "</td>\n";
     // ログイン日時
-    echo '<td class="main" >' . $arec['logintime'] . "</td>\n";
-    // ログインステータス
-    echo '<td class="main" >' . $arec['loginstatus'] . ' <small>[' . $GLOBALS['a_sts_in'][$arec['loginstatus']] . ']</small>' . "</td>\n";
+    echo '<td class="main" >' . $arec['logintime'] . "</td>\n"; 
     // 最終アクセス日時
     echo '<td class="main" >' . $arec['lastaccesstime'] . "</td>\n";
+    // ログインステータス
+    echo '<td class="main" >' . $arec['loginstatus'] . ' <small>[' . $GLOBALS['a_sts_in'][$arec['loginstatus']] . ']</small>' . "</td>\n";
     // ログアウトステータス
     if ($arec['logoutstatus']) {
       echo '<td class="main" >' . $arec['logoutstatus'] . ' <small>[' . $GLOBALS['a_sts_out'][$arec['logoutstatus']] . ']</small>' . "</td>\n";
@@ -308,9 +308,9 @@ function UserLoginLog_list() {
     echo "<tr>\n";
 //    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_LOGINID . '</td>' . "\n";      // Session ID
     echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_USER . '</td>' . "\n";       // ユーザ
-    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_LOGINTIME . '</td>' . "\n";      // ログイン日時
-    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_STATUS . '</td>' . "\n";       // ステータス
+    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_LOGINTIME . '</td>' . "\n";      // ログイン日 
     echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_LAST_ACCESSTIME . '</td>' . "\n";  // 最終アクセス日時
+    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_STATUS . '</td>' . "\n";       // ステータス
     echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_STATUS . '</td>' . "\n";       // ステータス
     echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_ADDRESS . '</td>' . "\n";      // アドレス
     echo "</tr>\n";
