@@ -118,7 +118,7 @@ $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
 $belong = preg_replace('/\?XSID=[^&]+/','',$belong);
 preg_match_all('/action=[^&]+/',$belong,$belong_temp_array);
-if($belong_temp_array[0][0] != ''){
+if($belong_temp_array[0][0] != '' && $belong_temp_array[0][0] != 'action=delete'){
   preg_match_all('/rID=[^&]+/',$belong,$belong_array);
   if($belong_array[0][0] != ''){
 
