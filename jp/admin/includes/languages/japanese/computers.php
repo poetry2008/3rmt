@@ -15,7 +15,7 @@ define('TEXT_INFO_HEADING_EDIT_COMPUTER', 'ボタンを編集');
 define('TEXT_INFO_HEADING_DELETE_COMPUTER', 'ボタンを削除');
 define('TEXT_COMPUTERS_NAME_EXISTS', 'ボタンはもう存在しています');
 //define('TEXT_DISPLAY_NUMBER_OF_COMPUTERS', 'Displaying <b>%d</b> to <b>%d</b> (of <b>%d</b> Tags)');
-define('TEXT_DISPLAY_NUMBER_OF_COMPUTERS', '<b>%d</b>~<b>%d</b>番目を表示（<b>%d</b>ボタンのうち） ');
+define('TEXT_DISPLAY_NUMBER_OF_COMPUTERS', '<b>%d</b> &sim; <b>%d</b>番目を表示(<b>%d</b>のボタンのうち)');
 define('TEXT_CONFIRM_DELETE_COMPUTER', 'アイコンを削除');
 define('TABLE_HEADING_COMPUTER_ORDER', '整列順');
 define('TEXT_USER_ADDED','登録者:');

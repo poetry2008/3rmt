@@ -2364,12 +2364,14 @@ searching
 	float:left;
 	padding-left:10px;
 }
-.float_right{
+.float_right, .float_right_box{
 	float:right;
+	overflow:hidden;
 }
-.float_right_box{
-	float:right;
-	width:160px;
+.box_text{
+	overflow:hidden;
+	height:20px;
+	line-height:17px;
 }
 .txt_input_box{
 	overflow:hidden;

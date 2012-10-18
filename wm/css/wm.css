@@ -1663,12 +1663,13 @@ searching
 	padding-left:10px;
 	font-size:11px\9;
 }
-.float_right{
+.float_right, .float_right_box{
 	float:right;
 }
-.float_right_box{
-	float:right;
-	width:160px;
+.box_text{
+	overflow:hidden;
+	height:20px;
+	line-height:17px;
 }
 .cp_content{
 	padding:0 20px;
@@ -1983,11 +1984,10 @@ searching
 }
 .box_list_title{
 margin-top:10px;
-background: url(../images/design/box/product_listing_page.gif) repeat-x; 
+/*background: url(../images/design/box/product_listing_page.gif) repeat-x; */
 height: 23px; 
 color: #005c69;
 }
-.box_list_title .float_right, .box_list_title .float_right_box{
+.box_list_title .float_right{
  margin-top:-2px; 
- *margin-top:-17px;
 }

@@ -269,7 +269,8 @@ $class_check++;
 <td>
 <table width="100%">
 <tr>
-<td class="smallText" valign="top"><?php echo $group_split->display_count($num_rows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?></td>
+<td class="smallText" valign="top"><?php echo $group_split->display_count($num_rows,
+    MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_USELESS_OPTION); ?></td>
 <td align="right" class="smallText">
 <?php
 echo $group_split->display_links($num_rows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'group_id')));

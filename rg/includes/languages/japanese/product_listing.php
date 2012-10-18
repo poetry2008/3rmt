@@ -11,6 +11,6 @@ define('PRE_SORT_PEOPLE','人気順に並べる');
 define('PRE_NUM_QTY','個');
 define('PRE_FORM','から');
 define('PRE_SURPLUS','残り');
-define('PRE_HOPE_QTY','ご希望の数量がない場合は「');
-define('PRE_HOPE_PRE','を予約する</a>」をクリック');
+define('PRE_HOPE_QTY','表示在庫以上の注文は「');
+define('PRE_HOPE_PRE','を予約</a>」からお手続きください。');
 ?>

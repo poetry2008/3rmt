@@ -59,10 +59,14 @@ if ($tmp_sort_str == '4') {
       <table border="0" width="100%" cellspacing="0" cellpadding="2">
         <tr>
           <td class="smallText"><?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
-          <td align="right" class="smallText">&nbsp;<?php echo TEXT_RESULT_PAGE; ?>
-          <?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('sort', 'page', 'info', 'x', 'y'))); ?>&nbsp;</td>
         </tr>
-      </table></td>
+      </table>
+      <table border="0" width="100%" cellspacing="0" cellpadding="2">
+        <tr>
+          <td class="smallText"><?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('sort', 'page', 'info', 'x', 'y'))); ?></td>
+        </tr>
+      </table>
+    </td>
   </tr>
 <?php
   }
@@ -177,18 +181,20 @@ if ($listing_numrows > 0) {
   }
 ?>
 </table>
-<table width="100%" cellspacing="0" cellpadding="2" border="0">
-    <?php
+<?php
   if ( ($listing_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '2') || (PREV_NEXT_BAR_LOCATION == '3')) ) {
 ?>
+<table width="100%" cellspacing="0" cellpadding="2" border="0">
   <tr>
-      <td ><?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
-
-       
-      <td align="right" class="smallText">&nbsp;<?php echo TEXT_RESULT_PAGE; ?> <?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('sort', 'page', 'info', 'x', 'y'))); ?>&nbsp;</td>
-     </tr>
+    <td class="smallText"><?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
+  </tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="2" border="0">
+  <tr>
+    <td class="smallText"><?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('sort', 'page', 'info', 'x', 'y'))); ?></td>
+  </tr>
+</table>
 <?php
   }
 ?>
- </table>
 

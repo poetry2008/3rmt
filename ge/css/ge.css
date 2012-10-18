@@ -1231,6 +1231,11 @@ searching
 	float:right;
 	width:160px;
 }
+.box_text{
+	overflow:hidden;
+	height:20px;
+	line-height:17px;
+}
 .cp_description{ 
 	padding:0 20px;
 	margin:5px 0;

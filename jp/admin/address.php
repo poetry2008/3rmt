@@ -341,7 +341,7 @@ tep_db_close();
 ?>
 <tr>
 <td colspan="4">
-<?php echo $address_page->display_count($address_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?>
+<?php echo $address_page->display_count($address_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_ADDRESS); ?>
 </td>
 <td colspan="5" align="right">
 <?php echo $address_page->display_links($address_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page'))); ?>
