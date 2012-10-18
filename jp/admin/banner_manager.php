@@ -260,8 +260,11 @@ if($belong_temp_array[0][0] != ''){
     $belong = $href_url.'?'.$belong_temp_array[0][0];
   }
 }else{
-
-  $belong = $href_url;
+  if(preg_match_all('/action=insert/',$belong,$belong_temp_array)){
+    $belong = $href_url.'?action=new';
+  }else{
+    $belong = $href_url;
+  }
 }
 require("includes/note_js.php");
 ?>

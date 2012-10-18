@@ -57,6 +57,13 @@ function toggle_leftColumn()
 if($belong == "" || $user_info == ""){
 $belong = str_replace("/admin/","",$_SERVER['REQUEST_URI']);
 $user_info['name'] = tep_get_user_info($ocertify->auth_user);
+}else{
+
+  $belong_url = $belong;
+  if($belong_temp != ''){
+
+    $belong = $belong_temp;
+  }
 }
 ?>
   if (arrow_status == 'none') {
@@ -152,6 +159,7 @@ function toggle_lan(sobj)
 </script>
 <?php }?>
 <?php
+$belong = $belong_url;
 $l_select_box_arr = array();
 if (isset($_SESSION['l_select_box'])) {
   $l_select_box_arr = explode(',', $_SESSION['l_select_box']);
