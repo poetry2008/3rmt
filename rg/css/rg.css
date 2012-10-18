@@ -1802,9 +1802,10 @@ border:2px solid #FF8080;
 .float_right{
 	float:right;
 }
-.float_right_box{
-	float:right;
-	width:160px;
+.box_text{
+	overflow:hidden;
+	height:20px;
+	line-height:17px;
 }
 .cp_content{
 	padding:0 20px;

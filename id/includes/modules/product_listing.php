@@ -36,10 +36,14 @@ if ($tmp_sort_str == '4') {
 <?php
   if ( ($listing_numrows > 0) && ( (PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3') ) ) {
 ?>
-<table border="0" width="100%" cellspacing="0" cellpadding="2" style="background: url(images/design/box/product_listing_page.gif) repeat-x; height: 23px; color: #005c69;">
+<table border="0" width="100%" cellspacing="0" cellpadding="2">
   <tr>
     <td class="smallText"><?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
-    <td align="right" class="smallText">&nbsp;<?php echo TEXT_RESULT_PAGE; ?> <?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('sort', 'page', 'info', 'x', 'y'))); ?>&nbsp;</td>
+  </tr>
+</table>
+<table border="0" width="100%" cellspacing="0" cellpadding="2">
+  <tr>
+    <td class="smallText"><?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('sort', 'page', 'info', 'x', 'y'))); ?></td>
   </tr>
 </table>
 <?php
@@ -104,18 +108,18 @@ if ($tmp_sort_str == '4') {
               if (isset($has_ca_single)) {
                 if (!$has_ca_single) {
             ?>
-            <p>1個<?php echo $price; ?>から</p>
+            <p>1<?php echo PRE_NUM_QTY.$price.PRE_FORM; ?></p>
             <?php
                 }
               } else {
             ?>
-            <p>1個<?php echo $price; ?>から</p>
+            <p>1<?php echo PRE_NUM_QTY.$price.PRE_FORM; ?></p>
             <?php
               }
             ?>
           </td>
           <td class="main" align="right">
-            <p><?php echo '残り&nbsp;<b>' . tep_show_quantity($listing['products_quantity']) . '</b>&nbsp;個'; ?></p>
+            <p><?php echo PRE_SURPLUS.'&nbsp;<b>' .  tep_show_quantity($listing['products_quantity']) .  '</b>&nbsp;'.PRE_NUM_QTY; ?></p>
           </td>
         </tr>
         <tr>
@@ -124,7 +128,7 @@ if ($tmp_sort_str == '4') {
 <?php
   echo $description . '..';
   if ($listing['preorder_status'] == '1') {
-    echo '<br>表示在庫以上の注文は「<a href="' .  tep_preorder_href_link($listing['products_id'], $listing['romaji']) . '">' . $products_name . $ten . 'を予約</a>」からお手続きください。';
+    echo '<br>'.PRE_HOPE_QTY.'<a href="' .  tep_preorder_href_link($listing['products_id'], $listing['romaji']) . '">' .  $products_name . $ten . PRE_HOPE_PRE;
   }
 ?>
             </p>
@@ -152,10 +156,14 @@ if ($tmp_sort_str == '4') {
 ?>
   <tr>
     <td>
-      <table border="0" width="100%" cellspacing="0" cellpadding="2" style="background: url(images/design/box/product_listing_page.gif) repeat-x; height: 23px; color: #005c69; margin-top: 10px;">
+      <table border="0" width="100%" cellspacing="0" cellpadding="2">
         <tr>
           <td class="smallText"><?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
-          <td align="right" class="smallText">&nbsp;<?php echo TEXT_RESULT_PAGE; ?> <?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('sort', 'page', 'info', 'x', 'y'))); ?>&nbsp;</td>
+        </tr>
+      </table>
+      <table border="0" width="100%" cellspacing="0" cellpadding="2">
+        <tr>
+          <td class="smallText"><?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('sort', 'page', 'info', 'x', 'y'))); ?></td>
         </tr>
       </table>
     </td>

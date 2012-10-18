@@ -53,6 +53,9 @@
         }
       }
       
+      if (!defined('DIR_WS_ADMIN')) {
+        echo '<span class="box_text">'; 
+      } 
       if ($num_pages <= 11) {
         for ($i = 1; $i <= $num_pages; $i++) {
           if ($i == $current_page_number) {
@@ -132,6 +135,9 @@
         }
       }
     
+      if (!defined('DIR_WS_ADMIN')) {
+        echo '</span>'; 
+      } 
       if ($current_page_number < $num_pages) {
         $next_url_str = str_replace('\'', '||||', tep_href_link(basename($PHP_SELF), $parameters.'page='.($current_page_number + 1))); 
         $next_url_str = str_replace('"', '>>>>', $next_url_str); 
@@ -140,15 +146,7 @@
       echo '</div>'; 
     
       if ($num_pages > 0) {
-        if (defined('DIR_WS_ADMIN')) {
-          echo '<div class="float_right">'; 
-        } else {
-          if (defined('NEW_STYLE_WEB')) {
-            echo '<div class="float_right">'; 
-          } else {
-            echo '<div class="float_right_box">'; 
-          }
-        }
+        echo '<div class="float_right">'; 
         if (defined('DIR_WS_ADMIN')) {
           echo '<form method="post" action="'.tep_href_link('ajax_orders.php', 'action=handle_split').'">'; 
         } else {
@@ -162,7 +160,11 @@
         echo '<input type="hidden" name="split_param" value="'.$parameters.'">'; 
         echo '<input type="hidden" name="current_file_info" value="'.basename($PHP_SELF).'">'; 
         echo '<input type="hidden" name="split_total_page" value="'.$num_pages.'">'; 
-        echo '&nbsp;'.JUMP_PAGE_TEXT.'&nbsp;'; 
+        if (!defined('DIR_WS_ADMIN')) {
+          echo '<span class="box_text">&nbsp;'.JUMP_PAGE_TEXT.'&nbsp;</span>'; 
+        } else {
+          echo '&nbsp;'.JUMP_PAGE_TEXT.'&nbsp;'; 
+        }
         echo '<input type="button" value="'.JUMP_PAGE_BUTTON_TEXT.'" onclick="jump_page(this, \''.$num_pages.'\',\''.(isset($current_page_number)?$current_page_number:'1').'\')">&nbsp;&nbsp;';
         echo '</form>'; 
         echo '</div>'; 

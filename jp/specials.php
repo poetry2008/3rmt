@@ -27,7 +27,7 @@
       </td>
       <!-- body_text //-->
       <td valign="top" id="contents">
-        <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?><?php echo STORE_NAME;?>の特価商品</h1>
+        <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?><?php echo STORE_NAME;?><?php echo SPECIAL_TITLE_LINK_TEXT;?></h1>
         <table border="0" width="100%" cellspacing="0" cellpadding="0">
 <?php
   $specials_query_raw = "
@@ -70,7 +70,11 @@
               <table border="0" width="100%" cellspacing="0" cellpadding="2">
                 <tr>
                   <td class="smallText"><?php echo $specials_split->display_count($specials_numrows, MAX_DISPLAY_SPECIAL_PRODUCTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_SPECIALS); ?></td>
-                  <td class="smallText" align="right"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $specials_split->display_links($specials_numrows, MAX_DISPLAY_SPECIAL_PRODUCTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
+                </tr>
+              </table>
+              <table border="0" width="100%" cellspacing="0" cellpadding="2">
+                <tr>
+                  <td class="smallText"><?php echo $specials_split->display_links($specials_numrows, MAX_DISPLAY_SPECIAL_PRODUCTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
                 </tr>
               </table>
             </td>
@@ -88,7 +92,7 @@
     $row++;
     echo '<td align="center" width="33%" class="smallText"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $specials['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'products/' .$specials['products_image'], $specials['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"') . '<br>' . $specials['products_name'] . '<br>';
     
-    echo '<img src="images/design/button/button_order.gif" width="81" height="24" alt="注文する"></a><br>';
+    echo '<img src="images/design/button/button_order.gif" width="81" height="24" alt="'.SPECIAL_CONFIRM_ORDER.'"></a><br>';
     
     echo '<s>' .
       $currencies->display_price(tep_get_price($specials['products_price'], $specials['products_price_offset'], $specials['products_small_sum'],$specials['products_bflag']), tep_get_tax_rate($specials['products_tax_class_id'])) . '</s><br><span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($specials['products_price'], $specials['products_price_offset'], $specials['products_small_sum']), tep_get_tax_rate($specials['products_tax_class_id'])) . '</span></td>' . "\n";
@@ -113,7 +117,11 @@
               <table border="0" width="100%" cellspacing="0" cellpadding="2">
                 <tr>
                   <td class="smallText"><?php echo $specials_split->display_count($specials_numrows, MAX_DISPLAY_SPECIAL_PRODUCTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_SPECIALS); ?></td>
-                  <td class="smallText" align="right"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $specials_split->display_links($specials_numrows, MAX_DISPLAY_SPECIAL_PRODUCTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
+                </tr>
+              </table>
+              <table border="0" width="100%" cellspacing="0" cellpadding="2">
+                <tr>
+                  <td class="smallText"><?php echo $specials_split->display_links($specials_numrows, MAX_DISPLAY_SPECIAL_PRODUCTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
                 </tr>
               </table>
             </td>

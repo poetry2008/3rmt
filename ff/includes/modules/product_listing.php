@@ -38,12 +38,12 @@ if ($tmp_sort_str == '4') {
 ?>
 <table border="0" width="100%" cellspacing="0" cellpadding="0" class="product_list_page">
   <tr>
-    <td align="left">
-  <?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?>
-    </td>
-    <td align="right">
-    &nbsp;<?php echo TEXT_RESULT_PAGE; ?> <?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('sort', 'page', 'info', 'x', 'y'))); ?>&nbsp;
-    </td>
+    <td><?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
+  </tr>
+</table>
+<table border="0" width="100%" cellspacing="0" cellpadding="0" class="product_list_page">
+  <tr>
+    <td><?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('sort', 'page', 'info', 'x', 'y'))); ?></td>
   </tr>
 </table>
 <?php
@@ -107,18 +107,18 @@ if ($tmp_sort_str == '4') {
               if (isset($has_ca_single)) {
                 if (!$has_ca_single) {
             ?>
-            <p>1個<?php echo $price; ?>から</p>
+            <p>1<?php echo PRE_NUM_QTY.$price.PRE_FORM; ?></p>
             <?php
                 }
               } else {
             ?>
-            <p>1個<?php echo $price; ?>から</p>
+            <p>1<?php echo PRE_NUM_QTY.$price.PRE_FORM; ?></p>
             <?php
               }
             ?>
           </td>
           <td class="main" align="right">
-            <p><?php echo '残り&nbsp;<b>' . tep_show_quantity($listing['products_quantity']) . '</b>&nbsp;個'; ?></p>
+            <p><?php echo PRE_SURPLUS.'&nbsp;<b>' .  tep_show_quantity($listing['products_quantity']) .  '</b>&nbsp;'.PRE_NUM_QTY; ?></p>
           </td>
         </tr>
         <tr>
@@ -129,7 +129,7 @@ if (!isset($listing['products_bflag'])) $listing['products_bflag'] = NULL;//del 
 if (!isset($listing['products_cflag'])) $listing['products_cflag'] = NULL;//del notice
   echo $description . '..';
   if ($listing['preorder_status'] == '1') {
-    echo '<br>表示在庫以上の注文は「<a href="' .  tep_preorder_href_link($listing['products_id'], $listing['romaji']) . '">' . $products_name . $ten . 'を予約</a>」からお手続きください。';
+    echo '<br>'.PRE_HOPE_QTY.'<a href="' .  tep_preorder_href_link($listing['products_id'], $listing['romaji']) . '">' .  $products_name . $ten . PRE_HOPE_PRE;
   }
 ?>
             </p>
@@ -152,18 +152,21 @@ if (!isset($listing['products_cflag'])) $listing['products_cflag'] = NULL;//del 
 <?php
   }
 ?>
+</table>
 <?php
   if ( ($listing_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '2') || (PREV_NEXT_BAR_LOCATION == '3')) ) {
 ?>
-
+      <table border="0" width="100%" cellspacing="0" cellpadding="0" class="product_list_page">
+        <tr>
+          <td><?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
+        </tr>
+      </table>
+      <table border="0" width="100%" cellspacing="0" cellpadding="0" class="product_list_page">
+        <tr>
+          <td><?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('sort', 'page', 'info', 'x', 'y'))); ?></td>
+        </tr>
+      </table>
 <?php
   }
 ?>
-</table>
-      <table border="0" width="100%" cellspacing="0" cellpadding="0" class="product_list_page">
-        <tr>
-          <td align="left"><?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
-          <td align="right">&nbsp;<?php echo TEXT_RESULT_PAGE; ?> <?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('sort', 'page', 'info', 'x', 'y'))); ?>&nbsp;</td>
-        </tr>
-      </table>
 <div id="dis_clist"></div>

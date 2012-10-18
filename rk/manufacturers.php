@@ -5,9 +5,9 @@
   require('includes/application_top.php');
   //require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_MANUFAXTURERS);
 
-  define('NAVBAR_TITLE', 'ゲームメーカー一覧');
-  define('HEADING_TITLE', 'ゲームメーカー一覧');
-  define('TEXT_MORE', 'このメーカー一覧の商品一覧へ');
+  define('NAVBAR_TITLE', TEXT_MANUFACTURERS_TITLE);
+  define('HEADING_TITLE', TEXT_MANUFACTURERS_TITLE);
+  define('TEXT_MORE', TEXT_MANUFACTURERS_PRODUCT_LIST);
 
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link('manufacturers.php'));
 ?>
@@ -46,7 +46,11 @@
                     <table border="0" width="100%" cellspacing="0" cellpadding="2">
                       <tr>
                         <td class="smallText"><?php echo $manufacturer_split->display_count($manufacturer_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
-                        <td align="right" class="smallText"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $manufacturer_split->display_links($manufacturer_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
+                      </tr>
+                    </table>
+                    <table border="0" width="100%" cellspacing="0" cellpadding="2">
+                      <tr>
+                        <td class="smallText"><?php echo $manufacturer_split->display_links($manufacturer_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
                       </tr>
                     </table>
                     <?php echo tep_draw_separator('pixel_trans.gif', '100%', '10') . "\n"; ?>
@@ -96,21 +100,22 @@ while ($manufacturer = tep_db_fetch_array($manufacturer_query)){
                 </tr>
                 <tr>
                   <td>
-                    <table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
   if (tep_db_num_rows($manufacturer_query)) {
 ?>
+                    <table border="0" width="100%" cellspacing="0" cellpadding="2">
                       <tr>
                         <td class="smallText"><?php echo $manufacturer_split->display_count($manufacturer_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
-                        <td align="right" class="smallText"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $manufacturer_split->display_links($manufacturer_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
                       </tr>
+                    </table>
+                    <table border="0" width="100%" cellspacing="0" cellpadding="2">
+                      <tr>
+                        <td class="smallText"><?php echo $manufacturer_split->display_links($manufacturer_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
+                      </tr>
+                    </table>
 <?php
   }
 ?>
-                      <tr>
-                        <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-                      </tr>
-                    </table>
                   </td>
                 </tr>
               </table>

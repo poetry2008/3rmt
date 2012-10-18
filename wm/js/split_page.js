@@ -10,7 +10,19 @@ function jump_page(j_ele, j_total_page, j_c_page)
 
 function page_change(j_page)
 {
-  j_page = j_page.replace("||||", "'"); 
-  j_page = j_page.replace('>>>>', '"'); 
+  while (true) {
+    if (j_page.indexOf("||||") >= 0) {
+      j_page = j_page.replace("||||", "'");
+    } else {
+      break; 
+    }
+  }
+  while (true) {
+    if (j_page.indexOf(">>>>") >= 0) {
+      j_page = j_page.replace(">>>>", '"');
+    } else {
+      break; 
+    }
+  }
   window.location.href = j_page;
 }
