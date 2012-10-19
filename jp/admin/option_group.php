@@ -4,7 +4,7 @@
 */
   require('includes/application_top.php');
 
-  
+
   if (isset($_GET['action']) && $_GET['action']) {
     switch ($_GET['action']) {
       case 'update':
@@ -27,9 +27,12 @@
               'sort_num' => tep_db_prepare_input($_POST['sort_num']),
               );  
           if ($_GET['action'] == 'update') {
-            tep_db_perform(TABLE_OPTION_GROUP, $sql_data_array, 'update', 'id=\''.$_POST['group_id'].'\''); 
+            $update_sql_data = array('user_update' => $ocertify->auth_user,'date_update' => 'now()');
+            $sql_data_array = tep_array_merge($sql_data_array, $update_sql_data);
+            tep_db_perform(TABLE_OPTION_GROUP, $sql_data_array, 'update', 'id=\''.$_POST['group_id'].'\'');
           } else if ($_GET['action'] == 'insert') {
-            $insert_sql_data = array('created_at' => 'now()'); 
+            $insert_sql_data = array('created_at' => 'now()','user_added' =>
+                $ocertify->auth_user,'user_update' => $ocertify->auth_user,'date_update' => 'now()'); 
             $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data); 
             tep_db_perform(TABLE_OPTION_GROUP, $sql_data_array); 
           }

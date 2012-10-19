@@ -980,6 +980,42 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   
   $html_str .= '<tr>';
   $html_str .= '<td>';
+  $html_str .= TEXT_USER_ADDED;
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= $campaign_res['user_added'];
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_DATE_ADDED;
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= $campaign_res['created_at'];
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_USER_UPDATE;
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= $campaign_res['user_update'];
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+ 
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_DATE_UPDATE;
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= $campaign_res['date_update'];
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
   $html_str .= '&nbsp;'; 
   $html_str .= '</td>';
   $html_str .= '<td  style="padding-left:20%;">';
@@ -1486,6 +1522,42 @@ echo json_encode($json_array);
   $html_str .= '</td>';
   $html_str .= '<td align="left">';
   $html_str .= tep_draw_input_field('sort_num', $group['sort_num'], 'size="31" id="sort_num" style="text-align:right;"'); 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  
+  $html_str .= '<tr>';
+  $html_str .= '<td width="220" align="left">'; 
+  $html_str .= TEXT_USER_ADDED;
+  $html_str .= '</td>';
+  $html_str .= '<td align="left">';
+  $html_str .= $group['user_added'];
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+
+  $html_str .= '<tr>';
+  $html_str .= '<td width="220" align="left">'; 
+  $html_str .= TEXT_DATE_ADDED;
+  $html_str .= '</td>';
+  $html_str .= '<td align="left">';
+  $html_str .= $group['created_at'];
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+
+  $html_str .= '<tr>';
+  $html_str .= '<td width="220" align="left">'; 
+  $html_str .= TEXT_USER_UPDATE;
+  $html_str .= '</td>';
+  $html_str .= '<td align="left">';
+  $html_str .= $group['user_update'];
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+ 
+  $html_str .= '<tr>';
+  $html_str .= '<td width="220" align="left">'; 
+  $html_str .= TEXT_DATE_UPDATE;
+  $html_str .= '</td>';
+  $html_str .= '<td align="left">';
+  $html_str .= $group['date_update'];
   $html_str .= '</td>';
   $html_str .= '</tr>';
 

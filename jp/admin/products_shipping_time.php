@@ -19,6 +19,10 @@ if(isset($action) && $action != ''){
     $db_set_day = tep_db_prepare_input($_POST['db_set_day']);
     $shipping_time = tep_db_prepare_input($_POST['shipping_time']);
     $sort = tep_db_prepare_input($_POST['sort']);
+    $user_added = $ocertify->auth_user;
+    $date_added = date('Y-m-d H:i:s',time());
+    $user_update = $ocertify->auth_user;
+    $date_update = date('Y-m-d H:i:s',time());
 
     $work = array();
     foreach($work_start_hour as $w_key=>$w_value){
@@ -42,7 +46,7 @@ if(isset($action) && $action != ''){
                    "','". $db_set_day .
                    "','". $shipping_time .
                    "','". $sort .                   
-                   "','0')";
+                   "','0','".$user_added."','".$date_added."','".$user_update."','".$date_update."')";
 
     }else{
       $products_sql = "update ". TABLE_PRODUCTS_SHIPPING_TIME .
@@ -52,6 +56,8 @@ if(isset($action) && $action != ''){
                    "',db_set_day='". $db_set_day .
                    "',shipping_time='". $shipping_time .
                    "',sort='". $sort .
+                   "',user_update ='".$user_update.
+                   "',date_update ='".$date_update.
                    "' where id=". $products_id;
     }
     

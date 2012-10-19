@@ -3861,8 +3861,49 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
     $str .= '</td>'; 
     $str .= '</tr>'; 
   }
+
+	$str .= '<tr>';
+	$str .= '<td class="main">';  
+	$str .= TEXT_USER_ADDED;
+	$str .= '</td>';
+	$str .= '<td class="main">';
+	if(isset($orders['user_added']) && $orders['user_added'] != ""){
+   $str .= $orders['user_added'];	
+	}else{
+   $str .= $orders['customers_name'];	
+	}	
+	$str .= '</td>';
+	$str .= '</tr>';
+
+  $str .= '<tr>';	
+	$str .= '<td class="main">';  
+	$str .= TEXT_DATE_ADDED;
+	$str .= '</td>';
+	$str .= '<td class="main">';
+	$str .= $orders['date_purchased'];
+	$str .= '</td>';
+	$str .= '</tr>';
+
+  $str .= '<tr>';	
+	$str .= '<td class="main">';  
+	$str .= TEXT_USER_UPDATE;
+	$str .= '</td>';
+	$str .= '<td class="main">';
+  $str .= $orders['user_update'];	
+	$str .= '</td>';
+	$str .= '</tr>';
   
-  
+        $str .= '<tr>';	
+	$str .= '<td class="main">';  
+	$str .= TEXT_DATE_UPDATE;
+	$str .= '</td>';
+	$str .= '<td class="main">';
+	$str .= $orders['last_modified'];
+	$str .= '</td>';
+	$str .= '</tr>';
+
+
+
   $str .= '</table>';
   $str .= '<table class="popup_order_info" border="0" cellpadding="2" cellspacing="0" width="100%">';
   $str .= '<tr><td width="120">&nbsp;</td><td class="main" style="padding-left:20%;">';
