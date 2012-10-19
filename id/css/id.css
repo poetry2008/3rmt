@@ -1498,6 +1498,8 @@ background:url(../images/icons/thread.gif) no-repeat;
 font-size:14px;
 font-weight:bold;
 padding:0 0 0 20px;
+margin-bottom:5px;
+line-height:16px;
 }
 
 .right_colum_border{
