@@ -1476,3 +1476,6 @@ font-size:14px;
 .float_right{
 	float:right;
 }
+a.pageResults{
+	text-decoration:underline;
+}

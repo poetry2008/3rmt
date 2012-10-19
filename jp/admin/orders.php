@@ -2976,7 +2976,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
                 '      <td class="dataTableContent" valign="top" nowrap>' . $order->products[$i]['model'] . '</td>' . "\n" .
                 '      <td class="dataTableContent" align="right" valign="top">' . tep_display_tax_value($order->products[$i]['tax']) . '%</td>' . "\n" .
                 '      <!--<td class="dataTableContent" align="right" valign="top"><b>' . $currencies->format($order->products[$i]['final_price'], true, $order->info['currency'], $order->info['currency_value']) . '</b></td>-->' . "\n" .
-                '      <td class="dataTableContent" align="right" valign="top"><b>';
+                '      <td class="dataTableContent" align="right" valign="top" nowrap><b>';
               if ($price_with_tax != '---') {
                 if ($order->products[$i]['final_price'] < 0) {
                   echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $price_with_tax).'</font>'.TEXT_MONEY_SYMBOL; 
@@ -2989,7 +2989,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
 
               echo '</b></td>' . "\n" .
                 '      <!--<td class="dataTableContent" align="right" valign="top"><b>' . $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'],true,$order->info['currency'],$order->info['currency_value']) . '</b></td>-->' . "\n" .
-                '      <td class="dataTableContent" align="right" valign="top"><b>';
+                '      <td class="dataTableContent" align="right" valign="top" nowrap><b>';
               if ($tprice_with_tax != '---') {
                 if ($order->products[$i]['final_price'] < 0) {
                   echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $tprice_with_tax).'</font>'.TEXT_MONEY_SYMBOL; 

@@ -1865,6 +1865,7 @@ A：page link（usual）
 --------------------------- */
 A.pageResults {
 	color: #2864B4;
+	text-decoration: underline;
 }
 /* ---------------------------
 A：page hover（on mouse over）

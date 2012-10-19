@@ -1260,6 +1260,7 @@ TD.productListing-data {
 /*A：page link（usual）*/
 A.pageResults {
 	color: #000;
+	text-decoration:underline;
 }
 /*A：page link（on mouse over）*/
 A.pageResults:hover {
