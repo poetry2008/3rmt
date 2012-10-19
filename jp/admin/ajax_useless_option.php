@@ -160,7 +160,32 @@ echo $option_group_option['comment'];
 &nbsp;&nbsp;&nbsp;<?php echo AJAX_USELESS_OPTION_GROUP_TIME;?>:
 </td>
 <td>
+<?php echo $option_group_array['user_added']?>
+</td>
+</tr>
+
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_ADDED;?>
+</td>
+<td>
 <?php echo $option_group_array['created_at']?>
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;<?php echo TEXT_USER_UPDATE;?>
+</td>
+<td>
+<?php echo $option_group_array['user_update']?>
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_UPDATE;?>
+</td>
+<td>
+<?php echo $option_group_array['date_update']?>
 </td>
 </tr>
 

@@ -137,7 +137,9 @@ if(isset($action) && $action != ''){
                    "'". $sql_str .
                    ",". $address_sort .
                    ",'". $show_title .
-                   "','0','0')";
+                   "','0','0','".$ocertify->auth_user."','".date('Y-m-d
+                       H:i:s',time())."','".$ocertify->auth_user."','".date('Y-m-d
+                       H:i:s',time())."')";
     }else{
       $address_sql = "update ". TABLE_ADDRESS .
                    " set ".
@@ -149,7 +151,8 @@ if(isset($action) && $action != ''){
                    "'". $sql_str .
                    ",sort=". $address_sort .
                    ",show_title='". $show_title .
-                   "' where id=". $address_id;
+                   "',user_update ='".$ocertify->auth_user.
+                   "',date_update ='".date('Y-m-d H:i:s',time())."' where id=". $address_id;
     }
     $address_update_query = tep_db_query($address_sql);
 

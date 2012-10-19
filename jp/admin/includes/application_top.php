@@ -6,7 +6,7 @@ $GLOBALS['HTTP_GET_VARS']  = $_GET;
 $GLOBALS['HTTP_POST_VARS'] = $_POST;
 
   setlocale (LC_ALL, 'ja_JP.UTF-8');
-
+if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/Tokyo');
 // Start the clock for the page parse time log
   define('PAGE_PARSE_START_TIME', microtime());
 

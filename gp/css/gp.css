@@ -1602,8 +1602,9 @@ TD.productListing-data {
 /* ---------------------------
 A：Links page (usually)
 --------------------------- */
-A.pageResults { 
+A.pageResults {
 	color: #000;
+	text-decoration: underline;
 }
 /* ---------------------------
 A：Page Link
@@ -2181,6 +2182,7 @@ line-height:21px;
 	overflow:hidden;
 	height:20px;
 	line-height:17px;
+	font-size:12px;
 }
 .cp_content{
 	padding:0 20px;

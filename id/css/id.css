@@ -1833,8 +1833,9 @@ TD.productListing-data {
 /* ---------------------------
 A：page link（usual）
 --------------------------- */
-A.pageResults { 
+A.pageResults {
 	color: #000;
+	text-decoration: underline;
 }
 /* ---------------------------
 A：page link（on mouse over）
@@ -2284,6 +2285,7 @@ searching
 	overflow:hidden;
 	height:20px;
 	line-height:16px;
+	font-size:12px;
 }
 .cp_content{
 	padding:0 20px;

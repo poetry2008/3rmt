@@ -677,7 +677,9 @@ if($address_error == false){
       tep_db_free_result($address_history_add_query);
   }
 }
-
+if($ocertify->auth_user && $orders['user_added'] == NULL){
+     tep_db_query("update `".TABLE_ORDERS."` set `user_added` = '".$ocertify->auth_user."',`user_update` = '".$ocertify->auth_user."' where `orders_id` = '".$oID."'");
+}
 
      //作所信息入库结束
 

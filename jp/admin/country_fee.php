@@ -40,7 +40,9 @@ if(isset($action) && $action != ''){
                    "','". $weight_limit .
                    "','". $email_comment .
                    "','". $email_comment_1 .
-                   "','0')";
+                  "','0','".$ocertify->auth_user."','".date('Y-m-d
+                       H:i:s',time())."','".$ocertify->auth_user."','".date('Y-m-d
+                       H:i:s',time())."')";
 
     }else{
       $country_fee_sql = "update ". TABLE_COUNTRY_FEE .
@@ -52,6 +54,8 @@ if(isset($action) && $action != ''){
                    "',weight_limit='". $weight_limit .
                    "',email_comment='". $email_comment .
                    "',email_comment_1='". $email_comment_1 .
+                   "',user_update='".$ocertify->auth_user.
+                   "',date_update='".date('Y-m-d H:i:s',time()).
                    "' where id=". $country_fee_id;
     }
     

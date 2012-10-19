@@ -31,7 +31,14 @@ if (isset($_GET['action']))
 
       $module->install();
     }
-      
+ 
+ tep_db_query("update " . TABLE_CONFIGURATION . " set user_update = '".$ocertify->auth_user."', last_modified = '".date('Y-m-d H:i:s',time())."' where configuration_key =  'MODULE_".strtoupper($set)."_".strtoupper($_GET['module'])."_STATUS' and site_id = '".$_POST['site_id']."'");
+ tep_db_query("update " . TABLE_CONFIGURATION . " set user_update =  '".$ocertify->auth_user."', last_modified = '".date('Y-m-d H:i:s',time())."' where configuration_key =  'MODULE_".strtoupper($set)."_".str_replace('OT_','',strtoupper($_GET['module']))."_STATUS' and site_id = '".$_POST['site_id']."'");
+
+ tep_db_query("update " . TABLE_CONFIGURATION . " set user_update =
+     '".$ocertify->auth_user."', last_modified = '".date('Y-m-d H:i:s',time())."'
+     where configuration_key =
+     'MODULE_".strtoupper($set)."_".strtoupper($_GET['module'])."_TITLE' and site_id = '".$_POST['site_id']."'");
     if ($_GET['set'] == 'payment') { 
       if ($site_id != 0) {
         $limit_show_str = ''; 
@@ -545,9 +552,24 @@ default:
       $contents[] = array('align' => 'left', 'text' => $link_form_str);
            
     }
+    if($set == 'order_total'){
+     $get_module = str_replace('OT_','',strtoupper($_GET['module']));
+     $suffix = 'STATUS';
+    }else if($set == 'payment'){
+     $get_module = strtoupper($_GET['module']); 
+     $suffix = 'STATUS';
+    }else if($set == 'metaseo'){
+     $get_module = strtoupper($_GET['module']); 
+     $suffix = 'TITLE';
+    }
     foreach(tep_get_sites() as $s){
+     $check_query = tep_db_query(" select *  from " .  TABLE_CONFIGURATION . "
+         where configuration_key =  'MODULE_".strtoupper($set)."_".$get_module."_".$suffix."'  and site_id = '".$s['id']."'");
+     $check = tep_db_fetch_array($check_query);
       $contents[] = array('text' => '<b>'.$s['romaji'].'</b>');
       $contents[] = array('align' => 'left', 'text' => '<a href="' .  tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' .  @$_GET['module'] . '&action=edit&site_id='.$s['id']) . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a>');
+      $contents[] = array('align' => 'left', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$check['user_update']);
+      $contents[] = array('align' => 'left', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$check['last_modified']);
     }
     // 临时隐藏
     // $contents[] = array('text' => '<br>' . $mInfo->description . "<hr>");
