@@ -75,7 +75,7 @@ define('FILENAME_ONCE_PWD_LOG', 'pwd_log.php');
     <?php  
         if ($ocertify->npermission == 15) $loginlog = '<span class="menuBoxContent_image">'.tep_image(DIR_WS_MENU_ICON . 'icon_access_log.gif').'</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_USERS_LOGINLOG, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_USER_LOG . '</a></span>';
 	else $loginlog = '';
-        echo '<span class="menuBoxContent_image">'.tep_image(DIR_WS_MENU_ICON . 'icon_user_manage.gif').'</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_USERS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_USER_ADMIN . '</a></span><br><span class="menuBoxContent_image">' .tep_image(DIR_WS_MENU_ICON . 'icon_logout.gif').  '</span><span class="menuBoxContent_span"><a href="' . tep_href_link(basename($PHP_SELF), '', 'NONSSL') . '?execute_logout_user=1" class="menuBoxContent_Link">' . BOX_USER_LOGOUT . '</a></span><br>' . 
+        echo '<span class="menuBoxContent_image">'.tep_image(DIR_WS_MENU_ICON . 'icon_user_manage.gif').'</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_USERS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_USER_ADMIN . '</a></span><br><span class="menuBoxContent_image">' .tep_image(DIR_WS_MENU_ICON . 'icon_logout.gif').  '</span><span class="menuBoxContent_span"><a href="' . tep_href_link(basename($PHP_SELF), '', 'NONSSL') . '?execute_logout_user=1&num='.time().'" class="menuBoxContent_Link">' . BOX_USER_LOGOUT . '</a></span><br>' . 
 					$loginlog."<br><span class='menuBoxContent_image'>".
 					tep_image(DIR_WS_MENU_ICON . 'icon_log.gif').
        '</span><span class="menuBoxContent_span"><a href="'.tep_href_link(FILENAME_ONCE_PWD_LOG).'"

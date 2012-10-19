@@ -348,7 +348,7 @@ echo "</form>";
 <?php
 //var_dump($ocertify->npermission);
 echo "<a href =
-'".tep_href_link(basename($GLOBALS['PHP_SELF']),'action=re_login','NONSSL')."'>";
+'".tep_href_link(basename($GLOBALS['PHP_SELF']),'action=re_login&num='.time(),'NONSSL')."'>";
 $user_info = tep_get_user_info($ocertify->auth_user);
 if (isset($ocertify) && $ocertify->npermission == 15) {
   echo '<font color="blue">'.$user_info['name'].'</font>';
@@ -512,11 +512,11 @@ if ($_SERVER['PHP_SELF'] != '/admin/orders.php') {
   echo ' 
     <td>&nbsp;
   <a href="' . tep_href_link(basename($GLOBALS['PHP_SELF']), '', 'NONSSL') .
-    '?execute_logout_user=1" class="headerLink">'.HEADER_TEXT_LOGOUT.'</a></td></tr></table>';
+    '?execute_logout_user=1&num='.time().'" class="headerLink">'.HEADER_TEXT_LOGOUT.'</a></td></tr></table>';
 } else {
   echo '|&nbsp;
   <a href="' . tep_href_link(basename($GLOBALS['PHP_SELF']), '', 'NONSSL') .
-    '?execute_logout_user=1" class="headerLink">'.HEADER_TEXT_LOGOUT.'</a>';
+    '?execute_logout_user=1&num='.time().'" class="headerLink">'.HEADER_TEXT_LOGOUT.'</a>';
 }
 ?>
 

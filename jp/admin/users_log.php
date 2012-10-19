@@ -173,13 +173,13 @@ function UserLoginIp_list(){
     echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_OPERATE . '</td>' . "\n";
     echo "</tr>\n";
     $j = 1;
-    $user_login_query = tep_db_query("select address,count(*) as num from ". TABLE_LOGIN ." where loginstatus='p' and time_format(timediff(now(),logintime),'%H')<24 and status='0' group by address having num>=5 order by logintime desc");
+    $user_login_query = tep_db_query("select address,count(*) as num from ". TABLE_LOGIN ." where loginstatus!='a' and time_format(timediff(now(),logintime),'%H')<24 and status='0' group by address having num>=5 order by logintime desc");
     while($user_login_array = tep_db_fetch_array($user_login_query)){
 
       $user_name_array = array();
       $user_time_array = array();
       $user_time_temp_array = array();
-      $user_login_list_query = tep_db_query("select * from ". TABLE_LOGIN ." where loginstatus='p' and time_format(timediff(now(),logintime),'%H')<24 and address='". $user_login_array['address'] ."' and status='0' order by logintime asc");
+      $user_login_list_query = tep_db_query("select * from ". TABLE_LOGIN ." where loginstatus!='a' and time_format(timediff(now(),logintime),'%H')<24 and address='". $user_login_array['address'] ."' and status='0' order by logintime asc");
       while($user_login_list_array = tep_db_fetch_array($user_login_list_query)){
 
         $user_name_array[] = $user_login_list_array['account'];
