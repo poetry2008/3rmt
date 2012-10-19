@@ -1636,6 +1636,7 @@ A：page link（usual）
 --------------------------- */
 A.pageResults {
 	color: #000;
+	text-decoration: underline;	
 }
 /* ---------------------------
 A：page link（on mouse over）
@@ -1979,6 +1980,7 @@ display:block;
 	overflow:hidden;
 	height:20px;
 	line-height:17px;
+	font-size:12px;
 }
 .cp_content{
 	padding:0 20px;

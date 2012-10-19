@@ -1520,6 +1520,7 @@ A：Links page (usually)
 --------------------------- */
 A.pageResults { 
 	color: #fff;
+	text-decoration:underline;
 }
 /* ---------------------------
 A：Page Link
@@ -1986,6 +1987,7 @@ border:1px solid #CAC6BE;
 	overflow:hidden;
 	height:20px;
 	line-height:17px;
+	font-size:12px;
 }
 .cp_content{
 	padding:0 20px;

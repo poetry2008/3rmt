@@ -1433,6 +1433,7 @@ A：Links page (usually)
 --------------------------- */
 A.pageResults { 
 	color: #000;
+	text-decoration:underline;
 }
 /* ---------------------------
 A：Page Link
@@ -1806,6 +1807,7 @@ border:2px solid #FF8080;
 	overflow:hidden;
 	height:20px;
 	line-height:17px;
+	font-size:10px;
 }
 .cp_content{
 	padding:0 20px;
