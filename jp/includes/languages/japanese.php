@@ -478,5 +478,5 @@ define('TEXT_JAVASCRIPT_ERROR','JavaScriptまたはCookieの設定がオンに�
 define('JUMP_PAGE_TEXT', 'ページへ');
 define('JUMP_PAGE_BUTTON_TEXT', '移動');
 define('TEXT_MANUFACTURERS_PRODUCT_LIST', 'このメーカー一覧の商品一覧へ');
-define('TEXT_MANUFACTURERS_TITLE', 'ゲームメーカー一覧');
+define('TEXT_MANUFACTURERS_TITLE', 'メーカー一覧');
 ?>
