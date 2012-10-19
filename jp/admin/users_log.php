@@ -186,7 +186,6 @@ function UserLoginIp_list(){
         $user_time_temp_array[$user_login_list_array['account']] = $user_login_list_array['logintime']; 
         $user_time_array[] = $user_login_list_array['logintime'];
       }
-      array_pop($user_name_array);
       foreach($user_name_array as $key=>$value){
 
         if(trim($value) == ''){
@@ -237,10 +236,15 @@ function UserLoginIp_list(){
       }else{
         echo '<tr id="ip_'.$j.'">'; 
       }
+      $user_name_list_array = $user_name_array;
+      if(count($user_name_list_array) == 6){
+
+        array_pop($user_name_list_array);
+      }
         echo '<td>'.$saddress.'</td>';
         echo '<td>'.max($user_time_array).'</td>'; 
         echo '<td>Staff,Chief</td>';
-        echo '<td>'.implode(',',$user_name_array).'</td>';
+        echo '<td>'.implode(',',$user_name_list_array).'</td>';
         echo '<td>';
         if(empty($user_admin_name_array)){
           echo '<a href="javascript:void(0);" onclick="if(confirm(\''.TEXT_DELETE_CONFIRM.'\')){ip_unlock(\''.$user_login_array['address'].'\','.$j.',\'\');}"><u>'.TEXT_IP_UNLOCK.'</u></a>';
