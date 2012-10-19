@@ -511,11 +511,11 @@ if ($_SERVER['PHP_SELF'] != '/admin/orders.php') {
   echo '</table></td>';
   echo ' 
     <td>&nbsp;
-  <a href="' . tep_href_link(basename($GLOBALS['PHP_SELF']), '', 'NONSSL') .
+  <a href="' . tep_href_link(str_replace('/admin/','',$_SERVER['SCRIPT_NAME']), '', 'NONSSL') .
     '?execute_logout_user=1&num='.time().'" class="headerLink">'.HEADER_TEXT_LOGOUT.'</a></td></tr></table>';
 } else {
   echo '|&nbsp;
-  <a href="' . tep_href_link(basename($GLOBALS['PHP_SELF']), '', 'NONSSL') .
+  <a href="' . tep_href_link(str_replace('/admin/','',$_SERVER['SCRIPT_NAME']), '', 'NONSSL') .
     '?execute_logout_user=1&num='.time().'" class="headerLink">'.HEADER_TEXT_LOGOUT.'</a>';
 }
 ?>
