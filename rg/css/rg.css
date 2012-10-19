@@ -990,6 +990,7 @@ Footer
 	color:#C51138;
 }
 .comment td a { font-size:12px;}
+.comment td .box_text a { font-size:10px;}
 .comment .main ul li a{
 	 color: #A81235;
 }

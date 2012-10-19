@@ -1037,6 +1037,7 @@ footer
 	color:#237023;
 }
 .comment table a{ font-size:12px;}
+.comment td .box_text a{ font-size:10px;}
 .comment .main ul li a {
 	color: #336600;
 }
@@ -1980,7 +1981,7 @@ display:block;
 	overflow:hidden;
 	height:20px;
 	line-height:17px;
-	font-size:12px;
+	font-size:10px;
 }
 .cp_content{
 	padding:0 20px;

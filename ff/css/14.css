@@ -1393,6 +1393,7 @@ TABLE：Info Box
 	border: solid 1px #ddd;*/
 }
 .product_info_box table td a { font-size:12px;}
+.product_info_box td .box_text a { font-size:10px;}
 .product_info_box a { font-size:12px;}
 .product_info_box .small_table{
 	width: 95%;
@@ -1927,7 +1928,7 @@ line-height:16px;
 	overflow:hidden;
 	height:20px;
 	line-height:17px;
-	font-size:12px;
+	font-size:10px;
 }
 .cp_content{
 	padding:0 20px;
