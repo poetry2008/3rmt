@@ -693,13 +693,18 @@ if(empty($cPath_back)&&empty($cID)&&isset($cPath)){
   &nbsp;&nbsp;&nbsp;&nbsp;<input type='button' value='<?php echo CATEGORY_ADMIN_BUTTON_XIEYE_PRICE;?>' name='d[]' onClick="list_display('<?php echo $cPath_yobi?$cPath_yobi:0;?>','<?php echo $current_category_id;?>','<?php echo $_GET['cPath'];?>')">
   &nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="x" value="<?php echo CATEGORY_ADMIN_BUTTON_ALL_UPDATE;?>" onClick="all_update()"></td>
 </tr>
-<!--dataTableRowSelected end-->
+</table>
+</td>
+</tr>
+</table>
+</form>
+<table width="100%" cellspacing="0" cellpadding="2" border="0">
 <tr>
   <td class="smallText" valign="top"><?php echo $products_split->display_count($products_query_numrows, MAX_DISPLAY_PRODUCTS_ADMIN, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?></td>
-  <td class="smallText" align="right" colspan="<?php echo 11 + $count_dougyousya['cnt'];?>"><?php echo $products_split->display_links($products_query_numrows, MAX_DISPLAY_PRODUCTS_ADMIN, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'pID'))); ?> </td>
+  <td class="smallText" align="right"><?php echo $products_split->display_links($products_query_numrows, MAX_DISPLAY_PRODUCTS_ADMIN, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'pID'))); ?> </td>
 </tr>
 <tr>
-  <td colspan="<?php echo 12 + $count_dougyousya['cnt'];?>">
+  <td colspan="2">
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td class="smallText"><?php echo CATEGORY_ADMIN_COUNTNUM_TEXT . '&nbsp;' . $categories_count .
@@ -718,11 +723,7 @@ tep_display_google_results(FILENAME_CATEGORIES_ADMIN);
 // google end
 ?>
 </table>
-</td>
-</tr>
-</table>
-</form>
-  <?php
+<?php
   if ($comment) {
 ?>
 <table>
