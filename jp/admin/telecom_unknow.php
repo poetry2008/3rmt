@@ -146,7 +146,7 @@ require("includes/note_js.php");
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
       <td valign="top">
-    <form action="?action=hide_more" method="post" onsubmit="return confirm('<?php echo TELECOM_UNKNOW_SELECT_NOTICE;?>')">
+    <form name="t_form" action="?action=hide_more" method="post" onsubmit="return confirm('<?php echo TELECOM_UNKNOW_SELECT_NOTICE;?>')">
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
     <tr class="dataTableHeadingRow">
       <td class="dataTableHeadingContent" align="left" width="20"><input type="checkbox" onclick="all_check(this)"></td>
@@ -362,24 +362,22 @@ require("includes/note_js.php");
     </tr>
 <?php }?>
   </table>
-   
-  <!-- display add end-->
+    <input type="hidden" name="page" value="<?php echo $_GET['page'];?>">
+    <input type="hidden" name="keywords" value="<?php echo $_GET['keywords'];?>">
+    <input type="hidden" name="rel" value="<?php echo $_GET['rel'];?>">
+  </form>
   <table border="0" width="100%" cellspacing="0" cellpadding="2">
     <tr>
       <td colspan="5">
         <table border="0" width="100%" cellspacing="0" cellpadding="2">
           <tr>
-            <td class="smallText" ><input type="submit" value="<?php echo TELECOM_UNKNOW_TABLE_DISPLAY;?>"><?php echo $orders_split->display_count($orders_query_numrows, MAX_DISPLAY_ORDERS_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_ORDERS); ?></td>
+            <td class="smallText" ><input type="button" onclick="if(confirm('<?php echo TELECOM_UNKNOW_SELECT_NOTICE;?>')) { document.forms.t_form.submit(); }" value="<?php echo TELECOM_UNKNOW_TABLE_DISPLAY;?>"><?php echo $orders_split->display_count($orders_query_numrows, MAX_DISPLAY_ORDERS_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_ORDERS); ?></td>
             <td class="smallText" align="right"><?php echo $orders_split->display_links($orders_query_numrows, MAX_DISPLAY_ORDERS_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'oID', 'action'))); ?></td>
           </tr>
         </table>
       </td>
     </tr>
   </table>
-    <input type="hidden" name="page" value="<?php echo $_GET['page'];?>">
-    <input type="hidden" name="keywords" value="<?php echo $_GET['keywords'];?>">
-    <input type="hidden" name="rel" value="<?php echo $_GET['rel'];?>">
-  </form>
       </td>
     </tr>
   </table>
