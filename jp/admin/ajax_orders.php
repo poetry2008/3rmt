@@ -21,7 +21,9 @@ if(count($request_one_time_arr)==1&&$request_one_time_arr[0]=='admin'&&$_SESSION
 }
 if (!$request_one_time_flag && $_SESSION['user_permission']!=15) {
   if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
-    forward401();
+    if (!isset($_POST['split_param'])) {
+      forward401();
+    }
   }
 }
 if(!in_array('onetime',$request_one_time_arr)&&$_SESSION['user_permission']!=15){
