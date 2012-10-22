@@ -1371,6 +1371,8 @@ function UserDelete_execute() {
       tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$preorders_sort_str."' where configuration_key='PERSONAL_SETTING_PREORDERS_SORT'");
     }
   }
+
+  tep_db_query("delete from notes where author='".$GLOBALS['userid']."'");
   return TRUE;
 
 }

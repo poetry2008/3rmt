@@ -53,6 +53,7 @@ function toggle_leftColumn()
 {
     
   var arrow_status = $('.columnLeft').css('display');
+  var scroll_width = document.body.scrollWidth; 
 <?php 
 if($belong == "" || $user_info == ""){
 $belong = str_replace("/admin/","",$_SERVER['REQUEST_URI']);
@@ -83,7 +84,12 @@ while($array = tep_db_fetch_array($query)){
 var left = $("#note_<?php echo $array['id']?>").css("left"); 
 left = left.replace("px","");
 left = parseInt(left);
+var note_width;
+note_width = $("#note_<?php echo $array['id'];?>").width();
+note_width = parseInt(note_width);
+if((left+note_width+160) < scroll_width){
     $("#note_<?php echo $array['id']?>").css("left",(left+160)+"px");
+}
 
 <?php
 }
