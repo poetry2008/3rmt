@@ -158,10 +158,7 @@ function makeSelectLoginLog() {
 
 function UserLoginIp_list(){
 
-  PageBody('t', PAGE_TITLE_MENU_IP,true);
-  if (isset($GLOBALS['jp']) && $GLOBALS['jp']) $GLOBALS['lm'] = (int)$GLOBALS['sp'];
-  if (isset($GLOBALS['pp']) && $GLOBALS['pp']) (int)$GLOBALS['lm'] -= LOGIN_LOG_MAX_LINE;
-  if (isset($GLOBALS['np']) && $GLOBALS['np']) (int)$GLOBALS['lm'] += LOGIN_LOG_MAX_LINE; 
+  PageBody('t', PAGE_TITLE_MENU_IP,true); 
     echo TEXT_IP_UNLOCK_NOTES.'</td>';
     echo '</tr><tr><td>';
     echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
