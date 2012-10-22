@@ -1660,6 +1660,10 @@ footer
 	border:1px solid #E0E0E0;
 	text-align:left;
 	margin-bottom:7px;
+	padding:5px;
+	width: 500px;
+    word-break: break-all;
+    word-wrap: break-word;
 }
 .message {
 	font-size:12px;
@@ -1865,6 +1869,7 @@ A：page link（usual）
 --------------------------- */
 A.pageResults {
 	color: #2864B4;
+	text-decoration: underline;
 }
 /* ---------------------------
 A：page hover（on mouse over）
@@ -2211,6 +2216,8 @@ P.description {
 .webTicket {
 	background:url(../images/icons/ticket_source_web.gif) 0 0 no-repeat;
 	padding-left:20px;
+	height:16px;
+	line-height:16px;
 }
 .emailTicket {
 	padding-left:20px;
@@ -2249,6 +2256,8 @@ a.Icon:hover {
 	font-size: 1em;
 	background: url(../images/icons/thread.gif) no-repeat;
 	padding-left:20px;
+	height:16px;
+	line-height:16px;
 }
 #errormessage {
 	color:#ff0000;

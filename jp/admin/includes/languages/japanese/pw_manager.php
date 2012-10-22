@@ -17,7 +17,7 @@ define('HEADING_TITLE','ID管理');
 define('TEXT_TITLE','ID管理');
 define('TEXT_INFO_COMMENT','登録情報');
 define('TEXT_INFO_MEMO','メモ欄');
-define('TEXT_INFO_CREATED','登録日:');
+define('TEXT_INFO_CREATED','作成日:');
 define('TEXT_INFO_UPDATED','更新日:');
 define('TEXT_INFO_HEADING_NEW','新規作成');
 define('TEXT_INFO_HEADING_EDIT','編集');

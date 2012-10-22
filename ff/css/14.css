@@ -1211,7 +1211,9 @@ a.Icon:hover {
 	background:url(../images/icons/thread.gif) no-repeat;
 	font-size:12px;
 	font-weight:bold;
-	padding-left:20px;}
+	padding-left:20px;
+	line-height:16px;
+}
 .products03{
 	height:29px;
 	padding:0px 6px;
@@ -1393,6 +1395,7 @@ TABLE：Info Box
 	border: solid 1px #ddd;*/
 }
 .product_info_box table td a { font-size:12px;}
+.product_info_box td .box_text a { font-size:10px;}
 .product_info_box a { font-size:12px;}
 .product_info_box .small_table{
 	width: 95%;
@@ -1494,8 +1497,9 @@ TD.productListing-data {
 /* ---------------------------
 A：Links page (usually)
 --------------------------- */
-A.pageResults { 
+A.pageResults {
 	color: #000;
+	text-decoration: underline;
 }
 /* ---------------------------
 A：Page Link
@@ -1926,6 +1930,7 @@ line-height:16px;
 	overflow:hidden;
 	height:20px;
 	line-height:17px;
+	font-size:10px;
 }
 .cp_content{
 	padding:0 20px;

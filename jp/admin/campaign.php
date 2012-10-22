@@ -87,12 +87,21 @@
             'type' => tep_db_prepare_input($_POST['type']),
             );
          if($_GET['action']=='update'){
+           $update_sql_date = array(
+               'user_update' => $ocertify->auth_user,
+               'date_update' => 'now()'
+               );
+           $sql_data_array = tep_array_merge($sql_date_array,$update_sql_date);
            tep_db_perform(TABLE_CAMPAIGN, $sql_data_array, 'update', 'id = \'' .  $_POST['campaign_id']. '\' and site_id = \''.(int)$_GET['site_id'].'\'');
         }else if($_GET['action']=='insert'){
           $insert_sql_data = array(
               'created_at' => 'now()',
               'status' => '1',
-              'site_id' => tep_db_prepare_input($_GET['site_id']));
+              'site_id' => tep_db_prepare_input($_GET['site_id']),
+              'user_added' => $ocertify->auth_user, 
+              'user_update'=> $ocertify->auth_user,
+              'date_update'=> 'now()'
+              );
           $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
           tep_db_perform(TABLE_CAMPAIGN, $sql_data_array);
         }

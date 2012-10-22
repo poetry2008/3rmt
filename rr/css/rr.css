@@ -1227,7 +1227,9 @@ a.Icon:hover {
 	background:url(../images/icons/thread.gif) no-repeat;
 	font-size:12px;
 	font-weight:bold;
-	padding-left:20px;}
+	padding-left:20px;
+	line-height:16px;
+}
 .products03{
 	height:29px;
 	padding:0px 6px;
@@ -1520,6 +1522,7 @@ A：Links page (usually)
 --------------------------- */
 A.pageResults { 
 	color: #fff;
+	text-decoration:underline;
 }
 /* ---------------------------
 A：Page Link
@@ -1986,6 +1989,7 @@ border:1px solid #CAC6BE;
 	overflow:hidden;
 	height:20px;
 	line-height:17px;
+	font-size:12px;
 }
 .cp_content{
 	padding:0 20px;

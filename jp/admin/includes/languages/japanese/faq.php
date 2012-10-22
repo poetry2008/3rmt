@@ -4,7 +4,7 @@ define('TABLE_FAQ_CATEGORY_IS_SHOW','ステータス');
 define('IMAGE_NEW_FAQ_CATEGORY','新しいカテゴリー');
 define('IMAGE_NEW_FAQ','新しいFAQ');
 define('CATEGORY_TREE_SELECT_TEXT','ジャンプ▼');
-define('TEXT_CREATED_AT','登録日:');
+define('TEXT_CREATED_AT','作成日:');
 define('TEXT_UPDATED_AT','更新日:');
 define('TEXT_NEW_FAQ_CATEGORY_SORT_ORDER','整列順');
 define('TEXT_NEW_FAQ_CATEGORY_TITLE','タイトル');

@@ -564,6 +564,7 @@ require("includes/note_js.php");
             'billing_state'               => $state,
             'billing_country'             => $country,
             'billing_address_format_id'   => $format_id,
+            'last_modified'               => 'now()',
             'date_purchased'              => 'now()', 
             'orders_status'               => '1',
             'currency'                    => $currency,
@@ -571,7 +572,9 @@ require("includes/note_js.php");
             'payment_method'              => $payment_method_info,
             'site_id'                     => $site_id,
             'is_active'                     => '1',
-            'orders_wait_flag'            => '1'
+            'orders_wait_flag'            => '1',
+            'user_added'                  => $ocertify->auth_user,
+            'user_update'                  => $ocertify->auth_user
             ); 
    
   $cpayment->admin_add_additional_info($sql_data_array, $_POST['payment_method']); 

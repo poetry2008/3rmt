@@ -77,17 +77,15 @@ function show_loginlog_list($oresult) {
     // ユーザ
     echo '<td class="main" >' . $arec['account'] . "</td>\n";
     // ログイン日時
-    echo '<td class="main" >' . $arec['logintime'] . "</td>\n";
-    // ログインステータス
-    echo '<td class="main" >' . $arec['loginstatus'] . ' <small>[' . $GLOBALS['a_sts_in'][$arec['loginstatus']] . ']</small>' . "</td>\n";
+    echo '<td class="main" >' . $arec['logintime'] . "</td>\n"; 
     // 最終アクセス日時
-    echo '<td class="main" >' . $arec['lastaccesstime'] . "</td>\n";
+    echo '<td class="main" >' . $arec['lastaccesstime'] . "</td>\n"; 
     // ログアウトステータス
     if ($arec['logoutstatus']) {
-      echo '<td class="main" >' . $arec['logoutstatus'] . ' <small>[' . $GLOBALS['a_sts_out'][$arec['logoutstatus']] . ']</small>' . "</td>\n";
+      echo '<td class="main" >' .$arec['loginstatus'] . ' <small>[' . $GLOBALS['a_sts_in'][$arec['loginstatus']] . ']</small>&nbsp;&nbsp;'. $arec['logoutstatus'] . ' <small>[' . $GLOBALS['a_sts_out'][$arec['logoutstatus']] . ']</small>' . "</td>\n";
     }
     else {
-      echo '<td class="main" >&nbsp;</small>' . "</td>\n";
+      echo '<td class="main" >'.$arec['loginstatus'] . ' <small>[' . $GLOBALS['a_sts_in'][$arec['loginstatus']] . ']</small></small>' . "</td>\n";
     }
     // アドレス
     echo '<td class="main" >' . $saddress . "</td>\n";
@@ -175,20 +173,19 @@ function UserLoginIp_list(){
     echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_OPERATE . '</td>' . "\n";
     echo "</tr>\n";
     $j = 1;
-    $user_login_query = tep_db_query("select address,count(*) as num from ". TABLE_LOGIN ." where loginstatus='p' and time_format(timediff(now(),logintime),'%H')<24 and status='0' group by address having num>=5 order by logintime desc");
+    $user_login_query = tep_db_query("select address,count(*) as num from ". TABLE_LOGIN ." where loginstatus!='a' and time_format(timediff(now(),logintime),'%H')<24 and status='0' group by address having num>=5 order by logintime desc");
     while($user_login_array = tep_db_fetch_array($user_login_query)){
 
       $user_name_array = array();
       $user_time_array = array();
       $user_time_temp_array = array();
-      $user_login_list_query = tep_db_query("select * from ". TABLE_LOGIN ." where loginstatus='p' and time_format(timediff(now(),logintime),'%H')<24 and address='". $user_login_array['address'] ."' and status='0' order by logintime asc");
+      $user_login_list_query = tep_db_query("select * from ". TABLE_LOGIN ." where loginstatus!='a' and time_format(timediff(now(),logintime),'%H')<24 and address='". $user_login_array['address'] ."' and status='0' order by logintime asc");
       while($user_login_list_array = tep_db_fetch_array($user_login_list_query)){
 
         $user_name_array[] = $user_login_list_array['account'];
         $user_time_temp_array[$user_login_list_array['account']] = $user_login_list_array['logintime']; 
         $user_time_array[] = $user_login_list_array['logintime'];
       }
-      array_pop($user_name_array);
       foreach($user_name_array as $key=>$value){
 
         if(trim($value) == ''){
@@ -239,10 +236,15 @@ function UserLoginIp_list(){
       }else{
         echo '<tr id="ip_'.$j.'">'; 
       }
+      $user_name_list_array = $user_name_array;
+      if(count($user_name_list_array) == 6){
+
+        array_pop($user_name_list_array);
+      }
         echo '<td>'.$saddress.'</td>';
         echo '<td>'.max($user_time_array).'</td>'; 
         echo '<td>Staff,Chief</td>';
-        echo '<td>'.implode(',',$user_name_array).'</td>';
+        echo '<td>'.implode(',',$user_name_list_array).'</td>';
         echo '<td>';
         if(empty($user_admin_name_array)){
           echo '<a href="javascript:void(0);" onclick="if(confirm(\''.TEXT_DELETE_CONFIRM.'\')){ip_unlock(\''.$user_login_array['address'].'\','.$j.',\'\');}"><u>'.TEXT_IP_UNLOCK.'</u></a>';
@@ -308,8 +310,7 @@ function UserLoginLog_list() {
     echo "<tr>\n";
 //    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_LOGINID . '</td>' . "\n";      // Session ID
     echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_USER . '</td>' . "\n";       // ユーザ
-    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_LOGINTIME . '</td>' . "\n";      // ログイン日時
-    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_STATUS . '</td>' . "\n";       // ステータス
+    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_LOGINTIME . '</td>' . "\n";      // ログイン日 
     echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_LAST_ACCESSTIME . '</td>' . "\n";  // 最終アクセス日時
     echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_STATUS . '</td>' . "\n";       // ステータス
     echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_ADDRESS . '</td>' . "\n";      // アドレス

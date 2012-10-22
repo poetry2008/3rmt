@@ -990,6 +990,7 @@ Footer
 	color:#C51138;
 }
 .comment td a { font-size:12px;}
+.comment td .box_text a { font-size:10px;}
 .comment .main ul li a{
 	 color: #A81235;
 }
@@ -1135,7 +1136,9 @@ a.Icon:hover {
 	background:url(../images/icons/thread.gif) no-repeat;
 	font-size:12px;
 	font-weight:bold;
-	padding-left:20px;}
+	padding-left:20px;
+	line-height:16px;
+}
 .products03{
 	height:29px;
 	padding:0px 6px;
@@ -1433,6 +1436,7 @@ A：Links page (usually)
 --------------------------- */
 A.pageResults { 
 	color: #000;
+	text-decoration:underline;
 }
 /* ---------------------------
 A：Page Link
@@ -1806,6 +1810,7 @@ border:2px solid #FF8080;
 	overflow:hidden;
 	height:20px;
 	line-height:17px;
+	font-size:10px;
 }
 .cp_content{
 	padding:0 20px;

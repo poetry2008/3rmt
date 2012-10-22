@@ -575,6 +575,25 @@ if($type != 'text'){
 <?php
 }
 ?>
+<tr>
+  <td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_USER_ADDED; ?></td>
+  <td><?php echo $address_array['user_added'];?></td>
+</tr>
+<tr>
+  <td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_ADDED; ?></td>
+  <td><?php echo $address_array['date_added'];?></td>
+</tr>
+
+<tr>
+  <td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_USER_UPDATE; ?></td>
+  <td><?php echo $address_array['user_update'];?></td>
+</tr>
+
+<tr>
+  <td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_UPDATE; ?></td>
+  <td><?php echo $address_array['date_update'];?></td>
+</tr>
+
 <tr><td width="30%">&nbsp;</td><td style="padding-left:10%;"><input type="button" name="new" value="<?php echo TABLE_BUTTON_SUBMIT;?>" onclick="show_text(0,'','text');">&nbsp;<input type="button" name="save" value="<?php echo TABLE_BUTTON_SAVE;?>" onclick="if(check_form()){check('save');}else{return check_form();}">&nbsp;
 
 <?php

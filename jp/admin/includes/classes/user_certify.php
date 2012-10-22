@@ -84,17 +84,17 @@ class user_certify {
           tep_db_free_result($per_query);
         }
         if($per_flag == true){   
-          $user_time_query = tep_db_query("select max(logintime) as max_time from login where address='{$user_ip4}' and loginstatus='p' and account='".$admin_name."' and status='0'");
+          $user_time_query = tep_db_query("select max(logintime) as max_time from login where address='{$user_ip4}' and loginstatus!='a' and account='".$admin_name."' and status='0'");
         }else{
-          $user_time_query = tep_db_query("select max(logintime) as max_time from login where address='{$user_ip4}' and loginstatus='p' and status='0'");
+          $user_time_query = tep_db_query("select max(logintime) as max_time from login where address='{$user_ip4}' and loginstatus!='a' and status='0'");
         }
         $user_time_array = tep_db_fetch_array($user_time_query);
         $user_max_time = $user_time_array['max_time'];
         tep_db_free_result($user_time_query);
         if($per_flag == true){
-          $user_query = tep_db_query("select * from login where address='{$user_ip4}' and loginstatus='p' and account='".$admin_name."' and time_format(timediff(now(),logintime),'%H')<24 and status='0' order by logintime desc");
+          $user_query = tep_db_query("select * from login where address='{$user_ip4}' and loginstatus!='a' and account='".$admin_name."' and time_format(timediff(now(),logintime),'%H')<24 and status='0' order by logintime desc");
         }else{
-          $user_query = tep_db_query("select * from login where address='{$user_ip4}' and loginstatus='p' and time_format(timediff(now(),logintime),'%H')<24 and status='0' order by logintime desc");
+          $user_query = tep_db_query("select * from login where address='{$user_ip4}' and loginstatus!='a' and time_format(timediff(now(),logintime),'%H')<24 and status='0' order by logintime desc");
         }
         $user_num_rows = tep_db_num_rows($user_query);
         if($user_num_rows >= 5){
@@ -508,17 +508,17 @@ if (!tep_session_is_registered('user_permission')) {
           tep_db_free_result($per_query);
         } 
         if($per_flag == true){
-          $user_time_query = tep_db_query("select max(logintime) as max_time from login where address='{$user_ip4}' and loginstatus='p' and account='".$admin_name."' and status='0'");
+          $user_time_query = tep_db_query("select max(logintime) as max_time from login where address='{$user_ip4}' and loginstatus!='a' and account='".$admin_name."' and status='0'");
         }else{
-          $user_time_query = tep_db_query("select max(logintime) as max_time from login where address='{$user_ip4}' and loginstatus='p' and status='0'");
+          $user_time_query = tep_db_query("select max(logintime) as max_time from login where address='{$user_ip4}' and loginstatus!='a' and status='0'");
         }
         $user_time_array = tep_db_fetch_array($user_time_query);
         $user_max_time = $user_time_array['max_time'];
         tep_db_free_result($user_time_query);
         if($per_flag == true){
-          $user_query = tep_db_query("select * from login where address='{$user_ip4}' and loginstatus='p' and account='".$admin_name."' and time_format(timediff(now(),logintime),'%H')<24 and status='0' order by logintime desc");
+          $user_query = tep_db_query("select * from login where address='{$user_ip4}' and loginstatus!='a' and account='".$admin_name."' and time_format(timediff(now(),logintime),'%H')<24 and status='0' order by logintime desc");
         }else{
-          $user_query = tep_db_query("select * from login where address='{$user_ip4}' and loginstatus='p' and time_format(timediff(now(),logintime),'%H')<24 and status='0' order by logintime desc");
+          $user_query = tep_db_query("select * from login where address='{$user_ip4}' and loginstatus!='a' and time_format(timediff(now(),logintime),'%H')<24 and status='0' order by logintime desc");
         }
         $user_num_rows = tep_db_num_rows($user_query);
 
@@ -596,7 +596,7 @@ if ($ocertify->isErr) {
 
 if (isset($GLOBALS['HTTP_GET_VARS']['action']) &&
   $GLOBALS['HTTP_GET_VARS']['action']== 're_login') { 
-  session_regenerate_id(); 
+  logout_user(FALSE,'o');
   $check_login_pos = strpos($_SERVER['REQUEST_URI'], 'users_login.php'); 
   if ($check_login_pos === false) {
     tep_redirect('users_login.php?his_url='.$PHP_SELF);

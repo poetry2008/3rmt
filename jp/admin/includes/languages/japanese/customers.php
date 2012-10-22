@@ -8,11 +8,11 @@ define('HEADING_TITLE_SEARCH', '検索:');
 
 define('TABLE_HEADING_FIRSTNAME', '名');
 define('TABLE_HEADING_LASTNAME', '姓');
-define('TABLE_HEADING_ACCOUNT_CREATED', 'アカウント作成日');
+define('TABLE_HEADING_ACCOUNT_CREATED', '作成日');
 define('TABLE_HEADING_ACTION', '操作');
 
-define('TEXT_DATE_ACCOUNT_CREATED', 'アカウント作成日:');
-define('TEXT_DATE_ACCOUNT_LAST_MODIFIED', 'アカウント更新日:');
+define('TEXT_DATE_ACCOUNT_CREATED', '作成日:');
+define('TEXT_DATE_ACCOUNT_LAST_MODIFIED', '更新日:');
 define('TEXT_INFO_DATE_LAST_LOGON', '最終ログイン日:');
 define('TEXT_INFO_NUMBER_OF_LOGONS', 'ログイン回数:');
 define('TEXT_INFO_COUNTRY', '国名:');
