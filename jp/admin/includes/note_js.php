@@ -47,7 +47,11 @@ var scroll_width = document.body.scrollWidth;
 var note_width;
 var note_left;
 var head_notice = 0;
-var left_status = '<?php echo $_COOKIE['tarrow'];?>';
+var left_status_flag = $(".columnLeft").css("display");
+var left_status = '';
+if(left_status_flag){
+  left_status = '<?php echo $_COOKIE['tarrow'];?>';
+}
 if(document.getElementById("show_head_notice")){
 
   head_notice = $("#show_head_notice").height();
