@@ -197,13 +197,13 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
   echo '<div class="assets_search_bar">';
   echo "<table width='100%'>";
   echo "<tr>";
-  echo "<td width='100'>";
+  echo "<td width='100' nowrap >";
   echo TEXT_SEARCH_SITE;
   echo "</td>";
   echo "<td width='260'>";
   echo tep_site_pull_down_menu_with_all($_GET['site_id'], false, TEXT_SHOW_ALL);
   echo "</td>";
-  echo "<td width='100'>";
+  echo "<td width='100' nowrap >";
   echo TEXT_SEARCH_WHERE;
   echo "</td>";
   echo "<td width='150'>";
@@ -221,7 +221,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
 
             <?php
             echo "</td>";
-  echo "<td width='100'>";
+  echo "<td width='100' nowrap >";
   echo TEXT_SEARCH_DATE;
   echo "</td>";
   echo "<td width='300'>";
@@ -229,7 +229,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     <?php //start date ?>
     <table cellpadding="0" cellspacing="0" border="0" class="assets_time">
     <tr>
-    <td>
+    <td nowrap >
     <?php echo TEXT_SEARCH_DATE_START."&nbsp;&nbsp";?>
     </td><td>
     <select name="startY" size="1">
@@ -285,7 +285,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     </td>
     </tr>
     <tr>
-    <td>
+    <td nowrap >
     <?php echo TEXT_SEARCH_CATEGORY;?>
     </td>
     <td>
@@ -294,7 +294,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
         $current_category_id);
   ?>
     </td>
-    <td>
+    <td nowrap >
     <?php echo TEXT_SEARCH_ORDER;?>
     </td><td>
     <select name="sort_order">
@@ -314,7 +314,8 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
                 </td>
     <td></td>
     <td>
-    <table cellpadding="0" cellspacing="0" border="0" class="assets_time"><tr><td>
+    <table cellpadding="0" cellspacing="0" border="0" class="assets_time"><tr><td
+    nowrap>
     <?php echo TEXT_SEARCH_DATE_END."&nbsp;&nbsp";?>
     </td><td>
     <select name="endY" size="1">

@@ -136,7 +136,7 @@ require("includes/note_js.php");
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
   <!-- header_eof //-->
   <!-- body //-->
-  <table border="0" width="100%" cellspacing="2" cellpadding="2">
+  <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
   <td <?php if ($ocertify->npermission < 10) {?>width='1'<?php } else {?> width="<?php echo BOX_WIDTH; ?>"<?php }?> valign="top">
   <table border="0" <?php if ($ocertify->npermission <10) {?>width='1'<?php } else {?> width="<?php echo BOX_WIDTH; ?>"<?php }?> cellspacing="1" cellpadding="1" class="columnLeft">
@@ -148,12 +148,13 @@ require("includes/note_js.php");
   <!-- body_text //-->
   <td width="100%" valign="top" id='categories_right_td'>
   <?php echo $notes;?>
+  <div class="compatible">
   <table border="0" width="100%" cellspacing="0" cellpadding="2">
   <tr>
   <td>
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
-      <td class="pageHeading" height="40">
+      <td class="pageHeading" height="40" nowrap>
       <?php echo CATEGORY_ADMIN_TITLE;?> 
       &nbsp; 
       <?php
@@ -692,13 +693,18 @@ if(empty($cPath_back)&&empty($cID)&&isset($cPath)){
   &nbsp;&nbsp;&nbsp;&nbsp;<input type='button' value='<?php echo CATEGORY_ADMIN_BUTTON_XIEYE_PRICE;?>' name='d[]' onClick="list_display('<?php echo $cPath_yobi?$cPath_yobi:0;?>','<?php echo $current_category_id;?>','<?php echo $_GET['cPath'];?>')">
   &nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="x" value="<?php echo CATEGORY_ADMIN_BUTTON_ALL_UPDATE;?>" onClick="all_update()"></td>
 </tr>
-<!--dataTableRowSelected end-->
+</table>
+</td>
+</tr>
+</table>
+</form>
+<table width="100%" cellspacing="0" cellpadding="2" border="0">
 <tr>
   <td class="smallText" valign="top"><?php echo $products_split->display_count($products_query_numrows, MAX_DISPLAY_PRODUCTS_ADMIN, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?></td>
-  <td class="smallText" align="right" colspan="<?php echo 11 + $count_dougyousya['cnt'];?>"><?php echo $products_split->display_links($products_query_numrows, MAX_DISPLAY_PRODUCTS_ADMIN, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'pID'))); ?> </td>
+  <td class="smallText" align="right"><?php echo $products_split->display_links($products_query_numrows, MAX_DISPLAY_PRODUCTS_ADMIN, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'pID'))); ?> </td>
 </tr>
 <tr>
-  <td colspan="<?php echo 12 + $count_dougyousya['cnt'];?>">
+  <td colspan="2">
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td class="smallText"><?php echo CATEGORY_ADMIN_COUNTNUM_TEXT . '&nbsp;' . $categories_count .
@@ -717,11 +723,7 @@ tep_display_google_results(FILENAME_CATEGORIES_ADMIN);
 // google end
 ?>
 </table>
-</td>
-</tr>
-</table>
-</form>
-  <?php
+<?php
   if ($comment) {
 ?>
 <table>
@@ -746,6 +748,7 @@ tep_display_google_results(FILENAME_CATEGORIES_ADMIN);
 </td>
 </tr>
 </table>
+</div>
 </td>
 </tr>
 </table>

@@ -155,7 +155,7 @@ require("includes/note_js.php");
     <!-- header_eof //-->
 
     <!-- body //-->
-    <table border="0" width="100%" cellspacing="2" cellpadding="2">
+    <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
     <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
     <!-- left_navigation //-->
@@ -165,6 +165,7 @@ require("includes/note_js.php");
     <!-- body_text //-->
 
     <td width="100%" valign="top"><?php echo $notes;?>
+    <div class="compatible">
     <table border="0" cellpadding="2" cellspacing="0" width="100%">
     <tr><td height="40" class="pageHeading"><?php echo TEXT_RESET_PWD_TITLE;?></td></tr>
     <tr>
@@ -175,7 +176,7 @@ require("includes/note_js.php");
     <tr><td colspan="4"><?php echo TEXT_RESET_PWD_INFO;?>
     </tr>
     <tr>
-    <td width="120"><?php 
+    <td width="120" nowrap><?php 
     echo TEXT_RESET_PWD_CUSTOMER_SET;?></td>
     <td width="260">
     <div class="yui3-skin-sam"> 
@@ -213,7 +214,7 @@ require("includes/note_js.php");
     echo TEXT_RESET_PWD_NEXT_TELL;?></td>
     </tr>
     <tr>
-    <td width="120"><?php echo TEXT_RESET_PWD_LIST_TITLE;?></td> <td> <input type='text' name='title' style="width:550px;" value='<?php echo $reset_pwd_title;?>'/></td>
+    <td width="120" nowrap><?php echo TEXT_RESET_PWD_LIST_TITLE;?></td> <td> <input type='text' name='title' style="width:550px;" value='<?php echo $reset_pwd_title;?>'/></td>
     </tr>
     <tr>
     <td valign="top"><?php echo TEXT_RESET_PWD_LIST_CONTENT;?></td>
@@ -254,6 +255,7 @@ require("includes/note_js.php");
     </td></td></table>
 
     </td></tr></table>
+    </div>
     </td>
 
     <!-- body_text_eof //-->

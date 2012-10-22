@@ -310,6 +310,7 @@ $(function(){
 <noscript>
 <div class="messageStackError"><?php echo TEXT_JAVASCRIPT_ERROR;?></div> 
 </noscript>
+<div class="compatible">
 <table border="0" width="100%" cellspacing="0" cellpadding="0" class="preorder_head">
 <tr>
   <td colspan="2">
@@ -322,10 +323,11 @@ $(function(){
 <tr>
 <td><?php echo tep_image(DIR_WS_CATALOG .DIR_WS_IMAGES . ADMINPAGE_LOGO_IMAGE, STORE_NAME, '', ''); ?></td>
 <td align="right" valign="bottom" width="60%">
-<div style="padding-bottom:35px;">
+<div class="header_space">
 <?php
 $languages = tep_get_languages();
 $cur_page = split('\?', basename($_SERVER['SCRIPT_NAME'])); $cur_page = $cur_page[0];
+$current_page_tp = split('\?', basename($_SERVER['SCRIPT_NAME'])); $current_page_tp = $current_page_tp[0];
 /*
 foreach($languages as $key => $val){
 echo "<a href=".tep_href_link($cur_page,tep_get_all_get_params(array('language'))."language=".$val['code'])."><font size=3px><b>".strtoupper($val['code']=='ja'?'jp':$val['code'])."</b></font></a>&nbsp;";
@@ -335,6 +337,7 @@ echo "<a href=".tep_href_link($cur_page,tep_get_all_get_params(array('language')
     "language=".'ja')."><font size=3px><b>JP</b></font></a>&nbsp;";
 echo "<a href=".tep_href_link($cur_page,tep_get_all_get_params(array('language')).
     "language=".'ch')."><font size=3px><b>CH</b></font></a>&nbsp;";
+echo '<a href="' . tep_href_link('help.php', 'info_romaji='.urlencode(str_replace('/admin/','',$current_page_tp)), 'NONSSL') . '" class="headerLink"  target="_blank"><img src="images/icon_help_info.gif" alt="img"></a>';
 ?>
 </div>
 
@@ -374,7 +377,6 @@ if(preg_match("/".FILENAME_ORDERS."/",$PHP_SELF)){
 <table width="100%">
 <tr>
 <td class="headerBarContent">&nbsp;&nbsp;<?php 
-$current_page_tp = split('\?', basename($_SERVER['SCRIPT_NAME'])); $current_page_tp = $current_page_tp[0];
 if($current_page_tp == "modules.php"){
   preg_match("#set=[^&]+#",$_SERVER["REQUEST_URI"],$set_mod_array);
  $current_page_tp .= "?".$set_mod_array[0];
@@ -386,7 +388,6 @@ if($current_page_tp == "configuration.php") {
 if (isset($ocertify->npermission) || $ocertify->npermission) {
   echo '&nbsp<a href="' . tep_href_link(FILENAME_DEFAULT, '', 'NONSSL') . '" class="headerLink">' . HEADER_TITLE_TOP . '</a>&nbsp;&nbsp;&nbsp;&nbsp';
 
-  echo '<a href="' . tep_href_link('help.php', 'info_romaji='.urlencode(str_replace('/admin/','',$current_page_tp)), 'NONSSL') . '" class="headerLink"  target="_blank"><img src="images/icon_help_info.gif" alt="img">&nbsp;'.TEXT_HEADER_HELP.'</a>&nbsp;&nbsp;&nbsp;';
  
 }
 ?></td>
@@ -395,11 +396,20 @@ if (isset($ocertify->npermission) || $ocertify->npermission) {
 if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
   echo '
     <table>
-    <tr>'; 
-  echo '<td><a class="headerLink" href="add_note.php?author='.$user_info['name'].'&belong='.$belong.'" id="fancy">'.TEXT_ADD_NOTE.'</a>&nbsp;|</td>';
-  echo '
+    <tr>';
+  $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
+    echo '
     <td><a class="headerLink" href="javascript:void(0);" onclick="toggle_header_menu(\'headerorder\')">'.HEADER_TEXT_ORDER_INFO.'</a>&nbsp;|<br>
     <table class="menu01" id="headerorder" cellpadding="0" cellspacing="0">
+    <tr>
+      <td class="menu01"><a class="t_link01"
+      href="'.tep_href_link('create_order.php', '',
+    'NONSSL').'">'.HEADER_TEXT_CREATE_ORDER.'</a></td>
+      </tr>
+      <tr>
+      <td class="menu01"><a class="t_link01" href="'.tep_href_link('create_preorder.php',
+    '', 'NONSSL').'">'.HEADER_TEXT_CREATE_PREORDER.'</a></td>
+      </tr> 
     <tr>
       <td class="menu01"><a class="t_link01" href="'.tep_href_link(FILENAME_ORDERS, '', 'NONSSL').'">'.HEADER_TEXT_ORDERS.'</a></td> 
     </tr>
@@ -431,33 +441,27 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
       </tr>       
       </table>
       </td>
-      <td align="left"> &nbsp;<a class="headerLink" href="javascript:void(0);"
-      onclick="toggle_header_menu(\'ordermenu\')">'.HEADER_TEXT_ORDERMENU.'</a>&nbsp;|<br>
-      <table class="menu01" id="ordermenu" cellpadding="0" cellspacing="0">
-      <tr>
-      <td class="menu01"><a class="t_link01"
-      href="'.tep_href_link('create_order.php', '',
-    'NONSSL').'">'.HEADER_TEXT_CREATE_ORDER.'</a></td>
-      </tr>
-      <tr>
-      <td class="menu01"><a class="t_link01" href="'.tep_href_link('create_preorder.php',
-    '', 'NONSSL').'">'.HEADER_TEXT_CREATE_PREORDER.'</a></td>
-      </tr> 
-      </table>
-      </td>
       <td><a href="' . tep_href_link(FILENAME_CUSTOMERS, '', 'NONSSL') . '" 
       class="headerLink">'.HEADER_TEXT_CUSTOMERS.'</a>&nbsp;|</td>
       <td>&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS, '', 'NONSSL') .
       '" class="headerLink">'.HEADER_TEXT_LATEST_NEWS.'</a>&nbsp;|</td>
-      <td>&nbsp;<a href="' . tep_href_link('micro_log.php', '', 'NONSSL') . '" class="headerLink"
-      >'.HEADER_TEXT_MICRO_LOG.'</a>&nbsp;|</td>
-
-
+      
       <td align="left">
       &nbsp;<a class="headerLink" href="javascript:void(0);"
       onclick="toggle_header_menu(\'managermenu\')">'.HEADER_TEXT_MANAGERMENU.'</a>&nbsp;|<br>
       <table class="menu01" id="managermenu" cellpadding="0" cellspacing="0">
+      ';
+    if($href_url == FILENAME_CATEGORIES_ADMIN || $href_url == FILENAME_CATEGORIES){
+    echo '<tr><td class="menu01"><a class="t_link01" 
+      href="add_note.php?author='.$user_info['name'].'&belong='.$belong.'"
+      id="fancy">'.TEXT_ADD_NOTE.'</a></td></tr>';
+  }
+      echo '
       <tr>
+      <td class="menu01"><a class="t_link01"
+       href="' . tep_href_link('micro_log.php', '', 'NONSSL') . '"
+      >'.HEADER_TEXT_MICRO_LOG.'</a></td>
+      </tr><tr>
       <td class="menu01"><a class="t_link01"
       href="'.tep_href_link(FILENAME_PW_MANAGER, '',
     'NONSSL').'">'.HEADER_TEXT_PW_MANAGER.'</a></td>
@@ -526,4 +530,4 @@ if ($_SERVER['PHP_SELF'] != '/admin/orders.php') {
 
 </td>
 </tr>
-</table>
+</table></div>

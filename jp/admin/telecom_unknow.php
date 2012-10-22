@@ -111,7 +111,7 @@ require("includes/note_js.php");
   }
 ?>
 <!-- body_text //-->
-    <td width="100%" valign="top"><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
   if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) {
     // edit start
@@ -127,8 +127,8 @@ require("includes/note_js.php");
   
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
-      <td class="pageHeading" width="33%" height="40"><a href="telecom_unknow.php"><?php echo TELECOM_UNKNOW_TITLE;?></a></td>
-      <td align="center">
+      <td class="pageHeading" width="43%" height="40"><a href="telecom_unknow.php"><?php echo TELECOM_UNKNOW_TITLE;?></a></td>
+      <td align="left" nowrap>
         <form action="?" method="get">
           <input type="text" name="keywords" value="<?php echo $_GET['keywords'];?>">
           <input type="checkbox" name="rel_yes" value="1" <?php if (!(!$_GET['rel_yes'] && $_GET['rel_no'])) {echo 'checked';} ?>><?php echo TELECOM_UNKNOW_SEARCH_SUCCESS;?> 
@@ -146,7 +146,7 @@ require("includes/note_js.php");
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
       <td valign="top">
-    <form action="?action=hide_more" method="post" onsubmit="return confirm('<?php echo TELECOM_UNKNOW_SELECT_NOTICE;?>')">
+    <form name="t_form" action="?action=hide_more" method="post" onsubmit="return confirm('<?php echo TELECOM_UNKNOW_SELECT_NOTICE;?>')">
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
     <tr class="dataTableHeadingRow">
       <td class="dataTableHeadingContent" align="left" width="20"><input type="checkbox" onclick="all_check(this)"></td>
@@ -362,24 +362,22 @@ require("includes/note_js.php");
     </tr>
 <?php }?>
   </table>
-   
-  <!-- display add end-->
+    <input type="hidden" name="page" value="<?php echo $_GET['page'];?>">
+    <input type="hidden" name="keywords" value="<?php echo $_GET['keywords'];?>">
+    <input type="hidden" name="rel" value="<?php echo $_GET['rel'];?>">
+  </form>
   <table border="0" width="100%" cellspacing="0" cellpadding="2">
     <tr>
       <td colspan="5">
         <table border="0" width="100%" cellspacing="0" cellpadding="2">
           <tr>
-	    <td class="smallText" ><input type="submit" value="<?php echo TELECOM_UNKNOW_TABLE_DISPLAY;?>"><?php echo $orders_split->display_count($orders_query_numrows, MAX_DISPLAY_ORDERS_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_ORDERS); ?></td>
+            <td class="smallText" ><input type="button" onclick="if(confirm('<?php echo TELECOM_UNKNOW_SELECT_NOTICE;?>')) { document.forms.t_form.submit(); }" value="<?php echo TELECOM_UNKNOW_TABLE_DISPLAY;?>"><?php echo $orders_split->display_count($orders_query_numrows, MAX_DISPLAY_ORDERS_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_ORDERS); ?></td>
             <td class="smallText" align="right"><?php echo $orders_split->display_links($orders_query_numrows, MAX_DISPLAY_ORDERS_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'oID', 'action'))); ?></td>
           </tr>
         </table>
       </td>
     </tr>
   </table>
-    <input type="hidden" name="page" value="<?php echo $_GET['page'];?>">
-    <input type="hidden" name="keywords" value="<?php echo $_GET['keywords'];?>">
-    <input type="hidden" name="rel" value="<?php echo $_GET['rel'];?>">
-  </form>
       </td>
     </tr>
   </table>
@@ -389,7 +387,9 @@ require("includes/note_js.php");
   }
 ?>
 
-    </table></td>
+    </table>
+    </div> 
+    </td>
 <!-- body_text_eof //-->
   </tr>
 </table>

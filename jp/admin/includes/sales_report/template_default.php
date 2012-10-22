@@ -33,7 +33,9 @@ require("includes/note_js.php");
       <!-- left_navigation_eof //-->
     </table></td>
     <!-- body_text //-->
-    <td width="100%" valign="top"><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <td width="100%" valign="top"><?php echo $notes;?>
+    <div class="compatible"> 
+    <table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td colspan=2><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
@@ -46,13 +48,14 @@ require("includes/note_js.php");
         <td colspan="2"><form action="" method="get">
           <table border="0" width="100%" cellspacing="0" cellpadding="2">
             <tr>
-              <td align="left" rowspan="2" class="menuBoxHeading"><input type="radio" name="report" value="1" <?php if ($srView == 1) echo "checked"; ?>>
+              <td align="left" rowspan="2" class="menuBoxHeading" nowrap><input
+              nowrap type="radio" name="report" value="1" <?php if ($srView == 1) echo "checked"; ?>>
               <?php echo SR_REPORT_TYPE_YEARLY; ?><br>
-              <input type="radio" name="report" value="2" <?php if ($srView == 2) echo "checked"; ?>>
+              <input nowrap type="radio" name="report" value="2" <?php if ($srView == 2) echo "checked"; ?>>
               <?php echo SR_REPORT_TYPE_MONTHLY; ?><br>
-              <input type="radio" name="report" value="3" <?php if ($srView == 3) echo "checked"; ?>>
+              <input nowrap type="radio" name="report" value="3" <?php if ($srView == 3) echo "checked"; ?>>
               <?php echo SR_REPORT_TYPE_WEEKLY; ?><br>
-              <input type="radio" name="report" value="4" <?php if ($srView == 4) echo "checked"; ?>>
+              <input nowrap type="radio" name="report" value="4" <?php if ($srView == 4) echo "checked"; ?>>
               <?php echo SR_REPORT_TYPE_DAILY; ?><br>
               </td>
               <td align="left" class="menuBoxHeading">
@@ -437,7 +440,9 @@ if ($srCompare > SR_COMPARE_NO) {
           </tr>
         </table></td>
       </tr>
-    </table></td>
+    </table>
+    </div> 
+    </td>
     <!-- body_text_eof //-->
   </tr>
 </table>
