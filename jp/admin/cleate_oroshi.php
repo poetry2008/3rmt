@@ -329,6 +329,7 @@ require("includes/note_js.php");
            </table>
         </td>
         <td width="100%" valign="top"><?php echo $notes;?>
+        <div class="compatible">
            <table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr>
                  <td class="pageHeading" height="40"><?php echo CLEATE_LIST_SETNAME_BUTTON;?></td>
@@ -405,6 +406,7 @@ require("includes/note_js.php");
                  </td>
               </tr>
            </table>
+           </div>
         </td>
       </tr>
   </table>

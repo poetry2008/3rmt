@@ -1742,7 +1742,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
   
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
-      <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
+      <td class="pageHeading" nowrap><?php echo HEADING_TITLE; ?></td>
       <td align="right" class="smallText">
         <table width=""  border="0" cellspacing="1" cellpadding="0">
           <tr>

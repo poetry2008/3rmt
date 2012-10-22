@@ -83,7 +83,7 @@ require("includes/note_js.php");
 ?>
 <!-- header_eof //-->
 <!-- body //-->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
 <?php
   if ($ocertify->npermission >= 10) {

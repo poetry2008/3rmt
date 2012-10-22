@@ -136,7 +136,7 @@ require("includes/note_js.php");
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
   <!-- header_eof //-->
   <!-- body //-->
-  <table border="0" width="100%" cellspacing="2" cellpadding="2">
+  <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
   <td <?php if ($ocertify->npermission < 10) {?>width='1'<?php } else {?> width="<?php echo BOX_WIDTH; ?>"<?php }?> valign="top">
   <table border="0" <?php if ($ocertify->npermission <10) {?>width='1'<?php } else {?> width="<?php echo BOX_WIDTH; ?>"<?php }?> cellspacing="1" cellpadding="1" class="columnLeft">
@@ -148,12 +148,13 @@ require("includes/note_js.php");
   <!-- body_text //-->
   <td width="100%" valign="top" id='categories_right_td'>
   <?php echo $notes;?>
+  <div class="compatible">
   <table border="0" width="100%" cellspacing="0" cellpadding="2">
   <tr>
   <td>
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
-      <td class="pageHeading" height="40">
+      <td class="pageHeading" height="40" nowrap>
       <?php echo CATEGORY_ADMIN_TITLE;?> 
       &nbsp; 
       <?php
@@ -746,6 +747,7 @@ tep_display_google_results(FILENAME_CATEGORIES_ADMIN);
 </td>
 </tr>
 </table>
+</div>
 </td>
 </tr>
 </table>

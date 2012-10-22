@@ -217,7 +217,7 @@ function msg2(){
         <!-- left_navigation_eof //-->
       </table></td>
     <!-- body_text //-->
-    <td width="100%" valign="top"><?php echo $notes;?><table width="100%" border="0" cellspacing="0" cellpadding="1" align="center">
+    <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table width="100%" border="0" cellspacing="0" cellpadding="1" align="center">
         <tr>
           <td><!-- insert -->
             <?php
@@ -916,6 +916,7 @@ break;
 </td>
 </tr>
 </table>
+</div>
 </td>
 </tr>
 </table>

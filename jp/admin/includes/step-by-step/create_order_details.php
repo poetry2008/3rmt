@@ -855,7 +855,7 @@ echo tep_draw_input_field('telephone', $telephone) . '&nbsp;' . ENTRY_TELEPHONE_
 -->
 
 <tr>
-<td class="main">&nbsp;
+<td class="main" nowrap>&nbsp;
 <?php
 echo CREATE_ORDER_COMMUNITY_SEARCH_TEXT;?></td>
 <td class="main">&nbsp;

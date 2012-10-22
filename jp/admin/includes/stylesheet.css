@@ -245,6 +245,20 @@ body {
 /* ---------------------------
 .[TABLE]：メニューボックスを統括するテーブル
 --------------------------- */
+.preorder_head{
+	width:100%;
+	min-width:750px;
+	overflow:hidden;
+	width: expression(document.body.clientWidth < 750? "750px": "100%" );
+	
+}
+@media all and (-webkit-min-device-pixel-ratio:0){
+.compatible{
+	min-width:750px;
+	width:100%;
+	width: expression(document.body.clientWidth < 750? "750px": "100%" );
+	
+}}
 .columnLeft {
 	background-color: #F0F1F1;                      /* 背景色 */
 	border-color: #999999;                          /* 境界線の色 */
@@ -289,7 +303,6 @@ body {
 	color: #ffffff;                                 /* フォントカラー */
 	font-weight: bold; 
 	overflow:hidden;
-	white-space:nowrap;
 	text-overflow:ellipsis;                           /* フォント太さ */
 }
 /* ---------------------------
@@ -342,7 +355,6 @@ body {
 	/* width:25%;*/
 	/* bobhero edit width:5%;*/
 	overflow:hidden;
-	white-space:nowrap;
 	
 }
 .dataTableContent2 {
@@ -351,7 +363,6 @@ body {
 	color: #000000;                         /* フォントカラー */
 	/*width:4%;*/
 	text-align:right;
-	white-space:nowrap;
 	
 }
 /*.dataTableContent2 input{
@@ -512,7 +523,7 @@ legend {
 }
 #tep_site_filter {
 	/*width:100%;*/
-  width: 63%;
+  width: 90%;
   height:14px;/*float: left;*/
 }
 #order_icons {
@@ -743,10 +754,10 @@ h3 {
 	border-bottom:1px inherit #999;
 }
 .categories_input01 input {
-	width:500px;
+	width:100%;
 }
 .categories_textarea01 textarea {
-	width:500px;
+	width:100%;
 }
 td.menu01 {
 	background:lightblue
@@ -1414,6 +1425,13 @@ font-size:14px;
 .show_left_menu{
 	height:650px;
 }
+@media all and (-webkit-min-device-pixel-ratio:0){
+.footer_copyright{
+	min-width:750px;
+	width:100%;
+	width: expression(document.body.clientWidth < 750? "750px": "100%" );
+	
+}}
 .footer_copyright{
 	text-align:center;
 	font-size:12px;
@@ -1421,6 +1439,10 @@ font-size:14px;
 	padding:20px 0;
 	background-color:#F0F1F1;
 	margin-top:10px;
+	width:100%;
+	min-width:750px;
+	overflow:hidden;
+	width: expression(document.body.clientWidth < 750? "750px": "100%" );
 
 }
 .order_option_width{
@@ -1476,6 +1498,16 @@ font-size:14px;
 .float_right{
 	float:right;
 }
+.content{
+	width:100%;
+	min-width:750px;
+	overflow:hidden;
+	width: expression(document.body.clientWidth < 750? "750px": "100%" );
+}
+.header_space{
+	padding-bottom:35px;
+}
+.header_space img{ margin-top:-5px;}
 a.pageResults{
 	text-decoration:underline;
 }
