@@ -185,6 +185,13 @@
 
 // display number of total products found
     function display_count($query_numrows, $max_rows_per_page, $current_page_number, $text_output) {
+      $total_page = intval($query_numrows / $max_rows_per_page);
+      if ($query_numrows % $max_rows_per_page) $total_page++; 
+        
+      if (($current_page_number > $total_page) && ($total_page > 0)) {
+         $current_page_number = $total_page; 
+      } 
+      
       $to_num = ($max_rows_per_page * $current_page_number);
       if ($to_num > $query_numrows) $to_num = $query_numrows;
       $from_num = ($max_rows_per_page * ($current_page_number - 1));
