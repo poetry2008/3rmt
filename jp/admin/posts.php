@@ -54,6 +54,9 @@ $xyz = '20|106|'.$zIndex;
 }else{
 $xyz = '180|106|'.$zIndex;
 }
+if($_SESSION['user_permission']==7){
+$xyz = '0|106|'.$zIndex;
+}
 $xlen = '460';
 $ylen = '150';
 $query = tep_db_query("insert into notes(title,content,color,xyz,addtime,attribute,author,belong)values

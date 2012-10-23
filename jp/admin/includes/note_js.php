@@ -79,6 +79,10 @@ if(note_left < 180){
     $("#note_<?php echo $note_row;?>").css("left",180);
   }else if(left_status == 'close'){
     $("#note_<?php echo $note_row;?>").css("left",20);
+  }else if(left_status == ''){
+    if(note_left < 0){
+      $("#note_<?php echo $note_row;?>").css("left",0);
+    }
   }
 }
 <?php
