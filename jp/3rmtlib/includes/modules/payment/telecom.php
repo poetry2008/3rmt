@@ -165,9 +165,6 @@ class telecom  extends basePayment  implements paymentInterface  {
     if (!isset($_SESSION['option'])) {
       $_SESSION['option'] = date('Ymd-His'). ds_makeRandStr(2);
     }
-    /*
-      $_SESSION['option'] = date('Ymd-His'). ds_makeRandStr(2);
-    */
     $process_button_string = tep_draw_hidden_field('option', $_SESSION['option']) .
       tep_draw_hidden_field('clientip', MODULE_PAYMENT_TELECOM_KID) .
       tep_draw_hidden_field('money', $total) .
