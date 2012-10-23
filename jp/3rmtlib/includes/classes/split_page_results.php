@@ -22,6 +22,13 @@
 
         $query_num_rows = tep_db_num_rows(tep_db_query($this->cutOrderString($sql_query)));
       }
+      
+      $total_page = intval($query_num_rows / $max_rows_per_page);
+      if ($query_num_rows % $max_rows_per_page) $total_page++; 
+      
+      if (($current_page_number > $total_page) && ($total_page > 0)) {
+        $offset = ($max_rows_per_page * ($total_page - 1));
+      }
       $sql_query .= " limit " . $offset . ", " . $max_rows_per_page;
     }
   
@@ -39,7 +46,11 @@
       $num_pages = intval($query_numrows / $max_rows_per_page);
       
       if ($query_numrows % $max_rows_per_page) $num_pages++; 
-     
+   
+      if ($current_page_number > $num_pages) {
+        $current_page_number = $num_pages; 
+      }
+      
       echo '<div class="float_right">'; 
       if ($current_page_number > 1) {
         if ($current_page_number == 2) {

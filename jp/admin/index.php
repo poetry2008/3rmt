@@ -43,7 +43,7 @@ require("includes/note_js.php");
       echo '<td>&nbsp;</td>';
     }
 ?>
-  <td width="100%" valign="top"><?php echo $notes;?>
+  <td width="100%" height="650" valign="top"><?php echo $notes;?>&nbsp;
 </td>
 </tr>
 </table>
