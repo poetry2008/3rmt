@@ -444,7 +444,7 @@ p.box_des{
     width:790px;
     text-align:center;
     margin:0px;
-    padding:0px;
+    padding:20px 0 0 0;
 }
 #footer {
     clear:both;
@@ -517,6 +517,7 @@ form {
 .dot {
     background: url(../images/design/box/dot.gif) repeat-x;
 	margin:5px 0;
+	*margin:0;
 	padding:0;
 	height:1px;
 }
