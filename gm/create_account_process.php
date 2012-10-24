@@ -701,16 +701,20 @@ unset($_SESSION['referer']);
     }
 
     if($guestchk == '1') {
-    # For Guest
-    tep_redirect(tep_href_link(FILENAME_CHECKOUT_ATTRIBUTES, '', 'SSL'));
-  } else {
-    # For Member
-    $email_text .= C_CREAT_ACCOUNT ;
-    $email_text = str_replace(array('${MAIL}', '${PASS}'), array($email_address, $password), $email_text);
-    tep_mail($name, $email_address, EMAIL_SUBJECT, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
-
-    tep_redirect(tep_href_link(FILENAME_CREATE_ACCOUNT_SUCCESS, '', 'SSL'));
-  }
+      # For Guest
+      tep_redirect(tep_href_link(FILENAME_CHECKOUT_ATTRIBUTES, '', 'SSL'));
+    } else {
+      # For Member
+      $email_text .= C_CREAT_ACCOUNT ;
+      $email_text = str_replace(array('${MAIL}', '${PASS}'), array($email_address, $password), $email_text);
+      
+      $customer_info_raw = tep_db_query("select is_send_mail from ".TABLE_CUSTOMERS." where customers_email_address = '".tep_db_input($email_address)."' site_id = '".SITE_ID."'"); 
+      $customer_info = tep_db_fetch_array($customer_info_raw);
+      if ($customer_info['is_send_mail'] != '1') {
+        tep_mail($name, $email_address, EMAIL_SUBJECT, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+      }
+      tep_redirect(tep_href_link(FILENAME_CREATE_ACCOUNT_SUCCESS, '', 'SSL'));
+    }
   }
 
   require(DIR_WS_INCLUDES . 'application_bottom.php');
