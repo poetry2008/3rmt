@@ -232,7 +232,7 @@ require("includes/note_js.php");
                    <td valign="top">
                       <table border="0" width="100%" cellspacing="0" cellpadding="2">
                          <tr class="dataTableHeadingRow">
-                            <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CONFIGURATION_TITLE; ?></td>
+                            <td class="dataTableHeadingContent" nowrap><?php echo TABLE_HEADING_CONFIGURATION_TITLE; ?></td>
                             <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CONFIGURATION_VALUE; ?></td>
                             <td class="dataTableHeadingContent" align="right" nowrap><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
                          </tr>
@@ -297,7 +297,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   echo '                  <tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $configuration['configuration_id']) . '\'">' . "\n";
     }
 ?>
-    <td class="dataTableContent"><?php echo $configuration['configuration_title']; ?></td>
+    <td class="dataTableContent" nowrap><?php echo $configuration['configuration_title']; ?></td>
                          <td class="dataTableContent"><?php echo mb_substr(htmlspecialchars($cfgValue),0,50); ?></td>
                                               <td class="dataTableContent" align="right"><?php if ( (isset($cInfo) && is_object($cInfo)) && ($configuration['configuration_id'] == $cInfo->configuration_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $configuration['configuration_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
     </tr>
@@ -474,9 +474,11 @@ if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {
 
 ?>
           </tr>
-        </table></div></td>
+        </table>
+        </td>
       </tr>
-    </table></td>
+    </table>
+    </div></td>
 <!-- body_text_eof //-->
   </tr>
 </table>
