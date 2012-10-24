@@ -2510,7 +2510,7 @@ if (tep_db_num_rows($orders_history_query)) {
       </tr>
     <tr>
       <td>
-      <?php echo EDIT_ORDERS_FINAL_CONFIRM_TEMPLATE;?> 
+      <?php echo EDIT_PREORDERS_FINAL_CONFIRM_TEMPLATE;?> 
       </td>
     </tr>
   <!-- End of Update Block -->

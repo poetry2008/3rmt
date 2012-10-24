@@ -758,10 +758,7 @@ switch ($_GET['action']) {
            default:
              break;
           }
-          $fetch_time_str =
-            date('Y'.SENDMAIL_TEXT_DATE_YEAR.'m'.SENDMAIL_TEXT_DATE_MONTH.'d'.SENDMAIL_TEXT_DATE_DAY,
-                strtotime($check_status['torihiki_date'])).$week_str.$fetch_time_start_array[1].'
-            '.SENDMAIL_TEXT_TIME_LINK.' '.$fetch_time_end_array[1]; 
+          $fetch_time_str = date('Y'.SENDMAIL_TEXT_DATE_YEAR.'m'.SENDMAIL_TEXT_DATE_MONTH.'d'.SENDMAIL_TEXT_DATE_DAY, strtotime($check_status['torihiki_date'])).$week_str.$fetch_time_start_array[1].' '.SENDMAIL_TEXT_TIME_LINK.' '.$fetch_time_end_array[1]; 
           $comments = str_replace('${SHIPPING_TIME}', $fetch_time_str, $comments); 
           $title = str_replace('${SHIPPING_TIME}', $fetch_time_str, $title); 
           $customer_info_raw = tep_db_query("select is_send_mail from ".TABLE_CUSTOMERS." where customers_id = '".$check_status['customers_id']."'"); 
