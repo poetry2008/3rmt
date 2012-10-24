@@ -9,6 +9,7 @@
   require(DIR_WS_FUNCTIONS . 'visites.php');
   require(DIR_WS_CLASSES . 'currencies.php');
   require(DIR_WS_CLASSES . 'payment.php');
+  include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .  '/default.php');
   if (isset($_GET['keywords'])) {
     $_GET['keywords'] = tep_db_prepare_input($_GET['keywords']);
   }

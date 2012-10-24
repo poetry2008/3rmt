@@ -4,6 +4,7 @@
  */
 //ob_start();
 require('includes/application_top.php');
+include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .  '/default.php');
 require_once(DIR_WS_CLASSES . 'payment.php');
 if (isset($_GET['keywords'])) {
   $_GET['keywords'] = tep_db_prepare_input($_GET['keywords']);
