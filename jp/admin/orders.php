@@ -2114,9 +2114,9 @@ else { ?>
         <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
         <script language="javascript" src="includes/javascript/jquery.js"></script>
         <script language="javascript" src="includes/javascript/jquery.form.js"></script>
-        <script language="javascript" src="includes/javascript/all_order.js"></script>
+        <script language="javascript" src="js2php.php?path=includes|javascript&name=all_order&type=js"></script>
         <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-        <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+        <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
         <script language="javascript">
         function change_site(site_id,flag,site_list,param_url){  
           var ele = document.getElementById("site_"+site_id);

@@ -713,3 +713,7 @@ define('BOX_USER_LOG', 'アクセスログ');
 define('BOX_USER_LOGOUT', 'ログアウト');
 define('JUMP_PAGE_TEXT', 'ページへ');
 define('JUMP_PAGE_BUTTON_TEXT', '移動');
+// javascript language
+define('JS_TEXT_ONETIME_PWD_ERROR','パスワードが違います');
+define('JS_TEXT_INPUT_ONETIME_PWD','ワンタイムパスワードを入力してください\r\n');
+define('JS_TEXT_POSTAL_NUMBER_ERROR','郵便番号に誤りがあります。');

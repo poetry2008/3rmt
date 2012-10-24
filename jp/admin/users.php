@@ -1491,7 +1491,11 @@ function UserPermission_execute($nmode=0) {
     return FALSE;
   }
 
-  printf(TEXT_SUCCESSINFO_PERMISSION, ($nmode == 0 ? '与え' : '取消し'));
+  if($nmode == 0){
+    echo TEXT_SUCCESSINFO_PERMISSION_GIVE;
+  }else{
+    echo TEXT_SUCCESSINFO_PERMISSION_CLEAR;
+  }
   echo "<br><br>\n";
   echo tep_draw_input_field("execute_permission", BUTTON_BACK_PERMISSION, '', FALSE, "submit", FALSE);  // 管理者権限に戻る
   echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);            // ユーザ管理メニューに戻る
@@ -1577,7 +1581,7 @@ function PageHeader() {
   }
 
   echo '<script language="javascript" src="includes/javascript/jquery_include.js"></script>'."\n";
-  echo '<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>'."\n";
+  echo '<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>';
   $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
   require("includes/note_js.php");
   echo '</head>' . "\n";
