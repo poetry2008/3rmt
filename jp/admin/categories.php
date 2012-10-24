@@ -2829,8 +2829,6 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
         <tr>
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
               <tr>
-                <td class="pageHeading" height="40" nowrap>
-                &nbsp; 
                 <?php
                   if ($cPath) {
                     $display_ca_str = display_category_link($cPath,
@@ -2875,7 +2873,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
           </td>
               </tr>
  <tr>
-            <td class="pageHeading">
+            <td class="pageHeading" colspan="3">
                 <?php echo BOX_CATALOG_CATEGORIES_PRODUCTS; ?>
                 </td>
             </tr>

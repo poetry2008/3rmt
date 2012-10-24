@@ -22,7 +22,7 @@ function redirect_new_url(new_object)
 <?php
 if($_SESSION['user_permission'] == 15 ){
   ?>
-  <div >
+  <div class="compatible">
   <?php 
     $sql_check = "select * from ".TABLE_PWD_CHECK." where
     page_name='".$_SERVER['PHP_SELF']."'";

@@ -318,7 +318,7 @@ require("includes/note_js.php");
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <!-- header_eof //-->
 <!-- body //-->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
 <!-- left_navigation //-->
@@ -327,6 +327,7 @@ require("includes/note_js.php");
     </table></td>
 <!-- body_text //-->
 <td width="100%" valign="top"><?php echo $notes;?>
+  <div class="compatible">
   <table border='0' bgcolor='#7c6bce' width='100%'>
       <tr>
         <td class="main"><font color="#ffffff"><b><?php echo CREATE_ORDER_STEP_ONE;?></b></font></td>
@@ -530,6 +531,7 @@ require("includes/note_js.php");
       </tr>
     </table>
   </form>
+  </div>
   </td>
   </tr>
 </table>
