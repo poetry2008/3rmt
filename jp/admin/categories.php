@@ -2814,7 +2814,6 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
               <tr>
                 <td class="pageHeading" height="40" nowrap>
-                <?php echo BOX_CATALOG_CATEGORIES_PRODUCTS; ?>
                 &nbsp; 
                 <?php
                   if ($cPath) {
@@ -2865,6 +2864,13 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
             </form>
           </td>
               </tr>
+ <tr>
+            <td class="pageHeading">
+                <?php echo BOX_CATALOG_CATEGORIES_PRODUCTS; ?>
+                </td>
+            </tr>
+
+ 
             </table></td>
         </tr>
         <tr>

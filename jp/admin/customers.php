@@ -341,8 +341,7 @@ require("includes/note_js.php");
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-    <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table
-    border="0" width="100%" cellspacing="0" cellpadding="2" class="content">
+    <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="content">
 <?php
   if (isset($_GET['action']) && $_GET['action'] == 'edit') {
     $customers_query = tep_db_query("
