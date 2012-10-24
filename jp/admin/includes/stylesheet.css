@@ -265,6 +265,20 @@ body {
 	width: expression(document.body.clientWidth < 750? "750px": "100%" );
 	
 }}
+.compatible_head{
+	min-width:564px;
+	*min-width:576px;
+	width:100%;
+	width: expression(document.body.clientWidth < 750? "750px": "100%" );
+	
+}
+@media all and (-webkit-min-device-pixel-ratio:0){
+.compatible_head{
+	min-width:750px;
+	width:100%;
+	width: expression(document.body.clientWidth < 750? "750px": "100%" );
+	
+}}
 .columnLeft {
 	background-color: #F0F1F1;                      /* 背景色 */
 	border-color: #999999;                          /* 境界線の色 */
@@ -880,7 +894,7 @@ display:none;
 	background-color:#000;
 	top:120px;
 	right:0;
-	z-index:20000;
+	z-index:200;
 	border:1px solid #000;
         width:100%
 }
