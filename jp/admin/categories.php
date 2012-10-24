@@ -2388,7 +2388,7 @@ $products_shipping_time .= '</select>';
                 <a href="javascript:void(0)" onclick="display()"><?php echo CATEGORY_TREE_SELECT_TEXT;?></a>
                 <div id="categories_tree">
                 <?php
-                  require(DIR_WS_CLASSES . 'category_tree.php');
+                  require_once(DIR_WS_CLASSES . 'category_tree.php');
                   if(isset($_GET['from'])&&$_GET['from']=='admin'){
                   $osC_CategoryTree = new osC_CategoryTree(true,true); 
                   echo $osC_CategoryTree->buildTree(FILENAME_CATEGORIES_ADMIN);
