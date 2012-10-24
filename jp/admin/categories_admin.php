@@ -167,7 +167,7 @@ require("includes/note_js.php");
   <td width="100%" valign="top" id='categories_right_td'>
   <?php echo $notes;?>
   <div class="compatible">
-  <table border="0" width="100%" cellspacing="0" cellpadding="2" class="content">
+  <table border="0" width="100%" cellspacing="0" cellpadding="2">
   <tr>
   <td>
   <table border="0" width="100%" cellspacing="0" cellpadding="0">

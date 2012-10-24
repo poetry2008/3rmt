@@ -333,7 +333,7 @@ require("includes/note_js.php");
 
 <!-- body //-->
 
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
 <!-- left_navigation //-->
@@ -341,7 +341,7 @@ require("includes/note_js.php");
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-    <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="content">
+    <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2" >
 <?php
   if (isset($_GET['action']) && $_GET['action'] == 'edit') {
     $customers_query = tep_db_query("
@@ -621,7 +621,7 @@ require("includes/note_js.php");
             </tr>
             <tr>
               <td class="left_title_width"><?php echo CUSTOMER_COMMUNITY_SEARCH_TEXT;?></td>
-              <td class="main"><span class="table_space_left"></span><textarea name='customers_fax' style='width:400px;height:42px;*height:40px;'><?php echo isset($_POST['customers_fax'])?$_POST['customers_fax']:$cInfo->customers_fax;?></textarea>&nbsp;&nbsp;<?php echo CUSTOMER_COMMUNITY_SEARCH_OLD_CUSTOMER_TEXT;?></td>
+              <td class="main"><span class="table_space_left"></span><textarea name='customers_fax' style='width:100%;height:42px;*height:40px;'><?php echo isset($_POST['customers_fax'])?$_POST['customers_fax']:$cInfo->customers_fax;?></textarea>&nbsp;&nbsp;<?php echo CUSTOMER_COMMUNITY_SEARCH_OLD_CUSTOMER_TEXT;?></td>
             </tr>
             <tr>
               <td class="main" colspan="2"><?php echo CUSTOMER_COMMUNITY_SEARCH_CREDIT_TEXT;?></td>
