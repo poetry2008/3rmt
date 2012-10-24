@@ -5309,7 +5309,7 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
 
           //$return_str .= $show_ca_res['categories_name'].':&nbsp;';  
           if($td_flag){
-          $return_str .= "</td><td class='smallText' align='right' width='450'>";
+          $return_str .= "<td class='smallText' align='right'>";
           }
           if ($cur_key !== false) {
            //   $return_str .= '<div style="float:left;width:120px">&nbsp;';
