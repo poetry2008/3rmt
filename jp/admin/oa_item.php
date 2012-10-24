@@ -49,6 +49,7 @@ function filter_trim_empty($value){
 }
 function insertItem()
 {
+         $belong = $_GET['belong'];
          $option_info_arr = prepareInsert();
           tep_db_query("insert into `".TABLE_OA_ITEM."` values(NULL,
             '".$_GET['gid']."', '".tep_db_prepare_input($_POST['ititle'])."',
@@ -59,6 +60,14 @@ function insertItem()
           $item_id = tep_db_insert_id(); 
           $option_info_arr['eid'] = $item_id;        
           tep_db_query("update `".TABLE_OA_ITEM."` SET `option` = '".tep_db_prepare_input(serialize($option_info_arr))."' where `id` = '".$item_id."';"); 
+          $notes_query = tep_db_query("select belong from notes where belong='".$belong."'");
+          if(tep_db_num_rows($notes_query) > 0){
+
+            preg_match_all('/eid=[^|]+/',$belong,$notes_array);
+            $belong_temp = str_replace($notes_array[0][0],'eid='.$item_id,$belong);
+            tep_db_query("update notes set belong='".$belong_temp."' where belong='".$belong."'");
+          }
+          tep_db_free_result($notes_query);
 }
 function deleteItem()
 {
@@ -221,9 +230,11 @@ function deltr(index)
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
 $belong = preg_replace('/\?XSID=[^&]+/','',$belong);
+preg_match_all('/pcode=([^&]+)/',$belong,$pcode_array);
 $belong = str_replace('&','|||',$belong);
+$belong_temp = $belong;
 require("includes/note_js.php");
-$belong = urlencode($belong);
+$belong = str_replace($pcode_array[1][0],urlencode($pcode_array[1][0]),$belong);
 ?>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onload="SetFocus();">
@@ -253,7 +264,7 @@ $belong = urlencode($belong);
       <td>
         <?php 
         if ($_GET['action'] == 'edit') {
-          echo tep_draw_form('form', FILENAME_OA_ITEM, 'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&action=update&eid='.$_GET['eid']);
+          echo tep_draw_form('form', FILENAME_OA_ITEM, 'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&action=update&eid='.$_GET['eid'].'&belong='.$belong);
         } else {
           echo tep_draw_form('form', FILENAME_OA_ITEM, 'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&action=insert');
         }

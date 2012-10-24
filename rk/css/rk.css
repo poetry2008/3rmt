@@ -1037,6 +1037,7 @@ footer
 	color:#237023;
 }
 .comment table a{ font-size:12px;}
+.comment td .box_text a{ font-size:10px;}
 .comment .main ul li a {
 	color: #336600;
 }
@@ -1323,6 +1324,7 @@ a.Icon:hover {
 	font-size:12px;
 	font-weight:bold;
 	padding-left:20px;
+	line-height:16px;
 }
 .products03 {
 	height:12px;
@@ -1636,6 +1638,7 @@ A：page link（usual）
 --------------------------- */
 A.pageResults {
 	color: #000;
+	text-decoration: underline;	
 }
 /* ---------------------------
 A：page link（on mouse over）
@@ -1972,12 +1975,14 @@ display:block;
 	float:left;
 	padding-left:10px;
 }
-.float_right{
+.float_right, .float_right_box{
 	float:right;
 }
-.float_right_box{
-	float:right;
-	width:160px;
+.box_text{
+	overflow:hidden;
+	height:20px;
+	line-height:17px;
+	font-size:10px;
 }
 .cp_content{
 	padding:0 20px;

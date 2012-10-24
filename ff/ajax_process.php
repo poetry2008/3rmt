@@ -1,5 +1,5 @@
 <?php
-require('includes/application_top.php');
+require_once('includes/application_top.php');
 
 if ($_GET['action'] == 'calc_price') {
   
@@ -17,4 +17,11 @@ if ($_GET['action'] == 'calc_price') {
     $price_array['price'] = $currencies->display_price($final_price, tep_get_tax_rate($products_info['products_tax_class_id']), $_GET['qty']); 
   }
   echo json_encode($price_array);
-} 
+  exit;
+} else if($_GET['action'] == 'new_telecom_option') {
+  $_SESSION['option'] = date('Ymd-His'). ds_makeRandStr(2);
+  if($_SESSION['option']){
+    echo $_SESSION['option'];
+    exit;
+  }
+}

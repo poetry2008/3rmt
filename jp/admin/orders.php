@@ -2346,7 +2346,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     ?>
     <!-- header_eof //-->
     <!-- body //-->
-    <table border="0" width="100%" cellspacing="2" cellpadding="2">
+    <table border="0" width="100%" cellspacing="2" cellpadding="2" class="conten">
     <tr>
     <?php
     if ($ocertify->npermission >= 10) {
@@ -2362,7 +2362,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     }
 ?>
 <!-- body_text //-->
-<td width="100%" valign="top"><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="2">
+<td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
 if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) {
   // edit start
@@ -2405,6 +2405,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         </td>
         </tr>
         </table>
+        </div>
         </td>
         </tr>
         <!-- 三种状态 + A,B,C -->
@@ -2976,7 +2977,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
                 '      <td class="dataTableContent" valign="top" nowrap>' . $order->products[$i]['model'] . '</td>' . "\n" .
                 '      <td class="dataTableContent" align="right" valign="top">' . tep_display_tax_value($order->products[$i]['tax']) . '%</td>' . "\n" .
                 '      <!--<td class="dataTableContent" align="right" valign="top"><b>' . $currencies->format($order->products[$i]['final_price'], true, $order->info['currency'], $order->info['currency_value']) . '</b></td>-->' . "\n" .
-                '      <td class="dataTableContent" align="right" valign="top"><b>';
+                '      <td class="dataTableContent" align="right" valign="top" nowrap><b>';
               if ($price_with_tax != '---') {
                 if ($order->products[$i]['final_price'] < 0) {
                   echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $price_with_tax).'</font>'.TEXT_MONEY_SYMBOL; 
@@ -2989,7 +2990,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
 
               echo '</b></td>' . "\n" .
                 '      <!--<td class="dataTableContent" align="right" valign="top"><b>' . $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'],true,$order->info['currency'],$order->info['currency_value']) . '</b></td>-->' . "\n" .
-                '      <td class="dataTableContent" align="right" valign="top"><b>';
+                '      <td class="dataTableContent" align="right" valign="top" nowrap><b>';
               if ($tprice_with_tax != '---') {
                 if ($order->products[$i]['final_price'] < 0) {
                   echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $tprice_with_tax).'</font>'.TEXT_MONEY_SYMBOL; 
@@ -4282,15 +4283,15 @@ if($c_parent_array['parent_id'] == 0){
 
             <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
-            <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
+            <td class="pageHeading" nowrap><?php echo HEADING_TITLE; ?></td>
             <td align="right" class="smallText">
             <table width=""  border="0" cellspacing="1" cellpadding="0">
             <tr>
-            <td class="smallText" valign='top'>
+            <td class="smallText" valign='top' align="right">
             <?php echo tep_draw_form('orders1', FILENAME_ORDERS, '',
                 'get','id="orders1" onsubmit="return false"'); ?><?php echo
             TEXT_ORDER_FIND;?> 
-            <input name="keywords" style="width:320px;" type="text" id="keywords" size="40" value="<?php if(isset($_GET['keywords'])) echo stripslashes($_GET['keywords']); ?>">
+            <input name="keywords" style="width:310px;" type="text" id="keywords" size="40" value="<?php if(isset($_GET['keywords'])) echo stripslashes($_GET['keywords']); ?>">
             <select name="search_type" onChange='search_type_changed(this)' style="text-align:left;">
             <option value="none"><?php echo TEXT_ORDER_FIND_SELECT;?></option>
             <option value="orders_id"><?php echo TEXT_ORDER_FIND_OID;?></option>

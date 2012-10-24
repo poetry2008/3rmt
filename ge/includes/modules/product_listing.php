@@ -4,6 +4,7 @@
 */
 
   require(DIR_WS_MODULES . 'sort_products.php');
+  require(DIR_WS_LANGUAGES . $language . '/product_listing.php');
 ?>
 <!--select searach -->
 <table width="100%" border="0" cellpadding="1" cellspacing="0">
@@ -69,9 +70,14 @@ if(basename($PHP_SELF) == FILENAME_DEFAULT) {
       <table border="0" width="100%" cellspacing="0" cellpadding="2">
         <tr>
           <td class="smallText"><?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
-          <td align="right" class="smallText">&nbsp;<?php echo TEXT_RESULT_PAGE; ?> <?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('sort', 'page', 'info', 'x', 'y'))); ?>&nbsp;</td>
         </tr>
-      </table></td>
+      </table>
+      <table border="0" width="100%" cellspacing="0" cellpadding="2">
+        <tr>
+          <td class="smallText"><?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('sort', 'page', 'info', 'x', 'y'))); ?></td>
+        </tr>
+      </table>
+    </td>
   </tr>
 <?php
   }
@@ -134,18 +140,18 @@ if ($listing_numrows > 0) {
               if (isset($has_ca_single)) {
                 if (!$has_ca_single) {
             ?>
-            <p class="main">1個<?php echo $price; ?>から</p>
+            <p class="main">1<?php echo PRE_NUM_QTY.$price.PRE_FORM; ?></p>
             <?php
                 }
               } else {
             ?>
-            <p class="main">1個<?php echo $price; ?>から</p>
+            <p class="main">1<?php echo PRE_NUM_QTY.$price.PRE_FORM; ?></p>
             <?php
               }
             ?>
           </td>
           <td width="120" align="right">
-              <p class="main"><?php echo '残り&nbsp;<b>' . tep_show_quantity($listing['products_quantity']) . '</b>&nbsp;個'; ?></p>
+              <p class="main"><?php echo PRE_SURPLUS.'&nbsp;<b>' .  tep_show_quantity($listing['products_quantity']) .  '</b>&nbsp;'.PRE_NUM_QTY; ?></p>
           </td>
         </tr>
         <tr>
@@ -154,13 +160,13 @@ if ($listing_numrows > 0) {
 <?php
     echo $description . '..';
     if ($listing['preorder_status'] == '1') {
-      echo '&nbsp;&nbsp;ご希望の数量がない場合は「<a href="' .  tep_preorder_href_link($listing['products_id'], $listing['romaji']) . '">' . $products_name . $ten . 'を予約する</a>」をクリック';
+      echo '&nbsp;&nbsp;'.PRE_HOPE_QTY.'<a href="' .  tep_preorder_href_link($listing['products_id'], $listing['romaji']) . '">' .  $products_name . $ten . PRE_HOPE_PRE;
     }
 ?>
             </p>
           </td>
           <td align="right">
-            <a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $listing['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/order.gif', '注文はこちら');?></a>
+            <a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $listing['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/order.gif', ORDER_PRODUCT_TEXT);?></a>
           </td>
         </tr>
       </table>
@@ -193,7 +199,11 @@ if ($listing_numrows > 0) {
       <table border="0" width="100%" cellspacing="0" cellpadding="2">
         <tr>
           <td class="smallText"><?php echo $listing_split->display_count($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
-          <td align="right" class="smallText">&nbsp;<?php echo TEXT_RESULT_PAGE; ?> <?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('sort', 'page', 'info', 'x', 'y'))); ?>&nbsp;</td>
+        </tr>
+      </table>
+      <table border="0" width="100%" cellspacing="0" cellpadding="2">
+        <tr>
+          <td class="smallText"><?php echo $listing_split->display_links($listing_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('sort', 'page', 'info', 'x', 'y'))); ?></td>
         </tr>
       </table>
     </td>

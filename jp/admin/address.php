@@ -137,7 +137,9 @@ if(isset($action) && $action != ''){
                    "'". $sql_str .
                    ",". $address_sort .
                    ",'". $show_title .
-                   "','0','0')";
+                   "','0','0','".$ocertify->auth_user."','".date('Y-m-d
+                       H:i:s',time())."','".$ocertify->auth_user."','".date('Y-m-d
+                       H:i:s',time())."')";
     }else{
       $address_sql = "update ". TABLE_ADDRESS .
                    " set ".
@@ -149,7 +151,8 @@ if(isset($action) && $action != ''){
                    "'". $sql_str .
                    ",sort=". $address_sort .
                    ",show_title='". $show_title .
-                   "' where id=". $address_id;
+                   "',user_update ='".$ocertify->auth_user.
+                   "',date_update ='".date('Y-m-d H:i:s',time())."' where id=". $address_id;
     }
     $address_update_query = tep_db_query($address_sql);
 
@@ -240,13 +243,13 @@ require("includes/note_js.php");
 <!-- header_eof -->
 
 <!-- body -->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft"><tr><td>
 <!-- left_navigation --> <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> <!-- left_navigation_eof -->
     </td></tr></table></td>
 <!-- body_text //-->
-    <td width="100%" valign="top"><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
@@ -351,7 +354,9 @@ tep_db_close();
 </table></td></tr></table></td></tr>
 </table></td>
 </tr>
-</table></td>
+</table>
+</div>
+</td>
 <!-- body_text_eof -->
 </tr>
 </table>

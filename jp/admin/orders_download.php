@@ -83,7 +83,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
   }
 ?>
 
-<td width="100%" valign="top"><?php echo $notes;?><table border="0" width="100%" cellspacing="0"
+<td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0"
 cellpadding="2">
 <?php
   if ($ocertify->npermission == 15) {
@@ -256,7 +256,9 @@ cellpadding="2">
     </td>
     </tr>
 
-    </table></td>
+    </table>
+    </div> 
+    </td>
 <!-- body_text_eof //-->
   </tr>
 </table>

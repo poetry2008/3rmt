@@ -212,7 +212,7 @@ require("includes/note_js.php");
              </table>
           </td>
     <!-- body_text //-->
-          <td width="100%" valign="top"><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="2"></td>
+          <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2"></td>
        </tr>
        <tr>
           <td>
@@ -474,7 +474,7 @@ if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {
 
 ?>
           </tr>
-        </table></td>
+        </table></div></td>
       </tr>
     </table></td>
 <!-- body_text_eof //-->

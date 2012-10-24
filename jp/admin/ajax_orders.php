@@ -16,24 +16,32 @@ while($request_one_time_row = tep_db_fetch_array($request_one_time_query)){
 
 if(count($request_one_time_arr)==1&&$request_one_time_arr[0]=='admin'&&$_SESSION['user_permission']!=15){
   if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest"){
-    forward401();
+    if (!isset($_POST['split_param'])) {
+      forward401();
+    }
   }
 }
 if (!$request_one_time_flag && $_SESSION['user_permission']!=15) {
   if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
-    forward401();
+    if (!isset($_POST['split_param'])) {
+      forward401();
+    }
   }
 }
 if(!in_array('onetime',$request_one_time_arr)&&$_SESSION['user_permission']!=15){
   if(!(in_array('chief',$request_one_time_arr)&&in_array('staff',$request_one_time_arr))){
   if($_SESSION['user_permission']==7&&in_array('chief',$request_one_time_arr)){
     if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
-      forward401();
+      if (!isset($_POST['split_param'])) {
+        forward401();
+      }
     }
   }
   if($_SESSION['user_permission']==10&&in_array('staff',$request_one_time_arr)){
     if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
-      forward401();
+      if (!isset($_POST['split_param'])) {
+        forward401();
+      }
     }
   }
   }
@@ -980,6 +988,42 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   
   $html_str .= '<tr>';
   $html_str .= '<td>';
+  $html_str .= TEXT_USER_ADDED;
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= $campaign_res['user_added'];
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_DATE_ADDED;
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= $campaign_res['created_at'];
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_USER_UPDATE;
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= $campaign_res['user_update'];
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+ 
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_DATE_UPDATE;
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= $campaign_res['date_update'];
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
   $html_str .= '&nbsp;'; 
   $html_str .= '</td>';
   $html_str .= '<td  style="padding-left:20%;">';
@@ -1486,6 +1530,42 @@ echo json_encode($json_array);
   $html_str .= '</td>';
   $html_str .= '<td align="left">';
   $html_str .= tep_draw_input_field('sort_num', $group['sort_num'], 'size="31" id="sort_num" style="text-align:right;"'); 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  
+  $html_str .= '<tr>';
+  $html_str .= '<td width="220" align="left">'; 
+  $html_str .= TEXT_USER_ADDED;
+  $html_str .= '</td>';
+  $html_str .= '<td align="left">';
+  $html_str .= $group['user_added'];
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+
+  $html_str .= '<tr>';
+  $html_str .= '<td width="220" align="left">'; 
+  $html_str .= TEXT_DATE_ADDED;
+  $html_str .= '</td>';
+  $html_str .= '<td align="left">';
+  $html_str .= $group['created_at'];
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+
+  $html_str .= '<tr>';
+  $html_str .= '<td width="220" align="left">'; 
+  $html_str .= TEXT_USER_UPDATE;
+  $html_str .= '</td>';
+  $html_str .= '<td align="left">';
+  $html_str .= $group['user_update'];
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+ 
+  $html_str .= '<tr>';
+  $html_str .= '<td width="220" align="left">'; 
+  $html_str .= TEXT_DATE_UPDATE;
+  $html_str .= '</td>';
+  $html_str .= '<td align="left">';
+  $html_str .= $group['date_update'];
   $html_str .= '</td>';
   $html_str .= '</tr>';
 

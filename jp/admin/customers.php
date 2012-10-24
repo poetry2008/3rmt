@@ -280,6 +280,22 @@ function check_form() {
     return true;
   }
 }
+
+
+function check_radio_status(r_ele)
+{
+  var s_radio_value = $("#s_radio").val(); 
+  var n_radio_value = $(r_ele).val(); 
+  
+  if (s_radio_value == n_radio_value) {
+    $(".table_img_list input[type='radio']").each(function(){
+      $(this).attr("checked", false); 
+    });
+    $("#s_radio").val(''); 
+  } else {
+    $("#s_radio").val(n_radio_value); 
+  } 
+}
 //--></script>
 <?php
   }
@@ -325,7 +341,8 @@ require("includes/note_js.php");
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-    <td width="100%" valign="top"><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table
+    border="0" width="100%" cellspacing="0" cellpadding="2" class="content">
 <?php
   if (isset($_GET['action']) && $_GET['action'] == 'edit') {
     $customers_query = tep_db_query("
@@ -594,12 +611,13 @@ require("includes/note_js.php");
               if ($dh) {
                 while (($file_str = readdir($dh)) !== false) {
                   if ($file_str != '.' && $file_str != '..') {
-                    echo '<li><input type="radio" name="pic_icon" value="'.$file_str.'"'.(($cInfo->pic_icon == $file_str)?' checked':'').'><img src="images/icon_list/'.$file_str.'" alt="pic"></li>'; 
+                    echo '<li><input type="radio" name="pic_icon" value="'.$file_str.'"'.(($cInfo->pic_icon == $file_str)?' checked':'').' onclick="check_radio_status(this);"><img src="images/icon_list/'.$file_str.'" alt="pic"></li>'; 
                   }
                 }
               }
               echo '</ul>'; 
               ?>
+              <input type="hidden" id="s_radio" name="s_radio" value="<?php echo $cInfo->pic_icon;?>"> 
               </td>
             </tr>
             <tr>
@@ -831,7 +849,9 @@ require("includes/note_js.php");
 <?php
   }
 ?>
-    </table></td>
+    </table>
+    </div> 
+    </td>
 <!-- body_text_eof //-->
   </tr>
 </table>

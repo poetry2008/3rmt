@@ -36,12 +36,19 @@
   if (($manufacturer_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3'))) {
 ?>
       <tr>
-        <td><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
-          <tr>
-            <td class="smallText"><?php echo $manufacturer_split->display_count($manufacturer_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
-            <td align="right" class="smallText"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $manufacturer_split->display_links($manufacturer_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
-          </tr>
-        </table><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
+        <td>
+          <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
+            <tr>
+              <td class="smallText"><?php echo $manufacturer_split->display_count($manufacturer_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
+            </tr>
+          </table>
+          <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
+            <tr>
+              <td class="smallText"><?php echo $manufacturer_split->display_links($manufacturer_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
+            </tr>
+          </table>
+          <?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?>
+        </td>
       </tr>
 <?php
   }
@@ -96,19 +103,25 @@ echo '
                 </td>
               </tr>
               <tr>
-                <td><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
+                <td>
                     <?php
   if (tep_db_num_rows($manufacturer_query)) {
 ?>
-                    <tr>
-            <td class="smallText"><?php echo $manufacturer_split->display_count($manufacturer_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
-            <td align="right" class="smallText"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $manufacturer_split->display_links($manufacturer_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
-                    </tr>
+                    <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
+                      <tr>
+                        <td class="smallText"><?php echo $manufacturer_split->display_count($manufacturer_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
+                      </tr>
+                    </table>
+                    <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
+                      <tr>
+                        <td class="smallText"><?php echo $manufacturer_split->display_links($manufacturer_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
+                      </tr>
+                    </table>
                     <?php
   }
 ?>
                     
-                  </table></td>
+                  </td>
               </tr>
             </table></div>
       </div>

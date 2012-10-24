@@ -118,7 +118,7 @@ $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
 $belong = preg_replace('/\?XSID=[^&]+/','',$belong);
 preg_match_all('/action=[^&]+/',$belong,$belong_temp_array);
-if($belong_temp_array[0][0] != ''){
+if($belong_temp_array[0][0] != '' && $belong_temp_array[0][0] != 'action=delete'){
   preg_match_all('/rID=[^&]+/',$belong,$belong_array);
   if($belong_array[0][0] != ''){
 
@@ -153,7 +153,7 @@ require("includes/note_js.php");
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-    <td width="100%" valign="top"><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td width="100%"><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
@@ -629,7 +629,9 @@ $contents[] = array('text' => '<br>'. TEXT_DATE_UPDATE. ' ' .tep_datetime_short(
 <?php
   }
 ?>
-    </table></td>
+    </table>
+    </div> 
+    </td>
 <!-- body_text_eof //-->
   </tr>
 </table>

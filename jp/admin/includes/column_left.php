@@ -53,10 +53,18 @@ function toggle_leftColumn()
 {
     
   var arrow_status = $('.columnLeft').css('display');
+  var scroll_width = document.body.scrollWidth; 
 <?php 
 if($belong == "" || $user_info == ""){
 $belong = str_replace("/admin/","",$_SERVER['REQUEST_URI']);
 $user_info['name'] = tep_get_user_info($ocertify->auth_user);
+}else{
+
+  $belong_url = $belong;
+  if($belong_temp != ''){
+
+    $belong = $belong_temp;
+  }
 }
 ?>
   if (arrow_status == 'none') {
@@ -76,7 +84,12 @@ while($array = tep_db_fetch_array($query)){
 var left = $("#note_<?php echo $array['id']?>").css("left"); 
 left = left.replace("px","");
 left = parseInt(left);
+var note_width;
+note_width = $("#note_<?php echo $array['id'];?>").width();
+note_width = parseInt(note_width);
+if((left+note_width+160) < scroll_width){
     $("#note_<?php echo $array['id']?>").css("left",(left+160)+"px");
+}
 
 <?php
 }
@@ -120,7 +133,7 @@ left = parseInt(left);
   }
   var menu_div_width = $('#categories_right_td').width();
   if(menu_div_width>=480){
-    $('#categories_tree').animate({width:(menu_div_width-5)+"px"});
+    //$('#categories_tree').animate({width:(menu_div_width-5)+"px"});
   }
   <?php
   if ($_SERVER['PHP_SELF'] == '/admin/orders.php' || $_SERVER['PHP_SELF'] == '/admin/preorders.php') {
@@ -152,6 +165,7 @@ function toggle_lan(sobj)
 </script>
 <?php }?>
 <?php
+$belong = $belong_url;
 $l_select_box_arr = array();
 if (isset($_SESSION['l_select_box'])) {
   $l_select_box_arr = explode(',', $_SESSION['l_select_box']);

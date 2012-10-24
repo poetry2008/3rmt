@@ -213,7 +213,7 @@ width:75px;
   background:#eee;
   clear: both;
 }
-.log .content{
+.log .contents{
   padding:3px;
   font-size:12px;
 }
@@ -506,7 +506,8 @@ function log_html(text){
   var log_date_len = text['date_added'].length;
   var log_date_str = log_date.substring(0, log_date_len-3); 
   
-  $str += '      <td style="background:#fff;"><div style="background:#fff;"><div class="content">'+text['content'].replace(/\n/g,'<br>')+'</div><div class="info">'+log_date_str+'</div></div></td>';
+  $str += '      <td style="background:#fff;"><div style="background:#fff;"><div
+    class="contents">'+text['content'].replace(/\n/g,'<br>')+'</div><div class="info">'+log_date_str+'</div></div></td>';
   $str += '      <td class="info02">';
   $str += '           <div class="level">'+parseInt(text['level'])+'</div>';
   $str += '           <div class="alarm">'+text['alarm']+'</div>';

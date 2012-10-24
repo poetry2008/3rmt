@@ -507,7 +507,7 @@ require("includes/note_js.php");
         <tr>
           <td class="main"><table border="0" cellspacing="0" cellpadding="2">
               <tr>
-                <td class="main">&nbsp;<?php echo CREATE_ORDER_COMMUNITY_SEARCH_TEXT;?></td>
+                <td class="main" nowrap>&nbsp;<?php echo CREATE_ORDER_COMMUNITY_SEARCH_TEXT;?></td>
                 <td class="main">&nbsp;<textarea name='fax' style='width:400px;height:42px;*height:40px;'><?php echo $fax;?></textarea>&nbsp;&nbsp;<?php echo CREATE_ORDER_COMMUNITY_SEARCH_READ;?></td>
               </tr>
         <tr>

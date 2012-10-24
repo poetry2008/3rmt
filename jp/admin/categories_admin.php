@@ -85,6 +85,15 @@ echo CATEGORY_ADMIN_TITLE."&nbsp;&nbsp;&nbsp;".$categories_array['categories_nam
   <script language="javascript" src="includes/javascript/jquery_include.js"></script>
   <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
   <script type="text/javascript">
+  function display(){
+   var categories_tree = document.getElementById('categories_tree'); 
+   if(categories_tree.style.display == 'none'){
+   categories_tree.style.display = 'block';
+   }else{
+   categories_tree.style.display = 'none';
+   }
+  }
+/*
 $(window).resize(function (){
     var menu_div_width = $('#categories_right_td').width();
     if(menu_div_width>=480){
@@ -103,7 +112,7 @@ $(window).resize(function (){
     }else{
       $('#categories_tree').animate({width:"470px"});
     }
-  })
+  })*/
   </script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
@@ -136,7 +145,16 @@ require("includes/note_js.php");
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
   <!-- header_eof //-->
   <!-- body //-->
-  <table border="0" width="100%" cellspacing="2" cellpadding="2">
+ <div id="categories_tree"  style="display:none">
+          <?php
+            require(DIR_WS_CLASSES . 'category_tree.php');
+            $osC_CategoryTree = new osC_CategoryTree(true, true); 
+            echo $osC_CategoryTree->buildTree();
+          ?>
+          </div>
+
+
+  <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
   <td <?php if ($ocertify->npermission < 10) {?>width='1'<?php } else {?> width="<?php echo BOX_WIDTH; ?>"<?php }?> valign="top">
   <table border="0" <?php if ($ocertify->npermission <10) {?>width='1'<?php } else {?> width="<?php echo BOX_WIDTH; ?>"<?php }?> cellspacing="1" cellpadding="1" class="columnLeft">
@@ -148,14 +166,12 @@ require("includes/note_js.php");
   <!-- body_text //-->
   <td width="100%" valign="top" id='categories_right_td'>
   <?php echo $notes;?>
-  <table border="0" width="100%" cellspacing="0" cellpadding="2">
+  <div class="compatible">
+  <table border="0" width="100%" cellspacing="0" cellpadding="2" class="content">
   <tr>
   <td>
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
-      <td class="pageHeading" height="40">
-      <?php echo CATEGORY_ADMIN_TITLE;?> 
-      &nbsp; 
       <?php
       if ($cPath) {
         $display_ca_str = display_category_link($cPath, $current_category_id,
@@ -169,24 +185,36 @@ require("includes/note_js.php");
         echo "<td class='smallText' align='right'>";
       }
       ?>
+      </td>
+      <td nowrap>
       <?php echo tep_draw_form('search', FILENAME_CATEGORIES_ADMIN, '', 'get') . "\n"; ?> <?php echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search', isset($_GET['search'])?$_GET['search']:'') . "\n"; ?>
       <input type = "submit" value = "<?php echo IMAGE_SEARCH;?>" >
       </form></td>
-      <td class="smallText" width="60" align="right">
+      <td class="smallText" width="60" align="right" nowrap>
         <div id="gotomenu">
-          <a href="javascript:void(0)" onclick="$('#categories_tree').toggle()"><?php echo CATEGORY_ADMIN_CATREE_TITLE;?></a>
-          <div id="categories_tree">
-          <?php
-            require(DIR_WS_CLASSES . 'category_tree.php');
-            $osC_CategoryTree = new osC_CategoryTree(true, true); 
-            echo $osC_CategoryTree->buildTree();
-          ?>
-          </div>
-        </div>
+          <a href="javascript:void(0)" onclick="display()"><?php echo CATEGORY_ADMIN_CATREE_TITLE;?></a>
+                 </div>
     <?php //echo tep_draw_form('goto', FILENAME_CATEGORIES_ADMIN, '', 'get') . "\n"; ?> <?php //echo HEADING_TITLE_GOTO . ' ' . tep_draw_pull_down_menu('cPath', tep_get_category_tree_cpath(), $current_category_id, 'onChange="this.form.submit();"') . "\n"; ?><!--</form>-->
       
       </td>
     </tr>
+ <tr>
+      <td class="pageHeading" height="40" nowrap>
+      <?php echo CATEGORY_ADMIN_TITLE;?> 
+      &nbsp; 
+      <?php
+  if($cPath){
+        $show_ca_query = tep_db_query("select * from (select
+          c.categories_id,cd.site_id, cd.categories_name from ".TABLE_CATEGORIES."
+          c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id
+          =cd.categories_id and c.categories_id ='".$current_category_id."' and
+          cd.language_id = '4' order by site_id DESC) c where site_id = '0' or site_id ='".$site_id."'group by categories_id limit 1");
+        $show_ca_res = tep_db_fetch_array($show_ca_query);
+        echo $show_ca_res['categories_name'];
+  }
+      ?>
+      </td>
+      </tr>
   </table>
   </td>
   </tr>
@@ -474,11 +502,15 @@ while ($products = tep_db_fetch_array($products_query)) {
   }
   ?>
   <td class="dataTableContent1">
-<?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'from=admin&cPath=' . $cPath . '&pID=' . $products['products_id'] . '&action=new_product_preview&read=only') . '">' . tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW) . '</a>&nbsp;&nbsp;';?>
+<?php echo '<div style="float:left"> <a href="' . tep_href_link(FILENAME_CATEGORIES, 'from=admin&cPath=' . $cPath . '&pID=' . $products['products_id'] . '&action=new_product_preview&read=only') . '">' . tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW) . '</a>&nbsp;&nbsp;';?>
      <?php 
      //echo '<a style="margin-left:-4px;" href="orders.php?real_name=true&search_type=products_name&keywords=' . urlencode($products['products_name']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_time.gif', '', 16, 16) . '</a>&nbsp;&nbsp;<span id="products_name_'.$products['products_id'].'">' . $products['products_name'] . '</span>'; 
-echo '<a style="margin-left:-4px;" href="orders.php?search_type=products_id&products_id=' .$products['products_id']. '">' . tep_image(DIR_WS_IMAGES . 'icon_time.gif', '', 16, 16) . '</a>&nbsp;&nbsp;<span id="products_name_'.$products['products_id'].'">' . $products['products_name'] . '</span>'; 
-
+echo '<a style="margin-left:-4px;" href="orders.php?search_type=products_id&products_id=' .$products['products_id']. '">' . tep_image(DIR_WS_IMAGES . 'icon_time.gif', '', 16, 16) . '</a>&nbsp;&nbsp;
+ </div>
+   <div style="float:left; width:60%; line-height:18px;">
+  <span id="products_name_'.$products['products_id'].'">' .
+  $products['products_name'] . '</span></div>'; 
+   
   ?>
   </td>
       <?php
@@ -692,13 +724,18 @@ if(empty($cPath_back)&&empty($cID)&&isset($cPath)){
   &nbsp;&nbsp;&nbsp;&nbsp;<input type='button' value='<?php echo CATEGORY_ADMIN_BUTTON_XIEYE_PRICE;?>' name='d[]' onClick="list_display('<?php echo $cPath_yobi?$cPath_yobi:0;?>','<?php echo $current_category_id;?>','<?php echo $_GET['cPath'];?>')">
   &nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="x" value="<?php echo CATEGORY_ADMIN_BUTTON_ALL_UPDATE;?>" onClick="all_update()"></td>
 </tr>
-<!--dataTableRowSelected end-->
+</table>
+</td>
+</tr>
+</table>
+</form>
+<table width="100%" cellspacing="0" cellpadding="2" border="0">
 <tr>
   <td class="smallText" valign="top"><?php echo $products_split->display_count($products_query_numrows, MAX_DISPLAY_PRODUCTS_ADMIN, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?></td>
-  <td class="smallText" align="right" colspan="<?php echo 11 + $count_dougyousya['cnt'];?>"><?php echo $products_split->display_links($products_query_numrows, MAX_DISPLAY_PRODUCTS_ADMIN, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'pID'))); ?> </td>
+  <td class="smallText" align="right"><?php echo $products_split->display_links($products_query_numrows, MAX_DISPLAY_PRODUCTS_ADMIN, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'pID'))); ?> </td>
 </tr>
 <tr>
-  <td colspan="<?php echo 12 + $count_dougyousya['cnt'];?>">
+  <td colspan="2">
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td class="smallText"><?php echo CATEGORY_ADMIN_COUNTNUM_TEXT . '&nbsp;' . $categories_count .
@@ -717,11 +754,7 @@ tep_display_google_results(FILENAME_CATEGORIES_ADMIN);
 // google end
 ?>
 </table>
-</td>
-</tr>
-</table>
-</form>
-  <?php
+<?php
   if ($comment) {
 ?>
 <table>
@@ -746,6 +779,7 @@ tep_display_google_results(FILENAME_CATEGORIES_ADMIN);
 </td>
 </tr>
 </table>
+</div>
 </td>
 </tr>
 </table>

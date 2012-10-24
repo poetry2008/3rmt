@@ -100,6 +100,11 @@ if (isset($erf)) {
 echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">' . "\n";
 echo '<html ' . HTML_PARAMS . '>' . "\n";
 echo '<head>' . "\n";
+header('Expires:'.date('D, d M Y H:i:s',0).' GMT');
+header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . 'GMT');
+header('Cache-Control: no-store, no-cache, must-revalidate');
+header('Cache-Control: post-check=0, pre-check=0', false);
+header('Pragma: no-cache');
 echo '<meta http-equiv="Content-Type" content="text/html; charset=' . CHARSET . '">' . "\n";
 echo '<title>' . TITLE . '</title>' . "\n";
 echo '<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">' . "\n";

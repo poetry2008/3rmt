@@ -4,7 +4,7 @@
 */
   require('includes/application_top.php');
 
-  
+
   if (isset($_GET['action']) && $_GET['action']) {
     switch ($_GET['action']) {
       case 'update':
@@ -27,9 +27,12 @@
               'sort_num' => tep_db_prepare_input($_POST['sort_num']),
               );  
           if ($_GET['action'] == 'update') {
-            tep_db_perform(TABLE_OPTION_GROUP, $sql_data_array, 'update', 'id=\''.$_POST['group_id'].'\''); 
+            $update_sql_data = array('user_update' => $ocertify->auth_user,'date_update' => 'now()');
+            $sql_data_array = tep_array_merge($sql_data_array, $update_sql_data);
+            tep_db_perform(TABLE_OPTION_GROUP, $sql_data_array, 'update', 'id=\''.$_POST['group_id'].'\'');
           } else if ($_GET['action'] == 'insert') {
-            $insert_sql_data = array('created_at' => 'now()'); 
+            $insert_sql_data = array('created_at' => 'now()','user_added' =>
+                $ocertify->auth_user,'user_update' => $ocertify->auth_user,'date_update' => 'now()'); 
             $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data); 
             tep_db_perform(TABLE_OPTION_GROUP, $sql_data_array); 
           }
@@ -201,7 +204,7 @@ require("includes/note_js.php");
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-    <td width="100%" valign="top"><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td>
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -319,7 +322,7 @@ echo '<a href="javascript:void(0);" onclick="show_group_info(this, \''.$group['i
           </tr>
         </table></td>
       </tr>
-    </table></td>
+    </table></div></td>
 <!-- body_text_eof //-->
   </tr>
 </table>

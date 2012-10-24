@@ -1,4 +1,6 @@
 <?php
+require_once('includes/application_top.php');
+
 if ($_GET['action'] == 'calc_price') {
   
   $attributes_price = $_GET['oprice'];  
@@ -16,4 +18,10 @@ if ($_GET['action'] == 'calc_price') {
   }
   echo json_encode($price_array);
   exit;
-} 
+} else if($_GET['action'] == 'new_telecom_option') {
+  $_SESSION['option'] = date('Ymd-His'). ds_makeRandStr(2);
+  if($_SESSION['option']){
+    echo $_SESSION['option'];
+    exit;
+  }
+}

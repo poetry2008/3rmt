@@ -2,7 +2,7 @@ function jump_page(j_ele, j_total_page, j_c_page)
 {
   var jump_page = j_ele.parentNode.childNodes[1].value;
   if (jump_page.match(/^\d+$/)) {
-    if ((parseInt(jump_page, 10) != parseInt(j_c_page, 10)) && (parseInt(jump_page, 10) >= 0)) {
+    if (parseInt(jump_page, 10) >= 0) {
        j_ele.parentNode.submit();
     }
   }
@@ -10,7 +10,19 @@ function jump_page(j_ele, j_total_page, j_c_page)
 
 function page_change(j_page)
 {
-  j_page = j_page.replace("||||", "'"); 
-  j_page = j_page.replace('>>>>', '"'); 
+  while (true) {
+    if (j_page.indexOf("||||") >= 0) {
+      j_page = j_page.replace("||||", "'");
+    } else {
+      break; 
+    }
+  }
+  while (true) {
+    if (j_page.indexOf(">>>>") >= 0) {
+      j_page = j_page.replace(">>>>", '"');
+    } else {
+      break; 
+    }
+  }
   window.location.href = j_page;
 }

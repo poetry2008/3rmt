@@ -1498,6 +1498,8 @@ background:url(../images/icons/thread.gif) no-repeat;
 font-size:14px;
 font-weight:bold;
 padding:0 0 0 20px;
+margin-bottom:5px;
+line-height:16px;
 }
 
 .right_colum_border{
@@ -1833,8 +1835,9 @@ TD.productListing-data {
 /* ---------------------------
 A：page link（usual）
 --------------------------- */
-A.pageResults { 
+A.pageResults {
 	color: #000;
+	text-decoration: underline;
 }
 /* ---------------------------
 A：page link（on mouse over）
@@ -2278,11 +2281,17 @@ searching
 	padding-left:10px;
 }
 .float_right{
-	float:right;
+	float: right;
+	margin-top:1px;
 }
 .float_right_box{
 	float:right;
-	width:160px;
+}
+.box_text{
+	overflow:hidden;
+	height:20px;
+	line-height:16px;
+	font-size:12px;
 }
 .cp_content{
 	padding:0 20px;

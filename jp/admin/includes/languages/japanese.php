@@ -713,6 +713,10 @@ define('BOX_USER_LOG', 'アクセスログ');
 define('BOX_USER_LOGOUT', 'ログアウト');
 define('JUMP_PAGE_TEXT', 'ページへ');
 define('JUMP_PAGE_BUTTON_TEXT', '移動');
+define('TEXT_USER_ADDED','作成者:');
+define('TEXT_USER_UPDATE','更新者:');
+define('TEXT_DATE_ADDED','作成日:');
+define('TEXT_DATE_UPDATE','更新日:');
 // javascript language
 define('JS_TEXT_ONETIME_PWD_ERROR','パスワードが違います');
 define('JS_TEXT_INPUT_ONETIME_PWD','ワンタイムパスワードを入力してください\r\n');

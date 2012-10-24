@@ -1357,6 +1357,7 @@ function handle_option()
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
 $belong = preg_replace('/\?XSID=[^&]+/','',$belong);
+preg_match_all('/action=[^&]+/',$belong,$belong_action_array);
 preg_match_all('/cPath=[^&]+/',$belong,$belong_array);
 preg_match_all('/pID=[^&]+/',$belong,$belong_pid_array);
 if($belong_array[0][0] != ''){
@@ -1366,9 +1367,9 @@ if($belong_array[0][0] != ''){
       $belong = $href_url.'?'.$belong_array[0][0].'|||'.$belong_pid_array[0][0];
     }else{
       if($belong_pid_array[0][0] != ''){
-        $belong = $href_url.'?'.$belong_array[0][0].'|||action=new_product|||'.$belong_pid_array[0][0]; 
+        $belong = $href_url.'?'.$belong_array[0][0].'|||'.$belong_action_array[0][0].'|||'.$belong_pid_array[0][0]; 
       }else{
-        $belong = $href_url.'?'.$belong_array[0][0].'|||action=new_product'; 
+        $belong = $href_url.'?action=new_product'; 
       }
     }
   }else{
@@ -1383,13 +1384,23 @@ if($belong_array[0][0] != ''){
         $belong = $href_url.'?'.$belong_array[0][0]; 
       }
     }else{
-      $belong = $href_url; 
+     if(preg_match('/action=new_product/',$belong)){
+       $belong = $href_url.'?action=new_product';
+     }else{
+       $belong = $href_url; 
+     }
     }
   }
 }else{
 
   if(preg_match('/action=new_product_preview/',$belong)){
-    $belong = $href_url.'?'.$belong_pid_array[0][0];
+    if($belong_pid_array[0][0] != ''){
+      $belong = $href_url.'?'.$belong_pid_array[0][0];
+    }else{
+      $belong = $href_url.'?action=new_product'; 
+    }
+  }else if(preg_match('/action=new_product/',$belong)){
+    $belong = $href_url.'?action=new_product'; 
   }else{
     $belong = $href_url; 
   }
@@ -1410,7 +1421,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <!-- header_eof //-->
 <!-- body //-->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
         <!-- left_navigation //-->
@@ -1420,6 +1431,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     <!-- body_text //-->
     <td width="100%" valign="top" id='categories_right_td'>
     <?php echo $notes;?>
+    <div class="compatible">
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
         <?php
   if (isset($_GET['action']) && $_GET['action'] == 'new_product') {
@@ -2801,7 +2813,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
         <tr>
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
               <tr>
-                <td class="pageHeading" height="40">
+                <td class="pageHeading" height="40" nowrap>
                 <?php echo BOX_CATALOG_CATEGORIES_PRODUCTS; ?>
                 &nbsp; 
                 <?php
@@ -2858,7 +2870,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
         <tr>
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
               <tr>
-                <td valign="top">
+                <td valign="top" nowrap>
                 <?php tep_site_filter(FILENAME_CATEGORIES, true);?> 
                 <table border="0" width="100%" cellspacing="0" cellpadding="2">
                     <tr class="dataTableHeadingRow">
@@ -4079,7 +4091,7 @@ $contents[] = array('text' => '<br>' . TEXT_PRODUCTS_AVERAGE_RATING . ' ' . numb
         <?php
   }
 ?>
-      </table></td>
+      </table></div></td>
     <!-- body_text_eof //-->
   </tr>
 </table>

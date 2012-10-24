@@ -175,7 +175,9 @@
       customers_postcode = '" . tep_db_input($update_customer_postcode) . "',
       customers_country = '" . tep_db_input(stripslashes($update_customer_country)) . "',
       customers_telephone = '" . tep_db_input($update_customer_telephone) . "',
-      customers_email_address = '" . tep_db_input($update_customer_email_address) . "',";
+      customers_email_address = '" . tep_db_input($update_customer_email_address) . "',
+      user_update ='".$ocertify->auth_user."',
+      ";
     
     if($SeparateBillingFields) {
     // Original: all database fields point to $update_billing_xxx, now they are updated with the same values as the customer fields

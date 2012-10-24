@@ -71,6 +71,10 @@ if(isset($id) && $id != 0){
    $db_set_day = $product_array['db_set_day'];
    $shipping_time = $product_array['shipping_time'];
    $sort = $product_array['sort'];
+   $user_added = $product_array['user_added'];
+   $date_added = $product_array['date_added'];
+   $user_update = $product_array['user_update'];
+   $date_update = $product_array['date_update'];
    
    $work_array = unserialize($work);
    tep_db_free_result($product_query);
@@ -161,6 +165,18 @@ if($id == 0){
 <input type="text" name="sort" id="sort" value="<?php echo $sort;?>" style="text-align: right;">
 </td></tr>
 
+<tr>
+    <td width="30%" align="left"><?php echo TEXT_USER_ADDED; ?></td><td><?php echo $user_added;?></td>
+</tr>
+<tr>
+    <td width="30%" align="left"><?php echo TEXT_DATE_ADDED; ?></td><td><?php echo $date_added;?></td>
+</tr>
+<tr>
+    <td width="30%" align="left"><?php echo TEXT_USER_UPDATE; ?></td><td><?php echo  $user_update;?></td>
+</tr>
+<tr>
+    <td width="30%" align="left"><?php echo TEXT_DATE_UPDATE; ?></td><td><?php echo $date_update;?></td>
+</tr>
 </td></tr>
 <tr><td width="30%"></td><td style="padding-left:10%;">
 <?php

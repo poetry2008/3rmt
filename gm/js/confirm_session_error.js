@@ -17,8 +17,19 @@ function confirm_session_error(num,str){
            array = data.split('|');
            $("#"+array[0]).html('&nbsp;<a href="open.php"><font color="#CC0033"><b>※要問合※</b></font></a><br><font color="#FF0000">総重量が（'+array[1]+'）の規定の重量を超えました。<br>商品を削除するか、または個数を変更して（'+array[2]+'）kg以内にしてください。</font>');
          }else{
-         
-           document.checkout_confirmation.submit();
+           $.ajax({
+             url: 'ajax_process.php?action=new_telecom_option',
+             type: 'POST',
+             dataType: 'text',
+             async : false,
+             success: function(data){
+               patrn = /^[0-9]{8}-[0-9]{8}$/;
+               if(patrn.exec(data)){
+                 $(':input[name=option]').val(data);
+               }
+               document.checkout_confirmation.submit();
+             }
+           });
          }          
        }
     });

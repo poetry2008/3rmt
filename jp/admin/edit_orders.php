@@ -429,6 +429,7 @@ if (tep_not_null($action)) {
       //住所信息入库
 
       tep_db_query("delete from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and customers_id='".$check_status['customers_id']."'");
+      tep_db_query("update `".TABLE_ORDERS."` set `user_update` = '".$ocertify->auth_user."' where `orders_id` = '".$oID."'");
       foreach($option_info_array as $ad_key=>$ad_value){
         
         $address_list_query = tep_db_query("select * from ". TABLE_ADDRESS ." where name_flag='". substr($ad_key,3) ."'");

@@ -78,8 +78,10 @@ function select_all_group()
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
 $belong = str_replace('&','|||',$belong);
+preg_match_all('/pcode=([^&]+)/',$belong,$pcode_array);
+$belong_temp = $belong;
 require("includes/note_js.php");
-$belong = urlencode($belong);
+$belong = str_replace($pcode_array[1][0],urlencode($pcode_array[1][0]),$belong);
 ?>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onload="SetFocus();">

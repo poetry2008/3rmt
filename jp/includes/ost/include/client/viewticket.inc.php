@@ -56,7 +56,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
     <?}?>
 </div>
 <div align="left">
-    <span class="Icon thread">回答一覧</span>
+    <div class="Icon thread">回答一覧</div>
     <div id="ticketthread">
         <?
       //get messages

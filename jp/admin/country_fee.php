@@ -40,7 +40,9 @@ if(isset($action) && $action != ''){
                    "','". $weight_limit .
                    "','". $email_comment .
                    "','". $email_comment_1 .
-                   "','0')";
+                  "','0','".$ocertify->auth_user."','".date('Y-m-d
+                       H:i:s',time())."','".$ocertify->auth_user."','".date('Y-m-d
+                       H:i:s',time())."')";
 
     }else{
       $country_fee_sql = "update ". TABLE_COUNTRY_FEE .
@@ -52,6 +54,8 @@ if(isset($action) && $action != ''){
                    "',weight_limit='". $weight_limit .
                    "',email_comment='". $email_comment .
                    "',email_comment_1='". $email_comment_1 .
+                   "',user_update='".$ocertify->auth_user.
+                   "',date_update='".date('Y-m-d H:i:s',time()).
                    "' where id=". $country_fee_id;
     }
     
@@ -158,7 +162,7 @@ require("includes/note_js.php");
 <!-- left_navigation //--> <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> <!-- left_navigation_eof //-->
     </td></tr></table></td>
 <!-- body_text //-->
-    <td width="100%" valign="top"><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
@@ -240,7 +244,9 @@ tep_db_close();
 </table></td></tr></table></td></tr>
 </table></td>
 </tr>
-</table></td>
+</table>
+</div>
+</td>
 <!-- body_text_eof //-->
 </tr>
 </table>

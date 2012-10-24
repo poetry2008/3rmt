@@ -265,7 +265,7 @@ define('PASSWORD_HIDDEN', '********');
 define('ENTRY_AGREEMENT_TEXT', '同意する');
 
 // constants for use in tep_prev_next_display function
-define('TEXT_RESULT_PAGE', '');
+define('TEXT_RESULT_PAGE', 'ページ:');
 define('TEXT_DISPLAY_NUMBER_OF_PRODUCTS', '<b>%d</b> - <b>%d</b> 番目を表示 (<b>%d</b> ある商品のうち)');
 define('TEXT_DISPLAY_NUMBER_OF_ORDERS', '<b>%d</b> - <b>%d</b> 番目を表示 (<b>%d</b> ある注文のうち)');
 define('TEXT_DISPLAY_NUMBER_OF_REVIEWS', '<b>%d</b> - <b>%d</b> 番目を表示 (<b>%d</b> あるレビューのうち)');
@@ -483,4 +483,7 @@ define('TEXT_OST_THANKYOU_INFO_TEXT',
 define('TEXT_JAVASCRIPT_ERROR','JavaScriptまたはCookieの設定がオンになっていません。お手数ですが設定を「オン」にして、ご利用ください。<br>※ 設定がオフになっていますと、ご利用いただけないサービスがあります。');
 define('JUMP_PAGE_TEXT', 'ページへ');
 define('JUMP_PAGE_BUTTON_TEXT', '移動');
+define('TEXT_MANUFACTURERS_PRODUCT_LIST', 'このメーカー一覧の商品一覧へ');
+define('TEXT_MANUFACTURERS_TITLE', 'メーカー一覧');
+define('ORDER_PRODUCT_TEXT', '注文はこちら');
 ?>

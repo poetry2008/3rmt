@@ -151,6 +151,7 @@ require("includes/note_js.php");
 <!-- body_text //-->
     <td width="100%" valign="top">
 <?php echo $notes;?>
+<div class="compatible">
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -232,6 +233,7 @@ require("includes/note_js.php");
         </td>
       </tr>
   </table>
+  </div>
     </td>
 <!-- body_text_eof //-->
   </tr>
