@@ -137,12 +137,12 @@ function mail_text(st,tt,ot){
   // 如果有了游戏人物名则不允许多选
 
   if((chk.length > 1)  && window.status_text[CI][0].indexOf('${ORDER_A}') != -1){
-    alert('複数の選択はできません。');
+    alert('<?php echo JS_TEXT_ALL_ORDERS_NOT_CHOOSE;?>');
     document.sele_act.elements[st].options[window.last_status].selected = true;
     return false;
   }
   if(chk.length < 1){
-    alert('注文書はまだ選択していません。');
+    alert('<?php echo JS_TEXT_ALL_ORDERS_NO_OPTION_ORDER;?>');
     document.sele_act.elements[st].options[window.last_status].selected = true;
     return false;
   }
@@ -226,25 +226,17 @@ success: function(msg) {
 
 $('#orders_info_box').html(msg);
 if(document.documentElement.clientHeight < document.body.scrollHeight){
-if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
-		if(ele.offsetTop < $('#orders_info_box').height()){
-	offset = ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;	
-		}else{
-	offset = ele.offsetTop+$("#orders_list_table").position().top-1-$('#orders_info_box').height()-$('#offsetHeight').height();}
-	}else{
-offset = ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;	
-	}
+offset = ele.offsetTop + ele.offsetHeight + $('#orders_info_box').height() > $('#orders_list_table').height()? ele.offsetTop+$("#orders_list_table").position().top-1-$('#orders_info_box').height()-$('#offsetHeight').height():ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;
 $('#orders_info_box').css('top',offset).show();
 }else{
-if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
-	offset = ele.offsetTop+$("#orders_list_table").position().top-1-$('#orders_info_box').height()-$('#offsetHeight').height();
-	}else{
-offset = ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;	
-	}
+if(ele.offsetTop+$("#orders_list_table").position().top+ele.offsetTop + ele.offsetHeight + $('#orders_info_box').height() > document.documentElement.clientHeight){
+offset = ele.offsetTop+$("#orders_list_table").position().top-$('#orders_info_box').height()-$('#offsetHeight').height()-1;
+$('#orders_info_box').css('top',offset).show();
+}else{
+offset = ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;
 $('#orders_info_box').css('top',offset).show();
 }
-
-
+}
 }
 });
 
@@ -299,36 +291,6 @@ function propertychange_option(ele){
   show_submit_button();
 }
 
-$(function(){
-    // 每分钟检查状态是否有修改
-    setTimeout(function(){checkChange()}, 60000);
-    });
-// 每分钟自动检查最新订单和修改
-function checkChange(){
-  $.ajax({
-dataType: 'text',
-url: 'ajax_orders.php?action=last_customer_action',
-success: function(last_customer_action) {
-if (
-  last_customer_action != cfg_last_customer_action 
-  && prev_customer_action != last_customer_action
-  ){
-// 如果有新订单和修改
-// 改变背景颜色
-$('body').css('background-color', '#ffcc99');// rgb(255, 204, 153)
-$('.preorder_head').css('background-color', '#ffcc99');
-// 在列表插入新订单
-newOrders(prev_customer_action != '' ? prev_customer_action : cfg_last_customer_action);
-// 修改最后检查时间
-prev_customer_action = last_customer_action;
-// 播放提示音
-playSound();
-}
-}
-});
-setTimeout(function(){checkChange()}, 60000);
-}
-
 // 点击按钮
 function orders_flag(ele, type, oid) {
   if (ele.className == 'orders_flag_checked') {
@@ -353,7 +315,6 @@ function orders_work(ele, work, oid) {
   document.getElementById('work_a').className = 'orders_flag_unchecked';
   document.getElementById('work_b').className = 'orders_flag_unchecked';
   document.getElementById('work_c').className = 'orders_flag_unchecked';
-  document.getElementById('work_d').className = 'orders_flag_unchecked';
   $.ajax({
 dataType: 'text',
 url: 'ajax_orders.php?orders_id='+oid+'&work='+work,
@@ -468,7 +429,7 @@ function show_questions(ele){
 		$("#oa_dynamic_groups")[0].options.add(new Option(''+group_name+'',group_id,true,false));
 	    }
 	    if(order_can_end=='1'){
-		$("#oa_dynamic_groups")[0].options.add(new Option('取引完了','end',true,false));
+		$("#oa_dynamic_groups")[0].options.add(new Option('<?php echo JS_TEXT_ALL_ORDERS_COMPLETION_TRANSACTION;?>','end',true,false));
 	    }
 	}});
 	$("#oa_dynamic_groups").unbind('change');
@@ -483,12 +444,12 @@ function show_questions(ele){
 	    }
 	    if($(this).selected().val()=='end'){
 		$("#oa_dynamic_submit").show();
-		$("#oa_dynamic_submit").html('取引完了');
+		$("#oa_dynamic_submit").html('<?php echo JS_TEXT_ALL_ORDERS_COMPLETION_TRANSACTION;?>');
 		msg = '<input type="hidden" id="endtheseorder" value="1"/>';
 		$("#oa_dynamic_group_item").html(msg);
 	    }else{
 		$("#oa_dynamic_submit").show();
-		$("#oa_dynamic_submit").html('保存');
+		$("#oa_dynamic_submit").html('<?php echo JS_TEXT_ALL_ORDERS_SAVE;?>');
 	    $.ajax(
 		{ 
 		    url: "ajax_orders.php?group_id="+$(this).val()+"&action=get_group_renderstring", 
@@ -534,7 +495,7 @@ $("#oa_dynamic_submit").click(function(){
 	      if (finish == 1){
 		  window.location.reload();
 	      }else {
-		  alert($("#oa_dynamic_groups").find('option|[selected]').text()+'の保存が完了しました');
+		  alert($("#oa_dynamic_groups").find('option|[selected]').text()+'<?php echo JS_TEXT_ALL_ORDERS_SAVED;?>');
 	      }
 	  }
       }
@@ -592,7 +553,7 @@ function copyToClipboard(txt) {
     try {   
       netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");   
     } catch (e) {   
-      alert("ブラウザに拒絶されました！\nブラウザのアドレス欄に'about:config'を入力してEnterキーを押します\nそれと'signed.applets.codebase_principal_support'数を'true'にしてください");   
+      alert("<?php echo JS_TEXT_ALL_ORDERS_BROWER_REJECTED;?>");   
     }   
     var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);   
     if (!clip)   
@@ -613,7 +574,7 @@ function copyToClipboard(txt) {
     clip.setData(trans,null,clipid.kGlobalClipboard);   
 
   }   
-  alert("クリップボードにコピーしました！")   
+  alert("<?php echo JS_TEXT_ALL_ORDERS_COPY_TO_CLIPBOARD;?>")   
 }  
 
 function show_monitor_error(e_id,flag,_this){
@@ -651,14 +612,87 @@ dataType: 'text',
 async : false,
 success: function(data) {
 var pwd_arr = data.split(",");
-var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
 if(in_array(pwd, pwd_arr)){
 window.location.href = url_str+'&once_pwd='+pwd; 
 } else {
-window.alert("パスワードが違います"); 
+window.alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>"); 
 }
 }
 });
+}
+function new_mail_text_orders(ele,st,tt,ot){
+  // 选中的索引
+  var idx = document.edit_order.elements[st].selectedIndex;
+  // 选中值
+  var CI  = document.edit_order.elements[st].options[idx].value;
+  // 选中的checkbox值
+  if (st == 'status') {
+    // 列表页
+    chk = getCheckboxValue('chk[]');
+  } else {
+    // 详细页
+    chk = new Array();
+    chk[0] = 0;
+  }
+
+  // 如果有了游戏人物名则不允许多选
+
+  if((chk.length > 1)  && window.status_text[CI][0].indexOf('${ORDER_A}') != -1){
+    alert('<?php echo JS_TEXT_ALL_ORDERS_NOT_CHOOSE;?>');
+    document.edit_order.elements[st].options[window.last_status].selected = true;
+    return false;
+  }
+  if(chk.length < 1){
+    alert('<?php echo JS_TEXT_ALL_ORDERS_NO_OPTION_ORDER;?>');
+    document.edit_order.elements[st].options[window.last_status].selected = true;
+    return false;
+  }
+  // 记录上一个状态
+  window.last_status = idx;
+  // 更换表单内容
+  if (st == 'status') {
+    // 列表页
+    if (typeof(window.status_title[CI]) != 'undefined' && typeof(window.status_title[CI][window.orderSite[chk[0]]]) != 'undefined') {
+      document.edit_order.elements[ot].value = window.status_title[CI][window.orderSite[chk[0]]];
+      document.edit_order.elements[tt].value = window.status_text[CI][window.orderSite[chk[0]]].replace('${ORDER_A}', window.orderStr[chk[0]]);
+    } else if (typeof(window.status_title[CI]) != 'undefined'){
+      document.edit_order.elements[ot].value = window.status_title[CI][0];
+      document.edit_order.elements[tt].value = window.status_text[CI][0].replace('${ORDER_A}', window.orderStr[chk[0]]);
+    }
+  } else {
+    // 详细页
+    if (typeof(window.status_title[CI]) != 'undefined') {
+      document.edit_order.elements[ot].value = window.status_title[CI][0];
+      document.edit_order.elements[tt].value = window.status_text[CI][0].replace('${ORDER_A}', window.orderStr);
+    } else if (typeof(window.status_title[CI]) != 'undefined'){
+      document.edit_order.elements[ot].value = window.status_title[CI][0];
+      document.edit_order.elements[tt].value = window.status_text[CI][0].replace('${ORDER_A}', window.orderStr);
+    }
+  }
+  // 替换${PAY_DATE}
+  if(document.edit_order.elements[tt].value.indexOf('${PAY_DATE}') != -1){
+    $.ajax({
+dataType: 'text',
+url: 'ajax_orders.php?action=paydate',
+success: function(text) {
+document.edit_order.elements[tt].value = document.edit_order.elements[tt].value.replace('${PAY_DATE}',text);
+}
+});
+}
+
+// 邮件和提醒的checkbox
+if (nomail[CI] == '1') {
+  $('#notify_comments').attr('checked','');
+  $('#notify').attr('checked','');
+} else {
+  $('#notify_comments').attr('checked',true);
+  $('#notify').attr('checked',true);
+}
+
+if ($(ele).val() == 20) {
+  $('#notify').attr('checked', false);  
+}
 }
 
 function new_mail_text(ele,st,tt,ot){
@@ -679,12 +713,12 @@ function new_mail_text(ele,st,tt,ot){
   // 如果有了游戏人物名则不允许多选
 
   if((chk.length > 1)  && window.status_text[CI][0].indexOf('${ORDER_A}') != -1){
-    alert('複数の選択はできません。');
+    alert('<?php echo JS_TEXT_ALL_ORDERS_NOT_CHOOSE;?>');
     document.sele_act.elements[st].options[window.last_status].selected = true;
     return false;
   }
   if(chk.length < 1){
-    alert('注文書はまだ選択していません。');
+    alert('<?php echo JS_TEXT_ALL_ORDERS_NO_OPTION_ORDER;?>');
     document.sele_act.elements[st].options[window.last_status].selected = true;
     return false;
   }
@@ -838,32 +872,207 @@ success: function(msg) {
 });
 }
 
-function recalc_order_price(oid, opd, o_str, op_str)
+function fmoney(s)
+{
+   s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(0) + "";
+    var l = s.split(".")[0].split("").reverse();
+     var t = '';
+      for(i = 0; i < l.length; i ++ ){
+            t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+              }
+       return t.split("").reverse().join("");
+}
+
+function recalc_order_price(oid, opd, o_str, op_str,opd_str)
 {
   var op_array = op_str.split('|||');
   var p_op_info = 0; 
+  var op_string = '';
+  var op_string_title = '';
+  var op_string_val = '';
   for (var i=0; i<op_array.length; i++) {
     if (op_array[i] != '') {
       p_op_info += parseInt(document.getElementsByName('update_products['+opd+'][attributes]['+op_array[i]+'][price]')[0].value); 
-    }
+      p_op_info_value = parseInt(document.getElementsByName('update_products['+opd+'][attributes]['+op_array[i]+'][price]')[0].value);
+      op_string += p_op_info_value+'|||';
+      p_op_info_title = document.getElementsByName('update_products['+opd+'][attributes]['+op_array[i]+'][option]')[0].value;
+      op_string_title += p_op_info_title+'|||';
+      p_op_info_val = document.getElementsByName('update_products['+opd+'][attributes]['+op_array[i]+'][value]')[0].value;
+      op_string_val += p_op_info_val+'|||';
+    } 
   }
   pro_num = document.getElementById('update_products_new_qty_'+opd).value;
   p_price = document.getElementsByName('update_products['+opd+'][p_price]')[0].value;
+  p_final_price = document.getElementsByName('update_products['+opd+'][final_price]')[0].value;
   
   $.ajax({
     type: "POST",
-    data:'oid='+oid+'&opd='+opd+'&o_str='+o_str+'&op_price='+p_op_info+'&p_num='+pro_num+'&p_price='+p_price,
+    data:'oid='+oid+'&opd='+opd+'&o_str='+o_str+'&op_price='+p_op_info+'&p_num='+pro_num+'&p_price='+p_price+'&p_final_price='+p_final_price+'&op_str='+op_str+'&op_string='+op_string+'&op_string_title='+op_string_title+'&op_string_val='+op_string_val,
     async:false,
     url: 'ajax_orders.php?action=recalc_price',
-    success: function(msg) {
+    success: function(msg) { 
       msg_info = msg.split('|||');
-      document.getElementsByName('update_products['+opd+'][final_price]')[0].value = msg_info[0];
-      document.getElementById('update_products['+opd+'][a_price]').innerHTML = msg_info[1];
-      document.getElementById('update_products['+opd+'][b_price]').innerHTML = msg_info[2];
-      document.getElementById('update_products['+opd+'][c_price]').innerHTML = '<b>'+msg_info[3]+'</b>';
+      if(o_str != 3){
+        document.getElementsByName('update_products['+opd+'][final_price]')[0].value = msg_info[0];
+        document.getElementById('update_products['+opd+'][final_price]').innerHTML = msg_info[11];
+      }
+      if(o_str != 3){
+        document.getElementById('update_products['+opd+'][a_price]').innerHTML = msg_info[1];
+      }else{
+        document.getElementById('update_products['+opd+'][a_price]').innerHTML = msg_info[7]; 
+      }
+      if(o_str != 3){
+        document.getElementById('update_products['+opd+'][b_price]').innerHTML = msg_info[2];
+      }else{
+        document.getElementById('update_products['+opd+'][b_price]').innerHTML = msg_info[8]; 
+      }
+      if(o_str != 3){
+        document.getElementById('update_products['+opd+'][c_price]').innerHTML = '<b>'+msg_info[3]+'</b>';
+      }else{
+        document.getElementById('update_products['+opd+'][c_price]').innerHTML = '<b>'+msg_info[9]+'</b>'; 
+      }
+      var opd_str_array = opd_str.split('|||');
+      var opd_str_value = '';
+      var opd_str_total = 0;
+      var opd_str_temp = '';
+      for(x in opd_str_array){
+        opd_str_temp = ''; 
+        opd_str_value = document.getElementById('update_products['+opd_str_array[x]+'][c_price]').innerHTML;
+        opd_str_temp = opd_str_value;
+        opd_str_value = opd_str_value.replace(/<.*?>/g,'');
+        opd_str_value = opd_str_value.replace(/,/g,'');
+        opd_str_value = opd_str_value.replace(msg_info[10],'');
+        opd_str_value = parseFloat(opd_str_value);
+        if(opd_str_temp.indexOf('color') > 0){
+          opd_str_total -= opd_str_value;
+        }else{
+          opd_str_total += opd_str_value; 
+        }
+      }
+      var ot_total = '';
+      var handle_fee_id = document.getElementById('handle_fee_id').innerHTML; 
+      handle_fee_id = handle_fee_id.replace(/<.*?>/g,'');
+      handle_fee_id = handle_fee_id.replace(/,/g,'');
+      handle_fee_id = handle_fee_id.replace(msg_info[10],'');
+      handle_fee_id = parseInt(handle_fee_id); 
+      var shipping_fee_id = document.getElementById('shipping_fee_id').innerHTML;
+      shipping_fee_id= shipping_fee_id.replace(/<.*?>/g,'');
+      shipping_fee_id = shipping_fee_id.replace(/,/g,'');
+      shipping_fee_id = shipping_fee_id.replace(msg_info[10],'');
+      shipping_fee_id = parseInt(shipping_fee_id); 
+      if(document.getElementById('point_id')){
+        var point_id = document.getElementById('point_id').value; 
+      }else{
+        var point_id = 0; 
+      }
+      var update_total_temp;
+      var update_total_num = 0;
+      var sum_num = document.getElementById('button_add_id').value;
+      for(var i = 1;i <= sum_num;i++){
+     
+        if(document.getElementById('update_total_'+i)){
+          update_total_temp = document.getElementById('update_total_'+i).value; 
+          if(update_total_temp == ''){update_total_temp = 0;}
+          update_total_temp = parseInt(update_total_temp);
+          update_total_num += update_total_temp;
+        }
+      }
+ 
+      ot_total = opd_str_total+handle_fee_id+shipping_fee_id-point_id+update_total_num;
+      
+      if(opd_str_total < 0){
+        opd_str_total = Math.abs(opd_str_total);
+        document.getElementById('ot_subtotal_id').innerHTML = '<font color="#FF0000">'+fmoney(opd_str_total)+'</font>'+msg_info[10];
+      }else{
+        document.getElementById('ot_subtotal_id').innerHTML = fmoney(opd_str_total)+msg_info[10]; 
+      }
+      if(ot_total < 0){
+        ot_total = Math.abs(ot_total);
+        document.getElementById('ot_total_id').innerHTML = '<font color="#FF0000">'+fmoney(ot_total)+'</font>'+msg_info[10];
+      }else{
+        document.getElementById('ot_total_id').innerHTML = fmoney(ot_total)+msg_info[10]; 
+      }
       document.getElementById('update_products['+opd+'][ah_price]').value = msg_info[4];
       document.getElementById('update_products['+opd+'][bh_price]').value = msg_info[5];
       document.getElementById('update_products['+opd+'][ch_price]').value = msg_info[6];
+    }
+  });
+}
+
+function price_total(str)
+{
+      var ot_total = '';
+      var ot_total_flag = false;
+      var ot_subtotal_id = document.getElementById('ot_subtotal_id').innerHTML; 
+      if(ot_subtotal_id.indexOf('color') > 0){
+        ot_total_flag = true; 
+      }
+      ot_subtotal_id = ot_subtotal_id.replace(/<.*?>/g,'');
+      ot_subtotal_id = ot_subtotal_id.replace(/,/g,'');
+      ot_subtotal_id = ot_subtotal_id.replace(str,'');
+      ot_subtotal_id= parseInt(ot_subtotal_id);
+      var handle_fee_id = document.getElementById('handle_fee_id').innerHTML; 
+      handle_fee_id = handle_fee_id.replace(/<.*?>/g,'');
+      handle_fee_id = handle_fee_id.replace(/,/g,'');
+      handle_fee_id = handle_fee_id.replace(str,'');
+      handle_fee_id = parseInt(handle_fee_id); 
+      var shipping_fee_id = document.getElementById('shipping_fee_id').innerHTML;
+      shipping_fee_id= shipping_fee_id.replace(/<.*?>/g,'');
+      shipping_fee_id = shipping_fee_id.replace(/,/g,'');
+      shipping_fee_id = shipping_fee_id.replace(str,'');
+      shipping_fee_id = parseInt(shipping_fee_id); 
+      if(document.getElementById('point_id')){
+        var point_id = document.getElementById('point_id').value; 
+      }else{
+        var point_id = 0;
+      }
+      var update_total_temp;
+      var update_total_num = 0;
+      var sum_num = document.getElementById('button_add_id').value;
+      var total_value = '';
+      var total_key = '';
+      var total_title_temp = '';
+      var total_title = '';
+      var temp_flag = false;
+      for(var i = 1;i <= sum_num;i++){
+     
+        if(document.getElementById('update_total_'+i)){
+          update_total_temp = document.getElementById('update_total_'+i).value; 
+          if(update_total_temp == ''){update_total_temp = 0;temp_flag = true;}
+          update_total_temp = parseInt(update_total_temp);
+          update_total_num += update_total_temp;
+          if(temp_flag == true){update_total_temp = '';temp_flag == false}
+          total_value += update_total_temp+'|||';
+          total_key += i+'|||';
+          total_title_temp = document.getElementsByName('update_totals['+i+'][title]')[0].value;
+          total_title += total_title_temp+'|||';
+        }
+      }
+      var ot_subtotal_id_temp;
+      if(ot_total_flag == false){
+        ot_total = ot_subtotal_id+handle_fee_id+shipping_fee_id-point_id+update_total_num;
+        ot_subtotal_id_temp = ot_subtotal_id;
+      }else{
+        ot_total = handle_fee_id+shipping_fee_id-point_id+update_total_num-ot_subtotal_id; 
+        ot_subtotal_id_temp = 0-ot_subtotal_id;
+      }
+      var ot_total_temp;
+      ot_total_temp = ot_total;
+      if(ot_total < 0){
+        ot_total = Math.abs(ot_total);
+        document.getElementById('ot_total_id').innerHTML = '<font color="#FF0000">'+fmoney(ot_total)+'</font>'+str;
+      }else{
+        document.getElementById('ot_total_id').innerHTML = fmoney(ot_total)+str; 
+      } 
+
+  var payment_value = document.getElementsByName('payment_method')[0].value;
+  $.ajax({
+    type: "POST",
+    data: 'total_title='+total_title+'&total_value='+total_value+'&point_value='+point_id+'&total_key='+total_key+'&ot_total='+ot_total_temp+'&ot_subtotal='+ot_subtotal_id_temp+'&payment_value='+payment_value,
+    async:false,
+    url: 'ajax_orders.php?action=price_total',
+    success: function(msg) {
+      
     }
   });
 }
@@ -923,24 +1132,68 @@ function recalc_all_product_price(oid, or_str)
   }); 
 }
 
-function mark_work(ele, mark_symbol, select_mark, c_site, param_other)
-{
+function delete_products(opid,o_str){
+
   $.ajax({
-    dataType: 'text',
-    type:"POST",
-    data:'param_other=' + param_other,
-    async:false, 
-    url: 'ajax_orders.php?action=handle_mark&mark_symbol='+mark_symbol+'&select_mark='+select_mark+'&c_site='+c_site,
+    type: "POST",
+    data: 'orders_products_id='+opid,
+    async:false,
+    url: 'ajax_orders.php?action=delete_products',
     success: function(data) {
-      data_array = data.split('|||'); 
-      if (data_array[0] == 'success') {
-        if (ele.className == 'mark_flag_checked') {
-          ele.className='mark_flag_unchecked';
-        } else {
-          ele.className='mark_flag_checked';
-        }
-        window.location.href = data_array[1]; 
+     if(data == 'true'){
+       var ot_total_flag = false;
+       var ot_subtotal_id = document.getElementById('ot_subtotal_id').innerHTML; 
+       if(ot_subtotal_id.indexOf('color') > 0){
+         ot_total_flag = true; 
+       }
+       ot_subtotal_id = ot_subtotal_id.replace(/<.*?>/g,'');
+       ot_subtotal_id = ot_subtotal_id.replace(/,/g,'');
+       ot_subtotal_id = ot_subtotal_id.replace(o_str,'');
+       ot_subtotal_id= parseInt(ot_subtotal_id);
+       var ot_products_flag = false;
+       var ot_products_id = document.getElementById('update_products['+opid+'][c_price]').innerHTML;
+       if(ot_products_id.indexOf('color') > 0){
+         ot_products_flag = true; 
+       }
+       ot_products_id = ot_products_id.replace(/<.*?>/g,'');
+       ot_products_id = ot_products_id.replace(/,/g,'');
+       ot_products_id = ot_products_id.replace(o_str,'');
+       ot_products_id= parseInt(ot_products_id); 
+       if(ot_total_flag == true && ot_products_flag == true){
+         opd_str_total = ot_subtotal_id-ot_products_id; 
+         opd_str_total = 0-opd_str_total;
+       }
+       if(ot_total_flag == true && ot_products_flag == false){
+         opd_str_total = ot_subtotal_id+ot_products_id; 
+         opd_str_total = 0-opd_str_total;
+       }
+       if(ot_total_flag == false && ot_products_flag == true){
+         opd_str_total = ot_subtotal_id+ot_products_id; 
+       }
+       if(ot_total_flag == false && ot_products_flag == false){
+         opd_str_total = ot_subtotal_id-ot_products_id; 
+       } 
+       if(opd_str_total < 0){
+        opd_str_total = Math.abs(opd_str_total);
+        document.getElementById('ot_subtotal_id').innerHTML = '<font color="#FF0000">'+fmoney(opd_str_total)+'</font>'+o_str;
+      }else{
+        document.getElementById('ot_subtotal_id').innerHTML = fmoney(opd_str_total)+o_str; 
       }
+      price_total(o_str);
+      $("#products_list_"+opid).remove();    
+     } 
+    }
+  });
+}
+function orders_session(type,value){
+  
+  $.ajax({
+    type: "POST",
+    data: 'orders_session_type='+type+'&orders_session_value='+value,
+    async:false,
+    url: 'ajax_orders.php?action=orders_session',
+    success: function(msg) {
+      
     }
   });
 }

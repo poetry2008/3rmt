@@ -1639,7 +1639,7 @@ if ($_GET['action']=='edit' && $_GET['oID']) {?>
 <script language="javascript" src="includes/javascript/all_order.js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/jquery.autocomplete.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script language="javascript">
 // 用作跳转
 var base_url = '<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('questions_type')));?>';

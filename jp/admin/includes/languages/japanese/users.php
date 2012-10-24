@@ -45,7 +45,9 @@ define('TEXT_SUCCESSINFO_INSERT_USER', 'ユーザを追加しました');
 define('TEXT_SUCCESSINFO_UPDATE_USER', 'ユーザ情報を更新しました');
 define('TEXT_SUCCESSINFO_DELETE_USER', 'ユーザ情報を削除しました');
 define('TEXT_SUCCESSINFO_CHANGE_PASSWORD', 'パスワードを変更しました');
-define('TEXT_SUCCESSINFO_PERMISSION', 'ユーザ権限を%sました');
+define('TEXT_SUCCESSINFO_PERMISSION_GIVE', 'ユーザ権限を与えました');
+define('TEXT_SUCCESSINFO_PERMISSION_CLEAR', 'ユーザ権限を取消しました');
+
 define('TEXT_SUCCESSINFO_CHANGE_PERMISSION','権限を変更しました');
 // ページタイトル
 define('PAGE_TITLE_MENU_USER', 'ユーザ管理メニュー');

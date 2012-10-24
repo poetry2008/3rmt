@@ -113,7 +113,7 @@ define('BOX_TOOLS_CACHE', '缓存控制');
 define('BOX_TOOLS_DEFINE_LANGUAGE', '语言文件管理');
 define('BOX_TOOLS_FILE_MANAGER', '文件管理');
 define('BOX_TOOLS_MAIL', '发送邮件');
-define('BOX_TOOLS_NEWSLETTER_MANAGER', '电子杂志管理');
+define('BOX_TOOLS_NEWSLETTER_MANAGER', '邮件杂志管理');
 define('BOX_TOOLS_SERVER_INFO', '服务器信息');
 define('BOX_TOOLS_WHOS_ONLINE', '在线用户');
 define('BOX_TOOLS_PRESENT','赠品功能');
@@ -701,4 +701,12 @@ define('TEXT_SITE_COPYRIGHT' ,'Copyright © %s Haomai');
 
 define('JUMP_PAGE_TEXT', '跳页');
 define('JUMP_PAGE_BUTTON_TEXT', '移动');
+define('TEXT_USER_ADDED','创建者:');
+define('TEXT_USER_UPDATE','更新者:');
+define('TEXT_DATE_ADDED','创建日:');
+define('TEXT_DATE_UPDATE','更新日:');
 
+// javascript language
+define('JS_TEXT_ONETIME_PWD_ERROR','密码有误');
+define('JS_TEXT_INPUT_ONETIME_PWD','请输入一次性密码\r\n');
+define('JS_TEXT_POSTAL_NUMBER_ERROR','邮编错误。');

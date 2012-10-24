@@ -39,7 +39,9 @@ define('TEXT_SUCCESSINFO_INSERT_USER', '已添加用户');
 define('TEXT_SUCCESSINFO_UPDATE_USER', '用户信息已更新');
 define('TEXT_SUCCESSINFO_DELETE_USER', '户信息已删除');
 define('TEXT_SUCCESSINFO_CHANGE_PASSWORD', '密码已更改');
-define('TEXT_SUCCESSINFO_PERMISSION', '用户权限已为%s');
+define('TEXT_SUCCESSINFO_PERMISSION_GIVE', '已给予用户权限');
+define('TEXT_SUCCESSINFO_PERMISSION_CLEAR', '已取消用户权限');
+
 define('TEXT_SUCCESSINFO_CHANGE_PERMISSION','已更改权限');
 
 define('PAGE_TITLE_MENU_USER', '用户管理菜单');

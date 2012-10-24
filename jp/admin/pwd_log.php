@@ -287,7 +287,7 @@ function PageHeader() {
   echo '<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">' . "\n";
   putJavaScript_ConfirmMsg();           // 確認メッセージを表示する JavaScript
   echo '<script language="javascript" src="includes/javascript/jquery_include.js"></script>'."\n";
-  echo '<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>'."\n";
+  echo '<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>';
   $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
   require("includes/note_js.php");
   echo '</head>' . "\n";

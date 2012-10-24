@@ -1,5 +1,18 @@
 <?php
   require('includes/application_top.php');
+  if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest"){
+    echo '<html '.HTML_PARAMS.'>'."\n";
+    echo '<head>'."\n";
+    echo '<meta http-equiv="Content-Type" content="text/html; charset='.CHARSET.'>'."\n";
+    echo '<title>'.TEXT_ADD_NOTE.'</title>'."\n";
+    echo '</head>'."\n";
+    echo '<body>'."\n";
+    if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){
+      echo "<script language='javascript'>"."\n";
+      echo 'one_time_pwd('.$page_name.');'."\n";
+      echo '</script>'."\n";
+    }
+  }
 ?>
 <div class="popwin" style="width:420px">
 <h3 class="popup_title"><?php echo TEXT_ADD_NOTE;?></h3>
@@ -54,3 +67,8 @@ value="<?php echo IMAGE_CANCEL?>" id="cancel" onclick="$.fancybox.close()" /></t
 </form>
 </div>
 </div>
+<?php 
+  if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest"){
+    echo '</body></html>';
+  }
+?>

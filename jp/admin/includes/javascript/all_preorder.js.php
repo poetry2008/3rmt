@@ -137,12 +137,12 @@ function mail_text(st,tt,ot){
   // 如果有了游戏人物名则不允许多选
 
   if((chk.length > 1)  && window.status_text[CI][0].indexOf('${ORDER_A}') != -1){
-    alert('複数の選択はできません。');
+    alert('<?php echo JS_TEXT_ALL_PREORDER_NOT_CHOOSE;?>');
     document.sele_act.elements[st].options[window.last_status].selected = true;
     return false;
   }
   if(chk.length < 1){
-    alert('注文書はまだ選択していません。');
+    alert('<?php echo JS_TEXT_ALL_PREORDER_NO_OPTION_ORDER;?>');
     document.sele_act.elements[st].options[window.last_status].selected = true;
     return false;
   }
@@ -172,7 +172,7 @@ function mail_text(st,tt,ot){
   if(document.sele_act.elements[tt].value.indexOf('${PAY_DATE}') != -1){
     $.ajax({
 dataType: 'text',
-url: 'ajax_orders.php?action=paydate',
+url: 'ajax_preorders.php?action=paydate',
 success: function(text) {
 document.sele_act.elements[tt].value = document.sele_act.elements[tt].value.replace('${PAY_DATE}',text);
 }
@@ -195,7 +195,7 @@ function newOrders(t)
 {
   $.ajax({
 dataType: 'text',
-url: 'ajax_orders.php?action=get_new_orders&prev_customer_action='+t,
+url: 'ajax_preorders.php?action=get_new_orders&prev_customer_action='+t,
 success: function(text) {
 $(text).insertAfter('#orders_list_table tr:eq(0)');
 }
@@ -209,42 +209,28 @@ function showRequest(formData, jqForm, options) {
 } 
 
 // 列表右侧的订单信息显示
-function showOrdersInfo(oID,ele,popup_type,param_str){
-  param_str = decodeURIComponent(param_str);
-  data_str = "oid="+oID+"&"+param_str; 
-  if (popup_type == 1) {
-    data_str += "&popup=1"; 
-    popup_num = 2; 
-    ele = ele.parentNode; 
-  }
+function showOrdersInfo(oID,ele){
+
   $.ajax({
 type:"POST",
-data:data_str,
+data:"oid="+oID,
 async:false, 
-url: 'ajax_orders.php?action=show_right_order_info',
+url: 'ajax_preorders.php?action=show_right_order_info',
 success: function(msg) {
 
 $('#orders_info_box').html(msg);
 if(document.documentElement.clientHeight < document.body.scrollHeight){
-if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
-		if(ele.offsetTop < $('#orders_info_box').height()){
-	offset = ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;	
-		}else{
-	offset = ele.offsetTop+$("#orders_list_table").position().top-1-$('#orders_info_box').height()-$('#offsetHeight').height();}
-	}else{
-offset = ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;	
-	}
+offset = ele.offsetTop + ele.offsetHeight + $('#orders_info_box').height() > $('#orders_list_table').height()? ele.offsetTop+$("#orders_list_table").position().top-$('#tep_site_filter').height()-$('#orders_info_box').height()-$('#offsetHeight').height():ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;
 $('#orders_info_box').css('top',offset).show();
 }else{
-if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
-	offset = ele.offsetTop+$("#orders_list_table").position().top-1-$('#orders_info_box').height()-$('#offsetHeight').height();
-	}else{
-offset = ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;	
-	}
+if(ele.offsetTop+$("#orders_list_table").position().top+ele.offsetTop + ele.offsetHeight + $('#orders_info_box').height() > document.documentElement.clientHeight){
+offset = ele.offsetTop+$("#orders_list_table").position().top-$('#orders_info_box').height()-$('#offsetHeight').height()-1;
+$('#orders_info_box').css('top',offset).show();
+}else{
+offset = ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;
 $('#orders_info_box').css('top',offset).show();
 }
-
-
+}
 }
 });
 
@@ -255,8 +241,8 @@ function hideOrdersInfo(popup_type){
   if (popup_type == 1) {
     popup_num = 1; 
   }
-  $("#orders_info_box").html("");
-  $("#orders_info_box").hide();
+  $('#orders_info_box').html('');
+  $('#orders_info_box').hide();
 }
 
 //播放提示音，需要warn_sound
@@ -265,11 +251,11 @@ function playSound()
   var node=document.getElementById('warn_sound');  
   if(node!=null)  
   {  
-    if (node.controls) {
-      node.controls.play();
-    } else {
-      node.play();
-    }
+   if (node.controls) {
+    node.controls.play();  
+   } else {
+    node.play();  
+   }
   }
 }
 // 当ele选中，则id必须同时被选中
@@ -307,7 +293,7 @@ $(function(){
 function checkChange(){
   $.ajax({
 dataType: 'text',
-url: 'ajax_orders.php?action=last_customer_action',
+url: 'ajax_preorders.php?action=last_customer_action',
 success: function(last_customer_action) {
 if (
   last_customer_action != cfg_last_customer_action 
@@ -315,8 +301,8 @@ if (
   ){
 // 如果有新订单和修改
 // 改变背景颜色
-$('body').css('background-color', '#ffcc99');// rgb(255, 204, 153)
-$('.preorder_head').css('background-color', '#ffcc99');
+$('body').css('background-color', '#83dc94');// rgb(255, 204, 153)
+$('.preorder_head').css('background-color', '#83dc94');
 // 在列表插入新订单
 newOrders(prev_customer_action != '' ? prev_customer_action : cfg_last_customer_action);
 // 修改最后检查时间
@@ -333,14 +319,14 @@ setTimeout(function(){checkChange()}, 60000);
 function orders_flag(ele, type, oid) {
   if (ele.className == 'orders_flag_checked') {
     $.ajax({
-url: 'ajax_orders.php?orders_id='+oid+'&orders_'+type+'_flag=0',
+url: 'ajax_preorders.php?orders_id='+oid+'&orders_'+type+'_flag=0',
 success: function(data) {
 ele.className='orders_flag_unchecked';
 }
 });
 } else {
   $.ajax({
-url: 'ajax_orders.php?orders_id='+oid+'&orders_'+type+'_flag=1',
+url: 'ajax_preorders.php?orders_id='+oid+'&orders_'+type+'_flag=1',
 success: function(data) {
 ele.className='orders_flag_checked';
 }
@@ -353,10 +339,9 @@ function orders_work(ele, work, oid) {
   document.getElementById('work_a').className = 'orders_flag_unchecked';
   document.getElementById('work_b').className = 'orders_flag_unchecked';
   document.getElementById('work_c').className = 'orders_flag_unchecked';
-  document.getElementById('work_d').className = 'orders_flag_unchecked';
   $.ajax({
 dataType: 'text',
-url: 'ajax_orders.php?orders_id='+oid+'&work='+work,
+url: 'ajax_preorders.php?orders_id='+oid+'&work='+work,
 success: function(data) {
 if (data == 'success') {
 if (ele.className == 'orders_flag_checked') {
@@ -373,14 +358,14 @@ ele.className='orders_flag_checked';
 function orders_computers(ele, cid, oid) {
   if (ele.className == 'orders_computer_checked') {
     $.ajax({
-url: 'ajax_orders.php?action=delete&orders_id='+oid+'&computers_id='+cid,
+url: 'ajax_preorders.php?action=delete&orders_id='+oid+'&computers_id='+cid,
 success: function(data) {
 ele.className='orders_computer_unchecked';
 }
 });
 } else {
   $.ajax({
-url: 'ajax_orders.php?action=insert&orders_id='+oid+'&computers_id='+cid,
+url: 'ajax_preorders.php?action=insert&orders_id='+oid+'&computers_id='+cid,
 success: function(data) {
 ele.className='orders_computer_checked';
 }
@@ -392,7 +377,7 @@ ele.className='orders_computer_checked';
 function clean_option(n,oid){
   // 自动保存
   // auto_save_questions();
-  $.ajax({ url: "ajax_orders.php?orders_id="+oid+"&action=clean_option&questions_no="+n, success: function(){}});
+  $.ajax({ url: "ajax_preorders.php?orders_id="+oid+"&action=clean_option&questions_no="+n, success: function(){}});
   // 是否显示按钮
   show_submit_button();
 }
@@ -421,7 +406,7 @@ function show_questions(ele){
 		ids += oid+'_';
 	    }
 	);		     
-	$.ajax({ url: "ajax_orders.php?action=get_oa_type",
+	$.ajax({ url: "ajax_preorders.php?action=get_oa_type",
 		 type:'post',
 		 beforeSend: function(jqXHR,settings){
 		     if(lastid!=ele.value){
@@ -447,11 +432,10 @@ function show_questions(ele){
     return true;
 }
     function show_questiondiv(show){
-
     if(show){
         $('#oa_dynamic_groups').html('');
 	$('#oa_dynamic_group_item').html('');
-	$.ajax({ url: "ajax_orders.php?payment="+order_payment_type+"&buytype="+order_buy_type+"&action=get_oa_groups", success: function(msg){
+	$.ajax({ url: "ajax_preorders.php?payment="+order_payment_type+"&buytype="+order_buy_type+"&action=get_oa_groups", success: function(msg){
 	    var oa_groupsobj =  eval("("+msg+")");
 	    var oa_groups = oa_groupsobj.split('_');;
 	    $("#oa_dynamic_groups").find('option').remove();//删除以前数据 
@@ -468,7 +452,7 @@ function show_questions(ele){
 		$("#oa_dynamic_groups")[0].options.add(new Option(''+group_name+'',group_id,true,false));
 	    }
 	    if(order_can_end=='1'){
-		$("#oa_dynamic_groups")[0].options.add(new Option('取引完了','end',true,false));
+		$("#oa_dynamic_groups")[0].options.add(new Option('<?php echo JS_TEXT_ALL_PREORDER_COMPLETION_TRANSACTION;?>','end',true,false));
 	    }
 	}});
 	$("#oa_dynamic_groups").unbind('change');
@@ -483,15 +467,15 @@ function show_questions(ele){
 	    }
 	    if($(this).selected().val()=='end'){
 		$("#oa_dynamic_submit").show();
-		$("#oa_dynamic_submit").html('取引完了');
+		$("#oa_dynamic_submit").html('<?php echo JS_TEXT_ALL_PREORDER_COMPLETION_TRANSACTION;?>');
 		msg = '<input type="hidden" id="endtheseorder" value="1"/>';
 		$("#oa_dynamic_group_item").html(msg);
 	    }else{
 		$("#oa_dynamic_submit").show();
-		$("#oa_dynamic_submit").html('保存');
+		$("#oa_dynamic_submit").html('<?php echo JS_TEXT_ALL_PREORDER_SAVE;?>');
 	    $.ajax(
 		{ 
-		    url: "ajax_orders.php?group_id="+$(this).val()+"&action=get_group_renderstring", 
+		    url: "ajax_preorders.php?group_id="+$(this).val()+"&action=get_group_renderstring", 
 		    type:"GET",
 		    data:"ids="+ids,
 		    success: function(msg){	      
@@ -534,7 +518,7 @@ $("#oa_dynamic_submit").click(function(){
 	      if (finish == 1){
 		  window.location.reload();
 	      }else {
-		  alert($("#oa_dynamic_groups").find('option|[selected]').text()+'の保存が完了しました');
+		  alert($("#oa_dynamic_groups").find('option|[selected]').text()+'<?php echo JS_TEXT_ALL_PREORDER_SAVED;?>');
 	      }
 	  }
       }
@@ -551,7 +535,7 @@ function click_relate(pid,ele){
   if ($(ele).parent().parent().find('#checkbox_'+pid).attr('checked')) {
     $(ele).parent().parent().find('#offset_'+pid).attr('readonly', true);
     $.ajax({
-url: 'ajax_orders.php?action=set_quantity&products_id='+pid+'&count='+($(ele).parent().parent().find('#quantity_'+pid).html()-$(ele).parent().parent().find('#offset_'+pid).val()),
+url: 'ajax_preorders.php?action=set_quantity&products_id='+pid+'&count='+($(ele).parent().parent().find('#quantity_'+pid).html()-$(ele).parent().parent().find('#offset_'+pid).val()),
 success: function(data) {
 }
 });
@@ -559,7 +543,7 @@ success: function(data) {
   // 减库存
   $(ele).parent().parent().find('#offset_'+pid).attr('readonly', false);
   $.ajax({
-url: 'ajax_orders.php?action=set_quantity&products_id='+pid+'&count=-'+($(ele).parent().parent().find('#quantity_'+pid).html()-$(ele).parent().parent().find('#offset_'+pid).val()),
+url: 'ajax_preorders.php?action=set_quantity&products_id='+pid+'&count=-'+($(ele).parent().parent().find('#quantity_'+pid).html()-$(ele).parent().parent().find('#offset_'+pid).val()),
 success: function(data) {
 }
 });
@@ -592,7 +576,7 @@ function copyToClipboard(txt) {
     try {   
       netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");   
     } catch (e) {   
-      alert("ブラウザに拒絶されました！\nブラウザのアドレス欄に'about:config'を入力してEnterキーを押します\nそれと'signed.applets.codebase_principal_support'数を'true'にしてください");   
+      alert("<?php echo JS_TEXT_ALL_ORDERS_BROWER_REJECTED;?>");   
     }   
     var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);   
     if (!clip)   
@@ -613,7 +597,7 @@ function copyToClipboard(txt) {
     clip.setData(trans,null,clipid.kGlobalClipboard);   
 
   }   
-  alert("クリップボードにコピーしました！")   
+  alert("<?php echo JS_TEXT_ALL_PREORDER_COPY_TO_CLIPBOARD;?>")   
 }  
 
 function show_monitor_error(e_id,flag,_this){
@@ -645,17 +629,17 @@ function allt(id,div_id){
 function once_pwd_redircet_new_url(url_str){
   //window.location.href = url_str;
   $.ajax({
-url: 'ajax_orders.php?action=getallpwd',
+url: 'ajax_preorders.php?action=getallpwd',
 type: 'POST',
 dataType: 'text',
 async : false,
 success: function(data) {
 var pwd_arr = data.split(",");
-var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
 if(in_array(pwd, pwd_arr)){
 window.location.href = url_str+'&once_pwd='+pwd; 
 } else {
-window.alert("パスワードが違います"); 
+window.alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>"); 
 }
 }
 });
@@ -679,12 +663,12 @@ function new_mail_text(ele,st,tt,ot){
   // 如果有了游戏人物名则不允许多选
 
   if((chk.length > 1)  && window.status_text[CI][0].indexOf('${ORDER_A}') != -1){
-    alert('複数の選択はできません。');
+    alert('<?php echo JS_TEXT_ALL_PREORDER_NOT_CHOOSE;?>');
     document.sele_act.elements[st].options[window.last_status].selected = true;
     return false;
   }
   if(chk.length < 1){
-    alert('注文書はまだ選択していません。');
+    alert('<?php echo JS_TEXT_ALL_PREORDER_NO_OPTION_ORDER;?>');
     document.sele_act.elements[st].options[window.last_status].selected = true;
     return false;
   }
@@ -714,7 +698,7 @@ function new_mail_text(ele,st,tt,ot){
   if(document.sele_act.elements[tt].value.indexOf('${PAY_DATE}') != -1){
     $.ajax({
 dataType: 'text',
-url: 'ajax_orders.php?action=paydate',
+url: 'ajax_preorders.php?action=paydate',
 success: function(text) {
 document.sele_act.elements[tt].value = document.sele_act.elements[tt].value.replace('${PAY_DATE}',text);
 }
@@ -757,6 +741,7 @@ function preorders_work(ele, work, oid) {
   document.getElementById('work_a').className = 'orders_flag_unchecked';
   document.getElementById('work_b').className = 'orders_flag_unchecked';
   document.getElementById('work_c').className = 'orders_flag_unchecked';
+  document.getElementById('work_d').className = 'orders_flag_unchecked';
   $.ajax({
 dataType: 'text',
 url: 'ajax_preorders.php?orders_id='+oid+'&work='+work,
@@ -790,19 +775,59 @@ ele.className='orders_computer_checked';
 }
 }
 
-function showPreOrdersInfo(oID,ele){
+function showPreOrdersInfo(oID,ele,popup_type,param_str){
+  param_str = decodeURIComponent(param_str);
+  data_str = "oid="+oID+"&"+param_str;
+  if (popup_type == 1) {
+    data_str += "&popup=1";
+    popup_num = 2;
+    ele = ele.parentNode; 
+  }
   $.ajax({
 type:"POST",
-data:"oid="+oID,
+data:data_str,
 async:false, 
-url: 'ajax_orders.php?action=show_right_preorder_info',
+url: 'ajax_preorders.php?action=show_right_preorder_info',
 success: function(msg) {
 
 $('#orders_info_box').html(msg);
+if(document.documentElement.clientHeight < document.body.scrollHeight){
+	if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
+		if(ele.offsetTop < $('#orders_info_box').height()){
+	offset = ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;	
+		}else{
+	offset = ele.offsetTop+$("#orders_list_table").position().top-1-$('#orders_info_box').height()-$('#offsetHeight').height();}
+	}else{
+offset = ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;	
+	}
+$('#orders_info_box').css('top',offset).show();
+}else{
+if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
+	offset = ele.offsetTop+$("#orders_list_table").position().top-1-$('#orders_info_box').height()-$('#offsetHeight').height();
+	}else{
+offset = ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;	
+	}
+$('#orders_info_box').css('top',offset).show();
+}
+/*
 offset = ele.offsetTop + $('#orders_info_box').height() > $('#orders_list_table').height()
 ? ele.offsetTop+$("#orders_list_table").position().top - $('#orders_info_box').height() 
 :ele.offsetTop+$("#orders_list_table").position().top;
 $('#orders_info_box').css('top',offset).show();
+*/
+/*if(document.documentElement.clientHeight < document.body.scrollHeight){
+offset = ele.offsetTop + ele.offsetHeight + $('#orders_info_box').height() > $('#orders_list_table').height()? ele.offsetTop+$("#orders_list_table").position().top-1-$('#orders_info_box').height()-$('#offsetHeight').height():ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;
+$('#orders_info_box').css('top',offset).show();
+}else{
+if(ele.offsetTop+$("#orders_list_table").position().top+ele.offsetTop + ele.offsetHeight + $('#orders_info_box').height() > document.documentElement.clientHeight){
+offset = ele.offsetTop+$("#orders_list_table").position().top-$('#orders_info_box').height()-$('#offsetHeight').height()-1;
+$('#orders_info_box').css('top',offset).show();
+}else{
+offset = ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;
+$('#orders_info_box').css('top',offset).show();
+}
+}
+*/
 }
 });
 }
@@ -811,116 +836,31 @@ $(document).ready(function(){
       if($(this).attr('class')!='dataTableRowSelected'){$(this).attr('style','background-color: rgb(240, 128, 128);')}})
     });
 
-function delete_order_info(oID, param_str)
+function delete_preorder_info(oID, param_str)
 {
   param_str = decodeURIComponent(param_str);
-  $.ajax({
+   $.ajax({
 type:"POST",
 data:'oID='+oID+'&'+param_str,
 async:false, 
-url: 'ajax_orders.php?action=show_del_info',
+url: 'ajax_preorders.php?action=show_del_preorder_info',
 success: function(msg) {
   $('#order_del').html(msg);
 }
 });
 }
-function cancel_del_order_info(oID, param_str)
+function cancel_del_preorder_info(oID, param_str)
 {
   param_str = decodeURIComponent(param_str);
 $.ajax({
 type:"POST",
 data:'oID='+oID+'&'+param_str,
 async:false, 
-url: 'ajax_orders.php?action=cancel_del_info',
+url: 'ajax_preorders.php?action=cancel_del_preorder_info',
 success: function(msg) {
   $('#order_del').html(msg);
 }
 });
-}
-
-function recalc_order_price(oid, opd, o_str, op_str)
-{
-  var op_array = op_str.split('|||');
-  var p_op_info = 0; 
-  for (var i=0; i<op_array.length; i++) {
-    if (op_array[i] != '') {
-      p_op_info += parseInt(document.getElementsByName('update_products['+opd+'][attributes]['+op_array[i]+'][price]')[0].value); 
-    }
-  }
-  pro_num = document.getElementById('update_products_new_qty_'+opd).value;
-  p_price = document.getElementsByName('update_products['+opd+'][p_price]')[0].value;
-  
-  $.ajax({
-    type: "POST",
-    data:'oid='+oid+'&opd='+opd+'&o_str='+o_str+'&op_price='+p_op_info+'&p_num='+pro_num+'&p_price='+p_price,
-    async:false,
-    url: 'ajax_orders.php?action=recalc_price',
-    success: function(msg) {
-      msg_info = msg.split('|||');
-      document.getElementsByName('update_products['+opd+'][final_price]')[0].value = msg_info[0];
-      document.getElementById('update_products['+opd+'][a_price]').innerHTML = msg_info[1];
-      document.getElementById('update_products['+opd+'][b_price]').innerHTML = msg_info[2];
-      document.getElementById('update_products['+opd+'][c_price]').innerHTML = '<b>'+msg_info[3]+'</b>';
-      document.getElementById('update_products['+opd+'][ah_price]').value = msg_info[4];
-      document.getElementById('update_products['+opd+'][bh_price]').value = msg_info[5];
-      document.getElementById('update_products['+opd+'][ch_price]').value = msg_info[6];
-    }
-  });
-}
-
-function recalc_all_product_price(oid, or_str)
-{
-  p_info = or_str.split('|||');
- 
-  o_str = '';
-  for (i=0; i<p_info.length; i++) {
-    j = 0; 
-    $('#ctable').find('input').each(function() {
-      if ($(this).attr('type') == 'text') {
-        regex = 'update_products['+p_info[i]+'][attributes]'; 
-        regex_p = 'update_products['+p_info[i]+'][p_price]';
-        regex_n = 'update_products['+p_info[i]+'][qty]';
-        
-        if ($(this).attr('name').indexOf(regex) == 0) {
-          regex_o = '[price]';
-          if ($(this).attr('name').indexOf(regex_o) > 0) {
-            o_str += $(this).attr('name')+'='+$(this).val()+'&';  
-          }
-        }
-        
-        if ($(this).attr('name').indexOf(regex_p) == 0) {
-          o_str += $(this).attr('name')+'='+$(this).val()+'&';  
-        }  
-        
-        if ($(this).attr('name').indexOf(regex_n) == 0) {
-          o_str += $(this).attr('name')+'='+$(this).val()+'&';  
-        }  
-        
-        j++; 
-      } 
-   }); 
-  }
-   
-  $.ajax({
-    type: "POST",
-    data:o_str+'op_i='+or_str+'&oid='+oid,
-    async:false,
-    url: 'ajax_orders.php?action=recalc_all_price',
-    success: function(msg) {
-      msg_array = msg.split('|||');
-      for (m=0; m<msg_array.length; m++) {
-        mp_array = msg_array[m].split(':::');
-        op_id = mp_array[0];
-        sp_array = mp_array[1].split('<<<');
-        
-        document.getElementsByName('update_products['+op_id+'][final_price]')[0].value = sp_array[0];
-        document.getElementById('update_products['+op_id+'][a_price]').innerHTML = sp_array[1];
-        document.getElementById('update_products['+op_id+'][b_price]').innerHTML = sp_array[2];
-        document.getElementById('update_products['+op_id+'][c_price]').innerHTML = sp_array[3];
-        
-      }
-    }
-  }); 
 }
 
 function mark_work(ele, mark_symbol, select_mark, c_site, param_other)
@@ -930,7 +870,7 @@ function mark_work(ele, mark_symbol, select_mark, c_site, param_other)
     type:"POST",
     data:'param_other=' + param_other,
     async:false, 
-    url: 'ajax_orders.php?action=handle_mark&mark_symbol='+mark_symbol+'&select_mark='+select_mark+'&c_site='+c_site,
+    url: 'ajax_preorders.php?action=handle_mark&mark_symbol='+mark_symbol+'&select_mark='+select_mark+'&c_site='+c_site,
     success: function(data) {
       data_array = data.split('|||'); 
       if (data_array[0] == 'success') {

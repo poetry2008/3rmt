@@ -575,8 +575,8 @@ echo $title_str;
 //<script type="text/javascript" src="xheditor1/xheditor-1.1.12-zh-tw.min.js"></script>
 ?>
 <script type="text/javascript" src="xheditor1/xheditor.js"></script>
-<script language="javascript" src="includes/general.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script>
 $(document).ready(function(){
 	$('#elm1').xheditor({upLinkUrl:"upload.php",upLinkExt:"zip,rar,txt",upImgUrl:"upload.php?check=<?php echo $rand_num;?>",upImgExt:"jpg,jpeg,gif,png",upFlashUrl:"upload.php",upFlashExt:"swf",upMediaUrl:"upload.php",upMediaExt:"avi"});
