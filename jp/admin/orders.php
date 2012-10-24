@@ -2346,7 +2346,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     ?>
     <!-- header_eof //-->
     <!-- body //-->
-    <table border="0" width="100%" cellspacing="2" cellpadding="2" class="conten">
+    <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
     <tr>
     <?php
     if ($ocertify->npermission >= 10) {

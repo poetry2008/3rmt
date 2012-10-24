@@ -335,6 +335,15 @@ $faq_query = tep_db_query("select title from ".TABLE_FAQ_CATEGORIES_DESCRIPTION.
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <script language="javascript">
+function display(){
+    var categories_tree = document.getElementById('categories_tree'); 
+      if(categories_tree.style.display == 'none'){
+           categories_tree.style.display = 'block';
+              }else{
+                    categories_tree.style.display = 'none';
+                       }
+         }
+/*
 $(window).resize(function (){
     var menu_div_width = $('#categories_right_td').width();
     if(menu_div_width>=480){
@@ -351,7 +360,7 @@ $(document).ready(function(){
     }else{
       $('#categories_tree').animate({width:"470px"});
     }
-});
+});*/
 </script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
@@ -379,6 +388,13 @@ require("includes/note_js.php");
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <!-- header_eof //-->
 
+<div id="categories_tree">
+                <?php
+                  require(DIR_WS_CLASSES . 'faq_tree.php');
+                  $osC_FaqTree = new osC_FaqTree;
+                  echo $osC_FaqTree->buildTree();
+                ?>
+                </div>
 <!-- body //-->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
@@ -425,14 +441,8 @@ require("includes/note_js.php");
             <div class="faq_gotomenu">
             <?php //goto menu start?>              
               <div id="gotomenu">
-                <a href="javascript:void(0)" onclick="$('#categories_tree').toggle()"><?php echo CATEGORY_TREE_SELECT_TEXT;?></a>
-                <div id="categories_tree">
-                <?php
-                  require(DIR_WS_CLASSES . 'faq_tree.php');
-                  $osC_FaqTree = new osC_FaqTree;
-                  echo $osC_FaqTree->buildTree();
-                ?>
-                </div>
+                <a href="javascript:void(0)" onclick="display()"><?php echo CATEGORY_TREE_SELECT_TEXT;?></a>
+                
               </div>
             </div>
 <?php
