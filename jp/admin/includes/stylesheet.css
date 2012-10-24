@@ -254,6 +254,7 @@ body {
 }
 @media all and (-webkit-min-device-pixel-ratio:0){
 .compatible{
+>-------min-width:750px;
 	width:100%;
 	width: expression(document.body.clientWidth < 750? "750px": "100%" );
 	
@@ -870,10 +871,11 @@ display:none;
 	position: absolute;
 /*	width:900px;  */
 	background-color:#000;
-	top:17px;
+	top:120px;
 	right:0;
-	z-index:180;
+	z-index:20000;
 	border:1px solid #000;
+        width:100%
 }
 .subcategory_tree_info{
 	margin-left:-10px;

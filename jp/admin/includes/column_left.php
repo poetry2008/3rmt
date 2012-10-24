@@ -133,7 +133,7 @@ left = parseInt(left);
   }
   var menu_div_width = $('#categories_right_td').width();
   if(menu_div_width>=480){
-    $('#categories_tree').animate({width:(menu_div_width-5)+"px"});
+    //$('#categories_tree').animate({width:(menu_div_width-5)+"px"});
   }
   <?php
   if ($_SERVER['PHP_SELF'] == '/admin/orders.php' || $_SERVER['PHP_SELF'] == '/admin/preorders.php') {

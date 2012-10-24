@@ -5307,27 +5307,27 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
           $show_ca_query = tep_db_query("select * from (select c.categories_id ,cd.site_id, cd.categories_name from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id = cd.categories_id and c.categories_id = '".$tmp_ca_id."' and cd.language_id = '".$language_id."' order by site_id DESC) c where site_id = '0' or site_id = '".$site_id."'group by categories_id limit 1"); 
           $show_ca_res = tep_db_fetch_array($show_ca_query);
 
-          $return_str .= $show_ca_res['categories_name'].':&nbsp;';  
+          //$return_str .= $show_ca_res['categories_name'].':&nbsp;';  
           if($td_flag){
           $return_str .= "</td><td class='smallText' align='right' width='450'>";
           }
           if ($cur_key !== false) {
-              $return_str .= '<div style="float:left;width:120px">&nbsp;';
+           //   $return_str .= '<div style="float:left;width:120px">&nbsp;';
             if (isset($level_category_arr[$cur_key-1])) {
               $prev_id =  $level_category_arr[$cur_key-1];
               $link_cpath = get_link_parent_category($prev_id); 
               $return_str .= '<input type="button" value="'.TEXT_CATEGORY_HEAD_IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID')).'cPath='.$link_cpath).'\'">&nbsp;'; 
             }
-              $return_str .= '</div>';
+            //  $return_str .= '</div>';
 
-              $return_str .= '<div style="float:left;width:120px">&nbsp;';
+             // $return_str .= '<div style="float:left;width:120px">&nbsp;';
             if (isset($level_category_arr[$cur_key+1])) {
               $next_id =  $level_category_arr[$cur_key+1];
               $link_cpath = get_link_parent_category($next_id); 
               $return_str .= '&nbsp;<input type="button"
                 value="'.TEXT_CATEGORY_HEAD_IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID')).'cPath='.$link_cpath).'\'">&nbsp;'; 
             }
-              $return_str .= '</div>';
+              //$return_str .= '</div>';
           }
 
         }
@@ -5385,25 +5385,25 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
             cd.categories_id and c.categories_id = '".$current_category_id."' and cd.language_id = '".$language_id."' order by site_id DESC) c where site_id = '0' or site_id = '".$site_id."'group by categories_id limit 1"); 
             $show_ca_res = tep_db_fetch_array($show_ca_query);
 
-          $return_str .= $show_ca_res['categories_name'].':&nbsp;';  
+          //$return_str .= $show_ca_res['categories_name'].':&nbsp;';  
           if($td_flag){
           $return_str .= "</td><td class='smallText' align='right' width='450'>";
           }
           if ($cur_pos !== false) {
               $link_path = get_link_parent_category($category_arr[$cur_pos-1]);
-              $return_str .= '<div style="float:left;width:120px">&nbsp;';
+              //$return_str .= '<div style="float:left;width:120px">&nbsp;';
             if (isset($category_arr[$cur_pos-1])) {
               $return_str .= '<input type="button"
                 value="'.TEXT_CATEGORY_HEAD_IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link($page, 'cPath='.$link_path.'&site_id='.(int)$site_id).'\'">&nbsp;'; 
             }
-              $return_str .= '</div>';
-              $return_str .= '<div style="float:left;width:120px">&nbsp;';
+              //$return_str .= '</div>';
+              //$return_str .= '<div style="float:left;width:120px">&nbsp;';
             if (isset($category_arr[$cur_pos+1])) {
               $link_path = get_link_parent_category($category_arr[$cur_pos+1]); 
               $return_str .= '&nbsp;<input type="button"
                 value="'.TEXT_CATEGORY_HEAD_IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link($page, 'cPath='.$link_path.'&site_id='.(int)$site_id).'\'">'; 
             }
-              $return_str .= '</div>';
+              //$return_str .= '</div>';
           }
         }
       }
