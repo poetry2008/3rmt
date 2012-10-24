@@ -72,6 +72,37 @@
 <link media="print" href="includes/print.css" rel="stylesheet" type="text/css" />
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script>
+function textarea_check(ele){
+    var comment_cols = $(ele).css("width");
+    var comment_font = $(ele).css("font-size"); 
+    var comment_id = $(ele).attr("id");
+    var comment_temp = 0;
+    var comment_temp_line = 0;
+    if(comment_id == 'responsible'){comment_temp = 30;comment_temp_line = 1;}
+    var comment_num;
+    var comment_line;
+    var comment_sum;
+    comment_cols = comment_cols.replace("px","");
+    comment_font = comment_font.replace("px","");
+    comment_cols = parseInt(comment_cols);
+    comment_font = parseInt(comment_font);
+    comment_num = (comment_cols-comment_temp)/comment_font;
+    var comment = $(ele).val();
+    comment_sum = comment.length;
+    comment_sum = parseInt(comment_sum);
+    comment_line = Math.round(comment_sum/comment_num)+comment_temp_line; 
+    $(ele).attr("rows",comment_line);
+}
+$(document).ready(function(){
+  $("textarea").change(function(){
+   textarea_check(this); 
+  });
+  //$("#bill_templates").change(function(){
+   //$("textarea").each(function(){
+    //textarea_check(this); 
+   //});
+  //});
+});
   // 数据保存
   var table_data = new Array();
   // 平均高度
@@ -172,10 +203,10 @@
     html += "<td class=\"link_03\">取引日</td>\n";
     html += "<td class=\"link_04\">種別</td>\n";
     html += "<td class=\"link_05\">商品名</td>\n";
-    html += "<td class=\"link_06\">単価</td>\n";
-    html += "<td class=\"link_07\">数量</td>\n";
-    html += "<td class=\"link_08\">値引</td>\n";
-    html += "<td class=\"link_09\">金額</td>\n";
+    html += "<td class=\"link_06\" align=\"right\">単価</td>\n";
+    html += "<td class=\"link_07\" align=\"right\">数量</td>\n";
+    html += "<td class=\"link_08\" align=\"right\">値引</td>\n";
+    html += "<td class=\"link_09\" align=\"right\">金額</td>\n";
     html += "</tr></thead>";
     return html;
   }
@@ -352,6 +383,9 @@
           $('#email').val(data['email']);
           $('#email_display').html(data['email']);
           $('#responsible').val(data['responsible']);
+          $("textarea").each(function(){
+            textarea_check(this); 
+          });
         }
       });
     }
@@ -417,7 +451,7 @@
   }
   
   // 上部文本发生改动时要重新分表格
-  function textarea_change(){
+  function textarea_change(num){
     data_empty(num);
     create_table(table_data);
   }
@@ -471,9 +505,9 @@
         <tr>
           <td width="30"></td>
           <td width="292" valign="top" align="left" class="input_print03">
-          <font size="3"><u><textarea id="data5" type="text" rows="6" style="font-size:14px; width:270px; overflow-y:visible;" onChange="textarea_change()"></textarea></u></font>
-          <font size="3"><u><textarea id="data6" type="text" rows="6" style="font-size:14px; overflow-y:visible; width:200px;" onChange="textarea_change()"></textarea></u></font>
-          <font size="3"><u><textarea id="data7" type="text" rows="6" style="font-size:14px; overflow-y:visible; width:200px;" onChange="textarea_change()"></textarea></u></font>
+          <font size="3"><u><textarea id="data5" type="text" rows="2" style="font-size:14px; width:270px; overflow-y:visible;" onChange="textarea_change()"></textarea></u></font>
+          <font size="3"><u><textarea id="data6" type="text" rows="2" style="font-size:14px; overflow-y:visible; width:200px;" onChange="textarea_change()"></textarea></u></font>
+          <font size="3"><u><textarea id="data7" type="text" rows="2" style="font-size:14px; overflow-y:visible; width:200px;" onChange="textarea_change()"></textarea></u></font>
           </td>
         </tr>
 </tr>
@@ -496,7 +530,7 @@
           <tr><td style="border-bottom:#000000 1px solid;  padding-top:4px;" align="center">
           <input name="textfield" type="text" id="data11" value="" style="width:110px; font-size:12px; padding-top:4px; text-align:center; height:20px;">
           </td></tr>
-          <tr><td colspan="6" align="center" valign="middle"><textarea id="responsible" type="text" rows="6" style=" width:100px; font-size:20px; overflow-y:visible; text-align:center; padding:15px 0;" onChange="textarea_change()"></textarea></td></tr>
+          <tr><td colspan="6" align="center" valign="middle"><textarea id="responsible" type="text" rows="6" style=" width:100px; font-size:20px; overflow-y:visible; text-align:center; padding:15px 0 15px 0; resize:none;" onChange="textarea_change()"></textarea></td></tr>
           </table>
         </td></tr>
       </table>
@@ -556,7 +590,7 @@ function check_select()
   var sel_p_list = document.getElementsByName('oid[]');
   for (var i=0; i<sel_p_list.length; i++) {
     if (sel_p_list[i].checked) {
-       return true; 
+      document.forms.orders_form.submit();
     }
   }
   return false;
@@ -608,7 +642,7 @@ require("includes/note_js.php");
 <!-- header //-->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <!-- header_eof //-->
-<form action="?action=print&customers_id=<?php echo $_GET['cID'];?>" method="post" name="form" onSubmit="return check_select();" target="_blank">
+<form action="?action=print&customers_id=<?php echo $_GET['cID'];?>" method="post" name="orders_form" target="_blank">
 <!-- body //-->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
@@ -732,7 +766,7 @@ require("includes/note_js.php");
                 <tr>
                   <td colspan="3" align="left"></td>
                   <td colspan="4" align="right">
-                  <?php echo tep_html_element_submit(APPLICATION_CREATE_TEXT);?> 
+                  <input type="button" name="orders_button" onclick="check_select();" value="<?php echo APPLICATION_CREATE_TEXT;?>">
                   <a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, str_replace('cpage', 'page', tep_get_all_get_params(array('page'))));?>"><?php echo tep_html_element_button(IMAGE_BACK);?></a> 
                   </td>
                 </tr>
