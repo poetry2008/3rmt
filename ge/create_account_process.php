@@ -303,10 +303,10 @@ function pass_hidd(){
   
   if(CI == '0'){
     document.getElementById('trpass1').style.display = "";
-  document.getElementById('trpass2').style.display = "";
+    document.getElementById('trpass2').style.display = "";
   }else{
     document.getElementById('trpass1').style.display = "none";
-  document.getElementById('trpass2').style.display = "none";
+    document.getElementById('trpass2').style.display = "none";
   }
 }
 </script>
@@ -689,13 +689,13 @@ unset($_SESSION['referer']);
     }
 
     $customer_first_name         = $firstname;
-    $customer_last_name          = $lastname; // 2003.03.11 Add Japanese osCommerce
+    $customer_last_name          = $lastname;
     $customer_default_address_id = 1;
     $customer_country_id         = $country;
     $customer_zone_id            = $zone_id;
     tep_session_register('customer_id');
     tep_session_register('customer_first_name');
-    tep_session_register('customer_last_name'); // 2003.03.11 Add Japanese osCommerce
+    tep_session_register('customer_last_name');
     tep_session_register('customer_default_address_id');
     tep_session_register('customer_country_id');
     tep_session_register('customer_zone_id');
