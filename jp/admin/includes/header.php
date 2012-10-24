@@ -451,9 +451,11 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
       onclick="toggle_header_menu(\'managermenu\')">'.HEADER_TEXT_MANAGERMENU.'</a>&nbsp;|<br>
       <table class="menu01" id="managermenu" cellpadding="0" cellspacing="0">
       ';
-      echo '<tr><td class="menu01"><a class="t_link01" 
+    if($href_url == FILENAME_CATEGORIES_ADMIN || $href_url == FILENAME_CATEGORIES){
+    echo '<tr><td class="menu01"><a class="t_link01" 
       href="add_note.php?author='.$user_info['name'].'&belong='.$belong.'"
       id="fancy">'.TEXT_ADD_NOTE.'</a></td></tr>';
+  }
       echo '
       <tr>
       <td class="menu01"><a class="t_link01"
