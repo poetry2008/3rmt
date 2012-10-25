@@ -866,12 +866,26 @@ font-size:10px;!important;
 
 /*print*/
 .data_table{ width:100%; margin:0 auto;}
-.link_02 ,.link_03 ,.link_04,.link_05,.link_06,.link_07,.link_08,.link_09{ background-color:#ccc; color:#000; font-size:18px; font-weight:bold;}
+.link_02 ,.link_03 ,.link_04,.link_05,.link_06,.link_07,.link_08,.link_09{ 
+background-color:#ccc; 
+color:#000; 
+font-size:18px; 
+font-weight:bold;
+}
 .link_01 { background-color:#fff; color:#000; font-size:18px;}
 .data_table td{ font-size:16px;}
 .link_01 a{ color:#FF0000;}
 .input_print01{ font-size:23px; color:#000000;  text-align:center; overflow:hidden; display:block;}
-.link_03{padding:2px; border-top:none; border-right:none;font-size:13px; float:left;}
+.link_03{padding:2px; border-top:none; border-right:none;font-size:13px; float:left; width:100%;*width:auto;}
+@media all and (-webkit-min-device-pixel-ratio:0){
+.link_03{
+	padding:2px;
+	border-top:none;
+	border-right:none;
+	font-size:13px; 
+	float:left; 
+	width:auto;
+}}
 #data10{ overflow:hidden;}
 #cost_print{ width:132px; margin:0 0 0 30px; text-align:right; float:left;}
 #cost_print02{ float:left;}
@@ -882,7 +896,6 @@ font-size:10px;!important;
 .text_x3{ width:90px; border-bottom:1px solid #000000; border-right:1px solid #000000; font-size:16px; /*float:left;*/ margin:0;} 
 .price input{width:80px; display:block; text-align:left;}
 .price span{width:80px; display:none;}
-
 
 /*categories_tree*/
 #gotomenu{ position:relative; }
