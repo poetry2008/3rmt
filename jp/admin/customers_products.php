@@ -73,6 +73,9 @@
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script>
 function textarea_check(ele){
+    var comment_str = $(ele).val();
+    var comment_str_array = comment_str.split("\n");
+    var comment_str_length = comment_str_array.length;
     var comment_cols = $(ele).css("width");
     var comment_font = $(ele).css("font-size"); 
     var comment_id = $(ele).attr("id");
@@ -80,28 +83,32 @@ function textarea_check(ele){
     var comment_temp_line = 0;
     if(comment_id == 'responsible'){comment_temp = 30;comment_temp_line = 1;}
     var comment_num;
-    var comment_line;
+    var comment_line = 0;
     var comment_sum;
     comment_cols = comment_cols.replace("px","");
     comment_font = comment_font.replace("px","");
     comment_cols = parseInt(comment_cols);
     comment_font = parseInt(comment_font);
     comment_num = (comment_cols-comment_temp)/comment_font;
-    var comment = $(ele).val();
-    comment_sum = comment.length;
-    comment_sum = parseInt(comment_sum);
-    comment_line = Math.round(comment_sum/comment_num)+comment_temp_line; 
-    $(ele).attr("rows",comment_line);
+    var comment = '';
+    var i = 0;
+    for(x in comment_str_array){
+
+      if(comment_str_array[x].length > comment_num){
+
+        comment = comment_str_array[x];
+        comment_sum = comment.length;
+        comment_sum = parseInt(comment_sum);
+        comment_line += Math.round(comment_sum/comment_num)+comment_temp_line;
+        i++;
+      }
+    } 
+    $(ele).attr("rows",comment_line+comment_str_length-i);
 }
 $(document).ready(function(){
   $("textarea").change(function(){
    textarea_check(this); 
   });
-  //$("#bill_templates").change(function(){
-   //$("textarea").each(function(){
-    //textarea_check(this); 
-   //});
-  //});
 });
   // 数据保存
   var table_data = new Array();
@@ -197,16 +204,16 @@ $(document).ready(function(){
   
   function table_header (num) {
     html =  "<div class=\"data_box\" style=\"width:100%\">\n";
-    html += "<table cellpadding=\"0\" cellspacing=\"1\" border=\"0\" class=\"data_table\" id=\"data_table_" + num + "\" align=\"center\">\n";
+    html += "<table cellpadding=\"0\" cellspacing=\"1\" border=\"0\" width=\"100%\" class=\"data_table\" id=\"data_table_" + num + "\" align=\"center\">\n";
     html += "<thead><tr align=\"center\" >\n";
-    html += "<td class=\"link_02\">No.</td>\n";
-    html += "<td class=\"link_03\">取引日</td>\n";
-    html += "<td class=\"link_04\">種別</td>\n";
-    html += "<td class=\"link_05\">商品名</td>\n";
-    html += "<td class=\"link_06\" align=\"right\">単価</td>\n";
-    html += "<td class=\"link_07\" align=\"right\">数量</td>\n";
-    html += "<td class=\"link_08\" align=\"right\">値引</td>\n";
-    html += "<td class=\"link_09\" align=\"right\">金額</td>\n";
+    html += "<td class=\"link_02\" width=\"5%\">No.</td>\n";
+    html += "<td class=\"link_03\" width=\"15%\">取引日</td>\n";
+    html += "<td class=\"link_04\" width=\"10%\">種別</td>\n";
+    html += "<td class=\"link_05\" width=\"20%\">商品名</td>\n";
+    html += "<td class=\"link_06\" width=\"15%\" align=\"right\">単価</td>\n";
+    html += "<td class=\"link_07\" width=\"15%\" align=\"right\">数量</td>\n";
+    html += "<td class=\"link_08\" width=\"15%\" align=\"right\">値引</td>\n";
+    html += "<td class=\"link_09\" width=\"15%\" align=\"right\">金額</td>\n";
     html += "</tr></thead>";
     return html;
   }
@@ -265,7 +272,7 @@ $(document).ready(function(){
     data['price'] = Math.abs(data['price']);
     html = "<tr class=\"data\" align=\"center\" style=\"font-size:15px;\">\n";
     html += "<td class=\"link_01 number\"></td>\n";
-    html += "<td class=\"link_01 date\" id=\"tdate_"+number+"\"  align=\"left\"><input size=\"10\" type=\"text\" value=\""+data['date']+"\" onchange=\"date_change(this,"+number+")\"></td>";
+    html += "<td id=\"tdate_"+number+"\"  align=\"center\"><input size=\"10\" type=\"text\" value=\""+data['date']+"\" onchange=\"date_change(this,"+number+")\"></td>";
     html += "<td class=\"link_01 type\" id=\"type_"+number+"\" align=\"center\" ><input size=\"10\" type=\"text\" value=\""+data['type']+"\" onchange=\"type_change(this,"+number+")\"></td>";
     html += "<td class=\"link_01 name\" id=\"pname_"+number+"\" align=\"left\"><input size=\"45\" type=\"text\" value=\""+data['name']+"\" id=\"name_display_"+number+"\" onchange=\"name_change(this,"+number+")\"></td>";
     html += "<td class=\"link_01 price\" id=\"fprice_"+number+"\" align=\"right\" ><input size=\"12\" type=\"text\" value=\""+(Math.abs(data['price']) != ''?(Math.abs(parseFloat(data['price'])).toFixed(1)):'')+"\" onchange=\"price_change(this,"+number+")\" style=\"text-align:right;\"><span class=\"price_display\" id=\"price_display_"+number+"\">"+(data['price'] != ''?('¥'+parseFloat(data['price']).toFixed(1)).replace('-',''):'')+" </span>";
@@ -505,9 +512,9 @@ $(document).ready(function(){
         <tr>
           <td width="30"></td>
           <td width="292" valign="top" align="left" class="input_print03">
-          <font size="3"><u><textarea id="data5" type="text" rows="2" style="font-size:14px; width:270px; overflow-y:visible;" onChange="textarea_change()"></textarea></u></font>
-          <font size="3"><u><textarea id="data6" type="text" rows="2" style="font-size:14px; overflow-y:visible; width:200px;" onChange="textarea_change()"></textarea></u></font>
-          <font size="3"><u><textarea id="data7" type="text" rows="2" style="font-size:14px; overflow-y:visible; width:200px;" onChange="textarea_change()"></textarea></u></font>
+          <font size="3"><u><textarea id="data5" type="text" rows="2" style="font-size:14px; width:270px; overflow-y:visible; resize:none;" onChange="textarea_change()"></textarea></u></font>
+          <font size="3"><u><textarea id="data6" type="text" rows="2" style="font-size:14px; overflow-y:visible; width:200px; resize:none;" onChange="textarea_change()"></textarea></u></font>
+          <font size="3"><u><textarea id="data7" type="text" rows="2" style="font-size:14px; overflow-y:visible; width:200px; resize:none;" onChange="textarea_change()"></textarea></u></font>
           </td>
         </tr>
 </tr>
@@ -522,15 +529,15 @@ $(document).ready(function(){
         <tr><td align="right"><textarea id="data10" type="text" rows="2" style="font-size:14px; overflow-y:visible; width:280px;  text-align:right;" ></textarea></td></tr>
         <tr><td align="right" class="input_print02">
   <font size="2">
-  <input name="textfield" type="text" id="email" value="" onChange="$('#email_display').html(this.value)" onpropertychange="$('#email_display').html(this.value)" onBlur="$('#email_display').html(this.value)" style="text-align:right; font-size:12px; width:300px; ">
+  <input name="textfield" type="text" id="email" value="" onChange="$('#email_display').html(this.value)" onpropertychange="$('#email_display').html(this.value)" onBlur="$('#email_display').html(this.value)" style="text-align:right; font-size:12px; width:300px;">
   <span id="email_display"></span>
   </font></td></tr>
         <tr><td align="right" colspan="4">
-          <table cellpadding="0" cellspacing="0" style="border:#000000 1px solid; margin-top:19px;">
-          <tr><td style="border-bottom:#000000 1px solid;  padding-top:4px;" align="center">
-          <input name="textfield" type="text" id="data11" value="" style="width:110px; font-size:12px; padding-top:4px; text-align:center; height:20px;">
+          <table cellpadding="0" cellspacing="0" style="border:#000000 1px solid;margin-top:19px;">
+          <tr><td style="padding-top:4px; border-bottom:1px solid #000000;" align="center">
+          <input name="textfield" type="text" id="data11" value="" style=" width:110px; font-size:12px; padding-top:4px; text-align:center; height:20px;">
           </td></tr>
-          <tr><td colspan="6" align="center" valign="middle"><textarea id="responsible" type="text" rows="6" style=" width:100px; font-size:20px; overflow-y:visible; text-align:center; padding:15px 0 15px 0; resize:none;" onChange="textarea_change()"></textarea></td></tr>
+          <tr><td colspan="6" align="center" valign="middle"><textarea id="responsible" type="text" rows="1" style=" width:100px; font-size:20px; overflow-y:visible; text-align:center; padding:15px 0; resize:none;" onChange="textarea_change()"></textarea></td></tr>
           </table>
         </td></tr>
       </table>
