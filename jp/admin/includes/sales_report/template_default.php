@@ -23,7 +23,7 @@ require("includes/note_js.php");
 ?>
 <!-- header_eof //-->
 <!-- body //-->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
       <!-- left_navigation //-->
@@ -48,7 +48,7 @@ require("includes/note_js.php");
         <td colspan="2"><form action="" method="get">
           <table border="0" width="100%" cellspacing="0" cellpadding="2">
             <tr>
-              <td align="left" rowspan="2" class="menuBoxHeading" nowrap><input
+              <td align="left" rowspan="3" class="menuBoxHeading" nowrap><input
               nowrap type="radio" name="report" value="1" <?php if ($srView == 1) echo "checked"; ?>>
               <?php echo SR_REPORT_TYPE_YEARLY; ?><br>
               <input nowrap type="radio" name="report" value="2" <?php if ($srView == 2) echo "checked"; ?>>
@@ -116,6 +116,9 @@ require("includes/note_js.php");
                 <option value="1"<?php if ($srMethod == 1) echo " selected"; ?>><?php echo SR_TITLE_ORDER_DAY;?></option>
               </select>
               </td>
+          </tr>
+
+          <tr>
               <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_DETAIL; ?><br>
               <select name="detail" size="1">
                 <!--<option value="0"<?php if ($srDetail == 0) echo " selected"; ?>><?php echo  SR_DET_HEAD_ONLY; ?></option>-->
@@ -224,6 +227,9 @@ date("Y") - $i; ?></option>
               </select>
               <br>
               </td>
+              </tr></table>
+              </td>
+              <td><table><tr>
               <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_SORT; ?><br>
               <select name="sort" size="1">
                 <option value="0"<?php if ($srSort == 0) echo " selected"; ?>><?php echo  SR_SORT_VAL0; ?></option>

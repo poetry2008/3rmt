@@ -535,6 +535,7 @@ TR：偶数行
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 	font-size: 12px;                                /* フォントサイズ */
 	line-height:14px;
+	word-break: break-all;
 }
 .main a { text-decoration:none;}
 legend {
@@ -775,7 +776,7 @@ h3 {
 	border-bottom:1px inherit #999;
 }
 .categories_input01 input {
-	width:100%;
+	width:90%;
 }
 .categories_textarea01 textarea {
 	width:100%;
@@ -866,36 +867,23 @@ font-size:10px;!important;
 
 /*print*/
 .data_table{ width:100%; margin:0 auto;}
-.link_02 ,.link_03 ,.link_04,.link_05,.link_06,.link_07,.link_08,.link_09{ 
-background-color:#ccc; 
-color:#000; 
-font-size:18px; 
-font-weight:bold;
-}
+.link_02 ,.link_03 ,.link_04,.link_05,.link_06,.link_07,.link_08,.link_09{ background-color:#ccc; color:#000; font-size:18px; font-weight:bold;}
 .link_01 { background-color:#fff; color:#000; font-size:18px;}
 .data_table td{ font-size:16px;}
 .link_01 a{ color:#FF0000;}
 .input_print01{ font-size:23px; color:#000000;  text-align:center; overflow:hidden; display:block;}
-.link_03{padding:2px; border-top:none; border-right:none;font-size:13px; float:left; width:100%;*width:auto;}
-@media all and (-webkit-min-device-pixel-ratio:0){
-.link_03{
-	padding:2px;
-	border-top:none;
-	border-right:none;
-	font-size:13px; 
-	float:left; 
-	width:auto;
-}}
+.link_03{padding:2px; border-top:none; border-right:none;font-size:13px; float:left;}
 #data10{ overflow:hidden;}
 #cost_print{ width:132px; margin:0 0 0 30px; text-align:right; float:left;}
 #cost_print02{ float:left;}
 #email_display{ display:none;}
 .text_x{ width:100%;overflow:hidden;}
 .text_x1{ height:19px; width:503px; /*float:left;*/}
-.text_x2{ width:53px; font-size:15px; border:1px solid #000000; background-color:#ccffff; /*float:left;*/ }
-.text_x3{ width:90px; border-top:1px solid #000000;border-bottom:1px solid #000000; border-right:1px solid #000000; font-size:16px; /*float:left;*/ margin:0;} 
+.text_x2{ width:53px; font-size:15px; border-left:1px solid #000000;  border-bottom:1px solid #000000; border-right:1px solid #000000; background-color:#ccffff; /*float:left;*/ }
+.text_x3{ width:90px; border-bottom:1px solid #000000; border-right:1px solid #000000; font-size:16px; /*float:left;*/ margin:0;} 
 .price input{width:80px; display:block; text-align:left;}
 .price span{width:80px; display:none;}
+
 
 /*categories_tree*/
 #gotomenu{ position:relative; }
@@ -1068,6 +1056,7 @@ a.s_column_bar {
 }
 .oa_auto_no_product { float:left; line-height:20px; width:100%\9;}
 .oa_auto_no_product_input { float:left;}
+#orders_info_box{ min-width:550px;}
 #orders_info_box table td{ font-size:14px;}
 .orders_info_div td { vertical-align:top; padding-top:2px;}
 
@@ -1105,7 +1094,6 @@ a.s_column_bar {
 	font-size:13px;
 	margin-right:5px;
 	padding:2px 9px\9;
-	float:left;
 	margin-bottom:2px;
 	margin-top:2px;
 }
@@ -1113,7 +1101,6 @@ a.s_column_bar {
 	font-size:13px;
 	margin-right:5px;
 	padding:2px 9px\9;
-	float:left;
 	margin-bottom:2px;
 	margin-top:2px;
 }
@@ -1185,10 +1172,12 @@ a.s_column_bar {
 	left:18%;
 	width:70%;
 	background-color:#FFFF00;
+	min-width:550px;
 }
 .campaign_top{
 	background-color:#000000;
 	color:#FFFFFF;
+	min-width:550px;
 }
 .campaign_top a{ color:#FFFFFF;}
 .campaign_input{
@@ -1196,6 +1185,7 @@ a.s_column_bar {
 }
 .campaign_body {
 	padding:0 50px 10px 50px;
+	min-width:550px;
 }
 .campaign_input_num{
 	width:20%;
@@ -1207,6 +1197,7 @@ a.s_column_bar {
     left: 18%;
     position: absolute;
     width: 70%;
+	min-width:550px;
 }
 #show_item_info{
     background-color: #FFFF00;
@@ -1240,6 +1231,7 @@ a.s_column_bar {
 	background:#000;
 	color:#fff;
 	padding:0 5px;
+	min-width:550px;
 }
 .popup_order_title img{
 	vertical-align:top;
@@ -1249,6 +1241,7 @@ a.s_column_bar {
 }
 .popup_order_info{
 	padding:5px 50px;
+	min-width:550px;
 }
 .popup_order_info td{
 	vertical-align:top;
@@ -1545,4 +1538,8 @@ font-size:14px;
 .header_space img{ margin-top:-5px;}
 a.pageResults{
 	text-decoration:underline;
+}
+.comp_width{
+	float:left;
+	width:60%;
 }

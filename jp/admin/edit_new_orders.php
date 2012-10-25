@@ -3205,7 +3205,7 @@ a.dpicker {
         </td>
         <!-- body_text //-->
         <td width="100%" valign="top"><?php echo $notes;?>
-        <table border="0" width="96%" cellspacing="0" cellpadding="2">
+        <table border="0" width="100%" cellspacing="0" cellpadding="2">
         <?php
         if ($action == 'edit') {
           if($orders_exit_flag == true){

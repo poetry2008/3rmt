@@ -902,7 +902,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
 ?>
 <!-- header_eof //-->
 <!-- body //-->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content"> 
   <tr>
 <?php
   if ($ocertify->npermission >= 10) {
@@ -918,7 +918,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
   }
 ?>
 <!-- body_text //-->
-<td width="100%" valign="top"><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="2">
+<td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
   if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) {
     // edit start
@@ -1726,9 +1726,9 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     <td colspan="2" align="right"><?php echo '<a href="' . tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('action','status','questions_type'))) . '">' .  tep_html_element_button(IMAGE_BACK) . '</a>'; ?></td>
   </tr>
 </table>
-
       
     </table>
+    </div>
   </td>
 </tr>
 
@@ -1740,7 +1740,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
 ?>
     <tr>
       <td width="100%" height="40">
-  
+  <div class="compatible">
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
       <td class="pageHeading" nowrap><?php echo HEADING_TITLE; ?></td>
@@ -1878,7 +1878,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       </td>
     </tr>
   </table>
-
+</div>
       </td>
     </tr>
     <tr>

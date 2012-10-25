@@ -33,7 +33,7 @@ ul { list-style:none;}
 .note_close { float:right; padding:1px 1px 0 0; position: absolute; right: 0;}
 .note_close input{ position:relative; float:left; margin-left:2px;}
 .note_move input { float:right;}
-textarea{ width:100%; position:relative;height:90%;}
+textarea{ width:100%; position:relative;}
 .note_textarea{ margin:15px 15px 15px 10px; clear:both;}
 .note_title { float:left; font-size:12px; padding-left:10px; color:#000000;white-space:nowrap;}
 .note_head { clear:both;}

@@ -542,7 +542,7 @@ $(document).ready(function(){
   </font></td></tr>
         <tr><td align="right" colspan="4">
           <table cellpadding="0" cellspacing="0" style="border:#000000 1px solid;margin-top:19px;">
-          <tr><td style="padding-top:4px; border-bottom:1px solid #000000;" align="center">
+          <tr><td style="border-bottom:#000000 1px solid;  padding-top:4px;" align="center">
           <input name="textfield" type="text" id="data11" value="" style="width:110px; font-size:12px; padding-top:4px; text-align:center; height:20px;">
           </td></tr>
           <tr><td colspan="6" align="center" valign="middle"><textarea id="responsible" type="text" rows="1" style=" width:100px; font-size:20px; overflow-y:visible; text-align:center; padding:15px 0; resize:none;" onChange="textarea_change()"></textarea></td></tr>

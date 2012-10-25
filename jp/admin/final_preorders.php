@@ -1723,7 +1723,7 @@ require("includes/note_js.php");
 <!-- header_eof //-->
 <!-- body //-->
 <?php echo tep_draw_form('edit_order', FILENAME_FINAL_PREORDERS, tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post','onSubmit="return presubmitChk();"'); ?>
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top">
       <table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
@@ -1734,7 +1734,8 @@ require("includes/note_js.php");
     </td>
     <!-- body_text //-->
     <td width="100%" valign="top"><?php echo $notes;?>
-      <table border="0" width="96%" cellspacing="0" cellpadding="2">
+      <div class="compatible">
+      <table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
   if (($action == 'edit') && ($order_exists == true)) {
     $order = new preorder($oID);
@@ -2701,7 +2702,7 @@ if($action == "add_product")
     print "</table></td></tr>\n";
 }  
 ?>
-    </table></td>
+    </table></div></td>
 <!-- body_text_eof //-->
   </tr>
 </table>
