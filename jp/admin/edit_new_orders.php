@@ -1115,7 +1115,7 @@ if($ocertify->auth_user && $orders['user_added'] == NULL){
             if ($totals['class'] == "ot_point" || $totals['class'] == "ot_subtotal") {
               if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
                 $total_details_mail .= SENDMAIL_TEXT_POINT_ONE . $currencies->format($totals['value']) . "\n";
-                $mailpoint = str_replace(SENDMAIL_EDIT_ORDERS_PRICE_UNIT,'',$currencies->format($totals['value']));
+                $mailpoint = str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($totals['value']));
               }
             } elseif ($totals['class'] == "ot_total") {
               if($handle_fee) {
