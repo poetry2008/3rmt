@@ -164,7 +164,7 @@
 <script language="javascript" src="includes/javascript/jquery.form.js"></script>
 <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script>
 //function auto_reload(){
 //  window.location.reload();

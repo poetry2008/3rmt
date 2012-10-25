@@ -136,7 +136,7 @@ case 'delete':
   <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
   <script type="text/javascript" src="includes/javascript/jquery.js"></script>
   <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-  <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+  <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
   <script type="text/javascript">
   var html = new Array();
 var i=0;

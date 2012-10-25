@@ -51,7 +51,7 @@ else echo HELP_INFO_HEADER;
 ?>
 
 </title>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script type="text/javascript" src="xheditor1/jquery/jquery-1.4.4.src.js"></script>
 <style>
 body {
@@ -92,8 +92,8 @@ h2,h3,h4,ul,li{ padding:0; margin:0;}
 }
 </style>
 <script type="text/javascript" src="xheditor1/xheditor.js"></script>
-<script language="javascript" src="includes/general.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script>
 $(document).ready(function(){
 	$('#elm1').xheditor();

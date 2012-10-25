@@ -133,9 +133,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title><?php echo HEADING_TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-<script language="javascript" src="includes/general.js"></script>
+<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script style="text/javascript">
 function show_link_campaign_info(cid, sid)
 {

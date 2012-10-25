@@ -1,16 +1,4 @@
 <?php
-/* *********************************************************
-  モジュール名: users.php
- * 2001/5/29
- *   modi 2002-05-10
- * Naomi Suzukawa
- * suzukawa@bitscope.co.jp
-  ----------------------------------------------------------
-ユーザ管理
-
-  ■変更履歴
-  2003-04-07 add  $HTTP_POST_VERS に対応させる（PHP スーパーグローバル変数[$_POST]への対応は次回とする）
-********************************************************* */
 
 /* ===============================================
   global 定数
@@ -599,7 +587,7 @@ function PageHeader() {
   }
 
   echo '<script language="javascript" src="includes/javascript/jquery_include.js"></script>'."\n";
-  echo '<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>'."\n";
+  echo '<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>';
   $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
   require("includes/note_js.php");
   echo '</head>' . "\n";

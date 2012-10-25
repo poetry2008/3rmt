@@ -152,7 +152,7 @@ $(document).ready(function(){
             products_name     : data[i]['products_name'],
             final_price       : data[i]['final_price'],
             products_quantity : data[i]['products_quantity'],
-            type              : '通貨'
+            type              : '<?php echo TEXT_CUSTOMERS_PRODUCTS_CURRENCY;?>'
           });
         }
         create_table(table_data);
@@ -211,13 +211,13 @@ $(document).ready(function(){
     html += "<table cellpadding=\"0\" cellspacing=\"1\" border=\"0\" width=\"100%\" class=\"data_table\" id=\"data_table_" + num + "\" align=\"center\">\n";
     html += "<thead><tr align=\"center\" >\n";
     html += "<td class=\"link_02\" width=\"5%\">No.</td>\n";
-    html += "<td class=\"link_03\" width=\"15%\">取引日</td>\n";
-    html += "<td class=\"link_04\" width=\"10%\">種別</td>\n";
-    html += "<td class=\"link_05\" width=\"20%\">商品名</td>\n";
-    html += "<td class=\"link_06\" width=\"15%\" align=\"right\">単価</td>\n";
-    html += "<td class=\"link_07\" width=\"15%\" align=\"right\">数量</td>\n";
-    html += "<td class=\"link_08\" width=\"15%\" align=\"right\">値引</td>\n";
-    html += "<td class=\"link_09\" width=\"15%\" align=\"right\">金額</td>\n";
+    html += "<td class=\"link_03\" width=\"15%\"><?php echo TEXT_CUSTOMERS_PRODUCTS_ORDER_DATA;?></td>\n";
+    html += "<td class=\"link_04\" width=\"10%\"><?php echo TEXT_CUSTOMERS_PRODUCTS_CATEGORY;?></td>\n";
+    html += "<td class=\"link_05\" width=\"20%\"><?php echo TEXT_CUSTOMERS_PRODUCTS_PNAME;?></td>\n";
+    html += "<td class=\"link_06\" width=\"15%\" align=\"right\"><?php echo TEXT_CUSTOMERS_PRODUCTS_ONE_PRICE;?></td>\n";
+    html += "<td class=\"link_07\" width=\"15%\" align=\"right\"><?php echo TEXT_CUSTOMERS_PRODUCTS_QUANTITY;?></td>\n";
+    html += "<td class=\"link_08\" width=\"15%\" align=\"right\"><?php echo TEXT_CUSTOMERS_PRODUCTS_REDUCTION_PRICE;?></td>\n";
+    html += "<td class=\"link_09\" width=\"15%\" align=\"right\"><?php echo TEXT_CUSTOMERS_PRODUCTS_PRICE;?></td>\n";
     html += "</tr></thead>";
     return html;
   }
@@ -229,7 +229,7 @@ $(document).ready(function(){
       html += " style=\"page-break-after:always;\"";
     }
     html += "><tr><td class=\"text_x1\"></td>\n";
-    html += "    <td class=\"text_x2\" align=\"center\">小計</td>\n";
+    html += "    <td class=\"text_x2\" align=\"center\"><?php echo TEXT_CUSTOMERS_PRODUCTS_SUB_TOTAL;?></td>\n";
     html += "    <td class=\"text_x3 cost_display\" align=\"right\" id=\"cost_display_"+num+"\" ></td>\n";
     html += "  </tr></table>";
     html += "</div>";
@@ -509,8 +509,12 @@ $(document).ready(function(){
   <tr>
     <td>
       <table border="0" width="50%" align="left" class="print_innput" cellpadding="0" cellspacing="0">
-        <tr><td height="30" colspan="2" style="font-size:18px; padding-bottom:10px;"><input name="textfield" type="text" id="data2" value="" style=" height:23px; width:160px; font-size:18px; font-weight:bold; margin-right:30px;"><b>御中</b></td></tr>
-        <tr><td height="25" colspan="2" style=" font-size:18px; padding-bottom:15px;"><span id="cost_print"><?php echo $total_cost;?></span><div class="cost_print02">円 税込</div></td></tr>
+        <tr><td height="30" colspan="2" style="font-size:18px; padding-bottom:10px;"><input name="textfield" type="text" id="data2" value="" style=" height:23px; width:160px; font-size:18px; font-weight:bold; margin-right:30px;"><b><?php echo TEXT_CUSTOMERS_PRODUCTS_MAIL_STR;?></b></td></tr>
+        <tr><td height="25" colspan="2" style=" font-size:18px; padding-bottom:15px;"><span id="cost_print"><?php echo $total_cost;?></span><div class="cost_print02"><?php 
+        echo TEXT_MONEY_SYMBOL;
+        echo '&nbsp;';
+        echo TEXT_CUSTOMERS_PRODUCTS_TAX;
+        ?></div></td></tr>
         <tr><td height="30" colspan="2" align="left" valign="center"><input name="textfield" type="text" id="data3" value="" style=" width:270px; font-size:16px; margin-right:5px;"></td></tr>
         <tr><td colspan="2" height="10" align="left"><input name="textfield" type="text" id="data4" value="" style=" width:200px; font-size:14px; margin-right:5px;"></td></tr>
         <tr>
@@ -670,11 +674,6 @@ require("includes/note_js.php");
               <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT);?></td> 
             </tr>
         </table>
-  <!--
-        <a href="javascript:void(0);" onclick="check_all(this,<?php echo $_GET['cID'];?>);">全部</a>
-        <a href="javascript:void(0);" onclick="clear_all(this,<?php echo $_GET['cID'];?>);">キャンセル</a>
-        
-  -->
         <table id="orders_list_table" border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td valign="top">

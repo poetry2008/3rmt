@@ -202,7 +202,7 @@
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <?php require('includes/step-by-step/form_check.js.php'); ?>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php 
 $belong = 'create_account.php'; 
 require("includes/note_js.php");

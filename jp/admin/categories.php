@@ -1149,10 +1149,10 @@ echo HEADING_TITLE.$categories_array['categories_name'];
 </title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <link rel="stylesheet" type="text/css" href="includes/jquery.autocomplete.css">
-<script language="javascript" src="includes/general.js"></script>
+<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery.autocomplete.js"></script>
 <script language="javascript">
   function relate_products1(cid,rid){

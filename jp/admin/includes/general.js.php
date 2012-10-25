@@ -24,9 +24,9 @@ function submitChk() {
   var date_orders = document.getElementById("date_orders");
   var date_order = document.getElementById("date_order");
   date_order.value = date_orders.value;
-  /* 確認ダイアログ表示 */ 
-  var flag = confirm ( "確認はしましたか？"); 
-  /* send_flg が TRUEなら送信、FALSEなら送信しない */ 
+<?php /* 確認ダイアログ表示 */ ?>
+  var flag = confirm ( "<?php echo JS_TEXT_GENERAL_IS_CONFIRM;?>"); 
+<?php /* send_flg が TRUEなら送信、FALSEなら送信しない */ ?>
   if(flag){
     $.ajax({
 url: 'ajax_orders.php?action=getallpwd',
@@ -39,7 +39,7 @@ var flag_tmp = true;
 $(".once_pwd").each(function(index) {
   var input_name = $(this).attr('name');
   var input_val = $(this).val();
-  var op_id  = input_name.replace(/[^0-9]/ig," ").replace(/(^\s*)|(\s*$)/g, "");;
+  var op_id  = input_name.replace(/[^0-9]/ig," ").replace(/(^\s*)|(\s*$)/g, "");
   var percent = 0;
   $.ajax({
     url: 'ajax_orders.php?action=getpercent',
@@ -60,20 +60,18 @@ $(".once_pwd").each(function(index) {
   }
   });
   if(!flag_tmp){
-  var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+  var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
   if(pwd != null){
   if(in_array(pwd,pwd_arr)){
   $("input[name=update_viladate]").val(pwd);
     document.edit_order.submit();
   }else{
-  alert("パスワードが違います");
+  alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>");
   $("input[name=update_viladate]").val('_false');
-  //document.edit_order.submit();
-  //alert("更新をキャンセルしました。");
   return false;
   }
   }else{
-    alert("更新をキャンセルしました。");
+    alert("<?php echo JS_TEXT_GENERAL_RESET_UPDATE;?>");
     return false;
   }
   }else{
@@ -98,13 +96,13 @@ dataType: 'text',
 async : false,
 success: function(data) {
 if (data == 'error') {
-alert('エラー: 注文が存在しません。');
+alert('<?php echo JS_TEXT_GENERAL_ERROR_PREORDER_IS_SET;?>');
 flag2 = false;
 }
 }
 });
 if (flag2) {
-  var flag = confirm ( "確認はしましたか？\n\n【 重要 】価格構成要素を変更した場合は、先に「注文内容確認」ボタンを押す必要があります。\n\n戻る場合は [キャンセル] ボタンをクリックしてください。"); 
+  var flag = confirm ( "<?php echo JS_TEXT_GENERAL_CONFIRM_ORDER_PRICE;?>"); 
   if(flag){
     $.ajax({
 url: 'ajax_orders.php?action=getallpwd',
@@ -138,18 +136,17 @@ $(".once_pwd").each(function(index) {
   }
   });
   if(!flag_tmp){
-  var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+  var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
   if(in_array(pwd,pwd_arr)){
   $("input[name=update_viladate]").val(pwd);
     _flag = true; 
     //document.edit_order.submit();
   }else{
-  alert("パスワードが違います");
+  alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>");
   $("input[name=update_viladate]").val('_false');
   $("input[name=x]").val('43');
   $("input[name=y]").val('12');
   document.edit_order.submit();
-//  alert("更新をキャンセルしました。");
   return false;
   }
   }else{
@@ -157,7 +154,6 @@ $(".once_pwd").each(function(index) {
     $("input[name=x]").val('43');
     $("input[name=y]").val('12');
     _flag = true;
-    //document.edit_order.submit();
   }
 }
 });
@@ -172,9 +168,8 @@ return _flag;
 
 function update_price() {
 
-  if (window.confirm("注文内容を確認しますか？")) {
+  if (window.confirm("<?php echo JS_TEXT_GENERAL_CONFIRM_ORDER_INFO;?>")) {
 
-    //viladate
     $.ajax({
 url: 'ajax_orders.php?action=getallpwd',
 type: 'POST',
@@ -207,22 +202,21 @@ $(".once_pwd").each(function(index) {
   }
   });
 if(!flag_tmp){
-var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
 if(in_array(pwd,pwd_arr)){
 $("input[name=update_viladate]").val(pwd);
 $("input[name=x]").val('');
 $("input[name=y]").val('');
-window.alert("注文内容を更新しました。合計金額を必ず確認してください。\n\n【 重要 】メールは送信されていません。【 重要 】");
+window.alert("<?php echo JS_TEXT_GENERAL_CONFIRM_PRICE_INFO;?>");
 document.edit_order.submit();
 document.edit_order.notify.checked = true;
 document.edit_order.notify_comments.checked = false;
 }else{
 $("input[name=update_viladate]").val('_false');
-alert("パスワードが違います");
+alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>");
 $("input[name=x]").val('');
 $("input[name=y]").val('');
 document.edit_order.submit();
-//alert("更新をキャンセルしました。");
 document.edit_order.notify.checked = true;
 document.edit_order.notify_comments.checked = false;
 }
@@ -230,7 +224,7 @@ document.edit_order.notify_comments.checked = false;
 $("input[name=update_viladate]").val('');
 $("input[name=x]").val('');
 $("input[name=y]").val('');
-window.alert("注文内容を更新しました。合計金額を必ず確認してください。\n\n【 重要 】メールは送信されていません。【 重要 】");
+window.alert("<?php echo JS_TEXT_GENERAL_CONFIRM_PRICE_INFO;?>");
 document.edit_order.submit();
 document.edit_order.notify.checked = true;
 document.edit_order.notify_comments.checked = false;
@@ -242,7 +236,7 @@ document.edit_order.notify_comments.checked = false;
 
 
 } else {
-  window.alert("注文内容確認をキャンセルしました。\n\n【 重要 】メールは送信されていません。【 重要 】");
+  window.alert("<?php echo JS_TEXT_GENERAL_RESET_ORDER_CONFIRM;?>");
 }
 
 }
@@ -251,7 +245,7 @@ function update_price2() {
   var date_orders = document.getElementById("date_orders");
   var date_order = document.getElementById("date_order");
   date_order.value = date_orders.value;
-  if (window.confirm("注文内容を確認しますか？")) {
+  if (window.confirm("<?php echo JS_TEXT_GENERAL_CONFIRM_ORDER_INFO;?>")) {
     document.edit_order.notify.checked = false;
     document.edit_order.notify_comments.checked = false;
     // 如果减少购买量则提示保存位置
@@ -259,8 +253,8 @@ function update_price2() {
         old = $('#'+$(this).attr('id').replace('_new_qty_', '_qty_'));
         if(parseInt(old.val()) > parseInt($(this).val())){
         pid = $(this).attr('id').substr($(this).attr('id').indexOf('_qty_')+5);
-        //alert(pid);
-        if (window.confirm($('#update_products_name_'+pid).val()+" "+(old.val() - $(this).val())+"個を実在個に保存しますか？架空在庫に保存しますか？\n\n「OK」なら実在庫、「キャンセル」なら架空在庫に足されます")) {
+        if (window.confirm($('#update_products_name_'+pid).val()+" "+(old.val() - $(this).val())+"<?php 
+            echo JS_TEXT_GENERAL_QUANTITY_INFO;?>")) {
         $('#update_products_real_quantity_'+pid).val('1');
         } else {
         $('#update_products_real_quantity_'+pid).val('0');
@@ -300,25 +294,24 @@ $(".once_pwd").each(function(index) {
   }
   });
 if(!flag_tmp){
-var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
 if(in_array(pwd,pwd_arr)){
 $("input[name=update_viladate]").val(pwd);
 document.edit_order.submit();
-window.alert("注文内容を更新しました。合計金額を必ず確認してください。\n\n【 重要 】メールは送信されていません。【 重要 】");
+window.alert("<?php JS_TEXT_GENERAL_CONFIRM_PRICE_INFO;?>");
 document.edit_order.notify.checked = true;
 document.edit_order.notify_comments.checked = false;
 }else{
 $("input[name=update_viladate]").val('_false');
-alert("パスワードが違います");
+alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>");
 document.edit_order.submit();
-//alert("更新をキャンセルしました。");
 document.edit_order.notify.checked = true;
 document.edit_order.notify_comments.checked = false;
 }
 }else{
 $("input[name=update_viladate]").val('');
 document.edit_order.submit();
-window.alert("注文内容を更新しました。合計金額を必ず確認してください。\n\n【 重要 】メールは送信されていません。【 重要 】");
+window.alert("<?php echo JS_TEXT_GENERAL_CONFIRM_PRICE_INFO;?>");
 document.edit_order.notify.checked = true;
 document.edit_order.notify_comments.checked = false;
 
@@ -329,7 +322,7 @@ document.edit_order.notify_comments.checked = false;
 
 // delete   document.edit_order.submit();
 } else {
-  window.alert("注文内容確認をキャンセルしました。\n\n【 重要 】メールは送信されていません。【 重要 】");
+  window.alert("<?php echo JS_TEXT_GENERAL_RESET_ORDER_CONFIRM;?>");
 }
 }
 function show_monitor_error(e_id,flag,_this){
@@ -344,7 +337,6 @@ function obj_obj(obj){
   return typeof(obj)=="string"?document.getElementById(obj):obj;
 }
 function allt(id,div_id){ 
-  //div 赋值
   e=obj_obj(id) 
     var et=e.offsetTop; 
   var el=e.offsetLeft; 
@@ -391,7 +383,7 @@ function clearNoNum(obj)
   var show_error_msg = false;  
   if(!re.test(obj.value) && obj.value != ''){
     show_error_msg = true; 
-    alert('登録できない文字が入力されました。その文字を消します。'); 
+    alert('<?php echo JS_TEXT_GENERAL_INPUT_TEXT_ERROR;?>'); 
   } 
   if(show_error_msg){
     //replace all un number and '.'
@@ -419,7 +411,7 @@ function clearNoNum_1(obj)
   if(!re.test(obj.value) && obj.value != ''){
     if(!(obj.value.substr(0,1) == '-' && obj.value.length == 1)){
       show_error_msg = true; 
-      alert('登録できない文字が入力されました。その文字を消します。'); 
+      alert('<?php echo JS_TEXT_GENERAL_INPUT_TEXT_ERROR;?>'); 
     }  
   } 
   if(show_error_msg){
@@ -448,11 +440,11 @@ function check_toggle_status(url_str)
     async : false,
     success: function(data) {
       var pwd_arr = data.split(",");
-      var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+      var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
       if(in_array(pwd, pwd_arr)){
         window.location.href = url_str+'&once_pwd='+pwd; 
       } else {
-        window.alert("パスワードが違います"); 
+        window.alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>"); 
       }
     }
   });
@@ -468,11 +460,11 @@ function change_status(url_str){
     async : false,
     success: function(data) {
       var pwd_arr = data.split(",");
-      var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+      var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
       if(in_array(pwd, pwd_arr)){
         window.location.href = url_str+'&once_pwd='+pwd; 
       } else {
-        window.alert("パスワードが違います"); 
+        window.alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>"); 
       }
     }
   });
@@ -490,7 +482,7 @@ function faq_c_is_set_romaji(pid,cid,site_id){
     success: function(data) {
       if(data=='true'){
         flag = false;
-        alert("既に登録されているため使用できません。");
+        alert("<?php echo JS_TEXT_GENERAL_IS_HAS;?>");
       }
     }
   });
@@ -510,7 +502,7 @@ function faq_c_is_set_error_char(romaji){
       if(data!=''){
         flag = false;
         $("#cromaji").val(data);
-        alert("禁止記号は全て「-」に置き換えられます");
+        alert("<?php echo JS_TEXT_GENERAL_CHAR_SET_INFO;?>");
       }
     }
   });
@@ -529,7 +521,7 @@ function faq_q_is_set_romaji(cid,qid,site_id){
     success: function(data) {
       if(data=='true'){
         flag = false;
-        alert("既に登録されているため使用できません。");
+        alert("<?php echo JS_TEXT_GENERAL_IS_HAS;?>");
       }
     }
   });
@@ -549,7 +541,7 @@ function faq_q_is_set_error_char(romaji){
       if(data!=''){
         flag = false;
         $("#qromaji").val(data);
-        alert("禁止記号は全て「-」に置き換えられます");
+        alert("<?php echo JS_TEXT_GENERAL_CHAR_SET_INFO;?>");
       }
     }
   });
@@ -589,7 +581,7 @@ function faq_category_romaji_can_move(cromaji,site_id){
     success: function(data) {
       if(data=='true'){
         flag = false;
-        alert("移動先に同じURLが登録されているため移動できません");
+        alert("<?php echo JS_TEXT_GENERAL_NOT_MOVE;?>");
       }
     }
   });
@@ -608,7 +600,7 @@ function faq_question_romaji_can_move(qromaji,site_id){
     success: function(data) {
       if(data=='true'){
         flag = false;
-        alert("移動先に同じURLが登録されているため移動できません");
+        alert("<?php echo JS_TEXT_GENERAL_NOT_MOVE;?>");
       }
     }
   });
@@ -627,7 +619,7 @@ function faq_question_romaji_can_copy_to(qromaji,site_id){
     success: function(data) {
       if(data=='true'){
         flag = false;
-        alert("コピー先に同じURLが登録されているためコピー出来ません");
+        alert("<?php echo JS_TEXT_GENERAL_NOT_COPY;?>");
       }
     }
   });
@@ -678,9 +670,9 @@ function c_is_set_error_char(replace_single){
         flag = false;
         if (replace_single == false) {
           $("#cromaji").val(data); 
-          alert("禁止記号は全て「-」に置き換えられます。");
+          alert("<?php echo JS_TEXT_GENERAL_CHAR_SET_INFO;?>");
         } else {
-          alert("ローマ字に禁止記号が含まれています。");
+          alert("<?php echo JS_TEXT_GENERAL_ROMAJI_ERROR;?>");
         }
       }
     }
@@ -701,7 +693,7 @@ function p_is_set_error_char(){
       if(data!=''){
         flag = false;
         $("#promaji").val(data);
-        alert("禁止記号は全て「-」に置き換えられます");
+        alert("<?php echo JS_TEXT_GENERAL_CHAR_SET_INFO;?>");
       }
     }
   });
@@ -721,7 +713,7 @@ function c_is_set_romaji(pid,cid,site_id){
     success: function(data) {
       if(data=='true'){
         flag = false;
-        alert("既に登録されているため使用できません。");
+        alert("<?php echo JS_TEXT_GENERAL_IS_HAS;?>");
       }
     }
   });
@@ -741,7 +733,7 @@ function p_is_set_romaji(cid,qid,site_id){
     success: function(data) {
       if(data=='true'){
         flag = false;
-        alert("既に登録されているため使用できません。");
+        alert("<?php echo JS_TEXT_GENERAL_IS_HAS;?>");
       }
     }
   });
@@ -819,15 +811,15 @@ function products_form_validator(cid,qid,site_id){
 
   if(flag == true){
 
-    var error_str = '入力フォームでエラーが起きています!'+"\n"+'次の項目を修正してください:'+"\n\n";
-    if(op1 == true){error_str += 'オススメ商品並び順は最大値を超えました。999,999,999,999,999以下にしてください。'+"\n";}
-    if(pw1 == true){error_str += '重量は最大値を超えました。999,999,999,999,999以下にしてください。'+"\n";}
-    if(pp1 == true){error_str += '商品の価格は最大値を超えました。999,999,999,999,999以下にしてください。'+"\n";}
-    if(pad1 == true){error_str += '増減の値は最大値を超えました。999,999,999,999,999以下にしてください。'+"\n";}
-    if(prq1 == true){error_str += '実在庫は最大値を超えました。999,999,999,999,999以下にしてください。'+"\n";}
-    if(pa1 == true){error_str += '数値は最大値を超えました。999,999,999,999,999以下にしてください。'+"\n";}
-    if(pcm1 == true){error_str += '買い忘れバナー最小在庫数は最大値を超えました。999,999,999,999,999以下にしてください。'+"\n";} 
-    if(pc1 == true){error_str += '表示順は最大値を超えました。999,999,999,999,999以下にしてください。'+"\n";} 
+    var error_str = '<?php echo JS_TEXT_GENERAL_INPUT_FORM_ERROR;?>'+"\n\n";
+    if(op1 == true){error_str += '<?php echo JS_TEXT_GENERAL_SORT_ERROR;?>'+"\n";}
+    if(pw1 == true){error_str += '<?php echo JS_TEXT_GENERAL_WEIGHT_ERROR;?>'+"\n";}
+    if(pp1 == true){error_str += '<?php echo JS_TEXT_GENERAL_PRICE_INFO_ERROR;?>'+"\n";}
+    if(pad1 == true){error_str += '<?php echo JS_TEXT_GENERAL_ADDORSUB_ERROR;?>'+"\n";}
+    if(prq1 == true){error_str += '<?php echo JS_TEXT_GENERAL_REAL_QUANTITY_ERROR;?>'+"\n";}
+    if(pa1 == true){error_str += '<?php echo JS_TEXT_GENERAL_QUANTITY_INFO_ERROR;?>'+"\n";}
+    if(pcm1 == true){error_str += '<?php echo JS_TEXT_GENERAL_CARTFLAG_TITLE_ERROR;?>'+"\n";} 
+    if(pc1 == true){error_str += '<?php echo JS_TEXT_GENERAL_CARTORDER_ERROR;?>'+"\n";} 
     alert(error_str);
     return false;
   }
@@ -845,9 +837,7 @@ function doubleClickme()
 }
 
 function presubmitChk() { 
-  /* 確認ダイアログ表示 */ 
-  var flag = confirm ( "確認はしましたか？\n\n【 重要 】価格構成要素を変更した場合は、先に「注文内容確認」ボタンを押す必要があります。\n\n戻る場合は [キャンセル] ボタンをクリックしてください。"); 
-  /* send_flg が TRUEなら送信、FALSEなら送信しない */ 
+  var flag = confirm ( "<?php echo JS_TEXT_GENERAL_CONFIRM_ORDER_PRICE;?>"); 
   if(flag){
     $.ajax({
 url: 'ajax_orders.php?action=getallpwd',
@@ -881,15 +871,14 @@ $(".once_pwd").each(function(index) {
   }
   });
   if(!flag_tmp){
-  var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+  var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
   if(in_array(pwd,pwd_arr)){
   $("input[name=update_viladate]").val(pwd);
     document.edit_order.submit();
   }else{
-  alert("パスワードが違います");
+  alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>");
   $("input[name=update_viladate]").val('_false');
   document.edit_order.submit();
-//  alert("更新をキャンセルしました。");
   return false;
   }
   }else{
@@ -909,11 +898,11 @@ function pre_update_price() {
   document.getElementById("h_deadline").value = document.getElementById("date_ensure_deadline").value;
   var num_is_null = false; 
 
-  if (window.confirm("注文内容を確認しますか？")) {
+  if (window.confirm("<?php echo JS_TEXT_GENERAL_CONFIRM_ORDER_INFO;?>")) {
     $('.update_products_qty').each(function(){
         if ($(this).val() == 0) {
            num_is_null = true; 
-          alert('商品個数に0を入力してはいけません。');
+          alert('<?php echo JS_TEXT_GENERAL_PRODUCT_NOT_ZERO;?>');
         }
     });
 
@@ -951,25 +940,24 @@ $(".once_pwd").each(function(index) {
   }
   });
 if(!flag_tmp){
-var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
 if(in_array(pwd,pwd_arr)){
 $("input[name=update_viladate]").val(pwd);
 document.edit_order.submit();
-window.alert("注文内容を更新しました。合計金額を必ず確認してください。\n\n【 重要 】メールは送信されていません。【 重要 】");
+window.alert("<?php echo JS_TEXT_GENERAL_CONFIRM_PRICE_INFO;?>");
 document.edit_order.notify.checked = true;
 document.edit_order.notify_comments.checked = false;
 }else{
 $("input[name=update_viladate]").val('_false');
-alert("パスワードが違います");
+alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>");
 document.edit_order.submit();
-//alert("更新をキャンセルしました。");
 document.edit_order.notify.checked = true;
 document.edit_order.notify_comments.checked = false;
 }
 }else{  
 $("input[name=update_viladate]").val('');
 document.edit_order.submit();
-window.alert("注文内容を更新しました。合計金額を必ず確認してください。\n\n【 重要 】メールは送信されていません。【 重要 】");
+window.alert("<?php echo JS_TEXT_GENERAL_CONFIRM_PRICE_INFO;?>");
 document.edit_order.notify.checked = true;
 document.edit_order.notify_comments.checked = false;
 
@@ -980,7 +968,7 @@ document.edit_order.notify_comments.checked = false;
 }
 
 } else {
-  window.alert("注文内容確認をキャンセルしました。\n\n【 重要 】メールは送信されていません。【 重要 】");
+  window.alert("<?php echo JS_TEXT_GENERAL_RESET_ORDER_CONFIRM;?>");
 }
 
 }
@@ -988,14 +976,14 @@ function pre_update_price2() {
   document.getElementById("h_predate").value = document.getElementById("date_predate").value;
   document.getElementById("h_deadline").value = document.getElementById("date_ensure_deadline").value;
   var num_is_null = false; 
-  if (window.confirm("注文内容を確認しますか？")) {
+  if (window.confirm("<?php echo JS_TEXT_GENERAL_CONFIRM_ORDER_INFO;?>")) {
     document.edit_order.notify.checked = false;
     document.edit_order.notify_comments.checked = false;
     // 如果减少购买量则提示保存位置
     $('.update_products_qty').each(function(){
         if ($(this).val() == 0) {
            num_is_null = true; 
-          alert('商品個数に0を入力してはいけません。');
+          alert('<?php echo JS_TEXT_GENERAL_CONFIRM_ORDER_INFO;?>');
         }
     });
     if (!num_is_null) {
@@ -1032,25 +1020,24 @@ $(".once_pwd").each(function(index) {
   }
   });
 if(!flag_tmp){
-var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
 if(in_array(pwd,pwd_arr)){
 $("input[name=update_viladate]").val(pwd);
 document.edit_order.submit();
-window.alert("注文内容を更新しました。合計金額を必ず確認してください。\n\n【 重要 】メールは送信されていません。【 重要 】");
+window.alert("<?php echo JS_TEXT_GENERAL_CONFIRM_PRICE_INFO;?>");
 document.edit_order.notify.checked = true;
 document.edit_order.notify_comments.checked = false;
 }else{
 $("input[name=update_viladate]").val('_false');
-alert("パスワードが違います");
+alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>");
 document.edit_order.submit();
-//alert("更新をキャンセルしました。");
 document.edit_order.notify.checked = true;
 document.edit_order.notify_comments.checked = false;
 }
 }else{
 $("input[name=update_viladate]").val('');
 document.edit_order.submit();
-window.alert("注文内容を更新しました。合計金額を必ず確認してください。\n\n【 重要 】メールは送信されていません。【 重要 】");
+window.alert("<?php echo JS_TEXT_GENERAL_CONFIRM_PRICE_INFO;?>");
 document.edit_order.notify.checked = true;
 document.edit_order.notify_comments.checked = false;
 
@@ -1060,7 +1047,7 @@ document.edit_order.notify_comments.checked = false;
 }
 // delete   document.edit_order.submit();
 } else {
-  window.alert("注文内容確認をキャンセルしました。\n\n【 重要 】メールは送信されていません。【 重要 】");
+  window.alert("<?php echo JS_TEXT_GENERAL_RESET_ORDER_CONFIRM;?>");
 }
 }
 
@@ -1073,15 +1060,15 @@ function check_toggle_black_status(url_str)
     async : false,
     success: function(data) {
       var pwd_arr = data.split(",");
-      var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+      var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
       if(in_array(pwd, pwd_arr)){
-        if (window.confirm('この商品のレビューを非表示にしますか？')) {
+        if (window.confirm('<?php echo JS_TEXT_GENERAL_SHOW_REVIEW;?>')) {
           window.location.href = url_str+'&once_pwd='+pwd+'&up_rs=true'; 
         } else {
           window.location.href = url_str+'&once_pwd='+pwd; 
         }
       } else {
-        window.alert("パスワードが違います"); 
+        window.alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>"); 
       }
     }
   });
@@ -1092,7 +1079,7 @@ function clearLibNum(obj)
   var re = /^[0-9]+$/;
   var error_single = false; 
   if(!re.test(obj.value) && obj.value != ''){
-    alert('登録できない文字が入力されました。その文字を消します。'); 
+    alert('<?php echo JS_TEXT_GENERAL_INPUT_TEXT_ERROR;?>'); 
     error_single = true; 
   }
   if (error_single) {
@@ -1109,7 +1096,7 @@ dataType: 'text',
 async : false,
 success: function(data) {
 if (data == 'error') {
-alert('エラー: 予約が存在しません。');
+alert('<?php echo JS_TEXT_GENERAL_ERROR_PREORDER_IS_SET;?>');
 flag2 = false;
 }
 }
@@ -1147,18 +1134,16 @@ $(".once_pwd").each(function(index) {
   }
   });
   if(!flag_tmp){
-  var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+  var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
   if(in_array(pwd,pwd_arr)){
   $("input[name=update_viladate]").val(pwd);
     _flag = true; 
     //document.edit_order.submit();
   }else{
-  alert("パスワードが違います");
+  alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>");
   $("input[name=update_viladate]").val('_false');
   $("input[name=x]").val('43');
   $("input[name=y]").val('12');
-  //document.edit_order.submit();
-//  alert("更新をキャンセルしました。");
   return false;
   }
   }else{
@@ -1179,11 +1164,11 @@ return _flag;
 function create_preorder_price() {
 
   var num_is_null = false; 
-  if (window.confirm("注文内容を確認しますか？")) {
+  if (window.confirm("<?php echo JS_TEXT_GENERAL_CONFIRM_ORDER_INFO;?>")) {
     $('.update_products_qty').each(function(){
         if ($(this).val() == 0) {
            num_is_null = true; 
-          alert('商品個数に0を入力してはいけません。');
+          alert('<?php echo JS_TEXT_GENERAL_PRODUCT_NOT_ZERO;?>');
         }
     });
 
@@ -1221,22 +1206,21 @@ $(".once_pwd").each(function(index) {
   }
   });
 if(!flag_tmp){
-var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
 if(in_array(pwd,pwd_arr)){
 $("input[name=update_viladate]").val(pwd);
 $("input[name=x]").val('');
 $("input[name=y]").val('');
-window.alert("注文内容を更新しました。合計金額を必ず確認してください。\n\n【 重要 】メールは送信されていません。【 重要 】");
+window.alert("<?php echo JS_TEXT_GENERAL_CONFIRM_PRICE_INFO;?>");
 document.edit_order.submit();
 document.edit_order.notify.checked = true;
 document.edit_order.notify_comments.checked = false;
 }else{
 $("input[name=update_viladate]").val('_false');
-alert("パスワードが違います");
+alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>");
 $("input[name=x]").val('');
 $("input[name=y]").val('');
 document.edit_order.submit();
-//alert("更新をキャンセルしました。");
 document.edit_order.notify.checked = true;
 document.edit_order.notify_comments.checked = false;
 }
@@ -1244,7 +1228,7 @@ document.edit_order.notify_comments.checked = false;
 $("input[name=update_viladate]").val('');
 $("input[name=x]").val('');
 $("input[name=y]").val('');
-window.alert("注文内容を更新しました。合計金額を必ず確認してください。\n\n【 重要 】メールは送信されていません。【 重要 】");
+window.alert("<?php echo JS_TEXT_GENERAL_CONFIRM_PRICE_INFO;?>");
 document.edit_order.submit();
 document.edit_order.notify.checked = true;
 document.edit_order.notify_comments.checked = false;
@@ -1254,7 +1238,7 @@ document.edit_order.notify_comments.checked = false;
 });
 }
 } else {
-  window.alert("注文内容確認をキャンセルしました。\n\n【 重要 】メールは送信されていません。【 重要 】");
+  window.alert("<?php echo JS_TEXT_GENERAL_RESET_ORDER_CONFIRM;?>");
 }
 }
 
@@ -1464,9 +1448,9 @@ function check(action){
     type:  'POST',
     success: function() {
       if(action == 'save'){
-        alert('保存しました。');
+        alert('<?php echo JS_TEXT_GENERAL_SAVED;?>');
       }else{
-        alert('削除成功');
+        alert('<?php echo JS_TEXT_GENERAL_DELETE_SUCCESS;?>');
         window.location.reload();
       }
     }
@@ -1481,9 +1465,9 @@ function check_fee(action){
     type:  'POST',
     success: function() {
       if(action == 'save'){
-        alert('保存しました。');
+        alert('<?php echo JS_TEXT_GENERAL_SAVED;?>');
       }else{
-        alert('削除成功');
+        alert('<?php echo JS_TEXT_GENERAL_DELETE_SUCCESS;?>');
         window.location.reload();
       }
     }
@@ -1498,9 +1482,9 @@ function check_area(action){
     type:  'POST',
     success: function() {
       if(action == 'save'){
-        alert('保存しました。');
+        alert('<?php echo JS_TEXT_GENERAL_SAVED;?>');
       }else{
-        alert('削除成功');
+        alert('<?php echo JS_TEXT_GENERAL_DELETE_SUCCESS;?>');
         window.location.reload();
       }
     }
@@ -1515,9 +1499,9 @@ function check_city(action){
     type:  'POST',
     success: function() {
       if(action == 'save'){
-        alert('保存しました。');
+        alert('<?php echo JS_TEXT_GENERAL_SAVED;?>');
       }else{
-        alert('削除成功');
+        alert('<?php echo JS_TEXT_GENERAL_DELETE_SUCCESS;?>');
         window.location.reload();
       }
     }
@@ -1532,9 +1516,9 @@ function check_products(action){
     type:  'POST',
     success: function() {
       if(action == 'save'){
-        alert('保存しました。');
+        alert('<?php echo JS_TEXT_GENERAL_SAVED;?>');
       }else{
-        alert('削除成功');
+        alert('<?php echo JS_TEXT_GENERAL_DELETE_SUCCESS;?>');
         window.location.reload();
       }
     }
@@ -1582,7 +1566,7 @@ function check_add(){
   num += 5;
   document.getElementById('num').value = num; 
   for(i=num-5;i<num;i++){
-    str += '<tr id="o'+i+'"><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;選択肢</td><td><input type="text" name="option_comment[]" value=""><input type="radio" name="option_value" value="'+i+'"><input type="button" value="削除" onclick="check_del('+i+');"></td></tr>';
+    str += '<tr id="o'+i+'"><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo JS_TEXT_GENERAL_SELECT_OPTION;?></td><td><input type="text" name="option_comment[]" value=""><input type="radio" name="option_value" value="'+i+'"><input type="button" value="<?php echo JS_TEXT_GENERAL_DELETE;?>" onclick="check_del('+i+');"></td></tr>';
 
   }
   $("#button_add").append(str);
@@ -1591,8 +1575,8 @@ function check_add(){
 function check_form(){
   var title = document.getElementById('title').value;
   var name = document.getElementById('name').value;
-  var error_title = '<font color="red">必須項目</font>'; 
-  var error_name = '<font color="red">必須項目</font>'; 
+  var error_title = '<font color="red"><?php echo JS_TEXT_GENERAL_MUST_INPUT;?></font>'; 
+  var error_name = '<font color="red"><?php echo JS_TEXT_GENERAL_MUST_INPUT;?></font>'; 
 
   error_str = false;
   if(title == ''){
@@ -1623,7 +1607,7 @@ function check_form(){
 
 function check_form_products(){
   var name = document.getElementById('name').value;
-  var error_name = '<font color="red">必須項目</font>'; 
+  var error_name = '<font color="red"><?php echo JS_TEXT_GENERAL_MUST_INPUT;?></font>'; 
 
   if(name == ''){
     $("#error_name").html(error_name);
@@ -1643,7 +1627,7 @@ function work_add(){
   num = work_num.value;
   num = parseInt(num);
   work_num.value = num+1; 
-  var work_str = '<tr id="workid'+num+'"><td width="30%" align="left">お届け可能時間'+num+'</td><td><input type="text" name="work_start_hour[]" size="3" maxlength="2" value="">&nbsp;:&nbsp;<input type="text" name="work_start_min[]" size="3" maxlength="2" value="">&nbsp;～&nbsp;<input type="text" name="work_end_hour[]" size="3" maxlength="2" value="">&nbsp;:&nbsp;<input type="text" name="work_end_min[]" size="3" maxlength="2" value="">&nbsp;<input type="button" value="削除" onclick="work_del('+num+');"><br><span id="work_error'+num+'"></span></td></tr>';
+  var work_str = '<tr id="workid'+num+'"><td width="30%" align="left"><?php echo JS_TEXT_GENERAL_EXPECT_TRADE_TIME;?>'+num+'</td><td><input type="text" name="work_start_hour[]" size="3" maxlength="2" value="">&nbsp;:&nbsp;<input type="text" name="work_start_min[]" size="3" maxlength="2" value="">&nbsp;<?php echo JS_TEXT_GENERAL_LINK_CHAR;?>&nbsp;<input type="text" name="work_end_hour[]" size="3" maxlength="2" value="">&nbsp;:&nbsp;<input type="text" name="work_end_min[]" size="3" maxlength="2" value="">&nbsp;<input type="button" value="<?php echo JS_TEXT_GENERAL_DELETE;?>" onclick="work_del('+num+');"><br><span id="work_error'+num+'"></span></td></tr>';
 
  $("#work_list").append(work_str); 
 }
@@ -1709,17 +1693,17 @@ function work_check(){
      
     if(error_str == true){
      
-      $("#work_error"+(i+1)).html('<font color="red">正しく入力してください</font>');
+      $("#work_error"+(i+1)).html('<font color="red"><?php echo JS_TEXT_GENERAL_INPUT_ERROR;?></font>');
       
     }else{
         if(error_1 == true && i == 0){
       
-          $("#work_error"+(i+1)).html('<font color="red">必須項目</font>');
+          $("#work_error"+(i+1)).html('<font color="red"><?php echo JS_TEXT_GENERAL_MUST_INPUT;?></font>');
         }else if(error_2 == true && i == 0){
       
-          $("#work_error"+(i+1)).html('<font color="red">正しく入力してください</font>');
+          $("#work_error"+(i+1)).html('<font color="red"><?php echo JS_TEXT_GENERAL_INPUT_ERROR;?></font>');
         }else if(error_3 == true){
-          $("#work_error"+(i+1)).html('<font color="red">正しく入力してください</font>');
+          $("#work_error"+(i+1)).html('<font color="red"><?php echo JS_TEXT_GENERAL_INPUT_ERROR;?></font>');
         }else{
           $("#work_error"+(i+1)).html(''); 
         }

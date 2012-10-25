@@ -78,12 +78,12 @@ echo CATEGORY_ADMIN_TITLE."&nbsp;&nbsp;&nbsp;".$categories_array['categories_nam
 
 </title>
   <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-  <script type="text/javascript" src="includes/general.js"></script>
+  <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
   <script type="text/javascript" src="includes/javascript/jquery.js"></script>
   <script type="text/javascript" src="includes/javascript/udlr.js"></script>
-  <script type="text/javascript" src="includes/set/c_admin.js"></script>
+  <script type="text/javascript" src="js2php.php?path=includes|set&name=c_admin&type=js"></script>
   <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-  <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+  <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
   <script type="text/javascript">
   function display(){
    var categories_tree = document.getElementById('categories_tree'); 

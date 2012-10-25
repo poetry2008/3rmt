@@ -4,6 +4,7 @@
  */
 //ob_start();
 require('includes/application_top.php');
+include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .  '/default.php');
 require_once(DIR_WS_CLASSES . 'payment.php');
 if (isset($_GET['keywords'])) {
   $_GET['keywords'] = tep_db_prepare_input($_GET['keywords']);
@@ -757,10 +758,7 @@ switch ($_GET['action']) {
            default:
              break;
           }
-          $fetch_time_str =
-            date('Y'.SENDMAIL_TEXT_DATE_YEAR.'m'.SENDMAIL_TEXT_DATE_MONTH.'d'.SENDMAIL_TEXT_DATE_DAY,
-                strtotime($check_status['torihiki_date'])).$week_str.$fetch_time_start_array[1].'
-            '.SENDMAIL_TEXT_TIME_LINK.' '.$fetch_time_end_array[1]; 
+          $fetch_time_str = date('Y'.SENDMAIL_TEXT_DATE_YEAR.'m'.SENDMAIL_TEXT_DATE_MONTH.'d'.SENDMAIL_TEXT_DATE_DAY, strtotime($check_status['torihiki_date'])).$week_str.$fetch_time_start_array[1].' '.SENDMAIL_TEXT_TIME_LINK.' '.$fetch_time_end_array[1]; 
           $comments = str_replace('${SHIPPING_TIME}', $fetch_time_str, $comments); 
           $title = str_replace('${SHIPPING_TIME}', $fetch_time_str, $title); 
           $customer_info_raw = tep_db_query("select is_send_mail from ".TABLE_CUSTOMERS." where customers_id = '".$check_status['customers_id']."'"); 
@@ -2114,9 +2112,9 @@ else { ?>
         <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
         <script language="javascript" src="includes/javascript/jquery.js"></script>
         <script language="javascript" src="includes/javascript/jquery.form.js"></script>
-        <script language="javascript" src="includes/javascript/all_order.js"></script>
+        <script language="javascript" src="js2php.php?path=includes|javascript&name=all_order&type=js"></script>
         <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-        <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+        <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
         <script language="javascript">
         function change_site(site_id,flag,site_list,param_url){  
           var ele = document.getElementById("site_"+site_id);

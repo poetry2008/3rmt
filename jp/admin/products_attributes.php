@@ -91,7 +91,7 @@
 <title><?php echo HEADING_TITLE_OPT; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script language="javascript"><!--
 function go_option() {
   if (document.option_order_by.selected.options[document.option_order_by.selected.selectedIndex].value != "none") {

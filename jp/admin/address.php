@@ -223,9 +223,9 @@ div#show {
 }
 </style>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-<script language="javascript" src="includes/general.js"></script>
+<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script language="javascript" src="includes/jquery.form.js"></script>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);

@@ -80,7 +80,7 @@ charset=<?php echo CHARSET; ?>">
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <link media="print" rel="stylesheet" type="text/css" href="includes/print_assets.css">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <title><?php echo ASSETS_TITLE;?></title>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);

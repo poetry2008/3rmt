@@ -11,7 +11,7 @@ $.ajax({
          
          if(data == ''){
          
-           alert('郵便番号に誤りがあります。');
+           alert('<?php echo JS_TEXT_POSTAL_NUMBER_ERROR;?>');
          }else{
            var arr = new Array();
            arr = data.split(",");

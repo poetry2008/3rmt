@@ -1115,7 +1115,7 @@ if($ocertify->auth_user && $orders['user_added'] == NULL){
             if ($totals['class'] == "ot_point" || $totals['class'] == "ot_subtotal") {
               if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
                 $total_details_mail .= SENDMAIL_TEXT_POINT_ONE . $currencies->format($totals['value']) . "\n";
-                $mailpoint = str_replace(SENDMAIL_EDIT_ORDERS_PRICE_UNIT,'',$currencies->format($totals['value']));
+                $mailpoint = str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($totals['value']));
               }
             } elseif ($totals['class'] == "ot_total") {
               if($handle_fee) {
@@ -1804,11 +1804,11 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
     <title><?php echo TITLE; ?></title>
     <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
     <link rel="stylesheet" type="text/css" href="includes/styles.css">
-    <script language="javascript" src="includes/general.js"></script>
+    <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
     <script language="javascript" src="includes/javascript/jquery.js"></script>
     <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-    <script language="javascript" src="includes/javascript/all_orders.js"></script>
-    <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+    <script language="javascript" src="js2php.php?path=includes|javascript&name=all_orders&type=js"></script>
+    <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
     <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
     <script language="javascript" src="includes/jquery.form.js"></script>
     <script type="text/javascript"> 

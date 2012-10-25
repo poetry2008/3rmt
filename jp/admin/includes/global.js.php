@@ -31,12 +31,12 @@ $(function(){
         var belong= $("#belong").val();
         var color = $("#mycolor").val();
         if(txt==""){
-        $("#msg_txt").html("内容を入力してください");
+        $("#msg_txt").html("<?php echo JS_TEXT_GLOBAL_INPUT_INFO;?>");
         $("#note_txt").focus();
         return false;
         }
         if(title==""){
-        $("#msg_title").html("タイトルを入力してください");
+        $("#msg_title").html("<?php echo JS_TEXT_GLOBAL_INPUT_TITLE;?>");
         $("#title").focus();
         return false;
         }
@@ -55,7 +55,7 @@ $(function(){
           zIndex = zIndex++;
           msg = msg.split('||');
           if(parseInt(msg[0])){
-          var str = "<div id='note_"+msg[0]+"' class='note "+color+"' style='left:0;top:0;z-index:"+zIndex+",width:150px,height:150px'><div class='note_head' ><div class='title'><input type='button' onclick=\"note_save_text(\'"+msg[0]+"\')\" value='保存'>"+title+"&nbsp;&nbsp;"+msg[1]+"</div><div class='note_clost'><input type='hidden' value='"+msg[0]+"' class='hidden'><input type='image' onclick=\"note_desplay_none(\'"+msg[0]+"\')\" alt='close' src='images/icons/note_close.gif'></div></div><div id='note_text_"+msg[0]+"' class='note_textarea' style='height:120px'><textarea style='resize: none;overflow;auto;font-size:11px;'>"+txt+"</textarea></div></div>";
+          var str = "<div id='note_"+msg[0]+"' class='note "+color+"' style='left:0;top:0;z-index:"+zIndex+",width:150px,height:150px'><div class='note_head' ><div class='title'><input type='button' onclick=\"note_save_text(\'"+msg[0]+"\')\" value='<?php echo JS_TEXT_GLOBAL_SAVE;?>'>"+title+"&nbsp;&nbsp;"+msg[1]+"</div><div class='note_clost'><input type='hidden' value='"+msg[0]+"' class='hidden'><input type='image' onclick=\"note_desplay_none(\'"+msg[0]+"\')\" alt='close' src='images/icons/note_close.gif'></div></div><div id='note_text_"+msg[0]+"' class='note_textarea' style='height:120px'><textarea style='resize: none;overflow;auto;font-size:11px;'>"+txt+"</textarea></div></div>";
           $(".demo").append(str);
           make_draggable($('.note'));
           $.fancybox.close();
@@ -89,7 +89,7 @@ id	: parseInt(ui.helper.find('input.hidden').val())
 }
 function note_desplay_none(id)
 {
-  if(confirm("削除を実行しますか？")){
+  if(confirm("<?php echo JS_TEXT_GLOBAL_IS_DELETE;?>")){
     document.getElementById('note_'+id).style.display = "none";
     $.get('update_position.php?del_note=true&id='+id,{});
   }
@@ -108,11 +108,11 @@ var res_arr = date.split("|||");
 var image_id = document.getElementById("image_id_"+id);
 image_id = image_id.src;
 if(res_arr[0]=='true'){
-  title = '<input type="button" onclick="note_save_text(\''+id+'\')" value="保存">&nbsp;<image id="image_id_'+id+'" src="'+image_id+'">&nbsp;&nbsp;'+res_arr[1]+'&nbsp;&nbsp;'+res_arr[2];
+  title = '<input type="button" onclick="note_save_text(\''+id+'\')" value="<?php echo JS_TEXT_GLOBAL_SAVE;?>">&nbsp;<image id="image_id_'+id+'" src="'+image_id+'">&nbsp;&nbsp;'+res_arr[1]+'&nbsp;&nbsp;'+res_arr[2];
   content = res_arr[3];
   $('#note_title_'+id).html(title);
   $('#note_textarea_'+id).val(content);
-  alert("内容を保存しました。");
+  alert("<?php echo JS_TEXT_GLOBAL_INFO_SAVED;?>");
 }
 }
 });

@@ -16,13 +16,13 @@ function all_update(){
     alert(error_msg);
     error_msg = '';
   }
-  var flg=confirm("更新しますか？");
+  var flg=confirm("<?php echo JS_TEXT_C_ADMIN_IS_UPDATE;?>");
   if(flg){
     document.myForm1.flg_up.value=1;
     window.document.myForm1.submit();
   }else{
     document.myForm1.flg_up.value=0;
-    alert("更新をキャンセルしました");
+    alert("<?php echo JS_TEXT_C_ADMIN_UPDATE_CLEAR;?>");
   }
 }
 
@@ -54,10 +54,10 @@ function list_display(path,cid,fullpath){
 function update_quantity(pid){
   oquantity = $('#quantity_'+pid).html();
   pname = $('#products_name_'+pid).html();
-  nquantity = prompt(pname+"\n現在の実在庫数 : "+oquantity+"  , 新実在庫数", oquantity);
+  nquantity = prompt(pname+"\n<?php echo JS_TEXT_C_ADMIN_REAL_QUANTITY_INFO_START;?>"+oquantity+"  , <?php echo JS_TEXT_C_ADMIN_REAL_QUANTITY_INFO_END;?>", oquantity);
   //alert(nquantity);
   if (nquantity && false == /^\d+$/.test(nquantity)) {
-    alert('半角数字で入力してください');
+    alert('<?php echo JS_TEXT_C_ADMIN_INPUT_INFO;?>');
     return false;
   }
   if (nquantity !== '' && nquantity !== null) {
@@ -74,10 +74,10 @@ function update_quantity(pid){
 function update_virtual_quantity(pid){
   oquantity = $('#virtual_quantity_'+pid).html();
   pname = $('#products_name_'+pid).html();
-  nquantity = prompt(pname+"\n現在の架空在庫数 : "+oquantity+"  , 新架空在庫数", oquantity);
+  nquantity = prompt(pname+"\n<?php echo JS_TEXT_C_ADMIN_VIRTUAL_QUANTITY_INFO_START;?>"+oquantity+"  , <?php echo JS_TEXT_C_ADMIN_VIRTUAL_QUANTITY_INFO_END;?>", oquantity);
   //alert(nquantity);
   if (nquantity && false == /^\d+$/.test(nquantity)) {
-    alert('半角数字で入力してください');
+    alert('<?php echo JS_TEXT_C_ADMIN_INPUT_INFO;?>');
     return false;
   }
   if (nquantity !== '' && nquantity !== null) {
@@ -102,7 +102,7 @@ function event_onblur(i){
       if (new_price > old_price) {
         if( ((new_price - old_price) / old_price) * 100 >= calc.percent ) {
             $('#price_input_'+i).css('border-color','red');
-            if( confirm(calc.percent+"%の差額があります。再設定してください") ) {
+            if( confirm(calc.percent+"<?php echo JS_TEXT_C_ADMIN_RESET_DIFFERENCE;?>") ) {
                 setTimeout(function(){$('#price_input_'+i).focus()}, 100);
             }
         }
@@ -165,7 +165,7 @@ function set_money(num,warning){
     ins_anser = 100 - ins_anser;
     if(calc.percent != '' && parseInt(ins_anser) >= calc.percent){
         if (warning){
-          error_msg = calc.percent+"%の差額があります。再設定してください\n";
+          error_msg = calc.percent+"<?php echo JS_TEXT_C_ADMIN_RESET_DIFFERENCE;?>\n";
         }
     }
     var kei = calc.keisan;//数字
@@ -181,7 +181,7 @@ function set_money(num,warning){
     ins_anser = 100 - ins_anser;
     if(calc.percent != '' && parseInt(ins_anser) >= calc.percent){
         if (warning){
-          error_msg = calc.percent+"%の差額があります。再設定してください\n";
+          error_msg = calc.percent+"<?php echo JS_TEXT_C_ADMIN_RESET_DIFFERENCE;?>\n";
         }
     }
     set_m=ins_ipt;
@@ -254,7 +254,7 @@ function check_error(){
       var this_price=document.getElementsByName("pprice[]");
       var bflag=document.getElementsByName("bflag[]");
       var focus_id = '';
-      var price_error = '価格設定はエラーが出ます。再設定してください。';
+      var price_error = '<?php echo JS_TEXT_C_ADMIN_ERROR_PRICE;?>';
 
       for(var i=0;i< trader_input_obj.length;i++){
           $('#price_input_'+(i+1)).css('border-color','');
@@ -268,20 +268,20 @@ function check_error(){
           if (calc.percent != '' && calc.percent != 0 && calc.percent != null) {
           if (new_price > old_price) {
             if( ((new_price - old_price) / old_price) * 100 >= calc.percent ) {
-                error_msg = calc.percent+"%の差額があります。再設定してください\n";
+                error_msg = calc.percent+"<?php echo JS_TEXT_C_ADMIN_RESET_DIFFERENCE;?>\n";
                 //error_msg = price_error;
                 $('#price_input_'+(i+1)).css('border-color','red');
-                //$('#price_error_'+(i+1)).html('<img src="images/icons/error_1.gif" title="'+calc.percent+'%の差額があります。再設定してください">');
+                //$('#price_error_'+(i+1)).html('<img src="images/icons/error_1.gif" title="'+calc.percent+'<?php echo JS_TEXT_C_ADMIN_RESET_DIFFERENCE;?>">');
                 if (focus_id == '') {
                     focus_id = '#price_input_'+(i+1);
                 }
             }
           } else {
             if( ((old_price - new_price) / new_price) * 100 >= calc.percent ) {
-                error_msg = calc.percent+"%の差額があります。再設定してください\n";
+                error_msg = calc.percent+"<?php echo JS_TEXT_C_ADMIN_RESET_DIFFERENCE;?>\n";
                 //error_msg = price_error;
                 $('#price_input_'+(i+1)).css('border-color','red');
-                //$('#price_error_'+(i+1)).html('<img src="images/icons/error_1.gif" title="'+calc.percent+'%の差額があります。再設定してください">');
+                //$('#price_error_'+(i+1)).html('<img src="images/icons/error_1.gif" title="'+calc.percent+'<?php echo JS_TEXT_C_ADMIN_RESET_DIFFERENCE;?>">');
                 if (focus_id == '') {
                     focus_id = '#price_input_'+(i+1);
                 }
@@ -293,7 +293,7 @@ function check_error(){
             if (parseFloat($('#offset_input_' + (i+1)).val()) > 0) {
               error_msg = price_error;
               $('#offset_input_'+(i+1)).css('border-color','red');
-              $('#offset_error_'+(i+1)).append('<img src="images/icons/error_2.gif" title="特別価格が通常価格より低くなりました">');
+              $('#offset_error_'+(i+1)).append('<img src="images/icons/error_2.gif" title="<?php echo JS_TEXT_C_ADMIN_SPECIAL_PRICE;?>">');
               if (focus_id == '') {
                   focus_id = '#price_input_'+(i+1);
               }

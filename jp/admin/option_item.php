@@ -226,9 +226,9 @@
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <link rel="stylesheet" type="text/css" href="includes/jquery.autocomplete.css">
-<script language="javascript" src="includes/general.js"></script>
+<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery.autocomplete.js"></script>
 <script text="text/javascript">
 function search_item_title(t_type, s_item_id)

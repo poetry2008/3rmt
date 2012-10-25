@@ -9,6 +9,7 @@
   require(DIR_WS_FUNCTIONS . 'visites.php');
   require(DIR_WS_CLASSES . 'currencies.php');
   require(DIR_WS_CLASSES . 'payment.php');
+  include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .  '/default.php');
   if (isset($_GET['keywords'])) {
     $_GET['keywords'] = tep_db_prepare_input($_GET['keywords']);
   }
@@ -682,9 +683,9 @@
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/javascript/jquery.form.js"></script>
-<script language="javascript" src="includes/javascript/all_preorder.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=all_preorder&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script language="javascript">
   function change_site(site_id,flag,site_list,param_url){  
           var ele = document.getElementById("site_"+site_id);
