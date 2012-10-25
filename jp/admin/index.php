@@ -5,18 +5,99 @@
 
   require('includes/application_top.php');
   require(DIR_WS_CLASSES . 'currencies.php');
+
+//notes
+$notes = '';  
+$left='';  
+$top='';  
+$zindex='';  
+$belong = str_replace('/admin/','',$_SERVER['PHP_SELF']);
+$query = tep_db_query("select * from notes where belong='".$belong."' and (attribute='1' or (attribute='0' and (author='".$ocertify->auth_user."' or author='')))  order by id desc");
+$note_arr = array();
+$height_arr = array();
+while($row=tep_db_fetch_array($query)){
+  list($left,$top,$zindex,$xlen,$ylen) = explode('|',$row['xyz']); 
+  $note_arr[] = $row['id'];
+  $height_arr[] = $ylen+$top+10;
+  $time = strtotime($row['addtime']);
+  $attribute = $row['attribute'];
+  $attribute_image = $attribute == 1 ? '<image id="image_id_'.$row['id'].'" alt="'.TEXT_ATTRIBUTE_PUBLIC.'" src="images/icons/public.gif">' : '<image id="image_id_'.$row['id'].'" alt="'.TEXT_ATTRIBUTE_PRIVATE.'" src="images/icons/private.gif">';
+  $notes.= '
+    <div id="note_'.$row['id'].'" ondblclick="changeLayer(this);" class="note '.$row['color'].'" 
+    style="left:'.$left.'px;top:'.$top.'px;z-index:'.$zindex.';height:'.$ylen.'px;width:'.$xlen.'px">
+    <div class="note_head">
+    <div id="note_title_'.$row['id'].'" class="note_title">
+    <input type="button" onclick="note_save_text(\''.$row['id'].'\')"
+     value=" '.IMAGE_SAVE.'" >&nbsp;'.$attribute_image.'&nbsp;'.$row['title'].'&nbsp;&nbsp;
+    '.substr($row['addtime'],0,strlen($row['addtime'])-3).'
+    </div><div class="note_close">
+    <input type="hidden" value="'.$row['id'].'" class="hidden">
+    <input type="image" onclick="note_desplay_none(\''.$row['id'].'\')" alt="close"
+    src="images/icons/note_close.gif"></div>
+    </div><div id="note_text_'.$row['id'].'" class="note_textarea"
+    style="height:'.($ylen-37).'px">'
+    .'<textarea style="overflow:auto;resize: none;font-size:11px;" id="note_textarea_'.$row['id'].'">'
+    .trim(htmlspecialchars($row['content'])).'</textarea></div>
+    </div>';
+}
+//end nodes
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
-<link rel="stylesheet" type="text/css" href="includes/stylesheet.css" />
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
-<?php 
-$belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
-require("includes/note_js.php");
+<script type="text/javascript" src="includes/jquery.fancybox-1.3.1.pack.js"></script>
+<script type="text/javascript" src="includes/global.js"></script>
+<script type='text/javascript' src='includes/javascript/ui/jquery-ui-1.8.16.custom.min.js'></script>
+<script type='text/javascript' src='includes/javascript/ui/jquery.ui.resizable.js'></script>
+<link rel="stylesheet" type="text/css" href="includes/note_style.css" />
+<link rel="stylesheet" type="text/css" href="includes/fancybox.css" />
+<link rel="stylesheet" type="text/css" href="includes/stylesheet.css" />
+<link rel="stylesheet" type="text/css" href="includes/base/jquery.ui.all.css" />
+<?php if(!empty($height_arr)){?>
+<script language="javascript">
+$(document).ready(function() { 
+$('.demo').height(<?php echo max($height_arr);?>);
+<?php
+foreach($note_arr as $note_row){
+  echo "$('#note_".$note_row."').resizable({ 
+    alsoResize: '#note_text_".$note_row."',
+    stop: function(e) {
+      var xlen=$(\"#note_".$note_row."\").width();
+      var ylen=$(\"#note_".$note_row."\").height();
+      var top=$(\"#note_".$note_row."\").css('top');
+      $.ajax({
+        url: 'update_position.php',
+        type: 'POST',
+        async: false,
+        data:
+        'action=change_move&xlen='+xlen+'&ylen='+ylen+'&id=".$note_row."',
+        success: function(){
+          if($('.demo').height()<(Number(ylen)+Number(top.substring(0,top.length-2))+10)){
+              $('.demo').height(Number(ylen)+Number(top.substring(0,top.length-2))+10);
+            }
+          }
+          });
+      }
+    });\n";
+}
 ?>
+});
+function changeLayer(obj) {
+  arr = new Array(); 
+  var i = 0 
+  $('.note').each(function(i) {
+    arr[i] = $(this).css("z-index");  
+    i++; 
+  });
+  arr.sort();
+  max = arr[arr.length-1]+1;
+  $(obj).css('z-index', max);
+}
+</script>
+<?php }?>
 <title><?php echo TITLE; ?></title>
 </head>
 <body>
@@ -43,7 +124,18 @@ require("includes/note_js.php");
       echo '<td>&nbsp;</td>';
     }
 ?>
-  <td width="100%" height="650" valign="top"><?php echo $notes;?>&nbsp;
+<td width="100%" valign="top">
+<table width="100%"><tr>
+<td align="rignt" height="20px">
+<div id="add">&nbsp;</div>
+</td>
+</tr>
+<tr><td>
+<div class="demo">
+<?php echo $notes;?>
+</div>
+</td></tr>
+</table>
 </td>
 </tr>
 </table>

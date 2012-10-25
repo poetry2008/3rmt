@@ -15,13 +15,17 @@ while($row=tep_db_fetch_array($query)){
   if($tarrow == 'open'){
   $left = (int)$left+160;
   $left = (string)$left;
- $xyz= $left."|".$top."|".$zindex."|".$xlen."|".$ylen;
- $update_query = tep_db_query("update notes set xyz='".$xyz."' where id='".$row['id']."'");
+  $xyz= $left."|".$top."|".$zindex."|".$xlen."|".$ylen;
+  if($belong != FILENAME_DEFAULT){
+    $update_query = tep_db_query("update notes set xyz='".$xyz."' where id='".$row['id']."'");
+  }
   }else{
   $left = (int)$left-160;
   $left = (string)$left;
- $xyz= $left."|".$top."|".$zindex."|".$xlen."|".$ylen;
- $update_query = tep_db_query("update notes set xyz='".$xyz."' where id='".$row['id']."'");
+  $xyz= $left."|".$top."|".$zindex."|".$xlen."|".$ylen;
+  if($belong != FILENAME_DEFAULT){
+    $update_query = tep_db_query("update notes set xyz='".$xyz."' where id='".$row['id']."'");
+  }
   }
 
 }

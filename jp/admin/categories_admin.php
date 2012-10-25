@@ -153,7 +153,6 @@ require("includes/note_js.php");
           ?>
           </div>
 
-
   <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
   <td <?php if ($ocertify->npermission < 10) {?>width='1'<?php } else {?> width="<?php echo BOX_WIDTH; ?>"<?php }?> valign="top">
@@ -186,7 +185,7 @@ require("includes/note_js.php");
       }
       ?>
       </td>
-      <td nowrap>
+      <td align="right" nowrap>
       <?php echo tep_draw_form('search', FILENAME_CATEGORIES_ADMIN, '', 'get') . "\n"; ?> <?php echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search', isset($_GET['search'])?$_GET['search']:'') . "\n"; ?>
       <input type = "submit" value = "<?php echo IMAGE_SEARCH;?>" >
       </form></td>

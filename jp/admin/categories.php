@@ -2388,7 +2388,7 @@ $products_shipping_time .= '</select>';
                 <a href="javascript:void(0)" onclick="display()"><?php echo CATEGORY_TREE_SELECT_TEXT;?></a>
                 <div id="categories_tree">
                 <?php
-                  require(DIR_WS_CLASSES . 'category_tree.php');
+                  require_once(DIR_WS_CLASSES . 'category_tree.php');
                   if(isset($_GET['from'])&&$_GET['from']=='admin'){
                   $osC_CategoryTree = new osC_CategoryTree(true,true); 
                   echo $osC_CategoryTree->buildTree(FILENAME_CATEGORIES_ADMIN);
@@ -2829,8 +2829,6 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
         <tr>
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
               <tr>
-                <td class="pageHeading" height="40" nowrap>
-                &nbsp; 
                 <?php
                   if ($cPath) {
                     $display_ca_str = display_category_link($cPath,
@@ -2875,7 +2873,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
           </td>
               </tr>
  <tr>
-            <td class="pageHeading">
+            <td class="pageHeading" colspan="3">
                 <?php echo BOX_CATALOG_CATEGORIES_PRODUCTS; ?>
                 </td>
             </tr>
