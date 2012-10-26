@@ -84,7 +84,7 @@ color: #000000;
   <script type="text/javascript" src="includes/javascript/jquery.js"></script>
   <script type="text/javascript" src="includes/javascript/udlr.js"></script>
   <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-  <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+  <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
   <script type="text/javascript">
     // true = disabled, false = enabled
     var products = new Array();
