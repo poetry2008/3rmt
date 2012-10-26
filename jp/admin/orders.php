@@ -4968,7 +4968,7 @@ if($c_parent_array['parent_id'] == 0){
             <div class="float_left"><a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $orders['orders_id'] . '&action=edit');?>"><?php echo tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW);?></a>&nbsp;
           <a href="<?php echo tep_href_link('orders.php', 'cEmail=' .
             tep_output_string_protected(urlencode($orders['customers_email_address'])));?>"><?php
-            echo tep_image(DIR_WS_ICONS . 'search.gif', TEXT_ORDER_HISTORY_ORDER);?></a>
+            echo tep_image(DIR_WS_ICONS . 'search.gif', TEXT_ORDER_HISTORY_ORDER);?></a></div>
             <div class="comp_width">
             <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
               <font color="#999">

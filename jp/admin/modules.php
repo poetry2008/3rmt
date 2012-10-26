@@ -377,7 +377,7 @@ foreach ($directory_array_sorted as $i => $files) {
       }
       ?>
       <td class="dataTableContent">
-      <?php if (isset($module->link) && $module->link) {?><a target='_blank' href="<?php echo $ex_site['url'].'/'.$module->link;?>"><?php echo tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW);?></a><?php } ?>
+      <?php if (isset($module->link) && $module->link) {?><div class="float_left"><a target='_blank' href="<?php echo $ex_site['url'].'/'.$module->link;?>"><?php echo tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW);?></a></div><?php } ?>
       <div class="comp_width">
       <?php 
       echo $module->title;
