@@ -98,7 +98,7 @@ function tep_show_preorders_products_info($orders_id) {
     if ($orders['confirm_payment_time'] != '0000-00-00 00:00:00') {
       $time_str = date(TEXT_FUNCTION_DATE_STRING, strtotime($orders['confirm_payment_time'])); 
     }else if(tep_check_pre_order_type($orders['orders_id'])!=2){
-      $time_str = '入金まだ'; 
+      $time_str = TEXT_PREORDER_NOT_COST; 
     }
     if($time_str){
     $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_UN_GIVE_MONY_DAY.'</b></td><td class="main" style="color:red;"><b>'.$time_str.'</b></td></tr>';
@@ -1085,48 +1085,9 @@ function tep_get_pre_orders_products_string($orders, $single = false, $popup = f
     $str .= '</td>'; 
     $str .= '</tr>'; 
   }
-	$str .= '<tr>';
-	$str .= '<td class="main">';  
-	$str .= TEXT_USER_ADDED;
-	$str .= '</td>';
-	$str .= '<td class="main">';
-	if(isset($orders['user_added']) && $orders['user_added'] != ""){
-   $str .= $orders['user_added'];	
-	}else{
-   $str .= $orders['customers_name'];	
-	}	
-	$str .= '</td>';
-	$str .= '</tr>';
-
-  $str .= '<tr>';	
-	$str .= '<td class="main">';  
-	$str .= TEXT_DATE_ADDED;
-	$str .= '</td>';
-	$str .= '<td class="main">';
-	$str .= $orders['date_purchased'];
-	$str .= '</td>';
-	$str .= '</tr>';
-
-  $str .= '<tr>';	
-	$str .= '<td class="main">';  
-	$str .= TEXT_USER_UPDATE;
-	$str .= '</td>';
-	$str .= '<td class="main">';
-  $str .= $orders['user_update'];	
-	$str .= '</td>';
-	$str .= '</tr>';
   
-	$str .= '<tr>';	
-	$str .= '<td class="main">';  
-	$str .= TEXT_DATE_UPDATE;
-	$str .= '</td>';
-	$str .= '<td class="main">';
-	$str .= $orders['last_modified'];
-	$str .= '</td>';
-	$str .= '</tr>';
-
-
   $str .= '<tr><td width="120">&nbsp;</td><td class="main" style="padding-left:20%">'; 
+  $str .= '<div id="order_del">';
   $str .= '<div id="order_del">';
   if ($orders['is_active'] == 1) {
     $str .= '<a href="'.tep_href_link(FILENAME_PREORDERS, urldecode($param_str).'&oID='.$orders['orders_id'].'&action=edit').'">'.tep_html_element_button(IMAGE_DETAILS).'</a>'; 

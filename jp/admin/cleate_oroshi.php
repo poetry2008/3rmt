@@ -142,7 +142,7 @@ case 'delete':
 var i=0;
 function input_add(){
       
-  var cbox_head = "<div class='add_link'>追加:<input type='text' name='set_oroshi[]'></div>"; 
+  var cbox_head = "<div class='add_link'><?php echo BUTTON_ADD_TEXT;?>:<input type='text' name='set_oroshi[]'></div>"; 
   var cbox  = document.getElementById("oo_input").innerHTML;
   cbox = cbox.replace(/ocid/g,'ocid['+i+']');
   html[i] = cbox_head+cbox;

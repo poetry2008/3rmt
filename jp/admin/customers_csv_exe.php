@@ -1,7 +1,4 @@
 <?php
-/*
-  $Id$
-*/
   require("includes/application_top.php");
   
   function Jcode_EUCtoSJIS(&$str_EUC) {
@@ -67,7 +64,7 @@
         
         
   //HEADER
-  $csv_header = 'アカウント作成日,性別,姓,名,生年月日,メールアドレス,会社名,郵便番号,都道府県,市区町村,住所1,住所2,国名,電話番号,FAX番号,メルマガ購読,ポイント';
+  $csv_header = CSV_HEADER_TEXT;
   $csv_header = Jcode_EUCtoSJIS($csv_header);
   print chr(0xEF).chr(0xBB).chr(0xBF);
   print $csv_header."\r\n";
@@ -169,18 +166,18 @@
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onLoad="SetFocus();"> 
-<!-- header //--> 
+<!-- header --> 
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-<!-- header_eof //--> 
-<!-- body //--> 
+<!-- header_eof --> 
+<!-- body --> 
 <table border="0" width="100%" cellspacing="2" cellpadding="2"> 
   <tr> 
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft"> 
-        <!-- left_navigation //--> 
+        <!-- left_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
-        <!-- left_navigation_eof //--> 
+        <!-- left_navigation_eof --> 
       </table></td> 
-    <!-- body_text //--> 
+    <!-- body_text --> 
     <td width="100%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
         <tr> 
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
@@ -300,13 +297,13 @@
             </td> 
         </tr> 
       </table></td> 
-    <!-- body_text_eof //--> 
+    <!-- body_text_eof --> 
   </tr> 
 </table> 
-<!-- body_eof //--> 
-<!-- footer //--> 
+<!-- body_eof --> 
+<!-- footer --> 
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-<!-- footer_eof //--> 
+<!-- footer_eof --> 
 <br> 
 </body>
 </html>

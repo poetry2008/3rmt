@@ -186,7 +186,7 @@ define('PRODUCTS_WEIGHT_ERROR_THREE','商品を削除するか、または個数
 define('PRODUCTS_WEIGHT_ERROR_FOUR','）kg以内にしてください。');
 define('TEXT_CANCEL_UPDATE','更新をキャンセルしました。');
 define('TEXT_DATE_ERROR','日時フォーマットが間違っています。 ');
-define('TEXT_DATE_NUM_ERROR','無効な日付または右記の数字を超えています。 ');
+define('TEXT_DATE_NUM_ERROR','お届け日時を正しく入力してください。');
 define('TEXT_INPUT_DATE_ERROR','日時が入力されていません。');
 define('TEXT_NO_ENOUGH_POINT','ポイントが足りません。入力可能なポイントは ');
 define('TEXT_LS',' です。');
@@ -243,5 +243,5 @@ define('TEXT_PASSWORD_NOT','パスワードが違います');
 
 
 define('TEXT_PRODUCTS_NUM','商品の数量が足りません。注文を作成しますか？');
-define('TEXT_DATE_TIME_ERROR','過去の日時が選択されています。誤りははありませんか？');
+define('TEXT_DATE_TIME_ERROR','過去の日時が選択されています。保存しますか？');
 ?>

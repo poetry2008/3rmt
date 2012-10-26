@@ -446,12 +446,12 @@ function checkurl(url){
 function valdata(){
   if (document.getElementById('url').value!=''&&
       !checkurl(document.getElementById('url').value)) {
-    alert('URL形式を正しく入力してください。例：http://iimy.co.jp'); 
+    alert('<?php echo TEXT_URL_EXAMPLE;?>'); 
     return false; 
   }
   if (document.getElementById('loginurl').value!=''&&
       !checkurl(document.getElementById('loginurl').value)) {
-    alert('URL形式を正しく入力してください。例：http://iimy.co.jp'); 
+    alert('<?php echo TEXT_URL_EXAMPLE;?>'); 
     return false; 
   }
 }
@@ -592,28 +592,28 @@ require("includes/note_js.php");
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
-<!-- header //-->
+<!-- header -->
 <?php
   require(DIR_WS_INCLUDES . 'header.php');
 ?>
-<!-- header_eof //-->
-<!-- body //-->
+<!-- header_eof -->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
 <?php
   if ($ocertify->npermission >= 10) {
     echo '<td width="' . BOX_WIDTH . '" valign="top">';
     echo '<table border="0" width="' . BOX_WIDTH . '" cellspacing="1" cellpadding="1" class="columnLeft">';
-    echo '<!-- left_navigation //-->';
+    echo '<!-- left_navigation -->';
     require(DIR_WS_INCLUDES . 'column_left.php');
-    echo '<!-- left_navigation_eof //-->';
+    echo '<!-- left_navigation_eof -->';
     echo '</table>';
     echo '</td>';
   } else {
     echo '<td>&nbsp;</td>';
   }
 ?>
-<!-- body_text //-->
+<!-- body_text -->
     <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
       <td width="100%" colspan='2'>
@@ -634,7 +634,7 @@ require("includes/note_js.php");
           <tr>
             <td class="smallText" valign='top'>
               <?php echo tep_draw_form('pw_manager1', FILENAME_PW_MANAGER, '',
-                  'get','id="pw_manager1" onsubmit="return false"'); ?>検索 : 
+                  'get','id="pw_manager1" onsubmit="return false"').IMAGE_SEARCH; ?> : 
               <input name="keywords" type="text" id="keywords" size="40" value="<?php if(isset($_GET['keywords'])) echo stripslashes($_GET['keywords']); ?>">
               <input name="site_id" type="hidden" id="site_id" size="40" value="<?php
               echo isset($site_id)?$site_id:'0'; ?>">
@@ -857,9 +857,9 @@ require("includes/note_js.php");
       */
       echo "<td class='dataTableContent'".$onclick." >";
         if($pw_manager_row['privilege'] =='7'){
-         echo "Staff以上";
+         echo TEXT_PERMISSION_STAFF;
         }else if($pw_manager_row['privilege'] =='10'){
-         echo "Chief以上";
+         echo TEXT_PERMISSION_CHIEF;
         }else{
          if($pw_manager_row['self']!=''){
          $self_info = tep_get_user_info($pw_manager_row['self']);
@@ -966,7 +966,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           "<br>".TEXT_OPERATOR_INFO."<br><br>".
           tep_draw_radio_field('privilege','15',false,'','id="self" class="privilege"').TEXT_SELF.
           tep_draw_radio_field('privilege','7',true,'','class="privilege"
-            id="privilege_s"')."Staff以上".
+            id="privilege_s"').TEXT_PERMISSION_STAFF.
           tep_draw_radio_field('privilege','10',false,'','class="privilege"
             id="privilege_c"')."Chief以上<br>"
           );
@@ -1047,7 +1047,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           "<br>".TEXT_OPERATOR_INFO."<br><br>".
           tep_draw_radio_field('privilege','15',$pwInfo->privilege==15?true:false,'','id="self" class="privilege"').TEXT_SELF.
           tep_draw_radio_field('privilege','7',$pwInfo->privilege==7?true:false,'','class="privilege"
-            id="privilege_s"')."Staff以上".
+            id="privilege_s"').TEXT_PERMISSION_STAFF.
           tep_draw_radio_field('privilege','10',$pwInfo->privilege==10?true:false,'','class="privilege"
             id="privilege_c"')."Chief以上<br>"
           );
@@ -1179,16 +1179,16 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
     </table>
     </div> 
     </td>
-<!-- body_text_eof //-->
+<!-- body_text_eof -->
   </tr>
 </table>
-<!-- body_eof //-->
+<!-- body_eof -->
 
-<!-- footer //-->
+<!-- footer -->
 <?php
     require(DIR_WS_INCLUDES . 'footer.php');
 ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 </body>
 </html>

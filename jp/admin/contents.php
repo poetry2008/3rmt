@@ -194,18 +194,18 @@ require("includes/note_js.php");
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
-<!-- header //--> 
+<!-- header --> 
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-<!-- header_eof //--> 
-<!-- body //--> 
+<!-- header_eof --> 
+<!-- body --> 
 <table border="0" width="100%" cellspacing="2" cellpadding="2"> 
   <tr> 
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft"> 
-        <!-- left_navigation //--> 
+        <!-- left_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
-        <!-- left_navigation_eof //--> 
+        <!-- left_navigation_eof --> 
       </table></td> 
-    <!-- body_text //--> 
+    <!-- body_text --> 
     <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
 <?php
   if (isset($_GET['action']) && $_GET['action'] == 'edit') {
@@ -464,7 +464,7 @@ require("includes/note_js.php");
       if ($cID && tep_not_null($cID)) {
     $heading[] = array('text' => '<b>' . $c_title . '</b>');
 
-        $contents[] = array('align' => 'center', 'text' => '<br>このページのリンクを表示させるには以下のソースコードを表示したい箇所にコピーしてください。<br>'.tep_draw_textarea_field('link','soft',30,5,'<a href="'.tep_catalog_href_link('page.php','pID='.(isset($_GET['cID'])?$_GET['cID']:'')).'">'.$c_title.'</a>').'<br><a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID .  '&action=edit') . '">' . tep_html_element_button(IMAGE_EDIT) . '</a>' .  ($ocertify->npermission == 15 ? ( ' <a href="' .  tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID .  '&action=confirm') . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'):''));
+        $contents[] = array('align' => 'center', 'text' => '<br>'.TEXT_CONTENT_MSG.'<br>'.tep_draw_textarea_field('link','soft',30,5,'<a href="'.tep_catalog_href_link('page.php','pID='.(isset($_GET['cID'])?$_GET['cID']:'')).'">'.$c_title.'</a>').'<br><a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID .  '&action=edit') . '">' . tep_html_element_button(IMAGE_EDIT) . '</a>' .  ($ocertify->npermission == 15 ? ( ' <a href="' .  tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID .  '&action=confirm') . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'):''));
       }
 $info_query = tep_db_query("select * from information_page where PID='".$_GET['cID']."'");
 $info_array = tep_db_fetch_array($info_query);
@@ -495,13 +495,13 @@ $contents[] = array('text' => '<br>'. TEXT_DATE_UPDATE. ' ' .tep_datetime_short(
       </table>
       </div> 
       </td> 
-    <!-- body_text_eof //--> 
+    <!-- body_text_eof --> 
   </tr> 
 </table> 
-<!-- body_eof //--> 
-<!-- footer //--> 
+<!-- body_eof --> 
+<!-- footer --> 
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-<!-- footer_eof //--> 
+<!-- footer_eof --> 
 <br> 
 </body>
 </html>

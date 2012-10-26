@@ -350,7 +350,7 @@ require("includes/note_js.php");
   <table width="100%" cellspacing="0" cellpadding="0">
      <tr>
         <td class="cleate_add" valign="top">
-  <input type="button" value="<?php echo CLEATE_DOUGYOUSYA_ADD_BUTTON;?>"　name='b1' onClick="input_add()">
+  <input type="button" value="<?php echo CLEATE_DOUGYOUSYA_ADD_BUTTON;?>" name='b1' onClick="input_add()">
         </td>
      </tr>
      <tr>
@@ -367,7 +367,10 @@ require("includes/note_js.php");
 <table>
 <?php while($col=tep_db_fetch_array($res)){?>
   <tr>
-    <td width="10"><?php if ($i) {?><a href="javascript:void(0);" onclick="ex(<?php echo $i;?>)">↑</a><?php }?></td>
+    <td width="10"><?php 
+      if ($i) {?>
+        <a href="javascript:void(0);" onclick="ex(<?php echo $i;?>)">&uarr;</a><?php 
+      }?></td>
     <td id="tr_<?php echo $i;?>_1">
       <input type="hidden" name="sort_order[<?php echo $col['dougyousya_id'];?>]" value="<?php echo $i;?>" class="sort_order_input">
       <?php echo CLEATE_DOUGYOUSYA_TONGYE;?><?php echo $col['dougyousya_name'];?>

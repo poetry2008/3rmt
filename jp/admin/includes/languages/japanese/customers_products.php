@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 Will Mays
-
-  Released under the GNU General Public License
 */
 
 define('HEADING_TITLE', '商品履歴');
@@ -33,4 +26,5 @@ define('TEXT_CUSTOMERS_PRODUCTS_PRICE','金額');
 define('TEXT_CUSTOMERS_PRODUCTS_SUB_TOTAL','小計');
 define('TEXT_CUSTOMERS_PRODUCTS_MAIL_STR','御中');
 define('TEXT_CUSTOMERS_PRODUCTS_TAX','税込');
+define('TEXT_PRINT', 'プリント');
 ?>

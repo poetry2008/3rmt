@@ -206,7 +206,7 @@ case 'oroshi':
       echo $game[0]['categories_name'];
       echo "</td>";
       echo "<td width='300' class='dataTableHeadingContent'><a href=
-        'history.php?action=oroshi_c&cPath=".$gid."&oid=".$oid."'>履歴詳細</a></td>";
+        'history.php?action=oroshi_c&cPath=".$gid."&oid=".$oid."'>".TEXT_RECORDS."</a></td>";
       echo "<td class='dataTableHeadingContent'><a href=
         'cleate_list.php?action=prelist&cid=".$game[0]['categories_id']."&oid=".$oid."&src_id=his'
         >'.TEXT_CREATE_DATA.'</a></td>";
@@ -220,7 +220,7 @@ case 'oroshi':
       }
       echo "</td>";
       echo "<td class='dataTableContent'><a onClick='return delete_one_data()'
-        href='history.php?action=oroshi&o_id=".$oid."&list_id=".$value['list_id']."'>削除</a></td>";
+        href='history.php?action=oroshi&o_id=".$oid."&list_id=".$value['list_id']."'>'.IMAGE_DELETE.'</a></td>";
       echo "</tr>";
     }
     echo "</table>";
@@ -540,7 +540,7 @@ case 'dougyousya_categories':
   <table border="1">
    <tr>
     <td colspan='<?php echo 2;?>'>
-      <input type="submit" name="b2" id = 'saveorder2' value="登録">
+      <input type="submit" name="b2" id = 'saveorder2' value="<?php echo TEXT_SIGN_IN;?>">
       <input type='hidden' id='orderstring1' name='orderstring' />
       <input type='hidden' id='targetstring1' name='targetstring' />
       <input type="button" onclick="get_last_date()" value="LAST DATA">
@@ -549,7 +549,7 @@ case 'dougyousya_categories':
   </tr>
 
      <tr>
-     <td <?php if ($ocertify->npermission>7) {?>colspan ='2'<?php }?>>カテゴリー / 商品</td>
+     <td <?php if ($ocertify->npermission>7) {?>colspan ='2'<?php }?>><?php echo TEXT_CLASSIFICATION;?></td>
 <?php 
   for($i=0;$i<$cnt;$i++){
     $html .= "<td>".$d_name[$i]."</td>";
@@ -594,7 +594,7 @@ case 'dougyousya_categories':
         $last_history_arr2[$i][$j] = isset($last_history_arr[$cid_list[$i]][$dougyousya_id[$j]])?$last_history_arr[$cid_list[$i]][$dougyousya_id[$j]]['dougyosya_kakaku']:'';
         //        <input type='text' size='7px' name='TARGET_INPUT[]' onkeydown=ctrl_keydown('TARGET_INPUT',".$i.",".$j.",".$count['cnt'].")></td>";//価格同業者
         echo "<td id='tr_".$x."_".($j+2)."' class='dataTableContent' >
-        <input value='' pos='".$i."_".$j."' id=\"ti_".$i."_".$j."\" class='udlr input_number col_".$j."'  type='text' size='7px' name='TARGET_INPUT[]' onpaste=\"return !clipboardData.getData('text').match(/\D/)\" ondragenter=\"return false\" style=\"ime-mode:Disabled\"><a href=\"javascript:void(0)\" onclick=\"$('.col_".$j."').val($('#ti_".$i."_".$j."').val())\">統一</a>";//価格同業者
+        <input value='' pos='".$i."_".$j."' id=\"ti_".$i."_".$j."\" class='udlr input_number col_".$j."'  type='text' size='7px' name='TARGET_INPUT[]' onpaste=\"return !clipboardData.getData('text').match(/\D/)\" ondragenter=\"return false\" style=\"ime-mode:Disabled\"><a href=\"javascript:void(0)\" onclick=\"$('.col_".$j."').val($('#ti_".$i."_".$j."').val())\">".TEXT_UNIFIED."</a>";//価格同業者
       }
     }else{
       //            echo "<td class='dataTableContent' ><input type='text' size='7px'  name='TARGET_INPUT[]' onkeydown=ctrl_keydown('TARGET_INPUT',".$i.",'0','0')></td>";//価格同業者  
@@ -608,7 +608,7 @@ case 'dougyousya_categories':
   ?>
   <tr>
     <td colspan='<?php echo $count['cnt']+3;?>'>
-      <input type="submit" name="b1" id = 'saveorder1' value="登録">
+      <input type="submit" name="b1" id = 'saveorder1' value="<?php echo TEXT_SIGN_IN;?>">
       <input type='hidden' id='orderstring' name='orderstring' />
       <input type='hidden' id='targetstring' name='targetstring' />
       <input type="button" onclick="get_last_date()" value="LAST DATA">
@@ -801,7 +801,7 @@ $products_arr = $sort_products_arr;
              . '&chma=30,30,0,30'
              
                
-             . '&chtt='.urlencode($productname)." ".urlencode(date('n月j日 H:i',$lenmin)).'+---+'.urlencode(date('n月j日 H:i',$lenmax))
+             . '&chtt='.urlencode($productname)." ".urlencode(date('n'.MONTH_TEXT.'j'.DAY_TEXT.' H:i',$lenmin)).'+---+'.urlencode(date('n'.MONTH_TEXT.'j'.DAY_TEXT.' H:i',$lenmax))
              . '&chts=000000,14'
                
              . '&chxt='.'x,y'

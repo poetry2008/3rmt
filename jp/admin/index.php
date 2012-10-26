@@ -49,7 +49,7 @@ while($row=tep_db_fetch_array($query)){
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script type="text/javascript" src="includes/jquery.fancybox-1.3.1.pack.js"></script>
-<script type="text/javascript" src="includes/global.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=global&type=js"></script>
 <script type='text/javascript' src='includes/javascript/ui/jquery-ui-1.8.16.custom.min.js'></script>
 <script type='text/javascript' src='includes/javascript/ui/jquery.ui.resizable.js'></script>
 <link rel="stylesheet" type="text/css" href="includes/note_style.css" />

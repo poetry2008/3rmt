@@ -148,7 +148,7 @@
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+  <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 require("includes/note_js.php");
@@ -160,19 +160,19 @@ require("includes/note_js.php");
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
-<!-- header //-->
+<!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
+<!-- header_eof -->
 
-<!-- body //-->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-<!-- left_navigation //-->
+<!-- left_navigation -->
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- left_navigation_eof //-->
+<!-- left_navigation_eof -->
     </table></td>
-<!-- body_text //-->
+<!-- body_text -->
     <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -283,7 +283,7 @@ require("includes/note_js.php");
       $contents[] = array('text' => '<br>' . TEXT_EDIT_ORDERS_STATUS_IMAGE . '<br>' . tep_draw_file_field('orders_status_image'));
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('finished', '1') . ' ' . TEXT_ORDERS_STATUS_FINISHED);
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('nomail', '1') . ' ' . 'DON\'T SEND MAIL');
-      $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('calc_price', '1') . ' ' . '平均単価の算出条件に設定');
+      $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('calc_price', '1') . ' ' . TEXT_ORDERS_STATUS_SET_PRICE_CALCULATION);
       
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('is_thzk', '1') . ' ' . TEXT_ORDERS_FETCH_CONDITION);
 
@@ -330,12 +330,12 @@ require("includes/note_js.php");
       //if(!is_dir(tep_get_local_path(DIR_FS_CATALOG_IMAGES).DIRECTORY_SEPARATOR.$oInfo->orders_status_image) && file_exists(tep_get_local_path(DIR_FS_CATALOG_IMAGES).DIRECTORY_SEPARATOR.$oInfo->orders_status_image)) {
       if(!is_dir(tep_get_upload_dir().'orders_status/'.$oInfo->orders_status_image) && file_exists(tep_get_upload_dir().'orders_status/'.$oInfo->orders_status_image)) {
         $contents[] = array('text' => '<br>' . tep_image(tep_get_web_upload_dir() .'orders_status/'. $oInfo->orders_status_image, $oInfo->orders_status_name, 15, 15));
-        $contents[] = array('text' => '<br><input type="checkbox" name="delete_image" value="1" >アイコンを削除');
+        $contents[] = array('text' => '<br><input type="checkbox" name="delete_image" value="1" >'.TEXT_DEL_IMAGE);
       }
       $contents[] = array('text' => '<br>' . TEXT_EDIT_ORDERS_STATUS_IMAGE . '<br>' . tep_draw_file_field('orders_status_image'));
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('finished', '1', $oInfo->finished) . ' ' . TEXT_ORDERS_STATUS_FINISHED);
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('nomail', '1', $oInfo->nomail) . ' ' . 'DON\'T SEND MAIL');
-      $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('calc_price', '1', $oInfo->calc_price) . ' ' . '平均単価の算出条件に設定');
+      $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('calc_price', '1', $oInfo->calc_price) . ' ' . TEXT_ORDERS_STATUS_SET_PRICE_CALCULATION);
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('is_thzk', '1', $oInfo->is_thzk) . ' ' . TEXT_ORDERS_FETCH_CONDITION);
       
       $contents[] = array('align' => 'center', 'text' => '<br>' .
@@ -393,14 +393,14 @@ $contents[] = array('text' => '<br>'. TEXT_DATE_UPDATE. ' ' .tep_datetime_short(
     </table>
     </div> 
     </td>
-<!-- body_text_eof //-->
+<!-- body_text_eof -->
   </tr>
 </table>
-<!-- body_eof //-->
+<!-- body_eof -->
 
-<!-- footer //-->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 </body>
 </html>

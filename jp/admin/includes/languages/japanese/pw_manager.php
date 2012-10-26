@@ -58,3 +58,6 @@ define('PW_MANAGER_SELECT_EIGHT', '登録情報');
 define('PW_MANAGER_SELECT_NINE', 'メモ欄');
 define('PW_MANAGER_SELECT_TEN', 'サイト名');
 define('TEXT_USER_ADDED','登録者:');
+define('TEXT_PERMISSION_STAFF','Staff以上');
+define('TEXT_PERMISSION_CHIEF','Chief以上');
+define('TEXT_URL_EXAMPLE','URL形式を正しく入力してください。例：http://example.com');

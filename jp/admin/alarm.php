@@ -147,7 +147,7 @@
 <title>
 <?php 
   if(isset($_GET['oID']) && $_GET['oID']){
- echo $_GET['oID'].'のアラーム設定';
+ echo $_GET['oID'].ALARM_TITLE;
   }else{
   echo TITLE; 
   }

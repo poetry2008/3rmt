@@ -6,4 +6,5 @@ define('TEXT_CREATE_DATA','データ作成');
 define('TEXT_DELETE','削除');
 define('TEXT_CLASSIFICATION','カテゴリー / 商品');
 define('TEXT_SIGN_IN','登録');
+define('TEXT_UNIFIED','統一');
 ?>

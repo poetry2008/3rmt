@@ -55,3 +55,6 @@ define('PW_MANAGER_SELECT_SIX', 'パスワード');
 define('PW_MANAGER_SELECT_SEVEN', '管理者');
 define('PW_MANAGER_SELECT_EIGHT', '登録情報');
 define('PW_MANAGER_SELECT_NINE', 'メモ欄');
+define('TEXT_PERMISSION_STAFF','Staff以上');
+define('TEXT_PERMISSION_CHIEF','Chief以上');
+define('TEXT_HISTORY_DELETE','履歴を削除しますか？');

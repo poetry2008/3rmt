@@ -1,4 +1,4 @@
-﻿var zaiko_input_obj=document.getElementsByName("zaiko[]");//架空
+var zaiko_input_obj=document.getElementsByName("zaiko[]");//架空
 var target_input_obj=document.getElementsByName("TARGET_INPUT[]");//同業者
 var price_obj=document.getElementsByName("price[]");//特別価格
 var error_msg='';
@@ -303,7 +303,7 @@ function check_error(){
             if (parseFloat($('#offset_input_' + (i+1)).val()) < 0) {
               error_msg = price_error;
               $('#offset_input_'+(i+1)).css('border-color','red');
-              $('#offset_error_'+(i+1)).append('<img src="images/icons/error_3.gif" title="特別価格が通常価格より高くなりました">');
+              $('#offset_error_'+(i+1)).append('<img src="images/icons/error_3.gif" title="<?php echo JS_TEXT_C_ADMIN_SPECIAL_PRICE_MORE;?>">');
               if (focus_id == '') {
                   focus_id = '#price_input_'+(i+1);
               }

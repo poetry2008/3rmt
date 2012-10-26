@@ -47,7 +47,7 @@
       break;
   }
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
@@ -56,19 +56,19 @@
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onload="SetFocus();">
-<!-- header //-->
+<!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
+<!-- header_eof -->
 
-<!-- body //-->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-<!-- left_navigation //-->
+<!-- left_navigation -->
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- left_navigation_eof //-->
+<!-- left_navigation_eof -->
     </table></td>
-<!-- body_text //-->
+<!-- body_text -->
     <td width="100%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td width="100%"><table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -137,7 +137,7 @@
       $contents[] = array('text' => TEXT_NEW_INTRO);
       $contents[] = array('text' => '<br>' . TEXT_COLORS_NAME . '<br>' . tep_draw_input_field('color_name'));
     $contents[] = array('text' => '<br>' . TEXT_COLORS_TAG . '<br>' . tep_draw_input_field('color_tag'));
-    $contents[] = array('text' => '<br>ソート順<br>' . tep_draw_input_field('sort_id'));
+    $contents[] = array('text' => '<br>'.TEXT_COLORS_SORT.'<br>' . tep_draw_input_field('sort_id'));
 
       $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_save.gif', IMAGE_SAVE) . ' <a href="' . tep_href_link(FILENAME_COLOR, 'page=' . $_GET['page'] . '&mID=' . $_GET['mID']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       break;
@@ -148,7 +148,7 @@
       $contents[] = array('text' => TEXT_EDIT_INTRO);
       $contents[] = array('text' => '<br>' . TEXT_COLORS_NAME . '<br>' . tep_draw_input_field('color_name', $mInfo->color_name));
     $contents[] = array('text' => '<br>' . TEXT_COLORS_TAG . '<br>' . tep_draw_input_field('color_tag', $mInfo->color_tag));
-    $contents[] = array('text' => '<br>ソート順<br>' . tep_draw_input_field('sort_id', $mInfo->sort_id));
+    $contents[] = array('text' => '<br>'.TEXT_COLORS_SORT.'<br>' . tep_draw_input_field('sort_id', $mInfo->sort_id));
 
       $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_save.gif', IMAGE_SAVE) . ' <a href="' . tep_href_link(FILENAME_COLOR, 'page=' . $_GET['page'] . '&mID=' . $mInfo->color_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       break;
@@ -190,14 +190,14 @@
         </table></td>
       </tr>
     </table></td>
-<!-- body_text_eof //-->
+<!-- body_text_eof -->
   </tr>
 </table>
-<!-- body_eof //-->
+<!-- body_eof -->
 
-<!-- footer //-->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 </body>
 </html>
