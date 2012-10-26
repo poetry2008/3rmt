@@ -777,7 +777,7 @@ require("includes/note_js.php");
                 <tr>
                   <td colspan="3" align="left"></td>
                   <td colspan="4" align="right">
-                  <input type="button" name="orders_button" onclick="check_select();" value="<?php echo APPLICATION_CREATE_TEXT;?>">
+                  <input class="element_button" type="button" name="orders_button" onclick="check_select();" value="<?php echo APPLICATION_CREATE_TEXT;?>">
                   <a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, str_replace('cpage', 'page', tep_get_all_get_params(array('page'))));?>"><?php echo tep_html_element_button(IMAGE_BACK);?></a> 
                   </td>
                 </tr>

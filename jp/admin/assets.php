@@ -111,7 +111,7 @@ require("includes/note_js.php");
       echo '<td>&nbsp;</td>';
     }
 ?>
-<td width="100%" valign="top"><?php echo $notes;?>
+<td width="100%" valign="top"><?php echo $notes;?><div class="compatible">
 <?php
 if(isset($_GET['pid'])&&$_GET['pid']!=''){
   echo "<div class = 'title_breadcreumb_div'>";
@@ -217,13 +217,11 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
             </option>
             </select>
 
-            <?php
-            echo "</td>";
-
-  echo "<td>";
-  echo "<td width='100' nowrap >";
-  echo TEXT_SEARCH_DATE;
+<?php
   echo "</td>";
+  echo "<td>";
+  echo TEXT_SEARCH_DATE;
+  echo "<br>";
   ?>
     <?php //start date ?>
     <table cellpadding="0" cellspacing="0" border="0" class="assets_time">
@@ -275,6 +273,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     </select></td>
     </tr>
     </table>
+    </div>
     </td>
     </tr>
     <tr>
