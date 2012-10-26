@@ -388,6 +388,7 @@ if($current_page_tp == "configuration.php") {
 if (isset($ocertify->npermission) || $ocertify->npermission) {
   echo '&nbsp<a href="' . tep_href_link(FILENAME_DEFAULT, '', 'NONSSL') . '" class="headerLink">' . HEADER_TITLE_TOP . '</a>&nbsp;&nbsp;&nbsp;&nbsp';
 
+  echo '<a href="' . tep_href_link('help.php', 'info_romaji='.urlencode(str_replace('/admin/','',$current_page_tp)), 'NONSSL') . '" class="headerLink"  target="_blank"><img src="images/icon_help_info.gif" alt="img">&nbsp;'.TEXT_HEADER_HELP.'</a>&nbsp;&nbsp;&nbsp;';
  
 }
 ?></td>
