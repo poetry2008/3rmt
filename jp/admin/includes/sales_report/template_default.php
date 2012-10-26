@@ -17,22 +17,22 @@ require("includes/note_js.php");
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
-<!-- header //-->
+<!-- header -->
       <?php
       require(DIR_WS_INCLUDES . 'header.php');
 ?>
-<!-- header_eof //-->
-<!-- body //-->
+<!-- header_eof -->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-      <!-- left_navigation //-->
+      <!-- left_navigation -->
       <?php
       require(DIR_WS_INCLUDES . 'column_left.php');
 ?>
-      <!-- left_navigation_eof //-->
+      <!-- left_navigation_eof -->
     </table></td>
-    <!-- body_text //-->
+    <!-- body_text -->
     <td width="100%" valign="top"><?php echo $notes;?>
     <div class="compatible"> 
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
@@ -60,7 +60,7 @@ require("includes/note_js.php");
               </td>
               <td align="left" class="menuBoxHeading">
  <?php echo SR_SITE;?> <br>
-                <?php echo tep_site_pull_down_menu_with_all($_GET['site_id'], false, 'すべて');?><br>
+                <?php echo tep_site_pull_down_menu_with_all($_GET['site_id'], false, TEXT_ALL);?><br>
               </td>
               <td class="menuBoxHeading"><?php echo SR_REPORT_START_DATE; ?><br>
               <table>
@@ -443,15 +443,15 @@ if ($srCompare > SR_COMPARE_NO) {
     </table>
     </div> 
     </td>
-    <!-- body_text_eof //-->
+    <!-- body_text_eof -->
   </tr>
 </table>
-<!-- body_eof //-->
-<!-- footer //-->
+<!-- body_eof -->
+<!-- footer -->
 <?php
   require(DIR_WS_INCLUDES . 'footer.php');
 ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 </body>
 </html>
 <?php

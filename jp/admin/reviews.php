@@ -12,7 +12,7 @@
           'reviews_id' => 'null',
           'products_id' => $_POST['products_id'],
           'customers_id' => '0',
-          'customers_name' => $_POST['customers_name'] ? $_POST['customers_name'] : '匿名',
+          'customers_name' => $_POST['customers_name'] ? $_POST['customers_name'] : TEXT_NO_NAME,
           'reviews_rating' => $_POST['reviews_rating'],
           'date_added' => $_POST['year'].'-'.$_POST['m'].'-'.$_POST['d'].' '.$_POST['h'].':'.$_POST['i'].':'.$_POST['s'],
           'last_modified' => '',
@@ -57,7 +57,7 @@
         $reviews_text   = tep_db_prepare_input($_POST['reviews_text']);
         $reviews_status = tep_db_prepare_input($_POST['reviews_status']);
         $date_added     = $_POST['year'].'-'.$_POST['m'].'-'.$_POST['d'].' '.$_POST['h'].':'.$_POST['i'].':'.$_POST['s'];
-        $customers_name = $_POST['customers_name'] ? $_POST['customers_name'] : '匿名';
+        $customers_name = $_POST['customers_name'] ? $_POST['customers_name'] : TEXT_NO_NAME;
         tep_db_query("
             update " . TABLE_REVIEWS . " 
             set reviews_rating = '" . tep_db_input($reviews_rating) . "', 
@@ -135,24 +135,24 @@ require("includes/note_js.php");
 ?>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onLoad="SetFocus();word_count(document.getElementById('reviews_text'))">
-<!-- header //-->
+<!-- header -->
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
   <script language='javascript'>
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
+<!-- header_eof -->
 
-<!-- body //-->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-<!-- left_navigation //-->
+<!-- left_navigation -->
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- left_navigation_eof //-->
+<!-- left_navigation_eof -->
     </table></td>
-<!-- body_text //-->
+<!-- body_text -->
     <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td width="100%"><table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -632,14 +632,14 @@ $contents[] = array('text' => '<br>'. TEXT_DATE_UPDATE. ' ' .tep_datetime_short(
     </table>
     </div> 
     </td>
-<!-- body_text_eof //-->
+<!-- body_text_eof -->
   </tr>
 </table>
-<!-- body_eof //-->
+<!-- body_eof -->
 
-<!-- footer //-->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 </body>
 </html>

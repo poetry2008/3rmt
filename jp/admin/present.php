@@ -205,18 +205,18 @@ function msg2(){
 </script>
 </head>
 <body>
-<!-- header //-->
+<!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
-<!-- body //-->
+<!-- header_eof -->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-        <!-- left_navigation //-->
+        <!-- left_navigation -->
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-        <!-- left_navigation_eof //-->
+        <!-- left_navigation_eof -->
       </table></td>
-    <!-- body_text //-->
+    <!-- body_text -->
     <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table width="100%" border="0" cellspacing="0" cellpadding="1" align="center">
         <tr>
           <td><!-- insert -->
@@ -444,10 +444,10 @@ $sele_lid = substr($sql1['limit_date'],8,2);
                               <td class="main" bgcolor="#FFFFFF">
                 <?php
                 if($sql1['html_check'] == 1){
-                  echo '<input type="checkbox" name="ht" value="1" checked>HTMLを許可する'."\n";
+                  echo '<input type="checkbox" name="ht" value="1" checked>'.PRESENT_HTML_READ."\n";
                   echo '<textarea name="text" style="width:95%; height:300px;">'.stripslashes($sql1['text']).'</textarea>'."\n";
                 }else{
-                  echo '<input type="checkbox" name="ht" value="1">HTMLを許可する'."\n";
+                  echo '<input type="checkbox" name="ht" value="1">'.PRESENT_HTML_READ."\n";
                   echo '<textarea name="text" style="width:95%; height:300px;">'.stripslashes($sql1['text']).'</textarea>'."\n";
                 }
                 ?>
@@ -742,7 +742,7 @@ $c_id = tep_db_prepare_input($_GET['cID']);
             if (isset($list_id) && $list_id && tep_not_null($list_id)) {
             $heading[] = array('text' => '<b>' . $c_title . '</b>');
         
-            $present[] = array('align' => 'center', 'text' => '<br><br><a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action','list_id')) . 'list_id=' .  $list_id  .'&action=listview') . '">' .  tep_html_element_button('表示') .'</a> <a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action'))) . '">' . tep_html_element_button('戻る') . '</a>');
+            $present[] = array('align' => 'center', 'text' => '<br><br><a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action','list_id')) . 'list_id=' .  $list_id  .'&action=listview') . '">' .  tep_html_element_button(PRESENT_SHOW) .'</a> <a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action'))) . '">' . tep_html_element_button(PRESENT_BACK) . '</a>');
             }
             break;
           }
@@ -874,7 +874,7 @@ default:
             if (isset($cID) && $cID && tep_not_null($cID)) {
             $heading[] = array('text' => '<b>' . $c_title . '</b>');
         
-            $present[] = array('align' => 'center', 'text' => '<br><br><a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=view') . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a> <a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=deleform') . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a> <a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action','page')) . 'cID=' . $cID . '&action=list') . '">' .  tep_html_element_button('リスト') . '</a>' );
+            $present[] = array('align' => 'center', 'text' => '<br><br><a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=view') . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a> <a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=deleform') . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a> <a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action','page')) . 'cID=' . $cID . '&action=list') . '">' .  tep_html_element_button(PRESENT_LIST) . '</a>' );
 $present_query = tep_db_query("select * from present_goods where goods_id='".$cID."'");
 $present_array = tep_db_fetch_array($present_query);
 $present[] = array('text' => '<br>'. TEXT_USER_ADDED. ' ' .$present_array['user_added']);
@@ -901,7 +901,7 @@ $present[] = array('text' => '<br>'. TEXT_DATE_UPDATE. ' ' .tep_datetime_short($
             </table></td>
         </tr>
       </table></td>
-    <!-- body_text_eof //-->
+    <!-- body_text_eof -->
   </tr>
 </table>
 <?php
@@ -920,10 +920,10 @@ break;
 </td>
 </tr>
 </table>
-<!-- body_eof //-->
-<!-- footer //-->
+<!-- body_eof -->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 </body>
 </html>

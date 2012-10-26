@@ -80,7 +80,6 @@ define('ERROR_ORDER_DOES_NOT_EXIST', '错误: 订单不存在。');
 define('SUCCESS_ORDER_UPDATED', '成功: 订单状态已更新。');
 define('WARNING_ORDER_NOT_UPDATED', '警告: 订单状态未改变。');
 
-// Add Japanese osCommerce
 define('EMAIL_TEXT_STORE_CONFIRMATION', ' 的订购、非常感谢。' . "\n\n"
 .'订单的受理情况和联络事项、在下面介绍。');
 define('EMAIL_TEXT_STORE_CONFIRMATION_FOOTER', 

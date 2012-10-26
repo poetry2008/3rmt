@@ -91,7 +91,7 @@ require("includes/note_js.php");
 if($_GET['action'] == 'success') {
   echo '<table border="0" cellspacing="0" cellpadding="0" width="100%">' . "\n";
   echo '<tr>' . "\n";
-  echo '<td class="messageStackSuccess" height="20" align="center"><strong>更新しました。</strong></td>' . "\n";
+  echo '<td class="messageStackSuccess" height="20" align="center"><strong>'.UPDATE_MSG_TEXT.'</strong></td>' . "\n";
   echo '</tr>' . "\n";
   echo '</table><br>' . "\n";
 }
@@ -191,17 +191,17 @@ if($_GET['action'] == 'success') {
     echo '
       <table border=1 cellspacing=0 cellpadding=2 width=100%>
       <tr bgcolor=#000000>
-      <td nowrap colspan=3>&nbsp;&nbsp;<font size=2 color=#FFFFFF>'.$year2.'年'.$m_num2.'月</font></td>
+      <td nowrap colspan=3>&nbsp;&nbsp;<font size=2 color=#FFFFFF>'.$year2.YEAR_TEXT.$m_num2.MONTH_TEXT.'</font></td>
       <td nowrap colspan=4 align=right>&nbsp;&nbsp;<font size=2 color=#FFFFFF>&nbsp;&nbsp;■&raquo;'.BANK_CL_COMMON_WORK_TIME.'&nbsp;&nbsp;<font color="'.CL_COLOR_01.'">■</font>&raquo;'.BANK_CL_REST_TIME.'&nbsp;&nbsp;<font color="'.CL_COLOR_02.'">■</font>&raquo;'.BANK_CL_SEND_MAIL.'&nbsp;&nbsp;</td>
       </tr>
       <tr bgcolor=ffffff>
-        <td align=middle height=15><font size="2" color="#cc0000">日</font></td>
-        <td align=middle height=15><font size="2">月</font></td>
-        <td align=middle height=15><font size="2">火</font></td>
-        <td align=middle height=15><font size="2">水</font></td>
-        <td align=middle height=15><font size="2">木</font></td>
-        <td align=middle height=15><font size="2">金</font></td>
-        <td align=middle height=15><font size="2" color="#0000cc">土</font></td>
+        <td align=middle height=15><font size="2" color="#cc0000">'.CL_TEXT_DATE_SUNDAY.'</font></td>
+        <td align=middle height=15><font size="2">'.CL_TEXT_DATE_MONDAY.'</font></td>
+        <td align=middle height=15><font size="2">'.CL_TEXT_DATE_TUESDAY.'</font></td>
+        <td align=middle height=15><font size="2">'.CL_TEXT_DATE_WEDNESDAY.'</font></td>
+        <td align=middle height=15><font size="2">'.CL_TEXT_DATE_THURSDAY.'</font></td>
+        <td align=middle height=15><font size="2">'.CL_TEXT_DATE_FRIDAY.'</font></td>
+        <td align=middle height=15><font size="2" color="#0000cc">'.CL_TEXT_DATE_STATURDAY.'</font></td>
       </tr>
       <tr bgcolor=#ffffff>
     ';
@@ -281,7 +281,7 @@ if($_GET['action'] == 'success') {
       <td align="right">
         <table border="0">
           <tr>
-  <td><a href="<?php echo tep_href_link('bank_cl.php', 'date='.date('Y-m',mktime(0,0,0,$m_num-1,1,$year)));?>"><?php echo BUTTON_PREV;?></a></td>
+            <td><a href="<?php echo tep_href_link('bank_cl.php', 'date='.date('Y-m',mktime(0,0,0,$m_num-1,1,$year)));?>"><?php echo BUTTON_PREV;?></a></td>
             <td><a href="<?php echo tep_href_link('bank_cl.php', 'date='.date('Y-m',mktime(0,0,0,$m_num+7,1,$year)));?>"><?php echo BUTTON_NEXT;?></a></td>
             <td>
               <select name="year" id="year">

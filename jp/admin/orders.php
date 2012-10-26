@@ -759,6 +759,7 @@ switch ($_GET['action']) {
              break;
           }
           $fetch_time_str = date('Y'.SENDMAIL_TEXT_DATE_YEAR.'m'.SENDMAIL_TEXT_DATE_MONTH.'d'.SENDMAIL_TEXT_DATE_DAY, strtotime($check_status['torihiki_date'])).$week_str.$fetch_time_start_array[1].' '.SENDMAIL_TEXT_TIME_LINK.' '.$fetch_time_end_array[1]; 
+          
           $comments = str_replace('${SHIPPING_TIME}', $fetch_time_str, $comments); 
           $title = str_replace('${SHIPPING_TIME}', $fetch_time_str, $title); 
           $customer_info_raw = tep_db_query("select is_send_mail from ".TABLE_CUSTOMERS." where customers_id = '".$check_status['customers_id']."'"); 
@@ -1024,9 +1025,8 @@ switch ($_GET['action']) {
              }
            }
           
-           $products_ordered_mail .= SENDMAIL_QTY_NUM.str_repeat('　',
-               intval($max_c_len - mb_strlen(SENDMAIL_QTY_NUM, 'utf-8'))).'：' .
-             $order_pro_list_res['products_quantity']. SENDMAIL_EDIT_ORDERS_NUM_UNIT. tep_get_full_count2($order_pro_list_res['products_quantity'], $order_pro_list_res['products_id']) . "\n";
+           $products_ordered_mail .= SENDMAIL_QTY_NUM.str_repeat('　', intval($max_c_len - mb_strlen(SENDMAIL_QTY_NUM, 'utf-8'))).'：' .
+           $order_pro_list_res['products_quantity']. SENDMAIL_EDIT_ORDERS_NUM_UNIT. tep_get_full_count2($order_pro_list_res['products_quantity'], $order_pro_list_res['products_id']) . "\n";
            $products_ordered_mail .= SENDMAIL_TABLE_HEADING_PRODUCTS_PRICE.str_repeat('　', intval($max_c_len - mb_strlen(SENDMAIL_TABLE_HEADING_PRODUCTS_PRICE, 'utf-8'))).'：' .  $currencies->display_price($order_pro_list_res['final_price'], $order_pro_list_res['products_tax']) . "\n";
            $products_ordered_mail .= str_replace(':', '', SENDMAIL_ENTRY_SUB_TOTAL).str_repeat('　', intval($max_c_len - mb_strlen(str_replace(':', '', SENDMAIL_ENTRY_SUB_TOTAL), 'utf-8'))).'：' .  $currencies->display_price($order_pro_list_res['final_price'], $order_pro_list_res['products_tax'], $order_pro_list_res['products_quantity']) . "\n";
            $products_ordered_mail .= '------------------------------------------' . "\n";
@@ -1296,7 +1296,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
     $type_str = 'desc';
   }else{
     $type_str = 'asc';
-  } 
+  }
   $work_array = array();
   $work_default = '0|1|2|3|4';
   if(PERSONAL_SETTING_ORDERS_WORK != ''){
@@ -2338,28 +2338,28 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     one_time_pwd('<?php echo $page_name;?>');
   </script>
     <?php }?>
-    <!-- header //-->
+    <!-- header -->
     <?php
     require(DIR_WS_INCLUDES . 'header.php');
     ?>
-    <!-- header_eof //-->
-    <!-- body //-->
+    <!-- header_eof -->
+    <!-- body -->
     <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
     <tr>
     <?php
     if ($ocertify->npermission >= 10) {
       echo '<td width="' . BOX_WIDTH . '" valign="top">';
       echo '<table border="0" width="' . BOX_WIDTH . '" cellspacing="1" cellpadding="1" class="columnLeft">';
-      echo '<!-- left_navigation //-->';
+      echo '<!-- left_navigation -->';
       require(DIR_WS_INCLUDES . 'column_left.php');
-      echo '<!-- left_navigation_eof //-->';
+      echo '<!-- left_navigation_eof -->';
       echo '</table>';
       echo '</td>';
     } else {
       echo '<td>&nbsp;</td>';
     }
 ?>
-<!-- body_text //-->
+<!-- body_text -->
 <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
 if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) {
@@ -3197,7 +3197,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
             </tr>
             <tr>
             <td class="main">
-            <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="off" rows="30" cols="74"><?php echo str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']); ?></textarea>
+            <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']); ?></textarea>
             </td>
             </tr>
             <tr>
@@ -4372,7 +4372,7 @@ if($c_parent_array['parent_id'] == 0){
                    ?>
                    <tr>
                    <td>
-                   <!--ORDER EXPORT SCRIPT //-->
+                   <!--ORDER EXPORT SCRIPT -->
                    <form action="<?php echo tep_href_link('orders_csv_exe.php','csv_exe=true', 'SSL') ; ?>" method="post">
                    <fieldset><legend class="smallText"><b>
                    <?php echo TEXT_ORDER_DOWNLOPAD;?></b></legend>
@@ -4450,7 +4450,7 @@ if($c_parent_array['parent_id'] == 0){
           </tr>
           </table></fieldset>
           </form>
-          <!--ORDER EXPORT SCRIPT EOF //-->
+          <!--ORDER EXPORT SCRIPT EOF -->
           </td>
           </tr>
           <?php
@@ -5167,7 +5167,7 @@ if($c_parent_array['parent_id'] == 0){
                   color="red">※</font>&nbsp;<?php echo TEXT_ORDER_COPY;?></td><td>
                   <?php echo TEXT_ORDER_LOGIN;?></td></tr></table>
                   <br>
-                  <?php echo tep_draw_textarea_field('comments', 'off', '74', '30',
+                  <?php echo tep_draw_textarea_field('comments', 'hard', '74', '30',
                       $select_text, 'style="font-family:monospace;font-size:12px; width:400px;"'); ?>
                   </td>
                   </tr>
@@ -5207,7 +5207,7 @@ if($c_parent_array['parent_id'] == 0){
 
                   </table>
                   <table width="100%">
-                  <tr><td align='right'><button id="oa_dynamic_submit" >保存</button></td></tr>
+                  <tr><td align='right'><button id="oa_dynamic_submit" ><?php echo IMAGE_SAVE;?></button></td></tr>
                   </table>
                   </div>
                   </td></tr></table>
@@ -5280,17 +5280,17 @@ if($c_parent_array['parent_id'] == 0){
               <?php } ?>
 
               </table></td>
-              <!-- body_text_eof //-->
+              <!-- body_text_eof -->
               </tr>
               </table>
-              <!-- body_eof //-->
+              <!-- body_eof -->
 
-              <!-- footer //-->
+              <!-- footer -->
               <?php
               require(DIR_WS_INCLUDES . 'footer.php');
             ?>
               <embed id="warn_sound" src="images/warn.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
-              <!-- footer_eof //-->
+              <!-- footer_eof -->
               <br>
               <div id="wait" style="position:fixed; left:45%; top:45%; display:none;"><img src="images/load.gif" alt="img"></div>
               </body>

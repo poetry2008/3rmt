@@ -6,7 +6,7 @@
   define('TS_MODULE_PAYMENT_MONEYORDER_TEXT_TITLE', '银行转账');
   define('TS_MODULE_PAYMENT_MONEYORDER_TEXT_EXPLAIN', '转入日本网上银行或seven银行。<br>转账手续费由客户承担。');
   define('TS_MODULE_PAYMENT_MONEYORDER_TEXT_DESCRIPTION', '转入日本网上银行或seven银行。<br>转账手续费由客户承担。'); 
-  define('TS_MODULE_PAYMENT_MONEYORDER_TEXT_EMAIL_FOOTER','转入日本网上银行或seven银行。<br>转账手续费由客户承担。'. EMAIL_SIGNATURE);  //Add Japanese osCommerce
+  define('TS_MODULE_PAYMENT_MONEYORDER_TEXT_EMAIL_FOOTER','转入日本网上银行或seven银行。<br>转账手续费由客户承担。'. EMAIL_SIGNATURE);  
   
   define('TS_MODULE_PAYMENT_MONEYORDER_TEXT_FEE', '银行转账手续费:');
   define('TS_MODULE_PAYMENT_MONEY_ORDER_TEXT_PROCESS', '银行转账结算手续费另算。');
@@ -32,4 +32,4 @@
 ※ 交易日期时间前如无法支付、请务必联络。
 　 没有联络的情况下、会解除库存抵押。
 ※ 转账需要在订购后7日内进行。
-※ iimy有限公司确认到款后合同生效。");
+※ ".COMPANY_NAME."确认到款后合同生效。");

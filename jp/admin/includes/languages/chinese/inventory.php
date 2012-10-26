@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 define('INVENTORY_TITLE','库存标准');
 define('TEXT_PRODUCT_NAME','商品（链接）');
 define('TEXT_IMAGINARY','虚拟数量');

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 define('TABLE_FAQ_CATEGORY_TITLE','种类/FAQ');
 define('TABLE_FAQ_CATEGORY_IS_SHOW','状态');
 define('IMAGE_NEW_FAQ_CATEGORY','新种类');

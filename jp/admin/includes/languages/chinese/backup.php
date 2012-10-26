@@ -35,7 +35,7 @@ define('TEXT_FORGET', '(忘记)');
 define('ERROR_BACKUP_DIRECTORY_DOES_NOT_EXIST', '错误: 备份目录不存在。请确认includes/configure.php的设置。');
 define('ERROR_BACKUP_DIRECTORY_NOT_WRITEABLE', '错误: 无法编辑备份目录。');
 define('ERROR_DOWNLOAD_LINK_NOT_ACCEPTABLE', '错误: 无法下载。');
-define('ERROR_FILE_NOT_REMOVEABLE', '错误: 无法删除备份文件。请确认文件的用户权限。');	//Add Japanese osCommerce
+define('ERROR_FILE_NOT_REMOVEABLE', '错误: 无法删除备份文件。请确认文件的用户权限。');
 
 define('SUCCESS_LAST_RESTORE_CLEARED', '成功: 最新复原数据已删除。');
 define('SUCCESS_DATABASE_SAVED', '成功: 数据库已保存。');

@@ -550,7 +550,7 @@ $parent_categories_query = tep_db_query("select categories_name from ".TABLE_CAT
 $parent_categories_array = tep_db_fetch_array($parent_categories_query);
 $categories_query = tep_db_query("select categories_name from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$_GET['cID']."' and site_id='0'");
 $categories_array = tep_db_fetch_array($categories_query);
-echo $parent_categories_array['categories_name']."/".$categories_array['categories_name']."のマニュアル作成";
+echo $parent_categories_array['categories_name']."/".$categories_array['categories_name'].MANUAL_TITLE;
 }else if((isset($_GET['cPath']) && $_GET['cPath']!="")  && (isset($_GET['action']) && $_GET['action']=="show_products_manual")){
 $cpath_array = explode("_",$_GET['cPath']) ;
 $tmp_categories_array = array();
@@ -608,6 +608,7 @@ if($belong_array[0][0] != ''){
 $belong = str_replace('&','|||',$belong);
 require("includes/note_js.php");
 ?>
+
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onload="SetFocus();">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
@@ -615,17 +616,17 @@ require("includes/note_js.php");
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
-<!-- header //-->
+<!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
+<!-- header_eof -->
 
-<!-- body //-->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft"><tr><td>
 <!-- left_navigation --> <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> <!-- left_navigation_eof -->
     </td></tr></table>
-<!-- body_text //-->
+<!-- body_text -->
 <td width="100%" valign = "top" id='categories_right_td'><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="2">
 <tr>
 
@@ -654,13 +655,13 @@ require("includes/note_js.php");
 </tr>
 </form>
 </table>
-<!-- body_eof //-->
+<!-- body_eof -->
 
    </table> 
 
-<!-- footer //-->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 </body>
 </html>

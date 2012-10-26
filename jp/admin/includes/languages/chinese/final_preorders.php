@@ -94,7 +94,6 @@ define('ADDPRODUCT_TEXT_OPTIONS_NOTEXIST', '没有选项，跳过..');
 define('ADDPRODUCT_TEXT_CONFIRM_QUANTITY', '数量');
 define('ADDPRODUCT_TEXT_CONFIRM_ADDNOW', '追加');
 
-// Add Japanese osCommerce
 define('EMAIL_TEXT_STORE_CONFIRMATION', '的预约，非常感谢 。' . "\n" . 
 '预约的受理情况和联络事项、在下面介绍。');
 define('TABLE_HEADING_COMMENTS_ADMIN', '[联络事项]');

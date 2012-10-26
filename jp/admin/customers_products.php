@@ -5,6 +5,7 @@
 
   require('includes/application_top.php');
   require(DIR_WS_CLASSES.'currencies.php');
+  require_once(DIR_FS_ADMIN . DIR_WS_LANGUAGES .  '/japanese/customers_products.php');
   $currencies = new currencies(2);
 
   header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
@@ -467,7 +468,7 @@ $(document).ready(function(){
   });
 </script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <body style="text-align:center;">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
   <script language='javascript'>
@@ -557,7 +558,7 @@ $(document).ready(function(){
         <a href="javascript:void(0)" onClick="add_empty()"><img src="/includes/languages/japanese/images/z_01.gif"></a>
         <a href="javascript:void(0)" onClick="delete_empty()"><img src="/includes/languages/japanese/images/not.gif"></a>
       </td>
-      <td align="right" style="display:block;"><input name="" type="button" value="プリント" onClick="create_table(table_data);window.print();"></td>
+      <td align="right" style="display:block;"><input name="" type="button" value="<?php echo TEXT_PRINT;?>" onClick="create_table(table_data);window.print();"></td>
   </tr>
 </table>
 </div></body>
@@ -650,17 +651,17 @@ require("includes/note_js.php");
 ?>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
-<!-- header //-->
+<!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
+<!-- header_eof -->
 <form action="?action=print&customers_id=<?php echo $_GET['cID'];?>" method="post" name="orders_form" target="_blank">
-<!-- body //-->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-<!-- left_navigation //-->
+<!-- left_navigation -->
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- left_navigation_eof //-->
+<!-- left_navigation_eof -->
     </table>
     </td>
     <td valign="top"  width="100%"><?php echo $notes;?>   

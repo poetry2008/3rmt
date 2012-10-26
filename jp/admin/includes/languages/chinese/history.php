@@ -6,4 +6,5 @@ define('TEXT_CREATE_DATA','创建数据');
 define('TEXT_DELETE','删除');
 define('TEXT_CLASSIFICATION','分类商品');
 define('TEXT_SIGN_IN','登陆');
+define('TEXT_UNIFIED','统一');
 ?>

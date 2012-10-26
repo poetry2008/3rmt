@@ -78,7 +78,7 @@ echo CATEGORY_ADMIN_TITLE."&nbsp;&nbsp;&nbsp;".$categories_array['categories_nam
 
 </title>
   <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-  <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
+  <script type="text/javascript" src="js2php.php?path=includes&name=general&type=js"></script>
   <script type="text/javascript" src="includes/javascript/jquery.js"></script>
   <script type="text/javascript" src="includes/javascript/udlr.js"></script>
   <script type="text/javascript" src="js2php.php?path=includes|set&name=c_admin&type=js"></script>
@@ -141,10 +141,10 @@ require("includes/note_js.php");
   </script>
 <?php }?>
   <div id="spiffycalendar" class="text"></div>
-  <!-- header //-->
+  <!-- header -->
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-  <!-- header_eof //-->
-  <!-- body //-->
+  <!-- header_eof -->
+  <!-- body -->
  <div id="categories_tree"  style="display:none">
           <?php
             require(DIR_WS_CLASSES . 'category_tree.php');
@@ -157,12 +157,12 @@ require("includes/note_js.php");
   <tr>
   <td <?php if ($ocertify->npermission < 10) {?>width='1'<?php } else {?> width="<?php echo BOX_WIDTH; ?>"<?php }?> valign="top">
   <table border="0" <?php if ($ocertify->npermission <10) {?>width='1'<?php } else {?> width="<?php echo BOX_WIDTH; ?>"<?php }?> cellspacing="1" cellpadding="1" class="columnLeft">
-  <!-- left_navigation //-->
+  <!-- left_navigation -->
   <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-  <!-- left_navigation_eof //-->
+  <!-- left_navigation_eof -->
   </table>
   </td>
-  <!-- body_text //-->
+  <!-- body_text -->
   <td width="100%" valign="top" id='categories_right_td'>
   <?php echo $notes;?>
   <div class="compatible">
@@ -783,10 +783,10 @@ tep_display_google_results(FILENAME_CATEGORIES_ADMIN);
 </tr>
 </table>
 
-<!-- body_eof //-->
-<!-- footer //-->
+<!-- body_eof -->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 </body>
 </html>

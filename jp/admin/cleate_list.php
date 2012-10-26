@@ -167,7 +167,7 @@ if ($action =='prelist'){
       //$cnt=0;
 
       //while($col=tep_db_fetch_array($res)){
-      $html.= "<td><a href='history.php?action=oroshi_c&cPath=".$_GET['cid']."&oid=".$col['oroshi_id']."&fullpath=".$_GET['cPath']."' title='履歴を見る'>".$col['oroshi_name']."</a>&nbsp;&nbsp;&nbsp;<a href='history.php?action=oroshi_c&cPath=".$_GET['cid']."&oid=".$col['oroshi_id']."&fullpath=".$_GET['cPath']."' title='履歴を見る'>履歴を見る</a></td>";
+      $html.= "<td><a href='history.php?action=oroshi_c&cPath=".$_GET['cid']."&oid=".$col['oroshi_id']."&fullpath=".$_GET['cPath']."' title='".TEXT_CLEATE_HISTORY."'>".$col['oroshi_name']."</a>&nbsp;&nbsp;&nbsp;<a href='history.php?action=oroshi_c&cPath=".$_GET['cid']."&oid=".$col['oroshi_id']."&fullpath=".$_GET['cPath']."' title='".TEXT_CLEATE_HISTORY."'>".TEXT_CLEATE_HISTORY."</a></td>";
       $html2.= '';
       $html2.="<td><textarea rows='5' cols='30' id='textarea_".$col['oroshi_id']."' name='set_list[".$oroid."]' ></textarea></td>";
 
@@ -187,7 +187,8 @@ echo $html;
                         <td></td>
                      </tr>
         <tr>
-          <td colspan="<?php echo count($c)+2;?>"><input type="submit" value="リスト登録"></td>
+          <td colspan="<?php echo count($c)+2;?>"><input type="submit" value="<?php
+          echo TEXT_CLEATE_LIST;?>"></td>
         </tr>
           </form>
           <?php

@@ -36,5 +36,6 @@ define('TEXT_DATE_ADDED','创建日期:');
 define('TEXT_DATE_UPDATE','更新日期:');
 
 
+define('TEXT_CONTENT_MSG', '为了显示此页面的链接，请将以下代码复制粘贴到想显示的地方。');
 
 ?>

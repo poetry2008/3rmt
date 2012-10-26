@@ -96,7 +96,6 @@ define('ADDPRODUCT_TEXT_OPTIONS_NOTEXIST', '无选项: 略过..');
 define('ADDPRODUCT_TEXT_CONFIRM_QUANTITY', '数量');
 define('ADDPRODUCT_TEXT_CONFIRM_ADDNOW', '添加');
 
-// Add Japanese osCommerce
 define('EMAIL_TEXT_STORE_CONFIRMATION', ' 的订购、非常感谢。' . "\n" . 
 '订单的受理情况和联络事项、在下面介绍。');
 define('TABLE_HEADING_COMMENTS_ADMIN', '[联络事项]');
@@ -222,7 +221,6 @@ define('TEXT_USUALLY','普通');
 define('TEXT_CONVERIENCE_PAYMENT','便利店结算');
 define('TEXT_RAKUTEN_BANK','乐天银行');
 define('TEXT_ACCOUNT_TYPE','账户类型:');
-define('TEXT_DUMMY','あいうえお的宽度');
 define('TEXT_CUSTOMER_INPUT','客户是会员。可输入的点数剩余 ');
 define('TEXT_REMAINING','');
 define('TEXT_SUBTOTAL','（合计');

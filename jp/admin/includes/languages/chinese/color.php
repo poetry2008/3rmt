@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /*
   $Id$
 */
@@ -27,5 +27,7 @@ define('TEXT_DELETE_INTRO', '确定删除这个商品颜色吗?');
 define('ERROR_DIRECTORY_NOT_WRITEABLE', '错误:无法写入这个使用手册 。请把正确的用户权限设置为 %s 。');
 define('ERROR_DIRECTORY_DOES_NOT_EXIST', '错误: %s 使用手册不存在。');
 
-define('TEXT_DISPLAY_NUMBER_OF_COLORS', '<b>%d</b> &sim; <b>%d</b> 表示节目表 (<b>%d</b> 的商品颜色)')
+define('TEXT_DISPLAY_NUMBER_OF_COLORS', '<b>%d</b> &sim; <b>%d</b> 表示节目表 (<b>%d</b> 的商品颜色)');
+
+define('TEXT_COLORS_SORT', '顺序');
 ?>

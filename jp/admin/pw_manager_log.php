@@ -60,7 +60,7 @@
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script language="javascript" >
 function delete_all(){
-  if(confirm('履歴を削除しますか？')){
+  if(confirm('<?php echo TEXT_HISTORY_DELETE;?>')){
     location.href='<?php echo
       tep_href_link(FILENAME_PW_MANAGER_LOG,'action=deleteconfirm&select=all&pw_id='.$pwid);?>';
   }
@@ -77,28 +77,28 @@ require("includes/note_js.php");
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
-<!-- header //-->
+<!-- header -->
 <?php
   require(DIR_WS_INCLUDES . 'header.php');
 ?>
-<!-- header_eof //-->
-<!-- body //-->
+<!-- header_eof -->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
 <?php
   if ($ocertify->npermission >= 10) {
     echo '<td width="' . BOX_WIDTH . '" valign="top">';
     echo '<table border="0" width="' . BOX_WIDTH . '" cellspacing="1" cellpadding="1" class="columnLeft">';
-    echo '<!-- left_navigation //-->';
+    echo '<!-- left_navigation -->';
     require(DIR_WS_INCLUDES . 'column_left.php');
-    echo '<!-- left_navigation_eof //-->';
+    echo '<!-- left_navigation_eof -->';
     echo '</table>';
     echo '</td>';
   } else {
     echo '<td>&nbsp;</td>';
   }
 ?>
-<!-- body_text //-->
+<!-- body_text -->
 <td width="100%" valign="top"><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
       <td width="100%" colspan='2'>
@@ -370,9 +370,9 @@ require("includes/note_js.php");
       echo "<td class='dataTableContent'>".mb_substr($pw_manager_row['password'],0,8,'utf-8')."</td>";
       echo "<td class='dataTableContent'".$onclick." >";
         if($pw_manager_row['privilege'] =='7'){
-         echo "Staff以上";
+         echo TEXT_PERMISSION_STAFF;
         }else if($pw_manager_row['privilege'] =='10'){
-         echo "Chief以上";
+         echo TEXT_PERMISSION_CHIEF;
         }else{
          if($pw_manager_row['self']!=''){
          $self_info = tep_get_user_info($pw_manager_row['self']);
@@ -516,16 +516,16 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
     </tr>
 
     </table></td>
-<!-- body_text_eof //-->
+<!-- body_text_eof -->
   </tr>
 </table>
-<!-- body_eof //-->
+<!-- body_eof -->
 
-<!-- footer //-->
+<!-- footer -->
 <?php
     require(DIR_WS_INCLUDES . 'footer.php');
 ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 </body>
 </html>

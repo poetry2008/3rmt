@@ -89,28 +89,28 @@ require("includes/note_js.php");
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
-<!-- header //-->
+<!-- header -->
 <?php
   require(DIR_WS_INCLUDES . 'header.php');
 ?>
-<!-- header_eof //-->
-<!-- body //-->
+<!-- header_eof -->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
 <?php
   if ($ocertify->npermission >= 10) {
     echo '<td width="' . BOX_WIDTH . '" valign="top">';
     echo '<table border="0" width="' . BOX_WIDTH . '" cellspacing="1" cellpadding="1" class="columnLeft">';
-    echo '<!-- left_navigation //-->';
+    echo '<!-- left_navigation -->';
     require(DIR_WS_INCLUDES . 'column_left.php');
-    echo '<!-- left_navigation_eof //-->';
+    echo '<!-- left_navigation_eof -->';
     echo '</table>';
     echo '</td>';
   } else {
     echo '<td>&nbsp;</td>';
   }
 ?>
-<!-- body_text //-->
+<!-- body_text -->
     <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
   if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) {
@@ -350,15 +350,15 @@ require("includes/note_js.php");
       echo '    <tr onmouseover="this.style.background=\'#FFCC99\'" onmouseout="this.style.background=\''.(tep_match_by_keywords($orders['telno'],TELNO_KEYWORDS)?'red':($orders['rel'] == 'no'?'#ccc':$nowColor)).'\'" style="border-bottom:1px solid #000000;'.(tep_match_by_keywords($orders['telno'],TELNO_KEYWORDS)?'background:red':($orders['rel'] == 'no'?'background:#ccc':'background:'.$nowColor)).'" class="dataTableRow" id="tr_'.$orders['id'].'">' . "\n";
 ?>
       <td align="left"   style="border-bottom:1px solid #000000;" class="dataTableContent"><input type="checkbox" name="ids[]" class="a_checkbox" onclick="check_one(this)" value="<?php echo $orders['type'] == 'success' ? 'false' : $orders['id'];?>"></td>
-      <td align="center"   style="border-bottom:1px solid #000000;" class="dataTableContent"><?php echo $orders['payment_method'] == 'paypal' ? 'ペイパル' : 'テレコム'; ?>&nbsp;</td>
+      <td align="center"   style="border-bottom:1px solid #000000;" class="dataTableContent"><?php echo $orders['payment_method'] == 'paypal' ?  TEXT_PAYPAL : TEXT_TELECOM; ?>&nbsp;</td>
       <td align="center" style="border-bottom:1px solid #000000;" class="dataTableContent"><?php echo tep_datetime_short($orders['date_added']); ?>&nbsp;</td>
-      <td align="center" style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['rel'] == 'yes' ? '成功' : '失敗'; ?>&nbsp;</td>
-      <td align="center" style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['type'] == 'success' ? '済' : '<font color="darkred">未</font>'; ?>&nbsp;</td>
+      <td align="center" style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['rel'] == 'yes' ?  TEXT_TELECOM_SUCCESS : TEXT_TELECOM_UNSUCCESS; ?>&nbsp;</td>
+      <td align="center" style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['type'] == 'success' ? TEXT_TELECOM_FINISH : '<font color="darkred">'.TEXT_TELECOM_UNFINISH.'</font>'; ?>&nbsp;</td>
       <td align="left"   style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['username']; ?>&nbsp;</td>
       <td align="left"   style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo tep_high_light_by_keywords($orders['telno'],TELNO_KEYWORDS);?>&nbsp;</td>
       <td align="left"   style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['email']; ?>&nbsp;</td>
       <td align="right"  style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['money']; ?>&nbsp;</td>
-      <td align="right"  style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><input type="hidden" id="rel_<?php echo $orders['id'];?>" value="<?php echo $orders['rel'];?>"><input type="hidden" id="red_<?php echo $orders['id'];?>" value="<?php echo tep_match_by_keywords($orders['telno'],TELNO_KEYWORDS)?1:0;?>"><?php if (!($orders['type'] == 'success')) {?><a href="javascript:void(0);" onclick="return confirm('非表示にしますか？') && hide(<?php echo $orders['id'];?>, this)"><img src="images/icons/cross.gif" ></a><?php } else { echo '&nbsp;'; } ?></td>
+      <td align="right"  style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><input type="hidden" id="rel_<?php echo $orders['id'];?>" value="<?php echo $orders['rel'];?>"><input type="hidden" id="red_<?php echo $orders['id'];?>" value="<?php echo tep_match_by_keywords($orders['telno'],TELNO_KEYWORDS)?1:0;?>"><?php if (!($orders['type'] == 'success')) {?><a href="javascript:void(0);" onclick="return confirm('<?php echo TEXT_NOT_SHOW;?>') && hide(<?php echo $orders['id'];?>, this)"><img src="images/icons/cross.gif" ></a><?php } else { echo '&nbsp;'; } ?></td>
     </tr>
 <?php }?>
   </table>
@@ -390,15 +390,15 @@ require("includes/note_js.php");
     </table>
     </div> 
     </td>
-<!-- body_text_eof //-->
+<!-- body_text_eof -->
   </tr>
 </table>
-<!-- body_eof //-->
-<!-- footer //-->
+<!-- body_eof -->
+<!-- footer -->
 <?php
     require(DIR_WS_INCLUDES . 'footer.php');
 ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

@@ -338,7 +338,7 @@ define('TEXT_CACHE_ALSO_PURCHASED', '关联商品模块');
 define('TEXT_NONE', '--没有--');
 define('TEXT_TOP', '首页');
 
-define('EMAIL_SIGNATURE',C_EMAIL_FOOTER);  //Add Japanese osCommerce
+define('EMAIL_SIGNATURE',C_EMAIL_FOOTER);
 
 //Add languages
 //------------------------
@@ -476,7 +476,7 @@ define('BUTTON_MAG_UP','上传');
 define('BUTTON_MAG_DL','下载');
 
 //header language
-define('HEADER_TEXT_SITE_NAME','iimy有限公司');
+define('HEADER_TEXT_SITE_NAME',COMPANY_NAME);
 define('HEADER_TEXT_LOGINED','正在登录中。');
 define('HEADER_TEXT_ORDERS','订单管理');
 define('HEADER_TEXT_TELECOM_UNKNOW','结算管理');
@@ -674,13 +674,11 @@ define('DB_CONFIGURATION_DESCRIPTION_INITIAL_SETTING_SHOP','主页的初期设�
 define('DB_CONFIGURATION_DESCRIPTION_BUSINESS_CALENDAR','营业日历设置');
 define('DB_CONFIGURATION_DESCRIPTION_SEO','Options for Ultimate SEO URLs by Chemo');
 
-define('HELP_INFO_TITLE','帮助信息管理');
 define('TEXT_TIME_LINK','到');
 define('TEXT_BUTTON_ADD','添加输入框');
 define('TEXT_ATTRIBUTE','属性');
 define('TEXT_ATTRIBUTE_PUBLIC','公有');
 define('TEXT_ATTRIBUTE_PRIVATE','私有');
-define('TEXT_HEADER_HELP','帮助');
 define('TEXT_KEYWORD','关键词');
 define('TEXT_GOOGLE_SEARCH','用GOOGLE搜%s关键词的结果');
 define('TEXT_RENAME','重命名');
@@ -701,12 +699,25 @@ define('TEXT_SITE_COPYRIGHT' ,'Copyright © %s Haomai');
 
 define('JUMP_PAGE_TEXT', '跳页');
 define('JUMP_PAGE_BUTTON_TEXT', '移动');
-define('TEXT_USER_ADDED','创建者:');
-define('TEXT_USER_UPDATE','更新者:');
-define('TEXT_DATE_ADDED','创建日:');
-define('TEXT_DATE_UPDATE','更新日:');
 
 // javascript language
 define('JS_TEXT_ONETIME_PWD_ERROR','密码有误');
 define('JS_TEXT_INPUT_ONETIME_PWD','请输入一次性密码\r\n');
 define('JS_TEXT_POSTAL_NUMBER_ERROR','邮编错误。');
+// cleate_list
+define('','登录列表');
+define('','查看历史记录');
+// products_tags
+define('TEXT_P_TAGS_NO_TAG','无标签数据，请添加');
+define('UPDATE_MSG_TEXT', '更新');
+define('CL_TEXT_DATE_MONDAY', '一');
+define('CL_TEXT_DATE_TUESDAY', '二');
+define('CL_TEXT_DATE_WEDNESDAY', '三');
+define('CL_TEXT_DATE_THURSDAY', '四');
+define('CL_TEXT_DATE_FRIDAY', '五');
+define('CL_TEXT_DATE_STATURDAY', '六');
+define('CL_TEXT_DATE_SUNDAY', '日');
+define('BUTTON_ADD_TEXT', '添加');
+define('CSV_HEADER_TEXT', '账号创建日期，性别，姓，名，出生年月日，邮箱地址，公司名称，邮编号码，省市县，市区镇村，地址1，地址2，国名，电话号码，FAX号码，邮件杂志订阅，点数');
+define('CSV_EXPORT_TEXT', 'CSV输出');
+define('TEXT_ALL','全部');

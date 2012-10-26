@@ -16,6 +16,7 @@ define('SENDMAIL_TEXT_DATE_SUNDAY', '日曜日');
 define('SENDMAIL_EDIT_ORDERS_NUM_UNIT', '個');
 define('SENDMAIL_ORDERS_PRODUCTS','注文商品');
 define('SENDMAIL_QTY_NUM','個数');
+define('SENDMAIL_SUB_TOTAL','小計');
 define('SENDMAIL_TABLE_HEADING_PRODUCTS_PRICE', '単価');
 define('SENDMAIL_ENTRY_SUB_TOTAL', '小計:');
 define('SENDMAIL_TEXT_CHARACTER_NAME_SEND_MAIL','※当社キャラクター名は、お取引10分前までに電子メールにてお知らせいたします。');
@@ -37,6 +38,11 @@ define('SENDMAIL_TEXT_ORDERS_SEND_MAIL','ご注文ありがとうございます
 define('SENDMAIL_TEXT_CARD_PAYMENT','クレジットカード決済について【');
 define('SENDMAIL_TEXT_SEND_MAIL_CARD_PAYMENT','送信済：クレジットカード決済について【');
 define('SENDMAIL_TEXT_POINT','割引　　　　　　：-');
+define('SENDMAIL_TEXT_IP_ADDRESS','IPアドレス　　　　　　：');
+define('SENDMAIL_TEXT_HOST','ホスト名　　　　　　　：');
+define('SENDMAIL_TEXT_USER_AGENT','ユーザーエージェント　：');
+define('SENDMAIL_TEXT_MEMBER','会員');
+define('SENDMAIL_TEXT_GUEST','ゲスト');
 // final_preorders 
 define('FORDERS_MAIL_PRODUCTS_NAME', '予約商品　　　　　：');
 define('FORDERS_MAIL_PRODUCTS_NUM', '個数　　　　　　　：');
@@ -68,6 +74,7 @@ define('FORDERS_MAIL_UPDATE_CONTENT_MAIL', '送信済：予約内容の変更を
 define('FORDERS_MAIL_REPLACE_TRAN_HANDLE_FEE', '決済手数料');
 define('FORDERS_MAIL_REPLACE_HANDLE_FEE', '手数料');
 define('SENDMAIL_TEXT_MONEY_SYMBOL','円');
+define('SENDMAIL_TEXT_SENDED','送信済：');
 
 // template for edit footer
 define('EDIT_ORDERS_FINAL_CONFIRM_TEMPLATE', '<table cellspacing="0" cellpadding="2" width="100%"><tr class="smalltext"><td valign="top" colspan="3"><font color="red">※</font>&nbsp;コピペ用フレーズです。トリプルクリックをすると全選択できます。</td></tr> <tr bgcolor="#999999" class="smalltext"><td>商品の変更</td><td>支払方法の変更（販売用）</td><td>支払方法の変更（販売用）</td></tr> <tr bgcolor="#cccccc" class="smalltext"> <td valign="top">弊社のキャラクター名は【】となります。</td> <td valign="top"> 下記の金融機関へお振り込みください。<br> ------------------------------------------<br> 銀行名　　：　ジャパンネット銀行<br> 支店名　　：　本店営業部<br> 口座種別　：　普通<br> 口座名　　：　カ）アイアイエムワイ<br> 口座番号　：　1164394<br> ------------------------------------------<br> 銀行名　　：　イーバンク銀行<br> 支店名　　：　ワルツ支店<br> 支店番号　：　204<br> 口座名　　：　カ）アイアイエムワイ<br> 口座番号　：　7003965<br> ------------------------------------------<br> ※ 必ずご注文時に入力したお名前でお振り込みください。<br> ※ 振込手数料はお客様のご負担となります。<br> ※ お振り込みはご注文から７日以内にお願いいたします。<br> ※ ご入金を'.COMPANY_NAME.'が確認した時点でご契約の成立となります。 </td> <td valign="top"> 10分程度でお客様専用のクレジットカード決済URLを電子メールにてご連絡い<br> たします。<br> メール本文に記載していますURLをクリックし、クレジットカード決済を完了<br> してください。 </td> </tr> </table>');
