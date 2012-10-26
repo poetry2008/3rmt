@@ -21,9 +21,9 @@ require("includes/note_js.php");
       <?php
       require(DIR_WS_INCLUDES . 'header.php');
 ?>
-<!-- header_eof -->
-<!-- body -->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<!-- header_eof //-->
+<!-- body //-->
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
       <!-- left_navigation -->
@@ -48,7 +48,7 @@ require("includes/note_js.php");
         <td colspan="2"><form action="" method="get">
           <table border="0" width="100%" cellspacing="0" cellpadding="2">
             <tr>
-              <td align="left" rowspan="2" class="menuBoxHeading" nowrap><input
+              <td align="left" rowspan="3" class="menuBoxHeading" nowrap><input
               nowrap type="radio" name="report" value="1" <?php if ($srView == 1) echo "checked"; ?>>
               <?php echo SR_REPORT_TYPE_YEARLY; ?><br>
               <input nowrap type="radio" name="report" value="2" <?php if ($srView == 2) echo "checked"; ?>>
@@ -116,6 +116,9 @@ require("includes/note_js.php");
                 <option value="1"<?php if ($srMethod == 1) echo " selected"; ?>><?php echo SR_TITLE_ORDER_DAY;?></option>
               </select>
               </td>
+          </tr>
+
+          <tr>
               <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_DETAIL; ?><br>
               <select name="detail" size="1">
                 <!--<option value="0"<?php if ($srDetail == 0) echo " selected"; ?>><?php echo  SR_DET_HEAD_ONLY; ?></option>-->
@@ -123,37 +126,7 @@ require("includes/note_js.php");
                 <option value="2"<?php if ($srDetail == 2) echo " selected"; ?>><?php echo  SR_DET_DETAIL_ONLY; ?></option>
               </select>
               </td>
-              <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_STATUS_FILTER; ?><br>
-              <select name="status" size="1">
-                <option value="2,5"><?php echo SR_TITLE_ORDER_FINISH;?></option>
-                <option value="0"<?php if ($srStatus == 0) echo " selected";?>><?php echo SR_REPORT_ALL; ?></option>
-                <?php
-                        foreach ($sr->status as $value) {
-?>
-                <option value="<?php echo $value["orders_status_id"]?>"<?php if ($srStatus == $value["orders_status_id"]) echo " selected"; ?>><?php echo $value["orders_status_name"] ; ?></option>
-                <?php
-                         }
-?>
-              </select>
-              <br>
-              </td>
-              <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_EXP; ?><br>
-              <select name="export" size="1">
-                <option value="0" selected><?php echo  SR_EXP_NORMAL; ?></option>
-                <option value="1"><?php echo  SR_EXP_CSV; ?></option>
-              </select>
-              </td>
-            </tr>
-            <tr>
-              <td class="menuBoxHeading">
- <?php echo SR_TITLE_CATEGORY;?><br>
-  <select name="bflag">
-    <option value="0"<?php if(!$_GET['bflag']){?> selected<?php }?>><?php echo SR_SELECT_ALL;?></option>
-    <option value="1"<?php if($_GET['bflag'] == '1'){?> selected<?php }?>><?php echo SR_OPTION_SALE;?></option>
-    <option value="2"<?php if($_GET['bflag'] == '2'){?> selected<?php }?>><?php echo SR_OPTION_BUY;?></option>
-  </select>
-              </td>
-              <td class="menuBoxHeading"><?php echo SR_REPORT_END_DATE; ?><br>
+                            <td class="menuBoxHeading"><?php echo SR_REPORT_END_DATE; ?><br>
               <table>
                 <tr>
                   <td><select name="endY" size="1">
@@ -202,6 +175,65 @@ date("Y") - $i; ?></option>
                 </tr>
               </table>
               </td>
+             <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_EXP; ?><br>
+              <select name="export" size="1">
+                <option value="0" selected><?php echo  SR_EXP_NORMAL; ?></option>
+                <option value="1"><?php echo  SR_EXP_CSV; ?></option>
+              </select>
+              </td>
+              
+            </tr>
+            <tr>
+              <td><table cellpadding="0" cellspacing="0"><tr>
+              <td class="menuBoxHeading">
+ <?php echo SR_TITLE_CATEGORY;?><br>
+  <select name="bflag">
+    <option value="0"<?php if(!$_GET['bflag']){?> selected<?php }?>><?php echo SR_SELECT_ALL;?></option>
+    <option value="1"<?php if($_GET['bflag'] == '1'){?> selected<?php }?>><?php echo SR_OPTION_SALE;?></option>
+    <option value="2"<?php if($_GET['bflag'] == '2'){?> selected<?php }?>><?php echo SR_OPTION_BUY;?></option>
+  </select>&nbsp;
+              </td>
+			   <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_STATUS_FILTER; ?><br>
+              <select name="status" size="1">
+                <option value="2,5"><?php echo SR_TITLE_ORDER_FINISH;?></option>
+                <option value="0"<?php if ($srStatus == 0) echo " selected";?>><?php echo SR_REPORT_ALL; ?></option>
+                <?php
+                        foreach ($sr->status as $value) {
+?>
+                <option value="<?php echo $value["orders_status_id"]?>"<?php if ($srStatus == $value["orders_status_id"]) echo " selected"; ?>><?php echo $value["orders_status_name"] ; ?></option>
+                <?php
+                         }
+?>
+              </select>
+              <br>
+              </td>
+              </tr></table>
+              </td> 
+              
+              <td><table><tr>
+              <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_SORT; ?><br>
+              <select name="sort" size="1">
+                <option value="0"<?php if ($srSort == 0) echo " selected"; ?>><?php echo  SR_SORT_VAL0; ?></option>
+                <option value="1"<?php if ($srSort == 1) echo " selected"; ?>><?php echo  SR_SORT_VAL1; ?></option>
+                <option value="2"<?php if ($srSort == 2) echo " selected"; ?>><?php echo  SR_SORT_VAL2; ?></option>
+                <option value="3"<?php if ($srSort == 3) echo " selected"; ?>><?php echo  SR_SORT_VAL3; ?></option>
+                <option value="4"<?php if ($srSort == 4) echo " selected"; ?>><?php echo  SR_SORT_VAL4; ?></option>
+                <option value="5"<?php if ($srSort == 5) echo " selected"; ?>><?php echo  SR_SORT_VAL5; ?></option>
+                <option value="6"<?php if ($srSort == 6) echo " selected"; ?>><?php echo  SR_SORT_VAL6; ?></option>
+              </select>
+              <br>
+              </td>
+              <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_COMP_FILTER; ?><br>
+              <select name="compare" size="1">
+                <option value="0" <?php if ($srCompare == SR_COMPARE_NO) echo "selected"; ?>><?php echo SR_REPORT_COMP_NO; ?></option>
+                <option value="1" <?php if ($srCompare == SR_COMPARE_DAY) echo "selected"; ?>><?php echo SR_REPORT_COMP_DAY; ?></option>
+                <option value="2" <?php if ($srCompare == SR_COMPARE_MONTH) echo "selected"; ?>><?php echo SR_REPORT_COMP_MONTH; ?></option>
+                <option value="3" <?php if ($srCompare == SR_COMPARE_YEAR) echo "selected"; ?>><?php echo SR_REPORT_COMP_YEAR; ?></option>
+              </select>
+              <br>
+              </td>
+              </tr></table>
+              </td>             
               
               <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_MAX; ?><br>
               <select name="max" size="1">
@@ -215,35 +247,17 @@ date("Y") - $i; ?></option>
                 <option<?php if ($srMax == 50) echo " selected"; ?>>50</option>
               </select>
               </td>
-              <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_COMP_FILTER; ?><br>
-              <select name="compare" size="1">
-                <option value="0" <?php if ($srCompare == SR_COMPARE_NO) echo "selected"; ?>><?php echo SR_REPORT_COMP_NO; ?></option>
-                <option value="1" <?php if ($srCompare == SR_COMPARE_DAY) echo "selected"; ?>><?php echo SR_REPORT_COMP_DAY; ?></option>
-                <option value="2" <?php if ($srCompare == SR_COMPARE_MONTH) echo "selected"; ?>><?php echo SR_REPORT_COMP_MONTH; ?></option>
-                <option value="3" <?php if ($srCompare == SR_COMPARE_YEAR) echo "selected"; ?>><?php echo SR_REPORT_COMP_YEAR; ?></option>
-              </select>
-              <br>
-              </td>
-              <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_SORT; ?><br>
-              <select name="sort" size="1">
-                <option value="0"<?php if ($srSort == 0) echo " selected"; ?>><?php echo  SR_SORT_VAL0; ?></option>
-                <option value="1"<?php if ($srSort == 1) echo " selected"; ?>><?php echo  SR_SORT_VAL1; ?></option>
-                <option value="2"<?php if ($srSort == 2) echo " selected"; ?>><?php echo  SR_SORT_VAL2; ?></option>
-                <option value="3"<?php if ($srSort == 3) echo " selected"; ?>><?php echo  SR_SORT_VAL3; ?></option>
-                <option value="4"<?php if ($srSort == 4) echo " selected"; ?>><?php echo  SR_SORT_VAL4; ?></option>
-                <option value="5"<?php if ($srSort == 5) echo " selected"; ?>><?php echo  SR_SORT_VAL5; ?></option>
-                <option value="6"<?php if ($srSort == 6) echo " selected"; ?>><?php echo  SR_SORT_VAL6; ?></option>
-              </select>
-              <br>
-              </td>
-              <td align="left" class="menuBoxHeading">&nbsp;</td>
-            </tr>
-            <tr>
-              <td colspan="7" class="menuBoxHeading" align="right"><input type="submit" value="<?php echo SR_REPORT_SEND; ?>">
+              
+              </tr>
+              <tr>
+              <td colspan="4" class="menuBoxHeading" align="right"><input type="submit" value="<?php echo SR_REPORT_SEND; ?>">
               </td>
             </tr>
-          </table>
-        </form></td>
+
+              </table>
+              </td>
+             
+        </form>
       </tr>
       <tr>
         <td width=100% valign=top>

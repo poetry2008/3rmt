@@ -104,10 +104,11 @@ function textarea_check(ele){
         i++;
       }
     } 
-    $(ele).attr("rows",comment_line+comment_str_length-i);
+    var comment_str_temp = 1; 
+    $(ele).attr("rows",comment_line+comment_str_length-i+comment_str_temp);
 }
 $(document).ready(function(){
-  $("textarea").change(function(){
+  $("textarea").keyup(function(){
    textarea_check(this); 
   });
 });
@@ -121,7 +122,7 @@ $(document).ready(function(){
   //var total_count = 45;
   // 页高
   //var page_height = row_height * count;
-  var page_height = 950;
+  var page_height = 900;
   
   // 千位分隔符
   function number_format(num)
@@ -187,7 +188,7 @@ $(document).ready(function(){
     }
     //alert(empty);
     if (empty < count) 
-    for (m = 0;m<empty;m++) {
+    for (m = 0;m<empty-20;m++) {
       html += add_tr(j+m, {
         date     : '',
         name     : '',
@@ -388,8 +389,8 @@ $(document).ready(function(){
           $('#data9').val(data['data9']);
           $('#data10').val(data['data10']);
           $('#data11').val(data['data11']);
-          $('#email').val(data['email']);
-          $('#email_display').html(data['email']);
+          $('#email_text').val(data['email']);
+          $('#email_display').val(data['email']);
           $('#responsible').val(data['responsible']);
           $("textarea").each(function(){
             textarea_check(this); 
@@ -459,7 +460,7 @@ $(document).ready(function(){
   }
   
   // 上部文本发生改动时要重新分表格
-  function textarea_change(num){
+  function textarea_change(){
     data_empty(num);
     create_table(table_data);
   }
@@ -531,15 +532,15 @@ $(document).ready(function(){
       <table border="0" width="50%" align="right" class="print_innput" style=" margin-top:10px;">
       <tr><td height="4"></td></tr>
         <tr><td height="30" valign="bottom" align="right"><input name="textfield" type="text" id="textfield" value="<?php echo str_replace(array(' 月曜日', ' 火曜日', ' 水曜日', ' 木曜日', ' 金曜日', ' 土曜日', ' 日曜日'),'',tep_date_long(date('Y-m-d H:i:s')));?>" style=" height:20px; width:150px; text-align:right; font-size:16px;  margin:5px 0 20px 20px;"></td></tr>
-        <tr><td align="right"><textarea id="data10" type="text" rows="2" style="font-size:14px; overflow-y:visible; width:280px;  text-align:right;" ></textarea></td></tr>
+        <tr><td align="right"><textarea id="data10" type="text" rows="2" style="font-size:14px; overflow-y:visible; width:280px; resize:none;text-align:right;" ></textarea></td></tr>
         <tr><td align="right" class="input_print02">
   <font size="2">
-  <input name="textfield" type="text" id="email" value="" onChange="$('#email_display').html(this.value)" onpropertychange="$('#email_display').html(this.value)" onBlur="$('#email_display').html(this.value)" style="text-align:right; font-size:12px; width:300px;">
-  <span id="email_display"></span>
+  <input name="textfield" type="text" id="email_text" value="" onChange="$('#email_display').val(this.value)" onpropertychange="$('#email_display').val(this.value)" onBlur="$('#email_display').val(this.value)" style="text-align:right; font-size:12px; width:300px;">
+  <input type="hidden" id="email_display" value="">
   </font></td></tr>
         <tr><td align="right" colspan="4">
           <table cellpadding="0" cellspacing="0" style="border:#000000 1px solid;margin-top:19px;">
-          <tr><td style="padding-top:4px; border-bottom:1px solid #000000;" align="center">
+          <tr><td style="border-bottom:#000000 1px solid;  padding-top:4px;" align="center">
           <input name="textfield" type="text" id="data11" value="" style="width:110px; font-size:12px; padding-top:4px; text-align:center; height:20px;">
           </td></tr>
           <tr><td colspan="6" align="center" valign="middle"><textarea id="responsible" type="text" rows="1" style=" width:100px; font-size:20px; overflow-y:visible; text-align:center; padding:15px 0; resize:none;" onChange="textarea_change()"></textarea></td></tr>
@@ -603,6 +604,7 @@ function check_select()
   for (var i=0; i<sel_p_list.length; i++) {
     if (sel_p_list[i].checked) {
       document.forms.orders_form.submit();
+      break;
     }
   }
   return false;
@@ -655,8 +657,8 @@ require("includes/note_js.php");
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <!-- header_eof -->
 <form action="?action=print&customers_id=<?php echo $_GET['cID'];?>" method="post" name="orders_form" target="_blank">
-<!-- body -->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<!-- body //-->
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
 <!-- left_navigation -->
@@ -665,6 +667,7 @@ require("includes/note_js.php");
     </table>
     </td>
     <td valign="top"  width="100%"><?php echo $notes;?>   
+      <div class="compatible">
       <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
               <td class="pageHeading"><?php echo HEADING_TITLE;?></td> 
@@ -773,7 +776,7 @@ require("includes/note_js.php");
                 <tr>
                   <td colspan="3" align="left"></td>
                   <td colspan="4" align="right">
-                  <input type="button" name="orders_button" onclick="check_select();" value="<?php echo APPLICATION_CREATE_TEXT;?>">
+                  <input class="element_button" type="button" name="orders_button" onclick="check_select();" value="<?php echo APPLICATION_CREATE_TEXT;?>">
                   <a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, str_replace('cpage', 'page', tep_get_all_get_params(array('page'))));?>"><?php echo tep_html_element_button(IMAGE_BACK);?></a> 
                   </td>
                 </tr>
@@ -781,6 +784,7 @@ require("includes/note_js.php");
             </td>
           </tr>
         </table>
+        </div>
     </td>
   </tr>
 </table>

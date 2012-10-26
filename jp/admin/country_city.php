@@ -174,13 +174,15 @@ require("includes/note_js.php");
 <!-- header_eof //-->
 
 <!-- body //-->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft"><tr><td>
 <!-- left_navigation //--> <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> <!-- left_navigation_eof //-->
     </td></tr></table></td>
 <!-- body_text //-->
-    <td width="100%" valign="top"><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <td width="100%" valign="top"><?php echo $notes;?>
+    <div class="compatible">
+    <table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
@@ -265,7 +267,9 @@ tep_db_close();
 </tr>
 <tr><td align="right" colspan="9"><button onclick="javascript:location.href='country_area.php?fid=<?php echo $ff_id;?>';"><?php echo TABLE_HISTROY;?></button>&nbsp;<button onclick="show_text_city(0,this,<?php echo $_GET['fid']; ?>);"><?php echo TABLE_BUTTON;?></button></td></tr>
 </table></td></tr></table></td></tr>
-</table></td>
+</table>
+</div>
+</td>
 </tr>
 </table></td>
 <!-- body_text_eof //-->

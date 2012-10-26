@@ -65,9 +65,9 @@ require("includes/note_js.php");
 <?php }?>
 <!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof -->
-<!-- body -->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<!-- header_eof //-->
+<!-- body //-->
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
 <!-- left_navigation -->
@@ -86,12 +86,15 @@ require("includes/note_js.php");
         <p><?php echo NEW_CUSTOMERS_TITLE_TEXT;?></p>
     <!--ORDER EXPORT SCRIPT -->
     <form action="<?php echo tep_href_link(FILENAME_NEW_CUSTOMERS) ; ?>" method="get">
-    <table  border="0" align="center" cellpadding="0" cellspacing="2">
+    <table  border="0" cellpadding="0" cellspacing="2">
     <tr>
-      <td class="smallText" width='150'>
+    <td class="smallText" colspan="3">
       <?php echo NEW_CUSTOMERS_SITES_SELECT;?> 
       <?php echo tep_site_pull_down_menu_with_all(isset($_GET['site_id']) ? $_GET['site_id'] :'', false);?>
       </td>
+    </tr>
+    <tr>
+      
       <td class="smallText">
       <?php echo NEW_CUSTOMERS_SEARCH_START;?> 
       <select name="s_y">
@@ -165,13 +168,12 @@ require("includes/note_js.php");
       ?>    
       </select>
       <?php echo DAY_TEXT;?> </td>
-      <td>&nbsp;</td>
       <td><input type="submit" value="<?php echo IMAGE_SEARCH;?>"></td>
       </tr>
     </table>
     </form>
-    <!--ORDER EXPORT SCRIPT EOF -->
-    <table  border="0" cellpadding="0" cellspacing="0" width="100%">
+    <!--ORDER EXPORT SCRIPT EOF //-->
+    <table  border="0" cellpadding="2" cellspacing="2" width="100%">
 <tr>
 <td align="left" width="200" >
 <?php 

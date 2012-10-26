@@ -74,17 +74,18 @@ require("includes/note_js.php");
 <!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <!-- header_eof -->
-
-<!-- body -->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<!-- body //-->
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
 <!-- left_navigation -->
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- left_navigation_eof -->
     </table></td>
-<!-- body_text -->
-<td width="100%" valign="top"><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="2">
+<!-- body_text //-->
+<td width="100%" valign="top"><?php echo $notes;?>
+<div class="compatible">
+<table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
 ?>
       <tr>
@@ -251,8 +252,10 @@ require("includes/note_js.php");
       </tr>
 <?php
 ?>
-    </table></td>
-<!-- body_text_eof -->
+    </table>
+    </div>
+    </td>
+<!-- body_text_eof //-->
   </tr>
 </table>
 <!-- body_eof -->

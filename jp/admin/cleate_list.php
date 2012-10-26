@@ -89,7 +89,7 @@ require("includes/note_js.php");
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" >
 <div id="spiffycalendar" class="text"></div>
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
    <tr>
       <td width="<?php echo BOX_WIDTH; ?>" valign="top">
          <table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
@@ -99,6 +99,7 @@ require("includes/note_js.php");
          </table>
       </td>
       <td width="100%" valign="top"><?php echo $notes;?>
+         <div class="compatible">
          <table border="0" width="100%" cellspacing="0" cellpadding="2">
             <tr>
                <td class = "pageHeading"><?php echo CLEATE_LIST_TITLE;?>
@@ -266,6 +267,7 @@ for($i=0;$i < $count[0];$i++){
                <td><a id="back_link" style="display:none" href="<?php echo tep_href_link($back_url, $back_url_params); ?>">go back</a></td>
             </tr>
          </table>
+         </div>
       </td>
   </tr>
   

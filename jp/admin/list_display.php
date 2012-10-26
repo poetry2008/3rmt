@@ -50,6 +50,7 @@ case update:
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
   <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
+  <link rel="stylesheet" type="text/css" href="includes/stylesheet.css" />
   <title><?php echo TEXT_LIST_RISUTOHYOUZI;?></title>
   <style>
 .dataTableHeadingRow {

@@ -900,9 +900,9 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
 <?php
   require(DIR_WS_INCLUDES . 'header.php');
 ?>
-<!-- header_eof -->
-<!-- body -->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<!-- header_eof //-->
+<!-- body //-->
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content"> 
   <tr>
 <?php
   if ($ocertify->npermission >= 10) {
@@ -917,8 +917,8 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     echo '<td>&nbsp;</td>';
   }
 ?>
-<!-- body_text -->
-<td width="100%" valign="top"><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="2">
+<!-- body_text //-->
+<td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
   if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) {
     // edit start
@@ -1726,9 +1726,9 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     <td colspan="2" align="right"><?php echo '<a href="' . tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('action','status','questions_type'))) . '">' .  tep_html_element_button(IMAGE_BACK) . '</a>'; ?></td>
   </tr>
 </table>
-
       
     </table>
+    </div>
   </td>
 </tr>
 
@@ -1740,7 +1740,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
 ?>
     <tr>
       <td width="100%" height="40">
-  
+  <div class="compatible">
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
       <td class="pageHeading" nowrap><?php echo HEADING_TITLE; ?></td>
@@ -1878,7 +1878,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       </td>
     </tr>
   </table>
-
+</div>
       </td>
     </tr>
     <tr>
@@ -2944,7 +2944,8 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
         ?>
         </td>
         <td style="border-bottom:1px solid #000000;" class="dataTableContent" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';">
-          <?php
+          <div class="float_left">
+		  <?php
             if ($orders['is_active'] == '1') {
           ?>
           <a href="<?php echo tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $orders['orders_id'] . '&action=edit');?>"><?php echo tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW);?></a>&nbsp;
@@ -2956,7 +2957,8 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
             }
           ?>
           <a href="<?php echo tep_href_link('preorders.php', 'cEmail=' .  tep_output_string_protected(urlencode($orders['customers_email_address'])));?>"><?php echo tep_image(DIR_WS_ICONS . 'search.gif', TEXT_ORDER_HISTORY_ORDER);?></a>
-          
+          </div>
+          <div class="comp_width">
            
           <?php 
   if ($orders['is_active'] == '0') {
@@ -2991,6 +2993,7 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
   }
   ?>
           </a>
+          
           <input type="hidden" id="cid_<?php echo $orders['orders_id'];?>" name="cid[]" value="<?php echo $orders['customers_id'];?>" />
   <?php 
   $customers_info_raw = tep_db_query("select pic_icon from ".TABLE_CUSTOMERS." where customers_id = '".$orders['customers_id']."'"); 
@@ -3007,7 +3010,7 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
   <?php echo tep_image(DIR_WS_ICONS . 'care.gif', TEXT_ORDER_CARE);?>
   <?php }?>
 
-
+</div>
     </td>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';">
       <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>

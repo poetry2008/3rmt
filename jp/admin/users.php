@@ -1609,7 +1609,7 @@ function PageBodyTable($mode='t') {
   switch ($mode) {
   case 't':
     echo '<!-- body -->' . "\n";
-    echo '<table border="0" width="100%" cellspacing="2" cellpadding="2">' . "\n";
+    echo '<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">' . "\n";
     echo '  <tr>' . "\n";
     if($GLOBALS['ocertify']->npermission >= 10){
     echo '    <td width="' . BOX_WIDTH . '" valign="top"><table border="0" width="' . BOX_WIDTH . '" cellspacing="1" cellpadding="1" class="columnLeft">' . "\n";
@@ -1634,7 +1634,7 @@ function PageBody($mode='t', $stitle = "") {
   switch ($mode) {
   case 't':
     echo '<!-- body_text -->' . "\n";
-    echo '    <td width="100%" valign="top" class="box">'. $notes.'<table border="0" width="100%" cellspacing="0" cellpadding="2">' . "\n";
+    echo '    <td width="100%" valign="top" class="box">'. $notes.'<div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">' . "\n";
     echo '      <tr>' . "\n";
     echo '        <td><table border="0" width="100%" cellspacing="0" cellpadding="0">' . "\n";
     echo '          <tr>' . "\n";
@@ -1651,7 +1651,7 @@ function PageBody($mode='t', $stitle = "") {
   case 'u':
     echo '        </td>' . "\n";
     echo '      </tr>' . "\n";
-    echo '    </table></td>' . "\n";
+    echo '    </table></div></td>' . "\n";
     echo '<!-- body_text_eof -->' . "\n";
     break;
   } 

@@ -214,11 +214,12 @@ require("includes/note_js.php");
     echo TEXT_RESET_PWD_NEXT_TELL;?></td>
     </tr>
     <tr>
-    <td width="120" nowrap><?php echo TEXT_RESET_PWD_LIST_TITLE;?></td> <td> <input type='text' name='title' style="width:550px;" value='<?php echo $reset_pwd_title;?>'/></td>
+    <td width="120" nowrap><?php echo TEXT_RESET_PWD_LIST_TITLE;?></td> 
+    <td> <input type='text' name='title' style="width:100%;" value='<?php echo $reset_pwd_title;?>'/></td>
     </tr>
     <tr>
     <td valign="top"><?php echo TEXT_RESET_PWD_LIST_CONTENT;?></td>
-    <td><textarea name='content' rows="20" style="width:550px; margin-bottom:5px;" /><?php echo $reset_pwd_content;?></textarea>
+    <td><textarea name='content' rows="20" style="width:100%; margin-bottom:5px;" /><?php echo $reset_pwd_content;?></textarea>
     <br><?php echo TEXT_RESET_PWD_OTHER_TEXT;?></td>
     </tr>
     <tr>

@@ -129,7 +129,7 @@ $belong = str_replace($pcode_array[1][0],urlencode($pcode_array[1][0]),$belong);
 
 <!-- body //-->
 <!--<h1 pageHeading>グループ管理</h1>-->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
 <!-- left_navigation //-->
@@ -138,6 +138,7 @@ $belong = str_replace($pcode_array[1][0],urlencode($pcode_array[1][0]),$belong);
     </table></td>
 <!-- body_text //-->
 <td width="100%" valign="top"><?php echo $notes;?>
+    <div class="compatible">
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
       <td class="pageHeading" height="40"><?php echo TEXT_GROUP_MANAGE;?></td>
@@ -466,6 +467,7 @@ function ajaxUpdate(id,order){
         </td> 
       </tr>
     </table>
+    </div>
     </td>
 <!-- body_text_eof //-->
   </tr>
