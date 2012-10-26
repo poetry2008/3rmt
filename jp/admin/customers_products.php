@@ -657,7 +657,7 @@ require("includes/note_js.php");
 <!-- header_eof //-->
 <form action="?action=print&customers_id=<?php echo $_GET['cID'];?>" method="post" name="orders_form" target="_blank">
 <!-- body //-->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
 <!-- left_navigation //-->
@@ -666,6 +666,7 @@ require("includes/note_js.php");
     </table>
     </td>
     <td valign="top"  width="100%"><?php echo $notes;?>   
+      <div class="compatible">
       <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
               <td class="pageHeading"><?php echo HEADING_TITLE;?></td> 
@@ -782,6 +783,7 @@ require("includes/note_js.php");
             </td>
           </tr>
         </table>
+        </div>
     </td>
   </tr>
 </table>
