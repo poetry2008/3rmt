@@ -261,7 +261,7 @@ if($address_error == false){
         ); 
     if ($preorder_total_res['class'] == 'ot_total') {
       if ($telecom_option_ok != true) {
-        $telecom_option_ok = $payment_modules->getPreexpress((int)$preorder_total_res['value'], $orders_id, $cpayment_code); 
+        $telecom_option_ok = $payment_modules->getPreexpress((int)$preorder_total_num, $orders_id, $cpayment_code); 
       }
     }
     tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);

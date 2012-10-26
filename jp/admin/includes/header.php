@@ -398,8 +398,7 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
     <table>
     <tr>';
   $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
-    echo '
-    <td><a class="headerLink" href="javascript:void(0);" onclick="toggle_header_menu(\'headerorder\')">'.HEADER_TEXT_ORDER_INFO.'</a>&nbsp;|<br>
+    echo '    <td><a class="headerLink" href="javascript:void(0);" onclick="toggle_header_menu(\'headerorder\')">'.HEADER_TEXT_ORDER_INFO.'</a>&nbsp;|<br>
     <table class="menu01" id="headerorder" cellpadding="0" cellspacing="0">
     <tr>
       <td class="menu01"><a class="t_link01"
@@ -451,12 +450,12 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
       onclick="toggle_header_menu(\'managermenu\')">'.HEADER_TEXT_MANAGERMENU.'</a>&nbsp;|<br>
       <table class="menu01" id="managermenu" cellpadding="0" cellspacing="0">
       ';
-    if($href_url == FILENAME_CATEGORIES_ADMIN || $href_url == FILENAME_CATEGORIES){
-    echo '<tr><td class="menu01"><a class="t_link01" 
+         echo '
+<tr><td class="menu01"><a class="t_link01" 
       href="add_note.php?author='.$user_info['name'].'&belong='.$belong.'"
-      id="fancy">'.TEXT_ADD_NOTE.'</a></td></tr>';
-  }
-      echo '
+      id="fancy">'.TEXT_ADD_NOTE.'</a></td></tr>
+
+
       <tr>
       <td class="menu01"><a class="t_link01"
        href="' . tep_href_link('micro_log.php', '', 'NONSSL') . '"
