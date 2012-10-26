@@ -103,10 +103,7 @@ function textarea_check(ele){
         i++;
       }
     } 
-    var comment_str_temp = 0;
-    if(navigator.userAgent.indexOf('Chrome') > 0){
-      comment_str_temp = 1; 
-    }
+    var comment_str_temp = 1; 
     $(ele).attr("rows",comment_line+comment_str_length-i+comment_str_temp);
 }
 $(document).ready(function(){
@@ -124,7 +121,7 @@ $(document).ready(function(){
   //var total_count = 45;
   // 页高
   //var page_height = row_height * count;
-  var page_height = 950;
+  var page_height = 900;
   
   // 千位分隔符
   function number_format(num)
@@ -190,7 +187,7 @@ $(document).ready(function(){
     }
     //alert(empty);
     if (empty < count) 
-    for (m = 0;m<empty;m++) {
+    for (m = 0;m<empty-20;m++) {
       html += add_tr(j+m, {
         date     : '',
         name     : '',
@@ -391,8 +388,8 @@ $(document).ready(function(){
           $('#data9').val(data['data9']);
           $('#data10').val(data['data10']);
           $('#data11').val(data['data11']);
-          $('#email').val(data['email']);
-          $('#email_display').html(data['email']);
+          $('#email_text').val(data['email']);
+          $('#email_display').val(data['email']);
           $('#responsible').val(data['responsible']);
           $("textarea").each(function(){
             textarea_check(this); 
@@ -537,8 +534,8 @@ $(document).ready(function(){
         <tr><td align="right"><textarea id="data10" type="text" rows="2" style="font-size:14px; overflow-y:visible; width:280px; resize:none;text-align:right;" ></textarea></td></tr>
         <tr><td align="right" class="input_print02">
   <font size="2">
-  <input name="textfield" type="text" id="email" value="" onChange="$('#email_display').html(this.value)" onpropertychange="$('#email_display').html(this.value)" onBlur="$('#email_display').html(this.value)" style="text-align:right; font-size:12px; width:300px;">
-  <span id="email_display"></span>
+  <input name="textfield" type="text" id="email_text" value="" onChange="$('#email_display').val(this.value)" onpropertychange="$('#email_display').val(this.value)" onBlur="$('#email_display').val(this.value)" style="text-align:right; font-size:12px; width:300px;">
+  <input type="hidden" id="email_display" value="">
   </font></td></tr>
         <tr><td align="right" colspan="4">
           <table cellpadding="0" cellspacing="0" style="border:#000000 1px solid;margin-top:19px;">
@@ -606,6 +603,7 @@ function check_select()
   for (var i=0; i<sel_p_list.length; i++) {
     if (sel_p_list[i].checked) {
       document.forms.orders_form.submit();
+      break;
     }
   }
   return false;
