@@ -90,6 +90,9 @@ if(success != null){
 
   $("#note_<?php echo $note_row;?>").css("top",note_top+head_success);
 }
+if(head_notice != null && success != null){
+  $("#note_<?php echo $note_row;?>").css("top",note_top+head_success+head_notice);
+}
 <?php
   echo "$('#note_".$note_row."').resizable({ 
     alsoResize: '#note_text_".$note_row."',
