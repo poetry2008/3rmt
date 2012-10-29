@@ -453,7 +453,7 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
       ';
          echo '
 <tr><td class="menu01"><a class="t_link01" 
-      href="add_note.php?author='.$user_info['name'].'&belong='.$belong.'"
+      href="add_note.php?author='.$ocertify->auth_user.'&belong='.$belong.'"
       id="fancy">'.TEXT_ADD_NOTE.'</a></td></tr>
 
 
