@@ -227,7 +227,7 @@ case 'p_categories_manual':
 //orders
 if(isset($_GET['oID']) && $_GET['oID']){
 $pid     = $_GET['pID'];
-$site_id = (!empty($_GET['site_id']))?$_GET['site_id']:0;
+$site_id = 0;
 $pro_to_cate_query=tep_db_query("select categories_id from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id='".$pid."'");
 $categories_array=tep_db_fetch_array($pro_to_cate_query);
 $categories_id=$categories_array['categories_id'];
