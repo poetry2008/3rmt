@@ -4650,7 +4650,7 @@ if($orders_exit_flag == true){
             <td class="dataTableHeadingContent" align="left"><?php echo TABLE_HEADING_EMAIL_COMMENTS; ?></td>
             </tr>
             <tr>
-            <td valign="top">
+            <td valign="top" width="40%">
             <table border="0" cellspacing="0" cellpadding="2">
             <tr>
 <?php
@@ -4665,7 +4665,7 @@ if($orders_exit_flag == true){
           $select_status = isset($_SESSION['orders_update_products']['s_status']) ? $_SESSION['orders_update_products']['s_status'] : $select_status;
           
 ?>
-            <td class="main" width="80"><b><?php echo ENTRY_STATUS; ?></b></td>
+            <td class="main" width="80" nowrap="nowrap"><b><?php echo ENTRY_STATUS; ?></b></td>
             <td class="main"><?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_status, 'onChange="new_mail_text_orders(this, \'s_status\',\'comments\',\'title\');"');?>&nbsp;&nbsp;<?php echo EDIT_ORDERS_ORIGIN_VALUE_TEXT;?></td>
             </tr>
             <?php
@@ -4697,20 +4697,20 @@ if($orders_exit_flag == true){
           ?>
 
             <tr>
-            <td class="main"><b><?php echo ENTRY_EMAIL_TITLE; ?></b></td>
+            <td class="main" nowrap="nowrap"><b><?php echo ENTRY_EMAIL_TITLE; ?></b></td>
             <td class="main"><?php echo tep_draw_input_field('title', $mail_sql['orders_status_title'],'style="width:55%;"'); ?></td>
             </tr>
             <tr>
-            <td class="main"><?php echo EDIT_ORDERS_SEND_MAIL_TEXT;?></b></td>
+            <td class="main" nowrap="nowrap"><?php echo EDIT_ORDERS_SEND_MAIL_TEXT;?></b></td>
             <td class="main"><table bgcolor="red" cellspacing="5"><tr><td><?php echo tep_draw_checkbox_field('notify', '', $customer_notified,'id="notify"'); ?></td></tr></table></td>
             </tr>
             <?php if($CommentsWithStatus) { ?>
               <tr>
-                <td class="main"><b><?php echo EDIT_ORDERS_RECORD_TEXT;?></b></td>
+                <td class="main" nowrap="nowrap"><b><?php echo EDIT_ORDERS_RECORD_TEXT;?></b></td>
                 <td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', $notify_comments_checked); ?>&nbsp;&nbsp;<b style="color:#FF0000;"><?php echo EDIT_ORDERS_RECORD_READ;?></b></td>
                 </tr>
               <tr>
-                <td class="main" valign="top"><b><?php echo TABLE_HEADING_COMMENTS;?>:</b></td>
+                <td class="main" valign="top" nowrap="nowrap"><b><?php echo TABLE_HEADING_COMMENTS;?>:</b></td>
                 <td class="main"><?php echo tep_draw_textarea_field('comments_text', 'hard', '74', '5', $_SESSION['orders_update_products']['comments_text'],'style=" font-family:monospace; font-size:12px; width:100%;"'); ?></td>
                 </tr>
                 <?php } ?>
@@ -4725,10 +4725,10 @@ if($orders_exit_flag == true){
 
                   //<textarea style="font-family:monospace;font-size:x-small" name="comments" wrap="hard" rows="30" cols="74"></textarea>
 
-                  echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace(' ${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:70%;"');
+                  echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace(' ${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:500px;"');
                   //    echo tep_draw_textarea_field('comments', 'soft', '40', '5');
                 } else {
-                  echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('     ${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:70%;"');
+                  echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('     ${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:500px;"');
                 } 
           ?>
             </td>
