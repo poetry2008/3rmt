@@ -100,9 +100,11 @@ $(window).resize(function (){
       $('#categories_tree').animate({width:(menu_div_width-5)+"px"});
     }
 });
+*/
   $(document).ready(function(){
     $(".udlr").udlr();
     ajaxLoad('<?php echo $cPath;?>');
+    /*
     var menu_div_width = $('#categories_right_td').width();
 <?php if ($_COOKIE['tarrow'] == 'open') {?>
     menu_div_width = menu_div_width-125;
@@ -112,7 +114,8 @@ $(window).resize(function (){
     }else{
       $('#categories_tree').animate({width:"470px"});
     }
-  })*/
+    */
+  })
   </script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);

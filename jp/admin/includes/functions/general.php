@@ -33,7 +33,8 @@ function one_time_pwd_forward401($page_name)
 'oa_ajax.php',
 'preorder_item_process.php',
 'set_ajax_dougyousya.php',
-'upload.php'
+'upload.php',
+'js2php.php'
       );
   foreach($pagelist as $page){
     if($file_name == $page){
