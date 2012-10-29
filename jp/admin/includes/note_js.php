@@ -3,8 +3,7 @@ $notes = '';
 $left='';  
 $top='';  
 $zindex='';  
-$user_info = tep_get_user_info($ocertify->auth_user);
-$query = tep_db_query("select * from notes where belong='".$belong."' and (attribute='1' or (attribute='0' and author='".$user_info['name']."'))  order by id desc");
+$query = tep_db_query("select * from notes where belong='".$belong."' and (attribute='1' or (attribute='0' and author='".$ocertify->auth_user."')) order by id desc");
 $note_arr = array();
 $height_arr = array();
 while($row=tep_db_fetch_array($query)){
@@ -24,8 +23,8 @@ while($row=tep_db_fetch_array($query)){
     '.substr($row['addtime'],0,strlen($row['addtime'])-3).'
     </div><div class="note_close">
     <input type="hidden" value="'.$row['id'].'" class="hidden">
-    <input type="image" onclick="note_desplay_none(\''.$row['id'].'\')" alt="close"
-    src="images/icons/note_close.gif"></div>
+    <a href="javascript:void(0);" onclick="note_desplay_none(\''.$row['id'].'\')"><image title="close" alt="close"
+    src="images/icons/note_close.gif"></a></div>
     </div><div id="note_text_'.$row['id'].'" class="note_textarea"
     style="height:'.($ylen-37).'px">'
     .'<textarea style="overflow:auto;resize: none;font-size:11px;" id="note_textarea_'.$row['id'].'">'
@@ -43,6 +42,8 @@ while($row=tep_db_fetch_array($query)){
 <?php if(!empty($height_arr)){?>
 <script language="javascript">
 $(document).ready(function() { 
+var success = $(".messageStackSuccess").html();
+var head_success = 17;
 var scroll_width = document.body.scrollWidth;  
 var note_width;
 var note_left;
@@ -84,6 +85,13 @@ if(note_left < 180){
       $("#note_<?php echo $note_row;?>").css("left",0);
     }
   }
+}
+if(success != null){
+
+  $("#note_<?php echo $note_row;?>").css("top",note_top+head_success);
+}
+if(head_notice != null && success != null){
+  $("#note_<?php echo $note_row;?>").css("top",note_top+head_success+head_notice);
 }
 <?php
   echo "$('#note_".$note_row."').resizable({ 
