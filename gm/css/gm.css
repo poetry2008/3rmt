@@ -82,7 +82,7 @@ td,th{ border:0; padding:2px; font-size:14px;}
 }
 @media screen and (-webkit-min-device-pixel-ratio:0) {
 #logo{
-	position: absolute;
+	position: relative;
 	z-index:121;
 	top:0;
 	text-align:center;
