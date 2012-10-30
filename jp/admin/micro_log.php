@@ -340,9 +340,9 @@ require("includes/note_js.php");
           </tr>
           <tr>
             <td width="250px">
-              <input type="radio" name="level" value="0" checked="checked" id="level_0">重1
-              <input type="radio" name="level" value="1" id="level_1">重2
-              <input type="radio" name="level" value="2" id="level_2">重3
+              <input type="radio" name="level" value="0" checked="checked" id="level_0"><?php echo TYPEA;?>
+              <input type="radio" name="level" value="1" id="level_1"><?php echo TYPEB;?>
+              <input type="radio" name="level" value="2" id="level_2"><?php echo TYPEC;?>
             </td>
             <td>
             <div class="yui3-skin-sam yui3-g">
@@ -508,13 +508,12 @@ function log_html(text){
   var log_date_len = text['date_added'].length;
   var log_date_str = log_date.substring(0, log_date_len-3); 
   
-  $str += '      <td style="background:#fff;"><div style="background:#fff;"><div
-    class="contents">'+text['content'].replace(/\n/g,'<br>')+'</div><div class="info">'+log_date_str+'</div></div></td>';
+  $str += '      <td style="background:#fff;"><div style="background:#fff;"><div class="contents">'+text['content'].replace(/\n/g,'<br>')+'</div><div class="info">'+log_date_str+'</div></div></td>';
   $str += '      <td class="info02">';
   $str += '           <div class="level">'+parseInt(text['level'])+'</div>';
   $str += '           <div class="alarm">'+text['alarm']+'</div>';
   $str += '           <div class="action"><a href="javascript:void(0);" onclick="edit_log('+text['log_id']+')"><img src="images/icons/edit_img.gif"></a> <a href="javascript:void(0)" onclick="up('+text['log_id']+')" ><img src="images/icons/up.gif"></a> <a href="javascript:void(0);" onclick="delete_log('+text['log_id']+')"><img src="images/icons/del_img.gif"></a> <a href="javascript:void(0)" onclick="down('+text['log_id']+')" ><img src="images/icons/down.gif"></a></div>';
-  $str += '           <div class="edit_action"><input type="submit" value="メモ保存" /></div>';
+  $str += '           <div class="edit_action"><input type="submit" value="<?php echo SAVE_BUTTON;?>" /></div>';
   $str += '      </td>';
   $str += '    </tr>';
   $str += '  </table>';
@@ -558,7 +557,7 @@ function edit_log(id)
   $('#log_'+id+' .alarm').html('<div id="demo" class="yui3-skin-sam yui3-g"><a id="dpk_'+id+'" href="javascript:void(0);" class="dpicker" onclick="open_update_calendar('+id+');"></a><input class="alarm_input" id="alarm_date_'+id+'" type="text" name="alarm" value="'+$('#log_'+id+' .alarm').html()+'"><input type="hidden" name="toggle_open_'+id+'" id="toggle_open_'+id+'" value="0"><div id="pos_m_'+id+'" class="yui3-u"><div id="calc_'+id+'_show"></div></div></div></div>');
 
   l = $('#log_'+id+' .level').html();
-  $('#log_'+id+' .level').show().html('<input type="radio" name="level" value="0" '+(l == '0' ? 'checked' : '')+' />重1<input type="radio" name="level" value="1" '+(l == '1' ? 'checked' : '')+' />重2<input type="radio" name="level" value="2" '+(l == '2' ? 'checked' : '')+' />重3');
+  $('#log_'+id+' .level').show().html('<input type="radio" name="level" value="0" '+(l == '0' ? 'checked' : '')+' /><?php echo TYPEA;?><input type="radio" name="level" value="1" '+(l == '1' ? 'checked' : '')+' /><?php echo TYPEB;?><input type="radio" name="level" value="2" '+(l == '2' ? 'checked' : '')+' /><?php echo TYPEC;?>');
   $('#log_'+id+' .edit_action').show();
   $('#log_'+id+' .alarm').show();
   $('#log_'+id+' .action').hide();
