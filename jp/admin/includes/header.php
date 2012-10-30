@@ -401,7 +401,13 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
   $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
     echo '    <td><a class="headerLink" href="javascript:void(0);" onclick="toggle_header_menu(\'headerorder\')">'.HEADER_TEXT_ORDER_INFO.'</a>&nbsp;|<br>
     <table class="menu01" id="headerorder" cellpadding="0" cellspacing="0">
+        <tr>
+      <td class="menu01"><a class="t_link01" href="'.tep_href_link(FILENAME_ORDERS, '', 'NONSSL').'">'.HEADER_TEXT_ORDERS.'</a></td> 
+    </tr>
     <tr>
+      <td class="menu01"><a class="t_link01" href="'.tep_href_link(FILENAME_PREORDERS, '', 'NONSSL').'">'.HEADER_TEXT_PREORDERS.'</a></td> 
+    </tr>
+<tr>
       <td class="menu01"><a class="t_link01"
       href="'.tep_href_link('create_order.php', '',
     'NONSSL').'">'.HEADER_TEXT_CREATE_ORDER.'</a></td>
@@ -410,12 +416,7 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
       <td class="menu01"><a class="t_link01" href="'.tep_href_link('create_preorder.php',
     '', 'NONSSL').'">'.HEADER_TEXT_CREATE_PREORDER.'</a></td>
       </tr> 
-    <tr>
-      <td class="menu01"><a class="t_link01" href="'.tep_href_link(FILENAME_ORDERS, '', 'NONSSL').'">'.HEADER_TEXT_ORDERS.'</a></td> 
-    </tr>
-    <tr>
-      <td class="menu01"><a class="t_link01" href="'.tep_href_link(FILENAME_PREORDERS, '', 'NONSSL').'">'.HEADER_TEXT_PREORDERS.'</a></td> 
-    </tr>
+
     </table> 
     </td>
     <td><a href="' . tep_href_link('telecom_unknow.php', '', 'NONSSL') . '" class="headerLink"

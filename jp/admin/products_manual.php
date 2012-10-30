@@ -227,7 +227,7 @@ case 'p_categories_manual':
 //orders
 if(isset($_GET['oID']) && $_GET['oID']){
 $pid     = $_GET['pID'];
-$site_id = (!empty($_GET['site_id']))?$_GET['site_id']:0;
+$site_id = 0;
 $pro_to_cate_query=tep_db_query("select categories_id from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id='".$pid."'");
 $categories_array=tep_db_fetch_array($pro_to_cate_query);
 $categories_id=$categories_array['categories_id'];
@@ -620,13 +620,13 @@ require("includes/note_js.php");
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <!-- header_eof -->
 
-<!-- body //-->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft"><tr><td>
 <!-- left_navigation --> <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> <!-- left_navigation_eof -->
     </td></tr></table>
-<!-- body_text //-->
+<!-- body_text -->
 <td width="100%" valign = "top" id='categories_right_td'><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
 <tr>
 
@@ -655,7 +655,7 @@ require("includes/note_js.php");
 </tr>
 </form>
 </table>
-<!-- body_eof //-->
+<!-- body_eof -->
 </td></div>
    </table> 
 
