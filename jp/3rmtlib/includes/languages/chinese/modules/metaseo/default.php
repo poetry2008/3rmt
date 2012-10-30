@@ -1,8 +1,4 @@
 <?php
-/*
-	JP、GM共通ファイル
-*/
-
   define('MODULE_METASEO_DEFAULT_TEXT_TITLE', '主页');
   define('MODULE_METASEO_DEFAULT_TEXT_EXPLAIN', 'EXPLAIN');
   define('MODULE_METASEO_DEFAULT_TEXT_DESCRIPTION', '主页的SEO');
