@@ -655,7 +655,6 @@ define('DB_CONFIGURATION_TITLE_INSTALL_SAFETY_REVIEW','レビューの安全を�
 define('DB_CONFIGURATION_TITLE_WARNING_SETTINGS','警告文字列設定');
 define('DB_CONFIGURATION_TITLE_SIMPLE_INFORMATION','簡易注文情報 ');
 define('DB_CONFIGURATION_TITLE_GRAPH_SET','混雑グラフ設定');
-define('DB_CONFIGURATION_TITLE_INITIAL_SETTING_SHOPS','商店初期设定');
 
 
 define('DB_CONFIGURATION_DESCRIPTION_SHOP','ショップの一般情報');
