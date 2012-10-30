@@ -277,6 +277,7 @@ date("Y") - $i; ?></option>
 $sum = 0;
 $orders_sum = 0;
 $products_point_sum = 0; 
+$row_num =0;
 while ($sr->hasNext()) {
   $info = $sr->next();
   $last = sizeof($info) - 1;
@@ -326,6 +327,7 @@ while ($sr->hasNext()) {
               </tr>
               <?php
 if (isset($srDetail)){
+  $row_num++;
     for ($i = 0; $i < $last; $i++) {
       if ($srMax === '0' or $i < $srMax) {
 ?>

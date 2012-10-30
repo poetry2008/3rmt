@@ -1,0 +1,11 @@
+<?php
+  define('TS_TEXT_POINT_NOW_TWO','<b>买入不加点数</b>&nbsp;&nbsp;这次获得的预定点数:');
+define('TEXT_ORDER_OK_ORDER_NIMBER','决算受理号码:');
+define('TEXT_ORDER_BANK','银行:');
+define('TEXT_ORDER_JNB','JNB');
+define('TEXT_ORDER_EBANK','eBank');
+define('TEXT_ORDER_POST_BANK','邮局');
+define('TEXT_ORDER_CONVENIENCE','便利店结算');
+define('TEXT_ORDER_CREDIT_CARD','信用卡结算');
+define('TEXT_ORDER_POST','邮政银行（邮局）');
+define('TEXT_ORDER_BANK_REMIT_MONEY','银行转账');

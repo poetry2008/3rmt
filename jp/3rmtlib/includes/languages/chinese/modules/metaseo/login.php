@@ -1,8 +1,4 @@
 <?php
-/*
-	JP、GM共通ファイル
-*/
-
   define('MODULE_METASEO_LOGIN_TEXT_TITLE', '登录');
   define('MODULE_METASEO_LOGIN_TEXT_EXPLAIN', 'EXPLAIN');
   define('MODULE_METASEO_LOGIN_TEXT_DESCRIPTION', '登录页的SEO');

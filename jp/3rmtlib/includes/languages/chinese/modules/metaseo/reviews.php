@@ -1,8 +1,4 @@
 <?php
-/*
-	JP、GM共通ファイル
-*/
-
   define('MODULE_METASEO_REVIEWS_TEXT_TITLE', '评论一览');
   define('MODULE_METASEO_REVIEWS_TEXT_EXPLAIN', 'EXPLAIN');
   define('MODULE_METASEO_REVIEWS_TEXT_DESCRIPTION', '评论一览页的SEO');
