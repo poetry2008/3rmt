@@ -126,7 +126,7 @@ require("includes/note_js.php");
                 <option value="2"<?php if ($srDetail == 2) echo " selected"; ?>><?php echo  SR_DET_DETAIL_ONLY; ?></option>
               </select>
               </td>
-                            <td class="menuBoxHeading"><?php echo SR_REPORT_END_DATE; ?><br>
+              <td class="menuBoxHeading"><?php echo SR_REPORT_END_DATE; ?><br>
               <table>
                 <tr>
                   <td><select name="endY" size="1">
@@ -366,6 +366,23 @@ SR_PRODUCTS_POINT_SUM.$products_point_sum.SR_POINT;?></td>
 <td class="dataTableContent" align="right"><?php echo SR_MONEY_SUM.
 ($t<0?'<font color="red">':'');?><?php echo $currencies->format($t);?><?php echo
 ($t<0?'</font>':'');?></td></tr>
+<tr>
+<td class="dataTableContent" align="right"></td>
+<td class="dataTableContent" align="right"><?php 
+echo AVG_ORDERS_SUM;
+echo str_replace(TEXT_MONEY_SYMBOL,'',$avg_currencies->format($orders_sum/$row_num));
+echo SR_ONE_ORDERS;?></td>
+<td class="dataTableContent" align="right"><?php 
+echo AVG_PRODUCTS_POINT_SUM;
+echo str_replace(TEXT_MONEY_SYMBOL,'',$avg_currencies->format($products_point_sum/$row_num));
+echo SR_POINT;?></td>
+<td class="dataTableContent" align="right"><?php echo AVG_MONEY_SUM.
+($t<0?'<font color="red">':'');?><?php 
+echo str_replace(TEXT_MONEY_SYMBOL,'',$avg_currencies->format($t/$row_num))
+;?><?php echo ($t<0?'</font>':'');
+echo TEXT_MONEY_SYMBOL;?></td>
+</tr>
+
 <?php
 if ($srCompare > SR_COMPARE_NO) {
 ?>
