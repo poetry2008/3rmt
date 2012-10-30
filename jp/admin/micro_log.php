@@ -213,8 +213,8 @@ width:75px;
   background:#eee;
   clear: both;
 }
-.log .contents{
-  padding:3px;
+.log .content{
+  padding:3px 0;
   font-size:12px;
 }
 .log .alarm{
@@ -246,6 +246,7 @@ padding:0;
 }
 .info02{
 width:50px;
+padding:0 5px;
 }
 .log .action{
 text-align:center;
@@ -266,6 +267,8 @@ textarea,input{
 }
 textarea{
   width:100%;
+  padding:0;
+  margin:0;
 }
 .alarm_on{
   border:2px solid #ff8e90;
@@ -287,6 +290,7 @@ float:left;
 	top:235px;
 	top:208px\9;
 	position: absolute;
+	z-index:200px;
 }
 @media screen and (-webkit-min-device-pixel-ratio:0) {
 #new_yui3{
@@ -294,6 +298,7 @@ float:left;
 	margin-left:-430px;
     padding-left:260px;
 	position: absolute;
+	z-index:200px;
 }
 }
 </style>
@@ -508,7 +513,7 @@ function log_html(text){
   var log_date_len = text['date_added'].length;
   var log_date_str = log_date.substring(0, log_date_len-3); 
   
-  $str += '      <td style="background:#fff;"><div style="background:#fff;"><div class="contents">'+text['content'].replace(/\n/g,'<br>')+'</div><div class="info">'+log_date_str+'</div></div></td>';
+  $str += '      <td style="background:#fff;"><div style="background:#fff;"><div class="content">'+text['content'].replace(/\n/g,'<br>')+'</div><div class="info">'+log_date_str+'</div></div></td>';
   $str += '      <td class="info02">';
   $str += '           <div class="level">'+parseInt(text['level'])+'</div>';
   $str += '           <div class="alarm">'+text['alarm']+'</div>';
