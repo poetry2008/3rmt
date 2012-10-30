@@ -1,6 +1,6 @@
 <?php
 /*
- *未使用オプション削除页面 
+ *未使用选项删除 
  */
 require('includes/application_top.php');
 require(DIR_WS_CLASSES.'currencies.php');

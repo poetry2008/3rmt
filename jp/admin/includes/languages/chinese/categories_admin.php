@@ -4,7 +4,7 @@
 */
  
 define('CATEGORY_ADMIN_TITLE', '商品批发价格管理');
-define('CATEGORY_ADMIN_CATREE_TITLE', 'jump▼');
+define('CATEGORY_ADMIN_CATREE_TITLE', '分类跳转▼');
 define('CATEGORY_ADMIN_SINGLE_PRICE', '单价规定:');
 define('TABLE_HEADING_CATEGORIES_ZHUWEN_NUM', '订单数');
 define('TABLE_HEADING_CATEGORIES_JIAKONG', '虚拟库存');

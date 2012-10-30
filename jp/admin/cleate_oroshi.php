@@ -340,7 +340,7 @@ require("includes/note_js.php");
                     <table width="100%" cellspacing="0" cellpadding="0">
                        <tr>
                           <td valign="top" class="cleate_add">
-  <input type="button" value="<?php echo CLEATE_DOUGYOUSYA_ADD_BUTTON;?>"　name='b1' onClick="input_add()">
+  <input type="button" value="<?php echo CLEATE_DOUGYOUSYA_ADD_BUTTON;?>" name='b1' onClick="input_add()">
                           </td>
                        </tr>
                        <tr>

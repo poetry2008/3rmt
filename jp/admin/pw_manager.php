@@ -968,7 +968,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           tep_draw_radio_field('privilege','7',true,'','class="privilege"
             id="privilege_s"').TEXT_PERMISSION_STAFF.
           tep_draw_radio_field('privilege','10',false,'','class="privilege"
-            id="privilege_c"')."Chief以上<br>"
+            id="privilege_c"').TEXT_PERMISSION_CHIEF."<br>"
           );
         $selected_user = $ocertify->auth_user;
       $contents[] = array('text' => '<br>' . '<div id="user_select"
@@ -1049,7 +1049,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           tep_draw_radio_field('privilege','7',$pwInfo->privilege==7?true:false,'','class="privilege"
             id="privilege_s"').TEXT_PERMISSION_STAFF.
           tep_draw_radio_field('privilege','10',$pwInfo->privilege==10?true:false,'','class="privilege"
-            id="privilege_c"')."Chief以上<br>"
+            id="privilege_c"').TEXT_PERMISSION_CHIEF."<br>"
           );
       /*
       $contents[] = array('text' => '<br>' . TEXT_INFO_PRIVILEGE . '<br>' .

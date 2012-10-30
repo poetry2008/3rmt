@@ -177,7 +177,7 @@ require("includes/note_js.php");
     }
     echo "</ul>\n";
   } else {
-    echo "无标签数据，请添加";
+    echo TEXT_P_TAGS_NO_TAG;
   }
 ?>
             </td>
@@ -223,7 +223,7 @@ require("includes/note_js.php");
     }
     echo "</ul>"."\n";
   } else {
-    echo "无分类数据，请添加";
+    echo TEXT_P_TAGS_NO_TAG;
   }
 ?>
             </td>

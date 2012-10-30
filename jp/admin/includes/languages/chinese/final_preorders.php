@@ -125,7 +125,6 @@ define('EDIT_ORDERS_FETCHTIME', '有效期限:');
 define('EDIT_ORDERS_TORI_TEXT', '选项:');
 define('EDIT_ORDERS_CUSTOMER_NAME_READ', '<font color="red">※</font>&nbsp;姓和名之间以<font color="red">半角空格</font>隔开。');
 define('EDIT_ORDERS_PAYMENT_METHOD_READ', '<table><tr class="smalltext"><td><font color="red">※</font>&nbsp;复制粘贴用:</td><td>银行转账</td><td>信用卡结算</td><td>银行转账(买入)</td><td>邮政银行邮局）</td><td>便利店结算</td></tr></table>');
-define('EDIT_ORDERS_FETCHTIME_READ', '<font color="red">※</font>&nbsp;日期・时间的格式:&nbsp;2008-01-01');
 define('EDIT_ORDERS_TORI_READ', '<table><tr class="smalltext"><td><font color="red">※</font>&nbsp;复制粘贴用:</td><td>希望按指定时间交易</td><td>如果可以的话希望早于指定时间到达</td></tr></table>');
 define('EDIT_ORDERS_PRO_LIST_TITLE', '2. 预约商品');
 define('TABLE_HEADING_NUM_PRO_NAME', '数量 / 商品名');

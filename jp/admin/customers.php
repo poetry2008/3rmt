@@ -7,7 +7,6 @@
   if (isset($_GET['action'])) {
     switch ($_GET['action']) {
       case 'update':
-        // tamura 2002/12/30 「全角」英数字を「半角」に変換
         $an_cols = array('customers_email_address','customers_telephone','customers_fax','customers_dob','entry_postcode');
         foreach ($an_cols as $col) {
           $_POST[$col] = tep_an_zen_to_han($_POST[$col]);

@@ -31,7 +31,7 @@
           $messageStack->add(ERROR_NEWSLETTER_TITLE, 'error');
           $newsletter_error = true;
         }
-        if (empty($newsletter_module)) { //2003-07-17 hiroshi_sato fixed
+        if (empty($newsletter_module)) { 
           $messageStack->add(ERROR_NEWSLETTER_MODULE, 'error');
           $newsletter_error = true;
         }
@@ -366,7 +366,6 @@ require("includes/note_js.php");
       <?php
     } 
   } 
-  //2003-07-17 hiroshi_sato fixed
 ?>
       <tr>
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>

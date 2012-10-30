@@ -184,7 +184,7 @@ define('TEXT_SHIPPING_ADDRESS','送货地');
 define('SHOW_MANUAL','手册');
 define('SHOW_MANUAL_TITLE','的手册');
 define('SHOW_MANUAL_SEARCH','搜索');
-define('SHOW_MANUAL_NONE','手册没有设置！！！');
+define('SHOW_MANUAL_NONE','暂无相关数据！！！');
 define('SHOW_MANUAL_RETURN','返回');
 define('SEARCH_MANUAL_PRODUCTS_FAIL','没有被搜索的手册！！！');
 define('SEARCH_CAT_PRO_TITLE','种类 / 商品');

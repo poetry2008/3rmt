@@ -519,9 +519,9 @@ default:
             if (!empty($con_limit_show)) {
               foreach ($con_limit_show as $lim_key => $lim_value) {
                 if ($lim_value == 1) {
-                  $con_limit_show_str .= '会員&nbsp;&nbsp;'; 
+                  $con_limit_show_str .= TEXT_TEP_CFG_PAYMENT_CHECKBOX_OPTION_MEMBER.'&nbsp;&nbsp;'; 
                 } elseif($lim_value ==2){
-                  $con_limit_show_str .= 'ゲスト'; 
+                  $con_limit_show_str .= TEXT_TEP_CFG_PAYMENT_CHECKBOX_OPTION_CUSTOMER; 
                 }
               }
             }
