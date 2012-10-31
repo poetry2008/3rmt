@@ -595,7 +595,7 @@ define('BOX_CATALOG_SHOW_USELESS_OPTION','删除未使用选项');
 define('TEXT_ORDER_ALARM_LINK', '警报');
 define('HOUR_TEXT', '时');
 define('MINUTE_TEXT', '分');
-define('NOTICE_EXTEND_TITLE', '移交记录');
+define('NOTICE_EXTEND_TITLE', '备忘录');
 define('NOTICE_ALARM_TITLE', '警报');
 define('NOTICE_DIFF_TIME_TEXT', '剩余');
 define('TEXT_DISPLAY_NUMBER_OF_MANUAL', '当前显示<b>%d</b> &sim; <b>%d</b> (共<b>%d</b> 项)');
