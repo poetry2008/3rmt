@@ -13,7 +13,6 @@
   define('TS_MODULE_PAYMENT_FETCH_GOOD_TEXT_OVERFLOW_ERROR','因为购买金额超过了来店支付的限制所以不能受理。');
   define('TS_MODULE_PAYMENT_FETCH_GOOD_TEXT_ERROR_MESSAGE', '来店支付结算处理时发生错误。请修改输入内容后再试。　');
   define('TS_MODULE_PAYMENT_FETCH_GOOD_TEXT_SHOW', '');
-// define('TS_MODULE_PAYMENT_FETCH_GOOD_TEXT_SHOW', '振込先口座情報に誤りがないかご確認ください。');
   define('TS_MODULE_PAYMENT_FETCH_GOOD_TEXT_CONFIRMATION',"");
   define('TS_MODULE_PAYMENT_FETCH_GOOD_ADDITIONAL_TEXT_TITLE', '来店支付');
 

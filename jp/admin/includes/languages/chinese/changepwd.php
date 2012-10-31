@@ -64,7 +64,7 @@ define('BUTTON_GRANT', '给予权限 >>');
 define('BUTTON_REVOKE', '<< 取消权限');
 define('BUTTON_BACK_PERMISSION', '返回管理者权限');
 define('BUTTON_CHANGE_PERMISSION','网站权限');
-// 項目名
+//项目名称 
 define('TABLE_HEADING_COLUMN', '列');
 define('TABLE_HEADING_DATA', '数据');
 define('TABLE_HEADING_USER', '用户');
