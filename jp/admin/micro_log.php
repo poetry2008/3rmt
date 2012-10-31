@@ -225,7 +225,7 @@ width:75px;
   font-size:10px;
   font-weight:bold;
   display:none;
-  width:123px;
+  width:99px;
 }
 .log .level input{
 margin:0;
