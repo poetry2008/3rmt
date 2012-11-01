@@ -270,7 +270,7 @@ class telecom  extends basePayment  implements paymentInterface  {
                  'MODULE_PAYMENT_TELECOM_LIMIT_SHOW',
                  'MODULE_PAYMENT_TELECOM_PREORDER_SHOW',
                  'MODULE_PAYMENT_TELECOM_IS_GET_POINT',
-                 'MODULE_PAYMENT_TELECOM_IS_POINT_RATE',
+                 'MODULE_PAYMENT_TELECOM_POINT_RATE',
                  'MODULE_PAYMENT_TELECOM_ORDER_STATUS_ID',
                  'MODULE_PAYMENT_TELECOM_SORT_ORDER',
                  'MODULE_PAYMENT_TELECOM_CONNECTION_URL',
