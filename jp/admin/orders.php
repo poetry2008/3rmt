@@ -570,7 +570,7 @@ switch ($_GET['action']) {
           } else {
             $get_point = $cpayment->admin_get_fetch_point(payment::changeRomaji($check_status['payment_method'],'code'),$result3['value']);
           }
-          $cpayment->admin_get_customer_point(payment::changeRomaji($check_status['payment_method'],'code'),intval($get_point),$result1['customers_id']); 
+          //$cpayment->admin_get_customer_point(payment::changeRomaji($check_status['payment_method'],'code'),intval($get_point),$result1['customers_id']); 
         } else {
           $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
           $os_result = tep_db_fetch_array($os_query);
@@ -581,7 +581,7 @@ switch ($_GET['action']) {
             $point_done_query =tep_db_query("select count(orders_status_history_id) cnt from ".TABLE_ORDERS_STATUS_HISTORY." where orders_status_id = '".$status."' and orders_id = '".tep_db_input($oID)."'");
             $point_done_row  =  tep_db_fetch_array($point_done_query);
             if($point_done_row['cnt'] <1 ){
-              tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  intval($get_point) . " where customers_id = '" . $result1['customers_id']."' and customers_guest_chk = '0'");
+              //tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  intval($get_point) . " where customers_id = '" . $result1['customers_id']."' and customers_guest_chk = '0'");
             }
           }
         }
@@ -898,7 +898,7 @@ switch ($_GET['action']) {
         }
         //$plus = $result4['point'] + $get_point;
 
-        $cpayment->admin_get_customer_point(payment::changeRomaji($check_status['payment_method'],'code'),intval($get_point),$result1['customers_id']); 
+        //$cpayment->admin_get_customer_point(payment::changeRomaji($check_status['payment_method'],'code'),intval($get_point),$result1['customers_id']); 
 
       }else{
         $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
@@ -914,7 +914,7 @@ switch ($_GET['action']) {
               orders_id = '".tep_db_input($oID)."'");
           $point_done_row  =  tep_db_fetch_array($point_done_query);
           if($point_done_row['cnt'] <1 ){
-            tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  intval($get_point) . " where customers_id = '" . $result1['customers_id']."' and customers_guest_chk = '0'");
+            //tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  intval($get_point) . " where customers_id = '" . $result1['customers_id']."' and customers_guest_chk = '0'");
           }
         }
       }

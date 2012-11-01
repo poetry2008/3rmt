@@ -797,5 +797,49 @@ class payment {
     }
     return false; 
   }
+  
+  function admin_is_get_point($payment, $site_id)
+  {
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'admin_is_get_point')) {
+        return $module->admin_is_get_point($site_id); 
+      }
+    }
+    return 0; 
+  }
+  
+  function admin_get_point_rate($payment, $site_id)
+  {
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'admin_get_point_rate')) {
+        return $module->admin_get_point_rate($site_id); 
+      }
+    }
+    return 0; 
+  }
+  
+  function admin_calc_get_point($payment, $orders_id, $point_rate, $site_id)
+  {
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'admin_calc_get_point')) {
+        return $module->admin_calc_get_point($orders_id, $point_rate, $site_id); 
+      }
+    }
+    return 0; 
+  }
+  
+  function get_point_rate($payment)
+  {
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'get_point_rate')) {
+        return $module->get_point_rate(); 
+      }
+    }
+    return 0; 
+  }
 }
 ?>

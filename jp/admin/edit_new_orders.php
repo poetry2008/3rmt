@@ -1318,7 +1318,7 @@ if($address_error == false){
           $get_point = $payment_modules->admin_get_fetch_point(payment::changeRomaji($payment_method,'code'),$result3['value']);
         }
         //$plus = $result4['point'] + $get_point;
-          $payment_modules->admin_get_customer_point(payment::changeRomaji($payment_method,'code'),intval($get_point),$result1['customers_id']); 
+          //$payment_modules->admin_get_customer_point(payment::changeRomaji($payment_method,'code'),intval($get_point),$result1['customers_id']); 
         
       }else{
         $os_query = tep_db_query("select orders_status_name,nomail from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
@@ -1337,7 +1337,7 @@ if($address_error == false){
               orders_id = '".tep_db_input($oID)."'");
           $point_done_row  =  tep_db_fetch_array($point_done_query);
           if($point_done_row['cnt'] <1){
-            tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  intval($get_point) . " where customers_id = '" . $result1['customers_id']."' and customers_guest_chk = '0'");
+            //tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  intval($get_point) . " where customers_id = '" . $result1['customers_id']."' and customers_guest_chk = '0'");
           }
         }
       }

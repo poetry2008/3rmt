@@ -673,6 +673,7 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
   $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
 }
 // ここまでカスタマ〖レベルに炳じたポイント丛傅唯换叫============================================================
+  $point_rate = $payment_modules->get_point_rate($con_payment_code);
   if ($preorder_subtotal > 0) {
     if (isset($_SESSION['preorder_campaign_fee'])) {
       $preorder_get_point = ($preorder_subtotal + $_SESSION['preorder_campaign_fee']) * $point_rate;
@@ -680,15 +681,11 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
       $preorder_get_point = ($preorder_subtotal - (int)$preorder_point) * $point_rate;
     }
   } else {
-    if (isset($payment_modules->modules[strtoupper($con_payment_code)]->show_point)) {
-      $show_point_single = true; 
-      if (isset($_SESSION['preorder_campaign_fee'])) {
-        $preorder_get_point = abs($preorder_subtotal)+abs($_SESSION['preorder_campaign_fee']);
-      } else {
-        $preorder_get_point = abs($preorder_subtotal);
-      }
+    $show_point_single = true; 
+    if (isset($_SESSION['preorder_campaign_fee'])) {
+      $preorder_get_point = (abs($preorder_subtotal)+abs($_SESSION['preorder_campaign_fee'])) * $point_rate;
     } else {
-      $preorder_get_point = 0;
+      $preorder_get_point = abs($preorder_subtotal) * $point_rate;
     }
   }
   

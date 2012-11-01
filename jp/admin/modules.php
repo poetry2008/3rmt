@@ -132,8 +132,95 @@ if (isset($_GET['action']))
           $blank_show_arr = array();
           tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($blank_show_arr) . "' where configuration_key = 'MODULE_PAYMENT_" . strtoupper($_GET['module'])  . "_LIMIT_SHOW' and site_id = '".$site_id."'");
         }
+      
+        $get_point_str = '';
+        foreach ($_POST['configuration'] as $gkey => $gvalue){
+          if(preg_match('/.*_IS_GET_POINT$/', $gkey)) {
+            $get_point_str = $gkey;
+            break;
+          }
+        }
+        
+        if (!empty($get_point_str)) {
+          if (!tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$get_point_str."' and site_id='".$site_id."'"))) {
+            $gp_show_configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$get_point_str."' and site_id='0'"));
+            if ($gp_show_configuration) {
+              tep_db_query("
+                  INSERT INTO `configuration` (
+                  `configuration_id` ,
+                  `configuration_title` ,
+                  `configuration_key` ,
+                  `configuration_value` ,
+                  `configuration_description` ,
+                  `configuration_group_id` ,
+                  `sort_order` ,
+                  `last_modified` ,
+                  `date_added` ,
+                  `use_function` ,
+                  `set_function` ,
+                  `site_id`
+                  )
+                  VALUES (
+                  NULL , 
+                  '".mysql_real_escape_string($gp_show_configuration['configuration_title'])."', 
+                  '".$gp_show_configuration['configuration_key']."', 
+                  '".$gp_show_configuration['configuration_value']."', 
+                  '".mysql_real_escape_string($gp_show_configuration['configuration_description'])."', 
+                  '".$gp_show_configuration['configuration_group_id']."', 
+                  '".$gp_show_configuration['sort_order']."' , 
+                  '".$gp_show_configuration['last_modified']."' , 
+                  '".$gp_show_configuration['date_added']."', 
+                  '".mysql_real_escape_string($gp_show_configuration['use_function'])."' , 
+                  '".mysql_real_escape_string($gp_show_configuration['set_function'])."' , 
+                  '".$site_id."'
+                  )
+                ");
+            }
+          } 
+          tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . $gvalue . "' where configuration_key = '" .  $get_point_str . "' and site_id = '".$site_id."'");
+        } else {
+          if (!tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='MODULE_PAYMENT_".strtoupper($_GET['module'])."_IS_GET_POINT' and site_id='".$site_id."'"))) {
+            $gp_show_configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='MODULE_PAYMENT_".strtoupper($_GET['module'])."_IS_GET_POINT' and site_id='0'"));
+            if ($gp_show_configuration) {
+              tep_db_query("
+                  INSERT INTO `configuration` (
+                  `configuration_id` ,
+                  `configuration_title` ,
+                  `configuration_key` ,
+                  `configuration_value` ,
+                  `configuration_description` ,
+                  `configuration_group_id` ,
+                  `sort_order` ,
+                  `last_modified` ,
+                  `date_added` ,
+                  `use_function` ,
+                  `set_function` ,
+                  `site_id`
+                  )
+                  VALUES (
+                  NULL , 
+                  '".mysql_real_escape_string($gp_show_configuration['configuration_title'])."', 
+                  '".$gp_show_configuration['configuration_key']."', 
+                  '', 
+                  '".mysql_real_escape_string($gp_show_configuration['configuration_description'])."', 
+                  '".$gp_show_configuration['configuration_group_id']."', 
+                  '".$gp_show_configuration['sort_order']."' , 
+                  '".$gp_show_configuration['last_modified']."' , 
+                  '".$gp_show_configuration['date_added']."', 
+                  '".mysql_real_escape_string($gp_show_configuration['use_function'])."' , 
+                  '".mysql_real_escape_string($gp_show_configuration['set_function'])."' , 
+                  '".$site_id."'
+                  )
+                ");
+            }
+          } 
+          
+          tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '' where configuration_key = 'MODULE_PAYMENT_" .  strtoupper($_GET['module'])  . "_IS_GET_POINT' and site_id = '".$site_id."'");
+        }
+      
       }
     }
+    
     $key = '';
     $value = '';
     foreach($post_configuration as $key => $value){
@@ -180,8 +267,10 @@ if (isset($_GET['action']))
         }
       }
 
-      if (preg_match('/.*LIMIT_SHOW/', $key)) 	{
+      if (preg_match('/.*LIMIT_SHOW/', $key)) {
         tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($value) . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
+      } else if (preg_match('/.*_IS_GET_POINT$/', $key)) {
+        tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . $value[0] . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
       } else {
         tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . $value . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
       }
@@ -519,9 +608,9 @@ default:
             if (!empty($con_limit_show)) {
               foreach ($con_limit_show as $lim_key => $lim_value) {
                 if ($lim_value == 1) {
-                  $con_limit_show_str .= '会員&nbsp;&nbsp;'; 
+                  $con_limit_show_str .= TEXT_TEP_CFG_PAYMENT_CHECKBOX_OPTION_MEMBER.'&nbsp;&nbsp;'; 
                 } elseif($lim_value ==2){
-                  $con_limit_show_str .= 'ゲスト'; 
+                  $con_limit_show_str .= TEXT_TEP_CFG_PAYMENT_CHECKBOX_OPTION_CUSTOMER; 
                 }
               }
             }

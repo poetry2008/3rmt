@@ -8,7 +8,7 @@
   
   $breadcrumb->add(NAVBAR_CHANGE_PREORDER_TITLE, '');
   /*
- * ???????ͷ???
+ * 计算配送费用
  */
   foreach($_POST as $shipping_key=>$shipping_value){
 
@@ -17,7 +17,7 @@
       $shipping_fee_array[substr($shipping_key,3)] = $shipping_value;
     }
   }
-  //??????Ʒ???ܼ۸???????��
+  //计算商品的总价格及总重量
   $weight_total = 0;
   $money_total = 0;
   $shipping_products_query = tep_db_query("select * from ". TABLE_PREORDERS_PRODUCTS ." where orders_id='". $_POST['pid'] ."'");
@@ -63,7 +63,7 @@ if($city_num > 0 && $op_key == $country_fee_array[3]){
   $city_free_value = $city_array['free_value'];
   $city_weight_fee_array = unserialize($city_array['weight_fee']);
 
-  //??????����??ȡ??Ӧ?????ͷ???
+  //根据重量来获取相应的配送费用
   foreach($city_weight_fee_array as $key=>$value){
     
     if(strpos($key,'-') > 0){
@@ -86,7 +86,7 @@ if($city_num > 0 && $op_key == $country_fee_array[3]){
   $address_free_value = $address_array['free_value'];
   $address_weight_fee_array = unserialize($address_array['weight_fee']);
 
-  //??????����??ȡ??Ӧ?????ͷ???
+  //根据重量来获取相应的配送费用
   foreach($address_weight_fee_array as $key=>$value){
     
     if(strpos($key,'-') > 0){
@@ -110,7 +110,7 @@ if($city_num > 0 && $op_key == $country_fee_array[3]){
   $country_free_value = $country_array['free_value'];
   $country_weight_fee_array = unserialize($country_array['weight_fee']);
 
-  //??????����??ȡ??Ӧ?????ͷ???
+  //根据重量来获取相应的配送费用
   foreach($country_weight_fee_array as $key=>$value){
     
     if(strpos($key,'-') > 0){
@@ -658,7 +658,7 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
   }
   //----------------------------------------------
   
-  //?Ը?Ψ???׻?----------------------------------
+  //丛傅唯を纷换----------------------------------
   if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
     $back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
   $back_rate = MODULE_ORDER_TOTAL_POINT_FEE;
@@ -681,7 +681,8 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
 } else {
   $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
 }
-// ?????ޤǥ??????ޡ????٥??˱??????ݥ????ȴԸ?Ψ????============================================================
+// ここまでカスタマ〖レベルに炳じたポイント丛傅唯换叫============================================================
+  $point_rate = $payment_modules->get_point_rate($con_payment_code);
   if ($preorder_subtotal > 0) {
     if (isset($_SESSION['preorder_campaign_fee'])) {
       $preorder_get_point = ($preorder_subtotal + $_SESSION['preorder_campaign_fee']) * $point_rate;
@@ -689,15 +690,11 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
       $preorder_get_point = ($preorder_subtotal - (int)$preorder_point) * $point_rate;
     }
   } else {
-    if (isset($payment_modules->modules[strtoupper($con_payment_code)]->show_point)) {
-      $show_point_single = true; 
-      if (isset($_SESSION['preorder_campaign_fee'])) {
-        $preorder_get_point = abs($preorder_subtotal)+abs($_SESSION['preorder_campaign_fee']);
-      } else {
-        $preorder_get_point = abs($preorder_subtotal);
-      }
+    $show_point_single = true; 
+    if (isset($_SESSION['preorder_campaign_fee'])) {
+      $preorder_get_point = (abs($preorder_subtotal)+abs($_SESSION['preorder_campaign_fee'])) * $point_rate;
     } else {
-      $preorder_get_point = 0;
+      $preorder_get_point = abs($preorder_subtotal) * $point_rate;
     }
   }
   

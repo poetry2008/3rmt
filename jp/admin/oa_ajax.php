@@ -64,7 +64,7 @@ if(isset($_GET['action'])){
     echo date('Y/m/d H-i' ,time());
     break;
   case 'finish':
-
+    require_once(DIR_WS_CLASSES. 'payment.php'); 
     $id = $_GET['oID'];
     if(!$id){
       $ids = $_POST['oID'];
@@ -78,14 +78,46 @@ if(isset($_GET['action'])){
     if($m){
       foreach ($oids as $id){
         if(trim($id)!=''){
-        $result = tep_db_query("update `".TABLE_ORDERS."` set `end_user` = '".$value."', `flag_qaf` = ".'1'." where orders_id = '".$id."'");  
-        if($_POST['finish']){
-          $messageStack->add_session('注文ID'.$id . 'の成功：取り引きが完了致しました', 'success');
-        }
-
+          $orders_raw = tep_db_query("select customers_id, payment_method, site_id from ".TABLE_ORDERS." where orders_id = '".$id."'"); 
+          $orders_res = tep_db_fetch_array($orders_raw); 
+          if ($orders_res) {
+            $tmp_setting = get_configuration_by_site_id_or_default('MODULE_ORDER_TOTAL_POINT_STATUS', $orders_res['site_id']);
+            $tmp_tmp_setting = get_configuration_by_site_id_or_default('MODULE_ORDER_TOTAL_POINT_ADD_STATUS', $orders_res['site_id']);
+            if ($tmp_setting == 'true' && $tmp_tmp_setting != '0') {
+              $cpayment = payment::getInstance($orders_res['site_id']); 
+              if ($cpayment->admin_is_get_point(payment::changeRomaji($orders_res['payment_method'], PAYMENT_RETURN_TYPE_CODE), $orders_res['site_id']) == '1') {
+                $point_rate = $cpayment->admin_get_point_rate(payment::changeRomaji($orders_res['payment_method'], PAYMENT_RETURN_TYPE_CODE), $orders_res['site_id']); 
+                
+                $get_point = $cpayment->admin_calc_get_point(payment::changeRomaji($orders_res['payment_method'], PAYMENT_RETURN_TYPE_CODE), $id, $point_rate, $orders_res['site_id']);
+                
+                tep_db_query("update `".TABLE_CUSTOMERS."` set point = point + ".(int)$get_point." where customers_id = '".$orders_res['customers_id']."' and customers_guest_chk = '0'"); 
+              }
+              unset($cpayment); 
+            }
+          }
+          $result = tep_db_query("update `".TABLE_ORDERS."` set `end_user` = '".$value."', `flag_qaf` = ".'1'." where orders_id = '".$id."'");  
+          if($_POST['finish']){
+            $messageStack->add_session(sprintf(MESSAGE_FINISH_ORDER_TEXT,$id) , 'success');
+          }
         }
       }
     }else {
+      $orders_raw = tep_db_query("select customers_id, payment_method, site_id from ".TABLE_ORDERS." where orders_id = '".$id."'"); 
+      $orders_res = tep_db_fetch_array($orders_raw); 
+      if ($orders_res) {
+        $tmp_setting = get_configuration_by_site_id_or_default('MODULE_ORDER_TOTAL_POINT_STATUS', $orders_res['site_id']);
+        $tmp_tmp_setting = get_configuration_by_site_id_or_default('MODULE_ORDER_TOTAL_POINT_ADD_STATUS', $orders_res['site_id']);
+        if ($tmp_setting == 'true' && $tmp_tmp_setting != '0') {
+          $cpayment = payment::getInstance($orders_res['site_id']); 
+          if ($cpayment->admin_is_get_point(payment::changeRomaji($orders_res['payment_method'], PAYMENT_RETURN_TYPE_CODE), $orders_res['site_id']) == '1') {
+            $point_rate = $cpayment->admin_get_point_rate(payment::changeRomaji($orders_res['payment_method'], PAYMENT_RETURN_TYPE_CODE), $orders_res['site_id']); 
+            
+            $get_point = $cpayment->admin_calc_get_point(payment::changeRomaji($orders_res['payment_method'], PAYMENT_RETURN_TYPE_CODE), $id, $point_rate, $orders_res['site_id']);
+                
+            tep_db_query("update `".TABLE_CUSTOMERS."` set point = point + ".(int)$get_point." where customers_id = '".$orders_res['customers_id']."' and customers_guest_chk = '0'"); 
+          }
+        }
+      }
       $result = tep_db_query("update `".TABLE_ORDERS."` set `end_user` = '".$value."', `flag_qaf` = ".'1'." where orders_id = '".$id."'");  
     }
 //tep_redirect(tep_href_link(FILENAME_ORDERS, 'oID='.$_GET['oID'].'&action=edit'));
