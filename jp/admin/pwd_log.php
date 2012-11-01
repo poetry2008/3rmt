@@ -18,18 +18,12 @@
 
   $FontColor = 'color="#009900"';       // フォント：マーク色
 
-/* --------------------------------
-2003-04-07 add 
-$HTTP_POST_VERS に対応させる
-（PHP スーパーグローバル変数[$_POST]への対応は次回とする）
--------------------------------- */
   if (isset($HTTP_POST_VERS['lm'])) { $lm = $HTTP_POST_VERS['lm']; }
   if (isset($HTTP_POST_VERS['jp'])) { $jp = $HTTP_POST_VERS['jp']; }
   if (isset($HTTP_POST_VERS['pp'])) { $pp = $HTTP_POST_VERS['pp']; }
   if (isset($HTTP_POST_VERS['np'])) { $np = $HTTP_POST_VERS['np']; }
   if (isset($HTTP_POST_VERS['aval'])) { $aval = $HTTP_POST_VERS['aval']; }
   if (isset($HTTP_POST_VERS['log_id'])) { $log_id = $HTTP_POST_VERS['log_id']; }
-//2003-07-16 hiroshi_sato add 2 line
         if (isset($_POST['sp'])) { $sp = $_POST['sp']; }
         if (isset($_POST['execute_delete'])) { $execute_delete = $_POST['execute_delete']; }
 

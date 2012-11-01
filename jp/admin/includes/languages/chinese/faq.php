@@ -3,7 +3,7 @@ define('TABLE_FAQ_CATEGORY_TITLE','种类/FAQ');
 define('TABLE_FAQ_CATEGORY_IS_SHOW','状态');
 define('IMAGE_NEW_FAQ_CATEGORY','新种类');
 define('IMAGE_NEW_FAQ','新FAQ');
-define('CATEGORY_TREE_SELECT_TEXT','jump▼');
+define('CATEGORY_TREE_SELECT_TEXT','分类跳转▼');
 define('TEXT_CREATED_AT','创建日期:');
 define('TEXT_UPDATED_AT','更新日期:');
 define('TEXT_NEW_FAQ_CATEGORY_SORT_ORDER','排列顺序');

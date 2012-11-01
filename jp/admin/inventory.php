@@ -209,7 +209,7 @@ require("includes/note_js.php");
           <td style="border-bottom:1px solid #000000" align="right"><?php 
           $price = explode('.', $products['products_price']);
           echo $price[0];
-          ;?>&nbsp;円</td>
+          ;?>&nbsp;<?php echo TEXT_MONEY_SYMBOL;?></td>
           <td style="border-bottom:1px solid #000000" align="right"><?php echo $imaginary;?>&nbsp;<?php echo MONTHS;?></td>
           <td style="border-bottom:1px solid #000000" align="right"><?php echo
           $products['products_quantity'];?>&nbsp;<?php echo MONTHS;?>

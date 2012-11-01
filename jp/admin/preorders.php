@@ -250,7 +250,6 @@
           }
           tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS',$site_id), $title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
         } 
-        //tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
         $customer_notified = '1';
       }
       
@@ -533,7 +532,6 @@
         tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
         tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS',$site_id), $title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
       }
-      //tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
       $customer_notified = '1';
     }
     
@@ -975,9 +973,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                 <td width="50%" align="left">
                   <table width="100%" border="0" cellspacing="2" cellpadding="2">
                     <tr>
-                      <?php 
-
-/* <!--<td width="100" align="center" class='<?php echo $order->info['orders_important_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'important')">重要</td>--> */ ?>
                       <td width="100" align="center" class='<?php echo $order->info['orders_care_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="preorders_flag(this, 'care', '<?php echo $order->info['orders_id'];?>')"><?php echo TEXT_ORDER_CARE;?></td>
                       <td width="100" align="center" class='<?php echo $order->info['orders_wait_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="preorders_flag(this, 'wait', '<?php echo $order->info['orders_id'];?>')"><?php echo TEXT_ORDER_WAIT;?></td>
                       <td width="100" align="center" class='<?php echo $order->info['orders_inputed_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="preorders_flag(this, 'inputed', '<?php echo $order->info['orders_id'];?>')"><?php echo TEXT_ORDER_INPUTED_FLAG;?></td>
@@ -1410,7 +1405,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
             <h3><?php echo TEXT_CREDIT_FIND;?></h3>
             <table width="100%" border="0" cellspacing="0" cellpadding="2">
               <tr>
-                <!--<td class="main" valign="top" width="30%"><b>信用調査:</b></td>-->
             <form action="ajax_preorders.php?orders_id=<?php echo $order->info['orders_id'];?>" id='form_orders_credit' method="post">
                 <td class="main"><textarea name="orders_credit" style="width:98%;height:42px;*height:40px;"><?php echo tep_get_customers_fax_by_id($order->customer['id']);?></textarea>
                 <input type="hidden" name="orders_id" value="<?php echo $order->info['orders_id'];?>">
@@ -1726,6 +1720,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     <td colspan="2" align="right"><?php echo '<a href="' . tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('action','status','questions_type'))) . '">' .  tep_html_element_button(IMAGE_BACK) . '</a>'; ?></td>
   </tr>
 </table>
+
       
     </table>
     </div>
@@ -1886,7 +1881,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
       <td valign="top">
-    <!-- 订单信息预览，配合javascript，永远浮动在屏幕右下角 -->
+    <?php /* 订单信息预览，配合javascript，永远浮动在屏幕右下角 */?>
     <div id="orders_info_box" style="left:15%; display:none; position:absolute; background:#FFFF00; width:70%; /*bottom:0;margin-top:40px;right:0;width:200px;*/">&nbsp;</div>
 <?php
   if ($ocertify->npermission == 15) {
@@ -2993,7 +2988,6 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
   }
   ?>
           </a>
-          
           <input type="hidden" id="cid_<?php echo $orders['orders_id'];?>" name="cid[]" value="<?php echo $orders['customers_id'];?>" />
   <?php 
   $customers_info_raw = tep_db_query("select pic_icon from ".TABLE_CUSTOMERS." where customers_id = '".$orders['customers_id']."'"); 

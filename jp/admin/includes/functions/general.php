@@ -1769,7 +1769,6 @@ function tep_rand($min = null, $max = null) {
 }
 
 // Convert "zen-kaku" alphabets and numbers to "han-kaku"
-// tamura 2002/12/30
 function tep_an_zen_to_han($string) {
   return mb_convert_kana($string, "a");
 }

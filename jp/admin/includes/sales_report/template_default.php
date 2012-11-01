@@ -21,8 +21,8 @@ require("includes/note_js.php");
       <?php
       require(DIR_WS_INCLUDES . 'header.php');
 ?>
-<!-- header_eof //-->
-<!-- body //-->
+<!-- header_eof -->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
@@ -126,7 +126,7 @@ require("includes/note_js.php");
                 <option value="2"<?php if ($srDetail == 2) echo " selected"; ?>><?php echo  SR_DET_DETAIL_ONLY; ?></option>
               </select>
               </td>
-                            <td class="menuBoxHeading"><?php echo SR_REPORT_END_DATE; ?><br>
+              <td class="menuBoxHeading"><?php echo SR_REPORT_END_DATE; ?><br>
               <table>
                 <tr>
                   <td><select name="endY" size="1">
@@ -277,6 +277,7 @@ date("Y") - $i; ?></option>
 $sum = 0;
 $orders_sum = 0;
 $products_point_sum = 0; 
+$row_num =0;
 while ($sr->hasNext()) {
   $info = $sr->next();
   $last = sizeof($info) - 1;
@@ -317,15 +318,21 @@ while ($sr->hasNext()) {
                 }?> 
                 <td class="dataTableContent" align="right"><?php 
   if ($info[$last - 1]['totsum'] < 0) {
-    echo '<font color="red">'.$currencies->format(isset($info[$last - 1]['totsum'])?$info[$last - 1]['totsum']:'').'</font>';
+    echo '<font color="red">'.
+      str_replace(TEXT_MONEY_SYMBOL,'',
+          $currencies->format(isset($info[$last - 1]['totsum'])?$info[$last - 1]['totsum']:'')).
+      '</font>'.TEXT_MONEY_SYMBOL;
   } else {
-    echo $currencies->format(isset($info[$last - 1]['totsum'])?$info[$last - 1]['totsum']:'');
+    echo str_replace(TEXT_MONEY_SYMBOL,'',
+      $currencies->format(isset($info[$last - 1]['totsum'])?$info[$last - 1]['totsum']:''))
+    .TEXT_MONEY_SYMBOL;
   }
   $t += $info[$last - 1]['totsum'];
   ?></td>
               </tr>
               <?php
 if (isset($srDetail)){
+  $row_num++;
     for ($i = 0; $i < $last; $i++) {
       if ($srMax === '0' or $i < $srMax) {
 ?>
@@ -338,9 +345,12 @@ if (isset($srDetail)){
           if ($srDetail == 2) {?>
                 <td class="dataTableContent" align="right"><?php 
                   if ($info[$i]['psum'] < 0) {
-                    echo '<font color="red">'.$currencies->format($info[$i]['psum']).'</font>'; 
+                    echo '<font color="red">'.
+                      str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($info[$i]['psum'])).
+                      '</font>'.TEXT_MONEY_SYMBOL; 
                   } else {
-                    echo $currencies->format($info[$i]['psum']); 
+                    echo str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($info[$i]['psum'])) 
+                      .TEXT_MONEY_SYMBOL;
                   }
                 ?></td>
                 <?php
@@ -364,8 +374,28 @@ SR_ORDERS_SUM.$orders_sum.SR_ONE_ORDERS;?></td>
 <td class="dataTableContent" align="right"><?php echo
 SR_PRODUCTS_POINT_SUM.$products_point_sum.SR_POINT;?></td>
 <td class="dataTableContent" align="right"><?php echo SR_MONEY_SUM.
-($t<0?'<font color="red">':'');?><?php echo $currencies->format($t);?><?php echo
-($t<0?'</font>':'');?></td></tr>
+($t<0?'<font color="red">':'');?><?php echo str_replace(TEXT_MONEY_SYMBOL,'',
+    $currencies->format($t));?><?php echo
+($t<0?'</font>':'');
+echo TEXT_MONEY_SYMBOL;
+?></td></tr>
+<tr>
+<td class="dataTableContent" align="right"></td>
+<td class="dataTableContent" align="right"><?php 
+echo AVG_ORDERS_SUM;
+echo str_replace(TEXT_MONEY_SYMBOL,'',$avg_currencies->format($orders_sum/$row_num));
+echo SR_ONE_ORDERS;?></td>
+<td class="dataTableContent" align="right"><?php 
+echo AVG_PRODUCTS_POINT_SUM;
+echo str_replace(TEXT_MONEY_SYMBOL,'',$avg_currencies->format($products_point_sum/$row_num));
+echo SR_POINT;?></td>
+<td class="dataTableContent" align="right"><?php echo AVG_MONEY_SUM.
+($t<0?'<font color="red">':'');?><?php 
+echo str_replace(TEXT_MONEY_SYMBOL,'',$avg_currencies->format($t/$row_num))
+;?><?php echo ($t<0?'</font>':'');
+echo TEXT_MONEY_SYMBOL;?></td>
+</tr>
+
 <?php
 if ($srCompare > SR_COMPARE_NO) {
 ?>
@@ -405,9 +435,14 @@ if ($srCompare > SR_COMPARE_NO) {
                 <td class="dataTableContent" align="right"><?php 
                 if(isset($info[$last - 1]['totsum']) ) {
                   if ($info[$last - 1]['totsum']<0) {
-                    echo '<font color="red">'.$currencies->format($info[$last - 1]['totsum']).'</font>';
+                    echo '<font color="red">'.
+                      str_replace(TEXT_MONEY_SYMBOL,'',
+                      $currencies->format($info[$last - 1]['totsum'])).
+                      '</font>'.TEXT_MONEY_SYMBOL;
                   } else {
-                    echo $currencies->format($info[$last - 1]['totsum']);
+                    echo str_replace(TEXT_MONEY_SYMBOL,'',
+                      $currencies->format($info[$last - 1]['totsum'])).
+                      TEXT_MONEY_SYMBOL;
                   }
                 }
     ?></td>
@@ -426,9 +461,13 @@ if ($srCompare > SR_COMPARE_NO) {
             if ($srDetail == 2) {?>
                 <td class="dataTableContent" align="right"><?php 
                   if ($info[$i]['psum'] < 0) {
-                    echo '<font color="red">'.$currencies->format($info[$i]['psum']).'</font>'; 
+                    echo '<font color="red">'.
+                      str_replace(TEXT_MONEY_SYMBOL,'',
+                      $currencies->format($info[$i]['psum'])).
+                      '</font>'.TEXT_MONEY_SYMBOL; 
                   } else {
-                    echo $currencies->format($info[$i]['psum']); 
+                    echo str_replace(TEXT_MONEY_SYMBOL,'',
+                      $currencies->format($info[$i]['psum'])).TEXT_MONEY_SYMBOL; 
                   }
                    ?></td>
                 <?php

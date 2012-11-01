@@ -386,7 +386,6 @@ while($userslist= tep_db_fetch_array($sites_id)){
 
 
 
-// define our authenticate functions 2003/04/16
   if(!tep_session_is_registered('adminaccs')) {
     include(DIR_WS_CLASSES . 'user_certify.php');
   }

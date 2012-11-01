@@ -15,24 +15,24 @@ define('TABLE_HEADING_ERRINFO', '!!!!! 错误提示 !!!!!');
 define('TEXT_ERRINFO_INPUT_NOINPUT', '未输入');
 define('TEXT_ERRINFO_INPUT_ERR', '未正确输入');
 define('TEXT_ERRINFO_INPUT_LENGTH', '请输入%d 字以上');
-define('TEXT_ERRINFO_USER_DELETE', '<b>用户信息的删除</b>:不能删除用户本人的信息');
-define('TEXT_ERRINFO_USER_GRANT', '<b>开权限</b>:请选择用户');
+define('TEXT_ERRINFO_USER_DELETE', '<b>用户信息的删除</b>:无法删除用户本人的信息');
+define('TEXT_ERRINFO_USER_GRANT', '<b>给予权限</b>:请选择用户');
 define('TEXT_ERRINFO_USER_REVOKE', '<b>取消权限</b>:请选择用户');
-define('TEXT_ERRINFO_USER_REVOKE_ONESELF', '<b>取消权限</b>:不能取消用户本人的权限');
+define('TEXT_ERRINFO_USER_REVOKE_ONESELF', '<b>取消权限</b>:无法取消用户本人的权限');
 define('TEXT_ERRINFO_CONFIRM_PASSWORD', '<b>为了确认再次输入</b>:为了确认再次输入的密码不同');
 
 // 访问表的错误信息
-define('TEXT_ERRINFO_DB_NO_USERINFO', '不能获得用户信息');
+define('TEXT_ERRINFO_DB_NO_USERINFO', '无法获得用户信息');
 define('TEXT_ERRINFO_DB_NO_USER', '成为对象的用户不存在');
 define('TEXT_ERRINFO_DB_USERCHACK', '用户是否存在的检查发生错误');
 define('TEXT_ERRINFO_DB_EXISTING_USER', '已经注册的用户');
-define('TEXT_ERRINFO_DB_INSERT_USER', '不能注册用户信息');
-define('TEXT_ERRINFO_DB_INSERT_PERMISSION', '不能注册用户权限信息');
-define('TEXT_ERRINFO_DB_UPDATE_USER', '不能更新用户信息');
-define('TEXT_ERRINFO_DB_DELETE_USER', '不能删除用户信息');
-define('TEXT_ERRINFO_DB_CHANGE_PASSWORD', '不能更改密码');
-define('TEXT_ERRINFO_DB_CHANGE_USER', '不能变更用户权限');
-define('TEXT_ERRINFO_DB_CHANGE_PERMISSION','不能变更用户权限');
+define('TEXT_ERRINFO_DB_INSERT_USER', '无法注册用户信息');
+define('TEXT_ERRINFO_DB_INSERT_PERMISSION', '无法注册用户权限信息');
+define('TEXT_ERRINFO_DB_UPDATE_USER', '无法更新用户信息');
+define('TEXT_ERRINFO_DB_DELETE_USER', '无法删除用户信息');
+define('TEXT_ERRINFO_DB_CHANGE_PASSWORD', '无法更改密码');
+define('TEXT_ERRINFO_DB_CHANGE_USER', '无法变更用户权限');
+define('TEXT_ERRINFO_DB_CHANGE_PERMISSION','无法变更用户权限');
 
 // 完了信息
 define('TEXT_SUCCESSINFO_INSERT_USER', '追加用户');
@@ -40,7 +40,7 @@ define('TEXT_SUCCESSINFO_UPDATE_USER', '更新用户信息');
 define('TEXT_SUCCESSINFO_DELETE_USER', '删除用户信息');
 define('TEXT_SUCCESSINFO_CHANGE_PASSWORD', '变更完成。');
 define('TEXT_SUCCESSINFO_PERMISSION', '%s用户权限');
-define('TEXT_SUCCESSINFO_CHANGE_PERMISSION','变更权限');
+define('TEXT_SUCCESSINFO_CHANGE_PERMISSION','更改权限');
 // 页面标题
 define('PAGE_TITLE_MENU_USER', '用户管理菜单');
 define('PAGE_TITLE_INSERT_USER', '用户的追加');
@@ -60,11 +60,11 @@ define('BUTTON_UPDATE', '更新');
 define('BUTTON_DELETE', '删除');
 define('BUTTON_RESET', '返回原值');
 define('BUTTON_CHANGE', '更改');
-define('BUTTON_GRANT', '开权限 >>');
+define('BUTTON_GRANT', '给予权限 >>');
 define('BUTTON_REVOKE', '<< 取消权限');
 define('BUTTON_BACK_PERMISSION', '返回管理者权限');
 define('BUTTON_CHANGE_PERMISSION','网站权限');
-// 項目名
+//项目名称 
 define('TABLE_HEADING_COLUMN', '列');
 define('TABLE_HEADING_DATA', '数据');
 define('TABLE_HEADING_USER', '用户');
@@ -102,11 +102,11 @@ define('TEXT_ERROR_RULE','计算式的格式不正确');
 define('TABLE_HEADING_USER_STAFF', 'Staff');
 define('TABLE_HEADING_USER_CHIEF', 'Chief');
 define('TABLE_HEADING_USER_ADMIN', 'Admin');
-define('JAVA_SCRIPT_INFO_STAFF2CHIEF', '开Chief权限。\n可以吗？');
+define('JAVA_SCRIPT_INFO_STAFF2CHIEF', '给予Chief权限。\n可以吗？');
 define('JAVA_SCRIPT_INFO_CHIEF2STAFF', '取消Chief权限。\n可以吗？');
-define('JAVA_SCRIPT_INFO_CHIEF2ADMIN', '开Admin权限。\n可以吗？');
+define('JAVA_SCRIPT_INFO_CHIEF2ADMIN', '给予Admin权限。\n可以吗？');
 define('JAVA_SCRIPT_INFO_ADMIN2CHIEF', '取消Admin权限。\n可以吗？');
-define('TEXT_ERRINFO_USER_STAFF', '<b>开权限</b>:请选择Staff');
+define('TEXT_ERRINFO_USER_STAFF', '<b>给予权限</b>:请选择Staff');
 define('TEXT_ERRINFO_USER_CHIEF', '<b>取消权限</b>:请选择Chief');
 define('TEXT_ERRINFO_USER_ADMIN', '<b>取消权限</b>:请选择Admin');
 

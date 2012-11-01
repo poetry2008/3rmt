@@ -1543,3 +1543,6 @@ a.pageResults{
 	float:left;
 	width:60%;
 }
+#new_yui3{
+	z-index:200;
+}

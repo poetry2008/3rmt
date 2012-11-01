@@ -4,8 +4,6 @@
 */
 
 ////
-// Class to handle currencies
-// TABLES: currencies
   class currencies {
     var $currencies;
 
@@ -140,7 +138,6 @@
 // $number: 金額
 // $round_type: 端数処理のタイプ  'drop'=切り捨て, 'round'=四捨五入, 'raise'=切り上げ
 // $currency_type: 通貨コード (例) 'JPY'
-// 2002/06/01 追加 tamura
     function round_off($number, $round_type = '', $currency_type = '') {
       global $currency;
       $a_comp = array('drop'=>0.00001, 'round'=>0.50001, 'raise'=>0.99999);

@@ -1,8 +1,4 @@
 <?php
-/*
-	JP、GM共通ファイル
-*/
-
   define('MODULE_METASEO_CATEGORY_TEXT_TITLE', '分类信息');
   define('MODULE_METASEO_CATEGORY_TEXT_EXPLAIN', 'EXPLAIN');
   define('MODULE_METASEO_CATEGORY_TEXT_DESCRIPTION', '分类信息页的SEO');

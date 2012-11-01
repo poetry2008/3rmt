@@ -3157,7 +3157,6 @@ if (($action == 'edit') && ($order_exists == true)) {
     ?>
     <input type="hidden" name='update_tori_torihiki_start_date' size='10' value='<?php echo str_replace('&nbsp;','',$date_start_array[1]); ?>'>
     <input type="hidden" name='update_tori_torihiki_end_date' size='10' value='<?php echo str_replace('&nbsp;','',$date_array[1]); ?>'>
-    <br><br><span class="smalltext"><?php echo EDIT_ORDERS_FETCHTIME_READ;?></span>
     </td>
     </tr>
     <!-- 住所信息 -->

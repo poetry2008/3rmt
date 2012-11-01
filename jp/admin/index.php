@@ -12,7 +12,7 @@ $left='';
 $top='';  
 $zindex='';  
 $belong = str_replace('/admin/','',$_SERVER['PHP_SELF']);
-$query = tep_db_query("select * from notes where belong='".$belong."' and (attribute='1' or (attribute='0' and (author='".$ocertify->auth_user."' or author='')))  order by id desc");
+$query = tep_db_query("select * from notes where belong='".$belong."' and (attribute='1' or (attribute='0' and (author='".$ocertify->auth_user."' or author=''))) order by id desc");
 $note_arr = array();
 $height_arr = array();
 while($row=tep_db_fetch_array($query)){

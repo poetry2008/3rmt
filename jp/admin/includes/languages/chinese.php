@@ -595,7 +595,7 @@ define('BOX_CATALOG_SHOW_USELESS_OPTION','删除未使用选项');
 define('TEXT_ORDER_ALARM_LINK', '警报');
 define('HOUR_TEXT', '时');
 define('MINUTE_TEXT', '分');
-define('NOTICE_EXTEND_TITLE', '移交记录');
+define('NOTICE_EXTEND_TITLE', '备忘录');
 define('NOTICE_ALARM_TITLE', '警报');
 define('NOTICE_DIFF_TIME_TEXT', '剩余');
 define('TEXT_DISPLAY_NUMBER_OF_MANUAL', '当前显示<b>%d</b> &sim; <b>%d</b> (共<b>%d</b> 项)');
@@ -645,7 +645,6 @@ define('DB_CONFIGURATION_TITLE_SEO','SEO URLs');
 define('DB_CONFIGURATION_TITLE_DOCUMENTS','文件管理器');
 define('DB_CONFIGURATION_TITLE_TIME_SETING','时间设置');
 define('DB_CONFIGURATION_TITLE_MAXIMUM_VALUE','最大值');
-define('DB_CONFIGURATION_TITLE_DEAL','指定交易方法');
 define('DB_CONFIGURATION_TITLE_NEW_REVIEW','新评论设置');
 define('DB_CONFIGURATION_TITLE_INSTALL_SAFETY_REVIEW','设置评论安全');
 define('DB_CONFIGURATION_TITLE_PROGRAM','联盟计划');
@@ -698,7 +697,7 @@ define('BOX_USER_LOGOUT', '退出');
 define('TEXT_SITE_COPYRIGHT' ,'Copyright © %s Haomai');
 
 define('JUMP_PAGE_TEXT', '跳页');
-define('JUMP_PAGE_BUTTON_TEXT', '移动');
+define('JUMP_PAGE_BUTTON_TEXT', '跳转到');
 
 // javascript language
 define('JS_TEXT_ONETIME_PWD_ERROR','密码有误');
@@ -710,6 +709,11 @@ define('','查看历史记录');
 // products_tags
 define('TEXT_P_TAGS_NO_TAG','无标签数据，请添加');
 define('UPDATE_MSG_TEXT', '更新');
+//customers scv
+define('TEXT_MALE','男性');
+define('TEXT_FEMALE','女性');
+define('TEXT_SUBSCRIPTION','订阅');
+define('TEXT_UNSUBSCRIPTION','未订阅');
 define('CL_TEXT_DATE_MONDAY', '一');
 define('CL_TEXT_DATE_TUESDAY', '二');
 define('CL_TEXT_DATE_WEDNESDAY', '三');

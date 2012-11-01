@@ -1,5 +1,6 @@
 <?php
   require("includes/application_top.php");
+  include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .  '/default.php');
   
   function Jcode_EUCtoSJIS(&$str_EUC) {
     return $str_EUC;
@@ -92,9 +93,9 @@
     
     //性別
     if($customers['customers_gender'] == 'm') {
-      $gender = '男性';
+      $gender = TEXT_MALE;
     } else {
-      $gender = '女性';
+      $gender = TEXT_FEMALE;
     }
     print Jcode_EUCtoSJIS($gender) . ',';
     
@@ -141,9 +142,9 @@
     
     //メルマガ購読
     if($customers['customers_newsletter'] == '0') {
-      $mag = "未購読";
+      $mag = TEXT_UNSUBSCRIPTION;
     } else {
-      $mag = "購読";
+      $mag = TEXT_SUBSCRIPTION;
     }
     print Jcode_EUCtoSJIS($mag) . ',';
     
@@ -281,7 +282,7 @@
                     </td> 
                 </tr> 
                 <tr> 
-                  <td style="padding-left:20px;" height="35"><input type="image" src="includes/languages/japanese/images/buttons/button_csv_exe.gif" alt="CSVエクスポート" width="105" height="22" border="0"></td> 
+                  <td style="padding-left:20px;" height="35"><input type="image" src="includes/languages/japanese/images/buttons/button_csv_exe.gif" alt="<?php echo TEXT_CSV_EXPOR;?>" width="105" height="22" border="0"></td> 
                 </tr> 
               </table> 
               <input type="hidden" name="act" value="export"> 

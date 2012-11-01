@@ -13,7 +13,6 @@
          else $site_arr="";
  forward401Unless(editPermission($site_arr, $site_id));
 
-        // tamura 2002/12/30 「全角」英数字を「半角」に変換
         $an_cols = array('navbar_title','heading_title','text_information');
         $error = false; 
         foreach ($an_cols as $col) {
@@ -73,7 +72,6 @@
         }
         break;
       case 'insert':
-        // tamura 2002/12/30 「全角」英数字を「半角」に変換
         $an_cols = array('navbar_title','heading_title','text_information');
         $error = false; 
         foreach ($an_cols as $col) {

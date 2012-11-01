@@ -132,7 +132,7 @@ require("includes/note_js.php");
       </select>
       <?php echo DAY_TEXT;?> </td>
         <td>&nbsp;</td>
-        <td><input type="submit" value="検索"></td>
+        <td><input type="submit" value="<?php echo IMAGE_SEARCH;?>"></td>
       </tr>
     </table></fieldset>
     </form>

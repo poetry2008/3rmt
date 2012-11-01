@@ -1,8 +1,6 @@
 <?php
 /*
    $Id$
-
-   3rmt over
 */
 
   require('includes/application_top.php');
@@ -13,7 +11,6 @@
     tep_redirect(tep_href_link(FILENAME_CREATE_ACCOUNT));
   }
 
-  // tamura 2002/12/30 「全角」英数字を「半角」に変換
   $an_cols = array('password','confirmation','email_address','postcode','telephone','fax');
   if (ACCOUNT_DOB) $an_cols[] = 'dob';
   foreach ($an_cols as $col) {
@@ -290,7 +287,6 @@ require("includes/note_js.php");
 
     $customer_id = tep_db_insert_id();
 
-// 2003-06-06 add_telephone
     $sql_data_array = array('customers_id' => $customer_id,
                             'address_book_id' => 1,
                             'entry_firstname' => $firstname,
@@ -318,7 +314,7 @@ require("includes/note_js.php");
 
     tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created) values ('" . tep_db_input($customer_id) . "', '0', now())");
 /*
-    if (SESSION_RECREATE == 'True') { // 2004/04/25 Add session management
+    if (SESSION_RECREATE == 'True') { 
       tep_session_recreate();
     }
 

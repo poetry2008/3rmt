@@ -2884,7 +2884,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
         <tr>
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
               <tr>
-                <td valign="top">
+                <td valign="top" nowrap>
                 <?php tep_site_filter(FILENAME_CATEGORIES, true);?> 
                 <table border="0" width="100%" cellspacing="0" cellpadding="2">
                     <tr class="dataTableHeadingRow">
@@ -3457,10 +3457,9 @@ if (isset($nowColor) && $nowColor == $odd) {
 		   
 <?php 
 if(!isset($_GET['site_id']) || $_GET['site_id']==0){
-echo '<div class="float_left"><a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products['products_id'] . '&action=new_product_preview&read=only') . '">' . tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW) . '</a>&nbsp;&nbsp;<a href="orders.php?search_type=products_id&products_id=' . $products['products_id'] . '">' . tep_image(DIR_WS_IMAGES . 'icon_time.gif', '', 16, 16) . '</a>&nbsp;&nbsp;</div>'; 
+echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products['products_id'] . '&action=new_product_preview&read=only') . '">' . tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW) . '</a>&nbsp;&nbsp;<a href="orders.php?search_type=products_id&products_id=' . $products['products_id'] . '">' . tep_image(DIR_WS_IMAGES . 'icon_time.gif', '', 16, 16) . '</a>&nbsp;&nbsp;'; 
 }
-
-	echo '<div class="comp_width">'.$products['products_name'].'</div>'; 
+	echo $products['products_name']; 
 ?>
 
                     </td>
