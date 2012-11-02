@@ -639,7 +639,6 @@ define('DB_CONFIGURATION_TITLE_EMAIL','发送E-Mail');
 define('DB_CONFIGURATION_TITLE_DOWNLOAD_SALES','下载销售');
 define('DB_CONFIGURATION_TITLE_GZIP','GZip压缩');
 define('DB_CONFIGURATION_TITLE_SESSION','Session');
-define('DB_CONFIGURATION_TITLE_INITIAL_SETTING_SHOP','店铺初期设置');
 define('DB_CONFIGURATION_TITLE_BUSINESS_CALENDAR','营业日历');
 define('DB_CONFIGURATION_TITLE_SEO','SEO URLs');
 define('DB_CONFIGURATION_TITLE_DOCUMENTS','文件管理器');
@@ -709,11 +708,6 @@ define('','查看历史记录');
 // products_tags
 define('TEXT_P_TAGS_NO_TAG','无标签数据，请添加');
 define('UPDATE_MSG_TEXT', '更新');
-//customers scv
-define('TEXT_MALE','男性');
-define('TEXT_FEMALE','女性');
-define('TEXT_SUBSCRIPTION','订阅');
-define('TEXT_UNSUBSCRIPTION','未订阅');
 define('CL_TEXT_DATE_MONDAY', '一');
 define('CL_TEXT_DATE_TUESDAY', '二');
 define('CL_TEXT_DATE_WEDNESDAY', '三');

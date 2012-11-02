@@ -2,12 +2,6 @@
 /*
   $Id$
 
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 osCommerce
-
-  Released under the GNU General Public License
 */
 
 define('HEADING_TITLE', 'バナー管理');
@@ -68,5 +62,5 @@ define('TEXT_USER_ADDED','登録者:');
 define('TEXT_USER_UPDATE','更新者:');
 define('TEXT_DATE_ADDED','登録日:');
 define('TEXT_DATE_UPDATE','更新日:');
-
+define('TEXT_ADVERTISEMENT_INFO','バナー機能を使うなら、「または下に新しいバナー・グループを登録」は必ず命名した先頭がadvになる');
 ?>
