@@ -46,9 +46,9 @@ var scroll_height = document.body.scrollHeight;
 var max_height = '<?php echo max($height_arr);?>';
 max_height = parseInt(max_height);
 if(max_height > scroll_height){
-  $('.demo').height(<?php echo max($height_arr);?>);
+  $('.box_warp').height(<?php echo max($height_arr);?>);
 }else{
-  $('.demo').height(scroll_height);
+  $('.box_warp').height(scroll_height);
 }
 <?php
 foreach($note_arr as $note_row){
@@ -65,8 +65,8 @@ foreach($note_arr as $note_row){
         data:
         'action=change_move&xlen='+xlen+'&ylen='+ylen+'&id=".$note_row."',
         success: function(){
-          if($('.demo').height()<(Number(ylen)+Number(top.substring(0,top.length-2))+10)){
-              $('.demo').height(Number(ylen)+Number(top.substring(0,top.length-2))+10);
+          if($('.box_warp').height()<(Number(ylen)+Number(top.substring(0,top.length-2))+10)){
+              $('.box_warp').height(Number(ylen)+Number(top.substring(0,top.length-2))+10);
             }
           }
           });
