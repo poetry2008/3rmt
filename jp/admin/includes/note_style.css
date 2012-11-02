@@ -1,6 +1,6 @@
 @charset "utf-8";
 /* CSS Document */
-.demo{position:relative; dotted #d3d3d3;}
+.box_warp{position:relative;}
 
 .note{position:absolute; margin-top:0; overflow:hidden; cursor:move; font-size:14px; line-height:22px; color:#39f;
 	/* Adding a CSS3 shadow below the note, in the browsers which support it: */

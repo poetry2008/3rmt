@@ -85,7 +85,7 @@ require("includes/note_js.php");
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-    <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
@@ -218,6 +218,7 @@ $css_rand_array = tep_db_fetch_array($css_rand_query)
 
     </table>
     </div> 
+    </div>
     </td>
 <!-- body_text_eof //-->
   </tr>

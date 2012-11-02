@@ -59,7 +59,7 @@ while($row=tep_db_fetch_array($query)){
 <?php if(!empty($height_arr)){?>
 <script language="javascript">
 $(document).ready(function() { 
-$('.demo').height(<?php echo max($height_arr);?>);
+$('.box_warp').height(<?php echo max($height_arr);?>);
 <?php
 foreach($note_arr as $note_row){
   echo "$('#note_".$note_row."').resizable({ 
@@ -75,8 +75,8 @@ foreach($note_arr as $note_row){
         data:
         'action=change_move&xlen='+xlen+'&ylen='+ylen+'&id=".$note_row."',
         success: function(){
-          if($('.demo').height()<(Number(ylen)+Number(top.substring(0,top.length-2))+10)){
-              $('.demo').height(Number(ylen)+Number(top.substring(0,top.length-2))+10);
+          if($('.box_warp').height()<(Number(ylen)+Number(top.substring(0,top.length-2))+10)){
+              $('.box_warp').height(Number(ylen)+Number(top.substring(0,top.length-2))+10);
             }
           }
           });
@@ -131,7 +131,7 @@ function changeLayer(obj) {
 </td>
 </tr>
 <tr><td>
-<div class="demo">
+<div class="box_warp">
 <?php echo $notes;?>
 </div>
 </td></tr>

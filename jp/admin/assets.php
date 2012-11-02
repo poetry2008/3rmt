@@ -111,7 +111,7 @@ require("includes/note_js.php");
       echo '<td>&nbsp;</td>';
     }
 ?>
-<td width="100%" valign="top"><?php echo $notes;?><div class="compatible">
+<td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible">
 <?php
 if(isset($_GET['pid'])&&$_GET['pid']!=''){
   echo "<div class = 'title_breadcreumb_div'>";
@@ -629,6 +629,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
   }
 }
 ?>
+</div>
 </td>
 </tr>
 </table>

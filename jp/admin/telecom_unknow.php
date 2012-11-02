@@ -111,7 +111,7 @@ require("includes/note_js.php");
   }
 ?>
 <!-- body_text -->
-    <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
   if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) {
     // edit start
@@ -389,6 +389,7 @@ require("includes/note_js.php");
 
     </table>
     </div> 
+    </div>
     </td>
 <!-- body_text_eof -->
   </tr>

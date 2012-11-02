@@ -158,7 +158,7 @@ require("includes/note_js.php");
               <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
            </table>
         </td>
-        <td width="100%" valign="top"><?php echo $notes;?>
+        <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
            <table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr>
                  <td class = "pageHeading">
@@ -845,7 +845,7 @@ $products_arr = $sort_products_arr;
 </td></tr></table></td></tr><tr><td>
 <?php echo '<a style="width:100%;display:none" id = "back_link" href="'. tep_href_link($back_url, $back_url_params, 'NONSSL').'"></a>';
 ?>
-</td></tr></table></td></tr>
+</td></tr></table></div></td></tr>
 </table>
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 <br>

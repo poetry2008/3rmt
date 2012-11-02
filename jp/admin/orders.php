@@ -2360,7 +2360,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     }
 ?>
 <!-- body_text -->
-<td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+<td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
 if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) {
   // edit start
@@ -5280,7 +5280,7 @@ if($c_parent_array['parent_id'] == 0){
               </tr>
               <?php } ?>
 
-              </table></td>
+              </table></div></td>
               <!-- body_text_eof -->
               </tr>
               </table>
