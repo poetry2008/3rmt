@@ -497,8 +497,130 @@ function mk_pwd(){
 }
 </script>
 <style type="text/css">
+.yui3-skin-sam input {
+  float:left;
+}
+a.dpicker {
+	width: 16px;
+	height: 16px;
+	border: none;
+	color: #fff;
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+        display:block;	
+        cursor: pointer;
+	background: url(./includes/calendar.png) no-repeat; 
+	float:left;
+} 
+.popup-calendar {
+top:20px;
+left:-95px;
+left:-163px;
+}
+.number{
+font-size:24px;
+font-weight:bold;
+width:20px;
+text-align:center;
+}
+form{
+margin:0;
+padding:0;
+}
+.alarm_input{
+width:75px;
+}
+.log{
+  border:#999 solid 1px;
+  background:#eee;
+  clear: both;
+}
+.log .content{
+  padding:3px 0;
+  font-size:12px;
+}
+.log .alarm{
+  display:none;
+  background:url(images/icons/alarm.gif) no-repeat left center;
+}
+.log .level{
+  font-size:10px;
+  font-weight:bold;
+  display:none;
+  width:99px;
+}
+.log .level input{
+margin:0;
+padding:0;
+}
+.log .info{
+  font-size:10px;
+  background:#fff;
+  text-align:right;
+  /*
+  position:relative;
+  right:0;
+  bottom:0;
+  */
+  /*padding-left:18px;
+  background:url(images/icons/info.gif) no-repeat left center;*/
+}
+.info02{
+width:50px;
+padding:0 5px;
+}
+.log .action{
+text-align:center;
+  font-size:10px;
+}
+.edit_action{
+  display:none;
+/*float:right;*/
+  font-size:10px;
+line-height:24px;
+padding-right:5px;
+}
+.action a{
+padding:0 3px;
+}
+textarea,input{
+  font-size:14px;
+}
+textarea{
+  width:100%;
+  padding:0;
+  margin:0;
+}
+.alarm_on{
+  border:2px solid #ff8e90;
+  background:#ffe6e6;
+}
+.clr{
+clear:both;
+width:100%;
+height:5px;
+overflow:hidden;
+}
+.popup-calendar-wrapper{
+float:left;
+}
 
-
+#new_yui3 {
+	margin-left:-168px;
+	margin-left:-28px\9;
+	bottom:-2px;
+	position: absolute;
+	z-index:200px;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+#new_yui3{
+	bottom:-9px;
+	position: absolute;
+	z-index:200px;
+}
+}
+#input_nextdate{ width:120px; float:left;}
 a.date-picker {
     display: block;
     float: none;
@@ -988,10 +1110,11 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           tep_draw_textarea_field('memo', 'soft', '30', '5', '', 'class="pw_textarea"'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_NEXTDATE . '<br><div
           class="nextdate_info">' .
+          '<div class="yui3-skin-sam yui3-g">'.
           tep_draw_input_field('nextdate','','id="input_nextdate"').
           '<a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"></a>
           <input type="hidden" name="toggle_open" value="0" id="toggle_open">
-          <div class="yui3-u" id="new_yui3"><div id="mycalendar"></div>'
+          <div class="yui3-u" id="new_yui3"><div id="mycalendar"></div></div>'
           ."</div>");
       $contents[] = array('text' => '<br>' . TEXT_INFO_PRIVILEGE . '<br>' .
           "<br>".TEXT_OPERATOR_INFO."<br><br>".
@@ -1072,11 +1195,12 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           tep_draw_textarea_field('memo', 'soft', '30', '5', $pwInfo->memo, 'class="pw_textarea"'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_NEXTDATE . '<br><div
           class="nextdate_info">' .
+          '<div class="yui3-skin-sam yui3-g">'.
           tep_draw_input_field('nextdate',$pwInfo->nextdate,
           'id="input_nextdate"').
           '<a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"></a>
           <input type="hidden" name="toggle_open" value="0" id="toggle_open">
-          <div class="yui3-u" id="new_yui3"><div id="mycalendar"></div>'
+          <div class="yui3-u" id="new_yui3"><div id="mycalendar"></div></div>'
           ."</div>");
       $contents[] = array('text' => '<br>' . TEXT_INFO_PRIVILEGE . '<br>' .
           "<br>".TEXT_OPERATOR_INFO."<br><br>".
