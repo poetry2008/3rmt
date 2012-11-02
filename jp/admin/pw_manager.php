@@ -358,11 +358,40 @@ if(isset($_GET['action']) &&
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/javascript/jquery.form.js"></script>
+<?php /*
 <script language="javascript" src="js2php.php?path=includes|javascript&name=datePicker&type=js"></script>
+*/?>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
 <script language="javascript" >
-<!--//checkbox like radio  -->
+function open_new_calendar()
+{
+  var is_open = $('#toggle_open').val(); 
+  if (is_open == 0) {
+    browser_str = navigator.userAgent.toLowerCase(); 
+    if (browser_str.indexOf("msie 9.0") > 0) {
+      $('#new_yui3').css('margin-left', '-170px'); 
+    }
+    $('#toggle_open').val('1'); 
+    YUI().use('calendar', 'datatype-date',  function(Y) {
+        var calendar = new Y.Calendar({
+            contentBox: "#mycalendar",
+            width:'170px',
+
+        }).render();
+      var dtdate = Y.DataType.Date;
+      calendar.on("selectionChange", function (ev) {
+        var newDate = ev.newSelection[0];
+        $("#input_nextdate").val(dtdate.format(newDate)); 
+        $('#toggle_open').val('0');
+        $('#toggle_open').next().html('<div id="mycalendar"></div>');
+      });
+    });
+  }
+}
+
+<!--//checkbox like radio  -->/
 $(function() {
   $("#self").click(function() {
       if($(this).attr("checked")){ 
@@ -384,10 +413,6 @@ $(function() {
       }
   }); 
 })
-$(function() {
-  $.datePicker.setDateFormat('ymd','-');
-  $('#input_nextdate').datePicker();
-});
 function copyCode(idpw,name){
   var testCode;
   $.post('<?php echo
@@ -472,6 +497,8 @@ function mk_pwd(){
 }
 </script>
 <style type="text/css">
+
+
 a.date-picker {
     display: block;
     float: none;
@@ -961,7 +988,11 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           tep_draw_textarea_field('memo', 'soft', '30', '5', '', 'class="pw_textarea"'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_NEXTDATE . '<br><div
           class="nextdate_info">' .
-          tep_draw_input_field('nextdate','','id="input_nextdate"')."</div>");
+          tep_draw_input_field('nextdate','','id="input_nextdate"').
+          '<a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"></a>
+          <input type="hidden" name="toggle_open" value="0" id="toggle_open">
+          <div class="yui3-u" id="new_yui3"><div id="mycalendar"></div>'
+          ."</div>");
       $contents[] = array('text' => '<br>' . TEXT_INFO_PRIVILEGE . '<br>' .
           "<br>".TEXT_OPERATOR_INFO."<br><br>".
           tep_draw_radio_field('privilege','15',false,'','id="self" class="privilege"').TEXT_SELF.
@@ -1042,7 +1073,11 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents[] = array('text' => '<br>' . TEXT_INFO_NEXTDATE . '<br><div
           class="nextdate_info">' .
           tep_draw_input_field('nextdate',$pwInfo->nextdate,
-          'id="input_nextdate"')."</div>");
+          'id="input_nextdate"').
+          '<a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"></a>
+          <input type="hidden" name="toggle_open" value="0" id="toggle_open">
+          <div class="yui3-u" id="new_yui3"><div id="mycalendar"></div>'
+          ."</div>");
       $contents[] = array('text' => '<br>' . TEXT_INFO_PRIVILEGE . '<br>' .
           "<br>".TEXT_OPERATOR_INFO."<br><br>".
           tep_draw_radio_field('privilege','15',$pwInfo->privilege==15?true:false,'','id="self" class="privilege"').TEXT_SELF.
