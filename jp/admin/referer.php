@@ -70,7 +70,7 @@ require("includes/note_js.php");
     <input type="hidden" name="" value="">
     <input type="hidden" name="" vlaue="">
     <fieldset>
-    <table  border="0" align="center" cellpadding="0" cellspacing="2">
+    <table  border="0" align="center" cellpadding="0" cellspacing="0">
     <tr>
       <td class="smallText">
       <input type="hidden" name="site_id" value="<?php echo $_GET['site_id'];?>">
@@ -103,7 +103,7 @@ require("includes/note_js.php");
       ?>    
       </select>
       <?php echo DAY_TEXT;?> </td>
-      <td width="80" align="center">～</td>
+      <td width="40" align="center">～</td>
       <td class="smallText">
       <?php echo KEYWORDS_SEARCH_END_TEXT;?> 
       <select name="ey">

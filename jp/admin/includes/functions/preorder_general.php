@@ -1086,7 +1086,7 @@ function tep_get_pre_orders_products_string($orders, $single = false, $popup = f
     $str .= '</tr>'; 
   }
   
-  $str .= '<tr><td width="120">&nbsp;</td><td class="main" style="padding-left:20%">'; 
+  $str .= '<tr><td class="main" colspan="2" align="center">'; 
   $str .= '<div id="order_del">';
   $str .= '<div id="order_del">';
   if ($orders['is_active'] == 1) {

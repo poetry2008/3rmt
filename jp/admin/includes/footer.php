@@ -106,7 +106,7 @@ if($_SESSION['user_permission'] == 15 ){
     <?
 }
 echo '<div class="footer_copyright">';
-echo sprintf(TEXT_SITE_COPYRIGHT,date('Y'));
+echo sprintf(TEXT_SITE_COPYRIGHT.COMPANY_NAME,date('Y'));
 echo '</div>';
 $page_name = $_SERVER['PHP_SELF'];
 if($_SESSION['last_page']!= $page_name){

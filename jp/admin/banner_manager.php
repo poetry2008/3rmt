@@ -383,26 +383,26 @@ $banner_query = tep_db_query("
           <tr>
 	  <input type="hidden" name="user_update" value="<?php echo $user_info['name']?>">
 	  <input type="hidden" name="user_added" value="<?php echo $user_info['name']?>">
-            <td class="main"><?php echo ENTRY_SITE; ?></td>
+            <td class="main" nowrap><?php echo ENTRY_SITE; ?></td>
             <td class="main"><?php echo (isset($_GET['bID']) && $_GET['bID'])?$banner['site_name']:tep_site_pull_down_menu(); ?></td>
           </tr>
           <tr>
-            <td class="main"><?php echo TEXT_BANNERS_TITLE; ?></td>
+            <td class="main" nowrap><?php echo TEXT_BANNERS_TITLE; ?></td>
             <td class="main"><?php echo tep_draw_input_field('banners_title', isset($bInfo->banners_title)?$bInfo->banners_title:'', '', true); ?></td>
           </tr>
           <tr>
-            <td class="main"><?php echo TEXT_BANNERS_URL; ?></td>
+            <td class="main" nowrap><?php echo TEXT_BANNERS_URL; ?></td>
             <td class="main"><?php echo tep_draw_input_field('banners_url', isset($bInfo->banners_url)?$bInfo->banners_url:''); ?></td>
           </tr>
           <tr>
-            <td class="main" valign="top"><?php echo TEXT_BANNERS_GROUP; ?></td>
+            <td class="main" valign="top" nowrap><?php echo TEXT_BANNERS_GROUP; ?></td>
             <td class="main"><?php echo tep_draw_pull_down_menu('banners_group', $groups_array, isset($bInfo->banners_group)?$bInfo->banners_group:'') . TEXT_BANNERS_NEW_GROUP . '<br>' . tep_draw_input_field('new_banners_group', '', '', ((sizeof($groups_array) > 0) ? false : true)); ?></td>
           </tr>
           <tr>
             <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
           <tr>
-            <td class="main" valign="top"><?php echo TEXT_BANNERS_IMAGE; ?></td>
+            <td class="main" valign="top" nowrap><?php echo TEXT_BANNERS_IMAGE; ?></td>
             <td class="main"><?php echo tep_draw_file_field('banners_image') . ' ' . TEXT_BANNERS_IMAGE_LOCAL . '<br>' . (tep_get_upload_root().'x/') . tep_draw_input_field('banners_image_local', isset($bInfo->banners_image)?$bInfo->banners_image:''); ?><br>
 <?php if(isset($bInfo->banners_image) && $bInfo->banners_image) echo tep_info_image($bInfo->banners_image, $bInfo->banners_title, '', '', $bInfo->site_id) ; ?>
 <br>
@@ -412,28 +412,28 @@ $banner_query = tep_db_query("
             <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
           <tr>
-            <td class="main"><?php echo TEXT_BANNERS_IMAGE_TARGET; ?></td>
+            <td class="main" nowrap><?php echo TEXT_BANNERS_IMAGE_TARGET; ?></td>
             <td class="main"><?php echo (tep_get_upload_root().'x/') . tep_draw_input_field('banners_image_target'); ?></td>
           </tr>
           <tr>
             <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
           <tr>
-            <td valign="top" class="main"><?php echo TEXT_BANNERS_HTML_TEXT; ?></td>
+            <td valign="top" class="main" nowrap><?php echo TEXT_BANNERS_HTML_TEXT; ?></td>
             <td class="main"><?php echo tep_draw_textarea_field('html_text', 'soft', '60', '5', isset($bInfo->banners_html_text)?$bInfo->banners_html_text:''); ?></td>
           </tr>
           <tr>
             <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
           <tr>
-            <td class="main"><?php echo TEXT_BANNERS_SCHEDULED_AT; ?><br><small>(dd/mm/yyyy)</small></td>
+            <td class="main" nowrap><?php echo TEXT_BANNERS_SCHEDULED_AT; ?><br><small>(dd/mm/yyyy)</small></td>
             <td valign="top" class="main"><script language="javascript">dateScheduled.writeControl(); dateScheduled.dateFormat="dd/MM/yyyy";</script></td>
           </tr>
           <tr>
             <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
           <tr>
-            <td valign="top" class="main"><?php echo TEXT_BANNERS_EXPIRES_ON; ?><br><small>(dd/mm/yyyy)</small></td>
+            <td valign="top" class="main" nowrap><?php echo TEXT_BANNERS_EXPIRES_ON; ?><br><small>(dd/mm/yyyy)</small></td>
             <td class="main"><script language="javascript">dateExpires.writeControl(); dateExpires.dateFormat="dd/MM/yyyy";</script><?php echo TEXT_BANNERS_OR_AT . '<br>' . tep_draw_input_field('impressions', isset($bInfo->expires_impressions)?$bInfo->expires_impressions:'', 'maxlength="7" size="7"') . ' ' . TEXT_BANNERS_IMPRESSIONS; ?></td>
           </tr>
         </table></td>

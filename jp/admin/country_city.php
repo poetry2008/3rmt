@@ -139,7 +139,6 @@ tep_db_free_result($f_query);
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <style type="text/css">
 div#show {
-  left:18%;
   width:70%;
   position:absolute;
 }

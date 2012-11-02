@@ -441,6 +441,7 @@ body {
 	font-size: 12px;                                /* フォントサイズ */
 	color: #000000;                                 /* フォントカラー */
 	background-color: #FFD700;                      /* 背景色 */
+	word-break:break-all;
 	padding-left:8px;                     
 }
 .infoBoxContent a { text-decoration:none;}
@@ -1169,7 +1170,6 @@ a.s_column_bar {
 /*campaign*/
 #show_campaign_info{
 	position:absolute;
-	left:18%;
 	width:70%;
 	background-color:#FFFF00;
 	min-width:550px;
@@ -1194,16 +1194,18 @@ a.s_column_bar {
 /*option group*/
 #show_group_info{
     background-color: #FFFF00;
-    left: 18%;
     position: absolute;
     width: 70%;
 	min-width:550px;
+	margin-left:2px;
+
 }
 #show_item_info{
     background-color: #FFFF00;
-    left: 18%;
     position: absolute;
     width: 70%;
+	margin-left:2px;
+	min-width:550px;
 }
 .option_item_input{
 	width:25%;

@@ -217,7 +217,7 @@ if(isset($action) && $action != ''){
 <title><?php echo HEADING_TITLE; ?></title>
 <style type="text/css">
 div#show {
-  left:18%;
+  
   width:70%;
   position:absolute;
 }

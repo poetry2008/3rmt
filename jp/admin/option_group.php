@@ -204,13 +204,7 @@ require("includes/note_js.php");
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-    <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
-      <tr>
-        <td>
-          <table border="0" width="100%" cellspacing="0" cellpadding="0">
-            <tr>
-              <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
-              <td align="right">
+    <td width="100%" valign="top"><?php echo $notes;?><div class="compatible">
               <div id="show_group_info" style="display:none;"></div> 
               <div align="right">
               <?php echo tep_draw_form('form', FILENAME_OPTION_GROUP, '', 'get');?> 
@@ -219,7 +213,12 @@ require("includes/note_js.php");
               <?php echo tep_html_element_submit(IMAGE_SEARCH);?>
               </form> 
               </div>      
-              </td>
+    <table border="0" width="100%" cellspacing="0" cellpadding="2">
+      <tr>
+        <td>
+          <table border="0" width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+              <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
             </tr>
           </table>
         </td>

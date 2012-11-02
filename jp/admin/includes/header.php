@@ -387,9 +387,6 @@ if($current_page_tp == "configuration.php") {
 }
 if (isset($ocertify->npermission) || $ocertify->npermission) {
   echo '&nbsp<a href="' . tep_href_link(FILENAME_DEFAULT, '', 'NONSSL') . '" class="headerLink">' . HEADER_TITLE_TOP . '</a>&nbsp;&nbsp;&nbsp;&nbsp';
-
-  echo '<a href="' . tep_href_link('help.php', 'info_romaji='.urlencode(str_replace('/admin/','',$current_page_tp)), 'NONSSL') . '" class="headerLink"  target="_blank"><img src="images/icon_help_info.gif" alt="img">&nbsp;'.TEXT_HEADER_HELP.'</a>&nbsp;&nbsp;&nbsp;';
- 
 }
 ?></td>
 <td class="headerBarContent" align="right">
@@ -399,7 +396,8 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
     <table>
     <tr>';
   $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
-    echo '    <td><a class="headerLink" href="javascript:void(0);" onclick="toggle_header_menu(\'headerorder\')">'.HEADER_TEXT_ORDER_INFO.'</a>&nbsp;|<br>
+    echo '
+    <td><a class="headerLink" href="javascript:void(0);" onclick="toggle_header_menu(\'headerorder\')">'.HEADER_TEXT_ORDER_INFO.'</a>&nbsp;|<br>
     <table class="menu01" id="headerorder" cellpadding="0" cellspacing="0">
     <tr>
       <td class="menu01"><a class="t_link01"

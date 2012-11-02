@@ -3907,7 +3907,7 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
 
   $str .= '</table>';
   $str .= '<table class="popup_order_info" border="0" cellpadding="2" cellspacing="0" width="100%">';
-  $str .= '<tr><td width="120">&nbsp;</td><td class="main" style="padding-left:20%;">';
+  $str .= '<tr><td class="main" colspan="2" align="center">';
   $str .= '<div id="order_del">'; 
   $str .= '<a href="'.tep_href_link(FILENAME_ALARM, urldecode($param_str.'&oID='.$orders['orders_id'])).'">'.tep_html_element_button(TEXT_ORDER_ALARM_LINK).'</a>'; 
   $str .= '<a href="'.tep_href_link(FILENAME_ORDERS, urldecode($param_str).'&oID='.$orders['orders_id'].'&action=edit').'">'.tep_html_element_button(IMAGE_DETAILS).'</a>'; 
