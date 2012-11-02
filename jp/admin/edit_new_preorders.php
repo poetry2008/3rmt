@@ -1755,29 +1755,29 @@ if (($action == 'edit') && ($order_exists == true)) {
     <td valign="top" width="40%">
       <table border="0" cellspacing="0" cellpadding="2">
         <tr>
-          <td class="main" width="80" nowrap="nowrap"><b><?php echo ENTRY_STATUS; ?></b></td>
+          <td class="main" width="82" style="min-width:45px;"><b><?php echo ENTRY_STATUS; ?></b></td>
           <td class="main">
           <?php
           $is_select_query = tep_db_query(" select orders_status_id, orders_status_name from " . TABLE_PREORDERS_STATUS . " where language_id = '" . (int)$languages_id . "' limit 1");
           $is_select_res = tep_db_fetch_array($is_select_query); 
           $sel_status_id = DEFAULT_PREORDERS_STATUS_ID; 
-          echo tep_draw_pull_down_menu('status', $orders_statuses, $sel_status_id, 'id="status" onchange="check_prestatus();"'); 
+          echo tep_draw_pull_down_menu('status', $orders_statuses, $sel_status_id, 'id="status" onchange="check_prestatus();" style="width:80px;"'); 
           ?>
           </td>
         </tr>
         <tr>
-          <td class="main" nowrap="nowrap"><b><?php echo EDIT_ORDERS_SEND_MAIL_TEXT; ?></b></td>
+          <td class="main"><b><?php echo EDIT_ORDERS_SEND_MAIL_TEXT; ?></b></td>
           <td class="main"><table bgcolor="red" cellspacing="5"><tr><td><?php echo tep_draw_checkbox_field('notify', '', isset($_GET['dtype'])?false:true); ?></td></tr></table></td>
         </tr>
         <?php if($CommentsWithStatus) { ?>
         <tr>
-          <td class="main" nowrap="nowrap"><b><?php echo EDIT_ORDERS_RECORD_TEXT; ?></b></td>
+          <td class="main"><b><?php echo EDIT_ORDERS_RECORD_TEXT; ?></b></td>
           <td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', false); ?>&nbsp;&nbsp;<b style="color:#FF0000;"><?php echo EDIT_ORDERS_RECORD_READ; ?></b></td>
         </tr>
         <?php } ?>
       </table>
     </td>
-    <td class="main" width="10">&nbsp;</td>
+    <td class="main" width="5%">&nbsp;</td>
     <td class="main">
     <?php
     $ma_se = "select * from ".TABLE_PREORDERS_MAIL." where orders_status_id = '".$sel_status_id."'"; 
@@ -1785,7 +1785,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     $mail_sql = tep_db_fetch_array($mail_sele);
     ?>
     <?php   
-    echo '<b>'.TEXT_EMAIL_TITLE.'</b>'.tep_draw_input_field('etitle', $mail_sql['orders_status_title'],'style="width:413px;"'); 
+    echo '<b>'.TEXT_EMAIL_TITLE.'</b>'.tep_draw_input_field('etitle', $mail_sql['orders_status_title'],'style="width:230px;"'); 
     ?> 
     <br>
     <br>
@@ -1796,7 +1796,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       $order_a_str .= $ovalue['character']."\n"; 
     }
     ?>
-    <textarea style="font-family:monospace;font-size:12px; width:500px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}', $order_a_str, $mail_sql['orders_status_mail']);?></textarea>
+    <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}', $order_a_str, $mail_sql['orders_status_mail']);?></textarea>
     </td>
   </tr>
 </table>

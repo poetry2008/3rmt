@@ -87,6 +87,7 @@ color: #000000;
 }
 .show_menu p{
 	min-width:750px;
+	margin-left:8px;
 }
   </style>
   <script type="text/javascript" src="includes/javascript/jquery.js"></script>
@@ -419,7 +420,7 @@ $rows = $count[0]>count($products)?$count[0]:count($products);
   <tr class="<?php echo $k%2==1?'dataTableRow':'dataTableSecondRow';?>" onmouseover="this.className='dataTableRowOver'" onmouseout="this.className='<?php echo $k%2==1?'dataTableRow':'dataTableSecondRow';?>'">
 <?php
   for($j=0;$j<$cnt;$j++){
-    echo "<td class=\"dataTableContent\" valign='top'>";
+    echo "<td class=\"dataTableContent\">";
     if (isset($lines_arr[$j][$k])) {
       echo "<span style='float:left' class='oroshi_data' id='data_".$k."_".$j."'>".$lines_arr[$j][$k]."</span>";
     }

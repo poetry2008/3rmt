@@ -2438,8 +2438,8 @@ if (tep_db_num_rows($orders_history_query)) {
     <td valign="top" width="40%">
       <table border="0" cellspacing="0" cellpadding="2">
         <tr>
-          <td class="main" nowrap="nowrap"><b><?php echo ENTRY_STATUS; ?></b></td>
-          <td class="main" nowrap="nowrap"><?php 
+          <td class="main" width="82" style="min-width:45px;"><b><?php echo ENTRY_STATUS; ?></b></td>
+          <td class="main"><?php 
           $is_nyuuka_raw = tep_db_query("select * from ".TABLE_PREORDERS_STATUS." where is_nyuuka = '1' order by orders_status_id asc limit 1"); 
           $is_nyuuka_res = tep_db_fetch_array($is_nyuuka_raw);
           if ($is_nyuuka_res) {
@@ -2447,27 +2447,27 @@ if (tep_db_num_rows($orders_history_query)) {
           } else {
             $sel_nyuuka_id = 1; 
           }
-          echo tep_draw_pull_down_menu('status', $orders_statuses, $sel_nyuuka_id, 'id="status" onchange="check_prestatus();" style="width:100%;"'); ?>
+          echo tep_draw_pull_down_menu('status', $orders_statuses, $sel_nyuuka_id, 'id="status" onchange="check_prestatus();" style="width:80px;"'); ?>
           <input type="hidden" name="isruhe" id="isruhe" value=""> 
           </td>
         </tr>
         <tr>
-          <td class="main" width="80" nowrap="nowrap"><b><?php echo EDIT_ORDERS_SEND_MAIL_TEXT;?></b></td>
+          <td class="main"><b><?php echo EDIT_ORDERS_SEND_MAIL_TEXT;?></b></td>
           <td class="main"><table bgcolor="red" cellspacing="5"><tr><td><?php echo tep_draw_checkbox_field('notify', '', true); ?></td></tr></table></td>
         </tr>
         <?php if($CommentsWithStatus) { ?>
         <tr>
-          <td class="main" nowrap="nowrap"><b><?php echo EDIT_ORDERS_RECORD_TEXT;?></b></td>
+          <td class="main"><b><?php echo EDIT_ORDERS_RECORD_TEXT;?></b></td>
           <td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', false); ?>&nbsp;&nbsp;<b style="color:#FF0000;"><?php echo EDIT_ORDERS_RECORD_READ;?></b></td>
         </tr>
         <tr>
-          <td class="main" valign="top" nowrap="nowrap"><b><?php echo TABLE_HEADING_COMMENTS;?>:</b></td>
+          <td class="main" valign="top"><b><?php echo TABLE_HEADING_COMMENTS;?>:</b></td>
           <td class="main"><?php echo tep_draw_textarea_field('comments_text', 'hard', '74', '5', '', 'style="font-family:monospace; font-size:12px; width:100%;"');?></td> 
         </tr>
         <?php } ?>
       </table>
     </td>
-    <td class="main" width="10">&nbsp;</td>
+    <td class="main" width="15%">&nbsp;</td>
     <td class="main">
     <?php
       $ma_se = "select * from ".TABLE_PREORDERS_MAIL." where orders_status_id = '".$sel_nyuuka_id."'"; 
