@@ -568,7 +568,7 @@ require("includes/note_js.php");
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-    <td width="100%" valign="top"><?php echo $notes;?><div class="compatible">
+    <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible">
               <div id="show_item_info" style="display:none;"></div> 
               <div align="right">
               <?php echo tep_draw_form('form', FILENAME_OPTION_GROUP, '', 'get');?>
@@ -735,7 +735,7 @@ require("includes/note_js.php");
         </table></td>
       </tr>
     </table>
-    </div></td>
+    </div></div></td>
 <!-- body_text_eof //-->
   </tr>
 </table>

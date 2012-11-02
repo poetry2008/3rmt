@@ -204,7 +204,13 @@ require("includes/note_js.php");
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-    <td width="100%" valign="top"><?php echo $notes;?><div class="compatible">
+    <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+      <tr>
+        <td>
+          <table border="0" width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+              <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
+              <td align="right">
               <div id="show_group_info" style="display:none;"></div> 
               <div align="right">
               <?php echo tep_draw_form('form', FILENAME_OPTION_GROUP, '', 'get');?> 
@@ -321,7 +327,7 @@ echo '<a href="javascript:void(0);" onclick="show_group_info(this, \''.$group['i
           </tr>
         </table></td>
       </tr>
-    </table></div></td>
+    </table></div></div></td>
 <!-- body_text_eof //-->
   </tr>
 </table>

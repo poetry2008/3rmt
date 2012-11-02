@@ -107,7 +107,7 @@ $belong = str_replace($pcode_array[1][0],urlencode($pcode_array[1][0]),$belong);
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-<td width="100%" valign="top"><?php echo $notes;?>
+<td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
     <div class="compatible">
     <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
@@ -231,6 +231,7 @@ function ajaxUpdate(id,order){
       </td>
     </tr>
     </table>
+    </div>
     </div>
     </td>
 <!-- body_text_eof //-->

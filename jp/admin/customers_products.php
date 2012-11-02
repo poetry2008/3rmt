@@ -67,7 +67,6 @@
           }
         }
 ?>
-<!--<meta http-equiv=”X-UA-Compatible” content=”IE=7″>-->
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <link media="print" href="includes/print.css" rel="stylesheet" type="text/css" />
@@ -531,7 +530,7 @@ $(document).ready(function(){
     <td valign="top">
       <table border="0" width="50%" align="right" class="print_innput" style=" margin-top:10px;">
       <tr><td height="4"></td></tr>
-        <tr><td height="30" valign="bottom" align="right"><input name="textfield" type="text" id="textfield" value="<?php echo str_replace(array(' 月曜日', ' 火曜日', ' 水曜日', ' 木曜日', ' 金曜日', ' 土曜日', ' 日曜日'),'',tep_date_long(date('Y-m-d H:i:s')));?>" style=" height:20px; width:150px; text-align:right; font-size:16px;  margin:5px 0 20px 20px;"></td></tr>
+        <tr><td height="30" valign="bottom" align="right"><input name="textfield" type="text" id="textfield" value="<?php echo str_replace(array(TEXT_DATE_MONDAY, TEXT_DATE_TUESDAY, TEXT_DATE_WEDNESDAY, TEXT_DATE_THURSDAY, TEXT_DATE_FRIDAY, TEXT_DATE_STATURDAY, TEXT_DATE_SUNDAY),'',tep_date_long(date('Y-m-d H:i:s')));?>" style=" height:20px; width:150px; text-align:right; font-size:16px;  margin:5px 0 20px 20px;"></td></tr>
         <tr><td align="right"><textarea id="data10" type="text" rows="2" style="font-size:14px; overflow-y:visible; width:280px; resize:none;text-align:right;" ></textarea></td></tr>
         <tr><td align="right" class="input_print02">
   <font size="2">
@@ -666,7 +665,7 @@ require("includes/note_js.php");
 <!-- left_navigation_eof -->
     </table>
     </td>
-    <td valign="top"  width="100%"><?php echo $notes;?>   
+    <td valign="top"  width="100%"><div class="box_warp"><?php echo $notes;?>   
       <div class="compatible">
       <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
@@ -784,6 +783,7 @@ require("includes/note_js.php");
             </td>
           </tr>
         </table>
+        </div>
         </div>
     </td>
   </tr>

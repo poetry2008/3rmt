@@ -290,7 +290,7 @@ require("includes/note_js.php");
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-    <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
@@ -396,7 +396,7 @@ $banner_query = tep_db_query("
           </tr>
           <tr>
             <td class="main" valign="top" nowrap><?php echo TEXT_BANNERS_GROUP; ?></td>
-            <td class="main"><?php echo tep_draw_pull_down_menu('banners_group', $groups_array, isset($bInfo->banners_group)?$bInfo->banners_group:'') . TEXT_BANNERS_NEW_GROUP . '<br>' . tep_draw_input_field('new_banners_group', '', '', ((sizeof($groups_array) > 0) ? false : true)); ?></td>
+            <td class="main"><?php echo tep_draw_pull_down_menu('banners_group', $groups_array, isset($bInfo->banners_group)?$bInfo->banners_group:'') . TEXT_BANNERS_NEW_GROUP . '<br>' . tep_draw_input_field('new_banners_group', '', '', ((sizeof($groups_array) > 0) ? false : true)); ?><br><?php echo TEXT_ADVERTISEMENT_INFO;?></td>
           </tr>
           <tr>
             <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
@@ -617,6 +617,7 @@ $contents[] = array('text' => '<br>'. TEXT_DATE_UPDATE. ' ' .tep_datetime_short(
 ?>
     </table>
     </div> 
+    </div>
     </td>
 <!-- body_text_eof //-->
   </tr>

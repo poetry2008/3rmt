@@ -330,6 +330,7 @@ define('TEXT_SET_DEFAULT', '默认设置');
 define('TEXT_FIELD_REQUIRED', '&nbsp;<span class="fieldRequired">* 必须</span>');
 
 define('ERROR_NO_DEFAULT_CURRENCY_DEFINED', '错误: 没有设置基本通货。 管理菜单->定位->通货设置: 请确认设置。');
+define('ERROR_INPUT_RIGHT_DATE', '请输入正确日期。');
 
 define('TEXT_CACHE_CATEGORIES', '分类区');
 define('TEXT_CACHE_MANUFACTURERS', '制造商区');
@@ -595,7 +596,7 @@ define('BOX_CATALOG_SHOW_USELESS_OPTION','删除未使用选项');
 define('TEXT_ORDER_ALARM_LINK', '警报');
 define('HOUR_TEXT', '时');
 define('MINUTE_TEXT', '分');
-define('NOTICE_EXTEND_TITLE', '移交记录');
+define('NOTICE_EXTEND_TITLE', '备忘录');
 define('NOTICE_ALARM_TITLE', '警报');
 define('NOTICE_DIFF_TIME_TEXT', '剩余');
 define('TEXT_DISPLAY_NUMBER_OF_MANUAL', '当前显示<b>%d</b> &sim; <b>%d</b> (共<b>%d</b> 项)');
@@ -639,20 +640,18 @@ define('DB_CONFIGURATION_TITLE_EMAIL','发送E-Mail');
 define('DB_CONFIGURATION_TITLE_DOWNLOAD_SALES','下载销售');
 define('DB_CONFIGURATION_TITLE_GZIP','GZip压缩');
 define('DB_CONFIGURATION_TITLE_SESSION','Session');
-define('DB_CONFIGURATION_TITLE_INITIAL_SETTING_SHOP','店铺初期设置');
 define('DB_CONFIGURATION_TITLE_BUSINESS_CALENDAR','营业日历');
 define('DB_CONFIGURATION_TITLE_SEO','SEO URLs');
 define('DB_CONFIGURATION_TITLE_DOCUMENTS','文件管理器');
 define('DB_CONFIGURATION_TITLE_TIME_SETING','时间设置');
 define('DB_CONFIGURATION_TITLE_MAXIMUM_VALUE','最大值');
-define('DB_CONFIGURATION_TITLE_DEAL','指定交易方法');
 define('DB_CONFIGURATION_TITLE_NEW_REVIEW','新评论设置');
 define('DB_CONFIGURATION_TITLE_INSTALL_SAFETY_REVIEW','设置评论安全');
 define('DB_CONFIGURATION_TITLE_PROGRAM','联盟计划');
 define('DB_CONFIGURATION_TITLE_WARNING_SETTINGS','警告字符串设置');
 define('DB_CONFIGURATION_TITLE_SIMPLE_INFORMATION','简易订单信息 ');
 define('DB_CONFIGURATION_TITLE_GRAPH_SET',' 混合图表设置');
-define('DB_CONFIGURATION_TITLE_INITIAL_SETTING_SHOPS','商店初期设置');
+define('DB_CONFIGURATION_TITLE_INITIAL_SETTING_SHOP','商店初期设置');
 
 
 define('DB_CONFIGURATION_DESCRIPTION_SHOP','商品的一般信息');
@@ -695,10 +694,10 @@ define('BOX_USER_ADMIN', '用户管理');
 define('BOX_USER_LOG', '访问日志');
 define('BOX_USER_LOGOUT', '退出');
 
-define('TEXT_SITE_COPYRIGHT' ,'Copyright © %s Haomai');
+define('TEXT_SITE_COPYRIGHT' ,'Copyright © %s '.COMPANY_NAME);
 
-define('JUMP_PAGE_TEXT', '跳页');
-define('JUMP_PAGE_BUTTON_TEXT', '移动');
+define('JUMP_PAGE_TEXT', ' ');
+define('JUMP_PAGE_BUTTON_TEXT', '跳转到');
 
 // javascript language
 define('JS_TEXT_ONETIME_PWD_ERROR','密码有误');

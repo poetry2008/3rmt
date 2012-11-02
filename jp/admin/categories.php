@@ -1433,8 +1433,13 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
 <div id="categories_tree">
                 <?php
                   require(DIR_WS_CLASSES . 'category_tree.php');
+                  if(isset($_GET['from'])&&$_GET['from']=='admin'){
+                  $osC_CategoryTree = new osC_CategoryTree(true,true); 
+                  echo $osC_CategoryTree->buildTree(FILENAME_CATEGORIES_ADMIN);
+                  }else{
                   $osC_CategoryTree = new osC_CategoryTree; 
                   echo $osC_CategoryTree->buildTree();
+                  }
                 ?>
                 </div>
 <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
@@ -1445,7 +1450,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
         <!-- left_navigation_eof -->
       </table></td>
     <!-- body_text -->
-    <td width="100%" valign="top" id='categories_right_td'>
+    <td width="100%" valign="top" id='categories_right_td'><div class="box_warp">
     <?php echo $notes;?>
     <div class="compatible">
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
@@ -1920,7 +1925,7 @@ $products_shipping_time .= '</select>';
 <?php
     }
 ?>
-              <!-- options// -->
+              <!-- options -->
               <?php
 
       //オプションデータ取得
@@ -2018,7 +2023,7 @@ $products_shipping_time .= '</select>';
 </td>
               </tr>
               <?php }?> 
-              <!-- //options -->
+              <!-- options -->
               <tr>
                   </table>
                   </fieldset></td>
@@ -2067,7 +2072,7 @@ $products_shipping_time .= '</select>';
           <?php
            if(COLOR_SEARCH_BOX_TF == "true" ){
            ?>
-          <!-- カラー別画像// -->
+          <?php // カラー別画像 ?>
           <hr size="1">
           <legend style="color:#009900 "><?php echo TEXT_PRODUCT_COLOR_IMAGE_TITLE;?></legend>
           <table border="0" cellpadding="1" cellspacing="5">
@@ -2095,7 +2100,7 @@ $products_shipping_time .= '</select>';
               
           </tr>
           </table>
-          <!-- //カラー別画像 -->
+         <?php // カラー別画像 ?>
          <?php
          }
          ?>
@@ -4106,7 +4111,7 @@ $contents[] = array('text' => '<br>' . TEXT_PRODUCTS_AVERAGE_RATING . ' ' . numb
         <?php
   }
 ?>
-      </table></div></td>
+      </table></div></div></td>
     <!-- body_text_eof -->
   </tr>
 </table>

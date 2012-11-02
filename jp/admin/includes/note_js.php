@@ -42,58 +42,16 @@ while($row=tep_db_fetch_array($query)){
 <?php if(!empty($height_arr)){?>
 <script language="javascript">
 $(document).ready(function() { 
-var success = $(".messageStackSuccess").html();
-var head_success = 17;
-var scroll_width = document.body.scrollWidth;  
-var note_width;
-var note_left;
-var head_notice = 0;
-var left_status_flag = $(".columnLeft").css("display");
-var left_status = '';
-if(left_status_flag){
-  left_status = '<?php echo $_COOKIE['tarrow'];?>';
+var scroll_height = document.body.scrollHeight;
+var max_height = '<?php echo max($height_arr);?>';
+max_height = parseInt(max_height);
+if(max_height > scroll_height){
+  $('.box_warp').height(<?php echo max($height_arr);?>);
+}else{
+  $('.box_warp').height(scroll_height);
 }
-if(document.getElementById("show_head_notice")){
-
-  head_notice = $("#show_head_notice").height();
-}
-$('.demo').height($('#main_table').height());
 <?php
 foreach($note_arr as $note_row){
-?>
-note_width = $("#note_<?php echo $note_row;?>").width();
-note_width = parseInt(note_width);
-note_top = $("#note_<?php echo $note_row;?>").css("top");
-note_top = parseInt(note_top);
-note_left = $("#note_<?php echo $note_row;?>").css("left");
-note_left = note_left.replace('px','');
-note_left = parseInt(note_left);
-if((note_left+note_width) > scroll_width){
-  $("#note_<?php echo $note_row;?>").css("left",scroll_width-note_width);
-}
-if(note_top < head_notice+93){
-
-  $("#note_<?php echo $note_row;?>").css("top",note_top+head_notice); 
-}
-if(note_left < 180){
-  if(left_status == 'open'){
-    $("#note_<?php echo $note_row;?>").css("left",180);
-  }else if(left_status == 'close'){
-    $("#note_<?php echo $note_row;?>").css("left",20);
-  }else if(left_status == ''){
-    if(note_left < 0){
-      $("#note_<?php echo $note_row;?>").css("left",0);
-    }
-  }
-}
-if(success != null){
-
-  $("#note_<?php echo $note_row;?>").css("top",note_top+head_success);
-}
-if(head_notice != null && success != null){
-  $("#note_<?php echo $note_row;?>").css("top",note_top+head_success+head_notice);
-}
-<?php
   echo "$('#note_".$note_row."').resizable({ 
     alsoResize: '#note_text_".$note_row."',
     stop: function(e) {
@@ -107,8 +65,8 @@ if(head_notice != null && success != null){
         data:
         'action=change_move&xlen='+xlen+'&ylen='+ylen+'&id=".$note_row."',
         success: function(){
-          if($('.demo').height()<(Number(ylen)+Number(top.substring(0,top.length-2))+10)){
-              $('.demo').height(Number(ylen)+Number(top.substring(0,top.length-2))+10);
+          if($('.box_warp').height()<(Number(ylen)+Number(top.substring(0,top.length-2))+10)){
+              $('.box_warp').height(Number(ylen)+Number(top.substring(0,top.length-2))+10);
             }
           }
           });

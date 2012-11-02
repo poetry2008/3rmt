@@ -22,17 +22,11 @@
 
   $FontColor = 'color="#009900"';       // フォント：マーク色
 
-/* --------------------------------
-2003-04-07 add 
-$HTTP_POST_VERS に対応させる
-（PHP スーパーグローバル変数[$_POST]への対応は次回とする）
--------------------------------- */
   if (isset($HTTP_POST_VERS['lm'])) { $lm = $HTTP_POST_VERS['lm']; }
   if (isset($HTTP_POST_VERS['jp'])) { $jp = $HTTP_POST_VERS['jp']; }
   if (isset($HTTP_POST_VERS['pp'])) { $pp = $HTTP_POST_VERS['pp']; }
   if (isset($HTTP_POST_VERS['np'])) { $np = $HTTP_POST_VERS['np']; }
   if (isset($HTTP_POST_VERS['aval'])) { $aval = $HTTP_POST_VERS['aval']; }
-//2003-07-16 hiroshi_sato add 2 line
         if (isset($_POST['sp'])) { $sp = $_POST['sp']; }
         if (isset($_POST['execute_delete'])) { $execute_delete = $_POST['execute_delete']; }
 
@@ -452,7 +446,7 @@ function PageBody($mode='t', $stitle = "", $notes_flag='') {
   switch ($mode) {
   case 't':
     echo '<!-- body_text //-->' . "\n";
-    echo '    <td width="100%" valign="top">'.$notes.'<table border="0" width="100%" cellspacing="0" cellpadding="2">' . "\n";
+    echo '    <td width="100%" valign="top"><div class="box_warp">'.$notes.'<table border="0" width="100%" cellspacing="0" cellpadding="2">' . "\n";
     echo '      <tr>' . "\n";
     echo '        <td><table border="0" width="100%" cellspacing="0" cellpadding="0">' . "\n";
     echo '          <tr>' . "\n";
@@ -469,7 +463,7 @@ function PageBody($mode='t', $stitle = "", $notes_flag='') {
   case 'u':
     echo '        </td>' . "\n";
     echo '      </tr>' . "\n";
-    echo '    </table></td>' . "\n";
+    echo '    </table></div></td>' . "\n";
     echo '<!-- body_text_eof //-->' . "\n";
     break;
   } 

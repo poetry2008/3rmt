@@ -44,7 +44,7 @@ require("includes/note_js.php");
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-<td width="100%" valign="top"><?php echo $notes;?>
+<td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
   <br>
   <?php echo tep_draw_form('account_edit', FILENAME_CREATE_ACCOUNT_PROCESS, 'onSubmit="return check_form();"') . tep_draw_hidden_field('action', 'process'); ?>
   <div class="compatible">
@@ -74,7 +74,7 @@ require("includes/note_js.php");
     </form>
     </td>
 <!-- body_text_eof //-->
-    
+    </div>
   </tr>
 </table>
 <!-- body_eof //-->

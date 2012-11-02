@@ -13,7 +13,6 @@
          else $site_arr="";
  forward401Unless(editPermission($site_arr, $site_id));
 
-        // tamura 2002/12/30 「全角」英数字を「半角」に変換
         $an_cols = array('navbar_title','heading_title','text_information');
         $error = false; 
         foreach ($an_cols as $col) {
@@ -73,7 +72,6 @@
         }
         break;
       case 'insert':
-        // tamura 2002/12/30 「全角」英数字を「半角」に変換
         $an_cols = array('navbar_title','heading_title','text_information');
         $error = false; 
         foreach ($an_cols as $col) {
@@ -206,7 +204,7 @@ require("includes/note_js.php");
         <!-- left_navigation_eof --> 
       </table></td> 
     <!-- body_text --> 
-    <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+    <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
 <?php
   if (isset($_GET['action']) && $_GET['action'] == 'edit') {
   $detail_query = tep_db_query("
@@ -494,6 +492,7 @@ $contents[] = array('text' => '<br>'. TEXT_DATE_UPDATE. ' ' .tep_datetime_short(
 ?> 
       </table>
       </div> 
+      </div>
       </td> 
     <!-- body_text_eof --> 
   </tr> 

@@ -1,9 +1,6 @@
 <?php
 /*
   $Id$
-
-
-  Released under the GNU General Public License
 */
 
 define('HEADING_TITLE', '优惠券设置');

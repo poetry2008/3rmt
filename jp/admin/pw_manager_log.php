@@ -99,7 +99,7 @@ require("includes/note_js.php");
   }
 ?>
 <!-- body_text -->
-<td width="100%" valign="top"><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="0">
+<td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
       <td width="100%" colspan='2'>
   
@@ -110,7 +110,7 @@ require("includes/note_js.php");
         <table width=""  border="0" cellspacing="1" cellpadding="0">
           <tr>
             <td class="smallText" valign='top'>
-              <?php echo tep_draw_form('orders1', FILENAME_PW_MANAGER_LOG, '', 'get','id="orders1" onsubmit="return false"'); ?>検索 : 
+              <?php echo tep_draw_form('orders1', FILENAME_PW_MANAGER_LOG, '', 'get','id="orders1" onsubmit="return false"'); ?><?php echo IMAGE_SEARCH;?> : 
               <input name="keywords" type="text" id="keywords" size="40" value="<?php if(isset($_GET['keywords'])) echo stripslashes($_GET['keywords']); ?>">
               <select name="search_type" onChange='search_type_changed(this)'>
                 <option value="none"><?php echo PW_MANAGER_SELECT_NONE;?></option>
@@ -515,7 +515,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       </td>
     </tr>
 
-    </table></td>
+    </table></div></td>
 <!-- body_text_eof -->
   </tr>
 </table>

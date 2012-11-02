@@ -1,17 +1,4 @@
 <?php
-/* *********************************************************
-   $Id$
-
-  モジュール名: users_log.php
- * 2002-05-13
- * Naomi Suzukawa
- * suzukawa@bitscope.co.jp
-  ----------------------------------------------------------
-ユーザアクセスログ
-
-  ■変更履歴
-********************************************************* */
-
   error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_WARNING);
   ini_set("display_errors", "Off");
   define('TABLE_CONFIGURATION', 'configuration');
@@ -41,8 +28,6 @@
   tep_session_start();
 
 
-  // セッションID を削除する
-  // PHPSESSIDのクッキー名で記録されている
   setcookie(session_name(), '', time() - 3600, '/');
   setcookie(session_name(), '', time() - 3600, substr(DIR_WS_ADMIN, 0, -1));
 
@@ -84,10 +69,6 @@ if (file_exists(DIR_WS_LANGUAGES . $language . '/user_certify.php')) {
   $_SESSION['PASSWORD_RULES'] = PASSWORD_RULES;
   include(DIR_WS_LANGUAGES . $language . '/user_certify.php');
 }
-/* -------------------------------------
-  ログイン画面表示
- ------------------------------------ */
-// エラーメッセージ
 
 $msg = (isset($erf) && $erf ? '<div align="center"><font color="#FF0000">'.TEXT_ERRINFO_LOGIN.'</font></div>' : '');
 
@@ -114,20 +95,12 @@ echo '<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" left
 if(isset($_GET['his_url'])&&$_GET['his_url']){
 
 echo tep_draw_form('defaultpage', FILENAME_DEFAULT . "?SID=" .
-    session_id()."&his_url=".$_GET['his_url']);   // <form>タグの出力
-}else{
-echo tep_draw_form('defaultpage', FILENAME_DEFAULT . "?SID=" . session_id());   // <form>タグの出力
+    session_id()."&his_url=".$_GET['his_url']);   }else{
+echo tep_draw_form('defaultpage', FILENAME_DEFAULT . "?SID=" . session_id());   
 }
 
 echo '<!-- body_text //-->' . "\n";
 echo '<table border="0" cellspacing="0" cellpadding="2">' . "\n";
-/*
-echo '<tr>' . "\n";
-echo '<td>';
-echo tep_image(DIR_WS_IMAGES . 'oscommerce.gif', 'osCommerce', '204', '50');
-echo '</td>' . "\n";
-echo '</tr>' . "\n";
-*/
 echo '<tr>' . "\n";
 echo '<td align="center">';
 
@@ -153,7 +126,7 @@ echo '</tr>' . "\n";
 echo '<tr>';
 echo '<td>&nbsp;</td>' . "\n";
 echo '<td align="left"><br>';
-echo tep_draw_input_field("execute_login", BUTTON_LOGIN, "", FALSE, "submit", FALSE); // ログイン
+echo tep_draw_input_field("execute_login", BUTTON_LOGIN, "", FALSE, "submit", FALSE); 
 echo '</td>' . "\n";
 echo '</tr>' . "\n";
 echo '</table>' . "\n";
@@ -164,7 +137,7 @@ echo '</td>' . "\n";
 echo '</tr>' . "\n";
 echo '</table>' . "\n";
 
-echo "</form>\n";           // フォームのフッター
+echo "</form>\n";           
 
 echo "</body>\n";
 echo "</html>\n";

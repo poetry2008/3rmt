@@ -217,7 +217,7 @@ function msg2(){
         <!-- left_navigation_eof -->
       </table></td>
     <!-- body_text //-->
-    <td width="100%" valign="top"><?php echo $notes;?><div class="compatible">
+    <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible">
     <div class="compatible">
     <table width="100%" border="0" cellspacing="0" cellpadding="1" align="center">
         <tr>
@@ -449,10 +449,10 @@ $sele_lid = substr($sql1['limit_date'],8,2);
                               <td class="main" bgcolor="#FFFFFF">
                 <?php
                 if($sql1['html_check'] == 1){
-                  echo '<input type="checkbox" name="ht" value="1" checked>HTMLを許可する'."\n";
+                  echo '<input type="checkbox" name="ht" value="1" checked>'.PRESENT_HTML_READ."\n";
                   echo '<br><textarea name="text" style="width:95%; height:300px;">'.stripslashes($sql1['text']).'</textarea>'."\n";
                 }else{
-                  echo '<input type="checkbox" name="ht" value="1">HTMLを許可する'."\n";
+                  echo '<input type="checkbox" name="ht" value="1">'.PRESENT_HTML_READ."\n";
                   echo '<br><textarea name="text" style="width:95%; height:300px;">'.stripslashes($sql1['text']).'</textarea>'."\n";
                 }
                 ?>
@@ -924,6 +924,7 @@ break;
 </td>
 </tr>
 </table>
+</div>
 </div>
 </td>
 </tr>

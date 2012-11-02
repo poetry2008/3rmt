@@ -83,7 +83,7 @@ require("includes/note_js.php");
 <!-- left_navigation_eof -->
     </table></td>
 <!-- body_text //-->
-<td width="100%" valign="top"><?php echo $notes;?>
+<td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
 <div class="compatible">
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
@@ -209,7 +209,7 @@ require("includes/note_js.php");
           <td style="border-bottom:1px solid #000000" align="right"><?php 
           $price = explode('.', $products['products_price']);
           echo $price[0];
-          ;?>&nbsp;円</td>
+          ;?>&nbsp;<?php echo TEXT_MONEY_SYMBOL;?></td>
           <td style="border-bottom:1px solid #000000" align="right"><?php echo $imaginary;?>&nbsp;<?php echo MONTHS;?></td>
           <td style="border-bottom:1px solid #000000" align="right"><?php echo
           $products['products_quantity'];?>&nbsp;<?php echo MONTHS;?>
@@ -253,6 +253,7 @@ require("includes/note_js.php");
 <?php
 ?>
     </table>
+    </div>
     </div>
     </td>
 <!-- body_text_eof //-->

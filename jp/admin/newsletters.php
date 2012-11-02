@@ -31,7 +31,7 @@
           $messageStack->add(ERROR_NEWSLETTER_TITLE, 'error');
           $newsletter_error = true;
         }
-        if (empty($newsletter_module)) { //2003-07-17 hiroshi_sato fixed
+        if (empty($newsletter_module)) { 
           $messageStack->add(ERROR_NEWSLETTER_MODULE, 'error');
           $newsletter_error = true;
         }
@@ -161,7 +161,7 @@ require("includes/note_js.php");
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-    <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
@@ -366,7 +366,6 @@ require("includes/note_js.php");
       <?php
     } 
   } 
-  //2003-07-17 hiroshi_sato fixed
 ?>
       <tr>
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
@@ -519,6 +518,7 @@ $contents[] = array('text' => '<br>' . TEXT_LAST_MODIFIED . ' ' . tep_datetime_s
   }
 ?>
     </table>
+    </div>
     </div>
     </td>
 <!-- body_text_eof //-->

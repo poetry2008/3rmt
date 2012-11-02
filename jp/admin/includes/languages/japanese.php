@@ -650,13 +650,11 @@ define('DB_CONFIGURATION_TITLE_SEO','SEO URLs');
 define('DB_CONFIGURATION_TITLE_DOCUMENTS','文件管理器');
 define('DB_CONFIGURATION_TITLE_TIME_SETING','時間設定');
 define('DB_CONFIGURATION_TITLE_MAXIMUM_VALUE','最大値');
-define('DB_CONFIGURATION_TITLE_DEAL','取引方法の指定');
 define('DB_CONFIGURATION_TITLE_NEW_REVIEW','レビュー新着設定');
 define('DB_CONFIGURATION_TITLE_INSTALL_SAFETY_REVIEW','レビューの安全を設置する');
 define('DB_CONFIGURATION_TITLE_WARNING_SETTINGS','警告文字列設定');
 define('DB_CONFIGURATION_TITLE_SIMPLE_INFORMATION','簡易注文情報 ');
 define('DB_CONFIGURATION_TITLE_GRAPH_SET','混雑グラフ設定');
-define('DB_CONFIGURATION_TITLE_INITIAL_SETTING_SHOPS','商店初期设定');
 
 
 define('DB_CONFIGURATION_DESCRIPTION_SHOP','ショップの一般情報');
@@ -732,3 +730,5 @@ define('BUTTON_ADD_TEXT', '追加');
 define('CSV_HEADER_TEXT', 'アカウント作成日,性別,姓,名,生年月日,メールアドレス,会社名,郵便番号,都道府県,市区町村,住所1,住所2,国名,電話番号,FAX番号,メルマガ購読,ポイント');
 define('CSV_EXPORT_TEXT', 'CSVエクスポート');
 define('TEXT_ALL','すべて');
+define('GET_POINT_TEXT', 'ポイント付く');
+define('MESSAGE_FINISH_ORDER_TEXT', '注文ID%sの成功：取り引きが完了致しました');

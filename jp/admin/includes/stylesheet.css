@@ -856,7 +856,6 @@ font-weight:bold;
 }
 @media screen and (-webkit-min-device-pixel-ratio:0) {
 a.headerLink{
--webkit-text-size-adjust:none;
 font-size:10px;!important;
 }
 }
@@ -1544,4 +1543,7 @@ a.pageResults{
 .comp_width{
 	float:left;
 	width:60%;
+}
+#new_yui3{
+	z-index:200;
 }

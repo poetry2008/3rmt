@@ -1088,7 +1088,6 @@ function tep_get_pre_orders_products_string($orders, $single = false, $popup = f
   
   $str .= '<tr><td class="main" colspan="2" align="center">'; 
   $str .= '<div id="order_del">';
-  $str .= '<div id="order_del">';
   if ($orders['is_active'] == 1) {
     $str .= '<a href="'.tep_href_link(FILENAME_PREORDERS, urldecode($param_str).'&oID='.$orders['orders_id'].'&action=edit').'">'.tep_html_element_button(IMAGE_DETAILS).'</a>'; 
   }

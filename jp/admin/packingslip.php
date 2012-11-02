@@ -41,7 +41,7 @@
         <td class="pageHeading"><?php echo nl2br(STORE_NAME_ADDRESS); ?></td>
         <td class="pageHeading" align="right"><?php echo tep_image(HTTP_CATALOG_SERVER . DIR_WS_CATALOG .DIR_WS_IMAGES . ADMINPAGE_LOGO_IMAGE, STORE_NAME, '', ''); ?></td>
       </tr>
-    </table><div align="right">注文日 : <?php echo tep_date_long($order->customer['date']) . ' 注文番号 : ' . $_GET['oID'] ; ?></div></td>
+    </table><div align="right"><?php echo RIGHT_ORDER_INFO_ORDER_DATE;?><?php echo tep_date_long($order->customer['date']) . ' '.TEXT_PACKINGSLIP_ORDER_ID.' ' . $_GET['oID'] ; ?></div></td>
   </tr>
   <tr>
     <td><table width="100%" border="0" cellspacing="0" cellpadding="2">
@@ -54,7 +54,6 @@
             <td class="main"><b><?php echo ENTRY_SOLD_TO; ?></b></td>
           </tr>
           <tr>
-<?php // 2003-06-06 add_telephone ?>
             <td class="main"><?php echo tep_address_format($order->customer['format_id'], $order->customer, 1, '&nbsp;', '<br>', FALSE); ?></td>
           </tr>
           <tr>

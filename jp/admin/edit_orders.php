@@ -1071,7 +1071,7 @@ if($address_error == false){
           } else {
             $get_point = $cpayment->admin_get_fetch_point(payment::changeRomaji($_POST['payment_method'],'code'),$result3['value']);
           }
-          $cpayment->admin_get_customer_point(payment::changeRomaji($_POST['payment_method'],'code'),intval($get_point),$result1['customers_id']); 
+          //$cpayment->admin_get_customer_point(payment::changeRomaji($_POST['payment_method'],'code'),intval($get_point),$result1['customers_id']); 
         }else{
           $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
           $os_result = tep_db_fetch_array($os_query);
@@ -1083,7 +1083,7 @@ if($address_error == false){
             $point_done_query =tep_db_query("select count(orders_status_history_id) cnt from ".TABLE_ORDERS_STATUS_HISTORY." where orders_status_id = '".$status."' and orders_id = '".tep_db_input($oID)."'");
             $point_done_row  =  tep_db_fetch_array($point_done_query);
             if($point_done_row['cnt'] <1 ){
-              tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  intval($get_point) . " where customers_id = '" . $result1['customers_id']."' and customers_guest_chk = '0'");
+              //tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  intval($get_point) . " where customers_id = '" . $result1['customers_id']."' and customers_guest_chk = '0'");
             }
           }
         }
@@ -2836,7 +2836,7 @@ if($action != "add_product"){
 </table>
 </td>
 <!-- body_text //-->
-<td width="100%" valign="top"><?php echo $notes;?>
+<td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
  <div class="compatible">
  <table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
@@ -3157,7 +3157,6 @@ if (($action == 'edit') && ($order_exists == true)) {
     ?>
     <input type="hidden" name='update_tori_torihiki_start_date' size='10' value='<?php echo str_replace('&nbsp;','',$date_start_array[1]); ?>'>
     <input type="hidden" name='update_tori_torihiki_end_date' size='10' value='<?php echo str_replace('&nbsp;','',$date_array[1]); ?>'>
-    <br><br><span class="smalltext"><?php echo EDIT_ORDERS_FETCHTIME_READ;?></span>
     </td>
     </tr>
     <!-- 住所信息 -->
@@ -4076,6 +4075,7 @@ if($action == "add_product")
 }  
 ?>
 </table>
+</div>
 </div>
 </td>
 <!-- body_text_eof //-->

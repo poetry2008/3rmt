@@ -156,7 +156,7 @@ case 'delete':
 var i=0;
 function input_add(){
       
-  var cbox_head  = "<div class='add_link'>追加:<input type='text' name='set_oroshi[]'></div>"; 
+  var cbox_head  = "<div class='add_link'><?php echo TEXT_ADD;?><input type='text' name='set_oroshi[]'></div>"; 
   var cbox = document.getElementById("oo_input").innerHTML;
   cbox =  cbox.replace(/ocid/g,'ocid['+i+']');
   html[i] = cbox_head+cbox; 
@@ -338,7 +338,7 @@ require("includes/note_js.php");
               </tr>
            </table>
         </td>
-        <td width="100%" valign="top"><?php echo $notes;?>
+        <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
         <div class="compatible">
            <table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr>
@@ -418,6 +418,7 @@ require("includes/note_js.php");
                  </td>
               </tr>
            </table>
+           </div>
            </div>
         </td>
       </tr>

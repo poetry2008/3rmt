@@ -80,7 +80,7 @@ require("includes/note_js.php");
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-<td width="100%" valign="top"><?php echo $notes;?>
+<td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
 <div class="compatible">
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
@@ -177,8 +177,12 @@ require("includes/note_js.php");
       <tr>
         <td class="main" align="right"><?php echo '<a href="' .  tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] . '&bID=' .  $_GET['bID']) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; ?></td>
       </tr>
+<<<<<<< HEAD
     </table>
     </div></td>
+=======
+    </table></div></td>
+>>>>>>> 544fc4cbe7e31c9107502ecb529d7b84f0f9344d
 <!-- body_text_eof //-->
   </tr>
 </table>

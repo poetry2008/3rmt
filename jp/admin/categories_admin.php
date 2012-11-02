@@ -166,7 +166,7 @@ require("includes/note_js.php");
   </table>
   </td>
   <!-- body_text -->
-  <td width="100%" valign="top" id='categories_right_td'>
+  <td width="100%" valign="top" id='categories_right_td'><div class="box_warp">
   <?php echo $notes;?>
   <div class="compatible">
   <table border="0" width="100%" cellspacing="0" cellpadding="2">
@@ -781,6 +781,7 @@ tep_display_google_results(FILENAME_CATEGORIES_ADMIN);
 </td>
 </tr>
 </table>
+</div>
 </div>
 </td>
 </tr>

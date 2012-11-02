@@ -101,6 +101,10 @@ class buyingpoint extends basePayment  implements paymentInterface  {
     tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('表示設定', 'MODULE_PAYMENT_BUYINGPOINT_LIMIT_SHOW', 'a:2:{i:0;s:1:\"1\";i:1;s:1:\"2\";}', '表示設定', '6', '1', 'tep_cfg_payment_checkbox_option(array(\'1\', \'2\'), ', now(), ".$this->site_id.");");
     
     tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('予約注文', 'MODULE_PAYMENT_BUYINGPOINT_PREORDER_SHOW', 'True', '予約注文でポイント(買い取り)を表示します', '6', '1', 'tep_cfg_select_option(array(\'True\', \'False\'), ', now(), ".$this->site_id.");");
+    
+    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('ポイント', 'MODULE_PAYMENT_BUYINGPOINT_IS_GET_POINT', '1', 'ポイント', '6', '1', 'tep_cfg_payment_new_checkbox(', now(), ".$this->site_id.");");
+    
+    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('ポイント還元率', 'MODULE_PAYMENT_BUYINGPOINT_POINT_RATE', '1', 'ポイント還元率', '6', '0', now(), ".$this->site_id.")");
   }
 
 
@@ -109,6 +113,8 @@ class buyingpoint extends basePayment  implements paymentInterface  {
         'MODULE_PAYMENT_BUYINGPOINT_STATUS', 
         'MODULE_PAYMENT_BUYINGPOINT_LIMIT_SHOW', 
         'MODULE_PAYMENT_BUYINGPOINT_PREORDER_SHOW',
+        'MODULE_PAYMENT_BUYINGPOINT_IS_GET_POINT',
+        'MODULE_PAYMENT_BUYINGPOINT_POINT_RATE',
         'MODULE_PAYMENT_BUYINGPOINT_ORDER_STATUS_ID', 
         'MODULE_PAYMENT_BUYINGPOINT_SORT_ORDER', 
         'MODULE_PAYMENT_BUYINGPOINT_MONEY_LIMIT',
@@ -202,6 +208,48 @@ class buyingpoint extends basePayment  implements paymentInterface  {
   function is_get_point()
   {
     return true; 
+  }
+
+  
+  function admin_is_get_point($site_id)
+  {
+    return get_configuration_by_site_id_or_default('MODULE_PAYMENT_BUYINGPOINT_IS_GET_POINT', (int)$site_id); 
+  }
+  
+  function admin_get_point_rate($site_id)
+  {
+    return get_configuration_by_site_id_or_default('MODULE_PAYMENT_BUYINGPOINT_POINT_RATE', (int)$site_id); 
+  }
+  
+  function admin_calc_get_point($orders_id, $point_rate, $site_id)
+  {
+    $order_point_raw = tep_db_query("select value from ".TABLE_ORDERS_TOTAL." where class = 'ot_point' and orders_id = '".$orders_id."'"); 
+    $order_point = tep_db_fetch_array($order_point_raw); 
+    
+    $order_subtotal_raw = tep_db_query("select value from ".TABLE_ORDERS_TOTAL." where class = 'ot_subtotal' and orders_id = '".$orders_id."'"); 
+    $order_subtotal = tep_db_fetch_array($order_subtotal_raw); 
+  
+    $order_campaign_raw = tep_db_query("select campaign_fee from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$orders_id."' and site_id = '".$site_id."'");
+    $order_campaign = tep_db_fetch_array($order_campaign_raw);
+    
+    if ($order_subtotal['value'] > 0) {
+      if ($order_campaign) {
+        return ($order_subtotal['value'] + $order_campaign['campaign_fee']) * $point_rate; 
+      } else {
+        return ($order_subtotal['value'] - (int)$order_point['value']) * $point_rate; 
+      }
+    } else {
+      if ($order_campaign) {
+        return (abs($order_subtotal['value']) + abs($order_campaign['campaign_fee'])) * $point_rate; 
+      } else {
+        return abs($order_subtotal['value']) * $point_rate; 
+      }
+    }
+  }
+  
+  function get_point_rate()
+  {
+    return MODULE_PAYMENT_BUYINGPOINT_POINT_RATE; 
   }
 }
 ?>

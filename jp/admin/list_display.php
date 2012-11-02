@@ -50,8 +50,8 @@ case update:
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
   <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
-  <link rel="stylesheet" type="text/css" href="includes/stylesheet.css" />
   <title><?php echo TEXT_LIST_RISUTOHYOUZI;?></title>
+  <link rel="stylesheet" type="text/css" href="includes/stylesheet.css" />
   <style>
 .dataTableHeadingRow {
 background-color: #808080;
@@ -80,6 +80,13 @@ background-color: #FFCC99;
 color: #000000;
 /*font-size:11px;*/
 /*white-space:nowrap;*/
+}
+.show_menu{
+	height:auto;
+	min-height:650px;
+}
+.show_menu p{
+	min-width:750px;
 }
   </style>
   <script type="text/javascript" src="includes/javascript/jquery.js"></script>
@@ -387,7 +394,8 @@ $rows = $count[0]>count($products)?$count[0]:count($products);
 </script>
 <!--------------------->
 <form name='listform' method='POST' action="?action=update&cid=<?php echo $cID; ?>&cpath=<?php echo $cPath; ?>">
-  <table border="0" cellspacing="1" cellpadding="2">
+<div class="show_menu">
+  <table border="0" cellspacing="1" cellpadding="2" style="margin-left:8px; min-width:750px;">
   <tr class="dataTableRow">
 <?php if($orotime)foreach ($orotime as $k => $value){?>
     <td class="dataTableContent"><?php echo $value;?></td>
@@ -465,9 +473,10 @@ $rows = $count[0]>count($products)?$count[0]:count($products);
 <?php }}?>
   </table>
     <input type="hidden" name="fullpath" value="<?php echo $_GET['fullpath']?>">
-    <input type="submit" value="<?php echo TEXT_LIST_KETTEI;?>">
-    <input type="button" value="<?php echo TEXT_LIST_RISETTO;?>" onclick="clear_page()">
+    <p><input type="submit" value="<?php echo TEXT_LIST_KETTEI;?>">
+    <input type="button" value="<?php echo TEXT_LIST_RISETTO;?>" onclick="clear_page()"></p>
     <!--<input type="button" value="<?php echo TEXT_LIST_RISETTO;?>" onclick="reset_page()">-->
+	</div>
   </form>
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 </body>

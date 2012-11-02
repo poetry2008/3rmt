@@ -149,7 +149,7 @@ require("includes/note_js.php");
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-    <td width="100%" valign="top">
+    <td width="100%" valign="top"><div class="box_warp">
 <?php echo $notes;?>
 <div class="compatible">
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
@@ -177,7 +177,7 @@ require("includes/note_js.php");
     }
     echo "</ul>\n";
   } else {
-    echo "无标签数据，请添加";
+    echo TEXT_P_TAGS_NO_TAG;
   }
 ?>
             </td>
@@ -223,7 +223,7 @@ require("includes/note_js.php");
     }
     echo "</ul>"."\n";
   } else {
-    echo "无分类数据，请添加";
+    echo TEXT_P_TAGS_NO_TAG;
   }
 ?>
             </td>
@@ -233,6 +233,7 @@ require("includes/note_js.php");
         </td>
       </tr>
   </table>
+  </div>
   </div>
     </td>
 <!-- body_text_eof //-->

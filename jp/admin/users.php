@@ -17,11 +17,6 @@
   $ThBgcolor = 'bgcolor="Gainsboro"';     // ヘッダセル：背景色
   $TdnBgcolor = 'bgcolor="WhiteSmoke"';   // セル：項目名背景色
 
-/* --------------------------------
-2003-04-07 add 
-$HTTP_POST_VERS に対応させる
-（PHP スーパーグローバル変数[$_POST]への対応は次回とする）
--------------------------------- */
   /*
   if (isset($_POST['userid'])) { $userid = $_POST['userid']; }
   if (isset($_POST['aval'])) { $aval = $_POST['aval']; }
@@ -37,7 +32,6 @@ $HTTP_POST_VERS に対応させる
   if (isset($_POST['execute_permission'])) { $execute_permission = $_POST['execute_permission']; }
 //修改权限
 if (isset($_POST['execute_change'])) { $execute_change = $_POST['execute_change'];}
-//2003-07-16 hiroshi_sato add 6 lines
         if (isset($_POST['execute_new'])) { $execute_new = $_POST['execute_new']; }
         if (isset($_POST['execute_insert'])) { $execute_insert = $_POST['execute_insert']; }
         if (isset($_POST['execute_update'])) { $execute_update = $_POST['execute_update']; }
@@ -494,7 +488,6 @@ function UserInsert_preview() {
   引  数 : なし
   戻り値 : なし
 
-2000.04.20 対象ユーザが存在しないとき、メッセージ表示するように変更する。
 
  --------------------------------------*/
 function UserInfo_preview() {
@@ -1634,7 +1627,7 @@ function PageBody($mode='t', $stitle = "") {
   switch ($mode) {
   case 't':
     echo '<!-- body_text -->' . "\n";
-    echo '    <td width="100%" valign="top" class="box">'. $notes.'<div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">' . "\n";
+    echo '    <td width="100%" valign="top" class="box"><div class="box_warp">'. $notes.'<div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">' . "\n";
     echo '      <tr>' . "\n";
     echo '        <td><table border="0" width="100%" cellspacing="0" cellpadding="0">' . "\n";
     echo '          <tr>' . "\n";
@@ -1651,7 +1644,7 @@ function PageBody($mode='t', $stitle = "") {
   case 'u':
     echo '        </td>' . "\n";
     echo '      </tr>' . "\n";
-    echo '    </table></div></td>' . "\n";
+    echo '    </table></div></div></td>' . "\n";
     echo '<!-- body_text_eof -->' . "\n";
     break;
   } 
@@ -1735,7 +1728,6 @@ function update_rules($userid,$rule,$letter){
   if (isset($_POST['execute_permission'])) { $execute_permission = $_POST['execute_permission']; }
 //修改权限
 if (isset($_POST['execute_change'])) { $execute_change = $_POST['execute_change'];}
-//2003-07-16 hiroshi_sato add 6 lines
         if (isset($_POST['execute_new'])) { $execute_new = $_POST['execute_new']; }
         if (isset($_POST['execute_insert'])) { $execute_insert = $_POST['execute_insert']; }
         if (isset($_POST['execute_update'])) { $execute_update = $_POST['execute_update']; }

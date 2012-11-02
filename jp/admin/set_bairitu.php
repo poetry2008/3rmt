@@ -59,6 +59,7 @@ charset=<?php echo CHARSET; ?>">
   $col=tep_db_fetch_array($res);
 ?>
 <body>
+<div class="show_left_menu">
 <?php
 if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
     <script language='javascript'>
@@ -84,9 +85,8 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
 <input type="text" value="<?php echo $col['keisan']?>" name="kei" ></p>
 <input type="hidden" value="<?php echo $cID ?>" name="cID_list">
 <input type="hidden" value="<?php echo $cpath ?>" name="cpath">
-<input type="submit" value="<?php echo SET_BAIRITU_CAL_SET;?>">
+<span><input type="submit" value="<?php echo SET_BAIRITU_CAL_SET;?>"></span>
 </form>
-<br>
 <?php if (!empty($_POST['cpath'])) {?>
 <?php
 $path_array = explode('_', $cpath);
@@ -100,11 +100,13 @@ if ($best_limit_res) {
 }
 ?>
 <form method="post" action="set_bairitu.php?action=set_time">
-<?php echo SET_BAIRITU_BESTSELLER;?><br><input type="text" value="<?php echo $current_limit_time;?>" name="btime"><?php echo SET_BAIRITU_BESTSELLER_READ;?>
+<p><?php echo SET_BAIRITU_BESTSELLER;?></p>
+<p><input type="text" value="<?php echo $current_limit_time;?>" name="btime"><?php echo SET_BAIRITU_BESTSELLER_READ;?></p>
 <input type="hidden" value="<?php echo $cpath ?>" name="cepath">
-<input type="submit" value="<?php echo IMAGE_CONFIRM;?>">
+<p><input type="submit" value="<?php echo IMAGE_CONFIRM;?>"></p>
 </form>
 <?php }?>
+</div>
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 </body>
 </html>

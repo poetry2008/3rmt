@@ -474,7 +474,7 @@ require("includes/note_js.php");
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-<td width="100%" valign="top"><?php echo $notes;?>
+<td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
   <table border='0' bgcolor='#7c6bce' width='100%'>
       <tr>
         <td class="main"><font color="#ffffff"><b><?php echo TEXT_STEP_1 ?></b></font></td>
@@ -508,6 +508,7 @@ require("includes/note_js.php");
       </tr>
     </table>
   </form>
+  </div>
   </td>
   </tr>
 </table>

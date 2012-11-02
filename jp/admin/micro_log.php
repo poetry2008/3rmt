@@ -213,8 +213,8 @@ width:75px;
   background:#eee;
   clear: both;
 }
-.log .contents{
-  padding:3px;
+.log .content{
+  padding:3px 0;
   font-size:12px;
 }
 .log .alarm{
@@ -225,8 +225,7 @@ width:75px;
   font-size:10px;
   font-weight:bold;
   display:none;
-  width:100px;
-  *width:120px;
+  width:99px;
 }
 .log .level input{
 margin:0;
@@ -246,6 +245,7 @@ padding:0;
 }
 .info02{
 width:50px;
+padding:0 5px;
 }
 .log .action{
 text-align:center;
@@ -266,6 +266,8 @@ textarea,input{
 }
 textarea{
   width:100%;
+  padding:0;
+  margin:0;
 }
 .alarm_on{
   border:2px solid #ff8e90;
@@ -287,6 +289,7 @@ float:left;
 	top:235px;
 	top:208px\9;
 	position: absolute;
+	z-index:200px;
 }
 @media screen and (-webkit-min-device-pixel-ratio:0) {
 #new_yui3{
@@ -294,6 +297,7 @@ float:left;
 	margin-left:-430px;
     padding-left:260px;
 	position: absolute;
+	z-index:200px;
 }
 }
 </style>
@@ -308,19 +312,19 @@ require("includes/note_js.php");
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
-<!-- header //-->
+<!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
-<!-- body //-->
+<!-- header_eof -->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-<!-- left_navigation //-->
+<!-- left_navigation -->
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- left_navigation_eof //-->
+<!-- left_navigation_eof -->
     </table></td>
-<!-- body_text //-->
-<td width="100%" valign="top"><?php echo $notes;?>
+<!-- body_text -->
+<td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
 <div class="compatible">
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
@@ -340,9 +344,9 @@ require("includes/note_js.php");
           </tr>
           <tr>
             <td width="250px">
-              <input type="radio" name="level" value="0" checked="checked" id="level_0">重1
-              <input type="radio" name="level" value="1" id="level_1">重2
-              <input type="radio" name="level" value="2" id="level_2">重3
+              <input type="radio" name="level" value="0" checked="checked" id="level_0"><?php echo TYPEA;?>
+              <input type="radio" name="level" value="1" id="level_1"><?php echo TYPEB;?>
+              <input type="radio" name="level" value="2" id="level_2"><?php echo TYPEC;?>
             </td>
             <td>
             <div class="yui3-skin-sam yui3-g">
@@ -508,13 +512,12 @@ function log_html(text){
   var log_date_len = text['date_added'].length;
   var log_date_str = log_date.substring(0, log_date_len-3); 
   
-  $str += '      <td style="background:#fff;"><div style="background:#fff;"><div
-    class="contents">'+text['content'].replace(/\n/g,'<br>')+'</div><div class="info">'+log_date_str+'</div></div></td>';
+  $str += '      <td style="background:#fff;"><div style="background:#fff;"><div class="content">'+text['content'].replace(/\n/g,'<br>')+'</div><div class="info">'+log_date_str+'</div></div></td>';
   $str += '      <td class="info02">';
   $str += '           <div class="level">'+parseInt(text['level'])+'</div>';
   $str += '           <div class="alarm">'+text['alarm']+'</div>';
   $str += '           <div class="action"><a href="javascript:void(0);" onclick="edit_log('+text['log_id']+')"><img src="images/icons/edit_img.gif"></a> <a href="javascript:void(0)" onclick="up('+text['log_id']+')" ><img src="images/icons/up.gif"></a> <a href="javascript:void(0);" onclick="delete_log('+text['log_id']+')"><img src="images/icons/del_img.gif"></a> <a href="javascript:void(0)" onclick="down('+text['log_id']+')" ><img src="images/icons/down.gif"></a></div>';
-  $str += '           <div class="edit_action"><input type="submit" value="メモ保存" /></div>';
+  $str += '           <div class="edit_action"><input type="submit" value="<?php echo SAVE_BUTTON;?>" /></div>';
   $str += '      </td>';
   $str += '    </tr>';
   $str += '  </table>';
@@ -558,7 +561,7 @@ function edit_log(id)
   $('#log_'+id+' .alarm').html('<div id="demo" class="yui3-skin-sam yui3-g"><a id="dpk_'+id+'" href="javascript:void(0);" class="dpicker" onclick="open_update_calendar('+id+');"></a><input class="alarm_input" id="alarm_date_'+id+'" type="text" name="alarm" value="'+$('#log_'+id+' .alarm').html()+'"><input type="hidden" name="toggle_open_'+id+'" id="toggle_open_'+id+'" value="0"><div id="pos_m_'+id+'" class="yui3-u"><div id="calc_'+id+'_show"></div></div></div></div>');
 
   l = $('#log_'+id+' .level').html();
-  $('#log_'+id+' .level').show().html('<input type="radio" name="level" value="0" '+(l == '0' ? 'checked' : '')+' />重1<input type="radio" name="level" value="1" '+(l == '1' ? 'checked' : '')+' />重2<input type="radio" name="level" value="2" '+(l == '2' ? 'checked' : '')+' />重3');
+  $('#log_'+id+' .level').show().html('<input type="radio" name="level" value="0" '+(l == '0' ? 'checked' : '')+' /><?php echo TYPEA;?><input type="radio" name="level" value="1" '+(l == '1' ? 'checked' : '')+' /><?php echo TYPEB;?><input type="radio" name="level" value="2" '+(l == '2' ? 'checked' : '')+' /><?php echo TYPEC;?>');
   $('#log_'+id+' .edit_action').show();
   $('#log_'+id+' .alarm').show();
   $('#log_'+id+' .action').hide();
@@ -652,14 +655,15 @@ function more_log(){
       </tr>
     </table>
     </div>
+    </div>
   </td>
-<!-- body_text_eof //-->
+<!-- body_text_eof -->
   </tr>
 </table>
-<!-- body_eof //-->
-<!-- footer //-->
+<!-- body_eof -->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 </body>
 </html>
