@@ -330,6 +330,7 @@ define('TEXT_SET_DEFAULT', '默认设置');
 define('TEXT_FIELD_REQUIRED', '&nbsp;<span class="fieldRequired">* 必须</span>');
 
 define('ERROR_NO_DEFAULT_CURRENCY_DEFINED', '错误: 没有设置基本通货。 管理菜单->定位->通货设置: 请确认设置。');
+define('ERROR_INPUT_RIGHT_DATE', '请输入正确日期。');
 
 define('TEXT_CACHE_CATEGORIES', '分类区');
 define('TEXT_CACHE_MANUFACTURERS', '制造商区');
@@ -639,7 +640,6 @@ define('DB_CONFIGURATION_TITLE_EMAIL','发送E-Mail');
 define('DB_CONFIGURATION_TITLE_DOWNLOAD_SALES','下载销售');
 define('DB_CONFIGURATION_TITLE_GZIP','GZip压缩');
 define('DB_CONFIGURATION_TITLE_SESSION','Session');
-define('DB_CONFIGURATION_TITLE_INITIAL_SETTING_SHOP','店铺初期设置');
 define('DB_CONFIGURATION_TITLE_BUSINESS_CALENDAR','营业日历');
 define('DB_CONFIGURATION_TITLE_SEO','SEO URLs');
 define('DB_CONFIGURATION_TITLE_DOCUMENTS','文件管理器');
@@ -651,7 +651,7 @@ define('DB_CONFIGURATION_TITLE_PROGRAM','联盟计划');
 define('DB_CONFIGURATION_TITLE_WARNING_SETTINGS','警告字符串设置');
 define('DB_CONFIGURATION_TITLE_SIMPLE_INFORMATION','简易订单信息 ');
 define('DB_CONFIGURATION_TITLE_GRAPH_SET',' 混合图表设置');
-define('DB_CONFIGURATION_TITLE_INITIAL_SETTING_SHOPS','商店初期设置');
+define('DB_CONFIGURATION_TITLE_INITIAL_SETTING_SHOP','商店初期设置');
 
 
 define('DB_CONFIGURATION_DESCRIPTION_SHOP','商品的一般信息');
@@ -694,9 +694,9 @@ define('BOX_USER_ADMIN', '用户管理');
 define('BOX_USER_LOG', '访问日志');
 define('BOX_USER_LOGOUT', '退出');
 
-define('TEXT_SITE_COPYRIGHT' ,'Copyright © %s Haomai');
+define('TEXT_SITE_COPYRIGHT' ,'Copyright © %s '.COMPANY_NAME);
 
-define('JUMP_PAGE_TEXT', '跳页');
+define('JUMP_PAGE_TEXT', ' ');
 define('JUMP_PAGE_BUTTON_TEXT', '跳转到');
 
 // javascript language
@@ -709,11 +709,6 @@ define('','查看历史记录');
 // products_tags
 define('TEXT_P_TAGS_NO_TAG','无标签数据，请添加');
 define('UPDATE_MSG_TEXT', '更新');
-//customers scv
-define('TEXT_MALE','男性');
-define('TEXT_FEMALE','女性');
-define('TEXT_SUBSCRIPTION','订阅');
-define('TEXT_UNSUBSCRIPTION','未订阅');
 define('CL_TEXT_DATE_MONDAY', '一');
 define('CL_TEXT_DATE_TUESDAY', '二');
 define('CL_TEXT_DATE_WEDNESDAY', '三');

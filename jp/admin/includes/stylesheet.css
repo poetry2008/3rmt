@@ -855,7 +855,6 @@ font-weight:bold;
 }
 @media screen and (-webkit-min-device-pixel-ratio:0) {
 a.headerLink{
--webkit-text-size-adjust:none;
 font-size:10px;!important;
 }
 }
@@ -1452,6 +1451,16 @@ font-size:14px;
 }
 .show_left_menu{
 	height:650px;
+}
+.show_left_menu p{
+  padding:5px 8px;
+  margin:0;
+  min-width:750px;
+}
+.show_left_menu span{
+  padding:0 8px 5px 5px;
+  margin:0;
+  clear:both;
 }
 @media all and (-webkit-min-device-pixel-ratio:0){
 .footer_copyright{
