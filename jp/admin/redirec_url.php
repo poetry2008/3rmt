@@ -8,6 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<link href="includes/stylesheet.css" type="text/css" rel="stylesheet">
 </head>
 <body>
 <?php

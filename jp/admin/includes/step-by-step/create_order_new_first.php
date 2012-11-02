@@ -91,7 +91,7 @@ if($order_exists == true){
 <!-- left_navigation_eof -->
     </table></td>
 <!-- body_text -->
-<td width="100%" valign="top"><?php echo $notes;?>
+<td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
   <div class="compatible">
   <table border='0' bgcolor='#7c6bce' width='100%'>
       <tr>
@@ -143,6 +143,7 @@ if($order_exists == true){
         <td class="main"><?php echo '<a href="' . tep_href_link(FILENAME_DEFAULT, '', 'SSL') . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; ?></td> <td class="main" align="right"><input type="button" value="<?php echo IMAGE_CONFIRM_NEXT; ?>" onclick="check_submit();"></td>
       </tr>
     </table>
+    </div>
     </div>
   </td>
   </tr>

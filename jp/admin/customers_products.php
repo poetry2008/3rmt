@@ -665,7 +665,7 @@ require("includes/note_js.php");
 <!-- left_navigation_eof -->
     </table>
     </td>
-    <td valign="top"  width="100%"><?php echo $notes;?>   
+    <td valign="top"  width="100%"><div class="box_warp"><?php echo $notes;?>   
       <div class="compatible">
       <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
@@ -783,6 +783,7 @@ require("includes/note_js.php");
             </td>
           </tr>
         </table>
+        </div>
         </div>
     </td>
   </tr>

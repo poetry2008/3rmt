@@ -1981,6 +1981,7 @@ require("includes/note_js.php");
                     <div id="ecalendar"></div>
                     </div>
                   </div>
+                  <span class="smalltext"><?php echo EDIT_ORDERS_FETCHTIME_READ;?></span>
                   <input type="hidden" name='update_tori_torihiki_date' size='25' value='<?php echo $order->tori['date']; ?>'>
                   <input type="hidden" name='update_tori_torihiki_houhou' size='45' value='<?php echo $order->tori['houhou']; ?>'>
                   <input type="hidden" name="update_viladate" value="true">
@@ -2446,7 +2447,7 @@ if (tep_db_num_rows($orders_history_query)) {
           } else {
             $sel_nyuuka_id = 1; 
           }
-          echo tep_draw_pull_down_menu('status', $orders_statuses, $sel_nyuuka_id, 'id="status" onchange="check_prestatus();"'); ?>
+          echo tep_draw_pull_down_menu('status', $orders_statuses, $sel_nyuuka_id, 'id="status" onchange="check_prestatus();" style="width:100%;"'); ?>
           <input type="hidden" name="isruhe" id="isruhe" value=""> 
           </td>
         </tr>
@@ -2473,10 +2474,10 @@ if (tep_db_num_rows($orders_history_query)) {
       $mail_sele = tep_db_query($ma_se); 
       $mail_sql = tep_db_fetch_array($mail_sele); 
     ?>
-    <?php echo '<b>'.ENTRY_EMAIL_TITLE.'</b>'.tep_draw_input_field('etitle', $mail_sql['orders_status_title'],' style="width:413px;"');?> 
+    <?php echo '<b>'.ENTRY_EMAIL_TITLE.'</b>'.tep_draw_input_field('etitle', $mail_sql['orders_status_title'],' style="width:230px;"');?> 
     <br> 
     <br> 
-    <textarea style="font-family:monospace; font-size:12px; width:500px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}', preorders_a($order->info['orders_id']), $mail_sql['orders_status_mail']);?></textarea> 
+    <textarea style="font-family:monospace; font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}', preorders_a($order->info['orders_id']), $mail_sql['orders_status_mail']);?></textarea> 
   </td>
   </tr>
 </table>

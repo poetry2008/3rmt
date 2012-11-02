@@ -115,7 +115,7 @@ foreach($weight_fee_array as $weight_fee_value){
 <tr><td width="30%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_UPDATE;?></td><td><?php echo $country_fee_array['date_update'];?></td></tr>
 
 </td></tr>
-<tr><td width="30%">&nbsp;</td><td style="padding-left:10%;"><input type="button" name="new" value="<?php echo TABLE_BUTTON_SUBMIT;?>" onclick="show_text_fee(0,'');">&nbsp;<input type="button" name="save" value="<?php echo TABLE_BUTTON_SAVE;?>" onclick="if(check_form()){check_fee('save');}else{return check_form();}">&nbsp;
+<tr><td  align="center" colspan="2"><input type="button" name="new" value="<?php echo TABLE_BUTTON_SUBMIT;?>" onclick="show_text_fee(0,'');">&nbsp;<input type="button" name="save" value="<?php echo TABLE_BUTTON_SAVE;?>" onclick="if(check_form()){check_fee('save');}else{return check_form();}">&nbsp;
 
 <?php
 if($id != 0){

@@ -56,7 +56,7 @@ $(function(){
           msg = msg.split('||');
           if(parseInt(msg[0])){
           var str = "<div id='note_"+msg[0]+"' class='note "+color+"' style='left:0;top:0;z-index:"+zIndex+",width:150px,height:150px'><div class='note_head' ><div class='title'><input type='button' onclick=\"note_save_text(\'"+msg[0]+"\')\" value='<?php echo JS_TEXT_GLOBAL_SAVE;?>'>"+title+"&nbsp;&nbsp;"+msg[1]+"</div><div class='note_clost'><input type='hidden' value='"+msg[0]+"' class='hidden'><input type='image' onclick=\"note_desplay_none(\'"+msg[0]+"\')\" alt='close' src='images/icons/note_close.gif'></div></div><div id='note_text_"+msg[0]+"' class='note_textarea' style='height:120px'><textarea style='resize: none;overflow;auto;font-size:11px;'>"+txt+"</textarea></div></div>";
-          $(".demo").append(str);
+          $(".box_warp").append(str);
           make_draggable($('.note'));
           $.fancybox.close();
           window.location.reload();

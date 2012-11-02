@@ -441,6 +441,7 @@ body {
 	font-size: 12px;                                /* フォントサイズ */
 	color: #000000;                                 /* フォントカラー */
 	background-color: #FFD700;                      /* 背景色 */
+	word-break:break-all;
 	padding-left:8px;                     
 }
 .infoBoxContent a { text-decoration:none;}
@@ -1168,7 +1169,6 @@ a.s_column_bar {
 /*campaign*/
 #show_campaign_info{
 	position:absolute;
-	left:18%;
 	width:70%;
 	background-color:#FFFF00;
 	min-width:550px;
@@ -1193,16 +1193,18 @@ a.s_column_bar {
 /*option group*/
 #show_group_info{
     background-color: #FFFF00;
-    left: 18%;
     position: absolute;
     width: 70%;
 	min-width:550px;
+	margin-left:2px;
+
 }
 #show_item_info{
     background-color: #FFFF00;
-    left: 18%;
     position: absolute;
     width: 70%;
+	margin-left:2px;
+	min-width:550px;
 }
 .option_item_input{
 	width:25%;
@@ -1451,16 +1453,6 @@ font-size:14px;
 }
 .show_left_menu{
 	height:650px;
-}
-.show_left_menu p{
-  padding:5px 8px;
-  margin:0;
-  min-width:750px;
-}
-.show_left_menu span{
-  padding:0 8px 5px 5px;
-  margin:0;
-  clear:both;
 }
 @media all and (-webkit-min-device-pixel-ratio:0){
 .footer_copyright{

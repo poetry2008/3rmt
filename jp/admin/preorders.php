@@ -918,7 +918,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
   }
 ?>
 <!-- body_text -->
-<td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+<td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
   if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) {
     // edit start
@@ -1881,8 +1881,8 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     <tr>
       <td valign="top">
     <?php // 订单信息预览，配合javascript，永远浮动在屏幕右下角 ?>
-    <div id="orders_info_box" style="left:15%; display:none; position:absolute; background:#FFFF00; width:70%; /*bottom:0;margin-top:40px;right:0;width:200px;*/">&nbsp;</div>
-<?php
+    <div id="orders_info_box" style=" display:none; position:absolute; background:#FFFF00; width:70%; /*bottom:0;margin-top:40px;right:0;width:200px;*/">&nbsp;</div>
+    <?php
   if ($ocertify->npermission == 15) {
     if(!tep_session_is_registered('reload')) $reload = 'yes';
     if (false) { 
@@ -3328,7 +3328,7 @@ function submit_confirm()
     </tr>
 <?php } ?>
 
-    </table></td>
+    </table></div></td>
 <!-- body_text_eof -->
   </tr>
 </table>

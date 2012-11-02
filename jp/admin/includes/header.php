@@ -387,8 +387,6 @@ if($current_page_tp == "configuration.php") {
 }
 if (isset($ocertify->npermission) || $ocertify->npermission) {
   echo '&nbsp<a href="' . tep_href_link(FILENAME_DEFAULT, '', 'NONSSL') . '" class="headerLink">' . HEADER_TITLE_TOP . '</a>';
-
- 
 }
 ?></td>
 <td class="headerBarContent" align="right">

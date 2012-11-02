@@ -51,81 +51,13 @@ $(document).ready(function(){
 });
 function toggle_leftColumn()
 {
-    
+
   var arrow_status = $('.columnLeft').css('display');
-  var scroll_width = document.body.scrollWidth; 
-  var note_flag = '<?php echo $belong == FILENAME_DEFAULT ? 'true' : 'false'?>';
-<?php 
-if($belong == "" || $user_info == ""){
-$belong = str_replace("/admin/","",$_SERVER['REQUEST_URI']);
-$user_info['name'] = tep_get_user_info($ocertify->auth_user);
-}else{
 
-  $belong_url = $belong;
-  if($belong_temp != ''){
-
-    $belong = $belong_temp;
-  }
-}
-?>
   if (arrow_status == 'none') {
-    document.cookie = 'tarrow=open'; 
-    $.ajax({
-url: 'ajax_memo.php',
-data: 'tarrow=open&belong=<?php echo $belong;?>&author=<?php echo $user_info['name'];?>',		    
-type: 'POST',
-dataType: 'text',
-async: 'false',
-success :function(data){
-<?php 
-$query = tep_db_query("select * from notes where belong='".$belong."' and (attribute='1' or (attribute='0' and author='".$user_info['name']."'))  order by id desc");
-
-while($array = tep_db_fetch_array($query)){
-?>
-var left = $("#note_<?php echo $array['id']?>").css("left"); 
-left = left.replace("px","");
-left = parseInt(left);
-var note_width;
-note_width = $("#note_<?php echo $array['id'];?>").width();
-note_width = parseInt(note_width);
-if((left+note_width+160) < scroll_width && note_flag == 'false'){
-    $("#note_<?php echo $array['id']?>").css("left",(left+160)+"px");
-}
-
-<?php
-}
-
-?>
-
-}
-    });
+    document.cookie = 'tarrow=open';  
   } else {
-    document.cookie = 'tarrow=close'; 
-    $.ajax({
-url: 'ajax_memo.php',
-data: 'tarrow=close&belong=<?php echo $belong;?>&author=<?php echo $user_info['name'];?>',		    
-type: 'POST',
-dataType: 'text',
-async: 'false',
-success :function(data){
-<?php 
-$query = tep_db_query("select * from notes where belong='".$belong."' and (attribute='1' or (attribute='0' and author='".$user_info['name']."'))  order by id desc");
-
-while($array = tep_db_fetch_array($query)){
-?>
-var left = $("#note_<?php echo $array['id']?>").css("left"); 
-left = left.replace("px","");
-left = parseInt(left);
-if(note_flag == 'false'){
-    $("#note_<?php echo $array['id']?>").css("left",(left-160)+"px");
-}
-
-<?php
-}
-?>
-
-}
-    });
+    document.cookie = 'tarrow=close';  
   }
   
   $('.columnLeft').toggle();
@@ -168,7 +100,6 @@ function toggle_lan(sobj)
 </script>
 <?php }?>
 <?php
-$belong = $belong_url;
 $l_select_box_arr = array();
 if (isset($_SESSION['l_select_box'])) {
   $l_select_box_arr = explode(',', $_SESSION['l_select_box']);

@@ -164,7 +164,7 @@ require("includes/note_js.php");
     </table></td>
     <!-- body_text //-->
 
-    <td width="100%" valign="top"><?php echo $notes;?>
+    <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
     <div class="compatible">
     <table border="0" cellpadding="2" cellspacing="0" width="100%">
     <tr><td height="40" class="pageHeading"><?php echo TEXT_RESET_PWD_TITLE;?></td></tr>
@@ -256,6 +256,7 @@ require("includes/note_js.php");
     </td></td></table>
 
     </td></tr></table>
+    </div>
     </div>
     </td>
 

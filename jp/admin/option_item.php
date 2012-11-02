@@ -568,7 +568,17 @@ require("includes/note_js.php");
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-    <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible">
+              <div id="show_item_info" style="display:none;"></div> 
+              <div align="right">
+              <?php echo tep_draw_form('form', FILENAME_OPTION_GROUP, '', 'get');?>
+              <input type="text" name="keyword" id="keyword">
+              <input type="hidden" name="search" value="1">
+              <?php echo tep_html_element_submit(IMAGE_SEARCH);?>
+              </form>
+              </div>      
+
+    <table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td>
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -579,16 +589,6 @@ require("includes/note_js.php");
                $option_group = tep_db_fetch_array($option_group_raw);
                echo $option_group['name'];
               ?>
-              </td>
-              <td align="right">
-              <div id="show_item_info" style="display:none;"></div> 
-              <div align="right">
-              <?php echo tep_draw_form('form', FILENAME_OPTION_GROUP, '', 'get');?>
-              <input type="text" name="keyword" id="keyword">
-              <input type="hidden" name="search" value="1">
-              <?php echo tep_html_element_submit(IMAGE_SEARCH);?>
-              </form>
-              </div>      
               </td>
             </tr>
           </table>
@@ -735,7 +735,7 @@ require("includes/note_js.php");
         </table></td>
       </tr>
     </table>
-    </div></td>
+    </div></div></td>
 <!-- body_text_eof //-->
   </tr>
 </table>
