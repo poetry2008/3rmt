@@ -159,6 +159,7 @@ require("includes/note_js.php");
            </table>
         </td>
         <td width="100%" valign="top"><?php echo $notes;?>
+        	<div class="compatible">
            <table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr>
                  <td class = "pageHeading">
@@ -209,7 +210,7 @@ case 'oroshi':
         'history.php?action=oroshi_c&cPath=".$gid."&oid=".$oid."'>".TEXT_RECORDS."</a></td>";
       echo "<td class='dataTableHeadingContent'><a href=
         'cleate_list.php?action=prelist&cid=".$game[0]['categories_id']."&oid=".$oid."&src_id=his'
-        >'.TEXT_CREATE_DATA.'</a></td>";
+        >".TEXT_CREATE_DATA."</a></td>";
       echo "</tr>";
     foreach ($game as $key=>$value){
       echo "<tr class='dataTableRow'>";
@@ -220,7 +221,7 @@ case 'oroshi':
       }
       echo "</td>";
       echo "<td class='dataTableContent'><a onClick='return delete_one_data()'
-        href='history.php?action=oroshi&o_id=".$oid."&list_id=".$value['list_id']."'>'.IMAGE_DELETE.'</a></td>";
+        href='history.php?action=oroshi&o_id=".$oid."&list_id=".$value['list_id']."'>".IMAGE_DELETE."</a></td>";
       echo "</tr>";
     }
     echo "</table>";
@@ -296,7 +297,6 @@ case 'oroshi_c':
     
     for($n=0;$n<$cnt;$n++){//取得したデータでどれが一番件数が大きいか
       if($count[0]<=$count[$n]){
-        $count[0]=$count[$n];
       }
     }
           
@@ -538,26 +538,6 @@ case 'dougyousya_categories':
   
   ?>
   <table border="1">
-   <tr>
-    <td colspan='<?php echo 2;?>'>
-      <input type="submit" name="b2" id = 'saveorder2' value="<?php echo TEXT_SIGN_IN;?>">
-      <input type='hidden' id='orderstring1' name='orderstring' />
-      <input type='hidden' id='targetstring1' name='targetstring' />
-      <input type="button" onclick="get_last_date()" value="LAST DATA">
-      <input type="button" onclick="$('.udlr').val('')" value="RESET">
-    </td>
-  </tr>
-
-     <tr>
-     <td <?php if ($ocertify->npermission>7) {?>colspan ='2'<?php }?>><?php echo TEXT_CLASSIFICATION;?></td>
-<?php 
-  for($i=0;$i<$cnt;$i++){
-    $html .= "<td>".$d_name[$i]."</td>";
-  }
-  echo $html;
-?>
-    <td>&nbsp;</td>
-  </tr>
       <?php 
       $res=tep_db_query("select count(*) as cnt from set_dougyousya_names sdn
           ,set_dougyousya_categories sdc  where sdn.dougyousya_id =
@@ -568,9 +548,32 @@ case 'dougyousya_categories':
   //登録フォーム作成
   if($count['cnt'] > 0){
     for($j=0;$j<$count['cnt'];$j++){
-      echo "<input type='hidden' name='d_id[]' value='".$dougyousya_id[$j]."'>";//同業者ID
+      $hidden_d_id = "<input type='hidden' name='d_id[]' value='".$dougyousya_id[$j]."'>";//同業者ID
     }
   }
+?>
+   <tr>
+    <td colspan='<?php echo $count['cnt']+3; ?>'>
+      <input type="submit" name="b2" id = 'saveorder2' value="<?php echo TEXT_SIGN_IN;?>">
+      <input type='hidden' id='orderstring1' name='orderstring' />
+      <input type='hidden' id='targetstring1' name='targetstring' />
+      <input type="button" onclick="get_last_date()" value="LAST DATA">
+      <input type="button" onclick="$('.udlr').val('')" value="RESET">
+    </td>
+  </tr>
+     <tr>
+     <td <?php if ($ocertify->npermission>7) {?>colspan ='2'<?php }?>><?php echo TEXT_CLASSIFICATION;?></td>
+<?php 
+  for($i=0;$i<$cnt;$i++){
+    $html .= "<td>".$d_name[$i]."</td>";
+  }
+  echo $html;
+?>
+    <td>&nbsp;</td>
+  </tr>
+
+<?php
+echo $hidden_d_id;
   $x = 0;
   for($i=0;$i<$cnt2;$i++){
     echo "<tr>";
@@ -585,6 +588,7 @@ case 'dougyousya_categories':
         echo "<td>&nbsp;</td>";
       }
     }
+
     echo "<td id='tr_".$x."_1'>";
     echo "<input type='hidden' name='proid[]' value='".$cid_list[$i]."' class='sort_order_input' >";//products_id
     echo "<a href='#".$col['products_name']."'>".$col['products_name']."</a></td>";
@@ -594,7 +598,7 @@ case 'dougyousya_categories':
         $last_history_arr2[$i][$j] = isset($last_history_arr[$cid_list[$i]][$dougyousya_id[$j]])?$last_history_arr[$cid_list[$i]][$dougyousya_id[$j]]['dougyosya_kakaku']:'';
         //        <input type='text' size='7px' name='TARGET_INPUT[]' onkeydown=ctrl_keydown('TARGET_INPUT',".$i.",".$j.",".$count['cnt'].")></td>";//価格同業者
         echo "<td id='tr_".$x."_".($j+2)."' class='dataTableContent' >
-        <input value='' pos='".$i."_".$j."' id=\"ti_".$i."_".$j."\" class='udlr input_number col_".$j."'  type='text' size='7px' name='TARGET_INPUT[]' onpaste=\"return !clipboardData.getData('text').match(/\D/)\" ondragenter=\"return false\" style=\"ime-mode:Disabled\"><a href=\"javascript:void(0)\" onclick=\"$('.col_".$j."').val($('#ti_".$i."_".$j."').val())\">".TEXT_UNIFIED."</a>";//価格同業者
+        <input value='' pos='".$i."_".$j."' id=\"ti_".$i."_".$j."\" class='udlr input_number col_".$j."'  type='text' size='7px' name='TARGET_INPUT[]' onpaste=\"return !clipboardData.getData('text').match(/\D/)\" ondragenter=\"return false\" style=\"ime-mode:Disabled;width:60%;\"><a href=\"javascript:void(0)\" onclick=\"$('.col_".$j."').val($('#ti_".$i."_".$j."').val())\">".TEXT_UNIFIED."</a>";//価格同業者
       }
     }else{
       //            echo "<td class='dataTableContent' ><input type='text' size='7px'  name='TARGET_INPUT[]' onkeydown=ctrl_keydown('TARGET_INPUT',".$i.",'0','0')></td>";//価格同業者  
@@ -720,7 +724,7 @@ $products_arr = $sort_products_arr;
           $tuli_arr[]  = $record['dougyousya_name'];
         }
       }
-      $imgstr = "<img width='720' height='300' alt='".$productname."' onclick='$(\"#history_table_".$value[0]['products_id']."\").toggle()' src = 'chart.php?cht=lxy&chs=720x300&";
+      $imgstr = "<img width='570' height='238' alt='".$productname."' onclick='$(\"#history_table_".$value[0]['products_id']."\").toggle()' src = 'chart.php?cht=lxy&chs=720x300&";
       $imgstr.= "chd=t:";
       $style = array();
       $key2count = 0;
@@ -845,7 +849,9 @@ $products_arr = $sort_products_arr;
 </td></tr></table></td></tr><tr><td>
 <?php echo '<a style="width:100%;display:none" id = "back_link" href="'. tep_href_link($back_url, $back_url_params, 'NONSSL').'"></a>';
 ?>
-</td></tr></table></td></tr>
+</td></tr></table>
+</div>
+</td></tr>
 </table>
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 <br>
