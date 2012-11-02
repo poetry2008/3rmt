@@ -337,7 +337,7 @@ echo "<a href=".tep_href_link($cur_page,tep_get_all_get_params(array('language')
     "language=".'ja')."><font size=3px><b>JP</b></font></a>&nbsp;";
 echo "<a href=".tep_href_link($cur_page,tep_get_all_get_params(array('language')).
     "language=".'ch')."><font size=3px><b>CH</b></font></a>&nbsp;";
-echo '<a href="' . tep_href_link('help.php', 'info_romaji='.urlencode(str_replace('/admin/','',$current_page_tp)), 'NONSSL') . '" class="headerLink"  target="_blank"><img src="images/icon_help_info.gif" alt="img"></a>';
+echo '<a href="' . tep_href_link('help.php', 'info_romaji='.urlencode(str_replace('/admin/','',$current_page_tp)), 'NONSSL') . '" class="headerLink"  target="_blank"><img src="images/menu_icon/icon_help_info.gif" alt="img"></a>';
 ?>
 </div>
 
@@ -386,9 +386,8 @@ if($current_page_tp == "configuration.php") {
  $current_page_tp .= "?".$set_mod_array[0];
 }
 if (isset($ocertify->npermission) || $ocertify->npermission) {
-  echo '&nbsp<a href="' . tep_href_link(FILENAME_DEFAULT, '', 'NONSSL') . '" class="headerLink">' . HEADER_TITLE_TOP . '</a>&nbsp;&nbsp;&nbsp;&nbsp';
+  echo '&nbsp<a href="' . tep_href_link(FILENAME_DEFAULT, '', 'NONSSL') . '" class="headerLink">' . HEADER_TITLE_TOP . '</a>';
 
-  echo '<a href="' . tep_href_link('help.php', 'info_romaji='.urlencode(str_replace('/admin/','',$current_page_tp)), 'NONSSL') . '" class="headerLink"  target="_blank"><img src="images/icon_help_info.gif" alt="img">&nbsp;'.TEXT_HEADER_HELP.'</a>&nbsp;&nbsp;&nbsp;';
  
 }
 ?></td>
@@ -399,7 +398,8 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
     <table>
     <tr>';
   $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
-    echo '    <td><a class="headerLink" href="javascript:void(0);" onclick="toggle_header_menu(\'headerorder\')">'.HEADER_TEXT_ORDER_INFO.'</a>&nbsp;|<br>
+    echo '
+    <td><a class="headerLink" href="javascript:void(0);" onclick="toggle_header_menu(\'headerorder\')">'.HEADER_TEXT_ORDER_INFO.'</a>&nbsp;|<br>
     <table class="menu01" id="headerorder" cellpadding="0" cellspacing="0">
         <tr>
       <td class="menu01"><a class="t_link01" href="'.tep_href_link(FILENAME_ORDERS, '', 'NONSSL').'">'.HEADER_TEXT_ORDERS.'</a></td> 
@@ -453,7 +453,7 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
       <table class="menu01" id="managermenu" cellpadding="0" cellspacing="0">
       ';
          echo '
-<tr><td class="menu01"><a class="t_link01" 
+      <tr><td class="menu01"><a class="t_link01" 
       href="add_note.php?author='.$ocertify->auth_user.'&belong='.$belong.'"
       id="fancy">'.TEXT_ADD_NOTE.'</a></td></tr>
 

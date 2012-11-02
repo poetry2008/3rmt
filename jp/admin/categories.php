@@ -1433,8 +1433,13 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
 <div id="categories_tree">
                 <?php
                   require(DIR_WS_CLASSES . 'category_tree.php');
+                  if(isset($_GET['from'])&&$_GET['from']=='admin'){
+                  $osC_CategoryTree = new osC_CategoryTree(true,true); 
+                  echo $osC_CategoryTree->buildTree(FILENAME_CATEGORIES_ADMIN);
+                  }else{
                   $osC_CategoryTree = new osC_CategoryTree; 
                   echo $osC_CategoryTree->buildTree();
+                  }
                 ?>
                 </div>
 <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
@@ -1920,7 +1925,7 @@ $products_shipping_time .= '</select>';
 <?php
     }
 ?>
-              <!-- options// -->
+              <!-- options -->
               <?php
 
       //オプションデータ取得
@@ -2018,7 +2023,7 @@ $products_shipping_time .= '</select>';
 </td>
               </tr>
               <?php }?> 
-              <!-- //options -->
+              <!-- options -->
               <tr>
                   </table>
                   </fieldset></td>
@@ -2067,7 +2072,7 @@ $products_shipping_time .= '</select>';
           <?php
            if(COLOR_SEARCH_BOX_TF == "true" ){
            ?>
-          <!-- カラー別画像// -->
+          <?php // カラー別画像 ?>
           <hr size="1">
           <legend style="color:#009900 "><?php echo TEXT_PRODUCT_COLOR_IMAGE_TITLE;?></legend>
           <table border="0" cellpadding="1" cellspacing="5">
@@ -2095,7 +2100,7 @@ $products_shipping_time .= '</select>';
               
           </tr>
           </table>
-          <!-- //カラー別画像 -->
+         <?php // カラー別画像 ?>
          <?php
          }
          ?>
@@ -2884,7 +2889,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
         <tr>
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
               <tr>
-                <td valign="top" nowrap>
+                <td valign="top">
                 <?php tep_site_filter(FILENAME_CATEGORIES, true);?> 
                 <table border="0" width="100%" cellspacing="0" cellpadding="2">
                     <tr class="dataTableHeadingRow">
@@ -3457,9 +3462,10 @@ if (isset($nowColor) && $nowColor == $odd) {
 		   
 <?php 
 if(!isset($_GET['site_id']) || $_GET['site_id']==0){
-echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products['products_id'] . '&action=new_product_preview&read=only') . '">' . tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW) . '</a>&nbsp;&nbsp;<a href="orders.php?search_type=products_id&products_id=' . $products['products_id'] . '">' . tep_image(DIR_WS_IMAGES . 'icon_time.gif', '', 16, 16) . '</a>&nbsp;&nbsp;'; 
+echo '<div class="float_left"><a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products['products_id'] . '&action=new_product_preview&read=only') . '">' . tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW) . '</a>&nbsp;&nbsp;<a href="orders.php?search_type=products_id&products_id=' . $products['products_id'] . '">' . tep_image(DIR_WS_IMAGES . 'icon_time.gif', '', 16, 16) . '</a>&nbsp;&nbsp;</div>'; 
 }
-	echo $products['products_name']; 
+
+	echo '<div class="comp_width">'.$products['products_name'].'</div>'; 
 ?>
 
                     </td>

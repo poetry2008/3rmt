@@ -1,8 +1,4 @@
 <?php
-/* *********************************************************
-   ユーザアクセスログの言語定義 
-   ■変更履歴
-********************************************************* */
 
 define('HEADING_TITLE', '一次性密码日志');
 
@@ -21,7 +17,7 @@ define('TEXT_PAGE', '( %s / %s Page [ %s / %s Rows ] )');
 define('BUTTON_DELETE_LOGINLOG', '删除');
 define('BUTTON_PREVIOUS_PAGE', '上一页');
 define('BUTTON_NEXT_PAGE', '下一页');
-define('BUTTON_JUMP_PAGE', '跳页');
+define('BUTTON_JUMP_PAGE', '跳转到');
 
 
 define('TABLE_HEADING_LOGINID', 'ID');

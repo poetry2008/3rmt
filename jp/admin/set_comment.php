@@ -34,7 +34,6 @@ switch ($HTTP_GET_VARS['action']){
   $col=tep_db_fetch_array($res);
 ?>
 <body>
-<body>
 <?php
 if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
     <script language='javascript'>
@@ -43,6 +42,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
 <?php }?>
 <form method="post" action="set_comment.php?action=save&cID=<?php echo
 $cID;?>&cPath=<?php echo $cPath;?>"  onsubmit="alert('<?php echo SET_COMMENT_UPDATE_NOTICE;?>')">
+<div class="show_left_menu">
 <p><?php echo SET_COMMENT_USER?></p>
 <p><input type='text' name='author' value="<?php echo $col['author'];?>" /></p>
 <p><?php echo SET_COMMENT_SINGLE?></p>
@@ -50,6 +50,7 @@ $cID;?>&cPath=<?php echo $cPath;?>"  onsubmit="alert('<?php echo SET_COMMENT_UPD
 <p><?php echo SET_COMMENT_COMMENT_TEXT;?></p>
 <p><textarea cols='60' rows='12' name='comment'><?php echo $col['comment'];?></textarea></p>
 <p><input type="submit" value="<?php echo SET_COMMENT_TITLE;?>"><p>
+</div>
 </form>
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 </body>
