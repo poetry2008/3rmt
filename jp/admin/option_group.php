@@ -209,10 +209,9 @@ require("includes/note_js.php");
         <td>
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
-              <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
               <td align="right">
               <div id="show_group_info" style="display:none;"></div> 
-              <div align="right">
+              <div>
               <?php echo tep_draw_form('form', FILENAME_OPTION_GROUP, '', 'get');?> 
               <input type="text" name="keyword" id="keyword">
               <input type="hidden" name="search" value="1">
@@ -224,7 +223,7 @@ require("includes/note_js.php");
         <td>
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
-              <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
+              <td class="pageHeading" align="left"><?php echo HEADING_TITLE; ?></td>
             </tr>
           </table>
         </td>
@@ -235,7 +234,7 @@ require("includes/note_js.php");
           <tr>
             <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr class="dataTableHeadingRow">
-                <td class="dataTableHeadingContent"><?php 
+                <td class="dataTableHeadingContent" align="left"><?php 
                 echo TABLE_HEADING_OPTION_GROUP_NAME; ?></td>
                 <td class="dataTableHeadingContent" align="left"><?php 
                 echo TABLE_HEADING_OPTION_GROUP_TITLE; ?></td>
@@ -280,12 +279,12 @@ require("includes/note_js.php");
         echo '              <tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'">' . "\n";
       }
 ?>
-                <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_GROUP, 'page='.$_GET['page'].'&group_id=' .  $group['id']);?>'">
+                <td align="left" class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_GROUP, 'page='.$_GET['page'].'&group_id=' .  $group['id']);?>'">
                 <a href="<?php echo tep_href_link(FILENAME_OPTION_ITEM, 'group_id='.$group['id'].(isset($_GET['page'])?'&gpage='.$_GET['page']:''));?>"><?php echo tep_image(DIR_WS_ICONS.'folder.gif', ICON_FOLDER);?></a> 
                 <?php echo '&nbsp;' . $group['name']; ?>
                 </td>
-                <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_GROUP, 'page='.$_GET['page'].'&group_id=' .  $group['id']);?>'"><?php echo '&nbsp;' . $group['title']; ?></td>
-                <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_GROUP, 'page='.$_GET['page'].'&group_id=' .  $group['id']);?>'">
+                <td align="left" class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_GROUP, 'page='.$_GET['page'].'&group_id=' .  $group['id']);?>'"><?php echo '&nbsp;' . $group['title']; ?></td>
+                <td align="left" class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_GROUP, 'page='.$_GET['page'].'&group_id=' .  $group['id']);?>'">
                 <?php
                 if ($group['is_preorder']) {
                   echo OPTION_GROUP_IS_PREORDER; 
@@ -294,7 +293,7 @@ require("includes/note_js.php");
                 }
                 ?>
                 </td>
-                <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_GROUP, 'page='.$_GET['page'].'&group_id=' .  $group['id']);?>'"><?php echo '&nbsp;' . $group['sort_num']; ?></td>
+                <td class="dataTableContent" align="left" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_GROUP, 'page='.$_GET['page'].'&group_id=' .  $group['id']);?>'"><?php echo '&nbsp;' . $group['sort_num']; ?></td>
                 
                 <td class="dataTableContent" align="right">
 <?php

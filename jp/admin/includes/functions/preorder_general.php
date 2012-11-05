@@ -1096,6 +1096,44 @@ function tep_get_pre_orders_products_string($orders, $single = false, $popup = f
   }
   $str .= '</div>';
   $str .= '</td></tr>'; 
+  $str .= '<tr>';
+  $str .= '<td>';
+  $str .= TEXT_USER_ADDED;
+  $str .= '</td>';
+  $str .= '<td>';
+  $str .= $orders['user_added'];
+  $str .= '</td>';
+  $str .= '</tr>';
+ 
+  $str .= '<tr>';
+  $str .= '<td>';
+  $str .= TEXT_DATE_ADDED;
+  $str .= '</td>';
+  $str .= '<td>';
+  $str .= $orders['date_purchased'];
+  $str .= '</td>';
+  $str .= '</tr>';
+
+
+  $str .= '<tr>';
+  $str .= '<td>';
+  $str .= TEXT_USER_UPDATE;
+  $str .= '</td>';
+  $str .= '<td>';
+  $str .= $orders['user_update'];
+  $str .= '</td>';
+  $str .= '</tr>';
+
+
+  $str .= '<tr>';
+  $str .= '<td>';
+  $str .= TEXT_DATE_UPDATE;
+  $str .= '</td>';
+  $str .= '<td>';
+  $str .= $orders['last_modified'];
+  $str .= '</td>';
+  $str .= '</tr>';
+
   $str .= '</table>';
   $str .= '</form>';
   $str=str_replace("\n","",$str);
