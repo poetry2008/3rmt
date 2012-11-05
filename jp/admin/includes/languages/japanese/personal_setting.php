@@ -13,4 +13,5 @@ define('TEXT_PREORDERS_SELECT_CUSTOMER','顧客名');
 define('TEXT_PREORDERS_SELECT_DATE','予約日');
 define('TEXT_PERSONAL_SETTING_SITE_ERROR','少なくても1つチェックして下さい。');
 define('TEXT_PERSONAL_SETTING_SORT_ERROR','正しく選択して下さい。');
+define('TEXT_PERSONAL_SETTING_LANGUAGE_OPTION','デフォルト言語選択');
 ?>
