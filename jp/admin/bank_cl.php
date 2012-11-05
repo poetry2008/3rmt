@@ -5,6 +5,7 @@
 include("includes/application_top.php");
 
 if($_POST['updata'] == 'on') {
+
   $mm_2 = "";
   for($j=201; $j<232; $j++) {
     $mm_2 .= $_POST[$j];
@@ -25,6 +26,7 @@ if($_POST['updata'] == 'on') {
   } else {
     tep_db_query("insert into  ".TABLE_BANK_CALENDAR." (cl_ym,cl_value) values ('".$_POST['ymd3']."','".$mm_3."')");
   }
+    
   $mm_4 = "";
   for($j=401; $j<432; $j++) {
     $mm_4 .= $_POST[$j];
@@ -64,7 +66,8 @@ if($_POST['updata'] == 'on') {
   } else {
     tep_db_query("insert into  ".TABLE_BANK_CALENDAR." (cl_ym,cl_value) values ('".$_POST['ymd7']."','".$mm_7."')");
   }
-     tep_redirect(tep_href_link(FILENAME_BANK_CL, 'action=success&date='.$_POST['date']));
+  
+  tep_redirect(tep_href_link(FILENAME_BANK_CL, 'action=success&date='.$_POST['date']));
 }
 ?>
 
@@ -75,8 +78,8 @@ if($_POST['updata'] == 'on') {
 <title><?php echo BANK_CL_TITLE_TEXT; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
-<script language="javascript" src="includes/general.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 require("includes/note_js.php");
@@ -88,7 +91,7 @@ require("includes/note_js.php");
 if($_GET['action'] == 'success') {
   echo '<table border="0" cellspacing="0" cellpadding="0" width="100%">' . "\n";
   echo '<tr>' . "\n";
-  echo '<td class="messageStackSuccess" height="20" align="center"><strong>更新しました。</strong></td>' . "\n";
+  echo '<td class="messageStackSuccess" height="20" align="center"><strong>'.UPDATE_MSG_TEXT.'</strong></td>' . "\n";
   echo '</tr>' . "\n";
   echo '</table><br>' . "\n";
 }
@@ -101,7 +104,6 @@ if($_GET['action'] == 'success') {
 <?php }?>
 <!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-
 <!-- header_eof -->
 
 <!-- body -->
@@ -113,7 +115,7 @@ if($_GET['action'] == 'success') {
 <!-- left_navigation_eof -->
     </table></td>
 <!-- body_text -->
-    <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="1">
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
@@ -122,10 +124,9 @@ if($_GET['action'] == 'success') {
           </tr>
         </table></td>
       </tr>
-
       <tr>
         <td>
-     
+
     <form action="<?php echo $PHP_SELF; ?>" method="post">
     <input type="hidden" name="updata" value="on">
     <input type="hidden" name="date" value="<?php echo $_GET['date'];?>">
@@ -188,19 +189,19 @@ if($_GET['action'] == 'success') {
     ($ii+1)."31"=>substr($calen2['cl_value'], 30, 1));
     //print_r($array2);
     echo '
-      <table border=1 cellspacing=0 cellpadding=2 width=100%>
+      <table border="1" cellspacing="0" cellpadding="1" width="100%">
       <tr bgcolor=#000000>
-      <td nowrap colspan=3>&nbsp;&nbsp;<font size=2 color=#FFFFFF>'.$year2.'年'.$m_num2.'月</font></td>
+      <td nowrap colspan=3>&nbsp;&nbsp;<font size=2 color=#FFFFFF>'.$year2.YEAR_TEXT.$m_num2.MONTH_TEXT.'</font></td>
       <td nowrap colspan=4 align=right>&nbsp;&nbsp;<font size=2 color=#FFFFFF>&nbsp;&nbsp;■&raquo;'.BANK_CL_COMMON_WORK_TIME.'&nbsp;&nbsp;<font color="'.CL_COLOR_01.'">■</font>&raquo;'.BANK_CL_REST_TIME.'&nbsp;&nbsp;<font color="'.CL_COLOR_02.'">■</font>&raquo;'.BANK_CL_SEND_MAIL.'&nbsp;&nbsp;</td>
       </tr>
       <tr bgcolor=ffffff>
-        <td align=middle height=15><font size="2" color="#cc0000">日</font></td>
-        <td align=middle height=15><font size="2">月</font></td>
-        <td align=middle height=15><font size="2">火</font></td>
-        <td align=middle height=15><font size="2">水</font></td>
-        <td align=middle height=15><font size="2">木</font></td>
-        <td align=middle height=15><font size="2">金</font></td>
-        <td align=middle height=15><font size="2" color="#0000cc">土</font></td>
+        <td align=middle height=15><font size="2" color="#cc0000">'.CL_TEXT_DATE_SUNDAY.'</font></td>
+        <td align=middle height=15><font size="2">'.CL_TEXT_DATE_MONDAY.'</font></td>
+        <td align=middle height=15><font size="2">'.CL_TEXT_DATE_TUESDAY.'</font></td>
+        <td align=middle height=15><font size="2">'.CL_TEXT_DATE_WEDNESDAY.'</font></td>
+        <td align=middle height=15><font size="2">'.CL_TEXT_DATE_THURSDAY.'</font></td>
+        <td align=middle height=15><font size="2">'.CL_TEXT_DATE_FRIDAY.'</font></td>
+        <td align=middle height=15><font size="2" color="#0000cc">'.CL_TEXT_DATE_STATURDAY.'</font></td>
       </tr>
       <tr bgcolor=#ffffff>
     ';
@@ -213,22 +214,22 @@ if($_GET['action'] == 'success') {
     while(checkdate($m_num2,$day2,$year2)){
       //select form
       if($array2[(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT)] == '1') {
-        $option2 = '<table border="1" cellspacing="0" cellpadding="2"><tr>';
-      $option2 .= '<td bgcolor="#FFFFFF"><input type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="0"></td>' . "\n";
-      $option2 .= '<td bgcolor="'.CL_COLOR_01.'"><input type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="1" checked></td>' . "\n";
-      $option2 .= '<td bgcolor="'.CL_COLOR_02.'"><input type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="2"></td>' . "\n";
+        $option2 = '<table border="1" cellspacing="0" cellpadding="0"><tr>';
+      $option2 .= '<td bgcolor="#FFFFFF"><input style="margin:2px;" type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="0"></td>' . "\n";
+      $option2 .= '<td bgcolor="'.CL_COLOR_01.'"><input style="margin:2px;" type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="1" checked></td>' . "\n";
+      $option2 .= '<td bgcolor="'.CL_COLOR_02.'"><input style="margin:2px;" type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="2"></td>' . "\n";
       $option2 .= '</tr></table>' . "\n";
       } elseif($array2[(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT)] == '2') {
-        $option2 = '<table border="1" cellspacing="0" cellpadding="2"><tr>';
-      $option2 .= '<td bgcolor="#FFFFFF"><input type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="0"></td>' . "\n";
-      $option2 .= '<td bgcolor="'.CL_COLOR_01.'"><input type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="1"></td>' . "\n";
-      $option2 .= '<td bgcolor="'.CL_COLOR_02.'"><input type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="2" checked></td>' . "\n";
+        $option2 = '<table border="1" cellspacing="0" cellpadding="0"><tr>';
+      $option2 .= '<td bgcolor="#FFFFFF"><input style="margin:2px;" type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="0"></td>' . "\n";
+      $option2 .= '<td bgcolor="'.CL_COLOR_01.'"><input style="margin:2px;" type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="1"></td>' . "\n";
+      $option2 .= '<td bgcolor="'.CL_COLOR_02.'"><input style="margin:2px;" type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="2" checked></td>' . "\n";
       $option2 .= '</tr></table>' . "\n";
       } else {
-        $option2 = '<table border="1" cellspacing="0" cellpadding="2"><tr>';
-      $option2 .= '<td bgcolor="#FFFFFF"><input type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="0" checked></td>' . "\n";
-      $option2 .= '<td bgcolor="'.CL_COLOR_01.'"><input type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="1"></td>' . "\n";
-      $option2 .= '<td bgcolor="'.CL_COLOR_02.'"><input type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="2"></td>' . "\n";
+        $option2 = '<table border="1" cellspacing="0" cellpadding="0"><tr>';
+      $option2 .= '<td bgcolor="#FFFFFF"><input style="margin:2px;" type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="0" checked></td>' . "\n";
+      $option2 .= '<td bgcolor="'.CL_COLOR_01.'"><input style="margin:2px;" type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="1"></td>' . "\n";
+      $option2 .= '<td bgcolor="'.CL_COLOR_02.'"><input style="margin:2px;" type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="2"></td>' . "\n";
       $option2 .= '</tr></table>' . "\n";
       }
       
@@ -271,16 +272,16 @@ if($_GET['action'] == 'success') {
     echo '<input type="hidden" name="ymd'.($ii+1).'" value="'.$ymd2.'">';
     }
     echo "</td></tr><tr><td align='right'>";
-    echo '<P>'.tep_html_element_submit(IMAGE_SAVE).'</P>';
+    echo '<P>'.tep_html_element_submit(IMAGE_SAVE).'</P>'
     ?>
     </form>
     </td>
       </tr>
-      <tr>
+    <tr>
       <td align="right">
         <table border="0">
           <tr>
-  <td><a href="<?php echo tep_href_link('bank_cl.php', 'date='.date('Y-m',mktime(0,0,0,$m_num-1,1,$year)));?>"><?php echo BUTTON_PREV;?></a></td>
+            <td><a href="<?php echo tep_href_link('bank_cl.php', 'date='.date('Y-m',mktime(0,0,0,$m_num-1,1,$year)));?>"><?php echo BUTTON_PREV;?></a></td>
             <td><a href="<?php echo tep_href_link('bank_cl.php', 'date='.date('Y-m',mktime(0,0,0,$m_num+7,1,$year)));?>"><?php echo BUTTON_NEXT;?></a></td>
             <td>
               <select name="year" id="year">
@@ -321,8 +322,7 @@ if($_GET['action'] == 'success') {
     }
     echo $html_str;
 ?>
-
-  </table></div></td>
+  </table></div></div></td>
 <!-- body_text_eof -->
   </tr>
 </table>

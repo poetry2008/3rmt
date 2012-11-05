@@ -22,9 +22,6 @@ case 'edit_oroshi':
 //  $sql.=' where oroshi_id = '.$orrshi_id;
 //  tep_db_query($sql);
   break;
-case 'select_oroshi':
-    
-  break;
 case 'set_oroshi':
   $orrshi_id = $_POST['orrshi_id'];
   if (isset($_POST['sort'])) {
@@ -137,13 +134,13 @@ case 'delete':
   <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
   <script type="text/javascript" src="includes/javascript/jquery.js"></script>
   <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-  <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+  <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
   <script type="text/javascript">
   var html = new Array();
 var i=0;
 function input_add(){
       
-  var cbox_head = "<div class='add_link'>追加:<input type='text' name='set_oroshi[]'></div>"; 
+  var cbox_head = "<div class='add_link'><?php echo BUTTON_ADD_TEXT;?>:<input type='text' name='set_oroshi[]'></div>"; 
   var cbox  = document.getElementById("oo_input").innerHTML;
   cbox = cbox.replace(/ocid/g,'ocid['+i+']');
   html[i] = cbox_head+cbox;
@@ -285,6 +282,7 @@ function del_oroshi(id){
       
   }
 }
+
 function edit_oroshi(id){
   var selectName = 'parent_id_'+id;
   var oroName = 'name_'+id;
@@ -324,13 +322,11 @@ require("includes/note_js.php");
         <td width="<?php echo BOX_WIDTH; ?>" valign="top">
            <table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
               <tr>
-                 <td>
-                    <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-                 </td>
-              </tr>
+                 <td><?php require(DIR_WS_INCLUDES . 'column_left.php'); ?></td>
+              </tr> 
            </table>
         </td>
-        <td width="100%" valign="top"><?php echo $notes;?>
+        <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
         <div class="compatible">
            <table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr>
@@ -339,17 +335,14 @@ require("includes/note_js.php");
               <tr>
                  <td>
   <form method="post" action="cleate_oroshi.php?action=set_oroshi" onSubmit="return w_close()">
-  <table width="100%" cellspacing="0" cellpadding="0" border="0">
-     <tr>
-        <td>
                     <table width="100%" cellspacing="0" cellpadding="0">
                        <tr>
-                          <td > 
-						
-                          <div class="dataTableHeadingRow">
-  <input type="button" value="<?php echo CLEATE_DOUGYOUSYA_ADD_BUTTON;?>"　name='b1' onClick="input_add()">
-  </div>
-
+                          <td valign="top" class="cleate_add">
+  <input type="button" value="<?php echo CLEATE_DOUGYOUSYA_ADD_BUTTON;?>" name='b1' onClick="input_add()">
+                          </td>
+                       </tr>
+                       <tr>
+                          <td class="cleate_main"> 
   <input type="hidden" value="<?php echo $cPath ?>" name="cpath">
   <?php if(isset($orrshi_id)){?>
     <input type="hidden" value="<?php echo $orrshi_id;?>" id = "orrshi_id" name="orrshi_id">
@@ -372,7 +365,6 @@ if(empty($HTTP_GET_VARS['id'])){
    echo '<tr>';
  }
   ?>
-   
   <!--卸業者：<input type='text' name='up_oroshi[]' value='<?php echo $col['oroshi_name'];?>'>
   <input type='button' value='削除' name='b[]' onclick='del_oroshi(<?php echo $col['oroshi_id'];?>, <?php echo $cPath;?>)'><br>-->
   <td width="10"><?php if ($i) {?><a href="javascript:void(0);" onclick="ex(<?php echo $i;?>)">↑</a><?php }?></td>
@@ -445,6 +437,7 @@ if(empty($HTTP_GET_VARS['id'])){
                  </td>
               </tr>
            </table>
+           </div>
            </div>
         </td>
       </tr>

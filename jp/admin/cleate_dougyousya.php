@@ -149,13 +149,13 @@ case 'delete':
   <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
   <script type="text/javascript" src="includes/javascript/jquery.js"></script>
   <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
   <script type="text/javascript">
   var html = new Array();
 var i=0;
 function input_add(){
       
-  var cbox_head  = "<div class='add_link'>追加:<input type='text' name='set_oroshi[]'></div>"; 
+  var cbox_head  = "<div class='add_link'><?php echo TEXT_ADD;?><input type='text' name='set_oroshi[]'></div>"; 
   var cbox = document.getElementById("oo_input").innerHTML;
   cbox =  cbox.replace(/ocid/g,'ocid['+i+']');
   html[i] = cbox_head+cbox; 
@@ -337,7 +337,7 @@ require("includes/note_js.php");
               </tr>
            </table>
         </td>
-        <td width="100%" valign="top"><?php echo $notes;?>
+        <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
         <div class="compatible">
            <table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr>
@@ -348,15 +348,12 @@ require("includes/note_js.php");
   <form method="post" action="cleate_dougyousya.php?action=set_oroshi"  onSubmit="return w_close()">
   <table width="100%" cellspacing="0" cellpadding="0">
      <tr>
-        <td>
-                    <table width="100%" cellspacing="0" cellpadding="0">
-                       <tr>
-                          <td > 
-						
-                          <div class="dataTableHeadingRow">
-  <input type="button" value="<?php echo CLEATE_DOUGYOUSYA_ADD_BUTTON;?>"　name='b1' onClick="input_add()">
-  </div>
-
+        <td class="cleate_add" valign="top">
+  <input type="button" value="<?php echo CLEATE_DOUGYOUSYA_ADD_BUTTON;?>" name='b1' onClick="input_add()">
+        </td>
+     </tr>
+     <tr>
+        <td class="cleate_main">
   <input type="hidden" value="<?php echo $cPath ?>" name="cpath">
   <?php if(isset($orrshi_id)){?>
     <input type="hidden" value="<?php echo $orrshi_id;?>" name="orrshi_id" id="orrshi_id">
@@ -390,7 +387,6 @@ if(empty($HTTP_GET_VARS['id'])){
   <td width='50'><a href='cleate_dougyousya.php?action=select_oroshi&id=<?php echo
   $col['dougyousya_id'];?>'><?php if($col['dougyousya_id'] == $HTTP_GET_VARS['id']){echo tep_image(DIR_WS_IMAGES.
       'icon_arrow_right.gif');}else{ echo tep_image(DIR_WS_IMAGES . 'icon_info.gif');}?></a></td>
- 
   </tr>
 <?php if(isset($ckstr)&&$orrshi_id == $col['dougyousya_id']){?>
   <tr>
@@ -451,6 +447,7 @@ if(empty($HTTP_GET_VARS['id'])){
                  </td>
               </tr>
            </table>
+           </div>
            </div>
         </td>
       </tr>
