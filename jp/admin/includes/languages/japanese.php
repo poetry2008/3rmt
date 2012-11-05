@@ -732,3 +732,7 @@ define('CSV_EXPORT_TEXT', 'CSVエクスポート');
 define('TEXT_ALL','すべて');
 define('GET_POINT_TEXT', 'ポイント付く');
 define('MESSAGE_FINISH_ORDER_TEXT', '注文ID%sの成功：取り引きが完了致しました');
+define('TEXT_USER_ADDED','作成者:');
+define('TEXT_USER_UPDATE','更新者:');
+define('TEXT_DATE_ADDED','作成日:');
+define('TEXT_DATE_UPDATE','更新日:');
