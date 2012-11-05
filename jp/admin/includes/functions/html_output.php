@@ -265,11 +265,11 @@
 ////
 // Output a form pull down menu
   function tep_draw_pull_down_menu($name, $values, $default = '', $params = '', $required = false) {
-    $field = '<select name="' . $name . '"';
+    $field = '<select  name="' . $name . '"';
     if ($params) $field .= ' ' . $params;
     $field .= '>';
     for ($i=0; $i<sizeof($values); $i++) {
-      $field .= '<option value="' . (isset($values[$i]['id'])?$values[$i]['id']:'') . '"';
+      $field .= '<option  value="' . (isset($values[$i]['id'])?$values[$i]['id']:'') . '"';
       if ( ( isset($values[$i]['id']) && (strlen($values[$i]['id']) > 0) && isset($GLOBALS[$name]) && ($GLOBALS[$name] == $values[$i]['id'])) || ($default == (isset($values[$i]['id'])?$values[$i]['id']:'')) ) {
         $field .= ' SELECTED';
       }

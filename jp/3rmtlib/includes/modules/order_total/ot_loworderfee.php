@@ -73,7 +73,14 @@
 
     function install() {
       // ccdd
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('低額取扱い手数料の表示', 'MODULE_ORDER_TOTAL_LOWORDERFEE_STATUS', 'true', '低額取扱い手数料の表示をしますか?', '6', '1','tep_cfg_select_option(array(\'true\', \'false\'), ', now(), ".$this->site_id.")");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title,
+        configuration_key, configuration_value, configuration_description,
+        configuration_group_id, sort_order, set_function, date_added,user_added,
+        site_id) values ('低額取扱い手数料の表示',
+          'MODULE_ORDER_TOTAL_LOWORDERFEE_STATUS', 'true',
+          '低額取扱い手数料の表示をしますか?', '6',
+          '1','tep_cfg_select_option(array(\'true\', \'false\'), ',
+            now(),'".$_SESSION['user_name']."', ".$this->site_id.")");
       // ccdd
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('表示の整列順', 'MODULE_ORDER_TOTAL_LOWORDERFEE_SORT_ORDER', '4', '表示の整列順を設定できます. 数字が小さいほど上位に表示されます.', '6', '2', now(), ".$this->site_id.")");
       // ccdd

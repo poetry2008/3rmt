@@ -1,4 +1,5 @@
 <?php
+
 /* ===============================================
   global 定数
  ============================================== */
@@ -208,6 +209,10 @@ function makeInsertUser($aval, $nmode=0) {
     $ssql .= ",'" . $aval['pwd_is_rand'] . "'";
     */
     $ssql .= ",'" . $aval['rule'] . "'";
+    $ssql .= ",'" . $_SESSION['user_name']."'";
+    $ssql .= ",'" . date('Y-m-d H:i:s',time())."'";
+    $ssql .= ",'" . $_SESSION['user_name']."'";
+    $ssql .= ",'" . date('Y-m-d H:i:s',time())."'";
     $ssql .= ")";
   } else {
     // ユーザ権限テーブルへの追加 sql 文字列生成
@@ -355,12 +360,10 @@ function UserManu_preview() {
     $ausers[$i]['text'] = $arec['name'];
     $i++;
   }
-
   echo '<tr><td>';                          // データセル
   echo tep_draw_pull_down_menu("userslist", $ausers, $ocertify->auth_user, $nLsize);  // リストボックスの表示
   echo "</td></tr>\n";
   echo "</table>\n";
-
   echo '<br>';
   echo tep_draw_hidden_field("execute_password",BUTTON_CHANGE_PASSWORD);
 

@@ -26,15 +26,16 @@ if ($_GET['action'] == 'check_search') {
   tep_db_query("update `".TABLE_OCONFIG."` set `value` = '' where `keyword` = 'reset_pwd_enddate'");  
   exit;
 }
+
 if($_SERVER['REQUEST_METHOD']=='POST'){
   if($_GET['type'] =='saveRange'){
     //检查是否合法后更新数据库，并把所有用户reset_flag设置成0 ,范围内的用户的 reset_flag设置成1 
 
     $reset_pwd_startdate = trim($_POST['start']);
     $reset_pwd_enddate   = trim($_POST['end']);
-
-    tep_db_query('update  '.TABLE_OCONFIG.' set value = "'. $reset_pwd_startdate.'" where  keyword = "reset_pwd_startdate"');
-    tep_db_query('update  '.TABLE_OCONFIG.' set value = "'. $reset_pwd_enddate.'" where  keyword = "reset_pwd_enddate"');
+    tep_db_query('update  '.TABLE_OCONFIG.' set value = "'.
+        $reset_pwd_startdate.'",user_update = "'.$ocertify->auth_user.'",date_update = "'.date('Y-m-d H:i:s',time()).'" where  keyword = "reset_pwd_startdate"');
+    tep_db_query('update  '.TABLE_OCONFIG.' set value = "'.$reset_pwd_enddate.'",user_update = "'.$ocertify->auth_user.'",date_update = "'.date('Y-m-d H:i:s',time()).'" where  keyword = "reset_pwd_enddate"');
 //    tep_db_query('update  '.TABLE_CUSTOMERS_INFO .' set reset_flag = 0');
 
     $reset_pwd_startdate.=' 00:00:00';
@@ -48,8 +49,8 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     //检查合法后 更新数据库即可
     $reset_pwd_title = $_POST['title'];
     $reset_pwd_content   = $_POST['content'];
-    tep_db_query('update  '.TABLE_OCONFIG.' set value = "'. $reset_pwd_title.'" where  keyword = "reset_pwd_title"');
-    tep_db_query('update  '.TABLE_OCONFIG.' set value = "'. $reset_pwd_content.'" where  keyword = "reset_pwd_content"');
+    tep_db_query('update  '.TABLE_OCONFIG.' set value = "'.$reset_pwd_title.'",user_update = "'.$ocertify->auth_user.'",date_update = "'.date('Y-m-d H:i:s',time()).'"  where  keyword = "reset_pwd_title"');
+    tep_db_query('update  '.TABLE_OCONFIG.' set value = "'.$reset_pwd_content.'",user_update = "'.$ocertify->auth_user.'",date_update = "'.date('Y-m-d H:i:s',time()).'"where  keyword = "reset_pwd_content"');
   }
 
 }
@@ -227,7 +228,7 @@ require("includes/note_js.php");
     <input type='submit' value="<?php echo TEXT_RESET_PWD_SAVE;?>">
     </td>
     </tr>
-    </table>
+       </table>
     </form>
     <table border="0" cellpadding="2" cellpadding="0" width="100%">
     <tr>
@@ -254,7 +255,19 @@ require("includes/note_js.php");
     </table>
     </td></td></table>
 
-    </td></tr></table>
+    </td></tr>
+     <?php
+        if($_GET['type'] == 'saveRange'){
+          $config_keyword = 'reset_pwd_startdate';  
+        }else if($_GET['type'] == 'saveMsg'){
+          $config_keyword = 'reset_pwd_title'; 
+        }
+       $config = tep_db_fetch_array(tep_db_query("select * from ".TABLE_OCONFIG." where `keyword` = '".$config_keyword."' ")); 
+       echo '<tr><td style="padding-top:10px;">'.TEXT_USER_UPDATE.'&nbsp;'.$config['user_update'].'</td></tr>    
+             <tr><td style="padding-bottom:10px;">'.TEXT_DATE_UPDATE.'&nbsp;'.$config['date_update'].'</td></tr>';    
+    ?>
+
+    </table>
     </div>
     </td>
 

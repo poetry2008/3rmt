@@ -27,15 +27,15 @@
         */
         if ($_POST['tags_id']) {
           foreach($_POST['tags_id'] as $tid) {
-            tep_db_query("delete from products_to_tags where tags_id='".$tid."'");
-            
+          tep_db_query("delete from products_to_tags where tags_id='".$tid."'");
             if ($_POST['products_id']) {
-              foreach($_POST['products_id'] as $pid) {
+               foreach($_POST['products_id'] as $pid) {
                 tep_db_perform("products_to_tags", array('products_id' => (int)$pid, 'tags_id' => (int)$tid));
               }
               //tep_db_query("delete from products_to_tags where tags_id='".$_POST['tags_id']."'");
             }
           }
+
         }
         tep_redirect(tep_href_link('products_tags.php'));
         break;

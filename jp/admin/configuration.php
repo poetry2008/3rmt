@@ -440,10 +440,8 @@ default:
 $contents[] = array('text' => '<br>' . TEXT_USER_ADDED . ' ' . $cInfo->user_added);
 $contents[] = array('text' => '<br>' . TEXT_INFO_DATE_ADDED . ' ' . tep_datetime_short($cInfo->date_added));
 
-if (tep_not_null($cInfo->last_modified)){
 $contents[] = array('text' => '<br>' . TEXT_USER_UPDATE . ' ' . $cInfo->user_update);
 $contents[] = array('text' =>'<br>'. TEXT_INFO_LAST_MODIFIED . ' ' . tep_datetime_short($cInfo->last_modified));
-    }
     }
     break;
 }

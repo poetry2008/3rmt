@@ -5,14 +5,13 @@
 include("includes/application_top.php");
 
 if($_POST['updata'] == 'on') {
-
   $mm_2 = "";
   for($j=201; $j<232; $j++) {
     $mm_2 .= $_POST[$j];
   }
   
   if (tep_db_num_rows(tep_db_query("select * from ".TABLE_BANK_CALENDAR." where cl_ym = '".$_POST['ymd2']."'"))) {
-    tep_db_query("update ".TABLE_BANK_CALENDAR." set cl_value='".$mm_2."' where cl_ym = '".$_POST['ymd2']."'");
+    tep_db_query("update ".TABLE_BANK_CALENDAR." set cl_value='".$mm_2."',user_update='".$ocertify->auth_user."',date_update='".date('Y-m-d H:i:s',time())."' where cl_ym = '".$_POST['ymd2']."'");
   } else {
     tep_db_query("insert into  ".TABLE_BANK_CALENDAR." (cl_ym,cl_value) values ('".$_POST['ymd2']."','".$mm_2."')");
   }
@@ -22,17 +21,16 @@ if($_POST['updata'] == 'on') {
     $mm_3 .= $_POST[$j];
   }
   if (tep_db_num_rows(tep_db_query("select * from ".TABLE_BANK_CALENDAR." where cl_ym = '".$_POST['ymd3']."'"))) {
-    tep_db_query("update ".TABLE_BANK_CALENDAR." set cl_value='".$mm_3."' where cl_ym = '".$_POST['ymd3']."'");
+    tep_db_query("update ".TABLE_BANK_CALENDAR." set cl_value='".$mm_3."',user_update='".$ocertify->auth_user."',date_update='".date('Y-m-d H:i:s',time())."'where cl_ym = '".$_POST['ymd3']."'");
   } else {
     tep_db_query("insert into  ".TABLE_BANK_CALENDAR." (cl_ym,cl_value) values ('".$_POST['ymd3']."','".$mm_3."')");
   }
-    
   $mm_4 = "";
   for($j=401; $j<432; $j++) {
     $mm_4 .= $_POST[$j];
   }
   if (tep_db_num_rows(tep_db_query("select * from ".TABLE_BANK_CALENDAR." where cl_ym = '".$_POST['ymd4']."'"))) {
-    tep_db_query("update ".TABLE_BANK_CALENDAR." set cl_value='".$mm_4."' where cl_ym = '".$_POST['ymd4']."'");
+    tep_db_query("update ".TABLE_BANK_CALENDAR." set cl_value='".$mm_4."',user_update='".$ocertify->auth_user."',date_update='".date('Y-m-d H:i:s',time())."'where cl_ym = '".$_POST['ymd4']."'");
   } else {
     tep_db_query("insert into  ".TABLE_BANK_CALENDAR." (cl_ym,cl_value) values ('".$_POST['ymd4']."','".$mm_4."')");
   }
@@ -42,7 +40,7 @@ if($_POST['updata'] == 'on') {
     $mm_5 .= $_POST[$j];
   }
   if (tep_db_num_rows(tep_db_query("select * from ".TABLE_BANK_CALENDAR." where cl_ym = '".$_POST['ymd5']."'"))) {
-    tep_db_query("update ".TABLE_BANK_CALENDAR." set cl_value='".$mm_5."' where cl_ym = '".$_POST['ymd5']."'");
+    tep_db_query("update ".TABLE_BANK_CALENDAR." set cl_value='".$mm_5."',user_update='".$ocertify->auth_user."',date_update='".date('Y-m-d H:i:s',time())."' where cl_ym = '".$_POST['ymd5']."'");
   } else {
     tep_db_query("insert into  ".TABLE_BANK_CALENDAR." (cl_ym,cl_value) values ('".$_POST['ymd5']."','".$mm_5."')");
   }
@@ -52,7 +50,7 @@ if($_POST['updata'] == 'on') {
     $mm_6 .= $_POST[$j];
   }
   if (tep_db_num_rows(tep_db_query("select * from ".TABLE_BANK_CALENDAR." where cl_ym = '".$_POST['ymd6']."'"))) {
-    tep_db_query("update ".TABLE_BANK_CALENDAR." set cl_value='".$mm_6."' where cl_ym = '".$_POST['ymd6']."'");
+    tep_db_query("update ".TABLE_BANK_CALENDAR." set cl_value='".$mm_6."',user_update='".$ocertify->auth_user."',date_update='".date('Y-m-d H:i:s',time())."' where cl_ym = '".$_POST['ymd6']."'");
   } else {
     tep_db_query("insert into  ".TABLE_BANK_CALENDAR." (cl_ym,cl_value) values ('".$_POST['ymd6']."','".$mm_6."')");
   }
@@ -62,12 +60,11 @@ if($_POST['updata'] == 'on') {
     $mm_7 .= $_POST[$j];
   }
   if (tep_db_num_rows(tep_db_query("select * from ".TABLE_BANK_CALENDAR." where cl_ym = '".$_POST['ymd7']."'"))) {
-    tep_db_query("update ".TABLE_BANK_CALENDAR." set cl_value='".$mm_7."' where cl_ym = '".$_POST['ymd7']."'");
+    tep_db_query("update ".TABLE_BANK_CALENDAR." set cl_value='".$mm_7."',user_update='".$ocertify->auth_user."',date_update='".date('Y-m-d H:i:s',time())."' where cl_ym = '".$_POST['ymd7']."'");
   } else {
     tep_db_query("insert into  ".TABLE_BANK_CALENDAR." (cl_ym,cl_value) values ('".$_POST['ymd7']."','".$mm_7."')");
   }
-  
-  tep_redirect(tep_href_link(FILENAME_BANK_CL, 'action=success&date='.$_POST['date']));
+     tep_redirect(tep_href_link(FILENAME_BANK_CL, 'action=success&date='.$_POST['date']));
 }
 ?>
 
@@ -104,6 +101,7 @@ if($_GET['action'] == 'success') {
 <?php }?>
 <!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
+
 <!-- header_eof -->
 
 <!-- body -->
@@ -124,9 +122,10 @@ if($_GET['action'] == 'success') {
           </tr>
         </table></td>
       </tr>
+
       <tr>
         <td>
-
+     
     <form action="<?php echo $PHP_SELF; ?>" method="post">
     <input type="hidden" name="updata" value="on">
     <input type="hidden" name="date" value="<?php echo $_GET['date'];?>">
@@ -272,12 +271,12 @@ if($_GET['action'] == 'success') {
     echo '<input type="hidden" name="ymd'.($ii+1).'" value="'.$ymd2.'">';
     }
     echo "</td></tr><tr><td align='right'>";
-    echo '<P>'.tep_html_element_submit(IMAGE_SAVE).'</P>'
+    echo '<P>'.tep_html_element_submit(IMAGE_SAVE).'</P>';
     ?>
     </form>
     </td>
       </tr>
-    <tr>
+      <tr>
       <td align="right">
         <table border="0">
           <tr>
@@ -300,6 +299,29 @@ if($_GET['action'] == 'success') {
         </table>
       </td>
     </tr>
+<?php 
+    $sql = tep_db_query("select * from ".TABLE_BANK_CALENDAR." where cl_ym = '".$ymd2."'");
+    $bank_rows = tep_db_fetch_array($sql);
+    $html_str = '';
+    if($bank_rows){
+    $html_str .= '<tr>'; 
+    $html_str .= '<td style="padding-top:10px;">';
+    $html_str .= TEXT_USER_UPDATE;
+    $html_str .= '&nbsp;'.$bank_rows['user_update'];
+    $html_str .= '</td>';
+    $html_str .= '</tr>';
+
+    $html_str .= '<tr>'; 
+    $html_str .= '<td style="padding-bottom:10px;">';
+    $html_str .= TEXT_DATE_UPDATE;
+    $html_str .= '&nbsp;'.$bank_rows['date_update'];
+    $html_str .= '</td>';
+    $html_str .= '</tr>';
+
+    }
+    echo $html_str;
+?>
+
   </table></div></td>
 <!-- body_text_eof -->
   </tr>
