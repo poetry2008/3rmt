@@ -14,6 +14,7 @@ if($_GET['action'] == 'update'){
   $preorders_work = tep_db_prepare_input($_POST['preorders_work']);
   $preorders_sort_list = tep_db_prepare_input($_POST['preorders_sort_list']);
   $preorders_sort = tep_db_prepare_input($_POST['preorders_sort']);
+  $personal_language = tep_db_prepare_input($_POST['personal_language']);
 
   $error = false;
   if(empty($orders_site)){
@@ -43,6 +44,16 @@ if($_GET['action'] == 'update'){
   }
 
   if($error == false){
+    $personal_language_temp_array = array();
+    if(PERSONAL_SETTING_LANGUAGE == ''){
+      $personal_language_temp_array = array($ocertify->auth_user=>$personal_language);
+    }else{
+      $personal_language_str_array = unserialize(PERSONAL_SETTING_LANGUAGE); 
+      $personal_language_str_array[$ocertify->auth_user] = $personal_language;
+      $personal_language_temp_array = $personal_language_str_array;
+    }
+    $personal_language_str = serialize($personal_language_temp_array);
+    tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$personal_language_str."' where configuration_key='PERSONAL_SETTING_LANGUAGE'");
     $user_info = tep_get_user_info($ocertify->auth_user);
     $orders_site_temp_array = array();
     $orders_site_setting_str = implode('|',$orders_site);
@@ -172,6 +183,25 @@ require("includes/note_js.php");
             <td valign="top">
             <form name="personal_setting" method="post" action="<?php echo FILENAME_PERSONAL_SETTING;?>?action=update">
             <table border="0" width="100%" cellspacing="0" cellpadding="5">
+              <tr><td>
+              <b><?php echo TEXT_PERSONAL_SETTING_LANGUAGE_OPTION;?></b> 
+              <?php
+               if(PERSONAL_SETTING_LANGUAGE == ''){
+                 $language_flag = 'jp';
+               }else{
+                 $personal_language_array = unserialize(PERSONAL_SETTING_LANGUAGE);
+                 if(array_key_exists($ocertify->auth_user,$personal_language_array)){
+                   $language_flag = $personal_language_array[$ocertify->auth_user]; 
+                 }else{
+                   $language_flag = 'jp'; 
+                 }
+               }
+              ?>
+              <select name="personal_language">
+              <option value="jp"<?php echo $language_flag == 'jp' ? 'selected' : '';?>>JP</option>
+              <option value="ch"<?php echo $language_flag == 'ch' ? 'selected' : '';?>>CH</option>
+              </select>
+              </td></tr>
               <tr><td><b><?php echo TEXT_ORDERS_SETTING;?></b></td></tr>
               <tr>
               <?php

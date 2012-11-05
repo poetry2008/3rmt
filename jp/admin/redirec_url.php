@@ -19,9 +19,9 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
 <?php }?>
 <?php
   if(isset($_GET['url'])&&$_GET['url']){
-    echo "<a href='".urldecode($_GET['url'])."'>";
+    echo "<div class='box_link'><a href='".urldecode($_GET['url'])."'>";
     echo urldecode($_GET['url']);
-    echo "</a>";
+    echo "</a></div>";
   }
  require(DIR_WS_INCLUDES . 'footer.php');
 ?>

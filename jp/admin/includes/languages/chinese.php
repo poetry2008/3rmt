@@ -310,8 +310,8 @@ define('TEXT_DISPLAY_NUMBER_OF_ZONES', '当前显示<b>%d</b> &sim; <b>%d</b>  (
 
 define('PREVNEXT_BUTTON_PREV', '&lt;&lt;');
 define('PREVNEXT_BUTTON_NEXT', '&gt;&gt;');
-define('BUTTON_PREV', '上一页');
-define('BUTTON_NEXT', '下一页');
+define('BUTTON_PREV', 'Prev');
+define('BUTTON_NEXT', 'Next');
 //==============================================================
 
 
@@ -694,18 +694,18 @@ define('BOX_USER_ADMIN', '用户管理');
 define('BOX_USER_LOG', '访问日志');
 define('BOX_USER_LOGOUT', '退出');
 
-define('TEXT_SITE_COPYRIGHT' ,'Copyright © %s '.COMPANY_NAME);
+define('TEXT_SITE_COPYRIGHT' ,'Copyright © %s Haomai');
 
-define('JUMP_PAGE_TEXT', ' ');
-define('JUMP_PAGE_BUTTON_TEXT', '跳转到');
+define('JUMP_PAGE_TEXT', 'Page');
+define('JUMP_PAGE_BUTTON_TEXT', 'Go');
 
 // javascript language
 define('JS_TEXT_ONETIME_PWD_ERROR','密码有误');
 define('JS_TEXT_INPUT_ONETIME_PWD','请输入一次性密码\r\n');
 define('JS_TEXT_POSTAL_NUMBER_ERROR','邮编错误。');
 // cleate_list
-define('','登录列表');
-define('','查看历史记录');
+define('TEXT_CLEATE_LIST','登录列表');
+define('TEXT_CLEATE_HISTORY','查看历史记录');
 // products_tags
 define('TEXT_P_TAGS_NO_TAG','无标签数据，请添加');
 define('UPDATE_MSG_TEXT', '更新');

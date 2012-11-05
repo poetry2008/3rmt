@@ -849,13 +849,7 @@ $products_arr = $sort_products_arr;
 </td></tr></table></td></tr><tr><td>
 <?php echo '<a style="width:100%;display:none" id = "back_link" href="'. tep_href_link($back_url, $back_url_params, 'NONSSL').'"></a>';
 ?>
-<<<<<<< HEAD
-</td></tr></table>
-</div>
-</td></tr>
-=======
-</td></tr></table></div></td></tr>
->>>>>>> 544fc4cbe7e31c9107502ecb529d7b84f0f9344d
+</td></tr></table></div></div></td></tr>
 </table>
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 <br>

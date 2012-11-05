@@ -1457,6 +1457,16 @@ font-size:14px;
 .show_left_menu{
 	height:650px;
 }
+.show_left_menu p{
+  padding:5px 8px;
+  margin:0;
+  min-width:750px;
+}
+.show_left_menu span{
+  padding:0 8px 5px 5px;
+  margin:0;
+  clear:both;
+}
 @media all and (-webkit-min-device-pixel-ratio:0){
 .footer_copyright{
 	min-width:750px;
@@ -1549,4 +1559,11 @@ a.pageResults{
 }
 #new_yui3{
 	z-index:200;
+}
+.box_link{height:650px;}
+.box_link a{
+	text-decoration:underline;
+	color:#0000FF;
+	line-height:25px;
+	margin:10px;
 }
