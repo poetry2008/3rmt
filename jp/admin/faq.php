@@ -1171,11 +1171,7 @@ $contents[] = array('text' => '<br>'. TEXT_USER_UPDATE. ' '
               /*
               $contents[] = array('text' => '<b>' .$site['romaji'] .'</b>');
               */
-              $contents[] = array('align' => 'left' ,
-                  'text' => '<a href="'.tep_href_link(FILENAME_FAQ, 'cPath=' . $cPath . '&qID=' . $qInfo->faq_question_id .  '&action=edit_faq_question'. '&site_id='.  $site['id'].'&page='.$_GET['page']).'">'.tep_html_element_button(IMAGE_EDIT).'</a>'.(
-                   tep_faq_question_description_exist($qInfo->faq_question_id,$site['id'])?
-                   '<a href="'.tep_href_link(FILENAME_FAQ, 'cPath=' . $cPath . '&qID=' . $qInfo->faq_question_id .  '&action=delete_faq_question&site_id='.  $site['id'].'&page='.$_GET['page']).'">'.tep_html_element_button(IMAGE_DELETE).'</a>'
-                   :'')
+              $contents[] = array('align' => 'left' , 'text' => '<a href="'.tep_href_link(FILENAME_FAQ, 'cPath=' . $cPath . '&qID=' . $qInfo->faq_question_id .  '&action=edit_faq_question'. '&site_id='.  $site['id'].'&page='.$_GET['page']).'">'.tep_html_element_button(IMAGE_EDIT).'</a>'.(tep_faq_question_description_exist($qInfo->faq_question_id,$site['id'])?'<a href="'.tep_href_link(FILENAME_FAQ, 'cPath=' . $cPath . '&qID=' . $qInfo->faq_question_id .  '&action=delete_faq_question&site_id='.  $site['id'].'&page='.$_GET['page']).'">'.tep_html_element_button(IMAGE_DELETE).'</a>':'')
                   );
             }
           }else{

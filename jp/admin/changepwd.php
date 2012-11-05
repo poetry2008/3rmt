@@ -132,7 +132,6 @@ function makeInsertUser($aval, $nmode=0) {
 }
 
 function makeUpdateUser($aval, $nmode=0) {
-
   $ssql = "update " . TABLE_USERS . " set";
   if ($nmode == 0) {
     $ssql .= " name='" . $aval['name'] . "'";
@@ -146,7 +145,7 @@ function makeUpdateUser($aval, $nmode=0) {
     $ssql .= ",'" . $aval['pwd_rules'] . "'";
     */
   }
-  $ssql .= " where userid='" . $GLOBALS['userid'] . "'";
+  $ssql .= ",user_update = '".$_SESSION['user_name']."',date_update = '".date('Y-m-d H:i:s',time())."'  where userid='" . $GLOBALS['userid'] . "'";
 
   return $ssql;
 }
@@ -223,7 +222,38 @@ function UserPassword_preview() {
   echo tep_draw_password_field("aval[chk_password]", '', TRUE," id='aval_chk_password'");
   echo '</td>';
   echo "</tr>\n";
+  $users = tep_db_fetch_array(tep_db_query("select * from ".TABLE_USERS." where userid  ='".$GLOBALS['userslist']."'"));
+  echo "<tr>\n";
+  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_USER_ADDED . '</td>';  // 確認のため再入力
+  // 入力項目出力
+  echo '<td>';
+  echo $users['user_added'];
+  echo '</td>';
+  echo "</tr>\n";
 
+  echo "<tr>\n";
+  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_DATE_ADDED . '</td>';  // 確認のため再入力
+  // 入力項目出力
+  echo '<td>';
+  echo $users['date_added'];
+  echo '</td>';
+  echo "</tr>\n";
+
+  echo "<tr>\n";
+  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_USER_UPDATE . '</td>';  // 確認のため再入力
+  // 入力項目出力
+  echo '<td>';
+  echo $users['user_update'];
+  echo '</td>';
+  echo "</tr>\n";
+
+  echo "<tr>\n";
+  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_DATE_UPDATE . '</td>';  // 確認のため再入力
+  // 入力項目出力
+  echo '<td>';
+  echo $users['date_update'];
+  echo '</td>';
+  echo "</tr>\n";
   echo "</table>\n";
 
   echo '<br>';

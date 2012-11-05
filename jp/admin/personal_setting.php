@@ -54,7 +54,7 @@ if($_GET['action'] == 'update'){
       $orders_site_temp_array = $orders_site_setting_array;
     }
     $orders_site_str = serialize($orders_site_temp_array);
-    tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$orders_site_str."' where configuration_key='PERSONAL_SETTING_ORDERS_SITE'");
+    tep_db_query("update ". TABLE_CONFIGURATION ." set   configuration_value='".$orders_site_str."',user_update='".$ocertify->auth_user."',last_modified='".date('Y-m-d H:i:s',time())."'  where configuration_key='PERSONAL_SETTING_ORDERS_SITE'");
     $orders_work_temp_array = array();
     $orders_work_setting_str = implode('|',$orders_work);
     if(PERSONAL_SETTING_ORDERS_WORK == ''){
@@ -417,6 +417,11 @@ require("includes/note_js.php");
                </td>
               </tr>
               <tr><td align="right"><input type="submit" value="<?php echo TEXT_SAVE;?>"></td></tr>
+              <?php 
+               $configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='PERSONAL_SETTING_ORDERS_SITE'"));  
+              echo '<tr><td>'.TEXT_USER_UPDATE.'&nbsp;'.$configuration['user_update'].'</td></tr>
+                    <tr><td>'.TEXT_DATE_UPDATE.'&nbsp;'.$configuration['last_modified'].'</td></tr>';
+              ?>
 </table>
 </form>
 </td></tr></table></td></tr>

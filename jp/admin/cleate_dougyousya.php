@@ -39,8 +39,8 @@ case 'set_oroshi':
   $j = 0 ;
   while ( $j < $cot) {
   $ocid = $ocid_arr[$j];
-  $sql = 'insert into set_dougyousya_names (dougyousya_name) values
-    ("'.$oro_name[$j].'")';
+  $sql = 'insert into set_dougyousya_names (dougyousya_name,user_added,date_added,user_update,date_update) values
+    ("'.$oro_name[$j].'","'.$ocertify->auth_user.'","'.date('Y-m-d H:i:s',time()).'","'.$ocertify->auth_user.'","'.date('Y-m-d H:i:s',time()).'")';
     $j++;
   if(!$oro_name[$j-1]||!$ocid){
     continue;
@@ -94,8 +94,7 @@ case 'set_oroshi':
   $sql = 'delete from set_dougyousya_history where dougyousya_id = "'.$orrshi_id.'"and categories_id not in (select sdc.categories_id from set_dougyousya_categories sdc where dougyousya_id ="'.$orrshi_id.'")';
   tep_db_query($sql);
 */
-  $sql = 'update set_dougyousya_names set dougyousya_name="'.$name[$orrshi_id].'"
-  where dougyousya_id="'.$orrshi_id.'"';
+  $sql = 'update set_dougyousya_names set dougyousya_name="'.$name[$orrshi_id].'",user_update="'.$ocertify->auth_user.'",date_update="'.date('Y-m-d H:i:s',time()).'" where dougyousya_id="'.$orrshi_id.'"';
   tep_db_query($sql);
   }
   
@@ -364,13 +363,19 @@ require("includes/note_js.php");
   $res=tep_db_query("select * from set_dougyousya_names ORDER BY sort_order ASC");
   $i = 0;
 ?>
-<table>
-<?php while($col=tep_db_fetch_array($res)){?>
-  <tr>
-    <td width="10"><?php 
-      if ($i) {?>
-        <a href="javascript:void(0);" onclick="ex(<?php echo $i;?>)">&uarr;</a><?php 
-      }?></td>
+<table width="100%" cellspacing="0" border="0" cellpadding="2">
+<?php
+while($col=tep_db_fetch_array($res)){
+if(empty($HTTP_GET_VARS['id'])){
+   $HTTP_GET_VARS['id'] = $col['dougyousya_id']; 
+   echo '<tr class="dataTableRowSelected">';
+ }else if($col['dougyousya_id'] == $HTTP_GET_VARS['id']){
+   echo '<tr class="dataTableRowSelected">';
+ } else{
+   echo '<tr>';
+ }
+  ?>
+    <td width="10"><?php if ($i) {?><a href="javascript:void(0);" onclick="ex(<?php echo $i;?>)">↑</a><?php }?></td>
     <td id="tr_<?php echo $i;?>_1">
       <input type="hidden" name="sort_order[<?php echo $col['dougyousya_id'];?>]" value="<?php echo $i;?>" class="sort_order_input">
       <?php echo CLEATE_DOUGYOUSYA_TONGYE;?><?php echo $col['dougyousya_name'];?>
@@ -379,6 +384,9 @@ require("includes/note_js.php");
     <td id="tr_<?php echo $i;?>_2" width='50'><a href='cleate_dougyousya.php?action=edit_oroshi&id=<?php echo $col['dougyousya_id'];?>'><?php echo CLEATE_DOUGYOUSYA_EDIT;?></a></td>
     <td id="tr_<?php echo $i;?>_3" width='50'><a href='javascript:void(0);' onclick='del_oroshi(<?php echo $col['dougyousya_id'];?>)'><?php echo CLEATE_DOUGYOUSYA_DEL;?></a></td>
     <td id="tr_<?php echo $i;?>_4" width='50'><a href='history.php?action=dougyousya&dougyousya_id=<?php echo $col['dougyousya_id'];?>'><?php echo CLEATE_DOUGYOUSYA_HISTORY;?></a>
+  <td width='50'><a href='cleate_dougyousya.php?action=select_oroshi&id=<?php echo
+  $col['dougyousya_id'];?>'><?php if($col['dougyousya_id'] == $HTTP_GET_VARS['id']){echo tep_image(DIR_WS_IMAGES.
+      'icon_arrow_right.gif');}else{ echo tep_image(DIR_WS_IMAGES . 'icon_info.gif');}?></a></td>
   </tr>
 <?php if(isset($ckstr)&&$orrshi_id == $col['dougyousya_id']){?>
   <tr>
@@ -401,8 +409,29 @@ require("includes/note_js.php");
 <tr>
 <td  colspan ='5'>
  <div id="o_input"></div> 
+  </td>
+</tr>
+</table>
 </td>
+<td width="25%" valign="top" class="right_column_boxes">
+<table width="100%" cellspacing="0" cellpadding="2" border="0">
+ <tr class="infoBoxHeading">
+    <td class="infoBoxHeading">
+    <?php 
+    $oroshi_query = tep_db_query("select * from set_dougyousya_names where   dougyousya_id = '".$HTTP_GET_VARS['id']."'");
+    $oroshi = tep_db_fetch_array($oroshi_query);
+    echo '<table width="100%" cellspacing="0" cellpadding="2" border="0">
+    <tr><td class="infoBoxContent" align="left"><b>'.$oroshi['dougyousya_name'].'</b></td></tr>
+    <tr><td>'.TEXT_USER_ADDED.'</td><td>'.$oroshi['user_added'].'</td></tr>
+    <tr><td>'.TEXT_DATE_ADDED.'</td><td>'.$oroshi['date_added'].'</td></tr>
+    <tr><td>'.TEXT_USER_UPDATE.'</td><td>'.$oroshi['user_update'].'</td></tr>
+    <tr><td>'.TEXT_DATE_UPDATE.'</td><td>'.$oroshi['date_update'].'</td></tr>
+    </table>';
+    ?></td>
+  </tr>
+</table>
 </td>
+</tr>
 </table>
 <div id="oo_input" style="display:none">
 <?php
@@ -411,10 +440,10 @@ require("includes/note_js.php");
 </div>
 <input type="submit" value="<?php echo CLEATE_DOUGYOUSYA_LOGIN;?>">
 <input type="submit" onClick="notval()" value="<?php echo CLEATE_DOUGYOUSYA_UPDATE_SORT;?>" name="sort" style="margin:2px">
-</td>
-</tr>
-</table>
 </form>
+                          </td>
+                       </tr>
+                    </table>      
                  </td>
               </tr>
            </table>

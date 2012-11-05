@@ -15,8 +15,7 @@ define('HEADING_TITLE', $tmp  =
 
 if (isset($_GET['action'])) 
   switch ($_GET['action']) {
-  case 'save':
-    $post_configuration = $_POST['configuration'];
+  case 'save': $post_configuration = $_POST['configuration'];
     $site_id = isset($_POST['site_id'])?(int)$_POST['site_id']:0;
     if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];//权限判断
     else $site_arr="";
@@ -31,7 +30,7 @@ if (isset($_GET['action']))
 
       $module->install();
     }
- 
+  
  tep_db_query("update " . TABLE_CONFIGURATION . " set user_update = '".$ocertify->auth_user."', last_modified = '".date('Y-m-d H:i:s',time())."' where configuration_key =  'MODULE_".strtoupper($set)."_".strtoupper($_GET['module'])."_STATUS' and site_id = '".$_POST['site_id']."'");
  tep_db_query("update " . TABLE_CONFIGURATION . " set user_update =  '".$ocertify->auth_user."', last_modified = '".date('Y-m-d H:i:s',time())."' where configuration_key =  'MODULE_".strtoupper($set)."_".str_replace('OT_','',strtoupper($_GET['module']))."_STATUS' and site_id = '".$_POST['site_id']."'");
 
@@ -85,7 +84,6 @@ if (isset($_GET['action']))
                   '".$site_id."'
                   )
                 ");
-
             }
           }
           tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($value) . "' where configuration_key = '" .  $limit_show_str . "' and site_id = '".$site_id."'");
@@ -96,7 +94,7 @@ if (isset($_GET['action']))
             $cp_show_configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='MODULE_PAYMENT_".strtoupper($_GET['module'])."_LIMIT_SHOW' and site_id='0'"));
             if ($cp_show_configuration) {
 
-              tep_db_query("
+             tep_db_query("
                   INSERT INTO `configuration` (
                   `configuration_id` ,
                   `configuration_title` ,
@@ -126,7 +124,6 @@ if (isset($_GET['action']))
                   '".$site_id."'
                   )
                 ");
-
             }
           }
           $blank_show_arr = array();
@@ -233,7 +230,7 @@ if (isset($_GET['action']))
 
         $cp_configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$key."' and site_id='0'"));
         if ($cp_configuration) {
-          tep_db_query("
+          $sql=tep_db_query("
               INSERT INTO `configuration` (
               `configuration_id` ,
               `configuration_title` ,
@@ -263,7 +260,6 @@ if (isset($_GET['action']))
               '".$site_id."'
               )
             ");
-
         }
       }
 
@@ -495,7 +491,12 @@ if (tep_db_num_rows($check_query)) {
     tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . implode(';', $installed_modules) . "', last_modified = now() where configuration_key = '" . $module_key . "'");
   }
 } else {
-  tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('Installed Modules', '" . $module_key . "', '" . implode(';', $installed_modules) . "', 'This is automatically updated. No need to edit.', '6', '0', now())");
+  tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title,
+    configuration_key, configuration_value, configuration_description,
+    configuration_group_id, sort_order, date_added , user_added) values ('Installed Modules', '".
+      $module_key . "', '" . implode(';', $installed_modules) . "', 'This is
+      automatically updated. No need to edit.', '6', '0', now(),
+      '".$ocertify->auth_user."')");
 }
 ?>
 <tr>
@@ -547,8 +548,7 @@ case 'edit':
   $contents = array('form' => tep_draw_form('modules', FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $_GET['module'] . '&action=save'));
   $contents[] = array('text' => $keys);
   $contents[] = array('text' => '<input type="hidden" name="site_id" value="'.$site_id.'">');
-  $contents[] = array('align' => 'center', 'text' => '<br>' .
-                      tep_html_element_submit(IMAGE_SAVE) . ' <a href="' .  tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' .  $_GET['module']) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
+  $contents[] = array('align' => 'center', 'text' => '<br>' .tep_html_element_submit(IMAGE_SAVE) . ' <a href="' .  tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' .  $_GET['module']) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
 
   break;
 default:
@@ -661,12 +661,15 @@ default:
      $check = tep_db_fetch_array($check_query);
       $contents[] = array('text' => '<b>'.$s['romaji'].'</b>');
       $contents[] = array('align' => 'left', 'text' => '<a href="' .  tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' .  @$_GET['module'] . '&action=edit&site_id='.$s['id']) . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a>');
+      $contents[] = array('align' => 'left', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$check['user_added']);
+      $contents[] = array('align' => 'left', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$check['date_added']);
       $contents[] = array('align' => 'left', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$check['user_update']);
       $contents[] = array('align' => 'left', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$check['last_modified']);
     }
     // 临时隐藏
     // $contents[] = array('text' => '<br>' . $mInfo->description . "<hr>");
     $contents[] = array('text' => '<div style="word-wrap:break-word;width:200px;overflow:hidden;"><br>' . $keys . '</div>');
+
   } else {
     $contents[] = array('text' => isset($mInfo->description)?$mInfo->description:'');
   }
@@ -684,7 +687,8 @@ if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {
 
 ?>
 </tr>
-</table></td>
+</table>
+</td>
 </tr>
 </table>
 </div>

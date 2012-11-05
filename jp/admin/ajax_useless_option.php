@@ -157,7 +157,7 @@ echo $option_group_option['comment'];
 
 <tr>
 <td>
-&nbsp;&nbsp;&nbsp;<?php echo AJAX_USELESS_OPTION_GROUP_TIME;?>:
+&nbsp;&nbsp;&nbsp;<?php echo TEXT_USER_ADDED;?>
 </td>
 <td>
 <?php echo $option_group_array['user_added']?>

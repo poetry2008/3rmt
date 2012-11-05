@@ -41,8 +41,7 @@ case 'set_oroshi':
   $j = 0 ;
   while ( $j < $cot) {
   $ocid = $ocid_arr[$j];
-  $sql = 'insert into set_oroshi_names (oroshi_name) values
-    ("'.$oro_name[$j].'")';
+  $sql = 'insert into set_oroshi_names  (oroshi_name,user_added,date_added,user_update,date_update) values ("'.$oro_name[$j].'","'.$ocertify->auth_user.'","'.date('Y-m-d H:i:s',time()).'","'.$ocertify->auth_user.'","'.date('Y-m-d H:i:s',time()).'")';
     $j++;
   if(!$oro_name[$j-1]||!$ocid){
     continue;
@@ -85,8 +84,7 @@ case 'set_oroshi':
 //  tep_db_query($sql);
   
     $name = $_POST['up_oroshi'];
-    $sql = 'update set_oroshi_names set oroshi_name="'.$name[$orrshi_id].'"
-    where oroshi_id="'.$orrshi_id.'"';
+    $sql = 'update set_oroshi_names set oroshi_name="'.$name[$orrshi_id].'",user_update="'.$ocertify->auth_user.'",date_update = "'.date("Y-m-d H:i:s",time()).'"  where oroshi_id="'.$orrshi_id.'"';
     tep_db_query($sql);
   }
   /*
@@ -355,9 +353,18 @@ require("includes/note_js.php");
   $res=tep_db_query("select * from set_oroshi_names ORDER BY sort_order ASC");
   $i = 0;
 ?>
-<table>
-<?php while($col=tep_db_fetch_array($res)){?>
-  <tr>
+<table width="100%" cellspacing="0" border="0" cellpadding="2">
+<?php
+while($col=tep_db_fetch_array($res)){
+if(empty($HTTP_GET_VARS['id'])){
+   $HTTP_GET_VARS['id'] = $col['oroshi_id']; 
+   echo '<tr class="dataTableRowSelected">';
+ }else if($col['oroshi_id'] == $HTTP_GET_VARS['id']){
+   echo '<tr class="dataTableRowSelected">';
+ } else{
+   echo '<tr>';
+ }
+  ?>
   <!--卸業者：<input type='text' name='up_oroshi[]' value='<?php echo $col['oroshi_name'];?>'>
   <input type='button' value='削除' name='b[]' onclick='del_oroshi(<?php echo $col['oroshi_id'];?>, <?php echo $cPath;?>)'><br>-->
   <td width="10"><?php if ($i) {?><a href="javascript:void(0);" onclick="ex(<?php echo $i;?>)">↑</a><?php }?></td>
@@ -369,6 +376,9 @@ require("includes/note_js.php");
   <td id="tr_<?php echo $i;?>_3" width='50'><a href='javascript:void(0);' onclick='del_oroshi(<?php echo $col['oroshi_id'];?>)'><?php echo CLEATE_DOUGYOUSYA_DEL;?></a></td>
   <td id="tr_<?php echo $i;?>_4" width='50'><a href='cleate_list.php?action=oroshi&o_id=<?php echo $col['oroshi_id'];?>'><?php echo OROSHI_DATA_MANAGE?></a></td>
   <td id="tr_<?php echo $i;?>_5" width='50'><a href='history.php?action=oroshi&o_id=<?php echo $col['oroshi_id'];?>'><?php echo CLEATE_DOUGYOUSYA_HISTORY;?></a>
+  <td width='50' align="right"><a href='cleate_oroshi.php?action=select_oroshi&id=<?php echo
+  $col['oroshi_id'];?>'><?php if($col['oroshi_id'] == $HTTP_GET_VARS['id']){echo tep_image(DIR_WS_IMAGES.
+      'icon_arrow_right.gif');}else{ echo tep_image(DIR_WS_IMAGES . 'icon_info.gif');}?></a></td>
   </tr>
 <?php if(isset($ckstr)&&$orrshi_id == $col['oroshi_id']){?>
   <tr>
@@ -389,6 +399,27 @@ require("includes/note_js.php");
   <td colspan='6'>
     <div id="o_input"></div>
   </td>
+</tr>
+</table>
+</td>
+<td width="25%" valign="top" class="right_column_boxes">
+<table width="100%" cellspacing="0" cellpadding="2" border="0">
+ <tr class="infoBoxHeading">
+    <td class="infoBoxHeading">
+    <?php 
+    $oroshi_query = tep_db_query("select * from set_oroshi_names where oroshi_id = '".$HTTP_GET_VARS['id']."'");
+    $oroshi = tep_db_fetch_array($oroshi_query);
+    echo '<table width="100%" cellspacing="0" cellpadding="2" border="0">
+    <tr><td class="infoBoxContent" align="left"><b>'.$oroshi['oroshi_name'].'</b></td></tr>
+    <tr><td>'.TEXT_USER_ADDED.'</td><td>'.$oroshi['user_added'].'</td></tr>
+    <tr><td>'.TEXT_DATE_ADDED.'</td><td>'.$oroshi['date_added'].'</td></tr>
+    <tr><td>'.TEXT_USER_UPDATE.'</td><td>'.$oroshi['user_update'].'</td></tr>
+    <tr><td>'.TEXT_DATE_UPDATE.'</td><td>'.$oroshi['date_update'].'</td></tr>
+    </table>';
+    ?></td>
+  </tr>
+</table>
+</td>
 </tr>
 </table>
 <div id="oo_input" style="display:none">
