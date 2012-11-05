@@ -310,8 +310,8 @@ define('TEXT_DISPLAY_NUMBER_OF_ZONES', '当前显示<b>%d</b> &sim; <b>%d</b>  (
 
 define('PREVNEXT_BUTTON_PREV', '&lt;&lt;');
 define('PREVNEXT_BUTTON_NEXT', '&gt;&gt;');
-define('BUTTON_PREV', '上一页');
-define('BUTTON_NEXT', '下一页');
+define('BUTTON_PREV', 'Prev');
+define('BUTTON_NEXT', 'Next');
 //==============================================================
 
 
@@ -694,18 +694,18 @@ define('BOX_USER_ADMIN', '用户管理');
 define('BOX_USER_LOG', '访问日志');
 define('BOX_USER_LOGOUT', '退出');
 
-define('TEXT_SITE_COPYRIGHT' ,'Copyright © %s '.COMPANY_NAME);
+define('TEXT_SITE_COPYRIGHT' ,'Copyright © %s Haomai');
 
-define('JUMP_PAGE_TEXT', ' ');
-define('JUMP_PAGE_BUTTON_TEXT', '跳转到');
+define('JUMP_PAGE_TEXT', 'Page');
+define('JUMP_PAGE_BUTTON_TEXT', 'Go');
 
 // javascript language
 define('JS_TEXT_ONETIME_PWD_ERROR','密码有误');
 define('JS_TEXT_INPUT_ONETIME_PWD','请输入一次性密码\r\n');
 define('JS_TEXT_POSTAL_NUMBER_ERROR','邮编错误。');
 // cleate_list
-define('','登录列表');
-define('','查看历史记录');
+define('TEXT_CLEATE_LIST','登录列表');
+define('TEXT_CLEATE_HISTORY','查看历史记录');
 // products_tags
 define('TEXT_P_TAGS_NO_TAG','无标签数据，请添加');
 define('UPDATE_MSG_TEXT', '更新');
@@ -720,3 +720,7 @@ define('BUTTON_ADD_TEXT', '添加');
 define('CSV_HEADER_TEXT', '账号创建日期，性别，姓，名，出生年月日，邮箱地址，公司名称，邮编号码，省市县，市区镇村，地址1，地址2，国名，电话号码，FAX号码，邮件杂志订阅，点数');
 define('CSV_EXPORT_TEXT', 'CSV输出');
 define('TEXT_ALL','全部');
+define('TEXT_USER_ADDED','作成者:');
+define('TEXT_USER_UPDATE','更新者:');
+define('TEXT_DATE_ADDED','作成日:');
+define('TEXT_DATE_UPDATE','更新日:');

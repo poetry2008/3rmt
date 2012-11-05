@@ -191,28 +191,27 @@ require("includes/note_js.php");
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
-<!-- header //-->
+<!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
+<!-- header_eof -->
 
-<!-- body //-->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-<!-- left_navigation //-->
+<!-- left_navigation -->
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- left_navigation_eof //-->
+<!-- left_navigation_eof -->
     </table></td>
-<!-- body_text //-->
+<!-- body_text -->
     <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td>
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
-              <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
               <td align="right">
               <div id="show_group_info" style="display:none;"></div> 
-              <div align="right">
+              <div>
               <?php echo tep_draw_form('form', FILENAME_OPTION_GROUP, '', 'get');?> 
               <input type="text" name="keyword" id="keyword">
               <input type="hidden" name="search" value="1">
@@ -224,7 +223,7 @@ require("includes/note_js.php");
         <td>
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
-              <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
+              <td class="pageHeading" align="left"><?php echo HEADING_TITLE; ?></td>
             </tr>
           </table>
         </td>
@@ -235,7 +234,7 @@ require("includes/note_js.php");
           <tr>
             <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr class="dataTableHeadingRow">
-                <td class="dataTableHeadingContent"><?php 
+                <td class="dataTableHeadingContent" align="left"><?php 
                 echo TABLE_HEADING_OPTION_GROUP_NAME; ?></td>
                 <td class="dataTableHeadingContent" align="left"><?php 
                 echo TABLE_HEADING_OPTION_GROUP_TITLE; ?></td>
@@ -280,12 +279,12 @@ require("includes/note_js.php");
         echo '              <tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'">' . "\n";
       }
 ?>
-                <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_GROUP, 'page='.$_GET['page'].'&group_id=' .  $group['id']);?>'">
+                <td align="left" class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_GROUP, 'page='.$_GET['page'].'&group_id=' .  $group['id']);?>'">
                 <a href="<?php echo tep_href_link(FILENAME_OPTION_ITEM, 'group_id='.$group['id'].(isset($_GET['page'])?'&gpage='.$_GET['page']:''));?>"><?php echo tep_image(DIR_WS_ICONS.'folder.gif', ICON_FOLDER);?></a> 
                 <?php echo '&nbsp;' . $group['name']; ?>
                 </td>
-                <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_GROUP, 'page='.$_GET['page'].'&group_id=' .  $group['id']);?>'"><?php echo '&nbsp;' . $group['title']; ?></td>
-                <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_GROUP, 'page='.$_GET['page'].'&group_id=' .  $group['id']);?>'">
+                <td align="left" class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_GROUP, 'page='.$_GET['page'].'&group_id=' .  $group['id']);?>'"><?php echo '&nbsp;' . $group['title']; ?></td>
+                <td align="left" class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_GROUP, 'page='.$_GET['page'].'&group_id=' .  $group['id']);?>'">
                 <?php
                 if ($group['is_preorder']) {
                   echo OPTION_GROUP_IS_PREORDER; 
@@ -294,7 +293,7 @@ require("includes/note_js.php");
                 }
                 ?>
                 </td>
-                <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_GROUP, 'page='.$_GET['page'].'&group_id=' .  $group['id']);?>'"><?php echo '&nbsp;' . $group['sort_num']; ?></td>
+                <td class="dataTableContent" align="left" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_GROUP, 'page='.$_GET['page'].'&group_id=' .  $group['id']);?>'"><?php echo '&nbsp;' . $group['sort_num']; ?></td>
                 
                 <td class="dataTableContent" align="right">
 <?php
@@ -328,14 +327,14 @@ echo '<a href="javascript:void(0);" onclick="show_group_info(this, \''.$group['i
         </table></td>
       </tr>
     </table></div></div></td>
-<!-- body_text_eof //-->
+<!-- body_text_eof -->
   </tr>
 </table>
-<!-- body_eof //-->
+<!-- body_eof -->
 
-<!-- footer //-->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 </body>
 </html>
