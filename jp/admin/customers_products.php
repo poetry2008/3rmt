@@ -67,6 +67,7 @@
           }
         }
 ?>
+<!--<meta http-equiv=”X-UA-Compatible” content=”IE=7″>-->
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <link media="print" href="includes/print.css" rel="stylesheet" type="text/css" />
@@ -208,13 +209,13 @@ $(document).ready(function(){
     html += "<table cellpadding=\"0\" cellspacing=\"1\" border=\"0\" width=\"100%\" class=\"data_table\" id=\"data_table_" + num + "\" align=\"center\">\n";
     html += "<thead><tr align=\"center\" >\n";
     html += "<td class=\"link_02\" width=\"5%\">No.</td>\n";
-    html += "<td class=\"link_03\" width=\"15%\"><?php echo TEXT_CUSTOMERS_PRODUCTS_ORDER_DATA;?></td>\n";
+    html += "<td class=\"link_03\" width=\"20%\"><?php echo TEXT_CUSTOMERS_PRODUCTS_ORDER_DATA;?></td>\n";
     html += "<td class=\"link_04\" width=\"10%\"><?php echo TEXT_CUSTOMERS_PRODUCTS_CATEGORY;?></td>\n";
-    html += "<td class=\"link_05\" width=\"20%\"><?php echo TEXT_CUSTOMERS_PRODUCTS_PNAME;?></td>\n";
-    html += "<td class=\"link_06\" width=\"15%\" align=\"right\"><?php echo TEXT_CUSTOMERS_PRODUCTS_ONE_PRICE;?></td>\n";
-    html += "<td class=\"link_07\" width=\"15%\" align=\"right\"><?php echo TEXT_CUSTOMERS_PRODUCTS_QUANTITY;?></td>\n";
-    html += "<td nowrap class=\"link_08\" width=\"15%\" align=\"right\"><?php echo TEXT_CUSTOMERS_PRODUCTS_REDUCTION_PRICE;?></td>\n";
-    html += "<td nowrap class=\"link_09\" width=\"15%\" align=\"right\"><?php echo TEXT_CUSTOMERS_PRODUCTS_PRICE;?></td>\n";
+    html += "<td class=\"link_05\" width=\"25%\"><?php echo TEXT_CUSTOMERS_PRODUCTS_PNAME;?></td>\n";
+    html += "<td class=\"link_06\" width=\"10%\"><?php echo TEXT_CUSTOMERS_PRODUCTS_ONE_PRICE;?></td>\n";
+    html += "<td class=\"link_07\" width=\"5%\"><?php echo TEXT_CUSTOMERS_PRODUCTS_QUANTITY;?></td>\n";
+    html += "<td nowrap class=\"link_08\" width=\"10%\"><?php echo TEXT_CUSTOMERS_PRODUCTS_REDUCTION_PRICE;?></td>\n";
+    html += "<td nowrap class=\"link_09\" width=\"10%\"><?php echo TEXT_CUSTOMERS_PRODUCTS_PRICE;?></td>\n";
     html += "</tr></thead>";
     return html;
   }
@@ -273,7 +274,7 @@ $(document).ready(function(){
     data['price'] = Math.abs(data['price']);
     html = "<tr class=\"data\" align=\"center\" style=\"font-size:15px;\">\n";
     html += "<td class=\"link_01 number\"></td>\n";
-    html += "<td id=\"tdate_"+number+"\"  align=\"center\"><input size=\"10\" type=\"text\" value=\""+data['date']+"\" onchange=\"date_change(this,"+number+")\"></td>";
+    html += "<td id=\"tdate_"+number+"\"  align=\"center\"><input size=\"14\" type=\"text\" value=\""+data['date']+"\" onchange=\"date_change(this,"+number+")\"></td>";
     html += "<td class=\"link_01 type\" id=\"type_"+number+"\" align=\"center\" ><input size=\"10\" type=\"text\" value=\""+data['type']+"\" onchange=\"type_change(this,"+number+")\"></td>";
     html += "<td id=\"pname_"+number+"\" align=\"left\"><input size=\"45\" type=\"text\" value=\""+data['name']+"\" id=\"name_display_"+number+"\" onchange=\"name_change(this,"+number+")\"></td>";
     html += "<td class=\"link_01 price\" id=\"fprice_"+number+"\" align=\"right\" ><input size=\"12\" type=\"text\" value=\""+(Math.abs(data['price']) != ''?(Math.abs(parseFloat(data['price'])).toFixed(1)):'')+"\" onchange=\"price_change(this,"+number+")\" style=\"text-align:right;\"><span class=\"price_display\" id=\"price_display_"+number+"\">"+(data['price'] != ''?('¥'+parseFloat(data['price']).toFixed(1)).replace('-',''):'')+" </span>";
@@ -528,7 +529,7 @@ $(document).ready(function(){
       </table>
     </td>
     <td valign="top">
-      <table border="0" width="50%" align="right" class="print_innput" style=" margin-top:10px;">
+      <table border="0" width="50%" align="right" class="print_innput" style=" margin:10px 0;">
       <tr><td height="4"></td></tr>
         <tr><td height="30" valign="bottom" align="right"><input name="textfield" type="text" id="textfield" value="<?php echo str_replace(array(TEXT_DATE_MONDAY, TEXT_DATE_TUESDAY, TEXT_DATE_WEDNESDAY, TEXT_DATE_THURSDAY, TEXT_DATE_FRIDAY, TEXT_DATE_STATURDAY, TEXT_DATE_SUNDAY),'',tep_date_long(date('Y-m-d H:i:s')));?>" style=" height:20px; width:150px; text-align:right; font-size:16px;  margin:5px 0 20px 20px;"></td></tr>
         <tr><td align="right"><textarea id="data10" type="text" rows="2" style="font-size:14px; overflow-y:visible; width:280px; resize:none;text-align:right;" ></textarea></td></tr>
@@ -656,7 +657,7 @@ require("includes/note_js.php");
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <!-- header_eof -->
 <form action="?action=print&customers_id=<?php echo $_GET['cID'];?>" method="post" name="orders_form" target="_blank">
-<!-- body //-->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">

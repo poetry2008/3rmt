@@ -1550,3 +1550,10 @@ a.pageResults{
 #new_yui3{
 	z-index:200;
 }
+.box_link{height:650px;}
+.box_link a{
+	text-decoration:underline;
+	color:#0000FF;
+	line-height:25px;
+	margin:10px;
+}

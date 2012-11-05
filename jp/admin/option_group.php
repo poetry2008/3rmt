@@ -27,12 +27,9 @@
               'sort_num' => tep_db_prepare_input($_POST['sort_num']),
               );  
           if ($_GET['action'] == 'update') {
-            $update_sql_data = array('user_update' => $ocertify->auth_user,'date_update' => 'now()');
-            $sql_data_array = tep_array_merge($sql_data_array, $update_sql_data);
-            tep_db_perform(TABLE_OPTION_GROUP, $sql_data_array, 'update', 'id=\''.$_POST['group_id'].'\'');
+            tep_db_perform(TABLE_OPTION_GROUP, $sql_data_array, 'update', 'id=\''.$_POST['group_id'].'\''); 
           } else if ($_GET['action'] == 'insert') {
-            $insert_sql_data = array('created_at' => 'now()','user_added' =>
-                $ocertify->auth_user,'user_update' => $ocertify->auth_user,'date_update' => 'now()'); 
+            $insert_sql_data = array('created_at' => 'now()'); 
             $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data); 
             tep_db_perform(TABLE_OPTION_GROUP, $sql_data_array); 
           }
@@ -191,26 +188,25 @@ require("includes/note_js.php");
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
-<!-- header //-->
+<!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
+<!-- header_eof -->
 
-<!-- body //-->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-<!-- left_navigation //-->
+<!-- left_navigation -->
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- left_navigation_eof //-->
+<!-- left_navigation_eof -->
     </table></td>
-<!-- body_text //-->
+<!-- body_text -->
     <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td>
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
-              <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
-              <td align="right">
+              <td align="left">
               <div id="show_group_info" style="display:none;"></div> 
               <div align="right">
               <?php echo tep_draw_form('form', FILENAME_OPTION_GROUP, '', 'get');?> 
@@ -309,8 +305,7 @@ echo '<a href="javascript:void(0);" onclick="show_group_info(this, \''.$group['i
               <tr>
                 <td colspan="10"><table border="0" width="100%" cellspacing="0" cellpadding="2">
                   <tr>
-                    <td class="smallText" valign="top"><?php echo
-                    $group_split->display_count($group_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_OPTION_GROUP); ?></td>
+                    <td class="smallText" valign="top"><?php echo $group_split->display_count($group_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_OPTION_GROUP); ?></td>
                     <td class="smallText" align="right"><?php echo $group_split->display_links($group_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'group_id'))); ?></td>
                   </tr>
                   <tr>
@@ -328,14 +323,14 @@ echo '<a href="javascript:void(0);" onclick="show_group_info(this, \''.$group['i
         </table></td>
       </tr>
     </table></div></div></td>
-<!-- body_text_eof //-->
+<!-- body_text_eof -->
   </tr>
 </table>
-<!-- body_eof //-->
+<!-- body_eof -->
 
-<!-- footer //-->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 </body>
 </html>
