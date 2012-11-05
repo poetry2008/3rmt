@@ -720,3 +720,7 @@ define('BUTTON_ADD_TEXT', '添加');
 define('CSV_HEADER_TEXT', '账号创建日期，性别，姓，名，出生年月日，邮箱地址，公司名称，邮编号码，省市县，市区镇村，地址1，地址2，国名，电话号码，FAX号码，邮件杂志订阅，点数');
 define('CSV_EXPORT_TEXT', 'CSV输出');
 define('TEXT_ALL','全部');
+define('TEXT_USER_ADDED','作成者:');
+define('TEXT_USER_UPDATE','更新者:');
+define('TEXT_DATE_ADDED','作成日:');
+define('TEXT_DATE_UPDATE','更新日:');

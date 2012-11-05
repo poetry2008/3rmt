@@ -27,9 +27,12 @@
               'sort_num' => tep_db_prepare_input($_POST['sort_num']),
               );  
           if ($_GET['action'] == 'update') {
-            tep_db_perform(TABLE_OPTION_GROUP, $sql_data_array, 'update', 'id=\''.$_POST['group_id'].'\''); 
+            $update_sql_data = array('user_update' => $ocertify->auth_user,'date_update' => 'now()');
+            $sql_data_array = tep_array_merge($sql_data_array, $update_sql_data);
+            tep_db_perform(TABLE_OPTION_GROUP, $sql_data_array, 'update', 'id=\''.$_POST['group_id'].'\'');
           } else if ($_GET['action'] == 'insert') {
-            $insert_sql_data = array('created_at' => 'now()'); 
+            $insert_sql_data = array('created_at' => 'now()','user_added' =>
+                $ocertify->auth_user,'user_update' => $ocertify->auth_user,'date_update' => 'now()'); 
             $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data); 
             tep_db_perform(TABLE_OPTION_GROUP, $sql_data_array); 
           }
@@ -206,9 +209,9 @@ require("includes/note_js.php");
         <td>
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
-              <td align="left">
+              <td align="right">
               <div id="show_group_info" style="display:none;"></div> 
-              <div align="right">
+              <div>
               <?php echo tep_draw_form('form', FILENAME_OPTION_GROUP, '', 'get');?> 
               <input type="text" name="keyword" id="keyword">
               <input type="hidden" name="search" value="1">
@@ -220,7 +223,7 @@ require("includes/note_js.php");
         <td>
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
-              <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
+              <td class="pageHeading" align="left"><?php echo HEADING_TITLE; ?></td>
             </tr>
           </table>
         </td>
@@ -231,7 +234,7 @@ require("includes/note_js.php");
           <tr>
             <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr class="dataTableHeadingRow">
-                <td class="dataTableHeadingContent"><?php 
+                <td class="dataTableHeadingContent" align="left"><?php 
                 echo TABLE_HEADING_OPTION_GROUP_NAME; ?></td>
                 <td class="dataTableHeadingContent" align="left"><?php 
                 echo TABLE_HEADING_OPTION_GROUP_TITLE; ?></td>
@@ -276,12 +279,12 @@ require("includes/note_js.php");
         echo '              <tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'">' . "\n";
       }
 ?>
-                <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_GROUP, 'page='.$_GET['page'].'&group_id=' .  $group['id']);?>'">
+                <td align="left" class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_GROUP, 'page='.$_GET['page'].'&group_id=' .  $group['id']);?>'">
                 <a href="<?php echo tep_href_link(FILENAME_OPTION_ITEM, 'group_id='.$group['id'].(isset($_GET['page'])?'&gpage='.$_GET['page']:''));?>"><?php echo tep_image(DIR_WS_ICONS.'folder.gif', ICON_FOLDER);?></a> 
                 <?php echo '&nbsp;' . $group['name']; ?>
                 </td>
-                <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_GROUP, 'page='.$_GET['page'].'&group_id=' .  $group['id']);?>'"><?php echo '&nbsp;' . $group['title']; ?></td>
-                <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_GROUP, 'page='.$_GET['page'].'&group_id=' .  $group['id']);?>'">
+                <td align="left" class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_GROUP, 'page='.$_GET['page'].'&group_id=' .  $group['id']);?>'"><?php echo '&nbsp;' . $group['title']; ?></td>
+                <td align="left" class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_GROUP, 'page='.$_GET['page'].'&group_id=' .  $group['id']);?>'">
                 <?php
                 if ($group['is_preorder']) {
                   echo OPTION_GROUP_IS_PREORDER; 
@@ -290,7 +293,7 @@ require("includes/note_js.php");
                 }
                 ?>
                 </td>
-                <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_GROUP, 'page='.$_GET['page'].'&group_id=' .  $group['id']);?>'"><?php echo '&nbsp;' . $group['sort_num']; ?></td>
+                <td class="dataTableContent" align="left" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_GROUP, 'page='.$_GET['page'].'&group_id=' .  $group['id']);?>'"><?php echo '&nbsp;' . $group['sort_num']; ?></td>
                 
                 <td class="dataTableContent" align="right">
 <?php
@@ -305,7 +308,8 @@ echo '<a href="javascript:void(0);" onclick="show_group_info(this, \''.$group['i
               <tr>
                 <td colspan="10"><table border="0" width="100%" cellspacing="0" cellpadding="2">
                   <tr>
-                    <td class="smallText" valign="top"><?php echo $group_split->display_count($group_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_OPTION_GROUP); ?></td>
+                    <td class="smallText" valign="top"><?php echo
+                    $group_split->display_count($group_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_OPTION_GROUP); ?></td>
                     <td class="smallText" align="right"><?php echo $group_split->display_links($group_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'group_id'))); ?></td>
                   </tr>
                   <tr>
