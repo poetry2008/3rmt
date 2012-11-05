@@ -614,7 +614,7 @@ define('TEXT_ONE_TIME_CONFIG_SAVE','保存しました');
 define('TEXT_ONE_TIME_ERROR','エラー');
 define('TEXT_ONE_TIME_CONFIRM','チェックがありません。チェックを入れてください');
 define('TEXT_ONE_TIME_ADMIN_CONFIRM','Adminのチェックを入れてください');
-define('TEXT_SITE_COPYRIGHT' ,'Copyright © %s ');
+define('TEXT_SITE_COPYRIGHT' ,'Copyright © %s Haomai');
 
 define('SECOND_TEXT','秒');
 define('PAYMENT_METHOD','支払方法：');
