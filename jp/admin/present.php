@@ -133,9 +133,9 @@ now(),
 ?>
 </title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-<script language="javascript" src="includes/general.js"></script>
+<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
@@ -205,19 +205,21 @@ function msg2(){
 </script>
 </head>
 <body>
-<!-- header //-->
+<!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <!-- header_eof //-->
 <!-- body //-->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-        <!-- left_navigation //-->
+        <!-- left_navigation -->
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-        <!-- left_navigation_eof //-->
+        <!-- left_navigation_eof -->
       </table></td>
     <!-- body_text //-->
-    <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table width="100%" border="0" cellspacing="0" cellpadding="1" align="center">
+    <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible">
+    <div class="compatible">
+    <table width="100%" border="0" cellspacing="0" cellpadding="1" align="center">
         <tr>
           <td><!-- insert -->
             <?php
@@ -234,25 +236,25 @@ case 'input' :
                 </tr>
                 <tr>
                   <td colspan="2"><p>&nbsp;</p>
-                    <table width="780" cellpadding="0" cellspacing="0">
+                    <table width="100%" cellpadding="0" cellspacing="0">
                       <tr>
                         <td><table width="100%"  border="0" cellspacing="1" cellpadding="3">
                             <tr>
-                              <td class="main" width="150" bgcolor="#FFFFFF"><?php echo ENTRY_SITE;?></td>
-                              <td class="main" width="630" bgcolor="#FFFFFF"><?php echo tep_site_pull_down_menu();?></td>
+                              <td class="main" width="100" bgcolor="#FFFFFF"><?php echo ENTRY_SITE;?></td>
+                              <td class="main" bgcolor="#FFFFFF"><?php echo tep_site_pull_down_menu();?></td>
                             <tr>
-                              <td class="main" width="150" bgcolor="#FFFFFF"><?php echo PRESENT_NAME_TEXT;?></td>
-                              <td class="main" width="630" bgcolor="#FFFFFF"><input name="title" type="text"></td>
+                              <td class="main" bgcolor="#FFFFFF"><?php echo PRESENT_NAME_TEXT;?></td>
+                              <td class="main" bgcolor="#FFFFFF"><input name="title" type="text"></td>
                             </tr>
                             <tr>
-                              <td class="main" width="150" bgcolor="#FFFFFF"><?php echo PRESENT_IMAGE_TEXT;?></td>
-                              <td class="main" width="630" bgcolor="#FFFFFF"><input type="file" name="file"></td>
+                              <td class="main" bgcolor="#FFFFFF"><?php echo PRESENT_IMAGE_TEXT;?></td>
+                              <td class="main" bgcolor="#FFFFFF"><input type="file" name="file"></td>
                             </tr>
                             <tr>
                               <td class="main" valign="top" bgcolor="#FFFFFF"><?php echo PRESENT_COMMENT_TEXT;?></td>
                               <td class="main" bgcolor="#FFFFFF">
                 <input type="checkbox" name="ht" value="1"><?php echo PRESENT_HTML_READ;?>
-                                <textarea name="text" style="width:95%; height:100px;"></textarea></td>
+                                <textarea name="text" style="width:65%; height:100px;"></textarea></td>
                             </tr>
                             <tr>
                               <td class="main" valign="top" bgcolor="#FFFFFF"><?php echo PRESENT_DATE_TEXT;?></td>
@@ -366,13 +368,16 @@ case 'input' :
                             </tr>
                           </table></td>
                       </tr>
-                    </table>
-                    <div align="right">
-            <a class="new_product_reset" href=
+                      <tr>
+                      <td colspan="2" align="right">
+                      <a class="new_product_reset" href=
             <?php echo tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action'))); ?>
 	    ><?php echo tep_html_element_button(PRESENT_BACK); ?></a>
             <?php echo tep_html_element_submit(PRESENT_SAVE); ?>
-                    </div></td>
+                      </td>
+                      </tr>
+                    </table>
+                    </td>
                 </tr>
               </table>
             </form>
@@ -416,20 +421,20 @@ $sele_lid = substr($sql1['limit_date'],8,2);
                 </tr>
                 <tr>
                   <td colspan="2"><p>&nbsp;</p>
-                    <table width="780" cellpadding="0" cellspacing="0">
+                    <table width="100%" cellpadding="0" cellspacing="0">
                       <tr>
                         <td><table width="100%"  border="0" cellspacing="1" cellpadding="3">
                             <tr>
-                              <td class="main" width="150" bgcolor="#FFFFFF"><?php echo ENTRY_SITE;?></td>
-                              <td class="main" width="630" bgcolor="#FFFFFF"><?php echo $sql1['site_name'] ;?></td>
+                              <td class="main" width="100" bgcolor="#FFFFFF"><?php echo ENTRY_SITE;?></td>
+                              <td class="main" bgcolor="#FFFFFF"><?php echo $sql1['site_name'] ;?></td>
                             </tr>
                             <tr>
-                              <td class="main" width="150" bgcolor="#FFFFFF"><?php echo PRESENT_NAME_TEXT;?></td>
-                              <td class="main" width="630" bgcolor="#FFFFFF"><input name="title" type="text" value="<?php echo $sql1['title'] ;?>"></td>
+                              <td class="main" bgcolor="#FFFFFF"><?php echo PRESENT_NAME_TEXT;?></td>
+                              <td class="main" bgcolor="#FFFFFF"><input name="title" type="text" value="<?php echo $sql1['title'] ;?>"></td>
                             </tr>
                             <tr>
-                              <td class="main" width="150" bgcolor="#FFFFFF"><?php echo PRESENT_IMAGE_TEXT;?></td>
-                              <td class="main" width="630" bgcolor="#FFFFFF">
+                              <td class="main" bgcolor="#FFFFFF"><?php echo PRESENT_IMAGE_TEXT;?></td>
+                              <td class="main" bgcolor="#FFFFFF">
                 <?php 
                 if($sql1['image']){
                 ?>
@@ -444,11 +449,11 @@ $sele_lid = substr($sql1['limit_date'],8,2);
                               <td class="main" bgcolor="#FFFFFF">
                 <?php
                 if($sql1['html_check'] == 1){
-                  echo '<input type="checkbox" name="ht" value="1" checked>HTMLを許可する'."\n";
-                  echo '<textarea name="text" style="width:95%; height:300px;">'.stripslashes($sql1['text']).'</textarea>'."\n";
+                  echo '<input type="checkbox" name="ht" value="1" checked>'.PRESENT_HTML_READ."\n";
+                  echo '<br><textarea name="text" style="width:95%; height:300px;">'.stripslashes($sql1['text']).'</textarea>'."\n";
                 }else{
-                  echo '<input type="checkbox" name="ht" value="1">HTMLを許可する'."\n";
-                  echo '<textarea name="text" style="width:95%; height:300px;">'.stripslashes($sql1['text']).'</textarea>'."\n";
+                  echo '<input type="checkbox" name="ht" value="1">'.PRESENT_HTML_READ."\n";
+                  echo '<br><textarea name="text" style="width:95%; height:300px;">'.stripslashes($sql1['text']).'</textarea>'."\n";
                 }
                 ?>
                 </td>
@@ -565,13 +570,16 @@ $sele_lid = substr($sql1['limit_date'],8,2);
                             </tr>
                           </table></td>
                       </tr>
-                    </table>
-                    <div align="right">
+                      <tr>
+                      <td colspan="2" align="right">
             <a href=
             <?php echo tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action'))); ?>
             ><?php echo tep_html_element_button(IMAGE_BACK); ?></a>
             <?php echo tep_html_element_submit(IMAGE_SAVE); ?>
-                    </div></td>
+                      </td>
+                      </tr>
+                    </table>
+</td>
                 </tr>
               </table>
             </form>
@@ -594,35 +602,35 @@ $sql2 = tep_db_fetch_array($sele2);
                 </tr>
                 <tr>
                   <td colspan="2"><p>&nbsp;</p>
-                    <table width="780" cellpadding="0" cellspacing="0">
+                    <table width="100%" cellpadding="0" cellspacing="0">
                       <tr>
                         <td><table width="100%"  border="1" cellspacing="1" cellpadding="3">
                             <tr>
-                              <td class="main" width="150" bgcolor="#FFFFFF">customer_id</td>
-                              <td class="main" width="630" bgcolor="#FFFFFF"><?php echo $sql2['customer_id'] ;?></td>
+                              <td class="main" width="100" bgcolor="#FFFFFF">customer_id</td>
+                              <td class="main" bgcolor="#FFFFFF"><?php echo $sql2['customer_id'] ;?></td>
                             </tr>
                             <tr>
-                              <td class="main" width="150" bgcolor="#FFFFFF"><?php echo PRESENT_CUSTOMER_NAME;?></td>
-                              <td class="main" width="630" bgcolor="#FFFFFF"><?php echo $sql2['family_name'] ;?><?php echo $sql2['first_name'] ;?></td>
+                              <td class="main" bgcolor="#FFFFFF"><?php echo PRESENT_CUSTOMER_NAME;?></td>
+                              <td class="main" bgcolor="#FFFFFF"><?php echo $sql2['family_name'] ;?><?php echo $sql2['first_name'] ;?></td>
                             </tr>
                             <tr>
-                              <td class="main" width="150" bgcolor="#FFFFFF">e-mail</td>
-                              <td class="main" width="630" bgcolor="#FFFFFF"><?php echo $sql2['mail'] ;?></td>
+                              <td class="main" bgcolor="#FFFFFF">e-mail</td>
+                              <td class="main" bgcolor="#FFFFFF"><?php echo $sql2['mail'] ;?></td>
                             </tr>
                             <tr>
-                              <td class="main" width="150" bgcolor="#FFFFFF"><?php echo PRESENT_CUSTOMER_ADDRESS;?></td>
-                              <td class="main" width="630" bgcolor="#FFFFFF">〒<?php echo $sql2['postcode'] ;?><br>
+                              <td class="main" bgcolor="#FFFFFF"><?php echo PRESENT_CUSTOMER_ADDRESS;?></td>
+                              <td class="main" bgcolor="#FFFFFF">〒<?php echo $sql2['postcode'] ;?><br>
                                 <?php echo $sql2['prefectures'] ;?><?php echo $sql2['cities'] ;?><br>
                                 <?php echo $sql2['address1'] ;?><br>
                                 <?php echo $sql2['address2'] ;?></td>
                             </tr>
                             <tr>
-                              <td class="main" width="150" bgcolor="#FFFFFF"><?php echo PRESENT_CUSTOMER_TEL;?></td>
-                              <td class="main" width="630" bgcolor="#FFFFFF"><?php echo $sql2['phone'] ;?></td>
+                              <td class="main" bgcolor="#FFFFFF"><?php echo PRESENT_CUSTOMER_TEL;?></td>
+                              <td class="main" bgcolor="#FFFFFF"><?php echo $sql2['phone'] ;?></td>
                             </tr>
                             <tr>
-                              <td class="main" width="150" bgcolor="#FFFFFF"><?php echo PRESENT_CUSTOMER_APPLYDAY;?></td>
-                              <td class="main" width="630" bgcolor="#FFFFFF"><?php echo $sql2['tourokubi'] ;?></td>
+                              <td class="main" bgcolor="#FFFFFF"><?php echo PRESENT_CUSTOMER_APPLYDAY;?></td>
+                              <td class="main" bgcolor="#FFFFFF"><?php echo $sql2['tourokubi'] ;?></td>
                             </tr>
                           </table>
               </td>
@@ -742,7 +750,7 @@ $c_id = tep_db_prepare_input($_GET['cID']);
             if (isset($list_id) && $list_id && tep_not_null($list_id)) {
             $heading[] = array('text' => '<b>' . $c_title . '</b>');
         
-            $present[] = array('align' => 'center', 'text' => '<br><br><a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action','list_id')) . 'list_id=' .  $list_id  .'&action=listview') . '">' .  tep_html_element_button('表示') .'</a> <a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action'))) . '">' . tep_html_element_button('戻る') . '</a>');
+            $present[] = array('align' => 'center', 'text' => '<br><br><a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action','list_id')) . 'list_id=' .  $list_id  .'&action=listview') . '">' .  tep_html_element_button(PRESENT_SHOW) .'</a> <a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action'))) . '">' . tep_html_element_button(PRESENT_BACK) . '</a>');
             }
             break;
           }
@@ -874,7 +882,7 @@ default:
             if (isset($cID) && $cID && tep_not_null($cID)) {
             $heading[] = array('text' => '<b>' . $c_title . '</b>');
         
-            $present[] = array('align' => 'center', 'text' => '<br><br><a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=view') . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a> <a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=deleform') . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a> <a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action','page')) . 'cID=' . $cID . '&action=list') . '">' .  tep_html_element_button('リスト') . '</a>' );
+            $present[] = array('align' => 'center', 'text' => '<br><br><a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=view') . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a> <a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=deleform') . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a> <a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action','page')) . 'cID=' . $cID . '&action=list') . '">' .  tep_html_element_button(PRESENT_LIST) . '</a>' );
 $present_query = tep_db_query("select * from present_goods where goods_id='".$cID."'");
 $present_array = tep_db_fetch_array($present_query);
 $present[] = array('text' => '<br>'. TEXT_USER_ADDED. ' ' .$present_array['user_added']);
@@ -900,7 +908,7 @@ $present[] = array('text' => '<br>'. TEXT_DATE_UPDATE. ' ' .tep_datetime_short($
               </tr>
             </table></td>
         </tr>
-      </table></td>
+      </table></div></td>
     <!-- body_text_eof //-->
   </tr>
 </table>
@@ -917,13 +925,14 @@ break;
 </tr>
 </table>
 </div>
+</div>
 </td>
 </tr>
 </table>
-<!-- body_eof //-->
-<!-- footer //-->
+<!-- body_eof -->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 </body>
 </html>

@@ -7,10 +7,10 @@
 <link rel="stylesheet" type="text/css" href="includes/jquery.autocomplete.css">
 <?php require('includes/step-by-step/form_check.js.php'); ?>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/all_order.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
-<script language="javascript" src="includes/javascript/address_search.js"></script>
-<script language="javascript" src="includes/general.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=all_order&type=js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=address_search&type=js"></script>
+<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/jquery.form.js"></script>
 <script type="text/javascript">
 function check_submit(){
@@ -75,23 +75,24 @@ require("includes/note_js.php");
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
-<!-- header //-->
+<!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
+<!-- header_eof -->
 
 <?php
 if($order_exists == true){
 ?>
-<!-- body //-->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-<!-- left_navigation //-->
+<!-- left_navigation -->
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- left_navigation_eof //-->
+<!-- left_navigation_eof -->
     </table></td>
-<!-- body_text //-->
-<td width="100%" valign="top"><?php echo $notes;?>
+<!-- body_text -->
+<td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
+  <div class="compatible">
   <table border='0' bgcolor='#7c6bce' width='100%'>
       <tr>
         <td class="main"><font color="#ffffff"><b><?php echo CREATE_ORDER_STEP_ONE;?></b></font></td>
@@ -142,17 +143,19 @@ if($order_exists == true){
         <td class="main"><?php echo '<a href="' . tep_href_link(FILENAME_DEFAULT, '', 'SSL') . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; ?></td> <td class="main" align="right"><input type="button" value="<?php echo IMAGE_CONFIRM_NEXT; ?>" onclick="check_submit();"></td>
       </tr>
     </table>
+    </div>
+    </div>
   </td>
   </tr>
 </table>
 <?php
 }
 ?>
-<!-- body_eof //-->
+<!-- body_eof -->
 
-<!-- footer //-->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 
 <br>
 </body>

@@ -57,9 +57,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title><?php echo INVENTORY_TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-<script language="javascript" src="includes/general.js"></script>
+<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+  <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 require("includes/note_js.php");
@@ -71,20 +71,21 @@ require("includes/note_js.php");
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
-<!-- header //-->
+<!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
-
+<!-- header_eof -->
 <!-- body //-->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-<!-- left_navigation //-->
+<!-- left_navigation -->
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- left_navigation_eof //-->
+<!-- left_navigation_eof -->
     </table></td>
 <!-- body_text //-->
-<td width="100%" valign="top"><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="2">
+<td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
+<div class="compatible">
+<table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
 ?>
       <tr>
@@ -208,10 +209,10 @@ require("includes/note_js.php");
           <td style="border-bottom:1px solid #000000" align="right"><?php 
           $price = explode('.', $products['products_price']);
           echo $price[0];
-          ;?>&nbsp;円</td>
-          <td style="border-bottom:1px solid #000000" align="right"><?php echo $imaginary;?>&nbsp;個</td>
+          ;?>&nbsp;<?php echo TEXT_MONEY_SYMBOL;?></td>
+          <td style="border-bottom:1px solid #000000" align="right"><?php echo $imaginary;?>&nbsp;<?php echo MONTHS;?></td>
           <td style="border-bottom:1px solid #000000" align="right"><?php echo
-          $products['products_quantity'];?>&nbsp;個
+          $products['products_quantity'];?>&nbsp;<?php echo MONTHS;?>
           <?php
           if($products['inventory_status']=='up'){
             echo "<img src='images/icons/up.gif'>";
@@ -221,9 +222,9 @@ require("includes/note_js.php");
           ?>
           </td>
           <td style="border-bottom:1px solid #000000" align="right"><?php echo
-          $inv['max']?$inv['max']:0;?>&nbsp;個</td>
+          $inv['max']?$inv['max']:0;?>&nbsp;<?php echo MONTHS;?></td>
           <td style="border-bottom:1px solid #000000" align="right"><?php echo
-          $inv['min']?$inv['min']:0;?>&nbsp;個</td>
+          $inv['min']?$inv['min']:0;?>&nbsp;<?php echo MONTHS;?></td>
         </tr>
         <?php
          }
@@ -251,15 +252,18 @@ require("includes/note_js.php");
       </tr>
 <?php
 ?>
-    </table></td>
+    </table>
+    </div>
+    </div>
+    </td>
 <!-- body_text_eof //-->
   </tr>
 </table>
-<!-- body_eof //-->
+<!-- body_eof -->
 
-<!-- footer //-->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 </body>
 </html>

@@ -16,7 +16,7 @@ define('FILENAME_CREATE_ORDER2', 'create_order2.php');
 define('FILENAME_EDIT_NEW_ORDERS2', 'edit_new_orders2.php');
 ////
 // Languages
-require('includes/languages/japanese/step-by-step/japanese.php');
+require('includes/languages/'.$language.'/step-by-step/'.$language.'.php');
 require(DIR_WS_CLASSES . 'payment.php');
 
 // check_email

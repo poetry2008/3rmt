@@ -70,10 +70,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title><?php echo TEXT_GROUP_MANAGE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-<script language="javascript" src="includes/general.js"></script>
+<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script type="text/javascript">
 
 	      $(document).ready(function(){
@@ -129,7 +129,7 @@ $belong = str_replace($pcode_array[1][0],urlencode($pcode_array[1][0]),$belong);
 
 <!-- body //-->
 <!--<h1 pageHeading>グループ管理</h1>-->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
 <!-- left_navigation //-->
@@ -137,7 +137,8 @@ $belong = str_replace($pcode_array[1][0],urlencode($pcode_array[1][0]),$belong);
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-<td width="100%" valign="top"><?php echo $notes;?>
+<td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
+    <div class="compatible">
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
       <td class="pageHeading" height="40"><?php echo TEXT_GROUP_MANAGE;?></td>
@@ -466,6 +467,8 @@ function ajaxUpdate(id,order){
         </td> 
       </tr>
     </table>
+    </div>
+    </div>
     </td>
 <!-- body_text_eof //-->
   </tr>

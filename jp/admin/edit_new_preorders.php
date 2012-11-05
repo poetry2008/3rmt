@@ -873,10 +873,10 @@
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <link rel="stylesheet" type="text/css" href="includes/styles.css">
-<script language="javascript" src="includes/general.js"></script>
+<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery.form.js"></script>
 <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
 <script language="javascript" src="includes/jquery.form.js"></script>
@@ -1368,7 +1368,7 @@ if($_GET['action'] != 'add_product'){
   echo tep_draw_form('edit_order', "edit_new_preorders.php", tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post', 'id="edit_order_id_one"'); 
 }
 ?>
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top">
       <table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
@@ -1378,8 +1378,9 @@ if($_GET['action'] != 'add_product'){
       </table>
     </td>
     <!-- body_text //-->
-    <td width="100%" valign="top"><?php echo $notes;?>
-      <table border="0" width="96%" cellspacing="0" cellpadding="2">
+    <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
+      <div class="compatible">
+      <table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
 if (($action == 'edit') && ($order_exists == true)) {
     $order = $_SESSION['create_preorder']['orders'];
@@ -1751,16 +1752,16 @@ if (($action == 'edit') && ($order_exists == true)) {
     <td class="dataTableHeadingContent" align="left"><?php echo TABLE_HEADING_COMMENTS; ?></td>
   </tr>
   <tr>
-    <td valign="top">
+    <td valign="top" width="40%">
       <table border="0" cellspacing="0" cellpadding="2">
         <tr>
-          <td class="main" width="80"><b><?php echo ENTRY_STATUS; ?></b></td>
+          <td class="main" width="82" style="min-width:45px;"><b><?php echo ENTRY_STATUS; ?></b></td>
           <td class="main">
           <?php
           $is_select_query = tep_db_query(" select orders_status_id, orders_status_name from " . TABLE_PREORDERS_STATUS . " where language_id = '" . (int)$languages_id . "' limit 1");
           $is_select_res = tep_db_fetch_array($is_select_query); 
           $sel_status_id = DEFAULT_PREORDERS_STATUS_ID; 
-          echo tep_draw_pull_down_menu('status', $orders_statuses, $sel_status_id, 'id="status" onchange="check_prestatus();"'); 
+          echo tep_draw_pull_down_menu('status', $orders_statuses, $sel_status_id, 'id="status" onchange="check_prestatus();" style="width:80px;"'); 
           ?>
           </td>
         </tr>
@@ -1776,7 +1777,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         <?php } ?>
       </table>
     </td>
-    <td class="main" width="10">&nbsp;</td>
+    <td class="main" width="5%">&nbsp;</td>
     <td class="main">
     <?php
     $ma_se = "select * from ".TABLE_PREORDERS_MAIL." where orders_status_id = '".$sel_status_id."'"; 
@@ -1784,7 +1785,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     $mail_sql = tep_db_fetch_array($mail_sele);
     ?>
     <?php   
-    echo '<b>'.TEXT_EMAIL_TITLE.'</b>'.tep_draw_input_field('etitle', $mail_sql['orders_status_title'],'style="width:55%;"'); 
+    echo '<b>'.TEXT_EMAIL_TITLE.'</b>'.tep_draw_input_field('etitle', $mail_sql['orders_status_title'],'style="width:230px;"'); 
     ?> 
     <br>
     <br>
@@ -1795,8 +1796,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       $order_a_str .= $ovalue['character']."\n"; 
     }
     ?>
-    <textarea style="font-family:monospace;font-size:12px; width:70%;" name="comments"
-    wrap="off" rows="30" cols="74"><?php echo str_replace('${ORDER_A}', $order_a_str, $mail_sql['orders_status_mail']);?></textarea>
+    <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}', $order_a_str, $mail_sql['orders_status_mail']);?></textarea>
     </td>
   </tr>
 </table>
@@ -2021,7 +2021,10 @@ if (($action == 'edit') && ($order_exists == true)) {
     echo "</table></td></tr>\n";
 }  
 ?>
-    </table></td>
+    </table>
+    </div>
+    </div>
+    </td>
 <!-- body_text_eof //-->
   </tr>
 </table>

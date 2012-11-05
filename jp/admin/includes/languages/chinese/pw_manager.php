@@ -58,4 +58,7 @@ define('PW_MANAGER_SELECT_EIGHT', '注册信息');
 define('PW_MANAGER_SELECT_NINE', '备注栏');
 define('PW_MANAGER_SELECT_TEN', '网站名');
 define('TEXT_USER_ADDED','创建者:');
+define('TEXT_PERMISSION_STAFF','Staff以上');
+define('TEXT_PERMISSION_CHIEF','Chief以上');
+define('TEXT_URL_EXAMPLE','请正确输入URL形式。例：http://example.com');
 ?>

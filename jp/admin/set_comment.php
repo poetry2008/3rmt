@@ -25,7 +25,7 @@ switch ($HTTP_GET_VARS['action']){
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=<?php echo CHARSET; ?>">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css" />
 <title><?php echo SET_COMMENT_TITLE?></title>
 </head>
@@ -33,7 +33,6 @@ switch ($HTTP_GET_VARS['action']){
   $res=tep_db_query("select * from set_comments where categories_id='".$cID."'");
   $col=tep_db_fetch_array($res);
 ?>
-<body>
 <body>
 <?php
 if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
@@ -43,6 +42,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
 <?php }?>
 <form method="post" action="set_comment.php?action=save&cID=<?php echo
 $cID;?>&cPath=<?php echo $cPath;?>"  onsubmit="alert('<?php echo SET_COMMENT_UPDATE_NOTICE;?>')">
+<div class="show_left_menu">
 <p><?php echo SET_COMMENT_USER?></p>
 <p><input type='text' name='author' value="<?php echo $col['author'];?>" /></p>
 <p><?php echo SET_COMMENT_SINGLE?></p>
@@ -50,6 +50,7 @@ $cID;?>&cPath=<?php echo $cPath;?>"  onsubmit="alert('<?php echo SET_COMMENT_UPD
 <p><?php echo SET_COMMENT_COMMENT_TEXT;?></p>
 <p><textarea cols='60' rows='12' name='comment'><?php echo $col['comment'];?></textarea></p>
 <p><input type="submit" value="<?php echo SET_COMMENT_TITLE;?>"><p>
+</div>
 </form>
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 </body>

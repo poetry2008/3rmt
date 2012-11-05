@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 osCommerce
-
-  Released under the GNU General Public License
 */
 
 define('HEADING_TITLE', '注文ステータス設定');
@@ -44,4 +37,5 @@ define('TEXT_USER_ADDED','作成者:');
 define('TEXT_USER_UPDATE','更新者:');
 define('TEXT_DATE_ADDED','作成日:');
 define('TEXT_DATE_UPDATE','更新日:');
+define('TEXT_DEL_IMAGE','アイコンを削除');
 

@@ -9,6 +9,7 @@
   require(DIR_WS_FUNCTIONS . 'visites.php');
   require(DIR_WS_CLASSES . 'currencies.php');
   require(DIR_WS_CLASSES . 'payment.php');
+  include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .  '/default.php');
   if (isset($_GET['keywords'])) {
     $_GET['keywords'] = tep_db_prepare_input($_GET['keywords']);
   }
@@ -568,7 +569,7 @@
   }
 
   if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($_GET['oID']) ) {
-    $oID = tep_db_prepare_input($_GET['oID']); 
+    $oID = tep_db_prepare_input($_GET['oID']);
     $orders_query = tep_db_query("
         select orders_id 
         from " . TABLE_PREORDERS . " 
@@ -682,9 +683,9 @@
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/javascript/jquery.form.js"></script>
-<script language="javascript" src="includes/javascript/all_preorder.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=all_preorder&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script language="javascript">
   function change_site(site_id,flag,site_list,param_url){  
           var ele = document.getElementById("site_"+site_id);
@@ -895,29 +896,29 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
-<!-- header //-->
+<!-- header -->
 <?php
   require(DIR_WS_INCLUDES . 'header.php');
 ?>
-<!-- header_eof //-->
-<!-- body //-->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<!-- header_eof -->
+<!-- body -->
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content"> 
   <tr>
 <?php
   if ($ocertify->npermission >= 10) {
     echo '<td width="' . BOX_WIDTH . '" valign="top">';
     echo '<table border="0" width="' . BOX_WIDTH . '" cellspacing="1" cellpadding="1" class="columnLeft">';
-    echo '<!-- left_navigation //-->';
+    echo '<!-- left_navigation -->';
     require(DIR_WS_INCLUDES . 'column_left.php');
-    echo '<!-- left_navigation_eof //-->';
+    echo '<!-- left_navigation_eof -->';
     echo '</table>';
     echo '</td>';
   } else {
     echo '<td>&nbsp;</td>';
   }
 ?>
-<!-- body_text //-->
-<td width="100%" valign="top"><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="2">
+<!-- body_text -->
+<td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
   if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) {
     // edit start
@@ -965,7 +966,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
           </table>
         </td>
       </tr>
-      <!-- 三种状态 + A,B,C -->
+      <?php // 三种状态 + A,B,C ?>
       <tr>
         <td width="100%">
           <div id="orders_flag">
@@ -974,9 +975,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                 <td width="50%" align="left">
                   <table width="100%" border="0" cellspacing="2" cellpadding="2">
                     <tr>
-                      <?php 
-
-/* <!--<td width="100" align="center" class='<?php echo $order->info['orders_important_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'important')">重要</td>--> */ ?>
                       <td width="100" align="center" class='<?php echo $order->info['orders_care_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="preorders_flag(this, 'care', '<?php echo $order->info['orders_id'];?>')"><?php echo TEXT_ORDER_CARE;?></td>
                       <td width="100" align="center" class='<?php echo $order->info['orders_wait_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="preorders_flag(this, 'wait', '<?php echo $order->info['orders_id'];?>')"><?php echo TEXT_ORDER_WAIT;?></td>
                       <td width="100" align="center" class='<?php echo $order->info['orders_inputed_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="preorders_flag(this, 'inputed', '<?php echo $order->info['orders_id'];?>')"><?php echo TEXT_ORDER_INPUTED_FLAG;?></td>
@@ -1002,7 +1000,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       </tr>
       <tr>
         <td>
-        <!-- 左右结构 -->
+        <?php // 左右结构 ?>
             <!-- left -->
             <div class="pageHeading_box">
             <div id="orders_info">
@@ -1192,7 +1190,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                 </tr>
               </table>
             </div>
-            <!-- 访问解析 -->
+            <?php //访问解析 ?>
             <div id="orders_referer">
               <h3>Referer Info</h3>
               <table width="100%" border="0" cellspacing="0" cellpadding="2">
@@ -1210,7 +1208,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               </table>
             </div>
             <?php if ($show_payment_info == 1) { ?>
-            <!-- 信用卡信息 -->
+            <?php // 信用卡信息 ?>
 
             <div id="orders_telecom">
               <h3><?php echo TEXT_ORDER_CREDITCARD_TITLE;?></h3>
@@ -1231,7 +1229,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
             </div>
 
             <?php }else if ($show_payment_info == 2) {?>
-            <!-- PAYPAL信息 -->
+            <?php // PAYPAL信息 ?>
 
             <div id="orders_paypal">
               <h3><?php echo TEXT_ORDER_CREDITCARD_TITLE;?></h3>
@@ -1263,7 +1261,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               </table>
             </div>
             <?php } ?>
-            <!-- 注文履历 -->
+            <?php // 注文履历 ?>
             <?php // 订单历史5条 ?>
             <div id="orders_history">
               <h3><a href="<?php echo tep_href_link('customers_products.php', 'cID='.$order->customer['id'].'&cpage=1')?>">Order History</a></h3>
@@ -1402,14 +1400,13 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
             <!-- /right -->
         </td>
       </tr>
-      <!-- 信用调查 -->
+      <?php // 信用调查 ?>
       <tr>
         <td>
           <div id="orders_credit">
             <h3><?php echo TEXT_CREDIT_FIND;?></h3>
             <table width="100%" border="0" cellspacing="0" cellpadding="2">
               <tr>
-                <!--<td class="main" valign="top" width="30%"><b>信用調査:</b></td>-->
             <form action="ajax_preorders.php?orders_id=<?php echo $order->info['orders_id'];?>" id='form_orders_credit' method="post">
                 <td class="main"><textarea name="orders_credit" style="width:98%;height:42px;*height:40px;"><?php echo tep_get_customers_fax_by_id($order->customer['id']);?></textarea>
                 <input type="hidden" name="orders_id" value="<?php echo $order->info['orders_id'];?>">
@@ -1423,7 +1420,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
           </div>
         </td>
       </tr>
-      <!-- 订单商品 -->
+      <?php // 订单商品 ?>
       <tr>
         <td>
 
@@ -1432,9 +1429,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
         <td class="dataTableHeadingContent" colspan="2"><?php echo TABLE_HEADING_PRODUCTS; ?></td>
         <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_PRODUCTS_MODEL; ?></td>
         <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TAX; ?></td>
-        <!--<td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_PRICE_EXCLUDING_TAX; ?></td>-->
         <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_PRICE_INCLUDING_TAX; ?></td>
-        <!--<td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_EXCLUDING_TAX; ?></td>-->
         <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_INCLUDING_TAX; ?></td>
       </tr>
   <?php
@@ -1578,7 +1573,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     </table>
         </td>
       </tr>
-    <!-- /订单商品 -->
+    <?php  //订单商品 ?>
     <!-- orders status history -->
       <tr>
         <td class="main" align="left">
@@ -1624,7 +1619,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
 </td>
       </tr>
       </table>
-      <!-- /orders status history -->
+      <!-- orders status history -->
       <!-- mail -->
   
 <table border="0" width="100%">
@@ -1674,7 +1669,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       </tr>
       <tr>
         <td class="main">
-          <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="off" rows="30" cols="74"><?php echo str_replace('${ORDER_A}',preorders_a($order->info['orders_id']),$mail_sql['orders_status_mail']); ?></textarea>
+          <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}',preorders_a($order->info['orders_id']),$mail_sql['orders_status_mail']); ?></textarea>
         </td>
       </tr>
       <tr>
@@ -1725,9 +1720,9 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     <td colspan="2" align="right"><?php echo '<a href="' . tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('action','status','questions_type'))) . '">' .  tep_html_element_button(IMAGE_BACK) . '</a>'; ?></td>
   </tr>
 </table>
-
       
     </table>
+    </div>
   </td>
 </tr>
 
@@ -1739,7 +1734,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
 ?>
     <tr>
       <td width="100%" height="40">
-  
+  <div class="compatible">
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
       <td class="pageHeading" nowrap><?php echo HEADING_TITLE; ?></td>
@@ -1877,7 +1872,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       </td>
     </tr>
   </table>
-
+</div>
       </td>
     </tr>
     <tr>
@@ -1885,9 +1880,9 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
       <td valign="top">
-    <!-- 订单信息预览，配合javascript，永远浮动在屏幕右下角 -->
-    <div id="orders_info_box" style="left:15%; display:none; position:absolute; background:#FFFF00; width:70%; /*bottom:0;margin-top:40px;right:0;width:200px;*/">&nbsp;</div>
-<?php
+    <?php // 订单信息预览，配合javascript，永远浮动在屏幕右下角 ?>
+    <div id="orders_info_box" style=" display:none; position:absolute; background:#FFFF00; width:70%; /*bottom:0;margin-top:40px;right:0;width:200px;*/">&nbsp;</div>
+    <?php
   if ($ocertify->npermission == 15) {
     if(!tep_session_is_registered('reload')) $reload = 'yes';
     if (false) { 
@@ -2943,6 +2938,7 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
         ?>
         </td>
         <td style="border-bottom:1px solid #000000;" class="dataTableContent" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';">
+          <div class="float_left">
           <?php
             if ($orders['is_active'] == '1') {
           ?>
@@ -2955,7 +2951,8 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
             }
           ?>
           <a href="<?php echo tep_href_link('preorders.php', 'cEmail=' .  tep_output_string_protected(urlencode($orders['customers_email_address'])));?>"><?php echo tep_image(DIR_WS_ICONS . 'search.gif', TEXT_ORDER_HISTORY_ORDER);?></a>
-          
+          </div>
+          <div class="comp_width">
            
           <?php 
   if ($orders['is_active'] == '0') {
@@ -2990,6 +2987,7 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
   }
   ?>
           </a>
+          
           <input type="hidden" id="cid_<?php echo $orders['orders_id'];?>" name="cid[]" value="<?php echo $orders['customers_id'];?>" />
   <?php 
   $customers_info_raw = tep_db_query("select pic_icon from ".TABLE_CUSTOMERS." where customers_id = '".$orders['customers_id']."'"); 
@@ -3006,7 +3004,7 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
   <?php echo tep_image(DIR_WS_ICONS . 'care.gif', TEXT_ORDER_CARE);?>
   <?php }?>
 
-
+</div>
     </td>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';">
       <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
@@ -3145,7 +3143,7 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
       echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); 
     } else { 
     ?>
-    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onmouseover="if(popup_num == 1) showPreOrdersInfo('<?php echo $orders['orders_id']?>', this, 0, '<?php echo urlencode(tep_get_all_get_params(array('oID', 'action')))?>');" onmouseout="if(popup_num == 1) hideOrdersInfo(0);">
+    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"  onmouseout="if(popup_num == 1) hideOrdersInfo(0);">
     <?php
       echo '<a href="javascript:void(0);" onclick="showPreOrdersInfo(\''.$orders['orders_id'].'\', this, 1, \''.urlencode(tep_get_all_get_params(array('oID', 'action'))).'\');">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
       
@@ -3211,7 +3209,7 @@ function submit_confirm()
           color="red">※</font>&nbsp;<?php echo TEXT_ORDER_COPY;?></td><td>
           <?php echo TEXT_ORDER_LOGIN;?></td></tr></table>
           <br>
-          <?php echo tep_draw_textarea_field('comments', 'off', '74', '30', $select_text, 'style="font-family:monospace;font-size:12px; width:400px;"'); ?>
+          <?php echo tep_draw_textarea_field('comments', 'hard', '74', '30', $select_text, 'style="font-family:monospace;font-size:12px; width:400px;"'); ?>
         </td>
         </tr>
         <tr>
@@ -3265,8 +3263,7 @@ function submit_confirm()
       <td colspan="5">
         <table border="0" width="100%" cellspacing="0" cellpadding="2">
           <tr>
-            <td class="smallText" valign="top"><?php echo
-            $orders_split->display_count($orders_query_numrows, MAX_DISPLAY_ORDERS_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PREORDERS); ?></td>
+            <td class="smallText" valign="top"><?php echo $orders_split->display_count($orders_query_numrows, MAX_DISPLAY_ORDERS_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PREORDERS); ?></td>
             <td class="smallText" align="right"><?php echo $orders_split->display_links($orders_query_numrows, MAX_DISPLAY_ORDERS_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'oID', 'action'))); ?></td>
           </tr>
         </table>
@@ -3331,18 +3328,18 @@ function submit_confirm()
     </tr>
 <?php } ?>
 
-    </table></td>
-<!-- body_text_eof //-->
+    </table></div></td>
+<!-- body_text_eof -->
   </tr>
 </table>
-<!-- body_eof //-->
+<!-- body_eof -->
 
-<!-- footer //-->
+<!-- footer -->
 <?php
     require(DIR_WS_INCLUDES . 'footer.php');
 ?>
 <embed id="warn_sound" src="images/presound.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 <div id="wait" style="position:fixed; left:45%; top:45%; display:none;"><img src="images/load.gif" alt="img"></div>
 </body>

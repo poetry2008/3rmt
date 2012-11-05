@@ -51,7 +51,7 @@ break;
 <title><?php echo HEADING_TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+  <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 require("includes/note_js.php");
@@ -63,19 +63,19 @@ require("includes/note_js.php");
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
-<!-- header //-->
+<!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <!-- header_eof //-->
 <!-- body //-->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-<!-- left_navigation //-->
+<!-- left_navigation -->
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- left_navigation_eof //-->
+<!-- left_navigation_eof -->
     </table></td>
-<!-- body_text //-->
-    <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+<!-- body_text -->
+    <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr><?php echo tep_draw_form('search', FILENAME_NEW_CUSTOMERS, tep_get_all_get_params(), 'get'); ?>
@@ -84,14 +84,17 @@ require("includes/note_js.php");
           </form></tr>
         </table>
         <p><?php echo NEW_CUSTOMERS_TITLE_TEXT;?></p>
-    <!--ORDER EXPORT SCRIPT //-->
+    <!--ORDER EXPORT SCRIPT -->
     <form action="<?php echo tep_href_link(FILENAME_NEW_CUSTOMERS) ; ?>" method="get">
-    <table  border="0" align="center" cellpadding="0" cellspacing="2">
+    <table  border="0" cellpadding="0" cellspacing="2">
     <tr>
-      <td class="smallText" width='150'>
+    <td class="smallText" colspan="3">
       <?php echo NEW_CUSTOMERS_SITES_SELECT;?> 
       <?php echo tep_site_pull_down_menu_with_all(isset($_GET['site_id']) ? $_GET['site_id'] :'', false);?>
       </td>
+    </tr>
+    <tr>
+      
       <td class="smallText">
       <?php echo NEW_CUSTOMERS_SEARCH_START;?> 
       <select name="s_y">
@@ -103,7 +106,7 @@ require("includes/note_js.php");
         }
       } ?>
       </select>
-      年
+      <?php echo YEAR_TEXT;?>
       <select name="s_m">
       <?php for($i=1; $i<13; $i++) { 
         if (isset($_GET['s_m']) && $i == $_GET['s_m']) {
@@ -113,7 +116,7 @@ require("includes/note_js.php");
         }  
       } ?>    
       </select>
-      月
+      <?php echo MONTH_TEXT;?>
       <select name="s_d">
       <?php
       for($i=1; $i<32; $i++) {
@@ -125,7 +128,7 @@ require("includes/note_js.php");
       }
       ?>    
       </select>
-      日 </td>
+      <?php echo DAY_TEXT;?> </td>
       <td width="80" align="center">～</td>
       <td class="smallText">
       <?php echo NEW_CUSTOMERS_SEARCH_END;?> 
@@ -140,7 +143,7 @@ require("includes/note_js.php");
       }
       ?>    
       </select>
-      年
+      <?php echo YEAR_TEXT;?>
       <select name="e_m">
       <?php
       for($i=1; $i<13; $i++) {
@@ -152,7 +155,7 @@ require("includes/note_js.php");
       }
       ?>    
       </select>
-      月
+      <?php echo MONTH_TEXT;?>
       <select name="e_d">
       <?php
       for($i=1; $i<32; $i++) {
@@ -164,20 +167,19 @@ require("includes/note_js.php");
       }
       ?>    
       </select>
-      日 </td>
-      <td>&nbsp;</td>
+      <?php echo DAY_TEXT;?> </td>
       <td><input type="submit" value="<?php echo IMAGE_SEARCH;?>"></td>
       </tr>
     </table>
     </form>
     <!--ORDER EXPORT SCRIPT EOF //-->
-    <table  border="0" cellpadding="0" cellspacing="0" width="100%">
+    <table  border="0" cellpadding="2" cellspacing="2" width="100%">
 <tr>
 <td align="left" width="200" >
 <?php 
 if(isset($_GET['r_t'])&&$_GET['r_t']){
 $ref_s=$_GET['r_t']/1000;
-echo  REFRESH_TIME.$ref_s."&nbsp秒";
+echo  REFRESH_TIME.$ref_s."&nbsp".SECOND_TEXT;
 
       if(isset($_GET['r_num'])&&$_GET['r_num']){
         echo "</td><td>&nbsp".REFRESH_NUM.$_GET['r_num'];
@@ -300,15 +302,16 @@ echo "<a   href='".tep_href_link(FILENAME_NEW_CUSTOMERS,"action=refresh")."'>".R
       </tr>
     </table>
     </div> 
+    </div>
     </td>
-<!-- body_text_eof //-->
+<!-- body_text_eof -->
   </tr>
 </table>
-<!-- body_eof //-->
+<!-- body_eof -->
 
-<!-- footer //-->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 </body>
 </html>

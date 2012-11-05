@@ -3,8 +3,7 @@ $notes = '';
 $left='';  
 $top='';  
 $zindex='';  
-$user_info = tep_get_user_info($ocertify->auth_user);
-$query = tep_db_query("select * from notes where belong='".$belong."' and (attribute='1' or (attribute='0' and author='".$user_info['name']."'))  order by id desc");
+$query = tep_db_query("select * from notes where belong='".$belong."' and (attribute='1' or (attribute='0' and author='".$ocertify->auth_user."')) order by id desc");
 $note_arr = array();
 $height_arr = array();
 while($row=tep_db_fetch_array($query)){
@@ -24,8 +23,8 @@ while($row=tep_db_fetch_array($query)){
     '.substr($row['addtime'],0,strlen($row['addtime'])-3).'
     </div><div class="note_close">
     <input type="hidden" value="'.$row['id'].'" class="hidden">
-    <input type="image" onclick="note_desplay_none(\''.$row['id'].'\')" alt="close"
-    src="images/icons/note_close.gif"></div>
+    <a href="javascript:void(0);" onclick="note_desplay_none(\''.$row['id'].'\')"><image title="close" alt="close"
+    src="images/icons/note_close.gif"></a></div>
     </div><div id="note_text_'.$row['id'].'" class="note_textarea"
     style="height:'.($ylen-37).'px">'
     .'<textarea style="overflow:auto;resize: none;font-size:11px;" id="note_textarea_'.$row['id'].'">'
@@ -34,7 +33,7 @@ while($row=tep_db_fetch_array($query)){
 }
 ?>
 <script type="text/javascript" src="includes/jquery.fancybox-1.3.1.pack.js"></script>
-<script type="text/javascript" src="includes/global.js"></script>
+<script type="text/javascript" src="js2php.php?path=includes&name=global&type=js"></script>
 <script type='text/javascript' src='includes/javascript/ui/jquery-ui-1.8.16.custom.min.js'></script>
 <script type='text/javascript' src='includes/javascript/ui/jquery.ui.resizable.js'></script>
 <link rel="stylesheet" type="text/css" href="includes/note_style.css" />
@@ -43,49 +42,16 @@ while($row=tep_db_fetch_array($query)){
 <?php if(!empty($height_arr)){?>
 <script language="javascript">
 $(document).ready(function() { 
-var scroll_width = document.body.scrollWidth;  
-var note_width;
-var note_left;
-var head_notice = 0;
-var left_status_flag = $(".columnLeft").css("display");
-var left_status = '';
-if(left_status_flag){
-  left_status = '<?php echo $_COOKIE['tarrow'];?>';
+var scroll_height = document.body.scrollHeight;
+var max_height = '<?php echo max($height_arr);?>';
+max_height = parseInt(max_height);
+if(max_height > scroll_height){
+  $('.box_warp').height(<?php echo max($height_arr);?>);
+}else{
+  $('.box_warp').height(scroll_height);
 }
-if(document.getElementById("show_head_notice")){
-
-  head_notice = $("#show_head_notice").height();
-}
-$('.demo').height($('#main_table').height());
 <?php
 foreach($note_arr as $note_row){
-?>
-note_width = $("#note_<?php echo $note_row;?>").width();
-note_width = parseInt(note_width);
-note_top = $("#note_<?php echo $note_row;?>").css("top");
-note_top = parseInt(note_top);
-note_left = $("#note_<?php echo $note_row;?>").css("left");
-note_left = note_left.replace('px','');
-note_left = parseInt(note_left);
-if((note_left+note_width) > scroll_width){
-  $("#note_<?php echo $note_row;?>").css("left",scroll_width-note_width);
-}
-if(note_top < head_notice+93){
-
-  $("#note_<?php echo $note_row;?>").css("top",note_top+head_notice); 
-}
-if(note_left < 180){
-  if(left_status == 'open'){
-    $("#note_<?php echo $note_row;?>").css("left",180);
-  }else if(left_status == 'close'){
-    $("#note_<?php echo $note_row;?>").css("left",20);
-  }else if(left_status == ''){
-    if(note_left < 0){
-      $("#note_<?php echo $note_row;?>").css("left",0);
-    }
-  }
-}
-<?php
   echo "$('#note_".$note_row."').resizable({ 
     alsoResize: '#note_text_".$note_row."',
     stop: function(e) {
@@ -99,8 +65,8 @@ if(note_left < 180){
         data:
         'action=change_move&xlen='+xlen+'&ylen='+ylen+'&id=".$note_row."',
         success: function(){
-          if($('.demo').height()<(Number(ylen)+Number(top.substring(0,top.length-2))+10)){
-              $('.demo').height(Number(ylen)+Number(top.substring(0,top.length-2))+10);
+          if($('.box_warp').height()<(Number(ylen)+Number(top.substring(0,top.length-2))+10)){
+              $('.box_warp').height(Number(ylen)+Number(top.substring(0,top.length-2))+10);
             }
           }
           });

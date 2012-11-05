@@ -7,7 +7,7 @@
 
 require('includes/application_top.php');
 require('includes/step-by-step/new_application_top.php');
-ini_set("display_errors","On");
+ini_set("display_errors","Off");
 include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .  '/default.php');
 include(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/' . FILENAME_EDIT_ORDERS);
 require(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_EDIT_ORDERS);
@@ -363,7 +363,7 @@ if($orders_exit_flag == true){
 
           tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
         }
-        tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
+        tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), SENDMAIL_TEXT_SENDED.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
         $customer_notified = '1';
       }
 
@@ -677,9 +677,7 @@ if($address_error == false){
       tep_db_free_result($address_history_add_query);
   }
 }
-if($ocertify->auth_user && $orders['user_added'] == NULL){
-     tep_db_query("update `".TABLE_ORDERS."` set `user_added` = '".$ocertify->auth_user."',`user_update` = '".$ocertify->auth_user."' where `orders_id` = '".$oID."'");
-}
+
 
      //作所信息入库结束
 
@@ -1115,7 +1113,7 @@ if($ocertify->auth_user && $orders['user_added'] == NULL){
             if ($totals['class'] == "ot_point" || $totals['class'] == "ot_subtotal") {
               if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
                 $total_details_mail .= SENDMAIL_TEXT_POINT_ONE . $currencies->format($totals['value']) . "\n";
-                $mailpoint = str_replace(SENDMAIL_EDIT_ORDERS_PRICE_UNIT,'',$currencies->format($totals['value']));
+                $mailpoint = str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($totals['value']));
               }
             } elseif ($totals['class'] == "ot_total") {
               if($handle_fee) {
@@ -1146,9 +1144,8 @@ if($ocertify->auth_user && $orders['user_added'] == NULL){
 
             $mailoption['TORIHIKIHOUHOU']   =  $order->tori['houhou'];      //?
             $mailoption['ORDER_PAYMENT']    = $order->info['payment_method'] ;  //d
-            $trade_time = str_replace($oarr,
-                $newarr,date('Y'.SENDMAIL_TEXT_DATE_YEAR.'m'.SENDMAIL_TEXT_DATE_MONTH.'d'.SENDMAIL_TEXT_DATE_DAY.'（l）H'.SENDMAIL_TEXT_HOUR.'i'.SENDMAIL_TEXT_MIN, strtotime($_POST['date_orders'].' '.$_POST['start_hour'].':'.$_POST['start_min'].':00'))); 
-            $trade_time_1 = date('H時i分',strtotime($_POST['date_orders'].' '.$_POST['end_hour'].':'.$_POST['end_min'].':00'));
+            $trade_time = str_replace($oarr, $newarr,date('Y'.SENDMAIL_TEXT_DATE_YEAR.'m'.SENDMAIL_TEXT_DATE_MONTH.'d'.SENDMAIL_TEXT_DATE_DAY.'（l）H'.SENDMAIL_TEXT_HOUR.'i'.SENDMAIL_TEXT_MIN, strtotime($_POST['date_orders'].' '.$_POST['start_hour'].':'.$_POST['start_min'].':00'))); 
+            $trade_time_1 = date('H'.SENDMAIL_TEXT_HOUR.'i'.SENDMAIL_TEXT_MIN,strtotime($_POST['date_orders'].' '.$_POST['end_hour'].':'.$_POST['end_min'].':00'));
             $mailoption['ORDER_TTIME']      = $trade_time . SENDMAIL_TEXT_TIME_LINK . $trade_time_1 .SENDMAIL_TEXT_TWENTY_FOUR_HOUR;//d
             //$mailoption['ORDER_COMMENT']    = $notify_comments_mail;// = $comments;
             $mailoption['ORDER_COMMENT']    = isset($comment_arr['payment_bank_info']['add_info'])?$comment_arr['comment']:$_POST['comments_text'];// = $comments;
@@ -1224,12 +1221,11 @@ if($ocertify->auth_user && $orders['user_added'] == NULL){
             $email = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$email);
             tep_mail($check_status['customers_name'], $check_status['customers_email_address'], SENDMAIL_TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
             tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), SENDMAIL_TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
-          }
             /* old send mail
             tep_mail($check_status['customers_name'], $check_status['customers_email_address'], TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
             tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
+            */
           }
-          */
           $customer_notified = '1';
           
           // 支払方法がクレジットなら決済URLを送る
@@ -1322,7 +1318,7 @@ if($ocertify->auth_user && $orders['user_added'] == NULL){
           $get_point = $payment_modules->admin_get_fetch_point(payment::changeRomaji($payment_method,'code'),$result3['value']);
         }
         //$plus = $result4['point'] + $get_point;
-          $payment_modules->admin_get_customer_point(payment::changeRomaji($payment_method,'code'),intval($get_point),$result1['customers_id']); 
+          //$payment_modules->admin_get_customer_point(payment::changeRomaji($payment_method,'code'),intval($get_point),$result1['customers_id']); 
         
       }else{
         $os_query = tep_db_query("select orders_status_name,nomail from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
@@ -1341,7 +1337,7 @@ if($ocertify->auth_user && $orders['user_added'] == NULL){
               orders_id = '".tep_db_input($oID)."'");
           $point_done_row  =  tep_db_fetch_array($point_done_query);
           if($point_done_row['cnt'] <1){
-            tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  intval($get_point) . " where customers_id = '" . $result1['customers_id']."' and customers_guest_chk = '0'");
+            //tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  intval($get_point) . " where customers_id = '" . $result1['customers_id']."' and customers_guest_chk = '0'");
           }
         }
       }
@@ -1428,7 +1424,7 @@ if($ocertify->auth_user && $orders['user_added'] == NULL){
       }
       for ($i=0; $i<sizeof($order2->products); $i++) {
         //$orders_products_id = $order->products[$i]['orders_products_id'];
-        $products_ordered_mail .= '注文商品'.str_repeat('　', intval($max_c_len - mb_strlen('注文商品', 'utf-8'))).'：' . $order2->products[$i]['name'] . '（' . $order2->products[$i]['model'] . '）' . "\n";
+        $products_ordered_mail .= SENDMAIL_ORDERS_PRODUCTS.str_repeat('　', intval($max_c_len - mb_strlen(SENDMAIL_ORDERS_PRODUCTS, 'utf-8'))).'：' . $order2->products[$i]['name'] . '（' . $order2->products[$i]['model'] . '）' . "\n";
         // Has Attributes?
         if (sizeof($order2->products[$i]['attributes']) > 0) {
           for ($j=0; $j<sizeof($order2->products[$i]['attributes']); $j++) {
@@ -1438,23 +1434,23 @@ if($ocertify->auth_user && $orders['user_added'] == NULL){
           }
         }
           
-        $products_ordered_mail .= '個数'.str_repeat('　', intval($max_c_len - mb_strlen('個数', 'utf-8'))).'：' . $order2->products[$i]['qty'] . '個(' . tep_get_full_count_in_order2($order2->products[$i]['qty'], $order2->products[$i]['id']) . ")\n";
-        $products_ordered_mail .= '単価'.str_repeat('　', intval($max_c_len - mb_strlen('単価', 'utf-8'))).'：' . $currencies->display_price($order2->products[$i]['final_price'], $order2->products[$i]['tax']) . "\n";
-        $products_ordered_mail .= '小計'.str_repeat('　', intval($max_c_len - mb_strlen('小計', 'utf-8'))).'：' . $currencies->display_price($order2->products[$i]['final_price'], $order2->products[$i]['tax'], $order2->products[$i]['qty']) . "\n";
+        $products_ordered_mail .= SENDMAIL_QTY_NUM.str_repeat('　', intval($max_c_len - mb_strlen(SENDMAIL_QTY_NUM, 'utf-8'))).'：' . $order2->products[$i]['qty'] . SENDMAIL_EDIT_ORDERS_NUM_UNIT.'(' . tep_get_full_count_in_order2($order2->products[$i]['qty'], $order2->products[$i]['id']) . ")\n";
+        $products_ordered_mail .= SENDMAIL_TABLE_HEADING_PRODUCTS_PRICE.str_repeat('　', intval($max_c_len - mb_strlen(SENDMAIL_TABLE_HEADING_PRODUCTS_PRICE, 'utf-8'))).'：' . $currencies->display_price($order2->products[$i]['final_price'], $order2->products[$i]['tax']) . "\n";
+        $products_ordered_mail .= SENDMAIL_SUB_TOTAL.str_repeat('　', intval($max_c_len - mb_strlen(SENDMAIL_SUB_TOTAL, 'utf-8'))).'：' . $currencies->display_price($order2->products[$i]['final_price'], $order2->products[$i]['tax'], $order2->products[$i]['qty']) . "\n";
         //$products_ordered_mail .= 'キャラクター名　　：' . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($order2->products[$i]['character']) : $order2->products[$i]['character']) . "\n";
         $products_ordered_mail .= "------------------------------------------\n";
         if (tep_get_cflag_by_product_id($order2->products[$i]['id'])) {
             if (tep_get_bflag_by_product_id($order2->products[$i]['id'])) {
-              $products_ordered_mail .= "※ 当社キャラクター名は、お取引10分前までに電子メールにてお知らせいたします。\n\n";
+              $products_ordered_mail .= SENDMAIL_TEXT_CHARACTER_NAME_SEND_MAIL."\n\n";
             } else {
-              $products_ordered_mail .= "※ 当社キャラクター名は、お支払い確認後に電子メールにてお知らせいたします。\n\n";
+              $products_ordered_mail .= SENDMAIL_TEXT_CHARACTER_NAME_CONFIRM_SEND_MAIL."\n\n";
             }
         }
       } 
       //customer info
-      $customer_printing_order .= 'IPアドレス　　　　　　：' . $_SERVER["REMOTE_ADDR"] . "\n";
-      $customer_printing_order .= 'ホスト名　　　　　　　：' . @gethostbyaddr($_SERVER["REMOTE_ADDR"]) . "\n";
-      $customer_printing_order .= 'ユーザーエージェント　：' . $_SERVER["HTTP_USER_AGENT"] . "\n";
+      $customer_printing_order .= SENDMAIL_TEXT_IP_ADDRESS . $_SERVER["REMOTE_ADDR"] . "\n";
+      $customer_printing_order .= SENDMAIL_TEXT_HOST . @gethostbyaddr($_SERVER["REMOTE_ADDR"]) . "\n";
+      $customer_printing_order .= SENDMAIL_TEXT_USER_AGENT . $_SERVER["HTTP_USER_AGENT"] . "\n";
   //credit research
   $credit_inquiry_query = tep_db_query("select customers_fax, customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id_flag . "'");
   $credit_inquiry       = tep_db_fetch_array($credit_inquiry_query);
@@ -1464,9 +1460,9 @@ if($ocertify->auth_user && $orders['user_added'] == NULL){
   $email_orders_history = '';
   
   if ($credit_inquiry['customers_guest_chk'] == '1') { 
-    $email_orders_history .= 'ゲスト'; 
+    $email_orders_history .= SENDMAIL_TEXT_GUEST; 
   } else { 
-    $email_orders_history .= '会員'; 
+    $email_orders_history .= SENDMAIL_TEXT_MEMBER; 
   }
   
   $email_orders_history .= "\n";
@@ -1481,7 +1477,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
   $br = $orders_i == 5 ? "" : "\n";
   $email_orders_history .= $order_history['date_purchased'] . '　　' .
     tep_output_string_protected($order_history['customers_name']) . '　　' .
-    abs(intval($order_history['order_total_value'])) . '円　　' . $order_history['orders_status_name'] . $br;
+    abs(intval($order_history['order_total_value'])) . SENDMAIL_TEXT_MONEY_SYMBOL.'　　' . $order_history['orders_status_name'] . $br;
 }
   //orders comment
       $cpayment = payment::getInstance();
@@ -1513,7 +1509,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
                           $handle_fee, 
                           abs($newtotal),
                           $products_ordered_mail,
-                          tep_date_long($_POST['date_orders']) . $_POST['start_hour'] . '時' . $_POST['start_min'].$_POST['start_min_1'] . '分から'. $_POST     ['end_hour'] .'時'. $_POST['end_min'].$_POST['end_min_1'] .'分　（24時間表記）', 
+                          tep_date_long($_POST['date_orders']) . $_POST['start_hour'] . SENDMAIL_TEXT_HOUR . $_POST['start_min'].$_POST['start_min_1'] . SENDMAIL_TEXT_MIN.SENDMAIL_TEXT_TIME_LINK. $_POST     ['end_hour'] .SENDMAIL_TEXT_HOUR. $_POST['end_min'].$_POST['end_min_1'] .SENDMAIL_TEXT_MIN.SENDMAIL_TEXT_TWENTY_FOUR_HOUR, 
                           $orders_comments,
                           '',
                           $customer_printing_order,
@@ -1804,11 +1800,11 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
     <title><?php echo TITLE; ?></title>
     <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
     <link rel="stylesheet" type="text/css" href="includes/styles.css">
-    <script language="javascript" src="includes/general.js"></script>
+    <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
     <script language="javascript" src="includes/javascript/jquery.js"></script>
     <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-    <script language="javascript" src="includes/javascript/all_orders.js"></script>
-    <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+    <script language="javascript" src="js2php.php?path=includes|javascript&name=all_orders&type=js"></script>
+    <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
     <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
     <script language="javascript" src="includes/jquery.form.js"></script>
     <script type="text/javascript"> 
@@ -3157,7 +3153,7 @@ require("includes/note_js.php");
         one_time_pwd('<?php echo $page_name;?>');
       </script>
         <?php }?>
-        <!-- header //-->
+        <!-- header -->
         <?php
         require(DIR_WS_INCLUDES . 'header.php');
       ?>
@@ -3191,21 +3187,21 @@ a.dpicker {
 	position:absolute;
 }
       </style>
-        <!-- header_eof //-->
-        <!-- body //-->
+        <!-- header_eof -->
+        <!-- body -->
         <?php echo tep_draw_form('edit_order', "edit_new_orders.php", tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post', 'id="edit_order_id"'); ?> 
-        <table border="0" width="100%" cellspacing="2" cellpadding="2">
+        <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
         <tr>
         <td width="<?php echo BOX_WIDTH; ?>" valign="top">
         <table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-        <!-- left_navigation //-->
+        <!-- left_navigation -->
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-        <!-- left_navigation_eof //-->
+        <!-- left_navigation_eof -->
         </table>
         </td>
-        <!-- body_text //-->
-        <td width="100%" valign="top"><?php echo $notes;?>
-        <table border="0" width="96%" cellspacing="0" cellpadding="2">
+        <!-- body_text -->
+        <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
+        <div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
         <?php
         if ($action == 'edit') {
           if($orders_exit_flag == true){
@@ -4654,7 +4650,7 @@ if($orders_exit_flag == true){
             <td class="dataTableHeadingContent" align="left"><?php echo TABLE_HEADING_EMAIL_COMMENTS; ?></td>
             </tr>
             <tr>
-            <td valign="top">
+            <td valign="top" width="40%">
             <table border="0" cellspacing="0" cellpadding="2">
             <tr>
 <?php
@@ -4669,8 +4665,8 @@ if($orders_exit_flag == true){
           $select_status = isset($_SESSION['orders_update_products']['s_status']) ? $_SESSION['orders_update_products']['s_status'] : $select_status;
           
 ?>
-            <td class="main" width="80"><b><?php echo ENTRY_STATUS; ?></b></td>
-            <td class="main"><?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_status, 'onChange="new_mail_text_orders(this, \'s_status\',\'comments\',\'title\');"');?>&nbsp;&nbsp;<?php echo EDIT_ORDERS_ORIGIN_VALUE_TEXT;?></td>
+            <td class="main" width="82" style="min-width:45px;"><b><?php echo ENTRY_STATUS; ?></b></td>
+            <td class="main"><?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_status, 'onChange="new_mail_text_orders(this, \'s_status\',\'comments\',\'title\');" style="width:80px;"');?>&nbsp;&nbsp;<?php echo EDIT_ORDERS_ORIGIN_VALUE_TEXT;?></td>
             </tr>
             <?php
 
@@ -4705,7 +4701,7 @@ if($orders_exit_flag == true){
             <td class="main"><?php echo tep_draw_input_field('title', $mail_sql['orders_status_title'],'style="width:55%;"'); ?></td>
             </tr>
             <tr>
-            <td class="main"><?php echo EDIT_ORDERS_SEND_MAIL_TEXT;?></b></td>
+            <td class="main"><b><?php echo EDIT_ORDERS_SEND_MAIL_TEXT;?></b></td>
             <td class="main"><table bgcolor="red" cellspacing="5"><tr><td><?php echo tep_draw_checkbox_field('notify', '', $customer_notified,'id="notify"'); ?></td></tr></table></td>
             </tr>
             <?php if($CommentsWithStatus) { ?>
@@ -4720,7 +4716,7 @@ if($orders_exit_flag == true){
                 <?php } ?>
                 </table>
                 </td>
-                <td class="main" width="10">&nbsp;</td>
+                <td class="main" width="15%">&nbsp;</td>
                 <td class="main">
                 <?php echo EDIT_ORDERS_RECORD_ARTICLE;?><br>
                 <?php
@@ -4729,10 +4725,10 @@ if($orders_exit_flag == true){
 
                   //<textarea style="font-family:monospace;font-size:x-small" name="comments" wrap="hard" rows="30" cols="74"></textarea>
 
-                  echo tep_draw_textarea_field('comments', 'off', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('     ${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:70%;"');
+                  echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace(' ${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:400px;"');
                   //    echo tep_draw_textarea_field('comments', 'soft', '40', '5');
                 } else {
-                  echo tep_draw_textarea_field('comments', 'off', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('     ${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:70%;"');
+                  echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('     ${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:400px;"');
                 } 
           ?>
             </td>
@@ -4945,16 +4941,19 @@ if($orders_exit_flag == true){
         echo "</table></td></tr>\n";
       }  
       ?>
-        </table></td>
+        </table>
+        </div>
+        </div>
+        </td>
         <!-- body_text_eof //-->
         </tr>
         </table>
         </form>
-        <!-- body_eof //-->
+        <!-- body_eof -->
 
-        <!-- footer //-->
+        <!-- footer -->
         <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-        <!-- footer_eof //-->
+        <!-- footer_eof -->
         <br>
         </body>
         </html>

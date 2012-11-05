@@ -51,6 +51,7 @@ case update:
   <head>
   <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
   <title><?php echo TEXT_LIST_RISUTOHYOUZI;?></title>
+  <link rel="stylesheet" type="text/css" href="includes/stylesheet.css" />
   <style>
 .dataTableHeadingRow {
 background-color: #808080;
@@ -80,11 +81,19 @@ color: #000000;
 /*font-size:11px;*/
 /*white-space:nowrap;*/
 }
+.show_menu{
+	height:auto;
+	min-height:650px;
+}
+.show_menu p{
+	min-width:750px;
+	margin-left:8px;
+}
   </style>
   <script type="text/javascript" src="includes/javascript/jquery.js"></script>
   <script type="text/javascript" src="includes/javascript/udlr.js"></script>
   <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-  <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+  <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
   <script type="text/javascript">
     // true = disabled, false = enabled
     var products = new Array();
@@ -386,7 +395,8 @@ $rows = $count[0]>count($products)?$count[0]:count($products);
 </script>
 <!--------------------->
 <form name='listform' method='POST' action="?action=update&cid=<?php echo $cID; ?>&cpath=<?php echo $cPath; ?>">
-  <table border="0" cellspacing="1" cellpadding="2">
+<div class="show_menu">
+  <table border="0" cellspacing="1" cellpadding="2" style="margin-left:8px; min-width:750px;">
   <tr class="dataTableRow">
 <?php if($orotime)foreach ($orotime as $k => $value){?>
     <td class="dataTableContent"><?php echo $value;?></td>
@@ -410,7 +420,7 @@ $rows = $count[0]>count($products)?$count[0]:count($products);
   <tr class="<?php echo $k%2==1?'dataTableRow':'dataTableSecondRow';?>" onmouseover="this.className='dataTableRowOver'" onmouseout="this.className='<?php echo $k%2==1?'dataTableRow':'dataTableSecondRow';?>'">
 <?php
   for($j=0;$j<$cnt;$j++){
-    echo "<td class=\"dataTableContent\" valign='top'>";
+    echo "<td class=\"dataTableContent\">";
     if (isset($lines_arr[$j][$k])) {
       echo "<span style='float:left' class='oroshi_data' id='data_".$k."_".$j."'>".$lines_arr[$j][$k]."</span>";
     }
@@ -464,9 +474,10 @@ $rows = $count[0]>count($products)?$count[0]:count($products);
 <?php }}?>
   </table>
     <input type="hidden" name="fullpath" value="<?php echo $_GET['fullpath']?>">
-    <input type="submit" value="<?php echo TEXT_LIST_KETTEI;?>">
-    <input type="button" value="<?php echo TEXT_LIST_RISETTO;?>" onclick="clear_page()">
+    <p><input type="submit" value="<?php echo TEXT_LIST_KETTEI;?>">
+    <input type="button" value="<?php echo TEXT_LIST_RISETTO;?>" onclick="clear_page()"></p>
     <!--<input type="button" value="<?php echo TEXT_LIST_RISETTO;?>" onclick="reset_page()">-->
+	</div>
   </form>
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 </body>

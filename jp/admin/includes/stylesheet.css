@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*
 	$Id$
 */
@@ -1537,3 +1538,1554 @@ font-size:14px;
 a.pageResults{
 	text-decoration:underline;
 }
+=======
+/*
+	$Id$
+*/
+body {
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif;
+	font-size: 12px;
+}
+/* links */
+/* ---------------------------
+A：リンク（通常）
+--------------------------- */
+a img {
+	border: 0;
+	vertical-align:middle;
+}
+.infoBoxContent a img {
+	vertical-align: top;
+}
+img {
+	vertical-align:middle;
+}
+a:link {
+	color: #000000;                                 /* フォントサイズ */
+	font-weight: normal;                            /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
+}
+/* ---------------------------
+A：リンク（訪問済み）
+--------------------------- */
+a:visited {
+	color: #000000;                                 /* フォントカラー */
+	font-weight: normal;                            /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
+}
+/* ---------------------------
+A：リンク（選択している）
+--------------------------- */
+a:active {
+	color: #000000;                                 /* フォントカラー */
+	font-weight: normal;                            /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
+}
+/* ---------------------------
+A：リンク（カーソルが上に乗ったとき）
+--------------------------- */
+a:hover {
+	color: #000000;                                 /* フォントカラー */
+	font-weight: normal;                            /* フォント太さ */
+	text-decoration:none;                     /* テキストの装飾 */
+}
+/* ---------------------------
+A：ヘッダリンク（通常）
+--------------------------- */
+a.headerLink:link {
+	color: #ffffff;                                 /* フォントカラー */
+	font-weight: bold;                              /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
+}
+/* ---------------------------
+A：ヘッダリンク（訪問済み）
+--------------------------- */
+a.headerLink:visited {
+	color: #ffffff;                                 /* フォントカラー */
+	font-weight: bold;                              /* フォント太さ */
+	text-decoration: none;
+                          /* テキストの装飾 */
+}
+/* ---------------------------
+A：ヘッダリンク（選択している）
+--------------------------- */
+a.headerLink:active {
+	color: #ffffff;                                 /* フォントカラー */
+	font-weight: bold;                              /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
+}
+/* ---------------------------
+A：ヘッダリンク（カーソルが上に乗ったとき）
+--------------------------- */
+a.headerLink:hover {
+	color: #ffffff;                                 /* フォントカラー */
+	font-weight: bold;                              /* フォント太さ */
+	text-decoration: underline;                     /* テキストの装飾 */
+}
+/* ---------------------------
+A：メニューボックスヘッダリンク（通常）
+--------------------------- */
+a.menuBoxHeading_Link:link {
+	font-size: 11px;
+	color: #000;                                 /* フォントカラー */
+	font-weight: bold;                              /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
+}
+/* ---------------------------
+A：メニューボックスヘッダリンク（訪問済み）
+--------------------------- */
+a.menuBoxHeading_Link:visited {
+	font-size: 11px;
+	color: #000;                                 /* フォントカラー */
+	font-weight: bold;                              /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
+}
+/* ---------------------------
+A：メニューボックスヘッダリンク（選択している）
+--------------------------- */
+a.menuBoxHeading_Link:active {
+	font-size: 11px;
+	color: #000;                                 /* フォントカラー */
+	font-weight: bold;                              /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
+}
+/* ---------------------------
+A：メニューボックスヘッダリンク（カーソルが上に乗ったとき）
+--------------------------- */
+a.menuBoxHeading_Link:hover {
+	font-size: 11px;
+	color: #000;                                 /* フォントカラー */
+	font-weight: bold;                              /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
+}
+/* ---------------------------
+A：メニューボックスコンテンツリンク（通常）
+--------------------------- */
+a.menuBoxContent_Link:link {
+	font-size: 11px;                                /* フォントサイズ */
+	color: #000;                                 /* フォントカラー */
+	font-weight: normal;                            /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
+}
+/* ---------------------------
+A：メニューボックスコンテンツリンク（訪問済み）
+--------------------------- */
+a.menuBoxContent_Link:visited {
+	font-size: 11px;
+	color: #000;                                 /* フォントカラー */
+	font-weight: normal;                            /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
+}
+/* ---------------------------
+A：メニューボックスコンテンツリンク（選択している）
+--------------------------- */
+a.menuBoxContent_Link:active {
+	font-size: 11px;
+	color: #000;                                 /* フォントカラー */
+	font-weight: normal;                            /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
+}
+/* ---------------------------
+A：メニューボックスコンテンツリンク（カーソルが上に乗ったとき）
+--------------------------- */
+a.menuBoxContent_Link:hover {
+	font-size: 11px;
+	color: #000;                                 /* フォントカラー */
+	font-weight: normal;                            /* フォント太さ */
+	text-decoration: underline;                     /* テキストの装飾 */
+}
+/* ---------------------------
+A：ページリンク（通常）
+--------------------------- */
+a.splitPageLink:link {
+	color: #0000FF;                                 /* フォントカラー */
+	font-weight: normal;                            /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
+}
+/* ---------------------------
+A：ページリンク（訪問済み）
+--------------------------- */
+a.splitPageLink:visited {
+	color: #0000FF;                                 /* フォントカラー */
+	font-weight: normal;                            /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
+}
+/* ---------------------------
+A：ページリンク（選択している）
+--------------------------- */
+a.splitPageLink:active {
+	color: #0000FF;                                 /* フォントカラー */
+	font-weight: normal;                            /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
+}
+/* ---------------------------
+A：ページリンク（カーソルが上に乗ったとき）
+--------------------------- */
+a.splitPageLink:hover {
+	color: #0000FF;                                 /* フォントカラー */
+	font-weight: normal;                            /* フォント太さ */
+	text-decoration: underline;                     /* テキストの装飾 */
+	background-color: #FFFF33;                      /* 背景色 */
+}
+/* menu box */
+/* ---------------------------
+.[TD]：メニューボックスコンテンツ
+--------------------------- */
+.menuBoxHeading {
+	color: #000;                                 /* フォントカラー */
+	background-color: #ffffff;
+	line-height:18px;                      /* 背景色 */
+}
+.menuBoxHeading img{
+	margin:0 5px 3px 0;
+}
+/* ---------------------------
+.[TD]：メニューボックスコンテンツ
+--------------------------- */
+.menuBoxContent {
+	color: #616060;                                 /* フォントカラー */
+}
+.menuBoxContent_image{
+	margin-right:5px;
+	float:left;
+	line-height:18px;
+}
+.menuBoxContent_span{
+	width:125px;
+	float:left;
+	line-height:18px;
+}
+/* page */
+/* ---------------------------
+BODY：ボディ
+--------------------------- */
+body {
+	background-color: #ffffff;                      /* 背景色 */
+	color: #000000;                                 /* フォントカラー */
+	margin: 0px;                                    /* マージン */
+}
+/* ---------------------------
+.[TR]：ヘッダ（ナビゲーション）
+--------------------------- */
+.headerBar {
+	background-color: #000000;                      /* 背景色 */
+}
+/* ---------------------------
+.[TD]：ヘッダ（ナビゲーション）
+--------------------------- */
+.headerBarContent {
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-size: 11px;                                /* フォントサイズ */
+	color: #ffffff;                                 /* フォントカラー */
+	font-weight: bold;                              /* フォント太さ */
+	padding:2px;                               /* 境界線と内容との間の空間 */
+}
+.headerBarContent img{
+	margin-bottom:3px;
+}
+/* ---------------------------
+.[TABLE]：メニューボックスを統括するテーブル
+--------------------------- */
+.preorder_head{
+	width:100%;
+	min-width:750px;
+	overflow:hidden;
+	width: expression(document.body.clientWidth < 750? "750px": "100%" );
+	
+}
+.compatible{
+	min-width:564px;
+	*min-width:576px;
+	width:100%;
+	width: expression(document.body.clientWidth < 750? "750px": "100%" );
+	
+}
+@media all and (-webkit-min-device-pixel-ratio:0){
+.compatible{
+	width:100%;
+	width: expression(document.body.clientWidth < 750? "750px": "100%" );
+	
+}}
+.compatible_head{
+	min-width:564px;
+	*min-width:576px;
+	width:100%;
+	width: expression(document.body.clientWidth < 750? "750px": "100%" );
+	
+}
+@media all and (-webkit-min-device-pixel-ratio:0){
+.compatible_head{
+	min-width:750px;
+	width:100%;
+	width: expression(document.body.clientWidth < 750? "750px": "100%" );
+	
+}}
+.columnLeft {
+	background-color: #F0F1F1;                      /* 背景色 */
+	border-color: #999999;                          /* 境界線の色 */
+	border-width: 1px;                              /* 境界線の幅 */
+	border-style: solid;                            /* 境界線のスタイル */
+	padding: 2px;                                   /* 境界線と内容との間の空間 */
+        display:none;
+}
+.leftmenu {
+ padding:5px 0 0 5px;
+}
+.pageHeading_box{
+	width:49%; overflow:hidden; display: block; float:left;
+}
+.pageHeading_box02{
+	width:50%; overflow:hidden; display: block; float:right;
+}
+.pageHeading_box03{width:99.3%; float:left; height:136px; height:138px\9; overflow:hidden;}
+/* ---------------------------
+.[TD]：ページヘッダ
+--------------------------- */
+.pageHeading {
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-size: 18px;                                /* フォントサイズ */
+	color: #727272;                                 /* フォントカラー */
+	font-weight: bold;                              /* フォント太さ */
+}
+.pageHeading a { text-decoration:none;}
+/* data table */
+/* ---------------------------
+.[TR]：一覧表の項目名（背景色）
+--------------------------- */
+.dataTableHeadingRow {
+	background-color: #808080;                      /* 背景色 */
+}
+/* ---------------------------
+.[TD]：一覧表の項目名（コンテンツ）
+--------------------------- */
+.dataTableHeadingContent {
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-size: 11px;
+	color: #ffffff;                                 /* フォントカラー */
+	font-weight: bold; 
+	overflow:hidden;
+	text-overflow:ellipsis;                           /* フォント太さ */
+}
+/* ---------------------------
+.[TR]：一覧表データ（通常行）
+--------------------------- */
+.dataTableRow {
+	background-color: #F0F1F1;                      /* 背景色 */
+}
+.inv {
+	background-color:#fff;
+}
+/* ---------------------------
+.[TR]：一覧表データ（色違行）
+--------------------------- */
+.dataTableSecondRow {
+	background-color: #E0E0E0;                      /* 背景色 */
+}
+.inv_second {
+	background-color:#ccc;
+}
+/* ---------------------------
+.[TR]：一覧表データ（選択行）
+--------------------------- */
+.oa_bg{ background-color:#E0E0E0;}
+.oa_bg02{ background-color:#F0F1F1;}
+
+.dataTableRowOver {
+	background-color: #FFCC99;                      /* 背景色 */
+}
+
+.dataTableRowSelected {
+	background-color: #FFD700;!important;                      /* 背景色 */
+}
+/* ---------------------------
+.[TR]：一覧表データ（カーソルが乗っている行）
+--------------------------- */
+/* ---------------------------
+.[TD]：一覧表データ（コンテンツ）
+--------------------------- */
+.dataTableContent {
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-size: 12px;
+	color: #000000;
+	word-break:break-all;
+                        /* フォントカラー */
+}
+.dataTableContent1 {
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-size: 12px;
+	color: #000000;                         /* フォントカラー */
+	/* width:25%;*/
+	/* bobhero edit width:5%;*/
+	overflow:hidden;
+	
+}
+.dataTableContent2 {
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-size: 12px;
+	color: #000000;                         /* フォントカラー */
+	/*width:4%;*/
+	text-align:right;
+	
+}
+/*.dataTableContent2 input{
+	float:left;
+}*/
+.dataTableContent2 span{text-align:center; padding-top:5px;
+}
+.dataTableContent3 {
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-size: 12px;
+	color: #000000;                         /* フォントカラー */
+	/*width:6%;*/
+}
+.dataTableContent4 {
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-size: 12px;
+	color: #000000;                         /* フォントカラー */
+	/*width:6%;*/
+}
+.dataTableContent5 {
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-size: 12px;
+	color: #000000;                         /* フォントカラー */
+/*	width:11%;*/
+}
+.dataTableContent6 {
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-size: 12px;
+	color: #000000;                         /* フォントカラー */
+/*	width:1%;*/
+}
+.dataTableContent_line {
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; 
+	font-size: 12px;
+	color: #000000;
+	text-decoration:underline;
+}                   
+/* info box */
+/* ---------------------------
+.[TR]：情報ボックス（タイトル） - 右側に表示される、一覧から選んだ項目の情報
+--------------------------- */
+.infoBoxHeading {
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-size: 12px;                                /* フォントサイズ */
+	color: #000000;                                 /* フォントカラー */
+	background-color: #FFD700;                      /* 背景色 */
+	padding-left:8px;                     
+
+}
+/* ---------------------------
+.[TD]：情報ボックス（コンテンツ） - 右側に表示される、一覧から選んだ項目の情報
+--------------------------- */
+.infoBoxContent {
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-size: 12px;                                /* フォントサイズ */
+	color: #000000;                                 /* フォントカラー */
+	background-color: #FFD700;                      /* 背景色 */
+	word-break:break-all;
+	padding-left:8px;                     
+}
+.infoBoxContent a { text-decoration:none;}
+/* message box */
+/* ---------------------------
+.[TR]：メッセージボックス
+--------------------------- */
+.messageBox {
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-size: 12px;
+}
+/* ---------------------------
+.[TR,TD]：エラー、警告メッセージ
+--------------------------- */
+.messageStackError, .messageStackWarning {
+	background-color: #ffb3b5;                      /* 背景色 */
+}
+/* ---------------------------
+.[TR,TD]：成功メッセージ
+--------------------------- */
+.messageStackSuccess {
+	background-color: #99ff00;                      /* 背景色 */
+}
+/* forms */
+/* ---------------------------
+CHECKBOX, INPUT, RADIO, SELECT, TEXTAREA, FILE：FORMの入力・選択項目
+--------------------------- */
+CHECKBOX, INPUT, RADIO, SELECT, TEXTAREA, FILE {
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-size: 12px;
+}
+/* account */
+/* ---------------------------
+.[TABLE]：フォームエリア（境界線）
+--------------------------- */
+.formArea {
+	background-color: #f1f9fe;                      /* 背景色 */
+	border-color: #7b9ebd;                          /* 境界線の色 */
+	border-style: solid;                            /* 境界線のスタイル */
+	border-width: 1px;                              /* 境界線の幅 */
+}
+/* ---------------------------
+.[TD]：フォームエリア（タイトル）
+--------------------------- */
+.formAreaTitle {
+	font-size: 12px;                                /* フォントサイズ */
+	font-weight: bold;                              /* フォント太さ */
+}
+/* attributes */
+/* ---------------------------
+TR：奇数行
+--------------------------- */
+.attributes-odd {
+	background-color: #f4f7fd;                      /* 背景色 */
+}
+/* ---------------------------
+TR：偶数行
+--------------------------- */
+.attributes-even {
+	background-color: #ffffff;                      /* 背景色 */
+}
+/* miscellaneous */
+/* ---------------------------
+.[SPAN]：特価商品価格
+--------------------------- */
+.specialPrice {
+	color: #ff0000;                                 /* フォントカラー */
+}
+/* ---------------------------
+.[SPAN]：旧商品価格
+--------------------------- */
+.oldPrice {
+	text-decoration: line-through;                  /* テキストの装飾 */
+}
+/* ---------------------------
+.[SPAN]：「*必須」文字列
+--------------------------- */
+.fieldRequired {
+	color: #ff0000;                                 /* フォントカラー */
+}
+/* ---------------------------
+.[TD]：小さい文字（メッセージ）
+--------------------------- */
+.smallText {
+	font-size: 10px;  
+	text-overflow:ellipsis;                              /* フォントサイズ */
+}
+/* ---------------------------
+.[TD]：メイン
+--------------------------- */
+.main {
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-size: 12px;                                /* フォントサイズ */
+	line-height:14px;
+	word-break: break-all;
+}
+.main a { text-decoration:none;}
+legend {
+	font-size: 12px;
+	font-weight: bold;
+	color: #000000;
+}
+#tep_site_filter {
+	/*width:100%;*/
+
+  height:14px;/*float: left;*/
+}
+#order_icons {
+	/*float: right;*/
+  text-align: right;
+	width: 63%;
+}
+#order_icons span {
+}
+#order_icons .order_icons_selected {
+	background: red;
+}
+#tep_site_filter span {
+	/*width:30px;*/
+  /*height:25px;*/
+  padding: 0 5px;
+	background: #ddd;
+	color: #000;/*display: block;*/
+}
+#tep_site_filter .site_filter_selected {
+	color: #fff;
+	font-weight: bold;
+	background: #e42e2e;
+}
+#tep_site_filter .site_filter_selected a {
+	color: #fff;
+	font-weight: bold;
+}
+.readonly {
+	background: #ccc;
+}
+.cleate_add {
+	width:120px;
+	padding:5px;
+	background:#E0E0E0;
+}
+.cleate_main {
+	padding:5px;
+	background:#F0F1F1;
+}
+.change_one_list {
+	font-size:12px;
+	display:block;
+	margin:10px 0;
+	padding:0;
+	overflow:hidden;
+}
+.change_one_list_main {
+	display:block;
+	float:left;
+	width:210px;
+}
+.dataTableHeadingRow b {
+	font-size:17px;
+}
+.history_img {
+	width:120px;
+}
+.add_link {
+	clear:both;
+}
+.search_class {
+	margin-top:10px;
+}
+.search_class_td {
+	font-size:12px;
+	font-weight:bold;
+}
+#orders_flag {
+	border-top: 1px solid #000;
+}
+.orders_flag_checked {
+	color: #fff;
+	background: #ff0000;
+	font-size:12px;
+	cursor:pointer;
+	border: 1px solid #000;
+	border-top: 2px solid #000;
+	border-left: 2px solid #000;
+	font-weight:bold;
+}
+.orders_flag_unchecked {
+	color: #000;
+	background: #fff;
+	font-size:12px;
+	cursor:pointer;
+	border: 1px solid #000;
+	border-bottom: 2px solid #000;
+	border-right: 2px solid #000;
+	font-weight:bold;
+}
+#orders_info,#orders_client,#orders_referer,#orders_history,#orders_comment ,#orders_answer,#orders_credit,#orders_telecom{
+	width:100%;
+	overflow:hidden;
+	display:block;
+}
+#orders_info {
+	margin-bottom: 10px;
+	background: #f0f1f1;
+	clear:both;
+	width:100%;
+/*	margin-right:10px;
+*/}
+#orders_client {
+	margin-bottom: 10px;
+	background: #f0f1f1;
+}
+#orders_referer {
+	margin-bottom: 10px;
+	background: #f0f1f1;
+}
+#orders_history {
+	margin-bottom: 10px;
+	background: #f0f1f1;
+}
+#orders_comment {
+	margin-bottom: 10px;
+	text-align:center;
+	background: #f0f1f1;
+	clear:both;
+	width:100%;
+}
+#orders_answer {
+	margin-bottom: 10px;
+	background: #f0f1f1;
+	width:100%;
+}
+#orders_credit {
+	margin-bottom: 10px;
+	background: #f0f1f1;
+}
+#orders_telecom {
+	margin-bottom: 10px;
+	background: #f0f1f1;
+}
+h3 {
+	height:15px;
+	background:#888;
+	font-size:11px;
+	color:#fff;
+	margin:0;
+	line-height:15px;
+	padding-left:2px;
+	text-align:left;
+}
+.orders_computer_checked {
+	color: #fff;
+	background: #ff0000;
+	font-size:12px;
+	cursor:pointer;
+	border: 1px solid #000;
+	border-top: 2px solid #000;
+	border-left: 2px solid #000;
+	font-weight:bold;
+	text-align:center;
+}
+.orders_computer_unchecked {
+	color: #000;
+	background: #fff;
+	font-size:12px;
+	cursor:pointer;
+	border: 1px solid #000;
+	border-bottom: 2px solid #000;
+	border-right: 2px solid #000;
+	font-weight:bold;
+	text-align:center;
+}
+.questions_date {
+	border: 0;
+	background: #f0f1f1;
+}
+.list_type span {
+	padding: 0 5px;
+	background: #ddd;
+	color: #000;
+}
+.list_type .site_filter_selected {
+	color: #fff;
+	font-weight: bold;
+	background: #808080;
+}
+.monitor_error {
+	opacity:0.8;
+	position:absolute;
+	background:#F1F1F1;
+	border:1px solid #999999;
+	filter:alpha(opacity=80);
+}
+.error_monitor {
+	color:#ff0000;
+	font-weight:bold;
+}
+.relate_product_link:hover {
+	text-decoration:none;
+}
+.new_product_reset img {
+	vertical-align:top;
+}
+.inventory_table td {
+	font-size:12px;
+}
+.inv_refresh {
+	float:right;
+}
+.smallText a img {
+	vertical-align:top;
+}
+.smallText a { text-decoration:none;}
+.right_column01{
+/*	margin-top:12px ;
+*/
+}
+.right_column_a {
+	 padding-top:14px;
+	 padding-top:14px\9;
+}
+.right_column_b {
+	 padding-top:19px;
+	 padding-top:18px\9;
+}
+.right_column_c {
+	 padding-top:23px;
+	 padding-top:20px\9;
+}
+.t_link01 {
+	display:block;
+	text-align:center;
+	border-bottom:1px inherit #999;
+}
+.categories_input01 input {
+	width:90%;
+}
+.categories_textarea01 textarea {
+	width:100%;
+}
+td.menu01 {
+	background:lightblue
+}
+.menu01 a{ text-decoration:underline; color:#00FF00;}
+table.menu01 {
+	font-size:100%;
+	position:absolute;
+	visibility:hidden;
+	z-index:10000;
+}
+#tutorials td {
+	background:#000;
+	padding:1px;
+}
+#tutorials td a {
+	color:#fff;
+	font-weight:bold;
+	padding:2px 7px;
+	text-decoration: underline;
+}
+#tutorials td a:hover {
+	color:#000;
+	text-decoration:none;
+	background:#ffd700;
+}
+#headerorder td {
+	background:#000;
+	padding:1px;
+}
+#headerorder td a {
+	color:#fff;
+	font-weight:bold;
+	padding:2px 7px;
+	text-decoration: underline;
+}
+#headerorder td a:hover {
+	color:#000;
+	text-decoration:none;
+	background:#ffd700;
+}
+#ordermenu td {
+	background:#000;
+	padding:1px;
+}
+#ordermenu td a {
+	color:#fff;
+	font-weight:bold;
+	padding:2px 5px;
+}
+#ordermenu td a:hover {
+	color:#000;
+	text-decoration:none;
+	background:#ffd700;
+}
+#redirecturl td {
+	background:#000;
+	padding:1px;
+}
+#redirecturl td a {
+	color:#fff;
+	font-weight:bold;
+	padding:2px 7px;
+}
+#redirecturl td a:hover {
+	color:#000;
+	text-decoration:none;
+	background:#ffd700;
+}
+#orders_history h3 a{
+color:#fff;
+font-weight:bold;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+a.headerLink{
+font-size:10px;!important;
+}
+}
+.order_link{
+	text-decoration: underline;
+}
+.order02_link a{text-decoration: underline;}
+
+
+/*print*/
+.data_table{ width:100%; margin:0 auto;}
+.link_02 ,.link_03 ,.link_04,.link_05,.link_06,.link_07,.link_08,.link_09{ background-color:#ccc; color:#000; font-size:18px; font-weight:bold;}
+.link_01 { background-color:#fff; color:#000; font-size:18px;}
+.data_table td{ font-size:16px;}
+.link_01 a{ color:#FF0000;}
+.input_print01{ font-size:23px; color:#000000;  text-align:center; overflow:hidden; display:block;}
+.link_03{padding:2px; border-top:none; border-right:none;font-size:13px;}
+#data10{ overflow:hidden;}
+#cost_print{ width:132px; margin:0 0 0 30px; text-align:right; float:left;}
+#cost_print02{ float:left;}
+#email_display{ display:none;}
+.text_x{ width:100%;overflow:hidden;}
+.text_x1{ height:19px; width:503px; /*float:left;*/}
+.text_x2{ width:53px; font-size:15px; border:1px solid #000000; background-color:#ccffff; /*float:left;*/ }
+.text_x3{ width:90px; border-bottom:1px solid #000000; border-right:1px solid #000000;border-top:1px solid #000000; font-size:16px; /*float:left;*/ margin:0;} 
+.price input{width:80px; display:block; text-align:left;}
+.price span{width:80px; display:none;}
+
+
+/*categories_tree*/
+#gotomenu{ position:relative; }
+#categories_tree {
+display:none;
+/*	width:100%;*/
+	position: absolute;
+/*	width:900px;  */
+	background-color:#000;
+	top:120px;
+	right:0;
+	z-index:200;
+	border:1px solid #000;
+        width:100%
+}
+.subcategory_tree_info{
+	margin-left:-10px;
+	*margin-left:10px;
+/*	*margin:0 0 8px 0;*/
+margin-bottom:15px\9;
+}
+#categories_tree li{
+	padding:0;
+	margin:0;
+/*	margin:5px;
+	*margin:0;*/
+	margin:0 5px\9;
+	text-align:left;
+	color:#FFFFFF;
+	list-style-type:none;
+}
+.subcategory a{
+	padding:0;
+	margin:5px;
+	*margin:0px;
+	text-align:left;
+	color:#FFFFFF;
+	display:block;
+	padding-left:10px;
+	background:url(/images/design/circle.gif) left 3px no-repeat;
+}
+.tdul{ padding:0; margin:0;/* border:1px solid #ff0000;*/}
+.tdul li{ padding:0; margin:0;}
+#categories_tree li a{ color:#fff;}
+#categories_tree li a:hover{ color:#FFD700;}
+.subcategory_tree_info li{ margin:0; padding:0;
+}
+.subcategory_tree{
+	margin:10px 0;
+	*margin-top:-8px!important;
+	margin:5px\9;
+}
+#categories_tree li .subcategory_tree{list-style-type: none;}
+.dataTableHeadingContent_pw a{ color:#FFFFFF; text-decoration:none; font-weight:bold;}
+.dataTableHeadingContent_order a{ color:#FFFFFF; text-decoration:underline; font-weight:bold;}
+/*
+a.head_sort_order_select { color:#884706; text-decoration:underline; font-weight:bold; }
+a.head_sort_order {color:#FFFFFF; text-decoration:underline; font-weight:bold; }
+*/
+.pw_textarea{ width:97%;}
+
+.popup-calendar {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 2px solid #000000;
+    color: #000000;
+    display: none;
+    overflow:hidden;
+    padding: 4px;
+    position:absolute;
+    width: 163px;
+    z-index: 9;
+}
+a.date-picker {
+    background: url(calendar.png) no-repeat;
+    border: medium none;
+    color: #FFFFFF;
+    cursor: pointer;
+    float: left;
+    height: 16px;
+    margin: 0;
+    overflow:hidden;
+    padding: 0;
+    width: 16px;}
+div.date-picker-holder input {
+    float: left;
+}
+/*.date-picker-holder, div.date-picker-holder * {
+    margin: 0;
+    padding: 0;
+	float:left;
+}
+*/	
+
+/*  szn add managermenu */
+#managermenu td{
+	background-color:#000;
+	padding:1px;
+}
+#managermenu td a {
+	color:#fff;
+	font-weight:bold;
+	padding:2px 5px;
+}
+#managermenu td a:hover {
+	color:#000;
+	text-decoration:none;
+	background:#ffd700;
+}
+
+#categories_tree li .current_link {
+    color: #663399;
+}
+.gotomenu_out_div{ float:right; font-size:10px;}
+.datatablecontent_warpper{
+overflow:hidden;
+white-space:nowrap;
+text-overflow:ellipsis;
+width:60px;
+}
+.datatablecontent_warpper02{
+overflow:hidden;
+white-space:nowrap;
+text-overflow:ellipsis;
+}
+.datatablecontent_warpper03{
+
+}
+.button_save input{ vertical-align:bottom;}
+.new_pwmanager{ text-align:right; width:100%;}
+.alertmsg {	color: #ff0000; }
+.faq_status_link{ text-decoration: none; }
+.faq_status_link:hover{ text-decoration: none; }
+.button_cancel a img { margin-top:-15px;}
+a.s_column_bar { 
+	font-size: 11px;                                /* フォントサイズ */
+	color: #000;                                 /* フォントカラー */
+	font-weight: bold;                            /* フォント太さ */
+	text-decoration: none;                          /* テキストの装飾 */
+}
+.tep_site_filter_oa a{
+	width:20%;
+    color: #000000;
+    padding:0 5px;
+	background-color:#ddd;
+}
+.oa_item_bg{background-color:#B5B4B4;
+}
+.oa_item_bg td{background-color:#f1f1f1;}
+#show_option span{ width:200000px;}
+.checkbox_item input{
+	clear:both;
+	margin:2px 0;
+}
+#canEnd{ text-align:right; margin-right:13px;}
+.element_button { 
+	font-size:13px;
+	margin-right:5px;
+	padding:2px 9px\9;
+	margin-bottom:2px;
+	margin-top:2px;
+}
+.element_button01{
+	font-size:13px;
+	margin-right:5px;
+	padding:2px 9px\9;
+}
+.autocalculate_div{ width:100%\9;}
+.faq_page_text{
+  float:left;
+}
+.oa_auto_no_product { float:left; line-height:20px; width:100%\9;}
+.oa_auto_no_product_input { float:left;}
+#orders_info_box{ min-width:550px;}
+#orders_info_box table td{ font-size:14px;}
+.orders_info_div td { vertical-align:top; padding-top:2px;}
+
+.error_body { height:100%; font-size:12px; background:url(../images/bjpicture.gif) top repeat-x; font-family:"ＭＳ Ｐゴシック",Osaka,Verdana,Arial,sans-serif}
+.error_box_bootom{ height:75px; background:url(../images/bottom_bg.gif) bottom repeat-x;}
+.error_p { padding-top:50px; margin-top:50px\9;}
+.sql_text{ padding:25px 0 0 40px; font-size:16px;}
+.sql_text01{ margin-left:40px; margin-top:15px;}
+.sql_text02{ width:600px; margin-left:40px; margin-top:15px;}
+.sql_text01 input{ height:25px\9; height:23px;}
+#oa_dynamic_group_item td { text-align:left;}
+#infoBox_01 td { vertical-align:top;}
+.right_column_text{ padding-top:25px;}
+.assets_search_bar { margin:0 5px 5px 5px;}
+.assets_search_bar select { float:left; margin-right:5px;}
+.assets_box { background-color:#676767; margin:0 5px;}
+.assets_c td, .assets_error td { height:20px;}
+.assets_c { background-color:#fff;}
+.assets_error { background-color:#ff0000;}
+.assets_text { background-color:#dcdcdc;}
+.assets_text td { height:25px;}
+.assets_title{ 
+	color: #727272;
+	font-family: "ＭＳ Ｐゴシック",Osaka,Verdana,Arial,sans-serif;
+    font-size: 18px;
+    font-weight: bold; 
+	line-height:40px;
+	padding-left:5px;
+	float:left;
+}
+.assets_bottom{
+  margin-right:8px;
+}
+.assets_input{
+	font-size:13px;
+	margin-right:5px;
+	padding:2px 9px\9;
+	margin-bottom:2px;
+	margin-top:2px;
+}
+.assets_submit{
+	font-size:13px;
+	margin-right:5px;
+	padding:2px 9px\9;
+	margin-bottom:2px;
+	margin-top:2px;
+}
+.assets_time { float:left;}
+.asset_info {
+	background-color:#676767;
+    color: #000;
+    height: 30px;
+    line-height: 30px;
+    margin-left: 5px;
+    text-align: right;
+    width: 99%;
+}
+.asset_info td { margin:0; padding:0; background-color:#fff;}
+.asset_easy { 
+	margin-left:5px;
+	background-color:#676767;
+	color:#000;
+	font-weight:bold;
+	height:30px;
+	line-height:30px;
+}
+.no_result { font-size:18px; color:#ff0000; margin-left:5px; clear:both;}
+.product_history_back { margin:5px 0 0 5px;}
+.assets_top_text { margin-left:5px; font-size:13px; clear:both;}
+.assets_bottom_info { text-align:right; /*border-bottom:1px solid #676767; border-right:1px solid #676767;*/ height:25px; background-color:#FFF;
+}
+.assets_bottom_info_right { text-align:right;
+}
+.info_sum_quantity_title, .info_avg_price_title, .info_sum_price_title{ text-align:left; float:left; padding-left:5px;}
+.info_sum_quantity_description, .info_avg_price_description, .info_sum_price_description{ float:right; padding-right:5px;}
+.assets_bottom_box{
+	margin-right:10px;
+}
+/*.assets_bottom_box td { background-color:#CCCCCC; height:25px}
+*/.assets_bottom_info_left {
+/*	border-bottom:1px solid #676767;
+	border-right:1px solid #676767;
+	border-left:1px solid #676767;
+*/	height:25px;
+	background-color:#ccc;
+}
+.asstes_easy_text { text-align:right;}
+.asstes_easy_left{ background-color:#ccc;}
+.assets_print { float:right; margin:5px 5px 0 0; height:25px;}
+.assets_print_bottom{ clear:both;}
+.print_assets_title{
+    color: #727272;
+    float: left;
+    font-family: "ＭＳ Ｐゴシック",Osaka,Verdana,Arial,sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 40px;
+    padding-left: 5px;
+}
+.product_history_info { float:right; margin-right:5px;}
+.assets_top_text_product { margin-left:5px; font-size:13px; float:left;}
+.breadcreumb_asset { float:right; line-height:40px; padding-right:10px;}
+.title_breadcreumb_div { clear:both; height:40px;}
+.rowHide { display:none}
+.edit_input { width:60%;}
+.edit_new_input{ width:98%;}
+.update_products_qty { width:25px;}
+
+
+/*campaign*/
+#show_campaign_info{
+	position:absolute;
+	width:70%;
+	background-color:#FFFF00;
+	min-width:550px;
+}
+.campaign_top{
+	background-color:#000000;
+	color:#FFFFFF;
+	min-width:550px;
+}
+.campaign_top a{ color:#FFFFFF;}
+.campaign_input{
+	width:40%;
+}
+.campaign_body {
+	padding:0 50px 10px 50px;
+	min-width:550px;
+}
+.campaign_input_num{
+	width:20%;
+	text-align:right;
+}
+/*option group*/
+#show_group_info{
+    background-color: #FFFF00;
+    position: absolute;
+    width: 70%;
+	min-width:550px;
+	margin-left:2px;
+
+}
+#show_item_info{
+    background-color: #FFFF00;
+    position: absolute;
+    width: 70%;
+	margin-left:2px;
+	min-width:550px;
+}
+.option_item_input{
+	width:25%;
+	text-align:right;
+}
+.option_input{
+	width:75%;
+}
+.option_text{
+	width:60%;
+}
+.option_error{
+  color:#ff0000;
+}
+.option_name {
+  width:150px;
+  vertical-align:top;
+}
+.option_preview{
+	margin-left:51px;
+}
+/* end option group*/
+
+.popup_order_title {
+	background:#000;
+	color:#fff;
+	padding:0 5px;
+	min-width:550px;
+}
+.popup_order_title img{
+	vertical-align:top;
+}
+.popup_order_title a{
+	color:#FFFFFF;
+}
+.popup_order_info{
+	padding:5px 50px;
+	min-width:550px;
+}
+.popup_order_info td{
+	vertical-align:top;
+	padding-top:2px;
+	line-height:21px;
+}
+.del_order_notice td{
+	vertical-align:middle;
+}
+
+
+.option_product_radio_list{
+	overflow:hidden;
+	width:85%;
+}
+.option_show_border {
+	float:left;
+	margin-right:5px;
+	overflow:hidden;
+	position:relative;
+}
+.option_show_border .option_checkmark{
+	position:absolute;
+	*position: absolute;
+	right:0px;
+	top:0px;
+	*right:0;
+	*top:0;
+	text-align:right;
+	opacity:1.0;
+	display:inline-block;
+}
+.option_show_border span{ float:left;}
+.option_show_border .option_conent{
+	border:3px solid #FF6701;
+	overflow:hidden;
+	padding:2px;
+	*display:inline-block;
+	float:left;
+	line-height:18px;
+
+}
+.option_show_border a{ 
+	color:#2864B4; 
+	/*display:block;*/
+	text-decoration:none;
+	display:block;
+}
+
+.option_hide_border .option_conent a:hover, .option_show_border .option_conent a:hover{
+	text-decoration:none;
+	cursor:pointer;	
+}
+.option_hide_border {
+  float:left;
+  margin-right:5px;
+  position:relative;
+}
+.option_hide_border .option_checkmark{
+	position: absolute;
+	*position: absolute;
+	right:0px;
+	top:0px;
+	*right:0;
+	*top:0;
+	opacity:0;
+	filter: Alpha(Opacity=0);
+	z-index:90;
+	display:inline-block;
+	text-align:right;
+}
+
+.option_hide_border .option_conent{
+	border:1px solid #ccc;
+	overflow:hidden;
+	padding:2px;
+	*display:inline-block;
+	float:left;
+	line-height:18px;
+	margin:2px;
+
+}
+.option_hide_border a{
+	color:#000000; 
+	display:block;
+	text-decoration:none;
+	
+}
+/*.option_hide_border a:hover{
+	border:2px solid #2864B4;
+}
+*/.option_radio_img img{ float:left;}
+.option_product_default_radio{
+	clear:both;
+	overflow:hidden;
+	margin-bottom:5px;
+}
+.option_product_radio_list{
+	overflow:hidden;
+	width:85%;
+}
+.option_hide_border span{ float:left; overflow:hidden;}
+.option_product_radio_img_list{
+	width:100%;
+	*float:left;
+	clear:both;
+	*margin-top:5px;
+}
+.option_radio_list{
+	width:100%;
+	overflow:hidden;
+	margin-bottom:5px;
+}
+.option_info_text input, .option_info_text textarea{
+	float:left;
+	width:30%;
+}
+.option_money {
+    float: right;
+    line-height: 18px;
+	text-align:right;
+}
+.option_product_default_radio{
+	clear:both;
+	overflow:hidden;
+	margin-bottom:5px;
+}
+
+.option_product_single_radio{
+	padding-bottom:5px;
+	float:left;
+}
+/*
+.option_product_single_radio span{
+	margin-right:20px;
+}
+*/.option_product_radio_img_list{
+	clear:both;
+	*padding-top:3px;
+	width:100%;
+	overflow:hidden;
+}
+
+.option_info_text {
+    margin-bottom: 5px;
+    overflow: hidden;
+    width: 100%;
+}
+.option_table{ width:100%;}
+.pro_option table{
+	width:100%;
+}
+.order_option_list{
+	overflow:hidden;
+	margin-bottom:5px;
+	margin-bottom:1px\9;
+}
+
+.order_option_info{
+	float:left;
+	width:70%;
+	line-height:21px;
+}
+.order_option_price{
+	float:left;
+}
+.order_option_price input{ text-align:right;}
+.order_option_title{ float:left; width:40%;}
+.order_option_value{ 
+	float:left; 
+	width:50%; 
+	word-wrap:break-word; 
+	display:block;
+	padding-left:5px;
+}
+/*shipping*/
+.shipping_error{
+	color:#ff0000;
+	font-size:12px;
+	line-height:1.5;
+}
+
+/*notice*/
+#show_head_notice td, #show_all_notice td{
+	line-height:21px;
+	background:#FFB3B5;
+}
+#show_all_notice{
+	position:absolute;
+	background:#fff;
+	width:100%;
+}
+.notice_info a {
+	color:#0000FF;
+	text-decoration:underline;
+}
+.check_button{
+	text-align:right;
+}
+/*end-notice*/
+.dataTableContent nobr {
+font-size:14px;
+}
+.option_input_width{ width:75%;}
+.box{
+	height:650px;
+	overflow:hidden;
+}
+.show_left_menu{
+	height:650px;
+}
+@media all and (-webkit-min-device-pixel-ratio:0){
+.footer_copyright{
+	min-width:750px;
+	width:100%;
+	width: expression(document.body.clientWidth < 750? "750px": "100%" );
+	
+}}
+.footer_copyright{
+	text-align:center;
+	font-size:12px;
+	border-top:1px solid #000;
+	padding:20px 0;
+	background-color:#F0F1F1;
+	margin-top:10px;
+	width:100%;
+	min-width:750px;
+	overflow:hidden;
+	width: expression(document.body.clientWidth < 750? "750px": "100%" );
+
+}
+.order_option_width{
+	min-width:260px;
+}
+.table_img_list{
+	list-style:none;
+	margin:0;
+	padding:0;
+}
+.table_img_list li{
+	float:left;
+	width:10%;
+}
+.table_img_list  img{
+	margin-bottom:7px;
+}
+.table_space_left{
+	margin-left:3px;
+	*margin-left:2px;
+	margin-left:2px\9;
+}
+.left_title_width{
+	min-width:200px;
+	font-size: 12px;
+    line-height: 14px;
+}
+.float_left{
+	float:left;
+}
+.mark_flag_checked {
+	color: #fff;
+	background: #ff0000;
+	font-size:12px;
+	cursor:pointer;
+	border: 1px solid #000;
+	border-top: 2px solid #000;
+	border-left: 2px solid #000;
+	font-weight:bold;
+        width:10px;
+}
+.mark_flag_unchecked {
+	color: #000;
+	background: #fff;
+	font-size:12px;
+	cursor:pointer;
+	border: 1px solid #000;
+	border-bottom: 2px solid #000;
+	border-right: 2px solid #000;
+	font-weight:bold;
+        width:10px;
+}
+.float_right{
+	float:right;
+}
+.content{
+	width:100%;
+	min-width:750px;
+	overflow:hidden;
+	width: expression(document.body.clientWidth < 750? "750px": "100%" );
+}
+.header_space{
+	padding-bottom:35px;
+}
+.header_space img{ margin-top:-5px;}
+a.pageResults{
+	text-decoration:underline;
+}
+.comp_width{
+	float:left;
+	width:60%;
+}
+#new_yui3{
+	z-index:200;
+}
+>>>>>>> e0afd49008a5be3dfb4dc6c76d375f70d0d4478d

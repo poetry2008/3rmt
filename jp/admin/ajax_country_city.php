@@ -164,7 +164,7 @@ if($id == 0){
 
 
 </td></tr>
-<tr><td width="30%"></td><td style="padding-left:10%;">
+<tr><td  colspan="2" align="center">
 <?php 
 if($id != 0){
 ?>

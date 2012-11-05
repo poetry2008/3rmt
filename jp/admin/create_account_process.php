@@ -1,8 +1,6 @@
 <?php
 /*
    $Id$
-
-   3rmt over
 */
 
   require('includes/application_top.php');
@@ -13,7 +11,6 @@
     tep_redirect(tep_href_link(FILENAME_CREATE_ACCOUNT));
   }
 
-  // tamura 2002/12/30 「全角」英数字を「半角」に変換
   $an_cols = array('password','confirmation','email_address','postcode','telephone','fax');
   if (ACCOUNT_DOB) $an_cols[] = 'dob';
   foreach ($an_cols as $col) {
@@ -202,7 +199,7 @@
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <?php require('includes/step-by-step/form_check.js.php'); ?>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php 
 $belong = 'create_account.php'; 
 require("includes/note_js.php");
@@ -214,22 +211,22 @@ require("includes/note_js.php");
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
-<!-- header //-->
+<!-- header -->
 <?php
   require(DIR_WS_INCLUDES . 'header.php');
 ?>
-<!-- header_eof //-->
+<!-- header_eof -->
 
-<!-- body //-->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-<!-- left_navigation //-->
+<!-- left_navigation -->
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- left_navigation_eof //-->
+<!-- left_navigation_eof -->
     </table></td>
-<!-- body_text //-->
-<td width="100%" valign="top"><?php echo $notes;?>
+<!-- body_text -->
+<td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
   <?php echo tep_draw_form('account_edit', FILENAME_CREATE_ACCOUNT_PROCESS, 'onSubmit="return check_form();"') . tep_draw_hidden_field('action', 'process'); ?>
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
       <tr>
@@ -254,18 +251,18 @@ require("includes/note_js.php");
         <td align="right" class="main"><br><?php echo tep_image_submit('button_insert.gif', IMAGE_INSERT); ?></td>
       </tr>
     </table></form></td>
-<!-- body_text_eof //-->
+<!-- body_text_eof -->
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="0" cellpadding="2">
-    </table></td>
+    </table></div></td>
   </tr>
 </table>
-<!-- body_eof //-->
+<!-- body_eof -->
 
-<!-- footer //-->
+<!-- footer -->
 <?php
     require(DIR_WS_INCLUDES . 'footer.php');
 ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 </body>
 </html>
@@ -290,7 +287,6 @@ require("includes/note_js.php");
 
     $customer_id = tep_db_insert_id();
 
-// 2003-06-06 add_telephone
     $sql_data_array = array('customers_id' => $customer_id,
                             'address_book_id' => 1,
                             'entry_firstname' => $firstname,
@@ -318,18 +314,18 @@ require("includes/note_js.php");
 
     tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created) values ('" . tep_db_input($customer_id) . "', '0', now())");
 /*
-    if (SESSION_RECREATE == 'True') { // 2004/04/25 Add session management
+    if (SESSION_RECREATE == 'True') { 
       tep_session_recreate();
     }
 
     $customer_first_name = $firstname;
-    $customer_last_name = $lastname; // 2003.03.11 Add Japanese osCommerce
+    $customer_last_name = $lastname; 
     $customer_default_address_id = 1;
     $customer_country_id = $country;
     $customer_zone_id = $zone_id;
     tep_session_register('customer_id');
     tep_session_register('customer_first_name');
-    tep_session_register('customer_last_name'); // 2003.03.11 Add Japanese osCommerce
+    tep_session_register('customer_last_name'); 
     tep_session_register('customer_default_address_id');
     tep_session_register('customer_country_id');
     tep_session_register('customer_zone_id');

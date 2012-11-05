@@ -76,4 +76,9 @@ define('ENTRY_EMAIL_TITLE', 'メールタイトル：');
 define('TEXT_CODE_HANDLE_FEE', '手数料:');
 define('TEXT_CAN_NOT_SHOW','引当が「済」になっているものは、非表示には出来ません');
 define('TEXT_NOT_SHOW','非表示にしますか？');
-
+define('TEXT_TELECOM_FINISH','済');
+define('TEXT_TELECOM_UNFINISH','未');
+define('TEXT_TELECOM_SUCCESS','成功');
+define('TEXT_TELECOM_UNSUCCESS','失敗');
+define('TEXT_PAYPAL','ペイパル');
+define('TEXT_TELECOM','テレコム');

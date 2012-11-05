@@ -183,7 +183,7 @@
 <link rel="stylesheet" type="text/css" href="includes/jquery.autocomplete.css">
 <?php require('includes/step-by-step/form_check.js.php'); ?>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery.form.js"></script>
 <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
 <script type="text/javascript">
@@ -474,7 +474,7 @@ require("includes/note_js.php");
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-<td width="100%" valign="top"><?php echo $notes;?>
+<td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
   <table border='0' bgcolor='#7c6bce' width='100%'>
       <tr>
         <td class="main"><font color="#ffffff"><b><?php echo TEXT_STEP_1 ?></b></font></td>
@@ -508,6 +508,7 @@ require("includes/note_js.php");
       </tr>
     </table>
   </form>
+  </div>
   </td>
   </tr>
 </table>

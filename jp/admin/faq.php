@@ -330,10 +330,10 @@ $faq_query = tep_db_query("select title from ".TABLE_FAQ_CATEGORIES_DESCRIPTION.
 ?>
 </title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-<script language="javascript" src="includes/general.js"></script>
+<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script language="javascript">
 function display(){
     var categories_tree = document.getElementById('categories_tree'); 
@@ -404,7 +404,7 @@ require("includes/note_js.php");
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-    <td width="100%" valign="top" id="categories_right_td"><?php echo $notes;?><div
+    <td width="100%" valign="top" id="categories_right_td"><div class="box_warp"><?php echo $notes;?><div
     class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -1208,7 +1208,7 @@ $contents[] = array('text' => '<br>'. TEXT_USER_UPDATE. ' '
           </tr>
         </table></td>
       </tr>
-    </table></div></td>
+    </table></div></div></td>
 <!-- body_text_eof //-->
   </tr>
 </table>

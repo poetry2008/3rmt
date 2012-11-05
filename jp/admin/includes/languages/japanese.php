@@ -310,8 +310,8 @@ define('TEXT_DISPLAY_NUMBER_OF_ZONES', '<b>%d</b> &sim; <b>%d</b> 番目を表�
 
 define('PREVNEXT_BUTTON_PREV', '&lt;&lt;');
 define('PREVNEXT_BUTTON_NEXT', '&gt;&gt;');
-define('BUTTON_PREV', '前へ');
-define('BUTTON_NEXT', '次へ');
+define('BUTTON_PREV', 'Prev');
+define('BUTTON_NEXT', 'Next');
 //define('PREVNEXT_BUTTON_PREV', '前のページ');
 //define('PREVNEXT_BUTTON_NEXT', '次のページ');
 
@@ -614,7 +614,7 @@ define('TEXT_ONE_TIME_CONFIG_SAVE','保存しました');
 define('TEXT_ONE_TIME_ERROR','エラー');
 define('TEXT_ONE_TIME_CONFIRM','チェックがありません。チェックを入れてください');
 define('TEXT_ONE_TIME_ADMIN_CONFIRM','Adminのチェックを入れてください');
-define('TEXT_SITE_COPYRIGHT' ,'Copyright © %s Haomai');
+define('TEXT_SITE_COPYRIGHT' ,'Copyright © %s ');
 
 define('SECOND_TEXT','秒');
 define('PAYMENT_METHOD','支払方法：');
@@ -650,13 +650,11 @@ define('DB_CONFIGURATION_TITLE_SEO','SEO URLs');
 define('DB_CONFIGURATION_TITLE_DOCUMENTS','文件管理器');
 define('DB_CONFIGURATION_TITLE_TIME_SETING','時間設定');
 define('DB_CONFIGURATION_TITLE_MAXIMUM_VALUE','最大値');
-define('DB_CONFIGURATION_TITLE_DEAL','取引方法の指定');
 define('DB_CONFIGURATION_TITLE_NEW_REVIEW','レビュー新着設定');
 define('DB_CONFIGURATION_TITLE_INSTALL_SAFETY_REVIEW','レビューの安全を設置する');
 define('DB_CONFIGURATION_TITLE_WARNING_SETTINGS','警告文字列設定');
 define('DB_CONFIGURATION_TITLE_SIMPLE_INFORMATION','簡易注文情報 ');
 define('DB_CONFIGURATION_TITLE_GRAPH_SET','混雑グラフ設定');
-define('DB_CONFIGURATION_TITLE_INITIAL_SETTING_SHOPS','商店初期设定');
 
 
 define('DB_CONFIGURATION_DESCRIPTION_SHOP','ショップの一般情報');
@@ -700,9 +698,7 @@ define('TEXT_FIND_DATA_STOP','%sをさがしましたが、表示を停止しま
 define('TEXT_NOT_ENOUGH_DATA','前からの&nbsp;50&nbsp;件検索結果に不重複な結果は&nbsp;%s&nbsp;件があります');
 define('CLEATE_DOUGYOUSYA_ALERT', 'まず、入力フォーム追加してください');
 define('BUTTON_MANUAL','マニュアル');
-define('HELP_INFO_TITLE','ヘルプ情報管理');
 define('TEXT_JAVASCRIPT_ERROR','JavaScriptまたはCookieの設定がオンになっていません。お手数ですが設定を「オン」にして、ご利用ください。<br>※ 設定がオフになっていますと、ご利用いただけないサービスがあります。');
-define('TEXT_HEADER_HELP','ヘルプ');
 define('HEADER_TEXT_PERSONAL_SETTING','個人設定');
 define('TEXT_FLAG_CHECKED','確認済');
 define('TEXT_FLAG_UNCHECK','未確認');
@@ -711,9 +707,28 @@ define('BOX_HEADING_USER', 'ユーザ');
 define('BOX_USER_ADMIN', 'ユーザ管理');
 define('BOX_USER_LOG', 'アクセスログ');
 define('BOX_USER_LOGOUT', 'ログアウト');
-define('JUMP_PAGE_TEXT', 'ページへ');
-define('JUMP_PAGE_BUTTON_TEXT', '移動');
-define('TEXT_USER_ADDED','作成者:');
-define('TEXT_USER_UPDATE','更新者:');
-define('TEXT_DATE_ADDED','作成日:');
-define('TEXT_DATE_UPDATE','更新日:');
+define('JUMP_PAGE_TEXT', 'Page');
+define('JUMP_PAGE_BUTTON_TEXT', 'Go');
+// javascript language
+define('JS_TEXT_ONETIME_PWD_ERROR','パスワードが違います');
+define('JS_TEXT_INPUT_ONETIME_PWD','ワンタイムパスワードを入力してください\r\n');
+define('JS_TEXT_POSTAL_NUMBER_ERROR','郵便番号に誤りがあります。');
+// cleate_list
+define('TEXT_CLEATE_LIST','リスト登録');
+define('TEXT_CLEATE_HISTORY','履歴を見る');
+// products_tags
+define('TEXT_P_TAGS_NO_TAG','タグのデータはありません、追加してください。');
+define('UPDATE_MSG_TEXT', '更新しました。');
+define('CL_TEXT_DATE_MONDAY', '月');
+define('CL_TEXT_DATE_TUESDAY', '火');
+define('CL_TEXT_DATE_WEDNESDAY', '水');
+define('CL_TEXT_DATE_THURSDAY', '木');
+define('CL_TEXT_DATE_FRIDAY', '金');
+define('CL_TEXT_DATE_STATURDAY', '土');
+define('CL_TEXT_DATE_SUNDAY', '日');
+define('BUTTON_ADD_TEXT', '追加');
+define('CSV_HEADER_TEXT', 'アカウント作成日,性別,姓,名,生年月日,メールアドレス,会社名,郵便番号,都道府県,市区町村,住所1,住所2,国名,電話番号,FAX番号,メルマガ購読,ポイント');
+define('CSV_EXPORT_TEXT', 'CSVエクスポート');
+define('TEXT_ALL','すべて');
+define('GET_POINT_TEXT', 'ポイント付く');
+define('MESSAGE_FINISH_ORDER_TEXT', '注文ID%sの成功：取り引きが完了致しました');

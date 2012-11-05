@@ -17,7 +17,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title><?php echo REFERER_TITLE_TEXT; ?></title>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
@@ -30,20 +30,20 @@ require("includes/note_js.php");
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
-<!-- header //-->
+<!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
+<!-- header_eof -->
 
-<!-- body //-->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-<!-- left_navigation //-->
+<!-- left_navigation -->
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- left_navigation_eof //-->
+<!-- left_navigation_eof -->
     </table></td>
-<!-- body_text //-->
-    <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+<!-- body_text -->
+    <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
@@ -70,7 +70,7 @@ require("includes/note_js.php");
     <input type="hidden" name="" value="">
     <input type="hidden" name="" vlaue="">
     <fieldset>
-    <table  border="0" align="center" cellpadding="0" cellspacing="2">
+    <table  border="0" align="center" cellpadding="0" cellspacing="0">
     <tr>
       <td class="smallText">
       <input type="hidden" name="site_id" value="<?php echo $_GET['site_id'];?>">
@@ -86,11 +86,11 @@ require("includes/note_js.php");
         }
       } ?>
       </select>
-      年
+      <?php echo YEAR_TEXT;?>
       <select name="sm">
       <?php for($i=1; $i<13; $i++) { if((isset($_GET['sm']) && $i == $_GET['sm']) or (!isset($_GET['sm']) && $i == date('m')-1)){ echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'" selected>'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n"; }else{ echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'">'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n"; }  } ?>    
       </select>
-      月
+      <?php echo MONTH_TEXT;?>
       <select name="sd">
       <?php
       for($i=1; $i<32; $i++) {
@@ -102,8 +102,8 @@ require("includes/note_js.php");
       }
       ?>    
       </select>
-      日 </td>
-      <td width="80" align="center">～</td>
+      <?php echo DAY_TEXT;?> </td>
+      <td width="40" align="center">～</td>
       <td class="smallText">
       <?php echo KEYWORDS_SEARCH_END_TEXT;?> 
       <select name="ey">
@@ -117,7 +117,7 @@ require("includes/note_js.php");
       }
       ?>    
       </select>
-      年
+      <?php echo YEAR_TEXT;?>
       <select name="em">
       <?php
       for($i=1; $i<13; $i++) {
@@ -129,7 +129,7 @@ require("includes/note_js.php");
       }
       ?>    
       </select>
-      月
+      <?php echo MONTH_TEXT;?>
       <select name="ed">
       <?php
       for($i=1; $i<32; $i++) {
@@ -141,7 +141,7 @@ require("includes/note_js.php");
       }
       ?>    
       </select>
-      日 </td>
+      <?php echo DAY_TEXT;?> </td>
         <td>&nbsp;</td>
         <td><input type="submit" value="<?php echo IMAGE_SEARCH?>"></td>
       </tr>
@@ -231,15 +231,16 @@ require("includes/note_js.php");
       </tr>
     </table>
     </div> 
+    </div>
     </td>
-<!-- body_text_eof //-->
+<!-- body_text_eof -->
   </tr>
 </table>
-<!-- body_eof //-->
+<!-- body_eof -->
 
-<!-- footer //-->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 </body>
 </html>

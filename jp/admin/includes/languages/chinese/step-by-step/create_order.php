@@ -92,5 +92,4 @@ define('ERROR_ORDER_DOES_NOT_EXIST','错误: 订单不存在。');
 define('PRODUCT_ERROR','没有商品。创建订单时、首先请添加商品。');
 define('ADDPRODUCT_TEXT_STEP1_TITLE', '分类选择:');
 define('ADDPRODUCT_TEXT_STEP2_TITLE', '商品选择:');
-define('TEXT_DUMMY','あいうえお的宽度');
 ?>

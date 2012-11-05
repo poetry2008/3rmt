@@ -78,12 +78,12 @@ echo CATEGORY_ADMIN_TITLE."&nbsp;&nbsp;&nbsp;".$categories_array['categories_nam
 
 </title>
   <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-  <script type="text/javascript" src="includes/general.js"></script>
+  <script type="text/javascript" src="js2php.php?path=includes&name=general&type=js"></script>
   <script type="text/javascript" src="includes/javascript/jquery.js"></script>
   <script type="text/javascript" src="includes/javascript/udlr.js"></script>
-  <script type="text/javascript" src="includes/set/c_admin.js"></script>
+  <script type="text/javascript" src="js2php.php?path=includes|set&name=c_admin&type=js"></script>
   <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-  <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+  <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
   <script type="text/javascript">
   function display(){
    var categories_tree = document.getElementById('categories_tree'); 
@@ -100,9 +100,11 @@ $(window).resize(function (){
       $('#categories_tree').animate({width:(menu_div_width-5)+"px"});
     }
 });
+*/
   $(document).ready(function(){
     $(".udlr").udlr();
     ajaxLoad('<?php echo $cPath;?>');
+    /*
     var menu_div_width = $('#categories_right_td').width();
 <?php if ($_COOKIE['tarrow'] == 'open') {?>
     menu_div_width = menu_div_width-125;
@@ -112,7 +114,8 @@ $(window).resize(function (){
     }else{
       $('#categories_tree').animate({width:"470px"});
     }
-  })*/
+    */
+  })
   </script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
@@ -141,10 +144,10 @@ require("includes/note_js.php");
   </script>
 <?php }?>
   <div id="spiffycalendar" class="text"></div>
-  <!-- header //-->
+  <!-- header -->
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-  <!-- header_eof //-->
-  <!-- body //-->
+  <!-- header_eof -->
+  <!-- body -->
  <div id="categories_tree"  style="display:none">
           <?php
             require(DIR_WS_CLASSES . 'category_tree.php');
@@ -157,13 +160,13 @@ require("includes/note_js.php");
   <tr>
   <td <?php if ($ocertify->npermission < 10) {?>width='1'<?php } else {?> width="<?php echo BOX_WIDTH; ?>"<?php }?> valign="top">
   <table border="0" <?php if ($ocertify->npermission <10) {?>width='1'<?php } else {?> width="<?php echo BOX_WIDTH; ?>"<?php }?> cellspacing="1" cellpadding="1" class="columnLeft">
-  <!-- left_navigation //-->
+  <!-- left_navigation -->
   <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-  <!-- left_navigation_eof //-->
+  <!-- left_navigation_eof -->
   </table>
   </td>
-  <!-- body_text //-->
-  <td width="100%" valign="top" id='categories_right_td'>
+  <!-- body_text -->
+  <td width="100%" valign="top" id='categories_right_td'><div class="box_warp">
   <?php echo $notes;?>
   <div class="compatible">
   <table border="0" width="100%" cellspacing="0" cellpadding="2">
@@ -198,7 +201,7 @@ require("includes/note_js.php");
       </td>
     </tr>
  <tr>
-      <td class="pageHeading" height="40" nowrap>
+      <td class="pageHeading" height="40" colspan="3">
       <?php echo CATEGORY_ADMIN_TITLE;?> 
       &nbsp; 
       <?php
@@ -501,12 +504,12 @@ while ($products = tep_db_fetch_array($products_query)) {
   }
   ?>
   <td class="dataTableContent1">
-<?php echo '<div style="float:left"> <a href="' . tep_href_link(FILENAME_CATEGORIES, 'from=admin&cPath=' . $cPath . '&pID=' . $products['products_id'] . '&action=new_product_preview&read=only') . '">' . tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW) . '</a>&nbsp;&nbsp;';?>
+<?php echo '<div class="float_left"> <a href="' . tep_href_link(FILENAME_CATEGORIES, 'from=admin&cPath=' . $cPath . '&pID=' . $products['products_id'] . '&action=new_product_preview&read=only') . '">' . tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW) . '</a>&nbsp;&nbsp;';?>
      <?php 
      //echo '<a style="margin-left:-4px;" href="orders.php?real_name=true&search_type=products_name&keywords=' . urlencode($products['products_name']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_time.gif', '', 16, 16) . '</a>&nbsp;&nbsp;<span id="products_name_'.$products['products_id'].'">' . $products['products_name'] . '</span>'; 
 echo '<a style="margin-left:-4px;" href="orders.php?search_type=products_id&products_id=' .$products['products_id']. '">' . tep_image(DIR_WS_IMAGES . 'icon_time.gif', '', 16, 16) . '</a>&nbsp;&nbsp;
  </div>
-   <div style="float:left; width:60%; line-height:18px;">
+   <div class="comp_width">
   <span id="products_name_'.$products['products_id'].'">' .
   $products['products_name'] . '</span></div>'; 
    
@@ -779,14 +782,15 @@ tep_display_google_results(FILENAME_CATEGORIES_ADMIN);
 </tr>
 </table>
 </div>
+</div>
 </td>
 </tr>
 </table>
 
-<!-- body_eof //-->
-<!-- footer //-->
+<!-- body_eof -->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 </body>
 </html>

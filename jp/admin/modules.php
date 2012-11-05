@@ -129,8 +129,95 @@ if (isset($_GET['action']))
           $blank_show_arr = array();
           tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($blank_show_arr) . "' where configuration_key = 'MODULE_PAYMENT_" . strtoupper($_GET['module'])  . "_LIMIT_SHOW' and site_id = '".$site_id."'");
         }
+      
+        $get_point_str = '';
+        foreach ($_POST['configuration'] as $gkey => $gvalue){
+          if(preg_match('/.*_IS_GET_POINT$/', $gkey)) {
+            $get_point_str = $gkey;
+            break;
+          }
+        }
+        
+        if (!empty($get_point_str)) {
+          if (!tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$get_point_str."' and site_id='".$site_id."'"))) {
+            $gp_show_configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$get_point_str."' and site_id='0'"));
+            if ($gp_show_configuration) {
+              tep_db_query("
+                  INSERT INTO `configuration` (
+                  `configuration_id` ,
+                  `configuration_title` ,
+                  `configuration_key` ,
+                  `configuration_value` ,
+                  `configuration_description` ,
+                  `configuration_group_id` ,
+                  `sort_order` ,
+                  `last_modified` ,
+                  `date_added` ,
+                  `use_function` ,
+                  `set_function` ,
+                  `site_id`
+                  )
+                  VALUES (
+                  NULL , 
+                  '".mysql_real_escape_string($gp_show_configuration['configuration_title'])."', 
+                  '".$gp_show_configuration['configuration_key']."', 
+                  '".$gp_show_configuration['configuration_value']."', 
+                  '".mysql_real_escape_string($gp_show_configuration['configuration_description'])."', 
+                  '".$gp_show_configuration['configuration_group_id']."', 
+                  '".$gp_show_configuration['sort_order']."' , 
+                  '".$gp_show_configuration['last_modified']."' , 
+                  '".$gp_show_configuration['date_added']."', 
+                  '".mysql_real_escape_string($gp_show_configuration['use_function'])."' , 
+                  '".mysql_real_escape_string($gp_show_configuration['set_function'])."' , 
+                  '".$site_id."'
+                  )
+                ");
+            }
+          } 
+          tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . $gvalue . "' where configuration_key = '" .  $get_point_str . "' and site_id = '".$site_id."'");
+        } else {
+          if (!tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='MODULE_PAYMENT_".strtoupper($_GET['module'])."_IS_GET_POINT' and site_id='".$site_id."'"))) {
+            $gp_show_configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='MODULE_PAYMENT_".strtoupper($_GET['module'])."_IS_GET_POINT' and site_id='0'"));
+            if ($gp_show_configuration) {
+              tep_db_query("
+                  INSERT INTO `configuration` (
+                  `configuration_id` ,
+                  `configuration_title` ,
+                  `configuration_key` ,
+                  `configuration_value` ,
+                  `configuration_description` ,
+                  `configuration_group_id` ,
+                  `sort_order` ,
+                  `last_modified` ,
+                  `date_added` ,
+                  `use_function` ,
+                  `set_function` ,
+                  `site_id`
+                  )
+                  VALUES (
+                  NULL , 
+                  '".mysql_real_escape_string($gp_show_configuration['configuration_title'])."', 
+                  '".$gp_show_configuration['configuration_key']."', 
+                  '', 
+                  '".mysql_real_escape_string($gp_show_configuration['configuration_description'])."', 
+                  '".$gp_show_configuration['configuration_group_id']."', 
+                  '".$gp_show_configuration['sort_order']."' , 
+                  '".$gp_show_configuration['last_modified']."' , 
+                  '".$gp_show_configuration['date_added']."', 
+                  '".mysql_real_escape_string($gp_show_configuration['use_function'])."' , 
+                  '".mysql_real_escape_string($gp_show_configuration['set_function'])."' , 
+                  '".$site_id."'
+                  )
+                ");
+            }
+          } 
+          
+          tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '' where configuration_key = 'MODULE_PAYMENT_" .  strtoupper($_GET['module'])  . "_IS_GET_POINT' and site_id = '".$site_id."'");
+        }
+      
       }
     }
+    
     $key = '';
     $value = '';
     foreach($post_configuration as $key => $value){
@@ -176,8 +263,10 @@ if (isset($_GET['action']))
         }
       }
 
-      if (preg_match('/.*LIMIT_SHOW/', $key)) 	{
+      if (preg_match('/.*LIMIT_SHOW/', $key)) {
         tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($value) . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
+      } else if (preg_match('/.*_IS_GET_POINT$/', $key)) {
+        tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . $value[0] . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
       } else {
         tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . $value . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
       }
@@ -229,7 +318,7 @@ else{
 </title>
   <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
   <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
@@ -256,7 +345,7 @@ require("includes/note_js.php");
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
   <!-- header_eof //-->
   <!-- body //-->
-  <table border="0" width="100%" cellspacing="2" cellpadding="2">
+  <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
   <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
   <!-- left_navigation //-->
@@ -264,7 +353,7 @@ require("includes/note_js.php");
   <!-- left_navigation_eof //-->
   </table></td>
   <!-- body_text //-->
-  <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+  <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
   <tr>
   <td width="100%"><table border="0" width="100%" cellspacing="0" cellpadding="0">
   <tr>
@@ -372,10 +461,14 @@ foreach ($directory_array_sorted as $i => $files) {
         echo '              <tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'" ondblclick="document.location.href=\'' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $class) . '\'">' . "\n";
       }
       ?>
-      <td class="dataTableContent"><?php if (isset($module->link) && $module->link) {?><a target='_blank' href="<?php echo $ex_site['url'].'/'.$module->link;?>"><?php echo tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW);?></a><?php } ?>
+      <td class="dataTableContent">
+      <?php if (isset($module->link) && $module->link) {?><div class="float_left"><a target='_blank' href="<?php echo $ex_site['url'].'/'.$module->link;?>"><?php echo tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW);?></a></div><?php } ?>
+      <div class="comp_width">
       <?php 
       echo $module->title;
-      ?></td>
+      ?>
+      </div>
+      </td>
       <td class="dataTableContent" align="left"><?php echo $module->link ? ($ex_site['url'].'/'.$module->link) : '';?></td>
                                                                                                                           <td class="dataTableContent" align="right"><?php if (is_numeric($module->sort_order)) echo $module->sort_order; ?></td>
                                                                                                                                                                                                                                                 <!--<td class="dataTableContent" align="right"><?php if ($module->check() > 0) { echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $class . '&action=remove') . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>'; } else { echo '<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $class . '&action=install') . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10); } ?></td>-->
@@ -515,9 +608,9 @@ default:
             if (!empty($con_limit_show)) {
               foreach ($con_limit_show as $lim_key => $lim_value) {
                 if ($lim_value == 1) {
-                  $con_limit_show_str .= '会員&nbsp;&nbsp;'; 
+                  $con_limit_show_str .= TEXT_TEP_CFG_PAYMENT_CHECKBOX_OPTION_MEMBER.'&nbsp;&nbsp;'; 
                 } elseif($lim_value ==2){
-                  $con_limit_show_str .= 'ゲスト'; 
+                  $con_limit_show_str .= TEXT_TEP_CFG_PAYMENT_CHECKBOX_OPTION_CUSTOMER; 
                 }
               }
             }
@@ -598,6 +691,7 @@ if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {
 </td>
 </tr>
 </table>
+</div>
 </div>
 </td>
 <!-- body_text_eof //-->

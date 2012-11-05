@@ -178,7 +178,7 @@ if($id == 0){
     <td width="30%" align="left"><?php echo TEXT_DATE_UPDATE; ?></td><td><?php echo $date_update;?></td>
 </tr>
 </td></tr>
-<tr><td width="30%"></td><td style="padding-left:10%;">
+<tr><td  colspan="2" align="center">
 <?php
 if($id != 0){
 ?>

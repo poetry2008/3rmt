@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 osCommerce
-
-  Released under the GNU General Public License
 */
 
 define('HEADING_TITLE', 'レビュー管理');
@@ -48,5 +41,6 @@ define('TEXT_USER_ADDED','投稿者:');
 define('TEXT_USER_UPDATE','更新者:');
 define('TEXT_DATE_ADDED','投稿日:');
 define('TEXT_DATE_UPDATE','更新日:');
+define('TEXT_NO_NAME','匿名');
 
 ?>

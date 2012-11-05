@@ -100,7 +100,6 @@ define('PRODUCTS_WEIGHT_ERROR_TWO','）超过了规定的重量。');
 define('PRODUCTS_WEIGHT_ERROR_THREE','请删除商品、或更改商品数量使重量在（');
 define('PRODUCTS_WEIGHT_ERROR_FOUR','）kg以内。');
 
-// Add Japanese osCommerce
 define('EMAIL_TEXT_STORE_CONFIRMATION', ' 的预约、非常感谢。' . "\n" . 
 '预约订单的受理情况和联络事项、在下面介绍。');
 define('TABLE_HEADING_COMMENTS_ADMIN', '[联络事项]');
@@ -160,7 +159,6 @@ define('EDIT_ORDERS_RECORD_READ', '←这里请不要勾选');
 define('EDIT_ORDERS_RECORD_ARTICLE', '在这里输入的文本将被插入到邮件正文里。');
 define('EDIT_ORDERS_ITEM_FIVE_TITLE', '5. 更新数据');
 define('EDIT_ORDERS_FINAL_CONFIRM_TEXT', '最终确认了吗？');
-define('EDIT_ORDERS_FINAL_CONFIRM_TEMPLATE', '<table cellspacing="0" cellpadding="2" width="100%"><tr class="smalltext"><td valign="top" colspan="3"><font color="red">※</font>&nbsp;复制粘贴用的短语。可以点三下或全选。</td></tr> <tr bgcolor="#999999" class="smalltext"><td>商品的更改</td><td>支付方式的更改（出售用）</td><td>支付方式的更改（出售用）</td></tr> <tr bgcolor="#cccccc" class="smalltext"> <td valign="top">本公司的交易人物名为【】。</td> <td valign="top"> 请转入下述的金融机构。<br> ------------------------------------------<br> 银行名称　　：　日本网上银行<br> 分店名称　　：　总店销售部<br> 账户类型　：　普通<br> 账户名　　：　1,2,3,4,5,6）iimy<br> 账户号　：　1164394<br> ------------------------------------------<br> 银行名称　　：　Ebank银行<br> 分店名　　：　华尔兹分店<br> 分店号　：　204<br> 账户名称　　：　1,2,3,4,5,6）iimy<br> 账户号　：　7003965<br> ------------------------------------------<br> ※ 请务必存入到预约时所填写账户姓名里。<br> ※ 转账手续费由顾客承担。<br> ※ 转账需要在订购后7日内进行。<br> ※ iimy有限公司确认到款后合同生效。 </td> <td valign="top"> 10分钟后，会通过邮件和您联系，将顾客专用的信用卡结算URL发送到您的邮箱里<br> たします。<br> 请点击邮件正文里的URL，完成信用卡结算<br>  </td> </tr> </table>');
 define('EDIT_ORDERS_PRO_DUMMY_NAME', '交易人物名:');
 define('EDIT_NEW_ORDERS_CREATE_TITLE', '创建预约订单');
 define('EDIT_NEW_ORDERS_CREATE_READ', '【重要】并非编辑预约订单。是创建订单的系统。');

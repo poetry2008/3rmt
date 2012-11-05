@@ -18,7 +18,7 @@
 <title><?php echo KEYWORDS_TITLE_TEXT; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+  <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 require("includes/note_js.php");
@@ -35,7 +35,7 @@ require("includes/note_js.php");
 <!-- header_eof //-->
 
 <!-- body //-->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
 <!-- left_navigation //-->
@@ -43,7 +43,7 @@ require("includes/note_js.php");
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-    <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
@@ -132,7 +132,7 @@ require("includes/note_js.php");
       </select>
       <?php echo DAY_TEXT;?> </td>
         <td>&nbsp;</td>
-        <td><input type="submit" value="検索"></td>
+        <td><input type="submit" value="<?php echo IMAGE_SEARCH;?>"></td>
       </tr>
     </table></fieldset>
     </form>
@@ -191,6 +191,7 @@ require("includes/note_js.php");
       </tr>
     </table>
     </div> 
+    </div>
     </td>
 <!-- body_text_eof //-->
   </tr>

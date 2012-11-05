@@ -5,6 +5,7 @@
 
   require('includes/application_top.php');
   require(DIR_WS_CLASSES.'currencies.php');
+  require_once(DIR_FS_ADMIN . DIR_WS_LANGUAGES .  '/japanese/customers_products.php');
   $currencies = new currencies(2);
 
   header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
@@ -66,13 +67,15 @@
           }
         }
 ?>
-<!--<meta http-equiv=”X-UA-Compatible” content=”IE=7″>-->
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <link media="print" href="includes/print.css" rel="stylesheet" type="text/css" />
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script>
 function textarea_check(ele){
+    var comment_str = $(ele).val();
+    var comment_str_array = comment_str.split("\n");
+    var comment_str_length = comment_str_array.length;
     var comment_cols = $(ele).css("width");
     var comment_font = $(ele).css("font-size"); 
     var comment_id = $(ele).attr("id");
@@ -80,28 +83,33 @@ function textarea_check(ele){
     var comment_temp_line = 0;
     if(comment_id == 'responsible'){comment_temp = 30;comment_temp_line = 1;}
     var comment_num;
-    var comment_line;
+    var comment_line = 0;
     var comment_sum;
     comment_cols = comment_cols.replace("px","");
     comment_font = comment_font.replace("px","");
     comment_cols = parseInt(comment_cols);
     comment_font = parseInt(comment_font);
     comment_num = (comment_cols-comment_temp)/comment_font;
-    var comment = $(ele).val();
-    comment_sum = comment.length;
-    comment_sum = parseInt(comment_sum);
-    comment_line = Math.round(comment_sum/comment_num)+comment_temp_line; 
-    $(ele).attr("rows",comment_line);
+    var comment = '';
+    var i = 0;
+    for(x in comment_str_array){
+
+      if(comment_str_array[x].length > comment_num){
+
+        comment = comment_str_array[x];
+        comment_sum = comment.length;
+        comment_sum = parseInt(comment_sum);
+        comment_line += Math.round(comment_sum/comment_num)+comment_temp_line;
+        i++;
+      }
+    } 
+    var comment_str_temp = 1; 
+    $(ele).attr("rows",comment_line+comment_str_length-i+comment_str_temp);
 }
 $(document).ready(function(){
-  $("textarea").change(function(){
+  $("textarea").keyup(function(){
    textarea_check(this); 
   });
-  //$("#bill_templates").change(function(){
-   //$("textarea").each(function(){
-    //textarea_check(this); 
-   //});
-  //});
 });
   // 数据保存
   var table_data = new Array();
@@ -113,7 +121,7 @@ $(document).ready(function(){
   //var total_count = 45;
   // 页高
   //var page_height = row_height * count;
-  var page_height = 950;
+  var page_height = 900;
   
   // 千位分隔符
   function number_format(num)
@@ -141,7 +149,7 @@ $(document).ready(function(){
             products_name     : data[i]['products_name'],
             final_price       : data[i]['final_price'],
             products_quantity : data[i]['products_quantity'],
-            type              : '通貨'
+            type              : '<?php echo TEXT_CUSTOMERS_PRODUCTS_CURRENCY;?>'
           });
         }
         create_table(table_data);
@@ -179,7 +187,7 @@ $(document).ready(function(){
     }
     //alert(empty);
     if (empty < count) 
-    for (m = 0;m<empty;m++) {
+    for (m = 0;m<empty-20;m++) {
       html += add_tr(j+m, {
         date     : '',
         name     : '',
@@ -197,16 +205,16 @@ $(document).ready(function(){
   
   function table_header (num) {
     html =  "<div class=\"data_box\" style=\"width:100%\">\n";
-    html += "<table cellpadding=\"0\" cellspacing=\"1\" border=\"0\" class=\"data_table\" id=\"data_table_" + num + "\" align=\"center\">\n";
+    html += "<table cellpadding=\"0\" cellspacing=\"1\" border=\"0\" width=\"100%\" class=\"data_table\" id=\"data_table_" + num + "\" align=\"center\">\n";
     html += "<thead><tr align=\"center\" >\n";
-    html += "<td class=\"link_02\">No.</td>\n";
-    html += "<td class=\"link_03\">取引日</td>\n";
-    html += "<td class=\"link_04\">種別</td>\n";
-    html += "<td class=\"link_05\">商品名</td>\n";
-    html += "<td class=\"link_06\" align=\"right\">単価</td>\n";
-    html += "<td class=\"link_07\" align=\"right\">数量</td>\n";
-    html += "<td class=\"link_08\" align=\"right\">値引</td>\n";
-    html += "<td class=\"link_09\" align=\"right\">金額</td>\n";
+    html += "<td class=\"link_02\" width=\"5%\">No.</td>\n";
+    html += "<td class=\"link_03\" width=\"15%\"><?php echo TEXT_CUSTOMERS_PRODUCTS_ORDER_DATA;?></td>\n";
+    html += "<td class=\"link_04\" width=\"10%\"><?php echo TEXT_CUSTOMERS_PRODUCTS_CATEGORY;?></td>\n";
+    html += "<td class=\"link_05\" width=\"20%\"><?php echo TEXT_CUSTOMERS_PRODUCTS_PNAME;?></td>\n";
+    html += "<td class=\"link_06\" width=\"15%\" align=\"right\"><?php echo TEXT_CUSTOMERS_PRODUCTS_ONE_PRICE;?></td>\n";
+    html += "<td class=\"link_07\" width=\"15%\" align=\"right\"><?php echo TEXT_CUSTOMERS_PRODUCTS_QUANTITY;?></td>\n";
+    html += "<td nowrap class=\"link_08\" width=\"15%\" align=\"right\"><?php echo TEXT_CUSTOMERS_PRODUCTS_REDUCTION_PRICE;?></td>\n";
+    html += "<td nowrap class=\"link_09\" width=\"15%\" align=\"right\"><?php echo TEXT_CUSTOMERS_PRODUCTS_PRICE;?></td>\n";
     html += "</tr></thead>";
     return html;
   }
@@ -218,7 +226,7 @@ $(document).ready(function(){
       html += " style=\"page-break-after:always;\"";
     }
     html += "><tr><td class=\"text_x1\"></td>\n";
-    html += "    <td class=\"text_x2\" align=\"center\">小計</td>\n";
+    html += "    <td class=\"text_x2\" align=\"center\"><?php echo TEXT_CUSTOMERS_PRODUCTS_SUB_TOTAL;?></td>\n";
     html += "    <td class=\"text_x3 cost_display\" align=\"right\" id=\"cost_display_"+num+"\" ></td>\n";
     html += "  </tr></table>";
     html += "</div>";
@@ -265,9 +273,9 @@ $(document).ready(function(){
     data['price'] = Math.abs(data['price']);
     html = "<tr class=\"data\" align=\"center\" style=\"font-size:15px;\">\n";
     html += "<td class=\"link_01 number\"></td>\n";
-    html += "<td class=\"link_01 date\" id=\"tdate_"+number+"\"  align=\"left\"><input size=\"10\" type=\"text\" value=\""+data['date']+"\" onchange=\"date_change(this,"+number+")\"></td>";
+    html += "<td id=\"tdate_"+number+"\"  align=\"center\"><input size=\"10\" type=\"text\" value=\""+data['date']+"\" onchange=\"date_change(this,"+number+")\"></td>";
     html += "<td class=\"link_01 type\" id=\"type_"+number+"\" align=\"center\" ><input size=\"10\" type=\"text\" value=\""+data['type']+"\" onchange=\"type_change(this,"+number+")\"></td>";
-    html += "<td class=\"link_01 name\" id=\"pname_"+number+"\" align=\"left\"><input size=\"45\" type=\"text\" value=\""+data['name']+"\" id=\"name_display_"+number+"\" onchange=\"name_change(this,"+number+")\"></td>";
+    html += "<td id=\"pname_"+number+"\" align=\"left\"><input size=\"45\" type=\"text\" value=\""+data['name']+"\" id=\"name_display_"+number+"\" onchange=\"name_change(this,"+number+")\"></td>";
     html += "<td class=\"link_01 price\" id=\"fprice_"+number+"\" align=\"right\" ><input size=\"12\" type=\"text\" value=\""+(Math.abs(data['price']) != ''?(Math.abs(parseFloat(data['price'])).toFixed(1)):'')+"\" onchange=\"price_change(this,"+number+")\" style=\"text-align:right;\"><span class=\"price_display\" id=\"price_display_"+number+"\">"+(data['price'] != ''?('¥'+parseFloat(data['price']).toFixed(1)).replace('-',''):'')+" </span>";
     html += "<input type=\"hidden\" class=\"price_flag\" id=\"fprice_flag_"+number+"\" value=\""+(data['price']>0?1:-1)+ "\" /></td>"
     html += "<td class=\"link_01 quantity\" id=\"pquantity_"+number+"\" align=\"right\"><input size=\"4\"  type=\"text\" value=\""+(data['quantity'] != ''?(parseFloat(data['quantity']).toFixed(1)):'')+"\" onchange=\"quantity_change(this,"+number+")\" style=\"text-align:right;\"></td>";
@@ -380,8 +388,8 @@ $(document).ready(function(){
           $('#data9').val(data['data9']);
           $('#data10').val(data['data10']);
           $('#data11').val(data['data11']);
-          $('#email').val(data['email']);
-          $('#email_display').html(data['email']);
+          $('#email_text').val(data['email']);
+          $('#email_display').val(data['email']);
           $('#responsible').val(data['responsible']);
           $("textarea").each(function(){
             textarea_check(this); 
@@ -451,7 +459,7 @@ $(document).ready(function(){
   }
   
   // 上部文本发生改动时要重新分表格
-  function textarea_change(num){
+  function textarea_change(){
     data_empty(num);
     create_table(table_data);
   }
@@ -460,7 +468,7 @@ $(document).ready(function(){
   });
 </script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <body style="text-align:center;">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
   <script language='javascript'>
@@ -498,16 +506,20 @@ $(document).ready(function(){
   <tr>
     <td>
       <table border="0" width="50%" align="left" class="print_innput" cellpadding="0" cellspacing="0">
-        <tr><td height="30" colspan="2" style="font-size:18px; padding-bottom:10px;"><input name="textfield" type="text" id="data2" value="" style=" height:23px; width:160px; font-size:18px; font-weight:bold; margin-right:30px;"><b>御中</b></td></tr>
-        <tr><td height="25" colspan="2" style=" font-size:18px; padding-bottom:15px;"><span id="cost_print"><?php echo $total_cost;?></span><div class="cost_print02">円 税込</div></td></tr>
+        <tr><td height="30" colspan="2" style="font-size:18px; padding-bottom:10px;"><input name="textfield" type="text" id="data2" value="" style=" height:23px; width:160px; font-size:18px; font-weight:bold; margin-right:30px;"><b><?php echo TEXT_CUSTOMERS_PRODUCTS_MAIL_STR;?></b></td></tr>
+        <tr><td height="25" colspan="2" style=" font-size:18px; padding-bottom:15px;"><span id="cost_print"><?php echo $total_cost;?></span><div class="cost_print02"><?php 
+        echo TEXT_MONEY_SYMBOL;
+        echo '&nbsp;';
+        echo TEXT_CUSTOMERS_PRODUCTS_TAX;
+        ?></div></td></tr>
         <tr><td height="30" colspan="2" align="left" valign="center"><input name="textfield" type="text" id="data3" value="" style=" width:270px; font-size:16px; margin-right:5px;"></td></tr>
         <tr><td colspan="2" height="10" align="left"><input name="textfield" type="text" id="data4" value="" style=" width:200px; font-size:14px; margin-right:5px;"></td></tr>
         <tr>
           <td width="30"></td>
           <td width="292" valign="top" align="left" class="input_print03">
-          <font size="3"><u><textarea id="data5" type="text" rows="2" style="font-size:14px; width:270px; overflow-y:visible;" onChange="textarea_change()"></textarea></u></font>
-          <font size="3"><u><textarea id="data6" type="text" rows="2" style="font-size:14px; overflow-y:visible; width:200px;" onChange="textarea_change()"></textarea></u></font>
-          <font size="3"><u><textarea id="data7" type="text" rows="2" style="font-size:14px; overflow-y:visible; width:200px;" onChange="textarea_change()"></textarea></u></font>
+          <font size="3"><u><textarea id="data5" type="text" rows="2" style="font-size:14px; width:270px; overflow-y:visible; resize:none;" onChange="textarea_change()"></textarea></u></font>
+          <font size="3"><u><textarea id="data6" type="text" rows="2" style="font-size:14px; overflow-y:visible; width:200px; resize:none;" onChange="textarea_change()"></textarea></u></font>
+          <font size="3"><u><textarea id="data7" type="text" rows="2" style="font-size:14px; overflow-y:visible; width:200px; resize:none;" onChange="textarea_change()"></textarea></u></font>
           </td>
         </tr>
 </tr>
@@ -518,19 +530,19 @@ $(document).ready(function(){
     <td valign="top">
       <table border="0" width="50%" align="right" class="print_innput" style=" margin-top:10px;">
       <tr><td height="4"></td></tr>
-        <tr><td height="30" valign="bottom" align="right"><input name="textfield" type="text" id="textfield" value="<?php echo str_replace(array(' 月曜日', ' 火曜日', ' 水曜日', ' 木曜日', ' 金曜日', ' 土曜日', ' 日曜日'),'',tep_date_long(date('Y-m-d H:i:s')));?>" style=" height:20px; width:150px; text-align:right; font-size:16px;  margin:5px 0 20px 20px;"></td></tr>
-        <tr><td align="right"><textarea id="data10" type="text" rows="2" style="font-size:14px; overflow-y:visible; width:280px;  text-align:right;" ></textarea></td></tr>
+        <tr><td height="30" valign="bottom" align="right"><input name="textfield" type="text" id="textfield" value="<?php echo str_replace(array(TEXT_DATE_MONDAY, TEXT_DATE_TUESDAY, TEXT_DATE_WEDNESDAY, TEXT_DATE_THURSDAY, TEXT_DATE_FRIDAY, TEXT_DATE_STATURDAY, TEXT_DATE_SUNDAY),'',tep_date_long(date('Y-m-d H:i:s')));?>" style=" height:20px; width:150px; text-align:right; font-size:16px;  margin:5px 0 20px 20px;"></td></tr>
+        <tr><td align="right"><textarea id="data10" type="text" rows="2" style="font-size:14px; overflow-y:visible; width:280px; resize:none;text-align:right;" ></textarea></td></tr>
         <tr><td align="right" class="input_print02">
   <font size="2">
-  <input name="textfield" type="text" id="email" value="" onChange="$('#email_display').html(this.value)" onpropertychange="$('#email_display').html(this.value)" onBlur="$('#email_display').html(this.value)" style="text-align:right; font-size:12px; width:300px; ">
-  <span id="email_display"></span>
+  <input name="textfield" type="text" id="email_text" value="" onChange="$('#email_display').val(this.value)" onpropertychange="$('#email_display').val(this.value)" onBlur="$('#email_display').val(this.value)" style="text-align:right; font-size:12px; width:300px;">
+  <input type="hidden" id="email_display" value="">
   </font></td></tr>
         <tr><td align="right" colspan="4">
-          <table cellpadding="0" cellspacing="0" style="border:#000000 1px solid; margin-top:19px;">
+          <table cellpadding="0" cellspacing="0" style="border:#000000 1px solid;margin-top:19px;">
           <tr><td style="border-bottom:#000000 1px solid;  padding-top:4px;" align="center">
           <input name="textfield" type="text" id="data11" value="" style="width:110px; font-size:12px; padding-top:4px; text-align:center; height:20px;">
           </td></tr>
-          <tr><td colspan="6" align="center" valign="middle"><textarea id="responsible" type="text" rows="6" style=" width:100px; font-size:20px; overflow-y:visible; text-align:center; padding:15px 0 15px 0; resize:none;" onChange="textarea_change()"></textarea></td></tr>
+          <tr><td colspan="6" align="center" valign="middle"><textarea id="responsible" type="text" rows="1" style=" width:100px; font-size:20px; overflow-y:visible; text-align:center; padding:15px 0; resize:none;" onChange="textarea_change()"></textarea></td></tr>
           </table>
         </td></tr>
       </table>
@@ -546,7 +558,7 @@ $(document).ready(function(){
         <a href="javascript:void(0)" onClick="add_empty()"><img src="/includes/languages/japanese/images/z_01.gif"></a>
         <a href="javascript:void(0)" onClick="delete_empty()"><img src="/includes/languages/japanese/images/not.gif"></a>
       </td>
-      <td align="right" style="display:block;"><input name="" type="button" value="プリント" onClick="create_table(table_data);window.print();"></td>
+      <td align="right" style="display:block;"><input name="" type="button" value="<?php echo TEXT_PRINT;?>" onClick="create_table(table_data);window.print();"></td>
   </tr>
 </table>
 </div></body>
@@ -591,6 +603,7 @@ function check_select()
   for (var i=0; i<sel_p_list.length; i++) {
     if (sel_p_list[i].checked) {
       document.forms.orders_form.submit();
+      break;
     }
   }
   return false;
@@ -639,31 +652,27 @@ require("includes/note_js.php");
 ?>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
-<!-- header //-->
+<!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
+<!-- header_eof -->
 <form action="?action=print&customers_id=<?php echo $_GET['cID'];?>" method="post" name="orders_form" target="_blank">
 <!-- body //-->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-<!-- left_navigation //-->
+<!-- left_navigation -->
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- left_navigation_eof //-->
+<!-- left_navigation_eof -->
     </table>
     </td>
-    <td valign="top"  width="100%"><?php echo $notes;?>   
+    <td valign="top"  width="100%"><div class="box_warp"><?php echo $notes;?>   
+      <div class="compatible">
       <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
               <td class="pageHeading"><?php echo HEADING_TITLE;?></td> 
               <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT);?></td> 
             </tr>
         </table>
-  <!--
-        <a href="javascript:void(0);" onclick="check_all(this,<?php echo $_GET['cID'];?>);">全部</a>
-        <a href="javascript:void(0);" onclick="clear_all(this,<?php echo $_GET['cID'];?>);">キャンセル</a>
-        
-  -->
         <table id="orders_list_table" border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td valign="top">
@@ -766,7 +775,7 @@ require("includes/note_js.php");
                 <tr>
                   <td colspan="3" align="left"></td>
                   <td colspan="4" align="right">
-                  <input type="button" name="orders_button" onclick="check_select();" value="<?php echo APPLICATION_CREATE_TEXT;?>">
+                  <input class="element_button" type="button" name="orders_button" onclick="check_select();" value="<?php echo APPLICATION_CREATE_TEXT;?>">
                   <a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, str_replace('cpage', 'page', tep_get_all_get_params(array('page'))));?>"><?php echo tep_html_element_button(IMAGE_BACK);?></a> 
                   </td>
                 </tr>
@@ -774,6 +783,8 @@ require("includes/note_js.php");
             </td>
           </tr>
         </table>
+        </div>
+        </div>
     </td>
   </tr>
 </table>

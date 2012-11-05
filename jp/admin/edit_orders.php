@@ -1071,7 +1071,7 @@ if($address_error == false){
           } else {
             $get_point = $cpayment->admin_get_fetch_point(payment::changeRomaji($_POST['payment_method'],'code'),$result3['value']);
           }
-          $cpayment->admin_get_customer_point(payment::changeRomaji($_POST['payment_method'],'code'),intval($get_point),$result1['customers_id']); 
+          //$cpayment->admin_get_customer_point(payment::changeRomaji($_POST['payment_method'],'code'),intval($get_point),$result1['customers_id']); 
         }else{
           $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
           $os_result = tep_db_fetch_array($os_query);
@@ -1083,7 +1083,7 @@ if($address_error == false){
             $point_done_query =tep_db_query("select count(orders_status_history_id) cnt from ".TABLE_ORDERS_STATUS_HISTORY." where orders_status_id = '".$status."' and orders_id = '".tep_db_input($oID)."'");
             $point_done_row  =  tep_db_fetch_array($point_done_query);
             if($point_done_row['cnt'] <1 ){
-              tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  intval($get_point) . " where customers_id = '" . $result1['customers_id']."' and customers_guest_chk = '0'");
+              //tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  intval($get_point) . " where customers_id = '" . $result1['customers_id']."' and customers_guest_chk = '0'");
             }
           }
         }
@@ -1513,12 +1513,12 @@ $shipping_fee = $order->info['shipping_fee'] != $shipping_fee ? $shipping_fee : 
 <title><?php echo HEADING_TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <link rel="stylesheet" type="text/css" href="includes/styles.css">
-<script language="javascript" src="includes/general.js"></script>
+<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/all_order.js"></script>
-<script language="javascript" src="includes/javascript/all_orders.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=all_order&type=js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=all_orders&type=js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
 <script language="javascript" src="includes/jquery.form.js"></script>
 <script language="javascript">
@@ -2836,7 +2836,7 @@ if($action != "add_product"){
 </table>
 </td>
 <!-- body_text //-->
-<td width="100%" valign="top"><?php echo $notes;?>
+<td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
  <div class="compatible">
  <table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
@@ -3157,7 +3157,6 @@ if (($action == 'edit') && ($order_exists == true)) {
     ?>
     <input type="hidden" name='update_tori_torihiki_start_date' size='10' value='<?php echo str_replace('&nbsp;','',$date_start_array[1]); ?>'>
     <input type="hidden" name='update_tori_torihiki_end_date' size='10' value='<?php echo str_replace('&nbsp;','',$date_array[1]); ?>'>
-    <br><br><span class="smalltext"><?php echo EDIT_ORDERS_FETCHTIME_READ;?></span>
     </td>
     </tr>
     <!-- 住所信息 -->
@@ -3777,7 +3776,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <td class="dataTableHeadingContent" align="left"><?php echo TABLE_HEADING_EMAIL_COMMENTS; ?></td>
     </tr>
     <tr>
-    <td valign="top">
+    <td valign="top" width="40%">
     <table border="0" cellspacing="0" cellpadding="2">
 <?php    
           $order_status_num_query = tep_db_query("select * from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='". $oID ."'");
@@ -3793,8 +3792,8 @@ if (($action == 'edit') && ($order_exists == true)) {
           $select_select = isset($_SESSION['orders_update_products']['s_status']) ? $_SESSION['orders_update_products']['s_status'] : $select_select;
 ?>
     <tr>
-    <td class="main" width="80"><b><?php echo ENTRY_STATUS; ?></b></td>
-    <td class="main"><?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_select,'onChange="new_mail_text_orders(this, \'s_status\',\'comments\',\'title\')"'); ?></td> 
+    <td class="main" width="82" style="min-width:45px;"><b><?php echo ENTRY_STATUS; ?></b></td>
+    <td class="main"><?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_select,'onChange="new_mail_text_orders(this, \'s_status\',\'comments\',\'title\')"; style="width:80px;"'); ?></td> 
     </tr>
     <?php
 
@@ -3840,7 +3839,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         <?php } ?>
         </table>
         </td>
-        <td class="main" width="10">&nbsp;</td>
+        <td class="main" width="15%">&nbsp;</td>
         <td class="main">
         <?php echo EDIT_ORDERS_RECORD_ARTICLE;?><br>
         <?php
@@ -3849,10 +3848,10 @@ if (($action == 'edit') && ($order_exists == true)) {
 
           //<textarea style="font-family:monospace;font-size:x-small" name="comments" wrap="hard" rows="30" cols="74"></textarea>
 
-          echo tep_draw_textarea_field('comments', 'off', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:70%;"');
+          echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:400px;"');
           //    echo tep_draw_textarea_field('comments', 'soft', '40', '5');
         } else {
-          echo tep_draw_textarea_field('comments', 'off', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:70%;"');
+          echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:400px;"');
         }
   ?>
     </td>
@@ -4076,6 +4075,7 @@ if($action == "add_product")
 }  
 ?>
 </table>
+</div>
 </div>
 </td>
 <!-- body_text_eof //-->

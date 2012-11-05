@@ -1,19 +1,4 @@
 <?php 
-/*
-  $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 osCommerce
-
-  Released under the GNU General Public License
-*/
-
-//
-// mb_substr() function v1.0.0 by S.HIRO 2003/03/03
-// It is not a function compatible with 100%.
-//
 function mb_substr($str, $start = 0, $length = 0, $encode = '')
 {
    return jsubstr($str, $start, $length);

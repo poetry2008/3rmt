@@ -17,7 +17,7 @@
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <?php require('includes/step-by-step/form_check.js.php'); ?>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 require("includes/note_js.php");
@@ -36,7 +36,7 @@ require("includes/note_js.php");
 <!-- header_eof //-->
 
 <!-- body //-->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
 <!-- left_navigation //-->
@@ -44,9 +44,10 @@ require("includes/note_js.php");
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-<td width="100%" valign="top"><?php echo $notes;?>
+<td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
   <br>
   <?php echo tep_draw_form('account_edit', FILENAME_CREATE_ACCOUNT_PROCESS, 'onSubmit="return check_form();"') . tep_draw_hidden_field('action', 'process'); ?>
+  <div class="compatible">
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
       <tr>
     <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
@@ -68,10 +69,12 @@ require("includes/note_js.php");
         <td align="right" class="main"><br><?php echo
         tep_html_element_submit(IMAGE_SAVE); ?></td>
       </tr>
-    </table></form></td>
+    </table>
+    </div>
+    </form>
+    </td>
 <!-- body_text_eof //-->
-    <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="0" cellpadding="2">
-    </table></td>
+    </div>
   </tr>
 </table>
 <!-- body_eof //-->

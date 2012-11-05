@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /*
   $Id$
 */
@@ -9,7 +9,7 @@ define('TABLE_HEADING_COUNTRY_NAME', '国名');
 define('TABLE_HEADING_COUNTRY_CODES', 'ISO 代码');
 define('TABLE_HEADING_ACTION', '操作');
 
-define('TEXT_INFO_EDIT_INTRO', '请增加必要的更改');
+define('TEXT_INFO_EDIT_INTRO', '请添加必要的更改');
 define('TEXT_INFO_COUNTRY_NAME', '名前:');
 define('TEXT_INFO_COUNTRY_CODE_2', 'ISO 代码 (2):');
 define('TEXT_INFO_COUNTRY_CODE_3', 'ISO 代码 (3):');

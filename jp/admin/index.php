@@ -12,7 +12,7 @@ $left='';
 $top='';  
 $zindex='';  
 $belong = str_replace('/admin/','',$_SERVER['PHP_SELF']);
-$query = tep_db_query("select * from notes where belong='".$belong."' and (attribute='1' or (attribute='0' and (author='".$ocertify->auth_user."' or author='')))  order by id desc");
+$query = tep_db_query("select * from notes where belong='".$belong."' and (attribute='1' or (attribute='0' and (author='".$ocertify->auth_user."' or author=''))) order by id desc");
 $note_arr = array();
 $height_arr = array();
 while($row=tep_db_fetch_array($query)){
@@ -47,9 +47,9 @@ while($row=tep_db_fetch_array($query)){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script type="text/javascript" src="includes/jquery.fancybox-1.3.1.pack.js"></script>
-<script type="text/javascript" src="includes/global.js"></script>
+<script language="javascript" src="js2php.php?path=includes&name=global&type=js"></script>
 <script type='text/javascript' src='includes/javascript/ui/jquery-ui-1.8.16.custom.min.js'></script>
 <script type='text/javascript' src='includes/javascript/ui/jquery.ui.resizable.js'></script>
 <link rel="stylesheet" type="text/css" href="includes/note_style.css" />
@@ -59,7 +59,7 @@ while($row=tep_db_fetch_array($query)){
 <?php if(!empty($height_arr)){?>
 <script language="javascript">
 $(document).ready(function() { 
-$('.demo').height(<?php echo max($height_arr);?>);
+$('.box_warp').height(<?php echo max($height_arr);?>);
 <?php
 foreach($note_arr as $note_row){
   echo "$('#note_".$note_row."').resizable({ 
@@ -75,8 +75,8 @@ foreach($note_arr as $note_row){
         data:
         'action=change_move&xlen='+xlen+'&ylen='+ylen+'&id=".$note_row."',
         success: function(){
-          if($('.demo').height()<(Number(ylen)+Number(top.substring(0,top.length-2))+10)){
-              $('.demo').height(Number(ylen)+Number(top.substring(0,top.length-2))+10);
+          if($('.box_warp').height()<(Number(ylen)+Number(top.substring(0,top.length-2))+10)){
+              $('.box_warp').height(Number(ylen)+Number(top.substring(0,top.length-2))+10);
             }
           }
           });
@@ -131,7 +131,7 @@ function changeLayer(obj) {
 </td>
 </tr>
 <tr><td>
-<div class="demo">
+<div class="box_warp">
 <?php echo $notes;?>
 </div>
 </td></tr>

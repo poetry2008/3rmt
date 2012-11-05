@@ -62,4 +62,5 @@ define('TEXT_USER_UPDATE','更新者:');
 define('TEXT_DATE_ADDED','创建日期:');
 define('TEXT_DATE_UPDATE','更新日期:');
 
+define('TEXT_ADVERTISEMENT_INFO','如果想使用广告功能的话，【注册新广告/组】的命名一定要以adv开头。');
 ?>

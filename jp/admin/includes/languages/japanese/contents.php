@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 osCommerce
-
-  Released under the GNU General Public License
 */
 
 define('HEADING_TITLE', 'コンテンツ管理');
@@ -40,4 +33,5 @@ define('TEXT_USER_UPDATE','更新者:');
 define('TEXT_DATE_ADDED','作成日:');
 define('TEXT_DATE_UPDATE','更新日:');
 
+define('TEXT_CONTENT_MSG', 'このページのリンクを表示させるには以下のソースコードを表示したい箇所にコピーしてください。');
 ?>

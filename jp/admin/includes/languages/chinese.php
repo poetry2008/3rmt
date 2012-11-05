@@ -113,7 +113,7 @@ define('BOX_TOOLS_CACHE', '缓存控制');
 define('BOX_TOOLS_DEFINE_LANGUAGE', '语言文件管理');
 define('BOX_TOOLS_FILE_MANAGER', '文件管理');
 define('BOX_TOOLS_MAIL', '发送邮件');
-define('BOX_TOOLS_NEWSLETTER_MANAGER', '电子杂志管理');
+define('BOX_TOOLS_NEWSLETTER_MANAGER', '邮件杂志管理');
 define('BOX_TOOLS_SERVER_INFO', '服务器信息');
 define('BOX_TOOLS_WHOS_ONLINE', '在线用户');
 define('BOX_TOOLS_PRESENT','赠品功能');
@@ -330,6 +330,7 @@ define('TEXT_SET_DEFAULT', '默认设置');
 define('TEXT_FIELD_REQUIRED', '&nbsp;<span class="fieldRequired">* 必须</span>');
 
 define('ERROR_NO_DEFAULT_CURRENCY_DEFINED', '错误: 没有设置基本通货。 管理菜单->定位->通货设置: 请确认设置。');
+define('ERROR_INPUT_RIGHT_DATE', '请输入正确日期。');
 
 define('TEXT_CACHE_CATEGORIES', '分类区');
 define('TEXT_CACHE_MANUFACTURERS', '制造商区');
@@ -338,7 +339,7 @@ define('TEXT_CACHE_ALSO_PURCHASED', '关联商品模块');
 define('TEXT_NONE', '--没有--');
 define('TEXT_TOP', '首页');
 
-define('EMAIL_SIGNATURE',C_EMAIL_FOOTER);  //Add Japanese osCommerce
+define('EMAIL_SIGNATURE',C_EMAIL_FOOTER);
 
 //Add languages
 //------------------------
@@ -476,7 +477,7 @@ define('BUTTON_MAG_UP','上传');
 define('BUTTON_MAG_DL','下载');
 
 //header language
-define('HEADER_TEXT_SITE_NAME','iimy有限公司');
+define('HEADER_TEXT_SITE_NAME',COMPANY_NAME);
 define('HEADER_TEXT_LOGINED','正在登录中。');
 define('HEADER_TEXT_ORDERS','订单管理');
 define('HEADER_TEXT_TELECOM_UNKNOW','结算管理');
@@ -595,7 +596,7 @@ define('BOX_CATALOG_SHOW_USELESS_OPTION','删除未使用选项');
 define('TEXT_ORDER_ALARM_LINK', '警报');
 define('HOUR_TEXT', '时');
 define('MINUTE_TEXT', '分');
-define('NOTICE_EXTEND_TITLE', '移交记录');
+define('NOTICE_EXTEND_TITLE', '备忘录');
 define('NOTICE_ALARM_TITLE', '警报');
 define('NOTICE_DIFF_TIME_TEXT', '剩余');
 define('TEXT_DISPLAY_NUMBER_OF_MANUAL', '当前显示<b>%d</b> &sim; <b>%d</b> (共<b>%d</b> 项)');
@@ -639,20 +640,18 @@ define('DB_CONFIGURATION_TITLE_EMAIL','发送E-Mail');
 define('DB_CONFIGURATION_TITLE_DOWNLOAD_SALES','下载销售');
 define('DB_CONFIGURATION_TITLE_GZIP','GZip压缩');
 define('DB_CONFIGURATION_TITLE_SESSION','Session');
-define('DB_CONFIGURATION_TITLE_INITIAL_SETTING_SHOP','店铺初期设置');
 define('DB_CONFIGURATION_TITLE_BUSINESS_CALENDAR','营业日历');
 define('DB_CONFIGURATION_TITLE_SEO','SEO URLs');
 define('DB_CONFIGURATION_TITLE_DOCUMENTS','文件管理器');
 define('DB_CONFIGURATION_TITLE_TIME_SETING','时间设置');
 define('DB_CONFIGURATION_TITLE_MAXIMUM_VALUE','最大值');
-define('DB_CONFIGURATION_TITLE_DEAL','指定交易方法');
 define('DB_CONFIGURATION_TITLE_NEW_REVIEW','新评论设置');
 define('DB_CONFIGURATION_TITLE_INSTALL_SAFETY_REVIEW','设置评论安全');
 define('DB_CONFIGURATION_TITLE_PROGRAM','联盟计划');
 define('DB_CONFIGURATION_TITLE_WARNING_SETTINGS','警告字符串设置');
 define('DB_CONFIGURATION_TITLE_SIMPLE_INFORMATION','简易订单信息 ');
 define('DB_CONFIGURATION_TITLE_GRAPH_SET',' 混合图表设置');
-define('DB_CONFIGURATION_TITLE_INITIAL_SETTING_SHOPS','商店初期设置');
+define('DB_CONFIGURATION_TITLE_INITIAL_SETTING_SHOP','商店初期设置');
 
 
 define('DB_CONFIGURATION_DESCRIPTION_SHOP','商品的一般信息');
@@ -674,13 +673,11 @@ define('DB_CONFIGURATION_DESCRIPTION_INITIAL_SETTING_SHOP','主页的初期设�
 define('DB_CONFIGURATION_DESCRIPTION_BUSINESS_CALENDAR','营业日历设置');
 define('DB_CONFIGURATION_DESCRIPTION_SEO','Options for Ultimate SEO URLs by Chemo');
 
-define('HELP_INFO_TITLE','帮助信息管理');
 define('TEXT_TIME_LINK','到');
 define('TEXT_BUTTON_ADD','添加输入框');
 define('TEXT_ATTRIBUTE','属性');
 define('TEXT_ATTRIBUTE_PUBLIC','公有');
 define('TEXT_ATTRIBUTE_PRIVATE','私有');
-define('TEXT_HEADER_HELP','帮助');
 define('TEXT_KEYWORD','关键词');
 define('TEXT_GOOGLE_SEARCH','用GOOGLE搜%s关键词的结果');
 define('TEXT_RENAME','重命名');
@@ -697,8 +694,29 @@ define('BOX_USER_ADMIN', '用户管理');
 define('BOX_USER_LOG', '访问日志');
 define('BOX_USER_LOGOUT', '退出');
 
-define('TEXT_SITE_COPYRIGHT' ,'Copyright © %s Haomai');
+define('TEXT_SITE_COPYRIGHT' ,'Copyright © %s '.COMPANY_NAME);
 
-define('JUMP_PAGE_TEXT', '跳页');
-define('JUMP_PAGE_BUTTON_TEXT', '移动');
+define('JUMP_PAGE_TEXT', ' ');
+define('JUMP_PAGE_BUTTON_TEXT', '跳转到');
 
+// javascript language
+define('JS_TEXT_ONETIME_PWD_ERROR','密码有误');
+define('JS_TEXT_INPUT_ONETIME_PWD','请输入一次性密码\r\n');
+define('JS_TEXT_POSTAL_NUMBER_ERROR','邮编错误。');
+// cleate_list
+define('','登录列表');
+define('','查看历史记录');
+// products_tags
+define('TEXT_P_TAGS_NO_TAG','无标签数据，请添加');
+define('UPDATE_MSG_TEXT', '更新');
+define('CL_TEXT_DATE_MONDAY', '一');
+define('CL_TEXT_DATE_TUESDAY', '二');
+define('CL_TEXT_DATE_WEDNESDAY', '三');
+define('CL_TEXT_DATE_THURSDAY', '四');
+define('CL_TEXT_DATE_FRIDAY', '五');
+define('CL_TEXT_DATE_STATURDAY', '六');
+define('CL_TEXT_DATE_SUNDAY', '日');
+define('BUTTON_ADD_TEXT', '添加');
+define('CSV_HEADER_TEXT', '账号创建日期，性别，姓，名，出生年月日，邮箱地址，公司名称，邮编号码，省市县，市区镇村，地址1，地址2，国名，电话号码，FAX号码，邮件杂志订阅，点数');
+define('CSV_EXPORT_TEXT', 'CSV输出');
+define('TEXT_ALL','全部');

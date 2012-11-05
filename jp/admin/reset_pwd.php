@@ -70,9 +70,9 @@ if (isset($_GET['action']) and $_GET['action']) {
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
-<script language="javascript" src="includes/general.js"></script>
+<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script>
 function open_new_calendar(c_type)
 {
@@ -165,7 +165,7 @@ require("includes/note_js.php");
     </table></td>
     <!-- body_text //-->
 
-    <td width="100%" valign="top"><?php echo $notes;?>
+    <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
     <div class="compatible">
     <table border="0" cellpadding="2" cellspacing="0" width="100%">
     <tr><td height="40" class="pageHeading"><?php echo TEXT_RESET_PWD_TITLE;?></td></tr>
@@ -215,11 +215,12 @@ require("includes/note_js.php");
     echo TEXT_RESET_PWD_NEXT_TELL;?></td>
     </tr>
     <tr>
-    <td width="120" nowrap><?php echo TEXT_RESET_PWD_LIST_TITLE;?></td> <td> <input type='text' name='title' style="width:550px;" value='<?php echo $reset_pwd_title;?>'/></td>
+    <td width="120" nowrap><?php echo TEXT_RESET_PWD_LIST_TITLE;?></td> 
+    <td> <input type='text' name='title' style="width:100%;" value='<?php echo $reset_pwd_title;?>'/></td>
     </tr>
     <tr>
     <td valign="top"><?php echo TEXT_RESET_PWD_LIST_CONTENT;?></td>
-    <td><textarea name='content' rows="20" style="width:550px; margin-bottom:5px;" /><?php echo $reset_pwd_content;?></textarea>
+    <td><textarea name='content' rows="20" style="width:100%; margin-bottom:5px;" /><?php echo $reset_pwd_content;?></textarea>
     <br><?php echo TEXT_RESET_PWD_OTHER_TEXT;?></td>
     </tr>
     <tr>
@@ -268,6 +269,7 @@ require("includes/note_js.php");
     ?>
 
     </table>
+    </div>
     </div>
     </td>
 

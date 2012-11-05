@@ -80,7 +80,7 @@ charset=<?php echo CHARSET; ?>">
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <link media="print" rel="stylesheet" type="text/css" href="includes/print_assets.css">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <title><?php echo ASSETS_TITLE;?></title>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
@@ -111,7 +111,7 @@ require("includes/note_js.php");
       echo '<td>&nbsp;</td>';
     }
 ?>
-<td width="100%" valign="top"><?php echo $notes;?>
+<td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible">
 <?php
 if(isset($_GET['pid'])&&$_GET['pid']!=''){
   echo "<div class = 'title_breadcreumb_div'>";
@@ -195,18 +195,16 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
   echo tep_draw_form('new_product', FILENAME_ASSETS,tep_get_all_get_params(
         array('site_id','bflag','product_categories_id')),'get');
   echo '<div class="assets_search_bar">';
-  echo "<table width='100%'>";
+  echo "<table width='100%' cellpadding='2' cellspacing='0' border='0'>";
   echo "<tr>";
-  echo "<td width='100' nowrap >";
+  echo "<td>";
   echo TEXT_SEARCH_SITE;
-  echo "</td>";
-  echo "<td width='260'>";
+  echo "<br>";
   echo tep_site_pull_down_menu_with_all($_GET['site_id'], false, TEXT_SHOW_ALL);
   echo "</td>";
-  echo "<td width='100' nowrap >";
+  echo "<td>";
   echo TEXT_SEARCH_WHERE;
-  echo "</td>";
-  echo "<td width='150'>";
+  echo "<br>";
   ?>
     <select name="show_status">
     <option value="easy" <?php
@@ -219,12 +217,11 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
             </option>
             </select>
 
-            <?php
-            echo "</td>";
-  echo "<td width='100' nowrap >";
-  echo TEXT_SEARCH_DATE;
+<?php
   echo "</td>";
-  echo "<td width='300'>";
+  echo "<td>";
+  echo TEXT_SEARCH_DATE;
+  echo "<br>";
   ?>
     <?php //start date ?>
     <table cellpadding="0" cellspacing="0" border="0" class="assets_time">
@@ -276,27 +273,19 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     </select></td>
     </tr>
     </table>
-    </td>
-    <td>
-    <input type="hidden" name="search" value="1">
-    <?php
-    echo tep_html_element_submit(TEXT_SEARCH,'','assets_submit');
-  ?>
+    </div>
     </td>
     </tr>
     <tr>
-    <td nowrap >
-    <?php echo TEXT_SEARCH_CATEGORY;?>
-    </td>
     <td>
+    <?php echo TEXT_SEARCH_CATEGORY;?><br>
     <?php
     echo tep_draw_pull_down_menu('product_categories_id',tep_get_category_tree(),
         $current_category_id);
   ?>
     </td>
-    <td nowrap >
-    <?php echo TEXT_SEARCH_ORDER;?>
-    </td><td>
+    <td>
+    <?php echo TEXT_SEARCH_ORDER;?><br>
     <select name="sort_order">
     <option value="" <?php
     if(!isset($_GET['sort_order'])||$_GET['sort_order']==''){?>
@@ -312,8 +301,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
                 </option>
                 </select>
                 </td>
-    <td></td>
-    <td>
+    <td><br>
     <table cellpadding="0" cellspacing="0" border="0" class="assets_time"><tr><td
     nowrap>
     <?php echo TEXT_SEARCH_DATE_END."&nbsp;&nbsp";?>
@@ -367,12 +355,20 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     </tr>
     </table>
     </td>
-    <td>
+    </tr>
+    <tr>
+     <td align="right" colspan="3">
+    <input type="hidden" name="search" value="1">
+    <?php
+    echo tep_html_element_submit(TEXT_SEARCH,'','assets_submit');
+  ?>
+    
     <?php ?>
     <input type="button" class="assets_input" value="<?php echo
     TEXT_ASSETS_PRINT;?>" onclick="window.open('<?php echo 
         tep_href_link(FILENAME_PRINT_ASSETS,tep_get_all_get_params());?>');">
     </td>
+    </tr>
     </table>
                 <?php
                 echo '</div>';
@@ -633,6 +629,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
   }
 }
 ?>
+</div>
 </td>
 </tr>
 </table>

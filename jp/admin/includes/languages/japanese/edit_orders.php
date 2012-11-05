@@ -127,8 +127,6 @@ define('EDIT_ORDERS_FETCHTIME', 'お届け日時:');
 define('EDIT_ORDERS_TORI_TEXT', 'オプション:');
 define('EDIT_ORDERS_CUSTOMER_NAME_READ', '<font color="red">※</font>&nbsp;姓と名の間には<font color="red">半角スペース</font>を入力してください。');
 define('EDIT_ORDERS_PAYMENT_METHOD_READ', '<table><tr class="smalltext"><td><font color="red">※</font>&nbsp;コピペ用:</td><td>銀行振込</td><td>クレジットカード決済</td><td>銀行振込(買い取り)</td><td>ゆうちょ銀行（郵便局）</td><td>コンビニ決済</td></tr></table>');
-define('EDIT_ORDERS_FETCHTIME_READ', 
-    '<font color="red">※</font>&nbsp;日付・時間の書式:&nbsp;2008-01-01 10:30:00&nbsp;～&nbsp;10:45:00');
 define('EDIT_ORDERS_TORI_READ', '<table><tr class="smalltext"><td><font color="red">※</font>&nbsp;コピペ用:</td><td>指定した時間どおりに取引して欲しい</td><td>指定した時間より早くできるなら早く来て欲しい</td></tr></table>');
 define('EDIT_ORDERS_PRO_LIST_TITLE', '2. 注文商品');
 define('TABLE_HEADING_NUM_PRO_NAME', '数量 / 商品名');
@@ -154,7 +152,6 @@ define('EDIT_ORDERS_RECORD_READ', '←ここはチェックしないように');
 define('EDIT_ORDERS_RECORD_ARTICLE', 'こちらに入力した文章はメール本文に挿入されます。');
 define('EDIT_ORDERS_ITEM_FIVE_TITLE', '5. データを更新');
 define('EDIT_ORDERS_FINAL_CONFIRM_TEXT', '最終確認はしましたか？');
-define('EDIT_ORDERS_FINAL_CONFIRM_TEMPLATE', '<table cellspacing="0" cellpadding="2" width="100%"><tr class="smalltext"><td valign="top" colspan="3"><font color="red">※</font>&nbsp;コピペ用フレーズです。トリプルクリックをすると全選択できます。</td></tr> <tr bgcolor="#999999" class="smalltext"><td>商品の変更</td><td>支払方法の変更（販売用）</td><td>支払方法の変更（販売用）</td></tr> <tr bgcolor="#cccccc" class="smalltext"> <td valign="top">弊社のキャラクター名は【】となります。</td> <td valign="top"> 下記の金融機関へお振り込みください。<br> ------------------------------------------<br> 銀行名　　：　ジャパンネット銀行<br> 支店名　　：　本店営業部<br> 口座種別　：　普通<br> 口座名　　：　カ）アイアイエムワイ<br> 口座番号　：　1164394<br> ------------------------------------------<br> 銀行名　　：　イーバンク銀行<br> 支店名　　：　ワルツ支店<br> 支店番号　：　204<br> 口座名　　：　カ）アイアイエムワイ<br> 口座番号　：　7003965<br> ------------------------------------------<br> ※ 必ずご注文時に入力したお名前でお振り込みください。<br> ※ 振込手数料はお客様のご負担となります。<br> ※ お振り込みはご注文から７日以内にお願いいたします。<br> ※ ご入金を'.COMPANY_NAME.'が確認した時点でご契約の成立となります。 </td> <td valign="top"> 10分程度でお客様専用のクレジットカード決済URLを電子メールにてご連絡い<br> たします。<br> メール本文に記載していますURLをクリックし、クレジットカード決済を完了<br> してください。 </td> </tr> </table>');
 define('EDIT_NEW_ORDERS_CREATE_TITLE', '注文書の作成');
 define('EDIT_NEW_ORDERS_CREATE_READ', '【重要】注文編集ではありません。新規注文作成システムです。');
 define('EDIT_ORDERS_ORIGIN_VALUE_TEXT', '（初期値）');
@@ -187,7 +184,7 @@ define('PRODUCTS_WEIGHT_ERROR_THREE','商品を削除するか、または個数
 define('PRODUCTS_WEIGHT_ERROR_FOUR','）kg以内にしてください。');
 define('TEXT_CANCEL_UPDATE','更新をキャンセルしました。');
 define('TEXT_DATE_ERROR','日時フォーマットが間違っています。 ');
-define('TEXT_DATE_NUM_ERROR','無効な日付または右記の数字を超えています。 ');
+define('TEXT_DATE_NUM_ERROR','お届け日時を正しく入力してください。');
 define('TEXT_INPUT_DATE_ERROR','日時が入力されていません。');
 define('TEXT_NO_ENOUGH_POINT','ポイントが足りません。入力可能なポイントは ');
 define('TEXT_LS',' です。');
@@ -244,5 +241,5 @@ define('TEXT_PASSWORD_NOT','パスワードが違います');
 
 
 define('TEXT_PRODUCTS_NUM','商品の数量が足りません。注文を作成しますか？');
-define('TEXT_DATE_TIME_ERROR','過去の日時が選択されています。誤りははありませんか？');
+define('TEXT_DATE_TIME_ERROR','過去の日時が選択されています。保存しますか？');
 ?>

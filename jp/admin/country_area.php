@@ -139,14 +139,13 @@ tep_db_free_result($f_query);
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <style type="text/css">
 div#show {
-  left:18%;
   width:70%;
   position:absolute;
 }
 </style>
-<script language="javascript" src="includes/general.js"></script>
+<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script language="javascript" src="includes/jquery.form.js"></script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
@@ -174,13 +173,15 @@ require("includes/note_js.php");
 <!-- header_eof //-->
 
 <!-- body //-->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft"><tr><td>
 <!-- left_navigation //--> <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> <!-- left_navigation_eof //-->
     </td></tr></table></td>
 <!-- body_text //-->
-    <td width="100%" valign="top"><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
+    <div class="compatible">
+    <table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
@@ -265,9 +266,11 @@ tep_db_close();
 </tr>
 <tr><td align="right" colspan="9"><button onclick="javascript:location.href='country_fee.php';"><?php echo TABLE_HISTROY;?></button>&nbsp;<button onclick="show_text_area(0,this,<?php echo $_GET['fid']; ?>);"><?php echo TABLE_BUTTON;?></button></td></tr>
 </table></td></tr></table></td></tr>
-</table></td>
+</table>
+</div>
+</td>
 </tr>
-</table></td>
+</table></div></td>
 <!-- body_text_eof //-->
 </tr>
 </table>

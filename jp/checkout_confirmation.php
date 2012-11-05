@@ -634,6 +634,8 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
   } else {
     $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
   }
+  
+  $point_rate = $payment_modules->get_point_rate($payment);
   if ($order->info['subtotal'] > 0) {
     if (isset($_SESSION['campaign_fee'])) {
       $get_point = ($order->info['subtotal'] + $_SESSION['campaign_fee']) * $point_rate;
@@ -641,14 +643,10 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
       $get_point = ($order->info['subtotal'] - (int)$point) * $point_rate;
     }
   } else {
-    if ($payment == 'buyingpoint') {
-      if (isset($_SESSION['campaign_fee'])) {
-        $get_point = abs($order->info['subtotal'])+abs($_SESSION['campaign_fee']);
-      } else {
-        $get_point = abs($order->info['subtotal']);
-      }
+    if (isset($_SESSION['campaign_fee'])) {
+      $get_point = (abs($order->info['subtotal'])+abs($_SESSION['campaign_fee'])) * $point_rate;
     } else {
-      $get_point = 0;
+      $get_point = abs($order->info['subtotal']) * $point_rate;
     }
   }
   if ($guestchk == '1') {

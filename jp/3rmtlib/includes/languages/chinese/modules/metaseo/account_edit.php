@@ -1,8 +1,4 @@
 <?php
-/*
-  JP、GM共通ファイル
-*/
-
   define('MODULE_METASEO_ACCOUNT_EDIT_TEXT_TITLE', '客户信息编辑');
   define('MODULE_METASEO_ACCOUNT_EDIT_TEXT_EXPLAIN', 'EXPLAIN');
   define('MODULE_METASEO_ACCOUNT_EDIT_TEXT_DESCRIPTION', '客户信息编辑页的SEO');

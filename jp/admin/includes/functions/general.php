@@ -33,7 +33,8 @@ function one_time_pwd_forward401($page_name)
 'oa_ajax.php',
 'preorder_item_process.php',
 'set_ajax_dougyousya.php',
-'upload.php'
+'upload.php',
+'js2php.php'
       );
   foreach($pagelist as $page){
     if($file_name == $page){
@@ -1767,8 +1768,6 @@ function tep_rand($min = null, $max = null) {
   }
 }
 
-// Convert "zen-kaku" alphabets and numbers to "han-kaku"
-// tamura 2002/12/30
 function tep_an_zen_to_han($string) {
   return mb_convert_kana($string, "a");
 }
@@ -3906,7 +3905,7 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
 
   $str .= '</table>';
   $str .= '<table class="popup_order_info" border="0" cellpadding="2" cellspacing="0" width="100%">';
-  $str .= '<tr><td width="120">&nbsp;</td><td class="main" style="padding-left:20%;">';
+  $str .= '<tr><td class="main" colspan="2" align="center">';
   $str .= '<div id="order_del">'; 
   $str .= '<a href="'.tep_href_link(FILENAME_ALARM, urldecode($param_str.'&oID='.$orders['orders_id'])).'">'.tep_html_element_button(TEXT_ORDER_ALARM_LINK).'</a>'; 
   $str .= '<a href="'.tep_href_link(FILENAME_ORDERS, urldecode($param_str).'&oID='.$orders['orders_id'].'&action=edit').'">'.tep_html_element_button(IMAGE_DETAILS).'</a>'; 
@@ -5316,7 +5315,11 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
             if (isset($level_category_arr[$cur_key-1])) {
               $prev_id =  $level_category_arr[$cur_key-1];
               $link_cpath = get_link_parent_category($prev_id); 
-              $return_str .= '<input type="button" value="'.TEXT_CATEGORY_HEAD_IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID')).'cPath='.$link_cpath).'\'">&nbsp;'; 
+              if (isset($level_category_arr[$cur_key+1])) {
+              $return_str .= '<input type="button" style="width:102px;float:left;margin-left:70px;" value="'.TEXT_CATEGORY_HEAD_IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID')).'cPath='.$link_cpath).'\'">&nbsp;'; 
+	      }else{
+                $return_str .= '<input type="button" style="width:102px;float:left;margin-left:70px;" value="'.TEXT_CATEGORY_HEAD_IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID')).'cPath='.$link_cpath).'\'">&nbsp;'; 
+	      }
             }
             //  $return_str .= '</div>';
 
@@ -5324,8 +5327,11 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
             if (isset($level_category_arr[$cur_key+1])) {
               $next_id =  $level_category_arr[$cur_key+1];
               $link_cpath = get_link_parent_category($next_id); 
-              $return_str .= '&nbsp;<input type="button"
-                value="'.TEXT_CATEGORY_HEAD_IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID')).'cPath='.$link_cpath).'\'">&nbsp;'; 
+              if (isset($level_category_arr[$cur_key-1])) {
+              $return_str .= '&nbsp;<input type="button" style="width:102px;float:left;margin-left:10px;" value="'.TEXT_CATEGORY_HEAD_IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID')).'cPath='.$link_cpath).'\'">&nbsp;'; 
+	      }else{
+                $return_str .= '&nbsp;<input style="width:102px;float:left;margin-left:182px;" type="button" value="'.TEXT_CATEGORY_HEAD_IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID')).'cPath='.$link_cpath).'\'">&nbsp;'; 
+	      }
             }
               //$return_str .= '</div>';
           }
@@ -5393,15 +5399,21 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
               $link_path = get_link_parent_category($category_arr[$cur_pos-1]);
               //$return_str .= '<div style="float:left;width:120px">&nbsp;';
             if (isset($category_arr[$cur_pos-1])) {
-              $return_str .= '<input type="button"
-                value="'.TEXT_CATEGORY_HEAD_IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link($page, 'cPath='.$link_path.'&site_id='.(int)$site_id).'\'">&nbsp;'; 
+              if (isset($category_arr[$cur_pos+1])) {
+                $return_str .= '<input type="button" style="width:102px;float:left;margin-left:70px;" value="'.TEXT_CATEGORY_HEAD_IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link($page, 'cPath='.$link_path.'&site_id='.(int)$site_id).'\'">&nbsp;'; 
+	      }else{
+                $return_str .= '<input type="button" style="width:102px;float:left;margin-left:70px;" value="'.TEXT_CATEGORY_HEAD_IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link($page, 'cPath='.$link_path.'&site_id='.(int)$site_id).'\'">&nbsp;'; 
+	      }
             }
               //$return_str .= '</div>';
               //$return_str .= '<div style="float:left;width:120px">&nbsp;';
             if (isset($category_arr[$cur_pos+1])) {
               $link_path = get_link_parent_category($category_arr[$cur_pos+1]); 
-              $return_str .= '&nbsp;<input type="button"
-                value="'.TEXT_CATEGORY_HEAD_IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link($page, 'cPath='.$link_path.'&site_id='.(int)$site_id).'\'">'; 
+              if (isset($category_arr[$cur_pos-1])) {
+                $return_str .= '&nbsp;<input type="button" style="width:102px;float:left;margin-left:10px;" value="'.TEXT_CATEGORY_HEAD_IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link($page, 'cPath='.$link_path.'&site_id='.(int)$site_id).'\'">'; 
+	      }else{
+                $return_str .= '&nbsp;<input type="button" style="width:102px;float:left;margin-left:182px;" value="'.TEXT_CATEGORY_HEAD_IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link($page, 'cPath='.$link_path.'&site_id='.(int)$site_id).'\'">'; 
+	      }
             }
               //$return_str .= '</div>';
           }
@@ -7432,3 +7444,15 @@ function new_nl2br($string) {
   $string = str_replace(array("\r\n", "\r", "\n"), "<br>", $string);
   return $string;
 } 
+
+function tep_cfg_payment_new_checkbox($key_value, $key = '') {
+  $string = '';
+  $name = (($key) ? 'configuration[' . $key . ']' : 'configuration_value');
+  $string .= '<br><input type="checkbox" name="' . $name . '[]" value="1"';
+  if ($key_value == '1') {
+    $string .= ' CHECKED';
+  }
+  $string .= '> '.GET_POINT_TEXT; 
+    
+  return $string;
+}

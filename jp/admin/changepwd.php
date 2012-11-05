@@ -1,16 +1,4 @@
 <?php
-/* *********************************************************
-  モジュール名: users.php
- * 2001/5/29
- *   modi 2002-05-10
- * Naomi Suzukawa
- * suzukawa@bitscope.co.jp
-  ----------------------------------------------------------
-ユーザ管理
-
-  ■変更履歴
-  2003-04-07 add  $HTTP_POST_VERS に対応させる（PHP スーパーグローバル変数[$_POST]への対応は次回とする）
-********************************************************* */
 
 /* ===============================================
   global 定数
@@ -30,21 +18,8 @@
   $ThBgcolor = 'bgcolor="Gainsboro"';     // ヘッダセル：背景色
   $TdnBgcolor = 'bgcolor="WhiteSmoke"';   // セル：項目名背景色
 
-/* --------------------------------
-2003-04-07 add 
-$HTTP_POST_VERS に対応させる
-（PHP スーパーグローバル変数[$_POST]への対応は次回とする）
--------------------------------- */
 
-/* ===============================================
-  入力チェック関数
- ============================================== */
 
-/*--------------------------------------
-  機  能 : 未入力チェック
-  引  数 : $s_val - (i) 値
-  戻り値 : "":ＯＫ,エラーメッセージ:ＮＧ
- --------------------------------------*/
 function checkNotnull($s_val) {
 
   // 値が入力されているときチェックを行う
@@ -54,13 +29,6 @@ function checkNotnull($s_val) {
   return '';        // 戻り値
 }
 
-/*--------------------------------------
-  機  能 : 文字列項目のチェック（正規表現）
-       正規表現パターンとの入力チェック（全半角混在）
-  引  数 : $s_val   -(i)  文字列. 文字列
-       $s_ereg  -(i)  文字列. 正規表現パターン（省略時:正規表現チェックをしない）
-  戻り値 : "":ＯＫ,エラーメッセージ:ＮＧ
- -------------------------------------*/
 function checkStringEreg($s_val, $s_ereg = "") {
 
   // 値が未入力のとき処理終了
@@ -74,12 +42,6 @@ function checkStringEreg($s_val, $s_ereg = "") {
   return '';            // 戻り値
 }
 
-/*--------------------------------------
-  機  能 : 文字数チェック
-  引  数 : $s_val     -(i)  文字列. 文字列
-       $n_len     -(i)  整数. バイト数（省略時:空文字）
-  戻り値 : "":ＯＫ,エラーメッセージ:ＮＧ
- -------------------------------------*/
 function checkLength_ge($s_val, $n_len) {
 
   // 値が未入力のとき処理終了
@@ -94,11 +56,6 @@ function checkLength_ge($s_val, $n_len) {
   return '';            // 戻り値
 }
 
-/*--------------------------------------
-  機  能 : エラーメッセージ表示
-  引  数 : $a_error -(i) エラーメッセージ
-  戻り値 : なし
- --------------------------------------*/
 function print_err_message($a_error) {
 
   $stable_bgcolor = 'bgcolor="#FFFFFF"';    // テーブル背景色
@@ -118,25 +75,11 @@ function print_err_message($a_error) {
 
 }
 
-/* -------------------------------------
-  機  能 : エラーメッセージ配列にエラーメッセージセット
-  引  数 : $a_error - (o) 配列エラーメッセージ
-       $s_errmsg - (i) エラーメッセージ
-  戻り値 : なし
- ------------------------------------ */
 function set_errmsg_array(&$a_error,$s_errmsg) {
 
   $a_error[] = $s_errmsg;
 }
 
-/* ===============================================
-  レコード取得 sql 文字列生成関数（Select）
- ============================================== */
-/*--------------------------------------
-  機  能 : ユーザ情報取得 sql 文字列生成
-  引  数 : $s_user_ID - (i) ユーザＩＤ（省略可）
-  戻り値 : select 句文字列
- --------------------------------------*/
 function makeSelectUserInfo($s_user_ID = "") {
 
   $s_select = "select * from " . TABLE_USERS;
@@ -146,11 +89,6 @@ function makeSelectUserInfo($s_user_ID = "") {
 
 }
 
-/*--------------------------------------
-  機  能 : ユーザ権限を含む情報取得 sql 文字列生成
-  引  数 : $nmode   - (i) 整数：生成モード（0:一般ユーザ取得[既定値]、1:管理者取得）
-  戻り値 : select 句文字列
- --------------------------------------*/
 function makeSelectUserParmission($nmode=0) {
 
   // ユーザ権限を含む情報取得
@@ -165,15 +103,6 @@ function makeSelectUserParmission($nmode=0) {
 
 }
 
-/* ==============================================
-  テーブル更新 sql 文字列生成関数（Insert、Update、Delete）
- ============================================= */
-/*--------------------------------------
-  機  能 : 新規ユーザの登録（ユーザ管理、ユーザ権限テーブルに追加登録）
-  引  数 : $aval    -(i)  連想配列：追加するデータ
-       $nmode   -(i)  整数：生成モード（0:ユーザ管理テーブル追加sql[既定値]、1:ユーザ権限テーブル追加sql）
-  戻り値 : なし
- --------------------------------------*/
 function makeInsertUser($aval, $nmode=0) {
 
   $ssql = "insert into ";
@@ -202,12 +131,6 @@ function makeInsertUser($aval, $nmode=0) {
   return $ssql;
 }
 
-/*--------------------------------------
-  機  能 : ユーザ情報テーブルの更新
-  引  数 : $aval    -(i)  連想配列：更新するデータ
-       $nmode   -(i)  更新モード（0:氏名、e-mail、1:パスワード）
-  戻り値 : なし
- --------------------------------------*/
 function makeUpdateUser($aval, $nmode=0) {
   $ssql = "update " . TABLE_USERS . " set";
   if ($nmode == 0) {
@@ -227,11 +150,6 @@ function makeUpdateUser($aval, $nmode=0) {
   return $ssql;
 }
 
-/*--------------------------------------
-  機  能 : ユーザの削除、（ユーザ管理、ユーザ権限テーブルから削除）
-  引  数 :  $nmode  -(i)  整数：生成モード（0:ユーザ管理テーブル削除sql[既定値]、1:ユーザ権限テーブル削除sql）
-  戻り値 : なし
- --------------------------------------*/
 function makeDeleteUser($nmode=0) {
 
   $ssql = "delete from ";
@@ -249,46 +167,6 @@ function makeDeleteUser($nmode=0) {
   return $ssql;
 }
 
-/*--------------------------------------
-  機  能 : ユーザ権限テーブルの更新
-  引  数 : $nmode   -(i) 更新モード（0:grant、1:revoke）
-       $susers  -(i) ユーザID
-  戻り値 : なし
- --------------------------------------*/
-
-/* ==============================================
-  画面表示関数（メイン）
- ============================================= */
-/*--------------------------------------
-  機  能 : ユーザ管理メニュー（表示）
-  引  数 : なし
-  戻り値 : なし
- --------------------------------------*/
-
-/*--------------------------------------
-  機  能 : ユーザの追加（表示メイン）
-  引  数 : なし
-  戻り値 : なし
- --------------------------------------*/
-
-/*--------------------------------------
-  機  能 : ユーザ情報保守（表示メイン）
-  引  数 : なし
-  戻り値 : なし
-
-2000.04.20 対象ユーザが存在しないとき、メッセージ表示するように変更する。
-
- --------------------------------------*/
-
-
-//修改用户管理网站的权限
-//修改用户管理网站的权限的执行方法
-
-/*--------------------------------------
-  機  能 : パスワード変更（表示メイン）
-  引  数 : なし
-  戻り値 : なし
- --------------------------------------*/
 function UserPassword_preview() {
 
   PageBody('t', PAGE_TITLE_PASSWORD);   // ユーザ管理画面のタイトル部表示（パスワード変更）
@@ -398,27 +276,6 @@ function UserPassword_preview() {
   return TRUE;
 }
 
-/*--------------------------------------
-  機  能 : 管理者権限（表示メイン）
-  引  数 : なし
-  戻り値 : なし
- --------------------------------------*/
-
-/* ==============================================
-  処理実行関数
- ============================================= */
-/*--------------------------------------
-  機  能 : ユーザの追加処理実行
-  引  数 : なし
-  戻り値 : true/false
-  補  足 : [:print:] 印字可能なキャラクタ(=制御文字以外のキャラクタ) 
- --------------------------------------*/
-/*--------------------------------------
-  機  能 : ユーザ情報の更新処理実行
-  引  数 : なし
-  戻り値 : true/false
-  補  足 : [:print:] 印字可能なキャラクタ(=制御文字以外のキャラクタ) 
- --------------------------------------*/
 function UserInfor_execute() {
 
   PageBody('t', PAGE_TITLE_USERINFO);   // ユーザ管理画面のタイトル部表示（ユーザ情報）
@@ -484,18 +341,6 @@ function UserInfor_execute() {
   return TRUE;
 }
 
-/*--------------------------------------
-  機  能 : ユーザ削除チェック
-  引  数 : なし
-  戻り値 : true/false
- --------------------------------------*/
-
-/*--------------------------------------
-  機  能 : パスワード変更処理実行
-  引  数 : なし
-  戻り値 : true/false
-  補  足 : [:print:] 印字可能なキャラクタ(=制御文字以外のキャラクタ) 
- --------------------------------------*/
 function UserPassword_execute() {
 
   PageBody('t', PAGE_TITLE_PASSWORD);   // ユーザ管理画面のタイトル部表示（パスワード変更）
@@ -549,17 +394,6 @@ function UserPassword_execute() {
 
 }
 
-/*--------------------------------------
-  機  能 : ユーザ権限選択チェック
-  引  数 : $nmode - (i) 更新モード（0:grant、1:revoke）
-  戻り値 : true/false
- --------------------------------------*/
-
-/*--------------------------------------
-  機  能 : 確認メッセージのための JavaScript
-  引  数 : なし
-  戻り値 : true/false
- --------------------------------------*/
 function putJavaScript_ConfirmMsg() {
 
 echo '
@@ -608,12 +442,6 @@ function formConfirm(type) {
 ';
 
 }
-
-/*--------------------------------------
-  機  能 : ページヘッダの表示
-  引  数 : なし
-  戻り値 : なし
- --------------------------------------*/
 function PageHeader() {
   global $ocertify,$page_name,$notes;
   echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">' . "\n";
@@ -629,7 +457,7 @@ function PageHeader() {
   }
 
   echo '<script language="javascript" src="includes/javascript/jquery_include.js"></script>'."\n";
-  echo '<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>'."\n";
+  echo '<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>';
   $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
   require("includes/note_js.php");
   echo '</head>' . "\n";
@@ -645,17 +473,12 @@ function PageHeader() {
   echo '<!-- header_eof //-->' . "\n";
 }
 
-/*--------------------------------------
-  機  能 : ページのレイアウトテーブル表示
-  引  数 : $mode    -(i)  文字列：モード（t:上、u:下）
-  戻り値 : なし
- --------------------------------------*/
 function PageBodyTable($mode='t') {
   global $ocertify;
   switch ($mode) {
   case 't':
     echo '<!-- body //-->' . "\n";
-    echo '<table border="0" width="100%" cellspacing="2" cellpadding="2">' . "\n";
+    echo '<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">' . "\n";
     echo '  <tr>' . "\n";
     if($GLOBALS['ocertify']->npermission >= 10){
     echo '    <td width="' . BOX_WIDTH . '" valign="top"><table border="0" width="' . BOX_WIDTH . '" cellspacing="1" cellpadding="1" class="columnLeft">' . "\n";
@@ -669,18 +492,12 @@ function PageBodyTable($mode='t') {
   } 
 }
 
-/*--------------------------------------
-  機  能 : ページボディの表示
-  引  数 : $mode    -(i)  文字列：モード（t:上、u:下）
-       $stitle  -(i)  文字列：ボディのタイトル
-  戻り値 : なし
- --------------------------------------*/
 function PageBody($mode='t', $stitle = "") {
   global $notes;
   switch ($mode) {
   case 't':
     echo '<!-- body_text //-->' . "\n";
-    echo '    <td width="100%" valign="top">'.$notes.'<table border="0" width="100%" cellspacing="0" cellpadding="2">' . "\n";
+    echo '    <td width="100%" valign="top"><div class="box_warp">'.$notes.'<div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">' . "\n";
     echo '      <tr>' . "\n";
     echo '        <td><table border="0" width="100%" cellspacing="0" cellpadding="0">' . "\n";
     echo '          <tr>' . "\n";
@@ -697,17 +514,12 @@ function PageBody($mode='t', $stitle = "") {
   case 'u':
     echo '        </td>' . "\n";
     echo '      </tr>' . "\n";
-    echo '    </table></td>' . "\n";
+    echo '    </table></div></div></td>' . "\n";
     echo '<!-- body_text_eof //-->' . "\n";
     break;
   } 
 }
 
-/*--------------------------------------
-  機  能 : ページフッタの表示
-  引  数 : なし
-  戻り値 : なし
- --------------------------------------*/
 function PageFooter() {
   echo "<!-- footer //-->\n";
   require(DIR_WS_INCLUDES . 'footer.php');
@@ -721,11 +533,6 @@ function PageFooter() {
 //修改规则 并插入 数据库
 
 
-/* *************************************
-
-   ユーザ情報保守画面のプログラム制御（メイン）
-
- ************************************* */
 
   require('includes/application_top.php');
   if (isset($_POST['userid'])) { $userid = $_POST['userid']; }
@@ -735,7 +542,6 @@ function PageFooter() {
   if (isset($_POST['execute_password'])) { $execute_password = $_POST['execute_password']; }
 //修改权限
 if (isset($_POST['execute_change'])) { $execute_change = $_POST['execute_change'];}
-//2003-07-16 hiroshi_sato add 6 lines
 
   PageHeader();       // ページ・ヘッダの表示
   PageBodyTable('t');     // ページのレイアウトテーブル：開始（ナビゲーションボックスを包括するテーブル開始）

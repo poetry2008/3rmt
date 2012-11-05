@@ -15,4 +15,5 @@ define('TABLE_HEADING_ORDERS_STATUS', '状态');
 define('PRODUCT_MONEY_UNIT', '日元');
 define('PRODUCT_NUM_TEXT', '个');
 define('APPLICATION_CREATE_TEXT', '新建账单');
+define('TEXT_PRINT', '打印');
 ?>

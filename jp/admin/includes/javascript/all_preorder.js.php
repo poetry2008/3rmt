@@ -137,12 +137,12 @@ function mail_text(st,tt,ot){
   // 如果有了游戏人物名则不允许多选
 
   if((chk.length > 1)  && window.status_text[CI][0].indexOf('${ORDER_A}') != -1){
-    alert('複数の選択はできません。');
+    alert('<?php echo JS_TEXT_ALL_PREORDER_NOT_CHOOSE;?>');
     document.sele_act.elements[st].options[window.last_status].selected = true;
     return false;
   }
   if(chk.length < 1){
-    alert('注文書はまだ選択していません。');
+    alert('<?php echo JS_TEXT_ALL_PREORDER_NO_OPTION_ORDER;?>');
     document.sele_act.elements[st].options[window.last_status].selected = true;
     return false;
   }
@@ -452,7 +452,7 @@ function show_questions(ele){
 		$("#oa_dynamic_groups")[0].options.add(new Option(''+group_name+'',group_id,true,false));
 	    }
 	    if(order_can_end=='1'){
-		$("#oa_dynamic_groups")[0].options.add(new Option('取引完了','end',true,false));
+		$("#oa_dynamic_groups")[0].options.add(new Option('<?php echo JS_TEXT_ALL_PREORDER_COMPLETION_TRANSACTION;?>','end',true,false));
 	    }
 	}});
 	$("#oa_dynamic_groups").unbind('change');
@@ -467,12 +467,12 @@ function show_questions(ele){
 	    }
 	    if($(this).selected().val()=='end'){
 		$("#oa_dynamic_submit").show();
-		$("#oa_dynamic_submit").html('取引完了');
+		$("#oa_dynamic_submit").html('<?php echo JS_TEXT_ALL_PREORDER_COMPLETION_TRANSACTION;?>');
 		msg = '<input type="hidden" id="endtheseorder" value="1"/>';
 		$("#oa_dynamic_group_item").html(msg);
 	    }else{
 		$("#oa_dynamic_submit").show();
-		$("#oa_dynamic_submit").html('保存');
+		$("#oa_dynamic_submit").html('<?php echo JS_TEXT_ALL_PREORDER_SAVE;?>');
 	    $.ajax(
 		{ 
 		    url: "ajax_preorders.php?group_id="+$(this).val()+"&action=get_group_renderstring", 
@@ -518,7 +518,7 @@ $("#oa_dynamic_submit").click(function(){
 	      if (finish == 1){
 		  window.location.reload();
 	      }else {
-		  alert($("#oa_dynamic_groups").find('option|[selected]').text()+'の保存が完了しました');
+		  alert($("#oa_dynamic_groups").find('option|[selected]').text()+'<?php echo JS_TEXT_ALL_PREORDER_SAVED;?>');
 	      }
 	  }
       }
@@ -576,7 +576,7 @@ function copyToClipboard(txt) {
     try {   
       netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");   
     } catch (e) {   
-      alert("ブラウザに拒絶されました！\nブラウザのアドレス欄に'about:config'を入力してEnterキーを押します\nそれと'signed.applets.codebase_principal_support'数を'true'にしてください");   
+      alert("<?php echo JS_TEXT_ALL_ORDERS_BROWER_REJECTED;?>");   
     }   
     var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);   
     if (!clip)   
@@ -597,7 +597,7 @@ function copyToClipboard(txt) {
     clip.setData(trans,null,clipid.kGlobalClipboard);   
 
   }   
-  alert("クリップボードにコピーしました！")   
+  alert("<?php echo JS_TEXT_ALL_PREORDER_COPY_TO_CLIPBOARD;?>")   
 }  
 
 function show_monitor_error(e_id,flag,_this){
@@ -635,11 +635,11 @@ dataType: 'text',
 async : false,
 success: function(data) {
 var pwd_arr = data.split(",");
-var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
 if(in_array(pwd, pwd_arr)){
 window.location.href = url_str+'&once_pwd='+pwd; 
 } else {
-window.alert("パスワードが違います"); 
+window.alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>"); 
 }
 }
 });
@@ -663,12 +663,12 @@ function new_mail_text(ele,st,tt,ot){
   // 如果有了游戏人物名则不允许多选
 
   if((chk.length > 1)  && window.status_text[CI][0].indexOf('${ORDER_A}') != -1){
-    alert('複数の選択はできません。');
+    alert('<?php echo JS_TEXT_ALL_PREORDER_NOT_CHOOSE;?>');
     document.sele_act.elements[st].options[window.last_status].selected = true;
     return false;
   }
   if(chk.length < 1){
-    alert('注文書はまだ選択していません。');
+    alert('<?php echo JS_TEXT_ALL_PREORDER_NO_OPTION_ORDER;?>');
     document.sele_act.elements[st].options[window.last_status].selected = true;
     return false;
   }

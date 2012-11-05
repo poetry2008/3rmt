@@ -1,9 +1,4 @@
 <?php
-/* *********************************************************
-
-   ユーザアクセスログの言語定義 
-   ■変更履歴
-********************************************************* */
 
 define('HEADING_TITLE', '访问日志');
 
@@ -22,7 +17,7 @@ define('TEXT_PAGE', '( %s / %s Page [ %s / %s Rows ] )');
 define('BUTTON_DELETE_LOGINLOG', '删除');
 define('BUTTON_PREVIOUS_PAGE', '上一页');
 define('BUTTON_NEXT_PAGE', '下一页');
-define('BUTTON_JUMP_PAGE', '跳页');
+define('BUTTON_JUMP_PAGE', '跳转到');
 
 
 define('TABLE_HEADING_LOGINID', 'ID');
@@ -37,4 +32,10 @@ define('TABLE_HEADING_PAGE', '页');
 define('JAVA_SCRIPT_INFO_DELETE', '删除访问日志。\n可以吗？');
 
 define('PAGE_TITLE_MENU_USER', '');
+define('PAGE_TITLE_MENU_IP','已锁IP列表');
+define('TABLE_HEADING_PERMISSIONS','管理者权限');
+define('TABLE_HEADING_OPERATE','操作');
+define('TEXT_IP_UNLOCK','解除锁定');
+define('TEXT_DELETE_CONFIRM','确定解除此IP地址的锁定吗？');
+define('TEXT_IP_UNLOCK_NOTES','<font color="#FF0000">※</font>&nbsp;同一IP下管理者权限的Admin,Staff,Chief用户被锁定时，请优先解除Admin的锁定。');
 ?>

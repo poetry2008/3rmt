@@ -134,9 +134,9 @@ tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, (isset($_GET['site_id'])?('site
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title><?php echo HEADING_TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-<script language="javascript" src="includes/general.js"></script>
+<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
@@ -169,7 +169,7 @@ require("includes/note_js.php");
 <!-- header_eof //-->
 
 <!-- body //-->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
 <!-- left_navigation //-->
@@ -177,7 +177,7 @@ require("includes/note_js.php");
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-    <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
   if (isset($_GET['action']) && $_GET['action'] == 'new_latest_news') { //insert or edit a news item
     if ( isset($_GET['latest_news_id']) ) { //editing exsiting news item
@@ -213,18 +213,18 @@ require("includes/note_js.php");
     <input type="hidden" name="update_editor" value="<?php echo $user_info['name']?>">
         <td><table border="0" cellspacing="0" cellpadding="2">
           <tr>
-            <td class="main"><?php echo ENTRY_SITE; ?></td>
+            <td class="main" width="120"><?php echo ENTRY_SITE; ?></td>
             <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . (isset($_GET['latest_news_id']) && $_GET['latest_news_id'] && $latest_news?tep_get_site_name_by_id($latest_news['site_id']):tep_site_pull_down_menu(isset($latest_news['site_id'])?$latest_news['site_id']:'',true,true)); ?></td>
           </tr>
           <tr>
-            <td class="main"><?php echo TEXT_LATEST_NEWS_HEADLINE; ?></td>
+            <td class="main" width="120"><?php echo TEXT_LATEST_NEWS_HEADLINE; ?></td>
             <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('headline', isset($latest_news['headline'])?$latest_news['headline']:'', '', true); ?></td>
           </tr>
           <tr>
             <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
           <tr>
-            <td class="main" valign="top"><?php echo TEXT_LATEST_NEWS_CONTENT; ?></td>
+            <td class="main" width="120" valign="top"><?php echo TEXT_LATEST_NEWS_CONTENT; ?></td>
             <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_textarea_field('content', 'soft', '70', '15',isset($latest_news['content'])? stripslashes($latest_news['content']):''); ?>
   <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#STORE_NAME#
   </td>
@@ -435,6 +435,7 @@ $contents[] = array('text' => '<br>' .TEXT_DATE_UPDATE. date("Y-m-d H:i:s",$sele
 ?>
     </table>
     </div> 
+    </div>
     </td>
 <!-- body_text_eof //-->
   </tr>

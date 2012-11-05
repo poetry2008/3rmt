@@ -62,7 +62,7 @@ echo CLEATE_LIST_TITLE;
 ?>
 </title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-<script language="javascript" src="includes/general.js"></script>
+<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <?php 
   if($oid){
@@ -89,7 +89,7 @@ require("includes/note_js.php");
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" >
 <div id="spiffycalendar" class="text"></div>
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
    <tr>
       <td width="<?php echo BOX_WIDTH; ?>" valign="top">
          <table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
@@ -98,7 +98,8 @@ require("includes/note_js.php");
             </tr>   
          </table>
       </td>
-      <td width="100%" valign="top"><?php echo $notes;?>
+      <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
+         <div class="compatible">
          <table border="0" width="100%" cellspacing="0" cellpadding="2">
             <tr>
                <td class = "pageHeading"><?php echo CLEATE_LIST_TITLE;?>
@@ -167,7 +168,7 @@ if ($action =='prelist'){
       //$cnt=0;
 
       //while($col=tep_db_fetch_array($res)){
-      $html.= "<td><a href='history.php?action=oroshi_c&cPath=".$_GET['cid']."&oid=".$col['oroshi_id']."&fullpath=".$_GET['cPath']."' title='履歴を見る'>".$col['oroshi_name']."</a>&nbsp;&nbsp;&nbsp;<a href='history.php?action=oroshi_c&cPath=".$_GET['cid']."&oid=".$col['oroshi_id']."&fullpath=".$_GET['cPath']."' title='履歴を見る'>履歴を見る</a></td>";
+      $html.= "<td><a href='history.php?action=oroshi_c&cPath=".$_GET['cid']."&oid=".$col['oroshi_id']."&fullpath=".$_GET['cPath']."' title='".TEXT_CLEATE_HISTORY."'>".$col['oroshi_name']."</a>&nbsp;&nbsp;&nbsp;<a href='history.php?action=oroshi_c&cPath=".$_GET['cid']."&oid=".$col['oroshi_id']."&fullpath=".$_GET['cPath']."' title='".TEXT_CLEATE_HISTORY."'>".TEXT_CLEATE_HISTORY."</a></td>";
       $html2.= '';
       $html2.="<td><textarea rows='5' cols='30' id='textarea_".$col['oroshi_id']."' name='set_list[".$oroid."]' ></textarea></td>";
 
@@ -187,7 +188,8 @@ echo $html;
                         <td></td>
                      </tr>
         <tr>
-          <td colspan="<?php echo count($c)+2;?>"><input type="submit" value="リスト登録"></td>
+          <td colspan="<?php echo count($c)+2;?>"><input type="submit" value="<?php
+          echo TEXT_CLEATE_LIST;?>"></td>
         </tr>
           </form>
           <?php
@@ -265,6 +267,8 @@ for($i=0;$i < $count[0];$i++){
                <td><a id="back_link" style="display:none" href="<?php echo tep_href_link($back_url, $back_url_params); ?>">go back</a></td>
             </tr>
          </table>
+         </div>
+         </div>
       </td>
   </tr>
   

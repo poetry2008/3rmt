@@ -4,6 +4,7 @@
  */
 //ob_start();
 require('includes/application_top.php');
+include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .  '/default.php');
 require_once(DIR_WS_CLASSES . 'payment.php');
 if (isset($_GET['keywords'])) {
   $_GET['keywords'] = tep_db_prepare_input($_GET['keywords']);
@@ -569,7 +570,7 @@ switch ($_GET['action']) {
           } else {
             $get_point = $cpayment->admin_get_fetch_point(payment::changeRomaji($check_status['payment_method'],'code'),$result3['value']);
           }
-          $cpayment->admin_get_customer_point(payment::changeRomaji($check_status['payment_method'],'code'),intval($get_point),$result1['customers_id']); 
+          //$cpayment->admin_get_customer_point(payment::changeRomaji($check_status['payment_method'],'code'),intval($get_point),$result1['customers_id']); 
         } else {
           $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
           $os_result = tep_db_fetch_array($os_query);
@@ -580,7 +581,7 @@ switch ($_GET['action']) {
             $point_done_query =tep_db_query("select count(orders_status_history_id) cnt from ".TABLE_ORDERS_STATUS_HISTORY." where orders_status_id = '".$status."' and orders_id = '".tep_db_input($oID)."'");
             $point_done_row  =  tep_db_fetch_array($point_done_query);
             if($point_done_row['cnt'] <1 ){
-              tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  intval($get_point) . " where customers_id = '" . $result1['customers_id']."' and customers_guest_chk = '0'");
+              //tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  intval($get_point) . " where customers_id = '" . $result1['customers_id']."' and customers_guest_chk = '0'");
             }
           }
         }
@@ -757,10 +758,8 @@ switch ($_GET['action']) {
            default:
              break;
           }
-          $fetch_time_str =
-            date('Y'.SENDMAIL_TEXT_DATE_YEAR.'m'.SENDMAIL_TEXT_DATE_MONTH.'d'.SENDMAIL_TEXT_DATE_DAY,
-                strtotime($check_status['torihiki_date'])).$week_str.$fetch_time_start_array[1].'
-            '.SENDMAIL_TEXT_TIME_LINK.' '.$fetch_time_end_array[1]; 
+          $fetch_time_str = date('Y'.SENDMAIL_TEXT_DATE_YEAR.'m'.SENDMAIL_TEXT_DATE_MONTH.'d'.SENDMAIL_TEXT_DATE_DAY, strtotime($check_status['torihiki_date'])).$week_str.$fetch_time_start_array[1].' '.SENDMAIL_TEXT_TIME_LINK.' '.$fetch_time_end_array[1]; 
+          
           $comments = str_replace('${SHIPPING_TIME}', $fetch_time_str, $comments); 
           $title = str_replace('${SHIPPING_TIME}', $fetch_time_str, $title); 
           $customer_info_raw = tep_db_query("select is_send_mail from ".TABLE_CUSTOMERS." where customers_id = '".$check_status['customers_id']."'"); 
@@ -899,7 +898,7 @@ switch ($_GET['action']) {
         }
         //$plus = $result4['point'] + $get_point;
 
-        $cpayment->admin_get_customer_point(payment::changeRomaji($check_status['payment_method'],'code'),intval($get_point),$result1['customers_id']); 
+        //$cpayment->admin_get_customer_point(payment::changeRomaji($check_status['payment_method'],'code'),intval($get_point),$result1['customers_id']); 
 
       }else{
         $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
@@ -915,7 +914,7 @@ switch ($_GET['action']) {
               orders_id = '".tep_db_input($oID)."'");
           $point_done_row  =  tep_db_fetch_array($point_done_query);
           if($point_done_row['cnt'] <1 ){
-            tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  intval($get_point) . " where customers_id = '" . $result1['customers_id']."' and customers_guest_chk = '0'");
+            //tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  intval($get_point) . " where customers_id = '" . $result1['customers_id']."' and customers_guest_chk = '0'");
           }
         }
       }
@@ -1026,9 +1025,8 @@ switch ($_GET['action']) {
              }
            }
           
-           $products_ordered_mail .= SENDMAIL_QTY_NUM.str_repeat('　',
-               intval($max_c_len - mb_strlen(SENDMAIL_QTY_NUM, 'utf-8'))).'：' .
-             $order_pro_list_res['products_quantity']. SENDMAIL_EDIT_ORDERS_NUM_UNIT. tep_get_full_count2($order_pro_list_res['products_quantity'], $order_pro_list_res['products_id']) . "\n";
+           $products_ordered_mail .= SENDMAIL_QTY_NUM.str_repeat('　', intval($max_c_len - mb_strlen(SENDMAIL_QTY_NUM, 'utf-8'))).'：' .
+           $order_pro_list_res['products_quantity']. SENDMAIL_EDIT_ORDERS_NUM_UNIT. tep_get_full_count2($order_pro_list_res['products_quantity'], $order_pro_list_res['products_id']) . "\n";
            $products_ordered_mail .= SENDMAIL_TABLE_HEADING_PRODUCTS_PRICE.str_repeat('　', intval($max_c_len - mb_strlen(SENDMAIL_TABLE_HEADING_PRODUCTS_PRICE, 'utf-8'))).'：' .  $currencies->display_price($order_pro_list_res['final_price'], $order_pro_list_res['products_tax']) . "\n";
            $products_ordered_mail .= str_replace(':', '', SENDMAIL_ENTRY_SUB_TOTAL).str_repeat('　', intval($max_c_len - mb_strlen(str_replace(':', '', SENDMAIL_ENTRY_SUB_TOTAL), 'utf-8'))).'：' .  $currencies->display_price($order_pro_list_res['final_price'], $order_pro_list_res['products_tax'], $order_pro_list_res['products_quantity']) . "\n";
            $products_ordered_mail .= '------------------------------------------' . "\n";
@@ -1298,7 +1296,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
     $type_str = 'desc';
   }else{
     $type_str = 'asc';
-  } 
+  }
   $work_array = array();
   $work_default = '0|1|2|3|4';
   if(PERSONAL_SETTING_ORDERS_WORK != ''){
@@ -2114,9 +2112,9 @@ else { ?>
         <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
         <script language="javascript" src="includes/javascript/jquery.js"></script>
         <script language="javascript" src="includes/javascript/jquery.form.js"></script>
-        <script language="javascript" src="includes/javascript/all_order.js"></script>
+        <script language="javascript" src="js2php.php?path=includes|javascript&name=all_order&type=js"></script>
         <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-        <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+        <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
         <script language="javascript">
         function change_site(site_id,flag,site_list,param_url){  
           var ele = document.getElementById("site_"+site_id);
@@ -2340,29 +2338,29 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     one_time_pwd('<?php echo $page_name;?>');
   </script>
     <?php }?>
-    <!-- header //-->
+    <!-- header -->
     <?php
     require(DIR_WS_INCLUDES . 'header.php');
     ?>
-    <!-- header_eof //-->
-    <!-- body //-->
+    <!-- header_eof -->
+    <!-- body -->
     <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
     <tr>
     <?php
     if ($ocertify->npermission >= 10) {
       echo '<td width="' . BOX_WIDTH . '" valign="top">';
       echo '<table border="0" width="' . BOX_WIDTH . '" cellspacing="1" cellpadding="1" class="columnLeft">';
-      echo '<!-- left_navigation //-->';
+      echo '<!-- left_navigation -->';
       require(DIR_WS_INCLUDES . 'column_left.php');
-      echo '<!-- left_navigation_eof //-->';
+      echo '<!-- left_navigation_eof -->';
       echo '</table>';
       echo '</td>';
     } else {
       echo '<td>&nbsp;</td>';
     }
 ?>
-<!-- body_text //-->
-<td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+<!-- body_text -->
+<td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
 if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) {
   // edit start
@@ -2408,7 +2406,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         </div>
         </td>
         </tr>
-        <!-- 三种状态 + A,B,C -->
+        <?php // 三种状态 + A,B,C ?>
         <tr>
         <td width="100%">
         <div id="orders_flag">
@@ -2417,9 +2415,6 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         <td width="50%" align="left">
         <table width="100%" border="0" cellspacing="2" cellpadding="2">
         <tr>
-        <?php 
-
-        /* <!--<td width="100" align="center" class='<?php echo $order->info['orders_important_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'important')">重要</td>--> */ ?>
           <td width="100" align="center" class='<?php echo $order->info['orders_care_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'care', '<?php echo $order->info['orders_id'];?>')"><?php echo TEXT_STATUS_HANDLING_WARNING;?></td>
           <td width="100" align="center" class='<?php echo $order->info['orders_wait_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'wait', '<?php echo $order->info['orders_id'];?>')"><?php echo TEXT_STATUS_WAIT_TRADE;?></td>
           <td width="100" align="center" class='<?php echo $order->info['orders_inputed_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'inputed', '<?php echo $order->info['orders_id'];?>')"><?php echo TEXT_STATUS_READY_ENTER;?></td>
@@ -2445,7 +2440,6 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         </tr>
         <tr>
         <td>
-        <!-- 左右结构 -->
         <!-- left -->
         <div class="pageHeading_box">
         <div id="orders_info">
@@ -2655,7 +2649,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                 </tr>
                 </table>
                 </div>
-                <!-- 访问解析 -->
+                <?php //访问解析 ?>
                 <div id="orders_referer">
                 <h3>Referer Info</h3>
                 <table width="100%" border="0" cellspacing="0" cellpadding="2">
@@ -2676,7 +2670,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                     <?php 
                        $payment_show = payment::getInstance($order->info['site_id']);
                        if ($payment_show->admin_get_payment_symbol(payment::changeRomaji($order->info['payment_method'],'code')) == 1) { ?>
-                      <!-- 信用卡信息 -->
+                       <?php // 信用卡信息 ?>
 
                         <div id="orders_telecom">
                         <h3><?php echo TEXT_CART_INFO;?></h3>
@@ -2697,7 +2691,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                         </div>
 
                         <?php }else if ($payment_show->admin_get_payment_symbol(payment::changeRomaji($order->info['payment_method'],'code')) == 2) {?>
-                          <!-- PAYPAL信息 -->
+                        <?php // PAYPAL信息 ?>
 
                             <div id="orders_paypal">
                             <h3><?php echo TEXT_CART_INFO;?></h3>
@@ -2729,7 +2723,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                             </table>
                             </div>
                             <?php } ?>
-                            <!-- 注文履历 -->
+                            <?php // 注文履历 ?>
                             <?php // 订单历史5条 ?>
                             <div id="orders_history">
                             <h3><a href="<?php echo tep_href_link('customers_products.php', 'cID='.$order->customer['id'].'&cpage=1')?>">Order History</a></h3>
@@ -2866,17 +2860,16 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
             </table>
             </div>
             </div>
-            <!-- /right -->
+            <!-- right -->
             </td>
             </tr>
-            <!-- 信用调查 -->
+            <?php // 信用调查 ?>
             <tr>
             <td>
             <div id="orders_credit">
             <h3><?php echo TEXT_CREDIT_FIND;?></h3>
             <table width="100%" border="0" cellspacing="0" cellpadding="2">
             <tr>
-            <!--<td class="main" valign="top" width="30%"><b>信用調査:</b></td>-->
             <form action="ajax_orders.php?orders_id=<?php echo $order->info['orders_id'];?>" id='form_orders_credit' method="post">
             <td class="main"><textarea name="orders_credit" style="width:98%;height:42px;*height:40px;"><?php echo tep_get_customers_fax_by_id($order->customer['id']);?></textarea>
             <input type="hidden" name="orders_id" value="<?php echo $order->info['orders_id'];?>">
@@ -2890,7 +2883,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
           </div>
         </td>
       </tr>
-      <!-- 订单商品 -->
+      <?php //订单商品 ?>
       <tr>
         <td>
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
@@ -3103,7 +3096,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
             </table>
             </td>
             </tr>
-            <!-- /订单商品 -->
+	    <?php // 订单商品 ?>
             <!-- orders status history -->
             <tr>
             <td class="main" align="left">
@@ -3149,7 +3142,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
             </td>
             </tr>
             </table>
-            <!-- /orders status history -->
+            <!-- orders status history -->
             <!-- mail -->
 
             <table border="0" width="100%">
@@ -3199,7 +3192,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
             </tr>
             <tr>
             <td class="main">
-            <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="off" rows="30" cols="74"><?php echo str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']); ?></textarea>
+            <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']); ?></textarea>
             </td>
             </tr>
             <tr>
@@ -3222,7 +3215,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
             </tr>
             </form>
             </table>
-            <!-- /mail -->
+            <!-- mail -->
             </td>
             <td width="50%" align="left" valign="top">
             <table width="100%">
@@ -4374,7 +4367,7 @@ if($c_parent_array['parent_id'] == 0){
                    ?>
                    <tr>
                    <td>
-                   <!--ORDER EXPORT SCRIPT //-->
+                   <!--ORDER EXPORT SCRIPT -->
                    <form action="<?php echo tep_href_link('orders_csv_exe.php','csv_exe=true', 'SSL') ; ?>" method="post">
                    <fieldset><legend class="smallText"><b>
                    <?php echo TEXT_ORDER_DOWNLOPAD;?></b></legend>
@@ -4452,7 +4445,7 @@ if($c_parent_array['parent_id'] == 0){
           </tr>
           </table></fieldset>
           </form>
-          <!--ORDER EXPORT SCRIPT EOF //-->
+          <!--ORDER EXPORT SCRIPT EOF -->
           </td>
           </tr>
           <?php
@@ -4464,8 +4457,8 @@ if($c_parent_array['parent_id'] == 0){
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
           <td valign="top">
-          <!-- 订单信息预览，配合javascript，永远浮动在屏幕右下角 -->
-          <div id="orders_info_box" style="left:15%; display:none; position:absolute; background:#FFFF00; width:70%; /*bottom:0;margin-top:40px;right:0;width:200px;*/">&nbsp;</div>
+          <?php // 订单信息预览，配合javascript，永远浮动在屏幕右下角 ?>
+          <div id="orders_info_box" style="display:none; position:absolute; background:#FFFF00; width:70%; /*bottom:0;margin-top:40px;right:0;width:200px;*/">&nbsp;</div>
           <?php
           if ($ocertify->npermission == 15) {
             if(!tep_session_is_registered('reload')) $reload = 'yes';
@@ -4967,10 +4960,11 @@ if($c_parent_array['parent_id'] == 0){
           ?>
             <td style="border-bottom:1px solid #000000;" class="dataTableContent" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><?php echo tep_get_site_romaji_by_id($orders['site_id']);?></td>
             <td style="border-bottom:1px solid #000000;" class="dataTableContent" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';">
-            <a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $orders['orders_id'] . '&action=edit');?>"><?php echo tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW);?></a>&nbsp;
+            <div class="float_left"><a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $orders['orders_id'] . '&action=edit');?>"><?php echo tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW);?></a>&nbsp;
           <a href="<?php echo tep_href_link('orders.php', 'cEmail=' .
             tep_output_string_protected(urlencode($orders['customers_email_address'])));?>"><?php
-            echo tep_image(DIR_WS_ICONS . 'search.gif', TEXT_ORDER_HISTORY_ORDER);?></a>
+            echo tep_image(DIR_WS_ICONS . 'search.gif', TEXT_ORDER_HISTORY_ORDER);?></a></div>
+            <div class="comp_width">
             <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
               <font color="#999">
                 <?php } else { ?>
@@ -4993,7 +4987,7 @@ if($c_parent_array['parent_id'] == 0){
                         <?php if ($orders['orders_care_flag']) { ?>
                           <?php echo tep_image(DIR_WS_ICONS . 'care.gif', TEXT_ORDER_CARE);?>
                             <?php }?>
-
+							</div>
 
                             </td>
                             <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';">
@@ -5103,7 +5097,7 @@ if($c_parent_array['parent_id'] == 0){
                 <?php
                 echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); 
             } else { 
-              echo '<td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onmouseover="if(popup_num == 1) showOrdersInfo(\''.$orders['orders_id'].'\', this, 0, \''.urlencode(tep_get_all_get_params(array('oID', 'action'))).'\');" onmouseout="if(popup_num == 1) hideOrdersInfo(0);">';
+              echo '<td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"  onmouseout="if(popup_num == 1) hideOrdersInfo(0);">';
               ?>
 
                 <?php echo '<a href="javascript:void(0);" onclick="showOrdersInfo(\''.$orders['orders_id'].'\', this, 1, \''.urlencode(tep_get_all_get_params(array('oID', 'action'))).'\');">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
@@ -5169,7 +5163,7 @@ if($c_parent_array['parent_id'] == 0){
                   color="red">※</font>&nbsp;<?php echo TEXT_ORDER_COPY;?></td><td>
                   <?php echo TEXT_ORDER_LOGIN;?></td></tr></table>
                   <br>
-                  <?php echo tep_draw_textarea_field('comments', 'off', '74', '30',
+                  <?php echo tep_draw_textarea_field('comments', 'hard', '74', '30',
                       $select_text, 'style="font-family:monospace;font-size:12px; width:400px;"'); ?>
                   </td>
                   </tr>
@@ -5209,7 +5203,7 @@ if($c_parent_array['parent_id'] == 0){
 
                   </table>
                   <table width="100%">
-                  <tr><td align='right'><button id="oa_dynamic_submit" >保存</button></td></tr>
+                  <tr><td align='right'><button id="oa_dynamic_submit" ><?php echo IMAGE_SAVE;?></button></td></tr>
                   </table>
                   </div>
                   </td></tr></table>
@@ -5281,18 +5275,18 @@ if($c_parent_array['parent_id'] == 0){
               </tr>
               <?php } ?>
 
-              </table></td>
-              <!-- body_text_eof //-->
+              </table></div></td>
+              <!-- body_text_eof -->
               </tr>
               </table>
-              <!-- body_eof //-->
+              <!-- body_eof -->
 
-              <!-- footer //-->
+              <!-- footer -->
               <?php
               require(DIR_WS_INCLUDES . 'footer.php');
             ?>
               <embed id="warn_sound" src="images/warn.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
-              <!-- footer_eof //-->
+              <!-- footer_eof -->
               <br>
               <div id="wait" style="position:fixed; left:45%; top:45%; display:none;"><img src="images/load.gif" alt="img"></div>
               </body>

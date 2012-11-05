@@ -1,17 +1,4 @@
 <?php
-/* *********************************************************
-  モジュール名: users_log.php
- * 2002-05-13
- * Naomi Suzukawa
- * suzukawa@bitscope.co.jp
-  ----------------------------------------------------------
-ユーザアクセスログ
-
-  ■変更履歴
-  2003-04-07 $HTTP_POST_VERS に対応させる（PHP スーパーグローバル変数[$_POST]への対応は次回とする）
-  2003-04-16 一定期間よりも古い認証ログを削除する機能を修正する（設定された期間のログを消していなかった）
-********************************************************* */
-
 /* ===============================================
   global 定数
  ============================================== */
@@ -35,17 +22,11 @@
 
   $FontColor = 'color="#009900"';       // フォント：マーク色
 
-/* --------------------------------
-2003-04-07 add 
-$HTTP_POST_VERS に対応させる
-（PHP スーパーグローバル変数[$_POST]への対応は次回とする）
--------------------------------- */
   if (isset($HTTP_POST_VERS['lm'])) { $lm = $HTTP_POST_VERS['lm']; }
   if (isset($HTTP_POST_VERS['jp'])) { $jp = $HTTP_POST_VERS['jp']; }
   if (isset($HTTP_POST_VERS['pp'])) { $pp = $HTTP_POST_VERS['pp']; }
   if (isset($HTTP_POST_VERS['np'])) { $np = $HTTP_POST_VERS['np']; }
   if (isset($HTTP_POST_VERS['aval'])) { $aval = $HTTP_POST_VERS['aval']; }
-//2003-07-16 hiroshi_sato add 2 line
         if (isset($_POST['sp'])) { $sp = $_POST['sp']; }
         if (isset($_POST['execute_delete'])) { $execute_delete = $_POST['execute_delete']; }
 
@@ -415,7 +396,7 @@ function PageHeader() {
   echo '<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">' . "\n";
   putJavaScript_ConfirmMsg();           // 確認メッセージを表示する JavaScript
   echo '<script language="javascript" src="includes/javascript/jquery_include.js"></script>'."\n";
-  echo '<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>'."\n";
+  echo '<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>';
   $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
   require("includes/note_js.php");
   echo '</head>' . "\n";
@@ -465,7 +446,7 @@ function PageBody($mode='t', $stitle = "", $notes_flag='') {
   switch ($mode) {
   case 't':
     echo '<!-- body_text //-->' . "\n";
-    echo '    <td width="100%" valign="top">'.$notes.'<table border="0" width="100%" cellspacing="0" cellpadding="2">' . "\n";
+    echo '    <td width="100%" valign="top"><div class="box_warp">'.$notes.'<table border="0" width="100%" cellspacing="0" cellpadding="2">' . "\n";
     echo '      <tr>' . "\n";
     echo '        <td><table border="0" width="100%" cellspacing="0" cellpadding="0">' . "\n";
     echo '          <tr>' . "\n";
@@ -482,7 +463,7 @@ function PageBody($mode='t', $stitle = "", $notes_flag='') {
   case 'u':
     echo '        </td>' . "\n";
     echo '      </tr>' . "\n";
-    echo '    </table></td>' . "\n";
+    echo '    </table></div></td>' . "\n";
     echo '<!-- body_text_eof //-->' . "\n";
     break;
   } 

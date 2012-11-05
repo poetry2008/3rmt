@@ -9,7 +9,7 @@ success: function(data) {
 if(data !='false'){
 var pwd_arr = data.split(",");
 if(data.indexOf('[SQL-ERROR]')==-1){
-pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
 if(in_array(pwd,pwd_arr)){
 $.ajax({
 url: 'ajax_orders.php?action=save_pwd_log',
@@ -21,9 +21,8 @@ success: function(_data) {
 }
 });
 }else{
-  alert("パスワードが違います");
+  alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>");
   location=location;
-  //跳霓ｬ髞呵ｯｯ鬘ｵ
 }
 }else{
   location.href='/admin/sql_error.php';

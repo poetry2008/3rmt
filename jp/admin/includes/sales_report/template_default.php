@@ -5,7 +5,7 @@
 <title><?php echo SR_HEADING_TITLE;?> </title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 require("includes/note_js.php");
@@ -17,23 +17,23 @@ require("includes/note_js.php");
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
-<!-- header //-->
+<!-- header -->
       <?php
       require(DIR_WS_INCLUDES . 'header.php');
 ?>
-<!-- header_eof //-->
-<!-- body //-->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<!-- header_eof -->
+<!-- body -->
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-      <!-- left_navigation //-->
+      <!-- left_navigation -->
       <?php
       require(DIR_WS_INCLUDES . 'column_left.php');
 ?>
-      <!-- left_navigation_eof //-->
+      <!-- left_navigation_eof -->
     </table></td>
-    <!-- body_text //-->
-    <td width="100%" valign="top"><?php echo $notes;?>
+    <!-- body_text -->
+    <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
     <div class="compatible"> 
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
@@ -48,7 +48,7 @@ require("includes/note_js.php");
         <td colspan="2"><form action="" method="get">
           <table border="0" width="100%" cellspacing="0" cellpadding="2">
             <tr>
-              <td align="left" rowspan="2" class="menuBoxHeading" nowrap><input
+              <td align="left" rowspan="3" class="menuBoxHeading" nowrap><input
               nowrap type="radio" name="report" value="1" <?php if ($srView == 1) echo "checked"; ?>>
               <?php echo SR_REPORT_TYPE_YEARLY; ?><br>
               <input nowrap type="radio" name="report" value="2" <?php if ($srView == 2) echo "checked"; ?>>
@@ -60,7 +60,7 @@ require("includes/note_js.php");
               </td>
               <td align="left" class="menuBoxHeading">
  <?php echo SR_SITE;?> <br>
-                <?php echo tep_site_pull_down_menu_with_all($_GET['site_id'], false, 'すべて');?><br>
+                <?php echo tep_site_pull_down_menu_with_all($_GET['site_id'], false, TEXT_ALL);?><br>
               </td>
               <td class="menuBoxHeading"><?php echo SR_REPORT_START_DATE; ?><br>
               <table>
@@ -116,42 +116,15 @@ require("includes/note_js.php");
                 <option value="1"<?php if ($srMethod == 1) echo " selected"; ?>><?php echo SR_TITLE_ORDER_DAY;?></option>
               </select>
               </td>
+          </tr>
+
+          <tr>
               <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_DETAIL; ?><br>
               <select name="detail" size="1">
                 <!--<option value="0"<?php if ($srDetail == 0) echo " selected"; ?>><?php echo  SR_DET_HEAD_ONLY; ?></option>-->
                 <option value="1"<?php if ($srDetail == 1) echo " selected"; ?>><?php echo  SR_DET_DETAIL; ?></option>
                 <option value="2"<?php if ($srDetail == 2) echo " selected"; ?>><?php echo  SR_DET_DETAIL_ONLY; ?></option>
               </select>
-              </td>
-              <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_STATUS_FILTER; ?><br>
-              <select name="status" size="1">
-                <option value="2,5"><?php echo SR_TITLE_ORDER_FINISH;?></option>
-                <option value="0"<?php if ($srStatus == 0) echo " selected";?>><?php echo SR_REPORT_ALL; ?></option>
-                <?php
-                        foreach ($sr->status as $value) {
-?>
-                <option value="<?php echo $value["orders_status_id"]?>"<?php if ($srStatus == $value["orders_status_id"]) echo " selected"; ?>><?php echo $value["orders_status_name"] ; ?></option>
-                <?php
-                         }
-?>
-              </select>
-              <br>
-              </td>
-              <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_EXP; ?><br>
-              <select name="export" size="1">
-                <option value="0" selected><?php echo  SR_EXP_NORMAL; ?></option>
-                <option value="1"><?php echo  SR_EXP_CSV; ?></option>
-              </select>
-              </td>
-            </tr>
-            <tr>
-              <td class="menuBoxHeading">
- <?php echo SR_TITLE_CATEGORY;?><br>
-  <select name="bflag">
-    <option value="0"<?php if(!$_GET['bflag']){?> selected<?php }?>><?php echo SR_SELECT_ALL;?></option>
-    <option value="1"<?php if($_GET['bflag'] == '1'){?> selected<?php }?>><?php echo SR_OPTION_SALE;?></option>
-    <option value="2"<?php if($_GET['bflag'] == '2'){?> selected<?php }?>><?php echo SR_OPTION_BUY;?></option>
-  </select>
               </td>
               <td class="menuBoxHeading"><?php echo SR_REPORT_END_DATE; ?><br>
               <table>
@@ -202,6 +175,65 @@ date("Y") - $i; ?></option>
                 </tr>
               </table>
               </td>
+             <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_EXP; ?><br>
+              <select name="export" size="1">
+                <option value="0" selected><?php echo  SR_EXP_NORMAL; ?></option>
+                <option value="1"><?php echo  SR_EXP_CSV; ?></option>
+              </select>
+              </td>
+              
+            </tr>
+            <tr>
+              <td><table cellpadding="0" cellspacing="0"><tr>
+              <td class="menuBoxHeading">
+ <?php echo SR_TITLE_CATEGORY;?><br>
+  <select name="bflag">
+    <option value="0"<?php if(!$_GET['bflag']){?> selected<?php }?>><?php echo SR_SELECT_ALL;?></option>
+    <option value="1"<?php if($_GET['bflag'] == '1'){?> selected<?php }?>><?php echo SR_OPTION_SALE;?></option>
+    <option value="2"<?php if($_GET['bflag'] == '2'){?> selected<?php }?>><?php echo SR_OPTION_BUY;?></option>
+  </select>&nbsp;
+              </td>
+			   <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_STATUS_FILTER; ?><br>
+              <select name="status" size="1">
+                <option value="2,5"><?php echo SR_TITLE_ORDER_FINISH;?></option>
+                <option value="0"<?php if ($srStatus == 0) echo " selected";?>><?php echo SR_REPORT_ALL; ?></option>
+                <?php
+                        foreach ($sr->status as $value) {
+?>
+                <option value="<?php echo $value["orders_status_id"]?>"<?php if ($srStatus == $value["orders_status_id"]) echo " selected"; ?>><?php echo $value["orders_status_name"] ; ?></option>
+                <?php
+                         }
+?>
+              </select>
+              <br>
+              </td>
+              </tr></table>
+              </td> 
+              
+              <td><table><tr>
+              <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_SORT; ?><br>
+              <select name="sort" size="1">
+                <option value="0"<?php if ($srSort == 0) echo " selected"; ?>><?php echo  SR_SORT_VAL0; ?></option>
+                <option value="1"<?php if ($srSort == 1) echo " selected"; ?>><?php echo  SR_SORT_VAL1; ?></option>
+                <option value="2"<?php if ($srSort == 2) echo " selected"; ?>><?php echo  SR_SORT_VAL2; ?></option>
+                <option value="3"<?php if ($srSort == 3) echo " selected"; ?>><?php echo  SR_SORT_VAL3; ?></option>
+                <option value="4"<?php if ($srSort == 4) echo " selected"; ?>><?php echo  SR_SORT_VAL4; ?></option>
+                <option value="5"<?php if ($srSort == 5) echo " selected"; ?>><?php echo  SR_SORT_VAL5; ?></option>
+                <option value="6"<?php if ($srSort == 6) echo " selected"; ?>><?php echo  SR_SORT_VAL6; ?></option>
+              </select>
+              <br>
+              </td>
+              <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_COMP_FILTER; ?><br>
+              <select name="compare" size="1">
+                <option value="0" <?php if ($srCompare == SR_COMPARE_NO) echo "selected"; ?>><?php echo SR_REPORT_COMP_NO; ?></option>
+                <option value="1" <?php if ($srCompare == SR_COMPARE_DAY) echo "selected"; ?>><?php echo SR_REPORT_COMP_DAY; ?></option>
+                <option value="2" <?php if ($srCompare == SR_COMPARE_MONTH) echo "selected"; ?>><?php echo SR_REPORT_COMP_MONTH; ?></option>
+                <option value="3" <?php if ($srCompare == SR_COMPARE_YEAR) echo "selected"; ?>><?php echo SR_REPORT_COMP_YEAR; ?></option>
+              </select>
+              <br>
+              </td>
+              </tr></table>
+              </td>             
               
               <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_MAX; ?><br>
               <select name="max" size="1">
@@ -215,35 +247,17 @@ date("Y") - $i; ?></option>
                 <option<?php if ($srMax == 50) echo " selected"; ?>>50</option>
               </select>
               </td>
-              <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_COMP_FILTER; ?><br>
-              <select name="compare" size="1">
-                <option value="0" <?php if ($srCompare == SR_COMPARE_NO) echo "selected"; ?>><?php echo SR_REPORT_COMP_NO; ?></option>
-                <option value="1" <?php if ($srCompare == SR_COMPARE_DAY) echo "selected"; ?>><?php echo SR_REPORT_COMP_DAY; ?></option>
-                <option value="2" <?php if ($srCompare == SR_COMPARE_MONTH) echo "selected"; ?>><?php echo SR_REPORT_COMP_MONTH; ?></option>
-                <option value="3" <?php if ($srCompare == SR_COMPARE_YEAR) echo "selected"; ?>><?php echo SR_REPORT_COMP_YEAR; ?></option>
-              </select>
-              <br>
-              </td>
-              <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_SORT; ?><br>
-              <select name="sort" size="1">
-                <option value="0"<?php if ($srSort == 0) echo " selected"; ?>><?php echo  SR_SORT_VAL0; ?></option>
-                <option value="1"<?php if ($srSort == 1) echo " selected"; ?>><?php echo  SR_SORT_VAL1; ?></option>
-                <option value="2"<?php if ($srSort == 2) echo " selected"; ?>><?php echo  SR_SORT_VAL2; ?></option>
-                <option value="3"<?php if ($srSort == 3) echo " selected"; ?>><?php echo  SR_SORT_VAL3; ?></option>
-                <option value="4"<?php if ($srSort == 4) echo " selected"; ?>><?php echo  SR_SORT_VAL4; ?></option>
-                <option value="5"<?php if ($srSort == 5) echo " selected"; ?>><?php echo  SR_SORT_VAL5; ?></option>
-                <option value="6"<?php if ($srSort == 6) echo " selected"; ?>><?php echo  SR_SORT_VAL6; ?></option>
-              </select>
-              <br>
-              </td>
-              <td align="left" class="menuBoxHeading">&nbsp;</td>
-            </tr>
-            <tr>
-              <td colspan="7" class="menuBoxHeading" align="right"><input type="submit" value="<?php echo SR_REPORT_SEND; ?>">
+              
+              </tr>
+              <tr>
+              <td colspan="4" class="menuBoxHeading" align="right"><input type="submit" value="<?php echo SR_REPORT_SEND; ?>">
               </td>
             </tr>
-          </table>
-        </form></td>
+
+              </table>
+              </td>
+             
+        </form>
       </tr>
       <tr>
         <td width=100% valign=top>
@@ -263,6 +277,7 @@ date("Y") - $i; ?></option>
 $sum = 0;
 $orders_sum = 0;
 $products_point_sum = 0; 
+$row_num =0;
 while ($sr->hasNext()) {
   $info = $sr->next();
   $last = sizeof($info) - 1;
@@ -303,15 +318,21 @@ while ($sr->hasNext()) {
                 }?> 
                 <td class="dataTableContent" align="right"><?php 
   if ($info[$last - 1]['totsum'] < 0) {
-    echo '<font color="red">'.$currencies->format(isset($info[$last - 1]['totsum'])?$info[$last - 1]['totsum']:'').'</font>';
+    echo '<font color="red">'.
+      str_replace(TEXT_MONEY_SYMBOL,'',
+          $currencies->format(isset($info[$last - 1]['totsum'])?$info[$last - 1]['totsum']:'')).
+      '</font>'.TEXT_MONEY_SYMBOL;
   } else {
-    echo $currencies->format(isset($info[$last - 1]['totsum'])?$info[$last - 1]['totsum']:'');
+    echo str_replace(TEXT_MONEY_SYMBOL,'',
+      $currencies->format(isset($info[$last - 1]['totsum'])?$info[$last - 1]['totsum']:''))
+    .TEXT_MONEY_SYMBOL;
   }
   $t += $info[$last - 1]['totsum'];
   ?></td>
               </tr>
               <?php
 if (isset($srDetail)){
+  $row_num++;
     for ($i = 0; $i < $last; $i++) {
       if ($srMax === '0' or $i < $srMax) {
 ?>
@@ -324,9 +345,12 @@ if (isset($srDetail)){
           if ($srDetail == 2) {?>
                 <td class="dataTableContent" align="right"><?php 
                   if ($info[$i]['psum'] < 0) {
-                    echo '<font color="red">'.$currencies->format($info[$i]['psum']).'</font>'; 
+                    echo '<font color="red">'.
+                      str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($info[$i]['psum'])).
+                      '</font>'.TEXT_MONEY_SYMBOL; 
                   } else {
-                    echo $currencies->format($info[$i]['psum']); 
+                    echo str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($info[$i]['psum'])) 
+                      .TEXT_MONEY_SYMBOL;
                   }
                 ?></td>
                 <?php
@@ -350,8 +374,28 @@ SR_ORDERS_SUM.$orders_sum.SR_ONE_ORDERS;?></td>
 <td class="dataTableContent" align="right"><?php echo
 SR_PRODUCTS_POINT_SUM.$products_point_sum.SR_POINT;?></td>
 <td class="dataTableContent" align="right"><?php echo SR_MONEY_SUM.
-($t<0?'<font color="red">':'');?><?php echo $currencies->format($t);?><?php echo
-($t<0?'</font>':'');?></td></tr>
+($t<0?'<font color="red">':'');?><?php echo str_replace(TEXT_MONEY_SYMBOL,'',
+    $currencies->format($t));?><?php echo
+($t<0?'</font>':'');
+echo TEXT_MONEY_SYMBOL;
+?></td></tr>
+<tr>
+<td class="dataTableContent" align="right"></td>
+<td class="dataTableContent" align="right"><?php 
+echo AVG_ORDERS_SUM;
+echo str_replace(TEXT_MONEY_SYMBOL,'',$avg_currencies->format($orders_sum/$row_num));
+echo SR_ONE_ORDERS;?></td>
+<td class="dataTableContent" align="right"><?php 
+echo AVG_PRODUCTS_POINT_SUM;
+echo str_replace(TEXT_MONEY_SYMBOL,'',$avg_currencies->format($products_point_sum/$row_num));
+echo SR_POINT;?></td>
+<td class="dataTableContent" align="right"><?php echo AVG_MONEY_SUM.
+($t<0?'<font color="red">':'');?><?php 
+echo str_replace(TEXT_MONEY_SYMBOL,'',$avg_currencies->format($t/$row_num))
+;?><?php echo ($t<0?'</font>':'');
+echo TEXT_MONEY_SYMBOL;?></td>
+</tr>
+
 <?php
 if ($srCompare > SR_COMPARE_NO) {
 ?>
@@ -391,9 +435,14 @@ if ($srCompare > SR_COMPARE_NO) {
                 <td class="dataTableContent" align="right"><?php 
                 if(isset($info[$last - 1]['totsum']) ) {
                   if ($info[$last - 1]['totsum']<0) {
-                    echo '<font color="red">'.$currencies->format($info[$last - 1]['totsum']).'</font>';
+                    echo '<font color="red">'.
+                      str_replace(TEXT_MONEY_SYMBOL,'',
+                      $currencies->format($info[$last - 1]['totsum'])).
+                      '</font>'.TEXT_MONEY_SYMBOL;
                   } else {
-                    echo $currencies->format($info[$last - 1]['totsum']);
+                    echo str_replace(TEXT_MONEY_SYMBOL,'',
+                      $currencies->format($info[$last - 1]['totsum'])).
+                      TEXT_MONEY_SYMBOL;
                   }
                 }
     ?></td>
@@ -412,9 +461,13 @@ if ($srCompare > SR_COMPARE_NO) {
             if ($srDetail == 2) {?>
                 <td class="dataTableContent" align="right"><?php 
                   if ($info[$i]['psum'] < 0) {
-                    echo '<font color="red">'.$currencies->format($info[$i]['psum']).'</font>'; 
+                    echo '<font color="red">'.
+                      str_replace(TEXT_MONEY_SYMBOL,'',
+                      $currencies->format($info[$i]['psum'])).
+                      '</font>'.TEXT_MONEY_SYMBOL; 
                   } else {
-                    echo $currencies->format($info[$i]['psum']); 
+                    echo str_replace(TEXT_MONEY_SYMBOL,'',
+                      $currencies->format($info[$i]['psum'])).TEXT_MONEY_SYMBOL; 
                   }
                    ?></td>
                 <?php
@@ -442,16 +495,17 @@ if ($srCompare > SR_COMPARE_NO) {
       </tr>
     </table>
     </div> 
+    </div>
     </td>
-    <!-- body_text_eof //-->
+    <!-- body_text_eof -->
   </tr>
 </table>
-<!-- body_eof //-->
-<!-- footer //-->
+<!-- body_eof -->
+<!-- footer -->
 <?php
   require(DIR_WS_INCLUDES . 'footer.php');
 ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 </body>
 </html>
 <?php

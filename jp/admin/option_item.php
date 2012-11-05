@@ -226,9 +226,9 @@
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <link rel="stylesheet" type="text/css" href="includes/jquery.autocomplete.css">
-<script language="javascript" src="includes/general.js"></script>
+<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery.autocomplete.js"></script>
 <script text="text/javascript">
 function search_item_title(t_type, s_item_id)
@@ -560,7 +560,7 @@ require("includes/note_js.php");
 <!-- header_eof //-->
 
 <!-- body //-->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
 <!-- left_navigation //-->
@@ -568,7 +568,17 @@ require("includes/note_js.php");
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-    <td width="100%" valign="top"><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible">
+              <div id="show_item_info" style="display:none;"></div> 
+              <div align="right">
+              <?php echo tep_draw_form('form', FILENAME_OPTION_GROUP, '', 'get');?>
+              <input type="text" name="keyword" id="keyword">
+              <input type="hidden" name="search" value="1">
+              <?php echo tep_html_element_submit(IMAGE_SEARCH);?>
+              </form>
+              </div>      
+
+    <table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td>
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -579,16 +589,6 @@ require("includes/note_js.php");
                $option_group = tep_db_fetch_array($option_group_raw);
                echo $option_group['name'];
               ?>
-              </td>
-              <td align="right">
-              <div id="show_item_info" style="display:none;"></div> 
-              <div align="right">
-              <?php echo tep_draw_form('form', FILENAME_OPTION_GROUP, '', 'get');?>
-              <input type="text" name="keyword" id="keyword">
-              <input type="hidden" name="search" value="1">
-              <?php echo tep_html_element_submit(IMAGE_SEARCH);?>
-              </form>
-              </div>      
               </td>
             </tr>
           </table>
@@ -734,7 +734,8 @@ require("includes/note_js.php");
           </tr>
         </table></td>
       </tr>
-    </table></td>
+    </table>
+    </div></div></td>
 <!-- body_text_eof //-->
   </tr>
 </table>

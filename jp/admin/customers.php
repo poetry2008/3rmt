@@ -7,7 +7,6 @@
   if (isset($_GET['action'])) {
     switch ($_GET['action']) {
       case 'update':
-        // tamura 2002/12/30 「全角」英数字を「半角」に変換
         $an_cols = array('customers_email_address','customers_telephone','customers_fax','customers_dob','entry_postcode');
         foreach ($an_cols as $col) {
           $_POST[$col] = tep_an_zen_to_han($_POST[$col]);
@@ -146,9 +145,9 @@
 <?php echo HEADING_TITLE; ?>
 </title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-<script language="javascript" src="includes/general.js"></script>
+<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php
   // 编辑页面
   if (isset($_GET['action']) && $_GET['action'] == 'edit') {
@@ -341,7 +340,7 @@ require("includes/note_js.php");
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-    <td width="100%" valign="top"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2" >
+    <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2" >
 <?php
   if (isset($_GET['action']) && $_GET['action'] == 'edit') {
     $customers_query = tep_db_query("
@@ -850,6 +849,7 @@ require("includes/note_js.php");
 ?>
     </table>
     </div> 
+    </div>
     </td>
 <!-- body_text_eof //-->
   </tr>
