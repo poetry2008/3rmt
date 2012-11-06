@@ -658,7 +658,6 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
   }
   //----------------------------------------------
   
-  //丛傅唯を纷换----------------------------------
   if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
     $back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
   $back_rate = MODULE_ORDER_TOTAL_POINT_FEE;
@@ -681,7 +680,6 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
 } else {
   $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
 }
-// ここまでカスタマ〖レベルに炳じたポイント丛傅唯换叫============================================================
   $point_rate = $payment_modules->get_point_rate($con_payment_code);
   if ($preorder_subtotal > 0) {
     if (isset($_SESSION['preorder_campaign_fee'])) {

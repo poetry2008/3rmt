@@ -15,7 +15,8 @@ define('HEADING_TITLE', $tmp  =
 
 if (isset($_GET['action'])) 
   switch ($_GET['action']) {
-  case 'save': $post_configuration = $_POST['configuration'];
+  case 'save':
+    $post_configuration = $_POST['configuration'];
     $site_id = isset($_POST['site_id'])?(int)$_POST['site_id']:0;
     if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];//权限判断
     else $site_arr="";
@@ -94,7 +95,7 @@ if (isset($_GET['action']))
             $cp_show_configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='MODULE_PAYMENT_".strtoupper($_GET['module'])."_LIMIT_SHOW' and site_id='0'"));
             if ($cp_show_configuration) {
 
-             tep_db_query("
+              tep_db_query("
                   INSERT INTO `configuration` (
                   `configuration_id` ,
                   `configuration_title` ,
@@ -267,6 +268,8 @@ if (isset($_GET['action']))
         tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($value) . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
       } else if (preg_match('/.*_IS_GET_POINT$/', $key)) {
         tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . $value[0] . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
+      } else if (preg_match('/.*_POINT_RATE$/', $key)) {
+        tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . $value/100 . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
       } else {
         tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . $value . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
       }
@@ -370,7 +373,6 @@ require("includes/note_js.php");
   <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_MODULES; ?></td>
   <td class="dataTableHeadingContent" align="right">&nbsp;</td>
   <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_SORT_ORDER; ?></td>
-  <!--<td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_STATUS; ?></td>-->
   <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
   </tr>
 <?php
@@ -471,7 +473,6 @@ foreach ($directory_array_sorted as $i => $files) {
       </td>
       <td class="dataTableContent" align="left"><?php echo $module->link ? ($ex_site['url'].'/'.$module->link) : '';?></td>
                                                                                                                           <td class="dataTableContent" align="right"><?php if (is_numeric($module->sort_order)) echo $module->sort_order; ?></td>
-                                                                                                                                                                                                                                                <!--<td class="dataTableContent" align="right"><?php if ($module->check() > 0) { echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $class . '&action=remove') . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>'; } else { echo '<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $class . '&action=install') . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10); } ?></td>-->
       <td class="dataTableContent" align="right"><?php if ( (@is_object($mInfo)) && ($class == $mInfo->code) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif'); } else { echo '<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $class) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
       </tr>
                                                                                                                                                                                                                                                                                                                                                                                <?php
@@ -534,7 +535,11 @@ case 'edit':
         eval('$keys .= ' . $value['set_function'] . "'" . $value['value'] . "', '" . $key . "');");
 
       } else {
-        $keys .= tep_draw_input_field('configuration[' . $key . ']', $value['value']);
+        if (preg_match("/^MODULE_PAYMENT_.*_POINT_RATE$/",$key)) {
+          $keys .= tep_draw_input_field('configuration[' . $key . ']', sprintf('%s', $value['value']*100)).'&nbsp;%';
+        } else {
+          $keys .= tep_draw_input_field('configuration[' . $key . ']', $value['value']);
+        }
       }
       $keys .= '<br><br>';
     }
@@ -615,6 +620,8 @@ default:
               }
             }
             $keys .= $con_limit_show_str;
+          } else if (preg_match("/^MODULE_PAYMENT_.*_POINT_RATE$/",$module_item['configuration_key'])) {
+            $keys .= $module_item['configuration_value'] * 100 . '%';
           } else {
             $keys .= $module_item['configuration_value'];
           }

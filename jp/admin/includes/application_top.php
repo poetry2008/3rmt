@@ -376,6 +376,20 @@ while($userslist= tep_db_fetch_array($sites_id)){
   if(isset($_SESSION['text_language'])&&$_SESSION['text_language']){
     $language = $_SESSION['text_language'];
   }
+  if(!isset($_GET['language'])){
+    if(PERSONAL_SETTING_LANGUAGE != ''){
+      $personal_login_language_array = unserialize(PERSONAL_SETTING_LANGUAGE);
+      if(array_key_exists($_POST['loginuid'],$personal_login_language_array)){
+        if($personal_login_language_array[$_POST['loginuid']] == 'jp'){
+          $personal_language_str = 'japanese';  
+        }else{
+          $personal_language_str = 'chinese'; 
+        }
+        $_SESSION['language'] = $personal_language_str;
+        $_SESSION['text_language'] = $personal_language_str;
+      }
+    }   
+  }
 
 // include the language translations
   require(DIR_WS_LANGUAGES . $language . '.php');

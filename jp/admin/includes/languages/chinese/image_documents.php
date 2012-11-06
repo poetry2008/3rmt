@@ -30,8 +30,8 @@
 
   define ('TEXT_INFO_HEADING_DOC_TYPES', '文件类型');
   
-  define ('TEXT_INFO_HEADING_NEW_DOC_TYPE', '新文件类型作成');
-  define ('TEXT_INFO_NEW_TYPE_INTRO', '.新文件类型作成前，请新建目录');
+  define ('TEXT_INFO_HEADING_NEW_DOC_TYPE', '新文件类型创建');
+  define ('TEXT_INFO_NEW_TYPE_INTRO', '.新文件类型创建前，请新建目录');
   define ('TEXT_INFO_TYPE_DIRECTORY', '文件地址:');
   define ('TEXT_INFO_TYPE_DESCRIPTION', '类型:');
   define ('TEXT_INFO_TYPE_SORT_ORDER', '来源:');

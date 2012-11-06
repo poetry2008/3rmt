@@ -35,7 +35,11 @@
               //tep_db_query("delete from products_to_tags where tags_id='".$_POST['tags_id']."'");
             }
           }
-
+          
+         tep_db_query("UPDATE `products_to_tags` SET user_update = '".$ocertify->auth_user."', date_update = '".date('Y-m-d H:i:s',time())."'  WHERE `products_id` = '".$pid."' AND `tags_id` = '".$tid."'");  
+         echo $pid;
+         echo '<br>';
+         echo $tid;
         }
         tep_redirect(tep_href_link('products_tags.php'));
         break;
@@ -168,7 +172,9 @@ require("includes/note_js.php");
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td valign="top" width="50%">
+
 <?php
+    
   $tags_query = tep_db_query("select * from tags order by tags_name");
   if (tep_db_num_rows($tags_query)) {
     echo "<ul>\n";
@@ -228,8 +234,29 @@ require("includes/note_js.php");
 ?>
             </td>
           </tr>
-            </table>
-  </form>
+         <?php 
+             $tags_date = tep_db_query("select * from products_to_tags order by date_update desc ");
+             $tags_row = tep_db_fetch_array($tags_date);
+         ?>
+          <tr>
+           <td colspan="2">
+           <?php 
+            echo TEXT_USER_UPDATE.'&nbsp;';
+            echo $tags_row['user_update'];
+           ?>
+           </td>
+          </tr>
+          <tr>
+           <td colspan="2">
+           <?php
+           echo TEXT_DATE_UPDATE.'&nbsp;'; 
+           echo $tags_row['date_update'];
+           ?>
+
+           </td>
+          </tr>
+         </table>
+         </form>
         </td>
       </tr>
   </table>
