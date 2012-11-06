@@ -267,6 +267,8 @@ if (isset($_GET['action']))
         tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($value) . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
       } else if (preg_match('/.*_IS_GET_POINT$/', $key)) {
         tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . $value[0] . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
+      } else if (preg_match('/.*_POINT_RATE$/', $key)) {
+        tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . $value/100 . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
       } else {
         tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . $value . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
       }
@@ -534,7 +536,11 @@ case 'edit':
         eval('$keys .= ' . $value['set_function'] . "'" . $value['value'] . "', '" . $key . "');");
 
       } else {
-        $keys .= tep_draw_input_field('configuration[' . $key . ']', $value['value']);
+        if (preg_match("/^MODULE_PAYMENT_.*_POINT_RATE$/",$key)) {
+          $keys .= tep_draw_input_field('configuration[' . $key . ']', sprintf('%s', $value['value']*100)).'&nbsp;%';
+        } else {
+          $keys .= tep_draw_input_field('configuration[' . $key . ']', $value['value']);
+        }
       }
       $keys .= '<br><br>';
     }
@@ -615,6 +621,8 @@ default:
               }
             }
             $keys .= $con_limit_show_str;
+          } else if (preg_match("/^MODULE_PAYMENT_.*_POINT_RATE$/",$module_item['configuration_key'])) {
+            $keys .= $module_item['configuration_value'] * 100 . '%';
           } else {
             $keys .= $module_item['configuration_value'];
           }
