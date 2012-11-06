@@ -9,10 +9,10 @@ define('HEADING_TITLE_SEARCH', '搜索:');
 
 define('TABLE_HEADING_FIRSTNAME', '名');
 define('TABLE_HEADING_LASTNAME', '姓');
-define('TABLE_HEADING_ACCOUNT_CREATED', '账号作成日');
+define('TABLE_HEADING_ACCOUNT_CREATED', '账号创建日');
 define('TABLE_HEADING_ACTION', '操作');
 
-define('TEXT_DATE_ACCOUNT_CREATED', '账号作成日:');
+define('TEXT_DATE_ACCOUNT_CREATED', '账号创建日:');
 define('TEXT_DATE_ACCOUNT_LAST_MODIFIED', '账号更新日:');
 define('TEXT_INFO_DATE_LAST_LOGON', '最终登录日:');
 define('TEXT_INFO_NUMBER_OF_LOGONS', '登录次数:');
@@ -40,7 +40,7 @@ define('CUSTOMER_COMMUNITY_SEARCH_CREDIT_TEXT', '信用卡首次结算日：C200
 define('CUSTOMER_COMMUNITY_SEARCH_EXAMPLE_TEXT', '填写例：WA-Aok-C2007/01/01-Hok-RGoogleFF11 RMT');
 define('CUSTOMER_SEARCH_READ_TITLE', '※搜索对象：「顾客名（姓/名/）」「注音假名（姓/名）」「邮箱地址」');
 define('CUSTOMER_RESET', '更改密码委托');
-define('TEXT_USER_ADDED','账号作成者:');
+define('TEXT_USER_ADDED','账号创建者:');
 define('TEXT_USER_UPDATE','账号更新者:');
 define('TABLE_QUITED_DATE',"退会日期");
 define('TABLE_CUSTOMERS_EMAIL',"邮箱地址");
