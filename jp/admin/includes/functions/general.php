@@ -4237,7 +4237,7 @@ function tep_display_google_results($from_url=''){
           }
           if(in_array($distinct_url,$stop_site_url)){
             $search_message = sprintf(TEXT_FIND_DATA_STOP, $distinct_url);
-            echo "<td class='dataTableContent search_class_td' style='width:20px'>&nbsp;".$icount++.":"."</td>";
+            echo "<td class='dataTableContent search_class_td' style='width:20px' nowrap='nowrap'>&nbsp;".$icount++.":"."</td>";
             echo "<td class='dataTableContent' ><b>".tep_get_siteurl_name($distinct_url)."</b></td>";
             echo "<td class='dataTableContent' >";
             /*
@@ -4258,7 +4258,7 @@ function tep_display_google_results($from_url=''){
             break;
           }
           $prama_url = str_replace('.','_',$distinct_url); 
-          echo "<td class='dataTableContent search_class_td' style='width:20px'>&nbsp;".$icount++.":"."</td>";
+          echo "<td class='dataTableContent search_class_td' style='width:20px' nowrap='nowrap'>&nbsp;".$icount++.":"."</td>";
           echo "<td class='dataTableContent' >".tep_get_siteurl_name($distinct_url)."</td>";
           echo "<td class='dataTableContent' >";
           /*
