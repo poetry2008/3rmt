@@ -66,6 +66,7 @@ class HM_Form extends DbRecord
     if($this->status == 6 or $this->status == 8){
       ?>
       disableQA();
+      $('#canEnd').html('<?php echo OA_FORM_ORDER_CANCEL;?>'); 
       var canceled = true;
       <?php 
     }else {
