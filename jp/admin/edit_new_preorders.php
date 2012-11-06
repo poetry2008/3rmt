@@ -603,9 +603,8 @@
           tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), $email_title, $email, $order->customer['name'], $order->customer['email_address'], $order->info['site_id']);
         }
         
-        $preorder_email_subject = str_replace('${SITE_NAME}', get_configuration_by_site_id('STORE_NAME', $order->info['site_id']), get_configuration_by_site_id('PREORDER_MAIL_SUBJECT', $order->info['site_id'])); 
-        $preorder_email_text = get_configuration_by_site_id('PREORDER_MAIL_CONTENT', $order->info['site_id']); 
-        
+        $preorder_email_subject = str_replace('${SITE_NAME}', get_configuration_by_site_id('STORE_NAME', $order->info['site_id']), get_configuration_by_site_id_or_default('PREORDER_MAIL_SUBJECT', $order->info['site_id'])); 
+        $preorder_email_text = get_configuration_by_site_id_or_default('PREORDER_MAIL_CONTENT', $order->info['site_id']); 
         $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}');
         
         $max_op_len = 0;
