@@ -15,7 +15,8 @@ define('HEADING_TITLE', $tmp  =
 
 if (isset($_GET['action'])) 
   switch ($_GET['action']) {
-  case 'save': $post_configuration = $_POST['configuration'];
+  case 'save':
+    $post_configuration = $_POST['configuration'];
     $site_id = isset($_POST['site_id'])?(int)$_POST['site_id']:0;
     if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];//权限判断
     else $site_arr="";
@@ -94,7 +95,7 @@ if (isset($_GET['action']))
             $cp_show_configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='MODULE_PAYMENT_".strtoupper($_GET['module'])."_LIMIT_SHOW' and site_id='0'"));
             if ($cp_show_configuration) {
 
-             tep_db_query("
+              tep_db_query("
                   INSERT INTO `configuration` (
                   `configuration_id` ,
                   `configuration_title` ,
@@ -372,7 +373,6 @@ require("includes/note_js.php");
   <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_MODULES; ?></td>
   <td class="dataTableHeadingContent" align="right">&nbsp;</td>
   <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_SORT_ORDER; ?></td>
-  <!--<td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_STATUS; ?></td>-->
   <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
   </tr>
 <?php
@@ -473,7 +473,6 @@ foreach ($directory_array_sorted as $i => $files) {
       </td>
       <td class="dataTableContent" align="left"><?php echo $module->link ? ($ex_site['url'].'/'.$module->link) : '';?></td>
                                                                                                                           <td class="dataTableContent" align="right"><?php if (is_numeric($module->sort_order)) echo $module->sort_order; ?></td>
-                                                                                                                                                                                                                                                <!--<td class="dataTableContent" align="right"><?php if ($module->check() > 0) { echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $class . '&action=remove') . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>'; } else { echo '<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $class . '&action=install') . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10); } ?></td>-->
       <td class="dataTableContent" align="right"><?php if ( (@is_object($mInfo)) && ($class == $mInfo->code) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif'); } else { echo '<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $class) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
       </tr>
                                                                                                                                                                                                                                                                                                                                                                                <?php
