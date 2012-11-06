@@ -8,7 +8,7 @@ define('TABLE_HEADING_CONFIGURATION_VALUE', '設定値');
 define('TABLE_HEADING_ACTION', '操作');
 
 define('TEXT_INFO_EDIT_INTRO', '必要な変更を加えてください');
-define('TEXT_INFO_DATE_ADDED', '登録日:');
+define('TEXT_INFO_DATE_ADDED', '作成日:');
 define('TEXT_INFO_LAST_MODIFIED', '更新日:');
 define('HEADING_TITLE_901','ショップ初期設定');
 define('HEADING_TITLE_16','時間設定');
