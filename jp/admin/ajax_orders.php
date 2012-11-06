@@ -646,15 +646,21 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $onsuit = false;
   $tnsuit = false;
   $notfinish = false;
+  $tmp_notfinish = false;
   $ids = $_POST['oid'];
   $ids_array = explode('_',$ids);
   foreach($ids_array as $oid){
     if($oid==''){continue;}
     unset($orders_info_raw);
-	$orders_info_raw = tep_db_query("select payment_method  from ".TABLE_ORDERS." where orders_id = '".$oid."'"); 
+    $orders_info_raw = tep_db_query("select payment_method, orders_status  from ".TABLE_ORDERS." where orders_id = '".$oid."'"); 
     $finish          = tep_get_order_canbe_finish($oid)?1:0;
     $type            = tep_check_order_type($oid);
-	$orders_info = tep_db_fetch_array($orders_info_raw); 
+    $orders_info = tep_db_fetch_array($orders_info_raw); 
+    if ($orders_info['orders_status'] == '6' || $orders_info['orders_status'] == '8') {
+      $tmp_finish = 1; 
+    } else {
+      $tmp_finish = 0; 
+    }
     if(!isset($orders_info_first)){
       $orders_info_first = $orders_info;
     }else {
@@ -678,10 +684,18 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
       $notfinish = true;
       }
     }
+    if (!isset($tmp_finish_first)) {
+      $tmp_finish_first = $tmp_finish;
+    } else {
+      if($tmp_finish_first != $tmp_finish or $tmp_notfinish){
+        $tmp_notfinish = true;
+      }
+    }
   }
   if(!$onsuit && !$tnsuit){
     echo urlencode($orders_info['payment_method']).'_'.$type.'_';
     echo $notfinish?0:$finish_first;
+    echo $tmp_notfinish?'_0':'_'.$tmp_finish_first;
   }
   //取得 支付类型 及 支付方法
 } else if  (isset($_GET['action'])&&$_GET['action']=='get_oa_groups') {
