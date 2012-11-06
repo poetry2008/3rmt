@@ -3958,12 +3958,31 @@ if($orders_exit_flag == true){
     $work_start = $shipping_time_hour_array[0];
     $work_end = $shipping_time_hour_array[1];  
   }
-    //当日起几日后可以收货
-    $db_set_day = max($shipping_time_array['db_set_day']);
-    $date_orders = date('Y-m-d',strtotime("+ ".$db_set_day."minute"));
+     $date_time_temp = date('Y-m-d H:i',strtotime("+ ".$db_set_day."minute"));
+     $work_start_temp = date('Y-m-d').' '.$work_start;
+    if(($work_start == '' && $work_end == '') || $work_start_temp < $date_time_temp){
+
+      $shipping_time_default_array = $shipping_time_array['work'][0]; 
+      $default_num = 0;
+      $default_temp = $shipping_time_default_array[0][0];
+      foreach($shipping_time_default_array as $default_key=>$default_value){
+        if($default_value[0] < $default_temp){
+          $default_num = $default_key; 
+        } 
+      }
+      $default_time = $shipping_time_default_array[$default_num];
+      $work_start = $default_time[0];
+      $work_end = $default_time[1];
+      $db_set_day = max($shipping_time_array['db_set_day']);
+      $date_orders = date('Y-m-d',strtotime("+ ".$db_set_day."minute"));
+      $date_orders = date('Y-m-d',strtotime("+1 days")); 
+    }else{
+      //当日起几日后可以收货
+      $db_set_day = max($shipping_time_array['db_set_day']);
+      $date_orders = date('Y-m-d',strtotime("+ ".$db_set_day."minute"));
+    }
 
   }
- 
   $work_start_array = explode(':',$work_start);
   $work_end_array = explode(':',$work_end);
   $work_start_hour = $work_start_array[0]; //开始时
