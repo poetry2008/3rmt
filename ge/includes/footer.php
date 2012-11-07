@@ -21,7 +21,6 @@
 */
 ?>
 <?php 
-// 譏ｾ示SQL謇ｧ行隶ｰ蠖销
 if (STORE_DB_TRANSACTIONS && false) {?>
 <div id="debug_info" style="text-align:left;">
   <pre>

@@ -117,7 +117,7 @@
 <!-- body //-->
 <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border">
   <tr>
-   <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border">
+    <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border">
       <!-- left_navigation //-->
       <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
       <!-- left_navigation_eof //-->
@@ -259,6 +259,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       }
     }  
     if (isset($_POST['action']) && ($_POST['action'] == 'process') && ($error == false)) {
+      $_SESSION['submit_flag'] = time();
       $_POST['quantity'] = tep_an_zen_to_han($_POST['quantity']);
       echo tep_draw_form('pform', tep_href_link(FILENAME_PREORDER_PAYMENT));
       foreach ($_POST as $p_key => $p_value) {
@@ -295,7 +296,7 @@ if (!isset($_GET['firstname'])) $_GET['firstname'] = NULL; //del notice
         if ($firstname_error == true) $first_name_prompt .= '&nbsp;<span class="errorText">' . PREORDER_TEXT_REQUIRED . '</span>';
 if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
         $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $_POST['from'] : $_GET['from']) , 'size="30" class="input_text"') . TEXT_PHONE_EMAIL_ADDRESS;
-        if ($fromemail_error == true) $your_email_address_prompt .= "<br>".ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
+        if ($fromemail_error == true) $your_email_address_prompt .="<br>".ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
       }
 ?>
       <div align="center">
@@ -324,7 +325,7 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
       <p>
         <?php echo TEXT_PREORDER_BOOK_TEXT;?>
       </p>
-        <p class="red"><b><?php echo TEXT_PREORDER_BOOK_TEXT_END;?></b></p>
+      <p class="red"><b><?php echo TEXT_PREORDER_BOOK_TEXT_END;?></b></p>
 <?php
       if($error == true) {
         echo '<span class="errorText"><b>'.TEXT_INPUT_ERROR_INFO.'</span></b><br><br>';

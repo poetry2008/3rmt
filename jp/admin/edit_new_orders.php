@@ -1796,7 +1796,6 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
     <html <?php echo HTML_PARAMS; ?>>
     <head>
     <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
-    <!--京-->
     <title><?php echo TITLE; ?></title>
     <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
     <link rel="stylesheet" type="text/css" href="includes/styles.css">
@@ -4412,9 +4411,6 @@ if($orders_exit_flag == true){
             <table width="100%" cellpadding="0" cellspacing="0">
             <tr>
             <td valign="top"><?php echo "<span class='smalltext'>" .  HINT_DELETE_POSITION . "</span>"; ?></td> <td align="right"><?php echo '<a href="create_order.php?oID=' . $oID . '&Customer_mail='.$email_address_flag.'&site_id='.$site_id_flag.'">' . tep_html_element_button(ADDING_TITLE) . '</a>'; ?></td>
-            <!--
-            <td valign="top"><?php echo "<span class='smalltext'>" .  HINT_DELETE_POSITION . EDIT_ORDERS_ADD_PRO_READ . "</span>"; ?></td> <td align="right"><?php echo '<a href="' . $PHP_SELF . '?oID=' . $oID . '&action=add_product&step=1">' . tep_html_element_button(ADDING_TITLE) . '</a>'; ?></td>
-            -->
             </tr> 
             </table>
             </td>
@@ -4601,7 +4597,6 @@ if($orders_exit_flag == true){
             </tr>
             <!-- End Order Total Block -->
             <!-- Begin Update Block -->
-            <!-- Improvement: more "Update" buttons (Michel Haase, 2005-02-18) -->    
                     <!-- End of Update Block -->
                     <!-- Begin Status Block -->
                     <tr>
@@ -4964,7 +4959,7 @@ if($orders_exit_flag == true){
         </div>
         </div>
         </td>
-        <!-- body_text_eof //-->
+        <!-- body_text_eof -->
         </tr>
         </table>
         </form>

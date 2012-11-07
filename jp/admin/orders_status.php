@@ -18,13 +18,25 @@
 
         $sql_data_array = array(
             'orders_status_name' => tep_db_prepare_input($orders_status_name_array[$language_id]),
-            'finished' => tep_db_prepare_input((int)$_POST['finished']),
             'nomail' => tep_db_prepare_input((int)$_POST['nomail']),
             'calc_price' => tep_db_prepare_input((int)$_POST['calc_price']),
 	    'user_update' => $_POST['user_update'],
             'date_update' => 'now()',
             );
-
+        switch($_POST['option_status']) {
+          case '1':
+            $sql_data_array['finished'] = 0; 
+            $sql_data_array['is_cancle'] = 0; 
+            break;
+          case '2':
+            $sql_data_array['finished'] = 1; 
+            $sql_data_array['is_cancle'] = 0; 
+            break;
+          case '3':
+            $sql_data_array['finished'] = 0; 
+            $sql_data_array['is_cancle'] = 1; 
+            break;
+        }
         if ($_GET['action'] == 'insert') {
           if (!tep_not_null($orders_status_id)) {
             $next_id_query = tep_db_query("select max(orders_status_id) as orders_status_id from " . TABLE_ORDERS_STATUS . "");
@@ -278,10 +290,10 @@ require("includes/note_js.php");
     //mail本文 add end
 
       $contents[] = array('text' => '<br>' . TEXT_INFO_ORDERS_STATUS_NAME . $orders_status_inputs_string);
-      $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('default') . ' ' . TEXT_SET_DEFAULT);
       
-      $contents[] = array('text' => '<br>' . TEXT_EDIT_ORDERS_STATUS_IMAGE . '<br>' . tep_draw_file_field('orders_status_image'));
-      $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('finished', '1') . ' ' . TEXT_ORDERS_STATUS_FINISHED);
+      $contents[] = array('text' => '<br>' . TEXT_ORDERS_STATUS_PIC . '&nbsp;' .  tep_draw_file_field('orders_status_image'));
+      $contents[] = array('text' => '<br>' . TEXT_ORDERS_STATUS_OPTION . '<br>' .  tep_draw_radio_field('option_status', '1', true).TEXT_ORDERS_STATUS_OPTION_NORMAL.'&nbsp;'.tep_draw_radio_field('option_status', '2', false).TEXT_ORDERS_STATUS_OPTION_SUCCESS.'&nbsp;'.tep_draw_radio_field('option_status', '3', false).TEXT_ORDERS_STATUS_OPTION_FAIL);
+      $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('default') . ' ' . TEXT_SET_DEFAULT);
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('nomail', '1') . ' ' . 'DON\'T SEND MAIL');
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('calc_price', '1') . ' ' . TEXT_ORDERS_STATUS_SET_PRICE_CALCULATION);
       
@@ -325,15 +337,24 @@ require("includes/note_js.php");
     //mail本文 add end
 
       $contents[] = array('text' => '<br>' . TEXT_INFO_ORDERS_STATUS_NAME . $orders_status_inputs_string);
-      if (DEFAULT_ORDERS_STATUS_ID != $oInfo->orders_status_id) $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('default') . ' ' . TEXT_SET_DEFAULT);
       
       //if(!is_dir(tep_get_local_path(DIR_FS_CATALOG_IMAGES).DIRECTORY_SEPARATOR.$oInfo->orders_status_image) && file_exists(tep_get_local_path(DIR_FS_CATALOG_IMAGES).DIRECTORY_SEPARATOR.$oInfo->orders_status_image)) {
       if(!is_dir(tep_get_upload_dir().'orders_status/'.$oInfo->orders_status_image) && file_exists(tep_get_upload_dir().'orders_status/'.$oInfo->orders_status_image)) {
         $contents[] = array('text' => '<br>' . tep_image(tep_get_web_upload_dir() .'orders_status/'. $oInfo->orders_status_image, $oInfo->orders_status_name, 15, 15));
         $contents[] = array('text' => '<br><input type="checkbox" name="delete_image" value="1" >'.TEXT_DEL_IMAGE);
       }
-      $contents[] = array('text' => '<br>' . TEXT_EDIT_ORDERS_STATUS_IMAGE . '<br>' . tep_draw_file_field('orders_status_image'));
-      $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('finished', '1', $oInfo->finished) . ' ' . TEXT_ORDERS_STATUS_FINISHED);
+      $contents[] = array('text' => '<br>' . TEXT_ORDERS_STATUS_PIC . '&nbsp;' .  tep_draw_file_field('orders_status_image'));
+     
+      $default_sel = '1';
+      if ($oInfo->finished == '1') {
+        $default_sel = '2';
+      }
+      if ($oInfo->is_cancle == '1') {
+        $default_sel = '3'; 
+      }
+      $contents[] = array('text' => '<br>' . TEXT_ORDERS_STATUS_OPTION . '<br>' .  tep_draw_radio_field('option_status', '1', (($default_sel == '1')?true:false)).TEXT_ORDERS_STATUS_OPTION_NORMAL.'&nbsp;'.tep_draw_radio_field('option_status', '2', (($default_sel == '2')?true:false)).TEXT_ORDERS_STATUS_OPTION_SUCCESS.'&nbsp;'.tep_draw_radio_field('option_status', '3', (($default_sel == '3')?true:false)).TEXT_ORDERS_STATUS_OPTION_FAIL);
+      
+      if (DEFAULT_ORDERS_STATUS_ID != $oInfo->orders_status_id) $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('default') . ' ' . TEXT_SET_DEFAULT);
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('nomail', '1', $oInfo->nomail) . ' ' . 'DON\'T SEND MAIL');
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('calc_price', '1', $oInfo->calc_price) . ' ' . TEXT_ORDERS_STATUS_SET_PRICE_CALCULATION);
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('is_thzk', '1', $oInfo->is_thzk) . ' ' . TEXT_ORDERS_FETCH_CONDITION);

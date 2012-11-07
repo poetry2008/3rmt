@@ -6,4 +6,3 @@ define('JS_TEXT_ALL_ORDER_BROWER_REJECTED','被浏览器拒绝！\n请在浏览�
 define('JS_TEXT_ALL_ORDER_NO_OPTION_ORDER','尚未选择订单。');
 define('JS_TEXT_ALL_ORDER_NOT_CHOOSE','无法多选。');
 define('JS_TEXT_ALL_ORDER_COPY_TO_CLIPBOARD','已复制到剪切板！');
-define('JS_TEXT_ALL_ORDER_CANCLE_TRANSACTION','交易取消');

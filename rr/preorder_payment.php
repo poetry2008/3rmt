@@ -114,8 +114,16 @@ $(document).ready(function(){
 	if ($(this).attr('checked') == true) {
 	  triggerHide(this);
 	}
-      });
-  });
+    });
+<?php
+if((isset($_POST['preorder_flag']) && $_POST['preorder_flag'] != $_SESSION['submit_flag']) ||(isset($_POST['preorder_flag']) && !isset($_SESSION['submit_flag']) && $_POST['preorder_flag'] == '')){
+?>
+  alert('<?php echo TEXT_SUBMIT_ERROR;?>');
+  document.location.href='<?php echo FILENAME_SHOPPING_CART;?>';
+<?php
+}
+?>
+});
 </script>
 </head>
 <body>
@@ -231,7 +239,8 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       }
     }
     
-    if (isset($_GET['action']) && ($_GET['action'] == 'process') && ($error == false)) {
+    if (isset($_GET['action']) && ($_GET['action'] == 'process') && ($error == false) && ($_POST['preorder_flag'] != '' && isset($_SESSION['submit_flag']) && $_POST['preorder_flag'] == $_SESSION['submit_flag'])) { 
+      unset($_SESSION['submit_flag']); 
       $_POST['quantity'] = tep_an_zen_to_han($_POST['quantity']); 
       $preorder_id = date('Ymd').'-'.date('His').tep_get_preorder_end_num(); 
       $redirect_single = 0; 
@@ -372,9 +381,9 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
         <div align="center"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . intval($_GET['products_id'])) . '">' . tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></div>
       </div>
 <?php
-    } else {
+    } else { 
       ?>
-      <?php echo tep_draw_form('preorder_product', tep_href_link(FILENAME_PREORDER_PAYMENT, 'action=process')) .  tep_draw_hidden_field('products_id', $product_info['products_id']).tep_draw_hidden_field('products_name', $product_info['products_name']); ?>
+      <?php echo tep_draw_form('preorder_product', tep_href_link(FILENAME_PREORDER_PAYMENT, 'action=process')) .  tep_draw_hidden_field('products_id', $product_info['products_id']).tep_draw_hidden_field('products_name', $product_info['products_name']).tep_draw_hidden_field('preorder_flag', $_SESSION['submit_flag']); ?>
 
       <p>
         <?php echo TEXT_PREORDER_BOOK_TEXT;?>

@@ -68,4 +68,5 @@ define('TEXT_PREORDER_BOOK_INFO_END','」をクリックしてお手続きくだ
 define('TEXT_PREORDER_BOOK_TEXT','弊社在庫にお客様がご希望する数量がない場合は、下記の必要事項をご入力の上お申し込みください。<br>予約手続きが完了いたしますと、入荷次第、お客様へ優先的にご案内いたします。');
 define('TEXT_PREORDER_BOOK_TEXT_END','ご予約・お見積りは無料ですので、お気軽にお問い合わせください。');
 define('TEXT_INPUT_ERROR_INFO','入力した内容に誤りがございます。正しく入力してください。');
+define('TEXT_SUBMIT_ERROR','一定時間が経過したか、複数のブラウザによって操作された為、接続が切断されました。お手数ではございますが、再度ご入力いただく必要がございます。');
 ?>

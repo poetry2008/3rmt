@@ -259,6 +259,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       }
     }  
     if (isset($_POST['action']) && ($_POST['action'] == 'process') && ($error == false)) {
+      $_SESSION['submit_flag'] = time();
       $_POST['quantity'] = tep_an_zen_to_han($_POST['quantity']);
       echo tep_draw_form('pform', tep_href_link(FILENAME_PREORDER_PAYMENT));
       foreach ($_POST as $p_key => $p_value) {
@@ -332,7 +333,7 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
       <p>
         <?php echo TEXT_PREORDER_BOOK_TEXT;?>
       </p>
-        <p class="red"><b><?php echo TEXT_PREORDER_BOOK_TEXT_END;?></b></p>
+      <p class="red"><b><?php echo TEXT_PREORDER_BOOK_TEXT_END;?></b></p>
 <?php
       if($error == true) {
         echo '<span class="errorText"><b>'.TEXT_INPUT_ERROR_INFO.'</span></b><br><br>';
