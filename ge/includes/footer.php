@@ -4,13 +4,13 @@
 */
 ?>
 <div id="f_menu">
-<a href="<?php echo HTTP_SERVER;?>/info/starting_rmt.html">はじめてのRMT</a>
+<a href="<?php echo HTTP_SERVER;?>/info/starting_rmt.html"><?php echo FOOTER_FIRST;?></a>
 &nbsp;|&nbsp;
-<a href="<?php echo HTTP_SERVER;?>/info/salespolicies.html">特定商取引に基づく表記</a>
+<a href="<?php echo HTTP_SERVER;?>/info/salespolicies.html"><?php echo FOOTER_RECORD; ?></a>
 &nbsp;|&nbsp;
-<a href="<?php echo tep_href_link('rss.php'); ?>">RSS</a>
+<a href="<?php echo tep_href_link('rss.php'); ?>"><?php echo FOOTER_RSS;?></a>
 &nbsp;|&nbsp;
-<a href="<?php echo HTTP_SERVER;?>/link/">相互リンク</a>
+<a href="<?php echo HTTP_SERVER;?>/link/"><?php echo FOOTER_LINKS; ?></a>
 </div>
 <div id="footer">
   <address class="copyright">
@@ -27,7 +27,6 @@
 */
 ?>
 <?php 
-// 譏ｾ示SQL謇ｧ行隶ｰ蠖销
 if (STORE_DB_TRANSACTIONS && false) {?>
 <div id="debug_info" style="text-align:left;">
   <pre>
