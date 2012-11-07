@@ -4,13 +4,7 @@
 */
 ?>
 <div id="f_menu">
-<a href="<?php echo HTTP_SERVER;?>/info/starting_rmt.html"><?php echo FOOTER_FIRST;?></a>
-&nbsp;|&nbsp;
-<a href="<?php echo HTTP_SERVER;?>/info/salespolicies.html"><?php echo FOOTER_RECORD; ?></a>
-&nbsp;|&nbsp;
-<a href="<?php echo tep_href_link('rss.php'); ?>"><?php echo FOOTER_RSS;?></a>
-&nbsp;|&nbsp;
-<a href="<?php echo HTTP_SERVER;?>/link/"><?php echo FOOTER_LINKS; ?></a>
+<?php if ($banner = tep_banner_exists('dynamic', 'footer1')) { echo  '<div align="center">' . "\n" . tep_display_banner('static', $banner) . '</div>'; }?>
 </div>
 <div id="footer">
   <address class="copyright">
