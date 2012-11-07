@@ -81,12 +81,12 @@ if(isset($_GET['action'])){
           $orders_raw = tep_db_query("select customers_id, payment_method, site_id, orders_status from ".TABLE_ORDERS." where orders_id = '".$id."'"); 
           $orders_res = tep_db_fetch_array($orders_raw); 
           if ($orders_res) {
-            if ($orders_res['orders_status'] != '6' && $orders_res['orders_status'] != '8') {
+            if (check_order_latest_status($id)) {
               $tmp_setting = get_configuration_by_site_id_or_default('MODULE_ORDER_TOTAL_POINT_STATUS', $orders_res['site_id']);
               $tmp_tmp_setting = get_configuration_by_site_id_or_default('MODULE_ORDER_TOTAL_POINT_ADD_STATUS', $orders_res['site_id']);
               if ($tmp_setting == 'true' && $tmp_tmp_setting != '0') {
                 $cpayment = payment::getInstance($orders_res['site_id']); 
-                if ($cpayment->admin_is_get_point(payment::changeRomaji($orders_res['payment_method'], PAYMENT_RETURN_TYPE_CODE), $orders_res['site_id']) == '1') {
+                if ($cpayment->admin_is_get_point(payment::changeRomaji($orders_res['payment_method'], PAYMENT_RETURN_TYPE_CODE), $orders_res['site_id']) == 'True') {
                   $point_rate = $cpayment->admin_get_point_rate(payment::changeRomaji($orders_res['payment_method'], PAYMENT_RETURN_TYPE_CODE), $orders_res['site_id']); 
                   
                   $get_point = $cpayment->admin_calc_get_point(payment::changeRomaji($orders_res['payment_method'], PAYMENT_RETURN_TYPE_CODE), $id, $point_rate, $orders_res['site_id']);
@@ -107,12 +107,12 @@ if(isset($_GET['action'])){
       $orders_raw = tep_db_query("select customers_id, payment_method, site_id, orders_status from ".TABLE_ORDERS." where orders_id = '".$id."'"); 
       $orders_res = tep_db_fetch_array($orders_raw); 
       if ($orders_res) {
-        if ($orders_res['orders_status'] != '6' && $orders_res['orders_status'] != '8') {
+        if (check_order_latest_status($id)) {
           $tmp_setting = get_configuration_by_site_id_or_default('MODULE_ORDER_TOTAL_POINT_STATUS', $orders_res['site_id']);
           $tmp_tmp_setting = get_configuration_by_site_id_or_default('MODULE_ORDER_TOTAL_POINT_ADD_STATUS', $orders_res['site_id']);
           if ($tmp_setting == 'true' && $tmp_tmp_setting != '0') {
             $cpayment = payment::getInstance($orders_res['site_id']); 
-            if ($cpayment->admin_is_get_point(payment::changeRomaji($orders_res['payment_method'], PAYMENT_RETURN_TYPE_CODE), $orders_res['site_id']) == '1') {
+            if ($cpayment->admin_is_get_point(payment::changeRomaji($orders_res['payment_method'], PAYMENT_RETURN_TYPE_CODE), $orders_res['site_id']) == 'True') {
               $point_rate = $cpayment->admin_get_point_rate(payment::changeRomaji($orders_res['payment_method'], PAYMENT_RETURN_TYPE_CODE), $orders_res['site_id']); 
               
               $get_point = $cpayment->admin_calc_get_point(payment::changeRomaji($orders_res['payment_method'], PAYMENT_RETURN_TYPE_CODE), $id, $point_rate, $orders_res['site_id']);

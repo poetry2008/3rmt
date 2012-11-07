@@ -38,4 +38,9 @@ define('TEXT_USER_ADDED','创建者:');
 define('TEXT_USER_UPDATE','更新者:');
 define('TEXT_DATE_ADDED','创建日期:');
 define('TEXT_DATE_UPDATE','更新日期:');
+define('TEXT_ORDERS_STATUS_PIC', '图标');
+define('TEXT_ORDERS_STATUS_OPTION', '选项');
+define('TEXT_ORDERS_STATUS_OPTION_NORMAL', '交易中');
+define('TEXT_ORDERS_STATUS_OPTION_SUCCESS', '交易成功');
+define('TEXT_ORDERS_STATUS_OPTION_FAIL', '交易失败');
 ?>

@@ -38,4 +38,8 @@ define('TEXT_USER_UPDATE','更新者:');
 define('TEXT_DATE_ADDED','作成日:');
 define('TEXT_DATE_UPDATE','更新日:');
 define('TEXT_DEL_IMAGE','アイコンを削除');
-
+define('TEXT_ORDERS_STATUS_PIC', 'アイコン');
+define('TEXT_ORDERS_STATUS_OPTION', 'オプション');
+define('TEXT_ORDERS_STATUS_OPTION_NORMAL', '取引最中');
+define('TEXT_ORDERS_STATUS_OPTION_SUCCESS', '取引成功');
+define('TEXT_ORDERS_STATUS_OPTION_FAIL', '取引失敗');
