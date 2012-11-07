@@ -7457,15 +7457,15 @@ function check_order_transaction_button($status_id)
 
 function check_order_latest_status($oid)
 {
-   $now_time = date('Y-m-d H:i:s', time()); 
-   $orders_status_history_raw = tep_db_query("select orders_status_id from ".TABLE_ORDERS_STATUS_HISTORY." where orders_id = '".$oid."' and date_added <= '".$now_time."' order by date_added desc"); 
-   while ($orders_status_history_info = tep_db_fetch_array($orders_status_history_raw)) {
-     $orders_status_raw = tep_db_query("select finished from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$orders_status_history_info['orders_status_id']."'");    
+   $orders_raw = tep_db_query("select orders_status from ".TABLE_ORDERS." where orders_id = '".$oid."'"); 
+   $orders_info = tep_db_fetch_array($orders_raw);
+   if ($orders_info) {
+     $orders_status_raw = tep_db_query("select finished from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$orders_info['orders_status']."'");    
      $orders_status = tep_db_fetch_array($orders_status_raw); 
      if ($orders_status) {
-        if ($orders_status['finished'] == '1') {
-          return true; 
-        }
+       if ($orders_status['finished'] == '1') {
+         return true; 
+       }
      }
    }
    return false;
