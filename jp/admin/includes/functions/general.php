@@ -7444,15 +7444,3 @@ function new_nl2br($string) {
   $string = str_replace(array("\r\n", "\r", "\n"), "<br>", $string);
   return $string;
 } 
-
-function tep_cfg_payment_new_checkbox($key_value, $key = '') {
-  $string = '';
-  $name = (($key) ? 'configuration[' . $key . ']' : 'configuration_value');
-  $string .= '<br><input type="checkbox" name="' . $name . '[]" value="1"';
-  if ($key_value == '1') {
-    $string .= ' CHECKED';
-  }
-  $string .= '> '.GET_POINT_TEXT; 
-    
-  return $string;
-}

@@ -86,7 +86,7 @@ if(isset($_GET['action'])){
               $tmp_tmp_setting = get_configuration_by_site_id_or_default('MODULE_ORDER_TOTAL_POINT_ADD_STATUS', $orders_res['site_id']);
               if ($tmp_setting == 'true' && $tmp_tmp_setting != '0') {
                 $cpayment = payment::getInstance($orders_res['site_id']); 
-                if ($cpayment->admin_is_get_point(payment::changeRomaji($orders_res['payment_method'], PAYMENT_RETURN_TYPE_CODE), $orders_res['site_id']) == '1') {
+                if ($cpayment->admin_is_get_point(payment::changeRomaji($orders_res['payment_method'], PAYMENT_RETURN_TYPE_CODE), $orders_res['site_id']) == 'True') {
                   $point_rate = $cpayment->admin_get_point_rate(payment::changeRomaji($orders_res['payment_method'], PAYMENT_RETURN_TYPE_CODE), $orders_res['site_id']); 
                   
                   $get_point = $cpayment->admin_calc_get_point(payment::changeRomaji($orders_res['payment_method'], PAYMENT_RETURN_TYPE_CODE), $id, $point_rate, $orders_res['site_id']);
@@ -112,7 +112,7 @@ if(isset($_GET['action'])){
           $tmp_tmp_setting = get_configuration_by_site_id_or_default('MODULE_ORDER_TOTAL_POINT_ADD_STATUS', $orders_res['site_id']);
           if ($tmp_setting == 'true' && $tmp_tmp_setting != '0') {
             $cpayment = payment::getInstance($orders_res['site_id']); 
-            if ($cpayment->admin_is_get_point(payment::changeRomaji($orders_res['payment_method'], PAYMENT_RETURN_TYPE_CODE), $orders_res['site_id']) == '1') {
+            if ($cpayment->admin_is_get_point(payment::changeRomaji($orders_res['payment_method'], PAYMENT_RETURN_TYPE_CODE), $orders_res['site_id']) == 'True') {
               $point_rate = $cpayment->admin_get_point_rate(payment::changeRomaji($orders_res['payment_method'], PAYMENT_RETURN_TYPE_CODE), $orders_res['site_id']); 
               
               $get_point = $cpayment->admin_calc_get_point(payment::changeRomaji($orders_res['payment_method'], PAYMENT_RETURN_TYPE_CODE), $id, $point_rate, $orders_res['site_id']);

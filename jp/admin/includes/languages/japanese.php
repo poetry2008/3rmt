@@ -730,7 +730,6 @@ define('BUTTON_ADD_TEXT', '追加');
 define('CSV_HEADER_TEXT', 'アカウント作成日,性別,姓,名,生年月日,メールアドレス,会社名,郵便番号,都道府県,市区町村,住所1,住所2,国名,電話番号,FAX番号,メルマガ購読,ポイント');
 define('CSV_EXPORT_TEXT', 'CSVエクスポート');
 define('TEXT_ALL','すべて');
-define('GET_POINT_TEXT', 'ポイント付く');
 define('MESSAGE_FINISH_ORDER_TEXT', '注文ID%sの成功：取り引きが完了致しました');
 define('TEXT_USER_ADDED','作成者:');
 define('TEXT_USER_UPDATE','更新者:');
