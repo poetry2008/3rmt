@@ -291,7 +291,7 @@ require("includes/note_js.php");
 
       $contents[] = array('text' => '<br>' . TEXT_INFO_ORDERS_STATUS_NAME . $orders_status_inputs_string);
       
-      $contents[] = array('text' => '<br>' . TEXT_ORDERS_STATUS_PIC . '&nbsp;' .  tep_draw_file_field('orders_status_image'));
+      $contents[] = array('text' => '<br>' . TEXT_EDIT_ORDERS_STATUS_IMAGE . '&nbsp;' .  tep_draw_file_field('orders_status_image'));
       $contents[] = array('text' => '<br>' . TEXT_ORDERS_STATUS_OPTION . '<br>' .  tep_draw_radio_field('option_status', '1', true).TEXT_ORDERS_STATUS_OPTION_NORMAL.'&nbsp;'.tep_draw_radio_field('option_status', '2', false).TEXT_ORDERS_STATUS_OPTION_SUCCESS.'&nbsp;'.tep_draw_radio_field('option_status', '3', false).TEXT_ORDERS_STATUS_OPTION_FAIL);
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('default') . ' ' . TEXT_SET_DEFAULT);
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('nomail', '1') . ' ' . 'DON\'T SEND MAIL');
@@ -343,7 +343,7 @@ require("includes/note_js.php");
         $contents[] = array('text' => '<br>' . tep_image(tep_get_web_upload_dir() .'orders_status/'. $oInfo->orders_status_image, $oInfo->orders_status_name, 15, 15));
         $contents[] = array('text' => '<br><input type="checkbox" name="delete_image" value="1" >'.TEXT_DEL_IMAGE);
       }
-      $contents[] = array('text' => '<br>' . TEXT_ORDERS_STATUS_PIC . '&nbsp;' .  tep_draw_file_field('orders_status_image'));
+      $contents[] = array('text' => '<br>' . TEXT_EDIT_ORDERS_STATUS_IMAGE . '&nbsp;' .  tep_draw_file_field('orders_status_image'));
      
       $default_sel = '1';
       if ($oInfo->finished == '1') {

@@ -25,7 +25,7 @@ define('TEXT_INFO_ORDERS_STATUS_MAIL', 'メール本文');
 define('TEXT_INFO_ORDERS_STATUS_TITLE', 'メールタイトル');
 
 //define('TEXT_EDIT_ORDERS_STATUS_IMAGE', 'メール&#22270;像');
-define('TEXT_EDIT_ORDERS_STATUS_IMAGE', 'ステータスに表示するアイコンを指定');
+define('TEXT_EDIT_ORDERS_STATUS_IMAGE', 'アイコン');
 
 define('TEXT_ORDERS_STATUS_FINISHED', '完了注文');
 define('TEXT_ORDERS_STATUS_SET_PRICE_CALCULATION','平均単価の算出条件に設定');
@@ -38,7 +38,6 @@ define('TEXT_USER_UPDATE','更新者:');
 define('TEXT_DATE_ADDED','作成日:');
 define('TEXT_DATE_UPDATE','更新日:');
 define('TEXT_DEL_IMAGE','アイコンを削除');
-define('TEXT_ORDERS_STATUS_PIC', 'アイコン');
 define('TEXT_ORDERS_STATUS_OPTION', 'オプション');
 define('TEXT_ORDERS_STATUS_OPTION_NORMAL', '取引最中');
 define('TEXT_ORDERS_STATUS_OPTION_SUCCESS', '取引成功');
