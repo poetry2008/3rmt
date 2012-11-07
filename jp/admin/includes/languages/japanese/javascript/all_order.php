@@ -6,4 +6,3 @@ define('JS_TEXT_ALL_ORDER_BROWER_REJECTED','ブラウザに拒絶されました
 define('JS_TEXT_ALL_ORDER_NO_OPTION_ORDER','注文書はまだ選択していません。');
 define('JS_TEXT_ALL_ORDER_NOT_CHOOSE','複数の選択はできません。');
 define('JS_TEXT_ALL_ORDER_COPY_TO_CLIPBOARD','クリップボードにコピーしました！');
-define('JS_TEXT_ALL_ORDER_CANCLE_TRANSACTION','取引取消');

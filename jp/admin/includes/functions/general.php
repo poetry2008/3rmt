@@ -7444,3 +7444,29 @@ function new_nl2br($string) {
   $string = str_replace(array("\r\n", "\r", "\n"), "<br>", $string);
   return $string;
 } 
+
+function check_order_transaction_button($status_id)
+{
+  $order_status_raw = tep_db_query("select is_cancle from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$status_id."'");
+  $order_status = tep_db_fetch_array($order_status_raw);
+  if ($order_status['is_cancle'] == '1') {
+    return true;
+  }
+  return false;
+}
+
+function check_order_latest_status($oid)
+{
+   $now_time = date('Y-m-d H:i:s', time()); 
+   $orders_status_history_raw = tep_db_query("select orders_status_id from ".TABLE_ORDERS_STATUS_HISTORY." where orders_id = '".$oid."' and date_added <= '".$now_time."' order by date_added desc"); 
+   while ($orders_status_history_info = tep_db_fetch_array($orders_status_history_raw)) {
+     $orders_status_raw = tep_db_query("select finished from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$orders_status_history_info['orders_status_id']."'");    
+     $orders_status = tep_db_fetch_array($orders_status_raw); 
+     if ($orders_status) {
+        if ($orders_status['finished'] == '1') {
+          return true; 
+        }
+     }
+   }
+   return false;
+}

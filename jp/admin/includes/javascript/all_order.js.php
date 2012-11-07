@@ -432,14 +432,13 @@ function show_questions(ele){
 		 },
 		 data:'oid='+ids,
 		 success: function(msg){
-                 var oamsg = msg.split("_");
+		     var oamsg = msg.split("_");
 		     if(oamsg.length>1){
 			 show = true;
 			 order_payment_type = oamsg[0];
 			 order_buy_type = oamsg[1];
 			 order_can_end =oamsg[2];
-			 is_cancle_transaction =oamsg[3];
-                     }else {
+		     }else {
 			 show =false;
 		     }
 		     show_questiondiv(show);
@@ -469,11 +468,7 @@ function show_questions(ele){
 		$("#oa_dynamic_groups")[0].options.add(new Option(''+group_name+'',group_id,true,false));
 	    }
 	    if(order_can_end=='1'){
-	       if (is_cancle_transaction == '1') {
-                 $("#oa_dynamic_groups")[0].options.add(new Option('<?php echo JS_TEXT_ALL_ORDER_CANCLE_TRANSACTION;?>','end',true,false));
-               } else {
-                 $("#oa_dynamic_groups")[0].options.add(new Option('<?php echo JS_TEXT_ALL_ORDER_COMPLETION_TRANSACTION;?>','end',true,false));
-               }
+		$("#oa_dynamic_groups")[0].options.add(new Option('<?php echo JS_TEXT_ALL_ORDER_COMPLETION_TRANSACTION;?>','end',true,false));
 	    }
 	}});
 	$("#oa_dynamic_groups").unbind('change');
@@ -488,11 +483,7 @@ function show_questions(ele){
 	    }
 	    if($(this).selected().val()=='end'){
 		$("#oa_dynamic_submit").show();
-	        if (is_cancle_transaction == '1') {
-                  $("#oa_dynamic_submit").html('<?php echo JS_TEXT_ALL_ORDER_CANCLE_TRANSACTION;?>');
-	        } else {
-                  $("#oa_dynamic_submit").html('<?php echo JS_TEXT_ALL_ORDER_COMPLETION_TRANSACTION;?>');
-                }
+		$("#oa_dynamic_submit").html('<?php echo JS_TEXT_ALL_ORDER_COMPLETION_TRANSACTION;?>');
 		msg = '<input type="hidden" id="endtheseorder" value="1"/>';
 		$("#oa_dynamic_group_item").html(msg);
 	    }else{

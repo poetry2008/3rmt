@@ -81,7 +81,7 @@ if(isset($_GET['action'])){
           $orders_raw = tep_db_query("select customers_id, payment_method, site_id, orders_status from ".TABLE_ORDERS." where orders_id = '".$id."'"); 
           $orders_res = tep_db_fetch_array($orders_raw); 
           if ($orders_res) {
-            if ($orders_res['orders_status'] != '6' && $orders_res['orders_status'] != '8') {
+            if (check_order_latest_status($id)) {
               $tmp_setting = get_configuration_by_site_id_or_default('MODULE_ORDER_TOTAL_POINT_STATUS', $orders_res['site_id']);
               $tmp_tmp_setting = get_configuration_by_site_id_or_default('MODULE_ORDER_TOTAL_POINT_ADD_STATUS', $orders_res['site_id']);
               if ($tmp_setting == 'true' && $tmp_tmp_setting != '0') {
@@ -107,7 +107,7 @@ if(isset($_GET['action'])){
       $orders_raw = tep_db_query("select customers_id, payment_method, site_id, orders_status from ".TABLE_ORDERS." where orders_id = '".$id."'"); 
       $orders_res = tep_db_fetch_array($orders_raw); 
       if ($orders_res) {
-        if ($orders_res['orders_status'] != '6' && $orders_res['orders_status'] != '8') {
+        if (check_order_latest_status($id)) {
           $tmp_setting = get_configuration_by_site_id_or_default('MODULE_ORDER_TOTAL_POINT_STATUS', $orders_res['site_id']);
           $tmp_tmp_setting = get_configuration_by_site_id_or_default('MODULE_ORDER_TOTAL_POINT_ADD_STATUS', $orders_res['site_id']);
           if ($tmp_setting == 'true' && $tmp_tmp_setting != '0') {
