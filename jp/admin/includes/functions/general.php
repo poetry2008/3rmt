@@ -7466,6 +7466,19 @@ function check_order_latest_status($oid)
        if ($orders_status['finished'] == '1') {
          return true; 
        }
+       $orders_status_history_raw = tep_db_query("select orders_status_id from ".TABLE_ORDERS_STATUS_HISTORY." where orders_id = '".$oid."' order by date_added desc");  
+       while ($orders_status_history = tep_db_fetch_array($orders_status_history_raw)) {
+         $tmp_orders_status_raw = tep_db_query("select finished, is_cancle from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$orders_status_history['orders_status_id']."'");    
+         $tmp_orders_status = tep_db_fetch_array($tmp_orders_status_raw); 
+         if ($tmp_orders_status) {
+           if ($tmp_orders_status['is_cancle'] == '1') {
+             return false; 
+           }
+           if ($tmp_orders_status['finished'] == '1') {
+             return true; 
+           }
+         }
+       }
      }
    }
    return false;
