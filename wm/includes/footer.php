@@ -23,7 +23,7 @@
         <?php echo FOOTER_TEXT_BODY . "\n"; ?><br>
               Copyright&nbsp;&copy;&nbsp;<?php echo date("Y");?>&nbsp;&nbsp;<a
               class="bold"
-              href="http://rmt.worldmoney.jp/"><?php echo  STORE_NAME; ?></a>
+              href="<?php echo HTTP_SERVER; ?>"><?php echo  STORE_NAME; ?></a>
             </address>
         </td>
         <td class="footer_6"></td>

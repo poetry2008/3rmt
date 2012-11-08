@@ -31,11 +31,6 @@
 }?>
 <script type="text/javascript" src="js/access.js"></script>
 <noscript><img src="axs/dsw.cgi?pg=RMT&amp;&amp;p=g&amp;&amp;md=nj" alt="img" height="1" width="1" border="0"></noscript>
-<?php
-/*
-<noscript>Some functions Supported by <a href="http://www.ds-style.com">DigitalStudio</a> INC.  Powered by <a href="http://osc.ds-style.com">osCommerce</a></noscript>
-*/
-?>
 <?php 
 if (STORE_DB_TRANSACTIONS && false) {?>
 <div id="debug_info" style="text-align:left;">

@@ -21,7 +21,7 @@
           <?php echo '|';?> 
           <a href="<?php echo HTTP_SERVER.'/link/';?>"><?php echo FOOTER_LINKS;?></a></div>
           <address class="footer_contacts">
-            <font color="#333333">当ウェブサイトに記載されている会社名・製品名・システム名などは、各社の登録商標、もしくは商標です。</font>
+            <font color="#333333"><?php echo FOOTER_WEBSITE_REGISTRATION;?></font>
         <?php //echo FOOTER_TEXT_BODY . "\n"; ?><br>
               Copyright&nbsp;&copy;&nbsp;<?php echo date("Y");?>&nbsp;&nbsp;<a class="bold" href="<?php echo tep_href_link(FILENAME_DEFAULT);?>"><?php echo TITLE;?></a>
             </address>
