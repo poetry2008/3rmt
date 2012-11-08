@@ -6,7 +6,7 @@
 <div id="footer">
   <?php echo FOOTER_TEXT_BODY . "\n"; ?>
   <address>
-    Copyright&nbsp;&copy;&nbsp;<?php echo date("Y");?>&nbsp;Jackpot&nbsp;<a class="bold" href="http://www.iimy.co.jp/"><strong>RMT</strong>ジャックポット</a>
+    Copyright&nbsp;&copy;&nbsp;<?php echo date("Y");?>&nbsp;Jackpot&nbsp;<a class="bold" href="http://www.iimy.co.jp/"><strong></strong><?php echo STORE_NAME;?></a>
   </address>
   <?php if ($banner = tep_banner_exists('dynamic', 'footer')) { echo  '<br><div align="center">' . "\n" . tep_display_banner('static', $banner) . '</div>'; }?>
 </div>
