@@ -10,16 +10,12 @@
             </div>
     */ ?>
         <div class="info_foot01">
-        <?php
-         $contents_page = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where status=1 and site_id='".SITE_ID."' order by sort_id"); 
-          while ($result = tep_db_fetch_array($contents_page)) {
-            echo '<a href="'.info_tep_href_link($result['romaji']).'">'.$result['heading_title'].'</a>'; 
-            echo '|'; 
-          }
-        ?>
-          <?php echo '<a href="'.tep_href_link(FILENAME_CONTACT_US,'','SSL').'">'.BOX_INFORMATION_CONTACT.'</a>';?>
-          <?php echo '|';?> 
-          <a href="<?php echo HTTP_SERVER.'/link/';?>"><?php echo FOOTER_LINKS;?></a></div>
+
+<?php 
+if ($banner = tep_banner_exists('dynamic', 'footer1')) { 
+  echo  '<div class="footer_links" align="center">' .tep_display_banner('static',  $banner) . '</div>'; }?>
+        
+       </div>
           <address class="footer_contacts">
             <font color="#333333"><?php echo FOOTER_WEBSITE_REGISTRATION;?></font>
         <?php //echo FOOTER_TEXT_BODY . "\n"; ?><br>

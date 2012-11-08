@@ -11,10 +11,7 @@
   <?php echo FOOTER_TEXT_BODY ; ?>
   </address>
 </div>
-<?php if ($banner = tep_banner_exists('dynamic', 'footer')) { 
-  echo  '<div class="footer_links" align="center">' .tep_display_banner('static',
-      $banner) . '<br><a href="'.HTTP_SERVER.'">'.STORE_NAME.'</a></div>'; 
-}?>
+<?php if ($banner = tep_banner_exists('dynamic', 'footer')) {  echo  '<div class="footer_links" align="center">' .tep_display_banner('static',  $banner) . '<br><a href="'.HTTP_SERVER.'">'.STORE_NAME.'</a></div>'; }?>
 <?php 
 if (STORE_DB_TRANSACTIONS && false) {?>
 <div id="debug_info" style="text-align:left;">
