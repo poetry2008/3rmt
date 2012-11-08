@@ -388,7 +388,6 @@ function open_new_calendar()
   }
 }
 
-<!--//checkbox like radio  -->/
 $(function() {
   $("#self").click(function() {
       if($(this).attr("checked")){ 
