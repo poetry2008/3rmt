@@ -897,10 +897,12 @@ display:none;
 /*	width:900px;  */
 	background-color:#000;
 	top:120px;
-	right:0;
+	left:0;
 	z-index:200;
 	border:1px solid #000;
-        width:100%
+    width:100%;
+	min-width:750px;
+	width: expression(document.body.clientWidth < 750? "750px": "100%" );
 }
 .subcategory_tree_info{
 	margin-left:-10px;
