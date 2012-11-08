@@ -497,6 +497,9 @@ function mk_pwd(){
 }
 </script>
 <style type="text/css">
+.yui3-skin-sam {
+  width:150px;
+}
 @media screen and (-webkit-min-device-pixel-ratio:0) {
 .yui3-skin-sam {
   width:150px;
@@ -613,6 +616,7 @@ float:left;
 
 #new_yui3 {
 	margin-left:-168px;
+	*margin-left:-28px;
 	margin-left:-28px\9;
 	position: absolute;
 	z-index:200px;
