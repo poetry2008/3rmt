@@ -497,6 +497,11 @@ function mk_pwd(){
 }
 </script>
 <style type="text/css">
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+.yui3-skin-sam {
+  width:150px;
+}
+}
 .yui3-skin-sam input {
   float:left;
 }
@@ -609,15 +614,15 @@ float:left;
 #new_yui3 {
 	margin-left:-168px;
 	margin-left:-28px\9;
-	bottom:-2px;
 	position: absolute;
 	z-index:200px;
+        margin-top:15px;
 }
 @media screen and (-webkit-min-device-pixel-ratio:0) {
 #new_yui3{
-	bottom:-9px;
 	position: absolute;
 	z-index:200px;
+        margin-top:17px;
 }
 }
 #input_nextdate{ width:120px; float:left;}
