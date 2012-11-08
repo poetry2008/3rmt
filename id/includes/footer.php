@@ -19,7 +19,7 @@
         ?>
           <?php echo '<a href="'.tep_href_link(FILENAME_CONTACT_US,'','SSL').'">'.BOX_INFORMATION_CONTACT.'</a>';?>
           <?php echo '|';?> 
-          <a href="<?php echo HTTP_SERVER.'/link/';?>">相互リンク</a></div>
+          <a href="<?php echo HTTP_SERVER.'/link/';?>"><?php echo FOOTER_LINKS;?></a></div>
           <address class="footer_contacts">
             <font color="#333333">当ウェブサイトに記載されている会社名・製品名・システム名などは、各社の登録商標、もしくは商標です。</font>
         <?php //echo FOOTER_TEXT_BODY . "\n"; ?><br>

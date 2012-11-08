@@ -15,11 +15,6 @@
   echo  '<div class="footer_links" align="center">' .tep_display_banner('static',
       $banner) . '<br><a href="'.HTTP_SERVER.'">'.STORE_NAME.'</a></div>'; 
 }?>
-<?php
-/*
-<noscript>Some functions Supported by <a href="http://www.ds-style.com">DigitalStudio</a> INC.  Powered by <a href="http://osc.ds-style.com">osCommerce</a></noscript>
-*/
-?>
 <?php 
 if (STORE_DB_TRANSACTIONS && false) {?>
 <div id="debug_info" style="text-align:left;">

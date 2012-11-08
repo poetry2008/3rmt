@@ -18,9 +18,9 @@
       }
       echo '|'; 
     }
-    echo '<a href="'.HTTP_SERVER.'/link/">相互リンク</a>';  
+    echo '<a href="'.HTTP_SERVER.'/link/">'.FOOTER_LINKS.'</a>';  
     echo '|'; 
-    echo '<a href="'.tep_href_link(FILENAME_CONTACT_US,'','SSL').'">お問い合わせ</a>';  
+    echo '<a href="'.tep_href_link(FILENAME_CONTACT_US,'','SSL').'">'.FOOTER_CONSULTATION.'</a>';  
 ?>
 </div>
 <div id="footer">
