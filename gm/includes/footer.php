@@ -1,7 +1,7 @@
 <?php include(DIR_WS_BOXES . 'best_sellers.php');?>
 <div id="footer">
 		<div id="footer-nav">
-<?php if ($banner = tep_banner_exists('dynamic', 'footer1')) {  echo  '<div class="footer_links" align="center">' .tep_display_banner    ('static',  $banner)  . '</div>'; }?>
+<?php if ($banner = tep_banner_exists('dynamic', 'footer1')) {  echo tep_display_banner    ('static',  $banner); }?>
 		</div>
                   <p><?php echo TEXT_FOOTER_SIX;?></p>
   <?php if ($banner = tep_banner_exists('dynamic', 'footer')) { 

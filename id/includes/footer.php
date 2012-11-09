@@ -13,7 +13,7 @@
 
 <?php 
 if ($banner = tep_banner_exists('dynamic', 'footer1')) { 
-  echo  '<div class="footer_links" align="center">' .tep_display_banner('static',  $banner) . '</div>'; }?>
+  echo   tep_display_banner('static',  $banner) ; }?>
         
        </div>
           <address class="footer_contacts">
