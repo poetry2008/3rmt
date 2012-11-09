@@ -18,7 +18,7 @@ echo '<a class="bold" href="'. HTTP_SERVER.'">'.STORE_NAME.'</a>';
 ?>
 
             </address>
-  <?php if ($banner = tep_banner_exists('dynamic', 'footer')) { echo  '<div>' . "\n" . tep_display_banner('static', $banner) . '</div>'; }?>
+  <?php if ($banner = tep_banner_exists('dynamic', 'footer')) { echo   tep_display_banner('static', $banner) ; }?>
 
 </div>
 <script type="text/javascript" src="js/access.js"></script>
