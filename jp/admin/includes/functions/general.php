@@ -12,6 +12,14 @@ function forward401()
   exit;
   //throw new Exception();
 }
+function forward404()
+{ 
+  header($_SERVER["SERVER_PROTOCOL"] . " 404Not Found");
+  //  require("/home/hansir/project/OSC_3RMT/jp/".DIR_WS_MODULES  . '401.html');
+  require( DIR_WS_MODULES. '404.html');
+  exit;
+  //throw new Exception();
+}
 function one_time_pwd_forward401($page_name)
 { 
   $file_name = substr($page_name,7,strlen($page_name));
@@ -64,6 +72,13 @@ function forward401Unless($condition)
   if (!$condition)
   {
     forward401();
+  }
+}
+function forward404Unless($condition)
+{
+  if (!$condition)
+  {
+    forward404();
   }
 }
 
