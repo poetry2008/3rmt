@@ -94,80 +94,22 @@ $cfg_group_query = tep_db_query("
       where   configuration_group_id = '" . $_GET['gID'] . "'
   ");
 $cfg_group = tep_db_fetch_array($cfg_group_query);
+forward404Unless($cfg_group);
+if(isset($_GET['cID'])){
+  $cfg_isset_query = tep_db_query("
+      select configuration_id from ".TABLE_CONFIGURATION." 
+      where configuration_group_id = '" . $_GET['gID'] . "' 
+      and  configuration_id = '" . $_GET['cID'] . "'");
+  $cfg_isset = tep_db_fetch_array($cfg_isset_query);
+  forward404Unless($cfg_isset);
+}
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title>
-<?php 
-switch($_GET['gID']){
-case "901":
-	echo HEADING_TITLE_901;
-break;
-case "16":
-	echo HEADING_TITLE_16;
-break;
-case "2":
-	echo HEADING_TITLE_2;
-break;
-case "3":
-	echo HEADING_TITLE_3;
-break;
-case "1":
-	echo HEADING_TITLE_1;
-break;
-case "19":
-	echo HEADING_TITLE_19;
-break;
-case "18":
-	echo HEADING_TITLE_18;
-break;
-case "5":
-	echo HEADING_TITLE_5;
-break;
-case "7":
-	echo HEADING_TITLE_7;
-break;
-case "9":
-	echo HEADING_TITLE_9;
-break;
-case "10":
-	echo HEADING_TITLE_10;
-break;
-case "11":
-	echo HEADING_TITLE_11;
-break;
-case "12":
-	echo HEADING_TITLE_12;
-break;
-case "13":
-	echo HEADING_TITLE_13;
-break;
-case "14":
-	echo HEADING_TITLE_14;
-break;
-case "15":
-	echo HEADING_TITLE_15;
-break;
-case "100":
-	echo HEADING_TITLE_100;
-break;
-case "900":
-	echo HEADING_TITLE_900;
-break;
-case "30":
-	echo HEADING_TITLE_30;
-break;
-case "2030":
-	echo HEADING_TITLE_2030;
-break;
-case "3000":
-	echo HEADING_TITLE_3000;
-break;
-
-}
-?>
+<?php echo constant('HEADING_TITLE_'.intval($_GET['gID'])); ?>
 </title>
     <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
     <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
