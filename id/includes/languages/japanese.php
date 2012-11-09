@@ -477,6 +477,4 @@ define('JUMP_PAGE_TEXT', 'ページへ');
 define('JUMP_PAGE_BUTTON_TEXT', '移動');
 define('TEXT_MANUFACTURERS_PRODUCT_LIST', 'このメーカー一覧の商品一覧へ');
 define('TEXT_MANUFACTURERS_TITLE', 'メーカー一覧');
-//footer
-define('FOOTER_WEBSITE_REGISTRATION','当ウェブサイトに記載されている会社名・製品名・システム名などは、各社の登録商標、もしくは商標です。');
 ?>
