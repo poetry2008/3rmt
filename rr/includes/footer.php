@@ -7,7 +7,7 @@
 <div id="footer">
 <div class="footer_link">
 <?php 
-if ($banner = tep_banner_exists('dynamic', 'footer1')) { echo  '<div align="center">' . "\n" . tep_display_banner('static', $banner) . '</div>'; }?>
+if ($banner = tep_banner_exists('dynamic', 'footer1')) { echo  tep_display_banner('static', $banner) ; }?>
 
 </div>
           <address class="footer_contacts">
