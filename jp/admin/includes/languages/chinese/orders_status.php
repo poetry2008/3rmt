@@ -26,7 +26,7 @@ define('TEXT_INFO_ORDERS_STATUS_MAIL', '邮件文本');
 define('TEXT_INFO_ORDERS_STATUS_TITLE', '邮件标题');
 
 //define('TEXT_EDIT_ORDERS_STATUS_IMAGE', 'メール&#22270;像');
-define('TEXT_EDIT_ORDERS_STATUS_IMAGE', '指定状态图标');
+define('TEXT_EDIT_ORDERS_STATUS_IMAGE', '图标');
 
 define('TEXT_ORDERS_STATUS_FINISHED', '订单完成');
 define('TEXT_ORDERS_STATUS_SET_PRICE_CALCULATION','平均单价的计算条件设置');
@@ -38,7 +38,6 @@ define('TEXT_USER_ADDED','创建者:');
 define('TEXT_USER_UPDATE','更新者:');
 define('TEXT_DATE_ADDED','创建日期:');
 define('TEXT_DATE_UPDATE','更新日期:');
-define('TEXT_ORDERS_STATUS_PIC', '图标');
 define('TEXT_ORDERS_STATUS_OPTION', '选项');
 define('TEXT_ORDERS_STATUS_OPTION_NORMAL', '交易中');
 define('TEXT_ORDERS_STATUS_OPTION_SUCCESS', '交易成功');

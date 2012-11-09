@@ -10,22 +10,17 @@
             </div>
     */ ?>
         <div class="info_foot01">
-        <?php
-         $contents_page = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where status=1 and site_id='".SITE_ID."' order by sort_id"); 
-          while ($result = tep_db_fetch_array($contents_page)) {
-            echo '<a href="'.info_tep_href_link($result['romaji']).'">'.$result['heading_title'].'</a>'; 
-            echo '|'; 
-          }
-        ?>
-          <?php echo '<a href="'.tep_href_link(FILENAME_CONTACT_US,'','SSL').'">'.BOX_INFORMATION_CONTACT.'</a>';?>
-          <?php echo '|';?> 
-          <a href="<?php echo HTTP_SERVER.'/link/';?>">相互リンク</a></div>
+
+<?php 
+if ($banner = tep_banner_exists('dynamic', 'footer1')) { 
+  echo   tep_display_banner('static',  $banner) ; }?>
+        
+       </div>
           <address class="footer_contacts">
-            <font color="#333333">当ウェブサイトに記載されている会社名・製品名・システム名などは、各社の登録商標、もしくは商標です。</font>
-        <?php //echo FOOTER_TEXT_BODY . "\n"; ?><br>
+            <font color="#333333"><?php echo FOOTER_TEXT_BODY. "\n";?></font>
               Copyright&nbsp;&copy;&nbsp;<?php echo date("Y");?>&nbsp;&nbsp;<a class="bold" href="<?php echo tep_href_link(FILENAME_DEFAULT);?>"><?php echo TITLE;?></a>
             </address>
-            <?php if ($banner = tep_banner_exists('dynamic', 'footer')) { echo  '<div align="center" class="info_foot02">' . "\n" . tep_display_banner('static', $banner) . '</div>'; }?>
+            <?php if ($banner = tep_banner_exists('dynamic', 'footer')) { echo  '<div class="info_foot02">' . "\n" . tep_display_banner('static', $banner) . '</div>'; }?>
 
 <?php 
 // 显示SQL执行记录

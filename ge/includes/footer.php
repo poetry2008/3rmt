@@ -4,7 +4,7 @@
 */
 ?>
 <div id="f_menu">
-<?php if ($banner = tep_banner_exists('dynamic', 'footer1')) { echo  '<div align="center">' . "\n" . tep_display_banner('static', $banner) . '</div>'; }?>
+<?php if ($banner = tep_banner_exists('dynamic', 'footer1')) { echo  tep_display_banner('static', $banner); }?>
 </div>
 <div id="footer">
   <address class="copyright">
@@ -15,11 +15,6 @@
   echo  '<div class="footer_links" align="center">' .tep_display_banner('static',
       $banner) . '<br><a href="'.HTTP_SERVER.'">'.STORE_NAME.'</a></div>'; 
 }?>
-<?php
-/*
-<noscript>Some functions Supported by <a href="http://www.ds-style.com">DigitalStudio</a> INC.  Powered by <a href="http://osc.ds-style.com">osCommerce</a></noscript>
-*/
-?>
 <?php 
 if (STORE_DB_TRANSACTIONS && false) {?>
 <div id="debug_info" style="text-align:left;">

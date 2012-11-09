@@ -486,9 +486,4 @@ define('JUMP_PAGE_BUTTON_TEXT', '移動');
 define('TEXT_MANUFACTURERS_PRODUCT_LIST', 'このメーカー一覧の商品一覧へ');
 define('TEXT_MANUFACTURERS_TITLE', 'メーカー一覧');
 define('ORDER_PRODUCT_TEXT', '注文はこちら');
-//footer
-define('FOOTER_FIRST','はじめてのRMT');
-define('FOOTER_RECORDS','特定商取引に基づく表記');
-define('FOOTER_LINKS','相互リンク');
-define('FOOTER_RSS','RSS');
 ?>
