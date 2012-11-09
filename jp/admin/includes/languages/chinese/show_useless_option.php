@@ -13,7 +13,7 @@ define('TEXT_DEL_OPTION_GROUP', '确定删除吗？');
 define('SHOW_USELESS_TEXT_GROUP_PREV', '<前');
 define('SHOW_USELESS_TEXT_GROUP_NEXT', '后>');
 define('SHOW_USELESS_DEL','删除');
-define('SHOW_USELESS_ALL_DEL','全选');
+define('SHOW_USELESS_ALL_SELECTED','全选');
 define('SHOW_USELESS_OPTION_GROUP_SELECT','选择');
 define('SHOW_USELESS_OPTION_GROUP_ALERT','请选择!');
 define('SHOW_USELESS_OPTION_GROUP_CONFIRM','删除吗？');

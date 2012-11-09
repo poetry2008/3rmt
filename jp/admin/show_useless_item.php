@@ -367,7 +367,7 @@ echo $item_split->display_links($num_rows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPL
 </td>
 </tr>
 <td align="right">
-<button onclick="del();"><?php echo SHOW_USELESS_OPTION_ITEM_DEL_LINK;?></button>&nbsp;<button onclick="del_all();" ><?php echo SHOW_USELESS_OPTION_ITEM_ALL_DEL_LINK;?></button>
+<button onclick="del();"><?php echo SHOW_USELESS_OPTION_ITEM_DEL_LINK;?></button>&nbsp;<button onclick="del_all();" ><?php echo SHOW_USELESS_OPTION_ITEM_ALL_SELECTED_LINK;?></button>
 </td>
 </td></tr></table></td></tr>
 </table>

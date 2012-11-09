@@ -286,7 +286,7 @@ echo $group_split->display_links($num_rows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISP
 <td>
 <table width="100%">
 <tr><td align="right">
-<button onclick="del();"><?php echo SHOW_USELESS_DEL;?></button>&nbsp;&nbsp;&nbsp;<button onclick="del_all();" ><?php echo SHOW_USELESS_ALL_DEL;?></button>
+<button onclick="del();"><?php echo SHOW_USELESS_DEL;?></button>&nbsp;&nbsp;&nbsp;<button onclick="del_all();" ><?php echo SHOW_USELESS_ALL_SELECTED;?></button>
  </td></tr>
 </table>
 </td>
