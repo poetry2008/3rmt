@@ -5,7 +5,7 @@
 		</div>
             <p><?php echo FOOTER_TEXT_BODY. "\n";?></p>
   <?php if ($banner = tep_banner_exists('dynamic', 'footer')) { 
-  echo  '<div class="footer_links" >' .tep_display_banner('static',
+  echo  '<div align="center" class="footer_links" >' .tep_display_banner('static',
       $banner) . '<br><a href="'.HTTP_SERVER.'">'.STORE_NAME.'</a></div>'; 
 }?>
 <script type="text/javascript" src="js/access.js"></script>
