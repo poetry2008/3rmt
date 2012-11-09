@@ -42,5 +42,3 @@ echo '<a class = "bold" href="'.tep_href_link('/').'" ><strong>'.STORE_NAME.'</s
 
 </address>
 </div>
-<script type="text/javascript" src="js/access.js"></script>
-<noscript><img src="axs/dsw.cgi?pg=RMT&amp;&amp;p=g&amp;&amp;md=nj" alt="" height="1" width="1" ></noscript>
