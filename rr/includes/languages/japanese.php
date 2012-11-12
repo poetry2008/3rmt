@@ -477,4 +477,6 @@ define('TEXT_TIME_LINK', 'から');
 define('TEXT_JAVASCRIPT_ERROR','JavaScriptまたはCookieの設定がオンになっていません。お手数ですが設定を「オン」にして、ご利用ください。<br>※ 設定がオフになっていますと、ご利用いただけないサービスがあります。');
 define('JUMP_PAGE_TEXT', 'ページへ');
 define('JUMP_PAGE_BUTTON_TEXT', '移動');
+//footer
+define('FOOTER_CONSULTATION', 'お問い合わせ');
 ?>

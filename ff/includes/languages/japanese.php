@@ -479,5 +479,4 @@ define('JUMP_PAGE_TEXT', 'ページへ');
 define('JUMP_PAGE_BUTTON_TEXT', '移動');
 //footer
 define('FOOTER_CONSULTATION','お問い合わせ');
-define('FOOTER_LINKS','相互リンク');
 ?>
