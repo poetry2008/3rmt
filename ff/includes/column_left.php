@@ -52,4 +52,4 @@ include(DIR_WS_BOXES . 'login.php');
    require(DIR_WS_BOXES . 'banners.php');
   }*/
 ?>
-  <div class="link_banner"><a href="<?php echo  tep_href_link(FILENAME_CONTACT_US,'','SSL') ;?>"><?php echo  tep_image(DIR_WS_IMAGES.'contact_us_img.gif',FOOTER_CONSULTATION) ?></a></div>
+  <div class="link_banner"><a href="<?php echo  tep_href_link(FILENAME_CONTACT_US,'','SSL') ;?>"><?php echo  tep_image(DIR_WS_IMAGES.'contact_us_img.gif',BOX_INFORMATION_CONTACT) ?></a></div>
