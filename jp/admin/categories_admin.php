@@ -176,9 +176,7 @@ require("includes/note_js.php");
       <td class="smallText" width="60" align="right" nowrap>
         <div id="gotomenu">
           <a href="javascript:void(0)" onclick="display()"><?php echo CATEGORY_ADMIN_CATREE_TITLE;?></a>
-                 </div>
-    <?php //echo tep_draw_form('goto', FILENAME_CATEGORIES_ADMIN, '', 'get') . "\n"; ?> <?php //echo HEADING_TITLE_GOTO . ' ' . tep_draw_pull_down_menu('cPath', tep_get_category_tree_cpath(), $current_category_id, 'onChange="this.form.submit();"') . "\n"; ?><!--</form>-->
-      
+        </div>
       </td>
     </tr>
  <tr>
@@ -275,17 +273,6 @@ require("includes/note_js.php");
   <td class="dataTableHeadingContent" align="center" ><?php echo TABLE_HEADING_CATEGORIES_NOW_PRICE;?></td>
   <td class="dataTableHeadingContent" align="center" ><?php echo TABLE_HEADING_CATEGORIES_SETTING_PRICE;?></td>
   <td class="dataTableHeadingContent" align="center" ><?php echo TABLE_HEADING_CATEGORIES_CHAE;?></td>
-  <?php /*
-  <td class="dataTableHeadingContent" align="center" <?php if ($ocertify->npermission < 10) {?>width='1'<?php } else {?>width='180'<?php }?>>
-  <div class="datatablecontent_warpper">
-  <?php
-  if ($ocertify->npermission >7) {
-    echo  TABLE_HEADING_STATUS; 
-  }
-  ?>
-  </div>
-  </td>
-  */ ?>
   <td class="dataTableHeadingContent" align="center">&nbsp;</td>
   </tr>
   <!--dataTableHeadingRow end-->
@@ -367,24 +354,7 @@ while ($categories = tep_db_fetch_array($categories_query)) {
   </td>
   <td class="dataTableContent" align="right" colspan="<?php echo 9 + $count_dougyousya['cnt'];?>">&nbsp;</td>
   <td class="dataTableContent5" align="center">&nbsp;</td>
-<?php /*
-<td class="dataTableContent4" align="center"><?php if ($ocertify->npermission == 15 or $ocertify->npermission == 10) {?>
-<?php //if (!isset($_GET['cPath']) or !$_GET['cPath']){?>
-<?php $c_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';?>
-                <?php if($categories['categories_status'] == '1'){?>
-                  <a href="<?php echo tep_href_link(FILENAME_CATEGORIES_ADMIN, 'action=toggle&cID='.$categories['categories_id'].'&status=0&cPath='.$HTTP_GET_VARS['cPath'].$c_page);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', '');?></a> <a href="<?php echo tep_href_link(FILENAME_CATEGORIES_ADMIN, 'action=toggle&cID='.$categories['categories_id'].'&status=2&cPath='.$HTTP_GET_VARS['cPath'].$c_page);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_blue_light.gif', '');?></a> <?php echo tep_image(DIR_WS_IMAGES .  'icon_status_red.gif', '');?> <a href="<?php echo tep_href_link(FILENAME_CATEGORIES_ADMIN, 'action=toggle&cID='.$categories['categories_id'].'&status=3&cPath='.$HTTP_GET_VARS['cPath'].$c_page);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_black_light.gif', '');?></a>
-                <?php } else if($categories['categories_status'] == '2'){?>
-                  <a href="<?php echo tep_href_link(FILENAME_CATEGORIES_ADMIN, 'action=toggle&cID='.$categories['categories_id'].'&status=0&cPath='.$HTTP_GET_VARS['cPath'].$c_page);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', '');?></a> <?php echo tep_image(DIR_WS_IMAGES .  'icon_status_blue.gif', '');?> <a href="<?php echo tep_href_link(FILENAME_CATEGORIES_ADMIN, 'action=toggle&cID='.$categories['categories_id'].'&status=1&cPath='.$HTTP_GET_VARS['cPath'].$c_page);?>"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_red_light.gif', '');?></a> <a href="<?php echo tep_href_link(FILENAME_CATEGORIES_ADMIN, 'action=toggle&cID='.$categories['categories_id'].'&status=3&cPath='.$HTTP_GET_VARS['cPath'].$c_page);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_black_light.gif', '');?></a>
-                <?php } else if ($categories['categories_status'] == '3') {?>
-                  <a href="<?php echo tep_href_link(FILENAME_CATEGORIES_ADMIN, 'action=toggle&cID='.$categories['categories_id'].'&status=0&cPath='.$HTTP_GET_VARS['cPath'].$c_page);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', '');?></a> <a href="<?php echo tep_href_link(FILENAME_CATEGORIES_ADMIN, 'action=toggle&cID='.$categories['categories_id'].'&status=2&cPath='.$HTTP_GET_VARS['cPath'].$c_page);?>"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_blue_light.gif', '');?></a> <a href="<?php echo tep_href_link(FILENAME_CATEGORIES_ADMIN, 'action=toggle&cID='.$categories['categories_id'].'&status=1&cPath='.$HTTP_GET_VARS['cPath'].$c_page);?>"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_red_light.gif', '');?></a> <?php echo tep_image(DIR_WS_IMAGES . 'icon_status_black.gif', '');?>
-                <?php } else {?>
-                  <?php echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', '');?> <a href="<?php echo tep_href_link(FILENAME_CATEGORIES_ADMIN, 'action=toggle&cID='.$categories['categories_id'].'&status=2&cPath='.$_GET['cPath'].$c_page);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_blue_light.gif', '');?></a> <a href="<?php echo tep_href_link(FILENAME_CATEGORIES_ADMIN, 'action=toggle&cID='.$categories['categories_id'].'&status=1&cPath='.$_GET['cPath'].$c_page);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', '');?></a> <a href="<?php echo tep_href_link(FILENAME_CATEGORIES_ADMIN, 'action=toggle&cID='.$categories['categories_id'].'&status=3&cPath='.$HTTP_GET_VARS['cPath'].$c_page);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_black_light.gif', '');?></a>
-                <?php }?>
-            <?php //}?>
-<?php }?>
-</td>
-*/?>
-<td>&nbsp;</td>
+  <td>&nbsp;</td>
 </tr>
   <!--dataTableRowSelected end-->
 <?php }
@@ -657,7 +627,6 @@ if ($ocertify->npermission >= 10) { //表示制限
   } else {
     echo tep_image(DIR_WS_ICONS . 'signal_blink.gif', $last_modified);
   }
-  //echo '&nbsp;&nbsp;' . tep_image(DIR_WS_ICONS . 'battery_0.gif', '数量異常');
   ?>
   <input type="hidden" name="this_price[]" value="<?php echo (int)$special_price_check;?>" >
   <input type="hidden" name="proid[]"      value="<?php echo $products['products_id']; ?>" >
@@ -681,8 +650,6 @@ if ($cPath_array) {
   }
 }
 
-//$cPath_yobi=cpathPart($cPath_back);
-
 /* リスト表示に必要な情報を得る */
 if(empty($cPath_back)&&empty($cID)&&isset($cPath)){ 
   $res_list=tep_db_query("select parent_id from categories where categories_id
@@ -690,9 +657,6 @@ if(empty($cPath_back)&&empty($cID)&&isset($cPath)){
   $col_list=tep_db_fetch_array($res_list);
   $cPath_yobi=$col_list['parent_id'];
 }
-
-//$cPath_back = isset($cPath_back) && $cPath_back ? 'cPath=' . $cPath_back : '';
-
 ?>
 <!--dataTableRowSelected-->
 <tr>
