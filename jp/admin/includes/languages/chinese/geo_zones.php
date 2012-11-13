@@ -29,8 +29,8 @@ define('TEXT_INFO_EDIT_SUB_ZONE_INTRO', '请加上必要的变更');
 define('TEXT_INFO_HEADING_DELETE_SUB_ZONE', '删除下属地域');
 define('TEXT_INFO_DELETE_SUB_ZONE_INTRO', '确定要删除这个下属地域吗?');
 
-define('TEXT_INFO_DATE_ADDED', '创建日期:');
-define('TEXT_INFO_LAST_MODIFIED', '更新日期:');
+define('TEXT_INFO_DATE_ADDED', '创建日:');
+define('TEXT_INFO_LAST_MODIFIED', '更新日:');
 define('TEXT_INFO_ZONE_NAME', '地域名:');
 define('TEXT_INFO_ZONE_DESCRIPTION', '说明:');
 define('TEXT_INFO_COUNTRY', '国名:');

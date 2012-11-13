@@ -1302,15 +1302,23 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           tep_draw_textarea_field('comment', 'soft', '30', '5', $pwInfo->comment, 'class="pw_textarea"'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_MEMO . '<br>' .
           tep_draw_textarea_field('memo', 'soft', '30', '5', $pwInfo->memo, 'class="pw_textarea"'));
-      
-      $contents[] = array('align' => '','text' => '<br>' . TEXT_USER_ADDED .  '&nbsp;&nbsp;&nbsp;' .
-          $pwInfo->user_added);
-      $contents[] = array('align' => '','text' => '<br>' . TEXT_INFO_CREATED .  '&nbsp;&nbsp;&nbsp;' .
-          $pwInfo->created_at);
-      $contents[] = array('align' => '','text' => '<br>' . TEXT_INFO_OPRATER . '&nbsp;&nbsp;&nbsp;' .
-          $pwInfo->update_user);
-      $contents[] = array('align' => '','text' => '<br>' . TEXT_INFO_UPDATED . '&nbsp;&nbsp;&nbsp;' .
-          $pwInfo->updated_at);
+     if(tep_not_null($pwInfo->user_added)){ 
+      $contents[] = array('align' => '','text' =>  TEXT_USER_ADDED .  '&nbsp;&nbsp;&nbsp;' . $pwInfo->user_added);
+     }else{
+      $contents[] = array('align' => '','text' =>  TEXT_USER_ADDED .  '&nbsp;&nbsp;&nbsp;' . TEXT_UNSET_DATA);
+     }if(tep_not_null($pwInfo->created_at)){
+      $contents[] = array('align' => '','text' =>  TEXT_INFO_CREATED .  '&nbsp;&nbsp;&nbsp;' . $pwInfo->created_at);
+     }else{
+      $contents[] = array('align' => '','text' =>  TEXT_INFO_CREATED .  '&nbsp;&nbsp;&nbsp;' . TEXT_UNSET_DATA);
+     }if(tep_not_null($pwInfo->update_user)){
+      $contents[] = array('align' => '','text' =>  TEXT_INFO_OPRATER . '&nbsp;&nbsp;&nbsp;' .  $pwInfo->update_user);
+     }else{
+      $contents[] = array('align' => '','text' =>  TEXT_INFO_OPRATER . '&nbsp;&nbsp;&nbsp;' .  TEXT_UNSET_DATA);
+     }if(tep_not_null($pwInfo->updated_at)){
+      $contents[] = array('align' => '','text' =>  TEXT_INFO_UPDATED . '&nbsp;&nbsp;&nbsp;' .   $pwInfo->updated_at);
+     }else{
+      $contents[] = array('align' => '','text' =>  TEXT_INFO_UPDATED . '&nbsp;&nbsp;&nbsp;' .   TEXT_UNSET_DATA);
+     }
           }
     break;
 }

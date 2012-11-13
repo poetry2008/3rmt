@@ -3860,7 +3860,7 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
     $str .= '</td>'; 
     $str .= '</tr>'; 
   }
-
+if(tep_not_null($orders['user_added']) && tep_not_null($orders['customers_name'])){
 	$str .= '<tr>';
 	$str .= '<td class="main">';  
 	$str .= TEXT_USER_ADDED;
@@ -3873,8 +3873,18 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
 	}	
 	$str .= '</td>';
 	$str .= '</tr>';
+}else{
+	$str .= '<tr>';
+	$str .= '<td class="main">';  
+	$str .= TEXT_USER_ADDED;
+	$str .= '</td>';
+	$str .= '<td class="main">';
+        $str .= TEXT_UNSET_DATA;	
+	$str .= '</td>';
+	$str .= '</tr>';
 
-  $str .= '<tr>';	
+}if(tep_not_null($orders['date_purchased'])){
+        $str .= '<tr>';	
 	$str .= '<td class="main">';  
 	$str .= TEXT_DATE_ADDED;
 	$str .= '</td>';
@@ -3882,8 +3892,18 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
 	$str .= $orders['date_purchased'];
 	$str .= '</td>';
 	$str .= '</tr>';
+}else{
+        $str .= '<tr>';	
+	$str .= '<td class="main">';  
+	$str .= TEXT_DATE_ADDED;
+	$str .= '</td>';
+	$str .= '<td class="main">';
+	$str .= TEXT_UNSET_DATA;
+	$str .= '</td>';
+	$str .= '</tr>';
 
-  $str .= '<tr>';	
+}if(tep_not_null($orders['user_update'])){
+        $str .= '<tr>';	
 	$str .= '<td class="main">';  
 	$str .= TEXT_USER_UPDATE;
 	$str .= '</td>';
@@ -3891,7 +3911,16 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
   $str .= $orders['user_update'];	
 	$str .= '</td>';
 	$str .= '</tr>';
-  
+}else{
+        $str .= '<tr>';	
+	$str .= '<td class="main">';  
+	$str .= TEXT_USER_UPDATE;
+	$str .= '</td>';
+	$str .= '<td class="main">';
+        $str .= TEXT_UNSET_DATA;	
+	$str .= '</td>';
+	$str .= '</tr>';
+}if(tep_not_null($orders['last_modified'])){ 
         $str .= '<tr>';	
 	$str .= '<td class="main">';  
 	$str .= TEXT_DATE_UPDATE;
@@ -3900,6 +3929,16 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
 	$str .= $orders['last_modified'];
 	$str .= '</td>';
 	$str .= '</tr>';
+}else{
+        $str .= '<tr>';	
+	$str .= '<td class="main">';  
+	$str .= TEXT_DATE_UPDATE;
+	$str .= '</td>';
+	$str .= '<td class="main">';
+	$str .= TEXT_UNSET_DATA;
+	$str .= '</td>';
+	$str .= '</tr>';
+}
 
 
 

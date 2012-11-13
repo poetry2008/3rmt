@@ -405,10 +405,23 @@ if (isset($_GET['latest_news_id']) and $latest_news['news_id'] == $_GET['latest_
             $contents[] = array('align' => 'center', 
                                 'text' => '<a href="' .  tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $selected_item['news_id'] .  '&action=new_latest_news') .  (isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):'').'">' . tep_html_element_button(IMAGE_EDIT) . '</a> <a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $selected_item['news_id'] .  '&action=delete_latest_news'.  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').  (isset($_GET['page'])?('&page='.$_GET['page']):'')) .  '">' . tep_html_element_button(IMAGE_DELETE) .  '</a>');
             $contents[] = array('text' => '<br>' . $selected_item['content']);
-$contents[] = array('text' => '<br>' .TEXT_USER_ADDED. $selected_item['author']);
-$contents[] = array('text' => '<br>' .TEXT_DATE_ADDED. $selected_item['date_added']);
-$contents[] = array('text' => '<br>' .TEXT_USER_UPDATE. $selected_item['update_editor']);
-$contents[] = array('text' => '<br>' .TEXT_DATE_UPDATE. date("Y-m-d H:i:s",$selected_item['latest_update_date']));
+if(tep_not_null($selected_item['author'])){
+$contents[] = array('text' => TEXT_USER_ADDED.'&nbsp;'. $selected_item['author']);
+}else{
+$contents[] = array('text' => TEXT_USER_ADDED.'&nbsp;'. TEXT_UNSET_DATA);
+}if(tep_not_null($selected_item['date_added'])){
+$contents[] = array('text' => TEXT_DATE_ADDED. '&nbsp;'.$selected_item['date_added']);
+}else{
+$contents[] = array('text' => TEXT_DATE_ADDED. '&nbsp;'.TEXT_UNSET_DATA);
+}if(tep_not_null($selected_item['update_editor'])){
+$contents[] = array('text' => TEXT_USER_UPDATE. '&nbsp;'.$selected_item['update_editor']);
+}else{
+$contents[] = array('text' => TEXT_USER_UPDATE. '&nbsp;'.TEXT_UNSET_DATA);
+}if(tep_not_null($selected_item['latest_update_date'])){
+$contents[] = array('text' => TEXT_DATE_UPDATE. '&nbsp;'.date("Y-m-d H:i:s",$selected_item['latest_update_date']));
+}else{
+$contents[] = array('text' => TEXT_DATE_UPDATE. '&nbsp;'.TEXT_UNSET_DATA);
+}
           }
         } else { // create category/product info
           $heading[] = array('text' => '<b>' . EMPTY_CATEGORY . '</b>');

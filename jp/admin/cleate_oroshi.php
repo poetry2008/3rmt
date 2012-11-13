@@ -410,12 +410,26 @@ if(empty($HTTP_GET_VARS['id'])){
     $oroshi_query = tep_db_query("select * from set_oroshi_names where oroshi_id = '".$HTTP_GET_VARS['id']."'");
     $oroshi = tep_db_fetch_array($oroshi_query);
     echo '<table width="100%" cellspacing="0" cellpadding="2" border="0">
-    <tr><td class="infoBoxContent" align="left"><b>'.$oroshi['oroshi_name'].'</b></td></tr>
-    <tr><td>'.TEXT_USER_ADDED.'</td><td>'.$oroshi['user_added'].'</td></tr>
-    <tr><td>'.TEXT_DATE_ADDED.'</td><td>'.$oroshi['date_added'].'</td></tr>
-    <tr><td>'.TEXT_USER_UPDATE.'</td><td>'.$oroshi['user_update'].'</td></tr>
-    <tr><td>'.TEXT_DATE_UPDATE.'</td><td>'.$oroshi['date_update'].'</td></tr>
-    </table>';
+    <tr><td class="infoBoxContent"
+    align="left"><b>'.$oroshi['oroshi_name'].'</b></td></tr>';
+    if(tep_not_null($oroshi['user_added'])){  
+    echo '<tr><td>'.TEXT_USER_ADDED.'&nbsp;'.$oroshi['user_added'].'</td></tr>';
+    }else{
+    echo '<tr><td>'.TEXT_USER_ADDED.'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';
+    }if(tep_not_null($oroshi['date_added'])){
+    echo '<tr><td>'.TEXT_DATE_ADDED.'&nbsp;'.$oroshi['date_added'].'</td></tr>';
+    }else{
+    echo '<tr><td>'.TEXT_DATE_ADDED.'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';
+    }if(tep_not_null($oroshi['user_update'])){
+    echo '<tr><td>'.TEXT_USER_UPDATE.'&nbsp;'.$oroshi['user_update'].'</td></tr>';
+    }else{
+    echo '<tr><td>'.TEXT_USER_UPDATE.'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';
+    }if(tep_not_null($oroshi['date_update'])){
+    echo '<tr><td>'.TEXT_DATE_UPDATE.'&nbsp;'.$oroshi['date_update'].'</td></tr>';
+    }else{
+    echo '<tr><td>'.TEXT_DATE_UPDATE.'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';
+    }
+    echo '</table>';
     ?></td>
   </tr>
 </table>

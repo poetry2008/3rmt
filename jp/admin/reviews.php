@@ -597,10 +597,23 @@ require("includes/note_js.php");
         $contents[] = array('align' => 'center', 'text' => 
           '<a href="' . tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] .  '&rID=' . $rInfo->reviews_id . '&action=edit' .  (isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a>' . ($ocertify->npermission == 15 ? (' <a href="' .  tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' .  $rInfo->reviews_id . '&action=delete' .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'):'')
         );
-$contents[] = array('text' => '<br>'. TEXT_USER_ADDED. ' ' .$rInfo->customers_name);
-$contents[] = array('text' => '<br>'. TEXT_DATE_ADDED. ' ' .tep_datetime_short($rInfo->date_added));
-$contents[] = array('text' => '<br>'. TEXT_USER_UPDATE. ' ' .$rInfo->user_update);
-$contents[] = array('text' => '<br>'. TEXT_DATE_UPDATE. ' ' .tep_datetime_short($rInfo->last_modified));
+if(tep_not_null($rInfo->customers_name)){
+$contents[] = array('text' =>  TEXT_USER_ADDED. ' ' .$rInfo->customers_name);
+}else{
+$contents[] = array('text' =>  TEXT_USER_ADDED. ' ' .TEXT_UNSET_DATA);
+}if(tep_not_null($rInfo->date_added)){
+$contents[] = array('text' =>  TEXT_DATE_ADDED. ' ' .tep_datetime_short($rInfo->date_added));
+}else{
+$contents[] = array('text' =>  TEXT_DATE_ADDED. ' ' .TEXT_UNSET_DATA);
+}if(tep_not_null($rInfo->user_update)){
+$contents[] = array('text' =>  TEXT_USER_UPDATE. ' ' .$rInfo->user_update);
+}else{
+$contents[] = array('text' =>  TEXT_USER_UPDATE. ' ' .TEXT_UNSET_DATA);
+}if(tep_not_null($rInfo->last_modified)){
+$contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .tep_datetime_short($rInfo->last_modified));
+}else{
+$contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .TEXT_UNSET_DATA);
+}
 
 //        $contents[] = array('text' => '<br>' . TEXT_INFO_DATE_ADDED . ' ' . tep_date_short($rInfo->date_added));
 //        if (tep_not_null($rInfo->last_modified)) $contents[] = array('text' => TEXT_INFO_LAST_MODIFIED . ' ' . tep_date_short($rInfo->last_modified));

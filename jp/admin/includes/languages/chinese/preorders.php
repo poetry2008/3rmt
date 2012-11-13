@@ -53,7 +53,7 @@ define('ENTRY_SHIPPING', '发送:');
 define('ENTRY_TOTAL', '合计:');
 define('ENTRY_DATE_PURCHASED', '订购日期:');
 define('ENTRY_STATUS', '状态:');
-define('ENTRY_DATE_LAST_UPDATED', '更新日期:');
+define('ENTRY_DATE_LAST_UPDATED', '更新日:');
 define('ENTRY_NOTIFY_CUSTOMER', '告知处理情况:');
 define('ENTRY_NOTIFY_COMMENTS', '添加评论:');
 define('ENTRY_PRINTABLE', '打印交货单');
@@ -63,7 +63,7 @@ define('TEXT_INFO_HEADING_DELETE_ORDER', '删除订单');
 define('TEXT_INFO_DELETE_INTRO', '确定删除这个订单吗?');
 define('TEXT_INFO_RESTOCK_PRODUCT_QUANTITY', '恢复库存'); // 'Restock product quantity'
 define('TEXT_DATE_ORDER_CREATED', '预约日期:');
-define('TEXT_DATE_ORDER_LAST_MODIFIED', '更新日期:');
+define('TEXT_DATE_ORDER_LAST_MODIFIED', '更新日:');
 define('TEXT_INFO_PAYMENT_METHOD', '支付方式:');
 
 define('TEXT_ALL_ORDERS', '全部订单');

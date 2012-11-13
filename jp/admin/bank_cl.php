@@ -305,20 +305,35 @@ if($_GET['action'] == 'success') {
     $bank_rows = tep_db_fetch_array($sql);
     $html_str = '';
     if($bank_rows){
+      if(tep_not_null($bank_rows['user_update'])){
     $html_str .= '<tr>'; 
     $html_str .= '<td style="padding-top:10px;">';
     $html_str .= TEXT_USER_UPDATE;
     $html_str .= '&nbsp;'.$bank_rows['user_update'];
     $html_str .= '</td>';
     $html_str .= '</tr>';
-
+      }else{
+    $html_str .= '<tr>'; 
+    $html_str .= '<td style="padding-top:10px;">';
+    $html_str .= TEXT_USER_UPDATE;
+    $html_str .= '&nbsp;'.TEXT_UNSET_DATA;
+    $html_str .= '</td>';
+    $html_str .= '</tr>';
+      }if(tep_not_null($bank_rows['date_update'])){
     $html_str .= '<tr>'; 
     $html_str .= '<td style="padding-bottom:10px;">';
     $html_str .= TEXT_DATE_UPDATE;
     $html_str .= '&nbsp;'.$bank_rows['date_update'];
     $html_str .= '</td>';
     $html_str .= '</tr>';
-
+      }else{
+    $html_str .= '<tr>'; 
+    $html_str .= '<td style="padding-bottom:10px;">';
+    $html_str .= TEXT_DATE_UPDATE;
+    $html_str .= '&nbsp;'.TEXT_UNSET_DATA;
+    $html_str .= '</td>';
+    $html_str .= '</tr>'; 
+      }
     }
     echo $html_str;
 ?>

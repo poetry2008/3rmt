@@ -4017,15 +4017,28 @@ tep_display_google_results(FILENAME_CATEGORIES);
                 'align' => 'left',
                 'text' => '<a href="'. tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $cPath . '&cID=' . $cInfo->categories_id . '&action=edit_keyword'.($_GET['search']?'&search='.$_GET['search']:'')) .  '">'.tep_html_element_button(TEXT_KEYWORD, '', 'element_button01') . '</a> ');
             }
-}
-            $contents[] = array('text' => '<br>' . TEXT_USER_ADDED . ' ' . $cInfo->user_added);
-            $contents[] = array('text' =>  '<br>' .TEXT_DATE_ADDED . ' ' . tep_datetime_short($cInfo->date_added));
+}           if(tep_not_null($cInfo->user_added)){
+            $contents[] = array('text' =>  TEXT_USER_ADDED . ' ' . $cInfo->user_added);
+             }else{
+            $contents[] = array('text' =>  TEXT_USER_ADDED . ' ' . TEXT_UNSET_DATA);
+             }
+           if(tep_not_null($cInfo->date_added)){
+            $contents[] = array('text' =>  TEXT_DATE_ADDED . ' ' . tep_datetime_short($cInfo->date_added));
+           }else{
+            $contents[] = array('text' =>  TEXT_DATE_ADDED . ' ' . TEXT_UNSET_DATA);
+           }
 
+	    if (tep_not_null($cInfo->user_last_modified)) {
+                    $contents[] = array('text' =>  TEXT_USER_UPDATE . ' ' . $cInfo->user_last_modified);
+            }else{
+                    $contents[] = array('text' =>  TEXT_USER_UPDATE . ' ' . TEXT_UNSET_DATA);
+            }
+          
 	    if (tep_not_null($cInfo->last_modified)) {
-                    $contents[] = array('text' => '<br>' . TEXT_USER_UPDATE . ' ' . $cInfo->user_last_modified);
-
-		    $contents[] = array('text' => '<br>' . TEXT_LAST_MODIFIED . ' ' . tep_datetime_short($cInfo->last_modified));
-	    }
+		    $contents[] = array('text' => TEXT_LAST_MODIFIED . ' ' . tep_datetime_short($cInfo->last_modified));
+	    }else{
+		    $contents[] = array('text' => TEXT_LAST_MODIFIED . ' ' . TEXT_UNSET_DATA);
+            }
             $contents[] = array('text' => '<br>' . tep_info_image('categories/'.$cInfo->categories_image, $cInfo->categories_name, HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT, 0) . '<br>' . $cInfo->categories_image);
             $contents[] = array('text' => '<br>' . TEXT_SUBCATEGORIES . ' ' . $cInfo->childs_count . '<br>' . TEXT_PRODUCTS . ' ' . $cInfo->products_count);
           } elseif (isset($pInfo) && is_object($pInfo)) { // product info box contents
@@ -4059,14 +4072,24 @@ tep_display_google_results(FILENAME_CATEGORIES);
             }
 }else{
             $contents[] = array('align' => 'left', 'text' => '<a href="' .  tep_href_link(FILENAME_REVIEWS, 'cPath=' . $cPath . '&products_id=' . $pInfo->products_id . '&action=new') . '">' . tep_html_element_button(IMAGE_REVIEWS) . '</a>');
-}
-            $contents[] = array('text' => '<br>' . TEXT_USER_ADDED .' ' . $pInfo->products_user_added);
-            $contents[] = array('text' => '<br>' . TEXT_DATE_ADDED . ' ' . tep_datetime_short($pInfo->products_date_added));
-	    if (tep_not_null($pInfo->products_last_modified)){
-        $contents[] = array('text' => '<br>' . TEXT_USER_UPDATE .' ' . $pInfo->products_user_update);
-	$contents[] = array('text' => '<br>'.TEXT_LAST_MODIFIED . ' ' . tep_datetime_short($pInfo->products_last_modified));
-        
-	    }
+}           if(tep_not_null($pInfo->products_user_added)){
+            $contents[] = array('text' => TEXT_USER_ADDED .'&nbsp;' . $pInfo->products_user_added);
+            }else{
+            $contents[] = array('text' => TEXT_USER_ADDED .'&nbsp;' . TEXT_UNSET_DATA);
+            }if(tep_not_null($pInfo->products_date_added)){
+            $contents[] = array('text' => TEXT_DATE_ADDED . '&nbsp;' . tep_datetime_short($pInfo->products_date_added));
+            }else{
+            $contents[] = array('text' => TEXT_DATE_ADDED . '&nbsp;' . TEXT_UNSET_DATA);
+            }
+	    if (tep_not_null($pInfo->products_user_update)){
+            $contents[] = array('text' =>  TEXT_USER_UPDATE .'&nbsp;' . $pInfo->products_user_update);
+            }else{
+            $contents[] = array('text' =>  TEXT_USER_UPDATE .'&nbsp;' . TEXT_UNSET_DATA);
+            }if(tep_not_null($pInfo->products_last_modified)){
+            $contents[] = array('text' => TEXT_LAST_MODIFIED . '&nbsp;' . tep_datetime_short($pInfo->products_last_modified));
+            }else{
+            $contents[] = array('text' => TEXT_LAST_MODIFIED . '&nbsp;' . TEXT_UNSET_DATA);
+            }
             if (date('Y-m-d') < $pInfo->products_date_available) $contents[] = array('text' => TEXT_DATE_AVAILABLE . ' ' . tep_date_short($pInfo->products_date_available));
             $contents[] = array('text' => '<br>' . tep_info_image('products/'.$pInfo->products_image, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 0) . '<br>' . $pInfo->products_image);
             if($pInfo->products_image2) {

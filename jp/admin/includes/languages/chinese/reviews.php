@@ -26,7 +26,7 @@ define('ENTRY_RATING', '评分:');
 define('TEXT_INFO_DELETE_REVIEW_INTRO', '确定删除这个评论吗?');
 
 define('TEXT_INFO_DATE_ADDED', '投稿日期:');
-define('TEXT_INFO_LAST_MODIFIED', '更新日期:');
+define('TEXT_INFO_LAST_MODIFIED', '更新日:');
 define('TEXT_INFO_IMAGE_NONEXISTENT', '图片不存在');
 define('TEXT_INFO_REVIEW_AUTHOR', '投稿人:');
 define('TEXT_INFO_REVIEW_RATING', '评分:');
@@ -39,9 +39,9 @@ define('TEXT_GOOD', '<small><font color="#ff0000"><b>好</b></font></small>');
 define('TEXT_BAD', '<small><font color="#ff0000"><b>差</b></font></small>');
 define('TEXT_INFO_HEADING_DELETE_REVIEW', '删除评论');
 define('TEXT_USER_ADDED','投稿人:');
-define('TEXT_USER_UPDATE','更新日期:');
+define('TEXT_USER_UPDATE','更新日:');
 define('TEXT_DATE_ADDED','投稿日期:');
-define('TEXT_DATE_UPDATE','更新日期:');
+define('TEXT_DATE_UPDATE','更新日:');
 define('TEXT_NO_NAME','匿名');
 
 ?>

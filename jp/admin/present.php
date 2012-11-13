@@ -885,10 +885,23 @@ default:
             $present[] = array('align' => 'center', 'text' => '<br><br><a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=view') . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a> <a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=deleform') . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a> <a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action','page')) . 'cID=' . $cID . '&action=list') . '">' .  tep_html_element_button(PRESENT_LIST) . '</a>' );
 $present_query = tep_db_query("select * from present_goods where goods_id='".$cID."'");
 $present_array = tep_db_fetch_array($present_query);
-$present[] = array('text' => '<br>'. TEXT_USER_ADDED. ' ' .$present_array['user_added']);
-$present[] = array('text' => '<br>'. TEXT_DATE_ADDED. ' ' .tep_datetime_short($present_array['date_added']));
-$present[] = array('text' => '<br>'. TEXT_USER_UPDATE. ' ' .$present_array['user_update']);
-$present[] = array('text' => '<br>'. TEXT_DATE_UPDATE. ' ' .tep_datetime_short($present_array['date_update']));
+if(tep_not_null($present_array['user_added'])){
+$present[] = array('text' =>  TEXT_USER_ADDED. ' ' .$present_array['user_added']);
+}else{
+$present[] = array('text' =>  TEXT_USER_ADDED. ' ' .TEXT_UNSET_DATA);
+}if(tep_not_null($present_array['date_added'])){
+$present[] = array('text' =>  TEXT_DATE_ADDED. ' ' .tep_datetime_short($present_array['date_added']));
+}else{
+$present[] = array('text' =>  TEXT_DATE_ADDED. ' ' .TEXT_UNSET_DATA);
+}if(tep_not_null($present_array['user_update'])){
+$present[] = array('text' =>  TEXT_USER_UPDATE. ' ' .$present_array['user_update']);
+}else{
+$present[] = array('text' =>  TEXT_USER_UPDATE. ' ' .TEXT_UNSET_DATA);
+}if(tep_not_null($present_array['date_update'])){
+$present[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .tep_datetime_short($present_array['date_update']));
+}else{
+$present[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .TEXT_UNSET_DATA);
+}
 
             }
             break;

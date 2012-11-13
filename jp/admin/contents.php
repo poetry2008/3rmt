@@ -466,10 +466,23 @@ require("includes/note_js.php");
       }
 $info_query = tep_db_query("select * from information_page where PID='".$_GET['cID']."'");
 $info_array = tep_db_fetch_array($info_query);
-$contents[] = array('text' => '<br>'. TEXT_USER_ADDED. ' ' .$info_array['user_added']);
-$contents[] = array('text' => '<br>'. TEXT_DATE_ADDED. ' ' .tep_datetime_short($info_array['date_added']));
-$contents[] = array('text' => '<br>'. TEXT_USER_UPDATE. ' ' .$info_array['user_update']);
-$contents[] = array('text' => '<br>'. TEXT_DATE_UPDATE. ' ' .tep_datetime_short($info_array['date_update']));
+if(tep_not_null($info_array['user_added'])){
+$contents[] = array('text' =>  TEXT_USER_ADDED. ' ' .$info_array['user_added']);
+}else{
+$contents[] = array('text' =>  TEXT_USER_ADDED. ' ' .TEXT_UNSET_DATA);
+}if(tep_not_null($info_array['date_added'])){
+$contents[] = array('text' =>  TEXT_DATE_ADDED. ' ' .tep_datetime_short($info_array['date_added']));
+}else{
+$contents[] = array('text' =>  TEXT_DATE_ADDED. ' ' .TEXT_UNSET_DATA);
+}if(tep_not_null($info_array['user_update'])){
+$contents[] = array('text' =>  TEXT_USER_UPDATE. ' ' .$info_array['user_update']);
+}else{
+$contents[] = array('text' =>  TEXT_USER_UPDATE. ' ' .TEXT_UNSET_DATA);
+}if(tep_not_null($info_array['date_update'])){
+$contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .tep_datetime_short($info_array['date_update']));
+}else{
+$contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .TEXT_UNSET_DATA);
+}
 
 
       break;

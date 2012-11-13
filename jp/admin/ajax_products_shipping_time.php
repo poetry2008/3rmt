@@ -164,19 +164,39 @@ if($id == 0){
 <tr><td width="30%" align="left"><?php echo TABLE_LIST_6;?></td><td>
 <input type="text" name="sort" id="sort" value="<?php echo $sort;?>" style="text-align: right;">
 </td></tr>
-
+<?php if(tep_not_null($user_added)){?>
 <tr>
     <td width="30%" align="left"><?php echo TEXT_USER_ADDED; ?></td><td><?php echo $user_added;?></td>
 </tr>
+<?php }else{ ?>
+<tr>
+    <td width="30%" align="left"><?php echo TEXT_USER_ADDED; ?></td><td><?php echo TEXT_UNSET_DATA;?></td>
+</tr>
+<?php } if(tep_not_null($date_added)){?>
 <tr>
     <td width="30%" align="left"><?php echo TEXT_DATE_ADDED; ?></td><td><?php echo $date_added;?></td>
 </tr>
+<?php }else{ ?> 
+<tr>
+    <td width="30%" align="left"><?php echo TEXT_DATE_ADDED; ?></td><td><?php echo TEXT_UNSET_DATA;?></td>
+</tr> 
+<?php } if(tep_not_null($user_update)){?>
 <tr>
     <td width="30%" align="left"><?php echo TEXT_USER_UPDATE; ?></td><td><?php echo  $user_update;?></td>
 </tr>
+<?php }else{ ?> 
+<tr>
+    <td width="30%" align="left"><?php echo TEXT_USER_UPDATE; ?></td><td><?php echo TEXT_UNSET_DATA;?></td>
+</tr> 
+<?php }if(tep_not_null($date_update)){?>
 <tr>
     <td width="30%" align="left"><?php echo TEXT_DATE_UPDATE; ?></td><td><?php echo $date_update;?></td>
 </tr>
+<?php }else{ ?>
+<tr>
+    <td width="30%" align="left"><?php echo TEXT_DATE_UPDATE; ?></td><td><?php echo TEXT_UNSET_DATA;?></td>
+</tr>
+<?php } ?>
 </td></tr>
 <tr><td  colspan="2" align="center">
 <?php

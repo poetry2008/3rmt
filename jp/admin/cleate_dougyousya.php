@@ -384,7 +384,7 @@ if(empty($HTTP_GET_VARS['id'])){
     <td id="tr_<?php echo $i;?>_2" width='50'><a href='cleate_dougyousya.php?action=edit_oroshi&id=<?php echo $col['dougyousya_id'];?>'><?php echo CLEATE_DOUGYOUSYA_EDIT;?></a></td>
     <td id="tr_<?php echo $i;?>_3" width='50'><a href='javascript:void(0);' onclick='del_oroshi(<?php echo $col['dougyousya_id'];?>)'><?php echo CLEATE_DOUGYOUSYA_DEL;?></a></td>
     <td id="tr_<?php echo $i;?>_4" width='50'><a href='history.php?action=dougyousya&dougyousya_id=<?php echo $col['dougyousya_id'];?>'><?php echo CLEATE_DOUGYOUSYA_HISTORY;?></a>
-  <td width='50'><a href='cleate_dougyousya.php?action=select_oroshi&id=<?php echo
+  <td width='50' align="right"><a href='cleate_dougyousya.php?action=select_oroshi&id=<?php echo
   $col['dougyousya_id'];?>'><?php if($col['dougyousya_id'] == $HTTP_GET_VARS['id']){echo tep_image(DIR_WS_IMAGES.
       'icon_arrow_right.gif');}else{ echo tep_image(DIR_WS_IMAGES . 'icon_info.gif');}?></a></td>
   </tr>
@@ -421,12 +421,26 @@ if(empty($HTTP_GET_VARS['id'])){
     $oroshi_query = tep_db_query("select * from set_dougyousya_names where   dougyousya_id = '".$HTTP_GET_VARS['id']."'");
     $oroshi = tep_db_fetch_array($oroshi_query);
     echo '<table width="100%" cellspacing="0" cellpadding="2" border="0">
-    <tr><td class="infoBoxContent" align="left"><b>'.$oroshi['dougyousya_name'].'</b></td></tr>
-    <tr><td>'.TEXT_USER_ADDED.'</td><td>'.$oroshi['user_added'].'</td></tr>
-    <tr><td>'.TEXT_DATE_ADDED.'</td><td>'.$oroshi['date_added'].'</td></tr>
-    <tr><td>'.TEXT_USER_UPDATE.'</td><td>'.$oroshi['user_update'].'</td></tr>
-    <tr><td>'.TEXT_DATE_UPDATE.'</td><td>'.$oroshi['date_update'].'</td></tr>
-    </table>';
+    <tr><td class="infoBoxContent"
+    align="left"><b>'.$oroshi['dougyousya_name'].'</b></td></tr>';
+    if(tep_not_null($oroshi['user_added'])){
+    echo '<tr><td>'.TEXT_USER_ADDED.'&nbsp;'.$oroshi['user_added'].'</td></tr>';
+    }else{
+    echo '<tr><td>'.TEXT_USER_ADDED.'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';
+    }if(tep_not_null($oroshi['date_added'])){
+    echo '<tr><td>'.TEXT_DATE_ADDED.'&nbsp;'.$oroshi['date_added'].'</td></tr>';
+    }else{
+    echo '<tr><td>'.TEXT_DATE_ADDED.'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';
+    }if(tep_not_null($oroshi['user_update'])){
+    echo '<tr><td>'.TEXT_USER_UPDATE.'&nbsp;'.$oroshi['user_update'].'</td></tr>';
+    }else{
+    echo '<tr><td>'.TEXT_USER_UPDATE.'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';
+    }if(tep_not_null($oroshi['date_update'])){
+    echo '<tr><td>'.TEXT_DATE_UPDATE.'&nbsp;'.$oroshi['date_update'].'</td></tr>';
+    }else{
+    echo '<tr><td>'.TEXT_DATE_UPDATE.'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';
+    }
+    echo '</table>';
     ?></td>
   </tr>
 </table>
