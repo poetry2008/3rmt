@@ -11,14 +11,16 @@
   } else {
     include(DIR_WS_BOXES . 'categories.php');
   }
+
+include(DIR_WS_BOXES . 'login.php');
 ?> <div class="reorder_link">
 	<div class="menu_top"><?php echo LEFT_REORDER_TITLE;?></div>
     <div class="reorder_link_info">
   <a href="<?php echo tep_href_link('reorder.php');?>"><?php echo LEFT_REORDER_TEXT;?></a> 
   </div>
   </div>
+  <div class="link_banner"><a href="<?php echo  tep_href_link(FILENAME_CONTACT_US,'','SSL') ;?>"><?php echo  tep_image(DIR_WS_IMAGES.'contact_us_img.gif',BOX_INFORMATION_CONTACT) ?></a></div>
 <?php 
-include(DIR_WS_BOXES . 'login.php');
   if (isset($_GET['products_id'])) {
     if (tep_session_is_registered('customer_id')) {
       $check_query = tep_db_query("select count(*) as count from " . TABLE_CUSTOMERS_INFO . " where customers_info_id = '" . $customer_id . "' and global_product_notifications = '1'");

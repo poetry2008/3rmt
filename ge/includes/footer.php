@@ -4,7 +4,7 @@
 */
 ?>
 <div id="f_menu">
-<?php if ($banner = tep_banner_exists('dynamic', 'footer1')) { echo  '<div align="center">' . "\n" . tep_display_banner('static', $banner) . '</div>'; }?>
+<?php if ($banner = tep_banner_exists('dynamic', 'footer1')) { echo  tep_display_banner('static', $banner); }?>
 </div>
 <div id="footer">
   <address class="copyright">

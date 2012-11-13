@@ -223,7 +223,7 @@ require("includes/note_js.php");
           <tr>
             <td valign="top"><table id="item_list_box" border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr class="dataTableHeadingRow">
-              <td class="dataTableHeadingContent"><?php echo SHOW_USELESS_OPTION_ITEM_SELECTED;?></td>
+              <td class="dataTableHeadingContent"><?php echo SHOW_USELESS_OPTION_ITEM_SELECT;?></td>
 	      <td class="dataTableHeadingContent"><?php echo SHOW_USELESS_OPTION_ITEM_NAME;?></td>
 	      <td class="dataTableHeadingContent"><?php echo SHOW_USELESS_OPTION_ITEM_TITLE;?> </td>
 	      <td class="dataTableHeadingContent"><?php echo SHOW_USELESS_OPTION_ITEM_TYPE;?></td>
@@ -341,8 +341,7 @@ $class_check++;
 <table width="100%">
 <tr>
 <td class="smallText">&nbsp;&nbsp;&nbsp;
-<?php echo $item_split->display_count($num_rows, MAX_DISPLAY_SEARCH_RESULTS,
-    $_GET['page'], TEXT_DISPLAY_NUMBER_OF_USELESS_ITEM);?>
+<?php echo $item_split->display_count($num_rows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_USELESS_ITEM);?>
 </td>
 <td align="right" class="smallText">
 <?php
@@ -367,7 +366,7 @@ echo $item_split->display_links($num_rows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPL
 </td>
 </tr>
 <td align="right">
-<button onclick="del();"><?php echo SHOW_USELESS_OPTION_ITEM_DEL_LINK;?></button>&nbsp;<button onclick="del_all();" ><?php echo SHOW_USELESS_OPTION_ITEM_ALL_DEL_LINK;?></button>
+<button onclick="del();"><?php echo SHOW_USELESS_OPTION_ITEM_DEL_LINK;?></button>&nbsp;<button onclick="del_all();" ><?php echo SHOW_USELESS_OPTION_ITEM_SELECT_ALL_LINK;?></button>
 </td>
 </td></tr></table></td></tr>
 </table>

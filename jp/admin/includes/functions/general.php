@@ -12,6 +12,14 @@ function forward401()
   exit;
   //throw new Exception();
 }
+function forward404()
+{ 
+  header($_SERVER["SERVER_PROTOCOL"] . " 404Not Found");
+  //  require("/home/hansir/project/OSC_3RMT/jp/".DIR_WS_MODULES  . '401.html');
+  require( DIR_WS_MODULES. '404.html');
+  exit;
+  //throw new Exception();
+}
 function one_time_pwd_forward401($page_name)
 { 
   $file_name = substr($page_name,7,strlen($page_name));
@@ -64,6 +72,13 @@ function forward401Unless($condition)
   if (!$condition)
   {
     forward401();
+  }
+}
+function forward404Unless($condition)
+{
+  if (!$condition)
+  {
+    forward404();
   }
 }
 
@@ -4276,7 +4291,7 @@ function tep_display_google_results($from_url=''){
           }
           if(in_array($distinct_url,$stop_site_url)){
             $search_message = sprintf(TEXT_FIND_DATA_STOP, $distinct_url);
-            echo "<td class='dataTableContent search_class_td' style='width:21px' nowrap='nowrap'>&nbsp;".$icount++.":"."</td>";
+            echo "<td class='dataTableContent search_class_td' style='width:22px' nowrap='nowrap'>&nbsp;".$icount++.":"."</td>";
             echo "<td class='dataTableContent' ><b>".tep_get_siteurl_name($distinct_url)."</b></td>";
             echo "<td class='dataTableContent' >";
             /*
@@ -4297,7 +4312,7 @@ function tep_display_google_results($from_url=''){
             break;
           }
           $prama_url = str_replace('.','_',$distinct_url); 
-          echo "<td class='dataTableContent search_class_td' style='width:21px' nowrap='nowrap'>&nbsp;".$icount++.":"."</td>";
+          echo "<td class='dataTableContent search_class_td' style='width:22px' nowrap='nowrap'>&nbsp;".$icount++.":"."</td>";
           echo "<td class='dataTableContent' >".tep_get_siteurl_name($distinct_url)."</td>";
           echo "<td class='dataTableContent' >";
           /*

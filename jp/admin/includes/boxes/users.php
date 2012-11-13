@@ -1,28 +1,12 @@
 <?php
-/* *********************************************************
-  モジュール名: users.php
- * 2001/5/29
- *   modi 2002-05-10
- * Naomi Suzukawa
- * suzukawa@bitscope.co.jp
-  ----------------------------------------------------------
-ナビゲーションボックス（ユーザ）  既存のシステムに組み込む
-
-  ■変更履歴
-  2003-04-16 それぞれの言語に対応させる（言語ファイル作成）
-********************************************************* */
-
 // ファイル名
 define('FILENAME_USERS', 'users.php');
 define('FILENAME_USERS_LOGINLOG', 'users_log.php');
 define('FILENAME_ONCE_PWD_LOG', 'pwd_log.php');
 
-// 2003-04-16 modi -s
-// ここで定数宣言をしていたのを、言語ファイルを作成して移動する
   if (file_exists(DIR_WS_LANGUAGES . $language . '/boxes_users.php')) {
     include(DIR_WS_LANGUAGES . $language . '/boxes_users.php');
   }
-// 2003-04-16 modi -e
 
 ?>
 
@@ -83,7 +67,7 @@ define('FILENAME_ONCE_PWD_LOG', 'pwd_log.php');
 					tep_image(DIR_WS_MENU_ICON . 'icon_log.gif').
        '</span><span class="menuBoxContent_span"><a href="'.tep_href_link(FILENAME_ONCE_PWD_LOG).'"
        class="menuBoxContent_Link">'.BOX_ONCE_PWD_LOG."</a></span><br><span class='menuBoxContent_image'>".
-        tep_image(DIR_WS_MENU_ICON . 'icon_logout.gif').  '</span><span class="menuBoxContent_span"><a href="' . tep_href_link(basename($PHP_SELF), '', 'NONSSL') . '?execute_logout_user=1&num='.time().'" class="menuBoxContent_Link">' . BOX_USER_LOGOUT . '</a></span>';
+        tep_image(DIR_WS_MENU_ICON . 'icon_logout.gif').  '</span><span class="menuBoxContent_span"><a href="' . tep_href_link(basename($PHP_SELF), 'execute_logout_user=1&num='.time(), 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_USER_LOGOUT . '</a></span>';
     ?>
                 </td>
               </tr>

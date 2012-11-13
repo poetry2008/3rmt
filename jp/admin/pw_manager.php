@@ -358,9 +358,6 @@ if(isset($_GET['action']) &&
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/javascript/jquery.form.js"></script>
-<?php /*
-<script language="javascript" src="js2php.php?path=includes|javascript&name=datePicker&type=js"></script>
-*/?>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
@@ -391,7 +388,6 @@ function open_new_calendar()
   }
 }
 
-<!--//checkbox like radio  -->/
 $(function() {
   $("#self").click(function() {
       if($(this).attr("checked")){ 
@@ -497,6 +493,9 @@ function mk_pwd(){
 }
 </script>
 <style type="text/css">
+.yui3-skin-sam {
+  width:150px;
+}
 @media screen and (-webkit-min-device-pixel-ratio:0) {
 .yui3-skin-sam {
   width:150px;
@@ -613,6 +612,7 @@ float:left;
 
 #new_yui3 {
 	margin-left:-168px;
+	*margin-left:-28px;
 	margin-left:-28px\9;
 	position: absolute;
 	z-index:200px;

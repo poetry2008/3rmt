@@ -4,15 +4,13 @@
 */
 
   //require(DIR_WS_BOXES . 'quick_link.php');
-
-  if ( (USE_CACHE == 'true') && !SID ) {
+ if ( (USE_CACHE == 'true') && !SID ) {
     include(DIR_WS_BOXES . 'categories.php');
    // echo tep_cache_categories_box();
   } else {
     include(DIR_WS_BOXES . 'categories.php');
   }
-?> 
-<?php
+
 include(DIR_WS_BOXES . 'login.php');
 ?>
 <div class="reorder_link">
@@ -21,6 +19,12 @@ include(DIR_WS_BOXES . 'login.php');
   <a href="<?php echo tep_href_link('reorder.php');?>"><?php echo LEFT_REORDER_TEXT;?></a> 
   </div>
   </div>
+
+<?php
+ echo '<div class="link_banner"><a  href="'.tep_href_link(FILENAME_CONTACT_US,'','SSL').'">'.tep_image(DIR_WS_IMAGES.'contact_us_img.gif',BOX_INFORMATION_CONTACT).'</a></div>';
+ 
+  require(DIR_WS_BOXES . 'banners.php');
+ ?> 
 <?php 
 //include(DIR_WS_BOXES . 'login.php');
   if (isset($_GET['products_id'])) {
@@ -50,7 +54,6 @@ include(DIR_WS_BOXES . 'login.php');
     require(DIR_WS_BOXES . 'reviews.php');
   }
   
-  require(DIR_WS_BOXES . 'banners.php');
   //require(DIR_WS_BOXES . 'cl.php');
 
 /*s

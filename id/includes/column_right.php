@@ -7,8 +7,15 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 5px;" summary="reviews">
   <tr>
   <td align="center">
-  <img width="171" height="27" alt="取引日時変更" src="images/design/reorder_right.gif" >
-  <?php echo '<a href="'.tep_href_link('reorder.php').'"><img width="171" alt="再配達フォーム" src="images/design/reorder_right02.gif" ></a>';?>
+  <img width="171" height="27" alt="<?php echo CHANGE_DELIVERY;?>" src="images/design/reorder_right.gif" >
+  <?php echo '<a href="'.tep_href_link('reorder.php').'"><img width="171"  alt="'.REORDER_FORM.'" src="images/design/reorder_right02.gif" ></a>';?>
+  </td>
+  </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 5px;">
+  <tr>
+  <td align="center">
+  <a href="<?php echo tep_href_link(FILENAME_CONTACT_US,'','SSL') ;?>"><?php echo  tep_image(DIR_WS_IMAGES.'contact_us_img.gif',BOX_INFORMATION_CONTACT) ?></a>
   </td>
   </tr>
   </table>

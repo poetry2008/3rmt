@@ -1290,31 +1290,13 @@ function get_cart_products(){
   window.open("categories.php?action=get_cart_products&products_id=<?php echo $_GET['pID'];?>&buyflag="+$("input[@type=radio][name=products_cart_buyflag][checked]").val()+tagstr, '','toolbar=0,location=0,directories=0,status=1,menubar=0,scrollbars=yes,resizable=yes,width=300');
 }
 function display(){
-    var categories_tree = document.getElementById('categories_tree'); 
-      if(categories_tree.style.display == 'none'){
-           categories_tree.style.display = 'block';
-              }else{
-                    categories_tree.style.display = 'none';
-                       }
-         }
-/*
-$(window).resize(function (){
-    var menu_div_width = $('#categories_right_td').width();
-    if(menu_div_width>=480){
-      $('#categories_tree').animate({width:(menu_div_width-5)+"px"});
-    }
-});
-$(document).ready(function(){
-    var menu_div_width = $('#categories_right_td').width();
-<?php if ($_COOKIE['tarrow'] == 'open') {?>
-    menu_div_width = menu_div_width-125;
-<?php } ?>
-    if(menu_div_width>=480){
-      $('#categories_tree').animate({width:(menu_div_width-10)+"px"});
-    }else{
-      $('#categories_tree').animate({width:"470px"});
-    }
-});*/
+  var categories_tree = document.getElementById('categories_tree'); 
+  if(categories_tree.style.display == 'none' || categories_tree.style.display == ''){
+    categories_tree.style.display = 'block';
+  }else{
+    categories_tree.style.display = 'none';
+  }
+}
 
 function clear_option()
 {
@@ -1696,16 +1678,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
           <tr>
               <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
-<!--
-          <tr>
-              <td class="main"><?php echo TEXT_PRODUCTS_OPTION; ?></td>
-              <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_pull_down_menu('option_type', tep_get_option_array(), isset($pInfo->option_type)?$pInfo->option_type:'', ($site_id ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '')); ?></td>
-              <td class="main">&nbsp;</td>
-          </tr>
-          <tr>
-            <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-          </tr>
--->
 <?php
 $products_shipping_time = '<select name="products_shipping_time">';
 $products_shipping_query = tep_db_query("select * from ". TABLE_PRODUCTS_SHIPPING_TIME ." where status='0' order by sort");
@@ -1742,21 +1714,17 @@ $products_shipping_time .= '</select>';
 ?>
               
               <tr>
-              <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+                <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
               <tr>
-              <td class="main"><?php echo TEXT_PRODUCTS_SHIPPING_WEIGHT; ?></td>
-              <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<input type="text" id="products_weight" name="products_shipping_weight" value="'. ($pInfo->products_weight == '' ? 0 : $pInfo->products_weight) .'">'; ?></td><tr>
-            <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-<!--
-          </tr>
-              <td class="main">&nbsp;</td>
-          </tr>
--->
-          <tr>
-            <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-          </tr>
-
+                <td class="main"><?php echo TEXT_PRODUCTS_SHIPPING_WEIGHT; ?></td>
+                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<input type="text" id="products_weight" name="products_shipping_weight" value="'. ($pInfo->products_weight == '' ? 0 : $pInfo->products_weight) .'">'; ?></td>
+              <tr>
+                <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+              </tr>
+              <tr>
+                <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+              </tr>
               <tr>
                 <td class="main"><?php echo TEXT_PRODUCTS_ROMAJI;?></td> 
                 <td class="main">
@@ -1926,25 +1894,6 @@ $products_shipping_time .= '</select>';
     }
 ?>
               <!-- options -->
-              <?php
-
-      //オプションデータ取得
-      /* 
-      if(isset($_GET['pID']) && $_GET['pID']) {
-        $options_query = tep_db_query("select * from products_attributes_2 where products_id = '".(int)$_GET['pID']."' order by products_attributes_2_id");
-      if(tep_db_num_rows($options_query)) {
-        $options_array = '';
-        while($options = tep_db_fetch_array($options_query)) {
-          $options_array .= tep_get_add_options_name($options['options_id']) . ',' . tep_get_add_options_value($options['options_values_id']) . ',' . (int)$options['options_values_price'] . ',' . $options['price_prefix'] . ',' . $options['products_at_quantity'] . "\n";
-        }
-        } else {
-        $options_array = '';
-      }
-      } else {
-        $options_array = '';
-      }
-      */ 
-      ?>
               <tr>
                 <td class="main">
                 <?php echo TEXT_PRODUCTS_OPTION_TEXT;?> 
@@ -2481,7 +2430,7 @@ $products_shipping_time .= '</select>';
     */
   }
 ?>
-<!--<hr size="2" noshade>--><?php //価格数量変更機能
+<?php //価格数量変更機能
 if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) || !$_GET['origin'])) {
   echo '<table width="100%"><tr><td align="left">';
   echo '<table width="95%" cellpadding="0" cellspacing="0" style="margin-bottom:10px;">';
@@ -2625,7 +2574,6 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
         <td class="main" width="120"><?php echo $order_history['torihiki_date'];?></td>
         <td class="main" width="100" align="right"><?php echo $order_history['products_quantity'];?><?php echo CATEGORY_GE_UNIT_TEXT;?></td>
         <td class="main" align="right"><?php echo display_price( $order_history['final_price'] );?><?php echo CATEGORY_MONEY_UNIT_TEXT;?></td>
-        <!--<td class="main"><?php echo strip_tags(tep_get_ot_total_by_orders_id($order_history['orders_id']));?></td>-->
         <td class="main" width="100"><?php echo $order_history['orders_status_name'];?></td>
       </tr>
     <?php
@@ -2892,20 +2840,13 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                 <td valign="top">
                 <?php tep_site_filter(FILENAME_CATEGORIES, true);?> 
                 <table border="0" width="100%" cellspacing="0" cellpadding="2">
-                    <tr class="dataTableHeadingRow">
-              <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CATEGORIES_PRODUCTS; ?></td>
-<!--
-            <?php if ($ocertify->npermission == 15 or $ocertify->npermission == 10) {?>
-            <?php if (!isset($_GET['cPath']) or !$_GET['cPath']){?>
-            <td class="dataTableHeadingContent" align="right">表示</td>
-            <?php }?>
-            <?php }?>
--->
-            <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_JIAGE_TEXT;?></td>
-            <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_NUM_TEXT;?></td>
-            <td class="dataTableHeadingContent" align="center" ><?php echo TABLE_HEADING_STATUS; ?></td>
-            <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
-          </tr>
+                  <tr class="dataTableHeadingRow">
+                    <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CATEGORIES_PRODUCTS; ?></td>
+                    <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_JIAGE_TEXT;?></td>
+                    <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_NUM_TEXT;?></td>
+                    <td class="dataTableHeadingContent" align="center" ><?php echo TABLE_HEADING_STATUS; ?></td>
+                    <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
+                  </tr>
                     <?php
     $categories_count = 0;
     $rows = 0;

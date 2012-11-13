@@ -691,6 +691,7 @@ define('TEXT_NOT_ENOUGH_DATA','从前面&nbsp;50&nbsp;个检索结果中不重�
 define('HEADER_TEXT_PERSONAL_SETTING','个人设定');
 define('BOX_HEADING_USER', '用户');
 define('BOX_USER_ADMIN', '用户管理');
+define('TEXT_ONE_TIME_CONFIG_SAVE','已保存');
 define('BOX_USER_LOG', '访问日志');
 define('BOX_USER_LOGOUT', '退出');
 

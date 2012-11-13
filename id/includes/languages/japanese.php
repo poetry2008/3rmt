@@ -477,6 +477,7 @@ define('JUMP_PAGE_TEXT', 'ページへ');
 define('JUMP_PAGE_BUTTON_TEXT', '移動');
 define('TEXT_MANUFACTURERS_PRODUCT_LIST', 'このメーカー一覧の商品一覧へ');
 define('TEXT_MANUFACTURERS_TITLE', 'メーカー一覧');
-//footer
-define('FOOTER_LINKS','相互リンク');
+//column_right
+define('CHANGE_DELIVERY','取引日時変更');
+define('REORDER_FORM','再配達フォーム');
 ?>

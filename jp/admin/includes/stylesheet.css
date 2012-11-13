@@ -6,9 +6,6 @@ body {
 	font-size: 12px;
 }
 /* links */
-/* ---------------------------
-A：リンク（通常）
---------------------------- */
 a img {
 	border: 0;
 	vertical-align:middle;
@@ -20,189 +17,125 @@ img {
 	vertical-align:middle;
 }
 a:link {
-	color: #000000;                                 /* フォントサイズ */
-	font-weight: normal;                            /* フォント太さ */
-	text-decoration: none;                          /* テキストの装飾 */
+	color: #000000;                                
+	font-weight: normal;                           
+	text-decoration: none;                        
 }
-/* ---------------------------
-A：リンク（訪問済み）
---------------------------- */
 a:visited {
-	color: #000000;                                 /* フォントカラー */
-	font-weight: normal;                            /* フォント太さ */
-	text-decoration: none;                          /* テキストの装飾 */
+	color: #000000;                                 
+	font-weight: normal;                           
+	text-decoration: none;                         
 }
-/* ---------------------------
-A：リンク（選択している）
---------------------------- */
 a:active {
-	color: #000000;                                 /* フォントカラー */
-	font-weight: normal;                            /* フォント太さ */
-	text-decoration: none;                          /* テキストの装飾 */
+	color: #000000;                                 
+	font-weight: normal;                            
+	text-decoration: none;                         
 }
-/* ---------------------------
-A：リンク（カーソルが上に乗ったとき）
---------------------------- */
 a:hover {
-	color: #000000;                                 /* フォントカラー */
-	font-weight: normal;                            /* フォント太さ */
-	text-decoration:none;                     /* テキストの装飾 */
+	color: #000000;                                 
+	font-weight: normal;                           
+	text-decoration:none;                     
 }
-/* ---------------------------
-A：ヘッダリンク（通常）
---------------------------- */
 a.headerLink:link {
-	color: #ffffff;                                 /* フォントカラー */
-	font-weight: bold;                              /* フォント太さ */
-	text-decoration: none;                          /* テキストの装飾 */
+	color: #ffffff;                                 
+	font-weight: bold;                              
+	text-decoration: none;                          
 }
-/* ---------------------------
-A：ヘッダリンク（訪問済み）
---------------------------- */
 a.headerLink:visited {
-	color: #ffffff;                                 /* フォントカラー */
-	font-weight: bold;                              /* フォント太さ */
+	color: #ffffff;                               
+	font-weight: bold;                             
 	text-decoration: none;
-                          /* テキストの装飾 */
 }
-/* ---------------------------
-A：ヘッダリンク（選択している）
---------------------------- */
 a.headerLink:active {
-	color: #ffffff;                                 /* フォントカラー */
-	font-weight: bold;                              /* フォント太さ */
-	text-decoration: none;                          /* テキストの装飾 */
+	color: #ffffff;                                 
+	font-weight: bold;                             
+	text-decoration: none;                         
 }
-/* ---------------------------
-A：ヘッダリンク（カーソルが上に乗ったとき）
---------------------------- */
 a.headerLink:hover {
-	color: #ffffff;                                 /* フォントカラー */
-	font-weight: bold;                              /* フォント太さ */
-	text-decoration: underline;                     /* テキストの装飾 */
+	color: #ffffff;                                
+	font-weight: bold;                              
+	text-decoration: underline;                     
 }
-/* ---------------------------
-A：メニューボックスヘッダリンク（通常）
---------------------------- */
 a.menuBoxHeading_Link:link {
 	font-size: 11px;
-	color: #000;                                 /* フォントカラー */
-	font-weight: bold;                              /* フォント太さ */
-	text-decoration: none;                          /* テキストの装飾 */
+	color: #000;                                
+	font-weight: bold;                              
+	text-decoration: none;                          
 }
-/* ---------------------------
-A：メニューボックスヘッダリンク（訪問済み）
---------------------------- */
 a.menuBoxHeading_Link:visited {
 	font-size: 11px;
-	color: #000;                                 /* フォントカラー */
-	font-weight: bold;                              /* フォント太さ */
-	text-decoration: none;                          /* テキストの装飾 */
+	color: #000;                                 
+	font-weight: bold;                              
+	text-decoration: none;                         
 }
-/* ---------------------------
-A：メニューボックスヘッダリンク（選択している）
---------------------------- */
 a.menuBoxHeading_Link:active {
 	font-size: 11px;
-	color: #000;                                 /* フォントカラー */
-	font-weight: bold;                              /* フォント太さ */
-	text-decoration: none;                          /* テキストの装飾 */
+	color: #000;                                
+	font-weight: bold;                              
+	text-decoration: none;                          
 }
-/* ---------------------------
-A：メニューボックスヘッダリンク（カーソルが上に乗ったとき）
---------------------------- */
 a.menuBoxHeading_Link:hover {
 	font-size: 11px;
-	color: #000;                                 /* フォントカラー */
-	font-weight: bold;                              /* フォント太さ */
-	text-decoration: none;                          /* テキストの装飾 */
+	color: #000;                                 
+	font-weight: bold;                              
+	text-decoration: none;                          
 }
-/* ---------------------------
-A：メニューボックスコンテンツリンク（通常）
---------------------------- */
 a.menuBoxContent_Link:link {
-	font-size: 11px;                                /* フォントサイズ */
-	color: #000;                                 /* フォントカラー */
-	font-weight: normal;                            /* フォント太さ */
-	text-decoration: none;                          /* テキストの装飾 */
+	font-size: 11px;                                
+	color: #000;                                 
+	font-weight: normal;                           
+	text-decoration: none;                          
 }
-/* ---------------------------
-A：メニューボックスコンテンツリンク（訪問済み）
---------------------------- */
 a.menuBoxContent_Link:visited {
 	font-size: 11px;
-	color: #000;                                 /* フォントカラー */
-	font-weight: normal;                            /* フォント太さ */
-	text-decoration: none;                          /* テキストの装飾 */
+	color: #000;                                
+	font-weight: normal;                           
+	text-decoration: none;                          
 }
-/* ---------------------------
-A：メニューボックスコンテンツリンク（選択している）
---------------------------- */
 a.menuBoxContent_Link:active {
 	font-size: 11px;
-	color: #000;                                 /* フォントカラー */
-	font-weight: normal;                            /* フォント太さ */
-	text-decoration: none;                          /* テキストの装飾 */
+	color: #000;                                 
+	font-weight: normal;                          
+	text-decoration: none;                         
 }
-/* ---------------------------
-A：メニューボックスコンテンツリンク（カーソルが上に乗ったとき）
---------------------------- */
 a.menuBoxContent_Link:hover {
 	font-size: 11px;
-	color: #000;                                 /* フォントカラー */
-	font-weight: normal;                            /* フォント太さ */
-	text-decoration: underline;                     /* テキストの装飾 */
+	color: #000;                                
+	font-weight: normal;                           
+	text-decoration: underline;                     
 }
-/* ---------------------------
-A：ページリンク（通常）
---------------------------- */
 a.splitPageLink:link {
-	color: #0000FF;                                 /* フォントカラー */
-	font-weight: normal;                            /* フォント太さ */
-	text-decoration: none;                          /* テキストの装飾 */
+	color: #0000FF;                                 
+	font-weight: normal;                            
+	text-decoration: none;                          
 }
-/* ---------------------------
-A：ページリンク（訪問済み）
---------------------------- */
 a.splitPageLink:visited {
-	color: #0000FF;                                 /* フォントカラー */
-	font-weight: normal;                            /* フォント太さ */
-	text-decoration: none;                          /* テキストの装飾 */
+	color: #0000FF;                                 
+	font-weight: normal;                            
+	text-decoration: none;                         
 }
-/* ---------------------------
-A：ページリンク（選択している）
---------------------------- */
 a.splitPageLink:active {
-	color: #0000FF;                                 /* フォントカラー */
-	font-weight: normal;                            /* フォント太さ */
-	text-decoration: none;                          /* テキストの装飾 */
+	color: #0000FF;                                 
+	font-weight: normal;                            
+	text-decoration: none;                          
 }
-/* ---------------------------
-A：ページリンク（カーソルが上に乗ったとき）
---------------------------- */
 a.splitPageLink:hover {
-	color: #0000FF;                                 /* フォントカラー */
-	font-weight: normal;                            /* フォント太さ */
-	text-decoration: underline;                     /* テキストの装飾 */
-	background-color: #FFFF33;                      /* 背景色 */
+	color: #0000FF;                                 
+	font-weight: normal;                            
+	text-decoration: underline;                     
+	background-color: #FFFF33;                     
 }
 /* menu box */
-/* ---------------------------
-.[TD]：メニューボックスコンテンツ
---------------------------- */
 .menuBoxHeading {
-	color: #000;                                 /* フォントカラー */
+	color: #000;                                 
 	background-color: #ffffff;
-	line-height:18px;                      /* 背景色 */
+	line-height:18px;                     
 }
 .menuBoxHeading img{
 	margin:0 5px 3px 0;
 }
-/* ---------------------------
-.[TD]：メニューボックスコンテンツ
---------------------------- */
 .menuBoxContent {
-	color: #616060;                                 /* フォントカラー */
+	color: #616060;                                 
 }
 .menuBoxContent_image{
 	margin-right:5px;
@@ -215,36 +148,24 @@ a.splitPageLink:hover {
 	line-height:18px;
 }
 /* page */
-/* ---------------------------
-BODY：ボディ
---------------------------- */
 body {
-	background-color: #ffffff;                      /* 背景色 */
-	color: #000000;                                 /* フォントカラー */
-	margin: 0px;                                    /* マージン */
+	background-color: #ffffff;                     
+	color: #000000;                                 
+	margin: 0px;                                    
 }
-/* ---------------------------
-.[TR]：ヘッダ（ナビゲーション）
---------------------------- */
 .headerBar {
-	background-color: #000000;                      /* 背景色 */
+	background-color: #000000;                      
 }
-/* ---------------------------
-.[TD]：ヘッダ（ナビゲーション）
---------------------------- */
 .headerBarContent {
-	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-	font-size: 11px;                                /* フォントサイズ */
-	color: #ffffff;                                 /* フォントカラー */
-	font-weight: bold;                              /* フォント太さ */
-	padding:2px;                               /* 境界線と内容との間の空間 */
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; 
+	font-size: 11px;                                
+	color: #ffffff;                                 
+	font-weight: bold;                              
+	padding:2px;                               
 }
 .headerBarContent img{
 	margin-bottom:3px;
 }
-/* ---------------------------
-.[TABLE]：メニューボックスを統括するテーブル
---------------------------- */
 .preorder_head{
 	width:100%;
 	min-width:750px;
@@ -280,11 +201,11 @@ body {
 	
 }}
 .columnLeft {
-	background-color: #F0F1F1;                      /* 背景色 */
-	border-color: #999999;                          /* 境界線の色 */
-	border-width: 1px;                              /* 境界線の幅 */
-	border-style: solid;                            /* 境界線のスタイル */
-	padding: 2px;                                   /* 境界線と内容との間の空間 */
+	background-color: #F0F1F1;                      
+	border-color: #999999;                          
+	border-width: 1px;                              
+	border-style: solid;                            
+	padding: 2px;                                  
         display:none;
 }
 .leftmenu {
@@ -297,123 +218,88 @@ body {
 	width:50%; overflow:hidden; display: block; float:right;
 }
 .pageHeading_box03{width:99.3%; float:left; height:136px; height:138px\9; overflow:hidden;}
-/* ---------------------------
-.[TD]：ページヘッダ
---------------------------- */
 .pageHeading {
-	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-	font-size: 18px;                                /* フォントサイズ */
-	color: #727272;                                 /* フォントカラー */
-	font-weight: bold;                              /* フォント太さ */
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; 
+	font-size: 18px;                                
+	color: #727272;                                 
+	font-weight: bold;                             
 }
 .pageHeading a { text-decoration:none;}
 /* data table */
-/* ---------------------------
-.[TR]：一覧表の項目名（背景色）
---------------------------- */
 .dataTableHeadingRow {
-	background-color: #808080;                      /* 背景色 */
+	background-color: #808080;                      
 }
-/* ---------------------------
-.[TD]：一覧表の項目名（コンテンツ）
---------------------------- */
 .dataTableHeadingContent {
-	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; 
 	font-size: 11px;
-	color: #ffffff;                                 /* フォントカラー */
+	color: #ffffff;                                 
 	font-weight: bold; 
 	overflow:hidden;
-	text-overflow:ellipsis;                           /* フォント太さ */
+	text-overflow:ellipsis;                           
 }
-/* ---------------------------
-.[TR]：一覧表データ（通常行）
---------------------------- */
 .dataTableRow {
-	background-color: #F0F1F1;                      /* 背景色 */
+	background-color: #F0F1F1;                      
 }
 .inv {
 	background-color:#fff;
 }
-/* ---------------------------
-.[TR]：一覧表データ（色違行）
---------------------------- */
 .dataTableSecondRow {
-	background-color: #E0E0E0;                      /* 背景色 */
+	background-color: #E0E0E0;                     
 }
 .inv_second {
 	background-color:#ccc;
 }
-/* ---------------------------
-.[TR]：一覧表データ（選択行）
---------------------------- */
 .oa_bg{ background-color:#E0E0E0;}
 .oa_bg02{ background-color:#F0F1F1;}
 
 .dataTableRowOver {
-	background-color: #FFCC99;                      /* 背景色 */
+	background-color: #FFCC99;                      
 }
 
 .dataTableRowSelected {
-	background-color: #FFD700;!important;                      /* 背景色 */
+	background-color: #FFD700;!important;                      
 }
-/* ---------------------------
-.[TR]：一覧表データ（カーソルが乗っている行）
---------------------------- */
-/* ---------------------------
-.[TD]：一覧表データ（コンテンツ）
---------------------------- */
 .dataTableContent {
-	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; 
 	font-size: 12px;
 	color: #000000;
 	word-break:break-all;
-                        /* フォントカラー */
 }
 .dataTableContent1 {
-	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; 
 	font-size: 12px;
-	color: #000000;                         /* フォントカラー */
-	/* width:25%;*/
-	/* bobhero edit width:5%;*/
+	color: #000000;                        
 	overflow:hidden;
 	
 }
 .dataTableContent2 {
-	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; 
 	font-size: 12px;
-	color: #000000;                         /* フォントカラー */
-	/*width:4%;*/
+	color: #000000;                        
 	text-align:right;
 	
 }
-/*.dataTableContent2 input{
-	float:left;
-}*/
 .dataTableContent2 span{text-align:center; padding-top:5px;
 }
 .dataTableContent3 {
-	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; 
 	font-size: 12px;
-	color: #000000;                         /* フォントカラー */
-	/*width:6%;*/
+	color: #000000;                        
 }
 .dataTableContent4 {
-	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; 
 	font-size: 12px;
-	color: #000000;                         /* フォントカラー */
-	/*width:6%;*/
+	color: #000000;                         
 }
 .dataTableContent5 {
-	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; 
 	font-size: 12px;
-	color: #000000;                         /* フォントカラー */
-/*	width:11%;*/
+	color: #000000;                        
 }
 .dataTableContent6 {
-	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; 
 	font-size: 12px;
-	color: #000000;                         /* フォントカラー */
-/*	width:1%;*/
+	color: #000000;                        
 }
 .dataTableContent_line {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; 
@@ -422,119 +308,74 @@ body {
 	text-decoration:underline;
 }                   
 /* info box */
-/* ---------------------------
-.[TR]：情報ボックス（タイトル） - 右側に表示される、一覧から選んだ項目の情報
---------------------------- */
 .infoBoxHeading {
-	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-	font-size: 12px;                                /* フォントサイズ */
-	color: #000000;                                 /* フォントカラー */
-	background-color: #FFD700;                      /* 背景色 */
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; 
+	font-size: 12px;                              
+	color: #000000;                                
+	background-color: #FFD700;                      
 	padding-left:8px;                     
 
 }
-/* ---------------------------
-.[TD]：情報ボックス（コンテンツ） - 右側に表示される、一覧から選んだ項目の情報
---------------------------- */
 .infoBoxContent {
-	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-	font-size: 12px;                                /* フォントサイズ */
-	color: #000000;                                 /* フォントカラー */
-	background-color: #FFD700;                      /* 背景色 */
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; 
+	font-size: 12px;                                
+	color: #000000;                                 
+	background-color: #FFD700;                      
 	word-break:break-all;
 	padding-left:8px;                     
 }
 .infoBoxContent a { text-decoration:none;}
 /* message box */
-/* ---------------------------
-.[TR]：メッセージボックス
---------------------------- */
 .messageBox {
-	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; 
 	font-size: 12px;
 }
-/* ---------------------------
-.[TR,TD]：エラー、警告メッセージ
---------------------------- */
 .messageStackError, .messageStackWarning {
-	background-color: #ffb3b5;                      /* 背景色 */
+	background-color: #ffb3b5;                      
 }
-/* ---------------------------
-.[TR,TD]：成功メッセージ
---------------------------- */
 .messageStackSuccess {
-	background-color: #99ff00;                      /* 背景色 */
+	background-color: #99ff00;                      
 }
 /* forms */
-/* ---------------------------
-CHECKBOX, INPUT, RADIO, SELECT, TEXTAREA, FILE：FORMの入力・選択項目
---------------------------- */
 CHECKBOX, INPUT, RADIO, SELECT, TEXTAREA, FILE {
-	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif;
 	font-size: 12px;
 }
 /* account */
-/* ---------------------------
-.[TABLE]：フォームエリア（境界線）
---------------------------- */
 .formArea {
-	background-color: #f1f9fe;                      /* 背景色 */
-	border-color: #7b9ebd;                          /* 境界線の色 */
-	border-style: solid;                            /* 境界線のスタイル */
-	border-width: 1px;                              /* 境界線の幅 */
+	background-color: #f1f9fe;                     
+	border-color: #7b9ebd;                          
+	border-style: solid;                            
+	border-width: 1px;                             
 }
-/* ---------------------------
-.[TD]：フォームエリア（タイトル）
---------------------------- */
 .formAreaTitle {
-	font-size: 12px;                                /* フォントサイズ */
-	font-weight: bold;                              /* フォント太さ */
+	font-size: 12px;                                
+	font-weight: bold;                              
 }
 /* attributes */
-/* ---------------------------
-TR：奇数行
---------------------------- */
 .attributes-odd {
-	background-color: #f4f7fd;                      /* 背景色 */
+	background-color: #f4f7fd;                      
 }
-/* ---------------------------
-TR：偶数行
---------------------------- */
 .attributes-even {
-	background-color: #ffffff;                      /* 背景色 */
+	background-color: #ffffff;                      
 }
 /* miscellaneous */
-/* ---------------------------
-.[SPAN]：特価商品価格
---------------------------- */
 .specialPrice {
-	color: #ff0000;                                 /* フォントカラー */
+	color: #ff0000;                                 
 }
-/* ---------------------------
-.[SPAN]：旧商品価格
---------------------------- */
 .oldPrice {
-	text-decoration: line-through;                  /* テキストの装飾 */
+	text-decoration: line-through;                  
 }
-/* ---------------------------
-.[SPAN]：「*必須」文字列
---------------------------- */
 .fieldRequired {
-	color: #ff0000;                                 /* フォントカラー */
+	color: #ff0000;                                 
 }
-/* ---------------------------
-.[TD]：小さい文字（メッセージ）
---------------------------- */
 .smallText {
 	font-size: 10px;  
-	text-overflow:ellipsis;                              /* フォントサイズ */
+	text-overflow:ellipsis;                              
 }
-/* ---------------------------
-.[TD]：メイン
---------------------------- */
 .main {
-	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-	font-size: 12px;                                /* フォントサイズ */
+	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif;
+	font-size: 12px;                               
 	line-height:14px;
 	word-break: break-all;
 }
@@ -545,12 +386,9 @@ legend {
 	color: #000000;
 }
 #tep_site_filter {
-	/*width:100%;*/
-
-  height:14px;/*float: left;*/
+  height:14px;
 }
 #order_icons {
-	/*float: right;*/
   text-align: right;
 	width: 63%;
 }
@@ -560,11 +398,9 @@ legend {
 	background: red;
 }
 #tep_site_filter span {
-	/*width:30px;*/
-  /*height:25px;*/
   padding: 0 5px;
 	background: #ddd;
-	color: #000;/*display: block;*/
+	color: #000;
 }
 #tep_site_filter .site_filter_selected {
 	color: #fff;
@@ -648,8 +484,7 @@ legend {
 	background: #f0f1f1;
 	clear:both;
 	width:100%;
-/*	margin-right:10px;
-*/}
+}
 #orders_client {
 	margin-bottom: 10px;
 	background: #f0f1f1;
@@ -755,10 +590,6 @@ h3 {
 	vertical-align:top;
 }
 .smallText a { text-decoration:none;}
-.right_column01{
-/*	margin-top:12px ;
-*/
-}
 .right_column_boxes {
  padding-top: 0px;   
 }
@@ -881,9 +712,9 @@ font-size:10px;!important;
 #cost_print02{ float:left;}
 #email_display{ display:none;}
 .text_x{ width:100%;overflow:hidden;}
-.text_x1{ height:19px; width:503px; /*float:left;*/}
-.text_x2{ width:53px; font-size:15px; border-bottom:1px solid #000000;border-right:1px solid #000000;border-left:1px solid #000000; background-color:#ccffff; /*float:left;*/ }
-.text_x3{ width:90px; border-bottom:1px solid #000000; border-right:1px solid #000000; font-size:16px; /*float:left;*/ margin:0;} 
+.text_x1{ height:19px; width:503px;}
+.text_x2{ width:53px; font-size:15px; border-bottom:1px solid #000000;border-right:1px solid #000000;border-left:1px solid #000000; background-color:#ccffff;}
+.text_x3{ width:90px; border-bottom:1px solid #000000; border-right:1px solid #000000; font-size:16px; margin:0;} 
 .price input{width:80px; display:block; text-align:left;}
 .price span{width:80px; display:none;}
 
@@ -892,29 +723,24 @@ font-size:10px;!important;
 #gotomenu{ position:relative; }
 #categories_tree {
 display:none;
-/*	width:100%;*/
 	position: absolute;
-/*	width:900px;  */
 	background-color:#000;
 	top:120px;
 	left:0;
 	z-index:200;
 	border:1px solid #000;
-    width:100%;
+        width:100%;
 	min-width:750px;
 	width: expression(document.body.clientWidth < 750? "750px": "100%" );
 }
 .subcategory_tree_info{
 	margin-left:-10px;
 	*margin-left:10px;
-/*	*margin:0 0 8px 0;*/
-margin-bottom:15px\9;
+        margin-bottom:15px\9;
 }
 #categories_tree li{
 	padding:0;
 	margin:0;
-/*	margin:5px;
-	*margin:0;*/
 	margin:0 5px\9;
 	text-align:left;
 	color:#FFFFFF;
@@ -930,7 +756,7 @@ margin-bottom:15px\9;
 	padding-left:10px;
 	background:url(/images/design/circle.gif) left 3px no-repeat;
 }
-.tdul{ padding:0; margin:0;/* border:1px solid #ff0000;*/}
+.tdul{ padding:0; margin:0;}
 .tdul li{ padding:0; margin:0;}
 #categories_tree li a{ color:#fff;}
 #categories_tree li a:hover{ color:#FFD700;}
@@ -944,10 +770,7 @@ margin-bottom:15px\9;
 #categories_tree li .subcategory_tree{list-style-type: none;}
 .dataTableHeadingContent_pw a{ color:#FFFFFF; text-decoration:none; font-weight:bold;}
 .dataTableHeadingContent_order a{ color:#FFFFFF; text-decoration:underline; font-weight:bold;}
-/*
-a.head_sort_order_select { color:#884706; text-decoration:underline; font-weight:bold; }
-a.head_sort_order {color:#FFFFFF; text-decoration:underline; font-weight:bold; }
-*/
+
 .pw_textarea{ width:97%;}
 
 .popup-calendar {
@@ -975,14 +798,7 @@ a.date-picker {
 div.date-picker-holder input {
     float: left;
 }
-/*.date-picker-holder, div.date-picker-holder * {
-    margin: 0;
-    padding: 0;
-	float:left;
-}
-*/	
-
-/*  szn add managermenu */
+/* add managermenu */
 #managermenu td{
 	background-color:#000;
 	padding:1px;
@@ -1023,10 +839,10 @@ text-overflow:ellipsis;
 .faq_status_link:hover{ text-decoration: none; }
 .button_cancel a img { margin-top:-15px;}
 a.s_column_bar { 
-	font-size: 11px;                                /* フォントサイズ */
-	color: #000;                                 /* フォントカラー */
-	font-weight: bold;                            /* フォント太さ */
-	text-decoration: none;                          /* テキストの装飾 */
+	font-size: 11px;                                
+	color: #000;                                
+	font-weight: bold;                           
+	text-decoration: none;                         
 }
 .tep_site_filter_oa a{
 	width:20%;
@@ -1131,7 +947,7 @@ a.s_column_bar {
 .no_result { font-size:18px; color:#ff0000; margin-left:5px; clear:both;}
 .product_history_back { margin:5px 0 0 5px;}
 .assets_top_text { margin-left:5px; font-size:13px; clear:both;}
-.assets_bottom_info { text-align:right; /*border-bottom:1px solid #676767; border-right:1px solid #676767;*/ height:25px; background-color:#FFF;
+.assets_bottom_info { text-align:right; height:25px; background-color:#FFF;
 }
 .assets_bottom_info_right { text-align:right;
 }
@@ -1140,12 +956,8 @@ a.s_column_bar {
 .assets_bottom_box{
 	margin-right:10px;
 }
-/*.assets_bottom_box td { background-color:#CCCCCC; height:25px}
-*/.assets_bottom_info_left {
-/*	border-bottom:1px solid #676767;
-	border-right:1px solid #676767;
-	border-left:1px solid #676767;
-*/	height:25px;
+.assets_bottom_info_left {
+	height:25px;
 	background-color:#ccc;
 }
 .asstes_easy_text { text-align:right;}
@@ -1292,14 +1104,13 @@ a.s_column_bar {
 }
 .option_show_border a{ 
 	color:#2864B4; 
-	/*display:block;*/
 	text-decoration:none;
 	display:block;
 }
 
 .option_hide_border .option_conent a:hover, .option_show_border .option_conent a:hover{
 	text-decoration:none;
-	cursor:pointer;	
+	cursor:pointer;
 }
 .option_hide_border {
   float:left;
@@ -1336,10 +1147,7 @@ a.s_column_bar {
 	text-decoration:none;
 	
 }
-/*.option_hide_border a:hover{
-	border:2px solid #2864B4;
-}
-*/.option_radio_img img{ float:left;}
+.option_radio_img img{ float:left;}
 .option_product_default_radio{
 	clear:both;
 	overflow:hidden;
@@ -1380,11 +1188,7 @@ a.s_column_bar {
 	padding-bottom:5px;
 	float:left;
 }
-/*
-.option_product_single_radio span{
-	margin-right:20px;
-}
-*/.option_product_radio_img_list{
+.option_product_radio_img_list{
 	clear:both;
 	*padding-top:3px;
 	width:100%;

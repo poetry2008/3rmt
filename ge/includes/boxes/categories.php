@@ -32,18 +32,44 @@ while ($category = tep_db_fetch_array($categories_query))  {
 if($cPath){
   $id = split('_', $cPath);
 }
+
+$left_show_single = false;
+if (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) {
+  $left_products_id = tep_preorder_get_products_id_by_param();
+  $left_ca_path = tep_get_product_path($left_products_id);
+  if (tep_not_null($left_ca_path)) {
+    $id = tep_parse_category_path($left_ca_path); 
+  }
+  $left_show_single = true;
+} else if (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_PAYMENT) {
+  $left_ca_path = tep_get_product_path($_POST['products_id']);
+  if (tep_not_null($left_ca_path)) {
+    $id = tep_parse_category_path($left_ca_path); 
+  }
+  $left_show_single = true;
+} else if (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_SUCCESS) {
+  $left_preorder_product_raw = tep_db_query("select products_id from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$_SESSION['send_preorder_id']."'"); 
+  $left_preorder_product = tep_db_fetch_array($left_preorder_product_raw);
+  $left_ca_path = tep_get_product_path($left_preorder_product['products_id']);
+  if (tep_not_null($left_ca_path)) {
+    $id = tep_parse_category_path($left_ca_path); 
+  }
+  $left_show_single = true;
+}
 ?>
-<div class="box_title">カテゴリー</div>
+<div class="box_title"><?php echo BOX_HEADING_CATEGORIES;?></div>
 <div id='box'>
   <ul class='l_m_category_ul'>
     <?php foreach($categories as $key => $category) {?>
-      <?php if($cPath && in_array($category['categories_id'], $id)) {?>
+      <?php if(($cPath && in_array($category['categories_id'], $id)) || ($left_show_single && in_array($category['categories_id'], $id))) {?>
         <li class='l_m_category_li2'>
           <a class='l_m_category_a' href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>">
             <?php if (in_array($category['categories_id'], $id)) {?>
+            <strong> 
             <?php }?>
             <?php echo $category['categories_name'];?>
             <?php if (in_array($category['categories_id'], $id)) {?>
+            </strong> 
             <?php }?>
           </a>
         <?php
@@ -76,10 +102,16 @@ if($cPath){
           ?>
           <ul class='l_m_category_ul2'>
           <?php foreach($subcategories as $skey =>  $subcategory){?>
-            <?php if($cPath && in_array($subcategory['categories_id'], $id)) {?>
+            <?php if(($cPath && in_array($subcategory['categories_id'], $id)) || ($left_show_single && in_array($subcategory['categories_id'], $id))) {?>
               <li class='l_m_categories_tree'>
                 <a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id'].'_'.$subcategory['categories_id']);?>">
+                  <?php if (in_array($subcategory['categories_id'], $id)) {?>
+                  <strong> 
+                  <?php }?>
                   <?php echo $subcategory['categories_name'];?>
+                  <?php if (in_array($subcategory['categories_id'], $id)) {?>
+                  </strong> 
+                  <?php }?>
                 </a>
         <?php
             $_subcategories = array();
@@ -139,7 +171,7 @@ if($cPath){
       <?php }?>
     <?php }?>
   <li class="l_m_category_li">
-    <a class='l_m_category_a' href="<?php echo tep_href_link('reorder.php');?>">再配達フォーム</a>
+    <a class='l_m_category_a' href="<?php echo tep_href_link('reorder.php');?>"><?php echo LINK_REORDER_TEXT;?></a>
   </li>
   </ul>
 </div>
