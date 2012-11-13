@@ -103,7 +103,7 @@
       include(DIR_WS_BOXES . 'categories.php');
       $cache_output = ob_get_contents();
       ob_end_clean();
-      write_cache($cache_output, 'categories_box-' . $language . '.cache' . $cPath);
+      write_cache($cache_output, 'categories_box-' . $language . '.cache' . $tmp_cPath);
     }
 
     return $cache_output;
