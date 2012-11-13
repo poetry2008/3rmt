@@ -5,11 +5,7 @@
 
   require(DIR_WS_BOXES . 'quick_link.php');
 
-  if ( (USE_CACHE == 'true') && !SID ) {
-    echo tep_cache_categories_box();
-  } else {
-    include(DIR_WS_BOXES . 'categories.php');
-  }
+  include(DIR_WS_BOXES . 'categories.php');
 /*
   //Color
   if(COLOR_SEARCH_BOX_TF == 'true') {
