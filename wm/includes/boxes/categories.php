@@ -59,7 +59,7 @@ if (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) {
 ?>
 
 <div id='categories'>
-  <img width="172" height="51" alt="<?php echo BOX_HEADING_CATEGORIES;?>" title="<?php echo BOX_HEADING_CATEGORIES;?>" src="images/design/box/menu.gif">
+  <img width="172" height="51" alt="" src="images/design/box/menu.gif">
   <ul class='l_m_category_ul'>
     <?php foreach($categories as $key => $category) {?>
       <?php if(($cPath && in_array($category['categories_id'], $id)) || ($left_show_single && in_array($category['categories_id'], $id))) {?>
