@@ -86,35 +86,16 @@ echo CATEGORY_ADMIN_TITLE."&nbsp;&nbsp;&nbsp;".$categories_array['categories_nam
   <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
   <script type="text/javascript">
   function display(){
-   var categories_tree = document.getElementById('categories_tree'); 
-   if(categories_tree.style.display == 'none'){
-   categories_tree.style.display = 'block';
-   }else{
-   categories_tree.style.display = 'none';
-   }
-  }
-/*
-$(window).resize(function (){
-    var menu_div_width = $('#categories_right_td').width();
-    if(menu_div_width>=480){
-      $('#categories_tree').animate({width:(menu_div_width-5)+"px"});
+    var categories_tree = document.getElementById('categories_tree'); 
+    if(categories_tree.style.display == 'none' || categories_tree.style.display == ''){
+      categories_tree.style.display = 'block';
+    }else{
+      categories_tree.style.display = 'none';
     }
-});
-*/
+  }
   $(document).ready(function(){
     $(".udlr").udlr();
     ajaxLoad('<?php echo $cPath;?>');
-    /*
-    var menu_div_width = $('#categories_right_td').width();
-<?php if ($_COOKIE['tarrow'] == 'open') {?>
-    menu_div_width = menu_div_width-125;
-<?php } ?>
-    if(menu_div_width>=480){
-      $('#categories_tree').animate({width:(menu_div_width-10)+"px"});
-    }else{
-      $('#categories_tree').animate({width:"470px"});
-    }
-    */
   })
   </script>
 <?php 
