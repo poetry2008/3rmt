@@ -266,10 +266,23 @@ require("includes/note_js.php");
           '<a href="' . tep_href_link(FILENAME_MANUFACTURERS, 'page=' .  $_GET['page'] . '&mID=' . $mInfo->manufacturers_id . '&action=edit') .  '">' . tep_html_element_button(IMAGE_EDIT) . '</a>' 
         . ($ocertify->npermission == 15 ? (' <a href="' .  tep_href_link(FILENAME_MANUFACTURERS, 'page=' . $_GET['page'] . '&mID=' . $mInfo->manufacturers_id . '&action=delete') . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'):'')
         );
-$contents[] = array('text' => '<br>'. TEXT_USER_ADDED. ' ' .$mInfo->user_added);
-$contents[] = array('text' => '<br>'. TEXT_DATE_ADDED. ' ' .tep_datetime_short($mInfo->date_added));
-$contents[] = array('text' => '<br>'. TEXT_USER_UPDATE. ' ' .$mInfo->user_update);
-$contents[] = array('text' => '<br>'. TEXT_DATE_UPDATE. ' ' .tep_datetime_short($mInfo->last_modified));
+if(tep_not_null($mInfo->user_added)){
+$contents[] = array('text' =>  TEXT_USER_ADDED. ' ' .$mInfo->user_added);
+}else{
+$contents[] = array('text' =>  TEXT_USER_ADDED. ' ' .TEXT_UNSET_DATA);
+}if(tep_not_null($mInfo->date_added)){
+$contents[] = array('text' =>  TEXT_DATE_ADDED. ' ' .tep_datetime_short($mInfo->date_added));
+}else{
+$contents[] = array('text' =>  TEXT_DATE_ADDED. ' ' .TEXT_UNSET_DATA);
+}if(tep_not_null($mInfo->user_update)){
+$contents[] = array('text' =>  TEXT_USER_UPDATE. ' ' .$mInfo->user_update);
+}else{
+$contents[] = array('text' =>  TEXT_USER_UPDATE. ' ' .TEXT_UNSET_DATA);
+}if(tep_not_null($mInfo->last_modified)){
+$contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .tep_datetime_short($mInfo->last_modified));
+}else{
+$contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .TEXT_UNSET_DATA);
+}
 
  //       $contents[] = array('text' => '<br>' . TEXT_DATE_ADDED . ' ' . tep_date_short($mInfo->date_added));
   //      if (tep_not_null($mInfo->last_modified)) $contents[] = array('text' => TEXT_LAST_MODIFIED . ' ' . tep_date_short($mInfo->last_modified));

@@ -18,7 +18,7 @@ define('TEXT_INFO_CURRENCY_SYMBOL_RIGHT', '右侧标志:');
 define('TEXT_INFO_CURRENCY_DECIMAL_POINT', '小数点:');
 define('TEXT_INFO_CURRENCY_THOUSANDS_POINT', '每3行的段落:');
 define('TEXT_INFO_CURRENCY_DECIMAL_PLACES', '小数点位置:');
-define('TEXT_INFO_CURRENCY_LAST_UPDATED', '更新日期:');
+define('TEXT_INFO_CURRENCY_LAST_UPDATED', '更新日:');
 define('TEXT_INFO_CURRENCY_VALUE', '设定值:');
 define('TEXT_INFO_CURRENCY_EXAMPLE', '例如:');
 define('TEXT_INFO_INSERT_INTRO', '请输入和新货币相关的数据');

@@ -32,8 +32,8 @@ define('ROMAJI_EXISTS', '罗马字已经存在。');
 define('ROMAJI_WRONG_FORMAT', '请用英数文字及「_」填写');
 define('TEXT_USER_ADDED','创建者:');
 define('TEXT_USER_UPDATE','更新者:');
-define('TEXT_DATE_ADDED','创建日期:');
-define('TEXT_DATE_UPDATE','更新日期:');
+define('TEXT_DATE_ADDED','创建日:');
+define('TEXT_DATE_UPDATE','更新日:');
 
 
 define('TEXT_CONTENT_MSG', '为了显示此页面的链接，请将以下代码复制粘贴到想显示的地方。');

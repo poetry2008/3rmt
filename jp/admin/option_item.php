@@ -190,7 +190,9 @@
               '".addslashes(serialize($option_array))."', `type` =
               '".tep_db_prepare_input(strtolower($_POST['type']))."', `price` =
               '".tep_db_prepare_input($_POST['price'])."', `sort_num` =
-              '".tep_db_prepare_input((int)$_POST['sort_num'])."', `place_type` = '".tep_db_prepare_input($_POST['place_type'])."' where id =
+              '".tep_db_prepare_input((int)$_POST['sort_num'])."', `place_type` =
+              '".tep_db_prepare_input($_POST['place_type'])."', `user_update` =
+              '".$ocertify->auth_user."', `date_update` = '".date('Y-m-d H:i:s',time())."' where id =
               '".$_POST['item_id']."'"; 
             tep_db_query($update_sql); 
           } else if ($_GET['action'] == 'insert') {
@@ -201,7 +203,9 @@
               '".addslashes(serialize($option_array))."',
               '".tep_db_prepare_input(strtolower($_POST['type']))."',
               '".tep_db_prepare_input($_POST['price'])."', '1',
-              '".tep_db_prepare_input((int)$_POST['sort_num'])."', '".tep_db_prepare_input($_POST['place_type'])."', '".date('Y-m-d H:i:s',time())."')"; 
+              '".tep_db_prepare_input((int)$_POST['sort_num'])."',
+              '".tep_db_prepare_input($_POST['place_type'])."', '".date('Y-m-d
+                H:i:s',time())."' ,'".$ocertify->auth_user."','".$ocertify->auth_user."','".date('Y-m-d H:i:s',time())."')"; 
              tep_db_query($insert_sql); 
              $item_id = tep_db_insert_id(); 
              $option_array['eid'] = $item_id;

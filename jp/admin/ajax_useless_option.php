@@ -154,39 +154,77 @@ echo $option_group_option['comment'];
 <?php echo $option_group_array['sort_num']?>
 </td>
 </tr>
-
+<?php  if(tep_not_null($option_group_array['user_added'])){?>
 <tr>
 <td>
 &nbsp;&nbsp;&nbsp;<?php echo TEXT_USER_ADDED;?>
 </td>
 <td>
-<?php echo $option_group_array['user_added']?>
+<?php echo $option_group_array['user_added'];?>
 </td>
 </tr>
-
+<?php }else{?>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;<?php echo TEXT_USER_ADDED;?>
+</td>
+<td>
+<?php echo TEXT_UNSET_DATA;?>
+</td>
+</tr>
+<?php } if(tep_not_null($option_group_array['created_at'])){?>
 <tr>
 <td>
 &nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_ADDED;?>
 </td>
 <td>
-<?php echo $option_group_array['created_at']?>
+<?php echo $option_group_array['created_at'];?>
 </td>
 </tr>
+<?php }else{?>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_ADDED;?>
+</td>
+<td>
+<?php echo TEXT_UNSET_DATA;?>
+</td>
+</tr>
+<?php } if(tep_not_null($option_group_array['user_update'])){?>
 <tr>
 <td>
 &nbsp;&nbsp;&nbsp;<?php echo TEXT_USER_UPDATE;?>
 </td>
 <td>
-<?php echo $option_group_array['user_update']?>
+<?php echo $option_group_array['user_update'];?>
 </td>
 </tr>
+<?php }else{ ?>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;<?php echo TEXT_USER_UPDATE;?>
+</td>
+<td>
+<?php echo TEXT_UNSET_DATA;?>
+</td>
+</tr>
+<?php  } if(tep_not_null($option_group_array['date_update'])){?>
 <tr>
 <td>
 &nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_UPDATE;?>
 </td>
 <td>
-<?php echo $option_group_array['date_update']?>
+<?php echo $option_group_array['date_update'];?>
 </td>
 </tr>
-
+<?php }else{?>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_UPDATE;?>
+</td>
+<td>
+<?php echo TEXT_UNSET_DATA;?>
+</td>
+</tr>
+<?php }?>
 </table>

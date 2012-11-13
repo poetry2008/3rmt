@@ -28,7 +28,7 @@ define('TEXT_BANNERS_INSERT_NOTE', '<b>图片:</b><ul><li>请在广告图片保�
 define('TEXT_BANNERS_EXPIRCY_NOTE', '<b>结束日期:</b><ul><li>结束日期和显示次数的两个输入框里面，只有一个能被保存。</li><li>如果不想让广告自动终止，请保持这些输入框空白。</li></ul>');
 define('TEXT_BANNERS_SCHEDULE_NOTE', '<b>开始日期:</b><ul><li>如果保存了开始日期,广告就从保存的日期开始有效。</li><li>如果保存了开始日期,不到开始日期广告不显示。</li></ul>');
 
-define('TEXT_BANNERS_DATE_ADDED', '创建日期:');
+define('TEXT_BANNERS_DATE_ADDED', '创建日:');
 define('TEXT_BANNERS_SCHEDULED_AT_DATE', '开始日期: <b>%s</b>');
 define('TEXT_BANNERS_EXPIRES_AT_DATE', '结束日期: <b>%s</b>');
 define('TEXT_BANNERS_EXPIRES_AT_IMPRESSIONS', '结束日期: <b>%s</b> 点击次数');
@@ -59,8 +59,8 @@ define('ERROR_GRAPHS_DIRECTORY_DOES_NOT_EXIST', "错误:  'graphs' 目录不存�
 define('ERROR_GRAPHS_DIRECTORY_NOT_WRITEABLE', "错误:  '无法编辑images/graphs' 目录。请设置正确的用户权限。");
 define('TEXT_USER_ADDED','创建者:');
 define('TEXT_USER_UPDATE','更新者:');
-define('TEXT_DATE_ADDED','创建日期:');
-define('TEXT_DATE_UPDATE','更新日期:');
+define('TEXT_DATE_ADDED','创建日:');
+define('TEXT_DATE_UPDATE','更新日:');
 
 define('TEXT_ADVERTISEMENT_INFO','如果想使用广告功能的话，【注册新广告/组】的命名一定要以adv开头。');
 ?>

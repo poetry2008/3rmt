@@ -574,26 +574,49 @@ if($type != 'text'){
 <tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_SHOW_TITLE;?></td><td><input type="radio" name="show_title" value="1" style="text-align: right;"<?php echo $checkbox_checked;?>>True&nbsp;<input type="radio" name="show_title" value="0" style="text-align: right;"<?php echo $checkbox_checked_false;?>>False</td></tr>
 <?php
 }
+if(!empty($address_array['id'])){
+if(tep_not_null($address_array['user_added'])){
 ?>
 <tr>
   <td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_USER_ADDED; ?></td>
   <td><?php echo $address_array['user_added'];?></td>
 </tr>
+<?php }else{ ?> 
+ <tr>
+  <td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_USER_ADDED; ?></td>
+  <td><?php echo TEXT_UNSET_DATA;?></td>
+</tr> 
+<?php } if(tep_not_null($address_array['date_added'])){?>
 <tr>
   <td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_ADDED; ?></td>
   <td><?php echo $address_array['date_added'];?></td>
 </tr>
-
+<?php }else{ ?>
+<tr>
+  <td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_ADDED; ?></td>
+  <td><?php echo TEXT_UNSET_DATA;?></td>
+</tr> 
+<?php } if(tep_not_null($address_array['user_update'])){?>
 <tr>
   <td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_USER_UPDATE; ?></td>
   <td><?php echo $address_array['user_update'];?></td>
 </tr>
-
+<?php } else{ ?>
+<tr>
+  <td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_USER_UPDATE; ?></td>
+  <td><?php echo TEXT_UNSET_DATA;?></td>
+</tr>
+<?php } if(tep_not_null($address_array['date_update'])){?>
 <tr>
   <td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_UPDATE; ?></td>
   <td><?php echo $address_array['date_update'];?></td>
 </tr>
-
+<?php }else{ ?>
+<tr>
+  <td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_UPDATE; ?></td>
+  <td><?php echo TEXT_UNSET_DATA;?></td>
+</tr>
+<?php } } ?>
 <tr><td colspan="2" align="center"><input type="button" name="new" value="<?php echo TABLE_BUTTON_SUBMIT;?>" onclick="show_text(0,'','text');">&nbsp;<input type="button" name="save" value="<?php echo TABLE_BUTTON_SAVE;?>" onclick="if(check_form()){check('save');}else{return check_form();}">&nbsp;
 
 <?php

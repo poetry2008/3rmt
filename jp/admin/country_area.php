@@ -7,7 +7,6 @@ $action = $_GET['action'];
 if(isset($action) && $action != ''){
 
   switch($action){
-
   case 'save':
     $area_fee_id = tep_db_prepare_input($_POST['cid']);
     $area_fee_fid = tep_db_prepare_input($_POST['fid']);
@@ -23,7 +22,6 @@ if(isset($action) && $action != ''){
     $area_fee_sort = tep_db_prepare_input($_POST['sort']);
 
 
-
         
     $sql_str = '';
     $sql_array = array();
@@ -36,7 +34,7 @@ if(isset($action) && $action != ''){
     $sql_str = serialize($sql_array); 
     //这里判断是添加，还是修改
     if($area_fee_id == ''){
-
+      
        $area_fee_sql = "insert into ". TABLE_AREA_FEE .
                    " values(NULL".
                    ",". $area_fee_fid .
@@ -49,7 +47,7 @@ if(isset($action) && $action != ''){
                    "','". $email_comment_1 .
                    "','". $area_fee_date .
                    "','". $area_fee_sort .                   
-                   "','0')";
+                   "','0','".$ocertify->auth_user."','".date('Y-m-d H:i:s',time())."','".$ocertify->auth_user."','".date('Y-m-d H:i:s',time())."')";
 
     }else{
       $area_fee_sql = "update ". TABLE_AREA_FEE .
@@ -63,9 +61,10 @@ if(isset($action) && $action != ''){
                    "',email_comment_1='". $email_comment_1 .
                    "',date='". $area_fee_date .
                    "',sort='". $area_fee_sort .
-                   "' where id=". $area_fee_id;
+                   "',user_update='".$ocertify->auth_user.
+                   "',date_update='".date('Y-m-d H:i:s',time()).
+                   "'  where id=". $area_fee_id;
     }
-
     $area_fee_query = tep_db_query($area_fee_sql);
 
     if($area_fee_query == true){
@@ -193,7 +192,11 @@ require("includes/note_js.php");
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td valign="top"><div id="show" style="display:none"></div><table border="0" width="100%" cellspacing="0" cellpadding="2" id="group_list_box">
+            <td valign="top">
+            <?php if(!empty($area_fee_array['id'])){
+            echo '<div id="show" style="display:none"></div>'; 
+            } ?>
+            <table border="0" width="100%" cellspacing="0" cellpadding="2" id="group_list_box">
               <tr class="dataTableHeadingRow">
                 <td class="dataTableHeadingContent"><?php echo TABLE_TITLE_1; ?></td>
                 <td class="dataTableHeadingContent"><?php echo TABLE_TITLE_2; ?></td>
@@ -265,7 +268,13 @@ tep_db_close();
 </td>
 </tr>
 <tr><td align="right" colspan="9"><button onclick="javascript:location.href='country_fee.php';"><?php echo TABLE_HISTROY;?></button>&nbsp;<button onclick="show_text_area(0,this,<?php echo $_GET['fid']; ?>);"><?php echo TABLE_BUTTON;?></button></td></tr>
-</table></td></tr></table></td></tr>
+</table>
+<?php if(empty($area_fee_array['id'])){
+echo '<div id="show" style="display:none;position:inherit;"></div>';
+}
+
+?>
+</td></tr></table></td></tr>
 </table>
 </div>
 </td>

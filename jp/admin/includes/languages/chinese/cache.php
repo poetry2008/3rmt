@@ -7,7 +7,7 @@
 define('HEADING_TITLE', '缓存控制');
 
 define('TABLE_HEADING_CACHE', '高速缓存块');
-define('TABLE_HEADING_DATE_CREATED', '创建日期');
+define('TABLE_HEADING_DATE_CREATED', '创建日');
 define('TABLE_HEADING_ACTION', '删除文件');
 
 define('TEXT_FILE_DOES_NOT_EXIST', '文件不存在');

@@ -22,7 +22,7 @@ define('LISTING_TITLE_A_TO_N','标题 あ～ん');
 define('LISTING_TITLE_N_TO_A','标题 ん～あ');
 define('TEXT_USER_ADDED','创建者:');
 define('TEXT_USER_UPDATE','更新者:');
-define('TEXT_DATE_ADDED','创建日期:');
-define('TEXT_DATE_UPDATE','更新日期:');
+define('TEXT_DATE_ADDED','创建日:');
+define('TEXT_DATE_UPDATE','更新日:');
 
 ?>

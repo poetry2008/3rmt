@@ -25,6 +25,11 @@
         print_r($_POST);
         exit;
         */
+        if($_POST['categories_id']){
+         $tags_query = tep_db_query("select * from tags where tags_id");
+         $tags_array = tep_db_fetch_array($tags_query);
+         tep_db_query("UPDATE `tags` SET user_update = '".$ocertify->auth_user."', date_update = '".date('Y-m-d H:i:s',time())."'  WHERE  `tags_id` = '".$tags_array['tags_id']."'");  
+        };
         if ($_POST['tags_id']) {
           foreach($_POST['tags_id'] as $tid) {
           tep_db_query("delete from products_to_tags where tags_id='".$tid."'");
@@ -35,11 +40,9 @@
               //tep_db_query("delete from products_to_tags where tags_id='".$_POST['tags_id']."'");
             }
           }
-          
-         tep_db_query("UPDATE `products_to_tags` SET user_update = '".$ocertify->auth_user."', date_update = '".date('Y-m-d H:i:s',time())."'  WHERE `products_id` = '".$pid."' AND `tags_id` = '".$tid."'");  
-         echo $pid;
-         echo '<br>';
-         echo $tid;
+        if($tid){
+         tep_db_query("UPDATE `tags` SET user_update = '".$ocertify->auth_user."', date_update = '".date('Y-m-d H:i:s',time())."'  WHERE  `tags_id` = '".$tid."'");  
+         }
         }
         tep_redirect(tep_href_link('products_tags.php'));
         break;
@@ -235,8 +238,9 @@ require("includes/note_js.php");
             </td>
           </tr>
          <?php 
-             $tags_date = tep_db_query("select * from products_to_tags order by date_update desc ");
+             $tags_date = tep_db_query("select * from tags order by date_update desc ");
              $tags_row = tep_db_fetch_array($tags_date);
+             if(tep_not_null($tags_row['user_update'])){
          ?>
           <tr>
            <td colspan="2">
@@ -246,6 +250,16 @@ require("includes/note_js.php");
            ?>
            </td>
           </tr>
+          <?php }else{ ?> 
+          <tr>
+           <td colspan="2">
+           <?php 
+            echo TEXT_USER_UPDATE.'&nbsp;';
+            echo TEXT_UNSET_DATA;
+           ?>
+           </td>
+          </tr>
+          <?php }if(tep_not_null($tags_row['date_update'])){ ?>
           <tr>
            <td colspan="2">
            <?php
@@ -255,6 +269,16 @@ require("includes/note_js.php");
 
            </td>
           </tr>
+          <?php }else{?>
+          <tr>
+           <td colspan="2">
+           <?php
+           echo TEXT_DATE_UPDATE.'&nbsp;'; 
+           echo TEXT_UNSET_DATA;
+           ?>
+           </td>
+          </tr>
+         <?php } ?>
          </table>
          </form>
         </td>

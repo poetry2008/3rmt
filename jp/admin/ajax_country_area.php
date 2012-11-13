@@ -74,7 +74,10 @@ if(isset($id) && $id != 0){
    $email_comment_1 = $area_fee_array['email_comment_1'];
    $area_date = $area_fee_array['date'];
    $area_sort = $area_fee_array['sort'];
-
+   $user_added = $area_fee_array['user_added'];
+   $date_added = $area_fee_array['date_update'];
+   $user_update = $area_fee_array['user_update'];
+   $date_update = $area_fee_array['date_update'];
    tep_db_free_result($area_fee_query);
 }
 
@@ -161,6 +164,48 @@ if($id == 0){
 
 
 </td></tr>
+
+<?php if(tep_not_null($user_added)){?>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<?php echo TEXT_USER_ADDED;?>
+</td>
+<td>
+<?php echo $user_added;?>
+</td>
+</tr>
+<?php } if(tep_not_null($date_added)){?>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<?php echo TEXT_DATE_ADDED;?>
+</td>
+<td>
+<?php echo $date_added;?>
+</td>
+</tr>
+<?php } if(tep_not_null($user_update)){?>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<?php echo TEXT_USER_UPDATE;?>
+</td>
+<td>
+<?php echo $user_update;?>
+</td>
+</tr>
+<?php } if(tep_not_null($date_update)){?>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<?php echo TEXT_DATE_UPDATE;?>
+</td>
+<td>
+<?php echo $date_update;?>
+</td>
+</tr>
+<?php }?>
 <tr><td  colspan="2" align="center">
 <?php 
 if($id != 0){

@@ -569,10 +569,23 @@ $banner_query = tep_db_query("
         $contents[] = array('align' => 'center', 'text' => '<a href="' . tep_href_link(FILENAME_BANNER_MANAGER, 'page=' .  $_GET['page'] . '&bID=' . $bInfo->banners_id . '&action=new' .  (isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a>' . ($ocertify->npermission == 15 ? (' <a href="' .  tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] . '&bID=' . $bInfo->banners_id . '&action=delete' .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'):'')
         );
 //        $contents[] = array('text' => '<br>' . TEXT_BANNERS_DATE_ADDED . ' ' . tep_date_short($bInfo->date_added));
-$contents[] = array('text' => '<br>'. TEXT_USER_ADDED. ' ' .$bInfo->user_added);
-$contents[] = array('text' => '<br>'. TEXT_DATE_ADDED. ' ' .tep_datetime_short($bInfo->date_added));
-$contents[] = array('text' => '<br>'. TEXT_USER_UPDATE. ' ' .$bInfo->user_update);
-$contents[] = array('text' => '<br>'. TEXT_DATE_UPDATE. ' ' .tep_datetime_short($bInfo->date_update));
+        if(tep_not_null($bInfo->user_added)){
+$contents[] = array('text' =>  TEXT_USER_ADDED. ' ' .$bInfo->user_added);
+        }else{
+$contents[] = array('text' =>  TEXT_USER_ADDED. ' ' .TEXT_UNSET_DATA);
+        }if(tep_not_null($bInfo->date_added)){
+$contents[] = array('text' =>  TEXT_DATE_ADDED. ' ' .tep_datetime_short($bInfo->date_added));
+        }else{
+$contents[] = array('text' =>  TEXT_DATE_ADDED. ' ' .TEXT_UNSET_DATA);
+        }if(tep_not_null($bInfo->user_update)){
+$contents[] = array('text' =>  TEXT_USER_UPDATE. ' ' .$bInfo->user_update);
+        }else{
+$contents[] = array('text' =>  TEXT_USER_UPDATE. ' ' .TEXT_UNSET_DATA);
+        }if(tep_not_null($bInfo->date_update)){
+$contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .tep_datetime_short($bInfo->date_update));
+        }else{
+$contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .TEXT_UNSET_DATA);
+        }
 
 
         if ( (function_exists('imagecreate')) && ($dir_ok) && ($banner_extension) ) {

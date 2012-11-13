@@ -985,7 +985,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
       'disabled="true" class="campaign_input_num" style="background:#ccc;" ').TEXT_CAMPAIGN_NUM_UNIT; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
-  
+  if(tep_not_null($campaign_res['user_added'])){ 
   $html_str .= '<tr>';
   $html_str .= '<td>';
   $html_str .= TEXT_USER_ADDED;
@@ -994,7 +994,16 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= $campaign_res['user_added'];
   $html_str .= '</td>';
   $html_str .= '</tr>';
-
+  }else{
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_USER_ADDED;
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_UNSET_DATA;
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  }if(tep_not_null($campaign_res['created_at'])){
   $html_str .= '<tr>';
   $html_str .= '<td>';
   $html_str .= TEXT_DATE_ADDED;
@@ -1003,7 +1012,16 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= $campaign_res['created_at'];
   $html_str .= '</td>';
   $html_str .= '</tr>';
-
+  }else{
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_DATE_ADDED;
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_UNSET_DATA;
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  }if(tep_not_null($campaign_res['user_update'])){
   $html_str .= '<tr>';
   $html_str .= '<td>';
   $html_str .= TEXT_USER_UPDATE;
@@ -1012,7 +1030,16 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= $campaign_res['user_update'];
   $html_str .= '</td>';
   $html_str .= '</tr>';
- 
+  }else{
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_USER_UPDATE;
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_UNSET_DATA;
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  }if(tep_not_null($campaign_res['date_update'])){ 
   $html_str .= '<tr>';
   $html_str .= '<td>';
   $html_str .= TEXT_DATE_UPDATE;
@@ -1021,7 +1048,16 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= $campaign_res['date_update'];
   $html_str .= '</td>';
   $html_str .= '</tr>';
-
+  }else{
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_DATE_UPDATE;
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_UNSET_DATA;
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  }
   $html_str .= '<tr>';
   $html_str .= '<td colspan="2" align="center">';
   $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_NEW_PROJECT, 'onclick="show_new_campaign(\''.$_POST['st_id'].'\')"').'</a>&nbsp;'; 
@@ -1527,6 +1563,7 @@ echo json_encode($json_array);
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
+  if(tep_not_null($group['user_added'])){
   $html_str .= '<tr>';
   $html_str .= '<td width="220" align="left">'; 
   $html_str .= TEXT_USER_ADDED;
@@ -1535,7 +1572,17 @@ echo json_encode($json_array);
   $html_str .= $group['user_added'];
   $html_str .= '</td>';
   $html_str .= '</tr>';
-
+  }else{
+  $html_str .= '<tr>';
+  $html_str .= '<td width="220" align="left">'; 
+  $html_str .= TEXT_USER_ADDED;
+  $html_str .= '</td>';
+  $html_str .= '<td align="left">';
+  $html_str .= TEXT_UNSET_DATA;
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  } 
+  if(tep_not_null($group['created_at'])){
   $html_str .= '<tr>';
   $html_str .= '<td width="220" align="left">'; 
   $html_str .= TEXT_DATE_ADDED;
@@ -1544,7 +1591,17 @@ echo json_encode($json_array);
   $html_str .= $group['created_at'];
   $html_str .= '</td>';
   $html_str .= '</tr>';
-
+  }else{
+  $html_str .= '<tr>';
+  $html_str .= '<td width="220" align="left">'; 
+  $html_str .= TEXT_DATE_ADDED;
+  $html_str .= '</td>';
+  $html_str .= '<td align="left">';
+  $html_str .= TEXT_UNSET_DATA;
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  }
+  if(tep_not_null($group['user_update'])){
   $html_str .= '<tr>';
   $html_str .= '<td width="220" align="left">'; 
   $html_str .= TEXT_USER_UPDATE;
@@ -1553,7 +1610,17 @@ echo json_encode($json_array);
   $html_str .= $group['user_update'];
   $html_str .= '</td>';
   $html_str .= '</tr>';
- 
+  }else{
+  $html_str .= '<tr>';
+  $html_str .= '<td width="220" align="left">'; 
+  $html_str .= TEXT_USER_UPDATE;
+  $html_str .= '</td>';
+  $html_str .= '<td align="left">';
+  $html_str .= TEXT_UNSET_DATA;
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  }
+  if(tep_not_null($group['date_update'])){
   $html_str .= '<tr>';
   $html_str .= '<td width="220" align="left">'; 
   $html_str .= TEXT_DATE_UPDATE;
@@ -1562,7 +1629,16 @@ echo json_encode($json_array);
   $html_str .= $group['date_update'];
   $html_str .= '</td>';
   $html_str .= '</tr>';
-
+  }else{
+  $html_str .= '<tr>';
+  $html_str .= '<td width="220" align="left">'; 
+  $html_str .= TEXT_DATE_UPDATE;
+  $html_str .= '</td>';
+  $html_str .= '<td align="left">';
+  $html_str .= TEXT_UNSET_DATA;
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  }
   $html_str .= '<tr>';
   $html_str .= '<td  align="center" colspan="2">';
   $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_NEW_PROJECT, 'onclick="create_option_group();"').'</a>&nbsp;'; 
@@ -1887,7 +1963,79 @@ echo json_encode($json_array);
   $html_str .= '</div>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
-  
+  if(tep_not_null($item['user_added'])){
+  $html_str .= '<tr>';
+  $html_str .= '<td align="left">';
+  $html_str .= TEXT_USER_ADDED;
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= $item['user_added'];
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  }else{
+  $html_str .= '<tr>';
+  $html_str .= '<td align="left">';
+  $html_str .= TEXT_USER_ADDED;
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_UNSET_DATA;
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  }if(tep_not_null($item['created_at'])){
+  $html_str .= '<tr>';
+  $html_str .= '<td align="left">';
+  $html_str .= TEXT_DATE_ADDED;
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= $item['created_at'];
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  }else{
+  $html_str .= '<tr>';
+  $html_str .= '<td align="left">';
+  $html_str .= TEXT_DATE_ADDED;
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_UNSET_DATA;
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  }if(tep_not_null($item['user_update'])){
+  $html_str .= '<tr>';
+  $html_str .= '<td align="left">';
+  $html_str .= TEXT_USER_UPDATE;
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= $item['user_update'];
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  }else{
+  $html_str .= '<tr>';
+  $html_str .= '<td align="left">';
+  $html_str .= TEXT_USER_UPDATE;
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_UNSET_DATA;
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  }if(tep_not_null($item['date_update'])){ 
+  $html_str .= '<tr>';
+  $html_str .= '<td align="left">';
+  $html_str .= TEXT_DATE_UPDATE;
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= $item['date_update'];
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  }else{
+  $html_str .= '<tr>';
+  $html_str .= '<td align="left">';
+  $html_str .= TEXT_DATE_UPDATE;
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_UNSET_DATA;
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  } 
   $html_str .= '<tr>';
   $html_str .= '<td  align="center" colspan="2">';
   $html_str .= '<input type="hidden" name="is_copy" value="0" id="is_copy">'; 

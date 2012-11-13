@@ -23,6 +23,6 @@ define('TEXT_INFO_HEADING_EDIT_POINT_MAIL','邮件的模板');
 define('TEXT_DISPLAY_NUMBER_OF_POINT_EMAIL','当前显示<b>%d</b> &sim; <b>%d</b> (共<b>%d</b>项 )');
 define('TEXT_USER_ADDED','创建者:');
 define('TEXT_USER_UPDATE','更新者:');
-define('TEXT_DATE_ADDED','创建日期:');
-define('TEXT_DATE_UPDATE','更新日期:');
+define('TEXT_DATE_ADDED','创建日:');
+define('TEXT_DATE_UPDATE','更新日:');
 ?>

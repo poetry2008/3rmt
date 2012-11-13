@@ -1149,16 +1149,23 @@ switch (isset($_action)? $_action:'') {
           
 
         }
-$contents[] = array('text' => '<br>'. TEXT_USER_ADDED. ' '
-                  .$faq_info->user_added);
-
-              $contents[] = array('text' => '<br>'. TEXT_CREATED_AT. ' '
-                  .tep_datetime_short($faq_info->created_at));
-$contents[] = array('text' => '<br>'. TEXT_USER_UPDATE. ' '
-                  .$faq_info->user_update);
-
-              $contents[] = array('text' => '<br>'. TEXT_UPDATED_AT. ' '
-                  .tep_datetime_short($faq_info->updated_at));
+if(tep_not_null($faq_info->user_added)){
+$contents[] = array('text' =>  TEXT_USER_ADDED. ' ' .$faq_info->user_added);
+}else{
+$contents[] = array('text' =>  TEXT_USER_ADDED. ' ' .TEXT_UNSET_DATA);
+}if(tep_not_null($faq_info->created_at)){
+$contents[] = array('text' =>  TEXT_CREATED_AT. ' ' .tep_datetime_short($faq_info->created_at));
+}else{
+$contents[] = array('text' =>  TEXT_CREATED_AT. ' ' .TEXT_UNSET_DATA);
+}if(tep_not_null($faq_info->user_update)){
+$contents[] = array('text' => TEXT_USER_UPDATE. ' ' .$faq_info->user_update);
+}else{
+$contents[] = array('text' => TEXT_USER_UPDATE. ' ' .TEXT_UNSET_DATA);
+}if(tep_not_null($faq_info->updated_at)){
+$contents[] = array('text' =>  TEXT_UPDATED_AT. ' ' .tep_datetime_short($faq_info->updated_at));
+}else{
+$contents[] = array('text' =>  TEXT_UPDATED_AT. ' ' .TEXT_UNSET_DATA);
+}
 
       }else if(isset($qInfo)&&is_object($qInfo)){
         $heading[] = array('text' => '<b>'.$qInfo->ask.'</b>');

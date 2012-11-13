@@ -492,10 +492,23 @@ require("includes/note_js.php");
           . ' <a href="' . tep_href_link(FILENAME_NEWSLETTERS, 'page=' .  $_GET['page'] . '&nID=' . $nInfo->newsletters_id . '&action=lock' .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_LOCK) . '</a>'
           );
         }
-$contents[] = array('text' => '<br>' . TEXT_USER_ADDED . ' ' . $nInfo->user_added);
-$contents[] = array('text' => '<br>' . TEXT_NEWSLETTER_DATE_ADDED . ' ' . tep_datetime_short($nInfo->date_added));
-$contents[] = array('text' => '<br>' . TEXT_USER_UPDATE . ' ' . $nInfo->user_update);
-$contents[] = array('text' => '<br>' . TEXT_LAST_MODIFIED . ' ' . tep_datetime_short($nInfo->last_modified));
+if(tep_not_null($nInfo->user_added)){
+$contents[] = array('text' =>  TEXT_USER_ADDED . ' ' . $nInfo->user_added);
+}else{
+$contents[] = array('text' =>  TEXT_USER_ADDED . ' ' . TEXT_UNSET_DATA);
+}if(tep_not_null($nInfo->date_added)){
+$contents[] = array('text' =>  TEXT_NEWSLETTER_DATE_ADDED . ' ' . tep_datetime_short($nInfo->date_added));
+}else{
+$contents[] = array('text' =>  TEXT_NEWSLETTER_DATE_ADDED . ' ' . TEXT_UNSET_DATA);
+}if(tep_not_null($nInfo->user_update)){
+$contents[] = array('text' =>  TEXT_USER_UPDATE . ' ' . $nInfo->user_update);
+}else{
+$contents[] = array('text' =>  TEXT_USER_UPDATE . ' ' . TEXT_UNSET_DATA);
+}if(tep_not_null($nInfo->last_modified)){
+$contents[] = array('text' =>  TEXT_LAST_MODIFIED . ' ' . tep_datetime_short($nInfo->last_modified));
+}else{
+$contents[] = array('text' =>  TEXT_LAST_MODIFIED . ' ' . TEXT_UNSET_DATA);
+}
 
         if ($nInfo->status == '1') $contents[] = array('text' => '<br>'.TEXT_NEWSLETTER_DATE_SENT . ' ' . tep_datetime_short($nInfo->date_sent));
       }

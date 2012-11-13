@@ -8,12 +8,12 @@ define('HEADING_TITLE_SEARCH', '搜索:');
 
 define('TABLE_HEADING_FIRSTNAME', '名');
 define('TABLE_HEADING_LASTNAME', '姓');
-define('TABLE_HEADING_ACCOUNT_CREATED', '账号注册日期');
+define('TABLE_HEADING_ACCOUNT_CREATED', '账号注册日');
 define('TABLE_HEADING_ACTION', '操作');
 
-define('TEXT_DATE_ACCOUNT_CREATED', '账号注册日期:');
-define('TEXT_DATE_ACCOUNT_LAST_MODIFIED', '账号更新日期:');
-define('TEXT_INFO_DATE_LAST_LOGON', '最终登录日期:');
+define('TEXT_DATE_ACCOUNT_CREATED', '账号注册日:');
+define('TEXT_DATE_ACCOUNT_LAST_MODIFIED', '账号更新日:');
+define('TEXT_INFO_DATE_LAST_LOGON', '最终登录:');
 define('TEXT_INFO_NUMBER_OF_LOGONS', '登录次数:');
 define('TEXT_INFO_COUNTRY', '国名:');
 define('TEXT_INFO_NUMBER_OF_REVIEWS', '评论投稿数:');
