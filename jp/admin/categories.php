@@ -4017,7 +4017,7 @@ tep_display_google_results(FILENAME_CATEGORIES);
             $contents[] = array('text' => TEXT_USER_ADDED .'&nbsp;' . $pInfo->products_user_added);
             }else{
             $contents[] = array('text' => TEXT_USER_ADDED .'&nbsp;' . TEXT_UNSET_DATA);
-            }if(tep_not_null($pInfo->products_date_added)){
+            }if(tep_not_null(tep_datetime_short($pInfo->products_date_added))){
             $contents[] = array('text' => TEXT_DATE_ADDED . '&nbsp;' . tep_datetime_short($pInfo->products_date_added));
             }else{
             $contents[] = array('text' => TEXT_DATE_ADDED . '&nbsp;' . TEXT_UNSET_DATA);
@@ -4026,7 +4026,7 @@ tep_display_google_results(FILENAME_CATEGORIES);
             $contents[] = array('text' =>  TEXT_USER_UPDATE .'&nbsp;' . $pInfo->products_user_update);
             }else{
             $contents[] = array('text' =>  TEXT_USER_UPDATE .'&nbsp;' . TEXT_UNSET_DATA);
-            }if(tep_not_null($pInfo->products_last_modified)){
+            }if(tep_not_null(tep_datetime_short($pInfo->products_last_modified))){
             $contents[] = array('text' => TEXT_LAST_MODIFIED . '&nbsp;' . tep_datetime_short($pInfo->products_last_modified));
             }else{
             $contents[] = array('text' => TEXT_LAST_MODIFIED . '&nbsp;' . TEXT_UNSET_DATA);

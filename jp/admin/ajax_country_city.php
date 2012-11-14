@@ -178,7 +178,17 @@ if($id == 0){
 <?php echo $user_added;?>
 </td>
 </tr>
-<?php } if(tep_not_null($date_added)){?>
+<?php }else{ ?>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<?php echo TEXT_USER_ADDED;?>
+</td>
+<td>
+<?php echo TEXT_UNSET_DATA;?>
+</td>
+</tr>
+<?php } if(tep_not_null($date_added)){ ?>
 <tr>
 <td>
 &nbsp;&nbsp;&nbsp;&nbsp;
@@ -186,6 +196,16 @@ if($id == 0){
 </td>
 <td>
 <?php echo $date_added;?>
+</td>
+</tr>
+<?php }else{ ?>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<?php echo TEXT_DATE_ADDED;?>
+</td>
+<td>
+<?php echo TEXT_UNSET_DATA;?>
 </td>
 </tr>
 <?php } if(tep_not_null($user_update)){?>
@@ -198,7 +218,17 @@ if($id == 0){
 <?php echo $user_update;?>
 </td>
 </tr>
-<?php } if(tep_not_null($date_update)){?>
+<?php } else{ ?>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<?php echo TEXT_USER_UPDATE;?>
+</td>
+<td>
+<?php echo TEXT_UNSET_DATA;?>
+</td>
+</tr>
+<?php }if(tep_not_null($date_update)){?>
 <tr>
 <td>
 &nbsp;&nbsp;&nbsp;&nbsp;
@@ -208,7 +238,17 @@ if($id == 0){
 <?php echo $date_update;?>
 </td>
 </tr>
-<?php }?>
+<?php } else{?>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<?php echo TEXT_DATE_UPDATE;?>
+</td>
+<td>
+<?php echo TEXT_UNSET_DATA;?>
+</td>
+</tr>
+<?php } ?>
 <tr><td  colspan="2" align="center">
 <?php 
 if($id != 0){

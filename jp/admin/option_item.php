@@ -573,7 +573,6 @@ require("includes/note_js.php");
     </table></td>
 <!-- body_text //-->
     <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible">
-              <div id="show_item_info" style="display:none;"></div> 
               <div align="right">
               <?php echo tep_draw_form('form', FILENAME_OPTION_GROUP, '', 'get');?>
               <input type="text" name="keyword" id="keyword">
@@ -739,6 +738,7 @@ require("includes/note_js.php");
         </table></td>
       </tr>
     </table>
+    <div id="show_item_info" style="display:none;position:inherit;"></div> 
     </div></div></td>
 <!-- body_text_eof //-->
   </tr>
