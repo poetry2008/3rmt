@@ -312,14 +312,14 @@ if($_GET['action'] == 'success') {
     $html_str .= '</td>';
     $html_str .= '</tr>';
     $html_str .= '<tr>'; 
-    $html_str .= '<td style="padding-top:10px;">';
+    $html_str .= '<td >';
     $html_str .= TEXT_DATE_ADDED;
     $html_str .= '&nbsp;'.TEXT_UNSET_DATA;
     $html_str .= '</td>';
     $html_str .= '</tr>';
       if(tep_not_null($bank_rows['user_update'])){
     $html_str .= '<tr>'; 
-    $html_str .= '<td style="padding-top:10px;">';
+    $html_str .= '<td >';
     $html_str .= TEXT_USER_UPDATE;
     $html_str .= '&nbsp;'.$bank_rows['user_update'];
     $html_str .= '</td>';
