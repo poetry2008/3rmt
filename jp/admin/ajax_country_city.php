@@ -75,7 +75,7 @@ if(isset($id) && $id != 0){
    $area_date = $area_fee_array['date'];
    $area_sort = $area_fee_array['sort'];
    $user_added = $area_fee_array['user_added'];
-   $date_added = $area_fee_array['date_update'];
+   $date_added = $area_fee_array['date_added'];
    $user_update = $area_fee_array['user_update'];
    $date_update = $area_fee_array['date_update'];
    tep_db_free_result($area_fee_query);
@@ -168,7 +168,9 @@ if($id == 0){
 
 </td></tr>
 
-<?php if(tep_not_null($user_added)){?>
+<?php 
+if($id != 0){
+if(tep_not_null($user_added)){?>
 <tr>
 <td>
 &nbsp;&nbsp;&nbsp;&nbsp;
@@ -248,7 +250,7 @@ if($id == 0){
 <?php echo TEXT_UNSET_DATA;?>
 </td>
 </tr>
-<?php } ?>
+<?php } } ?>
 <tr><td  colspan="2" align="center">
 <?php 
 if($id != 0){

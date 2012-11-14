@@ -164,7 +164,9 @@ if($id == 0){
 <tr><td width="30%" align="left"><?php echo TABLE_LIST_6;?></td><td>
 <input type="text" name="sort" id="sort" value="<?php echo $sort;?>" style="text-align: right;">
 </td></tr>
-<?php if(tep_not_null($user_added)){?>
+<?php 
+if($id != 0){
+if(tep_not_null($user_added)){?>
 <tr>
     <td width="30%" align="left"><?php echo TEXT_USER_ADDED; ?></td><td><?php echo $user_added;?></td>
 </tr>
@@ -196,7 +198,7 @@ if($id == 0){
 <tr>
     <td width="30%" align="left"><?php echo TEXT_DATE_UPDATE; ?></td><td><?php echo TEXT_UNSET_DATA;?></td>
 </tr>
-<?php } ?>
+<?php } } ?>
 </td></tr>
 <tr><td  colspan="2" align="center">
 <?php

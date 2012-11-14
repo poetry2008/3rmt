@@ -172,15 +172,34 @@ for ($i=0;$i<count($option_item_option['se_option']);$i++){
 <?php echo $option_item_array['user_added'];?>
 </td>
 </tr>
-<?php }if(tep_not_null($option_item_array['created_at'])){?>
+<?php }else{ ?>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;
+<?php echo TEXT_USER_ADDED;?>
+</td>
+<td>
+<?php echo TEXT_UNSET_DATA;?>
+</td>
+</tr> 
+<?php } if(tep_not_null($option_item_array['created_at'])){?>
 <tr>
 <td>
 &nbsp;&nbsp;&nbsp;<?php echo AJAX_USELESS_OPTION_ITEM_TIME;?>:
 </td>
 <td>
-<?php echo $option_item_array['created_at']?>
+<?php echo $option_item_array['created_at'];?>
 </td>
 </tr>
+<?php } else { ?> 
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;<?php echo AJAX_USELESS_OPTION_ITEM_TIME;?>:
+</td>
+<td>
+<?php echo TEXT_UNSET_DATA;?>
+</td>
+</tr> 
 <?php } if(tep_not_null($option_item_array['user_update'])){?>
 <tr>
 <td>
@@ -191,7 +210,24 @@ for ($i=0;$i<count($option_item_option['se_option']);$i++){
 <?php echo $option_item_array['user_update'];?>
 </td>
 </tr>
-<?php } if(tep_not_null($option_item_array['date_update'])){?>
+<?php }else { ?> 
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;
+<?php echo TEXT_USER_UPDATE;?>
+</td>
+<td>
+<?php echo TEXT_UNSET_DATA;?>
+</td>
+</tr> 
+<?php }  if(tep_not_null($option_item_array['date_update'])){?>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_UPDATE;?>
+</td>
+<td><?php echo $option_item_array['date_update'];?></td>
+</tr>
+<?php }else{  ?>
 <tr>
 <td>
 &nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_UPDATE;?>

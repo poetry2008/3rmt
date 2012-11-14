@@ -165,7 +165,9 @@ if($id == 0){
 
 </td></tr>
 
-<?php if(tep_not_null($user_added)){?>
+<?php 
+if($id != 0){
+if(tep_not_null($user_added)){?>
 <tr>
 <td>
 &nbsp;&nbsp;&nbsp;&nbsp;
@@ -251,7 +253,7 @@ if($id == 0){
 <?php echo TEXT_UNSET_DATA;?>
 </td>
 </tr>
-<?php }?>
+<?php } } ?>
 <tr><td  colspan="2" align="center">
 <?php 
 if($id != 0){
