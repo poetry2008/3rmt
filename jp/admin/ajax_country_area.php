@@ -75,7 +75,7 @@ if(isset($id) && $id != 0){
    $area_date = $area_fee_array['date'];
    $area_sort = $area_fee_array['sort'];
    $user_added = $area_fee_array['user_added'];
-   $date_added = $area_fee_array['date_update'];
+   $date_added = $area_fee_array['date_added'];
    $user_update = $area_fee_array['user_update'];
    $date_update = $area_fee_array['date_update'];
    tep_db_free_result($area_fee_query);

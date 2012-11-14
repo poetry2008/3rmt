@@ -270,7 +270,7 @@ if(tep_not_null($mInfo->user_added)){
 $contents[] = array('text' =>  TEXT_USER_ADDED. ' ' .$mInfo->user_added);
 }else{
 $contents[] = array('text' =>  TEXT_USER_ADDED. ' ' .TEXT_UNSET_DATA);
-}if(tep_not_null($mInfo->date_added)){
+}if(tep_not_null(tep_datetime_short($mInfo->date_added))){
 $contents[] = array('text' =>  TEXT_DATE_ADDED. ' ' .tep_datetime_short($mInfo->date_added));
 }else{
 $contents[] = array('text' =>  TEXT_DATE_ADDED. ' ' .TEXT_UNSET_DATA);
@@ -278,7 +278,7 @@ $contents[] = array('text' =>  TEXT_DATE_ADDED. ' ' .TEXT_UNSET_DATA);
 $contents[] = array('text' =>  TEXT_USER_UPDATE. ' ' .$mInfo->user_update);
 }else{
 $contents[] = array('text' =>  TEXT_USER_UPDATE. ' ' .TEXT_UNSET_DATA);
-}if(tep_not_null($mInfo->last_modified)){
+}if(tep_not_null(tep_datetime_short($mInfo->last_modified))){
 $contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .tep_datetime_short($mInfo->last_modified));
 }else{
 $contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .TEXT_UNSET_DATA);
