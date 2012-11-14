@@ -3969,7 +3969,7 @@ tep_display_google_results(FILENAME_CATEGORIES);
             $contents[] = array('text' =>  TEXT_DATE_ADDED . ' ' . TEXT_UNSET_DATA);
            }
 
-	    if (tep_not_null($cInfo->user_last_modified)) {
+	    if (tep_not_null(tep_datetime_short($cInfo->user_last_modified))) {
                     $contents[] = array('text' =>  TEXT_USER_UPDATE . ' ' . $cInfo->user_last_modified);
             }else{
                     $contents[] = array('text' =>  TEXT_USER_UPDATE . ' ' . TEXT_UNSET_DATA);

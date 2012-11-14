@@ -182,7 +182,7 @@ for ($i=0;$i<count($option_item_option['se_option']);$i++){
 <?php echo TEXT_UNSET_DATA;?>
 </td>
 </tr> 
-<?php } if(tep_not_null($option_item_array['created_at'])){?>
+<?php } if(tep_not_null(tep_datetime_short($option_item_array['created_at']))){?>
 <tr>
 <td>
 &nbsp;&nbsp;&nbsp;<?php echo AJAX_USELESS_OPTION_ITEM_TIME;?>:
