@@ -384,7 +384,7 @@ $contents[] = array('text' => TEXT_USER_ADDED . '&nbsp;' . $cInfo->user_added);
       }else{
 $contents[] = array('text' => TEXT_USER_ADDED . '&nbsp;' . TEXT_UNSET_DATA);
       }
-      if(tep_not_null($cInfo->date_added)){
+      if(tep_not_null(tep_datetime_short($cInfo->date_added))){
 $contents[] = array('text' =>  TEXT_INFO_DATE_ADDED . '&nbsp;' . tep_datetime_short($cInfo->date_added));
       }else{
 $contents[] = array('text' =>  TEXT_INFO_DATE_ADDED . '&nbsp;' . TEXT_UNSET_DATA);
@@ -393,7 +393,7 @@ $contents[] = array('text' =>  TEXT_INFO_DATE_ADDED . '&nbsp;' . TEXT_UNSET_DATA
 $contents[] = array('text' =>  TEXT_USER_UPDATE . '&nbsp;' . $cInfo->user_update);
       }else{
 $contents[] = array('text' =>  TEXT_USER_UPDATE . '&nbsp;' . TEXT_UNSET_DATA);}
-      if(tep_not_null($cInfo->last_modified)){
+      if(tep_not_null(tep_datetime_short($cInfo->last_modified))){
 $contents[] = array('text' => TEXT_INFO_LAST_MODIFIED . '&nbsp;' . tep_datetime_short($cInfo->last_modified));
       }else{
 $contents[] = array('text' => TEXT_INFO_LAST_MODIFIED . '&nbsp;' . TEXT_UNSET_DATA);

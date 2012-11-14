@@ -3963,7 +3963,7 @@ tep_display_google_results(FILENAME_CATEGORIES);
              }else{
             $contents[] = array('text' =>  TEXT_USER_ADDED . ' ' . TEXT_UNSET_DATA);
              }
-           if(tep_not_null($cInfo->date_added)){
+           if(tep_not_null(tep_datetime_short($cInfo->date_added))){
             $contents[] = array('text' =>  TEXT_DATE_ADDED . ' ' . tep_datetime_short($cInfo->date_added));
            }else{
             $contents[] = array('text' =>  TEXT_DATE_ADDED . ' ' . TEXT_UNSET_DATA);

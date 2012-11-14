@@ -573,7 +573,7 @@ $banner_query = tep_db_query("
 $contents[] = array('text' =>  TEXT_USER_ADDED. ' ' .$bInfo->user_added);
         }else{
 $contents[] = array('text' =>  TEXT_USER_ADDED. ' ' .TEXT_UNSET_DATA);
-        }if(tep_not_null($bInfo->date_added)){
+        }if(tep_not_null(tep_datetime_short($bInfo->date_added))){
 $contents[] = array('text' =>  TEXT_DATE_ADDED. ' ' .tep_datetime_short($bInfo->date_added));
         }else{
 $contents[] = array('text' =>  TEXT_DATE_ADDED. ' ' .TEXT_UNSET_DATA);
@@ -581,7 +581,7 @@ $contents[] = array('text' =>  TEXT_DATE_ADDED. ' ' .TEXT_UNSET_DATA);
 $contents[] = array('text' =>  TEXT_USER_UPDATE. ' ' .$bInfo->user_update);
         }else{
 $contents[] = array('text' =>  TEXT_USER_UPDATE. ' ' .TEXT_UNSET_DATA);
-        }if(tep_not_null($bInfo->date_update)){
+        }if(tep_not_null(tep_datetime_short($bInfo->date_update))){
 $contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .tep_datetime_short($bInfo->date_update));
         }else{
 $contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .TEXT_UNSET_DATA);
