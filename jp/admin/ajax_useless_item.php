@@ -185,7 +185,7 @@ for ($i=0;$i<count($option_item_option['se_option']);$i++){
 <?php } if(tep_not_null(tep_datetime_short($option_item_array['created_at']))){?>
 <tr>
 <td>
-&nbsp;&nbsp;&nbsp;<?php echo AJAX_USELESS_OPTION_ITEM_TIME;?>:
+&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_ADDED;?>
 </td>
 <td>
 <?php echo $option_item_array['created_at'];?>
@@ -194,7 +194,7 @@ for ($i=0;$i<count($option_item_option['se_option']);$i++){
 <?php } else { ?> 
 <tr>
 <td>
-&nbsp;&nbsp;&nbsp;<?php echo AJAX_USELESS_OPTION_ITEM_TIME;?>:
+&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_ADDED;?>
 </td>
 <td>
 <?php echo TEXT_UNSET_DATA;?>
@@ -220,19 +220,19 @@ for ($i=0;$i<count($option_item_option['se_option']);$i++){
 <?php echo TEXT_UNSET_DATA;?>
 </td>
 </tr> 
-<?php }  if(tep_not_null($option_item_array['date_update'])){?>
+<?php }  if(tep_not_null(tep_datetime_short($option_item_array['date_update']))){?>
 <tr>
 <td>
-&nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_UPDATE;?>
+&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_UPDATE;?>
 </td>
 <td><?php echo $option_item_array['date_update'];?></td>
 </tr>
 <?php }else{  ?>
 <tr>
 <td>
-&nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_UPDATE;?>
+&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_UPDATE;?>
 </td>
-<td><?php echo $option_item_array['date_update'];?></td>
+<td><?php echo TEXT_UNSET_DATA;?></td>
 </tr>
 <?php } ?>
 </table>
