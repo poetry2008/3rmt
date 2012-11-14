@@ -889,7 +889,7 @@ if(tep_not_null($present_array['user_added'])){
 $present[] = array('text' =>  TEXT_USER_ADDED. ' ' .$present_array['user_added']);
 }else{
 $present[] = array('text' =>  TEXT_USER_ADDED. ' ' .TEXT_UNSET_DATA);
-}if(tep_not_null($present_array['date_added'])){
+}if(tep_not_null(tep_datetime_short($present_array['date_added']))){
 $present[] = array('text' =>  TEXT_DATE_ADDED. ' ' .tep_datetime_short($present_array['date_added']));
 }else{
 $present[] = array('text' =>  TEXT_DATE_ADDED. ' ' .TEXT_UNSET_DATA);
@@ -897,7 +897,7 @@ $present[] = array('text' =>  TEXT_DATE_ADDED. ' ' .TEXT_UNSET_DATA);
 $present[] = array('text' =>  TEXT_USER_UPDATE. ' ' .$present_array['user_update']);
 }else{
 $present[] = array('text' =>  TEXT_USER_UPDATE. ' ' .TEXT_UNSET_DATA);
-}if(tep_not_null($present_array['date_update'])){
+}if(tep_not_null(tep_datetime_short($present_array['date_update']))){
 $present[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .tep_datetime_short($present_array['date_update']));
 }else{
 $present[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .TEXT_UNSET_DATA);

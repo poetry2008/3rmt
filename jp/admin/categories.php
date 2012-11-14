@@ -12,6 +12,7 @@
   if ( eregi("(insert|update|setflag)", $action) ) include_once('includes/reset_seo_cache.php');
 
   if (isset($_GET['action']) && $_GET['action']) {
+
     switch ($_GET['action']) {
       case 'get_products':
         echo tep_draw_pull_down_menu('xxx',array_merge(array(array('id' => '0','text' => TEXT_NO_ASSOCIATION)),tep_get_products_tree($_GET['cid'])),$_GET['rid'],'onchange=\'$("#relate_products_id").val(this.options[this.selectedIndex].value)\'');
@@ -2864,7 +2865,8 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                c.parent_id, 
                c.sort_order, 
                c.date_added, 
-               c.last_modified 
+               cd.last_modified, 
+	       cd.user_last_modified
         from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
         where c.categories_id = cd.categories_id 
           and cd.language_id = '" . $languages_id . "' 
@@ -3968,8 +3970,7 @@ tep_display_google_results(FILENAME_CATEGORIES);
            }else{
             $contents[] = array('text' =>  TEXT_DATE_ADDED . ' ' . TEXT_UNSET_DATA);
            }
-
-	    if (tep_not_null(tep_datetime_short($cInfo->user_last_modified))) {
+            if (tep_not_null($cInfo->user_last_modified)) {
                     $contents[] = array('text' =>  TEXT_USER_UPDATE . ' ' . $cInfo->user_last_modified);
             }else{
                     $contents[] = array('text' =>  TEXT_USER_UPDATE . ' ' . TEXT_UNSET_DATA);
