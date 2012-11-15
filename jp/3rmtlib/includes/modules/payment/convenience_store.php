@@ -353,14 +353,7 @@ class convenience_store extends basePayment  implements paymentInterface  {
     }
 
     function install() {
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title,
-        configuration_key, configuration_value, configuration_description,
-        configuration_group_id, sort_order, set_function, date_added,user_added,
-        site_id) values ('コンビニ決済を有効にする',
-          'MODULE_PAYMENT_CONVENIENCE_STORE_STATUS', 'True',
-          'コンビニ決済による支払いを受け付けますか?', '6', '1',
-          'tep_cfg_select_option(array(\'True\', \'False\'),
-            ',now(),'".$_SESSION['user_name']."', ".$this->site_id.");");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added,user_added, site_id) values ('コンビニ決済を有効にする', 'MODULE_PAYMENT_CONVENIENCE_STORE_STATUS', 'True', 'コンビニ決済による支払いを受け付けますか?', '6', '1', 'tep_cfg_select_option(array(\'True\', \'False\'), ',now(),'".$_SESSION['user_name']."', ".$this->site_id.");");
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('加盟店コード', 'MODULE_PAYMENT_CONVENIENCE_STORE_IP', '', '加盟店コードの設定をします。', '6', '2', now(), ".$this->site_id.")");
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('接続URL', 'MODULE_PAYMENT_CONVENIENCE_STORE_URL', '', '接続URLの設定をします。', '6', '6', now(), ".$this->site_id.")");
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('決済手数料', 'MODULE_PAYMENT_CONVENIENCE_STORE_COST', '99999999999:*0', '決済手数料 例: 代金300円以下、30円手数料をとる場合　300:*0+30, 代金301～1000円以内、代金の2％の手数料をとる場合　999:*0.02, 代金1000円以上の場合、手数料を無料する場合　99999999:*0, 無限大の符号を使えないため、このサイトで存在可能性がない数値で使ってください。 300:*0+30では*0がなければ、手数料は300+30になってしまいますので、ご注意ください。', '6', '3', now(), ".$this->site_id.")");

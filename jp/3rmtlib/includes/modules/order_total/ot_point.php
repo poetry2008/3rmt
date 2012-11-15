@@ -67,14 +67,7 @@
 	
     function install() {
       // ccdd
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title,
-        configuration_key, configuration_value, configuration_description,
-        configuration_group_id, sort_order, set_function, date_added,user_added,
-        site_id) values ('ポイントシステムの使用',
-          'MODULE_ORDER_TOTAL_POINT_STATUS', 'true',
-          'ポイントシステムを使用しますか?', '6',
-          '1','tep_cfg_select_option(array(\'true\', \'false\'), ', now(),
-            '".$_SESSION['user_name']."',".$this->site_id.")");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added,user_added, site_id) values ('ポイントシステムの使用', 'MODULE_ORDER_TOTAL_POINT_STATUS', 'true', 'ポイントシステムを使用しますか?', '6', '1','tep_cfg_select_option(array(\'true\', \'false\'), ', now(), '".$_SESSION['user_name']."',".$this->site_id.")");
       // ccdd
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('表示の整列順', 'MODULE_ORDER_TOTAL_POINT_SORT_ORDER', '4', '表示の整列順を設定できます. 数字が小さいほど上位に表示されます.', '6', '2', now(), ".$this->site_id.")");
       // ccdd

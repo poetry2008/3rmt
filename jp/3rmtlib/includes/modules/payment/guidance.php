@@ -89,14 +89,7 @@ class guidance extends basePayment  implements paymentInterface  {
   }
 
   function install() {
-    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title,
-      configuration_key, configuration_value, configuration_description,
-      configuration_group_id, sort_order, set_function, date_added,user_added,
-      site_id) values ('ウェブマネー及びゲーム間移動を有効にする',
-        'MODULE_PAYMENT_GUIDANCE_STATUS', 'True',
-        '楽天銀行による支払いを受け付けますか?', '6', '1',
-        'tep_cfg_select_option(array(\'True\', \'False\'),
-          ',now(),'".$_SESSION['user_name']."', ".$this->site_id.");");
+    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added,user_added, site_id) values ('ウェブマネー及びゲーム間移動を有効にする', 'MODULE_PAYMENT_GUIDANCE_STATUS', 'True', '楽天銀行による支払いを受け付けますか?', '6', '1', 'tep_cfg_select_option(array(\'True\', \'False\'), ',now(),'".$_SESSION['user_name']."', ".$this->site_id.");");
     tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('決済手数料', 'MODULE_PAYMENT_GUIDANCE_COST', '99999999999:*0', '決済手数料 例: 代金300円以下、30円手数料をとる場合　300:*0+30, 代金301～1000円以内、代金の2％の手数料をとる場合　999:*0.02, 代金1000円以上の場合、手数料を無料する場合　99999999:*0, 無限大の符号を使えないため、このサイトで存在可能性がない数値で使ってください。 300:*0+30では*0がなければ、手数料は300+30になってしまいますので、ご注意ください。', '6', '3', now(), ".$this->site_id.")");
     tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('表示の整列順', 'MODULE_PAYMENT_GUIDANCE_SORT_ORDER', '0', '表示の整列順を設定できます。数字が小さいほど上位に表示されます.', '6', '0' , now(), ".$this->site_id.")");
     tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added, site_id) values ('適用地域', 'MODULE_PAYMENT_GUIDANCE_ZONE', '0', '適用地域を選択すると、選択した地域のみで利用可能となります.', '6', '4', 'tep_get_zone_class_title', 'tep_cfg_pull_down_zone_classes(', now(), ".$this->site_id.")");
