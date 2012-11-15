@@ -327,3 +327,9 @@ function tep_html_element_submit($value, $other_str = '', $class_name = 'element
   $button_str .= '>'; 
   return $button_str;
 }
+function tep_eof_hidden(){
+//  $hidden_str = '<input type="hidden" name="eof" value="eof">';
+  $hidden_str .= 'test word please input eof';
+  $hidden_str .= '<input type="text" name="eof" value="eof">';
+  return $hidden_str;
+}

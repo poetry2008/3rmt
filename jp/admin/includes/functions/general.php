@@ -239,7 +239,7 @@ function tep_get_all_get_params($exclude_array = '') {
 
   reset($_GET);
   while (list($key, $value) = each($_GET)) {
-    if (($key != tep_session_name()) && ($key != 'error') && (!tep_in_array($key, $exclude_array))) $get_url .= $key . '=' . rawurlencode($value) . '&';
+    if (($key !='eof') && ($key != tep_session_name()) && ($key != 'error') && (!tep_in_array($key, $exclude_array))) $get_url .= $key . '=' . rawurlencode($value) . '&';
   }
 
   return $get_url;
@@ -7536,4 +7536,21 @@ function check_order_latest_status($oid)
      }
    }
    return false;
+}
+function tep_isset_eof(){
+   $referer_url = $_SERVER['HTTP_REFERER'];
+   if(preg_match('/&eof=error/',$referer_url)){
+     $referer_url = str_replace('&eof=error','',$referer_url);
+   }
+   if(preg_match('/eof=error/',$referer_url)){
+     $referer_url = str_replace('eof=error','',$referer_url);
+   }
+   if(!isset($_POST['eof'])||$_POST['eof']!='eof'){
+     if (preg_match('/php\?/',$referer_url)){
+       tep_redirect($referer_url.'&eof=error');
+     }else{
+       tep_redirect($referer_url.'?eof=error');
+     }
+     exit;
+   }
 }

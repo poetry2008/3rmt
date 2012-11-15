@@ -39,7 +39,7 @@ define('CUSTOMER_COMMUNITY_SEARCH_OLD_CUSTOMER_TEXT', '老顾客【HQ】&nbsp;&n
 define('CUSTOMER_COMMUNITY_SEARCH_CREDIT_TEXT', '信用卡初次结算日：C2007/01/01&nbsp;&nbsp;&nbsp;&nbsp;范围一致：Aok&nbsp;&nbsp;&nbsp;&nbsp;本人确认完了：Hok&nbsp;&nbsp;&nbsp;&nbsp;YahooID更新日：Y2007/01 /01&nbsp;&nbsp;&nbsp;&nbsp;referer：R');
 define('CUSTOMER_COMMUNITY_SEARCH_EXAMPLE_TEXT', '填写例：WA-Aok-C2007/01/01-Hok-RgoogleEFF11 RMT');
 define('CUSTOMER_SEARCH_READ_TITLE', '※搜索对象：「顾客名（姓/名/）」「注音假名（姓/名）」「邮箱地址」');
-define('CUSTOMER_RESET', '更改密码委托');
+define('CUSTOMER_RESET', '强制修改密码');
 define('TEXT_USER_ADDED','账号注册者:');
 define('TEXT_USER_UPDATE','账号更新者:');
 define('CUSTOMER_IS_SEAL','禁止下订单');
