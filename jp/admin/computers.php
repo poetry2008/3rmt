@@ -193,10 +193,23 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           . ($ocertify->npermission == 15 ? (' <a href="' .  tep_href_link(FILENAME_COMPUTERS, 'page=' . $_GET['page'] . '&cID=' .  $cInfo->computers_id . '&action=delete') . '">' . tep_html_element_button(IMAGE_DELETE) . '</a>'):'')
         );
         $contents[] = array('text' => '<br>' . TEXT_INFO_COMPUTERS_NAME . '<br>' . $cInfo->computers_name . '<br>');
-$contents[] = array('text' => '<br>'. TEXT_USER_ADDED. ' ' .$cInfo->user_added);
-$contents[] = array('text' => '<br>'. TEXT_DATE_ADDED. ' ' .tep_datetime_short($cInfo->date_added));
-$contents[] = array('text' => '<br>'. TEXT_USER_UPDATE. ' ' .$cInfo->user_update);
-$contents[] = array('text' => '<br>'. TEXT_DATE_UPDATE. ' ' .tep_datetime_short($cInfo->date_update));
+if(tep_not_null($cInfo->user_added)){
+$contents[] = array('text' =>  TEXT_USER_ADDED. ' ' .$cInfo->user_added);
+}else{
+$contents[] = array('text' =>  TEXT_USER_ADDED. ' ' .TEXT_UNSET_DATA);
+}if(tep_not_null(tep_datetime_short($cInfo->date_added))){
+$contents[] = array('text' =>  TEXT_DATE_ADDED. ' ' .tep_datetime_short($cInfo->date_added));
+}else{
+$contents[] = array('text' =>  TEXT_DATE_ADDED. ' ' .TEXT_UNSET_DATA);
+}if(tep_not_null($cInfo->user_update)){
+$contents[] = array('text' =>  TEXT_USER_UPDATE. ' ' .$cInfo->user_update);
+}else{
+$contents[] = array('text' =>  TEXT_USER_UPDATE. ' ' .TEXT_UNSET_DATA);
+}if(tep_not_null(tep_datetime_short($cInfo->date_update))){
+$contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .tep_datetime_short($cInfo->date_update));
+}else{
+$contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .TEXT_UNSET_DATA);
+}
 
 
       }

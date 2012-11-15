@@ -820,11 +820,24 @@ require("includes/note_js.php");
                 'action')).'cID='.$cInfo->customers_id)).'">'.tep_html_element_button(BUTTON_CUSTOMERS_PRODUCTS_TEXT).'</a>
             <a href="' . tep_href_link(FILENAME_MAIL, 'selected_box=tools&customer='
           .
-          $cInfo->customers_email_address.'&'.tep_get_all_get_params(array('page')).'&customer_page='.$_GET['page']) .  '">' .tep_html_element_button(IMAGE_EMAIL) . '</a>');
-	$contents[] = array('text' => '<br>'.TEXT_USER_ADDED.' '.$cInfo->customers_firstname.' '.$cInfo->customers_lastname);
-        $contents[] = array('text' => '<br>' . TEXT_DATE_ACCOUNT_CREATED . ' ' . tep_datetime_short($cInfo->date_account_created));
-        $contents[] = array('text' => '<br>'.TEXT_USER_UPDATE.' '.$cInfo->user_update);
-        $contents[] = array('text' => '<br>' . TEXT_DATE_ACCOUNT_LAST_MODIFIED . ' ' . tep_datetime_short($cInfo->date_account_last_modified));
+        $cInfo->customers_email_address.'&'.tep_get_all_get_params(array('page')).'&customer_page='.$_GET['page']) .  '">' .tep_html_element_button(IMAGE_EMAIL) . '</a>');
+        if(tep_not_null($cInfo->customers_lastname)){
+        $contents[] = array('text' => TEXT_USER_ADDED.' '.$cInfo->customers_firstname.' '.$cInfo->customers_lastname);
+        }else{
+        $contents[] = array('text' => TEXT_USER_ADDED.' '.TEXT_UNSET_DATA);
+        }if(tep_not_null($cInfo->date_account_created)){
+        $contents[] = array('text' =>  TEXT_DATE_ACCOUNT_CREATED . ' ' . tep_datetime_short($cInfo->date_account_created));
+        }else{
+        $contents[] = array('text' =>  TEXT_DATE_ACCOUNT_CREATED . ' ' . TEXT_UNSET_DATA);
+        }if(tep_not_null($cInfo->user_update)){
+        $contents[] = array('text' => TEXT_USER_UPDATE.' '.$cInfo->user_update);
+        }else{
+        $contents[] = array('text' => TEXT_USER_UPDATE.' '.TEXT_UNSET_DATA);
+        }if(tep_not_null($cInfo->date_account_last_modified)){
+        $contents[] = array('text' =>  TEXT_DATE_ACCOUNT_LAST_MODIFIED . ' ' . tep_datetime_short($cInfo->date_account_last_modified));
+        }else{
+        $contents[] = array('text' =>  TEXT_DATE_ACCOUNT_LAST_MODIFIED . ' ' . TEXT_UNSET_DATA);
+        }
         $contents[] = array('text' => '<br>' . TEXT_INFO_DATE_LAST_LOGON . ' '  . tep_date_short($cInfo->date_last_logon));
         $contents[] = array('text' => '<br>' . TEXT_INFO_NUMBER_OF_LOGONS . ' ' . $cInfo->number_of_logons);
         $contents[] = array('text' => '<br>' . TEXT_INFO_NUMBER_OF_REVIEWS . ' ' . $cInfo->number_of_reviews);

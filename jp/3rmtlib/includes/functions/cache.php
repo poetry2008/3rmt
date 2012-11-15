@@ -91,15 +91,19 @@
 ////
 //! Cache the categories box
 // Cache the categories box
-  function tep_cache_categories_box($auto_expire = false, $refresh = false) {
+  function tep_cache_categories_box($auto_expire = false, $refresh = false, $tmp_id_array = array()) {
     global $cPath, $foo, $language, $languages_id, $id, $categories_string;
-
-    if (($refresh == true) || !read_cache($cache_output, 'categories_box-' . $language . '.cache' . $cPath, $auto_expire)) {
+    if (!empty($tmp_id_array)) {
+      $tmp_cPath = implode('_', $tmp_id_array); 
+    } else {
+      $tmp_cPath = $cPath; 
+    }
+    if (($refresh == true) || !read_cache($cache_output, 'categories_box-' .  $language . '.cache' . $tmp_cPath, $auto_expire)) {
       ob_start();
       include(DIR_WS_BOXES . 'categories.php');
       $cache_output = ob_get_contents();
       ob_end_clean();
-      write_cache($cache_output, 'categories_box-' . $language . '.cache' . $cPath);
+      write_cache($cache_output, 'categories_box-' . $language . '.cache' . $tmp_cPath);
     }
 
     return $cache_output;

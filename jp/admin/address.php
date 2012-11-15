@@ -122,10 +122,8 @@ if(isset($action) && $action != ''){
  
     }
     
-
     //这里判断是添加，还是修改
     if($address_id == ''){
-
        $address_sql = "insert into ". TABLE_ADDRESS .
                    " values(NULL,".
                    "'". $address_title .

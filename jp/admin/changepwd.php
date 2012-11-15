@@ -223,6 +223,7 @@ function UserPassword_preview() {
   echo '</td>';
   echo "</tr>\n";
   $users = tep_db_fetch_array(tep_db_query("select * from ".TABLE_USERS." where userid  ='".$GLOBALS['userslist']."'"));
+  if(tep_not_null($users['user_added'])){
   echo "<tr>\n";
   echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_USER_ADDED . '</td>';  // 確認のため再入力
   // 入力項目出力
@@ -230,7 +231,15 @@ function UserPassword_preview() {
   echo $users['user_added'];
   echo '</td>';
   echo "</tr>\n";
-
+  }else{
+  echo "<tr>\n";
+  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_USER_ADDED . '</td>';  // 確認のため再入力
+  // 入力項目出力
+  echo '<td>';
+  echo TEXT_UNSET_DATA;
+  echo '</td>';
+  echo "</tr>\n";
+  }if(tep_not_null($users['date_added'])){
   echo "<tr>\n";
   echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_DATE_ADDED . '</td>';  // 確認のため再入力
   // 入力項目出力
@@ -238,7 +247,15 @@ function UserPassword_preview() {
   echo $users['date_added'];
   echo '</td>';
   echo "</tr>\n";
-
+  }else{
+  echo "<tr>\n";
+  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_DATE_ADDED . '</td>';  // 確認のため再入力
+  // 入力項目出力
+  echo '<td>';
+  echo TEXT_UNSET_DATA;
+  echo '</td>';
+  echo "</tr>\n";
+  }if(tep_not_null($users['user_update'])){
   echo "<tr>\n";
   echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_USER_UPDATE . '</td>';  // 確認のため再入力
   // 入力項目出力
@@ -246,7 +263,15 @@ function UserPassword_preview() {
   echo $users['user_update'];
   echo '</td>';
   echo "</tr>\n";
-
+  }else{
+  echo "<tr>\n";
+  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_USER_UPDATE . '</td>';  // 確認のため再入力
+  // 入力項目出力
+  echo '<td>';
+  echo TEXT_UNSET_DATA;
+  echo '</td>';
+  echo "</tr>\n";
+  }if(tep_not_null($users['date_update'])){
   echo "<tr>\n";
   echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_DATE_UPDATE . '</td>';  // 確認のため再入力
   // 入力項目出力
@@ -254,6 +279,15 @@ function UserPassword_preview() {
   echo $users['date_update'];
   echo '</td>';
   echo "</tr>\n";
+  }else{
+  echo "<tr>\n";
+  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_DATE_UPDATE . '</td>';  // 確認のため再入力
+  // 入力項目出力
+  echo '<td>';
+  echo TEXT_UNSET_DATA;
+  echo '</td>';
+  echo "</tr>\n";
+  }
   echo "</table>\n";
 
   echo '<br>';

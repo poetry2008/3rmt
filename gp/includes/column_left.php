@@ -2,8 +2,6 @@
 /*
   $Id$
 */
-
-  //require(DIR_WS_BOXES . 'quick_link.php');
 ?>
 <?php
 if ($_SERVER['PHP_SELF'] == '/product_info.php') {
@@ -57,23 +55,30 @@ if($_SERVER['PHP_SELF'] == '/faq.php'||$_SERVER['PHP_SELF'] == '/faq_info.php'
     ||(strpos($_SERVER['REQUEST_URI'],'index.php?cmd='))){
 }else{
   if (!((strpos($_SERVER['PHP_SELF'], 'index.php')) && ($category_depth == 'top') && !isset($_GET['manufacturers_id']))) {
-  $left_search_category_single = true; 
-  if ( (USE_CACHE == 'true') && !SID ) {
-    if ($cPath) {
-      include(DIR_WS_BOXES . 'list_categories.php');
+    $left_search_category_single = true; 
+    if ( (USE_CACHE == 'true') && !SID ) {
+      if ($cPath) {
+        include(DIR_WS_BOXES . 'list_categories.php');
+      } else {
+        if ((basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) || (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_PAYMENT) || (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_SUCCESS)) {
+          include(DIR_WS_BOXES . 'list_categories.php');
+        } else {
+          include(DIR_WS_BOXES . 'categories.php');
+        }
+      }
     } else {
-      include(DIR_WS_BOXES . 'categories.php');
+      if ($cPath) {
+        include(DIR_WS_BOXES . 'list_categories.php');
+      } else {
+        if ((basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) || (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_PAYMENT) || (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_SUCCESS)) {
+          include(DIR_WS_BOXES . 'list_categories.php');
+        } else {
+          include(DIR_WS_BOXES . 'categories.php');
+        }
+      }
     }
-   // echo tep_cache_categories_box();
-  } else {
-    if ($cPath) {
-      include(DIR_WS_BOXES . 'list_categories.php');
-    } else {
-      include(DIR_WS_BOXES . 'categories.php');
-    }
   }
-  }
-  }
+}
   if (!((strpos($_SERVER['PHP_SELF'], 'index.php')) && ($category_depth == 'top') && !isset($_GET['manufacturers_id']))) {
 ?>
 	<div class="seach_before">
@@ -121,7 +126,6 @@ echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 
   <tr>
     <td colspan="2">
                       <?php
-// --- get categoris list ( parent_id = 0 ) --- //
   $cat1 = '';
   if ($_GET['cPath']) {
     $cat0 = explode('_', $_GET['cPath']);
@@ -167,7 +171,6 @@ echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 
   }
   $categories_array .= '</select>'."\n";
   echo $categories_array ;
-// --- end add--- //
 ?>
     </td>
   </tr>

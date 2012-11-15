@@ -264,8 +264,15 @@ require("includes/note_js.php");
           $config_keyword = 'reset_pwd_title'; 
         }
        $config = tep_db_fetch_array(tep_db_query("select * from ".TABLE_OCONFIG." where `keyword` = '".$config_keyword."' ")); 
-       echo '<tr><td style="padding-top:10px;">'.TEXT_USER_UPDATE.'&nbsp;'.$config['user_update'].'</td></tr>    
-             <tr><td style="padding-bottom:10px;">'.TEXT_DATE_UPDATE.'&nbsp;'.$config['date_update'].'</td></tr>';    
+       if(tep_not_null($config['user_update'])){
+       echo '<tr><td style="padding-top:10px;">'.TEXT_USER_UPDATE.'&nbsp;'.$config['user_update'].'</td></tr>';
+       }else{
+       echo '<tr><td style="padding-top:10px;">'.TEXT_USER_UPDATE.'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';
+       }if(tep_not_null($config['date_update'])){
+       echo ' <tr><td style="padding-bottom:10px;">'.TEXT_DATE_UPDATE.'&nbsp;'.$config['date_update'].'</td></tr>';    
+       }else{
+       echo ' <tr><td style="padding-bottom:10px;">'.TEXT_DATE_UPDATE.'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';    
+       }
     ?>
 
     </table>

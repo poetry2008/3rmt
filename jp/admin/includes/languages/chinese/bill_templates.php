@@ -34,6 +34,6 @@ define('TEXT_INFO_BILL_TEMPLATES_RESPONSIBLE','名称:');
 define('TEXT_INFO_BILL_TEMPLATES_SORT_ORDER','排列顺序:');
 define('TEXT_USER_ADDED','创建者:');
 define('TEXT_USER_UPDATE','更新者:');
-define('TEXT_DATE_ADDED','创建日期:');
-define('TEXT_DATE_UPDATE','更新日期:');
+define('TEXT_DATE_ADDED','创建日:');
+define('TEXT_DATE_UPDATE','更新日:');
 

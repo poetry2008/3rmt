@@ -49,7 +49,7 @@ if(isset($action) && $action != ''){
                    "','". $email_comment_1 .
                    "','". $area_fee_date .
                    "','". $area_fee_sort .                   
-                   "','0')";
+                   "','0','".$ocertify->auth_user."','".date('Y-m-d  H:i:s',time())."','".$ocertify->auth_user."','".date('Y-m-d  H:i:s',time())."')";
 
     }else{
       $area_fee_sql = "update ". TABLE_COUNTRY_CITY .
@@ -63,6 +63,8 @@ if(isset($action) && $action != ''){
                    "',email_comment_1='". $email_comment_1 .
                    "',date='". $area_fee_date .
                    "',sort='". $area_fee_sort .
+                   "',user_update='".$ocertify->auth_user.
+                   "',date_update='".date('Y-m-d H:i:s',time()).
                    "' where id=". $area_fee_id;
     }
 
@@ -193,7 +195,11 @@ require("includes/note_js.php");
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td valign="top"><div id="show" style="display:none"></div><table border="0" width="100%" cellspacing="0" cellpadding="2" id="group_list_box">
+            <td valign="top">
+            <?php if($area_fee_array['id'] != 0){
+            echo '<div id="show" style="display:none"></div>'; 
+            } ?>
+            <table border="0" width="100%" cellspacing="0" cellpadding="2" id="group_list_box">
               <tr class="dataTableHeadingRow">
                 <td class="dataTableHeadingContent"><?php echo TABLE_TITLE_1; ?></td>
                 <td class="dataTableHeadingContent"><?php echo TABLE_TITLE_2; ?></td>
@@ -265,7 +271,12 @@ tep_db_close();
 </td>
 </tr>
 <tr><td align="right" colspan="9"><button onclick="javascript:location.href='country_area.php?fid=<?php echo $ff_id;?>';"><?php echo TABLE_HISTROY;?></button>&nbsp;<button onclick="show_text_city(0,this,<?php echo $_GET['fid']; ?>);"><?php echo TABLE_BUTTON;?></button></td></tr>
-</table></td></tr></table></td></tr>
+</table>
+<?php if($area_fee_array['id'] == 0){
+echo '<div id="show" style="display:none;position:inherit;"></div>';
+}
+?>
+</td></tr></table></td></tr>
 </table>
 </div>
 </td>

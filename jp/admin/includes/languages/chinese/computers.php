@@ -20,7 +20,7 @@ define('TEXT_CONFIRM_DELETE_COMPUTER', '删除标志');
 define('TABLE_HEADING_COMPUTER_ORDER', '排列顺序');
 define('TEXT_USER_ADDED','创建者:');
 define('TEXT_USER_UPDATE','更新者:');
-define('TEXT_DATE_ADDED','创建日期:');
-define('TEXT_DATE_UPDATE','更新日期:');
+define('TEXT_DATE_ADDED','创建日:');
+define('TEXT_DATE_UPDATE','更新日:');
 
 

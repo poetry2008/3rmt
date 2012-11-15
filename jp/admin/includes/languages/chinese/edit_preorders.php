@@ -25,7 +25,7 @@ define('TABLE_HEADING_UNIT_PRICE', '单价');
 define('TABLE_HEADING_TOTAL_PRICE', '合计');
 
 define('TABLE_HEADING_CUSTOMER_NOTIFIED', '告知处理情况');
-define('TABLE_HEADING_DATE_ADDED', '更新日期');
+define('TABLE_HEADING_DATE_ADDED', '更新日');
 
 define('ENTRY_CUSTOMER', '顾客名:');
 define('ENTRY_CUSTOMER_NAME', '名称');
@@ -55,7 +55,7 @@ define('ENTRY_SHIPPING', '投递方式:');
 define('ENTRY_TOTAL', '合计:');
 define('ENTRY_DATE_PURCHASED', '预约日期:');
 define('ENTRY_STATUS', '状态:');
-define('ENTRY_DATE_LAST_UPDATED', '更新日期:');
+define('ENTRY_DATE_LAST_UPDATED', '更新日:');
 define('ENTRY_NOTIFY_CUSTOMER', '告知处理情况:');
 define('ENTRY_NOTIFY_COMMENTS', '添加评论:');
 define('ENTRY_PRINTABLE', '打印交货单');
@@ -63,8 +63,8 @@ define('ENTRY_PRINTABLE', '打印交货单');
 define('TEXT_INFO_HEADING_DELETE_ORDER', '删除预约');
 define('TEXT_INFO_DELETE_INTRO', '确定删除这个预约吗?');
 define('TEXT_INFO_RESTOCK_PRODUCT_QUANTITY', '恢复库存');
-define('TEXT_DATE_ORDER_CREATED', '创建日期:');
-define('TEXT_DATE_ORDER_LAST_MODIFIED', '更新日期:');
+define('TEXT_DATE_ORDER_CREATED', '创建日:');
+define('TEXT_DATE_ORDER_LAST_MODIFIED', '更新日:');
 define('TEXT_DATE_ORDER_ADDNEW', '添加商品');
 define('TEXT_INFO_PAYMENT_METHOD', '支付方式:');
 

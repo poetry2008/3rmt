@@ -36,8 +36,8 @@ define('TEXT_ORDERS_STATUS_DESCRIPTION','名称：${NAME}<br>邮件地址：${MA
 define('TEXT_ORDERS_FETCH_CONDITION', '交易情况');
 define('TEXT_USER_ADDED','创建者:');
 define('TEXT_USER_UPDATE','更新者:');
-define('TEXT_DATE_ADDED','创建日期:');
-define('TEXT_DATE_UPDATE','更新日期:');
+define('TEXT_DATE_ADDED','创建日:');
+define('TEXT_DATE_UPDATE','更新日:');
 define('TEXT_ORDERS_STATUS_OPTION', '选项');
 define('TEXT_ORDERS_STATUS_OPTION_NORMAL', '交易中');
 define('TEXT_ORDERS_STATUS_OPTION_SUCCESS', '交易成功');

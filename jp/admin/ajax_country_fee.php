@@ -108,12 +108,25 @@ foreach($weight_fee_array as $weight_fee_value){
 <textarea name="email_comment_1" id="email_comment_1" rows="5" cols="30" class="option_text"><?php echo $email_comment_1; ?></textarea>
 <br><?php echo TABLE_PROMPT_4;?></td></tr>
 
-
+<?php 
+if(!empty($country_fee_array['id'])){
+if(tep_not_null($country_fee_array['user_added'])){ ?>
 <tr><td width="30%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_USER_ADDED;?></td><td><?php echo $country_fee_array['user_added'];?></td></tr>
+<?php }else{ ?>
+<tr><td width="30%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_USER_ADDED;?></td><td><?php echo TEXT_UNSET_DATA;?></td></tr>
+<?php } if(tep_not_null($country_fee_array['date_added'])){ ?>
 <tr><td width="30%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_ADDED;?></td><td><?php echo $country_fee_array['date_added'];?></td></tr>
+<?php }else{ ?> 
+<tr><td width="30%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_ADDED;?></td><td><?php echo TEXT_UNSET_DATA;?></td></tr>
+<?php }if(tep_not_null($country_fee_array['user_update'])){ ?>
 <tr><td width="30%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_USER_UPDATE;?></td><td><?php echo $country_fee_array['user_update'];?></td></tr>
+<?php } else { ?>
+<tr><td width="30%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_USER_UPDATE;?></td><td><?php echo TEXT_UNSET_DATA;?></td></tr>
+<?php } if(tep_not_null($country_fee_array['date_update'])){ ?>
 <tr><td width="30%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_UPDATE;?></td><td><?php echo $country_fee_array['date_update'];?></td></tr>
-
+<?php }else{ ?>
+<tr><td width="30%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_UPDATE;?></td><td><?php echo TEXT_UNSET_DATA;?></td></tr>
+<?php } } ?>
 </td></tr>
 <tr><td  align="center" colspan="2"><input type="button" name="new" value="<?php echo TABLE_BUTTON_SUBMIT;?>" onclick="show_text_fee(0,'');">&nbsp;<input type="button" name="save" value="<?php echo TABLE_BUTTON_SAVE;?>" onclick="if(check_form()){check_fee('save');}else{return check_form();}">&nbsp;
 

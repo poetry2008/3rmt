@@ -271,10 +271,23 @@ $contents[] = array('text' => '<input type="hidden" name="user_update" value="'.
             '<a href="'.tep_href_link(FILENAME_POINT_EMAIL, 'page=' . $_GET['page'] .'&id='.$point_info->id.'&action=edit').'">'.tep_html_element_button(IMAGE_EDIT).'</a>'.
             '<a href="'.tep_href_link(FILENAME_POINT_EMAIL, 'page=' . $_GET['page'] .'&id='.$point_info->id.'&action=delete').'">'.tep_html_element_button(IMAGE_DELETE).'</a>');
       }
-$contents[] = array('text' => '<br>'. TEXT_USER_ADDED. ' ' .$point_info->user_added);
-$contents[] = array('text' => '<br>'. TEXT_DATE_ADDED. ' ' .tep_datetime_short($point_info->created_at));
-$contents[] = array('text' => '<br>'. TEXT_USER_UPDATE. ' ' .$point_info->user_update);
-$contents[] = array('text' => '<br>'. TEXT_DATE_UPDATE. ' ' .tep_datetime_short($point_info->updated_at));
+if(tep_not_null($point_info->user_added)){
+$contents[] = array('text' =>  TEXT_USER_ADDED. ' ' .$point_info->user_added);
+}else{
+$contents[] = array('text' =>  TEXT_USER_ADDED. ' ' .TEXT_UNSET_DATA);
+}if(tep_not_null($point_info->created_at)){
+$contents[] = array('text' =>  TEXT_DATE_ADDED. ' ' .tep_datetime_short($point_info->created_at));
+}else{
+$contents[] = array('text' =>  TEXT_DATE_ADDED. ' ' .TEXT_UNSET_DATA);
+}if(tep_not_null($point_info->user_update)){
+$contents[] = array('text' =>  TEXT_USER_UPDATE. ' ' .$point_info->user_update);
+}else{
+$contents[] = array('text' =>  TEXT_USER_UPDATE. ' ' .TEXT_UNSET_DATA);
+}if(tep_not_null($point_info->updated_at)){
+$contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .tep_datetime_short($point_info->updated_at));
+}else{
+$contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .TEXT_UNSET_DATA);
+}
 
       break;
   }

@@ -580,10 +580,23 @@ default:
      $check = tep_db_fetch_array($check_query);
       $contents[] = array('text' => '<b>'.$s['romaji'].'</b>');
       $contents[] = array('align' => 'left', 'text' => '<a href="' .  tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' .  @$_GET['module'] . '&action=edit&site_id='.$s['id']) . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a>');
+      if(tep_not_null($check['user_added'])){
       $contents[] = array('align' => 'left', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$check['user_added']);
+      }else{
+      $contents[] = array('align' => 'left', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.TEXT_UNSET_DATA);
+      }if(tep_not_null($check['date_added'])){
       $contents[] = array('align' => 'left', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$check['date_added']);
+      }else{
+      $contents[] = array('align' => 'left', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.TEXT_UNSET_DATA);
+      }if(tep_not_null($check['user_update'])){
       $contents[] = array('align' => 'left', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$check['user_update']);
+      }else{
+      $contents[] = array('align' => 'left', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.TEXT_UNSET_DATA);
+      }if(tep_not_null($check['last_modified'])){
       $contents[] = array('align' => 'left', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$check['last_modified']);
+      }else{
+      $contents[] = array('align' => 'left', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.TEXT_UNSET_DATA);
+      }
     }
     // 临时隐藏
     // $contents[] = array('text' => '<br>' . $mInfo->description . "<hr>");

@@ -16,7 +16,7 @@ define('TEXT_NEWSLETTER_MODULE', '模块的选择:');
 define('TEXT_NEWSLETTER_TITLE', '邮件杂志的标题:');
 define('TEXT_NEWSLETTER_CONTENT', '内容:');
 
-define('TEXT_NEWSLETTER_DATE_ADDED', '创建日期:');
+define('TEXT_NEWSLETTER_DATE_ADDED', '创建日:');
 define('TEXT_NEWSLETTER_DATE_SENT', '发送日期:');
 
 define('TEXT_INFO_DELETE_INTRO', '确定要删除这个邮件杂志吗?');
@@ -32,7 +32,7 @@ define('ERROR_SEND_UNLOCKED_NEWSLETTER', '错误: 发送邮件杂志需要解锁
 define('NOTICE_SEND_ZERO_MAIL_TEXT', '送信地是0个。中止邮件杂志送信操作。');
 define('TEXT_USER_UPDATE','更新者:');
 define('TEXT_USER_ADDED','创建者:');
-define('TEXT_LAST_MODIFIED','更新日期:');
+define('TEXT_LAST_MODIFIED','更新日:');
 
 
 

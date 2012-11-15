@@ -449,8 +449,15 @@ require("includes/note_js.php");
               <tr><td align="right"><input type="submit" value="<?php echo TEXT_SAVE;?>"></td></tr>
               <?php 
                $configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='PERSONAL_SETTING_ORDERS_SITE'"));  
-              echo '<tr><td>'.TEXT_USER_UPDATE.'&nbsp;'.$configuration['user_update'].'</td></tr>
-                    <tr><td>'.TEXT_DATE_UPDATE.'&nbsp;'.$configuration['last_modified'].'</td></tr>';
+               if(tep_not_null($configuration['user_update'])){
+               echo '<tr><td>'.TEXT_USER_UPDATE.'&nbsp;'.$configuration['user_update'].'</td></tr>';
+               }else{
+               echo '<tr><td>'.TEXT_USER_UPDATE.'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';
+               }if(tep_not_null($configuration['last_modified'])){
+               echo '<tr><td>'.TEXT_DATE_UPDATE.'&nbsp;'.$configuration['last_modified'].'</td></tr>';
+               }else{
+               echo '<tr><td>'.TEXT_DATE_UPDATE.'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';
+               }
               ?>
 </table>
 </form>
