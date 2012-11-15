@@ -6,7 +6,7 @@
   define('TS_MODULE_PAYMENT_POSTALMONEYORDER_TEXT_TITLE', 'ゆうちょ銀行（郵便局）');// '代金先払い'/'郵便振替'/'現金書留'に変更して使用できます
   define('TS_MODULE_PAYMENT_POSTALMONEYORDER_TEXT_EXPLAIN', '郵便局の窓口およびATMから送金できます。<br>送金手数料はお客様のご負担となります。');
   define('TS_MODULE_PAYMENT_POSTALMONEYORDER_TEXT_DESCRIPTION',  '郵便局の窓口およびATMから送金できます。<br>送金手数料はお客様のご負担となります。');
-  define('TS_MODULE_PAYMENT_POSTALMONEYORDER_TEXT_EMAIL_FOOTER', '郵便局の窓口およびATMから送金できます。<br>送金手数料はお客様のご負担となります。'."\n\n". EMAIL_SIGNATURE);  //Add Japanese osCommerce
+  define('TS_MODULE_PAYMENT_POSTALMONEYORDER_TEXT_EMAIL_FOOTER', '郵便局の窓口およびATMから送金できます。<br>送金手数料はお客様のご負担となります。'."\n\n". EMAIL_SIGNATURE); 
   define('TS_MODULE_PAYMENT_POSTALMONEYORDER_TEXT_FEE', 'ゆうちょ銀行（郵便局）手数料:');
   define('TS_MODULE_PAYMENT_POSTALMONEY_ORDER_TEXT_PROCESS', 'ゆうちょ銀行（郵便局）決済手数料が別途かかります。');
   define('TS_MODULE_PAYMENT_POSTALMONEYORDER_TEXT_OVERFLOW_ERROR','お買い上げ金額がゆうちょ銀行（郵便局）の制限を超えたためお取り扱いできません。');
@@ -30,5 +30,5 @@
 ※ 取引日時までにお支払いができない場合は、必ずご連絡ください。
 　 ご連絡がない場合、在庫引き当てを解除することがあります。
 ※ 送金はご注文から７日以内にお願いいたします。
-※ ご入金を株式会社iimyが確認した時点でご契約の成立となります。');
+※ ご入金を'.COMPANY_NAME.'が確認した時点でご契約の成立となります。');
 define('TS_MODULE_PAYMENT_POSTALMONEYORDER_NORMAL', '普通');

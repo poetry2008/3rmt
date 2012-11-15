@@ -24,9 +24,6 @@
 || #	GNU General Public License for more details.					# ||
 || #																	# ||
 || #	Script is intended to be used with:								# ||
-|| #	osCommerce, Open Source E-Commerce Solutions					# ||
-|| #	http://www.oscommerce.com										# ||
-|| #	Copyright (c) 2003 osCommerce									# ||
 || ###################################################################### ||
 \*========================================================================*/
 tep_db_query("DELETE FROM cache WHERE cache_name LIKE '%seo_urls%'");

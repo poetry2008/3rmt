@@ -6,7 +6,6 @@
   
   Released under the GNU General Public License
 
-  Copyright (c) 2003 osCommerce
   
   possible views (srView):
   1 yearly

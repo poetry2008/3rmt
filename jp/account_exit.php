@@ -34,7 +34,7 @@ $update_customer_orders = tep_db_query("update ".TABLE_ORDERS." set customer_is_
   tep_session_unregister('customer_id');
   tep_session_unregister('customer_default_address_id');
   tep_session_unregister('customer_first_name');
-  tep_session_unregister('customer_last_name'); //Add Japanese osCommerce
+  tep_session_unregister('customer_last_name'); 
   tep_session_unregister('customer_country_id');
   tep_session_unregister('customer_zone_id');
   tep_session_unregister('comments');

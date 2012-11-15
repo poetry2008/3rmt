@@ -132,16 +132,6 @@ class SEO_DataBase{
     return addslashes($data);
   } # end function
 
-/**
- * Function to perform DB inserts and updates - abstracted from osCommerce-MS-2.2 project
- * @author Bobby Easland 
- * @version 1.0
- * @param string $table Database table
- * @param array $data Associative array of columns / values
- * @param string $action insert or update
- * @param string $parameters
- * @return resource
- */ 
   function DBPerform($table, $data, $action = 'insert', $parameters = '') {
     reset($data);
     if ($action == 'insert') {
@@ -186,19 +176,6 @@ class SEO_DataBase{
   } # end function  
 } # end class
 
-/**
- * Ultimate SEO URLs Base Class
- *
- * Ultimate SEO URLs offers search engine optimized URLS for osCommerce
- * based applications. Other features include optimized performance and 
- * automatic redirect script.
- * @package Ultimate-SEO-URLs
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version 2.1
- * @link http://www.oscommerce-freelancers.com/ osCommerce-Freelancers
- * @copyright Copyright 2005, Bobby Easland 
- * @author Bobby Easland 
- */
 class SEO_URL{
   /**
   * $cache is the per page data array that contains all of the previously stripped titles
