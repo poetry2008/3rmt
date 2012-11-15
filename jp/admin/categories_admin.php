@@ -26,6 +26,7 @@ if (isset($_GET['action']) && $_GET['action']) {
   switch ($_GET['action']) 
     {
     case 'all_update': //一括更新　　
+      tep_isset_eof();
       require('includes/set/all_update.php');
       tep_redirect(tep_href_link(FILENAME_CATEGORIES_ADMIN, 'cPath=' . $HTTP_GET_VARS['cPath'] . '&pID=' .$products_id));
       break;
@@ -84,6 +85,7 @@ echo CATEGORY_ADMIN_TITLE."&nbsp;&nbsp;&nbsp;".$categories_array['categories_nam
   <script type="text/javascript" src="js2php.php?path=includes|set&name=c_admin&type=js"></script>
   <script language="javascript" src="includes/javascript/jquery_include.js"></script>
   <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<script language="javascript" src="includes/javascript/all_page.js"></script>
   <script type="text/javascript">
   function display(){
     var categories_tree = document.getElementById('categories_tree'); 
@@ -118,7 +120,20 @@ $belong = str_replace('0_','',$belong);
 require("includes/note_js.php");
 ?>
   </head>
-  <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" >
+<?php
+// 数据传输错误 提示DIV
+if(isset($_GET['eof'])&&$_GET['eof']=='error'){
+?>
+<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onload="show_eof_error()" >
+<div id="popup_info">
+<div class="popup_img"><img onclick="close_eof_error()" src="images/close.gif"
+alt="close" /></div>
+<span><?php echo TEXT_EOF_ERROR_MSG;?></span>
+</div>
+<div id="popup_box"></div>
+<?php } else { ?>
+<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" >
+<?php } ?>
   <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
   <script language='javascript'>
     one_time_pwd('<?php echo $page_name;?>');
@@ -668,8 +683,7 @@ if(empty($cPath_back)&&empty($cID)&&isset($cPath)){
     <input type='button' value='<?php echo CATEGORY_ADMIN_BUTTON_CAL_SETTING;?>' name='b[]' onClick="cleat_set('set_bairitu.php')">
   <?php }?>
   &nbsp;&nbsp;&nbsp;&nbsp;<input type='button' value='<?php echo CATEGORY_ADMIN_BUTTON_LOGIN;?>' name='e[]' onClick="location.href='set_comment.php?cID=<?php echo $current_category_id;?>&cPath=<?php echo $_GET['cPath'];?>'">
-  &nbsp;&nbsp;&nbsp;&nbsp;<input type='button' value='<?php echo CATEGORY_ADMIN_BUTTON_XIEYE_PRICE;?>' name='d[]' onClick="list_display('<?php echo $cPath_yobi?$cPath_yobi:0;?>','<?php echo $current_category_id;?>','<?php echo $_GET['cPath'];?>')">
-  &nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="x" value="<?php echo CATEGORY_ADMIN_BUTTON_ALL_UPDATE;?>" onClick="all_update()"></td>
+  &nbsp;&nbsp;&nbsp;&nbsp;<input type='button' value='<?php echo CATEGORY_ADMIN_BUTTON_XIEYE_PRICE;?>' name='d[]' onClick="list_display('<?php echo $cPath_yobi?$cPath_yobi:0;?>','<?php echo $current_category_id;?>','<?php echo $_GET['cPath'];?>')"><?php echo tep_eof_hidden();?>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="x" value="<?php echo CATEGORY_ADMIN_BUTTON_ALL_UPDATE;?>" onClick="all_update()"></td>
 </tr>
 </table>
 </td>

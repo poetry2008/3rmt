@@ -735,3 +735,4 @@ define('TEXT_USER_ADDED','作成者:');
 define('TEXT_USER_UPDATE','更新者:');
 define('TEXT_DATE_ADDED','作成日:');
 define('TEXT_DATE_UPDATE','更新日:');
+define('TEXT_EOF_ERROR_MSG','データ送信が失敗しました。再度送信してください。');

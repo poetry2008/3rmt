@@ -10,6 +10,15 @@ if (!isset($_GET['gID'])) {
   tep_redirect(tep_href_link(FILENAME_CONFIGURATION, 'gID='.$first_configuration_group['configuration_group_id']));
 }
 if (isset($_GET['action']) && $_GET['action']) {
+if(isset($_GET['cID'])){
+  $cfg_isset_query = tep_db_query("
+      select configuration_id from ".TABLE_CONFIGURATION." 
+      where configuration_group_id = '" . $_GET['gID'] . "' 
+      and configuration_id = '" . $_GET['cID'] . "'
+      and site_id='0'");
+  $cfg_isset = tep_db_fetch_array($cfg_isset_query);
+  forward404Unless($cfg_isset);
+}
 if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];//权限判断
          else $site_arr="";
     switch  ($_GET['action']) {
@@ -99,7 +108,8 @@ if(isset($_GET['cID'])){
   $cfg_isset_query = tep_db_query("
       select configuration_id from ".TABLE_CONFIGURATION." 
       where configuration_group_id = '" . $_GET['gID'] . "' 
-      and  configuration_id = '" . $_GET['cID'] . "'");
+      and  configuration_id = '" . $_GET['cID'] . "'
+      and site_id='0'");
   $cfg_isset = tep_db_fetch_array($cfg_isset_query);
   forward404Unless($cfg_isset);
 }
@@ -160,8 +170,7 @@ require("includes/note_js.php");
           <td>
              <table border="0" width="100%" cellspacing="0" cellpadding="0">
                 <tr>
-                   <td class="pageHeading"><?php echo constant($cfg_group
-                       ['configuration_group_title']); ?></td>
+                   <td class="pageHeading"><?php echo constant($cfg_group ['configuration_group_title']); ?></td>
                    <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?></td>
                 </tr>
              </table>
@@ -346,8 +355,7 @@ case 'edit':
       if($fetch_result['configuration_key'] == 'ADMINPAGE_LOGO_IMAGE') {
     $value_field = tep_draw_file_field('upfile'). '<br>' . $fetch_result['configuration_value'];
       } else {
-        //$value_field = tep_draw_input_field('configuration_value', $fetch_result['configuration_value']);
-          $value_field = '<textarea name="configuration_value" rows="5" cols="35">'. $fetch_result['configuration_value'] .'</textarea>';
+    $value_field = '<textarea name="configuration_value" rows="5" cols="35">'. $fetch_result['configuration_value'] .'</textarea>';
       }
   }
   if($fetch_result['configuration_key'] == 'ADMINPAGE_LOGO_IMAGE') {
@@ -382,8 +390,10 @@ default:
 $contents[] = array('text' => '<br>' . TEXT_USER_ADDED . ' ' . $cInfo->user_added);
 $contents[] = array('text' => '<br>' . TEXT_INFO_DATE_ADDED . ' ' . tep_datetime_short($cInfo->date_added));
 
+if (tep_not_null($cInfo->last_modified)){
 $contents[] = array('text' => '<br>' . TEXT_USER_UPDATE . ' ' . $cInfo->user_update);
 $contents[] = array('text' =>'<br>'. TEXT_INFO_LAST_MODIFIED . ' ' . tep_datetime_short($cInfo->last_modified));
+    }
     }
     break;
 }
