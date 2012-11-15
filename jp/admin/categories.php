@@ -28,7 +28,6 @@
         exit;
         break;
       case 'toggle':
-        tep_isset_eof();
           $up_rs = (isset($_GET['up_rs']))?true:false; 
           if ($_GET['cID']) {
             $cID = intval($_GET['cID']);
@@ -54,7 +53,6 @@
           tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page));
           break;
       case 'setflag':
-        tep_isset_eof();
         if(isset($_SESSION['site_permission'])) {
           $site_arr=$_SESSION['site_permission'];
         } else {
@@ -1036,7 +1034,6 @@ tep_db_query($update_sql);
         tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $categories_id . '&pID=' . $products_id));
         break;
       case 'new_product_preview':
-        tep_isset_eof();
         $_SESSION['product_history'] = $_POST;
         if (!isset($_GET['read'])) { 
         $romaji_error = 0; 
@@ -1073,6 +1070,7 @@ tep_db_query($update_sql);
             }
           }
         } else {
+          tep_isset_eof();
           if (trim($_POST['romaji']) == '') {
             $romaji_error = 1; 
             $romaji_error_str = TEXT_ROMAJI_NOT_NULL;
@@ -1629,7 +1627,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               <tr>
                 <td class="main" valign="top"><?php echo $site_id?('<br><b>'.tep_get_site_name_by_id($site_id).'</b>'):'';?></td>
                 <td class="main" align="right">
-                <?php echo tep_eof_hidden();?>
                 <?php echo tep_html_element_submit(IMAGE_PREVIEW) .  '&nbsp;&nbsp;';
                 if (isset($_GET['rdirect'])) {
                   echo '<a class = "new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&page='.$_GET['page'].'&site_id=0&pID=' .  (isset($_GET['pID'])?$_GET['pID']:'')) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>'; 
