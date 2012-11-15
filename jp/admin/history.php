@@ -297,6 +297,7 @@ case 'oroshi_c':
     
     for($n=0;$n<$cnt;$n++){//取得したデータでどれが一番件数が大きいか
       if($count[0]<=$count[$n]){
+        $count[0]=$count[$n];
       }
     }
           
@@ -538,20 +539,6 @@ case 'dougyousya_categories':
   
   ?>
   <table border="1">
-      <?php 
-      $res=tep_db_query("select count(*) as cnt from set_dougyousya_names sdn
-          ,set_dougyousya_categories sdc  where sdn.dougyousya_id =
-          sdc.dougyousya_id and sdc.categories_id='".$cPath."'");
-  $count=tep_db_fetch_array($res);
-  $target_cnt=1;//同業者専用
-  $products_count=0;
-  //登録フォーム作成
-  if($count['cnt'] > 0){
-    for($j=0;$j<$count['cnt'];$j++){
-      $hidden_d_id = "<input type='hidden' name='d_id[]' value='".$dougyousya_id[$j]."'>";//同業者ID
-    }
-  }
-?>
    <tr>
     <td colspan='<?php echo $count['cnt']+3; ?>'>
       <input type="submit" name="b2" id = 'saveorder2' value="<?php echo TEXT_SIGN_IN;?>">
@@ -561,6 +548,7 @@ case 'dougyousya_categories':
       <input type="button" onclick="$('.udlr').val('')" value="RESET">
     </td>
   </tr>
+
      <tr>
      <td <?php if ($ocertify->npermission>7) {?>colspan ='2'<?php }?>><?php echo TEXT_CLASSIFICATION;?></td>
 <?php 
@@ -571,9 +559,19 @@ case 'dougyousya_categories':
 ?>
     <td>&nbsp;</td>
   </tr>
-
-<?php
-echo $hidden_d_id;
+      <?php 
+      $res=tep_db_query("select count(*) as cnt from set_dougyousya_names sdn
+          ,set_dougyousya_categories sdc  where sdn.dougyousya_id =
+          sdc.dougyousya_id and sdc.categories_id='".$cPath."'");
+  $count=tep_db_fetch_array($res);
+  $target_cnt=1;//同業者専用
+  $products_count=0;
+  //登録フォーム作成
+  if($count['cnt'] > 0){
+    for($j=0;$j<$count['cnt'];$j++){
+      echo "<input type='hidden' name='d_id[]' value='".$dougyousya_id[$j]."'>";//同業者ID
+    }
+  }
   $x = 0;
   for($i=0;$i<$cnt2;$i++){
     echo "<tr>";
@@ -588,7 +586,6 @@ echo $hidden_d_id;
         echo "<td>&nbsp;</td>";
       }
     }
-
     echo "<td id='tr_".$x."_1'>";
     echo "<input type='hidden' name='proid[]' value='".$cid_list[$i]."' class='sort_order_input' >";//products_id
     echo "<a href='#".$col['products_name']."'>".$col['products_name']."</a></td>";
