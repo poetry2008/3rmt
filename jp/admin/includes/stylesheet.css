@@ -1373,3 +1373,25 @@ a.pageResults{
 	line-height:25px;
 	margin:10px;
 }
+#popup_box{
+	background-color:#000;
+	opacity:0.5;
+    filter: alpha(opacity=50);
+	width:100%;
+	position:absolute;
+	z-index:1500;
+}
+#popup_info{
+	border:1px solid #CCCCCA;
+	background-color:#F9F9F9;
+	z-index:1550;
+	text-align:center;
+	width:20%;
+	padding:50px 20px;
+	position:absolute;
+}
+.popup_img{
+	position: absolute;
+	right:2px;
+	top:2px;
+}
