@@ -48,4 +48,4 @@ define('TABLE_FAQ_SITE','サイト');
 define('TEXT_NEW_FAQ_QUESTION_ANSWER_HELP','答えは#REPLACE#　で区切る');
 define('TEXT_EDIT_FAQ_QUESTION_INFO','編集FAQの内容を入力してください');
 define('TEXT_USER_UPDATE','更新者:');
-define('TEXT_USER_ADDED','登録者:');
+define('TEXT_USER_ADDED','作成者:');

@@ -7,6 +7,7 @@
 //产品id 列表
 $products_id = tep_db_prepare_input($HTTP_GET_VARS['pID']);
 $cID=$_POST['cID_list'];
+
 if($_POST[flg_up]==1){
   $psrice_datas = $_POST['price'];//特价
   $proid = $_POST['proid'];//pid
@@ -34,6 +35,7 @@ if($_POST[flg_up]==1){
       $rajio_a++;
     }
   }
+
   $res_cnt=tep_db_query("select count(*) as cnt_d from set_dougyousya_history where categories_id !=0 and categories_id = '".tep_db_prepare_input($cID)."' AND products_id  = '".tep_db_prepare_input($proid[0])."'");
   $col_cnt=tep_db_fetch_array($res_cnt);
   $cnt_d=$d_cnt*20;//カテゴリー20件保存(5日分)

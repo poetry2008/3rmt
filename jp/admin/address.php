@@ -3,6 +3,7 @@
  * 住所作成 action_ajax
  */
 require('includes/application_top.php');
+
 //生成随即16位name
 function rand_str(){
   

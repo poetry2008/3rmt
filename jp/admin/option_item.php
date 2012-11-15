@@ -564,6 +564,7 @@ require("includes/note_js.php");
 <!-- header_eof //-->
 
 <!-- body //-->
+
 <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
@@ -579,7 +580,12 @@ require("includes/note_js.php");
               <input type="hidden" name="search" value="1">
               <?php echo tep_html_element_submit(IMAGE_SEARCH);?>
               </form>
-              </div>      
+              </div>
+    <?php
+    if(!empty($item['id'])){
+    echo ' <div id="show_item_info" style="display:none;position:inherit;"></div>';
+    }
+    ?>
 
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
@@ -738,7 +744,11 @@ require("includes/note_js.php");
         </table></td>
       </tr>
     </table>
-    <div id="show_item_info" style="display:none;position:inherit;"></div> 
+    <?php
+    if(empty($item['id'])){
+      echo ' <div id="show_item_info" style="display:none;position:inherit;"></div>';
+    }
+      ?>
     </div></div></td>
 <!-- body_text_eof //-->
   </tr>
