@@ -3,12 +3,6 @@
   $Id$
   $Loc: catalog/admin/includes/languages/english/
 
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2005 osCommerce
-
-  Released under the GNU General Public License
 */
 
   define ('HEADING_TITLE_TYPES', 'ファイルタイプ');

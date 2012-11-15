@@ -2,12 +2,6 @@
 /*
   $Id$
 
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 /**
  * change $_GET ,$_POST to $HTTP_GET_VAR;$HTTP_POST_VAR

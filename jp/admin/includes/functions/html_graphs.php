@@ -2,14 +2,6 @@
 /*
   $Id$
 
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 osCommerce
-
-  Released under the GNU General Public License
-
-  HTML_Graphs (v1.5 1998/11/05 06:15:52) by Phil Davis, http://www.pobox.com/~pdavis/
 */
 
 ////
