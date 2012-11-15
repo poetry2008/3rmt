@@ -4063,9 +4063,8 @@ tep_display_google_results(FILENAME_CATEGORIES);
             $contents[] = array('text' => TEXT_LAST_MODIFIED . '&nbsp;' . tep_datetime_short($pInfo->products_last_modified));
             }else{
             $contents[] = array('text' => TEXT_LAST_MODIFIED . '&nbsp;' . TEXT_UNSET_DATA);
-            $contents[] = array('align' => 'left', 'text' => '<a href="' .  tep_href_link(FILENAME_REVIEWS, 'cPath=' . $cPath . '&products_id=' . $pInfo->products_id . '&action=new') . '">' . tep_html_element_button(IMAGE_REVIEWS) . '</a>');
+            }
             if (date('Y-m-d') < $pInfo->products_date_available) $contents[] = array('text' => TEXT_DATE_AVAILABLE . ' ' . tep_date_short($pInfo->products_date_available));
-            $contents[] = array('text' => '<br>' . tep_info_image('products/'.$pInfo->products_image, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 0) . '<br>' . $pInfo->products_image);
             $contents[] = array('text' => '<br>' . tep_info_image('products/'.$pInfo->products_image, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 0) . '<br>' . $pInfo->products_image);
             if($pInfo->products_image2) {
               $contents[] = array('text' => '<br>' . tep_info_image('products/'.$pInfo->products_image2, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '<br>' . $pInfo->products_image2, 0);
