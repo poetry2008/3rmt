@@ -412,13 +412,13 @@ case 'dougyousya':
       $cate_name= $testcol['categories_name'];
       $colmunLimit = 2;//分几行
       $colmunLimit_add_1 = $colmunLimit+1;
-      echo "<table border=1>";
-      echo "<th width='200'></th>";
+      echo "<table border='0' class='table_box'>";
+	  echo "<th width='200'>";
       //        echo "<td colspan = ".$colmunLimit_add_1 .">";
       echo "<th width='200'>";
       echo $cate_name;
       echo "</th>";
-      echo "<th width='200'></th>";
+	  echo "<th width='200'>";
       echo "<tbody>";
       $getSubCategories = 'select cd.categories_name,cd.categories_id from
         categories_description cd, categories c where
@@ -538,7 +538,7 @@ case 'dougyousya_categories':
   //print_r($last_history_arr);
   
   ?>
-  <table border="1">
+    <table border="0">
    <tr>
     <td colspan='<?php echo $count['cnt']+3; ?>'>
       <input type="submit" name="b2" id = 'saveorder2' value="<?php echo TEXT_SIGN_IN;?>">
@@ -548,16 +548,17 @@ case 'dougyousya_categories':
       <input type="button" onclick="$('.udlr').val('')" value="RESET">
     </td>
   </tr>
-
+  </table>
+  <table border="0" class="table_box">
      <tr>
-     <td <?php if ($ocertify->npermission>7) {?>colspan ='2'<?php }?>><?php echo TEXT_CLASSIFICATION;?></td>
+     <th <?php if ($ocertify->npermission>7) {?>colspan ='2'<?php }?>><?php echo TEXT_CLASSIFICATION;?></th>
 <?php 
   for($i=0;$i<$cnt;$i++){
-    $html .= "<td>".$d_name[$i]."</td>";
+    $html .= "<th>".$d_name[$i]."</th>";
   }
   echo $html;
 ?>
-    <td>&nbsp;</td>
+    <th>&nbsp;</th>
   </tr>
       <?php 
       $res=tep_db_query("select count(*) as cnt from set_dougyousya_names sdn
@@ -607,7 +608,9 @@ case 'dougyousya_categories':
     $x++;
   }
   ?>
-  <tr>
+     </table>
+	 <table border="0">
+	   <tr>
     <td colspan='<?php echo $count['cnt']+3;?>'>
       <input type="submit" name="b1" id = 'saveorder1' value="<?php echo TEXT_SIGN_IN;?>">
       <input type='hidden' id='orderstring' name='orderstring' />
@@ -616,8 +619,8 @@ case 'dougyousya_categories':
       <input type="button" onclick="$('.udlr').val('')" value="RESET">
     </td>
   </tr>
-     </form>
      </table>
+  </form>
     <script>
     var last_history = new Array();
     <?php

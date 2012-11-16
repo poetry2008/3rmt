@@ -1395,3 +1395,5 @@ a.pageResults{
 	right:2px;
 	top:2px;
 }
+.table_box th{ background-color:#cccccc;}
+.table_box td{ border:1px solid #B2B2B2;}
