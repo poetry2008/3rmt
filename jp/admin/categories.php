@@ -1420,9 +1420,9 @@ require("includes/note_js.php");
 // 数据传输错误 提示DIV 
 if(isset($_GET['eof'])&&$_GET['eof']=='error'){ 
 ?>
-<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onload="show_eof_error()" >
+<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onload="show_error_message()" >
 <div id="popup_info">
-<div class="popup_img"><img onclick="close_eof_error()" src="images/close.gif" alt="close" /></div>
+<div class="popup_img"><img onclick="close_error_message()" src="images/close_error_message.gif" alt="close" /></div>
 <span><?php echo TEXT_EOF_ERROR_MSG;?></span>
 </div>
 <div id="popup_box"></div>
