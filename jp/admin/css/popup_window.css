@@ -1,0 +1,20 @@
+.popup_window {
+  background-color: #FFFF00;
+  position: absolute;
+  margin-left:2px;
+  display:none;
+}
+.popup_window_top{
+  background-color:#000000;
+  color:#FFFFFF;
+  padding:0 5px;
+}
+.popup_window_top a{ color:#FFFFFF;}
+.popup_window_body{
+	padding:5px 50px;
+}
+.popup_window_body input{
+  margin:5px 0;
+  padding:0;      
+}
+
