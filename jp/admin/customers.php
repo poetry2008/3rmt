@@ -825,7 +825,7 @@ require("includes/note_js.php");
         $contents[] = array('text' => TEXT_USER_ADDED.' '.$cInfo->customers_firstname.' '.$cInfo->customers_lastname);
         }else{
         $contents[] = array('text' => TEXT_USER_ADDED.' '.TEXT_UNSET_DATA);
-        }if(tep_not_null($cInfo->date_account_created)){
+        }if(tep_not_null(tep_datetime_short($cInfo->date_account_created))){
         $contents[] = array('text' =>  TEXT_DATE_ACCOUNT_CREATED . ' ' . tep_datetime_short($cInfo->date_account_created));
         }else{
         $contents[] = array('text' =>  TEXT_DATE_ACCOUNT_CREATED . ' ' . TEXT_UNSET_DATA);
@@ -833,7 +833,7 @@ require("includes/note_js.php");
         $contents[] = array('text' => TEXT_USER_UPDATE.' '.$cInfo->user_update);
         }else{
         $contents[] = array('text' => TEXT_USER_UPDATE.' '.TEXT_UNSET_DATA);
-        }if(tep_not_null($cInfo->date_account_last_modified)){
+        }if(tep_not_null(tep_datetime_short($cInfo->date_account_last_modified))){
         $contents[] = array('text' =>  TEXT_DATE_ACCOUNT_LAST_MODIFIED . ' ' . tep_datetime_short($cInfo->date_account_last_modified));
         }else{
         $contents[] = array('text' =>  TEXT_DATE_ACCOUNT_LAST_MODIFIED . ' ' . TEXT_UNSET_DATA);

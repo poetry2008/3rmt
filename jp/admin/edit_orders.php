@@ -429,7 +429,7 @@ if (tep_not_null($action)) {
       //住所信息入库
 
       tep_db_query("delete from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and customers_id='".$check_status['customers_id']."'");
-      tep_db_query("update `".TABLE_ORDERS."` set `user_update` = '".$ocertify->auth_user."' where `orders_id` = '".$oID."'");
+      tep_db_query("update `".TABLE_ORDERS."` set `user_update` = '".$_SESSION['user_name']."' where `orders_id` = '".$oID."'");
       foreach($option_info_array as $ad_key=>$ad_value){
         
         $address_list_query = tep_db_query("select * from ". TABLE_ADDRESS ." where name_flag='". substr($ad_key,3) ."'");
@@ -3159,7 +3159,6 @@ if (($action == 'edit') && ($order_exists == true)) {
     <input type="hidden" name='update_tori_torihiki_end_date' size='10' value='<?php echo str_replace('&nbsp;','',$date_array[1]); ?>'>
     </td>
     </tr>
-    <!-- 住所信息 -->
     <?php
       $address_temp_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'");
       $count_num = tep_db_num_rows($address_temp_query);
@@ -3199,17 +3198,6 @@ if (($action == 'edit') && ($order_exists == true)) {
     <?php
       }
     ?>
-<!--
-    <tr>
-    <td class="main" valign="top"><b><?php echo EDIT_ORDERS_TORI_TEXT;?></b></td>
-    <td class="main">
-    <input name='update_tori_torihiki_houhou' size='45' value='<?php echo $order->tori['houhou']; ?>'>
-    <?php echo EDIT_ORDERS_TORI_READ;?> 
-
-
-    </td>
-    </tr>
--->
 <tr>
 <td colspan="2">
     <input type="hidden" name="update_viladate" value="true">
@@ -3684,7 +3672,6 @@ if (($action == 'edit') && ($order_exists == true)) {
     </tr>
     <!-- End Order Total Block -->
     <!-- Begin Update Block -->
-    <!-- Improvement: more "Update" buttons (Michel Haase, 2005-02-18) -->   
             <!-- End of Update Block -->
             <!-- Begin Status Block -->
             <tr>

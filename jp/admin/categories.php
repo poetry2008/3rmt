@@ -239,6 +239,7 @@ tep_db_query($update_sql);
           $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
           tep_db_perform(TABLE_CATEGORIES, $sql_data_array);
           $categories_id = tep_db_insert_id();
+          
         } elseif ($_GET['action'] == 'update_category') {
 		$update_sql_data = array('last_modified' => 'now()');
           $sql_data_array = tep_array_merge($sql_data_array, $update_sql_data);
@@ -252,7 +253,6 @@ $update_sql = "update ".TABLE_CATEGORIES_DESCRIPTION." set last_modified=now(),u
 tep_db_query($update_sql);
 	  }
         }
-
         $languages = tep_get_languages();
         for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
           $categories_name_array  = $_POST['categories_name'];
@@ -282,6 +282,8 @@ tep_db_query($update_sql);
                   'meta_description' => tep_db_prepare_input($meta_description[$language_id]),
                   'character_romaji' => tep_db_prepare_input($character_romaji[$language_id]),
                   'alpha_romaji' => tep_db_prepare_input($alpha_romaji[$language_id]),
+                  'last_modified ' => date('Y-m-d H:i:s',time()),
+                  'user_last_modified' => $_SESSION['user_name'],
                 );
 
           if ($_GET['action'] == 'insert_category' || ($_GET['action'] == 'update_category' && !tep_categories_description_exist($categories_id, $language_id, $site_id))) {
@@ -343,7 +345,6 @@ tep_db_query($update_sql);
               tep_redirect(tep_href_link(FILENAME_CATEGORIES));
         }
         tep_db_perform(TABLE_CATEGORIES_DESCRIPTION, $sql_data_array, 'update', 'categories_id = \'' . $categories_id . '\' and language_id = \'' . $languages[$i]['id'] . '\' and site_id = \''.$site_id.'\'');
-            
       //categories_image2 upload => UPDATE
       $categories_image2 = tep_get_uploaded_file('categories_image2');
       //$image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES);
@@ -390,6 +391,8 @@ tep_db_query($update_sql);
         } else {
           tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&cID=' . $categories_id.'&site_id='.$site_id.($_GET['search']?'&search='.$_GET['search']:'')));
         }
+
+
         break;
       case 'delete_product_description_confirm':
         tep_isset_eof();
@@ -658,8 +661,6 @@ tep_db_query($update_sql);
                                   'products_cartorder' => tep_db_prepare_input($_POST['products_cartorder']),
                                   );
            
-
-
           if ($_POST['products_image']) {
             $sql_data_array['products_image'] = (($_POST['products_image'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image']));
           }
@@ -709,7 +710,6 @@ $update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=
 tep_db_query($update_sql);
 	  }
           }
-        
         if (isset($_POST['carttags']) && $site_id == '0') {
           tep_db_query("delete from products_to_carttag where products_id='".$products_id."'");
           foreach($_POST['carttags'] as $ck => $ct){
@@ -801,6 +801,8 @@ tep_db_query($update_sql);
             if (isset($_GET['action']) && ($_GET['action'] == 'insert_product' || ($_GET['action'] == 'update_product' && !tep_products_description_exist($products_id,$site_id,$language_id)))) {
               $insert_sql_data = array('products_id' => $products_id,
                                        'language_id' => $language_id,
+                                       'products_user_update ' => $_SESSION['user_name'],
+                                       'products_last_modified ' => date('Y-m-d H:i:s',time()),
                                        'site_id' => $site_id);
               $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
               tep_db_perform(TABLE_PRODUCTS_DESCRIPTION, $sql_data_array);
@@ -812,7 +814,7 @@ tep_db_query($update_sql);
               tep_db_query("update `".TABLE_PRODUCTS_DESCRIPTION."` set `preorder_status` = '".$_POST['preorder_status']."' where products_id = '".$products_id."' and `site_id` != '0'"); 
             }
           }
-      
+
       //-----------------------------------------
       // オプション値インサートスタート
       //-----------------------------------------
@@ -4002,7 +4004,7 @@ tep_display_google_results(FILENAME_CATEGORIES);
             if (tep_not_null($cInfo->user_last_modified)) {
                     $contents[] = array('text' =>  TEXT_USER_UPDATE . ' ' . $cInfo->user_last_modified);
             }else{
-                    $contents[] = array('text' =>  TEXT_USER_UPDATE . ' ' . TEXT_UNSET_DATA);
+                    $contents[] = array('text' =>  TEXT_USER_UPDATE .' '. TEXT_UNSET_DATA);
             }
           
 	    if (tep_not_null(tep_datetime_short($cInfo->last_modified))) {

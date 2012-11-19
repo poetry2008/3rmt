@@ -1085,13 +1085,17 @@ function tep_get_pre_orders_products_string($orders, $single = false, $popup = f
     $str .= '</td>'; 
     $str .= '</tr>'; 
   }
-   if(tep_not_null($orders['user_added'])){
+   if(tep_not_null($orders['user_added'])|| tep_not_null($orders['customers_name'])){
   $str .= '<tr>';
   $str .= '<td>';
   $str .= TEXT_USER_ADDED;
   $str .= '</td>';
   $str .= '<td>';
-  $str .= $orders['user_added'];
+if(isset($orders['user_added']) && $orders['user_added'] != ""){
+   $str .= $orders['user_added'];	
+	}else{
+   $str .= $orders['customers_name'];	
+	}	
   $str .= '</td>';
   $str .= '</tr>';
   }else{
@@ -1123,13 +1127,17 @@ function tep_get_pre_orders_products_string($orders, $single = false, $popup = f
   $str .= '</td>';
   $str .= '</tr>';
   }
-  if(tep_not_null($orders['user_update'])){
+  if(tep_not_null($orders['user_update']) || tep_not_null($orders['customers_name'])){
   $str .= '<tr>';
   $str .= '<td>';
   $str .= TEXT_USER_UPDATE;
   $str .= '</td>';
   $str .= '<td>';
+  if(isset($orders['user_update']) && $orders['user_update'] != ""){
   $str .= $orders['user_update'];
+  }else{
+  $str .= $orders['customers_name'];
+  }
   $str .= '</td>';
   $str .= '</tr>';
   }else{
@@ -1142,13 +1150,17 @@ function tep_get_pre_orders_products_string($orders, $single = false, $popup = f
   $str .= '</td>';
   $str .= '</tr>';
   }
-  if(tep_not_null($orders['last_modified'])){
+  if(tep_not_null($orders['last_modified']) || tep_not_null($orders['date_purchased'])){
   $str .= '<tr>';
   $str .= '<td>';
   $str .= TEXT_DATE_UPDATE;
   $str .= '</td>';
   $str .= '<td>';
+  if(isset($orders['last_modified']) && $orders['last_modified'] != ""){
   $str .= $orders['last_modified'];
+  }else{
+  $str .= $orders['date_purchased'];
+  }
   $str .= '</td>';
   $str .= '</tr>';
   }else{

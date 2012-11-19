@@ -114,7 +114,7 @@ if(tep_not_null($country_fee_array['user_added'])){ ?>
 <tr><td width="30%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_USER_ADDED;?></td><td><?php echo $country_fee_array['user_added'];?></td></tr>
 <?php }else{ ?>
 <tr><td width="30%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_USER_ADDED;?></td><td><?php echo TEXT_UNSET_DATA;?></td></tr>
-<?php } if(tep_not_null($country_fee_array['date_added'])){ ?>
+<?php } if(tep_not_null(tep_datetime_short($country_fee_array['date_added']))){ ?>
 <tr><td width="30%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_ADDED;?></td><td><?php echo $country_fee_array['date_added'];?></td></tr>
 <?php }else{ ?> 
 <tr><td width="30%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_ADDED;?></td><td><?php echo TEXT_UNSET_DATA;?></td></tr>
@@ -122,7 +122,7 @@ if(tep_not_null($country_fee_array['user_added'])){ ?>
 <tr><td width="30%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_USER_UPDATE;?></td><td><?php echo $country_fee_array['user_update'];?></td></tr>
 <?php } else { ?>
 <tr><td width="30%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_USER_UPDATE;?></td><td><?php echo TEXT_UNSET_DATA;?></td></tr>
-<?php } if(tep_not_null($country_fee_array['date_update'])){ ?>
+<?php } if(tep_not_null(tep_datetime_short($country_fee_array['date_update']))){ ?>
 <tr><td width="30%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_UPDATE;?></td><td><?php echo $country_fee_array['date_update'];?></td></tr>
 <?php }else{ ?>
 <tr><td width="30%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_UPDATE;?></td><td><?php echo TEXT_UNSET_DATA;?></td></tr>

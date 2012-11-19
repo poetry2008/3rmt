@@ -65,7 +65,12 @@ if($_GET['action'] == 'update'){
       $orders_site_temp_array = $orders_site_setting_array;
     }
     $orders_site_str = serialize($orders_site_temp_array);
-    tep_db_query("update ". TABLE_CONFIGURATION ." set   configuration_value='".$orders_site_str."',user_update='".$ocertify->auth_user."',last_modified='".date('Y-m-d H:i:s',time())."'  where configuration_key='PERSONAL_SETTING_ORDERS_SITE'");
+    $configuration_row = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='PERSONAL_SETTING_ORDERS_SITE'"));
+    if($configuration_row['user_update'] == $_SESSION['user_name']){
+    tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$orders_site_str."',user_update='".$_SESSION['user_name']."',last_modified='".date('Y-m-d H:i:s',time())."'  where configuration_key='PERSONAL_SETTING_ORDERS_SITE'");
+    }else{
+   tep_db_query("insert into ".TABLE_CONFIGURATION."  (`configuration_value`,`configuration_key`,`user_update`,`last_modified`)  values('".$orders_site_str."','PERSONAL_SETTING_ORDERS_SITE','".$_SESSION['user_name']."','".date('Y-m-d H:i:s',time())."')");
+    }
     $orders_work_temp_array = array();
     $orders_work_setting_str = implode('|',$orders_work);
     if(PERSONAL_SETTING_ORDERS_WORK == ''){
@@ -448,7 +453,9 @@ require("includes/note_js.php");
               </tr>
               <tr><td align="right"><input type="submit" value="<?php echo TEXT_SAVE;?>"></td></tr>
               <?php 
-               $configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='PERSONAL_SETTING_ORDERS_SITE'"));  
+               $configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where  configuration_key='PERSONAL_SETTING_ORDERS_SITE' and  user_update = '".$_SESSION['user_name']."'"));  
+               echo '<tr><td>'.TEXT_USER_ADDED.'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';
+               echo '<tr><td>'.TEXT_DATE_ADDED.'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';
                if(tep_not_null($configuration['user_update'])){
                echo '<tr><td>'.TEXT_USER_UPDATE.'&nbsp;'.$configuration['user_update'].'</td></tr>';
                }else{

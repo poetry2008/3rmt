@@ -574,8 +574,8 @@ require("includes/note_js.php");
             'site_id'                     => $site_id,
             'is_active'                     => '1',
             'orders_wait_flag'            => '1',
-            'user_added'                  => $ocertify->auth_user,
-            'user_update'                  => $ocertify->auth_user
+            'user_added'                  => $_SESSION['user_name'],
+            'user_update'                  => $_SESSION['user_name']
             ); 
    
   $cpayment->admin_add_additional_info($sql_data_array, $_POST['payment_method']); 

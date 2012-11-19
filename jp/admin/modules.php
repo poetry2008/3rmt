@@ -32,11 +32,10 @@ if (isset($_GET['action']))
       $module->install();
     }
   
- tep_db_query("update " . TABLE_CONFIGURATION . " set user_update = '".$ocertify->auth_user."', last_modified = '".date('Y-m-d H:i:s',time())."' where configuration_key =  'MODULE_".strtoupper($set)."_".strtoupper($_GET['module'])."_STATUS' and site_id = '".$_POST['site_id']."'");
- tep_db_query("update " . TABLE_CONFIGURATION . " set user_update =  '".$ocertify->auth_user."', last_modified = '".date('Y-m-d H:i:s',time())."' where configuration_key =  'MODULE_".strtoupper($set)."_".str_replace('OT_','',strtoupper($_GET['module']))."_STATUS' and site_id = '".$_POST['site_id']."'");
+ tep_db_query("update " . TABLE_CONFIGURATION . " set user_update = '".$_SESSION['user_name']."', last_modified = '".date('Y-m-d H:i:s',time())."' where configuration_key =  'MODULE_".strtoupper($set)."_".strtoupper($_GET['module'])."_STATUS' and site_id = '".$_POST['site_id']."'");
+ tep_db_query("update " . TABLE_CONFIGURATION . " set user_update =  '".$_SESSION['user_name']."', last_modified = '".date('Y-m-d H:i:s',time())."' where configuration_key =  'MODULE_".strtoupper($set)."_".str_replace('OT_','',strtoupper($_GET['module']))."_STATUS' and site_id = '".$_POST['site_id']."'");
 
- tep_db_query("update " . TABLE_CONFIGURATION . " set user_update =
-     '".$ocertify->auth_user."', last_modified = '".date('Y-m-d H:i:s',time())."'
+ tep_db_query("update " . TABLE_CONFIGURATION . " set user_update = '".$_SESSION['user_name']."', last_modified = '".date('Y-m-d H:i:s',time())."'
      where configuration_key =
      'MODULE_".strtoupper($set)."_".strtoupper($_GET['module'])."_TITLE' and site_id = '".$_POST['site_id']."'");
     if ($_GET['set'] == 'payment') { 
@@ -409,7 +408,7 @@ if (tep_db_num_rows($check_query)) {
     configuration_group_id, sort_order, date_added , user_added) values ('Installed Modules', '".
       $module_key . "', '" . implode(';', $installed_modules) . "', 'This is
       automatically updated. No need to edit.', '6', '0', now(),
-      '".$ocertify->auth_user."')");
+      '".$_SESSION['user_name']."')");
 }
 ?>
 <tr>
@@ -584,7 +583,7 @@ default:
       $contents[] = array('align' => 'left', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$check['user_added']);
       }else{
       $contents[] = array('align' => 'left', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.TEXT_UNSET_DATA);
-      }if(tep_not_null($check['date_added'])){
+      }if(tep_not_null(tep_datetime_short($check['date_added']))){
       $contents[] = array('align' => 'left', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$check['date_added']);
       }else{
       $contents[] = array('align' => 'left', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.TEXT_UNSET_DATA);
@@ -592,7 +591,7 @@ default:
       $contents[] = array('align' => 'left', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$check['user_update']);
       }else{
       $contents[] = array('align' => 'left', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.TEXT_UNSET_DATA);
-      }if(tep_not_null($check['last_modified'])){
+      }if(tep_not_null(tep_datetime_short($check['last_modified']))){
       $contents[] = array('align' => 'left', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$check['last_modified']);
       }else{
       $contents[] = array('align' => 'left', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.TEXT_UNSET_DATA);

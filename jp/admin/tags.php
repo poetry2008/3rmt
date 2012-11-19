@@ -288,7 +288,7 @@ if(tep_not_null($cInfo->user_added)){
 $contents[] = array('text' => TEXT_USER_ADDED. '&nbsp;' .$cInfo->user_added);
 }else{
 $contents[] = array('text' => TEXT_USER_ADDED. '&nbsp;' .TEXT_UNSET_DATA);
-}if(tep_not_null($cInfo->date_added)){
+}if(tep_not_null(tep_datetime_short($cInfo->date_added))){
 $contents[] = array('text' =>  TEXT_DATE_ADDED. '&nbsp;' .tep_datetime_short($cInfo->date_added));
 }else{
 $contents[] = array('text' =>  TEXT_DATE_ADDED. '&nbsp;' .TEXT_UNSET_DATA);
@@ -296,7 +296,7 @@ $contents[] = array('text' =>  TEXT_DATE_ADDED. '&nbsp;' .TEXT_UNSET_DATA);
 $contents[] = array('text' =>  TEXT_USER_UPDATE. '&nbsp;' .$cInfo->user_update);
 }else{
 $contents[] = array('text' =>  TEXT_USER_UPDATE. '&nbsp;' .TEXT_UNSET_DATA);
-}if(tep_not_null($cInfo->date_update)){
+}if(tep_not_null(tep_datetime_short($cInfo->date_update))){
 $contents[] = array('text' =>  TEXT_DATE_UPDATE. '&nbsp;' .tep_datetime_short($cInfo->date_update));
 }else{
 $contents[] = array('text' =>  TEXT_DATE_UPDATE. '&nbsp;' .TEXT_UNSET_DATA);

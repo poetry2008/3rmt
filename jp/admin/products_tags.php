@@ -28,7 +28,7 @@
         if($_POST['categories_id']){
          $tags_query = tep_db_query("select * from tags where tags_id");
          $tags_array = tep_db_fetch_array($tags_query);
-         tep_db_query("UPDATE `tags` SET user_update = '".$ocertify->auth_user."', date_update = '".date('Y-m-d H:i:s',time())."'  WHERE  `tags_id` = '".$tags_array['tags_id']."'");  
+         tep_db_query("UPDATE `tags` SET user_update = '".$_SESSION['user_name']."', date_update = '".date('Y-m-d H:i:s',time())."'  WHERE  `tags_id` = '".$tags_array['tags_id']."'");  
         };
         if ($_POST['tags_id']) {
           foreach($_POST['tags_id'] as $tid) {
@@ -41,7 +41,7 @@
             }
           }
         if($tid){
-         tep_db_query("UPDATE `tags` SET user_update = '".$ocertify->auth_user."', date_update = '".date('Y-m-d H:i:s',time())."'  WHERE  `tags_id` = '".$tid."'");  
+         tep_db_query("UPDATE `tags` SET user_update = '".$_SESSION['user_name']."', date_update = '".date('Y-m-d H:i:s',time())."'  WHERE  `tags_id` = '".$tid."'");  
          }
         }
         tep_redirect(tep_href_link('products_tags.php'));
@@ -172,7 +172,7 @@ require("includes/note_js.php");
         <td>
   <?php echo tep_draw_form('products_to_tags','products_tags.php', 'action=save', 'post');?>
   <input type="submit" value="<?php echo IMAGE_SAVE;?>">
-  <table border="0" width="100%" cellspacing="0" cellpadding="0">
+  <table border="0" width="100%" cellspacing="2" cellpadding="0">
           <tr>
             <td valign="top" width="50%">
 
@@ -237,12 +237,29 @@ require("includes/note_js.php");
 ?>
             </td>
           </tr>
+          <tr>
+           <td colspan="2">
+           <?php 
+            echo TEXT_USER_ADDED.'&nbsp;';
+            echo TEXT_UNSET_DATA;
+           ?>
+           </td>
+          </tr>
+          <tr>
+           <td colspan="2">
+           <?php 
+            echo TEXT_USER_UPDATE.'&nbsp;';
+            echo TEXT_UNSET_DATA;
+           ?>
+           </td>
+          </tr>
+
          <?php 
              $tags_date = tep_db_query("select * from tags order by date_update desc ");
              $tags_row = tep_db_fetch_array($tags_date);
              if(tep_not_null($tags_row['user_update'])){
          ?>
-          <tr>
+                   <tr>
            <td colspan="2">
            <?php 
             echo TEXT_USER_UPDATE.'&nbsp;';

@@ -49,7 +49,7 @@ if(isset($action) && $action != ''){
                    "','". $email_comment_1 .
                    "','". $area_fee_date .
                    "','". $area_fee_sort .                   
-                   "','0','".$ocertify->auth_user."','".date('Y-m-d  H:i:s',time())."','".$ocertify->auth_user."','".date('Y-m-d  H:i:s',time())."')";
+                   "','0','".$_SESSION['user_name']."','".date('Y-m-d H:i:s',time())."','".$_SESSION['user_name']."','".date('Y-m-d  H:i:s',time())."')";
 
     }else{
       $area_fee_sql = "update ". TABLE_COUNTRY_CITY .
@@ -63,7 +63,7 @@ if(isset($action) && $action != ''){
                    "',email_comment_1='". $email_comment_1 .
                    "',date='". $area_fee_date .
                    "',sort='". $area_fee_sort .
-                   "',user_update='".$ocertify->auth_user.
+                   "',user_update='".$_SESSION['user_name'].
                    "',date_update='".date('Y-m-d H:i:s',time()).
                    "' where id=". $area_fee_id;
     }

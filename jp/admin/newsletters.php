@@ -44,6 +44,14 @@
 				  'user_update'=> $_POST['user_update'],
 				  'last_modified' => 'now()',
 			  );
+          $update_sql_data_array = array('title' => $title,
+                                  'content' => $content,
+				  'module' => $newsletter_module,
+				  'user_update'=> $_POST['user_update'],
+				  'last_modified' => 'now()',
+			  );
+
+
 
           if ($_GET['action'] == 'insert') {
             $site_id = tep_db_prepare_input($_POST['site_id']);
@@ -57,7 +65,7 @@
             tep_db_perform(TABLE_NEWSLETTERS, $sql_data_array);
             $newsletter_id = tep_db_insert_id();
           } elseif ($_GET['action'] == 'update') {
-            tep_db_perform(TABLE_NEWSLETTERS, $sql_data_array, 'update', 'newsletters_id = \'' . tep_db_input($newsletter_id) . '\'');
+            tep_db_perform(TABLE_NEWSLETTERS, $update_sql_data_array, 'update', 'newsletters_id = \'' . tep_db_input($newsletter_id) . '\'');
           }
 
           tep_redirect(tep_href_link(FILENAME_NEWSLETTERS, 'page=' . $_GET['page'] . '&nID=' . $newsletter_id.(isset($_GET['lsite_id'])?('&site_id='.$_GET['lsite_id']):'')));

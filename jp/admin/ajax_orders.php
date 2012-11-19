@@ -1003,7 +1003,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= TEXT_UNSET_DATA;
   $html_str .= '</td>';
   $html_str .= '</tr>';
-  }if(tep_not_null($campaign_res['created_at'])){
+  }if(tep_not_null(tep_datetime_short($campaign_res['created_at']))){
   $html_str .= '<tr>';
   $html_str .= '<td>';
   $html_str .= TEXT_DATE_ADDED;
@@ -1039,7 +1039,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= TEXT_UNSET_DATA;
   $html_str .= '</td>';
   $html_str .= '</tr>';
-  }if(tep_not_null($campaign_res['date_update'])){ 
+  }if(tep_not_null(tep_datetime_short($campaign_res['date_update']))){ 
   $html_str .= '<tr>';
   $html_str .= '<td>';
   $html_str .= TEXT_DATE_UPDATE;
