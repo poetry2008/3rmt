@@ -192,7 +192,7 @@
               '".tep_db_prepare_input($_POST['price'])."', `sort_num` =
               '".tep_db_prepare_input((int)$_POST['sort_num'])."', `place_type` =
               '".tep_db_prepare_input($_POST['place_type'])."', `user_update` =
-              '".$ocertify->auth_user."', `date_update` = '".date('Y-m-d H:i:s',time())."' where id =
+              '".$_SESSION['user_name']."', `date_update` = '".date('Y-m-d H:i:s',time())."' where id =
               '".$_POST['item_id']."'"; 
             tep_db_query($update_sql); 
           } else if ($_GET['action'] == 'insert') {
@@ -205,7 +205,8 @@
               '".tep_db_prepare_input($_POST['price'])."', '1',
               '".tep_db_prepare_input((int)$_POST['sort_num'])."',
               '".tep_db_prepare_input($_POST['place_type'])."', '".date('Y-m-d
-                H:i:s',time())."' ,'".$ocertify->auth_user."','".$ocertify->auth_user."','".date('Y-m-d H:i:s',time())."')"; 
+                H:i:s',time())."'
+                ,'".$_SESSION['user_name']."','".$_SESSION['user_name']."','".date('Y-m-d H:i:s',time())."')"; 
              tep_db_query($insert_sql); 
              $item_id = tep_db_insert_id(); 
              $option_array['eid'] = $item_id;
@@ -564,6 +565,7 @@ require("includes/note_js.php");
 <!-- header_eof //-->
 
 <!-- body //-->
+
 <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
@@ -579,7 +581,12 @@ require("includes/note_js.php");
               <input type="hidden" name="search" value="1">
               <?php echo tep_html_element_submit(IMAGE_SEARCH);?>
               </form>
-              </div>      
+              </div>
+    <?php
+    if(!empty($item['id'])){
+    echo ' <div id="show_item_info" style="display:none;position:inherit;"></div>';
+    }
+    ?>
 
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
@@ -738,7 +745,11 @@ require("includes/note_js.php");
         </table></td>
       </tr>
     </table>
-    <div id="show_item_info" style="display:none;position:inherit;"></div> 
+    <?php
+    if(empty($item['id'])){
+      echo ' <div id="show_item_info" style="display:none;position:inherit;"></div>';
+    }
+      ?>
     </div></div></td>
 <!-- body_text_eof //-->
   </tr>

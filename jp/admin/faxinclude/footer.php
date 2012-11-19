@@ -2,12 +2,6 @@
 /*
   $Id$
 
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 ?>
 <br>
@@ -26,14 +20,11 @@
   Frequently Asked Questions entry on the osCommerce
   support site:
 
-  http://www.oscommerce.com/community.php/faq,26/q,50
 
   Please leave this comment intact together with the
   following copyright announcement.
 */
 ?>
-E-Commerce Engine Copyright &copy; 2003 <a href="http://www.oscommerce.com" target="_blank">osCommerce</a><br>
-osCommerce provides no warranty and is redistributable under the <a href="http://www.fsf.org/licenses/gpl.txt" target="_blank">GNU General Public License</a>
     </td>
   </tr>
   <tr>

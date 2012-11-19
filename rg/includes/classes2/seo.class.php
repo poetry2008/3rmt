@@ -1,34 +1,7 @@
 <?php
 define('URL_TYPE_CPATH',1);
 define('URL_TYPE_PRODUCT',2);
-/**
- * Ultimate SEO URLs Contribution - osCommerce MS-2.2
- *
- * Ultimate SEO URLs offers search engine optimized URLS for osCommerce
- * based applications. Other features include optimized performance and 
- * automatic redirect script.
- * @package Ultimate-SEO-URLs
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version 2.1
- * @link http://www.oscommerce-freelancers.com/ osCommerce-Freelancers
- * @copyright Copyright 2005, Bobby Easland 
- * @author Bobby Easland 
- * @filesource
- */
 
-/**
- * SEO_DataBase Class
- *
- * The SEO_DataBase class provides abstraction so the databaes can be accessed
- * without having to use tep API functions. This class has minimal error handling
- * so make sure your code is tight!
- * @package Ultimate-SEO-URLs
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version 1.1
- * @link http://www.oscommerce-freelancers.com/ osCommerce-Freelancers
- * @copyright Copyright 2005, Bobby Easland 
- * @author Bobby Easland 
- */
 class SEO_DataBase{
   /**
   * Database host (localhost, IP based, etc)
@@ -1163,13 +1136,6 @@ class SEO_URL{
     }
   } # end function
 
-/**
- * Function to check if a value is NULL 
- * @author Bobby Easland as abstracted from osCommerce-MS2.2 
- * @version 1.0
- * @param mixed $value
- * @return boolean
- */ 
   function not_null($value) {
     if (is_array($value)) {
       if (sizeof($value) > 0) {

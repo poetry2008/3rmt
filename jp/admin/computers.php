@@ -157,8 +157,8 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
 
       $contents = array('form' => tep_draw_form('computers', FILENAME_COMPUTERS, 'page=' . $_GET['page'] . '&action=insert', 'post', 'enctype="multipart/form-data"'));
       $contents[] = array('text' => TEXT_INFO_INSERT_INTRO);
-      $contents[] = array('text' => '<input type="hidden" name="user_added" value="'.$user_info['name'].'">');
-      $contents[] = array('text' => '<input type="hidden" name="user_update" value="'.$user_info['name'].'">');
+      $contents[] = array('text' => '<input type="hidden" name="user_added"   value="'.$_SESSION['user_name'].'">');
+      $contents[] = array('text' => '<input type="hidden" name="user_update"   value="'.$_SESSION['user_name'].'">');
 
       $contents[] = array('text' => '<br>' . TEXT_INFO_COMPUTERS_NAME . '<br>' . tep_draw_input_field('computers_name'));
       $contents[] = array('text' => '<br>'.TABLE_HEADING_COMPUTER_ORDER.'<br>' . tep_draw_input_field('sort_order'));

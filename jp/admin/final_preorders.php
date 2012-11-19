@@ -176,7 +176,7 @@
       customers_country = '" . tep_db_input(stripslashes($update_customer_country)) . "',
       customers_telephone = '" . tep_db_input($update_customer_telephone) . "',
       customers_email_address = '" . tep_db_input($update_customer_email_address) . "',
-      user_update ='".$ocertify->auth_user."',
+      user_update ='".$_SESSION['user_name']."',
       ";
     
     if($SeparateBillingFields) {

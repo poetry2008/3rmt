@@ -88,7 +88,7 @@
             );
          if($_GET['action']=='update'){
            $update_sql_date = array(
-               'user_update' => $ocertify->auth_user,
+               'user_update' => $_SESSION['user_name'],
                'date_update' => 'now()'
                );
            $sql_data_array = tep_array_merge($sql_date_array,$update_sql_date);
@@ -98,8 +98,8 @@
               'created_at' => 'now()',
               'status' => '1',
               'site_id' => tep_db_prepare_input($_GET['site_id']),
-              'user_added' => $ocertify->auth_user, 
-              'user_update'=> $ocertify->auth_user,
+              'user_added' => $_SESSION['user_name'], 
+              'user_update'=> $_SESSION['user_name'],
               'date_update'=> 'now()'
               );
           $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);

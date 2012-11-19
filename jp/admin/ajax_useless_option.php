@@ -172,7 +172,7 @@ echo $option_group_option['comment'];
 <?php echo TEXT_UNSET_DATA;?>
 </td>
 </tr>
-<?php } if(tep_not_null($option_group_array['created_at'])){?>
+<?php } if(tep_not_null(tep_datetime_short($option_group_array['created_at']))){?>
 <tr>
 <td>
 &nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_ADDED;?>
@@ -208,7 +208,7 @@ echo $option_group_option['comment'];
 <?php echo TEXT_UNSET_DATA;?>
 </td>
 </tr>
-<?php  } if(tep_not_null($option_group_array['date_update'])){?>
+<?php  } if(tep_not_null(tep_datetime_short($option_group_array['date_update']))){?>
 <tr>
 <td>
 &nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_UPDATE;?>

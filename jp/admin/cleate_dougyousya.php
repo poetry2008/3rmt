@@ -40,7 +40,7 @@ case 'set_oroshi':
   while ( $j < $cot) {
   $ocid = $ocid_arr[$j];
   $sql = 'insert into set_dougyousya_names (dougyousya_name,user_added,date_added,user_update,date_update) values
-    ("'.$oro_name[$j].'","'.$ocertify->auth_user.'","'.date('Y-m-d H:i:s',time()).'","'.$ocertify->auth_user.'","'.date('Y-m-d H:i:s',time()).'")';
+    ("'.$oro_name[$j].'","'.$_SESSION['user_name'].'","'.date('Y-m-d  H:i:s',time()).'","'.$_SESSION['user_name'].'","'.date('Y-m-d H:i:s',time()).'")';
     $j++;
   if(!$oro_name[$j-1]||!$ocid){
     continue;
@@ -94,7 +94,7 @@ case 'set_oroshi':
   $sql = 'delete from set_dougyousya_history where dougyousya_id = "'.$orrshi_id.'"and categories_id not in (select sdc.categories_id from set_dougyousya_categories sdc where dougyousya_id ="'.$orrshi_id.'")';
   tep_db_query($sql);
 */
-  $sql = 'update set_dougyousya_names set dougyousya_name="'.$name[$orrshi_id].'",user_update="'.$ocertify->auth_user.'",date_update="'.date('Y-m-d H:i:s',time()).'" where dougyousya_id="'.$orrshi_id.'"';
+  $sql = 'update set_dougyousya_names set  dougyousya_name="'.$name[$orrshi_id].'",user_update="'.$_SESSION['user_name'].'",date_update="'.date('Y-m-d H:i:s',time()).'" where dougyousya_id="'.$orrshi_id.'"';
   tep_db_query($sql);
   }
   
@@ -427,7 +427,7 @@ if(empty($HTTP_GET_VARS['id'])){
     echo '<tr><td>'.TEXT_USER_ADDED.'&nbsp;'.$oroshi['user_added'].'</td></tr>';
     }else{
     echo '<tr><td>'.TEXT_USER_ADDED.'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';
-    }if(tep_not_null($oroshi['date_added'])){
+    }if(tep_not_null(tep_datetime_short($oroshi['date_added']))){
     echo '<tr><td>'.TEXT_DATE_ADDED.'&nbsp;'.$oroshi['date_added'].'</td></tr>';
     }else{
     echo '<tr><td>'.TEXT_DATE_ADDED.'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';
@@ -435,7 +435,7 @@ if(empty($HTTP_GET_VARS['id'])){
     echo '<tr><td>'.TEXT_USER_UPDATE.'&nbsp;'.$oroshi['user_update'].'</td></tr>';
     }else{
     echo '<tr><td>'.TEXT_USER_UPDATE.'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';
-    }if(tep_not_null($oroshi['date_update'])){
+    }if(tep_not_null(tep_datetime_short($oroshi['date_update']))){
     echo '<tr><td>'.TEXT_DATE_UPDATE.'&nbsp;'.$oroshi['date_update'].'</td></tr>';
     }else{
     echo '<tr><td>'.TEXT_DATE_UPDATE.'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';

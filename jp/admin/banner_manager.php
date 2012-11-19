@@ -89,13 +89,12 @@
                                   'banners_image'     => $db_image_location,
                                   'banners_group'     => $banners_group,
 				  'banners_html_text' => $html_text,
-				  'user_update' =>$_POST['user_update'],
-				  'date_update' =>'now()'
+				  'user_update' => $_SESSION['user_name'],
+				  'date_update' => date('Y-m-d H:i:s',time())
 			  );
-
           if ($_GET['action'] == 'insert') {
-            $insert_sql_data = array('date_added' => 'now()',
-		                     'user_added' => $_POST['user_added'],
+            $insert_sql_data = array('date_added' => date('Y-m-d H:i:s',time()),
+		                     'user_added' => $_SESSION['user_name'],
                                       'status' => '1',
                                       'site_id' => $site_id
                                      );

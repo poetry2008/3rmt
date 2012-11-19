@@ -3,6 +3,7 @@
  * 住所作成 action_ajax
  */
 require('includes/application_top.php');
+
 //生成随即16位name
 function rand_str(){
   
@@ -134,8 +135,8 @@ if(isset($action) && $action != ''){
                    "'". $sql_str .
                    ",". $address_sort .
                    ",'". $show_title .
-                   "','0','0','".$ocertify->auth_user."','".date('Y-m-d
-                       H:i:s',time())."','".$ocertify->auth_user."','".date('Y-m-d
+                   "','0','0','".$_SESSION['user_name']."','".date('Y-m-d
+                       H:i:s',time())."','".$_SESSION['user_name']."','".date('Y-m-d
                        H:i:s',time())."')";
     }else{
       $address_sql = "update ". TABLE_ADDRESS .
@@ -148,7 +149,7 @@ if(isset($action) && $action != ''){
                    "'". $sql_str .
                    ",sort=". $address_sort .
                    ",show_title='". $show_title .
-                   "',user_update ='".$ocertify->auth_user.
+                   "',user_update ='".$_SESSION['user_name'].
                    "',date_update ='".date('Y-m-d H:i:s',time())."' where id=". $address_id;
     }
     $address_update_query = tep_db_query($address_sql);

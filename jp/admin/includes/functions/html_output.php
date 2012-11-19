@@ -265,11 +265,11 @@
 ////
 // Output a form pull down menu
   function tep_draw_pull_down_menu($name, $values, $default = '', $params = '', $required = false) {
-    $field = '<select  name="' . $name . '"';
+    $field = '<select name="' . $name . '"';
     if ($params) $field .= ' ' . $params;
     $field .= '>';
     for ($i=0; $i<sizeof($values); $i++) {
-      $field .= '<option  value="' . (isset($values[$i]['id'])?$values[$i]['id']:'') . '"';
+      $field .= '<option value="' . (isset($values[$i]['id'])?$values[$i]['id']:'') . '"';
       if ( ( isset($values[$i]['id']) && (strlen($values[$i]['id']) > 0) && isset($GLOBALS[$name]) && ($GLOBALS[$name] == $values[$i]['id'])) || ($default == (isset($values[$i]['id'])?$values[$i]['id']:'')) ) {
         $field .= ' SELECTED';
       }
@@ -326,4 +326,9 @@ function tep_html_element_submit($value, $other_str = '', $class_name = 'element
   }
   $button_str .= '>'; 
   return $button_str;
+}
+function tep_eof_hidden(){
+  //判断 POST 值 是否存在
+  $hidden_str = '<input type="hidden" name="eof" value="eof">';
+  return $hidden_str;
 }

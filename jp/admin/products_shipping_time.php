@@ -19,9 +19,9 @@ if(isset($action) && $action != ''){
     $db_set_day = tep_db_prepare_input($_POST['db_set_day']);
     $shipping_time = tep_db_prepare_input($_POST['shipping_time']);
     $sort = tep_db_prepare_input($_POST['sort']);
-    $user_added = $ocertify->auth_user;
+    $user_added = $_SESSION['user_name'];
     $date_added = date('Y-m-d H:i:s',time());
-    $user_update = $ocertify->auth_user;
+    $user_update = $_SESSION['user_name'];
     $date_update = date('Y-m-d H:i:s',time());
 
     $work = array();

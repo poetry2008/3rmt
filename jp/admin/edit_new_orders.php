@@ -194,7 +194,8 @@ if (tep_not_null($action)) {
 			'orders_status'               => DEFAULT_ORDERS_STATUS_ID,
 			'currency'                    => $currency,
 			'currency_value'              => $currency_value,
-			'orders_wait_flag'            => '1'
+			'orders_wait_flag'            => '1',
+                        'user_added'                  => $_SESSION['user_name']
 			); 
      //创建订单
      tep_db_perform(TABLE_ORDERS, $sql_data_array);
@@ -291,7 +292,7 @@ if($orders_exit_flag == true){
      */ 
     
     if ($check_status['orders_status'] != $status || $comments != '' || $orders_exit_flag == false) {
-        tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
+        tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', user_update='".$_SESSION['user_name']."',last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
         orders_updated(tep_db_input($oID));
         orders_wait_flag(tep_db_input($oID));
         $customer_notified = '0';
@@ -1007,7 +1008,7 @@ if($address_error == false){
 
       // 最終処理（更新およびメール送信）
       if ($products_delete == false) {
-        tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
+        tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "',user_update='".$_SESSION['user_name']."', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
         orders_updated(tep_db_input($oID));
         $notify_comments = '';
         $notify_comments_mail = $comments;
