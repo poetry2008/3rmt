@@ -872,6 +872,7 @@
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <link rel="stylesheet" type="text/css" href="includes/styles.css">
+<link rel="stylesheet" type="text/css" href="css/popup_window.css">
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
@@ -879,6 +880,7 @@
 <script language="javascript" src="includes/javascript/jquery.form.js"></script>
 <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
 <script language="javascript" src="includes/jquery.form.js"></script>
+<script language="javascript" src="js2php.php?path=js&name=popup_window&type=js"></script>
 <script>
 function submit_check(){
   var qty = document.getElementById('add_product_quantity').value;
@@ -1500,8 +1502,21 @@ if (($action == 'edit') && ($order_exists == true)) {
     $products_id = '';
     $orders_price = $orders_products['price'];
     $op_price = 0;
+    $option_item_order_sql = "select it.id,it.type item_type,it.option item_option from ".TABLE_PRODUCTS."
+      p,".TABLE_OPTION_ITEM." it 
+      where p.products_id = '".(int)$pid."' 
+      and p.belong_to_option = it.group_id 
+      and it.status = 1
+      order by it.sort_num,it.title";
+      $option_item_order_query = tep_db_query($option_item_order_sql);
+      $item_type_array = array();
+      $item_option_array = array(); 
+      while($show_option_row_item = tep_db_fetch_array($option_item_order_query)){
+        $item_type_array[$show_option_row_item['id']] = $show_option_row_item['item_type'];
+        $item_option_array[$show_option_row_item['id']] = $show_option_row_item['item_option']; 
+      } 
     foreach($create_preorder['orders_products_attributes'][$pid] as $orders_att_key=>$orders_att_value){
-
+      
       $op_price += $orders_att_value['options_values_price'];
     }
     $RowStyle = "dataTableContent";
@@ -1513,14 +1528,40 @@ if (($action == 'edit') && ($order_exists == true)) {
        '      &nbsp;&nbsp;';
     // Has Attributes?
     if (sizeof($order_products_attributes[$pid]) > 0) {
+      echo '<div id="popup_window" class="popup_window"></div>';
       for ($j=0; $j<sizeof($order_products_attributes[$pid]); $j++) {
-        echo '<br><div class="order_option_width"><small>&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' .'<input type="text" class="option_input_width" name="update_products[' .  $pid . '][attributes]['.$j.'][option]" value=\'' .  tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['title']), array("'"=>"&quot;")) . '\'>: ' . 
-           '</div><div class="order_option_value">' . 
-           '<input type="text" class="option_input_width" name="update_products[' . $pid .  '][attributes]['.$j.'][value]" value=\'' .  tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['value']), array("'"=>"&quot;")).'\'></div>';
+        $t_item_id = $order_products_attributes[$pid][$j]['option_item_id']; 
+        $item_type = $item_type_array[$t_item_id]; 
+        $item_option_string = $item_option_array[$t_item_id];
+        $item_option_string_array = unserialize($item_option_string);
+        $item_option_temp_array = array();
+        if($item_type == 'radio'){
+          foreach($item_option_string_array['radio_image'] as $item_value){
+
+            $item_option_temp_array[] = $item_value['title']; 
+          }
+          $item_list = implode('|||>>>',$item_option_temp_array);   
+        }else if($item_type == 'select'){
+          foreach($item_option_string_array['se_option'] as $item_value){
+            $item_option_temp_array[] = $item_value; 
+          }
+          $item_list = implode('|||>>>',$item_option_temp_array); 
+        } 
+        if($item_type == 'textarea'){
+          if($item_option_string_array['iline'] == 1){
+            $item_type = 'text'; 
+          } 
+        }else if($item_type == 'text'){
+          $item_type = 'textarea'; 
+        } 
+        $default_value = tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['value']), array("'"=>"&quot;")) == '' ? TEXT_UNSET_DATA : tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['value']), array("'"=>"&quot;"));
+        echo '<br><div class="order_option_width">&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' .tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['title']), array("'"=>"&quot;")).'<input type="hidden" class="option_input_width" name="update_products[' .  $pid . '][attributes]['.$j.'][option]" value=\'' .  tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['title']), array("'"=>"&quot;")) . '\'>: ' . 
+           '</div><div class="order_option_value"><a onclick="popup_window(this,\''.$item_type.'\',\''.tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['title']), array("'"=>"&quot;")).'\',\''.$item_list.'\');" href="javascript:void(0);"><u>' . 
+           $default_value.'</u></a><input type="hidden" class="option_input_width" name="update_products[' . $pid .  '][attributes]['.$j.'][value]" value=\'' .  tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['value']), array("'"=>"&quot;")).'\'></div>';
         //if ($order_products_attributes[$pid][$j]['price'] != '0') {
           //echo ' ('.$currencies->format($order_products_attributes[$pid][$j]['price'] * $order_products[$pid]['qty']).')'; 
         //}
-        echo '</div></i></small></div>';
+        echo '</div></i></div>';
       }
     }
     

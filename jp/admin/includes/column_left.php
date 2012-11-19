@@ -79,6 +79,22 @@ function toggle_leftColumn()
     }
   }
   ?>
+  var ele_obj = '';
+  if("undefined" != typeof temp_id){
+    if(temp_id != ''){
+      var box_warp = '';
+      var box_warp_top = 0;
+      var box_warp_left = 0;
+      if($(".box_warp").offset()){
+        box_warp = $(".box_warp").offset();
+        box_warp_top = box_warp.top;
+        box_warp_left = box_warp.left;
+      }
+      ele_obj = $("#popup_window_value_"+temp_id).offset();
+      $("#popup_window").css('top',ele_obj.top+$("#popup_window_value_"+temp_id).height()-box_warp_top);
+      $("#popup_window").css('left',ele_obj.left-box_warp_left);
+    }
+  }
 }
 function toggle_lan(sobj)
 {

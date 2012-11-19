@@ -736,3 +736,5 @@ define('TEXT_USER_UPDATE','更新者:');
 define('TEXT_DATE_ADDED','作成日:');
 define('TEXT_DATE_UPDATE','更新日:');
 define('TEXT_UNSET_DATA','データなし');
+define('TEXT_POPUP_WINDOW_SHOW','旧');
+define('TEXT_POPUP_WINDOW_EDIT','新');
