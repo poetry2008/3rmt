@@ -4,7 +4,6 @@
 //include(@realpath('./includes/configure.php'));
 include(dirname(__FILE__).'/includes/configure.php');
 define("LOG_LIMIT",60);
-set_time_limit(60);
 
 function sql_injection($content)
 {
@@ -16,7 +15,9 @@ function db_query($sql)
 {
   global $conn;
   if (!$conn || !mysql_ping($conn)){
-    if(!mysql_ping($conn)){mysql_close($conn);}
+    if(isset($conn)){
+      if(!mysql_ping($conn)){mysql_close($conn);}
+    }
     $conn =
                   mysql_connect(DB_SERVER,DB_SERVER_USERNAME,DB_SERVER_PASSWORD);
     if (!$conn){
@@ -35,7 +36,6 @@ function get_http_content($url){
     $opts = array(
       'http'=>array(
       'method'=>"GET",
-      'timeout'=>60,
       'header'=>"Accept-language: en\r\n" .
       "Authorization: Basic ".base64_encode($urlinfo['user'].':'.$urlinfo['pass'])
       )
@@ -94,7 +94,6 @@ class Monitor {
     ";
               echo $sql;
     $result = db_query($sql);
-    //              var_dump($result);
     //执行完成以后检查是否多于系统限制如果多于,则删除以前记录 
     $sqlCount = "
       SELECT count(*) as cnt
