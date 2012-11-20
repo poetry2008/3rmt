@@ -2553,7 +2553,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         <h3>Customer Info</h3>
         <table width="100%" border="0" cellspacing="0" cellpadding="2">
         <tr>
-        <td class="main" valign="top" width="30%"><b><?php echo TEXT_IP_ADDRESS;?></b></td>
+        <td class="main" valign="top" width="30%" nowrap><b><?php echo TEXT_IP_ADDRESS;?></b></td>
         <td class="main"><?php echo tep_high_light_by_keywords($order->info['orders_ip'] ? $order->info['orders_ip'] : 'UNKNOW',IP_LIGHT_KEYWORDS);?></td>
         </tr>
         <tr>

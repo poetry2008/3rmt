@@ -4,26 +4,19 @@
 //include(@realpath('./includes/configure.php'));
 include(dirname(__FILE__).'/includes/configure.php');
 define("LOG_LIMIT",60);
+set_time_limit(60);
 
 function sql_injection($content)
 {
-  if (!get_magic_quotes_gpc()) {
-    if (is_array($content)) {
-      foreach ($content as $key=>$value) {
-        $content[$key] = addslashes($value);
-      }
-    } else {
-      addslashes($content);
-    }
-  }
-
-  return $content;
+  $sa_string =  addslashes(serialize($content));
+  return $sa_string;
 }
 
 function db_query($sql)
 {
   global $conn;
-  if (!$conn){
+  if (!$conn || !mysql_ping($conn)){
+    if(!mysql_ping($conn)){mysql_close($conn);}
     $conn =
                   mysql_connect(DB_SERVER,DB_SERVER_USERNAME,DB_SERVER_PASSWORD);
     if (!$conn){
@@ -42,6 +35,7 @@ function get_http_content($url){
     $opts = array(
       'http'=>array(
       'method'=>"GET",
+      'timeout'=>60,
       'header'=>"Accept-language: en\r\n" .
       "Authorization: Basic ".base64_encode($urlinfo['user'].':'.$urlinfo['pass'])
       )
@@ -106,7 +100,10 @@ class Monitor {
       SELECT count(*) as cnt
       FROM monitor_log ";
     //    WHERE m_id = ".$this->id;
-    $res = mysql_fetch_array(db_query($sqlCount));
+    $resRes = db_query($sqlCount);
+    //echo mysql_errno() . ": " . mysql_error() . "\n";
+    $res = mysql_fetch_array($resRes);
+
 
     if($haveToDel = ($limit = (int)$res['cnt']-LOG_LIMIT)>0){
       //                          WHERE m_id = ".$this->id."
