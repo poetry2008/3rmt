@@ -998,7 +998,7 @@ a.s_column_bar {
 	width:40%;
 }
 .campaign_body {
-	padding:0 50px 0 50px;
+	padding:0 50px;
 	min-width:550px;
 }
 .campaign_body td{ line-height:22px;}
