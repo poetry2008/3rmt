@@ -1887,8 +1887,6 @@ echo json_encode($json_array);
   
   $html_str .= '</table>'; 
   
-  $html_str .= '<table id="search_title" cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
-  $html_str .= '</table>'; 
   
   $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
   $html_str .= '<tr>';
