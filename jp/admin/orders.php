@@ -2891,9 +2891,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         <td class="dataTableHeadingContent" colspan="2"><?php echo TABLE_HEADING_PRODUCTS; ?></td>
         <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_PRODUCTS_MODEL; ?></td>
         <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TAX; ?></td>
-        <!--<td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_PRICE_EXCLUDING_TAX; ?></td>-->
         <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_PRICE_INCLUDING_TAX; ?></td>
-        <!--<td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_EXCLUDING_TAX; ?></td>-->
         <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_INCLUDING_TAX; ?></td>
       </tr>
   <?php
@@ -2969,7 +2967,6 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
               echo '      </td>' . "\n" .
                 '      <td class="dataTableContent" valign="top" nowrap>' . $order->products[$i]['model'] . '</td>' . "\n" .
                 '      <td class="dataTableContent" align="right" valign="top">' . tep_display_tax_value($order->products[$i]['tax']) . '%</td>' . "\n" .
-                '      <!--<td class="dataTableContent" align="right" valign="top"><b>' . $currencies->format($order->products[$i]['final_price'], true, $order->info['currency'], $order->info['currency_value']) . '</b></td>-->' . "\n" .
                 '      <td class="dataTableContent" align="right" valign="top" nowrap><b>';
               if ($price_with_tax != '---') {
                 if ($order->products[$i]['final_price'] < 0) {
@@ -2982,7 +2979,6 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
               }
 
               echo '</b></td>' . "\n" .
-                '      <!--<td class="dataTableContent" align="right" valign="top"><b>' . $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'],true,$order->info['currency'],$order->info['currency_value']) . '</b></td>-->' . "\n" .
                 '      <td class="dataTableContent" align="right" valign="top" nowrap><b>';
               if ($tprice_with_tax != '---') {
                 if ($order->products[$i]['final_price'] < 0) {
@@ -4502,31 +4498,6 @@ if($c_parent_array['parent_id'] == 0){
           <?php tep_site_filter(FILENAME_ORDERS);?>
           </td>
           <td align="right">
-          <!--
-          <div id="order_icons">
-          <span<?php if (isset($_GET['type']) && $_GET['type'] == 'sell') {?> class="order_icons_selected"<?php }?>>
-          <a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action', 'type')) . 'type=sell', 'SSL');?>" title="<?php echo TEXT_ORDER_SELL;?>"><img src="images/icons/mai4.gif" alt="<?php echo TEXT_ORDER_SELL;?>" title="<?php echo TEXT_ORDER_SELL;?>"> </a>
-          </span>
-          <span<?php if (isset($_GET['type']) && $_GET['type'] == 'buy') {?> class="order_icons_selected"<?php }?>>
-          <a href="<?php echo tep_href_link(FILENAME_ORDERS,  tep_get_all_get_params(array('oID', 'action', 'type')) . 'type=buy','SSL');?>" title="<?php echo TEXT_ORDER_BUY;?>"><img src="images/icons/mai3.gif" alt="<?php echo TEXT_ORDER_BUY;?>" title="<?php echo TEXT_ORDER_BUY;?>"> </a>
-          </span>
-          <span<?php if (isset($_GET['type']) && $_GET['type'] == 'mix') {?> class="order_icons_selected"<?php }?>>
-          <a href="<?php echo tep_href_link(FILENAME_ORDERS,  tep_get_all_get_params(array('oID', 'action', 'type')) . 'type=mix','SSL');?>" title="<?php echo TEXT_ORDER_MIX;?>"><img src="images/icons/kon.gif" alt="<?php echo TEXT_ORDER_MIX;?>" title="<?php echo TEXT_ORDER_MIX;?>"> </a>
-          </span>
-          <span<?php if (isset($_GET['payment']) && $_GET['payment'] == 'moneyorder') {?> class="order_icons_selected"<?php }?>>
-          <a href="<?php echo tep_href_link(FILENAME_ORDERS,  tep_get_all_get_params(array('oID', 'action', 'payment')) . 'payment=moneyorder','SSL');?>" title="<?php echo TEXT_ORDER_BANK_REMIT_MONEY;?>"><img src="images/icons/gi.gif" alt="<?php echo TEXT_ORDER_BANK_REMIT_MONEY;?>" title="<?php echo TEXT_ORDER_BANK_REMIT_MONEY;?>"> </a>
-          </span>
-          <span<?php if (isset($_GET['payment']) && $_GET['payment'] == 'postalmoneyorder') {?> class="order_icons_selected"<?php }?>>
-          <a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action', 'payment')) . 'payment=postalmoneyorder','SSL');?>" title="<?php echo TEXT_ORDER_POST;?>"><img src="images/icons/yu.gif" alt="<?php echo TEXT_ORDER_POST;?>" title="<?php echo TEXT_ORDER_POST;?>"> </a>
-          </span>
-          <span<?php if (isset($_GET['payment']) && $_GET['payment'] == 'telecom') {?> class="order_icons_selected"<?php }?>>
-          <a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action', 'payment')) . 'payment=telecom','SSL');?>" title="<?php echo TEXT_ORDER_CREDIT_CARD;?>"><img src="images/icons/ku.gif" alt="<?php echo TEXT_ORDER_CREDIT_CARD;?>" title="<?php echo TEXT_ORDER_CREDIT_CARD;?>"> </a>
-          </span>
-          <span<?php if (isset($_GET['payment']) && $_GET['payment'] == 'convenience_store') {?> class="order_icons_selected"<?php }?>>
-          <a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action', 'payment')) . 'payment=convenience_store','SSL');?>" title="<?php echo TEXT_ORDER_CONVENIENCE;?>"><img src="images/icons/ko.gif" alt="<?php echo TEXT_ORDER_CONVENIENCE;?>" title="<?php echo TEXT_ORDER_CONVENIENCE;?>"> </a>
-          </span>
-          </div>
-          -->
           <?php
           if(isset($_GET['mark']) && $_GET['mark'] != ''){
             

@@ -868,7 +868,6 @@
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
-<!--京-->
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <link rel="stylesheet" type="text/css" href="includes/styles.css">
@@ -1516,7 +1515,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         $item_option_array[$show_option_row_item['id']] = $show_option_row_item['item_option']; 
       } 
     foreach($create_preorder['orders_products_attributes'][$pid] as $orders_att_key=>$orders_att_value){
-      
+
       $op_price += $orders_att_value['options_values_price'];
     }
     $RowStyle = "dataTableContent";
