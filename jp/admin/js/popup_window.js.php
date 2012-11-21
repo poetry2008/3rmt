@@ -61,17 +61,17 @@ function popup_window_head(title){
 function popup_window_body(default_value,type_html,id){ 
   var html_str = '';
   html_str += '<table width="100%" cellspacing="0" cellpadding="2" border="0" class="popup_window_body">';
-  html_str += '<tr><td colspan="2">&nbsp;</td></tr>';
+  html_str += '<tr><td colspan="3">&nbsp;</td></tr>';
   html_str += '<tr>';
   html_str += '<td width="55"valign="top"><?php echo TEXT_POPUP_WINDOW_SHOW;?></td>';
-  html_str += '<td align="left">'+default_value+'</td>';
+  html_str += '<td align="left" colspan="2">'+default_value+'</td>';
   html_str += '</tr>';
   html_str += '<tr>';
   html_str += '<td width="55" valign="top"><?php echo TEXT_POPUP_WINDOW_EDIT;?></td>';
-  html_str += '<td align="left">'+type_html+'</td>';
+  html_str += '<td align="left" colspan="2">'+type_html+'</td>';
   html_str += '</tr>';
   html_str += '<tr>';
-  html_str += '<td align="center" colspan="2"><input type="button" value="<?php echo IMAGE_SAVE;?>" onclick="popup_window_save(\''+id+'\');"></td>';
+  html_str += '<td align="center" colspan="3"><input type="button" value="<?php echo IMAGE_SAVE;?>" onclick="popup_window_save(\''+id+'\');"></td>';
   html_str += '</tr>';  
   html_str += '</table>';
   return html_str;
@@ -99,6 +99,9 @@ function popup_window_radio(list,default_value,id){
   list_array = list.split("|||>>>");
   var radio_value_temp = '';
   html_str = '<table width="100%" cellspacing="2" cellpadding="2" border="0">';
+  var line_str = '';
+  list_str = list_array[0];
+  list_str = list_str.replace(/\|\|\|\<\<\</g,"<br>");
   for(x in list_array){
     radio_value_temp = list_array[x];
     radio_value_temp = radio_value_temp.replace(/\|\|\|\<\<\</g,"<br>");
@@ -112,7 +115,7 @@ function popup_window_radio(list,default_value,id){
     } 
     html_str += '<tr><td valign="top"><input type="radio" name="radio_value" value="'+radio_value_temp+'" onclick="popup_window_default_value(\''+id+'\',this.value);"'+selected+'></td><td>'+radio_value_temp;
   }
-  default_value = default_value == '' ? list_array[0] : default_value;
+  default_value = default_value == '' ? list_str : default_value;
   html_str += '<input type="hidden" id="default_value_'+id+'" value="'+default_value+'"></td></tr>';
   html_str += '</table>';
   return html_str;
