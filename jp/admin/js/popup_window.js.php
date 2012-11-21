@@ -97,19 +97,24 @@ function popup_window_radio(list,default_value,id){
   var selected = '';
   var list_array = new Array();
   list_array = list.split("|||>>>");
+  var radio_value_temp = '';
+  html_str = '<table width="100%" cellspacing="2" cellpadding="2" border="0">';
   for(x in list_array){
-    if(list_array[x] == default_value){
+    radio_value_temp = list_array[x];
+    radio_value_temp = radio_value_temp.replace(/\|\|\|\<\<\</g,"<br>");
+    if(radio_value_temp == default_value){
       selected = ' checked="true"';
     }else{
       selected = '';
     }
     if(default_value == '' && x == 0){
       selected = ' checked="true"'; 
-    }
-    html_str += '<input type="radio" name="radio_value" value="'+list_array[x]+'" onclick="popup_window_default_value(\''+id+'\',this.value);"'+selected+'>&nbsp;'+list_array[x]+'<br>';
+    } 
+    html_str += '<tr><td valign="top"><input type="radio" name="radio_value" value="'+radio_value_temp+'" onclick="popup_window_default_value(\''+id+'\',this.value);"'+selected+'></td><td>'+radio_value_temp;
   }
   default_value = default_value == '' ? list_array[0] : default_value;
-  html_str += '<input type="hidden" id="default_value_'+id+'" value="'+default_value+'">';
+  html_str += '<input type="hidden" id="default_value_'+id+'" value="'+default_value+'"></td></tr>';
+  html_str += '</table>';
   return html_str;
 }
 

@@ -1535,12 +1535,22 @@ if (($action == 'edit') && ($order_exists == true)) {
         $item_option_string = $item_option_array[$t_item_id];
         $item_option_string_array = unserialize($item_option_string);
         $item_option_temp_array = array();
+        $item_list = '';
         if($item_type == 'radio'){
-          foreach($item_option_string_array['radio_image'] as $item_value){
+           foreach($item_option_string_array['radio_image'] as $item_value){
+             $item_option_line_array = explode("\n",$item_value['title']);
+             foreach($item_option_line_array as $item_line_key=>$item_line_value){
 
-            $item_option_temp_array[] = $item_value['title']; 
-          }
-          $item_list = implode('|||>>>',$item_option_temp_array);   
+               $item_option_line_array[$item_line_key] = trim($item_line_value);
+             }
+             if(count($item_option_line_array) > 1){
+               $item_option_line_str = implode("|||<<<",$item_option_line_array); 
+             }else{
+               $item_option_line_str = $item_value['title'];
+             }
+             $item_option_temp_array[] = $item_option_line_str; 
+           }
+           $item_list = implode('|||>>>',$item_option_temp_array);   
         }else if($item_type == 'select'){
           foreach($item_option_string_array['se_option'] as $item_value){
             $item_option_temp_array[] = $item_value; 
