@@ -3279,7 +3279,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_AFTER; ?></td>
     </tr>
 
-    <?php 
+    <?php
     $all_p_info_array = array(); 
     $orders_products_array = array(); 
     $orders_products_list = '';
@@ -3343,7 +3343,7 @@ if (($action == 'edit') && ($order_exists == true)) {
                 $order->products[$i]['attributes'][$j]['option_info']['value'] = isset($_SESSION['orders_update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option_info']['value']) ? $_SESSION['orders_update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option_info']['value'] : $order->products[$i]['attributes'][$j]['option_info']['value'];
         $all_show_option[$order->products[$i]['attributes'][$j]['option_item_id']] =
           $order->products[$i]['attributes'][$j];
-      }  
+      }
       foreach($all_show_option_id as $t_item_id){
         $item_type = $item_type_array[$t_item_id]; 
         $item_option_string = $item_option_array[$t_item_id];

@@ -336,8 +336,8 @@
                  'option_group_id' => $_POST['belong_to_option'],
                  'option_item_id' => $option_key
                  ); 
-              tep_db_perform(TABLE_PREORDERS_PRODUCTS_ATTRIBUTES, $new_op_data_array); 
-            }
+             tep_db_perform(TABLE_PREORDERS_PRODUCTS_ATTRIBUTES, $new_op_data_array); 
+          }
         }
       }
     } else { // b.) null quantity found --> delete
@@ -1251,7 +1251,6 @@ function recalc_preorder_price(oid, opd, o_str, op_str)
   pro_num = document.getElementById('update_products_new_qty_'+opd).value;
   p_price = document.getElementsByName('update_products['+opd+'][p_price]')[0].value;
   p_final_price = document.getElementsByName('update_products['+opd+'][final_price]')[0].value;
-    
   $.ajax({
     type: "POST",
     data:'oid='+oid+'&opd='+opd+'&o_str='+o_str+'&op_price='+p_op_info+'&p_num='+pro_num+'&p_price='+p_price+'&p_final_price='+p_final_price,
@@ -2175,7 +2174,7 @@ require("includes/note_js.php");
 
       }
       
-    } else {   
+    } else {
       $all_show_option_id = array();
       $all_show_option = array();
       $option_item_order_sql = "select it.id,it.type item_type,it.option item_option,it.place_type as place_type from ".TABLE_PRODUCTS."
@@ -2243,7 +2242,7 @@ require("includes/note_js.php");
         echo "'></div></div>";
         echo '<div class="order_option_price">';
         echo "<input type='text' size='9' name='new_update_products_op_price[$t_item_id]' value='".(int)$option_item_array['price']."' onkeyup=\"clearLibNum(this);recalc_preorder_price('".$oID."', '".$orders_products_id."', 'true', '".$op_info_str."');\">"; 
-        echo TEXT_MONEY_SYMBOL;  
+        echo TEXT_MONEY_SYMBOL; 
         echo '</div>'; 
         echo '</i></div>';
  
