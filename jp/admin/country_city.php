@@ -273,7 +273,7 @@ tep_db_close();
 <tr><td align="right" colspan="9"><button onclick="javascript:location.href='country_area.php?fid=<?php echo $ff_id;?>';"><?php echo TABLE_HISTROY;?></button>&nbsp;<button onclick="show_text_city(0,this,<?php echo $_GET['fid']; ?>);"><?php echo TABLE_BUTTON;?></button></td></tr>
 </table>
 <?php if($area_fee_array['id'] == 0){
-echo '<div id="show" style="display:none;position:inherit;"></div>';
+echo '<div id="show" style="display:none;position:absolute;"></div>';
 }
 ?>
 </td></tr></table></td></tr>

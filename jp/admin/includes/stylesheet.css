@@ -860,11 +860,9 @@ a.s_column_bar {
 }
 #canEnd{ text-align:right; margin-right:13px;}
 .element_button { 
-	font-size:13px;
+	font-size:12px;
 	margin-right:5px;
 	padding:2px 9px\9;
-	margin-bottom:2px;
-	margin-top:2px;
 }
 .element_button01{
 	font-size:13px;
@@ -1000,9 +998,10 @@ a.s_column_bar {
 	width:40%;
 }
 .campaign_body {
-	padding:0 50px 10px 50px;
+	padding:0 50px 0 50px;
 	min-width:550px;
 }
+.campaign_body td{ line-height:22px;}
 .campaign_input_num{
 	width:20%;
 	text-align:right;

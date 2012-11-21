@@ -584,7 +584,7 @@ require("includes/note_js.php");
               </div>
     <?php
     if(!empty($item['id'])){
-    echo ' <div id="show_item_info" style="display:none;position:inherit;"></div>';
+    echo ' <div id="show_item_info" style="display:none;position:absolute;"></div>';
     }
     ?>
 
@@ -747,7 +747,7 @@ require("includes/note_js.php");
     </table>
     <?php
     if(empty($item['id'])){
-      echo ' <div id="show_item_info" style="display:none;position:inherit;"></div>';
+      echo ' <div id="show_item_info" style="display:none;position:absolute;"></div>';
     }
       ?>
     </div></div></td>

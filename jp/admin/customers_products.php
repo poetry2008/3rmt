@@ -159,15 +159,14 @@ $(document).ready(function(){
   }
   
   function create_table (data) {
-    one_count = Math.floor((page_height - $('#content_html').height())/row_height)-2;
 
+    //one_count = Math.floor((page_height - $('#content_html').height())/row_height)-2;
+    one_count = 28;
     html = "";
     
     empty = 0;
-
     j = 0; // tr计数器
     k = 0; // table计数器
-    
     html += table_header(k);
     for(i in data){
       if (j != 0 && (j == one_count || (j+1-one_count)%count == 1)) {
@@ -186,9 +185,8 @@ $(document).ready(function(){
     } else {
       empty = count - ((j - one_count)%count);
     }
-    //alert(empty);
     if (empty < count) 
-    for (m = 0;m<empty-20;m++) {
+    for (m = 0;m<empty;m++) {
       html += add_tr(j+m, {
         date     : '',
         name     : '',
@@ -531,7 +529,10 @@ $(document).ready(function(){
     <td valign="top">
       <table border="0" width="50%" align="right" class="print_innput" style=" margin:10px 0;">
       <tr><td height="4"></td></tr>
-        <tr><td height="30" valign="bottom" align="right"><input name="textfield" type="text" id="textfield" value="<?php echo str_replace(array(TEXT_DATE_MONDAY, TEXT_DATE_TUESDAY, TEXT_DATE_WEDNESDAY, TEXT_DATE_THURSDAY, TEXT_DATE_FRIDAY, TEXT_DATE_STATURDAY, TEXT_DATE_SUNDAY),'',tep_date_long(date('Y-m-d H:i:s')));?>" style=" height:20px; width:150px; text-align:right; font-size:16px;  margin:5px 0 20px 20px;"></td></tr>
+        <tr><td height="30" valign="bottom" align="right"><input name="textfield"
+        type="text" id="textfield" value="<?php echo
+        tep_date_long(date('Y-m-d H:i:s'));?>" style="
+        height:20px; width:190px; text-align:right; font-size:16px;  margin:5px 0 20px 20px;"></td></tr>
         <tr><td align="right"><textarea id="data10" type="text" rows="2" style="font-size:14px; overflow-y:visible; width:280px; resize:none;text-align:right;" ></textarea></td></tr>
         <tr><td align="right" class="input_print02">
   <font size="2">
