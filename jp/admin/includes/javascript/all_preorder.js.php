@@ -840,6 +840,14 @@ $('#orders_info_box').css('top',offset).show();
 }
 }
 */
+var orders_info_box_top = $("#orders_info_box").css("top");
+orders_info_box_top = orders_info_box_top.replace("px","");
+orders_info_box_top = parseInt(orders_info_box_top);
+var orders_info_box_height = $("#orders_info_box").height();
+var box_warp_heiht = $(".box_warp").height();
+if((orders_info_box_top+orders_info_box_height) > box_warp_heiht){
+  $(".box_warp").height(orders_info_box_top+orders_info_box_height);
+}
 }
 });
 }
