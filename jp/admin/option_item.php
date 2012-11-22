@@ -205,8 +205,7 @@
               '".tep_db_prepare_input($_POST['price'])."', '1',
               '".tep_db_prepare_input((int)$_POST['sort_num'])."',
               '".tep_db_prepare_input($_POST['place_type'])."', '".date('Y-m-d
-                H:i:s',time())."'
-                ,'".$_SESSION['user_name']."','".$_SESSION['user_name']."','".date('Y-m-d H:i:s',time())."')"; 
+                H:i:s',time())."' ,'".$_SESSION['user_name']."','".$_SESSION['user_name']."','".date('Y-m-d H:i:s',time())."')"; 
              tep_db_query($insert_sql); 
              $item_id = tep_db_insert_id(); 
              $option_array['eid'] = $item_id;

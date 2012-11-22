@@ -3989,7 +3989,7 @@ tep_display_google_results(FILENAME_CATEGORIES);
             $contents[] = array('text' => '<b>'.TEXT_KEYWORD.'&nbsp;:&nbsp;&nbsp;'.$default_keyword.'</b>');
             $contents[] = array(
                 'align' => 'left',
-                'text' => '<a href="'. tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $cPath . '&cID=' . $cInfo->categories_id . '&action=edit_keyword'.($_GET['search']?'&search='.$_GET['search']:'')) .  '">'.tep_html_element_button(TEXT_KEYWORD, '', 'element_button01') . '</a> ');
+                'text' => '<a href="'. tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $cPath . '&cID=' . $cInfo->categories_id . '&action=edit_keyword'.($_GET['search']?'&search='.$_GET['search']:'')) .  '">'.tep_html_element_button(TEXT_KEYWORD, '', 'element_button') . '</a> ');
             }
 }           if(tep_not_null($cInfo->user_added)){
             $contents[] = array('text' =>  TEXT_USER_ADDED . ' ' . $cInfo->user_added);

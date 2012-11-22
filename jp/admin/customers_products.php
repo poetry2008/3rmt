@@ -160,8 +160,7 @@ $(document).ready(function(){
   
   function create_table (data) {
 
-    //one_count = Math.floor((page_height - $('#content_html').height())/row_height)-2;
-    one_count = 28;
+    one_count = Math.floor((page_height - $('#content_html').height())/row_height)-2;
     html = "";
     
     empty = 0;
@@ -529,10 +528,7 @@ $(document).ready(function(){
     <td valign="top">
       <table border="0" width="50%" align="right" class="print_innput" style=" margin:10px 0;">
       <tr><td height="4"></td></tr>
-        <tr><td height="30" valign="bottom" align="right"><input name="textfield"
-        type="text" id="textfield" value="<?php echo
-        tep_date_long(date('Y-m-d H:i:s'));?>" style="
-        height:20px; width:190px; text-align:right; font-size:16px;  margin:5px 0 20px 20px;"></td></tr>
+        <tr><td height="30" valign="bottom" align="right"><input name="textfield" type="text" id="textfield" value="<?php echo tep_date_long(date('Y-m-d H:i:s'));?>" style=" height:20px; width:190px; text-align:right; font-size:16px;  margin:5px 0 20px 20px;"></td></tr>
         <tr><td align="right"><textarea id="data10" type="text" rows="2" style="font-size:14px; overflow-y:visible; width:280px; resize:none;text-align:right;" ></textarea></td></tr>
         <tr><td align="right" class="input_print02">
   <font size="2">
