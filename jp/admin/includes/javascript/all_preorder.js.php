@@ -7,7 +7,7 @@ window.last_status  = 0;
 var auto_submit_able = true;
 // 最后检查时间
 var prev_customer_action = '';
-
+var check_pre_o_single = '0';
 // 全选
 function all_check(){
   field_on();
@@ -299,6 +299,8 @@ if (
   last_customer_action != cfg_last_customer_action 
   && prev_customer_action != last_customer_action
   ){
+checkNewPreOrders(prev_customer_action != '' ? prev_customer_action : cfg_last_customer_action);
+if (check_pre_o_single == '1') {
 // 如果有新订单和修改
 // 改变背景颜色
 $('body').css('background-color', '#83dc94');// rgb(255, 204, 153)
@@ -309,6 +311,8 @@ newOrders(prev_customer_action != '' ? prev_customer_action : cfg_last_customer_
 prev_customer_action = last_customer_action;
 // 播放提示音
 playSound();
+check_pre_o_single = '0';
+}
 }
 }
 });
@@ -880,6 +884,21 @@ function mark_work(ele, mark_symbol, select_mark, c_site, param_other)
           ele.className='mark_flag_checked';
         }
         window.location.href = data_array[1]; 
+      }
+    }
+  });
+}
+
+function checkNewPreOrders(t)
+{
+  $.ajax({
+    dataType: 'text',
+    url: 'ajax_preorders.php?action=get_new_orders&type=check&prev_customer_action='+t,
+    success: function(msg) {
+      if (msg == '1') {
+        check_pre_o_single = '1';
+      } else {
+        check_pre_o_single = '0';
       }
     }
   });
