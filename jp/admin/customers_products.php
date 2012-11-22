@@ -160,8 +160,7 @@ $(document).ready(function(){
   
   function create_table (data) {
 
-    //one_count = Math.floor((page_height - $('#content_html').height())/row_height)-2;
-    one_count = 28;
+    one_count = Math.floor((page_height - $('#content_html').height())/row_height)-2;
     html = "";
     
     empty = 0;
