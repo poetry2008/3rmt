@@ -233,6 +233,21 @@ if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {
 ?>
 var cfg_head_last_customer_action = '<?php echo PREORDER_LAST_CUSTOMER_ACTION;?>';
 var prev_head_customer_action = '';
+var check_head_pre_o_single = '0';
+function checkHeadPreOrders(t)
+{
+  $.ajax({
+    dataType: 'text',
+    url: 'ajax_preorders.php?action=get_new_orders&type=check&prev_customer_action='+t,
+    success: function(msg) {
+      if (msg == '1') {
+        check_head_pre_o_single = '1';
+      } else {
+        check_head_pre_o_single = '0';
+      }
+    }
+  });
+}
 function playHeadSound()  
 {  
   var hnode=document.getElementById('head_sound');  
@@ -251,11 +266,15 @@ function check_preorder_head() {
     url: 'ajax_preorders.php?action=last_customer_action',
     success: function(last_head_customer_action) {
       if (last_head_customer_action != cfg_head_last_customer_action && prev_head_customer_action != last_head_customer_action){
-        $('.preorder_head').css('background-color', '#83dc94');
-        prev_head_customer_action = last_head_customer_action;
-        playHeadSound();
+        checkHeadPreOrders(prev_head_customer_action != '' ?  prev_head_customer_action : cfg_head_last_customer_action);
+        if (check_head_pre_o_single == '1') {
+          $('.preorder_head').css('background-color', '#83dc94');
+          prev_head_customer_action = last_head_customer_action;
+          playHeadSound();
+          check_head_pre_o_single = '0'; 
+        }
       }
-      }
+    }
   });
   setTimeout(function(){check_preorder_head()}, 70000);
 }
@@ -272,6 +291,22 @@ if ($_SERVER['PHP_SELF'] != '/admin/orders.php') {
 ?>
 var cfg_ohead_last_customer_action = '<?php echo LAST_CUSTOMER_ACTION;?>';
 var prev_ohead_customer_action = '';
+var check_head_o_single = '0';
+
+function checkHeadOrders(t)
+{
+  $.ajax({
+    dataType: 'text',
+    url: 'ajax_orders.php?action=get_new_orders&type=check&prev_customer_action='+t,
+    success: function(msg) {
+      if (msg == '1') {
+        check_head_o_single = '1';
+      } else {
+        check_head_o_single = '0';
+      }
+    }
+  });
+}
 function playOrderHeadSound()  
 {  
   var ohnode=document.getElementById('head_warn');  
@@ -290,11 +325,15 @@ function check_order_head() {
     url: 'ajax_orders.php?action=last_customer_action',
     success: function(last_ohead_customer_action) {
       if (last_ohead_customer_action != cfg_ohead_last_customer_action && prev_ohead_customer_action != last_ohead_customer_action){
-        $('.preorder_head').css('background-color', '#ffcc99');
-        prev_ohead_customer_action = last_ohead_customer_action;
-        playOrderHeadSound();
+        checkHeadOrders(prev_ohead_customer_action != '' ?  prev_ohead_customer_action : cfg_ohead_last_customer_action);
+        if (check_head_o_single == '1') {
+          $('.preorder_head').css('background-color', '#ffcc99');
+          prev_ohead_customer_action = last_ohead_customer_action;
+          playOrderHeadSound();
+          check_head_o_single = '0';    
+        }
       }
-      }
+    }
   });
   setTimeout(function(){check_order_head()}, 90000);
 }
