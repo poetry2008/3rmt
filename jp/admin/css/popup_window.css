@@ -1,5 +1,4 @@
 .popup_window {
-  background-color: #FFFF00;
   position: absolute;
   margin-left:2px;
   display:none;
@@ -12,7 +11,8 @@
 }
 .popup_window_top a{ color:#FFFFFF;}
 .popup_window_body{
-	padding:5px 50px;
+  padding:5px 50px;
+  background-color: #FFFF00;
 }
 .popup_window_body input, .popup_window_body select{
   margin:0;

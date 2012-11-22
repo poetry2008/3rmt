@@ -1294,6 +1294,8 @@ font-size:14px;
 }
 .order_option_width{
 	min-width:260px;
+	width:260px;
+	overflow:hidden;
 }
 .table_img_list{
 	list-style:none;
