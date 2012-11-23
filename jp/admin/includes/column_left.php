@@ -51,8 +51,7 @@ $(document).ready(function(){
 });
 function toggle_leftColumn()
 {
-
-  var arrow_status = $('.columnLeft').css('display');
+    var arrow_status = $('.columnLeft').css('display');
 
   if (arrow_status == 'none') {
     document.cookie = 'tarrow=open';  
@@ -95,6 +94,13 @@ function toggle_leftColumn()
       $("#popup_window").css('left',ele_obj.left-box_warp_left);
     }
   }
+<?php if($_SERVER['PHP_SELF'] == '/admin/campaign.php'){  ?>
+  setTimeout("show_campaign_info_offset()",10); 
+    <?php }?>
+  <?php if($_SERVER['PHP_SELF'] == '/admin/orders.php'){?>
+  setTimeout("orders_info_box_offset()",10);
+  <?php } ?>
+
 }
 function toggle_lan(sobj)
 {
