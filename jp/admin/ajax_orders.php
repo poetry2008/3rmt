@@ -118,7 +118,14 @@ if ($_POST['orders_id'] &&
 			select * from ".TABLE_ORDERS."
 			where date_purchased > '".$_GET['prev_customer_action']."'
 			");
-
+  if (isset($_GET['type'])) {
+    if (tep_db_num_rows($orders_query)) {
+      echo '1'; 
+    } else {
+      echo '0'; 
+    }
+    exit; 
+  }
   while ($orders = tep_db_fetch_array($orders_query)) {
     if (!isset($orders['site_id'])) {
       $orders = tep_db_fetch_array(tep_db_query("

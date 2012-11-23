@@ -110,6 +110,14 @@ if ($_POST['orders_id'] &&
 			select * from ".TABLE_PREORDERS."
 			where date_purchased > '".$_GET['prev_customer_action']."' and is_active = '1'");
 
+  if (isset($_GET['type'])) {
+    if (tep_db_num_rows($orders_query)) {
+      echo '1'; 
+    } else {
+      echo '0'; 
+    }
+    exit; 
+  }
   while ($orders = tep_db_fetch_array($orders_query)) {
     if (!isset($orders['site_id'])) {
       $orders = tep_db_fetch_array(tep_db_query("
@@ -490,7 +498,7 @@ if ($_POST['orders_id'] &&
     echo "false";
   }
 }else if(isset($_GET['action'])&&$_GET['action']=='save_pwd_log'){
-  tep_insert_pwd_log($_POST['one_time_pwd'],111111111,true,$_POST['page_name']);
+  tep_insert_pwd_log($_POST['one_time_pwd'],$ocertify->auth_user,true,$_POST['page_name']);
 } else if (isset($_GET['action'])&&$_GET['action']=='show_right_order_info') {
   $orders_info_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_POST['oid']."'"); 
   $orders_info = tep_db_fetch_array($orders_info_raw); 
