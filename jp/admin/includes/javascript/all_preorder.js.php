@@ -43,6 +43,13 @@ function all_check(){
       }
     }
   }
+var select_send = $("#select_send").offset();
+var select_send_top = select_send.top;
+var select_send_height = $("#select_send").height();
+var box_warp_top = $(".box_warp").height();
+if((select_send_top+select_send_height) > box_warp_top){
+  $(".box_warp").height(select_send_top+select_send_height);
+}
 }
 
 function chg_tr_color(aaa){
@@ -438,7 +445,14 @@ function show_questions(ele){
 		     }else {
 			 show =false;
 		     }
-		     show_questiondiv(show);
+                     show_questiondiv(show);
+                     var select_send = $("#select_send").offset();
+                     var select_send_top = select_send.top;
+                     var select_send_height = $("#select_send").height();
+                     var box_warp_top = $(".box_warp").height();
+                     if((select_send_top+select_send_height) > box_warp_top){
+                       $(".box_warp").height(select_send_top+select_send_height);
+                     }
 		 }});},1000);
     }
     return true;
