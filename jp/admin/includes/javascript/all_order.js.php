@@ -216,7 +216,9 @@ function showRequest(formData, jqForm, options) {
 } 
 
 // 列表右侧的订单信息显示
+var temp_oid = '';
 function showOrdersInfo(oID,ele,popup_type,param_str){
+temp_oid = oID;
   param_str = decodeURIComponent(param_str);
   data_str = "oid="+oID+"&"+param_str; 
   if (popup_type == 1) {
@@ -262,6 +264,24 @@ if((orders_info_box_top+orders_info_box_height) > box_warp_heiht){
 }
 });
 
+}
+
+window.onresize = orders_info_box_offset; 
+function orders_info_box_offset(){
+   var orders_value = '';
+   var box_warp = '';
+   var box_warp_top = 0;
+   var box_warp_left = 0;
+   if(temp_oid != ''){
+    if($(".box_warp").offset()){
+          box_warp = $(".box_warp").offset();
+          box_warp_top = box_warp.top;
+          box_warp_left = box_warp.left;
+      }
+   orders_value = $("#tr_" + temp_oid).offset();
+  $("#orders_info_box").css('top',orders_value.top+$("#tr_" +  temp_oid).height()-box_warp_top);
+  $("#orders_info_box").css('left',orders_value.left-box_warp_left);
+  }
 }
 
 // 列表右侧的订单信息隐藏

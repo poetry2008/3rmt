@@ -83,8 +83,10 @@ function close_group_info()
   $('#show_group_info').html(''); 
   $('#show_group_info').hide(); 
 }
+var temp_id = '';
  function show_option_group(ele, id, pos , end)
 {
+  temp_id = id;
   ele = ele.parentNode;
   $.ajax({
     url: 'ajax_useless_option.php',      
@@ -121,6 +123,25 @@ offset =
     }
   });
 }	
+window.onresize = show_campaign_info_offset; 
+function show_campaign_info_offset(){
+   var show_value = '';
+   var box_warp = '';
+   var box_warp_top = 0;
+   var box_warp_left = 0;
+    if(temp_id != ''){
+        if($(".box_warp").offset()){
+           box_warp = $(".box_warp").offset();
+           box_warp_top = box_warp.top;
+           box_warp_left = box_warp.left;
+      }
+   show_value = $("#show_value_" + temp_id).offset();
+   $("#show_group_info").css('top',show_value.top+$("#show_value_" + temp_id).height()-box_warp_top);
+   $("#show_group_info").css('left',show_value.left-box_warp_left);
+   }
+ }
+
+
 function show_option_group_ajax( id, pos , end)
 {
   $.ajax({
@@ -234,10 +255,10 @@ $selected_item = $option_group_array;
 	
 	if((isset($selected_item) && is_array($selected_item)) && ($option_group_array['id'] == $selected_item['id'])){
 
-echo "<tr class='dataTableRowSelected'>";
+echo "<tr class='dataTableRowSelected' id='show_value_".$option_group_id."'>";
 	}else{
 	?>
-<tr class="<?php echo $class_check%2==0 ?'dataTableSecondRow' : 'dataTableRow'?>" onmouseover="this.className='dataTableRowOver'"  onmouseout="this.className='<?php echo $class_check%2==0 ?'dataTableSecondRow' : 'dataTableRow'?>'" >
+<tr  id='show_value_<?php echo $option_group_id; ?>'class="<?php echo $class_check%2==0 ?'dataTableSecondRow' : 'dataTableRow'?>" onmouseover="this.className='dataTableRowOver'"  onmouseout="this.className='<?php echo $class_check%2==0 ?'dataTableSecondRow' : 'dataTableRow'?>'" >
 <?php	
 }
 

@@ -800,8 +800,9 @@ ele.className='orders_computer_checked';
 });
 }
 }
-
+var temp_oid = '';
 function showPreOrdersInfo(oID,ele,popup_type,param_str){
+  temp_oid = oID;
   param_str = decodeURIComponent(param_str);
   data_str = "oid="+oID+"&"+param_str;
   if (popup_type == 1) {
@@ -869,6 +870,26 @@ $(document).ready(function(){
     $(".dataTableContent").find("input|[type=checkbox][checked]").parent().parent().each(function(){
       if($(this).attr('class')!='dataTableRowSelected'){$(this).attr('style','background-color: rgb(240, 128, 128);')}})
     });
+
+window.onresize = preorders_info_box_offset;
+
+function preorders_info_box_offset(){
+   var preorders_value = '';
+   var box_warp = '';
+   var box_warp_top = 0;
+   var box_warp_left = 0;
+   if(temp_oid != ''){
+    if($(".box_warp").offset()){
+           box_warp = $(".box_warp").offset();
+           box_warp_top = box_warp.top;
+           box_warp_left = box_warp.left;
+     }
+    preorders_value = $("#tr_" + temp_oid).offset();
+   $("#orders_info_box").css('top',preorders_value.top+$("#tr_" +  temp_oid).height()-box_warp_top);
+   $("#orders_info_box").css('left',preorders_value.left-box_warp_left);
+  }
+ }
+
 
 function delete_preorder_info(oID, param_str)
 {
