@@ -136,7 +136,7 @@ $(document).ready(function(){
 <?php
 /*
   $Id$
-  ファイルコードを確認
+  确认文件代码
 */
   $newsletter_array = array(array('id' => '1',
                                   'text' => ENTRY_NEWSLETTER_YES),

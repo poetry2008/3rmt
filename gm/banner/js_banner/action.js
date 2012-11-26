@@ -65,7 +65,7 @@ function right(){
 	var img5W = parseFloat(img[5].style.width);
 	var img5L = parseFloat(img[5].style.left);
 
-	//è§£å†³IEå…¼å®¹æ€§é—®é¢˜
+	//½â¾öIE¼æÈİĞÔÎÊÌâ
 	if(navigator.userAgent.indexOf("MSIE")>0 && i%2==0) {
 		img1W = img1W + 1;
 		img2H = img2H + 1;
@@ -129,7 +129,7 @@ function left(){
 	var img5W = parseFloat(img[5].style.width);
 	var img5L = parseFloat(img[5].style.left);
 
-	//è§£å†³IEå…¼å®¹æ€§é—®é¢˜
+	//½â¾öIE¼æÈİĞÔÎÊÌâ
 	if(navigator.userAgent.indexOf("MSIE")>0 && i%2==0) {
 		img0W = img0W + 1;
 		img1H = img1H + 1;

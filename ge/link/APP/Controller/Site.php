@@ -1586,13 +1586,13 @@ function linkcheck($url,$linkpage_url,$admin_mode = true){
   $linktag = '&lt;a href=&quot;'.$my_site_url.'&quot; target=&quot;_blank&quot;&gt;'.$anchor.'&lt;/a&gt;';
   $UnixSockString = "";
 
-  // 相互リンク設置URLのhttp://を削除
+  // 删除相互link设置url里的http://
   $ChkrelinkURL = str_replace("http://", "", $linkpage_url);
 
-  // 相互リンク設置URLのHostをゲット
+  // 获取相互link设置url的Host
   $Host = substr($ChkrelinkURL, 0, strpos($ChkrelinkURL, "/"));
 
-  // 相互リンク設置URLのPathをゲット
+  // 获取相互link设置url的Path
   $Path = substr($ChkrelinkURL, strpos($ChkrelinkURL, "/"));
 
   if(strpos($Path, "/") == "0"){
@@ -1606,20 +1606,20 @@ function linkcheck($url,$linkpage_url,$admin_mode = true){
     }
 
 
-  // サイトURLのhttp://を削除
+  // 删除网站URL的http://
   $site_url_nonhttp = str_replace("http://", "", $url);
 
-  // サイトURLのHostをゲット
+  // 获取网站URL的Host
   $site_url_host = substr($site_url_nonhttp, 0, strpos($site_url_nonhttp, "/"));
 
-  // サイトURLURLのPathをゲット
+  // 获取网站URL的Path
   $site_url_path = substr($site_url_nonhttp, strpos($site_url_nonhttp, "/"));
 
-  //自サイトURL
+  //自己网站的URL
   $my_site_url = str_replace("http://", "", $my_site_url);
   $my_site_url = substr($my_site_url, 0, strpos($my_site_url, "/"));
 
-  // 登録URLとリンク設置URLが同じか確認
+  // 确认注册的URL和链接设置的URL是否相同
   if ($Host != $site_url_host) {
     $bln[state] = false;
     if(!$admin_mode){
@@ -1630,7 +1630,7 @@ function linkcheck($url,$linkpage_url,$admin_mode = true){
     exit;
   }
 
-  //80接続
+  //80接续
   @$fp = fsockopen($Host, 80, $ErrNo, $ErrStr, 10);
   if (!$fp) {
     $bln[state] = false;
@@ -1640,13 +1640,13 @@ function linkcheck($url,$linkpage_url,$admin_mode = true){
     }
   }
   else {
-    // 読み込みのタイムアウト設定
+    // 读取超时设定
     socket_set_timeout($fp, 2);
     fputs($fp, "GET ". $Path . " HTTP/1.0\r\nHost:" . $Host .
         "\r\nReferer:".url('site','linkcheck_submit')."\r\n\r\n");
     while(!feof($fp))
       $UnixSockString.=fgets($fp, 128);
-    // タイムアウトしたか調べる
+    // 调查是否超时
     $stat = socket_get_status($fp);
     if ($stat["timed_out"]) {
       $bln[state] = false;
@@ -1669,7 +1669,7 @@ function linkcheck($url,$linkpage_url,$admin_mode = true){
   @$pos = preg_match($preg_str
 //    preg_match('/<a\s{0,}(target\s{0,}=\s{0,}"(\_{0,1}blank){0,}"){0,}\s{0,}href\s{0,}=\s{0,}"http:(\/\/){0,1}www\.iimy\.co\.jp\/{0,1}"\s{0,}(target\s{0,}=\s{0,}"(\_{0,1}blank){0,}"){0,}>/i'
         ,$UnixSockString);
-  //リンク済みの場合True
+  //link停止的时候，True
   if ($pos > 0) {
     $bln[state] = true;
   } else {
@@ -1686,7 +1686,7 @@ function linkcheck($url,$linkpage_url,$admin_mode = true){
     if($Path!='/'&&array_pop($tmp_path_arr)==''){
      $Path = substr($Path,0,-1);
     }
-  // 登録URLとリンク設置URLが同じか確認
+  // 确认注册的URL和链接设置的URL是否相同
   if ($Host != $site_url_host) {
     $bln[state] = false;
     if(!$admin_mode){
@@ -1697,7 +1697,7 @@ function linkcheck($url,$linkpage_url,$admin_mode = true){
     exit;
   }
    $UnixSockString ='';
-  //80接続
+  //80接续
   @$fp = fsockopen($Host, 80, $ErrNo, $ErrStr, 10);
   if (!$fp) {
     $bln[state] = false;
@@ -1707,13 +1707,13 @@ function linkcheck($url,$linkpage_url,$admin_mode = true){
     }
   }
   else {
-    // 読み込みのタイムアウト設定
+    // 读取超时设定
     socket_set_timeout($fp, 2);
     fputs($fp, "GET ". $Path . " HTTP/1.0\r\nHost:" . $Host .
         "\r\nReferer:".url('site','linkcheck_submit')."\r\n\r\n");
     while(!feof($fp))
       $UnixSockString.=fgets($fp, 128);
-    // タイムアウトしたか調べる
+    // 调查是否超时
     $stat = socket_get_status($fp);
     if ($stat["timed_out"]) {
       $bln[state] = false;
@@ -1728,7 +1728,7 @@ function linkcheck($url,$linkpage_url,$admin_mode = true){
   @$pos = preg_match($preg_str
 //    preg_match('/<a\s{0,}(target\s{0,}=\s{0,}"(\_{0,1}blank){0,}"){0,}\s{0,}href\s{0,}=\s{0,}"http:(\/\/){0,1}www\.iimy\.co\.jp\/{0,1}"\s{0,}(target\s{0,}=\s{0,}"(\_{0,1}blank){0,}"){0,}>/i'
         ,$UnixSockString);
-  //リンク済みの場合True
+  //link停止的时候，True
   if ($pos > 0) {
     $bln[state] = true;
   } else {
@@ -1758,11 +1758,11 @@ function linkcheck($url,$linkpage_url,$admin_mode = true){
       }
 
 
-  //リンク済みの場合True
+  //link停止的时候，True
   /*
   if($bln[state] == true && $url != $linkpage_url){
 
-    //80接続
+    //80接续
     $fp2 = fsockopen($site_url_host, 80, $ErrNo, $ErrStr, 10);
     if (!$fp2) {
       $bln[state] = false;
@@ -1774,13 +1774,13 @@ function linkcheck($url,$linkpage_url,$admin_mode = true){
       exit;
     }
     else {
-      // 読み込みのタイムアウト設定
+      // 读取超时设定
       socket_set_timeout($fp2, 2);
       while(!feof($fp))
         fputs($fp2, "GET ".$site_url_path ." HTTP/1.0\r\nHost:".$site_url_host."\r\nReferer:".url('site','index')."\r\n\r\n");
       while(!feof($fp2))
         $UnixSockString2.=fgets($fp2, 128);
-      // タイムアウトしたか調べる
+      // 调查是否超时
       $stat = socket_get_status($fp2);
       if ($stat["timed_out"]) {
         $bln[state] = false;
@@ -1797,7 +1797,7 @@ function linkcheck($url,$linkpage_url,$admin_mode = true){
           ,$UnixSockString2);
     //  $pos2 = strpos($UnixSockString2, $Path_check);
 
-    //リンク済みの場合True
+    //link停止的时候，True
     if ($pos2 > 0) {
       $bln[state] = true;
     } else {

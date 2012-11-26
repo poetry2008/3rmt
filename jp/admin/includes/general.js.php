@@ -1241,9 +1241,9 @@ document.edit_order.notify_comments.checked = false;
   window.alert("<?php echo JS_TEXT_GENERAL_RESET_ORDER_CONFIRM;?>");
 }
 }
-
+var temp_id = '';
 function show_text(id,ele,type,sort,flag,title,name,comment){
-
+    temp_id = id; 
     ele = ele.parentNode;
     $.ajax({
        url: 'ajax_address.php',
@@ -1278,6 +1278,24 @@ function show_text(id,ele,type,sort,flag,title,name,comment){
        }
     }); 
             
+}
+
+ window.onresize = address_offset; 
+ function address_offset(){
+   var show_value = '';
+   var box_warp = '';
+   var box_warp_top = 0;
+   var box_warp_left = 0;
+   if(temp_id != ''){
+       if($(".box_warp").offset()){
+          box_warp = $(".box_warp").offset();
+          box_warp_top = box_warp.top;
+          box_warp_left = box_warp.left;
+      }
+   show_value = $("#show_value_" + temp_id).offset();
+   $("#show").css('top',show_value.top+$("#show_value_" + temp_id).height()-box_warp_top)    ;
+   $("#show").css('left',show_value.left-box_warp_left);
+  }
 }
 
 function show_text_fee(id,ele,flag){

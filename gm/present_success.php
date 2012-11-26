@@ -1,7 +1,6 @@
 <?php
 /*
   $Id$
-
 */
 
   require('includes/application_top.php');
@@ -96,7 +95,7 @@
 </body>
 </html>
 <?php 
-//セッション開放
+//session开放
 tep_session_unregister('pc_id');
 tep_session_unregister('firstname');
 tep_session_unregister('lastname');

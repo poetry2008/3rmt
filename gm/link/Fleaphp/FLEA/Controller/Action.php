@@ -1,32 +1,11 @@
 <?php
-/////////////////////////////////////////////////////////////////////////////
-// FleaPHP Framework
-//
-// Copyright (c) 2005 - 2007 FleaPHP.org (www.fleaphp.org)
-//
-// 许可协议，请查看源代码中附带的 LICENSE.txt 文件，
-// 或者访问 http://www.fleaphp.org/ 获得详细信息。
-/////////////////////////////////////////////////////////////////////////////
-
 /**
  * 定义 FLEA_Controller_Action 类
- *
- * @copyright Copyright (c) 2005 - 2008 QeeYuan China Inc. (http://www.qeeyuan.com)
- * @author 起源科技 (www.qeeyuan.com)
- * @package Core
- * @version $Id$
- */
-
-/**
  * FLEA_Controller_Action 实现了一个其它控制器的超类，
  * 为开发者自己的控制器提供了一些方便的成员变量和方法
  *
  * 开发者不一定需要从这个类继承来构造自己的控制器。
  * 但从这个类派生自己的控制器可以获得一些便利性。
- *
- * @package Core
- * @author 起源科技 (www.qeeyuan.com)
- * @version 1.0
  */
 class FLEA_Controller_Action
 {

@@ -1,21 +1,6 @@
 <?php
-/////////////////////////////////////////////////////////////////////////////
-// FleaPHP Framework
-//
-// Copyright (c) 2005 - 2008 QeeYuan China Inc. (http://www.qeeyuan.com)
-//
-// 许可协议，请查看源代码中附带的 LICENSE.txt 文件，
-// 或者访问 http://www.fleaphp.org/ 获得详细信息。
-/////////////////////////////////////////////////////////////////////////////
-
 /**
  * 定义 Table_Nodes 类
- *
- * @copyright Copyright (c) 2005 - 2008 QeeYuan China Inc. (http://www.qeeyuan.com)
- * @author 起源科技 (www.qeeyuan.com)
- * @package Example
- * @subpackage SHOP
- * @version $Id$
  */
 
 // {{{ includes
@@ -34,11 +19,6 @@ FLEA::loadClass('FLEA_Db_TableDataGateway');
  * 对于应用程序来说，“_#_ROOT_NODE_#_”节点是不存在的。所以，应用程序
  * 可以创建多个父节点 ID 为 0 的“顶级节点”。这些顶级节点实际上就是
  * “_#_ROOT_NODE_#_”节点的直接子节点。
- *
- * @package Example
- * @subpackage SHOP
- * @author 起源科技 (www.qeeyuan.com)
- * @version 1.0
  */
 class Model_Nodes extends FLEA_Db_TableDataGateway
 {

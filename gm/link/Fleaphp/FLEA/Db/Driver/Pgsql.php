@@ -1,27 +1,7 @@
 <?php
-/////////////////////////////////////////////////////////////////////////////
-// FleaPHP Framework
-//
-// 该文件由“夜猫子”共享，特此感谢！
-/////////////////////////////////////////////////////////////////////////////
-
 /**
  * 定义 FLEA_Db_Driver_Pgsql 驱动
- *
- * 由夜猫子提供，廖宇雷修改，并参考 AdoDB 的 MetaColumns() 及 SelectLimit() 方法。
- *
- * @copyright Copyright (c) 2005 - 2008 QeeYuan China Inc. (http://www.qeeyuan.com)
- * @author 夜猫子 yangyi.cn.gz #AT# gmail.com
- * @package Core
- * @version $Id$
- */
-
-/**
  * 用于 pgsql 扩展的数据库驱动程序
- *
- * @package Core
- * @author 夜猫子 yangyi.cn.gz #AT# gmail.com
- * @version 1.1
  */
 class FLEA_Db_Driver_Pgsql
 {

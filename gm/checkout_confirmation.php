@@ -534,7 +534,7 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
     echo $order_total_modules->output();
   }
   if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
-  // 2005.11.17 K.Kaneko
+
   if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
     $ptoday = date("Y-m-d H:i:s", time());
     $pstday_array = getdate();

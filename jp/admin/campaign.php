@@ -422,7 +422,6 @@ echo $campaign['start_date'].'～'.$campaign['end_date'];
                 <td class="dataTableContent" align="right">
 <?php
       echo '<a href="javascript:void(0);" onclick="show_campaign_info(this, \''.$campaign['id'].'\', \''.(!empty($_GET['site_id'])?$_GET['site_id']:0).'\');">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
-         $_SESSION['campaign'] = $campaign['id'];
     ?>&nbsp;
     </td>
               </tr>

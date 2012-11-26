@@ -1,6 +1,6 @@
 
 /**
- * 设置一个Cookie的值
+ * set cookie value
  */
 function addCookie(objName,objValue,objHours){
   var str = objName + "=" + escape(objValue);
@@ -14,7 +14,7 @@ function addCookie(objName,objValue,objHours){
 }
 
 /**
- * 取得一个Cookie的值
+ * get cookie value
  */
 function getCookie(objName){
   var arrStr = document.cookie.split("; ");
@@ -26,7 +26,7 @@ function getCookie(objName){
 }
 
 /**
- * 删除一个Cookie
+ * delete cookie value
  */
 function delCookie(name){
   var date = new Date();
@@ -35,7 +35,7 @@ function delCookie(name){
 }
 
 /**
- * 字符串去前后空格
+ * delete both space of string
  */
 function trim(str){
   return   str.replace(/(^\s*)|(\s*$)/g,"");

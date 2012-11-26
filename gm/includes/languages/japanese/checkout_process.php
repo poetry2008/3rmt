@@ -30,7 +30,7 @@ define('TEXT_EMAIL_VIA', '(配送方法)');
 //Add Point System
 define('TEXT_POINT_NOW', '今回の獲得ポイント:');
 
-//在庫切れアラート
+//库存告急警报
 define('ZAIKO_ALART_TITLE','在庫が切れました。');
 define('ZAIKO_ALART_TITLE2','オプション在庫が切れました。');
 define('ZAIKO_ARART_BODY',

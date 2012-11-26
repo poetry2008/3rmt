@@ -1,21 +1,10 @@
 <?php
 /**
- * Spyc -- A Simple PHP YAML Class
- * @version 0.2.3 -- 2006-02-04
- * @author Chris Wanstrath <chris@ozmm.org>
- * @link http://spyc.sourceforge.net/
- * @copyright Copyright 2005-2006 Chris Wanstrath
- * @license http://www.opensource.org/licenses/mit-license.php MIT License
- * @package Core
- */
-
-/**
  * 载入 YAML 文件，返回分析结果
  *
  * load_yaml() 会自动使用缓存，只有当 YAML 文件被改变后，缓存才会更新。
  *
- * 关于 YAML 的详细信息,请参考 www.yaml.org 。
- *
+  *
  * 用法：
  * <code>
  * $data = load_yaml('myData.yaml');

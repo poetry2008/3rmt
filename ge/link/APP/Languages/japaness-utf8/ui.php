@@ -30,7 +30,7 @@ return array(
 	'contract'=>'縮む',
 	'expand'=>'広げる',
 
-	//カテゴリ管理
+	//目录管理
 	'classAdd'=>'新規カテゴリ',
 	'classEdit'=>'指定されたカテゴリを変更',
 	'classDel'=>'指定したカテゴリを削除',
@@ -74,7 +74,7 @@ return array(
     'ui_c_operation_list_site' => 'カテゴリの中のサイトを閲覧',
 	'ui_c_operation_create_child' => '建立子カテゴリ',
     'ui_c_form_validation' => 'カテゴリ名を入力してください',
-    'ui_c_invalid_parent_id' => '無効なパラメータ：parent_id = %s',//新しいパスワードが一致しません
+    'ui_c_invalid_parent_id' => '無効なパラメータ：parent_id = %s',//和新密码不一致
     'ui_c_invalid_class_id' => '無効なパラメータ：class_id = %s',
     'ui_c_new_top_class' => '新規上層カテゴリ',
         /**
@@ -138,7 +138,7 @@ return array(
 
 
 
-	//操作員管理
+	//操作员管理
 	'operator_title'=>'操作員管理',
 	'operator_name'=>'操作員名',
 	'operator_last_login'=>'最終ログイン時間',
@@ -198,7 +198,7 @@ return array(
 	'menu_Seoplink_Admin_Top'=>"リンクチェック",
 
 
-	//権限控制
+	//控制权限
 	'allow'=>"許可",
 	'deny'=>"拒否",
 	"auth_RBACEVERYONE"=>"全員",
@@ -219,7 +219,7 @@ return array(
 
     'param_error' => 'パラメータエラー',
 
-    //トップページ用户自定义
+    //首页用户自定义
 	'custom_site_title'=>'ユーザー定義サイト',
 	'custom_site_name'=>'名前',
 	'custom_site_url'=>'Url',

@@ -307,7 +307,7 @@ while($address_array = tep_db_fetch_array($address_query)){
 
     //$status = '<a title="del" href="javascript:check(\'del\');"><img border="0" alt="" src="images/icon_status_blue.gif"></a>'; 
   //}
-  echo '<tr class="'.$nowColor.'" '. $onmouseover .'>' . "\n";
+  echo '<tr id = "show_value_'.$address_array['id'].'" class="'.$nowColor.'" '. $onmouseover .'>' . "\n";
   echo '<td onclick="document.location.href=\'?page='. $_GET['page'] .'&id='. $address_array['id'] .'\'">'.$address_array['title'].'</td>';
   echo '<td onclick="document.location.href=\'?page='. $_GET['page'] .'&id='. $address_array['id'] .'\'">'.$address_array['name'].'</td>';
   echo '<td onclick="document.location.href=\'?page='. $_GET['page'] .'&id='. $address_array['id'] .'\'">'.$address_array['comment'].'</td>';

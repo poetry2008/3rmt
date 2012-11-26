@@ -246,7 +246,7 @@ document.onclick=function(e){
     $products_ordered .= '------------------------------------------' . "\n";
   }
   
-  # メール本文整形 --------------------------------------
+  # 邮件正文调整 --------------------------------------
   $email_order = '';
 
   // ccdd
@@ -308,7 +308,7 @@ document.onclick=function(e){
   $mail_title = "[" . $order['orders_id'] . "]再配達確認メール【" . STORE_NAME . "】";
   $email_order = str_replace(array('${NAME}', '${TIME}', '${CONTENT}', '${SITE_NAME}', '${SITE_URL}', '${SUPPORT_EMAIL}'), array($o->customer['name'], date('Y-m-d H:i:s'), $email_order, STORE_NAME, HTTP_SERVER, SUPPORT_EMAIL_ADDRESS), $mail_content);
 
-  # メール本文整形 --------------------------------------
+  # 邮件正文调整 --------------------------------------
   tep_mail($o->customer['name'], $o->customer['email_address'], $mail_title, $email_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
   if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
     tep_mail('', SEND_EXTRA_ORDER_EMAILS_TO, $mail_title, $email_order, $o->customer['name'], $o->customer['email_address'], '');

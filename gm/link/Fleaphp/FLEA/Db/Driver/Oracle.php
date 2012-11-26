@@ -1,19 +1,8 @@
 <?php
-/////////////////////////////////////////////////////////////////////////////
-// FleaPHP Framework
-//
-// 该文件由“夜猫子”共享，特此感谢！
-/////////////////////////////////////////////////////////////////////////////
-
 /**
  * 定义 FLEA_Db_Driver_Oracle 驱动
  *
  * 参考 AdoDB 的 MetaColumns() 及 SelectLimit() 方法。
- *
- * @copyright Copyright (c) 2005 - 2008 QeeYuan China Inc. (http://www.qeeyuan.com)
- * @author 起源科技 (www.qeeyuan.com)
- * @package Core
- * @version $Id$
  */
 
 // {{{ includes
@@ -22,10 +11,6 @@ FLEA::loadClass('FLEA_Db_Driver_Abstract');
 
 /**
  * 用于 pgsql 扩展的数据库驱动程序
- *
- * @package Core
- * @author 起源科技 (www.qeeyuan.com)
- * @version 1.0
  */
 class FLEA_Db_Driver_Oracle extends FLEA_Db_Driver_Abstract
 {
