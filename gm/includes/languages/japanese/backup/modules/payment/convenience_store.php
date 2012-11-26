@@ -4,7 +4,7 @@
 
 */
 
-// コンビニ決済
+// 便利店支付
   define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_TITLE', 'コンビニ決済');
   define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_DESCRIPTION', 'コンビニ決済(代金に手数料が連動)');
   define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_PROCESS', 'コンビニ決済手数料が別途かかります。');

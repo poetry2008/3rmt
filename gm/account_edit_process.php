@@ -244,7 +244,6 @@
         // ccdd
         tep_db_perform(TABLE_CUSTOMERS, $sql_data_array, 'update', "customers_id = '" .  tep_db_input($customer_id) . "' and site_id = '".SITE_ID."'");
 
-    // 2003-06-06 add_telephone
         $sql_data_array = array('entry_street_address' => $street_address,
                                 'entry_firstname' => $firstname,
                                 'entry_lastname' => $lastname,

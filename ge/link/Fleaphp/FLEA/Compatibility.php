@@ -1,23 +1,4 @@
 <?php
-/////////////////////////////////////////////////////////////////////////////
-// FleaPHP Framework
-//
-// Copyright (c) 2005 - 2008 QeeYuan China Inc. (http://www.qeeyuan.com)
-//
-// 许可协议，请查看源代码中附带的 LICENSE.txt 文件，
-// 或者访问 http://www.fleaphp.org/ 获得详细信息。
-/////////////////////////////////////////////////////////////////////////////
-
-/**
- * 该文件用于让基于 FleaPHP 1.0.6x 系列开发的应用程序能够在不做大量修改的情况下与
- * FleaPHP 1.0.70 及以后的版本保持兼容。
- *
- * @copyright Copyright (c) 2005 - 2008 QeeYuan China Inc. (http://www.qeeyuan.com)
- * @author 起源科技 (www.qeeyuan.com)
- * @package Core
- * @version $Id$
- */
-
 /**
  * 注册应用程序设置（已经过时，用 FLEA::loadAppInf() 代替）
  *

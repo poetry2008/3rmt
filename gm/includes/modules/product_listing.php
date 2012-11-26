@@ -1,7 +1,7 @@
 <?php
 /*
   $Id$
-  ファイルコードを確認
+  确认文件代码
 */
 
   require(DIR_WS_MODULES . 'sort_products.php');

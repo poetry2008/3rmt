@@ -25,7 +25,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
 }else{ 
 
   if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
-    // tamura 2002/12/30 「全角」英数字を「半角」に変換
+    //将全角的英数字改成半角
     $_POST['email_address'] = tep_an_zen_to_han($_POST['email_address']);
     $flag_error = false;
     $user_ip = explode('.',$_SERVER['REMOTE_ADDR']);
@@ -327,7 +327,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
             WHERE customers_info_id = '" . $customer_id . "'
         ");
          
-    //POINT_LIMIT CHECK ポイントの有効期限チェック ds-style
+    //POINT_LIMIT CHECK 返点的有效期限判断 ds-style
     if(MODULE_ORDER_TOTAL_POINT_LIMIT != '0') {
 //ccdd
       $plimit_count_query = tep_db_query("

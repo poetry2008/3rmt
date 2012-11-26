@@ -27,8 +27,8 @@
   
   //process
   switch($_GET['action']) {
-    case 'process'://申し込みプロセス
-    //現在の日時
+    case 'process'://申请流程
+    //现在的时间
     $now = date("Y/m/d H:i:s", time());
     
     //insert present_aplicant
@@ -98,7 +98,7 @@
     tep_redirect(tep_href_link(FILENAME_PRESENT_SUCCESS,'goods_id='.$_GET['goods_id']));
     break;
   
-  case 'update'://申込者情報変更
+  case 'update'://申请者信息变更
     $firstname = tep_db_prepare_input($_POST['firstname']);
     $lastname = tep_db_prepare_input($_POST['lastname']);
     $email_address = tep_db_prepare_input($_POST['email_address']);
@@ -152,7 +152,7 @@
     }
     
     if($error == false) {
-      //セッションを一時的に開放
+      //session一时开放
       tep_session_unregister('firstname');
       tep_session_unregister('lastname');
       tep_session_unregister('email_address');
@@ -163,7 +163,7 @@
       tep_session_unregister('city');
       tep_session_unregister('zone_id');
     
-      //セッション更新
+      //session更新
       tep_session_register('firstname');
       tep_session_register('lastname');
       tep_session_register('email_address');

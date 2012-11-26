@@ -7,15 +7,15 @@ require('includes/modules/payment/paypal.php');
 */
 
 // Set request-specific fields.
-$paymentAmount = urlencode(htmlspecialchars($_REQUEST['amount']));//合計金額？
+$paymentAmount = urlencode(htmlspecialchars($_REQUEST['amount']));//合计金额？
 $currencyID = urlencode('JPY');
 $paymentType = urlencode('Sale');
-$itemNumAMT   = urlencode(htmlspecialchars($_REQUEST['amount']));//商品単価
+$itemNumAMT   = urlencode(htmlspecialchars($_REQUEST['amount']));//商品单价
 $itemQuantity = urlencode('1');//商品数量
 $returnURL = urlencode(htmlspecialchars($_REQUEST['RETURNURL']));
 $cancelURL = urlencode(htmlspecialchars($_REQUEST['CANCELURL']));
-$pageDefault = urlencode('Billing'); //デフォルトでクレジットカード入力欄
-$location = urlencode('JP');//国コード
+$pageDefault = urlencode('Billing'); //默认的信用卡输入框
+$location = urlencode('JP');//国家code
 //$customOption = urlencode('123456-789');//&CUSTOM=$customOption
 // Add request-specific fields to the request string.
 

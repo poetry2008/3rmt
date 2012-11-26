@@ -1,13 +1,6 @@
 <?php
 
 /**
- * 定义 FLEA_Db_Driver_Sqlite 驱动
- * Editor by Chen Yanchun 2007-9-18
- * Email:picpld@gmail.com
- * Version 0.1
- */
-
-/**
  * 用于 sqlite 扩展的数据库驱动程序
  *
  */

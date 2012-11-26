@@ -1,13 +1,3 @@
-/*!
- * Feature Carousel, Version 1.3
- * http://www.bkosolutions.com
- *
- * Copyright 2011 Brian Osborne
- * Licensed under GPL version 3
- * brian@bkosborne.com
- *
- * http://www.gnu.org/licenses/gpl.txt
- */
 (function($) {
 
   $.fn.featureCarousel = function (options) {
