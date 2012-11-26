@@ -4,7 +4,6 @@
  *
  * load_yaml() 会自动使用缓存，只有当 YAML 文件被改变后，缓存才会更新。
  *
-  *
  * 用法：
  * <code>
  * $data = load_yaml('myData.yaml');

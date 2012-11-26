@@ -289,7 +289,6 @@ function check_form() {
   var street_address = document.add_entry.street_address.value;
   var postcode = document.add_entry.postcode.value;
   var city = document.add_entry.city.value;
-<?php
   var telephone = document.add_entry.telephone.value;
 
 <?php
@@ -355,7 +354,6 @@ function check_form() {
     error = 1;
   }
 
-<?php
   if (telephone == '' || telephone.length < <?php echo ENTRY_TELEPHONE_MIN_LENGTH; ?>) {
     error_message = error_message + "<?php echo JS_TELEPHONE; ?>";
     error = 1;

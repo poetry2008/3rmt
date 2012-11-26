@@ -542,19 +542,19 @@ RegUrl.URLParser.prototype._makeGetter = function(field) {
 function fn(value){
   var gameid = document.getElementById("gameid");
   if(gameid.style.display == 'none'){  
-  $(value).css("background","url('image/seach_right_visit.png') no-repeat scroll 0 0 transparent");
+  $(value).css("background","url('image/seach_bottom04_visit.png') no-repeat scroll 0 0 transparent");
    $(value).css("height","75px");
      
    $("#gameid").slideDown("slow");
          $("#out_id").slideUp("slow");
 
    }else{
-    $(value).css("background","url('image/seach_right.png') no-repeat scroll 0 0 transparent");
+    $(value).css("background","url('image/seach_bottom03_visit.png') no-repeat scroll 0 0 transparent");
       $("#gameid").slideUp("slow");               
     }
 }
 function search_close(){
-  $("#game-preview").css("background","url('image/seach_right.png') no-repeat scroll 0 0 transparent");
+  $("#game-preview").css("background","url('image/seach_bottom03_visit.png') no-repeat scroll 0 0 transparent");
   $("#gameid").slideUp("slow");
 }
 
