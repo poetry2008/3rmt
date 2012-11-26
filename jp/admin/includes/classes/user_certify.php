@@ -81,6 +81,11 @@ class user_certify {
       if($admin_ip_limit == false){
         $this->isErr = TRUE;
         $this->ipSealErr = TRUE; 
+        session_regenerate_id();            
+        $s_sid = session_id();
+        $newc=new funCrypt; 
+        $password = $newc->enCrypt($_POST['loginpwd'],$this->key); 
+        tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address) values('$s_sid',now(),now(),'{$_POST['loginuid']}','{$password}','p','','$user_ip4')");
       } 
  
       if($admin_ip_limit == true){
