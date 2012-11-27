@@ -38,22 +38,21 @@ $(function() {
       $("#targetstring").val($("#targetstring").val() +','+this.value);
         });
       return true;
-      //return false;
       });
     $(".udlr").udlr();
     var key_sum=0;
-    // 给文本框加个keypress，即键盘按下的时候判断
+    <?php // 给文本框加个keypress，即键盘按下的时候判断 ?> 
     $(".input_number").keypress(); 
     $(".input_number").keypress(function(event) {
         if (!$.browser.mozilla) {
             if (event.keyCode && ((event.keyCode < 45 || event.keyCode > 57) && event.keyCode != 47)) {
-                // ie6,7,8,opera,chrome管用
+                <?php // ie6,7,8,opera,chrome管用 ?> 
                 event.preventDefault();
                 key_sum++;
             }
         } else {
             if (event.charCode && ((event.charCode < 45 || event.charCode > 57) && event.charCode != 47)) {
-                // firefox管用
+                <?php // firefox管用 ?>
                 event.preventDefault();
                 key_sum++;
             }
@@ -75,22 +74,21 @@ $(function() {
       $("#targetstring").val($("#targetstring").val() +','+this.value);
         });
       return true;
-      //return false;
       });
     $(".udlr").udlr();
     var key_sum=0;
-    // 给文本框加个keypress，即键盘按下的时候判断
+    <?php // 给文本框加个keypress，即键盘按下的时候判断 ?>
     $(".input_number").keypress(); 
     $(".input_number").keypress(function(event) {
         if (!$.browser.mozilla) {
             if (event.keyCode && ((event.keyCode < 45 || event.keyCode > 57) && event.keyCode != 47)) {
-                // ie6,7,8,opera,chrome管用
+                <?php // ie6,7,8,opera,chrome管用 ?>
                 event.preventDefault();
                 key_sum++;
             }
         } else {
             if (event.charCode && ((event.charCode < 45 || event.charCode > 57) && event.charCode != 47)) {
-                // firefox管用
+                <?php // firefox管用 ?>
                 event.preventDefault();
                 key_sum++;
             }
@@ -103,7 +101,6 @@ $(function() {
 });
 
 function ex(id,tr_len){
-  //alert(document.getElementsByName['sort_order[]']);
   tr_len = tr_len+1;
   for(exi=1;exi<tr_len;exi++){
     id_tmp1 = 'tr_'+id+'_'+exi;
@@ -118,23 +115,16 @@ function ex(id,tr_len){
     $("#"+id_tmp2).children('input').val(id_val1);
   }
   $(".udlr").udlr();
-  /*
-  $('#tr_'+id+'_1>.sort_order_input').val(id);
-  $('#tr_'+(id-1)+'_1>.sort_order_input').val(id-1);
-  */
 }
   </script>
   <title>
 
 <?php
   if ($HTTP_GET_VARS['action'] == 'oroshi') {
-    //echo '卸業者の履歴登録';
     echo HISTORY_TITLE_THREE; 
   } else if ($HTTP_GET_VARS['action'] == 'oroshi_c') {
-    //echo '卸業者の履歴表示';
     echo HISTORY_TITLE_TWO; 
   } else {
-    //echo '同業者の履歴登録';
     echo HISTORY_TITLE_ONE; 
   }
   ?>
@@ -165,13 +155,10 @@ require("includes/note_js.php");
                  <td class = "pageHeading">
   <?php
   if ($HTTP_GET_VARS['action'] == 'oroshi') {
-    //echo '卸業者の履歴登録';
     echo HISTORY_TITLE_THREE; 
   } else if ($HTTP_GET_VARS['action'] == 'oroshi_c') {
-    //echo '卸業者の履歴表示';
     echo HISTORY_TITLE_TWO; 
   } else {
-    //echo '同業者の履歴登録';
     echo HISTORY_TITLE_ONE; 
   }
   ?>
@@ -197,7 +184,6 @@ case 'oroshi':
   }
   $res = tep_db_query("select sod.list_id,sod.datas,sod.set_date,cd.categories_name,son.oroshi_name ,son.oroshi_id, cd.categories_id  from set_oroshi_names son,set_oroshi_datas sod ,categories_description cd where sod.oroshi_id = son.oroshi_id and  sod.parent_id = cd.categories_id  and cd.site_id = 0 and  sod.oroshi_id = '".$oid."'");
   while($col =tep_db_fetch_array($res)){
-    //    var_dump($col);
     $games[$col['categories_id']][] = $col;
   }
   if($games){
@@ -285,12 +271,6 @@ case 'oroshi_c':
     for($i=0;$i<=$cnt;$i++){
       $res = tep_db_query("select * from set_oroshi_datas where parent_id='".$cPath."' && oroshi_id='".$o_id[$i]."' ORDER BY list_id DESC limit ".$a.",1 ");
       $col[$i] = tep_db_fetch_array($res);
-      
-      /*
-      $col[$i]['datas'] = trim($col[$i]['datas']);         // 文頭文末の空白を削除
-      $col[$i]['datas'] = str_replace($cr, "\n",$col[$i]['datas']);  // 改行コードを統一
-      $lines[$i] = explode("\n", $col[$i]['datas']);
-      */
       $lines[$i] = spliteOroData($col[$i]['datas']);
       $count[$i] = count($lines[$i]);
     }
@@ -319,37 +299,14 @@ case 'oroshi_c':
   }
   break;
 case 'd_submit':
-  /**
-  echo "<pre>";
-  print_r($_GET);
-  print_r($_POST);
-  exit;
-  /**/
   $cPath = $_GET['cPath'];
   $cid = $_GET['cid'];
   $did = $_GET['did'];
-  //$back_url = 'history.php';
-  //$back_url_params ='action=dougyousya_categories'.'&cPath='.$cPath.'&cid='.$cid.'&did='.$did;
-  //$dougyousya=$_POST['TARGET_INPUT'];//同業者価格
-  //$proid = $_POST['proid'];
   $dou_id=$_POST['d_id'];//同業者ID
   $submit = $_POST['b1'];
   
-  //$str = $_POST['orderstring'];
   $proid_arr = $proid = explode(',',substr($_POST['orderstring'], 1));
-  //$str = $_POST['targetstring'];
   $dougyousya = explode(',',substr($_POST['targetstring'], 1));
-  //print_r($dougyousya);
-  //exit;
-  //print_r($proid_arr);
-  //print_r($dougyousya);
-  //array_shift($proid_arr);
-  //array_shift($dougyousya);
-  //echo "<pre>";
-  //print_r($proid_arr);
-  //print_r($dougyousya);
-  
-  //exit;
   $con = count($proid_arr);
   for($z=0;$z<$con;$z++){
     $sql = 'select order_value from product_dougyousya_order 
@@ -374,7 +331,6 @@ case 'd_submit':
       $count_tontye++;
   }
   $count_product = count($proid);//一共几行
-  //$limit = 20;        
   
   for ($i = 0;$i<$count_tontye;$i++)
     {
@@ -413,12 +369,11 @@ case 'dougyousya':
       $colmunLimit = 2;//分几行
       $colmunLimit_add_1 = $colmunLimit+1;
       echo "<table border='0' class='table_box'>";
-	  echo "<th width='200'>";
-      //        echo "<td colspan = ".$colmunLimit_add_1 .">";
+      echo "<th width='200'>";
       echo "<th width='200'>";
       echo $cate_name;
       echo "</th>";
-	  echo "<th width='200'>";
+      echo "<th width='200'>";
       echo "<tbody>";
       $getSubCategories = 'select cd.categories_name,cd.categories_id from
         categories_description cd, categories c where
@@ -432,8 +387,7 @@ case 'dougyousya':
         if($rowCount == $colmunLimit){
           echo "</tr>\n";
         }
-        echo "<td><a href=
-          'history.php?action=dougyousya_categories&cid=".$sub_cate_id."&cPath=".$cate_id."&did=".$did."' >".$sub_cate_name.'</a></td>';
+        echo "<td><a href= 'history.php?action=dougyousya_categories&cid=".$sub_cate_id."&cPath=".$cate_id."&did=".$did."' >".$sub_cate_name.'</a></td>';
         if($rowCount>0) { 
           $rowCount--;
         }else {
@@ -507,22 +461,6 @@ case 'dougyousya_categories':
 
   // get last history
   $last_history_arr = $last_history_arr2 = array();
-  /*
-  $last_history_date = tep_db_fetch_array(tep_db_query("select * from set_dougyousya_history where categories_id='".$cID."' order by last_date desc"));
-  if ($last_history_date) {
-    $last_history_date = $last_history_date['last_date'];
-    
-    $last_history_query = tep_db_query("
-      select * from set_dougyousya_history 
-      where categories_id='".$cID."' 
-        and ( last_date='".$last_history_date."' or last_date='".date('Y-m-d H:i:s',strtotime($last_history_date)-1)."' )
-    ");
-    while($last_history = tep_db_fetch_array($last_history_query)){
-      $last_history_arr[$last_history['products_id']][$last_history['dougyousya_id']] = $last_history;
-    }
-  }
-  */
-  //print_r($last_history_arr);
   $last_history_query = tep_db_query("
     select * from (
       select * 
@@ -535,10 +473,8 @@ case 'dougyousya_categories':
   while($last_history = tep_db_fetch_array($last_history_query)){
     $last_history_arr[$last_history['products_id']][$last_history['dougyousya_id']] = $last_history;
   }
-  //print_r($last_history_arr);
-  
   ?>
-    <table border="0">
+  <table border="0">
    <tr>
     <td colspan='<?php echo $count['cnt']+3; ?>'>
       <input type="submit" name="b2" id = 'saveorder2' value="<?php echo TEXT_SIGN_IN;?>">
@@ -576,7 +512,6 @@ case 'dougyousya_categories':
   $x = 0;
   for($i=0;$i<$cnt2;$i++){
     echo "<tr>";
-    //$res=tep_db_query("select * from products_description where products_id='".$cid_list[$i]."'");
     $res=tep_db_query("select * from products_description where products_id='".$cid_list[$i]."' and site_id='0' order by products_description.products_name asc");
 
     $col=tep_db_fetch_array($res);  
@@ -592,14 +527,11 @@ case 'dougyousya_categories':
     echo "<a href='#".$col['products_name']."'>".$col['products_name']."</a></td>";
     if($count['cnt'] > 0){
       for($j=0;$j<$count['cnt'];$j++){
-        //        <input type='text' size='7px' name='TARGET_INPUT[]' onkeydown=ctrl_keydown('TARGET_INPUT',".$i.",".$j.",".$count['cnt'].")></td>";//価格同業者
         $last_history_arr2[$i][$j] = isset($last_history_arr[$cid_list[$i]][$dougyousya_id[$j]])?$last_history_arr[$cid_list[$i]][$dougyousya_id[$j]]['dougyosya_kakaku']:'';
-        //        <input type='text' size='7px' name='TARGET_INPUT[]' onkeydown=ctrl_keydown('TARGET_INPUT',".$i.",".$j.",".$count['cnt'].")></td>";//価格同業者
         echo "<td id='tr_".$x."_".($j+2)."' class='dataTableContent' >
         <input value='' pos='".$i."_".$j."' id=\"ti_".$i."_".$j."\" class='udlr input_number col_".$j."'  type='text' size='7px' name='TARGET_INPUT[]' onpaste=\"return !clipboardData.getData('text').match(/\D/)\" ondragenter=\"return false\" style=\"ime-mode:Disabled;width:60%;\"><a href=\"javascript:void(0)\" onclick=\"$('.col_".$j."').val($('#ti_".$i."_".$j."').val())\">".TEXT_UNIFIED."</a>";//価格同業者
       }
     }else{
-      //            echo "<td class='dataTableContent' ><input type='text' size='7px'  name='TARGET_INPUT[]' onkeydown=ctrl_keydown('TARGET_INPUT',".$i.",'0','0')></td>";//価格同業者  
       echo "<td class='dataTableContent' ><input pos='".$i."_".$j."' class='udlr input_number' type='text' size='7px'
         name='TARGET_INPUT[]' ></td>";//価格同業者 
     }
@@ -652,13 +584,6 @@ case 'dougyousya_categories':
      <br>
      <br>
      <?php 
-  /*$res=tep_db_query("
-    select sdh.* ,sdn.dougyousya_name 
-    from set_dougyousya_history sdh ,set_dougyousya_names sdn 
-    where sdh.dougyousya_id = sdn.dougyousya_id 
-      and categories_id='".$cID."' 
-    order by sdn.dougyousya_id,pd.products_name,last_date
-  " );*/
   if ($ocertify->npermission>7) {
     $res=tep_db_query("
     select sdh.* ,sdn.dougyousya_name 
@@ -691,7 +616,6 @@ case 'dougyousya_categories':
     $products_arr[$col_datas['products_id']][] = $col_datas;
   }
   $color_arr = array('f44040','8fccad','f59a40','35cccc','cccc35','409af5','81cc35','3131f5','35cc35','9331f5');
-//  ksort($products_arr);
  foreach($cid_list as $val){
   foreach($products_arr as $key=>$val_products){
 	  if($key == $val) {
@@ -711,7 +635,6 @@ $products_arr = $sort_products_arr;
       $productname = tep_db_fetch_array($res_for_productname);
       $productname = $productname['products_name'];
       echo "<a name='".$productname."'></a>";
-      //echo $productname;
       $dys_arr = array();
       $time_arr = array();
       $tuli_arr = array();
@@ -719,7 +642,6 @@ $products_arr = $sort_products_arr;
       foreach ($value as $record)
       {
         $dys_arr[$record['dougyousya_id']][] = $record;
-        //echo $record['dougyousya_name'];
         if (!in_array($record['dougyousya_name'], $tuli_arr)){
           $tuli_arr[]  = $record['dougyousya_name'];
         }
@@ -779,7 +701,6 @@ $products_arr = $sort_products_arr;
           if (isset($value2[$key3+1])){
             $y.=',';
           }
-          //$style[]='o,'.$color_arr[$dys_arr_count].','.$key2count.','.$key3.',5';
           $chls[] = 3;
         }
         $style[]='o,'.$color_arr[$dys_arr_count].','.$key2count.',,10';
@@ -794,9 +715,7 @@ $products_arr = $sort_products_arr;
         
       }
       $imgstr.='&chf=bg,s,ffffff|c,ls,90,BBBBBB,0.25,999999,0.25,777777,0.25,444444,0.25'
-             //. '&chds='.$xmin.','.$xmax.'|'.$min.','.$max
              . '&chm='.join('|',$style)
-             //. '&chem='.join('|',$chem)
              . '&chco='.join(',',$chco)
              . '&chdl='.join('|',$tuli)
              . '&chls='.join('|',$chls)

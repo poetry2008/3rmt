@@ -347,7 +347,7 @@ function check_error(){
 function set_new_price(pid) {
   pname = $('#products_name_'+pid).html();
   default_price = $('#h_edit_p_'+pid).html(); 
-  nquantity = prompt(pname+"\n"+"<?php echo OLD_TITLE_TEXT.':  ';?>"+default_price+"\n"+"<?php echo NEW_TITLE_TEXT;?>", default_price);
+  nquantity = prompt(pname+"\n"+"<?php echo TEXT_POPUP_WINDOW_SHOW.': ';?>"+default_price+"\n"+"<?php echo TEXT_POPUP_WINDOW_EDIT;?>", default_price);
   if (nquantity && false == /^\d+$/.test(nquantity)) {
     alert('<?php echo JS_TEXT_C_ADMIN_INPUT_INFO;?>');
     return false;
