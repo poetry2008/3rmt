@@ -592,7 +592,6 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
   }
   if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
   // 计算各个不同顾客的返点率从这开始============================================================
-
   if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
     //规定期间内，计算订单合计金额------------
     $ptoday = date("Y-m-d H:i:s", time());

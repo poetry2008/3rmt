@@ -70,8 +70,6 @@
  * 但客户端验证仅提供有限的验证能力。包括：
  *
  * notNull, hasDefault, min, max, minLength, maxLength
-
-
  */
 class FLEA_Helper_Verifier
 {

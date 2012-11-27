@@ -13,7 +13,6 @@
  *     activity    int(11)         该 session 最后一次读取/写入时间
  *
  * - 修改应用程序设置 sessionProvider 为 FLEA_Session_Db
-
  */
 class FLEA_Session_Db
 {

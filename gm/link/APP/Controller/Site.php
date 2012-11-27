@@ -105,7 +105,7 @@ class Controller_Site extends Controller_Base
       $seo = $model_Setseo->find("action ='index'");
     }
     $this->getBreadcrumb();
-    $bread =  $this->bread->trail('<img src="images/point.gif">');
+    $bread =  $this->bread->trail(' &raquo; ');
     $seo = $this->replace_seo($this->bread,$seo);
     $viewData = array( 'hostlink' => $this->host_dir,
         'bread' => $bread,
@@ -230,7 +230,7 @@ class Controller_Site extends Controller_Base
     }
     $this->bread->add($classkind['name'],'/'.$dir['value'].
         '/class_id='.$classkind['class_id'].'.html');
-    $bread =  $this->bread->trail('<img src="images/point.gif"> ');
+    $bread =  $this->bread->trail(' &raquo; ');
     $seo = $this->replace_seo($this->bread,$seo);
     $viewData = array( 'hostlink' => $this->host_dir,
         'seo' => $seo,
@@ -472,7 +472,7 @@ class Controller_Site extends Controller_Base
         $seo = $model_Setseo->find("action ='index'");
       }
     $this->getBreadcrumb();
-    $bread =  $this->bread->trail('<img src="images/point.gif"> ');
+    $bread =  $this->bread->trail(' &raquo; ');
     $seo = $this->replace_seo($this->bread,$seo);
     $top_info['h1'] = 'regist_h1';
     $top_info['text'] = 'regist_text';
@@ -539,7 +539,7 @@ class Controller_Site extends Controller_Base
           $seo = $model_Setseo->find("action ='index'");
         }
     $this->getBreadcrumb();
-    $bread =  $this->bread->trail('<img src="images/point.gif"> ');
+    $bread =  $this->bread->trail(' &raquo; ');
     $seo = $this->replace_seo($this->bread,$seo);
     $top_info['h1'] = 'regist_h1';
     $top_info['text'] = 'regist_text';
@@ -763,7 +763,7 @@ class Controller_Site extends Controller_Base
       $seo = $model_Setseo->find("action ='index'");
     }
     $this->getBreadcrumb();
-    $bread =  $this->bread->trail('<img src="images/point.gif">');
+    $bread =  $this->bread->trail(' &raquo; ');
     $seo = $this->replace_seo($this->bread,$seo);
     $top_info['h1'] = 'regist_h1';
     $top_info['text'] = 'regist_text';
@@ -809,7 +809,7 @@ class Controller_Site extends Controller_Base
     $model_Setseo = FLEA::getSingleton('Model_Setseo');
     $seo = $model_Setseo->find("action ='".$_GET['action']."'");
     $this->getBreadcrumb();
-    $bread =  $this->bread->trail('<img src="images/point.gif"> ');
+    $bread =  $this->bread->trail(' &raquo; ');
     $seo = $this->replace_seo($this->bread,$seo);
     if(!$seo){
       $seo = $model_Setseo->find("action ='index'");
@@ -886,7 +886,7 @@ class Controller_Site extends Controller_Base
       $seo = $model_Setseo->find("action ='index'");
     }
     $this->getBreadcrumb();
-    $bread =  $this->bread->trail('<img src="images/point.gif"> ');
+    $bread =  $this->bread->trail(' &raquo; ');
     $seo = $this->replace_seo($this->bread,$seo);
     $page_info = $pager->getPagerData();
     $last_page = array_pop($page_info['pagesNumber']);
@@ -956,7 +956,7 @@ class Controller_Site extends Controller_Base
       $seo = $model_Setseo->find("action ='index'");
     }
     $this->getBreadcrumb();
-    $bread =  $this->bread->trail('<img src="images/point.gif"> ');
+    $bread =  $this->bread->trail(' &raquo; ');
     $seo = $this->replace_seo($this->bread,$seo);
     $page_info = $pager->getPagerData();
     $last_page = array_pop($page_info['pagesNumber']);
@@ -1008,7 +1008,7 @@ class Controller_Site extends Controller_Base
       $seo = $model_Setseo->find("action ='index'");
     }
     $this->getBreadcrumb();
-    $bread =  $this->bread->trail('<img src="images/point.gif"> ');
+    $bread =  $this->bread->trail(' &raquo; ');
     $seo = $this->replace_seo($this->bread,$seo);
     $page_info = $pager->getPagerData();
     $last_page = array_pop($page_info['pagesNumber']);
@@ -1076,7 +1076,7 @@ class Controller_Site extends Controller_Base
       $seo = $model_Setseo->find("action ='index'");
     }
     $this->getBreadcrumb();
-    $bread =  $this->bread->trail('<img src="images/point.gif"> ');
+    $bread =  $this->bread->trail(' &raquo; ');
     $seo = $this->replace_seo($this->bread,$seo);
 
     if($consumer = $model_Consumer->find($cond))
@@ -1160,7 +1160,7 @@ class Controller_Site extends Controller_Base
         $seo = $model_Setseo->find("action ='index'");
       }
     $this->getBreadcrumb();
-    $bread =  $this->bread->trail('<img src="images/point.gif"> ');
+    $bread =  $this->bread->trail(' &raquo; ');
     $seo = $this->replace_seo($this->bread,$seo);
       $viewData = array( 'hostlink' => $this->host_dir,
           'bread' => $bread,
@@ -1309,7 +1309,7 @@ class Controller_Site extends Controller_Base
       $seo = $model_Setseo->find("action ='index'");
     }
     $this->getBreadcrumb();
-    $bread =  $this->bread->trail('<img src="images/point.gif">');
+    $bread =  $this->bread->trail(' &raquo; ');
     $seo = $this->replace_seo($this->bread,$seo);
     $page_info = $pager->getPagerData();
     $last_page = array_pop($page_info['pagesNumber']);
@@ -1343,7 +1343,7 @@ class Controller_Site extends Controller_Base
       $seo = $model_Setseo->find("action ='index'");
     }
     $this->getBreadcrumb();
-    $bread =  $this->bread->trail('<img src="images/point.gif">');
+    $bread =  $this->bread->trail(' &raquo; ');
     $seo = $this->replace_seo($this->bread,$seo);
     $viewData = array( 'hostlink' => $this->host_dir,
         'bread' => $bread,
@@ -1410,7 +1410,7 @@ class Controller_Site extends Controller_Base
       $seo = $model_Setseo->find("action ='index'");
     }
     $this->getBreadcrumb();
-    $bread =  $this->bread->trail('<img src="images/point.gif">');
+    $bread =  $this->bread->trail(' &raquo; ');
     $seo = $this->replace_seo($this->bread,$seo);
     if (mail($to, $subject, $message, $headers))
     {
@@ -1528,7 +1528,7 @@ function actionSitemap()
     $seo = $model_Setseo->find("action ='index'");
   }
     $this->getBreadcrumb();
-    $bread =  $this->bread->trail('<img src="images/point.gif">');
+    $bread =  $this->bread->trail(' &raquo; ');
     $seo = $this->replace_seo($this->bread,$seo);
   $viewData = array( 'hostlink' => $this->host_dir,
       'bread' => $bread,
