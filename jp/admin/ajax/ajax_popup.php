@@ -120,6 +120,7 @@ if ($_GET['action'] == 'show_category_info') {
   $notice_box->get_heading($heading);
    
   $notice_box->get_contents($category_info_row, $buttons);
+  $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice();
 } else if ($_GET['action'] == 'move_category') {
   //移动分类信息的弹出框 
@@ -161,6 +162,7 @@ if ($_GET['action'] == 'show_category_info') {
   $notice_box->get_form($form_str);
   $notice_box->get_heading($heading);
   $notice_box->get_contents($move_category_info, $buttons);
+  $notice_box->get_eof(tep_eof_hidden());
 
   echo $notice_box->show_notice();
 } else if ($_GET['action'] == 'delete_category') {
@@ -226,6 +228,6 @@ if ($_GET['action'] == 'show_category_info') {
   $notice_box->get_form($form_str);
   $notice_box->get_heading($heading);
   $notice_box->get_contents($delete_category_info, $buttons);
-
+  $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice();
 }

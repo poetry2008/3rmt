@@ -2602,6 +2602,7 @@ foreach($pid_arr as $p_key => $p_value){
 //所有内容的表单
 $form_action = 'simple_update_product';
 echo tep_draw_form($form_action, FILENAME_CATEGORIES, 'cPath=' .  $cPath .  '&pID=' .  $_GET['pID'] . '&page='.$_GET['page'].  '&action=' .  $form_action.($_GET['search']?'&search='.  $_GET['search']:''), 'post', '');
+echo tep_eof_hidden();
 ?>
 <?php //移动过来内容的信息 ?>
 <table width="100%" cellspacing="0" cellpadding="0" border="0" class="popup_order_info">
@@ -2988,6 +2989,7 @@ if (isset($_GET['rdirect'])) {
 } else {
   echo tep_draw_form('products', FILENAME_CATEGORIES, 'action=delete_product_description_confirm&site_id=' .  $_GET['site_id'] . '&pID=' . $_GET['pID'] . '&cPath=' .  $cPath.$d_page.($_GET['search']?'&search='.$_GET['search']:''), 'post');
 }
+echo tep_eof_hidden();
 ?>
 <table width="100%" cellspacing="0" cellpadding="0" border="0" class="popup_order_info">
 <tr><td>
@@ -3023,6 +3025,7 @@ echo tep_draw_form('products', FILENAME_CATEGORIES,
     'action=delete_product_confirm&cPath=' .
     $cPath.$d_page.($_GET['search']?'&search='.$_GET['search']:''));
 echo tep_draw_hidden_field('products_id', $pInfo->products_id);
+echo tep_eof_hidden();
 ?>
 <table width="100%" cellspacing="0" cellpadding="0" border="0" class="popup_order_info">
 <tr><td>
@@ -3072,6 +3075,7 @@ $cPath = $_GET['cPath'];
 echo tep_draw_form('products', FILENAME_CATEGORIES,
     'action=move_product_confirm&cPath=' . $cPath);
 echo tep_draw_hidden_field('products_id', $pInfo->products_id);
+echo tep_eof_hidden();
 ?>
 <table width="100%" cellspacing="0" cellpadding="0" border="0" class="popup_order_info">
 <tr><td>
@@ -3114,6 +3118,7 @@ $cPath = $_GET['cPath'];
 <?php 
 echo tep_draw_form('copy_to', FILENAME_CATEGORIES, 'action=copy_to_confirm&cPath=' . $cPath);
 echo tep_draw_hidden_field('products_id', $pInfo->products_id);
+echo tep_eof_hidden();
 ?>
 <table width="100%" cellspacing="0" cellpadding="0" border="0" class="popup_order_info">
 <tr><td>

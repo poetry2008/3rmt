@@ -16,13 +16,14 @@
     switch ($_GET['action']) {
       //一并更新
       case 'all_update':
+        tep_isset_eof();
         require('includes/set/all_update.php');
         tep_redirect(tep_href_link(FILENAME_CATEGORIES, tep_get_all_get_params(array('action', 'x', 'y'))));
         break;
       // 产品 浮动DIV 保存 动作
       case 'simple_update_product':
         // 浮动DIV 修改信息
-        //tep_isset_eof();
+        tep_isset_eof();
         $products_id = tep_db_prepare_input($_GET['pID']);
         $site_id     = tep_db_prepare_input($_GET['site_id']);
         $relate_products_id = tep_db_prepare_input($_POST['relate_products_id']);
@@ -137,6 +138,7 @@
         tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $_GET['cPath'].'&pID='.$_GET['pID'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page));
         break;
       case 'simple_update': // 価格と数量の簡易アップデート
+        tep_isset_eof();
         $products_id = tep_db_prepare_input($_GET['pID']);
         $site_id     = tep_db_prepare_input($_POST['pID']);
         //％指定の場合は価格を算出
@@ -159,6 +161,7 @@ tep_db_query($update_sql);
         tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $_GET['cPath'] . '&pID=' . $products_id));
         break;
       case 'upload_inventory':
+        tep_isset_eof();
         $error = false;
         $products_id = $_POST['products_id'];
         $max_inventory = $_POST['max_inventory'];
@@ -184,6 +187,7 @@ tep_db_query($update_sql);
         break;
       case 'insert_category':
       case 'update_category':
+        tep_isset_eof();
         $categories_id = tep_db_prepare_input($_POST['categories_id']);
         $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
         
@@ -422,6 +426,7 @@ tep_db_query($update_sql);
         }
         break;
       case 'delete_product_description_confirm':
+        tep_isset_eof();
         $d_page = (isset($_GET['page']))?'&page='.$_GET['page']:''; 
         if ($_GET['pID'] && $_GET['site_id']) {
           tep_db_query("delete from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$_GET['pID']."' && site_id = '".(int)$_GET['site_id']."'");
@@ -433,6 +438,7 @@ tep_db_query($update_sql);
         }
         break;
       case 'delete_category_description_confirm':
+        tep_isset_eof();
         $dc_page = (isset($_GET['page']))?'&page='.$_GET['page']:''; 
         if ($_GET['cID'] && $_GET['site_id']) {
           tep_db_query("delete from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id = '".$_GET['cID']."' && site_id = '".(int)$_GET['site_id']."'");
@@ -444,6 +450,7 @@ tep_db_query($update_sql);
         }
         break;
       case 'delete_category_confirm':
+        tep_isset_eof();
         $dc_page = (isset($_GET['page']))?'&page='.$_GET['page']:''; 
         if ($_POST['categories_id']) {
           $categories_id = tep_db_prepare_input($_POST['categories_id']);
@@ -494,6 +501,7 @@ tep_db_query($update_sql);
         tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath.$dc_page.($_GET['search']?'&search='.$_GET['search']:'')));
         break;
       case 'delete_product_confirm':
+        tep_isset_eof();
         $d_page = (isset($_GET['page']))?'&page='.$_GET['page']:''; 
         if ( ($_POST['products_id']) && (is_array($_POST['product_categories'])) ) {
           $product_id = tep_db_prepare_input($_POST['products_id']);
@@ -520,6 +528,7 @@ tep_db_query($update_sql);
         tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath.$d_page.($_GET['search']?'&search='.$_GET['search']:'')));
         break;
       case 'move_category_confirm':
+        tep_isset_eof();
         if ( ($_POST['categories_id']) && ($_POST['categories_id'] != $_POST['move_to_category_id']) ) {
           $categories_id = tep_db_prepare_input($_POST['categories_id']);
           $new_parent_id = tep_db_prepare_input($_POST['move_to_category_id']);
@@ -534,6 +543,7 @@ tep_db_query($update_sql);
         tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $new_parent_id . '&cID=' . $categories_id));
         break;
       case 'move_product_confirm':
+        tep_isset_eof();
         $products_id = tep_db_prepare_input($_POST['products_id']);
         $new_parent_id = tep_db_prepare_input($_POST['move_to_category_id']);
 
@@ -550,7 +560,7 @@ tep_db_query($update_sql);
         break;
       case 'insert_product':
       case 'update_product':
-        
+        tep_isset_eof();
         $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
          if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];
          else $site_arr="";
@@ -789,6 +799,7 @@ tep_db_query($update_sql);
         }
         break;
       case 'copy_to_confirm':
+        tep_isset_eof();
         if ( (tep_not_null($_POST['products_id'])) && (tep_not_null($_POST['categories_id'])) ) {
           $products_id   = tep_db_prepare_input($_POST['products_id']);
           $categories_id = tep_db_prepare_input($_POST['categories_id']);
@@ -949,6 +960,7 @@ tep_db_query($update_sql);
             }
           }
         } else {
+          tep_isset_eof();
           if (trim($_POST['romaji']) == '') {
             $romaji_error = 1; 
             $romaji_error_str = TEXT_ROMAJI_NOT_NULL;
@@ -2226,6 +2238,7 @@ $products_shipping_time .= '</select>';
             if (isset($_GET['rdirect'])) {
               echo tep_draw_hidden_field('rdirect', 'all'); 
             }
+            echo tep_eof_hidden(); 
             echo tep_html_element_submit(IMAGE_PREVIEW) .  '&nbsp;&nbsp;'; 
             if (isset($_GET['rdirect'])) {
               echo '<a class = "new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&page='.$_GET['page'].'&site_id=0&pID=' .  (isset($_GET['pID'])?$_GET['pID']:'')) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>'; 
@@ -3104,6 +3117,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                     <tr>
                       <td class="main" align="right">
                       <?php 
+                        echo tep_eof_hidden(); 
                         if ($_GET['action'] == 'new_category') {
                           echo '<input type="hidden" name="user_added" value='.$user_info['name'].'>'; 
                         } else {
@@ -3211,7 +3225,8 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
           }
           ?>
           <form name="myForm1" action="<?php echo tep_href_link(FILENAME_CATEGORIES, tep_get_all_get_params('action').'action=all_update');?>" method="POST" onSubmit="return false"> 
-          <input type="hidden" name="flg_up" value=""> 
+          <input type="hidden" name="flg_up" value="">
+          <?php echo tep_eof_hidden();?>
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
               <tr>
                 <td valign="top">
