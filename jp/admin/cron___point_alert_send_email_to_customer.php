@@ -128,12 +128,12 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
          "=====".$customer_info['customer_email']."\n---------------------\n");
        */
       if(($out_time>$now_time)&&($customer_info['config_date']>=$value)&&
-          intval(($out_time-$now_time)/86400)==$value){
+          intval(($out_time-$now_time)/86400)==$value+1){
         /*
            var_dump($customer_info_arr['point_date'].">>>".$value.">>>".$customer_info['customer_email']);
          */
         //replace ${} to true value
-        $point_out_date = date('Y年m月d日',$out_time);
+        $point_out_date = date('Y年m月d日',$out_time-86400);
         $show_email_template = str_replace(
             array('${NAME}','${MAIL}','${POINT}','${POINT_DATE}','${SITE_NAME}','${POINT_OUT_DATE}'
               ,'${SITE_URL}','${SUPPORT_EMAIL}'),
