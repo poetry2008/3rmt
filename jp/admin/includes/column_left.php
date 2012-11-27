@@ -106,11 +106,12 @@ function toggle_leftColumn()
   <?php if($_SERVER['PHP_SELF'] == '/admin/orders.php'){?>
   setTimeout("orders_info_box_offset()",10);
   <?php } ?>
-
-  if($('input:[name=show_info_id]')){
-    show_info_id = $('input:[name=show_info_id]').val()
-  leftset = $('.leftmenu').width()+$('.show_left_menu').width()+parseInt($('.leftmenu').css('padding-left'))+parseInt($('.show_left_menu').css('padding-right'))+parseInt($('#categories_right_td table').attr('cellpadding'));
-  $('#'+show_info_id).css('left',leftset).show();
+ 
+  
+  if($('#show_info_id').length > 0){
+    show_info_str = $('#show_info_id').val();
+    leftset = $('.leftmenu').width()+$('.show_left_menu').width()+parseInt($('.leftmenu').css('padding-left'))+parseInt($('.show_left_menu').css('padding-right'))+parseInt($('#categories_right_td table').attr('cellpadding'));
+    $('#'+show_info_str).css('left',leftset);
   }
 }
 function toggle_lan(sobj)
