@@ -1454,7 +1454,19 @@ function handle_option()
 require("includes/note_js.php");
 ?>
 </head>
+<?php 
+// 数据传输错误 提示DIV 
+if(isset($_GET['eof'])&&$_GET['eof']=='error'){ 
+?>
+<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onload="show_error_message()" >
+<div id="popup_info">
+<div class="popup_img"><img onclick="close_error_message()" src="images/close_error_message.gif" alt="close" /></div>
+<span><?php echo TEXT_EOF_ERROR_MSG;?></span>
+</div>
+<div id="popup_box"></div>
+<?php }else{?>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" >
+<?php } ?>
 <?php
 if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']&&false){?>
   <script language='javascript'>
