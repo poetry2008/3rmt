@@ -7,23 +7,17 @@ define("LOG_LIMIT",60);
 
 function sql_injection($content)
 {
-  if (!get_magic_quotes_gpc()) {
-    if (is_array($content)) {
-      foreach ($content as $key=>$value) {
-        $content[$key] = addslashes($value);
-      }
-    } else {
-      addslashes($content);
-    }
-  }
-
-  return $content;
+  $sa_string =  addslashes(serialize($content));
+  return $sa_string;
 }
 
 function db_query($sql)
 {
   global $conn;
-  if (!$conn){
+  if (!$conn || !mysql_ping($conn)){
+    if(isset($conn)){
+      if(!mysql_ping($conn)){mysql_close($conn);}
+    }
     $conn =
                   mysql_connect(DB_SERVER,DB_SERVER_USERNAME,DB_SERVER_PASSWORD);
     if (!$conn){
@@ -100,13 +94,15 @@ class Monitor {
     ";
               echo $sql;
     $result = db_query($sql);
-    //              var_dump($result);
     //执行完成以后检查是否多于系统限制如果多于,则删除以前记录 
     $sqlCount = "
       SELECT count(*) as cnt
       FROM monitor_log ";
     //    WHERE m_id = ".$this->id;
-    $res = mysql_fetch_array(db_query($sqlCount));
+    $resRes = db_query($sqlCount);
+    //echo mysql_errno() . ": " . mysql_error() . "\n";
+    $res = mysql_fetch_array($resRes);
+
 
     if($haveToDel = ($limit = (int)$res['cnt']-LOG_LIMIT)>0){
       //                          WHERE m_id = ".$this->id."

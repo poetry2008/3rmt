@@ -600,7 +600,7 @@ unset($_SESSION['referer']);
   }
 
 
-    if (SESSION_RECREATE == 'True') { // 2004/04/25 Add session management
+    if (SESSION_RECREATE == 'True') {
       tep_session_recreate();
     }
     

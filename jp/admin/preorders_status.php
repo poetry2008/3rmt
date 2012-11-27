@@ -373,7 +373,7 @@ require("includes/note_js.php");
 $contents[] = array('text' =>  TEXT_USER_ADDED. ' ' .$oInfo->user_added);
         }else{
 $contents[] = array('text' =>  TEXT_USER_ADDED. ' ' .TEXT_UNSET_DATA);
-        }if(tep_not_null($oInfo->date_added)){
+        }if(tep_not_null(tep_datetime_short($oInfo->date_added))){
 $contents[] = array('text' =>  TEXT_DATE_ADDED. ' ' .tep_datetime_short($oInfo->date_added));
         }else{
 $contents[] = array('text' =>  TEXT_DATE_ADDED. ' ' .TEXT_UNSET_DATA);
@@ -381,7 +381,7 @@ $contents[] = array('text' =>  TEXT_DATE_ADDED. ' ' .TEXT_UNSET_DATA);
 $contents[] = array('text' =>  TEXT_USER_UPDATE. ' ' .$oInfo->user_update);
         }else{
 $contents[] = array('text' =>  TEXT_USER_UPDATE. ' ' .TEXT_UNSET_DATA);
-        }if(tep_not_null($oInfo->date_update)){
+        }if(tep_not_null(tep_datetime_short($oInfo->date_update))){
 $contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .tep_datetime_short($oInfo->date_update));
         }else{
 $contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .TEXT_UNSET_DATA);

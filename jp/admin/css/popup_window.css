@@ -1,0 +1,21 @@
+.popup_window {
+  position: absolute;
+  margin-left:2px;
+  display:none;
+}
+.popup_window_top{
+  background-color:#000000;
+  color:#FFFFFF;
+  padding:0 5px;
+  clear:both;
+}
+.popup_window_top a{ color:#FFFFFF;}
+.popup_window_body{
+  padding:5px 50px;
+  background-color: #FFFF00;
+}
+.popup_window_body input, .popup_window_body select{
+  margin:0;
+  padding:0;      
+}
+

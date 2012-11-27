@@ -3,7 +3,7 @@ function $_(eleId){
 }
 <!--
 function ch_type(sel){
-// onchangeでウィンドウを開く方法を選択
+// open a window by onchange
 var form=document.getElementById('form1');
 var open_type=sel.options[sel.selectedIndex].value;
 if(open_type==1){form.target="_blank";}
@@ -542,19 +542,19 @@ RegUrl.URLParser.prototype._makeGetter = function(field) {
 function fn(value){
   var gameid = document.getElementById("gameid");
   if(gameid.style.display == 'none'){  
-  $(value).css("background","url('image/seach_right_visit.png') no-repeat scroll 0 0 transparent");
+  $(value).css("background","url('image/seach_bottom04_visit.png') no-repeat scroll 0 0 transparent");
    $(value).css("height","75px");
      
    $("#gameid").slideDown("slow");
          $("#out_id").slideUp("slow");
 
    }else{
-    $(value).css("background","url('image/seach_right.png') no-repeat scroll 0 0 transparent");
+    $(value).css("background","url('image/seach_bottom03_visit.png') no-repeat scroll 0 0 transparent");
       $("#gameid").slideUp("slow");               
     }
 }
 function search_close(){
-  $("#game-preview").css("background","url('image/seach_right.png') no-repeat scroll 0 0 transparent");
+  $("#game-preview").css("background","url('image/seach_bottom03_visit.png') no-repeat scroll 0 0 transparent");
   $("#gameid").slideUp("slow");
 }
 

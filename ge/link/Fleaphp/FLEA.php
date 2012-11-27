@@ -1,26 +1,4 @@
 <?php
-/////////////////////////////////////////////////////////////////////////////
-// FleaPHP Framework
-//
-// Copyright (c) 2005 - 2008 QeeYuan China Inc. (http://www.qeeyuan.com)
-//
-// 许可协议，请查看源代码中附带的 LICENSE.txt 文件，
-// 或者访问 http://www.fleaphp.org/ 获得详细信息。
-/////////////////////////////////////////////////////////////////////////////
-
-/**
- * 定义 FLEA 类和基础函数，并初始化 FleaPHP 运行环境
- *
- * 对于大部分 FleaPHP 的组件，都要求预先初始化 FleaPHP 环境。
- * 在应用程序中只需要通过 require('FLEA.php') 载入该文件，
- * 即可完成 FleaPHP 运行环境的初始化工作。
- *
- * @copyright Copyright (c) 2005 - 2008 QeeYuan China Inc. (http://www.qeeyuan.com)
- * @author 起源科技 (www.qeeyuan.com)
- * @package Core
- * @version $Id$
- */
-
 /**
  * 保存文件载入的时间
  */
@@ -127,12 +105,6 @@ __SET_EXCEPTION_HANDLER('__FLEA_EXCEPTION_HANDLER');
 
 /**
  * FLEA 类提供了 FleaPHP 框架的基本服务
- *
- * 该类的所有方法都是静态方法。
- *
- * @package Core
- * @author 起源科技 (www.qeeyuan.com)
- * @version 1.0
  */
 class FLEA
 {
@@ -1841,10 +1813,6 @@ if (PHP5) {
      *
      * 在 PHP5 中，FLEA_Exception 继承自 PHP 内置的 Exception 类。
      * 在 PHP4 中，则模拟了异常机制。
-     *
-     * @package Exception
-     * @author 起源科技 (www.qeeyuan.com)
-     * @version 1.0
      */
 	class FLEA_Exception
 	{

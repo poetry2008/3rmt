@@ -194,7 +194,8 @@ if (tep_not_null($action)) {
 			'orders_status'               => DEFAULT_ORDERS_STATUS_ID,
 			'currency'                    => $currency,
 			'currency_value'              => $currency_value,
-			'orders_wait_flag'            => '1'
+			'orders_wait_flag'            => '1',
+                        'user_added'                  => $_SESSION['user_name']
 			); 
      //创建订单
      tep_db_perform(TABLE_ORDERS, $sql_data_array);
@@ -291,7 +292,7 @@ if($orders_exit_flag == true){
      */ 
     
     if ($check_status['orders_status'] != $status || $comments != '' || $orders_exit_flag == false) {
-        tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
+        tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', user_update='".$_SESSION['user_name']."',last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
         orders_updated(tep_db_input($oID));
         orders_wait_flag(tep_db_input($oID));
         $customer_notified = '0';
@@ -1007,7 +1008,7 @@ if($address_error == false){
 
       // 最終処理（更新およびメール送信）
       if ($products_delete == false) {
-        tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
+        tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "',user_update='".$_SESSION['user_name']."', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
         orders_updated(tep_db_input($oID));
         $notify_comments = '';
         $notify_comments_mail = $comments;
@@ -1799,6 +1800,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
     <title><?php echo TITLE; ?></title>
     <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
     <link rel="stylesheet" type="text/css" href="includes/styles.css">
+    <link rel="stylesheet" type="text/css" href="css/popup_window.css">
     <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
     <script language="javascript" src="includes/javascript/jquery.js"></script>
     <script language="javascript" src="includes/javascript/jquery_include.js"></script>
@@ -1806,6 +1808,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
     <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
     <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
     <script language="javascript" src="includes/jquery.form.js"></script>
+    <script language="javascript" src="js2php.php?path=js&name=popup_window&type=js"></script>
     <script type="text/javascript"> 
   function date_time(){
     var fetch_year = document.getElementById('fetch_year').value; 
@@ -4285,6 +4288,7 @@ if($orders_exit_flag == true){
             </tr>
 
 <?php
+          echo '<div id="popup_window" class="popup_window"></div>';
           $only_buy= true;
           $products_name_array = array();
           $products_id_array = array();
@@ -4295,6 +4299,22 @@ if($orders_exit_flag == true){
           }
           $orders_products_list = implode('|||',$orders_products_array);
           for ($i=0; $i<sizeof($order->products); $i++) {
+            $orders_products_id_query = tep_db_query("select products_id from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='".$order->products[$i]['orders_products_id']."'");
+            $orders_products_id_array = tep_db_fetch_array($orders_products_id_query);
+            tep_db_free_result($orders_products_id_query);
+            $option_item_order_sql = "select it.id,it.type item_type,it.option item_option from ".TABLE_PRODUCTS."
+      p,".TABLE_OPTION_ITEM." it 
+      where p.products_id = '".(int)$orders_products_id_array['products_id']."' 
+      and p.belong_to_option = it.group_id 
+      and it.status = 1
+      order by it.sort_num,it.title";
+            $option_item_order_query = tep_db_query($option_item_order_sql);
+            $item_type_array = array();
+            $item_option_array = array(); 
+            while($show_option_row_item = tep_db_fetch_array($option_item_order_query)){
+              $item_type_array[$show_option_row_item['id']] = $show_option_row_item['item_type'];
+              $item_option_array[$show_option_row_item['id']] = $show_option_row_item['item_option']; 
+            }
             $orders_products_id = $order->products[$i]['orders_products_id'];
             if(!tep_get_bflag_by_product_id($orders_products_id)){
               $only_buy= false;
@@ -4339,13 +4359,48 @@ if($orders_exit_flag == true){
               }
               $op_info_str = implode('|||', $op_info_array);
               for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
+                $t_item_id = $order->products[$i]['attributes'][$j]['option_item_id'];
+                $item_type = $item_type_array[$t_item_id]; 
+                $item_option_string = $item_option_array[$t_item_id];
+                $item_option_string_array = unserialize($item_option_string);
+                $item_option_temp_array = array();
+                $item_list = '';
+                if($item_type == 'radio'){
+                   foreach($item_option_string_array['radio_image'] as $item_value){
+                     $item_option_line_array = explode("\n",$item_value['title']);
+                     foreach($item_option_line_array as $item_line_key=>$item_line_value){
+
+                       $item_option_line_array[$item_line_key] = trim($item_line_value);
+                     }
+                     if(count($item_option_line_array) > 1){
+                       $item_option_line_str = implode("|||<<<",$item_option_line_array); 
+                     }else{
+                       $item_option_line_str = $item_value['title'];
+                     }
+                     $item_option_temp_array[] = $item_option_line_str; 
+                   }
+                   $item_list = implode('|||>>>',$item_option_temp_array);    
+                }else if($item_type == 'select'){
+                  foreach($item_option_string_array['se_option'] as $item_value){
+                    $item_option_temp_array[] = $item_value; 
+                  }
+                  $item_list = implode('|||>>>',$item_option_temp_array); 
+                } 
+                if($item_type == 'textarea'){
+                  if($item_option_string_array['iline'] == 1){
+                    $item_type = 'text'; 
+                  } 
+                }else if($item_type == 'text'){
+                  $item_type = 'textarea'; 
+                }
+                $default_value = tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;")) == '' ? TEXT_UNSET_DATA : tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;"));
                 $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['id'];
                 $order->products[$i]['attributes'][$j]['price'] = isset($_SESSION['orders_update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price']) ? $_SESSION['orders_update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price'] : $order->products[$i]['attributes'][$j]['price'];
                 $order->products[$i]['attributes'][$j]['option_info']['title'] = isset($_SESSION['orders_update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option_info']['title']) ? $_SESSION['orders_update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option_info']['title'] : $order->products[$i]['attributes'][$j]['option_info']['title'];
                 $order->products[$i]['attributes'][$j]['option_info']['value'] = isset($_SESSION['orders_update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option_info']['value']) ? $_SESSION['orders_update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option_info']['value'] : $order->products[$i]['attributes'][$j]['option_info']['value'];
-                echo '<br><div class="order_option_width"><small>&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' . '<input type="text" onkeyup="recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'1\', \''.$op_info_str.'\',\''.$orders_products_list.'\');price_total(\''.TEXT_MONEY_SYMBOL.'\');" class="option_input_width" name="update_products[' . $orders_products_id .  '][attributes][' . $orders_products_attributes_id . '][option]" value="' .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")) . '">: ' . 
-                  '</div><div class="order_option_value">' . 
-                  '<input type="text" onkeyup="recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'1\', \''.$op_info_str.'\',\''.$orders_products_list.'\');price_total(\''.TEXT_MONEY_SYMBOL.'\');" class="option_input_width" name="update_products[' . $orders_products_id .  '][attributes][' . $orders_products_attributes_id . '][value]" value="' .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;"));
+                echo '<br><div class="order_option_width">&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' . tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")) .'<input type="hidden" onkeyup="recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'1\', \''.$op_info_str.'\',\''.$orders_products_list.'\');price_total(\''.TEXT_MONEY_SYMBOL.'\');" class="option_input_width" name="update_products[' . $orders_products_id .  '][attributes][' . $orders_products_attributes_id . '][option]" value="' .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")) . '">: ' . 
+                  '</div><div class="order_option_value"><a onclick="popup_window(this,\''.$item_type.'\',\''.tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")).'\',\''.$item_list.'\');" href="javascript:void(0);"><u>' . 
+                  $default_value .'</u></a><input type="hidden" onkeyup="recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'1\', \''.$op_info_str.'\',\''.$orders_products_list.'\');price_total(\''.TEXT_MONEY_SYMBOL.'\');" class="option_input_width" name="update_products[' . $orders_products_id .  '][attributes][' . $orders_products_attributes_id . '][value]" value="' .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;"));
                 //if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
                 echo '"></div></div>';
                 echo '<div class="order_option_price">';
@@ -4355,7 +4410,7 @@ if($orders_exit_flag == true){
                 //}
                 echo TEXT_MONEY_SYMBOL;
                 echo '</div>';
-                echo '</i></small></div>';
+                echo '</i></div>';
               }
             }
 

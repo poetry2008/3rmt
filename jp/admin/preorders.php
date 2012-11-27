@@ -1094,7 +1094,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               <h3>Customer Info</h3>
               <table width="100%" border="0" cellspacing="0" cellpadding="2">
                 <tr>
-                  <td class="main" valign="top" width="30%"><b><?php echo TEXT_ORDER_IP_ADDRESS;?></b></td>
+                  <td class="main" valign="top" width="30%" nowrap><b><?php echo TEXT_ORDER_IP_ADDRESS;?></b></td>
                   <td class="main"><?php echo tep_high_light_by_keywords($order->info['orders_ip'] ? $order->info['orders_ip'] : 'UNKNOW',IP_LIGHT_KEYWORDS);?></td>
                 </tr>
                 <tr>
@@ -1881,8 +1881,8 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     <tr>
       <td valign="top">
     <?php // 订单信息预览，配合javascript，永远浮动在屏幕右下角 ?>
-    <div id="orders_info_box" style=" display:none; position:absolute; background:#FFFF00; width:70%; /*bottom:0;margin-top:40px;right:0;width:200px;*/">&nbsp;</div>
-    <?php
+    <div id="orders_info_box" style=" display:none; position:absolute; background:#FFFF00; width:70%;z-index:2; /*bottom:0;margin-top:40px;right:0;width:200px;*/">&nbsp;</div>
+<?php
   if ($ocertify->npermission == 15) {
     if(!tep_session_is_registered('reload')) $reload = 'yes';
     if (false) { 
@@ -3183,7 +3183,7 @@ function submit_confirm()
 <table width="100%"><tr><td width="70%">
       <table width="100%" id="select_send" style="display:none">
         <tr>
-          <td class="main" width="100"><b><?php echo ENTRY_STATUS; ?></b></td>
+          <td class="main" width="100" nowrap="nowrap"><b><?php echo ENTRY_STATUS; ?></b></td>
         <td class="main"><?php echo tep_draw_pull_down_menu('status',
             $orders_statuses, $select_select,
             'onChange="mail_text(\'status\',\'comments\',\'os_title\')"'); ?> <?php
@@ -3195,14 +3195,14 @@ function submit_confirm()
           <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
         </tr>
         <tr>
-          <td class="main"><b><?php echo ENTRY_EMAIL_TITLE; ?></b></td>
+          <td class="main" nowrap="nowrap"><b><?php echo ENTRY_EMAIL_TITLE; ?></b></td>
         <td class="main"><?php echo tep_draw_input_field('os_title', $select_title,' style=" width:400px;"'); ?></td>
         </tr>
         <tr>
           <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
         </tr>
         <tr>
-          <td class="main" valign="top"><b><?php echo TABLE_HEADING_COMMENTS . ':'; ?></b></td>
+          <td class="main" valign="top" nowrap="nowrap"><b><?php echo TABLE_HEADING_COMMENTS . ':'; ?></b></td>
         <td class="main">
           <?php echo TEXT_MAIL_CONTENT_INFO;?>
           <table><tr class="smalltext"><td><font

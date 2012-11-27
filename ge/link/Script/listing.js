@@ -1,6 +1,6 @@
 
 	/**
-	* 表头排序时的动作
+	* Operation when the table header to sort
 	*/
 	function fnTableSort(tablename,colName,sortDir){
 		addCookie('sortName_'+tablename,colName,30*24);
@@ -9,7 +9,7 @@
 	}	
 	
 	/**
-	* 改变表格显示行数的动作
+	* The change table shows the number of rows of action
 	*/
 	function fnChangeSize(tablename,pageSize){
 		addCookie('pageSize_'+tablename,pageSize,24*30);
@@ -17,7 +17,7 @@
 	}
 	
 	/**
-	* 改变分类的动作
+	* To change the classification of the action
 	*/
 	function fnChangeCategory(tablename,category){
 		addCookie('category_'+tablename,category,24*30);
@@ -25,17 +25,17 @@
 	}
 	
 	/**
-	* 跳页动作
+	* Jump page action
 	*/
 	function fnChangePage(tablename,pageNo){
 		//alert('tableName:'+tablename+". pageNo="+pageNo+".");
 		addCookie('pageNo_'+tablename,pageNo,24*30);
-		setTimeout('window.location.href=gUrl;',1000);		//使用了全局变量
+		setTimeout('window.location.href=gUrl;',1000);		//The use of global variables
 		return false;
 	}
 	
 	/**
-	* 全选 或 全部取消选中的动作
+	* Select or uncheck all the action
 	*/
 	function fnCheckAll(tablename,checked){
 		var eles = document.getElementsByTagName("input");
@@ -46,8 +46,8 @@
 	}
 	
 	/**
-	* 点击删除的时确认
+	* Confirm delete when click it
 	*/
 	function fnConfirm(){
-		return confirm(gConfirm);		//使用了全局变量
+		return confirm(gConfirm);		//The use of global variables
 	}

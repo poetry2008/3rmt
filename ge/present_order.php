@@ -19,14 +19,14 @@
     tep_redirect(tep_href_link(FILENAME_PRESENT, 'error_message='.urlencode(TEXT_PRESENT_ERROR_NOT_SELECTED), 'SSL'));  
   }
 
-  //ログイン済みの場合は確認画面へリダイレクト
+  //登录的情况下，跳转到确认页面
   if(tep_session_is_registered('customer_id')) {
     $pc_id = $customer_id;
     tep_session_register('pc_id');
     tep_redirect(tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.(int)$_GET['goods_id'], 'SSL'));
   }
   
-  //セッション内に「pc_id」が入っていた場合は確認画面へリダイレクト
+  //session里有“pc_id”的时候，跳转到确认页面
   if(tep_session_is_registered('pc_id')) {
     tep_redirect(tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.(int)$_GET['goods_id'], 'SSL'));
   }
@@ -34,11 +34,11 @@
  
   
   switch($_GET['action']) {
-    //既会員ログイン
+    //老会员登录
   case 'login':
     require(DIR_WS_ACTIONS.'present_login.php');
     break;
-    //ゲストまたは新規会員
+    //游客或者新会员
   case 'process':
     require(DIR_WS_ACTIONS.'present_process.php');
     break;

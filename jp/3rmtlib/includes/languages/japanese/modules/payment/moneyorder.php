@@ -6,7 +6,7 @@
   define('TS_MODULE_PAYMENT_MONEYORDER_TEXT_TITLE', '銀行振込');// '代金先払い'/'郵便振替'/'現金書留'に変更して使用できます
   define('TS_MODULE_PAYMENT_MONEYORDER_TEXT_EXPLAIN', 'ジャパンネット銀行またはセブン銀行へお振り込み。<br>振込手数料はお客様のご負担となります。');
   define('TS_MODULE_PAYMENT_MONEYORDER_TEXT_DESCRIPTION', 'ジャパンネット銀行またはセブン銀行へお振り込み。<br>振込手数料はお客様のご負担となります。'); 
-  define('TS_MODULE_PAYMENT_MONEYORDER_TEXT_EMAIL_FOOTER','ジャパンネット銀行またはセブン銀行へお振り込み。<br>振込手数料はお客様のご負担となります。'. EMAIL_SIGNATURE);  //Add Japanese osCommerce
+  define('TS_MODULE_PAYMENT_MONEYORDER_TEXT_EMAIL_FOOTER','ジャパンネット銀行またはセブン銀行へお振り込み。<br>振込手数料はお客様のご負担となります。'. EMAIL_SIGNATURE);
   
   define('TS_MODULE_PAYMENT_MONEYORDER_TEXT_FEE', '銀行振込手数料:');
   define('TS_MODULE_PAYMENT_MONEY_ORDER_TEXT_PROCESS', '銀行振込決済手数料が別途かかります。');
@@ -32,6 +32,6 @@
 ※ 取引日時までにお支払いができない場合は、必ずご連絡ください。
 　 ご連絡がない場合、在庫引き当てを解除することがあります。
 ※ お振り込みはご注文から7日以内にお願いいたします。
-※ ご入金を株式会社iimyが確認した時点でご契約の成立となります。
+※ ご入金を".COMPANY_NAME."が確認した時点でご契約の成立となります。
 ");
 define('TS_MODULE_PAYMENT_MONEYORDER_NORMAL', '普通');

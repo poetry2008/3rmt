@@ -2,12 +2,6 @@
 /*
   $Id$
 
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   $newsletter_array = array(array('id' => '1',
@@ -74,7 +68,7 @@
   } elseif ($error == true) {
       if ($entry_date_of_birth_error == true) {
           $a_value = tep_draw_input_field('dob') . '&nbsp;' . ENTRY_DATE_OF_BIRTH_ERROR;
-      //18歳未満登録禁止処理
+      //未满18岁禁止注册处理
     } elseif($entry_date_of_birth_error2 == true) {
           $a_value = tep_draw_input_field('dob') . '&nbsp;' . ENTRY_DATE_OF_BIRTH_ERROR2;
     } else {
@@ -186,7 +180,7 @@
   if ($account['entry_country_id']) { $country = $account['entry_country_id']; }
   else if (!$country) { $country = STORE_COUNTRY; } 
     echo tep_draw_hidden_field('country', 107);
-// 2003-07-15 modi -e
+
 ?>
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
   <tr>

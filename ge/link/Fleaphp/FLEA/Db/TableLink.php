@@ -1,32 +1,5 @@
 <?php
-/////////////////////////////////////////////////////////////////////////////
-// FleaPHP Framework
-//
-// Copyright (c) 2005 - 2008 QeeYuan China Inc. (http://www.qeeyuan.com)
-//
-// 许可协议，请查看源代码中附带的 LICENSE.txt 文件，
-// 或者访问 http://www.fleaphp.org/ 获得详细信息。
-/////////////////////////////////////////////////////////////////////////////
 
-/**
- * 定义 FLEA_Db_TableLink 类及其继承类
- *
- * @copyright Copyright (c) 2005 - 2008 QeeYuan China Inc. (http://www.qeeyuan.com)
- * @author 起源科技 (www.qeeyuan.com)
- * @package Core
- * @version $Id$
- */
-
-/**
- * FLEA_Db_TableLink 封装数据表之间的关联关系
- *
- * FLEA_Db_TableLink 是一个完全供 FleaPHP 内部使用的类，
- * 开发者不应该直接构造 FLEA_Db_TableLink 对象。
- *
- * @package Core
- * @author 起源科技 (www.qeeyuan.com)
- * @version 1.2
- */
 class FLEA_Db_TableLink
 {
     /**
@@ -469,10 +442,6 @@ class FLEA_Db_TableLink
 
 /**
  * FLEA_Db_HasOneLink 封装 has one 关系
- *
- * @package Core
- * @author 起源科技 (www.qeeyuan.com)
- * @version 1.0
  */
 class FLEA_Db_HasOneLink extends FLEA_Db_TableLink
 {
@@ -579,10 +548,6 @@ class FLEA_Db_HasOneLink extends FLEA_Db_TableLink
 
 /**
  * FLEA_Db_BelongsToLink 封装 belongs to 关系
- *
- * @package Core
- * @author 起源科技 (www.qeeyuan.com)
- * @version 1.0
  */
 class FLEA_Db_BelongsToLink extends FLEA_Db_TableLink
 {
@@ -650,10 +615,6 @@ class FLEA_Db_BelongsToLink extends FLEA_Db_TableLink
 
 /**
  * FLEA_Db_HasManyLink 封装 has many 关系
- *
- * @package Core
- * @author 起源科技 (www.qeeyuan.com)
- * @version 1.0
  */
 class FLEA_Db_HasManyLink extends FLEA_Db_HasOneLink
 {
@@ -685,10 +646,6 @@ class FLEA_Db_HasManyLink extends FLEA_Db_HasOneLink
 
 /**
  * FLEA_Db_ManyToManyLink 封装 many to many 关系
- *
- * @package Core
- * @author 起源科技 (www.qeeyuan.com)
- * @version 1.0
  */
 class FLEA_Db_ManyToManyLink extends FLEA_Db_TableLink
 {
@@ -958,10 +915,6 @@ class FLEA_Db_ManyToManyLink extends FLEA_Db_TableLink
 
 /**
  * FLEA_Db_SqlHelper 类提供了各种生成 SQL 语句的辅助方法
- *
- * @package Core
- * @author 起源科技 (www.qeeyuan.com)
- * @version 1.0
  */
 class FLEA_Db_SqlHelper
 {

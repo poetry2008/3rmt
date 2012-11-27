@@ -190,7 +190,7 @@ if(tep_not_null($user_added)){?>
 <?php echo TEXT_UNSET_DATA;?>
 </td>
 </tr>
-<?php } if(tep_not_null($date_added)){ ?>
+<?php } if(tep_not_null(tep_datetime_short($date_added))){ ?>
 <tr>
 <td>
 &nbsp;&nbsp;&nbsp;&nbsp;
@@ -230,7 +230,7 @@ if(tep_not_null($user_added)){?>
 <?php echo TEXT_UNSET_DATA;?>
 </td>
 </tr>
-<?php }if(tep_not_null($date_update)){?>
+<?php }if(tep_not_null(tep_datetime_short($date_update))){?>
 <tr>
 <td>
 &nbsp;&nbsp;&nbsp;&nbsp;

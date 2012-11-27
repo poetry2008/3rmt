@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
@@ -102,7 +95,7 @@
 </body>
 </html>
 <?php 
-//セッション開放
+//session开放
 tep_session_unregister('pc_id');
 tep_session_unregister('firstname');
 tep_session_unregister('lastname');

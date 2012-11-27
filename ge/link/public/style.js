@@ -3,7 +3,7 @@ function $_(eleId){
 }
 <!--
 function ch_type(sel){
-// onchangeでウィンドウを開く方法を選択
+// open a window by onchange
 var form=document.getElementById('form1');
 var open_type=sel.options[sel.selectedIndex].value;
 if(open_type==1){form.target="_blank";}

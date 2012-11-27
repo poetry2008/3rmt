@@ -7,7 +7,7 @@
 // * DIR_FS_* = Filesystem directories (local/physical)
 // * DIR_WS_* = Webserver directories (virtual/URL)
 //  define('HTTP_SERVER', 'http://3xy.szn.200.com'); // eg, http://localhost - should not be empty for productive servers
-  define('HTTP_SERVER', 'http://3rr.kthiz.200.com'); // eg, http://localhost - should not be empty for productive servers
+  define('HTTP_SERVER', 'http://rrosc3rmt.hm1002.200.com'); // eg, http://localhost - should not be empty for productive servers
   define('HTTPS_SERVER', 'https://cchm.vicp.net'); // eg, https://localhost - should not be empty for productive servers
   define('URL_ROMAJI_ENABLED', true);
   define('ENABLE_SSL', false); // secure webserver for checkout procedure?
@@ -23,18 +23,18 @@
   define('DIR_WS_LANGUAGES', DIR_WS_INCLUDES . 'languages/');
 
   define('DIR_WS_DOWNLOAD_PUBLIC', DIR_WS_CATALOG . 'pub/');
-  define('DIR_FS_DOCUMENT_ROOT', '/home/kthiz/project/OSC_3RMT/rr/');
+  define('DIR_FS_DOCUMENT_ROOT', '/home/hm1002/OSC_3RMT/rr/');
   define('DIR_FS_CATALOG', DIR_FS_DOCUMENT_ROOT);
   define('DIR_FS_DOWNLOAD', DIR_FS_CATALOG . 'download/');
   define('DIR_FS_DOWNLOAD_PUBLIC', DIR_FS_CATALOG . 'pub/');
   
-  define('DIR_FS_3RMTLIB', '/home/kthiz/project/OSC_3RMT/jp/3rmtlib/');
+  define('DIR_FS_3RMTLIB', '/home/hm1002/OSC_3RMT/jp/3rmtlib/');
 
 // define our database connection
   define('DB_SERVER', 'localhost'); // eg, localhost - should not be empty for productive servers
   define('DB_SERVER_USERNAME', 'root');
   define('DB_SERVER_PASSWORD', '123456');
-  define('DB_DATABASE', 'maker_3rmt');
+  define('DB_DATABASE', '3rmt');
   define('USE_PCONNECT', 'false'); // use persistent connections?
   define('STORE_SESSIONS', ''); // leave empty '' for default handler or set to 'mysql'
 

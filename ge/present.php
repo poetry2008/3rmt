@@ -44,7 +44,7 @@ function popupWindow(url) {
         <tr>
           <td><?php
       ######################
-      ##    詳細ページ    ##
+      ##    详细页面    ##
       ######################
       if($_GET['goods_id'] && !empty($_GET['goods_id'])) {
 //ccdd
@@ -87,7 +87,7 @@ function popupWindow(url) {
           </table>
           <?php
       ######################
-      ##    一覧ページ    ##
+      ##    一览页面    ##
       ######################
       } else {
       ?>

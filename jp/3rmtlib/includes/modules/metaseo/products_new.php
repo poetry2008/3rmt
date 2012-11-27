@@ -61,12 +61,7 @@
     function install() {
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added,site_id) values ('表示の整列順', 'MODULE_METASEO_PRODUCTS_NEW_SORT_ORDER', '0', '表示の整列順を設定できます。数字が小さいほど上位に表示されます.', '6', '0', now(), '".$this->site_id."')");
 
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title,
-        configuration_key, configuration_value, configuration_description,
-        configuration_group_id, sort_order, date_added,user_added, set_function,
-        site_id) values ('タイトル',   'MODULE_METASEO_PRODUCTS_NEW_TITLE',
-          '', '新着商品のタイトル<br>#SEO_PAGE#',   '6',
-          '0','".$_SESSION['user_name']."', now(), NULL, '".$this->site_id."')");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added,user_added, set_function, site_id) values ('タイトル',   'MODULE_METASEO_PRODUCTS_NEW_TITLE', '', '新着商品のタイトル<br>#SEO_PAGE#',   '6', '0','".$_SESSION['user_name']."', now(), NULL, '".$this->site_id."')");
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, set_function, site_id) values ('キーワード', 'MODULE_METASEO_PRODUCTS_NEW_KEYWORDS',    '', '新着商品のキーワード<br>#SEO_PAGE#', '6', '0', now(), \"tep_draw_textarea_field('configuration[MODULE_METASEO_PRODUCTS_NEW_KEYWORDS]', false, 35, 5,\", '".$this->site_id."')");
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, set_function, site_id) values ('説明',       'MODULE_METASEO_PRODUCTS_NEW_DESCRIPTION', '', '新着商品の説明<br>#SEO_PAGE#',       '6', '0', now(), \"tep_draw_textarea_field('configuration[MODULE_METASEO_PRODUCTS_NEW_DESCRIPTION]', false, 35, 5,\", '".$this->site_id."')");
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, set_function, site_id) values ('ロボット',   'MODULE_METASEO_PRODUCTS_NEW_ROBOTS',      '', '新着商品のロボット',               '6', '0', now(), \"tep_cfg_select_option(array('index,follow', 'noindex'),\", '".$this->site_id."')");

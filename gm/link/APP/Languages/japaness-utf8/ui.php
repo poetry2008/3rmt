@@ -30,7 +30,7 @@ return array(
 	'contract'=>'縮む',
 	'expand'=>'広げる',
 
-	//カテゴリ管理
+	//目录管理
 	'classAdd'=>'新規カテゴリ',
 	'classEdit'=>'指定されたカテゴリを変更',
 	'classDel'=>'指定したカテゴリを削除',
@@ -138,7 +138,7 @@ return array(
 
 
 
-	//操作員管理
+	//操作员管理
 	'operator_title'=>'操作員管理',
 	'operator_name'=>'操作員名',
 	'operator_last_login'=>'最終ログイン時間',
@@ -198,7 +198,7 @@ return array(
 	'menu_Seoplink_Admin_Top'=>"リンクチェック",
 
 
-	//権限控制
+	//控制权限
 	'allow'=>"許可",
 	'deny'=>"拒否",
 	"auth_RBACEVERYONE"=>"全員",
@@ -219,7 +219,7 @@ return array(
 
     'param_error' => 'パラメータエラー',
 
-    //トップページ用户自定义
+    //首页用户自定义
 	'custom_site_title'=>'ユーザー定義サイト',
 	'custom_site_name'=>'名前',
 	'custom_site_url'=>'Url',

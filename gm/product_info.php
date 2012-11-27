@@ -1,7 +1,7 @@
 <?php
 /*
    $Id$
-   ファイルコードを確認
+   确认文件代码
  */
 require('includes/application_top.php');
 check_uri('/(.*)\{(.*)\}(.*)/'); 
@@ -274,8 +274,8 @@ if (!$product_info) { // product not found in database
                 TEXT_PRODUCT_PRICE;?></b></td>
                 <td>
                 <?php
-//# 追加スタート ---------------------------------------
-//# -- 注文数量と単価のリスト --------------------------
+//# 添加开始 ---------------------------------------
+//# -- 订单数量和单价列表 --------------------------
                 if(tep_not_null($product_info['products_small_sum'])) {
                   $wari_array = array();
                   echo '<span class="smallText">'.TEXT_PRODUCT_INFO_PRICE_INFO.'</span>';
@@ -294,8 +294,8 @@ if (!$product_info) { // product not found in database
                 } else {
                   echo '<strong>'.$products_price.'</strong>';
                 }
-//# -- 注文数量と単価のリスト --------------------------
-//# 追加エンド -------------------------------------------
+//# -- 订单数量和单价列表 --------------------------
+//# 添加结束 -------------------------------------------
   ?>
     </td>
     </tr>
@@ -383,7 +383,7 @@ if (!$product_info) { // product not found in database
     <?php
     if($product_info['products_quantity'] < 1) {
       if($product_info['products_bflag'] == '1') {
-# 買い取り商品
+# 买取商品
         echo '<span class="markProductOutOfStock">'.TEXT_PAUSE;
       } elseif ($product_info['products_cflag'] == '0') {
         echo '<span class="markProductOutOfStock">'.TEXT_SOLD_OUT;
@@ -451,7 +451,7 @@ if (!$product_info) { // product not found in database
     </form>
     </div>
     <?php
-    //サブ画像
+    //sub图像
     // ccdd
     $sub_colors_query = tep_db_query("
         SELECT color_image, 
@@ -468,7 +468,7 @@ if (!$product_info) { // product not found in database
       <tr>
       <?php
       while($sub_colors = tep_db_fetch_array($sub_colors_query)) {
-        //色名を取得
+        //获取颜色名
         $colors_name_query = tep_db_query("
             SELECT color_name 
             FROM ".TABLE_COLOR." 

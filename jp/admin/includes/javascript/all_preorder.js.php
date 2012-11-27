@@ -7,7 +7,7 @@ window.last_status  = 0;
 var auto_submit_able = true;
 // 最后检查时间
 var prev_customer_action = '';
-
+var check_pre_o_single = '0';
 // 全选
 function all_check(){
   field_on();
@@ -43,6 +43,13 @@ function all_check(){
       }
     }
   }
+var select_send = $("#select_send").offset();
+var select_send_top = select_send.top;
+var select_send_height = $("#select_send").height();
+var box_warp_top = $(".box_warp").height();
+if((select_send_top+select_send_height) > box_warp_top){
+  $(".box_warp").height(select_send_top+select_send_height);
+}
 }
 
 function chg_tr_color(aaa){
@@ -231,6 +238,14 @@ offset = ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;
 $('#orders_info_box').css('top',offset).show();
 }
 }
+var orders_info_box_top = $("#orders_info_box").css("top");
+orders_info_box_top = orders_info_box_top.replace("px","");
+orders_info_box_top = parseInt(orders_info_box_top);
+var orders_info_box_height = $("#orders_info_box").height();
+var box_warp_heiht = $(".box_warp").height();
+if((orders_info_box_top+orders_info_box_height) > box_warp_heiht){
+  $(".box_warp").height(orders_info_box_top+orders_info_box_height);
+}
 }
 });
 
@@ -299,6 +314,8 @@ if (
   last_customer_action != cfg_last_customer_action 
   && prev_customer_action != last_customer_action
   ){
+checkNewPreOrders(prev_customer_action != '' ? prev_customer_action : cfg_last_customer_action);
+if (check_pre_o_single == '1') {
 // 如果有新订单和修改
 // 改变背景颜色
 $('body').css('background-color', '#83dc94');// rgb(255, 204, 153)
@@ -309,6 +326,8 @@ newOrders(prev_customer_action != '' ? prev_customer_action : cfg_last_customer_
 prev_customer_action = last_customer_action;
 // 播放提示音
 playSound();
+check_pre_o_single = '0';
+}
 }
 }
 });
@@ -426,7 +445,14 @@ function show_questions(ele){
 		     }else {
 			 show =false;
 		     }
-		     show_questiondiv(show);
+                     show_questiondiv(show);
+                     var select_send = $("#select_send").offset();
+                     var select_send_top = select_send.top;
+                     var select_send_height = $("#select_send").height();
+                     var box_warp_top = $(".box_warp").height();
+                     if((select_send_top+select_send_height) > box_warp_top){
+                       $(".box_warp").height(select_send_top+select_send_height);
+                     }
 		 }});},1000);
     }
     return true;
@@ -774,8 +800,9 @@ ele.className='orders_computer_checked';
 });
 }
 }
-
+var temp_oid = '';
 function showPreOrdersInfo(oID,ele,popup_type,param_str){
+  temp_oid = oID;
   param_str = decodeURIComponent(param_str);
   data_str = "oid="+oID+"&"+param_str;
   if (popup_type == 1) {
@@ -828,6 +855,14 @@ $('#orders_info_box').css('top',offset).show();
 }
 }
 */
+var orders_info_box_top = $("#orders_info_box").css("top");
+orders_info_box_top = orders_info_box_top.replace("px","");
+orders_info_box_top = parseInt(orders_info_box_top);
+var orders_info_box_height = $("#orders_info_box").height();
+var box_warp_heiht = $(".box_warp").height();
+if((orders_info_box_top+orders_info_box_height) > box_warp_heiht){
+  $(".box_warp").height(orders_info_box_top+orders_info_box_height);
+}
 }
 });
 }
@@ -835,6 +870,26 @@ $(document).ready(function(){
     $(".dataTableContent").find("input|[type=checkbox][checked]").parent().parent().each(function(){
       if($(this).attr('class')!='dataTableRowSelected'){$(this).attr('style','background-color: rgb(240, 128, 128);')}})
     });
+
+window.onresize = preorders_info_box_offset;
+
+function preorders_info_box_offset(){
+   var preorders_value = '';
+   var box_warp = '';
+   var box_warp_top = 0;
+   var box_warp_left = 0;
+   if(temp_oid != ''){
+    if($(".box_warp").offset()){
+           box_warp = $(".box_warp").offset();
+           box_warp_top = box_warp.top;
+           box_warp_left = box_warp.left;
+     }
+    preorders_value = $("#tr_" + temp_oid).offset();
+   $("#orders_info_box").css('top',preorders_value.top+$("#tr_" +  temp_oid).height()-box_warp_top);
+   $("#orders_info_box").css('left',preorders_value.left-box_warp_left);
+  }
+ }
+
 
 function delete_preorder_info(oID, param_str)
 {
@@ -880,6 +935,21 @@ function mark_work(ele, mark_symbol, select_mark, c_site, param_other)
           ele.className='mark_flag_checked';
         }
         window.location.href = data_array[1]; 
+      }
+    }
+  });
+}
+
+function checkNewPreOrders(t)
+{
+  $.ajax({
+    dataType: 'text',
+    url: 'ajax_preorders.php?action=get_new_orders&type=check&prev_customer_action='+t,
+    success: function(msg) {
+      if (msg == '1') {
+        check_pre_o_single = '1';
+      } else {
+        check_pre_o_single = '0';
       }
     }
   });

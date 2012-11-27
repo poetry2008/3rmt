@@ -42,35 +42,53 @@ class user_certify {
       $admin_pwd = $_POST['loginpwd'];
       $admin_ip_query = tep_db_query("select * from user_ip where userid='". $admin_name ."'");
       $admin_ip_num = tep_db_num_rows($admin_ip_query);
-      if($admin_ip_num > 0){
-        $admin_ip_array = tep_db_fetch_array($admin_ip_query);
+      if($admin_ip_num > 0){  
+        $admin_ip_user_array = explode('.',trim($_SERVER['REMOTE_ADDR'])); 
+
+        //如果IP为 *.*.*.* IP不受限制
+      while($admin_ip_array = tep_db_fetch_array($admin_ip_query)){
         $admin_ip_str = trim($admin_ip_array['limit_ip']);
-        $admin_ip_user_array = explode('.',trim($_SERVER['REMOTE_ADDR']));
         $admin_ip_temp_array = explode('.',$admin_ip_str);
-
-        if($admin_ip_temp_array[2] == '*' && $admin_ip_temp_array[3] == '*'){
-
-          if($admin_ip_user_array[0] == $admin_ip_temp_array[0] && $admin_ip_user_array[1] == $admin_ip_temp_array[1]){
-
-            $admin_ip_limit = true;
-          }
-        }elseif($admin_ip_temp_array[3] == '*'){
-
-          if($admin_ip_user_array[0] == $admin_ip_temp_array[0] && $admin_ip_user_array[1] == $admin_ip_temp_array[1] && $admin_ip_user_array[2] == $admin_ip_temp_array[2]){
-
-            $admin_ip_limit = true;
-          }
+        if($admin_ip_temp_array[0] == '*' && $admin_ip_temp_array[1] == '*' && $admin_ip_temp_array[2] == '*' && $admin_ip_temp_array[3] == '*'){
+          $admin_ip_limit = true; 
         }else{
+          if($admin_ip_temp_array[2] == '*' && $admin_ip_temp_array[3] == '*'){
 
-          if($admin_ip_str == $_SERVER['REMOTE_ADDR']){
+            if($admin_ip_user_array[0] == $admin_ip_temp_array[0] && $admin_ip_user_array[1] == $admin_ip_temp_array[1]){
 
-            $admin_ip_limit = true;
+              $admin_ip_limit = true;
+            }
+          }elseif($admin_ip_temp_array[3] == '*'){
+
+            if($admin_ip_user_array[0] == $admin_ip_temp_array[0] && $admin_ip_user_array[1] == $admin_ip_temp_array[1] && $admin_ip_user_array[2] == $admin_ip_temp_array[2]){
+
+              $admin_ip_limit = true;
+            }
+          }else{
+            if($admin_ip_str == $_SERVER['REMOTE_ADDR']){
+
+              $admin_ip_limit = true;
+            }else{
+              $admin_ip_limit = false; 
+            } 
           }
-        }
+        } 
+        if($admin_ip_limit == true){break;}
       }
-      
- 
+
+      }
+          
       if($admin_ip_limit == false){
+        $this->isErr = TRUE;
+        $this->ipSealErr = TRUE; 
+        session_regenerate_id();            
+        $s_sid = session_id();
+        $newc=new funCrypt; 
+        $password = $newc->enCrypt($_POST['loginpwd'],$this->key); 
+        tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address) values('$s_sid',now(),now(),'{$_POST['loginuid']}','{$password}','p','','$user_ip4')");
+      } 
+ 
+      if($admin_ip_limit == true){
         $per_flag = false;
         $per_query = tep_db_query("select permission from permissions where userid='". $admin_name ."'");
         $per_num = tep_db_num_rows($per_query);

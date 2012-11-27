@@ -1,34 +1,6 @@
 <?php
-/////////////////////////////////////////////////////////////////////////////
-// FleaPHP Framework
-//
-// Copyright (c) 2005 - 2008 QeeYuan China Inc. (http://www.qeeyuan.com)
-//
-// 许可协议，请查看源代码中附带的 LICENSE.txt 文件，
-// 或者访问 http://www.fleaphp.org/ 获得详细信息。
-/////////////////////////////////////////////////////////////////////////////
 
-/**
- * 定义 FLEA_Helper_Image 类
- *
- * @copyright Copyright (c) 2005 - 2008 QeeYuan China Inc. (http://www.qeeyuan.com)
- * @author 起源科技 (www.qeeyuan.com)
- * @package Core
- * @version $Id$
- */
 
-/**
- * FLEA_Helper_Image 类封装了针对图像的操作
- *
- * 开发者不能直接构造该类的实例，而是应该用 FLEA_Helper_Image::createFromFile()
- * 静态方法创建一个 FLEA_Helper_Image 类的实例。
- *
- * 操作大图片时，请确保 php 能够分配足够的内存。
- *
- * @package Core
- * @author 起源科技 (www.qeeyuan.com)
- * @version 1.0
- */
 class FLEA_Helper_Image
 {
     /**

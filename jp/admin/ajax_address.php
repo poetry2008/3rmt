@@ -586,7 +586,7 @@ if(tep_not_null($address_array['user_added'])){
   <td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_USER_ADDED; ?></td>
   <td><?php echo TEXT_UNSET_DATA;?></td>
 </tr> 
-<?php } if(tep_not_null($address_array['date_added'])){?>
+<?php } if(tep_not_null(tep_datetime_short($address_array['date_added']))){?>
 <tr>
   <td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_ADDED; ?></td>
   <td><?php echo $address_array['date_added'];?></td>
@@ -606,7 +606,7 @@ if(tep_not_null($address_array['user_added'])){
   <td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_USER_UPDATE; ?></td>
   <td><?php echo TEXT_UNSET_DATA;?></td>
 </tr>
-<?php } if(tep_not_null($address_array['date_update'])){?>
+<?php } if(tep_not_null(tep_datetime_short($address_array['date_update']))){?>
 <tr>
   <td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_UPDATE; ?></td>
   <td><?php echo $address_array['date_update'];?></td>

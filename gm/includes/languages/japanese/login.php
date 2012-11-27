@@ -33,7 +33,7 @@ define('TEXT_LOGIN_IP_ERROR','<font color="#ff0000">一定の回数以上ログ�
 define('TEXT_VISITORS_CART', '<font color="#ff0000"><b>ご注意:</b></font> ログインすると、[ショッピングカート] の商品は [メンバーズ・ショッピングカート] へ自動的に移動します。 <a href="javascript:session_win();"> [詳細情報]</a>');
 
 if(MODULE_ORDER_TOTAL_POINT_STATUS == "true"){
-   //通常のポイントシステム
+   //普通的积分系统
    if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL != "true") {
       $point_text_1 = MODULE_ORDER_TOTAL_POINT_FEE*100 ;
         if(MODULE_ORDER_TOTAL_POINT_LIMIT != "0"){
@@ -44,7 +44,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == "true"){
 		define('TEXT_POINT','<p class="main"><h3>ポイントシステム</h3>ポイントサービスは、当店でお買い物をされた場合、購入金額の'.$point_text_1.'%をポイントとして還元しております。<br />
               溜まったポイントは次回のお買い物に1ポイント＝1円で使えます。ポイントの有効期限は'.$point_text_2.'。</p>');
    }else{
-   //カスタマーレベル連動型ポイントシステム
+   //客户水平联动型积分系统
     $customer_level_array = explode("||",MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
 	if(!empty($customer_level_array)) {
 	   $customer_lebel_string = '<ul>'."\n";
@@ -57,7 +57,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == "true"){
               '.$customer_lebel_string.'<p class="main">次回のお買い物に1ポイント＝1円で使えます。ポイントの有効期限は'.MODULE_ORDER_TOTAL_POINT_LIMIT.'日です。</p>');
 	 }
   }
-//ポイントシステム不採用 		  
+//不采用积分系统 		  
  }else{
   define('TEXT_POINT','');
  }  
@@ -67,7 +67,7 @@ define('PREORDER_HEADING_TITLE', '注文移行手続き');
 define('PREORDER_LOGIN_HEAD_TEXT', '<font color="#ff0000" style="font-size:14px;">注文移行手続きを行うにはログインしていただく必要がございます。<br>予約時の会員情報にてログインしてください。</font>');
 
 define('SEND_MAIL_TEST', 'メール受信テストをする');
-define('TEXT_LOGIN_SSL_READ', ' <h3>SSL認証</h3></i><p> 当サイトでは、実在性の証明とプライバシー保護のため、グローバルサインのSSLサーバ証明書を使用し、SSL暗号化通信を実現しています。 ブラウザのURLが「'.HTTPS_SERVER.'～」で始まるURLであることを確認ください。 以下に掲載するグローバルサイン発行済みサイトシールのクリックにより、サーバ証明書の検証結果をご確認ください。 </p>');
+define('TEXT_LOGIN_SSL_READ', ' <h3>SSL認証</h3><p> 当サイトでは、実在性の証明とプライバシー保護のため、グローバルサインのSSLサーバ証明書を使用し、SSL暗号化通信を実現しています。 ブラウザのURLが「'.HTTPS_SERVER.'～」で始まるURLであることを確認ください。 以下に掲載するグローバルサイン発行済みサイトシールのクリックにより、サーバ証明書の検証結果をご確認ください。 </p>');
 define('TEXT_BODY_TEXT',STORE_NAME.'が、会員登録をご利用予定のメールアドレスへ、'."\n".'受信確認のためにお送りしています。'."\n\n".'このメールを、無事に受信ボックスで確認できましたら、'."\n".'こちらのメールアドレスは'.STORE_NAME.'で問題なくご利用いただけます。'."\n\n".'以下のURLにアクセスして会員登録を行ってください。'."\n".  HTTP_SERVER.'/create_account.php'."\n\n".'ご不明な点がありましたら、'.STORE_NAME.'までお問い合わせください。'."\n\n\n".'[ご連絡・お問い合わせ先]━━━━━━━━━━━━'."\n".COMPANY_NAME."\n".HTTP_SERVER."\n".STORE_OWNER_EMAIL_ADDRESS."\n"."━━━━━━━━━━━━━━━━━━━━━━━");
 define('TEXT_SEAL_GLOBALSIGN_COM_IMG_ALT','SSL　グローバルサインのサイトシール');
 ?>

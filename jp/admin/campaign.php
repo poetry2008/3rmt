@@ -88,7 +88,7 @@
             );
          if($_GET['action']=='update'){
            $update_sql_date = array(
-               'user_update' => $ocertify->auth_user,
+               'user_update' => $_SESSION['user_name'],
                'date_update' => 'now()'
                );
            $sql_data_array = tep_array_merge($sql_date_array,$update_sql_date);
@@ -98,8 +98,8 @@
               'created_at' => 'now()',
               'status' => '1',
               'site_id' => tep_db_prepare_input($_GET['site_id']),
-              'user_added' => $ocertify->auth_user, 
-              'user_update'=> $ocertify->auth_user,
+              'user_added' => $_SESSION['user_name'], 
+              'user_update'=> $_SESSION['user_name'],
               'date_update'=> 'now()'
               );
           $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
@@ -137,6 +137,7 @@
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script style="text/javascript">
+
 function show_link_campaign_info(cid, sid)
 {
   $.ajax({
@@ -151,8 +152,10 @@ function show_link_campaign_info(cid, sid)
     }
   });
 }
+var temp_id = '';
 function show_campaign_info(ele, cid, sid)
 {
+  temp_id = cid;
   ele = ele.parentNode; 
   $.ajax({
     url: 'ajax_orders.php?action=edit_campaign',     
@@ -187,7 +190,23 @@ function show_campaign_info(ele, cid, sid)
     }
   });
 }
-
+window.onresize = show_campaign_info_offset; 
+function show_campaign_info_offset(){
+   var show_value = '';
+   var box_warp = '';
+   var box_warp_top = 0;
+   var box_warp_left = 0;
+   if(temp_id != ''){
+       if($(".box_warp").offset()){
+          box_warp = $(".box_warp").offset();
+          box_warp_top = box_warp.top;
+          box_warp_left = box_warp.left;
+      }
+   show_value = $("#show_value_" + temp_id).offset();
+   $("#show_campaign_info").css('top',show_value.top+$("#show_value_" + temp_id).height()-box_warp_top);
+   $("#show_campaign_info").css('left',show_value.left-box_warp_left);
+ }
+}
 function close_campaign_info()
 {
   $('#show_campaign_info').html('');  
@@ -357,9 +376,9 @@ require("includes/note_js.php");
         $nowColor = $odd; 
       }
       if ( (isset($selected_item) && is_array($selected_item)) && ($campaign['id'] == $selected_item['id']) ) {
-        echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'">' . "\n";
+        echo '              <tr class="dataTableRowSelected" id="show_value_'.$campaign['id'].'" onmouseover="this.style.cursor=\'hand\'">' . "\n";
       } else {
-        echo '              <tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'">' . "\n";
+        echo '              <tr class="'.$nowColor.'" id="show_value_'.$campaign['id'].'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'">' . "\n";
       }
 ?>
                 <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_CAMPAIGN, 'page='.$_GET['page'].'&campaign_id=' .  $campaign['id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):''));?>'"><?php echo '&nbsp;'.tep_get_site_romaji_by_id($campaign['site_id']); ?></td>

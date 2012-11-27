@@ -239,7 +239,7 @@ function UserPassword_preview() {
   echo TEXT_UNSET_DATA;
   echo '</td>';
   echo "</tr>\n";
-  }if(tep_not_null($users['date_added'])){
+  }if(tep_not_null(tep_datetime_short($users['date_added']))){
   echo "<tr>\n";
   echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_DATE_ADDED . '</td>';  // 確認のため再入力
   // 入力項目出力

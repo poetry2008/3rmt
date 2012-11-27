@@ -7,7 +7,7 @@ window.last_status  = 0;
 var auto_submit_able = true;
 // 最后检查时间
 var prev_customer_action = '';
-
+var check_o_single = '0';
 // 全选
 function all_check(){
   field_on();
@@ -43,6 +43,13 @@ function all_check(){
       }
     }
   }
+var select_send = $("#select_send").offset();
+var select_send_top = select_send.top;
+var select_send_height = $("#select_send").height();
+var box_warp_top = $(".box_warp").height();
+if((select_send_top+select_send_height) > box_warp_top){
+  $(".box_warp").height(select_send_top+select_send_height);
+}
 }
 
 function chg_tr_color(aaa){
@@ -209,7 +216,9 @@ function showRequest(formData, jqForm, options) {
 } 
 
 // 列表右侧的订单信息显示
+var temp_oid = '';
 function showOrdersInfo(oID,ele,popup_type,param_str){
+temp_oid = oID;
   param_str = decodeURIComponent(param_str);
   data_str = "oid="+oID+"&"+param_str; 
   if (popup_type == 1) {
@@ -244,10 +253,35 @@ offset = ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;
 $('#orders_info_box').css('top',offset).show();
 }
 
-
+var orders_info_box_top = $("#orders_info_box").css("top");
+orders_info_box_top = orders_info_box_top.replace("px","");
+orders_info_box_top = parseInt(orders_info_box_top);
+var orders_info_box_height = $("#orders_info_box").height();
+var box_warp_heiht = $(".box_warp").height();
+if((orders_info_box_top+orders_info_box_height) > box_warp_heiht){
+  $(".box_warp").height(orders_info_box_top+orders_info_box_height);
+}
 }
 });
 
+}
+
+window.onresize = orders_info_box_offset; 
+function orders_info_box_offset(){
+   var orders_value = '';
+   var box_warp = '';
+   var box_warp_top = 0;
+   var box_warp_left = 0;
+   if(temp_oid != ''){
+    if($(".box_warp").offset()){
+          box_warp = $(".box_warp").offset();
+          box_warp_top = box_warp.top;
+          box_warp_left = box_warp.left;
+      }
+   orders_value = $("#tr_" + temp_oid).offset();
+  $("#orders_info_box").css('top',orders_value.top+$("#tr_" +  temp_oid).height()-box_warp_top);
+  $("#orders_info_box").css('left',orders_value.left-box_warp_left);
+  }
 }
 
 // 列表右侧的订单信息隐藏
@@ -313,6 +347,8 @@ if (
   last_customer_action != cfg_last_customer_action 
   && prev_customer_action != last_customer_action
   ){
+checkNewOrders(prev_customer_action != '' ? prev_customer_action : cfg_last_customer_action, 1)
+if (check_o_single == '1') {
 // 如果有新订单和修改
 // 改变背景颜色
 $('body').css('background-color', '#ffcc99');// rgb(255, 204, 153)
@@ -323,6 +359,8 @@ newOrders(prev_customer_action != '' ? prev_customer_action : cfg_last_customer_
 prev_customer_action = last_customer_action;
 // 播放提示音
 playSound();
+check_o_single = '0';
+}
 }
 }
 });
@@ -441,7 +479,14 @@ function show_questions(ele){
 		     }else {
 			 show =false;
 		     }
-		     show_questiondiv(show);
+                     show_questiondiv(show);
+                     var select_send = $("#select_send").offset();
+                     var select_send_top = select_send.top;
+                     var select_send_height = $("#select_send").height();
+                     var box_warp_top = $(".box_warp").height();
+                     if((select_send_top+select_send_height) > box_warp_top){
+                       $(".box_warp").height(select_send_top+select_send_height);
+                     }
 		 }});},1000);
     }
     return true;
@@ -940,6 +985,21 @@ function mark_work(ele, mark_symbol, select_mark, c_site, param_other)
           ele.className='mark_flag_checked';
         }
         window.location.href = data_array[1]; 
+      }
+    }
+  });
+}
+
+function checkNewOrders(t)
+{
+  $.ajax({
+    dataType: 'text',
+    url: 'ajax_orders.php?action=get_new_orders&type=check&prev_customer_action='+t,
+    success: function(msg) {
+      if (msg == '1') {
+        check_o_single = '1';
+      } else {
+        check_o_single = '0';
       }
     }
   });

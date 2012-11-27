@@ -174,7 +174,7 @@ if(tep_not_null($user_added)){?>
 <tr>
     <td width="30%" align="left"><?php echo TEXT_USER_ADDED; ?></td><td><?php echo TEXT_UNSET_DATA;?></td>
 </tr>
-<?php } if(tep_not_null($date_added)){?>
+<?php } if(tep_not_null(tep_datetime_short($date_added))){?>
 <tr>
     <td width="30%" align="left"><?php echo TEXT_DATE_ADDED; ?></td><td><?php echo $date_added;?></td>
 </tr>
@@ -190,7 +190,7 @@ if(tep_not_null($user_added)){?>
 <tr>
     <td width="30%" align="left"><?php echo TEXT_USER_UPDATE; ?></td><td><?php echo TEXT_UNSET_DATA;?></td>
 </tr> 
-<?php }if(tep_not_null($date_update)){?>
+<?php }if(tep_not_null(tep_datetime_short($date_update))){?>
 <tr>
     <td width="30%" align="left"><?php echo TEXT_DATE_UPDATE; ?></td><td><?php echo $date_update;?></td>
 </tr>

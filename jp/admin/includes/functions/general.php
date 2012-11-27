@@ -240,7 +240,7 @@ function tep_get_all_get_params($exclude_array = '') {
 
   reset($_GET);
   while (list($key, $value) = each($_GET)) {
-    if (($key != tep_session_name()) && ($key != 'error') && (!tep_in_array($key, $exclude_array))) $get_url .= $key . '=' . rawurlencode($value) . '&';
+    if (($key !='eof') && ($key != tep_session_name()) && ($key != 'error') && (!tep_in_array($key, $exclude_array))) $get_url .= $key . '=' . rawurlencode($value) . '&';
   }
 
   return $get_url;
@@ -3876,7 +3876,7 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
     $str .= '</td>'; 
     $str .= '</tr>'; 
   }
-if(tep_not_null($orders['user_added']) && tep_not_null($orders['customers_name'])){
+if(tep_not_null($orders['user_added']) || tep_not_null($orders['customers_name'])){
 	$str .= '<tr>';
 	$str .= '<td class="main">';  
 	$str .= TEXT_USER_ADDED;
@@ -3918,13 +3918,17 @@ if(tep_not_null($orders['user_added']) && tep_not_null($orders['customers_name']
 	$str .= '</td>';
 	$str .= '</tr>';
 
-}if(tep_not_null($orders['user_update'])){
+}if(tep_not_null($orders['user_update']) || tep_not_null($orders['customers_name'])){
         $str .= '<tr>';	
 	$str .= '<td class="main">';  
 	$str .= TEXT_USER_UPDATE;
 	$str .= '</td>';
 	$str .= '<td class="main">';
-  $str .= $orders['user_update'];	
+        if(isset($orders['user_update']) && $orders['user_update'] != ""){
+        $str .= $orders['user_update'];	
+        }else{
+        $str .= $orders['customers_name'];
+        }
 	$str .= '</td>';
 	$str .= '</tr>';
 }else{
@@ -3936,13 +3940,17 @@ if(tep_not_null($orders['user_added']) && tep_not_null($orders['customers_name']
         $str .= TEXT_UNSET_DATA;	
 	$str .= '</td>';
 	$str .= '</tr>';
-}if(tep_not_null($orders['last_modified'])){ 
+}if(tep_not_null($orders['last_modified']) || tep_not_null($orders['date_purchased'])){ 
         $str .= '<tr>';	
 	$str .= '<td class="main">';  
 	$str .= TEXT_DATE_UPDATE;
 	$str .= '</td>';
 	$str .= '<td class="main">';
+        if(isset($orders['last_modified']) && $orders['last_modified'] != ""){
 	$str .= $orders['last_modified'];
+        }else{
+        $str .= $orders['date_purchased']; 
+        }
 	$str .= '</td>';
 	$str .= '</tr>';
 }else{
@@ -7539,7 +7547,8 @@ function check_order_latest_status($oid)
    return false;
 }
 
-function check_in_dougyousya($d_id, $dougyousya) {
+function check_in_dougyousya($d_id, $dougyousya)
+{
   foreach ($dougyousya as $d) {
     if ($d['dougyousya_id'] === $d_id) {
       return true;
@@ -7547,7 +7556,9 @@ function check_in_dougyousya($d_id, $dougyousya) {
   }
   return false;
 }
-function tep_get_pinfo_by_pid($pid,$site_id=0){
+
+function tep_get_pinfo_by_pid($pid,$site_id=0)
+{
   global $languages_id;
   $product_query = tep_db_query("
           select pd.products_name, 
@@ -7605,4 +7616,23 @@ function tep_get_pinfo_by_pid($pid,$site_id=0){
       $pInfo_array = tep_array_merge($product, $reviews);
       $pInfo = new objectInfo($pInfo_array);
       return $pInfo;
+}
+
+function tep_isset_eof()
+{
+   $referer_url = $_SERVER['HTTP_REFERER'];
+   if(preg_match('/&eof=error/',$referer_url)){
+     $referer_url = str_replace('&eof=error','',$referer_url);
+   }
+   if(preg_match('/eof=error/',$referer_url)){
+     $referer_url = str_replace('eof=error','',$referer_url);
+   }
+   if(!isset($_POST['eof'])||$_POST['eof']!='eof'){
+     if (preg_match('/php\?/',$referer_url)){
+       tep_redirect($referer_url.'&eof=error');
+     }else{
+       tep_redirect($referer_url.'?eof=error');
+     }
+     exit;
+   }
 }

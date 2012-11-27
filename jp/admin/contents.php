@@ -464,13 +464,17 @@ require("includes/note_js.php");
 
         $contents[] = array('align' => 'center', 'text' => '<br>'.TEXT_CONTENT_MSG.'<br>'.tep_draw_textarea_field('link','soft',30,5,'<a href="'.tep_catalog_href_link('page.php','pID='.(isset($_GET['cID'])?$_GET['cID']:'')).'">'.$c_title.'</a>').'<br><a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID .  '&action=edit') . '">' . tep_html_element_button(IMAGE_EDIT) . '</a>' .  ($ocertify->npermission == 15 ? ( ' <a href="' .  tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID .  '&action=confirm') . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'):''));
       }
+       if(empty($_GET['cID'])){
+        $info_cID = tep_db_fetch_array(tep_db_query("select * from information_page  where pID = '".$cID."'"));
+        $_GET['cID'] = $cID;
+      }
 $info_query = tep_db_query("select * from information_page where PID='".$_GET['cID']."'");
 $info_array = tep_db_fetch_array($info_query);
 if(tep_not_null($info_array['user_added'])){
 $contents[] = array('text' =>  TEXT_USER_ADDED. ' ' .$info_array['user_added']);
 }else{
 $contents[] = array('text' =>  TEXT_USER_ADDED. ' ' .TEXT_UNSET_DATA);
-}if(tep_not_null($info_array['date_added'])){
+}if(tep_not_null(tep_datetime_short($info_array['date_added']))){
 $contents[] = array('text' =>  TEXT_DATE_ADDED. ' ' .tep_datetime_short($info_array['date_added']));
 }else{
 $contents[] = array('text' =>  TEXT_DATE_ADDED. ' ' .TEXT_UNSET_DATA);
@@ -478,7 +482,7 @@ $contents[] = array('text' =>  TEXT_DATE_ADDED. ' ' .TEXT_UNSET_DATA);
 $contents[] = array('text' =>  TEXT_USER_UPDATE. ' ' .$info_array['user_update']);
 }else{
 $contents[] = array('text' =>  TEXT_USER_UPDATE. ' ' .TEXT_UNSET_DATA);
-}if(tep_not_null($info_array['date_update'])){
+}if(tep_not_null(tep_datetime_short($info_array['date_update']))){
 $contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .tep_datetime_short($info_array['date_update']));
 }else{
 $contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .TEXT_UNSET_DATA);

@@ -1,20 +1,6 @@
 <?php
-/////////////////////////////////////////////////////////////////////////////
-// FleaPHP Framework
-//
-// Copyright (c) 2005 - 2008 QeeYuan China Inc. (http://www.qeeyuan.com)
-//
-// 许可协议，请查看源代码中附带的 LICENSE.txt 文件，
-// 或者访问 http://www.fleaphp.org/ 获得详细信息。
-/////////////////////////////////////////////////////////////////////////////
-
 /**
  * 定义 FLEA_Db_Driver_Mysql 驱动
- *
- * @copyright Copyright (c) 2005 - 2008 QeeYuan China Inc. (http://www.qeeyuan.com)
- * @author 起源科技 (www.qeeyuan.com)
- * @package Core
- * @version $Id$
  */
 
 // {{{ includes
@@ -23,10 +9,6 @@ FLEA::loadClass('FLEA_Db_Driver_Abstract');
 
 /**
  * 用于 mysql 扩展的数据库驱动程序
- *
- * @package Core
- * @author 起源科技 (www.qeeyuan.com)
- * @version 1.1
  */
 class FLEA_Db_Driver_Mysql extends FLEA_Db_Driver_Abstract
 {
@@ -328,10 +310,6 @@ class FLEA_Db_Driver_Mysql extends FLEA_Db_Driver_Abstract
  * 与 FLEA_Db_Driver_Mysql 的唯一区别在于 FLEA_Db_Driver_Mysqlt 支持事务功能
  *
  * 要求表的存储引擎为 InnoDB 或者 BDB。
- *
- * @package Core
- * @author 起源科技 (www.qeeyuan.com)
- * @version 1.1
  */
 class FLEA_Db_Driver_Mysqlt extends FLEA_Db_Driver_Mysql
 {

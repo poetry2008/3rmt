@@ -310,8 +310,8 @@ define('TEXT_DISPLAY_NUMBER_OF_ZONES', '<b>%d</b> &sim; <b>%d</b> 番目を表�
 
 define('PREVNEXT_BUTTON_PREV', '&lt;&lt;');
 define('PREVNEXT_BUTTON_NEXT', '&gt;&gt;');
-define('BUTTON_PREV', 'Prev');
-define('BUTTON_NEXT', 'Next');
+define('BUTTON_PREV', '前へ');
+define('BUTTON_NEXT', '次へ');
 //define('PREVNEXT_BUTTON_PREV', '前のページ');
 //define('PREVNEXT_BUTTON_NEXT', '次のページ');
 
@@ -707,8 +707,8 @@ define('BOX_HEADING_USER', 'ユーザ');
 define('BOX_USER_ADMIN', 'ユーザ管理');
 define('BOX_USER_LOG', 'アクセスログ');
 define('BOX_USER_LOGOUT', 'ログアウト');
-define('JUMP_PAGE_TEXT', 'Page');
-define('JUMP_PAGE_BUTTON_TEXT', 'Go');
+define('JUMP_PAGE_TEXT', 'ページへ');
+define('JUMP_PAGE_BUTTON_TEXT', '移動');
 // javascript language
 define('JS_TEXT_ONETIME_PWD_ERROR','パスワードが違います');
 define('JS_TEXT_INPUT_ONETIME_PWD','ワンタイムパスワードを入力してください\r\n');
@@ -735,7 +735,8 @@ define('TEXT_USER_ADDED','作成者:');
 define('TEXT_USER_UPDATE','更新者:');
 define('TEXT_DATE_ADDED','作成日:');
 define('TEXT_DATE_UPDATE','更新日:');
+define('TEXT_EOF_ERROR_MSG','データ送信が失敗しました。再度送信してください。');
 define('TEXT_UNSET_DATA','データなし');
 define('IMAGE_PREV', '前へ');
-define('NEW_TITLE_TEXT', '新');
-define('OLD_TITLE_TEXT', '旧');
+define('TEXT_POPUP_WINDOW_SHOW','旧');
+define('TEXT_POPUP_WINDOW_EDIT','新');

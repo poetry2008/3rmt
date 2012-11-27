@@ -2,17 +2,11 @@
 /*
   $Id$
 
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 osCommerce
-
   mime.php - a class to assist in building mime-HTML eMails
 
   The original class was made by Richard Heyes <richard@phpguru.org>
   and can be found here: http://www.phpguru.org
 
-  Renamed and Modified by Jan Wildeboer for osCommerce
 */
 
   class mime {

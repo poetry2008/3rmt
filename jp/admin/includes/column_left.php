@@ -51,8 +51,7 @@ $(document).ready(function(){
 });
 function toggle_leftColumn()
 {
-
-  var arrow_status = $('.columnLeft').css('display');
+    var arrow_status = $('.columnLeft').css('display');
 
   if (arrow_status == 'none') {
     document.cookie = 'tarrow=open';  
@@ -79,10 +78,39 @@ function toggle_leftColumn()
     }
   }
   ?>
+  var ele_obj = '';
+  if("undefined" != typeof temp_id){
+    if(temp_id != ''){
+      var box_warp = '';
+      var box_warp_top = 0;
+      var box_warp_left = 0;
+      if($(".box_warp").offset()){
+        box_warp = $(".box_warp").offset();
+        box_warp_top = box_warp.top;
+        box_warp_left = box_warp.left;
+      }
+      ele_obj = $("#popup_window_value_"+temp_id).offset();
+      var font_size = $("#popup_window_value_"+temp_id).css("font-size");
+      font_size = font_size.replace("px","");
+      font_size = parseInt(font_size);
+      if(navigator.userAgent.indexOf("MSIE")>0){
+        font_size = 0;
+      }
+      $("#popup_window").css('top',ele_obj.top-box_warp_top+font_size);
+      $("#popup_window").css('left',ele_obj.left-box_warp_left);
+    }
+  }
+<?php if($_SERVER['PHP_SELF'] == '/admin/campaign.php'){  ?>
+  setTimeout("show_campaign_info_offset()",10); 
+    <?php }?>
+  <?php if($_SERVER['PHP_SELF'] == '/admin/orders.php'){?>
+  setTimeout("orders_info_box_offset()",10);
+  <?php } ?>
+
   if($('input:[name=show_info_id]')){
     show_info_id = $('input:[name=show_info_id]').val()
-    leftset = $('.leftmenu').width()+$('.show_left_menu').width()+parseInt($('.leftmenu').css('padding-left'))+parseInt($('.show_left_menu').css('padding-right'))+parseInt($('#categories_right_td table').attr('cellpadding'));
-    $('#'+show_info_id).css('left',leftset).show();
+  leftset = $('.leftmenu').width()+$('.show_left_menu').width()+parseInt($('.leftmenu').css('padding-left'))+parseInt($('.show_left_menu').css('padding-right'))+parseInt($('#categories_right_td table').attr('cellpadding'));
+  $('#'+show_info_id).css('left',leftset).show();
   }
 }
 function toggle_lan(sobj)

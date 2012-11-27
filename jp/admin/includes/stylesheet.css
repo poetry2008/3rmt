@@ -860,14 +860,7 @@ a.s_column_bar {
 }
 #canEnd{ text-align:right; margin-right:13px;}
 .element_button { 
-	font-size:13px;
-	margin-right:5px;
-	padding:2px 9px\9;
-	margin-bottom:2px;
-	margin-top:2px;
-}
-.element_button01{
-	font-size:13px;
+	font-size:12px;
 	margin-right:5px;
 	padding:2px 9px\9;
 }
@@ -1000,9 +993,10 @@ a.s_column_bar {
 	width:40%;
 }
 .campaign_body {
-	padding:0 50px 10px 50px;
+	padding:0 50px;
 	min-width:550px;
 }
+.campaign_body td{ line-height:22px;}
 .campaign_input_num{
 	width:20%;
 	text-align:right;
@@ -1212,7 +1206,7 @@ a.s_column_bar {
 
 .order_option_info{
 	float:left;
-	width:70%;
+	width:65%;
 	line-height:21px;
 }
 .order_option_price{
@@ -1295,6 +1289,8 @@ font-size:14px;
 }
 .order_option_width{
 	min-width:260px;
+	width:260px;
+	overflow:hidden;
 }
 .table_img_list{
 	list-style:none;
@@ -1373,3 +1369,27 @@ a.pageResults{
 	line-height:25px;
 	margin:10px;
 }
+#popup_box{
+	background-color:#000;
+	opacity:0.5;
+    filter: alpha(opacity=50);
+	width:100%;
+	position:absolute;
+	z-index:1500;
+}
+#popup_info{
+	border:1px solid #CCCCCA;
+	background-color:#F9F9F9;
+	z-index:1550;
+	text-align:center;
+	width:20%;
+	padding:50px 20px;
+	position:absolute;
+}
+.popup_img{
+	position: absolute;
+	right:2px;
+	top:2px;
+}
+.table_box th{ background-color:#cccccc;}
+.table_box td{ border:1px solid #B2B2B2;}

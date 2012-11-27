@@ -118,7 +118,14 @@ if ($_POST['orders_id'] &&
 			select * from ".TABLE_ORDERS."
 			where date_purchased > '".$_GET['prev_customer_action']."'
 			");
-
+  if (isset($_GET['type'])) {
+    if (tep_db_num_rows($orders_query)) {
+      echo '1'; 
+    } else {
+      echo '0'; 
+    }
+    exit; 
+  }
   while ($orders = tep_db_fetch_array($orders_query)) {
     if (!isset($orders['site_id'])) {
       $orders = tep_db_fetch_array(tep_db_query("
@@ -1003,7 +1010,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= TEXT_UNSET_DATA;
   $html_str .= '</td>';
   $html_str .= '</tr>';
-  }if(tep_not_null($campaign_res['created_at'])){
+  }if(tep_not_null(tep_datetime_short($campaign_res['created_at']))){
   $html_str .= '<tr>';
   $html_str .= '<td>';
   $html_str .= TEXT_DATE_ADDED;
@@ -1039,7 +1046,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= TEXT_UNSET_DATA;
   $html_str .= '</td>';
   $html_str .= '</tr>';
-  }if(tep_not_null($campaign_res['date_update'])){ 
+  }if(tep_not_null(tep_datetime_short($campaign_res['date_update']))){ 
   $html_str .= '<tr>';
   $html_str .= '<td>';
   $html_str .= TEXT_DATE_UPDATE;
@@ -1887,8 +1894,6 @@ echo json_encode($json_array);
   
   $html_str .= '</table>'; 
   
-  $html_str .= '<table id="search_title" cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
-  $html_str .= '</table>'; 
   
   $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
   $html_str .= '<tr>';

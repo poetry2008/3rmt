@@ -47,7 +47,7 @@ if(isset($action) && $action != ''){
                    "','". $email_comment_1 .
                    "','". $area_fee_date .
                    "','". $area_fee_sort .                   
-                   "','0','".$ocertify->auth_user."','".date('Y-m-d H:i:s',time())."','".$ocertify->auth_user."','".date('Y-m-d H:i:s',time())."')";
+                   "','0','".$_SESSION['user_name']."','".date('Y-m-d  H:i:s',time())."','".$_SESSION['user_name']."','".date('Y-m-d H:i:s',time())."')";
 
     }else{
       $area_fee_sql = "update ". TABLE_AREA_FEE .
@@ -61,7 +61,7 @@ if(isset($action) && $action != ''){
                    "',email_comment_1='". $email_comment_1 .
                    "',date='". $area_fee_date .
                    "',sort='". $area_fee_sort .
-                   "',user_update='".$ocertify->auth_user.
+                   "',user_update='".$_SESSION['user_name'].
                    "',date_update='".date('Y-m-d H:i:s',time()).
                    "'  where id=". $area_fee_id;
     }
@@ -270,7 +270,7 @@ tep_db_close();
 <tr><td align="right" colspan="9"><button onclick="javascript:location.href='country_fee.php';"><?php echo TABLE_HISTROY;?></button>&nbsp;<button onclick="show_text_area(0,this,<?php echo $_GET['fid']; ?>);"><?php echo TABLE_BUTTON;?></button></td></tr>
 </table>
 <?php if(empty($area_fee_array['id'])){
-echo '<div id="show" style="display:none;position:inherit;"></div>';
+echo '<div id="show" style="display:none;position:absolute;"></div>';
 }
 
 ?>

@@ -1,19 +1,4 @@
 <?php
-/*********************************************************************
-    index.php
-
-    Client Login 
-
-    Peter Rotich <peter@osticket.com> 
-    Copyright (c)  2006-2010 osTicket
-    http://www.osticket.com
-
-    Released under the GNU General Public License WITHOUT ANY WARRANTY.
-    See LICENSE.TXT for details.
-
-    vim: expandtab sw=4 ts=4 sts=4:
-    $Id$
-**********************************************************************/
 $_noemailclass = true;
   require_once('includes/application_top.php');
 $breadcrumb->add(TEXT_CONTACT_US, tep_href_link(FILENAME_CONTACT_US));
@@ -48,7 +33,7 @@ if($_POST && (!empty($_POST['lemail']) && !empty($_POST['lticket']))):
         }
     }
     //See if we can fetch local ticket id associated with the ID given
-if(!$errors && is_numeric($ticketID) && Validator::is_email($email) && ($tid=Ticket::getIdByExtId($ticketID,true))) {
+    if(!$errors && is_numeric($ticketID) && Validator::is_email($email) && ($tid=Ticket::getIdByExtId($ticketID,true))) {
         //At this point we know the ticket is valid.
         $ticket= new Ticket($tid);
         //TODO: 1) Check how old the ticket is...3 months max?? 2) Must be the latest 5 tickets?? 
@@ -90,7 +75,6 @@ if(!$errors && is_numeric($ticketID) && Validator::is_email($email) && ($tid=Tic
         Sys::log(LOG_WARNING,'Failed login attempt (client)',$alert);
     }
 endif;
-
 mysql_select_db(DB_DATABASE);
 require(CLIENTINC_DIR.'header.inc.php');
 require(CLIENTINC_DIR.'login.inc.php');

@@ -1,21 +1,5 @@
 <?php
-/////////////////////////////////////////////////////////////////////////////
-// FleaPHP Framework
-//
-// Copyright (c) 2005 - 2008 QeeYuan China Inc. (http://www.qeeyuan.com)
-//
-// 许可协议，请查看源代码中附带的 LICENSE.txt 文件，
-// 或者访问 http://www.fleaphp.org/ 获得详细信息。
-/////////////////////////////////////////////////////////////////////////////
 
-/**
- * 定义 FLEA_Db_TableDataGateway 类
- *
- * @copyright Copyright (c) 2005 - 2008 QeeYuan China Inc. (http://www.qeeyuan.com)
- * @author 起源科技 (www.qeeyuan.com)
- * @package Core
- * @version $Id$
- */
 
 // {{{ includes
 FLEA::loadClass('FLEA_Db_TableLink');
@@ -51,10 +35,6 @@ define('MANY_TO_MANY',  4);
  *
  * 对于每一个表数据入口对象，都必须在类定义中通过 $tableName 和 $primaryKey
  * 来分别指定数据表的名字和主键字段名。
- *
- * @package Core
- * @author 起源科技 (www.qeeyuan.com)
- * @version 1.2
  */
 class FLEA_Db_TableDataGateway
 {

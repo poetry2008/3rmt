@@ -48,7 +48,7 @@
       $customer_id                 = $customers_result['customers_id'];
       $customer_default_address_id = $customers_result['customers_default_address_id'];
       $customer_first_name         = $customers_result['customers_firstname'];
-      $customer_last_name          = $customers_result['customers_lastname']; // 2003.03.08 Add Japanese osCommerce
+      $customer_last_name          = $customers_result['customers_lastname']; 
       $customer_country_id         = $customers_result['entry_country_id'];
       $customer_zone_id            = $customers_result['entry_zone_id'];
       $customer_emailaddress       = $email_address; 

@@ -1,7 +1,7 @@
 <?php
 /*
   $Id$
-  ファイルコードを確認
+  确认文件代码
 */
   $category = tep_get_category_by_id($current_category_id, SITE_ID, $languages_id);
 ?> 

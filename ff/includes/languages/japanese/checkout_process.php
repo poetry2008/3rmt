@@ -9,7 +9,7 @@ define('EMAIL_TEXT_SUBJECT2','ご注文ありがとうございます【'.STORE_
 define('EMAIL_TEXT_STORE_CONFIRMATION', ' へご注文をいただきまして、誠にありがとうございます。' . "\n\n" . 
 '下記の内容にてご注文を承りましたので、ご確認ください。' . "\n\n" . 
 'なお、本メールに記載されたご注文内容の誤りや、ご質問等がございましたら、' . "\n" .
-'お手数ですが早急に当店までお問い合わせくださいますよう、お願い申し上げます。' . "\n"); //Add Japanese osCommerce
+'お手数ですが早急に当店までお問い合わせくださいますよう、お願い申し上げます。' . "\n"); 
 
 define('EMAIL_TEXT_ORDER_NUMBER', 'ご注文受付番号:');
 define('EMAIL_TEXT_INVOICE_URL', 'ご注文についての情報を下記URLでご覧になれます。' . "\n");

@@ -37,7 +37,7 @@ if($_POST['updata'] == 'on') {
 if($_GET['action'] == 'success') {
   echo '<table border="0" cellspacing="0" cellpadding="0" width="100%">' . "\n";
   echo '<tr>' . "\n";
-  echo '<td class="messageStackSuccess" height="20" align="center"><strong>åù´æËèááÎä!¾ã¡÷¡¦Þä ¡¦/strong></td>' . "\n";
+  echo '<td class="messageStackSuccess" height="20" align="center"><strong>¿¿¿¿¿¿¿</strong></td>' . "\n";
   echo '</tr>' . "\n";
   echo '</table><br>' . "\n";
 }
@@ -51,24 +51,24 @@ if($_GET['action'] == 'success') {
 <script type="text/javascript" src="includes/general.js"></script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onLoad="SetFocus();">
-<!-- header //-->
+<!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
+<!-- header_eof -->
 
-<!-- body //-->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-<!-- left_navigation //-->
+<!-- left_navigation -->
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- left_navigation_eof //-->
+<!-- left_navigation_eof -->
     </table></td>
-<!-- body_text //-->
+<!-- body_text -->
     <td width="100%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td class="pageHeading"><?php echo '¡¦¡¦¥æáã³ã¥à¡¦¼ç·¨¡¦¡¦; ?></td>
+            <td class="pageHeading"><?php echo '¿¿¿¿¿¿¿'; ?></td>
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?></td>
           </tr>
         </table></td>
@@ -79,20 +79,23 @@ if($_GET['action'] == 'success') {
     <form action="<?php echo $PHP_SELF; ?>" method="post">
     <input type="hidden" name="updata" value="on">
     <?php
-    //ä»´åÉãŽª    $today = getdate();
+    //¿¿
+    $today = getdate();
     
     $m_num = $today[mon];
     $d_num = $today[mday];
     $year = $today[year];
-    // 1åõ¥çÕçáá¡¦Õüåõ¦¬    $f_today = getdate(mktime(0,0,0,$m_num,1,$year));
+    // 1¿¿¿¿¿
+    $f_today = getdate(mktime(0,0,0,$m_num,1,$year));
     $wday = $f_today[wday];
-    // åú°æÝäéâŽ¸
+    // ¿¿¿
     $m_name = "$year ".substr($today[month],0,3);
     
-    //¡¦ºä!¡¦¡âááºä!¡¦×àçµ¤åÉã½î¡¦Óè¡¦¡¦Íã¡¦°ï»ç
+    //¿¿¿¿¿¿¿¿¿¿¿¿¿¿
     $test = date("d", mktime(0,0,0,$m_num+2,0,$year));
     
-    //åú°ä!¡¦¥ç¡¦¼ã£ð¡¦Ìå]¡¦    $ymd = date("Ym", time());
+    //¿¿¿¿¿¿¿
+    $ymd = date("Ym", time());
     // ccdd
     $calen_query = tep_db_query("
         select cl_value 
@@ -107,23 +110,23 @@ if($_GET['action'] == 'success') {
     echo '
       <table border=1 cellspacing=0 cellpadding=2 width="100%">
       <tr bgcolor=#000000>
-      <td nowrap colspan=3>&nbsp;&nbsp;<font size=2 color=#FFFFFF>'.$year.'å¹¡¦.$m_num.'åú¡¦/font></td>
-      <td nowrap colspan=4 align=right>&nbsp;&nbsp;<font size=2 color=#FFFFFF>&nbsp;&nbsp;áô <img src="images/point.gif">¡¦ÔåW¸åËëçãL&nbsp;&nbsp;<font color="'.CL_COLOR_01.'">áô </font><img src="images/point.gif">åºÎæ¡¦ä¼ÂåŽ£¡¦nbsp;&nbsp;<font color="'.CL_COLOR_02.'">áô </font><img src="images/point.gif">¡¦¡ã¥îáã¡¦¡¦ä¿¡ä»ïæ¥¡¦nbsp;&nbsp;</td>
+      <td nowrap colspan=3>&nbsp;&nbsp;<font size=2 color=#FFFFFF>'.$year.'¿'.$m_num.'¿</font></td>
+      <td nowrap colspan=4 align=right>&nbsp;&nbsp;<font size=2 color=#FFFFFF>&nbsp;&nbsp;¿&raquo;¿¿¿¿&nbsp;&nbsp;<font color="'.CL_COLOR_01.'">¿</font>&raquo;¿¿¿¿&nbsp;&nbsp;<font color="'.CL_COLOR_02.'">¿</font>&raquo;¿¿¿¿¿¿¿&nbsp;&nbsp;</td>
       </tr>
       <tr bgcolor=ffffff>
-        <td align=middle height=15><font size="2" color="#cc0000">åõ¡¦/font></td>
-        <td align=middle height=15><font size="2">åú¡¦/font></td>
-        <td align=middle height=15><font size="2">¡¦¡¦/font></td>
-        <td align=middle height=15><font size="2">æ°¡¦/font></td>
-        <td align=middle height=15><font size="2">åú¡¦/font></td>
-        <td align=middle height=15><font size="2">¡¦¡¦/font></td>
-        <td align=middle height=15><font size="2" color="#0000cc">¡¦¡¦/font></td>
+        <td align=middle height=15><font size="2" color="#cc0000">¿</font></td>
+        <td align=middle height=15><font size="2">¿</font></td>
+        <td align=middle height=15><font size="2">¿</font></td>
+        <td align=middle height=15><font size="2">¿</font></td>
+        <td align=middle height=15><font size="2">¿</font></td>
+        <td align=middle height=15><font size="2">¿</font></td>
+        <td align=middle height=15><font size="2" color="#0000cc">¿</font></td>
       </tr>
       <tr bgcolor=#ffffff>
     ';
     
     for ($i=0; $i<$wday; $i++) { // Blank
-      echo "<td align=center>¡¦€</td>\n"; 
+      echo "<td align=center>¿</td>\n"; 
     }
     
     $day = 1;
@@ -162,10 +165,12 @@ if($_GET['action'] == 'success') {
       }
       }
       elseif($array[$day] == '1'){
-      //¡¦´åYÎä!¡¦»ïæ¥­æÍãŽª      echo "<td align=center bgcolor=".CL_COLOR_01."><font size=2>$day<br>".$option."</font></td>\n";
+      //¿¿¿¿¿¿
+      echo "<td align=center bgcolor=".CL_COLOR_01."><font size=2>$day<br>".$option."</font></td>\n";
       }
       elseif($array[$day] == '2'){
-      //¡¦¡ã¥îáã¡¦¡¦ä¿¡ä»ïæ¥­æÍãŽª      echo "<td align=center bgcolor=".CL_COLOR_02."><font size=2>$day<br>".$option."</font></td>\n";  
+      //¿¿¿¿¿¿¿¿
+      echo "<td align=center bgcolor=".CL_COLOR_02."><font size=2>$day<br>".$option."</font></td>\n";  
       }  
       elseif($wday == 0){ 
       //  Sunday
@@ -179,7 +184,7 @@ if($_GET['action'] == 'success') {
       // Weekday
       echo "<td align=center><font size=2>$day<br>".$option."</font></td>\n";
       }
-      // åò¹è¡¦
+      // ¿¿
       if($wday == 6) echo "</tr><tr bgcolor=#ffffff>";
       $day++;
       $wday++;
@@ -187,7 +192,7 @@ if($_GET['action'] == 'success') {
     }
     if($wday > 0){
       while($wday < 7) { // Blank
-      echo "<td align=center>¡¦€</td>\n";
+      echo "<td align=center>¿</td>\n";
       $wday++;
       }
     } else {
@@ -197,7 +202,7 @@ if($_GET['action'] == 'success') {
     
     //----------------------------------------------------
     echo '<br><br>';
-    //æ¬¡æ×è
+    //¿¿
     //----------------------------------------------------
     
     $today2 = getdate(mktime(0,0,0,$m_num+1,1,$year));
@@ -205,12 +210,14 @@ if($_GET['action'] == 'success') {
     $m_num2 = $today2[mon];
     $d_num2 = $today2[mday];
     $year2 = $today2[year];
-    // 1åõ¥çÕçáá¡¦Õüåõ¦¬    $f_today2 = getdate(mktime(0,0,0,$m_num2,1,$year2));
+    // 1¿¿¿¿¿
+    $f_today2 = getdate(mktime(0,0,0,$m_num2,1,$year2));
     $wday2 = $f_today2[wday];
-    // åú°æÝäéâŽ¸
+    // ¿¿¿
     $m_name2 = "$year ".substr($today2[month],0,3);
     
-    //åú°ä!¡¦¥ç¡¦¼ã£ð¡¦Ìå]¡¦    $ymd2 = date("Ym", mktime(0,0,0,$m_num2,1,$year2));
+    //¿¿¿¿¿¿¿
+    $ymd2 = date("Ym", mktime(0,0,0,$m_num2,1,$year2));
     $calen_query2 = tep_db_query("select cl_value from calendar where cl_ym = '".$ymd2."'");
     $calen2 = tep_db_fetch_array($calen_query2);
     
@@ -219,23 +226,23 @@ if($_GET['action'] == 'success') {
     echo '
       <table border=1 cellspacing=0 cellpadding=2 width=100%>
       <tr bgcolor=#000000>
-      <td nowrap colspan=3>&nbsp;&nbsp;<font size=2 color=#FFFFFF>'.$year2.'å¹¡¦.$m_num2.'åú¡¦/font></td>
-      <td nowrap colspan=4 align=right>&nbsp;&nbsp;<font size=2 color=#FFFFFF>&nbsp;&nbsp;áô <img src="images/point.gif">¡¦ÔåW¸åËëçãL&nbsp;&nbsp;<font color="'.CL_COLOR_01.'">áô </font><img src="images/point.gif">åºÎæ¡¦ä¼ÂåŽ£¡¦nbsp;&nbsp;<font color="'.CL_COLOR_02.'">áô </font><img src="images/point.png">¡¦¡ã¥îáã¡¦¡¦ä¿¡ä»ïæ¥¡¦nbsp;&nbsp;</td>
+      <td nowrap colspan=3>&nbsp;&nbsp;<font size=2 color=#FFFFFF>'.$year2.'¿'.$m_num2.'¿</font></td>
+      <td nowrap colspan=4 align=right>&nbsp;&nbsp;<font size=2 color=#FFFFFF>&nbsp;&nbsp;¿&raquo;¿¿¿¿&nbsp;&nbsp;<font color="'.CL_COLOR_01.'">¿</font>&raquo;¿¿¿¿&nbsp;&nbsp;<font color="'.CL_COLOR_02.'">¿</font>&raquo;¿¿¿¿¿¿¿&nbsp;&nbsp;</td>
       </tr>
       <tr bgcolor=ffffff>
-        <td align=middle height=15><font size="2" color="#cc0000">åõ¡¦/font></td>
-        <td align=middle height=15><font size="2">åú¡¦/font></td>
-        <td align=middle height=15><font size="2">¡¦¡¦/font></td>
-        <td align=middle height=15><font size="2">æ°¡¦/font></td>
-        <td align=middle height=15><font size="2">åú¡¦/font></td>
-        <td align=middle height=15><font size="2">¡¦¡¦/font></td>
-        <td align=middle height=15><font size="2" color="#0000cc">¡¦¡¦/font></td>
+        <td align=middle height=15><font size="2" color="#cc0000">¿</font></td>
+        <td align=middle height=15><font size="2">¿</font></td>
+        <td align=middle height=15><font size="2">¿</font></td>
+        <td align=middle height=15><font size="2">¿</font></td>
+        <td align=middle height=15><font size="2">¿</font></td>
+        <td align=middle height=15><font size="2">¿</font></td>
+        <td align=middle height=15><font size="2" color="#0000cc">¿</font></td>
       </tr>
       <tr bgcolor=#ffffff>
     ';
     
     for ($i=0; $i<$wday2; $i++) { // Blank
-      echo "<td align=center>¡¦€</td>\n"; 
+      echo "<td align=center>¿</td>\n"; 
     }
     
     $day2 = 1;
@@ -263,10 +270,12 @@ if($_GET['action'] == 'success') {
       
       
       if($array2['1'.str_pad($day2, 2, 0, STR_PAD_LEFT)] == '1'){
-      //¡¦´åYÎä!¡¦»ïæ¥­æÍãŽª      echo "<td align=center bgcolor=".CL_COLOR_01."><font size=2>$day2<br>".$option2."</font></td>\n";
+      //¿¿¿¿¿¿
+      echo "<td align=center bgcolor=".CL_COLOR_01."><font size=2>$day2<br>".$option2."</font></td>\n";
       }
       elseif($array2['1'.str_pad($day2, 2, 0, STR_PAD_LEFT)] == '2'){
-      //¡¦¡ã¥îáã¡¦¡¦ä¿¡ä»ïæ¥­æÍãŽª      echo "<td align=center bgcolor=".CL_COLOR_02."><font size=2>$day2<br>".$option2."</font></td>\n";  
+      //¿¿¿¿¿¿¿¿
+      echo "<td align=center bgcolor=".CL_COLOR_02."><font size=2>$day2<br>".$option2."</font></td>\n";  
       }  
       elseif($wday == 0){ 
       //  Sunday
@@ -280,7 +289,7 @@ if($_GET['action'] == 'success') {
       // Weekday
       echo "<td align=center><font size=2>$day2<br>".$option2."</font></td>\n";
       }
-      // åò¹è¡¦
+      // ¿¿
       if($wday2 == 6) echo "</tr><tr bgcolor=#ffffff>";
       $day2++;
       $wday2++;
@@ -288,7 +297,7 @@ if($_GET['action'] == 'success') {
     }
     if($wday2 > 0){
       while($wday2 < 7) { // Blank
-      echo "<td align=center>¡¦€</td>\n";
+      echo "<td align=center>¿</td>\n";
       $wday2++;
       }
     } else {
@@ -306,14 +315,14 @@ if($_GET['action'] == 'success') {
     </td>
       </tr>
   </table></td>
-<!-- body_text_eof //-->
+<!-- body_text_eof -->
   </tr>
 </table>
-<!-- body_eof //-->
+<!-- body_eof -->
 
-<!-- footer //-->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 </body>
 </html>
