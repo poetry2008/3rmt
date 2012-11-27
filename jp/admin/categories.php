@@ -1478,7 +1478,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <!-- header_eof -->
 <!-- body -->
-<input type="hidden" name="show_info_id" value="show_popup_info">
+<input type="hidden" name="show_info_id" value="show_popup_info" id="show_info_id">
 <div id="show_popup_info" style="position: absolute; background: none repeat scroll 0% 0% rgb(255, 255, 0); width: 70%; display:none;">
 </div>
 <div id="categories_tree">
