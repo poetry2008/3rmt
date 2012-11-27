@@ -460,7 +460,7 @@ case 'dougyousya_categories':
   $back_url = 'history.php'; 
   $back_url_params = 'action=dougyousya'.'&dougyousya_id='.$did;
   if ($_GET['fullpath']) {
-    $back_url = 'categories_admin.php'; 
+    $back_url = 'categories.php'; 
     $back_url_params = 'cPath='.$_GET['fullpath'];
   }
   $a=0;

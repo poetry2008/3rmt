@@ -727,3 +727,6 @@ define('TEXT_DATE_ADDED','创建日:');
 define('TEXT_DATE_UPDATE','更新日:');
 define('MESSAGE_FINISH_ORDER_TEXT', '订单ID%s的成功：交易完了');
 define('TEXT_UNSET_DATA','没有数据');
+define('IMAGE_PREV', '上一个');
+define('NEW_TITLE_TEXT', '新');
+define('OLD_TITLE_TEXT', '旧');

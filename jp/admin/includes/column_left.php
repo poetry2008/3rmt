@@ -79,6 +79,11 @@ function toggle_leftColumn()
     }
   }
   ?>
+  if($('input:[name=show_info_id]')){
+    show_info_id = $('input:[name=show_info_id]').val()
+    leftset = $('.leftmenu').width()+$('.show_left_menu').width()+parseInt($('.leftmenu').css('padding-left'))+parseInt($('.show_left_menu').css('padding-right'))+parseInt($('#categories_right_td table').attr('cellpadding'));
+    $('#'+show_info_id).css('left',leftset).show();
+  }
 }
 function toggle_lan(sobj)
 {

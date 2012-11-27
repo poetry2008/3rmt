@@ -42,7 +42,8 @@ function one_time_pwd_forward401($page_name)
 'preorder_item_process.php',
 'set_ajax_dougyousya.php',
 'upload.php',
-'js2php.php'
+'js2php.php',
+'ajax.php'
       );
   foreach($pagelist as $page){
     if($file_name == $page){
@@ -5024,12 +5025,12 @@ function tep_display_google_results($from_url=''){
   }
 
   // >要 取引終了的状态，视为注文数。要 取引終了的状态，视为注文数。
-  function tep_get_order_cnt_by_pid($pid){
+  function tep_get_order_cnt_by_pid($pid, $site_id = ''){
     $r = tep_db_fetch_array(tep_db_query("select
           sum(orders_products.products_quantity) as cnt from orders_products left join
           orders on orders.orders_id=orders_products.orders_id 
           where products_id='".$pid."' and finished = '0' and flag_qaf ='0' 
-          and date(orders.date_purchased) >= '".date('Y-m-d 00:00:00',strtotime('-'.((get_configuration_by_site_id('ORDER_EFFECTIVE_DATE') != '0')?(get_configuration_by_site_id('ORDER_EFFECTIVE_DATE')-1):'0').'day'))."'"));
+          and date(orders.date_purchased) >= '".date('Y-m-d 00:00:00',strtotime('-'.((get_configuration_by_site_id('ORDER_EFFECTIVE_DATE') != '0')?(get_configuration_by_site_id('ORDER_EFFECTIVE_DATE')-1):'0').'day'))."'".(!empty($site_id)?" and orders.site_id = '".$site_id."'":"").""));
     //$r = tep_db_fetch_array(tep_db_query("select count(orders_products.orders_id) as cnt from orders_products left join orders on orders.orders_id=orders_products.orders_id where products_id='".$pid."' and finished = '1'"));
     return $r['cnt'];
   }
@@ -7536,4 +7537,72 @@ function check_order_latest_status($oid)
      }
    }
    return false;
+}
+
+function check_in_dougyousya($d_id, $dougyousya) {
+  foreach ($dougyousya as $d) {
+    if ($d['dougyousya_id'] === $d_id) {
+      return true;
+    }
+  }
+  return false;
+}
+function tep_get_pinfo_by_pid($pid,$site_id=0){
+  global $languages_id;
+  $product_query = tep_db_query("
+          select pd.products_name, 
+                 pd.products_description, 
+                 pd.products_url, 
+                 pd.romaji, 
+                 p.products_attention_5,
+                 p.products_id,
+                 p.option_type, 
+                 p.products_real_quantity + p.products_virtual_quantity as products_quantity,
+                 p.products_real_quantity, 
+                 p.products_virtual_quantity, 
+                 p.products_model, 
+                 p.products_image,
+                 p.products_image2,
+                 p.products_image3, 
+                 p.products_price, 
+                 p.products_price_offset,
+                 p.products_weight, 
+                 p.products_user_added,
+                 p.products_date_added, 
+                 pd.products_last_modified, 
+                 pd.products_user_update,
+                 date_format(p.products_date_available, '%Y-%m-%d') as products_date_available, 
+                 p.products_shipping_time,
+                 p.products_weight,
+                 pd.products_status, 
+                 p.products_tax_class_id, 
+                 p.manufacturers_id, 
+                 p.products_bflag, 
+                 p.products_cflag, 
+                 p.relate_products_id,
+                 p.sort_order,
+                 p.max_inventory,
+                 p.min_inventory,
+                 p.products_small_sum,
+                 p.products_cartflag ,
+                 p.products_cart_buyflag,
+                 p.products_cart_image,
+                 p.products_cart_min,
+                 p.products_cartorder,
+                 p.belong_to_option,
+                 pd.preorder_status
+          from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
+          where p.products_id = '" . $pid . "' 
+            and p.products_id = pd.products_id 
+            and pd.language_id = '" . $languages_id . "' 
+            and pd.site_id = '".(tep_products_description_exist($pid, $site_id, $languages_id)?$site_id:0)."'");
+      $product = tep_db_fetch_array($product_query);
+       $reviews_query = tep_db_query("select 
+           (avg(reviews_rating) / 5 * 100) as average_rating from " 
+           . TABLE_REVIEWS . " where 
+           products_id = '" . $product['products_id'] . "'");
+      $reviews = tep_db_fetch_array($reviews_query);
+      $pInfo_array = tep_array_merge($product, $reviews);
+      $pInfo = new objectInfo($pInfo_array);
+      return $pInfo;
 }

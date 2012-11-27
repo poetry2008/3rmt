@@ -5,17 +5,10 @@ require('includes/application_top.php');
 require(DIR_WS_CLASSES . 'currencies.php');
 $currencies = new currencies();
 
-/**
-echo "<pre>";
-print_r($_GET);
-print_r($_POST);
-echo "</pre>";
-/**/
 $cID=$_POST['cID_list'];
 $cpath = $_POST['cpath'];
-//$cID=$_POST['cpath_yobi'];
 switch ($HTTP_GET_VARS['action']){
-      case 'set_bai':
+  case 'set_bai':
     $bai     = $_POST['bai'];
     $keisan  = $_POST['kei'];
     $shisoku = $_POST['shisoku'];
@@ -27,9 +20,9 @@ switch ($HTTP_GET_VARS['action']){
     }else{
       tep_db_query("insert into set_auto_calc (parent_id,bairitu,keisan,shisoku,percent) values ('".$cID."','".$bai."','".$keisan."','".$shisoku."','".$percent."')");
     }
-    tep_redirect('categories_admin.php?cPath='.$cpath);
+    tep_redirect('categories.php?cPath='.$cpath);
     break;
-    case 'set_time':
+  case 'set_time':
     $path_array = explode('_', $_POST['cepath']);
     $limit_ca_cid = $path_array[count($path_array)-1];
   
@@ -40,7 +33,7 @@ switch ($HTTP_GET_VARS['action']){
       tep_db_query("insert into `".TABLE_BESTSELLERS_TIME_TO_CATEGORY."` values('".(int)$limit_ca_cid."', '".(int)$_POST['btime']."')"); 
     }
 
-    tep_redirect('categories_admin.php?cPath='.$_POST['cepath']);
+    tep_redirect('categories.php?cPath='.$_POST['cepath']);
     break;
 }
 ?>

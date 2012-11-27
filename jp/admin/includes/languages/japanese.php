@@ -736,3 +736,6 @@ define('TEXT_USER_UPDATE','更新者:');
 define('TEXT_DATE_ADDED','作成日:');
 define('TEXT_DATE_UPDATE','更新日:');
 define('TEXT_UNSET_DATA','データなし');
+define('IMAGE_PREV', '前へ');
+define('NEW_TITLE_TEXT', '新');
+define('OLD_TITLE_TEXT', '旧');

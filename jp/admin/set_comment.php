@@ -8,7 +8,7 @@ $cID   = (int)$_GET['cID'];
 $cPath = $_GET['cPath'];
 
 switch ($HTTP_GET_VARS['action']){
-      case 'save':
+  case 'save':
     $res=tep_db_query("select count(*) as cnt from set_comments where categories_id='".$cID."'");
     $count=tep_db_fetch_array($res);
     if($count['cnt'] > 0){
@@ -16,7 +16,7 @@ switch ($HTTP_GET_VARS['action']){
     }else{
       tep_db_query("insert into set_comments (categories_id,author,rule,comment,date_added,last_modified) values ('".$cID."','".mysql_real_escape_string($_POST['author'])."','".mysql_real_escape_string($_POST['rule'])."','".mysql_real_escape_string($_POST['comment'])."',now(),now())");
     }
-    tep_redirect('categories_admin.php?cPath='.$cPath);
+    tep_redirect('categories.php?cPath='.$cPath);
     break;
 }
 ?>

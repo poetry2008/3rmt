@@ -97,7 +97,6 @@ define('ERROR_CATALOG_IMAGE_DIRECTORY_NOT_WRITEABLE', '错误: 无法编辑分�
 define('ERROR_CATALOG_IMAGE_DIRECTORY_DOES_NOT_EXIST', '错误: 分类图片的目录不存在: ' . DIR_FS_CATALOG_IMAGES);
 
 define('TEXT_PRODUCTS_TAGS', '商品标签:');
-define('TEXT_KEYWORD','关键字');
 define('TEXT_GOOGLE_SEARCH','在GOOGLE下以%s为关键字的搜索结果');
 define('TEXT_RENAME','重命名');
 define('TEXT_INFO_KEYWORD','更改关键字');
@@ -239,4 +238,25 @@ define('TEXT_LANGUAGE_CHINA','汉语(+400日元)');
 define('TEXT_LANGUAGE_KOREA','韩语(-100日元)');
 define('TEXT_TEXT','文本：');
 define('TEXT_WITH','有关联: ');
+define('TABLE_HEADING_CATEGORIES_ORDER_NUM', '订单');
+define('TABLE_HEADING_CATEGORIES_PREORDER_NUM', '预约');
+define('TABLE_HEADING_CATEGORIES_PRODUCT_VIRTUAL_STORE', '进货');
+define('TABLE_HEADING_CATEGORIES_PRODUCT_REAL_QUANTITY', '实际库存');
+define('TABLE_HEADING_CATEGORIES_PRODUCT_BUYING', ' 采购');
+define('TABLE_HEADING_CATEGORIES_PRODUCT_NOW_PRICE', '单价');
+define('TABLE_HEADING_CATEGORIES_PRODUCT_SETTING_PRICE', '单价设置');
+define('TABLE_HEADING_CATEGORIES_PEER_PERSON_NO_SETTING', '同行未设置');
+define('PIC_MAE_ALT_TEXT', '目前有订单');
+define('CATEGORY_BUTTON_CAL_SETTING', '计算设置');
+define('CATEGORY_BUTTON_LOGIN', '负责人登记');
+define('CATEGORY_BUTTON_XIEYE_PRICE', '批发商单价设置');
+define('CATEGORY_SHOW_SINGLE_PRICE_TEXT', '单价规定:');
+define('CATEGORY_INFORMATION_TITLE', '分类基本信息');
+define('CATEGORY_META_TAG_TEXT', 'META标签');
+define('CATEGORY_META_TAG_READ_TEXT', '（此处填写的文字是将会在首页的分类广告下显示。如果想要两行显示的话，请在填写时用“，”分隔。)');
+define('CATEGORY_BUTTON_ALL_UPDATE', '统一更新');
+define('CATEGORY_PIC_TITLE', '分类的图片信息');
+define('CATEGORY_SEO_TITLE', '分类的seo');
+define('TEXT_CATEGORY_KEYWORD', 'Google关键字:');
+define('TEXT_NEW_CATEGORY', '&quot;%s&quot;的分类注册');
 ?>

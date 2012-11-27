@@ -32,7 +32,6 @@ case update:
     for ($i = 0; $i < count($_POST['product']); $i++) {
         tep_db_perform('set_menu_list', array(
           'products_id'   => $_POST['product'][$i],
-          //'kakuukosuu'    => SBC2DBC($_POST['kakuukosuu'][$i]),
           'kakaku'        => SBC2DBC($_POST['kakaku'][$i]),
           'categories_id' => $cID,
           'last_modified' => 'now()'
@@ -40,7 +39,7 @@ case update:
         tep_db_perform('products', array('products_virtual_quantity' => SBC2DBC($_POST['kakuukosuu'][$i])), 'update', "products_id='".$_POST['product'][$i]."'");
     }
   }
-  tep_redirect('categories_admin.php?cPath='.$_POST['fullpath']);
+  tep_redirect('categories.php?cPath='.$_POST['fullpath']);
   break;
 }
 
@@ -78,8 +77,6 @@ background-color: #FFCC99;
 
 .dataTableContent {
 color: #000000;
-/*font-size:11px;*/
-/*white-space:nowrap;*/
 }
 .show_menu{
 	height:auto;
@@ -95,12 +92,10 @@ color: #000000;
   <script language="javascript" src="includes/javascript/jquery_include.js"></script>
   <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
   <script type="text/javascript">
-    // true = disabled, false = enabled
     var products = new Array();
     var last_val = 0;
     var kakaku = new Array();
     var kakuukosuu = new Array();
-    //var products_order = new Array(31703,31697,31681)
     var products_order = new Array(<?php
     $set_menu_list_query = tep_db_query("select * from set_menu_list where categories_id='".$cID."' order by set_list_id asc");
     $i = 0;
@@ -321,23 +316,12 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     order by soc.oroshi_id asc
   ');
   while($col = tep_db_fetch_array($res)){
-    //$oroname2[] = $col['oroshi_name'];
     $oroids[]   = $col['oroshi_id'];
   }
   
 $lines_arr = array();
 $oroname   = array();
 $cr        = array("\r\n", "\r");   // 改行コード置換用配
-/*
-$orocnt = tep_db_query('
-  select distinct(oroshi_id) 
-  from set_oroshi_datas 
-  where parent_id = "'.$cid.'" 
-  order by oroshi_id
-');
-while($testcol = tep_db_fetch_array($orocnt)){
-  $oroids[] = $testcol['oroshi_id'];
-}*/
 if($oroids)
   foreach($oroids as $key=>$value){
     $res = tep_db_query("
@@ -374,7 +358,6 @@ for($n=0;$n<$cnt;$n++){
     $count[0]=$count[$n];
   }
 }
-//$rows = count($set_menu_list)>$count[0]?count($set_menu_list):$count[0];
 $rows = $count[0]>count($products)?$count[0]:count($products);
 }
 ?>
@@ -393,7 +376,6 @@ $rows = $count[0]>count($products)?$count[0]:count($products);
  }
  ?>
 </script>
-<!--------------------->
 <form name='listform' method='POST' action="?action=update&cid=<?php echo $cID; ?>&cpath=<?php echo $cPath; ?>">
 <div class="show_menu">
   <table border="0" cellspacing="1" cellpadding="2" style="margin-left:8px; min-width:750px;">
@@ -412,7 +394,6 @@ $rows = $count[0]>count($products)?$count[0]:count($products);
     <th class="dataTableHeadingContent" ><?php echo LIST_DISPLAY_PRODUCT_SELECT;?></th>
     <th class="dataTableHeadingContent" ><?php echo LIST_DISPLAY_JIAKONGZAIKU;?></th>
     <th class="dataTableHeadingContent" ><?php echo LIST_DISPLAY_YEZHE_PRICE;?></th>
-    <!--<th></th>-->
   </tr>
 <?php 
  if($count){
@@ -442,42 +423,26 @@ $rows = $count[0]>count($products)?$count[0]:count($products);
   }
 ?>
     <td class="dataTableContent" id="td_product_<?php echo $k;?>">
-<?php //if($k<count($products)) {?>
       <select class="productSelect" name="product[<?php echo $k;?>]" id="product_<?php echo $k;?>">
         <option value='0'><?php echo TEXT_LIST_ENTAKUSHITEKUDASAI;?></option>
 <?php foreach ($products as $ok => $op) {?>
         <option value='<?php echo $op['products_id'];?>'><?php echo $op['products_name'];?></option>
 <?php }?>
       </select>
-<?php //}?>
     </td>
     <td class="dataTableContent" id="td_kakuukosuu_<?php echo $k;?>">
-<?php //if($k<count($products)) {?>
       <input pos="<?php echo $k;?>_0" class="udlr kakuukosuu_input" type="text" size='10' name="kakuukosuu[<?php echo $k;?>]" id="kakuukosuu_<?php echo $k;?>" value="" disabled>
-<?php //}?>
-      <!--<a href="javascript:void(0)"
-      onclick="$('.kakuukosuu_input').val($('#kakuukosuu_<?php echo
-      $k;?>').val())"><?php echo TEXT_LIST_TOUITU;?></a>-->
-      </td>
+    </td>
     <td class="dataTableContent" id="td_kakaku_<?php echo $k;?>">
-<?php //if($k<count($products)) {?>
       <input pos="<?php echo $k;?>_1" onkeyup="check_input(this);" class="udlr kakaku_input" type="text" size='10' name="kakaku[<?php echo $k;?>]" id="kakaku_<?php echo $k;?>" value="" disabled>
-<?php //}?>
-      </td>
-    <!--<td>
-<?php if ($k) {?>
-        <input type='button' onclick="exchange_product(<?php echo $k;?>)"
-          value='<?php echo TEXT_LIST_DISTPLAY_ADD;?>'>
-<?php }?>
-    </td>-->
+    </td>
   </tr>
 <?php }}?>
   </table>
     <input type="hidden" name="fullpath" value="<?php echo $_GET['fullpath']?>">
     <p><input type="submit" value="<?php echo TEXT_LIST_KETTEI;?>">
     <input type="button" value="<?php echo TEXT_LIST_RISETTO;?>" onclick="clear_page()"></p>
-    <!--<input type="button" value="<?php echo TEXT_LIST_RISETTO;?>" onclick="reset_page()">-->
-	</div>
+    </div>
   </form>
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 </body>

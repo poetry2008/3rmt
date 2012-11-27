@@ -3,7 +3,6 @@ ob_start();
 require('includes/application_top.php');
 require(DIR_WS_CLASSES . 'currencies.php');
 $currencies = new currencies();
-//  $cPath=cpathPart($_POST['cpath']);
 $cPath=cpathPart($_GET['cpath']);
 $oid = $_GET['o_id'];
 $action = $HTTP_GET_VARS['action'];
@@ -16,7 +15,6 @@ case 'data_cleate':
   $cid = $_POST['cid'];
   $o_id = $_POST['oid'];
   foreach ($setdata as $key=>$value){
-    //    tep_db_query('delete from set_oroshi_datas where oroshi_id = '.$key.' and parent_id ='.$cid);
     if(trim($value)){
     $oroid = $key;
     $sql = 'insert into set_oroshi_datas (oroshi_id ,parent_id,datas,set_date) values(';
@@ -28,7 +26,6 @@ case 'data_cleate':
     tep_db_query($sql);
     }
   }
-  //var_dump($_GET['src_id']);
   if(isset($_GET['src_id'])&&$_GET['src_id']!=null){
     $jump_url = 'cleate_list.php?action=prelist&cid='. $cid  .'&oid='.$o_id.'&src_id=his&cPath='.$_POST['cPath'];
   }else{
@@ -152,22 +149,18 @@ if ($action =='prelist'){
     $form_action = 'cleate_list.php?action=data_cleate&src_id='.$src_id;
   }else if (isset($_GET['cPath']) && '' != $_GET['cPath']) {
     
-    $back_url = "categories_admin.php";
+    $back_url = "categories.php";
     $back_url_params = "cPath=".$_GET['cPath'];
   }
-  //  $res = tep_db_query("select * from set_oroshi_categories soc,set_oroshi_names son where son.oroshi_id = soc.oroshi_id and soc.categories
   $res =tep_db_query('select * from set_oroshi_names son, categories c
       ,set_oroshi_categories soc where c.categories_id = "'.$cid.'" and c.categories_id = soc.categories_id and son.oroshi_id = soc.oroshi_id order by soc.oroshi_id ');
-  //var_dump('select * from set_oroshi_names son, categories c ,set_oroshi_categories soc where c.categories_id = '.$cid.' and c.categories__id = soc.categories_id and son.oroshi_id = soc.oroshi_id order by soc.oroshi_id desc');
       $html2 = '';
       $c=0;
     while($col = tep_db_fetch_array($res)){
       $c++;
       $oroname = $col['oroshi_name'];
       $oroid = $col['oroshi_id'];
-      //$cnt=0;
 
-      //while($col=tep_db_fetch_array($res)){
       $html.= "<td><a href='history.php?action=oroshi_c&cPath=".$_GET['cid']."&oid=".$col['oroshi_id']."&fullpath=".$_GET['cPath']."' title='".TEXT_CLEATE_HISTORY."'>".$col['oroshi_name']."</a>&nbsp;&nbsp;&nbsp;<a href='history.php?action=oroshi_c&cPath=".$_GET['cid']."&oid=".$col['oroshi_id']."&fullpath=".$_GET['cPath']."' title='".TEXT_CLEATE_HISTORY."'>".TEXT_CLEATE_HISTORY."</a></td>";
       $html2.= '';
       $html2.="<td><textarea rows='5' cols='30' id='textarea_".$col['oroshi_id']."' name='set_list[".$oroid."]' ></textarea></td>";
@@ -211,13 +204,6 @@ foreach($cols as $col){
   if($col['set_date']){
     $oroname[] = $col['oroshi_name'];
     $orotime[] = date('Y/m/d H:i:s', strtotime($col['set_date']));
-    /**
-    $col['datas'] = trim($col['datas']);         // 文頭文末の空白を削除
-    $col['datas'] = str_replace($cr, "\n",$col['datas']);  // 改行コードを統一
-    $lines= explode("\n", $col['datas']);
-    $count[]=count($lines);
-    $lines_arr[]=$lines;
-    /**/
     $lines = spliteOroData($col['datas']);
     $count[]=count($lines);
     $lines_arr[]=$lines;
