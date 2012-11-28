@@ -107,7 +107,7 @@ if ($_GET['action'] == 'show_category_info') {
   
   $category_info_row[]['text'] = array(
         array('align' => 'left', 'text' => TEXT_USER_UPDATE.'&nbsp;'.((tep_not_null($category_info_res['user_last_modified'])?$category_info_res['user_last_modified']:TEXT_UNSET_DATA))), 
-        array('align' => 'left', 'text' => TEXT_LAST_MODIFIED.'&nbsp;'.((tep_not_null(tep_datetime_short($category_info_res['last_mofified'])))?tep_datetime_short($category_info_res['last_mofified']):TEXT_UNSET_DATA)), 
+        array('align' => 'left', 'text' => TEXT_LAST_MODIFIED.'&nbsp;'.((tep_not_null(tep_datetime_short($category_info_res['last_modified'])))?tep_datetime_short($category_info_res['last_modified']):TEXT_UNSET_DATA)), 
       );
   
   $category_info_row[]['text'] = array(

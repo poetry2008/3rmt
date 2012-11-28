@@ -1317,19 +1317,18 @@ function handle_option()
       success: function(msg) {
         ele = ele.parentNode;
         head_top = $('.compatible_head').height();
+        box_warp_height = 0;
         if(document.documentElement.clientHeight < document.body.scrollHeight){
           if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
             if(ele.offsetTop < $('#show_popup_info').height()){
               offset = ele.offsetTop+$("#products_list_table").position().top+ele.offsetHeight+head_top;
             }else{
-              if ((ele.offsetTop+$('#show_popup_info').height()) > $('.box_warp').height()) {
-                offset = ele.offsetTop+$("#products_list_table").position().top-1-$('#show_popup_info').height()+head_top; 
-              } else {
-                offset = ele.offsetTop+$("#products_list_table").position().top+$(ele).height()+head_top; 
-              }
+              offset = ele.offsetTop+$("#products_list_table").position().top-1-$('#show_popup_info').height()+head_top; 
+              box_warp_height = offset-head_top;
             }
           }else{
             offset = ele.offsetTop+$("#products_list_table").position().top+ele.offsetHeight+head_top;
+            box_warp_height = offset-head_top;
           }
           $('#show_popup_info').css('top',offset);
         }else{
@@ -1337,12 +1336,17 @@ function handle_option()
             offset = ele.offsetTop+$("#products_list_table").position().top-1-$('#show_popup_info').height();
           }else{
             offset = ele.offsetTop+$("#products_list_table").position().top+ele.offsetHeight+head_top;
+            box_warp_height = offset-head_top;
           }
           $('#show_popup_info').css('top',offset);
         }
+        box_warp_height = box_warp_height + $('#show_popup_info').height();
         leftset = $('.leftmenu').width()+$('.show_left_menu').width()+parseInt($('.leftmenu').css('padding-left'))+parseInt($('.show_left_menu').css('padding-right'))+parseInt($('#categories_right_td table').attr('cellpadding'));
         $('#show_popup_info').css('z-index', msg);
         $('#show_popup_info').css('left',leftset);
+        if($('.box_warp').height()<box_warp_height){
+          $('.box_warp').css('height',box_warp_height);
+        }
       }
     });
   }
@@ -1478,8 +1482,8 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <!-- header_eof -->
 <!-- body -->
-<input type="hidden" name="show_info_id" value="show_popup_info">
-<div id="show_popup_info" style="position: absolute; background: none repeat scroll 0% 0% rgb(255, 255, 0); width: 70%; display:none;">
+<input type="hidden" name="show_info_id" value="show_popup_info" id="show_info_id">
+<div id="show_popup_info" style="min-width: 550px; position: absolute; background: none repeat scroll 0% 0% rgb(255, 255, 0); width: 70%; display:none;">
 </div>
 <div id="categories_tree">
                 <?php
@@ -3215,26 +3219,9 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
         <tr>
           <td>
           <?php
-            // 取得価格/業者更新时间
+            //取得价格/业者更新时间 
             $set_menu_list  = tep_db_fetch_array(tep_db_query("select * from set_menu_list where categories_id='".$current_category_id."'"));
             $kakaku_updated = $set_menu_list?date('n/j G:i',strtotime($set_menu_list['last_modified'])):'';
-          ?>
-          <?php
-          if (false) { 
-          $show_comment = tep_db_fetch_array(tep_db_query("select * from set_comments where categories_id='".$current_category_id."'"));
-          if (empty($site_id)) { 
-            if (!empty($show_comment['rule'])) {
-            ?>
-            <table>
-              <tr>
-              <td class="dataTableContent"><b><?php echo CATEGORY_SHOW_SINGLE_PRICE_TEXT;?></b></td>
-              <td class="dataTableContent"><?php echo nl2br($show_comment['rule']);?></td>
-              </tr>
-            </table>
-          <?
-            }
-          }
-          }
           ?>
           <form name="myForm1" action="<?php echo tep_href_link(FILENAME_CATEGORIES, tep_get_all_get_params('action').'action=all_update');?>" method="POST" onSubmit="return false"> 
           <input type="hidden" name="flg_up" value="">
@@ -3843,7 +3830,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
           $kakaku_treder=0;
         }
       }
-      //同業者専用
+      //同业者专用
       $target_cnt=$products_count-1;
   ?>
                       <?php

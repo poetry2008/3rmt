@@ -2949,15 +2949,14 @@ if ($ocertify->npermission >= 10) {
     echo '<input class="element_button" type="button" value="'.IMAGE_COPY.  '" onclick="show_product_copy(\''.$pInfo->products_id.'\')">';
   }
   if(isset($site_id)&&$site_id!=0){
-    if ($ocertify->npermission == 15) {
-      if (tep_db_num_rows(tep_db_query("select products_id from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$pInfo->products_id."' and site_id = '".(int)$site_id."'"))) {
-        echo '<input class="element_button" type="button" value="'.IMAGE_DELETE.  '" onclick="show_product_description_delete(\''.$pInfo->products_id.'\')">';
-      }
+    if (tep_db_num_rows(tep_db_query("select products_id from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$pInfo->products_id."' and site_id = '".(int)$site_id."'"))) {
+      echo '<input class="element_button" type="button" value="'.IMAGE_DELETE.  '" onclick="show_product_description_delete(\''.$pInfo->products_id.'\')">';
     }
   }else{
-    echo '<input class="element_button" type="button" value="'.IMAGE_DELETE.  '" onclick="show_product_delete(\''.$pInfo->products_id.'\')">';
+    if ($ocertify->npermission == 15) {
+      echo '<input class="element_button" type="button" value="'.IMAGE_DELETE.  '" onclick="show_product_delete(\''.$pInfo->products_id.'\')">';
+    }
   }
-  //echo tep_eof_hidden();
   echo tep_html_element_submit(IMAGE_SAVE);
 } else {
   echo ' <a href="' . tep_href_link(FILENAME_REVIEWS, 'cPath=' . $cPath .  '&products_id=' . $pInfo->products_id .  '&action=new') . '">'.tep_html_element_button(IMAGE_REVIEWS).'</a>';
@@ -2998,7 +2997,6 @@ echo tep_eof_hidden();
 <?php echo '<br><b>' . $pInfo->products_name . '</b>';?>
 </td></tr><tr><td align="center">
 <?php
-//echo tep_eof_hidden();
 echo '<br>' . tep_html_element_submit(IMAGE_DELETE);
 echo '<input type="button" value="'.IMAGE_CANCEL.
   '" onclick="hidden_info_box()" class="element_button" >';
@@ -3049,7 +3047,6 @@ echo '<br>' . $product_categories_string;
 ?>
 </td></tr><tr><td align="center">
 <?php 
-//echo tep_eof_hidden();
 echo '<br>' . tep_html_element_submit(IMAGE_DELETE);
 echo '<input type="button" value="'.IMAGE_CANCEL.
   '" onclick="hidden_info_box()" class="element_button" >';
@@ -3093,7 +3090,6 @@ tep_draw_pull_down_menu('move_to_category_id',
 ?>
 </td></tr><tr><td align="center">
 <?php 
-//echo tep_eof_hidden();
 echo '<br>' . tep_html_element_submit(IMAGE_MOVE); 
 echo '<input type="button" value="'.IMAGE_CANCEL.
   '" onclick="hidden_info_box()" class="element_button" >';
@@ -3144,7 +3140,6 @@ tep_draw_radio_field('copy_as', 'duplicate') . ' ' . TEXT_COPY_AS_DUPLICATE;
 ?>
 </td></tr><tr><td align="center">
 <?php 
-//echo tep_eof_hidden();
 echo '<br>' . tep_html_element_submit(IMAGE_COPY); 
 echo '<input type="button" value="'.IMAGE_CANCEL.  '" onclick="hidden_info_box()" class="element_button" >';
 ?>
@@ -3153,6 +3148,7 @@ echo '<input type="button" value="'.IMAGE_CANCEL.  '" onclick="hidden_info_box()
 </form>
 <?php
 } else if ($_GET['action'] == 'get_top_layer') {
+  //获得页面最大的z-index值 
   $z_index = '1';
  
   $note_list_raw = mysql_query("select xyz from notes where belong = '".$_POST['current_belong']."'");

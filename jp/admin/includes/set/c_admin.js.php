@@ -40,13 +40,18 @@ function chek_radio(cnt){
           async:false, 
           url: 'set_ajax_dougyousya.php?products_id='+proid[cnt].value+'&dougyousya_id='+$('#radio_'+cnt+"_"+i).val(),
           success: function(msg) {
-            $('body').css('cursor', ''); 
-            $('#wait').hide(); 
+            $('body').css('cursor', '');
+            setTimeout('read_space_time()', 500);
           } 
         });
       }
     }
   }   
+}
+
+function read_space_time()
+{
+  $('#wait').hide(); 
 }
 
 function cleat_set(url){

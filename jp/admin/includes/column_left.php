@@ -2,28 +2,7 @@
 /*
   $Id$
 */
-/*
-if ((strpos($_SERVER['PHP_SELF'], 'history.php') === false)  && 
-    (strpos($_SERVER['PHP_SELF'], 'cleate_oroshi.php') === false) && 
-    (strpos($_SERVER['PHP_SELF'], 'list_display.php') === false) && 
-    (strpos($_SERVER['PHP_SELF'], 'edit_orders.php') === false) && 
-    (strpos($_SERVER['PHP_SELF'], 'edit_new_orders.php') === false) && 
-    (strpos($_SERVER['PHP_SELF'], 'categories.php') === false) && 
-    (strpos($_SERVER['PHP_SELF'], 'micro_log.php') === false) && 
-    (strpos($_SERVER['PHP_SELF'], 'products_tags.php') === false) && 
-    (strpos($_SERVER['PHP_SELF'], 'categories_admin.php') === false) && 
-    (strpos($_SERVER['PHP_SELF'], 'pw_manager_log.php') === false) && 
-    (strpos($_SERVER['PHP_SELF'], 'cleate_dougyousya.php') === false) && 
-    (strpos($_SERVER['PHP_SELF'], 'customers_products.php') === false) && 
-    (strpos($_SERVER['PHP_SELF'], 'pw_manager.php') === false) && 
-    (strpos($_SERVER['PHP_SELF'], 'edit_new_orders2.php') === false) && 
-    (strpos($_SERVER['PHP_SELF'], 'telecom_unknow.php') === false) && 
-    (strpos($_SERVER['PHP_SELF'], 'cleate_list.php') === false) && 
-    (strpos($_SERVER['PHP_SELF'], 'orders.php') === false)) {
 ?>
-<script type="text/javascript" src="includes/javascript/jquery.js"></script>
-<?php }
-*/?>
 <script type="text/javascript" >
 if (typeof window.jQuery == "undefined") {
     document.write('<script language="javascript" src="includes/javascript/jquery.js"><\/script>');
@@ -51,7 +30,8 @@ $(document).ready(function(){
 });
 function toggle_leftColumn()
 {
-    var arrow_status = $('.columnLeft').css('display');
+
+  var arrow_status = $('.columnLeft').css('display');
 
   if (arrow_status == 'none') {
     document.cookie = 'tarrow=open';  
@@ -100,17 +80,16 @@ function toggle_leftColumn()
       $("#popup_window").css('left',ele_obj.left-box_warp_left);
     }
   }
-<?php if($_SERVER['PHP_SELF'] == '/admin/campaign.php'){  ?>
-  setTimeout("show_campaign_info_offset()",10); 
-    <?php }?>
-  <?php if($_SERVER['PHP_SELF'] == '/admin/orders.php'){?>
-  setTimeout("orders_info_box_offset()",10);
-  <?php } ?>
-
-  if($('input:[name=show_info_id]')){
-    show_info_id = $('input:[name=show_info_id]').val()
-  leftset = $('.leftmenu').width()+$('.show_left_menu').width()+parseInt($('.leftmenu').css('padding-left'))+parseInt($('.show_left_menu').css('padding-right'))+parseInt($('#categories_right_td table').attr('cellpadding'));
-  $('#'+show_info_id).css('left',leftset).show();
+<?php if($_SERVER['PHP_SELF'] == '/admin/campaign.php'){ ?>
+setTimeout("show_campaign_info_offset()",10); 
+<?php } ?>
+<?php if($_SERVER['PHP_SELF'] == '/admin/orders.php'){ ?>
+setTimeout("orders_info_box_offset()",10);
+<?php } ?>
+  if($('#show_info_id').length > 0){
+    show_info_str = $('#show_info_id').val();
+    leftset = $('.leftmenu').width()+$('.show_left_menu').width()+parseInt($('.leftmenu').css('padding-left'))+parseInt($('.show_left_menu').css('padding-right'))+parseInt($('#categories_right_td table').attr('cellpadding'));
+    $('#'+show_info_str).css('left',leftset);
   }
 }
 function toggle_lan(sobj)
