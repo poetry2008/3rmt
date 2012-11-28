@@ -68,9 +68,14 @@ function dbc2sbc(str){
   return result;   
 }
 $(document).ready(function () {
-   calc_product_final_price("<?php echo (int)$_GET['products_id'];?>"); 
+   var change_flag = $("#change_flag").val();
+   if(change_flag == 'true'){
+     calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
+     $("#show_price").show();
+     $(".calc_show_price").show();  
+   } 
    var actiontime =new Date().getTime();  
-   });
+});
 function calc_product_final_price(pid)
 {
    var attr_price = 0; 
@@ -93,7 +98,10 @@ function calc_product_final_price(pid)
    }); 
    
    $.getJSON("<?php echo HTTP_SERVER;?>"+"/ajax_process.php?action=calc_price&p_id="+pid+"&oprice="+attr_price+"&qty="+$('#quantity').val(), function(msg) { 
-       document.getElementById("show_price").innerHTML = msg.price; 
+     document.getElementById("show_price").innerHTML = msg.price; 
+     $("#change_flag").val('true');
+     $("#show_price").show();
+     $(".calc_show_price").show();
   });
 }
 
@@ -157,9 +165,8 @@ function change_num(ob,targ, quan, a_quan)
   product_quantity.value = num_value;
   actiontime =new Date().getTime();  
    setTimeout( function() {
-      timeline_action("<?php echo (int)$_GET['products_id'];?>"); 
-       }, 1000);   
-
+      timeline_action("<?php echo (int)$_GET['products_id'];?>");  
+   }, 1000);    
 }
 function get_current_ts(){
 
@@ -171,7 +178,7 @@ function timeline_action(p){
 
   if (get_current_ts()-actiontime>=980){
   calc_product_final_price(p);
-  }; 
+  };
 //calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
 }
 </script>
@@ -419,7 +426,7 @@ if (!$product_info) { // product not found in database
         </tr>
         <tr>
         	<td width="20%">
-       		 <div class="calc_show_price"><?php echo TEXT_PRODUCT_PRICE;?></div></td>
+       		 <div class="calc_show_price"><input type="hidden" id="change_flag" name="change_num_flag" value="<?php echo isset($_POST['change_num_flag']) ? $_POST['change_num_flag'] : 'false';?>"><?php echo TEXT_PRODUCT_SUBTOTAL;?></div></td>
             <td>
              <div id="show_price"></div>
             </td>

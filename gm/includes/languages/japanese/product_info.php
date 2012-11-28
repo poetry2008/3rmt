@@ -28,3 +28,4 @@ define('TEXT_OUT_OF_STOCK','在庫切れ');
 define('TEXT_PREORDER_BOOK','を予約する');
 define('TEXT_PRODUCTS_QTY','数量:');
 define('TEXT_UNIT','個');
+define('TEXT_PRODUCT_SUBTOTAL','小計');
