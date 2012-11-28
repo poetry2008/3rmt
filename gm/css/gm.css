@@ -1372,12 +1372,14 @@ top:70px;
 	font-size:20px;
 	font-weight:bold;
 	color:#66DFFF;
+        display:none;
 }
 .calc_show_price{
 	color:#66DFFF;
 	font-size:20px;
 	font-weight:bold;
 	margin-left:-1px;
+        display:none;
 }
 #group_list_box td{ height:20px; padding:0;}
 

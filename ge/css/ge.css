@@ -1426,11 +1426,13 @@ searching
 #show_price{
 	font-size:14px;
 	font-weight:bold;
+        display:none;
 }
 .calc_show_price{
 	font-size:14px;
 	font-weight:bold;
 	margin-left:-1px;
+        display:none;
 }
 #group_list_box td{ height:20px; padding:0;}
 

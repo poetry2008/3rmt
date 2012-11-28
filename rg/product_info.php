@@ -39,7 +39,12 @@ function dbc2sbc(str){
   return result;   
 }
 jq(document).ready(function () {
-   calc_product_final_price("<?php echo (int)$_GET['products_id'];?>"); 
+   var change_flag = jq("#change_flag").val();
+   if(change_flag == 'true'){
+     calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
+     jq("#show_price").show();
+     jq(".calc_show_price").show();  
+   } 
    var actiontime =new Date().getTime();  
 });
 function calc_product_final_price(pid)
@@ -64,7 +69,10 @@ function calc_product_final_price(pid)
    }); 
    
    jq.getJSON("<?php echo HTTP_SERVER;?>"+"/ajax_process.php?action=calc_price&p_id="+pid+"&oprice="+attr_price+"&qty="+jq('#quantity').val(), function(msg) { 
-       document.getElementById("show_price").innerHTML = msg.price; 
+     document.getElementById("show_price").innerHTML = msg.price; 
+     jq("#change_flag").val('true');
+     jq("#show_price").show();
+     jq(".calc_show_price").show(); 
   });
 }
 
@@ -128,9 +136,8 @@ function change_num(ob,targ, quan, a_quan)
   product_quantity.value = num_value;
   actiontime =new Date().getTime();  
    setTimeout( function() {
-      timeline_action("<?php echo (int)$_GET['products_id'];?>"); 
-       }, 1000);   
-
+      timeline_action("<?php echo (int)$_GET['products_id'];?>");  
+   }, 1000);    
 }
 function get_current_ts(){
 
@@ -449,7 +456,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                           </tr>
                           <tr>
                             <td class="main" width="85">
-                            <div class="calc_show_price"><?php echo TEXT_PRODUCT_PRICE;?>:</div>
+                            <div class="calc_show_price"><input type="hidden" id="change_flag" name="change_num_flag" value="<?php echo isset($_POST['change_num_flag']) ? $_POST['change_num_flag'] : 'false';?>"><?php echo TEXT_PRODUCT_SUBTOTAL;?>:</div>
                             </td>
                             <td width="325">
                               <div id="show_price"></div>

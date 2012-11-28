@@ -2237,11 +2237,13 @@ border:1px solid #CAC6BE;
 	font-size:20px;
 	font-weight:bold;
 	color:#fff;
+        display:none;
 }
 .calc_show_price{
 	color:#fff;
 	font-size:20px;
 	font-weight:bold;
+        display:none;
 }
 .formArea_td_info{
 	*width:82%;
