@@ -1317,19 +1317,18 @@ function handle_option()
       success: function(msg) {
         ele = ele.parentNode;
         head_top = $('.compatible_head').height();
+        box_warp_height = 0;
         if(document.documentElement.clientHeight < document.body.scrollHeight){
           if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
             if(ele.offsetTop < $('#show_popup_info').height()){
               offset = ele.offsetTop+$("#products_list_table").position().top+ele.offsetHeight+head_top;
             }else{
-              if ((ele.offsetTop+$('#show_popup_info').height()) > $('.box_warp').height()) {
-                offset = ele.offsetTop+$("#products_list_table").position().top-1-$('#show_popup_info').height()+head_top; 
-              } else {
-                offset = ele.offsetTop+$("#products_list_table").position().top+$(ele).height()+head_top; 
-              }
+              offset = ele.offsetTop+$("#products_list_table").position().top-1-$('#show_popup_info').height()+head_top; 
+              box_warp_height = offset-head_top;
             }
           }else{
             offset = ele.offsetTop+$("#products_list_table").position().top+ele.offsetHeight+head_top;
+            box_warp_height = offset-head_top;
           }
           $('#show_popup_info').css('top',offset);
         }else{
@@ -1337,12 +1336,17 @@ function handle_option()
             offset = ele.offsetTop+$("#products_list_table").position().top-1-$('#show_popup_info').height();
           }else{
             offset = ele.offsetTop+$("#products_list_table").position().top+ele.offsetHeight+head_top;
+            box_warp_height = offset-head_top;
           }
           $('#show_popup_info').css('top',offset);
         }
+        box_warp_height = box_warp_height + $('#show_popup_info').height();
         leftset = $('.leftmenu').width()+$('.show_left_menu').width()+parseInt($('.leftmenu').css('padding-left'))+parseInt($('.show_left_menu').css('padding-right'))+parseInt($('#categories_right_td table').attr('cellpadding'));
         $('#show_popup_info').css('z-index', msg);
         $('#show_popup_info').css('left',leftset);
+        if($('.box_warp').height()<box_warp_height){
+          $('.box_warp').css('height',box_warp_height);
+        }
       }
     });
   }
