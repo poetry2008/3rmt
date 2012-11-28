@@ -3153,6 +3153,7 @@ echo '<input type="button" value="'.IMAGE_CANCEL.  '" onclick="hidden_info_box()
 </form>
 <?php
 } else if ($_GET['action'] == 'get_top_layer') {
+  //获得页面最大的z-index值 
   $z_index = '1';
  
   $note_list_raw = mysql_query("select xyz from notes where belong = '".$_POST['current_belong']."'");

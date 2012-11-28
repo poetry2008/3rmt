@@ -3215,26 +3215,9 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
         <tr>
           <td>
           <?php
-            // 取得価格/業者更新时间
+            //取得价格/业者更新时间 
             $set_menu_list  = tep_db_fetch_array(tep_db_query("select * from set_menu_list where categories_id='".$current_category_id."'"));
             $kakaku_updated = $set_menu_list?date('n/j G:i',strtotime($set_menu_list['last_modified'])):'';
-          ?>
-          <?php
-          if (false) { 
-          $show_comment = tep_db_fetch_array(tep_db_query("select * from set_comments where categories_id='".$current_category_id."'"));
-          if (empty($site_id)) { 
-            if (!empty($show_comment['rule'])) {
-            ?>
-            <table>
-              <tr>
-              <td class="dataTableContent"><b><?php echo CATEGORY_SHOW_SINGLE_PRICE_TEXT;?></b></td>
-              <td class="dataTableContent"><?php echo nl2br($show_comment['rule']);?></td>
-              </tr>
-            </table>
-          <?
-            }
-          }
-          }
           ?>
           <form name="myForm1" action="<?php echo tep_href_link(FILENAME_CATEGORIES, tep_get_all_get_params('action').'action=all_update');?>" method="POST" onSubmit="return false"> 
           <input type="hidden" name="flg_up" value="">
@@ -3843,7 +3826,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
           $kakaku_treder=0;
         }
       }
-      //同業者専用
+      //同业者专用
       $target_cnt=$products_count-1;
   ?>
                       <?php
