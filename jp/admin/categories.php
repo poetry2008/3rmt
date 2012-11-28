@@ -1322,18 +1322,23 @@ function handle_option()
           if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
             if(ele.offsetTop < $('#show_popup_info').height()){
               offset = ele.offsetTop+$("#products_list_table").position().top+ele.offsetHeight+head_top;
+              box_warp_height = offset-head_top;
             }else{
               offset = ele.offsetTop+$("#products_list_table").position().top-1-$('#show_popup_info').height()+head_top; 
               box_warp_height = offset-head_top;
             }
           }else{
-            offset = ele.offsetTop+$("#products_list_table").position().top+ele.offsetHeight+head_top;
-            box_warp_height = offset-head_top;
+            if (((head_top+ele.offsetTop+$('#show_popup_info').height()) > $('.box_warp').height())&&($('#show_popup_info').height()<ele.offsetTop+parseInt(head_top)-$("#products_list_table").position().top-1)) {
+             offset = ele.offsetTop+$("#products_list_table").position().top-1-$('#show_popup_info').height()+head_top;
+            } else {
+             offset = ele.offsetTop+$("#products_list_table").position().top+1+$(ele).height()+head_top;
+            }
           }
           $('#show_popup_info').css('top',offset);
         }else{
           if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
             offset = ele.offsetTop+$("#products_list_table").position().top-1-$('#show_popup_info').height();
+            box_warp_height = offset-head_top;
           }else{
             offset = ele.offsetTop+$("#products_list_table").position().top+ele.offsetHeight+head_top;
             box_warp_height = offset-head_top;
@@ -1344,8 +1349,10 @@ function handle_option()
         leftset = $('.leftmenu').width()+$('.show_left_menu').width()+parseInt($('.leftmenu').css('padding-left'))+parseInt($('.show_left_menu').css('padding-right'))+parseInt($('#categories_right_td table').attr('cellpadding'));
         $('#show_popup_info').css('z-index', msg);
         $('#show_popup_info').css('left',leftset);
-        if($('.box_warp').height()<box_warp_height){
+        if($('.compatible').height()<box_warp_height){
           $('.box_warp').css('height',box_warp_height);
+        }else{
+          $('.box_warp').css('height',$('.compatible').height());
         }
       }
     });
