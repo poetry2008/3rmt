@@ -2893,8 +2893,8 @@ if (tep_get_bflag_by_product_id($pInfo->products_id)) {
 </td></tr>
 <tr><td colspan="2">
 <?php //做成者和时间?>
-<table>
-<tr><td width="50%">
+<table width="100%">
+<tr><td width="10%">
 <?php 
 echo TEXT_USER_ADDED;
 if (!empty($pInfo->products_user_added)) {
