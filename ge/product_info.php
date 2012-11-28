@@ -446,7 +446,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
               <tr>
               <?php $p_a_quan = $product_info['products_quantity'];?>
               <td>
-                <input name="quantity" type="text" id="quantity" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1);?>" size="10" maxlength="4" style="text-align:right;" onChange="change_num('quantity','','',<?php echo $p_a_quan;?>)">
+                <input name="quantity" type="text" id="quantity" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1);?>" size="10" maxlength="4" style="text-align:right;" onchange="change_num('quantity','','',<?php echo $p_a_quan;?>)">
               </td>
               <td width="15">
                 <div>
@@ -503,7 +503,6 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                     $cnt=0;
                    if(tep_db_num_rows($sub_colors_query) >= 1) {
     ?>
-      <!-- //color image -->
       <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0">
         <tr>
           <?php
@@ -542,7 +541,6 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
     ?>
         </tr>
       </table>
-      <!-- //color image -->
       <?php
         }
  ?>
