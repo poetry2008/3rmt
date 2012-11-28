@@ -2957,7 +2957,6 @@ if ($ocertify->npermission >= 10) {
   }else{
     echo '<input class="element_button" type="button" value="'.IMAGE_DELETE.  '" onclick="show_product_delete(\''.$pInfo->products_id.'\')">';
   }
-  //echo tep_eof_hidden();
   echo tep_html_element_submit(IMAGE_SAVE);
 } else {
   echo ' <a href="' . tep_href_link(FILENAME_REVIEWS, 'cPath=' . $cPath .  '&products_id=' . $pInfo->products_id .  '&action=new') . '">'.tep_html_element_button(IMAGE_REVIEWS).'</a>';
@@ -2998,7 +2997,6 @@ echo tep_eof_hidden();
 <?php echo '<br><b>' . $pInfo->products_name . '</b>';?>
 </td></tr><tr><td align="center">
 <?php
-//echo tep_eof_hidden();
 echo '<br>' . tep_html_element_submit(IMAGE_DELETE);
 echo '<input type="button" value="'.IMAGE_CANCEL.
   '" onclick="hidden_info_box()" class="element_button" >';
@@ -3049,7 +3047,6 @@ echo '<br>' . $product_categories_string;
 ?>
 </td></tr><tr><td align="center">
 <?php 
-//echo tep_eof_hidden();
 echo '<br>' . tep_html_element_submit(IMAGE_DELETE);
 echo '<input type="button" value="'.IMAGE_CANCEL.
   '" onclick="hidden_info_box()" class="element_button" >';
@@ -3093,7 +3090,6 @@ tep_draw_pull_down_menu('move_to_category_id',
 ?>
 </td></tr><tr><td align="center">
 <?php 
-//echo tep_eof_hidden();
 echo '<br>' . tep_html_element_submit(IMAGE_MOVE); 
 echo '<input type="button" value="'.IMAGE_CANCEL.
   '" onclick="hidden_info_box()" class="element_button" >';
@@ -3144,7 +3140,6 @@ tep_draw_radio_field('copy_as', 'duplicate') . ' ' . TEXT_COPY_AS_DUPLICATE;
 ?>
 </td></tr><tr><td align="center">
 <?php 
-//echo tep_eof_hidden();
 echo '<br>' . tep_html_element_submit(IMAGE_COPY); 
 echo '<input type="button" value="'.IMAGE_CANCEL.  '" onclick="hidden_info_box()" class="element_button" >';
 ?>
