@@ -1111,7 +1111,6 @@ $belong = str_replace('0_','',$belong);
 <script type="text/javascript" src="js2php.php?path=includes|set&name=c_admin&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
-<script language="javascript" src="includes/javascript/jquery.autocomplete.js"></script>
 <script language="javascript">
   $(document).ready(function(){
     $(".udlr").udlr(); 
@@ -1478,6 +1477,7 @@ function handle_option()
 <?php 
 require("includes/note_js.php");
 ?>
+<script language="javascript" src="includes/javascript/jquery.autocomplete.js"></script>
 </head>
 <?php 
 // 数据传输错误 提示DIV 
