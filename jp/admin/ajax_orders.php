@@ -2503,6 +2503,10 @@ echo json_encode($json_array);
   tep_db_perform(TABLE_PRODUCTS, $update_sql_data, 'update', 'products_id = \''.$_POST['products_id'].'\'');
 } else if ($_GET['action'] == 'product_info_box') {
 include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .'/'. $language. '/'.FILENAME_CATEGORIES);
+$isstaff = true;;
+if ($ocertify->npermission >= 10) {
+  $isstaff = false;
+}
 $site_id = isset($_GET['site_id'])?$_GET['site_id']:0;
 $pInfo = tep_get_pinfo_by_pid($_GET['pID'],$site_id);
 $cPath = $_GET['cPath'];
@@ -2601,7 +2605,7 @@ foreach($pid_arr as $p_key => $p_value){
 <?php 
 //所有内容的表单
 $form_action = 'simple_update_product';
-echo tep_draw_form($form_action, FILENAME_CATEGORIES, 'cPath=' .  $cPath .  '&pID=' .  $_GET['pID'] . '&page='.$_GET['page'].  '&action=' .  $form_action.($_GET['search']?'&search='.  $_GET['search']:''), 'post', '');
+echo tep_draw_form($form_action, FILENAME_CATEGORIES, 'cPath=' .  $_GET['cPath'] .  '&pID=' .  $_GET['pID'] . '&page='.$_GET['page'].  '&action=' .  $form_action.($_GET['search']?'&search='.  $_GET['search']:'').(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'&site_id=0'), 'post', '');
 echo tep_eof_hidden();
 ?>
 <?php //移动过来内容的信息 ?>
@@ -2623,10 +2627,13 @@ echo tep_eof_hidden();
   }
   echo tep_draw_input_field('products_price', number_format(abs($pInfo->products_price)?abs($pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)" id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;' . CATEGORY_MONEY_UNIT_TEXT .  '&nbsp;&nbsp;&larr;&nbsp;' . (int)$pInfo->products_price . CATEGORY_MONEY_UNIT_TEXT.' ' . "\n";
   echo '</td>';
-  echo '<tr><td align="left" colspan="2">';
-  if (!$pInfo->products_bflag && $pInfo->relate_products_id)
-  echo CATEGORY_AVERAGE_PRICE.' '.@display_price(tep_get_avg_by_pid($pInfo->products_id)).CATEGORY_MONEY_UNIT_TEXT;
-  echo '</td></tr>';
+  if (!$pInfo->products_bflag && $pInfo->relate_products_id) {
+    echo '<tr><td>';
+    echo CATEGORY_AVERAGE_PRICE;
+    echo '</td>'; 
+    echo '<td>'.@display_price(tep_get_avg_by_pid($pInfo->products_id)).CATEGORY_MONEY_UNIT_TEXT;
+    echo '</td></tr>';
+  } 
   echo '<tr>';
   echo '<td align="left">';
   echo TABLE_HEADING_CATEGORIES_PRODUCT_REAL_QUANTITY;
@@ -2648,11 +2655,19 @@ echo tep_eof_hidden();
   echo '<tr><td>';
   echo TEXT_MAX;
   echo '</td><td>';
-  echo tep_draw_input_field('inventory_max',$inventory['max']);
+  if($isstaff){
+    echo $inventory['max'];
+  }else{
+    echo tep_draw_input_field('inventory_max',$inventory['max']);
+  }
   echo '</tr><tr><td>';
   echo TEXT_MIN;
   echo '</td><td>';
-  echo tep_draw_input_field('inventory_min',$inventory['min']);
+  if($isstaff){
+    echo $inventory['min'];
+  }else{
+    echo tep_draw_input_field('inventory_min',$inventory['min']);
+  }
   echo '</tr>';
   }
   //echo '<tr><td colspan="2">';
@@ -2663,8 +2678,9 @@ echo tep_eof_hidden();
       //'70','10',$pInfo->products_attention_5);
   //echo '</td></tr>';
   echo '<tr>';
-  echo '<td colspan="2">';
-  echo TEXT_PRODUCTS_AVERAGE_RATING.'&nbsp;&nbsp;';
+  echo '<td>';
+  echo TEXT_PRODUCTS_AVERAGE_RATING.'</td>';
+  echo '<td>'; 
   echo number_format($pInfo->average_rating,2).'%';
   echo '</td>';
   echo '</tr>';
@@ -2690,10 +2706,12 @@ echo tep_eof_hidden();
   echo tep_draw_input_field('relate_products_price',
       number_format(abs($relate_pInfo->products_price)?abs($relate_pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;' . CATEGORY_MONEY_UNIT_TEXT .  '&nbsp;&nbsp;&larr;&nbsp;' . (int)$relate_pInfo->products_price . CATEGORY_MONEY_UNIT_TEXT.' ' . "\n";
   echo '</td>';
-  echo '<tr><td align="left" colspan="2">';
-  if (!$relate_pInfo->products_bflag && $relate_pInfo->relate_products_id)
-  echo CATEGORY_AVERAGE_PRICE.' '.@display_price(tep_get_avg_by_pid($relate_pInfo->products_id)).CATEGORY_MONEY_UNIT_TEXT;
-  echo '</td></tr>';
+  if (!$relate_pInfo->products_bflag && $relate_pInfo->relate_products_id) {
+    echo '<tr><td>';
+    echo CATEGORY_AVERAGE_PRICE.'</td>';
+    echo '<td>'.@display_price(tep_get_avg_by_pid($relate_pInfo->products_id)).CATEGORY_MONEY_UNIT_TEXT;
+    echo '</td></tr>';
+  } 
   echo '<tr>';
   echo '<td align="left">';
   echo TABLE_HEADING_CATEGORIES_PRODUCT_REAL_QUANTITY;
@@ -2715,11 +2733,19 @@ echo tep_eof_hidden();
   echo '<tr><td>';
   echo TEXT_MAX;
   echo '</td><td>';
-  echo tep_draw_input_field('relate_inventory_max',$inventory['max']);
+  if($isstaff){
+    echo $inventory['max'];
+  }else{
+    echo tep_draw_input_field('relate_inventory_max',$inventory['max']);
+  }
   echo '</tr><tr><td>';
   echo TEXT_MIN;
   echo '</td><td>';
-  echo tep_draw_input_field('relate_inventory_min',$inventory['min']);
+  if($isstaff){
+    echo $inventory['min'];
+  }else{
+    echo tep_draw_input_field('relate_inventory_min',$inventory['min']);
+  }
   echo '</tr>';
   }
   //echo '<tr><td colspan="2">';
@@ -2730,8 +2756,9 @@ echo tep_eof_hidden();
       //'70','10',$relate_pInfo->products_attention_5);
   //echo '</td></tr>';
   echo '<tr>';
-  echo '<td colspan="2">';
-  echo TEXT_PRODUCTS_AVERAGE_RATING.'&nbsp;&nbsp;';
+  echo '<td>';
+  echo TEXT_PRODUCTS_AVERAGE_RATING.'</td>';
+  echo '<td>';
   echo number_format($relate_pInfo->average_rating,2).'%';
   echo '</td>';
   echo '</tr>';
@@ -2781,9 +2808,9 @@ if (tep_get_bflag_by_product_id($pInfo->products_id)) {
       <th colspan="4" align="left"><?php echo TABLE_HEADING_PRODUCT_HISTORY;?></th>
     </tr>
     <tr>
-      <th><?php echo TABLE_HEADING_FETCHTIME_TEXT;?></th>
-      <th><?php echo TABLE_HEADING_GESHU;?></th>
-      <th><?php echo TABLE_HEADING_DANJIA;?></th>
+      <th width="30%"><?php echo TABLE_HEADING_FETCHTIME_TEXT;?></th>
+      <th width="15%"><?php echo TABLE_HEADING_GESHU;?></th>
+      <th width="25%"><?php echo TABLE_HEADING_DANJIA;?></th>
       <th><?php echo TABLE_HEADING_OSTATUS;?></th>
     </tr>
   <?php
@@ -2809,8 +2836,8 @@ if (tep_get_bflag_by_product_id($pInfo->products_id)) {
     ?>
       <tr>
         <th></th>
-        <td class="main" align="right"><table cellspacing="0" cellpadding="0" border='0' width="100%"><tr><td align="left"><?php echo CATEGORY_TOTALNUM_TEXT;?></td><td align="right"><?php echo $sum_quantity;?><?php echo CATEGORY_GE_UNIT_TEXT;?></td></tr></table></td>
-        <td class="main" align="right"><table cellspacing="0" cellpadding="0" border='0' width="100%"><tr><td align="left"><?php echo CATEGORY_AVERAGENUM_TEXT;?></td><td align="right"><?php echo display_price($sum_price/$sum_quantity);?><?php echo CATEGORY_MONEY_UNIT_TEXT;?></td></tr></table></td>
+        <td class="main" align="right"><table cellspacing="0" cellpadding="0" border='0' width="100%"><tr><td align="left"><?php echo mb_substr(CATEGORY_TOTALNUM_TEXT, 1, mb_strlen(CATEGORY_TOTALNUM_TEXT, 'utf-8')-1, 'utf-8');?></td></tr><tr><td align="right"><?php echo $sum_quantity;?><?php echo CATEGORY_GE_UNIT_TEXT;?></td></tr></table></td>
+        <td class="main" align="right"><table cellspacing="0" cellpadding="0" border='0' width="100%"><tr><td align="left"><?php echo mb_substr(CATEGORY_AVERAGENUM_TEXT, 1, mb_strlen(CATEGORY_AVERAGENUM_TEXT, 'utf-8')-1, 'utf-8');?></td></tr><tr><td align="right"><?php echo display_price($sum_price/$sum_quantity);?><?php echo CATEGORY_MONEY_UNIT_TEXT;?></td></tr></table></td>
         <td class="main"> </td>
       </tr>
       <?php
@@ -2840,9 +2867,9 @@ if (tep_get_bflag_by_product_id($pInfo->products_id)) {
       echo $relate_products_name;?></th>
     </tr>
     <tr>
-      <th><?php echo TABLE_HEADING_FETCHTIME_TEXT;?></th>
-      <th><?php echo TABLE_HEADING_GESHU;?></th>
-      <th><?php echo TABLE_HEADING_DANJIA;?></th>
+      <th width="30%"><?php echo TABLE_HEADING_FETCHTIME_TEXT;?></th>
+      <th width="15%"><?php echo TABLE_HEADING_GESHU;?></th>
+      <th width="25%"><?php echo TABLE_HEADING_DANJIA;?></th>
       <th><?php echo TABLE_HEADING_OSTATUS;?></th>
     </tr>
   <?php
@@ -2868,8 +2895,8 @@ if (tep_get_bflag_by_product_id($pInfo->products_id)) {
     ?>
       <tr>
         <th></th>
-        <td class="main" align="right"><table border='0' cellspacing="0" cellpadding="0" width="100%"><tr><td align="left"><?php echo CATEGORY_TOTALNUM_TEXT;?></td><td align="right"><?php echo $sum_quantity;?><?php echo CATEGORY_GE_UNIT_TEXT;?></td></tr></table></td>
-        <td class="main" align="right"><table border='0' cellspacing="0" cellpadding="0" width="100%"><tr><td align="left"><?php echo CATEGORY_AVERAGENUM_TEXT;?></td><td align="right"><?php echo @display_price($sum_price/$sum_quantity);?><?php echo CATEGORY_MONEY_UNIT_TEXT;?></td></tr></table></td>
+        <td class="main" align="right"><table border='0' cellspacing="0" cellpadding="0" width="100%"><tr><td align="left"><?php echo mb_substr(CATEGORY_TOTALNUM_TEXT, 1, mb_strlen(CATEGORY_TOTALNUM_TEXT, 'utf-8')-1, 'utf-8');?></td></tr><tr><td align="right"><?php echo $sum_quantity;?><?php echo CATEGORY_GE_UNIT_TEXT;?></td></tr></table></td>
+        <td class="main" align="right"><table border='0' cellspacing="0" cellpadding="0" width="100%"><tr><td align="left"><?php echo mb_substr(CATEGORY_AVERAGENUM_TEXT, 1, mb_strlen(CATEGORY_AVERAGENUM_TEXT, 'utf-8')-1, 'utf-8');?></td></tr><tr><td align="right"><?php echo @display_price($sum_price/$sum_quantity);?><?php echo CATEGORY_MONEY_UNIT_TEXT;?></td></tr></table></td>
         <td class="main"> </td>
       </tr>
     <?php
@@ -2894,26 +2921,27 @@ if (tep_get_bflag_by_product_id($pInfo->products_id)) {
 <tr><td colspan="2">
 <?php //做成者和时间?>
 <table>
-<tr><td width="50%">
-<?php 
-echo TEXT_USER_ADDED;
+<tr><td width="80"><?php echo TEXT_USER_ADDED;?>
+<?php echo '</td><td width="120">'; ?>
+<?php
 if (!empty($pInfo->products_user_added)) {
   echo $pInfo->products_user_added;
 } else {
   echo TEXT_UNSET_DATA;
 }
-echo '</td><td>';
+echo '</td><td width="80">';
 echo TEXT_DATE_ADDED;
+echo '</td><td width="120">';
 if (!empty($pInfo->products_date_added)) {
   echo tep_datetime_short($pInfo->products_date_added);
 } else {
   echo TEXT_UNSET_DATA;
 }
 ?>
-</td></tr><tr><td>
-<?php //更新者和时间?>
-<?php 
+</td></tr><tr><td><?php 
+//更新者和时间
 echo TEXT_USER_UPDATE;
+echo '</td><td>';
 if (!empty($pInfo->products_user_update)) {
   echo $pInfo->products_user_update;
 } else {
@@ -2921,6 +2949,7 @@ if (!empty($pInfo->products_user_update)) {
 }
 echo '</td><td>';
 echo TEXT_LAST_MODIFIED;
+echo '</td><td>';
 if (!empty($pInfo->products_last_modified)) {
   echo tep_datetime_short($pInfo->products_last_modified);
 } else {
@@ -2937,7 +2966,7 @@ if (!empty($pInfo->products_last_modified)) {
 <td align="center" class="main">
 <div id="order_del">
 <?php
-if ($ocertify->npermission >= 10) {
+if (!$isstaff) {
   if (empty($site_id)) {
     echo '<a href="' .  tep_href_link(FILENAME_PRODUCTS_MANUAL, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id .  '&action=show_products_manual'. '&site_id='.  $site_id.  '&page='.$_GET['page'])  .'">';
     echo tep_html_element_button(IMAGE_MANUAL);
@@ -2957,10 +2986,10 @@ if ($ocertify->npermission >= 10) {
       echo '<input class="element_button" type="button" value="'.IMAGE_DELETE.  '" onclick="show_product_delete(\''.$pInfo->products_id.'\')">';
     }
   }
-  echo tep_html_element_submit(IMAGE_SAVE);
 } else {
   echo ' <a href="' . tep_href_link(FILENAME_REVIEWS, 'cPath=' . $cPath .  '&products_id=' . $pInfo->products_id .  '&action=new') . '">'.tep_html_element_button(IMAGE_REVIEWS).'</a>';
 }
+echo tep_html_element_submit(IMAGE_SAVE);
 ?>
 </div>
 </td>

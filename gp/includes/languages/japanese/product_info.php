@@ -29,3 +29,4 @@ define('TEXT_PREORDER_BOOK','を予約する');
 define('TEXT_PRODUCTS_QTY','数量:');
 define('TEXT_ABOUT','について');
 define('TEXT_KEYWORD','に関するキーワード');
+define('TEXT_PRODUCT_SUBTOTAL','小計');

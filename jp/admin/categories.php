@@ -67,7 +67,7 @@
           $relate_update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now(),products_user_update='".$_SESSION['user_name']."' where products_id='".$relate_products_id."' and site_id='".$site_id."'";
           tep_db_query($relate_update_sql);
         }
-        tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $_GET['cPath'] . '&pID=' . $products_id));
+        tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $_GET['cPath'] .  '&pID=' .  $products_id.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'')));
         break;
 // 保存动作结束
       case 'get_products':
@@ -1111,7 +1111,6 @@ $belong = str_replace('0_','',$belong);
 <script type="text/javascript" src="js2php.php?path=includes|set&name=c_admin&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
-<script language="javascript" src="includes/javascript/jquery.autocomplete.js"></script>
 <script language="javascript">
   $(document).ready(function(){
     $(".udlr").udlr(); 
@@ -1317,32 +1316,58 @@ function handle_option()
       success: function(msg) {
         ele = ele.parentNode;
         head_top = $('.compatible_head').height();
+        box_warp_height = 0;
         if(document.documentElement.clientHeight < document.body.scrollHeight){
           if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
             if(ele.offsetTop < $('#show_popup_info').height()){
               offset = ele.offsetTop+$("#products_list_table").position().top+ele.offsetHeight+head_top;
+              box_warp_height = offset-head_top;
             }else{
-              if ((ele.offsetTop+$('#show_popup_info').height()) > $('.box_warp').height()) {
-                offset = ele.offsetTop+$("#products_list_table").position().top-1-$('#show_popup_info').height()+head_top; 
+              if (((head_top+ele.offsetTop+$('#show_popup_info').height()) > $('.box_warp').height())&&($('#show_popup_info').height()<ele.offsetTop+parseInt(head_top)-$("#products_list_table").position().top-1)) {
+               offset = ele.offsetTop+$("#products_list_table").position().top-1-$('#show_popup_info').height()+head_top;
               } else {
-                offset = ele.offsetTop+$("#products_list_table").position().top+$(ele).height()+head_top; 
+                offset = ele.offsetTop+$("#products_list_table").position().top+$(ele).height()+head_top;
+                offset = offset + parseInt($('#products_list_table').attr('cellpadding'))+parseInt($('.compatible table').attr('cellpadding'));
               }
+              box_warp_height = offset-head_top;
             }
           }else{
-            offset = ele.offsetTop+$("#products_list_table").position().top+ele.offsetHeight+head_top;
+            if (((head_top+ele.offsetTop+$('#show_popup_info').height()) > $('.box_warp').height())&&($('#show_popup_info').height()<ele.offsetTop+parseInt(head_top)-$("#products_list_table").position().top-1)) {
+             offset = ele.offsetTop+$("#products_list_table").position().top-1-$('#show_popup_info').height()+head_top;
+            } else {
+               offset = ele.offsetTop+$("#products_list_table").position().top+$(ele).height()+head_top;
+               offset = offset + parseInt($('#products_list_table').attr('cellpadding'))+parseInt($('.compatible table').attr('cellpadding'));
+            }
           }
           $('#show_popup_info').css('top',offset);
         }else{
           if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
-            offset = ele.offsetTop+$("#products_list_table").position().top-1-$('#show_popup_info').height();
+            if (((head_top+ele.offsetTop+$('#show_popup_info').height()) > $('.box_warp').height())&&($('#show_popup_info').height()<ele.offsetTop+parseInt(head_top)-$("#products_list_table").position().top-1)) {
+              offset = ele.offsetTop+$("#products_list_table").position().top-1-$('#show_popup_info').height()+head_top;
+            } else {
+              offset = ele.offsetTop+$("#products_list_table").position().top+$(ele).height()+head_top;
+              offset = offset + parseInt($('#products_list_table').attr('cellpadding'))+parseInt($('.compatible table').attr('cellpadding'));
+            }
+            box_warp_height = offset-head_top;
           }else{
             offset = ele.offsetTop+$("#products_list_table").position().top+ele.offsetHeight+head_top;
+            box_warp_height = offset-head_top;
           }
           $('#show_popup_info').css('top',offset);
         }
-        leftset = $('.leftmenu').width()+$('.show_left_menu').width()+parseInt($('.leftmenu').css('padding-left'))+parseInt($('.show_left_menu').css('padding-right'))+parseInt($('#categories_right_td table').attr('cellpadding'));
+        box_warp_height = box_warp_height + $('#show_popup_info').height();
+        if($('.show_left_menu').width()){
+          leftset = $('.leftmenu').width()+$('.show_left_menu').width()+parseInt($('.leftmenu').css('padding-left'))+parseInt($('.show_left_menu').css('padding-right'))+parseInt($('#categories_right_td table').attr('cellpadding'));
+        }else{
+          leftset = parseInt($('.content').attr('cellspacing'))+parseInt($('.content').attr('cellpadding'))*2+parseInt($('.columnLeft').attr('cellspacing'))*2+parseInt($('.columnLeft').attr('cellpadding'))*2+parseInt($('.compatible table').attr('cellpadding'));
+        }
         $('#show_popup_info').css('z-index', msg);
         $('#show_popup_info').css('left',leftset);
+        if($('.compatible').height()<box_warp_height){
+          $('.box_warp').css('height',box_warp_height);
+        }else{
+          $('.box_warp').css('height',$('.compatible').height());
+        }
       }
     });
   }
@@ -1353,8 +1378,7 @@ function handle_option()
   function show_product_info(pid,ele){
     $.ajax({
       dataType: 'text',
-      url: 'ajax_orders.php?action=product_info_box&pID='+pid+'&site_id=<?php 
-      echo $site_id."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
+      url: 'ajax_orders.php?action=product_info_box&pID='+pid+'&site_id=<?php echo (isset($_GET['site_id'])?$_GET['site_id']:'0')."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
       success: function(text) {
         //show_p_info 
         $('#show_popup_info').html(text);
@@ -1453,6 +1477,7 @@ function handle_option()
 <?php 
 require("includes/note_js.php");
 ?>
+<script language="javascript" src="includes/javascript/jquery.autocomplete.js"></script>
 </head>
 <?php 
 // 数据传输错误 提示DIV 
@@ -3256,11 +3281,11 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                             <?php
                             if (empty($site_id)) {
                             ?>
-                               <a style="font-weight:bold;" href='javascript:void(0);' onClick=dougyousya_history('history.php',<?php echo $cPath_yobi;?>,<?php echo $current_category_id;?>,'dougyousya_categories','<?php echo $col_dougyousya['dougyousya_id'];?>','<?php echo $_GET['cPath'];?>')><?php echo $col_dougyousya['dougyousya_name'];?></a>
+                               <a style="font-weight:bold;" class="title_text_link" href='javascript:void(0);' onClick=dougyousya_history('history.php',<?php echo $cPath_yobi;?>,<?php echo $current_category_id;?>,'dougyousya_categories','<?php echo $col_dougyousya['dougyousya_id'];?>','<?php echo $_GET['cPath'];?>')><?php echo $col_dougyousya['dougyousya_name'];?></a>
                             <?php
                             } else {
                             ?>
-                               <a style="font-weight:bold;" href='javascript:void(0);'><?php echo $col_dougyousya['dougyousya_name'];?></a>
+                            <?php echo $col_dougyousya['dougyousya_name'];?>
                             <?php
                             }
                             ?>
@@ -3393,10 +3418,9 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                       } else {
                         echo tep_image(DIR_WS_ICONS.'preview.gif', ICON_PREVIEW).'&nbsp;'; 
                       }
-                      if (empty($site_id)) {
-                        echo '<a href="'.tep_href_link(FILENAME_ORDERS, 'search_type=categories_id&scategories_id='.$categories['categories_id']).'">'.tep_image(DIR_WS_ICONS.'search.gif', IMAGE_SEARCH).'</a>&nbsp;'; 
-                      }
-                      echo '<b>'.$categories['categories_name'].'</b>&nbsp;<a href="' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . tep_image(DIR_WS_ICONS . 'folder.gif', ICON_FOLDER) .  '</a>'; ?>
+                      echo '<a href="'.tep_href_link(FILENAME_ORDERS, 'search_type=categories_id&scategories_id='.$categories['categories_id']).(!empty($site_id)?'&site_id='.$site_id:'').'&order_sort=torihiki_date&order_type=desc">'.tep_image(DIR_WS_ICONS.'search.gif', IMAGE_SEARCH).'</a>&nbsp;'; 
+                      echo '<a class="title_text_link" href="' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . '<b>'.$categories['categories_name'].'</b>&nbsp;' .  '</a>';
+                      echo '<a href="' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . tep_image(DIR_WS_ICONS . 'folder.gif', ICON_FOLDER) .  '</a>'; ?>
                       </td>
                       <?php
                       $tmp_count_cnt = 9 + $count_dougyousya['cnt']; 
@@ -3807,11 +3831,13 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   } else {
     echo tep_image(DIR_WS_ICONS.'preview.gif', ICON_PREVIEW).'&nbsp;'; 
   }
-  if(!isset($_GET['site_id']) || $_GET['site_id']==0){
-    echo '<a href="orders.php?search_type=products_id&products_id=' .  $products['products_id'] . '">' . tep_image(DIR_WS_ICONS . 'search.gif', IMAGE_SEARCH) . '</a>&nbsp;'; 
-  }
+  echo '<a href="orders.php?search_type=products_id&products_id=' .  $products['products_id'] .(!empty($site_id)?'&site_id='.$site_id:'') .'">' . tep_image(DIR_WS_ICONS . 'search.gif', IMAGE_SEARCH) . '</a>&nbsp;'; 
   echo '</div>';
-  echo '<div class="title_text"><span id="products_name_'.$products['products_id'].'">'.$products['products_name'].'</span></div>'; 
+  if ($ocertify->npermission >= 10) { 
+    echo '<div class="title_text"><span id="products_name_'.$products['products_id'].'"><a class="title_text_link" href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&pID=' .  $products['products_id'] .  '&action=new_product'.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').'&page='.$_GET['page'].($_GET['search']?'&search='.$_GET['search']:'')).'">'.$products['products_name'].'</a></span></div>'; 
+  } else {
+    echo '<div class="title_text"><span id="products_name_'.$products['products_id'].'">'.$products['products_name'].'</span></div>'; 
+  }
   ?>
 
                       </td>
@@ -4220,7 +4246,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                       </tr>
                       <?php
                       // google start
-                      tep_display_google_results(FILENAME_CATEGORIES);
+                      tep_display_google_results(FILENAME_CATEGORIES, true);
                       // google end
                       ?>
                     </table>

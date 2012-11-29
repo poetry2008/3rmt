@@ -1393,3 +1393,4 @@ a.pageResults{
 }
 .table_box th{ background-color:#cccccc;}
 .table_box td{ border:1px solid #B2B2B2;}
+.title_text_link:hover{ text-decoration:underline;}

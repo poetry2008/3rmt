@@ -23,7 +23,7 @@
          );
     tep_db_perform(TABLE_SITENAME, $sql_data_array);
     tep_redirect(tep_href_link($from_url,
-          'action='.$_GET['act'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath']));
+          'action='.$_GET['act'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].(isset($_GET['csite_id'])?'&site_id='.$_GET['csite_id']:'')));
     break;
     case 'update':
     $sql_data_array = array(
@@ -32,7 +32,7 @@
          );
     tep_db_perform(TABLE_SITENAME, $sql_data_array,'update','id='.$_POST['id']);
     tep_redirect(tep_href_link($from_url,
-          'action='.$_GET['act'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath']));
+          'action='.$_GET['act'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].(isset($_GET['csite_id'])?'&site_id='.$_GET['csite_id']:'')));
     break;
   }
   
@@ -76,8 +76,7 @@
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="2">
           <?php if($is_insert){?>
-          <tr><FORM method="POST" action="<?php echo tep_href_link(FILENAME_RECORD,
-          'from='.$from_url.'&action=insert&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath']);?>" enctype="multipart/form-data">
+          <tr><FORM method="POST" action="<?php echo tep_href_link(FILENAME_RECORD, 'from='.$from_url.'&action=insert&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].(isset($_GET['csite_id'])?'&csite_id='.$_GET['csite_id']:''));?>" enctype="multipart/form-data">
             <td><table border="0" cellpadding="0" cellspacing="2">
             <tr>
             <td><?php echo SITEURL;?></td>
@@ -89,8 +88,7 @@
             </tr>
             <tr>
           <?php }else {?>
-          <tr><FORM method="POST" action="<?php echo tep_href_link(FILENAME_RECORD,
-          'from='.$from_url.'&action=update&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath']);?>" enctype="multipart/form-data">
+          <tr><FORM method="POST" action="<?php echo tep_href_link(FILENAME_RECORD, 'from='.$from_url.'&action=update&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].(isset($_GET['csite_id'])?'&csite_id='.$_GET['csite_id']:''));?>" enctype="multipart/form-data">
             <td><table border="0" cellpadding="0" cellspacing="2">
             <tr>
             <td><?php echo SITEURL;?></td>
@@ -114,7 +112,7 @@
             echo "&nbsp;&nbsp;";
             echo '</td><td>'; 
             if (isset($from_url)) { 
-              echo '<a href="' .  tep_href_link($from_url,'action='.$_GET['act'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath']) . '">';
+              echo '<a href="' .  tep_href_link($from_url,'action='.$_GET['act'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].(isset($_GET['csite_id'])?'&site_id='.$_GET['csite_id']:'')) . '">';
             } else {
               echo '<a href="'.tep_href_link(FILENAME_RECORD).'">'; 
             }

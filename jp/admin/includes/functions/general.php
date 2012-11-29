@@ -345,8 +345,10 @@ function tep_get_category_tree($parent_id = '0', $spacing = '', $exclude = '', $
 
   $categories_query = tep_db_query("select c.categories_id, cd.categories_name, c.parent_id from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where c.categories_id = cd.categories_id and cd.language_id = '" . $languages_id . "' and c.parent_id = '" . $parent_id . "' and site_id ='0' order by c.sort_order, cd.categories_name");
   while ($categories = tep_db_fetch_array($categories_query)) {
-    if ($exclude != $categories['categories_id']) $category_tree_array[] = array('id' => $categories['categories_id'], 'text' => $spacing . $categories['categories_name']);
-    $category_tree_array = tep_get_category_tree($categories['categories_id'], $spacing . '&nbsp;&nbsp;&nbsp;', $exclude, $category_tree_array);
+    if ($exclude != $categories['categories_id']) {
+      $category_tree_array[] = array('id' => $categories['categories_id'], 'text' => $spacing . $categories['categories_name']);
+      $category_tree_array = tep_get_category_tree($categories['categories_id'], $spacing . '&nbsp;&nbsp;&nbsp;', $exclude, $category_tree_array);
+    }
   }
 
   return $category_tree_array;
@@ -4233,12 +4235,16 @@ function tep_get_pay_day($time = null){
  */
 
 
-function tep_display_google_results($from_url=''){
+function tep_display_google_results($from_url='', $c_type=false){
   // 谷歌关键字结果显示停止条件
   $stop_site_url = array(
       //"iimy.co.jp",
       //"www.iimy.co.jp",
       );
+  $tmp_param_str = ''; 
+  if ($c_type == true) {
+    $tmp_param_str = isset($_GET['site_id'])?'&csite_id='.$_GET['site_id']:'';  
+  }
   if(isset($_GET['cPath'])&&$_GET['cPath']!=''){
     $categories_id = array_pop(explode('_',$_GET['cPath']));
     /*
@@ -4310,11 +4316,11 @@ function tep_display_google_results($from_url=''){
              */
             if(isset($from_url)&&$from_url){
               echo "<a href='".tep_href_link(FILENAME_RECORD,
-                  'from='.$from_url.'&action=rename&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url).
+                  'from='.$from_url.'&action=rename&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url.$tmp_param_str).
                 "'>".TEXT_RENAME."</a>";
             }else{
               echo "<a href='".tep_href_link(FILENAME_RECORD,
-                  'action=rename&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url).
+                  'action=rename&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url.$tmp_param_str).
                 "'>".TEXT_RENAME."</a>";
             }
             echo "</td></tr>";
@@ -4332,11 +4338,11 @@ function tep_display_google_results($from_url=''){
 
           if(isset($from_url)&&$from_url){
             echo "<a href='".tep_href_link(FILENAME_RECORD,
-                'from='.$from_url.'&action=rename&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url).
+                'from='.$from_url.'&action=rename&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url.$tmp_param_str).
               "'>".TEXT_RENAME."</a>";
           }else{
             echo "<a href='".tep_href_link(FILENAME_RECORD,
-                'action=rename&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url).
+                'action=rename&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url.$tmp_param_str).
               "'>".TEXT_RENAME."</a>";
           }
           echo "</td></tr>";

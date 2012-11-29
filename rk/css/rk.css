@@ -2232,12 +2232,14 @@ display:block;
 	font-size:20px;
 	font-weight:bold;
 	color:#2864B4;
+        display:none;
 }
 .calc_show_price{
 	color:#2864B4;
 	font-size:20px;
 	font-weight:bold;
 	margin-left:-1px;
+        display:none;
 }
 .formArea_td_info{
 	*width:325px;
