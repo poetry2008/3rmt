@@ -360,18 +360,12 @@ function set_new_price(pid) {
   if (nquantity !== '' && nquantity !== null) {
     $.ajax({
       type:'POST', 
-      //beforeSend: function(){$('body').css('cursor', 'wait');$('#wait').show();}, 
       dataType:'text',
       data:'products_id='+pid+"&new_price="+nquantity, 
       async:false, 
       url: 'ajax_orders.php?action=set_new_price',
       success: function(msg) {
         window.location.href = window.location.href; 
-        //msg_info = msg.split('|||'); 
-        //$('#edit_p_'+pid).html(msg_info[0]); 
-        //$('#h_edit_p_'+pid).html(msg_info[1]); 
-        //$('body').css('cursor', ''); 
-        //$('#wait').hide(); 
       }
     }); 
   }
