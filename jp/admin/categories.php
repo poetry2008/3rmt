@@ -1357,7 +1357,11 @@ function handle_option()
           $('#show_popup_info').css('top',offset);
         }
         box_warp_height = box_warp_height + $('#show_popup_info').height();
-        leftset = $('.leftmenu').width()+$('.show_left_menu').width()+parseInt($('.leftmenu').css('padding-left'))+parseInt($('.show_left_menu').css('padding-right'))+parseInt($('#categories_right_td table').attr('cellpadding'));
+        if($('.show_left_menu').width()){
+          leftset = $('.leftmenu').width()+$('.show_left_menu').width()+parseInt($('.leftmenu').css('padding-left'))+parseInt($('.show_left_menu').css('padding-right'))+parseInt($('#categories_right_td table').attr('cellpadding'));
+        }else{
+          leftset = parseInt($('.content').attr('cellspacing'))+parseInt($('.content').attr('cellpadding'))*2+parseInt($('.columnLeft').attr('cellspacing'))*2+parseInt($('.columnLeft').attr('cellpadding'))*2+parseInt($('.compatible table').attr('cellpadding'));
+        }
         $('#show_popup_info').css('z-index', msg);
         $('#show_popup_info').css('left',leftset);
         if($('.compatible').height()<box_warp_height){
