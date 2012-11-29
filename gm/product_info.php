@@ -148,6 +148,24 @@ function change_num(ob,targ, quan, a_quan)
     var product_quantity_reg = new RegExp(/\.|\-/);
     if(product_quantity_reg.test(product_quantity.value)){
       product_quantity.value = 0; 
+    }else{
+      if(product_quantity.value.substr(0,1) == 0 || product_quantity.value.substr(0,1) == '+'){
+        var length = product_quantity.value.length;
+        var code = '';
+        var code_flag = false;
+        var add_code = product_quantity.value.charAt(0) == '+' ? true : false;
+        for(var i=0;i<length;i++){
+          if(product_quantity.value.charAt(i) > 0 && code_flag == false){
+            code_flag = true; 
+          }
+          if(code_flag == true){
+            code += product_quantity.value.charAt(i); 
+          }
+        }
+        code = code == '' || code == '+' ? 0 : code;
+        code = add_code == true && code != 0? '+'+code : code;
+        product_quantity.value = code;
+      }
     } 
   }
   var product_quantity_num = parseInt(product_quantity.value);

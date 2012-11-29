@@ -40,10 +40,10 @@ function dbc2sbc(str){
 }
 jq(document).ready(function () {
    var change_flag = jq("#change_flag").val();
-   if(change_flag == 'true'){ 
+   if(change_flag == 'true'){
      calc_product_final_price("<?php echo (int)$_GET['products_id'];?>"); 
      jq("#show_price").show();
-     jq(".calc_show_price").show();
+     jq(".calc_show_price").show();  
    } 
    var actiontime =new Date().getTime();  
 });
@@ -71,8 +71,8 @@ function calc_product_final_price(pid)
    jq.getJSON("<?php echo HTTP_SERVER;?>"+"/ajax_process.php?action=calc_price&p_id="+pid+"&oprice="+attr_price+"&qty="+jq('#quantity').val(), function(msg) { 
      document.getElementById("show_price").innerHTML = msg.price; 
      jq("#change_flag").val('true');
-     jq(".calc_show_price").show();
      jq("#show_price").show();
+     jq(".calc_show_price").show();
   });
 }
 
@@ -119,6 +119,24 @@ function change_num(ob,targ, quan, a_quan)
     var product_quantity_reg = new RegExp(/\.|\-/);
     if(product_quantity_reg.test(product_quantity.value)){
       product_quantity.value = 0; 
+    }else{
+      if(product_quantity.value.substr(0,1) == 0 || product_quantity.value.substr(0,1) == '+'){
+        var length = product_quantity.value.length;
+        var code = '';
+        var code_flag = false;
+        var add_code = product_quantity.value.charAt(0) == '+' ? true : false;
+        for(var i=0;i<length;i++){
+          if(product_quantity.value.charAt(i) > 0 && code_flag == false){
+            code_flag = true; 
+          }
+          if(code_flag == true){
+            code += product_quantity.value.charAt(i); 
+          }
+        }
+        code = code == '' || code == '+' ? 0 : code;
+        code = add_code == true && code != 0? '+'+code : code;
+        product_quantity.value = code;
+      }
     } 
   }
   var product_quantity_num = parseInt(product_quantity.value);

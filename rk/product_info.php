@@ -119,7 +119,25 @@ function change_num(ob,targ, quan, a_quan)
     var product_quantity_reg = new RegExp(/\.|\-/);
     if(product_quantity_reg.test(product_quantity.value)){
       product_quantity.value = 0; 
-    }  
+    }else{
+      if(product_quantity.value.substr(0,1) == 0 || product_quantity.value.substr(0,1) == '+'){
+        var length = product_quantity.value.length;
+        var code = '';
+        var code_flag = false;
+        var add_code = product_quantity.value.charAt(0) == '+' ? true : false;
+        for(var i=0;i<length;i++){
+          if(product_quantity.value.charAt(i) > 0 && code_flag == false){
+            code_flag = true; 
+          }
+          if(code_flag == true){
+            code += product_quantity.value.charAt(i); 
+          }
+        }
+        code = code == '' || code == '+' ? 0 : code;
+        code = add_code == true && code != 0? '+'+code : code;
+        product_quantity.value = code;
+      }
+    } 
   }
   var product_quantity_num = parseInt(product_quantity.value);
   if (targ == 'up') { 
@@ -452,7 +470,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                             <table cellpadding="0" cellspacing="0" border="0">
                             <tr>
                             <?php $p_a_quan = $product_info['products_quantity'];?>
-                            <td class="main" valign="middle"><input name="quantity" type="text" id="quantity" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1)?>" class="input_text_short" onchange="change_num('quantity','','',<?php echo $p_a_quan;?>)"></td>
+                            <td class="main" valign="middle"><input name="quantity" type="text" id="quantity" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1)?>" class="input_text_short" maxlength="4" onchange="change_num('quantity','','',<?php echo $p_a_quan;?>)"></td>
                             <td valign="middle">
                               <div style="margin-top:-3px\9;">
                                 <a style="display:block;" href="javascript:void(0)" onClick="change_num('quantity','up',1,<?php echo $p_a_quan;?>);return false;"><img src="images/ico/nup.gif" alt="+"></a>
