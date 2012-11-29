@@ -356,7 +356,7 @@ $(function(){
   <div id="show_head_notice">
 <?php echo tep_get_notice_info();?>
 </div>
-<div id="show_all_notice" style="display:none;"></div>
+<div id="show_all_notice" style="display:none; z-index:30000;"></div>
   </td>
 </tr>
 <tr>
