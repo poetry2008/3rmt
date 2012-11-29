@@ -2605,7 +2605,7 @@ foreach($pid_arr as $p_key => $p_value){
 <?php 
 //所有内容的表单
 $form_action = 'simple_update_product';
-echo tep_draw_form($form_action, FILENAME_CATEGORIES, 'cPath=' .  $cPath .  '&pID=' .  $_GET['pID'] . '&page='.$_GET['page'].  '&action=' .  $form_action.($_GET['search']?'&search='.  $_GET['search']:''), 'post', '');
+echo tep_draw_form($form_action, FILENAME_CATEGORIES, 'cPath=' .  $_GET['cPath'] .  '&pID=' .  $_GET['pID'] . '&page='.$_GET['page'].  '&action=' .  $form_action.($_GET['search']?'&search='.  $_GET['search']:'').(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'&site_id=0'), 'post', '');
 echo tep_eof_hidden();
 ?>
 <?php //移动过来内容的信息 ?>

@@ -67,7 +67,7 @@
           $relate_update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now(),products_user_update='".$_SESSION['user_name']."' where products_id='".$relate_products_id."' and site_id='".$site_id."'";
           tep_db_query($relate_update_sql);
         }
-        tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $_GET['cPath'] . '&pID=' . $products_id));
+        tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $_GET['cPath'] .  '&pID=' .  $products_id.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'')));
         break;
 // 保存动作结束
       case 'get_products':
@@ -1111,7 +1111,6 @@ $belong = str_replace('0_','',$belong);
 <script type="text/javascript" src="js2php.php?path=includes|set&name=c_admin&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
-<script language="javascript" src="includes/javascript/jquery.autocomplete.js"></script>
 <script language="javascript">
   $(document).ready(function(){
     $(".udlr").udlr(); 
@@ -1379,8 +1378,7 @@ function handle_option()
   function show_product_info(pid,ele){
     $.ajax({
       dataType: 'text',
-      url: 'ajax_orders.php?action=product_info_box&pID='+pid+'&site_id=<?php 
-      echo $site_id."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
+      url: 'ajax_orders.php?action=product_info_box&pID='+pid+'&site_id=<?php echo (isset($_GET['site_id'])?$_GET['site_id']:'0')."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
       success: function(text) {
         //show_p_info 
         $('#show_popup_info').html(text);
@@ -1479,6 +1477,7 @@ function handle_option()
 <?php 
 require("includes/note_js.php");
 ?>
+<script language="javascript" src="includes/javascript/jquery.autocomplete.js"></script>
 </head>
 <?php 
 // 数据传输错误 提示DIV 
@@ -3420,11 +3419,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                         echo tep_image(DIR_WS_ICONS.'preview.gif', ICON_PREVIEW).'&nbsp;'; 
                       }
                       echo '<a href="'.tep_href_link(FILENAME_ORDERS, 'search_type=categories_id&scategories_id='.$categories['categories_id']).(!empty($site_id)?'&site_id='.$site_id:'').'&order_sort=torihiki_date&order_type=desc">'.tep_image(DIR_WS_ICONS.'search.gif', IMAGE_SEARCH).'</a>&nbsp;'; 
-                      if ($ocertify->npermission >= 10) { 
-                        echo '<a class="title_text_link" href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$cPath.'&cID='.$categories['categories_id'].'&action=edit_category'.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').(isset($_GET['search'])?$_GET['search']:'')).'"><b>'.$categories['categories_name'].'</b></a>&nbsp;'; 
-                      } else {
-                        echo '<b>'.$categories['categories_name'].'</b>&nbsp;';
-                      }
+                      echo '<a class="title_text_link" href="' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . '<b>'.$categories['categories_name'].'</b>&nbsp;' .  '</a>';
                       echo '<a href="' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . tep_image(DIR_WS_ICONS . 'folder.gif', ICON_FOLDER) .  '</a>'; ?>
                       </td>
                       <?php
@@ -4251,7 +4246,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                       </tr>
                       <?php
                       // google start
-                      tep_display_google_results(FILENAME_CATEGORIES);
+                      tep_display_google_results(FILENAME_CATEGORIES, true);
                       // google end
                       ?>
                     </table>
@@ -4271,7 +4266,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
   <!-- footer_eof -->
   <br>
-  <div id="wait" style="position:fixed; left:45%; top:45%; display:none;"><img src="images/load.gif" alt="img"></div>
+  <div id="wait" style="position:fixed; left:45%; top:45%; display:none; z-index:10000;"><img src="images/load.gif" alt="img"></div>
   </body>
   </html>
   <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

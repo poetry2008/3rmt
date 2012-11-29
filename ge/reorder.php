@@ -342,8 +342,7 @@ document.onclick=function(e){
           </tr>
           <tr>
             <td>お届け日時（変更前）</td>
-            <td class="reorder_width" id='old_time'><?php echo tep_date_long(strtotime($order['torihiki_date']))?>
-              <?php echo date('H:i', strtotime($order['torihiki_date']));?></td>
+            <td class="reorder_width" id='old_time'><?php echo tep_date_long(strtotime($order['torihiki_date']))?><?php echo date('H:i', strtotime($order['torihiki_date']));?><?php echo TEXT_TIME_LINK;?><?php echo date('H:i', strtotime($order['torihiki_date_end']));?></td>
           </tr>       
 <?php
 //根据订单中的商品来生成取引时间

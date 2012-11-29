@@ -44,7 +44,7 @@ while ($comments_info = mysql_fetch_array($comments_raw)) {
  
   $content = '';
   $content .= $comments_info['rule']."\r\n";
-  $content .= "担当者:".$comments_info['author']."\r\n";
+  $content .= "\r\n";
   $content .= "コメント:\r\n".$comments_info['comment']; 
   $belong = 'categories.php';  
   if (!empty($comments_info['categories_id'])) {
@@ -74,7 +74,7 @@ while ($comments_info = mysql_fetch_array($comments_raw)) {
   if ($user_info_res) {
     $user_info_id = $user_info_res['userid']; 
   }
-  $insert_note_sql = "insert into `notes` values(NULL, '単価ルール', '".$content."', 'red', '".$xyz."|".$xlen."|".$ylen."', '".date('Y-m-d H:i:s', time())."', '1', '".$user_info_id."', '".$belong."')";
+  $insert_note_sql = "insert into `notes` values(NULL, '単価ルール', '".addslashes($content)."', 'red', '".$xyz."|".$xlen."|".$ylen."', '".date('Y-m-d H:i:s', time())."', '1', '".addslashes($user_info_id)."', '".$belong."')";
   mysql_query($insert_note_sql);
 }
 echo '<br>finish';
