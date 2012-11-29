@@ -528,7 +528,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                     $cnt=0;
                    if(tep_db_num_rows($sub_colors_query) >= 1) {
     ?>
-            <!-- //color image -->
+            <!-- color image -->
             <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="rmt">
               <tr>
                 <?php
@@ -568,7 +568,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
               </tr>
             </table>
 
-        <!-- //color image -->
+        <!-- color image -->
         <?php
         }
  ?>
