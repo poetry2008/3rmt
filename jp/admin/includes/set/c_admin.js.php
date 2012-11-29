@@ -152,7 +152,7 @@ function SBC2DBC(str) {
   return str;
 }
 <?php//計算設定読み込み ?>
-function set_money(num,warning, sm_single){
+function set_money(num,warning, single_type){
   if (warning ==undefined)
     {
         warning = true;
@@ -165,7 +165,7 @@ function set_money(num,warning, sm_single){
 
   }else{
     for(var i=0;i < radio_cnt.length;i++){
-      if (sm_single == '1') {
+      if (single_type == '1') {
         if(radio_cnt[i].checked == true){
           var tar_ipt = document.getElementById("target_"+n+"_"+i).innerHTML;<?php//同業者 ?>
         }
@@ -211,7 +211,7 @@ function set_money(num,warning, sm_single){
     set_m = 0;
   }
   if(typeof(tar_ipt) == 'undefined' || ins_ipt == 0) {
-    if (sm_single == '1') {
+    if (single_type == '1') {
       price_obj[n].style.color="red";
     } else {
       document.getElementsByName('show_price[]')[n].style.color="red"; 
@@ -231,13 +231,13 @@ function set_money(num,warning, sm_single){
   //一致しているなら文字の色を青、不一致なら赤にする
   ?>
   if(parseInt(document.getElementsByName("pprice[]")[n].value)==parseInt(set_m)){
-    if (sm_single == '1') {
+    if (single_type == '1') {
       price_obj[n].style.color="blue";
     } else {
       document.getElementsByName('show_price[]')[n].innerHTML = '<font color="blue">'+parseInt(set_m)+'</font>'; 
     }
   }else{
-    if (sm_single == '1') {
+    if (single_type == '1') {
       price_obj[n].style.color="red";
     } else {
       document.getElementsByName('show_price[]')[n].innerHTML = '<font color="red">'+parseInt(set_m)+'</font>'; 
@@ -246,13 +246,13 @@ function set_money(num,warning, sm_single){
 }
 
 var calc;
-function ajaxLoad(path, cs_single){
+function ajaxLoad(path, single_type){
     var send_url="set_ajax.php?action=ajax&cPath="+path;
   $.ajax({
     url: send_url,
         success: function(data) {
         calc = eval('('+data+')');
-            onload_keisan(false, cs_single);
+            onload_keisan(false, single_type);
       }
     });
 }
@@ -274,12 +274,12 @@ function dougyousya_history(url,cpath,cid,action,did,fullpath){
   //window.open(url,'ccc',"width=1000,height=800,scrollbars=yes");
 }
 
-function onload_keisan(warning, ks_single){
+function onload_keisan(warning, single_type){
 
   var trader_input_obj=$(".TRADER_INPUT");<?php //業者?>
   var increase_input_obj=$(".INCREASE_INPUT");<?php //業者?>
   for(var i=0;i< trader_input_obj.length;i++){
-      set_money(i,warning,ks_single);<?php //特価価格設定?>
+      set_money(i,warning,single_type);<?php //特価価格設定?>
   }
 }
 function check_error(){
