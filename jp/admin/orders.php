@@ -1537,8 +1537,12 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
 
     $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".str_replace('torihiki_date_error desc,date_purchased_error desc,', '', $order_str);
   } elseif (isset($_GET['scategories_id']) && isset($_GET['search_type']) && $_GET['search_type'] == 'categories_id') {
+    if (isset($_GET['site_id'])) {
+      $tmp_site_array = explode('-', $_GET['site_id']); 
+    }
     $relate_category_array = tep_get_child_category_by_cid($_GET['scategories_id']);
     $orders_query_raw = " select distinct op.orders_id from " .  TABLE_ORDERS_PRODUCTS . " op, ".TABLE_ORDERS." o,".TABLE_PRODUCTS_TO_CATEGORIES." p2c " .$sort_table." where ".$sort_where." op.orders_id = o.orders_id and op.products_id = p2c.products_id and p2c.categories_id in (".implode(',', $relate_category_array).")";
+    $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".str_replace('torihiki_date_error desc,date_purchased_error desc,', '', $order_str);
   } elseif (isset($_GET['keywords']) && isset($_GET['search_type']) && $_GET['search_type'] == 'sproducts_id' ) {
     $orders_query_raw = " select distinct op.orders_id from " . TABLE_ORDERS_PRODUCTS . " op
       ,".TABLE_ORDERS." o 
