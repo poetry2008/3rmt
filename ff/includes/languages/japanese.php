@@ -21,7 +21,7 @@ if (extension_loaded('mbstring')) {
 //@setlocale(LC_TIME, 'ja_JP');
 //@setlocale(LC_TIME, 'en_US');
 define('DATE_FORMAT_SHORT', '%Y/%m/%d');  // this is used for strftime()
-define('DATE_FORMAT_LONG', '%Y年%m月%d日 %A'); // this is used for strftime()
+define('DATE_FORMAT_LONG', '%Y年%m月%d日 （%A）'); // this is used for strftime()
 define('DATE_FORMAT', 'Y/m/d'); // this is used for date()
 define('DATE_TIME_FORMAT', DATE_FORMAT_SHORT . ' %H:%M:%S');
 
