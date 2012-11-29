@@ -2503,6 +2503,10 @@ echo json_encode($json_array);
   tep_db_perform(TABLE_PRODUCTS, $update_sql_data, 'update', 'products_id = \''.$_POST['products_id'].'\'');
 } else if ($_GET['action'] == 'product_info_box') {
 include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .'/'. $language. '/'.FILENAME_CATEGORIES);
+$isstaff = true;;
+if ($ocertify->npermission >= 10) {
+  $isstaff = false;
+}
 $site_id = isset($_GET['site_id'])?$_GET['site_id']:0;
 $pInfo = tep_get_pinfo_by_pid($_GET['pID'],$site_id);
 $cPath = $_GET['cPath'];
@@ -2648,11 +2652,19 @@ echo tep_eof_hidden();
   echo '<tr><td>';
   echo TEXT_MAX;
   echo '</td><td>';
-  echo tep_draw_input_field('inventory_max',$inventory['max']);
+  if($isstaff){
+    echo $inventory['max'];
+  }else{
+    echo tep_draw_input_field('inventory_max',$inventory['max']);
+  }
   echo '</tr><tr><td>';
   echo TEXT_MIN;
   echo '</td><td>';
-  echo tep_draw_input_field('inventory_min',$inventory['min']);
+  if($isstaff){
+    echo $inventory['min'];
+  }else{
+    echo tep_draw_input_field('inventory_min',$inventory['min']);
+  }
   echo '</tr>';
   }
   //echo '<tr><td colspan="2">';
@@ -2715,11 +2727,19 @@ echo tep_eof_hidden();
   echo '<tr><td>';
   echo TEXT_MAX;
   echo '</td><td>';
-  echo tep_draw_input_field('relate_inventory_max',$inventory['max']);
+  if($isstaff){
+    echo $inventory['max'];
+  }else{
+    echo tep_draw_input_field('relate_inventory_max',$inventory['max']);
+  }
   echo '</tr><tr><td>';
   echo TEXT_MIN;
   echo '</td><td>';
-  echo tep_draw_input_field('relate_inventory_min',$inventory['min']);
+  if($isstaff){
+    echo $inventory['min'];
+  }else{
+    echo tep_draw_input_field('relate_inventory_min',$inventory['min']);
+  }
   echo '</tr>';
   }
   //echo '<tr><td colspan="2">';
@@ -2893,8 +2913,8 @@ if (tep_get_bflag_by_product_id($pInfo->products_id)) {
 </td></tr>
 <tr><td colspan="2">
 <?php //做成者和时间?>
-<table>
-<tr><td width="50%">
+<table width="100%">
+<tr><td width="10%">
 <?php 
 echo TEXT_USER_ADDED;
 if (!empty($pInfo->products_user_added)) {
@@ -2937,7 +2957,7 @@ if (!empty($pInfo->products_last_modified)) {
 <td align="center" class="main">
 <div id="order_del">
 <?php
-if ($ocertify->npermission >= 10) {
+if (!$isstaff) {
   if (empty($site_id)) {
     echo '<a href="' .  tep_href_link(FILENAME_PRODUCTS_MANUAL, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id .  '&action=show_products_manual'. '&site_id='.  $site_id.  '&page='.$_GET['page'])  .'">';
     echo tep_html_element_button(IMAGE_MANUAL);
@@ -2957,10 +2977,10 @@ if ($ocertify->npermission >= 10) {
       echo '<input class="element_button" type="button" value="'.IMAGE_DELETE.  '" onclick="show_product_delete(\''.$pInfo->products_id.'\')">';
     }
   }
-  echo tep_html_element_submit(IMAGE_SAVE);
 } else {
   echo ' <a href="' . tep_href_link(FILENAME_REVIEWS, 'cPath=' . $cPath .  '&products_id=' . $pInfo->products_id .  '&action=new') . '">'.tep_html_element_button(IMAGE_REVIEWS).'</a>';
 }
+echo tep_html_element_submit(IMAGE_SAVE);
 ?>
 </div>
 </td>
