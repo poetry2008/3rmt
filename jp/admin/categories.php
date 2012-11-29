@@ -4266,7 +4266,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
   <!-- footer_eof -->
   <br>
-  <div id="wait" style="position:fixed; left:45%; top:45%; display:none;"><img src="images/load.gif" alt="img"></div>
+  <div id="wait" style="position:fixed; left:45%; top:45%; display:none; z-index:10000;"><img src="images/load.gif" alt="img"></div>
   </body>
   </html>
   <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>
