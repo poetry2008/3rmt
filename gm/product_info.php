@@ -144,6 +144,11 @@ function change_num(ob,targ, quan, a_quan)
   product_quantity.value = dbc2sbc(product_quantity.value);
   if(isNaN(product_quantity.value)||product_quantity.value==''){
     product_quantity.value = 0;
+  }else{
+    var product_quantity_reg = new RegExp(/\.|\-/);
+    if(product_quantity_reg.test(product_quantity.value)){
+      product_quantity.value = 0; 
+    } 
   }
   var product_quantity_num = parseInt(product_quantity.value);
   if (targ == 'up') { 
