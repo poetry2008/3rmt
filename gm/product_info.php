@@ -37,13 +37,11 @@ foreach($p_image_list as $p_list_row){
 <link rel="stylesheet" href="css/jquery.lightbox-0.5.css" type="text/css">
 <link rel="stylesheet" href="css/feature-carousel.css" type="text/css">
 <script type="text/javascript">
-<!--//
 $(document).ready(function() {
   var carousel = $("#carousel").featureCarousel({
     });
   $("#carousel a").lightBox();
 });
-//-->
 </script>
 <?php
 }
