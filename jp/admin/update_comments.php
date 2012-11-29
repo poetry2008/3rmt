@@ -44,7 +44,7 @@ while ($comments_info = mysql_fetch_array($comments_raw)) {
  
   $content = '';
   $content .= $comments_info['rule']."\r\n";
-  $content .= "担当者:".$comments_info['author']."\r\n";
+  $content .= "\r\n";
   $content .= "コメント:\r\n".$comments_info['comment']; 
   $belong = 'categories.php';  
   if (!empty($comments_info['categories_id'])) {
