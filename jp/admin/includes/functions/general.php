@@ -4235,12 +4235,16 @@ function tep_get_pay_day($time = null){
  */
 
 
-function tep_display_google_results($from_url=''){
+function tep_display_google_results($from_url='', $c_type=false){
   // 谷歌关键字结果显示停止条件
   $stop_site_url = array(
       //"iimy.co.jp",
       //"www.iimy.co.jp",
       );
+  $tmp_param_str = ''; 
+  if ($c_type == true) {
+    $tmp_param_str = isset($_GET['site_id'])?'&csite_id='.$_GET['site_id']:'';  
+  }
   if(isset($_GET['cPath'])&&$_GET['cPath']!=''){
     $categories_id = array_pop(explode('_',$_GET['cPath']));
     /*
@@ -4312,11 +4316,11 @@ function tep_display_google_results($from_url=''){
              */
             if(isset($from_url)&&$from_url){
               echo "<a href='".tep_href_link(FILENAME_RECORD,
-                  'from='.$from_url.'&action=rename&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url).
+                  'from='.$from_url.'&action=rename&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url.$tmp_param_str).
                 "'>".TEXT_RENAME."</a>";
             }else{
               echo "<a href='".tep_href_link(FILENAME_RECORD,
-                  'action=rename&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url).
+                  'action=rename&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url.$tmp_param_str).
                 "'>".TEXT_RENAME."</a>";
             }
             echo "</td></tr>";
@@ -4334,11 +4338,11 @@ function tep_display_google_results($from_url=''){
 
           if(isset($from_url)&&$from_url){
             echo "<a href='".tep_href_link(FILENAME_RECORD,
-                'from='.$from_url.'&action=rename&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url).
+                'from='.$from_url.'&action=rename&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url.$tmp_param_str).
               "'>".TEXT_RENAME."</a>";
           }else{
             echo "<a href='".tep_href_link(FILENAME_RECORD,
-                'action=rename&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url).
+                'action=rename&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url.$tmp_param_str).
               "'>".TEXT_RENAME."</a>";
           }
           echo "</td></tr>";

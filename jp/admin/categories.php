@@ -67,7 +67,7 @@
           $relate_update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now(),products_user_update='".$_SESSION['user_name']."' where products_id='".$relate_products_id."' and site_id='".$site_id."'";
           tep_db_query($relate_update_sql);
         }
-        tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $_GET['cPath'] . '&pID=' . $products_id));
+        tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $_GET['cPath'] .  '&pID=' .  $products_id.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'')));
         break;
 // 保存动作结束
       case 'get_products':
@@ -1379,8 +1379,7 @@ function handle_option()
   function show_product_info(pid,ele){
     $.ajax({
       dataType: 'text',
-      url: 'ajax_orders.php?action=product_info_box&pID='+pid+'&site_id=<?php 
-      echo $site_id."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
+      url: 'ajax_orders.php?action=product_info_box&pID='+pid+'&site_id=<?php echo (isset($_GET['site_id'])?$_GET['site_id']:'0')."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
       success: function(text) {
         //show_p_info 
         $('#show_popup_info').html(text);
@@ -4251,7 +4250,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                       </tr>
                       <?php
                       // google start
-                      tep_display_google_results(FILENAME_CATEGORIES);
+                      tep_display_google_results(FILENAME_CATEGORIES, true);
                       // google end
                       ?>
                     </table>
