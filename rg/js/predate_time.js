@@ -20,7 +20,7 @@ function selectDate(start_time,end_time,value,start_time_old,end_time_old,now_ti
 	//document.order.hour.options.length = 1;
 
 
-	//'Obtain the range of values ​​of the time select box
+	//'Obtain the range of values of the time select box
 	//'
 	//'
         /*

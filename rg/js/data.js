@@ -80,7 +80,7 @@ function selectHour(myHour, myMin){
 	document.order.min.options.length = 1;
 
 
-	//'Obtain the range of values ​​of the time select box
+	//'Obtain the range of values of the time select box
 	//'
 	//'
 	if (num2 == 1) {
