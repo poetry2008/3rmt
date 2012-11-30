@@ -15,7 +15,7 @@ function sendData(geturi,execution_f,did) {
 	}
   }
   
-  //execution_fを追加したら以下の処理を追加する
+  //If added a execution_f,add the following process
   if(xmlHttpObject){
 	if(execution_f == 'tabmenu2'){
 	  xmlHttpObject.onreadystatechange = tabmenu2;
@@ -24,9 +24,9 @@ function sendData(geturi,execution_f,did) {
   
   
 //----------------------------------------------------------------------------------------------------
-//ここから下は追加Function
+//Add Function from here
 
-  //表示変更（tab_menu2）
+  //Display change（tab_menu2）
   function tabmenu2() {
     if((xmlHttpObject.readyState == 4) && (xmlHttpObject.status == 200)){  
       document.getElementById(did).innerHTML = xmlHttpObject.responseText;
@@ -35,7 +35,7 @@ function sendData(geturi,execution_f,did) {
     }
   }
 
-//ここまでが追加Function
+//Add function stop here
 //----------------------------------------------------------------------------------------------------  
   
   if(xmlHttpObject){

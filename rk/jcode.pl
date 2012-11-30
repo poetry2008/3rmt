@@ -1,35 +1,6 @@
 package jcode;
 ;######################################################################
 ;#
-;# jcode.pl: Perl library for Japanese character code conversion
-;#
-;# Copyright (c) 1995-2000 Kazumasa Utashiro <utashiro@iij.ad.jp>
-;# Internet Initiative Japan Inc.
-;# 3-13 Kanda Nishiki-cho, Chiyoda-ku, Tokyo 101-0054, Japan
-;#
-;# Copyright (c) 1992,1993,1994 Kazumasa Utashiro
-;# Software Research Associates, Inc.
-;#
-;# Use and redistribution for ANY PURPOSE are granted as long as all
-;# copyright notices are retained.  Redistribution with modification
-;# is allowed provided that you make your modified version obviously
-;# distinguishable from the original one.  THIS SOFTWARE IS PROVIDED
-;# BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES ARE
-;# DISCLAIMED.
-;#
-;# Original version was developed under the name of srekcah@sra.co.jp
-;# February 1992 and it was called kconv.pl at the beginning.  This
-;# address was a pen name for group of individuals and it is no longer
-;# valid.
-;#
-;# The latest version is available here:
-;#
-;#	ftp://ftp.iij.ad.jp/pub/IIJ/dist/utashiro/perl/
-;#
-;; $rcsid = q$Id$;
-;#
-;######################################################################
-;#
 ;# PERL4 INTERFACE:
 ;#
 ;#	&jcode'getcode(*line)

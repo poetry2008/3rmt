@@ -24,8 +24,6 @@ define('OUT_OF_STOCK_CANT_CHECKOUT', STOCK_MARK_PRODUCT_OUT_OF_STOCK . ' 印の�
 define('PRODUCTS_WEIGHT_ERROR', STOCK_MARK_PRODUCT_OUT_OF_STOCK . ' 総重量が規定の範囲を超えました。<br>商品を削除するか、または個数を変更して（'.$max_weight_count.'）kg以内にしてください。');
 //define('OUT_OF_STOCK_CAN_CHECKOUT', STOCK_MARK_PRODUCT_OUT_OF_STOCK . ' 印の商品はご希望の数量が在庫にございません。<br>このまま購入手続きを続行していただくと、ご注文の確認画面で発送可能な数量を確認することができます。');
 define('OUT_OF_STOCK_CAN_CHECKOUT', STOCK_MARK_PRODUCT_OUT_OF_STOCK . ' 印の商品はご希望の数量が在庫にございません。<br>このまま購入手続きを続行していただくと、後程納期をご連絡させていただきます。');
-
-// '... Make any changes above? Click.' (tamura 2002/03/28 追加)
 define('TEXT_UPDATE_CART_INFO', '<b><font color="#ff0000">※</font> 数量をご確認の上「レジへ進む」ボタンをクリックしてください。</b>');
 define('TABLE_HEADING_IMAGE', '画像');
 define('TABLE_HEADING_OPERATE', '操作');
