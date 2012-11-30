@@ -282,6 +282,15 @@ function orders_info_box_offset(){
   $("#orders_info_box").css('top',orders_value.top+$("#tr_" +  temp_oid).height()-box_warp_top);
   $("#orders_info_box").css('left',orders_value.left-box_warp_left);
   }
+
+  var orders_info_box_top = $("#orders_info_box").css("top");
+  orders_info_box_top = orders_info_box_top.replace("px","");
+  orders_info_box_top = parseInt(orders_info_box_top);
+  var orders_info_box_height = $("#orders_info_box").height();
+  var box_warp_heiht = $(".box_warp").height();
+  if((orders_info_box_top+orders_info_box_height) > box_warp_heiht){
+    $(".box_warp").height(orders_info_box_top+orders_info_box_height);
+  }
 }
 
 // 列表右侧的订单信息隐藏
