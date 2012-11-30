@@ -170,7 +170,9 @@ function set_money(num,warning, single_type){
           var tar_ipt = document.getElementById("target_"+n+"_"+i).innerHTML;<?php//同業者 ?>
         }
       } else {
-        var tar_ipt = document.getElementById("target_"+n+"_"+i).innerHTML;<?php//同業者 ?>
+        if (document.getElementById("radio_"+n+"_"+i)) {
+          var tar_ipt = document.getElementById("radio_"+n+"_"+i).value;<?php//同業者 ?>
+        }
       }
     } 
   } 
@@ -222,8 +224,10 @@ function set_money(num,warning, single_type){
   //var price_n = n + 1;
   //var price_obj=document.getElementById("price_input_"+ price_n);<?php //サイトインプット?>
   var this_price=document.getElementsByName("pprice[]");
-  
-  price_obj[n].value=parseInt(set_m);
+ 
+  if (single_type == '1') {
+    price_obj[n].value=parseInt(set_m);
+  }
     
   <?php 
   //価格の判定
