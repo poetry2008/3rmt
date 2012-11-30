@@ -31,7 +31,7 @@
         $HTTP_POST_VARS['products_price_offset'] = SBC2DBC($HTTP_POST_VARS['products_price_offset']);
         // jiakong
         $update_sql_data = array(
-            'products_price_offset'     => tep_db_prepare_input($HTTP_POST_VARS['products_price_offset']),
+            //'products_price_offset'     => tep_db_prepare_input($HTTP_POST_VARS['products_price_offset']),
             'max_inventory'             => tep_db_prepare_input($_POST['inventory_max']),
             'min_inventory'             => tep_db_prepare_input($_POST['inventory_min']),
             'products_last_modified'    => 'now()',
@@ -45,7 +45,7 @@
           $HTTP_POST_VARS['relate_products_price_offset'] = SBC2DBC($HTTP_POST_VARS['relate_products_price_offset']);
           // jiakong
           $relate_update_sql_data = array(
-              'products_price_offset'     => tep_db_prepare_input($HTTP_POST_VARS['relate_products_price_offset']),
+              //'products_price_offset'     => tep_db_prepare_input($HTTP_POST_VARS['relate_products_price_offset']),
               'max_inventory'             => tep_db_prepare_input($_POST['relate_inventory_max']),
               'min_inventory'             => tep_db_prepare_input($_POST['relate_inventory_min']),
               'products_last_modified'    => 'now()',
@@ -3834,7 +3834,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   echo '<a href="orders.php?search_type=products_id&products_id=' .  $products['products_id'] .(!empty($site_id)?'&site_id='.$site_id:'') .'">' . tep_image(DIR_WS_ICONS . 'search.gif', IMAGE_SEARCH) . '</a>&nbsp;'; 
   echo '</div>';
   if ($ocertify->npermission >= 10) { 
-    echo '<div class="title_text"><span id="products_name_'.$products['products_id'].'"><a class="title_text_link" href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&pID=' .  $products['products_id'] .  '&action=new_product'.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').'&page='.$_GET['page'].($_GET['search']?'&search='.$_GET['search']:'')).'">'.$products['products_name'].'</a></span></div>'; 
+    echo '<div class="title_text"><a class="title_text_link" href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&pID=' .  $products['products_id'] .  '&action=new_product'.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').'&page='.$_GET['page'].($_GET['search']?'&search='.$_GET['search']:'')).'"><span id="products_name_'.$products['products_id'].'">'.$products['products_name'].'</span></a></div>'; 
   } else {
     echo '<div class="title_text"><span id="products_name_'.$products['products_id'].'">'.$products['products_name'].'</span></div>'; 
   }
