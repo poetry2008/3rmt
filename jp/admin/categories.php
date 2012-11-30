@@ -31,7 +31,7 @@
         $HTTP_POST_VARS['products_price_offset'] = SBC2DBC($HTTP_POST_VARS['products_price_offset']);
         // jiakong
         $update_sql_data = array(
-            'products_price_offset'     => tep_db_prepare_input($HTTP_POST_VARS['products_price_offset']),
+            //'products_price_offset'     => tep_db_prepare_input($HTTP_POST_VARS['products_price_offset']),
             'max_inventory'             => tep_db_prepare_input($_POST['inventory_max']),
             'min_inventory'             => tep_db_prepare_input($_POST['inventory_min']),
             'products_last_modified'    => 'now()',
@@ -45,7 +45,7 @@
           $HTTP_POST_VARS['relate_products_price_offset'] = SBC2DBC($HTTP_POST_VARS['relate_products_price_offset']);
           // jiakong
           $relate_update_sql_data = array(
-              'products_price_offset'     => tep_db_prepare_input($HTTP_POST_VARS['relate_products_price_offset']),
+              //'products_price_offset'     => tep_db_prepare_input($HTTP_POST_VARS['relate_products_price_offset']),
               'max_inventory'             => tep_db_prepare_input($_POST['relate_inventory_max']),
               'min_inventory'             => tep_db_prepare_input($_POST['relate_inventory_min']),
               'products_last_modified'    => 'now()',
@@ -1493,7 +1493,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" >
 <?php } ?>
 <?php
-if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']&&false){?>
+if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
   <script language='javascript'>
     one_time_pwd('<?php echo $page_name;?>');
   </script>
@@ -3143,7 +3143,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                             <tr>
                               <td class="main"><?php echo TEXT_SORT_ORDER;?></td> 
                               <td class="main">
-                              <?php echo tep_draw_input_field('sort_order', (($_GET['action'] == 'edit_category')?$cInfo->sort_order:''), 'size="2" onkeyup="clearLibNum(this);" class="tdul"'); 
+                              <?php echo tep_draw_input_field('sort_order', (($_GET['action'] == 'edit_category')?$cInfo->sort_order:''), 'onkeyup="clearLibNum(this);" class="tdul"'); 
                               ?>
                               </td>
                             </tr>
@@ -3265,7 +3265,15 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                     $col=tep_db_fetch_array($res);
                     if (!$col) $col['bairitu'] = 1.1;
                     ?>
-                    <td class="dataTableHeadingContent" align="center" ><?php echo TABLE_HEADING_CATEGORIES_PRODUCT_BUYING;?></td>
+                    <td class="dataTableHeadingContent" align="center" >
+                    <?php 
+                    if (empty($site_id)) {
+                      echo '<a href="'.tep_href_link('cleate_list.php', 'cid='.$cPath_yobi.'&action=prelist&cPath='.$_GET['cPath']).'" style="font-weight:bold" class="title_text_link">'.TABLE_HEADING_CATEGORIES_PRODUCT_BUYING.'</a>';
+                    } else {
+                      echo TABLE_HEADING_CATEGORIES_PRODUCT_BUYING;
+                    }
+                    ?>
+                    </td>
                       <?php
                       if ($cPath_yobi){
                         $res=tep_db_query("select count(*) as cnt from set_dougyousya_names sdn ,set_dougyousya_categories sdc  where sdn.dougyousya_id = sdc.dougyousya_id and sdc.categories_id = '".$cPath_yobi."'");
@@ -3834,7 +3842,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   echo '<a href="orders.php?search_type=products_id&products_id=' .  $products['products_id'] .(!empty($site_id)?'&site_id='.$site_id:'') .'">' . tep_image(DIR_WS_ICONS . 'search.gif', IMAGE_SEARCH) . '</a>&nbsp;'; 
   echo '</div>';
   if ($ocertify->npermission >= 10) { 
-    echo '<div class="title_text"><span id="products_name_'.$products['products_id'].'"><a class="title_text_link" href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&pID=' .  $products['products_id'] .  '&action=new_product'.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').'&page='.$_GET['page'].($_GET['search']?'&search='.$_GET['search']:'')).'">'.$products['products_name'].'</a></span></div>'; 
+    echo '<div class="title_text"><a class="title_text_link" href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&pID=' .  $products['products_id'] .  '&action=new_product'.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').'&page='.$_GET['page'].($_GET['search']?'&search='.$_GET['search']:'')).'"><span id="products_name_'.$products['products_id'].'">'.$products['products_name'].'</span></a></div>'; 
   } else {
     echo '<div class="title_text"><span id="products_name_'.$products['products_id'].'">'.$products['products_name'].'</span></div>'; 
   }

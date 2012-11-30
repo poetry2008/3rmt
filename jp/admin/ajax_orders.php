@@ -2618,7 +2618,7 @@ echo tep_eof_hidden();
   echo '<table width="95%" cellpadding="0" cellspacing="0" style="margin-bottom:10px;">';
   echo '  <tr>';
     // add abs for products_price
-  echo '<td width="30%">';
+  echo '<td width="30%" nowrap="nowrap">';
   echo TABLE_HEADING_JIAGE_TEXT.'：';
   echo '</td><td>';
   $product_tmp_price = tep_get_products_price($pInfo->products_id);
@@ -2628,31 +2628,31 @@ echo tep_eof_hidden();
   echo tep_draw_input_field('products_price', number_format(abs($pInfo->products_price)?abs($pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)" id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;' . CATEGORY_MONEY_UNIT_TEXT .  '&nbsp;&nbsp;&larr;&nbsp;' . (int)$pInfo->products_price . CATEGORY_MONEY_UNIT_TEXT.' ' . "\n";
   echo '</td>';
   if (!$pInfo->products_bflag && $pInfo->relate_products_id) {
-    echo '<tr><td>';
+    echo '<tr><td nowrap="nowrap">';
     echo CATEGORY_AVERAGE_PRICE;
     echo '</td>'; 
     echo '<td>'.@display_price(tep_get_avg_by_pid($pInfo->products_id)).CATEGORY_MONEY_UNIT_TEXT;
     echo '</td></tr>';
   } 
   echo '<tr>';
-  echo '<td align="left">';
+  echo '<td align="left" nowrap="nowrap">';
   echo TABLE_HEADING_CATEGORIES_PRODUCT_REAL_QUANTITY;
   echo '</td><td>';
   echo tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"') . '&nbsp;' .CATEGORY_GE_UNIT_TEXT. '&nbsp;&nbsp;&larr;&nbsp;' . $pInfo->products_real_quantity .CATEGORY_GE_UNIT_TEXT. "\n";
   echo '  </td>';
   echo '  </tr>';
-  echo '  <td >';
+  echo '  <td nowrap="nowrap">';
   echo TABLE_HEADING_CATEGORIES_PRODUCT_VIRTUAL_STORE;
   echo '</td><td>';
   echo  tep_draw_input_field('products_virtual_quantity', $pInfo->products_virtual_quantity,' size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"') . '&nbsp;'.CATEGORY_GE_UNIT_TEXT. '&nbsp;&nbsp;&larr;&nbsp;' . $pInfo->products_virtual_quantity . CATEGORY_GE_UNIT_TEXT . "\n";
-  echo '</td></tr><tr><td>';
+  echo '</td></tr><tr><td nowrap="nowrap">';
   echo TEXT_PRODUCT_ADDORSUB_VALUE;
   echo '</td><td>';
   echo $pInfo->products_price_offset;
   echo '</tr>';
   $inventory = tep_get_product_inventory($pInfo->products_id);
   if(!isset($site_id)||!$site_id){
-  echo '<tr><td>';
+  echo '<tr><td nowrap="nowrap">';
   echo TEXT_MAX;
   echo '</td><td>';
   if($isstaff){
@@ -2660,7 +2660,7 @@ echo tep_eof_hidden();
   }else{
     echo tep_draw_input_field('inventory_max',$inventory['max']);
   }
-  echo '</tr><tr><td>';
+  echo '</tr><tr><td nowrap="nowrap">';
   echo TEXT_MIN;
   echo '</td><td>';
   if($isstaff){
@@ -2678,7 +2678,7 @@ echo tep_eof_hidden();
       //'70','10',$pInfo->products_attention_5);
   //echo '</td></tr>';
   echo '<tr>';
-  echo '<td>';
+  echo '<td nowrap="nowrap">';
   echo TEXT_PRODUCTS_AVERAGE_RATING.'</td>';
   echo '<td>'; 
   echo number_format($pInfo->average_rating,2).'%';
@@ -2694,7 +2694,7 @@ echo tep_eof_hidden();
   echo '<tr><td colspan="2"><b>'.TEXT_PRODUCT_LINK_PRODUCT_TEXT.$relate_pInfo->products_name.'</b></td></tr>';
   echo '<tr>';
     // add abs for products_price
-  echo '<td width="30%">';
+  echo '<td width="30%" nowrap="nowrap">';
   echo TABLE_HEADING_JIAGE_TEXT.'：';
   echo '</td><td>';
   echo tep_draw_hidden_field('relate_products_id',
@@ -2707,30 +2707,30 @@ echo tep_eof_hidden();
       number_format(abs($relate_pInfo->products_price)?abs($relate_pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;' . CATEGORY_MONEY_UNIT_TEXT .  '&nbsp;&nbsp;&larr;&nbsp;' . (int)$relate_pInfo->products_price . CATEGORY_MONEY_UNIT_TEXT.' ' . "\n";
   echo '</td>';
   if (!$relate_pInfo->products_bflag && $relate_pInfo->relate_products_id) {
-    echo '<tr><td>';
+    echo '<tr><td nowrap="nowrap">';
     echo CATEGORY_AVERAGE_PRICE.'</td>';
     echo '<td>'.@display_price(tep_get_avg_by_pid($relate_pInfo->products_id)).CATEGORY_MONEY_UNIT_TEXT;
     echo '</td></tr>';
   } 
   echo '<tr>';
-  echo '<td align="left">';
+  echo '<td align="left" nowrap="nowrap">';
   echo TABLE_HEADING_CATEGORIES_PRODUCT_REAL_QUANTITY;
   echo '</td><td>';
   echo tep_draw_input_field('relate_products_real_quantity', $relate_pInfo->products_real_quantity,'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"') . '&nbsp;' .CATEGORY_GE_UNIT_TEXT. '&nbsp;&nbsp;&larr;&nbsp;' . $relate_pInfo->products_real_quantity .CATEGORY_GE_UNIT_TEXT. "\n";
   echo '  </td>';
   echo '  </tr>';
-  echo '  <td >';
+  echo '  <td nowrap="nowrap">';
   echo TABLE_HEADING_CATEGORIES_PRODUCT_VIRTUAL_STORE;
   echo '</td><td>';
   echo  tep_draw_input_field('relate_products_virtual_quantity', $relate_pInfo->products_virtual_quantity,' size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"') . '&nbsp;'.CATEGORY_GE_UNIT_TEXT. '&nbsp;&nbsp;&larr;&nbsp;' . $relate_pInfo->products_virtual_quantity . CATEGORY_GE_UNIT_TEXT . "\n";
-  echo '</td></tr><tr><td>';
+  echo '</td></tr><tr><td nowrap="nowrap">';
   echo TEXT_PRODUCT_ADDORSUB_VALUE;
   echo '</td><td>';
   echo $relate_pInfo->products_price_offset;
   echo '</tr>';
   $inventory = tep_get_product_inventory($relate_pInfo->products_id);
   if(!isset($site_id)||!$site_id){
-  echo '<tr><td>';
+  echo '<tr><td nowrap="nowrap">';
   echo TEXT_MAX;
   echo '</td><td>';
   if($isstaff){
@@ -2738,7 +2738,7 @@ echo tep_eof_hidden();
   }else{
     echo tep_draw_input_field('relate_inventory_max',$inventory['max']);
   }
-  echo '</tr><tr><td>';
+  echo '</tr><tr><td nowrap="nowrap">';
   echo TEXT_MIN;
   echo '</td><td>';
   if($isstaff){
@@ -2756,7 +2756,7 @@ echo tep_eof_hidden();
       //'70','10',$relate_pInfo->products_attention_5);
   //echo '</td></tr>';
   echo '<tr>';
-  echo '<td>';
+  echo '<td nowrap="nowrap">';
   echo TEXT_PRODUCTS_AVERAGE_RATING.'</td>';
   echo '<td>';
   echo number_format($relate_pInfo->average_rating,2).'%';
@@ -2977,12 +2977,12 @@ if (!$isstaff) {
     echo '<input class="element_button" type="button" value="'.IMAGE_MOVE.  '" onclick="show_product_move(\''.$pInfo->products_id.'\')">';
     echo '<input class="element_button" type="button" value="'.IMAGE_COPY.  '" onclick="show_product_copy(\''.$pInfo->products_id.'\')">';
   }
-  if(isset($site_id)&&$site_id!=0){
-    if (tep_db_num_rows(tep_db_query("select products_id from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$pInfo->products_id."' and site_id = '".(int)$site_id."'"))) {
-      echo '<input class="element_button" type="button" value="'.IMAGE_DELETE.  '" onclick="show_product_description_delete(\''.$pInfo->products_id.'\')">';
-    }
-  }else{
-    if ($ocertify->npermission == 15) {
+  if ($ocertify->npermission == 15) {
+    if(isset($site_id)&&$site_id!=0){
+      if (tep_db_num_rows(tep_db_query("select products_id from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$pInfo->products_id."' and site_id = '".(int)$site_id."'"))) {
+        echo '<input class="element_button" type="button" value="'.IMAGE_DELETE.  '" onclick="show_product_description_delete(\''.$pInfo->products_id.'\')">';
+      }
+    }else{
       echo '<input class="element_button" type="button" value="'.IMAGE_DELETE.  '" onclick="show_product_delete(\''.$pInfo->products_id.'\')">';
     }
   }

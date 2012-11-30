@@ -179,7 +179,6 @@
   if ($account['entry_country_id']) { $country = $account['entry_country_id']; }
   else if (!$country) { $country = STORE_COUNTRY; } 
     echo tep_draw_hidden_field('country', 107);
-
 ?>
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
   <tr>

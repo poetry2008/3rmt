@@ -22,7 +22,7 @@ function selectDate(myHour, myMin){
 	document.order.hour.options.length = 1;
 
 
-	//'Obtain the range of values ​​of the time select box
+	//'Obtain the range of values of the time select box
 	//'
 	//'
 	if (num == 0) {

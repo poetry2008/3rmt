@@ -39,7 +39,6 @@ function mb_convert_kana($str, $option, $encode = 'auto')
    }
 }
 
-//
 function mb_convert_encoding($str, $to, $from = 'auto')
 {
     $jc_to   = _check_encoding($to);
@@ -48,8 +47,6 @@ function mb_convert_encoding($str, $to, $from = 'auto')
     return JcodeConvert($str, $jc_from, $jc_to);
 }
 
-//
-//
 function mb_encode_mimeheader($str, $encode = 'ISO-2022-JP', $trn = 'B', $lf ='\r\n')
 {
     return "=?".$encode."?".$trn."?".base64_encode(mb_convert_encoding($str, 'JIS', 'EUC'))."?=";
