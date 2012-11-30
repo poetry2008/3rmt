@@ -49,7 +49,7 @@ if ($tmp_sort_str == '4') {
 <?php
   }
 ?>
-<!--select searach_eof// -->
+<!--select searach_eof -->
 <table border="0" width="100%" cellspacing="0" cellpadding="0"  class="product_list_info">
   <tr>
     <td>

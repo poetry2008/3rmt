@@ -1,7 +1,5 @@
 <?php
 /*
-  $Id$
-
 */
 
 define('NAVBAR_TITLE', 'キャラクター名の入力');

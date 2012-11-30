@@ -1,7 +1,6 @@
 <?php
 /*
   $Id$
-
 */
 
 define('NAVBAR_TITLE', 'ご利用規約');

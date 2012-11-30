@@ -1,26 +1,26 @@
 /******************************************************************************/
-/*                            時間セレクトボックス                             /
+/*                            Time select box                             /
 /******************************************************************************/
 function selectDate(start_time,end_time,value,start_time_old,end_time_old,now_time,start_time_exit,end_time_exit,exit_time){
-	//var num    = document.order.date.selectedIndex; //'選択セレクトボックス番号
-	//var myD    = new Date();                        //'日付オブジェクト
-//	var myHour = myD.getHours();                    //'時間
-//	var myMin  = myD.getMinutes();                  //'分
-		//myMin  = Math.ceil(myMin/10) * 10;          //'切り上げ処理済「分」
-	//var plus   = 20;                                //'追加分初期値
+	//var num    = document.order.date.selectedIndex; //'Select a number of select box
+	//var myD    = new Date();                        //'Date object
+//	var myHour = myD.getHours();                    //'Time
+//	var myMin  = myD.getMinutes();                  //'Minutes
+		//myMin  = Math.ceil(myMin/10) * 10;          //'Minutes carry dealt
+	//var plus   = 20;                                //'Add the initial value of minutes
 
 
-	//'整数化
+	//'Integerized
 	//myHour = parseInt(myHour);
 	//myMin  = parseInt(myMin);
 
 
-	//'セレクトボックス値クリア
+	//'Select box value is cleared
 	//document.order.min.options.length  = 1;
 	//document.order.hour.options.length = 1;
 
 
-	//'セレクトボックス表示時間範囲値取得
+	//'Obtain the range of values ​​of the time select box
 	//'
 	//'
         /*
@@ -95,7 +95,7 @@ function selectDate(start_time,end_time,value,start_time_old,end_time_old,now_ti
         $("#shipping_list_min").hide();
 
 
-	//'セレクトボックス値作成
+	//'Create a select box value
 	//for (i=hour; i<24; i++) {
 		//document.order.hour.options[document.order.hour.options.length]=new Option(i, i);
 		//if(document.layers){
@@ -109,7 +109,7 @@ function selectDate(start_time,end_time,value,start_time_old,end_time_old,now_ti
 
 
 /******************************************************************************/
-/*                            分セレクトボックス                               /
+/*                            Minutes select box                               /
 /******************************************************************************/
 function selectHour(start_time,end_time,hour,min_num,ele){
         $("#hour_error").html("");
@@ -125,7 +125,7 @@ function selectHour(start_time,end_time,hour,min_num,ele){
         var array_end = new Array();
         array_end = end_time.split('||');
          
-        //整数化
+        //Integerized
 
         for(h = 0;h < 24;h++){
           flag = false;
@@ -261,7 +261,7 @@ function selectHour(start_time,end_time,hour,min_num,ele){
           
           $("#ele_id").val(temp_value);
         }
-	//'セレクトボックス値作成
+	//'Create a select box value
         /*
 	for (i=min; i<60; i=i+10) {
 		if (i == 0) {

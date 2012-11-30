@@ -18,7 +18,7 @@
     tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
   }
   //start
-  // tamura 2002/12/30 「全角」英数字を「半角」に変換
+  // 全角的英数字改成半角
   $save_flag = false;
   $del_flag = false; 
   $an_cols = array('password','confirmation','email_address','postcode','telephone','fax');
@@ -135,7 +135,6 @@ case 'per':
         // ccdd
         tep_db_perform(TABLE_CUSTOMERS, $sql_data_array, 'update', "customers_id = '" .  tep_db_input($customer_id) . "' and site_id = '".SITE_ID."'");
 
-    // 2003-06-06 add_telephone
         $sql_data_array = array('entry_street_address' => $street_address,
                                 'entry_firstname' => $firstname,
                                 'entry_lastname' => $lastname,
@@ -393,7 +392,6 @@ if($_POST['num_rows'] > 0){
         // ccdd
         tep_db_perform(TABLE_CUSTOMERS, $sql_data_array, 'update', "customers_id = '" .  tep_db_input($customer_id) . "' and site_id = '".SITE_ID."'");
 
-    // 2003-06-06 add_telephone
         $sql_data_array = array('entry_street_address' => $street_address,
                                 'entry_firstname' => $firstname,
                                 'entry_lastname' => $lastname,
@@ -568,14 +566,14 @@ if($_POST['num_rows'] > 0){
 <body>
 <div align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-  <!-- header_eof //--> 
-  <!-- body //--> 
+  <!-- header_eof --> 
+  <!-- body --> 
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border" summary="table"> 
     <tr> 
-      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
+      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
-        <!-- left_navigation_eof //--> </td> 
-      <!-- body_text //--> 
+        <!-- left_navigation_eof --> </td> 
+      <!-- body_text --> 
       <td valign="top" id="contents"> 
         <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1> 
         
@@ -610,18 +608,18 @@ if($_POST['num_rows'] > 0){
         </div>
         <p class="pageBottom"></p>
         </td> 
-      <!-- body_text_eof //--> 
-      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 
+      <!-- body_text_eof --> 
+      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-        <!-- right_navigation_eof //--> 
+        <!-- right_navigation_eof --> 
       </td> 
     </tr>
   </table> 
   </form>
-  <!-- body_eof //--> 
-  <!-- footer //--> 
+  <!-- body_eof --> 
+  <!-- footer --> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
+  <!-- footer_eof --> 
 </div>
 </div>
 </body>

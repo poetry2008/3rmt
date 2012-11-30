@@ -1170,7 +1170,7 @@ a.Icon:hover {
 	padding:2px;
 	margin-bottom:5px;
 }
-/* xy_rmt*/
+
 .h_title{
 	background-color:#BF1731;
 	font-size:10px;
@@ -1537,9 +1537,6 @@ TEXTAREA {
 	width: 100%;
 	font-size: 11px;
 }
-/* ---------------------------
-SPAN：Message Home (Hi, ○ ○ ~)
---------------------------- */
 SPAN.greetUser {
 	font-size: 12px;
 	color: #0000a0;
@@ -1861,7 +1858,7 @@ border:2px solid #FF8080;
     padding: 5px;
 	font-size:11px;
 }
-/*密码*/
+/*password*/
 #greybackground{
 	background:#000000;
 	width:100%; 
@@ -2064,13 +2061,11 @@ border:2px solid #FF8080;
 	font-size:20px;
 	font-weight:bold;
 	color:#2864B4;
-        display:none;
 }
 .calc_show_price{
 	color:#2864B4;
 	font-size:20px;
 	font-weight:bold;
-        display:none;
 }
 .formArea_td_info{
 	*width:75%;
@@ -2081,7 +2076,7 @@ border:2px solid #FF8080;
 }
 #group_list_box td{ height:20px; padding:0; font-size:14px;}
 .address_item_info{ padding-left:4px;}
-/*配送*/
+/*shipping*/
 
 .shipping_error{
 	color:#ff0000;

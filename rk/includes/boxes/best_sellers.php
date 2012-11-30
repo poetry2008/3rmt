@@ -5,7 +5,7 @@
 
   if (isset($current_category_id) && ($current_category_id > 0)) {
     // ccdd
-    // del distinct 10.8.2
+    // del distinct
     $best_sellers_query = tep_db_query("
       select *
       from (
@@ -37,7 +37,7 @@
     
   } else {
     // ccdd
-    // del distinct 10.8.2
+    // del distinct
     $best_sellers_query = tep_db_query("
       select *
       from (
@@ -69,7 +69,7 @@
 
   if (tep_db_num_rows($best_sellers_query) >= MIN_DISPLAY_BESTSELLERS) {
 ?>
-<!-- best_sellers //-->
+<!-- best_sellers -->
       <div class="ranking_warpper">
       <div class="menu_top_ranking"><img src="images/menu_ico.gif" alt="" align="top">&nbsp;ランキング</div>
     <?php //echo tep_image(DIR_WS_IMAGES.'design/box/ranking.gif',BOX_HEADING_BESTSELLERS,'171','39'); ?>
@@ -109,7 +109,7 @@
 ?>  
     <div class="ranking_bottom"><img src="images/design/box/box_bottom_bg_01.gif" width="170" height="14" alt="" ></div>
 </div>
-<!-- best_sellers_eof //-->
+<!-- best_sellers_eof -->
 <?php
   }
 ?>
