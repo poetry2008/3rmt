@@ -125,12 +125,7 @@ function changeLayer(obj) {
     }
 ?>
 <td width="100%" valign="top">
-<table width="100%"><tr>
-<td align="rignt" height="20px">
-<div id="add">&nbsp;</div>
-</td>
-</tr>
-<tr><td>
+<table width="100%"><tr><td>
 <div class="box_warp">
 <?php echo $notes;?>
 </div>

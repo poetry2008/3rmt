@@ -70,6 +70,15 @@ $(function(){
 
 var zIndex = 0;
 function make_draggable(elements){
+  elements.mousedown(function(e){
+    if(e.which == 1){
+      var box_warp_height = $('.box_warp').height();
+      var leftmenu_height = $(".leftmenu").height();
+      if(leftmenu_height > box_warp_height){
+        $('.box_warp').height(leftmenu_height);
+      }
+    }
+  });
   /*elements.click(function(){
     $(this).css('z-index',++zIndex);
     });*/

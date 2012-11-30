@@ -1382,7 +1382,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= '</td>';
   $html_str .= '</tr>'; 
   $html_str .= '<tr>'; 
-  $html_str .= '<td colspan="3">'.tep_html_element_submit(IMAGE_DELETE); 
+  $html_str .= '<td colspan="3" align="center">'.tep_html_element_submit(IMAGE_DELETE); 
   $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="cancel_del_order_info(\''.$_POST['oID'].'\', \''.urlencode($param_str).'\')"').'</a>';
   $html_str .= '</td>'; 
   $html_str .= '</tr>'; 
