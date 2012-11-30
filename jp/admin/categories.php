@@ -3265,7 +3265,15 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                     $col=tep_db_fetch_array($res);
                     if (!$col) $col['bairitu'] = 1.1;
                     ?>
-                    <td class="dataTableHeadingContent" align="center" ><?php echo TABLE_HEADING_CATEGORIES_PRODUCT_BUYING;?></td>
+                    <td class="dataTableHeadingContent" align="center" >
+                    <?php 
+                    if (empty($site_id)) {
+                      echo '<a href="'.tep_href_link('cleate_list.php', 'cid='.$cPath_yobi.'&action=prelist&cPath='.$_GET['cPath']).'" style="font-weight:bold" class="title_text_link">'.TABLE_HEADING_CATEGORIES_PRODUCT_BUYING.'</a>';
+                    } else {
+                      echo TABLE_HEADING_CATEGORIES_PRODUCT_BUYING;
+                    }
+                    ?>
+                    </td>
                       <?php
                       if ($cPath_yobi){
                         $res=tep_db_query("select count(*) as cnt from set_dougyousya_names sdn ,set_dougyousya_categories sdc  where sdn.dougyousya_id = sdc.dougyousya_id and sdc.categories_id = '".$cPath_yobi."'");
