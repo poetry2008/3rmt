@@ -888,7 +888,16 @@ function preorders_info_box_offset(){
    $("#orders_info_box").css('top',preorders_value.top+$("#tr_" +  temp_oid).height()-box_warp_top);
    $("#orders_info_box").css('left',preorders_value.left-box_warp_left);
   }
- }
+ 
+  var orders_info_box_top = $("#orders_info_box").css("top");
+  orders_info_box_top = orders_info_box_top.replace("px","");
+  orders_info_box_top = parseInt(orders_info_box_top);
+  var orders_info_box_height = $("#orders_info_box").height();
+  var box_warp_heiht = $(".box_warp").height();
+  if((orders_info_box_top+orders_info_box_height) > box_warp_heiht){
+    $(".box_warp").height(orders_info_box_top+orders_info_box_height);
+  }
+}
 
 
 function delete_preorder_info(oID, param_str)
@@ -901,6 +910,14 @@ async:false,
 url: 'ajax_preorders.php?action=show_del_preorder_info',
 success: function(msg) {
   $('#order_del').html(msg);
+  var orders_info_box_top = $("#orders_info_box").css("top");
+  orders_info_box_top = orders_info_box_top.replace("px","");
+  orders_info_box_top = parseInt(orders_info_box_top);
+  var orders_info_box_height = $("#orders_info_box").height();
+  var box_warp_heiht = $(".box_warp").height();
+  if((orders_info_box_top+orders_info_box_height) > box_warp_heiht){
+    $(".box_warp").height(orders_info_box_top+orders_info_box_height);
+  }
 }
 });
 }
