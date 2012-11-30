@@ -901,6 +901,14 @@ async:false,
 url: 'ajax_preorders.php?action=show_del_preorder_info',
 success: function(msg) {
   $('#order_del').html(msg);
+  var orders_info_box_top = $("#orders_info_box").css("top");
+  orders_info_box_top = orders_info_box_top.replace("px","");
+  orders_info_box_top = parseInt(orders_info_box_top);
+  var orders_info_box_height = $("#orders_info_box").height();
+  var box_warp_heiht = $(".box_warp").height();
+  if((orders_info_box_top+orders_info_box_height) > box_warp_heiht){
+    $(".box_warp").height(orders_info_box_top+orders_info_box_height);
+  }
 }
 });
 }
