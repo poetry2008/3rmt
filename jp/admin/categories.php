@@ -3143,7 +3143,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                             <tr>
                               <td class="main"><?php echo TEXT_SORT_ORDER;?></td> 
                               <td class="main">
-                              <?php echo tep_draw_input_field('sort_order', (($_GET['action'] == 'edit_category')?$cInfo->sort_order:''), 'size="2" onkeyup="clearLibNum(this);" class="tdul"'); 
+                              <?php echo tep_draw_input_field('sort_order', (($_GET['action'] == 'edit_category')?$cInfo->sort_order:''), 'onkeyup="clearLibNum(this);" class="tdul"'); 
                               ?>
                               </td>
                             </tr>
