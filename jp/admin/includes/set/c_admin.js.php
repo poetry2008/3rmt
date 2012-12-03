@@ -67,7 +67,7 @@ function list_display(path,cid,fullpath){
 function update_quantity(pid){
   oquantity = $('#quantity_'+pid).html();
   pname = $('#products_name_'+pid).html();
-  nquantity = prompt(pname+"\n<?php echo JS_TEXT_C_ADMIN_REAL_QUANTITY_INFO_START;?>"+oquantity+"\n<?php echo JS_TEXT_C_ADMIN_REAL_QUANTITY_INFO_END;?>", oquantity);
+  nquantity = prompt(pname+"\n<?php echo TEXT_POPUP_WINDOW_SHOW.': ';?>"+oquantity+"\n<?php echo TEXT_POPUP_WINDOW_EDIT;?>", oquantity);
   //alert(nquantity);
   if (nquantity && false == /^\d+$/.test(nquantity)) {
     alert('<?php echo JS_TEXT_C_ADMIN_INPUT_INFO;?>');
@@ -90,7 +90,7 @@ function update_quantity(pid){
 function update_virtual_quantity(pid){
   oquantity = $('#virtual_quantity_'+pid).html();
   pname = $('#products_name_'+pid).html();
-  nquantity = prompt(pname+"\n<?php echo JS_TEXT_C_ADMIN_VIRTUAL_QUANTITY_INFO_START;?>"+oquantity+"\n<?php echo JS_TEXT_C_ADMIN_VIRTUAL_QUANTITY_INFO_END;?>", oquantity);
+  nquantity = prompt(pname+"\n<?php echo TEXT_POPUP_WINDOW_SHOW.': ';?>"+oquantity+"\n<?php echo TEXT_POPUP_WINDOW_EDIT;?>", oquantity);
   //alert(nquantity);
   if (nquantity && false == /^\d+$/.test(nquantity)) {
     alert('<?php echo JS_TEXT_C_ADMIN_INPUT_INFO;?>');
