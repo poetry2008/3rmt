@@ -3577,17 +3577,6 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                         echo '<td class="dataTableContent" align="center">';
                       }
                       ?>
-                      <table width="100%"><tr>
-                      <?php
-                      if ( (isset($cInfo) && is_object($cInfo)) && ($categories['categories_id'] == $cInfo->categories_id) ) {
-                        echo '<td  onclick="document.location.href=\'' .  tep_href_link(FILENAME_CATEGORIES,tep_get_path($categories['categories_id']).  '&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '\'">' . "&nbsp;</td>";
-                      } else {
-                      ?>
-                        <td <?php echo 'onclick="document.location.href=\'' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .(isset($_GET['page'])&&$_GET['page'] ? ('&page=' .  $_GET['page']) : '') . '&cID=' .  $categories['categories_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'')) .'\'" ';?> >&nbsp;</td>
-                      <?php
-                      }
-  ?>
-                  <td align="center" style="width:60px">
                   <?php if ($ocertify->npermission == 15 or $ocertify->npermission == 10) {?>
                   <?php $c_page = (isset($_GET['page']))?'&page='.$_GET['page']:''; ?>
                   <?php
@@ -3808,17 +3797,6 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                         <?php }?>
                   <?php }?>
               <?php }?>
-            </td>
-  <?php
-                      if ( (isset($cInfo) && is_object($cInfo)) && ($categories['categories_id'] == $cInfo->categories_id) ) {
-                        echo '<td  onclick="document.location.href=\'' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']) .'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '\'">' . "&nbsp;</td>";
-                      } else {
-                      ?>
-                      <td <?php echo 'onclick="document.location.href=\'' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .(isset($_GET['page'])&&$_GET['page'] ? ('&page=' .  $_GET['page']) : '') . '&cID=' .  $categories['categories_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'')) .'\'" ';?> >&nbsp;</td>
-                      <?php
-                      }
-  ?>
-  </tr></table>
               </td>
               <td class="dataTableContent">&nbsp;</td> 
               <td class="dataTableContent" align="right">
@@ -4155,22 +4133,10 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                      </td>
                      <td class="dataTableContent" align="center">&nbsp;</td>
                      <td class="dataTableContent" align="center">
-                     <table width="100%">
-                     <tr>
-                     <?php 
-                     if ( (isset($pInfo) && is_object($pInfo)) && ($products['products_id'] == $pInfo->products_id) ) {
-                       //echo '<td align="right" class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' . $products['products_id'] .  '&action=new_product_preview&read=only') . '\'">' . "\n";
-                       echo '<td class="dataTableContent" align="right" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'')) . '\'">';
-                     } else {
-                       echo '<td class="dataTableContent" align="right" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'')) . '\'">';
-                     }
-                     ?>&nbsp;
                      <input type="hidden" name="this_price[]" value="<?php echo (int)$special_price_check;?>">
                      <input type="hidden" name="proid[]"      value="<?php echo $products['products_id']; ?>">
                      <input type="hidden" name="pprice[]"     value="<?php echo abs($products['products_price']);?>">
                      <input type="hidden" name="bflag[]"      value="<?php echo $products['products_bflag']; ?>">
-                     </td>
-                     <td style="width:60px" align="center">
               <?php
     $p_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
     $repro_site_id = (isset($_GET['site_id']))?$_GET['site_id']:0; 
@@ -4303,18 +4269,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
       }
     }
   ?>
-  </td>
-  <?php 
-      if ( (isset($pInfo) && is_object($pInfo)) && ($products['products_id'] == $pInfo->products_id) ) {
-                       //echo '<td align="right" class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' . $products['products_id'] .  '&action=new_product_preview&read=only') . '\'">' . "\n";
-                       echo '<td class="dataTableContent" align="right" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'')) . '\'">';
-                     } else {
-                       echo '<td class="dataTableContent" align="right" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'')) . '\'">';
-     }
-  ?>&nbsp;</td>
-  </tr>
-  </table>
-  </td>
+  </td> 
                        <td class="dataTableContent" align="center">
                        <?php
                        $last_modified_array = getdate(strtotime(tep_datetime_short($products['new_products_last_modified'])));
