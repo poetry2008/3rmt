@@ -613,8 +613,8 @@ h3 {
 .categories_input01 input {
 	width:90%;
 }
-.categories_textarea01 textarea {
-	width:100%;
+.textarea_box textarea {
+	width:500px;
 }
 td.menu01 {
 	background:lightblue

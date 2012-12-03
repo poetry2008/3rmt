@@ -748,7 +748,9 @@ tep_db_query($update_sql);
         }
           
         //add product tags
-        tep_db_query("delete from ".TABLE_PRODUCTS_TO_TAGS." where products_id='".$products_id."'"); 
+        if ($site_id == 0) {
+          tep_db_query("delete from ".TABLE_PRODUCTS_TO_TAGS." where products_id='".$products_id."'"); 
+        } 
         if ($_POST['tags']) {
           $sql = "insert into ".TABLE_PRODUCTS_TO_TAGS."(products_id, tags_id) values "; 
           foreach ($_POST['tags'] as $key => $t) {
@@ -1193,12 +1195,18 @@ $belong = str_replace('0_','',$belong);
 </title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <link rel="stylesheet" type="text/css" href="includes/jquery.autocomplete.css">
-<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
+<script language="javascript" >
+<?php tep_get_javascript('general','includes');?>
+</script>
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/javascript/udlr.js"></script>
-<script type="text/javascript" src="js2php.php?path=includes|set&name=c_admin&type=js"></script>
+<script type="text/javascript" >
+<?php tep_get_javascript('c_admin','includes|set');?>
+</script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<script language="javascript" >
+<?php tep_get_javascript('one_time_pwd','includes|javascript');?>
+</script>
 <script language="javascript">
   $(document).ready(function(){
     $(".udlr").udlr(); 
@@ -1963,7 +1971,7 @@ $products_shipping_time .= '</select>';
                     </tr>
           <tr>
             <td class="main" valign="top"><?php echo TEXT_PRODUCTS_SMALL_SUM; ?></td>
-            <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_textarea01">' . tep_draw_textarea_field('products_small_sum', 'soft', '70', '5', isset($pInfo->products_small_sum)?$pInfo->products_small_sum:'', ($site_id ? 'class="readonly" readonly' : '')).'</span>'; ?></td>
+            <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<div class="textarea_box">' .  tep_draw_textarea_field('products_small_sum', 'soft', '70', '5', isset($pInfo->products_small_sum)?$pInfo->products_small_sum:'', ($site_id ? 'class="readonly" readonly' : '')).'</div>'; ?></td>
           </tr>
           <tr>
                       <td class="main">&nbsp;</td>
@@ -2036,7 +2044,7 @@ $products_shipping_time .= '</select>';
         </tr>
         <tr>
           <td class="main" valign="top"><?php echo TEXT_PRODUCT_ATTFIVE_TITLE;?></td>
-          <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_textarea01">' .  tep_draw_textarea_field('products_attention_5', 'soft', '70', '15', isset($pInfo->products_attention_5)?$pInfo->products_attention_5:(isset($des_result['products_attention_5'])?$des_result['products_attention_5']:''), ($site_id ? 'class="readonly" readonly' : '')).'</span>'; ?></td>
+          <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<div class="textarea_box">' .  tep_draw_textarea_field('products_attention_5', 'soft', '70', '15', isset($pInfo->products_attention_5)?$pInfo->products_attention_5:(isset($des_result['products_attention_5'])?$des_result['products_attention_5']:''), ($site_id ? 'class="readonly" readonly' : '')).'</div>'; ?></td>
         </tr>
       </table>
                   </fieldset></td>
@@ -2054,12 +2062,11 @@ $products_shipping_time .= '</select>';
     for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
 ?>
               <tr>
-                <td class="main" valign="top"><?php if ($i == 0) echo TEXT_PRODUCTS_DESCRIPTION; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td class="main" valign="top"  nowrap="nowrap"><?php if ($i == 0) echo TEXT_PRODUCTS_DESCRIPTION; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 <td class="main"><table border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td class="main" valign="top"><?php echo tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']); ?>&nbsp;</td>
-                      <td class="main"><?php echo
-                      '<span class="categories_textarea01">'.tep_draw_textarea_field('products_description[' .  $languages[$i]['id'] . ']', 'soft', '70', '15', (isset($products_description[$languages[$i]['id']]) ?  stripslashes($products_description[$languages[$i]['id']]) : (isset($pInfo->products_id)?tep_get_products_description($pInfo->products_id, $languages[$i]['id'], $site_id, true):''))).'</span>'; ?></td>
+                      <td class="main"><?php echo '<div class="textarea_box">'.tep_draw_textarea_field('products_description[' .  $languages[$i]['id'] . ']', 'soft', '78', '15', (isset($products_description[$languages[$i]['id']]) ?  stripslashes($products_description[$languages[$i]['id']]) : (isset($pInfo->products_id)?tep_get_products_description($pInfo->products_id, $languages[$i]['id'], $site_id, true):''))).'</div>'; ?></td>
                     </tr>
                   </table>
 
@@ -2072,7 +2079,7 @@ $products_shipping_time .= '</select>';
 ?>
               <!-- options -->
               <tr>
-                <td class="main">
+                <td class="main" nowrap="nowrap">
                 <?php echo TEXT_PRODUCTS_OPTION_TEXT;?> 
                 </td>
                 <td class="main">
@@ -2261,7 +2268,7 @@ $products_shipping_time .= '</select>';
                       while ($tag = tep_db_fetch_array($t_query)) {
                         $tag_array[] = $tag;
                       ?>
-                        <input type='checkbox' name='tags[]' value='<?php echo $tag['tags_id'];?>' 
+                        <input type='checkbox' <?php echo ($site_id)?'disabled':'';?> name='tags[]' value='<?php echo $tag['tags_id'];?>' 
                       <?php
                         if ($_GET['pID'] || isset($pInfo->tags)) {
                           if (isset($checked_tags[$tag['tags_id']])) {
