@@ -748,7 +748,9 @@ tep_db_query($update_sql);
         }
           
         //add product tags
-        tep_db_query("delete from ".TABLE_PRODUCTS_TO_TAGS." where products_id='".$products_id."'"); 
+        if ($site_id == 0) {
+          tep_db_query("delete from ".TABLE_PRODUCTS_TO_TAGS." where products_id='".$products_id."'"); 
+        } 
         if ($_POST['tags']) {
           $sql = "insert into ".TABLE_PRODUCTS_TO_TAGS."(products_id, tags_id) values "; 
           foreach ($_POST['tags'] as $key => $t) {
@@ -2266,7 +2268,7 @@ $products_shipping_time .= '</select>';
                       while ($tag = tep_db_fetch_array($t_query)) {
                         $tag_array[] = $tag;
                       ?>
-                        <input type='checkbox' name='tags[]' value='<?php echo $tag['tags_id'];?>' 
+                        <input type='checkbox' <?php echo ($site_id)?'disabled':'';?> name='tags[]' value='<?php echo $tag['tags_id'];?>' 
                       <?php
                         if ($_GET['pID'] || isset($pInfo->tags)) {
                           if (isset($checked_tags[$tag['tags_id']])) {
