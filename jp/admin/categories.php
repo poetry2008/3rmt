@@ -14,6 +14,12 @@
   if (isset($_GET['action']) && $_GET['action']) {
 
     switch ($_GET['action']) {
+      case 'edit_category'; 
+      case 'new_product'; 
+      if (!($ocertify->npermission >= 10)){
+        forward401();
+      }
+      break;
       //一并更新
       case 'all_update':
         tep_isset_eof();
@@ -748,7 +754,9 @@ tep_db_query($update_sql);
         }
           
         //add product tags
-        tep_db_query("delete from ".TABLE_PRODUCTS_TO_TAGS." where products_id='".$products_id."'"); 
+        if ($site_id == 0) {
+          tep_db_query("delete from ".TABLE_PRODUCTS_TO_TAGS." where products_id='".$products_id."'"); 
+        } 
         if ($_POST['tags']) {
           $sql = "insert into ".TABLE_PRODUCTS_TO_TAGS."(products_id, tags_id) values "; 
           foreach ($_POST['tags'] as $key => $t) {
@@ -887,9 +895,37 @@ tep_db_query($update_sql);
               $move_flag = true; 
             }
           }else{
+            $products_id_query = tep_db_query("select romaji from ". TABLE_PRODUCTS_DESCRIPTION ." where products_id='". $products_id ."'");
+            $products_id_array = tep_db_fetch_array($products_id_query);
+            tep_db_free_result($products_id_query);
+            $products_id_code = $products_id_array['romaji']; 
+            $products_code_id_query = tep_db_query("select distinct p_d.romaji as pd_romaji from ". TABLE_PRODUCTS_DESCRIPTION ." as p_d left join ". TABLE_PRODUCTS_TO_CATEGORIES ." as p_t_c on p_d.products_id=p_t_c.products_id where p_t_c.categories_id='". $categories_id ."'");
+            $products_code_array = array();
+            while($products_code_id_array = tep_db_fetch_array($products_code_id_query)){
+
+              $products_code_array[] = $products_code_id_array['pd_romaji'];
+            }
+            tep_db_free_result($products_code_id_query);
+            
+            if(!empty($products_code_array)){
+
+              $code_num_array = array();
+              $products_id_code = str_replace(array('(',')'),array('\(','\)'),$products_id_code);
+              foreach($products_code_array as $code_key=>$code_value){ 
+                preg_match_all('/^'.$products_id_code.'\(([0-9])\)$/',$code_value,$code_array);
+                if($code_array[1][0] != ''){
+                  $code_num_array[] = $code_array[1][0]; 
+                }
+              } 
+              if(max($code_num_array) < 2){
+                $code_str = 2;
+              }else{
+                $code_str = max($code_num_array)+1;
+              }
+            }
             $move_flag = true; 
           }
-        if($move_flag == true){
+        if($move_flag == true){ 
           if ($_POST['copy_as'] == 'link') {
             if ($_POST['categories_id'] != $current_category_id) {
               $check_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($products_id) . "' and categories_id = '" . tep_db_input($categories_id) . "'");
@@ -993,7 +1029,7 @@ tep_db_query($update_sql);
                   '0',
                   '" . $description['site_id'] . "', 
                   '" . $description['products_status'] . "', 
-                  '" . $description['romaji']."'
+                  '" . $description['romaji'].'('.$code_str.')'."'
                 )");
             }
 
@@ -1193,12 +1229,18 @@ $belong = str_replace('0_','',$belong);
 </title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <link rel="stylesheet" type="text/css" href="includes/jquery.autocomplete.css">
-<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
+<script language="javascript" >
+<?php tep_get_javascript('general','includes');?>
+</script>
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/javascript/udlr.js"></script>
-<script type="text/javascript" src="js2php.php?path=includes|set&name=c_admin&type=js"></script>
+<script type="text/javascript" >
+<?php tep_get_javascript('c_admin','includes|set');?>
+</script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<script language="javascript" >
+<?php tep_get_javascript('one_time_pwd','includes|javascript');?>
+</script>
 <script language="javascript">
   $(document).ready(function(){
     $(".udlr").udlr(); 
@@ -2260,7 +2302,7 @@ $products_shipping_time .= '</select>';
                       while ($tag = tep_db_fetch_array($t_query)) {
                         $tag_array[] = $tag;
                       ?>
-                        <input type='checkbox' name='tags[]' value='<?php echo $tag['tags_id'];?>' 
+                        <input type='checkbox' <?php echo ($site_id)?'disabled':'';?> name='tags[]' value='<?php echo $tag['tags_id'];?>' 
                       <?php
                         if ($_GET['pID'] || isset($pInfo->tags)) {
                           if (isset($checked_tags[$tag['tags_id']])) {
@@ -3401,6 +3443,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                       <td class="dataTableHeadingContent" align="center"><?php echo TABLE_HEADING_CATEGORIES_PRODUCT_SETTING_PRICE; ?></td>
                       <td class="dataTableHeadingContent" align="center">&nbsp;</td>
                       <td class="dataTableHeadingContent" align="center"><?php echo TABLE_HEADING_STATUS; ?></td>
+                      <td class="dataTableHeadingContent" align="center"><?php echo IMAGE_UPDATE; ?></td>
                       <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
                     </tr>
                       <?php
@@ -3495,7 +3538,11 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
 
         if ( (isset($cInfo) && is_object($cInfo)) && ($categories['categories_id'] == $cInfo->categories_id) ) {
           $select_single = 1; 
-          echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" >' . "\n";
+          if($rows == 1 && !isset($_GET['cID'])){
+            echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'">' . "\n";
+          }else{
+            echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" >' . "\n"; 
+          }
         } else {
           echo '              <tr class="' . $nowColor . '" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'' . $nowColor . '\'" >' . "\n";
         }
@@ -3510,9 +3557,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                       }
                       ?>
                       <?php 
-                      if ($ocertify->npermission >= 10) { 
-                        echo '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$cPath.'&cID='.$categories['categories_id'].'&action=edit_category'.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').(isset($_GET['search'])?$_GET['search']:'')).'">'.tep_image(DIR_WS_ICONS.'preview.gif', ICON_PREVIEW).'</a>&nbsp;'; 
-                      } 
+                      echo '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$cPath.'&cID='.$categories['categories_id'].'&action=edit_category'.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').(isset($_GET['search'])?$_GET['search']:'')).'">'.tep_image(DIR_WS_ICONS.'preview.gif', ICON_PREVIEW).'</a>&nbsp;'; 
                       echo '<a href="'.tep_href_link(FILENAME_ORDERS, 'search_type=categories_id&scategories_id='.$categories['categories_id']).(!empty($site_id)?'&site_id='.$site_id:'').'&order_sort=torihiki_date&order_type=desc">'.tep_image(DIR_WS_ICONS.'search.gif', IMAGE_SEARCH).'</a>&nbsp;'; 
                       echo '<a class="title_text_link" href="' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . '<b>'.$categories['categories_name'].'</b>&nbsp;' .  '</a>';
                       echo '<a href="' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . tep_image(DIR_WS_ICONS . 'folder.gif', ICON_FOLDER) .  '</a>'; ?>
@@ -3775,6 +3820,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   ?>
   </tr></table>
               </td>
+              <td class="dataTableContent">&nbsp;</td> 
               <td class="dataTableContent" align="right">
               <a href="javascript:void(0);" onclick="show_category_info('<?php echo $categories['categories_id'];?>', this)"><?php echo tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO);?></a>
               &nbsp; 
@@ -3799,6 +3845,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                  p.products_user_added,
                  p.products_date_added, 
                  pd.products_last_modified, 
+                 p.products_last_modified as new_products_last_modified, 
                  pd.products_user_update,
                  p.products_date_available, 
                  pd.products_status, 
@@ -3831,6 +3878,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                  p.products_user_added,
                  p.products_date_added,
                  pd.products_last_modified, 
+                 p.products_last_modified as new_products_last_modified, 
                  pd.products_user_update,
                  p.products_date_available, 
                  pd.site_id, 
@@ -3895,7 +3943,11 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
     $nowColor = $odd;
   }
         if ( (isset($pInfo) && is_object($pInfo)) && ($products['products_id'] == $pInfo->products_id)  && !isset($select_single)) {
-          echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" >' . "\n";
+          if($rows == 1 && !isset($_GET['cID'])){           
+            echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'">' . "\n";
+          }else{
+            echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" >' . "\n"; 
+          }
         } else {
           echo '              <tr class="' . $nowColor . '" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'' . $nowColor . '\'">' . "\n";
         }
@@ -3921,9 +3973,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   <?php 
   echo '<div class="float_left">'; 
   //表示制限
-  if ($ocertify->npermission >= 10) { 
-    echo '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&pID=' .  $products['products_id'] .  '&action=new_product'.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').'&page='.$_GET['page'].($_GET['search']?'&search='.$_GET['search']:'')).'">'.tep_image(DIR_WS_ICONS.'preview.gif', ICON_PREVIEW).'</a>&nbsp;'; 
-  } 
+  echo '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&pID=' .  $products['products_id'] .  '&action=new_product'.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').'&page='.$_GET['page'].($_GET['search']?'&search='.$_GET['search']:'')).'">'.tep_image(DIR_WS_ICONS.'preview.gif', ICON_PREVIEW).'</a>&nbsp;'; 
   echo '<a href="orders.php?search_type=products_id&products_id=' .  $products['products_id'] .(!empty($site_id)?'&site_id='.$site_id:'') .'">' . tep_image(DIR_WS_ICONS . 'search.gif', IMAGE_SEARCH) . '</a>&nbsp;'; 
   echo '</div>';
   if ($ocertify->npermission >= 10) { 
@@ -4265,6 +4315,25 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   </tr>
   </table>
   </td>
+                       <td class="dataTableContent" align="center">
+                       <?php
+                       $last_modified_array = getdate(strtotime(tep_datetime_short($products['new_products_last_modified'])));
+                       $today_array = getdate();
+                       $last_modified = date('n/j H:i:s',strtotime(tep_datetime_short($products['new_products_last_modified'])));
+                       if ( $last_modified_array["year"] == $today_array["year"] && $last_modified_array["mon"] == $today_array["mon"] && $last_modified_array["mday"] == $today_array["mday"]
+                       ) {
+                         if ($last_modified_array["hours"] >= ($today_array["hours"]-2)) {
+                           echo tep_image(DIR_WS_ICONS . 'signal_blue.gif', $last_modified);
+                         } elseif ($last_modified_array["hours"] >= ($today_array["hours"]-5)) {
+                           echo tep_image(DIR_WS_ICONS . 'signal_yellow.gif', $last_modified);
+                         } else {
+                           echo tep_image(DIR_WS_ICONS . 'signal_red.gif', $last_modified);
+                         }
+                       } else {
+                         echo tep_image(DIR_WS_ICONS . 'signal_blink.gif', $last_modified);
+                       }
+                       ?>
+                       </td> 
                        <td class="dataTableContent" align="right">
                        <?php 
                         echo '<a href="javascript:void(0)" onclick="show_product_info(\''.$products['products_id'].'\',this)">'.tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO).'</a>'; 
@@ -4293,7 +4362,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
       $cPath_back = isset($cPath_back) && $cPath_back ? 'cPath=' . $cPath_back : '';
   ?>
     <tr>
-      <td colspan="<?php echo 12 + $count_dougyousya['cnt'];?>" align="right">
+      <td colspan="<?php echo 13 + $count_dougyousya['cnt'];?>" align="right">
       <input type="hidden" value="<?php echo $cPath; ?>" name="cpath">
       <input type="hidden" value="<?php echo $cPath_yobi; ?>" name="cpath_yobi">
       <input type="hidden" value="<?php echo $current_category_id; ?>" name="cID_list">

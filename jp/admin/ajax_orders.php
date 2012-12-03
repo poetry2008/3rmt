@@ -2518,6 +2518,28 @@ echo json_encode($json_array);
   $html_str .= abs($_POST['new_price']); 
   $html_str .= '|||'; 
   $html_str .= $bflag_single?1:2;
+  $html_str .= '|||'; 
+  $products_info_raw = tep_db_query("select products_last_modified from ".TABLE_PRODUCTS." where products_id = '".$_POST['products_id']."'"); 
+  $products_info = tep_db_fetch_array($products_info_raw); 
+  
+  $last_modified_array = getdate(strtotime(tep_datetime_short($products_info['products_last_modified'])));
+  $today_array = getdate();
+  $last_modified = date('n/j H:i:s',strtotime(tep_datetime_short($products_info['products_last_modified'])));
+  if (
+     $last_modified_array["year"] == $today_array["year"] 
+  && $last_modified_array["mon"] == $today_array["mon"] 
+  && $last_modified_array["mday"] == $today_array["mday"]
+  ) {
+    if ($last_modified_array["hours"] >= ($today_array["hours"]-2)) {
+      $html_str .= tep_image(DIR_WS_ICONS . 'signal_blue.gif', $last_modified);
+    } elseif ($last_modified_array["hours"] >= ($today_array["hours"]-5)) {
+      $html_str .= tep_image(DIR_WS_ICONS . 'signal_yellow.gif', $last_modified);
+    } else {
+      $html_str .= tep_image(DIR_WS_ICONS . 'signal_red.gif', $last_modified);
+    }
+  } else {
+    $html_str .= tep_image(DIR_WS_ICONS . 'signal_blink.gif', $last_modified);
+  }
   echo $html_str;
 } else if ($_GET['action'] == 'product_info_box') {
 include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .'/'. $language. '/'.FILENAME_CATEGORIES);
@@ -2989,9 +3011,11 @@ if (!$isstaff) {
     echo '<a href="' .  tep_href_link(FILENAME_PRODUCTS_MANUAL, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id .  '&action=show_products_manual'. '&site_id='.  $site_id.  '&page='.$_GET['page'])  .'">';
     echo tep_html_element_button(IMAGE_MANUAL);
     echo '</a>';
+  }
     echo ' <a href="' . tep_href_link(FILENAME_REVIEWS, 'cPath=' . $cPath .  '&products_id=' . $pInfo->products_id .  '&action=new'.($_GET['search']?'&search='.$_GET['search']:'')) . '">'; 
     echo tep_html_element_button(IMAGE_REVIEWS);
     echo '</a>';
+  if (empty($site_id)) {
     echo '<input class="element_button" type="button" value="'.IMAGE_MOVE.  '" onclick="show_product_move(\''.$pInfo->products_id.'\')">';
     echo '<input class="element_button" type="button" value="'.IMAGE_COPY.  '" onclick="show_product_copy(\''.$pInfo->products_id.'\')">';
   }
@@ -3133,7 +3157,7 @@ tep_output_generated_category_path($pInfo->products_id, 'product') .
 <?php
 echo '<br>' . sprintf(TEXT_MOVE, $pInfo->products_name) . '<br>' .
 tep_draw_pull_down_menu('move_to_category_id', 
-    tep_get_category_tree(),$current_category_id);
+    tep_get_category_tree('0','','','',false,false),$current_category_id);
 ?>
 </td></tr><tr><td align="center">
 <?php 
@@ -3176,7 +3200,7 @@ tep_output_generated_category_path($pInfo->products_id,
 <?php
 echo '<br>' . TEXT_CATEGORIES . '<br>' . 
 tep_draw_pull_down_menu('categories_id', 
-    tep_get_category_tree(), $current_category_id);
+    tep_get_category_tree('0','','','',false,false), $current_category_id);
 ?>
 </td></tr><tr><td>
 <?php
