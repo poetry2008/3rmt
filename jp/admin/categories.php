@@ -889,9 +889,37 @@ tep_db_query($update_sql);
               $move_flag = true; 
             }
           }else{
+            $products_id_query = tep_db_query("select romaji from ". TABLE_PRODUCTS_DESCRIPTION ." where products_id='". $products_id ."'");
+            $products_id_array = tep_db_fetch_array($products_id_query);
+            tep_db_free_result($products_id_query);
+            $products_id_code = $products_id_array['romaji']; 
+            $products_code_id_query = tep_db_query("select distinct p_d.romaji as pd_romaji from ". TABLE_PRODUCTS_DESCRIPTION ." as p_d left join ". TABLE_PRODUCTS_TO_CATEGORIES ." as p_t_c on p_d.products_id=p_t_c.products_id where p_t_c.categories_id='". $categories_id ."'");
+            $products_code_array = array();
+            while($products_code_id_array = tep_db_fetch_array($products_code_id_query)){
+
+              $products_code_array[] = $products_code_id_array['pd_romaji'];
+            }
+            tep_db_free_result($products_code_id_query);
+            
+            if(!empty($products_code_array)){
+
+              $code_num_array = array();
+              $products_id_code = str_replace(array('(',')'),array('\(','\)'),$products_id_code);
+              foreach($products_code_array as $code_key=>$code_value){ 
+                preg_match_all('/^'.$products_id_code.'\(([0-9])\)$/',$code_value,$code_array);
+                if($code_array[1][0] != ''){
+                  $code_num_array[] = $code_array[1][0]; 
+                }
+              } 
+              if(max($code_num_array) < 2){
+                $code_str = 2;
+              }else{
+                $code_str = max($code_num_array)+1;
+              }
+            }
             $move_flag = true; 
           }
-        if($move_flag == true){
+        if($move_flag == true){ 
           if ($_POST['copy_as'] == 'link') {
             if ($_POST['categories_id'] != $current_category_id) {
               $check_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($products_id) . "' and categories_id = '" . tep_db_input($categories_id) . "'");
@@ -995,7 +1023,7 @@ tep_db_query($update_sql);
                   '0',
                   '" . $description['site_id'] . "', 
                   '" . $description['products_status'] . "', 
-                  '" . $description['romaji']."'
+                  '" . $description['romaji'].'('.$code_str.')'."'
                 )");
             }
 

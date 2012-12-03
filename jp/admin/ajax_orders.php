@@ -3135,7 +3135,7 @@ tep_output_generated_category_path($pInfo->products_id, 'product') .
 <?php
 echo '<br>' . sprintf(TEXT_MOVE, $pInfo->products_name) . '<br>' .
 tep_draw_pull_down_menu('move_to_category_id', 
-    tep_get_category_tree(),$current_category_id);
+    tep_get_category_tree('0','','','',false,false),$current_category_id);
 ?>
 </td></tr><tr><td align="center">
 <?php 
@@ -3178,7 +3178,7 @@ tep_output_generated_category_path($pInfo->products_id,
 <?php
 echo '<br>' . TEXT_CATEGORIES . '<br>' . 
 tep_draw_pull_down_menu('categories_id', 
-    tep_get_category_tree(), $current_category_id);
+    tep_get_category_tree('0','','','',false,false), $current_category_id);
 ?>
 </td></tr><tr><td>
 <?php

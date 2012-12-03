@@ -331,11 +331,11 @@ function tep_in_array($lookup_value, $lookup_array) {
   return false;
 }
 
-function tep_get_category_tree($parent_id = '0', $spacing = '', $exclude = '', $category_tree_array = '', $include_itself = false) {
+function tep_get_category_tree($parent_id = '0', $spacing = '', $exclude = '', $category_tree_array = '', $include_itself = false,$index_flag = true) {
   global $languages_id;
 
   if (!is_array($category_tree_array)) $category_tree_array = array();
-  if ( (sizeof($category_tree_array) < 1) && ($exclude != '0') ) $category_tree_array[] = array('id' => '0', 'text' => TEXT_TOP);
+  if ( (sizeof($category_tree_array) < 1) && ($exclude != '0') && $index_flag == true) $category_tree_array[] = array('id' => '0', 'text' => TEXT_TOP);
 
   if ($include_itself) {
     $category_query = tep_db_query("select cd.categories_name from " . TABLE_CATEGORIES_DESCRIPTION . " cd where cd.language_id = '" . $languages_id . "' and cd.categories_id = '" . $parent_id . "' and cd.site_id='0'");
