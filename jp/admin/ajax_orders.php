@@ -2971,9 +2971,11 @@ if (!$isstaff) {
     echo '<a href="' .  tep_href_link(FILENAME_PRODUCTS_MANUAL, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id .  '&action=show_products_manual'. '&site_id='.  $site_id.  '&page='.$_GET['page'])  .'">';
     echo tep_html_element_button(IMAGE_MANUAL);
     echo '</a>';
+  }
     echo ' <a href="' . tep_href_link(FILENAME_REVIEWS, 'cPath=' . $cPath .  '&products_id=' . $pInfo->products_id .  '&action=new'.($_GET['search']?'&search='.$_GET['search']:'')) . '">'; 
     echo tep_html_element_button(IMAGE_REVIEWS);
     echo '</a>';
+  if (empty($site_id)) {
     echo '<input class="element_button" type="button" value="'.IMAGE_MOVE.  '" onclick="show_product_move(\''.$pInfo->products_id.'\')">';
     echo '<input class="element_button" type="button" value="'.IMAGE_COPY.  '" onclick="show_product_copy(\''.$pInfo->products_id.'\')">';
   }
