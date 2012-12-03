@@ -1856,7 +1856,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
 <?php
-$products_shipping_time = '<select name="products_shipping_time">';
+$products_shipping_time = '<select name="products_shipping_time"'. ($site_id ?  'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '').'>';
 $products_shipping_query = tep_db_query("select * from ". TABLE_PRODUCTS_SHIPPING_TIME ." where status='0' order by sort");
 while($products_shipping_array = tep_db_fetch_array($products_shipping_query)){
 
@@ -2094,7 +2094,7 @@ $products_shipping_time .= '</select>';
                 } else { 
                   $option_group_raw = tep_db_query("select name from ".TABLE_OPTION_GROUP." where id = '".$pInfo->belong_to_option."'"); 
                   $option_group = tep_db_fetch_array($option_group_raw);
-                  echo $option_group['name']; 
+                  echo '<input type="text" name="hide_option_keyword" value="'.$option_group['name'].'" class="readonly" readonly>'; 
                 } 
                 ?>
                 </td>
@@ -2241,7 +2241,7 @@ $products_shipping_time .= '</select>';
                 <table>
                   <tr>
                     <td><fieldset><legend style="color:#009900 "><?php echo TEXT_PRODUCTS_TAGS;?></legend> 
-                    <?php if($site_id){echo ' class="readonly"';}?> 
+                    <?php if($site_id){/*echo ' class="readonly"';*/}?> 
                     <?php
                       //show tags 
                       $checked_tags = array();
@@ -3361,6 +3361,8 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                       echo TABLE_HEADING_CATEGORIES_PRODUCT_BUYING;
                     }
                     ?>
+                    <br>
+                    <small style="font-weight:bold;font-size:12px;"><?php echo str_replace(' ', '<br>', $kakaku_updated)?></small>
                     </td>
                       <?php
                       if ($cPath_yobi){
@@ -3511,9 +3513,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                       <?php 
                       if ($ocertify->npermission >= 10) { 
                         echo '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$cPath.'&cID='.$categories['categories_id'].'&action=edit_category'.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').(isset($_GET['search'])?$_GET['search']:'')).'">'.tep_image(DIR_WS_ICONS.'preview.gif', ICON_PREVIEW).'</a>&nbsp;'; 
-                      } else {
-                        echo tep_image(DIR_WS_ICONS.'preview.gif', ICON_PREVIEW).'&nbsp;'; 
-                      }
+                      } 
                       echo '<a href="'.tep_href_link(FILENAME_ORDERS, 'search_type=categories_id&scategories_id='.$categories['categories_id']).(!empty($site_id)?'&site_id='.$site_id:'').'&order_sort=torihiki_date&order_type=desc">'.tep_image(DIR_WS_ICONS.'search.gif', IMAGE_SEARCH).'</a>&nbsp;'; 
                       echo '<a class="title_text_link" href="' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . '<b>'.$categories['categories_name'].'</b>&nbsp;' .  '</a>';
                       echo '<a href="' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . tep_image(DIR_WS_ICONS . 'folder.gif', ICON_FOLDER) .  '</a>'; ?>
@@ -3924,9 +3924,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   //表示制限
   if ($ocertify->npermission >= 10) { 
     echo '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&pID=' .  $products['products_id'] .  '&action=new_product'.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').'&page='.$_GET['page'].($_GET['search']?'&search='.$_GET['search']:'')).'">'.tep_image(DIR_WS_ICONS.'preview.gif', ICON_PREVIEW).'</a>&nbsp;'; 
-  } else {
-    echo tep_image(DIR_WS_ICONS.'preview.gif', ICON_PREVIEW).'&nbsp;'; 
-  }
+  } 
   echo '<a href="orders.php?search_type=products_id&products_id=' .  $products['products_id'] .(!empty($site_id)?'&site_id='.$site_id:'') .'">' . tep_image(DIR_WS_ICONS . 'search.gif', IMAGE_SEARCH) . '</a>&nbsp;'; 
   echo '</div>';
   if ($ocertify->npermission >= 10) { 
@@ -4072,7 +4070,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                      <?php
                      if (empty($site_id)) {
                      ?>
-                     <td class="dataTableContent" align="right" onclick="set_new_price(<?php echo $products['products_id'];?>)" onmouseover="this.style.cursor='pointer'"> 
+                     <td class="dataTableContent" align="right" onclick="set_new_price(this, <?php echo $products['products_id'];?>, <?php echo $target_cnt;?>)" onmouseover="this.style.cursor='pointer'"> 
                      <?php
                      } else {
                      ?>
@@ -4100,7 +4098,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                      <?php
                      } else {
                      ?> 
-                     <input style="text-align:right;" pos="<?php echo $products_count;?>_1" class="udlr" type="hidden" size='6' value="<?php echo (int)abs($products['products_price']);?>" name="price[]" id="<?php echo "price_input_".$products_count; ?>" onblur="event_onblur(<?php echo $products_count; ?>)" onkeyup="clearNoNum(this);" onchange="event_onchange(<?php echo $products_count; ?>)"><span name="show_price[]"><?php echo (int)abs($products['products_price']);?></span><span id="price_error_<?php echo $products_count; ?>" style="display:none"></span>
+                     <input style="text-align:right;" pos="<?php echo $products_count;?>_1" class="udlr" type="hidden" size='6' value="<?php echo (int)abs($products['products_price']);?>" name="price[]" id="<?php echo "price_input_".$products_count; ?>" onblur="event_onblur(<?php echo $products_count; ?>)" onkeyup="clearNoNum(this);" onchange="event_onchange(<?php echo $products_count; ?>)"><span id="show_price_<?php echo $products['products_id'];?>"><?php echo (int)abs($products['products_price']);?></span><input name='hide_price[]' type="hidden" value="<?php echo $products['products_id']?>"><span id="price_error_<?php echo $products_count; ?>" style="display:none"></span>
                      <?php 
                      }
                      ?>
