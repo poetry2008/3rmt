@@ -266,3 +266,4 @@ define('CATEGORY_PIC_TITLE', 'カテゴリーの画像');
 define('CATEGORY_SEO_TITLE', 'カテゴリ―のseo');
 define('TEXT_CATEGORY_KEYWORD', 'Googleキーワード:');
 define('TEXT_NEW_CATEGORY', '&quot;%s&quot;  へのカテゴリ登録');
+define('ERROR_MOVE_CATEGORY','エラー: 移動先のカテゴリー内に該当ローマ字が既に登録されていたので、移動できません。');

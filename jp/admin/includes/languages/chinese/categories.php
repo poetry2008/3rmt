@@ -259,4 +259,5 @@ define('CATEGORY_PIC_TITLE', '分类的图片信息');
 define('CATEGORY_SEO_TITLE', '分类的seo');
 define('TEXT_CATEGORY_KEYWORD', 'Google关键字:');
 define('TEXT_NEW_CATEGORY', '&quot;%s&quot;的分类注册');
+define('ERROR_MOVE_CATEGORY','错误：目标下的分类已经存在相同url文字，所以不能移动。');
 ?>

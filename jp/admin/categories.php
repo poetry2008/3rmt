@@ -532,31 +532,83 @@ tep_db_query($update_sql);
         if ( ($_POST['categories_id']) && ($_POST['categories_id'] != $_POST['move_to_category_id']) ) {
           $categories_id = tep_db_prepare_input($_POST['categories_id']);
           $new_parent_id = tep_db_prepare_input($_POST['move_to_category_id']);
-          tep_db_query("update " . TABLE_CATEGORIES . " set parent_id = '" . tep_db_input($new_parent_id) . "', last_modified = now() where categories_id = '" . tep_db_input($categories_id) . "'");
+          $categories_id_query = tep_db_query("select romaji from ". TABLE_CATEGORIES_DESCRIPTION ." where categories_id='". $categories_id ."'");
+          $categories_id_array = tep_db_fetch_array($categories_id_query);
+          tep_db_free_result($categories_id_query);
+          $categories_id_code = $categories_id_array['romaji']; 
+          $categories_new_id_query = tep_db_query("select distinct c_d.romaji as cd_romaji from ". TABLE_CATEGORIES ." as c left join ". TABLE_CATEGORIES_DESCRIPTION." as c_d on c.categories_id=c_d.categories_id where parent_id='". $new_parent_id ."'");
+          $categories_new_id_code = array();
+          while($categories_new_id_array = tep_db_fetch_array($categories_new_id_query)){
 
-          if (USE_CACHE == 'true') {
-            tep_reset_cache_block('categories');
-            tep_reset_cache_block('also_purchased');
+            $categories_new_id_code[] = $categories_new_id_array['cd_romaji'];
+          }
+          tep_db_free_result($categories_new_id_query);
+          $move_flag == false;
+          if(!empty($categories_new_id_code)){
+            
+            if(in_array($categories_id_code,$categories_new_id_code)){
+              
+              $messageStack->add(ERROR_MOVE_CATEGORY, 'error');
+            }else{
+              $move_flag = true; 
+            } 
+          }else{
+            $move_flag = true; 
+          }
+
+          if($move_flag == true){
+            tep_db_query("update " . TABLE_CATEGORIES . " set parent_id = '" . tep_db_input($new_parent_id) . "', last_modified = now() where categories_id = '" . tep_db_input($categories_id) . "'");
+
+            if (USE_CACHE == 'true') {
+              tep_reset_cache_block('categories');
+              tep_reset_cache_block('also_purchased');
+            }
           }
         }
-
-        tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $new_parent_id . '&cID=' . $categories_id));
+        if($move_flag == true){
+          tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $new_parent_id . '&cID=' . $categories_id));
+        }
         break;
       case 'move_product_confirm':
         tep_isset_eof();
         $products_id = tep_db_prepare_input($_POST['products_id']);
         $new_parent_id = tep_db_prepare_input($_POST['move_to_category_id']);
 
-        $duplicate_check_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($products_id) . "' and categories_id = '" . tep_db_input($new_parent_id) . "'");
-        $duplicate_check = tep_db_fetch_array($duplicate_check_query);
-        if ($duplicate_check['total'] < 1) tep_db_query("update " . TABLE_PRODUCTS_TO_CATEGORIES . " set categories_id = '" . tep_db_input($new_parent_id) . "' where products_id = '" . tep_db_input($products_id) . "' and categories_id = '" . $current_category_id . "'");
+        $products_id_query = tep_db_query("select romaji from ". TABLE_PRODUCTS_DESCRIPTION ." where products_id='". $products_id ."'");
+        $products_id_array = tep_db_fetch_array($products_id_query);
+        tep_db_free_result($products_id_query);
+        $products_id_code = $products_id_array['romaji']; 
+        $products_code_id_query = tep_db_query("select distinct p_d.romaji as pd_romaji from ". TABLE_PRODUCTS_DESCRIPTION ." as p_d left join ". TABLE_PRODUCTS_TO_CATEGORIES ." as p_t_c on p_d.products_id=p_t_c.products_id where p_t_c.categories_id='". $new_parent_id ."'");
+        $products_code_array = array();
+        while($products_code_id_array = tep_db_fetch_array($products_code_id_query)){
 
-        if (USE_CACHE == 'true') {
-          tep_reset_cache_block('categories');
-          tep_reset_cache_block('also_purchased');
+          $products_code_array[] = $products_code_id_array['pd_romaji'];
         }
+        tep_db_free_result($products_code_id_query);
+        $move_flag = false;
+        if(!empty($products_code_array)){
 
-        tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $new_parent_id . '&pID=' . $products_id));
+          if(in_array($products_id_code,$products_code_array)){
+
+            $messageStack->add(ERROR_MOVE_CATEGORY, 'error');
+          }else{
+            $move_flag = true; 
+          }
+        }else{
+          $move_flag = true; 
+        }
+        if($move_flag == true){
+          $duplicate_check_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($products_id) . "' and categories_id = '" . tep_db_input($new_parent_id) . "'");
+          $duplicate_check = tep_db_fetch_array($duplicate_check_query);
+          if ($duplicate_check['total'] < 1) tep_db_query("update " . TABLE_PRODUCTS_TO_CATEGORIES . " set categories_id = '" . tep_db_input($new_parent_id) . "' where products_id = '" . tep_db_input($products_id) . "' and categories_id = '" . $current_category_id . "'");
+
+          if (USE_CACHE == 'true') {
+            tep_reset_cache_block('categories');
+            tep_reset_cache_block('also_purchased');
+          }
+
+          tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $new_parent_id . '&pID=' . $products_id));
+        }
         break;
       case 'insert_product':
       case 'update_product':
@@ -804,6 +856,40 @@ tep_db_query($update_sql);
           $products_id   = tep_db_prepare_input($_POST['products_id']);
           $categories_id = tep_db_prepare_input($_POST['categories_id']);
 
+          $products_categories_id_query = tep_db_query("select categories_id from ". TABLE_PRODUCTS_TO_CATEGORIES ." where products_id='". $products_id ."'");
+          $products_categories_id_array = tep_db_fetch_array($products_categories_id_query);
+          tep_db_free_result($products_categories_id_query);
+
+          $move_flag = false;
+          if($products_categories_id_array['categories_id'] != $categories_id){
+
+            $products_id_query = tep_db_query("select romaji from ". TABLE_PRODUCTS_DESCRIPTION ." where products_id='". $products_id ."'");
+            $products_id_array = tep_db_fetch_array($products_id_query);
+            tep_db_free_result($products_id_query);
+            $products_id_code = $products_id_array['romaji']; 
+            $products_code_id_query = tep_db_query("select distinct p_d.romaji as pd_romaji from ". TABLE_PRODUCTS_DESCRIPTION ." as p_d left join ". TABLE_PRODUCTS_TO_CATEGORIES ." as p_t_c on p_d.products_id=p_t_c.products_id where p_t_c.categories_id='". $categories_id ."'");
+            $products_code_array = array();
+            while($products_code_id_array = tep_db_fetch_array($products_code_id_query)){
+
+              $products_code_array[] = $products_code_id_array['pd_romaji'];
+            }
+            tep_db_free_result($products_code_id_query);
+            
+            if(!empty($products_code_array)){
+
+              if(in_array($products_id_code,$products_code_array)){
+
+                $messageStack->add(ERROR_MOVE_CATEGORY, 'error');
+              }else{
+                $move_flag = true; 
+              }
+            }else{
+              $move_flag = true; 
+            }
+          }else{
+            $move_flag = true; 
+          }
+        if($move_flag == true){
           if ($_POST['copy_as'] == 'link') {
             if ($_POST['categories_id'] != $current_category_id) {
               $check_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($products_id) . "' and categories_id = '" . tep_db_input($categories_id) . "'");
@@ -920,8 +1006,10 @@ tep_db_query($update_sql);
             tep_reset_cache_block('also_purchased');
           }
         }
-
-        tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $categories_id . '&pID=' . $products_id));
+        }
+        if($move_flag == true){
+          tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $categories_id . '&pID=' . $products_id));
+        }
         break;
       case 'new_product_preview':
         $_SESSION['product_history'] = $_POST;
