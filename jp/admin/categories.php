@@ -14,6 +14,12 @@
   if (isset($_GET['action']) && $_GET['action']) {
 
     switch ($_GET['action']) {
+      case 'edit_category'; 
+      case 'new_product'; 
+      if (!($ocertify->npermission >= 10)){
+        forward401();
+      }
+      break;
       //一并更新
       case 'all_update':
         tep_isset_eof();
@@ -3522,9 +3528,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                       }
                       ?>
                       <?php 
-                      if ($ocertify->npermission >= 10) { 
-                        echo '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$cPath.'&cID='.$categories['categories_id'].'&action=edit_category'.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').(isset($_GET['search'])?$_GET['search']:'')).'">'.tep_image(DIR_WS_ICONS.'preview.gif', ICON_PREVIEW).'</a>&nbsp;'; 
-                      } 
+                      echo '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$cPath.'&cID='.$categories['categories_id'].'&action=edit_category'.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').(isset($_GET['search'])?$_GET['search']:'')).'">'.tep_image(DIR_WS_ICONS.'preview.gif', ICON_PREVIEW).'</a>&nbsp;'; 
                       echo '<a href="'.tep_href_link(FILENAME_ORDERS, 'search_type=categories_id&scategories_id='.$categories['categories_id']).(!empty($site_id)?'&site_id='.$site_id:'').'&order_sort=torihiki_date&order_type=desc">'.tep_image(DIR_WS_ICONS.'search.gif', IMAGE_SEARCH).'</a>&nbsp;'; 
                       echo '<a class="title_text_link" href="' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . '<b>'.$categories['categories_name'].'</b>&nbsp;' .  '</a>';
                       echo '<a href="' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . tep_image(DIR_WS_ICONS . 'folder.gif', ICON_FOLDER) .  '</a>'; ?>
@@ -3937,9 +3941,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   <?php 
   echo '<div class="float_left">'; 
   //表示制限
-  if ($ocertify->npermission >= 10) { 
-    echo '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&pID=' .  $products['products_id'] .  '&action=new_product'.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').'&page='.$_GET['page'].($_GET['search']?'&search='.$_GET['search']:'')).'">'.tep_image(DIR_WS_ICONS.'preview.gif', ICON_PREVIEW).'</a>&nbsp;'; 
-  } 
+  echo '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&pID=' .  $products['products_id'] .  '&action=new_product'.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').'&page='.$_GET['page'].($_GET['search']?'&search='.$_GET['search']:'')).'">'.tep_image(DIR_WS_ICONS.'preview.gif', ICON_PREVIEW).'</a>&nbsp;'; 
   echo '<a href="orders.php?search_type=products_id&products_id=' .  $products['products_id'] .(!empty($site_id)?'&site_id='.$site_id:'') .'">' . tep_image(DIR_WS_ICONS . 'search.gif', IMAGE_SEARCH) . '</a>&nbsp;'; 
   echo '</div>';
   if ($ocertify->npermission >= 10) { 
