@@ -377,6 +377,7 @@ function set_new_price(c_ele, pid, cnt) {
         $(c_ele).html(msg_array[0]); 
         $(c_ele).next().next().next().find('input[name="pprice[]"]').eq(0).val(msg_array[1]); 
         $(c_ele).next().find('input[name="price[]"]').eq(0).val(msg_array[1]);  
+        $(c_ele).next().next().next().next().html(msg_array[3]);  
         set_money(cnt, false, '1'); 
         $('body').css('cursor', '');
         setTimeout('read_space_time()', 500);

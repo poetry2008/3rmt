@@ -7661,6 +7661,7 @@ function tep_isset_eof()
    }
 }
 function tep_get_javascript($name,$path='',$type='js'){
+  global $language; 
   if($name&&$type=='js'&&$path){
     // name not empty and type is js require file *.php.js
     $path = str_replace('|','/',$path);

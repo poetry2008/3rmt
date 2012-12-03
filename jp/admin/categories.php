@@ -3415,6 +3415,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                       <td class="dataTableHeadingContent" align="center"><?php echo TABLE_HEADING_CATEGORIES_PRODUCT_SETTING_PRICE; ?></td>
                       <td class="dataTableHeadingContent" align="center">&nbsp;</td>
                       <td class="dataTableHeadingContent" align="center"><?php echo TABLE_HEADING_STATUS; ?></td>
+                      <td class="dataTableHeadingContent" align="center"><?php echo IMAGE_UPDATE; ?></td>
                       <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
                     </tr>
                       <?php
@@ -3791,6 +3792,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   ?>
   </tr></table>
               </td>
+              <td class="dataTableContent">&nbsp;</td> 
               <td class="dataTableContent" align="right">
               <a href="javascript:void(0);" onclick="show_category_info('<?php echo $categories['categories_id'];?>', this)"><?php echo tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO);?></a>
               &nbsp; 
@@ -3815,6 +3817,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                  p.products_user_added,
                  p.products_date_added, 
                  pd.products_last_modified, 
+                 p.products_last_modified as new_products_last_modified, 
                  pd.products_user_update,
                  p.products_date_available, 
                  pd.products_status, 
@@ -3847,6 +3850,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                  p.products_user_added,
                  p.products_date_added,
                  pd.products_last_modified, 
+                 p.products_last_modified as new_products_last_modified, 
                  pd.products_user_update,
                  p.products_date_available, 
                  pd.site_id, 
@@ -4283,6 +4287,25 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   </tr>
   </table>
   </td>
+                       <td class="dataTableContent" align="center">
+                       <?php
+                       $last_modified_array = getdate(strtotime(tep_datetime_short($products['new_products_last_modified'])));
+                       $today_array = getdate();
+                       $last_modified = date('n/j H:i:s',strtotime(tep_datetime_short($products['new_products_last_modified'])));
+                       if ( $last_modified_array["year"] == $today_array["year"] && $last_modified_array["mon"] == $today_array["mon"] && $last_modified_array["mday"] == $today_array["mday"]
+                       ) {
+                         if ($last_modified_array["hours"] >= ($today_array["hours"]-2)) {
+                           echo tep_image(DIR_WS_ICONS . 'signal_blue.gif', $last_modified);
+                         } elseif ($last_modified_array["hours"] >= ($today_array["hours"]-5)) {
+                           echo tep_image(DIR_WS_ICONS . 'signal_yellow.gif', $last_modified);
+                         } else {
+                           echo tep_image(DIR_WS_ICONS . 'signal_red.gif', $last_modified);
+                         }
+                       } else {
+                         echo tep_image(DIR_WS_ICONS . 'signal_blink.gif', $last_modified);
+                       }
+                       ?>
+                       </td> 
                        <td class="dataTableContent" align="right">
                        <?php 
                         echo '<a href="javascript:void(0)" onclick="show_product_info(\''.$products['products_id'].'\',this)">'.tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO).'</a>'; 
@@ -4311,7 +4334,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
       $cPath_back = isset($cPath_back) && $cPath_back ? 'cPath=' . $cPath_back : '';
   ?>
     <tr>
-      <td colspan="<?php echo 12 + $count_dougyousya['cnt'];?>" align="right">
+      <td colspan="<?php echo 13 + $count_dougyousya['cnt'];?>" align="right">
       <input type="hidden" value="<?php echo $cPath; ?>" name="cpath">
       <input type="hidden" value="<?php echo $cPath_yobi; ?>" name="cpath_yobi">
       <input type="hidden" value="<?php echo $current_category_id; ?>" name="cID_list">
