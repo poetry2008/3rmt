@@ -5807,6 +5807,8 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
     $status_arr['blue'] = array();
     $status_arr['red'] = array();
     $status_arr['black'] = array();
+    $category_status_site_id = array();
+    $category_status = array();
 
     $site_arr[] = 0; 
     $site_romaji[] = 'all';
@@ -5816,12 +5818,29 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
       $site_arr[] = $site_res['id']; 
       $site_romaji[] = $site_res['romaji']; 
     }
-
+    $category_des_raw = tep_db_query("select site_id,categories_status from ".TABLE_CATEGORIES_DESCRIPTION." where  categories_id = '".$category_id."' order by site_id desc"); 
+    while($category_des_res = tep_db_fetch_array($category_des_raw)){
+      $category_status[] = $category_des_res['categories_status']; 
+      $category_status_site_id[] = $category_des_res['site_id'];
+    }
+    foreach($category_status_site_id as $c_key => $c_value){
+      if($c_value == '0'){
+        $default_status = $category_status[$c_key];
+        break;
+      }
+    }
     foreach ($site_arr as $key => $value) {
-      $category_des_raw = tep_db_query("select * from ".TABLE_CATEGORIES_DESCRIPTION." where (site_id = '".$value."' or site_id = '0') and categories_id = '".$category_id."' order by site_id desc limit 1"); 
-      $category_des_res = tep_db_fetch_array($category_des_raw); 
-
-      switch ($category_des_res['categories_status']) {
+      if(isset($default_status)&&$default_status!=0){
+        $temp_status = $default_status;
+      }else{
+        $temp_status = 0;
+      }
+      foreach($category_status_site_id as $c_k => $c_v){
+        if($value == $c_v){
+          $temp_status = $category_status[$c_k];
+        }
+      }
+      switch ($temp_status) {
         case '2':
           $status_arr['blue'][] = $site_romaji[$key]; 
           break;
@@ -5836,7 +5855,6 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
           break;
       }
     }
-
     return $status_arr;
   }
 
@@ -7641,4 +7659,19 @@ function tep_isset_eof()
      }
      exit;
    }
+}
+function tep_get_javascript($name,$path='',$type='js'){
+  if($name&&$type=='js'&&$path){
+    // name not empty and type is js require file *.php.js
+    $path = str_replace('|','/',$path);
+    if(preg_match('/^[_a-zA-Z][A-Za-z0-9_]+$/',$name)){
+      if(file_exists(DIR_WS_LANGUAGES.$language .'/javascript/'.$name.'.php')){
+        require_once(DIR_WS_LANGUAGES.$language .'/javascript/'.$name.'.php');
+      }
+      $file_path = $path.'/'.$name.".js.php";
+      if(file_exists($file_path)){
+        require_once($file_path);
+      }
+    }
+  }
 }

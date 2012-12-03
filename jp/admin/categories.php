@@ -1105,12 +1105,18 @@ $belong = str_replace('0_','',$belong);
 </title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <link rel="stylesheet" type="text/css" href="includes/jquery.autocomplete.css">
-<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
+<script language="javascript" >
+<?php tep_get_javascript('general','includes');?>
+</script>
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/javascript/udlr.js"></script>
-<script type="text/javascript" src="js2php.php?path=includes|set&name=c_admin&type=js"></script>
+<script type="text/javascript" >
+<?php tep_get_javascript('c_admin','includes|set');?>
+</script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<script language="javascript" >
+<?php tep_get_javascript('one_time_pwd','includes|javascript');?>
+</script>
 <script language="javascript">
   $(document).ready(function(){
     $(".udlr").udlr(); 
@@ -3421,11 +3427,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                       }
                       ?>
                       <?php 
-                      if ($ocertify->npermission >= 10) { 
                         echo '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$cPath.'&cID='.$categories['categories_id'].'&action=edit_category'.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').(isset($_GET['search'])?$_GET['search']:'')).'">'.tep_image(DIR_WS_ICONS.'preview.gif', ICON_PREVIEW).'</a>&nbsp;'; 
-                      } else {
-                        echo tep_image(DIR_WS_ICONS.'preview.gif', ICON_PREVIEW).'&nbsp;'; 
-                      }
                       echo '<a href="'.tep_href_link(FILENAME_ORDERS, 'search_type=categories_id&scategories_id='.$categories['categories_id']).(!empty($site_id)?'&site_id='.$site_id:'').'&order_sort=torihiki_date&order_type=desc">'.tep_image(DIR_WS_ICONS.'search.gif', IMAGE_SEARCH).'</a>&nbsp;'; 
                       echo '<a class="title_text_link" href="' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . '<b>'.$categories['categories_name'].'</b>&nbsp;' .  '</a>';
                       echo '<a href="' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . tep_image(DIR_WS_ICONS . 'folder.gif', ICON_FOLDER) .  '</a>'; ?>
@@ -3834,11 +3836,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   <?php 
   echo '<div class="float_left">'; 
   //表示制限
-  if ($ocertify->npermission >= 10) { 
     echo '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&pID=' .  $products['products_id'] .  '&action=new_product'.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').'&page='.$_GET['page'].($_GET['search']?'&search='.$_GET['search']:'')).'">'.tep_image(DIR_WS_ICONS.'preview.gif', ICON_PREVIEW).'</a>&nbsp;'; 
-  } else {
-    echo tep_image(DIR_WS_ICONS.'preview.gif', ICON_PREVIEW).'&nbsp;'; 
-  }
   echo '<a href="orders.php?search_type=products_id&products_id=' .  $products['products_id'] .(!empty($site_id)?'&site_id='.$site_id:'') .'">' . tep_image(DIR_WS_ICONS . 'search.gif', IMAGE_SEARCH) . '</a>&nbsp;'; 
   echo '</div>';
   if ($ocertify->npermission >= 10) { 
