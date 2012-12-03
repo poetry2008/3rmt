@@ -2494,13 +2494,31 @@ echo json_encode($json_array);
   tep_redirect(tep_href_link($_POST['current_file_info'], $_POST['split_param'].(($_POST['j_page'] != '1')?'page='.$_POST['j_page']:'')));
 } else if ($_GET['action'] == 'set_new_price') {
   //设置新的商品价格
+  $bflag_single = false;
+  if (tep_get_bflag_by_product_id($_POST['products_id'])) {
+    $bflag_single = true;
+  }
   $price_info_array = array(); 
   $price_info_str = ''; 
   $update_sql_data = array(
       'products_last_modified' => 'now()', 
-      'products_price' => tep_get_bflag_by_product_id($_POST['products_id'])?(0 - $_POST['new_price']):$_POST['new_price']
+      'products_price' => $bflag_single?(0 - $_POST['new_price']):$_POST['new_price']
       );
   tep_db_perform(TABLE_PRODUCTS, $update_sql_data, 'update', 'products_id = \''.$_POST['products_id'].'\'');
+  $products_new_price = tep_get_products_price($_POST['products_id']);
+  $html_str = '<span id="edit_p_'.$_POST['products_id'].'">';
+  if ($products_new_price['sprice']) {
+    $html_str .= '<span class="specialPrice"><b>'.$currencies->format($products_new_price['sprice']).'</b></span>'; 
+  } else {
+    $html_str .= '<b>'.$currencies->format($products_new_price['price']).'</b>'; 
+  }
+  $html_str .= '</span>';
+  $html_str .= '<span style="display:none;" id="h_edit_p_'.$_POST['products_id'].'">'.abs($_POST['new_price']).'</span>';
+  $html_str .= '|||'; 
+  $html_str .= abs($_POST['new_price']); 
+  $html_str .= '|||'; 
+  $html_str .= $bflag_single?1:2;
+  echo $html_str;
 } else if ($_GET['action'] == 'product_info_box') {
 include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .'/'. $language. '/'.FILENAME_CATEGORIES);
 $isstaff = true;;
