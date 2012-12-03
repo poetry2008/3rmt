@@ -212,11 +212,14 @@ function set_money(num,warning, single_type){
   if (set_m < 0) {
     set_m = 0;
   }
+  if (single_type == '0') {
+    current_tmp_pid = document.getElementsByName('hide_price[]')[n].value; 
+  }
   if(typeof(tar_ipt) == 'undefined' || ins_ipt == 0) {
     if (single_type == '1') {
       price_obj[n].style.color="red";
     } else {
-      document.getElementsByName('show_price[]')[n].style.color="red"; 
+      document.getElementById('show_price_'+current_tmp_pid).style.color="red"; 
     }
     return;
   }
@@ -238,13 +241,13 @@ function set_money(num,warning, single_type){
     if (single_type == '1') {
       price_obj[n].style.color="blue";
     } else {
-      document.getElementsByName('show_price[]')[n].innerHTML = '<font color="blue">'+parseInt(set_m)+'</font>'; 
+      document.getElementById('show_price_'+current_tmp_pid).innerHTML = '<font color="blue">'+parseInt(set_m)+'</font>'; 
     }
   }else{
     if (single_type == '1') {
       price_obj[n].style.color="red";
     } else {
-      document.getElementsByName('show_price[]')[n].innerHTML = '<font color="red">'+parseInt(set_m)+'</font>'; 
+      document.getElementById('show_price_'+current_tmp_pid).innerHTML = '<font color="red">'+parseInt(set_m)+'</font>'; 
     }
   }
 }
@@ -353,7 +356,7 @@ function check_error(){
       }
 }
 
-function set_new_price(pid) {
+function set_new_price(c_ele, pid, cnt) {
   pname = $('#products_name_'+pid).html();
   default_price = $('#h_edit_p_'+pid).html(); 
   nquantity = prompt(pname+"\n"+"<?php echo TEXT_POPUP_WINDOW_SHOW.': ';?>"+default_price+"\n"+"<?php echo TEXT_POPUP_WINDOW_EDIT;?>", default_price);
@@ -365,11 +368,18 @@ function set_new_price(pid) {
     $.ajax({
       type:'POST', 
       dataType:'text',
+      beforeSend: function(){$('body').css('cursor', 'wait');$('#wait').show();}, 
       data:'products_id='+pid+"&new_price="+nquantity, 
       async:false, 
       url: 'ajax_orders.php?action=set_new_price',
       success: function(msg) {
-        window.location.href = window.location.href; 
+        msg_array = msg.split('|||'); 
+        $(c_ele).html(msg_array[0]); 
+        $(c_ele).next().next().next().find('input[name="pprice[]"]').eq(0).val(msg_array[1]); 
+        $(c_ele).next().find('input[name="price[]"]').eq(0).val(msg_array[1]);  
+        set_money(cnt, false, '1'); 
+        $('body').css('cursor', '');
+        setTimeout('read_space_time()', 500);
       }
     }); 
   }
