@@ -21,7 +21,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       echo "</td>";
     }
     echo "<td>";
-    if (!$this->loaded){
+    if ($this->loaded){
       $this->defaultValue = $this->loadedValue;
     }  
  

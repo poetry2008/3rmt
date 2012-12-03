@@ -2995,12 +2995,12 @@ if (!$isstaff) {
     echo '<input class="element_button" type="button" value="'.IMAGE_MOVE.  '" onclick="show_product_move(\''.$pInfo->products_id.'\')">';
     echo '<input class="element_button" type="button" value="'.IMAGE_COPY.  '" onclick="show_product_copy(\''.$pInfo->products_id.'\')">';
   }
-  if(isset($site_id)&&$site_id!=0){
-    if (tep_db_num_rows(tep_db_query("select products_id from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$pInfo->products_id."' and site_id = '".(int)$site_id."'"))) {
-      echo '<input class="element_button" type="button" value="'.IMAGE_DELETE.  '" onclick="show_product_description_delete(\''.$pInfo->products_id.'\')">';
-    }
-  }else{
-    if ($ocertify->npermission == 15) {
+  if ($ocertify->npermission == 15) {
+    if(isset($site_id)&&$site_id!=0){
+      if (tep_db_num_rows(tep_db_query("select products_id from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$pInfo->products_id."' and site_id = '".(int)$site_id."'"))) {
+        echo '<input class="element_button" type="button" value="'.IMAGE_DELETE.  '" onclick="show_product_description_delete(\''.$pInfo->products_id.'\')">';
+      }
+    }else{
       echo '<input class="element_button" type="button" value="'.IMAGE_DELETE.  '" onclick="show_product_delete(\''.$pInfo->products_id.'\')">';
     }
   }
