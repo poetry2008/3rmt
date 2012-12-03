@@ -1963,7 +1963,7 @@ $products_shipping_time .= '</select>';
                     </tr>
           <tr>
             <td class="main" valign="top"><?php echo TEXT_PRODUCTS_SMALL_SUM; ?></td>
-            <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_textarea01">' . tep_draw_textarea_field('products_small_sum', 'soft', '70', '5', isset($pInfo->products_small_sum)?$pInfo->products_small_sum:'', ($site_id ? 'class="readonly" readonly' : '')).'</span>'; ?></td>
+            <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<div class="textarea_box">' .  tep_draw_textarea_field('products_small_sum', 'soft', '70', '5', isset($pInfo->products_small_sum)?$pInfo->products_small_sum:'', ($site_id ? 'class="readonly" readonly' : '')).'</div>'; ?></td>
           </tr>
           <tr>
                       <td class="main">&nbsp;</td>
@@ -2036,7 +2036,7 @@ $products_shipping_time .= '</select>';
         </tr>
         <tr>
           <td class="main" valign="top"><?php echo TEXT_PRODUCT_ATTFIVE_TITLE;?></td>
-          <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_textarea01">' .  tep_draw_textarea_field('products_attention_5', 'soft', '70', '15', isset($pInfo->products_attention_5)?$pInfo->products_attention_5:(isset($des_result['products_attention_5'])?$des_result['products_attention_5']:''), ($site_id ? 'class="readonly" readonly' : '')).'</span>'; ?></td>
+          <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<div class="textarea_box">' .  tep_draw_textarea_field('products_attention_5', 'soft', '70', '15', isset($pInfo->products_attention_5)?$pInfo->products_attention_5:(isset($des_result['products_attention_5'])?$des_result['products_attention_5']:''), ($site_id ? 'class="readonly" readonly' : '')).'</div>'; ?></td>
         </tr>
       </table>
                   </fieldset></td>
@@ -2054,12 +2054,11 @@ $products_shipping_time .= '</select>';
     for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
 ?>
               <tr>
-                <td class="main" valign="top"><?php if ($i == 0) echo TEXT_PRODUCTS_DESCRIPTION; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td class="main" valign="top"  nowrap="nowrap"><?php if ($i == 0) echo TEXT_PRODUCTS_DESCRIPTION; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 <td class="main"><table border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td class="main" valign="top"><?php echo tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']); ?>&nbsp;</td>
-                      <td class="main"><?php echo
-                      '<span class="categories_textarea01">'.tep_draw_textarea_field('products_description[' .  $languages[$i]['id'] . ']', 'soft', '70', '15', (isset($products_description[$languages[$i]['id']]) ?  stripslashes($products_description[$languages[$i]['id']]) : (isset($pInfo->products_id)?tep_get_products_description($pInfo->products_id, $languages[$i]['id'], $site_id, true):''))).'</span>'; ?></td>
+                      <td class="main"><?php echo '<div class="textarea_box">'.tep_draw_textarea_field('products_description[' .  $languages[$i]['id'] . ']', 'soft', '78', '15', (isset($products_description[$languages[$i]['id']]) ?  stripslashes($products_description[$languages[$i]['id']]) : (isset($pInfo->products_id)?tep_get_products_description($pInfo->products_id, $languages[$i]['id'], $site_id, true):''))).'</div>'; ?></td>
                     </tr>
                   </table>
 
@@ -2072,7 +2071,7 @@ $products_shipping_time .= '</select>';
 ?>
               <!-- options -->
               <tr>
-                <td class="main">
+                <td class="main" nowrap="nowrap">
                 <?php echo TEXT_PRODUCTS_OPTION_TEXT;?> 
                 </td>
                 <td class="main">
