@@ -1,6 +1,3 @@
-
-// See scriptaculous.js for full license.  
-
 /* ------------- element ext -------------- */  
  
 // converts rgb() and #xxx to #xxxxxx format,  
