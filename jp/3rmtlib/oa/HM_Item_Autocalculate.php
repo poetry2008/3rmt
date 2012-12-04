@@ -44,7 +44,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
         p.products_id,op.products_quantity,op.products_name,p.relate_products_id,p.products_bflag
         from ".TABLE_ORDERS_PRODUCTS." op, ".TABLE_PRODUCTS." p where
         op.products_id=p.products_id and
-        op.orders_id='".$this->order_id."' order by op.products_name
+        op.orders_id='".$this->order_id."'and p.products_bflag=1 order by op.products_name
         asc");
     $i = 0;
 
