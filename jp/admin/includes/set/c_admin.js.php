@@ -75,7 +75,9 @@ function update_quantity(pid){
       beforeSend: function(){$('body').css('cursor', 'wait');$('#wait').show();}, 
       url: send_url,
         success: function(data) {
-          $('#quantity_'+pid).html(data);
+          data_tmp_array = data.split('|||'); 
+          $('#quantity_'+pid).html(data_tmp_array[0]);
+          $('#h_edit_p_'+pid).parent().next().next().next().next().html(data_tmp_array[1]); 
           setTimeout(function(){$('body').css('cursor', '');$('#wait').hide();$('#show_popup_info').css('display', 'none');}, 500);
         }
     });
@@ -93,7 +95,9 @@ function update_virtual_quantity(pid){
       beforeSend: function(){$('body').css('cursor', 'wait');$('#wait').show();}, 
       url: send_url,
         success: function(data) {
-          $('#virtual_quantity_'+pid).html(data);
+          data_tmp_array = data.split('|||'); 
+          $('#virtual_quantity_'+pid).html(data_tmp_array[0]);
+          $('#h_edit_p_'+pid).parent().next().next().next().next().html(data_tmp_array[1]); 
           setTimeout(function(){$('body').css('cursor', '');$('#wait').hide();$('#show_popup_info').css('display', 'none');}, 500);
         }
     });
