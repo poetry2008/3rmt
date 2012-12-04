@@ -4010,7 +4010,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                         $preorder_products_res = tep_db_fetch_array($preorder_products_raw);
                         if ($preorder_products_res) {
                           if ($preorder_products_res['pre_total']) {
-                            echo '<a href="preorders.php?keywords='.urlencode($products['products_id']).'&search_type=sproducts_id'.(!empty($site_id)?'&site_id='.$site_id:'').'" target="_blank" style="text-decoration:underline;">';
+                            echo '<a href="preorders.php?keywords='.urlencode($products['products_id']).'&search_type=sproducts_id'.(!empty($site_id)?'&site_id='.$site_id:'').'" style="text-decoration:underline;">';
                             echo $preorder_products_res['pre_total'];
                             echo '</a>';
                           } else {
@@ -4022,7 +4022,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                       <?php
                         echo '<td class="dataTableContent" align="center">';
                         if(tep_get_order_cnt_by_pid($products['products_id'], $site_id)){
-                          echo '<a href="orders.php?keywords='.urlencode($products['products_id']).'&search_type=sproducts_id'.(!empty($site_id)?'&site_id='.$site_id:'').'" target="_blank" style="text-decoration:underline;">';
+                          echo '<a href="orders.php?keywords='.urlencode($products['products_id']).'&search_type=sproducts_id'.(!empty($site_id)?'&site_id='.$site_id:'').'" style="text-decoration:underline;">';
                           echo tep_get_order_cnt_by_pid($products['products_id'], $site_id);
                           echo '</a>';  
                         } 
