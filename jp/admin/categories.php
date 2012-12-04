@@ -1603,6 +1603,36 @@ function handle_option()
       }
     });
   }
+
+  function show_update_info(ele, pid, update_type, cnt_num) {
+    if (update_type == '1') {
+      origin_quantity = $('#virtual_quantity_'+pid).html(); 
+      url_str = 'ajax.php?action=update_virtual_quantity';
+      data_str = 'pid='+pid+"&origin_num="+origin_quantity;
+    } else if (update_type == '2') {
+      origin_quantity = $('#quantity_'+pid).html(); 
+      url_str = 'ajax.php?action=update_real_quantity'; 
+      data_str = 'pid='+pid+"&origin_num="+origin_quantity;
+    } else {
+      origin_price = $('#h_edit_p_'+pid).html(); 
+      url_str = 'ajax.php?action=set_new_price'; 
+      data_str = 'pid='+pid+"&origin_price="+origin_price+'&cnt_num='+cnt_num;
+    }
+    $.ajax({
+      type:'POST',
+      dataType:'text',
+      data:data_str, 
+      async:false, 
+      url: url_str,
+      success: function(text) {
+        $('#show_popup_info').html(text);
+        if(ele!=''){
+          info_box_set(ele, '<?php echo $belong;?>');
+        }
+        $('#show_popup_info').css('display','block');
+      }
+    });
+  }
 </script>
 <?php 
 require("includes/note_js.php");
@@ -4003,8 +4033,8 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                       <?php
                         if (empty($site_id)) {
                       ?>
-                      <td class="dataTableContent" align='right' onmouseover='this.style.cursor="pointer"' id='virtual_quantity_<?php echo $products['products_id']; ?>' onclick="update_virtual_quantity(<?php echo $products['products_id']; ?>)"><?php echo $imaginary;?></td>
-                      <td class="dataTableContent" align='right' onmouseover='this.style.cursor="pointer"' style="font-weight:bold;" id='quantity_<?php echo $products['products_id']; ?>' onclick="update_quantity(<?php echo $products['products_id']; ?>)"><?php echo $products['products_real_quantity'];?></td>
+                      <td class="dataTableContent" align='right' onmouseover='this.style.cursor="pointer"' id='virtual_quantity_<?php echo $products['products_id']; ?>' onclick="show_update_info(this, <?php echo $products['products_id']; ?>, '1', '1')"><?php echo $imaginary;?></td>
+                      <td class="dataTableContent" align='right' onmouseover='this.style.cursor="pointer"' style="font-weight:bold;" id='quantity_<?php echo $products['products_id']; ?>' onclick="show_update_info(this, <?php echo $products['products_id']; ?>, '2', '1')"><?php echo $products['products_real_quantity'];?></td>
                       <?php
                         } else {
                       ?>
@@ -4097,7 +4127,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                      <?php
                      if (empty($site_id)) {
                      ?>
-                     <td class="dataTableContent" align="right" onclick="set_new_price(this, <?php echo $products['products_id'];?>, <?php echo $target_cnt;?>)" onmouseover="this.style.cursor='pointer'"> 
+                     <td class="dataTableContent" align="right" onclick="show_update_info(this, <?php echo $products['products_id'];?>, '3', <?php echo $target_cnt;?>)" onmouseover="this.style.cursor='pointer'"> 
                      <?php
                      } else {
                      ?>

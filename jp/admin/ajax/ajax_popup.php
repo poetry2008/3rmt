@@ -230,4 +230,133 @@ if ($_GET['action'] == 'show_category_info') {
   $notice_box->get_contents($delete_category_info, $buttons);
   $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice();
+} else if ($_GET['action'] == 'update_virtual_quantity') {
+  //更新商品虚拟库存的弹出框 
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_CATEGORIES);
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+  
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+  
+  $product_info_raw = tep_db_query("select products_name from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$_POST['pid']."'");
+  $product_info = tep_db_fetch_array($product_info_raw);
+  
+  $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+  
+  $heading = array();
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => '<b>'.TABLE_HEADING_CATEGORIES_PRODUCT_VIRTUAL_STORE.'</b>');
+  $heading[] = array('align' => 'right', 'text' => $page_str);
+
+  $buttons = array();
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CONFIRM, 'onclick="update_virtual_quantity(\''.$_POST['pid'].'\')"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="hidden_info_box();"').'</a>'; 
+    
+  $buttons = array('align' => 'center', 'button' => $button); 
+ 
+  $update_info_array = array();
+  
+  $update_info_array[]['text'] = array(
+        array('align' => 'left', 'params' => 'colspan="2"', 'text' => $product_info['products_name']), 
+      );
+  
+  $update_info_array[]['text'] = array(
+        array('align' => 'left', 'text' => TEXT_POPUP_WINDOW_SHOW.':'), 
+        array('align' => 'left', 'text' => $_POST['origin_num']), 
+      );
+  
+  $update_info_array[]['text'] = array(
+        array('align' => 'left', 'text' => TEXT_POPUP_WINDOW_EDIT.':'), 
+        array('align' => 'left', 'text' => tep_draw_input_field('virtual_pro_num', $_POST['origin_num'], 'id="virtual_pro_num"')), 
+      );
+  
+  $notice_box->get_heading($heading);
+   
+  $notice_box->get_contents($update_info_array, $buttons);
+  echo $notice_box->show_notice();
+} else if ($_GET['action'] == 'update_real_quantity') {
+  //更新商品数量的弹出框 
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_CATEGORIES);
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+  
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+  
+  $product_info_raw = tep_db_query("select products_name from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$_POST['pid']."'");
+  $product_info = tep_db_fetch_array($product_info_raw);
+  
+  $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+  
+  $heading = array();
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => '<b>'.TABLE_HEADING_CATEGORIES_PRODUCT_REAL_QUANTITY.'</b>');
+  $heading[] = array('align' => 'right', 'text' => $page_str);
+
+  $buttons = array();
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CONFIRM, 'onclick="update_quantity(\''.$_POST['pid'].'\')"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="hidden_info_box();"').'</a>'; 
+    
+  $buttons = array('align' => 'center', 'button' => $button); 
+ 
+  $update_info_array = array();
+  
+  $update_info_array[]['text'] = array(
+        array('align' => 'left', 'params' => 'colspan="2"', 'text' => $product_info['products_name']), 
+      );
+  
+  $update_info_array[]['text'] = array(
+        array('align' => 'left', 'text' => TEXT_POPUP_WINDOW_SHOW.':'), 
+        array('align' => 'left', 'text' => $_POST['origin_num']), 
+      );
+  
+  $update_info_array[]['text'] = array(
+        array('align' => 'left', 'text' => TEXT_POPUP_WINDOW_EDIT.':'), 
+        array('align' => 'left', 'text' => tep_draw_input_field('real_pro_num', $_POST['origin_num'], 'id="real_pro_num"')), 
+      );
+  
+  $notice_box->get_heading($heading);
+   
+  $notice_box->get_contents($update_info_array, $buttons);
+  echo $notice_box->show_notice();
+} else if ($_GET['action'] == 'set_new_price') {
+  //设置商品价格的弹出框 
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_CATEGORIES);
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+  
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+  
+  $product_info_raw = tep_db_query("select products_name from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$_POST['pid']."'");
+  $product_info = tep_db_fetch_array($product_info_raw);
+  
+  $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+  
+  $heading = array();
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => '<b>'.TABLE_HEADING_DANJIA.'</b>');
+  $heading[] = array('align' => 'right', 'text' => $page_str);
+
+  $buttons = array();
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CONFIRM, 'onclick="set_new_price(\''.$_POST['pid'].'\', \''.$_POST['cnt_num'].'\')"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="hidden_info_box();"').'</a>'; 
+    
+  $buttons = array('align' => 'center', 'button' => $button); 
+ 
+  $update_info_array = array();
+  
+  $update_info_array[]['text'] = array(
+        array('align' => 'left', 'params' => 'colspan="2"', 'text' => $product_info['products_name']), 
+      );
+  
+  $update_info_array[]['text'] = array(
+        array('align' => 'left', 'text' => TEXT_POPUP_WINDOW_SHOW.':'), 
+        array('align' => 'left', 'text' => $_POST['origin_price']), 
+      );
+  
+  $update_info_array[]['text'] = array(
+        array('align' => 'left', 'text' => TEXT_POPUP_WINDOW_EDIT.':'), 
+        array('align' => 'left', 'text' => tep_draw_input_field('new_confirm_price', $_POST['origin_price'], 'id="new_confirm_price"')), 
+      );
+  
+  $notice_box->get_heading($heading);
+   
+  $notice_box->get_contents($update_info_array, $buttons);
+  echo $notice_box->show_notice();
 }
