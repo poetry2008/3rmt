@@ -3949,15 +3949,13 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                      ?> 
                      
   <?php 
-  echo '<div class="float_left">'; 
   //表示制限
   echo '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&pID=' .  $products['products_id'] .  '&action=new_product'.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').'&page='.$_GET['page'].($_GET['search']?'&search='.$_GET['search']:'')).'">'.tep_image(DIR_WS_ICONS.'preview.gif', ICON_PREVIEW).'</a>&nbsp;'; 
   echo '<a href="orders.php?search_type=products_id&products_id=' .  $products['products_id'] .(!empty($site_id)?'&site_id='.$site_id:'') .'">' . tep_image(DIR_WS_ICONS . 'search.gif', IMAGE_SEARCH) . '</a>&nbsp;'; 
-  echo '</div>';
   if ($ocertify->npermission >= 10) { 
-    echo '<div class="title_text"><a class="title_text_link" href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&pID=' .  $products['products_id'] .  '&action=new_product'.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').'&page='.$_GET['page'].($_GET['search']?'&search='.$_GET['search']:'')).'"><span id="products_name_'.$products['products_id'].'">'.$products['products_name'].'</span></a></div>'; 
+    echo '<a class="title_text_link" href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&pID=' .  $products['products_id'] .  '&action=new_product'.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').'&page='.$_GET['page'].($_GET['search']?'&search='.$_GET['search']:'')).'"><span id="products_name_'.$products['products_id'].'">'.$products['products_name'].'</span></a>'; 
   } else {
-    echo '<div class="title_text"><span id="products_name_'.$products['products_id'].'">'.$products['products_name'].'</span></div>'; 
+    echo '<span id="products_name_'.$products['products_id'].'">'.$products['products_name'].'</span>'; 
   }
   ?>
 
