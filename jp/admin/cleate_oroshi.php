@@ -41,8 +41,7 @@ case 'set_oroshi':
   $j = 0 ;
   while ( $j < $cot) {
   $ocid = $ocid_arr[$j];
-  $sql = 'insert into set_oroshi_names
-    (oroshi_name,user_added,date_added,user_update,date_update) values ("'.$oro_name[$j].'","'.$_SESSION['user_name'].'","'.date('Y-m-d  H:i:s',time()).'","'.$_SESSION['user_name'].'","'.date('Y-m-d H:i:s',time()).'")';
+  $sql = 'insert into set_oroshi_names  (oroshi_name,user_added,date_added,user_update,date_update) values ("'.$oro_name[$j].'","'.$_SESSION['user_name'].'","'.date('Y-m-d  H:i:s',time()).'","'.$_SESSION['user_name'].'","'.date('Y-m-d H:i:s',time()).'")';
     $j++;
   if(!$oro_name[$j-1]||!$ocid){
     continue;
@@ -351,7 +350,7 @@ require("includes/note_js.php");
   //get categorie_tree
   $start = 0;
   $categories_subtree = getSubcatergories($start);
-  $res=tep_db_query("select * from set_oroshi_names ORDER BY sort_order ASC");
+  $res=tep_db_query("select * from set_oroshi_names ORDER BY sort_order,oroshi_id ASC");
   $i = 0;
 ?>
 <table width="100%" cellspacing="0" border="0" cellpadding="2">

@@ -3295,7 +3295,11 @@ function get_products_dougyousya($products_id) {
 
 function get_all_products_dougyousya($categories_id,$products_id) {
   $arr = array();
-  $query = tep_db_query("select dougyousya_id from set_dougyousya_categories where categories_id = '".$categories_id."'");
+  $query = tep_db_query("select sdc.dougyousya_id 
+      from set_dougyousya_categories sdc,set_dougyousya_names sdn 
+      where categories_id = '".$categories_id."'
+      and sdn.dougyousya_id=sdc.dougyousya_id 
+      order by sdn.sort_order,sdn.dougyousya_id asc");
   while($data = tep_db_fetch_array($query))
   {
     $arr[] = $data;

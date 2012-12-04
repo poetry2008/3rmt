@@ -152,8 +152,7 @@ if ($action =='prelist'){
     $back_url = "categories.php";
     $back_url_params = "cPath=".$_GET['cPath'];
   }
-  $res =tep_db_query('select * from set_oroshi_names son, categories c
-      ,set_oroshi_categories soc where c.categories_id = "'.$cid.'" and c.categories_id = soc.categories_id and son.oroshi_id = soc.oroshi_id order by soc.oroshi_id ');
+  $res =tep_db_query('select * from set_oroshi_names son, categories c ,set_oroshi_categories soc where c.categories_id = "'.$cid.'" and c.categories_id = soc.categories_id and son.oroshi_id = soc.oroshi_id order by son.sort_order,soc.oroshi_id ');
       $html2 = '';
       $c=0;
     while($col = tep_db_fetch_array($res)){
@@ -189,7 +188,12 @@ echo $html;
     $lines_arr = array();
 $oroname = array();
 $cr = array("\r\n", "\r");   // 改行コード置換用配
-$orocnt = tep_db_query('select distinct(oroshi_id) from set_oroshi_categories where categories_id = "'.$cid.'" order by oroshi_id');
+$orocnt = tep_db_query('select distinct(soc.oroshi_id) 
+    from set_oroshi_categories  soc,
+    set_oroshi_names son
+    where soc.categories_id = "'.$cid.'" 
+    and soc.oroshi_id = son.oroshi_id
+    order by son.sort_order,soc.oroshi_id');
 while($testcol = tep_db_fetch_array($orocnt)){
   $oroids[] = $testcol['oroshi_id'];
 }
