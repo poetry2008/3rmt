@@ -94,7 +94,7 @@ case 'set_oroshi':
   $sql = 'delete from set_dougyousya_history where dougyousya_id = "'.$orrshi_id.'"and categories_id not in (select sdc.categories_id from set_dougyousya_categories sdc where dougyousya_id ="'.$orrshi_id.'")';
   tep_db_query($sql);
 */
-  $sql = 'update set_dougyousya_names set  dougyousya_name="'.$name[$orrshi_id].'",user_update="'.$_SESSION['user_name'].'",date_update="'.date('Y-m-d H:i:s',time()).'" where dougyousya_id="'.$orrshi_id.'"';
+  $sql = 'update set_dougyousya_names set dougyousya_name="'.$name[$orrshi_id].'",user_update="'.$_SESSION['user_name'].'",date_update="'.date('Y-m-d H:i:s',time()).'" where dougyousya_id="'.$orrshi_id.'"';
   tep_db_query($sql);
   }
   
@@ -360,7 +360,7 @@ require("includes/note_js.php");
   <?php }
   $start = 0;
   $categories_subtree = getSubcatergories($start);
-  $res=tep_db_query("select * from set_dougyousya_names ORDER BY sort_order ASC");
+  $res=tep_db_query("select * from set_dougyousya_names ORDER BY sort_order ,dougyousya_id ASC");
   $i = 0;
 ?>
 <table width="100%" cellspacing="0" border="0" cellpadding="2">

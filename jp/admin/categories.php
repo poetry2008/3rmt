@@ -1603,6 +1603,36 @@ function handle_option()
       }
     });
   }
+
+  function show_update_info(ele, pid, update_type, cnt_num) {
+    if (update_type == '1') {
+      origin_quantity = $('#virtual_quantity_'+pid).html(); 
+      url_str = 'ajax.php?action=update_virtual_quantity';
+      data_str = 'pid='+pid+"&origin_num="+origin_quantity;
+    } else if (update_type == '2') {
+      origin_quantity = $('#quantity_'+pid).html(); 
+      url_str = 'ajax.php?action=update_real_quantity'; 
+      data_str = 'pid='+pid+"&origin_num="+origin_quantity;
+    } else {
+      origin_price = $('#h_edit_p_'+pid).html(); 
+      url_str = 'ajax.php?action=set_new_price'; 
+      data_str = 'pid='+pid+"&origin_price="+origin_price+'&cnt_num='+cnt_num;
+    }
+    $.ajax({
+      type:'POST',
+      dataType:'text',
+      data:data_str, 
+      async:false, 
+      url: url_str,
+      success: function(text) {
+        $('#show_popup_info').html(text);
+        if(ele!=''){
+          info_box_set(ele, '<?php echo $belong;?>');
+        }
+        $('#show_popup_info').css('display','block');
+      }
+    });
+  }
 </script>
 <?php 
 require("includes/note_js.php");
@@ -3410,7 +3440,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                         $res=tep_db_query("select count(*) as cnt from set_dougyousya_names sdn ,set_dougyousya_categories sdc  where sdn.dougyousya_id = sdc.dougyousya_id and sdc.categories_id = '".$cPath_yobi."'");
                         $count_dougyousya=tep_db_fetch_array($res);
                         if($count_dougyousya['cnt'] > 0) {
-                          $res=tep_db_query("select * from set_dougyousya_names sdn ,set_dougyousya_categories sdc  where sdn.dougyousya_id = sdc.dougyousya_id and sdc.categories_id = '".$cPath_yobi. "' ORDER BY sdc.dougyousya_id ASC");
+                          $res=tep_db_query("select * from set_dougyousya_names sdn ,set_dougyousya_categories sdc  where sdn.dougyousya_id = sdc.dougyousya_id and sdc.categories_id = '".$cPath_yobi. "' ORDER BY sdn.sort_order,sdc.dougyousya_id ASC");
                           while($col_dougyousya=tep_db_fetch_array($res)){
                             $i++;
                             $dougyousya_history = tep_db_fetch_array(tep_db_query("select * from set_dougyousya_history where categories_id='".$current_category_id."' and dougyousya_id='".$col_dougyousya['dougyousya_id']."' order by last_date desc"));
@@ -3980,7 +4010,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                         $preorder_products_res = tep_db_fetch_array($preorder_products_raw);
                         if ($preorder_products_res) {
                           if ($preorder_products_res['pre_total']) {
-                            echo '<a href="preorders.php?keywords='.urlencode($products['products_id']).'&search_type=sproducts_id'.(!empty($site_id)?'&site_id='.$site_id:'').'" target="_blank" style="text-decoration:underline;">';
+                            echo '<a href="preorders.php?keywords='.urlencode($products['products_id']).'&search_type=sproducts_id'.(!empty($site_id)?'&site_id='.$site_id:'').'" style="text-decoration:underline;">';
                             echo $preorder_products_res['pre_total'];
                             echo '</a>';
                           } else {
@@ -3992,7 +4022,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                       <?php
                         echo '<td class="dataTableContent" align="center">';
                         if(tep_get_order_cnt_by_pid($products['products_id'], $site_id)){
-                          echo '<a href="orders.php?keywords='.urlencode($products['products_id']).'&search_type=sproducts_id'.(!empty($site_id)?'&site_id='.$site_id:'').'" target="_blank" style="text-decoration:underline;">';
+                          echo '<a href="orders.php?keywords='.urlencode($products['products_id']).'&search_type=sproducts_id'.(!empty($site_id)?'&site_id='.$site_id:'').'" style="text-decoration:underline;">';
                           echo tep_get_order_cnt_by_pid($products['products_id'], $site_id);
                           echo '</a>';  
                         } 
@@ -4001,8 +4031,8 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                       <?php
                         if (empty($site_id)) {
                       ?>
-                      <td class="dataTableContent" align='right' onmouseover='this.style.cursor="pointer"' id='virtual_quantity_<?php echo $products['products_id']; ?>' onclick="update_virtual_quantity(<?php echo $products['products_id']; ?>)"><?php echo $imaginary;?></td>
-                      <td class="dataTableContent" align='right' onmouseover='this.style.cursor="pointer"' style="font-weight:bold;" id='quantity_<?php echo $products['products_id']; ?>' onclick="update_quantity(<?php echo $products['products_id']; ?>)"><?php echo $products['products_real_quantity'];?></td>
+                      <td class="dataTableContent" align='right' onmouseover='this.style.cursor="pointer"' id='virtual_quantity_<?php echo $products['products_id']; ?>' onclick="show_update_info(this, <?php echo $products['products_id']; ?>, '1', '1')"><?php echo $imaginary;?></td>
+                      <td class="dataTableContent" align='right' onmouseover='this.style.cursor="pointer"' style="font-weight:bold;" id='quantity_<?php echo $products['products_id']; ?>' onclick="show_update_info(this, <?php echo $products['products_id']; ?>, '2', '1')"><?php echo $products['products_real_quantity'];?></td>
                       <?php
                         } else {
                       ?>
@@ -4095,7 +4125,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                      <?php
                      if (empty($site_id)) {
                      ?>
-                     <td class="dataTableContent" align="right" onclick="set_new_price(this, <?php echo $products['products_id'];?>, <?php echo $target_cnt;?>)" onmouseover="this.style.cursor='pointer'"> 
+                     <td class="dataTableContent" align="right" onclick="show_update_info(this, <?php echo $products['products_id'];?>, '3', <?php echo $target_cnt;?>)" onmouseover="this.style.cursor='pointer'"> 
                      <?php
                      } else {
                      ?>

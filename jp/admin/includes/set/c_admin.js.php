@@ -65,47 +65,41 @@ function list_display(path,cid,fullpath){
 }
 
 function update_quantity(pid){
-  oquantity = $('#quantity_'+pid).html();
-  pname = $('#products_name_'+pid).html();
-  nquantity = prompt(pname+"\n<?php echo TEXT_POPUP_WINDOW_SHOW.': ';?>"+oquantity+"\n<?php echo TEXT_POPUP_WINDOW_EDIT;?>", oquantity);
-  //alert(nquantity);
+  nquantity = $('#real_pro_num').val();
   if (nquantity && false == /^\d+$/.test(nquantity)) {
     alert('<?php echo JS_TEXT_C_ADMIN_INPUT_INFO;?>');
-    return false;
   }
   if (nquantity !== '' && nquantity !== null) {
-  var send_url="set_quantity.php?pid="+pid+"&quantity="+nquantity;
-  $.ajax({
-    beforeSend: function(){$('body').css('cursor', 'wait');$('#wait').show();}, 
-    url: send_url,
+    var send_url="set_quantity.php?pid="+pid+"&quantity="+nquantity;
+    $.ajax({
+      beforeSend: function(){$('body').css('cursor', 'wait');$('#wait').show();}, 
+      url: send_url,
         success: function(data) {
-            $('#quantity_'+pid).html(data)
-            $('body').css('cursor', ''); 
-            $('#wait').hide(); 
-      }
+          data_tmp_array = data.split('|||'); 
+          $('#quantity_'+pid).html(data_tmp_array[0]);
+          $('#h_edit_p_'+pid).parent().next().next().next().next().html(data_tmp_array[1]); 
+          setTimeout(function(){$('body').css('cursor', '');$('#wait').hide();$('#show_popup_info').css('display', 'none');}, 500);
+        }
     });
   }
 }
 
 function update_virtual_quantity(pid){
-  oquantity = $('#virtual_quantity_'+pid).html();
-  pname = $('#products_name_'+pid).html();
-  nquantity = prompt(pname+"\n<?php echo TEXT_POPUP_WINDOW_SHOW.': ';?>"+oquantity+"\n<?php echo TEXT_POPUP_WINDOW_EDIT;?>", oquantity);
-  //alert(nquantity);
+  nquantity = $('#virtual_pro_num').val();
   if (nquantity && false == /^\d+$/.test(nquantity)) {
     alert('<?php echo JS_TEXT_C_ADMIN_INPUT_INFO;?>');
-    return false;
   }
   if (nquantity !== '' && nquantity !== null) {
-  var send_url="set_quantity.php?pid="+pid+"&virtual_quantity="+nquantity;
-  $.ajax({
-    beforeSend: function(){$('body').css('cursor', 'wait');$('#wait').show();}, 
-    url: send_url,
+    var send_url="set_quantity.php?pid="+pid+"&virtual_quantity="+nquantity;
+    $.ajax({
+      beforeSend: function(){$('body').css('cursor', 'wait');$('#wait').show();}, 
+      url: send_url,
         success: function(data) {
-            $('#virtual_quantity_'+pid).html(data)
-            $('body').css('cursor', ''); 
-            $('#wait').hide(); 
-      }
+          data_tmp_array = data.split('|||'); 
+          $('#virtual_quantity_'+pid).html(data_tmp_array[0]);
+          $('#h_edit_p_'+pid).parent().next().next().next().next().html(data_tmp_array[1]); 
+          setTimeout(function(){$('body').css('cursor', '');$('#wait').hide();$('#show_popup_info').css('display', 'none');}, 500);
+        }
     });
   }
 }
@@ -356,10 +350,10 @@ function check_error(){
       }
 }
 
-function set_new_price(c_ele, pid, cnt) {
-  pname = $('#products_name_'+pid).html();
+function set_new_price(pid, cnt) {
   default_price = $('#h_edit_p_'+pid).html(); 
-  nquantity = prompt(pname+"\n"+"<?php echo TEXT_POPUP_WINDOW_SHOW.': ';?>"+default_price+"\n"+"<?php echo TEXT_POPUP_WINDOW_EDIT;?>", default_price);
+  nquantity = $('#new_confirm_price').val();
+  c_ele = $('#h_edit_p_'+pid).parent(); 
   if (nquantity && false == /^\d+$/.test(nquantity)) {
     alert('<?php echo JS_TEXT_C_ADMIN_INPUT_INFO;?>');
     return false;
@@ -379,8 +373,7 @@ function set_new_price(c_ele, pid, cnt) {
         $(c_ele).next().find('input[name="price[]"]').eq(0).val(msg_array[1]);  
         $(c_ele).next().next().next().next().html(msg_array[3]);  
         set_money(cnt, false, '1'); 
-        $('body').css('cursor', '');
-        setTimeout('read_space_time()', 500);
+        setTimeout(function(){$('body').css('cursor', '');$('#wait').hide();$('#show_popup_info').css('display', 'none');}, 500);
       }
     }); 
   }
