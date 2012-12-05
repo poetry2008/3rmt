@@ -3,7 +3,7 @@
   $Id$
 */
 
-    //PDF Data Sheet language file ------------------
+    //PDF Data Sheet language file
     
 	define('TEXT_PRICE_VAT_INCLUDED',' inc VAT');
 	define('TEXT_PRICE_EX_VAT',' ex VAT');

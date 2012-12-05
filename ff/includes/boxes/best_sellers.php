@@ -5,11 +5,9 @@
 
   if (isset($current_category_id) && ($current_category_id > 0)) {
     // ccdd
-    // del distinct 10.8.2
     $best_c_category_id = $current_category_id; 
   } else {
     // ccdd
-    // del distinct 10.8.2
     $best_c_category_id = FF_CID; 
   }
     $best_sellers_query = tep_db_query("
@@ -43,7 +41,7 @@
 
   if (tep_db_num_rows($best_sellers_query) >= MIN_DISPLAY_BESTSELLERS) {
 ?>
-<!-- best_sellers //-->
+<!-- best_sellers -->
       <div class="ranking_warpper">
       <div class="menu_top">ランキング</div>
       <div class="bestseller_sort">
@@ -58,7 +56,7 @@
 ?>    
 <div class="bestseller_sort_info">
 <div class="bestseller_text">
-<!--sellers num //-->
+<!--sellers num -->
 <span><?php echo $rows;?></span>
 <a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $best_sellers['products_id']); ?>" title="<?php echo $best_sellers['products_name']; ?>">
 <?php echo $best_sellers['products_name']; ?></a>
@@ -81,7 +79,7 @@
 ?>  
 </div>
 </div>
-<!-- best_sellers_eof //-->
+<!-- best_sellers_eof -->
 <?php
   }
 ?>

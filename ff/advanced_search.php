@@ -1,7 +1,6 @@
 <?php
 /*
   $Id$
-
 */
 
   require('includes/application_top.php');
@@ -99,20 +98,20 @@ function check_form() {
 function popupWindow(url) {
   window.open(url,'popupWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=450,height=280,screenX=150,screenY=150,top=150,left=150')
 }
-//--></script>
+--></script>
 </head>
 <body><div class="body_shadow" align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-  <!-- header_eof //--> 
-  <!-- body //--> 
+  <!-- header_eof --> 
+  <!-- body --> 
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
     <tr> 
-      <td valign="top" class="left_colum_border"> <!-- left_navigation //--> 
+      <td valign="top" class="left_colum_border"> <!-- left_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
-        <!-- left_navigation_eof //--> </td> 
-      <!-- body_text //--> 
+        <!-- left_navigation_eof --> </td> 
+      <!-- body_text --> 
       <td valign="top" id="contents"><?php echo tep_draw_form('advanced_search', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, '', 'NONSSL', false), 'get', 'onSubmit="return check_form(this);"') . tep_hide_session_id(); ?> 
-        <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1> 
+        <h1 class="pageHeading"><span><?php echo HEADING_TITLE ; ?></span></h1> 
         
         <div class="comment"> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0" class="product_info_box"> 
@@ -236,7 +235,7 @@ function popupWindow(url) {
         </div>
         </form> 
         <p class="pageBottom"></p>
-         	<h2 class="pageHeading"><?php echo HEADING_SEARCH_HELP; ?></h2>
+         	<h2 class="pageHeading"><span><?php echo HEADING_SEARCH_HELP; ?></span></h2>
             <div class="comment">
             <table width="100%" cellspacing="0" cellpadding="3" border="0" class="infoBoxContents" summary="table">
                 <tr>
@@ -246,15 +245,15 @@ function popupWindow(url) {
             </div>
          <p class="pageBottom"></p>
         </td> 
-      <!-- body_text_eof //--> 
-      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 
+      <!-- body_text_eof --> 
+      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-        <!-- right_navigation_eof //--> </td> 
+        <!-- right_navigation_eof --> </td> 
   </table> 
-  <!-- body_eof //--> 
-  <!-- footer //--> 
+  <!-- body_eof --> 
+  <!-- footer --> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
+  <!-- footer_eof --> 
 </div> 
 </div> 
 </body>
