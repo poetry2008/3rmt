@@ -1,30 +1,15 @@
 <?php
-/*********************************************************************
-    index.php
-
-    Client Login 
-
-    Peter Rotich <peter@osticket.com>
-    Copyright (c)  2006-2010 osTicket  
-    http://www.osticket.com
-
-    Released under the GNU General Public License WITHOUT ANY WARRANTY.
-    See LICENSE.TXT for details.
-
-    vim: expandtab sw=4 ts=4 sts=4:
-    $Id$
-**********************************************************************/
 $_noemailclass = true;
 require_once('includes/application_top.php');
 $breadcrumb->add('お問い合わせ', tep_href_link(FILENAME_CONTACT_US));
 require_once('includes/ost/client.inc.php');
 if(!defined('INCLUDE_DIR')) die('Fatal Error');
 define('CLIENTINC_DIR',INCLUDE_DIR.'client/');
-define('OSTCLIENTINC',TRUE); //make includes happy
+define('OSTCLIENTINC',TRUE); 
 
 require_once(INCLUDE_DIR.'class.client.php');
 require_once(INCLUDE_DIR.'class.ticket.php');
-//We are ready baby
+
 $loginmsg='情報を入力し「送信」ボタンをクリックしてください。';
 if($_POST && (!empty($_POST['lemail']) && !empty($_POST['lticket']))):
     $loginmsg='Authentication Required';

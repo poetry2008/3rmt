@@ -10,7 +10,7 @@ $colors_query = tep_db_query("
 ");
 if(tep_db_num_rows($colors_query)) {
 ?>
-<!-- by color// -->
+<!-- by color -->
  <table width="100%"  border="0" cellspacing="0" cellpadding="0"> 
   <tr> 
      <td height="25" align="center" background="images/design/box/box_title_bg.jpg"><?php echo tep_image(DIR_WS_IMAGES.'design/box/color.gif','カラーから選択');?></td> 
@@ -36,7 +36,7 @@ if(tep_db_num_rows($colors_query)) {
   }
   ?> 
 </table> 
-<!-- //by color --> 
+<!-- by color --> 
 <?php
 }
 ?> 
