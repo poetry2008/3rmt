@@ -2376,7 +2376,7 @@ $products_shipping_time .= '</select>';
                       </tr>
                       <tr><td colspan='2'>
 <?php foreach($tag_array as $tag){ ?>
-                        <input type='checkbox' class="carttags" name='carttags[<?php echo $tag['tags_id'];?>]' value='1'<?php if(isset($carttag_array[$tag['tags_id']])){echo " checked";} else if (isset($pInfo->carttags[$tag['tags_id']])) {echo "checked";}?>><?php echo $tag['tags_name'];?>
+                        <input type='checkbox' <?php echo ($site_id)?'disabled':'';?> class="carttags" name='carttags[<?php echo $tag['tags_id'];?>]' value='1'<?php if(isset($carttag_array[$tag['tags_id']])){echo " checked";} else if (isset($pInfo->carttags[$tag['tags_id']])) {echo "checked";}?>><?php echo $tag['tags_name'];?>
 <?php }?>
                       </td></tr>
                     </table>
