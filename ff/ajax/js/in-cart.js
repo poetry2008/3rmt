@@ -1,26 +1,26 @@
 //----------------------------------------  
-//スクロール時にウィンドウの表示（カート）
+//When scrolling window display (cart)
 //----------------------------------------
   
   var vs = "0";
   window.onscroll = myMove;
   
-  //----------ie用function----------
+  //----------function for ie----------
   function ietruebody(){
     return (document.compatMode && document.compatMode!="BackCompat")? document.documentElement : document.body
   }
    
-  //----------divを左下に表示----------
+  //----------a div displayed in the lower left corner ----------
   function myMove(){
-	var offSY = ietruebody().scrollTop; //スクロール位置（画面上のy座標）
+	var offSY = ietruebody().scrollTop; //(Y coordinates on the screen) scroll position
 	
 	if(document.all){
-	  var offMY = ietruebody().clientHeight; //ウインドウサイズ
+	  var offMY = ietruebody().clientHeight; //Window size
 	}else{
 	  var offMY = innerHeight;
 	}
 	
-	var dsize = 250; //画像サイズ（y座標）
+	var dsize = 250; //Image size (Y coordinates)
 	var offTop = offSY + offMY - dsize;
 	
     document.getElementById("dis_clist").style.top = offTop + "px";
@@ -34,7 +34,7 @@
 	document.getElementById("dis_clist").style.visibility = "visible";
 	  
 
-    //----------クロスウラウザ不透明度設定関数----------
+    //----------Cross browser opacity setting function ----------
 	if(window.opera){
       return;
     }
@@ -51,7 +51,7 @@
       document.getElementById("dis_clist").style.MozOpacity = arg;
     }
   
-    //----------１回目の表示？----------
+    //----------Display for the first time----------
 	if(vs == 0){
 	  vs = "1";
 
@@ -66,9 +66,9 @@
 //----------------------------------------
 //Content            :Communication
 //
-//geturi             :送信先URL
-//execution_f        :xmlHttpObjectの生成後、状態が変わったら実行するFunction(空の場合は、バックエンドでの処理)
-//did                :文字変更ID
+//geturi             :URL destination
+//execution_f        :After generating the xmlHttpObject, Function to run state has changed (if empty, the back-end processing)
+//did                :ID character change
 //----------------------------------------
   function cart_view(geturi,execution_f,did) {
     xmlHttpObject = null;
@@ -86,7 +86,7 @@
 	  }
     }
   
-    //----------execution_fを追加したら以下の処理を追加する----------
+    //----------If added a execution_f,add the following process----------
     if(xmlHttpObject){
 	  if(execution_f == 'in_cart'){
 	    xmlHttpObject.onreadystatechange = in_cart;
@@ -94,19 +94,19 @@
     }
   
     //----------------------------------------------------------------------------------------------------
-    //ここから下は追加Function
+    //Add Function from here
 
-    //----------カート内リストの表示----------
+    //----------View a list of the cart----------
     function in_cart(){
-	  var offSY = ietruebody().scrollTop; //スクロール位置（画面上のy座標）
+	  var offSY = ietruebody().scrollTop; //(Y coordinates on the screen) scroll position
 	
 	  if(document.all){
-	    var offMY = ietruebody().clientHeight; //ウインドウサイズ
+	    var offMY = ietruebody().clientHeight; //Window size
 	  }else{
 	    var offMY = innerHeight;
 	  }
 	
-	  var dsize = 250; //画像サイズ（y座標）
+	  var dsize = 250; //Image size (Y coordinates)
 	  var offTop = offSY + offMY - dsize;
 	
       document.getElementById("dis_clist").style.top = offTop + "px";
@@ -119,13 +119,13 @@
 	  document.getElementById("dis_clist").style.fontSize = "10px";
 	  document.getElementById("dis_clist").style.visibility = "visible";
 	  
-	  //----------スクロール時に動かすfunctionの設定----------
+	  //----------Setting the function to move when scrolling----------
 	  window.onscroll = myMove;
 	  
-	  //----------クリック時にウィンドウの表示（カート）設定----------
+	  //----------When you click Display Settings window (cart)----------
 	  document.getElementById("dis_clist").onclick = null;
 
-      //----------クロスウラウザ不透明度設定関数----------
+      //----------Cross browser opacity setting function ----------
 	  if(window.opera){
         return;
       }
@@ -142,7 +142,7 @@
         document.getElementById("dis_clist").style.MozOpacity = arg;
       }
 	  
-	  //----------送受信----------
+	  //----------Send and receive----------
 	  if((xmlHttpObject.readyState == 4) && (xmlHttpObject.status == 200)){
         document.getElementById(did).innerHTML = xmlHttpObject.responseText;
       } else {
@@ -150,7 +150,7 @@
       }
     }
   
-    //ここまでが追加Function
+    //Add function stop here
     //----------------------------------------------------------------------------------------------------  
   
     if(xmlHttpObject){
@@ -162,19 +162,19 @@
 
 
 //----------------------------------------  
-//ウィンドウ(mini)の表示
+//Window display (mini)
 //----------------------------------------
   function cart_non(did) {
-    //----------mini_divを左下に表示----------
-    var miniSY = ietruebody().scrollTop; //スクロール位置（画面上のy座標）
+    //----------mini_div displayed in the lower left ----------
+    var miniSY = ietruebody().scrollTop; //(Y coordinates on the screen) scroll position
 	
 	if(document.all){
-	  var miniMY = ietruebody().clientHeight; //ウインドウサイズ
+	  var miniMY = ietruebody().clientHeight; //Window size
 	}else{
 	  var miniMY = innerHeight;
 	}
 	
-	var minisize = 40; //画像サイズ（y座標）
+	var minisize = 40; //Image size (Y coordinates)
 	var miniTop = miniSY + miniMY - minisize;
 	
     document.getElementById(did).style.top = miniTop + "px";
@@ -187,24 +187,24 @@
 	document.getElementById(did).innerHTML = "";
 	document.getElementById(did).style.visibility = "visible";
 	
-	//----------スクロール時に動かすfunctionの設定----------
+	//----------Setting the function to move when scrolling----------
 	window.onscroll = miniMove;
   }
 
 //----------------------------------------  
-//スクロール時にウィンドウの表示（mini）
+//When scrolling window display (mini)
 //----------------------------------------
   function miniMove(){
-    //----------divを左下に表示----------
-	var moveSY = ietruebody().scrollTop; //スクロール位置（画面上のy座標）
+    //----------a div displayed in the lower left corner ----------
+	var moveSY = ietruebody().scrollTop; //(Y coordinates on the screen) scroll position
 	
 	if(document.all){
-	  var moveMY = ietruebody().clientHeight; //ウインドウサイズ
+	  var moveMY = ietruebody().clientHeight; //Window size
 	}else{
 	  var moveMY = innerHeight;
 	}
 	
-	var movesize = 40; //画像サイズ（y座標）
+	var movesize = 40; //Image size (Y coordinates)
 	var moveTop = moveSY + moveMY - movesize;
 	
     document.getElementById("dis_clist").style.top = moveTop + "px";
@@ -216,6 +216,6 @@
 	document.getElementById("dis_clist").style.fontSize = "10px";
 	document.getElementById("dis_clist").style.visibility = "visible";
 	
-	//----------クリック時にウィンドウの表示（カート）設定----------
+	//----------When you click Display Settings window (cart)----------
 	document.getElementById("dis_clist").onclick = function(){cart_view('ajax.php?id=jk-list','in_cart','dis_clist')};
   }

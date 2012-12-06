@@ -2691,12 +2691,15 @@ echo tep_eof_hidden();
   echo $pInfo->products_price_offset;
   echo '</tr>';
   $inventory = tep_get_product_inventory($pInfo->products_id);
+  $show_inventory = true;
   if(!isset($site_id)||!$site_id){
+  $show_inventory = false;
   echo '<tr><td nowrap="nowrap">';
   echo TEXT_MAX;
   echo '</td><td>';
   if($isstaff){
     echo $inventory['max'];
+    echo tep_draw_hidden_field('inventory_max',$inventory['max']);
   }else{
     echo tep_draw_input_field('inventory_max',$inventory['max']);
   }
@@ -2705,6 +2708,7 @@ echo tep_eof_hidden();
   echo '</td><td>';
   if($isstaff){
     echo $inventory['min'];
+    echo tep_draw_hidden_field('inventory_min',$inventory['min']);
   }else{
     echo tep_draw_input_field('inventory_min',$inventory['min']);
   }
@@ -2719,6 +2723,10 @@ echo tep_eof_hidden();
   //echo '</td></tr>';
   echo '<tr>';
   echo '<td nowrap="nowrap">';
+  if($show_inventory){
+    echo tep_draw_hidden_field('inventory_max',$inventory['max']);
+    echo tep_draw_hidden_field('inventory_min',$inventory['min']);
+  }
   echo TEXT_PRODUCTS_AVERAGE_RATING.'</td>';
   echo '<td>'; 
   echo number_format($pInfo->average_rating,2).'%';
@@ -2769,12 +2777,15 @@ echo tep_eof_hidden();
   echo $relate_pInfo->products_price_offset;
   echo '</tr>';
   $inventory = tep_get_product_inventory($relate_pInfo->products_id);
+  $relate_show_inventory =  true;
   if(!isset($site_id)||!$site_id){
+  $relate_show_inventory =  false;
   echo '<tr><td nowrap="nowrap">';
   echo TEXT_MAX;
   echo '</td><td>';
   if($isstaff){
     echo $inventory['max'];
+    echo tep_draw_hidden_field('relate_inventory_max',$inventory['max']);
   }else{
     echo tep_draw_input_field('relate_inventory_max',$inventory['max']);
   }
@@ -2783,6 +2794,7 @@ echo tep_eof_hidden();
   echo '</td><td>';
   if($isstaff){
     echo $inventory['min'];
+    echo tep_draw_hidden_field('relate_inventory_min',$inventory['min']);
   }else{
     echo tep_draw_input_field('relate_inventory_min',$inventory['min']);
   }
@@ -2797,6 +2809,10 @@ echo tep_eof_hidden();
   //echo '</td></tr>';
   echo '<tr>';
   echo '<td nowrap="nowrap">';
+  if($relate_show_inventory){
+    echo tep_draw_hidden_field('relate_inventory_max',$inventory['max']);
+    echo tep_draw_hidden_field('relate_inventory_min',$inventory['min']);
+  }
   echo TEXT_PRODUCTS_AVERAGE_RATING.'</td>';
   echo '<td>';
   echo number_format($relate_pInfo->average_rating,2).'%';

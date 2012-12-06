@@ -196,20 +196,20 @@ function showimage($1) {
     document.images.lrgproduct.src = $1;
 }
 
-//--></script>
+--></script>
 </head>
 <body>
 <div class="body_shadow" align="center">
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-  <!-- header_eof //-->
-  <!-- body //-->
+  <!-- header_eof -->
+  <!-- body -->
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border" summary="box">
     <tr>
-      <td valign="top" class="left_colum_border"><!-- left_navigation //-->
+      <td valign="top" class="left_colum_border"><!-- left_navigation -->
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-        <!-- left_navigation_eof //-->
+        <!-- left_navigation_eof -->
       </td>
-      <!-- body_text //-->
+      <!-- body_text -->
       <td valign="top" id="contents">
 <?php
   $product_info = tep_get_product_by_id((int)$_GET['products_id'], SITE_ID,
@@ -315,8 +315,8 @@ function showimage($1) {
                           <td class="main"><b><font color="#00719D"><?php echo TEXT_PRODUCT_PRICE;?></font></b></td>
                             <td class="main">
                                 <?php
-                                  # 追加スタート ---------------------------------------
-                                  # -- 注文数量と単価のリスト --------------------------
+                                  # 添加开始 ---------------------------------------
+                                  # -- 订单数量和单价列表 --------------------------
                                   if(tep_not_null($product_info['products_small_sum'])) {
                                     $wari_array = array();
                                     echo '<span class="smallText">'.TEXT_ONE_UNIT_PRICE.'</span><div class="small_table">';
@@ -339,8 +339,8 @@ function showimage($1) {
                                     echo '<strong>'.$products_price.'</strong>';
                                   }
                                   
-                                  # -- 注文数量と単価のリスト --------------------------
-                                  # 追加エンド -------------------------------------------
+                                  # -- 订单数量和单价列表 --------------------------
+                                  # 添加结束 -------------------------------------------
                                 
                                 ?>
                             </td>
@@ -437,7 +437,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
                       <script language="javascript" type="text/javascript">
                       <!--
 document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_info['products_image'].'" rel="lightbox[products]">' . tep_image3(DIR_WS_IMAGES . 'products/'. $product_info['products_image'], addslashes($product_info['products_name']), PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, 'name="lrgproduct" id="lrgproduct"') . '<br>' . TEXT_CLICK_TO_ENLARGE . '<\'+\'/a>'; ?>');
-                        //-->
+                        -->
                         </script>
                         <noscript>
                         <?php echo '<a href="' . tep_href_link(DIR_WS_IMAGES . urlencode($product_info['products_image'])) . '">' . tep_image3(DIR_WS_IMAGES . 'products/' . $product_info['products_image'], $product_info['products_name'], PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '<br>' . TEXT_CLICK_TO_ENLARGE . '</a>'; ?>
@@ -476,7 +476,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
 <?php
       if($product_info['products_quantity'] < 1) {
         if($product_info['products_bflag'] == '1') {
-          # 買い取り商品
+          # 买取商品
           echo '<span class="markProductOutOfStock">'.TEXT_PAUSE;
         } elseif ($product_info['products_cflag'] == '0') {
           echo '<span class="markProductOutOfStock">'.TEXT_SOLD_OUT;
@@ -534,7 +534,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                     </tr>
             </table>
       <?php
-                    //サブ画像
+                    //sub图像
         // ccdd
         $sub_colors_query = tep_db_query("
             SELECT color_image, 
@@ -551,7 +551,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
               <tr>
                 <?php
                     while($sub_colors = tep_db_fetch_array($sub_colors_query)) {
-                      //色名を取得
+                      //获取颜色名
           // ccdd
           $colors_name_query = tep_db_query("
               SELECT color_name 
@@ -565,7 +565,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                       ?>
                 <script language="javascript" type="text/javascript"><!--
     document.write('<?php //echo '<td class="smallText" align="center"><a href="javascript:popupWindow(\\\'' . tep_href_link(FILENAME_POPUP_IMAGE, 'pID=' . $product_info['products_id']) . '\\\')">' . tep_image2(DIR_WS_IMAGES . $product_info['products_image'], addslashes($product_info['products_name']), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="2" vspace="2"  class="image_border"') . '</a><br>-</td>'; ?>');
-    //--></script>
+    --></script>
                 <noscript>
                 <?php echo '<td class="smallText" align="center" width="20%"><a href="' . tep_href_link(DIR_WS_IMAGES . $product_info['products_image']) . '" rel="lightbox[products]">' . tep_image3(DIR_WS_IMAGES . $product_info['products_image'], $product_info['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="2" vspace="2" class="image_border"') . '</a><br>-</td>'; ?>
                 </noscript>
@@ -595,7 +595,6 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
             <h3 class="pageHeading_long"><?php echo $product_info['products_name'].TEXT_ABOUT; ?></h3>
             <div class="comment_long">
               <div  class="reviews_area"><p><?php 
-            //Edit ds-style 2005.11.29
             //echo stripslashes($product_info['products_description']);
             echo $description;
             ?>
@@ -652,12 +651,12 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
  ?>
       </td>
      </tr>
-      <!-- body_text_eof //-->
+      <!-- body_text_eof -->
   </table>
-  <!-- body_eof //-->
-  <!-- footer //-->
+  <!-- body_eof -->
+  <!-- footer -->
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-  <!-- footer_eof //-->
+  <!-- footer_eof -->
 </div>
 </div>
 </body>

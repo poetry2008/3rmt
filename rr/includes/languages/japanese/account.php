@@ -3,8 +3,8 @@
   $Id$
 */
 
-define('NAVBAR_TITLE', 'お客様情報');//***タイトル1
-define('HEADING_TITLE', 'お客様情報');//タイトル2
+define('NAVBAR_TITLE', 'お客様情報');//***标题1
+define('HEADING_TITLE', 'お客様情報');//标题2
 
 //Add Point System
 define('TEXT_POINT_NOW', 'ポイント');

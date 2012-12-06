@@ -2,14 +2,8 @@
 /*
   $Id$
 */
-
-//
-// mb_internal_encoding() is set for PHP-4.3.x(Zend Multibyte)
-//
-// A compatible module is loaded for environment without mbstring-extension
-//
 if (extension_loaded('mbstring')) {
-  mb_internal_encoding('UTF-8'); // 内部コードを指定
+  mb_internal_encoding('UTF-8'); // 指定内部代码
 } else {
   include_once(DIR_WS_LANGUAGES . $language . '/jcode.phps');
   include_once(DIR_WS_LANGUAGES . $language . '/mbstring_wrapper.php');
@@ -18,10 +12,8 @@ if (extension_loaded('mbstring')) {
 // on RedHat try 'en_US'
 // on FreeBSD try 'en_US.ISO_8859-1'
 // on Windows try 'en', or 'English'
-//@setlocale(LC_TIME, 'ja_JP');
-//@setlocale(LC_TIME, 'en_US');
 define('DATE_FORMAT_SHORT', '%Y/%m/%d');  // this is used for strftime()
-define('DATE_FORMAT_LONG', '%Y年%m月%d日 （%A）'); // this is used for strftime()
+define('DATE_FORMAT_LONG', '%Y年%m月%d日 %A'); // this is used for strftime()
 define('DATE_FORMAT', 'Y/m/d'); // this is used for date()
 define('DATE_TIME_FORMAT', DATE_FORMAT_SHORT . ' %H:%M:%S');
 
@@ -47,7 +39,7 @@ define('HTML_PARAMS','dir="LTR" lang="ja"');
 define('CHARSET', 'UTF-8');    // Shift_JIS / euc-jp / iso-2022-jp
 
 // page title
-define('TITLE', STORE_NAME);  //ショップ名等を記述してください。ブラウザの表示タイトルになります。
+define('TITLE', STORE_NAME);  //请记述商品名等数据。作为浏览器的显示标题。
 
 define('META_TAGS',
  '<meta name = "keywords" content ="'.C_KEYWORDS.'">'."\n"
@@ -360,12 +352,11 @@ define('EMAIL_SIGNATURE',C_EMAIL_FOOTER);
 
 
 //Add languages
-//------------------------
 
 //create_account
 define('ENTRY_DATE_OF_BIRTH_ERROR2', '&nbsp;<small><font color="#FF0000">18歳未満の方の登録はご遠慮ください。</font></small>');
 
-//page - インフォメーションページが見つからなかった時に表示
+//page - 页面没有信息的时候显示
 define('PAGE_TEXT_NOT_FOUND', 'ページが見つかりません...');
 define('PAGE_ERR_NAVBER_TITLE', 'ページが見つかりません...');
 
@@ -392,7 +383,7 @@ define('ENTRY_GUEST', '会員登録:');
 define('ENTRY_ACCOUNT_MEMBER', '会員登録をする');
 define('ENTRY_ACCOUNT_GUEST', '会員登録をしない');
 
-# 注文状現金額を超えたときのメッセージ
+# 超过订单合计金额上限的时候，提示错误信息
 define('DS_LIMIT_PRICE_OVER_ERROR', '一度に%s以上を注文することはできません。<br>合計金額を%s以下にしてから再度お申し込みください。');
 
 define('INPUT_SEND_MAIL', 'メールアドレス');

@@ -5044,13 +5044,17 @@ function tep_display_google_results($from_url='', $c_type=false){
 
   // >要 取引終了的状态，视为注文数。要 取引終了的状态，视为注文数。
   function tep_get_order_cnt_by_pid($pid, $site_id = ''){
-    $r = tep_db_fetch_array(tep_db_query("select
-          sum(orders_products.products_quantity) as cnt from orders_products left join
+    $query = (tep_db_query("select
+          orders_products.products_quantity as pq from orders_products left join
           orders on orders.orders_id=orders_products.orders_id 
           where products_id='".$pid."' and finished = '0' and flag_qaf ='0' 
           and date(orders.date_purchased) >= '".date('Y-m-d 00:00:00',strtotime('-'.((get_configuration_by_site_id('ORDER_EFFECTIVE_DATE') != '0')?(get_configuration_by_site_id('ORDER_EFFECTIVE_DATE')-1):'0').'day'))."'".(!empty($site_id)?" and orders.site_id = '".$site_id."'":"").""));
     //$r = tep_db_fetch_array(tep_db_query("select count(orders_products.orders_id) as cnt from orders_products left join orders on orders.orders_id=orders_products.orders_id where products_id='".$pid."' and finished = '1'"));
-    return $r['cnt'];
+    $cnt = 0;
+    while($row = tep_db_fetch_array($query)){
+      $cnt += $row['pq'];
+    }
+    return $cnt;
   }
   //read user nama
   function tep_get_user_info($s_user_ID = "") {
@@ -5873,6 +5877,8 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
     $status_arr['blue'] = array();
     $status_arr['red'] = array();
     $status_arr['black'] = array();
+    $products_status_site_id = array();
+    $products_status = array();
 
     $site_arr[] = 0; 
     $site_romaji[] = 'all';
@@ -5882,12 +5888,30 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
       $site_arr[] = $site_res['id']; 
       $site_romaji[] = $site_res['romaji']; 
     }
+    $product_des_raw = tep_db_query("select products_status,site_id from ".TABLE_PRODUCTS_DESCRIPTION." where  products_id = '".$product_id."' and language_id = '".$languages_id."' order by site_id desc "); 
+    while($product_des_res = tep_db_fetch_array($product_des_raw)){
+      $products_status[] = $product_des_res['products_status'];
+      $products_status_site_id[]= $product_des_res['site_id'];
+    }
+    foreach($products_status_site_id as $p_key => $p_value){
+      if($p_value == '0'){
+        $default_status = $products_status[$p_key];
+        break;
+      }
+    }
 
     foreach ($site_arr as $key => $value) {
-      $product_des_raw = tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where (site_id = '".$value."' or site_id = '0') and products_id = '".$product_id."' and language_id = '".$languages_id."' order by site_id desc limit 1"); 
-      $product_des_res = tep_db_fetch_array($product_des_raw); 
-
-      switch ($product_des_res['products_status']) {
+      if(isset($default_status)&&$default_status!=1){
+        $temp_status = $default_status;
+      }else{
+        $temp_status = 1;
+      }
+      foreach($products_status_site_id as $p_k => $p_v){
+        if($value == $p_v){
+          $temp_status = $products_status[$p_k];
+        }
+      }
+      switch ($temp_status) {
         case '2':
           $status_arr['blue'][] = $site_romaji[$key]; 
           break;
