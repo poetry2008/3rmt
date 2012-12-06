@@ -1238,6 +1238,7 @@ $belong = str_replace('0_','',$belong);
 <?php tep_get_javascript('c_admin','includes|set');?>
 </script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
+<script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
 <script language="javascript" >
 <?php tep_get_javascript('one_time_pwd','includes|javascript');?>
 </script>
@@ -1508,7 +1509,7 @@ function handle_option()
   function show_product_info(pid,ele){
     $.ajax({
       dataType: 'text',
-      url: 'ajax_orders.php?action=product_info_box&pID='+pid+'&site_id=<?php echo (isset($_GET['site_id'])?$_GET['site_id']:'0')."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
+      url: 'ajax.php?action=product_info_box&pID='+pid+'&site_id=<?php echo (isset($_GET['site_id'])?$_GET['site_id']:'0')."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
       success: function(text) {
         //show_p_info 
         $('#show_popup_info').html(text);
@@ -1522,8 +1523,7 @@ function handle_option()
   function show_product_move(pid){
     $.ajax({
       dataType: 'text',
-      url: 'ajax_orders.php?action=product_move_box&pID='+pid+'&site_id=<?php 
-      echo $site_id."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
+      url: 'ajax.php?action=product_move_box&pID='+pid+'&site_id=<?php echo $site_id."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
       success: function(text) {
         //show_p_info 
         $('#show_popup_info').html(text);
@@ -1534,8 +1534,7 @@ function handle_option()
   function show_product_copy(pid){
     $.ajax({
       dataType: 'text',
-      url: 'ajax_orders.php?action=product_copy_to_box&pID='+pid+'&site_id=<?php 
-      echo $site_id."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
+      url: 'ajax.php?action=product_copy_to_box&pID='+pid+'&site_id=<?php echo $site_id."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
       success: function(text) {
         //show_p_info 
         $('#show_popup_info').html(text);
@@ -1546,8 +1545,7 @@ function handle_option()
   function show_product_delete(pid){
     $.ajax({
       dataType: 'text',
-      url: 'ajax_orders.php?action=product_delete_box&pID='+pid+'&site_id=<?php 
-      echo $site_id."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
+      url: 'ajax.php?action=product_delete_box&pID='+pid+'&site_id=<?php echo $site_id."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
       success: function(text) {
         //show_p_info 
         $('#show_popup_info').html(text);
@@ -1558,8 +1556,7 @@ function handle_option()
   function show_product_description_delete(pid){
     $.ajax({
       dataType: 'text',
-      url: 'ajax_orders.php?action=product_description_delete_box&pID='+pid+'&site_id=<?php 
-      echo $site_id."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
+      url: 'ajax.php?action=product_description_delete_box&pID='+pid+'&site_id=<?php echo $site_id."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'].(isset($_GET['rdirect'])?'&rdirect='.$_GET['rdirect']:'');?>',
       success: function(text) {
         //show_p_info 
         $('#show_popup_info').html(text);
@@ -1633,11 +1630,118 @@ function handle_option()
       }
     });
   }
+function open_new_calendar()
+{
+  var is_open = $('#toggle_open').val(); 
+  if (is_open == 0) {
+    //mm-dd-yyyy || mm/dd/yyyy
+    $('#toggle_open').val('1'); 
+    
+    var rules = {
+           "all": {
+                  "all": {
+                           "all": {
+                                      "all": "current_s_day",
+                                }
+                     }
+            }};
+    if ($("#date_orders").val() != '') {
+      if ($("#date_orders").val() == '0000-00-00') {
+        date_info_str = '<?php echo date('Y-m-d', time())?>';  
+        date_info = date_info_str.split('-');  
+      } else {
+        date_info = $("#date_orders").val().split('-'); 
+      }
+    } else {
+                      //mm-dd-yyyy || mm/dd/yyyy
+      date_info_str = '<?php echo date('Y-m-d', time())?>';  
+      date_info = date_info_str.split('-');  
+    }
+    new_date = new Date(date_info[0], date_info[1]-1, date_info[2]); 
+    YUI().use('calendar', 'datatype-date',  function(Y) {
+        var calendar = new Y.Calendar({
+            contentBox: "#mycalendar",
+            width:'170px',
+            date: new_date
+
+        }).render();
+      if (rules != '') {
+       month_tmp = date_info[1].substr(0, 1);
+       if (month_tmp == '0') {
+         month_tmp = date_info[1].substr(1);
+         month_tmp = month_tmp-1;
+       } else {
+         month_tmp = date_info[1]-1; 
+       }
+       day_tmp = date_info[2].substr(0, 1);
+       
+       if (day_tmp == '0') {
+         day_tmp = date_info[2].substr(1);
+       } else {
+         day_tmp = date_info[2];   
+       }
+       data_tmp_str = date_info[0]+'-'+month_tmp+'-'+day_tmp;
+       calendar.set("customRenderer", {
+            rules: rules,
+               filterFunction: function (date, node, rules) {
+                 cmp_tmp_str = date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate();
+                 if (cmp_tmp_str == data_tmp_str) {
+                   node.addClass("redtext"); 
+                 }
+               }
+       });
+     }
+      var dtdate = Y.DataType.Date;
+      calendar.on("selectionChange", function (ev) {
+        var newDate = ev.newSelection[0];
+        tmp_show_date = dtdate.format(newDate); 
+        tmp_show_date_array = tmp_show_date.split('-');
+        $(".cal-TextBox").val(tmp_show_date); 
+        $("#date_orders").val(tmp_show_date); 
+        $('#toggle_open').val('0');
+        $('#toggle_open').next().html('<div id="mycalendar"></div>');
+      });
+    });
+  }
+}
 </script>
 <?php 
 require("includes/note_js.php");
 ?>
 <script language="javascript" src="includes/javascript/jquery.autocomplete.js"></script>
+<style type="text/css">
+a.dpicker {
+width: 16px;
+height: 16px;
+border: none;
+color: #fff;
+padding: 0;
+margin:0;
+overflow: hidden;
+display:block;
+cursor: pointer;
+background: url(./includes/calendar.png) no-repeat;
+}
+#new_yui3 {
+margin-left:-168px;
+*margin-left:-28px;
+margin-left:-170px\9;
+position: absolute;
+z-index:200px;
+margin-top:15px;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+#new_yui3{
+position: absolute;
+z-index:200px;
+margin-top:17px;
+}
+}
+.yui3-skin-sam img,.yui3-skin-sam input,.date_box{ float:left;}
+.yui3-skin-sam .redtext {
+      color:#0066CC;
+}
+</style>
 </head>
 <?php 
 // 数据传输错误 提示DIV 
@@ -1823,11 +1927,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     $des_result = tep_db_fetch_array($des_query);
   }
 ?>
-        <link rel="stylesheet" type="text/css" href="includes/javascript/spiffyCal/spiffyCal_v2_1.css">
-        <script language="JavaScript" src="includes/javascript/spiffyCal/spiffyCal_v2_1.js"></script>
-        <script language="javascript">
-  var dateAvailable = new ctlSpiffyCalendarBox("dateAvailable", "new_product", "products_date_available","btnDate1","<?php echo isset($pInfo->products_date_available)?$pInfo->products_date_available:''; ?>",scBTNMODE_CUSTOMBLUE);
-</script>
         <tr>
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
               <tr>
@@ -1907,8 +2006,21 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
           <tr>
             <td class="main"><?php echo TEXT_PRODUCTS_DATE_AVAILABLE; ?><br>
               <small>(YYYY-MM-DD)</small></td>
-            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;'; ?>
-              <script language="javascript">dateAvailable.writeControl(); dateAvailable.dateFormat="yyyy-MM-dd";</script></td>
+            <td class="main">
+                 <div class="yui3-skin-sam yui3-g">
+                    <?php echo tep_draw_separator('pixel_trans.gif', '24', '15').
+                    tep_draw_input_field('products_date_available','',(($site_id)?'class="readonly" disabled':'class="cal-TextBox"').' value="'.$pInfo->products_date_available.'"');?>
+                    <input id="date_orders" type="hidden" name='date_orders' size='15' value='<?php echo $pInfo->products_date_available;?>'>
+                    <div class="date_box">
+                      <a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"></a> 
+                    </div>
+                <input type="hidden" id="date_order" name="update_tori_torihiki_date" value="<?php echo $pInfo->products_date_available; ?>">
+                <input type="hidden" name="toggle_open" value="0" id="toggle_open"> 
+                   <div class="yui3-u" id="new_yui3">
+                    <div id="mycalendar"></div> 
+                   </div>
+                  </div>
+            </td>
             <td class="main">&nbsp;</td>
           </tr>
           <tr>
@@ -2358,7 +2470,7 @@ $products_shipping_time .= '</select>';
                     <fieldset><legend style="color:#009900 "><?php echo TEXT_PRODUCT_CARTFLAG_TITLE;?></legend>
                     <table>
                     <tr><td>
-                    <?php echo TEXT_PRODUCT_CARTFLAG_TITLE;?> <input type="radio" name="products_cartflag" value="0"<?php if(!$pInfo->products_cartflag){?> checked<?php }?>><?php echo
+                    <?php echo TEXT_PRODUCT_CARTFLAG_TITLE;?> <input type="radio" <?php echo ($site_id)?'disabled':'';?> name="products_cartflag" value="0"<?php if(!$pInfo->products_cartflag){?> checked<?php }?>><?php echo
                       TEXT_PRODUCT_CARTFLAG_NO;?> <input type="radio" name="products_cartflag" value="1"<?php if($pInfo->products_cartflag){?> checked<?php }?>><?php echo TEXT_PRODUCT_CARTFLAG_YES;?>
                     </td></tr>
                     <tr><td>
@@ -2371,8 +2483,10 @@ $products_shipping_time .= '</select>';
                       ?>
                     <table width="100%" >
                       <tr>
-                        <td nowrap="nowrap" width="50%"><input type="radio" name="products_cart_buyflag" value='0'<?php if(!$pInfo->products_cart_buyflag){?> checked<?php }?>><?php echo TEXT_PRODUCT_BUYFLAG_SELL;?> <input type="radio" name="products_cart_buyflag" value='1'<?php if($pInfo->products_cart_buyflag){?> checked<?php }?>><?php echo TEXT_PRODUCT_BUYFLAG_BUY;?></td>
-                        <td width="50%" align="left"><a href="javascript:void(0);" onclick="$('.carttags').each(function(){if(this.checked)this.checked=false; else this.checked=true;})"><?php echo TEXT_PRODUCT_BUYFLAG_OPSITE_SELECT;?></a></td>
+                        <td nowrap="nowrap" width="50%"><input type="radio" <?php echo ($site_id)?'disabled':'';?> name="products_cart_buyflag" value='0'<?php if(!$pInfo->products_cart_buyflag){?> checked<?php }?>><?php echo TEXT_PRODUCT_BUYFLAG_SELL;?> <input type="radio"  <?php echo ($site_id)?'disabled':'';?> name="products_cart_buyflag" value='1'<?php if($pInfo->products_cart_buyflag){?> checked<?php }?>><?php echo TEXT_PRODUCT_BUYFLAG_BUY;?></td>
+                        <td width="50%" align="left"><?php if(!isset($site_id)||!$site_id){?>
+                          <a href="javascript:void(0);" onclick="$('.carttags').each(function(){if(this.checked)this.checked=false; else this.checked=true;})"><?php echo TEXT_PRODUCT_BUYFLAG_OPSITE_SELECT;?></a><?php }?>
+                          </td>
                       </tr>
                       <tr><td colspan='2'>
 <?php foreach($tag_array as $tag){ ?>
@@ -2386,11 +2500,11 @@ $products_shipping_time .= '</select>';
                     
                     <table width="100%">
                     <td></tr>
-                    <tr><td width="150"><?php echo TEXT_PRODUCT_CART_MIN_TEXT;?></td> <td><input id="products_cart_min" name="products_cart_min" type="text" value="<?php echo $pInfo->products_cart_min?$pInfo->products_cart_min:0;?>" onkeyup="clearLibNum(this);">
+                    <tr><td width="150"><?php echo TEXT_PRODUCT_CART_MIN_TEXT;?></td> <td><input id="products_cart_min" <?php echo ($site_id)?'class="readonly" disabled':'';?> name="products_cart_min" type="text" value="<?php echo $pInfo->products_cart_min?$pInfo->products_cart_min:0;?>" onkeyup="clearLibNum(this);">
                     </td></tr>
                     <tr>
                     <td><?php echo TEXT_PRODUCT_CARTORDER_TEXT;?></td>
-                    <td><input id="products_cartorder" name="products_cartorder" type="text" value="<?php echo $pInfo->products_cartorder?$pInfo->products_cartorder:1000;?>" onkeyup="clearLibNum(this);">
+                    <td><input id="products_cartorder" <?php echo ($site_id)?'class="readonly" disabled':'';?> name="products_cartorder" type="text" value="<?php echo $pInfo->products_cartorder?$pInfo->products_cartorder:1000;?>" onkeyup="clearLibNum(this);">
                     </td></tr>
  <?php if ($pInfo->products_cart_image) {?>
                     <tr>
@@ -2401,7 +2515,7 @@ $products_shipping_time .= '</select>';
                     </td></tr>
 <?php }?>
                     <tr><td><?php echo TEXT_PRODUCT_CARTIMAGE_TITLE;?></td>
-                    <td><input type="file" name="products_cart_image">
+                    <td><input type="file" <?php echo ($site_id)?'class="readonly" disabled':'';?> name="products_cart_image">
                       <br><?php echo TEXT_PRODUCT_CARTIMAGE_NOTICE;?>
                     </td></tr>
                     <tr><td colspan="2" style="text-align:center;"> <a href="javascript:void(0);" onclick="get_cart_products()"><?php echo TEXT_PRODUCT_RESULT_CONFIRM;?></a>
@@ -3278,7 +3392,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                             } 
                           ?>
                           <?php
-                            if (empty($site_id) && $_GET['action'] == 'edit_category') { 
+                            if ($_GET['action'] == 'edit_category') { 
                               $categories_to_mission_sql = 'SELECT c2m.*,m.keyword from ' .TABLE_CATEGORIES_TO_MISSION.' c2m ,' .TABLE_MISSION.' m' .' where c2m.mission_id = m.id and c2m.categories_id  ="'.$_GET['cID'].'"';
                               $categories_to_mission_query = tep_db_query($categories_to_mission_sql);
                               $categories_to_mission_res = tep_db_fetch_array($categories_to_mission_query);
@@ -3287,12 +3401,18 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                               <td class="main"><?php echo TEXT_CATEGORY_KEYWORD;?></td> 
                               <td class="main">
                               <?php 
+                              if(empty($site_id)){
                                 echo tep_draw_input_field('keyword', $categories_to_mission_res['keyword']?$categories_to_mission_res['keyword']:'', 'class="tdul"'); 
                                 if ($categories_to_mission_res) {
                                   echo tep_draw_hidden_field('method', 'upload'); 
                                 } else {
                                   echo tep_draw_hidden_field('method', 'insert'); 
                                 }
+                              }else{
+                                echo tep_draw_input_field('keyword',
+                                    $categories_to_mission_res['keyword']?$categories_to_mission_res['keyword']:'',
+                                    'class="readonly" disabled'); 
+                              }
                               ?>
                               </td>
                             </tr>
@@ -3302,7 +3422,10 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                             <tr>
                               <td class="main"><?php echo TEXT_SORT_ORDER;?></td> 
                               <td class="main">
-                              <?php echo tep_draw_input_field('sort_order', (($_GET['action'] == 'edit_category')?$cInfo->sort_order:''), 'onkeyup="clearLibNum(this);" class="tdul"'); 
+                              <?php echo tep_draw_input_field('sort_order',
+                                  (($_GET['action'] ==
+                                    'edit_category')?$cInfo->sort_order:''),
+                                  'onkeyup="clearLibNum(this);" '.( ($site_id)?'class="readonly" disabled':'class="tdul"')); 
                               ?>
                               </td>
                             </tr>
@@ -3850,6 +3973,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                  p.products_image3, 
                  p.products_price, 
                  p.products_price_offset,
+                 p.products_small_sum,
                  p.products_user_added,
                  p.products_date_added, 
                  pd.products_last_modified, 
@@ -3883,6 +4007,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                  p.products_image3, 
                  p.products_price, 
                  p.products_price_offset,
+                 p.products_small_sum,
                  p.products_user_added,
                  p.products_date_added,
                  pd.products_last_modified, 
@@ -3929,15 +4054,11 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
             && (!isset($_GET['action']) || substr($_GET['action'], 0, 4) != 'new_') 
           ) {
   // find out the rating average from customer reviews
-          $reviews_query = tep_db_query("select (avg(reviews_rating) / 5 * 100) as average_rating from " . TABLE_REVIEWS . " where products_id = '" . $products['products_id'] . "'");
-          $reviews = tep_db_fetch_array($reviews_query);
-          $pInfo_array = tep_array_merge($products, $reviews);
+          $pInfo_array = $products;
           $pInfo = new objectInfo($pInfo_array);
         }
         if (!$highlight_symbol) {
-          $reviews_query = tep_db_query("select (avg(reviews_rating) / 5 * 100) as average_rating from " . TABLE_REVIEWS . " where products_id = '" . $products['products_id'] . "'");
-          $reviews = tep_db_fetch_array($reviews_query);
-          $pInfo_array = tep_array_merge($products, $reviews);
+          $pInfo_array = $products;
           $pInfo = new objectInfo($pInfo_array);
         }
         $highlight_symbol = true; 
@@ -4021,9 +4142,10 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                       ?>
                       <?php
                         echo '<td class="dataTableContent" align="center">';
-                        if(tep_get_order_cnt_by_pid($products['products_id'], $site_id)){
+                        $tmp_order_product_num = tep_get_order_cnt_by_pid($products['products_id'], $site_id); 
+                        if($tmp_order_product_num){
                           echo '<a href="orders.php?keywords='.urlencode($products['products_id']).'&search_type=sproducts_id'.(!empty($site_id)?'&site_id='.$site_id:'').'" style="text-decoration:underline;">';
-                          echo tep_get_order_cnt_by_pid($products['products_id'], $site_id);
+                          echo $tmp_order_product_num;
                           echo '</a>';  
                         } 
                       ?>
@@ -4043,16 +4165,18 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                       ?>
                       <td class="dataTableContent">
                       <?php
-                        if (tep_check_show_isbuy($products['products_id'])) { 
-                          if (tep_check_best_sellers_isbuy($products['products_id'])) {
-                            $diff_oday = tep_calc_limit_time_by_order_id($products['products_id']); 
+                        $limit_time_query = tep_db_query("select * from ".TABLE_BESTSELLERS_TIME_TO_CATEGORY." where categories_id = '".$current_category_id."'"); 
+                        $limit_time_info = tep_db_fetch_array($limit_time_query); 
+                        if (tep_check_show_isbuy($products['products_id'], $limit_time_info)) { 
+                          if (tep_check_best_sellers_isbuy($products['products_id'], $limit_time_info)) {
+                            $diff_oday = tep_calc_limit_time_by_order_id($products['products_id'], false, $limit_time_info); 
                             if ($diff_oday !== '') {
                               echo '<img src="images/icons/mae1.gif" alt="'.$diff_oday.PIC_MAE_ALT_TEXT.'" title="'.$diff_oday.PIC_MAE_ALT_TEXT.'">'; 
                             } else {
                               echo '<img src="images/icons/mae3.gif" alt="">'; 
                             }
                           } else {
-                            $diff_oday = tep_calc_limit_time_by_order_id($products['products_id'], true); 
+                            $diff_oday = tep_calc_limit_time_by_order_id($products['products_id'], true, $limit_time_info); 
                             if ($diff_oday !== '') {
                               echo '<img src="images/icons/mae2.gif" alt="'.$diff_oday.PIC_MAE_ALT_TEXT.'" title="'.$diff_oday.PIC_MAE_ALT_TEXT.'">'; 
                             } else {
@@ -4120,7 +4244,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                             echo "<span name='TARGET_INPUT[]' id='target_".$target_cnt."_0' >0</span></td>";
                           }
                        }
-                       $tmp_p_price = tep_get_bflag_by_product_id($products['products_id'])?(0-(int)$products['products_price']):(int)$products['products_price']; 
+                       $tmp_p_price = ($products['products_bflag'])?(0-(int)$products['products_price']):(int)$products['products_price']; 
                      ?>
                      <?php
                      if (empty($site_id)) {
@@ -4134,7 +4258,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                      }
                      ?>
                      <?php
-                     $product_price = tep_get_products_price($products['products_id']);
+                     $product_price = tep_get_products_price($products['products_id'], $products);
                      echo '<span id="edit_p_'.$products['products_id'].'">'; 
                      if ($product_price['sprice']) {
                        echo '<span class="specialPrice"><b>' .  $currencies->format($product_price['sprice']) . '</b></span>';
