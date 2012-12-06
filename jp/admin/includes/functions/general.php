@@ -3026,9 +3026,13 @@ function tep_get_final_price($price, $offset, $sum, $quantity) {
   }
 }
 
-function tep_get_products_price ($products_id) {
-  $product_query = tep_db_query("select * from " . TABLE_PRODUCTS . " where products_id = '" . (int)$products_id . "'");
-  $product = tep_db_fetch_array($product_query);
+function tep_get_products_price ($products_id, $product_info = '') {
+  if (!empty($product_info)) {
+    $product = $product_info;
+  } else {
+    $product_query = tep_db_query("select * from " . TABLE_PRODUCTS . " where products_id = '" . (int)$products_id . "'");
+    $product = tep_db_fetch_array($product_query);
+  }
   if ($product['products_bflag'] == 1) {
     return array(
         'price' => tep_get_price($product['products_price'], $product['products_price_offset'], $product['products_small_sum'], $product['products_bflag']),

@@ -3973,6 +3973,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                  p.products_image3, 
                  p.products_price, 
                  p.products_price_offset,
+                 p.products_small_sum,
                  p.products_user_added,
                  p.products_date_added, 
                  pd.products_last_modified, 
@@ -4006,6 +4007,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                  p.products_image3, 
                  p.products_price, 
                  p.products_price_offset,
+                 p.products_small_sum,
                  p.products_user_added,
                  p.products_date_added,
                  pd.products_last_modified, 
@@ -4052,15 +4054,11 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
             && (!isset($_GET['action']) || substr($_GET['action'], 0, 4) != 'new_') 
           ) {
   // find out the rating average from customer reviews
-          $reviews_query = tep_db_query("select (avg(reviews_rating) / 5 * 100) as average_rating from " . TABLE_REVIEWS . " where products_id = '" . $products['products_id'] . "'");
-          $reviews = tep_db_fetch_array($reviews_query);
-          $pInfo_array = tep_array_merge($products, $reviews);
+          $pInfo_array = $products;
           $pInfo = new objectInfo($pInfo_array);
         }
         if (!$highlight_symbol) {
-          $reviews_query = tep_db_query("select (avg(reviews_rating) / 5 * 100) as average_rating from " . TABLE_REVIEWS . " where products_id = '" . $products['products_id'] . "'");
-          $reviews = tep_db_fetch_array($reviews_query);
-          $pInfo_array = tep_array_merge($products, $reviews);
+          $pInfo_array = $products;
           $pInfo = new objectInfo($pInfo_array);
         }
         $highlight_symbol = true; 
@@ -4144,9 +4142,10 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                       ?>
                       <?php
                         echo '<td class="dataTableContent" align="center">';
-                        if(tep_get_order_cnt_by_pid($products['products_id'], $site_id)){
+                        $tmp_order_product_num = tep_get_order_cnt_by_pid($products['products_id'], $site_id); 
+                        if($tmp_order_product_num){
                           echo '<a href="orders.php?keywords='.urlencode($products['products_id']).'&search_type=sproducts_id'.(!empty($site_id)?'&site_id='.$site_id:'').'" style="text-decoration:underline;">';
-                          echo tep_get_order_cnt_by_pid($products['products_id'], $site_id);
+                          echo $tmp_order_product_num;
                           echo '</a>';  
                         } 
                       ?>
@@ -4243,7 +4242,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                             echo "<span name='TARGET_INPUT[]' id='target_".$target_cnt."_0' >0</span></td>";
                           }
                        }
-                       $tmp_p_price = tep_get_bflag_by_product_id($products['products_id'])?(0-(int)$products['products_price']):(int)$products['products_price']; 
+                       $tmp_p_price = ($products['products_bflag'])?(0-(int)$products['products_price']):(int)$products['products_price']; 
                      ?>
                      <?php
                      if (empty($site_id)) {
@@ -4257,7 +4256,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                      }
                      ?>
                      <?php
-                     $product_price = tep_get_products_price($products['products_id']);
+                     $product_price = tep_get_products_price($products['products_id'], $products);
                      echo '<span id="edit_p_'.$products['products_id'].'">'; 
                      if ($product_price['sprice']) {
                        echo '<span class="specialPrice"><b>' .  $currencies->format($product_price['sprice']) . '</b></span>';
