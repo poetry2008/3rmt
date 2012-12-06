@@ -201,7 +201,11 @@ tep_db_query($update_sql);
          else $site_arr="";
          forward401Unless(editPermission($site_arr, $site_id));
         $sort_order = tep_db_prepare_input($_POST['sort_order']);
-        $sql_data_array = array('sort_order' => $sort_order);
+        if(!isset($site_id)||$site_id==''||$site_id==0){
+          $sql_data_array = array('sort_order' => $sort_order);
+        }else{
+          $sql_data_array = array();
+        }
         
         if ($_GET['action'] == 'insert_category') {
           $insert_sql_data = array('parent_id' => $current_category_id,
@@ -350,14 +354,16 @@ tep_db_query($update_sql);
           tep_copy_uploaded_file($categories_image, $image_directory);
         }
 
-        if ((($site_id == '') || ($site_id == 0)) && $_GET['action'] == 'update_category') {
+        if ((($site_id == '') || ($site_id == 0))) {
           //删除没有关系的mission 
           $sql_del_no_categories_mission = 'DELETE FROM '.TABLE_MISSION.' WHERE id NOT IN (SELECT mission_id FROM '.TABLE_CATEGORIES_TO_MISSION.')';
           $sql_del_no_mission_session = 'delete from '.TABLE_SESSION_LOG.'  WHERE mission_id NOT IN (SELECT mission_id FROM '.TABLE_CATEGORIES_TO_MISSION.')';
           $sql_del_no_mission_record = 'delete from '.TABLE_RECORD.'  WHERE mission_id NOT IN (SELECT mission_id FROM '.TABLE_CATEGORIES_TO_MISSION.')';
           
           $kWord = trim($_POST['keyword']);
-          $categories_id = $_POST['categories_id'];
+          if(isset($_POST['categories_id'])&&$_POST['categories_id']){
+            $categories_id = $_POST['categories_id'];
+          }
           $method = $_POST['method'];
           
           if($method){
@@ -628,10 +634,6 @@ tep_db_query($update_sql);
            $_GET['action'] = 'new_product';
          } else {
           $products_id = tep_db_prepare_input($_GET['pID']);
-          $products_date_available = tep_db_prepare_input($_POST['products_date_available']);
-          //$site_id = tep_db_prepare_input($_POST['site_id']);
-
-          $products_date_available = (date('Y-m-d') < $products_date_available) ? $products_date_available : 'null';
 
       if(isset($_POST['products_image2_del']) && $_POST['products_image2_del'] == 'none') {
         $_POST['products_image2'] = 'none';
@@ -668,7 +670,6 @@ tep_db_query($update_sql);
                                   'products_price' =>
                                   tep_db_prepare_input($_POST['products_bflag'])? 0 - abs(tep_db_prepare_input($_POST['products_price'])):abs(tep_db_prepare_input($_POST['products_price'])),
                                   'products_price_offset' => tep_db_prepare_input($HTTP_POST_VARS['products_price_offset']),
-                                  'products_date_available' => $products_date_available,
                                   'products_shipping_time' => tep_db_prepare_input($_POST['products_shipping_time']),
                                   'products_weight' => tep_db_prepare_input($_POST['products_shipping_weight']),
                                   'products_status' => tep_db_prepare_input($_POST['products_status']),
@@ -676,15 +677,22 @@ tep_db_query($update_sql);
                                   'manufacturers_id' => tep_db_prepare_input($_POST['manufacturers_id']),
                                   'products_bflag' => tep_db_prepare_input($_POST['products_bflag']),
                                   'option_type' => tep_db_prepare_input($_POST['option_type']),
-                                  'sort_order' => tep_db_prepare_input($_POST['sort_order']),
                                   'relate_products_id' => tep_db_prepare_input($_POST['relate_products_id']),
                                   'products_small_sum' => tep_db_prepare_input($_POST['products_small_sum']),
                                   'products_cartflag' => tep_db_prepare_input($_POST['products_cartflag']),
                                   'products_cart_buyflag' => tep_db_prepare_input($_POST['products_cart_buyflag']),
-                                  'products_cart_min' => tep_db_prepare_input($_POST['products_cart_min']),
                                   'products_cartorder' => tep_db_prepare_input($_POST['products_cartorder']),
                                   );
-           
+          //处理 发售日 时间
+          if(!isset($site_id)||$site_id==''||$site_id==0){
+            $products_date_available = tep_db_prepare_input($_POST['products_date_available']);
+            $products_date_available = (date('Y-m-d') < $products_date_available) ? $products_date_available : 'null';
+            $sql_data_array = array_merge($sql_data_array,
+                array(
+                  'products_date_available' => $products_date_available,
+                  'products_cart_min' => tep_db_prepare_input($_POST['products_cart_min']),
+                  'sort_order' => tep_db_prepare_input($_POST['sort_order'])));
+          }
 
 
           if ($_POST['products_image']) {
@@ -1931,6 +1939,11 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     $des_result = tep_db_fetch_array($des_query);
   }
 ?>
+        <link rel="stylesheet" type="text/css" href="includes/javascript/spiffyCal/spiffyCal_v2_1.css">
+        <script language="JavaScript" src="includes/javascript/spiffyCal/spiffyCal_v2_1.js"></script>
+        <script language="javascript">
+  var dateAvailable = new ctlSpiffyCalendarBox("dateAvailable", "new_product", "products_date_available","btnDate1","<?php echo isset($pInfo->products_date_available)?$pInfo->products_date_available:''; ?>",scBTNMODE_CUSTOMBLUE);
+</script>
         <tr>
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
               <tr>
@@ -2013,7 +2026,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
             <td class="main">
                  <div class="yui3-skin-sam yui3-g">
                     <?php echo tep_draw_separator('pixel_trans.gif', '24', '15').
-                    tep_draw_input_field('products_date_available','',(($site_id)?'class="readonly" disabled':'class="cal-TextBox"').' value="'.$pInfo->products_date_available.'"');?>
+                    tep_draw_input_field('products_date_available','',(($site_id)?'class="readonly" disabled value="'.$pInfo->products_date_available.'"':'class="cal-TextBox" value="'.$pInfo->products_date_available.'"'));?>
                     <input id="date_orders" type="hidden" name='date_orders' size='15' value='<?php echo $pInfo->products_date_available;?>'>
                     <div class="date_box">
                       <a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"></a> 
@@ -3396,7 +3409,8 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                             } 
                           ?>
                           <?php
-                            if ($_GET['action'] == 'edit_category') { 
+                            if ($_GET['action'] == 'edit_category'||
+                                $_GET['action'] == 'new_category') { 
                               $categories_to_mission_sql = 'SELECT c2m.*,m.keyword from ' .TABLE_CATEGORIES_TO_MISSION.' c2m ,' .TABLE_MISSION.' m' .' where c2m.mission_id = m.id and c2m.categories_id  ="'.$_GET['cID'].'"';
                               $categories_to_mission_query = tep_db_query($categories_to_mission_sql);
                               $categories_to_mission_res = tep_db_fetch_array($categories_to_mission_query);
