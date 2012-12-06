@@ -409,10 +409,8 @@ $rows = $count[0]>count($products)?$count[0]:count($products);
     if ($k != 0 && isset($lines_arr[$j][$k])) {
       echo "<a href=\"javascript:void(0)\" onclick=\"exchange(".$k.",".$j.")\" >↑</a>";
     }
-    if ($k != ($count[0]-1) && isset($lines_arr[$j][$k])) {
+    if ($k != ($count[0]-1) && isset($lines_arr[$j][$k]) && count($lines_arr[$j]) > 1) {
       echo "<a href=\"javascript:void(0)\" onclick=\"exchange_down(".$k.",".$j.")\" >↓</a>";
-    } else if ($k == ($count[0]-1) && isset($lines_arr[$j][$k])) {
-      echo "↓";
     }
     if (isset($lines_arr[$j][$k])) {
       echo "  <a href=\"javascript:void(0)\" onclick=\"deleteHistory(".$k.",".$j.")\" >X</a>";
