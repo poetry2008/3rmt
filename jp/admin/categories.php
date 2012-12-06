@@ -1517,7 +1517,7 @@ function handle_option()
   function show_product_info(pid,ele){
     $.ajax({
       dataType: 'text',
-      url: 'ajax_orders.php?action=product_info_box&pID='+pid+'&site_id=<?php echo (isset($_GET['site_id'])?$_GET['site_id']:'0')."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
+      url: 'ajax.php?action=product_info_box&pID='+pid+'&site_id=<?php echo (isset($_GET['site_id'])?$_GET['site_id']:'0')."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
       success: function(text) {
         //show_p_info 
         $('#show_popup_info').html(text);
@@ -1531,8 +1531,7 @@ function handle_option()
   function show_product_move(pid){
     $.ajax({
       dataType: 'text',
-      url: 'ajax_orders.php?action=product_move_box&pID='+pid+'&site_id=<?php 
-      echo $site_id."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
+      url: 'ajax.php?action=product_move_box&pID='+pid+'&site_id=<?php echo $site_id."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
       success: function(text) {
         //show_p_info 
         $('#show_popup_info').html(text);
@@ -1543,8 +1542,7 @@ function handle_option()
   function show_product_copy(pid){
     $.ajax({
       dataType: 'text',
-      url: 'ajax_orders.php?action=product_copy_to_box&pID='+pid+'&site_id=<?php 
-      echo $site_id."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
+      url: 'ajax.php?action=product_copy_to_box&pID='+pid+'&site_id=<?php echo $site_id."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
       success: function(text) {
         //show_p_info 
         $('#show_popup_info').html(text);
@@ -1555,8 +1553,7 @@ function handle_option()
   function show_product_delete(pid){
     $.ajax({
       dataType: 'text',
-      url: 'ajax_orders.php?action=product_delete_box&pID='+pid+'&site_id=<?php 
-      echo $site_id."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
+      url: 'ajax.php?action=product_delete_box&pID='+pid+'&site_id=<?php echo $site_id."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
       success: function(text) {
         //show_p_info 
         $('#show_popup_info').html(text);
@@ -1567,8 +1564,7 @@ function handle_option()
   function show_product_description_delete(pid){
     $.ajax({
       dataType: 'text',
-      url: 'ajax_orders.php?action=product_description_delete_box&pID='+pid+'&site_id=<?php 
-      echo $site_id."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
+      url: 'ajax.php?action=product_description_delete_box&pID='+pid+'&site_id=<?php echo $site_id."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'].(isset($_GET['rdirect'])?'&rdirect='.$_GET['rdirect']:'');?>',
       success: function(text) {
         //show_p_info 
         $('#show_popup_info').html(text);
@@ -3991,6 +3987,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                  p.products_image3, 
                  p.products_price, 
                  p.products_price_offset,
+                 p.products_small_sum,
                  p.products_user_added,
                  p.products_date_added, 
                  pd.products_last_modified, 
@@ -4024,6 +4021,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                  p.products_image3, 
                  p.products_price, 
                  p.products_price_offset,
+                 p.products_small_sum,
                  p.products_user_added,
                  p.products_date_added,
                  pd.products_last_modified, 
@@ -4070,15 +4068,11 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
             && (!isset($_GET['action']) || substr($_GET['action'], 0, 4) != 'new_') 
           ) {
   // find out the rating average from customer reviews
-          $reviews_query = tep_db_query("select (avg(reviews_rating) / 5 * 100) as average_rating from " . TABLE_REVIEWS . " where products_id = '" . $products['products_id'] . "'");
-          $reviews = tep_db_fetch_array($reviews_query);
-          $pInfo_array = tep_array_merge($products, $reviews);
+          $pInfo_array = $products;
           $pInfo = new objectInfo($pInfo_array);
         }
         if (!$highlight_symbol) {
-          $reviews_query = tep_db_query("select (avg(reviews_rating) / 5 * 100) as average_rating from " . TABLE_REVIEWS . " where products_id = '" . $products['products_id'] . "'");
-          $reviews = tep_db_fetch_array($reviews_query);
-          $pInfo_array = tep_array_merge($products, $reviews);
+          $pInfo_array = $products;
           $pInfo = new objectInfo($pInfo_array);
         }
         $highlight_symbol = true; 
@@ -4162,9 +4156,10 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                       ?>
                       <?php
                         echo '<td class="dataTableContent" align="center">';
-                        if(tep_get_order_cnt_by_pid($products['products_id'], $site_id)){
+                        $tmp_order_product_num = tep_get_order_cnt_by_pid($products['products_id'], $site_id); 
+                        if($tmp_order_product_num){
                           echo '<a href="orders.php?keywords='.urlencode($products['products_id']).'&search_type=sproducts_id'.(!empty($site_id)?'&site_id='.$site_id:'').'" style="text-decoration:underline;">';
-                          echo tep_get_order_cnt_by_pid($products['products_id'], $site_id);
+                          echo $tmp_order_product_num;
                           echo '</a>';  
                         } 
                       ?>
@@ -4184,16 +4179,18 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                       ?>
                       <td class="dataTableContent">
                       <?php
-                        if (tep_check_show_isbuy($products['products_id'])) { 
-                          if (tep_check_best_sellers_isbuy($products['products_id'])) {
-                            $diff_oday = tep_calc_limit_time_by_order_id($products['products_id']); 
+                        $limit_time_query = tep_db_query("select * from ".TABLE_BESTSELLERS_TIME_TO_CATEGORY." where categories_id = '".$current_category_id."'"); 
+                        $limit_time_info = tep_db_fetch_array($limit_time_query); 
+                        if (tep_check_show_isbuy($products['products_id'], $limit_time_info)) { 
+                          if (tep_check_best_sellers_isbuy($products['products_id'], $limit_time_info)) {
+                            $diff_oday = tep_calc_limit_time_by_order_id($products['products_id'], false, $limit_time_info); 
                             if ($diff_oday !== '') {
                               echo '<img src="images/icons/mae1.gif" alt="'.$diff_oday.PIC_MAE_ALT_TEXT.'" title="'.$diff_oday.PIC_MAE_ALT_TEXT.'">'; 
                             } else {
                               echo '<img src="images/icons/mae3.gif" alt="">'; 
                             }
                           } else {
-                            $diff_oday = tep_calc_limit_time_by_order_id($products['products_id'], true); 
+                            $diff_oday = tep_calc_limit_time_by_order_id($products['products_id'], true, $limit_time_info); 
                             if ($diff_oday !== '') {
                               echo '<img src="images/icons/mae2.gif" alt="'.$diff_oday.PIC_MAE_ALT_TEXT.'" title="'.$diff_oday.PIC_MAE_ALT_TEXT.'">'; 
                             } else {
@@ -4261,7 +4258,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                             echo "<span name='TARGET_INPUT[]' id='target_".$target_cnt."_0' >0</span></td>";
                           }
                        }
-                       $tmp_p_price = tep_get_bflag_by_product_id($products['products_id'])?(0-(int)$products['products_price']):(int)$products['products_price']; 
+                       $tmp_p_price = ($products['products_bflag'])?(0-(int)$products['products_price']):(int)$products['products_price']; 
                      ?>
                      <?php
                      if (empty($site_id)) {
@@ -4275,7 +4272,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                      }
                      ?>
                      <?php
-                     $product_price = tep_get_products_price($products['products_id']);
+                     $product_price = tep_get_products_price($products['products_id'], $products);
                      echo '<span id="edit_p_'.$products['products_id'].'">'; 
                      if ($product_price['sprice']) {
                        echo '<span class="specialPrice"><b>' .  $currencies->format($product_price['sprice']) . '</b></span>';

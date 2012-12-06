@@ -2137,3 +2137,10 @@ border:2px solid #FF8080;
 	border:1px solid #ff8e90;
 	background-color:#FFE9E9;
 }
+.login{
+	overflow:hidden;
+	margin-top:8px;
+}
+.login img{
+	margin-bottom:5px;
+}

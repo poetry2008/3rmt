@@ -406,15 +406,23 @@ $rows = $count[0]>count($products)?$count[0]:count($products);
       echo "<span style='float:left' class='oroshi_data' id='data_".$k."_".$j."'>".$lines_arr[$j][$k]."</span>";
     }
     echo "<span style='float:right'>";
+    echo '<table border="0" cellspacing="0" cellpadding="0">';
+    echo '<tr>';
     if ($k != 0 && isset($lines_arr[$j][$k])) {
-      echo "<a href=\"javascript:void(0)\" onclick=\"exchange(".$k.",".$j.")\" >↑</a>";
+      echo "<td width='12'><a href=\"javascript:void(0)\" onclick=\"exchange(".$k.",".$j.")\" >↑</a></td>";
+    }else{
+      echo '<td width="12">&nbsp;</td>'; 
     }
     if ($k != ($count[0]-1) && isset($lines_arr[$j][$k]) && count($lines_arr[$j]) > 1) {
-      echo "<a href=\"javascript:void(0)\" onclick=\"exchange_down(".$k.",".$j.")\" >↓</a>";
+      echo "<td width='12'><a href=\"javascript:void(0)\" onclick=\"exchange_down(".$k.",".$j.")\" >↓</a></td>";
+    }else{
+      echo '<td width="12">&nbsp;</td>'; 
     }
     if (isset($lines_arr[$j][$k])) {
-      echo "  <a href=\"javascript:void(0)\" onclick=\"deleteHistory(".$k.",".$j.")\" >X</a>";
+      echo "<td width='13' align='center'><a href=\"javascript:void(0)\" onclick=\"deleteHistory(".$k.",".$j.")\" >X</a></td>";
     }
+    echo '</tr>';
+    echo '</table>';
     echo "</span>";
     echo "<input type='hidden' name='oroshi_datas[".$datas_id[$j]."][]' id='oroshi_datas_".$k."_".$j."' value='".$lines_arr[$j][$k]."'>\n";
     echo "</td>";
