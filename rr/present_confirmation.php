@@ -28,8 +28,8 @@
   //process
 if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
   switch($_GET['action']) {
-    case 'process'://申し込みプロセス
-    //現在の日時
+    case 'process'://申请流程
+    //现在的时间
     $now = date("Y/m/d H:i:s", time());
     
     //insert present_aplicant
@@ -99,7 +99,7 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
     tep_redirect(tep_href_link(FILENAME_PRESENT_SUCCESS,'goods_id='.$_GET['goods_id']));
     break;
   
-  case 'update'://申込者情報変更
+  case 'update'://申请者信息变更
     $firstname = tep_db_prepare_input($_POST['firstname']);
     $lastname = tep_db_prepare_input($_POST['lastname']);
     $email_address = tep_db_prepare_input($_POST['email_address']);
@@ -153,7 +153,7 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
     }
     
     if($error == false) {
-      //セッションを一時的に開放
+      //临时开放session
       tep_session_unregister('firstname');
       tep_session_unregister('lastname');
       tep_session_unregister('email_address');
@@ -164,7 +164,7 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
       tep_session_unregister('city');
       tep_session_unregister('zone_id');
     
-      //セッション更新
+      //session更新
       tep_session_register('firstname');
       tep_session_register('lastname');
       tep_session_register('email_address');
@@ -243,14 +243,14 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
 </head>
 <body><div class="body_shadow" align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-  <!-- header_eof //--> 
-  <!-- body //--> 
+  <!-- header_eof --> 
+  <!-- body --> 
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
     <tr> 
-      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
+      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
-        <!-- left_navigation_eof //--> </td> 
-      <!-- body_text //--> 
+        <!-- left_navigation_eof --> </td> 
+      <!-- body_text --> 
       <td valign="top" id="contents"> <h1 class="pageHeading"> 
       <?php if (!isset($_GET['news_id'])) $_GET['news_id'] = NULL; //del notice?>
           <?php if ($_GET['news_id']) { echo $latest_news['headline']; } else { echo HEADING_TITLE; } ?> 
@@ -447,15 +447,15 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
            </div>
            <p class="pageBottom"></p>
            </td> 
-      <!-- body_text_eof //--> 
-      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 
+      <!-- body_text_eof --> 
+      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-        <!-- right_navigation_eof //--> </td> 
+        <!-- right_navigation_eof --> </td> 
   </table> 
-  <!-- body_eof //--> 
-  <!-- footer //--> 
+  <!-- body_eof --> 
+  <!-- footer --> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
+  <!-- footer_eof --> 
 </div> 
 </body>
 </html>

@@ -5,7 +5,7 @@
 
 define('NAVBAR_TITLE_1', 'ログイン');
 define('HEADING_TITLE', 'パスワード再発行手続き');
-define('ENTRY_FORGOTTEN_EMAIL_ADDRESS', 'ご登録のメールアドレス:'); 
+define('ENTRY_FORGOTTEN_EMAIL_ADDRESS', 'ご登録のメールアドレス:');
 define('TEXT_NO_EMAIL_ADDRESS_FOUND', '<font color="#ff0000"><b>ご注意:</b></font> ご入力されたメールアドレスは見つかりませんでした。もう一度入力してください。');
 define('EMAIL_PASSWORD_REMINDER_SUBJECT', 'パスワード再発行手続き');
 define('EMAIL_PASSWORD_REMINDER_BODY',

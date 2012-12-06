@@ -1228,7 +1228,6 @@ a.Icon:hover {
 	padding:2px;
 	margin-bottom:5px;
 }
-/* xy_rmt*/
 .h_title{
 	background:url(../images/design/h1_bg.gif) no-repeat;
 	font-size:10px;
@@ -1965,7 +1964,7 @@ line-height:16px;
     padding: 5px;
 	font-size:12px;
 }
-/*密码*/
+/*password*/
 #greybackground{
 	background:#000000;
 	width:100%; 
@@ -2189,7 +2188,7 @@ line-height:16px;
 }
 #group_list_box td{ height:20px; padding:0; font-size:14px;}
 .address_item_info{ padding-left:4px;}
-/*配送*/
+/*shipping*/
 
 .shipping_error{
 	color:#ff0000;

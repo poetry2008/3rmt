@@ -24,20 +24,20 @@
 function popupWindow(url) {
   window.open(url,'popupWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=100,height=100,screenX=150,screenY=150,top=150,left=150')
 }
-//--></script>
+--></script>
 </head>
 <body>
 <div align="center">
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-  <!-- header_eof //-->
-  <!-- body //-->
+  <!-- header_eof -->
+  <!-- body -->
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border" summary="box">
     <tr>
-      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"><!-- left_navigation //-->
+      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"><!-- left_navigation -->
       <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-      <!-- left_navigation_eof //-->
+      <!-- left_navigation_eof -->
       </td>
-      <!-- body_text //-->
+      <!-- body_text -->
       <td valign="top" id="contents">
       <h1 class="pageHeading"> <?php echo ($_GET['goods_id'] && $_GET['goods_id'] != '' ) ? $present['title'] : HEADING_TITLE ; ?> </h1>
       <div class="comment">
@@ -45,7 +45,7 @@ function popupWindow(url) {
         <tr>
           <td><?php
       ######################
-      ##    詳細ページ    ##
+      ##    详细页面     ##
       ######################
       if($_GET['goods_id'] && !empty($_GET['goods_id'])) {
 //ccdd
@@ -63,7 +63,7 @@ function popupWindow(url) {
             <tr>
               <td align="center" class="smallText"><script type="text/javascript" language="javascript"><!--
       document.write('<?php echo '<a href="javascript:popupWindow(\\\'' . tep_href_link('present_popup_image.php', 'pID=' . (int)$_GET['goods_id']) . '\\\')">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '<br>イメージを拡大</a>'; ?>');
-      //--></script>
+      --></script>
               <noscript>
               <?php echo tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'align="right"'); ?>
               </noscript>
@@ -88,7 +88,7 @@ function popupWindow(url) {
           </table>
           <?php
       ######################
-      ##    一覧ページ    ##
+      ##    列表页面     ##
       ######################
       } else {
       ?>
@@ -163,16 +163,16 @@ function popupWindow(url) {
       </div>
       <p class="pageBottom"></p>
       </td>
-      <!-- body_text_eof //-->
-      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"><!-- right_navigation //-->
+      <!-- body_text_eof -->
+      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"><!-- right_navigation -->
       <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
-      <!-- right_navigation_eof //-->
+      <!-- right_navigation_eof -->
       </td>
   </table>
-  <!-- body_eof //-->
-  <!-- footer //-->
+  <!-- body_eof -->
+  <!-- footer -->
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-  <!-- footer_eof //-->
+  <!-- footer_eof -->
 </div>
 </body>
 </html>

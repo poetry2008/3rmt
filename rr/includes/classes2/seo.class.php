@@ -133,16 +133,7 @@ class SEO_DataBase{
     return addslashes($data);
   } # end function
 
-/**
- * Function to perform DB inserts and updates - abstracted from osCommerce-MS-2.2 project
- * @author Bobby Easland 
- * @version 1.0
- * @param string $table Database table
- * @param array $data Associative array of columns / values
- * @param string $action insert or update
- * @param string $parameters
- * @return resource
- */ 
+ 
   function DBPerform($table, $data, $action = 'insert', $parameters = '') {
     reset($data);
     if ($action == 'insert') {
@@ -380,16 +371,7 @@ class SEO_URL{
     } # end if
   } # end constructor
 
-/**
- * Function to return SEO URL link SEO'd with stock generattion for error fallback
- * @author Bobby Easland 
- * @version 1.0
- * @param string $page Base script for URL 
- * @param string $parameters URL parameters
- * @param string $connection NONSSL/SSL
- * @param boolean $add_session_id Switch to add osCsid
- * @return string Formed href link 
- */ 
+
   function href_link($page = '', $parameters = '', $connection = 'NONSSL', $add_session_id = true){
     global $request_type;
     $this->start($this->timestamp);
@@ -1123,13 +1105,7 @@ class SEO_URL{
     }
   } # end function
 
-/**
- * Function to check if a value is NULL 
- * @author Bobby Easland as abstracted from osCommerce-MS2.2 
- * @version 1.0
- * @param mixed $value
- * @return boolean
- */ 
+ 
   function not_null($value) {
     if (is_array($value)) {
       if (sizeof($value) > 0) {

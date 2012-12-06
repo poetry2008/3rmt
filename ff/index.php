@@ -66,18 +66,18 @@ if(isset($_GET['cmd'])&&$_GET['cmd']){
   }
 ?>
 <div align="center">
-  <!-- header //-->
+  <!-- header -->
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-  <!-- header_eof //-->
-  <!-- body //-->
+  <!-- header_eof -->
+  <!-- body -->
   <table width="900" summary="container" border="0" cellpadding="0" cellspacing="0" class="side_border">
     <tr>
       <td valign="top" class="left_colum_border">
-        <!-- left_navigation //-->
+        <!-- left_navigation -->
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-        <!-- left_navigation_eof //-->
+        <!-- left_navigation_eof -->
       </td>
-      <!-- body_text //-->
+      <!-- body_text -->
 <?php
 if ($category_depth == 'nested') {
   require(DIR_WS_ACTIONS.'index_nested.php');
@@ -118,7 +118,7 @@ if ($category_depth == 'nested') {
     echo HEADING_TITLE;
   }
 ?></h1>
-    <div class="comment_long"><font color="#FFffff"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seoフレーズ ?></font>
+    <div class="comment_long"><font color="#FFffff"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seo句子 ?></font>
        <?php
           $has_ca_single = false; 
         ?>
@@ -304,10 +304,10 @@ $update_url = tep_get_popup_url();
 ?> 
     </tr> 
   </table> 
-  <!-- body_eof //--> 
-  <!-- footer //--> 
+  <!-- body_eof --> 
+  <!-- footer --> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
+  <!-- footer_eof --> 
 </div> 
 </div>
 </body>

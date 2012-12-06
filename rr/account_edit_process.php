@@ -19,7 +19,7 @@
     tep_redirect(tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL'));
   }
 
-  // tamura 2002/12/30 「全角」英数字を「半角」に変換
+  //全角的英数字改成半角
   $an_cols = array('password','confirmation','email_address','postcode','telephone','fax');
   if (ACCOUNT_DOB) $an_cols[] = 'dob';
   foreach ($an_cols as $col) {
@@ -245,7 +245,7 @@
         // ccdd
         tep_db_perform(TABLE_CUSTOMERS, $sql_data_array, 'update', "customers_id = '" .  tep_db_input($customer_id) . "' and site_id = '".SITE_ID."'");
 
-    // 2003-06-06 add_telephone
+    // add_telephone
         $sql_data_array = array('entry_street_address' => $street_address,
                                 'entry_firstname' => $firstname,
                                 'entry_lastname' => $lastname,

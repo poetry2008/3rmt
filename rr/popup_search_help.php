@@ -1,7 +1,6 @@
 <?php
 /*
   $Id$
-
 */
 
   require('includes/application_top.php');
@@ -14,7 +13,7 @@
 </head>
 <style type="text/css"><!--
 BODY { margin-bottom: 10px; margin-left: 10px; margin-right: 10px; margin-top: 10px; }
-//--></style>
+--></style>
 <body marginwidth="10" marginheight="10" topmargin="10" bottommargin="10" leftmargin="10" rightmargin="10">
 
 <?php

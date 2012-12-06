@@ -1,7 +1,6 @@
 <?php
 /*
   $Id$
-
 */
 
 define('NAVBAR_TITLE1', 'プレゼント');

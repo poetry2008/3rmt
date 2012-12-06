@@ -1,7 +1,6 @@
 <?php
 /*
   $Id$
-
 */
 define('NAVBAR_TITLE', 'メール認証完了');
 define('HEADING_TITLE', 'メール認証完了');

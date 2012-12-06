@@ -1,7 +1,6 @@
 <?php
 /*
   $Id$
-  Google sitemap 网站地图
 */
   require('includes/application_top.php');
   header('Content-Type:   text/xml');
