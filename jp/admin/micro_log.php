@@ -217,6 +217,7 @@ width:75px;
   padding:3px 0;
   font-size:12px;
 }
+.log .content textarea{ font-size:12px;}
 .log .alarm{
   display:none;
   background:url(images/icons/alarm.gif) no-repeat left center;
