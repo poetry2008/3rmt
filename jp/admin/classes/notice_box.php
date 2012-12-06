@@ -58,8 +58,7 @@ class notice_box {
       }else{
         $p_parameters = '';
       }
-      $table_str = '<table border="' .$p_border. '" width="'
-        .$p_width. '" cellspacing="' .$p_cellspacing. 
+      $table_str = '<table border="' .$p_border. '" '.(!empty($p_width)?'width="'.$p_width.'"':'').' cellspacing="' .$p_cellspacing. 
         '" cellpadding="' .$p_cellpadding .'" ';
       if($p_parameters !=''){
         $table_str .= ' ' .$p_parameters;
