@@ -22,7 +22,6 @@ function mb_strlen($str, $encoding)
 }
 
 //
-// mb_convert_kana() function v1.0.0 by S.HIRO
 // It is not a function compatible with 100%.
 //
 function mb_convert_kana($str, $option, $encode = 'auto')
@@ -49,7 +48,6 @@ function mb_convert_kana($str, $option, $encode = 'auto')
 }
 
 //
-// mb_convert_encoding() function v1.0.0 by TOMO 
 // It is not a function compatible with 100%.
 //
 function mb_convert_encoding($str, $to, $from = 'auto')
@@ -61,7 +59,6 @@ function mb_convert_encoding($str, $to, $from = 'auto')
 }
 
 //
-// mb_encode_mimeheader() function v1.0.0 by S.HIRO
 // It is not a function compatible with 100%.
 //
 function mb_encode_mimeheader($str, $encode = 'ISO-2022-JP', $trn = 'B', $lf ='\r\n')
