@@ -13,7 +13,7 @@ if (extension_loaded('mbstring')) {
 // on FreeBSD try 'en_US.ISO_8859-1'
 // on Windows try 'en', or 'English'
 define('DATE_FORMAT_SHORT', '%Y/%m/%d');  // this is used for strftime()
-define('DATE_FORMAT_LONG', '%Y年%m月%d日 %A'); // this is used for strftime()
+define('DATE_FORMAT_LONG', '%Y年%m月%d日 &nbsp;（%A）'); // this is used for strftime()
 define('DATE_FORMAT', 'Y/m/d'); // this is used for date()
 define('DATE_TIME_FORMAT', DATE_FORMAT_SHORT . ' %H:%M:%S');
 
@@ -356,7 +356,7 @@ define('EMAIL_SIGNATURE',C_EMAIL_FOOTER);
 //create_account
 define('ENTRY_DATE_OF_BIRTH_ERROR2', '&nbsp;<small><font color="#FF0000">18歳未満の方の登録はご遠慮ください。</font></small>');
 
-//page - 页面没有信息的时候显示
+//页面没有信息的时候显示
 define('PAGE_TEXT_NOT_FOUND', 'ページが見つかりません...');
 define('PAGE_ERR_NAVBER_TITLE', 'ページが見つかりません...');
 
