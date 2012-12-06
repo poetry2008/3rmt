@@ -5578,20 +5578,27 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
 
   }
 
-  function tep_check_best_sellers_isbuy($products_id)
+  function tep_check_best_sellers_isbuy($products_id, $limit_time_info = '')
   {
     $now_time = time(); 
-    $pro_to_ca_raw = tep_db_query("select * from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id = '".$products_id."'");
-    $pro_to_ca_res = tep_db_fetch_array($pro_to_ca_raw);
     $limit_time = 0; 
-
-    if ($pro_to_ca_res) {
-      $limit_time_raw = tep_db_query("select * from ".TABLE_BESTSELLERS_TIME_TO_CATEGORY." where categories_id = '".$pro_to_ca_res['categories_id']."'"); 
-      $limit_time_res = tep_db_fetch_array($limit_time_raw); 
-      if ($limit_time_res) {
-        $limit_time = $limit_time_res['limit_time']; 
+    
+    if ($limit_time_info !== '') {
+      if ($limit_time_info) {
+        $limit_time = $limit_time_info['limit_time']; 
+      }
+    } else {
+      $pro_to_ca_raw = tep_db_query("select * from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id = '".$products_id."'");
+      $pro_to_ca_res = tep_db_fetch_array($pro_to_ca_raw);
+      if ($pro_to_ca_res) {
+        $limit_time_raw = tep_db_query("select * from ".TABLE_BESTSELLERS_TIME_TO_CATEGORY." where categories_id = '".$pro_to_ca_res['categories_id']."'"); 
+        $limit_time_res = tep_db_fetch_array($limit_time_raw); 
+        if ($limit_time_res) {
+          $limit_time = $limit_time_res['limit_time']; 
+        }
       }
     }
+    
 
     if ($limit_time == 0) {
       return false; 
@@ -5645,22 +5652,32 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
 
     return 'cPath=' . $cPath_new;
   }
-  function tep_calc_limit_time_by_order_id($products_id, $single = false)
+  function tep_calc_limit_time_by_order_id($products_id, $single = false, $limit_time_info = '')
   {
     $now_time = time(); 
-    $pro_to_ca_raw = tep_db_query("select * from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id = '".$products_id."'");
-    $pro_to_ca_res = tep_db_fetch_array($pro_to_ca_raw);
-    if ($pro_to_ca_res) {
-      $limit_time_raw = tep_db_query("select * from ".TABLE_BESTSELLERS_TIME_TO_CATEGORY." where categories_id = '".$pro_to_ca_res['categories_id']."'"); 
-      $limit_time_res = tep_db_fetch_array($limit_time_raw); 
-      if ($limit_time_res) {
-        $limit_time = $limit_time_res['limit_time']; 
+    
+    if ($limit_time_info !== '') {
+      if ($limit_time_info) {
+        $limit_time = $limit_time_info['limit_time']; 
       } else {
         return ''; 
       }
     } else {
-      return ''; 
-    } 
+      $pro_to_ca_raw = tep_db_query("select * from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id = '".$products_id."'");
+      $pro_to_ca_res = tep_db_fetch_array($pro_to_ca_raw);
+      if ($pro_to_ca_res) {
+        $limit_time_raw = tep_db_query("select * from ".TABLE_BESTSELLERS_TIME_TO_CATEGORY." where categories_id = '".$pro_to_ca_res['categories_id']."'"); 
+        $limit_time_res = tep_db_fetch_array($limit_time_raw); 
+        if ($limit_time_res) {
+          $limit_time = $limit_time_res['limit_time']; 
+        } else {
+          return ''; 
+        }
+      } else {
+        return ''; 
+      }
+    }
+     
 
     if ($limit_time == 0) {
       return ''; 
@@ -5691,19 +5708,28 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
     return $diff_time_str;
   }
 
-  function tep_check_show_isbuy($products_id) 
+  function tep_check_show_isbuy($products_id, $limit_time_info = '') 
   {
-    $pro_to_ca_raw = tep_db_query("select * from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id = '".$products_id."'");
-    $pro_to_ca_res = tep_db_fetch_array($pro_to_ca_raw);
-    if ($pro_to_ca_res) {
-      $limit_time_raw = tep_db_query("select * from ".TABLE_BESTSELLERS_TIME_TO_CATEGORY." where categories_id = '".$pro_to_ca_res['categories_id']."'"); 
-      $limit_time_res = tep_db_fetch_array($limit_time_raw); 
-      if ($limit_time_res) {
-        if ($limit_time_res['limit_time']) {
+    if ($limit_time_info !== '') {
+      if ($limit_time_info) {
+        if ($limit_time_info['limit_time']) {
           return true; 
         }
       }
+    } else {
+      $pro_to_ca_raw = tep_db_query("select * from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id = '".$products_id."'");
+      $pro_to_ca_res = tep_db_fetch_array($pro_to_ca_raw);
+      if ($pro_to_ca_res) {
+        $limit_time_raw = tep_db_query("select * from ".TABLE_BESTSELLERS_TIME_TO_CATEGORY." where categories_id = '".$pro_to_ca_res['categories_id']."'"); 
+        $limit_time_res = tep_db_fetch_array($limit_time_raw); 
+        if ($limit_time_res) {
+          if ($limit_time_res['limit_time']) {
+            return true; 
+          }
+        }
+      }
     }
+    
     return false;
   }
 

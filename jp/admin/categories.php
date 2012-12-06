@@ -4165,16 +4165,18 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                       ?>
                       <td class="dataTableContent">
                       <?php
-                        if (tep_check_show_isbuy($products['products_id'])) { 
-                          if (tep_check_best_sellers_isbuy($products['products_id'])) {
-                            $diff_oday = tep_calc_limit_time_by_order_id($products['products_id']); 
+                        $limit_time_query = tep_db_query("select * from ".TABLE_BESTSELLERS_TIME_TO_CATEGORY." where categories_id = '".$current_category_id."'"); 
+                        $limit_time_info = tep_db_fetch_array($limit_time_query); 
+                        if (tep_check_show_isbuy($products['products_id'], $limit_time_info)) { 
+                          if (tep_check_best_sellers_isbuy($products['products_id'], $limit_time_info)) {
+                            $diff_oday = tep_calc_limit_time_by_order_id($products['products_id'], false, $limit_time_info); 
                             if ($diff_oday !== '') {
                               echo '<img src="images/icons/mae1.gif" alt="'.$diff_oday.PIC_MAE_ALT_TEXT.'" title="'.$diff_oday.PIC_MAE_ALT_TEXT.'">'; 
                             } else {
                               echo '<img src="images/icons/mae3.gif" alt="">'; 
                             }
                           } else {
-                            $diff_oday = tep_calc_limit_time_by_order_id($products['products_id'], true); 
+                            $diff_oday = tep_calc_limit_time_by_order_id($products['products_id'], true, $limit_time_info); 
                             if ($diff_oday !== '') {
                               echo '<img src="images/icons/mae2.gif" alt="'.$diff_oday.PIC_MAE_ALT_TEXT.'" title="'.$diff_oday.PIC_MAE_ALT_TEXT.'">'; 
                             } else {
