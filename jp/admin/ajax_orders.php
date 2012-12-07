@@ -2190,13 +2190,14 @@ echo json_encode($json_array);
   $op_string_array = explode('|||',$op_string);
   $op_string_title_array = explode('|||',$op_string_title);
   $op_string_val_array = explode('|||',$op_string_val);
+  $session_orders_id = $_POST['orders_id'];
   foreach($op_array as $op_key=>$op_value){
 
-    $_SESSION['orders_update_products'][$_POST['opd']]['attributes'][$op_value]['price'] = $op_string_array[$op_key];
-    $_SESSION['orders_update_products'][$_POST['opd']]['attributes'][$op_value]['option_info']['title'] = $op_string_title_array[$op_key];
-    $_SESSION['orders_update_products'][$_POST['opd']]['attributes'][$op_value]['option_info']['value'] = $op_string_val_array[$op_key];
+    $_SESSION['orders_update_products'][$session_orders_id][$_POST['opd']]['attributes'][$op_value]['price'] = $op_string_array[$op_key];
+    $_SESSION['orders_update_products'][$session_orders_id][$_POST['opd']]['attributes'][$op_value]['option_info']['title'] = $op_string_title_array[$op_key];
+    $_SESSION['orders_update_products'][$session_orders_id][$_POST['opd']]['attributes'][$op_value]['option_info']['value'] = $op_string_val_array[$op_key];
   }
-  $_SESSION['orders_update_products'][$_POST['opd']]['qty'] = $_POST['p_num'];
+  $_SESSION['orders_update_products'][$session_orders_id][$_POST['opd']]['qty'] = $_POST['p_num'];
   $orders_info_raw = tep_db_query("select currency, currency_value from ".TABLE_ORDERS." where orders_id = '".$_POST['oid']."'");
   $orders_info_num_rows = tep_db_num_rows($orders_info_raw);
   $orders_info = tep_db_fetch_array($orders_info_raw);
@@ -2209,9 +2210,9 @@ echo json_encode($json_array);
   } else {
     $p_price = tep_replace_full_character($_POST['p_price']); 
   }
-  $_SESSION['orders_update_products'][$_POST['opd']]['p_price'] = $p_price; 
+  $_SESSION['orders_update_products'][$session_orders_id][$_POST['opd']]['p_price'] = $p_price; 
   $final_price = $p_price + tep_replace_full_character($_POST['op_price']);
-  $_SESSION['orders_update_products'][$_POST['opd']]['final_price'] = $final_price;  
+  $_SESSION['orders_update_products'][$session_orders_id][$_POST['opd']]['final_price'] = $final_price;  
   $price_array[] = tep_display_currency(number_format(abs($final_price), 2));
    
   if ($final_price < 0) {
@@ -2327,20 +2328,22 @@ echo json_encode($json_array);
   $total_key_array = explode('|||',$_POST['total_key']);
   $total_value_array = explode('|||',$total_value);
   $total_title_array = explode('|||',$total_title);
-  $_SESSION['orders_update_products']['point'] = $point_value;
+  $total_orders_id = $_POST['orders_id'];
+  $_SESSION['orders_update_products'][$total_orders_id]['point'] = $point_value;
   foreach($total_value_array as $total_key=>$total_val){
 
-    $_SESSION['orders_update_products'][$total_key_array[$total_key]]['value'] = $total_val;
-    $_SESSION['orders_update_products'][$total_key_array[$total_key]]['title'] = $total_title_array[$total_key];
+    $_SESSION['orders_update_products'][$total_orders_id][$total_key_array[$total_key]]['value'] = $total_val;
+    $_SESSION['orders_update_products'][$total_orders_id][$total_key_array[$total_key]]['title'] = $total_title_array[$total_key];
   }
-  $_SESSION['orders_update_products']['ot_subtotal'] = $_POST['ot_subtotal'];
-  $_SESSION['orders_update_products']['ot_total'] = $_POST['ot_total'];
-  $_SESSION['orders_update_products']['payment_method'] = $_POST['payment_value'];
+  $_SESSION['orders_update_products'][$total_orders_id]['ot_subtotal'] = $_POST['ot_subtotal'];
+  $_SESSION['orders_update_products'][$total_orders_id]['ot_total'] = $_POST['ot_total'];
+  $_SESSION['orders_update_products'][$total_orders_id]['payment_method'] = $_POST['payment_value'];
 }else if($_GET['action'] == 'orders_session'){
 
   $session_type = $_POST['orders_session_type'];
   $session_value = $_POST['orders_session_value'];
-  $_SESSION['orders_update_products'][$session_type] = $session_value;
+  $session_orders_id = $_POST['orders_id'];
+  $_SESSION['orders_update_products'][$session_orders_id][$session_type] = $session_value;
 }else if($_GET['action'] == 'products_num'){
 
   $products_list_id = $_POST['products_list_id'];

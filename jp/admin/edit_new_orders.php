@@ -1801,6 +1801,9 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
     <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
     <link rel="stylesheet" type="text/css" href="includes/styles.css">
     <link rel="stylesheet" type="text/css" href="css/popup_window.css">
+    <script type="text/javascript">
+    var session_orders_id = '<?php echo $_GET['oID'];?>';
+    </script>
     <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
     <script language="javascript" src="includes/javascript/jquery.js"></script>
     <script language="javascript" src="includes/javascript/jquery_include.js"></script>
@@ -1809,7 +1812,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
     <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
     <script language="javascript" src="includes/jquery.form.js"></script>
     <script language="javascript" src="js2php.php?path=js&name=popup_window&type=js"></script>
-    <script type="text/javascript"> 
+    <script type="text/javascript">  
   function date_time(){
     var fetch_year = document.getElementById('fetch_year').value; 
     var fetch_month = document.getElementById('fetch_month').value;
@@ -3422,7 +3425,7 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
             }
             tep_db_free_result($orders_status_history_query); 
           }
-          $pay_method = isset($_SESSION['orders_update_products']['payment_method']) ? $_SESSION['orders_update_products']['payment_method'] : $pay_method; 
+          $pay_method = isset($_SESSION['orders_update_products'][$_GET['oID']]['payment_method']) ? $_SESSION['orders_update_products'][$_GET['oID']]['payment_method'] : $pay_method; 
           $pay_method = isset($_POST['payment_method']) ? $_POST['payment_method'] : $pay_method;
           if($pay_method == ''){
             if($products_money_total > 0){
@@ -3988,10 +3991,10 @@ if($orders_exit_flag == true){
   $work_start_array = explode(':',$work_start);
   $work_end_array = explode(':',$work_end);
   $work_start_hour = $work_start_array[0]; //开始时
-  $work_start_hour = isset($_SESSION['orders_update_products']['hour']) ? $_SESSION['orders_update_products']['hour'] : $work_start_hour;
+  $work_start_hour = isset($_SESSION['orders_update_products'][$_GET['oID']]['hour']) ? $_SESSION['orders_update_products'][$_GET['oID']]['hour'] : $work_start_hour;
   $work_start_min = $work_start_array[1]; //开始分
   $work_end_hour = $work_end_array[0]; //结束时
-  $work_end_hour = isset($_SESSION['orders_update_products']['hour_1']) ? $_SESSION['orders_update_products']['hour_1'] : $work_end_hour;
+  $work_end_hour = isset($_SESSION['orders_update_products'][$_GET['oID']]['hour_1']) ? $_SESSION['orders_update_products'][$_GET['oID']]['hour_1'] : $work_end_hour;
   $work_end_min = $work_end_array[1]; //结束分
 
   //可选收货期限
@@ -4012,7 +4015,7 @@ if($orders_exit_flag == true){
   } 
   $hour_str .= '</select>';
   $work_min_temp = substr($work_start_min,0,1);
-  $work_min_temp = isset($_SESSION['orders_update_products']['min']) ? $_SESSION['orders_update_products']['min'] : $work_min_temp;
+  $work_min_temp = isset($_SESSION['orders_update_products'][$_GET['oID']]['min']) ? $_SESSION['orders_update_products'][$_GET['oID']]['min'] : $work_min_temp;
   $min_str = '<select name="start_min" id="min" onchange="check_min(this.value);">';
   for($m_i = 0;$m_i <= 5;$m_i++){
 
@@ -4027,7 +4030,7 @@ if($orders_exit_flag == true){
   } 
   $min_str .= '</select>';
   $min_str_temp = substr($work_start_min,1,1);;
-  $min_str_temp = isset($_SESSION['orders_update_products']['min_1']) ? $_SESSION['orders_update_products']['min_1'] : $min_str_temp;
+  $min_str_temp = isset($_SESSION['orders_update_products'][$_GET['oID']]['min_1']) ? $_SESSION['orders_update_products'][$_GET['oID']]['min_1'] : $min_str_temp;
   $min_str_start = '<select name="start_min_1" id="min_1" onchange="check_min_1(this.value);">';
   for($m_i_1 = 0;$m_i_1 <= 9;$m_i_1++){
 
@@ -4065,7 +4068,7 @@ if($orders_exit_flag == true){
   $hour_str_1 .= '</select>';
 
   $min_str_1_temp = substr($work_end_min,0,1); 
-  $min_str_1_temp = isset($_SESSION['orders_update_products']['min_end']) ? $_SESSION['orders_update_products']['min_end'] : $min_str_1_temp;
+  $min_str_1_temp = isset($_SESSION['orders_update_products'][$_GET['oID']]['min_end']) ? $_SESSION['orders_update_products'][$_GET['oID']]['min_end'] : $min_str_1_temp;
   $min_str_1 = '<select name="end_min" id="min_end" onchange="check_end_min(this.value);">';
   $work_min_temp = $work_start_hour < $work_end_hour ? 0 : $work_min_temp;
   for($m1_i = $work_min_temp;$m1_i <= 5;$m1_i++){
@@ -4081,7 +4084,7 @@ if($orders_exit_flag == true){
   } 
   $min_str_1 .= '</select>';
   $min_str_end_temp = substr($work_end_min,1,1);
-  $min_str_end_temp = isset($_SESSION['orders_update_products']['min_end_1']) ? $_SESSION['orders_update_products']['min_end_1'] : $min_str_end_temp;
+  $min_str_end_temp = isset($_SESSION['orders_update_products'][$_GET['oID']]['min_end_1']) ? $_SESSION['orders_update_products'][$_GET['oID']]['min_end_1'] : $min_str_end_temp;
   $min_str_end = '<select name="end_min_1" id="min_end_1">';
   $work_start_min_temp = $min_str_1_temp == $work_min_temp ? $min_str_temp : 0;
   $work_start_min_temp = $work_start_hour < $work_end_hour ? 0 : $work_start_min_temp;
@@ -4109,7 +4112,7 @@ if($orders_exit_flag == true){
             <div style="float:left;"> 
               <select name="fetch_year" id="fetch_year" onchange="change_fetch_date();">
              <?php
-                $fetch_date_array[0] = isset($_SESSION['orders_update_products']['fetch_year']) ? $_SESSION['orders_update_products']['fetch_year'] : $fetch_date_array[0];
+                $fetch_date_array[0] = isset($_SESSION['orders_update_products'][$_GET['oID']]['fetch_year']) ? $_SESSION['orders_update_products'][$_GET['oID']]['fetch_year'] : $fetch_date_array[0];
                 $default_fetch_year = (isset($_POST['fetch_year']))?$_POST['fetch_year']:$fetch_date_array[0]; 
                 for ($f_num = 2006; $f_num <= 2050; $f_num++) {
                   echo '<option value="'.$f_num.'"'.(($default_fetch_year == $f_num)?' selected':'').'>'.$f_num.'</option>'; 
@@ -4119,7 +4122,7 @@ if($orders_exit_flag == true){
               <select name="fetch_month" id="fetch_month" onchange="change_fetch_date();">
               <?php
                 for ($f_num = 1; $f_num <= 12; $f_num++) {
-                  $fetch_date_array[1] = isset($_SESSION['orders_update_products']['fetch_month']) ? $_SESSION['orders_update_products']['fetch_month'] : $fetch_date_array[1];
+                  $fetch_date_array[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['fetch_month']) ? $_SESSION['orders_update_products'][$_GET['oID']]['fetch_month'] : $fetch_date_array[1];
                   $default_fetch_month = (isset($_POST['fetch_month']))?$_POST['fetch_month']:$fetch_date_array[1]; 
                   $tmp_fetch_month = sprintf('%02d', $f_num); 
                   echo '<option value="'.$tmp_fetch_month.'"'.(($default_fetch_month == $tmp_fetch_month)?' selected':'').'>'.$tmp_fetch_month.'</option>'; 
@@ -4129,7 +4132,7 @@ if($orders_exit_flag == true){
               <select name="fetch_day" id="fetch_day" onchange="change_fetch_date();">
               <?php
                 for ($f_num = 1; $f_num <= 31; $f_num++) {
-                  $fetch_date_array[2] = isset($_SESSION['orders_update_products']['fetch_day']) ? $_SESSION['orders_update_products']['fetch_day'] : $fetch_date_array[2];
+                  $fetch_date_array[2] = isset($_SESSION['orders_update_products'][$_GET['oID']]['fetch_day']) ? $_SESSION['orders_update_products'][$_GET['oID']]['fetch_day'] : $fetch_date_array[2];
                   $default_fetch_day = (isset($_POST['fetch_day']))?$_POST['fetch_day']:$fetch_date_array[2]; 
                   $tmp_fetch_day = sprintf('%02d', $f_num); 
                   echo '<option value="'.$tmp_fetch_day.'"'.(($default_fetch_day == $tmp_fetch_day)?' selected':'').'>'.$tmp_fetch_day.'</option>'; 
@@ -4329,11 +4332,11 @@ if($orders_exit_flag == true){
 
               $products_qty_num = $order->products[$i]['qty'];
             }
-            if(isset($_SESSION['orders_update_products'][$orders_products_id]['qty'])){
+            if(isset($_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['qty'])){
 
-              $products_qty_num = $_SESSION['orders_update_products'][$orders_products_id]['qty'];
+              $products_qty_num = $_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['qty'];
             }
-            $order->products[$i]['qty'] = isset($_SESSION['orders_update_products'][$orders_products_id]['qty']) ? $_SESSION['orders_update_products'][$orders_products_id]['qty'] : $order->products[$i]['qty'];
+            $order->products[$i]['qty'] = isset($_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['qty']) ? $_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['qty'] : $order->products[$i]['qty'];
             $op_info_str = '';
             if (sizeof($order->products[$i]['attributes']) > 0) {
               $op_info_array = array();
@@ -4395,9 +4398,9 @@ if($orders_exit_flag == true){
                 }
                 $default_value = tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;")) == '' ? TEXT_UNSET_DATA : tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;"));
                 $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['id'];
-                $order->products[$i]['attributes'][$j]['price'] = isset($_SESSION['orders_update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price']) ? $_SESSION['orders_update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price'] : $order->products[$i]['attributes'][$j]['price'];
-                $order->products[$i]['attributes'][$j]['option_info']['title'] = isset($_SESSION['orders_update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option_info']['title']) ? $_SESSION['orders_update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option_info']['title'] : $order->products[$i]['attributes'][$j]['option_info']['title'];
-                $order->products[$i]['attributes'][$j]['option_info']['value'] = isset($_SESSION['orders_update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option_info']['value']) ? $_SESSION['orders_update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option_info']['value'] : $order->products[$i]['attributes'][$j]['option_info']['value'];
+                $order->products[$i]['attributes'][$j]['price'] = isset($_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['attributes'][$orders_products_attributes_id]['price']) ? $_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['attributes'][$orders_products_attributes_id]['price'] : $order->products[$i]['attributes'][$j]['price'];
+                $order->products[$i]['attributes'][$j]['option_info']['title'] = isset($_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['attributes'][$orders_products_attributes_id]['option_info']['title']) ? $_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['attributes'][$orders_products_attributes_id]['option_info']['title'] : $order->products[$i]['attributes'][$j]['option_info']['title'];
+                $order->products[$i]['attributes'][$j]['option_info']['value'] = isset($_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['attributes'][$orders_products_attributes_id]['option_info']['value']) ? $_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['attributes'][$orders_products_attributes_id]['option_info']['value'] : $order->products[$i]['attributes'][$j]['option_info']['value'];
                 echo '<br><div class="order_option_width">&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' . tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")) .'<input type="hidden" onkeyup="recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'1\', \''.$op_info_str.'\',\''.$orders_products_list.'\');price_total(\''.TEXT_MONEY_SYMBOL.'\');" class="option_input_width" name="update_products[' . $orders_products_id .  '][attributes][' . $orders_products_attributes_id . '][option]" value="' .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")) . '">: ' . 
                   '</div><div class="order_option_value"><a onclick="popup_window(this,\''.$item_type.'\',\''.tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")).'\',\''.$item_list.'\');" href="javascript:void(0);"><u>' . 
                   $default_value .'</u></a><input type="hidden" onkeyup="recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'1\', \''.$op_info_str.'\',\''.$orders_products_list.'\');price_total(\''.TEXT_MONEY_SYMBOL.'\');" class="option_input_width" name="update_products[' . $orders_products_id .  '][attributes][' . $orders_products_attributes_id . '][value]" value="' .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;"));
@@ -4417,15 +4420,15 @@ if($orders_exit_flag == true){
             echo '      </td>' . "\n" .
               '      <td class="' . $RowStyle . '">' . $order->products[$i]['model'] . "<input name='update_products[$orders_products_id][model]' size='12' type='hidden' value='" . $order->products[$i]['model'] . "'>" . '</td>' . "\n" .
               '      <td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($order->products[$i]['tax']) . "<input name='update_products[$orders_products_id][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order->products[$i]['tax']) . "'>" . '%</td>' . "\n";
-              $order->products[$i]['price'] = isset($_SESSION['orders_update_products'][$orders_products_id]['p_price']) ? $_SESSION['orders_update_products'][$orders_products_id]['p_price'] : $order->products[$i]['price']; 
+              $order->products[$i]['price'] = isset($_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['p_price']) ? $_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['p_price'] : $order->products[$i]['price']; 
               echo '<td class="'.$RowStyle.'" align="right"><input type="text" style="text-align:right;" class="once_pwd" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['p_price'])?$_POST['update_products'][$orders_products_id]['p_price']:$order->products[$i]['price']), 2)).'" onkeyup="clearNoNum(this);recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\',\''.$op_info_str.'\',\''.$orders_products_list.'\');price_total(\''.TEXT_MONEY_SYMBOL.'\');">'.TEXT_MONEY_SYMBOL.'</td>';
-              $order->products[$i]['final_price'] = isset($_SESSION['orders_update_products'][$orders_products_id]['final_price']) ? $_SESSION['orders_update_products'][$orders_products_id]['final_price'] : $order->products[$i]['final_price'];
+              $order->products[$i]['final_price'] = isset($_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['final_price']) ? $_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['final_price'] : $order->products[$i]['final_price'];
               echo '      <td class="' . $RowStyle . '" align="right">' . '<input type="hidden"
               class="once_pwd" style="text-align:right;" name="update_products['.$orders_products_id.'][final_price]" size="9" value="' . tep_display_currency(number_format(abs($order->products[$i]['final_price']),2)) 
               . '" onkeyup="clearNoNum(this);recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'3\',\''.$op_info_str.'\',\''.$orders_products_list.'\');price_total(\''.TEXT_MONEY_SYMBOL.'\');" >' .
               '<input type="hidden" name="op_id_'.$orders_products_id.'" 
               value="'.tep_get_product_by_op_id($orders_products_id).'"><div id="update_products['.$orders_products_id.'][final_price]">'; 
-              $order->products[$i]['final_price'] = isset($_SESSION['orders_update_products'][$_POST['opd']]['final_price']) ? $_SESSION['orders_update_products'][$_POST['opd']]['final_price'] : $order->products[$i]['final_price'];
+              $order->products[$i]['final_price'] = isset($_SESSION['orders_update_products'][$_GET['oID']][$_POST['opd']]['final_price']) ? $_SESSION['orders_update_products'][$_GET['oID']][$_POST['opd']]['final_price'] : $order->products[$i]['final_price'];
               if ($order->products[$i]['final_price'] < 0) {
               echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($order->products[$i]['final_price'], true, $orders_exit_flag == true ? $order->info['currency'] : $_SESSION['currency'], $orders_exit_flag == true ? $order->info['currency_value'] : $_SESSION['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
             } else {
@@ -4520,7 +4523,7 @@ if($orders_exit_flag == true){
           array_pop($TotalsArray);
           $totals_end_value = end($TotalsArray);
           array_pop($TotalsArray);
-          $total_num = $_SESSION['orders_update_products']['orders_totals'];
+          $total_num = $_SESSION['orders_update_products'][$_GET['oID']]['orders_totals'];
           for($totals_i = 5;$totals_i <= $total_num;$totals_i++){
 
             $TotalsArray[$totals_i]['Name'] = '';
@@ -4539,10 +4542,10 @@ if($orders_exit_flag == true){
                 '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' . 
                 '    <td align="right" class="' . $TotalStyle . '"><b><div id="ot_total_id">' ;
               if (($TotalDetails["Price"]+$shipping_fee_total) >= 0){
-                echo $currencies->ot_total_format(isset($_SESSION['orders_update_products']['ot_total']) ? $_SESSION['orders_update_products']['ot_total'] : $TotalDetails["Price"]+$shipping_fee_total, true,
+                echo $currencies->ot_total_format(isset($_SESSION['orders_update_products'][$_GET['oID']]['ot_total']) ? $_SESSION['orders_update_products'][$_GET['oID']]['ot_total'] : $TotalDetails["Price"]+$shipping_fee_total, true,
                     $orders_exit_flag == true ? $order->info['currency'] : $_SESSION['currency'], $orders_exit_flag == true ? $order->info['currency_value'] : $_SESSION['currency_value']);
               }else{
-                echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->ot_total_format(isset($_SESSION['orders_update_products']['ot_total']) ? $_SESSION['orders_update_products']['ot_total'] : $TotalDetails["Price"]+$shipping_fee_total, true, $orders_exit_flag == true ? $order->info['currency'] : $_SESSION['currency'], $orders_exit_flag == true ? $order->info['currency_value'] : $_SESSION['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+                echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->ot_total_format(isset($_SESSION['orders_update_products'][$_GET['oID']]['ot_total']) ? $_SESSION['orders_update_products'][$_GET['oID']]['ot_total'] : $TotalDetails["Price"]+$shipping_fee_total, true, $orders_exit_flag == true ? $order->info['currency'] : $_SESSION['currency'], $orders_exit_flag == true ? $order->info['currency_value'] : $_SESSION['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
               }
               echo '</div></b>' . 
                 "<input name='update_totals[$TotalIndex][title]' type='hidden' value='" . trim($TotalDetails["Name"]) . "' size='" . strlen($TotalDetails["Name"]) . "' >" . 
@@ -4552,7 +4555,7 @@ if($orders_exit_flag == true){
                 '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
                 '  </tr>' . "\n";
             } elseif ($TotalDetails["Class"] == "ot_subtotal") {
-              $TotalDetails["Price"] = isset($_SESSION['orders_update_products']['ot_subtotal']) ? $_SESSION['orders_update_products']['ot_subtotal'] : $TotalDetails["Price"];
+              $TotalDetails["Price"] = isset($_SESSION['orders_update_products'][$_GET['oID']]['ot_subtotal']) ? $_SESSION['orders_update_products'][$_GET['oID']]['ot_subtotal'] : $TotalDetails["Price"];
               $shipping_ot_subtotal = $TotalDetails["Price"];
               echo '  <tr>' . "\n" .
                 '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_OTSUBTOTAL_READ.'</td>' . 
@@ -4598,7 +4601,7 @@ if($orders_exit_flag == true){
                 '  </tr>' . "\n";
             } elseif ($TotalDetails["Class"] == "ot_point") {
               $shipping_ot_point = $TotalDetails["Price"];
-              $TotalDetails["Price"] = isset($_SESSION['orders_update_products']['point']) ? $_SESSION['orders_update_products']['point'] : $TotalDetails["Price"];
+              $TotalDetails["Price"] = isset($_SESSION['orders_update_products'][$_GET['oID']]['point']) ? $_SESSION['orders_update_products'][$_GET['oID']]['point'] : $TotalDetails["Price"];
               if ($customer_guest['customers_guest_chk'] == 0) { //会員
                 $current_point = $customer_point['point'] + $TotalDetails["Price"];
                 echo '  <tr>' . "\n" .
@@ -4626,11 +4629,11 @@ if($orders_exit_flag == true){
                   '  </tr>' . "\n";
               }
             } else {
-              $totals_sum = isset($_SESSION['orders_update_products']['orders_totals']) ? $_SESSION['orders_update_products']['orders_totals'] : 4;
-              $totals_num = isset($_SESSION['orders_update_products']['orders_totals']) ? $_SESSION['orders_update_products']['orders_totals'] : 3;
+              $totals_sum = isset($_SESSION['orders_update_products'][$_GET['oID']]['orders_totals']) ? $_SESSION['orders_update_products'][$_GET['oID']]['orders_totals'] : 4;
+              $totals_num = isset($_SESSION['orders_update_products'][$_GET['oID']]['orders_totals']) ? $_SESSION['orders_update_products'][$_GET['oID']]['orders_totals'] : 3;
               $button_add = $TotalIndex == $totals_num ? '<INPUT type="button" id="button_add" value="'.TEXT_BUTTON_ADD.'" onclick="add_option();orders_session(\'orders_totals\','.($totals_sum+1).');"><input type="hidden" id="button_add_id" value="'. $totals_sum.'">&nbsp;' : '';
-              $TotalDetails["Price"] = isset($_SESSION['orders_update_products'][$TotalIndex]['value']) ? $_SESSION['orders_update_products'][$TotalIndex]['value'] : $TotalDetails["Price"];
-              $TotalDetails["Name"] = isset($_SESSION['orders_update_products'][$TotalIndex]['title']) ? $_SESSION['orders_update_products'][$TotalIndex]['title'] : $TotalDetails["Name"];
+              $TotalDetails["Price"] = isset($_SESSION['orders_update_products'][$_GET['oID']][$TotalIndex]['value']) ? $_SESSION['orders_update_products'][$_GET['oID']][$TotalIndex]['value'] : $TotalDetails["Price"];
+              $TotalDetails["Name"] = isset($_SESSION['orders_update_products'][$_GET['oID']][$TotalIndex]['title']) ? $_SESSION['orders_update_products'][$_GET['oID']][$TotalIndex]['title'] : $TotalDetails["Name"];
               echo '  <tr>' . "\n" .
                 '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_TOTALDETAIL_READ_ONE.'</td>' . 
                 '    <td style="min-width:180px;" align="right" class="' . $TotalStyle . '">' . $button_add ."<input name='update_totals[$TotalIndex][title]' onkeyup='price_total(\"".TEXT_MONEY_SYMBOL."\");' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
@@ -4730,8 +4733,8 @@ if($orders_exit_flag == true){
           $customer_notified = $order_status_array['customer_notified'];           
           $customer_notified = isset($customer_notified) ? $customer_notified : true;
           $customer_notified = $select_status == 31 ? 0 : $customer_notified;
-          $customer_notified = isset($_SESSION['orders_update_products']['notify']) ? $_SESSION['orders_update_products']['notify'] : $customer_notified;
-          $select_status = isset($_SESSION['orders_update_products']['s_status']) ? $_SESSION['orders_update_products']['s_status'] : $select_status;
+          $customer_notified = isset($_SESSION['orders_update_products'][$_GET['oID']]['notify']) ? $_SESSION['orders_update_products'][$_GET['oID']]['notify'] : $customer_notified;
+          $select_status = isset($_SESSION['orders_update_products'][$_GET['oID']]['s_status']) ? $_SESSION['orders_update_products'][$_GET['oID']]['s_status'] : $select_status;
           
 ?>
             <td class="main" width="82" style="min-width:45px;"><b><?php echo ENTRY_STATUS; ?></b></td>
@@ -4761,8 +4764,8 @@ if($orders_exit_flag == true){
           $mail_sele = tep_db_query($ma_se);
           $mail_sql  = tep_db_fetch_array($mail_sele);
           $sta       = isset($_GET['status'])?$_GET['status']:'';
-          $mail_sql['orders_status_title'] = isset($_SESSION['orders_update_products']['title']) ? $_SESSION['orders_update_products']['title'] : $mail_sql['orders_status_title'];
-          $notify_comments_checked = isset($_SESSION['orders_update_products']['notify_comments']) ? $_SESSION['orders_update_products']['notify_comments'] == 1 ? true : false : false;
+          $mail_sql['orders_status_title'] = isset($_SESSION['orders_update_products'][$_GET['oID']]['title']) ? $_SESSION['orders_update_products'][$_GET['oID']]['title'] : $mail_sql['orders_status_title'];
+          $notify_comments_checked = isset($_SESSION['orders_update_products'][$_GET['oID']]['notify_comments']) ? $_SESSION['orders_update_products'][$_GET['oID']]['notify_comments'] == 1 ? true : false : false;
           ?>
 
             <tr>
@@ -4780,7 +4783,7 @@ if($orders_exit_flag == true){
                 </tr>
               <tr>
                 <td class="main" valign="top"><b><?php echo TABLE_HEADING_COMMENTS;?>:</b></td>
-                <td class="main"><?php echo tep_draw_textarea_field('comments_text', 'hard', '74', '5', $_SESSION['orders_update_products']['comments_text'],'style=" font-family:monospace; font-size:12px; width:100%;"'); ?></td>
+                <td class="main"><?php echo tep_draw_textarea_field('comments_text', 'hard', '74', '5', $_SESSION['orders_update_products'][$_GET['oID']]['comments_text'],'style=" font-family:monospace; font-size:12px; width:100%;"'); ?></td>
                 </tr>
                 <?php } ?>
                 </table>
@@ -4789,7 +4792,7 @@ if($orders_exit_flag == true){
                 <td class="main">
                 <?php echo EDIT_ORDERS_RECORD_ARTICLE;?><br>
                 <?php
-                $mail_sql['orders_status_mail'] = isset($_SESSION['orders_update_products']['comments']) ? $_SESSION['orders_update_products']['comments'] : $mail_sql['orders_status_mail'];
+                $mail_sql['orders_status_mail'] = isset($_SESSION['orders_update_products'][$_GET['oID']]['comments']) ? $_SESSION['orders_update_products'][$_GET['oID']]['comments'] : $mail_sql['orders_status_mail'];
                 if($CommentsWithStatus) {
 
                   //<textarea style="font-family:monospace;font-size:x-small" name="comments" wrap="hard" rows="30" cols="74"></textarea>

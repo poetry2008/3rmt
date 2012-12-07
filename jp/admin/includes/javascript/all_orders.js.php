@@ -907,7 +907,7 @@ function recalc_order_price(oid, opd, o_str, op_str,opd_str)
   
   $.ajax({
     type: "POST",
-    data:'oid='+oid+'&opd='+opd+'&o_str='+o_str+'&op_price='+p_op_info+'&p_num='+pro_num+'&p_price='+p_price+'&p_final_price='+p_final_price+'&op_str='+op_str+'&op_string='+op_string+'&op_string_title='+op_string_title+'&op_string_val='+op_string_val,
+    data:'oid='+oid+'&opd='+opd+'&o_str='+o_str+'&op_price='+p_op_info+'&p_num='+pro_num+'&p_price='+p_price+'&p_final_price='+p_final_price+'&op_str='+op_str+'&op_string='+op_string+'&op_string_title='+op_string_title+'&op_string_val='+op_string_val+'&orders_id='+session_orders_id,
     async:false,
     url: 'ajax_orders.php?action=recalc_price',
     success: function(msg) { 
@@ -1068,7 +1068,7 @@ function price_total(str)
   var payment_value = document.getElementsByName('payment_method')[0].value;
   $.ajax({
     type: "POST",
-    data: 'total_title='+total_title+'&total_value='+total_value+'&point_value='+point_id+'&total_key='+total_key+'&ot_total='+ot_total_temp+'&ot_subtotal='+ot_subtotal_id_temp+'&payment_value='+payment_value,
+      data: 'total_title='+total_title+'&total_value='+total_value+'&point_value='+point_id+'&total_key='+total_key+'&ot_total='+ot_total_temp+'&ot_subtotal='+ot_subtotal_id_temp+'&payment_value='+payment_value+'&orders_id='+session_orders_id,
     async:false,
     url: 'ajax_orders.php?action=price_total',
     success: function(msg) {
@@ -1189,7 +1189,7 @@ function orders_session(type,value){
   
   $.ajax({
     type: "POST",
-    data: 'orders_session_type='+type+'&orders_session_value='+value,
+      data: 'orders_session_type='+type+'&orders_session_value='+value+'&orders_id='+session_orders_id,
     async:false,
     url: 'ajax_orders.php?action=orders_session',
     success: function(msg) {
