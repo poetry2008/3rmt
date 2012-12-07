@@ -818,7 +818,7 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
   text += "<tr><td bgcolor='#eeeeee' width='130'>\n";
   text += "<?php echo TEXT_REORDER_TRADE_NO_CHANGE;?>";
   text += "</td><td>\n";
-  text += oldTime + "\n";
+  text += oldTime.replace(/(\s*)/g, "") + "\n";
   text += "</td></tr><tr><td bgcolor='#eeeeee'>\n";
   
   dateChanged = (document.getElementById('new_date').selectedIndex != 0);
@@ -853,9 +853,9 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
 
   if(dateChanged){
     newTime = document.getElementById('new_date').options[document.getElementById('new_date').selectedIndex].innerHTML + " " +document.getElementById('start_hour').value + ":" + document.getElementById('start_min').value + "<?php echo TEXT_TIME_LINK;?>" +document.getElementById('end_hour').value + ":" + document.getElementById('end_min').value;
-    text += newTime + "</td></tr></table><br >\n";
+    text += newTime.replace(/(\s*)/g, "")  + "</td></tr></table><br >\n";
   } else {
-    text += oldTime + "</td></tr></table><br >\n";
+    text += oldTime.replace(/(\s*)/g, "")  + "</td></tr></table><br >\n";
   }
   
   text += "<table class='information_table' summary='table'>\n"
