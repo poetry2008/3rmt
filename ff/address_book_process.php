@@ -2,144 +2,6 @@
 /*
   $Id$
 */
-
-  require('includes/application_top.php');
-
-  if (!tep_session_is_registered('customer_id')) {
-    $navigation->set_snapshot();
-    tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
-  }
-
-  # For Guest
-  if($guestchk == '1') {
-    tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
-  }
-
-  if ( ($navigation->snapshot['page'] != FILENAME_ADDRESS_BOOK) || ($navigation->snapshot['page'] != FILENAME_CHECKOUT_ADDRESS) ) {
-    $navigation->set_path_as_snapshot(1);
-  }
-
-  if (isset($_GET['action']) && ($_GET['action'] == 'remove') && tep_not_null($_GET['entry_id']) ) {
-    $entry_id = tep_db_prepare_input($_GET['entry_id']);
-
-//ccdd
-    tep_db_query("
-DELETE FROM
- " . TABLE_ADDRESS_BOOK . " 
-WHERE address_book_id = '" . tep_db_input($entry_id) . "' 
-AND customers_id = '" . $customer_id . "'");
-//ccdd
-    tep_db_query(
-"UPDATE " . TABLE_ADDRESS_BOOK . " 
-SET address_book_id = address_book_id - 1
-WHERE address_book_id > " . tep_db_input($entry_id)  . " AND customers_id = '" . $customer_id . "'"
-);
-
-    tep_redirect(tep_href_link(FILENAME_ADDRESS_BOOK, '', 'SSL'));
-  }
-
-// Post-entry error checking when updating or adding an entry
-  $process = false;
-  if (isset($_POST['action']) && (($_POST['action'] == 'process') || ($_POST['action'] == 'update'))) {
-    $process = true;
-    $error = false;
-
-    // 全角的英数字改成半角
-    $_POST['postcode'] = tep_an_zen_to_han($_POST['postcode']);
-
-    $gender = tep_db_prepare_input($_POST['gender']);
-    $company = tep_db_prepare_input($_POST['company']);
-    $firstname = tep_db_prepare_input($_POST['firstname']);
-    $lastname = tep_db_prepare_input($_POST['lastname']);
-  
-  $firstname_f = tep_db_prepare_input($_POST['firstname_f']);
-    $lastname_f = tep_db_prepare_input($_POST['lastname_f']);
-  
-    $street_address = tep_db_prepare_input($_POST['street_address']);
-    $suburb = tep_db_prepare_input($_POST['suburb']);
-    $postcode = tep_db_prepare_input($_POST['postcode']);
-    $city = tep_db_prepare_input($_POST['city']);
-    $country = tep_db_prepare_input($_POST['country']);
-    $zone_id = tep_db_prepare_input($_POST['zone_id']);
-    $state = tep_db_prepare_input($_POST['state']);
-//add_telephone
-    $telephone = tep_db_prepare_input($_POST['telephone']);
-
-    if (ACCOUNT_GENDER == 'true') {
-      if (($gender == 'm') || ($gender == 'f')) {
-        $gender_error = false;
-      } else {
-        $gender_error = true;
-        $error = true;
-      }
-    }
-
-    if (ACCOUNT_COMPANY == 'true') {
-      if (strlen($company) < ENTRY_COMPANY_MIN_LENGTH) {
-        $company_error = true;
-        $error = true;
-      } else {
-        $company_error = false;
-      }
-    }
-
-    if (strlen($firstname) < ENTRY_FIRST_NAME_MIN_LENGTH) {
-      $firstname_error = true;
-      $error = true;
-    } else {
-      $firstname_error = false;
-    }
-
-    if (strlen($lastname) < ENTRY_LAST_NAME_MIN_LENGTH) {
-      $lastname_error = true;
-      $error = true;
-    } else {
-      $lasttname_error = false;
-    }
-  
-  if (strlen($firstname_f) < ENTRY_FIRST_NAME_MIN_LENGTH) {
-      $firstname_f_error = true;
-      $error = true;
-    } else {
-      $firstname_f_error = false;
-    }
-
-    if (strlen($lastname_f) < ENTRY_LAST_NAME_MIN_LENGTH) {
-      $lastname_f_error = true;
-      $error = true;
-    } else {
-      $lasttname_f_error = false;
-    }
-
-    if (strlen($street_address) < ENTRY_STREET_ADDRESS_MIN_LENGTH) {
-      $street_address_error = true;
-      $error = true;
-    } else {
-      $street_address_error = false;
-    }
-
-    if (strlen($postcode) < ENTRY_POSTCODE_MIN_LENGTH) {
-      $postcode_error = true;
-      $error = true;
-    } else {
-      $postcode_error = false;
-    }
-
-    if (strlen($city) < ENTRY_CITY_MIN_LENGTH) {
-      $city_error = true;
-      $error = true;
-    } else {
-      $city_error = false;
-    }
-
-    if (!$country) {
-      $country_error = true;
-      $error = true;
-    } else {
-      $country_error = false;
-    }
-
-//add_telephone
     if (strlen($telephone) < ENTRY_TELEPHONE_MIN_LENGTH) {
       $telephone_error = true;
       $error = true;
@@ -184,7 +46,6 @@ WHERE address_book_id > " . tep_db_input($entry_id)  . " AND customers_id = '" .
     }
 
     if ($error == false) {
-// add_telephone
       $sql_data_array = array('entry_firstname' => $firstname,
                               'entry_lastname' => $lastname,
                 
@@ -234,7 +95,6 @@ WHERE address_book_id > " . tep_db_input($entry_id)  . " AND customers_id = '" .
   }
 
   if (isset($_GET['action']) && ($_GET['action'] == 'modify') && tep_not_null($_GET['entry_id'])) {
-// add_telephone
 //ccdd
     $entry_query = tep_db_query("
 SELECT 
@@ -289,7 +149,6 @@ function check_form() {
   var street_address = document.add_entry.street_address.value;
   var postcode = document.add_entry.postcode.value;
   var city = document.add_entry.city.value;
-<?php // add_telephone ?>
   var telephone = document.add_entry.telephone.value;
 
 <?php
@@ -355,7 +214,6 @@ function check_form() {
     error = 1;
   }
 
-<?php // add_telephone ?>
   if (telephone == '' || telephone.length < <?php echo ENTRY_TELEPHONE_MIN_LENGTH; ?>) {
     error_message = error_message + "<?php echo JS_TELEPHONE; ?>";
     error = 1;
