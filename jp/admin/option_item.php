@@ -233,7 +233,6 @@
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
-<script language="javascript" src="includes/javascript/jquery.autocomplete.js"></script>
 <script text="text/javascript">
 function search_item_title(t_type, s_item_id)
 {
@@ -552,6 +551,7 @@ if($belong_array[0][0] != ''){
 }
 require("includes/note_js.php");
 ?>
+<script language="javascript" src="includes/javascript/jquery.autocomplete.js"></script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onload="SetFocus();">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
