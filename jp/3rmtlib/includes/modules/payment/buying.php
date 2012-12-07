@@ -299,7 +299,13 @@ class buying extends basePayment  implements paymentInterface  {
   }
 
   function install() {
-    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added,user_added, site_id) values ('買い取りを有効にする', 'MODULE_PAYMENT_BUYING_STATUS', 'True', '銀行振込による支払いを受け付けますか?', '6', '1', 'tep_cfg_select_option(array(\'True\', \'False\'), ', now(), '".$_SESSION['user_name']."',".$this->site_id.");");
+    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title,
+      configuration_key, configuration_value, configuration_description,
+      configuration_group_id, sort_order, set_function, date_added,user_added,
+      site_id) values ('買い取りを有効にする', 'MODULE_PAYMENT_BUYING_STATUS',
+        'True', '銀行振込による支払いを受け付けますか?', '6', '1',
+        'tep_cfg_select_option(array(\'True\', \'False\'), ', now(),
+          '".$_SESSION['user_name']."',".$this->site_id.");");
     //tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('お振込先:', 'MODULE_PAYMENT_BUYING_PAYTO', '', 'お振込先名義を設定してください.', '6', '1', now(), ".$this->site_id.");");
     tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('表示の整列順', 'MODULE_PAYMENT_BUYING_SORT_ORDER', '0', '表示の整列順を設定できます。数字が小さいほど上位に表示されます.', '6', '0', now(), ".$this->site_id.")");
     tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added, site_id) values ('適用地域', 'MODULE_PAYMENT_BUYING_ZONE', '0', '適用地域を選択すると、選択した地域のみで利用可能となります.', '6', '2', 'tep_get_zone_class_title', 'tep_cfg_pull_down_zone_classes(', now(), ".$this->site_id.")");
