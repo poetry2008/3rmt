@@ -44,7 +44,7 @@ WHERE address_book_id > " . tep_db_input($entry_id)  . " AND customers_id = '" .
     $process = true;
     $error = false;
 
-    // tamura 2002/12/30 「全角」英数字を「半角」に変換
+    // 全角的英数字改成半角
     $_POST['postcode'] = tep_an_zen_to_han($_POST['postcode']);
 
     $gender = tep_db_prepare_input($_POST['gender']);
