@@ -458,6 +458,7 @@ function getMailString($option=''){
   function admin_show_payment_list($pay_info_array){
 
    global $_POST;
+   global $_GET;
    $pay_array = explode("\n",trim($pay_info_array[0]));
    $bank_name = explode(':',$pay_array[0]);
    $bank_name[1] = isset($_POST['bank_name']) ? $_POST['bank_name'] : $bank_name[1]; 
@@ -484,7 +485,7 @@ function getMailString($option=''){
    echo 'document.getElementsByName("con_email")[0].value = "'.$con_email[1].'";'."\n";
    $pay_array = explode("\n",trim($pay_info_array[2]));
    $rak_tel = explode(":",trim($pay_array[0]));
-   $rak_tel[1] = isset($_SESSION['orders_update_products']['rak_tel']) ? $_SESSION['orders_update_products']['rak_tel'] : $rak_tel[1];
+   $rak_tel[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['rak_tel']) ? $_SESSION['orders_update_products'][$_GET['oID']]['rak_tel'] : $rak_tel[1];
    $rak_tel[1] = isset($_POST['rak_tel']) ? $_POST['rak_tel'] : $rak_tel[1];
    echo 'document.getElementsByName("rak_tel")[0].value = "'.$rak_tel[1].'";'."\n";
   }
