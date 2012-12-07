@@ -19,7 +19,11 @@ if ($_GET['action'] == 'calc_price') {
   echo json_encode($price_array);
   exit;
 } else if($_GET['action'] == 'new_telecom_option') {
+  if(!isset($_SESSION['option_list'])){
+    $_SESSION['option_list'] = array($_SESSION['option']);
+  }
   $_SESSION['option'] = date('Ymd-His'). ds_makeRandStr(2);
+  array_push($_SESSION['option_list'],$_SESSION['option']);
   if($_SESSION['option']){
     echo $_SESSION['option'];
     exit;

@@ -928,6 +928,7 @@ tep_session_unregister('bank_kouza_name');
 */
 #convenience_store
 unset($_SESSION['insert_id']);
+unset($_SESSION['option_list']);
 unset($_SESSION['character']);
 unset($_SESSION['option']);
 unset($_SESSION['referer_adurl']);

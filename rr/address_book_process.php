@@ -62,7 +62,6 @@ WHERE address_book_id > " . tep_db_input($entry_id)  . " AND customers_id = '" .
     $country = tep_db_prepare_input($_POST['country']);
     $zone_id = tep_db_prepare_input($_POST['zone_id']);
     $state = tep_db_prepare_input($_POST['state']);
-// add_telephone
     $telephone = tep_db_prepare_input($_POST['telephone']);
 
     if (ACCOUNT_GENDER == 'true') {
@@ -139,7 +138,6 @@ WHERE address_book_id > " . tep_db_input($entry_id)  . " AND customers_id = '" .
       $country_error = false;
     }
 
-// add_telephone
     if (strlen($telephone) < ENTRY_TELEPHONE_MIN_LENGTH) {
       $telephone_error = true;
       $error = true;
@@ -184,7 +182,6 @@ WHERE address_book_id > " . tep_db_input($entry_id)  . " AND customers_id = '" .
     }
 
     if ($error == false) {
-// add_telephone
       $sql_data_array = array('entry_firstname' => $firstname,
                               'entry_lastname' => $lastname,
                 
@@ -234,7 +231,6 @@ WHERE address_book_id > " . tep_db_input($entry_id)  . " AND customers_id = '" .
   }
 
   if (isset($_GET['action']) && ($_GET['action'] == 'modify') && tep_not_null($_GET['entry_id'])) {
-// add_telephone
 //ccdd
     $entry_query = tep_db_query("
 SELECT 
@@ -289,7 +285,6 @@ function check_form() {
   var street_address = document.add_entry.street_address.value;
   var postcode = document.add_entry.postcode.value;
   var city = document.add_entry.city.value;
-<?php // add_telephone ?>
   var telephone = document.add_entry.telephone.value;
 
 <?php
@@ -355,7 +350,6 @@ function check_form() {
     error = 1;
   }
 
-<?php // add_telephone ?>
   if (telephone == '' || telephone.length < <?php echo ENTRY_TELEPHONE_MIN_LENGTH; ?>) {
     error_message = error_message + "<?php echo JS_TELEPHONE; ?>";
     error = 1;

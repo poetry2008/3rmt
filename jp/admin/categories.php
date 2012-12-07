@@ -201,7 +201,11 @@ tep_db_query($update_sql);
          else $site_arr="";
          forward401Unless(editPermission($site_arr, $site_id));
         $sort_order = tep_db_prepare_input($_POST['sort_order']);
-        $sql_data_array = array('sort_order' => $sort_order);
+        if(!isset($site_id)||$site_id==''||$site_id==0){
+          $sql_data_array = array('sort_order' => $sort_order);
+        }else{
+          $sql_data_array = array();
+        }
         
         if ($_GET['action'] == 'insert_category') {
           $insert_sql_data = array('parent_id' => $current_category_id,
@@ -350,14 +354,16 @@ tep_db_query($update_sql);
           tep_copy_uploaded_file($categories_image, $image_directory);
         }
 
-        if ((($site_id == '') || ($site_id == 0)) && $_GET['action'] == 'update_category') {
+        if ((($site_id == '') || ($site_id == 0))) {
           //删除没有关系的mission 
           $sql_del_no_categories_mission = 'DELETE FROM '.TABLE_MISSION.' WHERE id NOT IN (SELECT mission_id FROM '.TABLE_CATEGORIES_TO_MISSION.')';
           $sql_del_no_mission_session = 'delete from '.TABLE_SESSION_LOG.'  WHERE mission_id NOT IN (SELECT mission_id FROM '.TABLE_CATEGORIES_TO_MISSION.')';
           $sql_del_no_mission_record = 'delete from '.TABLE_RECORD.'  WHERE mission_id NOT IN (SELECT mission_id FROM '.TABLE_CATEGORIES_TO_MISSION.')';
           
           $kWord = trim($_POST['keyword']);
-          $categories_id = $_POST['categories_id'];
+          if(isset($_POST['categories_id'])&&$_POST['categories_id']){
+            $categories_id = $_POST['categories_id'];
+          }
           $method = $_POST['method'];
           
           if($method){
@@ -628,10 +634,6 @@ tep_db_query($update_sql);
            $_GET['action'] = 'new_product';
          } else {
           $products_id = tep_db_prepare_input($_GET['pID']);
-          $products_date_available = tep_db_prepare_input($_POST['products_date_available']);
-          //$site_id = tep_db_prepare_input($_POST['site_id']);
-
-          $products_date_available = (date('Y-m-d') < $products_date_available) ? $products_date_available : 'null';
 
       if(isset($_POST['products_image2_del']) && $_POST['products_image2_del'] == 'none') {
         $_POST['products_image2'] = 'none';
@@ -668,7 +670,6 @@ tep_db_query($update_sql);
                                   'products_price' =>
                                   tep_db_prepare_input($_POST['products_bflag'])? 0 - abs(tep_db_prepare_input($_POST['products_price'])):abs(tep_db_prepare_input($_POST['products_price'])),
                                   'products_price_offset' => tep_db_prepare_input($HTTP_POST_VARS['products_price_offset']),
-                                  'products_date_available' => $products_date_available,
                                   'products_shipping_time' => tep_db_prepare_input($_POST['products_shipping_time']),
                                   'products_weight' => tep_db_prepare_input($_POST['products_shipping_weight']),
                                   'products_status' => tep_db_prepare_input($_POST['products_status']),
@@ -676,15 +677,22 @@ tep_db_query($update_sql);
                                   'manufacturers_id' => tep_db_prepare_input($_POST['manufacturers_id']),
                                   'products_bflag' => tep_db_prepare_input($_POST['products_bflag']),
                                   'option_type' => tep_db_prepare_input($_POST['option_type']),
-                                  'sort_order' => tep_db_prepare_input($_POST['sort_order']),
                                   'relate_products_id' => tep_db_prepare_input($_POST['relate_products_id']),
                                   'products_small_sum' => tep_db_prepare_input($_POST['products_small_sum']),
                                   'products_cartflag' => tep_db_prepare_input($_POST['products_cartflag']),
                                   'products_cart_buyflag' => tep_db_prepare_input($_POST['products_cart_buyflag']),
-                                  'products_cart_min' => tep_db_prepare_input($_POST['products_cart_min']),
                                   'products_cartorder' => tep_db_prepare_input($_POST['products_cartorder']),
                                   );
-           
+          //处理 发售日 时间
+          if(!isset($site_id)||$site_id==''||$site_id==0){
+            $products_date_available = tep_db_prepare_input($_POST['products_date_available']);
+            $products_date_available = (date('Y-m-d') < $products_date_available) ? $products_date_available : 'null';
+            $sql_data_array = array_merge($sql_data_array,
+                array(
+                  'products_date_available' => $products_date_available,
+                  'products_cart_min' => tep_db_prepare_input($_POST['products_cart_min']),
+                  'sort_order' => tep_db_prepare_input($_POST['sort_order'])));
+          }
 
 
           if ($_POST['products_image']) {
@@ -1509,7 +1517,7 @@ function handle_option()
   function show_product_info(pid,ele){
     $.ajax({
       dataType: 'text',
-      url: 'ajax_orders.php?action=product_info_box&pID='+pid+'&site_id=<?php echo (isset($_GET['site_id'])?$_GET['site_id']:'0')."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
+      url: 'ajax.php?action=product_info_box&pID='+pid+'&site_id=<?php echo (isset($_GET['site_id'])?$_GET['site_id']:'0')."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
       success: function(text) {
         //show_p_info 
         $('#show_popup_info').html(text);
@@ -1523,8 +1531,7 @@ function handle_option()
   function show_product_move(pid){
     $.ajax({
       dataType: 'text',
-      url: 'ajax_orders.php?action=product_move_box&pID='+pid+'&site_id=<?php 
-      echo $site_id."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
+      url: 'ajax.php?action=product_move_box&pID='+pid+'&site_id=<?php echo $site_id."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
       success: function(text) {
         //show_p_info 
         $('#show_popup_info').html(text);
@@ -1535,8 +1542,7 @@ function handle_option()
   function show_product_copy(pid){
     $.ajax({
       dataType: 'text',
-      url: 'ajax_orders.php?action=product_copy_to_box&pID='+pid+'&site_id=<?php 
-      echo $site_id."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
+      url: 'ajax.php?action=product_copy_to_box&pID='+pid+'&site_id=<?php echo $site_id."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
       success: function(text) {
         //show_p_info 
         $('#show_popup_info').html(text);
@@ -1547,8 +1553,7 @@ function handle_option()
   function show_product_delete(pid){
     $.ajax({
       dataType: 'text',
-      url: 'ajax_orders.php?action=product_delete_box&pID='+pid+'&site_id=<?php 
-      echo $site_id."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
+      url: 'ajax.php?action=product_delete_box&pID='+pid+'&site_id=<?php echo $site_id."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
       success: function(text) {
         //show_p_info 
         $('#show_popup_info').html(text);
@@ -1559,8 +1564,7 @@ function handle_option()
   function show_product_description_delete(pid){
     $.ajax({
       dataType: 'text',
-      url: 'ajax_orders.php?action=product_description_delete_box&pID='+pid+'&site_id=<?php 
-      echo $site_id."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
+      url: 'ajax.php?action=product_description_delete_box&pID='+pid+'&site_id=<?php echo $site_id."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'].(isset($_GET['rdirect'])?'&rdirect='.$_GET['rdirect']:'');?>',
       success: function(text) {
         //show_p_info 
         $('#show_popup_info').html(text);
@@ -1931,6 +1935,11 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     $des_result = tep_db_fetch_array($des_query);
   }
 ?>
+        <link rel="stylesheet" type="text/css" href="includes/javascript/spiffyCal/spiffyCal_v2_1.css">
+        <script language="JavaScript" src="includes/javascript/spiffyCal/spiffyCal_v2_1.js"></script>
+        <script language="javascript">
+  var dateAvailable = new ctlSpiffyCalendarBox("dateAvailable", "new_product", "products_date_available","btnDate1","<?php echo isset($pInfo->products_date_available)?$pInfo->products_date_available:''; ?>",scBTNMODE_CUSTOMBLUE);
+</script>
         <tr>
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
               <tr>
@@ -2013,7 +2022,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
             <td class="main">
                  <div class="yui3-skin-sam yui3-g">
                     <?php echo tep_draw_separator('pixel_trans.gif', '24', '15').
-                    tep_draw_input_field('products_date_available','',(($site_id)?'class="readonly" disabled':'class="cal-TextBox"').' value="'.$pInfo->products_date_available.'"');?>
+                    tep_draw_input_field('products_date_available','',(($site_id)?'class="readonly" disabled value="'.$pInfo->products_date_available.'"':'class="cal-TextBox" value="'.$pInfo->products_date_available.'"'));?>
                     <input id="date_orders" type="hidden" name='date_orders' size='15' value='<?php echo $pInfo->products_date_available;?>'>
                     <div class="date_box">
                       <a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"></a> 
@@ -3396,7 +3405,8 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                             } 
                           ?>
                           <?php
-                            if ($_GET['action'] == 'edit_category') { 
+                            if ($_GET['action'] == 'edit_category'||
+                                $_GET['action'] == 'new_category') { 
                               $categories_to_mission_sql = 'SELECT c2m.*,m.keyword from ' .TABLE_CATEGORIES_TO_MISSION.' c2m ,' .TABLE_MISSION.' m' .' where c2m.mission_id = m.id and c2m.categories_id  ="'.$_GET['cID'].'"';
                               $categories_to_mission_query = tep_db_query($categories_to_mission_sql);
                               $categories_to_mission_res = tep_db_fetch_array($categories_to_mission_query);
@@ -3530,13 +3540,13 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
             $set_menu_list  = tep_db_fetch_array(tep_db_query("select * from set_menu_list where categories_id='".$current_category_id."'"));
             $kakaku_updated = $set_menu_list?date('n/j G:i',strtotime($set_menu_list['last_modified'])):'';
           ?>
-          <form name="myForm1" action="<?php echo tep_href_link(FILENAME_CATEGORIES, tep_get_all_get_params('action').'action=all_update');?>" method="POST" onSubmit="return false"> 
-          <input type="hidden" name="flg_up" value="">
-          <?php echo tep_eof_hidden();?>
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
               <tr>
                 <td valign="top">
                 <?php tep_site_filter(FILENAME_CATEGORIES, true);?> 
+                <form name="myForm1" action="<?php echo tep_href_link(FILENAME_CATEGORIES, tep_get_all_get_params('action').'action=all_update');?>" method="POST" onSubmit="return false"> 
+                <input type="hidden" name="flg_up" value="">
+                <?php echo tep_eof_hidden();?>
                 <table id="products_list_table" border="0" width="100%" cellspacing="0" cellpadding="2">
                   <tr class="dataTableHeadingRow" valign="top">
                     <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CATEGORIES_PRODUCTS; ?></td>
@@ -3977,6 +3987,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                  p.products_image3, 
                  p.products_price, 
                  p.products_price_offset,
+                 p.products_small_sum,
                  p.products_user_added,
                  p.products_date_added, 
                  pd.products_last_modified, 
@@ -4010,6 +4021,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                  p.products_image3, 
                  p.products_price, 
                  p.products_price_offset,
+                 p.products_small_sum,
                  p.products_user_added,
                  p.products_date_added,
                  pd.products_last_modified, 
@@ -4056,15 +4068,11 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
             && (!isset($_GET['action']) || substr($_GET['action'], 0, 4) != 'new_') 
           ) {
   // find out the rating average from customer reviews
-          $reviews_query = tep_db_query("select (avg(reviews_rating) / 5 * 100) as average_rating from " . TABLE_REVIEWS . " where products_id = '" . $products['products_id'] . "'");
-          $reviews = tep_db_fetch_array($reviews_query);
-          $pInfo_array = tep_array_merge($products, $reviews);
+          $pInfo_array = $products;
           $pInfo = new objectInfo($pInfo_array);
         }
         if (!$highlight_symbol) {
-          $reviews_query = tep_db_query("select (avg(reviews_rating) / 5 * 100) as average_rating from " . TABLE_REVIEWS . " where products_id = '" . $products['products_id'] . "'");
-          $reviews = tep_db_fetch_array($reviews_query);
-          $pInfo_array = tep_array_merge($products, $reviews);
+          $pInfo_array = $products;
           $pInfo = new objectInfo($pInfo_array);
         }
         $highlight_symbol = true; 
@@ -4094,18 +4102,9 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
     $menu_datas[$i_cnt][2]=$col_kaku['kakaku'];
     $i_cnt++;
   }
-  ?>
+  
+  echo '<td class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'')) . '\'">';
                      
-                     <?php 
-                     if ( (isset($pInfo) && is_object($pInfo)) && ($products['products_id'] == $pInfo->products_id)&&!isset($select_single)) {
-                      // echo '<td class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' . $products['products_id'] .  '&action=new_product_preview&read=only') . '\'">' . "\n";
-                       echo '<td class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'')) . '\'">';
-                     } else {
-                       echo '<td class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'')) . '\'">';
-                     }
-                     ?> 
-                     
-  <?php 
   //表示制限
   echo '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&pID=' .  $products['products_id'] .  '&action=new_product'.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').'&page='.$_GET['page'].($_GET['search']?'&search='.$_GET['search']:'')).'">'.tep_image(DIR_WS_ICONS.'preview.gif', ICON_PREVIEW).'</a>&nbsp;'; 
   echo '<a href="orders.php?search_type=products_id&products_id=' .  $products['products_id'] .(!empty($site_id)?'&site_id='.$site_id:'') .'">' . tep_image(DIR_WS_ICONS . 'search.gif', IMAGE_SEARCH) . '</a>&nbsp;'; 
@@ -4148,9 +4147,10 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                       ?>
                       <?php
                         echo '<td class="dataTableContent" align="center">';
-                        if(tep_get_order_cnt_by_pid($products['products_id'], $site_id)){
+                        $tmp_order_product_num = tep_get_order_cnt_by_pid($products['products_id'], $site_id); 
+                        if($tmp_order_product_num){
                           echo '<a href="orders.php?keywords='.urlencode($products['products_id']).'&search_type=sproducts_id'.(!empty($site_id)?'&site_id='.$site_id:'').'" style="text-decoration:underline;">';
-                          echo tep_get_order_cnt_by_pid($products['products_id'], $site_id);
+                          echo $tmp_order_product_num;
                           echo '</a>';  
                         } 
                       ?>
@@ -4170,16 +4170,18 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                       ?>
                       <td class="dataTableContent">
                       <?php
-                        if (tep_check_show_isbuy($products['products_id'])) { 
-                          if (tep_check_best_sellers_isbuy($products['products_id'])) {
-                            $diff_oday = tep_calc_limit_time_by_order_id($products['products_id']); 
+                        $limit_time_query = tep_db_query("select * from ".TABLE_BESTSELLERS_TIME_TO_CATEGORY." where categories_id = '".$current_category_id."'"); 
+                        $limit_time_info = tep_db_fetch_array($limit_time_query); 
+                        if (tep_check_show_isbuy($products['products_id'], $limit_time_info)) { 
+                          if (tep_check_best_sellers_isbuy($products['products_id'], $limit_time_info)) {
+                            $diff_oday = tep_calc_limit_time_by_order_id($products['products_id'], false, $limit_time_info); 
                             if ($diff_oday !== '') {
                               echo '<img src="images/icons/mae1.gif" alt="'.$diff_oday.PIC_MAE_ALT_TEXT.'" title="'.$diff_oday.PIC_MAE_ALT_TEXT.'">'; 
                             } else {
                               echo '<img src="images/icons/mae3.gif" alt="">'; 
                             }
                           } else {
-                            $diff_oday = tep_calc_limit_time_by_order_id($products['products_id'], true); 
+                            $diff_oday = tep_calc_limit_time_by_order_id($products['products_id'], true, $limit_time_info); 
                             if ($diff_oday !== '') {
                               echo '<img src="images/icons/mae2.gif" alt="'.$diff_oday.PIC_MAE_ALT_TEXT.'" title="'.$diff_oday.PIC_MAE_ALT_TEXT.'">'; 
                             } else {
@@ -4190,12 +4192,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                       ?>
                       </td> 
                       <?php
-                      if ( (isset($pInfo) && is_object($pInfo)) && ($products['products_id'] == $pInfo->products_id)&&!isset($select_single)) {
-                        //echo '<td class="dataTableContent" align="center" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' . $products['products_id'] .  '&action=new_product_preview&read=only') . '\'">' . "\n";
                         echo '<td class="dataTableContent" align="right" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'')) . '\'">';
-                      } else {
-                        echo '<td class="dataTableContent" align="right" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'')) . '\'">';
-                      }
                       ?>
                         <span style="display:none" class = 'TRADER_INPUT'  name="TRADER_INPUT[]"  id="TRADER_<?php echo $products['products_id']; ?>"><?php echo $kakaku_treder?round($kakaku_treder,2):0;?></span>
                         <span name="INCREASE_INPUT" class = 'INCREASE_INPUT'>
@@ -4247,7 +4244,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                             echo "<span name='TARGET_INPUT[]' id='target_".$target_cnt."_0' >0</span></td>";
                           }
                        }
-                       $tmp_p_price = tep_get_bflag_by_product_id($products['products_id'])?(0-(int)$products['products_price']):(int)$products['products_price']; 
+                       $tmp_p_price = ($products['products_bflag'])?(0-(int)$products['products_price']):(int)$products['products_price']; 
                      ?>
                      <?php
                      if (empty($site_id)) {
@@ -4261,7 +4258,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                      }
                      ?>
                      <?php
-                     $product_price = tep_get_products_price($products['products_id']);
+                     $product_price = tep_get_products_price($products['products_id'], $products);
                      echo '<span id="edit_p_'.$products['products_id'].'">'; 
                      if ($product_price['sprice']) {
                        echo '<span class="specialPrice"><b>' .  $currencies->format($product_price['sprice']) . '</b></span>';
