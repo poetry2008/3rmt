@@ -199,6 +199,27 @@ class telecom  extends basePayment  implements paymentInterface  {
       $t_orderq = tep_db_query("select telecom_option  from ".TABLE_ORDERS." 
           where orders_id = '".$new_insert_id."' limit 1");
       $t_order = tep_db_fetch_array($t_orderq);
+      if(isset($_SESSION['option_list'])
+          &&is_array($_SESSION['option_list'])){
+        $option_list = array_reverse($_SESSION['option_list']);
+        foreach($option_list as $option_row){
+          $option_exist_sql = "select * from telecom_unknow 
+            where option='".$option_row."' limit 1";
+          $option_exist_query = tep_db_query($option_exist_sql);
+          if($option_exist_row = tep_db_fetch_array($option_exist_query)){
+            $option_temp_total = $option_exist_row['money'];
+            $option_temp_id = $option_exist_row['option'];
+            if($option_temp_total == $t_tatal
+                &&$option_temp_id != $t_order['telecom_option']){
+              tep_db_query("update `telecom_unknow` set option='".
+                $option_row."' where id='".$option_exist_row['id']."'");
+            }
+
+          }
+        }
+
+      }
+      //重复的OPTION 但是金额不同的时候 调用下面代码
       tep_db_query("update `telecom_unknow` set type='hide' where `option`='".
           $t_order['telecom_option']."' and rel='yes' ");
       $t_query = tep_db_query("select * from `telecom_unknow` where `option`='".
