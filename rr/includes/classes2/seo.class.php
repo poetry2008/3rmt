@@ -618,7 +618,7 @@ class SEO_URL{
               $url = $this->make_url($page, 'reviews/page', '', $p2[1], '.html', $separator);
               break;
             case ($page == FILENAME_DEFAULT && $_GET['cPath']):
-              //break; //zhu shi
+              //break; 
             default:
               $container[$p2[0]] = $p2[1];
               break;

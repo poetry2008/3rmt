@@ -69,9 +69,10 @@ RewriteRule ^latest_news/([0-9]+)\.html$ latest_news.php?news_id=$1&%{QUERY_STRI
 
 RewriteCond %{REQUEST_FILENAME} !-f 
 RewriteCond %{SERVER_PORT} 443 
-RewriteRule ^images/(.*)$ /www.rmt-kames.jp/default_images/$1
+RewriteRule ^images/(.*)$ /www.rmt-kames.jp/default_images/$1 [QSA,L]
 
 RewriteCond %{REQUEST_FILENAME} !-f 
+RewriteCond %{SERVER_PORT} 80
 RewriteRule ^images/(.*) default_images/$1 [QSA,L]
 
 RewriteRule ^game/m-([0-9]+).html$ index.php?manufacturers_id=$1&%{QUERY_STRING}
