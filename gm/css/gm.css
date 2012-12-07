@@ -1518,3 +1518,9 @@ top:70px;
 .float_right_box .input_box{
   width:1.5em;
 }
+.shipping_box{ width:100%; float:left;}
+.shipping_box span{
+    display: block;
+    float: left;
+    overflow: hidden;
+}
