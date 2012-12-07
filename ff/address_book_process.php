@@ -62,7 +62,6 @@ WHERE address_book_id > " . tep_db_input($entry_id)  . " AND customers_id = '" .
     $country = tep_db_prepare_input($_POST['country']);
     $zone_id = tep_db_prepare_input($_POST['zone_id']);
     $state = tep_db_prepare_input($_POST['state']);
-// 2003-06-06 add_telephone
     $telephone = tep_db_prepare_input($_POST['telephone']);
 
     if (ACCOUNT_GENDER == 'true') {
