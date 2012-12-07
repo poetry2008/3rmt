@@ -2,6 +2,143 @@
 /*
   $Id$
 */
+
+  require('includes/application_top.php');
+
+  if (!tep_session_is_registered('customer_id')) {
+    $navigation->set_snapshot();
+    tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
+  }
+
+  # For Guest
+  if($guestchk == '1') {
+    tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
+  }
+
+  if ( ($navigation->snapshot['page'] != FILENAME_ADDRESS_BOOK) || ($navigation->snapshot['page'] != FILENAME_CHECKOUT_ADDRESS) ) {
+    $navigation->set_path_as_snapshot(1);
+  }
+
+  if (isset($_GET['action']) && ($_GET['action'] == 'remove') && tep_not_null($_GET['entry_id']) ) {
+    $entry_id = tep_db_prepare_input($_GET['entry_id']);
+
+//ccdd
+    tep_db_query("
+DELETE FROM
+ " . TABLE_ADDRESS_BOOK . " 
+WHERE address_book_id = '" . tep_db_input($entry_id) . "' 
+AND customers_id = '" . $customer_id . "'");
+//ccdd
+    tep_db_query(
+"UPDATE " . TABLE_ADDRESS_BOOK . " 
+SET address_book_id = address_book_id - 1
+WHERE address_book_id > " . tep_db_input($entry_id)  . " AND customers_id = '" . $customer_id . "'"
+);
+
+    tep_redirect(tep_href_link(FILENAME_ADDRESS_BOOK, '', 'SSL'));
+  }
+
+// Post-entry error checking when updating or adding an entry
+  $process = false;
+  if (isset($_POST['action']) && (($_POST['action'] == 'process') || ($_POST['action'] == 'update'))) {
+    $process = true;
+    $error = false;
+
+    // tamura 2002/12/30 「全角」英数字を「半角」に変換
+    $_POST['postcode'] = tep_an_zen_to_han($_POST['postcode']);
+
+    $gender = tep_db_prepare_input($_POST['gender']);
+    $company = tep_db_prepare_input($_POST['company']);
+    $firstname = tep_db_prepare_input($_POST['firstname']);
+    $lastname = tep_db_prepare_input($_POST['lastname']);
+  
+  $firstname_f = tep_db_prepare_input($_POST['firstname_f']);
+    $lastname_f = tep_db_prepare_input($_POST['lastname_f']);
+  
+    $street_address = tep_db_prepare_input($_POST['street_address']);
+    $suburb = tep_db_prepare_input($_POST['suburb']);
+    $postcode = tep_db_prepare_input($_POST['postcode']);
+    $city = tep_db_prepare_input($_POST['city']);
+    $country = tep_db_prepare_input($_POST['country']);
+    $zone_id = tep_db_prepare_input($_POST['zone_id']);
+    $state = tep_db_prepare_input($_POST['state']);
+// 2003-06-06 add_telephone
+    $telephone = tep_db_prepare_input($_POST['telephone']);
+
+    if (ACCOUNT_GENDER == 'true') {
+      if (($gender == 'm') || ($gender == 'f')) {
+        $gender_error = false;
+      } else {
+        $gender_error = true;
+        $error = true;
+      }
+    }
+
+    if (ACCOUNT_COMPANY == 'true') {
+      if (strlen($company) < ENTRY_COMPANY_MIN_LENGTH) {
+        $company_error = true;
+        $error = true;
+      } else {
+        $company_error = false;
+      }
+    }
+
+    if (strlen($firstname) < ENTRY_FIRST_NAME_MIN_LENGTH) {
+      $firstname_error = true;
+      $error = true;
+    } else {
+      $firstname_error = false;
+    }
+
+    if (strlen($lastname) < ENTRY_LAST_NAME_MIN_LENGTH) {
+      $lastname_error = true;
+      $error = true;
+    } else {
+      $lasttname_error = false;
+    }
+  
+  if (strlen($firstname_f) < ENTRY_FIRST_NAME_MIN_LENGTH) {
+      $firstname_f_error = true;
+      $error = true;
+    } else {
+      $firstname_f_error = false;
+    }
+
+    if (strlen($lastname_f) < ENTRY_LAST_NAME_MIN_LENGTH) {
+      $lastname_f_error = true;
+      $error = true;
+    } else {
+      $lasttname_f_error = false;
+    }
+
+    if (strlen($street_address) < ENTRY_STREET_ADDRESS_MIN_LENGTH) {
+      $street_address_error = true;
+      $error = true;
+    } else {
+      $street_address_error = false;
+    }
+
+    if (strlen($postcode) < ENTRY_POSTCODE_MIN_LENGTH) {
+      $postcode_error = true;
+      $error = true;
+    } else {
+      $postcode_error = false;
+    }
+
+    if (strlen($city) < ENTRY_CITY_MIN_LENGTH) {
+      $city_error = true;
+      $error = true;
+    } else {
+      $city_error = false;
+    }
+
+    if (!$country) {
+      $country_error = true;
+      $error = true;
+    } else {
+      $country_error = false;
+    }
+
     if (strlen($telephone) < ENTRY_TELEPHONE_MIN_LENGTH) {
       $telephone_error = true;
       $error = true;

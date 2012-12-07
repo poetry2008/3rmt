@@ -4,7 +4,7 @@
 */
 
   require('includes/application_top.php');
-  
+
   //关于商品名的咨询
   define('HEADING_TITLE', 'IE6の設定について');
   define('NAVBAR_TITLE', 'ブラウザの設定');

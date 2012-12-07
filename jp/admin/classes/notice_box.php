@@ -43,7 +43,7 @@ class notice_box {
       }else{
         $p_cellspacing = 0;
       }
-      if(isset($param_arr['cellpadding'])&&$param_arr['cellspacing']!=''){
+      if(isset($param_arr['cellpadding'])&&$param_arr['cellpadding']!=''){
         $p_cellpadding = $param_arr['cellpadding'];
       }else{
         $p_cellpadding = 0;
