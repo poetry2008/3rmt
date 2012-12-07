@@ -204,20 +204,28 @@ class telecom  extends basePayment  implements paymentInterface  {
         $option_list = array_reverse($_SESSION['option_list']);
         foreach($option_list as $option_row){
           $option_exist_sql = "select * from telecom_unknow 
-            where option='".$option_row."' limit 1";
+            where `option`='".$option_row."' limit 1";
           $option_exist_query = tep_db_query($option_exist_sql);
           if($option_exist_row = tep_db_fetch_array($option_exist_query)){
             $option_temp_total = $option_exist_row['money'];
             $option_temp_id = $option_exist_row['option'];
-            if($option_temp_total == $t_tatal
+            if($option_temp_id == $t_order['telecom_option']){
+              break;
+            }
+            if($option_temp_total == $t_total
                 &&$option_temp_id != $t_order['telecom_option']){
-              tep_db_query("update `telecom_unknow` set option='".
-                $option_row."' where id='".$option_exist_row['id']."'");
+              tep_db_query("update ".TABLE_ORDERS." set 
+                telecom_name = '".$option_exist_row['username']."',
+                telecom_tel = '".$option_exist_row['telno']."',
+                telecom_email = '".$option_exist_row['email']."',
+                telecom_money = '".$option_temp_total."',
+                telecom_option = '".$option_temp_id."'
+                where orders_id = '".$new_insert_id."'");
+              break;
             }
 
           }
         }
-
       }
       //重复的OPTION 但是金额不同的时候 调用下面代码
       tep_db_query("update `telecom_unknow` set type='hide' where `option`='".
