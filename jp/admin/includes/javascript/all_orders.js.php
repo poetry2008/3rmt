@@ -1068,7 +1068,7 @@ function price_total(str)
   var payment_value = document.getElementsByName('payment_method')[0].value;
   $.ajax({
     type: "POST",
-      data: 'total_title='+total_title+'&total_value='+total_value+'&point_value='+point_id+'&total_key='+total_key+'&ot_total='+ot_total_temp+'&ot_subtotal='+ot_subtotal_id_temp+'&payment_value='+payment_value+'&orders_id='+session_orders_id,
+    data: 'total_title='+total_title+'&total_value='+total_value+'&point_value='+point_id+'&total_key='+total_key+'&ot_total='+ot_total_temp+'&ot_subtotal='+ot_subtotal_id_temp+'&payment_value='+payment_value+'&orders_id='+session_orders_id,
     async:false,
     url: 'ajax_orders.php?action=price_total',
     success: function(msg) {
@@ -1189,7 +1189,7 @@ function orders_session(type,value){
   
   $.ajax({
     type: "POST",
-      data: 'orders_session_type='+type+'&orders_session_value='+value+'&orders_id='+session_orders_id,
+    data: 'orders_session_type='+type+'&orders_session_value='+value+'&orders_id='+session_orders_id,
     async:false,
     url: 'ajax_orders.php?action=orders_session',
     success: function(msg) {

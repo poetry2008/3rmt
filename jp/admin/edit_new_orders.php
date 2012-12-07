@@ -1812,7 +1812,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
     <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
     <script language="javascript" src="includes/jquery.form.js"></script>
     <script language="javascript" src="js2php.php?path=js&name=popup_window&type=js"></script>
-    <script type="text/javascript">  
+    <script type="text/javascript"> 
   function date_time(){
     var fetch_year = document.getElementById('fetch_year').value; 
     var fetch_month = document.getElementById('fetch_month').value;
