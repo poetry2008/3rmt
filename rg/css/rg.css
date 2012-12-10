@@ -2139,8 +2139,8 @@ border:2px solid #FF8080;
 }
 .login{
 	overflow:hidden;
-	margin-bottom:7px;
+	margin:6px 0 1px 0;
 }
 .login a img{
-	margin-top:6px;
+	margin-bottom:6px;
 }
