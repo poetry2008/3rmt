@@ -36,7 +36,7 @@ if ($_GET['action'] == 'process') {
       if ($op_single_str == 'op_') {
         $p_tmp_value = str_replace(' ', '', $p_value);
         $p_tmp_value = str_replace('　', '', $p_value);
-        if ($p_tmp_value != '') {
+        if (trim($p_tmp_value) != '') {
           $option_info_array[$p_key] = str_replace('<BR>', '<br>', stripslashes($p_value)); 
         }
       } 
