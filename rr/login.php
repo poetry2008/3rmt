@@ -292,7 +292,7 @@ if($flag_error == false){
                $_SESSION['reset_customers_id'] = $check_customer['customers_id'];
        	       tep_redirect(tep_href_link(FILENAME_DEFAULT));	    
 	  }
-        if (SESSION_RECREATE == 'True') { // Add session management
+        if (SESSION_RECREATE == 'True') { 
           tep_session_recreate();
         }
 
