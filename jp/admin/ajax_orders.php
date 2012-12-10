@@ -2316,8 +2316,17 @@ echo json_encode($json_array);
   }
 }else if($_GET['action'] == 'delete_products'){
 
+  $session_orders_id = $_POST['orders_id'];
+  $orders_products_query = tep_db_query("select final_price from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='".$_POST['orders_products_id']."'");
+  $orders_products_array = tep_db_fetch_array($orders_products_query);
+  tep_db_free_result($orders_products_query);
+  $orders_total = $orders_products_array['final_price'];
   $delete_products_query =tep_db_query("delete from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='".$_POST['orders_products_id']."'");
   if($delete_products_query){
+    $total_products_query = tep_db_query("update ". TABLE_ORDERS_TOTAL ." set value=value-".(int)$orders_total." where orders_id='".$session_orders_id."' and class='ot_total'"); 
+    $subtotal_products_query = tep_db_query("update ". TABLE_ORDERS_TOTAL ." set value=value-".(int)$orders_total." where orders_id='".$session_orders_id."' and class='ot_subtotal'");
+  }
+  if($delete_products_query && $total_products_query && $subtotal_products_query){
     echo 'true';
   }
 }else if($_GET['action'] == 'price_total'){

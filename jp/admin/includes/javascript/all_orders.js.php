@@ -1136,7 +1136,7 @@ function delete_products(opid,o_str){
 
   $.ajax({
     type: "POST",
-    data: 'orders_products_id='+opid,
+    data: 'orders_products_id='+opid+'&orders_id='+session_orders_id,
     async:false,
     url: 'ajax_orders.php?action=delete_products',
     success: function(data) {
