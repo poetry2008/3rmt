@@ -2141,6 +2141,9 @@ border:2px solid #FF8080;
 	overflow:hidden;
 	margin:6px 0 1px 0;
 }
+.right_colum_border .box{
+	margin-top:0px;
+}
 .login a img{
 	margin-bottom:6px;
 }
