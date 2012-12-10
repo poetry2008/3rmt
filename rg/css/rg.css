@@ -1078,7 +1078,7 @@ margin-top:-10px\9;
 #ticketthread{margin:15px 0;}
 .captcha_comment{ font-size:12px;}
 .right_colum_border{ width:170px;}
-.link_banner{ margin:5px 0;}
+.link_banner{ margin:-2px 0 5px 0;}
 .side_border{ width:900px; margin:0 auto;}
 .latest_news_box,.welcome_box{
 	width:530px;
@@ -1184,7 +1184,7 @@ a.Icon:hover {
 .h_search img{ float:left; padding-right:5px;}
 .h_search span{ float:left; padding-top:3px;}
 .top_index_image{ margin-top:7px;}
-.reviews_warp{ width:168px;*width:170px; border:1px solid #ccc; font-size:10px; padding:5px 0;}
+.reviews_warp{ width:168px;*width:170px; border:1px solid #ccc; font-size:10px; padding:5px 0; margin-bottom:2px;}
 /* ---------------------------
 boxText
 --------------------------- */
@@ -1760,7 +1760,7 @@ border:2px solid #FF8080;
 .rg_pay_info{ border:1px solid #ccc; background-color:#fff; padding:4px; margin:3px 0;}
 .best_goods{ width:170px; margin:0 auto;}
 .best_goods_info { text-align:center; font-size:12px; padding:5px 0; border:1px solid #ccc;}
-.reorder{margin-top:8px; overflow:hidden;}
+.reorder{ overflow:hidden;}
 .payment_comment{ 
  word-wrap:break-word;
  word-break:break-all;
@@ -2139,8 +2139,8 @@ border:2px solid #FF8080;
 }
 .login{
 	overflow:hidden;
-	margin-top:8px;
+	margin-bottom:7px;
 }
-.login img{
-	margin-bottom:5px;
+.login a img{
+	margin-top:6px;
 }
