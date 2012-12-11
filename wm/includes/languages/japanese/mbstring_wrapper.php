@@ -40,7 +40,6 @@ function mb_convert_kana($str, $option, $encode = 'auto')
    }
 }
 
-
 function mb_convert_encoding($str, $to, $from = 'auto')
 {
     $jc_to   = _check_encoding($to);

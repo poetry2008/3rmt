@@ -1,6 +1,7 @@
 <?php
 /*
   $Id$
+
 */
 
   require('includes/application_top.php');
