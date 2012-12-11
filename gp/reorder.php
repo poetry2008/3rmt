@@ -36,16 +36,16 @@ document.onclick=function(e){
 <body>
 <div align="center">
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-  <!-- header_eof //-->
-  <!-- body //-->
+  <!-- header_eof -->
+  <!-- body -->
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border" summary="table">
     <tr>
       <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border">
-        <!-- left_navigation //-->
+        <!-- left_navigation -->
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-        <!-- left_navigation_eof //-->
+        <!-- left_navigation_eof -->
       </td>
-      <!-- body_text //-->
+      <!-- body_text -->
       <td id="contents" valign="top">
         <div class="pageHeading"><h1><?php echo HEADING_TITLE; ?></h1></div>
 <?php if ($_POST) {
@@ -245,7 +245,7 @@ document.onclick=function(e){
     $products_ordered .= '------------------------------------------' . "\n";
   }
   
-  # メール本文整形 --------------------------------------
+  # 邮件正文调整 --------------------------------------
   $email_order = '';
 
   // ccdd
@@ -307,7 +307,7 @@ document.onclick=function(e){
   $mail_title = "[" . $order['orders_id'] . "]".TEXT_REORDER_TITLE_EMAIL;
   $email_order = str_replace(array('${NAME}', '${TIME}', '${CONTENT}', '${SITE_NAME}', '${SITE_URL}', '${SUPPORT_EMAIL}'), array($o->customer['name'], date('Y-m-d H:i:s'), $email_order, STORE_NAME, HTTP_SERVER, SUPPORT_EMAIL_ADDRESS), $mail_content);
 
-  # メール本文整形 --------------------------------------
+  # 邮件正文调整--------------------------------------
   tep_mail($o->customer['name'], $o->customer['email_address'], $mail_title, $email_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
   if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
     tep_mail('', SEND_EXTRA_ORDER_EMAILS_TO, $mail_title, $email_order, $o->customer['name'], $o->customer['email_address'], '');
@@ -818,7 +818,7 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
   text += "<tr><td bgcolor='#eeeeee' width='130'>\n";
   text += "<?php echo TEXT_REORDER_TRADE_NO_CHANGE;?>";
   text += "</td><td>\n";
-  text += oldTime.replace(/(\s*)/g, "") + "\n";
+  text += oldTime + "\n";
   text += "</td></tr><tr><td bgcolor='#eeeeee'>\n";
   
   dateChanged = (document.getElementById('new_date').selectedIndex != 0);
@@ -853,9 +853,9 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
 
   if(dateChanged){
     newTime = document.getElementById('new_date').options[document.getElementById('new_date').selectedIndex].innerHTML + " " +document.getElementById('start_hour').value + ":" + document.getElementById('start_min').value + "<?php echo TEXT_TIME_LINK;?>" +document.getElementById('end_hour').value + ":" + document.getElementById('end_min').value;
-    text += newTime.replace(/(\s*)/g, "")  + "</td></tr></table><br >\n";
+    text += newTime + "</td></tr></table><br >\n";
   } else {
-    text += oldTime.replace(/(\s*)/g, "")  + "</td></tr></table><br >\n";
+    text += oldTime + "</td></tr></table><br >\n";
   }
   
   text += "<table class='information_table' summary='table'>\n"
@@ -916,18 +916,18 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
     </div>
         <p class="pageBottom"></p>
       </td>
-      <!-- body_text_eof //-->
+      <!-- body_text_eof -->
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>">
-        <!-- right_navigation //-->
+        <!-- right_navigation -->
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
-        <!-- right_navigation_eof //-->
+        <!-- right_navigation_eof -->
       </td>           
     </tr>
   </table>
-  <!-- body_eof //-->
-  <!-- footer //-->
+  <!-- body_eof -->
+  <!-- footer -->
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-  <!-- footer_eof //-->
+  <!-- footer_eof -->
 </div>
 </body>
 </html>

@@ -1,5 +1,5 @@
 /* ---------------------------
-文字装飾
+Text decoration
 --------------------------- */
 a{
 	font-size: 10px;
@@ -82,7 +82,7 @@ width:370px;
 	background: url(images/design/contents/headding_content_long.gif) repeat-y;
 }
 /* ---------------------------
-画像
+Image
 --------------------------- */
 img.middle {
 	vertical-align: middle;
@@ -97,7 +97,7 @@ img.middle {
 	margin: 10px 10px;
 }
 /* ---------------------------
-リスト
+List
 --------------------------- */
 UL {
 	margin: 0px;
@@ -374,7 +374,7 @@ select{
 	height:20px;
 }
 /* ---------------------------
-ヘッダー
+Header
 --------------------------- */
 #title {
 	font-family: Osaka, Verdana;
@@ -558,7 +558,7 @@ sitemap
 	font-weight: normal;
 }
 /* ---------------------------
-ランキング
+Ranking
 --------------------------- */
 .bestseller_text {
     font-family: Osaka, Verdana, Arial, sans-serif;
@@ -697,7 +697,7 @@ product listing
 	padding: 5px;
 }
 /* ---------------------------
-お知らせ
+Announcement
 --------------------------- */
 #news {
   	text-align: left;
@@ -800,7 +800,7 @@ Information
 	vertical-align: top;
 }
 /* ---------------------------
-ページタイトル
+Page title
 --------------------------- */
 .pageHeading, .pageHeading_gameList{
 	font-family: Osaka, Verdana, Arial, sans-serif;
@@ -848,7 +848,7 @@ Information
 	background: url(images/design/contents/headding_bottom_long.gif) no-repeat;
 }
 /* ---------------------------
-フッター
+Footer
 --------------------------- */
 #footer {
 	border: none;

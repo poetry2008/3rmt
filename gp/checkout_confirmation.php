@@ -22,14 +22,14 @@ unset($_SESSION['shipping_session_flag']);
 ?>
 <body><div class="body_shadow" align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-  <!-- header_eof //--> 
-  <!-- body //--> 
+  <!-- header_eof --> 
+  <!-- body --> 
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
     <tr> 
-      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
+      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
-        <!-- left_navigation_eof //--> </td> 
-      <!-- body_text //--> 
+        <!-- left_navigation_eof --> </td> 
+      <!-- body_text --> 
       <td valign="top" id="contents"> 
       <?php echo tep_draw_form('checkout_confirmation', $form_action_url, 'post', 'onSubmit="return check_confirm_payment(\''.$payment.'\')"');?>
       <div class="pageHeading"><h1><?php echo HEADING_TITLE ; ?></h1></div>      
@@ -222,14 +222,12 @@ if(array_key_exists($fixed_option_list_array[3],$ad_array)){
   foreach($all_show_option_id as $t_item_id){
       $op_price = tep_get_show_attributes_price( $all_show_option[$t_item_id]['item_id'],
         $all_show_option[$t_item_id]['group_id'], $all_show_option[$t_item_id]['value']); 
-      if(trim($all_show_option[$t_item_id]['value']) != ''){
-        echo '<br><small>&nbsp;<i> - ' . $all_show_option[$t_item_id]['front_title'] .
-             ': ' .  str_replace(array("<br>", "<BR>"), '', $all_show_option[$t_item_id]['value']);
-        if ($op_price != '0') {
-          echo ' ('.$currencies->format($op_price).')'; 
-        }
-        echo '</i></small>';
+      echo '<br><small>&nbsp;<i> - ' . $all_show_option[$t_item_id]['front_title'] .
+      ': ' .  str_replace(array("<br>", "<BR>"), '', $all_show_option[$t_item_id]['value']);
+      if ($op_price != '0') {
+        echo ' ('.$currencies->format($op_price).')'; 
       }
+      echo '</i></small>';
 
   }
   echo '</td>' . "\n";
@@ -595,10 +593,9 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
     echo $order_total_modules->output();
   }
   if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
-  // ここからカスタマーレベルに応じたポイント還元率算出============================================================
-  // 2005.11.17 K.Kaneko
+  // 计算各个不同顾客的返点率从这开始============================================================
   if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
-    //設定した期間内の注文合計金額を算出------------
+    //规定期间内，计算订单合计金额------------
     $ptoday = date("Y-m-d H:i:s", time());
     $pstday_array = getdate();
     $pstday = date("Y-m-d H:i:s", mktime($pstday_array[hours],$pstday_array[mimutes],$pstday_array[second],$pstday_array[mon],($pstday_array[mday] - MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL_KIKAN),$pstday_array[year]));
@@ -619,7 +616,7 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
     }
     //----------------------------------------------
     
-    //還元率を計算----------------------------------
+    //计算返点率----------------------------------
     if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
       $back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
     $back_rate = MODULE_ORDER_TOTAL_POINT_FEE;
@@ -642,7 +639,7 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
   } else {
     $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
   }
-  // ここまでカスタマーレベルに応じたポイント還元率算出============================================================
+  // 计算各个不同顾客的返点率到此结束============================================================
   $point_rate = $payment_modules->get_point_rate($payment);
   if ($order->info['subtotal'] > 0) {
     if (isset($_SESSION['campaign_fee'])) {
@@ -794,26 +791,26 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
         <p class="pageBottom"></p>
         </form> 
         </td> 
-      <!-- body_text_eof //--> 
-      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 
+      <!-- body_text_eof --> 
+      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-        <!-- right_navigation_eof //--> 
+        <!-- right_navigation_eof --> 
       </td> 
     </tr>
   </table> 
-  <!-- body_eof //--> 
-  <!-- footer //--> 
+  <!-- body_eof --> 
+  <!-- footer --> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
+  <!-- footer_eof --> 
 </div> 
 </div> 
-<!-- /visites --> 
+<!-- visites --> 
 <object>
 <noscript>
 <img src="visites.php" alt="Statistics" style="border:0">
 </noscript>
 </object>
-<!-- /visites -->
+<!-- visites -->
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

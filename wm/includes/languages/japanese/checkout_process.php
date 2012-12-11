@@ -1,11 +1,10 @@
 <?php
 /*
   $Id$
-
 */
 
-define('EMAIL_TEXT_SUBJECT', 'ご注文ありがとうございます【'.STORE_NAME.'】　');
-define('EMAIL_TEXT_SUBJECT2','ご注文ありがとうございます【'.STORE_NAME.'】　');
+define('EMAIL_TEXT_SUBJECT', 'ご注文ありがとうございます【RMTワールドマネー】　');
+define('EMAIL_TEXT_SUBJECT2','ご注文ありがとうございます【RMTワールドマネー】　');
 
 define('EMAIL_TEXT_STORE_CONFIRMATION', ' へご注文をいただきまして、誠にありがとうございます。' . "\n\n" . 
 '下記の内容にてご注文を承りましたので、ご確認ください。' . "\n\n" . 
@@ -30,7 +29,7 @@ define('TEXT_EMAIL_VIA', '(配送方法)');
 //Add Point System
 define('TEXT_POINT_NOW', '今回の獲得ポイント:');
 
-//在庫切れアラート
+//库存不足提醒
 define('ZAIKO_ALART_TITLE','在庫が切れました。');
 define('ZAIKO_ALART_TITLE2','オプション在庫が切れました。');
 define('ZAIKO_ARART_BODY',

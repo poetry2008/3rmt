@@ -1,7 +1,6 @@
 <?php
 /*
   $Id$
-
 */
 
 define('NAVBAR_TITLE', '詳細検索');

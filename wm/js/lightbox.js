@@ -1,19 +1,3 @@
-// -----------------------------------------------------------------------------------
-//
-//	Lightbox v2.02
-//	by Lokesh Dhakar - http://www.huddletogether.com
-//	3/31/06
-//
-//	For more information on this script, visit:
-//	http://huddletogether.com/projects/lightbox2/
-//
-//	Licensed under the Creative Commons Attribution 2.5 License - http://creativecommons.org/licenses/by/2.5/
-//	
-//	Credit also due to those who have helped, inspired, and made their code available to the public.
-//	Including: Scott Upton(uptonic.com), Peter-Paul Koch(quirksmode.org), Thomas Fuchs(mir.aculo.us), and others.
-//
-//
-// -----------------------------------------------------------------------------------
 /*
 
 	Table of Contents
@@ -80,10 +64,6 @@ resizeDuration = (11 - resizeSpeed) * 0.15;
 
 // -----------------------------------------------------------------------------------
 
-//
-//	Additional methods for Element added by SU, Couloir
-//	- further additions by Lokesh Dhakar (huddletogether.com)
-//
 Object.extend(Element, {
 	getWidth: function(element) {
 	   	element = $(element);
@@ -154,9 +134,6 @@ Array.prototype.empty = function () {
 //	- keyboardNavAction()
 //	- preloadNeighborImages()
 //	- end()
-//
-//	Structuring of code inspired by Scott Upton (http://www.uptonic.com/)
-//
 var Lightbox = Class.create();
 
 Lightbox.prototype = {
@@ -546,11 +523,6 @@ Lightbox.prototype = {
 
 // -----------------------------------------------------------------------------------
 
-//
-// getPageScroll()
-// Returns array with x,y page scroll values.
-// Core code from - quirksmode.org
-//
 function getPageScroll(){
 
 	var yScroll;
@@ -569,12 +541,6 @@ function getPageScroll(){
 
 // -----------------------------------------------------------------------------------
 
-//
-// getPageSize()
-// Returns array with page width, height and window width, height
-// Core code from - quirksmode.org
-// Edit for Firefox by pHaez
-//
 function getPageSize(){
 	
 	var xScroll, yScroll;
@@ -666,11 +632,6 @@ function hideSelectBoxes(){
 
 // ---------------------------------------------------
 
-//
-// pause(numberMillis)
-// Pauses code execution for specified time. Uses busy code, not good.
-// Code from http://www.faqts.com/knowledge_base/view.phtml/aid/1602
-//
 function pause(numberMillis) {
 	var now = new Date();
 	var exitTime = now.getTime() + numberMillis;

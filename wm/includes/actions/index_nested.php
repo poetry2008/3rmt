@@ -19,7 +19,7 @@
        echo '<h1 class="pageHeading">'.$seo_manufacturers['manufacturers_name'].'</h1>';
       }
 ?> 
-      <p class="comment"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seoフレーズ ?></p>
+      <p class="comment"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seo句子 ?></p>
             <div class="comment">
         <table border="0" width="100%" cellspacing="3" cellpadding="3" summary=""> 
           <tr align="center">
@@ -100,7 +100,7 @@
           </tr>
         </table>
             </div>
-      <p class="comment"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']); //seoフレーズ ?></p>
+      <p class="comment"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']); //seo句子 ?></p>
             <p class="pageBottom"></p>
       <?php
       $new_products_category_id = $current_category_id; 
@@ -119,7 +119,7 @@
   if (isset($cPath_array)) {
     if ($seo_category['seo_description']) {
       echo '<h3 class="pageHeading">' . str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']) . 'について</h3>' . "\n";
-      echo '<p class="comment">' . str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']) . '</p>' . "\n"; //seoフレーズ
+      echo '<p class="comment">' . str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']) . '</p>' . "\n"; //seo句子
 ?>
         <p class="pageBottom"></p>
 <?php
@@ -137,7 +137,7 @@
 ?>
     </td> 
     <td width="<?php echo BOX_WIDTH; ?>" valign="top" class="right_colum_border">
-      <!-- right_navigation //--> 
+      <!-- right_navigation --> 
       <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-      <!-- right_navigation_eof //-->
+      <!-- right_navigation_eof -->
     </td> 
