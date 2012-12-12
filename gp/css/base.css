@@ -23,7 +23,7 @@ a:hover{
 a{
 	border: none;
 	background: transparent;
-  text-decoration: none;		/* The line does not appear */
+  text-decoration: none;		/* The line does not appear*/
 }
 
 h3 {
@@ -498,7 +498,7 @@ div#navi-side div.waku-area hr.sideber{
   border-left: 0px solid #000000;
 	margin-bottom:10px;
 }
-/* Side menu Firefox ns7 */
+/* Side menu firefox ns7 */
 :root div#navi-side div.waku-area{
   margin-top: 0px;
   margin-bottom: 0px;

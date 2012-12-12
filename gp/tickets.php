@@ -1,4 +1,8 @@
 <?php
+/*
+    $Id$
+*/
+
 $_noemailclass = true;
 
 require_once('includes/application_top.php');
