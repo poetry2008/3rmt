@@ -6,6 +6,7 @@
  */
 require('includes/application_top.php');
 require(DIR_WS_CLASSES . 'currencies.php');  
+require(DIR_FS_ADMIN . '/classes/notice_box.php');
 $cPath_yobi = cpathPart($_GET['cPath'], 1);  
 $currencies = new currencies();
 $action = (isset($_GET['action']) ? $_GET['action'] : '');
@@ -3546,8 +3547,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <?php tep_site_filter(FILENAME_CATEGORIES, true);?> 
                 <?php
               $categories_table_form = '<form name="myForm1" action="'.  tep_href_link(FILENAME_CATEGORIES, tep_get_all_get_params('action').'action=all_update').'" method="POST" onSubmit="return false"> ';
-              //声明类
-              include(DIR_FS_ADMIN . '/classes/notice_box.php');
               // 商品列表
               $categories_table_params = array('width'=>'100%','cellpadding'=>'2','border'=>'0',
                   'cellspacing'=>'0','parameters'=>'id="products_list_table"');
@@ -3620,11 +3619,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               // 商品列表标题
               $categories_table_row[] = array('params' => 'valign="top" class="dataTableHeadingRow"',
                   'text' => $categories_title_row);
-              //这里是最后的列表输出
-              /*
-                 $notice_box->get_contents($categories_table_row);
-                 echo $notice_box->show_notice();
-               */
               $categories_count = 0;
               $rows = 0;
               if (isset($_GET['search']) && $_GET['search']) {
@@ -3997,11 +3991,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   $categories['categories_id'].'\', this)">'.tep_image(DIR_WS_IMAGES .  'icon_info.gif', IMAGE_ICON_INFO).'</a>&nbsp;');
                 $categories_table_row[] = array('params'=>$categories_table_row_params, 'text'=>$categories_table_content_row);
               }
-              /*
-                 $notice_box->get_contents($categories_table_row);
-                 echo $notice_box->show_notice();
-                 exit;
-               */
               // categories show list end 
 
               $products_count = 0;
