@@ -3,11 +3,10 @@
   $Id$
 */
 ?>
-<!-- login //-->
+<!-- login -->
 <script type="text/javascript" src="js/logincheck.js"></script>
 <?php
   if (!tep_session_is_registered('customer_id')) {
-
   echo '<div class="menu_top"><img src="images/menu_ico09.gif" alt="" align="top"><span>メンバーズページ</span></div>';
   echo '<div class="login"><a class="reorder_link" href="'.tep_href_link(FILENAME_LOGIN,'','SSL').'"><img src="images/login_02.gif" alt="'.HEADER_TITLE_LOGIN.'"></a>';
   echo '<a class="reorder_link" href="'.tep_href_link(FILENAME_CREATE_ACCOUNT,'','SSL').'"><img src="images/signup_01.gif" alt="'.HEADER_TITLE_CREATE_ACCOUNT.'"></a></div>';
@@ -48,20 +47,18 @@
   */
     } else {
 ?>
-  <div class="login box"> <div class="menu_top"><img src="images/menu_ico09.gif" alt="" align="top"><span>メンバーズページ</span></div>
+<div class="login box">
+        <div class="menu_top"><img src="images/menu_ico09.gif" alt="" align="top"><span>メンバーズページ</span></div>
       <ul class="login_list">
           <li class="login_list_info"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . HEADER_TITLE_MY_ACCOUNT . '</a>'."\n"; ?></li>
           <li class="login_list_info"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL') . '">' . MYACCOUNT_EDIT . '</a>'."\n"; ?></li>
-          <li class="login_list_info"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT_HISTORY, '', 'SSL') . '">' . MYACCOUNT_HISTORY . '</a>'."\n"; ?></li>
+		  <li class="login_list_info"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT_HISTORY, '', 'SSL') . '">' . MYACCOUNT_HISTORY . '</a>'."\n"; ?></li>
           <li class="login_list_info"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, '', 'SSL') . '">' . MYACCOUNT_NOTIFICATION . '</a>'."\n"; ?></li>
           <li class="login_list_info"><?php echo '<a href="' . tep_href_link(FILENAME_LOGOFF, '', 'SSL') . '">' . HEADER_TITLE_LOGOFF . '</a>'."\n"; ?></li>
-      </ul>
+           </ul>
+        </div>
 <?php 
-  echo '<div class="login"><a class="reorder_link" href="'.tep_href_link(FILENAME_LOGIN,'','SSL').'"><img src="images/login_02.gif" alt="'.HEADER_TITLE_LOGIN.'"></a>';
-  echo '<a class="reorder_link" href="'.tep_href_link(FILENAME_CREATE_ACCOUNT,'','SSL').'"><img src="images/signup_01.gif" alt="'.HEADER_TITLE_CREATE_ACCOUNT.'"></a></div>';
-  echo '</div>';
-
     }
   } 
 ?>
-<!-- login_eof //-->
+<!-- login_eof -->
