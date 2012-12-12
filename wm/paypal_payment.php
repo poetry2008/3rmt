@@ -1,8 +1,7 @@
 <?php
 require('includes/application_top.php');
 require('includes/modules/payment/paypal.php');
-/** SetExpressCheckout NVP example; last modified 08MAY23.
- *
+/*
  *  Initiate an Express Checkout transaction. 
 */
 
@@ -40,6 +39,7 @@ if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING"
         $_SESSION['paypaltoken']=$token;
   //$payPalURL = "https://www.paypal.com/webscr&cmd=_express-checkout&token=$token";
     $payPalURL = "https://www.paypal.com/webscr&cmd=_express-checkout&token=".$token."&useraction=commit";
+
 
 
 
