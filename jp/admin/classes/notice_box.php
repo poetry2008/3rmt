@@ -10,9 +10,10 @@ class notice_box {
   var $table_parameters = '';
   var $table_row_parameters = '';
   var $table_data_parameters = '';
-  function notice_box($heading_class='',$contents_class=''){
+  function notice_box($heading_class='',$contents_class='',$table_params=array()){
     $this->heading = array();
     $this->contents = array();
+    $this->table_params = $table_params;
     $this->heading_class = $heading_class;
     $this->contents_class = $contents_class;
     $this->eof = '';
@@ -32,6 +33,9 @@ class notice_box {
   }
   function get_table($arr,$class='',$param_arr=array()){
     //获得表格头
+    if(empty($param_arr)&&!empty($this->table_params)){
+      $param_arr = $this->table_params;
+    }
     if(!empty($param_arr)){
       if(isset($param_arr['border'])&&$param_arr['border']!=''){
         $p_border = $param_arr['border'];
@@ -131,6 +135,7 @@ class notice_box {
   function format_button(){
     // start button 处理 按钮
     $buttons = $this->contents['buttons'];
+    if(!empty($buttons)){
     $str = '';
     if(isset($buttons['button'])&&is_array($buttons['button'])){
       if($buttons['type'] == 'div'){
@@ -151,6 +156,7 @@ class notice_box {
     $arr = array();
     $arr[] = array('text'=>$arr_str);
     $table_str = $this->get_table($arr,$this->contents_class);
+    }
     // end button 按钮 处理结束
     return $table_str;
   }
