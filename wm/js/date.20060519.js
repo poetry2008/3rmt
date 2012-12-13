@@ -1,21 +1,21 @@
 /******************************************************************************/
-/*                            時間セレクトボックス                             /
+/*                            Time select box                             /
 /******************************************************************************/
 function selectDate(){
 
-	var num    = document.order.date.selectedIndex; //'選択セレクトボックス番号
-	var myD    = new Date();                        //'日付オブジェクト
-	var myHour = myD.getHours();                    //'時間
-	var myMin  = myD.getMinutes();                  //'分
-	var myMin  = Math.ceil(myMin/10) * 10;          //'切り上げ処理済「分」
+	var num    = document.order.date.selectedIndex; //'Select a number of select box
+	var myD    = new Date();                        //'Date object
+	var myHour = myD.getHours();                    //'Time
+	var myMin  = myD.getMinutes();                  //'Minutes
+	var myMin  = Math.ceil(myMin/10) * 10;          //'Minutes carry dealt
 
 
-	//'セレクトボックス値クリア
+	//'Select box value is cleared
 	document.order.min.options.length  = 1;
 	document.order.hour.options.length = 1;
 
 
-	//'セレクトボックス表示時間範囲値取得
+	//'Obtain the range of values of the time select box
 	//'
 	//'
 	if (num == 0) {
@@ -36,7 +36,7 @@ function selectDate(){
 	hour = (hour < 10)? 10 : hour;
 
 
-	//'セレクトボックス値作成
+	//'Create a select box value
 	for (i=hour; i<24; i++) {
 		document.order.hour.options[document.order.hour.options.length]=new Option(i, i);
 		if(document.layers){
@@ -50,24 +50,24 @@ function selectDate(){
 
 
 /******************************************************************************/
-/*                            分セレクトボックス                               /
+/*                            Minutes select box                              /
 /******************************************************************************/
 function selectHour(){
-	var num  = document.order.hour.selectedIndex;  //'選択セレクトボックス番号
-	var num2 = document.order.date.selectedIndex;  //'選択セレクトボックス番号
+	var num  = document.order.hour.selectedIndex;  //'Select a number of select box
+	var num2 = document.order.date.selectedIndex;  //'Select a number of select box
 
-	var myD    = new Date();                       //'日付オブジェクト
-	var myHour = myD.getHours();                   //'時間
-	var myMin  = myD.getMinutes();                 //'分
-	var myMin  = Math.ceil(myMin/10) * 10;         //'切り上げ処理済「分」
-	var min    = 0;                                //'分初期値
+	var myD    = new Date();                       //'Date object
+	var myHour = myD.getHours();                   //'Time
+	var myMin  = myD.getMinutes();                 //'Minutes
+	var myMin  = Math.ceil(myMin/10) * 10;         //'Minutes carry dealt
+	var min    = 0;                                //'the initial value of minutes
 
 
-	//'セレクトボックス値クリア
+	//'Select box value is cleared
 	document.order.min.options.length = 1;
 
 
-	//'セレクトボックス表示分範囲値取得
+	//'Obtain the range of values of the minutes select box
 	//'
 	//'
 	if (num2 == 1) {
@@ -98,7 +98,7 @@ function selectHour(){
 	}
 
 
-	//'セレクトボックス値作成
+	//'Create a select box value
 	for (i=min; i<60; i=i+10) {
 		if (i == 0) {
 			document.order.min.options[document.order.min.options.length]=new Option("00", "00");

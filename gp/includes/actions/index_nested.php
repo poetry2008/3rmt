@@ -22,7 +22,7 @@
        <?php
        if (!empty($seo_category['categories_header_text'])) {
        ?>
-       <div class="comment"><div class="comment_info_warpper"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seoフレーズ ?></div></div>
+       <div class="comment"><div class="comment_info_warpper"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seo句子 ?></div></div>
        <?php
        }
        ?>
@@ -109,7 +109,7 @@
             <?php
             if (!empty($seo_category['categories_footer_text'])) {
             ?>
-            <div class="comment"><div class="comment_info_warpper"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']); //seoフレーズ ?></div></div>
+            <div class="comment"><div class="comment_info_warpper"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']); //seo句子 ?></div></div>
             <?php
             }
             ?>
@@ -131,7 +131,7 @@
   if (isset($cPath_array)) {
     if ($seo_category['seo_description']) {
       echo '<div class="pageHeading"><h3> ' . str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']) . 'について</h3></div>' . "\n";
-      echo '<div class="comment"><div class="comment_info_warpper">' .  str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']) . '</div></div>' . "\n"; //seoフレーズ
+      echo '<div class="comment"><div class="comment_info_warpper">' .  str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']) . '</div></div>' . "\n"; //seo句子
 ?>
         <p class="pageBottom"></p>
 <?php
@@ -149,7 +149,7 @@
 ?>
     </td> 
     <td width="<?php echo BOX_WIDTH; ?>" valign="top" class="right_colum_border">
-      <!-- right_navigation //--> 
+      <!-- right_navigation --> 
       <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-      <!-- right_navigation_eof //-->
+      <!-- right_navigation_eof -->
     </td> 

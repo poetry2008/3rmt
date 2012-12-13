@@ -1,7 +1,6 @@
 <?php
 /*
   $Id$
-
 */
 
 define('HEADING_TITLE', 'お問い合わせ');

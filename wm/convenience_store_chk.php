@@ -6,12 +6,12 @@
   include('includes/application_top.php');
   
   if($_GET['sid'] != ""){
-    #基本情報
+    #基本信息
   $ip = MODULE_PAYMENT_CONVENIENCE_STORE_IP;
   $sid = $_GET['sid'];
   $oid = substr($_GET['sid'],0,8) . '-' . substr($_GET['sid'],8,8);
   
-  #DB取得情報
+  #获取数据库信息
   //ccdd
   $orders_status_history_query = tep_db_query("select comments from " . TABLE_ORDERS_STATUS_HISTORY . " where orders_id = '" . $oid . "'");
   $orders_status_history_result = tep_db_fetch_array($orders_status_history_query);

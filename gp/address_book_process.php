@@ -1,7 +1,6 @@
 <?php
 /*
   $Id$
-
 */
 
   require('includes/application_top.php');
@@ -45,7 +44,7 @@ WHERE address_book_id > " . tep_db_input($entry_id)  . " AND customers_id = '" .
     $process = true;
     $error = false;
 
-    // tamura 2002/12/30 「全角」英数字を「半角」に変換
+    // 全角的英数字改成半角
     $_POST['postcode'] = tep_an_zen_to_han($_POST['postcode']);
 
     $gender = tep_db_prepare_input($_POST['gender']);
@@ -63,7 +62,6 @@ WHERE address_book_id > " . tep_db_input($entry_id)  . " AND customers_id = '" .
     $country = tep_db_prepare_input($_POST['country']);
     $zone_id = tep_db_prepare_input($_POST['zone_id']);
     $state = tep_db_prepare_input($_POST['state']);
-// 2003-06-06 add_telephone
     $telephone = tep_db_prepare_input($_POST['telephone']);
 
     if (ACCOUNT_GENDER == 'true') {
@@ -140,7 +138,6 @@ WHERE address_book_id > " . tep_db_input($entry_id)  . " AND customers_id = '" .
       $country_error = false;
     }
 
-// 2003-06-06 add_telephone
     if (strlen($telephone) < ENTRY_TELEPHONE_MIN_LENGTH) {
       $telephone_error = true;
       $error = true;
@@ -185,7 +182,6 @@ WHERE address_book_id > " . tep_db_input($entry_id)  . " AND customers_id = '" .
     }
 
     if ($error == false) {
-// 2003-06-06 add_telephone
       $sql_data_array = array('entry_firstname' => $firstname,
                               'entry_lastname' => $lastname,
                 
@@ -235,7 +231,6 @@ WHERE address_book_id > " . tep_db_input($entry_id)  . " AND customers_id = '" .
   }
 
   if (isset($_GET['action']) && ($_GET['action'] == 'modify') && tep_not_null($_GET['entry_id'])) {
-// 2003-06-06 add_telephone
 //ccdd
     $entry_query = tep_db_query("
 SELECT 
@@ -290,7 +285,6 @@ function check_form() {
   var street_address = document.add_entry.street_address.value;
   var postcode = document.add_entry.postcode.value;
   var city = document.add_entry.city.value;
-<?php // 2003-06-06 add_telephone ?>
   var telephone = document.add_entry.telephone.value;
 
 <?php
@@ -356,7 +350,6 @@ function check_form() {
     error = 1;
   }
 
-<?php // 2003-06-06 add_telephone ?>
   if (telephone == '' || telephone.length < <?php echo ENTRY_TELEPHONE_MIN_LENGTH; ?>) {
     error_message = error_message + "<?php echo JS_TELEPHONE; ?>";
     error = 1;
@@ -369,18 +362,18 @@ function check_form() {
     return true;
   }
 }
-//--></script>
+--></script>
 </head>
 <body><div class="body_shadow" align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-  <!-- header_eof //--> 
-  <!-- body //--> 
+  <!-- header_eof --> 
+  <!-- body --> 
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
     <tr> 
-      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
+      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
-        <!-- left_navigation_eof //--> </td> 
-      <!-- body_text //--> 
+        <!-- left_navigation_eof --> </td> 
+      <!-- body_text --> 
       <td valign="top" id="contents"><?php echo tep_draw_form('add_entry', tep_href_link(FILENAME_ADDRESS_BOOK_PROCESS, '', 'SSL'), 'post', 'onSubmit="return check_form();"'); ?> 
         <h1 class="pageHeading"><?php echo (isset($_GET['action']) && $_GET['action'] == 'modify') ? HEADING_TITLE_MODIFY_ENTRY : HEADING_TITLE_ADD_ENTRY; ?></h1>
         
@@ -437,15 +430,15 @@ function check_form() {
           </table> 
           </form> 
         </div></td> 
-      <!-- body_text_eof //--> 
-      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 
+      <!-- body_text_eof --> 
+      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-        <!-- right_navigation_eof //--> </td> 
+        <!-- right_navigation_eof --> </td> 
   </table> 
-  <!-- body_eof //--> 
-  <!-- footer //--> 
+  <!-- body_eof --> 
+  <!-- footer --> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
+  <!-- footer_eof --> 
 </div> 
 </body>
 </html>

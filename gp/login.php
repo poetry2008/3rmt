@@ -26,7 +26,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
 }else{ 
 
   if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
-    // tamura 2002/12/30 「全角」英数字を「半角」に変換
+    // 全角的英数字改成半角
     $_POST['email_address'] = tep_an_zen_to_han($_POST['email_address']);
 
     $flag_error = false;
@@ -290,7 +290,7 @@ if($flag_error == false){
                $_SESSION['reset_customers_id'] = $check_customer['customers_id'];
        	       tep_redirect(tep_href_link(FILENAME_DEFAULT));	    
 	  }
-        if (SESSION_RECREATE == 'True') { // 2004/04/25 Add session management
+        if (SESSION_RECREATE == 'True') { 
           tep_session_recreate();
         }
 
@@ -329,7 +329,7 @@ if($flag_error == false){
                 customers_info_number_of_logons   = customers_info_number_of_logons+1 
             WHERE customers_info_id = '" . $customer_id . "'
         ");    
-    //POINT_LIMIT CHECK ポイントの有効期限チェック ds-style
+    //POINT_LIMIT CHECK 返点的有效期限判断 ds-style
     if(MODULE_ORDER_TOTAL_POINT_LIMIT != '0') {
 //ccdd
       $plimit_count_query = tep_db_query("
@@ -405,20 +405,20 @@ if($flag_error == false){
 function session_win() {
   window.open("<?php echo tep_href_link(FILENAME_INFO_SHOPPING_CART, '', 'SSL'); ?>","info_shopping_cart","height=460,width=430,toolbar=no,statusbar=no,scrollbars=yes").focus();
 }
-//--></script>
+--></script>
 </head>
 <body>
 <div class="body_shadow" align="center">
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-  <!-- header_eof //-->
-  <!-- body //-->
+  <!-- header_eof -->
+  <!-- body -->
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border" summary="box">
     <tr>
-      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"><!-- left_navigation //-->
+      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"><!-- left_navigation -->
       <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-      <!-- left_navigation_eof //-->
+      <!-- left_navigation_eof -->
       </td>
-      <!-- body_text //-->
+      <!-- body_text -->
       <td id="contents" valign="top">
 
       <div class="pageHeading">
@@ -587,17 +587,17 @@ if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){
 
       <p class="pageBottom"></p>
       </td>
-      <!-- body_text_eof //-->
-      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"><!-- right_navigation //-->
+      <!-- body_text_eof -->
+      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"><!-- right_navigation -->
       <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
-      <!-- right_navigation_eof //-->
+      <!-- right_navigation_eof -->
       </td>
     </tr>
   </table>
-  <!-- body_eof //-->
-  <!-- footer //-->
+  <!-- body_eof -->
+  <!-- footer -->
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-  <!-- footer_eof //-->
+  <!-- footer_eof -->
 </div>
 </body>
 </html>

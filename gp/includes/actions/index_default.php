@@ -4,7 +4,7 @@
 */
 ?>
     <td valign="top" id="contents">
-    <!-- 切换 -->
+    <!-- switch -->
     <div class="top_index_image" id="imenu01">
     	<div class="s_link"><a href="javascript:void(0);" onclick="toggle_index_menu(0);">カタカナ</a></div>
         <div class="s_link02"><a href="javascript:void(0);" onclick="toggle_index_menu(1);">英数字</a></div>  
@@ -31,8 +31,8 @@
             </tr>
          </table>
     </div>
-    <!-- 切换 end -->
-    <!-- 切换02 -->
+    <!-- switch end -->
+    <!-- switch02 -->
     <div class="top_index_image" id="imenu02" style="display:none;">
     	<div class="s_link_hover"><a href="javascript:void(0);" onclick="toggle_index_menu(0);">カタカナ</a></div>
         <div class="s_link02_hover"><a href="javascript:void(0);" onclick="toggle_index_menu(1);">英数字</a></div>  
@@ -60,7 +60,7 @@
             </tr>
          </table>
     </div>
-    <!-- 切换02 end -->
+    <!-- switch02 end -->
     
 <div id="showca" style="display:none">
 </div>
@@ -87,4 +87,4 @@
 include(DIR_WS_MODULES . 'categories_banner_text.php');
 ?>
 </td>
-    <!-- body_text_eof //--> 
+    <!-- body_text_eof --> 

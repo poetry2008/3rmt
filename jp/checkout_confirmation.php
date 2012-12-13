@@ -215,12 +215,14 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
   foreach($all_show_option_id as $t_item_id){
       $op_price = tep_get_show_attributes_price( $all_show_option[$t_item_id]['item_id'],
         $all_show_option[$t_item_id]['group_id'], $all_show_option[$t_item_id]['value']); 
-      echo '<br><small>&nbsp;<i> - ' . $all_show_option[$t_item_id]['front_title'] .
-      ': ' .  str_replace(array("<br>", "<BR>"), '', $all_show_option[$t_item_id]['value']);
-      if ($op_price != '0') {
-        echo ' ('.$currencies->format($op_price).')'; 
+      if(trim($all_show_option[$t_item_id]['value']) != ''){
+        echo '<br><small>&nbsp;<i> - ' . $all_show_option[$t_item_id]['front_title'] .
+             ': ' .  str_replace(array("<br>", "<BR>"), '', $all_show_option[$t_item_id]['value']);
+        if ($op_price != '0') {
+          echo ' ('.$currencies->format($op_price).')'; 
+        }
+        echo '</i></small>';
       }
-      echo '</i></small>';
 
   }
   echo '</td>' . "\n";

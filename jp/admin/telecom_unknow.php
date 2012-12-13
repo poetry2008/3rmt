@@ -321,17 +321,20 @@ require("includes/note_js.php");
       $where_str .= " and rel='no'";
     }
       // 默认显示不明和后台创建的信用卡
+      if(!isset($_GET['keywords'])||$_GET['keywords']==''){
+         $where_str = " and (type=''or type is null) ". $where_str;
+      }
       $orders_query_raw = "
         select *
         from telecom_unknow
-        where 1 ".(!$_GET['keywords']?" and type is null":'')." ".$where_str."
+        where 1 ".$where_str."
         order by date_added DESC
       ";
       
       $orders_query_numrows_raw = "
         select count(id) as count
         from telecom_unknow
-        where 1 ".(!$_GET['keywords']?" and type is null":'')." ".$where_str."
+        where 1 ".$where_str."
       ";
       
       //echo $orders_query_raw;

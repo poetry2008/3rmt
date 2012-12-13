@@ -68,6 +68,7 @@ function update_quantity(pid){
   nquantity = $('#real_pro_num').val();
   if (nquantity && false == /^\d+$/.test(nquantity)) {
     alert('<?php echo JS_TEXT_C_ADMIN_INPUT_INFO;?>');
+    return false; 
   }
   if (nquantity !== '' && nquantity !== null) {
     var send_url="set_quantity.php?pid="+pid+"&quantity="+nquantity;
@@ -88,6 +89,7 @@ function update_virtual_quantity(pid){
   nquantity = $('#virtual_pro_num').val();
   if (nquantity && false == /^\d+$/.test(nquantity)) {
     alert('<?php echo JS_TEXT_C_ADMIN_INPUT_INFO;?>');
+    return false; 
   }
   if (nquantity !== '' && nquantity !== null) {
     var send_url="set_quantity.php?pid="+pid+"&virtual_quantity="+nquantity;
