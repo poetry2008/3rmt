@@ -1758,3 +1758,24 @@ function select_item_radio(i_obj, t_str, o_str, p_str, r_price)
       origin_default_value = $('#'+o_str).val(); 
       $('#'+o_str).parent().html("<input type='hidden' id='"+o_str+"' name='"+p_str+"' value=\""+t_str+"\">"); 
 }
+
+function check_signal_time_select()
+{
+  green_info_str = document.getElementById('green_1').value+document.getElementById('green_2').value+document.getElementById('green_3').value+document.getElementById('green_4').value;    
+  yellow_info_str = document.getElementById('yellow_1').value+document.getElementById('yellow_2').value+document.getElementById('yellow_3').value+document.getElementById('yellow_4').value;    
+  red_info_str = document.getElementById('red_1').value+document.getElementById('red_2').value+document.getElementById('red_3').value+document.getElementById('red_4').value;    
+  
+  green_num = parseInt(green_info_str, 10); 
+  yellow_num = parseInt(yellow_info_str, 10); 
+  red_num = parseInt(red_info_str, 10); 
+  time_error = false;
+  if ((green_num >= yellow_num) || (green_num >= red_num) || (yellow_num >= red_num)) {
+    time_error = true; 
+  }
+  
+  if (time_error == false) {
+    document.forms.configuration.submit();
+  } else {
+    alert('<?php echo NOTICE_SET_WRONG_TIME;?>'); 
+  }
+}

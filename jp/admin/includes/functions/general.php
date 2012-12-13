@@ -7734,3 +7734,51 @@ function tep_get_javascript($name,$path='',$type='js'){
     }
   }
 }
+
+function tep_get_time_select_symbol($name_str, $id_str, $default_value) {
+  $html_str = '<select name="'.$name_str.'" id="'.$id_str.'">';
+  for ($i = 0; $i <= 9; $i++) {
+    $html_str .= '<option value="'.$i.'"'.(($default_value == $i)?' selected':'').'>'.$i.'</option>';  
+  }
+  $html_str .= '</select>';
+  return $html_str;
+}
+
+function tep_cfg_time_select($default_value) {
+  $string = '';
+  $default_info_array = @unserialize(stripslashes($default_value));
+  $string .= SIGNAL_GREEN.'&nbsp;&nbsp;'.NOW_TIME_TEXT.'&nbsp;&nbsp;'.tep_get_time_select_symbol('configuration_value[green][]', 'green_1', $default_info_array['green'][0]).'&nbsp;'.tep_get_time_select_symbol('configuration_value[green][]', 'green_2', $default_info_array['green'][1]).'&nbsp;'.tep_get_time_select_symbol('configuration_value[green][]', 'green_3', $default_info_array['green'][2]).'&nbsp;'.tep_get_time_select_symbol('configuration_value[green][]', 'green_4', $default_info_array['green'][3]).'&nbsp;'.NOW_TIME_LINK_TEXT.'<br>'; 
+  
+  $string .= SIGNAL_YELLOW.'&nbsp;&nbsp;'.NOW_TIME_TEXT.'&nbsp;&nbsp;'.tep_get_time_select_symbol('configuration_value[yellow][]', 'yellow_1', $default_info_array['yellow'][0]).'&nbsp;'.tep_get_time_select_symbol('configuration_value[yellow][]', 'yellow_2', $default_info_array['yellow'][1]).'&nbsp;'.tep_get_time_select_symbol('configuration_value[yellow][]', 'yellow_3', $default_info_array['yellow'][2]).'&nbsp;'.tep_get_time_select_symbol('configuration_value[yellow][]', 'yellow_4', $default_info_array['yellow'][3]).'&nbsp;'.NOW_TIME_LINK_TEXT.'<br>'; 
+  
+  $string .= SIGNAL_RED.'&nbsp;&nbsp;'.NOW_TIME_TEXT.'&nbsp;&nbsp;'.tep_get_time_select_symbol('configuration_value[red][]', 'red_1', $default_info_array['red'][0]).'&nbsp;'.tep_get_time_select_symbol('configuration_value[red][]', 'red_2', $default_info_array['red'][1]).'&nbsp;'.tep_get_time_select_symbol('configuration_value[red][]', 'red_3', $default_info_array['red'][2]).'&nbsp;'.tep_get_time_select_symbol('configuration_value[red][]', 'red_4', $default_info_array['red'][3]).'&nbsp;'.NOW_TIME_LINK_TEXT.'<br>'; 
+  
+  
+  $string .= SIGNAL_BLNK.'&nbsp;&nbsp;'.SIGNAL_BLINK_READ_TEXT;
+
+  return $string;
+}
+
+function tep_get_signal_pic_info($last_modified_info) {
+  $last_modified_str = date('n/j H:i:s', strtotime(tep_datetime_short($last_modified_info))); 
+  $origin_last_modified_time = strtotime($last_modified_info);
+
+  $html_str = tep_image(DIR_WS_ICONS.'signal_blink.gif', $last_modified_str);
+  $now_time = time();
+  
+  $set_time_array = unserialize(get_configuration_by_site_id('DS_ADMIN_SIGNAL_TIME', '0'));
+  
+  $set_time_part_1 = (int)($set_time_array['green'][0].$set_time_array['green'][1].$set_time_array['green'][2].$set_time_array['green'][3]); 
+  $set_time_part_2 = (int)($set_time_array['yellow'][0].$set_time_array['yellow'][1].$set_time_array['yellow'][2].$set_time_array['yellow'][3]); 
+  $set_time_part_3 = (int)($set_time_array['red'][0].$set_time_array['red'][1].$set_time_array['red'][2].$set_time_array['red'][3]); 
+  
+  if ($origin_last_modified_time >= ($now_time - $set_time_part_1*60*60)) {
+    $html_str = tep_image(DIR_WS_ICONS.'signal_blue.gif', $last_modified_str);
+  } else if ($origin_last_modified_time >= ($now_time - $set_time_part_2*60*60)) {
+    $html_str = tep_image(DIR_WS_ICONS.'signal_yellow.gif', $last_modified_str);
+  } else if ($origin_last_modified_time >= ($now_time - $set_time_part_3*60*60)) {
+    $html_str = tep_image(DIR_WS_ICONS.'signal_red.gif', $last_modified_str);
+  }
+  
+  return $html_str;
+}
