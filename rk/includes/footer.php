@@ -5,9 +5,7 @@
 ?>
 <div id="footer">
           <address class="footer_contacts">
-        <?php echo FOOTER_TEXT_BODY . "\n"; ?><br> Copyright&nbsp;&copy;&nbsp;<?php
-        echo date("Y");?>&nbsp;&nbsp;<a class="bold" href="<?php echo HTTP_SERVER;
-        ?>"><?php echo STORE_NAME;?></a>
+        <?php echo FOOTER_TEXT_BODY . "\n"; ?><br> Copyright&nbsp;&copy;&nbsp;<?php echo date("Y");?>&nbsp;&nbsp;<a class="bold" href="<?php echo HTTP_SERVER; ?>"><?php echo STORE_NAME;?></a>
             </address>
           <?php if ($banner = tep_banner_exists('dynamic', 'footer')) { echo  '<div align="center">' . "\n" . tep_display_banner('static', $banner) . '</div>'; }?>
 
