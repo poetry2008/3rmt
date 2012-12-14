@@ -541,16 +541,16 @@ if ($_GET['action'] == 'show_category_info') {
       );
   
   $product_info_str .= $notice_box->get_table($product_info_array, '', $product_info_params);
-  $relate_exists_sigle = false;
+  $relate_exists_single = false;
   if (!empty($pInfo->relate_products_id)) {
     $relate_product_exists_raw = tep_db_query("select products_id from ".TABLE_PRODUCTS." where products_id = '".(int)$pInfo->relate_products_id."'"); 
     $relate_product_exists = tep_db_fetch_array($relate_product_exists_raw);
     if ($relate_product_exists) {
-      $relate_exists_sigle = true;
+      $relate_exists_single = true;
     }
   }
   //关联商品信息
-  if ($relate_exists_sigle) {
+  if ($relate_exists_single) {
     $relate_product_info_array = array(); 
     $relate_pInfo = tep_get_pinfo_by_pid($pInfo->relate_products_id, $site_id); 
     $relate_product_tmp_price = tep_get_products_price($relate_pInfo->products_id);
@@ -707,7 +707,7 @@ if ($_GET['action'] == 'show_category_info') {
   $history_info_str .= $notice_box->get_table($product_history_array, '', $history_table_params);
 
   //关联商品历史记录
-  if ($relate_exists_sigle) {
+  if ($relate_exists_single) {
     $history_info_str .= '<br>'; 
     $relate_order_history_query = tep_db_query("
       select * 
