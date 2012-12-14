@@ -11,13 +11,21 @@ if (!isset($_GET['gID'])) {
 }
 if (isset($_GET['action']) && $_GET['action']) {
 if(isset($_GET['cID'])){
+  if (!is_numeric($_GET['cID'])) {
+    $tmp_cid_info = explode('_',$_GET['cID']);
+    $tmp_cid = $tmp_cid_info[0];
+  } else {
+    $tmp_cid = $_GET['cID']; 
+  }
+  $tmp_gid = $_GET['gID']; 
   $cfg_isset_query = tep_db_query("
       select configuration_id from ".TABLE_CONFIGURATION." 
-      where configuration_group_id = '" . $_GET['gID'] . "' 
-      and configuration_id = '" . $_GET['cID'] . "'
-      and site_id='0'");
+      where configuration_group_id = '" . $tmp_gid . "' 
+      and configuration_id = '" . $tmp_cid . "'");
   $cfg_isset = tep_db_fetch_array($cfg_isset_query);
-  forward404Unless($cfg_isset);
+  if ($_GET['action'] != 'tdel') {
+    forward404Unless($cfg_isset);
+  }
 }
 if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];//权限判断
          else $site_arr="";
@@ -80,8 +88,21 @@ WHERE
       $configuration_value = tep_db_input($upfile_name);
       tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . tep_db_input($upfile_name) . "', last_modified = now(),user_update='".$_POST['user_update']."' where configuration_id = '" . tep_db_input($cID) . "'");
   }
-        tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . tep_db_input($configuration_value) . "', last_modified = now(),user_update='".$_POST['user_update']."' where configuration_id = '" . tep_db_input($cID) . "'");
-        tep_redirect(tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' .  tep_get_default_configuration_id_by_id($cID)));
+  
+  $exists_configuration_raw = tep_db_query("select configuration_key from ".TABLE_CONFIGURATION." where configuration_id = '".$cID."'");       
+  $exists_configuration_res = tep_db_fetch_array($exists_configuration_raw);
+  $signal_single = false; 
+  if ($exists_configuration_res) {
+    if ($exists_configuration_res['configuration_key'] == 'DS_ADMIN_SIGNAL_TIME') {
+      $signal_single = true; 
+    }
+  }
+  if ($signal_single) {
+    tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" .  tep_db_input(serialize($configuration_value)) . "', last_modified = now(),user_update='".$_POST['user_update']."' where configuration_id = '" . tep_db_input($cID) . "'");
+  } else {
+    tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . tep_db_input($configuration_value) . "', last_modified = now(),user_update='".$_POST['user_update']."' where configuration_id = '" . tep_db_input($cID) . "'");
+  }
+  tep_redirect(tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' .  tep_get_default_configuration_id_by_id($cID)));
   break;
     case 'tdel':
   $two_id = explode('_',$_GET['cID']);
@@ -193,6 +214,7 @@ require("includes/note_js.php");
 select 
     configuration_id, 
     configuration_title, 
+    configuration_key, 
     configuration_value, 
     use_function 
 from " . TABLE_CONFIGURATION . " 
@@ -249,7 +271,18 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     }
 ?>
     <td class="dataTableContent" nowrap><?php echo $configuration['configuration_title']; ?></td>
-                         <td class="dataTableContent"><?php echo mb_substr(htmlspecialchars($cfgValue),0,50); ?></td>
+                         <td class="dataTableContent">
+                         <?php 
+                         if ($configuration['configuration_key'] == 'DS_ADMIN_SIGNAL_TIME') {
+                           $tmp_setting_array = @unserialize(stripslashes($cfgValue));
+                           echo SIGNAL_GREEN.':'.(int)($tmp_setting_array['green'][0].$tmp_setting_array['green'][1].$tmp_setting_array['green'][2].$tmp_setting_array['green'][3]);
+                           echo SIGNAL_YELLOW.':'.(int)($tmp_setting_array['yellow'][0].$tmp_setting_array['yellow'][1].$tmp_setting_array['yellow'][2].$tmp_setting_array['yellow'][3]);
+                           echo SIGNAL_RED.':'.(int)($tmp_setting_array['red'][0].$tmp_setting_array['red'][1].$tmp_setting_array['red'][2].$tmp_setting_array['red'][3]);
+                         } else {
+                           echo mb_substr(htmlspecialchars($cfgValue),0,50); 
+                         }
+                         ?>
+                         </td>
                                               <td class="dataTableContent" align="right"><?php if ( (isset($cInfo) && is_object($cInfo)) && ($configuration['configuration_id'] == $cInfo->configuration_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $configuration['configuration_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
     </tr>
 <?php
@@ -262,17 +295,20 @@ $contents = array();
 switch (isset($_GET['action']) && $_GET['action']) {
 case 'edit':
     $heading[] = array('text' => '<b>' . $cInfo->configuration_title . '</b>');
-
     if ($cInfo->set_function) {
-  eval('$value_field = ' . $cInfo->set_function . '\'' .  htmlspecialchars(addcslashes($cInfo->configuration_value, '\'')) . '\');');
-  $value_field = htmlspecialchars_decode($value_field);
+      if ($cInfo->configuration_key == 'DS_ADMIN_SIGNAL_TIME') {
+        eval('$value_field = '.$cInfo->set_function."'".$cInfo->configuration_value."');"); 
+      } else {
+        eval('$value_field = ' . $cInfo->set_function . '\'' .  htmlspecialchars(addcslashes($cInfo->configuration_value, '\'')) . '\');');
+      }
+      $value_field = htmlspecialchars_decode($value_field);
     } else {
-        if($cInfo->configuration_key == 'ADMINPAGE_LOGO_IMAGE') {
-      $value_field = tep_draw_file_field('upfile') . '<br>' . $cInfo->configuration_value;
-  } else {
+      if($cInfo->configuration_key == 'ADMINPAGE_LOGO_IMAGE') {
+        $value_field = tep_draw_file_field('upfile') . '<br>' . $cInfo->configuration_value;
+      } else {
     //$value_field = tep_draw_input_field('configuration_value', $cInfo->configuration_value);
-      $value_field = '<textarea name="configuration_value" rows="5" cols="35">'. $cInfo->configuration_value .'</textarea>';
-  }
+        $value_field = '<textarea name="configuration_value" rows="5" cols="35">'. $cInfo->configuration_value .'</textarea>';
+      }
     }
 // 针对 logo—image 做特殊处理
     if($cInfo->configuration_key == 'ADMINPAGE_LOGO_IMAGE') {
@@ -284,7 +320,11 @@ case 'edit':
     $contents[] = array('text' => TEXT_INFO_EDIT_INTRO);
     $contents[] = array('text' => '<br><b>' . $cInfo->configuration_title . '</b><br>' . $cInfo->configuration_description . '<br>' . $value_field);
   
-    $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_UPDATE) . '&nbsp;<a class="new_product_reset" href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] .  '&cID=' . $cInfo->configuration_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
+    if ($cInfo->configuration_key == 'DS_ADMIN_SIGNAL_TIME') {
+      $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_button(IMAGE_UPDATE, 'onclick="check_signal_time_select()"') . '&nbsp;<a class="new_product_reset" href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] .  '&cID=' . $cInfo->configuration_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
+    } else {
+      $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_UPDATE) . '&nbsp;<a class="new_product_reset" href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] .  '&cID=' . $cInfo->configuration_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
+    }
 
 //----------------------------------
 // for 3rmt {{{
@@ -335,6 +375,7 @@ case 'edit':
             'ORDERS_EMPTY_EMAIL_TITLE',
             'ORDERS_EMPTY_EMAIL_TEXT',
             'ORDER_EFFECTIVE_DATE',
+            'DS_ADMIN_SIGNAL_TIME',
             ))) 
     while($site = tep_db_fetch_array($select_site_configure)) {
   $site_romaji[] = $site['romaji'];
@@ -386,8 +427,7 @@ default:
         $heading[] = array('text' => '<b>' . $cInfo->configuration_title . '</b>');
 
         $contents[] = array('align' => 'center', 'text' => '<a href="' .  tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' .  $cInfo->configuration_id . '&action=edit') . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a>');
-
-        $contents[] = array('text' => '<br />'. $cInfo->configuration_description);
+        $contents[] = array('text' => '<br>'. $cInfo->configuration_description);
       if(tep_not_null($cInfo->user_added)){
 $contents[] = array('text' => TEXT_USER_ADDED . '&nbsp;' . $cInfo->user_added);
       }else{

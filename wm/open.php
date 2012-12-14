@@ -1,19 +1,7 @@
 <?php
-/*********************************************************************
-    open.php
-
-    New tickets handle.
-
-    Peter Rotich <peter@osticket.com>
-    Copyright (c)  2006-2010 osTicket
-    http://www.osticket.com
-
-    Released under the GNU General Public License WITHOUT ANY WARRANTY.
-    See LICENSE.TXT for details.
-
-    vim: expandtab sw=4 ts=4 sts=4:
+/*
     $Id$
-**********************************************************************/
+*/
 //require('client.inc.php');
 $_noemailclass = true;
   require_once('includes/application_top.php');
@@ -44,7 +32,6 @@ if($_POST):
     //Ticket::create...checks for errors..
     if(($ticket=Ticket::create($_POST,$errors,SOURCE))){
               $msg='お客様のご質問は '.STORE_NAME.' へ送信されました。';
-      //        $msg='お客様のご質問は RMTジャックポット へ送信されました。';
       /*
         if($thisclient && $thisclient->isValid()) //Logged in...simply view the newly created ticket.
             @header('Location: tickets.php?id='.$ticket->getExtId());

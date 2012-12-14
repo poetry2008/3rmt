@@ -5,7 +5,7 @@
 
   require('includes/application_top.php');
 
-  //「商品名」についてのお問い合わせ
+  //关于商品名的咨询
   define('HEADING_TITLE', 'Internet Explorer6の設定について');
   define('NAVBAR_TITLE', 'ブラウザの設定');
   
@@ -16,16 +16,16 @@
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
   <div class="body_shadow" align="center">
     <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-    <!-- header_eof //-->
-    <!-- body //-->
+    <!-- header_eof -->
+    <!-- body -->
     <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border">
       <tr>
         <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border">
-          <!-- left_navigation //-->
+          <!-- left_navigation -->
           <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-          <!-- left_navigation_eof //-->
+          <!-- left_navigation_eof -->
         </td> 
-        <!-- body_text //--> 
+        <!-- body_text --> 
         <td valign="top" id="contents">
           <h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1> 
           <div class="comment">
@@ -64,18 +64,18 @@
           </div>
                     <p class="pageBottom"></p>
         </td>
-        <!-- body_text_eof //-->
+        <!-- body_text_eof -->
         <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>">
-          <!-- right_navigation //-->
+          <!-- right_navigation -->
           <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
-          <!-- right_navigation_eof //-->
+          <!-- right_navigation_eof -->
         </td>
       </tr>
     </table>
-    <!-- body_eof //-->
-    <!-- footer //-->
+    <!-- body_eof -->
+    <!-- footer -->
     <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-    <!-- footer_eof //-->
+    <!-- footer_eof -->
   </div>
 </body>
 </html>

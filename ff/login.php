@@ -572,7 +572,8 @@ if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){
           </td>
         </tr>
       </table>
-<div class="product_info_box">
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" summary="content" class="product_info_box">
+<tr><td>
 <?php echo TEXT_LOGIN_SSL_READ;?>
 <p align="center"> 
 <!-- GeoTrust Smart Icon tag. Do not edit. -->
@@ -580,7 +581,7 @@ if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){
 <!-- END of GeoTrust Smart Icon tag -->
         </p>
 <div class="underline"></div>
-<?php echo TEXT_POINT ; ?></div>
+<?php echo TEXT_POINT ; ?></td></tr></table>
       </div>
       </form>
 

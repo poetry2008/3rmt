@@ -1,11 +1,9 @@
 <?php 
 /*
   $Id$
-
 */
 
 //
-// mb_substr() function v1.0.0 by S.HIRO 2003/03/03
 // It is not a function compatible with 100%.
 //
 function mb_substr($str, $start = 0, $length = 0, $encode = '')
@@ -24,7 +22,6 @@ function mb_strlen($str, $encoding)
 }
 
 //
-// mb_convert_kana() function v1.0.0 by S.HIRO 2003/03/03
 // It is not a function compatible with 100%.
 //
 function mb_convert_kana($str, $option, $encode = 'auto')
@@ -51,8 +48,6 @@ function mb_convert_kana($str, $option, $encode = 'auto')
 }
 
 //
-// mb_convert_encoding() function v1.0.0 by TOMO 2002/07/19
-//                                 v1.0.1 Modifyed by S.HIRO 2003/03/03
 // It is not a function compatible with 100%.
 //
 function mb_convert_encoding($str, $to, $from = 'auto')
@@ -64,10 +59,7 @@ function mb_convert_encoding($str, $to, $from = 'auto')
 }
 
 //
-// mb_encode_mimeheader() function v1.0.0 by S.HIRO 2003/03/03
 // It is not a function compatible with 100%.
-//
-// v1.0.1 by S.HIRO 2003/03/05 character is changed into JIS from EUC
 //
 function mb_encode_mimeheader($str, $encode = 'ISO-2022-JP', $trn = 'B', $lf ='\r\n')
 {

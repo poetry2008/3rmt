@@ -1760,7 +1760,7 @@ border:2px solid #FF8080;
 .rg_pay_info{ border:1px solid #ccc; background-color:#fff; padding:4px; margin:3px 0;}
 .best_goods{ width:170px; margin:0 auto;}
 .best_goods_info { text-align:center; font-size:12px; padding:5px 0; border:1px solid #ccc;}
-.reorder{ overflow:hidden;}
+.reorder{ overflow:hidden; margin-top:7px;}
 .payment_comment{ 
  word-wrap:break-word;
  word-break:break-all;
@@ -2139,8 +2139,8 @@ border:2px solid #FF8080;
 }
 .login{
 	overflow:hidden;
-	margin-bottom:7px;
+	margin:2px 0 1px 0;
 }
-.login a img{
-	margin-top:6px;
+.right_colum_border .box{
+	margin-top:0px;
 }

@@ -16,16 +16,16 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
 <body>
 <div align="center">
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-  <!-- header_eof //-->
-  <!-- body //-->
+  <!-- header_eof -->
+  <!-- body -->
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border">
     <tr>
       <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border">
-        <!-- left_navigation //-->
+        <!-- left_navigation -->
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-        <!-- left_navigation_eof //-->
+        <!-- left_navigation_eof -->
       </td>
-      <!-- body_text //-->
+      <!-- body_text -->
       <td id="contents" valign="top">
         <h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
         <?php if($_POST){
@@ -75,7 +75,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
             $email_order .= "お問い合わせください。\n\n";
 
             $email_order .= "[ご連絡・お問い合わせ先]━━━━━━━━━━━━\n";
-            $email_order .= "株式会社 iimy\n";
+            $email_order .= COMPANY_NAME."\n";
             $email_order .= SUPPORT_EMAIL_ADDRESS . "\n";
             $email_order .= HTTP_SERVER . "\n";
             //$email_order .= "〒761-0445 香川県高松市西植田町2925番地\n";
@@ -177,18 +177,18 @@ if(isset($comment)&&$comment){
 <?php }?></div>
         <p class="pageBottom"></p>
       </td>
-      <!-- body_text_eof //-->
+      <!-- body_text_eof -->
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>">
-        <!-- right_navigation //-->
+        <!-- right_navigation -->
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
-        <!-- right_navigation_eof //-->
+        <!-- right_navigation_eof -->
       </td>           
     </tr>
   </table>
-  <!-- body_eof //-->
-  <!-- footer //-->
+  <!-- body_eof -->
+  <!-- footer -->
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-  <!-- footer_eof //-->
+  <!-- footer_eof -->
 </div>
 </body>
 </html>
