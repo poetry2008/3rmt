@@ -4872,20 +4872,15 @@ function tep_display_google_results($from_url='', $c_type=false){
     $res_str = "<select name='letter'>";
     if($userid!=''){
       if($is_letter){
-        $selected = $userid;
+        $selected = $is_letter;
       }else{
         $selected = tep_rand_pw_start($userid);
       }
     }else{
       $selected = 'first';
     }
-    if($is_letter){
-      $sql = "select * from ".TABLE_LETTERS." WHERE userid IS NULL
-        OR userid = ''";
-    }else{
-      $sql = "select * from ".TABLE_LETTERS." WHERE userid IS NULL
-        OR userid = '' OR userid = '".$userid."'";
-    }
+    $sql = "select * from ".TABLE_LETTERS." WHERE userid IS NULL
+      OR userid = '' OR userid = '".$userid."'";
     $res = tep_db_query($sql);
     while($row = tep_db_fetch_array($res)){
       $res_str .= "<option value ='".$row['letter']."' ";

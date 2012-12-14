@@ -1,5 +1,4 @@
 <?php
-
 /* ===============================================
   global 定数
  ============================================== */
@@ -605,7 +604,7 @@ function UserInfo_preview() {
   echo "</td>\n";
   echo "<td>\n";
   if(isset($GLOBALS['letter'])&&$GLOBALS['letter']){
-  echo tep_show_pw_start($GLOBALS['letter'],true);
+  echo tep_show_pw_start($arec['userid'],$GLOBALS['letter']);
   }else{
   echo tep_show_pw_start($arec['userid']);
   }
@@ -619,8 +618,8 @@ function UserInfo_preview() {
   echo "<tr>\n";
   echo "<td colspan='2' align='center'>\n";
   echo tep_draw_hidden_field("userslist", $arec['userid']);    
-  echo tep_draw_input_field("execute_user", MAKE_PWD, '', FALSE, "submit", FALSE);  // ユーザ情報
-  echo tep_draw_input_field("reset", RESET_PWD, '', FALSE, "reset", FALSE);  // 元の値に戻す
+  echo tep_draw_input_field("execute_user", IMAGE_PREVIEW, '', FALSE, "submit", FALSE);  // ユーザ情報
+  echo tep_draw_input_field("reset", IMAGE_RESET, '', FALSE, "reset", FALSE);  // 元の値に戻す
   echo "</td>\n";
   echo "</tr>\n";
   echo "</table></td><td valign='top'>".TEXT_RAND_PWD_INFO."</td></tr>\n";
