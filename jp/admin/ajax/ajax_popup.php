@@ -498,7 +498,7 @@ if ($_GET['action'] == 'show_category_info') {
   $inventory = tep_get_product_inventory($pInfo->products_id);
  
   $product_info_array[]['text'] = array(
-        array('params' => 'width="30%" nowrap="nowrap"', 'text' => TABLE_HEADING_JIAGE_TEXT.':'),
+        array('params' => 'width="130" nowrap="nowrap"', 'text' => TABLE_HEADING_JIAGE_TEXT.':'),
         array('text' => (($product_tmp_price['sprice'])?'<s>'.$currencies->format($product_tmp_price['price']).'</s>&nbsp;':'').tep_draw_input_field('products_price', number_format(abs($pInfo->products_price)?abs($pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)" id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;' . CATEGORY_MONEY_UNIT_TEXT .  '&nbsp;&nbsp;&larr;&nbsp;' . (int)$pInfo->products_price .  CATEGORY_MONEY_UNIT_TEXT)
       );
   if (!$pInfo->products_bflag && $pInfo->relate_products_id) {
@@ -561,7 +561,7 @@ if ($_GET['action'] == 'show_category_info') {
         );
     
     $relate_product_info_array[]['text'] = array(
-          array('params' => 'width="30%" nowrap="nowrap"', 'text' => TABLE_HEADING_JIAGE_TEXT.':'), 
+          array('params' => 'width="130" nowrap="nowrap"', 'text' => TABLE_HEADING_JIAGE_TEXT.':'), 
           array('text' => tep_draw_hidden_field('relate_products_id', $relate_pInfo->products_id).(($relate_product_tmp_price['sprice'])?'<s>'.$currencies->format($relate_product_tmp_price['price']).'</s>&nbsp;':'').tep_draw_input_field('relate_products_price', number_format(abs($relate_pInfo->products_price)?abs($relate_pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;' .  CATEGORY_MONEY_UNIT_TEXT .  '&nbsp;&nbsp;&larr;&nbsp;' .  (int)$relate_pInfo->products_price . CATEGORY_MONEY_UNIT_TEXT)
         );
   
