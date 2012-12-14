@@ -17,7 +17,7 @@ if ($_GET['action'] == 'show_category_info') {
         and cd.language_id = '" . $languages_id . "' 
         and cd.categories_name like '%" . $_GET['search'] . "%' ";
     if(!empty($site_id)){
-      $categories_query_raw .= " and cd.site_id = '".$site_id."' ";
+      $categories_query_raw .= " and cd.site_id = '".(int)$site_id."' ";
     }else{
       $categories_query_raw .= " and cd.site_id = '0' ";
     }
@@ -37,7 +37,7 @@ if ($_GET['action'] == 'show_category_info') {
             and cd.language_id='" . $languages_id ."' 
           order by site_id DESC
         ) c 
-      where site_id = ".$site_id."
+      where site_id = ".(int)$site_id."
          or site_id = 0
       group by categories_id
       order by sort_order, categories_name
@@ -541,8 +541,16 @@ if ($_GET['action'] == 'show_category_info') {
       );
   
   $product_info_str .= $notice_box->get_table($product_info_array, '', $product_info_params);
+  $relate_exists_single = false;
+  if (!empty($pInfo->relate_products_id)) {
+    $relate_product_exists_raw = tep_db_query("select products_id from ".TABLE_PRODUCTS." where products_id = '".(int)$pInfo->relate_products_id."'"); 
+    $relate_product_exists = tep_db_fetch_array($relate_product_exists_raw);
+    if ($relate_product_exists) {
+      $relate_exists_single = true;
+    }
+  }
   //关联商品信息
-  if ($pInfo->relate_products_id) {
+  if ($relate_exists_single) {
     $relate_product_info_array = array(); 
     $relate_pInfo = tep_get_pinfo_by_pid($pInfo->relate_products_id, $site_id); 
     $relate_product_tmp_price = tep_get_products_price($relate_pInfo->products_id);
@@ -699,7 +707,7 @@ if ($_GET['action'] == 'show_category_info') {
   $history_info_str .= $notice_box->get_table($product_history_array, '', $history_table_params);
 
   //关联商品历史记录
-  if ($pInfo->relate_products_id) {
+  if ($relate_exists_single) {
     $history_info_str .= '<br>'; 
     $relate_order_history_query = tep_db_query("
       select * 
@@ -940,7 +948,7 @@ if ($_GET['action'] == 'show_category_info') {
         array('text' => '<br>' . TEXT_INFO_CURRENT_CATEGORIES . '<br><b>' . tep_output_generated_category_path($pInfo->products_id, 'product') .  '</b>'.tep_draw_hidden_field('products_id', $pInfo->products_id)) 
       );
   $move_product_info[]['text'] = array(
-        array('text' => '<br>' . sprintf(TEXT_MOVE, $pInfo->products_name) . '<br>' . tep_draw_pull_down_menu('move_to_category_id', tep_get_category_tree('0','','','',false,false),$current_category_id)) 
+        array('text' => '<br>' . sprintf(TEXT_MOVE, $pInfo->products_name) . '<br>' . tep_draw_pull_down_menu('move_to_category_id', tep_get_category_tree('0','','','',false),$current_category_id)) 
       );
   
   $form_str = tep_draw_form('products', FILENAME_CATEGORIES, 'action=move_product_confirm&cPath=' . $cPath);
