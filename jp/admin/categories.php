@@ -6,6 +6,7 @@
  */
 require('includes/application_top.php');
 require(DIR_WS_CLASSES . 'currencies.php');  
+require(DIR_FS_ADMIN . '/classes/notice_box.php');
 $cPath_yobi = cpathPart($_GET['cPath'], 1);  
 $currencies = new currencies();
 $action = (isset($_GET['action']) ? $_GET['action'] : '');
@@ -3546,8 +3547,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <?php tep_site_filter(FILENAME_CATEGORIES, true);?> 
                 <?php
               $categories_table_form = '<form name="myForm1" action="'.  tep_href_link(FILENAME_CATEGORIES, tep_get_all_get_params('action').'action=all_update').'" method="POST" onSubmit="return false"> ';
-              //声明类
-              include(DIR_FS_ADMIN . '/classes/notice_box.php');
               // 商品列表
               $categories_table_params = array('width'=>'100%','cellpadding'=>'2','border'=>'0',
                   'cellspacing'=>'0','parameters'=>'id="products_list_table"');
@@ -3620,11 +3619,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               // 商品列表标题
               $categories_table_row[] = array('params' => 'valign="top" class="dataTableHeadingRow"',
                   'text' => $categories_title_row);
-              //这里是最后的列表输出
-              /*
-                 $notice_box->get_contents($categories_table_row);
-                 echo $notice_box->show_notice();
-               */
               $categories_count = 0;
               $rows = 0;
               if (isset($_GET['search']) && $_GET['search']) {
@@ -3997,11 +3991,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   $categories['categories_id'].'\', this)">'.tep_image(DIR_WS_IMAGES .  'icon_info.gif', IMAGE_ICON_INFO).'</a>&nbsp;');
                 $categories_table_row[] = array('params'=>$categories_table_row_params, 'text'=>$categories_table_content_row);
               }
-              /*
-                 $notice_box->get_contents($categories_table_row);
-                 echo $notice_box->show_notice();
-                 exit;
-               */
               // categories show list end 
 
               $products_count = 0;
@@ -4454,21 +4443,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 }
                 $products_table_content_row[] = array('params'=>$products_status_params, 'text'=>$products_status_text);
                 $products_change_params .= 'class="dataTableContent" align="center"';
-                $last_modified_array = getdate(strtotime(tep_datetime_short($products['new_products_last_modified'])));
-                $today_array = getdate();
-                $last_modified = date('n/j H:i:s',strtotime(tep_datetime_short($products['new_products_last_modified'])));
-                if ( $last_modified_array["year"] == $today_array["year"] && $last_modified_array["mon"] == $today_array["mon"] && $last_modified_array["mday"] == $today_array["mday"]
-                   ) {
-                  if ($last_modified_array["hours"] >= ($today_array["hours"]-2)) {
-                    $products_change_text .= tep_image(DIR_WS_ICONS . 'signal_blue.gif', $last_modified);
-                  } elseif ($last_modified_array["hours"] >= ($today_array["hours"]-5)) {
-                    $products_change_text .= tep_image(DIR_WS_ICONS . 'signal_yellow.gif', $last_modified);
-                  } else {
-                    $products_change_text .= tep_image(DIR_WS_ICONS . 'signal_red.gif', $last_modified);
-                  }
-                } else {
-                  $products_change_text .= tep_image(DIR_WS_ICONS . 'signal_blink.gif', $last_modified);
-                }
+                $products_change_text .= tep_get_signal_pic_info($products['new_products_last_modified']); 
                 $products_table_content_row[] = array('params'=>$products_change_params, 'text'=>$products_change_text);
                 $products_operation_params .= 'class="dataTableContent" align="right"';
                 $products_operation_text .= '<a href="javascript:void(0)" onclick="show_product_info(\''.$products['products_id'].'\',this)">'.tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO).'</a>&nbsp;'; 

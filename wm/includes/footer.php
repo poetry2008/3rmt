@@ -21,9 +21,7 @@
         <td class="footer_5">
           <address class="footer_contacts">
         <?php echo FOOTER_TEXT_BODY . "\n"; ?><br>
-              Copyright&nbsp;&copy;&nbsp;<?php echo date("Y");?>&nbsp;&nbsp;<a
-              class="bold"
-              href="<?php echo HTTP_SERVER; ?>"><?php echo  STORE_NAME; ?></a>
+              Copyright&nbsp;&copy;&nbsp;<?php echo date("Y");?>&nbsp;&nbsp;<a class="bold" href="<?php echo HTTP_SERVER; ?>"><?php echo  STORE_NAME; ?></a>
             </address>
         </td>
         <td class="footer_6"></td>

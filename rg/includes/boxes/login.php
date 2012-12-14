@@ -7,9 +7,6 @@
 <script type="text/javascript" src="js/logincheck.js"></script>
 <?php
   if (!tep_session_is_registered('customer_id')) {
-  echo '<div class="menu_top"><img src="images/menu_ico09.gif" alt="" align="top"><span>メンバーズページ</span></div>';
-  echo '<div class="login"><a class="reorder_link" href="'.tep_href_link(FILENAME_LOGIN,'','SSL').'"><img src="images/login_02.gif" alt="'.HEADER_TITLE_LOGIN.'"></a>';
-  echo '<a class="reorder_link" href="'.tep_href_link(FILENAME_CREATE_ACCOUNT,'','SSL').'"><img src="images/signup_01.gif" alt="'.HEADER_TITLE_CREATE_ACCOUNT.'"></a></div>';
     /*
 ?>
     <div class="login_box">

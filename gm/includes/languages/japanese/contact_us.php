@@ -14,14 +14,16 @@ define('TEXT_SUCCESS', '<b>お客様のご質問は ' . STORE_NAME . ' へ送信
 弊社のメールが 「迷惑メールフォルダ」や「ゴミ箱」に振り分けされ見落としていませんか？<br>
 <br>
 ＜メールドメインの受信制限を設定している＞<br>
-gamemoney.ccのメールドメインを受信するように設定をお願いいたします。<br>
+'.STORE_DOMAIN.'のメールドメインを受信するように設定をお願いいたします。<br>
 <br>
 ＜それでも届かないときは、メールアドレス変更＞<br>
 別のメールアドレスをご入力いただき、お問い合わせをお願いいたします。');
 define('EMAIL_SUBJECT', STORE_NAME . ' への問い合わせ');
 
 define('ENTRY_NAME', 'お名前:');
-define('ENTRY_EMAIL', 'メールアドレス:');
+define('ENTRY_EMAIL', 'メールアドレス');
 define('ENTRY_ENQUIRY', 'ご質問内容:');
 define('TEXT_PROMPT_CONFIRM','お問い合わせへの返事を確認');
+define('ENTRY_NUM','お問い合わせ番号');
+define('ENTRY_SEND_MAIL','送信');
 ?>
