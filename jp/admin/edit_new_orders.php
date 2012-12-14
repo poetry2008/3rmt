@@ -1552,7 +1552,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
        unset($_SESSION['temp_amount']);
        unset($_SESSION['currency']); 
        unset($_SESSION['currency_value']);
-       unset($_SESSION['orders_update_products']);
+       unset($_SESSION['orders_update_products'][$oID]);
        tep_redirect(tep_href_link("orders.php", 'keywords='.$oID.'&search_type=orders_id'));
         
         break;
@@ -1803,6 +1803,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
     <link rel="stylesheet" type="text/css" href="css/popup_window.css">
     <script type="text/javascript">
     var session_orders_id = '<?php echo $_GET['oID'];?>';
+    var session_site_id = '<?php echo $_SESSION['sites_id_flag'];?>';
     </script>
     <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
     <script language="javascript" src="includes/javascript/jquery.js"></script>
@@ -4350,7 +4351,7 @@ if($orders_exit_flag == true){
             $products_id_array[] = $orders_weight_array['products_id'];
             echo '    <tr class="dataTableRow" id="products_list_'.$orders_products_id.'">' . "\n" .
               '      <td class="' . $RowStyle . '" align="left" valign="top" width="8%" style="min-width:100px;">'
-              . "<input type='hidden' id='update_products_qty_$orders_products_id' value='" . $products_qty_num . "'><input class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" . $products_qty_num . "' onkeyup=\"clearLibNum(this);recalc_order_price('".$oID."', '".$orders_products_id."', '2', '".$op_info_str."','".$orders_products_list."');price_total('".TEXT_MONEY_SYMBOL."');\">&nbsp;<input type='button' value='".IMAGE_DELETE."' onclick=\"delete_products( '".$orders_products_id."', '".TEXT_MONEY_SYMBOL."');\">&nbsp;x</td>\n" . 
+              . "<input type='hidden' id='update_products_qty_$orders_products_id' value='" . $products_qty_num . "'><input class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" . $products_qty_num . "' onkeyup=\"clearLibNum(this);recalc_order_price('".$oID."', '".$orders_products_id."', '2', '".$op_info_str."','".$orders_products_list."');price_total('".TEXT_MONEY_SYMBOL."');\">&nbsp;<input type='button' value='".IMAGE_DELETE."' onclick=\"delete_products( '".$orders_products_id."', '".TEXT_MONEY_SYMBOL."','1');\">&nbsp;x</td>\n" . 
               '      <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input id='update_products_name_$orders_products_id' name='update_products[$orders_products_id][name]' size='64' type='hidden' value='" . $order->products[$i]['name'] . "'>\n" . 
               '      &nbsp;&nbsp;';
             // Has Attributes?
