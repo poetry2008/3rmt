@@ -138,9 +138,14 @@ case 'edit_orders':
     $shipping_array = array();
     foreach($update_products as $products_key=>$products_value){
 
-      $shipping_products_query = tep_db_query("select * from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='". $products_key."'");
-      $shipping_products_array = tep_db_fetch_array($shipping_products_query);
-      tep_db_free_result($shipping_products_query);
+      $products_session_list_array = explode('_',$products_key);
+      if(count($products_session_list_array) <= 1){
+        $shipping_products_query = tep_db_query("select * from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='". $products_key."'");
+        $shipping_products_array = tep_db_fetch_array($shipping_products_query);
+        tep_db_free_result($shipping_products_query);
+      }else{
+        $shipping_products_array['products_id'] = $_SESSION['new_products_list'][$_GET['oID']]['orders_products'][$products_session_list_array[1]]['products_id']; 
+      }
       $shipping_array[] = array('id'=>$shipping_products_array['products_id'],'qty'=>$products_value['qty'],'final_price'=>$products_value['final_price']);
     }
     $shipping_weight_total = 0;
