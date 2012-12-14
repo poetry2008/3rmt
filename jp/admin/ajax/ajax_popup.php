@@ -707,7 +707,7 @@ if ($_GET['action'] == 'show_category_info') {
   $history_info_str .= $notice_box->get_table($product_history_array, '', $history_table_params);
 
   //关联商品历史记录
-  if ($pInfo->relate_products_id) {
+  if ($relate_exists_sigle) {
     $history_info_str .= '<br>'; 
     $relate_order_history_query = tep_db_query("
       select * 
