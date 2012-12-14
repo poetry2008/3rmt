@@ -3488,7 +3488,24 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
               $pay_k++;
            } 
          }
-         echo '</table></td></tr>';
+          echo '</table></td></tr>';
+          $pay_array = explode("\n",trim($pay_info_array[0]));
+          $bank_name = explode(':',$pay_array[0]);
+          $_SESSION['orders_update_products'][$_GET['oID']]['bank_name'] = $bank_name[1];
+          $bank_shiten = explode(':',$pay_array[1]);
+          $_SESSION['orders_update_products'][$_GET['oID']]['bank_shiten'] = $bank_shiten[1];
+          $bank_kamoku = explode(':',$pay_array[2]);
+          $_SESSION['orders_update_products'][$_GET['oID']]['bank_kamoku'] = $bank_kamoku[1];
+          $bank_kouza_num = explode(':',$pay_array[3]);
+          $_SESSION['orders_update_products'][$_GET['oID']]['bank_kouza_num'] = $bank_kouza_num[1];
+          $bank_kouza_name = explode(':',$pay_array[4]);
+          $_SESSION['orders_update_products'][$_GET['oID']]['bank_kouza_name'] = $bank_kouza_name[1];
+          $pay_array = explode("\n",trim($pay_info_array[1]));
+          $con_email = explode(":",trim($pay_array[0]));
+          $_SESSION['orders_update_products'][$_GET['oID']]['con_email'] = $con_email[1];
+          $pay_array = explode("\n",trim($pay_info_array[2]));
+          $rak_tel = explode(":",trim($pay_array[0]));
+          $_SESSION['orders_update_products'][$_GET['oID']]['rak_tel'] = $rak_tel[1];
 
 ?>
             </td>
@@ -4637,7 +4654,7 @@ if($orders_exit_flag == true){
               $TotalDetails["Name"] = isset($_SESSION['orders_update_products'][$_GET['oID']][$TotalIndex]['title']) ? $_SESSION['orders_update_products'][$_GET['oID']][$TotalIndex]['title'] : $TotalDetails["Name"];
               echo '  <tr>' . "\n" .
                 '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_TOTALDETAIL_READ_ONE.'</td>' . 
-                '    <td style="min-width:180px;" align="right" class="' . $TotalStyle . '">' . $button_add ."<input name='update_totals[$TotalIndex][title]' onkeyup='price_total(\"".TEXT_MONEY_SYMBOL."\");' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
+                '    <td style="min-width:188px;" align="right" class="' . $TotalStyle . '">' . $button_add ."<input name='update_totals[$TotalIndex][title]' onkeyup='price_total(\"".TEXT_MONEY_SYMBOL."\");' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
                 '    <td align="right" class="' . $TotalStyle . '">' . "<input name='update_totals[$TotalIndex][value]' id='update_total_".$TotalIndex."' onkeyup='clearNoNum(this);price_total(\"".TEXT_MONEY_SYMBOL."\");' size='6' value='" . $TotalDetails["Price"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . 
