@@ -3348,7 +3348,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         name='update_products_real_quantity[$orders_products_id]'
         id='update_products_real_quantity_$orders_products_id' value='1'><input
         type='hidden' id='update_products_qty_$orders_products_id' value='" .
-        $order->products[$i]['qty'] . "'><input type='text' class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" .  (isset($_POST['update_products'][$orders_products_id]['qty'])?$_POST['update_products'][$orders_products_id]['qty']:$order->products[$i]['qty']) . "' onkeyup='clearLibNum(this);recalc_order_price(\"".$oID."\", \"".$orders_products_id."\", \"2\", \"".$op_info_str."\",\"".$orders_products_list."\");price_total(\"".TEXT_MONEY_SYMBOL."\");;'>&nbsp;<input type='button' value='".IMAGE_DELETE."' onclick=\"delete_products( '".$orders_products_id."', '".TEXT_MONEY_SYMBOL."','".$customer_guest['is_calc_quantity']."');\">&nbsp;x</td>\n" . 
+        $order->products[$i]['qty'] . "'><input type='text' class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" .  (isset($_POST['update_products'][$orders_products_id]['qty'])?$_POST['update_products'][$orders_products_id]['qty']:$order->products[$i]['qty']) . "' onkeyup='clearLibNum(this);recalc_order_price(\"".$oID."\", \"".$orders_products_id."\", \"2\", \"".$op_info_str."\",\"".$orders_products_list."\");price_total(\"".TEXT_MONEY_SYMBOL."\");;'>&nbsp;<input type='button' value='".IMAGE_DELETE."' onclick=\"delete_products( '".$orders_products_id."', '".TEXT_MONEY_SYMBOL."','".$customer_guest['is_calc_quantity']."');recalc_order_price('".$oID."', '".$orders_products_id."', '2', '".$op_info_str."','".$orders_products_list."');\">&nbsp;x</td>\n" . 
         '      <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input name='update_products[$orders_products_id][name]' size='64' id='update_products_name_$orders_products_id' type='hidden' value='" . $order->products[$i]['name'] . "'>\n" . 
         '      &nbsp;&nbsp;';
       // Has Attributes?
@@ -3690,7 +3690,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         '  </tr>' . "\n";
     } elseif ($TotalDetails["Class"] == "ot_point") {
       $shipping_fee_point = $TotalDetails["Price"];
-      $TotalDetails["Price"] = isset($_SESSION['orders_update_products'][$_GET['oID']]['point']) ? $_SESSION['orders_update_products'][$_GET['oID']]['point'] : $TotalDetails["Price"];
+      $point_session_id = isset($_SESSION['orders_update_products'][$_GET['oID']]['point']) ? $_SESSION['orders_update_products'][$_GET['oID']]['point'] : $TotalDetails["Price"];
       if ($customer_guest['customers_guest_chk'] == 0) { //会員
         $current_point = $customer_point['point'] + $TotalDetails["Price"];
         echo '  <tr>' . "\n" .
@@ -3705,7 +3705,7 @@ if (($action == 'edit') && ($order_exists == true)) {
             $campaign_res['campaign_fee'] = isset($_SESSION['orders_update_products'][$_GET['oID']]['point']) ? $_SESSION['orders_update_products'][$_GET['oID']]['point'] : $campaign_res['campaign_fee'];
             echo "<input type='hidden' id='point_value_temp' value='".(int)$campaign_res['campaign_fee']."'><input name='update_totals[$TotalIndex][value]' id='point_id' onkeyup='clearNoNum(this);price_total(\"".TEXT_MONEY_SYMBOL."\");' size='6' value='" .abs((int)$campaign_res['campaign_fee']) . "'>";
           } else {
-            echo "<input name='update_totals[$TotalIndex][value]' id='point_id' onkeyup='clearNoNum(this);price_total(\"".TEXT_MONEY_SYMBOL."\");' size='6' value='" .  $TotalDetails["Price"] . "'>";
+            echo "<input name='update_totals[$TotalIndex][value]' id='point_id' onkeyup='clearNoNum(this);price_total(\"".TEXT_MONEY_SYMBOL."\");' size='6' value='" . $point_session_id . "'>";
           }
           echo "<input type='hidden' name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . 
           "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
