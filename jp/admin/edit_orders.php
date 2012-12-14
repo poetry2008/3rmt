@@ -3042,23 +3042,37 @@ if (($action == 'edit') && ($order_exists == true)) {
          }
          echo '</table>'; 
          echo EDIT_ORDERS_PAYMENT_METHOD_READ;
-          $pay_array = explode("\n",trim($pay_info_array[0]));
-          $bank_name = explode(':',$pay_array[0]);
-          $_SESSION['orders_update_products'][$_GET['oID']]['bank_name'] = $bank_name[1];
-          $bank_shiten = explode(':',$pay_array[1]);
-          $_SESSION['orders_update_products'][$_GET['oID']]['bank_shiten'] = $bank_shiten[1];
-          $bank_kamoku = explode(':',$pay_array[2]);
-          $_SESSION['orders_update_products'][$_GET['oID']]['bank_kamoku'] = $bank_kamoku[1];
-          $bank_kouza_num = explode(':',$pay_array[3]);
-          $_SESSION['orders_update_products'][$_GET['oID']]['bank_kouza_num'] = $bank_kouza_num[1];
-          $bank_kouza_name = explode(':',$pay_array[4]);
-          $_SESSION['orders_update_products'][$_GET['oID']]['bank_kouza_name'] = $bank_kouza_name[1];
-          $pay_array = explode("\n",trim($pay_info_array[1]));
-          $con_email = explode(":",trim($pay_array[0]));
-          $_SESSION['orders_update_products'][$_GET['oID']]['con_email'] = $con_email[1];
-          $pay_array = explode("\n",trim($pay_info_array[2]));
-          $rak_tel = explode(":",trim($pay_array[0]));
-          $_SESSION['orders_update_products'][$_GET['oID']]['rak_tel'] = $rak_tel[1];
+         $pay_array = explode("\n",trim($pay_info_array[0]));
+         $bank_name = explode(':',$pay_array[0]);
+         if(!isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_name'])){ 
+           $_SESSION['orders_update_products'][$_GET['oID']]['bank_name'] = $bank_name[1];
+         }
+         $bank_shiten = explode(':',$pay_array[1]);
+         if(!isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_shiten'])){
+           $_SESSION['orders_update_products'][$_GET['oID']]['bank_shiten'] = $bank_shiten[1];
+         }
+         $bank_kamoku = explode(':',$pay_array[2]);
+         if(!isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_kamoku'])){
+           $_SESSION['orders_update_products'][$_GET['oID']]['bank_kamoku'] = $bank_kamoku[1];
+         }
+         $bank_kouza_num = explode(':',$pay_array[3]);
+         if(!isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_kouza_num'])){
+           $_SESSION['orders_update_products'][$_GET['oID']]['bank_kouza_num'] = $bank_kouza_num[1];
+         }
+         $bank_kouza_name = explode(':',$pay_array[4]);
+         if(!isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_kouza_name'])){
+           $_SESSION['orders_update_products'][$_GET['oID']]['bank_kouza_name'] = $bank_kouza_name[1];
+         }
+         $pay_array = explode("\n",trim($pay_info_array[1]));
+         $con_email = explode(":",trim($pay_array[0]));
+         if(!isset($_SESSION['orders_update_products'][$_GET['oID']]['con_email'])){
+           $_SESSION['orders_update_products'][$_GET['oID']]['con_email'] = $con_email[1];
+         }
+         $pay_array = explode("\n",trim($pay_info_array[2]));
+         $rak_tel = explode(":",trim($pay_array[0]));
+         if(!isset($_SESSION['orders_update_products'][$_GET['oID']]['rak_tel'])){
+           $_SESSION['orders_update_products'][$_GET['oID']]['rak_tel'] = $rak_tel[1];
+         }
     ?> 
     </td>
     </tr>
