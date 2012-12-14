@@ -19,7 +19,18 @@ $currencies = new currencies(2);
 
 include(DIR_WS_CLASSES . 'order.php');
 
-
+$orders_update_time_query = tep_db_query("select last_modified from ". TABLE_ORDERS ." where orders_id='".$_GET['oID']."'");
+$orders_update_time_array = tep_db_fetch_array($orders_update_time_query);
+tep_db_free_result($orders_update_time_query);
+if(!isset($_SESSION['orders_update_time'][$_GET['oID']])){
+  $_SESSION['orders_update_time'][$_GET['oID']] = $orders_update_time_array['last_modified'];
+}else{
+  if($_SESSION['orders_update_time'][$_GET['oID']] != $orders_update_time_array['last_modified']){
+    unset($_SESSION['orders_update_products'][$_GET['oID']]);
+    unset($_SESSION['new_products_list'][$_GET['oID']]);  
+    $_SESSION['orders_update_time'][$_GET['oID']] = $orders_update_time_array['last_modified'];
+  }
+}
 // START CONFIGURATION ################################
 
 // Correction tax pre-values (Michel Haase, 2005-02-18)
@@ -1148,6 +1159,7 @@ if($address_error == false){
       }
       unset($_SESSION['orders_update_products'][$oID]);
       unset($_SESSION['new_products_list'][$oID]);
+      unset($_SESSION['orders_update_time'][$oID]);
       tep_redirect(tep_href_link("edit_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
 
       break;
