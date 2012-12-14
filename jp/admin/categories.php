@@ -82,10 +82,15 @@ if (isset($_GET['action']) && $_GET['action']) {
     exit;
     break;
     case 'get_cart_products':
+    echo '<html><head>'; 
+    echo '<meta http-equiv="Content-Type" content="text/html; charset='.CHARSET.'">';
+    echo '</head>';
+    echo '<body>'; 
     foreach(tep_get_cart_products($_GET['products_id'],$_GET['tags_id'],$_GET['buyflag']) as $p){
       $p = tep_get_product_by_id($p,0,4);
       echo $p['products_name'] . "<br>";
     }
+    echo '</body></html>'; 
     exit;
     break;
     case 'toggle':
@@ -680,8 +685,6 @@ if (isset($_GET['action']) && $_GET['action']) {
           'option_type' => tep_db_prepare_input($_POST['option_type']),
           'relate_products_id' => tep_db_prepare_input($_POST['relate_products_id']),
           'products_small_sum' => tep_db_prepare_input($_POST['products_small_sum']),
-          'products_cartflag' => tep_db_prepare_input($_POST['products_cartflag']),
-          'products_cart_buyflag' => tep_db_prepare_input($_POST['products_cart_buyflag']),
           'products_cartorder' => tep_db_prepare_input($_POST['products_cartorder']),
           );
       //处理 发售日 时间
@@ -692,6 +695,8 @@ if (isset($_GET['action']) && $_GET['action']) {
             array(
               'products_date_available' => $products_date_available,
               'products_cart_min' => tep_db_prepare_input($_POST['products_cart_min']),
+              'products_cartflag' => tep_db_prepare_input($_POST['products_cartflag']),
+              'products_cart_buyflag' => tep_db_prepare_input($_POST['products_cart_buyflag']),
               'sort_order' => tep_db_prepare_input($_POST['sort_order'])));
       }
 
@@ -2484,8 +2489,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                     <fieldset><legend style="color:#009900 "><?php echo TEXT_PRODUCT_CARTFLAG_TITLE;?></legend>
                                     <table>
                                     <tr><td>
-                                    <?php echo TEXT_PRODUCT_CARTFLAG_TITLE;?> <input type="radio" <?php echo ($site_id)?'disabled':'';?> name="products_cartflag" value="0"<?php if(!$pInfo->products_cartflag){?> checked<?php }?>><?php echo
-                                    TEXT_PRODUCT_CARTFLAG_NO;?> <input type="radio" name="products_cartflag" value="1"<?php if($pInfo->products_cartflag){?> checked<?php }?>><?php echo TEXT_PRODUCT_CARTFLAG_YES;?>
+                                    <?php
+                                    echo TEXT_PRODUCT_CARTFLAG_TITLE;?> <input type="radio" <?php echo ($site_id)?'disabled':'';?> name="products_cartflag" value="0"<?php if(!$pInfo->products_cartflag){?> checked<?php }?>><?php echo
+                                    TEXT_PRODUCT_CARTFLAG_NO;?> <input type="radio" <?php echo ($site_id)?'disabled':'';?> name="products_cartflag" value="1"<?php if($pInfo->products_cartflag){?> checked<?php }?>><?php echo TEXT_PRODUCT_CARTFLAG_YES;?>
                                     </td></tr>
                                     <tr><td>
                                     <?php 
@@ -4307,6 +4313,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 $products_table_content_row[] = array('params'=>$products_set_price_params, 'text'=>$products_set_price_text);
                 $products_table_content_row[] = array('params'=>'class="dataTableContent" align="center"', 'text'=>'&nbsp;');
                 $products_status_params .= 'class="dataTableContent" align="center"';
+                if (empty($_GET['cPath'])) {
+                  $products_status_text .= "<span name='TARGET_INPUT[]' id='target_".$target_cnt."_0' style='display:none'>0</span>";
+                }
                 $products_status_text .= '<input type="hidden" name="this_price[]" value="'.(int)$special_price_check.'">';
                 $products_status_text .= '<input type="hidden" name="proid[]" value="'.$products['products_id'].'">';
                 $products_status_text .= '<input type="hidden" name="pprice[]" value="'.abs($products['products_price']).'">';

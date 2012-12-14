@@ -19,7 +19,18 @@ $currencies = new currencies(2);
 
 include(DIR_WS_CLASSES . 'order.php');
 
-
+$orders_update_time_query = tep_db_query("select last_modified from ". TABLE_ORDERS ." where orders_id='".$_GET['oID']."'");
+$orders_update_time_array = tep_db_fetch_array($orders_update_time_query);
+tep_db_free_result($orders_update_time_query);
+if(!isset($_SESSION['orders_update_time'][$_GET['oID']])){
+  $_SESSION['orders_update_time'][$_GET['oID']] = $orders_update_time_array['last_modified'];
+}else{
+  if($_SESSION['orders_update_time'][$_GET['oID']] != $orders_update_time_array['last_modified']){
+    unset($_SESSION['orders_update_products'][$_GET['oID']]);
+    unset($_SESSION['new_products_list'][$_GET['oID']]);  
+    $_SESSION['orders_update_time'][$_GET['oID']] = $orders_update_time_array['last_modified'];
+  }
+}
 // START CONFIGURATION ################################
 
 // Correction tax pre-values (Michel Haase, 2005-02-18)
@@ -1148,6 +1159,7 @@ if($address_error == false){
       }
       unset($_SESSION['orders_update_products'][$oID]);
       unset($_SESSION['new_products_list'][$oID]);
+      unset($_SESSION['orders_update_time'][$oID]);
       tep_redirect(tep_href_link("edit_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
 
       break;
@@ -3000,7 +3012,7 @@ if (($action == 'edit') && ($order_exists == true)) {
           }
           $pay_info_array[0] = $pay_info_array[0] == '' && $pay_method == $pay_type_array[0] ? $pay_comment : $pay_info_array[0];
           $pay_info_array[1] = $pay_info_array[1] == '' && $pay_method == $pay_type_array[1] ? $pay_comment : $pay_info_array[1];
-          $pay_info_array[2] = $pay_info_array[2] == '' && $pay_method == $pay_type_array[2] ?  $pay_comment : $pay_info_array[2];
+          $pay_info_array[2] = $pay_info_array[2] == '' && $pay_method == $pay_type_array[2] ?  $pay_comment : $pay_info_array[2];  
     ?>
     <?php echo payment::makePaymentListPullDownMenu(payment::changeRomaji($pay_method, PAYMENT_RETURN_TYPE_CODE));?> 
     <?php  
@@ -3041,7 +3053,38 @@ if (($action == 'edit') && ($order_exists == true)) {
            } 
          }
          echo '</table>'; 
-    echo EDIT_ORDERS_PAYMENT_METHOD_READ;
+         echo EDIT_ORDERS_PAYMENT_METHOD_READ;
+         $pay_array = explode("\n",trim($pay_info_array[0]));
+         $bank_name = explode(':',$pay_array[0]);
+         if(!isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_name'])){ 
+           $_SESSION['orders_update_products'][$_GET['oID']]['bank_name'] = $bank_name[1];
+         }
+         $bank_shiten = explode(':',$pay_array[1]);
+         if(!isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_shiten'])){
+           $_SESSION['orders_update_products'][$_GET['oID']]['bank_shiten'] = $bank_shiten[1];
+         }
+         $bank_kamoku = explode(':',$pay_array[2]);
+         if(!isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_kamoku'])){
+           $_SESSION['orders_update_products'][$_GET['oID']]['bank_kamoku'] = $bank_kamoku[1];
+         }
+         $bank_kouza_num = explode(':',$pay_array[3]);
+         if(!isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_kouza_num'])){
+           $_SESSION['orders_update_products'][$_GET['oID']]['bank_kouza_num'] = $bank_kouza_num[1];
+         }
+         $bank_kouza_name = explode(':',$pay_array[4]);
+         if(!isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_kouza_name'])){
+           $_SESSION['orders_update_products'][$_GET['oID']]['bank_kouza_name'] = $bank_kouza_name[1];
+         }
+         $pay_array = explode("\n",trim($pay_info_array[1]));
+         $con_email = explode(":",trim($pay_array[0]));
+         if(!isset($_SESSION['orders_update_products'][$_GET['oID']]['con_email'])){
+           $_SESSION['orders_update_products'][$_GET['oID']]['con_email'] = $con_email[1];
+         }
+         $pay_array = explode("\n",trim($pay_info_array[2]));
+         $rak_tel = explode(":",trim($pay_array[0]));
+         if(!isset($_SESSION['orders_update_products'][$_GET['oID']]['rak_tel'])){
+           $_SESSION['orders_update_products'][$_GET['oID']]['rak_tel'] = $rak_tel[1];
+         }
     ?> 
     </td>
     </tr>
@@ -3348,7 +3391,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         name='update_products_real_quantity[$orders_products_id]'
         id='update_products_real_quantity_$orders_products_id' value='1'><input
         type='hidden' id='update_products_qty_$orders_products_id' value='" .
-        $order->products[$i]['qty'] . "'><input type='text' class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" .  (isset($_POST['update_products'][$orders_products_id]['qty'])?$_POST['update_products'][$orders_products_id]['qty']:$order->products[$i]['qty']) . "' onkeyup='clearLibNum(this);recalc_order_price(\"".$oID."\", \"".$orders_products_id."\", \"2\", \"".$op_info_str."\",\"".$orders_products_list."\");price_total(\"".TEXT_MONEY_SYMBOL."\");;'>&nbsp;<input type='button' value='".IMAGE_DELETE."' onclick=\"delete_products( '".$orders_products_id."', '".TEXT_MONEY_SYMBOL."','".$customer_guest['is_calc_quantity']."');\">&nbsp;x</td>\n" . 
+        $order->products[$i]['qty'] . "'><input type='text' class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" .  (isset($_POST['update_products'][$orders_products_id]['qty'])?$_POST['update_products'][$orders_products_id]['qty']:$order->products[$i]['qty']) . "' onkeyup='clearLibNum(this);recalc_order_price(\"".$oID."\", \"".$orders_products_id."\", \"2\", \"".$op_info_str."\",\"".$orders_products_list."\");price_total(\"".TEXT_MONEY_SYMBOL."\");;'>&nbsp;<input type='button' value='".IMAGE_DELETE."' onclick=\"delete_products( '".$orders_products_id."', '".TEXT_MONEY_SYMBOL."','".$customer_guest['is_calc_quantity']."');recalc_order_price('".$oID."', '".$orders_products_id."', '2', '".$op_info_str."','".$orders_products_list."');\">&nbsp;x</td>\n" . 
         '      <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input name='update_products[$orders_products_id][name]' size='64' id='update_products_name_$orders_products_id' type='hidden' value='" . $order->products[$i]['name'] . "'>\n" . 
         '      &nbsp;&nbsp;';
       // Has Attributes?
@@ -3690,7 +3733,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         '  </tr>' . "\n";
     } elseif ($TotalDetails["Class"] == "ot_point") {
       $shipping_fee_point = $TotalDetails["Price"];
-      $TotalDetails["Price"] = isset($_SESSION['orders_update_products'][$_GET['oID']]['point']) ? $_SESSION['orders_update_products'][$_GET['oID']]['point'] : $TotalDetails["Price"];
+      $point_session_id = isset($_SESSION['orders_update_products'][$_GET['oID']]['point']) ? $_SESSION['orders_update_products'][$_GET['oID']]['point'] : $TotalDetails["Price"];
       if ($customer_guest['customers_guest_chk'] == 0) { //会員
         $current_point = $customer_point['point'] + $TotalDetails["Price"];
         echo '  <tr>' . "\n" .
@@ -3705,7 +3748,7 @@ if (($action == 'edit') && ($order_exists == true)) {
             $campaign_res['campaign_fee'] = isset($_SESSION['orders_update_products'][$_GET['oID']]['point']) ? $_SESSION['orders_update_products'][$_GET['oID']]['point'] : $campaign_res['campaign_fee'];
             echo "<input type='hidden' id='point_value_temp' value='".(int)$campaign_res['campaign_fee']."'><input name='update_totals[$TotalIndex][value]' id='point_id' onkeyup='clearNoNum(this);price_total(\"".TEXT_MONEY_SYMBOL."\");' size='6' value='" .abs((int)$campaign_res['campaign_fee']) . "'>";
           } else {
-            echo "<input name='update_totals[$TotalIndex][value]' id='point_id' onkeyup='clearNoNum(this);price_total(\"".TEXT_MONEY_SYMBOL."\");' size='6' value='" .  $TotalDetails["Price"] . "'>";
+            echo "<input name='update_totals[$TotalIndex][value]' id='point_id' onkeyup='clearNoNum(this);price_total(\"".TEXT_MONEY_SYMBOL."\");' size='6' value='" . $point_session_id . "'>";
           }
           echo "<input type='hidden' name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . 
           "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
@@ -3735,7 +3778,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       $TotalDetails["Name"] = isset($_SESSION['orders_update_products'][$_GET['oID']][$TotalIndex]['title']) ? $_SESSION['orders_update_products'][$_GET['oID']][$TotalIndex]['title'] : $TotalDetails["Name"];
       echo '  <tr>' . "\n" .
         '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_TOTALDETAIL_READ_ONE.'</td>' . 
-        '    <td style="min-width:180px;" align="right" class="' . $TotalStyle . '">' . $button_add ."<input name='update_totals[$TotalIndex][title]' onkeyup='price_total(\"".TEXT_MONEY_SYMBOL."\");' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
+        '    <td style="min-width:188px;" align="right" class="' . $TotalStyle . '">' . $button_add ."<input name='update_totals[$TotalIndex][title]' onkeyup='price_total(\"".TEXT_MONEY_SYMBOL."\");' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
         '    <td align="right" class="' . $TotalStyle . '">' . "<input name='update_totals[$TotalIndex][value]' id='update_total_".$TotalIndex."' onkeyup='clearNoNum(this);price_total(\"".TEXT_MONEY_SYMBOL."\");' size='6' value='" . $TotalDetails["Price"] . "'>" . 
         "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
         "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . 
