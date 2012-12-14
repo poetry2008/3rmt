@@ -42,5 +42,5 @@ define('TEXT_USER_UPDATE','更新者:');
 define('TEXT_DATE_ADDED','投稿日:');
 define('TEXT_DATE_UPDATE','更新日:');
 define('TEXT_NO_NAME','匿名');
-
+define('REVIEWS_NOTICE_TOTALNUM_ERROR', 'レビューの内容は50文字以上を入力してください');
 ?>
