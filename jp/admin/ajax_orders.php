@@ -1,5 +1,6 @@
 <?php
 require('includes/application_top.php');
+require(DIR_WS_CLASSES . 'payment.php');
 //one time pwd 
 $http_referer = $_SERVER['HTTP_REFERER'];
 $http_referer_arr = explode('?',$_SERVER['HTTP_REFERER']);
@@ -2201,14 +2202,27 @@ echo json_encode($json_array);
   $orders_info_raw = tep_db_query("select currency, currency_value from ".TABLE_ORDERS." where orders_id = '".$_POST['oid']."'");
   $orders_info_num_rows = tep_db_num_rows($orders_info_raw);
   $orders_info = tep_db_fetch_array($orders_info_raw);
-  
-  $orders_p_raw = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." where orders_products_id = '".$_POST['opd']."'");
-  $orders_p = tep_db_fetch_array($orders_p_raw);
-  
-  if (tep_check_product_type($_POST['opd'])) {
-    $p_price = 0 - tep_replace_full_character($_POST['p_price']); 
-  } else {
-    $p_price = tep_replace_full_character($_POST['p_price']); 
+
+  $products_session_list_array = explode('_',$_POST['opd']);
+  if(count($products_session_list_array) <= 1){ 
+    $orders_p_raw = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." where orders_products_id = '".$_POST['opd']."'");
+    $orders_p = tep_db_fetch_array($orders_p_raw);
+  }else{
+    $orders_p['products_tax'] = $_SESSION['new_products_list'][$session_orders_id]['orders_products'][$products_session_list_array[1]]['products_tax']; 
+  }
+
+  if(count($products_session_list_array) <= 1){ 
+    if (tep_check_product_type($_POST['opd'])) {
+      $p_price = 0 - tep_replace_full_character($_POST['p_price']); 
+    } else {
+      $p_price = tep_replace_full_character($_POST['p_price']); 
+    }
+  }else{
+    if($_SESSION['new_products_list'][$session_orders_id]['orders_products'][$products_session_list_array[1]]['products_price'] < 0){
+      $p_price = 0 - tep_replace_full_character($_POST['p_price']); 
+    }else{
+      $p_price = tep_replace_full_character($_POST['p_price']); 
+    }
   }
   $_SESSION['orders_update_products'][$session_orders_id][$_POST['opd']]['p_price'] = $p_price; 
   $final_price = $p_price + tep_replace_full_character($_POST['op_price']);
@@ -2317,16 +2331,29 @@ echo json_encode($json_array);
 }else if($_GET['action'] == 'delete_products'){
 
   $session_orders_id = $_POST['orders_id'];
-  $orders_products_query = tep_db_query("select final_price from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='".$_POST['orders_products_id']."'");
-  $orders_products_array = tep_db_fetch_array($orders_products_query);
-  tep_db_free_result($orders_products_query);
-  $orders_total = $orders_products_array['final_price'];
-  $delete_products_query =tep_db_query("delete from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='".$_POST['orders_products_id']."'");
-  if($delete_products_query){
+  $products_id_list_array = explode('_',$_POST['orders_products_id']);
+  $products_delete_flag = false;
+  if(count($products_id_list_array) <= 1){
+    $orders_products_query = tep_db_query("select products_id,final_price,products_quantity from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='".$_POST['orders_products_id']."'");
+    $orders_products_array = tep_db_fetch_array($orders_products_query);
+    tep_db_free_result($orders_products_query);
+    $orders_total = $orders_products_array['final_price']*$orders_products_array['products_quantity'];
+    $delete_products_query =tep_db_query("delete from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='".$_POST['orders_products_id']."'");
+    $delete_products_attributes_query = tep_db_query("delete from ". TABLE_ORDERS_PRODUCTS_ATTRIBUTES ." where orders_products_id='".$_POST['orders_products_id']."'");
+    if($_POST['delete_flag'] != '1') {
+      tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = products_real_quantity + ".$orders_products_array['products_quantity'].", products_ordered = products_ordered - " . $orders_products_array['products_quantity'] . " where products_id = '" . (int)$orders_products_array['products_id'] . "'");
+    } 
+  }else{
+    $_SESSION['orders_update_products'][$_GET['oID']]['ot_subtotal'] -= $_SESSION['new_products_list'][$session_orders_id]['orders_products'][$products_id_list_array[1]]['final_price'];
+    $_SESSION['orders_update_products'][$_GET['oID']]['ot_total'] -= $_SESSION['new_products_list'][$session_orders_id]['orders_products'][$products_id_list_array[1]]['final_price'];
+    unset($_SESSION['new_products_list'][$session_orders_id]['orders_products'][$products_id_list_array[1]]);  
+    $products_delete_flag = true;
+  }
+  if($delete_products_query && $delete_products_attributes_query){
     $total_products_query = tep_db_query("update ". TABLE_ORDERS_TOTAL ." set value=value-".(int)$orders_total." where orders_id='".$session_orders_id."' and class='ot_total'"); 
     $subtotal_products_query = tep_db_query("update ". TABLE_ORDERS_TOTAL ." set value=value-".(int)$orders_total." where orders_id='".$session_orders_id."' and class='ot_subtotal'");
   }
-  if($delete_products_query && $total_products_query && $subtotal_products_query){
+  if($products_delete_flag == true || ($delete_products_query && $delete_products_attributes_query && $total_products_query && $subtotal_products_query)){
     echo 'true';
   }
 }else if($_GET['action'] == 'price_total'){
@@ -2338,6 +2365,20 @@ echo json_encode($json_array);
   $total_value_array = explode('|||',$total_value);
   $total_title_array = explode('|||',$total_title);
   $total_orders_id = $_POST['orders_id'];
+  $point_value_temp = $_POST['point_value_temp'];
+  $campaign_flag = false;
+  $campaign_fee = 0;
+  $camp_exists_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$total_orders_id."' and site_id = '". $_POST['session_site_id'] ."'");
+  if(tep_db_num_rows($camp_exists_query)) {
+    $campaign_flag = true;
+    $campaign_fee = get_campaion_fee($_POST['ot_subtotal'],$total_orders_id,$_POST['session_site_id']);  
+  } 
+  tep_db_free_result($camp_exists_query);
+  if($campaign_flag == true){
+    
+    $_POST['ot_total'] -= abs($campaign_fee); 
+    $point_value = $campaign_fee;
+  }
   $_SESSION['orders_update_products'][$total_orders_id]['point'] = $point_value;
   foreach($total_value_array as $total_key=>$total_val){
 
@@ -2347,6 +2388,10 @@ echo json_encode($json_array);
   $_SESSION['orders_update_products'][$total_orders_id]['ot_subtotal'] = $_POST['ot_subtotal'];
   $_SESSION['orders_update_products'][$total_orders_id]['ot_total'] = $_POST['ot_total'];
   $_SESSION['orders_update_products'][$total_orders_id]['payment_method'] = $_POST['payment_value'];
+  $cpayment = payment::getInstance($_POST['session_site_id']);
+  $handle_fee = $cpayment->handle_calc_fee($_POST['payment_value'], $_POST['ot_total']);
+  $handle_fee = $handle_fee == '' ? 0 : $handle_fee;
+  echo $handle_fee.'|||'.$campaign_fee.'|||'.$campaign_flag;
 }else if($_GET['action'] == 'orders_session'){
 
   $session_type = $_POST['orders_session_type'];
@@ -2368,22 +2413,39 @@ echo json_encode($json_array);
   $products_name_array = explode('|||',$products_name_str);
   $products_num_error_array = array();
 
+  $products_temp_array = array();
+  foreach($orders_products_list_id_array as $orders_products_key=>$orders_products_value){
+    if(isset($_POST['products_diff'])){
+      $orders_session_list_array = explode('_',$orders_products_value);
+      if(count($orders_session_list_array) <= 1){
+        $products_orders_query = tep_db_query("select products_quantity from " . TABLE_ORDERS_PRODUCTS . " where orders_products_id = '" . $orders_products_value  . "'");
+        $products_orders_array = tep_db_fetch_array($products_orders_query);
+        tep_db_free_result($products_orders_query);
+        $products_temp_array[$products_id_array[$orders_products_key]] += $products_orders_array['products_quantity'];
+      }
+    }else{
+      $products_temp_array[$products_id_array[$orders_products_key]] = 0; 
+    } 
+  }
   foreach($products_id_array as $products_key=>$products_value){
     $products_query = tep_db_query("select products_real_quantity from ". TABLE_PRODUCTS ." where products_id='".$products_value."'");
     $products_array = tep_db_fetch_array($products_query);
     tep_db_free_result($products_query);
-    if(isset($_POST['products_diff'])){
+    $products_sum = 0;
+    foreach($products_id_array as $p_key=>$p_value){
 
-      $products_orders_query = tep_db_query("select products_quantity from " . TABLE_ORDERS_PRODUCTS . " where orders_products_id = '" .$orders_products_list_id_array[$products_key]  . "'");
-      $products_orders_array = tep_db_fetch_array($products_orders_query);
-      tep_db_free_result($products_orders_query);
-      $products_num_array[$products_key] = $products_num_array[$products_key] - $products_orders_array['products_quantity'];
+      if($products_value == $p_value){
+
+        $products_sum += $products_num_array[$p_key];
+      } 
     }
-    if($products_num_array[$products_key] > $products_array['products_real_quantity']){
+    $products_sum = $products_sum - $products_temp_array[$products_value];
+    if($products_sum > $products_array['products_real_quantity']){
 
       $products_num_error_array[] = $products_name_array[$products_key];
     }
   }
+  $products_num_error_array = array_unique($products_num_error_array);
   if(!empty($products_num_error_array)){
 
     $products_num_error_str = implode('、',$products_num_error_array);

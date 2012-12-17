@@ -4872,20 +4872,15 @@ function tep_display_google_results($from_url='', $c_type=false){
     $res_str = "<select name='letter'>";
     if($userid!=''){
       if($is_letter){
-        $selected = $userid;
+        $selected = $is_letter;
       }else{
         $selected = tep_rand_pw_start($userid);
       }
     }else{
       $selected = 'first';
     }
-    if($is_letter){
-      $sql = "select * from ".TABLE_LETTERS." WHERE userid IS NULL
-        OR userid = ''";
-    }else{
-      $sql = "select * from ".TABLE_LETTERS." WHERE userid IS NULL
-        OR userid = '' OR userid = '".$userid."'";
-    }
+    $sql = "select * from ".TABLE_LETTERS." WHERE userid IS NULL
+      OR userid = '' OR userid = '".$userid."'";
     $res = tep_db_query($sql);
     while($row = tep_db_fetch_array($res)){
       $res_str .= "<option value ='".$row['letter']."' ";
@@ -7736,7 +7731,7 @@ function tep_get_javascript($name,$path='',$type='js'){
 }
 
 function tep_get_time_select_symbol($name_str, $id_str, $default_value) {
-  $html_str = '<select name="'.$name_str.'" id="'.$id_str.'">';
+  $html_str = '<select name="'.$name_str.'" id="'.$id_str.'" style="padding:0;margin:0;">';
   for ($i = 0; $i <= 9; $i++) {
     $html_str .= '<option value="'.$i.'"'.(($default_value == $i)?' selected':'').'>'.$i.'</option>';  
   }
@@ -7747,11 +7742,11 @@ function tep_get_time_select_symbol($name_str, $id_str, $default_value) {
 function tep_cfg_time_select($default_value) {
   $string = '';
   $default_info_array = @unserialize(stripslashes($default_value));
-  $string .= SIGNAL_GREEN.'&nbsp;&nbsp;'.NOW_TIME_TEXT.'&nbsp;&nbsp;'.tep_get_time_select_symbol('configuration_value[green][]', 'green_1', $default_info_array['green'][0]).'&nbsp;'.tep_get_time_select_symbol('configuration_value[green][]', 'green_2', $default_info_array['green'][1]).'&nbsp;'.tep_get_time_select_symbol('configuration_value[green][]', 'green_3', $default_info_array['green'][2]).'&nbsp;'.tep_get_time_select_symbol('configuration_value[green][]', 'green_4', $default_info_array['green'][3]).'&nbsp;'.NOW_TIME_LINK_TEXT.'<br>'; 
+  $string .= SIGNAL_GREEN.'&nbsp;&nbsp;'.NOW_TIME_TEXT.'&nbsp;&nbsp;<p style="padding:0;margin:0;">'.tep_get_time_select_symbol('configuration_value[green][]', 'green_1', $default_info_array['green'][0]).tep_get_time_select_symbol('configuration_value[green][]', 'green_2', $default_info_array['green'][1]).tep_get_time_select_symbol('configuration_value[green][]', 'green_3', $default_info_array['green'][2]).tep_get_time_select_symbol('configuration_value[green][]', 'green_4', $default_info_array['green'][3]).NOW_TIME_LINK_TEXT.'</p><br>'; 
   
-  $string .= SIGNAL_YELLOW.'&nbsp;&nbsp;'.NOW_TIME_TEXT.'&nbsp;&nbsp;'.tep_get_time_select_symbol('configuration_value[yellow][]', 'yellow_1', $default_info_array['yellow'][0]).'&nbsp;'.tep_get_time_select_symbol('configuration_value[yellow][]', 'yellow_2', $default_info_array['yellow'][1]).'&nbsp;'.tep_get_time_select_symbol('configuration_value[yellow][]', 'yellow_3', $default_info_array['yellow'][2]).'&nbsp;'.tep_get_time_select_symbol('configuration_value[yellow][]', 'yellow_4', $default_info_array['yellow'][3]).'&nbsp;'.NOW_TIME_LINK_TEXT.'<br>'; 
+  $string .= SIGNAL_YELLOW.'&nbsp;&nbsp;'.NOW_TIME_TEXT.'&nbsp;&nbsp;<p style="padding:0;margin:0;">'.tep_get_time_select_symbol('configuration_value[yellow][]', 'yellow_1', $default_info_array['yellow'][0]).tep_get_time_select_symbol('configuration_value[yellow][]', 'yellow_2', $default_info_array['yellow'][1]).tep_get_time_select_symbol('configuration_value[yellow][]', 'yellow_3', $default_info_array['yellow'][2]).tep_get_time_select_symbol('configuration_value[yellow][]', 'yellow_4', $default_info_array['yellow'][3]).NOW_TIME_LINK_TEXT.'</p><br>'; 
   
-  $string .= SIGNAL_RED.'&nbsp;&nbsp;'.NOW_TIME_TEXT.'&nbsp;&nbsp;'.tep_get_time_select_symbol('configuration_value[red][]', 'red_1', $default_info_array['red'][0]).'&nbsp;'.tep_get_time_select_symbol('configuration_value[red][]', 'red_2', $default_info_array['red'][1]).'&nbsp;'.tep_get_time_select_symbol('configuration_value[red][]', 'red_3', $default_info_array['red'][2]).'&nbsp;'.tep_get_time_select_symbol('configuration_value[red][]', 'red_4', $default_info_array['red'][3]).'&nbsp;'.NOW_TIME_LINK_TEXT.'<br>'; 
+  $string .= SIGNAL_RED.'&nbsp;&nbsp;'.NOW_TIME_TEXT.'&nbsp;&nbsp;<p style="padding:0;margin:0;">'.tep_get_time_select_symbol('configuration_value[red][]', 'red_1', $default_info_array['red'][0]).tep_get_time_select_symbol('configuration_value[red][]', 'red_2', $default_info_array['red'][1]).tep_get_time_select_symbol('configuration_value[red][]', 'red_3', $default_info_array['red'][2]).tep_get_time_select_symbol('configuration_value[red][]', 'red_4', $default_info_array['red'][3]).NOW_TIME_LINK_TEXT.'</p><br>'; 
   
   
   $string .= SIGNAL_BLNK.'&nbsp;&nbsp;'.SIGNAL_BLINK_READ_TEXT;

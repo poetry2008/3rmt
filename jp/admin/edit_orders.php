@@ -19,7 +19,18 @@ $currencies = new currencies(2);
 
 include(DIR_WS_CLASSES . 'order.php');
 
-
+$orders_update_time_query = tep_db_query("select last_modified from ". TABLE_ORDERS ." where orders_id='".$_GET['oID']."'");
+$orders_update_time_array = tep_db_fetch_array($orders_update_time_query);
+tep_db_free_result($orders_update_time_query);
+if(!isset($_SESSION['orders_update_time'][$_GET['oID']])){
+  $_SESSION['orders_update_time'][$_GET['oID']] = $orders_update_time_array['last_modified'];
+}else{
+  if($_SESSION['orders_update_time'][$_GET['oID']] != $orders_update_time_array['last_modified']){
+    unset($_SESSION['orders_update_products'][$_GET['oID']]);
+    unset($_SESSION['new_products_list'][$_GET['oID']]);  
+    $_SESSION['orders_update_time'][$_GET['oID']] = $orders_update_time_array['last_modified'];
+  }
+}
 // START CONFIGURATION ################################
 
 // Correction tax pre-values (Michel Haase, 2005-02-18)
@@ -106,9 +117,15 @@ if (tep_not_null($action)) {
       $shipping_array = array();
     foreach($update_products as $products_key=>$products_value){
 
-      $shipping_products_query = tep_db_query("select * from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='". $products_key."'");
-      $shipping_products_array = tep_db_fetch_array($shipping_products_query);
-      tep_db_free_result($shipping_products_query);
+      $products_session_str_array = explode('_',$products_key);
+      if(count($products_session_str_array) <= 1){
+        $shipping_products_query = tep_db_query("select * from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='". $products_key."'");
+        $shipping_products_array = tep_db_fetch_array($shipping_products_query);
+        tep_db_free_result($shipping_products_query);
+      }else{
+        $shipping_products_array['final_price'] = $_SESSION['new_products_list'][$_GET['oID']]['orders_products'][$products_session_str_array[1]]['final_price']; 
+        $shipping_products_array['products_id'] = $_SESSION['new_products_list'][$_GET['oID']]['orders_products'][$products_session_str_array[1]]['products_id'];
+      }
       $products_value['final_price'] = $shipping_products_array['final_price'] < 0 ? -$products_value['final_price'] : $products_value['final_price'];
       $shipping_array[] = array('id'=>$shipping_products_array['products_id'],'qty'=>$products_value['qty'],'final_price'=>$products_value['final_price']);
     }
@@ -365,7 +382,7 @@ if (tep_not_null($action)) {
 
       // 1.1 UPDATE ORDER INFO #####
       $UpdateOrders = "update " . TABLE_ORDERS . " set 
-        customers_name = '" . tep_db_input(stripslashes($update_customer_name)) . "',
+                       customers_name = '" . tep_db_input(stripslashes($update_customer_name)) . "',
                        customers_name_f = '" . tep_db_input(stripslashes($update_customer_name_f)) . "',
                        customers_company = '" . tep_db_input(stripslashes($update_customer_company)) . "',
                        customers_street_address = '" . tep_db_input(stripslashes($update_customer_street_address)) . "',
@@ -512,16 +529,25 @@ if($address_error == false){
       $products_delete = false;
       foreach ($update_products as $orders_products_id => $products_details) {
         // 1.3.1.1 Update Inventory Quantity
-        $op_query = tep_db_query("
+        $products_session_string_array = explode('_',$orders_products_id);
+        $products_qty_add = false;
+        if(count($products_session_string_array) <= 1){
+          $op_query = tep_db_query("
             select products_id, 
             products_quantity
             from " . TABLE_ORDERS_PRODUCTS . " 
             where orders_id = '" . tep_db_input($oID) . "' 
             and orders_products_id = '".$orders_products_id."'");
 
-        // 1.3.1.1 Update Inventory Quantity
-        $order = tep_db_fetch_array($op_query);
-        if ($products_details["qty"] != $order['products_quantity']) {
+          // 1.3.1.1 Update Inventory Quantity
+          $order = tep_db_fetch_array($op_query);
+        }else{
+          $order = array();
+          $order['products_id'] = $_SESSION['new_products_list'][$_GET['oID']]['orders_products'][$products_session_string_array[1]]['products_id']; 
+          $order['products_quantity'] = 0;
+          $products_qty_add = true;
+        }
+        if (($products_details["qty"] != $order['products_quantity']) || $products_qty_add == true) {
           $quantity_difference = ($products_details["qty"] - $order['products_quantity']);
           $p = tep_db_fetch_array(tep_db_query("select * from products where products_id='".$order['products_id']."'"));
 
@@ -554,15 +580,33 @@ if($address_error == false){
         }
         
         if($products_details["qty"] > 0) { // a.) quantity found --> add to list & sum
-          $Query = "update " . TABLE_ORDERS_PRODUCTS . " set
-            products_model = '" . $products_details["model"] . "',
+          if(count($products_session_string_array) <= 1){
+            $Query = "update " . TABLE_ORDERS_PRODUCTS . " set
+                           products_model = '" . $products_details["model"] . "',
                            products_name = '" . str_replace("'", "&#39;", $products_details["name"]) . "',
                            products_price = '" .  (tep_check_product_type($orders_products_id) ? 0 - $products_details["p_price"] : $products_details["p_price"]) . "',
                            final_price = '" . (tep_get_bflag_by_product_id((int)$order['products_id']) ? 0 - $products_details["final_price"] : $products_details["final_price"]) . "',
                            products_tax = '" . $products_details["tax"] . "',
                            products_quantity = '" . $products_details["qty"] . "'
-                             where orders_products_id = '$orders_products_id';";
-          tep_db_query($Query);
+                           where orders_products_id = '$orders_products_id';";
+            tep_db_query($Query);
+          }else{
+            $Query = "insert into " . TABLE_ORDERS_PRODUCTS . " set
+                    orders_id = '$oID',
+                    products_id = ".$order['products_id'].",
+                    products_model = '".$products_details["model"]."',
+                    products_name = '" . str_replace("'", "&#39;", $products_details["name"]) . "',
+                    products_price = '". (tep_check_product_type($orders_products_id) ? 0 - $products_details["p_price"] : $products_details["p_price"]) ."',
+                    final_price = '" . (tep_get_bflag_by_product_id((int)$order['products_id']) ? 0 - $products_details["final_price"] : $products_details["final_price"]) . "',
+                    products_tax = '". $products_details["tax"] ."',
+                    site_id = '".tep_get_site_id_by_orders_id($oID)."',
+                    products_rate = '".tep_get_products_rate($order['products_id'])."',
+                    products_quantity = '" . (int)$products_details["qty"] . "';";
+           tep_db_query($Query);
+           $new_products_id = tep_db_insert_id();
+
+           orders_updated($oID); 
+          }
 
           // Update Tax and Subtotals: please choose sum WITH or WITHOUT tax, but activate only ONE version ;-)
 
@@ -578,16 +622,30 @@ if($address_error == false){
           if (IsSet($products_details[attributes])) {
             foreach ($products_details["attributes"] as $orders_products_attributes_id => $attributes_details) {
               $input_option = array('title' => $attributes_details["option"], 'value' => $attributes_details["value"]); 
-              $Query = "update " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " set option_info = '".tep_db_input(serialize($input_option))."', options_values_price = '".$attributes_details['price']."' where orders_products_attributes_id = '$orders_products_attributes_id';"; 
-              tep_db_query($Query);
+              $orders_products_attributes_array = explode('_', $orders_products_attributes_id);
+              if(count($products_session_string_array) <= 1){
+                $Query = "update " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " set option_info = '".tep_db_input(serialize($input_option))."', options_values_price = '".$attributes_details['price']."' where orders_products_attributes_id = '$orders_products_attributes_id';"; 
+                tep_db_query($Query);
+              }else{
+                $Query = "insert into " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " set
+                        orders_id = '$oID',
+                        orders_products_id = $new_products_id,
+                        options_values_price = '" .tep_db_input($attributes_details['price']) ."',
+                        option_group_id = '" . $_SESSION['new_products_list'][$oID]['orders_products'][$products_session_string_array[1]]['products_attributes'][$orders_products_attributes_array[1]]['option_group_id'] . "',
+                        option_item_id = '" . $_SESSION['new_products_list'][$oID]['orders_products'][$products_session_string_array[1]]['products_attributes'][$orders_products_attributes_array[1]]['option_item_id'] . "',
+                        option_info = '".tep_db_input(serialize($input_option))."';";
+                tep_db_query($Query); 
+              }
             }
           }
         } else { // b.) null quantity found --> delete
-          $Query = "delete from " . TABLE_ORDERS_PRODUCTS . " where orders_products_id = '$orders_products_id';";
-          tep_db_query($Query);
-          $Query = "delete from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " where orders_products_id = '$orders_products_id';";
-          tep_db_query($Query);
-          $products_delete = true;
+          if(count($products_session_string_array) <= 1){
+            $Query = "delete from " . TABLE_ORDERS_PRODUCTS . " where orders_products_id = '$orders_products_id';";
+            tep_db_query($Query);
+            $Query = "delete from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " where orders_products_id = '$orders_products_id';";
+            tep_db_query($Query);
+            $products_delete = true;
+          }
         }
       }
 
@@ -1099,7 +1157,9 @@ if($address_error == false){
       } else {
         $messageStack->add_session(TEXT_ERROR_NO_SUCCESS, 'error');
       }
-      unset($_SESSION['orders_update_products']);
+      unset($_SESSION['orders_update_products'][$oID]);
+      unset($_SESSION['new_products_list'][$oID]);
+      unset($_SESSION['orders_update_time'][$oID]);
       tep_redirect(tep_href_link("edit_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
 
       break;
@@ -1178,66 +1238,9 @@ if($address_error == false){
         $CountryID = tep_get_country_id($order->delivery["country"]);
         $ZoneID = tep_get_zone_id($CountryID, $order->delivery["state"]);
 
-        $ProductsTax = tep_get_tax_rate($p_products_tax_class_id, $CountryID, $ZoneID);
+        $ProductsTax = tep_get_tax_rate($p_products_tax_class_id, $CountryID, $ZoneID);  
 
-        // 2.2 UPDATE ORDER #####
-        $Query = "insert into " . TABLE_ORDERS_PRODUCTS . " set
-          orders_id = '$oID',
-                    products_id = $add_product_products_id,
-                    products_model = '$p_products_model',
-                    products_name = '" . str_replace("'", "&#39;", $p_products_name) . "',
-                    products_price = '$p_products_price',
-                    final_price = '" . ($p_products_price + $AddedOptionsPrice) . "',
-                    products_tax = '$ProductsTax',
-                    site_id = '".tep_get_site_id_by_orders_id($oID)."',
-                    products_rate = '".tep_get_products_rate($add_product_products_id)."',
-                    products_quantity = '" . (int)$add_product_quantity . "';";
-        tep_db_query($Query);
-        $new_product_id = tep_db_insert_id();
-
-        orders_updated($oID);
-
-        // 2.2.1 Update inventory Quantity
-        $p = tep_db_fetch_array(tep_db_query("select * from products where products_id='".$add_product_products_id."'"));
-        if ((int)$add_product_quantity > $p['products_real_quantity']) {
-          // 买取商品大于实数
-          tep_db_perform('products',array(
-                'products_real_quantity' => 0,
-                //'products_virtual_quantity' => 0,
-                //'products_virtual_quantity' => $p['products_virtual_quantity'] - ((int)$add_product_quantity + $p['products_real_quantity'])
-                'products_virtual_quantity' => $p['products_virtual_quantity'] - (int)$add_product_quantity + $p['products_real_quantity']
-                ),
-              'update',
-              "products_id = '" . $add_product_products_id . "'");
-        } else {
-          tep_db_perform('products',array(
-                'products_real_quantity' =>$p['products_real_quantity']  - (int)$add_product_quantity
-                // 'products_real_quantity' =>$p['products_real_quantity']+ $p['products_virtual_quantity'] - (int)$add_product_quantity
-                ),
-              'update',
-              "products_id = '" . $add_product_products_id . "'");
-        }
-        // 增加销售量
-        tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . (int)$add_product_quantity . " where products_id = '" . $add_product_products_id . "'");
-        // 处理负数问题
-        tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . $add_product_products_id . "'");
-        tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . $add_product_products_id . "'");
-        /*
-        if (IsSet($add_product_options)) {
-
-          foreach($add_product_options as $option_id => $option_value_id) {
-            $Query = "insert into " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " set
-              orders_id = '$oID',
-                        orders_products_id = $new_product_id,
-                        products_options = '" . $option_names[$option_id] . "',
-                        products_options_values = '" . tep_db_input($option_values_names[$option_value_id]) . "',
-                        options_values_price = '" . $option_value_details[$option_id][$option_value_id]["options_values_price"] . "',
-                        attributes_id = '" . $option_attributes_id[$option_value_id] . "',
-                        price_prefix = '+';";
-            tep_db_query($Query);
-          }
-        }
-        */
+        $new_products_attributes_array = array();
         foreach($_POST as $op_i_key => $op_i_value)
         {
           $op_pos = substr($op_i_key, 0, 3);
@@ -1266,22 +1269,32 @@ if($address_error == false){
             } else {
               $op_price = $ioption_item_res['price']; 
             }
-            $Query = "insert into " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " set
-              orders_id = '$oID',
-                        orders_products_id = $new_product_id,
-                        options_values_price = '" .tep_db_input($op_price) ."',
-                        option_group_id = '" . $ioption_item_res['group_id']. "',
-                        option_item_id = '" . $ioption_item_res['id']. "',
-                        option_info = '".tep_db_input(serialize($input_option_array))."';";
-            tep_db_query($Query);
+            $new_products_attributes_array[] = array('options_values_price'=>tep_db_input($op_price),
+                                                   'option_group_id'=>$ioption_item_res['group_id'], 
+                                                   'option_item_id'=>$ioption_item_res['id'],
+                                                   'option_info'=>tep_db_input(serialize($input_option_array))
+                                                   );  
             }
           } 
         } 
+
+        // 2.2 UPDATE ORDER SESSION ##### 
+        $products_list_array = array('products_id'=>$add_product_products_id,
+                                     'products_model'=>$p_products_model, 
+                                     'products_name'=>str_replace("'", "&#39;", $p_products_name),
+                                     'products_price'=>$p_products_price,
+                                     'final_price'=>($p_products_price + $AddedOptionsPrice),
+                                     'products_tax'=>$ProductsTax,
+                                     'site_id'=>tep_get_site_id_by_orders_id($oID),
+                                     'products_rate'=>tep_get_products_rate($add_product_products_id),
+                                     'products_quantity'=>(int)$add_product_quantity,
+                                     'products_attributes'=>$new_products_attributes_array
+                                   );
+        $_SESSION['new_products_list'][$oID]['orders_products'][] = $products_list_array; 
         // 2.2.2 Calculate Tax and Sub-Totals
         $order = new order($oID);
         $RunningSubTotal = 0;
-        $RunningTax = 0;
-
+        $RunningTax = 0; 
         for ($i=0; $i<sizeof($order->products); $i++) {
           if (DISPLAY_PRICE_WITH_TAX == 'true') {
             $RunningSubTotal += (tep_add_tax(($order->products[$i]['qty'] * $order->products[$i]['final_price']), $order->products[$i]['tax']));
@@ -1296,31 +1309,17 @@ if($address_error == false){
         $new_subtotal = $RunningSubTotal;
         $new_tax = $RunningTax;
 
-        //subtotal
-        /*
-           delete
-           , text = '".tep_insert_currency_text($currencies->format($new_subtotal, true, $order->info['currency']))."'
-         */
-        tep_db_query("update " . TABLE_ORDERS_TOTAL . " set value = '".tep_insert_currency_value($new_subtotal)."' where class='ot_subtotal' and orders_id = '".$oID."'");
-
-        $campaign_fee = get_campaion_fee($new_subtotal, $oID, $order->info['site_id']);
-        tep_db_query("update ". TABLE_CUSTOMER_TO_CAMPAIGN." set campaign_fee = '".$campaign_fee."' where orders_id = '".$oID."' and site_id = '".$order->info['site_id']."'"); 
+        $campaign_fee = get_campaion_fee($new_subtotal, $oID, $order->info['site_id']); 
         //tax
         $plustax_query = tep_db_query("select count(*) as cnt from " . TABLE_ORDERS_TOTAL . " where class = 'ot_tax' and orders_id = '".$oID."'");
         $plustax = tep_db_fetch_array($plustax_query);
-        /*
-           delete from update 
-           text = '".tep_insert_currency_text
-           ($currencies->format($new_tax, true, $order->info['currency']))."'
-         */
-        if($plustax['cnt'] > 0) {
-          tep_db_query("update " . TABLE_ORDERS_TOTAL . " set value = '".tep_insert_currency_value($new_tax)."' where class='ot_tax' and orders_id = '".$oID."'");
-        }
-
+   
         //total
-        $total_query = tep_db_query("select sum(value) as total_value from " . TABLE_ORDERS_TOTAL . " where class != 'ot_total' and orders_id = '".$oID."'");
+        $total_query = tep_db_query("select sum(value) as total_value from " . TABLE_ORDERS_TOTAL . " where class != 'ot_total' and class != 'ot_point' and orders_id = '".$oID."'");
         $total_value = tep_db_fetch_array($total_query);
-
+        $point_total_query = tep_db_query("select value as point_value from " . TABLE_ORDERS_TOTAL . " where class = 'ot_point' and orders_id = '".$oID."'");
+        $point_total_value = tep_db_fetch_array($point_total_query);
+        $total_value["total_value"] -= $point_total_value['point_value'];
         if($plustax['cnt'] == 0) {
           $newtotal = $total_value["total_value"] + $new_tax;
         } else {
@@ -1332,23 +1331,26 @@ if($address_error == false){
         }
         $handle_fee = $cpayment->handle_calc_fee(payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE), $newtotal);
         $newtotal   = $newtotal+$handle_fee;
-
-        /* delete text for update 
-           text = '<b>".$currencies->ot_total_format
-           (intval(floor($newtotal)), true, $order->info['currency'])."</b>'
-         */
-        $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '".intval(floor($newtotal+$campaign_fee+$shipping_fee))."' where class='ot_total' and orders_id = '".$oID."'";
-        tep_db_query($totals);
-
-        $update_orders_sql = "update ".TABLE_ORDERS." set code_fee = '".$handle_fee."' where orders_id = '".$oID."'";
-        tep_db_query($update_orders_sql);
+ 
         if(isset($_SESSION['orders_update_products'][$_GET['oID']]['ot_subtotal'])){
           $_SESSION['orders_update_products'][$_GET['oID']]['ot_subtotal'] += tep_add_tax(($p_products_price + $AddedOptionsPrice)*(int)$add_product_quantity,$ProductsTax);
+        }else{
+          $_SESSION['orders_update_products'][$_GET['oID']]['ot_subtotal'] = tep_add_tax(($p_products_price + $AddedOptionsPrice)*(int)$add_product_quantity,$ProductsTax)+tep_insert_currency_value($new_subtotal); 
         }
         if(isset($_SESSION['orders_update_products'][$_GET['oID']]['ot_total'])){
           $_SESSION['orders_update_products'][$_GET['oID']]['ot_total'] += tep_add_tax(($p_products_price + $AddedOptionsPrice)*(int)$add_product_quantity,$ProductsTax);
+        }else{
+          $_SESSION['orders_update_products'][$_GET['oID']]['ot_total'] = intval(floor($newtotal+$campaign_fee+$shipping_fee+tep_add_tax(($p_products_price + $AddedOptionsPrice)*(int)$add_product_quantity,$ProductsTax))); 
         }
-        //exit;
+        if($_SESSION['orders_update_products'][$_GET['oID']]['ot_total'] < 0){
+
+          if(isset($_SESSION['orders_update_products'][$_GET['oID']]['point'])){
+
+            $_SESSION['orders_update_products'][$_GET['oID']]['ot_total'] -= $_SESSION['orders_update_products'][$_GET['oID']]['point'];
+          }else{
+            $_SESSION['orders_update_products'][$_GET['oID']]['ot_total'] += $point_total_value['point_value']; 
+          }
+        }
         tep_redirect(tep_href_link("edit_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
       }
       break;
@@ -1520,6 +1522,7 @@ $shipping_fee = $order->info['shipping_fee'] != $shipping_fee ? $shipping_fee : 
 <link rel="stylesheet" type="text/css" href="css/popup_window.css">
 <script language="javascript">
 var session_orders_id = '<?php echo $_GET['oID'];?>';
+var session_site_id = '<?php echo $order->info['site_id'];?>';
 </script>
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery.js"></script>
@@ -1588,7 +1591,7 @@ function products_num_check(orders_products_list_id,products_name,products_list_
 function submit_check_con(){
 
     var options = {
-    url: 'ajax_orders_weight.php?action=edit_orders',
+      url: 'ajax_orders_weight.php?action=edit_orders&oID=<?php echo $_GET['oID'];?>',
     type:  'POST',
     success: function(data) {
       if(data != ''){
@@ -2424,7 +2427,14 @@ $(document).ready(function(){
 ?>
 //todo:修改通性用
 <?php
-      $cpayment = payment::getInstance();
+      foreach($order->totals as $total_key=>$total_value){
+        
+        if($total_value['class'] == 'ot_total'){
+
+          $orders_total_sum = (int)$total_value['value'];
+        }
+      }
+      $cpayment = payment::getInstance($order->info['site_id']);
       $payment_array = payment::getPaymentList();
       foreach($payment_array[0] as $pay_key=>$pay_value){ 
         $payment_info = $cpayment->admin_get_payment_info_comment($pay_value,$order->customer['email_address'],$order->info['site_id']);
@@ -2432,12 +2442,13 @@ $(document).ready(function(){
 
           switch($payment_info[0]){
           case 1: 
-            $handle_fee_code = $cpayment->handle_calc_fee( payment::changeRomaji($pay_value,PAYMENT_RETURN_TYPE_CODE), 0);
+            $handle_fee_code = $cpayment->handle_calc_fee( payment::changeRomaji($pay_value,PAYMENT_RETURN_TYPE_CODE), $orders_total_sum);
             $pay_type_str = $pay_value;
             break;  
           }
         } 
       }
+      $handle_fee_code = $handle_fee_code == '' ? 0 : $handle_fee_code;
 ?>
   function hidden_payment(num){
    if(document.edit_order){
@@ -2860,10 +2871,18 @@ if (($action == 'edit') && ($order_exists == true)) {
     $products_orders_id_array[] = $products_orders_list_array['orders_products_id'];
   }
   tep_db_free_result($products_orders_list_query);
+  foreach($_SESSION['new_products_list'][$oID]['orders_products'] as $orders_products_id_key=>$orders_products_id_value){
+
+    $products_orders_id_array[] = 'o_'.$orders_products_id_key;
+  }
   foreach($order->products as $order_key=>$order_val){
 
     $products_id_array[] = $order_val['id'];
     $products_name_array[] = $order_val['name']; 
+  }
+  foreach($_SESSION['new_products_list'][$_GET['oID']]['orders_products'] as $new_value){
+    $products_id_array[] = $new_value['products_id']; 
+    $products_name_array[] = $new_value['products_name'];
   }
   $products_name_str = implode('|||',$products_name_array);
   $products_id_str = implode('|||',$products_id_array);
@@ -2993,7 +3012,7 @@ if (($action == 'edit') && ($order_exists == true)) {
           }
           $pay_info_array[0] = $pay_info_array[0] == '' && $pay_method == $pay_type_array[0] ? $pay_comment : $pay_info_array[0];
           $pay_info_array[1] = $pay_info_array[1] == '' && $pay_method == $pay_type_array[1] ? $pay_comment : $pay_info_array[1];
-          $pay_info_array[2] = $pay_info_array[2] == '' && $pay_method == $pay_type_array[2] ?  $pay_comment : $pay_info_array[2];
+          $pay_info_array[2] = $pay_info_array[2] == '' && $pay_method == $pay_type_array[2] ?  $pay_comment : $pay_info_array[2];  
     ?>
     <?php echo payment::makePaymentListPullDownMenu(payment::changeRomaji($pay_method, PAYMENT_RETURN_TYPE_CODE));?> 
     <?php  
@@ -3034,7 +3053,38 @@ if (($action == 'edit') && ($order_exists == true)) {
            } 
          }
          echo '</table>'; 
-    echo EDIT_ORDERS_PAYMENT_METHOD_READ;
+         echo EDIT_ORDERS_PAYMENT_METHOD_READ;
+         $pay_array = explode("\n",trim($pay_info_array[0]));
+         $bank_name = explode(':',$pay_array[0]);
+         if(!isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_name'])){ 
+           $_SESSION['orders_update_products'][$_GET['oID']]['bank_name'] = $bank_name[1];
+         }
+         $bank_shiten = explode(':',$pay_array[1]);
+         if(!isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_shiten'])){
+           $_SESSION['orders_update_products'][$_GET['oID']]['bank_shiten'] = $bank_shiten[1];
+         }
+         $bank_kamoku = explode(':',$pay_array[2]);
+         if(!isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_kamoku'])){
+           $_SESSION['orders_update_products'][$_GET['oID']]['bank_kamoku'] = $bank_kamoku[1];
+         }
+         $bank_kouza_num = explode(':',$pay_array[3]);
+         if(!isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_kouza_num'])){
+           $_SESSION['orders_update_products'][$_GET['oID']]['bank_kouza_num'] = $bank_kouza_num[1];
+         }
+         $bank_kouza_name = explode(':',$pay_array[4]);
+         if(!isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_kouza_name'])){
+           $_SESSION['orders_update_products'][$_GET['oID']]['bank_kouza_name'] = $bank_kouza_name[1];
+         }
+         $pay_array = explode("\n",trim($pay_info_array[1]));
+         $con_email = explode(":",trim($pay_array[0]));
+         if(!isset($_SESSION['orders_update_products'][$_GET['oID']]['con_email'])){
+           $_SESSION['orders_update_products'][$_GET['oID']]['con_email'] = $con_email[1];
+         }
+         $pay_array = explode("\n",trim($pay_info_array[2]));
+         $rak_tel = explode(":",trim($pay_array[0]));
+         if(!isset($_SESSION['orders_update_products'][$_GET['oID']]['rak_tel'])){
+           $_SESSION['orders_update_products'][$_GET['oID']]['rak_tel'] = $rak_tel[1];
+         }
     ?> 
     </td>
     </tr>
@@ -3287,6 +3337,33 @@ if (($action == 'edit') && ($order_exists == true)) {
     </tr>
 
     <?php
+    $new_products_temp_list = array();
+    foreach($_SESSION['new_products_list'][$oID]['orders_products'] as $list_key=>$list_value){
+
+      $new_products_list_attributes_array = array();
+      foreach($list_value['products_attributes'] as $attr_key=>$attr_value){
+
+        $attr_list_array = array();
+        $attr_list_array = unserialize(stripcslashes($attr_value['option_info']));
+        $new_products_list_attributes_array[] = array('id'=>'a_'.$attr_key,
+                                                      'option_info'=>$attr_list_array, 
+                                                      'option_group_id'=>$attr_value['option_group_id'],
+                                                      'option_item_id'=>$attr_value['option_item_id'],
+                                                      'price'=>$attr_value['options_values_price']
+                                                      );
+      }
+      $new_products_temp_list = array('id'=>$list_value['products_id'],
+                                      'qty'=>$list_value['products_quantity'],
+                                      'name'=>$list_value['products_name'],
+                                      'model'=>$list_value['products_model'],
+                                      'tax'=>sprintf("%01.4f",$list_value['products_tax']),
+                                      'price'=>sprintf("%01.4f",$list_value['products_price']),
+                                      'final_price'=>sprintf("%01.4f",$list_value['final_price']),
+                                      'orders_products_id'=>'o_'.$list_key,
+                                      'attributes'=>$new_products_list_attributes_array 
+                                    );
+      $order->products[] = $new_products_temp_list;
+    } 
     $all_p_info_array = array(); 
     $orders_products_array = array(); 
     $orders_products_list = '';
@@ -3314,7 +3391,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         name='update_products_real_quantity[$orders_products_id]'
         id='update_products_real_quantity_$orders_products_id' value='1'><input
         type='hidden' id='update_products_qty_$orders_products_id' value='" .
-        $order->products[$i]['qty'] . "'><input type='text' class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" .  (isset($_POST['update_products'][$orders_products_id]['qty'])?$_POST['update_products'][$orders_products_id]['qty']:$order->products[$i]['qty']) . "' onkeyup='clearLibNum(this);recalc_order_price(\"".$oID."\", \"".$orders_products_id."\", \"2\", \"".$op_info_str."\",\"".$orders_products_list."\");price_total(\"".TEXT_MONEY_SYMBOL."\");;'>&nbsp;<input type='button' value='".IMAGE_DELETE."' onclick=\"delete_products( '".$orders_products_id."', '".TEXT_MONEY_SYMBOL."');\">&nbsp;x</td>\n" . 
+        $order->products[$i]['qty'] . "'><input type='text' class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" .  (isset($_POST['update_products'][$orders_products_id]['qty'])?$_POST['update_products'][$orders_products_id]['qty']:$order->products[$i]['qty']) . "' onkeyup='clearLibNum(this);recalc_order_price(\"".$oID."\", \"".$orders_products_id."\", \"2\", \"".$op_info_str."\",\"".$orders_products_list."\");price_total(\"".TEXT_MONEY_SYMBOL."\");;'>&nbsp;<input type='button' value='".IMAGE_DELETE."' onclick=\"delete_products( '".$orders_products_id."', '".TEXT_MONEY_SYMBOL."','".$customer_guest['is_calc_quantity']."');recalc_order_price('".$oID."', '".$orders_products_id."', '2', '".$op_info_str."','".$orders_products_list."');\">&nbsp;x</td>\n" . 
         '      <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input name='update_products[$orders_products_id][name]' size='64' id='update_products_name_$orders_products_id' type='hidden' value='" . $order->products[$i]['name'] . "'>\n" . 
         '      &nbsp;&nbsp;';
       // Has Attributes?
@@ -3656,7 +3733,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         '  </tr>' . "\n";
     } elseif ($TotalDetails["Class"] == "ot_point") {
       $shipping_fee_point = $TotalDetails["Price"];
-      $TotalDetails["Price"] = isset($_SESSION['orders_update_products'][$_GET['oID']]['point']) ? $_SESSION['orders_update_products'][$_GET['oID']]['point'] : $TotalDetails["Price"];
+      $point_session_id = isset($_SESSION['orders_update_products'][$_GET['oID']]['point']) ? $_SESSION['orders_update_products'][$_GET['oID']]['point'] : $TotalDetails["Price"];
       if ($customer_guest['customers_guest_chk'] == 0) { //会員
         $current_point = $customer_point['point'] + $TotalDetails["Price"];
         echo '  <tr>' . "\n" .
@@ -3668,9 +3745,10 @@ if (($action == 'edit') && ($order_exists == true)) {
           $campaign_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$_GET['oID']."' and site_id = '".$order->info['site_id']."'"); 
           $campaign_res = tep_db_fetch_array($campaign_query);
           if ($campaign_res) {
-            echo "<input name='update_totals[$TotalIndex][value]' id='point_id' onkeyup='clearNoNum(this);price_total(\"".TEXT_MONEY_SYMBOL."\");' size='6' value='" .abs((int)$campaign_res['campaign_fee']) . "'>";
+            $campaign_res['campaign_fee'] = isset($_SESSION['orders_update_products'][$_GET['oID']]['point']) ? $_SESSION['orders_update_products'][$_GET['oID']]['point'] : $campaign_res['campaign_fee'];
+            echo "<input type='hidden' id='point_value_temp' value='".(int)$campaign_res['campaign_fee']."'><input name='update_totals[$TotalIndex][value]' id='point_id' onkeyup='clearNoNum(this);price_total(\"".TEXT_MONEY_SYMBOL."\");' size='6' value='" .abs((int)$campaign_res['campaign_fee']) . "'>";
           } else {
-            echo "<input name='update_totals[$TotalIndex][value]' id='point_id' onkeyup='clearNoNum(this);price_total(\"".TEXT_MONEY_SYMBOL."\");' size='6' value='" .  $TotalDetails["Price"] . "'>";
+            echo "<input name='update_totals[$TotalIndex][value]' id='point_id' onkeyup='clearNoNum(this);price_total(\"".TEXT_MONEY_SYMBOL."\");' size='6' value='" . $point_session_id . "'>";
           }
           echo "<input type='hidden' name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . 
           "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
@@ -3700,7 +3778,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       $TotalDetails["Name"] = isset($_SESSION['orders_update_products'][$_GET['oID']][$TotalIndex]['title']) ? $_SESSION['orders_update_products'][$_GET['oID']][$TotalIndex]['title'] : $TotalDetails["Name"];
       echo '  <tr>' . "\n" .
         '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_TOTALDETAIL_READ_ONE.'</td>' . 
-        '    <td style="min-width:180px;" align="right" class="' . $TotalStyle . '">' . $button_add ."<input name='update_totals[$TotalIndex][title]' onkeyup='price_total(\"".TEXT_MONEY_SYMBOL."\");' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
+        '    <td style="min-width:188px;" align="right" class="' . $TotalStyle . '">' . $button_add ."<input name='update_totals[$TotalIndex][title]' onkeyup='price_total(\"".TEXT_MONEY_SYMBOL."\");' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
         '    <td align="right" class="' . $TotalStyle . '">' . "<input name='update_totals[$TotalIndex][value]' id='update_total_".$TotalIndex."' onkeyup='clearNoNum(this);price_total(\"".TEXT_MONEY_SYMBOL."\");' size='6' value='" . $TotalDetails["Price"] . "'>" . 
         "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
         "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . 

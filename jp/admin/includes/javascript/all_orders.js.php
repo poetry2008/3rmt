@@ -1022,7 +1022,11 @@ function price_total(str)
       shipping_fee_id = shipping_fee_id.replace(str,'');
       shipping_fee_id = parseInt(shipping_fee_id); 
       if(document.getElementById('point_id')){
-        var point_id = document.getElementById('point_id').value; 
+        if(document.getElementById('point_value_temp')){
+          var point_id = 0; 
+        }else{
+          var point_id = document.getElementById('point_id').value;
+        }
       }else{
         var point_id = 0;
       }
@@ -1050,29 +1054,41 @@ function price_total(str)
       }
       var ot_subtotal_id_temp;
       if(ot_total_flag == false){
-        ot_total = ot_subtotal_id+handle_fee_id+shipping_fee_id-point_id+update_total_num;
+        ot_total = ot_subtotal_id+handle_fee_id+shipping_fee_id+update_total_num;
         ot_subtotal_id_temp = ot_subtotal_id;
       }else{
-        ot_total = handle_fee_id+shipping_fee_id-point_id+update_total_num-ot_subtotal_id; 
+        ot_total = handle_fee_id+shipping_fee_id+update_total_num-ot_subtotal_id; 
         ot_subtotal_id_temp = 0-ot_subtotal_id;
+      }
+      if(ot_subtotal_id_temp > 0){
+        ot_total -= point_id;
       }
       var ot_total_temp;
       ot_total_temp = ot_total;
-      if(ot_total < 0){
+       
+  var payment_value = document.getElementsByName('payment_method')[0].value; 
+  $.ajax({
+    type: "POST",
+    data: 'total_title='+total_title+'&total_value='+total_value+'&point_value='+point_id+'&total_key='+total_key+'&ot_total='+ot_total_temp+'&ot_subtotal='+ot_subtotal_id_temp+'&payment_value='+payment_value+'&orders_id='+session_orders_id+'&session_site_id='+session_site_id,
+    async:false,
+    url: 'ajax_orders.php?action=price_total',
+    success: function(msg) {
+     var msg_array = new Array();
+     msg_array = msg.split('|||');
+     var handle_fee = parseInt(msg_array[0]);
+     var campaign_fee =  Math.abs(parseInt(msg_array[1]));
+     var campaign_flag = msg_array[2];
+     if(campaign_flag == 1){
+       document.getElementById('point_id').value = campaign_fee;
+     }
+     document.getElementById('handle_fee_id').innerHTML = handle_fee+str;
+     ot_total = ot_total-handle_fee_id+handle_fee-campaign_fee;
+     if(ot_total < 0){ 
         ot_total = Math.abs(ot_total);
         document.getElementById('ot_total_id').innerHTML = '<font color="#FF0000">'+fmoney(ot_total)+'</font>'+str;
       }else{
         document.getElementById('ot_total_id').innerHTML = fmoney(ot_total)+str; 
-      } 
-
-  var payment_value = document.getElementsByName('payment_method')[0].value;
-  $.ajax({
-    type: "POST",
-    data: 'total_title='+total_title+'&total_value='+total_value+'&point_value='+point_id+'&total_key='+total_key+'&ot_total='+ot_total_temp+'&ot_subtotal='+ot_subtotal_id_temp+'&payment_value='+payment_value+'&orders_id='+session_orders_id,
-    async:false,
-    url: 'ajax_orders.php?action=price_total',
-    success: function(msg) {
-      
+      }
     }
   });
 }
@@ -1132,15 +1148,9 @@ function recalc_all_product_price(oid, or_str)
   }); 
 }
 
-function delete_products(opid,o_str){
+function delete_products(opid,o_str,delete_flag){
 
-  $.ajax({
-    type: "POST",
-    data: 'orders_products_id='+opid+'&orders_id='+session_orders_id,
-    async:false,
-    url: 'ajax_orders.php?action=delete_products',
-    success: function(data) {
-     if(data == 'true'){
+       document.getElementById('update_products_new_qty_'+opid).value = 0;
        var ot_total_flag = false;
        var ot_subtotal_id = document.getElementById('ot_subtotal_id').innerHTML; 
        if(ot_subtotal_id.indexOf('color') > 0){
@@ -1179,11 +1189,9 @@ function delete_products(opid,o_str){
       }else{
         document.getElementById('ot_subtotal_id').innerHTML = fmoney(opd_str_total)+o_str; 
       }
+      document.getElementById('update_products['+opid+'][b_price]').innerHTML = '0'+o_str; 
+      document.getElementById('update_products['+opid+'][c_price]').innerHTML = '0'+o_str; 
       price_total(o_str);
-      $("#products_list_"+opid).remove();    
-     } 
-    }
-  });
 }
 function orders_session(type,value){
   
