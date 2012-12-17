@@ -984,17 +984,18 @@ width:19px;
 }
 .header_search_input{
 	border: solid 1px #ddd;
-	padding: 3px 5px;
+	padding: 0 5px;
 	height: 20px;
 	color: #555;
 	width: 110px;
+	margin:2px 2px 0 0;
 }
 .header_search_select{
 	border: solid 1px #ddd;
-	height: 20px;
-	* height: 18px;/*IE*/
+	height: 22px;
 	color: #555;
 	width:172px;
+	margin:2px 2px 0 2px;
 }
 .header_search_submit{
 	width: 51px;
@@ -1002,6 +1003,7 @@ width:19px;
 	border: none;
 	cursor: pointer;
 	background: url(../../../images/design/button/search.gif) no-repeat;
+	margin-top:2px;
 }
 .header_search_submit:hover{
 	background: url(../../../images/design/button/search_hover.gif) no-repeat;
