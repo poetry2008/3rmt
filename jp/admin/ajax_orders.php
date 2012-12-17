@@ -1,6 +1,5 @@
 <?php
 require('includes/application_top.php');
-require(DIR_WS_CLASSES . 'payment.php');
 //one time pwd 
 $http_referer = $_SERVER['HTTP_REFERER'];
 $http_referer_arr = explode('?',$_SERVER['HTTP_REFERER']);
@@ -2357,7 +2356,7 @@ echo json_encode($json_array);
     echo 'true';
   }
 }else if($_GET['action'] == 'price_total'){
-
+  require(DIR_WS_CLASSES . 'payment.php');
   $total_value = $_POST['total_value'];
   $point_value = $_POST['point_value'];
   $total_title = $_POST['total_title'];
