@@ -1557,6 +1557,14 @@ function date_time(){
 
 function products_num_check(orders_products_list_id,products_name,products_list_id){
 
+    var _end = $("#mail_title_status").val();
+    if($("#confrim_mail_title_"+_end).val()==$("#mail_title").val()){
+    }else{
+      if(confirm("<?php echo TEXT_STATUS_MAIL_TITLE_CHANGED;?>")){
+      }else{
+        return false;
+      }
+    }
     var products_error = true;
     var products_array = new Array();
     products_array = orders_products_list_id.split('|||');
@@ -3905,7 +3913,7 @@ if (($action == 'edit') && ($order_exists == true)) {
 ?>
     <tr>
     <td class="main" width="82" style="min-width:45px;"><b><?php echo ENTRY_STATUS; ?></b></td>
-    <td class="main"><?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_select,'onChange="new_mail_text_orders(this, \'s_status\',\'comments\',\'title\')"; style="width:80px;"'); ?></td> 
+    <td class="main"><?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_select,'onChange="new_mail_text_orders(this, \'s_status\',\'comments\',\'title\')"; style="width:80px;" id="mail_title_status"'); ?></td> 
     </tr>
     <?php
 
@@ -3933,7 +3941,7 @@ if (($action == 'edit') && ($order_exists == true)) {
 
             <tr>
             <td class="main"><b><?php echo ENTRY_EMAIL_TITLE; ?></b></td>
-            <td class="main"><?php echo tep_draw_input_field('title', $mail_sql['orders_status_title'],'style="width:55%;"'); ?></td>
+            <td class="main"><?php echo tep_draw_input_field('title', $mail_sql['orders_status_title'],'style="width:55%;" id="mail_title"'); ?></td>
             </tr>
     <tr>
     <td class="main"><b><?php echo EDIT_ORDERS_SEND_MAIL_TEXT;?></b></td>
@@ -3990,7 +3998,14 @@ if (($action == 'edit') && ($order_exists == true)) {
     <td class="main" bgcolor="#FBE2C8" width="10">&nbsp;</td>
     <td class="main" bgcolor="#FFCC99" width="10">&nbsp;</td>
     <td class="main" bgcolor="#F8B061" width="10">&nbsp;</td>
-    <td class="main" bgcolor="#FF9933" width="120" align="center"><INPUT type="button" value="<?php echo TEXT_FOOTER_CHECK_SAVE;?>" onClick="if(date_time()){if(products_num_check('<?php echo $orders_products_list;?>','<?php echo $products_name_str;?>','<?php echo $products_id_str;?>')){submit_check_con();}}"></td>
+    <td class="main" bgcolor="#FF9933" width="120" align="center">
+    <?php
+      foreach($orders_statuses as $o_status){
+        echo '<input type="hidden" id="confrim_mail_title_'.$o_status['id'].
+          '" value="'.$mo[$o_status['id']][0].'">';
+      }
+    ?>
+    <INPUT type="button" value="<?php echo TEXT_FOOTER_CHECK_SAVE;?>" onClick="if(date_time()){if(products_num_check('<?php echo $orders_products_list;?>','<?php echo $products_name_str;?>','<?php echo $products_id_str;?>')){submit_check_con();}}"></td>
     </tr>
     </table>
     </td>

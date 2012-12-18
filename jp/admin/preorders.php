@@ -687,6 +687,7 @@
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script language="javascript">
+
   function change_site(site_id,flag,site_list,param_url){  
           var ele = document.getElementById("site_"+site_id);
           $.ajax({
@@ -817,6 +818,16 @@ function del_confirm_payment_time(oid, status_id)
 }
 function check_mail_product_status(pid)
 {
+   var _end = $("#s_status").val();
+   if($("#confrim_mail_title_"+_end).val()==$("#mail_title").val()){
+     return true;
+   }else{
+   if(confirm("<?php echo TEXT_STATUS_MAIL_TITLE_CHANGED;?>")){
+     return true;
+   }else{
+      return false;
+     }
+   }
    var direct_single = false; 
    var select_status = document.getElementById('s_status').value;  
    if (select_status == 32) {
@@ -1655,7 +1666,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
         $sta       = isset($_GET['status'])?$_GET['status']:'';
       ?>
       <tr>
-        <td class="main"><b><?php echo ENTRY_EMAIL_TITLE; ?></b><?php echo tep_draw_input_field('title', $mail_sql['orders_status_title'],'style=" width:315px;"'); ?></td>
+        <td class="main"><b><?php echo ENTRY_EMAIL_TITLE; ?></b><?php echo tep_draw_input_field('title', $mail_sql['orders_status_title'],'style=" width:315px;" id="mail_title"'); ?></td>
       </tr>
       <tr>
         <td class="main">
@@ -1685,7 +1696,12 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               <td class="main" colspan="2">
               <?php echo tep_draw_hidden_field('qu_type', $orders_questions_type);?> 
               <br><b style="color:#FF0000;">
-              <?php echo TEXT_ORDER_HAS_ERROR;?></b><br><br><?php echo tep_html_element_submit(IMAGE_UPDATE); ?></td>
+              <?php 
+                  foreach($orders_statuses as $o_status){
+                    echo '<input type="hidden" id="confrim_mail_title_'.$o_status['id'].
+                      '" value="'.$mo[$o_status['id']][0].'">';
+                  }
+              echo TEXT_ORDER_HAS_ERROR;?></b><br><br><?php echo tep_html_element_submit(IMAGE_UPDATE); ?></td>
             </tr>
           </table>
         </td>
@@ -3172,6 +3188,16 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
 <?php }?>
 function submit_confirm()
 {
+  var _end = $("#mail_title_status").val();
+  if($("#confrim_mail_title_"+_end).val()==$("#mail_title").val()){
+    return true;
+  }else{
+  if(confirm("<?php echo TEXT_STATUS_MAIL_TITLE_CHANGED;?>")){
+    return true;
+  }else{
+     return false;
+    }
+  }
   var idx = document.sele_act.elements['status'].selectedIndex;
   var CI  = document.sele_act.elements['status'].options[idx].value;
   chk = getCheckboxValue('chk[]')
@@ -3192,7 +3218,7 @@ function submit_confirm()
           <td class="main" width="100" nowrap="nowrap"><b><?php echo ENTRY_STATUS; ?></b></td>
         <td class="main"><?php echo tep_draw_pull_down_menu('status',
             $orders_statuses, $select_select,
-            'onChange="mail_text(\'status\',\'comments\',\'os_title\')"'); ?> <?php
+            'onChange="mail_text(\'status\',\'comments\',\'os_title\')" id="mail_title_status"'); ?> <?php
         if($ocertify->npermission > 7 ) { ?>&nbsp;<a href="<?php echo
           tep_href_link(FILENAME_PREORDERS_STATUS,'',SSL);?>"><?php echo
             TEXT_EDIT_MAIL_TEXT;?></a><?php } ?></td>
@@ -3202,7 +3228,7 @@ function submit_confirm()
         </tr>
         <tr>
           <td class="main" nowrap="nowrap"><b><?php echo ENTRY_EMAIL_TITLE; ?></b></td>
-        <td class="main"><?php echo tep_draw_input_field('os_title', $select_title,' style=" width:400px;"'); ?></td>
+        <td class="main"><?php echo tep_draw_input_field('os_title', $select_title,' style=" width:400px;" id="mail_title"'); ?></td>
         </tr>
         <tr>
           <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
@@ -3235,6 +3261,10 @@ function submit_confirm()
               </tr>
               <tr>
                 <td class="main" colspan="2"><br><b style="color:#FF0000;"><?php
+                  foreach($orders_statuses as $o_status){
+                    echo '<input type="hidden" id="confrim_mail_title_'.$o_status['id'].
+                      '" value="'.$mo[$o_status['id']][0].'">';
+                  }
                 echo TEXT_ORDER_HAS_ERROR;?></b><br><br>
                 <?php //echo tep_image_submit('button_update.gif', IMAGE_UPDATE, 'onclick="return submit_confirm()&&check_question_form();"'); ?>
                 <?php echo tep_html_element_button(IMAGE_UPDATE,'onclick="if(submit_confirm()) document.sele_act.submit();"');?> 
