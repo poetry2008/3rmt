@@ -820,10 +820,8 @@ function check_mail_product_status(pid)
 {
    var _end = $("#s_status").val();
    if($("#confrim_mail_title_"+_end).val()==$("#mail_title").val()){
-     return true;
    }else{
    if(confirm("<?php echo TEXT_STATUS_MAIL_TITLE_CHANGED;?>")){
-     return true;
    }else{
       return false;
      }
@@ -3190,10 +3188,8 @@ function submit_confirm()
 {
   var _end = $("#mail_title_status").val();
   if($("#confrim_mail_title_"+_end).val()==$("#mail_title").val()){
-    return true;
   }else{
   if(confirm("<?php echo TEXT_STATUS_MAIL_TITLE_CHANGED;?>")){
-    return true;
   }else{
      return false;
     }
