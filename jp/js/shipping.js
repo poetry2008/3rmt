@@ -8,9 +8,9 @@ function format_time(str){
     return "0"+str;
   }
 }
-//下面的方法 需要添加 参数 才能适用于多个配送
+//The following methods need to add parameters to apply to multiple shipping
 function show_address_book(pid){
-  //显示 地址本
+  //Showing address book
   address_list = window.document.getElementById('address_book_list'+pid);
   address_list.style.display = 'block';
 }
@@ -19,32 +19,32 @@ function show_shipping_method(pid){
   shipping_list_t.style.display = 'block';
 }
 function create_address_book(){
-  //跳转到 创建地址页
+  //Jump to create an address page
   window.location.href = 'checkout_shipping_address.php';
 }
 function show_torihiki_time(_this,radio_name,pid){
   shipping_torihiki_t = window.document.getElementById('shipping_torihiki'+pid);
   if(_this.value != ''){
   shipping_torihiki_t.style.display = 'block';
-  //通过隐藏 获得 工作时间 和 开始时间
+  //To get the working time and start time by hiding
   var work_time = window.document.getElementById('shipping_work_time'+pid).value;
   var start_time = window.document.getElementById('shipping_start_time'+pid).value;
   work_time_arr = work_time.split('-');
   work_start = work_time_arr[0];
   work_end = work_time_arr[1];
-  //工作 开始时间
+  //Work start time
   work_start_arr = work_start.split(':');
   work_start_hour = work_start_arr[0];
   work_start_mim = work_start_arr[1];
-  //工作 结束时间
+  //Work end time
   work_end_arr = work_end.split(':');
   work_end_hour = work_end_arr[0];
   work_end_mim = work_end_arr[1];
-  //通过 时间戳 获得可以配送的开始时间
+  //To get the beginning of the shipping time by timestamp
   work_datetime = new Date(parseInt(start_time) * 1000);
   start_hour = work_datetime.getHours();
   start_mim = work_datetime.getMinutes();
-  //获得 现在的时间
+  //To get the time now
   now_datetime = new Date();
   now_hour = now_datetime.getHours();
   now_mim = now_datetime.getMinutes();
@@ -57,7 +57,7 @@ function show_torihiki_time(_this,radio_name,pid){
   now_year = parseInt(now_datetime.getFullYear());
   now_mon = parseInt(now_datetime.getMonth())+1;
   now_day = parseInt(now_datetime.getDate());
-  // date_flag 选择时间  大于 现在时间是1 等于是2 其他是0
+  // date_flag     Select time    Greater than now time is 1   Equal to the time now is 2   Others are 0
   date_flag=0;
   if(select_year > now_year){
     date_flag=1;
@@ -79,8 +79,8 @@ function show_torihiki_time(_this,radio_name,pid){
     s_hour = work_start_hour;
     s_mim = work_start_mim;
   }else if(date_flag == 2){
-  //通过 配送的开始时间 和现在时间 确定 显示时间的开始
-    //根据结束时间判断
+  //Through the start time and the time now of the shipping to determine and display time start
+    //According to the end of time to judge
   sub_time = start_mim - work_end_mim;
   if(start_hour > work_end_hour){
     s_hour = work_start_hour;
@@ -103,7 +103,7 @@ function show_torihiki_time(_this,radio_name,pid){
     }
   }
 
-  //根据开始时间判断
+  //According to the start time to determine
   sub_time = start_mim - now_mim;
   if(start_hour > now_hour){
     s_hour = start_hour;
@@ -239,7 +239,7 @@ function un_show_torihiki_time_info(pid){
   torihiki_radio_time_div.innerHTML = "";
 }
 function set_torihiki_date(shipping_code,work_time,start_time,pid){
-  //设置 可用 取引日期
+  //Settings available transaction date
   var show_select = window.document.getElementById('shipping_torihiki_date_select'+pid);
   var show_length = show_select.options.length;
   var from_select = window.document.getElementById(shipping_code+pid);

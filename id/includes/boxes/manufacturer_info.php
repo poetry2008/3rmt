@@ -18,13 +18,13 @@
     if (tep_db_num_rows($manufacturer_query)) {
       $manufacturer = tep_db_fetch_array($manufacturer_query);
 ?>
-<!-- manufacturer_info //-->
+<!-- manufacturer_info -->
 <?php
 
       echo '<a href="' . tep_href_link(FILENAME_DEFAULT, 'manufacturers_id=' . $manufacturer['manufacturers_id']) . '">' . $manufacturer['manufacturers_name'] . '</a>';
 
 ?>
-<!-- manufacturer_info_eof //-->
+<!-- manufacturer_info_eof -->
 <?php
     } else {
     echo '---';

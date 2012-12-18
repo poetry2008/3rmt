@@ -23,7 +23,7 @@ if ($tmp_sort_str == '4') {
 		      }
 			       }                    
 ?>
-<!--select searach -->
+<!--select search -->
 <table width=" 100%"  border="0" cellpadding="1" cellspacing="1" bgcolor="#C0CEDD" class="sort">
   <tr>
   <td height="25" align="center" <?php echo ($_COOKIE['sort'] == '100a' or !isset($_COOKIE['sort']) or $_COOKIE['sort'] == '100d') ? 'bgcolor="#E2F8FD"' : 'bgcolor="#FFFFFF"' ; ?> class="main" onMouseOver="this.bgColor = '#E2F8FD';" onMouseOut ="this.bgColor = '<?php echo ($_COOKIE['sort'] == '100a' or $_COOKIE['sort'] == '100d') ? '#E2F8FD' : '#FFFFFF' ; ?>'"><a href="javascript:void(0)" onclick="change_sort_type('100<?php echo $sort_default_str;?>');"><?php echo PRE_SORT_DEFAULT?></a><img class="middle" src="images/design/box/triangle<?php if(empty($_COOKIE['sort'])){ echo $sort_default_str=='d' ? '_upward' : '_downward';} else {if($tmp_sort_str=='100'){echo $sort_default_str=='d' ? '_upward' : '_downward';}else{echo  '_upward';}}?>.png" hspace="3" alt=""></td>
@@ -48,7 +48,7 @@ if ($tmp_sort_str == '4') {
 <?php
   }
 ?>
-<!--select searach_eof// -->
+<!--select search_eof// -->
 <div class="underline">&nbsp;</div>
 <table border="0" width="689" cellspacing="0" cellpadding="0">
   <tr>

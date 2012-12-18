@@ -16,4 +16,4 @@
     if ($banner = tep_banner_exists('dynamic', 'right8')) { echo tep_display_banner('static', $banner).'<br><br>';  }
     if ($banner = tep_banner_exists('dynamic', 'right9')) { echo tep_display_banner('static', $banner).'<br><br>';  }
 ?></div>
-<!--right_banner_eof//-->
+<!--right_banner_eof-->

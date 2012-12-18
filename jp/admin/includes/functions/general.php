@@ -4792,6 +4792,8 @@ function tep_display_google_results($from_url='', $c_type=false){
   // make rand pwd
   function make_rand_pwd($rule){
     //分割 规则字符串
+    $rule = str_replace('M','m',$rule);
+    $rule = str_replace('D','d',$rule);
     $arr = explode(':',$rule);
     $str ='';
     //定义一个数字 用来存储时间

@@ -3,7 +3,7 @@
   $Id$
 */
 ?>
-<!-- clender //-->
+<!-- clender -->
 <table width="100%"  border="0" cellspacing="0" cellpadding="0"> 
         <tr> 
           <td height="25" align="center" background="images/design/box/box_title_bg.jpg"><img src="images/design/box/calendar.gif" width="164" height="17" ></td> 
@@ -11,19 +11,19 @@
       </table><table width="100%"  border="0" cellspacing="0" cellpadding="0"> <tr><td class="boxText"><br>
       <?php
 
-//今日
+//今天
 $today = getdate();
 
 $m_num = $today[mon];
 $d_num = $today[mday];
 $year = $today[year];
-// 1日目の曜日
+//第一天对应的星期
 $f_today = getdate(mktime(0,0,0,$m_num,1,$year));
 $wday = $f_today[wday];
-// 月表示
+// 显示月
 $m_name = "$year ".substr($today[month],0,3);
 
-//年月取得
+//获取年月
 $ymd = date("Ym", time());
 
   echo '<strong>'.$year.'年'.$m_num.'月'.BOX_HEADING_CL.'</strong>';
@@ -73,11 +73,11 @@ while(checkdate($m_num,$day,$year)){
   }
   }
   elseif($array[$day] == '1'){
-    //お店の休業日
+    //商店的休息日
   $cl_string .= "<td align=center bgcolor=".CL_COLOR_01." class=\"smallText\"><font color=\"#FFFFFF\">$day</font></td>\n";
   }
   elseif($array[$day] == '2'){
-    //メール返信休業日
+    //邮件回信休息日
   $cl_string .= "<td align=center bgcolor=".CL_COLOR_02." class=\"smallText\">$day</td>\n";  
   }  
   elseif($wday == 0){ 
@@ -92,7 +92,7 @@ while(checkdate($m_num,$day,$year)){
     // Weekday
     $cl_string .= "<td align=center class=\"smallText\">$day</td>\n";
   }
-  // 改行
+  // 换行
   if($wday == 6) $cl_string .= "</tr><tr bgcolor=#ffffff>";
   $day++;
   $wday++;
@@ -122,13 +122,13 @@ echo $cl_string ;
     $m_num2 = $today2[mon];
     $d_num2 = $today2[mday];
     $year2 = $today2[year];
-    // 1日目の曜日
+    // 第一天对应的星期
     $f_today2 = getdate(mktime(0,0,0,$m_num2,1,$year2));
     $wday2 = $f_today2[wday];
-    // 月表示
+    // 显示月
     $m_name2 = "$year ".substr($today2[month],0,3);
     
-    //月のデータ取得
+    //获取月的数据
     $ymd2 = date("Ym", mktime(0,0,0,$m_num2,1,$year2));    // ccdd
     $calen_query2 = tep_db_query("
         select cl_value 
@@ -184,11 +184,11 @@ echo $cl_string ;
       
       
       if($array2['1'.str_pad($day2, 2, 0, STR_PAD_LEFT)] == '1'){
-      //お店の休業日
+      //商店的休息日
       echo "<td align=center bgcolor=".CL_COLOR_01." class=\"smallText\"><font color=\"#FFFFFF\">$day2</font></td>\n";
       }
       elseif($array2['1'.str_pad($day2, 2, 0, STR_PAD_LEFT)] == '2'){
-      //メール返信休業日
+      //邮件回信休息日
       echo "<td align=center bgcolor=".CL_COLOR_02." class=\"smallText\">$day2</td>\n";  
       }  
       elseif($wday2 == 0){ 
@@ -203,7 +203,7 @@ echo $cl_string ;
       // Weekday
       echo "<td align=\"center\" class=\"smallText\">$day2</td>\n";
       }
-      // 改行
+      // 换行
       if($wday2 == 6) echo "</tr><tr bgcolor=#ffffff>";
       $day2++;
       $wday2++;
@@ -223,5 +223,5 @@ echo '<p class="smallText" align="left" style="margin:10px;"><font color="'.CL_C
 <font color="'.CL_COLOR_02.'">■</font>は出荷・メールでのご返信はお休みとさせていただきます。</p>';
 ?>
 </td></tr></table>
-<!-- clender_eof //-->
+<!-- clender_eof -->
 <?php if ($banner = tep_banner_exists('dynamic', 'left0')) { echo '<div align="center" style="margin-top:5;margin-bottom:5;">'.tep_display_banner('static', $banner).'</div>'; } ?>

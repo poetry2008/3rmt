@@ -283,8 +283,8 @@ function showimage($1) {
                       <td class="main" width="85"><font color="#0070AF"><?php echo TEXT_PRODUCT_PRICE;?></font></td>
                         <td class="main">
                         <?php
-                          # 追加スタート ---------------------------------------
-                          # -- 注文数量と単価のリスト --------------------------
+                          # 添加开始 ---------------------------------------
+                          # -- 订单数量和单价列表 --------------------------
                           if(tep_not_null($product_info['products_small_sum'])) {
                           $wari_array = array();
                           echo '<span class="smallText">'.TEXT_ONE_UNIT_PRICE.'</span><table border="0" cellpadding="0" cellspacing="0" class="infoBox">';
@@ -307,8 +307,8 @@ function showimage($1) {
                             echo '<strong>'.$products_price.'</strong>';
                           }
                           
-                          # -- 注文数量と単価のリスト --------------------------
-                          # 追加エンド -------------------------------------------
+                          # -- 订单数量和单价列表 --------------------------
+                          # 添加结束 -------------------------------------------
                         
                         ?>
                       </td>
@@ -433,7 +433,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
 <?php
   if($product_info['products_quantity'] < 1) {
     if($product_info['products_bflag'] == '1') {
-      # 買い取り商品
+      # 买取商品
       echo '<span class="markProductOutOfStock">'.TEXT_PAUSE;
     } elseif ($product_info['products_cflag'] == '0') {
       echo '<span class="markProductOutOfStock">'.TEXT_SOLD_OUT;
@@ -503,7 +503,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
 
 		</table>
         <?php
-          //サブ画像
+          //sub图像
         // ccdd
         $sub_colors_query = tep_db_query("
             SELECT color_image, 
@@ -520,7 +520,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
           <tr>
             <?php
         while($sub_colors = tep_db_fetch_array($sub_colors_query)) {
-          //色名を取得
+          //获取颜色名
           // ccdd
           $colors_name_query = tep_db_query("
               SELECT color_name 

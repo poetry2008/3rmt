@@ -5,7 +5,7 @@
 
   if (isset($_GET['products_id'])) {
 ?>
-<!-- notifications //-->
+<!-- notifications -->
           <tr>
             <td>
 <?php
@@ -40,7 +40,7 @@
 ?>
             </td>
           </tr>
-<!-- notifications_eof //-->
+<!-- notifications_eof -->
 <?php
   }
 ?>

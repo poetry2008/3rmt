@@ -1,6 +1,6 @@
 @charset "Shift_JIS";
 
-/* 全体構造
+/* The whole structure
 ---------------------------------------------------- */
 body {
   margin: 0px;
@@ -23,7 +23,7 @@ a:hover{
 a{
 	border: none;
 	background: transparent;
-  text-decoration: none;		/* 線が表示されないようにする */
+  text-decoration: none;		/* The line does not appear*/
 }
 
 h3 {
@@ -185,7 +185,7 @@ html*ul.nul li.nli{
 	font-size:small
 }
 
-/* ヘッダ
+/* Header
 ---------------------------------------------------- */
 #header {
   color: #333333;
@@ -275,7 +275,7 @@ html*div#header ul{
 	font-weight:bold;
 }
 
-/* コンテンツ
+/* Content
 ---------------------------------------------------- */
 #content {
 	text-align:center;
@@ -313,7 +313,7 @@ html*div#content {
 	top:-10px;
 	left:-6px;
 }
-/* サイドメニュー
+/* Side menu
 ---------------------------------------------------- */
 #navi-side {
 	text-align:center;
@@ -389,7 +389,7 @@ root: #navi-side {
 	font-weight:bold;
 }
 
-/* サイドメニュー 基本 */
+/* Side menu basic */
 div#navi-side div.waku-area{
   margin-top: 0px;
   margin-bottom: 0px;
@@ -438,7 +438,7 @@ div#navi-side div.waku-area div.waku-bottom{
 	top:0px;
 }
 
-/* サイドメニュー ie6 */
+/* Side menu ie6 */
 html*div#navi-side div.waku-area{
   margin-top: 0px;
   margin-bottom: 0px;
@@ -498,7 +498,7 @@ div#navi-side div.waku-area hr.sideber{
   border-left: 0px solid #000000;
 	margin-bottom:10px;
 }
-/* サイドメニュー firefox ns7 */
+/* Side menu firefox ns7 */
 :root div#navi-side div.waku-area{
   margin-top: 0px;
   margin-bottom: 0px;
@@ -561,7 +561,7 @@ p.sidetext{
 	top:-5px;
 	left:0px;
 }
-/* フッター
+/* Footer
 ---------------------------------------------------- */
 #footer{
 	clear:both;
@@ -594,7 +594,7 @@ html*div#footer{
 	top:0px;
 	left:-6px;
 }
-/* メイン共通
+/* Main common
 ---------------------------------------------------- */
 #main{
   width:620px;
@@ -745,7 +745,7 @@ div#main div.waku-bottom{
   border-bottom: 0px solid #000000;
   border-left: 0px solid #000000;
 }
-/* メイントップ
+/* Main Top
 ---------------------------------------------------- */
 .waku-up{
 	position:relative;
@@ -936,7 +936,7 @@ html*span.info-text01{
 	left:0px
 }
 
-/* メインボックス */
+/* Main box */
 .box-info-wrap{
 	width:580px;
 	position:relative;
@@ -1147,7 +1147,7 @@ html*div.box02{
 	left:0px;
 }
 
-/* サイトマップ
+/* Site Map
 ---------------------------------------------------- */
 .waku-sitemap{
 	position:relative;
@@ -1242,7 +1242,7 @@ html*div.box-sitemap hr{
 	width:200px;
 }
 
-/* 規約
+/* Constitution
 ---------------------------------------------------- */
 .box-rules{
 	text-align:left;
@@ -1295,7 +1295,7 @@ html*div.box-rules{
 
 
 
-/* 運営
+/* Management
 ---------------------------------------------------- */
 .box-companyprofile{
 	font-size: small;
@@ -1364,7 +1364,7 @@ table.t-unei th{
 	width:450px;
 	height:2px;
 }
-/* お問い合わせ
+/* Contact Us
 ---------------------------------------------------- */
 .waku-contact{
 	position:relative;
@@ -1595,7 +1595,7 @@ html*div.box-contact03{
 	left:0px;
 }
 
-/* ギル購入
+/* Buy Gil
 ---------------------------------------------------- */
 .waku-buygil{
 	position:relative;
@@ -1638,7 +1638,7 @@ table.t-buygil th{
 	text-align:center;
 	font-size:90%;
 }	
-/* 買取
+/* Purchase
 ---------------------------------------------------- */
 .box-sell{
 	text-align:left;
@@ -1705,7 +1705,7 @@ html*div.sellgill-box03{
 	font-weight: bold;
 }
 
-/* ガイド
+/* Guide
 ---------------------------------------------------- */
 .box-guide{
 	text-align:left;
@@ -1995,7 +1995,7 @@ ul.news-list{
 	top:-5px;
 	left:5px
 }
-/* はじめに
+/* Start
 ---------------------------------------------------- */
 .main-begin.box03{
 	margin-bottom:25px;
@@ -2058,7 +2058,7 @@ table.t-begin th{
 	font-size: 80%;
 	color: #FF0000;
 }
-/* モバイル
+/* Mobile
 ---------------------------------------------------- */
 div.box-mobile div.box07{
 	text-align:left;
@@ -2096,7 +2096,7 @@ html*div.box-mobile div.box07{
   width:620px;
   height:39px
 }
-/* 購入ガイド
+/* Buying Guide
 ---------------------------------------------------- */
 .box-guidebuy{
 	text-align:center;
@@ -2143,7 +2143,7 @@ div.box-guidebuy div.box07{
 	font-size:small;
 }
 
-/* 買取ガイド
+/* Purchase Guide
 ---------------------------------------------------- */
 .box-guidesell{
 	text-align:center;
@@ -2172,7 +2172,7 @@ div.box-guidebuy div.box07{
   border-bottom: 0px solid #000000;
   border-left: 0px solid #000000;
 }
-/* 銀行ガイド
+/* Bank Guide
 ---------------------------------------------------- */
 .box-bank{
 	text-align:left;
@@ -2296,7 +2296,7 @@ html*div.bank-guide-custom-box03{
 	margin-top: 6px;
 }
 
-/* クレジットガイド
+/* Credit Guide
 ---------------------------------------------------- */
 /* firefox */
 div.box-credit div.box07{
@@ -2381,7 +2381,7 @@ html*div.credit-box03{
 	font-size: small;
 }
 
-/* 携帯ガイド
+/* Mobile Guide
 ---------------------------------------------------- */
 .under-arrow{
 	margin-left:10px;
@@ -2476,7 +2476,7 @@ html*div.credit-box03{
 .under{
 	text-decoration:underline;
 }
-/* エンドクリア
+/* Clear end
 ---------------------------------------------------- */
 .end{
 	clear:both;
@@ -2486,7 +2486,7 @@ html*div.credit-box03{
 	padding:0px;
 }
 
-/* ここからＦＡＱ専用
+/* FAQ from here 
 ---------------------------------------------------- */
 .toriaezu{
 　position:relative;

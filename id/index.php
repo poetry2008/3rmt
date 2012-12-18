@@ -110,7 +110,7 @@ if ($category_depth == 'nested') {
     echo HEADING_TITLE;
   }
 ?></span></h1>
-    <div class="comment"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seoフレーズ ?>
+    <div class="comment"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seo句子 ?>
         <?php
         $has_ca_single = false; 
         ?>

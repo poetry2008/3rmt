@@ -12,7 +12,7 @@
   }
   
   $active_single = 0;
-  // tamura 2002/12/30 「全角」英数字を「半角」に変換
+  //全角的英数字改成半角
   $an_cols = array('password','confirmation','email_address','postcode','telephone','fax');
   if (ACCOUNT_DOB) $an_cols[] = 'dob';
   foreach ($an_cols as $col) {
@@ -343,11 +343,11 @@ function pass_hidd(){
 </head>
 <body><div class="body_shadow" align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-  <!-- header_eof //--> 
-  <!-- body //--> 
+  <!-- header_eof --> 
+  <!-- body --> 
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
     <tr> 
-      <!-- body_text //--> 
+      <!-- body_text --> 
       <td valign="top" id="contents"><?php echo tep_draw_form('account_edit', tep_href_link(FILENAME_CREATE_ACCOUNT_PROCESS, '', 'SSL'), 'post', 'onSubmit="return check_form();"') . tep_draw_hidden_field('action', 'process'); ?> 
         <h1 class="pageHeading"><span class="game_t"><?php echo HEADING_TITLE ; ?></span></h1> 
         
@@ -370,17 +370,17 @@ function pass_hidd(){
           </form> 
         </div>
         </td> 
-      <!-- body_text_eof //--> 
+      <!-- body_text_eof --> 
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-        <!-- right_navigation_eof //--> 
+        <!-- right_navigation_eof --> 
       </td> 
     </tr>
   </table> 
-  <!-- body_eof //--> 
-  <!-- footer //--> 
+  <!-- body_eof --> 
+  <!-- footer --> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
+  <!-- footer_eof --> 
 </div> 
 </body>
 </html>
@@ -392,7 +392,7 @@ function pass_hidd(){
       //ccdd
       $check_cid = tep_db_query("select customers_id, is_active from " . TABLE_CUSTOMERS . " where customers_email_address = '" . tep_db_input($email_address) . "' and site_id = '".SITE_ID."'");
       if(tep_db_num_rows($check_cid)) {
-      # Guest & 2回目以上 //==============================================
+      # Guest & 第二次以上 //==============================================
       $check = tep_db_fetch_array($check_cid);
       if ($check['is_active'] == 1) {
         $active_single = 0; 
@@ -451,11 +451,11 @@ function pass_hidd(){
 	         tep_db_query("update ".TABLE_CUSTOMERS." set referer='".tep_db_prepare_input($_SESSION['referer'])."'   where customers_id='".$customer_id."'");
 unset($_SESSION['referer']); 
 	                }	 
-      # //Guest & 2回目以上 ==============================================
+      # //Guest & 第二次以上 ==============================================
       //ccdd
       tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_of_last_logon = now(), customers_info_number_of_logons = customers_info_number_of_logons+1 where customers_info_id = '" . $customer_id . "'");
     } else {
-      # Guest & 1回目 //==================================================
+      # Guest & 第一次 //==================================================
     $NewPass = tep_create_random_value(ENTRY_PASSWORD_MIN_LENGTH);
       $sql_data_array = array('customers_firstname' => $firstname,
                                 'customers_lastname' => $lastname,
@@ -507,7 +507,7 @@ unset($_SESSION['referer']);
 
         //ccdd
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
-    # Guest & 1回目 //==================================================
+    # Guest & 第一次 //==================================================
       //ccdd
       tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created) values ('" . tep_db_input($customer_id) . "', '0', now())");
       }
@@ -517,7 +517,7 @@ unset($_SESSION['referer']);
     $active_single = 1; 
     $check_cid = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_email_address = '" . tep_db_input($email_address) . "' and site_id = '".SITE_ID."'");
     if(tep_db_num_rows($check_cid)) {
-      # Member & 2回目以上 //==============================================
+      # Member & 第二次以上 //==============================================
       $check = tep_db_fetch_array($check_cid);
       $NewPass = $password;
       
@@ -580,11 +580,11 @@ unset($_SESSION['referer']);
 
         //ccdd
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', 'customers_id = ' . $check['customers_id']);
-      # //Member & 2回目以上 ==============================================
+      # //Member & 第二次以上 ==============================================
         //ccdd
         tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_of_last_logon = now(), customers_info_number_of_logons = customers_info_number_of_logons+1 where customers_info_id = '" . $customer_id . "'");
     } else {
-      # Member & 1回目 //==================================================
+      # Member & 第一次 //==================================================
       $NewPass = $password;
       $sql_data_array = array('customers_firstname' => $firstname,
                                 'customers_lastname' => $lastname,
@@ -637,14 +637,14 @@ unset($_SESSION['referer']);
 
         //ccdd
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
-    # Member & 1回目 //==================================================
+    # Member & 第一次 //==================================================
       //ccdd
       tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created) values ('" . tep_db_input($customer_id) . "', '0', now())");
     }
   }
 
 
-    if (SESSION_RECREATE == 'True') { // 2004/04/25 Add session management
+    if (SESSION_RECREATE == 'True') { 
       tep_session_recreate();
     }
     

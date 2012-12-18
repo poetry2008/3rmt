@@ -3,7 +3,7 @@
   $Id$
 */
 ?>
-<!-- shopping_cart //-->
+<!-- shopping_cart -->
           <tr>
             <td>
 <?php
@@ -57,4 +57,4 @@
 ?>
             </td>
           </tr>
-<!-- shopping_cart_eof //-->
+<!-- shopping_cart_eof -->

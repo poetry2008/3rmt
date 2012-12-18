@@ -1,11 +1,11 @@
 <?php
 require('paypal-api-conf.php');
-/** SetExpressCheckout NVP example; last modified 08MAY23.
+/** SetExpressCheckout NVP example
  *
  *  Initiate an Express Checkout transaction. 
 */
 
-$environment = 'sandbox';	// or 'beta-sandbox' or 'live'テストをするために必要
+$environment = 'sandbox';	// or 'beta-sandbox' or 'live'测试用
 
 /**
  * Send HTTP POST Request
@@ -72,20 +72,20 @@ function PPHttpPost($methodName_, $nvpStr_) {
 
 // Set request-specific fields.
 
-$paymentAmount = urlencode(htmlspecialchars($_REQUEST['amount']));//合計金額？
+$paymentAmount = urlencode(htmlspecialchars($_REQUEST['amount']));//合计金额
 $currencyID = urlencode('JPY');							// or other currency code ('GBP', 'EUR', 'JPY', 'CAD', 'AUD')
 $paymentType = urlencode('Sale');				// or 'Sale' or 'Order'
 
-//$itemNumber   = '623083';//商品番号
-//$itemDesc     = 'サイズ';//商品サイズ
-$itemNumAMT   = urlencode(htmlspecialchars($_REQUEST['amount']));//商品単価
+//$itemNumber   = '623083';//商品序号
+//$itemDesc     = 'サイズ';//商品尺寸
+$itemNumAMT   = urlencode(htmlspecialchars($_REQUEST['amount']));//商品单价
 $itemQuantity = urlencode('1');//商品数量
 
 $returnURL = urlencode(htmlspecialchars($_REQUEST['return']));
 $cancelURL = urlencode(htmlspecialchars($_REQUEST['cancel_return']));
 
-$pageDefault = urlencode('Billing'); //デフォルトでクレジットカード入力欄
-$location = urlencode('JP');//国コード
+$pageDefault = urlencode('Billing'); //默认的信用卡输入框
+$location = urlencode('JP');//国家码
 
 //$customOption = urlencode('123456-789');//&CUSTOM=$customOption
 // Add request-specific fields to the request string.
