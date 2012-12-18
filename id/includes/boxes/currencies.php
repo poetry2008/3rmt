@@ -5,7 +5,7 @@
 
   if (isset($currencies) && is_object($currencies)) {
 ?>
-<!-- currencies //-->
+<!-- currencies -->
           <tr>
             <td>
 <?php
@@ -37,7 +37,7 @@
 ?>
             </td>
           </tr>
-<!-- currencies_eof //-->
+<!-- currencies_eof -->
 <?php
   }
 ?>

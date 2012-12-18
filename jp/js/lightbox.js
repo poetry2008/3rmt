@@ -1,19 +1,3 @@
-// -----------------------------------------------------------------------------------
-//
-//	Lightbox v2.02
-//	by Lokesh Dhakar - http://www.huddletogether.com
-//	3/31/06
-//
-//	For more information on this script, visit:
-//	http://huddletogether.com/projects/lightbox2/
-//
-//	Licensed under the Creative Commons Attribution 2.5 License - http://creativecommons.org/licenses/by/2.5/
-//	
-//	Credit also due to those who have helped, inspired, and made their code available to the public.
-//	Including: Scott Upton(uptonic.com), Peter-Paul Koch(quirksmode.org), Thomas Fuchs(mir.aculo.us), and others.
-//
-//
-// -----------------------------------------------------------------------------------
 /*
 
 	Table of Contents
@@ -154,9 +138,6 @@ Array.prototype.empty = function () {
 //	- keyboardNavAction()
 //	- preloadNeighborImages()
 //	- end()
-//
-//	Structuring of code inspired by Scott Upton (http://www.uptonic.com/)
-//
 var Lightbox = Class.create();
 
 Lightbox.prototype = {
@@ -669,7 +650,6 @@ function hideSelectBoxes(){
 //
 // pause(numberMillis)
 // Pauses code execution for specified time. Uses busy code, not good.
-// Code from http://www.faqts.com/knowledge_base/view.phtml/aid/1602
 //
 function pause(numberMillis) {
 	var now = new Date();

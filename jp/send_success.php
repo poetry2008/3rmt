@@ -1,9 +1,6 @@
 <?php
-// 3rmt over
 /*
   $Id$
-
-  商品隸・ｮｺ隸ｦ扈・｡ｵ
 */
   require('includes/application_top.php');
   

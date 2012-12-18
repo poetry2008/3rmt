@@ -3,7 +3,7 @@
   $Id$
 */
 ?>
-<!-- information //-->
+<!-- information -->
 <div id="information">
   <img width="172" height="39" alt="RMT情報" src="images/design/box/information.gif">
   <ul class="l_m_category_ul">
@@ -36,4 +36,4 @@
   </ul>
   <img src="images/design/box/box_bottom_bg_01.gif" width="172" height="14" alt="" >
 </div>
-<!-- information_eof //-->
+<!-- information_eof -->

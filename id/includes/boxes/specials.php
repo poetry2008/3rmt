@@ -29,7 +29,7 @@
         limit " . MAX_RANDOM_SELECT_SPECIALS
         )) {
 ?>
-<!-- specials //-->
+<!-- specials -->
           <tr>
             <td>
 <?php
@@ -57,7 +57,7 @@
 ?>
             </td>
           </tr>
-<!-- specials_eof //-->
+<!-- specials_eof -->
 <?php
   }
 ?>

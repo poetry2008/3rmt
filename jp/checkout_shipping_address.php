@@ -1,5 +1,4 @@
 <?php
-// 3rmt over
 /*
   $Id$
 
@@ -384,7 +383,7 @@ function check_form() {
     error = 1;
   }
 
-<?php // 2003-06-06 add_telephone ?>
+<?php?>
   if (telephone == '' || telephone.length < <?php echo ENTRY_TELEPHONE_MIN_LENGTH; ?>) {
     error_message = error_message + "<?php echo JS_TELEPHONE; ?>";
     error = 1;
@@ -507,7 +506,7 @@ function check_form() {
                         <?php
       $radio_buttons = 0;
 
-// 2003-06-06 add_telephone
+
       $addresses_query = tep_db_query("
           SELECt address_book_id, 
                  entry_firstname      AS firstname, 

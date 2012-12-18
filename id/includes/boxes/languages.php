@@ -3,7 +3,7 @@
   $Id$
 */
 ?>
-<!-- languages //-->
+<!-- languages -->
           <tr>
             <td>
 <?php
@@ -31,4 +31,4 @@
 ?>
             </td>
           </tr>
-<!-- languages_eof //-->
+<!-- languages_eof -->

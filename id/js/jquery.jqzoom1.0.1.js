@@ -1,10 +1,4 @@
 /*
- * JQZoom Evolution 1.0.1 - Javascript Image magnifier
- *
- * Copyright (c) Engineer Renzi Marco(www.mind-projects.it)
- *
- * $Date: 12-12-2008
- *
  *	ChangeLog:
  *  
  * $License : GPL,so any change to the code you should copy and paste this section,and would be nice to report this to me(renzi.mrc@gmail.com).

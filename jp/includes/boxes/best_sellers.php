@@ -5,7 +5,7 @@
 
   if (isset($current_category_id) && ($current_category_id > 0)) {
     // ccdd
-    // del distinct 10.8.2
+
     $best_sellers_query = tep_db_query("
       select *
       from (
@@ -37,7 +37,7 @@
       limit " . MAX_DISPLAY_BESTSELLERS);
   } else {
     // ccdd
-    // del distinct 10.8.2
+
     $best_sellers_query = tep_db_query("
       select *
       from (

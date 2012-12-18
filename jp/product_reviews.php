@@ -1,10 +1,9 @@
 <?php
-// 3rmt over
 /*
   $Id$
 
   一个商品的评论列表页
-  ex: http://www.iimy.co.jp/item/pr-31693.html
+
 */
 
   require('includes/application_top.php');
