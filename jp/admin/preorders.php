@@ -3001,7 +3001,13 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
   if ($customers_info_res) {
     if (!empty($customers_info_res['pic_icon'])) {
       if (file_exists(DIR_FS_DOCUMENT_ROOT.DIR_WS_IMAGES.'icon_list/'.$customers_info_res['pic_icon'])) {
-        echo tep_image(DIR_WS_IMAGES.'icon_list/'.$customers_info_res['pic_icon']); 
+        $pic_icon_title_str = ''; 
+        $pic_icon_title_raw = tep_db_query("select pic_alt from ".TABLE_CUSTOMERS_PIC_LIST." where pic_name = '".$customers_info_res['pic_icon']."'"); 
+        $pic_icon_title_res = tep_db_fetch_array($pic_icon_title_raw); 
+        if ($pic_icon_title_res) {
+          $pic_icon_title_str = $pic_icon_title_res['pic_alt']; 
+        }
+        echo tep_image(DIR_WS_IMAGES.'icon_list/'.$customers_info_res['pic_icon'], $pic_icon_title_str); 
       }
     }
   }

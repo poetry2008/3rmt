@@ -739,3 +739,4 @@ define('NOW_TIME_LINK_TEXT', '小时前');
 define('SIGNAL_BLNK', '闪烁');
 define('SIGNAL_BLINK_READ_TEXT', '超过红色信号灯设置的时间');
 define('NOTICE_SET_WRONG_TIME', '设置时间不正确');
+define('BOX_TOOLS_PIC_MANAGER', '图片管理');

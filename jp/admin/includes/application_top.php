@@ -46,6 +46,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('LOCAL_EXE_UNZIP', '/usr/local/bin/unzip');
 
 // define the filenames used in the project
+  define('FILENAME_PIC_MANAGER_LIST', 'pic_manager_list.php');
   define('FILENAME_OPTION_GROUP', 'option_group.php');
   define('FILENAME_OPTION_ITEM', 'option_item.php');
   define('FILENAME_RESET_PWD','reset_pwd.php');
@@ -269,7 +270,7 @@ define('TABLE_PERMISSIONS','permissions');
   define('TABLE_COUNTRY_FEE','country_fee');
   define('TABLE_COUNTRY_CITY','country_city');
   define('TABLE_OCONFIG',  'other_config');
-  
+  define('TABLE_CUSTOMERS_PIC_LIST', 'customers_pic_list'); 
 // customization for the design layout
   define('BOX_WIDTH', 160); // how wide the boxes should be in pixels (default: 125)
 
