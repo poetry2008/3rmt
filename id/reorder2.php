@@ -74,7 +74,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
             $email_order .= "お問い合わせください。\n\n";
 
             $email_order .= "[ご連絡・お問い合わせ先]━━━━━━━━━━━━\n";
-            $email_order .= "株式会社 iimy\n";
+            $email_order .= COMPANY_NAME."\n";
             $email_order .= SUPPORT_EMAIL_ADDRESS . "\n";
             $email_order .= HTTP_SERVER . "\n";
             //$email_order .= "〒761-0445 香川県高松市西植田町2925番地\n";

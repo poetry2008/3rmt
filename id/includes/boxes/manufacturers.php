@@ -3,7 +3,7 @@
   $Id$
 */
 ?>
-<!-- manufacturers //-->
+<!-- manufacturers -->
               <table width="170"  border="0" cellpadding="0" cellspacing="0"> 
                 <tr> 
                   <td height="40"><?php echo tep_image(DIR_WS_IMAGES.'design/menu_left/by_brand.gif',BOX_HEADING_MANUFACTURERS);?></td> 
@@ -62,4 +62,4 @@
   //new infoBox($info_box_contents);
 ?>
     </table>
-<!-- manufacturers_eof //-->
+<!-- manufacturers_eof -->

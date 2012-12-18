@@ -21,7 +21,7 @@
     );
     if (tep_db_num_rows($orders_query)) {
 ?>
-<!-- customer_orders //-->
+<!-- customer_orders -->
           <tr>
             <td>
 <?php
@@ -68,7 +68,7 @@
 ?>
             </td>
           </tr>
-<!-- customer_orders_eof //-->
+<!-- customer_orders_eof -->
 <?php
     }
   }

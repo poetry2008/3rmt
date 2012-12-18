@@ -16,7 +16,7 @@ $w_option   = $_GET['option'];
 $w_rel      = $_GET['rel'];
 
 
-//パラメータが設定されてない場合されていない箇所にエラーメッセージを設定する
+//没有设置参数的时候，设置错误信息
 
 /*
 $w_error="パラメータが不正です";
@@ -44,7 +44,7 @@ if(!isset($w_option)){
 */
 if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
 
-  if ($w_rel == 'yes' &&  $w_option != "") {//optionが空白の場合optionの検索はしない
+  if ($w_rel == 'yes' &&  $w_option != "") {//option是空白的是偶，不搜索option
     $orders = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS." where telecom_option='".$w_option."' and date_purchased > '".(date('Y-m-d H:i:s',time()-86400))."'"));
   }
 
@@ -79,7 +79,7 @@ if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
     ));
 
   } else {
-    // 不明
+    // 不清楚
     tep_db_perform('telecom_unknow', array(
       '`option`' => $w_option,
       'username' => $w_username,
@@ -87,7 +87,7 @@ if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
       'telno' => $w_telno,
       'money' => $w_money,
       'rel' => $w_rel,
-      'type' => ($w_rel == 'yes' && $w_option =="")?'success':'null',//optionが空白の場合手動作成である
+      'type' => ($w_rel == 'yes' && $w_option =="")?'success':'null',//option是空白的时候手动做成
       'date_added' => 'now()',
       'last_modified' => 'now()'
 
@@ -95,7 +95,7 @@ if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
   }
 } else {
 
-  // 不正
+  // 不正确
 }
 
 if($w_clientip == "76011"){

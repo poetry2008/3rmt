@@ -3,7 +3,7 @@
   $Id$
 */
 ?>
-<!-- reviews //-->
+<!-- reviews -->
 <?php
   if(basename($PHP_SELF) == FILENAME_PRODUCT_INFO){
     $reviews_query = tep_db_query("select rd.reviews_text, r.reviews_rating, r.reviews_id, r.products_id, r.customers_name, r.date_added, r.last_modified, r.reviews_read from " . TABLE_REVIEWS . " r, " . TABLE_REVIEWS_DESCRIPTION . " rd where  r.reviews_id = rd.reviews_id and r.products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "' and r.reviews_status = '1' and  r.products_id not in".tep_not_in_disabled_products()." limit 100");
@@ -66,4 +66,4 @@ if (isset($HTTP_GET_VARS['products_id'])) {
 <?php
   }
 ?>
-<!-- reviews_eof //-->
+<!-- reviews_eof -->

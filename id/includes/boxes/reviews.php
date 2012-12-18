@@ -12,7 +12,7 @@ if (
   && basename($PHP_SELF) != FILENAME_LOGIN
 ) {
 ?>
-<!-- reviews //-->
+<!-- reviews -->
 <?php
   if(basename($PHP_SELF) == FILENAME_PRODUCT_INFO){
     // ccdd
@@ -122,7 +122,7 @@ if (
     </td>
   </tr>
 </table>
-<!-- reviews_eof //-->
+<!-- reviews_eof -->
 <?php
   }
 }

@@ -33,7 +33,7 @@ define('TEXT_LOGIN_IP_ERROR','<font color="#ff0000">一定の回数以上ログ�
 define('TEXT_VISITORS_CART', '<font color="#ff0000"><b>ご注意:</b></font> ログインすると、[ショッピングカート] の商品は [メンバーズ・ショッピングカート] へ自動的に移動します。 <a href="javascript:session_win();"> [詳細情報]</a>');
 
 if(MODULE_ORDER_TOTAL_POINT_STATUS == "true"){
-   //通常のポイントシステム
+   //通常的返点系统
    if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL != "true") {
       $point_text_1 = MODULE_ORDER_TOTAL_POINT_FEE*100 ;
         if(MODULE_ORDER_TOTAL_POINT_LIMIT != "0"){
@@ -44,7 +44,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == "true"){
 		define('TEXT_POINT','<p class="main"><i><strong>ポイントシステム</strong></i><br>ポイントサービスは、当店でお買い物をされた場合、購入金額の'.$point_text_1.'%をポイントとして還元しております。<br>
               溜まったポイントは次回のお買い物に1ポイント＝1円で使えます。ポイントの有効期限は'.$point_text_2.'。</p>');
    }else{
-   //カスタマーレベル連動型ポイントシステム
+   //客户等级连动型返点系统
     $customer_level_array = explode("||",MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
 	if(!empty($customer_level_array)) {
 	   $customer_lebel_string = '<ul>'."\n";
@@ -57,7 +57,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == "true"){
               '.$customer_lebel_string.'<p class="main">次回のお買い物に1ポイント＝1円で使えます。ポイントの有効期限は'.MODULE_ORDER_TOTAL_POINT_LIMIT.'日です。</p>');
 	 }
   }
-//ポイントシステム不採用 		  
+//不使用返点系统
  }else{
   define('TEXT_POINT','');
  }  

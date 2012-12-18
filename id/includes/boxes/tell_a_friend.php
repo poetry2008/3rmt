@@ -3,7 +3,7 @@
   $Id$
 */
 ?>
-<!-- tell_a_friend //-->
+<!-- tell_a_friend -->
           <tr>
             <td>
 <?php
@@ -21,4 +21,4 @@
 ?>
             </td>
           </tr>
-<!-- tell_a_friend_eof //-->
+<!-- tell_a_friend_eof -->

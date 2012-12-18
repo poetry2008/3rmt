@@ -194,4 +194,4 @@ if($cPath){
   </ul>
   <img src="images/design/box/box_bottom_bg_01.gif" width="172" height="14" alt="" >
 </div>
-<!-- categories_eof //-->
+<!-- categories_eof -->

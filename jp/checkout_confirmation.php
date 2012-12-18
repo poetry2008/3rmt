@@ -590,10 +590,10 @@ if (MODULE_ORDER_TOTAL_INSTALLED) {
   echo $order_total_modules->output();
 }
 if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
-  // ここからカスタマーレベルに応じたポイント還元率算出============================================================
-  // 2005.11.17 K.Kaneko
+  // 计算各个不同顾客的返点率从这开始============================================================
+
   if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
-    //設定した期間内の注文合計金額を算出------------
+    //规定期间内，计算订单合计金额------------
     $ptoday = date("Y-m-d H:i:s", time());
     $pstday_array = getdate();
     $pstday = date("Y-m-d H:i:s", mktime($pstday_array[hours],$pstday_array[mimutes],$pstday_array[second],$pstday_array[mon],($pstday_array[mday] - MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL_KIKAN),$pstday_array[year]));
@@ -613,7 +613,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
       }
     }
     //----------------------------------------------
-    //還元率を計算----------------------------------
+    //计算返点率----------------------------------
     if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
       $back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
       $back_rate = MODULE_ORDER_TOTAL_POINT_FEE;

@@ -1,19 +1,7 @@
 <?php
-/*********************************************************************
-    index.php
-
-    Helpdesk landing page. Please customize it to fit your needs.
-
-    Peter Rotich <peter@osticket.com>
-    Copyright (c)  2006-2010 osTicket
-    http://www.osticket.com
-
-    Released under the GNU General Public License WITHOUT ANY WARRANTY.
-    See LICENSE.TXT for details.
-
-    vim: expandtab sw=4 ts=4 sts=4:
+/*
     $Id$
-**********************************************************************/
+*/
 $_noemailclass = true;
   require_once('includes/application_top.php');
 $breadcrumb->add('お問い合わせ', tep_href_link(FILENAME_CONTACT_US));

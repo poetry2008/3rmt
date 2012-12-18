@@ -1,11 +1,3 @@
-// Copyright (c) 2005 Thomas Fuchs (http://script.aculo.us, http://mir.aculo.us)
-// Contributors:
-//  Justin Palmer (http://encytemedia.com/)
-//  Mark Pilgrim (http://diveintomark.org/)
-//  Martin Bialasinki
-// 
-// See scriptaculous.js for full license.  
-
 /* ------------- element ext -------------- */  
  
 // converts rgb() and #xxx to #xxxxxx format,  

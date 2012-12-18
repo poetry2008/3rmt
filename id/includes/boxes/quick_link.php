@@ -3,7 +3,7 @@
   $Id$
 */
 ?>
-<!-- quick_link //-->
+<!-- quick_link -->
 <?php if (!(isset($cPath) && tep_not_null($cPath))) {?>
             <?php if (isset($_COOKIE['quick_categories_id'])) {?>
               <?php
@@ -17,4 +17,4 @@
             <?php } ?>
 </div>
 <?php }?>
-<!-- quick_link_eof //-->
+<!-- quick_link_eof -->

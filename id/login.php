@@ -25,7 +25,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
 }else{ 
 
   if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
-    // tamura 2002/12/30 「全角」英数字を「半角」に変換
+    // 全角的英数字改成半角
     $_POST['email_address'] = tep_an_zen_to_han($_POST['email_address']);
  
 
@@ -291,7 +291,7 @@ if($flag_error == false){
                $_SESSION['reset_customers_id'] = $check_customer['customers_id'];
        	       tep_redirect(tep_href_link(FILENAME_DEFAULT));	    
 	  }
-        if (SESSION_RECREATE == 'True') { // 2004/04/25 Add session management
+        if (SESSION_RECREATE == 'True') {
           tep_session_recreate();
         }
 
@@ -330,7 +330,7 @@ if($flag_error == false){
                 customers_info_number_of_logons   = customers_info_number_of_logons+1 
             WHERE customers_info_id = '" . $customer_id . "'
         ");    
-    //POINT_LIMIT CHECK ポイントの有効期限チェック ds-style
+    //POINT_LIMIT CHECK 返点的有效期限判断 ds-style
     if(MODULE_ORDER_TOTAL_POINT_LIMIT != '0') {
 //ccdd
       $plimit_count_query = tep_db_query("

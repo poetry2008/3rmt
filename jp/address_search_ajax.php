@@ -1,7 +1,7 @@
 <?php
 
 /*
- * 郵便番号 Ajax
+ * 邮编号码 Ajax
  */
 require('includes/application_top.php');
 

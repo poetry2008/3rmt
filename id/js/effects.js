@@ -1,4 +1,3 @@
-// Copyright (c) 2005 Thomas Fuchs (http://script.aculo.us, http://mir.aculo.us)
 // Contributors:
 //  Justin Palmer (http://encytemedia.com/)
 //  Mark Pilgrim (http://diveintomark.org/)

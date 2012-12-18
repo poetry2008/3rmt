@@ -3,7 +3,7 @@
   $Id$
 */
 ?>
-<!-- bestlinks //-->
+<!-- bestlinks -->
 <script type="text/javascript" src="js/blank.js"></script>
 <div class="boxText ad">
   <img src="images/design/box/bestlinks.gif" alt="公式 攻略 相場 Wikiなどリンク集" width="171" height="42">
@@ -22,4 +22,4 @@
 ?>
 <img src="images/design/box/bestlinks_bottom_bg.gif" width="171" height="10" alt="" >
 </div>
-<!-- bestlinks_eof //-->
+<!-- bestlinks_eof -->

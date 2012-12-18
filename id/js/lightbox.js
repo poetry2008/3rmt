@@ -1,9 +1,4 @@
 // -----------------------------------------------------------------------------------
-//
-//	Lightbox v2.02
-//	by Lokesh Dhakar - http://www.huddletogether.com
-//	3/31/06
-//
 //	For more information on this script, visit:
 //	http://huddletogether.com/projects/lightbox2/
 //

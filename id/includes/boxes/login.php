@@ -3,7 +3,7 @@
   $Id$
 */
 ?>
-<!-- login //-->
+<!-- login -->
 <script type="text/javascript" src="js/logincheck.js"></script>
 <?php
   if (!tep_session_is_registered('customer_id')) {
@@ -65,4 +65,4 @@
     }
   } 
 ?>
-<!-- login_eof //-->
+<!-- login_eof -->

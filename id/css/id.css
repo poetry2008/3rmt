@@ -1608,7 +1608,7 @@ searching
 	text-decoration: underline;
 }
 /* ---------------------------
-BODYィ
+BODY
 --------------------------- */
 BODY {
 	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
@@ -2323,7 +2323,7 @@ searching
     padding: 5px;
 	font-size:12px;
 }
-/*密码*/
+/*password*/
 #greybackground{
 	background:#000000;
 	width:100%; 
@@ -2537,7 +2537,7 @@ searching
 #group_list_box td{ height:20px; padding:0; font-size:14px;}
 .address_item_info{ padding-left:4px;}
 
-/*配送*/
+/*shipping*/
 
 .shipping_error{
 	color:#ff0000;

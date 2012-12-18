@@ -5,7 +5,6 @@
 
   if (isset($current_category_id) && ($current_category_id > 0)) {
     // ccdd
-    // del distinct 10.8.2
     $best_sellers_query = tep_db_query("
       select *
       from (
@@ -33,7 +32,6 @@
       limit " . MAX_DISPLAY_BESTSELLERS);
   } else {
     // ccdd
-    // del distinct 10.8.2
     $best_sellers_query = tep_db_query("
       select *
       from (
@@ -62,7 +60,7 @@
 
   if (tep_db_num_rows($best_sellers_query) >= MIN_DISPLAY_BESTSELLERS) {
 ?>
-<!-- best_sellers //-->
+<!-- best_sellers -->
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background: url(images/design/box/ranking_content_bg.gif) repeat-y; margin-bottom: 5px;" summary="best sellers box">
   <tr>
     <td height="27"><img width="171" height="27" alt="RMTランキング" src="images/design/title_img11.gif"></td>
@@ -111,7 +109,7 @@
     <td colspan="2"><img src="images/design/box/ranking_bottom_bg.gif" width="171" height="11" alt="" ></td>
   </tr>
 </table>
-<!-- best_sellers_eof //-->
+<!-- best_sellers_eof -->
 <?php
   }
 ?>

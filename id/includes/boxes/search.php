@@ -3,7 +3,7 @@
   $Id$
 */
 ?>
-<!-- search //-->
+<!-- search -->
 <table align="center">
 <tr>
 <?php
@@ -23,4 +23,4 @@
        '</form>' ;
 ?>
 </tr></table>
-<!-- search_eof //-->
+<!-- search_eof -->
