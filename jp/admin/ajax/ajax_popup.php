@@ -1063,7 +1063,7 @@ if ($_GET['action'] == 'show_category_info') {
   
   $pic_info_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="220"', 'text' => TABLE_HEADING_MARKS_PIC_LIST_SORT.':'),
-        array('text' => tep_draw_input_field('sort_order', (($pic_info_res['sort_order'] != '')?$pic_info_res['sort_order']:1000)))
+        array('text' => tep_draw_input_field('sort_order', $pic_info_res['sort_order']))
       );
   
   $pic_info_row[]['text'] = array(

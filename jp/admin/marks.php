@@ -201,7 +201,7 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                       $pic_info_table_title[] = array('align' => 'left', 'params' => 'class=dataTableHeadingContent', 'text' => TABLE_HEADING_MARKS_PIC_LIST_NAME);
                       $pic_info_table_title[] = array('align' => 'left', 'params' => 'class=dataTableHeadingContent', 'text' => TABLE_HEADING_MARKS_PIC_LIST_TITLE);
                       $pic_info_table_title[] = array('align' => 'left', 'params' => 'class=dataTableHeadingContent', 'text' => TABLE_HEADING_MARKS_PIC_LIST_SORT);
-                      $pic_info_table_title[] = array('align' => 'right', 'params' => 'class=dataTableHeadingContent', 'text' => TABLE_HEADING_ACTION);
+                      $pic_info_table_title[] = array('align' => 'right', 'params' => 'class=dataTableHeadingContent width="25"', 'text' => TABLE_HEADING_ACTION);
                       $pic_info_table_list_row[] = array('params' => 'class="dataTableHeadingRow"', 'text' => $pic_info_table_title); 
                       
                       $pic_list_query = tep_db_query("select * from ".TABLE_CUSTOMERS_PIC_LIST." order by sort_order asc");
@@ -213,14 +213,24 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                         } else {
                           $nowColor = $odd; 
                         }
-                        
+                        $selected_m_single = false; 
+                        if (isset($_GET['m_id'])) {
+                          if ($_GET['m_id'] == $pic_list_res['id']) {
+                            $nowColor = 'dataTableRowSelected'; 
+                            $selected_m_single = true; 
+                          }
+                        }
                         $pic_info_table_single_row = array();
-                        $pic_info_table_single_row[] = array('align' => 'left', 'params' => 'class="dataTableContent"', 'text' => tep_image(DIR_WS_IMAGES.'icon_list/'.$pic_list_res['pic_name']));
-                        $pic_info_table_single_row[] = array('align' => 'left', 'params' => 'class="dataTableContent"', 'text' => $pic_list_res['pic_alt']);
-                        $pic_info_table_single_row[] = array('align' => 'left', 'params' => 'class="dataTableContent"', 'text' => $pic_list_res['sort_order']);
+                        $pic_info_table_single_row[] = array('align' => 'left', 'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_MARKS, 'm_id='.$pic_list_res['id']).'\';"', 'text' => tep_image(DIR_WS_IMAGES.'icon_list/'.$pic_list_res['pic_name']));
+                        $pic_info_table_single_row[] = array('align' => 'left', 'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_MARKS, 'm_id='.$pic_list_res['id']).'\';"', 'text' => $pic_list_res['pic_alt']);
+                        $pic_info_table_single_row[] = array('align' => 'left', 'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_MARKS, 'm_id='.$pic_list_res['id']).'\';"', 'text' => $pic_list_res['sort_order']);
                         $pic_info_table_single_row[] = array('align' => 'right', 'params' => 'class="dataTableContent"', 'text' => '<a href="javascript:void(0);" onclick="show_popup_info(this, \''.$pic_list_res['id'].'\');">'.tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO).'</a>');
                         
-                        $pic_info_table_list_row[] = array('params' => 'class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\'; this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"', 'text' => $pic_info_table_single_row); 
+                        if ($selected_m_single) {
+                          $pic_info_table_list_row[] = array('params' => 'class="'.$nowColor.'" onmouseover="this.style.cursor=\'hand\'"', 'text' => $pic_info_table_single_row); 
+                        } else {
+                          $pic_info_table_list_row[] = array('params' => 'class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\'; this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"', 'text' => $pic_info_table_single_row); 
+                        }
                       }
                       
                       $notice_box->get_contents($pic_info_table_list_row); 
