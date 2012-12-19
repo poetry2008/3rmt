@@ -11,6 +11,11 @@ if (isset($_GET['action'])) {
       $pic_alt_text = $_POST['pic_alt'];
       $pic_sort_order = $_POST['sort_order'];
       $user_update_info = $_POST['user_update_info'];
+      $pic_sort_order = str_replace('　', '', $pic_sort_order);   
+      $pic_sort_order = str_replace(' ', '', $pic_sort_order);   
+      if ($pic_sort_order == '') {
+        $pic_sort_order = 'null'; 
+      }
       $sql_data_array = array(
             'pic_alt' => tep_db_prepare_input($pic_alt_text),
             'sort_order' => tep_db_prepare_input($pic_sort_order),
