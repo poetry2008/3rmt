@@ -21,6 +21,32 @@
 
   include(DIR_WS_CLASSES . 'preorder.php');
 
+
+  $__orders_status_query = tep_db_query("
+      select orders_status_id 
+      from " . TABLE_PREORDERS_STATUS . " 
+      where language_id = " . $languages_id . " 
+      order by orders_status_id");
+  $__orders_status_ids   = array();
+  while($__orders_status = tep_db_fetch_array($__orders_status_query)){
+    $__orders_status_ids[] = $__orders_status['orders_status_id'];
+  }
+  $select_query = tep_db_query("
+      select om.orders_status_mail,
+                      om.orders_status_title,
+                      os.orders_status_id,
+                      os.nomail,
+                      om.site_id
+      from ".TABLE_PREORDERS_STATUS." os left join ".TABLE_PREORDERS_MAIL." om on os.orders_status_id = om.orders_status_id
+      where os.language_id = " . $languages_id . " 
+        and os.orders_status_id IN (".join(',', $__orders_status_ids).")");
+
+  while($select_result = tep_db_fetch_array($select_query)){
+    $osid = $select_result['orders_status_id'];
+    $mt[$osid][$select_result['site_id']?$select_result['site_id']:0] = $select_result['orders_status_mail'];
+    $mo[$osid][$select_result['site_id']?$select_result['site_id']:0] = $select_result['orders_status_title'];
+  }
+
 // START CONFIGURATION ################################
 
 // Correction tax pre-values (Michel Haase, 2005-02-18)
@@ -1014,6 +1040,14 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 <script language="javascript" src="js2php.php?path=js&name=popup_window&type=js"></script>
 <script language="javascript">
 function submit_order_check(products_id,op_id){
+  var _end = $("#status").val();
+  if($("#confrim_mail_title_"+_end).val()==$("#mail_title").val()){
+  }else{
+    if(confirm("<?php echo TEXT_STATUS_MAIL_TITLE_CHANGED;?>")){
+    }else{
+      return false;
+    }
+  }
   var qty = document.getElementById('update_products_new_qty_'+op_id).value;
 
   $.ajax({
@@ -2586,7 +2620,7 @@ if (tep_db_num_rows($orders_history_query)) {
       $mail_sele = tep_db_query($ma_se); 
       $mail_sql = tep_db_fetch_array($mail_sele); 
     ?>
-    <?php echo '<b>'.ENTRY_EMAIL_TITLE.'</b>'.tep_draw_input_field('etitle', $mail_sql['orders_status_title'],' style="width:230px;"');?> 
+    <?php echo '<b>'.ENTRY_EMAIL_TITLE.'</b>'.tep_draw_input_field('etitle', $mail_sql['orders_status_title'],' style="width:230px;" id="mail_title"');?> 
     <br> 
     <br> 
     <textarea style="font-family:monospace; font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}', preorders_a($order->info['orders_id']), $mail_sql['orders_status_mail']);?></textarea> 
@@ -2615,6 +2649,12 @@ if (tep_db_num_rows($orders_history_query)) {
               <td class="main" bgcolor="#FFCC99" width="10">&nbsp;</td>
               <td class="main" bgcolor="#F8B061" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FF9933" width="120" align="center">
+              <?php
+              foreach($orders_statuses as $o_status){
+                echo '<input type="hidden" id="confrim_mail_title_'.$o_status['id'].
+                  '" value="'.$mo[$o_status['id']][0].'">';
+              }
+              ?>
               <?php echo tep_html_element_button(TEXT_FOOTER_CHECK_SAVE, 'onclick="submit_order_check('.$order->products[0]['products_id'].','.$order->products[0]['orders_products_id'].');"');?> 
               </td>
           </tr>

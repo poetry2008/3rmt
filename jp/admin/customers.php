@@ -604,14 +604,10 @@ require("includes/note_js.php");
               <td class="left_title_width"><?php echo CUSTOMER_PIC_TEXT; ?></td>
               <td class="main">
               <?php
-              $dh = opendir(DIR_FS_DOCUMENT_ROOT.DIR_WS_CATALOG_IMAGES.'icon_list'); 
+              $pic_list_raw = tep_db_query("select * from ".TABLE_CUSTOMERS_PIC_LIST." order by sort_order asc"); 
               echo '<ul class="table_img_list">'; 
-              if ($dh) {
-                while (($file_str = readdir($dh)) !== false) {
-                  if ($file_str != '.' && $file_str != '..') {
-                    echo '<li><input type="radio" name="pic_icon" value="'.$file_str.'"'.(($cInfo->pic_icon == $file_str)?' checked':'').' onclick="check_radio_status(this);"><img src="images/icon_list/'.$file_str.'" alt="pic"></li>'; 
-                  }
-                }
+              while ($pic_list_res = tep_db_fetch_array($pic_list_raw)) {
+                echo '<li><input type="radio" name="pic_icon" value="'.$pic_list_res['pic_name'].'"'.(($cInfo->pic_icon == $pic_list_res['pic_name'])?' checked':'').' onclick="check_radio_status(this);"><img src="images/icon_list/'.$pic_list_res['pic_name'].'" alt="pic"></li>'; 
               }
               echo '</ul>'; 
               ?>
