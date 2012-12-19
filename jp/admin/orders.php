@@ -3164,9 +3164,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
             <table border="0" width="100%">
             <tr>
             <td width="50%">
-            <?php echo tep_draw_form('sele_act', FILENAME_ORDERS,
-                tep_get_all_get_params(array('action')) . 'action=update_order',
-                '','onsubmit="return confrim_mail_title()"'); ?>
+            <?php echo tep_draw_form('sele_act', FILENAME_ORDERS, tep_get_all_get_params(array('action')) . 'action=update_order', 'post','onsubmit="return confrim_mail_title()"'); ?>
             <table width="100%" border="0">
             <tr>
             <td class="main"><b><?php echo ENTRY_STATUS; ?></b>
@@ -4518,8 +4516,7 @@ if($c_parent_array['parent_id'] == 0){
             }
           }
         ?>
-          <?php echo tep_draw_form('sele_act', FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 
-              'action=sele_act','','onsubmit="return confrim_mail_title()"'); ?>
+          <?php echo tep_draw_form('sele_act', FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) .  'action=sele_act','post','onsubmit="return confrim_mail_title()"'); ?>
           <table width="100%">
           <tr>
           <td>
