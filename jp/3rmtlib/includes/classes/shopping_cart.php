@@ -23,22 +23,32 @@
             continue; 
           }
           $qty = $this->contents[$products_id]['qty'];
+          $products_info_option = $this->contents[$products_id]['op_attributes'];
+          $products_id_num = array();
           $products_id_num = explode('_',$products_id);
-          $products_diff_query = tep_db_query("select c_b.products_id c_products_id,c_b_o.option_info p_option_info from ". TABLE_CUSTOMERS_BASKET ." c_b left join ". TABLE_CUSTOMERS_BASKET_OPTIONS ." c_b_o on c_b.products_id=c_b_o.products_id and c_b.customers_id=c_b_o.customers_id  where c_b.products_id like '".$products_id_num[0]."_%' and c_b.customers_id='".$customer_id."'");
-          while($products_diff_array = tep_db_fetch_array($products_diff_query)){
+          $products_id_temp = false;
+          $products_diff_query = tep_db_query("select distinct c_b.products_id c_products_id,c_b_o.option_info p_option_info from ". TABLE_CUSTOMERS_BASKET ." c_b left join ". TABLE_CUSTOMERS_BASKET_OPTIONS ." c_b_o on c_b.products_id=c_b_o.products_id and c_b.customers_id=c_b_o.customers_id  where c_b.products_id like '".$products_id_num[0]."_%' and c_b.customers_id='".$customer_id."'"); 
+          if(tep_db_num_rows($products_diff_query) > 0){
+            while($products_diff_array = tep_db_fetch_array($products_diff_query)){
 
-            $products_diff_id_array[] = $this->get_products_uprid($products_id_num[0], unserialize($products_diff_array['p_option_info']));
-            $products_diff_num_array[] = $products_diff_array['c_products_id'];
-          }
-          if(in_array($products_id,$products_diff_id_array)){
+              if($products_diff_array['p_option_info'] != ''){
+                $products_diff_key_array = array_diff_key(unserialize($products_diff_array['p_option_info']), $products_info_option); 
+                $products_diff_value_array = array_diff(unserialize($products_diff_array['p_option_info']), $products_info_option); 
+                
+                $products_diff_key_r_array = array_diff_key($products_info_option, unserialize($products_diff_array['p_option_info'])); 
+                $products_diff_value_r_array = array_diff($products_info_option, unserialize($products_diff_array['p_option_info'])); 
 
-            $products_id_temp = $products_diff_num_array[array_search($products_id,$products_diff_id_array)];
-          }else{
-            $products_id_temp = $products_id; 
+                if (empty($products_diff_key_array) && empty($products_diff_value_array) && empty($products_diff_key_r_array) && empty($products_diff_value_r_array)) {
+                  $products_id_temp = true;
+                  break;
+                }
+              } 
+            } 
           }
+          tep_db_free_result($products_diff_query);
 //ccdd
-          $product_query = tep_db_query("select products_id from " . TABLE_CUSTOMERS_BASKET . " where customers_id = '" . $customer_id . "' and products_id = '" . $products_id_temp . "'");
-          if (!tep_db_num_rows($product_query)) {
+          $product_query = tep_db_query("select products_id from " . TABLE_CUSTOMERS_BASKET . " where customers_id = '" . $customer_id . "' and products_id = '" . $products_id . "'");
+          if (!tep_db_num_rows($product_query) && $products_id_temp == false) {
 //ccdd
             tep_db_query("insert into " . TABLE_CUSTOMERS_BASKET . " (customers_id, products_id, customers_basket_quantity, customers_basket_date_added) values ('" . $customer_id . "', '" . $products_id . "', '" . $qty . "', '" . date('Ymd') . "')");
             if (isset($this->contents[$products_id]['op_attributes'])) {
