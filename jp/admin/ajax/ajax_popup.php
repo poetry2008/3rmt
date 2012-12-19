@@ -1004,11 +1004,12 @@ if ($_GET['action'] == 'show_category_info') {
   $notice_box->get_contents($copy_product_info, $buttons);
   $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice();
-} else if ($_GET['action'] == 'show_pic_info') {
-  //图片信息的弹出框 
-  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_PIC_MANAGER_LIST);
+} else if ($_GET['action'] == 'show_update_pic_info') {
+  //图片更新的弹出框 
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_MARKS);
   include(DIR_FS_ADMIN.'classes/notice_box.php');
   $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+  
   $pic_info_raw = tep_db_query("select * from ".TABLE_CUSTOMERS_PIC_LIST." where id = '".$_POST['pic_id']."'");  
   $pic_info_res = tep_db_fetch_array($pic_info_raw); 
   
@@ -1016,7 +1017,6 @@ if ($_GET['action'] == 'show_category_info') {
   $pid_array = array();
 
   $pic_list_query = tep_db_query("select * from ".TABLE_CUSTOMERS_PIC_LIST." order by sort_order asc");
-  
   while ($pic_list_tmp_info = tep_db_fetch_array($pic_list_query)) {
     $pid_array[] = $pic_list_tmp_info['id']; 
   }
@@ -1030,59 +1030,13 @@ if ($_GET['action'] == 'show_category_info') {
   $page_str = '';
   
   if ($p_key > 0) {
-    $page_str .= '<a onclick="show_popup_info(\'\', \''.$pid_array[$p_key-1].'\', \'1\')" href="javascript:void(0);"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+    $page_str .= '<a onclick="show_popup_info(\'\', \''.$pid_array[$p_key-1].'\')" href="javascript:void(0);"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
   }
  
   if ($p_key < (count($pid_array) - 1)) {
-    $page_str .= '<a onclick="show_popup_info(\'\', \''.$pid_array[$p_key+1].'\', \'1\')" href="javascript:void(0);">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
+    $page_str .= '<a onclick="show_popup_info(\'\', \''.$pid_array[$p_key+1].'\')" href="javascript:void(0);">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
   }
   
-  
-  $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
-  
-  $heading = array();
-  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => '<b>'.$pic_info_res['pic_alt'].'</b>');
-  $heading[] = array('align' => 'right', 'text' => $page_str);
-  
-  $buttons = array();
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_EDIT, 'onclick="show_popup_info(\'\', \''.$_POST['pic_id'].'\', \'2\')"').'</a>'; 
-  
-  $buttons = array('align' => 'center', 'button' => $button); 
-
-  $pic_info_row = array();
-
-  $pic_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'colspan="2"', 'text' => PIC_LIST_ALT_TEXT.':&nbsp;'.$pic_info_res['pic_alt']), 
-      );
-  
-  $pic_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'colspan="2"', 'text' => TABLE_HEADING_PIC_LIST_SORT.':&nbsp;'.$pic_info_res['sort_order']), 
-      );
- 
-  $pic_info_row[]['text'] = array(
-        array('align' => 'left', 'text' => TEXT_USER_ADDED.'&nbsp;'.((tep_not_null($pic_info_res['user_added'])?$pic_info_res['user_added']:TEXT_UNSET_DATA))), 
-        array('align' => 'left', 'text' => TEXT_DATE_ADDED.'&nbsp;'.((tep_not_null(tep_datetime_short($pic_info_res['date_added'])))?tep_datetime_short($pic_info_res['date_added']):TEXT_UNSET_DATA)), 
-      );
-  
-  $pic_info_row[]['text'] = array(
-        array('align' => 'left', 'text' => TEXT_USER_UPDATE.'&nbsp;'.((tep_not_null($pic_info_res['user_update'])?$pic_info_res['user_update']:TEXT_UNSET_DATA))), 
-        array('align' => 'left', 'text' => TEXT_DATE_UPDATE.'&nbsp;'.((tep_not_null(tep_datetime_short($pic_info_res['date_update'])))?tep_datetime_short($pic_info_res['date_update']):TEXT_UNSET_DATA)), 
-      ); 
-  
-  $notice_box->get_heading($heading);
-  $notice_box->get_contents($pic_info_row, $buttons);
-  echo $notice_box->show_notice();
-} else if ($_GET['action'] == 'show_update_pic_info') {
-  //图片更新的弹出框 
-  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_PIC_MANAGER_LIST);
-  include(DIR_FS_ADMIN.'classes/notice_box.php');
-  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
-  
-  $pic_info_raw = tep_db_query("select * from ".TABLE_CUSTOMERS_PIC_LIST." where id = '".$_POST['pic_id']."'");  
-  $pic_info_res = tep_db_fetch_array($pic_info_raw); 
-  
-  $page_str = ''; 
   $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
   
   $heading = array();
@@ -1099,20 +1053,40 @@ if ($_GET['action'] == 'show_category_info') {
   $pic_info_row = array();
 
   $pic_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'colspan="2"', 'text' => PIC_UPDATE_NOTICE_TEXT.tep_draw_hidden_field('pic_id', $_POST['pic_id'])), 
+        array('align' => 'left', 'params' => 'colspan="2"', 'text' => MARKS_UPDATE_NOTICE_TEXT.tep_draw_hidden_field('pic_id', $_POST['pic_id'])), 
       );
   
   $pic_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="220"', 'text' => PIC_LIST_ALT_TEXT.':'),
+        array('align' => 'left', 'params' => 'width="220"', 'text' => TABLE_HEADING_MARKS_PIC_LIST_TITLE.':'),
         array('text' => tep_draw_input_field('pic_alt', $pic_info_res['pic_alt']))
       );
   
   $pic_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="220"', 'text' => TABLE_HEADING_PIC_LIST_SORT.':'),
-        array('text' => tep_draw_input_field('sort_order', $pic_info_res['sort_order']))
+        array('align' => 'left', 'params' => 'width="220"', 'text' => TABLE_HEADING_MARKS_PIC_LIST_SORT.':'),
+        array('text' => tep_draw_input_field('sort_order', (($pic_info_res['sort_order'] != '')?$pic_info_res['sort_order']:1000)))
       );
   
-  $form_str = tep_draw_form('pic', FILENAME_PIC_MANAGER_LIST, 'action=update_pic');
+  $pic_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="220"', 'text' => TEXT_USER_ADDED),
+        array('text' => ((tep_not_null($pic_info_res['user_added'])?$pic_info_res['user_added']:TEXT_UNSET_DATA)))
+      );
+  
+  $pic_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="220"', 'text' => TEXT_DATE_ADDED),
+        array('text' => ((tep_not_null(tep_datetime_short($pic_info_res['date_added'])))?tep_datetime_short($pic_info_res['date_added']):TEXT_UNSET_DATA))
+      );
+  
+  $pic_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="220"', 'text' => TEXT_USER_UPDATE),
+        array('text' => ((tep_not_null($pic_info_res['user_update'])?$pic_info_res['user_update']:TEXT_UNSET_DATA)))
+      );
+  
+  $pic_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="220"', 'text' => TEXT_DATE_UPDATE),
+        array('text' => ((tep_not_null(tep_datetime_short($pic_info_res['date_update'])))?tep_datetime_short($pic_info_res['date_update']):TEXT_UNSET_DATA))
+      );
+  
+  $form_str = tep_draw_form('pic', FILENAME_MARKS, 'action=update_pic');
   $notice_box->get_form($form_str);
   $notice_box->get_heading($heading);
   $notice_box->get_contents($pic_info_row, $buttons);

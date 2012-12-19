@@ -1300,6 +1300,7 @@ font-size:14px;
 .table_img_list li{
 	float:left;
 	width:10%;
+        white-space:nowrap;
 }
 .table_img_list  img{
 	margin-bottom:7px;

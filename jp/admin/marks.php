@@ -23,7 +23,7 @@ if (isset($_GET['action'])) {
             'date_update' => 'now()' 
           );
       tep_db_perform(TABLE_CUSTOMERS_PIC_LIST, $sql_data_array, 'update', 'id=\''.tep_db_input($_POST['pic_id']).'\''); 
-      tep_redirect(tep_href_link(FILENAME_PIC_MANAGER_LIST)); 
+      tep_redirect(tep_href_link(FILENAME_MARKS)); 
       break;
   }
 }
@@ -113,13 +113,9 @@ function info_box_set(ele, current_belong)
   });
 }
 
-function show_popup_info(ele, pic_id, popup_type)
+function show_popup_info(ele, pic_id)
 {
-  if (popup_type == '1') {
-    url_str = 'ajax.php?action=show_pic_info';
-  } else {
-    url_str = 'ajax.php?action=show_update_pic_info';
-  }
+  url_str = 'ajax.php?action=show_update_pic_info';
   data_str = 'pic_id='+pic_id;
   $.ajax({
     type:'POST',    
@@ -129,10 +125,8 @@ function show_popup_info(ele, pic_id, popup_type)
     data:data_str,
     success: function(msg) {
       $('#show_popup_info').html(msg);
-      if (popup_type == '1') {
-        if (ele != '') {
-          info_box_set(ele, '<?php echo $belong?>'); 
-        }
+      if (ele != '') {
+        info_box_set(ele, '<?php echo $belong?>'); 
       }
       $('#show_popup_info').css('display', 'block'); 
     }
@@ -196,7 +190,7 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                     <td align="right">
                       <table border="0" width="100%" cellspacing="0" cellpadding="2">
                         <tr>
-                          <td>
+                          <td height="40">
                             <table border="0" width="100%" cellspacing="0" cellpadding="0">
                               <tr>
                               <td class="pageHeading" align="left"><?php echo HEADING_TITLE; ?></td>
@@ -211,9 +205,9 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                             $notice_box = new notice_box('', '', $pic_info_table_params); 
                             $pic_info_table_title = array();
                             $pic_info_table_list_row = array();
-                            $pic_info_table_title[] = array('align' => 'center', 'params' => 'class=dataTableHeadingContent width="150"', 'text' => TABLE_HEADING_PIC_LIST_NAME);
-                            $pic_info_table_title[] = array('align' => 'left', 'params' => 'class=dataTableHeadingContent', 'text' => TABLE_HEADING_PIC_LIST_TITLE);
-                            $pic_info_table_title[] = array('align' => 'right', 'params' => 'class=dataTableHeadingContent', 'text' => TABLE_HEADING_PIC_LIST_SORT);
+                            $pic_info_table_title[] = array('align' => 'left', 'params' => 'class=dataTableHeadingContent', 'text' => TABLE_HEADING_MARKS_PIC_LIST_NAME);
+                            $pic_info_table_title[] = array('align' => 'left', 'params' => 'class=dataTableHeadingContent', 'text' => TABLE_HEADING_MARKS_PIC_LIST_TITLE);
+                            $pic_info_table_title[] = array('align' => 'left', 'params' => 'class=dataTableHeadingContent', 'text' => TABLE_HEADING_MARKS_PIC_LIST_SORT);
                             $pic_info_table_title[] = array('align' => 'right', 'params' => 'class=dataTableHeadingContent', 'text' => TABLE_HEADING_ACTION);
                             $pic_info_table_list_row[] = array('params' => 'class="dataTableHeadingRow"', 'text' => $pic_info_table_title); 
                             
@@ -228,10 +222,10 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                               }
                               
                               $pic_info_table_single_row = array();
-                              $pic_info_table_single_row[] = array('align' => 'center', 'params' => 'class="dataTableContent"', 'text' => tep_image(DIR_WS_IMAGES.'icon_list/'.$pic_list_res['pic_name']));
+                              $pic_info_table_single_row[] = array('align' => 'left', 'params' => 'class="dataTableContent"', 'text' => tep_image(DIR_WS_IMAGES.'icon_list/'.$pic_list_res['pic_name']));
                               $pic_info_table_single_row[] = array('align' => 'left', 'params' => 'class="dataTableContent"', 'text' => $pic_list_res['pic_alt']);
-                              $pic_info_table_single_row[] = array('align' => 'right', 'params' => 'class="dataTableContent"', 'text' => $pic_list_res['sort_order']);
-                              $pic_info_table_single_row[] = array('align' => 'right', 'params' => 'class="dataTableContent"', 'text' => '<a href="javascript:void(0);" onclick="show_popup_info(this, \''.$pic_list_res['id'].'\', \'1\');">'.tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO).'</a>');
+                              $pic_info_table_single_row[] = array('align' => 'left', 'params' => 'class="dataTableContent"', 'text' => $pic_list_res['sort_order']);
+                              $pic_info_table_single_row[] = array('align' => 'right', 'params' => 'class="dataTableContent"', 'text' => '<a href="javascript:void(0);" onclick="show_popup_info(this, \''.$pic_list_res['id'].'\');">'.tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO).'</a>');
                               
                               $pic_info_table_list_row[] = array('params' => 'class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\'; this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"', 'text' => $pic_info_table_single_row); 
                             }

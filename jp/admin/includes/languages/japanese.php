@@ -748,4 +748,4 @@ define('NOW_TIME_LINK_TEXT', '時間前');
 define('SIGNAL_BLNK', '点滅');
 define('SIGNAL_BLINK_READ_TEXT', '赤の時刻を越えたら');
 define('NOTICE_SET_WRONG_TIME', '商品更新時刻の合図の設置が間違いました。');
-define('BOX_TOOLS_PIC_MANAGER', 'マーク管理');
+define('BOX_TOOLS_MARKS_MANAGER', 'マーク管理');
