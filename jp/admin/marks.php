@@ -187,55 +187,50 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
               <td>
                 <table border="0" width="100%" cellspacing="0" cellpadding="0">
                   <tr>
-                    <td align="right">
-                      <table border="0" width="100%" cellspacing="0" cellpadding="2">
-                        <tr>
-                          <td height="40">
-                            <table border="0" width="100%" cellspacing="0" cellpadding="0">
-                              <tr>
-                              <td class="pageHeading" align="left"><?php echo HEADING_TITLE; ?></td>
-                              </tr>
-                            </table>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                          <?php
-                            $pic_info_table_params = array('width' => '100%', 'cellpadding' => '2', 'cellspacing' => '0', 'parameters' => 'id="pic_list_table"'); 
-                            $notice_box = new notice_box('', '', $pic_info_table_params); 
-                            $pic_info_table_title = array();
-                            $pic_info_table_list_row = array();
-                            $pic_info_table_title[] = array('align' => 'left', 'params' => 'class=dataTableHeadingContent', 'text' => TABLE_HEADING_MARKS_PIC_LIST_NAME);
-                            $pic_info_table_title[] = array('align' => 'left', 'params' => 'class=dataTableHeadingContent', 'text' => TABLE_HEADING_MARKS_PIC_LIST_TITLE);
-                            $pic_info_table_title[] = array('align' => 'left', 'params' => 'class=dataTableHeadingContent', 'text' => TABLE_HEADING_MARKS_PIC_LIST_SORT);
-                            $pic_info_table_title[] = array('align' => 'right', 'params' => 'class=dataTableHeadingContent', 'text' => TABLE_HEADING_ACTION);
-                            $pic_info_table_list_row[] = array('params' => 'class="dataTableHeadingRow"', 'text' => $pic_info_table_title); 
-                            
-                            $pic_list_query = tep_db_query("select * from ".TABLE_CUSTOMERS_PIC_LIST." order by sort_order asc");
-                            while ($pic_list_res = tep_db_fetch_array($pic_list_query)) {
-                              $even = 'dataTableSecondRow';
-                              $odd = 'dataTableRow';
-                              if (isset($nowColor) && $nowColor == $odd) {
-                                $nowColor = $even; 
-                              } else {
-                                $nowColor = $odd; 
-                              }
-                              
-                              $pic_info_table_single_row = array();
-                              $pic_info_table_single_row[] = array('align' => 'left', 'params' => 'class="dataTableContent"', 'text' => tep_image(DIR_WS_IMAGES.'icon_list/'.$pic_list_res['pic_name']));
-                              $pic_info_table_single_row[] = array('align' => 'left', 'params' => 'class="dataTableContent"', 'text' => $pic_list_res['pic_alt']);
-                              $pic_info_table_single_row[] = array('align' => 'left', 'params' => 'class="dataTableContent"', 'text' => $pic_list_res['sort_order']);
-                              $pic_info_table_single_row[] = array('align' => 'right', 'params' => 'class="dataTableContent"', 'text' => '<a href="javascript:void(0);" onclick="show_popup_info(this, \''.$pic_list_res['id'].'\');">'.tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO).'</a>');
-                              
-                              $pic_info_table_list_row[] = array('params' => 'class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\'; this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"', 'text' => $pic_info_table_single_row); 
-                            }
-                            
-                            $notice_box->get_contents($pic_info_table_list_row); 
-                            echo $notice_box->show_notice(); 
-                          ?>
-                          </td>
-                        </tr>
-                      </table>
+                    <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
+                    <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <table border="0" width="100%" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td valign="top">
+                    <?php
+                      $pic_info_table_params = array('width' => '100%', 'cellpadding' => '2', 'cellspacing' => '0', 'parameters' => 'id="pic_list_table"'); 
+                      $notice_box = new notice_box('', '', $pic_info_table_params); 
+                      $pic_info_table_title = array();
+                      $pic_info_table_list_row = array();
+                      $pic_info_table_title[] = array('align' => 'left', 'params' => 'class=dataTableHeadingContent', 'text' => TABLE_HEADING_MARKS_PIC_LIST_NAME);
+                      $pic_info_table_title[] = array('align' => 'left', 'params' => 'class=dataTableHeadingContent', 'text' => TABLE_HEADING_MARKS_PIC_LIST_TITLE);
+                      $pic_info_table_title[] = array('align' => 'left', 'params' => 'class=dataTableHeadingContent', 'text' => TABLE_HEADING_MARKS_PIC_LIST_SORT);
+                      $pic_info_table_title[] = array('align' => 'right', 'params' => 'class=dataTableHeadingContent', 'text' => TABLE_HEADING_ACTION);
+                      $pic_info_table_list_row[] = array('params' => 'class="dataTableHeadingRow"', 'text' => $pic_info_table_title); 
+                      
+                      $pic_list_query = tep_db_query("select * from ".TABLE_CUSTOMERS_PIC_LIST." order by sort_order asc");
+                      while ($pic_list_res = tep_db_fetch_array($pic_list_query)) {
+                        $even = 'dataTableSecondRow';
+                        $odd = 'dataTableRow';
+                        if (isset($nowColor) && $nowColor == $odd) {
+                          $nowColor = $even; 
+                        } else {
+                          $nowColor = $odd; 
+                        }
+                        
+                        $pic_info_table_single_row = array();
+                        $pic_info_table_single_row[] = array('align' => 'left', 'params' => 'class="dataTableContent"', 'text' => tep_image(DIR_WS_IMAGES.'icon_list/'.$pic_list_res['pic_name']));
+                        $pic_info_table_single_row[] = array('align' => 'left', 'params' => 'class="dataTableContent"', 'text' => $pic_list_res['pic_alt']);
+                        $pic_info_table_single_row[] = array('align' => 'left', 'params' => 'class="dataTableContent"', 'text' => $pic_list_res['sort_order']);
+                        $pic_info_table_single_row[] = array('align' => 'right', 'params' => 'class="dataTableContent"', 'text' => '<a href="javascript:void(0);" onclick="show_popup_info(this, \''.$pic_list_res['id'].'\');">'.tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO).'</a>');
+                        
+                        $pic_info_table_list_row[] = array('params' => 'class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\'; this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"', 'text' => $pic_info_table_single_row); 
+                      }
+                      
+                      $notice_box->get_contents($pic_info_table_list_row); 
+                      echo $notice_box->show_notice(); 
+                    ?>
                     </td>
                   </tr>
                 </table>
