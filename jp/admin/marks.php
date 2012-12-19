@@ -167,7 +167,7 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
 <!-- header_eof -->
 <!-- body -->
 <input type="hidden" name="show_info_id" value="show_popup_info" id="show_info_id">
-<div id="show_popup_info" style="min-width: 550px; position: absolute; background: none repeat scroll 0% 0% rgb(255, 255, 0); width: 70%; display:none; margin-left:2px;"></div>
+<div id="show_popup_info" style="min-width: 550px; position: absolute; background: none repeat scroll 0% 0% rgb(255, 255, 0); width: 70%; display:none;"></div>
 <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top">
