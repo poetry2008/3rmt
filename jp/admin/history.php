@@ -580,7 +580,6 @@ case 'dougyousya_categories':
       }
     }
     </script>
-     <!-- data start -->
      <br>
      <br>
      <?php 
