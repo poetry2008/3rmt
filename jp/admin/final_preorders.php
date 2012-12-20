@@ -2012,7 +2012,7 @@ require("includes/note_js.php");
                     <div id="ecalendar"></div>
                     </div>
                   </div>
-                  <span class="smalltext"><?php echo EDIT_ORDERS_FETCHTIME_READ;?></span>
+                  <span class="smalltext"><?php //echo EDIT_ORDERS_FETCHTIME_READ;?></span>
                   <input type="hidden" name='update_tori_torihiki_date' size='25' value='<?php echo $order->tori['date']; ?>'>
                   <input type="hidden" name='update_tori_torihiki_houhou' size='45' value='<?php echo $order->tori['houhou']; ?>'>
                   <input type="hidden" name="update_viladate" value="true">

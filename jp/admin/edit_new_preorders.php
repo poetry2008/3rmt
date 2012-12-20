@@ -103,6 +103,7 @@
         break;
   // 1. UPDATE ORDER ###############################################################################################
   case 'update_order':
+  $update_user_info = tep_get_user_info($ocertify->auth_user);
   $viladate = tep_db_input($_POST['update_viladate']);//viladate pwd 
   if($viladate!='_false'&&$viladate!=''){
       tep_insert_pwd_log($viladate,$ocertify->auth_user);
@@ -471,7 +472,8 @@
                     'orders_status_id' => $_POST['status'], 
                     'date_added' => 'now()', 
                     'customer_notified' => '1',
-                    'comments' => $comment_str);
+                    'comments' => $comment_str,
+                    'user_added' => $update_user_info['name']);
         tep_db_perform(TABLE_PREORDERS_STATUS_HISTORY, $sql_data_array);
       } else {
         $sql_data_array = array(
@@ -479,7 +481,8 @@
                     'orders_status_id' => DEFAULT_PREORDERS_STATUS_ID, 
                     'date_added' => 'now()', 
                     'customer_notified' => '1',
-                    'comments' => $comment_str);
+                    'comments' => $comment_str,
+                    'user_added' => $update_user_info['name']);
         tep_db_perform(TABLE_PREORDERS_STATUS_HISTORY, $sql_data_array);
         
         $sql_data_array = array(
@@ -487,7 +490,8 @@
                     'orders_status_id' => $_POST['status'], 
                     'date_added' => 'now()', 
                     'customer_notified' => '1',
-                    'comments' => '');
+                    'comments' => '',
+                    'user_added' => $update_user_info['name']);
         tep_db_perform(TABLE_PREORDERS_STATUS_HISTORY, $sql_data_array);
       
       } 

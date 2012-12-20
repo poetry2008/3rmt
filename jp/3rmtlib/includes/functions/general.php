@@ -4373,7 +4373,8 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
                            'orders_status_id' => $orders_status, 
                            'date_added' => 'now()', 
                            'customer_notified' => $customer_notification,
-                           'comments' => $sh_comments, 
+                           'comments' => $sh_comments,
+                           'user_added' => ($exists_single)?tep_get_fullname($pInfo['firstname'],$pInfo['lastname']):tep_get_fullname($customers_res['customers_firstname'], $customers_res['customers_lastname'])
                            );
    tep_db_perform(TABLE_PREORDERS_STATUS_HISTORY, $sql_data_array);
   

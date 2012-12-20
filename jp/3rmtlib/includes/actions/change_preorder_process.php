@@ -282,7 +282,8 @@ if($address_error == false){
                           'orders_status_id' => DEFAULT_ORDERS_STATUS_ID, 
                           'date_added' => date('Y-m-d H:i:s', time()), 
                           'customer_notified' => $customer_notification, 
-                          'comments' => $order_comment_str, 
+                          'comments' => $order_comment_str,
+                          'user_added' => $preorder['customers_name']
       ); 
   tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
  
@@ -292,7 +293,9 @@ if($address_error == false){
                             'orders_status_id' => '30', 
                             'date_added' => 'now()', 
                             'customer_notified' => '0',
-                            'comments' => 'checkout');
+                            'comments' => 'checkout',
+                            'user_added' => $preorder['customers_name']
+                            );
     // ccdd
     //tep_order_status_change($orders_id,30);
     tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);

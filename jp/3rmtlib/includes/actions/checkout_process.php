@@ -395,7 +395,8 @@ $sql_data_array = array('orders_id' => $insert_id,
                         'orders_status_id' => $order->info['order_status'], 
                         'date_added' => 'now()', 
                         'customer_notified' => $customer_notification,
-                        'comments' => $order->info['comments']);
+                        'comments' => $order->info['comments'],
+                        'user_added' => tep_get_fullname($order->customer['firstname'],$order->customer['lastname']));
 // ccdd
 tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
   
@@ -407,7 +408,8 @@ if ($telecom_option_ok == true) {
                           'orders_status_id' => '30', 
                           'date_added' => 'now()', 
                           'customer_notified' => '0',
-                          'comments' => 'checkout');
+                          'comments' => 'checkout',
+                          'user_added' => tep_get_fullname($order->customer['firstname'],$order->customer['lastname']));
   // ccdd
   tep_order_status_change($orders['orders_id'],30);
   tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);

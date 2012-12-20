@@ -126,14 +126,16 @@ document.onclick=function(e){
                 `orders_status_id` ,
                 `date_added` ,
                 `customer_notified` ,
-                `comments`
+                `comments`,
+                `user_added`
               ) VALUES (
                 NULL ,
                 '".$order_id."', 
                 '17', 
                 '".date("Y-m-d H:i:s")."', 
                 '1', 
-                '".mysql_real_escape_string($comment)."'
+                '".mysql_real_escape_string($comment)."',
+                '".tep_db_input($order['customers_name'])."'
               )
           ";
           // ccdd
