@@ -487,7 +487,7 @@ switch ($_GET['action']) {
       tep_redirect(tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action'))));
     }
     //tep_redirect(tep_href_link(FILENAME_ORDERS));
-
+    $update_user_info = tep_get_user_info($ocertify->auth_user);
     foreach($_POST['chk'] as $value){
       $oID      = $value;
       $status   = tep_db_prepare_input($_POST['status']);
@@ -777,7 +777,7 @@ switch ($_GET['action']) {
         } else {
           $customer_notified = '0';
         }
-        tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '')");
+        tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments, user_added) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '', '".tep_db_input($update_user_info['name'])."')");
 
         $order_updated = true;
 
@@ -796,6 +796,7 @@ switch ($_GET['action']) {
     break;
     //------------------------------------------
   case 'update_order':
+    $update_user_info = tep_get_user_info($ocertify->auth_user);
     $oID      = tep_db_prepare_input($_GET['oID']);
     $status   = tep_db_prepare_input($_POST['s_status']);
     $title    = tep_db_prepare_input($_POST['title']);
@@ -1113,7 +1114,7 @@ switch ($_GET['action']) {
       } else {
         $customer_notified = '0';
       }
-      tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '')");
+      tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments, user_added) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '', '".tep_db_input($update_user_info['name'])."')");
       // 同步问答
       //    orders_status_updated_for_question($oID,tep_db_input($status),$_POST['notify_comments'] == 'on', $_POST['qu_type']);
       $order_updated = true;
@@ -3122,10 +3123,11 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
             <td class="smallText" align="center" nowrap="true"><b><?php echo TABLE_HEADING_CUSTOMER_NOTIFIED; ?></b></td>
             <td class="smallText" align="center" nowrap="true"><b><?php echo TABLE_HEADING_STATUS; ?></b></td>
             <td class="smallText" align="center"><b><?php echo TABLE_HEADING_COMMENTS; ?></b></td>
+            <td class="smallText" align="center"><b><?php echo TEXT_OPERATE_USER; ?></b></td>
             <td class="smallText" align="center"><b></b></td>
             </tr>
             <?php
-            $orders_history_query = tep_db_query("select orders_status_history_id, orders_status_id, date_added, customer_notified, comments from " . TABLE_ORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($oID) . "' order by date_added");
+            $orders_history_query = tep_db_query("select orders_status_history_id, orders_status_id, date_added, customer_notified, comments, user_added from " . TABLE_ORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($oID) . "' order by date_added");
           if (tep_db_num_rows($orders_history_query)) {
             while ($orders_history = tep_db_fetch_array($orders_history_query)) {
               $select_select = $orders_history['orders_status_id'];
@@ -3141,6 +3143,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
               echo '      <td class="smallText">' .  $orders_status_array[$orders_history['orders_status_id']];
               echo '</td>' . "\n" .
                 '      <td class="smallText"><p style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;width:170px;">' . nl2br(tep_db_output($orders_history['comments'])) . '&nbsp;</p></td>' . "\n";
+              echo '<td class="smallText">'.$orders_history['user_added'].'</td>'; 
               echo '<td>';
               $order_confirm_payment_raw = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".tep_db_input($oID)."'"); 
               $order_confirm_payment_res = tep_db_fetch_array($order_confirm_payment_raw); 
