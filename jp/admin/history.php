@@ -420,7 +420,7 @@ case 'dougyousya_categories':
   }
   $a=0;
   $dou_cnt=0;
-  $res=tep_db_query("select sdn.*,sdc.categories_id from set_dougyousya_names sdn,set_dougyousya_categories sdc  where sdn.dougyousya_id = sdc.dougyousya_id and sdc.categories_id ='".$cPath."' ORDER BY sdc.dougyousya_id ASC");
+  $res=tep_db_query("select sdn.*,sdc.categories_id from set_dougyousya_names sdn,set_dougyousya_categories sdc  where sdn.dougyousya_id = sdc.dougyousya_id and sdc.categories_id ='".$cPath."' ORDER BY sdn.sort_order ASC");
   $cnt=0;
   while($col=tep_db_fetch_array($res)){
     $d_name[]=$col['dougyousya_name'];

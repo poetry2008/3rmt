@@ -117,8 +117,8 @@ require("includes/note_js.php");
   if ($action == 'oroshi'){
     $back_url = 'cleate_oroshi.php';
   $getMyCate = 'select cd.categories_name,soc.categories_id  from
-    set_oroshi_categories soc ,categories_description cd where cd.site_id =0 and
-    soc.categories_id = cd.categories_id and soc.oroshi_id = "'.$oid.'"';
+    set_oroshi_categories soc ,categories_description cd,categories c where cd.site_id =0 and
+    soc.categories_id = cd.categories_id and cd.categories_id = c.categories_id and soc.oroshi_id = "'.$oid.'" order by c.sort_order asc';
 $res = tep_db_query($getMyCate);
 while ($col = tep_db_fetch_array($res)){
   $cate_id = $col['categories_id'];
