@@ -750,3 +750,4 @@ define('SIGNAL_BLINK_READ_TEXT', '赤の時刻を越えたら');
 define('NOTICE_SET_WRONG_TIME', '商品更新時刻の合図の設置が間違いました。');
 define('TEXT_STATUS_MAIL_TITLE_CHANGED','ステータスと送信されるメールは一致しません。送信をしますか？');
 define('BOX_TOOLS_MARKS_MANAGER', 'マーク管理');
+define('TEXT_OPERATE_USER', '操作者');

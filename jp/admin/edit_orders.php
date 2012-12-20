@@ -101,6 +101,7 @@ if (tep_not_null($action)) {
     // 1. UPDATE ORDER ###############################################################################################
   case 'update_order':
 
+      $update_user_info = tep_get_user_info($ocertify->auth_user);
       $year = $_POST['fetch_year']; 
       $month = $_POST['fetch_month'];
       $day = $_POST['fetch_day'];
@@ -1146,7 +1147,7 @@ if($address_error == false){
           }
         }
       }
-        tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . tep_db_input($customer_notified) . "', '" . mysql_real_escape_string($comment_arr['comment'].$comments_text) . "')");
+        tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments, user_added) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . tep_db_input($customer_notified) . "', '" .  mysql_real_escape_string($comment_arr['comment'].$comments_text) . "', '".tep_db_input($update_user_info['name'])."')");
         $order_updated_2 = true;
       }
 
@@ -3824,10 +3825,12 @@ if (($action == 'edit') && ($order_exists == true)) {
             <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>
             <td class="dataTableHeadingContent" align="left"><?php echo TABLE_HEADING_STATUS; ?></td>
             <?php if($CommentsWithStatus) { ?>
-              <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>
-                <td class="dataTableHeadingContent" align="left"><?php echo TABLE_HEADING_COMMENTS; ?></td>
-                <?php } ?>
-                </tr>
+            <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>
+            <td class="dataTableHeadingContent" align="left"><?php echo TABLE_HEADING_COMMENTS; ?></td>
+            <?php } ?>
+            <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>
+            <td class="dataTableHeadingContent" align="left"><?php echo TEXT_OPERATE_USER; ?></td>
+            </tr>
                 <?php
                 $orders_history_query = tep_db_query("select * from " . TABLE_ORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($oID) . "' order by date_added");
   if (tep_db_num_rows($orders_history_query)) {
@@ -3869,7 +3872,14 @@ if (($action == 'edit') && ($order_exists == true)) {
       if ($CommentsWithStatus && $orders_history['comments'] != $orders_status_history_str) {
         echo '    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>' . "\n" .
           '    <td class="smallText" align="left">' . nl2br(tep_db_output($orders_history_comment)) . '&nbsp;</td>' . "\n";
+      } else {
+        if ($CommentsWithStatus) {
+          echo '    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>' . "\n" .
+            '    <td class="smallText" align="left">&nbsp;</td>' . "\n";
+        }
       }
+      echo '    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>' . "\n" .
+        '    <td class="smallText" align="left">' . $orders_history['user_added'] . '&nbsp;</td>' . "\n";
       echo '  </tr>' . "\n";
       $orders_status_history_str = $orders_history['comments'];
     }
