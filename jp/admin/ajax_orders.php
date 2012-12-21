@@ -303,7 +303,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
 }  else if(isset($_GET['action'])&&$_GET['action'] == 'getallpwd'){
   $sql = "select u.userid,u.rule,l.letter from ".
     TABLE_USERS." u , ".TABLE_LETTERS." l 
-		where u.userid = l.userid and (l.letter != '' or l.letter != null)"; 
+		where u.userid = l.userid and (l.letter != '' or l.letter != null)";
   $result = tep_db_query($sql);
   $arr =array();
   while($row = tep_db_fetch_array($result)){
@@ -613,7 +613,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
       TABLE_USERS." u , ".TABLE_LETTERS." l,".TABLE_PERMISSIONS." p 
 			where u.userid = l.userid 
 			and (l.letter != '' or l.letter != null)
-			and u.userid=p.userid "; 
+			and u.userid=p.userid ";
     $result = tep_db_query($sql);
     $arr =array();
     while($row = tep_db_fetch_array($result)){

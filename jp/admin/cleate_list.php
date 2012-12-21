@@ -54,7 +54,6 @@ charset=<?php echo CHARSET; ?>">
 if(isset($_GET['action']) && $_GET['action']!=""){
 echo CLEATE_LIST_TITLE;
 
-//<!--リスト作成-->
 }
 ?>
 </title>
