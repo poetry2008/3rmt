@@ -94,7 +94,6 @@ padding:5px 12px;
 </style>
 <script type="text/javascript" src="xheditor1/xheditor.js"></script>
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
-<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script>
 $(document).ready(function(){
   $('#elm1').xheditor();
@@ -108,10 +107,10 @@ $(document).ready(function(){
 </script>
 <?php }?>
 <?php 
-  if (isset($_GET['info_romaji']) && $_GET['info_romaji']) {
-    if (empty($info_array)) {
-      echo HELP_INFO_NO_INFO;
-    } else {
+if (isset($_GET['info_romaji']) && $_GET['info_romaji']) {
+  if (empty($info_array)) {
+    echo HELP_INFO_NO_INFO;
+  } else {
 ?>
 <div class="content">
 <?php
