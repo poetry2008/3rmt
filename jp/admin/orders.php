@@ -2124,6 +2124,12 @@ else { ?>
         <script language="javascript" src="includes/javascript/jquery_include.js"></script>
         <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
         <script language="javascript">
+window.onresize = resizepage;
+function resizepage(){
+  if($(".note_head").val()== ""&&$("#orders_list_table").width()< 714){
+    $(".box_warp").css('height',$('.compatible').height());
+  }
+}
 function confrim_mail_title(){
   var _end = $("#mail_title_status").val();
   if($("#confrim_mail_title_"+_end).val()==$("#mail_title").val()){
@@ -2380,6 +2386,13 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       echo '<td>&nbsp;</td>';
     }
 ?>
+<script>
+$(document).ready(function(){ 
+  if($(".note_head").val()== ""&&$("#orders_list_table").width()< 714){
+    $(".box_warp").css('height','100%');
+  }
+    });
+</script>
 <!-- body_text -->
 <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
