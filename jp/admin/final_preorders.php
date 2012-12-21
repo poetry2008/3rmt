@@ -49,10 +49,6 @@
 
 // START CONFIGURATION ################################
 
-// Correction tax pre-values (Michel Haase, 2005-02-18)
-// -> What was this ? Why 20.0, 20.0, 7.6 and 7.6 ???
-//    It's used later in a 'hidden way' an produces unlogical results ...
-
 // Optional Tax Rates, e.g. shipping tax of 17.5% is "17.5"
 // $AddCustomTax = "20.0"; // class "ot_custom", used for all unknown total modules
   $AddCustomTax = "19.6";  // new
@@ -333,12 +329,6 @@
           where orders_products_id = '$orders_products_id';";
       tep_db_query($Query);
   
-// Update Tax and Subtotals: please choose sum WITH or WITHOUT tax, but activate only ONE version ;-)
-  
-// Correction tax calculation (Michel Haase, 2005-02-18)
-// -> correct calculation, but why there is a division by 20 and afterwards a mutiplication with 20 ???
-//    -> no changes made
-//      $RunningSubTotal += (tep_add_tax(($products_details["qty"] * $products_details["final_price"]), $products_details["tax"])*20)/20; // version WITH tax
   
       $RunningSubTotal += $products_details["qty"] * $products_details["final_price"]; // version WITHOUT tax
       $RunningTax += (($products_details["tax"]/100) * ($products_details["qty"] * $products_details["final_price"]));

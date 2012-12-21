@@ -1097,7 +1097,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
             ?>
               </table>
             </div>
-            <!-- /left -->
             <!-- right -->
               <?php // 订单备注 ?>
             <div style="float:left; width:100%;">
@@ -1408,7 +1407,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                 </table>
               </div>
             </div>
-            <!-- /right -->
         </td>
       </tr>
       <?php // 信用调查 ?>
@@ -1710,7 +1708,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       </tr>
       </form>
       </table>
-      <!-- /mail -->
     </td>
     <td width="50%" align="left" valign="top">
 <table width="100%">
