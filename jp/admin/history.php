@@ -360,7 +360,7 @@ case 'dougyousya':
   $did = $_GET['dougyousya_id'];
   $sql = 'select sdc.categories_id,cd.categories_name  from categories_description
     cd,set_dougyousya_categories sdc,categories c where cd.site_id = 0 and sdc.categories_id =
-    cd.categories_id and cd.categories_id = c.categories_id and sdc.dougyousya_id ="' .$did.'" order by c.sort_order asc';
+    cd.categories_id and cd.categories_id = c.categories_id and sdc.dougyousya_id ="' .$did.'" order by c.sort_order asc,cd.categories_name asc';
   $res = tep_db_query($sql);
   while($testcol  = tep_db_fetch_array($res))
     {
@@ -377,7 +377,7 @@ case 'dougyousya':
       echo "<tbody>";
       $getSubCategories = 'select cd.categories_name,cd.categories_id from
         categories_description cd, categories c where
-        c.categories_id=cd.categories_id and cd.site_id = 0 and c.parent_id ="'.$cate_id.'" order by c.sort_order asc';
+        c.categories_id=cd.categories_id and cd.site_id = 0 and c.parent_id ="'.$cate_id.'" order by c.sort_order asc,cd.categories_name asc';
       $subRes = tep_db_query($getSubCategories);
 
       $rowCount = $colmunLimit;
