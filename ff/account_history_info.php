@@ -71,7 +71,7 @@
                     <td class="smallText" align="right">
                     <?php 
                     if ($order->info['total'] < 0) {
-                      echo HEADING_ORDER_TOTAL . ' ' .'<font color="#ff0000">' .  $currencies->format(abs($order->info['total'])).'</font>'; 
+                      echo HEADING_ORDER_TOTAL . ' ' .'<font color="#ff0000">' .  str_replace(MONEY_UNIT_ATEXT,"",$currencies->format(abs($order->info['total']))).'</font>'.MONEY_UNIT_ATEXT; 
                     } else {
                       echo HEADING_ORDER_TOTAL . ' ' .  $currencies->format(abs($order->info['total'])); 
                     }
