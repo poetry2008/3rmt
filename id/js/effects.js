@@ -1,10 +1,3 @@
-// Contributors:
-//  Justin Palmer (http://encytemedia.com/)
-//  Mark Pilgrim (http://diveintomark.org/)
-//  Martin Bialasinki
-// 
-// See scriptaculous.js for full license.  
-
 /* ------------- element ext -------------- */  
  
 // converts rgb() and #xxx to #xxxxxx format,  

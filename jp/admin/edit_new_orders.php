@@ -1479,7 +1479,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
   $br = $orders_i == 5 ? "" : "\n";
   $email_orders_history .= $order_history['date_purchased'] . '　　' .
     tep_output_string_protected($order_history['customers_name']) . '　　' .
-    abs(intval($order_history['order_total_value'])) . SENDMAIL_TEXT_MONEY_SYMBOL.'　　' . $order_history['orders_status_name'] . $br;
+    $currencies->format(abs(intval($order_history['order_total_value']))) .'　　' . $order_history['orders_status_name'] . $br;
 }
   //orders comment
       $cpayment = payment::getInstance();
