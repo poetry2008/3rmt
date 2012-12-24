@@ -29,11 +29,8 @@
 ?>
             <table cellspacing="0" cellpadding="2" border="0" width="150"> 
               <tr>
-              <td onmouseover="this.style.cursor='hand'" class="menuBoxHeading">
-							&nbsp; 
-							<?php echo tep_image(DIR_WS_MENU_ICON . 'icon_settings.gif'); ?>						
-							<a class="menuBoxHeading_Link" href="javascript:void(0);" onclick="toggle_lan('col1');"><?php echo BOX_HEADING_CONFIGURATION;?></a> 
-              &nbsp; 
+              <td onmouseover="this.style.cursor='hand'" class="menuBoxHeading">&nbsp;<?php echo tep_image(DIR_WS_MENU_ICON . 'icon_settings.gif'); ?>						
+              <a class="menuBoxHeading_Link" href="javascript:void(0);" onclick="toggle_lan('col1');"><?php echo BOX_HEADING_CONFIGURATION;?></a>&nbsp; 
               </td>
               </tr>
             </table> 
@@ -72,7 +69,8 @@ $configuration_groups_img = array("901"=>"icon_shop_settings.gif",
 	"100"=>"icon_safety.gif",
 	"900"=>"icon_affiliate.gif",
 	"30" =>"icon_warning.gif",
-	"2030"=>"icon_order_info.gif"
+	"2030"=>"icon_order_info.gif",
+        "4"  =>"icon_img.gif"
 );
                 $configuration_groups_query = tep_db_query("select configuration_group_id as cgID, configuration_group_title as cgTitle from " . TABLE_CONFIGURATION_GROUP . " where visible = '1' order by sort_order");
                 while ($configuration_groups = tep_db_fetch_array($configuration_groups_query)) {
@@ -90,7 +88,7 @@ $configuration_groups_img = array("901"=>"icon_shop_settings.gif",
                </td>
               </tr>
             </table> 
-            </div> 
-            </td>
-          </tr>
+           </div> 
+          </td>
+         </tr>
 <!-- configuration_eof -->
