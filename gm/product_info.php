@@ -73,6 +73,24 @@ $(document).ready(function () {
      $(".calc_show_price").show();  
    } 
    var actiontime =new Date().getTime();  
+   $(".option_product_radio_list").each(function(){
+
+     var radio_option_value = $(this).next("span").children("input[type='hidden']").val();
+     radio_option_value = radio_option_value.replace(/<br>/i,"<br>");
+     radio_option_value = radio_option_value.replace(/<\/br>/i,"</br>");
+     $(this).children(".option_product_radio_img_list").children(".option_product_single_radio").each(function(){
+
+       var radio_list_option_value = $(this).children().children(".option_conent").children("a").children("span:first").html();
+       radio_list_option_value = radio_list_option_value.replace(/<br>/i,"<br>");
+       radio_list_option_value = radio_list_option_value.replace(/<\/br>/i,"</br>");
+       if(radio_list_option_value == radio_option_value ){
+
+         $(this).children().attr("class","option_show_border");
+       }else{
+         $(this).children().attr("class","option_hide_border"); 
+       }
+     });
+   });
 });
 function calc_product_final_price(pid)
 {
@@ -123,7 +141,7 @@ function select_item_radio(i_obj, t_str, o_str, p_str, r_price)
       
       $(i_obj).parent().parent()[0].className = 'option_show_border'; 
       origin_default_value = $('#'+o_str).val(); 
-      $('#'+o_str).parent().html("<input type='hidden' id='"+o_str+"' name='"+p_str+"' value=\""+t_str+"\">"); 
+      $('#'+o_str).val(t_str);
       
       item_info = p_str.split('_');
       item_id = item_info[3];
