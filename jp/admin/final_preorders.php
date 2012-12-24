@@ -725,7 +725,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         $num_product.PREORDER_PRODUCT_UNIT_TEXT,
         $num_product_res['products_name'],
         $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']),
-        $ot_sub_total
+        $currencies->format($ot_sub_total)
       ),$email);
       
       if ($customer_guest['is_send_mail'] != '1') {
