@@ -1509,7 +1509,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
                           $comment_arr['comment'],
                           $point,  
                           $handle_fee, 
-                          abs($newtotal),
+                          $currencies->format(abs($newtotal)),
                           $products_ordered_mail,
                           tep_date_long($_POST['date_orders']) . $_POST['start_hour'] . SENDMAIL_TEXT_HOUR . $_POST['start_min'].$_POST['start_min_1'] . SENDMAIL_TEXT_MIN.SENDMAIL_TEXT_TIME_LINK. $_POST     ['end_hour'] .SENDMAIL_TEXT_HOUR. $_POST['end_min'].$_POST['end_min_1'] .SENDMAIL_TEXT_MIN.SENDMAIL_TEXT_TWENTY_FOUR_HOUR, 
                           $orders_comments,
