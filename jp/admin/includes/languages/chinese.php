@@ -742,3 +742,4 @@ define('NOTICE_SET_WRONG_TIME', '设置时间不正确');
 define('TEXT_STATUS_MAIL_TITLE_CHANGED','状态和送信邮件不一致。送信吗？');
 define('BOX_TOOLS_MARKS_MANAGER', '标记管理');
 define('TEXT_OPERATE_USER', '操作者');
+define('TEXT_TIMEOUT_RELOGIN','超过一定时间不操作，会自动退出登录。请在此登录。');

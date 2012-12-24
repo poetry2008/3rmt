@@ -204,6 +204,10 @@ function newOrders(t)
 dataType: 'text',
 url: 'ajax_orders.php?action=get_new_orders&prev_customer_action='+t,
 success: function(text) {
+if(text.indexOf('</body>')>0&&text.indexOf('</html>')){
+  alert("<?php echo TEXT_TIMEOUT_RELOGIN;?>");
+  window.location.reload();
+}
 $(text).insertAfter('#orders_list_table tr:eq(0)');
 }
 });
@@ -352,6 +356,10 @@ function checkChange(){
 dataType: 'text',
 url: 'ajax_orders.php?action=last_customer_action',
 success: function(last_customer_action) {
+if(last_customer_action.indexOf('</body>')>0&&last_customer_action.indexOf('</html>')>0){
+  alert("<?php echo TEXT_TIMEOUT_RELOGIN;?>");
+  window.location.reload();
+}
 if (
   last_customer_action != cfg_last_customer_action 
   && prev_customer_action != last_customer_action
