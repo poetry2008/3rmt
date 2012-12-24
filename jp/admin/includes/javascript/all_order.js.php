@@ -204,7 +204,7 @@ function newOrders(t)
 dataType: 'text',
 url: 'ajax_orders.php?action=get_new_orders&prev_customer_action='+t,
 success: function(text) {
-if(text.indexOf('</body>')>0&&text.indexOf('</html>')){
+if((text.indexOf('</body>')>0)&&(text.indexOf('</html>')>0)){
   alert("<?php echo TEXT_TIMEOUT_RELOGIN;?>");
   window.location.reload();
 }
@@ -356,7 +356,7 @@ function checkChange(){
 dataType: 'text',
 url: 'ajax_orders.php?action=last_customer_action',
 success: function(last_customer_action) {
-if(last_customer_action.indexOf('</body>')>0&&last_customer_action.indexOf('</html>')>0){
+if((last_customer_action.indexOf('</body>')>0)&&(last_customer_action.indexOf('</html>')>0)){
   alert("<?php echo TEXT_TIMEOUT_RELOGIN;?>");
   window.location.reload();
 }
