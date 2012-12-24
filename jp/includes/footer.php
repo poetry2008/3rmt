@@ -4,11 +4,7 @@
 */
 ?>
 <div id="footer">
-  <?php echo FOOTER_TEXT_BODY . "\n"; ?>
-  <address>
-    Copyright&nbsp;&copy;&nbsp;<?php echo date("Y");?>&nbsp;Jackpot&nbsp;<a
-    class="bold" href="<?php echo HTTP_SERVER ;?>"><?php echo STORE_NAME;?></a>
-  </address>
+  <?php echo str_replace('${YEAR}',date('Y'),FOOTER_TEXT_BODY) . "\n"; ?>
   <?php if ($banner = tep_banner_exists('dynamic', 'footer')) { echo  '<br><div align="center">' . "\n" . tep_display_banner('static', $banner) . '</div>'; }?>
 </div>
 <script type="text/javascript" src="js/access.js"></script>
