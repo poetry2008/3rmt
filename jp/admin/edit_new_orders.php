@@ -1479,7 +1479,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
   $br = $orders_i == 5 ? "" : "\n";
   $email_orders_history .= $order_history['date_purchased'] . '　　' .
     tep_output_string_protected($order_history['customers_name']) . '　　' .
-    abs(intval($order_history['order_total_value'])) . SENDMAIL_TEXT_MONEY_SYMBOL.'　　' . $order_history['orders_status_name'] . $br;
+    $currencies->format(abs(intval($order_history['order_total_value']))) .'　　' . $order_history['orders_status_name'] . $br;
 }
   //orders comment
       $cpayment = payment::getInstance();
@@ -1509,7 +1509,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
                           $comment_arr['comment'],
                           $point,  
                           $handle_fee, 
-                          abs($newtotal),
+                          $currencies->format(abs($newtotal)),
                           $products_ordered_mail,
                           tep_date_long($_POST['date_orders']) . $_POST['start_hour'] . SENDMAIL_TEXT_HOUR . $_POST['start_min'].$_POST['start_min_1'] . SENDMAIL_TEXT_MIN.SENDMAIL_TEXT_TIME_LINK. $_POST     ['end_hour'] .SENDMAIL_TEXT_HOUR. $_POST['end_min'].$_POST['end_min_1'] .SENDMAIL_TEXT_MIN.SENDMAIL_TEXT_TWENTY_FOUR_HOUR, 
                           $orders_comments,
