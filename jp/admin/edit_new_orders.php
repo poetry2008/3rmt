@@ -100,6 +100,7 @@ if (tep_not_null($action)) {
     // 1. UPDATE ORDER ###############################################################################################
   case 'update_order':
     //订单状态更新
+    $update_user_info = tep_get_user_info($ocertify->auth_user);
     $oID      = tep_db_prepare_input($_GET['oID']);
     $status   = tep_db_prepare_input($_POST['s_status']);
     $title    = tep_db_prepare_input($_POST['title']);
@@ -1345,7 +1346,7 @@ if($address_error == false){
     }
       if ($check_status['orders_status'] != $status || $comments != '' || $orders_exit_flag == false) {
           $comment_str = is_array($comment_arr) ? $comment_arr['comment'] : $comments_text;
-          tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '".$comment_str."')");
+          tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments, user_added) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '".$comment_str."', '".tep_db_input($update_user_info['name'])."')");
       }
         if ($order_updated && !$products_delete && $order_updated_2) {
           if($message_success == false){

@@ -43,6 +43,7 @@ function one_time_pwd_forward401($page_name)
 'set_ajax_dougyousya.php',
 'upload.php',
 'js2php.php',
+'help.php',
 'ajax.php'
       );
   foreach($pagelist as $page){

@@ -367,6 +367,13 @@ $(function(){
 $languages = tep_get_languages();
 $cur_page = split('\?', basename($_SERVER['SCRIPT_NAME'])); $cur_page = $cur_page[0];
 $current_page_tp = split('\?', basename($_SERVER['SCRIPT_NAME'])); $current_page_tp = $current_page_tp[0];
+if ($current_page_tp == FILENAME_CONFIGURATION) {
+  $current_page_tp .= '?gID='.$_GET['gID'];
+}
+
+if ($current_page_tp == FILENAME_MODULES) {
+  $current_page_tp .= '?set='.$_GET['set'];
+}
 /*
 foreach($languages as $key => $val){
 echo "<a href=".tep_href_link($cur_page,tep_get_all_get_params(array('language'))."language=".$val['code'])."><font size=3px><b>".strtoupper($val['code']=='ja'?'jp':$val['code'])."</b></font></a>&nbsp;";

@@ -1641,6 +1641,13 @@ if(ele!=''){
 info_box_set(ele, '<?php echo $belong;?>');
 }
 $('#show_popup_info').css('display','block');
+if (update_type == '1') {
+$('#virtual_pro_num').select().focus();
+} else if (update_type == '2') {
+$('#real_pro_num').select().focus();
+} else {
+$('#new_confirm_price').select().focus();
+}
 }
 });
 }
@@ -1718,6 +1725,31 @@ calendar.on("selectionChange", function (ev) {
 });
 }
 }
+$(document).ready(function() {
+  $(document).keyup(function(event) {
+    if (event.which == 27) {
+      if ($('#show_popup_info').css('display') != 'none') {
+        hidden_info_box(); 
+      }
+    }
+    if (event.which == 13) {
+      if ($('#show_popup_info').css('display') != 'none') {
+        tmp_click_str = $("#show_popup_info").find('input:button').first().attr('onclick'); 
+        tmp_click_symbol = '0'; 
+        if (tmp_click_str.indexOf('update_virtual_quantity') >= 0) {
+          tmp_click_symbol = '1'; 
+        } else if (tmp_click_str.indexOf('update_quantity') >= 0) {
+          tmp_click_symbol = '1'; 
+        } else if (tmp_click_str.indexOf('set_new_price') >= 0) {
+          tmp_click_symbol = '1'; 
+        }
+        if (tmp_click_symbol == '1') {
+          $("#show_popup_info").find('input:button').first().trigger("click"); 
+        }
+      } 
+    }
+  });    
+});
 </script>
 <?php 
 require("includes/note_js.php");

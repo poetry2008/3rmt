@@ -359,8 +359,8 @@ case 'dougyousya':
 
   $did = $_GET['dougyousya_id'];
   $sql = 'select sdc.categories_id,cd.categories_name  from categories_description
-    cd,set_dougyousya_categories sdc where cd.site_id = 0 and sdc.categories_id =
-    cd.categories_id and  sdc.dougyousya_id ="' .$did.'"';
+    cd,set_dougyousya_categories sdc,categories c where cd.site_id = 0 and sdc.categories_id =
+    cd.categories_id and cd.categories_id = c.categories_id and sdc.dougyousya_id ="' .$did.'" order by c.sort_order asc,cd.categories_name asc';
   $res = tep_db_query($sql);
   while($testcol  = tep_db_fetch_array($res))
     {
@@ -377,7 +377,7 @@ case 'dougyousya':
       echo "<tbody>";
       $getSubCategories = 'select cd.categories_name,cd.categories_id from
         categories_description cd, categories c where
-        c.categories_id=cd.categories_id and cd.site_id = 0 and c.parent_id ="'.$cate_id.'"';
+        c.categories_id=cd.categories_id and cd.site_id = 0 and c.parent_id ="'.$cate_id.'" order by c.sort_order asc,cd.categories_name asc';
       $subRes = tep_db_query($getSubCategories);
 
       $rowCount = $colmunLimit;
@@ -420,7 +420,7 @@ case 'dougyousya_categories':
   }
   $a=0;
   $dou_cnt=0;
-  $res=tep_db_query("select sdn.*,sdc.categories_id from set_dougyousya_names sdn,set_dougyousya_categories sdc  where sdn.dougyousya_id = sdc.dougyousya_id and sdc.categories_id ='".$cPath."' ORDER BY sdc.dougyousya_id ASC");
+  $res=tep_db_query("select sdn.*,sdc.categories_id from set_dougyousya_names sdn,set_dougyousya_categories sdc  where sdn.dougyousya_id = sdc.dougyousya_id and sdc.categories_id ='".$cPath."' ORDER BY sdn.sort_order ASC");
   $cnt=0;
   while($col=tep_db_fetch_array($res)){
     $d_name[]=$col['dougyousya_name'];
@@ -580,7 +580,6 @@ case 'dougyousya_categories':
       }
     }
     </script>
-     <!-- data start -->
      <br>
      <br>
      <?php 

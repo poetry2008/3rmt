@@ -19,9 +19,6 @@
   $cpayment = payment::getInstance((int)$_SESSION['create_preorder']['orders']['site_id']);
 // START CONFIGURATION ################################
 
-// Correction tax pre-values (Michel Haase, 2005-02-18)
-// -> What was this ? Why 20.0, 20.0, 7.6 and 7.6 ???
-//    It's used later in a 'hidden way' an produces unlogical results ...
 
 // Optional Tax Rates, e.g. shipping tax of 17.5% is "17.5"
 // $AddCustomTax = "20.0"; // class "ot_custom", used for all unknown total modules
@@ -103,6 +100,7 @@
         break;
   // 1. UPDATE ORDER ###############################################################################################
   case 'update_order':
+  $update_user_info = tep_get_user_info($ocertify->auth_user);
   $viladate = tep_db_input($_POST['update_viladate']);//viladate pwd 
   if($viladate!='_false'&&$viladate!=''){
       tep_insert_pwd_log($viladate,$ocertify->auth_user);
@@ -185,10 +183,6 @@
   
 // Update Tax and Subtotals: please choose sum WITH or WITHOUT tax, but activate only ONE version ;-)
   
-// Correction tax calculation (Michel Haase, 2005-02-18)
-// -> correct calculation, but why there is a division by 20 and afterwards a mutiplication with 20 ???
-//    -> no changes made
-//      $RunningSubTotal += (tep_add_tax(($products_details["qty"] * $products_details["final_price"]), $products_details["tax"])*20)/20; // version WITH tax
   
       $RunningSubTotal += $products_details["qty"] * $products_details["final_price"]; // version WITHOUT tax
       $RunningTax += (($products_details["tax"]/100) * ($products_details["qty"] * $products_details["final_price"]));
@@ -471,7 +465,8 @@
                     'orders_status_id' => $_POST['status'], 
                     'date_added' => 'now()', 
                     'customer_notified' => '1',
-                    'comments' => $comment_str);
+                    'comments' => $comment_str,
+                    'user_added' => $update_user_info['name']);
         tep_db_perform(TABLE_PREORDERS_STATUS_HISTORY, $sql_data_array);
       } else {
         $sql_data_array = array(
@@ -479,7 +474,8 @@
                     'orders_status_id' => DEFAULT_PREORDERS_STATUS_ID, 
                     'date_added' => 'now()', 
                     'customer_notified' => '1',
-                    'comments' => $comment_str);
+                    'comments' => $comment_str,
+                    'user_added' => $update_user_info['name']);
         tep_db_perform(TABLE_PREORDERS_STATUS_HISTORY, $sql_data_array);
         
         $sql_data_array = array(
@@ -487,7 +483,8 @@
                     'orders_status_id' => $_POST['status'], 
                     'date_added' => 'now()', 
                     'customer_notified' => '1',
-                    'comments' => '');
+                    'comments' => '',
+                    'user_added' => $update_user_info['name']);
         tep_db_perform(TABLE_PREORDERS_STATUS_HISTORY, $sql_data_array);
       
       } 

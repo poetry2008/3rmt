@@ -313,7 +313,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     where c.categories_id = "'.$cid.'" 
       and c.categories_id = soc.categories_id 
       and son.oroshi_id = soc.oroshi_id 
-    order by soc.oroshi_id asc
+    order by son.sort_order asc
   ');
   while($col = tep_db_fetch_array($res)){
     $oroids[]   = $col['oroshi_id'];

@@ -33,10 +33,6 @@ if(!isset($_SESSION['orders_update_time'][$_GET['oID']])){
 }
 // START CONFIGURATION ################################
 
-// Correction tax pre-values (Michel Haase, 2005-02-18)
-// -> What was this ? Why 20.0, 20.0, 7.6 and 7.6 ???
-//    It's used later in a 'hidden way' an produces unlogical results ...
-
 // Optional Tax Rates, e.g. shipping tax of 17.5% is "17.5"
 // $AddCustomTax = "20.0"; // class "ot_custom", used for all unknown total modules
 $AddCustomTax = "19.6";  // new
@@ -101,6 +97,7 @@ if (tep_not_null($action)) {
     // 1. UPDATE ORDER ###############################################################################################
   case 'update_order':
 
+      $update_user_info = tep_get_user_info($ocertify->auth_user);
       $year = $_POST['fetch_year']; 
       $month = $_POST['fetch_month'];
       $day = $_POST['fetch_day'];
@@ -607,13 +604,6 @@ if($address_error == false){
 
            orders_updated($oID); 
           }
-
-          // Update Tax and Subtotals: please choose sum WITH or WITHOUT tax, but activate only ONE version ;-)
-
-          // Correction tax calculation (Michel Haase, 2005-02-18)
-          // -> correct calculation, but why there is a division by 20 and afterwards a mutiplication with 20 ???
-          //    -> no changes made
-          //      $RunningSubTotal += (tep_add_tax(($products_details["qty"] * $products_details["final_price"]), $products_details["tax"])*20)/20; // version WITH tax
 
           $RunningSubTotal += $products_details["qty"] * $products_details["final_price"]; // version WITHOUT tax
           $RunningTax += (($products_details["tax"]/100) * ($products_details["qty"] * $products_details["final_price"]));
@@ -1146,7 +1136,7 @@ if($address_error == false){
           }
         }
       }
-        tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . tep_db_input($customer_notified) . "', '" . mysql_real_escape_string($comment_arr['comment'].$comments_text) . "')");
+        tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments, user_added) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . tep_db_input($customer_notified) . "', '" .  mysql_real_escape_string($comment_arr['comment'].$comments_text) . "', '".tep_db_input($update_user_info['name'])."')");
         $order_updated_2 = true;
       }
 
@@ -3824,10 +3814,12 @@ if (($action == 'edit') && ($order_exists == true)) {
             <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>
             <td class="dataTableHeadingContent" align="left"><?php echo TABLE_HEADING_STATUS; ?></td>
             <?php if($CommentsWithStatus) { ?>
-              <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>
-                <td class="dataTableHeadingContent" align="left"><?php echo TABLE_HEADING_COMMENTS; ?></td>
-                <?php } ?>
-                </tr>
+            <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>
+            <td class="dataTableHeadingContent" align="left"><?php echo TABLE_HEADING_COMMENTS; ?></td>
+            <?php } ?>
+            <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>
+            <td class="dataTableHeadingContent" align="left"><?php echo TEXT_OPERATE_USER; ?></td>
+            </tr>
                 <?php
                 $orders_history_query = tep_db_query("select * from " . TABLE_ORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($oID) . "' order by date_added");
   if (tep_db_num_rows($orders_history_query)) {
@@ -3869,7 +3861,14 @@ if (($action == 'edit') && ($order_exists == true)) {
       if ($CommentsWithStatus && $orders_history['comments'] != $orders_status_history_str) {
         echo '    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>' . "\n" .
           '    <td class="smallText" align="left">' . nl2br(tep_db_output($orders_history_comment)) . '&nbsp;</td>' . "\n";
+      } else {
+        if ($CommentsWithStatus) {
+          echo '    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>' . "\n" .
+            '    <td class="smallText" align="left">&nbsp;</td>' . "\n";
+        }
       }
+      echo '    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>' . "\n" .
+        '    <td class="smallText" align="left">' . $orders_history['user_added'] . '&nbsp;</td>' . "\n";
       echo '  </tr>' . "\n";
       $orders_status_history_str = $orders_history['comments'];
     }

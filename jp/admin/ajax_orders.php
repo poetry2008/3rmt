@@ -304,11 +304,6 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $sql = "select u.userid,u.rule,l.letter from ".
     TABLE_USERS." u , ".TABLE_LETTERS." l 
 		where u.userid = l.userid and (l.letter != '' or l.letter != null)";
-  if($ocertify->npermission == 15){
-    $sql .= "";
-  }else{
-    $sql .= " and u.userid != '".$ocertify->auth_user."'";
-  }
   $result = tep_db_query($sql);
   $arr =array();
   while($row = tep_db_fetch_array($result)){
@@ -619,13 +614,6 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
 			where u.userid = l.userid 
 			and (l.letter != '' or l.letter != null)
 			and u.userid=p.userid ";
-    if(!in_array('admin',$one_time_arr)){
-      $sql .= " and p.permission = '15' ";
-    }else if(in_array('chief',$one_time_arr)){
-      $sql .= " and (p.permission = '15' or p.permission='10')";
-    }else {
-      $sql .= " and p.permission = '15' ";
-    }
     $result = tep_db_query($sql);
     $arr =array();
     while($row = tep_db_fetch_array($result)){

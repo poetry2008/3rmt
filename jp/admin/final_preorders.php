@@ -49,10 +49,6 @@
 
 // START CONFIGURATION ################################
 
-// Correction tax pre-values (Michel Haase, 2005-02-18)
-// -> What was this ? Why 20.0, 20.0, 7.6 and 7.6 ???
-//    It's used later in a 'hidden way' an produces unlogical results ...
-
 // Optional Tax Rates, e.g. shipping tax of 17.5% is "17.5"
 // $AddCustomTax = "20.0"; // class "ot_custom", used for all unknown total modules
   $AddCustomTax = "19.6";  // new
@@ -116,6 +112,7 @@
       
   // 1. UPDATE ORDER ###############################################################################################
   case 'update_order':
+    $update_user_info = tep_get_user_info($ocertify->auth_user);
     $oID = tep_db_prepare_input($_GET['oID']);
     $comments_text = tep_db_prepare_input($_POST['comments_text']);
     $order = new preorder($oID);
@@ -332,12 +329,6 @@
           where orders_products_id = '$orders_products_id';";
       tep_db_query($Query);
   
-// Update Tax and Subtotals: please choose sum WITH or WITHOUT tax, but activate only ONE version ;-)
-  
-// Correction tax calculation (Michel Haase, 2005-02-18)
-// -> correct calculation, but why there is a division by 20 and afterwards a mutiplication with 20 ???
-//    -> no changes made
-//      $RunningSubTotal += (tep_add_tax(($products_details["qty"] * $products_details["final_price"]), $products_details["tax"])*20)/20; // version WITH tax
   
       $RunningSubTotal += $products_details["qty"] * $products_details["final_price"]; // version WITHOUT tax
       $RunningTax += (($products_details["tax"]/100) * ($products_details["qty"] * $products_details["final_price"]));
@@ -807,7 +798,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       //tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS', $order->info['site_id']), FORDERS_MAIL_UPDATE_CONTENT_MAIL.'【' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
       $customer_notified = '1';
     }
-    tep_db_query("insert into " . TABLE_PREORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" .  tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" .  tep_db_input($customer_notified) . "', '" .  mysql_real_escape_string($comment_arr['comment'].$comments_text) . "')");
+    tep_db_query("insert into " . TABLE_PREORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments, user_added) values ('" .  tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" .  tep_db_input($customer_notified) . "', '" .  mysql_real_escape_string($comment_arr['comment'].$comments_text) . "', '".tep_db_input($update_user_info['name'])."')");
     $order_updated_2 = true;
   }
 
@@ -2011,7 +2002,7 @@ require("includes/note_js.php");
                     <div id="ecalendar"></div>
                     </div>
                   </div>
-                  <span class="smalltext"><?php echo EDIT_ORDERS_FETCHTIME_READ;?></span>
+                  <span class="smalltext"><?php //echo EDIT_ORDERS_FETCHTIME_READ;?></span>
                   <input type="hidden" name='update_tori_torihiki_date' size='25' value='<?php echo $order->tori['date']; ?>'>
                   <input type="hidden" name='update_tori_torihiki_houhou' size='45' value='<?php echo $order->tori['houhou']; ?>'>
                   <input type="hidden" name="update_viladate" value="true">
@@ -2536,6 +2527,8 @@ require("includes/note_js.php");
     <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>
     <td class="dataTableHeadingContent" align="left"><?php echo TABLE_HEADING_COMMENTS; ?></td>
     <?php } ?>
+    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>
+    <td class="dataTableHeadingContent" align="left"><?php echo TEXT_OPERATE_USER; ?></td>
   </tr>
 <?php
 $orders_history_query = tep_db_query("select * from " . TABLE_PREORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($oID) . "' order by date_added");
@@ -2555,7 +2548,9 @@ if (tep_db_num_rows($orders_history_query)) {
     if ($CommentsWithStatus) {
       echo '    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>' . "\n" .
            '    <td class="smallText" align="left">' . nl2br(tep_db_output($orders_history['comments'])) . '&nbsp;</td>' . "\n";
-    }
+    } 
+    echo '    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>' . "\n" .
+         '    <td class="smallText" align="left">' . $orders_history['user_added'] . '</td>' . "\n";
     echo '  </tr>' . "\n";
   }
 } else {
