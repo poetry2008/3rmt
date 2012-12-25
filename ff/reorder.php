@@ -740,7 +740,7 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
   </tr>
 </table>
 
-<table border="0" cellpadding="0" cellspacing="0" style=" position:absolute; width:504px; *width:514px;">
+<table border="0" cellpadding="0" cellspacing="0" style=" position:absolute; width:514px; *width:504px;">
 <tr id="shipping_list_min" style="display:none;">
  <td class="main" width="29.9%">&nbsp;<input type="hidden" id="ele_id" name="ele" value=""></td>
  <td class="main" id="shipping_list_show_min">
