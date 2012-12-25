@@ -1525,9 +1525,9 @@ function check_point(point_num) {
   </td>
   </tr>
 </table>
-<table border="0" cellpadding="2" cellspacing="0" style=" position:absolute; width:488px;">
+<table border="0" cellpadding="2" cellspacing="0" style=" position:absolute; width:490px;">
 <tr id="shipping_list_min" style="display:none;">
-<td class="main" width="136">&nbsp;</td>
+<td class="main" width="137">&nbsp;</td>
  <td class="main" id="shipping_list_show_min">
  </td>
  </tr>
