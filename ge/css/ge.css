@@ -454,6 +454,7 @@ p.box_des{
     text-align:center;
     margin:0;
 	padding:46px 0 0 0;
+	*padding-bottom:15px;
 	color:#000;
 }
 #footer a {
@@ -1593,7 +1594,4 @@ TEXTAREA {
 	background: #ffb3b5;
 	color:#656565;
 	font-weight:bold;
-}
-.margin_clear{
-  margin:0px;
 }
