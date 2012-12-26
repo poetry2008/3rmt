@@ -169,7 +169,7 @@
   $address_form->setFormHidden('country',$a_hidden); // in case without country
   */
 
-// 2003-06-06 add_telephone
+
   // telephone
   if ($process == true) {
     if ($telephone_error == true) {

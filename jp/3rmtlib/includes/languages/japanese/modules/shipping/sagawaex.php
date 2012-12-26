@@ -11,7 +11,7 @@ define('MODULE_SHIPPING_SAGAWAEX_TEXT_OVERSIZE',     '重量またはサイズ�
 define('MODULE_SHIPPING_SAGAWAEX_TEXT_ILLEGAL_ZONE', '指定された都道府県が不正です.');
 define('MODULE_SHIPPING_SAGAWAEX_TEXT_OUT_OF_AREA',  '配達区域外です.');
 
-// 時間帯サービス
+// 时间段设置
 $GLOBALS['a_sagawaex_time']=array(
   array('id'=>'希望なし',  'text'=>'希望なし'),
   array('id'=>'午前中',    'text'=>'午前中'),

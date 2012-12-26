@@ -2,9 +2,6 @@
 /*
   $Id$
 
-
-  Copyright 2001 Leo West <west_leo@yahoo-REMOVE-.com> Net_HTTP_Client v0.6
-
   Minimal Example:
 
   $http = new httpClient();

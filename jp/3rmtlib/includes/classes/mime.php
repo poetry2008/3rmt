@@ -1,12 +1,6 @@
 <?php
 /*
   $Id$
-
-  mime.php - a class to assist in building mime-HTML eMails
-
-  The original class was made by Richard Heyes <richard@phpguru.org>
-  and can be found here: http://www.phpguru.org
-
 */
 
   class mime {

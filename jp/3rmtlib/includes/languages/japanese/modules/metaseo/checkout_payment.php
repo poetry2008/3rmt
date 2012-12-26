@@ -1,6 +1,6 @@
 <?php
 /*
-	JP、GM共通ファイル
+	JP、GM公共文件
 */
 
   define('MODULE_METASEO_CHECKOUT_PAYMENT_TEXT_TITLE', '支払方法');

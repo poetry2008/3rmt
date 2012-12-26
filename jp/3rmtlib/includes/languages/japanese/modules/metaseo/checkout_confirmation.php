@@ -1,6 +1,6 @@
 <?php
 /*
-	JP、GM共通ファイル
+	JP、GM公共文件
 */
 
   define('MODULE_METASEO_CHECKOUT_CONFIRMATION_TEXT_TITLE', '最終確認');

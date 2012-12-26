@@ -30,14 +30,14 @@ function getFlashVer() {
  return f;
 }
 
-//ユーザーの言語環境
+//Language environment of the user environment
 function getUserLanguage(){
 	if (objChk(navigator.userLanguage))
 		return navigator.userLanguage;
 	else{return '';}
 } 
 
-//パソコンの言語環境
+//Language environment of the personal computer
 function getSystemLanguage(){
 	if (objChk(navigator.systemLanguage))
 		return navigator.systemLanguage;

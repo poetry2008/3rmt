@@ -1,6 +1,6 @@
 <?php
 /*
-	JP、GM共通ファイル
+	JP、GM公共文件
 */
 
   define('MODULE_METASEO_CHECKOUT_SUCCESS_TEXT_TITLE', 'ご注文の手続きが完了しました');

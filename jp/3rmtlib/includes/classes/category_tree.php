@@ -2,9 +2,6 @@
 /*
  $Id$
 */
-
-# Modified to support SEO URL's and multi-depth cats 3/11/05
-
  class osC_CategoryTree {
    var $root_category_id = 0,
        $max_level = 0,

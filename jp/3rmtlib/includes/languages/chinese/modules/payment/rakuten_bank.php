@@ -3,7 +3,7 @@
   $Id$
 */
 
-// 楽天銀行
+// 乐天银行
   define('TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_TITLE', '乐天银行');
   define('TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_DESCRIPTION', '乐天银行(货款包含手续费)');
   define('TS_MODULE_PAYMENT_RAKUTEN_BANK_FIELDS_DESCRIPTION', '请在下列输入框写上电话号码');

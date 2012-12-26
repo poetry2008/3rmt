@@ -540,7 +540,7 @@ $email_shipping_fee = '▼配送料　　　　　：'.$shipping_fee_value.'円
 $email_order_text = str_replace($email_temp,$email_shipping_fee,$email_order_text);
 $email_order_text = str_replace($email_temp_str,$email_shipping_fee,$email_order_text);
 $email_address = '▼注文商品';
-//zhusuo
+
 if(!empty($add_list)){
   $address_len_array = array();
   foreach($add_list as $address_value){

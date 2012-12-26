@@ -3,7 +3,7 @@
   $Id$
 */
 
-// 代金引換払い(手数料が購入金額に連動)
+// 货到付款（手续费与购买价格连动）
 require_once (DIR_WS_CLASSES . 'basePayment.php');
 class convenience_store extends basePayment  implements paymentInterface  { 
   var $site_id, $code, $title, $description, $enabled, $n_fee, $s_error, $email_footer, $show_payment_info;
@@ -87,8 +87,8 @@ class convenience_store extends basePayment  implements paymentInterface  {
       global $currencies;
       global $order;
 
-      $total_cost = $order->info['total'];      // 税金も含めた代金の総額
-      $f_result = $this->calc_fee($total_cost); // 手数料
+      $total_cost = $order->info['total'];      // 包括税收的总价格
+      $f_result = $this->calc_fee($total_cost); // 手续费
 
       $added_hidden = $f_result
         ? tep_draw_hidden_field('codt_fee', $this->n_fee).tep_draw_hidden_field('cod_total_cost', $total_cost)
@@ -261,7 +261,7 @@ class convenience_store extends basePayment  implements paymentInterface  {
       global $_POST;
       global $order, $point;
 
-      // 追加 - 2007.01.05 ----------------------------------------------
+
       $total = $order->info['total'];
       if ((MODULE_ORDER_TOTAL_CODT_STATUS == 'true')
           && ($payment == 'cod_table')
@@ -279,9 +279,9 @@ class convenience_store extends basePayment  implements paymentInterface  {
       if(MODULE_ORDER_TOTAL_CONV_STATUS == 'true' && ($payment == 'convenience_store')) {
         $total += intval($_SESSION['h_code_fee']);
       }
-      // 追加 - 2007.01.05 ----------------------------------------------
+
     
-      // email_footer に使用する文字列
+      // email_footer 里使用的字符串
       $s_message = $_POST['codt_fee_error']
         ? $_POST['codt_fee_error']
         : sprintf(MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_MAILFOOTER,

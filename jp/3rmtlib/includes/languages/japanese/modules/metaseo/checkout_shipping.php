@@ -1,6 +1,6 @@
 <?php
 /*
-	JP、GM共通ファイル
+	JP、GM公共文件
 */
 
   define('MODULE_METASEO_CHECKOUT_SHIPPING_TEXT_TITLE', '取引日時の指定');

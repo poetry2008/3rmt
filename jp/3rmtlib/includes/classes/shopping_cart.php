@@ -313,7 +313,7 @@
           $products_weight = $product['products_weight'];
 
       $products_price = tep_get_final_price($product['products_price'], $product['products_price_offset'], $product['products_small_sum'], $qty);
-      # 追加エンド -------------------------------------------
+      # 添加结束 -------------------------------------------
 
           $this->total += tep_add_tax($products_price, $products_tax) * $qty;
           $this->abs   += abs(tep_add_tax($products_price, $products_tax) * $qty);
@@ -441,7 +441,7 @@
           $products_price = $products['products_price'];
 
       $products_price = tep_get_final_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'], $this->contents[$products_id_info]['qty']);
-      # 追加エンド -------------------------------------------
+      # 添加结束 -------------------------------------------
       if(!isset($this->contents[$products_id_info]['op_attributes'])) $this->contents[$products_id_info]['op_attributes']= NULL;
       if(!isset($this->contents[$products_id_info]['ck_attributes'])) $this->contents[$products_id_info]['ck_attributes']= NULL;
           $products_array[] = array('id' => $products_id_info,

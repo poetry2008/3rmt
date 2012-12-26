@@ -1,6 +1,6 @@
 <?php
 /*
-  JP、GM共通ファイル
+  JP、GM公共文件
 */
 
   define('MODULE_METASEO_MEMBER_AUTH_TEXT_TITLE', 'メール認証(会員)');

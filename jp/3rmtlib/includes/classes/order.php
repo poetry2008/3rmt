@@ -129,7 +129,7 @@
                               'telephone' => $order['customers_telephone'],
                               'email_address' => $order['customers_email_address']);
 
-// 2003-06-06 add_telephone
+
       $this->delivery = array('name' => $order['delivery_name'],
                               'name_f' => $order['delivery_name_f'],
                               'company' => $order['delivery_company'],
@@ -146,7 +146,7 @@
         $this->delivery = false;
       }
 
-// 2003-06-06 add_telephone
+
       $this->billing = array('name' => $order['billing_name'],
                              'name_f' => $order['billing_name_f'],
                              'company' => $order['billing_company'],
@@ -247,7 +247,6 @@
       $tax_address_query = tep_db_query("select ab.entry_country_id, ab.entry_zone_id from " . TABLE_ADDRESS_BOOK . " ab left join " . TABLE_ZONES . " z on (ab.entry_zone_id = z.zone_id) where ab.customers_id = '" . $customer_id . "' and ab.address_book_id = '" . ($this->content_type == 'virtual' ? $billto : $sendto) . "'");
       $tax_address = tep_db_fetch_array($tax_address_query);
 
-      // 刻舟求剑
       if (!isset($GLOBALS['cc_type'])) $GLOBALS['cc_type']=NULL;
       if (!isset($GLOBALS['cc_owner'])) $GLOBALS['cc_owner']=NULL;
       if (!isset($GLOBALS['cc_number'])) $GLOBALS['cc_number']=NULL;
@@ -291,7 +290,7 @@
                               'telephone' => $customer_address['customers_telephone'],
                               'email_address' => $customer_address['customers_email_address']);
 
-// 2003-06-06 add_telephone
+
       $this->delivery = array('firstname' => $shipping_address['entry_firstname'],
                               'lastname' => $shipping_address['entry_lastname'],
                               
@@ -310,7 +309,7 @@
                               'telephone' => $shipping_address['entry_telephone'],
                               'format_id' => $shipping_address['address_format_id']);
 
-// 2003-06-06 add_telephone
+
       $this->billing = array('firstname' => $billing_address['entry_firstname'],
                              'lastname' => $billing_address['entry_lastname'],
                              
@@ -429,7 +428,7 @@
       if (DISPLAY_PRICE_WITH_TAX == 'true') {
         $this->info['total'] = $this->info['subtotal'] + $this->info['shipping_cost'];
       } else {
-        // 税額の端数処理(税種別ごと)
+        // 税款金额的零头处理(根据税种不同有所区别)
         $total_tax = 0;
         reset($this->info['tax_groups']);
         while (list($key, $value) = each($this->info['tax_groups'])) {
@@ -439,7 +438,7 @@
             $total_tax += $value;
           }
         }
-        // 税額の端数処理(税金の総額)
+        // 税款金额的零头处理(税款金额的总额)
         $this->info['tax'] = $total_tax;
 
         $this->info['total'] = $this->info['subtotal'] + $this->info['tax'] + $this->info['shipping_cost'];
