@@ -15,7 +15,8 @@ if($_GET['action'] == 'update'){
   $preorders_sort_list = tep_db_prepare_input($_POST['preorders_sort_list']);
   $preorders_sort = tep_db_prepare_input($_POST['preorders_sort']);
   $personal_language = tep_db_prepare_input($_POST['personal_language']);
-
+  $is_transaction = tep_db_prepare_input($_POST['is_transaction']);
+  
   $error = false;
   if(empty($orders_site)){
     $error = true;
@@ -134,6 +135,18 @@ if($_GET['action'] == 'update'){
       $preorders_sort_str = serialize($preorders_sort_temp_array); 
     } 
     tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$preorders_sort_str."' where configuration_key='PERSONAL_SETTING_PREORDERS_SORT'"); 
+    
+    $personal_is_transaction_temp_array = array();
+    if(PERSONAL_SETTING_TRANSACTION_FINISH == ''){
+      $personal_is_transaction_temp_array = array($ocertify->auth_user=>$is_transaction);
+    }else{
+      $personal_is_transaction_array = unserialize(PERSONAL_SETTING_TRANSACTION_FINISH); 
+      $personal_is_transaction_array[$ocertify->auth_user] = $is_transaction;
+      $personal_is_transaction_temp_array = $personal_is_transaction_array;
+    }
+    $personal_is_transaction_str = serialize($personal_is_transaction_temp_array);
+    tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$personal_is_transaction_str."' where configuration_key='PERSONAL_SETTING_TRANSACTION_FINISH'");
+    
     $messageStack->add_session(TEXT_ONE_TIME_CONFIG_SAVE, 'success');
     tep_redirect(tep_href_link(FILENAME_PERSONAL_SETTING,''));
   }
@@ -315,18 +328,37 @@ require("includes/note_js.php");
                  }
                ?>
                <select name="orders_sort_list">
-                 <option value="">--
-                 <option value="0"<?php echo $sort_list == '0' ? ' selected' : '';?>><?php echo TEXT_ORDERS_SELECT_SITE;?>
-                 <option value="1"<?php echo $sort_list == '1' ? ' selected' : '';?>><?php echo TEXT_PREORDERS_SELECT_CUSTOMER;?>
-                 <option value="2"<?php echo $sort_list == '2' ? ' selected' : '';?>><?php echo TEXT_ORDERS_SELECT_PRICE?>
-                 <option value="3"<?php echo $sort_list == '3' ? ' selected' : '';?>><?php echo TEXT_ORDERS_SELECT_TIME;?>
-                 <option value="4"<?php echo $sort_list == '4' ? ' selected' : '';?>><?php echo TEXT_ORDERS_SELECT_DATE?> 
-                 <option value="5"<?php echo $sort_list == '5' ? ' selected' : '';?>><?php echo TEXT_ORDERS_SELECT_STATUS;?>
+                 <option value="">--</option>
+                 <option value="0"<?php echo $sort_list == '0' ? ' selected' : '';?>><?php echo TEXT_ORDERS_SELECT_SITE;?></option>
+                 <option value="1"<?php echo $sort_list == '1' ? ' selected' : '';?>><?php echo TEXT_PREORDERS_SELECT_CUSTOMER;?></option>
+                 <option value="2"<?php echo $sort_list == '2' ? ' selected' : '';?>><?php echo TEXT_ORDERS_SELECT_PRICE?></option>
+                 <option value="3"<?php echo $sort_list == '3' ? ' selected' : '';?>><?php echo TEXT_ORDERS_SELECT_TIME;?></option>
+                 <option value="4"<?php echo $sort_list == '4' ? ' selected' : '';?>><?php echo TEXT_ORDERS_SELECT_DATE?></option> 
+                 <option value="5"<?php echo $sort_list == '5' ? ' selected' : '';?>><?php echo TEXT_ORDERS_SELECT_STATUS;?></option>
                </select>
                <select name="orders_sort">
-                 <option value="">--
-                 <option value="0"<?php echo $sort == '0' ? ' selected' : '';?>><?php echo TEXT_SELECT_ASC;?>
-                 <option value="1"<?php echo $sort == '1' ? ' selected' : '';?>><?php echo TEXT_SELECT_DESC?>
+                 <option value="">--</option>
+                 <option value="0"<?php echo $sort == '0' ? ' selected' : '';?>><?php echo TEXT_SELECT_ASC;?></option>
+                 <option value="1"<?php echo $sort == '1' ? ' selected' : '';?>><?php echo TEXT_SELECT_DESC?></option>
+               </select>
+               <?php
+               if (PERSONAL_SETTING_TRANSACTION_FINISH != '') {
+                 $personal_is_transaction_array = unserialize(PERSONAL_SETTING_TRANSACTION_FINISH);
+                 if(array_key_exists($ocertify->auth_user, $personal_is_transaction_array)){
+                   $is_transaction = $personal_is_transaction_array[$ocertify->auth_user]; 
+                 }else{
+                   $is_transaction = '0'; 
+                 }
+               } else {
+                 $is_transaction = '0'; 
+               }
+               if (isset($_POST['is_transaction'])) {
+                 $is_transaction = $_POST['is_transaction']; 
+               }
+               ?>
+               <select name="is_transaction">
+                 <option value="0"<?php echo $is_transaction == '0' ? ' selected' : '';?>><?php echo TEXT_PERSONAL_SETTING_HIDE_TRANSACTION_FINISH;?></option> 
+                 <option value="1"<?php echo $is_transaction == '1' ? ' selected' : '';?>><?php echo TEXT_PERSONAL_SETTING_SHOW_TRANSACTION_FINISH;?></option> 
                </select>
                <?php
                  if(isset($orders_sort_error) && $orders_sort_error != ''){
