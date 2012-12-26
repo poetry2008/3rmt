@@ -2049,8 +2049,6 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                   ".$sort_where."
                                   o.site_id in (".$site_list_str.")". 
                                   ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str:'')." 
-                                  -- and o.orders_status != '6'
-                                  -- and o.orders_status != '8'
                                   " . $where_payment . $where_type . " order by ".$order_str;
                        //o.torihiki_date DESC";
                      }

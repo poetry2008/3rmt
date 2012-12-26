@@ -1529,3 +1529,6 @@ top:70px;
     float: left;
     overflow: hidden;
 }
+.margin_clear{
+  margin:0px;
+}
