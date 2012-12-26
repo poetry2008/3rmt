@@ -114,6 +114,13 @@ class SEO_DataBase{
     return addslashes($data);
   } # end function
 
+/**
+ * @param string $table Database table
+ * @param array $data Associative array of columns / values
+ * @param string $action insert or update
+ * @param string $parameters
+ * @return resource
+ */ 
   function DBPerform($table, $data, $action = 'insert', $parameters = '') {
     reset($data);
     if ($action == 'insert') {
@@ -354,7 +361,7 @@ class SEO_URL{
  * @param string $page Base script for URL 
  * @param string $parameters URL parameters
  * @param string $connection NONSSL/SSL
- * @param boolean $add_session_id Switch to add osCsid
+ * @param boolean $add_session_id Switch to add sid
  * @return string Formed href link 
  */ 
   function href_link($page = '', $parameters = '', $connection = 'NONSSL', $add_session_id = true){

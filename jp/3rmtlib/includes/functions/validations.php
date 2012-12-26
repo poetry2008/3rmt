@@ -3,6 +3,30 @@
    $Id$
  */
 
+////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Function    : tep_validate_email
+//
+// Arguments   : email   email address to be checked
+//
+// Return      : true  - valid email address
+//               false - invalid email address
+//
+// Sample Valid Addresses:
+//
+//    first.last@host.com
+//    firstlast@host.to
+//    "first last"@host.com
+//    "first@last"@host.com
+//    first-last@host.com
+//    first.last@[123.123.123.123]
+//
+// Invalid Addresses:
+//
+//    first last@host.com
+//
+//
+////////////////////////////////////////////////////////////////////////////////////////////////
 function tep_validate_email($email) {
   $isValid = true;
   $atIndex = strrpos($email, "@");
