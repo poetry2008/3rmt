@@ -19,10 +19,7 @@
     <tr>
       <td class="footer_4"></td>
         <td class="footer_5">
-          <address class="footer_contacts">
-        <?php echo FOOTER_TEXT_BODY . "\n"; ?><br>
-              Copyright&nbsp;&copy;&nbsp;<?php echo date("Y");?>&nbsp;&nbsp;<a class="bold" href="<?php echo HTTP_SERVER; ?>"><?php echo  STORE_NAME; ?></a>
-            </address>
+          <?php echo str_replace('${YEAR}',date('Y'),FOOTER_TEXT_BODY) . "\n"; ?>
         </td>
         <td class="footer_6"></td>
     </tr>
