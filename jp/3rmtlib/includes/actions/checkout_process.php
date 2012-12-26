@@ -194,7 +194,7 @@ $customers_referer_array = tep_db_fetch_array($customers_referer_query);
 $referer = $customers_referer_array['referer'];
 # Select
 //$cnt = strlen($NewOid);
-// 2003-06-06 add_telephone
+
 $_SESSION['insert_id'] = $insert_id;
 $sql_data_array = array('orders_id'         => $insert_id,
                         'customers_id'      => $customer_id,
@@ -400,7 +400,7 @@ $sql_data_array = array('orders_id' => $insert_id,
 // ccdd
 tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
   
-//# 追加分（買取情報）
+//# 添加部分（买取信息）
 
 if ($telecom_option_ok == true) {
   tep_db_perform(TABLE_ORDERS, array('orders_status' => '30'), 'update', "orders_id='".$insert_id."'");
@@ -701,7 +701,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
   
 $email_orders_history .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n\n\n";
 
-# メール本文整形 --------------------------------------{
+# 邮件正文调整 --------------------------------------{
 
 //mailoption {
 $mailoption['ORDER_ID']         = $insert_id;
@@ -751,7 +751,7 @@ $email_shipping_fee = '▼配送料　　　　　：'.$shipping_fee_value.'円
 $email_order = str_replace($email_temp,$email_shipping_fee,$email_order);
 $email_order = str_replace($email_temp_str,$email_shipping_fee,$email_order);
 $email_address = '▼注文商品';
-//zhusuo
+
 if(isset($_SESSION['options']) && !empty($_SESSION['options'])){
   $address_len_array = array();
   foreach($_SESSION['options'] as $address_value){
@@ -781,7 +781,7 @@ if (SENTMAIL_ADDRESS != '') {
   
 last_customer_action();
 
-# 印刷用メール本文 ----------------------------
+# 打印邮件正文 ----------------------------
 $email_printing_order = '';
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
 $email_printing_order .= 'サイト名　　　　：' . STORE_NAME . "\n";
@@ -840,7 +840,6 @@ if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
   tep_mail('', PRINT_EMAIL_ADDRESS, STORE_NAME, $email_printing_order, tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], '');
 }
 
-// Include OSC-AFFILIATE 
 // require(DIR_WS_INCLUDES . 'affiliate_checkout_process.php');
 
 //$ac_total = tep_add_tax($affiliate_total,0);
@@ -889,7 +888,7 @@ if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
 }
   
   
-// ゲスト購入の場合はポイントリセット
+// 游客购买的时候重新设置点数
 if($guestchk == '1') {
   //ccdd
   tep_db_query("update ".TABLE_CUSTOMERS." set point = '0' where customers_id = '".$customer_id."'");

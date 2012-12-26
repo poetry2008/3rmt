@@ -3,7 +3,7 @@
   $Id$
 */
 
-// コンビニ決済
+// 便利店决算
   define('TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_TITLE', 'コンビニ決済');
   define('TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_DESCRIPTION', 'コンビニ決済(代金に手数料が連動)');
   define('TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_EXPLAIN', 'LAWSON、スリーエフ、MINI STOP、サークルK、SUNKUSがご利用いただけます。<br>30,000円未満の決済の場合200円、30,000円以上の決済の場合は350円の手数料が別途必要となります。');

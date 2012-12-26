@@ -1536,10 +1536,10 @@ function check_point(point_num) {
     </td>
   </tr>
 </table>
-<table border="0" cellpadding="0" cellspacing="0" style=" position:absolute; width:520px;">
+<table border="0" cellpadding="0" cellspacing="0" style=" position:absolute; width:526px;">
 <tr id="shipping_list_min" style="display:none;">
  <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?><input type="hidden" id="ele_id" name="ele" value=""></td> 
- <td class="main" width="162">&nbsp;</td>
+ <td class="main" width="164">&nbsp;</td>
  <td class="main" id="shipping_list_show_min">
  </td>
  </tr>

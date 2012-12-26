@@ -1,17 +1,11 @@
 <?php
 /*
   $Id$
-
-  YuuPack Shipping Calculator.
-  Calculate shipping costs.
-
-  2002/04/23 written by TAMURA Toshihiko (tamura@bitscope.co.jp)
-  2003/04/12 modified for ms1
  */
 /*
   $rate = new _YuuPack('yuupack','ゆうパック');
-  $rate->SetOrigin('01', 'JP');  // 北海道から
-  $rate->SetDest('13', 'JP');    // 東京都まで
+  $rate->SetOrigin('01', 'JP');  // 从北海道
+  $rate->SetDest('13', 'JP');    // 到东京
   $rate->SetWeight(10);      // kg
   $quote = $rate->GetQuote();
   print $quote['type'] . "<br>";
@@ -28,10 +22,10 @@ class _YuuPack {
   var $Width  = 0;
   var $Height = 0;
 
-  // コンストラクタ
+  // 构造函数
   // $id:   module id
   // $titl: module name
-  // $zone: 都道府県コード '01'～'47'
+  // $zone: 省市县代码 '01'～'47'
   // $country: country code
   function _YuuPack($id, $title, $zone = NULL, $country = NULL) {
     $this->quote = array('id' => $id, 'title' => $title);
@@ -39,8 +33,8 @@ class _YuuPack {
       $this->SetOrigin($zone, $country);
     }
   }
-  // 発送元をセットする
-  // $zone: 都道府県コード '01'～'47'
+  // 设置发送地
+  // $zone: 省市县代码 '01'～'47'
   // $country: country code
   function SetOrigin($zone, $country = NULL) {
     $this->OriginZone = $zone;
@@ -68,26 +62,26 @@ class _YuuPack {
       $this->Height = $height;
     }
   }
-  // サイズ区分(0～4)を返す
-  // 規格外の場合は-1を返す
+    // 返回尺寸区分(0～4)
+    // 规格以外的时候返回-1
   //
-  // 区分 ３辺計    重量
+  // 区分    3边合计   重量
   // ---------------------------------
-  // 0    150cmまで  2kgまで
-  // 1    150cmまで  4kgまで
-  // 2    150cmまで  6kgまで
-  // 3    150cmまで  8kgまで
-  // 4    150cmまで 10kgまで
-  // 5    150cmまで 12kgまで
-  // 6    150cmまで 14kgまで
-  // 7    150cmまで 16kgまで
-  // 8    150cmまで 18kgまで
-  // 9    150cmまで 20kgまで
-  // 10   150cmまで 25kgまで
-  // 11   150cmまで 30kgまで
+  // 0    150cm     2kg
+  // 1    150cm     4kg
+  // 2    150cm     6kg
+  // 3    150cm     8kg
+  // 4    150cm    10kg
+  // 5    150cm    12kg
+  // 6    150cm    14kg
+  // 7    150cm    16kg
+  // 8    150cm    18kg
+  // 9    150cm    20kg
+  // 10   150cm    25kg
+  // 11   150cm    30kg
   function GetSizeClass() {
     $a_classes = array(
-      array(0, 150,  2),  // 区分,３辺計(cmまで),重量(kgまで)
+      array(0, 150,  2),  // 区分,3边合计(cm),重量(kg)
       array(1, 150,  4),
       array(2, 150,  6),
       array(3, 150,  8),
@@ -108,16 +102,16 @@ class _YuuPack {
         return $a_limit[0];
       }
     }
-    return -1;  // 規格外
+    return -1;  // 规格外
   }
-  // 送付元と送付先から地帯ランク(1～4)を取得する
+  // 从送货地点和收货地点来获取地域rank(1～4)
   //
   function GetDistRank() {
-    // 地帯 - 地帯間の価格ランク
-    // (参照) http://www.post.yusei.go.jp/service/parcel/you_pack/
+    // 地域-地域间的价格顺
+
     $a_dist_to_rank = array(
-    array(1), // 基点:北海道 - 終点:北海道
-    array(1,1), // 基点:青森県 - 終点:北海道,青森県
+    array(1), // 始发:北海道 - 终点:北海道
+    array(1,1), // 始发:青森县 - 终点:北海道,青森县
     array(2,1,1),
     array(3,1,1,1),
     array(2,1,1,1,1),
@@ -167,10 +161,10 @@ class _YuuPack {
 
     $n_rank = 0;
     if ( $this->OriginZone && $this->DestZone ) {
-      $n_z1 = (int)$this->OriginZone - 1; // ゼロ・オリジンに変換
+      $n_z1 = (int)$this->OriginZone - 1; // 转换成零起点
       $n_z2 = (int)$this->DestZone   - 1;
 
-      // ランクを取得
+      // 获取rank
       if ( $n_z1 <= $n_z2 ) {
         $n_rank = $a_dist_to_rank[$n_z2][$n_z1];
       } else {
@@ -181,13 +175,13 @@ class _YuuPack {
   }
 
   function GetQuote() {
-    // 距離別の価格ランク: ランク => 価格([2],[4],[6],[8]...[20],[25],[30])
+    // 按照距离划分的价格顺: rank => 价格([2],[4],[6],[8]...[20],[25],[30])
     $a_pricerank = array(
-    array( 510, 630, 750, 810, 870, 930, 990,1050,1110,1170,1320,1470),// 第１地帯(市内) 近距離
-    array( 610, 770, 930,1010,1090,1170,1250,1330,1410,1490,1690,1890),// 第１地帯(その他) ↑
-    array( 710, 870,1030,1110,1190,1270,1350,1430,1510,1590,1790,1990),// 第２地帯
-    array( 820, 980,1140,1220,1300,1380,1460,1540,1620,1700,1900,2100),// 第３地帯         ↓
-    array(1020,1180,1340,1420,1500,1580,1660,1740,1820,1900,2100,2300) // 第４地帯       遠距離
+    array( 510, 630, 750, 810, 870, 930, 990,1050,1110,1170,1320,1470),// 第一地域（市内）近距离
+    array( 610, 770, 930,1010,1090,1170,1250,1330,1410,1490,1690,1890),// 第一地域(其他) ↑
+    array( 710, 870,1030,1110,1190,1270,1350,1430,1510,1590,1790,1990),// 第二地域
+    array( 820, 980,1140,1220,1300,1380,1460,1540,1620,1700,1900,2100),// 第三地域         ↓
+    array(1020,1180,1340,1420,1500,1580,1660,1740,1820,1900,2100,2300) // 第四地域       远距离
     );
 
     if ( $this->OriginCountryCode == 'JP' && $this->DestCountryCode == 'JP' ) {
@@ -197,7 +191,7 @@ class _YuuPack {
         if ($n_sizeclass < 0) {
           $this->quote['error'] = MODULE_SHIPPING_YUUPACK_TEXT_OVERSIZE;
         } else {
-          // 同一都道府県内
+          // 同一省市县内
           // if ( $this->OriginZone == $this->DestZone ) {
           //   $s_pattern = ($this->OriginZone == '13') ? '^(.+区)' : '^(.+市)';
           // }

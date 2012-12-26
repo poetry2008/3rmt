@@ -1,6 +1,6 @@
 <?php
 /*
-  JP、GM共通ファイル
+  JP、GM公共文件
 */
 
   define('MODULE_METASEO_CHANGE_PREORDER_SUCCESS_TEXT_TITLE', '予約注文の手続きが完了しました');

@@ -1,7 +1,6 @@
 <?php
 require('paypal-api-conf.php');
-/** GetExpressCheckoutDetails NVP example; last modified 08MAY23.
- *
+/*
  *  Get information about an Express Checkout transaction. 
 */
 

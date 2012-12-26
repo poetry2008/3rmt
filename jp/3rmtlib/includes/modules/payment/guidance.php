@@ -3,7 +3,7 @@
    $Id$
  */
 
-// 代金引換払い(手数料が購入金額に連動)
+// 货到付款（手续费与购买价格连动）
 require_once (DIR_WS_CLASSES . 'basePayment.php');
 class guidance extends basePayment  implements paymentInterface  {
   var $site_id, $code, $title, $description, $enabled, $n_fee, $s_error, $email_footer,$c_prefix, $show_payment_info;

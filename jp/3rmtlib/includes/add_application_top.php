@@ -557,7 +557,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
                                       $hide_option_info = @unserialize(stripslashes($_POST['option_info'][$i])); 
                                     }
                                   }
-                                  // tamura 2002/12/30 「全角」英数字を「半角」に変換
+                                  // 全角的英数字改成半角
                                   $_POST['cart_quantity'][$i] = tep_an_zen_to_han($_POST['cart_quantity'][$i]);                 
                                   if ($_POST['cart_quantity'][$i] == 0) {
                                     $cart->remove($_POST['products_id'][$i]);
@@ -927,7 +927,7 @@ if(!preg_match ("#".HTTP_SERVER."#", $_SERVER["HTTP_REFERER"]) && !preg_match ("
   }
 
   tep_session_register('ajax');
-# 注文上限金額設定
+# 订单上限金额设置
   if(substr(basename($PHP_SELF),0,9) == 'checkout_') {
     if(DS_LIMIT_PRICE < $cart->show_total()) {
       tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, 'limit_error=true', 'SSL'));

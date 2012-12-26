@@ -1,6 +1,6 @@
 <?php
 /*
-	JP、GM共通ファイル
+	JP、GM公共文件
 */
 
   define('MODULE_METASEO_ADVANCED_SEARCH_RESULT_TEXT_TITLE', '検索結果');

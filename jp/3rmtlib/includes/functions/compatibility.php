@@ -1,9 +1,6 @@
 <?php
 /*
   $Id$
-
-  Modified by Marco Canini, <m.canini@libero.it>
-  - Fixed a bug with arrays in $HTTP_xxx_VARS
 */
 
 ////

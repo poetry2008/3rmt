@@ -1,6 +1,6 @@
 <?php
 /*
-	JP、GM共通ファイル
+	JP、GM公共文件
 */
 
   define('MODULE_METASEO_POPUP_SEARCH_HELP_TEXT_TITLE', '詳細検索の使い方');

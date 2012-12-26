@@ -1,6 +1,6 @@
 <?php
 /*
-	JP、GM共通ファイル
+	JP、GM公共文件
 */
 
   define('MODULE_METASEO_CREATE_ACCOUNT_SUCCESS_TEXT_TITLE', '会員登録完了');

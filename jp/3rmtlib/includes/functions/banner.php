@@ -82,7 +82,7 @@
     if (tep_not_null($banner['banners_html_text'])) {
       $banner_string = $banner['banners_html_text'];
     } else {
-      if($banner['banners_url'] != '') { //add 2005.08.03 ds-style.com
+      if($banner['banners_url'] != '') { 
          if($width && $height) {
         $banner_string = '<a href="' . tep_href_link(FILENAME_REDIRECT, 'action=banner&goto=' . $banner['banners_id']) . '" class="blank">' . tep_image(DIR_WS_IMAGES . $banner['banners_image'], $banner['banners_title'], $width, $height) . '</a>';
          } else {

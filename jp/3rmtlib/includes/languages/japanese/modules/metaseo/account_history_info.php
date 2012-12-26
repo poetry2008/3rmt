@@ -1,6 +1,6 @@
 <?php
 /*
-	JP、GM共通ファイル
+	JP、GM公共文件
 */
 
   define('MODULE_METASEO_ACCOUNT_HISTORY_INFO_TEXT_TITLE', '注文情報');

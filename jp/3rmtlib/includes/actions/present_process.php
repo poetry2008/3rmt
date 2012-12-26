@@ -189,9 +189,9 @@ $gender = tep_db_prepare_input($_POST['gender']);
     //-----------------------------------
     // end check
     if($error == false) {
-      //会員登録希望（パスワードが入力されていた場合）
+      //会员注册希望（密码没输入的情况）
       if(!empty($password)) {
-        //会員登録処理
+        //会员注册处理
         $sql_data_array = array('customers_firstname' => $firstname,
                   'customers_lastname' => $lastname,
                   'customers_email_address' => $email_address,
@@ -212,7 +212,6 @@ $gender = tep_db_prepare_input($_POST['gender']);
   
         $customer_id = tep_db_insert_id();
   
-        // 2003-06-06 add_telephone
         $sql_data_array = array('customers_id' => $customer_id,
                   'address_book_id' => 1,
                   'entry_firstname' => $firstname,
@@ -250,13 +249,13 @@ $gender = tep_db_prepare_input($_POST['gender']);
               now())
         ");
   
-        if (SESSION_RECREATE == 'True') { // 2004/04/25 Add session management
+        if (SESSION_RECREATE == 'True') { 
           tep_session_recreate();
         }
       
         $pc_id = $customer_id;
         
-        //セッション内に情報を一時的に挿入
+        //临时插入信息到session里
         
         $customer_default_address_id = 1;
         $customer_first_name = $firstname;
@@ -287,11 +286,11 @@ $gender = tep_db_prepare_input($_POST['gender']);
         tep_session_register('zone_id');
       
         tep_redirect(tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.$goods_id, 'SSL'));
-      } else {//ゲスト（該当する回の応募のみ）
+      } else {//游客（只是用于此次）
         $pc_id = 0;
         tep_session_register('pc_id');
         
-        //セッション内に情報を一時的に挿入
+        //临时插入信息到session
         tep_session_register('firstname');
         tep_session_register('lastname');
         tep_session_register('email_address');

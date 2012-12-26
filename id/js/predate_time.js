@@ -20,7 +20,7 @@ function selectDate(start_time,end_time,value,start_time_old,end_time_old,now_ti
 	//document.order.hour.options.length = 1;
 
 
-	//'Obtain the range of values ​​of the time select box
+	//'Obtain the range of values of the time select box
 	//'
 	//'
         /*
@@ -207,44 +207,44 @@ function selectHour(start_time,end_time,hour,min_num,ele){
         var temp_value = 0;
         if(hour < 6){
           if(navigator.userAgent.indexOf("MSIE 9.0")>0) {
-              temp_value = -106;
+              temp_value = -82;
           } else {
             if(navigator.userAgent.indexOf("MSIE")>0) {
-              temp_value = -106;
+              temp_value = -82;
             } else {
-              temp_value = -105;
+              temp_value = -81;
             }
           }
         }else if(hour >= 6 && hour <= 11){
         
           if(navigator.userAgent.indexOf("MSIE 9.0")>0) {
-              temp_value = -86;
+              temp_value = -60;
           } else {
             if(navigator.userAgent.indexOf("MSIE")>0) {
-              temp_value = -86;
+              temp_value = -60;
             } else {
-              temp_value = -83;
+              temp_value = -59;
             }
           }
         }else if(hour >= 12 && hour <= 17){
         
           if(navigator.userAgent.indexOf("MSIE 9.0")>0) {
-            temp_value = -63;
+            temp_value = -38;
           } else {
           if(navigator.userAgent.indexOf("MSIE")>0) {
-            temp_value = -63;
+            temp_value = -38;
           } else {
-            temp_value = -61;
+            temp_value = -37;
           }
           }
         }else{
           if(navigator.userAgent.indexOf("MSIE 9.0")>0) {
-            temp_value = -41;
+            temp_value = -16;
           } else {
           if(navigator.userAgent.indexOf("MSIE")>0) {
-            temp_value = -41;
+            temp_value = -16;
           } else {
-            temp_value = -39;
+            temp_value = -15;
           }
           }
         }

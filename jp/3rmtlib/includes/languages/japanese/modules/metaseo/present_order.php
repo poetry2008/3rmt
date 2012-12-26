@@ -1,6 +1,6 @@
 <?php
 /*
-  JP、GM共通ファイル
+  JP、GM公共文件
 */
 
   define('MODULE_METASEO_PRESENT_ORDER_TEXT_TITLE', 'プレゼント応募確認画面');

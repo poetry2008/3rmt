@@ -165,7 +165,7 @@
   $a_hidden = tep_draw_hidden_field('country',$entry['entry_country_id'] ? $entry['entry_country_id'] : STORE_COUNTRY);
   $address_form->setFormHidden('country',$a_hidden); // in case without country
 
-// 2003-06-06 add_telephone
+
   // telephone
   if ($process == true) {
       if ($telephone_error == true) {

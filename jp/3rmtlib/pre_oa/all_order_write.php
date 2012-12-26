@@ -44,7 +44,7 @@ AND ot1.orders_id = '".$o['orders_id']."'"
     $mixed.= $o['orders_id'] ." 小計".$mixedOrder['ot_subtotal']." 合計".$mixedOrder['ot_total']."</br>\n";
     continue;
   }
-  //如果是荵ｰ
+
   if ($o['avgf'] ==1 ){
     ob_flush();
     flush();
@@ -63,10 +63,10 @@ AND ot1.orders_id = '".$o['orders_id']."'"
                                            )
                               );
       if ($p) {
-        // 荵ｰ取
+
         $ot_total = 0-$ot_total;
         $ot_subtotal = 0-$ot_subtotal;
-        //小計合計比較
+        //小计与合计进行比较
         if($ot_total < 0 and $ot_subtotal < 0 and abs($ot_total) != abs($ot_subtotal)){
           echo  $o['orders_id']. " 小計".$ot_subtotal." 合計".$ot_total."</br>\n";
           ob_flush();

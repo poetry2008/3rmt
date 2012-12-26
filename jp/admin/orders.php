@@ -1230,6 +1230,15 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
   $order_str = 'torihiki_date_error desc,date_purchased_error desc,'; 
   $user_info = tep_get_user_info($ocertify->auth_user);
   $sort_setting_flag = false;
+  $is_show_transaction = false; 
+  if (PERSONAL_SETTING_TRANSACTION_FINISH != '') {
+    $show_transaction_array = @unserialize(PERSONAL_SETTING_TRANSACTION_FINISH);  
+    if (isset($show_transaction_array[$ocertify->auth_user])) {
+      if ($show_transaction_array[$ocertify->auth_user] == '1') {
+        $is_show_transaction = true; 
+      }
+    }
+  }
   if(PERSONAL_SETTING_ORDERS_SORT != ''){
     $sort_list_array = array("0"=>"site_romaji",
                              "1"=>"customers_name",
@@ -2038,10 +2047,10 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                   from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                                   where 
                                   ".$sort_where."
-                                  o.flag_qaf = 0".(($mark_sql_str != '')?' and '.$mark_sql_str:'')." 
+                                  o.site_id in (".$site_list_str.")". 
+                                  ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str:'')." 
                                   -- and o.orders_status != '6'
                                   -- and o.orders_status != '8'
-                                  " . " and o.site_id in (". $site_list_str .")" . "
                                   " . $where_payment . $where_type . " order by ".$order_str;
                        //o.torihiki_date DESC";
                      }

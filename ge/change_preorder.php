@@ -1199,9 +1199,9 @@ if (isset($time_error)) {
               </table>
               </noscript>
  
-<table border="0" cellpadding="0" cellspacing="0" style=" position:absolute; width:446px; *width:445px;">
+<table border="0" cellpadding="0" cellspacing="0" style="position:absolute; width:445px;">
 <tr id="shipping_list_min" style="display:none;">
-              <td class="main" width="160">&nbsp;<input type="hidden" id="ele_id" name="ele" value=""></td> 
+              <td class="main" width="187">&nbsp;<input type="hidden" id="ele_id" name="ele" value=""></td> 
               <td class="main" id="shipping_list_show_min"> 
               </td> 
             </tr>

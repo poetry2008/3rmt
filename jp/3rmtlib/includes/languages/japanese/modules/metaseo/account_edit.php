@@ -1,6 +1,6 @@
 <?php
 /*
-  JP、GM共通ファイル
+  JP、GM公共文件
 */
 
   define('MODULE_METASEO_ACCOUNT_EDIT_TEXT_TITLE', 'お客様情報の編集');

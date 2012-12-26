@@ -68,7 +68,7 @@ class telecom  extends basePayment  implements paymentInterface  {
     global $order, $currencies, $currency;   
     global $point,$cart,$languages_id;
 
-    // 追加 - 2007.01.05 ----------------------------------------------
+
     $total = $order->info['total'];
     $f_result = $this->calc_fee($total); 
     
@@ -80,7 +80,7 @@ class telecom  extends basePayment  implements paymentInterface  {
     }   
     
     $total += intval($this->n_fee); 
-    // 追加 - 2007.01.05 ----------------------------------------------
+
     if (isset($_SESSION['campaign_fee'])) {
       $total += $_SESSION['campaign_fee']; 
     }
@@ -92,7 +92,7 @@ class telecom  extends basePayment  implements paymentInterface  {
     #mail送信
       $mail_body = '仮クレジットカード注文です。'."\n\n";
     
-    # ユーザー情報----------------------------
+    # 用户信息----------------------------
       $mail_body .= '━━━━━━━━━━━━━━━━━━━━━'."\n";
     /*
       $mail_body .= '▼注文番号　　　　：2007****-********'."\n";
@@ -148,11 +148,11 @@ class telecom  extends basePayment  implements paymentInterface  {
     */    
     $mail_body .= "\t" . '------------------------------------------'."\n";
     
-    # お届け日時----------------------------
+    # 交易时间----------------------------
       $mail_body .= '▼お届け日時　　　　：' . $_SESSION["insert_torihiki_date"] . "\n";
     $mail_body .= '　　　　　　　　　：' . $_SESSION["torihikihouhou"] . "\n";
     
-    # ユーザーエージェントなど----------------------------
+    # 用户代理等----------------------------
       $mail_body .= "\n\n";
     $mail_body .= '■IPアドレス　　　　　　：' . $_SERVER["REMOTE_ADDR"] . "\n";
     $mail_body .= '■ホスト名　　　　　　　：' . @gethostbyaddr($_SERVER["REMOTE_ADDR"]) . "\n";
@@ -314,7 +314,7 @@ class telecom  extends basePayment  implements paymentInterface  {
 );
   }
   
-  //エラー
+  //错误
   function get_error() {
     global $_GET;
     

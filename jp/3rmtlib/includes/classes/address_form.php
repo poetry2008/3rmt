@@ -51,7 +51,7 @@
             case 'postcode':
             case 'city':
             case 'country':
-// 2003-06-06 add_telephone
+
             case 'telephone':
                 $orders[] = $element;
                 break;

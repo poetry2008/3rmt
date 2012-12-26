@@ -78,7 +78,6 @@
       // ccdd
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, use_function, date_added, site_id) values ('ポイントの加算設定', 'MODULE_ORDER_TOTAL_POINT_ADD_STATUS', '0', 'ポイントを加算するステータスの設定を行います<br>会計時に加算する場合は「デフォルト」を選択。ステータス更新時に加算する場合は、加算するステータスを選択してください', '6', '5', 'tep_cfg_pull_down_order_statuses(', 'tep_get_order_status_name', now(), ".$this->site_id.")");
     
-      //カスタマーレベル用に追加 - 2005.11.17 - K.Kaneko
       // ccdd
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('カスタマーレベルの使用', 'MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL', 'false', 'ポイントの計算方法にカスタマーレベルの適用を行いますか?', '6', '6','tep_cfg_select_option(array(\'true\', \'false\'), ', now(), ".$this->site_id.")");
       // ccdd

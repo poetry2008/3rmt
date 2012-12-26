@@ -63,7 +63,7 @@
       $city                        = $address_result['entry_city'];
       $zone_id                     = $address_result['entry_zone_id'];
 
-        //セッション内に情報を一時的に挿入
+        //临时插入信息到session里
       tep_session_register('customer_id');
       tep_session_register('customer_default_address_id');
       tep_session_register('customer_first_name');
