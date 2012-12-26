@@ -141,19 +141,19 @@ if(!isset($email_error)||$email_error == true){?>
  <tr>
   <td width='120' valign="top">お届け日時</td>
   <td>
-   <select name='date' id='new_date' onChange="selectDate('<?php echo date('H');?>', '<?php echo date('i');?>')">
+   <select class='margin_clear' name='date' onChange="selectDate('<?php echo date('H');?>', '<?php echo date('i');?>')">
     <option value=''>--</option>
 <?php for($i=0;$i<7;$i++){?>
     <option value='<?php echo date('Y-m-d', time()+($i*86400));?>'><?php echo tep_date_long(time()+($i*86400));?></option>
 <?php }?>
    </select>
-   <select name='hour' id='new_hour' onChange="selectHour('<?php echo date('H');?>', '<?php echo date('i');?>')">
+   <select name='hour' onChange="selectHour('<?php echo date('H');?>', '<?php echo date('i');?>')">
     <option value=''>--</option>
    </select>:
-   <select name='minute' id='new_minute'>
+   <select name='minute'>
     <option value=''>--</option>
    </select>
-   <div class="clear_box"><span id='date_error'><?php
+   <div><span id='date_error'><?php
    if($hour==''||$date==''||$minute==''){
      echo TEXT_REORDER2_TORIHIKI_ERROR;
    }?></span>
@@ -163,7 +163,7 @@ if(!isset($email_error)||$email_error == true){?>
           <tr>
             <td>備考</td>
             <td>
-              <textarea name='comment' id='comment' class="clear_box"><?php
+              <textarea name='comment' id='comment'><?php
               if(isset($comment)&&$comment){
                   echo $comment;
               }?></textarea>
@@ -173,7 +173,7 @@ if(!isset($email_error)||$email_error == true){?>
         <table width="100%">
 <td width="120">&nbsp;</td>
         <td>
-          <input class="clear_box" type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="確定" title="確定" >
+          <input type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="確定" title="確定" >
           <input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="クリア" title="クリア" onclick='javascript:document.order.reset();return false;' >
         </td>
 </table>

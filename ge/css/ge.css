@@ -1591,3 +1591,6 @@ TEXTAREA {
 	color:#656565;
 	font-weight:bold;
 }
+.margin_clear{
+  margin:0px;
+}

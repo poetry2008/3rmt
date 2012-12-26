@@ -139,7 +139,7 @@ if(isset($product)&&$product){
 <tr>
   <td bgcolor="#eeeeee">お届け日時</td>
   <td>
-   <select name='date' id='new_date' onChange="selectDate('<?php echo date('H');?>', '<?php echo date('i');?>')">
+   <select class="margin_clear" name='date' id='new_date' onChange="selectDate('<?php echo date('H');?>', '<?php echo date('i');?>')">
     <option value=''>--</option>
 <?php for($i=0;$i<7;$i++){?>
     <option value='<?php echo date('Y-m-d', time()+($i*86400));?>'><?php echo tep_date_long(time()+($i*86400));?></option>

@@ -1994,3 +1994,6 @@ color: #005c69;
 .box_list_title .float_right{
   margin-top:0; 
 }
+.margin_clear{
+  margin:0px;
+}
