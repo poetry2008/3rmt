@@ -2,8 +2,7 @@
 /*
   $Id$
  */
-/*
-    
+class _SagawaEx {
     var $quote;
     var $OriginZone;
     var $OriginCountryCode = 'JP';
