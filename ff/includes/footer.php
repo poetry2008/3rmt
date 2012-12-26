@@ -10,15 +10,7 @@ if ($banner = tep_banner_exists('dynamic', 'footer1')) { echo  tep_display_banne
 
 </div>
 <div id="footer">
-
-          <address class="footer_contacts">
-        <?php echo FOOTER_TEXT_BODY . "\n"; ?><br>
-              Copyright&nbsp;&copy;&nbsp;<?php echo date("Y");?>&nbsp;&nbsp;
-<?php
-echo '<a class="bold" href="'. HTTP_SERVER.'">'.STORE_NAME.'</a>';
-?>
-
-            </address>
+  <?php echo str_replace('${YEAR}',date('Y'),FOOTER_TEXT_BODY) . "\n"; ?>
             <?php if ($banner = tep_banner_exists('dynamic', 'footer')) { echo  '<div  class="footer_link02">' . "\n" . tep_display_banner('static', $banner) . '</div>'; }?>
 
 </div>

@@ -1028,6 +1028,7 @@ Footer
 	clear:both;
 	height:89px;
 	background:url(../images/design/box/footer_bg.gif) repeat-x 0 bottom;
+	color:#fff;
 }
 .footer_link {
 	width:870px;
@@ -1058,10 +1059,10 @@ Footer
 	  color: #ff0000;
 }
 .footer_contacts{
-	letter-spacing:0.5mm;
+	letter-spacing:0.6mm;
 	line-height:19px;
-	padding-top:5px;
 	color:#FFF;
+	padding-top:3px;
 }
 .footer_contacts a{
 	color: #CCFF00;
@@ -2317,4 +2318,8 @@ border:1px solid #CAC6BE;
 	border:1px solid #ff8e90;
 	background-color:#F8C2C2;
 	color:#656565;
+}
+.footer_address{
+	letter-spacing:0.5mm;
+    padding-top: 9px;
 }

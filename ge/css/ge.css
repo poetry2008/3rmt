@@ -16,7 +16,7 @@ a{
 	text-decoration: underline;
 }
 a:hover{color:#66CC99;}
-a:active {color:#ff0000;}
+a:active{color:#ff0000;}
 h1 {
     font-weight:normal;
     margin-bottom:0px;
@@ -449,20 +449,23 @@ p.box_des{
 #footer {
     clear:both;
     width:790px;
-    height:95px;
+    height:49px;
     background:url(../images/design/oc/footer.jpg) no-repeat;
     text-align:center;
     margin:0;
-    padding:0;
+	padding:46px 0 0 0;
+	color:#000;
 }
 #footer a {
-    color:#000;
-    text-decoration:none;
+	color:#339966;
+	text-decoration: underline;
 }
+#footer a:hover{color:#66CC99;}
+#footer a:active{color:#ff0000;}
 .copyright {
     color:#000;
     font-style:normal;
-	padding:45px 0 0 0;
+	padding:12px 0 0;
 }
 /* CGI
 */

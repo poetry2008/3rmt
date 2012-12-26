@@ -16,10 +16,7 @@ if ($banner = tep_banner_exists('dynamic', 'footer1')) {
   echo   tep_display_banner('static',  $banner) ; }?>
         
        </div>
-          <address class="footer_contacts">
-            <font color="#333333"><?php echo FOOTER_TEXT_BODY. "\n";?></font>
-              Copyright&nbsp;&copy;&nbsp;<?php echo date("Y");?>&nbsp;&nbsp;<a class="bold" href="<?php echo tep_href_link(FILENAME_DEFAULT);?>"><?php echo TITLE;?></a>
-            </address>
+          <?php echo str_replace('${YEAR}',date('Y'),FOOTER_TEXT_BODY) . "\n"; ?>
             <?php if ($banner = tep_banner_exists('dynamic', 'footer')) { echo  '<div class="info_foot02">' . "\n" . tep_display_banner('static', $banner) . '</div>'; }?>
 
 <?php 

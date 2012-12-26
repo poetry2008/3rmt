@@ -1096,8 +1096,7 @@ footer
 	color: #000;
 }
 .footer_contacts {
-	margin-top: 2px;
- *margin-top: 2px;
+	margin-top: 4px;
 	color:#000000;
 	line-height:18px;
 }
@@ -1214,8 +1213,9 @@ font-weight:bold;
 .info_foot01 {
 	padding-left:10px;
  *padding-left:2px;
-	margin-left:10px;
+	margin-left:11px;
 	padding-top:10px;
+	padding-bottom:6px;
 	color:#000;
 	font-size:11px;
 	line-height:15px;
@@ -2625,7 +2625,7 @@ searching
 .red_border{
 	font-size:12px;
 	line-height:14px;
-	margin:5px 0 65px 0;
+	margin:5px 0 70px 0;
 	border:1px solid #ff8e90;
 	background-color:#FFE9E9;
 	padding:5px;
