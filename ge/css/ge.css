@@ -454,6 +454,7 @@ p.box_des{
     text-align:center;
     margin:0;
 	padding:46px 0 0 0;
+	*padding-bottom:15px;
 	color:#000;
 }
 #footer a {
