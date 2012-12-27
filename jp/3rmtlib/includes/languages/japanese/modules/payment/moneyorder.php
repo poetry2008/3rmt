@@ -3,7 +3,7 @@
   $Id$
 */
 
-  define('TS_MODULE_PAYMENT_MONEYORDER_TEXT_TITLE', '銀行振込');// '代金先払い'/'郵便振替'/'現金書留'に変更して使用できます
+  define('TS_MODULE_PAYMENT_MONEYORDER_TEXT_TITLE', '銀行振込');//  改成“预付金”/“邮政转帐”/“现金挂号汇单”可以使用
   define('TS_MODULE_PAYMENT_MONEYORDER_TEXT_EXPLAIN', 'ジャパンネット銀行またはセブン銀行へお振り込み。<br>振込手数料はお客様のご負担となります。');
   define('TS_MODULE_PAYMENT_MONEYORDER_TEXT_DESCRIPTION', 'ジャパンネット銀行またはセブン銀行へお振り込み。<br>振込手数料はお客様のご負担となります。'); 
   define('TS_MODULE_PAYMENT_MONEYORDER_TEXT_EMAIL_FOOTER','ジャパンネット銀行またはセブン銀行へお振り込み。<br>振込手数料はお客様のご負担となります。'. EMAIL_SIGNATURE);

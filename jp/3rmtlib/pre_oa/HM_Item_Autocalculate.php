@@ -5,8 +5,8 @@ require_once DIR_WS_LANGUAGES . $language . '/oa/HM_Item_Autocalculate.php';
 class HM_Item_Autocalculate extends HM_Item_Basic
 {
   /*
-    必須：○　必須
-    項目名_____ _____　
+    必须：○　必须
+    项目名_____ _____　
   */
   var $hasRequire = true;
   var $hasTheName = true;
@@ -258,7 +258,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       $this->d= date('d',strtotime($theDate));
       $this->y= date('Y',strtotime($theDate));
     */
-    //天津ORDER id
+    //ORDER id
     $this->order_id = $order_id;
   }
 

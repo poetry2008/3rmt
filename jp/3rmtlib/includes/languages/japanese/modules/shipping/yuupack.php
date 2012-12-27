@@ -10,7 +10,7 @@ define('MODULE_SHIPPING_YUUPACK_TEXT_ILLEGAL_ZONE','指定された都道府県�
 define('MODULE_SHIPPING_YUUPACK_TEXT_OUT_OF_AREA', '配達区域外です.');
 define('MODULE_SHIPPING_YUUPACK_TEXT_CONFIG_ERROR','設定が不正です.');
 
-// 配達時間帯指定サービス
+// 配送时间段指定设置
 $GLOBALS['a_yuupack_time']=array(
   array('id'=>'希望なし',            'text'=>'希望なし'),
   array('id'=>'午前(9時〜12時ごろ)', 'text'=>'午前(9時〜12時ごろ)'),

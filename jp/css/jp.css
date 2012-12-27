@@ -343,10 +343,13 @@ footer
 	width: 900px;
 	font-size: 10px;
 	text-align: center;
-	padding: 5px 0px;
+	padding: 8px 0px 5px 0px;
 	border-top:3px solid #325082;
 	border-right:1px solid #ccc;
 	border-left:1px solid #ccc;
+}
+.footer_contacts{
+	padding-top:4px;
 }
 .contact_us_warpper {
 	clear:both;
@@ -1510,18 +1513,6 @@ page title
 	padding-left: 13px;
 	height: 23px;
 	line-height: 23px;
-}
-/* ---------------------------
-footer
---------------------------- */
-#footer {
-	width: 900px;
-	font-size: 10px;
-	text-align: center;
-	padding: 5px 0px;
-	border-top:3px solid #325082;
-	border-right:1px solid #ccc;
-	border-left:1px solid #ccc;
 }
 .contact_us_warpper {
 	clear:both;
@@ -2816,4 +2807,7 @@ searching
 	border:1px solid #ff8e90;
 	background-color:#FFE9E9;
 	width:100%;
+}
+.margin_clear{
+  margin:0px;
 }

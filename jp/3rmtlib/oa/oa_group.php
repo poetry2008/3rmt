@@ -1,13 +1,4 @@
 <?php
-/**
- * @file   oa_group.php
- * @author bobhero <bobhero.chen@gmail.com>
- * @date   Wed May 18 19:03:07 2011
- * 
- * @brief  列表,新建,编辑
- * 
- * 
- */
 require_once 'includes/application_top.php';
 global $language;
 $action = $_GET['action'];

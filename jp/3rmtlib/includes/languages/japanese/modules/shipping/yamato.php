@@ -10,7 +10,7 @@ define('MODULE_SHIPPING_YAMATO_TEXT_OVERSIZE',     '重量またはサイズが�
 define('MODULE_SHIPPING_YAMATO_TEXT_ILLEGAL_ZONE', '指定された都道府県が不正です.');
 define('MODULE_SHIPPING_YAMATO_TEXT_OUT_OF_AREA',  '配達区域外です.');
 
-// 「時間帯お届けサービス」
+// 到达时间段设置
 $GLOBALS['a_yamato_time']=array(
   array('id'=>'希望なし',  'text'=>'希望なし'),
   array('id'=>'午前中',    'text'=>'午前中'),

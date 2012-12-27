@@ -1020,14 +1020,14 @@ footer
 	line-height:18px;
 }
 .footer_contacts {
-	margin-top: -3px;
  *margin-top:0;
-	letter-spacing:0.5mm;
+	letter-spacing:0.6mm;
 	line-height:18px;
 	font-style:normal;
 }
 .footer_contacts a {
 	color: #fff;
+	margin-left:8px;
 }
 /*link color*/
 .product_listing_content a {
@@ -2331,4 +2331,14 @@ display:block;
 	*margin:5px 0 -6px 0;
 	border:1px solid #ff8e90;
 	background-color:#FFE9E9;
+}
+.footer_address{
+    font-style: normal;
+    letter-spacing: 0.5mm;
+    line-height: 18px;
+    margin-top: -3px;
+	*margin-top:0;
+}
+.margin_clear{
+  margin:0px;
 }

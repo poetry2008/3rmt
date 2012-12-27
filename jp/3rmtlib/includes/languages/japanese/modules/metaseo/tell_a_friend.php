@@ -1,8 +1,4 @@
 <?php
-/*
-	JP、GM共通ファイル
-*/
-
   define('MODULE_METASEO_TELL_A_FRIEND_TEXT_TITLE', '友達に知らせる');
   define('MODULE_METASEO_TELL_A_FRIEND_TEXT_EXPLAIN', 'EXPLAIN');
   define('MODULE_METASEO_TELL_A_FRIEND_TEXT_DESCRIPTION', '友達に知らせるページのSEO');

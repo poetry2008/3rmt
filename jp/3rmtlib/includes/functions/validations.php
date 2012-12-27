@@ -1,7 +1,6 @@
 <?php
 /*
    $Id$
-
  */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -12,12 +11,6 @@
 //
 // Return      : true  - valid email address
 //               false - invalid email address
-//
-// Description : function for validating email address that conforms to RFC 822 specs
-//
-//               This function is converted from a JavaScript written by
-//               Sandeep V. Tamhankar (stamhankar@hotmail.com). The original JavaScript
-//               is available at http://javascript.internet.com
 //
 // Sample Valid Addresses:
 //

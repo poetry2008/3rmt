@@ -1026,8 +1026,12 @@ Footer
 	text-align: center;
 	margin:0 auto;
 	clear:both;
-	height:64px;
+	height:51px;
+	*height:64px;
+	padding-top:11px;
+	color:#FFFFFF;
 	background:url(../images/design/box/footer_bg.gif) repeat-x;
+	letter-spacing:0.5mm;
 }
 .footer_link {
 	background:url(../images/design/box/footer_xian.gif) repeat-x;
@@ -1045,10 +1049,10 @@ Footer
 	  color: #0C9DEA;
 }
 .footer_contacts{
-	letter-spacing:0.5mm;
-	padding-top:7px;
-	line-height:18px;
+	line-height:16px;
 	color:#FFF;
+	letter-spacing:0.5mm;
+	margin-top:5px;
 }
 .footer_link02{ color:#9E9D9D;}
 .footer_link02 a{ color:#9E9D9D;}
@@ -2254,4 +2258,7 @@ line-height:16px;
 	*margin:5px 0 0 0;
 	border:1px solid #ff8e90;
 	background-color:#FFE9E9;
+}
+.margin_clear{
+  margin:0px;
 }

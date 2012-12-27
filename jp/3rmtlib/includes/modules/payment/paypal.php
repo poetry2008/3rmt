@@ -141,7 +141,7 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
     #mail送信
     $mail_body = '仮クレジットカード注文です。'."\n\n";
     
-    # ユーザー情報----------------------------
+    # 用户信息----------------------------
     $mail_body .= '━━━━━━━━━━━━━━━━━━━━━'."\n";
     $mail_body .= '▼注文日　　　　　：' . tep_date_long(time())."\n";
     $mail_body .= '▼お名前　　　　　：' . $order->customer["lastname"] . ' ' . $order->customer["firstname"]."\n";
@@ -187,11 +187,11 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
     
     $mail_body .= "\t" . '------------------------------------------'."\n";
     
-    # お届け日時----------------------------
+    # 交易时间----------------------------
     $mail_body .= '▼お届け日時　　　　：' . $_SESSION["insert_torihiki_date"] . "\n";
     $mail_body .= '　　　　　　　　　：' . $_SESSION["torihikihouhou"] . "\n";
     
-    # ユーザーエージェントなど----------------------------
+    # 用户代理等----------------------------
     $mail_body .= "\n\n";
     $mail_body .= '■IPアドレス　　　　　　：' . $_SERVER["REMOTE_ADDR"] . "\n";
     $mail_body .= '■ホスト名　　　　　　　：' . @gethostbyaddr($_SERVER["REMOTE_ADDR"]) . "\n";
@@ -286,7 +286,7 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
                   );
     }
   
-  //エラー
+  //错误
   function get_error() {
       global $_GET;
     
@@ -351,7 +351,7 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
         'last_modified' => 'now()'
       ));
       }else{
-      //不明扱い
+      //不明处理
                   tep_db_perform('telecom_unknow', array(
         'payment_method' => 'paypal',
         '`option`'      => ' ',
@@ -456,7 +456,7 @@ function getpreexpress($pre_value, $pre_pid){
         'last_modified' => 'now()'
       ));
       }else{
-      //不明扱い
+      //不明处理
                   tep_db_perform('telecom_unknow', array(
         'payment_method' => 'paypal',
         '`option`'      => ' ',

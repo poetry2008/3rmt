@@ -3,7 +3,7 @@
   $Id$
 */
 
-// 楽天銀行
+// 乐天银行
   define('TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_TITLE', '楽天銀行');
   define('TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_DESCRIPTION', '楽天銀行(代金に手数料が連動)');
   define('TS_MODULE_PAYMENT_RAKUTEN_BANK_FIELDS_DESCRIPTION', '下記入力欄に電話番号をご記入ください');

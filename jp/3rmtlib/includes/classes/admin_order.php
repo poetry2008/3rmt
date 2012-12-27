@@ -1,6 +1,6 @@
 <?php
 /*
-  JP、GM共通ファイル
+  JP、GM共通文件
 */
 
   class order {
@@ -17,7 +17,7 @@
     }
 
     function query($order_id) {
-// 2003-06-06 add_telephone
+
       $order_query = tep_db_query("select customers_name, customers_id, customers_name_f, customers_company, customers_street_address, customers_suburb, customers_city, customers_postcode, customers_state, customers_country, customers_telephone, customers_email_address, customers_address_format_id, delivery_name, delivery_name_f, delivery_company, delivery_street_address, delivery_suburb, delivery_city, delivery_postcode, delivery_state, delivery_country, delivery_telephone, delivery_address_format_id, billing_name, billing_name_f, billing_company, billing_street_address, billing_suburb, billing_city, billing_postcode, billing_state, billing_country, billing_telephone, billing_address_format_id, payment_method, cc_type, cc_owner, cc_number, cc_expires, currency, currency_value, date_purchased, orders_status, last_modified, torihiki_Bahamut, torihiki_houhou, torihiki_date from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($order_id) . "'");
       $order = tep_db_fetch_array($order_query);
 
@@ -59,7 +59,7 @@
                               'email_address' => $order['customers_email_address'],
                               'date' => $order['date_purchased']);
 
-// 2003-06-06 add_telephone
+
       $this->delivery = array('name' => $order['delivery_name'],
                               'name_f' => $order['delivery_name_f'],
                               'company' => $order['delivery_company'],
@@ -73,7 +73,7 @@
                               'format_id' => $order['delivery_address_format_id'],
                               'date' => $order['date_purchased']);
 
-// 2003-06-06 add_telephone
+
       $this->billing = array('name' => $order['billing_name'],
                              'name_f' => $order['billing_name_f'],
                              'company' => $order['billing_company'],

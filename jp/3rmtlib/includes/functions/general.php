@@ -26,7 +26,7 @@
     */
     // id 要求登录后自动跳转到非ssl首页，所以需要让此代码在id下失效
     /*
-    if ( (ENABLE_SSL == true) && (getenv('HTTPS') == 'on') && (SITE_ID != 4 && SITE_ID != 5)) { // We are loading an SSL page // 要求id登陆跳回非SSL页面 2010.12.28 18:00 - maker
+    if ( (ENABLE_SSL == true) && (getenv('HTTPS') == 'on') && (SITE_ID != 4 && SITE_ID != 5)) { // We are loading an SSL page // 要求id登陆跳回非SSL页面
       if (substr($url, 0, strlen(HTTP_SERVER)) == HTTP_SERVER) { // NONSSL url
         $url = HTTPS_SERVER . substr($url, strlen(HTTP_SERVER)); // Change it to SSL
       }
@@ -170,7 +170,7 @@ function forward404Unless($condition)
   }
 
 ////
-// 商品IDから説明文を呼び出す
+// 从商品ID调用说明书
   function ds_tep_get_description($products_id) {
     global $languages_id;
 //ccdd
@@ -803,7 +803,7 @@ function forward404Unless($condition)
 ////
 // Output a raw date string in the selected locale date format
 // $raw_date needs to be in this format: YYYY-MM-DD HH:MM:SS
-// NOTE: Includes a workaround for dates before 01/01/1970 that fail on windows servers
+
   function tep_date_short($raw_date) {
     if ( ($raw_date == '0000-00-00 00:00:00') || ($raw_date == '') ) return false;
 
@@ -1202,12 +1202,11 @@ function forward404Unless($condition)
 // Parameters:
 // $to_name           The name of the recipient, e.g. "Jan Wildeboer"
 // $to_email_address  The eMail address of the recipient, 
-//                    e.g. jan.wildeboer@gmx.de 
 // $email_subject     The subject of the eMail
 // $email_text        The text of the eMail, may contain HTML entities
 // $from_email_name   The name of the sender, e.g. Shop Administration
 // $from_email_adress The eMail address of the sender, 
-//                    e.g. info@mytepshop.com
+
 
   function tep_mail($to_name, $to_email_address, $email_subject, $email_text, $from_email_name, $from_email_address) {
     if (SEND_EMAILS != 'true') return false;
@@ -1437,8 +1436,6 @@ function forward404Unless($condition)
     }
   }
 
-  // Convert "zen-kaku" alphabets and numbers to "han-kaku"
-  // tamura 2002/12/30
   function tep_an_zen_to_han($string) {
     return mb_convert_kana($string, "a");
   }
@@ -1457,7 +1454,7 @@ function forward404Unless($condition)
   }
 
 ////
-// 商品IDからメーカー名を呼び出す
+// 从商品ID调用说明书
   function ds_tep_get_count_manufactures($manufacturers_id) {
 //ccdd
     $manufactures_query = tep_db_query("select count(*) as total from ".TABLE_PRODUCTS." where manufacturers_id = '".$manufacturers_id."'");
@@ -1468,18 +1465,18 @@ function forward404Unless($condition)
    
 
 ////
-// 商品IDからメーカー名を呼び出す
+// 从商品ID调用说明书
   function ds_tep_get_manufactures($manufacturers_id, $return) {
   
   if($return == 1) {
-    //メーカー名を返す
+    //返回厂商名
 //ccdd
     $manufactures_query = tep_db_query("select manufacturers_name from ".TABLE_MANUFACTURERS." where manufacturers_id = '".$manufacturers_id."'");
     $manufactures = tep_db_fetch_array($manufactures_query);
     
     $mreturn = $manufactures['manufacturers_name'];
   } elseif($return == 2) {
-    //メーカー画像
+    //厂商图像
 //ccdd
     $manufactures_query = tep_db_query("select manufacturers_image from ".TABLE_MANUFACTURERS." where manufacturers_id = '".$manufacturers_id."'");
     $manufactures = tep_db_fetch_array($manufactures_query);
@@ -1492,7 +1489,7 @@ function forward404Unless($condition)
   
 ////
 ////
-// Ajax用文字コード変換
+// Ajax用文字代码转换
   function ds_convert_Ajax($string) {
     return mb_convert_encoding($string,'UTF-8','EUC-JP');
   }
@@ -1756,10 +1753,10 @@ header("Expires:".date("D, d M Y H:i:s",0)." GMT");
             if (isset($cPath) && tep_not_null($cPath)) {
               switch(SITE_ID) {
                 case '3':
-                  $title       = $seo_category['categories_name'] . 'と言えばRMTワールドマネー｜' . (tep_not_null($seo_category['categories_meta_text']) ? $seo_category['categories_meta_text'] : C_TITLE); 
+                  $title       = $seo_category['categories_name'] . 'と言えば'.STORE_NAME.'｜' . (tep_not_null($seo_category['categories_meta_text']) ? $seo_category['categories_meta_text'] : C_TITLE); 
                   break;
                 case '2':
-                  $title       = $seo_category['categories_name'] . (tep_not_null($seo_category['categories_meta_text']) ? '-' . $seo_category['categories_meta_text'] . '｜激安のRMTゲームマネー' : C_TITLE); 
+                  $title       = $seo_category['categories_name'] . (tep_not_null($seo_category['categories_meta_text']) ? '-' .  $seo_category['categories_meta_text'] . '｜激安の'.STORE_NAME : C_TITLE); 
                   break;
                 case '1':
                 default:
@@ -2518,7 +2515,7 @@ function tep_unlink_temp_dir($dir)
   $categories_path_array = explode("_", $categories_path);
   
   if($return == 1) {
-    //大カテゴリの画像を返す
+    //返回一级分类的图像
     // ccdd
     $categories_query = tep_db_query("
         select categories_name
@@ -2531,7 +2528,7 @@ function tep_unlink_temp_dir($dir)
     
     $creturn = $categories['categories_name'];
   } elseif($return == 2) {
-    //中カテゴリ名を返す
+    //返回二级分类名
     // ccdd
     $categories_query = tep_db_query("
       select categories_name 
@@ -2561,7 +2558,7 @@ function tep_unlink_temp_dir($dir)
     $price = $result['products_price'];
   }
   
-  //ポイント計算
+  //计算返点
   $point_value = (int)($price * MODULE_ORDER_TOTAL_POINT_FEE);
   
   return $point_value;
@@ -2581,14 +2578,14 @@ function tep_unlink_temp_dir($dir)
   }
 
 ////
-// 買い取り商品が存在するか？
+// 存在买取商品吗？
   function ds_count_bflag() {
     global $cart;
     return $cart->show_total() < 0 ? 'View' : false;
   }
   
 ////
-// 在庫調査  
+// 调查库存  
   function ds_replace_plist($pID, $qty, $string) {
     // ccdd
     $query = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".(int)tep_get_prid($pID)."'");
@@ -2596,7 +2593,7 @@ function tep_unlink_temp_dir($dir)
   
     if($qty < 1) {
       if($result['products_bflag'] == '1') {
-        # 買い取り商品
+        # 买取商品
       return '<span class="markProductOutOfStock">一時停止</span>';
       } else {
         # 通常商品
@@ -2865,10 +2862,9 @@ function tep_orders_status_finished($osid){
 
 
   function tep_get_rss($url){
-    //寡鹿議方怏
+
     $input_arr = array();
     $i = 0; 
-    //貫rss嶄寡鹿仟療議url
     /*
     $cache_file = '/tmp/' . base64_encode($url);
     if(file_exists($cache_file) && time() - filemtime($cache_file) > ){
@@ -2880,18 +2876,18 @@ function tep_orders_status_finished($osid){
     */
     $rss_str = @file_get_contents($url);
     preg_match_all("/\<item rdf:about=\"([^\"]*)\"\>(.*?)\<\/item\>/s", $rss_str, $gamearr);
-    //rss嶄頁倦嗤仟療方象
+
     if (!empty($gamearr[2])) {
       foreach ($gamearr[2] as $gkey => $game)
       {
         preg_match_all("/\<title\>(.*?)\<\/title\>/", $game, $title);
         preg_match_all("/\<link\>(.*?)\<\/link\>/", $game, $link);
         preg_match_all("/\<dc:date\>(.*?)\<\/dc:date\>/", $game, $date_added);
-        //仟療議銭俊頁倦贋壓 
+
         if (isset($link[1][0])) {
-          //仟療議url 
+
           $input_arr[$i]['url'] =  $link[1][0]; 
-          //仟療議炎籾 
+
           if (isset($title[1][0])) {
             $input_arr[$i]['headline'] =  $title[1][0]; 
           } else {
@@ -3352,7 +3348,7 @@ function tep_get_categories_by_products_id($pid){
   }
   return $carr;
 }
-//返回该产品的romaji
+//返回该产品的url文字
 function tep_get_romaji_by_pid($id)
 {
   //return $id;

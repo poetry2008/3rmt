@@ -30,8 +30,6 @@ class SEO_DataBase{
 
 /**
  * MySQL_DataBase class constructor 
- * @author Bobby Easland 
- * @version 1.0
  * @param string $host
  * @param string $user
  * @param string $db
@@ -49,8 +47,6 @@ class SEO_DataBase{
 
 /**
  * Function to connect to MySQL 
- * @author Bobby Easland 
- * @version 1.1
  */ 
   function ConnectDB(){
     $this->link_id = mysql_connect($this->host, $this->user, $this->pass);
@@ -58,8 +54,6 @@ class SEO_DataBase{
   
 /**
  * Function to select the database
- * @author Bobby Easland 
- * @version 1.0
  * @return resoource 
  */ 
   function SelectDB(){
@@ -68,8 +62,6 @@ class SEO_DataBase{
   
 /**
  * Function to perform queries
- * @author Bobby Easland 
- * @version 1.0
  * @param string $query SQL statement
  * @return resource 
  */ 
@@ -79,8 +71,6 @@ class SEO_DataBase{
   
 /**
  * Function to fetch array
- * @author Bobby Easland 
- * @version 1.0
  * @param resource $resource_id
  * @param string $type MYSQL_BOTH or MYSQL_ASSOC
  * @return array 
@@ -91,8 +81,6 @@ class SEO_DataBase{
   
 /**
  * Function to fetch the number of rows
- * @author Bobby Easland 
- * @version 1.0
  * @param resource $resource_id
  * @return mixed  
  */ 
@@ -102,8 +90,6 @@ class SEO_DataBase{
 
 /**
  * Function to fetch the last insertID
- * @author Bobby Easland 
- * @version 1.0
  * @return integer  
  */ 
   function InsertID() {
@@ -112,8 +98,6 @@ class SEO_DataBase{
   
 /**
  * Function to free the resource
- * @author Bobby Easland 
- * @version 1.0
  * @param resource $resource_id
  * @return boolean
  */ 
@@ -123,8 +107,6 @@ class SEO_DataBase{
 
 /**
  * Function to add slashes
- * @author Bobby Easland 
- * @version 1.0
  * @param string $data
  * @return string 
  */ 
@@ -132,6 +114,13 @@ class SEO_DataBase{
     return addslashes($data);
   } # end function
 
+/**
+ * @param string $table Database table
+ * @param array $data Associative array of columns / values
+ * @param string $action insert or update
+ * @param string $parameters
+ * @return resource
+ */ 
   function DBPerform($table, $data, $action = 'insert', $parameters = '') {
     reset($data);
     if ($action == 'insert') {
@@ -275,8 +264,6 @@ class SEO_URL{
   
 /**
  * SEO_URL class constructor 
- * @author Bobby Easland 
- * @version 1.1
  * @param integer $languages_id
  */ 
   function SEO_URL($languages_id){
@@ -371,12 +358,10 @@ class SEO_URL{
 
 /**
  * Function to return SEO URL link SEO'd with stock generattion for error fallback
- * @author Bobby Easland 
- * @version 1.0
  * @param string $page Base script for URL 
  * @param string $parameters URL parameters
  * @param string $connection NONSSL/SSL
- * @param boolean $add_session_id Switch to add osCsid
+ * @param boolean $add_session_id Switch to add sid
  * @return string Formed href link 
  */ 
   function href_link($page = '', $parameters = '', $connection = 'NONSSL', $add_session_id = true){
@@ -565,8 +550,6 @@ class SEO_URL{
 
 /**
  * Function to append session ID if needed 
- * @author Bobby Easland 
- * @version 1.0
  * @param string $link 
  * @param boolean $add_session_id
  * @param string $connection
@@ -630,8 +613,6 @@ class SEO_URL{
   
 /**
  * SFunction to parse the parameters into an SEO URL 
- * @author Bobby Easland 
- * @version 1.1
  * @param string $page
  * @param string $params
  * @param string $separator NOTE: passed by reference
@@ -682,7 +663,7 @@ class SEO_URL{
               $url = $this->make_url($page, 'reviews/page', '', $p2[1], '.html', $separator);
               break;
             case ($page == FILENAME_DEFAULT && $_GET['cPath']):
-              //break; //zhu shi
+              //break; 
             default:
               $container[$p2[0]] = $p2[1];
               break;
@@ -738,7 +719,7 @@ class SEO_URL{
           } # end switch
           break;
         //===========================================
-        // 追加
+        // 添加
         case 'colors':
           $url = $this->make_url($page, REWRITE_PRODUCTS, $p2[0], $p2[1], '.html', $separator);
           break;
@@ -775,8 +756,6 @@ class SEO_URL{
 
 /**
  * Function to return the generated SEO URL  
- * @author Bobby Easland 
- * @version 1.0
  * @param string $page
  * @param string $string Stripped, formed anchor
  * @param string $anchor_type Parameter type (products_id, cPath, etc.)
@@ -851,8 +830,6 @@ class SEO_URL{
 
 /**
  * Function to get the product name. Use evaluated cache, per page cache, or database query in that order of precedent  
- * @author Bobby Easland 
- * @version 1.1
  * @param integer $pID
  * @return string Stripped anchor text
  */ 
@@ -888,8 +865,6 @@ class SEO_URL{
   
 /**
  * Function to get the category name. Use evaluated cache, per page cache, or database query in that order of precedent 
- * @author Bobby Easland 
- * @version 1.1
  * @param integer $cID NOTE: passed by reference
  * @return string Stripped anchor text
  */ 
@@ -950,8 +925,6 @@ class SEO_URL{
 
 /**
  * Function to get the manufacturer name. Use evaluated cache, per page cache, or database query in that order of precedent.
- * @author Bobby Easland 
- * @version 1.1
  * @param integer $mID
  * @return string
  */ 
@@ -984,8 +957,6 @@ class SEO_URL{
 
 /**
  * Function to get the article name. Use evaluated cache, per page cache, or database query in that order of precedent.
- * @author Bobby Easland 
- * @version 1.0
  * @param integer $aID
  * @return string
  */ 
@@ -1021,8 +992,6 @@ class SEO_URL{
 
 /**
  * Function to get the topic name. Use evaluated cache, per page cache, or database query in that order of precedent.
- * @author Bobby Easland 
- * @version 1.1
  * @param integer $tID
  * @return string
  */ 
@@ -1058,8 +1027,6 @@ class SEO_URL{
 
 /**
  * Function to get the informatin name. Use evaluated cache, per page cache, or database query in that order of precedent.
- * @author Bobby Easland 
- * @version 1.1
  * @param integer $iID
  * @return string
  */ 
@@ -1095,8 +1062,6 @@ class SEO_URL{
 
 /**
  * Function to retrieve full cPath from category ID 
- * @author Bobby Easland 
- * @version 1.1
  * @param mixed $cID Could contain cPath or single category_id
  * @param integer $original Single category_id passed back by reference
  * @return string Full cPath string
@@ -1119,8 +1084,6 @@ class SEO_URL{
 
 /**
  * Recursion function to retrieve parent categories from category ID 
- * @author Bobby Easland 
- * @version 1.0
  * @param mixed $categories Passed by reference
  * @param integer $categories_id
  */ 
@@ -1140,8 +1103,6 @@ class SEO_URL{
 
 /**
  * Function to check if a value is NULL 
- * @author Bobby Easland as abstracted from osCommerce-MS2.2 
- * @version 1.0
  * @param mixed $value
  * @return boolean
  */ 
@@ -1163,8 +1124,6 @@ class SEO_URL{
 
 /**
  * Function to check if the products_id contains an attribute 
- * @author Bobby Easland 
- * @version 1.1
  * @param integer $pID
  * @return boolean
  */ 
@@ -1178,8 +1137,6 @@ class SEO_URL{
 
 /**
  * Function to check if the params contains a products_id 
- * @author Bobby Easland 
- * @version 1.1
  * @param string $params
  * @return boolean
  */ 
@@ -1193,8 +1150,6 @@ class SEO_URL{
 
 /**
  * Function to check if cPath is in the parameter string  
- * @author Bobby Easland 
- * @version 1.0
  * @param string $params
  * @return boolean
  */ 
@@ -1208,8 +1163,6 @@ class SEO_URL{
 
 /**
  * Function used to output class profile
- * @author Bobby Easland 
- * @version 1.0
  */ 
   function profile(){
     $this->calculate_performance();
@@ -1219,8 +1172,6 @@ class SEO_URL{
 
 /**
  * Function used to calculate and output the performance metrics of the class
- * @author Bobby Easland 
- * @version 1.0
  * @return mixed Output of performance data wrapped in HTML pre tags
  */ 
   function calculate_performance(){
@@ -1233,8 +1184,6 @@ class SEO_URL{
   
 /**
  * Function to strip the string of punctuation and white space 
- * @author Bobby Easland 
- * @version 1.0
  * @param string $string
  * @return string Stripped text. Removes all non-alphanumeric characters.
  */ 
@@ -1251,8 +1200,6 @@ class SEO_URL{
 
 /**
  * Function to expand the SEO_CONVERT_SET group 
- * @author Bobby Easland 
- * @version 1.0
  * @param string $set
  * @return mixed
  */ 
@@ -1273,8 +1220,6 @@ class SEO_URL{
   } # end function
 /**
  * Function to return the short word filtered string 
- * @author Bobby Easland 
- * @version 1.0
  * @param string $str
  * @param integer $limit
  * @return string Short word filtered
@@ -1298,8 +1243,6 @@ class SEO_URL{
   
 /**
  * Function to implode an associative array 
- * @author Bobby Easland 
- * @version 1.0
  * @param array $array Associative data array
  * @param string $inner_glue
  * @param string $outer_glue
@@ -1317,8 +1260,6 @@ class SEO_URL{
 
 /**
  * Function to print an array within pre tags, debug use 
- * @author Bobby Easland 
- * @version 1.0
  * @param mixed $array
  */ 
   /*
@@ -1334,8 +1275,6 @@ class SEO_URL{
 
 /**
  * Function to start time for performance metric 
- * @author Bobby Easland 
- * @version 1.0
  * @param float $start_time
  */ 
   function start(&$start_time){
@@ -1344,8 +1283,6 @@ class SEO_URL{
   
 /**
  * Function to stop time for performance metric 
- * @author Bobby Easland 
- * @version 1.0
  * @param float $start
  * @param float $time NOTE: passed by reference
  */ 
@@ -1356,8 +1293,6 @@ class SEO_URL{
 
 /**
  * Function to translate a string 
- * @author Bobby Easland 
- * @version 1.0
  * @param string $data String to be translated
  * @param array $parse Array of tarnslation variables
  * @return string
@@ -1368,8 +1303,6 @@ class SEO_URL{
   
 /**
  * Function to output a translated or sanitized string 
- * @author Bobby Easland 
- * @version 1.0
  * @param string $sting String to be output
  * @param mixed $translate Array of translation characters
  * @param boolean $protected Switch for htemlspecialchars processing
@@ -1389,8 +1322,6 @@ class SEO_URL{
 
 /**
  * Function to return the session ID 
- * @author Bobby Easland 
- * @version 1.0
  * @param string $sessid
  * @return string
  */ 
@@ -1404,8 +1335,6 @@ class SEO_URL{
   
 /**
  * Function to return the session name 
- * @author Bobby Easland 
- * @version 1.0
  * @param string $name
  * @return string
  */ 
@@ -1419,8 +1348,6 @@ class SEO_URL{
 
 /**
  * Function to generate products cache entries 
- * @author Bobby Easland 
- * @version 1.0
  */ 
   function generate_products_cache(){
     $this->is_cached($this->cache_file . 'products', $is_cached, $is_expired);    
@@ -1457,8 +1384,6 @@ class SEO_URL{
     
 /**
  * Function to generate manufacturers cache entries 
- * @author Bobby Easland 
- * @version 1.0
  */ 
   function generate_manufacturers_cache(){
     $this->is_cached($this->cache_file . 'manufacturers', $is_cached, $is_expired);   
@@ -1485,8 +1410,6 @@ class SEO_URL{
 
 /**
  * Function to generate categories cache entries 
- * @author Bobby Easland 
- * @version 1.1
  */ 
   function generate_categories_cache(){
     $this->is_cached($this->cache_file . 'categories', $is_cached, $is_expired);    
@@ -1546,8 +1469,6 @@ class SEO_URL{
 
 /**
  * Function to generate articles cache entries 
- * @author Bobby Easland 
- * @version 1.0
  */ 
   /*
   function generate_articles_cache(){
@@ -1574,8 +1495,6 @@ class SEO_URL{
 
 /**
  * Function to generate topics cache entries 
- * @author Bobby Easland 
- * @version 1.0
  */ 
   /*
   function generate_topics_cache(){
@@ -1602,8 +1521,6 @@ class SEO_URL{
 
 /**
  * Function to generate information cache entries 
- * @author Bobby Easland 
- * @version 1.0
  */ 
   /*
   function generate_information_cache(){
@@ -1630,8 +1547,6 @@ class SEO_URL{
 
 /**
  * Function to save the cache to database 
- * @author Bobby Easland 
- * @version 1.0
  * @param string $name Cache name
  * @param mixed $value Can be array, string, PHP code, or just about anything
  * @param string $method RETURN, ARRAY, EVAL
@@ -1671,8 +1586,6 @@ class SEO_URL{
   
 /**
  * Function to get cache entry 
- * @author Bobby Easland 
- * @version 1.0
  * @param string $name
  * @param boolean $local_memory
  * @return mixed
@@ -1739,8 +1652,6 @@ class SEO_URL{
 
 /**
  * Function to get cache from memory
- * @author Bobby Easland 
- * @version 1.0
  * @param string $name
  * @param string $method
  * @return mixed
@@ -1766,8 +1677,6 @@ class SEO_URL{
 
 /**
  * Function to perform basic garbage collection for database cache system 
- * @author Bobby Easland 
- * @version 1.0
  */ 
   function cache_gc(){
           //date_default_timezone_set('UTC');
@@ -1776,8 +1685,6 @@ class SEO_URL{
 
 /**
  * Function to convert time for cache methods 
- * @author Bobby Easland 
- * @version 1.0
  * @param string $expires
  * @return string
  */ 
@@ -1811,8 +1718,6 @@ class SEO_URL{
 
 /**
  * Function to check if the cache is in the database and expired  
- * @author Bobby Easland 
- * @version 1.0
  * @param string $name
  * @param boolean $is_cached NOTE: passed by reference
  * @param boolean $is_expired NOTE: passed by reference
@@ -1830,8 +1735,6 @@ class SEO_URL{
 
 /**
  * Function to initialize the redirect logic
- * @author Bobby Easland 
- * @version 1.0
  */ 
   function check_redirect(){
     $this->need_redirect = false; 
@@ -1848,8 +1751,6 @@ class SEO_URL{
   
 /**
  * Function to check if the URL needs to be redirected 
- * @author Bobby Easland 
- * @version 1.1
  */ 
   function need_redirect(){
     if ( is_numeric(strpos($this->real_uri, '{')) ){
@@ -1872,8 +1773,6 @@ class SEO_URL{
   
 /**
  * Function to check if it's a valid redirect page 
- * @author Bobby Easland 
- * @version 1.0
  */ 
   function check_seo_page(){
     !defined('SEO_URLS') 
@@ -1887,8 +1786,6 @@ class SEO_URL{
   
 /**
  * Function to parse the path for old SEF URLs 
- * @author Bobby Easland 
- * @version 1.0
  * @param string $path_info
  * @return array
  */ 
@@ -1908,8 +1805,6 @@ class SEO_URL{
   
 /**
  * Function to perform redirect 
- * @author Bobby Easland 
- * @version 1.0
  */ 
   function do_redirect(){
     $p = @explode('&', $this->uri_parsed['query']);
@@ -1933,7 +1828,7 @@ class SEO_URL{
     $url = $this->href_link($this->uri_parsed['path'], $params, 'NONSSL', false);
     if ( $this->attributes['USE_SEO_REDIRECT'] == 'true' ){     
       header("HTTP/1.0 301 Moved Permanently"); 
-      header("Location: $url"); // redirect...bye bye   
+      header("Location: $url"); // redirect 
     }
   } # end function do_redirect  
 } # end class

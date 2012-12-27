@@ -192,31 +192,21 @@ function toggle_header_menu(elmnt)
     switch (elmnt) {
       case 'tutorials':
         document.getElementById('headerorder').style.visibility="hidden";
-        document.getElementById('ordermenu').style.visibility="hidden";
-        document.getElementById('managermenu').style.visibility="hidden";
-        document.getElementById('redirecturl').style.visibility="hidden";
-        break;
-      case 'ordermenu':
-        document.getElementById('headerorder').style.visibility="hidden";
-        document.getElementById('tutorials').style.visibility="hidden";
         document.getElementById('managermenu').style.visibility="hidden";
         document.getElementById('redirecturl').style.visibility="hidden";
         break;
       case 'managermenu':
         document.getElementById('headerorder').style.visibility="hidden";
         document.getElementById('tutorials').style.visibility="hidden";
-        document.getElementById('ordermenu').style.visibility="hidden";
         document.getElementById('redirecturl').style.visibility="hidden";
         break; 
       case 'redirecturl':
         document.getElementById('headerorder').style.visibility="hidden";
         document.getElementById('tutorials').style.visibility="hidden";
-        document.getElementById('ordermenu').style.visibility="hidden";
         document.getElementById('managermenu').style.visibility="hidden";
         break;
       case 'headerorder':
         document.getElementById('tutorials').style.visibility="hidden";
-        document.getElementById('ordermenu').style.visibility="hidden";
         document.getElementById('redirecturl').style.visibility="hidden";
         document.getElementById('managermenu').style.visibility="hidden";
         break;

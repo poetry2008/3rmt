@@ -1,22 +1,7 @@
 <?php
 /*
   $Id$
-
-  SagawaEx Shipping Calculator.
-  Calculate shipping costs.
-
-  2002/03/29 written by TAMURA Toshihiko (tamura@bitscope.co.jp)
-  2003/04/10 modified for ms1
  */
-/*
-    $rate = new _SagawaEx('sagawaex','通常便');
-    $rate->SetOrigin('01', 'JP');   // 北海道から
-    $rate->SetDest('13', 'JP');     // 東京都まで
-    $rate->SetWeight(10);           // kg
-    $quote = $rate->GetQuote();
-    print $quote['type'] . "<br>";
-    print $quote['cost'] . "\n";
-*/
 class _SagawaEx {
     var $quote;
     var $OriginZone;
@@ -28,10 +13,10 @@ class _SagawaEx {
     var $Width  = 0;
     var $Height = 0;
 
-    // コンストラクタ
+    // 构造函数
     // $id:   module id
     // $titl: module name
-    // $zone: 都道府県コード '01'～'47'
+    // $zone: 省市县代码 '01'～'47'
     // $country: country code
     function _SagawaEx($id, $title, $zone = NULL, $country = NULL) {
         $this->quote = array('id' => $id, 'title' => $title);
@@ -39,8 +24,8 @@ class _SagawaEx {
             $this->SetOrigin($zone, $country);
         }
     }
-    // 発送元をセットする
-    // $zone: 都道府県コード '01'～'47'
+    // 设置发送地
+    // $zone: 省市县代码 '01'～'47'
     // $country: country code
     function SetOrigin($zone, $country = NULL) {
         $this->OriginZone = $zone;
@@ -68,20 +53,20 @@ class _SagawaEx {
             $this->Height = $height;
         }
     }
-    // サイズ区分(0～4)を返す
-    // 規格外の場合は9を返す
+    // 返回尺寸区分(0～4)
+    // 规格以外的时候返回9
     //
-    // 区分  サイズ名  ３辺計   重量
+    // 区分  尺寸名  3边合计   重量
     // ----------------------------------
-    // 0     60サイズ  60cmまで  2kgまで
-    // 1     80サイズ  80cmまで  5kgまで
-    // 2    100サイズ 100cmまで 10kgまで
-    // 3    140サイズ 140cmまで 20kgまで
-    // 4    160サイズ 160cmまで 30kgまで
-    // 9    規格外    
+    // 0     60size  60cm      2kg
+    // 1     80size  80cm      5kg
+    // 2    100size 100cm      10kg
+    // 3    140size 140cm      20kg
+    // 4    160size 160cm      30kg
+    // 9    规格外    
     function GetSizeClass() {
         $a_classes = array(
-            array(0,  60,  2),  // 区分,３辺計,重量
+            array(0,  60,  2),  // 区分，3边合计，重量
             array(1,  80,  5),
             array(2, 100, 10),
             array(3, 140, 20),
@@ -95,16 +80,16 @@ class _SagawaEx {
                 return $a_limit[0];
             }
         }
-        return -1;  // 規格外
+        return -1;  // 规格外
     }
-    // 送付元と送付先からキーを作成する
+    //用送货地点和收货地点来做成key
     //
     function GetDistKey() {
         $s_key = '';
         $s_z1 = $this->GetLZone($this->OriginZone);
         $s_z2 = $this->GetLZone($this->DestZone);
         if ( $s_z1 && $s_z2 ) {
-            // 地帯コードをアルファベット順に連結する
+            // 地域代码用阿拉伯数字连接
             if ( ord($s_z1) < ord($s_z2) ) {
                 $s_key = $s_z1 . $s_z2;
             } else {
@@ -113,10 +98,10 @@ class _SagawaEx {
         }
         return $s_key;
     }
-    // 都道府県コードから地帯コードを取得する
-    // $zone: 都道府県コード
-    function GetLZone($zone) {
-        // 都道府県コードを地帯コード('A'～'M')に変換する
+    // 通过省市县代码来获取地域代码
+    // $zone: 省市县代码
+        function GetLZone($zone) {
+        // 把省市县代码替换成地域代码('A'～'M')
         //  北海道:'A' = 北海道
         //  北東北:'B' = 青森県,岩手県,秋田県
         //  南東北:'C' = 宮城県,山形県,福島県
@@ -183,22 +168,21 @@ class _SagawaEx {
     }
 
     function GetQuote() {
-        // 距離別の価格ランク: ランクコード => 価格(60,80,100,140,160)
+        // 按照距离定的价格顺: rankcode => 价格(60,80,100,140,160)
         $a_pricerank = array(
-        'N01'=>array(630, 630,630,630,630), // 通常便(01) 近距離
-        'N02'=>array(630, 630,630,630,630), // 通常便(02)   ↑
-        'N03'=>array(630, 630,630,630,630), // 通常便(03)
-        'N04'=>array(630, 630,630,630,630), // 通常便(04)
-        'N05'=>array(630, 630,630,630,630), // 通常便(05)
-        'N06'=>array(630, 630,630,630,630), // 通常便(06)
-        'N07'=>array(630, 630,630,630,630), // 通常便(07)
-        'N08'=>array(630, 630,630,630,630), // 通常便(08)
-        'N09'=>array(630, 630,630,630,630), // 通常便(09)
-        'N10'=>array(630, 630,630,630,630), // 通常便(10)   ↓
-        'N11'=>array(630, 630,630,630,630)  // 通常便(11) 遠距離
+        'N01'=>array(630, 630,630,630,630), // 通常邮寄(01) 近距离
+        'N02'=>array(630, 630,630,630,630), // 通常邮寄(02)   ↑
+        'N03'=>array(630, 630,630,630,630), // 通常邮寄(03)
+        'N04'=>array(630, 630,630,630,630), // 通常邮寄(04)
+        'N05'=>array(630, 630,630,630,630), // 通常邮寄(05)
+        'N06'=>array(630, 630,630,630,630), // 通常邮寄(06)
+        'N07'=>array(630, 630,630,630,630), // 通常邮寄(07)
+        'N08'=>array(630, 630,630,630,630), // 通常邮寄(08)
+        'N09'=>array(630, 630,630,630,630), // 通常邮寄(09)
+        'N10'=>array(630, 630,630,630,630), // 通常邮寄(10)   ↓
+        'N11'=>array(630, 630,630,630,630)  // 通常邮寄(11) 远距离
         );
-        // 地帯 - 地帯間の価格ランク
-        // (参照) http://www.sagawa-exp.co.jp/business/budjetserch-j.html
+        // 地域-地域间的价格顺
         $a_dist_to_rank = array(
         'AA'=>'N01',
         'AB'=>'N03','BB'=>'N01',

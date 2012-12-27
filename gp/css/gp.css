@@ -1100,17 +1100,18 @@ Footer
 --------------------------- */
 #footer {
 	width: 900px;
-	font-size: 10px;
+	font-size: 12px;
 	text-align: center;
 	margin:5px auto;
+	padding-top:15px;
 	clear:both;
 	height:85px;
 	line-height:20px;
 	background:url(../images/design/box/footer_bg.gif) repeat-x;
+	letter-spacing:0.5mm;
 }
 .footer_contacts{
 	letter-spacing:0.5mm;
-	padding-top:15px;
 	line-height:20px;
 	font-size:12px;
 }
@@ -2509,4 +2510,7 @@ line-height:21px;
 	*margin:5px 0 -6px 0;
 	border:1px solid #ff8e90;
 	background-color:#FFE9E9;
+}
+.margin_clear{
+  margin:0px;
 }

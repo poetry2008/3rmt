@@ -3,7 +3,7 @@
    $Id$
  */
 
-// 代金引換払い(手数料が購入金額に連動)
+// 货到付款（手续费与购买价格连动）
 require_once (DIR_WS_CLASSES . 'basePayment.php');
 class rakuten_bank  extends basePayment  implements paymentInterface {
   var $site_id, $code, $title, $description, $enabled, $n_fee, $s_error, $email_footer,$c_prefix, $show_payment_info;
@@ -95,10 +95,10 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
     global $currencies;
     global $order;
 
-    $total_cost = $order->info['total'];      // 税金も含めた代金の総額
-    $f_result = $this->calc_fee($total_cost); // 手数料
+    $total_cost = $order->info['total'];      // 包括税收的总价格
+    $f_result = $this->calc_fee($total_cost); // 手续费
 
-    $added_hidden = ''; // added by rekam
+    $added_hidden = ''; 
     if (!empty($this->n_fee)) {
       $s_message = $f_result ? (MODULE_PAYMENT_RAKUTEN_BANK_TEXT_FEE . '&nbsp;' . $currencies->format($this->n_fee)) : ('<font color="#FF0000">' . $this->s_error . '</font>');
     } else {
@@ -192,7 +192,7 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
     global $_POST;
     global $order, $point;
 
-    // 追加 - 2007.01.05 ----------------------------------------------
+
     $total = $order->info['total'];
     if ((MODULE_ORDER_TOTAL_CODT_STATUS == 'true')
         && ($payment == 'cod_table')
@@ -210,9 +210,9 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
     if(MODULE_ORDER_TOTAL_CONV_STATUS == 'true' && ($payment == 'rakuten_bank')) {
       $total += intval($_POST['codt_fee']);
     }
-    // 追加 - 2007.01.05 ----------------------------------------------
 
-    // email_footer に使用する文字列
+
+    // email_footer里使用的字符串
     $s_message = $_POST['codt_fee_error']
       ? $_POST['codt_fee_error']
       : sprintf(MODULE_PAYMENT_RAKUTEN_BANK_TEXT_MAILFOOTER,

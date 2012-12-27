@@ -2,7 +2,7 @@
 /*
   $Id$
 */
-//银行掁入
+//银行转账
 require_once (DIR_WS_CLASSES . 'basePayment.php');
 class moneyorder extends basePayment implements paymentInterface {
   var $site_id, $code, $title, $description, $enabled, $s_error, $n_fee, $email_footer, $show_payment_info;

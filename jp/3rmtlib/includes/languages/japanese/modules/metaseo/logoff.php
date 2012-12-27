@@ -1,8 +1,4 @@
 <?php
-/*
-	JP、GM共通ファイル
-*/
-
   define('MODULE_METASEO_LOGOFF_TEXT_TITLE', 'ログアウト');
   define('MODULE_METASEO_LOGOFF_TEXT_EXPLAIN', 'EXPLAIN');
   define('MODULE_METASEO_LOGOFF_TEXT_DESCRIPTION', 'ログアウトページのSEO');

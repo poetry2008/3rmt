@@ -33,12 +33,5 @@ _gaq.push(['_trackPageview']);
 </tr>
 </table> 
 <div id="footer">
-<address class="footer_contacts">
-<?php echo FOOTER_TEXT_BODY . "\n"; ?><br>
-Copyright&nbsp;&copy;&nbsp;<?php echo date("Y");?>&nbsp;&nbsp;
-<?php
-echo '<a class = "bold" href="'.tep_href_link('/').'" ><strong>'.STORE_NAME.'</strong></a>';
-?>
-
-</address>
+<?php echo str_replace('${YEAR}',date('Y'),FOOTER_TEXT_BODY) . "\n"; ?>
 </div>

@@ -7,13 +7,11 @@
 <?php if ($banner = tep_banner_exists('dynamic', 'footer1')) { echo  tep_display_banner('static', $banner); }?>
 </div>
 <div id="footer">
-  <address class="copyright">
-  <?php echo FOOTER_TEXT_BODY ; ?>
-  </address>
+<?php echo str_replace('${YEAR}',date('Y'),FOOTER_TEXT_BODY) . "\n"; ?>
 </div>
 <?php if ($banner = tep_banner_exists('dynamic', 'footer')) { 
-  echo  '<div class="footer_links" align="center">' .tep_display_banner('static',
-      $banner) . '<br><a href="'.HTTP_SERVER.'">'.STORE_NAME.'</a></div>'; 
+  echo  '<div class="footer_links_bgcolor"><div class="footer_links" align="center">' .tep_display_banner('static', $banner); 
+  echo "</div></div>";
 }?>
 <?php 
 if (STORE_DB_TRANSACTIONS && false) {?>

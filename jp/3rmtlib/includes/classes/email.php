@@ -466,9 +466,9 @@
 
     function send($to_name, $to_addr, $from_name, $from_addr, $subject = '',
         $headers = '',$from_page="") {
-      // $from_name が "" で $from_addr が "Name <someone@abc.com>" 形式の場合に
-      // $from_addr を分解して純粋な E-mail アドレスに変える
-      // tamura 2002/05/08
+      // $from_name 是 "" ， $from_addr 是 "Name <someone@abc.com>" 格式的情况下
+      // $from_addr 分解后，转换成纯粹的 E-mail 地址
+
       if (ereg("[ ]*(.+[^ ]+)[ ]*<([^@]+@[^@]+)>[ ]*", $from_addr, $a_regs)) {
         $from_name .= $a_regs[1];
         $from_addr = $a_regs[2];
@@ -478,7 +478,7 @@
       if($from_page=='mail'){
       $subject = mb_convert_encoding($subject, 'UTF-8');
       }else{
-      $subject = mb_convert_encoding($subject, 'ISO-2022-JP'); // 追加
+      $subject = mb_convert_encoding($subject, 'ISO-2022-JP'); // 添加
       }
       //$subject = mb_convert_encoding($subject, 'UTF-8', 'ECU-JP');
       //echo '<br>';
@@ -497,21 +497,21 @@
     
     if($to_name != '') {
       /*
-      $to_name = mb_convert_encoding($to_name, 'ISO-2022-JP'); // 追加
-        $to_addr = mb_convert_encoding($to_addr, 'ISO-2022-JP'); // 追加
+      $to_name = mb_convert_encoding($to_name, 'ISO-2022-JP'); // 添加
+        $to_addr = mb_convert_encoding($to_addr, 'ISO-2022-JP'); // 添加
         */
-      $to_name = mb_convert_encoding($to_name, 'UTF-8'); // 追加
-        $to_addr = mb_convert_encoding($to_addr, 'UTF-8'); // 追加
+      $to_name = mb_convert_encoding($to_name, 'UTF-8'); // 添加
+        $to_addr = mb_convert_encoding($to_addr, 'UTF-8'); // 添加
     }
     
     if($from_name != '') {
       /*
-      $from_name = mb_convert_encoding($from_name, 'ISO-2022-JP'); // 追加
-        $from_addr = mb_convert_encoding($from_addr, 'ISO-2022-JP'); // 追加
+      $from_name = mb_convert_encoding($from_name, 'ISO-2022-JP'); // 添加
+        $from_addr = mb_convert_encoding($from_addr, 'ISO-2022-JP'); // 添加
         */
         
-      $from_name = mb_convert_encoding($from_name, 'UTF-8'); // 追加
-      $from_addr = mb_convert_encoding($from_addr, 'UTF-8'); // 追加
+      $from_name = mb_convert_encoding($from_name, 'UTF-8'); // 添加
+      $from_addr = mb_convert_encoding($from_addr, 'UTF-8'); // 添加
     }
     
     /*
@@ -549,7 +549,7 @@
       if (!isset($xtra_headers)) {
         $xtra_headers = array();
       }
-//2006/12/16
+
       $bounce_mail_option = '-f' . (defined('BOUNCE_EMAIL_ADDRESS') ? BOUNCE_EMAIL_ADDRESS : ($this->site_id?get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $this->site_id):STORE_OWNER_EMAIL_ADDRESS));
       if (EMAIL_TRANSPORT == 'smtp') {
         return mail($to_addr, $subject, $this->output,
