@@ -1,8 +1,4 @@
 <?php
-/*
-	JP、GM公共文件
-*/
-
   define('MODULE_METASEO_BROWSER_IE6X_TEXT_TITLE', 'ブラウザの設定');
   define('MODULE_METASEO_BROWSER_IE6X_TEXT_EXPLAIN', 'EXPLAIN');
   define('MODULE_METASEO_BROWSER_IE6X_TEXT_DESCRIPTION', 'ブラウザの設定ページのSEO');

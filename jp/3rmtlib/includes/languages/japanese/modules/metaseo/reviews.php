@@ -1,8 +1,4 @@
 <?php
-/*
-	JP、GM公共文件
-*/
-
   define('MODULE_METASEO_REVIEWS_TEXT_TITLE', 'レビュー一覧');
   define('MODULE_METASEO_REVIEWS_TEXT_EXPLAIN', 'EXPLAIN');
   define('MODULE_METASEO_REVIEWS_TEXT_DESCRIPTION', 'レビュー一覧ページのSEO');

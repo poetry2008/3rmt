@@ -1,8 +1,4 @@
 <?php
-/*
-	JP、GM公共文件
-*/
-
   define('MODULE_METASEO_SITEMAP_TEXT_TITLE', 'サイトマップ');
   define('MODULE_METASEO_SITEMAP_TEXT_EXPLAIN', 'EXPLAIN');
   define('MODULE_METASEO_SITEMAP_TEXT_DESCRIPTION', 'サイトマップページのSEO');

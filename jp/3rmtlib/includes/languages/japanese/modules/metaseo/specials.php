@@ -1,8 +1,4 @@
 <?php
-/*
-	JP、GM公共文件
-*/
-
   define('MODULE_METASEO_SPECIALS_TEXT_TITLE', 'お買い得商品');
   define('MODULE_METASEO_SPECIALS_TEXT_EXPLAIN', 'EXPLAIN');
   define('MODULE_METASEO_SPECIALS_TEXT_DESCRIPTION', 'お買い得商品ページのSEO');

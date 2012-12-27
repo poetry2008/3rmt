@@ -1,8 +1,4 @@
 <?php
-/*
-	JP、GM公共文件
-*/
-
   define('MODULE_METASEO_DEFAULT_TEXT_TITLE', 'ホームページ');
   define('MODULE_METASEO_DEFAULT_TEXT_EXPLAIN', 'EXPLAIN');
   define('MODULE_METASEO_DEFAULT_TEXT_DESCRIPTION', 'ホームページページのSEO');
