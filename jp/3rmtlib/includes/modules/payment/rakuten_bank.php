@@ -98,7 +98,7 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
     $total_cost = $order->info['total'];      // 包括税收的总价格
     $f_result = $this->calc_fee($total_cost); // 手续费
 
-    $added_hidden = ''; // 
+    $added_hidden = ''; 
     if (!empty($this->n_fee)) {
       $s_message = $f_result ? (MODULE_PAYMENT_RAKUTEN_BANK_TEXT_FEE . '&nbsp;' . $currencies->format($this->n_fee)) : ('<font color="#FF0000">' . $this->s_error . '</font>');
     } else {
