@@ -2359,6 +2359,7 @@ echo json_encode($json_array);
   $total_title_array = explode('|||',$total_title);
   $total_orders_id = $_POST['orders_id'];
   $point_value_temp = $_POST['point_value_temp'];
+  $handle_fee_value = $_POST['handle_fee'];
   $campaign_flag = false;
   $campaign_fee = 0;
   $camp_exists_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$total_orders_id."' and site_id = '". $_POST['session_site_id'] ."'");
@@ -2384,6 +2385,9 @@ echo json_encode($json_array);
   $cpayment = payment::getInstance($_POST['session_site_id']);
   $handle_fee = $cpayment->handle_calc_fee($_POST['payment_value'], $_POST['ot_total']);
   $handle_fee = $handle_fee == '' ? 0 : $handle_fee;
+  $_SESSION['orders_update_products'][$total_orders_id]['code_fee'] = $handle_fee;
+  $_SESSION['orders_update_products'][$total_orders_id]['ot_total'] -= $handle_fee_value;
+  $_SESSION['orders_update_products'][$total_orders_id]['ot_total'] += $handle_fee;
   echo $handle_fee.'|||'.$campaign_fee.'|||'.$campaign_flag;
 }else if($_GET['action'] == 'orders_session'){
 

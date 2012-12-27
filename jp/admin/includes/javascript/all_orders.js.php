@@ -988,6 +988,7 @@ function recalc_order_price(oid, opd, o_str, op_str,opd_str)
       }
       if(ot_total < 0){
         ot_total = Math.abs(ot_total);
+        ot_total -= point_id;
         document.getElementById('ot_total_id').innerHTML = '<font color="#FF0000">'+fmoney(ot_total)+'</font>'+msg_info[10];
       }else{
         document.getElementById('ot_total_id').innerHTML = fmoney(ot_total)+msg_info[10]; 
@@ -1069,7 +1070,7 @@ function price_total(str)
   var payment_value = document.getElementsByName('payment_method')[0].value; 
   $.ajax({
     type: "POST",
-    data: 'total_title='+total_title+'&total_value='+total_value+'&point_value='+point_id+'&total_key='+total_key+'&ot_total='+ot_total_temp+'&ot_subtotal='+ot_subtotal_id_temp+'&payment_value='+payment_value+'&orders_id='+session_orders_id+'&session_site_id='+session_site_id,
+    data: 'total_title='+total_title+'&total_value='+total_value+'&point_value='+point_id+'&total_key='+total_key+'&ot_total='+ot_total_temp+'&ot_subtotal='+ot_subtotal_id_temp+'&payment_value='+payment_value+'&orders_id='+session_orders_id+'&session_site_id='+session_site_id+'&handle_fee='+handle_fee_id,
     async:false,
     url: 'ajax_orders.php?action=price_total',
     success: function(msg) {
@@ -1082,6 +1083,7 @@ function price_total(str)
        document.getElementById('point_id').value = campaign_fee;
      }
      document.getElementById('handle_fee_id').innerHTML = handle_fee+str;
+     document.getElementsByName('payment_code_fee')[0].value = handle_fee; 
      ot_total = ot_total-handle_fee_id+handle_fee-campaign_fee;
      if(ot_total < 0){ 
         ot_total = Math.abs(ot_total);

@@ -257,4 +257,5 @@ define('TEXT_PLEASE_PASSWORD','请输入一次性口令\r\n');
 define('TEXT_PASSWORD_NOT','密码不一致');
 define('TEXT_DATE_TIME_ERROR','选择时间已过期，确认无误吗？');
 define('TEXT_PRODUCTS_NUM','商品数量不足。确定创建订单吗？');
+define('ORDERS_PRODUCT_ERROR','没有商品。编辑订单内容时、首先请添加商品。');
 ?>
