@@ -10,7 +10,8 @@
 <?php echo str_replace('${YEAR}',date('Y'),FOOTER_TEXT_BODY) . "\n"; ?>
 </div>
 <?php if ($banner = tep_banner_exists('dynamic', 'footer')) { 
-  echo  '<div class="footer_links" align="center">' .tep_display_banner('static', $banner); 
+  echo  '<div class="footer_links_bgcolor"><div class="footer_links" align="center">' .tep_display_banner('static', $banner); 
+  echo "</div></div>";
 }?>
 <?php 
 if (STORE_DB_TRANSACTIONS && false) {?>

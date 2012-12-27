@@ -466,8 +466,15 @@ p.box_des{
 .copyright {
     color:#000;
     font-style:normal;
-	padding:12px 0 0;
+	padding:14px 0 0;
+	*padding:17px 0 0;
 }
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+.copyright {
+    color:#000;
+    font-style:normal;
+	padding:17px 0 0;
+}}
 /* CGI
 */
 html > body #cgi {
@@ -1293,7 +1300,7 @@ searching
 .popup_notice_button a{
 	margin:0 20px;
 }
-.footer_links{ width:780px; font-size:12px;}
+.footer_links{font-size:12px; background-color:#333333; *margin-top:-7px; width:780px;}
 /*option*/
 .option_table{
 	width:100%;
@@ -1594,4 +1601,10 @@ TEXTAREA {
 	background: #ffb3b5;
 	color:#656565;
 	font-weight:bold;
+}
+.footer_links_bgcolor{
+	background-color:#333333;
+}
+.margin_clear{
+  margin:0px;
 }
