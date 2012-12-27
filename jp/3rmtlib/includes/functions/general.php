@@ -1753,10 +1753,10 @@ header("Expires:".date("D, d M Y H:i:s",0)." GMT");
             if (isset($cPath) && tep_not_null($cPath)) {
               switch(SITE_ID) {
                 case '3':
-                  $title       = $seo_category['categories_name'] . 'と言えばRMTワールドマネー｜' . (tep_not_null($seo_category['categories_meta_text']) ? $seo_category['categories_meta_text'] : C_TITLE); 
+                  $title       = $seo_category['categories_name'] . 'と言えば'.STORE_NAME.'｜' . (tep_not_null($seo_category['categories_meta_text']) ? $seo_category['categories_meta_text'] : C_TITLE); 
                   break;
                 case '2':
-                  $title       = $seo_category['categories_name'] . (tep_not_null($seo_category['categories_meta_text']) ? '-' . $seo_category['categories_meta_text'] . '｜激安のRMTゲームマネー' : C_TITLE); 
+                  $title       = $seo_category['categories_name'] . (tep_not_null($seo_category['categories_meta_text']) ? '-' .  $seo_category['categories_meta_text'] . '｜激安の'.STORE_NAME : C_TITLE); 
                   break;
                 case '1':
                 default:
