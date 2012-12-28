@@ -4171,12 +4171,7 @@ if($index_num > 0){
                  '<td class="' . $RowStyle . '" align="left" valign="top" width="20">'
                  .$porducts_qty."&nbsp;x</td>\n" .  '<td class="' . $RowStyle . '">' . $new_products_temp_add[$i]['name'] . "\n"; 
             // Has Attributes?
-            if (sizeof($new_products_temp_add[$i]['attributes']) > 0) {
-              $op_info_array = array();
-                 for ($i_num = 0; $i_num < sizeof($new_products_temp_add[$i]['attributes']); $i_num++) {
-                 $op_info_array[] = $new_products_temp_add[$i]['attributes'][$i_num]['id'];
-              }
-              $op_info_str = implode('|||', $op_info_array);
+            if (sizeof($new_products_temp_add[$i]['attributes']) > 0) { 
               for ($j=0; $j<sizeof($new_products_temp_add[$i]['attributes']); $j++) {
                 $orders_products_attributes_id = $new_products_temp_add[$i]['attributes'][$j]['id'];
                 echo '<div class="order_option_list"><small>&nbsp;<i><div
