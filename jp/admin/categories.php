@@ -1257,7 +1257,16 @@ $belong = str_replace('0_','',$belong);
 <?php tep_get_javascript('one_time_pwd','includes|javascript');?>
 </script>
 <script language="javascript">
+window.onresize = resizepage;
+function resizepage(){
+  if($(".box_warp").height() < $(".compatible").height()){
+    $(".box_warp").height($(".compatible").height());
+  }
+}
 $(document).ready(function(){
+    if($(".box_warp").height() < $(".compatible").height()){
+      $(".box_warp").height($(".compatible").height()+100);
+    }
     $(".udlr").udlr(); 
     ajaxLoad('<?php echo $cPath;?>', '<?php echo empty($_GET['site_id'])?'1':'0';?>'); 
     }); 
@@ -1508,11 +1517,11 @@ if($('.show_left_menu').width()){
 }
 $('#show_popup_info').css('z-index', msg);
 $('#show_popup_info').css('left',leftset);
-if($('.compatible').height()<box_warp_height){
-  $('.box_warp').css('height',box_warp_height);
-}else{
-  $('.box_warp').css('height',$('.compatible').height());
-}
+//if($('.compatible').height()<box_warp_height){
+  //$('.box_warp').css('height',box_warp_height);
+//}else{
+  //$('.box_warp').css('height',$('.compatible').height());
+//}
 }
 });
 }
