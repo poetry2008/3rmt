@@ -1395,3 +1395,14 @@ a.pageResults{
 .table_box th{ background-color:#cccccc;}
 .table_box td{ border:1px solid #B2B2B2;}
 .title_text_link:hover{ text-decoration:underline;}
+.option_title_space{ 
+	padding-top:4px;
+    word-break: break-all;
+}
+.option_box_space{
+	padding:4px 2px;
+	background-color: #F1F9FE;
+    border-color: #7B9EBD;
+    border-style: solid;
+    border-width: 1px;
+}

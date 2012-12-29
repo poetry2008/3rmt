@@ -4163,7 +4163,7 @@ if($index_num > 0){
   
             <table border="0" width="100%" cellspacing="0" cellpadding="2">
             <tr style="background-color: #e1f9fe;">
-            <td class="dataTableContent" colspan="2" width="35%"><?php echo TABLE_HEADING_NUM_PRO_NAME;?></td>
+            <td class="dataTableContent" colspan="2" width="35%">&nbsp;<?php echo TABLE_HEADING_NUM_PRO_NAME;?></td>
             <td class="dataTableContent"><?php echo TABLE_HEADING_PRODUCTS_MODEL; ?></td>
             <td class="dataTableContent"><?php echo TABLE_HEADING_CURRENICY;?></td>
             <td class="dataTableContent" align="center"><?php echo TABLE_HEADING_PRODUCTS_PRICE; ?></td>
@@ -4179,7 +4179,7 @@ if($index_num > 0){
             $RowStyle = "dataTableContent";
             $porducts_qty = $new_products_temp_add[$i]['qty'];
             echo '<tr>' . "\n" .
-                 '<td class="' . $RowStyle . '" align="left" valign="top" width="20">'
+                 '<td class="' . $RowStyle . '" align="left" valign="top" width="20">&nbsp;'
                  .$porducts_qty."&nbsp;x</td>\n" .  '<td class="' . $RowStyle . '">' . $new_products_temp_add[$i]['name'] . "\n"; 
             // Has Attributes?
             if (sizeof($new_products_temp_add[$i]['attributes']) > 0) { 
@@ -4294,7 +4294,7 @@ if($index_num > 0){
   //   Add Products Steps
   // ############################################################################
 
-  print "<tr><td><table border='0' width='100%' class='formArea'>\n";
+  print "<tr><td><table border='0' width='100%' class='option_box_space' cellspacing='1' cellpadding='2'>\n";
 
   // Set Defaults
   if(!IsSet($add_product_categories_id))
@@ -4304,25 +4304,41 @@ if($index_num > 0){
     $add_product_products_id = 0;
 
   // Step 1: Choose Category
-  print "<tr><form action='$PHP_SELF?oID=$oID&action=$action' method='POST'>\n";
-  print "<td class='dataTableContent' align='right' width='80'><b>" . ADDPRODUCT_TEXT_STEP . " 1:</b></td>\n";
+  print "<tr>\n";
+  print "<td class='dataTableContent' width='80'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 1:</b></td>\n";
   print "<td class='dataTableContent' valign='top'>";
+  print "<form action='$PHP_SELF?oID=$oID&action=$action' method='POST'>";
+  print "<table>";
+  print '<tr>';
+  print '<td width="150">';
+  print ADDPRODUCT_TEXT_STEP1;
+  print '</td>';
+  print '<td>';
   echo ' ' . tep_draw_pull_down_menu('add_product_categories_id', tep_get_category_tree(), $current_category_id, 'onChange="this.form.submit();"');
   print "<input type='hidden' name='step' value='2'>";
+  print '<td></tr>';
+  print '</table>';
+  print "</form>";
+  print "</td>\n";
+  print "<td class='dataTableContent'>";
   if(isset($_GET['add_error']) && $_GET['add_error'] == 1){
     print "&nbsp;&nbsp;&nbsp;<font color='#FF0000'>".ORDERS_PRODUCT_ERROR."</font>";
   }
   print "</td>\n";
-  print "<td class='dataTableContent' width='90'>" . ADDPRODUCT_TEXT_STEP1 . "</td>\n";
-  print "</form></tr>\n";
-  print "<tr><td colspan='3'>&nbsp;</td></tr>\n";
+  print "</tr>\n";
 
   // Step 2: Choose Product
   if(($step > 1) && ($add_product_categories_id > 0))
   {
-    print "<tr><form action='$PHP_SELF?oID=$oID&action=$action' method='POST'>\n";
-    print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 2: </b></td>\n";
-    print "<td class='dataTableContent' valign='top'><select name=\"add_product_products_id\" onChange=\"this.form.submit();\">";
+    print "<tr>\n";
+    print "<td class='dataTableContent'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 2: </b></td>\n";
+    print "<td class='dataTableContent' valign='top'>";
+    print "<form action='$PHP_SELF?oID=$oID&action=$action' method='POST'>";
+    print "<table>";
+    print "<tr><td width='150'>";
+    print ADDPRODUCT_TEXT_STEP2."</td>";
+    print "<td>";
+    print "<select name=\"add_product_products_id\" onChange=\"this.form.submit();\">";
     $ProductOptions = "<option value='0'>" .  ADDPRODUCT_TEXT_SELECT_PRODUCT . "\n";
     asort($ProductList[$add_product_categories_id]);
     foreach($ProductList[$add_product_categories_id] as $ProductID => $ProductName)
@@ -4331,13 +4347,17 @@ if($index_num > 0){
     }
     $ProductOptions = str_replace("value='$add_product_products_id'","value='$add_product_products_id' selected", $ProductOptions);
     print $ProductOptions;
-    print "</select></td>\n";
+    print "</select>\n";
     print "<input type='hidden' name='add_product_categories_id' value='$add_product_categories_id'>";
     print "<input type='hidden' name='step' value='3'>\n";
     print "<input type='hidden' name='cstep' value='1'>\n";
-    print "<td class='dataTableContent'>" . ADDPRODUCT_TEXT_STEP2 . "</td>\n";
-    print "</form></tr>\n";
-    print "<tr><td colspan='3'>&nbsp;</td></tr>\n";
+    print "</td>";
+    print "</tr>";
+    print "</table>";
+    print "</form>";
+    print "</td>\n";
+    print "<td class='dataTableContent' align='right'>&nbsp;</td>\n";
+    print "</tr>\n";
   }
   
   require('option/HM_Option.php');
@@ -4358,7 +4378,7 @@ if($index_num > 0){
     if(!$hm_option->admin_whether_show($option_product['belong_to_option'], 0, $option_product['products_cflag']))
     {
       print "<tr>\n";
-      print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td>\n";
+      print "<td class='dataTableContent'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td>\n";
       print "<td class='dataTableContent' valign='top' colspan='2'><i>" . ADDPRODUCT_TEXT_OPTIONS_NOTEXIST . "</i></td>\n";
       print "</tr>\n";
       $step = 4;
@@ -4368,7 +4388,7 @@ if($index_num > 0){
 
       $p_cflag = tep_get_cflag_by_product_id($add_product_products_id);
       print "<tr>";
-      print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td><td class='dataTableContent' valign='top'>";
+      print "<td class='option_title_space' valign='top'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td><td class='dataTableContent' valign='top'>";
       print "<div class=\"pro_option\">"; 
       print "<form name='aform' action='$PHP_SELF?oID=$oID&action=$action' method='POST'>\n";
          
@@ -4381,21 +4401,19 @@ if($index_num > 0){
       print "</form>";
       print "</div>"; 
       print "</td>";
-      print "<td class='dataTableContent' align='center'><input type='button' value='" . ADDPRODUCT_TEXT_OPTIONS_CONFIRM . "' onclick='document.forms.aform.submit();'>";
-      print "</td>\n";
       print "</tr>\n";
     }
 
-    print "<tr><td colspan='3'>&nbsp;</td></tr>\n";
+    print "<tr><td colspan='3' align='right'><input type='button' value='" . ADDPRODUCT_TEXT_OPTIONS_CONFIRM . "' onclick='document.forms.aform.submit();'></td></tr>\n";
   }
 
   // Step 4: Confirm
   if($step > 3)
   {
     print "<tr><form action='$PHP_SELF?oID=$oID&action=$action' method='POST'>\n";
-    print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 4: </b></td>";
-    print "<td class='dataTableContent'>" .  ADDPRODUCT_TEXT_CONFIRM_QUANTITY . "<input name='add_product_quantity' size='2' value='1' onkeyup='clearLibNum(this);'>&nbsp;".EDIT_ORDERS_NUM_UNIT."&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-    print "<td class='dataTableContent' align='center'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
+    print "<td class='dataTableContent'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 4: </b></td>";
+    print "<td class='dataTableContent'>&nbsp;" .  ADDPRODUCT_TEXT_CONFIRM_QUANTITY . "<input name='add_product_quantity' size='2' value='1' onkeyup='clearLibNum(this);'>&nbsp;".EDIT_ORDERS_NUM_UNIT."&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+    print "<td class='dataTableContent' align='right'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
 
     foreach ($_POST as $op_key => $op_value)
     {
