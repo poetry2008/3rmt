@@ -35,7 +35,7 @@ if(isset($_GET['clear_products']) && isset($_SESSION['clear_products_flag'])){
   if($_GET['clear_products'] == 1){
     $orders_products_price_sum = 0;
     $orders_price_flag = $_SESSION['orders_update_products'][$_GET['oID']]['ot_subtotal'] > 0 ? true : false;
-    $orders_price_exists_flag = $_SESSION['orders_update_products'][$_GET['oID']]['ot_subtotal'] ? true : false;
+    $orders_price_exists_flag = isset($_SESSION['orders_update_products'][$_GET['oID']]['ot_subtotal']) ? true : false;
     foreach($_SESSION['new_products_list_add'][$_GET['oID']]['orders_products'] as $orders_product_value){
       $_SESSION['new_products_list'][$_GET['oID']]['orders_products'][] = $orders_product_value;
       $orders_products_price_sum += $orders_product_value['products_quantity']*$orders_product_value['final_price'];
@@ -94,6 +94,11 @@ if(isset($_GET['clear_products']) && isset($_SESSION['clear_products_flag'])){
           $campaign_value = get_campaion_fee($orders_total_value,$_GET['oID'],$orders_update_time_array['site_id']);
           $campaign_value = isset($_SESSION['orders_update_products'][$_GET['oID']]['point']) ? $_SESSION['orders_update_products'][$_GET['oID']]['point'] : $campaign_value;
           $_SESSION['orders_update_products'][$_GET['oID']]['ot_total'] += abs($campaign_value);
+          if($orders_price_flag == true){
+            if($_SESSION['orders_update_products'][$_GET['oID']]['ot_subtotal'] < 0){
+              $_SESSION['orders_update_products'][$_GET['oID']]['ot_total'] += abs($campaign_value); 
+            }
+          }
           $_SESSION['orders_update_products'][$_GET['oID']]['ot_total'] -= abs($campaign_fee);
           $_SESSION['orders_update_products'][$_GET['oID']]['point'] = $campaign_fee;
         }
@@ -101,14 +106,14 @@ if(isset($_GET['clear_products']) && isset($_SESSION['clear_products_flag'])){
         $payment_value = isset($_SESSION['orders_update_products'][$_GET['oID']]['payment_method']) ? $_SESSION['orders_update_products'][$_GET['oID']]['payment_method'] : payment::changeRomaji($orders_update_time_array['payment_method'],PAYMENT_RETURN_TYPE_CODE); 
         $handle_fee = $payment_handle->handle_calc_fee($payment_value, $_SESSION['orders_update_products'][$_GET['oID']]['ot_subtotal']);
         $handle_fee = $handle_fee == '' ? 0 : $handle_fee;
-        $handle_fee_value = isset($_SESSION['orders_update_products'][$_GET['oID']]['code_fee']) ? $_SESSION['orders_update_products'][$_GET['oID']]['code_fee'] : 0;
-        if(isset($_SESSION['orders_update_products'][$_GET['oID']]['code_fee'])){
-          $handle_fee = isset($_SESSION['orders_update_products'][$_GET['oID']]['code_fee']) ? $handle_fee-$handle_fee_value : $handle_fee;
-        }else{
-          $handle_fee = $orders_update_time_array['code_fee'] > 0 ? $handle_fee-$orders_update_time_array['code_fee'] : $handle_fee; 
+        $handle_fee_temp = $handle_fee;
+        $handle_fee_num = isset($_SESSION['orders_update_products'][$_GET['oID']]['code_fee']) ? $_SESSION['orders_update_products'][$_GET['oID']]['code_fee'] : $orders_update_time_array['code_fee']; 
+        if($handle_fee_temp != $handle_fee_num){
+
+            $_SESSION['orders_update_products'][$_GET['oID']]['ot_total'] -= $handle_fee_num;
+            $_SESSION['orders_update_products'][$_GET['oID']]['ot_total'] += $handle_fee_temp; 
         }
-        $_SESSION['orders_update_products'][$_GET['oID']]['code_fee'] = $handle_fee; 
-        $_SESSION['orders_update_products'][$_GET['oID']]['ot_total'] += $handle_fee;
+        $_SESSION['orders_update_products'][$_GET['oID']]['code_fee'] = $handle_fee_temp != $handle_fee_num ? $handle_fee_temp : $handle_fee_num;  
   } 
   unset($_SESSION['orders_products_price_subtotal'][$_GET['oID']]);
   unset($_SESSION['orders_products_price_point'][$_GET['oID']]);
@@ -2967,7 +2972,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
     <td class="pageHeading" align="right">
     <INPUT type="button" class="element_button" value="<?php echo TEXT_FOOTER_CHECK_SAVE;?>" onClick="if(date_time()){if(products_num_check('<?php echo $products_orders_id_str;?>','<?php echo $products_name_str;?>','<?php echo $products_id_str;?>')){submit_check_con();}}">&nbsp;
-    <?php echo '<a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params()) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; ?>
+    <?php echo '<a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('clear_products'))) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; ?>
     </td>
     </tr>
     </table>
@@ -4127,6 +4132,16 @@ if($action == "add_product")
 ?>
 <tr><td>
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
+<tr>
+<td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
+</tr>
+<tr>
+<td class="pageHeading"><?php echo ADDING_TITLE; ?>:</td>
+</tr>
+</table>
+</td></tr>
+<tr><td>
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
 <?php
 if($index_num > 0){
 ?>
@@ -4134,7 +4149,7 @@ if($index_num > 0){
 <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
 </tr>
 <tr>
-<td class="pageHeading"><?php echo ORDERS_PRODUCTS;?></td>
+<td class="formAreaTitle"><?php echo ORDERS_PRODUCTS;?></td>
 </tr>
 <?php
 }
@@ -4229,15 +4244,7 @@ if($index_num > 0){
 //end
 ?>
     <tr>
-    <td width="100%">
-    <table border="0" width="100%" cellspacing="0" cellpadding="0">
-    <tr>
-    <td class="pageHeading"><?php echo ADDING_TITLE; ?> (Nr. <?php echo $oID; ?>)</td>
-    <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
-    <td class="pageHeading" align="right">&nbsp;</td>
-    </tr>
-    </table>
-    </td>
+    <td class="formAreaTitle"><br><?php echo ADDING_TITLE; ?> (Nr. <?php echo $oID; ?>)</td>
     </tr>
 
     <?php 
@@ -4391,7 +4398,7 @@ if($index_num > 0){
   {
     print "<tr><form action='$PHP_SELF?oID=$oID&action=$action' method='POST'>\n";
     print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 4: </b></td>";
-    print "<td class='dataTableContent' valign='top'>" .  ADDPRODUCT_TEXT_CONFIRM_QUANTITY . "<input name='add_product_quantity' size='2' value='1' onkeyup='clearLibNum(this);'>&nbsp;".EDIT_ORDERS_NUM_UNIT."&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+    print "<td class='dataTableContent'>" .  ADDPRODUCT_TEXT_CONFIRM_QUANTITY . "<input name='add_product_quantity' size='2' value='1' onkeyup='clearLibNum(this);'>&nbsp;".EDIT_ORDERS_NUM_UNIT."&nbsp;&nbsp;&nbsp;&nbsp;</td>";
     print "<td class='dataTableContent' align='center'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
 
     foreach ($_POST as $op_key => $op_value)
@@ -4409,12 +4416,12 @@ if($index_num > 0){
   }
 
   print "</table></td></tr>\n";
-  echo '<tr><td>';
+  echo '<tr><td><br>';
   echo '<table border="0" width="100%" cellspacing="0" cellpadding="0"><tr><td class="main" align="left">';
-  echo '<a href="' .  tep_href_link(FILENAME_ORDERS_EDIT, tep_get_all_get_params(array('action','step')).'clear_products=0') . '">' . tep_html_element_button(IMAGE_BACK) . '</a></td>'; 
+  echo '<a href="' .  tep_href_link(FILENAME_ORDERS_EDIT, tep_get_all_get_params(array('action','step')).'action=edit&clear_products=0') . '">' . tep_html_element_button(IMAGE_BACK) . '</a></td>'; 
   echo '<td class="main" align="right">';
   $url_action_array = $index_num > 0 ? array('action','step') : array(''); 
-  $url_action = $index_num > 0 ? 'clear_products=1' : 'add_error=1';
+  $url_action = $index_num > 0 ? 'action=edit&clear_products=1' : 'add_error=1';
   echo '<a href="' .  tep_href_link(FILENAME_ORDERS_EDIT, tep_get_all_get_params($url_action_array).$url_action) . '"><input type="button" value="'.IMAGE_CONFIRM_NEXT.'"></a>';
   echo '</td></tr>';
   echo '</table>';
