@@ -40,7 +40,6 @@ if(isset($action) && $action != ''){
 
     
 
-    //guolv $address_option_comment kongzhi
     //过滤 $address_option_comment 空值
     $array_temp = array();
     foreach($address_option_comment as $key=>$value){
@@ -246,7 +245,7 @@ require("includes/note_js.php");
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft"><tr><td>
 <!-- left_navigation --> <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> <!-- left_navigation_eof -->
     </td></tr></table></td>
-<!-- body_text //-->
+<!-- body_text -->
     <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">

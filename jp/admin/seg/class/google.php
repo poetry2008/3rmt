@@ -41,11 +41,6 @@ class google implements engine {
     
   }
   function makeUrl($page=1){
-    //http://search.yahoo.co.jp/search?p=bobhero&aq=-1&ei=UTF-8&pstart=1&fr=top_ga1_sa&b=11
-    // 2 http://search.yahoo.co.jp/search?p=bobhero&aq=-1&ei=UTF-8&pstart=1&fr=top_ga1_sa&b=11
-    // http://search.yahoo.co.jp/search?p=link%3Ahttp%3A%2F%2Frmt.gvx.co.jp+リンク&search.x=1&fr=top_ga1_sa&tid=top_ga1_sa&ei=UTF-8&aq=&oq=
-    // http://search.yahoo.co.jp/search?p=link%3Ahttp%3A%2F%2Frmt.gvx.co.jp+%E3%83%AA%E3%83%B3%E3%82%AF&aq=-1&ei=UTF-8&pstart=1&fr=top_ga1_sa&dups=1&b=251
-//    $nextpage = "http://search.yahoo.co.jp/search?p={{keyword}}&aq=-1&ei=UTF-8&pstart=1&fr=top_ga1_sa&dups=1&b={{pager}}1";
     //由于GOOGLE 采用的是 查询开始 所以每个页面要 乘以 10 首条记录为0
     if($page >=1){
     $page = $page-1;
@@ -53,13 +48,8 @@ class google implements engine {
     $page = 0;
     }
     $page = intval($page) * 10;
-    //$nextpage =
-    //  "http://www.google.co.jp/search?as_oq={{keyword}}&aq=f&ie=utf-8&pstart=1&fr=top_ga1_sa&start={{pager}}&hl=ja&num=10";
     $nextpage =
       "http://www.google.co.jp/search?q={{keyword}}&ie=utf-8&start={{pager}}&hl=ja&num=10";
-    //$nextpage = 
-    //  "http://www.google.co.jp/search?q=FF14+RMT&hl=ja&newwindow=1&ei=EGvPTIWsK4yKuAOpuo3VBg&start=10&sa=N";
-      //      return str_replace('{{keyword}}',urlencode($this->keywordi),$this->searchEnter);
     $url = str_replace('{{keyword}}',urlencode($this->keyword),$nextpage);
     $url = str_replace('{{pager}}',$page,$url);
     $this->currentUrl = $url;

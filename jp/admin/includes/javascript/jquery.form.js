@@ -1,13 +1,3 @@
-/*!
- * jQuery Form Plugin
- * version: 2.47 (04-SEP-2010)
- * @requires jQuery v1.3.2 or later
- *
- * Examples and documentation at: http://malsup.com/jquery/form/
- * Dual licensed under the MIT and GPL licenses:
- *   http://www.opensource.org/licenses/mit-license.php
- *   http://www.gnu.org/licenses/gpl.html
- */
 ;(function($) {
 
 /*
@@ -158,7 +148,6 @@ $.fn.ajaxSubmit = function(options) {
 	// 06-NOV-09: now defaulting to iframe mode if file input is detected
    if (options.iframe !== false && (fileInputs || options.iframe || multipart)) {
 	   // hack to fix Safari hang (thanks to Tim Molendijk for this)
-	   // see:  http://groups.google.com/group/jquery-dev/browse_thread/thread/36395b7ab510dd5d
 	   if (options.closeKeepAlive) {
 		   $.get(options.closeKeepAlive, fileUpload);
 		}
@@ -448,7 +437,6 @@ $.fn.ajaxForm = function(options) {
 			});
 			return this;
 		}
-		// is your DOM ready?  http://docs.jquery.com/Tutorials:Introducing_$(document).ready()
 		log('terminating; zero elements found by selector' + ($.isReady ? '' : ' (DOM not ready)'));
 		return this;
 	}
@@ -622,7 +610,6 @@ $.fn.fieldSerialize = function(successful) {
  *  v == ['C1']
  *
  * The successful argument controls whether or not the field element must be 'successful'
- * (per http://www.w3.org/TR/html4/interact/forms.html#successful-controls).
  * The default value of the successful argument is true.  If this value is false the value(s)
  * for each element is returned.
  *

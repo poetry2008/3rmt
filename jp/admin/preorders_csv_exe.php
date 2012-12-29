@@ -44,23 +44,23 @@ if(!in_array('onetime',$request_one_time_arr)&&$_SESSION['user_permission']!=15)
 }
 //end one time pwd
 
-// CSVファイル名の作成
+// 创建CSV文件名
 
   $filename = ((isset($_POST['site_id'])&&$_POST['site_id']) ?
       (tep_get_site_romaji_by_id(intval($_POST['site_id'])).'_') :'')."preorders_".date("Ymd_His", time()).".csv";
 
-//ダウンロード範囲の取得
-  $s_y = $_POST['s_y'] ; //開始日　年
-  $s_m = $_POST['s_m'] ; //開始日　月
-  $s_d = $_POST['s_d'] ; //開始日　日
+//获取下载范围
+  $s_y = $_POST['s_y'] ; //起始日　年
+  $s_m = $_POST['s_m'] ; //起始日　月
+  $s_d = $_POST['s_d'] ; //起始日　日
   $start = $s_y.$s_m.$s_d ;
   
-  $e_y = $_POST['e_y'] ; //終了日　年
-  $e_m = $_POST['e_m'] ; //終了日　月
-  $e_d = $_POST['e_d'] ; //終了日　日
+  $e_y = $_POST['e_y'] ; //结束日　年
+  $e_m = $_POST['e_m'] ; //结束日　月
+  $e_d = $_POST['e_d'] ; //结束日　日
   $end = $e_y.$e_m.$e_d ;
 
-// ダウンロード範囲の指定
+// 指定下载范围
     //if($_POST['preorder_status'] && $_POST['preorder_status'] !=""){
       //$csv_query = tep_db_query("
           //select o.*, op.* 

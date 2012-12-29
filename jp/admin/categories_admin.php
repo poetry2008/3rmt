@@ -25,7 +25,7 @@ if ( eregi("(insert|update|setflag)", $action) ) include_once('includes/reset_se
 if (isset($_GET['action']) && $_GET['action']) {
   switch ($_GET['action']) 
     {
-    case 'all_update': //一括更新　　
+    case 'all_update': //批量更新　　
       tep_isset_eof();
       require('includes/set/all_update.php');
       tep_redirect(tep_href_link(FILENAME_CATEGORIES_ADMIN, 'cPath=' . $HTTP_GET_VARS['cPath'] . '&pID=' .$products_id));
@@ -220,7 +220,7 @@ alt="close" /></div>
   <form name="myForm1" action="categories_admin.php?<?php echo "cPath=".$cPath."&pID=".$products['products_id']."&action=all_update"; ?>" method="POST" onSubmit="return false">
   <input type="hidden" name="flg_up" value="" />
   <?php
-    // 取得価格/業者更新时间
+    // 获取价格/工商业者的更新时间
     $set_menu_list  = tep_db_fetch_array(tep_db_query("select * from set_menu_list where categories_id='".$current_category_id."'"));
     $kakaku_updated = $set_menu_list?date('n/j G:i',strtotime($set_menu_list['last_modified'])):'';
     ?>
@@ -353,7 +353,7 @@ while ($categories = tep_db_fetch_array($categories_query)) {
     $cInfo = new objectInfo($cInfo_array);
   }
 
-  // 列を色違いにする
+  // 每列弄成不同的颜色
   $even = 'dataTableSecondRow';
   $odd = 'dataTableRow';
   if (isset($nowColor) && $nowColor == $odd) {
@@ -448,7 +448,7 @@ while ($products = tep_db_fetch_array($products_query)) {
     $pInfo = new objectInfo($pInfo_array);
   }
 
-  // 列を色違いにする
+  // 每列弄成不同的样色
   // products list
   $even = 'dataTableSecondRow';
   $odd = 'dataTableRow';
@@ -492,7 +492,7 @@ echo '<a style="margin-left:-4px;" href="orders.php?search_type=products_id&prod
           $kakaku_treder=0;
         }
       }
-      $target_cnt=$products_count-1;//同業者専用
+      $target_cnt=$products_count-1;//同行专用
   ?>
   <td class="dataTableContent6" align='right'>
   <?php
@@ -521,7 +521,7 @@ echo '<a style="margin-left:-4px;" href="orders.php?search_type=products_id&prod
     echo '</a>';  
   } 
   ?></td>
-  <?php //個数架空 ?>
+  <?php //虚拟个数 ?>
   <td class="dataTableContent6" align='right' onmouseover='this.style.cursor="pointer"'  id='virtual_quantity_<?php echo $products['products_id']; ?>' onclick="update_virtual_quantity(<?php echo $products['products_id']; ?>)"><?php echo $imaginary;?></td>
 <?php //数量 ?>
   <td class="dataTableContent6" align='right' onmouseover='this.style.cursor="pointer"' style="font-weight:bold;" id='quantity_<?php echo $products['products_id']; ?>' onclick="update_quantity(<?php echo $products['products_id']; ?>)"><?php echo $products['products_real_quantity'];?></td>
@@ -547,7 +547,7 @@ echo '<a style="margin-left:-4px;" href="orders.php?search_type=products_id&prod
   ?>
   </td>
   <td align='right' class="dataTableContent2" ><span class = 'TRADER_INPUT'  name="TRADER_INPUT[]"  id="TRADER_<?php echo $products['products_id']; ?>"><?php echo $kakaku_treder?round($kakaku_treder,2):0;?></span></td>
-<?php //価格業者  ?>
+<?php //价格工商业者  ?>
   <td align='right' class="dataTableContent6" ><span name="INCREASE_INPUT" class = 'INCREASE_INPUT'>
     <?php //echo ceil($kakaku_treder*$col['bairitu']);?>
 <?php
@@ -559,7 +559,7 @@ echo '<a style="margin-left:-4px;" href="orders.php?search_type=products_id&prod
   echo ceil(number_format($col['bairitu']*$kakaku_treder,$float_number,'.',''));
 ?>
   </span></td>
-                <?php //価格倍率  ?>
+                <?php //价格倍率  ?>
                 <?php
 if ($cPath_yobi){
                 if($products_count==1)
@@ -571,10 +571,10 @@ if ($cPath_yobi){
                     
                   }
               
-              /*同業者価格を文字列で表示させる必要あり
-                現在は代変でreadonlyと書いている
-                取得方法はまだ書いていない
-                history.phpのaction=dougyousyaに方法は書いてある
+              /*同行的价格需要用字符串进行显示
+                现在写成只读
+                获取方法还没写
+                history.phpのaction=dougyousya里写着方法
               */
               if($count['cnt'] > 0){
                 $dougyousya = get_products_dougyousya($products['products_id']);
@@ -584,14 +584,14 @@ if ($cPath_yobi){
                     <td class='dataTableContent2' align='left'>
                     <input type='radio' id='radio_".$target_cnt."_".$i."' value='".$all_dougyousya[$i]['dougyousya_id']."' name='chk[".$target_cnt."]' onClick='chek_radio(".$target_cnt.")'".(in_dougyousya($dougyousya, $all_dougyousya) ? ($all_dougyousya[$i]['dougyousya_id'] == $dougyousya?' checked':'') : ($i == 0 ? ' checked':'')).">
                     <span name='TARGET_INPUT[]' id='target_".$target_cnt."_".$i."' >".get_dougyousya_history($products['products_id'], $all_dougyousya[$i]['dougyousya_id'])."</span>
-                    </td>";//価格同業者
+                    </td>";//价格同行
                 }
               }else{
                 echo "
                   <td class='dataTableContent6' align='center'>
                   <input type='radio' value='0' name='chk[".$target_cnt."]' checked>
                   <span name='TARGET_INPUT[]' id='target_".$target_cnt."_0' >0</span>
-                  </td>";//価格同業者
+                  </td>";//价格同行
               }
   }
               ?>
@@ -605,10 +605,10 @@ if ($cPath_yobi){
 ?></div></td>
 <td class="dataTableContent6" align="center"><input style="text-align:right;" pos="<?php echo $products_count;?>_1" class="udlr" type="text" size='6' value="<?php echo (int)abs($products['products_price']);?>" name="price[]" id="<?php echo "price_input_".$products_count; ?>" onblur="event_onblur(<?php echo $products_count; ?>)" onkeyup="clearNoNum(this);" onchange="event_onchange(<?php echo $products_count; ?>)"><span id="price_error_<?php echo $products_count; ?>"></span></td>
 <td class="dataTableContent2" align="center"><?php echo (float)$products['products_price_offset'] > 0 ?"+":'';?><?php echo $products['products_price_offset'];?><input style="text-align:right;" pos="<?php echo $products_count;?>_2" class="_udlr" type="hidden" size='6' value="<?php echo $products['products_price_offset'];?>" name="offset[]" id="<?php echo "offset_input_".$products_count; ?>"><span id="offset_error_<?php echo $products_count; ?>" onchange="this.value=SBC2DBC(this.value)"></span></td>
-<?php //サイト入力  ?>
+<?php //网站输入  ?>
 <?php /*
 <td class="dataTableContent5" align="center"><?php
-if ($ocertify->npermission >= 10) { //表示制限
+if ($ocertify->npermission >= 10) { //限制显示
     $p_page = (isset($_GET['page']))?'&page='.$_GET['page']:''; 
     if ($products['products_status'] == '1') {
       echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;<a href="' .  tep_href_link(FILENAME_CATEGORIES_ADMIN, 'action=setflag&flag=2&pID=' .  $products['products_id'] . '&cPath=' . $cPath.$p_page) . '">' .  tep_image(DIR_WS_IMAGES . 'icon_status_blue_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>&nbsp;<a href="' .  tep_href_link(FILENAME_CATEGORIES_ADMIN, 'action=setflag&flag=0&pID=' .  $products['products_id'] . '&cPath=' . $cPath.$p_page) . '">' .  tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>&nbsp;<a href="' .  tep_href_link(FILENAME_CATEGORIES_ADMIN, 'action=setflag&flag=3&pID=' .  $products['products_id'] . '&cPath=' . $cPath.$p_page) . '">' .  tep_image(DIR_WS_IMAGES . 'icon_status_black_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>';
@@ -665,7 +665,7 @@ if ($cPath_array) {
   }
 }
 
-/* リスト表示に必要な情報を得る */
+/* 获取列表显示信息 */
 if(empty($cPath_back)&&empty($cID)&&isset($cPath)){ 
   $res_list=tep_db_query("select parent_id from categories where categories_id
       ='".tep_db_prepare_input($cPath)."'");

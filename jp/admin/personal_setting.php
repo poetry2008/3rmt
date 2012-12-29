@@ -1,6 +1,6 @@
 <?php
 /*
- * 個人設定
+ * 个人设定
  */
 require('includes/application_top.php');
 
@@ -172,17 +172,17 @@ require("includes/note_js.php");
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
-<!-- header //-->
+<!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
+<!-- header_eof -->
 
-<!-- body //-->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft"><tr><td>
-<!-- left_navigation //--> <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> <!-- left_navigation_eof //-->
+<!-- left_navigation --> <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> <!-- left_navigation_eof -->
     </td></tr></table></td>
-<!-- body_text //-->
+<!-- body_text -->
 <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
 <div class="compatible">
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
@@ -505,14 +505,14 @@ require("includes/note_js.php");
 </div></div></td>
 </tr>
 </table></td>
-<!-- body_text_eof //-->
+<!-- body_text_eof -->
 </tr>
 </table>
 
-<!-- body_eof //-->
-<!-- footer //-->
+<!-- body_eof -->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 </body>
 </html>

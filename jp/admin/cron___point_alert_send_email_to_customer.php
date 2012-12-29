@@ -6,7 +6,7 @@ set_time_limit(0);
 define('ROOT_DIR','/home/szn/project/3rmt/jp/admin');
 require(ROOT_DIR.'/includes/configure.php');
 // default sleep second
-define('SLEEP_SECOND',3);//秒単位設定
+define('SLEEP_SECOND',3);//以秒为单位设置
 // default send row to sleep
 define('SEND_ROWS',2);
 // debug module flag

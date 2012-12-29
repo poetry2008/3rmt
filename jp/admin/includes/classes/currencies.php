@@ -134,10 +134,10 @@
       return $this->format(tep_add_tax($products_price, $products_tax) * $quantity);
     }
 
-// 金額の端数処理を行う
-// $number: 金額
-// $round_type: 端数処理のタイプ  'drop'=切り捨て, 'round'=四捨五入, 'raise'=切り上げ
-// $currency_type: 通貨コード (例) 'JPY'
+// 进行金额的尾数处理
+// $number: 金额
+// $round_type: 尾数处理的类型  'drop'=舍去, 'round'=四舍五入, 'raise'=舍尾进一
+// $currency_type: 货币代码 (例) 'JPY'
     function round_off($number, $round_type = '', $currency_type = '') {
       global $currency;
       $a_comp = array('drop'=>0.00001, 'round'=>0.50001, 'raise'=>0.99999);

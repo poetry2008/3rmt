@@ -36,7 +36,6 @@
     $currency_text = tep_db_prepare_input($_POST['Currency']);
   }
   
-  //Add input string check - 2006.4.14 ds-style
   $error = false;
   
   //customer_id check
@@ -133,7 +132,6 @@
     $entry_payment_method_error = false;
   }
 
-  //Add input string check - NG return Input order data - d2006.4.14 ds-style
   if($error == true) {
   
 // #### Get Available Customers
@@ -265,7 +263,6 @@
 </body>
 </html>
 <?php
-  //Add input string check - OK insert order data - d2006.4.14 ds-style
   } else {
   $currency_array = explode(",", $currency_text);
    
@@ -329,7 +326,7 @@
   */
   $payment_method_romaji = payment::changeRomaji($payment_method, PAYMENT_RETURN_TYPE_CODE);  
   $comment_arr = $payment_modules->dealComment($payment_method_romaji, '');
-  // 買取（口座情報をコメントに追加）
+  // 买取（把银行信息添加到备注里）
   $_SESSION['create_order2']['comments'] = $comment_arr['comment'];
   //insert into order total
   //=================================================

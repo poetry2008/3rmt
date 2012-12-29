@@ -36,25 +36,25 @@
   
   
   if(isset($_POST['act']) && $_POST['act'] == 'export') {
-    //CSVファイルネーム指定
+    //指定CSV文件名
     $filename = 'customer_' . date("YmdHis") . '.csv';
 
-  //エラー対策
+  //错误对策
   $start = "0000-00-00 00:00:00";
   $end   = "0000-00-00 00:00:01";
   
-  //指定範囲の取得
+  //获取指定范围
   if(!empty($_POST['s_y']) && !empty($_POST['s_m']) && !empty($_POST['s_d'])) {
-      $s_y = $_POST['s_y'] ; //開始日　年
-      $s_m = $_POST['s_m'] ; //開始日　月
-      $s_d = $_POST['s_d'] ; //開始日　日
+      $s_y = $_POST['s_y'] ; //起始日　年
+      $s_m = $_POST['s_m'] ; //起始日　月
+      $s_d = $_POST['s_d'] ; //起始日　日
       $start = $s_y.'-'.$s_m.'-'.$s_d . ' 00:00:00';
   }
   
     if(!empty($_POST['e_y']) && !empty($_POST['e_m']) && !empty($_POST['e_d'])) {
-    $e_y = $_POST['e_y'] ; //終了日　年
-      $e_m = $_POST['e_m'] ; //終了日　月
-      $e_d = $_POST['e_d'] ; //終了日　日
+    $e_y = $_POST['e_y'] ; //结束日　年
+      $e_m = $_POST['e_m'] ; //结束日　月
+      $e_d = $_POST['e_d'] ; //结束日　日
       $end = $e_y.'-'.$e_m.'-'.$e_d . ' 00:00:00';
   }
   
@@ -87,11 +87,11 @@
       //Get Addressbood default data
     $addressbook_query = tep_db_query("select * from ".TABLE_ADDRESS_BOOK." where customers_id = '".$customers['customers_id']."' and address_book_id = '".$customers['customers_default_address_id']."'");
     $addressbook = tep_db_fetch_array($addressbook_query);
-    //アカウント作成日
+    //创建帐号日
     $account_add = str_replace("-", "/", $customers['customers_info_date_account_created']);
     print Jcode_EUCtoSJIS($account_add) . ',';
     
-    //性別
+    //性别
     if($customers['customers_gender'] == 'm') {
       $gender = TEXT_MALE;
     } else {
@@ -105,42 +105,42 @@
     //名
     print Jcode_EUCtoSJIS($customers['customers_firstname']) . ',';
     
-    //生年月日
+    //出生年月日
     print Jcode_EUCtoSJIS($customers['customers_dob']) . ',';
     
-    //メールアドレス
+    //邮件地址
     print Jcode_EUCtoSJIS($customers['customers_email_address']) . ',';
     
-    //会社名
+    //公司名
     print Jcode_EUCtoSJIS($addressbook['entry_company']) . ',';
     
-    //郵便番号
+    //邮政编码
     print Jcode_EUCtoSJIS($addressbook['entry_postcode']) . ',';
     
-    //都道府県
+    //省市县
     $zone = tep_get_zone_name($addressbook['entry_zone_id']);
     print Jcode_EUCtoSJIS($zone) . ',';
     
-    //市区町村
+    //区街道
     print Jcode_EUCtoSJIS($addressbook['entry_city']) . ',';
     
-    //住所1
+    //住址1
     print Jcode_EUCtoSJIS($addressbook['entry_street_address']) . ',';
     
-    //住所2
+    //住址2
     print Jcode_EUCtoSJIS($addressbook['entry_suburb']) . ',';
     
     //国名
     $country = tep_get_country_name($addressbook['entry_country_id']);
     print Jcode_EUCtoSJIS($country) . ',';
     
-    //電話番号
+    //电话号码
     print Jcode_EUCtoSJIS($customers['customers_telephone']) . ',';
     
-    //FAX番号
+    //FAX序号
     print Jcode_EUCtoSJIS($customers['customers_fax']) . ',';
     
-    //メルマガ購読
+    //订阅邮件杂志
     if($customers['customers_newsletter'] == '0') {
       $mag = TEXT_UNSUBSCRIPTION;
     } else {
@@ -148,10 +148,10 @@
     }
     print Jcode_EUCtoSJIS($mag) . ',';
     
-    //ポイント
+    //返点
     print Jcode_EUCtoSJIS($customers['point']);
     
-    //改行
+    //换行
     print "\r\n";
     }
   }

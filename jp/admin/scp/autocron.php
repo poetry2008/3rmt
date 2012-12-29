@@ -1,20 +1,7 @@
 <?php
-/*********************************************************************
-    cron.php
-
-    Auto-cron handle.
-    File requested as 1X1 image on the footer of every staff's page
-
-    Peter Rotich <peter@osticket.com>
-    Copyright (c)  2006-2010 osTicket
-    http://www.osticket.com
-
-    Released under the GNU General Public License WITHOUT ANY WARRANTY.
-    See LICENSE.TXT for details.
-
-    vim: expandtab sw=4 ts=4 sts=4:
+/*
     $Id$
-**********************************************************************/
+*/
 require('staff.inc.php');
 ignore_user_abort(1);//Leave me a lone bro!
 @set_time_limit(0); //useless when safe_mode is on

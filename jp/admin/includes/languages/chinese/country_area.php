@@ -1,6 +1,6 @@
 <?php
 /*
- * 料金設定
+ * 费用设置
  */
 
 define('HEADING_TITLE','费用的设置');

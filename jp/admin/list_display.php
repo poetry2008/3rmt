@@ -321,7 +321,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
   
 $lines_arr = array();
 $oroname   = array();
-$cr        = array("\r\n", "\r");   // 改行コード置換用配
+$cr        = array("\r\n", "\r");   // 用于换行代码替换
 if($oroids)
   foreach($oroids as $key=>$value){
     $res = tep_db_query("

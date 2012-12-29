@@ -295,7 +295,7 @@ function check_radio_status(r_ele)
     $("#s_radio").val(n_radio_value); 
   } 
 }
-//--></script>
+--></script>
 <?php
   }
 ?>
@@ -639,7 +639,7 @@ require("includes/note_js.php");
           <tr><?php echo tep_draw_form('search', FILENAME_CUSTOMERS, tep_get_all_get_params(), 'get'); ?>
             <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
-            <td class="smallText" align="right"><?php //echo tep_draw_hidden_field('d', '龠');?><?php echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search'); ?>
+            <td class="smallText" align="right"><?php echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search'); ?>
       <input type="submit" value="<?php echo IMAGE_SEARCH;?>">
             <br><?php echo CUSTOMER_SEARCH_READ_TITLE;?> 
       </td>

@@ -41,10 +41,10 @@ while($o = tep_db_fetch_array($query)) {
       $p = tep_db_fetch_array(tep_db_query("select * from products where products_id='".$op['products_id']."'"));
       if ($p) {
         if ($p['products_bflag'] == '1' && $op['final_price'] > 0) {
-          // 荵ｰ取
+
           $ot_total = 0-$ot_total;
           $ot_subtotal = 0-$ot_subtotal;
-          if(abs($ot_total) != abs($ot_subtotal)){//小計合計比較
+          if(abs($ot_total) != abs($ot_subtotal)){//小计和合计进行比较
             $red2 .= $o['orders_id']. " 小計".$ot_subtotal." 合計".$ot_total."</br>\n";
             ob_flush();
             flush();

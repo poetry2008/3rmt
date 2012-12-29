@@ -19,7 +19,6 @@
 
 // START CONFIGURATION ################################
 
-// Correction tax pre-values (Michel Haase, 2005-02-18)
 // -> What was this ? Why 20.0, 20.0, 7.6 and 7.6 ???
 //    It's used later in a 'hidden way' an produces unlogical results ...
 
@@ -63,16 +62,16 @@
       from " . TABLE_ORDERS_PRODUCTS . " 
       where orders_id = '" . tep_db_input($oID) . "'");
   
-  // 最新の注文情報取得
+  // 获取最新订单信息
   $order = $_SESSION['create_order2']['orders'];
-  // ポイントを取得する
+  // 获取返点
   $customer_point_query = tep_db_query("
       select point 
       from " . TABLE_CUSTOMERS . " 
       where customers_id = '" . $order['customers_id'] . "'");
   $customer_point = tep_db_fetch_array($customer_point_query);
 
-  // ゲストチェック
+  // 游客检查
   $customer_guest_query = tep_db_query("
       select customers_guest_chk 
       from " . TABLE_CUSTOMERS . " 
@@ -83,7 +82,6 @@
     switch ($action) {
       case 'check_session':
         /*
-        header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
         # 永远是改动过的
         header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT");
         # HTTP/1.1
@@ -180,7 +178,6 @@
   
 // Update Tax and Subtotals: please choose sum WITH or WITHOUT tax, but activate only ONE version ;-)
   
-// Correction tax calculation (Michel Haase, 2005-02-18)
 // -> correct calculation, but why there is a division by 20 and afterwards a mutiplication with 20 ???
 //    -> no changes made
 //      $RunningSubTotal += (tep_add_tax(($products_details["qty"] * $products_details["final_price"]), $products_details["tax"])*20)/20; // version WITH tax
@@ -207,8 +204,6 @@
   foreach($update_totals as $total_index => $total_details) {
     extract($total_details,EXTR_PREFIX_ALL,"ot");
   
-// Correction tax calculation (Michel Haase, 2005-02-18)
-// Correction tax calculation (Shimon Pozin, 2005-09-03) 
 // Here is the major caveat: the product is priced in default currency, while shipping etc. are priced in target currency. We need to convert target currency
 // into default currency before calculating RunningTax (it will be converted back before display)
     if ($ot_class == "ot_shipping" || $ot_class == "ot_lev_discount" || $ot_class == "ot_customer_discount" || $ot_class == "ot_custom" || $ot_class == "ot_cod_fee") {
@@ -263,7 +258,6 @@
   
       // Check for existence of subtotals (CWS)                      
       if ($ot_class == "ot_total") {
-        // Correction tax calculation (Michel Haase, 2005-02-18)
         // I can't find out, WHERE the $RunningTotal is calculated - but the subtraction of the tax was wrong (in our shop)
 //        $ot_value = $RunningTotal-$RunningTax;
         $ot_value = $RunningTotal;
@@ -276,7 +270,7 @@
 
 /*
 需要加到订单生成中去
-      if ($customer_guest['customers_guest_chk'] == 0 && $ot_class == "ot_point" && $ot_value != $before_point) { //会員ならポントの増減
+      if ($customer_guest['customers_guest_chk'] == 0 && $ot_class == "ot_point" && $ot_value != $before_point) { //如果是会员的话会进行对应的返点
         $point_difference = ($ot_value - $before_point);
         tep_db_query("update " . TABLE_CUSTOMERS . " set point = point - " . $point_difference . " where customers_id = '" . $order->customer['id'] . "'"); 
       }
@@ -419,7 +413,7 @@
   
   $_SESSION['create_order2']['orders']['code_fee'] = $handle_fee;
     
-  // 最終処理（更新およびメール送信）
+  // 最终处理（更新并返信）
   if ($products_delete == false) {
     /*
     tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
@@ -473,7 +467,7 @@
           
           tep_db_perform(TABLE_ORDERS_PRODUCTS_ATTRIBUTES, $orders_product_attributes);
         }
-        /* 士入不需要操作库存 */
+        /* 进货不需要操作库存 */
       }
       
       $orders_type_str = tep_get_order_type_info($_SESSION['create_order2']['orders']['orders_id']); 
@@ -504,7 +498,7 @@
       
   $order = $_SESSION['create_order2']['orders'];
 //start print 
-  # 印刷用メール本文 ----------------------------
+  # 打印邮件正文 ----------------------------
   if(preg_match('/ /',$order['torihiki_date'])){
     $date_arr = explode(" ",$order['torihiki_date']);
     $date_time_arr = explode(':',$date_arr[1]);
@@ -951,7 +945,7 @@
       $row = tep_db_fetch_array($result);
       extract($row, EXTR_PREFIX_ALL, "p");
       
-      // 特価を適用
+      // 适用于特价
       // $p_products_price = tep_get_final_price($p_products_price, $p_products_price_offset, $p_products_small_sum, (int)$add_product_quantity);
       $p_products_price =
         tep_get_bflag_by_product_id($add_product_products_id)?0-$_POST['add_product_price']:$_POST['add_product_price'];
@@ -1129,7 +1123,6 @@
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
-<!--京-->
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
@@ -1154,7 +1147,7 @@ function check_add(){
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
-<!-- header //-->
+<!-- header -->
 <?php
   require(DIR_WS_INCLUDES . 'header.php');
 ?>
@@ -1166,18 +1159,18 @@ function check_add(){
   color: #FF6600;
 }
 </style>
-<!-- header_eof //-->
-<!-- body //-->
+<!-- header_eof -->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top">
       <table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-        <!-- left_navigation //-->
+        <!-- left_navigation -->
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-        <!-- left_navigation_eof //-->
+        <!-- left_navigation_eof -->
       </table>
     </td>
-    <!-- body_text //-->
+    <!-- body_text -->
     <td width="100%" valign="top">
       <table border="0" width="96%" cellspacing="0" cellpadding="2">
 <?php
@@ -1490,7 +1483,7 @@ function check_add(){
            '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
            '  </tr>' . "\n";
     } elseif ($TotalDetails["Class"] == "ot_point") {
-      if ($customer_guest['customers_guest_chk'] == 0 || $customer_guest['customers_guest_chk'] == 9) { //会員
+      if ($customer_guest['customers_guest_chk'] == 0 || $customer_guest['customers_guest_chk'] == 9) { //会员
         $current_point = $customer_point['point'] + $TotalDetails["Price"];
         echo '  <tr>' . "\n" .
              '    <td align="left" class="' . $TotalStyle . '">このお客様は会員です。入力可能ポイントは <font color="red"><b>残り' . $customer_point['point'] . '（合計' . $current_point . '）</b></font> です。−（マイナス）符号の入力は必要ありません。必ず正数を入力するように！</td>' . 
@@ -1538,7 +1531,6 @@ function check_add(){
       </tr>
   <!-- End Order Total Block -->
   <!-- Begin Update Block -->
-<!-- Improvement: more "Update" buttons (Michel Haase, 2005-02-18) -->
       <tr>
         <td>
           <table width="100%" border="0" cellpadding="2" cellspacing="1">
@@ -1822,14 +1814,14 @@ function check_add(){
 }  
 ?>
     </table></td>
-<!-- body_text_eof //-->
+<!-- body_text_eof -->
   </tr>
 </table>
-<!-- body_eof //-->
+<!-- body_eof -->
 
-<!-- footer //-->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 </body>
 </html>

@@ -90,16 +90,16 @@
       from " . TABLE_PREORDERS_PRODUCTS . " 
       where orders_id = '" . tep_db_input($oID) . "'");
   
-  // 最新の注文情報取得
+  // 获取最新订单信息
   $order = new preorder($oID);
   $cpayment = payment::getInstance($order->info['site_id']); 
-  // ポイントを取得する
+  // 获取返点
   $customer_point_query = tep_db_query("
       select point 
       from " . TABLE_CUSTOMERS . " 
       where customers_id = '" . $order->customer['id'] . "'");
   $customer_point = tep_db_fetch_array($customer_point_query);
-  // ゲストチェック
+  // 游客检查
   $customer_guest_query = tep_db_query("
       select customers_guest_chk, is_send_mail, is_calc_quantity 
       from " . TABLE_CUSTOMERS . " 
@@ -137,7 +137,7 @@
     break;
   }
     /*
-    if (isset($update_tori_torihiki_date)) { //日時が有効かチェック
+    if (isset($update_tori_torihiki_date)) { //日期时间是否有效检查
       if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/', $update_tori_torihiki_date, $m)) { // check the date format
         $messageStack->add(EDIT_ORDERS_NOTICE_DATE_WRONG_TEXT, 'error');
         $action = 'edit';
@@ -154,7 +154,7 @@
     }
     */
     //valadate email 
-    if (isset($_POST['h_deadline'])) { //日時が有効かチェック
+    if (isset($_POST['h_deadline'])) { //日期时间是否有效检查
       if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d)$/', $_POST['h_deadline'], $m1)) { // check the date format
         $messageStack->add(EDIT_ORDERS_NOTICE_DATE_WRONG_TEXT, 'error');
         $action = 'edit';
@@ -297,7 +297,7 @@
           // 增加实数
           $pr_quantity = $pr_quantity - $quantity_difference;
         } else {
-          // 增加架空
+          // 增加虚拟库存
           $pv_quantity = $pv_quantity - $quantity_difference;
         }
       // 减少库存
@@ -371,8 +371,6 @@
   foreach($update_totals as $total_index => $total_details) {
     extract($total_details,EXTR_PREFIX_ALL,"ot");
   
-// Correction tax calculation (Michel Haase, 2005-02-18)
-// Correction tax calculation (Shimon Pozin, 2005-09-03) 
 // Here is the major caveat: the product is priced in default currency, while shipping etc. are priced in target currency. We need to convert target currency
 // into default currency before calculating RunningTax (it will be converted back before display)
     if ($ot_class == "ot_shipping" || $ot_class == "ot_lev_discount" || $ot_class == "ot_customer_discount" || $ot_class == "ot_custom" || $ot_class == "ot_cod_fee") {
@@ -443,7 +441,7 @@
   
       $order = new preorder($oID);
 
-      if ($customer_guest['customers_guest_chk'] == 0 && $ot_class == "ot_point" && $ot_value != $before_point) { //会員ならポントの増減
+      if ($customer_guest['customers_guest_chk'] == 0 && $ot_class == "ot_point" && $ot_value != $before_point) { //如果是会员的话会进行对应的返点
         $point_difference = ($ot_value - $before_point);
         //tep_db_query("update " . TABLE_CUSTOMERS . " set point = point - " . $point_difference . " where customers_id = '" . $order->customer['id'] . "'"); 
       }
@@ -487,7 +485,7 @@
         $RunningTotal += $ot_value / $order->info['currency_value'];
 
 //} elseif ($ot_class == "ot_point") {
-//$RunningTotal -= $ot_value; // ポイント割引
+//$RunningTotal -= $ot_value; // 返点折扣
 
       } else {
         $RunningTotal += $ot_value;
@@ -575,7 +573,7 @@
   $update_orders_sql = "update ".TABLE_PREORDERS." set code_fee = '".$handle_fee."' where orders_id = '".$oID."'";
   tep_db_query($update_orders_sql);
     
-  // 最終処理（更新およびメール送信）
+  // 最终处理（更新并返信）
   if ($products_delete == false) {
     tep_pre_order_status_change($oID,$status);
     tep_db_query("update " . TABLE_PREORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
@@ -630,7 +628,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       $total_details_mail .= "\t" . FORDERS_MAIL_HANDLE_FEE . $currencies->format($handle_fee)."\n";
     $total_details_mail .= "\t" . FORDERS_MAIL_TOTAL_MONEY . $currencies->format($totals['value']) . "\n";
   } else {
-    // 去掉 決済手数料 消費税
+    // 去掉 决算费用 消费税
     $totals['title'] = str_replace(FORDERS_MAIL_REPLACE_TRAN_HANDLE_FEE, FORDERS_MAIL_REPLACE_HANDLE_FEE, $totals['title']);
     $total_details_mail .= "\t" . $totals['title'] . str_repeat('　', intval((16 -
             strlen($totals['title']))/2)) . '：' . $currencies->format($totals['value']) . "\n";
@@ -1729,7 +1727,7 @@ require("includes/note_js.php");
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
-<!-- header //-->
+<!-- header -->
 <?php
   require(DIR_WS_INCLUDES . 'header.php');
 ?>
@@ -1741,19 +1739,19 @@ require("includes/note_js.php");
   color: #FF6600;
 }
 </style>
-<!-- header_eof //-->
-<!-- body //-->
+<!-- header_eof -->
+<!-- body -->
 <?php echo tep_draw_form('edit_order', FILENAME_FINAL_PREORDERS, tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post','onSubmit="return presubmitChk();"'); ?>
 <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top">
       <table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-        <!-- left_navigation //-->
+        <!-- left_navigation -->
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-        <!-- left_navigation_eof //-->
+        <!-- left_navigation_eof -->
       </table>
     </td>
-    <!-- body_text //-->
+    <!-- body_text -->
     <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
       <div class="compatible">
       <table border="0" width="100%" cellspacing="0" cellpadding="2">
@@ -2458,7 +2456,7 @@ require("includes/note_js.php");
            '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
            '  </tr>' . "\n";
     } elseif ($TotalDetails["Class"] == "ot_point") {
-      if ($customer_guest['customers_guest_chk'] == 0) { //会員
+      if ($customer_guest['customers_guest_chk'] == 0) { //会员
         $current_point = $customer_point['point'] + $TotalDetails["Price"];
         echo '  <tr>' . "\n" .
              '    <td colspan="4">' . "<input type='hidden' name='update_totals[$TotalIndex][value]' size='6' value='" . $TotalDetails["Price"] . "'>" . 
@@ -2468,7 +2466,7 @@ require("includes/note_js.php");
                 "<input type='hidden' name='before_point' value='" . $TotalDetails["Price"] . "'>" . 
              '   </td>' . "\n" .
              '  </tr>' . "\n";
-      } else { //ゲスト
+      } else { //游客
         echo '  <tr>' . "\n" .
              '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_TOTALDETAIL_READ.'</td>' . 
              '    <td align="right" class="' . $TotalStyle . '">' . trim($TotalDetails["Name"]) . '</td>' . "\n" .
@@ -2504,7 +2502,7 @@ require("includes/note_js.php");
       </tr>
   <!-- End Order Total Block -->
   <!-- Begin Update Block -->
-<!-- Improvement: more "Update" buttons (Michel Haase, 2005-02-18) -->   
+<!-- Improvement: more "Update" buttons -->   
   <!-- End of Update Block -->
   <!-- Begin Status Block -->
       <tr>
@@ -2850,15 +2848,15 @@ if($action == "add_product")
 }  
 ?>
     </table></div></div></td>
-<!-- body_text_eof //-->
+<!-- body_text_eof -->
   </tr>
 </table>
 </form>
-<!-- body_eof //-->
+<!-- body_eof -->
 
-<!-- footer //-->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 </body>
 </html>

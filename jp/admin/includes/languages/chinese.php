@@ -43,7 +43,7 @@ function tep_date_raw($date, $reverse = false) {
 define('HTML_PARAMS','dir="ltr" lang="ja"');
 
 // charset for web pages and emails
-define('CHARSET', 'UTF-8');    // Shift_JIS / euc-jp / iso-2022-jp
+define('CHARSET', 'UTF-8');  
 
 // page title
 define('TITLE', STORE_NAME);  //请输入商店名。

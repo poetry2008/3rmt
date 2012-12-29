@@ -27,6 +27,6 @@ define('TEXT_OK_TO_DELETE', 'このオプションは、商品とオプション
 define('TEXT_OPTION_ID', 'オプションID');
 define('TEXT_OPTION_NAME', 'オプション名');
 
-define('TABLE_HEADING_OPT_STOCK', '在庫数');//add products_stock - 2005.09.20 ds-style
+define('TABLE_HEADING_OPT_STOCK', '在庫数');
 define('BUTTON_IMAGE_TEXT', '画像');
 ?>

@@ -9,7 +9,7 @@
 // A compatible module is loaded for environment without mbstring-extension
 //
 if (extension_loaded('mbstring')) {
-  mb_internal_encoding('UTF-8'); // 内部コードを指定
+  mb_internal_encoding('UTF-8'); // 指定内部代码
 } else {
   include_once(DIR_WS_LANGUAGES . $language . '/jcode.phps');
   include_once(DIR_WS_LANGUAGES . $language . '/mbstring_wrapper.php');
@@ -43,10 +43,10 @@ function tep_date_raw($date, $reverse = false) {
 define('HTML_PARAMS','dir="ltr" lang="ja"');
 
 // charset for web pages and emails
-define('CHARSET', 'UTF-8');    // Shift_JIS / euc-jp / iso-2022-jp
+define('CHARSET', 'UTF-8'); 
 
 // page title
-define('TITLE', STORE_NAME);  //ショップ名を記述してください。
+define('TITLE', STORE_NAME);  //请记述商店名。
 
 // header text in includes/header.php
 define('HEADER_TITLE_TOP', 'トップ');

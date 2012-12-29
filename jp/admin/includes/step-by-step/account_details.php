@@ -190,7 +190,6 @@
   }
   $address_form->setFormLine('state',ENTRY_STATE,$a_value);
 
-// 2003-07-15 modi -s
 //  // country
 //  if ($is_read_only == true) {
 //    $a_value = tep_get_country_name($account['entry_country_id']);
@@ -224,7 +223,7 @@
 	  $address_form->setFormLine('country',ENTRY_COUNTRY,$a_value);
 	  $a_hidden = tep_draw_hidden_field('country',$country);
 	  $address_form->setFormHidden('country',$a_hidden); // in case without country
-// 2003-07-15 modi -e
+
 ?>
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
 

@@ -35,10 +35,7 @@ class yahoo implements engine {
     
   }
   function makeUrl($page=1){
-    //http://search.yahoo.co.jp/search?p=bobhero&aq=-1&ei=UTF-8&pstart=1&fr=top_ga1_sa&b=11
-    // 2 http://search.yahoo.co.jp/search?p=bobhero&aq=-1&ei=UTF-8&pstart=1&fr=top_ga1_sa&b=11
-    // http://search.yahoo.co.jp/search?p=link%3Ahttp%3A%2F%2Frmt.gvx.co.jp+リンク&search.x=1&fr=top_ga1_sa&tid=top_ga1_sa&ei=UTF-8&aq=&oq=
-    // http://search.yahoo.co.jp/search?p=link%3Ahttp%3A%2F%2Frmt.gvx.co.jp+%E3%83%AA%E3%83%B3%E3%82%AF&aq=-1&ei=UTF-8&pstart=1&fr=top_ga1_sa&dups=1&b=251
+  
     $nextpage = "http://search.yahoo.co.jp/search?p={{keyword}}&aq=-1&ei=UTF-8&pstart=1&fr=top_ga1_sa&dups=1&b={{pager}}1";
     if ($page == 1){
       //      return str_replace('{{keyword}}',urlencode($this->keywordi),$this->searchEnter);

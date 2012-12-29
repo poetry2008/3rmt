@@ -60,16 +60,16 @@
       from " . TABLE_PREORDERS_PRODUCTS . " 
       where orders_id = '" . tep_db_input($oID) . "'");
   
-  // 最新の予約情報取得
+  // 获取最新预约信息
   $order = $_SESSION['create_preorder']['orders'];
-  // ポイントを取得する
+  // 获取返点
   $customer_point_query = tep_db_query("
       select point 
       from " . TABLE_CUSTOMERS . " 
       where customers_id = '" . $order['customers_id'] . "'");
   $customer_point = tep_db_fetch_array($customer_point_query);
 
-  // ゲストチェック
+  // 游客检查
   $customer_guest_query = tep_db_query("
       select customers_guest_chk, is_send_mail, is_calc_quantity 
       from " . TABLE_CUSTOMERS . " 
@@ -80,7 +80,6 @@
     switch ($action) {
       case 'check_session':
         /*
-        header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
         # 永远是改动过的
         header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT");
         # HTTP/1.1
@@ -205,8 +204,6 @@
   foreach($update_totals as $total_index => $total_details) {
     extract($total_details,EXTR_PREFIX_ALL,"ot");
   
-// Correction tax calculation (Michel Haase, 2005-02-18)
-// Correction tax calculation (Shimon Pozin, 2005-09-03) 
 // Here is the major caveat: the product is priced in default currency, while shipping etc. are priced in target currency. We need to convert target currency
 // into default currency before calculating RunningTax (it will be converted back before display)
     if ($ot_class == "ot_shipping" || $ot_class == "ot_lev_discount" || $ot_class == "ot_customer_discount" || $ot_class == "ot_custom" || $ot_class == "ot_cod_fee") {
@@ -261,7 +258,6 @@
   
       // Check for existence of subtotals (CWS)                      
       if ($ot_class == "ot_total") {
-        // Correction tax calculation (Michel Haase, 2005-02-18)
         // I can't find out, WHERE the $RunningTotal is calculated - but the subtraction of the tax was wrong (in our shop)
         $ot_value = $RunningTotal;
         
@@ -398,7 +394,7 @@
   
   $_SESSION['create_preorder']['orders']['code_fee'] = $handle_fee;
     
-  // 最終処理（更新およびメール送信）
+  // 最终处理（更新并返信）
   if ($products_delete == false) {
     
     $notify_comments = '';
@@ -715,7 +711,7 @@
       $row = tep_db_fetch_array($result);
       extract($row, EXTR_PREFIX_ALL, "p");
       
-      // 特価を適用
+      // 适用于特价
       $p_products_price =
         tep_get_bflag_by_product_id($add_product_products_id)?0-$_POST['add_product_price']:$_POST['add_product_price'];
 
@@ -1346,7 +1342,7 @@ require("includes/note_js.php");
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
-<!-- header //-->
+<!-- header -->
 <?php
   require(DIR_WS_INCLUDES . 'header.php');
 ?>
@@ -1358,8 +1354,8 @@ require("includes/note_js.php");
   color: #FF6600;
 }
 </style>
-<!-- header_eof //-->
-<!-- body //-->
+<!-- header_eof -->
+<!-- body -->
 <?php 
 if($_GET['action'] != 'add_product'){
   echo tep_draw_form('edit_order', "edit_new_preorders.php", tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post', 'id="edit_order_id_one"'); 
@@ -1369,12 +1365,12 @@ if($_GET['action'] != 'add_product'){
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top">
       <table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-        <!-- left_navigation //-->
+        <!-- left_navigation -->
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-        <!-- left_navigation_eof //-->
+        <!-- left_navigation_eof -->
       </table>
     </td>
-    <!-- body_text //-->
+    <!-- body_text -->
     <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
       <div class="compatible">
       <table border="0" width="100%" cellspacing="0" cellpadding="2">
@@ -1733,7 +1729,7 @@ if (($action == 'edit') && ($order_exists == true)) {
            '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
            '  </tr>' . "\n";
     } elseif ($TotalDetails["Class"] == "ot_point") {
-      if ($customer_guest['customers_guest_chk'] == 0) { //会員
+      if ($customer_guest['customers_guest_chk'] == 0) { //会员
         $current_point = $customer_point['point'] + $TotalDetails["Price"];
         echo '  <tr>' . "\n" .
              '    <td colspan="4">' . "<input type='hidden' name='update_totals[$TotalIndex][value]' size='6' value='" . $TotalDetails["Price"] . "'>" . 
@@ -1743,7 +1739,7 @@ if (($action == 'edit') && ($order_exists == true)) {
                 "<input type='hidden' name='before_point' value='" . $TotalDetails["Price"] . "'>" . 
              '   </td>' . "\n" .
              '  </tr>' . "\n";
-      } else { //ゲスト
+      } else { //游客
         echo '  <tr>' . "\n" .
              '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_TOTALDETAIL_READ.'</td>' . 
              '    <td align="right" class="' . $TotalStyle . '">' . trim($TotalDetails["Name"]) . '</td>' . "\n" .
@@ -1779,7 +1775,6 @@ if (($action == 'edit') && ($order_exists == true)) {
       </tr>
   <!-- End Order Total Block -->
   <!-- Begin Update Block -->
-<!-- Improvement: more "Update" buttons (Michel Haase, 2005-02-18) -->   
   <!-- End of Update Block --> 
   <!-- Begin Status Block -->
       <tr>
@@ -2071,7 +2066,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     </div>
     </div>
     </td>
-<!-- body_text_eof //-->
+<!-- body_text_eof -->
   </tr>
 </table>
 <?php
@@ -2081,11 +2076,11 @@ if($action != 'add_product'){
 <?php
 }
 ?>
-<!-- body_eof //-->
+<!-- body_eof -->
 
-<!-- footer //-->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 </body>
 </html>

@@ -1,8 +1,6 @@
 <?php
 /*
    $Id$
-  
-   3rmt over
 */
 
     tep_draw_hidden_field($customer_id);    

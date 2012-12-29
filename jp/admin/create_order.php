@@ -74,7 +74,7 @@ case 'add_product':
           
           $add_product_price = (int)$_POST['add_product_price'];
           $p_products_price = $add_product_price;
-          // 特価を適用
+          // 适用于特价
           $p_products_price = tep_get_final_price($p_products_price, $p_products_price_offset, $p_products_small_sum, (int)$add_product_quantity);
 
           // Following functions are defined at the bottom of this file
