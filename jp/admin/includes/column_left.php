@@ -91,6 +91,9 @@ setTimeout("orders_info_box_offset()",10);
     leftset = $('.leftmenu').width()+$('.show_left_menu').width()+parseInt($('.leftmenu').css('padding-left'))+parseInt($('.show_left_menu').css('padding-right'))+parseInt($('#categories_right_td table').attr('cellpadding'));
     $('#'+show_info_str).css('left',leftset);
   }
+  if($(".box_warp").height() < $(".compatible").height()){
+      $(".box_warp").height($(".compatible").height());
+  }
 }
 function toggle_lan(sobj)
 {
