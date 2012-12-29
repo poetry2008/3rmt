@@ -1830,13 +1830,6 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
     var error_str = '';
     var payment_method = document.getElementsByName("payment_method")[0].value;
     var con_email = document.getElementsByName("con_email")[0];
-    if(!con_email.disabled){
-      var reg = /^([a-zA-Z0-9]+[-]+[_|\_|\.]?)*[a-zA-Z0-9\-]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/; 
-      if(!reg.test(con_email.value)){
-        payment_error = true;
-        error_str += '<?php echo TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE;?>'+"\n\n";
-      }
-    }
     var b_name = document.getElementsByName("bank_name")[0];
     if(!b_name.disabled){
       var b_name_value = b_name.value;
