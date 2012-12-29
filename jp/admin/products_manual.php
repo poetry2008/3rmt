@@ -570,26 +570,25 @@ echo $title_str;
 ?>
 </title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-<script type="text/javascript" src="xheditor1/jquery/jquery-1.4.4.src.js"></script>
-<?php
-//<script type="text/javascript" src="xheditor1/xheditor-1.1.12-zh-tw.min.js"></script>
-?>
-<script type="text/javascript" src="xheditor1/xheditor.js"></script>
+<script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
-<script>
-$(document).ready(function(){
-	$('#elm1').xheditor({upLinkUrl:"upload.php",upLinkExt:"zip,rar,txt",upImgUrl:"upload.php?check=<?php echo $rand_num;?>",upImgExt:"jpg,jpeg,gif,png",upFlashUrl:"upload.php",upFlashExt:"swf",upMediaUrl:"upload.php",upMediaExt:"avi"});
-});
-
-$(document).ready(function(){
-var tmp_width=$(".xheLayout").attr("style");
-var start_pos=tmp_width.indexOf(":");
-var end_pos=tmp_width.indexOf(";");
-var width=tmp_width.substring(start_pos+1,end_pos);
-$("#button_width").attr("width",width);
-$("#xhe0_iframe").attr("style","width:100%;height:1000px");
-
+<script type="text/javascript" src="lib/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+<script type="text/javascript">
+tinyMCE.init({
+        mode : "textareas",
+        theme : "advanced",
+        height: "800", 
+        plugins : "imageupload,pagebreak,style,layer,table,advhr,advlink,emotions,iespell,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,inlinepopups",
+         
+        theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,formatselect,fontsizeselect,forecolor,backcolor,imageupload,|,cut,copy,paste|,search,replace,|,bullist,numlist,|,undo,redo,|,link,unlink,anchor,|,code",
+        theme_advanced_toolbar_location : "top",
+        theme_advanced_toolbar_align : "left",
+        theme_advanced_statusbar_location : "bottom",
+        theme_advanced_resizing : false,
+        
+        skin : "o2k7",
+        skin_variant : "silver",
 });
 </script>
 <?php 
@@ -638,13 +637,16 @@ require("includes/note_js.php");
 <?php echo $form_info;?>
 <table width="100%">
 
-<tr><td id="emd" >
+<tr><td id="emd" colspan="2">
 <textarea id="elm1" class="" cols="207" rows="20" name="manual" style="width:100%;height:100%;"><?php echo stripcslashes($manual_content);?></textarea>
 
 
 <td></tr>
-<tr><td align="right" id="button_width">
+<tr>
+<td align="left">
 <input type="submit" value="<?php echo MANUAL_SAVE;?>">
+</td>
+<td align="right" id="button_width">
 <?php echo $return_button;?>
 </td></tr>
 
