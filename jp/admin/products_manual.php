@@ -637,16 +637,14 @@ require("includes/note_js.php");
 <?php echo $form_info;?>
 <table width="100%">
 
-<tr><td id="emd" colspan="2">
+<tr><td id="emd">
 <textarea id="elm1" class="" cols="207" rows="20" name="manual" style="width:100%;height:100%;"><?php echo stripcslashes($manual_content);?></textarea>
 
 
 <td></tr>
 <tr>
-<td align="left">
-<input type="submit" value="<?php echo MANUAL_SAVE;?>">
-</td>
 <td align="right" id="button_width">
+<input type="submit" value="<?php echo MANUAL_SAVE;?>">
 <?php echo $return_button;?>
 </td></tr>
 
