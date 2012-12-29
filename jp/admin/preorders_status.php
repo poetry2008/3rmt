@@ -56,7 +56,7 @@
         }
       }
     
-    //mail本文 add
+    //mail正文 add
     if ($_GET['action'] == 'insert') {
       $sql_os_array = array('orders_status_id' => $orders_status_id,
                             'language_id' => $languages_id,
@@ -158,19 +158,19 @@ require("includes/note_js.php");
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
-<!-- header //-->
+<!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
+<!-- header_eof -->
 
-<!-- body //-->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-<!-- left_navigation //-->
+<!-- left_navigation -->
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- left_navigation_eof //-->
+<!-- left_navigation_eof -->
     </table></td>
-<!-- body_text //-->
+<!-- body_text -->
     <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
     <div class="compatible">    
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
@@ -270,13 +270,13 @@ require("includes/note_js.php");
         $orders_status_inputs_string .= '<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('orders_status_name[' . $languages[$i]['id'] . ']');
       }
     
-    //mailタイトル add
+    //mail标题 add
     $orders_status_inputs_string .= '<br><br>' . TEXT_INFO_ORDERS_STATUS_TITLE . '<br>' . tep_draw_input_field('os_title');
-    //mailタイトル add end
+    //mail标题 add end
     
-    //mail本文 add
+    //mail正文 add
     $orders_status_inputs_string .= '<br><br>' . TEXT_INFO_ORDERS_STATUS_MAIL . '<br>' . tep_draw_textarea_field('os_mail', 'soft', '25', '5').'<br>'.$explanation ;
-    //mail本文 add end
+    //mail正文 add end
 
       $contents[] = array('text' => '<br>' . TEXT_INFO_ORDERS_STATUS_NAME . $orders_status_inputs_string);
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('default') . ' ' . TEXT_SET_DEFAULT);
@@ -316,13 +316,13 @@ require("includes/note_js.php");
     $os_title = $os_result['orders_status_title'];
     $contents[] = array('text' => '<input type="hidden" name="site_id" value="'.($os_result?$os_result['site_id']:$site_id).'">');
     
-    //mailタイトル add
+    //mail标题 add
     $orders_status_inputs_string .= '<br><br>' . TEXT_INFO_ORDERS_STATUS_TITLE . '<br>' . tep_draw_input_field('os_title', $os_title);
-    //mailタイトル add end
+    //mail标题 add end
 
-    //mail本文 add
+    //mail正文 add
     $orders_status_inputs_string .= '<br><br>' . TEXT_INFO_ORDERS_STATUS_MAIL . '<br>' . tep_draw_textarea_field('os_mail', 'soft', '25', '5', $os_mail) . '<br>' . $explanation;
-    //mail本文 add end
+    //mail正文 add end
 
       $contents[] = array('text' => '<br>' . TEXT_INFO_ORDERS_STATUS_NAME . $orders_status_inputs_string);
       if (DEFAULT_PREORDERS_STATUS_ID != $oInfo->orders_status_id) $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('default') . ' ' . TEXT_SET_DEFAULT);
@@ -407,14 +407,14 @@ $contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .TEXT_UNSET_DATA);
     </div> 
     </div>
     </td>
-<!-- body_text_eof //-->
+<!-- body_text_eof -->
   </tr>
 </table>
-<!-- body_eof //-->
+<!-- body_eof -->
 
-<!-- footer //-->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 </body>
 </html>

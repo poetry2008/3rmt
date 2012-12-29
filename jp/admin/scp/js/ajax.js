@@ -1,10 +1,3 @@
-/* 
-    Peter
-    Simple httprequest wrapper. It will be replaced by an ajax framework in the future.
-  
-    Based on Wrapper by http://adamv.com/dev/javascript/http_request
-*/
-
 var Http = {
 	ReadyState: {
 		Uninitialized: 0,

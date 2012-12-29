@@ -98,7 +98,6 @@ define('TEXT_RAND_PWD','密码');
 define('TEXT_RAND_RULES','计算式');
 define('TEXT_ERROR_RULE','计算式的格式不正确');
 
-//add by szn
 define('TABLE_HEADING_USER_STAFF', 'Staff');
 define('TABLE_HEADING_USER_CHIEF', 'Chief');
 define('TABLE_HEADING_USER_ADMIN', 'Admin');

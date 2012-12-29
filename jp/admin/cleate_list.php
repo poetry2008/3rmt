@@ -35,13 +35,13 @@ case 'data_cleate':
     break;
 }
 /*
-  危険　24時間　価格更新なし
-  警告　4時間未満　7時間未満　24時間　価格更新なし
-*/    //DBに保存するのは最大20
+  危险　24小时　价格没有更新
+  警告　未满4小时　未满7小时　24小时　价格没有更新
+*/    //DB里保存的最大值是20
     
-//DBの記録に必要なもの
+//有必要记录到DB里
 /*
-  卸業者名、$cPath、時間、データ
+  批发商名、$cPath、时间、数据
 */
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -186,7 +186,7 @@ echo $html;
           <?php
     $lines_arr = array();
 $oroname = array();
-$cr = array("\r\n", "\r");   // 改行コード置換用配
+$cr = array("\r\n", "\r");   // 用于换行代码替换
 $orocnt = tep_db_query('select distinct(soc.oroshi_id) 
     from set_oroshi_categories  soc,
     set_oroshi_names son

@@ -34,7 +34,6 @@
  * an HTML form using AJAX.
  */
 $.fn.ajaxSubmit = function(options) {
-	// fast fail if nothing selected (http://dev.jquery.com/ticket/2752)
 	if (!this.length) {
 		log('ajaxSubmit: skipping submit process - no element selected');
 		return this;
@@ -140,7 +139,6 @@ $.fn.ajaxSubmit = function(options) {
 	// 06-NOV-09: now defaulting to iframe mode if file input is detected
    if ((files.length && options.iframe !== false) || options.iframe || found || multipart) {
 	   // hack to fix Safari hang (thanks to Tim Molendijk for this)
-	   // see:  http://groups.google.com/group/jquery-dev/browse_thread/thread/36395b7ab510dd5d
 	   if (options.closeKeepAlive)
 		   $.get(options.closeKeepAlive, fileUpload);
 	   else
@@ -516,7 +514,6 @@ $.fn.fieldSerialize = function(successful) {
  *  v == ['C1']
  *
  * The successful argument controls whether or not the field element must be 'successful'
- * (per http://www.w3.org/TR/html4/interact/forms.html#successful-controls).
  * The default value of the successful argument is true.  If this value is false the value(s)
  * for each element is returned.
  *

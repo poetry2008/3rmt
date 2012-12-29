@@ -134,7 +134,7 @@ if($order_exists == true){
   </table>
 
 <?php
-  //変数挿入
+  //插入变量
     require(DIR_WS_INCLUDES . 'step-by-step/create_order_details.php');
 ?>
   <br>

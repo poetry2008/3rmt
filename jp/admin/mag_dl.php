@@ -29,7 +29,7 @@
       //ID
       print $result['mag_id'] . ",";
     
-      //メールアドレス
+      //邮件地址
       print $result['mag_email'] . ",";
     
       //姓名

@@ -1,6 +1,6 @@
 <?php
 /*
- * 住所作成 Ajax
+ * 创建地址 Ajax
  */
 require('includes/application_top.php');
 $id = tep_db_prepare_input($_POST['id']);

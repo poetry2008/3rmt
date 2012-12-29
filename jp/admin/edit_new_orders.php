@@ -72,20 +72,19 @@ $order_query = tep_db_query("
     from " . TABLE_ORDERS_PRODUCTS . " 
     where orders_id = '" . tep_db_input($oID) . "'");
 
-// 最新の注文情報取得
-// 获取最新 订单情报
+// 获取最新订单信息
 if($orders_exit_flag == true){
   $order = new order($oID);
 }
-// ポイントを取得する
-// 获得客户信息
+// 获取返点
+// 获取客户信息
 $customer_id_flag = $orders_exit_flag == true ? $order->customer['id'] : $_SESSION['customer_id'];
 $customer_point_query = tep_db_query("
     select point 
     from " . TABLE_CUSTOMERS . " 
     where customers_id = '" . $customer_id_flag . "'");
 $customer_point = tep_db_fetch_array($customer_point_query);
-// ゲストチェック
+// 游客检查
 // 获取客户 是否为注册用户
 $customer_guest_query = tep_db_query("
     select customers_guest_chk, is_send_mail, is_calc_quantity  
@@ -393,7 +392,7 @@ if($orders_exit_flag == true){
       //订单状态更新结束  
       $products_weight_total = 0; //商品总重量
       $products_money_total = 0; //商品总价
-      $cart_shipping_time = array(); //商品取引时间
+      $cart_shipping_time = array(); //商品交易时间
       //$products_address_query = tep_db_query("select * from ". TABLE_ORDERS_PRODUCTS ." where orders_id='". tep_db_input($oID) ."'");
       //while($products_address_array = tep_db_fetch_array($products_address_query)){
       foreach($update_products as $update_key=>$update_value){
@@ -532,7 +531,7 @@ if($orders_exit_flag == true){
 
       $oID = tep_db_prepare_input($_GET['oID']);
       $order = new order($oID);
-      //$status = '1'; // 初期値
+      //$status = '1'; // 初始值
       $goods_check = $order_query;
       /*
          if (tep_db_num_rows($goods_check) == 0) {
@@ -746,7 +745,7 @@ if($address_error == false){
                 // 增加实数
                 $pr_quantity = $pr_quantity - $quantity_difference;
               } else {
-                // 增加架空
+                // 增加虚拟库存
                 $pv_quantity = $pv_quantity - $quantity_difference;
               }
               // 减少库存
@@ -814,7 +813,7 @@ if($address_error == false){
           $order = new order($oID);
           $RunningTax += $ot_value * $products_details['tax'] / $order->info['currency_value'] / 100 ; // corrected tax by cb
 
-          //} elseif ($ot_class == "ot_point") { // ポイント割引
+          //} elseif ($ot_class == "ot_point") { // 返点折扣
           //$order = new order($oID);
           //$RunningTax -= $ot_value * $products_details['tax'] / $order->info['currency_value'] / 100 ;
 
@@ -922,7 +921,7 @@ if($address_error == false){
             $RunningTotal += $ot_value / $order->info['currency_value'];
 
             //} elseif ($ot_class == "ot_point") {
-            //$RunningTotal -= $ot_value; // ポイント割引
+            //$RunningTotal -= $ot_value; // 返点折扣
 
         } else {
           $RunningTotal += $ot_value;
@@ -1007,7 +1006,7 @@ if($address_error == false){
       $update_orders_sql = "update ".TABLE_ORDERS." set code_fee = '".$handle_fee."' where orders_id = '".$oID."'";
       tep_db_query($update_orders_sql);
 
-      // 最終処理（更新およびメール送信）
+      // 最终处理理（更新并发信）
       if ($products_delete == false) {
         tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "',user_update='".$_SESSION['user_name']."', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
         orders_updated(tep_db_input($oID));
@@ -1230,7 +1229,7 @@ if($address_error == false){
           }
           $customer_notified = '1';
           
-          // 支払方法がクレジットなら決済URLを送る
+          // 支付方法是信用卡的话，发送决算URL
           $email_credit =  $payment_modules->admin_process_pay_email(
                   payment::changeRomaji($payment_method,PAYMENT_RETURN_TYPE_CODE),
                 $order,$total_price_mail);
@@ -1265,10 +1264,10 @@ if($address_error == false){
 
 
 
-        // ここからカスタマーレベルに応じたポイント還元率算出============================================================
+        // 计算各个不同顾客的返点率从这开始============================================================
         if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
           $customer_id = $result1['customers_id'];
-          //設定した期間内の注文合計金額を算出------------
+          //规定期间内，计算订单合计金额------------
           $ptoday = date("Y-m-d H:i:s", time());
           $pstday_array = getdate();
           $pstday = date("Y-m-d H:i:s", mktime($pstday_array[hours],$pstday_array[mimutes],$pstday_array[second],$pstday_array[mon],($pstday_array[mday] - MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL_KIKAN),$pstday_array[year]));
@@ -1287,10 +1286,10 @@ if($address_error == false){
             }
           }
           //----------------------------------------------
-          //今回の注文額は除外
+          //这次的订单金额除外
           $total_buyed_date = $total_buyed_date - ($result3['value'] - (int)$result2['value']);
 
-          //還元率を計算----------------------------------
+          //计算返点率----------------------------------
           if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
             $back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
             $back_rate = MODULE_ORDER_TOTAL_POINT_FEE;
@@ -1313,7 +1312,7 @@ if($address_error == false){
         } else {
           $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
         }
-        // ここまでカスタマーレベルに応じたポイント還元率算出============================================================
+        // 计算各个不同顾客的返点率到此结束============================================================
         if ($result3['value'] >= 0) {
           $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
         } else {
@@ -1611,7 +1610,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
           $row = tep_db_fetch_array($result);
           extract($row, EXTR_PREFIX_ALL, "p");
 
-          // 特価を適用
+          // 适用于特价
           $p_products_price = tep_get_final_price($p_products_price, $p_products_price_offset, $p_products_small_sum, (int)$add_product_quantity);
           // Following functions are defined at the bottom of this file
           $CountryID = tep_get_country_id($order->delivery["country"]);
@@ -1832,7 +1831,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
     var payment_method = document.getElementsByName("payment_method")[0].value;
     var con_email = document.getElementsByName("con_email")[0];
     if(!con_email.disabled){
-      var reg = /^([a-zA-Z0-9]+[-]+[_|\_|\.]?)*[a-zA-Z0-9]+[-]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/; 
+      var reg = /^([a-zA-Z0-9]+[-]+[_|\_|\.]?)*[a-zA-Z0-9\-]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/; 
       if(!reg.test(con_email.value)){
         payment_error = true;
         error_str += '<?php echo TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE;?>'+"\n\n";
@@ -3301,7 +3300,7 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
           //这里判断 订单商品是否有配送 如果有用自己的配送 如果没有用session的
               $products_weight_total = 0; //商品总重量
               $products_money_total = 0; //商品总价
-              $cart_shipping_time = array(); //商品取引时间
+              $cart_shipping_time = array(); //商品交易时间
               $products_address_query = tep_db_query("select * from ". TABLE_ORDERS_PRODUCTS ." where orders_id='". tep_db_input($oID) ."'");
               while($products_address_array = tep_db_fetch_array($products_address_query)){
 
@@ -4635,7 +4634,7 @@ if($orders_exit_flag == true){
             } elseif ($TotalDetails["Class"] == "ot_point") {
               $shipping_ot_point = $TotalDetails["Price"];
               $TotalDetails["Price"] = isset($_SESSION['orders_update_products'][$_GET['oID']]['point']) ? $_SESSION['orders_update_products'][$_GET['oID']]['point'] : $TotalDetails["Price"];
-              if ($customer_guest['customers_guest_chk'] == 0) { //会員
+              if ($customer_guest['customers_guest_chk'] == 0) { //会员
                 $current_point = $customer_point['point'] + $TotalDetails["Price"];
                 echo '  <tr>' . "\n" .
                   '    <td align="left" class="' . $TotalStyle . '">'.TEXT_CUSTOMER_INPUT.'<font color="red"><b>'.TEXT_REMAINING . $customer_point['point'] . TEXT_SUBTOTAL . $current_point . TEXT_RIGHT_BRACKETS.'</b></font>' . TEXT_INPUT_POSITIVE_NUM . 

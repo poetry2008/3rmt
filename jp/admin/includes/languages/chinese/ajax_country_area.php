@@ -1,6 +1,6 @@
 <?php
 /*
- * 料金設定 Ajax
+ * 费用设置 Ajax
  */
 
 define('TABLE_TITLE_1','的设置');

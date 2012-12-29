@@ -2,7 +2,6 @@
 /*
   $Id$
 
-  Charly Wilhelm  charly@yoshi.ch
   
   Released under the GNU General Public License
 

@@ -1,6 +1,6 @@
-var zaiko_input_obj=document.getElementsByName("zaiko[]");<?php //架空 ?>
-var target_input_obj=document.getElementsByName("TARGET_INPUT[]");<?php//同業者 ?>
-var price_obj=document.getElementsByName("price[]");<?php//特別価格 ?>
+var zaiko_input_obj=document.getElementsByName("zaiko[]");<?php //虚拟 ?>
+var target_input_obj=document.getElementsByName("TARGET_INPUT[]");<?php//同行 ?>
+var price_obj=document.getElementsByName("price[]");<?php//特价 ?>
 var error_msg='';
 
 function confirmg(question,url) {
@@ -147,7 +147,7 @@ function SBC2DBC(str) {
   str = str.replace(/[^\d\.]/gi,'');
   return str;
 }
-<?php//計算設定読み込み ?>
+<?php//读取计算设定 ?>
 function set_money(num,warning, single_type){
   if (warning ==undefined)
     {
@@ -157,25 +157,25 @@ function set_money(num,warning, single_type){
   var radio_cnt=document.getElementsByName("chk["+n+"]");
   if(radio_cnt.length == 0){
 
-    var tar_ipt = document.getElementById("target_"+n+"_0").innerHTML;<?php//同業者 ?>
+    var tar_ipt = document.getElementById("target_"+n+"_0").innerHTML;<?php//同行 ?>
 
   }else{
     for(var i=0;i < radio_cnt.length;i++){
       if (single_type == '1') {
         if(radio_cnt[i].checked == true){
-          var tar_ipt = document.getElementById("target_"+n+"_"+i).innerHTML;<?php//同業者 ?>
+          var tar_ipt = document.getElementById("target_"+n+"_"+i).innerHTML;<?php//同行 ?>
         }
       } else {
         if (document.getElementById("radio_"+n+"_"+i)) {
-          var tar_ipt = document.getElementById("radio_"+n+"_"+i).value;<?php//同業者 ?>
+          var tar_ipt = document.getElementById("radio_"+n+"_"+i).value;<?php//同行 ?>
         }
       }
     } 
   } 
-  var increase_input_obj=$(".INCREASE_INPUT");<?php//業者 x 倍数 ?>
+  var increase_input_obj=$(".INCREASE_INPUT");<?php//工商业者 x 倍数 ?>
   var ins_ipt=increase_input_obj[n].innerHTML; 
 
-  var set_m=0;                       <?php //サイト入力フォームに値を設置変数初期化 ?>
+  var set_m=0;                       <?php //在网站输入框里设置值 变量初始化 ?>
 
   if(parseInt(ins_ipt) < parseInt(tar_ipt)){
       
@@ -187,7 +187,7 @@ function set_money(num,warning, single_type){
         }
     }
     var kei = calc.keisan;<?php //数字 ?>
-    var shisoku = calc.shisoku;<?php //演算子 ?>
+    var shisoku = calc.shisoku;<?php //运算符 ?>
 
     if(shisoku == "+"){
       set_m = parseInt(tar_ipt) + parseInt(kei);
@@ -229,9 +229,9 @@ function set_money(num,warning, single_type){
   }
     
   <?php 
-  //価格の判定
-  //現在の価格と更新予定の価格を比較
-  //一致しているなら文字の色を青、不一致なら赤にする
+  //价格的判定
+  //现在的价格和预计更新的价格相比较
+  //如果一致的话，文字蓝色显示，不一致的话，文字红色显示
   ?>
   if(parseInt(document.getElementsByName("pprice[]")[n].value)==parseInt(set_m)){
     if (single_type == '1') {
@@ -279,15 +279,15 @@ function dougyousya_history(url,cpath,cid,action,did,fullpath){
 
 function onload_keisan(warning, single_type){
 
-  var trader_input_obj=$(".TRADER_INPUT");<?php //業者?>
-  var increase_input_obj=$(".INCREASE_INPUT");<?php //業者?>
+  var trader_input_obj=$(".TRADER_INPUT");<?php //工商业者?>
+  var increase_input_obj=$(".INCREASE_INPUT");<?php //工商业者?>
   for(var i=0;i< trader_input_obj.length;i++){
       set_money(i,warning,single_type);<?php //特価価格設定?>
   }
 }
 function check_error(){
 
-      var trader_input_obj=$(".TRADER_INPUT");<?php //業者?>
+      var trader_input_obj=$(".TRADER_INPUT");<?php //工商业者?>
       var this_price=document.getElementsByName("pprice[]");
       var bflag=document.getElementsByName("bflag[]");
       var focus_id = '';

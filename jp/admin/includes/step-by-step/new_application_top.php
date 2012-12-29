@@ -10,7 +10,7 @@ define('FILENAME_CREATE_ORDER', 'create_order.php');
 define('FILENAME_EDIT_ORDERS', 'edit_orders.php');
 define('FILENAME_EDIT_NEW_ORDERS', 'edit_new_orders.php');
 
-// 業者仕入
+// 工商业者进货
 define('FILENAME_CREATE_ORDER_PROCESS2', 'create_order_process2.php');
 define('FILENAME_CREATE_ORDER2', 'create_order2.php');
 define('FILENAME_EDIT_NEW_ORDERS2', 'edit_new_orders2.php');

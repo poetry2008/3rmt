@@ -8,7 +8,6 @@
   
 
   $order_id = $_GET['oID'];
-//  $order_id = '20110523-11420425';
    ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html dir="ltr" lang="ja">

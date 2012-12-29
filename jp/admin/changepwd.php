@@ -1,71 +1,71 @@
 <?php
 
 /* ===============================================
-  global 定数
+  global 常量
  ============================================== */
-// テーブル名
+// 表名
   define('TABLE_USERS', 'users');
   define('TABLE_PERMISSIONS', 'permissions');
 
 /* ===============================================
-  global 変数
+  global 变量
  ============================================== */
-  $TableBorder = 'border="0"';        // テーブル：線の太さ
-  $TableCellspacing = 'cellspacing="1"';    // テーブル：セルの間隔
-  $TableCellpadding = 'cellpadding="0"';    // テーブル：セルのマージン
-  $TableBgcolor = 'bgcolor="#FFFFFF"';    // テーブル：背景色
+  $TableBorder = 'border="0"';        // 表：线的宽度
+  $TableCellspacing = 'cellspacing="1"';    // 表：间距
+  $TableCellpadding = 'cellpadding="0"';    // 表：内间距
+  $TableBgcolor = 'bgcolor="#FFFFFF"';    // 表：背景色
 
-  $ThBgcolor = 'bgcolor="Gainsboro"';     // ヘッダセル：背景色
-  $TdnBgcolor = 'bgcolor="WhiteSmoke"';   // セル：項目名背景色
+  $ThBgcolor = 'bgcolor="Gainsboro"';     // 头部：背景色
+  $TdnBgcolor = 'bgcolor="WhiteSmoke"';   // 表格：项目名背景色
 
 
 
 function checkNotnull($s_val) {
 
-  // 値が入力されているときチェックを行う
+  // 输入值的时候进行检查
   if ($s_val == "") {
     return TEXT_ERRINFO_INPUT_NOINPUT;
   }
-  return '';        // 戻り値
+  return '';        // 返回值
 }
 
 function checkStringEreg($s_val, $s_ereg = "") {
 
-  // 値が未入力のとき処理終了
+  // 输入完成的时候，处理结束
   if ($s_val == "") return '';
 
-  // エラー判定
+  // 判断错误
   if ($s_ereg && (ereg($s_ereg,$s_val) == false)) {
     return TEXT_ERRINFO_INPUT_ERR;
   }
 
-  return '';            // 戻り値
+  return '';            // 返回值
 }
 
 function checkLength_ge($s_val, $n_len) {
 
-  // 値が未入力のとき処理終了
+  // 输入完成的时候，处理结束
   if ($s_val == "") return '';
 
-  // エラー判定
+  // 判断错误
   $n_val_len = strlen($s_val);
   if ($n_len > 0 && $n_len > $n_val_len) {
     return sprintf(TEXT_ERRINFO_INPUT_LENGTH, $n_len);
   }
 
-  return '';            // 戻り値
+  return '';            // 返回值
 }
 
 function print_err_message($a_error) {
 
-  $stable_bgcolor = 'bgcolor="#FFFFFF"';    // テーブル背景色
-  $sfont_color = 'color="#FF0000"';     // フォントカラー（エラー色）
+  $stable_bgcolor = 'bgcolor="#FFFFFF"';    // 表的背景色
+  $sfont_color = 'color="#FF0000"';     // 字体颜色
 
   echo '<font class="main" ' . $sfont_color . '">';
-  echo TABLE_HEADING_ERRINFO;   // エラーメッセージ表示タイトル
+  echo TABLE_HEADING_ERRINFO;   // 错误信息显示标题
   echo "<br>\n";
 
-  //-- エラー表示 --
+  //-- 错误显示 --
   for ($i = 0 ; $i < count($a_error) ; $i++) {
     echo $a_error[$i];
     echo "<br>\n";
@@ -84,20 +84,20 @@ function makeSelectUserInfo($s_user_ID = "") {
 
   $s_select = "select * from " . TABLE_USERS;
   $s_select .= ($s_user_ID == "" ? "" : " where userid = '$s_user_ID'");
-  $s_select .= " order by userid;";     // ユーザＩＤの順番にデータを取得する
+  $s_select .= " order by userid;";     // 按照先后顺序获取用户id
   return $s_select;
 
 }
 
 function makeSelectUserParmission($nmode=0) {
 
-  // ユーザ権限を含む情報取得
+  // 获取用话权限信息
   $s_select = "select u.userid as userid, u.name as name";
   $s_select .= " from " . TABLE_USERS . " u, " . TABLE_PERMISSIONS . " p";
   $s_select .= " where u.userid = p.userid";
-  if ($nmode == 0) $s_select .= " and p.permission < 15";   // 生成モードにより where 句の条件を編集する
+  if ($nmode == 0) $s_select .= " and p.permission < 15";   // 根据生成模式编辑 where 语句
   else $s_select .= " and p.permission = '".$nmode."'";
-  $s_select .= " order by u.userid";              // ユーザＩＤの順番にデータを取得する
+  $s_select .= " order by u.userid";              // 按照顺序获取用户id数据
 
   return $s_select;
 
@@ -107,9 +107,9 @@ function makeInsertUser($aval, $nmode=0) {
 
   $ssql = "insert into ";
   if ($nmode == 0) {
-    // DES で暗号化する
+    // 用DES加密
     $cryot_password = (string) crypt($aval['password']);
-    // ユーザ管理テーブルへの追加 sql 文字列生成
+    // 往用户管理表里添加数据用sql 生成字符串
     $ssql .= TABLE_USERS . " values (";
     $ssql .= "'" . $aval['userid'] . "'";
     $ssql .= ",'$cryot_password'";
@@ -121,7 +121,7 @@ function makeInsertUser($aval, $nmode=0) {
     $ssql .= ",'" . $aval['rule'] . "'";
     $ssql .= ")";
   } else {
-    // ユーザ権限テーブルへの追加 sql 文字列生成
+    // 往用户权限管理表里添加数据用sql 生成字符串
     $ssql .= TABLE_PERMISSIONS . " values (";
     $ssql .= "'" . $aval['userid'] . "'";
     $ssql .= ",7";
@@ -137,7 +137,7 @@ function makeUpdateUser($aval, $nmode=0) {
     $ssql .= " name='" . $aval['name'] . "'";
     $ssql .= ", email='" . $aval['email'] . "'";
   } else {
-    // DES で暗号化する
+    // 用DES加密
     $cryot_password = (string) crypt($aval['password']);
     $ssql .= " password='$cryot_password'";
     /*
@@ -154,12 +154,12 @@ function makeDeleteUser($nmode=0) {
 
   $ssql = "delete from ";
   if ($nmode == 0) {
-    // DES で暗号化する
+    // 用DES加密
     $cryot_password = (string) crypt(isset($aval['password'])?$aval['password']:'');
-    // ユーザ管理テーブルへの追加 sql 文字列生成
+    // 往用户管理表里添加数据用sql 生成字符串
     $ssql .= TABLE_USERS;
   } else {
-    // ユーザ権限テーブルへの追加 sql 文字列生成
+    // 往用户权限管理表里添加数据用sql 生成字符串
     $ssql .= TABLE_PERMISSIONS;
   }
   $ssql .= " where userid='" . $GLOBALS['userid'] . "'";
@@ -169,55 +169,55 @@ function makeDeleteUser($nmode=0) {
 
 function UserPassword_preview() {
 
-  PageBody('t', PAGE_TITLE_PASSWORD);   // ユーザ管理画面のタイトル部表示（パスワード変更）
+  PageBody('t', PAGE_TITLE_PASSWORD);   // 用户后台的标题显示（修改密码）
 
-  echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));              // <form>タグの出力
+  echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));              // <form>标签的输出
 
-  $ssql = makeSelectUserInfo($GLOBALS['userslist']);      // ユーザ情報取得
+  $ssql = makeSelectUserInfo($GLOBALS['userslist']);      // 获取用户信息
   @$oresult = tep_db_query($ssql);
-  if (!$oresult) {                      // エラーだったとき
-    echo TEXT_ERRINFO_DB_NO_USERINFO;           // メッセージ表示
+  if (!$oresult) {                      // 错误的时候
+    echo TEXT_ERRINFO_DB_NO_USERINFO;           // 显示信息
     echo "<br>\n";
-    echo tep_draw_form('users', FILENAME_USERS);            // <form>タグの出力
-    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // ユーザ管理メニューに戻る
-    echo "</form>\n";                   // フォームのフッター
-    if ($oresult) @tep_db_free_result($oresult);      // 結果オブジェクトを開放する
+    echo tep_draw_form('users', FILENAME_USERS);            // <form>标签的输出
+    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
+    echo "</form>\n";                   // form的footer
+    if ($oresult) @tep_db_free_result($oresult);      // 开放结果项目
     return FALSE;
   }
 
-  $nrow = tep_db_num_rows($oresult);              // レコード件数の取得
-  if ($nrow != 1) {                     // 取得したレコード件数1件でないとき
-    echo TEXT_ERRINFO_DB_NO_USER;             // メッセージ表示
+  $nrow = tep_db_num_rows($oresult);              // 获取记录件数
+  if ($nrow != 1) {                     // 获取的记录件数不是一件的时候
+    echo TEXT_ERRINFO_DB_NO_USER;             // 显示信息
     echo "<br>\n";
-    echo tep_draw_form('users', FILENAME_USERS);            // <form>タグの出力
-    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // ユーザ管理メニューに戻る
-    echo "</form>\n";                   // フォームのフッター
-    if ($oresult) @tep_db_free_result($oresult);      // 結果オブジェクトを開放する
-    return FALSE;                     // 処理を抜ける
+    echo tep_draw_form('users', FILENAME_USERS);            // <form>标签的输出
+    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回到用户管理菜单
+    echo "</form>\n";                   // form的footer
+    if ($oresult) @tep_db_free_result($oresult);      // 开放结果项目
+    return FALSE;                     // 退出处理
   }
 
   $arec = tep_db_fetch_array($oresult);
-  if ($oresult) @tep_db_free_result($oresult);    // 結果オブジェクトを開放する
+  if ($oresult) @tep_db_free_result($oresult);    // 开放结果项目
 
-  // テーブルタグの開始
+  // 表标签的开始
   echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
   echo "<tr>\n";
-  // ユーザ名称（ユーザID）
+  // 用户名（用户ID）
   echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . ' colspan="2" nowrap>' .
     $arec['name'] . "（" . $GLOBALS['userslist'] . '）</td>' . "\n";
   echo "</tr>\n";
 
   echo "<tr>\n";
-  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TABLE_HEADING_NEW_PASSWORD . '</td>';    // 新しいパスワード
-  // 入力項目出力
+  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TABLE_HEADING_NEW_PASSWORD . '</td>';    // 新密码
+  // 输入项目的输出
   echo '<td>';
   echo tep_draw_password_field("aval[password]", '', TRUE," id='aval_password'");
   echo '</td>';
   echo "</tr>\n";
 
   echo "<tr>\n";
-  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TABLE_HEADING_CONFIRM_PASSWORD . '</td>';  // 確認のため再入力
-  // 入力項目出力
+  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TABLE_HEADING_CONFIRM_PASSWORD . '</td>';  // 为了确认请再次输入
+  // 输入项目的输出
   echo '<td>';
   echo tep_draw_password_field("aval[chk_password]", '', TRUE," id='aval_chk_password'");
   echo '</td>';
@@ -225,64 +225,64 @@ function UserPassword_preview() {
   $users = tep_db_fetch_array(tep_db_query("select * from ".TABLE_USERS." where userid  ='".$GLOBALS['userslist']."'"));
   if(tep_not_null($users['user_added'])){
   echo "<tr>\n";
-  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_USER_ADDED . '</td>';  // 確認のため再入力
-  // 入力項目出力
+  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_USER_ADDED . '</td>';  // 为了确认请再次输入
+  // 输入项目的输出
   echo '<td>';
   echo $users['user_added'];
   echo '</td>';
   echo "</tr>\n";
   }else{
   echo "<tr>\n";
-  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_USER_ADDED . '</td>';  // 確認のため再入力
-  // 入力項目出力
+  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_USER_ADDED . '</td>';  // 为了确认请再次输入
+  // 输入项目的输出
   echo '<td>';
   echo TEXT_UNSET_DATA;
   echo '</td>';
   echo "</tr>\n";
   }if(tep_not_null(tep_datetime_short($users['date_added']))){
   echo "<tr>\n";
-  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_DATE_ADDED . '</td>';  // 確認のため再入力
-  // 入力項目出力
+  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_DATE_ADDED . '</td>';  // 为了确认请再次输入
+  // 输入项目的输出
   echo '<td>';
   echo $users['date_added'];
   echo '</td>';
   echo "</tr>\n";
   }else{
   echo "<tr>\n";
-  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_DATE_ADDED . '</td>';  // 確認のため再入力
-  // 入力項目出力
+  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_DATE_ADDED . '</td>';  // 为了确认请再次输入
+  // 输入项目的输出
   echo '<td>';
   echo TEXT_UNSET_DATA;
   echo '</td>';
   echo "</tr>\n";
   }if(tep_not_null($users['user_update'])){
   echo "<tr>\n";
-  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_USER_UPDATE . '</td>';  // 確認のため再入力
-  // 入力項目出力
+  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_USER_UPDATE . '</td>';  // 为了确认请再次输入
+  // 输入项目的输出
   echo '<td>';
   echo $users['user_update'];
   echo '</td>';
   echo "</tr>\n";
   }else{
   echo "<tr>\n";
-  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_USER_UPDATE . '</td>';  // 確認のため再入力
-  // 入力項目出力
+  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_USER_UPDATE . '</td>';  // 为了确认请再次输入
+  // 输入项目的输出
   echo '<td>';
   echo TEXT_UNSET_DATA;
   echo '</td>';
   echo "</tr>\n";
   }if(tep_not_null($users['date_update'])){
   echo "<tr>\n";
-  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_DATE_UPDATE . '</td>';  // 確認のため再入力
-  // 入力項目出力
+  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_DATE_UPDATE . '</td>';  // 为了确认请再次输入
+  // 输入项目的输出
   echo '<td>';
   echo $users['date_update'];
   echo '</td>';
   echo "</tr>\n";
   }else{
   echo "<tr>\n";
-  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_DATE_UPDATE . '</td>';  // 確認のため再入力
-  // 入力項目出力
+  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_DATE_UPDATE . '</td>';  // 为了确认请再次输入
+  // 输入项目的输出
   echo '<td>';
   echo TEXT_UNSET_DATA;
   echo '</td>';
@@ -292,19 +292,19 @@ function UserPassword_preview() {
 
   echo '<br>';
 
-  echo tep_draw_hidden_field("execute_password");         // 処理モードを隠し項目にセットする
-  echo tep_draw_hidden_field("userid", $GLOBALS['userslist']);    // ユーザＩＤを隠し項目にセットする
-  echo tep_draw_hidden_field("userslist", $GLOBALS['userslist']);    // ユーザＩＤを隠し項目にセットする
+  echo tep_draw_hidden_field("execute_password");         // 把处理模式放在隐藏项目里
+  echo tep_draw_hidden_field("userid", $GLOBALS['userslist']);    //把用户id放在隐藏项目里
+  echo tep_draw_hidden_field("userslist", $GLOBALS['userslist']);    // 把用户id放在隐藏项目里
 
-  // ボタン表示
-  echo tep_draw_input_field("execute_update", BUTTON_CHANGE, "onClick=\"return formConfirm('password')\"", FALSE, "submit", FALSE); // 変更
-  echo tep_draw_input_field("clear", BUTTON_CLEAR, '', FALSE, "reset", FALSE);  // クリア
+  // 显示按钮
+  echo tep_draw_input_field("execute_update", BUTTON_CHANGE, "onClick=\"return formConfirm('password')\"", FALSE, "submit", FALSE); // 变更
+  echo tep_draw_input_field("clear", BUTTON_CLEAR, '', FALSE, "reset", FALSE);  // 清除
   echo "\n";
 
-  echo "</form>\n";                 // フォームのフッター
+  echo "</form>\n";                 // form的footer
 
   /*
-  echo '<a href="' . tep_href_link(FILENAME_USERS) . '">&laquo;&nbsp;' . BUTTON_BACK_MENU . '</a>'; // ユーザ管理メニューに戻る
+  echo '<a href="' . tep_href_link(FILENAME_USERS) . '">&laquo;&nbsp;' . BUTTON_BACK_MENU . '</a>'; // 返回用户管理菜单
   */
 
   return TRUE;
@@ -312,31 +312,31 @@ function UserPassword_preview() {
 
 function UserInfor_execute() {
 
-  PageBody('t', PAGE_TITLE_USERINFO);   // ユーザ管理画面のタイトル部表示（ユーザ情報）
+  PageBody('t', PAGE_TITLE_USERINFO);   // 用户管理换面的标题显示（用户信息）
 
-  // 氏名 の入力チェック
+  // 名字的输入检查
   $ret_err = checkNotnull($GLOBALS['aval']['name']);
-  if ($ret_err != "") set_errmsg_array($aerror, '<b>' . TABLE_HEADING_NAME . '</b>:' . $ret_err);   // 氏名
+  if ($ret_err != "") set_errmsg_array($aerror, '<b>' . TABLE_HEADING_NAME . '</b>:' . $ret_err);   // 名字
 
-  echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));      // <form>タグの出力
+  echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));      // <form>标签的输出
 
-  if (isset($aerror) && is_array($aerror)) {      // 入力エラーのとき
-    print_err_message($aerror);   // エラーメッセージ表示
+  if (isset($aerror) && is_array($aerror)) {      // 输入错误的时候
+    print_err_message($aerror);   // 显示错误信息
     echo "<br>\n";
-    echo tep_draw_hidden_field('userslist', $GLOBALS['userid']);            // ユーザＩＤを隠し項目にセットする
-    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // ユーザ管理メニューに戻る
-    echo "</form>\n";       // フォームのフッター
+    echo tep_draw_hidden_field('userslist', $GLOBALS['userid']);            // 把用户id方才隐藏项目里
+    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
+    echo "</form>\n";       // form的footer
     return FALSE;
   }
 
-  $ssql = makeUpdateUser($GLOBALS['aval']);         // ユーザ管理テーブルの氏名とE-Maiを更新する sql文字列を取得する
+  $ssql = makeUpdateUser($GLOBALS['aval']);         // 更新用户管理表的名字和邮件  获取sql字符串
   @$oresult = tep_db_query($ssql);
-  if (!$oresult) {                      // エラーだったとき
-    echo TEXT_ERRINFO_DB_UPDATE_USER;           // メッセージ表示
+  if (!$oresult) {                      // 错误的时候
+    echo TEXT_ERRINFO_DB_UPDATE_USER;           // 显示信息
     echo "<br>\n";
-    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // ユーザ管理メニューに戻る
-    echo "</form>\n";                   // フォームのフッター
-    if ($oresult) @tep_db_free_result($oresult);      // 結果オブジェクトを開放する
+    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
+    echo "</form>\n";                   // form的footer
+    if ($oresult) @tep_db_free_result($oresult);      // 开放结果项目
     return FALSE;
   }
   
@@ -361,12 +361,12 @@ function UserInfor_execute() {
     }
   }
   echo "<br>\n";
-  echo TEXT_SUCCESSINFO_UPDATE_USER;    // 完了メッセージ
+  echo TEXT_SUCCESSINFO_UPDATE_USER;    // 完成信息
   echo "<br><br>\n";
-  echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // ユーザ管理メニューに戻る
-  echo "</form>\n";           // フォームのフッター
+  echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
+  echo "</form>\n";           // form的footer
 
-  if ($oresult) @tep_db_free_result($oresult);    // 結果オブジェクトを開放する
+  if ($oresult) @tep_db_free_result($oresult);    // 开放结果项目
   if(isset($GLOBALS['letter'])&&$GLOBALS['letter']!=''
       &&isset($GLOBALS['rule'])&&$GLOBALS['rule']!=''){
     update_rules($GLOBALS['userid'],$GLOBALS['rule'],$GLOBALS['letter']);
@@ -377,52 +377,52 @@ function UserInfor_execute() {
 
 function UserPassword_execute() {
 
-  PageBody('t', PAGE_TITLE_PASSWORD);   // ユーザ管理画面のタイトル部表示（パスワード変更）
-  // 新しいパスワードの入力チェック
+  PageBody('t', PAGE_TITLE_PASSWORD);   // 用户管理画面的标题显示（修改密码）
+  // 新密码的输入检查
   $ret_err = checkNotnull($GLOBALS['aval']['password']);
   if ($ret_err != "") set_errmsg_array($aerror, '<b>' . TABLE_HEADING_NEW_PASSWORD . '</b>:' . $ret_err);
   $ret_err = checkLength_ge($GLOBALS['aval']['password'], 2);
   if ($ret_err == "") $ret_err = checkStringEreg($GLOBALS['aval']['password'], "[[:print:]]");
   if ($ret_err != "") set_errmsg_array($aerror, '<b>' . TABLE_HEADING_NEW_PASSWORD . '</b>:' . $ret_err);
-  // 確認のため再入力の入力チェック
+  // 为了确认请再次输入的检查
   if (strcmp($GLOBALS['aval']['password'],$GLOBALS['aval']['chk_password']) != 0)
     set_errmsg_array($aerror, TEXT_ERRINFO_CONFIRM_PASSWORD);
 
-  echo tep_draw_form('users',FILENAME_CHANGEPWD);      // <form>タグの出力
+  echo tep_draw_form('users',FILENAME_CHANGEPWD);      // <form>标签的输出
 
-  if (isset($aerror) && is_array($aerror)) {      // 入力エラーのとき
-    print_err_message($aerror);   // エラーメッセージ表示
+  if (isset($aerror) && is_array($aerror)) {      // 输入错误的时候
+    print_err_message($aerror);   // 显示错误信息
     echo "<br>\n";
-    echo tep_draw_hidden_field('userslist', $GLOBALS['userid']);    // ユーザＩＤを隠し項目にセットする
+    echo tep_draw_hidden_field('userslist', $GLOBALS['userid']);    // 把用户id方才隐藏项目里
     echo tep_draw_hidden_field('execute_password', $GLOBALS['execute_password']);
-    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // ユーザ管理メニューに戻る
-    echo "</form>\n";       // フォームのフッター
+    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
+    echo "</form>\n";       // form的footer
     return FALSE;
   }
 
-  $ssql = makeUpdateUser($GLOBALS['aval'], 1);    // ユーザ管理テーブルのパスワードを更新する sql文字列を取得する
+  $ssql = makeUpdateUser($GLOBALS['aval'], 1);    // 更新用户管理表的密码  获取sql字符串
   @$oresult = tep_db_query($ssql);
-  if (!$oresult) {                  // エラーだったとき
-    echo TEXT_ERRINFO_DB_CHANGE_PASSWORD;     // メッセージ表示
+  if (!$oresult) {                  // 错误的时候
+    echo TEXT_ERRINFO_DB_CHANGE_PASSWORD;     // 显示信息
     echo "<br>\n";
-    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // ユーザ管理メニューに戻る
-    echo "</form>\n";               // フォームのフッター
-    if ($oresult) @tep_db_free_result($oresult);  // 結果オブジェクトを開放する
+    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
+    echo "</form>\n";               // form的footer
+    if ($oresult) @tep_db_free_result($oresult);  // 开放结果项目
     return FALSE;
   }
 
   echo "<br>\n";
   echo "&nbsp;&nbsp;&nbsp;&nbsp;";
   echo "<font size='4' color='red'>";
-  echo TEXT_SUCCESSINFO_CHANGE_PASSWORD;    // 完了メッセージ
+  echo TEXT_SUCCESSINFO_CHANGE_PASSWORD;    // 完成信息
   echo "</font>";
   echo "<br><br>\n";
 /*
-  echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // ユーザ管理メニューに戻る
+  echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
   */
-  echo "</form>\n";           // フォームのフッター
+  echo "</form>\n";           // form的footer
 
-  if ($oresult) @tep_db_free_result($oresult);    // 結果オブジェクトを開放する
+  if ($oresult) @tep_db_free_result($oresult);    // 开放结果项目
 
   return TRUE;
 
@@ -485,9 +485,9 @@ function PageHeader() {
   echo '<title>'.HEADING_TITLE.'  </title>' . "\n";
   echo '<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">' . "\n";
 
-  // ユーザ情報、パスワード変更、管理者権限のとき確認メッセージ JavaScript 出力
+  // 修改用户信息，修改密码，管理者权限的时候，用JavaScript输出确认信息
   if ((isset($GLOBALS['execute_user']) && $GLOBALS['execute_user']) || (isset($GLOBALS['execute_password']) && $GLOBALS['execute_password']) || (isset($GLOBALS['execute_permission']) && $GLOBALS['execute_permission']) ) {
-    putJavaScript_ConfirmMsg();           // 確認メッセージを表示する JavaScript
+    putJavaScript_ConfirmMsg();           // 显示确认信息 JavaScript
   }
 
   echo '<script language="javascript" src="includes/javascript/jquery_include.js"></script>'."\n";
@@ -577,10 +577,10 @@ function PageFooter() {
 //修改权限
 if (isset($_POST['execute_change'])) { $execute_change = $_POST['execute_change'];}
 
-  PageHeader();       // ページ・ヘッダの表示
-  PageBodyTable('t');     // ページのレイアウトテーブル：開始（ナビゲーションボックスを包括するテーブル開始）
+  PageHeader();       // 显示页面的头部
+  PageBodyTable('t');     // 页面的布局表：开始（启动包括导航的表）
 
-  // 左ナビゲーションボックスの表示
+  // 显示左侧导航
   if($ocertify->npermission >= 10){
   echo "<!-- left_navigation //-->\n";    // 
   include_once(DIR_WS_INCLUDES . 'column_left.php');
@@ -598,23 +598,23 @@ if (isset($_POST['execute_change'])) { $execute_change = $_POST['execute_change'
   }
 
   
-// 画面表示、入力チェックＤＢ反映
+// 显示画面，输入检查，反应数据库
   if ($ocertify->auth_user&&$change_pwd_flag) {
-        // パスワード変更
+        // 修改密码
     if (isset($execute_password) && $execute_password) {
       if (isset($execute_update) && $execute_update){
-        UserPassword_execute();  // パスワード変更処理実行
+        UserPassword_execute();  // 执行密码变更处理
       }else{
-        UserPassword_preview();          // パスワード変更ページ表示
+        UserPassword_preview();          // 显示密码变更页面
       }
 
-    // 管理者権限
+    // 管理者权限
     }   
   }
 
-  PageBody('u');        // ページボディの終了
-  PageBodyTable('u');     // ページのレイアウトテーブル：終了
-  PageFooter();       // ページフッタの表示
+  PageBody('u');        // 页面终了
+  PageBodyTable('u');     // 页面布局表：终了
+  PageFooter();       // 页脚的显示
 
   require(DIR_WS_INCLUDES . 'application_bottom.php');
 ?>

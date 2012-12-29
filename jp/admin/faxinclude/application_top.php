@@ -73,7 +73,7 @@ setlocale (LC_ALL, 'ja_JP.eucJP');
   define('FILENAME_MODULES', 'modules.php');
   define('FILENAME_NEWSLETTERS', 'newsletters.php');
   define('FILENAME_ORDERS', 'orders.php');
-  define('FILENAME_ORDERS_EDIT', 'edit_orders.php');//ди╡ц-order_editer 2005.10.20
+  define('FILENAME_ORDERS_EDIT', 'edit_orders.php');
   define('FILENAME_ORDERS_INVOICE', 'invoice.php');
   define('FILENAME_ORDERS_PACKINGSLIP', 'packingslip.php');
   define('FILENAME_ORDERS_STATUS', 'orders_status.php');
@@ -268,7 +268,6 @@ setlocale (LC_ALL, 'ja_JP.eucJP');
 
   require('faxinclude/functions/admin_functions.php');
 
-// define our authenticate functions 2003/04/16
   //var_dump(!tep_session_is_registered('adminaccs'));
   if(!tep_session_is_registered('adminaccs')) {
     include('faxinclude/classes/' . 'user_certify.php');
@@ -329,7 +328,7 @@ setlocale (LC_ALL, 'ja_JP.eucJP');
   if (!defined('DEFAULT_LANGUAGE')) {
     $messageStack->add(ERROR_NO_DEFAULT_LANGUAGE_DEFINED, 'error');
   }
-// Include OSC-AFFILIATE
+
   require('includes/affiliate_application_top.php');
   //for sql_log
   $testArray = array();

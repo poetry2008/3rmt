@@ -56,8 +56,7 @@
   {
     $currency_text = tep_db_prepare_input($_POST['Currency']);
   }
-  
-  //Add input string check - 2006.4.14 ds-style
+
   $error = false;
   
   //customer_id check
@@ -523,7 +522,6 @@ require("includes/note_js.php");
 </body>
 </html>
 <?php
-  //Add input string check - OK insert order data - d2006.4.14 ds-style
   } else {
   unset($_SESSION['create_preorder']); 
   $currency_array = explode(",", $currency_text);

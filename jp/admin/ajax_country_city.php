@@ -1,6 +1,6 @@
 <?php
 /*
- * 地域料金設定 Ajax
+ * 设置地区费用 Ajax
  */
 require('includes/application_top.php');
 $id = tep_db_prepare_input($_POST['id']);
@@ -123,7 +123,7 @@ if($id == 0 || $maxid == $minid){
 <tr><td width="30%">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_4;?></td><td>
 <?php
 // SHIPPING_BOX_WEIGHT_LIST
-// 重量/料金
+// 重量/费用
 $weight_fee_array = explode(',',SHIPPING_BOX_WEIGHT_LIST);
 
 $weight_fee_option_array = unserialize($weight_fee);

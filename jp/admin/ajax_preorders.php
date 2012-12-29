@@ -76,13 +76,13 @@ if ($_POST['orders_id'] &&
   // 重要
   tep_db_perform('preorders', array('orders_important_flag' => $_GET['orders_important_flag']), 'update', "orders_id='".$_GET['orders_id']."'");
 } else if ($_GET['orders_id'] && isset($_GET['orders_care_flag'])) {
-  // 取り扱い注意
+  // 注意处理方式
   tep_db_perform('preorders', array('orders_care_flag' => $_GET['orders_care_flag']), 'update', "orders_id='".$_GET['orders_id']."'");
 } else if ($_GET['orders_id'] && isset($_GET['orders_wait_flag'])) {
-  // 取引待ち
+  // 交易等待
   tep_db_perform('preorders', array('orders_wait_flag' => $_GET['orders_wait_flag']), 'update', "orders_id='".$_GET['orders_id']."'");
 }  else if ($_GET['orders_id'] && isset($_GET['orders_inputed_flag'])) {
-  // 入力済み
+  // 输入完成
   tep_db_perform('preorders', array('orders_inputed_flag' => $_GET['orders_inputed_flag']), 'update', "orders_id='".$_GET['orders_id']."'");
 } else if ($_GET['action'] == 'delete' && $_GET['orders_id'] && $_GET['computers_id']) {
   tep_db_query("delete from ".TABLE_PREORDERS_TO_COMPUTERS." where orders_id='".$_GET['orders_id']."' and computers_id='".(int)$_GET['computers_id']."'");
@@ -131,13 +131,13 @@ if ($_POST['orders_id'] &&
     //  $oInfo = new objectInfo($orders);
     //}
 
-    //今日の取引なら赤色
+    //如果是今天的交易的话，显示红色
     $trade_array = getdate(strtotime(tep_datetime_short($orders['predate'])));
     $today_array = getdate();
     if ($trade_array["year"] == $today_array["year"] && $trade_array["mon"] == $today_array["mon"] && $trade_array["mday"] == $today_array["mday"]) {
       $today_color = 'red';
       if ($trade_array["hours"] >= $today_array["hours"]) {
-        $next_mark = tep_image(DIR_WS_ICONS . 'arrow_blinking.gif', NEXT_ORDER_TEXT); //次の注文に目印をつける
+        $next_mark = tep_image(DIR_WS_ICONS . 'arrow_blinking.gif', NEXT_ORDER_TEXT); //标记下个订单
       } else {
         $next_mark = '';
       }

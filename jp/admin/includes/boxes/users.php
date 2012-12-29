@@ -1,5 +1,5 @@
 <?php
-// ファイル名
+// 文件名
 define('FILENAME_USERS', 'users.php');
 define('FILENAME_USERS_LOGINLOG', 'users_log.php');
 define('FILENAME_ONCE_PWD_LOG', 'pwd_log.php');

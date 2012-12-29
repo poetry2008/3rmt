@@ -24,8 +24,6 @@ define('ERROR_STATUS_USED_IN_HISTORY', '错误:这个订单状态、现在正在
 //mail本文 add
 define('TEXT_INFO_ORDERS_STATUS_MAIL', '邮件文本');
 define('TEXT_INFO_ORDERS_STATUS_TITLE', '邮件标题');
-
-//define('TEXT_EDIT_ORDERS_STATUS_IMAGE', 'メール&#22270;像');
 define('TEXT_EDIT_ORDERS_STATUS_IMAGE', '图标');
 
 define('TEXT_ORDERS_STATUS_FINISHED', '订单完成');

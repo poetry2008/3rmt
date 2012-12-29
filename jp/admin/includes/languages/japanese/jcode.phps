@@ -1,29 +1,4 @@
 <?php
-/*************************************************************************
-                      ________________________________
-
-                             jcode.phps by TOMO
-                      ________________________________
-
-
- [Version] : 1.34 (2002/10/10)
- [URL]     : http://www.spencernetwork.org/
- [E-MAIL]  : groove@spencernetwork.org
- [Changes] :
-     v1.30 Changed XXXtoUTF8 and UTF8toXXX with conversion tables.
-     v1.31 Deleted a useless and harmful line in JIStoUTF8() (^^;
-     v1.32 Fixed miss type of jsubstr().
-           Fixed HANtoZEN_EUC(), HANtoZEN_SJIS() and HANtoZEN_JIS().
-     v1.33 Fixed JIStoXXX(), HANtoZEN_JIS() and ZENtoHAN_JIS().
-           Added jstr_split() as O-MA-KE No.4.
-           Added jstrcut() as O-MA-KE No.5.
-           Changed the logic of AutoDetect()
-     v1.34 Fixed ZENtoHAN_SJIS()
-
- * jcode.phps is free but without any warranty.
- * use this script at your own risk.
-
-***************************************************************************/
 
 function JcodeConvert(&$str, $from, $to)
 {
@@ -56,12 +31,10 @@ function AutoDetect(&$str)
 	//0:US-ASCII
 	//1:EUC-JP
 	//2:Shift_JIS
-	//3:ISO-2022-JP(JIS)
 	//4:UTF-8
 	//5:Unknown
 
 	if (!ereg("[\x80-\xFF]", $str)) {
-		// --- Check ISO-2022-JP ---
 		if (ereg("\x1B", $str)) return 3; // ISO-2022-JP(JIS)
 		return 0; //US-ASCII
 	}
@@ -156,7 +129,6 @@ function HANtoZEN(&$str, $encode)
 	//0:PASS
 	//1:EUC-JP
 	//2:Shift_JIS
-	//3:ISO-2022-JP(JIS)
 	//4:UTF-8
 
 	if ($encode == 0) return $str;
@@ -173,7 +145,6 @@ function ZENtoHAN(&$str, $encode, $kana=1, $alph=1)
 	//0:PASS
 	//1:EUC-JP
 	//2:Shift_JIS
-	//3:ISO-2022-JP(JIS)
 
 	if ($encode == 0) return $str;
 	if ($encode == 1) return ZENtoHAN_EUC($str,  $kana, $alph, $kana);
