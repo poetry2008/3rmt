@@ -79,7 +79,7 @@ WHERE
       }
  $site_id= tep_get_conf_sid_by_id($cID);
         if($site_id['site_id'])    forward401Unless(editPermission($site_arr, $site_id['site_id']));//权限不够 跳到401
-  //画像アップロード時のみ
+  //只在图像上传的时候
         $upfile_name = $_FILES["upfile"]["name"];
         $upfile = $_FILES["upfile"]["tmp_name"];
   if(file_exists($upfile)){
@@ -170,21 +170,21 @@ require("includes/note_js.php");
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
-    <!-- header //-->
+    <!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-    <!-- header_eof //-->
+    <!-- header_eof -->
 
-    <!-- body //-->
+    <!-- body -->
     <table border="0" width="100%" cellspacing="2" cellpadding="2">
        <tr>
           <td width="<?php echo BOX_WIDTH; ?>" valign="top">
              <table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-    <!-- left_navigation //-->
+    <!-- left_navigation -->
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-    <!-- left_navigation_eof //-->
+    <!-- left_navigation_eof -->
              </table>
           </td>
-    <!-- body_text //-->
+    <!-- body_text -->
           <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2"></td>
        </tr>
        <tr>
@@ -327,7 +327,7 @@ case 'edit':
     }
 
 //----------------------------------
-// for 3rmt {{{
+
     $contents_sites_array = array();
     $select_site_configure = tep_db_query('select * from sites order by order_num');
     // configuration admin page only
@@ -418,7 +418,7 @@ case 'edit':
   $contents_sites_array[] = $contents_site;
   
     }
-//for 3rmt }}}
+
 
     break;
 default:
@@ -482,14 +482,14 @@ if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {
       </tr>
     </table>
     </div></div></td>
-<!-- body_text_eof //-->
+<!-- body_text_eof -->
   </tr>
 </table>
-<!-- body_eof //-->
+<!-- body_eof -->
 
-<!-- footer //-->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 </body>
 </html>

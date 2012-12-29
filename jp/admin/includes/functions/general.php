@@ -579,7 +579,6 @@ function tep_get_geo_zone_name($geo_zone_id) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 
-// 2003-06-06 add_telephone
 //  function tep_address_format($address_format_id, $address, $html, $boln, $eoln) {
 function tep_address_format($address_format_id, $address, $html, $boln, $eoln, $telephone=TRUE) {
   $address_format_query = tep_db_query("select address_format as format from " . TABLE_ADDRESS_FORMAT . " where address_format_id = '" . $address_format_id . "'");
@@ -602,7 +601,6 @@ function tep_address_format($address_format_id, $address, $html, $boln, $eoln, $
   $country = tep_get_country_name($country_id);
   $state = tep_get_zone_code($country_id, $zone_id, $state);
   $statename = $state; // for Japanese Localize
-  // 2003-06-06 add_telephone
   if ($telephone) { $telephone = tep_output_string_protected($address['telephone']); }
 
   if ($html) {
@@ -2031,7 +2029,7 @@ function tep_parse_search_string($search_str = '', &$objects) {
   }
 }
 
-// お届け日時
+// 交易时间
 function tep_torihiki($raw_datetime) {
   if ( ($raw_datetime == '0000-00-00 00:00:00') || ($raw_datetime == '') ) return false;
 
@@ -2597,7 +2595,7 @@ function tep_get_site_name_by_order_id($id){
    return $product['specials_new_products_price'];
    }*/
 
-//オプション名取得
+//获取option名
 function tep_get_add_options_name($id, $languages='4') {
   $query = tep_db_query("select products_options_name from products_options where products_options_id = '".$id."' and language_id = '".$languages."'");
   if(tep_db_num_rows($query)) {
@@ -2607,7 +2605,7 @@ function tep_get_add_options_name($id, $languages='4') {
     return '';
   }
 }
-//オプション値登録
+//注册option值
 function tep_get_add_options_value($id, $languages='4') {
   $query = tep_db_query("select products_options_values_name from products_options_values where products_options_values_id = '".$id."' and language_id = '".$languages."'");
   if(tep_db_num_rows($query)) {
@@ -3389,9 +3387,9 @@ function tep_get_parent_cpath($cid){
 
 function spliteOroData($orodata){
   $new_lines = array();
-  $cr = array("\r\n", "\r");   // 改行コード置換用配
+  $cr = array("\r\n", "\r");   // 用于换行代码替换
   $data = trim($orodata);
-  $data = str_replace($cr, "\n",$data);  // 改行コードを統一
+  $data = str_replace($cr, "\n",$data);  //统一换行代码
   $lines = explode("\n", $data);
   foreach($lines as $key => $line) {
     $lines[$key] = trim($line);

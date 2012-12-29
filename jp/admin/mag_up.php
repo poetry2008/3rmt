@@ -21,26 +21,26 @@ require("includes/note_js.php");
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
-<!-- header //-->
+<!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
+<!-- header_eof -->
 <?php
   if (isset($_GET['action']) && $_GET['action'] == 'upload'){
     /*
     $dat[0] => ID
-    $dat[1] => メールアドレス
+    $dat[1] => 邮件地址
     $dat[2] => 姓名
   */
-    // CSVファイルのチェック
+    // CSV文件检查
     $chk_csv = true;
     $filename = isset($HTTP_POST_FILES['products_csv']['name'])?$HTTP_POST_FILES['products_csv']['name']:'';
     if(substr($filename, strrpos($filename,".")+1)!="csv") $chk_csv = false;
      
-    // ファイル名の参照チェック
+    // 文件名参考检查
     if(isset($HTTP_POST_FILES['products_csv']['tmp_name']) && $HTTP_POST_FILES['products_csv']['tmp_name']!="" && $chk_csv){
     $file = fopen($products_csv,"r");
   
-  //SQLを空にする
+  //SQL弄成空
   //mysql_query("TRUNCATE TABLE mail_magazine");
   mysql_query("delete from ".TABLE_MAIL_MAGAZINE." where site_id = '".(int)$_POST['site_id']."'");
   
@@ -50,17 +50,17 @@ require("includes/note_js.php");
   
   echo '<P>';
   while($dat = fgetcsv($file,10000,',')){
-    // １行目がフィールド名のとき、２行目から読む
+    // 第一行是字段名的时候，从第二行开始读取
     if(!ereg("@", $dat[1])) $dat = fgetcsv($file,10000,',');
     
-    // EUCに変換
+    // 转换成EUC
     for($e=0;$e<count($dat);$e++){
       $dat[$e] = addslashes(jcodeconvert($dat[$e],"0","1"));
     }
     
     if($chk_input){
       
-      //インサート
+      //插入
       //if(!empty($dat[1]) && !empty($dat[2])) {
       if(!empty($dat[1])) {
             
@@ -70,7 +70,7 @@ require("includes/note_js.php");
         
         $updated = false;
         
-        //顧客情報のテーブル参照
+        //参考顾客信息表
         $ccnt_query = tep_db_query("select count(*) as cnt from customers where customers_email_address = '".$dat1."' and site_id = '".$_POST['site_id']."'");
         $ccnt = tep_db_fetch_array($ccnt_query);
         
@@ -83,16 +83,16 @@ require("includes/note_js.php");
         //--------------------------------------
         //mail_magazine Update
         if($updated == false) {
-          //重複チェック
+          //重复检查
           $jcnt_query = tep_db_query("select count(*) as cnt from mail_magazine where mag_email = '".$dat1."' and site_id = '".(int)$_POST['site_id']."'");
           $jcnt = tep_db_fetch_array($jcnt_query);
         
-          //インサート（重複なし）
+          //插入（不重复）
           if($jcnt['cnt'] == 0) {
           tep_db_query("insert into mail_magazine (mag_email, mag_name, site_id) values ('".$dat1."', '".$dat2."', '".(int)$_POST['site_id']."')");
           } 
         
-          //アップデート（重複有り）
+          //更新（有重复）
           else {
           tep_db_query("update mail_magazine set mag_name = '".$dat2."' where mag_email = '".$dat1."' where site_id = '".(int)$_POST['site_id']."'");
           }
@@ -117,15 +117,15 @@ require("includes/note_js.php");
   echo '<br><br><br><a href="mag_up.php">'.BUTTON_BACK.'</a>';
   } else {
 ?>
-<!-- body //-->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-<!-- left_navigation //-->
+<!-- left_navigation -->
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- left_navigation_eof //-->
+<!-- left_navigation_eof -->
     </table></td>
-<!-- body_text //-->
+<!-- body_text -->
 <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="0">
       <tr>
         <td width="100%"><table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -159,7 +159,7 @@ require("includes/note_js.php");
           </form></tr>
 
 
-<!-- body_text_eof //-->
+<!-- body_text_eof -->
         </table></td>
       </tr>
     </table>
@@ -168,12 +168,12 @@ require("includes/note_js.php");
     </td>
   </tr>
 </table>
-<!-- body_eof //-->
+<!-- body_eof -->
 
 
-<!-- footer //-->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 </body>
 </html>

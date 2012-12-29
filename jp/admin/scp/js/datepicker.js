@@ -8,25 +8,15 @@ You'll also want to include a stylesheet that makes the datepicker elements
 look nice. An example one can be found in the database that this script was
 originally released with, at:
 
-http://www.nsftools.com/tips/NotesTips.htm#datepicker
-
-I've tested this lightly with Internet Explorer 6 and Mozilla Firefox. I have no idea
 how compatible it is with other browsers.
 
-version 1.5
-December 4, 2005
-Julian Robichaux -- http://www.nsftools.com
-
 HISTORY
---  version 1.0 (Sept. 4, 2004):
 Initial release.
 
---  version 1.1 (Sept. 5, 2004):
 Added capability to define the date format to be used, either globally (using the
 defaultDateSeparator and defaultDateFormat variables) or when the displayDatePicker
 function is called.
 
---  version 1.2 (Sept. 7, 2004):
 Fixed problem where datepicker x-y coordinates weren't right inside of a table.
 Fixed problem where datepicker wouldn't display over selection lists on a page.
 Added a call to the datePickerClosed function (if one exists) after the datepicker
@@ -35,19 +25,16 @@ has been chosen. For this to work, you must have a function called datePickerClo
 somewhere on the page, that accepts a field object as a parameter. See the
 example in the comments of the updateDateField function for more details.
 
---  version 1.3 (Sept. 9, 2004)
 Fixed problem where adding the <div> and <iFrame> used for displaying the datepicker
 was causing problems on IE 6 with global variables that had handles to objects on
 the page (I fixed the problem by adding the elements using document.createElement()
 and document.body.appendChild() instead of document.body.innerHTML += ...).
 
---  version 1.4 (Dec. 20, 2004)
 Added "targetDateField.focus();" to the updateDateField function (as suggested
 by Alan Lepofsky) to avoid a situation where the cursor focus is at the top of the
 form after a date has been picked. Added "padding: 0px;" to the dpButton CSS
 style, to keep the table from being so wide when displayed in Firefox.
 
--- version 1.5 (Dec 4, 2005)
 Added display=none when datepicker is hidden, to fix problem where cursor is
 not visible on input fields that are beneath the date picker. Added additional null
 date handling for date errors in Safari when the date is empty. Added additional
@@ -451,8 +438,6 @@ Use an "iFrame shim" to deal with problems where the datepicker shows up behind
 selection list elements, if they're below the datepicker. The problem and solution are
 described at:
 
-http://dotnetjunkies.com/WebLog/jking/archive/2003/07/21/488.aspx
-http://dotnetjunkies.com/WebLog/jking/archive/2003/10/30/2975.aspx
 */
 function adjustiFrame(pickerDiv, iFrameDiv)
 {

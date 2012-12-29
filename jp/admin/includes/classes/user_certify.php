@@ -1,21 +1,21 @@
 <?php
 class user_certify {
-    // ユーザ権限
+    // 用户权限
     var $apermissions = array('read'=>0, 'write'=>0, 'config'=>0, 'users'=>0);
     var $npermission = 0;
-    // ログインログのデータ保持期間（日）
+    // 登陆日志的数据保存时间（日）
     var $login_log_span = 14;
-    // 日付形式
+    // 日期格式
     var $date_format = 'Y-m-d H:i:s';
 
-    // 初回ログインフラグ
+    // 初次登陆标签
     var $isFirstTime = FALSE;
-    // ログインエラーフラグ
+    // 登陆错误标签
     var $isErr = FALSE;
-    // ログイン済みフラグ
+    // 登陆完了标签
     var $flg = FALSE;
 
-    // ユーザID
+    // 用户ID
     var $auth_user = '';
     
     var $ipLimitErr = FALSE;
@@ -24,10 +24,10 @@ class user_certify {
 
     var $key = 'gf1a2';
 /* -------------------------------------
-    機  能 : コンストラクタ
-    引  数 : $s_sid             - (i) セッションID
-    戻り値 : TRUE/FALSE
-    説  明 : ユーザの認証を行う
+    功  能 : 构造函数
+    参  数 : $s_sid             - (i) sessionID
+    返回值 : TRUE/FALSE
+    说  明 : 进行用户认证
  ------------------------------------ */
     function user_certify($s_sid) {
       //判断用户IP是否是被封IP,如果是给出提示，并无法登录
@@ -164,44 +164,44 @@ class user_certify {
       } 
     }
     if($this->isErr == FALSE && $this->ipSealErr == FALSE){
-        $this->user_admin_entry();           // 管理者（admin）登録
+        $this->user_admin_entry();           // 管理员（admin）注册
 
-        // タイムアウト時刻を取得
+        // 获取超时时刻
         $actime = $this->time_out_time();
         //error_log('USER ' . date($this->date_format) . ' user_certify start. timeout='.$actime . "\n", 3, STORE_PAGE_PARSE_TIME_LOG);// DEBUG
 
-        // 一定期間経過したアクセスログのステータスをログアウトに更新する
+        // 经过一定时间的访问日志的状态需要更新为退出登录
         $this->logoutCertifyLog($actime,$s_sid);
 
         $user = '';
-        // ログインページでユーザＩＤが入力されているとき
+        // 登录页面用户ID被输入的时候
         if (isset($GLOBALS['_POST']['execute_login']) && $GLOBALS['_POST']['execute_login']) {
             $user = trim($GLOBALS['_POST']['loginuid']);
         }
-        // セッションＩＤにより、ユーザログイン情報取得
+        // 根据sessionID获取用户登录信息
         $oresult = tep_db_query("select * from login where sessionid='" . $s_sid . "'");
-        if (!$oresult) {                     // DBエラーだったとき
+        if (!$oresult) {                     // DB错误的时候
             $this->putCertifyLog($s_sid,'e',$user);
             $this->isErr = TRUE;
             die('<br>'.TEXT_ERRINFO_DBERROR);
         }
 
-        $nrow = tep_db_num_rows($oresult);   // レコード件数の取得
-        if ($nrow == 1) {                    // ログインログが登録されているとき
+        $nrow = tep_db_num_rows($oresult);   // 获取记录件数
+        if ($nrow == 1) {                    // 登陆日志注册的时候
             $this->flg = TRUE;
-            $arec = tep_db_fetch_array($oresult);  // レコードを取得
-      // UIDがログインページで入力されているときテーブルの値と等しいかチェック
+            $arec = tep_db_fetch_array($oresult);  // 获取记录件数
+      // UID在登录页面被输入的时候，检查是否和表里值一致
             if ($user && $user != $arec['account']) {
                 $this->putCertifyLog($s_sid,'n',$user);
                 $this->isErr = TRUE;
                 return;
-            } elseif ($arec['loginstatus'] != 'a') { // 前のログインがエラーでないか?
+            } elseif ($arec['loginstatus'] != 'a') { // 上一次的登陆是否错误?
                 $this->isFirstTime = TRUE;
                 return;
-            } elseif ($arec['logoutstatus'] != 'i') {// エラー,ログアウト,タイムアウト?
+            } elseif ($arec['logoutstatus'] != 'i') {// 错误,退出登录,超时?
                 $this->isFirstTime = TRUE;
                 return;
-            } elseif (strcmp($arec['lastaccesstime'], $actime) < 0) {// タイムアウト?
+            } elseif (strcmp($arec['lastaccesstime'], $actime) < 0) {// 超时?
                 //error_log('USER ' . date($this->date_format) . ' timeout lastaccesstime[' . $arec['lastaccesstime'] . '] limit=[' . $actime . "]\n", 3, STORE_PAGE_PARSE_TIME_LOG);// DEBUG
                 $this->putTimeOut($s_sid);
                 $this->isFirstTime = TRUE;
@@ -210,10 +210,10 @@ class user_certify {
                 $user = $arec['account'];
             }
     }
-        if (!$user) {       // 初回ログインのとき処理を抜ける
+        if (!$user) {       // 退出初次登陆
             $this->isFirstTime = TRUE;
         } else {
-          // ユーザＩＤチェック
+          // 检查用户ID
             $login_flag = false;
             $login_query = tep_db_query("select * from users where userid = '" . $user . "'");
             $login_array = tep_db_fetch_array($login_query); 
@@ -222,16 +222,16 @@ class user_certify {
               $login_flag = true; 
             }
             $oresult = tep_db_query("select * from users where userid = '" . $user . "'");
-            if (!$oresult) {                 // DBエラーだったとき
+            if (!$oresult) {                 // DB错误的时候
                 $this->putCertifyLog($s_sid,'e',$user);
                 $this->isErr = TRUE;
                 die('<br>'.TEXT_ERRINFO_DBERROR);
             }
-            $nrow = tep_db_num_rows($oresult); // レコード件数の取得
-            if ($nrow == 1 && $login_flag == false) {  // 入力された UID のユーザが登録されているとき
-                $arec = tep_db_fetch_array($oresult); // レコードを取得
-                $pret = $this->password_check($s_sid,$arec['password'],$user); // パスワード検査
-                $aret = $this->user_parmission($s_sid,$user); // ユーザ権限を取得
+            $nrow = tep_db_num_rows($oresult); // 获取记录件数
+            if ($nrow == 1 && $login_flag == false) {  // 输入的UID的用户被注册的时候
+                $arec = tep_db_fetch_array($oresult); // 获取记录
+                $pret = $this->password_check($s_sid,$arec['password'],$user); // 检查密码
+                $aret = $this->user_parmission($s_sid,$user); // 获取用户权限
                 if ($pret && $aret) {
                     $login_ip = $_SERVER['REMOTE_ADDR']; 
                     $ip_limit_query = tep_db_query("select * from user_ip where userid = '".$user."'"); 
@@ -281,7 +281,7 @@ class user_certify {
                 } else {
                     $this->isErr = TRUE;
                 }
-            } else {  // 登録されていないユーザ
+            } else {  // 没有注册的用户
                 $this->putCertifyLog($s_sid,'n',$user);
                 $this->isErr = TRUE;
             }
@@ -290,19 +290,19 @@ class user_certify {
     }
 
 /* -------------------------------------
-    機  能 : パスワードチェック
-    引  数 : $s_sid             - (i) セッションID
+    功  能 : 检查密码
+    参  数 : $s_sid             - (i) sessionID
              $pwd               - (i) パスワード
-             $auth_user         - (i) ユーザID
-    戻り値 : TRUE/FALSE
+             $auth_user         - (i) 用户ID
+    返回值 : TRUE/FALSE
  ------------------------------------ */
     function password_check($s_sid,$pwd,$auth_user) {
         if (isset($GLOBALS['_POST']['execute_login']) && $GLOBALS['_POST']['execute_login']) {
             if (isset($GLOBALS['_POST']['loginpwd']) && $GLOBALS['_POST']['loginpwd']) {
-                // 入力されたパスワードを DES 暗号化法により暗号化する
-                //（テーブルに登録されているパスワードと同じ状態に変換）
+                // 输入的密码用DES进行加密
+                //（转换成和表里注册的密码一样的状态）
                 $sLogin_pwd = crypt($GLOBALS['_POST']['loginpwd'], $pwd);
-                $n_max = 64;                        // フィールド長の制限
+                $n_max = 64;                        // 字段长度限制
                 if (substr($pwd,0,$n_max) != substr($sLogin_pwd,0,$n_max)) {
                     $this->putCertifyLog($s_sid,'p',$auth_user);
                     return FALSE;
@@ -316,9 +316,9 @@ class user_certify {
     }
 
 /* -------------------------------------
-    機  能 : タイムアウト時刻取得
-    引  数 : なし
-    戻り値 : タイムアウト時刻
+    功  能 : 获取超时时刻
+    参  数 : 没有
+    返回值 : 超时时刻
  ------------------------------------ */
     function time_out_time() {
         if (isset($GLOBALS['SESS_LIFE']) && $GLOBALS['SESS_LIFE']) {
@@ -331,23 +331,23 @@ class user_certify {
     }
 
 /* -------------------------------------
-    機  能 : ユーザ権限取得
-    引  数 : $s_sid             - (i) セッションID
-             $auth_user         - (i) ユーザID
-    戻り値 : 認証完了：空白文字列、異常終了：エラーメッセージ
-    説  明 : 取得したユーザ権限をクラス変数にセットする
+    功  能 : 获取用户权限
+    参  数 : $s_sid             - (i) sessionID
+             $auth_user         - (i) 用户ID
+    返回值 : 认证完成：空字符串、异常终了：错误信息
+    说  明 : 将获取的用户权限放到类变量里
  ------------------------------------ */
     function user_parmission($s_sid,$auth_user) {
-        // ユーザ権限取得
+        // 获取用户权限
         $oresult = tep_db_query("select permission from permissions where userid = '" . $auth_user . "'");
-        if (!$oresult) {                                        // エラーだったとき
+        if (!$oresult) {                                        // 错误的时候
             $this->putCertifyLog($s_sid,'n',$auth_user);
             die('<br>'.TEXT_ERRINFO_DBERROR);
         }
 
-        $nrow = tep_db_num_rows($oresult);      // レコード件数の取得
-        if ($nrow == 1) {                       // 入力された UID のユーザが登録されているとき
-            $arec = tep_db_fetch_array($oresult); // レコードを取得
+        $nrow = tep_db_num_rows($oresult);      // 获取记录件数
+        if ($nrow == 1) {                       // 输入的UID的用户被注册的时候
+            $arec = tep_db_fetch_array($oresult); // 获取记录
             $this->npermission = $arec['permission'];
             $this->apermissions['read'] = ($this->npermission & 1);
             $this->apermissions['write'] = ($this->npermission & 2);
@@ -362,16 +362,16 @@ class user_certify {
         return FALSE;
     }
 /* -------------------------------------
-    機  能 : 管理者（admin）登録
-    引  数 : なし
-    戻り値 : なし
-    説  明 : ユーザが一人も登録されていないとき、管理者（admin）を登録する
+    功  能 : 管理员（admin）注册
+    参  数 : 没有
+    返回值 : 没有
+    说  明 : 用户一个也没有注册的时候，注册管理员（admin）
  ------------------------------------ */
     function user_admin_entry() {
-        // 管理者（admin）登録
+        // 管理员（admin）注册
         $oresult = tep_db_query("select * from users");
-        $nrow = tep_db_num_rows($oresult); // レコード件数の取得
-        if ($nrow == 0) {      // ユーザが一人も登録されていないとき、管理者登録
+        $nrow = tep_db_num_rows($oresult); // 获取记录件数
+        if ($nrow == 0) {      // 用户一个也没有注册的时候，注册管理员
             $s_pwd = crypt('admin');
             $result = tep_db_query("insert into users values ('admin','$s_pwd','システム管理者','')");
             $result = tep_db_query("insert into permissions values ('admin',15)");
@@ -379,14 +379,14 @@ class user_certify {
     }
 
 /* -------------------------------------
-    機  能 : 認証ログを記録する
-    引  数 : $s_sid             - (i) セッションID
-             $s_status          - (i) ステータス
-             $auth_user         - (i) ユーザID
-    戻り値 : なし
+    功  能 : 记载认证日志
+    参  数 : $s_sid             - (i) sessionID
+             $s_status          - (i) 状态
+             $auth_user         - (i) 用户ID
+    返回值 : 没有
  ------------------------------------ */
     function putCertifyLog($s_sid,$s_status,$auth_user) {
-        $this->deleteCertifyLog();  // 一定期間よりも古い認証ログを削除する
+        $this->deleteCertifyLog();  // 经过一定期间删除旧的认证日志
         $time_ = date($this->date_format);
 
         if ($this->flg) {
@@ -399,7 +399,7 @@ class user_certify {
         else {
             // The IP address of the remote host making the request.
             $as_ip = explode('.', getenv('REMOTE_ADDR'));
-            // IPアドレスを4バイト整数にパックする
+            // IP地址弄成4字节整数
             $n_ip4 = 0;
             while (list($n_key, $s_byte) = each($as_ip)) {
                 $n_ip4 = ($n_ip4 << 8) | (int)$s_byte;
@@ -411,7 +411,7 @@ class user_certify {
                 $status_out = ",'i'";
             }
 
-            // 記録
+            // 记载
             if($s_status == 'p'){
 
               $newc=new funCrypt;
@@ -430,10 +430,10 @@ class user_certify {
     }
 
 /* -------------------------------------
-    機  能 : タイムアウトを記録する
-    引  数 : $s_sid             - (i) セッションID
-             $auth_user         - (i) ユーザID
-    戻り値 : なし
+    功  能 : 记载超时
+    参  数 : $s_sid             - (i) sessionID
+             $auth_user         - (i) 用户ID
+    返回值 : 没有
  ------------------------------------ */
     function putTimeOut($s_sid) {
         if ($this->flg) {
@@ -448,20 +448,20 @@ class user_certify {
     }
 
 /* -------------------------------------
-    機  能 : 一定期間経過したアクセスログのステータスをログアウトに更新する
-    引  数 : $actime            - (i) タイムアウト時刻
-             $s_sid             - (i) ステータス
-    戻り値 : なし
+    功  能 : 经过一定时间将访问日志的状态更新为退出登录
+    参  数 : $actime            - (i) 超时时刻
+             $s_sid             - (i) 状态
+    返回值 : 没有
  ------------------------------------ */
     function logoutCertifyLog($actime,$s_sid) {
-        // 現在のセッションIDではなく、最終アクセス時刻がタイムアウト時刻よりも前で、正常ログインしているレコードをログアウトさせる
+        // 不是现在的sessionID，并且和超时时刻比较是更早的最终访问时刻的话，就强制退出登录
         $result = tep_db_query("update login set logoutstatus='o' where sessionid!='$s_sid' and lastaccesstime<'$actime' and logoutstatus='i'");
     }
 
 /* -------------------------------------
-    機  能 : 一定期間よりも古いアクセスログを削除する
-    引  数 : なし
-    戻り値 : なし
+    功  能 : 经过一定期间删除旧的认证日志
+    参  数 : 没有
+    返回值 : 没有
  ------------------------------------ */
     function deleteCertifyLog() {
         if ( 0 < $this->login_log_span) {
@@ -472,13 +472,13 @@ class user_certify {
 }
 
 /* -------------------------------------
-    機  能 : ログアウト
-    引  数 : $erf               - (i) エラーブラグ
-             $s_status          - (i) ステータス
-    戻り値 : なし
+    功  能 : 退出登录
+    参  数 : $erf               - (i) 错误标签
+             $s_status          - (i) 状态
+    返回值 : 没有
  ------------------------------------ */
 function logout_user($erf='',$s_status='',$url='') {
-    if ($s_status) {    // ログアウトを記録する
+    if ($s_status) {    // 记载退出登录
         $s_sid = session_id();
         $result = tep_db_query("update login set logoutstatus='$s_status' where sessionid='$s_sid'");
     }
@@ -496,7 +496,7 @@ function logout_user($erf='',$s_status='',$url='') {
 }
 
 /* =====================================
-    メイン
+    主要
  ===================================== */
 if (isset($GLOBALS['HTTP_GET_VARS']['execute_logout_user']) && $GLOBALS['HTTP_GET_VARS']['execute_logout_user']) { logout_user(FALSE,'o'); } 
 
@@ -599,7 +599,7 @@ if (!tep_session_is_registered('user_permission')) {
     tep_redirect('users_login.php');
   }
 }
-$ocertify = new user_certify(session_id());     // 認証
+$ocertify = new user_certify(session_id());     // 认证
 if ($ocertify->isErr) { 
   if($ocertify->ipSealErr){
     logout_user(1,'',$_GET['his_url']);

@@ -1,8 +1,4 @@
 <?php
-/*
-	JP、GM共通ファイル
-*/
-
   if ($messageStack->size > 0) {
     echo $messageStack->output();
   }

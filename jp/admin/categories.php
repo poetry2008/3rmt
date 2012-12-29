@@ -34,9 +34,8 @@ if (isset($_GET['action']) && $_GET['action']) {
     $products_id = tep_db_prepare_input($_GET['pID']);
     $site_id     = tep_db_prepare_input($_GET['site_id']);
     $relate_products_id = tep_db_prepare_input($_POST['relate_products_id']);
-    //％指定の場合は価格を算出
+    //指定%的情况下，计算价格
     $HTTP_POST_VARS['products_price_offset'] = SBC2DBC($HTTP_POST_VARS['products_price_offset']);
-    // jiakong
     $update_sql_data = array(
         //'products_price_offset'     => tep_db_prepare_input($HTTP_POST_VARS['products_price_offset']),
         'max_inventory'             => tep_db_prepare_input($_POST['inventory_max']),
@@ -48,7 +47,7 @@ if (isset($_GET['action']) && $_GET['action']) {
         'products_price'            => tep_get_bflag_by_product_id($products_id) ? 0 - abs(tep_db_prepare_input($_POST['products_price'])): abs(tep_db_prepare_input($_POST['products_price'])));
     tep_db_perform(TABLE_PRODUCTS, $update_sql_data, 'update', 'products_id = \'' . tep_db_input($products_id) . '\'');
     if(isset($relate_products_id)&&$relate_products_id){
-      //％指定の場合は価格を算出
+      //指定%的情况下，计算价格
       $HTTP_POST_VARS['relate_products_price_offset'] = SBC2DBC($HTTP_POST_VARS['relate_products_price_offset']);
       // jiakong
       $relate_update_sql_data = array(
@@ -149,13 +148,12 @@ if (isset($_GET['action']) && $_GET['action']) {
     }
     tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $_GET['cPath'].'&pID='.$_GET['pID'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page));
     break;
-    case 'simple_update': // 価格と数量の簡易アップデート
+    case 'simple_update': // 价格和数量的简单更新
     tep_isset_eof();
     $products_id = tep_db_prepare_input($_GET['pID']);
     $site_id     = tep_db_prepare_input($_POST['pID']);
-    //％指定の場合は価格を算出
+    //指定%的情况下，计算价格
     $HTTP_POST_VARS['products_price_offset'] = SBC2DBC($HTTP_POST_VARS['products_price_offset']);
-    // jiakong
     $update_sql_data = array('products_last_modified'    => 'now()',
         'products_real_quantity'    => tep_db_prepare_input($_POST['products_real_quantity']),
         'products_virtual_quantity' => tep_db_prepare_input($_POST['products_virtual_quantity']),
@@ -648,7 +646,7 @@ if (isset($_GET['action']) && $_GET['action']) {
       if(isset($_POST['products_image3_del']) && $_POST['products_image3_del'] == 'none') {
         $_POST['products_image3'] = 'none';
       }
-      //％指定の場合は価格を算出
+      //指定%的情况下，计算价格
       $HTTP_POST_VARS['products_price_offset'] = SBC2DBC($HTTP_POST_VARS['products_price_offset']);
 
       $products_attention_1_1 = tep_db_prepare_input($_POST['products_attention_1_1']);
@@ -660,7 +658,7 @@ if (isset($_GET['action']) && $_GET['action']) {
       $products_attention_3 = tep_db_prepare_input($_POST['products_naiyou']);
       $products_attention_4 = tep_db_prepare_input($_POST['products_zaishitu']);
       $products_attention_5 = tep_db_prepare_input($_POST['products_attention_5']);
-      // jiakong
+
       $sql_data_array = array(
           'products_real_quantity' => tep_db_prepare_input($_POST['products_real_quantity']),
           'products_model' => tep_db_prepare_input($_POST['products_model']),
@@ -783,7 +781,7 @@ if (isset($_GET['action']) && $_GET['action']) {
       }
 
       //-----------------------------------------
-      // カラー別画像インサートスタート
+      // 按照颜色划分图像开始插入
       //-----------------------------------------
       $color_query = tep_db_query("select * from ".TABLE_COLOR." order by color_name");
       $cnt=0;
@@ -815,13 +813,13 @@ if (isset($_GET['action']) && $_GET['action']) {
         }
       } // end color while
       //-----------------------------------------
-      // カラー別画像インサート終了
+      // 按照颜色划分图像插入完成
       //-----------------------------------------
 
       $languages = tep_get_languages();
       for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
         $language_id = $languages[$i]['id'];
-        //商品説明を結合
+        //结合商品说明
         $des = tep_db_prepare_input($_POST['products_description'][$language_id]);
         $sql_data_array = array(
             'products_name'        => tep_db_prepare_input($_POST['products_name'][$language_id]),
@@ -855,7 +853,7 @@ if (isset($_GET['action']) && $_GET['action']) {
         }
       }
       //-----------------------------------------
-      // オプション値インサート終了
+      // option值插入完成
       //-----------------------------------------
 
       if (USE_CACHE == 'true') {
@@ -957,7 +955,6 @@ if (isset($_GET['action']) && $_GET['action']) {
               where products_id = '" . tep_db_input($products_id) . "'
               ");
           $product = tep_db_fetch_array($product_query);
-          //jiakong
           //products_virtual_quantity, 
           tep_db_query("
               insert into " . TABLE_PRODUCTS . " (
@@ -1142,10 +1139,10 @@ if (file_exists(tep_get_upload_root())) {
   $messageStack->add(ERROR_CATALOG_IMAGE_DIRECTORY_DOES_NOT_EXIST, 'error');
 }
 
-//商品画像削除
+//删除商品图像
 if (isset($_GET['mode']) && $_GET['mode'] == 'p_delete') {
-  $image_location  = tep_get_upload_dir($site_id). 'products/' . $_GET['file'];//元画像
-  $image_location2 = tep_get_upload_dir($site_id) .'imagecache3/'. $_GET['file'];//サムネイル画像
+  $image_location  = tep_get_upload_dir($site_id). 'products/' . $_GET['file'];//原始图像
+  $image_location2 = tep_get_upload_dir($site_id) .'imagecache3/'. $_GET['file'];//缩略图
   $delete_image = $_GET['cl'];
   if (file_exists($image_location)) @unlink($image_location);
   if (file_exists($image_location2)) @unlink($image_location2);
@@ -1154,7 +1151,7 @@ if (isset($_GET['mode']) && $_GET['mode'] == 'p_delete') {
   $messageStack->add(CATEGORY_PIC_DEL_SUCCESS_NOTICE, 'success');
 }
 if (isset($_GET['mode']) && $_GET['mode'] == 'c_delete') {
-  $image_location  = tep_get_upload_dir($site_id). 'carttags/' . $_GET['file'];//元画像
+  $image_location  = tep_get_upload_dir($site_id). 'carttags/' . $_GET['file'];//原始图像
   $delete_image = $_GET['cl'];
   if (file_exists($image_location)) @unlink($image_location);
   tep_db_query("update  " . TABLE_PRODUCTS . " set ".$delete_image." = '' where products_id  = '" . $_GET['pID'] . "'");
@@ -1951,7 +1948,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 $in_bflag = true; $out_bflag = false;
               }
 
-              //商品説明を分割
+              //拆分商品说明
               if(isset($pInfo->products_id)){
                 $des_query = tep_db_query("
                     select 
@@ -2432,7 +2429,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                     <?php
                                     if(COLOR_SEARCH_BOX_TF == "true" ){
                                       ?>
-                                        <?php // カラー別画像 ?>
+                                        <?php // 按照颜色划分图片 ?>
                                         <hr size="1">
                                         <legend style="color:#009900 "><?php echo TEXT_PRODUCT_COLOR_IMAGE_TITLE;?></legend>
                                         <table border="0" cellpadding="1" cellspacing="5">
@@ -2460,7 +2457,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
 
                                         </tr>
                                         </table>
-                                        <?php // カラー別画像 ?>
+                                        <?php // 按照颜色划分图片 ?>
                                         <?php
                                     }
                                   ?>
@@ -2647,7 +2644,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     $products_image_name2 = $_POST['products_previous_image2'];
                     $products_image_name3 = $_POST['products_previous_image3'];
                   }
-                  // copy image only if modified -- add ds-style
+                  // copy image only if modified 
                   $products_image2 = tep_get_uploaded_file('products_image2');
                   $products_image3 = tep_get_uploaded_file('products_image3');
                   $image_directory = tep_get_local_path(tep_get_upload_dir($site_id).'products/');
@@ -2782,7 +2779,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   $pInfo->products_description = tep_db_prepare_input($products_description[$languages[$i]['id']]);
                   $pInfo->products_url = tep_db_prepare_input($products_url[$languages[$i]['id']]);
                 }
-                //特価がある場合の処理
+                //有特价的情况下的处理
                 if (tep_get_special_price($pInfo->products_price, $pInfo->products_price_offset, $pInfo->products_small_sum)) {
                   $products_price_preview = '<s>' .
                     $currencies->format(tep_get_price(((int)$pInfo->products_bflag ? (0 - $pInfo->products_price) : $pInfo->products_price), $pInfo->products_price_offset, $pInfo->products_small_sum, $pInfo->products_bflag)) . '</s> <span class="specialPrice">' . $currencies->format(tep_get_special_price($pInfo->products_price, $pInfo->products_price_offset, $pInfo->products_small_sum)) . '</span>';
@@ -2820,7 +2817,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   $oroshi           = tep_db_fetch_array(tep_db_query("select * from set_menu_list where products_id='".$_GET['pID']."'"));
                 }
                 ?>
-                  <?php //価格数量変更機能
+                  <?php //价格数量变更功能
                   if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) || !$_GET['origin'])) {
                     echo '<table width="100%"><tr><td align="left">';
                     echo '<table width="95%" cellpadding="0" cellspacing="0" style="margin-bottom:10px;">';
@@ -3007,7 +3004,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   </td>
                   </tr>
                   <?php
-                  if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) || !$_GET['origin'])) { //表示制限
+                  if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) || !$_GET['origin'])) { //限制显示
                     echo '<tr><td><b>'.CATEGORY_BUTTON_UPDATE_TEXT.'</b></td></tr>' . "\n";
                   } else {
                     ?>
@@ -3058,7 +3055,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       </tr>
                       <?php
                   }
-              } // 表示制限終わり
+              } // 结束限制显示
 
               if (isset($_GET['read']) && $_GET['read'] == 'only') {
                 if (isset($_GET['origin']) && $_GET['origin']) {
@@ -3750,7 +3747,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   $cInfo = new objectInfo($cInfo_array);
                 }
 
-                // 列を色違いにする
+                // 每列弄成不同的颜色
                 $even = 'dataTableSecondRow';
                 $odd = 'dataTableRow';
                 if (isset($nowColor) && $nowColor == $odd) {
@@ -4163,7 +4160,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   $pInfo = new objectInfo($pInfo_array);
                 }
                 $highlight_symbol = true; 
-                // 列を色違いにする
+                // 每列弄成不同的颜色
                 // products list
                 $even = 'dataTableSecondRow';
                 $odd = 'dataTableRow';
@@ -4192,7 +4189,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
 
 
                 $products_name_params .= 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'')) . '\'"';
-                //表示制限
+                //限制显示
                 $products_name_text .= '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&pID=' .  $products['products_id'] .  '&action=new_product'.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').'&page='.$_GET['page'].($_GET['search']?'&search='.$_GET['search']:'')).'">'.tep_image(DIR_WS_ICONS.'preview.gif', ICON_PREVIEW).'</a>&nbsp;'; 
                 $products_name_text .= '<a href="orders.php?search_type=products_id&products_id=' .  $products['products_id'] .(!empty($site_id)?'&site_id='.$site_id:'') .'">' . tep_image(DIR_WS_ICONS . 'search.gif', IMAGE_SEARCH) . '</a>&nbsp;'; 
                 if ($ocertify->npermission >= 10) { 
@@ -4211,7 +4208,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     $kakaku_treder=0;
                   }
                 }
-                //同业者专用
+                //同行专用
                 $target_cnt=$products_count-1;
                 $products_preorder_params .= 'class="dataTableContent" align="center"';
                 $preorder_products_raw = tep_db_query("select sum(prep.products_quantity) as pre_total from ".TABLE_PREORDERS_PRODUCTS." prep ,".TABLE_PREORDERS." pre where  prep.products_id = '".$products['products_id']."' and prep.orders_id = pre.orders_id and pre.finished !='1' ".(!empty($site_id)?" and pre.site_id = '".$site_id."'":"")); 
@@ -4545,7 +4542,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     }
               ?>
                 <?php
-                if ((!isset($_GET['search']) || !$_GET['search']) && $ocertify->npermission >= 10) { //表示制限
+                if ((!isset($_GET['search']) || !$_GET['search']) && $ocertify->npermission >= 10) { //限制显示
                   echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&action=new_category') . '">' . tep_html_element_button(IMAGE_NEW_CATEGORY) .  '</a>&nbsp;<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&action=new_product'.(isset($_GET['page'])?'&page='.$_GET['page']:'')) . '">' . tep_html_element_button(IMAGE_NEW_PRODUCT) . '</a>';
                 }
               ?>

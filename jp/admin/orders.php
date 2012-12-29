@@ -480,7 +480,7 @@ while ($orders_status = tep_db_fetch_array($orders_status_query)) {
 
 if (isset($_GET['action'])){ 
 switch ($_GET['action']) {
-  //一括変更----------------------------------
+  //批量修改----------------------------------
   case 'sele_act':
     if($_POST['chk'] == ""){
       $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
@@ -515,10 +515,10 @@ switch ($_GET['action']) {
           $query4  = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '".$result1['customers_id']."'");
           $result4 = tep_db_fetch_array($query4);
 
-          // ここからカスタマーレベルに応じたポイント還元率算出============================================================
+          // 计算各个不同顾客的返点率从这开始============================================================
           if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
             $customer_id = $result1['customers_id'];
-            //設定した期間内の注文合計金額を算出------------
+            //规定期间内，计算订单合计金额------------
             $ptoday = date("Y-m-d H:i:s", time());
             $pstday_array = getdate();
             $pstday = date("Y-m-d H:i:s", mktime($pstday_array[hours],$pstday_array[mimutes],$pstday_array[second],$pstday_array[mon],($pstday_array[mday] - MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL_KIKAN),$pstday_array[year]));
@@ -537,10 +537,10 @@ switch ($_GET['action']) {
               }
             }
             //----------------------------------------------
-            //今回の注文額は除外
+            //这次的订单金额除外
             $total_buyed_date = $total_buyed_date - ($result3['value'] - (int)$result2['value']);
 
-            //還元率を計算----------------------------------
+            //计算返点率----------------------------------
             if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
               $back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
               $back_rate = MODULE_ORDER_TOTAL_POINT_FEE;
@@ -563,7 +563,7 @@ switch ($_GET['action']) {
           } else {
             $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
           }
-          // ここまでカスタマーレベルに応じたポイント還元率算出============================================================
+          // 计算各个不同顾客的返点率到此结束============================================================
 
           if ($result3['value'] >= 0) {
             $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
@@ -843,10 +843,10 @@ switch ($_GET['action']) {
 
 
 
-        // ここからカスタマーレベルに応じたポイント還元率算出============================================================
+        // 计算各个不同顾客的返点率从这开始============================================================
         if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
           $customer_id = $result1['customers_id'];
-          //設定した期間内の注文合計金額を算出------------
+          //规定期间内，计算订单合计金额------------
           $ptoday = date("Y-m-d H:i:s", time());
           $pstday_array = getdate();
           $pstday = date("Y-m-d H:i:s", mktime($pstday_array[hours],$pstday_array[mimutes],$pstday_array[second],$pstday_array[mon],($pstday_array[mday] - MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL_KIKAN),$pstday_array[year]));
@@ -865,10 +865,10 @@ switch ($_GET['action']) {
             }
           }
           //----------------------------------------------
-          //今回の注文額は除外
+          //这次的订单金额除外
           $total_buyed_date = $total_buyed_date - ($result3['value'] - (int)$result2['value']);
 
-          //還元率を計算----------------------------------
+          //计算返点率----------------------------------
           if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
             $back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
             $back_rate = MODULE_ORDER_TOTAL_POINT_FEE;
@@ -891,7 +891,7 @@ switch ($_GET['action']) {
         } else {
           $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
         }
-        // ここまでカスタマーレベルに応じたポイント還元率算出============================================================
+        // 计算各个不同顾客的返点率到此结束============================================================
         if ($result3['value'] >= 0) {
           $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
         } else {
@@ -2013,7 +2013,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                        $orders_query_raw .= "order by ".$order_str;
 
                      } else {
-                       // orders_list 隐藏 「キャンセル」と「注文取消」
+                       // orders_list 隐藏 「取消」と「取消订单」
                        $orders_query_raw = "
                          select distinct o.orders_status as orders_status_id, 
                                 o.orders_id, 
@@ -4936,14 +4936,14 @@ if($c_parent_array['parent_id'] == 0){
             $oInfo = new objectInfo($orders);
           }
 
-          //今日の取引なら赤色
+          //如果是红色显示
           $trade_array = getdate(strtotime(tep_datetime_short_torihiki($orders['torihiki_date'])));
           $today_array = getdate();
           if ($trade_array["year"] == $today_array["year"] && $trade_array["mon"] == $today_array["mon"] && $trade_array["mday"] == $today_array["mday"]) {
             $today_color = 'red';
             if ($trade_array["hours"] >= $today_array["hours"]) {
               $next_mark = tep_image(DIR_WS_ICONS . 'arrow_blinking.gif',
-                  TEXT_ORDER_NEXT_ORDER); //次の注文に目印をつける
+                  TEXT_ORDER_NEXT_ORDER); //标记下个订单
             } else {
               $next_mark = '';
             }

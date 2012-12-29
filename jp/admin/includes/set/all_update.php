@@ -13,15 +13,15 @@ if($_POST[flg_up]==1){
   $proid = $_POST['proid'];//pid
 
   $cnt = count($psrice_datas);
-  $dougyousya=$_POST['TARGET_INPUT'];//同業者価格
+  $dougyousya=$_POST['TARGET_INPUT'];//同业者价格
 
-  $dou_id=$_POST['d_id'];//同業者ID
-  $d_cnt=count($dougyousya);//同業者フォームの数
+  $dou_id=$_POST['d_id'];//同业者ID
+  $d_cnt=count($dougyousya);//同业者形式的数
 
   $radio_chk=$_POST['chk'];
 
   $loop_cnt=count($dou_id);
-  //同業者データを行ごとに分割する
+  //每行分割同业者数据
   $rajio_a=0;
   $num=0;
   for($j=0;$j < $d_cnt;$j++){
@@ -38,7 +38,7 @@ if($_POST[flg_up]==1){
 
   $res_cnt=tep_db_query("select count(*) as cnt_d from set_dougyousya_history where categories_id !=0 and categories_id = '".tep_db_prepare_input($cID)."' AND products_id  = '".tep_db_prepare_input($proid[0])."'");
   $col_cnt=tep_db_fetch_array($res_cnt);
-  $cnt_d=$d_cnt*20;//カテゴリー20件保存(5日分)
+  $cnt_d=$d_cnt*20;//保存20件目录（5天的）
   for($n=0;$n < $cnt;$n++ ){
 
     update_products_dougyousya(tep_db_prepare_input($proid[$n]), tep_db_prepare_input($radio_chk[$n]));

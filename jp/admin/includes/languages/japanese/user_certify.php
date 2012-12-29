@@ -1,29 +1,19 @@
 <?php
-/* *********************************************************
-  モジュール名: user_certify.php
- * 2002-05-21
- * Naomi Suzukawa
- * suzukawa@bitscope.co.jp
-  ----------------------------------------------------------
-ユーザ認証の言語定義
-
-  ■変更履歴
-********************************************************* */
-// ページタイトル
+// 页面标题
 define('HEADING_TITLE_', 'ユーザ認証');
 
-// テーブルアクセスエラーメッセージ
+// 访问表错误信息
 define('TEXT_ERRINFO_DBERROR', 'DBエラーが発生しました');
 
 define('TEXT_ERRINFO_IP', 'ｉｐを制限されていますので、ログインできません');
-// メッセージ
+// 信息
 define('TEXT_ADMIN_USER', 'システム管理者');
 define('TEXT_ERRINFO_LOGIN', '!!!!! ログインエラー !!!!!');
 
-// ボタン
+// 按钮
 define('BUTTON_LOGIN', 'ログイン');
 
-// 項目名
+// 项目名称
 !defined('TABLE_HEADING_USER') && define('TABLE_HEADING_USER', 'ユーザ');
 !defined('TABLE_HEADING_PASSWORD')&& define('TABLE_HEADING_PASSWORD', 'パスワード');
 ?>

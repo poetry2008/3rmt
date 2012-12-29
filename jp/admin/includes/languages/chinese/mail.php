@@ -12,8 +12,6 @@ define('TEXT_MESSAGE', '消息:');
 define('TEXT_SELECT_CUSTOMER', '选择顾客');
 define('TEXT_ALL_CUSTOMERS', '所有的顾客');
 define('TEXT_NEWSLETTER_CUSTOMERS', '所有的邮件杂志订阅者');
-
-//define('NOTICE_EMAIL_SENT_TO', '注: %s へE-Mailを送信しました。');
 define('NOTICE_EMAIL_SENT_TO', '%s 条邮件发送完了。');
 define('ERROR_NO_CUSTOMER_SELECTED', '错误: 未选择顾客。');
 define('BUTTON_SENDMAIL_TEXT', '发送E-mail');
