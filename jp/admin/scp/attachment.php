@@ -1,19 +1,7 @@
 <?php
-/*********************************************************************
-    attachment.php
-
-    Handles attachment downloads. Validates the download.
-
-    Peter Rotich <peter@osticket.com>
-    Copyright (c)  2006-2010 osTicket
-    http://www.osticket.com
-
-    Released under the GNU General Public License WITHOUT ANY WARRANTY.
-    See LICENSE.TXT for details.
-
-    vim: expandtab sw=4 ts=4 sts=4:
+/*
     $Id$
-**********************************************************************/
+*/
 require('staff.inc.php');
 //TODO: alert admin on any error on this file.
 if(!$thisuser || !$thisuser->isStaff() || !$_GET['id'] || !$_GET['ref']) die('Access Denied');

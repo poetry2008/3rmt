@@ -1,21 +1,6 @@
-/*********************************************************************
-    autolock.js
-
-    Ticket locking utility...loaded only when ticket locking is enabled!!
-    Mainly useful for renewing locks based on form activity since we do initial lock onview at PHP end.
-
-    It is work in process...feedback is welcomed!
-
-    Peter Rotich <peter@osticket.com>
-    Copyright (c) 2006-2010 osTicket
-    http://www.osticket.com
-
-    Released under the GNU General Public License WITHOUT ANY WARRANTY.
-    See LICENSE.TXT for details.
-
-    vim: expandtab sw=4 ts=4 sts=4:
+/*
     $Id$
-**********************************************************************/
+*/
 var autoLock = {
     
     addEvent: function(elm, evType, fn, useCapture) {
@@ -52,7 +37,7 @@ var autoLock = {
         }else{
             autoLock.renewLock(e);
         }
-        if(!autoLock.lasteventTime) //I hate nav away warnings..but
+        if(!autoLock.lasteventTime) 
             autoLock.addEvent(window,'beforeunload',autoLock.discardWarning,true);
         autoLock.lasteventTime=new Date().getTime();
     },

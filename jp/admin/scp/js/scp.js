@@ -1,5 +1,3 @@
-//Copyright (c) 2007 osTicket.com
-
 function getCannedResponse(idx,fObj,target)
 {
     if(idx==0) { return false; }

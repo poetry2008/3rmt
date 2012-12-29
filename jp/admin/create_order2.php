@@ -89,7 +89,7 @@
     </tr>
   </table>
 <?php
-  //変数挿入
+  //插入变量
     $customer_id    = isset($account['customers_id'])           ? $account['customers_id']:'';
     $firstname      = isset($account['customers_firstname'])    ? $account['customers_firstname']:'';
     $lastname       = isset($account['customers_lastname'])     ? $account['customers_lastname']:'';
@@ -110,8 +110,6 @@
 <?php
 /*
    $Id$
-  
-   3rmt over
 */
 
     tep_draw_hidden_field($customer_id);    
@@ -184,14 +182,14 @@
 ?>
 
 <?php
-  // オプションのリスト作成
+  // 创建option的列表
   $torihiki_array = explode("\n", DS_TORIHIKI_HOUHOU);
   $torihiki_list[] = array('id' => '', 'text' => '選択してください');
   for($i=0; $i<sizeof($torihiki_array); $i++) {
     $torihiki_list[] = array('id' => $torihiki_array[$i],
                 'text' => $torihiki_array[$i]);
   }
-  // 取引日のリスト作成
+  // 创建交易日的列表
   $today = getdate();
   $m_num = $today['mon'];
   $d_num = $today['mday'];
@@ -201,7 +199,7 @@
     $date_list[] = array('id' => date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$i,$year)),
               'text' => strftime("%Y年%m月%d日（%a）", mktime(0,0,0,$m_num,$d_num+$i,$year)));
   }
-  // 取引時間のリスト作成
+  // 创建交易时间的列表
   $hour_list[] = array('id' => '', 'text' => '--');
   for($i=0; $i<24; $i++) {
     $hour_num = str_pad($i, 2, "0", STR_PAD_LEFT);
@@ -215,7 +213,7 @@
     $min_list[] = array('id' => $min_num,
               'text' => $min_num);
   }
-  // 支払方法のリスト作成 
+  // 创建支付方法的列表 
   /*
   $payment_text = "銀行振込\nクレジットカード決済\n銀行振込(買い取り)\nコンビニ決済\nゆうちょ銀行（郵便局）\nその他の支払い";
   $payment_array = explode("\n", $payment_text);

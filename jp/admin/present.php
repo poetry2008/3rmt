@@ -5,21 +5,21 @@
 
 require('includes/application_top.php');
 
-//年月日の取得
+//获取年月日
   $today = getdate();
   $yyyy = $today['year'];
   $mm = $today['mon'];
   $dd = $today['mday'];
   $pd = $dd + 1;
 
-//ファイルの拡張子を取得
+//获取文件的扩展名
   function GetExt($filepath){
     $f = strrev($filepath);
     $ext = substr($f,0,strpos($f,"."));
     return strrev($ext);
   }
 
-//登録処理
+//注册处理
   if(isset($_GET['action']) && $_GET['action'] == 'insert'){
 
     $site_id  = tep_db_prepare_input($_POST['site_id']);
@@ -70,7 +70,7 @@ now(),
     header("location: present.php");
   }
 
-//更新処理
+//更新处理
   if(isset($_GET['action']) && $_GET['action'] == 'update'){
     $up_id = tep_db_prepare_input($_GET['cID']);
     $up_ht = tep_db_prepare_input($_POST['ht']);
@@ -104,7 +104,7 @@ now(),
     header("location: present.php");
   }
 
-//削除処理
+//删除处理
   if(isset($_GET['action']) && $_GET['action'] == 'delete'){
     $dele_id = tep_db_prepare_input($_GET['cID']);
 
@@ -207,8 +207,8 @@ function msg2(){
 <body>
 <!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
-<!-- body //-->
+<!-- header_eof -->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
@@ -216,7 +216,7 @@ function msg2(){
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
         <!-- left_navigation_eof -->
       </table></td>
-    <!-- body_text //-->
+    <!-- body_text -->
     <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible">
     <div class="compatible">
     <table width="100%" border="0" cellspacing="0" cellpadding="1" align="center">
@@ -401,9 +401,9 @@ $sele1 = tep_db_query("
       and g.site_id = s.id
     ");
 $sql1 = tep_db_fetch_array($sele1);
-//画像
+//图像
 //$pic = HTTP_CATALOG_SERVER . DIR_WS_CATALOG . DIR_WS_IMAGES . "present/".$sql1['image'];
-//期間
+//期间
 $sele_sty = substr($sql1['start_date'],0,4);
 $sele_stm = substr($sql1['start_date'],5,2);
 $sele_std = substr($sql1['start_date'],8,2);
@@ -720,7 +720,7 @@ $c_id = tep_db_prepare_input($_GET['cID']);
                     </tr>
                     <?php
     }
-  //While終了
+  //While结束
   ?>
                     <tr>
                       <td colspan="4"><table border="0" width="100%" cellspacing="0" cellpadding="2">
@@ -843,7 +843,7 @@ default:
                           </tr>
                           <?php
     }
-//While終了
+//While结束
 ?>
                           <tr>
                             <td colspan="4"><table border="0" width="100%" cellspacing="0" cellpadding="2">
@@ -922,7 +922,7 @@ $present[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .TEXT_UNSET_DATA);
             </table></td>
         </tr>
       </table></div></td>
-    <!-- body_text_eof //-->
+    <!-- body_text_eof -->
   </tr>
 </table>
 <?php

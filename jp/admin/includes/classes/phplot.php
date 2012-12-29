@@ -1,9 +1,6 @@
 <?php
 /*
   $Id$
-
-
-  PHPLOT 4.4.6 Copyright (c) 1998-2001 Afan Ottenheimer
 */
 
 class PHPlot{

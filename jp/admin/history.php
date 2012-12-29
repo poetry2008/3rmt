@@ -46,13 +46,11 @@ $(function() {
     $(".input_number").keypress(function(event) {
         if (!$.browser.mozilla) {
             if (event.keyCode && ((event.keyCode < 45 || event.keyCode > 57) && event.keyCode != 47)) {
-                <?php // ie6,7,8,opera,chrome管用 ?> 
                 event.preventDefault();
                 key_sum++;
             }
         } else {
             if (event.charCode && ((event.charCode < 45 || event.charCode > 57) && event.charCode != 47)) {
-                <?php // firefox管用 ?>
                 event.preventDefault();
                 key_sum++;
             }
@@ -82,13 +80,11 @@ $(function() {
     $(".input_number").keypress(function(event) {
         if (!$.browser.mozilla) {
             if (event.keyCode && ((event.keyCode < 45 || event.keyCode > 57) && event.keyCode != 47)) {
-                <?php // ie6,7,8,opera,chrome管用 ?>
                 event.preventDefault();
                 key_sum++;
             }
         } else {
             if (event.charCode && ((event.charCode < 45 || event.charCode > 57) && event.charCode != 47)) {
-                <?php // firefox管用 ?>
                 event.preventDefault();
                 key_sum++;
             }
@@ -267,7 +263,7 @@ case 'oroshi_c':
     </tr>
 
 <?php
-    $cr = array("\r\n", "\r");   // 改行コード置換用配
+    $cr = array("\r\n", "\r");   // 用于换行代码替换
     for($i=0;$i<=$cnt;$i++){
       $res = tep_db_query("select * from set_oroshi_datas where parent_id='".$cPath."' && oroshi_id='".$o_id[$i]."' ORDER BY list_id DESC limit ".$a.",1 ");
       $col[$i] = tep_db_fetch_array($res);
@@ -275,7 +271,7 @@ case 'oroshi_c':
       $count[$i] = count($lines[$i]);
     }
     
-    for($n=0;$n<$cnt;$n++){//取得したデータでどれが一番件数が大きいか
+    for($n=0;$n<$cnt;$n++){//获取的数据里哪个件数最多
       if($count[0]<=$count[$n]){
         $count[0]=$count[$n];
       }
@@ -302,7 +298,7 @@ case 'd_submit':
   $cPath = $_GET['cPath'];
   $cid = $_GET['cid'];
   $did = $_GET['did'];
-  $dou_id=$_POST['d_id'];//同業者ID
+  $dou_id=$_POST['d_id'];//同行ID
   $submit = $_POST['b1'];
   
   $proid_arr = $proid = explode(',',substr($_POST['orderstring'], 1));
@@ -501,12 +497,12 @@ case 'dougyousya_categories':
           ,set_dougyousya_categories sdc  where sdn.dougyousya_id =
           sdc.dougyousya_id and sdc.categories_id='".$cPath."'");
   $count=tep_db_fetch_array($res);
-  $target_cnt=1;//同業者専用
+  $target_cnt=1;//同行专用
   $products_count=0;
-  //登録フォーム作成
+  //创建注册框
   if($count['cnt'] > 0){
     for($j=0;$j<$count['cnt'];$j++){
-      echo "<input type='hidden' name='d_id[]' value='".$dougyousya_id[$j]."'>";//同業者ID
+      echo "<input type='hidden' name='d_id[]' value='".$dougyousya_id[$j]."'>";//同行ID
     }
   }
   $x = 0;
@@ -529,11 +525,11 @@ case 'dougyousya_categories':
       for($j=0;$j<$count['cnt'];$j++){
         $last_history_arr2[$i][$j] = isset($last_history_arr[$cid_list[$i]][$dougyousya_id[$j]])?$last_history_arr[$cid_list[$i]][$dougyousya_id[$j]]['dougyosya_kakaku']:'';
         echo "<td id='tr_".$x."_".($j+2)."' class='dataTableContent' >
-        <input value='' pos='".$i."_".$j."' id=\"ti_".$i."_".$j."\" class='udlr input_number col_".$j."'  type='text' size='7px' name='TARGET_INPUT[]' onpaste=\"return !clipboardData.getData('text').match(/\D/)\" ondragenter=\"return false\" style=\"ime-mode:Disabled;width:60%;\"><a href=\"javascript:void(0)\" onclick=\"$('.col_".$j."').val($('#ti_".$i."_".$j."').val())\">".TEXT_UNIFIED."</a>";//価格同業者
+        <input value='' pos='".$i."_".$j."' id=\"ti_".$i."_".$j."\" class='udlr input_number col_".$j."'  type='text' size='7px' name='TARGET_INPUT[]' onpaste=\"return !clipboardData.getData('text').match(/\D/)\" ondragenter=\"return false\" style=\"ime-mode:Disabled;width:60%;\"><a href=\"javascript:void(0)\" onclick=\"$('.col_".$j."').val($('#ti_".$i."_".$j."').val())\">".TEXT_UNIFIED."</a>";//价格同行
       }
     }else{
       echo "<td class='dataTableContent' ><input pos='".$i."_".$j."' class='udlr input_number' type='text' size='7px'
-        name='TARGET_INPUT[]' ></td>";//価格同業者 
+        name='TARGET_INPUT[]' ></td>";//价格同行 
     }
     echo '<td><input type="button" onclick="get_last_date_line('.$i.')" value="LAST DATA"></td>';
     echo "</tr>";

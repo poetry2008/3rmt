@@ -581,7 +581,7 @@ tinyMCE.init({
         height: "800", 
         plugins : "imageupload,pagebreak,style,layer,table,advhr,advlink,emotions,iespell,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,inlinepopups",
          
-        theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,formatselect,fontsizeselect,forecolor,backcolor,imageupload,|,cut,copy,paste|,search,replace,|,bullist,numlist,|,undo,redo,|,link,unlink,anchor,|,code",
+        theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,formatselect,fontsizeselect,forecolor,backcolor,imageupload,|,cut,copy,paste,|,search,replace,|,bullist,numlist,|,undo,redo,|,link,unlink,anchor,|,code",
         theme_advanced_toolbar_location : "top",
         theme_advanced_toolbar_align : "left",
         theme_advanced_statusbar_location : "bottom",

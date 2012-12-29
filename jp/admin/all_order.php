@@ -1,6 +1,5 @@
 <?php
   require('includes/application_top.php');
-//  $_GET['y']=2010;
   set_time_limit(0);
   if($_GET['y'] == '2007') {
     $query = tep_db_query("select * from orders where date_purchased>'2007-1-1 00:00:00' and date_purchased<'2008-1-1 00:00:00'");

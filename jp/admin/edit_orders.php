@@ -164,16 +164,16 @@ $order_query = tep_db_query("
     from " . TABLE_ORDERS_PRODUCTS . " 
     where orders_id = '" . tep_db_input($oID) . "'");
 
-// 最新の注文情報取得
+// 获取最新订单信息
 $order = new order($oID);
 $cpayment = payment::getInstance($order->info['site_id']);
-// ポイントを取得する
+// 获取返点
 $customer_point_query = tep_db_query("
     select point 
     from " . TABLE_CUSTOMERS . " 
     where customers_id = '" . $order->customer['id'] . "'");
 $customer_point = tep_db_fetch_array($customer_point_query);
-// ゲストチェック
+// 游客检查
 $customer_guest_query = tep_db_query("
     select customers_guest_chk,is_send_mail,is_calc_quantity 
     from " . TABLE_CUSTOMERS . " 
@@ -613,7 +613,7 @@ if($address_error == false){
       }
 
       // 1.3.1 Update orders_products Table
-      $products_delete = false;
+      //$products_delete = false;
       foreach ($update_products as $orders_products_id => $products_details) {
         // 1.3.1.1 Update Inventory Quantity
         $products_session_string_array = explode('_',$orders_products_id);
@@ -724,7 +724,7 @@ if($address_error == false){
             tep_db_query($Query);
             $Query = "delete from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " where orders_products_id = '$orders_products_id';";
             tep_db_query($Query);
-            $products_delete = true;
+            //$products_delete = true;
           }
         }
       }
@@ -737,8 +737,6 @@ if($address_error == false){
       foreach($update_totals as $total_index => $total_details) {
         extract($total_details,EXTR_PREFIX_ALL,"ot");
 
-        // Correction tax calculation (Michel Haase, 2005-02-18)
-        // Correction tax calculation (Shimon Pozin, 2005-09-03) 
         // Here is the major caveat: the product is priced in default currency, while shipping etc. are priced in target currency. We need to convert target currency
         // into default currency before calculating RunningTax (it will be converted back before display)
         if ($ot_class == "ot_shipping" || $ot_class == "ot_lev_discount" || $ot_class == "ot_customer_discount" || $ot_class == "ot_custom" || $ot_class == "ot_cod_fee") {
@@ -792,7 +790,6 @@ if($address_error == false){
 
           // Check for existence of subtotals (CWS)                      
           if ($ot_class == "ot_total") {
-            // Correction tax calculation (Michel Haase, 2005-02-18)
             // I can't find out, WHERE the $RunningTotal is calculated - but the subtraction of the tax was wrong (in our shop)
             //        $ot_value = $RunningTotal-$RunningTax;
             $ot_value = $RunningTotal;
@@ -804,7 +801,6 @@ if($address_error == false){
 
           // Set $ot_text (display-formatted value)
 
-          // Correction of number_format - German format (Michel Haase, 2005-02-18)
           //      $ot_text = "\$" . number_format($ot_value, 2, ',', '');
 
           $order = new order($oID);
@@ -853,7 +849,7 @@ if($address_error == false){
             $RunningTotal += $ot_value / $order->info['currency_value'];
 
             //} elseif ($ot_class == "ot_point") {
-            //$RunningTotal -= $ot_value; // ポイント割引
+            //$RunningTotal -= $ot_value; // 返点折扣
 
         } else {
           $RunningTotal += $ot_value;
@@ -943,8 +939,8 @@ if($address_error == false){
       $update_orders_sql = "update ".TABLE_ORDERS." set code_fee = '".$handle_fee."' where orders_id = '".$oID."'";
       tep_db_query($update_orders_sql);
 
-      // 最終処理（更新およびメール送信）
-      if ($products_delete == false) {
+      // 最终处理（更新并返信）
+      //if ($products_delete == false) {
         $check_status_query = tep_db_query("
         select orders_id, 
         customers_name, 
@@ -1097,7 +1093,7 @@ if($address_error == false){
                 $total_details_mail .= SENDMAIL_TEXT_HANDLE_FEE.$currencies->format($handle_fee)."\n";
               $total_details_mail .= SENDMAIL_TEXT_PAYMENT_AMOUNT . $currencies->format($totals['value']);
             } else {
-              // 去掉 決済手数料 消費税
+              // 去掉 决算费用  消费税
               $totals['title'] = str_replace(SENDMAIL_TEXT_TRANSACTION_FEE, SENDMAIL_TEXT_HANDLE_FEE_ONE, $totals['title']);
               $total_details_mail .= $totals['title'] . str_repeat('　', intval((16 - strlen($totals['title']))/2)) . '：' . $currencies->format($totals['value']) . "\n";
             }
@@ -1228,12 +1224,12 @@ if($address_error == false){
       }
         tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments, user_added) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . tep_db_input($customer_notified) . "', '" .  mysql_real_escape_string($comment_arr['comment'].$comments_text) . "', '".tep_db_input($update_user_info['name'])."')");
         $order_updated_2 = true;
-      }
+      //}
 
-      if ($order_updated && !$products_delete && $order_updated_2) {
+      if ($order_updated && $order_updated_2) {
         $messageStack->add_session(SUCCESS_ORDER_UPDATED, 'success');
-      } elseif ($order_updated && $products_delete) {
-        $messageStack->add_session(TEXT_PRODUCTS_DELETE, 'success');
+      //} elseif ($order_updated && $products_delete) {
+        //$messageStack->add_session(TEXT_PRODUCTS_DELETE, 'success');
       } else {
         $messageStack->add_session(TEXT_ERROR_NO_SUCCESS, 'error');
       }

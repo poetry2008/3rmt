@@ -314,18 +314,18 @@ require("includes/note_js.php");
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
-<!-- header //-->
+<!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
-<!-- body //-->
+<!-- header_eof -->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-<!-- left_navigation //-->
+<!-- left_navigation -->
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- left_navigation_eof //-->
+<!-- left_navigation_eof -->
     </table></td>
-<!-- body_text //-->
+<!-- body_text -->
 <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
   <div class="compatible">
   <table border='0' bgcolor='#7c6bce' width='100%'>
@@ -351,7 +351,7 @@ require("includes/note_js.php");
     </tr>
   </table>
 <?php
-  //変数挿入
+  //插入变量
     $customer_id    = isset($account['customers_id'])           ? $account['customers_id']:'';
     $firstname      = isset($account['customers_firstname'])    ? $account['customers_firstname']:'';
     $lastname       = isset($account['customers_lastname'])     ? $account['customers_lastname']:'';
@@ -372,8 +372,6 @@ require("includes/note_js.php");
 <?php
 /*
    $Id$
-  
-   3rmt over
 */
 
     tep_draw_hidden_field($customer_id);    
@@ -536,11 +534,11 @@ require("includes/note_js.php");
   </td>
   </tr>
 </table>
-<!-- body_eof //-->
+<!-- body_eof -->
 
-<!-- footer //-->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 
 <br>
 </body>

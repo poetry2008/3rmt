@@ -131,7 +131,7 @@ if($_GET['action'] == 'success') {
     <input type="hidden" name="updata" value="on">
     <input type="hidden" name="date" value="<?php echo $_GET['date'];?>">
     <?php
-    //今日
+    //今天
     $now = $_GET['date']?$_GET['date']:date('Y-m');
     $m_num = date('m',strtotime($now.'-1 00:00:00')) - 1;
     $year = date('Y',strtotime($now.'-1 00:00:00'));
@@ -144,13 +144,13 @@ if($_GET['action'] == 'success') {
     $m_num2 = $today2[mon];
     $d_num2 = $today2[mday];
     $year2 = $today2[year];
-    // 1日目の曜日
+    // 第一天对应的星期
     $f_today2 = getdate(mktime(0,0,0,$m_num2,1,$year2));
     $wday2 = $f_today2[wday];
-    // 月表示
+    // 显示月
     $m_name2 = "$year ".substr($today2[month],0,3);
     
-    //月のデータ取得
+    //获取年月
     $ymd2 = date("Ym", mktime(0,0,0,$m_num2,1,$year2));
     $calen_query2 = tep_db_query("select cl_value from ".TABLE_BANK_CALENDAR." where cl_ym = '".$ymd2."'");
     $calen2 = tep_db_fetch_array($calen_query2);
@@ -235,11 +235,11 @@ if($_GET['action'] == 'success') {
       
       
       if($array2[(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT)] == '1'){
-      //お店の休業日
+      //商店的休息日
       echo "<td align=center bgcolor=".CL_COLOR_01."><font size=2>$day2<br>".$option2."</font></td>\n";
       }
       elseif($array2[(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT)] == '2'){
-      //メール返信休業日
+      //邮件回信休息日
       echo "<td align=center bgcolor=".CL_COLOR_02."><font size=2>$day2<br>".$option2."</font></td>\n";  
       }  
       elseif($wday == 0){ 
@@ -254,7 +254,7 @@ if($_GET['action'] == 'success') {
       // Weekday
       echo "<td align=center><font size=2>$day2<br>".$option2."</font></td>\n";
       }
-      // 改行
+      // 换行
       if($wday2 == 6) echo "</tr><tr bgcolor=#ffffff>";
       $day2++;
       $wday2++;

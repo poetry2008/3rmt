@@ -1,9 +1,3 @@
-<?php
-/*
-	JP、GM共通ファイル
-*/
-?>
-
 <script language="javascript"><!--
 
 var submitted = false;
@@ -266,4 +260,4 @@ function get_torihiki_time_list(work_time,start_time,torihiki_date,radio_name,ch
   return torihiki_time_str;
 }
 */
-//--></script>
+--></script>

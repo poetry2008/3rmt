@@ -1,25 +1,5 @@
 <?php
 require('includes/application_top.php');
-//  $_GET['y']=2010;
-/*
-   set_time_limit(0);
-   if($_GET['y'] == '2007') {
-   $query = tep_db_query("select * from orders where date_purchased>'2007-1-1 00:00:00' and date_purchased<'2008-1-1 00:00:00'");
-   } else if ($_GET['y'] == '2008'){
-   $query = tep_db_query("select * from orders where date_purchased>'2008-1-1 00:00:00' and date_purchased<'2009-1-1 00:00:00'");
-   } else if ($_GET['y'] == '2009'){
-   $query = tep_db_query("select * from orders where date_purchased>'2009-1-1 00:00:00' and date_purchased<'2010-1-1 00:00:00'");
-   } else if ($_GET['y'] == '2010'){
-   $query = tep_db_query("select * from orders where date_purchased>'2010-1-1 00:00:00' and date_purchased<'2011-1-1 00:00:00'");
-   } else if ($_GET['y'] == '2011'){
-   $query = tep_db_query("select * from orders where date_purchased>'2011-1-1 00:00:00' and date_purchased<'2012-1-1 00:00:00'");
-   } else {
-   exit('no parameter');
-   }
-
-   while($o = tep_db_fetch_array($query)) {
-   }
- */
 $right_order_sql = "select count(*) cnt from orders_temp where isreg = 1";
 $error_order_sql = "select count(*) cnt from orders_temp where isreg = 0";
 $unknow_order_sql = "select count(*) cnt from orders_temp where suborder <> 3";
