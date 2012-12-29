@@ -613,7 +613,7 @@ if($address_error == false){
       }
 
       // 1.3.1 Update orders_products Table
-      $products_delete = false;
+      //$products_delete = false;
       foreach ($update_products as $orders_products_id => $products_details) {
         // 1.3.1.1 Update Inventory Quantity
         $products_session_string_array = explode('_',$orders_products_id);
@@ -724,7 +724,7 @@ if($address_error == false){
             tep_db_query($Query);
             $Query = "delete from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " where orders_products_id = '$orders_products_id';";
             tep_db_query($Query);
-            $products_delete = true;
+            //$products_delete = true;
           }
         }
       }
@@ -944,7 +944,7 @@ if($address_error == false){
       tep_db_query($update_orders_sql);
 
       // 最終処理（更新およびメール送信）
-      if ($products_delete == false) {
+      //if ($products_delete == false) {
         $check_status_query = tep_db_query("
         select orders_id, 
         customers_name, 
@@ -1228,12 +1228,12 @@ if($address_error == false){
       }
         tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments, user_added) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . tep_db_input($customer_notified) . "', '" .  mysql_real_escape_string($comment_arr['comment'].$comments_text) . "', '".tep_db_input($update_user_info['name'])."')");
         $order_updated_2 = true;
-      }
+      //}
 
-      if ($order_updated && !$products_delete && $order_updated_2) {
+      if ($order_updated && $order_updated_2) {
         $messageStack->add_session(SUCCESS_ORDER_UPDATED, 'success');
-      } elseif ($order_updated && $products_delete) {
-        $messageStack->add_session(TEXT_PRODUCTS_DELETE, 'success');
+      //} elseif ($order_updated && $products_delete) {
+        //$messageStack->add_session(TEXT_PRODUCTS_DELETE, 'success');
       } else {
         $messageStack->add_session(TEXT_ERROR_NO_SUCCESS, 'error');
       }
