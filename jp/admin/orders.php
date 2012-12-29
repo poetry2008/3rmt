@@ -3361,7 +3361,7 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 ?>
 <h2>
 □<?php echo $get_categories_array['categories_name'].SHOW_MANUAL_TITLE?> 
-<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=p_categories_manual')?>"><button><?php echo MANUAL_SEARCH_EDIT;?></button></a>
+<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=p_categories_manual')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
 </h2>
 <?php echo $get_categories_array['c_manual']!='' ? stripslashes($get_categories_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 <hr>
@@ -3371,19 +3371,19 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 ?>
 <h2>
 □<?php echo $cp_manual_array['categories_name'].SHOW_MANUAL_TITLE?> 
-<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=p_categories_manual')?>"><button><?php echo MANUAL_SEARCH_EDIT;?></button></a>
+<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=p_categories_manual')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
 </h2>
 <?php echo $cp_manual_array['c_manual']!='' ? stripslashes($cp_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 <hr>
 <h2>
 □<?php echo $c_manual_array['categories_name'].SHOW_MANUAL_TITLE?>
-<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=show_categories_manual')?>"><button><?php echo MANUAL_SEARCH_EDIT;?></button></a>
+<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=show_categories_manual')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
 </h2>
 <?php echo $c_manual_array['c_manual']!='' ? stripslashes($c_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 <hr>
 <h2>
 □<?php echo $pro_manual_array['products_name'].SHOW_MANUAL_TITLE?>
-<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=show_products_manual')?>"><button><?php echo MANUAL_SEARCH_EDIT;?></button></a>
+<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=show_products_manual')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
 </h2>
 <?php echo $pro_manual_array['p_manual']!='' ? stripslashes($pro_manual_array['p_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>'?>
 <hr>
@@ -4081,7 +4081,7 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 ?>
 <h2>
 □<?php echo $get_categories_array['categories_name'].SHOW_MANUAL_TITLE?> 
-<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=p_categories_manual')."&cID=".$check_categories_array['parent_id']?>"><button><?php echo MANUAL_SEARCH_EDIT;?></button></a>
+<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=p_categories_manual')."&cID=".$check_categories_array['parent_id']?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
 </h2>
 <?php echo $get_categories_array['c_manual']!='' ? stripslashes($get_categories_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 <hr>
@@ -4092,19 +4092,18 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 
 <h2>
 □<?php echo $cp_manual_array['categories_name'].SHOW_MANUAL_TITLE?> 
-<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=p_categories_manual')?>"><button><?php echo MANUAL_SEARCH_EDIT;?></button></a>
+<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=p_categories_manual')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
 </h2>
 <?php echo $cp_manual_array['c_manual']!='' ? stripslashes($cp_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 <hr>
 <h2>
 □<?php echo $c_manual_array['categories_name'].SHOW_MANUAL_TITLE?>
-<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=show_categories_manual')?>"><button><?php echo MANUAL_SEARCH_EDIT;?></button></a>
+<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=show_categories_manual')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
 </h2>
 <?php echo $c_manual_array['c_manual']!='' ? stripslashes($c_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 <hr>
 <h2>
-□<?php echo $pro_manual_array['products_name'].SHOW_MANUAL_TITLE?>
-<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=show_products_manual')?>"><button><?php echo MANUAL_SEARCH_EDIT;?></button></a>
+□<?php echo $pro_manual_array['products_name'].SHOW_MANUAL_TITLE?> <a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=show_products_manual')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
 
 
 </h2>
@@ -4182,7 +4181,7 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 ?>
 <h2>
 □<?php echo $get_categories_array['categories_name'].SHOW_MANUAL_TITLE?> 
-<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=p_categories_manual')."&cID1=".$check_categories_array['parent_id']?>"><button><?php echo MANUAL_SEARCH_EDIT;?></button></a>
+<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=p_categories_manual')."&cID1=".$check_categories_array['parent_id']?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
 </h2>
 <?php echo $get_categories_array['c_manual']!='' ? stripslashes($get_categories_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 <hr>
@@ -4192,13 +4191,13 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 ?>
 <h2>
 □<?php echo $cp_manual_array['categories_name'].SHOW_MANUAL_TITLE?>
-<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=p_categories_manual')?>"><button><?php echo MANUAL_SEARCH_EDIT;?></button></a>
+<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=p_categories_manual')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
  </h2>
 <?php echo $cp_manual_array['c_manual']!='' ? stripslashes($cp_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 <hr>
 <h2>
 □<?php echo $c_manual_array['categories_name'].SHOW_MANUAL_TITLE?>
-<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=show_categories_manual')?>"><button><?php echo MANUAL_SEARCH_EDIT;?></button></a>
+<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=show_categories_manual')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
 </h2>
 <?php echo $c_manual_array['c_manual']!='' ? stripslashes($c_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 <hr>
@@ -4273,7 +4272,7 @@ if($c_parent_array['parent_id'] == 0){
 ?>
 <h2>
 □<?php echo $c_manual_array['categories_name'].SHOW_MANUAL_TITLE?>
-<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=p_categories_manual')?>"><button><?php echo MANUAL_SEARCH_EDIT;?></button></a>
+<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=p_categories_manual')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
 
  </h2>
 <?php echo $c_manual_content = $c_manual_array['c_manual']!='' ? stripslashes($c_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';
@@ -4284,13 +4283,13 @@ if($c_parent_array['parent_id'] == 0){
 ?>
 <h2>
 □<?php echo $cp_manual_array['categories_name'].SHOW_MANUAL_TITLE?>
-<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=p_categories_manual&p_cpath='.$_GET['cPath'])?>"><button><?php echo MANUAL_SEARCH_EDIT;?></button></a>
+<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=p_categories_manual&p_cpath='.$_GET['cPath'])?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
  </h2>
 <?php echo $cp_manual_array['c_manual']!='' ? stripslashes($cp_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 <hr>
 <h2>
 □<?php echo $c_manual_array['categories_name'].SHOW_MANUAL_TITLE?>
-<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=show_categories_manual')?>"><button><?php echo MANUAL_SEARCH_EDIT;?></button></a>
+<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=show_categories_manual')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
 </h2>
 <?php echo $c_manual_array['c_manual']!='' ? stripslashes($c_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 <hr>
