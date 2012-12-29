@@ -386,8 +386,7 @@ if (isset($entry_email_address_error) && $entry_email_address_error == true) { e
   <tr>
   <td class="main"><table border="0" cellspacing="0" cellpadding="2">
   <tr>
-  <td class="main">&nbsp;
-<?php
+  <td class="main">&nbsp;<?php
 echo ENTRY_SITE;
 ?>:</td>
 <td class="main">&nbsp;
@@ -517,7 +516,7 @@ if($index > 0){
   
             <table border="0" width="100%" cellspacing="0" cellpadding="2">
             <tr style="background-color: #e1f9fe;">
-            <td class="dataTableContent" colspan="2" width="35%"><?php echo TABLE_HEADING_NUM_PRO_NAME;?></td>
+            <td class="dataTableContent" colspan="2" width="35%">&nbsp;<?php echo TABLE_HEADING_NUM_PRO_NAME;?></td>
             <td class="dataTableContent"><?php echo TABLE_HEADING_PRODUCTS_MODEL; ?></td>
             <td class="dataTableContent"><?php echo TABLE_HEADING_CURRENICY;?></td>
             <td class="dataTableContent" align="center"><?php echo TABLE_HEADING_PRODUCTS_PRICE; ?></td>
@@ -544,7 +543,7 @@ if($index > 0){
             $porducts_qty = isset($_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['qty']) ? $_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['qty'] : $porducts_qty;
             $order->products[$i]['qty'] = isset($_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['qty']) ? $_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['qty'] : $order->products[$i]['qty'];
             echo '    <tr>' . "\n" .
-              '      <td class="' . $RowStyle . '" align="left" valign="top" width="20">'
+              '      <td class="' . $RowStyle . '" align="left" valign="top" width="35">&nbsp;'
               . "<input type='hidden' id='update_products_qty_$orders_products_id' value='" . $order->products[$i]['qty'] . "'><input type='hidden' class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" . $porducts_qty . "' onkeyup=\"clearLibNum(this);\">".$porducts_qty."&nbsp;x</td>\n" .  '      <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input id='update_products_name_$orders_products_id' name='update_products[$orders_products_id][name]' size='64' type='hidden' value='" . $order->products[$i]['name'] . "'>\n"; 
             // Has Attributes?
             if (sizeof($order->products[$i]['attributes']) > 0) {
@@ -623,9 +622,9 @@ if($index > 0){
   <td class="formAreaTitle"><?php echo $index > 0 ? '<br>' : tep_draw_separator('pixel_trans.gif', '100%', '10');echo ADDING_TITLE; ?> (Nr. <?php echo $oID; ?>)</td>
   </tr>
   <tr>
-  <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
+  <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">  
   <tr>
-  <td class="main"><input type="hidden" name="oID" value="<?php echo $oID;?>"><table border="0" cellspacing="0" cellpadding="2" width="100%">  
+  <td class="main"><input type="hidden" name="oID" value="<?php echo $oID;?>">  
 
           <?php
           // ############################################################################
@@ -679,7 +678,7 @@ if($index > 0){
         if(isset($Customer_mail) && $Customer_mail != '' && isset($site_id) && $site_id != ''){
           $param_str = "&Customer_mail=$Customer_mail&site_id=$site_id";
         }
-        print "<tr><td><table border='0' width='100%'>\n";
+        print "<table border='0' cellspacing='0' cellpadding='2' width='100%'>\n";
         
         $Customer_mail = tep_db_prepare_input($_GET['Customer_mail']);
         $site_id = tep_db_prepare_input($_GET['site_id']);
@@ -697,7 +696,7 @@ if($index > 0){
         //}
         $PHP_SELF = 'create_order.php';
         print "<tr>\n";
-        print "<td class='dataTableContent' width='70'><b>" . ADDPRODUCT_TEXT_STEP . " 1:</b></td>\n";
+        print "<td class='dataTableContent' width='70'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 1:</b></td>\n";
         print "<td class='dataTableContent'>";
         print "<form action='$PHP_SELF?oID=$oID&action=add_product$param_str' method='POST'>\n";
         print '<table>'; 
@@ -720,7 +719,7 @@ if($index > 0){
         if(($step > 1) && ($add_product_categories_id > 0))
         {
           print "<tr>\n";
-          print "<td class='dataTableContent'><b>" . ADDPRODUCT_TEXT_STEP . " 2: </b></td>\n";
+          print "<td class='dataTableContent'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 2: </b></td>\n";
           print "<td class='dataTableContent'>";
           print "<form action='$PHP_SELF?oID=$oID&action=$action$param_str' method='POST'>\n";
           print "<table>"; 
@@ -765,7 +764,7 @@ if($index > 0){
           if(!$hm_option->admin_whether_show($option_product['belong_to_option'], 0, $option_product['products_cflag']))
           {
             print "<tr>\n";
-            print "<td class='dataTableContent' valign='top'><b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td>\n";
+            print "<td class='dataTableContent' valign='top'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td>\n";
             print "<td class='dataTableContent' valign='top' colspan='2'><i>" . ADDPRODUCT_TEXT_OPTIONS_NOTEXIST . "</i></td>\n";
             print "</tr>\n";
             $step = 4;
@@ -774,7 +773,7 @@ if($index > 0){
           {
             $p_cflag = tep_get_cflag_by_product_id($add_product_products_id);
             print "<tr>\n";
-            print "<td class='dataTableContent' valign='top'><b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td><td class='dataTableContent' valign='top'>";
+            print "<td class='option_title_space' valign='top'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td><td class='dataTableContent' valign='top'>";
             print "<form name='coform' action='$PHP_SELF?oID=$oID&action=$action$param_str' method='POST'>";
             print $hm_option->render($option_product['belong_to_option'], false, 2, '', '', $p_cflag); 
             print "</td>";
@@ -787,8 +786,8 @@ if($index > 0){
             print "</form></td>\n";
             print "</tr>\n";
             print "<tr>"; 
-            print "<td colspan='3' class='dataTableContent' align='right'>"; 
-            print "<div style='margin-right:30%;'><input type='button' value='" .  ADDPRODUCT_TEXT_OPTIONS_CONFIRM . "' onclick='document.forms.coform.submit();'></div>";
+            print "<td colspan='4' class='dataTableContent' align='right'>"; 
+            print "<div><input type='button' value='" .  ADDPRODUCT_TEXT_OPTIONS_CONFIRM . "' onclick='document.forms.coform.submit();'></div>";
             print "</td>"; 
             print "</tr>"; 
           }
@@ -803,11 +802,11 @@ if($index > 0){
           $products_array = tep_db_fetch_array($products_query);
           tep_db_free_result($products_query);  
           echo "<tr><form action='$PHP_SELF?oID=$oID&action=$action$param_str' method='POST'>\n";
-          echo "<td class='dataTableContent'><b>" . ADDPRODUCT_TEXT_STEP . " 4: </b></td>";
-          echo '<td class="dataTableContent">' .
+          echo "<td class='dataTableContent'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 4: </b></td>";
+          echo '<td class="dataTableContent">&nbsp;' .
             ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input name="add_product_quantity" size="2" value="1" onkeyup="clearLibNum(this);">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'&nbsp;&nbsp;&nbsp;&nbsp;';
           echo '<input type="hidden" style="text-align:right;" class="once_pwd" onkeyup="clearNoNum_1(this);" value="'. (int)$products_array['products_price'] .'" size="9" name="add_product_price">&nbsp;</td>';
-          echo "<td class='dataTableContent' align='center'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
+          echo "<td class='dataTableContent' align='right' colspan='2'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
 
           foreach ($_POST as $op_key => $op_value) {
             $op_pos = substr($op_key, 0, 3);
@@ -824,8 +823,6 @@ if($index > 0){
 
         echo "</table></td></tr>\n";
 ?> 
-</table></td>
-</tr>
 </table>
 </td>
 </tr>
@@ -855,9 +852,7 @@ echo tep_draw_input_field('telephone', $telephone) . '&nbsp;' . ENTRY_TELEPHONE_
 -->
 
 <tr>
-<td class="main" nowrap>&nbsp;
-<?php
-echo CREATE_ORDER_COMMUNITY_SEARCH_TEXT;?></td>
+<td class="main" valign="top" nowrap="nowrap" style="padding-left:6px;"><?php echo CREATE_ORDER_COMMUNITY_SEARCH_TEXT;?></td>
 <td class="main">&nbsp;
 <textarea id='fax' name='fax_1' style='width:400px;height:42px;*height:40px;'><?php echo $fax;?></textarea>
 &nbsp;&nbsp;
