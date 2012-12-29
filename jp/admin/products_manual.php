@@ -570,6 +570,7 @@ echo $title_str;
 ?>
 </title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
+<script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script type="text/javascript" src="lib/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
