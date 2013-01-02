@@ -234,6 +234,9 @@
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script text="text/javascript">
+
+var box_warp_height;
+var offset=0;
 function search_item_title(t_type, s_item_id)
 {
   var search_title = document.getElementById('title').value;
@@ -336,6 +339,7 @@ function create_option_item(gid)
       $('#show_item_info').show(); 
     }
   });
+  $(".box_warp").height(box_warp_height+$("#show_item_info").height());
 }
 
 function check_item_info()
@@ -377,6 +381,7 @@ function close_item_info()
 {
   $('#show_item_info').html(''); 
   $('#show_item_info').hide(); 
+  $(".box_warp").height(box_warp_height);
 }
 
 function show_item_info(ele, item_id, gid)
@@ -411,6 +416,7 @@ function show_item_info(ele, item_id, gid)
       $('#show_item_info').show(); 
     }
   });
+  $(".box_warp").height(offset+$("#show_item_info").height());
 }
 
 function show_link_item_info(item_id, gid)
@@ -443,11 +449,21 @@ function change_option_item_type(item_id)
        }
      }
   });
+  if(offset!=0){
+    $(".box_warp").height(offset+$("#show_item_info").height());
+  }else{
+    $(".box_warp").height(box_warp_height+$("#show_item_info").height());
+  }
 }
 
 function del_option_select(ele)
 {
   $(ele).parent().parent().remove();    
+  if(offset!=0){
+    $(".box_warp").height(offset+$("#show_item_info").height());
+  }else{
+    $(".box_warp").height(box_warp_height+$("#show_item_info").height());
+  }
 }
 
 function add_option_select()
@@ -463,6 +479,11 @@ function add_option_select()
     html_str += '<tr><td align="left"><?php echo TEXT_OPTION_ITEM_SELECT;?></td><td align="left"><input type="text" name="op_'+i_num_add+'" value="" class="option_text">&nbsp;<input type="button" onclick="del_option_select(this);" value="<?php echo TEXT_OPTION_ITEM_DEL_LINK;?>"></td></tr>';   
   }
   $('#add_select').parent().before(html_str);
+  if(offset!=0){
+    $(".box_warp").height(offset+$("#show_item_info").height());
+  }else{
+    $(".box_warp").height(box_warp_height+$("#show_item_info").height());
+  }
 }
 
 function add_option_radio()
@@ -515,6 +536,7 @@ function delete_item_pic(i_obj)
 }
 
 $(function() {
+      box_warp_height = $(".box_warp").height();
       function format(group) {
           return group.name;
       }
