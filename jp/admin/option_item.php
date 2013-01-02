@@ -505,6 +505,11 @@ function add_option_radio()
     html_str += '<tr height="40"><td valign="top" align="left">&nbsp;&nbsp;<?php echo TEXT_ITEM_MONEY_NAME;?></td><td valign="top" align="left"><input type="text" name="rom_'+i_num_add+'" value="" style="width:35%; text-align:right">&nbsp;<?php echo TEXT_MONEY_SYMBOL;?></td></tr>';
   }
   $('#add_radio').parent().before(html_str);
+  if(offset!=0){
+    $(".box_warp").height(offset+$("#show_item_info").height());
+  }else{
+    $(".box_warp").height(box_warp_height+$("#show_item_info").height());
+  }
 }
 
 function add_item_pic(i_obj, i_num)
