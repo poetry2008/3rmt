@@ -550,6 +550,7 @@ class convenience_store extends basePayment  implements paymentInterface  {
   } 
 
   function admin_get_payment_info($payment_info){
+    $payment_info  = str_replace("\xe2\x80\x8b", '', $payment_info);
     $cemail_text = $payment_info;  
     return "cemail_text = '{$cemail_text}',";
   }

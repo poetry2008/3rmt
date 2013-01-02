@@ -150,6 +150,8 @@ class BasePayment
       } 
     }
     */
+
+    $value  = str_replace("\xe2\x80\x8b", '', $value);
     if(!tep_validate_email($value)){
       if (!empty($this->p_error_msg)) {
         return $this->p_error_msg; 
