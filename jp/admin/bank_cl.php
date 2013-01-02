@@ -214,22 +214,22 @@ if($_GET['action'] == 'success') {
     while(checkdate($m_num2,$day2,$year2)){
       //select form
       if($array2[(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT)] == '1') {
-        $option2 = '<table border="1" cellspacing="0" cellpadding="0"><tr>';
-      $option2 .= '<td bgcolor="#FFFFFF"><input style="margin:2px;" type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="0"></td>' . "\n";
-      $option2 .= '<td bgcolor="'.CL_COLOR_01.'"><input style="margin:2px;" type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="1" checked></td>' . "\n";
-      $option2 .= '<td bgcolor="'.CL_COLOR_02.'"><input style="margin:2px;" type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="2"></td>' . "\n";
+        $option2 = '<table border="1" cellspacing="0" cellpadding="2"><tr>';
+      $option2 .= '<td bgcolor="#FFFFFF"><input type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="0"></td>' . "\n";
+      $option2 .= '<td bgcolor="'.CL_COLOR_01.'"><input type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="1" checked></td>' . "\n";
+      $option2 .= '<td bgcolor="'.CL_COLOR_02.'"><input type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="2"></td>' . "\n";
       $option2 .= '</tr></table>' . "\n";
       } elseif($array2[(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT)] == '2') {
-        $option2 = '<table border="1" cellspacing="0" cellpadding="0"><tr>';
-      $option2 .= '<td bgcolor="#FFFFFF"><input style="margin:2px;" type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="0"></td>' . "\n";
-      $option2 .= '<td bgcolor="'.CL_COLOR_01.'"><input style="margin:2px;" type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="1"></td>' . "\n";
-      $option2 .= '<td bgcolor="'.CL_COLOR_02.'"><input style="margin:2px;" type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="2" checked></td>' . "\n";
+        $option2 = '<table border="1" cellspacing="0" cellpadding="2"><tr>';
+      $option2 .= '<td bgcolor="#FFFFFF"><input type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="0"></td>' . "\n";
+      $option2 .= '<td bgcolor="'.CL_COLOR_01.'"><input type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="1"></td>' . "\n";
+      $option2 .= '<td bgcolor="'.CL_COLOR_02.'"><input type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="2" checked></td>' . "\n";
       $option2 .= '</tr></table>' . "\n";
       } else {
-        $option2 = '<table border="1" cellspacing="0" cellpadding="0"><tr>';
-      $option2 .= '<td bgcolor="#FFFFFF"><input style="margin:2px;" type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="0" checked></td>' . "\n";
-      $option2 .= '<td bgcolor="'.CL_COLOR_01.'"><input style="margin:2px;" type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="1"></td>' . "\n";
-      $option2 .= '<td bgcolor="'.CL_COLOR_02.'"><input style="margin:2px;" type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="2"></td>' . "\n";
+        $option2 = '<table border="1" cellspacing="0" cellpadding="2"><tr>';
+      $option2 .= '<td bgcolor="#FFFFFF"><input type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="0" checked></td>' . "\n";
+      $option2 .= '<td bgcolor="'.CL_COLOR_01.'"><input type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="1"></td>' . "\n";
+      $option2 .= '<td bgcolor="'.CL_COLOR_02.'"><input type="radio" name="'.(1+$ii).str_pad($day2, 2, 0, STR_PAD_LEFT).'" value="2"></td>' . "\n";
       $option2 .= '</tr></table>' . "\n";
       }
       
