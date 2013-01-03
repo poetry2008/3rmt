@@ -297,6 +297,12 @@ if(isset($_GET['site_id']) and isset($_GET['Customer_mail'] )){
   if(!$customerId){
     //如果不存在则跳转到新建用户的页面
     tep_redirect(tep_href_link(FILENAME_CREATE_ACCOUNT, 'site_id='.$site_id.'email_address=' . $email, 'SSL'));
+  }else{
+
+    if($_SESSION['email_address'] != $_GET['Customer_mail']){
+
+      unset($_SESSION['orders_update_products'][$_GET['oID']]); 
+    }
   }
 }
 //}}

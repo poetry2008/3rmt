@@ -609,5 +609,30 @@ class convenience_store extends basePayment  implements paymentInterface  {
   {
     return MODULE_PAYMENT_CONVENIENCE_STORE_POINT_RATE; 
   }
+
+  function admin_get_comment($comment){
+
+    $payment_comment_array = array(TS_TEXT_BANK_NAME,
+                                   TS_TEXT_BANK_SHITEN,
+                                   TS_TEXT_BANK_KAMOKU,
+                                   TS_TEXT_BANK_KOUZA_NUM,
+                                   TS_TEXT_BANK_KOUZA_NAME, 
+                                   TS_MODULE_PAYMENT_CONVENIENCE_EMAIL_TEXT,
+                                   TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_TEL
+                                 );
+    $comment_array = explode("\n",$comment);
+    $comment_str_array = array();
+    $comment_str = '';
+    foreach($comment_array as $value){
+
+      $value_array = explode(':',$value); 
+      if(!(in_array($value_array[0].':',$payment_comment_array) && trim($value_array[1]) == '')){
+
+        $comment_str_array[] = $value;
+      }
+    }
+    $comment_str = implode("\n",$comment_str_array);
+    return $comment_str;
+  }
 }
 ?>
