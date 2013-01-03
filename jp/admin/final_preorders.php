@@ -2545,7 +2545,7 @@ if (tep_db_num_rows($orders_history_query)) {
          '    <td class="smallText" align="left">' . $orders_status_array[$orders_history['orders_status_id']] . '</td>' . "\n";
     if ($CommentsWithStatus) {
       echo '    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>' . "\n" .
-           '    <td class="smallText" align="left">' . nl2br(tep_db_output($orders_history['comments'])) . '&nbsp;</td>' . "\n";
+           '    <td class="smallText" align="left">' . nl2br(tep_db_output($cpayment->admin_get_comment(payment::changeRomaji($order->info['payment_method'],PAYMENT_RETURN_TYPE_CODE),$orders_history['comments']))) . '&nbsp;</td>' . "\n";
     } 
     echo '    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>' . "\n" .
          '    <td class="smallText" align="left">' . $orders_history['user_added'] . '</td>' . "\n";

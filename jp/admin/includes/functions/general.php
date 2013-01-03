@@ -3488,7 +3488,9 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
     if($time_str){
     $str .= '<tr><td class="main">入金日：</td><td class="main" style="color:red;">'.$time_str.'</td></tr>';
     }
-  $str .= '<tr><td class="main">オプション：</td><td class="main" style="color:blue;">'.$orders['torihiki_houhou'].'</td></tr>';
+    if(trim($orders['torihiki_houhou']) != ''){
+      $str .= '<tr><td class="main">オプション：</td><td class="main" style="color:blue;">'.$orders['torihiki_houhou'].'</td></tr>';
+    }
 
   $orders_products_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." op,".TABLE_PRODUCTS." p where p.products_id = op.products_id and op.orders_id = '".$orders['orders_id']."'");
   $autocalculate_arr = array();

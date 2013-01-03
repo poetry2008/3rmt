@@ -841,5 +841,16 @@ class payment {
     }
     return 0; 
   }
+
+  function admin_get_comment($payment,$comment)
+  {
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'admin_get_comment')) {
+        return $module->admin_get_comment($comment); 
+      }
+    }
+    return ''; 
+  }
 }
 ?>
