@@ -1129,22 +1129,6 @@ function tep_set_banner_status($banners_id, $status, $site_id) {
 }
 
 ////
-// Sets the status of a product
-function tep_set_product_status($products_id, $status) {
-  if ($status == '1') {
-    return tep_db_query("update " . TABLE_PRODUCTS . " set products_status = '1', products_last_modified = now() where products_id = '" . $products_id . "'");
-  } elseif ($status == '2') {
-    return tep_db_query("update " . TABLE_PRODUCTS . " set products_status = '2', products_last_modified = now() where products_id = '" . $products_id . "'");
-  } elseif ($status == '0') {
-    return tep_db_query("update " . TABLE_PRODUCTS . " set products_status = '0', products_last_modified = now() where products_id = '" . $products_id . "'");
-  } elseif ($status == '3') {
-    return tep_db_query("update " . TABLE_PRODUCTS . " set products_status = '3', products_last_modified = now() where products_id = '" . $products_id . "'");
-  } else {
-    return -1;
-  }
-}
-
-////
 // Sets the status of a product on special
 /*
    function tep_set_specials_status($specials_id, $status) {
@@ -7759,7 +7743,7 @@ function tep_get_signal_pic_info($last_modified_info) {
   $last_modified_str = date('n/j H:i:s', strtotime(tep_datetime_short($last_modified_info))); 
   $origin_last_modified_time = strtotime($last_modified_info);
 
-  $html_str = tep_image(DIR_WS_ICONS.'signal_blink.gif', $last_modified_str);
+  $html_str = tep_image(DIR_WS_ICONS.'signal_blink.gif', tep_datetime_short($last_modified_info));
   $now_time = time();
   
   $set_time_array = unserialize(get_configuration_by_site_id('DS_ADMIN_SIGNAL_TIME', '0'));
@@ -7769,11 +7753,11 @@ function tep_get_signal_pic_info($last_modified_info) {
   $set_time_part_3 = (int)($set_time_array['red'][0].$set_time_array['red'][1].$set_time_array['red'][2].$set_time_array['red'][3]); 
   
   if ($origin_last_modified_time >= ($now_time - $set_time_part_1*60*60)) {
-    $html_str = tep_image(DIR_WS_ICONS.'signal_blue.gif', $last_modified_str);
+    $html_str = tep_image(DIR_WS_ICONS.'signal_blue.gif', tep_datetime_short($last_modified_info));
   } else if ($origin_last_modified_time >= ($now_time - $set_time_part_2*60*60)) {
-    $html_str = tep_image(DIR_WS_ICONS.'signal_yellow.gif', $last_modified_str);
+    $html_str = tep_image(DIR_WS_ICONS.'signal_yellow.gif', tep_datetime_short($last_modified_info));
   } else if ($origin_last_modified_time >= ($now_time - $set_time_part_3*60*60)) {
-    $html_str = tep_image(DIR_WS_ICONS.'signal_red.gif', $last_modified_str);
+    $html_str = tep_image(DIR_WS_ICONS.'signal_red.gif', tep_datetime_short($last_modified_info));
   }
   
   return $html_str;
