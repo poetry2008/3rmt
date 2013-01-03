@@ -1611,7 +1611,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
           }
           echo '      <td class="smallText">' .  $orders_status_array[$orders_history['orders_status_id']];
           echo '</td>' . "\n" .
-           '      <td class="smallText"><p style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;width:170px;">' . nl2br(tep_db_output($orders_history['comments'])) . '&nbsp;</p></td>' . "\n";
+           '      <td class="smallText"><p style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;width:170px;">' . nl2br(tep_db_output($cpayment->admin_get_comment(payment::changeRomaji($order->info['payment_method'],PAYMENT_RETURN_TYPE_CODE),$orders_history['comments']))) . '&nbsp;</p></td>' . "\n";
           echo '<td class="smallText">'.$orders_history['user_added'].'</td>'; 
           echo '<td>';
           $order_confirm_payment_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".tep_db_input($oID)."'"); 

@@ -148,7 +148,7 @@ while ($tag = tep_db_fetch_array($tags_query))
                p.products_price,
                p.products_price_offset,
                p.products_date_added,
-               p.products_last_modified,
+               pd.products_last_modified,
                p.products_date_available,
                p.products_weight,
                pd.products_status,

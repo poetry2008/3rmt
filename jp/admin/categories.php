@@ -40,7 +40,6 @@ if (isset($_GET['action']) && $_GET['action']) {
         //'products_price_offset'     => tep_db_prepare_input($HTTP_POST_VARS['products_price_offset']),
         'max_inventory'             => tep_db_prepare_input($_POST['inventory_max']),
         'min_inventory'             => tep_db_prepare_input($_POST['inventory_min']),
-        'products_last_modified'    => 'now()',
         'products_real_quantity'    => tep_db_prepare_input($_POST['products_real_quantity']),
         'products_virtual_quantity' => tep_db_prepare_input($_POST['products_virtual_quantity']),
         //'products_attention_5'      => tep_db_prepare_input($_POST['products_attention_5']),
@@ -54,7 +53,6 @@ if (isset($_GET['action']) && $_GET['action']) {
           //'products_price_offset'     => tep_db_prepare_input($HTTP_POST_VARS['relate_products_price_offset']),
           'max_inventory'             => tep_db_prepare_input($_POST['relate_inventory_max']),
           'min_inventory'             => tep_db_prepare_input($_POST['relate_inventory_min']),
-          'products_last_modified'    => 'now()',
           'products_real_quantity'    => tep_db_prepare_input($_POST['relate_products_real_quantity']),
           'products_virtual_quantity' => tep_db_prepare_input($_POST['relate_products_virtual_quantity']),
           //'products_attention_5'      => tep_db_prepare_input($_POST['relate_products_attention_5']),
@@ -70,8 +68,12 @@ if (isset($_GET['action']) && $_GET['action']) {
     }else{
       $update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now(), products_user_update='".$_SESSION['user_name']."' where products_id='".$products_id."' and site_id='".$site_id."'";
       tep_db_query($update_sql);
+      $update_all_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now(), products_user_update='".$_SESSION['user_name']."' where products_id='".$products_id."' and site_id='0'";
+      tep_db_query($update_all_sql);
       $relate_update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now(),products_user_update='".$_SESSION['user_name']."' where products_id='".$relate_products_id."' and site_id='".$site_id."'";
       tep_db_query($relate_update_sql);
+      $relate_all_update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now(),products_user_update='".$_SESSION['user_name']."' where products_id='".$relate_products_id."' and site_id='0'";
+      tep_db_query($relate_all_update_sql);
     }
     tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $_GET['cPath'] .  '&pID=' .  $products_id.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'')));
     break;
@@ -154,7 +156,7 @@ if (isset($_GET['action']) && $_GET['action']) {
     $site_id     = tep_db_prepare_input($_POST['pID']);
     //指定%的情况下，计算价格
     $HTTP_POST_VARS['products_price_offset'] = SBC2DBC($HTTP_POST_VARS['products_price_offset']);
-    $update_sql_data = array('products_last_modified'    => 'now()',
+    $update_sql_data = array(
         'products_real_quantity'    => tep_db_prepare_input($_POST['products_real_quantity']),
         'products_virtual_quantity' => tep_db_prepare_input($_POST['products_virtual_quantity']),
         'products_attention_5'      => tep_db_prepare_input($_POST['products_attention_5']),
@@ -736,8 +738,6 @@ if (isset($_GET['action']) && $_GET['action']) {
             $sql_data_array['belong_to_option'] = ''; 
           }
         } 
-        $update_sql_data = array('products_last_modified' => 'now()');
-        $sql_data_array = tep_array_merge($sql_data_array, $update_sql_data);
         tep_db_perform(TABLE_PRODUCTS, $sql_data_array, 'update', 'products_id = \'' . tep_db_input($products_id) . '\'');
         if($site_id=="" || $site_id==0){
           $update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now(),products_user_update='".$_POST['products_user_update']."' where products_id='".$products_id."'";
@@ -2716,7 +2716,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       p.products_bflag,
                       p.products_weight, 
                       p.products_date_added, 
-                      p.products_last_modified, 
+                      pd.products_last_modified, 
                       p.products_date_available, 
                       p.products_attention_5,
                       p.relate_products_id,
@@ -4054,7 +4054,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                          p.products_user_added,
                          p.products_date_added, 
                          pd.products_last_modified, 
-                         p.products_last_modified as new_products_last_modified, 
                          pd.products_user_update,
                          p.products_date_available, 
                          pd.products_status, 
@@ -4088,7 +4087,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       p.products_user_added,
                       p.products_date_added,
                       pd.products_last_modified, 
-                      p.products_last_modified as new_products_last_modified, 
                       pd.products_user_update,
                       p.products_date_available, 
                       pd.site_id, 
@@ -4490,7 +4488,13 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 }
                 $products_table_content_row[] = array('params'=>$products_status_params, 'text'=>$products_status_text);
                 $products_change_params .= 'class="dataTableContent" align="center"';
-                $products_change_text .= tep_get_signal_pic_info($products['new_products_last_modified']); 
+                if (empty($_GET['site_id'])) {
+                  $products_change_text .= tep_get_signal_pic_info($products['products_last_modified']); 
+                } else {
+                  $pro_singal_raw = tep_db_query("select products_last_modified from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$products['products_id']."' and site_id = '0'"); 
+                  $pro_signal_res = tep_db_fetch_array($pro_singal_raw); 
+                  $products_change_text .= tep_get_signal_pic_info($pro_signal_res['products_last_modified']); 
+                }
                 $products_table_content_row[] = array('params'=>$products_change_params, 'text'=>$products_change_text);
                 $products_operation_params .= 'class="dataTableContent" align="right"';
                 $products_operation_text .= '<a href="javascript:void(0)" onclick="show_product_info(\''.$products['products_id'].'\',this)">'.tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO).'</a>&nbsp;'; 
