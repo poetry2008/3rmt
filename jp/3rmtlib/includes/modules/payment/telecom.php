@@ -221,6 +221,7 @@ class telecom  extends basePayment  implements paymentInterface  {
                 telecom_money = '".$option_temp_total."',
                 telecom_option = '".$option_temp_id."'
                 where orders_id = '".$new_insert_id."'");
+                tep_db_query("update `telecom_unknow` set type='success' where `option`='".  $option_temp_id."' and rel='yes' ");
               break;
             }
 
