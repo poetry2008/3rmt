@@ -3379,8 +3379,23 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
             $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$pay_orders_id_array[0]."' order by date_added desc"); 
             while($orders_status_history_array = tep_db_fetch_array($orders_status_history_query)){
               if($orders_status_history_array['comments']!=''){
-                $pay_info_array[0] = $orders_status_history_array['comments']; 
-                break;
+                $orders_status_list_array = array();
+                $orders_status_list_array = explode("\n",$orders_status_history_array['comments']);
+                $status_flag = false;
+                foreach($orders_status_list_array as $orders_value){
+
+                  $orders_list_array = array();
+                  $orders_list_array = explode(':',$orders_value);
+                  if(trim($orders_list_array[1]) == '' && count($orders_list_array) > 1){
+
+                    $status_flag = true; 
+                    break;
+                  }
+                }
+                if($status_flag == false){
+                  $pay_info_array[0] = $orders_status_history_array['comments']; 
+                  break;
+                }
               }
             }
             tep_db_free_result($orders_status_history_query);
@@ -3389,8 +3404,23 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
             $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$pay_orders_id_array[1]."' order by date_added desc"); 
             while($orders_status_history_array = tep_db_fetch_array($orders_status_history_query)){
               if($orders_status_history_array['comments']!=''){
-                $pay_info_array[1] = $orders_status_history_array['comments']; 
-                break;
+                $orders_status_list_array = array();
+                $orders_status_list_array = explode("\n",$orders_status_history_array['comments']);
+                $status_flag = false;
+                foreach($orders_status_list_array as $orders_value){
+
+                  $orders_list_array = array();
+                  $orders_list_array = explode(':',$orders_value);
+                  if(trim($orders_list_array[1]) == '' && count($orders_list_array) > 1){
+
+                    $status_flag = true; 
+                    break;
+                  }
+                }
+                if($status_flag == false){
+                  $pay_info_array[1] = $orders_status_history_array['comments']; 
+                  break;
+                }
               }
             }
             tep_db_free_result($orders_status_history_query);
@@ -3399,8 +3429,23 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
             $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$pay_orders_id_array[2]."' order by date_added desc"); 
             while($orders_status_history_array = tep_db_fetch_array($orders_status_history_query)){
               if($orders_status_history_array['comments']!=''){
-                $pay_info_array[2] = $orders_status_history_array['comments']; 
-                break;
+                $orders_status_list_array = array();
+                $orders_status_list_array = explode("\n",$orders_status_history_array['comments']);
+                $status_flag = false;
+                foreach($orders_status_list_array as $orders_value){
+
+                  $orders_list_array = array();
+                  $orders_list_array = explode(':',$orders_value);
+                  if(trim($orders_list_array[1]) == '' && count($orders_list_array) > 1){
+
+                    $status_flag = true; 
+                    break;
+                  }
+                }
+                if($status_flag == false){
+                  $pay_info_array[2] = $orders_status_history_array['comments']; 
+                  break;
+                }
               }
             }
             tep_db_free_result($orders_status_history_query);
@@ -4208,11 +4253,11 @@ if($orders_exit_flag == true){
             </tr> 
             <tr><td colspan="2"><table width="100%" border="0" cellpadding="2" cellspacing="0" id="address_show_id" style="<?php echo $address_style;?>">
         <tr>
-        <td class="main" width="30%">
+        <td class="main" width="30%">&nbsp;</td>
+        <td class="main" width="70%">
         <input type="radio" name="address_option" value="old" onClick="address_option_show('old');address_option_list(address_first_num);address_clear_error();" <?php echo $old_checked;?>><?php echo TABLE_OPTION_OLD; ?>
-        <input type="radio" name="address_option" value="new" onClick="address_option_show('new');" <?php echo $new_checked;?>><?php echo TABLE_OPTION_NEW; ?> 
+        <input type="radio" name="address_option" value="new" onClick="address_option_show('new');" <?php echo $new_checked;?>><?php echo TABLE_OPTION_NEW; ?>  
         </td>
-        <td class="main" width="70%"></td>
       </tr>
       <tr id="address_list_id">
 <td class="main" width="30%"><?php echo TABLE_ADDRESS_SHOW; ?></td>

@@ -741,7 +741,9 @@ function tep_get_pre_orders_products_string($orders, $single = false, $popup = f
   if($time_str) {
     $str .= '<tr><td class="main">'.TEXT_PREORDER_COST_DATE.'</td><td class="main" style="color:red;">'.$time_str.'</td></tr>';
   }
-  $str .= '<tr><td class="main">'.RIGHT_ORDER_INFO_ORDER_OPTION.'</td><td class="main" style="color:blue;">'.$orders['torihiki_houhou'].'</td></tr>';
+  if(trim($orders['torihiki_houhou']) != ''){
+    $str .= '<tr><td class="main">'.RIGHT_ORDER_INFO_ORDER_OPTION.'</td><td class="main" style="color:blue;">'.$orders['torihiki_houhou'].'</td></tr>';
+  }
 
   $orders_products_query = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." op,".TABLE_PRODUCTS." p where p.products_id = op.products_id and op.orders_id = '".$orders['orders_id']."'");
   $autocalculate_arr = array();

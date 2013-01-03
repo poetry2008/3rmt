@@ -3308,11 +3308,11 @@ if (($action == 'edit') && ($order_exists == true)) {
     ?>
       <td colspan="2"><table width="100%" border="0" cellpadding="2" cellspacing="0" id="address_show_id" style="<?php echo $address_style;?>">
       <tr>
-        <td class="main" width="30%">
-        <input type="radio" name="address_option" value="old" onClick="address_option_show('old');address_list();address_clear_error();" <?php echo $old_checked;?>><?php echo TABLE_OPTION_OLD; ?>
+        <td class="main" width="30%">&nbsp;</td>
+        <td class="main" width="70%">
+         <input type="radio" name="address_option" value="old" onClick="address_option_show('old');address_list();address_clear_error();" <?php echo $old_checked;?>><?php echo TABLE_OPTION_OLD; ?>
         <input type="radio" name="address_option" value="new" onClick="address_option_show('new');" <?php echo $new_checked;?>><?php echo TABLE_OPTION_NEW; ?> 
         </td>
-        <td class="main" width="70%"></td>
       </tr>
       <tr id="address_list_id">
 <td class="main" width="30%"><?php echo TABLE_ADDRESS_SHOW; ?></td>
@@ -3934,7 +3934,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       }
       if ($CommentsWithStatus && $orders_history['comments'] != $orders_status_history_str) {
         echo '    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>' . "\n" .
-          '    <td class="smallText" align="left">' . nl2br(tep_db_output($orders_history_comment)) . '&nbsp;</td>' . "\n";
+          '    <td class="smallText" align="left">' . nl2br(tep_db_output($cpayment->admin_get_comment(payment::changeRomaji($order->info['payment_method'],PAYMENT_RETURN_TYPE_CODE),$orders_history_comment))) . '&nbsp;</td>' . "\n";
       } else {
         if ($CommentsWithStatus) {
           echo '    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>' . "\n" .
