@@ -3584,13 +3584,15 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
     $str .= date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($orders['torihiki_date'])).' '.$week_str.'&nbsp;'.TEXT_TIME_LINK.'&nbsp;'.$tmp_date_end[1]; 
     $str .= '</td>'; 
     $str .= '</tr>'; 
-    
-    $str .= '<tr>'; 
-    $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_OPTION.'</td>';
-    $str .= '<td class="main">';
-    $str .= $orders['torihiki_houhou'];    
-    $str .= '</td>'; 
-    $str .= '</tr>'; 
+
+    if(trim($orders['torihiki_houhou']) != ''){ 
+      $str .= '<tr>'; 
+      $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_OPTION.'</td>';
+      $str .= '<td class="main">';
+      $str .= $orders['torihiki_houhou'];    
+      $str .= '</td>'; 
+      $str .= '</tr>'; 
+    }
   
     $str .= '<tr>'; 
     $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_ID.'</td>';
