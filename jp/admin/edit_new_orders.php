@@ -3404,8 +3404,23 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
             $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$pay_orders_id_array[1]."' order by date_added desc"); 
             while($orders_status_history_array = tep_db_fetch_array($orders_status_history_query)){
               if($orders_status_history_array['comments']!=''){
-                $pay_info_array[1] = $orders_status_history_array['comments']; 
-                break;
+                $orders_status_list_array = array();
+                $orders_status_list_array = explode("\n",$orders_status_history_array['comments']);
+                $status_flag = false;
+                foreach($orders_status_list_array as $orders_value){
+
+                  $orders_list_array = array();
+                  $orders_list_array = explode(':',$orders_value);
+                  if(trim($orders_list_array[1]) == '' && count($orders_list_array) > 1){
+
+                    $status_flag = true; 
+                    break;
+                  }
+                }
+                if($status_flag == false){
+                  $pay_info_array[1] = $orders_status_history_array['comments']; 
+                  break;
+                }
               }
             }
             tep_db_free_result($orders_status_history_query);
@@ -3414,8 +3429,23 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
             $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$pay_orders_id_array[2]."' order by date_added desc"); 
             while($orders_status_history_array = tep_db_fetch_array($orders_status_history_query)){
               if($orders_status_history_array['comments']!=''){
-                $pay_info_array[2] = $orders_status_history_array['comments']; 
-                break;
+                $orders_status_list_array = array();
+                $orders_status_list_array = explode("\n",$orders_status_history_array['comments']);
+                $status_flag = false;
+                foreach($orders_status_list_array as $orders_value){
+
+                  $orders_list_array = array();
+                  $orders_list_array = explode(':',$orders_value);
+                  if(trim($orders_list_array[1]) == '' && count($orders_list_array) > 1){
+
+                    $status_flag = true; 
+                    break;
+                  }
+                }
+                if($status_flag == false){
+                  $pay_info_array[2] = $orders_status_history_array['comments']; 
+                  break;
+                }
               }
             }
             tep_db_free_result($orders_status_history_query);
