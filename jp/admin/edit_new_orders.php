@@ -4255,8 +4255,8 @@ if($orders_exit_flag == true){
         <tr>
         <td class="main" width="30%">&nbsp;</td>
         <td class="main" width="70%">
-        <input type="radio" name="address_option" value="old" onClick="address_option_show('old');address_option_list(address_first_num);address_clear_error();" <?php echo $old_checked;?>><?php echo TABLE_OPTION_OLD; ?>
-        <input type="radio" name="address_option" value="new" onClick="address_option_show('new');" <?php echo $new_checked;?>><?php echo TABLE_OPTION_NEW; ?>  
+        <input type="radio" name="address_option" value="old" style="margin-left:0px;" onClick="address_option_show('old');address_option_list(address_first_num);address_clear_error();" <?php echo $old_checked;?>><?php echo TABLE_OPTION_OLD; ?>
+        <input type="radio" name="address_option" value="new" style="margin-left:0px;" onClick="address_option_show('new');" <?php echo $new_checked;?>><?php echo TABLE_OPTION_NEW; ?>  
         </td>
       </tr>
       <tr id="address_list_id">
