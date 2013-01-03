@@ -148,7 +148,7 @@ class telecom  extends basePayment  implements paymentInterface  {
     */    
     $mail_body .= "\t" . '------------------------------------------'."\n";
     
-    # 交易时间----------------------------
+    # 配送时间----------------------------
       $mail_body .= '▼お届け日時　　　　：' . $_SESSION["insert_torihiki_date"] . "\n";
     $mail_body .= '　　　　　　　　　：' . $_SESSION["torihikihouhou"] . "\n";
     
