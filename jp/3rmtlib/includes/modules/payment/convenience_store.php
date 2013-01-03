@@ -408,9 +408,9 @@ class convenience_store extends basePayment  implements paymentInterface  {
     function dealComment($comment, $session_paymentinfo_name)
     {
       if($_POST['convenience_email']){ 
-      $pay_comments = 'PCメールアドレス:'.$_POST['convenience_email']; 
+      $pay_comments = 'PCメールアドレス:'.str_replace("\xe2\x80\x8b",'',$_POST['convenience_email']); 
       }else if($_POST['con_email']){
-      $pay_comments = 'PCメールアドレス:'.$_POST['con_email']; 
+      $pay_comments = 'PCメールアドレス:'.str_replace("\xe2\x80\x8b",'',$_POST['con_email']); 
       }else{
       $pay_comments = 'PCメールアドレス:'; 
       }
@@ -550,7 +550,6 @@ class convenience_store extends basePayment  implements paymentInterface  {
   } 
 
   function admin_get_payment_info($payment_info){
-    $payment_info  = str_replace("\xe2\x80\x8b", '', $payment_info);
     $cemail_text = $payment_info;  
     return "cemail_text = '{$cemail_text}',";
   }
