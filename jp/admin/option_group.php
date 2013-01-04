@@ -73,6 +73,11 @@ function create_option_group()
       $('#show_group_info').show(); 
     }
   });
+  if((offset+$("#show_group_info").height())>box_warp_height){
+    $(".box_warp").height(offset+$("#show_group_info").height());
+  }else{
+    $(".box_warp").height(box_warp_height);
+  }
 }
 
 function check_group_info(gid, type)
@@ -102,6 +107,7 @@ function close_group_info()
 {
   $('#show_group_info').html(''); 
   $('#show_group_info').hide(); 
+  $(".box_warp").height(box_warp_height);
 }
 
 function show_group_info(ele, gid, param_str)
@@ -139,6 +145,11 @@ function show_group_info(ele, gid, param_str)
       $('#show_group_info').show(); 
     }
   });
+  if((offset+$("#show_group_info").height())>box_warp_height){
+    $(".box_warp").height(offset+$("#show_group_info").height());
+  }else{
+    $(".box_warp").height(box_warp_height);
+  }
 }
 
 function show_link_group_info(gid, k_str)
@@ -157,6 +168,7 @@ function show_link_group_info(gid, k_str)
 }
 
 $(function() {
+      box_warp_height = $(".box_warp").height();
       function format(group) {
           return group.name;
       }
