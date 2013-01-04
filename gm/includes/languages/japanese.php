@@ -153,7 +153,6 @@ define('BOX_HEADING_TELL_A_FRIEND', '友達に知らせる');
 define('BOX_TELL_A_FRIEND_TEXT', 'この商品のURLを友達にメールする');
 
 // checkout procedure text
-define('CHECKOUT_BAR_PRODUCTS','商品オプション');
 define('CHECKOUT_BAR_DELIVERY',    '配送方法');
 define('CHECKOUT_BAR_PAYMENT',     '支払方法');
 define('CHECKOUT_BAR_CONFIRMATION','最終確認');
