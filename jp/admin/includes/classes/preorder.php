@@ -1,7 +1,4 @@
 <?php
-/*
-  JP、GM公共文件
-*/
 
   class preorder {
     var $info, $totals, $products, $customer, $delivery;

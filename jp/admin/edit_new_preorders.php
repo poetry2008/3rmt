@@ -80,6 +80,7 @@
     switch ($action) {
       case 'check_session':
         /*
+        header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
         # 永远是改动过的
         header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT");
         # HTTP/1.1
