@@ -4204,9 +4204,21 @@ if($index_num > 0){
                 echo '</td>' . "\n" .
                      '<td class="' . $RowStyle . '">' . $new_products_temp_add[$i]['model'] . '</td>' . "\n" .
                      '<td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($new_products_temp_add[$i]['tax']) . '%</td>' . "\n";
-                echo '<td class="'.$RowStyle.'" align="right">'.tep_display_currency(number_format(abs($new_products_temp_add[$i]['price']), 2)).TEXT_MONEY_SYMBOL.'</td>'; 
-                echo '<td class="' . $RowStyle . '" align="right">' .
-                     tep_display_currency(number_format(abs($new_products_temp_add[$i]['final_price']),2)).TEXT_MONEY_SYMBOL ."\n" . '</td>' . "\n" . 
+            if($new_products_temp_add[$i]['price'] < 0){
+              $products_price_value = '<font color="#ff0000">'.$currencies->format(tep_display_currency(number_format(abs($new_products_temp_add[$i]['price']), 2))).'</font>';  
+            }else{
+
+              $products_price_value = $currencies->format(tep_display_currency(number_format(abs($new_products_temp_add[$i]['price']), 2)));
+            }
+            if($new_products_temp_add[$i]['final_price'] < 0){
+              $products_tax_price_value = '<font color="#ff0000">'.$currencies->format(tep_display_currency(number_format(abs($new_products_temp_add[$i]['final_price']),2))).'</font>';  
+            }else{
+
+              $products_tax_price_value = $currencies->format(tep_display_currency(number_format(abs($new_products_temp_add[$i]['final_price']),2)));
+            }
+                echo '<td class="'.$RowStyle.'" align="right">'.str_replace(TEXT_MONEY_SYMBOL,'',$products_price_value).TEXT_MONEY_SYMBOL.'</td>'; 
+                echo '<td class="' . $RowStyle . '" align="right">' .str_replace(TEXT_MONEY_SYMBOL,'',$products_tax_price_value)
+                     .TEXT_MONEY_SYMBOL ."\n" . '</td>' . "\n" . 
                      '<td class="' . $RowStyle . '" align="right"><div id="update_products['.$orders_products_id.'][a_price]">';
             if ($new_products_temp_add[$i]['final_price'] < 0) {
               echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($new_products_temp_add[$i]['final_price'], $new_products_temp_add[$i]['tax']), true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
