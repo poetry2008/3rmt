@@ -1,3 +1,5 @@
+var box_warp_height;
+var offset=0;
 function SetFocus() {
   if (document.forms.length > 0) {
     var field = document.forms[0];
