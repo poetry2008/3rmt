@@ -3147,6 +3147,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
             <td class="smallText" align="center"><b></b></td>
             </tr>
             <?php
+            $cpayment = payment::getInstance($orders['site_id']);
             $orders_history_query = tep_db_query("select orders_status_history_id, orders_status_id, date_added, customer_notified, comments, user_added from " . TABLE_ORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($oID) . "' order by date_added");
           if (tep_db_num_rows($orders_history_query)) {
             while ($orders_history = tep_db_fetch_array($orders_history_query)) {
@@ -3162,7 +3163,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
               }
               echo '      <td class="smallText">' .  $orders_status_array[$orders_history['orders_status_id']];
               echo '</td>' . "\n" .
-                '      <td class="smallText"><p style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;width:170px;">' . nl2br(tep_db_output($orders_history['comments'])) . '&nbsp;</p></td>' . "\n";
+                '      <td class="smallText"><p style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;width:170px;">' . nl2br(tep_db_output($cpayment->admin_get_comment(payment::changeRomaji($order->info['payment_method'],PAYMENT_RETURN_TYPE_CODE),$orders_history['comments']))) . '&nbsp;</p></td>' . "\n";
               echo '<td class="smallText">'.$orders_history['user_added'].'</td>'; 
               echo '<td>';
               $order_confirm_payment_raw = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".tep_db_input($oID)."'"); 
