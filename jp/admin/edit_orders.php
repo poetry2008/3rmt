@@ -683,7 +683,7 @@ if($address_error == false){
                     products_id = ".$order['products_id'].",
                     products_model = '".$products_details["model"]."',
                     products_name = '" . str_replace("'", "&#39;", $products_details["name"]) . "',
-                    products_price = '". (tep_check_product_type($orders_products_id) ? 0 - $products_details["p_price"] : $products_details["p_price"]) ."',
+                    products_price = '". (tep_get_bflag_by_product_id((int)$order['products_id']) ? 0 - $products_details["p_price"] : $products_details["p_price"]) ."',
                     final_price = '" . (tep_get_bflag_by_product_id((int)$order['products_id']) ? 0 - $products_details["final_price"] : $products_details["final_price"]) . "',
                     products_tax = '". $products_details["tax"] ."',
                     site_id = '".tep_get_site_id_by_orders_id($oID)."',
