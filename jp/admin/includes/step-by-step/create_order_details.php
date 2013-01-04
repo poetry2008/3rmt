@@ -575,14 +575,24 @@ if($index > 0){
             echo '      </td>' . "\n" .
               '      <td class="' . $RowStyle . '">' . $order->products[$i]['model'] . "<input name='update_products[$orders_products_id][model]' size='12' type='hidden' value='" . $order->products[$i]['model'] . "'>" . '</td>' . "\n" .
               '      <td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($order->products[$i]['tax']) . "<input name='update_products[$orders_products_id][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order->products[$i]['tax']) . "'>" . '%</td>' . "\n";
-              $order->products[$i]['price'] = isset($_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['p_price']) ? $_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['p_price'] : $order->products[$i]['price'];
-              echo '<td class="'.$RowStyle.'" align="right"><input type="hidden" style="text-align:right;" class="once_pwd" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['p_price'])?$_POST['update_products'][$orders_products_id]['p_price']:$order->products[$i]['price']), 2)).'" onkeyup="if(!clearNoNum(this)){recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\', \''.$op_info_str.'\');}">'.tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['p_price'])?$_POST['update_products'][$orders_products_id]['p_price']:$order->products[$i]['price']), 2)).TEXT_MONEY_SYMBOL.'</td>'; 
-              $order->products[$i]['final_price'] = isset($_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['final_price']) ? $_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['final_price'] : $order->products[$i]['final_price'];
+            $order->products[$i]['price'] = isset($_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['p_price']) ? $_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['p_price'] : $order->products[$i]['price'];
+            if($order->products[$i]['price'] < 0){
+              $products_price_value = '<font color="#ff0000">'.$currencies->format(tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['p_price'])?$_POST['update_products'][$orders_products_id]['p_price']:$order->products[$i]['price']), 2))).'</font>'; 
+            }else{
+              $products_price_value = $currencies->format(tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['p_price'])?$_POST['update_products'][$orders_products_id]['p_price']:$order->products[$i]['price']), 2))); 
+            }
+              echo '<td class="'.$RowStyle.'" align="right"><input type="hidden" style="text-align:right;" class="once_pwd" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['p_price'])?$_POST['update_products'][$orders_products_id]['p_price']:$order->products[$i]['price']), 2)).'" onkeyup="if(!clearNoNum(this)){recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\', \''.$op_info_str.'\');}">'.str_replace(TEXT_MONEY_SYMBOL,'',$products_price_value).TEXT_MONEY_SYMBOL.'</td>'; 
+            $order->products[$i]['final_price'] = isset($_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['final_price']) ? $_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['final_price'] : $order->products[$i]['final_price'];
+            if($order->products[$i]['final_price'] < 0){
+              $product_tax_price_value = '<font color="#ff0000">'.$currencies->format(tep_display_currency(number_format(abs($order->products[$i]['final_price']),2))).'</font>';  
+            }else{
+              $product_tax_price_value = $currencies->format(tep_display_currency(number_format(abs($order->products[$i]['final_price']),2))); 
+            }
               echo '      <td class="' . $RowStyle . '" align="right">' . "<input
               type='hidden' class='once_pwd' style='text-align:right;' name='update_products[$orders_products_id][final_price]' size='9' value='" . tep_display_currency(number_format(abs($order->products[$i]['final_price']),2)) 
               . "' onkeyup='clearNoNum(this)' >" .
               '<input type="hidden" name="op_id_'.$orders_products_id.'" 
-              value="'.tep_get_product_by_op_id($orders_products_id).'">' .tep_display_currency(number_format(abs($order->products[$i]['final_price']),2)).TEXT_MONEY_SYMBOL ."\n" . '</td>' . "\n" . 
+              value="'.tep_get_product_by_op_id($orders_products_id).'">' .str_replace(TEXT_MONEY_SYMBOL,'',$product_tax_price_value).TEXT_MONEY_SYMBOL ."\n" . '</td>' . "\n" . 
               '      <td class="' . $RowStyle . '" align="right"><div id="update_products['.$orders_products_id.'][a_price]">';
             if ($order->products[$i]['final_price'] < 0) {
               echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $orders_exit_flag == true ? $order->info['currency'] : $currency, $orders_exit_flag == true ? $order->info['currency_value'] : $currency_value)).'</font>'.TEXT_MONEY_SYMBOL;
