@@ -1040,7 +1040,7 @@ function UserPermission_preview() {
   功  能 : 执行用户添加处理
   参  数 : 没有
   返回值 : true/false
-  補  足 : [:print:] 可以打印的人物名（=受限文字以外的人物名）
+  补  充 : [:print:] 可以打印的人物名（=受限文字以外的人物名）
  --------------------------------------*/
 function UserInsert_execute() {
 
@@ -1152,7 +1152,7 @@ function UserInsert_execute() {
   功  能 : 执行用户信息更新处理
   参  数 : 没有
   返回值 : true/false
-  補  足 : [:print:] 可以打印的人物名（=受限文字以外的人物名）
+  补  充 : [:print:] 可以打印的人物名（=受限文字以外的人物名）
  --------------------------------------*/
 function UserInfor_execute() {
 
@@ -1376,7 +1376,7 @@ function UserDelete_execute() {
   功  能 : 执行密码变更处理
   参  数 : 没有
   返回值 : true/false
-  補  足 : [:print:] 可以打印的人物名（=受限文字以外的人物名）
+  补  充 : [:print:] 可以打印的人物名（=受限文字以外的人物名）
  --------------------------------------*/
 function UserPassword_execute() {
 

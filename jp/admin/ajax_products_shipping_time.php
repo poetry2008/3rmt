@@ -1,6 +1,6 @@
 <?php
 /*
- * 设置交易时间指定组 Ajax
+ * 设置配送时间指定组 Ajax
  */
 require('includes/application_top.php');
 $id = tep_db_prepare_input($_POST['id']);

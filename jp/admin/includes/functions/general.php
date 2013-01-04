@@ -2013,7 +2013,7 @@ function tep_parse_search_string($search_str = '', &$objects) {
   }
 }
 
-// 交易时间
+// 配送时间
 function tep_torihiki($raw_datetime) {
   if ( ($raw_datetime == '0000-00-00 00:00:00') || ($raw_datetime == '') ) return false;
 

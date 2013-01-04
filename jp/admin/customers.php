@@ -364,8 +364,6 @@ require("includes/note_js.php");
                c.customers_newsletter, 
                c.customers_default_address_id,
                c.is_seal,
-	       c.is_quited,
-	       c.quited_date,
 	       c.pic_icon,
 	       c.is_send_mail,
 	       c.is_calc_quantity,
@@ -415,12 +413,6 @@ require("includes/note_js.php");
     // email_address
     $a_value = tep_draw_input_field('customers_email_address', $cInfo->customers_email_address, 'maxlength="96"', false);
     $address_form->setFormLine('email_address',ENTRY_EMAIL_ADDRESS,$a_value);
-    //quited_date
-    if($cInfo->is_quited==1){
-    $a_value = date("Y/m/d H:i",strtotime($cInfo->quited_date));
-
-    $address_form->setFormLine('quited_date',ENTRY_QUITED_DATE,$a_value);
-    }
     // company
     $a_value = tep_draw_input_field('entry_company', $cInfo->entry_company, 'maxlength="32"');
     $address_form->setFormLine('company',ENTRY_COMPANY,$a_value);
@@ -510,12 +502,6 @@ require("includes/note_js.php");
               <td class="main" width="200"><?php echo ENTRY_NEWSLETTER; ?></td>
               <td class="main"><span class="table_space_left"></span><?php echo tep_draw_pull_down_menu('customers_newsletter', $newsletter_array, $cInfo->customers_newsletter); ?></td>
             </tr>
-            <?php if ($cInfo->is_quited == 1) {?> 
-            <tr>
-              <td class="main" width="200"><?php echo ENTRY_QUITED_DATE; ?></td>
-              <td class="main"><span class="table_space_left"></span><?php echo date("Y/m/d H:i", strtotime($cInfo->quited_date)); ?></td>
-            </tr>
-            <?php }?> 
           </table>
         </td>
       </tr>
@@ -673,7 +659,6 @@ require("includes/note_js.php");
              c.customers_email_address, 
              a.entry_country_id, 
              c.customers_guest_chk,
-	     c.is_quited,
 	     ci.user_update,
              ci.customers_info_date_account_created as date_account_created, 
              ci.customers_info_date_account_last_modified as date_account_last_modified, 
@@ -721,7 +706,7 @@ require("includes/note_js.php");
         $cInfo = new objectInfo($cInfo_array);
       }
 
-    if($customers['customers_guest_chk'] == 1 || $customers['is_quited'] == 1) {
+    if($customers['customers_guest_chk'] == 1) {
       $type = TABLE_HEADING_MEMBER_TYPE_GUEST;
     } else {
       $type = TABLE_HEADING_MEMBER_TYPE_MEMBER;

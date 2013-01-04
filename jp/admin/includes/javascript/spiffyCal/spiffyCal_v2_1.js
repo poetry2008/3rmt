@@ -1,3 +1,15 @@
+/*
+ * Bazillyo's Spiffy DHTML Popup Calendar Control - version 2.1
+ * ｩ2001 S. Ousta 
+ * see the included readme.htm file for license information and release notes.
+ * 
+ * For more information see:
+ * http://www.geocities.com/bazillyo/spiffy/calendar/index.htm or
+ * http://groups.yahoo.com/group/spiffyDHTML or
+ * email me: bazillyo@yahoo.com
+ *
+ */
+
 // GLOBAL variables
 var scImgPath = './includes/javascript/spiffyCal/images/';
 
@@ -22,7 +34,7 @@ var focusHack;
  *
  * 	the functions:
  * 		isDate(), formatDate(), _isInteger(), _getInt(), and getDateFromFormat()
- * 	are based on ones courtesy of Matt Kruse (mkruse@netexpress.net)
+ * 	are based on ones courtesy of Matt Kruse (mkruse@netexpress.net) http://www.mattkruse.com/javascript/
  * 	with some modifications by myself and Michael Brydon
  *
  */
@@ -1294,6 +1306,7 @@ function domlay(id,trigger,lax,lay,content) {
 	/*
 	 * Cross browser Layer visibility / Placement Routine
 	 * Done by Chris Heilmann (mail@ichwill.net)
+	 * http://www.ichwill.net/mom/domlay/
 	 * Feel free to use with these lines included!
 	 * Created with help from Scott Andrews.
 	 * The marked part of the content change routine is taken

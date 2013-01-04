@@ -370,7 +370,7 @@ case 'input' :
                       </tr>
                       <tr>
                       <td colspan="2" align="right">
-                      <a class="new_product_reset" href=
+            <a class="new_product_reset" href=
             <?php echo tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action'))); ?>
 	    ><?php echo tep_html_element_button(PRESENT_BACK); ?></a>
             <?php echo tep_html_element_submit(PRESENT_SAVE); ?>

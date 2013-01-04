@@ -245,6 +245,7 @@ tep_db_close();
 </tr>
 </table>
 </div>
+</div>
 </td>
 <!-- body_text_eof -->
 </tr>

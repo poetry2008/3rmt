@@ -1,6 +1,6 @@
 <?php
 /*
- * 设置交易时间指定组
+ * 设置配送时间指定组
  */
 require('includes/application_top.php'); 
 $action = $_GET['action'];

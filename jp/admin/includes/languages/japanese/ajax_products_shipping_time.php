@@ -1,6 +1,6 @@
 <?php
 /*
- * 设置指定送达时间组Ajax
+ * 设置指定配送时间组Ajax
  */
 
 define('TABLE_TITLE_1','の設置');
