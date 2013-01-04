@@ -2575,7 +2575,8 @@ echo json_encode($json_array);
       'products_price' => $bflag_single?(0 - $_POST['new_price']):$_POST['new_price']
       );
   tep_db_perform(TABLE_PRODUCTS, $update_sql_data, 'update', 'products_id = \''.$_POST['products_id'].'\'');
-  tep_db_query("update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now() where products_id = '".$_POST['products_id']."'"); 
+  $user_info = tep_get_user_info($ocertify->auth_user);
+  tep_db_query("update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now(), products_user_update='".$user_info['name']."' where products_id = '".$_POST['products_id']."'"); 
   $products_new_price = tep_get_products_price($_POST['products_id']);
   $html_str = '<span id="edit_p_'.$_POST['products_id'].'">';
   if ($products_new_price['sprice']) {

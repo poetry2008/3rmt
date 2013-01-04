@@ -107,6 +107,13 @@ if (isset($_GET['action']) && $_GET['action']) {
 
       if (isset($_GET['status']) && ($_GET['status'] == 0 || $_GET['status'] == 1 || $_GET['status'] == 2 || $_GET['status'] == 3)){
         tep_set_category_link_product_status($cID, $_GET['status'], $site_id, $up_rs); 
+        if($site_id == "" || $site_id == 0){
+          $update_sql = "update ".TABLE_CATEGORIES_DESCRIPTION." set last_modified=now(), user_last_modified='".$_SESSION['user_name']."' where categories_id='".$_GET['cID']."'";
+          tep_db_query($update_sql);
+        }else{
+          $update_sql = "update ".TABLE_CATEGORIES_DESCRIPTION." set last_modified=now(), user_last_modified='".$_SESSION['user_name']."' where categories_id='".$_GET['cID']."' and site_id='".$site_id."'";
+          tep_db_query($update_sql);
+        }
       } 
     }
     if (USE_CACHE == 'true') {
@@ -126,6 +133,15 @@ if (isset($_GET['action']) && $_GET['action']) {
 
     $p_page = (isset($_GET['page']))?'&page='.$_GET['page']:''; 
     $up_rs = (isset($_GET['up_rs']))?true:false; 
+    
+    if($site_id == "" || $site_id == 0){
+      $update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now(), products_user_update='".$_SESSION['user_name']."'  where products_id='".$_GET['pID']."'";
+      tep_db_query($update_sql);
+    }else{
+      $update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now(), products_user_update='".$_SESSION['user_name']."' where products_id='".$_GET['pID']."' and site_id='".$site_id."'";
+      tep_db_query($update_sql);
+    }
+    
     if ($site_id == 0) {
       tep_set_all_product_status($_GET['pID'], $_GET['flag'], $up_rs); 
       if (USE_CACHE == 'true') {

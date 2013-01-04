@@ -45,7 +45,7 @@ if($_POST[flg_up]==1){
     $update_sql_data = array('products_price'         => tep_get_bflag_by_product_id(tep_db_prepare_input($proid[$n])) ? 0 - tep_db_prepare_input($psrice_datas[$n]) : tep_db_prepare_input($psrice_datas[$n])
     );
     tep_db_perform(TABLE_PRODUCTS, $update_sql_data, 'update', 'products_id = \'' . tep_db_prepare_input($proid[$n]) . '\'');
-    tep_db_query("update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now() where products_id = '".tep_db_prepare_input($proid[$n])."'"); 
+    tep_db_query("update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now(), products_user_update='".$_SESSION['user_name']."' where products_id = '".tep_db_prepare_input($proid[$n])."'"); 
   }
 }
 
