@@ -3309,9 +3309,12 @@ if (($action == 'edit') && ($order_exists == true)) {
       <td colspan="2"><table width="100%" border="0" cellpadding="2" cellspacing="0" id="address_show_id" style="<?php echo $address_style;?>">
       <tr>
         <td class="main" width="30%">&nbsp;</td>
-        <td class="main" width="70%">
-         <input type="radio" name="address_option" value="old" onClick="address_option_show('old');address_list();address_clear_error();" <?php echo $old_checked;?>><?php echo TABLE_OPTION_OLD; ?>
-        <input type="radio" name="address_option" value="new" onClick="address_option_show('new');" <?php echo $new_checked;?>><?php echo TABLE_OPTION_NEW; ?> 
+        <td class="main" width="70%"><table border="0" cellpadding="0" cellspacing="0">
+         <tr><td>
+         <input type="radio" name="address_option" value="old" style="margin: 0 4px 2px 0;" onClick="address_option_show('old');address_list();address_clear_error();" <?php echo $old_checked;?>></td><td><?php echo TABLE_OPTION_OLD; ?></td><td>
+        <input type="radio" name="address_option" value="new" style="margin: 0 4px 2px 15px;" onClick="address_option_show('new');" <?php echo $new_checked;?>></td><td><?php echo TABLE_OPTION_NEW; ?></td> 
+        </tr>
+        </table>
         </td>
       </tr>
       <tr id="address_list_id">
