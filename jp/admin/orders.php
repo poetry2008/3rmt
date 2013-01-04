@@ -2013,7 +2013,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                        $orders_query_raw .= "order by ".$order_str;
 
                      } else {
-                       // orders_list 隐藏 「取消」と「取消订单」
+                       // orders_list 隐藏 「取消」和「取消订单」
                        $orders_query_raw = "
                          select distinct o.orders_status as orders_status_id, 
                                 o.orders_id, 

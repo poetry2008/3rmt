@@ -2013,7 +2013,7 @@ function tep_parse_search_string($search_str = '', &$objects) {
   }
 }
 
-// 交易时间
+// 配送时间
 function tep_torihiki($raw_datetime) {
   if ( ($raw_datetime == '0000-00-00 00:00:00') || ($raw_datetime == '') ) return false;
 
@@ -3584,13 +3584,15 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
     $str .= date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($orders['torihiki_date'])).' '.$week_str.'&nbsp;'.TEXT_TIME_LINK.'&nbsp;'.$tmp_date_end[1]; 
     $str .= '</td>'; 
     $str .= '</tr>'; 
-    
-    $str .= '<tr>'; 
-    $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_OPTION.'</td>';
-    $str .= '<td class="main">';
-    $str .= $orders['torihiki_houhou'];    
-    $str .= '</td>'; 
-    $str .= '</tr>'; 
+
+    if(trim($orders['torihiki_houhou']) != ''){ 
+      $str .= '<tr>'; 
+      $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_OPTION.'</td>';
+      $str .= '<td class="main">';
+      $str .= $orders['torihiki_houhou'];    
+      $str .= '</td>'; 
+      $str .= '</tr>'; 
+    }
   
     $str .= '<tr>'; 
     $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_ID.'</td>';

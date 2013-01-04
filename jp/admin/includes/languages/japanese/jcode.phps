@@ -31,10 +31,12 @@ function AutoDetect(&$str)
 	//0:US-ASCII
 	//1:EUC-JP
 	//2:Shift_JIS
+	//3:ISO-2022-JP(JIS)
 	//4:UTF-8
 	//5:Unknown
 
 	if (!ereg("[\x80-\xFF]", $str)) {
+		// --- Check ISO-2022-JP ---
 		if (ereg("\x1B", $str)) return 3; // ISO-2022-JP(JIS)
 		return 0; //US-ASCII
 	}
@@ -129,6 +131,7 @@ function HANtoZEN(&$str, $encode)
 	//0:PASS
 	//1:EUC-JP
 	//2:Shift_JIS
+	//3:ISO-2022-JP(JIS)
 	//4:UTF-8
 
 	if ($encode == 0) return $str;
@@ -145,6 +148,7 @@ function ZENtoHAN(&$str, $encode, $kana=1, $alph=1)
 	//0:PASS
 	//1:EUC-JP
 	//2:Shift_JIS
+	//3:ISO-2022-JP(JIS)
 
 	if ($encode == 0) return $str;
 	if ($encode == 1) return ZENtoHAN_EUC($str,  $kana, $alph, $kana);

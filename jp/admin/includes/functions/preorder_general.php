@@ -103,7 +103,9 @@ function tep_show_preorders_products_info($orders_id) {
     if($time_str){
     $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_UN_GIVE_MONY_DAY.'</b></td><td class="main" style="color:red;"><b>'.$time_str.'</b></td></tr>';
     }
-  $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_OPTION.'</b></td><td class="main" style="color:blue;"><b>'.$orders['torihiki_houhou'].'</b></td></tr>';
+    if(trim($orders['torihiki_houhou']) != ''){
+      $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_OPTION.'</b></td><td class="main" style="color:blue;"><b>'.$orders['torihiki_houhou'].'</b></td></tr>';
+    }
 
   $orders_products_query = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." op,".TABLE_PRODUCTS." p where p.products_id = op.products_id and op.orders_id = '".$orders['orders_id']."'");
   $autocalculate_arr = array();
@@ -171,13 +173,15 @@ function tep_show_preorders_products_info($orders_id) {
     $str .= $orders['torihiki_date']; 
     $str .= '</td>'; 
     $str .= '</tr>'; 
-    
-    $str .= '<tr>'; 
-    $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_OPTION.'</b></td>';
-    $str .= '<td class="main">';
-    $str .= $orders['torihiki_houhou'];    
-    $str .= '</td>'; 
-    $str .= '</tr>'; 
+
+    if(trim($orders['torihiki_houhou']) != ''){ 
+      $str .= '<tr>'; 
+      $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_OPTION.'</b></td>';
+      $str .= '<td class="main">';
+      $str .= $orders['torihiki_houhou'];    
+      $str .= '</td>'; 
+      $str .= '</tr>'; 
+    }
   
     $str .= '<tr>'; 
     $str .= '<td class="main"><b>'.TEXT_PREORDER_ID_TEXT.'</b></td>';
@@ -804,13 +808,15 @@ function tep_get_pre_orders_products_string($orders, $single = false, $popup = f
     $str .= $orders['torihiki_date']; 
     $str .= '</td>'; 
     $str .= '</tr>'; 
-    
-    $str .= '<tr>'; 
-    $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_OPTION.'</td>';
-    $str .= '<td class="main">';
-    $str .= $orders['torihiki_houhou'];    
-    $str .= '</td>'; 
-    $str .= '</tr>'; 
+
+    if(trim($orders['torihiki_houhou']) != ''){ 
+      $str .= '<tr>'; 
+      $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_OPTION.'</td>';
+      $str .= '<td class="main">';
+      $str .= $orders['torihiki_houhou'];    
+      $str .= '</td>'; 
+      $str .= '</tr>'; 
+    }
   
     $str .= '<tr>'; 
     $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_ID.'</td>';

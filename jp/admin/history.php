@@ -46,11 +46,13 @@ $(function() {
     $(".input_number").keypress(function(event) {
         if (!$.browser.mozilla) {
             if (event.keyCode && ((event.keyCode < 45 || event.keyCode > 57) && event.keyCode != 47)) {
+                <?php // ie6,7,8,opera,chrome管用 ?> 
                 event.preventDefault();
                 key_sum++;
             }
         } else {
             if (event.charCode && ((event.charCode < 45 || event.charCode > 57) && event.charCode != 47)) {
+                <?php // firefox管用 ?>
                 event.preventDefault();
                 key_sum++;
             }
@@ -80,11 +82,13 @@ $(function() {
     $(".input_number").keypress(function(event) {
         if (!$.browser.mozilla) {
             if (event.keyCode && ((event.keyCode < 45 || event.keyCode > 57) && event.keyCode != 47)) {
+                <?php // ie6,7,8,opera,chrome管用 ?>
                 event.preventDefault();
                 key_sum++;
             }
         } else {
             if (event.charCode && ((event.charCode < 45 || event.charCode > 57) && event.charCode != 47)) {
+                <?php // firefox管用 ?>
                 event.preventDefault();
                 key_sum++;
             }

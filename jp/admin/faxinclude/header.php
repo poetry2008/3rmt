@@ -7,7 +7,7 @@
   <tr>
     <td><?php echo tep_image(DIR_WS_CATALOG .DIR_WS_IMAGES . ADMINPAGE_LOGO_IMAGE, STORE_NAME, '', ''); ?></td>
     <td align="right">
-		³ô¼°²ñ¼Òiimy&nbsp;<b>
+		<?php echo COMPANY_NAME;?>&nbsp;<b>
 		<?php
 			if ($ocertify->npermission == 15) {
 				echo '<font color="blue">Admin</font>';

@@ -12,7 +12,7 @@ if($_POST['updata'] == 'on') {
   }
   
   if (tep_db_num_rows(tep_db_query("select * from ".TABLE_BANK_CALENDAR." where cl_ym = '".$_POST['ymd2']."'"))) {
-    tep_db_query("update ".TABLE_BANK_CALENDAR." set   cl_value='".$mm_2."',user_update='".$_SESSION['user_name']."',date_update='".date('Y-m-d H:i:s',time())."' where cl_ym = '".$_POST['ymd2']."'");
+    tep_db_query("update ".TABLE_BANK_CALENDAR." set cl_value='".$mm_2."',user_update='".$_SESSION['user_name']."',date_update='".date('Y-m-d H:i:s',time())."' where cl_ym = '".$_POST['ymd2']."'");
   } else {
     tep_db_query("insert into  ".TABLE_BANK_CALENDAR." (cl_ym,cl_value) values ('".$_POST['ymd2']."','".$mm_2."')");
   }
