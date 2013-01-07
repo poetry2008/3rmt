@@ -1,4 +1,30 @@
 <?php
+/*************************************************************************
+                      ________________________________
+
+                             jcode.phps by TOMO
+                      ________________________________
+
+
+ [Version] : 1.34 (2002/10/10)
+ [URL]     : http://www.spencernetwork.org/
+ [E-MAIL]  : groove@spencernetwork.org
+ [Changes] :
+     v1.30 Changed XXXtoUTF8 and UTF8toXXX with conversion tables.
+     v1.31 Deleted a useless and harmful line in JIStoUTF8() (^^;
+     v1.32 Fixed miss type of jsubstr().
+           Fixed HANtoZEN_EUC(), HANtoZEN_SJIS() and HANtoZEN_JIS().
+     v1.33 Fixed JIStoXXX(), HANtoZEN_JIS() and ZENtoHAN_JIS().
+           Added jstr_split() as O-MA-KE No.4.
+           Added jstrcut() as O-MA-KE No.5.
+           Changed the logic of AutoDetect()
+     v1.34 Fixed ZENtoHAN_SJIS()
+
+ * jcode.phps is free but without any warranty.
+ * use this script at your own risk.
+
+***************************************************************************/
+
 function JcodeConvert(&$str, $from, $to)
 {
 	//0:AUTO DETECT
