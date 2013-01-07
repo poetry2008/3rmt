@@ -2981,7 +2981,11 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
             if (is_array($all_show_option[$t_item_id]['option_info'])) {
               echo '<table><tr><td valign="top">-&nbsp; </td><td>' .  $all_show_option[$t_item_id]['option_info']['title'] . ': ' .  str_replace(array("<br>", "<BR>"), "",$all_show_option[$t_item_id]['option_info']['value']);
               if ($all_show_option[$t_item_id]['price'] != '0'){
-                echo ' (' .$currencies->format($all_show_option[$t_item_id]['price'], true, $order->info['currency'], $order->info['currency_value']) . ')';
+                if ($all_show_option[$t_item_id]['price'] < 0) {
+                  echo ' (<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '',$currencies->format($all_show_option[$t_item_id]['price'], true, $order->info['currency'], $order->info['currency_value'])) . '</font>'.TEXT_MONEY_SYMBOL.')';
+                } else {
+                  echo ' (' .$currencies->format($all_show_option[$t_item_id]['price'], true, $order->info['currency'], $order->info['currency_value']) . ')';
+                }
               }
               echo '</td></tr>';
             }  
