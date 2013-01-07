@@ -1267,7 +1267,12 @@ function recalc_preorder_price(oid, opd, o_str, op_str)
       if(o_str == 'true' || document.getElementById('belong_to_option')){
         p_op_info += parseInt(document.getElementsByName('new_update_products_op_price['+op_array[i]+']')[0].value); 
       }else{
-        p_op_info += parseInt(document.getElementsByName('update_products['+opd+'][attributes]['+op_array[i]+'][price]')[0].value); 
+        tmp_price_str = document.getElementsByName('update_products['+opd+'][attributes]['+op_array[i]+'][price]')[0].value.replace(/s+/g, ""); 
+        if (tmp_price_str != '') {
+          p_op_info += parseInt(document.getElementsByName('update_products['+opd+'][attributes]['+op_array[i]+'][price]')[0].value); 
+        } else {
+          p_op_info += 0; 
+        }
       }
     }
   }
