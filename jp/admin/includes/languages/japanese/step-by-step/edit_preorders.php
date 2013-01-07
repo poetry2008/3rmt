@@ -114,9 +114,9 @@ define('ENTRY_CUSTOMER_EMAIL', 'Eメールアドレス');
 //define('ADDPRODUCT_TEXT_CONFIRM_QUANTITY', 'この商品の数量');
 //define('ADDPRODUCT_TEXT_CONFIRM_ADDNOW', '追加する');
 define('ADDPRODUCT_TEXT_STEP', 'ステップ');
-define('ADDPRODUCT_TEXT_STEP1', ' &laquo; カテゴリ選択. ');
-define('ADDPRODUCT_TEXT_STEP2', ' &laquo; 商品選択. ');
-define('ADDPRODUCT_TEXT_STEP3', ' &laquo; オプション選択. ');
+define('ADDPRODUCT_TEXT_STEP1', 'カテゴリ選択:');
+define('ADDPRODUCT_TEXT_STEP2', '商品選択:');
+define('ADDPRODUCT_TEXT_STEP3', 'オプション選択:');
 
 define('MENUE_TITLE_CUSTOMER', '1. 顧客情報');
 define('MENUE_TITLE_PAYMENT', '2. 支払方法');
@@ -125,4 +125,5 @@ define('MENUE_TITLE_TOTAL', '4. 配送、決済、税金');
 define('MENUE_TITLE_STATUS', '5. 予約ステータス、コメント通知');
 define('MENUE_TITLE_UPDATE', '6. データを更新');
 define('TEXT_CODE_HANDLE_FEE', '手数料:');
+define('ORDERS_PRODUCT_ERROR','商品がありませんが、商品を追加してください。');
 ?>

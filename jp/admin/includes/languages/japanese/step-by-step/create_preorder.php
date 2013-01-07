@@ -42,4 +42,6 @@ define('CREATE_ORDER_SHIRU_TEXT', '仕入れ予約');
 define('CREATE_ORDER_TEL_TEXT', '電話番号:');
 define('CREATE_PREORDER_PREDATE', '有効期限');
 define('CREATE_PREORDER_PAYMENT_LIST_DEFAULT', '支払方法を選択してください');
+define('TABLE_HEADING_PRODUCTS_PRICE', '単価');
+define('ORDERS_PRODUCTS','注文商品');
 ?>

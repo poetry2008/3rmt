@@ -172,4 +172,5 @@ define('ERROR_NEW_PREORDERS_UPDATE', 'エラーが発生しました。正常に
 define('NEW_PREORDERS_CHARACTER_TEXT', '当社のキャラクター名:');
 define('TEXT_EMAIL_TITLE','メールタイトル：');
 define('TEXT_DATE_NUM_ERROR','お届け日時を正しく入力してください');
+define('NOTICE_NEW_PREORDERS_PRODUCTS_DEL','商品の削除は成功しました。');
 ?>
