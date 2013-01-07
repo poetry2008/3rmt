@@ -91,6 +91,26 @@ border-right:1px solid #cccccc;
 background-color:#EEEEEE;
 padding:5px 12px;
 }
+@media all and (-webkit-min-device-pixel-ratio:0){
+.footer_copyright{
+	min-width:750px;
+	width:100%;
+	width: expression(document.body.clientWidth < 750? "750px": "100%" );
+	
+}}
+.footer_copyright{
+	text-align:center;
+	font-size:12px;
+	border-top:1px solid #000;
+	padding:20px 0;
+	background-color:#F0F1F1;
+	margin-top:10px;
+	width:100%;
+	min-width:750px;
+	overflow:hidden;
+	width: expression(document.body.clientWidth < 750? "750px": "100%" );
+
+}
 </style>
 <script type="text/javascript" src="xheditor1/xheditor.js"></script>
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
@@ -109,7 +129,13 @@ $(document).ready(function(){
 <?php 
 if (isset($_GET['info_romaji']) && $_GET['info_romaji']) {
   if (empty($info_array)) {
+    echo '<table width="100%"><tr><td>'; 
+    echo '<div class="box_info">'; 
+    echo '<font color="red"><b>';
     echo HELP_INFO_NO_INFO;
+    echo '</b></font>';
+    echo '</div>';
+    echo '</td></tr></table>';
   } else {
 ?>
 <div class="content">
@@ -144,14 +170,15 @@ if(isset($_GET['keyword']) && $_GET['keyword']){
     <?php
     $num_info = tep_db_num_rows($info_query);
     if ($num_info == 0) {
+    echo '<div class="box_info">'; 
     echo '<font color="red"><b>';
     echo HELP_INFO_NO_SEARCH_INFO;
     echo '</b></font>';
+    echo '</div>';
     } else {
       while($info_array = tep_db_fetch_array($info_query)){
         echo '<div class="content">';
-        echo '<a href="'.tep_href_link("help.php","info_romaji=".urlencode($info_array['romaji'])).'"><h2><img alt="img" src="images/icon_help_info.gif">&nbsp;'.$info_array['title'].'</h2></a>';
-
+        echo '<a href="'.tep_href_link("help.php","info_romaji=".urlencode($info_array['romaji'])).'"><h2><img alt="img" src="images/icon_help_info.gif">&nbsp;'.$info_array['title'].'</h2></a></div>'; 
         echo '<div class="box_info">';
         echo '<a href="'.tep_href_link("help.php","info_romaji=".urlencode($info_array['romaji'])).'">'.substr(strip_tags($info_array['content']),0,300).'......</a></div>';
       }
@@ -163,6 +190,9 @@ if(isset($_GET['keyword']) && $_GET['keyword']){
 <?php
 }
 ?>
+<div class="footer_copyright">
+<?php echo sprintf(TEXT_SITE_COPYRIGHT,date('Y'));?>
+</div>
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>
