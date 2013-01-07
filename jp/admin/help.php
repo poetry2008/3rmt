@@ -52,8 +52,8 @@ if (isset($_GET['info_romaji']) && $_GET['info_romaji']) {
 }
 ?>
 </title>
+<script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
-<script type="text/javascript" src="xheditor1/jquery/jquery-1.4.4.src.js"></script>
 <style>
 body {
 font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif;
@@ -112,13 +112,7 @@ padding:5px 12px;
 
 }
 </style>
-<script type="text/javascript" src="xheditor1/xheditor.js"></script>
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
-<script>
-$(document).ready(function(){
-  $('#elm1').xheditor();
-});
-</script>
 </head>
 <body>
 <?php if (!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']) {?>
