@@ -891,7 +891,7 @@ if(!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['c
     
     // Step 1: Choose Category
       print "<tr>\n";
-      print "<td class='dataTableContent' width='80'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 1:</b></td>\n";
+      print "<td class='dataTableContent' width='70'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 1:</b></td>\n";
       print "<td class='dataTableContent' valign='top'>";
       echo "<form action='$PHP_SELF?oID=$oID&action=add_product$param_str' method='POST'>";
       echo "<table>";
@@ -962,7 +962,7 @@ if(!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['c
       if(!$hm_option->admin_whether_show($option_product['belong_to_option'], 1, $option_product['products_cflag']))
       {
         print "<tr>\n"; 
-        print "<td class=\"dataTableContent\">&nbsp;<b>".ADDPRODUCT_TEXT_STEP." 3: </b></td>\n"; 
+        print "<td class=\"dataTableContent\" valign='top'>&nbsp;<b>".ADDPRODUCT_TEXT_STEP." 3: </b></td>\n"; 
         print "<td class=\"dataTableContent\" valign='top' colspan='2'><i>".ADDPRODUCT_TEXT_OPTIONS_NOTEXIST."</i></td>\n"; 
         print "</tr>\n"; 
         $step = 4; 
@@ -973,7 +973,7 @@ if(!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['c
       
         $p_cflag = tep_get_cflag_by_product_id($add_product_products_id);
         print "<tr>";
-        print "<td class='dataTableContent'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td><td class='dataTableContent' valign='top'>";
+        print "<td class='dataTableContent' valign='top'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td><td class='dataTableContent' valign='top'>";
         print "<div class=\"pro_option\">"; 
         print "<form action='$PHP_SELF?oID=$oID&action=add_product$param_str' method='POST' name='aform'>\n";
         
@@ -1031,7 +1031,7 @@ if(!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['c
         <tr>
           <td class="main"><table border="0" cellspacing="0" cellpadding="2">
               <tr>
-                <td class="main" nowrap>&nbsp;<?php echo CREATE_ORDER_COMMUNITY_SEARCH_TEXT;?></td>
+                <td class="main" nowrap valign="top">&nbsp;<?php echo CREATE_ORDER_COMMUNITY_SEARCH_TEXT;?></td>
                 <td class="main">&nbsp;<textarea name='fax_flag' style='width:400px;height:42px;*height:40px;'><?php echo $fax;?></textarea>&nbsp;&nbsp;<?php echo CREATE_ORDER_COMMUNITY_SEARCH_READ;?></td>
               </tr>
         <tr>
