@@ -892,8 +892,14 @@ function recalc_order_price(oid, opd, o_str, op_str,opd_str)
   var op_string_val = '';
   for (var i=0; i<op_array.length; i++) {
     if (op_array[i] != '') {
-      p_op_info += parseInt(document.getElementsByName('update_products['+opd+'][attributes]['+op_array[i]+'][price]')[0].value); 
-      p_op_info_value = parseInt(document.getElementsByName('update_products['+opd+'][attributes]['+op_array[i]+'][price]')[0].value);
+      tmp_price_str = document.getElementsByName('update_products['+opd+'][attributes]['+op_array[i]+'][price]')[0].value.replace(/s+/g,""); 
+      if (tmp_price_str != '') {
+        p_op_info += parseInt(document.getElementsByName('update_products['+opd+'][attributes]['+op_array[i]+'][price]')[0].value); 
+        p_op_info_value = parseInt(document.getElementsByName('update_products['+opd+'][attributes]['+op_array[i]+'][price]')[0].value);
+      } else {
+        p_op_info += 0;
+        p_op_info_value = 0;
+      }
       op_string += p_op_info_value+'|||';
       p_op_info_title = document.getElementsByName('update_products['+opd+'][attributes]['+op_array[i]+'][option]')[0].value;
       op_string_title += p_op_info_title+'|||';
