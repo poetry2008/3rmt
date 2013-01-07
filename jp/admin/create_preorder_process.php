@@ -5,6 +5,8 @@
 
   require('includes/application_top.php');
   require('includes/step-by-step/new_application_top.php');
+  include(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/edit_preorders.php');
+  require(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/step-by-step/edit_preorders.php'); 
 
   if (isset($_GET['Customer_mail'])) {
     $_POST['site_id'] = isset($_GET['site_id']) ? $_GET['site_id']: 0;
@@ -35,6 +37,7 @@
   $rak_tel  = tep_db_prepare_input($_POST['rak_tel']);
   $telephone      = isset($_POST['telephone']) ? tep_db_prepare_input($_POST['telephone']) : '';
   $fax            = tep_db_prepare_input($_POST['fax']);
+  $fax = !isset($_POST['fax']) ? $account['customers_fax'] : $fax;
   $street_address = isset($_POST['street_address']) ? tep_db_prepare_input($_POST['street_address']) : '';
   $company        = isset($_POST['company']) ? tep_db_prepare_input($_POST['company']) : '';
   $suburb         = isset($_POST['suburb']) ? tep_db_prepare_input($_POST['suburb']) : '';
@@ -56,7 +59,7 @@
   {
     $currency_text = tep_db_prepare_input($_POST['Currency']);
   }
-
+  
   $error = false;
   
   //customer_id check
@@ -110,8 +113,16 @@
     } 
   } 
 
+  $orders_products_list_error = false;
+  if((!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['create_preorder']['orders_products'])) && $_GET['action'] != 'add_product'){
+
+    $orders_products_list_error = true;
+    $error = true;
+  }
+   
   if($error == true) {
-  
+    require(DIR_WS_CLASSES . 'currencies.php');
+    $currencies = new currencies(2);  
 // #### Get Available Customers
 
   $query = tep_db_query("select customers_id, customers_firstname, customers_lastname from " . TABLE_CUSTOMERS . " ORDER BY customers_lastname");
@@ -186,6 +197,13 @@
 <script language="javascript" src="includes/javascript/jquery.form.js"></script>
 <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
 <script type="text/javascript">
+function submit_next(){
+
+  var fax_flag = document.getElementsByName('fax_flag')[0].value;
+  var fax = document.getElementsByName('fax')[0]; 
+  fax.value = fax_flag;
+  document.create_order.submit();  
+}
 $(function() {
       function format(group) {
           return group.name;
@@ -482,13 +500,16 @@ require("includes/note_js.php");
  <?php if (empty($customer_id)) {?> 
     <p class="pageHeading"><?php echo CREATE_ORDER_TITLE_TEXT;?></p>
 <?php
+  $url_action = isset($_GET['oID']) ? '<input type="hidden" name="oID" value="'.$_GET['oID'].'">' : '';
   echo '<form action="' . $PHP_SELF . '" method="GET">' . "\n";
   echo '<p class=main>'.CREATE_ORDER_SEARCH_TEXT.'<br>';
-  echo CREATE_ORDER_EMAIL_TEXT.'&nbsp;<input type="text" id="keyword" name="Customer_mail" size="40" value="'.$_GET['Customer_mail'].'">'.tep_site_pull_down_menu('', false).'&nbsp;&nbsp;<input type="submit" value="  '.CREATE_ORDER_SEARCH_BUTTON_TEXT.'  "></p>' . "\n";
+  echo CREATE_ORDER_EMAIL_TEXT.'&nbsp;<input type="text" id="keyword" name="Customer_mail" size="40" value="'.$_GET['Customer_mail'].'">'.tep_site_pull_down_menu('', false).'&nbsp;&nbsp;<input type="submit" value="  '.CREATE_ORDER_SEARCH_BUTTON_TEXT.'  ">'.$url_action.'</p>' . "\n";
   echo '</form>' . "\n";
 ?>
-  <?php }?> 
-  <?php echo tep_draw_form('create_order', 'create_preorder_process.php', '', 'post', '', '') . tep_draw_hidden_field('customers_id', $account->customers_id); ?>
+  <?php }
+  $url_action = isset($_GET['oID']) ? '?oID='.$_GET['oID'] : '';
+  ?> 
+  <?php echo tep_draw_form('create_order', 'create_preorder_process.php'.$url_action, '', 'post', '', '') . tep_draw_hidden_field('customers_id', $account->customers_id); ?>
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
       <td class="pageHeading"><font color="red"><?php echo CREATE_ORDER_RED_TITLE_TEXT;?></font></td>
@@ -498,15 +519,22 @@ require("includes/note_js.php");
     </tr>
   </table>
   <?php
+  $default_payment = '';
+  if (isset($_GET['Customer_mail']) && isset($_GET['site_id'])) {
+    $last_order_raw = tep_db_query("select payment_method from ".TABLE_PREORDERS." where customers_id = '".$customer_id."' and site_id = '".$_GET['site_id']."' order by orders_id desc limit 1");  
+     $last_order = tep_db_fetch_array($last_order_raw);
+     if ($last_order) {
+       $default_payment = payment::changeRomaji($last_order['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
+     }
+  }
   require(DIR_WS_INCLUDES . 'step-by-step/create_preorder_details.php');
   ?>
   <table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td class="main"><?php echo '<a href="' . tep_href_link(FILENAME_DEFAULT, '', 'SSL') . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; ?></td>
-        <td class="main" align="right"><?php echo tep_html_element_submit(IMAGE_CONFIRM); ?></td>
+        <td class="main" align="right"><?php echo tep_html_element_button(IMAGE_CONFIRM_NEXT,'onclick="submit_next();"'); ?></td>
       </tr>
     </table>
-  </form>
   </div>
   </td>
   </tr>
@@ -523,13 +551,12 @@ require("includes/note_js.php");
 </html>
 <?php
   } else {
-  unset($_SESSION['create_preorder']); 
   $currency_array = explode(",", $currency_text);
    
   $currency = $currency_array[0];
   $currency_value = $currency_array[1];
   //$insert_id = date("Ymd") . '-' . date("His") . '00';
-  $insert_id = date("Ymd") . '-' . date("His") . tep_get_preorder_end_num();
+  $insert_id = $_GET['oID'];
   
   $payment_method_info = payment::changeRomaji($payment_method, PAYMENT_LIST_TYPE_HAIJI);
   
@@ -654,7 +681,60 @@ require("includes/note_js.php");
       $_SESSION['create_preorder']['orders_total'][$ot_tax->code] = $sql_data_array;
     }
     $_SESSION['create_preorder']['customer_fax'] = $fax;
+    // 2.2.2 Calculate Tax and Sub-Totals
+      $RunningSubTotal = 0;
+      $RunningTax = 0;
+
+      foreach ($_SESSION['create_preorder']['orders_products'] as $pid => $order_products) {
+        if (DISPLAY_PRICE_WITH_TAX == 'true') {
+          $RunningSubTotal += (tep_add_tax(($order_products['products_quantity'] * $order_products['final_price']), $order_products['products_tax']));
+        } else {
+          $RunningSubTotal += ($order_products['products_quantity'] * $order_products['final_price']);
+        }
+        $RunningTax += (($order_products['products_tax'] / 100) * ($order_products['products_quantity'] * $order_products['final_price']));     
+      }
+      
+      $new_subtotal = $RunningSubTotal;
+      $new_tax = $RunningTax;
+      
+      //subtotal
+      
+      $_SESSION['create_preorder']['orders_total']['ot_subtotal']['value'] = tep_insert_currency_value($new_subtotal);
+      $_SESSION['create_preorder']['orders_total']['ot_subtotal']['text']  = tep_insert_currency_text($currencies->format($new_subtotal, true, $order['currency']));
+      
+      //tax
+      $plustax_query = tep_db_query("select count(*) as cnt from " . TABLE_PREORDERS_TOTAL . " where class = 'ot_tax' and orders_id = '".$oID."'");
+      $plustax = tep_db_fetch_array($plustax_query);
+      if($plustax['cnt'] > 0) {
+        $_SESSION['create_preorder']['orders_total']['ot_tax']['value'] = tep_insert_currency_value($new_tax);
+        $_SESSION['create_preorder']['orders_total']['ot_tax']['text']  = tep_insert_currency_text($currencies->format($new_tax, true, $order['currency']));
+      }
+      
+      //total
+      $total_value = 0;
+      foreach ($_SESSION['create_preorder']['orders_total'] as $code => $orders_total) {
+        if ($code !== 'ot_total') {
+          $total_value += $orders_total['value'];
+        }
+      }
+
+      if($plustax['cnt'] == 0) {
+        $newtotal = $total_value + $new_tax;
+      } else {
+        if(DISPLAY_PRICE_WITH_TAX == 'true') {
+          $newtotal = $total_value - $new_tax;
+        } else {
+          $newtotal = $total_value;
+        }
+      }
+    $order = $_SESSION['create_preorder']['orders'];
+    $payment_code = payment::changeRomaji($payment_method, PAYMENT_RETURN_TYPE_CODE);
+    $handle_fee = $cpayment->handle_calc_fee($payment_code, $newtotal);
+    $newtotal = $newtotal+$handle_fee;
+    $_SESSION['create_preorder']['orders_total']['ot_total']['value'] = intval(floor($newtotal));
+    $_SESSION['create_preorder']['orders_total']['ot_total']['text']  = $currencies->ot_total_format(intval(floor($newtotal)), true, $order['currency']);
+    $_SESSION['create_preorder']['orders']['code_fee'] = $handle_fee;
   
-    tep_redirect(tep_href_link('edit_new_preorders.php', 'oID=' . $insert_id . '&action=add_product&step=1', 'SSL'));
+    tep_redirect(tep_href_link('edit_new_preorders.php', 'oID=' . $insert_id, 'SSL'));
   }
   require(DIR_WS_INCLUDES . 'application_bottom.php');

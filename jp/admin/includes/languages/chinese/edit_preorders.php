@@ -174,4 +174,5 @@ define('NOTICE_NEW_PRERODERS_PRODUCTS_DEL', '商品已删除。<font color="red"
 define('ERROR_NEW_PREORDERS_UPDATE', '发生错误。可能无法正常处理。');
 define('NEW_PREORDERS_CHARACTER_TEXT', '公司交易人物名:');
 define('TEXT_EMAIL_TITLE','邮件标题：');
+define('NOTICE_NEW_PREORDERS_PRODUCTS_DEL','商品删除成功。');
 ?>

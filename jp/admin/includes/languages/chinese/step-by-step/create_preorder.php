@@ -52,4 +52,6 @@ define('CREATE_ORDER_SHIRU_TEXT', '进货预约');
 define('CREATE_ORDER_TEL_TEXT', '电话号码:');
 define('CREATE_PREORDER_PREDATE', '有效期限');
 define('CREATE_PREORDER_PAYMENT_LIST_DEFAULT', '请选择支付方式');
+define('TABLE_HEADING_PRODUCTS_PRICE', '单价');
+define('ORDERS_PRODUCTS','订购商品');
 ?>

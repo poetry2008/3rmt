@@ -28,9 +28,9 @@ define('ENTRY_CUSTOMER_EMAIL', 'E邮箱地址');
 
 
 define('ADDPRODUCT_TEXT_STEP', '步骤');
-define('ADDPRODUCT_TEXT_STEP1', ' &laquo; 分类选择. ');
-define('ADDPRODUCT_TEXT_STEP2', ' &laquo; 商品选择. ');
-define('ADDPRODUCT_TEXT_STEP3', ' &laquo; 选项选择. ');
+define('ADDPRODUCT_TEXT_STEP1', '分类选择: ');
+define('ADDPRODUCT_TEXT_STEP2', '商品选择:');
+define('ADDPRODUCT_TEXT_STEP3', '选项选择:');
 
 define('MENUE_TITLE_CUSTOMER', '1. 顾客信息');
 define('MENUE_TITLE_PAYMENT', '2. 支付方式');
@@ -39,4 +39,5 @@ define('MENUE_TITLE_TOTAL', '4. 送货、结算、税款');
 define('MENUE_TITLE_STATUS', '5. 预约状态、评论通知');
 define('MENUE_TITLE_UPDATE', '6. 更新数据');
 define('TEXT_CODE_HANDLE_FEE', '手续费:');
+define('ORDERS_PRODUCT_ERROR','没有商品，请添加商品。');
 ?>

@@ -1781,3 +1781,16 @@ function check_signal_time_select()
     alert('<?php echo NOTICE_SET_WRONG_TIME;?>'); 
   }
 }
+
+function clearNewLibNum(obj) 
+{
+  var re = /^[-]*[0-9]+$/;
+  var error_single = false; 
+  if(!re.test(obj.value) && obj.value != ''){
+    alert('<?php echo JS_TEXT_GENERAL_INPUT_TEXT_ERROR;?>'); 
+    error_single = true; 
+  }
+  if (error_single) {
+    obj.value = obj.value.replace(/[^-0-9]/g,"");
+  }
+}

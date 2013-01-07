@@ -649,201 +649,7 @@
     tep_redirect(tep_href_link("edit_new_preorders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
     
   break;
-
-  // 2. ADD A PRODUCT ###############################################################################################
-  case 'add_product':
   
-    if($step == 5)
-    {
-      // 2.1 GET ORDER INFO #####
-      
-      $oID = tep_db_prepare_input($_SESSION['create_preorder']['orders']['orders_id']);
-      $order = $_SESSION['create_preorder']['orders']; 
-
-      if (isset($_POST['add_product_options'])) {
-        $add_product_options = $_POST['add_product_options'];
-      }
-      $AddedOptionsPrice = 0;
-
-      $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>", "'", "\"");
-      // 2.1.1 Get Product Attribute Info
-      foreach ($_POST as $op_key => $op_value) {
-        $op_pos = substr($op_key, 0, 3);
-        if ($op_pos == 'op_') {
-            $op_tmp_value = str_replace(' ', '', $op_value);
-            $op_tmp_value = str_replace('　', '', $op_value);
-            if ($op_tmp_value == '') {
-              continue; 
-            }
-            $op_info_array = explode('_', $op_key); 
-            $op_item_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$op_info_array[1]."' and id = '".$op_info_array[3]."'"); 
-            $op_item_res = tep_db_fetch_array($op_item_query);
-            if ($op_item_res) {
-              if ($op_item_res['type'] == 'radio') {
-                    $o_option_array = @unserialize($op_item_res['option']);
-                    if (!empty($o_option_array['radio_image'])) {
-                      foreach ($o_option_array['radio_image'] as $or_key => $or_value) {
-                        if (trim(str_replace($replace_arr, '', nl2br(stripslashes($or_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($op_value))))) {
-                          $AddedOptionsPrice += $or_value['money'];
-                          break;
-                        }
-                      }
-                    }
-              } else {
-                    $AddedOptionsPrice += $op_item_res['price'];
-              }
-            }
-        }
-      }
-      // 2.1.2 Get Product Info
-      $InfoQuery = "
-        select p.products_model, 
-               p.products_price, 
-               pd.products_name, 
-               p.products_tax_class_id, 
-               p.products_small_sum,
-               p.products_price_offset
-        from " . TABLE_PRODUCTS . " p left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on pd.products_id=p.products_id 
-        where p.products_id='$add_product_products_id' 
-          and pd.site_id = '0'
-          and pd.language_id = '" . (int)$languages_id . "'";
-      $result = tep_db_query($InfoQuery);
-
-      $row = tep_db_fetch_array($result);
-      extract($row, EXTR_PREFIX_ALL, "p");
-      
-      // 适用于特价
-      $p_products_price =
-        tep_get_bflag_by_product_id($add_product_products_id)?0-$_POST['add_product_price']:$_POST['add_product_price'];
-
-      // Following functions are defined at the bottom of this file
-      $CountryID = tep_get_country_id($order["delivery_country"]);
-      $ZoneID = tep_get_zone_id($CountryID, $order["delivery_state"]);
-      
-      $ProductsTax = tep_get_tax_rate($p_products_tax_class_id, $CountryID, $ZoneID);
-      
-      // 2.2 UPDATE ORDER #####
-      foreach ($_SESSION['create_preorder']['orders_products'] as $pkey => $pvalue) {
-        if ($pvalue['orders_id'] != $oID) {
-          unset($_SESSION['create_preorder']['orders_products'][$pkey]); 
-        }
-      }
-      $_SESSION['create_preorder']['orders_products'][$add_product_products_id] = array(
-        'orders_id' => $oID,
-        'products_id' => $add_product_products_id,
-        'products_model' => $p_products_model,
-        'products_name' => str_replace("'", "&#39;", $p_products_name),
-        'products_price' => $p_products_price,
-        'final_price' => $p_products_price + $AddedOptionsPrice,
-        'products_tax' => $ProductsTax,
-        'site_id' => tep_get_pre_site_id_by_orders_id($oID),
-        'products_rate' => tep_get_products_rate($add_product_products_id),
-        'products_quantity' => $add_product_quantity
-      );
-
-      
-      unset($_SESSION['create_preorder']['orders_products_attributes'][$add_product_products_id]); 
-      foreach($_POST as $op_i_key => $op_i_value) {
-        $op_pos = substr($op_i_key, 0, 3);
-        if ($op_pos == 'op_') {
-          $op_i_tmp_value = str_replace(' ', '', $op_i_value);
-          $op_i_tmp_value = str_replace('　', '', $op_i_value);
-          if ($op_i_tmp_value == '') {
-            continue; 
-          }
-          $i_op_array = explode('_', $op_i_key);
-          $ioption_item_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$i_op_array[1]."' and id = '".$i_op_array[3]."'");
-          $ioption_item_res = tep_db_fetch_array($ioption_item_query); 
-          if ($ioption_item_res) {
-            $input_option_array = array('title' => $ioption_item_res['front_title'], 'value' => str_replace("<BR>", "<br>", stripslashes($op_i_value))); 
-            $op_price = 0; 
-            if ($ioption_item_res['type'] == 'radio') {
-              $io_option_array = @unserialize($ioption_item_res['option']);
-              if (!empty($io_option_array['radio_image'])) {
-                foreach ($io_option_array['radio_image'] as $ior_key => $ior_value) {
-                  if (trim(str_replace($replace_arr, '', nl2br(stripslashes($ior_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($op_i_value))))) {
-                    $op_price = $ior_value['money']; 
-                    break; 
-                  }
-                }
-              }
-            } else {
-              $op_price = $ioption_item_res['price']; 
-            }
-           $_SESSION['create_preorder']['orders_products_attributes'][$add_product_products_id][] = array(
-              'orders_id' => $oID,
-              'orders_products_id'      => $new_product_id,
-              'options_values_price'    => $op_price,
-              'option_group_id'           => $ioption_item_res['group_id'],
-              'option_item_id'           => $ioption_item_res['id'],
-              'option_info'           => $input_option_array,
-            ); 
-          }
-        }
-      }
-      // 2.2.2 Calculate Tax and Sub-Totals
-      $order = $_SESSION['create_preorder']['orders'];
-      $RunningSubTotal = 0;
-      $RunningTax = 0;
-
-      foreach ($_SESSION['create_preorder']['orders_products'] as $pid => $order_products) {
-        if (DISPLAY_PRICE_WITH_TAX == 'true') {
-          $RunningSubTotal += (tep_add_tax(($order_products['products_quantity'] * $order_products['final_price']), $order_products['products_tax']));
-        } else {
-          $RunningSubTotal += ($order_products['products_quantity'] * $order_products['final_price']);
-        }
-        $RunningTax += (($order_products['products_tax'] / 100) * ($order_products['products_quantity'] * $order_products['final_price']));     
-      }
-      
-      $new_subtotal = $RunningSubTotal;
-      $new_tax = $RunningTax;
-      
-      //subtotal
-      
-      $_SESSION['create_preorder']['orders_total']['ot_subtotal']['value'] = tep_insert_currency_value($new_subtotal);
-      $_SESSION['create_preorder']['orders_total']['ot_subtotal']['text']  = tep_insert_currency_text($currencies->format($new_subtotal, true, $order['currency']));
-      
-      //tax
-      $plustax_query = tep_db_query("select count(*) as cnt from " . TABLE_PREORDERS_TOTAL . " where class = 'ot_tax' and orders_id = '".$oID."'");
-      $plustax = tep_db_fetch_array($plustax_query);
-      if($plustax['cnt'] > 0) {
-        $_SESSION['create_preorder']['orders_total']['ot_tax']['value'] = tep_insert_currency_value($new_tax);
-        $_SESSION['create_preorder']['orders_total']['ot_tax']['text']  = tep_insert_currency_text($currencies->format($new_tax, true, $order['currency']));
-      }
-      
-      //total
-      $total_value = 0;
-      foreach ($_SESSION['create_preorder']['orders_total'] as $code => $orders_total) {
-        if ($code != 'ot_total') {
-          $total_value += $orders_total['value'];
-        }
-      }
-
-      if($plustax['cnt'] == 0) {
-        $newtotal = $total_value + $new_tax;
-      } else {
-        if(DISPLAY_PRICE_WITH_TAX == 'true') {
-          $newtotal = $total_value - $new_tax;
-        } else {
-          $newtotal = $total_value;
-        }
-      }
-      $payment_code = payment::changeRomaji($order['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
-      $handle_fee = $cpayment->handle_calc_fee($payment_code, $newtotal); 
-      $newtotal = $newtotal+$handle_fee;    
-      
-      //tep_db_query($totals);
-      $_SESSION['create_preorder']['orders_total']['ot_total']['value'] = intval(floor($newtotal));
-      $_SESSION['create_preorder']['orders_total']['ot_total']['text']  = $currencies->ot_total_format(intval(floor($newtotal)), true, $order['currency']);
-      
-      $_SESSION['create_preorder']['orders']['code_fee'] = $handle_fee;
-      
-        
-      tep_redirect(tep_href_link("edit_new_preorders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
-    }
-  
-    break;
-    
   }
 }
 
@@ -875,33 +681,6 @@
 <script language="javascript" src="includes/jquery.form.js"></script>
 <script language="javascript" src="js2php.php?path=js&name=popup_window&type=js"></script>
 <script>
-function submit_check(){
-  var qty = document.getElementById('add_product_quantity').value;
-
-  var products_id = document.getElementById('add_product_products_id').value;
-
-  $.ajax({
-    dataType: 'text',
-    url: 'ajax_orders_weight.php?action=edit_preorder',
-    data: 'qty='+qty+'&products_id='+products_id, 
-    type:'POST',
-    async: false,
-    success: function(data) {
-      if(data != ''){
-
-        if(confirm(data)){
-
-          document.edit_order_id.submit();
-        }      
-      }else{
-
-         document.edit_order_id.submit(); 
-      }
-    }
-  });
-    
-}
-
 function add_option(){
     var add_num = $("#button_add_id").val();
     add_num = parseInt(add_num);
@@ -1617,7 +1396,7 @@ if (($action == 'edit') && ($order_exists == true)) {
               <?php 
               if (!(count($order_products) > 0)) {
               ?> 
-              <td align="right"><?php echo '<a href="' . $PHP_SELF . '?oID=' .  $order['orders_id'] . '&action=add_product&step=1">' .  tep_html_element_button(ADDING_TITLE) . '</a>'; ?></td>
+              <td align="right"><?php echo '<a href="create_preorder.php?oID=' .  $order['orders_id'] . '&Customer_mail='.$order['customers_email_address'].'&site_id='.$order['site_id'].'">' .  tep_html_element_button(ADDING_TITLE) . '</a>'; ?></td>
               <?php }?> 
             </tr>
           </table>
@@ -1667,13 +1446,31 @@ if (($action == 'edit') && ($order_exists == true)) {
 
 
   $TotalsArray = array();
+  $ot_custom_flag = false;
+  $orders_totals_num = 0;
+  foreach($order_totals as $key => $value){
+
+    if($value['class'] == 'ot_custom'){
+
+      $ot_custom_flag = true;
+      $orders_totals_num++;
+    }
+  }
   foreach ($order_totals as $k => $ot) {
     $TotalsArray[] = array("Name" => $ot['title'], "Price" => tep_display_currency(number_format((float)$ot['value'], 2, '.', '')), "Class" => $ot['class'], "TotalID" => $ot['orders_total_id']);
-    $TotalsArray[] = array("Name" => "          ", "Price" => "", "Class" => "ot_custom", "TotalID" => "0");
+    if($ot_custom_flag == false){
+      $TotalsArray[] = array("Name" => "          ", "Price" => "", "Class" => "ot_custom", "TotalID" => "0");
+    }else{
+      if($ot['class'] == 'ot_point' && $orders_totals_num < 2){
+
+        $TotalsArray[] = array("Name" => "          ", "Price" => "", "Class" => "ot_custom", "TotalID" => "0");
+      } 
+    }
   }
-  
-  array_pop($TotalsArray);
-  
+
+  if($ot_custom_flag == false){ 
+    array_pop($TotalsArray);
+  }
   foreach ($TotalsArray as $TotalIndex => $TotalDetails) {
     $TotalStyle = "smallText";
     if ($TotalDetails["Class"] == "ot_total") {
@@ -1754,7 +1551,7 @@ if (($action == 'edit') && ($order_exists == true)) {
              '  </tr>' . "\n";
       }
     } else {
-      $button_add = $TotalIndex == 3 ? '<INPUT type="button" id="button_add" value="'.TEXT_BUTTON_ADD.'" onClick="add_option();"><input type="hidden" id="button_add_id" value="4">&nbsp;' : '';
+      $button_add = $TotalIndex == count($TotalsArray)-2 ? '<INPUT type="button" id="button_add" value="'.TEXT_BUTTON_ADD.'" onClick="add_option();"><input type="hidden" id="button_add_id" value="'.(count($TotalsArray)-1).'">&nbsp;' : '';
       echo '  <tr>' . "\n" .
            '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_TOTALDETAIL_READ_ONE.'</td>' . 
            '    <td style="min-width:180px;" align="right" class="' . $TotalStyle . '">' . $button_add ."<input name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
@@ -1880,188 +1677,6 @@ if (($action == 'edit') && ($order_exists == true)) {
   <!-- End of Update Block -->
 <?php
   }
-  if ($action == "add_product") {
-?>
-      <tr>
-        <td width="100%">
-          <table border="0" width="100%" cellspacing="0" cellpadding="0">
-            <tr>
-              <td class="pageHeading"><?php echo ADDING_TITLE; ?> (Nr. <?php echo $oID; ?>)</td>
-              <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
-              <td class="pageHeading" align="right"><?php echo '<a href="' .  tep_href_link(FILENAME_EDIT_NEW_ORDERS2, tep_get_all_get_params(array('action'))) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; ?></td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-
-<?php
-  // ############################################################################
-  //   Get List of All Products
-  // ############################################################################
-
-    $result = tep_db_query("
-        SELECT products_name, 
-               p.products_id, 
-               cd.categories_name, 
-               ptc.categories_id 
-        FROM " . TABLE_PRODUCTS . " p LEFT JOIN " . TABLE_PRODUCTS_DESCRIPTION . " pd ON pd.products_id=p.products_id LEFT JOIN " . TABLE_PRODUCTS_TO_CATEGORIES . " ptc ON ptc.products_id=p.products_id LEFT JOIN " . TABLE_CATEGORIES_DESCRIPTION . " cd ON cd.categories_id=ptc.categories_id 
-        where pd.language_id = '" . (int)$languages_id . "' 
-          and cd.site_id = '0'
-          and pd.site_id = '0'
-        ORDER BY categories_name");
-    while($row = tep_db_fetch_array($result))
-    {
-      extract($row,EXTR_PREFIX_ALL,"db");
-      $ProductList[$db_categories_id][$db_products_id] = $db_products_name;
-      $CategoryList[$db_categories_id] = $db_categories_name;
-      $LastCategory = $db_categories_name;
-    }
-    
-    // ksort($ProductList);
-    
-    $LastOptionTag = "";
-    $ProductSelectOptions = "<option value='0'>Don't Add New Product" . $LastOptionTag . "\n";
-    $ProductSelectOptions .= "<option value='0'>&nbsp;" . $LastOptionTag . "\n";
-    foreach($ProductList as $Category => $Products)
-    {
-      $ProductSelectOptions .= "<option value='0'>$Category" . $LastOptionTag . "\n";
-      $ProductSelectOptions .= "<option value='0'>---------------------------" . $LastOptionTag . "\n";
-      asort($Products);
-      foreach($Products as $Product_ID => $Product_Name)
-      {
-        $ProductSelectOptions .= "<option value='$Product_ID'> &nbsp; $Product_Name" . $LastOptionTag . "\n";
-      }
-      
-      if($Category != $LastCategory)
-      {
-        $ProductSelectOptions .= "<option value='0'>&nbsp;" . $LastOptionTag . "\n";
-        $ProductSelectOptions .= "<option value='0'>&nbsp;" . $LastOptionTag . "\n";
-      }
-    }
-  
-  
-  // ############################################################################
-  //   Add Products Steps
-  // ############################################################################
-  
-    print "<tr><td><table border='0' width='100%'>\n";
-    
-    // Set Defaults
-      if(!IsSet($add_product_categories_id))
-      $add_product_categories_id = 0;
-
-      if(!IsSet($add_product_products_id))
-      $add_product_products_id = 0;
-    
-    // Step 1: Choose Category
-      print "<tr class=\"dataTableRow\"><form action='$PHP_SELF?oID=$oID&action=$action' method='POST'>\n";
-      print "<td class='dataTableContent' align='right' width='80'><b>" . ADDPRODUCT_TEXT_STEP . " 1:</b></td>\n";
-      print "<td class='dataTableContent' valign='top'>";
-      echo ' ' . tep_draw_pull_down_menu('add_product_categories_id', tep_get_category_tree(), $current_category_id, 'onChange="this.form.submit();"');
-      print "<input type='hidden' name='step' value='2'>";
-      print "</td>\n";
-      print "<td class='dataTableContent' width='90'>" . ADDPRODUCT_TEXT_STEP1 . "</td>\n";
-      print "</form></tr>\n";
-      print "<tr><td colspan='3'>&nbsp;</td></tr>\n";
-
-    // Step 2: Choose Product
-    if(($step > 1) && ($add_product_categories_id > 0))
-    {
-      print "<tr class=\"dataTableRow\"><form action='$PHP_SELF?oID=$oID&action=$action' method='POST'>\n";
-      print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 2: </b></td>\n";
-      print "<td class='dataTableContent' valign='top'><select name=\"add_product_products_id\" onChange=\"this.form.submit();\">";
-      $ProductOptions = "<option value='0'>" .  ADDPRODUCT_TEXT_SELECT_PRODUCT . "\n";
-      asort($ProductList[$add_product_categories_id]);
-      foreach($ProductList[$add_product_categories_id] as $ProductID => $ProductName)
-      {
-      $ProductOptions .= "<option value='$ProductID'> $ProductName\n";
-      }
-      $ProductOptions = str_replace("value='$add_product_products_id'","value='$add_product_products_id' selected", $ProductOptions);
-      print $ProductOptions;
-      print "</select></td>\n";
-      print "<input type='hidden' name='add_product_categories_id' value='$add_product_categories_id'>";
-      print "<input type='hidden' name='step' value='3'>\n";
-      print "<input type='hidden' name='cstep' value='1'>\n";
-      print "<td class='dataTableContent'>" . ADDPRODUCT_TEXT_STEP2 . "</td>\n";
-      print "</form></tr>\n";
-      print "<tr><td colspan='3'>&nbsp;</td></tr>\n";
-    }
-    require('option/HM_Option.php');
-    require('option/HM_Option_Group.php');
-    $hm_option = new HM_Option();
-    
-    if (($step == 3) && ($add_product_products_id > 0) && isset($_POST['action_process'])) {
-      if (!$hm_option->check()) {
-        $step = 4; 
-      }
-    }
-    // Step 3: Choose Options
-    if(($step > 2) && ($add_product_products_id > 0))
-    {
-      $option_product_raw = tep_db_query("select products_cflag, belong_to_option from ".TABLE_PRODUCTS." where products_id = '".$add_product_products_id."'"); 
-      $option_product = tep_db_fetch_array($option_product_raw); 
-      if(!$hm_option->admin_whether_show($option_product['belong_to_option'], 1, $option_product['products_cflag']))
-      {
-        print "<tr class=\"dataTableRow\">\n"; 
-        print "<td class=\"dataTableContent\" align='right'><b>".ADDPRODUCT_TEXT_STEP." 3: </b></td>\n"; 
-        print "<td class=\"dataTableContent\" valign='top' colspan='2'><i>".ADDPRODUCT_TEXT_OPTIONS_NOTEXIST."</i></td>\n"; 
-        print "</tr>\n"; 
-        $step = 4; 
-      }
-      else
-      {
-        
-      
-        $p_cflag = tep_get_cflag_by_product_id($add_product_products_id);
-        print "<tr class=\"dataTableRow\">";
-        print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td><td class='dataTableContent' valign='top'>";
-        print "<div class=\"pro_option\">"; 
-        print "<form action='$PHP_SELF?oID=$oID&action=$action' method='POST' name='aform'>\n";
-        
-        print $hm_option->render($option_product['belong_to_option'], false, 0, '', '', $p_cflag); 
-        
-        print "<input type='hidden' name='add_product_categories_id' value='$add_product_categories_id'>";
-        print "<input type='hidden' name='add_product_products_id' value='$add_product_products_id'>";
-        print "<input type='hidden' name='step' value='3'>";
-        print "<input type='hidden' name='action_process' value='1'>";
-        print "</form>";
-        print "</div>"; 
-        print "</td>";
-        print "<td class='dataTableContent' align='center'><input type='button' value='" . ADDPRODUCT_TEXT_OPTIONS_CONFIRM . "' onclick='document.forms.aform.submit();'>";
-        print "</td>\n";
-        print "</tr>\n";
-      }
-
-      echo "<tr><td colspan='3'>&nbsp;</td></tr>\n";
-    }
-
-    // Step 4: Confirm
-    if($step > 3)
-    {
-      echo "<tr class=\"dataTableRow\"><form action='$PHP_SELF?oID=$oID&action=$action' method='POST' id='edit_order_id' name='edit_order_id'>\n";
-      echo "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP .  " 4: </b></td>";
-      $products_num = isset($_POST['add_product_quantity']) ? $_POST['add_product_quantity'] : 1;
-      $products_price = isset($_POST['add_product_price']) ? $_POST['add_product_price'] : 0;
-      echo '<td class="dataTableContent" valign="top">' .
-        ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input id="add_product_quantity" name="add_product_quantity" size="2" value="'.$products_num.'" onkeyup="clearLibNum(this);">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'&nbsp;&nbsp;'.TABLE_HEADING_UNIT_PRICE.'<input name="add_product_price" id="add_product_price" size="4" value="'.$products_price.'" onkeyup="clearNoNum(this);">&nbsp;'.EDIT_ORDERS_PRICE_UNIT.'&nbsp;&nbsp;&nbsp;'; 
-      echo '</td>';
-      echo '<td class="dataTableContent" align="center"><input type="button" value="' . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . '" onclick="submit_check();">';
-       
-      foreach ($_POST as $op_key => $op_value) {
-        $op_pos = substr($op_key, 0, 3);
-        if ($op_pos == 'op_') {
-          echo "<input type='hidden' name='".$op_key."' value='".tep_parse_input_field_data(stripslashes($op_value), array("'" => "&quot;"))."'>"; 
-        }
-      }
-      echo "<input type='hidden' name='add_product_categories_id' value='$add_product_categories_id'>";
-      echo "<input type='hidden' id='add_product_products_id' name='add_product_products_id' value='$add_product_products_id'>";
-      echo "<input type='hidden' name='step' value='5'>";
-      echo "</td>\n";
-      echo "</form></tr>\n";
-    }
-    
-    echo "</table></td></tr>\n";
-}  
 ?>
     </table>
     </div>

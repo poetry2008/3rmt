@@ -1267,7 +1267,12 @@ function recalc_preorder_price(oid, opd, o_str, op_str)
       if(o_str == 'true' || document.getElementById('belong_to_option')){
         p_op_info += parseInt(document.getElementsByName('new_update_products_op_price['+op_array[i]+']')[0].value); 
       }else{
-        p_op_info += parseInt(document.getElementsByName('update_products['+opd+'][attributes]['+op_array[i]+'][price]')[0].value); 
+        tmp_price_str = document.getElementsByName('update_products['+opd+'][attributes]['+op_array[i]+'][price]')[0].value.replace(/s+/g, ""); 
+        if (tmp_price_str != '') {
+          p_op_info += parseInt(document.getElementsByName('update_products['+opd+'][attributes]['+op_array[i]+'][price]')[0].value); 
+        } else {
+          p_op_info += 0; 
+        }
       }
     }
   }
@@ -2186,7 +2191,7 @@ require("includes/note_js.php");
         //if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
         echo "'></div></div>";
         echo '<div class="order_option_price">';
-        echo "<input type='text' size='9' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".(int)$all_show_option[$t_item_id]['price']."' onkeyup=\"clearLibNum(this);recalc_preorder_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."');\">"; 
+        echo "<input type='text' size='9' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".(int)$all_show_option[$t_item_id]['price']."' onkeyup=\"clearNewLibNum(this);recalc_preorder_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."');\">"; 
         echo TEXT_MONEY_SYMBOL; 
         //if ($order->products[$i]['attributes'][$j]['price'] != '0') {
           //echo ' ('.$currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty']).')'; 
