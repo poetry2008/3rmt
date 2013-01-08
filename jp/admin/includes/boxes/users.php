@@ -57,17 +57,33 @@ define('FILENAME_ONCE_PWD_LOG', 'pwd_log.php');
               <tr>
                 <td class="menuBoxContent">
     <?php  
-        if ($ocertify->npermission == 15) $loginlog = '<span class="menuBoxContent_image">'.tep_image(DIR_WS_MENU_ICON . 'icon_access_log.gif').'</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_USERS_LOGINLOG, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_USER_LOG . '</a></span>';
+        if ($ocertify->npermission == 15) $loginlog = '<span>'.tep_image(DIR_WS_MENU_ICON . 'icon_access_log.gif').'</span><span><a href="' . tep_href_link(FILENAME_USERS_LOGINLOG, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_USER_LOG . '</a></span>';
 	else $loginlog = '';
-        echo '<span class="menuBoxContent_image">'.tep_image(DIR_WS_MENU_ICON . 'icon_user_manage.gif').'</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_USERS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_USER_ADMIN . '</a></span><br><span class="menuBoxContent_image">' .
-					tep_image(DIR_WS_MENU_ICON . 'icon_personal_setting.gif').
-       '</span><span class="menuBoxContent_span"><a href="'.tep_href_link(FILENAME_PERSONAL_SETTING).'"
-       class="menuBoxContent_Link">'.HEADER_TEXT_PERSONAL_SETTING."</a></span><br>" .  
-					$loginlog."<br><span class='menuBoxContent_image'>".
-					tep_image(DIR_WS_MENU_ICON . 'icon_log.gif').
-       '</span><span class="menuBoxContent_span"><a href="'.tep_href_link(FILENAME_ONCE_PWD_LOG).'"
-       class="menuBoxContent_Link">'.BOX_ONCE_PWD_LOG."</a></span><br><span class='menuBoxContent_image'>".
-        tep_image(DIR_WS_MENU_ICON . 'icon_logout.gif').  '</span><span class="menuBoxContent_span"><a href="' . tep_href_link(basename($PHP_SELF), 'execute_logout_user=1&num='.time(), 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_USER_LOGOUT . '</a></span>';
+        if(HTTP_SERVER.$_SERVER['PHP_SELF'] == tep_href_link(FILENAME_USERS, '', 'NONSSL')){
+        echo '<div class="sidebarselected"><span>'.tep_image(DIR_WS_MENU_ICON .  'icon_user_manage.gif').'</span><span><a href="' .  tep_href_link(FILENAME_USERS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_USER_ADMIN . '</a></span></div>';
+        }else{
+        echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar"><span>'.tep_image(DIR_WS_MENU_ICON .  'icon_user_manage.gif').'</span><span><a href="' .  tep_href_link(FILENAME_USERS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_USER_ADMIN . '</a></span></div>';
+        }
+        if(HTTP_SERVER.$_SERVER['PHP_SELF'] == tep_href_link(FILENAME_PERSONAL_SETTING)){
+        echo '<div class="sidebarselected"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_personal_setting.gif').  '</span><span><a href="'.tep_href_link(FILENAME_PERSONAL_SETTING).'" class="menuBoxContent_Link">'.HEADER_TEXT_PERSONAL_SETTING.'</a></span></div>'; 
+        }else{
+        echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_personal_setting.gif').  '</span><span><a href="'.tep_href_link(FILENAME_PERSONAL_SETTING).'" class="menuBoxContent_Link">'.HEADER_TEXT_PERSONAL_SETTING.'</a></span></div>'; 
+        }
+        if(HTTP_SERVER.$_SERVER['PHP_SELF'] == tep_href_link(FILENAME_USERS_LOGINLOG, '', 'NONSSL')){
+        echo '<div class="sidebarselected">'.  $loginlog.'</div>';
+        }else{
+        echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar">'.  $loginlog.'</div>';
+        }
+        if(HTTP_SERVER.$_SERVER['PHP_SELF'] == tep_href_link(FILENAME_ONCE_PWD_LOG)){
+        echo '<div class="sidebarselected">'."<span>".  tep_image(DIR_WS_MENU_ICON . 'icon_log.gif').  '</span><span><a href="'.tep_href_link(FILENAME_ONCE_PWD_LOG).'" class="menuBoxContent_Link">'.BOX_ONCE_PWD_LOG.'</a></span> </div>';
+        }else{
+        echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar">'."<span>".  tep_image(DIR_WS_MENU_ICON . 'icon_log.gif').  '</span><span><a href="'.tep_href_link(FILENAME_ONCE_PWD_LOG).'" class="menuBoxContent_Link">'.BOX_ONCE_PWD_LOG.'</a></span> </div>';
+        }
+        if(HTTP_SERVER.$_SERVER['PHP_SELF'] == tep_href_link(basename($PHP_SELF), 'execute_logout_user=1&num='.time(), 'NONSSL')){
+        echo '<div class="sidebarselected">'."<span>".  tep_image(DIR_WS_MENU_ICON . 'icon_logout.gif').  '</span><span><a href="' .  tep_href_link(basename($PHP_SELF), 'execute_logout_user=1&num='.time(), 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_USER_LOGOUT .  '</a></span></div>';
+        }else{
+        echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar">'."<span>".  tep_image(DIR_WS_MENU_ICON . 'icon_logout.gif').  '</span><span><a href="' .  tep_href_link(basename($PHP_SELF), 'execute_logout_user=1&num='.time(), 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_USER_LOGOUT .  '</a></span></div>';
+        }
     ?>
                 </td>
               </tr>

@@ -49,14 +49,22 @@
             <table cellspacing="0" cellpadding="2" border="0" width="100%"> 
               <tr>
                 <td class="menuBoxContent">
-                 <?php echo '<span class="menuBoxContent_image">'.tep_image(DIR_WS_MENU_ICON . 'icon_order_status.gif').'</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_ORDERS_STATUS, '', 'NONSSL') . '" class="menuBoxContent_Link">' .  BOX_LOCALIZATION_ORDERS_STATUS . '</a></span>';?>
-                 <br> 
-                 <?php echo '<span class="menuBoxContent_image">'.tep_image(DIR_WS_MENU_ICON . 'icon_preorder_status.gif').'</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_PREORDERS_STATUS, '', 'NONSSL') . '" class="menuBoxContent_Link">' .  BOX_LOCALIZATION_PREORDERS_STATUS . '</a></span>';?>
-
+                 <?php 
+                 if(HTTP_SERVER.$_SERVER['PHP_SELF'] == tep_href_link(FILENAME_ORDERS_STATUS, '', 'NONSSL')){
+                 echo '<div class="sidebarselected"><span>'.tep_image(DIR_WS_MENU_ICON .  'icon_order_status.gif').'</span><span><a href="' .  tep_href_link(FILENAME_ORDERS_STATUS, '', 'NONSSL') . '" class="menuBoxContent_Link">' .  BOX_LOCALIZATION_ORDERS_STATUS .  '</a></span></div>';
+                 }else{ 
+                 echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar"><span>'.tep_image(DIR_WS_MENU_ICON .  'icon_order_status.gif').'</span><span><a href="' .  tep_href_link(FILENAME_ORDERS_STATUS, '', 'NONSSL') . '" class="menuBoxContent_Link">' .  BOX_LOCALIZATION_ORDERS_STATUS .  '</a></span></div>';
+                 }?>
+                 <?php 
+                 if(HTTP_SERVER.$_SERVER['PHP_SELF'] == tep_href_link(FILENAME_PREORDERS_STATUS, '', 'NONSSL')){
+                 echo '<div class="sidebarselected"><span>'.tep_image(DIR_WS_MENU_ICON .  'icon_preorder_status.gif').'</span><span><a href="' .  tep_href_link(FILENAME_PREORDERS_STATUS, '', 'NONSSL') . '" class="menuBoxContent_Link">' .  BOX_LOCALIZATION_PREORDERS_STATUS . '</a></span></div>';
+                 }else{ 
+                 echo'<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar"><span>'.tep_image(DIR_WS_MENU_ICON .  'icon_preorder_status.gif').'</span><span><a href="' .  tep_href_link(FILENAME_PREORDERS_STATUS, '', 'NONSSL') . '" class="menuBoxContent_Link">' .  BOX_LOCALIZATION_PREORDERS_STATUS . '</a></span></div>';
+                 }?>
                 </td>
               </tr>
-            </table>
+             </table>
             </div>
-            </td>
+           </td>
           </tr>
 <!-- localization_eof -->

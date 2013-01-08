@@ -49,10 +49,23 @@
             <table cellspacing="0" cellpadding="2" border="0" width="100%"> 
               <tr>
                 <td class="menuBoxContent">
-    <?php 
-echo '<span class="menuBoxContent_image">'.tep_image(DIR_WS_MENU_ICON . 'icon_payment.gif').'</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_MODULES, 'set=payment', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_MODULES_PAYMENT . '</a></span><br><span class="menuBoxContent_image">' .
-	tep_image(DIR_WS_MENU_ICON . 'icon_calculation.gif').'</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_MODULES, 'set=order_total', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_MODULES_ORDER_TOTAL . '</a></span><br><span class="menuBoxContent_image">'.tep_image(DIR_WS_MENU_ICON . 'icon_seo.gif').  '</span><span class="menuBoxContent_span"><a href="' . tep_href_link(FILENAME_MODULES, 'set=metaseo', 'NONSSL') . '" class="menuBoxContent_Link">' .  BOX_MODULES_METASEO . '</a></span><br>'; ?>
-
+<?php 
+  if(HTTP_SERVER.$_SERVER['PHP_SELF'].'?set='.$_GET['set'] == tep_href_link(FILENAME_MODULES, 'set=payment', 'NONSSL')){
+  echo '<div class="sidebarselected"><span>'.tep_image(DIR_WS_MENU_ICON .  'icon_payment.gif').'</span><span><a href="' . tep_href_link(FILENAME_MODULES, 'set=payment', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_MODULES_PAYMENT . '</a></span></div>';
+  }else{
+  echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar"><span>'.tep_image(DIR_WS_MENU_ICON .  'icon_payment.gif').'</span><span><a href="' . tep_href_link(FILENAME_MODULES, 'set=payment', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_MODULES_PAYMENT . '</a></span></div>';
+  }
+  if(HTTP_SERVER.$_SERVER['PHP_SELF'].'?set='.$_GET['set'] == tep_href_link(FILENAME_MODULES, 'set=order_total', 'NONSSL')){
+  echo '<div class="sidebarselected"><span>' . tep_image(DIR_WS_MENU_ICON .  'icon_calculation.gif').'</span><span><a href="' .  tep_href_link(FILENAME_MODULES, 'set=order_total', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_MODULES_ORDER_TOTAL . '</a></span></div>';
+  }else{
+  echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar"><span>' . tep_image(DIR_WS_MENU_ICON .  'icon_calculation.gif').'</span><span><a href="' .  tep_href_link(FILENAME_MODULES, 'set=order_total', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_MODULES_ORDER_TOTAL . '</a></span></div>';
+  }
+  if(HTTP_SERVER.$_SERVER['PHP_SELF'].'?set='.$_GET['set'] == tep_href_link(FILENAME_MODULES, 'set=metaseo', 'NONSSL')){
+  echo '<div class="sidebarselected"><span>'.tep_image(DIR_WS_MENU_ICON . 'icon_seo.gif').  '</span><span><a href="' . tep_href_link(FILENAME_MODULES, 'set=metaseo', 'NONSSL') . '" class="menuBoxContent_Link">' .  BOX_MODULES_METASEO .  '</a></span></div>';
+  }else{
+  echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar"><span>'.tep_image(DIR_WS_MENU_ICON . 'icon_seo.gif').  '</span><span><a href="' . tep_href_link(FILENAME_MODULES, 'set=metaseo', 'NONSSL') . '" class="menuBoxContent_Link">' .  BOX_MODULES_METASEO .  '</a></span></div>'; 
+  } 
+  ?>
                 </td>
               </tr>
             </table>

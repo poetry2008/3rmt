@@ -74,13 +74,23 @@ $configuration_groups_img = array("901"=>"icon_shop_settings.gif",
 );
                 $configuration_groups_query = tep_db_query("select configuration_group_id as cgID, configuration_group_title as cgTitle from " . TABLE_CONFIGURATION_GROUP . " where visible = '1' order by sort_order");
                 while ($configuration_groups = tep_db_fetch_array($configuration_groups_query)) {
-                  echo '<span class="menuBoxContent_image">'.tep_image(DIR_WS_MENU_ICON.$configuration_groups_img[$configuration_groups['cgID']]).'</span><span class="menuBoxContent_span"><a href="' .  tep_href_link(FILENAME_CONFIGURATION, 'gID=' .  $configuration_groups['cgID'], 'NONSSL') . '" class="menuBoxContent_Link">';
+                 if(HTTP_SERVER.$_SERVER['PHP_SELF'].'?gID='.$_GET['gID'] == tep_href_link(FILENAME_CONFIGURATION, 'gID=' .  $configuration_groups['cgID'], 'NONSSL')){
+                   echo '<div class="sidebarselected"><span >'.tep_image(DIR_WS_MENU_ICON.$configuration_groups_img[$configuration_groups['cgID']]).'</span><span ><a href="' .  tep_href_link(FILENAME_CONFIGURATION, 'gID=' .  $configuration_groups['cgID'], 'NONSSL') . '" class="menuBoxContent_Link">';
                   if(constant($configuration_groups['cgTitle'])){
                     echo constant($configuration_groups['cgTitle']);
                   }else{
                     echo $configuration_groups['cgTitle']; 
                   }
-                  echo '</a></span><br>';
+                  echo '</a></span></div>';
+                 }else{
+                  echo '<div onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar"><span >'.tep_image(DIR_WS_MENU_ICON.$configuration_groups_img[$configuration_groups['cgID']]).'</span><span ><a href="' .  tep_href_link(FILENAME_CONFIGURATION, 'gID=' .  $configuration_groups['cgID'], 'NONSSL') . '" class="menuBoxContent_Link">';
+                  if(constant($configuration_groups['cgTitle'])){
+                    echo constant($configuration_groups['cgTitle']);
+                  }else{
+                    echo $configuration_groups['cgTitle']; 
+                  }
+                  echo '</a></span></div>';
+                 }
                 ?>
                 <?php
                 }
