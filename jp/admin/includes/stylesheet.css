@@ -730,6 +730,7 @@ font-size:10px;!important;
 
 /*categories_tree*/
 #gotomenu{ position:relative; }
+#gotomenu a:hover{ background-color:#FFCC99;}
 #categories_tree {
 display:none;
 	position: absolute;
