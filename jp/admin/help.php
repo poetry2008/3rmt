@@ -174,7 +174,7 @@ if(isset($_GET['keyword']) && $_GET['keyword']){
         echo '<div class="content">';
         echo '<a href="'.tep_href_link("help.php","info_romaji=".urlencode($info_array['romaji'])).'"><h2><img alt="img" src="images/icon_help_info.gif">&nbsp;'.$info_array['title'].'</h2></a></div>'; 
         echo '<div class="box_info">';
-        echo '<a href="'.tep_href_link("help.php","info_romaji=".urlencode($info_array['romaji'])).'">'.substr(strip_tags($info_array['content']),0,300).'......</a></div>';
+        echo '<a href="'.tep_href_link("help.php","info_romaji=".urlencode($info_array['romaji'])).'">'.mb_substr(strip_tags($info_array['content']),0,300,'utf-8').'......</a></div>';
       }
     }
     ?>
