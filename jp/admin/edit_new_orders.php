@@ -882,7 +882,7 @@ if($address_error == false){
           //      $ot_text = "\$" . number_format($ot_value, 2, ',', '');
 
           $order = new order($oID);
-          if ($customer_guest['customers_guest_chk'] == 0 && $ot_class == "ot_point" && $ot_value != $before_point) { //会員ならポントの増減
+          if ($customer_guest['customers_guest_chk'] == 0 && $ot_class == "ot_point" && $ot_value != $before_point) { //如果是会员的话进行返点的计算
             $point_difference = ($ot_value - $before_point);
             tep_db_query("update " . TABLE_CUSTOMERS . " set point = point - " . $point_difference . " where customers_id = '" . $order->customer['id'] . "'"); 
           }
