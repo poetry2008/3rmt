@@ -234,6 +234,9 @@
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script text="text/javascript">
+
+var box_warp_height;
+var offset=0;
 function search_item_title(t_type, s_item_id)
 {
   var search_title = document.getElementById('title').value;

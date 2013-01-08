@@ -60,6 +60,7 @@
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<script language="javascript" src="includes/javascript/jquery.autocomplete.js"></script>
 <script text="text/javascript">
 function create_option_group()
 {
@@ -73,11 +74,6 @@ function create_option_group()
       $('#show_group_info').show(); 
     }
   });
-  if((offset+$("#show_group_info").height())>box_warp_height){
-    $(".box_warp").height(offset+$("#show_group_info").height());
-  }else{
-    $(".box_warp").height(box_warp_height);
-  }
 }
 
 function check_group_info(gid, type)
@@ -107,7 +103,6 @@ function close_group_info()
 {
   $('#show_group_info').html(''); 
   $('#show_group_info').hide(); 
-  $(".box_warp").height(box_warp_height);
 }
 
 function show_group_info(ele, gid, param_str)
@@ -145,11 +140,6 @@ function show_group_info(ele, gid, param_str)
       $('#show_group_info').show(); 
     }
   });
-  if((offset+$("#show_group_info").height())>box_warp_height){
-    $(".box_warp").height(offset+$("#show_group_info").height());
-  }else{
-    $(".box_warp").height(box_warp_height);
-  }
 }
 
 function show_link_group_info(gid, k_str)
@@ -168,7 +158,6 @@ function show_link_group_info(gid, k_str)
 }
 
 $(function() {
-      box_warp_height = $(".box_warp").height();
       function format(group) {
           return group.name;
       }
@@ -195,7 +184,6 @@ $(function() {
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 require("includes/note_js.php");
 ?>
-<script language="javascript" src="includes/javascript/jquery.autocomplete.js"></script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onload="SetFocus();">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
