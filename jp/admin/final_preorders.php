@@ -424,7 +424,6 @@
   
       // Check for existence of subtotals (CWS)                      
       if ($ot_class == "ot_total") {
-        // Correction tax calculation (Michel Haase, 2005-02-18)
         // I can't find out, WHERE the $RunningTotal is calculated - but the subtraction of the tax was wrong (in our shop)
 //        $ot_value = $RunningTotal-$RunningTax;
         $ot_value = $RunningTotal;
@@ -436,7 +435,6 @@
   
 // Set $ot_text (display-formatted value)
   
-      // Correction of number_format - German format (Michel Haase, 2005-02-18)
 //      $ot_text = "\$" . number_format($ot_value, 2, ',', '');
   
       $order = new preorder($oID);
@@ -2537,7 +2535,6 @@ require("includes/note_js.php");
       </tr>
   <!-- End Order Total Block -->
   <!-- Begin Update Block -->
-<!-- Improvement: more "Update" buttons -->   
   <!-- End of Update Block -->
   <!-- Begin Status Block -->
       <tr>

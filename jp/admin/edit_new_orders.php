@@ -392,7 +392,7 @@ if($orders_exit_flag == true){
       //订单状态更新结束  
       $products_weight_total = 0; //商品总重量
       $products_money_total = 0; //商品总价
-      $cart_shipping_time = array(); //商品交易时间
+      $cart_shipping_time = array(); //商品配送时间
       //$products_address_query = tep_db_query("select * from ". TABLE_ORDERS_PRODUCTS ." where orders_id='". tep_db_input($oID) ."'");
       //while($products_address_array = tep_db_fetch_array($products_address_query)){
       foreach($update_products as $update_key=>$update_value){
@@ -866,7 +866,6 @@ if($address_error == false){
 
           // Check for existence of subtotals (CWS)                      
           if ($ot_class == "ot_total") {
-            // Correction tax calculation (Michel Haase, 2005-02-18)
             // I can't find out, WHERE the $RunningTotal is calculated - but the subtraction of the tax was wrong (in our shop)
             //        $ot_value = $RunningTotal-$RunningTax;
             $ot_value = $RunningTotal;
@@ -880,7 +879,6 @@ if($address_error == false){
 
           // Set $ot_text (display-formatted value)
 
-          // Correction of number_format - German format (Michel Haase, 2005-02-18)
           //      $ot_text = "\$" . number_format($ot_value, 2, ',', '');
 
           $order = new order($oID);
@@ -1006,7 +1004,7 @@ if($address_error == false){
       $update_orders_sql = "update ".TABLE_ORDERS." set code_fee = '".$handle_fee."' where orders_id = '".$oID."'";
       tep_db_query($update_orders_sql);
 
-      // 最终处理理（更新并发信）
+      // 最终处理（更新并发信）
       if ($products_delete == false) {
         tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "',user_update='".$_SESSION['user_name']."', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
         orders_updated(tep_db_input($oID));
