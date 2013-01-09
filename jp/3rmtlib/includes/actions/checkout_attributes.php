@@ -6,13 +6,16 @@
   }
 
   // if there is nothing in the customers cart, redirect them to the shopping cart page
-  if ($cart->count_contents() < 1) {
+  if ($cart->count_contents(true) < 1) {
     tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
   }
   
 // Stock Check
   if ( (STOCK_CHECK == 'true') && (STOCK_ALLOW_CHECKOUT != 'true') ) {
     $products = $cart->get_products();
+    if (empty($products)) {
+      tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
+    }
     for ($i=0, $n=sizeof($products); $i<$n; $i++) {
       if (tep_check_stock((int)$products[$i]['id'], $products[$i]['quantity'])) {
         tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));

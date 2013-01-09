@@ -330,7 +330,7 @@ function change_num(ob,targ, quan,a_quan, origin_qty, origin_small)
 <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
         <?php
   $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>");
-  if ($cart->count_contents() > 0) {
+  if ($cart->count_contents(true) > 0) {
 ?> 
         <tr> 
           <td><?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_SHOPPING_CART, 'action=update_product', 'SSL')); ?> 

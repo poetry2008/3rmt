@@ -5,7 +5,7 @@ require('address/AD_Option_Group.php');
 $hm_option = new AD_Option();
 $check_before_pos = strpos($_SERVER['HTTP_REFERER'], 'login.php');
 if ($check_before_pos !== false || !isset($_SERVER['HTTP_REFERER'])) {
-  if ($cart->count_contents() > 0) {
+  if ($cart->count_contents(true) > 0) {
     $c_products_list = $cart->get_products();  
     $check_op_single = false; 
     require('option/HM_Option.php'); 
@@ -27,6 +27,10 @@ if ($check_before_pos !== false || !isset($_SERVER['HTTP_REFERER'])) {
       tep_redirect(tep_href_link(FILENAME_CHECKOUT_OPTION, '', 'SSL'));
     } 
   }
+}
+
+if ($cart->count_contents(true) < 1) {
+  tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
 }
 
 if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {

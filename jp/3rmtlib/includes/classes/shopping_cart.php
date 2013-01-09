@@ -231,12 +231,22 @@
       }
     }
 
-    function count_contents() {  // get total number of items in cart 
+    function count_contents($c_type = false) {  // get total number of items in cart 
       $total_items = 0;
       if (is_array($this->contents)) {
         reset($this->contents);
         while (list($products_id, ) = each($this->contents)) {
-          $total_items += $this->get_quantity($products_id);
+          if ($c_type == true) {
+            $products_id_array = explode('_', $products_id);
+            $exists_pro_raw = tep_db_query("select products_id from ".TABLE_PRODUCTS." where products_id = '".$products_id_array[0]."'");
+            if (!tep_db_num_rows($exists_pro_raw)) {
+              $this->remove($products_id); 
+            } else {
+              $total_items += $this->get_quantity($products_id);
+            }
+          } else {
+            $total_items += $this->get_quantity($products_id);
+          }
         }
       }
 
@@ -487,7 +497,7 @@
     function get_content_type() {
       $this->content_type = false;
 
-      if ( (DOWNLOAD_ENABLED == 'true') && ($this->count_contents() > 0) ) {
+      if ( (DOWNLOAD_ENABLED == 'true') && ($this->count_contents(true) > 0) ) {
         reset($this->contents);
         while (list($products_id, ) = each($this->contents)) {
           if (isset($this->contents[$products_id]['op_attributes'])) {

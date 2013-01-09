@@ -29,6 +29,7 @@ unset($_SESSION['shipping_session_flag']);
       <!-- body_text --> 
       <td valign="top" id="contents"> 
       <?php echo tep_draw_form('checkout_confirmation', $form_action_url, 'post', 'onSubmit="return check_confirm_payment(\''.$payment.'\')"');?>
+      <input type="hidden" name="carturl" id="carturl" value="<?php echo tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL');?>">
       <div class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><h1><?php echo HEADING_TITLE ; ?></h1></div>      
       <div class="comment">
         <table border="0" width="100%" cellspacing="0" cellpadding="0"> 

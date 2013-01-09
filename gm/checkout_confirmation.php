@@ -29,12 +29,12 @@ unset($_SESSION['shipping_session_flag']);
 <?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- body_text //-->
 <div id="layout" class="yui3-u">
-<?php echo tep_draw_form('checkout_confirmation', $form_action_url, 'post', 'onSubmit="return check_confirm_payment(\''.$payment.'\')"');?>
 <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
 
 
 <div id="main-content">
 <?php echo tep_draw_form('checkout_confirmation', $form_action_url, 'post', 'onSubmit="return check_confirm_payment(\''.$payment.'\')"');?>
+<input type="hidden" name="carturl" id="carturl" value="<?php echo tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL');?>">
 <h2><?php echo HEADING_TITLE; ?></h2>
 <table border="0" width="100%" cellspacing="0" cellpadding="0" class="checkout_s_link">
       <tr>

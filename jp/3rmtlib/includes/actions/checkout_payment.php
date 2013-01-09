@@ -7,7 +7,7 @@ if (!tep_session_is_registered('customer_id')) {
 }else{
   $check_before_pos = strpos($_SERVER['HTTP_REFERER'], 'login.php');
   if ($check_before_pos !== false) {
-    if ($cart->count_contents() > 0) {
+    if ($cart->count_contents(true) > 0) {
       $c_products_list = $cart->get_products();  
       $check_op_single = false; 
       require('option/HM_Option.php'); 
@@ -52,7 +52,7 @@ if (!tep_session_is_registered('customer_id')) {
 $page_url_array = explode('/',$_SERVER['REQUEST_URI']);
 $_SESSION['shipping_page_str'] = end($page_url_array);
 // if there is nothing in the customers cart, redirect them to the shopping cart page
-if ($cart->count_contents() < 1) {
+if ($cart->count_contents(true) < 1) {
   tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
 }
 

@@ -3,6 +3,10 @@
  * confirm session error
  */
 require('includes/application_top.php');
+if ($cart->count_contents(true) < 1) {
+   echo 'no_count';
+   exit;
+}
 if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['hour']) || !isset($_SESSION['min'])){
   echo 'error';
 }else{
@@ -69,6 +73,6 @@ if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['h
       echo $fixed_option_list_array[1].'|'.$_POST['ad_str'].'|'.$weight_limit;
     }
   }
- 
+
 }
 ?>
