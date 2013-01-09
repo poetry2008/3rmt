@@ -4126,6 +4126,11 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   }
                 } 
               } 
+              $res_kaku_list = array(); 
+              $res_kaku=tep_db_query("select * from set_menu_list where categories_id='".$current_category_id."' ORDER BY set_list_id ASC");
+              while($col_kaku=tep_db_fetch_array($res_kaku)){
+                $res_kaku_list[] = $col_kaku; 
+              } 
               $products_query = tep_db_query($products_query_raw);
               while ($products = tep_db_fetch_array($products_query)) {
                 $products_count++;
@@ -4197,13 +4202,14 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 } else {
                   $products_table_row_params .= 'class="' . $nowColor . '" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'' . $nowColor . '\'"';
                 }
-                $res_kaku=tep_db_query("select * from set_menu_list where categories_id='".$current_category_id."' ORDER BY set_list_id ASC");
                 $i_cnt=0;
-                while($col_kaku=tep_db_fetch_array($res_kaku)){
-                  $menu_datas[$i_cnt][0]=$col_kaku['products_id'];
-                  $menu_datas[$i_cnt][1]=tep_get_kakuukosuu_by_products_id($col_kaku['products_id']);
-                  $menu_datas[$i_cnt][2]=$col_kaku['kakaku'];
-                  $i_cnt++;
+                if (!empty($res_kaku_list)) {
+                  foreach($res_kaku_list as $k_key => $k_value){
+                    $menu_datas[$i_cnt][0]=$k_value['products_id'];
+                    $menu_datas[$i_cnt][1]=tep_get_kakuukosuu_by_products_id($k_value['products_id']);
+                    $menu_datas[$i_cnt][2]=$k_value['kakaku'];
+                    $i_cnt++;
+                  }
                 }
 
 
@@ -4246,7 +4252,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 $tmp_order_product_num = tep_get_order_cnt_by_pid($products['products_id'], $site_id); 
                 if($tmp_order_product_num){
                   $products_order_text .= '<a href="orders.php?keywords='.urlencode($products['products_id']).'&search_type=sproducts_id'.(!empty($site_id)?'&site_id='.$site_id:'').'" style="text-decoration:underline;">';
-                  $products_order_text .= tep_get_order_cnt_by_pid($products['products_id'], $site_id);
+                  $products_order_text .= $tmp_order_product_num;
                   $products_order_text .= '</a>';  
                 } 
                 $products_table_content_row[] = array('params'=>$products_order_params, 'text'=>$products_order_text);

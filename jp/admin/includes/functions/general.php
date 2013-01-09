@@ -43,7 +43,6 @@ function one_time_pwd_forward401($page_name)
 'set_ajax_dougyousya.php',
 'upload.php',
 'js2php.php',
-'help.php',
 'ajax.php'
       );
   foreach($pagelist as $page){
@@ -5033,14 +5032,17 @@ function tep_display_google_results($from_url='', $c_type=false){
   // >要 取引終了的状态，视为注文数。要 取引終了的状态，视为注文数。
   function tep_get_order_cnt_by_pid($pid, $site_id = ''){
     $query = (tep_db_query("select
-          orders_products.products_quantity as pq from orders_products left join
+          orders_products.products_quantity as pq 
+          ,finished,flag_qaf 
+          from orders_products left join
           orders on orders.orders_id=orders_products.orders_id 
-          where products_id='".$pid."' and finished = '0' and flag_qaf ='0' 
-          and date(orders.date_purchased) >= '".date('Y-m-d 00:00:00',strtotime('-'.((get_configuration_by_site_id('ORDER_EFFECTIVE_DATE') != '0')?(get_configuration_by_site_id('ORDER_EFFECTIVE_DATE')-1):'0').'day'))."'".(!empty($site_id)?" and orders.site_id = '".$site_id."'":"").""));
+          where products_id='".$pid."' and date(orders.date_purchased) >= '".date('Y-m-d 00:00:00',strtotime('-'.((get_configuration_by_site_id('ORDER_EFFECTIVE_DATE') != '0')?(get_configuration_by_site_id('ORDER_EFFECTIVE_DATE')-1):'0').'day'))."'".(!empty($site_id)?" and orders.site_id = '".$site_id."'":"").""));
     //$r = tep_db_fetch_array(tep_db_query("select count(orders_products.orders_id) as cnt from orders_products left join orders on orders.orders_id=orders_products.orders_id where products_id='".$pid."' and finished = '1'"));
     $cnt = 0;
     while($row = tep_db_fetch_array($query)){
-      $cnt += $row['pq'];
+      if($row['finished']=='0'&&$row['flag_qaf']=='0'){
+        $cnt += $row['pq'];
+      }
     }
     return $cnt;
   }
