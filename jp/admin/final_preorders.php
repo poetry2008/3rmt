@@ -424,7 +424,6 @@
   
       // Check for existence of subtotals (CWS)                      
       if ($ot_class == "ot_total") {
-        // Correction tax calculation (Michel Haase, 2005-02-18)
         // I can't find out, WHERE the $RunningTotal is calculated - but the subtraction of the tax was wrong (in our shop)
 //        $ot_value = $RunningTotal-$RunningTax;
         $ot_value = $RunningTotal;
@@ -436,7 +435,6 @@
   
 // Set $ot_text (display-formatted value)
   
-      // Correction of number_format - German format (Michel Haase, 2005-02-18)
 //      $ot_text = "\$" . number_format($ot_value, 2, ',', '');
   
       $order = new preorder($oID);
@@ -1075,7 +1073,7 @@ function add_option(){
 
     add_str += '<tr><td class="smallText" align="left"><?php echo EDIT_ORDERS_TOTALDETAIL_READ_ONE;?></td>'
             +'<td class="smallText" align="right"><INPUT type="button" id="button_add" value="<?php echo TEXT_BUTTON_ADD;?>" onClick="add_option();">&nbsp;<input value="" size="7" name="update_totals['+add_num+'][title]">'
-            +'</td><td class="smallText" align="right"><input id="update_totals_'+add_num+'" value="" size="6" onkeyup="clearNoNum(this);price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');" name="update_totals['+add_num+'][value]"><input type="hidden" name="update_totals['+add_num+'][class]" value="ot_custom"><input type="hidden" name="update_totals['+add_num+'][total_id]" value="0"></td>'
+            +'</td><td class="smallText" align="right"><input id="update_totals_'+add_num+'" value="" size="6" onkeyup="clearNewLibNum(this);price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');" name="update_totals['+add_num+'][value]"><input type="hidden" name="update_totals['+add_num+'][class]" value="ot_custom"><input type="hidden" name="update_totals['+add_num+'][total_id]" value="0"></td>'
             +'<td><b><img height="17" width="1" border="0" alt="" src="images/pixel_trans.gif"></b></td></tr>'
             +'<tr id="add_option_total">'+add_option_total_str+'</tr>';
 
@@ -1267,12 +1265,7 @@ function recalc_preorder_price(oid, opd, o_str, op_str)
       if(o_str == 'true' || document.getElementById('belong_to_option')){
         p_op_info += parseInt(document.getElementsByName('new_update_products_op_price['+op_array[i]+']')[0].value); 
       }else{
-        tmp_price_str = document.getElementsByName('update_products['+opd+'][attributes]['+op_array[i]+'][price]')[0].value.replace(/s+/g, ""); 
-        if (tmp_price_str != '') {
-          p_op_info += parseInt(document.getElementsByName('update_products['+opd+'][attributes]['+op_array[i]+'][price]')[0].value); 
-        } else {
-          p_op_info += 0; 
-        }
+        p_op_info += parseInt(document.getElementsByName('update_products['+opd+'][attributes]['+op_array[i]+'][price]')[0].value); 
       }
     }
   }
@@ -1326,7 +1319,7 @@ function recalc_preorder_price(oid, opd, o_str, op_str)
      
         if(document.getElementById('update_totals_'+i)){
           update_total_temp = document.getElementById('update_totals_'+i).value; 
-          if(update_total_temp == ''){update_total_temp = 0;}
+          if(update_total_temp == '' || update_total_temp == '-'){update_total_temp = 0;}
           update_total_temp = parseInt(update_total_temp);
           update_total_num += update_total_temp;
         }
@@ -1373,7 +1366,7 @@ function price_total()
      
         if(document.getElementById('update_totals_'+i)){
           update_total_temp = document.getElementById('update_totals_'+i).value; 
-          if(update_total_temp == ''){update_total_temp = 0;}
+          if(update_total_temp == '' || update_total_temp == '-'){update_total_temp = 0;}
           update_total_temp = parseInt(update_total_temp);
           update_total_num += update_total_temp;
         }
@@ -2279,8 +2272,12 @@ require("includes/note_js.php");
     echo '      </td>' . "\n" .
          '      <td class="' . $RowStyle . '">' . $order->products[$i]['model'] . "<input name='update_products[$orders_products_id][model]' size='12' type='hidden' value='" . $order->products[$i]['model'] . "'>" . '</td>' . "\n" .
          '      <td class="' . $RowStyle . '" align="right">' .  tep_display_tax_value($order->products[$i]['tax']) . "<input name='update_products[$orders_products_id][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order->products[$i]['tax']) . "'>" .  '%</td>' . "\n";
-    
-    echo '<td class="'.$RowStyle.'" align="right"><input type="text" style="text-align:right;" class="once_pwd" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs($order->products[$i]['price']), 2)).'" onkeyup="clearLibNum(this);recalc_preorder_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\', \''.$op_info_str.'\');" >'.TEXT_MONEY_SYMBOL.'</td>'; 
+    $orders_products_type = '';
+    if(tep_check_pre_product_type($orders_products_id)){
+
+      $orders_products_type = '−';
+    }
+    echo '<td class="'.$RowStyle.'" align="right">'.$orders_products_type.'<input type="text" style="text-align:right;" class="once_pwd" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs($order->products[$i]['price']), 2)).'" onkeyup="clearLibNum(this);recalc_preorder_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\', \''.$op_info_str.'\');" >'.TEXT_MONEY_SYMBOL.'</td>'; 
     
     echo '<td class="' . $RowStyle . '" align="right">';
     //if ($ocertify->npermission == 7) {
@@ -2489,7 +2486,7 @@ require("includes/note_js.php");
       echo '  <tr>' . "\n" .
            '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_TOTALDETAIL_READ_ONE.'</td>' . 
            '    <td style="min-width:180px;" align="right" class="' . $TotalStyle . '">' . $button_add ."<input name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
-           '    <td align="right" class="' . $TotalStyle . '">' . "<input name='update_totals[$TotalIndex][value]' id='update_totals_$TotalIndex' onkeyup='clearNoNum(this);price_total();' size='6' value='" . $TotalDetails["Price"] . "'>" . 
+           '    <td align="right" class="' . $TotalStyle . '">' . "<input name='update_totals[$TotalIndex][value]' id='update_totals_$TotalIndex' onkeyup='clearNewLibNum(this);price_total();' size='6' value='" . $TotalDetails["Price"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . 
            '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
@@ -2507,7 +2504,6 @@ require("includes/note_js.php");
       </tr>
   <!-- End Order Total Block -->
   <!-- Begin Update Block -->
-<!-- Improvement: more "Update" buttons -->   
   <!-- End of Update Block -->
   <!-- Begin Status Block -->
       <tr>

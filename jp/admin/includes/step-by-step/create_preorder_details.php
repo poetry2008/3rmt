@@ -1,11 +1,14 @@
 <?php
 /*
    $Id$
-*/
-
-    tep_draw_hidden_field($customer_id);    
+*/    
 ?>
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
+<?php 
+  $url_action = isset($_GET['oID']) ? '?oID='.$_GET['oID'] : '';
+  echo tep_draw_form('create_order', 'create_preorder_process.php'.$url_action, '', 'post', '', '') . tep_draw_hidden_field('customers_id', $account->customers_id); 
+  tep_draw_hidden_field($customer_id);
+?>
   <tr>
     <td class="formAreaTitle"><?php echo CATEGORY_CORRECT; ?></td>
   </tr>
@@ -51,7 +54,7 @@
               </tr>
             </table></td>
         </tr>
-      </table></td>
+      </table><input type="hidden" name="fax" value="<?php echo $fax;?>"></td>
   </tr>
   <?php
   if (ACCOUNT_COMPANY == 'true' && false) {
@@ -74,59 +77,7 @@
   </tr>
   <?php
   }
-?>
-
-<?php
-  $payment_array = payment::getPaymentList(); 
-  $payment_list[] = array('id' => '', 'text' => CREATE_PREORDER_PAYMENT_LIST_DEFAULT);
-  for($i=0; $i<sizeof($payment_array[0]); $i++) {
-    if (!empty($payment_array[0][$i])) {
-      $payment_list[] = array('id' => $payment_array[0][$i], 'text' => $payment_array[1][$i]);
-    }
-  }
-
-?>
-  <tr>
-    <td class="formAreaTitle"><br><?php echo CREATE_ORDER_PAYMENT_TITLE;?></td>
-  </tr>
-  <tr>
-    <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
-        <tr>
-          <td class="main"><table border="0" cellspacing="0" cellpadding="2">
-              <tr>
-        <td class="main">&nbsp;<?php echo CREATE_ORDER_PAYMENT_TITLE;?>:</td>
-                <td class="main">&nbsp;
-                <?php 
-                //diff order and order2
-                echo tep_draw_pull_down_menu('payment_method', $payment_list, isset($payment_method) && $payment_method != '' ?$payment_method:$default_payment, 'onchange="hidden_payment()"'); 
-                if (isset($entry_payment_method_error ) && $entry_payment_method_error == true) { 
-                  echo '&nbsp;&nbsp;<font color="red">'.CREATE_PREORDER_MUST_INPUT.'</font>'; 
-                } ?>
-        </td>
-              </tr>
-
-              <?php
-              foreach ($selection as $skey => $singleton) { 
-              foreach ($singleton['fields'] as $fkey => $field) { 
-              ?>
-                <tr class="rowHide rowHide_<?php echo $singleton['id'];?>" <?php echo ($default_payment == $singleton['id'])?'style="display: table-row;"':'';?>>
-                <td class="main">
-                &nbsp;<?php echo $field['title'];?> 
-                </td>
-                <td class="main">
-                &nbsp;&nbsp;<?php echo $field['field'];?> 
-                <font color="#red"><?php echo str_replace('Error', CREATE_PREORDER_MUST_INPUT,$field['message']);?></font> 
-                </td>
-              </tr>
-              <?php }?> 
-              <?php }?>
-        </table></td>
-
-        </tr>
-      </table>
-      <input type="hidden" name="fax" value="<?php echo $fax;?>">
-  </td>
-  </tr>
+?> 
   </form>
   <tr><td>
   <table border="0" width="100%" cellspacing="0" cellpadding="0">

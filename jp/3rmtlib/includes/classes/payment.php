@@ -776,12 +776,12 @@ class payment {
     return '';
   }
 
-  function admin_get_payment_info_comment($payment,$customers_email,$site_id){
+  function admin_get_payment_info_comment($payment,$customers_email,$site_id,$orders_type=1){
 
     $module = $this->getModule($payment);
     if ($module) {
       if (method_exists($module, 'admin_get_payment_info_comment')) {
-         return $module->admin_get_payment_info_comment($customers_email,$site_id); 
+         return $module->admin_get_payment_info_comment($customers_email,$site_id,$orders_type); 
       }
     }
     return '';

@@ -7,7 +7,9 @@ function confirm_session_error(num,str){
        dataType: 'text',
        async : false,
        success: function(data){
-         if(data == 'error'){
+         if (data == 'no_count') {
+           window.location.href = $('#carturl').val();         
+         }else if(data == 'error'){
            alert('一定時間が経過したか、複数のブラウザによって操作された為、接続が切断されました。お手数ではございますが、再度ご入力いただく必要がございます。');document.location.href='checkout_option.php';
          }else if(data == 'weight'){
            alert('一定時間が経過したか、複数のブラウザによって操作された為、接続が切断されました。お手数ではございますが、再度ご入力いただく必要がございます。');document.location.href='shopping_cart.php';

@@ -3546,7 +3546,7 @@ if (($action == 'edit') && ($order_exists == true)) {
           //if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
           echo "'></div></div>";
           echo '<div class="order_option_price">'; 
-          echo "<input type='text' size='9' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".(int)(isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price'])?$_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price']:$all_show_option[$t_item_id]['price'])."' onkeyup=\"clearNewLibNum(this);recalc_order_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."','".$orders_products_list."');price_total('".TEXT_MONEY_SYMBOL."');\">";   
+          echo "<input type='text' size='9' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".(int)(isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price'])?$_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price']:$all_show_option[$t_item_id]['price'])."' onkeyup=\"clearLibNum(this);recalc_order_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."','".$orders_products_list."');price_total('".TEXT_MONEY_SYMBOL."');\">";   
           echo TEXT_MONEY_SYMBOL; 
           echo '</div>'; 
           echo '</i></div>';
@@ -4451,7 +4451,7 @@ if($index_num > 0){
   echo '<td class="main" align="right">';
   $url_action_array = $index_num > 0 ? array('action','step') : array(''); 
   $url_action = $index_num > 0 ? 'action=edit&clear_products=1' : 'add_error=1';
-  echo '<a href="' .  tep_href_link(FILENAME_ORDERS_EDIT, tep_get_all_get_params($url_action_array).$url_action) . '"><input type="button" value="'.IMAGE_CONFIRM_NEXT.'"></a>';
+  echo '<a href="' .  tep_href_link(FILENAME_ORDERS_EDIT, tep_get_all_get_params($url_action_array).$url_action) .  '">'.tep_html_element_button(IMAGE_CONFIRM_NEXT).'</a>';
   echo '</td></tr>';
   echo '</table>';
   echo '</td></tr>';
