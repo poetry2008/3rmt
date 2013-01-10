@@ -132,7 +132,7 @@
         'products_model' => $p_products_model,
         'products_name' => str_replace("'", "&#39;", $p_products_name),
         'products_price' => $p_products_price,
-        'final_price' => $p_products_price + $AddedOptionsPrice,
+        'final_price' => 0,
         'products_tax' => $ProductsTax,
         'site_id' => tep_get_pre_site_id_by_orders_id($oID),
         'products_rate' => tep_get_products_rate($add_product_products_id),
@@ -171,7 +171,7 @@
            $_SESSION['create_preorder']['orders_products_attributes'][$add_product_products_id][] = array(
               'orders_id' => $oID,
               'orders_products_id'      => $new_product_id,
-              'options_values_price'    => $op_price,
+              'options_values_price'    => 0,
               'option_group_id'           => $ioption_item_res['group_id'],
               'option_item_id'           => $ioption_item_res['id'],
               'option_info'           => $input_option_array,
@@ -940,7 +940,7 @@ if(!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['c
       $products_num = isset($_POST['add_product_quantity']) ? $_POST['add_product_quantity'] : 1;
       $products_price = isset($_POST['add_product_price']) ? $_POST['add_product_price'] : 0;
       echo '<td class="dataTableContent" valign="top">&nbsp;' .
-        ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input id="add_product_quantity" name="add_product_quantity" size="2" value="'.$products_num.'" onkeyup="clearLibNum(this);">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'<input type="hidden" name="add_product_price" id="add_product_price" size="4" value="'.(int)abs($products_array['products_price']).'">'; 
+        ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input id="add_product_quantity" name="add_product_quantity" size="2" value="'.$products_num.'" onkeyup="clearLibNum(this);">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'<input type="hidden" name="add_product_price" id="add_product_price" size="4" value="0">'; 
       echo '</td>';
       echo '<td class="dataTableContent" align="right"><input type="button" value="' . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . '" onclick="submit_check();">';
        

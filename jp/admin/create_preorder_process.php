@@ -558,7 +558,10 @@ require("includes/note_js.php");
             'user_added'                  => $_SESSION['user_name'],
             'user_update'                  => $_SESSION['user_name']
             ); 
-   
+  if(isset($_SESSION['create_preorder']['orders']['payment_method'])){
+
+    $payment_method = $_SESSION['create_preorder']['orders']['payment_method'];
+  } 
   $_SESSION['create_preorder']['orders'] = $sql_data_array;
   
   //insert into order total
@@ -687,6 +690,9 @@ require("includes/note_js.php");
     $_SESSION['create_preorder']['orders_total']['ot_total']['value'] = intval(floor($newtotal));
     $_SESSION['create_preorder']['orders_total']['ot_total']['text']  = $currencies->ot_total_format(intval(floor($newtotal)), true, $order['currency']);
     $_SESSION['create_preorder']['orders']['code_fee'] = $handle_fee;
+    if(isset($payment_method)){
+      $_SESSION['create_preorder']['orders']['payment_method'] = $payment_method;
+    }
   
     tep_redirect(tep_href_link('edit_new_preorders.php', 'oID=' . $insert_id, 'SSL'));
   }
