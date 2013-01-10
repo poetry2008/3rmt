@@ -33,7 +33,7 @@ class HM_Option_Item_Basic
    
     if ($this->has_text_comment) {
       $default_text = isset($item_value['icomment'])?$item_value['icomment']:''; 
-      $formString .= "<tr><td width='220' align='left'>".TEXT_ITEM_TEXT_COMMENT_HEAD."</td><td align='left'><input type='text' name='icomment' value='".stripslashes($default_text)."' class='option_text'></td></tr>"; 
+      $formString .= "<tr><td width='30%' align='left'>".TEXT_ITEM_TEXT_COMMENT_HEAD."</td><td align='left'><input type='text' name='icomment' value='".stripslashes($default_text)."' class='option_text'></td></tr>"; 
     } 
     
     if ($this->has_text_line) {
@@ -83,15 +83,15 @@ class HM_Option_Item_Basic
     
     if ($this->has_textarea_default) {
       $default_text = isset($item_value['itextarea'])?$item_value['itextarea']:''; 
-      $formString .= "<tr><td width='220' align='left'>".TEXT_ITEM_TEXTAREA_HEAD."</td><td align='left'><textarea name='itextarea' cols='30' rows='10' class='option_text'>".stripslashes($default_text)."</textarea></td></tr>"; 
+      $formString .= "<tr><td width='30%' align='left'>".TEXT_ITEM_TEXTAREA_HEAD."</td><td align='left'><textarea name='itextarea' cols='30' rows='10' class='option_text'>".stripslashes($default_text)."</textarea></td></tr>"; 
     }
   
     if ($this->hasSelect) {
       if ($this->hasComment) {
-        $formString .= "<tr><td width='220' align='left'>".TEXT_ITEM_SELECT_COMMENT."</td><td align='left'><input type='text' name='secomment' value='".stripslashes($item_value['secomment'])."' class='option_text'></td></tr>"; 
+        $formString .= "<tr><td width='30%' align='left'>".TEXT_ITEM_SELECT_COMMENT."</td><td align='left'><input type='text' name='secomment' value='".stripslashes($item_value['secomment'])."' class='option_text'></td></tr>"; 
       }
       if ($this->has_select_default) {
-        $formString .= "<tr><td width='220' align='left'>".TEXT_ITEM_SELECT_DEFAULT."</td><td align='left'><input type='text' name='sedefault' value='".stripslashes($item_value['sedefault'])."' class='option_text'></td></tr>"; 
+        $formString .= "<tr><td width='30%' align='left'>".TEXT_ITEM_SELECT_DEFAULT."</td><td align='left'><input type='text' name='sedefault' value='".stripslashes($item_value['sedefault'])."' class='option_text'></td></tr>"; 
       }
       if (!isset($item_value['se_option'])) {
         for($i=1; $i<=5; $i++) {
@@ -110,11 +110,11 @@ class HM_Option_Item_Basic
     }
     
     if ($this->has_radio_comment) {
-      $formString .= "<tr><td width='220' align='left'>".TEXT_ITEM_TEXT_COMMENT_HEAD."</td><td align='left'><input type='text' name='racomment' value='".stripslashes($item_value['racomment'])."' class='option_text'><br><span id='rname_error' style='color:#ff0000;'></span></td></tr>"; 
+      $formString .= "<tr><td width='30%' align='left'>".TEXT_ITEM_TEXT_COMMENT_HEAD."</td><td align='left'><input type='text' name='racomment' value='".stripslashes($item_value['racomment'])."' class='option_text'><br><span id='rname_error' style='color:#ff0000;'></span></td></tr>"; 
     }
     
     if ($this->has_default) {
-      $formString .= "<tr><td width='220' align='left'>".TEXT_ITEM_RADIO_DEFAULT_SELECT."</td><td align='left'><input type='text' name='default_radio' value='".stripslashes($item_value['default_radio'])."' class='option_text'></td></tr>"; 
+      $formString .= "<tr><td width='30%' align='left'>".TEXT_ITEM_RADIO_DEFAULT_SELECT."</td><td align='left'><input type='text' name='default_radio' value='".stripslashes($item_value['default_radio'])."' class='option_text'></td></tr>"; 
     }
     
     if ($this->has_radio) {

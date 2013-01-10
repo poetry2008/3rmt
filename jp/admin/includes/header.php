@@ -335,10 +335,10 @@ $(function(){
 <?php
 }
 ?>
-</script>
-<noscript>
+</script><noscript>
 <div class="messageStackError"><?php echo TEXT_JAVASCRIPT_ERROR;?></div> 
 </noscript>
+
 <div class="compatible_head">
 <table border="0" width="100%" cellspacing="0" cellpadding="0" class="preorder_head">
 <tr>
@@ -385,7 +385,7 @@ echo "</form>";
 ?>
 <?php echo HEADER_TEXT_SITE_NAME;?>&nbsp;<b>
 <?php
-echo "<a href =
+echo "<a class='head_link' href =
 '".tep_href_link(basename($GLOBALS['PHP_SELF']),'action=re_login&num='.time(),'NONSSL')."'>";
 $user_info = tep_get_user_info($ocertify->auth_user);
 $_SESSION['user_name'] = $user_info['name'];
