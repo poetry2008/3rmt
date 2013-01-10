@@ -301,7 +301,7 @@ class moneyorder extends basePayment implements paymentInterface {
     tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $point_value .  " where customers_id = '" .$customer_id."' and customers_guest_chk = '0' ");
   } 
 
-  function admin_get_payment_info_comment($customers_email,$site_id){
+  function admin_get_payment_info_comment($customers_email,$site_id,$orders_type){
 
      return array(6);
   }

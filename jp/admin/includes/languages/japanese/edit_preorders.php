@@ -173,4 +173,8 @@ define('NEW_PREORDERS_CHARACTER_TEXT', '当社のキャラクター名:');
 define('TEXT_EMAIL_TITLE','メールタイトル：');
 define('TEXT_DATE_NUM_ERROR','お届け日時を正しく入力してください');
 define('NOTICE_NEW_PREORDERS_PRODUCTS_DEL','商品の削除は成功しました。');
+define('TABLE_HEADING_PRODUCTS_PRICE', '単価');
+define('TEXT_REQUIRE','*必須');
+define('ADDRESS_ERROR_OPTION_ITEM_TEXT_NULL','必須項目');
+define('ADDRESS_ERROR_OPTION_ITEM_TEXT_TYPE_WRONG','正しく入力してください');
 ?>

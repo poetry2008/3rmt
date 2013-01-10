@@ -39,5 +39,5 @@ define('MENUE_TITLE_TOTAL', '4. 送货、结算、税款');
 define('MENUE_TITLE_STATUS', '5. 预约状态、评论通知');
 define('MENUE_TITLE_UPDATE', '6. 更新数据');
 define('TEXT_CODE_HANDLE_FEE', '手续费:');
-define('ORDERS_PRODUCT_ERROR','没有商品，请添加商品。');
+define('ORDERS_PRODUCT_ERROR','没有商品。创建预约订单时、首先请添加商品。');
 ?>

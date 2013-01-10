@@ -24,12 +24,9 @@
     }  
   }
   require(DIR_WS_LANGUAGES . $language . '/step-by-step/create_preorder_process.php');
-  $cpayment = payment::getInstance((int)$_POST['site_id']);
-
 
   
   $customer_id    = tep_db_prepare_input($_POST['customers_id']);
-  $payment_method = tep_db_prepare_input($_POST['payment_method']);
   $firstname      = tep_db_prepare_input($_POST['firstname']);
   $lastname       = tep_db_prepare_input($_POST['lastname']);
   $email_address  = tep_db_prepare_input($_POST['email_address']);
@@ -97,22 +94,6 @@
     $entry_email_address_check_error = false;
   }
 
-  if ($payment_method == '') {
-    $error = true;
-    $entry_payment_method_error = true;
-  } else {
-    $entry_payment_method_error = false;
-  }
-  
-  $selection = $cpayment->admin_selection();
-  if (!empty($_POST['payment_method'])) {
-    $validateModule = $cpayment->admin_confirmation_check($_POST['payment_method']); 
-    if ($validateModule['validated'] == false) {
-      $selection[strtoupper($_POST['payment_method'])] = $validateModule; 
-      $error = true;
-    } 
-  } 
-
   $orders_products_list_error = false;
   if((!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['create_preorder']['orders_products'])) && $_GET['action'] != 'add_product'){
 
@@ -120,7 +101,7 @@
     $error = true;
   }
    
-  if($error == true) {
+  if($error == true || !isset($_POST['fax'])) {
     require(DIR_WS_CLASSES . 'currencies.php');
     $currencies = new currencies(2);  
 // #### Get Available Customers
@@ -299,19 +280,6 @@ function open_calendar()
     });
   }
 }
-function hidden_payment()
-{
-  var idx = document.create_order.elements['payment_method'].selectedIndex; 
-  var CI = document.create_order.elements['payment_method'].options[idx].value; 
-  $(".rowHide").hide(); 
-  $(".rowHide_"+CI).show();
-}
-$(function () {
-  var CI = '<?php echo $payment_method;?>'; 
-  if (CI != '') {
-    $(".rowHide_"+CI).show();
-  }
-});
 
 function is_date(dateval)
 {
@@ -506,10 +474,9 @@ require("includes/note_js.php");
   echo CREATE_ORDER_EMAIL_TEXT.'&nbsp;<input type="text" id="keyword" name="Customer_mail" size="40" value="'.$_GET['Customer_mail'].'">'.tep_site_pull_down_menu('', false).'&nbsp;&nbsp;<input type="submit" value="  '.CREATE_ORDER_SEARCH_BUTTON_TEXT.'  ">'.$url_action.'</p>' . "\n";
   echo '</form>' . "\n";
 ?>
-  <?php }
-  $url_action = isset($_GET['oID']) ? '?oID='.$_GET['oID'] : '';
-  ?> 
-  <?php echo tep_draw_form('create_order', 'create_preorder_process.php'.$url_action, '', 'post', '', '') . tep_draw_hidden_field('customers_id', $account->customers_id); ?>
+<?php 
+     } 
+?>  
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
       <td class="pageHeading"><font color="red"><?php echo CREATE_ORDER_RED_TITLE_TEXT;?></font></td>
@@ -518,15 +485,7 @@ require("includes/note_js.php");
       <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
     </tr>
   </table>
-  <?php
-  $default_payment = '';
-  if (isset($_GET['Customer_mail']) && isset($_GET['site_id'])) {
-    $last_order_raw = tep_db_query("select payment_method from ".TABLE_PREORDERS." where customers_id = '".$customer_id."' and site_id = '".$_GET['site_id']."' order by orders_id desc limit 1");  
-     $last_order = tep_db_fetch_array($last_order_raw);
-     if ($last_order) {
-       $default_payment = payment::changeRomaji($last_order['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
-     }
-  }
+  <?php 
   require(DIR_WS_INCLUDES . 'step-by-step/create_preorder_details.php');
   ?>
   <table border="0" width="100%" cellspacing="0" cellpadding="2">
@@ -557,9 +516,7 @@ require("includes/note_js.php");
   $currency_value = $currency_array[1];
   //$insert_id = date("Ymd") . '-' . date("His") . '00';
   $insert_id = $_GET['oID'];
-  
-  $payment_method_info = payment::changeRomaji($payment_method, PAYMENT_LIST_TYPE_HAIJI);
-  
+   
   $sql_data_array = array('orders_id'     => $insert_id,
             'customers_id'                => $customer_id,
             'customers_name'              => tep_get_fullname($firstname,$lastname),
@@ -595,7 +552,6 @@ require("includes/note_js.php");
             'orders_status'               => '1',
             'currency'                    => $currency,
             'currency_value'              => $currency_value,
-            'payment_method'              => $payment_method_info,
             'site_id'                     => $site_id,
             'is_active'                     => '1',
             'orders_wait_flag'            => '1',
@@ -603,8 +559,6 @@ require("includes/note_js.php");
             'user_update'                  => $_SESSION['user_name']
             ); 
    
-  $cpayment->admin_add_additional_info($sql_data_array, $_POST['payment_method']); 
-
   $_SESSION['create_preorder']['orders'] = $sql_data_array;
   
   //insert into order total
@@ -728,8 +682,7 @@ require("includes/note_js.php");
         }
       }
     $order = $_SESSION['create_preorder']['orders'];
-    $payment_code = payment::changeRomaji($payment_method, PAYMENT_RETURN_TYPE_CODE);
-    $handle_fee = $cpayment->handle_calc_fee($payment_code, $newtotal);
+    $handle_fee = 0;
     $newtotal = $newtotal+$handle_fee;
     $_SESSION['create_preorder']['orders_total']['ot_total']['value'] = intval(floor($newtotal));
     $_SESSION['create_preorder']['orders_total']['ot_total']['text']  = $currencies->ot_total_format(intval(floor($newtotal)), true, $order['currency']);

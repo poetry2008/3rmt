@@ -255,14 +255,6 @@ $(function() {
       }).result(function(e, item) {
       });
 });
-function hidden_payment()
-{
-
-  var idx = document.create_order.elements['payment_method'].selectedIndex; 
-  var CI = document.create_order.elements['payment_method'].options[idx].value; 
-  $(".rowHide").hide(); 
-  $(".rowHide_"+CI).show();
-}
 
 function open_calendar()
 {
@@ -604,7 +596,7 @@ require("includes/note_js.php");
               </tr>
             </table></td>
         </tr>
-      </table></td>
+      </table><input type="hidden" name="fax" value="<?php echo $fax;?>"></td>
   </tr>
   <?php
   if (ACCOUNT_COMPANY == 'true' && false) {
@@ -627,64 +619,7 @@ require("includes/note_js.php");
   </tr>
   <?php
   }
-?>
-
-<?php
-  $cpayment = payment::getInstance((int)$_GET['site_id']); 
-  $payment_array = payment::getPaymentList();
-  $payment_list[] = array('id' => '', 'text' => CREATE_PREORDER_PAYMENT_LIST_DEFAULT);
-  for($pnum = 0; $pnum<sizeof($payment_array[0]); $pnum++) {
-    if (!empty($payment_array[0][$pnum])) {
-      $payment_list[] = array('id' => $payment_array[0][$pnum], 'text' => $payment_array[1][$pnum]); 
-    }
-  }
-  $selection = $cpayment->admin_selection();
-  
-  $default_payment = '';
-  if (isset($_GET['Customer_mail']) && isset($_GET['site_id'])) {
-    $last_order_raw = tep_db_query("select payment_method from ".TABLE_PREORDERS." where customers_id = '".$customer."' and site_id = '".$_GET['site_id']."' order by orders_id desc limit 1");  
-     $last_order = tep_db_fetch_array($last_order_raw);
-     if ($last_order) {
-       $default_payment = payment::changeRomaji($last_order['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
-     }
-  }
-?>
-  <tr>
-    <td class="formAreaTitle"><br><?php echo CREATE_ORDER_PAYMENT_TITLE;?></td>
-  </tr>
-  <tr>
-    <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
-        <tr>
-          <td class="main">
-          <table border="0" cellspacing="0" cellpadding="2">
-              <tr>
-                <td class="main">&nbsp;<?php echo CREATE_ORDER_PAYMENT_TITLE;?>:</td>
-                <td class="main">
-                <?php echo tep_draw_pull_down_menu('payment_method', $payment_list, $default_payment, 'onchange="hidden_payment()"');?>  
-                </td>
-              </tr>
-              <?php
-              foreach ($selection as $skey => $singleton) { 
-              foreach ($singleton['fields'] as $fkey => $field) { 
-              ?>
-              <tr class="rowHide rowHide_<?php echo $singleton['id'];?>" <?php echo ($default_payment == $singleton['id'])?'style="display: table-row;"':'';?>>
-                <td class="main">
-                &nbsp;<?php echo $field['title'];?> 
-                </td>
-                <td class="main">
-                <?php echo $field['field'];?> 
-                <font color="#red"><?php echo $field['message'];?></font> 
-                </td>
-              </tr>
-              <?php }?> 
-              <?php }?> 
-          </table></td>
-
-        </tr>
-      </table>
-      <input type="hidden" name="fax" value="<?php echo $fax;?>">
-  </td>
-  </tr>
+?> 
   </form>
   <tr><td>
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -997,12 +932,15 @@ if(!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['c
     // Step 4: Confirm
     if($step > 3)
     {
+      $products_query = tep_db_query("select products_price from ".TABLE_PRODUCTS." where products_id = '".$add_product_products_id."'");
+      $products_array = tep_db_fetch_array($products_query);
+      tep_db_free_result($products_query);
       echo "<tr><form action='$PHP_SELF?oID=$oID&action=add_product$param_str' method='POST' id='edit_order_id' name='edit_order_id'>\n";
       echo "<td class='dataTableContent'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP .  " 4: </b></td>";
       $products_num = isset($_POST['add_product_quantity']) ? $_POST['add_product_quantity'] : 1;
       $products_price = isset($_POST['add_product_price']) ? $_POST['add_product_price'] : 0;
       echo '<td class="dataTableContent" valign="top">&nbsp;' .
-        ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input id="add_product_quantity" name="add_product_quantity" size="2" value="'.$products_num.'" onkeyup="clearLibNum(this);">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'&nbsp;&nbsp;'.TABLE_HEADING_UNIT_PRICE.'<input name="add_product_price" id="add_product_price" size="4" value="'.$products_price.'" onkeyup="clearNoNum(this);">&nbsp;'.EDIT_ORDERS_PRICE_UNIT.'&nbsp;&nbsp;&nbsp;'; 
+        ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input id="add_product_quantity" name="add_product_quantity" size="2" value="'.$products_num.'" onkeyup="clearLibNum(this);">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'<input type="hidden" name="add_product_price" id="add_product_price" size="4" value="'.(int)abs($products_array['products_price']).'">'; 
       echo '</td>';
       echo '<td class="dataTableContent" align="right"><input type="button" value="' . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . '" onclick="submit_check();">';
        

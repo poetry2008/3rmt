@@ -19,7 +19,6 @@
   $cpayment = payment::getInstance((int)$_SESSION['create_preorder']['orders']['site_id']);
 // START CONFIGURATION ################################
 
-
 // Optional Tax Rates, e.g. shipping tax of 17.5% is "17.5"
 // $AddCustomTax = "20.0"; // class "ot_custom", used for all unknown total modules
   $AddCustomTax = "19.6";  // new
@@ -101,6 +100,18 @@
   // 1. UPDATE ORDER ###############################################################################################
   case 'update_order':
   $update_user_info = tep_get_user_info($ocertify->auth_user);
+  $payment_method = $_POST['payment_method'];
+  $payment_method_romaji = payment::changeRomaji($payment_method,PAYMENT_RETURN_TYPE_CODE);
+  $payment_modules = payment::getInstance($_SESSION['create_preorder']['orders']['site_id']);
+  $validateModule = $payment_modules->admin_confirmation_check($payment_method);
+
+  if ($validateModule['validated']===false){
+
+        $selections = $payment_modules->admin_selection();
+        $selections[strtoupper($payment_method)] = $validateModule;
+        $action = 'edit';
+        break;
+  }
   $viladate = tep_db_input($_POST['update_viladate']);//viladate pwd 
   if($viladate!='_false'&&$viladate!=''){
       tep_insert_pwd_log($viladate,$ocertify->auth_user);
@@ -177,6 +188,7 @@
       $_SESSION['create_preorder']['orders_products'][$orders_products_id]['products_model'] = $products_details["model"];
       $_SESSION['create_preorder']['orders_products'][$orders_products_id]['products_name'] = str_replace("'", "&#39;", $products_details["name"]);
       $_SESSION['create_preorder']['orders_products'][$orders_products_id]['final_price'] = (tep_get_bflag_by_product_id((int)$orders_products_id) ? 0 - $products_details["final_price"] : $products_details["final_price"]);
+      $_SESSION['create_preorder']['orders_products'][$orders_products_id]['products_price'] = (tep_get_bflag_by_product_id((int)$orders_products_id) ? 0 - $products_details["p_price"] : $products_details["p_price"]);;
       $_SESSION['create_preorder']['orders_products'][$orders_products_id]['products_tax'] = $products_details["tax"];
       $_SESSION['create_preorder']['orders_products'][$orders_products_id]['products_quantity'] = $products_details["qty"];
       
@@ -191,6 +203,7 @@
       if (IsSet($products_details["attributes"])) {
         foreach ($products_details["attributes"] as $attributes_id => $attributes_details) {
           $_SESSION['create_preorder']['orders_products_attributes'][$orders_products_id][$attributes_id]['option_info'] = array('title' => $attributes_details['option'], 'value' => $attributes_details['value']);
+          $_SESSION['create_preorder']['orders_products_attributes'][$orders_products_id][$attributes_id]['options_values_price'] = tep_db_input($attributes_details['price']);
         }
       }
     } else { // b.) null quantity found --> delete
@@ -382,7 +395,7 @@
     $newtotal = '0';
   }
   
-  $payment_code = payment::changeRomaji($order['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
+  $payment_code = payment::changeRomaji($payment_method, PAYMENT_RETURN_TYPE_CODE); 
   $handle_fee = $cpayment->handle_calc_fee($payment_code, $newtotal); 
   
   $newtotal = $newtotal+$handle_fee;
@@ -422,6 +435,9 @@
       $new_orders2_id = '';
       $_SESSION['create_preorder']['orders']['orders_id']= date("Ymd") . '-' .  date("His") . tep_get_preorder_end_num();
       $new_orders2_id = $_SESSION['create_preorder']['orders']['orders_id'];
+      $sql_data_temp_array = $_SESSION['create_preorder']['orders'];
+      $cpayment->admin_add_additional_info($sql_data_temp_array, $_POST['payment_method']);
+      $_SESSION['create_preorder']['orders'] = $sql_data_temp_array;
       tep_db_perform(TABLE_PREORDERS, $_SESSION['create_preorder']['orders']);
       preorder_last_customer_action();
       preorders_updated($_SESSION['create_preorder']['orders']['orders_id']);
@@ -632,6 +648,7 @@
 //end print
       tep_pre_order_status_change($_SESSION['create_preorder']['orders']['orders_id'],$_SESSION['create_preorder']['orders']['orders_status']);      
       unset($_SESSION['create_preorder']);
+      unset($_SESSION['preorder_products'][$_GET['oID']]);
 
       tep_redirect(tep_href_link(FILENAME_PREORDERS, 'oID='.$sql_data_array['orders_id']));
     }
@@ -645,6 +662,9 @@
     } else {
       $messageStack->add_session(ERROR_NEW_PREORDERS_UPDATE, 'error');
     }
+    unset($_SESSION['create_preorder']);
+    unset($_SESSION['preorder_products'][$_GET['oID']]);
+    unset($_SESSION['orders_update_products'][$_GET['oID']]);
 
     tep_redirect(tep_href_link("edit_new_preorders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
     
@@ -681,6 +701,125 @@
 <script language="javascript" src="includes/jquery.form.js"></script>
 <script language="javascript" src="js2php.php?path=js&name=popup_window&type=js"></script>
 <script>
+var session_orders_id = '<?php echo $_GET['oID'];?>';
+function orders_session(type,value){
+  
+  $.ajax({
+    type: "POST",
+    data: 'orders_session_type='+type+'&orders_session_value='+value+'&orders_id='+session_orders_id,
+    async:false,
+    url: 'ajax_preorders.php?action=orders_session',
+    success: function(msg) {
+      
+    }
+  });
+}
+  //todo:修改通性用
+<?php
+      $payment_array = payment::getPaymentList();
+      foreach($payment_array[0] as $pay_key=>$pay_value){ 
+        $payment_info = $cpayment->admin_get_payment_info_comment($pay_value,$_SESSION['create_preorder']['orders']['customers_email_address'],$_SESSION['create_preorder']['orders']['site_id']);
+        if(is_array($payment_info)){
+
+          switch($payment_info[0]){
+          case 1: 
+            $handle_fee_code = $cpayment->handle_calc_fee( payment::changeRomaji($pay_value,PAYMENT_RETURN_TYPE_CODE), $_SESSION['create_preorder']['orders_total']['ot_total']['value']);
+            $pay_type_str = $pay_value;
+            break;  
+          }
+        } 
+      }
+  $op_info_str = '';
+  $op_info_array = array();
+  foreach($_SESSION['create_preorder']['orders_products'] as $orders_key=>$orders_value){
+   $products_id_str = $orders_key; 
+  }
+  foreach($_SESSION['create_preorder']['orders_products_attributes'] as $attr_key=>$attr_value){ 
+    foreach($attr_value as $attr_str_key=>$attr_str_value){
+      $op_info_array[] = $attr_str_key; 
+    }   
+  } 
+  $op_info_str = implode('|||',$op_info_array);
+?>
+  function hidden_payment(){
+  var idx = document.edit_order.elements["payment_method"].selectedIndex;
+  var CI = document.edit_order.elements["payment_method"].options[idx].value;
+  $(".rowHide").hide();
+  $(".rowHide").find("input").attr("disabled","true");
+  $(".rowHide_"+CI).show();
+  $(".rowHide_"+CI).find("input").removeAttr("disabled");
+  if(CI == '<?php echo $pay_type_str;?>'){
+    $("#handle_fee_id").html('<?php echo $handle_fee_code.TEXT_MONEY_SYMBOL;?>');
+  }else{
+    $("#handle_fee_id").html(0+'<?php echo TEXT_MONEY_SYMBOL;?>'); 
+  }
+  price_total();
+  recalc_preorder_price("<?php echo $_GET['oID'];?>", "<?php echo $products_id_str;?>", "0", "<?php echo $op_info_str;?>");
+  }
+$(document).ready(function(){
+  hidden_payment();
+  $("input[name='con_email']").blur(function(){
+    var con_email = document.getElementsByName("con_email")[0].value;
+    orders_session('con_email',con_email);
+  });
+  $("input[name='bank_name']").blur(function(){
+    var payment_value = document.getElementsByName("bank_name")[0].value;
+    orders_session('bank_name',payment_value);
+  });
+  $("input[name='bank_shiten']").blur(function(){
+    var payment_value = document.getElementsByName("bank_shiten")[0].value;
+    orders_session('bank_shiten',payment_value);
+  });
+  $("input[name='bank_kamoku']").click(function(){
+    if(document.getElementsByName("bank_kamoku")[0].checked == true){
+      var payment_value = document.getElementsByName("bank_kamoku")[0].value;
+    }else{
+      var payment_value = document.getElementsByName("bank_kamoku")[1].value; 
+    }
+    orders_session('bank_kamoku',payment_value);
+  });
+  $("input[name='bank_kouza_num']").blur(function(){
+    var payment_value = document.getElementsByName("bank_kouza_num")[0].value;
+    orders_session('bank_kouza_num',payment_value);
+  });
+  $("input[name='bank_kouza_name']").blur(function(){
+    var payment_value = document.getElementsByName("bank_kouza_name")[0].value;
+    orders_session('bank_kouza_name',payment_value);
+  });
+  $("input[name='rak_tel']").blur(function(){
+    var payment_value = document.getElementsByName("rak_tel")[0].value;
+    orders_session('rak_tel',payment_value);
+  });
+  $("select[name='status']").change(function(){
+    var s_status = document.getElementsByName("status")[0].value;
+    orders_session('s_status',s_status);
+    var title = document.getElementsByName("title")[0].value;
+    orders_session('title',title);
+    var comments = document.getElementsByName("comments")[0].value;
+    orders_session('comments',comments);
+  }); 
+  $("input[name='etitle']").blur(function(){
+    var title = document.getElementsByName("etitle")[0].value;
+    orders_session('etitle',title);
+  });
+  $("textarea[name='comments']").blur(function(){
+    var comments = document.getElementsByName("comments")[0].value;
+    orders_session('comments',comments);
+  }); 
+  $("input[name='notify']").click(function(){
+    var notify = document.getElementsByName("notify")[0].checked;
+    notify = notify == true ? 1 : 0;
+    orders_session('notify',notify);
+  });
+  $("input[name='notify_comments']").click(function(){
+    var notify_comments = document.getElementsByName("notify_comments")[0].checked;
+    notify_comments = notify_comments == true ? 1 : 0;
+    orders_session('notify_comments',notify_comments);
+  });
+  $("select[name='payment_method']").change(function(){
+    hidden_payment();
+  });
+});
 function add_option(){
     var add_num = $("#button_add_id").val();
     add_num = parseInt(add_num);
@@ -738,17 +877,50 @@ function fmoney(s)
        return t.split("").reverse().join("");
 }
 
-function recalc_preorder_price(oid, opd, o_str, oid_price, op_price)
+function recalc_preorder_price(oid, opd, o_str, op_str)
 {
   
+  var op_array = op_str.split("|||"); 
+  var op_price = 0;
+  var op_price_total = 0;
+  var oid_price = 0;
+  var op_price_str = ''; 
+  oid_price = document.getElementsByName('update_products['+opd+'][p_price]')[0].value;
+  if(op_str != ''){
+    for(x in op_array){
+
+      op_price = document.getElementsByName('update_products['+opd+'][attributes]['+op_array[x]+'][price]')[0].value;  
+      op_price = parseInt(op_price);
+      op_price_total += op_price;
+      op_price_str += op_price+'|||';
+    }
+  }
   pro_num = document.getElementById('p_'+opd).value;
   p_price = oid_price; 
   p_final_price = document.getElementsByName('update_products['+opd+'][final_price]')[0].value;  
-  p_op_info = op_price;  
+  p_op_info = op_price_total;  
 
+  var update_total_temp;
+  var update_total_num = 0;
+  var add_num = $("#button_add_id").val();
+  var total_str = '';
+  var total_price_str = '';
+  for(var i = 1;i <= add_num;i++){
+     
+        if(document.getElementById('update_totals_'+i)){
+          update_total_temp = document.getElementById('update_totals_'+i).value; 
+          update_total_temp_value = update_total_temp;
+          if(update_total_temp == ''){update_total_temp = 0;}
+          update_total_temp = parseInt(update_total_temp);
+          update_total_num += update_total_temp;
+          total_str += i+'|||';
+          total_price_str += update_total_temp_value+'|||';
+        }
+  }
+  var payment_method = document.getElementsByName('payment_method')[0].value;
   $.ajax({
     type: "POST",
-    data:'oid='+oid+'&opd='+opd+'&o_str='+o_str+'&op_price='+p_op_info+'&p_num='+pro_num+'&p_price='+p_price+'&p_final_price='+p_final_price,
+    data:'oid='+oid+'&opd='+opd+'&o_str='+o_str+'&op_price='+p_op_info+'&p_num='+pro_num+'&p_price='+p_price+'&p_final_price='+p_final_price+'&update_total_num='+update_total_num+'&op_str='+op_str+'&op_price_str='+op_price_str+'&total_str='+total_str+'&total_price_str='+total_price_str+'&payment_method='+payment_method,
     async:false,
     url: 'ajax_preorders.php?action=recalc_price',
     success: function(msg) {
@@ -773,6 +945,7 @@ function recalc_preorder_price(oid, opd, o_str, oid_price, op_price)
         document.getElementById('update_products['+opd+'][c_price]').innerHTML = '<b>'+msg_info[6]+'</b>'; 
       }
       document.getElementById('ot_subtotal_id').innerHTML = document.getElementById('update_products['+opd+'][c_price]').innerHTML;
+      document.getElementById('handle_fee_id').innerHTML = msg_info[8]+'<?php echo TEXT_MONEY_SYMBOL;?>';
       var opd_str_value = document.getElementById('ot_subtotal_id').innerHTML;
       var opd_str_temp = opd_str_value;
       opd_str_value = opd_str_value.replace(/<.*?>/g,'');
@@ -785,19 +958,7 @@ function recalc_preorder_price(oid, opd, o_str, oid_price, op_price)
       handle_fee_id = handle_fee_id.replace(/,/g,'');
       handle_fee_id = handle_fee_id.replace('<?php echo TEXT_MONEY_SYMBOL;?>','');
       handle_fee_id = parseInt(handle_fee_id);  
-
-      var update_total_temp;
-      var update_total_num = 0;
-      var add_num = $("#button_add_id").val();
-      for(var i = 1;i <= add_num;i++){
-     
-        if(document.getElementById('update_totals_'+i)){
-          update_total_temp = document.getElementById('update_totals_'+i).value; 
-          if(update_total_temp == ''){update_total_temp = 0;}
-          update_total_temp = parseInt(update_total_temp);
-          update_total_num += update_total_temp;
-        }
-      }
+ 
       if(opd_str_temp.indexOf('color') > 0){
          
          ot_total = handle_fee_id+update_total_num-opd_str_value;
@@ -1215,10 +1376,217 @@ if (($action == 'edit') && ($order_exists == true)) {
               <tr>
                 <td class="main" valign="top"><b><?php echo EDIT_ORDERS_PAYMENT_METHOD;?></b></td>
                 <td class="main">
-                <?php 
-                $payment_code = payment::changeRomaji($order['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
-                echo payment::makePaymentListPullDownMenu($payment_code); 
-                ?>
+      <?php 
+      //payment method
+      $pay_info_array = array();
+      $pay_orders_id_array = array();
+      $pay_type_array = array();
+      $payment_negative_array = array();
+      $payment_positive_array = array();
+      foreach($payment_array[0] as $pay_key=>$pay_value){ 
+        $payment_info = $cpayment->admin_get_payment_info_comment($pay_value,$_SESSION['create_preorder']['orders']['customers_email_address'],$_SESSION['create_preorder']['orders']['site_id'],0);
+        if(is_array($payment_info)){
+
+          switch($payment_info[0]){
+          case 0: 
+            $pay_orders_id_array[0] = $payment_info[1];
+            $pay_type_array[0] = $pay_value;
+            $payment_negative_array[] = $payment_array[1][$pay_key];
+            break;
+          case 1: 
+            $pay_orders_id_array[1] = $payment_info[1];
+            $pay_type_array[1] = $pay_value;
+            $payment_positive_array[] = $payment_array[1][$pay_key];
+            break;
+          case 2: 
+            $pay_orders_id_array[2] = $payment_info[1];
+            $pay_type_array[2] = $pay_value;
+            $payment_positive_array[] = $payment_array[1][$pay_key];
+            break;
+          case 3:
+            $payment_negative_array[] = $payment_array[1][$pay_key];
+            break;
+          case 4:
+            $payment_negative_array[] = $payment_array[1][$pay_key];
+            break;
+          case 5:
+            $payment_zero = $payment_array[0][$pay_key];
+            break;
+          case 6:
+            $payment_default = $payment_array[0][$pay_key];
+            $payment_positive_array[] = $payment_array[1][$pay_key];
+            break; 
+          }
+        }else{
+
+           $payment_positive_array[] = $payment_array[1][$pay_key];
+        }
+      }     
+      
+      $payment_negative_array = array_unique($payment_negative_array);       
+      $payment_positive_array = array_unique($payment_positive_array); 
+      $products_money_total = $_SESSION['create_preorder']['orders_total']['ot_total']['value'];
+      if($products_money_total != 0){
+          $orders_payment_query = tep_db_query("select payment_method,orders_id from ". TABLE_PREORDERS ." where customers_email_address='". $_SESSION['create_preorder']['orders']['customers_email_address'] ."' and site_id='". $_SESSION['create_preorder']['orders']['site_id'] ."' order by orders_id desc"); 
+          while($orders_payment_array = tep_db_fetch_array($orders_payment_query)){
+
+            if($orders_payment_array['payment_method'] != ''){
+              if($products_money_total > 0 && in_array($orders_payment_array['payment_method'],$payment_positive_array)){
+                $payment_num = array_search($orders_payment_array['payment_method'],$payment_array[1]);
+                $pay_method = $orders_payment_array['payment_method'];
+                break;
+              }
+              if($products_money_total < 0 && in_array($orders_payment_array['payment_method'],$payment_negative_array)){
+                $payment_num = array_search($orders_payment_array['payment_method'],$payment_array[1]);
+                $pay_method = $orders_payment_array['payment_method'];
+                break;
+              }
+            }
+          }
+          tep_db_free_result($orders_payment_query);
+      }
+       
+          if($pay_orders_id_array[0] != ''){ 
+            $orders_status_history_query = tep_db_query("select comments from ". TABLE_PREORDERS_STATUS_HISTORY ." where orders_id='".$pay_orders_id_array[0]."' order by date_added desc"); 
+            while($orders_status_history_array = tep_db_fetch_array($orders_status_history_query)){
+              if($orders_status_history_array['comments']!=''){
+                $orders_status_list_array = array();
+                $orders_status_list_array = explode("\n",$orders_status_history_array['comments']);
+                $status_flag = false;
+                foreach($orders_status_list_array as $orders_value){
+
+                  $orders_list_array = array();
+                  $orders_list_array = explode(':',$orders_value);
+                  if(trim($orders_list_array[1]) == '' && count($orders_list_array) > 1){
+
+                    $status_flag = true; 
+                    break;
+                  }
+                }
+                if($status_flag == false){
+                  $pay_info_array[0] = $orders_status_history_array['comments']; 
+                  break;
+                }
+              }
+            }
+            tep_db_free_result($orders_status_history_query);
+          }
+          if($pay_orders_id_array[1] != ''){ 
+            $orders_status_history_query = tep_db_query("select comments from ". TABLE_PREORDERS_STATUS_HISTORY ." where orders_id='".$pay_orders_id_array[1]."' order by date_added desc"); 
+            while($orders_status_history_array = tep_db_fetch_array($orders_status_history_query)){
+              if($orders_status_history_array['comments']!=''){
+                $orders_status_list_array = array();
+                $orders_status_list_array = explode("\n",$orders_status_history_array['comments']);
+                $status_flag = false;
+                foreach($orders_status_list_array as $orders_value){
+
+                  $orders_list_array = array();
+                  $orders_list_array = explode(':',$orders_value);
+                  if(trim($orders_list_array[1]) == '' && count($orders_list_array) > 1){
+
+                    $status_flag = true; 
+                    break;
+                  }
+                }
+                if($status_flag == false){
+                  $pay_info_array[1] = $orders_status_history_array['comments']; 
+                  break;
+                }
+              }
+            }
+            tep_db_free_result($orders_status_history_query);
+          }
+          if($pay_orders_id_array[2] != ''){ 
+            $orders_status_history_query = tep_db_query("select comments from ". TABLE_PREORDERS_STATUS_HISTORY ." where orders_id='".$pay_orders_id_array[2]."' order by date_added desc"); 
+            while($orders_status_history_array = tep_db_fetch_array($orders_status_history_query)){
+              if($orders_status_history_array['comments']!=''){
+                $orders_status_list_array = array();
+                $orders_status_list_array = explode("\n",$orders_status_history_array['comments']);
+                $status_flag = false;
+                foreach($orders_status_list_array as $orders_value){
+
+                  $orders_list_array = array();
+                  $orders_list_array = explode(':',$orders_value);
+                  if(trim($orders_list_array[1]) == '' && count($orders_list_array) > 1){
+
+                    $status_flag = true; 
+                    break;
+                  }
+                }
+                if($status_flag == false){
+                  $pay_info_array[2] = $orders_status_history_array['comments']; 
+                  break;
+                }
+              }
+            }
+            tep_db_free_result($orders_status_history_query);
+          }
+          $code_payment_method = $payment_array[0][$payment_num]; 
+          if($pay_method == ''){
+            if($products_money_total > 0){
+
+              $pay_method = $payment_default;
+            }
+            if($products_money_total < 0){
+
+              $pay_method = $pay_type_array[0];
+            }
+            if($products_money_total == 0){
+
+              $pay_method = $payment_zero;
+            }
+          }else{
+
+            $pay_method = $pay_method;
+          } 
+          //end
+          $pay_method = isset($_SESSION['create_preorder']['orders']['payment_method']) ? $_SESSION['create_preorder']['orders']['payment_method'] : $pay_method;
+          $pay_method = isset($_POST['payment_method']) ? $_POST['payment_method'] : $pay_method;
+          $payment_code = payment::changeRomaji($pay_method, PAYMENT_RETURN_TYPE_CODE); 
+          $_SESSION['create_preorder']['orders']['payment_method'] = $payment_code;
+          echo payment::makePaymentListPullDownMenu($payment_code); 
+          echo "\n".'<script language="javascript">'."\n"; 
+          echo '$(document).ready(function(){'."\n";
+
+          $cpayment->admin_show_payment_list($payment_code,$pay_info_array);
+          
+          echo '});'."\n";
+          echo '</script>'."\n";
+      
+          
+          if(!isset($selections)){
+            $selections = $cpayment->admin_selection();
+          } 
+          echo '<tr><td class="main"></td><td class="main"><table>';
+          foreach ($selections as $se){
+            $pay_k = 0;
+            foreach($se['fields'] as $field ){
+              echo '<tr class="rowHide rowHide_'.$se['id'].'">';
+              echo '<td class="main">';
+              echo $field['title']."</td>";
+              echo "<td class='main'>";
+              echo "&nbsp;&nbsp;".$field['field'];
+              if(isset($_POST['payment_method'])){
+                $pay_arr = array();
+                preg_match_all('/name="(.*?)"/',$field['field'],$pay_arr);
+                if(trim($_POST[$pay_arr[1][0]]) == ''){
+                  $field['message'] = $field['message'] != '' ? ADDRESS_ERROR_OPTION_ITEM_TEXT_NULL : ''; 
+                }else{
+                  $field['message'] = $field['message'] != '' ? ADDRESS_ERROR_OPTION_ITEM_TEXT_TYPE_WRONG : ''; 
+                }
+              }else{
+                if(!$cpayment->admin_get_payment_buying_type($payment_code,$field['title']) && $pay_k != 2){
+                  $field['message'] = TEXT_REQUIRE;
+                }
+              }
+              echo "<font color='red'>&nbsp;".$field['message']."</font>";
+              echo "</td>";
+              echo "</tr>";
+              $pay_k++;
+           } 
+         }
+          echo '</table></td></tr>';  
+        ?>
                 </td>
               </tr>
               <!-- End Payment Block -->
@@ -1262,6 +1630,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <td class="dataTableHeadingContent" colspan="2"><?php echo TABLE_HEADING_NUM_PRO_NAME;?></td>
     <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_PRODUCTS_MODEL; ?></td>
     <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CURRENICY; ?></td>
+    <td class="dataTableHeadingContent" align="center"><?php echo TABLE_HEADING_PRODUCTS_PRICE; ?></td>
     <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_PRICE_BEFORE; ?></td>
     <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_PRICE_AFTER; ?></td>
     <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_BEFORE; ?></td>
@@ -1270,6 +1639,12 @@ if (($action == 'edit') && ($order_exists == true)) {
   </tr>
   
 <?php 
+  $op_info_str = '';
+  $op_info_array = array();
+  foreach($order_products_attributes[$pid] as $attributes_key=>$attributes_value){
+    $op_info_array[] = $attributes_key;   
+  } 
+  $op_info_str = implode('|||',$op_info_array);
   foreach ($order_products as $pid => $orders_products) { 
     $products_id = '';
     $orders_price = $orders_products['price'];
@@ -1292,13 +1667,14 @@ if (($action == 'edit') && ($order_exists == true)) {
       $op_price += $orders_att_value['options_values_price'];
     }
     $RowStyle = "dataTableContent";
+    $order_products[$pid]['qty'] = isset($_SESSION['preorder_products'][$_GET['oID']]['qty']) ? $_SESSION['preorder_products'][$_GET['oID']]['qty'] : $order_products[$pid]['qty']; 
     $orders_products_num = isset($_POST['update_products'][$pid]['qty']) ? $_POST['update_products'][$pid]['qty'] : $order_products[$pid]['qty'];
     echo '    <tr class="dataTableRow">' . "\n" .
          '      <td class="' . $RowStyle . '" align="left" valign="top" width="6%">'
-         . "<input name='update_products[$pid][qty]' id='p_".$pid."' size='2' value='" . $orders_products_num . "' onkeyup='clearLibNum(this);recalc_preorder_price(\"".$oID."\", \"".$pid."\", \"0\", \"".$orders_price."\", \"".$op_price."\");' class='update_products_qty'>&nbsp;x</td>\n" . 
+         . "<input name='update_products[$pid][qty]' id='p_".$pid."' size='2' value='" . $orders_products_num . "' onkeyup='clearLibNum(this);recalc_preorder_price(\"".$oID."\", \"".$pid."\", \"0\", \"".$op_info_str."\");' class='update_products_qty'>&nbsp;x</td>\n" . 
          '      <td class="' . $RowStyle . '" width="35%">' . $order_products[$pid]['name'] . "<input name='update_products[$pid][name]' size='64' type='hidden' value='" . $order_products[$pid]['name'] . "'>\n" . 
        '      &nbsp;&nbsp;';
-    // Has Attributes?
+    // Has Attributes? 
     if (sizeof($order_products_attributes[$pid]) > 0) {
       echo '<div id="popup_window" class="popup_window"></div>';
       for ($j=0; $j<sizeof($order_products_attributes[$pid]); $j++) {
@@ -1339,21 +1715,34 @@ if (($action == 'edit') && ($order_exists == true)) {
         $default_value = tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['value']), array("'"=>"&quot;")) == '' ? TEXT_UNSET_DATA : tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['value']), array("'"=>"&quot;"));
         echo '<br><div class="order_option_width">&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' .tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['title']), array("'"=>"&quot;")).'<input type="hidden" class="option_input_width" name="update_products[' .  $pid . '][attributes]['.$j.'][option]" value=\'' .  tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['title']), array("'"=>"&quot;")) . '\'>: ' . 
            '</div><div class="order_option_value"><a onclick="popup_window(this,\''.$item_type.'\',\''.tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['title']), array("'"=>"&quot;")).'\',\''.$item_list.'\');" href="javascript:void(0);"><u>' . 
-           $default_value.'</u></a><input type="hidden" class="option_input_width" name="update_products[' . $pid .  '][attributes]['.$j.'][value]" value=\'' .  tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['value']), array("'"=>"&quot;")).'\'></div>';
+           $default_value.'</u></a><input type="hidden" class="option_input_width" name="update_products[' . $pid .  '][attributes]['.$j.'][value]" value=\'' .  tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['value']), array("'"=>"&quot;")).'\'></div></div>';
+        echo '<div class="order_option_price">';
+        $order_products_attributes[$pid][$j]['price'] = isset($_SESSION['preorder_products'][$_GET['oID']]['attr'][$j]) ? $_SESSION['preorder_products'][$_GET['oID']]['attr'][$j] : $order_products_attributes[$pid][$j]['price'];
+        echo "<input size='9' type='text' name='update_products[$pid][attributes][$j][price]' value='".(int)(isset($_POST['update_products'][$pid]['attributes'][$j]['price'])?$_POST['update_products'][$pid]['attributes'][$j]['price']:$order_products_attributes[$pid][$j]['price'])."' onkeyup=\"clearLibNum(this);recalc_preorder_price('".$oID."', '".$pid."', '0', '".$op_info_str."');\">";
+        echo TEXT_MONEY_SYMBOL;
+        echo '</div>'; 
         //if ($order_products_attributes[$pid][$j]['price'] != '0') {
           //echo ' ('.$currencies->format($order_products_attributes[$pid][$j]['price'] * $order_products[$pid]['qty']).')'; 
         //}
-        echo '</div></i></div>';
+        echo '</i></div>';
       }
     }
     
     echo '      </td>' . "\n" .
          '      <td class="' . $RowStyle . '">' . $order_products[$pid]['model'] . "<input name='update_products[$pid][model]' size='12' type='hidden' value='" . $order_products[$pid]['model'] . "'>" . '</td>' . "\n" .
-         '      <td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($order_products[$pid]['tax']) . "<input name='update_products[$pid][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order_products[$pid]['tax']) . "'>" . '%</td>' . "\n" .
-         '      <td class="' . $RowStyle . '" align="right">' . "<input type='hidden' name='update_products[$pid][final_price]' onkeyup='clearLibNum(this);recalc_preorder_price(\"".$oID."\", \"".$pid."\", \"1\", \"".$orders_price."\", \"".$op_price."\");' size='9' style='text-align:right;' value='" . tep_display_currency(number_format(abs($order_products[$pid]['final_price']),2)) 
+         '      <td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($order_products[$pid]['tax']) . "<input name='update_products[$pid][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order_products[$pid]['tax']) . "'>" . '%</td>' . "\n";
+         $order_products[$pid]['price'] = isset($_SESSION['preorder_products'][$_GET['oID']]['price']) ? $_SESSION['preorder_products'][$_GET['oID']]['price'] : $order_products[$pid]['price'];
+         $orders_products_type = '';
+         if(tep_get_bflag_by_product_id((int)$pid)){
+
+           $orders_products_type = '−';
+         }
+         echo '<td class="'.$RowStyle.'" align="right">'.$orders_products_type.'<input type="text" style="text-align:right;" class="once_pwd" name="update_products['.$pid.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs(isset($_POST['update_products'][$pid]['p_price'])?$_POST['update_products'][$pid]['p_price']:$order_products[$pid]['price']), 2)).'" onkeyup="clearNoNum(this);recalc_preorder_price(\''.$oID.'\', \''.$pid.'\', \'0\',\''.$op_info_str.'\');">'.TEXT_MONEY_SYMBOL.'</td>';
+         $order_products[$pid]['final_price'] = isset($_SESSION['preorder_products'][$_GET['oID']]['final_price']) ? $_SESSION['preorder_products'][$_GET['oID']]['final_price'] : $order_products[$pid]['final_price'];
+         echo '      <td class="' . $RowStyle . '" align="right">' . "<input type='hidden' name='update_products[$pid][final_price]' onkeyup='clearLibNum(this);recalc_preorder_price(\"".$oID."\", \"".$pid."\", \"1\", \"".$orders_price."\", \"".$op_price."\");' size='9' style='text-align:right;' value='" . tep_display_currency(number_format(abs($order_products[$pid]['final_price']),2)) 
          . "'  onkeyup='clearNoNum(this)' class='once_pwd' >" . 
          '<input type="hidden" name="op_id_'.$pid.'" 
-         value="'.tep_get_pre_product_by_op_id($pid,'pid').'"><div id="update_products['.$pid.'][final_price]">'; 
+         value="'.tep_get_pre_product_by_op_id($pid,'pid').'"><div id="update_products['.$pid.'][final_price]">';  
      if ($order_products[$pid]['final_price'] < 0) {
       echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($order_products[$pid]['final_price'], true, $order['currency'], $order['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
     } else {
@@ -1367,7 +1756,8 @@ if (($action == 'edit') && ($order_exists == true)) {
       echo $currencies->format(tep_add_tax($order_products[$pid]['final_price'], $order_products[$pid]['tax']), true, $order['currency'], $order['currency_value']);
     }
     echo '</div></td>' . "\n" . 
-         '      <td class="' . $RowStyle . '" align="right"><div id="update_products['.$pid.'][b_price]">';
+      '      <td class="' . $RowStyle . '" align="right"><div id="update_products['.$pid.'][b_price]">';
+    $order_products[$pid]['qty'] = isset($_POST['update_products'][$pid]['qty']) ? $_POST['update_products'][$pid]['qty'] : $order_products[$pid]['qty'];
     if ($order_products[$pid]['final_price'] < 0) {
       echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($order_products[$pid]['final_price'] * $order_products[$pid]['qty'], true, $order['currency'], $order['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
     } else {
@@ -1478,6 +1868,7 @@ if (($action == 'edit') && ($order_exists == true)) {
            '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_OTTOTAL_READ.'</td>' . 
            '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' . 
            '    <td align="right" class="' . $TotalStyle . '"><b><div id="ot_total_id">';
+                $TotalDetails["Price"] = isset($_SESSION['preorder_products'][$_GET['oID']]['ot_total']) ? $_SESSION['preorder_products'][$_GET['oID']]['ot_total'] : $TotalDetails["Price"];
                 if($TotalDetails["Price"]>=0){
                   echo  $currencies->ot_total_format($TotalDetails["Price"], true,
                       $order['currency'], $order['currency_value']);
@@ -1496,6 +1887,7 @@ if (($action == 'edit') && ($order_exists == true)) {
            '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_OTSUBTOTAL_READ.'</td>' . 
            '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' .
            '    <td align="right" class="' . $TotalStyle . '"><b><div id="ot_subtotal_id">';
+           $TotalDetails["Price"] = isset($_SESSION['preorder_products'][$_GET['oID']]['ot_subtotal']) ? $_SESSION['preorder_products'][$_GET['oID']]['ot_subtotal'] : $TotalDetails["Price"];
            if($TotalDetails["Price"]>=0){
                   echo  $currencies->ot_total_format($TotalDetails["Price"], true,
                       $order['currency'], $order['currency_value']);
@@ -1552,10 +1944,14 @@ if (($action == 'edit') && ($order_exists == true)) {
       }
     } else {
       $button_add = $TotalIndex == count($TotalsArray)-2 ? '<INPUT type="button" id="button_add" value="'.TEXT_BUTTON_ADD.'" onClick="add_option();"><input type="hidden" id="button_add_id" value="'.(count($TotalsArray)-1).'">&nbsp;' : '';
+      $TotalDetails["Name"] = isset($_POST['update_totals'][$TotalIndex]['title']) ? $_POST['update_totals'][$TotalIndex]['title'] : $TotalDetails["Name"];
+      $TotalDetails["Price"] = isset($_SESSION['preorder_products'][$_GET['oID']]['customer'][$TotalIndex]) ? $_SESSION['preorder_products'][$_GET['oID']]['customer'][$TotalIndex] : $TotalDetails["Price"];
+      $TotalDetails["Price"] = isset($_POST['update_totals'][$TotalIndex]['value']) ? $_POST['update_totals'][$TotalIndex]['value'] : $TotalDetails["Price"];
+      $TotalDetails["Name"] = isset($_SESSION['orders_update_products'][$_GET['oID']]['customers_total_'.$TotalIndex]) ? $_SESSION['orders_update_products'][$_GET['oID']]['customers_total_'.$TotalIndex] : $TotalDetails["Name"];
       echo '  <tr>' . "\n" .
            '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_TOTALDETAIL_READ_ONE.'</td>' . 
-           '    <td style="min-width:180px;" align="right" class="' . $TotalStyle . '">' . $button_add ."<input name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
-           '    <td align="right" class="' . $TotalStyle . '">' . "<input name='update_totals[$TotalIndex][value]' id='update_totals_$TotalIndex' onkeyup='clearNoNum(this);price_total();' size='6' value='" . $TotalDetails["Price"] . "'>" . 
+           '    <td style="min-width:180px;" align="right" class="' . $TotalStyle . '">' . $button_add ."<input name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "' onblur='orders_session(\"customers_total_".$TotalIndex."\",this.value);'>" . '</td>' . "\n" .
+           '    <td align="right" class="' . $TotalStyle . '">' . "<input name='update_totals[$TotalIndex][value]' id='update_totals_$TotalIndex' onkeyup='clearNoNum(this);price_total();recalc_preorder_price(\"".$oID."\", \"".$pid."\", \"0\", \"".$op_info_str."\");' size='6' value='" . $TotalDetails["Price"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . 
            '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
@@ -1600,18 +1996,20 @@ if (($action == 'edit') && ($order_exists == true)) {
           $is_select_query = tep_db_query(" select orders_status_id, orders_status_name from " . TABLE_PREORDERS_STATUS . " where language_id = '" . (int)$languages_id . "' limit 1");
           $is_select_res = tep_db_fetch_array($is_select_query); 
           $sel_status_id = DEFAULT_PREORDERS_STATUS_ID; 
+          $customer_notified = isset($_SESSION['orders_update_products'][$_GET['oID']]['notify']) ? $_SESSION['orders_update_products'][$_GET['oID']]['notify'] : $customer_notified;
+          $sel_status_id = isset($_SESSION['orders_update_products'][$_GET['oID']]['s_status']) ? $_SESSION['orders_update_products'][$_GET['oID']]['s_status'] : $sel_status_id;
           echo tep_draw_pull_down_menu('status', $orders_statuses, $sel_status_id, 'id="status" onchange="check_prestatus();" style="width:80px;"'); 
           ?>
           </td>
         </tr>
         <tr>
           <td class="main"><b><?php echo EDIT_ORDERS_SEND_MAIL_TEXT; ?></b></td>
-          <td class="main"><table bgcolor="red" cellspacing="5"><tr><td><?php echo tep_draw_checkbox_field('notify', '', isset($_GET['dtype'])?false:true); ?></td></tr></table></td>
+          <td class="main"><table bgcolor="red" cellspacing="5"><tr><td><?php echo tep_draw_checkbox_field('notify', '', isset($_GET['dtype'])?false:$_POST['notify'] == 1 ? true : isset($_SESSION['orders_update_products'][$_GET['oID']]['notify']) && $_SESSION['orders_update_products'][$_GET['oID']]['notify']== 1 ? true :false); ?></td></tr></table></td>
         </tr>
         <?php if($CommentsWithStatus) { ?>
         <tr>
           <td class="main"><b><?php echo EDIT_ORDERS_RECORD_TEXT; ?></b></td>
-          <td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', false); ?>&nbsp;&nbsp;<b style="color:#FF0000;"><?php echo EDIT_ORDERS_RECORD_READ; ?></b></td>
+          <td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', isset($_SESSION['orders_update_products'][$_GET['oID']]['notify_comments']) && $_SESSION['orders_update_products'][$_GET['oID']]['notify_comments'] == 1 ? true: false); ?>&nbsp;&nbsp;<b style="color:#FF0000;"><?php echo EDIT_ORDERS_RECORD_READ; ?></b></td>
         </tr>
         <?php } ?>
       </table>
@@ -1622,6 +2020,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     $ma_se = "select * from ".TABLE_PREORDERS_MAIL." where orders_status_id = '".$sel_status_id."'"; 
     $mail_sele = tep_db_query($ma_se);
     $mail_sql = tep_db_fetch_array($mail_sele);
+    $mail_sql['orders_status_title'] = isset($_SESSION['orders_update_products'][$_GET['oID']]['etitle']) ? $_SESSION['orders_update_products'][$_GET['oID']]['etitle'] : $mail_sql['orders_status_title'];  
     ?>
     <?php   
     echo '<b>'.TEXT_EMAIL_TITLE.'</b>'.tep_draw_input_field('etitle', $mail_sql['orders_status_title'],'style="width:230px;"'); 
@@ -1635,7 +2034,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       $order_a_str .= $ovalue['character']."\n"; 
     }
     ?>
-    <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}', $order_a_str, $mail_sql['orders_status_mail']);?></textarea>
+    <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}', $order_a_str, isset($_POST['comments']) ? $_POST['comments'] : isset($_SESSION['orders_update_products'][$_GET['oID']]['comments']) ? $_SESSION['orders_update_products'][$_GET['oID']]['comments'] : $mail_sql['orders_status_mail']);?></textarea>
     </td>
   </tr>
 </table>
