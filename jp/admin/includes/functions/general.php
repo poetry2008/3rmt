@@ -5594,11 +5594,30 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
       } else {
         $before_time = strtotime("-".$limit_time." days", $now_time); 
       }
-      $order_query = tep_db_query("select o.orders_id from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where o.orders_id = op.orders_id and op.products_id = '".$products_id."' and o.date_purchased <= '".date('Y-m-d H:i:s', $now_time)."' and o.date_purchased >= '".date('Y-m-d H:i:s', $before_time)."' limit 1");
-
+      /*
+      $order_query = tep_db_query("select o.orders_id from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where o.orders_id = op.orders_id and op.products_id = '".$products_id."' and o.date_purchased >= '".date('Y-m-d H:i:s', $before_time)."' limit 1");
       if (tep_db_num_rows($order_query)) {
         return true; 
       }
+      */
+      $order_arr = array();
+      $order_query = tep_db_query("select orders_id from ".TABLE_ORDERS." where date_purchased >= '".date('Y-m-d H:i:s', $before_time)."'");
+      while($order_row = tep_db_fetch_array($order_query)){
+        $order_arr[] = $order_row['orders_id'];
+      }
+      $order_product_arr = array();
+      $order_product_query = tep_db_query("select orders_id from ".TABLE_ORDERS_PRODUCTS." where products_id = '".$products_id."'");
+      while($order_product_row = tep_db_fetch_array($order_product_query)){
+        $order_product_arr[] = $order_product_row['orders_id'];
+      }
+      if(empty($order_arr)||empty($order_product_arr)){
+        return true;
+      }
+      $intersect_order = array_intersect($order_product_arr,$order_arr);
+      if(!empty($intersect_order)){
+        return true;
+      }
+
     }
 
     return false;
@@ -5638,13 +5657,18 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
 
     return 'cPath=' . $cPath_new;
   }
-  function tep_calc_limit_time_by_order_id($products_id, $single = false, $limit_time_info = '')
+  function tep_calc_limit_time_by_order_id($products_id, $single = false,
+      $limit_time_info = '',$speed=false)
   {
     $now_time = time(); 
     
     if ($limit_time_info !== '') {
       if ($limit_time_info) {
-        $limit_time = $limit_time_info['limit_time']; 
+        if(is_array($limit_time_info)){
+          $limit_time = $limit_time_info['limit_time']; 
+        }else{
+          $limit_time = $limit_time_info; 
+        }
       } else {
         return ''; 
       }
@@ -5676,11 +5700,22 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
     }
 
     if ($single) {
+      if($speed){
+      $order_query = tep_db_query("select o.orders_id, o.date_purchased from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where o.orders_id = op.orders_id and op.products_id = '".$products_id."' limit 1");
+      }else{
       $order_query = tep_db_query("select o.orders_id, o.date_purchased from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where o.orders_id = op.orders_id and op.products_id = '".$products_id."' order by orders_id desc limit 1");
+      }
     } else {
+      if($speed){
+      $order_query = tep_db_query("select o.orders_id, o.date_purchased from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where o.orders_id = op.orders_id and op.products_id = '".$products_id."' and o.date_purchased >= '".date('Y-m-d H:i:s', $before_time)."' limit 1");
+      }else{
       $order_query = tep_db_query("select o.orders_id, o.date_purchased from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where o.orders_id = op.orders_id and op.products_id = '".$products_id."' and o.date_purchased <= '".date('Y-m-d H:i:s', $now_time)."' and o.date_purchased >= '".date('Y-m-d H:i:s', $before_time)."' order by orders_id desc limit 1");
+      }
     }
     $order_res = tep_db_fetch_array($order_query); 
+    if($speed&&$order_res){
+      return true;
+    }
 
     $diff_time_str = '';
     if ($order_res) {

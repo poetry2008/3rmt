@@ -15,6 +15,10 @@ if ( eregi("(insert|update|setflag)", $action) ) include_once('includes/reset_se
 if (isset($_GET['action']) && $_GET['action']) {
 
   switch ($_GET['action']) {
+    case 'get_last_order_date';
+      echo intval(tep_calc_limit_time_by_order_id($_POST['pid'],$_POST['single'],$_POST['limit_time']));
+    exit;
+    break;
     case 'edit_category'; 
     case 'new_product'; 
     if (!($ocertify->npermission >= 10)){
@@ -1279,6 +1283,19 @@ $(document).ready(function(){
     $(".udlr").udlr(); 
     ajaxLoad('<?php echo $cPath;?>', '<?php echo empty($_GET['site_id'])?'1':'0';?>'); 
     }); 
+function set_image_alt_and_title(_this,pid,limit_time_info,limit_flag){
+  $.ajax({
+type:'POST',
+dataType: 'text',
+url: 'categories.php?action=get_last_order_date',
+data: 'pid='+pid+'&limit_time='+limit_time_info+'&single='+limit_flag,
+async:false,
+success: function(text) {
+  $(_this).attr('alt',text+'<?php echo PIC_MAE_ALT_TEXT;?>');
+  $(_this).attr('title',text+'<?php echo PIC_MAE_ALT_TEXT;?>');
+}
+});
+}
 function relate_products1(cid,rid){
   $.ajax({
 dataType: 'text',
@@ -4274,16 +4291,14 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 $limit_time_info = tep_db_fetch_array($limit_time_query); 
                 if (tep_check_show_isbuy($products['products_id'], $limit_time_info)) { 
                   if (tep_check_best_sellers_isbuy($products['products_id'], $limit_time_info)) {
-                    $diff_oday = tep_calc_limit_time_by_order_id($products['products_id'], false, $limit_time_info); 
+                    $diff_oday = tep_calc_limit_time_by_order_id($products['products_id'], false, $limit_time_info,true); 
                     if ($diff_oday !== '') {
-                      $products_mae_image_text .= '<img src="images/icons/mae1.gif" alt="'.$diff_oday.PIC_MAE_ALT_TEXT.'" title="'.$diff_oday.PIC_MAE_ALT_TEXT.'">'; 
-                    } else {
-                      $products_mae_image_text .= '<img src="images/icons/mae3.gif" alt="">'; 
+                      $products_mae_image_text .= '<img onmouseover="set_image_alt_and_title(this,\''.$products['products_id'].'\',\''.$limit_time_info['limit_time'].'\',false)" src="images/icons/mae1.gif" alt="alt" title="title">'; } else { $products_mae_image_text .= '<img src="images/icons/mae3.gif" alt="">'; 
                     }
                   } else {
-                    $diff_oday = tep_calc_limit_time_by_order_id($products['products_id'], true, $limit_time_info); 
+                    $diff_oday = tep_calc_limit_time_by_order_id($products['products_id'], true, $limit_time_info,true); 
                     if ($diff_oday !== '') {
-                      $products_mae_image_text .= '<img src="images/icons/mae2.gif" alt="'.$diff_oday.PIC_MAE_ALT_TEXT.'" title="'.$diff_oday.PIC_MAE_ALT_TEXT.'">'; 
+                      $products_mae_image_text .= '<img onmouseover="set_image_alt_and_title(this,\''.$products['products_id'].'\',\''.$limit_time_info['limit_time'].'\',true)" src="images/icons/mae2.gif" alt="alt" title="title">'; 
                     } else {
                       $products_mae_image_text .= '<img src="images/icons/mae3.gif" alt="">'; 
                     }
