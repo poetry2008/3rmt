@@ -507,12 +507,12 @@ $(document).ready(function(){
       $a_value = tep_output_string($account['customers_firstname'],false,true);
   } elseif ($error == true) {
       if ($entry_firstname_error == true) {
-          $a_value = tep_draw_input_field('firstname') . '&nbsp;' . ENTRY_FIRST_NAME_ERROR;
+          $a_value = tep_draw_input_field('firstname','','style="width:198px"') . '&nbsp;' . ENTRY_FIRST_NAME_ERROR;
       } else {
-          $a_value = $firstname . tep_draw_hidden_field('firstname');
+          $a_value = $firstname .  tep_draw_hidden_field('firstname','','style="width:198px"');
       }
   } else {
-      $a_value = tep_draw_input_field('firstname', $account['customers_firstname']) . '&nbsp;' . ENTRY_FIRST_NAME_TEXT;
+      $a_value = tep_draw_input_field('firstname', $account['customers_firstname'],'style="width:198px"') . '&nbsp;' . ENTRY_FIRST_NAME_TEXT;
   }
   $address_form->setFormLine('firstname',ENTRY_FIRST_NAME,$a_value);
 
@@ -521,12 +521,12 @@ $(document).ready(function(){
       $a_value = tep_output_string($account['customers_lastname'],false,true);
   } elseif ($error == true) {
       if ($entry_lastname_error == true) {
-          $a_value = tep_draw_input_field('lastname') . '&nbsp;' . ENTRY_LAST_NAME_ERROR;
+          $a_value = tep_draw_input_field('lastname','','style="width:198px"') . '&nbsp;' . ENTRY_LAST_NAME_ERROR;
       } else {
-          $a_value = $lastname . tep_draw_hidden_field('lastname');
+          $a_value = $lastname .  tep_draw_hidden_field('lastname','','style="width:198px"');
       }
   } else {
-      $a_value = tep_draw_input_field('lastname', $account['customers_lastname']) . '&nbsp;' . ENTRY_LAST_NAME_TEXT;
+      $a_value = tep_draw_input_field('lastname', $account['customers_lastname'],'style="width:198px"') . '&nbsp;' . ENTRY_LAST_NAME_TEXT;
   }
   $address_form->setFormLine('lastname',ENTRY_LAST_NAME,$a_value);
 
@@ -535,18 +535,18 @@ $(document).ready(function(){
       $a_value = tep_output_string($account['customers_email_address'],false,true);
   } elseif ($error == true) {
       if ($entry_email_address_error == true) {
-          $a_value = tep_draw_input_field('email_address') . '&nbsp;' . ENTRY_EMAIL_ADDRESS_ERROR;
+          $a_value = tep_draw_input_field('email_address','','style="width:198px"') . '&nbsp;' . ENTRY_EMAIL_ADDRESS_ERROR;
       } elseif ($entry_email_address_check_error == true) {
-          $a_value = tep_draw_input_field('email_address') . '&nbsp;' . ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
+          $a_value = tep_draw_input_field('email_address','','style="width:198px"') . '&nbsp;' . ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
       } elseif ($entry_email_address_exists == true) {
-          $a_value = tep_draw_input_field('email_address') . '&nbsp;' . ENTRY_EMAIL_ADDRESS_ERROR_EXISTS;
+          $a_value = tep_draw_input_field('email_address','','style="width:198px"') . '&nbsp;' . ENTRY_EMAIL_ADDRESS_ERROR_EXISTS;
       } elseif ($entry_guest_not_active == true) {
-          $a_value = tep_draw_input_field('email_address') . '&nbsp;' .  ENTRY_GUEST_EMAIL_NOT_ACTIVE;
+          $a_value = tep_draw_input_field('email_address','','style="width:198px"') . '&nbsp;' .  ENTRY_GUEST_EMAIL_NOT_ACTIVE;
       } else {
-          $a_value = $email_address . tep_draw_hidden_field('email_address');
+          $a_value = $email_address .  tep_draw_hidden_field('email_address','','style="width:198px"');
       }
   } else {
-      $a_value = tep_draw_input_field('email_address', $account['customers_email_address']) . '&nbsp;' . ENTRY_EMAIL_ADDRESS_TEXT;
+      $a_value = tep_draw_input_field('email_address', $account['customers_email_address'],'style="width:198px"') . '&nbsp;' . ENTRY_EMAIL_ADDRESS_TEXT;
   }
   $address_form->setFormLine('email_address',ENTRY_EMAIL_ADDRESS,$a_value);
 ?>
@@ -704,18 +704,18 @@ if (!isset($guestchk)) $guestchk = NULL;
 <?php
     if ($error_pwd == true) {
       if ($entry_password_english_error == true) { 
-        echo tep_draw_password_field('password') . '&nbsp;' . ENTRY_PASSWORD_TEXT;
+        echo tep_draw_password_field('password','','style="width:198px"') . '&nbsp;' . ENTRY_PASSWORD_TEXT;
       } else if($entry_password_error == true) {
-        echo tep_draw_password_field('password') . '&nbsp;' . ENTRY_PASSWORD_TEXT;
+        echo tep_draw_password_field('password','','style="width:198px"') . '&nbsp;' . ENTRY_PASSWORD_TEXT;
       } else if($entry_password_confirmation_error == true){
-        echo tep_draw_password_field('password') . '&nbsp;' . ENTRY_PASSWORD_TEXT;
+        echo tep_draw_password_field('password','','style="width:198px"') . '&nbsp;' . ENTRY_PASSWORD_TEXT;
       } else if($entry_password_old_error == true){
-         echo tep_draw_password_field('password') . '&nbsp;' . ENTRY_PASSWORD_TEXT;
+         echo tep_draw_password_field('password','','style="width:198px"') . '&nbsp;' . ENTRY_PASSWORD_TEXT;
       } else {
-        echo PASSWORD_HIDDEN . tep_draw_hidden_field('password') . tep_draw_hidden_field('confirmation');
+        echo PASSWORD_HIDDEN .  tep_draw_hidden_field('password','','style="width:198px"') . tep_draw_hidden_field('confirmation');
       }
     } else {
-      echo tep_draw_password_field('password') . '&nbsp;' . ENTRY_PASSWORD_TEXT;
+      echo tep_draw_password_field('password','','style="width:198px"') . '&nbsp;' . ENTRY_PASSWORD_TEXT;
     }
 ?></td>
           </tr>
@@ -726,7 +726,7 @@ if (!isset($guestchk)) $guestchk = NULL;
             <td class="main"><?php echo ENTRY_PASSWORD_CONFIRMATION; ?></td>
             <td class="main">
 <?php
-      echo tep_draw_password_field('confirmation') . '&nbsp;' . ENTRY_PASSWORD_CONFIRMATION_TEXT;
+      echo tep_draw_password_field('confirmation','','style="width:198px"') . '&nbsp;' . ENTRY_PASSWORD_CONFIRMATION_TEXT;
 ?></td>
           </tr>
 <?php
