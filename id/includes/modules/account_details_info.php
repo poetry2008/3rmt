@@ -597,12 +597,6 @@ $(document).ready(function(){
           tep_db_free_result($address_orders_history_query);
           $sylte_none = $address_orders_history_num > 0 ? '' : 'style="display:none;"';
   ?>
-  <tr>
-    <td class="main">
-    <table border="0" width="100%" summary="table" cellspacing="0" cellpadding="2" class="formArea">
-      <tr>
-        <td class="main">
-        <table border="0" cellspacing="0" cellpadding="2" summary="table" width="100%">
         <input type="hidden" id="address_flag_id" name="address_flag_id" value="">
         <input type="hidden" id="first_name" name="lastname" value="">
         <input type="hidden" id="end_name" name="firstname" value="">
@@ -613,11 +607,17 @@ $(document).ready(function(){
         <input type="hidden" id="pwd_1" name="confirmation" value="">
         <input type="hidden" id="action_flag" name="action_flag" value="0"> 
         <input type="hidden" name="num_rows" value="<?php echo $address_orders_num_rows;?>">
-        <?php if($style_display == 'block'){ ?>
-        <tr id="address_histroy_id"<?php echo $sylte_none;?>><td class="main" width="93"><?php echo TITLE_ADDRESS_OPTION;?></td><td class="main"><select id="address_show_list" name="address_show_list" onchange="address_option_list(this.value);"></select>
+ 
+  <?php if($style_display == 'block'){ ?>
+  <tr>
+    <td class="main">
+    <table border="0" width="100%" summary="table" cellspacing="0" cellpadding="2" class="formArea">
+      <tr>
+        <td class="main">
+        <table border="0" cellspacing="0" cellpadding="2" summary="table" width="100%">
+       <tr id="address_histroy_id"<?php echo $sylte_none;?>><td class="main" width="93"><?php echo TITLE_ADDRESS_OPTION;?></td><td class="main"><select id="address_show_list" name="address_show_list" onchange="address_option_list(this.value);"></select>
        </td></tr>
         <?php       
-         }
           $hm_option->render('','',true); 
         ?> 
         </table>
@@ -625,9 +625,10 @@ $(document).ready(function(){
       </tr>
         <tr><td class="main" align="right" colspan="2"><a href="javascript:void(0);" onclick="if(confirm('<?php echo NOTICE_DELETE_CONFIRM_TEXT;?>')){location.href='<?php echo FILENAME_ACCOUNT_EDIT;?>?act='+document.getElementById('address_flag_id').value;}else{return false;}"><img src="includes/languages/japanese/images/buttons/button_delete02.gif"></a>&nbsp;<a href="javascript:void(0);" onclick="address_clear();"><img src="images/design/button/create.gif"></a>&nbsp;<a href="javascript:void(0);" onclick="check_form_address();document.account_edit_address.submit();"><img src="images/design/button/save.gif"></a></form>&nbsp;&nbsp;</td></tr>
     </table>
-     </form>
     </td>
  </tr>
+<?php } ?>
+</form>
 <!-- end -->
 
   <tr>
