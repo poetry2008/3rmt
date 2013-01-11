@@ -29,13 +29,13 @@
 <?php page_head();?>
 </head>
 <body>
-<!-- header //--> 
+<!-- header --> 
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-<!-- header_eof //--> 
-<!-- body //--> 
+<!-- header_eof --> 
+<!-- body --> 
 <div id="main">
 <?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- body_text //-->
+<!-- body_text -->
 <div class="yui3-u" id="layout">
 <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
  <?php include('includes/search_include.php');?>
@@ -50,15 +50,15 @@
    }
    echo tep_draw_form('login', tep_href_link('send_mail.php'), 'post') . "\n";
 ?>
-      <table width="100%">
+      <table class="login" width="100%">
         <tr>
-          <td valign="top" width="15%"><b><?php echo INPUT_SEND_MAIL; ?>:</b></td>
-          <td valign="top">
-            <input type="text" name="email_address" id="send_input_text">
+          <td valign="top" width="20%"><b><?php echo INPUT_SEND_MAIL; ?>:</b></td>
+          <td class="login_text" valign="top" width="70%">
+            <input type="text" name="email_address" id="input_text">
           </td>
         </tr>
         <tr>
-        <td align="right" colspan="2">
+        <td align="right" style="padding-top:25px;" colspan="2">
             <?php echo tep_image_submit('button_send_mail.gif',
                 SENDMAIL_BUTTON,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_send_mail.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_send_mail_hover.gif\'"'); ?>
           </td>
@@ -108,12 +108,12 @@
   </div>
     <?php include('includes/float-box.php');?>
 	</div>
-      <!-- body_text_eof //--> 
+      <!-- body_text_eof --> 
 <?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-  <!-- body_eof //-->
-  <!-- footer //-->
+  <!-- body_eof -->
+  <!-- footer -->
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-  <!-- footer_eof //-->
+  <!-- footer_eof -->
 </div>
 </body>
 </html>

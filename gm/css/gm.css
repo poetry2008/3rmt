@@ -814,7 +814,7 @@ td,th{ border:0; padding:2px; font-size:14px;}
 	width:40%;
 }
 #input_text_short{
-	width:198px;
+	width:25%;
 }
 /*checkout*/
 .hm-hot-product{ height:93px; overflow:hidden;}
@@ -1487,7 +1487,7 @@ top:70px;
 }
 .markProductOutOfStock a{ font-weight:bold;}
 .table_p10{ padding-left:20px;}
-#input_width{ width:198px;}
+#input_width{ width:70%;}
 .table_spacing{ padding-left:20px;}
 .confirmation_product_num_info{ 
 	padding-right:80px;
@@ -1531,7 +1531,4 @@ top:70px;
 }
 .margin_clear{
   margin:0px;
-}
-#send_input_text{
-	width:198px;
 }

@@ -69,7 +69,7 @@ define('HEADER_TITLE_NEWS', '最新情報');
 define('MYACCOUNT_EDIT', 'お客様情報の編集');
 define('MYACCOUNT_ADDRESS', 'アドレス帳');
 define('MYACCOUNT_HISTORY', '注文履歴');
-define('MYACCOUNT_NOTIFICATION', 'ショップからのお知らせ');
+define('MYACCOUNT_NOTIFICATION', 'お知らせ設定');
 define('MENU_MU','メーカー一覧');
 
 // footer text in includes/footer.php

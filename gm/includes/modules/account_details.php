@@ -154,14 +154,14 @@ $(document).ready(function(){
       $a_value = tep_output_string($account['customers_firstname'],false,true);
   } elseif ($error == true) {
       if ($entry_firstname_error == true) {
-          $a_value = tep_draw_input_field('firstname','','class="input_text"') . '&nbsp;' . ENTRY_FIRST_NAME_ERROR;
+          $a_value = tep_draw_input_field('firstname') . '&nbsp;' . ENTRY_FIRST_NAME_ERROR;
       } else {
-          $a_value = $firstname .  tep_draw_hidden_field('firstname','','class="input_text"');
+          $a_value = $firstname . tep_draw_hidden_field('firstname');
       }
   } else {
       $a_value = tep_draw_input_field('firstname',
                                       $account['customers_firstname'],
-                                      "class='input_text' style='width:198px'") . '&nbsp;' . ENTRY_FIRST_NAME_TEXT;
+                                      "class='input_text' style='width:40%'") . '&nbsp;' . ENTRY_FIRST_NAME_TEXT;
   }
   $address_form->setFormLine('firstname',ENTRY_FIRST_NAME,$a_value);
 
@@ -170,14 +170,14 @@ $(document).ready(function(){
       $a_value = tep_output_string($account['customers_lastname'],false,true);
   } elseif ($error == true) {
       if ($entry_lastname_error == true) {
-          $a_value = tep_draw_input_field('lastname','','class="input_text"') . '&nbsp;' . ENTRY_LAST_NAME_ERROR;
+          $a_value = tep_draw_input_field('lastname') . '&nbsp;' . ENTRY_LAST_NAME_ERROR;
       } else {
-          $a_value = $lastname .  tep_draw_hidden_field('lastname','','class="input_text"');
+          $a_value = $lastname . tep_draw_hidden_field('lastname');
       }
   } else {
       $a_value = tep_draw_input_field('lastname',
                                       $account['customers_lastname'],"class='input_text'
-                                      style='width:198px'") . '&nbsp;' . ENTRY_LAST_NAME_TEXT;
+                                      style='width:40%'") . '&nbsp;' . ENTRY_LAST_NAME_TEXT;
   }
   $address_form->setFormLine('lastname',ENTRY_LAST_NAME,$a_value);
 
@@ -186,19 +186,19 @@ $(document).ready(function(){
       $a_value = tep_output_string($account['customers_email_address'],false,true);
   } elseif ($error == true) {
       if ($entry_email_address_error == true) {
-          $a_value = tep_draw_input_field('email_address','','class="input_text"') . '&nbsp;' . ENTRY_EMAIL_ADDRESS_ERROR;
+          $a_value = tep_draw_input_field('email_address') . '&nbsp;' . ENTRY_EMAIL_ADDRESS_ERROR;
       } elseif ($entry_email_address_check_error == true) {
-          $a_value = tep_draw_input_field('email_address','','class="input_text"') . '&nbsp;' . ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
+          $a_value = tep_draw_input_field('email_address') . '&nbsp;' . ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
       } elseif ($entry_email_address_exists == true) {
-          $a_value = tep_draw_input_field('email_address','','class="input_text"') . '&nbsp;' . ENTRY_EMAIL_ADDRESS_ERROR_EXISTS;
+          $a_value = tep_draw_input_field('email_address') . '&nbsp;' . ENTRY_EMAIL_ADDRESS_ERROR_EXISTS;
       } elseif ($entry_guest_not_active == true) {
-          $a_value = tep_draw_input_field('email_address','','class="input_text"') . '&nbsp;' . ENTRY_GUEST_EMAIL_NOT_ACTIVE;
+          $a_value = tep_draw_input_field('email_address') . '&nbsp;' . ENTRY_GUEST_EMAIL_NOT_ACTIVE;
       } else {
-          $a_value = $email_address .  tep_draw_hidden_field('email_address','','class="input_text"');
+          $a_value = $email_address . tep_draw_hidden_field('email_address');
       }
   } else {
       $a_value = tep_draw_input_field('email_address',
-          $account['customers_email_address'],"class='input_text' style='width:198px'") . '&nbsp;' . ENTRY_EMAIL_ADDRESS_TEXT;
+          $account['customers_email_address'],"class='input_text' style='width:40%'") . '&nbsp;' . ENTRY_EMAIL_ADDRESS_TEXT;
   }
   $address_form->setFormLine('email_address',ENTRY_EMAIL_ADDRESS,$a_value);
 ?>
@@ -219,8 +219,8 @@ $(document).ready(function(){
     <td class="formAreaTitle"><br><h3><?php echo TITLE_ADDRESS; ?></h3></td>
   </tr>
             <tr>
-            <td class="main" width="15%" valign="top" align="left"><?php echo TITLE_ADDRESS_OPTION; ?></td>
-            <td class="main"><select id="address_show_list" onchange="address_option_list(this.value);"></select>
+            <td class="main" width="20%" valign="top" align="left">&nbsp;<?php echo TITLE_ADDRESS_OPTION; ?></td>
+            <td class="main">&nbsp;<select id="address_show_list" onchange="address_option_list(this.value);"></select>
             </td>
             </tr> 
       <?php
@@ -228,7 +228,7 @@ $(document).ready(function(){
         while($address_array = tep_db_fetch_array($address_query)){
       ?>    
       <tr id="tr_<?php echo $address_array['name_flag'];?>" style="display:none;">
-        <td class="main" width="15%" valign="top" align="left">&nbsp;<?php echo $address_array['name'].':'; ?></td>
+        <td class="main" width="20%" valign="top" align="left">&nbsp;<?php echo $address_array['name'].':'; ?></td>
         <?php if (isset($check_ac_single)) {?> 
         <td class="main"><div class="address_item_info" id="op_<?php echo $address_array['name_flag'];?>"></div></td>
         <?php } else {?>
@@ -260,8 +260,8 @@ if (isset($account_single)) {
     </td>
 </tr>
 <tr>
-	<td width="15%" align="left"><?php echo ENTRY_NEWSLETTER; ?></td>
-    <td align="left"><?php
+	<td width="20%" align="left"><?php echo ENTRY_NEWSLETTER; ?></td>
+    <td align="left">&nbsp;<?php
   if ($is_read_only == true) {
     if ($account['customers_newsletter'] == '1') {
       echo ENTRY_NEWSLETTER_YES;
@@ -301,8 +301,8 @@ if (isset($account_single)) {
   
 ?>
               <tr>
-                <td align="left" width="15%"><?php echo ENTRY_GUEST; ?></td>
-                <td align="left"><?php echo tep_draw_pull_down_menu('guestchk', $guestchk_array, $guestchk, 'onchange="pass_hidd()"'); ?></td>
+                <td align="left" width="20%"><?php echo ENTRY_GUEST; ?></td>
+                <td align="left">&nbsp;<?php echo tep_draw_pull_down_menu('guestchk', $guestchk_array, $guestchk, 'onchange="pass_hidd()"'); ?></td>
               </tr>
               <tr>
                 <td>&nbsp;</td>
@@ -328,7 +328,7 @@ if (isset($account_single)) {
   if ($is_read_only == false) {
 ?>
   <tr id="trpass1">
-    <td width="15%" align="left">
+    <td width="20%" align="left">
       <h3><?php echo CATEGORY_PASSWORD; ?></h3></td>
       <td></td>
   </tr>
@@ -337,8 +337,8 @@ if (isset($account_single)) {
        <table width="100%">
              
        <tr>
-                <td width="15%" align="left"><?php echo ENTRY_PASSWORD; ?></td>
-                <td><?php
+                <td width="20%" align="left"><?php echo ENTRY_PASSWORD; ?></td>
+                <td>&nbsp;<?php
  if(preg_match("/[a-zA-Z]/",$_POST['password']) ||
      preg_match("/[0-9]/",$_POST['password'])){
 
@@ -378,9 +378,9 @@ if (isset($account_single)) {
 ?>
               <tr>
                 <td><?php echo ENTRY_PASSWORD_CONFIRMATION; ?></td>
-                <td><?php
+                <td>&nbsp;<?php
       echo tep_draw_password_field('confirmation', '', "id='input_text_short'") .
-      '&nbsp;'. ENTRY_PASSWORD_CONFIRMATION_TEXT;
+      '&nbsp;' . ENTRY_PASSWORD_CONFIRMATION_TEXT;
 ?>                </td>
               </tr>
               <?php
@@ -393,7 +393,7 @@ else{
 ?>
              <tr>
                 <td><?php echo ENTRY_PASSWORD_CONFIRMATION; ?></td>
-                <td><?php
+                <td>&nbsp;<?php
       echo tep_draw_password_field('confirmation', '', "id='input_text_short'") .
       '&nbsp;' . ENTRY_PASSWORD_CONFIRMATION_TEXT;
 ?>                </td>
@@ -408,7 +408,7 @@ else{
     <?php
             if($_POST['password'] != $_POST['confirmation']){
         echo "<tr><td></td><td style='font-size:14px'><font
-      color=\"red\">".ENTRY_PASSWORD_IS_DIFFERENT."</td></tr>";
+      color=\"red\">&nbsp;&nbsp;".ENTRY_PASSWORD_IS_DIFFERENT."</td></tr>";
     }
 
   if ($p_error_show_str != '') {
@@ -416,7 +416,7 @@ else{
    <tr>
      <td class="main">&nbsp;</td>
      <td class="main" style="font-size:14px;">
-     <?php echo $p_error_show_str;?> 
+     <?php echo '&nbsp;'.$p_error_show_str;?> 
      </td>
    </tr>
   <?php 
@@ -444,7 +444,7 @@ else{
 </table> 
 <table width="100%" cellspacing="0" cellpadding="2" border="0" class="content_account"> 
   <tr>
-     <td colspan="2" width="15%" align="left"><h3><?php echo CATEGORY_AGREEMENT; ?></h3></td>
+     <td colspan="2" width="20%" align="left"><h3><?php echo CATEGORY_AGREEMENT; ?></h3></td>
   </tr>
 <tr>
                 <td colspan="2" width="100%">
