@@ -337,7 +337,7 @@
       if (IsSet($products_details[attributes])) {
         foreach ($products_details["attributes"] as $orders_products_attributes_id => $attributes_details) {
           $input_option = array('title' => $attributes_details['option'], 'value' => $attributes_details['value']); 
-          $Query = "update " . TABLE_PREORDERS_PRODUCTS_ATTRIBUTES . " set option_info = '" . tep_db_input(serialize($input_option)) . "' , options_values_price = '".(($attributes_details['price_symbol'] == '1')?0-$attributes_details['price']:$attributes_details['price'])."' where orders_products_attributes_id = '$orders_products_attributes_id';";
+          $Query = "update " . TABLE_PREORDERS_PRODUCTS_ATTRIBUTES . " set option_info = '" . tep_db_input(serialize($input_option)) . "' , options_values_price = '".$attributes_details['price']."' where orders_products_attributes_id = '$orders_products_attributes_id';";
           tep_db_query($Query);
         }
       }
@@ -348,7 +348,7 @@
               $new_op_data_array = array(
                  'orders_id' => $oID,
                  'orders_products_id' => $orders_products_id,
-                 'options_values_price' => (($_POST['new_update_products_op_price'][$option_key.'_price_symbol'] == '1')?0-$_POST['new_update_products_op_price'][$option_key]:$_POST['new_update_products_op_price'][$option_key]),
+                 'options_values_price' => $_POST['new_update_products_op_price'][$option_key],
                  'option_info' => tep_db_input(serialize($tmp_new_op_array)),
                  'option_group_id' => $_POST['belong_to_option'],
                  'option_item_id' => $option_key
@@ -1073,7 +1073,7 @@ function add_option(){
 
     add_str += '<tr><td class="smallText" align="left"><?php echo EDIT_ORDERS_TOTALDETAIL_READ_ONE;?></td>'
             +'<td class="smallText" align="right"><INPUT type="button" id="button_add" value="<?php echo TEXT_BUTTON_ADD;?>" onClick="add_option();">&nbsp;<input value="" size="7" name="update_totals['+add_num+'][title]">'
-            +'</td><td class="smallText" align="right"><input id="update_totals_'+add_num+'" value="" size="6" onkeyup="clearNoNum(this);price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');" name="update_totals['+add_num+'][value]"><input type="hidden" name="update_totals['+add_num+'][class]" value="ot_custom"><input type="hidden" name="update_totals['+add_num+'][total_id]" value="0"></td>'
+            +'</td><td class="smallText" align="right"><input id="update_totals_'+add_num+'" value="" size="6" onkeyup="clearNewLibNum(this);price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');" name="update_totals['+add_num+'][value]"><input type="hidden" name="update_totals['+add_num+'][class]" value="ot_custom"><input type="hidden" name="update_totals['+add_num+'][total_id]" value="0"></td>'
             +'<td><b><img height="17" width="1" border="0" alt="" src="images/pixel_trans.gif"></b></td></tr>'
             +'<tr id="add_option_total">'+add_option_total_str+'</tr>';
 
@@ -1263,29 +1263,9 @@ function recalc_preorder_price(oid, opd, o_str, op_str)
   for (var i=0; i<op_array.length; i++) {
     if (op_array[i] != '') {
       if(o_str == 'true' || document.getElementById('belong_to_option')){
-        n_tmp_price_str = document.getElementsByName('new_update_products_op_price['+op_array[i]+']')[0].value.replace(/s+/g, ""); 
-        n_tmp_price_symbol = document.getElementsByName('new_update_products_op_price['+op_array[i]+'_price_symbol]')[0].value; 
-        if (n_tmp_price_str != '') {
-          n_tmp_price= parseInt(n_tmp_price_str); 
-          if (n_tmp_price_symbol == '1') {
-            n_tmp_price = 0 - n_tmp_price; 
-          }
-          p_op_info += n_tmp_price; 
-        } else {
-          p_op_info += 0; 
-        }
+        p_op_info += parseInt(document.getElementsByName('new_update_products_op_price['+op_array[i]+']')[0].value); 
       }else{
-        tmp_price_str = document.getElementsByName('update_products['+opd+'][attributes]['+op_array[i]+'][price]')[0].value.replace(/s+/g, ""); 
-        tmp_price_symbol = document.getElementsByName('update_products['+opd+'][attributes]['+op_array[i]+'][price_symbol]')[0].value; 
-        if (tmp_price_str != '') {
-          tmp_price = parseInt(tmp_price_str); 
-          if (tmp_price_symbol == '1') {
-            tmp_price = 0 - tmp_price; 
-          } 
-          p_op_info += tmp_price; 
-        } else {
-          p_op_info += 0; 
-        }
+        p_op_info += parseInt(document.getElementsByName('update_products['+opd+'][attributes]['+op_array[i]+'][price]')[0].value); 
       }
     }
   }
@@ -1339,7 +1319,7 @@ function recalc_preorder_price(oid, opd, o_str, op_str)
      
         if(document.getElementById('update_totals_'+i)){
           update_total_temp = document.getElementById('update_totals_'+i).value; 
-          if(update_total_temp == ''){update_total_temp = 0;}
+          if(update_total_temp == '' || update_total_temp == '-'){update_total_temp = 0;}
           update_total_temp = parseInt(update_total_temp);
           update_total_num += update_total_temp;
         }
@@ -1386,7 +1366,7 @@ function price_total()
      
         if(document.getElementById('update_totals_'+i)){
           update_total_temp = document.getElementById('update_totals_'+i).value; 
-          if(update_total_temp == ''){update_total_temp = 0;}
+          if(update_total_temp == '' || update_total_temp == '-'){update_total_temp = 0;}
           update_total_temp = parseInt(update_total_temp);
           update_total_num += update_total_temp;
         }
@@ -2157,11 +2137,6 @@ require("includes/note_js.php");
         $item_option_array[$show_option_row_item['id']] = $show_option_row_item['item_option'];
       }
       for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
-        if ($order->products[$i]['attributes'][$j]['price'] < 0) {
-           $order->products[$i]['attributes'][$j]['price_symbol'] = '1';
-        } else {
-           $order->products[$i]['attributes'][$j]['price_symbol'] = '2';
-        }
         $all_show_option[$order->products[$i]['attributes'][$j]['option_item_id']] =
           $order->products[$i]['attributes'][$j];
       }
@@ -2209,12 +2184,7 @@ require("includes/note_js.php");
         //if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
         echo "'></div></div>";
         echo '<div class="order_option_price">';
-        if ($all_show_option[$t_item_id]['price_symbol'] == '1') {
-          echo "<input style='color:#ff0000;' type='text' size='9' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".abs((int)$all_show_option[$t_item_id]['price'])."' onkeyup=\"clearLibNum(this);recalc_preorder_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."');\">"; 
-        } else {
-          echo "<input type='text' size='9' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".(int)$all_show_option[$t_item_id]['price']."' onkeyup=\"clearLibNum(this);recalc_preorder_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."');\">"; 
-        }
-        echo "<input type='hidden' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price_symbol]' value='".$all_show_option[$t_item_id]['price_symbol']."'>"; 
+        echo "<input type='text' size='9' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".(int)$all_show_option[$t_item_id]['price']."' onkeyup=\"clearNewLibNum(this);recalc_preorder_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."');\">"; 
         echo TEXT_MONEY_SYMBOL; 
         //if ($order->products[$i]['attributes'][$j]['price'] != '0') {
           //echo ' ('.$currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty']).')'; 
@@ -2292,13 +2262,7 @@ require("includes/note_js.php");
            "<a onclick='popup_window(this,\"".$item_type."\",\"".tep_parse_input_field_data($option_item_array['front_title'], array("'"=>"&quot;"))."\",\"".$item_list."\");' href='javascript:void(0);'><u>".tep_parse_input_field_data($option_default_value, array("'"=>"&quot;"))."</u></a><input type='hidden' class='option_input_width' name='new_update_products_op_value[$t_item_id]' value='"; 
         echo "'></div></div>";
         echo '<div class="order_option_price">';
-        if ($option_item_array['price'] < 0) {
-          echo "<input style='color:#ff0000;' type='text' size='9' name='new_update_products_op_price[$t_item_id]' value='".abs((int)$option_item_array['price'])."' onkeyup=\"clearLibNum(this);recalc_preorder_price('".$oID."', '".$orders_products_id."', 'true', '".$op_info_str."');\">"; 
-          echo "<input type='hidden' name='new_update_products_op_price[".$t_item_id."_price_symbol]' value='1'>"; 
-        } else {
-          echo "<input type='text' size='9' name='new_update_products_op_price[$t_item_id]' value='".(int)$option_item_array['price']."' onkeyup=\"clearLibNum(this);recalc_preorder_price('".$oID."', '".$orders_products_id."', 'true', '".$op_info_str."');\">"; 
-          echo "<input type='hidden' name='new_update_products_op_price[".$t_item_id."_price_symbol]' value='2'>"; 
-        }
+        echo "<input type='text' size='9' name='new_update_products_op_price[$t_item_id]' value='".(int)$option_item_array['price']."' onkeyup=\"clearLibNum(this);recalc_preorder_price('".$oID."', '".$orders_products_id."', 'true', '".$op_info_str."');\">"; 
         echo TEXT_MONEY_SYMBOL; 
         echo '</div>'; 
         echo '</i></div>';
@@ -2308,7 +2272,12 @@ require("includes/note_js.php");
     echo '      </td>' . "\n" .
          '      <td class="' . $RowStyle . '">' . $order->products[$i]['model'] . "<input name='update_products[$orders_products_id][model]' size='12' type='hidden' value='" . $order->products[$i]['model'] . "'>" . '</td>' . "\n" .
          '      <td class="' . $RowStyle . '" align="right">' .  tep_display_tax_value($order->products[$i]['tax']) . "<input name='update_products[$orders_products_id][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order->products[$i]['tax']) . "'>" .  '%</td>' . "\n";
-    echo '<td class="'.$RowStyle.'" align="right"><input type="text" '.(tep_get_bflag_by_product_id($order->products[$i]['products_id'])?'style="color:#ff0000;text-align:right;"':'style="text-align:right;"').' class="once_pwd" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs($order->products[$i]['price']), 2)).'" onkeyup="clearLibNum(this);recalc_preorder_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\', \''.$op_info_str.'\');" >'.TEXT_MONEY_SYMBOL.'</td>'; 
+    $orders_products_type = '';
+    if(tep_check_pre_product_type($orders_products_id)){
+
+      $orders_products_type = '−';
+    }
+    echo '<td class="'.$RowStyle.'" align="right">'.$orders_products_type.'<input type="text" style="text-align:right;" class="once_pwd" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs($order->products[$i]['price']), 2)).'" onkeyup="clearLibNum(this);recalc_preorder_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\', \''.$op_info_str.'\');" >'.TEXT_MONEY_SYMBOL.'</td>'; 
     
     echo '<td class="' . $RowStyle . '" align="right">';
     //if ($ocertify->npermission == 7) {
@@ -2517,7 +2486,7 @@ require("includes/note_js.php");
       echo '  <tr>' . "\n" .
            '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_TOTALDETAIL_READ_ONE.'</td>' . 
            '    <td style="min-width:180px;" align="right" class="' . $TotalStyle . '">' . $button_add ."<input name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
-           '    <td align="right" class="' . $TotalStyle . '">' . "<input name='update_totals[$TotalIndex][value]' id='update_totals_$TotalIndex' onkeyup='clearNoNum(this);price_total();' size='6' value='" . $TotalDetails["Price"] . "'>" . 
+           '    <td align="right" class="' . $TotalStyle . '">' . "<input name='update_totals[$TotalIndex][value]' id='update_totals_$TotalIndex' onkeyup='clearNewLibNum(this);price_total();' size='6' value='" . $TotalDetails["Price"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . 
            '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 

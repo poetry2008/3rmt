@@ -125,5 +125,5 @@ define('MENUE_TITLE_TOTAL', '4. 配送、決済、税金');
 define('MENUE_TITLE_STATUS', '5. 予約ステータス、コメント通知');
 define('MENUE_TITLE_UPDATE', '6. データを更新');
 define('TEXT_CODE_HANDLE_FEE', '手数料:');
-define('ORDERS_PRODUCT_ERROR','商品がありませんが、商品を追加してください。');
+define('ORDERS_PRODUCT_ERROR','商品がありません。予約作成するには、まず商品を追加してください。');
 ?>

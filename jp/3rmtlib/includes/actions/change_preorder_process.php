@@ -305,10 +305,11 @@ if($address_error == false){
   
   $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
   $preorder_product_res = tep_db_fetch_array($preorder_product_raw); 
+  $search_products = tep_get_product_by_id($preorder_product_res['products_id'], 0, $languages_id,true,'product_info');
   $sql_data_array = array('orders_id' => $orders_id,
                           'products_id' => $preorder_product_res['products_id'],
                           'products_model' => $preorder_product_res['products_model'], 
-                          'products_name' => $preorder_product_res['products_name'], 
+                          'products_name' => $search_products['products_name'], 
                           'products_price' => $preorder_product_res['products_price'], 
                           'final_price' => (isset($option_info_array['final_price']))?$option_info_array['final_price']:$preorder_product_res['final_price'], 
                           'products_tax' => $preorder_product_res['products_tax'], 

@@ -23,7 +23,7 @@ if (!tep_session_is_registered('customer_id')) {
 }
 
 // if there is nothing in the customers cart, redirect them to the shopping cart page
-if ($cart->count_contents() < 1) {
+if ($cart->count_contents(true) < 1) {
   tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
 }
 

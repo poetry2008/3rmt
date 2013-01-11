@@ -15,6 +15,10 @@ if ( eregi("(insert|update|setflag)", $action) ) include_once('includes/reset_se
 if (isset($_GET['action']) && $_GET['action']) {
 
   switch ($_GET['action']) {
+    case 'get_last_order_date';
+      echo intval(tep_calc_limit_time_by_order_id($_POST['pid'],$_POST['single'],$_POST['limit_time']));
+    exit;
+    break;
     case 'edit_category'; 
     case 'new_product'; 
     if (!($ocertify->npermission >= 10)){
@@ -1279,6 +1283,23 @@ $(document).ready(function(){
     $(".udlr").udlr(); 
     ajaxLoad('<?php echo $cPath;?>', '<?php echo empty($_GET['site_id'])?'1':'0';?>'); 
     }); 
+function set_image_alt_and_title(_this,pid,limit_time_info,limit_flag){
+  $.ajax({
+type:'POST',
+dataType: 'text',
+url: 'categories.php?action=get_last_order_date',
+data: 'pid='+pid+'&limit_time='+limit_time_info+'&single='+limit_flag,
+async:false,
+success: function(text) {
+  if((text.indexOf('</body>')>0)&&(text.indexOf('</html>')>0)){
+    alert("<?php echo TEXT_TIMEOUT_RELOGIN;?>");
+    window.location.reload();
+  }
+  $(_this).attr('alt',text+'<?php echo PIC_MAE_ALT_TEXT;?>');
+  $(_this).attr('title',text+'<?php echo PIC_MAE_ALT_TEXT;?>');
+}
+});
+}
 function relate_products1(cid,rid){
   $.ajax({
 dataType: 'text',
@@ -4126,6 +4147,11 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   }
                 } 
               } 
+              $res_kaku_list = array(); 
+              $res_kaku=tep_db_query("select * from set_menu_list where categories_id='".$current_category_id."' ORDER BY set_list_id ASC");
+              while($col_kaku=tep_db_fetch_array($res_kaku)){
+                $res_kaku_list[] = $col_kaku; 
+              } 
               $products_query = tep_db_query($products_query_raw);
               while ($products = tep_db_fetch_array($products_query)) {
                 $products_count++;
@@ -4197,13 +4223,14 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 } else {
                   $products_table_row_params .= 'class="' . $nowColor . '" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'' . $nowColor . '\'"';
                 }
-                $res_kaku=tep_db_query("select * from set_menu_list where categories_id='".$current_category_id."' ORDER BY set_list_id ASC");
                 $i_cnt=0;
-                while($col_kaku=tep_db_fetch_array($res_kaku)){
-                  $menu_datas[$i_cnt][0]=$col_kaku['products_id'];
-                  $menu_datas[$i_cnt][1]=tep_get_kakuukosuu_by_products_id($col_kaku['products_id']);
-                  $menu_datas[$i_cnt][2]=$col_kaku['kakaku'];
-                  $i_cnt++;
+                if (!empty($res_kaku_list)) {
+                  foreach($res_kaku_list as $k_key => $k_value){
+                    $menu_datas[$i_cnt][0]=$k_value['products_id'];
+                    $menu_datas[$i_cnt][1]=tep_get_kakuukosuu_by_products_id($k_value['products_id']);
+                    $menu_datas[$i_cnt][2]=$k_value['kakaku'];
+                    $i_cnt++;
+                  }
                 }
 
 
@@ -4246,7 +4273,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 $tmp_order_product_num = tep_get_order_cnt_by_pid($products['products_id'], $site_id); 
                 if($tmp_order_product_num){
                   $products_order_text .= '<a href="orders.php?keywords='.urlencode($products['products_id']).'&search_type=sproducts_id'.(!empty($site_id)?'&site_id='.$site_id:'').'" style="text-decoration:underline;">';
-                  $products_order_text .= tep_get_order_cnt_by_pid($products['products_id'], $site_id);
+                  $products_order_text .= $tmp_order_product_num;
                   $products_order_text .= '</a>';  
                 } 
                 $products_table_content_row[] = array('params'=>$products_order_params, 'text'=>$products_order_text);
@@ -4268,18 +4295,18 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 $limit_time_info = tep_db_fetch_array($limit_time_query); 
                 if (tep_check_show_isbuy($products['products_id'], $limit_time_info)) { 
                   if (tep_check_best_sellers_isbuy($products['products_id'], $limit_time_info)) {
-                    $diff_oday = tep_calc_limit_time_by_order_id($products['products_id'], false, $limit_time_info); 
+                    $diff_oday = tep_calc_limit_time_by_order_id($products['products_id'], false, $limit_time_info,true); 
                     if ($diff_oday !== '') {
-                      $products_mae_image_text .= '<img src="images/icons/mae1.gif" alt="'.$diff_oday.PIC_MAE_ALT_TEXT.'" title="'.$diff_oday.PIC_MAE_ALT_TEXT.'">'; 
-                    } else {
-                      $products_mae_image_text .= '<img src="images/icons/mae3.gif" alt="">'; 
+                      $products_mae_image_text .= '<img onmouseover="set_image_alt_and_title(this,\''.$products['products_id'].'\',\''.$limit_time_info['limit_time'].'\',false)" src="images/icons/mae1.gif" alt="alt" title="title">'; 
+                    } else { 
+                      $products_mae_image_text .= '<img alt="'.PIC_MAE_ALT_TEXT_NODATA.'" title="'.PIC_MAE_ALT_TEXT_NODATA.'" src="images/icons/mae3.gif" alt="">'; 
                     }
                   } else {
-                    $diff_oday = tep_calc_limit_time_by_order_id($products['products_id'], true, $limit_time_info); 
+                    $diff_oday = tep_calc_limit_time_by_order_id($products['products_id'], true, $limit_time_info,true); 
                     if ($diff_oday !== '') {
-                      $products_mae_image_text .= '<img src="images/icons/mae2.gif" alt="'.$diff_oday.PIC_MAE_ALT_TEXT.'" title="'.$diff_oday.PIC_MAE_ALT_TEXT.'">'; 
+                      $products_mae_image_text .= '<img onmouseover="set_image_alt_and_title(this,\''.$products['products_id'].'\',\''.$limit_time_info['limit_time'].'\',true)" src="images/icons/mae2.gif" alt="alt" title="title">'; 
                     } else {
-                      $products_mae_image_text .= '<img src="images/icons/mae3.gif" alt="">'; 
+                      $products_mae_image_text .= '<img alt="'.PIC_MAE_ALT_TEXT_NODATA.'" title="'.PIC_MAE_ALT_TEXT_NODATA.'" src="images/icons/mae3.gif" alt="">'; 
                     }
                   }
                 }
