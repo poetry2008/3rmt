@@ -255,7 +255,7 @@ define('ENTRY_NEWSLETTER_YES', '購読する');
 define('ENTRY_NEWSLETTER_NO', '購読しない');
 define('ENTRY_NEWSLETTER_ERROR', '');
 define('ENTRY_PASSWORD', 'パスワード:');
-define('ENTRY_PASSWORD_CONFIRMATION', 'パスワードを再入力:');
+define('ENTRY_PASSWORD_CONFIRMATION', 'パスワード再入力:');
 define('ENTRY_PASSWORD_CONFIRMATION_TEXT', '&nbsp;<span>(例. abcd1234) <font color="#FC0000">必須</font></span>');
 define('ENTRY_PASSWORD_ERROR', '<small><font color="#FF0000">少なくても ' . ENTRY_PASSWORD_MIN_LENGTH . ' 文字</font></small>');
 define('ENTRY_PASSWORD_TEXT', '&nbsp;<span>(例. abcd1234) <font color="#FC0000">必須</font></span>');

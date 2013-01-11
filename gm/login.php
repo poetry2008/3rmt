@@ -326,7 +326,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
             WHERE customers_info_id = '" . $customer_id . "'
         ");
     
-    //POINT_LIMIT CHECK 返点的有效期限判断 ds-style
+    //POINT_LIMIT CHECK 返点的有效期限判断
     if(MODULE_ORDER_TOTAL_POINT_LIMIT != '0') {
 //ccdd
       $plimit_count_query = tep_db_query("
@@ -460,14 +460,14 @@ if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){
                       <td colspan="2"><?php echo TEXT_RETURNING_CUSTOMER; ?></td>
                     </tr>
                     <tr>
-                      <td width="20%"><b><?php echo ENTRY_EMAIL_ADDRESS; ?></b></td>
+                      <td width="15%"><b><?php echo ENTRY_EMAIL_ADDRESS; ?></b></td>
                       <td><?php echo
-                      tep_draw_input_field('email_address','','style="width:40%;"'); ?></td>
+                      tep_draw_input_field('email_address','','style="width:198px;"'); ?></td>
                     </tr>
                     <tr>
                       <td><b><?php echo ENTRY_PASSWORD; ?></b></td>
                       <td><?php echo
-                      tep_draw_password_field('password','','style="width:40%;"'); ?></td>
+                      tep_draw_password_field('password','','style="width:198px;"'); ?></td>
                     </tr>
                     <tr>
                       <td class="smallText" colspan="2"><?php echo '<a href="' . tep_href_link(FILENAME_PASSWORD_FORGOTTEN, '', 'SSL') . '">' . TEXT_PASSWORD_FORGOTTEN . '</a>'; ?></td>

@@ -8,18 +8,18 @@ class AD_Option_Item_Option extends AD_Option_Item_Basic
   function render($option_error_array,$is_space = false)
   {
      if (strlen($this->front_title)) {
-       echo '<td class="main" width="120">';
+       echo '<td class="main" width="93">';
        if (NEW_STYLE_WEB !== true) {
-         echo '&nbsp;'; 
+         //echo '&nbsp;'; 
        }
        echo $this->front_title.':';
        echo '</td>';
      }
      if(!$is_space){
-       echo '<td class="main" style="padding-left:10px;">'; 
+       echo '<td class="main">'; 
      }else{
          
-       echo '<td class="main">&nbsp;'; 
+       echo '<td class="main">'; 
      }
      echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
     if($this->fixed_option == 0){

@@ -71,7 +71,7 @@ define('HEADER_TITLE_NEWS', '最新情報');
 define('MYACCOUNT_EDIT', 'お客様情報の編集');
 define('MYACCOUNT_ADDRESS', 'アドレス帳');
 define('MYACCOUNT_HISTORY', '注文履歴');
-define('MYACCOUNT_NOTIFICATION', 'ショップからのお知らせ');
+define('MYACCOUNT_NOTIFICATION', 'お知らせ設定');
 define('MENU_MU','メーカー一覧');
 
 // footer text in includes/footer.php
@@ -257,7 +257,7 @@ define('ENTRY_NEWSLETTER_YES', '購読する');
 define('ENTRY_NEWSLETTER_NO', '購読しない');
 define('ENTRY_NEWSLETTER_ERROR', '');
 define('ENTRY_PASSWORD', 'パスワード:');
-define('ENTRY_PASSWORD_CONFIRMATION', 'パスワードを再入力:');
+define('ENTRY_PASSWORD_CONFIRMATION', 'パスワード再入力:');
 define('ENTRY_PASSWORD_CONFIRMATION_TEXT', '&nbsp;<span style="font-size:14px">英数字' .  ENTRY_PASSWORD_MIN_LENGTH .  '文字以上&nbsp;(例. abcd1234) <font  color="RED">*必須</font></span>');
 define('ENTRY_PASSWORD_ERROR', '&nbsp;<font color="#FF0000">少なくても ' . ENTRY_PASSWORD_MIN_LENGTH . ' 文字</font>');
 define('ENTRY_PASSWORD_TEXT', '&nbsp;<span style="font-size:14px">英数字' .  ENTRY_PASSWORD_MIN_LENGTH .  '文字以上&nbsp;(例. abcd1234) <font color="RED">*必須</font></span>');
@@ -432,8 +432,8 @@ define('JPMONEY_UNIT_TEXT', '円');
 define('CHECKOUT_BAR_OPTION', '商品オプション');
 define('TEXT_RIDE_RSS','×');
 define('ENTRY_NO_USE_OLD_PASSWORD', '<font color="#FF0000">安全のため、古いパスワードと違うパスワードを設定してください。</font>');
-define('ENTRY_PASSWORD_IS_NUM', '&nbsp;<font color="#FF0000">英字（abcdef...z）が1文字以上必要です。<br>&nbsp;&nbsp;英字と数字を組み合わせて設定してください。</font>');
-define('ENTRY_PASSWORD_IS_ALPHA', '&nbsp;<font color="#FF0000">数字（0123456789）が1文字以上必要です。<br>&nbsp;&nbsp;英字と数字を組み合わせて設定してください。</font>');
+define('ENTRY_PASSWORD_IS_NUM', '<font color="#FF0000">英字（abcdef...z）が1文字以上必要です。<br>英字と数字を組み合わせて設定してください。</font>');
+define('ENTRY_PASSWORD_IS_ALPHA', '<font color="#FF0000">数字（0123456789）が1文字以上必要です。<br>英字と数字を組み合わせて設定してください。</font>');
 define('ENTRY_PASSWORD_IS_DIFFERENT', 'パスワードと再入力が違います。');
 define('ENTRY_PASSWORD_INFORM_READ_TEXT', '半角の英字、数字を組み合わせた'.ENTRY_PASSWORD_MIN_LENGTH.'文字以上を入力してください。<br>英字、数字がそれぞれ1文字以上を必要です。大文字と小文字は区別されます。<br>記号は入力できません。');
 define('TEXT_REORDER2_MUST_INPUT','<font color="red">必須項目</font>');

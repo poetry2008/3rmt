@@ -497,11 +497,11 @@ if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){
                       <td class="main" colspan="2"><?php echo TEXT_RETURNING_CUSTOMER; ?></td>
                     </tr>
                     <tr>
-                      <td class="main"><b><?php echo ENTRY_EMAIL_ADDRESS; ?></b></td>
+                      <td class="main" width="92"><b><?php echo ENTRY_EMAIL_ADDRESS; ?></b></td>
                       <td class="main"><?php echo tep_draw_input_field('email_address', '', "class='input_text'"); ?></td>
                     </tr>
                     <tr>
-                      <td class="main"><b><?php echo ENTRY_PASSWORD; ?></b></td>
+                      <td class="main" width="92"><b><?php echo ENTRY_PASSWORD; ?></b></td>
                       <td class="main"><?php echo tep_draw_password_field('password', '', "class='input_text'"); ?></td>
                     </tr>
                     <tr>

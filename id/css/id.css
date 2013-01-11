@@ -2600,7 +2600,6 @@ searching
 	font-size:12px;
 	text-align:left;
 }
-.input_width{ width:480px;}
 .table_a_spacing{ margin-bottom:10px;}
 .table_a_spacing img{ vertical-align:top;}
 .confirmation_product_num_info{ 
@@ -2641,3 +2640,4 @@ searching
 .margin_clear{
   margin:0px;
 }
+.send_mail td{ font-size:11px;}

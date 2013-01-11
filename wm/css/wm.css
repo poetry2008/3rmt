@@ -243,14 +243,6 @@ UL {
 	height: 20px;
 	background: url(../images/design/box/login_text_bg.gif) no-repeat;
 }
-.login_text {
-	width: 98px;
-	height: 20px;
-	color: #593109;
-	border: none;
-	background: none;
-	padding: 3px 5px;
-}
 .login_submit {
 	margin: 2px 7px 0px 0px;
 }
@@ -338,8 +330,7 @@ UL {
 	padding:3px 5px;
 }
 .input_text {
-	width: 170px;
-	width:185px\09;
+	width: 198px;
 	height:20px;
 }
 .input_text_short {
@@ -1958,7 +1949,6 @@ searching
 	*font-size:10px; 
 	line-height:1.5;
 }
-.input_width{ width:295px;}
 .table_a_spacing{ margin-bottom:8px;}
 .table_a_spacing img{ vertical-align:top;}
 .product_info_table td{ font-size:12px; line-height:1.5;}
@@ -1996,4 +1986,7 @@ color: #005c69;
 }
 .margin_clear{
   margin:0px;
+}
+.send_mail td{
+	font-size:11px;
 }

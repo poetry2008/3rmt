@@ -4,8 +4,8 @@
 */
 
 define('NAVBAR_TITLE_1', 'お客様情報');
-define('NAVBAR_TITLE_2', 'ショップからのお知らせ');
-define('HEADING_TITLE', 'ショップからのお知らせ');
+define('NAVBAR_TITLE_2', 'お知らせ設定');
+define('HEADING_TITLE', 'お知らせ設定');
 
 define('TEXT_PRODUCT_NOTIFICATIONS_INTRODUCTION',
 'あなたが選んだ商品の最新情報を電子メールでお届けするサービスです。<br>

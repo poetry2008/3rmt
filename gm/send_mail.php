@@ -50,15 +50,15 @@
    }
    echo tep_draw_form('login', tep_href_link('send_mail.php'), 'post') . "\n";
 ?>
-      <table class="login" width="100%">
+      <table width="100%">
         <tr>
-          <td valign="top" width="20%"><b><?php echo INPUT_SEND_MAIL; ?>:</b></td>
-          <td class="login_text" valign="top" width="70%">
+          <td valign="top" width="15%"><b><?php echo INPUT_SEND_MAIL; ?>:</b></td>
+          <td valign="top">
             <input type="text" name="email_address" id="send_input_text">
           </td>
         </tr>
         <tr>
-        <td align="right" style="padding-top:25px;" colspan="2">
+        <td align="right" colspan="2">
             <?php echo tep_image_submit('button_send_mail.gif',
                 SENDMAIL_BUTTON,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_send_mail.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_send_mail_hover.gif\'"'); ?>
           </td>

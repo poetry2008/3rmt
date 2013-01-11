@@ -157,12 +157,12 @@ $(document).ready(function(){
       $a_value = tep_output_string($account['customers_firstname'],false,true);
   } elseif ($error == true) {
       if ($entry_firstname_error == true) {
-          $a_value = tep_draw_input_field('firstname') . '&nbsp;' . ENTRY_FIRST_NAME_ERROR;
+          $a_value = tep_draw_input_field('firstname','','class="input_text"') . ENTRY_FIRST_NAME_ERROR;
       } else {
-          $a_value = $firstname . tep_draw_hidden_field('firstname');
+          $a_value = $firstname .  tep_draw_hidden_field('firstname','','class="input_text"');
       }
   } else {
-      $a_value = tep_draw_input_field('firstname', $account['customers_firstname'], "class='input_text'") . '&nbsp;' . ENTRY_FIRST_NAME_TEXT;
+      $a_value = tep_draw_input_field('firstname', $account['customers_firstname'], "class='input_text'") . ENTRY_FIRST_NAME_TEXT;
   }
   $address_form->setFormLine('firstname',ENTRY_FIRST_NAME,$a_value);
 
@@ -171,12 +171,12 @@ $(document).ready(function(){
       $a_value = tep_output_string($account['customers_lastname'],false,true);
   } elseif ($error == true) {
       if ($entry_lastname_error == true) {
-          $a_value = tep_draw_input_field('lastname') . '&nbsp;' . ENTRY_LAST_NAME_ERROR;
+          $a_value = tep_draw_input_field('lastname','','class="input_text"') . ENTRY_LAST_NAME_ERROR;
       } else {
-          $a_value = $lastname . tep_draw_hidden_field('lastname');
+          $a_value = $lastname .  tep_draw_hidden_field('lastname','','class="input_text"');
       }
   } else {
-      $a_value = tep_draw_input_field('lastname', $account['customers_lastname'],"class='input_text'") . '&nbsp;' . ENTRY_LAST_NAME_TEXT;
+      $a_value = tep_draw_input_field('lastname', $account['customers_lastname'],"class='input_text'") . ENTRY_LAST_NAME_TEXT;
   }
   $address_form->setFormLine('lastname',ENTRY_LAST_NAME,$a_value);
 
@@ -185,18 +185,18 @@ $(document).ready(function(){
       $a_value = tep_output_string($account['customers_email_address'],false,true);
   } elseif ($error == true) {
       if ($entry_email_address_error == true) {
-          $a_value = tep_draw_input_field('email_address') . '&nbsp;<br>' . ENTRY_EMAIL_ADDRESS_ERROR;
+          $a_value = tep_draw_input_field('email_address','','class="input_text"') .'<div>'.  ENTRY_EMAIL_ADDRESS_ERROR . '</div>';
       } elseif ($entry_email_address_check_error == true) {
-          $a_value = tep_draw_input_field('email_address') . '&nbsp;<br>' . ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
+          $a_value = tep_draw_input_field('email_address','','class="input_text"') .'<div>'.  ENTRY_EMAIL_ADDRESS_CHECK_ERROR . '</div>';
       } elseif ($entry_email_address_exists == true) {
-          $a_value = tep_draw_input_field('email_address') . '&nbsp;<br>' . ENTRY_EMAIL_ADDRESS_ERROR_EXISTS;
+          $a_value = tep_draw_input_field('email_address','','class="input_text"') .'<div>'.  ENTRY_EMAIL_ADDRESS_ERROR_EXISTS . '</div>';
       } elseif ($entry_guest_not_active == true) {
-          $a_value = tep_draw_input_field('email_address') . '&nbsp;<br>' . ENTRY_GUEST_EMAIL_NOT_ACTIVE;
+          $a_value = tep_draw_input_field('email_address','','class="input_text"') .'<div>'.  ENTRY_GUEST_EMAIL_NOT_ACTIVE .'</div>';
       } else {
           $a_value = $email_address . tep_draw_hidden_field('email_address');
       }
   } else {
-      $a_value = tep_draw_input_field('email_address', $account['customers_email_address'],"class='input_text'") . '&nbsp;' . ENTRY_EMAIL_ADDRESS_TEXT;
+      $a_value = tep_draw_input_field('email_address', $account['customers_email_address'],"class='input_text'") .'<div>'.  ENTRY_EMAIL_ADDRESS_TEXT.'</div>';
   }
   $address_form->setFormLine('email_address',ENTRY_EMAIL_ADDRESS,$a_value);
 ?>
@@ -209,7 +209,7 @@ $(document).ready(function(){
       <table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
         <tr>
           <td class="main">
-            <table class="box_des" border="0" cellspacing="0" cellpadding="2">
+            <table class="box_des" border="0" cellspacing="0" cellpadding="2" width="100%">
               <?php
   $address_form->printCategoryPersonal();
 ?>
@@ -235,7 +235,7 @@ $(document).ready(function(){
         <td class="main">
         <table border="0" cellspacing="0" cellpadding="2" summary="table" class="box_des" width="100%">
           <tr>
-            <td class="main" width="120">&nbsp;<?php echo TITLE_ADDRESS_OPTION; ?></td>
+            <td class="main" width="93">&nbsp;<?php echo TITLE_ADDRESS_OPTION; ?></td>
             <td class="main">&nbsp;<select id="address_show_list" onchange="address_option_list(this.value);"></select>
             </td>
             </tr> 
@@ -266,12 +266,12 @@ $(document).ready(function(){
   </tr>
   <tr>
     <td class="main">
-      <table border="0" width="100%" cellspacing="0" cellpadding="0" class="formArea">
+      <table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
         <tr>
           <td class="main">
             <table class="box_des" border="0" cellspacing="0" cellpadding="2" width="100%">
               <tr>
-                <td class="main" width="120">&nbsp;<?php echo ENTRY_NEWSLETTER; ?></td>
+                <td class="main" width="93"><?php echo ENTRY_NEWSLETTER; ?></td>
                 <td class="main">
                   <?php
   if ($is_read_only == true) {
@@ -302,8 +302,8 @@ $(document).ready(function(){
   
 ?>      
               <tr>
-                <td class="main" width="120">&nbsp;<?php echo ENTRY_GUEST; ?></td>
-                <td class="main" style="padding-left:10px; *padding-left:14px;"><?php echo tep_draw_pull_down_menu('guestchk', $guestchk_array, $guestchk, 'onchange="pass_hidd()"'); ?></td>
+                <td class="main" width="93"><?php echo ENTRY_GUEST; ?></td>
+                <td class="main"><?php echo tep_draw_pull_down_menu('guestchk', $guestchk_array, $guestchk, 'onchange="pass_hidd()"'); ?></td>
               </tr>
               <tr>
                 <td>&nbsp;</td>
@@ -340,19 +340,19 @@ $(document).ready(function(){
           <td class="main">
             <table class="box_des" border="0" cellspacing="0" cellpadding="2" width="100%">
               <tr>
-                <td class="main" width="120">&nbsp;<?php echo ENTRY_PASSWORD; ?></td>
-                <td class="main" width="320">&nbsp;
+                <td class="main" width="93"><?php echo ENTRY_PASSWORD; ?></td>
+                <td class="main">
                   <?php
     $p_error_show_str = ''; 
     if ($error == true) {
       if ($entry_password_confirm_same_error == true) { 
-        echo tep_draw_password_field('password','',"class='input_text'") . '&nbsp;' . ENTRY_PASSWORD_TEXT;
+        echo tep_draw_password_field('password','',"class='input_text'") . ENTRY_PASSWORD_TEXT;
         $p_error_show_str = ENTRY_NO_USE_OLD_PASSWORD;
       } else if ($entry_password_confirmation_error == true) { 
-        echo tep_draw_password_field('password','',"class='input_text'") . '&nbsp;' . ENTRY_PASSWORD_TEXT;
+        echo tep_draw_password_field('password','',"class='input_text'") . ENTRY_PASSWORD_TEXT;
         $p_error_show_str = '&nbsp;<font color="red">'.ENTRY_PASSWORD_IS_DIFFERENT.'</font>';
       } else if($entry_password_error == true) {
-        echo tep_draw_password_field('password','',"class='input_text'") . '&nbsp;' . ENTRY_PASSWORD_TEXT;
+        echo tep_draw_password_field('password','',"class='input_text'") . ENTRY_PASSWORD_TEXT;
         if (isset($entry_password_error_msg)) {
           $p_error_show_str = $entry_password_error_msg; 
         } else {
@@ -362,7 +362,7 @@ $(document).ready(function(){
         echo PASSWORD_HIDDEN . tep_draw_hidden_field('password') . tep_draw_hidden_field('confirmation');
       }
     } else {
-        echo tep_draw_password_field('password','',"class='input_text'") . '&nbsp;' . ENTRY_PASSWORD_TEXT;
+        echo tep_draw_password_field('password','',"class='input_text'") . ENTRY_PASSWORD_TEXT;
     }
 ?>
                 </td>
@@ -371,10 +371,10 @@ $(document).ready(function(){
     if ( ($error == false) || ($entry_password_error == true) ) {
 ?>
               <tr>
-                <td class="main" style="padding-left:6px;"><?php echo ENTRY_PASSWORD_CONFIRMATION; ?></td>
-                <td class="main">&nbsp;
+                <td class="main"><?php echo ENTRY_PASSWORD_CONFIRMATION; ?></td>
+                <td class="main">
                   <?php
-      echo tep_draw_password_field('confirmation', '', "class='input_text'") . '&nbsp;' . ENTRY_PASSWORD_CONFIRMATION_TEXT;
+      echo tep_draw_password_field('confirmation', '', "class='input_text'") . ENTRY_PASSWORD_CONFIRMATION_TEXT;
 ?>
                 </td>
               </tr>
@@ -387,13 +387,15 @@ $(document).ready(function(){
   <tr>
     <td class="main">&nbsp;</td>
     <td class="main" >
-    <?php echo '&nbsp;'.$p_error_show_str;?> 
+    <?php echo $p_error_show_str;?> 
     </td>
   </tr>
   <?php
   }
   ?>
-    <tr>
+  </table>
+  <table border="0" cellspacing="0" cellpadding="2" width="100%" summary="table">
+      <tr>
       <td class="main" colspan="2"><?php echo ENTRY_PASSWORD_INFORM_READ_TEXT;?></td> 
     </tr>
   </table>
