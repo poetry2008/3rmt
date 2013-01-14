@@ -10,7 +10,9 @@
   include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .  '/default.php');
   include(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/edit_preorders.php');
   require(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/step-by-step/edit_preorders.php');
-
+  if(!isset($_SESSION['create_preorder']) || !isset($_GET['oID'])){
+    tep_redirect(tep_redirect(tep_href_link('create_preorder.php', null, 'SSL')));
+  }
   require(DIR_WS_CLASSES . 'currencies.php');
   $currencies = new currencies(2);
   

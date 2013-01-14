@@ -139,7 +139,8 @@ if(isset($_SESSION['create_preorder']['orders_products']) && !empty($_SESSION['c
           foreach ($_SESSION['create_preorder']['orders_products'] as $new_products_temp_add) {
             $orders_products_id = ''; 
             $RowStyle = "dataTableContent";
-            $porducts_qty = isset($_SESSION['preorder_products'][$_GET['oID']]['qty']) ? $_SESSION['preorder_products'][$_GET['oID']]['qty'] : $new_products_temp_add['products_quantity'];
+            $new_products_temp_add['products_quantity'] = isset($_SESSION['preorder_products'][$_GET['oID']]['qty']) ? $_SESSION['preorder_products'][$_GET['oID']]['qty'] : $new_products_temp_add['products_quantity'];
+            $porducts_qty = $new_products_temp_add['products_quantity'];
             echo '<tr>' . "\n" .
                  '<td class="' . $RowStyle . '" align="left" valign="top" width="20">&nbsp;'
                  .$porducts_qty."&nbsp;x</td>\n" .  '<td class="' . $RowStyle . '">' . $new_products_temp_add['products_name'] . "\n"; 
