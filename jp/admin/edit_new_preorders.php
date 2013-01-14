@@ -761,38 +761,6 @@ function orders_session(type,value){
   }
 $(document).ready(function(){
   hidden_payment();
-  $("input[name='con_email']").blur(function(){
-    var con_email = document.getElementsByName("con_email")[0].value;
-    orders_session('con_email',con_email);
-  });
-  $("input[name='bank_name']").blur(function(){
-    var payment_value = document.getElementsByName("bank_name")[0].value;
-    orders_session('bank_name',payment_value);
-  });
-  $("input[name='bank_shiten']").blur(function(){
-    var payment_value = document.getElementsByName("bank_shiten")[0].value;
-    orders_session('bank_shiten',payment_value);
-  });
-  $("input[name='bank_kamoku']").click(function(){
-    if(document.getElementsByName("bank_kamoku")[0].checked == true){
-      var payment_value = document.getElementsByName("bank_kamoku")[0].value;
-    }else{
-      var payment_value = document.getElementsByName("bank_kamoku")[1].value; 
-    }
-    orders_session('bank_kamoku',payment_value);
-  });
-  $("input[name='bank_kouza_num']").blur(function(){
-    var payment_value = document.getElementsByName("bank_kouza_num")[0].value;
-    orders_session('bank_kouza_num',payment_value);
-  });
-  $("input[name='bank_kouza_name']").blur(function(){
-    var payment_value = document.getElementsByName("bank_kouza_name")[0].value;
-    orders_session('bank_kouza_name',payment_value);
-  });
-  $("input[name='rak_tel']").blur(function(){
-    var payment_value = document.getElementsByName("rak_tel")[0].value;
-    orders_session('rak_tel',payment_value);
-  });
   $("select[name='status']").change(function(){
     var s_status = document.getElementsByName("status")[0].value;
     orders_session('s_status',s_status);
