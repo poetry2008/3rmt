@@ -341,7 +341,11 @@ foreach($all_show_option_id as $t_item_id){
     echo $all_attr_info['title'].':'.str_replace(array("<br>", "<BR>"), '', $all_attr_info['value']);
     if ($all_show_option[$t_item_id]['options_values_price'] != '0') {
       if ((int)$preorder_product_res['products_price'] != '0') {
-        echo ' ('.$currencies->format($all_show_option[$t_item_id]['options_values_price']).')'; 
+        if($all_show_option[$t_item_id]['options_values_price'] < 0){
+          echo ' (<font color="#FF0000">'.str_replace(JPMONEY_UNIT_TEXT,'',$currencies->format($all_show_option[$t_item_id]['options_values_price'])).'</font>'.JPMONEY_UNIT_TEXT.')'; 
+        }else{
+          echo ' ('.$currencies->format($all_show_option[$t_item_id]['options_values_price']).')'; 
+        }
       } 
     }
         echo '<br>';

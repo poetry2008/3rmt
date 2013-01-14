@@ -139,7 +139,7 @@ if(isset($_SESSION['create_preorder']['orders_products']) && !empty($_SESSION['c
           foreach ($_SESSION['create_preorder']['orders_products'] as $new_products_temp_add) {
             $orders_products_id = ''; 
             $RowStyle = "dataTableContent";
-            $porducts_qty = $new_products_temp_add['products_quantity'];
+            $porducts_qty = isset($_SESSION['preorder_products'][$_GET['oID']]['qty']) ? $_SESSION['preorder_products'][$_GET['oID']]['qty'] : $new_products_temp_add['products_quantity'];
             echo '<tr>' . "\n" .
                  '<td class="' . $RowStyle . '" align="left" valign="top" width="20">&nbsp;'
                  .$porducts_qty."&nbsp;x</td>\n" .  '<td class="' . $RowStyle . '">' . $new_products_temp_add['products_name'] . "\n"; 
@@ -153,7 +153,7 @@ if(isset($_SESSION['create_preorder']['orders_products']) && !empty($_SESSION['c
                   str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data($orders_products_attributes_array[$j]['option_info']['value'], array("'"=>"&quot;"))); 
                 echo '</div></div>';
                 echo '<div class="order_option_price">';
-                echo (int)$orders_products_attributes_array[$j]['options_values_price'];
+                echo isset($_SESSION['preorder_products'][$_GET['oID']]['attr'][$j]) ? $_SESSION['preorder_products'][$_GET['oID']]['attr'][$j] : (int)$orders_products_attributes_array[$j]['options_values_price'];
                 echo TEXT_MONEY_SYMBOL;
                 echo '</div>';
                 echo '</i></small></div>';
@@ -163,9 +163,22 @@ if(isset($_SESSION['create_preorder']['orders_products']) && !empty($_SESSION['c
                 echo '</td>' . "\n" .
                      '<td class="' . $RowStyle . '">' . $new_products_temp_add['products_model'] . '</td>' . "\n" .
                      '<td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($new_products_temp_add['products_tax']) . '%</td>' . "\n";
-                echo '<td class="'.$RowStyle.'" align="right">'.str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format(tep_display_currency(number_format(abs($new_products_temp_add['products_price']), 2)))).TEXT_MONEY_SYMBOL.'</td>'; 
-                echo '<td class="' . $RowStyle . '" align="right">' .
-                     str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format(tep_display_currency(number_format(abs($new_products_temp_add['final_price']),2)))).TEXT_MONEY_SYMBOL ."\n" . '</td>' . "\n" . 
+            $new_products_temp_add['products_price'] = isset($_SESSION['preorder_products'][$_GET['oID']]['price']) ? $_SESSION['preorder_products'][$_GET['oID']]['price'] : $new_products_temp_add['products_price'];
+            if($new_products_temp_add['products_price'] < 0){
+
+              $orders_products_price = '<font color="#FF0000">'.str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format(tep_display_currency(number_format(abs($new_products_temp_add['products_price']), 2)))).'</font>';
+            }else{
+
+              $orders_products_price = str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format(tep_display_currency(number_format(abs($new_products_temp_add['products_price']), 2)))); 
+            }
+            echo '<td class="'.$RowStyle.'" align="right">'.$orders_products_price.TEXT_MONEY_SYMBOL.'</td>'; 
+            $new_products_temp_add['final_price'] = isset($_SESSION['preorder_products'][$_GET['oID']]['final_price']) ? $_SESSION['preorder_products'][$_GET['oID']]['final_price'] : $new_products_temp_add['final_price'];
+            if($new_products_temp_add['final_price'] < 0){
+              $orders_products_tax_price = '<font color="#FF0000">'.str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format(tep_display_currency(number_format(abs($new_products_temp_add['final_price']),2)))).'</font>'; 
+            }else{
+              $orders_products_tax_price = str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format(tep_display_currency(number_format(abs($new_products_temp_add['final_price']),2)))); 
+            }
+                echo '<td class="' . $RowStyle . '" align="right">' .$orders_products_tax_price.TEXT_MONEY_SYMBOL ."\n" . '</td>' . "\n" . 
                      '<td class="' . $RowStyle . '" align="right"><div id="update_products['.$orders_products_id.'][a_price]">';
             if ($new_products_temp_add['final_price'] < 0) {
               echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($new_products_temp_add['final_price'], $new_products_temp_add['products_tax']), true, $currency, $currency_value)).'</font>'.TEXT_MONEY_SYMBOL;

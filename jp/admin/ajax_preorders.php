@@ -765,9 +765,13 @@ if ($_POST['orders_id'] &&
   $_SESSION['preorder_products'][$_POST['oid']]['price'] = tep_replace_full_character($p_price);
   $_SESSION['preorder_products'][$_POST['oid']]['final_price'] = $final_price;
   $_SESSION['preorder_products'][$_POST['oid']]['ot_subtotal'] = $final_price*tep_replace_full_character($_POST['p_num']);
-  $cpayment = payment::getInstance((int)$_SESSION['create_preorder']['orders']['site_id']);
+  $cpayment = payment::getInstance((isset($_POST['session_site_id']) ? $_POST['session_site_id'] : (int)$_SESSION['create_preorder']['orders']['site_id']));
   if(isset($_POST['payment_method'])){
-    $_SESSION['create_preorder']['orders']['payment_method'] = $_POST['payment_method'];
+    if(tep_db_num_rows($orders_p_raw) > 0){
+      $_SESSION['preorder_products'][$_POST['oid']]['payment_method'] = $_POST['payment_method'];
+    }else{
+      $_SESSION['create_preorder']['orders']['payment_method'] = $_POST['payment_method'];
+    }
     $handle_fee = $cpayment->handle_calc_fee($_POST['payment_method'], $_SESSION['preorder_products'][$_POST['oid']]['ot_subtotal']);
   }
   $handle_fee = $handle_fee == '' ? 0 : $handle_fee;

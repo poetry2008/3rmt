@@ -18,7 +18,8 @@
   unset($cpayment); 
   $cpayment = payment::getInstance((int)$_SESSION['create_preorder']['orders']['site_id']);
 // START CONFIGURATION ################################
-
+//unset($_SESSION['orders_update_products'][$_GET['oID']]);
+//print_r($_SESSION['orders_update_products'][$_GET['oID']]);  
 // Optional Tax Rates, e.g. shipping tax of 17.5% is "17.5"
 // $AddCustomTax = "20.0"; // class "ot_custom", used for all unknown total modules
   $AddCustomTax = "19.6";  // new
@@ -833,8 +834,8 @@ function add_option(){
     var add_str = '';
 
     add_str += '<tr><td class="smallText" align="left"><?php echo EDIT_ORDERS_TOTALDETAIL_READ_ONE;?></td>'
-            +'<td class="smallText" align="right"><INPUT type="button" id="button_add" value="<?php echo TEXT_BUTTON_ADD;?>" onClick="add_option();">&nbsp;<input value="" size="7" name="update_totals['+add_num+'][title]">'
-            +'</td><td class="smallText" align="right"><input id="update_totals_'+add_num+'" value="" size="6" onkeyup="clearNewLibNum(this);price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');" name="update_totals['+add_num+'][value]"><input type="hidden" name="update_totals['+add_num+'][class]" value="ot_custom"><input type="hidden" name="update_totals['+add_num+'][total_id]" value="0"></td>'
+            +'<td class="smallText" align="right"><INPUT type="button" id="button_add" value="<?php echo TEXT_BUTTON_ADD;?>" onClick="add_option();orders_session(\'customers_add_num\','+(add_num+1)+');">&nbsp;<input value="" size="7" name="update_totals['+add_num+'][title]" onblur="orders_session(\'customers_total_'+add_num+'\',this.value);">'
+            +'</td><td class="smallText" align="right"><input id="update_totals_'+add_num+'" value="" size="6" onkeyup="clearNewLibNum(this);price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');recalc_preorder_price(\'<?php echo $_GET['oID'];?>\', \'<?php echo $products_id_str;?>\', \'0\', \'<?php echo $op_info_str;?>\');" name="update_totals['+add_num+'][value]"><input type="hidden" name="update_totals['+add_num+'][class]" value="ot_custom"><input type="hidden" name="update_totals['+add_num+'][total_id]" value="0"></td>'
             +'<td><b><img height="17" width="1" border="0" alt="" src="images/pixel_trans.gif"></b></td></tr>'
             +'<tr id="add_option_total">'+add_option_total_str+'</tr>';
 
@@ -887,7 +888,9 @@ function recalc_preorder_price(oid, opd, o_str, op_str)
   var op_price_total = 0;
   var oid_price = 0;
   var op_price_str = ''; 
-  oid_price = document.getElementsByName('update_products['+opd+'][p_price]')[0].value;
+  if(document.getElementsByName('update_products['+opd+'][p_price]')[0]){
+    oid_price = document.getElementsByName('update_products['+opd+'][p_price]')[0].value;
+  }
   if(op_str != ''){
     for(x in op_array){
 
@@ -897,9 +900,15 @@ function recalc_preorder_price(oid, opd, o_str, op_str)
       op_price_str += op_price+'|||';
     }
   }
-  pro_num = document.getElementById('p_'+opd).value;
+  var pro_num = <?php echo $_SESSION['create_preorder']['orders_products'][$products_id_str]['products_quantity'];?>;
+  if(document.getElementById('p_'+opd)){
+    pro_num = document.getElementById('p_'+opd).value;
+  }
   p_price = oid_price; 
-  p_final_price = document.getElementsByName('update_products['+opd+'][final_price]')[0].value;  
+  var p_final_price = 0;
+  if(document.getElementsByName('update_products['+opd+'][final_price]')[0]){
+    p_final_price = document.getElementsByName('update_products['+opd+'][final_price]')[0].value;  
+  }
   p_op_info = op_price_total;  
 
   var update_total_temp;
@@ -1863,6 +1872,14 @@ if (($action == 'edit') && ($order_exists == true)) {
   if($ot_custom_flag == false){ 
     array_pop($TotalsArray);
   }
+  if(isset($_SESSION['orders_update_products'][$_GET['oID']]['customers_add_num'])){
+    $customers_add_num = $_SESSION['orders_update_products'][$_GET['oID']]['customers_add_num'];
+    $totals_total = array_pop($TotalsArray);
+    for($total_i = 5;$total_i <= $customers_add_num;$total_i++){
+      $TotalsArray[$total_i] = array("Name" => "          ", "Price" => "", "Class" => "ot_custom", "TotalID" => "0"); 
+    } 
+    $TotalsArray[] = $totals_total;
+  }
   foreach ($TotalsArray as $TotalIndex => $TotalDetails) {
     $TotalStyle = "smallText";
     if ($TotalDetails["Class"] == "ot_total") {
@@ -1945,7 +1962,7 @@ if (($action == 'edit') && ($order_exists == true)) {
              '  </tr>' . "\n";
       }
     } else {
-      $button_add = $TotalIndex == count($TotalsArray)-2 ? '<INPUT type="button" id="button_add" value="'.TEXT_BUTTON_ADD.'" onClick="add_option();"><input type="hidden" id="button_add_id" value="'.(count($TotalsArray)-1).'">&nbsp;' : '';
+      $button_add = $TotalIndex == (isset($_SESSION['orders_update_products'][$_GET['oID']]['customers_add_num']) ? count($TotalsArray)-1: count($TotalsArray)-2) ? '<INPUT type="button" id="button_add" value="'.TEXT_BUTTON_ADD.'" onClick="add_option();orders_session(\'customers_add_num\','.count($TotalsArray).');"><input type="hidden" id="button_add_id" value="'.(count($TotalsArray)-1).'">&nbsp;' : '';
       $TotalDetails["Name"] = isset($_POST['update_totals'][$TotalIndex]['title']) ? $_POST['update_totals'][$TotalIndex]['title'] : $TotalDetails["Name"];
       $TotalDetails["Price"] = isset($_SESSION['preorder_products'][$_GET['oID']]['customer'][$TotalIndex]) ? $_SESSION['preorder_products'][$_GET['oID']]['customer'][$TotalIndex] : $TotalDetails["Price"];
       $TotalDetails["Price"] = isset($_POST['update_totals'][$TotalIndex]['value']) ? $_POST['update_totals'][$TotalIndex]['value'] : $TotalDetails["Price"];
