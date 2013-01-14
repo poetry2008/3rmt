@@ -96,7 +96,6 @@ define('ENTRY_CUSTOMER_EMAIL', 'Eメールアドレス');
 //define('SUCCESS_ORDER_UPDATED', '成功: 予約状態が更新されました。');
 //define('WARNING_ORDER_NOT_UPDATED', '警告: 予約状態はなにも変更されませんでした。');
 
-// Add Japanese osCommerce
 //define('EMAIL_TEXT_STORE_CONFIRMATION', ' へのご予約、誠にありがとうございます。' . "\n\n"
 //.'ご予約の受付状況及びご連絡事項を、下記にご案内申し上げます。');
 //define('EMAIL_TEXT_STORE_CONFIRMATION_FOOTER', 
