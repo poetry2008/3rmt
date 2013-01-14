@@ -132,6 +132,7 @@ p.pageBottom_long {
 	margin:0;
 	padding:0;
 }
+.send_mail td{ font-size:11px;}
 .send_mail a { font-size:12px;}
 /* ---------------------------
 img
@@ -392,13 +393,6 @@ check out in turn
 	height: 20px;
 	background: url(../images/design/box/login_text_bg.gif) no-repeat;
 }
-.login_text {
-	width: 98px;
-	height: 20px;
-	border: none;
-	background: none;
-	padding: 3px 5px;
-}
 .login_submit {
 	margin: 2px 16px 0px 0px;
 }
@@ -501,7 +495,7 @@ input textarea select
 	padding:3px 5px;
 }
 .input_text {
-	width: 200px;
+	width: 198px;
 	height:20px;
 }
 .input_text_short {
@@ -2082,7 +2076,7 @@ display:block;
 	font-weight:bold;
 }
 .option_input{
-	width:75%;
+	width:200px;
 	float:left;
 }
 .option_error{
@@ -2299,7 +2293,6 @@ display:block;
 }
 .address_item_info{ margin-left:4px;}
 #shiping_box{ padding:0;}
-.input_width{ width:310px;}
 .product_info_table td{ font-size:12px; line-height:1.5;}
 .table_a_spacing{ margin-bottom:13px;}
 .table_a_spacing img{ vertical-align:top;}
@@ -2341,4 +2334,7 @@ display:block;
 }
 .margin_clear{
   margin:0px;
+}
+.box_des{
+	margin-top:8px;
 }

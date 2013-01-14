@@ -84,7 +84,7 @@
               <td colspan="2"></td>
             <tr>
               <td class="main" width="130"><?php echo ENTRY_FORGOTTEN_EMAIL_ADDRESS; ?></td>
-              <td class="main"><?php echo tep_draw_input_field('email_address', '', 'maxlength="96" class="input_width"'); ?></td>
+              <td class="main"><?php echo tep_draw_input_field('email_address', '', 'maxlength="96" class="input_text"'); ?></td>
             </tr>
             <tr>
               <td colspan="2"><br>

@@ -10,7 +10,7 @@ define('PAGE_ACCOUNT', 'お客様情報');
 define('PAGE_ACCOUNT_EDIT', 'お客様情報の編集');
 define('PAGE_ADDRESS_BOOK', 'アドレス帳');
 define('PAGE_ACCOUNT_HISTORY', '注文履歴');
-define('PAGE_ACCOUNT_NOTIFICATIONS', 'ショップからのお知らせ');
+define('PAGE_ACCOUNT_NOTIFICATIONS', 'お知らせ設定');
 define('PAGE_SHOPPING_CART', 'ショッピングカート');
 define('PAGE_CHECKOUT_SHIPPING', 'レジへすすむ');
 define('PAGE_ADVANCED_SEARCH', '詳細検索');

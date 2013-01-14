@@ -69,7 +69,7 @@ define('HEADER_TITLE_NEWS', '最新情報');
 define('MYACCOUNT_EDIT', 'お客様情報の編集');
 define('MYACCOUNT_ADDRESS', 'アドレス帳');
 define('MYACCOUNT_HISTORY', '注文履歴');
-define('MYACCOUNT_NOTIFICATION', 'ショップからのお知らせ');
+define('MYACCOUNT_NOTIFICATION', 'お知らせ設定');
 define('MENU_MU','メーカー一覧');
 
 // footer text in includes/footer.php
@@ -205,10 +205,10 @@ define('ENTRY_GENDER_ERROR', '&nbsp;<small><font color="#AABBDD">が必要です
 define('ENTRY_GENDER_TEXT', '&nbsp;<small><font color="#AABBDD">必須</font></small>');
 define('ENTRY_FIRST_NAME', '名:');
 define('ENTRY_FIRST_NAME_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_FIRST_NAME_MIN_LENGTH . ' 文字</font></small>');
-define('ENTRY_FIRST_NAME_TEXT', '&nbsp;(例. 太郎) <font color="#AABBDD">必須</font>');
+define('ENTRY_FIRST_NAME_TEXT', '(例. 太郎) <font color="#AABBDD">必須</font>');
 define('ENTRY_LAST_NAME', '姓:');
 define('ENTRY_LAST_NAME_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_LAST_NAME_MIN_LENGTH . ' 文字</font></small>');
-define('ENTRY_LAST_NAME_TEXT', '&nbsp;(例. 田中) <font color="#AABBDD">必須</font>');
+define('ENTRY_LAST_NAME_TEXT', '(例. 田中) <font color="#AABBDD">必須</font>');
 
 define('ENTRY_FIRST_NAME_F', '名(フリガナ):');
 define('ENTRY_FIRST_NAME_F_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_FIRST_NAME_MIN_LENGTH . ' 文字</font></small>');
@@ -224,7 +224,7 @@ define('ENTRY_EMAIL_ADDRESS', 'メールアドレス:');
 define('ENTRY_EMAIL_ADDRESS_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_EMAIL_ADDRESS_MIN_LENGTH . ' 文字</font></small>');
 define('ENTRY_EMAIL_ADDRESS_CHECK_ERROR', '&nbsp;<small><font color="#FF0000">入力されたメールアドレスは不正です!</font></small>');
 define('ENTRY_EMAIL_ADDRESS_ERROR_EXISTS', '&nbsp;<small><font color="#FF0000">メールアドレスはすでに存在しています!</font></small>');
-define('ENTRY_EMAIL_ADDRESS_TEXT', '&nbsp;(例. sample@example.com) <font color="#AABBDD">必須</font>');
+define('ENTRY_EMAIL_ADDRESS_TEXT', '(例. sample@example.com) <font color="#AABBDD">必須</font>');
 define('ENTRY_STREET_ADDRESS', '住所１:');
 define('ENTRY_STREET_ADDRESS_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_STREET_ADDRESS_MIN_LENGTH . ' 文字</font></small>');
 define('ENTRY_STREET_ADDRESS_TEXT', '&nbsp;<small>(例. 1-15-6) <font color="#AABBDD">必須</font></small>');
@@ -255,7 +255,7 @@ define('ENTRY_NEWSLETTER_YES', '購読する');
 define('ENTRY_NEWSLETTER_NO', '購読しない');
 define('ENTRY_NEWSLETTER_ERROR', '');
 define('ENTRY_PASSWORD', 'パスワード:');
-define('ENTRY_PASSWORD_CONFIRMATION', 'パスワードを再入力:');
+define('ENTRY_PASSWORD_CONFIRMATION', 'パスワード再入力:');
 define('ENTRY_PASSWORD_CONFIRMATION_TEXT', '&nbsp;(例. abcd1234) <font color="#AABBDD">必須</font>');
 define('ENTRY_PASSWORD_ERROR', '<small><font color="#FF0000">少なくても ' . ENTRY_PASSWORD_MIN_LENGTH . ' 文字</font></small>');
 define('ENTRY_PASSWORD_TEXT', '&nbsp;(例. abcd1234) <font color="#AABBDD">必須</font>');

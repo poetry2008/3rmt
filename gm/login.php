@@ -326,7 +326,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
             WHERE customers_info_id = '" . $customer_id . "'
         ");
     
-    //POINT_LIMIT CHECK 返点的有效期限判断 ds-style
+    //POINT_LIMIT CHECK 返点的有效期限判断
     if(MODULE_ORDER_TOTAL_POINT_LIMIT != '0') {
 //ccdd
       $plimit_count_query = tep_db_query("

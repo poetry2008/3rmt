@@ -62,7 +62,7 @@ dd {
 }
 .redtext {
     color:#ff4500;
-	margin-left:10px;
+	margin-left:2px;
 }
 .border {
     border:2px dashed #ccc;
@@ -668,7 +668,7 @@ list-style:none;
 /*input*/
 .main_input input{
 height:20px;
-width:150px;
+width:200px;
 }
 /*botton*/
 .button_delete02{
@@ -1121,8 +1121,7 @@ searching
 .text { color:#000;line-height:18px;}
 .input_text {
     height: 20px;
-    width: 112px;
-	*width:105px;
+    width:198px;
 }
 .payment_comment{ 
  word-wrap:break-word;
@@ -1513,7 +1512,6 @@ TEXTAREA {
 	font-size:12px;
 }
 .font_size14{ font-size:14px;}
-#newsletter{ margin-left:8px;*margin-left:12px;}
 #new_hour,#new_date,#new_date,#new_minute{
 	margin-bottom:5px;
 }

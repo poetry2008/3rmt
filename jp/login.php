@@ -337,7 +337,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
             //VALUES('". session_id() ."',now(),now(),'{$_POST['email_address']}','a','','{$user_ip4}','0') 
             //");
     
-    //POINT_LIMIT CHECK 返点的有效期限判断 ds-style
+    //POINT_LIMIT CHECK 返点的有效期限判断
     if(MODULE_ORDER_TOTAL_POINT_LIMIT != '0') {
 //ccdd
       $plimit_count_query = tep_db_query("
@@ -503,12 +503,12 @@ function session_win() {
                       <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
                     </tr>
                     <tr>
-                      <td class="main"><b><?php echo ENTRY_EMAIL_ADDRESS; ?></b></td>
-                      <td class="main email_address"><?php echo tep_draw_input_field('email_address'); ?></td>
+                      <td class="main" width="93">&nbsp;<b><?php echo ENTRY_EMAIL_ADDRESS; ?></b></td>
+                      <td class="main"><?php echo tep_draw_input_field('email_address','','class="input_text"'); ?></td>
                     </tr>
                     <tr>
-                      <td class="main"><b><?php echo ENTRY_PASSWORD; ?></b></td>
-                      <td class="main password"><?php echo tep_draw_password_field('password'); ?></td>
+                      <td class="main"><b>&nbsp;<?php echo ENTRY_PASSWORD; ?></b></td>
+                      <td class="main"><?php echo tep_draw_password_field('password','','class="input_text"'); ?></td>
                     </tr>
                     <tr>
                       <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
@@ -587,9 +587,10 @@ function session_win() {
       </table>
       <?php echo TEXT_LOGIN_SSL_READ;?>    
       <p align="center"> 
-<!-- GlobalSign SiteSeal tag. Do not edit. -->
-<span id="ss_img_wrapper_130-66_flash_ja"><a href="http://jp.globalsign.com/" target="_blank"><img alt="<?php echo TEXT_SEAL_GLOBALSIGN_COM_IMG_ALT;?>" border="0" id="ss_img" src="//seal.globalsign.com/SiteSeal/images/gs_noscript_130-66_ja.gif"></a></span><script type="text/javascript" src="//seal.globalsign.com/SiteSeal/gs_flash_130-66_ja.js"></script>
-<!-- End of GlobalSign SiteSeal Tag -->
+
+<!-- GeoTrust Smart Icon tag. Do not edit. -->
+<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>
+<!-- END of GeoTrust Smart Icon tag -->
 
         </p>
 <div class="underline"></div>

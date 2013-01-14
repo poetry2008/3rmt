@@ -12,7 +12,7 @@ class AD_Option_Item_Text extends AD_Option_Item_Basic
   function render($option_error_array,$is_space = false)
   {
      if (strlen($this->front_title)) {
-       echo '<td class="main" width="120" valign="top">';
+       echo '<td class="main" width="93" valign="top">';
        if (NEW_STYLE_WEB !== true) {
          echo '&nbsp;';
        } 
@@ -20,7 +20,7 @@ class AD_Option_Item_Text extends AD_Option_Item_Basic
        echo '</td>';
      }
      if(!$is_space){
-       echo '<td class="main" style="padding-left:10px;">';
+       echo '<td class="main">';
      }else{
        echo '<td class="main">';
      }

@@ -47,15 +47,13 @@ function pass_hidd(){
   if (sizeof($navigation->snapshot) > 0) {
 ?> 
             <tr> 
-              <td class="smallText"><br> 
+              <td class="smallText">
                 <?php echo sprintf(TEXT_ORIGIN_LOGIN, tep_href_link(FILENAME_LOGIN, tep_get_all_get_params(), 'SSL')); ?></td> 
             </tr> 
             <?php
   }
 ?> 
-            <tr> 
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-            </tr> 
+
             <tr> 
               <td><?php
   if (isset($_GET['email_address'])) $email_address = tep_db_prepare_input($_GET['email_address']);
