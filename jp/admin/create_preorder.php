@@ -682,6 +682,7 @@ if(isset($_SESSION['create_preorder']['orders_products']) && !empty($_SESSION['c
           foreach ($_SESSION['create_preorder']['orders_products'] as $new_products_temp_add) {
             $orders_products_id = ''; 
             $RowStyle = "dataTableContent";
+            $new_products_temp_add['products_quantity'] = isset($_SESSION['preorder_products'][$_GET['oID']]['qty']) ? $_SESSION['preorder_products'][$_GET['oID']]['qty'] : $new_products_temp_add['products_quantity'];
             $porducts_qty = $new_products_temp_add['products_quantity'];
             echo '<tr>' . "\n" .
                  '<td class="' . $RowStyle . '" align="left" valign="top" width="20">&nbsp;'
@@ -696,7 +697,7 @@ if(isset($_SESSION['create_preorder']['orders_products']) && !empty($_SESSION['c
                   str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data($orders_products_attributes_array[$j]['option_info']['value'], array("'"=>"&quot;"))); 
                 echo '</div></div>';
                 echo '<div class="order_option_price">';
-                echo (int)$orders_products_attributes_array[$j]['options_values_price'];
+                echo isset($_SESSION['preorder_products'][$_GET['oID']]['attr'][$j]) ? $_SESSION['preorder_products'][$_GET['oID']]['attr'][$j] : (int)$orders_products_attributes_array[$j]['options_values_price'];
                 echo TEXT_MONEY_SYMBOL;
                 echo '</div>';
                 echo '</i></small></div>';
@@ -706,12 +707,14 @@ if(isset($_SESSION['create_preorder']['orders_products']) && !empty($_SESSION['c
                 echo '</td>' . "\n" .
                      '<td class="' . $RowStyle . '">' . $new_products_temp_add['products_model'] . '</td>' . "\n" .
                      '<td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($new_products_temp_add['products_tax']) . '%</td>' . "\n";
+            $new_products_temp_add['products_price'] = isset($_SESSION['preorder_products'][$_GET['oID']]['price']) ? $_SESSION['preorder_products'][$_GET['oID']]['price'] : $new_products_temp_add['products_price'];
             if($new_products_temp_add['products_price'] < 0){
               $orders_products_price = '<font color="#ff0000">'.$currencies->format(tep_display_currency(number_format(abs($new_products_temp_add['products_price']), 2))).'</font>'; 
             }else{
               $orders_products_price = $currencies->format(tep_display_currency(number_format(abs($new_products_temp_add['products_price']), 2))); 
             }
             echo '<td class="'.$RowStyle.'" align="right">'.str_replace(TEXT_MONEY_SYMBOL,'',$orders_products_price).TEXT_MONEY_SYMBOL.'</td>'; 
+            $new_products_temp_add['final_price'] = isset($_SESSION['preorder_products'][$_GET['oID']]['final_price']) ? $_SESSION['preorder_products'][$_GET['oID']]['final_price'] : $new_products_temp_add['final_price'];
             if($new_products_temp_add['final_price'] < 0){
               $orders_products_tax_price = '<font color="#ff0000">'.$currencies->format(tep_display_currency(number_format(abs($new_products_temp_add['final_price']),2))).'</font>'; 
             }else{
@@ -939,7 +942,7 @@ if(!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['c
       echo "<td class='dataTableContent'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP .  " 4: </b></td>";
       $products_num = isset($_POST['add_product_quantity']) ? $_POST['add_product_quantity'] : 1;
       $products_price = isset($_POST['add_product_price']) ? $_POST['add_product_price'] : 0;
-      echo '<td class="dataTableContent" valign="top">&nbsp;' .
+      echo '<td class="dataTableContent">&nbsp;' .
         ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input id="add_product_quantity" name="add_product_quantity" size="2" value="'.$products_num.'" onkeyup="clearLibNum(this);">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'<input type="hidden" name="add_product_price" id="add_product_price" size="4" value="0">'; 
       echo '</td>';
       echo '<td class="dataTableContent" align="right"><input type="button" value="' . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . '" onclick="submit_check();">';

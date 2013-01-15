@@ -91,7 +91,7 @@
                'user_update' => $_SESSION['user_name'],
                'date_update' => 'now()'
                );
-           $sql_data_array = tep_array_merge($sql_date_array,$update_sql_date);
+           $sql_data_array = tep_array_merge($sql_data_array,$update_sql_date);
            tep_db_perform(TABLE_CAMPAIGN, $sql_data_array, 'update', 'id = \'' .  $_POST['campaign_id']. '\' and site_id = \''.(int)$_GET['site_id'].'\'');
         }else if($_GET['action']=='insert'){
           $insert_sql_data = array(

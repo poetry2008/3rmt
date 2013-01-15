@@ -14,32 +14,51 @@
 <?php require('includes/form_check.js.php'); ?>
 <script type="text/javascript">
 <!--
-function pass_hidd(){
+function pass_hidd(CI){
+  /*
   var idx = document.account_edit.elements["guestchk"].selectedIndex;
   var CI = document.account_edit.elements["guestchk"].options[idx].value;
-  
+*/
   if(CI == '0'){
     document.getElementById('trpass1').style.display = "";
-	document.getElementById('trpass2').style.display = "";
+    document.getElementById('trpass2').style.display = "";
+    if( document.getElementById('trpass3')){
+      document.getElementById('trpass3').style.display = "";
+    }
+    if( document.getElementById('trpass4')){
+      document.getElementById('trpass4').style.display = "";
+    }
+    if( document.getElementById('trpass5')){
+      document.getElementById('trpass5').style.display = "";
+    }
   }else{
     document.getElementById('trpass1').style.display = "none";
-	document.getElementById('trpass2').style.display = "none";
+    document.getElementById('trpass2').style.display = "none";
+    if( document.getElementById('trpass3')){
+      document.getElementById('trpass3').style.display = "none";
+    }
+    if( document.getElementById('trpass4')){
+      document.getElementById('trpass4').style.display = "none";
+    }
+    if( document.getElementById('trpass5')){
+      document.getElementById('trpass5').style.display = "none";
+    }
   }
 }
 -->
 </script>
 </head>
 <body>
-<!-- header //--> 
+<!-- header --> 
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-<!-- header_eof //--> 
-<!-- body //--> 
+<!-- header_eof --> 
+<!-- body --> 
 <div id="main">
 <div id="layout" class="yui3-u">
 <?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
 <?php include('includes/search_include.php');?>
-<!-- body_text //-->
+<!-- body_text -->
 <div id="main-content">
 
 <?php echo tep_draw_form('account_edit', tep_href_link(FILENAME_CREATE_ACCOUNT_PROCESS, '', 'SSL'), 'post', 'onSubmit="return check_form();"') . tep_draw_hidden_field('action', 'process'); ?> 
@@ -69,12 +88,23 @@ function pass_hidd(){
         </div>          </div></form>
  <?php include('includes/float-box.php');?>
 		</div>
-      <!-- body_text_eof //--> 
+      <!-- body_text_eof --> 
 <?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-  <!-- body_eof //-->  
-  <!-- footer //--> 
-   <!-- footer_eof //-->
+  <!-- body_eof -->  
+  <!-- footer --> 
+   <!-- footer_eof -->
 <?php echo DEFAULT_PAGE_TOP_CONTENTS;?>
+  <script>
+  document.onreadystatechange=function(){
+  var obj = document.getElementsByName("guestchk"); 
+  for(i = 0;i < obj.length;i++)    { 
+    if(obj[i].checked){ 
+      CI = obj[i].value; 
+    } 
+  }      
+  pass_hidd(CI);  
+  }
+  </script>
 </div>
 
  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
