@@ -820,6 +820,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 
     unset($_SESSION['orders_update_products'][$_GET['oID']]); 
     unset($_SESSION['preorder_products'][$_GET['oID']]);
+    unset($_SESSION['preorders_update_time'][$_GET['oID']]);
     tep_redirect(tep_href_link(FILENAME_FINAL_PREORDERS, tep_get_all_get_params(array('action')) . 'action=edit'));
     
   break;
