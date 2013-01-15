@@ -301,14 +301,34 @@ $(document).ready(function(){
   } else {
     if(substr(basename($PHP_SELF),0,7) == 'create_') {
     $guestchk_array = array(array('id' => '0',
-                                   'text' => ENTRY_ACCOUNT_MEMBER),
+                                   'text' => '<span>'.ENTRY_ACCOUNT_MEMBER.'</span>'),
                               array('id' => '1',
-                                   'text' => ENTRY_ACCOUNT_GUEST));
+                                   'text' => '<span>'.ENTRY_ACCOUNT_GUEST.'</span>'));
   
 ?>      
       <tr>
-        <td class="main"><?php echo ENTRY_GUEST; ?></td>
-        <td class="main"><?php echo tep_draw_pull_down_menu('guestchk', $guestchk_array, $guestchk, 'onchange="pass_hidd()"'); ?>&nbsp;&nbsp;<span><span class="red">※</span>&nbsp;<?php echo TEXT_ACCOUNT_GUEST_INFO;?></span></td>
+        <td class="main" valign="top"><?php echo ENTRY_GUEST; ?></td>
+<?php if (!isset($guestchk)) $guestchk = NULL;?>
+        <td class="main">
+        <?php 
+        foreach($guestchk_array as $guestchk_info){
+          echo '<div class="input_box"><input type="radio" value="'.  $guestchk_info['id'].'" name="guestchk" ';
+          if(isset($guestchk)&&$guestchk){
+            if($guestchk_info['id']==$guestchk){
+              echo ' checked="true" ';
+            }
+          }else{
+            if($guestchk_info['id']=='0'){
+              echo ' checked="true" ';
+            }
+          }
+          echo ' onclick="pass_hidd(\''.$guestchk_info['id'].'\')">';
+          echo $guestchk_info['text'];
+          echo "&nbsp;&nbsp;</div>";
+        }
+        ?>
+        <br>
+        <div class="input_both"><span class="red">※</span>&nbsp;<?php echo TEXT_ACCOUNT_GUEST_INFO;?></div></td>
       </tr>
 <?php
     } else {
@@ -357,7 +377,7 @@ $(document).ready(function(){
           $p_error_show_str = ENTRY_PASSWORD_ERROR;
         }
       } else {
-        echo PASSWORD_HIDDEN . tep_draw_hidden_field('password', '', "class='input_text'") . tep_draw_hidden_field('confirmation');
+      echo tep_draw_password_field('password', '', "class='input_text'") . '&nbsp;' . ENTRY_PASSWORD_TEXT;
       }
     } else {
       echo tep_draw_password_field('password', '', "class='input_text'") . '&nbsp;' . ENTRY_PASSWORD_TEXT;
@@ -365,7 +385,7 @@ $(document).ready(function(){
 ?></td>
           </tr>
 <?php
-    if ( ($error == false) || ($entry_password_error == true) ) {
+    if ( ($error == false) || ($entry_password_error == true) || ($error == true) ) {
 ?>
           <tr>
             <td class="main" width="93"><?php echo ENTRY_PASSWORD_CONFIRMATION; ?></td>

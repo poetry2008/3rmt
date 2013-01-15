@@ -23,6 +23,9 @@
 </table>
 <?php 
   } else { 
+    $customers = tep_db_query('select * from '.TABLE_CUSTOMERS.' where customers_id='.$_SESSION['customer_id']);
+    $customers_row = tep_db_fetch_array($customers);
+    $guestchk= $customers_row['customers_guest_chk'];
     if($guestchk == '1') {
 ?>
 <table border="0" width="171" cellpadding="0" cellspacing="0" summary="login box">

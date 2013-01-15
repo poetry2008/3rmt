@@ -399,7 +399,7 @@ footer
 	padding:5px 10px;
 }
 .status_warpper label {
-	width:110px;
+	width:100px;
 	float:left;
 	padding:3px;
 }
@@ -723,6 +723,9 @@ TD.main, P.main {
 .main02 {
 	font-size: 11px;
 	padding:8px 0 5px 0;
+}
+.main input{
+	padding-left:0;
 }
 /* ---------------------------
 TD,SPAN：small text（message）
@@ -1564,11 +1567,6 @@ page title
 	clear:both;
 	padding:5px 10px;
 }
-.status_warpper label {
-	width:110px;
-	float:left;
-	padding:3px;
-}
 .status_warpper input {
 	float:left;
 }
@@ -2337,9 +2335,6 @@ searching
 	padding:5px;
 	line-height:1.5;
 }
-.float_left{
-	float:left;
-}
 .txt_right{
 	text-align:right;
 }
@@ -2376,7 +2371,7 @@ searching
 
 }
 .frame_title{
-	width:40%;
+	width:30%;
 	float:left;
 	line-height:25px;
 }
@@ -2803,3 +2798,6 @@ searching
 .margin_clear{
   margin:0px;
 }
+.input_box{margin:0 2px 0 -4px; height:20px; float:left;}
+.input_box input,.input_box span{ float:left; line-height:22px;}
+.input_both{clear:both;}

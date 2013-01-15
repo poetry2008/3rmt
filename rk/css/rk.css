@@ -1042,6 +1042,10 @@ footer
 	color:#06727D;
 }
 .main a { font-size:11px;}
+.main input{
+	padding-left:0;
+	margin-left:0;
+}
 .main p a:hover {
 	text-decoration:underline;
 }
@@ -1111,7 +1115,7 @@ footer
 .status_warpper label {
 	float:left;
 	padding:3px;
-	width:110px;
+	width:95px;
 }
 .status_warpper input {
 	float:left;
@@ -1993,7 +1997,7 @@ display:block;
 	height:15%;
 }
 .frame_title{
-	width:30%;
+	width:28%;
 	float:left;
 	line-height:25px;
 }
@@ -2338,3 +2342,6 @@ display:block;
 .box_des{
 	margin-top:8px;
 }
+.input_box{margin:0 2px 0 0px;*margin:0 2px 0 -4px; height:20px; float:left;}
+.input_box input,.input_box span{ float:left; line-height:22px;}
+.input_both{clear:both;}
