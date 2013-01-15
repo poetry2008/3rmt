@@ -12,7 +12,7 @@ define('TEXT_REORDER_EMAIL_TITLE','メールアドレス');
 define('TEXT_REORDER_OID_NAME','お名前');
 define('TEXT_REORDER_NAME_EMAIL','▼お名前:');
 define('TEXT_REORDER_EMAIL_EMAIL','▼メールアドレス:');
-define('TEXT_REORDER_TITLE_EMAIL','[%s]再配達確認メール【'.  STORE_NAME . '】');
+define('TEXT_REORDER_TITLE_EMAIL','再配達確認メール【'.  STORE_NAME . '】');
 define('TEXT_REORDER_TRADE_TEXT','ご希望のお時間に添えない場合は、弊社より「お届け日時」をご連絡させていただきます。');
 define('TEXT_REORDER_P_PRODUCT_NAME','商品名');
 define('TEXT_REORDER_COMMENT_TITLE','備考');
