@@ -21,6 +21,19 @@
 
   include(DIR_WS_CLASSES . 'preorder.php');
 
+  $preorders_update_time_query = tep_db_query("select last_modified from ". TABLE_PREORDERS ." where orders_id='".$_GET['oID']."'");
+  $preorders_update_time_array = tep_db_fetch_array($preorders_update_time_query);
+  tep_db_free_result($preorders_update_time_query);
+  if(!isset($_SESSION['preorders_update_time'][$_GET['oID']])){
+    $_SESSION['preorders_update_time'][$_GET['oID']] = $preorders_update_time_array['last_modified'];
+  }else{
+    if($_SESSION['preorders_update_time'][$_GET['oID']] != $preorders_update_time_array['last_modified']){
+      unset($_SESSION['orders_update_products'][$_GET['oID']]); 
+      unset($_SESSION['preorder_products'][$_GET['oID']]);
+      $_SESSION['preorders_update_time'][$_GET['oID']] = $preorders_update_time_array['last_modified'];
+    }
+  }
+
   $__orders_status_query = tep_db_query("
       select orders_status_id 
       from " . TABLE_PREORDERS_STATUS . " 
