@@ -2518,7 +2518,7 @@ require("includes/note_js.php");
     if($ot_custom_flag == false){
       $TotalsArray[] = array("Name" => "          ", "Price" => "", "Class" => "ot_custom", "TotalID" => "0");
     }else{
-      if($ot['class'] == 'ot_point' && $orders_totals_num < 2){
+      if($order->totals[$i]['class'] == 'ot_point' && $orders_totals_num < 2){
 
         $TotalsArray[] = array("Name" => "          ", "Price" => "", "Class" => "ot_custom", "TotalID" => "0");
       } 
