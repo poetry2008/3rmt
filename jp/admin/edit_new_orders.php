@@ -3311,6 +3311,7 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
             break;
           case 6:
             $payment_default = $payment_array[0][$pay_key];
+            $payment_positive_array[] = $payment_array[1][$pay_key];
             break; 
           }
         }else{
