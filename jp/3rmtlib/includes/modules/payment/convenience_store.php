@@ -30,11 +30,7 @@ class convenience_store extends basePayment  implements paymentInterface  {
     $total_cost = $order->info['total'];
     $f_result = $this->calc_fee($total_cost);
     $added_hidden = tep_draw_hidden_field('code_fee', $f_result); 
-     if(NEW_STYLE_WEB===true){
-       $input_text_id = ' class="input_text" ';
-     }else{
-       $input_text_id = '';
-     }
+    $input_text_id = ' class="input_text" ';
     return array(
                  array(
                        "code"=>'convenience_email',

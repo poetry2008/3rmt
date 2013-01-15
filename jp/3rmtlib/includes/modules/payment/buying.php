@@ -53,11 +53,7 @@ class buying extends basePayment  implements paymentInterface  {
                        ),
                  );
     } else {
-     if(NEW_STYLE_WEB===true){
-       $input_text_id = ' class="input_text" ';
-     }else{
-       $input_text_id = '';
-     }
+     $input_text_id = ' class="input_text" ';
      if(NEW_STYLE_WEB===true){
        $style_width = 'style="width: 10px;"';
      }else{
@@ -75,7 +71,7 @@ class buying extends basePayment  implements paymentInterface  {
                        "code"=>'bank_shiten',
                        "title"=>TS_TEXT_BANK_SHITEN,
                        "field"=>tep_draw_input_field('bank_shiten',
-                         $theData['bank_shiten'],'',input_text_id),
+                         $theData['bank_shiten'],''.$input_text_id),
                        "rule"=>basePayment::RULE_NOT_NULL,
                        "error_msg" => TS_TEXT_BANK_ERROR_SHITEN 
                        ),

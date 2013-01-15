@@ -33,7 +33,7 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
 
                 ); 
     } else {
-     $input_text_id = NEW_STYLE_WEB===true ? 'class="input_text"' : '';
+     $input_text_id = 'class="input_text"';
     return array(
                  array(
                        "code"=>'',
