@@ -35,13 +35,14 @@ class convenience_store extends basePayment  implements paymentInterface  {
                  array(
                        "code"=>'convenience_email',
                        "title"=>TS_MODULE_PAYMENT_CONVENIENCE_EMAIL_TEXT,
-                       "field"=>tep_draw_input_field('convenience_email', (isset($_SESSION['customer_emailaddress'])?$_SESSION['customer_emailaddress']:$theData['convenience_email']),'onpaste="return false"'.$input_text_id.'').TS_MODULE_PAYMENT_CONVENIENCE_MUST_INPUT, 
+                       "field"=>tep_draw_input_field('convenience_email',
+                         (isset($_SESSION['customer_emailaddress'])?$_SESSION['customer_emailaddress']:$theData['convenience_email']),'onpaste="return false"'.$input_text_id.'').'&nbsp;&nbsp;'.TS_MODULE_PAYMENT_CONVENIENCE_MUST_INPUT, 
                        "rule"=>array(basePayment::RULE_NOT_NULL,basePayment::RULE_EMAIL),
                        "error_msg" => array(TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE, TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE)),
                  array(
                        "code"=>'convenience_email_again',
                        "title"=>TS_MODULE_PAYMENT_CONVENIENCE_EMAIL_CONFIRMATION_TEXT,
-                       "field"=>tep_draw_input_field('convenience_email_again', isset($_SESSION['customer_emailaddress'])?$_SESSION['customer_emailaddress']:$theData['convenience_email_again'],'onpaste="return false"'.$input_text_id.'').TS_MODULE_PAYMENT_CONVENIENCE_MUST_INPUT,
+                       "field"=>tep_draw_input_field('convenience_email_again', isset($_SESSION['customer_emailaddress'])?$_SESSION['customer_emailaddress']:$theData['convenience_email_again'],'onpaste="return false"'.$input_text_id.'').'&nbsp;&nbsp;'.TS_MODULE_PAYMENT_CONVENIENCE_MUST_INPUT,
                        "rule"=>array(basePayment::RULE_NOT_NULL, basePayment::RULE_SAME_TO,basePayment::RULE_EMAIL),
                        "params_code"=>'convenience_email',
                        "error_msg" => array(TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE, TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE_NOE, TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE) 
