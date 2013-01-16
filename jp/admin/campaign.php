@@ -137,7 +137,6 @@
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script style="text/javascript">
-
 function show_link_campaign_info(cid, sid)
 {
   $.ajax({
