@@ -911,7 +911,7 @@ if(!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['c
       
         $p_cflag = tep_get_cflag_by_product_id($add_product_products_id);
         print "<tr>";
-        print "<td class='dataTableContent' valign='top'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td><td class='dataTableContent' valign='top'>";
+        print "<td class='option_title_space' valign='top'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td><td class='dataTableContent' valign='top'>";
         print "<div class=\"pro_option\">"; 
         print "<form action='$PHP_SELF?oID=$oID&action=add_product$param_str' method='POST' name='aform'>\n";
         

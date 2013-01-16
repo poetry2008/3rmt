@@ -2509,9 +2509,9 @@ require("includes/note_js.php");
     }
   }
   if($ot_custom_flag == false){
-    $orders_totals_sum = count($order->totals); 
+    $orders_totals_sum = count($order->totals)+2; 
   }else{
-    $orders_totals_sum = count($order->totals)-1; 
+    $orders_totals_sum = count($order->totals); 
   }
   for ($i=0; $i<sizeof($order->totals); $i++) {
     $TotalsArray[] = array("Name" => $order->totals[$i]['title'], "Price" => tep_display_currency(number_format($order->totals[$i]['value'], 2, '.', '')), "Class" => $order->totals[$i]['class'], "TotalID" => $order->totals[$i]['orders_total_id']);
@@ -2529,9 +2529,10 @@ require("includes/note_js.php");
   }
   if(isset($_SESSION['orders_update_products'][$_GET['oID']]['customers_add_num'])){
     $customers_add_num = $_SESSION['orders_update_products'][$_GET['oID']]['customers_add_num'];
+    $customers_add_num = $ot_custom_flag == false ? $customers_add_num+2 : $customers_add_num+1;
     $totals_total = array_pop($TotalsArray);
-    for($total_i = $orders_totals_sum;$total_i <= $customers_add_num+1;$total_i++){
-      $TotalsArray[] = array("Name" => "          ", "Price" => "", "Class" => "ot_custom", "TotalID" => "0"); 
+    for($total_i = $orders_totals_sum;$total_i <= $customers_add_num;$total_i++){
+      $TotalsArray[$total_i] = array("Name" => "          ", "Price" => "", "Class" => "ot_custom", "TotalID" => "0"); 
     } 
     if($ot_custom_flag == false){
 
@@ -2630,12 +2631,12 @@ require("includes/note_js.php");
              '  </tr>' . "\n";
       }
     } else {
-      $button_add = $TotalIndex == $show_num ? '<INPUT type="button" id="button_add" value="'.TEXT_BUTTON_ADD.'" onClick="add_option();orders_session(\'customers_add_num\','.(count($TotalsArray)-1).');""><input type="hidden" id="button_add_id" value="'.($sum_num-1).'">&nbsp;' : '';
+      $button_add = $TotalIndex == $show_num ? '<INPUT type="button" id="button_add" value="'.TEXT_BUTTON_ADD.'" onClick="add_option();orders_session(\'customers_add_num\','.count($TotalsArray).');""><input type="hidden" id="button_add_id" value="'.$sum_num.'">&nbsp;' : '';
       $TotalDetails["Name"] = isset($_SESSION['orders_update_products'][$_GET['oID']]['customers_total_'.$TotalIndex]) ? $_SESSION['orders_update_products'][$_GET['oID']]['customers_total_'.$TotalIndex] : $TotalDetails["Name"];
       echo '  <tr>' . "\n" .
            '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_TOTALDETAIL_READ_ONE.'</td>' . 
            '    <td style="min-width:180px;" align="right" class="' . $TotalStyle . '">' . $button_add ."<input name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "' onblur='orders_session(\"customers_total_".$TotalIndex."\",this.value);'>" . '</td>' . "\n" .
-           '    <td align="right" class="' . $TotalStyle . '">' . "<input name='update_totals[$TotalIndex][value]' id='update_totals_$TotalIndex' onkeyup='clearNewLibNum(this);price_total();recalc_preorder_price(\"".$oID."\", \"".$orders_products_id."\", \"1\", \"".$op_info_str."\");' size='6' value='" . (isset($_SESSION['preorder_products'][$_GET['oID']]['customer'][$TotalIndex]) ? $_SESSION['preorder_products'][$_GET['oID']]['customer'][$TotalIndex] : $TotalDetails["Price"]) . "'><b>" .TEXT_MONEY_SYMBOL . 
+           '    <td align="right" class="' . $TotalStyle . '" style="min-width: 60px;">' . "<input name='update_totals[$TotalIndex][value]' id='update_totals_$TotalIndex' onkeyup='clearNewLibNum(this);price_total();recalc_preorder_price(\"".$oID."\", \"".$orders_products_id."\", \"1\", \"".$op_info_str."\");' size='6' value='" . (isset($_SESSION['preorder_products'][$_GET['oID']]['customer'][$TotalIndex]) ? $_SESSION['preorder_products'][$_GET['oID']]['customer'][$TotalIndex] : $TotalDetails["Price"]) . "'><b>" .TEXT_MONEY_SYMBOL . 
                 "</b><input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . 
            '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 

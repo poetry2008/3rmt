@@ -4810,7 +4810,7 @@ if($orders_exit_flag == true){
 
             <tr>
             <td class="main"><b><?php echo ENTRY_EMAIL_TITLE; ?></b></td>
-            <td class="main"><?php echo tep_draw_input_field('title', $mail_sql['orders_status_title'],'style="width:55%;"'); ?></td>
+            <td class="main"><?php echo tep_draw_input_field('title', $mail_sql['orders_status_title'],'style="width:100%;"'); ?></td>
             </tr>
             <tr>
             <td class="main"><b><?php echo EDIT_ORDERS_SEND_MAIL_TEXT;?></b></td>
