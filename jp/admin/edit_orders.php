@@ -3671,27 +3671,27 @@ if (($action == 'edit') && ($order_exists == true)) {
     }
   }
   // END OF MAKING ALL INPUT FIELDS THE SAME LENGTH
-
+ 
   $TotalsArray = array();
   for ($i=0; $i<sizeof($order->totals); $i++) {
     $TotalsArray[] = array("Name" => $order->totals[$i]['title'], "Price" => tep_display_currency(number_format($order->totals[$i]['value'], 2, '.', '')), "Class" => $order->totals[$i]['class'], "TotalID" => $order->totals[$i]['orders_total_id']);
-    $TotalsArray[] = array("Name" => "          ", "Price" => "", "Class" => "ot_custom", "TotalID" => "0");
+    if($order->totals[$i+1]['class'] == 'ot_point' && $order->totals[$i]['class'] != 'ot_custom'){
+
+      $TotalsArray[] = array("Name" => "          ", "Price" => "", "Class" => "ot_custom", "TotalID" => "0");
+    }
+
+    if($order->totals[$i]['class'] == 'ot_point' && $order->totals[$i+1]['class'] != 'ot_custom'){
+
+      $TotalsArray[] = array("Name" => "          ", "Price" => "", "Class" => "ot_custom", "TotalID" => "0");
+    } 
   }
-  
-  array_pop($TotalsArray); 
   $shipping_fee_subtotal = 0; //小计
   $shipping_fee_tax = 0; //税
   $shipping_fee_point = 0; //折点
   $sum_num = count($TotalsArray)-1;
-  $show_num = 0;
-  $ot_custom_num = 0;
+  $show_num = 0; 
   foreach ($TotalsArray as $TotalIndex => $TotalDetails) {
-    if(trim($TotalDetails['Name']) != '' && $TotalDetails['Class'] == 'ot_custom'){
-      $ot_custom_num++;
-    }
-  }
-  foreach ($TotalsArray as $TotalIndex => $TotalDetails) {
-    if(trim($TotalDetails['Name']) == '' && $TotalDetails['Class'] == 'ot_custom' && $ot_custom_num >= 2){
+    if(trim($TotalDetails['Name']) == '' && $TotalDetails['Class'] == 'ot_custom' && $TotalIndex != 1 && $TotalIndex != 3){
        unset($TotalsArray[$TotalIndex]);
     }
   } 
