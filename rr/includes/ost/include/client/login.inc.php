@@ -20,11 +20,11 @@ $t=Format::input($_POST['lticket']?$_POST['lticket']:$_GET['t']);
     <table cellspacing="1" cellpadding="0" align="center" width="100%" class="open_login">
         <tr> 
             <td>メールアドレス</td>
-            <td><input type="text" name="lemail" size="25" value="<?=$e?>"></td>
+            <td><input class="input_text" type="text" name="lemail" size="25" value="<?=$e?>"></td>
          </tr>
          <tr>   
             <td>お問い合わせ番号</td>
-            <td><input type="text" name="lticket" size="10" value="<?=$t?>"></td>
+            <td><input class="input_text" type="text" name="lticket" size="10" value="<?=$t?>"></td>
             </tr>
         </tr>
     </table>

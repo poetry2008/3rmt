@@ -294,7 +294,8 @@ if (!isset($_GET['firstname'])) $_GET['firstname'] = NULL; //del notice
         if ($lastname_error == true) $last_name_prompt .= '&nbsp;<span class="errorText">' . PREORDER_TEXT_REQUIRED . '</span>';
         if ($firstname_error == true) $first_name_prompt .= '&nbsp;<span class="errorText">' . PREORDER_TEXT_REQUIRED . '</span>';
 if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
-        $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $_POST['from'] : $_GET['from']) , 'size="30" class="input_text"') . TEXT_PHONE_EMAIL_ADDRESS;
+        $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error
+                == true) ? $_POST['from'] : $_GET['from']) , 'size="30" class="input_text"') .'<br>'. TEXT_PHONE_EMAIL_ADDRESS;
         if ($fromemail_error == true) $your_email_address_prompt .="<br>".ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
       }
 ?>
