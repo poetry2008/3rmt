@@ -2527,7 +2527,6 @@ require("includes/note_js.php");
   if($ot_custom_flag == false){ 
     array_pop($TotalsArray);
   }
-  print_r($_SESSION['orders_update_products'][$_GET['oID']]);
   if(isset($_SESSION['orders_update_products'][$_GET['oID']]['customers_add_num'])){
     $customers_add_num = $_SESSION['orders_update_products'][$_GET['oID']]['customers_add_num'];
     $customers_add_num = $ot_custom_flag == false ? $customers_add_num+2 : $customers_add_num+1;
