@@ -62,7 +62,6 @@ dd {
 }
 .redtext {
     color:#ff4500;
-	margin-left:2px;
 }
 .border {
     border:2px dashed #ccc;
@@ -666,9 +665,13 @@ line-height:1.5;
 list-style:none;
 }
 /*input*/
+.main input{
+	padding-left:0;
+	margin-left:0;
+}
 .main_input input{
-height:20px;
-width:200px;
+	height:20px;
+	width:198px;
 }
 /*botton*/
 .button_delete02{
@@ -1010,7 +1013,7 @@ checkbox select row
 	padding:0 10px 5px 16px; 
 	margin-left:1px;
 }
-.status_warpper label{width:140px;float:left; padding:3px;}
+.status_warpper label{width:100px;float:left; padding:3px;}
 .status_warpper input{ float:left;}
 .button2{ float:right;}
 .open_title{
@@ -1240,7 +1243,7 @@ searching
 	*height:6%;
 }
 .frame_title{
-	width:40%;
+	width:33%;
 	float:left;
 	line-height:25px;
 }
@@ -1606,3 +1609,6 @@ TEXTAREA {
 .margin_clear{
   margin:0px;
 }
+.input_box{margin:0 2px 0 0px;*margin:0 2px 0 -4px; height:20px; float:left;}
+.input_box input,.input_box span{ float:left; line-height:22px;}
+.input_both{clear:both;}

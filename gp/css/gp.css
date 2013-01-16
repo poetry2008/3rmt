@@ -1138,6 +1138,10 @@ Footer
 .main p a{
 	color:#06727D;
 }
+.main input{
+	padding-left:0;
+	margin-left:0;
+}
 .main a{ font-size:12px;}
 .main p a:hover{
 	text-decoration:underline;
@@ -1170,7 +1174,7 @@ margin:0;
 .status_form{ clear:both;}
 .status_warpper02{ clear:both;}
 .status_warpper{ clear:both; padding:5px 10px; width:350px; display:block;overflow:hidden;}
-.status_warpper label{ float:left; padding:3px;width:110px;}
+.status_warpper label{ float:left; padding:3px;width:95px;}
 .status_warpper input{ float:left;}
 .button2{ float:right;}
 .open_title{
@@ -2513,3 +2517,6 @@ line-height:21px;
 .margin_clear{
   margin:0px;
 }
+.input_box{margin:0 2px 0 0px;*margin:0 2px 0 -4px; height:20px; float:left;}
+.input_box input,.input_box span{ float:left; line-height:22px;}
+.input_both{clear:both;}

@@ -405,7 +405,7 @@ input textarea select
 	padding:3px 5px;
 }
 .input_text {
-	width: 200px;
+	width: 198px;
 	height:20px;
 	font-size:12px;
 }
@@ -1125,6 +1125,10 @@ footer
 .main p a {
 	color:#06727D;
 }
+.main input{
+	padding-left:0;
+	margin-left:0;
+}
 .main p a:hover {
 	text-decoration:underline;
 }
@@ -1328,7 +1332,6 @@ margin:10px 0 0 0;
 	font-size:12px;
 	background-color:#E7E6E4;
 	padding:5px;
-	width:270px;
 	*border:5px solid #E7E6E4;
 }
 .open_login td{
@@ -1337,7 +1340,7 @@ margin:10px 0 0 0;
 	background-color:#FFFFFF;
 }
 .open_login_info span{float:left; width:100px; margin-top:2px; text-align:left;}
-.open_login_info input{ float:left; height:20px; width:140px;}
+/*.open_login_info input{ float:left; height:20px; width:140px;}*/
 .login_inc_button{
 	overflow:hidden;
 }
@@ -1416,7 +1419,7 @@ margin:10px 0 0 0;
 .status_warpper label {
 float:left;
 padding:3px;
-width:110px;
+width:108px;
 }
 .status_warpper02{ clear:both; overflow:hidden; height:21px;}
 .tickets, .infotable {
@@ -2306,7 +2309,7 @@ searching
 	height:15%;
 }
 .frame_title{
-	width:40%;
+	width:22%;
 	float:left;
 	line-height:21px;
 }
@@ -2641,3 +2644,6 @@ searching
   margin:0px;
 }
 .send_mail td{ font-size:11px;}
+.input_box{margin:0 2px 0 0px;*margin:0 2px 0 -4px; height:20px; float:left;}
+.input_box input,.input_box span{ float:left; line-height:22px;}
+.input_both{clear:both;}

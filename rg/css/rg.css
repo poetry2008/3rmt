@@ -466,7 +466,7 @@ input textarea select
 	padding:3px 5px;
 }
 .input_text{
-	width: 200px;
+	width: 198px;
 	height:20px;
 }
 .input_text_short{
@@ -1020,6 +1020,10 @@ Footer
 	color:#06727D;
 }
 .main a{ font-size:11px;}
+.main input{
+	padding-left:0;
+	margin-left:0;
+}
 .main p a:hover{
 	text-decoration:underline;
 }
@@ -1051,7 +1055,7 @@ margin-top:-10px\9;
 .status_form{ clear:both;}
 .status_warpper02{ clear:both;}
 .status_warpper{ clear:both; padding:5px 10px; width:350px; display:block;overflow:hidden;}
-.status_warpper label{ float:left; padding:3px;width:110px;}
+.status_warpper label{ float:left; padding:3px;width:95px;}
 .status_warpper input{ float:left;}
 .button2{ float:right;}
 .open_title{
@@ -1842,7 +1846,7 @@ border:2px solid #FF8080;
 	height:15%;
 }
 .frame_title{
-	width:30%;
+	width:28%;
 	float:left;
 	line-height:25px;
 }
@@ -2149,3 +2153,6 @@ border:2px solid #FF8080;
 .margin_clear{
   margin:0px;
 }
+.input_box{margin:0 2px 0 0px;*margin:0 2px 0 -4px; height:20px; float:left;}
+.input_box input,.input_box span{ float:left; line-height:22px;}
+.input_both{clear:both;}
