@@ -46,3 +46,4 @@ define('CUSTOMER_IS_SEAL','禁止下订单');
 define('CUSTOMER_PIC_TEXT', '标记');
 define('CUSTOMER_NO_SEND_MAIL_TEXT', '不发送邮件');
 define('CUSTOMER_CALC_QUANTITY_TEXT', '不自动计算库存数量的增减');
+define('TEXT_CUSTOMERS_ORDER_COUNT','订单数:');
