@@ -43,7 +43,6 @@
   $guestchk       = tep_db_prepare_input($_POST['guestchk']);
   $referer        = tep_db_prepare_input($_SESSION['referer']);
   $error = false; // reset error flag
-
   if (strlen($firstname) < ENTRY_FIRST_NAME_MIN_LENGTH) {
     $error = true;
     $entry_firstname_error = true;

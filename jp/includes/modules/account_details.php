@@ -284,6 +284,7 @@ $(document).ready(function(){
     }
     echo tep_draw_hidden_field('newsletter');  
   } else {
+    if (!isset($account['customers_newsletter'])) $account['customers_newsletter'] = NULL; //del notice
     echo tep_draw_pull_down_menu('newsletter', $newsletter_array, $account['customers_newsletter']) . '&nbsp;' . ENTRY_NEWSLETTER_TEXT;
   }
 ?></td>
@@ -302,6 +303,9 @@ $(document).ready(function(){
 <?php if (!isset($guestchk)) $guestchk = NULL;?>
         <td class="main">
         <?php 
+        if(isset($_POST['guestchk']) && $_POST['guestchk'] != ''){
+          $guestchk = tep_db_prepare_input($_POST['guestchk']);
+        }
         foreach($guestchk_array as $guestchk_info){
           echo '<div class="input_box"><input type="radio" value="'.  $guestchk_info['id'].'" name="guestchk" ';
           if(isset($guestchk)&&$guestchk){

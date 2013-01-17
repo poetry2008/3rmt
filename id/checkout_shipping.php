@@ -1373,7 +1373,7 @@ function check_point(point_num) {
     $quest_array = tep_db_fetch_array($quest_query);
     tep_db_free_result($quest_query);
 ?>
-  <tr><td width="70%"><b><?php echo TABLE_ADDRESS_TITLE; ?></b></td></tr> 
+  <tr><td width="70%" class="main"><b><?php echo TABLE_ADDRESS_TITLE; ?></b></td></tr> 
   <?php
     if($quest_array['customers_guest_chk'] == 0){
       $address_history_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $_SESSION['customer_id'] ."'");

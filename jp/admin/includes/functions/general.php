@@ -7803,3 +7803,16 @@ function tep_get_signal_pic_info($last_modified_info) {
   
   return $html_str;
 }
+function tep_get_orders_by_customers_id($customers_id,$site_id){
+  $sql = "select distinct o.orders_id from orders o 
+    where  o.customers_id = '".$customers_id."' 
+    and o.site_id ='".$site_id."'";
+  $query = tep_db_query($sql);
+  $arr = array();
+  while($row = tep_db_fetch_array($query)){
+    if(!in_array($row['orders_id'],$arr)){
+      $arr[] = $row['orders_id'];
+    }
+  }
+  return count($arr);
+}

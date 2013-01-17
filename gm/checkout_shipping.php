@@ -925,7 +925,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
 <h2><?php echo HEADING_TITLE ; ?></h2>
 <table border="0" width="100%" cellspacing="0" cellpadding="0" class="checkout_s_link"> 
       <tr> 
-        <td width="20%">
+        <td width="15%">
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
               <td width="50%" align="right"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5'); ?></td>
@@ -933,7 +933,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
             </tr>
           </table>
         </td>
-        <td width="20%">
+        <td width="15%">
         <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr>
               <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
@@ -941,7 +941,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
               <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
             </tr>
           </table></td> 
-        <td width="20%">
+        <td width="15%">
        <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
               <td width="50%">
@@ -950,7 +950,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
             </tr>
           </table> 
       </td> 
-        <td width="20%">
+        <td width="15%">
        <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
               <td width="50%">
@@ -959,7 +959,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
             </tr>
           </table> 
         </td> 
-        <td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+        <td width="15%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr> 
               <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
               <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5'); ?></td> 
@@ -967,11 +967,11 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
           </table></td> 
       </tr> 
       <tr> 
-        <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom"><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_OPTION, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_OPTION . '</a>'; ?></td>
-        <td align="center" nowrap="nowrap" width="20%" class="checkoutBarCurrent"><?php echo CHECKOUT_BAR_DELIVERY; ?></td> 
-        <td align="center" nowrap="nowrap" width="20%" class="checkoutBarTo"><?php echo CHECKOUT_BAR_PAYMENT; ?></td> 
-        <td align="center" nowrap="nowrap" width="20%" class="checkoutBarTo"><?php echo CHECKOUT_BAR_CONFIRMATION; ?></td> 
-        <td align="center" nowrap="nowrap" width="20%" class="checkoutBarTo"><?php echo CHECKOUT_BAR_FINISHED; ?></td> 
+        <td align="center" nowrap="nowrap" width="15%" class="checkoutBarFrom"><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_OPTION, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_OPTION . '</a>'; ?></td>
+        <td align="center" nowrap="nowrap" width="15%" class="checkoutBarCurrent"><?php echo CHECKOUT_BAR_DELIVERY; ?></td> 
+        <td align="center" nowrap="nowrap" width="15%" class="checkoutBarTo"><?php echo CHECKOUT_BAR_PAYMENT; ?></td> 
+        <td align="center" nowrap="nowrap" width="15%" class="checkoutBarTo"><?php echo CHECKOUT_BAR_CONFIRMATION; ?></td> 
+        <td align="center" nowrap="nowrap" width="15%" class="checkoutBarTo"><?php echo CHECKOUT_BAR_FINISHED; ?></td> 
       </tr> 
     </table>
 	<div id="hm-checkout-warp">
@@ -1416,7 +1416,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
                             if($quest_array['customers_guest_chk'] == 0){
                           ?>
                           <tr id="address_show_id" style="display:<?php echo $show_flag;?>;">
-<td width="20%"><?php echo TABLE_ADDRESS_SHOW; ?></td>
+<td width="15%"><?php echo TABLE_ADDRESS_SHOW; ?></td>
 <td>
 <select name="address_show_list" id="address_show_list" onChange="address_option_list(this.value);">
 <option value="">--</option>
@@ -1438,7 +1438,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
      <!--start-->
 	 <table width="100%">
 	 <tr>
-<td width="20%"><?php echo TEXT_EXPECT_TRADE_DATE; ?></td>
+<td width="15%"><?php echo TEXT_EXPECT_TRADE_DATE; ?></td>
 <td>
 <?php
     $today = getdate();
@@ -1516,7 +1516,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
 </table>
 <table border="0" cellpadding="0" cellspacing="0" style=" position:absolute; width:100%;">
 <tr id="shipping_list_min" style="display:none;">
- <td width="20%">&nbsp;</td>
+ <td width="15%">&nbsp;</td>
  <td id="shipping_list_show_min">
  </td>
  </tr>
@@ -1556,7 +1556,7 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
 ?>
 <table width="100%">
   <tr id="time_error">
-  <td class="main" width="20%">&nbsp;</td>
+  <td class="main" width="15%">&nbsp;</td>
     <td class="main"><?php echo $time_error; ?></td>
   </tr>
 </table>

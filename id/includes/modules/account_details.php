@@ -302,9 +302,7 @@ $(document).ready(function(){
 ?></td>
           </tr>
 <?php
-  if ($is_read_only == true) {
-    //Not View
-  } else {
+  if ($is_read_only != true) {
     if(substr(basename($PHP_SELF),0,7) == 'create_') {
     $guestchk_array = array(array('id' => '0',
                                    'text' => '<span>'.ENTRY_ACCOUNT_MEMBER.'</span>'),
@@ -317,6 +315,9 @@ $(document).ready(function(){
 <?php if (!isset($guestchk)) $guestchk = NULL;?>
         <td class="main">
         <?php 
+        if(isset($_POST['guestchk']) && $_POST['guestchk'] != ''){
+          $guestchk = tep_db_prepare_input($_POST['guestchk']);
+        }
         foreach($guestchk_array as $guestchk_info){
           echo '<div class="input_box"><input type="radio" value="'.  $guestchk_info['id'].'" name="guestchk" ';
           if(isset($guestchk)&&$guestchk){
@@ -347,6 +348,7 @@ $(document).ready(function(){
     </table></td>
   </tr>
 <?php
+if (!isset($guestchk)) $guestchk = NULL;
   if($guestchk == '1') {
     $newpass = tep_create_random_value(ENTRY_PASSWORD_MIN_LENGTH);
     $password = $newpass;
