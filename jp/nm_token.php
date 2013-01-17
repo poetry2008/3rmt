@@ -37,7 +37,6 @@
         tep_session_register('guestchk');
         $cart->restore_contents(); 
       }
-      
       tep_db_query("update ".TABLE_CUSTOMERS." set `is_active` = 1 where customers_id = '".$customers_res['customers_id']."' and site_id = '".SITE_ID."'"); 
       
       tep_redirect(tep_href_link('non-member_auth_finish.php', '', 'SSL')); 

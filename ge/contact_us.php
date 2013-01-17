@@ -31,11 +31,11 @@ require_once(CLIENTINC_DIR.'header.inc.php');
   <form class="status_form" action="<?php echo tep_href_link('contact_us_login.php','','SSL')?>" method="post">
     <div class="status_warpper">
       <label>メールアドレス</label>
-      <input type="text" name="lemail">
+      <input class="input_text" type="text" name="lemail">
     </div>
     <div class="status_warpper">
      <label>お問い合わせ番号</label>
-     <input type="text" name="lticket">
+     <input class="input_text" type="text" name="lticket">
     </div>
          <input type="image" class="button2" value="送信" src="includes/languages/japanese/images/buttons/button_send_mail.gif">
   </form>

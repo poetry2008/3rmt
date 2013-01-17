@@ -95,16 +95,18 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
          }
        }
       $default_value = stripslashes($default_value);
-      
+      if(NEW_STYLE_WEB===true){
+         $style_width = 'style="width:28%"';
+      }
       if ($this->iline > 1) {
        echo '<div class="option_info_text">'; 
        if ($this->require == '1') {
-         echo '<textarea class="option_input" name="'.$pre_item_str.'op_'.$this->formname.'" rows="'.$this->iline.'">'.$default_value.'</textarea>';    
+         echo '<textarea class="option_input" '.$style_width.'name="'.$pre_item_str.'op_'.$this->formname.'" rows="'.$this->iline.'">'.$default_value.'</textarea>';    
        } else {
          if ($pro_pos !== false) {
-           echo '<textarea class="option_input" name="'.$pre_item_str.'op_'.$this->formname.'" rows="'.$this->iline.'"  onkeyup="recalc_product_price(this);">'.$default_value.'</textarea>';    
+           echo '<textarea class="option_input" '.$style_width.' name="'.$pre_item_str.'op_'.$this->formname.'" rows="'.$this->iline.'"  onkeyup="recalc_product_price(this);">'.$default_value.'</textarea>';    
          } else {
-           echo '<textarea class="option_input" name="'.$pre_item_str.'op_'.$this->formname.'" rows="'.$this->iline.'">'.$default_value.'</textarea>';    
+           echo '<textarea class="option_input" '.$style_width.' name="'.$pre_item_str.'op_'.$this->formname.'" rows="'.$this->iline.'">'.$default_value.'</textarea>';    
          }
        }
        
@@ -147,12 +149,12 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
      } else {
        echo '<div class="option_info_text">'; 
        if ($this->require == '1') {
-         echo '<input class="option_input" type="text" name="'.$pre_item_str.'op_'.$this->formname.'" value="'.$default_value.'">'; 
+           echo '<input class="option_input" '.$style_width.'type="text" name="'.$pre_item_str.'op_'.$this->formname.'" value="'.$default_value.'">'; 
        } else {
          if ($pro_pos !== false) {
-           echo '<input class="option_input" type="text" name="'.$pre_item_str.'op_'.$this->formname.'" value="'.$default_value.'" onkeyup="recalc_product_price(this);">'; 
+           echo '<input class="option_input" '.$style_width.'type="text" name="'.$pre_item_str.'op_'.$this->formname.'" value="'.$default_value.'" onkeyup="recalc_product_price(this);">'; 
          } else {
-           echo '<input class="option_input" type="text" name="'.$pre_item_str.'op_'.$this->formname.'" value="'.$default_value.'">'; 
+           echo '<input class="option_input" '.$style_width.'type="text" name="'.$pre_item_str.'op_'.$this->formname.'" value="'.$default_value.'">'; 
          }
        }
        

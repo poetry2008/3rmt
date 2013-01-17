@@ -670,14 +670,18 @@ td,th{ border:0;font-size:14px; padding:2px;}
 .box_content_title{ margin:35px 0 8px 0; clear:both; overflow:hidden; _height:22px;}
 .box_content_text{ padding-left:10px; width:90%;}
 .payment-content input{ float:left; margin-right:8px;}
-.txt_input_box{ clear:both;}
+.txt_input_box{ clear:both; overflow:hidden;}
 .txt_input_box div{ 
 	float:left;
 }
-.frame_title{ width:19%; line-height:25px;}
+.frame_title{ 
+	width:20%;
+	line-height:25px; 
+	white-space:normal;
+}
 .float_left { width:70%;}
-.input_title{ width:70%;}
-.input_title input{ width:39%; margin-right:5px;}
+.input_title
+.input_title input{ margin-right:5px;}
 .cp_content{ overflow:hidden;}
 
 
@@ -810,14 +814,14 @@ td,th{ border:0;font-size:14px; padding:2px;}
 #guestchk,#newsletter{margin-bottom:5px;}
 #newsletter{ margin-left:-2px;}
 #input_text{ 
-	width:35%;
+	width:62%;
 	float:left;
 }
 .input_text{ 
-	width:40%;
+	width:35%;
 }
 #input_text_short{
-	width:25%;
+	width:35%;
 }
 /*checkout*/
 .hm-hot-product{ height:93px; overflow:hidden;}

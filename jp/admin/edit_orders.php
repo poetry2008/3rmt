@@ -3689,7 +3689,7 @@ if (($action == 'edit') && ($order_exists == true)) {
   $shipping_fee_tax = 0; //税
   $shipping_fee_point = 0; //折点
   $sum_num = count($TotalsArray)-1;
-  $show_num = 0; 
+  $show_num = 0;
   foreach ($TotalsArray as $TotalIndex => $TotalDetails) {
     if(trim($TotalDetails['Name']) == '' && $TotalDetails['Class'] == 'ot_custom' && $TotalIndex != 1 && $TotalIndex != 3){
        unset($TotalsArray[$TotalIndex]);
@@ -3985,7 +3985,7 @@ if (($action == 'edit') && ($order_exists == true)) {
 
             <tr>
             <td class="main"><b><?php echo ENTRY_EMAIL_TITLE; ?></b></td>
-            <td class="main"><?php echo tep_draw_input_field('title', $mail_sql['orders_status_title'],'style="width:55%;" id="mail_title"'); ?></td>
+            <td class="main"><?php echo tep_draw_input_field('title', $mail_sql['orders_status_title'],'style="width:100%;" id="mail_title"'); ?></td>
             </tr>
     <tr>
     <td class="main"><b><?php echo EDIT_ORDERS_SEND_MAIL_TEXT;?></b></td>

@@ -18,12 +18,12 @@ $t=Format::input($_POST['lticket']?$_POST['lticket']:$_GET['t']);
     <form action="<?php echo tep_href_link('contact_us_login.php','','SSL')?>" method="post">
     <table cellspacing="1" cellpadding="0" border="0" class="open_login">
         <tr> 
-            <th width="35%">メールアドレス</th>
-            <td><input type="text" name="lemail" size="25" value="<?=$e?>"></td>
+            <th width="100">メールアドレス</th>
+            <td><input class="input_text" type="text" name="lemail" size="25" value="<?=$e?>"></td>
         </tr>
         <tr>
             <th>お問い合わせ番号</th>
-            <td><input type="text" name="lticket" size="25" value="<?=$t?>"></td>
+            <td><input class="input_text" type="text" name="lticket" size="25" value="<?=$t?>"></td>
         </tr>
         <tr>
         	<td></td>

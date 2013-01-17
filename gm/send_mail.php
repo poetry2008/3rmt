@@ -52,7 +52,7 @@
 ?>
       <table class="login" width="100%">
         <tr>
-          <td valign="top" width="20%"><b><?php echo INPUT_SEND_MAIL; ?>:</b></td>
+          <td valign="top" width="15%"><b><?php echo INPUT_SEND_MAIL; ?>:</b></td>
           <td class="login_text" valign="top" width="70%">
             <input type="text" name="email_address" id="input_text">
           </td>
