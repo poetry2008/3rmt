@@ -106,9 +106,10 @@
   }
 
   for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
+    $show_products_name = tep_get_products_name($order->products[$i]['id']);
     echo '          <tr>' . "\n" .
          '            <td class="table_spacing" valign="top" width="20%">' . $order->products[$i]['qty'] . '&nbsp;x</td>' . "\n" .
-         '            <td valign="top">' . $order->products[$i]['name'];
+         '            <td valign="top">' . (tep_not_null($show_products_name) ? $show_products_name : $order->products[$i]['name']);
 
     if ($order->products[$i]['price'] != '0') {
       if ($order->products[$i]['price'] < 0) {

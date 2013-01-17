@@ -521,7 +521,7 @@
         $pre_otm = number_format($preorder_total_res['value'], 0, '.', '').SENDMAIL_EDIT_ORDERS_PRICE_UNIT; 
       }
       $num_product = 0;
-      $num_product_raw = tep_db_query("select products_name, products_quantity from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$order->info['orders_id']."'");
+      $num_product_raw = tep_db_query("select products_name, products_id, products_quantity from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$order->info['orders_id']."'");
       $num_product_res = tep_db_fetch_array($num_product_raw);
       if ($num_product_res) {
         $num_product = $num_product_res['products_quantity']; 
@@ -608,8 +608,11 @@
         $s_status_raw = tep_db_query("select nomail from ".TABLE_PREORDERS_STATUS." where orders_status_id = '".$_POST['status']."'");  
         $s_status_res = tep_db_fetch_array($s_status_raw);
         $email = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$email);
+        $search_products_name_query = tep_db_query("select products_name from ". TABLE_PRODUCTS_DESCRIPTION ." where products_id='".$num_product_res['products_id']."' and language_id='".$languages_id."' and (site_id='".$order->info['site_id']."' or site_id='0') order by site_id DESC");
+        $search_products_name_array = tep_db_fetch_array($search_products_name_query);
+        tep_db_free_result($search_products_name_query);
         if ($s_status_res['nomail'] != 1) {
-          tep_mail($order->customer['name'], $order->customer['email_address'], $email_title, $email, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
+          tep_mail($order->customer['name'], $order->customer['email_address'], $email_title, str_replace($num_product_res['products_name'],$search_products_name_array['products_name'],$email), get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
           
           tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), $email_title, $email, $order->customer['name'], $order->customer['email_address'], $order->info['site_id']);
         }
@@ -639,14 +642,14 @@
         $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
         
         $preorder_email_text = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$preorder_email_text);
-        tep_mail($order->customer['name'], $order->customer['email_address'], $preorder_email_subject, $preorder_email_text, get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']), $order->info['site_id']);
+        tep_mail($order->customer['name'], $order->customer['email_address'], $preorder_email_subject, str_replace($num_product_res['products_name'],$search_products_name_array['products_name'],$email), get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']), $order->info['site_id']);
         
         tep_mail('', get_configuration_by_site_id('SENTMAIL_ADDRESS', $order->info['site_id']), $preorder_email_subject, $preorder_email_text, $order->customer['name'], $order->customer['email_address'], $order->info['site_id']); 
       }
       $customer_notified = '1';
     }
 
-//end print
+      //end print
       tep_pre_order_status_change($_SESSION['create_preorder']['orders']['orders_id'],$_SESSION['create_preorder']['orders']['orders_status']);      
       unset($_SESSION['create_preorder']);
       unset($_SESSION['preorder_products'][$_GET['oID']]);
@@ -655,7 +658,6 @@
     }
     $order_updated_2 = true;
   }
-
     if ($order_updated && !$products_delete && $order_updated_2) {
       $messageStack->add_session(SUCCESS_ORDER_UPDATED, 'success');
     } elseif ($order_updated && $products_delete) {

@@ -264,7 +264,7 @@
     preorders_updated($oID);
     $order_updated = true;
 
-    $check_status_query = tep_db_query("select customers_id, customers_name, customers_email_address, orders_status, date_purchased from " . TABLE_PREORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
+    $check_status_query = tep_db_query("select customers_id, customers_name, customers_email_address, orders_status, date_purchased, language_id from " . TABLE_PREORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
     $check_status = tep_db_fetch_array($check_status_query);
 
   // fin mise ・jour
@@ -797,8 +797,11 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         $s_status_raw = tep_db_query("select nomail from ".TABLE_PREORDERS_STATUS." where orders_status_id = '".$status."'");  
         $s_status_res = tep_db_fetch_array($s_status_raw);
         $email = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$email);
+        $search_products_name_query = tep_db_query("select products_name from ". TABLE_PRODUCTS_DESCRIPTION ." where products_id='".$num_product_res['products_id']."' and language_id='".$check_status['language_id']."' and (site_id='".$order->info['site_id']."' or site_id='0') order by site_id DESC");
+        $search_products_name_array = tep_db_fetch_array($search_products_name_query);
+        tep_db_free_result($search_products_name_query);
         if ($s_status_res['nomail'] != 1) {
-          tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $preorder_email_title, $email, get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
+          tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $preorder_email_title, str_replace($num_product_res['products_name'],$search_products_name_array['products_name'],$email), get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
           
           tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS', $order->info['site_id']), $preorder_email_title, $email, $check_status['customers_name'], $check_status['customers_email_address'], $order->info['site_id']);
         }

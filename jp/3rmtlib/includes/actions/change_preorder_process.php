@@ -351,8 +351,8 @@ if($cl_max_len < 4) {
   $cl_max_len = 4;
 }
   
-  
-  $products_ordered_text .= '注文商品'.str_repeat('　', intval(($cl_max_len-mb_strlen('注文商品','utf-8')))).'：'.$preorder_product_res['products_name'];
+  $show_products_name = tep_get_products_name($preorder_product_res['products_id']); 
+  $products_ordered_text .= '注文商品'.str_repeat('　', intval(($cl_max_len-mb_strlen('注文商品','utf-8')))).'：'.(tep_not_null($show_products_name) ? $show_products_name : $preorder_product_res['products_name']);
   if (tep_not_null($preorder_product_res['products_model'])) {
     $products_ordered_text .= ' ('.$preorder_product_res['products_model'].')'; 
   }
@@ -561,7 +561,6 @@ if(!empty($add_list)){
   $email_address_str .= $email_address;
   $email_order_text = str_replace($email_address,$email_address_str,$email_order_text);
 }
-
 if ($seal_user_row['is_send_mail'] != '1') {
   tep_mail($preorder['customers_name'], $preorder['customers_email_address'], EMAIL_TEXT_SUBJECT, $email_order_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
 }

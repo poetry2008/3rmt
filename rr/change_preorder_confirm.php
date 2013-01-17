@@ -256,6 +256,8 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                     <td class="main">
                     <?php 
                     $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>");
+                    $show_products_name = tep_get_products_name($preorder_product_res['products_id']);
+                    $preorder_product_res['products_name'] = tep_not_null($show_products_name) ? $show_products_name : $preorder_product_res['products_name'];
                     echo $preorder_product_res['products_name'];
                     if ($preorder_product_res['products_price'] != '0') {
                       if ($preorder_product_res['products_price'] < 0) {
