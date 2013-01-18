@@ -15,8 +15,11 @@
   <a href="<?php echo tep_href_link(FILENAME_CREATE_ACCOUNT,'','SSL'); ?>"><img class="middle" src="images/banners/login03.gif" alt="会員登録"></a>
 </div>
 <?php 
-  } else {
-    if($guestchk == '1'){
+  } else { 
+    $customers = tep_db_query('select * from '.TABLE_CUSTOMERS.' where customers_id='.$_SESSION['customer_id']);
+    $customers_row = tep_db_fetch_array($customers);
+    $guestchk= $customers_row['customers_guest_chk'];
+    if($guestchk == '1') {
 ?>
 <div class="login02">
   <a href="<?php echo tep_href_link(FILENAME_LOGIN,'','SSL'); ?>"><img class="middle" src="images/banners/login02.gif" alt="ログイン"></a>

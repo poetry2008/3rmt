@@ -692,6 +692,7 @@ if ($_POST['orders_id'] &&
   $html_str .= '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_preorder_info(\''.$_POST['oID'].'\', \''.urlencode($param_str).'\')"').'</a>'; 
   echo $html_str;
 } else if (isset($_GET['action'])&&$_GET['action']=='recalc_price') {
+  require(DIR_WS_CLASSES . 'payment.php');
   $orders_info_raw = tep_db_query("select currency, currency_value from ".TABLE_PREORDERS." where orders_id = '".$_POST['oid']."'");
   $orders_info = tep_db_fetch_array($orders_info_raw);
   $orders_info_num_rows = tep_db_num_rows($orders_info_raw);
@@ -702,13 +703,20 @@ if ($_POST['orders_id'] &&
   if (tep_check_pre_product_type($_POST['opd'])) {
     $p_price = 0 - tep_replace_full_character($_POST['p_price']); 
   } else {
-    $p_price = tep_replace_full_character($_POST['p_price']); 
+    $product_query = tep_db_query("select products_bflag from " . TABLE_PRODUCTS . " where products_id = '" . $_POST['opd'] . "'");
+    $product = tep_db_fetch_array($product_query);
+    tep_db_free_result($product_query);
+    if($product['products_bflag']){
+      $p_price = 0 - tep_replace_full_character($_POST['p_price']);
+    }else{
+      $p_price = tep_replace_full_character($_POST['p_price']); 
+    }
   }
   
   $final_price = $p_price + tep_replace_full_character($_POST['op_price']);
    
   $price_array[] = tep_display_currency(number_format(abs($final_price), 2));
-  
+   
   if ($final_price < 0) {
     $price_array[] = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($final_price, $orders_p['products_tax']), true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['create_preorder']['orders']['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['create_preorder']['orders']['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL; 
     
@@ -736,7 +744,39 @@ if ($_POST['orders_id'] &&
     $price_array[] = $currencies->format(tep_add_tax($_POST['p_final_price'], $orders_p['products_tax'])*tep_replace_full_character($_POST['p_num']), true, $orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['create_preorder']['orders']['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['create_preorder']['orders']['currency_value']);
     $price_array[] = str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($final_price, true,$orders_info_num_rows > 0 ? $orders_info['currency'] : $_SESSION['create_preorder']['orders']['currency'], $orders_info_num_rows > 0 ? $orders_info['currency_value'] : $_SESSION['create_preorder']['orders']['currency_value'])).TEXT_MONEY_SYMBOL;
   }
-  
+  $update_total_num = $_POST['update_total_num'];
+  $customers_total_array = explode('|||',$_POST['total_str']);
+  array_pop($customers_total_array);
+  $customers_total_price_array = explode('|||',$_POST['total_price_str']);
+  array_pop($customers_total_price_array);
+  foreach($customers_total_array as $customers_key=>$customers_value){
+
+    $_SESSION['preorder_products'][$_POST['oid']]['customer'][$customers_value] = trim($customers_total_price_array[$customers_key]) == '' ? '' : $customers_total_price_array[$customers_key];
+  }
+  //把option价格存储为SESSION
+  $op_str_array = explode('|||',$_POST['op_str']); 
+  $op_price_str_array = explode('|||',$_POST['op_price_str']);
+  array_pop($op_price_str_array);
+  foreach($op_str_array as $key=>$value){
+
+    $_SESSION['preorder_products'][$_POST['oid']]['attr'][$value] = $op_price_str_array[$key];   
+  }
+  $_SESSION['preorder_products'][$_POST['oid']]['qty'] = tep_replace_full_character($_POST['p_num']);
+  $_SESSION['preorder_products'][$_POST['oid']]['price'] = tep_replace_full_character($p_price);
+  $_SESSION['preorder_products'][$_POST['oid']]['final_price'] = $final_price;
+  $_SESSION['preorder_products'][$_POST['oid']]['ot_subtotal'] = $final_price*tep_replace_full_character($_POST['p_num']);
+  $cpayment = payment::getInstance((isset($_POST['session_site_id']) ? $_POST['session_site_id'] : (int)$_SESSION['create_preorder']['orders']['site_id']));
+  if(isset($_POST['payment_method'])){
+    if(tep_db_num_rows($orders_p_raw) > 0){
+      $_SESSION['preorder_products'][$_POST['oid']]['payment_method'] = $_POST['payment_method'];
+    }else{
+      $_SESSION['create_preorder']['orders']['payment_method'] = $_POST['payment_method'];
+    }
+    $handle_fee = $cpayment->handle_calc_fee($_POST['payment_method'], $_SESSION['preorder_products'][$_POST['oid']]['ot_subtotal']);
+  }
+  $handle_fee = $handle_fee == '' ? 0 : $handle_fee;
+  $_SESSION['preorder_products'][$_POST['oid']]['ot_total'] = $_SESSION['preorder_products'][$_POST['oid']]['ot_subtotal']+$update_total_num+$handle_fee;
+  $price_array[] = $handle_fee;
   echo implode('|||', $price_array);
 } else if ($_GET['action'] == 'handle_mark') {
   $return_array = array();
@@ -846,4 +886,10 @@ if ($_POST['orders_id'] &&
   }else{
     echo tep_href_link(FILENAME_PREORDERS, $_POST['param_url']); 
   }
+}else if($_GET['action'] == 'orders_session'){
+
+  $session_type = $_POST['orders_session_type'];
+  $session_value = $_POST['orders_session_value'];
+  $session_orders_id = $_POST['orders_id'];
+  $_SESSION['orders_update_products'][$session_orders_id][$session_type] = $session_value;
 }

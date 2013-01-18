@@ -96,7 +96,6 @@ define('ENTRY_CUSTOMER_EMAIL', 'Eメールアドレス');
 //define('SUCCESS_ORDER_UPDATED', '成功: 予約状態が更新されました。');
 //define('WARNING_ORDER_NOT_UPDATED', '警告: 予約状態はなにも変更されませんでした。');
 
-// Add Japanese osCommerce
 //define('EMAIL_TEXT_STORE_CONFIRMATION', ' へのご予約、誠にありがとうございます。' . "\n\n"
 //.'ご予約の受付状況及びご連絡事項を、下記にご案内申し上げます。');
 //define('EMAIL_TEXT_STORE_CONFIRMATION_FOOTER', 
@@ -125,5 +124,5 @@ define('MENUE_TITLE_TOTAL', '4. 配送、決済、税金');
 define('MENUE_TITLE_STATUS', '5. 予約ステータス、コメント通知');
 define('MENUE_TITLE_UPDATE', '6. データを更新');
 define('TEXT_CODE_HANDLE_FEE', '手数料:');
-define('ORDERS_PRODUCT_ERROR','商品がありませんが、商品を追加してください。');
+define('ORDERS_PRODUCT_ERROR','商品がありません。予約作成するには、まず商品を追加してください。');
 ?>

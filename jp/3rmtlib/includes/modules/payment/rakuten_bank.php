@@ -33,7 +33,10 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
 
                 ); 
     } else {
-     $input_text_id = NEW_STYLE_WEB===true ? 'class="input_text"' : '';
+     $input_text_id = 'class="input_text"';
+    if(NEW_STYLE_WEB===true){
+      $style_width = 'style="width:231px"';
+    }
     return array(
                  array(
                        "code"=>'',
@@ -45,14 +48,14 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
                  array(
                        "code"=>'rakuten_telnumber',
                        "title"=>TS_MODULE_PAYMENT_RAKUTEN_TELNUMBER_TEXT,
-                       "field"=>tep_draw_input_field('rakuten_telnumber', $theData['rakuten_telnumber'],'onpaste="return false" '.$input_text_id.'').TS_MODULE_PAYMENT_RAKUTEN_MUST_INPUT,
+                       "field"=>tep_draw_input_field('rakuten_telnumber', $theData['rakuten_telnumber'],'onpaste="return false" '.$style_width.$input_text_id.'').'&nbsp;&nbsp'.TS_MODULE_PAYMENT_RAKUTEN_MUST_INPUT,
                        "rule"=>array(basePayment::RULE_NOT_NULL, basePayment::RULE_CHECK_TEL),
                        "error_msg" => array(TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE,TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE) 
                        ),
                  array(
                        "code"=>'rakuten_telnumber_again',
                        "title"=>TS_MODULE_PAYMENT_RAKUTEN_TELNUMBER_CONFIRMATION_TEXT,
-                       "field"=>tep_draw_input_field('rakuten_telnumber_again', $theData['rakuten_telnumber_again'],'onpaste="return false" '.$input_text_id.'').TS_MODULE_PAYMENT_RAKUTEN_MUST_INPUT,
+                       "field"=>tep_draw_input_field('rakuten_telnumber_again', $theData['rakuten_telnumber_again'],'onpaste="return false" '.$style_width.$input_text_id.'').'&nbsp;&nbsp;'.TS_MODULE_PAYMENT_RAKUTEN_MUST_INPUT,
                        "rule"=>array(basePayment::RULE_NOT_NULL,
                          basePayment::RULE_CHECK_TEL, basePayment::RULE_SAME_TO),
                        "params_code"=>'rakuten_telnumber',
@@ -500,6 +503,41 @@ function getMailString($option=''){
    $rak_tel[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['rak_tel']) ? $_SESSION['orders_update_products'][$_GET['oID']]['rak_tel'] : $rak_tel[1];
    $rak_tel[1] = isset($_POST['rak_tel']) ? $_POST['rak_tel'] : $rak_tel[1];
    echo 'document.getElementsByName("rak_tel")[0].value = "'.$rak_tel[1].'";'."\n";
+   echo <<<EOT
+   $("input[name='con_email']").blur(function(){
+     var con_email = document.getElementsByName("con_email")[0].value;
+     orders_session('con_email',con_email);
+   });
+   $("input[name='bank_name']").blur(function(){
+     var payment_value = document.getElementsByName("bank_name")[0].value;
+     orders_session('bank_name',payment_value);
+   });
+   $("input[name='bank_shiten']").blur(function(){
+     var payment_value = document.getElementsByName("bank_shiten")[0].value;
+     orders_session('bank_shiten',payment_value);
+   });
+   $("input[name='bank_kamoku']").click(function(){
+     if(document.getElementsByName("bank_kamoku")[0].checked == true){
+       var payment_value = document.getElementsByName("bank_kamoku")[0].value;
+     }else{
+      var payment_value = document.getElementsByName("bank_kamoku")[1].value; 
+     }
+     orders_session('bank_kamoku',payment_value);
+   });
+   $("input[name='bank_kouza_num']").blur(function(){
+     var payment_value = document.getElementsByName("bank_kouza_num")[0].value;
+     orders_session('bank_kouza_num',payment_value);
+   });
+   $("input[name='bank_kouza_name']").blur(function(){
+     var payment_value = document.getElementsByName("bank_kouza_name")[0].value;
+     orders_session('bank_kouza_name',payment_value);
+   });
+   $("input[name='rak_tel']").blur(function(){
+     var payment_value = document.getElementsByName("rak_tel")[0].value;
+     orders_session('rak_tel',payment_value);
+   });
+EOT;
+   echo "\n";
   }
   
   function admin_get_customer_point($point_value,$customer_id){
@@ -511,13 +549,14 @@ function getMailString($option=''){
     return "raku_text = '{$raku_text}',";
   }
 
-  function admin_get_payment_info_comment($customers_email,$site_id){
+  function admin_get_payment_info_comment($customers_email,$site_id,$orders_type){
 
-    $orders_status_history_temp_query = tep_db_query("select payment_method,orders_id from ". TABLE_ORDERS ." where customers_email_address='". $customers_email ."' and site_id='".$site_id."' and payment_method='".TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_TITLE."' limit 0,1");
+    $orders_type_str = $orders_type == 1 ? TABLE_ORDERS : TABLE_PREORDERS;
+    $orders_status_history_temp_query = tep_db_query("select payment_method,orders_id from ". $orders_type_str ." where customers_email_address='". $customers_email ."' and site_id='".$site_id."' and payment_method='".TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_TITLE."' limit 0,1");
     $orders_num_rows = tep_db_num_rows($orders_status_history_temp_query);
     tep_db_free_result($orders_status_history_temp_query);
   if($orders_num_rows > 0){
-    $orders_status_history_query = tep_db_query("select payment_method,orders_id from ". TABLE_ORDERS ." where customers_email_address='". $customers_email ."' and site_id='".$site_id."' and payment_method='".TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_TITLE."' order by orders_id desc limit 0,1");
+    $orders_status_history_query = tep_db_query("select payment_method,orders_id from ". $orders_type_str ." where customers_email_address='". $customers_email ."' and site_id='".$site_id."' and payment_method='".TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_TITLE."' order by orders_id desc limit 0,1");
     $ordres_status_history_array = tep_db_fetch_array($orders_status_history_query);
     $orders_status_history_num_rows = tep_db_num_rows($orders_status_history_query);
     tep_db_free_result($orders_status_history_query);

@@ -786,7 +786,7 @@ if($address_error == false){
           if (IsSet($products_details[attributes])) {
             foreach ($products_details["attributes"] as $orders_products_attributes_id => $attributes_details) {
               $input_option = array('title' => $attributes_details['option'], 'value'=> $attributes_details['value']); 
-              $Query = "update " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " set option_info = '" .tep_db_input(serialize($input_option)) .  "',options_values_price = '".(($attributes_details['price_symbol'] == '1')?0-$attributes_details['price']:$attributes_details['price'])."' where orders_products_attributes_id = '$orders_products_attributes_id';";
+              $Query = "update " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " set option_info = '" .tep_db_input(serialize($input_option)) . "',options_values_price = '".$attributes_details['price']."' where orders_products_attributes_id = '$orders_products_attributes_id';";
               tep_db_query($Query);
             }
           }
@@ -1035,7 +1035,11 @@ if($address_error == false){
           if ($max_c_len < 4) {
             $max_c_len = 4; 
           }
+          $search_products_id_list = array();
+          $mode_products_name_list = array();
           for ($i=0; $i<sizeof($order->products); $i++) {
+            $search_products_id_list[] =$order->products[$i]['id'];
+            $mode_products_name_list[] = $order->products[$i]['name'];
             //$orders_products_id = $order->products[$i]['orders_products_id'];
             $products_ordered_mail .= SENDMAIL_ORDERS_PRODUCTS.str_repeat('　', intval($max_c_len - mb_strlen(SENDMAIL_ORDERS_PRODUCTS, 'utf-8'))).'：' . $order->products[$i]['name'] . '（' . $order->products[$i]['model'] . '）';
             if ($order->products[$i]['price'] != '0') {
@@ -1217,8 +1221,15 @@ if($address_error == false){
               //$email_order = $payment_class->getOrderMailString($mailoption);  
             //bobhero end}}}  
   // new send mail 
-            $email = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$email);
-            tep_mail($check_status['customers_name'], $check_status['customers_email_address'], SENDMAIL_TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
+            $email = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$email); 
+            $search_products_name_list = array();
+            foreach($search_products_id_list as $products_name_value){
+              $search_products_name_query = tep_db_query("select products_name from ". TABLE_PRODUCTS_DESCRIPTION ." where products_id='".$products_name_value."' and language_id='".$languages_id."' and (site_id='".$order->info['site_id']."' or site_id='0') order by site_id DESC");
+              $search_products_name_array = tep_db_fetch_array($search_products_name_query);
+              tep_db_free_result($search_products_name_query);
+              $search_products_name_list[] = $search_products_name_array['products_name'];
+            }
+            tep_mail($check_status['customers_name'], $check_status['customers_email_address'], SENDMAIL_TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', str_replace($mode_products_name_list,$search_products_name_list,$email), get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
             tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), SENDMAIL_TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
             /* old send mail
             tep_mail($check_status['customers_name'], $check_status['customers_email_address'], TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
@@ -2796,39 +2807,7 @@ $(function() {
 
  }
 $(document).ready(function(){
-  hidden_payment();
-  $("input[name='con_email']").blur(function(){
-    var con_email = document.getElementsByName("con_email")[0].value;
-    orders_session('con_email',con_email);
-  });
-  $("input[name='bank_name']").blur(function(){
-    var payment_value = document.getElementsByName("bank_name")[0].value;
-    orders_session('bank_name',payment_value);
-  });
-  $("input[name='bank_shiten']").blur(function(){
-    var payment_value = document.getElementsByName("bank_shiten")[0].value;
-    orders_session('bank_shiten',payment_value);
-  });
-  $("input[name='bank_kamoku']").click(function(){
-    if(document.getElementsByName("bank_kamoku")[0].checked == true){
-      var payment_value = document.getElementsByName("bank_kamoku")[0].value;
-    }else{
-      var payment_value = document.getElementsByName("bank_kamoku")[1].value; 
-    }
-    orders_session('bank_kamoku',payment_value);
-  });
-  $("input[name='bank_kouza_num']").blur(function(){
-    var payment_value = document.getElementsByName("bank_kouza_num")[0].value;
-    orders_session('bank_kouza_num',payment_value);
-  });
-  $("input[name='bank_kouza_name']").blur(function(){
-    var payment_value = document.getElementsByName("bank_kouza_name")[0].value;
-    orders_session('bank_kouza_name',payment_value);
-  });
-  $("input[name='rak_tel']").blur(function(){
-    var payment_value = document.getElementsByName("rak_tel")[0].value;
-    orders_session('rak_tel',payment_value);
-  });
+  hidden_payment(); 
   $("#fetch_year").change(function(){
     var date_value = document.getElementById("fetch_year").value;
     orders_session('fetch_year',date_value);
@@ -3343,6 +3322,7 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
             break;
           case 6:
             $payment_default = $payment_array[0][$pay_key];
+            $payment_positive_array[] = $payment_array[1][$pay_key];
             break; 
           }
         }else{
@@ -4478,14 +4458,7 @@ if($orders_exit_flag == true){
                 //if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
                 echo '"></div></div>';
                 echo '<div class="order_option_price">';
-                $tmp_a_price = (int)(isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price'])?$_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price']:$order->products[$i]['attributes'][$j]['price']); 
-                
-                echo "<input ".(($tmp_a_price < 0)?"style='color:#ff0000;'":"")." size='9' type='text' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".abs((int)(isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price'])?$_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price']:$order->products[$i]['attributes'][$j]['price']))."' onkeyup=\"clearLibNum(this);recalc_order_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."','".$orders_products_list."');price_total('".TEXT_MONEY_SYMBOL."');\">";
-                if ($tmp_a_price < 0) {
-                  echo "<input type='hidden' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price_symbol]' value='1'>"; 
-                } else {
-                  echo "<input type='hidden' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price_symbol]' value='2'>"; 
-                }
+                echo "<input size='9' type='text' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".(int)(isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price'])?$_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price']:$order->products[$i]['attributes'][$j]['price'])."' onkeyup=\"clearNoNum(this);recalc_order_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."','".$orders_products_list."');price_total('".TEXT_MONEY_SYMBOL."');\">";
                 //if ($order->products[$i]['attributes'][$j]['price'] != '0') {
                   //echo ' ('.$currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty']).')'; 
                 //}
@@ -4499,9 +4472,7 @@ if($orders_exit_flag == true){
               '      <td class="' . $RowStyle . '">' . $order->products[$i]['model'] . "<input name='update_products[$orders_products_id][model]' size='12' type='hidden' value='" . $order->products[$i]['model'] . "'>" . '</td>' . "\n" .
               '      <td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($order->products[$i]['tax']) . "<input name='update_products[$orders_products_id][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order->products[$i]['tax']) . "'>" . '%</td>' . "\n";
               $order->products[$i]['price'] = isset($_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['p_price']) ? $_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['p_price'] : $order->products[$i]['price']; 
-              $tmp_op_raw = tep_db_query("select products_id from ".TABLE_ORDERS_PRODUCTS." where orders_products_id = '".$orders_products_id."'"); 
-              $tmp_op_res = tep_db_fetch_array($tmp_op_raw);
-              echo '<td class="'.$RowStyle.'" align="right"><input type="text" '.((tep_get_bflag_by_product_id($tmp_op_res['products_id']))?'style="text-align:right;color:#ff0000;"':'style="text-align:right;"').' class="once_pwd" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['p_price'])?$_POST['update_products'][$orders_products_id]['p_price']:$order->products[$i]['price']), 2)).'" onkeyup="clearNoNum(this);recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\',\''.$op_info_str.'\',\''.$orders_products_list.'\');price_total(\''.TEXT_MONEY_SYMBOL.'\');">'.TEXT_MONEY_SYMBOL.'</td>';
+              echo '<td class="'.$RowStyle.'" align="right"><input type="text" style="text-align:right;" class="once_pwd" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['p_price'])?$_POST['update_products'][$orders_products_id]['p_price']:$order->products[$i]['price']), 2)).'" onkeyup="clearNoNum(this);recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\',\''.$op_info_str.'\',\''.$orders_products_list.'\');price_total(\''.TEXT_MONEY_SYMBOL.'\');">'.TEXT_MONEY_SYMBOL.'</td>';
               $order->products[$i]['final_price'] = isset($_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['final_price']) ? $_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['final_price'] : $order->products[$i]['final_price'];
               echo '      <td class="' . $RowStyle . '" align="right">' . '<input type="hidden"
               class="once_pwd" style="text-align:right;" name="update_products['.$orders_products_id.'][final_price]" size="9" value="' . tep_display_currency(number_format(abs($order->products[$i]['final_price']),2)) 
@@ -4850,7 +4821,7 @@ if($orders_exit_flag == true){
 
             <tr>
             <td class="main"><b><?php echo ENTRY_EMAIL_TITLE; ?></b></td>
-            <td class="main"><?php echo tep_draw_input_field('title', $mail_sql['orders_status_title'],'style="width:55%;"'); ?></td>
+            <td class="main"><?php echo tep_draw_input_field('title', $mail_sql['orders_status_title'],'style="width:100%;"'); ?></td>
             </tr>
             <tr>
             <td class="main"><b><?php echo EDIT_ORDERS_SEND_MAIL_TEXT;?></b></td>

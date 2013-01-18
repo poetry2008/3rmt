@@ -1371,7 +1371,7 @@ function check_point(point_num) {
     $quest_array = tep_db_fetch_array($quest_query);
     tep_db_free_result($quest_query);
 ?>
-  <tr><td width="70%"><b><?php echo TABLE_ADDRESS_TITLE; ?></b></td></tr> 
+  <tr><td width="70%" class="main"><b><?php echo TABLE_ADDRESS_TITLE; ?></b></td></tr> 
   <?php
     if($quest_array['customers_guest_chk'] == 0){
       $address_history_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $_SESSION['customer_id'] ."'");
@@ -1445,7 +1445,7 @@ function check_point(point_num) {
   }
 ?>
           <tr>
-          <td><b><?php echo TABLE_HEADING_SHIPPING_ADDRESS; ?></b></td></tr>
+          <td class="main"><b><?php echo TABLE_HEADING_SHIPPING_ADDRESS; ?></b></td></tr>
           <tr>
           <td width="10" height="5"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
           </tr>
@@ -1610,7 +1610,7 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
             <td>
               <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                 <tr> 
-                  <td>
+                  <td class="main">
                   <b><?php echo TEXT_POINT_OR_CAMPAION; ?></b>
                   &nbsp;&nbsp;
                   <?php
@@ -1666,7 +1666,7 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
             <td>
               <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                 <tr> 
-                  <td>
+                  <td class="main">
                   <b><?php echo TEXT_POINT_OR_CAMPAION; ?></b>
                   &nbsp;&nbsp;
                   <?php

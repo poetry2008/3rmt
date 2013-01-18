@@ -43,7 +43,6 @@ function one_time_pwd_forward401($page_name)
 'set_ajax_dougyousya.php',
 'upload.php',
 'js2php.php',
-'help.php',
 'ajax.php'
       );
   foreach($pagelist as $page){
@@ -5033,14 +5032,17 @@ function tep_display_google_results($from_url='', $c_type=false){
   // >要 取引終了的状态，视为注文数。要 取引終了的状态，视为注文数。
   function tep_get_order_cnt_by_pid($pid, $site_id = ''){
     $query = (tep_db_query("select
-          orders_products.products_quantity as pq from orders_products left join
+          orders_products.products_quantity as pq 
+          ,finished,flag_qaf 
+          from orders_products left join
           orders on orders.orders_id=orders_products.orders_id 
-          where products_id='".$pid."' and finished = '0' and flag_qaf ='0' 
-          and date(orders.date_purchased) >= '".date('Y-m-d 00:00:00',strtotime('-'.((get_configuration_by_site_id('ORDER_EFFECTIVE_DATE') != '0')?(get_configuration_by_site_id('ORDER_EFFECTIVE_DATE')-1):'0').'day'))."'".(!empty($site_id)?" and orders.site_id = '".$site_id."'":"").""));
+          where products_id='".$pid."' and date(orders.date_purchased) >= '".date('Y-m-d 00:00:00',strtotime('-'.((get_configuration_by_site_id('ORDER_EFFECTIVE_DATE') != '0')?(get_configuration_by_site_id('ORDER_EFFECTIVE_DATE')-1):'0').'day'))."'".(!empty($site_id)?" and orders.site_id = '".$site_id."'":"").""));
     //$r = tep_db_fetch_array(tep_db_query("select count(orders_products.orders_id) as cnt from orders_products left join orders on orders.orders_id=orders_products.orders_id where products_id='".$pid."' and finished = '1'"));
     $cnt = 0;
     while($row = tep_db_fetch_array($query)){
-      $cnt += $row['pq'];
+      if($row['finished']=='0'&&$row['flag_qaf']=='0'){
+        $cnt += $row['pq'];
+      }
     }
     return $cnt;
   }
@@ -5592,11 +5594,30 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
       } else {
         $before_time = strtotime("-".$limit_time." days", $now_time); 
       }
-      $order_query = tep_db_query("select o.orders_id from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where o.orders_id = op.orders_id and op.products_id = '".$products_id."' and o.date_purchased <= '".date('Y-m-d H:i:s', $now_time)."' and o.date_purchased >= '".date('Y-m-d H:i:s', $before_time)."' limit 1");
-
+      /*
+      $order_query = tep_db_query("select o.orders_id from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where o.orders_id = op.orders_id and op.products_id = '".$products_id."' and o.date_purchased >= '".date('Y-m-d H:i:s', $before_time)."' limit 1");
       if (tep_db_num_rows($order_query)) {
         return true; 
       }
+      */
+      $order_arr = array();
+      $order_query = tep_db_query("select orders_id from ".TABLE_ORDERS." where date_purchased >= '".date('Y-m-d H:i:s', $before_time)."'");
+      while($order_row = tep_db_fetch_array($order_query)){
+        $order_arr[] = $order_row['orders_id'];
+      }
+      $order_product_arr = array();
+      $order_product_query = tep_db_query("select orders_id from ".TABLE_ORDERS_PRODUCTS." where products_id = '".$products_id."'");
+      while($order_product_row = tep_db_fetch_array($order_product_query)){
+        $order_product_arr[] = $order_product_row['orders_id'];
+      }
+      if(empty($order_arr)||empty($order_product_arr)){
+        return true;
+      }
+      $intersect_order = array_intersect($order_product_arr,$order_arr);
+      if(!empty($intersect_order)){
+        return true;
+      }
+
     }
 
     return false;
@@ -5636,13 +5657,18 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
 
     return 'cPath=' . $cPath_new;
   }
-  function tep_calc_limit_time_by_order_id($products_id, $single = false, $limit_time_info = '')
+  function tep_calc_limit_time_by_order_id($products_id, $single = false,
+      $limit_time_info = '',$speed=false)
   {
     $now_time = time(); 
     
     if ($limit_time_info !== '') {
       if ($limit_time_info) {
-        $limit_time = $limit_time_info['limit_time']; 
+        if(is_array($limit_time_info)){
+          $limit_time = $limit_time_info['limit_time']; 
+        }else{
+          $limit_time = $limit_time_info; 
+        }
       } else {
         return ''; 
       }
@@ -5674,11 +5700,22 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
     }
 
     if ($single) {
+      if($speed){
+      $order_query = tep_db_query("select o.orders_id, o.date_purchased from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where o.orders_id = op.orders_id and op.products_id = '".$products_id."' limit 1");
+      }else{
       $order_query = tep_db_query("select o.orders_id, o.date_purchased from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where o.orders_id = op.orders_id and op.products_id = '".$products_id."' order by orders_id desc limit 1");
+      }
     } else {
+      if($speed){
+      $order_query = tep_db_query("select o.orders_id, o.date_purchased from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where o.orders_id = op.orders_id and op.products_id = '".$products_id."' and o.date_purchased >= '".date('Y-m-d H:i:s', $before_time)."' limit 1");
+      }else{
       $order_query = tep_db_query("select o.orders_id, o.date_purchased from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where o.orders_id = op.orders_id and op.products_id = '".$products_id."' and o.date_purchased <= '".date('Y-m-d H:i:s', $now_time)."' and o.date_purchased >= '".date('Y-m-d H:i:s', $before_time)."' order by orders_id desc limit 1");
+      }
     }
     $order_res = tep_db_fetch_array($order_query); 
+    if($speed&&$order_res){
+      return true;
+    }
 
     $diff_time_str = '';
     if ($order_res) {
@@ -7765,6 +7802,20 @@ function tep_get_signal_pic_info($last_modified_info) {
   }
   
   return $html_str;
+}
+
+function tep_get_orders_by_customers_id($customers_id,$site_id){
+  $sql = "select distinct o.orders_id from orders o 
+    where  o.customers_id = '".$customers_id."' 
+    and o.site_id ='".$site_id."'";
+  $query = tep_db_query($sql);
+  $arr = array();
+  while($row = tep_db_fetch_array($query)){
+    if(!in_array($row['orders_id'],$arr)){
+      $arr[] = $row['orders_id'];
+    }
+  }
+  return count($arr);
 }
 
 //获取当前页的memo的z-index的最大值

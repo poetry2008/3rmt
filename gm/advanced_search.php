@@ -153,42 +153,42 @@ tep_image_submit('button_search.gif',
 <td> <?php
 $options_box = '<table border="0" width="100%" cellspacing="0" cellpadding="2">' . "\n" .
 '  <tr>' . "\n" .
-'    <td class="fieldKey">' . ENTRY_CATEGORIES . '</td>' . "\n" .
+'    <td width="15%">' . ENTRY_CATEGORIES . '</td>' . "\n" .
 '    <td class="fieldValue">' . tep_draw_pull_down_menu('categories_id', tep_get_categories(array(array('id' => '', 'text' => TEXT_ALL_CATEGORIES)))) . '<br></td>' . "\n" .
 '  </tr>' . "\n" .
 '  <tr>' . "\n" .
-'    <td class="fieldKey">&nbsp;</td>' . "\n" .
+'    <td width="15%">&nbsp;</td>' . "\n" .
 '    <td class="smallText">' . tep_draw_checkbox_field('inc_subcat', '1', true) . ' ' . ENTRY_INCLUDE_SUBCATEGORIES . '</td>' . "\n" .
 '  </tr>' . "\n" .
 '  <tr>' . "\n" .
 '    <td colspan="2">' . tep_draw_separator('pixel_trans.gif', '100%', '10') . '</td>' . "\n" .
 '  </tr>' . "\n" .
 '  <tr>' . "\n" .
-'    <td class="fieldKey">' . ENTRY_MANUFACTURERS . '</td>' . "\n" .
+'    <td width="15%">' . ENTRY_MANUFACTURERS . '</td>' . "\n" .
 '    <td class="fieldValue">' . tep_draw_pull_down_menu('manufacturers_id', tep_get_manufacturers(array(array('id' => '', 'text' => TEXT_ALL_MANUFACTURERS)))) . '</td>' . "\n" .
 '  </tr>' . "\n" .
 '  <tr>' . "\n" .
 '    <td colspan="2">' . tep_draw_separator('pixel_trans.gif', '100%', '10') . '</td>' . "\n" .
 '  </tr>' . "\n" .
 '  <tr>' . "\n" .
-'    <td class="fieldKey">' . ENTRY_PRICE_FROM . '</td>' . "\n" .
+'    <td width="15%">' . ENTRY_PRICE_FROM . '</td>' . "\n" .
 '    <td class="fieldValue">' .
 tep_draw_input_field('pfrom','','id="input_text_short"') . '</td>' . "\n" .
 '  </tr>' . "\n" .
 '  <tr>' . "\n" .
-'    <td class="fieldKey">' . ENTRY_PRICE_TO . '</td>' . "\n" .
+'    <td width="15%">' . ENTRY_PRICE_TO . '</td>' . "\n" .
 '    <td class="fieldValue">' . tep_draw_input_field('pto','','id="input_text_short"') . '</td>' . "\n" .
 '  </tr>' . "\n" .
 '  <tr>' . "\n" .
 '    <td colspan="2">' . tep_draw_separator('pixel_trans.gif', '100%', '10') . '</td>' . "\n" .
 '  </tr>' . "\n" .
 '  <tr>' . "\n" .
-'    <td class="fieldKey">' . ENTRY_DATE_FROM . '</td>' . "\n" .
+'    <td width="15%">' . ENTRY_DATE_FROM . '</td>' . "\n" .
 '    <td class="fieldValue">' . tep_draw_input_field('dfrom',
     DOB_FORMAT_STRING, 'id="input_text_short" onFocus="RemoveFormatString(this, \'' . DOB_FORMAT_STRING . '\')"') . '</td>' . "\n" .
 '  </tr>' . "\n" .
 '  <tr>' . "\n" .
-'    <td class="fieldKey">' . ENTRY_DATE_TO . '</td>' . "\n" .
+'    <td width="15%">' . ENTRY_DATE_TO . '</td>' . "\n" .
 '    <td class="fieldValue">' . tep_draw_input_field('dto',
     DOB_FORMAT_STRING, 'id="input_text_short" onFocus="RemoveFormatString(this, \'' . DOB_FORMAT_STRING . '\')"') . '</td>' . "\n" .
 '  </tr>' . "\n" .

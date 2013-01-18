@@ -53,13 +53,9 @@ class buying extends basePayment  implements paymentInterface  {
                        ),
                  );
     } else {
+     $input_text_id = ' class="input_text" ';
      if(NEW_STYLE_WEB===true){
-       $input_text_id = ' class="input_text" ';
-     }else{
-       $input_text_id = '';
-     }
-     if(NEW_STYLE_WEB===true){
-       $style_width = 'style="width: 10px;"';
+       $style_width = 'style="width:231px;"';
      }else{
        $style_width = '';
      }
@@ -67,7 +63,7 @@ class buying extends basePayment  implements paymentInterface  {
                  array(
                        "code"=>'bank_name',
                        "title"=>TS_TEXT_BANK_NAME,
-                       "field"=>tep_draw_input_field('bank_name', $theData['bank_name'],''.$input_text_id.''),
+                       "field"=>tep_draw_input_field('bank_name', $theData['bank_name'],''.$style_width.$input_text_id.''),
                        "rule"=>basePayment::RULE_NOT_NULL,
                        "error_msg" => TS_TEXT_BANK_ERROR_NAME 
                        ),
@@ -75,7 +71,7 @@ class buying extends basePayment  implements paymentInterface  {
                        "code"=>'bank_shiten',
                        "title"=>TS_TEXT_BANK_SHITEN,
                        "field"=>tep_draw_input_field('bank_shiten',
-                         $theData['bank_shiten'],'',input_text_id),
+                         $theData['bank_shiten'],''.$style_width.$input_text_id),
                        "rule"=>basePayment::RULE_NOT_NULL,
                        "error_msg" => TS_TEXT_BANK_ERROR_SHITEN 
                        ),
@@ -94,14 +90,14 @@ class buying extends basePayment  implements paymentInterface  {
                  array(
                        "code"=>'bank_kouza_num',
                        "title"=>TS_TEXT_BANK_KOUZA_NUM,
-                       "field"=>tep_draw_input_field('bank_kouza_num', $theData['bank_kouza_num'],''.$input_text_id.''),
+                       "field"=>tep_draw_input_field('bank_kouza_num', $theData['bank_kouza_num'],''.$style_width.$input_text_id.''),
                        "rule"=>array(basePayment::RULE_NOT_NULL,basePayment::RULE_IS_NUMBER),
                        "error_msg" => array(TS_TEXT_BANK_ERROR_KOUZA_NUM, TS_TEXT_BANK_ERROR_KOUZA_NUM2) 
                        ),
                  array(
                        "code"=>'bank_kouza_name',
                        "title"=>TS_TEXT_BANK_KOUZA_NAME,
-                       "field"=>tep_draw_input_field('bank_kouza_name', $theData['bank_kouza_name'],''.$input_text_id.'').((!$back)?'<br>'.TS_TEXT_BANK_KOUZA_NAME_READ:''),
+                       "field"=>tep_draw_input_field('bank_kouza_name', $theData['bank_kouza_name'],''.$style_width.$input_text_id.'').((!$back)?'<br>'.TS_TEXT_BANK_KOUZA_NAME_READ:''),
                        "rule"=>basePayment::RULE_NOT_NULL,
                        "error_msg" => TS_TEXT_BANK_ERROR_KOUZA_NAME 
                        ),
@@ -527,6 +523,41 @@ class buying extends basePayment  implements paymentInterface  {
    $rak_tel[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['rak_tel']) ? $_SESSION['orders_update_products'][$_GET['oID']]['rak_tel'] : $rak_tel[1];
    $rak_tel[1] = isset($_POST['rak_tel']) ? $_POST['rak_tel'] : $rak_tel[1];
    echo 'document.getElementsByName("rak_tel")[0].value = "'.$rak_tel[1].'";'."\n";
+   echo <<<EOT
+   $("input[name='con_email']").blur(function(){
+     var con_email = document.getElementsByName("con_email")[0].value;
+     orders_session('con_email',con_email);
+   });
+   $("input[name='bank_name']").blur(function(){
+     var payment_value = document.getElementsByName("bank_name")[0].value;
+     orders_session('bank_name',payment_value);
+   });
+   $("input[name='bank_shiten']").blur(function(){
+     var payment_value = document.getElementsByName("bank_shiten")[0].value;
+     orders_session('bank_shiten',payment_value);
+   });
+   $("input[name='bank_kamoku']").click(function(){
+     if(document.getElementsByName("bank_kamoku")[0].checked == true){
+       var payment_value = document.getElementsByName("bank_kamoku")[0].value;
+     }else{
+      var payment_value = document.getElementsByName("bank_kamoku")[1].value; 
+     }
+     orders_session('bank_kamoku',payment_value);
+   });
+   $("input[name='bank_kouza_num']").blur(function(){
+     var payment_value = document.getElementsByName("bank_kouza_num")[0].value;
+     orders_session('bank_kouza_num',payment_value);
+   });
+   $("input[name='bank_kouza_name']").blur(function(){
+     var payment_value = document.getElementsByName("bank_kouza_name")[0].value;
+     orders_session('bank_kouza_name',payment_value);
+   });
+   $("input[name='rak_tel']").blur(function(){
+     var payment_value = document.getElementsByName("rak_tel")[0].value;
+     orders_session('rak_tel',payment_value);
+   });
+EOT;
+   echo "\n";
   }
 
   function admin_get_payment_buying(&$mailoption,$comment_arr){
@@ -568,13 +599,14 @@ class buying extends basePayment  implements paymentInterface  {
     return "bank_info = '{$bank_info}',";
   }
 
-  function admin_get_payment_info_comment($customers_email,$site_id){
+  function admin_get_payment_info_comment($customers_email,$site_id,$orders_type){
 
-    $orders_status_history_temp_query = tep_db_query("select payment_method,orders_id from ". TABLE_ORDERS ." where customers_email_address='". $customers_email ."' and site_id='".$site_id."' and payment_method='".TS_MODULE_PAYMENT_BUYING_TEXT_TITLE."' limit 0,1");
+    $orders_type_str = $orders_type == 1 ? TABLE_ORDERS : TABLE_PREORDERS;
+    $orders_status_history_temp_query = tep_db_query("select payment_method,orders_id from ". $orders_type_str ." where customers_email_address='". $customers_email ."' and site_id='".$site_id."' and payment_method='".TS_MODULE_PAYMENT_BUYING_TEXT_TITLE."' limit 0,1");
     $orders_num_rows = tep_db_num_rows($orders_status_history_temp_query);
     tep_db_free_result($orders_status_history_temp_query);
     if($orders_num_rows > 0){
-      $orders_status_history_query = tep_db_query("select payment_method,orders_id from ". TABLE_ORDERS ." where customers_email_address='". $customers_email ."' and site_id='".$site_id."' and payment_method='".TS_MODULE_PAYMENT_BUYING_TEXT_TITLE."' order by orders_id desc limit 0,1");
+      $orders_status_history_query = tep_db_query("select payment_method,orders_id from ". $orders_type_str ." where customers_email_address='". $customers_email ."' and site_id='".$site_id."' and payment_method='".TS_MODULE_PAYMENT_BUYING_TEXT_TITLE."' order by orders_id desc limit 0,1");
       $ordres_status_history_array = tep_db_fetch_array($orders_status_history_query);
       $orders_status_history_num_rows = tep_db_num_rows($orders_status_history_query);
       tep_db_free_result($orders_status_history_query);

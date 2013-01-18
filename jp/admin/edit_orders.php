@@ -704,13 +704,13 @@ if($address_error == false){
               $input_option = array('title' => $attributes_details["option"], 'value' => $attributes_details["value"]); 
               $orders_products_attributes_array = explode('_', $orders_products_attributes_id);
               if(count($products_session_string_array) <= 1){
-                $Query = "update " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " set option_info = '".tep_db_input(serialize($input_option))."', options_values_price = '".(($attributes_details['price_symbol'] == '1')?0-$attributes_details['price']:$attributes_details['price'])."' where orders_products_attributes_id = '$orders_products_attributes_id';"; 
+                $Query = "update " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " set option_info = '".tep_db_input(serialize($input_option))."', options_values_price = '".$attributes_details['price']."' where orders_products_attributes_id = '$orders_products_attributes_id';"; 
                 tep_db_query($Query);
               }else{
                 $Query = "insert into " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " set
                         orders_id = '$oID',
                         orders_products_id = $new_products_id,
-                        options_values_price = '" .(($attributes_details['price_symbol'] == '1')?tep_db_input(0-$attributes_details['price']):tep_db_input($attributes_details['price'])) ."',
+                        options_values_price = '" .tep_db_input($attributes_details['price']) ."',
                         option_group_id = '" . $_SESSION['new_products_list'][$oID]['orders_products'][$products_session_string_array[1]]['products_attributes'][$orders_products_attributes_array[1]]['option_group_id'] . "',
                         option_item_id = '" . $_SESSION['new_products_list'][$oID]['orders_products'][$products_session_string_array[1]]['products_attributes'][$orders_products_attributes_array[1]]['option_item_id'] . "',
                         option_info = '".tep_db_input(serialize($input_option))."';";
@@ -1042,7 +1042,11 @@ if($address_error == false){
           if ($max_c_len < 4) {
             $max_c_len = 4; 
           }
+          $search_products_id_list = array();
+          $mode_products_name_list = array();
           for ($i=0; $i<sizeof($order->products); $i++) {
+            $search_products_id_list[] = $order->products[$i]['id'];
+            $mode_products_name_list[] = $order->products[$i]['name'];
             //$orders_products_id = $order->products[$i]['orders_products_id'];
             $products_ordered_mail .= SENDMAIL_ORDERS_PRODUCTS.str_repeat('　', intval($max_c_len - mb_strlen(SENDMAIL_ORDERS_PRODUCTS, 'utf-8'))).'：' . $order->products[$i]['name'] . '（' . $order->products[$i]['model'] . '）';
             if ($order->products[$i]['price'] != '0') {
@@ -1139,8 +1143,15 @@ if($address_error == false){
           $email = str_replace('${SHIPPING_TIME}', $fetch_time_str, $email); 
           $title = str_replace('${SHIPPING_TIME}', $fetch_time_str, $title); 
           $email = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$email);
+          $search_products_name_list = array();
+          foreach($search_products_id_list as $products_name_value){
+            $search_products_name_query = tep_db_query("select products_name from ". TABLE_PRODUCTS_DESCRIPTION ." where products_id='".$products_name_value."' and language_id='".$languages_id."' and (site_id='".$order->info['site_id']."' or site_id='0') order by site_id DESC");
+            $search_products_name_array = tep_db_fetch_array($search_products_name_query);
+            tep_db_free_result($search_products_name_query);
+            $search_products_name_list[] = $search_products_name_array['products_name'];
+          }
           if ($customer_guest['is_send_mail'] != '1')
-            tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $email, get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
+            tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, str_replace($mode_products_name_list,$search_products_name_list,$email), get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
 
           tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS', $order->info['site_id']), $title, $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
           $customer_notified = '1';
@@ -2542,39 +2553,7 @@ $(document).ready(function(){
    }
   }
 $(document).ready(function(){
-  hidden_payment(1);
-  $("input[name='con_email']").blur(function(){
-    var con_email = document.getElementsByName("con_email")[0].value;
-    orders_session('con_email',con_email);
-  });
-  $("input[name='bank_name']").blur(function(){
-    var payment_value = document.getElementsByName("bank_name")[0].value;
-    orders_session('bank_name',payment_value);
-  });
-  $("input[name='bank_shiten']").blur(function(){
-    var payment_value = document.getElementsByName("bank_shiten")[0].value;
-    orders_session('bank_shiten',payment_value);
-  });
-  $("input[name='bank_kamoku']").click(function(){
-    if(document.getElementsByName("bank_kamoku")[0].checked == true){
-      var payment_value = document.getElementsByName("bank_kamoku")[0].value;
-    }else{
-      var payment_value = document.getElementsByName("bank_kamoku")[1].value; 
-    }
-    orders_session('bank_kamoku',payment_value);
-  });
-  $("input[name='bank_kouza_num']").blur(function(){
-    var payment_value = document.getElementsByName("bank_kouza_num")[0].value;
-    orders_session('bank_kouza_num',payment_value);
-  });
-  $("input[name='bank_kouza_name']").blur(function(){
-    var payment_value = document.getElementsByName("bank_kouza_name")[0].value;
-    orders_session('bank_kouza_name',payment_value);
-  });
-  $("input[name='rak_tel']").blur(function(){
-    var payment_value = document.getElementsByName("rak_tel")[0].value;
-    orders_session('rak_tel',payment_value);
-  });
+  hidden_payment(1); 
   $("#fetch_year").change(function(){
     var date_value = document.getElementById("fetch_year").value;
     orders_session('fetch_year',date_value);
@@ -3500,7 +3479,6 @@ if (($action == 'edit') && ($order_exists == true)) {
         $order->products[$i]['attributes'][$j]['price'] = isset($_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['attributes'][$orders_products_attributes_id]['price']) ? $_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['attributes'][$orders_products_attributes_id]['price'] : $order->products[$i]['attributes'][$j]['price'];
                 $order->products[$i]['attributes'][$j]['option_info']['title'] = isset($_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['attributes'][$orders_products_attributes_id]['option_info']['title']) ? $_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['attributes'][$orders_products_attributes_id]['option_info']['title'] : $order->products[$i]['attributes'][$j]['option_info']['title'];
                 $order->products[$i]['attributes'][$j]['option_info']['value'] = isset($_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['attributes'][$orders_products_attributes_id]['option_info']['value']) ? $_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['attributes'][$orders_products_attributes_id]['option_info']['value'] : $order->products[$i]['attributes'][$j]['option_info']['value'];
-        $order->products[$i]['attributes'][$j]['price_symbol'] = ($order->products[$i]['attributes'][$j]['price'] < 0)?'1':'2'; 
         $all_show_option[$order->products[$i]['attributes'][$j]['option_item_id']] =
           $order->products[$i]['attributes'][$j];
       }
@@ -3547,12 +3525,7 @@ if (($action == 'edit') && ($order_exists == true)) {
           //if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
           echo "'></div></div>";
           echo '<div class="order_option_price">'; 
-          if ($all_show_option[$t_item_id]['price_symbol'] == '1') {
-            echo "<input style='color:#ff0000;' type='text' size='9' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".(int)(isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price'])?$_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price']:abs($all_show_option[$t_item_id]['price']))."' onkeyup=\"clearLibNum(this);recalc_order_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."','".$orders_products_list."');price_total('".TEXT_MONEY_SYMBOL."');\">";   
-          } else {
-            echo "<input type='text' size='9' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".(int)(isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price'])?$_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price']:abs($all_show_option[$t_item_id]['price']))."' onkeyup=\"clearLibNum(this);recalc_order_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."','".$orders_products_list."');price_total('".TEXT_MONEY_SYMBOL."');\">";   
-          }
-          echo "<input type='hidden' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price_symbol]' value='".$all_show_option[$t_item_id]['price_symbol']."'>"; 
+          echo "<input type='text' size='9' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".(int)(isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price'])?$_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price']:$all_show_option[$t_item_id]['price'])."' onkeyup=\"clearLibNum(this);recalc_order_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."','".$orders_products_list."');price_total('".TEXT_MONEY_SYMBOL."');\">";   
           echo TEXT_MONEY_SYMBOL; 
           echo '</div>'; 
           echo '</i></div>';
@@ -3566,7 +3539,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         tep_display_tax_value($order->products[$i]['tax']) . "<input name='update_products[$orders_products_id][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order->products[$i]['tax']) . "'>" .  '%</td>' . "\n";
 
       $order->products[$i]['price'] = isset($_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['p_price']) ? $_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['p_price'] : $order->products[$i]['price']; 
-      echo '<td class="'.$RowStyle.'" align="right"><input '.(tep_get_bflag_by_product_id($order->products[$i]['id'])?'style="color:#ff0000;text-align:right;"':'style="text-align:right;"').' type="text" class="once_pwd" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['p_price'])?$_POST['update_products'][$orders_products_id]['p_price']:$order->products[$i]['price']), 2)).'" onkeyup="clearLibNum(this);recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\', \''.$op_info_str.'\',\''.$orders_products_list.'\');price_total(\''.TEXT_MONEY_SYMBOL.'\');">'.TEXT_MONEY_SYMBOL.'</td>'; 
+      echo '<td class="'.$RowStyle.'" align="right"><input type="text" class="once_pwd" style="text-align:right;" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['p_price'])?$_POST['update_products'][$orders_products_id]['p_price']:$order->products[$i]['price']), 2)).'" onkeyup="clearLibNum(this);recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\', \''.$op_info_str.'\',\''.$orders_products_list.'\');price_total(\''.TEXT_MONEY_SYMBOL.'\');">'.TEXT_MONEY_SYMBOL.'</td>'; 
 
       $order->products[$i]['final_price'] = isset($_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['final_price']) ? $_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['final_price'] : $order->products[$i]['final_price']; 
       echo  '<td class="' . $RowStyle . '" align="right">' . "<input type='hidden' style='text-align:right' class='once_pwd' name='update_products[$orders_products_id][final_price]' size='9' value='" .  tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['final_price'])?$_POST['update_products'][$orders_products_id]['final_price']:$order->products[$i]['final_price']),2)) .  "'" .' onkeyup="clearNoNum(this);recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'3\',\''.$op_info_str.'\',\''.$orders_products_list.'\');price_total(\''.TEXT_MONEY_SYMBOL.'\');" >'.  
@@ -3709,27 +3682,27 @@ if (($action == 'edit') && ($order_exists == true)) {
     }
   }
   // END OF MAKING ALL INPUT FIELDS THE SAME LENGTH
-
+ 
   $TotalsArray = array();
   for ($i=0; $i<sizeof($order->totals); $i++) {
     $TotalsArray[] = array("Name" => $order->totals[$i]['title'], "Price" => tep_display_currency(number_format($order->totals[$i]['value'], 2, '.', '')), "Class" => $order->totals[$i]['class'], "TotalID" => $order->totals[$i]['orders_total_id']);
-    $TotalsArray[] = array("Name" => "          ", "Price" => "", "Class" => "ot_custom", "TotalID" => "0");
+    if($order->totals[$i+1]['class'] == 'ot_point' && $order->totals[$i]['class'] != 'ot_custom'){
+
+      $TotalsArray[] = array("Name" => "          ", "Price" => "", "Class" => "ot_custom", "TotalID" => "0");
+    }
+
+    if($order->totals[$i]['class'] == 'ot_point' && $order->totals[$i+1]['class'] != 'ot_custom'){
+
+      $TotalsArray[] = array("Name" => "          ", "Price" => "", "Class" => "ot_custom", "TotalID" => "0");
+    } 
   }
-  
-  array_pop($TotalsArray); 
   $shipping_fee_subtotal = 0; //小计
   $shipping_fee_tax = 0; //税
   $shipping_fee_point = 0; //折点
   $sum_num = count($TotalsArray)-1;
   $show_num = 0;
-  $ot_custom_num = 0;
   foreach ($TotalsArray as $TotalIndex => $TotalDetails) {
-    if(trim($TotalDetails['Name']) != '' && $TotalDetails['Class'] == 'ot_custom'){
-      $ot_custom_num++;
-    }
-  }
-  foreach ($TotalsArray as $TotalIndex => $TotalDetails) {
-    if(trim($TotalDetails['Name']) == '' && $TotalDetails['Class'] == 'ot_custom' && $ot_custom_num >= 2){
+    if(trim($TotalDetails['Name']) == '' && $TotalDetails['Class'] == 'ot_custom' && $TotalIndex != 1 && $TotalIndex != 3){
        unset($TotalsArray[$TotalIndex]);
     }
   } 
@@ -4023,7 +3996,7 @@ if (($action == 'edit') && ($order_exists == true)) {
 
             <tr>
             <td class="main"><b><?php echo ENTRY_EMAIL_TITLE; ?></b></td>
-            <td class="main"><?php echo tep_draw_input_field('title', $mail_sql['orders_status_title'],'style="width:55%;" id="mail_title"'); ?></td>
+            <td class="main"><?php echo tep_draw_input_field('title', $mail_sql['orders_status_title'],'style="width:100%;" id="mail_title"'); ?></td>
             </tr>
     <tr>
     <td class="main"><b><?php echo EDIT_ORDERS_SEND_MAIL_TEXT;?></b></td>
@@ -4200,13 +4173,8 @@ if($index_num > 0){
                   str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data($new_products_temp_add[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;"))); 
                 echo '</div></div>';
                 echo '<div class="order_option_price">';
-                if ($new_products_temp_add[$i]['attributes'][$j]['price'] < 0) {
-                  echo '<font color="#ff0000">'.abs((int)$new_products_temp_add[$i]['attributes'][$j]['price']).'</font>';
-                  echo TEXT_MONEY_SYMBOL;
-                } else {
-                  echo (int)$new_products_temp_add[$i]['attributes'][$j]['price'];
-                  echo TEXT_MONEY_SYMBOL;
-                }
+                echo (int)$new_products_temp_add[$i]['attributes'][$j]['price'];
+                echo TEXT_MONEY_SYMBOL;
                 echo '</div>';
                 echo '</i></small></div>';
               }

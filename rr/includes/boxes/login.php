@@ -24,6 +24,9 @@
   </div>
 <?php 
   } else { 
+    $customers = tep_db_query('select * from '.TABLE_CUSTOMERS.' where customers_id='.$_SESSION['customer_id']);
+    $customers_row = tep_db_fetch_array($customers);
+    $guestchk= $customers_row['customers_guest_chk'];
     if($guestchk == '1') {
 ?>
     <div class="login_box">

@@ -4228,7 +4228,7 @@ function preorders_updated($orders_id) {
   
 function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $exists_single = false) 
 {
-   global $currency, $currencies, $payment_modules; 
+   global $currency, $currencies, $payment_modules, $languages_id; 
    $is_active = 1; 
    if ($tmp_cid) {
      $is_active = 0; 
@@ -4379,11 +4379,11 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
    
   $tax_address_query = tep_db_query("select ab.entry_country_id, ab.entry_zone_id from " . TABLE_ADDRESS_BOOK . " ab left join " . TABLE_ZONES . " z on (ab.entry_zone_id = z.zone_id) where ab.customers_id = '" . $customers_id . "' and ab.address_book_id = '1'");
   $tax_address = tep_db_fetch_array($tax_address_query);
-    
+   $search_products = tep_get_product_by_id($pInfo['products_id'], 0, $languages_id,true,'product_info'); 
    $sql_data_array = array('orders_id' => $order_id, 
                           'products_id' => $pInfo['products_id'], 
                           'products_model' => $products_res['products_model'], 
-                          'products_name' => $pInfo['products_name'],
+                          'products_name' => $search_products['products_name'],
                           'products_tax' => tep_get_tax_rate($products_res['products_tax_class_id'], $tax_address['entry_country_id'], $tax_address['entry_zone_id']), 
                           'products_quantity' => $pInfo['quantity'], 
                           'products_rate' => tep_get_products_rate($pInfo['products_id']), 
@@ -4423,7 +4423,7 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
          $sql_data_array = array(
            'orders_id' => $order_id,
            'orders_products_id' => $preorder_products_id, 
-           'options_values_price' => $item_price, 
+           'options_values_price' => 0, 
            'option_info' => tep_db_input(serialize($input_option_array)), 
            'option_group_id' => $item_res['group_id'], 
            'option_item_id' => $item_res['id'], 

@@ -175,4 +175,8 @@ define('ERROR_NEW_PREORDERS_UPDATE', '发生错误。可能无法正常处理。
 define('NEW_PREORDERS_CHARACTER_TEXT', '公司交易人物名:');
 define('TEXT_EMAIL_TITLE','邮件标题：');
 define('NOTICE_NEW_PREORDERS_PRODUCTS_DEL','商品删除成功。');
+define('TABLE_HEADING_PRODUCTS_PRICE', '单价');
+define('TEXT_REQUIRE','*必须');
+define('ADDRESS_ERROR_OPTION_ITEM_TEXT_NULL','必须项目');
+define('ADDRESS_ERROR_OPTION_ITEM_TEXT_TYPE_WRONG','请正确输入');
 ?>

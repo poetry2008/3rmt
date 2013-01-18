@@ -125,7 +125,7 @@
                 </td>
               </tr>
               <tr>
-                <td style="font-size:11px;" colspan="3">
+                <td style="font-size:12px;" colspan="3">
                 <?php echo ACTIVE_INFO_FRONT_COMMENT;?>
                 <br>
                 </td>

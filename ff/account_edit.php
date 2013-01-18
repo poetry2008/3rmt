@@ -593,9 +593,6 @@ if($_POST['num_rows'] > 0){
 </td> 
             </tr> 
             <tr> 
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-            </tr> 
-            <tr> 
               <td>
               <table border="0" width="95%" cellspacing="0" cellpadding="2" align="center" summary="table"> 
                   <tr> 

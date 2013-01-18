@@ -655,8 +655,12 @@ switch ($_GET['action']) {
                 );
           $products_ordered_mail = '';
           $order_pro_array = array(); 
+          $search_products_id_list = array();
+          $mode_products_name_list = array();
           $order_pro_list_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS.  " where orders_id = '".$oID."'"); 
           while ($order_pro_list_res = tep_db_fetch_array($order_pro_list_query)) {
+             $search_products_id_list[] = $order_pro_list_res['products_id'];
+             $mode_products_name_list[] = $order_pro_list_res['products_name'];
              $order_pro_attr_list_raw = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$oID."' and orders_products_id = '".$order_pro_list_res['orders_products_id']."'"); 
              $max_c_len = 0;
              $max_len_array = array();
@@ -764,8 +768,15 @@ switch ($_GET['action']) {
           $title = str_replace('${SHIPPING_TIME}', $fetch_time_str, $title); 
           $customer_info_raw = tep_db_query("select is_send_mail from ".TABLE_CUSTOMERS." where customers_id = '".$check_status['customers_id']."'"); 
           $customer_info_res = tep_db_fetch_array($customer_info_raw); 
+          $search_products_name_list = array();
+          foreach($search_products_id_list as $products_name_value){
+            $search_products_name_query = tep_db_query("select products_name from ". TABLE_PRODUCTS_DESCRIPTION ." where products_id='".$products_name_value."' and language_id='".$languages_id."' and (site_id='".$site_id."' or site_id='0') order by site_id DESC");
+            $search_products_name_array = tep_db_fetch_array($search_products_name_query);
+            tep_db_free_result($search_products_name_query);
+            $search_products_name_list[] = $search_products_name_array['products_name'];
+          }
           if ($customer_info_res['is_send_mail'] != '1') {
-            tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
+            tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, str_replace($mode_products_name_list,$search_products_name_list,$comments), get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
           } 
           tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), $title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
           $customer_notified = '1';
@@ -990,8 +1001,12 @@ switch ($_GET['action']) {
           
         $products_ordered_mail = '';
         $order_pro_array = array(); 
+        $search_products_id_list = array();
+        $mode_products_name_list = array();
         $order_pro_list_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS.  " where orders_id = '".$oID."'"); 
         while ($order_pro_list_res = tep_db_fetch_array($order_pro_list_query)) {
+           $search_products_id_list[] = $order_pro_list_res['products_id'];
+           $mode_products_name_list[] = $order_pro_list_res['products_name'];
            $order_pro_attr_list_raw = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$oID."' and orders_products_id = '".$order_pro_list_res['orders_products_id']."'"); 
            $max_c_len = 0;
            $max_len_array = array();
@@ -1101,8 +1116,15 @@ switch ($_GET['action']) {
         $title = str_replace('${SHIPPING_TIME}', $fetch_time_str, $title); 
         $customer_info_raw = tep_db_query("select is_send_mail from ".TABLE_CUSTOMERS." where customers_id = '".$check_status['customers_id']."'"); 
         $customer_info_res = tep_db_fetch_array($customer_info_raw); 
+        $search_products_name_list = array();
+        foreach($search_products_id_list as $products_name_value){
+          $search_products_name_query = tep_db_query("select products_name from ". TABLE_PRODUCTS_DESCRIPTION ." where products_id='".$products_name_value."' and language_id='".$languages_id."' and (site_id='".$site_id."' or site_id='0') order by site_id DESC");
+          $search_products_name_array = tep_db_fetch_array($search_products_name_query);
+          tep_db_free_result($search_products_name_query);
+          $search_products_name_list[] = $search_products_name_array['products_name'];
+        }
         if ($customer_info_res['is_send_mail'] != '1') {
-          tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
+          tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, str_replace($mode_products_name_list,$search_products_name_list,$comments), get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
         }
         tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), $title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
         $customer_notified = '1';

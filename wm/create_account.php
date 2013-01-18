@@ -13,10 +13,11 @@
 <?php require('includes/form_check.js.php'); ?>
 <script type="text/javascript" language="javascript">
 <!--
-function pass_hidd(){
+function pass_hidd(CI){
+  /*
   var idx = document.account_edit.elements["guestchk"].selectedIndex;
   var CI = document.account_edit.elements["guestchk"].options[idx].value;
-  
+*/
   if(CI == '0'){
     document.getElementById('trpass1').style.display = "";
 	document.getElementById('trpass2').style.display = "";
@@ -54,9 +55,6 @@ function pass_hidd(){
   }
 ?> 
             <tr> 
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-            </tr> 
-            <tr> 
               <td><?php
   if (isset($_GET['email_address'])) $email_address = tep_db_prepare_input($_GET['email_address']);
   $account['entry_country_id'] = STORE_COUNTRY;
@@ -83,7 +81,18 @@ function pass_hidd(){
   <!-- footer //--> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
   <!-- footer_eof //--> 
-</div> 
+  <script>
+  document.onreadystatechange=function(){
+  var obj = document.getElementsByName("guestchk"); 
+  for(i = 0;i < obj.length;i++)    { 
+    if(obj[i].checked){ 
+      CI = obj[i].value; 
+    } 
+  }      
+  pass_hidd(CI);  
+  }
+  </script>
+</div>
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

@@ -69,7 +69,7 @@ define('HEADER_TITLE_NEWS', '最新情報');
 define('MYACCOUNT_EDIT', 'お客様情報の編集');
 define('MYACCOUNT_ADDRESS', 'アドレス帳');
 define('MYACCOUNT_HISTORY', '注文履歴');
-define('MYACCOUNT_NOTIFICATION', 'ショップからのお知らせ');
+define('MYACCOUNT_NOTIFICATION', 'お知らせ設定');
 define('MENU_MU','メーカー一覧');
 
 // footer text in includes/footer.php
@@ -255,7 +255,7 @@ define('ENTRY_NEWSLETTER_YES', '購読する');
 define('ENTRY_NEWSLETTER_NO', '購読しない');
 define('ENTRY_NEWSLETTER_ERROR', '');
 define('ENTRY_PASSWORD', 'パスワード:');
-define('ENTRY_PASSWORD_CONFIRMATION', 'パスワードを再入力:');
+define('ENTRY_PASSWORD_CONFIRMATION', 'パスワード再入力:');
 define('ENTRY_PASSWORD_CONFIRMATION_TEXT', '&nbsp;<span>(例. abcd1234) <font color="#FC0000">必須</font></span>');
 define('ENTRY_PASSWORD_ERROR', '<small><font color="#FF0000">少なくても ' . ENTRY_PASSWORD_MIN_LENGTH . ' 文字</font></small>');
 define('ENTRY_PASSWORD_TEXT', '&nbsp;<span>(例. abcd1234) <font color="#FC0000">必須</font></span>');

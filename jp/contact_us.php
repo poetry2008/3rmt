@@ -39,11 +39,11 @@ require_once(CLIENTINC_DIR.'header.inc.php');
   <form class="status_form" action="<?php echo tep_href_link('contact_us_login.php','','SSL')?>" method="post">
     <div class="status_warpper">
       <label>メールアドレス</label>
-      <input type="text" name="lemail">
+      <input type="text" name="lemail" class="input_text">
       </div>
       <div class="status_warpper">
      <label>お問い合わせ番号</label>
-     <input type="text" name="lticket">
+     <input type="text" name="lticket" class="input_text">
      </div>
      <div class="status_warpper02">
         <label>&nbsp;</label>

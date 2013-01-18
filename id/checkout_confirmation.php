@@ -546,7 +546,7 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
 ?>
     
         <tr> 
-          <td  style="color: #000; font-size: 12px; padding: 10px; background: url(images/design/box/dot.gif) bottom repeat-x;">
+          <td  style="color: #000; font-size: 12px; padding: 10px 10px 10px 5px; background: url(images/design/box/dot.gif) bottom repeat-x;">
             <b><?php echo HEADING_BILLING_INFORMATION; ?></b>
           </td> 
         </tr> 
@@ -682,7 +682,7 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
         <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
         </tr> 
         <tr> 
-          <td style="color: #000; font-size: 12px; padding: 10px; background: url(images/design/box/dot.gif) bottom repeat-x;"><b><?php echo HEADING_PAYMENT_INFORMATION; ?></b></td> 
+          <td style="color: #000; font-size: 12px; padding: 10px 10px 10px 5px; background: url(images/design/box/dot.gif) bottom repeat-x;"><b><?php echo HEADING_PAYMENT_INFORMATION; ?></b></td> 
         </tr> 
         <tr> 
           <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 

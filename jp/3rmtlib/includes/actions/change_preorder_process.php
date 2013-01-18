@@ -305,10 +305,11 @@ if($address_error == false){
   
   $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
   $preorder_product_res = tep_db_fetch_array($preorder_product_raw); 
+  $search_products = tep_get_product_by_id($preorder_product_res['products_id'], 0, $languages_id,true,'product_info');
   $sql_data_array = array('orders_id' => $orders_id,
                           'products_id' => $preorder_product_res['products_id'],
                           'products_model' => $preorder_product_res['products_model'], 
-                          'products_name' => $preorder_product_res['products_name'], 
+                          'products_name' => $search_products['products_name'], 
                           'products_price' => $preorder_product_res['products_price'], 
                           'final_price' => (isset($option_info_array['final_price']))?$option_info_array['final_price']:$preorder_product_res['final_price'], 
                           'products_tax' => $preorder_product_res['products_tax'], 
@@ -350,8 +351,8 @@ if($cl_max_len < 4) {
   $cl_max_len = 4;
 }
   
-  
-  $products_ordered_text .= '注文商品'.str_repeat('　', intval(($cl_max_len-mb_strlen('注文商品','utf-8')))).'：'.$preorder_product_res['products_name'];
+  $show_products_name = tep_get_products_name($preorder_product_res['products_id']); 
+  $products_ordered_text .= '注文商品'.str_repeat('　', intval(($cl_max_len-mb_strlen('注文商品','utf-8')))).'：'.(tep_not_null($show_products_name) ? $show_products_name : $preorder_product_res['products_name']);
   if (tep_not_null($preorder_product_res['products_model'])) {
     $products_ordered_text .= ' ('.$preorder_product_res['products_model'].')'; 
   }
@@ -560,7 +561,6 @@ if(!empty($add_list)){
   $email_address_str .= $email_address;
   $email_order_text = str_replace($email_address,$email_address_str,$email_order_text);
 }
-
 if ($seal_user_row['is_send_mail'] != '1') {
   tep_mail($preorder['customers_name'], $preorder['customers_email_address'], EMAIL_TEXT_SUBJECT, $email_order_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
 }

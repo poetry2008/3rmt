@@ -95,7 +95,10 @@
             <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_NAME;?>
             </td>
             <td>
-            <?php echo $preorder_product['products_name'];?> 
+            <?php 
+                  $show_products_name = tep_get_products_name($preorder_product['products_id']); 
+                  echo tep_not_null($show_products_name) ? $show_products_name : $preorder_product['products_name'];
+            ?> 
             </td>
             </tr> 
             <?php

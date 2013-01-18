@@ -752,3 +752,6 @@ define('TEXT_STATUS_MAIL_TITLE_CHANGED','ステータスと送信されるメー
 define('BOX_TOOLS_MARKS_MANAGER', 'マーク管理');
 define('TEXT_OPERATE_USER', '操作者');
 define('TEXT_TIMEOUT_RELOGIN','無操作が一定時間を超えた為、自動的にログアウトしました。再度ログインしてください。');
+define('TEXT_PREORDER_ENSURE_DATE', '確保期限：');
+define('TEXT_PREORDER_ID_NUM', '予約番号：');
+define('TEXT_PREORDER_DATE_TEXT', '予約日：');

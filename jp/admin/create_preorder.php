@@ -132,7 +132,7 @@
         'products_model' => $p_products_model,
         'products_name' => str_replace("'", "&#39;", $p_products_name),
         'products_price' => $p_products_price,
-        'final_price' => $p_products_price + $AddedOptionsPrice,
+        'final_price' => 0,
         'products_tax' => $ProductsTax,
         'site_id' => tep_get_pre_site_id_by_orders_id($oID),
         'products_rate' => tep_get_products_rate($add_product_products_id),
@@ -171,7 +171,7 @@
            $_SESSION['create_preorder']['orders_products_attributes'][$add_product_products_id][] = array(
               'orders_id' => $oID,
               'orders_products_id'      => $new_product_id,
-              'options_values_price'    => $op_price,
+              'options_values_price'    => 0,
               'option_group_id'           => $ioption_item_res['group_id'],
               'option_item_id'           => $ioption_item_res['id'],
               'option_info'           => $input_option_array,
@@ -255,14 +255,6 @@ $(function() {
       }).result(function(e, item) {
       });
 });
-function hidden_payment()
-{
-
-  var idx = document.create_order.elements['payment_method'].selectedIndex; 
-  var CI = document.create_order.elements['payment_method'].options[idx].value; 
-  $(".rowHide").hide(); 
-  $(".rowHide_"+CI).show();
-}
 
 function open_calendar()
 {
@@ -604,7 +596,7 @@ require("includes/note_js.php");
               </tr>
             </table></td>
         </tr>
-      </table></td>
+      </table><input type="hidden" name="fax" value="<?php echo $fax;?>"></td>
   </tr>
   <?php
   if (ACCOUNT_COMPANY == 'true' && false) {
@@ -627,64 +619,7 @@ require("includes/note_js.php");
   </tr>
   <?php
   }
-?>
-
-<?php
-  $cpayment = payment::getInstance((int)$_GET['site_id']); 
-  $payment_array = payment::getPaymentList();
-  $payment_list[] = array('id' => '', 'text' => CREATE_PREORDER_PAYMENT_LIST_DEFAULT);
-  for($pnum = 0; $pnum<sizeof($payment_array[0]); $pnum++) {
-    if (!empty($payment_array[0][$pnum])) {
-      $payment_list[] = array('id' => $payment_array[0][$pnum], 'text' => $payment_array[1][$pnum]); 
-    }
-  }
-  $selection = $cpayment->admin_selection();
-  
-  $default_payment = '';
-  if (isset($_GET['Customer_mail']) && isset($_GET['site_id'])) {
-    $last_order_raw = tep_db_query("select payment_method from ".TABLE_PREORDERS." where customers_id = '".$customer."' and site_id = '".$_GET['site_id']."' order by orders_id desc limit 1");  
-     $last_order = tep_db_fetch_array($last_order_raw);
-     if ($last_order) {
-       $default_payment = payment::changeRomaji($last_order['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
-     }
-  }
-?>
-  <tr>
-    <td class="formAreaTitle"><br><?php echo CREATE_ORDER_PAYMENT_TITLE;?></td>
-  </tr>
-  <tr>
-    <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
-        <tr>
-          <td class="main">
-          <table border="0" cellspacing="0" cellpadding="2">
-              <tr>
-                <td class="main">&nbsp;<?php echo CREATE_ORDER_PAYMENT_TITLE;?>:</td>
-                <td class="main">
-                <?php echo tep_draw_pull_down_menu('payment_method', $payment_list, $default_payment, 'onchange="hidden_payment()"');?>  
-                </td>
-              </tr>
-              <?php
-              foreach ($selection as $skey => $singleton) { 
-              foreach ($singleton['fields'] as $fkey => $field) { 
-              ?>
-              <tr class="rowHide rowHide_<?php echo $singleton['id'];?>" <?php echo ($default_payment == $singleton['id'])?'style="display: table-row;"':'';?>>
-                <td class="main">
-                &nbsp;<?php echo $field['title'];?> 
-                </td>
-                <td class="main">
-                <?php echo $field['field'];?> 
-                <font color="#red"><?php echo $field['message'];?></font> 
-                </td>
-              </tr>
-              <?php }?> 
-              <?php }?> 
-          </table></td>
-
-        </tr>
-      </table>
-      <input type="hidden" name="fax" value="<?php echo $fax;?>">
-  </td>
-  </tr>
+?> 
   </form>
   <tr><td>
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -747,6 +682,7 @@ if(isset($_SESSION['create_preorder']['orders_products']) && !empty($_SESSION['c
           foreach ($_SESSION['create_preorder']['orders_products'] as $new_products_temp_add) {
             $orders_products_id = ''; 
             $RowStyle = "dataTableContent";
+            $new_products_temp_add['products_quantity'] = isset($_SESSION['preorder_products'][$_GET['oID']]['qty']) ? $_SESSION['preorder_products'][$_GET['oID']]['qty'] : $new_products_temp_add['products_quantity'];
             $porducts_qty = $new_products_temp_add['products_quantity'];
             echo '<tr>' . "\n" .
                  '<td class="' . $RowStyle . '" align="left" valign="top" width="20">&nbsp;'
@@ -761,7 +697,7 @@ if(isset($_SESSION['create_preorder']['orders_products']) && !empty($_SESSION['c
                   str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data($orders_products_attributes_array[$j]['option_info']['value'], array("'"=>"&quot;"))); 
                 echo '</div></div>';
                 echo '<div class="order_option_price">';
-                echo (int)$orders_products_attributes_array[$j]['options_values_price'];
+                echo isset($_SESSION['preorder_products'][$_GET['oID']]['attr'][$j]) ? $_SESSION['preorder_products'][$_GET['oID']]['attr'][$j] : (int)$orders_products_attributes_array[$j]['options_values_price'];
                 echo TEXT_MONEY_SYMBOL;
                 echo '</div>';
                 echo '</i></small></div>';
@@ -771,12 +707,14 @@ if(isset($_SESSION['create_preorder']['orders_products']) && !empty($_SESSION['c
                 echo '</td>' . "\n" .
                      '<td class="' . $RowStyle . '">' . $new_products_temp_add['products_model'] . '</td>' . "\n" .
                      '<td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($new_products_temp_add['products_tax']) . '%</td>' . "\n";
+            $new_products_temp_add['products_price'] = isset($_SESSION['preorder_products'][$_GET['oID']]['price']) ? $_SESSION['preorder_products'][$_GET['oID']]['price'] : $new_products_temp_add['products_price'];
             if($new_products_temp_add['products_price'] < 0){
               $orders_products_price = '<font color="#ff0000">'.$currencies->format(tep_display_currency(number_format(abs($new_products_temp_add['products_price']), 2))).'</font>'; 
             }else{
               $orders_products_price = $currencies->format(tep_display_currency(number_format(abs($new_products_temp_add['products_price']), 2))); 
             }
             echo '<td class="'.$RowStyle.'" align="right">'.str_replace(TEXT_MONEY_SYMBOL,'',$orders_products_price).TEXT_MONEY_SYMBOL.'</td>'; 
+            $new_products_temp_add['final_price'] = isset($_SESSION['preorder_products'][$_GET['oID']]['final_price']) ? $_SESSION['preorder_products'][$_GET['oID']]['final_price'] : $new_products_temp_add['final_price'];
             if($new_products_temp_add['final_price'] < 0){
               $orders_products_tax_price = '<font color="#ff0000">'.$currencies->format(tep_display_currency(number_format(abs($new_products_temp_add['final_price']),2))).'</font>'; 
             }else{
@@ -973,7 +911,7 @@ if(!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['c
       
         $p_cflag = tep_get_cflag_by_product_id($add_product_products_id);
         print "<tr>";
-        print "<td class='dataTableContent' valign='top'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td><td class='dataTableContent' valign='top'>";
+        print "<td class='option_title_space' valign='top'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td><td class='dataTableContent' valign='top'>";
         print "<div class=\"pro_option\">"; 
         print "<form action='$PHP_SELF?oID=$oID&action=add_product$param_str' method='POST' name='aform'>\n";
         
@@ -997,12 +935,15 @@ if(!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['c
     // Step 4: Confirm
     if($step > 3)
     {
+      $products_query = tep_db_query("select products_price from ".TABLE_PRODUCTS." where products_id = '".$add_product_products_id."'");
+      $products_array = tep_db_fetch_array($products_query);
+      tep_db_free_result($products_query);
       echo "<tr><form action='$PHP_SELF?oID=$oID&action=add_product$param_str' method='POST' id='edit_order_id' name='edit_order_id'>\n";
       echo "<td class='dataTableContent'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP .  " 4: </b></td>";
       $products_num = isset($_POST['add_product_quantity']) ? $_POST['add_product_quantity'] : 1;
       $products_price = isset($_POST['add_product_price']) ? $_POST['add_product_price'] : 0;
-      echo '<td class="dataTableContent" valign="top">&nbsp;' .
-        ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input id="add_product_quantity" name="add_product_quantity" size="2" value="'.$products_num.'" onkeyup="clearLibNum(this);">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'&nbsp;&nbsp;'.TABLE_HEADING_UNIT_PRICE.'<input name="add_product_price" id="add_product_price" size="4" value="'.$products_price.'" onkeyup="clearNoNum(this);">&nbsp;'.EDIT_ORDERS_PRICE_UNIT.'&nbsp;&nbsp;&nbsp;'; 
+      echo '<td class="dataTableContent">&nbsp;' .
+        ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input id="add_product_quantity" name="add_product_quantity" size="2" value="'.$products_num.'" onkeyup="clearLibNum(this);">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'<input type="hidden" name="add_product_price" id="add_product_price" size="4" value="0">'; 
       echo '</td>';
       echo '<td class="dataTableContent" align="right"><input type="button" value="' . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . '" onclick="submit_check();">';
        

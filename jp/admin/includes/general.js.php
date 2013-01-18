@@ -1087,6 +1087,37 @@ function clearLibNum(obj)
   }
 }
 
+function clearNewLibNum(obj) 
+{
+  var re = /^-?[0-9]+$/;
+  var obj_value = obj.value;
+  var error_single = false; 
+  if(!re.test(obj.value) && obj.value != ''){
+    if(!(obj_value.length == 1 && obj_value[0] == '-')){
+      alert('<?php echo JS_TEXT_GENERAL_INPUT_TEXT_ERROR;?>'); 
+      error_single = true; 
+    }
+  }
+  if (error_single) { 
+    if(obj_value[0] == '-'){
+      obj.value = obj.value.replace(/[^0-9]/g,"");
+      obj.value = '-'+obj.value;
+    }else{
+      if(obj_value[1] == '-'){
+        var re_temp = /[0-9]/;
+        if(re_temp.test(obj_value[0])){
+          obj.value = obj_value.substring(1);
+        }else{
+          obj.value = obj.value.replace(/[^0-9]/g,"");
+          obj.value = '-'+obj.value;   
+        }
+      }else{
+        obj.value = obj.value.replace(/[^0-9]/g,"");
+      }
+    }
+  }
+}
+
 function createPreorderChk() { 
   var flag2 = true;
   $.ajax({

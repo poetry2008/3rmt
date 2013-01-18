@@ -257,6 +257,8 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                     <td class="main">
                     <?php 
                     $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>");
+                    $show_products_name = tep_get_products_name($preorder_product_res['products_id']);
+                    $preorder_product_res['products_name'] = tep_not_null($show_products_name) ? $show_products_name : $preorder_product_res['products_name'];
                     echo $preorder_product_res['products_name'];
                     if ($preorder_product_res['products_price'] != '0') {
                       if ($preorder_product_res['products_price'] < 0) {
@@ -346,7 +348,11 @@ foreach($all_show_option_id as $t_item_id){
     echo $all_attr_info['title'].':'.str_replace(array("<br>", "<BR>"), '', $all_attr_info['value']);
     if ($all_show_option[$t_item_id]['options_values_price'] != '0') {
       if ((int)$preorder_product_res['products_price'] != '0') {
-        echo ' ('.$currencies->format($all_show_option[$t_item_id]['options_values_price']).')'; 
+        if($all_show_option[$t_item_id]['options_values_price'] < 0){
+          echo ' (<font color="#FF0000">'.str_replace(JPMONEY_UNIT_TEXT,'',$currencies->format($all_show_option[$t_item_id]['options_values_price'])).'</font>'.JPMONEY_UNIT_TEXT.')'; 
+        }else{
+          echo ' ('.$currencies->format($all_show_option[$t_item_id]['options_values_price']).')'; 
+        }
       } 
     }
         echo '<br>';

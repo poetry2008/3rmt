@@ -318,7 +318,7 @@ page title
 	font-weight: bold;
 	color: #516182;
 	margin-top: 17px;
-	margin-bottom: 10px;
+	margin-bottom: 7px;
 	background-image: url(../images/design/contents/headding_title.gif);
 	background-repeat: no-repeat;
 	padding-left: 13px;
@@ -399,7 +399,7 @@ footer
 	padding:5px 10px;
 }
 .status_warpper label {
-	width:110px;
+	width:100px;
 	float:left;
 	padding:3px;
 }
@@ -724,6 +724,9 @@ TD.main, P.main {
 	font-size: 11px;
 	padding:8px 0 5px 0;
 }
+.main input{
+	padding-left:0;
+}
 /* ---------------------------
 TD,SPAN：small text（message）
 --------------------------- */
@@ -750,6 +753,9 @@ TD：ield（value）
 --------------------------- */
 TD.fieldValue {
 	font-size: 12px;
+}
+TD.fieldValue input{
+	width:200px;
 }
 /* ---------------------------
 TD：list of item's name
@@ -1144,7 +1150,7 @@ searching
 .preorser_formArea{ background-color:#ccc; font-size:13px; line-height:20px;}
 .preorser_formArea td{ background-color:#fff; padding-left:2px;}
 .formArea_td_info { width:380px\9; font-size:12px; line-height:1.5;}
-.input_text { width:200px; height:20px;}
+.input_text { width:198px; height:20px;}
 .input_text_short { width:40px; height:20px; text-align:right;}
 .information_color{background-color: #FDEBAC; color: #000000; padding:5px; margin:5px; width:100%;}
 .all_time_list{ margin-top:10px;}
@@ -1560,11 +1566,6 @@ page title
 	overflow:hidden;
 	clear:both;
 	padding:5px 10px;
-}
-.status_warpper label {
-	width:110px;
-	float:left;
-	padding:3px;
 }
 .status_warpper input {
 	float:left;
@@ -2256,12 +2257,6 @@ a.Icon:hover {
 .tag_image01 {
 	height:50px;
 }
-.email_address input {
-	width:120px;
-}
-.password input {
-	width:120px;
-}
 .c_pay_info {padding:5px; border:1px solid #B6B7CB; margin:35px 0 15px 0;}
 #caemail p{/* height:290px;*/ margin:0;}
 /*#caemail p img { text-align:center; position:relative; left:40px;}
@@ -2316,7 +2311,6 @@ searching
 .preorser_formArea{ background-color:#ccc; font-size:13px; line-height:20px;}
 .preorser_formArea td{ background-color:#fff; padding-left:2px;}
 .formArea_td_info { width:380px\9; font-size:12px; line-height:1.5;}
-.input_text { width:200px; height:20px;}
 .input_text_short { width:40px; height:20px; text-align:right;}
 .active_email_name { font-size:11px; width:100px;}
 .cp_description{ 
@@ -2340,9 +2334,6 @@ searching
 	font-size:12px;
 	padding:5px;
 	line-height:1.5;
-}
-.float_left{
-	float:left;
 }
 .txt_right{
 	text-align:right;
@@ -2380,7 +2371,7 @@ searching
 
 }
 .frame_title{
-	width:40%;
+	width:30%;
 	float:left;
 	line-height:25px;
 }
@@ -2760,10 +2751,6 @@ searching
 .popup_notice_button a{
 	margin:0 20px;
 }
-.input_width{
-	width:290px;
-	*width:310px;
-}
 .confirmation_product_num_info{ 
 	padding-right:84px;
 	line-height:1.5;
@@ -2811,3 +2798,6 @@ searching
 .margin_clear{
   margin:0px;
 }
+.input_box{margin:0 2px 0 -4px; height:20px; float:left;}
+.input_box input,.input_box span{ float:left; line-height:22px;}
+.input_both{clear:both;}

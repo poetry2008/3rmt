@@ -13,10 +13,11 @@
 <?php require('includes/form_check.js.php'); ?>
 <script type="text/javascript" language="javascript">
 <!--
-function pass_hidd(){
+function pass_hidd(CI){
+  /*
   var idx = document.account_edit.elements["guestchk"].selectedIndex;
   var CI = document.account_edit.elements["guestchk"].options[idx].value;
-  
+*/
   if(CI == '0'){
     document.getElementById('trpass1').style.display = "";
 	document.getElementById('trpass2').style.display = "";
@@ -40,7 +41,7 @@ function pass_hidd(){
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
       <td valign="top" id="contents"><?php echo tep_draw_form('account_edit', tep_href_link(FILENAME_CREATE_ACCOUNT_PROCESS, '', 'SSL'), 'post', 'onSubmit="return check_form();"') . tep_draw_hidden_field('action', 'process'); ?> 
-        <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1> 
+        <h1 class="pageHeading"><span><?php echo HEADING_TITLE ; ?></span></h1> 
         <div class="comment"> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="table" class="product_info_box"> 
             <?php
@@ -80,6 +81,17 @@ function pass_hidd(){
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
   <!-- footer_eof //--> 
 </div> 
+  <script>
+  document.onreadystatechange=function(){
+  var obj = document.getElementsByName("guestchk"); 
+  for(i = 0;i < obj.length;i++)    { 
+    if(obj[i].checked){ 
+      CI = obj[i].value; 
+    } 
+  }      
+  pass_hidd(CI);  
+  }
+  </script>
 </div> 
 </body>
 </html>
