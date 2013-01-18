@@ -833,6 +833,13 @@ function tep_get_pre_orders_products_string($orders, $single = false, $popup = f
     $str .= '</tr>'; 
   
     $str .= '<tr>'; 
+    $str .= '<td class="main">'.TEXT_PREORDER_ENSURE_DATE.'</td>';
+    $str .= '<td class="main">';
+    $str .= $orders['ensure_deadline']; 
+    $str .= '</td>'; 
+    $str .= '</tr>';
+    
+    $str .= '<tr>'; 
     $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_CUSTOMER_TYPE.'</td>';
     $str .= '<td class="main">';
     $str .= get_guest_chk($orders['customers_id']); 
