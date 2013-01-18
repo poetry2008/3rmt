@@ -7766,3 +7766,23 @@ function tep_get_signal_pic_info($last_modified_info) {
   
   return $html_str;
 }
+
+//获取当前页的memo的z-index的最大值
+function tep_get_note_top_layer($belong_str) 
+{
+  $z_index = '1';
+ 
+  $note_list_raw = mysql_query("select xyz from notes where belong = '".$belong_str."'");
+  $note_list_array = array();
+  
+  while ($note_list_res = mysql_fetch_array($note_list_raw)) {
+    $note_list_tmp_array = explode('|', $note_list_res['xyz']); 
+    $note_list_array[] = $note_list_tmp_array[2]; 
+  }
+  
+  if (!empty($note_list_array)) {
+    $z_index = max($note_list_array) + 1; 
+  }
+  
+  return $z_index;
+}

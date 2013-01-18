@@ -31,7 +31,7 @@ class notice_box {
   function get_form($form){
     $this->form = $form;
   }
-  function get_table($arr,$class='',$param_arr=array()){
+  function get_table($arr,$class='',$param_arr=array(),$show_type = false){
     //获得表格头
     if(empty($param_arr)&&!empty($this->table_params)){
       $param_arr = $this->table_params;
@@ -79,16 +79,20 @@ class notice_box {
       $table_str .= ' class="' .$class.'" ';
     }
     $table_str .= '>' ."\n";
-    foreach($arr as $row){
-      $table_str .= '<tr';
-      if($row['params']){
-        $table_str .= ' ' .$row['params'];
+    if ($show_type) {
+      $table_str .= $arr; 
+    } else {
+      foreach($arr as $row){
+        $table_str .= '<tr';
+        if($row['params']){
+          $table_str .= ' ' .$row['params'];
+        }
+        $table_str .= '>';
+        if(isset($row['text'])&&$row['text']){
+          $table_str .= $this->get_td_list($row['text']);
+        }
+        $table_str .= '</tr>';
       }
-      $table_str .= '>';
-      if(isset($row['text'])&&$row['text']){
-        $table_str .= $this->get_td_list($row['text']);
-      }
-      $table_str .= '</tr>';
     }
     $table_str .= '</table>';
     return $table_str;

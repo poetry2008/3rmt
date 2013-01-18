@@ -33,15 +33,10 @@
        }else{
        echo ' <div class="sidebar" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" onmouseout="this.className=\'sidebar\'" style=""><span>' .  tep_image(DIR_WS_MENU_ICON . 'icon_category.gif').'</span><span><a href="' .  tep_href_link(FILENAME_CATEGORIES, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CATALOG_CATEGORIES_PRODUCTS .  '</a></span></div>';
        }
-       if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_SHOW_USELESS_OPTION || str_replace('/admin/','',$_SERVER['PHP_SELF']) == 'show_useless_item.php'){
-       echo ' <div class="sidebarselected"><span>' .  tep_image(DIR_WS_MENU_ICON . 'icon_delete_option.gif').'</span><span><a href="' . tep_href_link(FILENAME_SHOW_USELESS_OPTION, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CATALOG_SHOW_USELESS_OPTION .  '</a></span></div>';
+       if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_OPTION){
+       echo ' <div class="sidebarselected"><span>' .  tep_image(DIR_WS_MENU_ICON . 'icon_option_register.gif') .'</span><span><a href="' . tep_href_link(FILENAME_OPTION, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CATALOG_CATEGORIES_PRODUCTS_ATTRIBUTES .  '</a></span></div>'; 
        }else{
-       echo ' <div class="sidebar" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" onmouseout="this.className=\'sidebar\'" style=""><span>' .  tep_image(DIR_WS_MENU_ICON . 'icon_delete_option.gif').'</span><span><a href="' . tep_href_link(FILENAME_SHOW_USELESS_OPTION, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CATALOG_SHOW_USELESS_OPTION .  '</a></span></div>';
-       }
-       if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_OPTION_GROUP || str_replace('/admin/','',$_SERVER['PHP_SELF']) == 'option_item.php'){
-       echo ' <div class="sidebarselected"><span>' .  tep_image(DIR_WS_MENU_ICON . 'icon_option_register.gif') .'</span><span><a href="' . tep_href_link(FILENAME_OPTION_GROUP, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CATALOG_CATEGORIES_PRODUCTS_ATTRIBUTES .  '</a></span></div>'; 
-       }else{
-       echo '<div class="sidebar" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" onmouseout="this.className=\'sidebar\'" style=""><span>' .  tep_image(DIR_WS_MENU_ICON . 'icon_option_register.gif') .'</span><span><a href="' . tep_href_link(FILENAME_OPTION_GROUP, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CATALOG_CATEGORIES_PRODUCTS_ATTRIBUTES .  '</a></span></div>'; 
+       echo '<div class="sidebar" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" onmouseout="this.className=\'sidebar\'" style=""><span>' .  tep_image(DIR_WS_MENU_ICON . 'icon_option_register.gif') .'</span><span><a href="' . tep_href_link(FILENAME_OPTION, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CATALOG_CATEGORIES_PRODUCTS_ATTRIBUTES .  '</a></span></div>'; 
        }
        if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_TAGS){
        echo ' <div class="sidebarselected"><span>' .  tep_image(DIR_WS_MENU_ICON . 'icon_tags.gif') . '</span><span><a href="' .  tep_href_link(FILENAME_TAGS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CATALOG_PRODUCTS_TAGS . '</a></span></div>';

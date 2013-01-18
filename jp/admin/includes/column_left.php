@@ -17,10 +17,16 @@ $(document).ready(function(){
   ?>
   $('.columnLeft').parent().after('<td class="show_left_menu" valign="top" style="padding-top:5px; *padding-top:48px; padding-right:5px; *padding-left:0;"><a href="javascript:void(0);" class="leftright" onclick="toggle_leftColumn();"><img src="includes/languages/japanese/images/boult_back.gif" alt="img"></a></td>');
   $('.columnLeft').css('display', 'block'); 
+  if ($("#toggle_width").length > 0) {
+    $("#toggle_width").css('min-width', '562px'); 
+  }
   <?php
   } else {
   ?>
   $('.columnLeft').parent().after('<td class="show_left_menu" valign="top" style="padding-top:5px; *padding-top:48px; padding-right:5px; *padding-left:0;"><a href="javascript:void(0);" class="leftright" onclick="toggle_leftColumn();"><img src="includes/languages/japanese/images/boult.gif" alt="img"></a></td>');
+  if ($("#toggle_width").length > 0) {
+    $("#toggle_width").css('min-width', '726px'); 
+  }
   <?php
   }
   ?>
@@ -42,8 +48,14 @@ function toggle_leftColumn()
   $('.columnLeft').toggle();
   if ($('.leftright').children().attr('src').indexOf('boult.gif') == -1) {
      $('.leftright').children().attr('src', 'includes/languages/japanese/images/boult.gif')
+     if ($("#toggle_width").length > 0) {
+       $("#toggle_width").css('min-width', '726px'); 
+     }
   } else {
      $('.leftright').children().attr('src', 'includes/languages/japanese/images/boult_back.gif')
+     if ($("#toggle_width").length > 0) {
+       $("#toggle_width").css('min-width', '562px'); 
+     }
   }
   var menu_div_width = $('#categories_right_td').width();
   if(menu_div_width>=480){
