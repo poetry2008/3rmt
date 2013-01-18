@@ -798,7 +798,7 @@ function tep_get_pre_orders_products_string($orders, $single = false, $popup = f
     $str .= '<tr>'; 
     $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_FROM.'</td>'; 
     $str .= '<td class="main">';
-    $str .= tep_get_site_name_by_order_id($orders['orders_id']); 
+    $str .= tep_get_pre_site_name_by_order_id($orders['orders_id']); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
     
@@ -826,14 +826,14 @@ function tep_get_pre_orders_products_string($orders, $single = false, $popup = f
     }
   
     $str .= '<tr>'; 
-    $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_ID.'</td>';
+    $str .= '<td class="main">'.TEXT_PREORDER_ID_NUM.'</td>';
     $str .= '<td class="main">';
     $str .= $orders['orders_id']; 
     $str .= '</td>'; 
     $str .= '</tr>'; 
   
     $str .= '<tr>'; 
-    $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_DATE.'</td>';
+    $str .= '<td class="main">'.TEXT_PREORDER_DATE_TEXT.'</td>';
     $str .= '<td class="main">';
     $str .= tep_date_long($orders['date_purchased']); 
     $str .= '</td>'; 
