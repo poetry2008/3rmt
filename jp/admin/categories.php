@@ -1483,7 +1483,7 @@ url: 'ajax_orders.php?action=handle_option',
 data:'keyword='+option_value,
 async:false,
 success: function(msg) {
-open_url = "<?php echo HTTP_SERVER;?>"+'/admin/option_group.php?keyword='+option_value+"&search=2";     
+open_url = "<?php echo HTTP_SERVER;?>"+'/admin/option.php?keyword='+option_value+"&search=2";     
 window.open(open_url, 'newwindow', ''); 
 }
 });  
@@ -1784,6 +1784,20 @@ $(document).ready(function() {
         }
         if (tmp_click_symbol == '1') {
           $("#show_popup_info").find('input:button').first().trigger("click"); 
+        }
+      } 
+    }
+    if (event.which == 37) {
+      if ($('#show_popup_info').css('display') != 'none') {
+        if ($("#option_prev")) {
+          $("#option_prev").trigger("click");
+        }
+      } 
+    }
+    if (event.which == 39) {
+      if ($('#show_popup_info').css('display') != 'none') {
+        if ($("#option_next")) {
+          $("#option_next").trigger("click");
         }
       } 
     }

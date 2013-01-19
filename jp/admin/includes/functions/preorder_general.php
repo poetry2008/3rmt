@@ -798,9 +798,16 @@ function tep_get_pre_orders_products_string($orders, $single = false, $popup = f
     $str .= '<tr>'; 
     $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_FROM.'</td>'; 
     $str .= '<td class="main">';
-    $str .= tep_get_site_name_by_order_id($orders['orders_id']); 
+    $str .= tep_get_pre_site_name_by_order_id($orders['orders_id']); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
+    
+    $str .= '<tr>'; 
+    $str .= '<td class="main">'.TEXT_PREORDER_ENSURE_DATE.'</td>';
+    $str .= '<td class="main">';
+    $str .= $orders['ensure_deadline']; 
+    $str .= '</td>'; 
+    $str .= '</tr>';
     
     $str .= '<tr>'; 
     $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_FETCH_TIME.'</td>';
@@ -819,23 +826,29 @@ function tep_get_pre_orders_products_string($orders, $single = false, $popup = f
     }
   
     $str .= '<tr>'; 
-    $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_ID.'</td>';
+    $str .= '<td class="main">'.TEXT_PREORDER_ID_NUM.'</td>';
     $str .= '<td class="main">';
     $str .= $orders['orders_id']; 
     $str .= '</td>'; 
     $str .= '</tr>'; 
   
     $str .= '<tr>'; 
-    $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_DATE.'</td>';
+    $str .= '<td class="main">'.TEXT_PREORDER_DATE_TEXT.'</td>';
     $str .= '<td class="main">';
     $str .= tep_date_long($orders['date_purchased']); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
-  
+    
     $str .= '<tr>'; 
     $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_CUSTOMER_TYPE.'</td>';
     $str .= '<td class="main">';
-    $str .= get_guest_chk($orders['customers_id']); 
+     
+    $tmp_customers_type .= get_guest_chk($orders['customers_id']); 
+    if ($tmp_customers_type == 0) {
+      $str .= TEXT_TEP_CFG_PAYMENT_CHECKBOX_OPTION_MEMBER; 
+    } else {
+      $str .= TEXT_TEP_CFG_PAYMENT_CHECKBOX_OPTION_CUSTOMER; 
+    }
     $str .= '</td>'; 
     $str .= '</tr>'; 
     

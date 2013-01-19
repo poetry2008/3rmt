@@ -743,3 +743,6 @@ define('TEXT_STATUS_MAIL_TITLE_CHANGED','状态和送信邮件不一致。送信
 define('BOX_TOOLS_MARKS_MANAGER', '标记管理');
 define('TEXT_OPERATE_USER', '操作者');
 define('TEXT_TIMEOUT_RELOGIN','无操作时间过长，已自动退出。请重新登录。');
+define('TEXT_PREORDER_ENSURE_DATE', '确保期限：');
+define('TEXT_PREORDER_ID_NUM', '预约号码：');
+define('TEXT_PREORDER_DATE_TEXT', '预约日期：');

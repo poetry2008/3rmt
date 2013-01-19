@@ -1035,7 +1035,11 @@ if($address_error == false){
           if ($max_c_len < 4) {
             $max_c_len = 4; 
           }
+          $search_products_id_list = array();
+          $mode_products_name_list = array();
           for ($i=0; $i<sizeof($order->products); $i++) {
+            $search_products_id_list[] =$order->products[$i]['id'];
+            $mode_products_name_list[] = $order->products[$i]['name'];
             //$orders_products_id = $order->products[$i]['orders_products_id'];
             $products_ordered_mail .= SENDMAIL_ORDERS_PRODUCTS.str_repeat('　', intval($max_c_len - mb_strlen(SENDMAIL_ORDERS_PRODUCTS, 'utf-8'))).'：' . $order->products[$i]['name'] . '（' . $order->products[$i]['model'] . '）';
             if ($order->products[$i]['price'] != '0') {
@@ -1217,8 +1221,15 @@ if($address_error == false){
               //$email_order = $payment_class->getOrderMailString($mailoption);  
             //bobhero end}}}  
   // new send mail 
-            $email = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$email);
-            tep_mail($check_status['customers_name'], $check_status['customers_email_address'], SENDMAIL_TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
+            $email = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$email); 
+            $search_products_name_list = array();
+            foreach($search_products_id_list as $products_name_value){
+              $search_products_name_query = tep_db_query("select products_name from ". TABLE_PRODUCTS_DESCRIPTION ." where products_id='".$products_name_value."' and language_id='".$languages_id."' and (site_id='".$order->info['site_id']."' or site_id='0') order by site_id DESC");
+              $search_products_name_array = tep_db_fetch_array($search_products_name_query);
+              tep_db_free_result($search_products_name_query);
+              $search_products_name_list[] = $search_products_name_array['products_name'];
+            }
+            tep_mail($check_status['customers_name'], $check_status['customers_email_address'], SENDMAIL_TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', str_replace($mode_products_name_list,$search_products_name_list,$email), get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
             tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), SENDMAIL_TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
             /* old send mail
             tep_mail($check_status['customers_name'], $check_status['customers_email_address'], TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
