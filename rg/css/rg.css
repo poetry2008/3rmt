@@ -1552,10 +1552,9 @@ TABLE：Form area (the border)
 --------------------------- */
 TABLE.formArea {
 	background: #FFF;
-	border-color: #E8E8E8;
-	border-style: solid;
-	border-width: 1px;
+	border: 1px solid #E8E8E8;
 }
+TABLE.formArea td{ padding:2px; margin:0;}
 /* ---------------------------
 TD：Form area (Title)
 --------------------------- */
@@ -1913,6 +1912,7 @@ border:2px solid #FF8080;
 	width:100%;
 	font-size:12px;
 	line-height:1.5;
+	margin-left:-3px;
 }
 .option_name{
 	width:85px;
@@ -1920,7 +1920,7 @@ border:2px solid #FF8080;
 	font-weight:bold;
 }
 .option_input{
-	width:75%;
+	width:198px;
 	float:left;
 }
 .option_error{
@@ -2027,6 +2027,7 @@ border:2px solid #FF8080;
 .option_product_radio_list{
 	overflow:hidden;
 	width:85%;
+	*margin-top:-5px;
 }
 
 .option_product_radio_img_list{
@@ -2061,7 +2062,7 @@ border:2px solid #FF8080;
 	width:100%;
 	margin-bottom:5px;
 }
-.option_info_text select{ float:left;}
+.option_info_text select{ float:left; margin-left:0;}
 #show_price{
 	font-size:20px;
 	font-weight:bold;
@@ -2077,9 +2078,12 @@ border:2px solid #FF8080;
 .formArea_td_info{
 	*width:75%;
 	font-size:12px;
+	margin:0;
+	padding:0;
 }
 .formArea_td_info input, .formArea_td_info select{
-	margin-bottom:5px;
+	margin:0;
+	padding:0;
 }
 #group_list_box td{ height:20px; padding:0; font-size:14px;}
 .address_item_info{ padding-left:4px;}
@@ -2156,3 +2160,4 @@ border:2px solid #FF8080;
 .input_box{margin:0 2px 0 0px;*margin:0 2px 0 -4px; height:20px; float:left;}
 .input_box input,.input_box span{ float:left; line-height:22px;}
 .input_both{clear:both;}
+.text_box{ margin-top:5px;}

@@ -294,8 +294,7 @@ if (!isset($_GET['firstname'])) $_GET['firstname'] = NULL; //del notice
         if ($lastname_error == true) $last_name_prompt .= '&nbsp;<span class="errorText">' . PREORDER_TEXT_REQUIRED . '</span>';
         if ($firstname_error == true) $first_name_prompt .= '&nbsp;<span class="errorText">' . PREORDER_TEXT_REQUIRED . '</span>';
 if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
-        $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error
-                == true) ? $_POST['from'] : $_GET['from']) , 'size="30" class="input_text"') .'<br>'. TEXT_PHONE_EMAIL_ADDRESS;
+        $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $_POST['from'] : $_GET['from']) , 'size="30" class="input_text"') .'<br><span>'. TEXT_PHONE_EMAIL_ADDRESS.'</span>';
         if ($fromemail_error == true) $your_email_address_prompt .="<br>".ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
       }
 ?>
@@ -347,11 +346,11 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
           <td class="formArea_td_info"><?php echo $first_name_prompt; ?></td>
         </tr>
         <tr>
-          <td class="main"><?php echo FORM_FIELD_CUSTOMER_EMAIL; ?></td>
+          <td class="main" valign="top"><?php echo FORM_FIELD_CUSTOMER_EMAIL; ?></td>
           <td class="formArea_td_info"><?php echo $your_email_address_prompt; ?></td>
         </tr>
         <tr> 
-        <td colspan="2" class="main"><?php echo PREORDER_FINAL_EAMIL;?></td>
+        <td colspan="2"><?php echo PREORDER_FINAL_EAMIL;?></td>
         </tr>
       </table>
       <div class="formAreaTitle"><b><?php echo FORM_TITLE_FRIEND_DETAILS; ?></b></div>

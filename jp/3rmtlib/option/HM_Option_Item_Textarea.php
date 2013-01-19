@@ -96,7 +96,7 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
        }
       $default_value = stripslashes($default_value);
       if(NEW_STYLE_WEB===true){
-         $style_width = 'style="width:28%"';
+         $style_width = 'style="width:43%"';
       }
       if ($this->iline > 1) {
        echo '<div class="option_info_text">'; 

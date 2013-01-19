@@ -295,8 +295,8 @@ if (!isset($_GET['firstname'])) $_GET['firstname'] = NULL; //del notice
         if ($lastname_error == true) $last_name_prompt .= '&nbsp;<span class="errorText">' . PREORDER_TEXT_REQUIRED . '</span>';
         if ($firstname_error == true) $first_name_prompt .= '&nbsp;<span class="errorText">' . PREORDER_TEXT_REQUIRED . '</span>';
 if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
-        $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $_POST['from'] : $_GET['from']) , 'size="30" class="input_text"') . TEXT_PHONE_EMAIL_ADDRESS;
-        if ($fromemail_error == true) $your_email_address_prompt .="<br>".ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
+        $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $_POST['from'] : $_GET['from']) , 'size="30" class="input_text"') . '<span>'.TEXT_PHONE_EMAIL_ADDRESS.'</span>';
+        if ($fromemail_error == true) $your_email_address_prompt .="<br><div class='text_box'>".ENTRY_EMAIL_ADDRESS_CHECK_ERROR.'</div>';
       }
 ?>
       <div align="center">
@@ -337,9 +337,9 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
       }
 ?>
       <div class="formAreaTitle"><?php echo FORM_TITLE_CUSTOMER_DETAILS; ?></div>
-      <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
+      <table width="100%" cellpadding="0" cellspacing="1" border="0" class="formArea">
         <tr>  
-          <td class="main" width="20%"><?php echo FORM_FIELD_CUSTOMER_LASTNAME; ?></td>
+          <td class="main" width="25%"><?php echo FORM_FIELD_CUSTOMER_LASTNAME; ?></td>
           <td class="formArea_td_info"><?php echo $last_name_prompt; ?></td>
         </tr>
         <tr>  
@@ -347,7 +347,7 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
           <td class="formArea_td_info"><?php echo $first_name_prompt; ?></td>
         </tr>
         <tr>
-          <td class="main"><?php echo FORM_FIELD_CUSTOMER_EMAIL; ?></td>
+          <td class="main" valign="top"><?php echo FORM_FIELD_CUSTOMER_EMAIL; ?></td>
           <td class="formArea_td_info"><?php echo $your_email_address_prompt; ?></td>
         </tr>
         <tr> 
@@ -355,9 +355,9 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
         </tr>
       </table><br>
       <div class="formAreaTitle"><?php echo FORM_TITLE_FRIEND_DETAILS; ?></div>
-      <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
+      <table width="100%" cellpadding="0" cellspacing="1" border="0" class="formArea">
         <tr>
-        <td class="main" valign="top" width="20%"><?php echo PREORDER_PRODUCTS_NAME;?></td>
+        <td class="main" valign="top" width="25%"><?php echo PREORDER_PRODUCTS_NAME;?></td>
           <td class="formArea_td_info">
           <strong>
           <?php 

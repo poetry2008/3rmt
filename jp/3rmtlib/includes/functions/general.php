@@ -5270,8 +5270,12 @@ if (isset($_SESSION['campaign_fee'])) {
 					?>
                                                                                   
                         <div class="txt_input_box">
-                        <?php if($field['title']){ ?>
-                            <div class="frame_title"><?php echo $field['title'];?></div>
+                        <?php 
+                            if(NEW_STYLE_WEB===true){
+                              $style_nowrap = 'style="white-space:nowrap;width:180px;"'; 
+                            }
+                            if($field['title']){ ?>
+                            <div class="frame_title" <?php echo $style_nowrap; ?> ><?php echo $field['title'];?></div>
                             <?php }?>
                             <div class="input_title"><?php echo $field['field'];?><small><font color="#AE0E30"><?php echo $field['message'];?></font></small></div>
                         </div>

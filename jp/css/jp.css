@@ -799,6 +799,7 @@ TABLE.formArea {
 	background: #FFF;
 	border: #E8E8E8 1px solid;
 }
+TABLE.formArea td{ padding:2px; margin:0;}
 /* ---------------------------
 TD：form eria（title）
 --------------------------- */
@@ -1149,7 +1150,7 @@ searching
 .change_preorder_timeout_table { font-size:12px;}
 .preorser_formArea{ background-color:#ccc; font-size:13px; line-height:20px;}
 .preorser_formArea td{ background-color:#fff; padding-left:2px;}
-.formArea_td_info { width:380px\9; font-size:12px; line-height:1.5;}
+.formArea_td_info { width:380px\9; font-size:12px; padding:0; margin:0;}
 .input_text { width:198px; height:20px;}
 .input_text_short { width:40px; height:20px; text-align:right;}
 .information_color{background-color: #FDEBAC; color: #000000; padding:5px; margin:5px; width:100%;}
@@ -1956,13 +1957,6 @@ SPAN.greetUser {
 	font-weight: bold;
 }
 /* ---------------------------
-TABLE：form eria（boundary line）
---------------------------- */
-TABLE.formArea {
-	background: #FFF;
-	border: #E8E8E8 1px solid;
-}
-/* ---------------------------
 TD：form eria（title）
 --------------------------- */
 TD.formAreaTitle {
@@ -2310,7 +2304,6 @@ searching
 .change_preorder_timeout_table { font-size:12px;}
 .preorser_formArea{ background-color:#ccc; font-size:13px; line-height:20px;}
 .preorser_formArea td{ background-color:#fff; padding-left:2px;}
-.formArea_td_info { width:380px\9; font-size:12px; line-height:1.5;}
 .input_text_short { width:40px; height:20px; text-align:right;}
 .active_email_name { font-size:11px; width:100px;}
 .cp_description{ 
@@ -2512,13 +2505,13 @@ searching
 .option_table{
 	width:100%;
 	font-size:12px;
+	margin-left:-3px;
 }
 .option_name{
-	width:85px;
 	vertical-align:top;
 }
 .option_input{
-	width:75%;
+	width:198px;
 	float:left;
 }
 .option_error{
@@ -2605,11 +2598,11 @@ searching
 .option_hide_border .option_conent{
 	border:1px solid #ccc;
 	overflow:hidden;
-	padding:2px;
+	padding:2px 2px 2px 0;
 	*display:inline-block;
 	float:left;
 	line-height:18px;
-	margin:2px;
+	margin:2px 2px 2px 0;
 }
 .option_hide_border span{ float:left; overflow:hidden;}
 .option_hide_border a{
@@ -2630,6 +2623,7 @@ searching
 .option_product_radio_list{
 	overflow:hidden;
 	width:100%;
+	*margin-top:-5px;
 }
 
 .option_product_radio_img_list{
@@ -2651,7 +2645,7 @@ searching
 }
 .preorder_option{ padding:0;}
 .preorder_option .option_name{
-	width:25%;
+	width:26%;
 }
 .option_money{
 	float:right;
@@ -2662,7 +2656,7 @@ searching
 	width:100%;
 	margin-bottom:5px;
 }
-.option_info_text select{ float:left;}
+.option_info_text select{ float:left; margin-left:0;}
 #show_price{
 	font-size:20px;
 	font-weight:bold;
@@ -2773,7 +2767,8 @@ searching
 	padding:0;
 }
 .formArea_td_info input, .formArea_td_info select{
-	margin-bottom:5px;
+	margin:0;
+	padding:0;
 }
 .sort img{ margin:-5px 0 0 5px;}
 .sort td{ width:25%;}
@@ -2801,3 +2796,4 @@ searching
 .input_box{margin:0 2px 0 -4px; height:20px; float:left;}
 .input_box input,.input_box span{ float:left; line-height:22px;}
 .input_both{clear:both;}
+.text_box{ margin-top:5px;}

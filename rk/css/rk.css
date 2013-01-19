@@ -1742,10 +1742,9 @@ TABLE：form eria（boundary line）
 --------------------------- */
 TABLE.formArea {
 	background: #FFFFFF;
-	border-color: #E8E8E8;
-	border-style: solid;
-	border-width: 1px;
+	border:1px solid #E8E8E8;
 }
+TABLE.formArea td{ padding:2px; margin:0;}
 /* ---------------------------
 TD：form eria（title）
 --------------------------- */
@@ -2073,14 +2072,15 @@ display:block;
 	font-size:11px;
 	*font-size:10px;
 	line-height:1.5;
+	margin-left:-3px;
 }
 .option_name{
-	width:85px;
+	width:25%;
 	vertical-align:top;
 	font-weight:bold;
 }
 .option_input{
-	width:200px;
+	width:198px;
 	float:left;
 }
 .option_error{
@@ -2191,6 +2191,7 @@ display:block;
 .option_product_radio_list{
 	overflow:hidden;
 	width:100%;
+	*margin-top:-5px;
 }
 
 .option_product_radio_img_list{
@@ -2212,7 +2213,6 @@ display:block;
 }
 .preorder_option{ padding:0;}
 .preorder_option .option_name{
-	width:20%;
 	padding:0;
 	font-weight:normal;
 }
@@ -2225,7 +2225,7 @@ display:block;
 	width:100%;
 	margin-bottom:5px;
 }
-.option_info_text select{ float:left;}
+.option_info_text select{ float:left; margin-left:0;}
 #show_price{
 	font-size:20px;
 	font-weight:bold;
@@ -2241,10 +2241,13 @@ display:block;
 }
 .formArea_td_info{
 	*width:325px;
-	font-size:11px;
+	font-size:10px;
+	margin:0;
+	padding:0;
 }
 .formArea_td_info input, .formArea_td_info select{
-	margin-bottom:5px;
+	margin:0;
+	padding:0;
 }
 .errorText{ font-size:11px;}
 /*shipping*/
@@ -2345,3 +2348,4 @@ display:block;
 .input_box{margin:0 2px 0 0px;*margin:0 2px 0 -4px; height:20px; float:left;}
 .input_box input,.input_box span{ float:left; line-height:22px;}
 .input_both{clear:both;}
+.text_box{ margin-top:5px;}

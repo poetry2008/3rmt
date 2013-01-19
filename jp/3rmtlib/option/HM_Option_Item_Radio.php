@@ -23,7 +23,7 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
        if ($ptype) {
          echo '<td class="preorder_option_name">';      
        } else {
-         echo '<td class="option_name">'; 
+         echo '<td class="option_name" valign="top">'; 
        }
        echo $this->front_title.':';
        echo '</td>';

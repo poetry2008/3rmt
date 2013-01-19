@@ -24,7 +24,11 @@ class HM_Option_Group extends Option_DbRecord
     if ($pro_pos !== false) {
       echo "<table class='option_table' cellspacing='1' cellpadding='3' border='0'>";
     } else {
+      if(NEW_STYLE_WEB===true){
+      echo "<table class='option_table' border='0' cellspacing='0' cellpadding='0'>";
+      }else{
       echo "<table class='option_table'>";
+      }
     }
     foreach ($this->items as $item){
       if ($is_product_info == 1) {

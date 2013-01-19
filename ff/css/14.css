@@ -1605,10 +1605,9 @@ TABLE：Form area (the border)
 --------------------------- */
 TABLE.formArea {
 	background: #FFF;
-	border-color: #ccc;
-	border-style: solid;
-	border-width: 1px;
+	border:1px solid #ccc;
 }
+TABLE.formArea td{ padding:2px; margin:0;}
 /* ---------------------------
 TD：Form area (Title)
 --------------------------- */
@@ -2024,13 +2023,13 @@ line-height:16px;
 	line-height:1.5;
 }
 .option_name{
-	width:85px;
+	width:120px;
 	vertical-align:top;
 	padding-left:8px;
 	font-weight:bold;
 }
 .option_input{
-	width:75%;
+	width:198px;
 	float:left;
 }
 .option_error{
@@ -2118,11 +2117,11 @@ line-height:16px;
 .option_hide_border .option_conent{
 	border:1px solid #ccc;
 	overflow:hidden;
-	padding:2px;
+	padding:2px 2px 2px 0;
 	*display:inline-block;
 	float:left;
 	line-height:18px;
-	margin:2px;
+	margin:2px 2px 2px 0;
 }
 .option_hide_border span{ float:left; overflow:hidden;}
 .option_hide_border a{
@@ -2140,6 +2139,7 @@ line-height:16px;
 .option_product_radio_list{
 	overflow:hidden;
 	width:100%;
+	*margin-top:-5px;
 }
 
 .option_product_radio_img_list{
@@ -2161,7 +2161,6 @@ line-height:16px;
 }
 .preorder_option{ padding:0;}
 .preorder_option .option_name{
-	width:123px;
 	padding:0;
 	font-weight:normal;
 }
@@ -2174,7 +2173,7 @@ line-height:16px;
 	width:100%;
 	margin-bottom:5px;
 }
-.option_info_text select{ float:left;}
+.option_info_text select{ float:left; margin-left:0;}
 #show_price{
 	font-size:20px;
 	font-weight:bold;
@@ -2192,7 +2191,8 @@ line-height:16px;
 	font-size:12px;
 }
 .formArea_td_info input, .formArea_td_info select{
-	margin-bottom:5px;
+	margin:0;
+	padding:0;
 }
 #group_list_box td{ height:20px; padding:0; font-size:14px;}
 .address_item_info{ padding-left:4px;}
@@ -2269,3 +2269,4 @@ line-height:16px;
 .input_box{margin:0 2px 0 0px;*margin:0 2px 0 -4px; height:20px; float:left;}
 .input_box input,.input_box span{ float:left; line-height:22px;}
 .input_both{clear:both;}
+.text_box{ margin-top:5px;}

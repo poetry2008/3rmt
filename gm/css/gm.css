@@ -676,13 +676,12 @@ td,th{ border:0;font-size:14px; padding:2px;}
 }
 .frame_title{ 
 	width:20%;
-	line-height:25px; 
-	white-space:normal;
+	line-height:25px;
 }
 .float_left { width:70%;}
-.input_title
+.input_title{ margin-top:5px;}
 .input_title input{ margin-right:5px;}
-.cp_content{ overflow:hidden;}
+.cp_content{ overflow:hidden; width:100%;}
 
 
 /*Decoration*/
@@ -1238,6 +1237,7 @@ top:70px;
 .option_table{
 	width:100%;
 }
+.option_table td,.option_table input{ padding-left:0;margin-left:0;}
 .option_name{
 	width:20%;
 	vertical-align:top;

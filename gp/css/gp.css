@@ -1711,10 +1711,11 @@ TABLE：Form area (the border)
 --------------------------- */
 TABLE.formArea {
 	background: #EEEEEE;
-	border-color: #ddd;
-	border-style: solid;
-	border-width: 1px;
+	border: 1px solid #ddd;
+	*margin:0 5px;
+	*width:98%;
 }
+TABLE.formArea td{ padding:2px; margin:0;}
 /* ---------------------------
 TD：Form area (Title)
 --------------------------- */
@@ -1844,6 +1845,7 @@ P.description{
 	font-size: 11px;
 	font-weight: bold;
 	color: #666;
+	*padding:0 5px;
 }
 .smallText {
 	font-size: 10px;
@@ -2142,9 +2144,10 @@ line-height:21px;
 .preorser_formArea{ background-color:#ccc; font-size:13px;}
 .preorser_formArea td{ background-color:#fff; padding-left:2px; line-height:25px;}
 .product_info_table{ background:#fff; padding:5px;}
-.formArea_td_info { width:360px\9; font-size:12px; line-height:1.5;}
-.preorder_info_box{	border: solid 1px #ccc; background: #fff; padding: 5px; font-size:12px;}
-.active_email_name { font-size:11px; width:80px\9;}
+.formArea_td_info { width:360px\9; font-size:12px; padding:0; margin:0;}
+.preorder_info_box{	border: solid 1px #ccc; background: #fff; padding:5px; font-size:12px;}
+.preorder_info_box td p{ padding:5px;}
+.active_email_name { font-size:11px; width:95px;}
 
 
 
@@ -2230,6 +2233,7 @@ line-height:21px;
     margin: 5px;
     padding: 5px;
     width: 100%;
+	font-size:12px;
 }
 /*password*/
 #greybackground{
@@ -2280,6 +2284,7 @@ line-height:21px;
 	width:100%;
 	font-size:12px;
 	line-height:1.5;
+	margin-left:-3px;
 }
 .option_name{
 	width:85px;
@@ -2287,7 +2292,7 @@ line-height:21px;
 	font-weight:bold;
 }
 .option_input{
-	width:75%;
+	width:198px;
 	float:left;
 }
 .option_error{
@@ -2396,6 +2401,7 @@ line-height:21px;
 	overflow:hidden;
 	width:100%;
 	*width:90%;
+	*margin-top:-5px;
 }
 
 .option_product_radio_img_list{
@@ -2431,7 +2437,7 @@ line-height:21px;
 	width:100%;
 	margin-bottom:5px;
 }
-.option_info_text select{ float:left;}
+.option_info_text select{ float:left; margin-left:0;}
 #show_price{
 	font-size:20px;
 	font-weight:bold;
@@ -2449,8 +2455,12 @@ line-height:21px;
 	*width:75%;
 	font-size:12px;
 }
+.formArea_td_info small{
+	padding-top:5px;
+}
 .formArea_td_info input, .formArea_td_info select{
-	margin-bottom:5px;
+	margin:0;
+	padding:0;
 }
 #group_list_box td{ height:20px; padding:0; font-size:14px;}
 .address_item_info{ padding-left:4px;}
@@ -2520,3 +2530,4 @@ line-height:21px;
 .input_box{margin:0 2px 0 0px;*margin:0 2px 0 -4px; height:20px; float:left;}
 .input_box input,.input_box span{ float:left; line-height:22px;}
 .input_both{clear:both;}
+.text_box{ margin-top:5px;}

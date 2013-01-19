@@ -287,12 +287,12 @@ if (!isset($_POST['lastname'])) $_POST['lastname'] = NULL; //del notice
 if (!isset($_POST['firstname'])) $_POST['firstname'] = NULL; //del notice
 if (!isset($_GET['lastname'])) $_GET['lastname'] = NULL; //del notice
 if (!isset($_GET['firstname'])) $_GET['firstname'] = NULL; //del notice
-        $last_name_prompt = tep_draw_input_field('lastname', (($lastname_error == true) ? $_POST['lastname'] : $_GET['lastname']), 'class="input_text"');
-        $first_name_prompt = tep_draw_input_field('firstname', (($firstname_error == true) ? $_POST['firstname'] : $_GET['firstname']), 'class="input_text"');
+        $last_name_prompt = tep_draw_input_field('lastname', (($lastname_error == true) ? $_POST['lastname'] : $_GET['lastname']), 'class="input_text" style="width:35%"');
+        $first_name_prompt = tep_draw_input_field('firstname', (($firstname_error == true) ? $_POST['firstname'] : $_GET['firstname']), 'class="input_text" style="width:35%"');
         if ($lastname_error == true) $last_name_prompt .= '&nbsp;<span class="errorText">' . PREORDER_TEXT_REQUIRED . '</span>';
         if ($firstname_error == true) $first_name_prompt .= '&nbsp;<span class="errorText">' . PREORDER_TEXT_REQUIRED . '</span>';
 if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
-        $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $_POST['from'] : $_GET['from']) , 'size="30" class="input_text"') . TEXT_PHONE_EMAIL_ADDRESS;
+        $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $_POST['from'] : $_GET['from']) , 'size="30" class="input_text" style="width:35%"') . TEXT_PHONE_EMAIL_ADDRESS;
         if ($fromemail_error == true) $your_email_address_prompt .="<br>".ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
       }
 ?>
@@ -339,7 +339,7 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
           <td><?php echo $first_name_prompt; ?></td>
         </tr>
         <tr>
-          <td><?php echo FORM_FIELD_CUSTOMER_EMAIL; ?></td>
+          <td valign="top"><?php echo FORM_FIELD_CUSTOMER_EMAIL; ?></td>
           <td><?php echo $your_email_address_prompt; ?></td>
         </tr>
         <tr> 

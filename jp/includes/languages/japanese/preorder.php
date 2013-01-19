@@ -17,7 +17,7 @@ define('FORM_FIELD_PREORDER_PAYMENT', 'お支払い方法');
 define('FORM_FIELD_CUSTOMER_LASTNAME', '姓:');
 define('FORM_FIELD_CUSTOMER_FIRSTNAME', '名:');
 define('PREORDER_TEXT_REQUIRED', '必須項目');
-define('TEXT_PHONE_EMAIL_ADDRESS','<br>携帯電話メールアドレス推奨');
+define('TEXT_PHONE_EMAIL_ADDRESS','&nbsp;携帯電話メールアドレス推奨');
 define('TEXT_PREORDER_BOOK','を予約する');
 define('TEXT_PREORDER_IN','では、');
 define('TEXT_PREORDER_BOOK_INFO','の予約サービスを行っております。<br> ご希望する数量が弊社在庫にある場合は「');
