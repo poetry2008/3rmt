@@ -375,7 +375,7 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                 <td class="pageHeading" align="right">
                 <div>
                 <?php echo tep_draw_form('form', FILENAME_OPTION, '', 'get');?> 
-                <input type="text" name="keyword" id="keyword">
+                <input type="text" name="keyword" id="keyword" value="<?php echo isset($_GET['keyword'])?$_GET['keyword']:'';?>">
                 <input type="hidden" name="search" value="1">
                 <?php echo tep_html_element_submit(IMAGE_SEARCH);?>
                 </form> 
