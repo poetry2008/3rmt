@@ -87,7 +87,7 @@
          }
          ?>
          <?php echo tep_draw_form('form', tep_href_link('ac_mail_finish.php', 'action=send', 'SSL'));?> 
-          <table border="0" width="100%" cellspacing="0" cellpadding="0" class="product_info_box captcha_comment"> 
+          <table border="0" width="100%" cellspacing="0" cellpadding="0" class="product_info_box"> 
             <tr>
               <td>
               <table class="captcha_comment">
