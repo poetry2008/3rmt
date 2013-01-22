@@ -3553,6 +3553,7 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
     $str .= '<tr>'; 
     $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_FETCH_TIME.'</td>';
     $str .= '<td class="main">';
+    $tmp_date_start = explode(' ', $orders['torihiki_date']);
     $tmp_date_end = explode(' ', $orders['torihiki_date_end']); 
     $tmp_week = date('D', strtotime($orders['torihiki_date'])); 
     switch(strtolower($tmp_week)) {
@@ -3580,7 +3581,7 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
      default:
        break;
     }
-    $str .= date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($orders['torihiki_date'])).' '.$week_str.'&nbsp;'.TEXT_TIME_LINK.'&nbsp;'.$tmp_date_end[1]; 
+    $str .= date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($orders['torihiki_date'])).' '.$week_str.'&nbsp;'.$tmp_date_start[1].'&nbsp;'.TEXT_TIME_LINK.'&nbsp;'.$tmp_date_end[1]; 
     $str .= '</td>'; 
     $str .= '</tr>'; 
 
