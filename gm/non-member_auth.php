@@ -120,7 +120,7 @@
         ?>
         <tr>
           <td>
-          <table class="box_des" width="100%">
+           <table border="0" cellpadding="0" cellspacing="0" width="100%" class="content_account">
             <tr>
               <td colspan="3" align="center"><img src="images/design/mail_top.gif" alt=""></td> 
             </tr>

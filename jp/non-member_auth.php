@@ -141,7 +141,7 @@
                 </td> 
                 <td width="360">
                 <?php echo tep_draw_input_field('cemail',
-                    (isset($_post['cemail'])?$_post['cemail']:$cus_email),'size="58"');?>
+                    (isset($_post['cemail'])?$_post['cemail']:$cus_email),'size="56"');?>
                 </td>
                 <td align="right">
                 <?php echo tep_image_submit('button_send_mail.gif', SENDMAIL_BUTTON);?>

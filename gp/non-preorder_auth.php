@@ -131,8 +131,6 @@
         }
       }
       echo tep_draw_form('form', tep_href_link('non-preorder_auth.php')); 
-      echo PREORDER_SUCCESS_ACTIVE_INFO_TEXT; 
-      echo '<br><br>'; 
       echo tep_draw_hidden_field('action', 'send'); 
       ?>
         <table border="0" width="100%" class="info_middle" cellspacing="0" cellpadding="0">
@@ -140,20 +138,45 @@
             <td>
               <table>
                 <tr>
-                  <td style="font-size:11px; color:#ff0000;"><?php echo INPUT_PREORDER_SEND_MAIL;?></td> 
-                  <td>
-                  <?php echo tep_draw_input_field('pemail', (isset($_POST['pemail'])?$_POST['pemail']:$pe_email));?> 
+                  <td colspan="3"><img src="images/design/mail_top.gif" alt=""></td>
+                </tr>
+                <tr>
+                  <td colspan="3" class="information_color">
+                  <?php
+                    echo sprintf(PREORDER_NOTICE_SEND_TO_EMAIL_TEXT, (isset($_POST['pemail'])?$_POST['pemail']:$pe_email)); 
+                  ?></div>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="3" class="main">
+                  <br><?php
+                    echo PREORDER_ACTIVE_INFO_FRONT_COMMENT; 
+                  ?><br><br>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="active_email_name"><b><?php echo INPUT_PREORDER_SEND_MAIL;?></b></td> 
+                  <td class="active_email">
+                  <?php echo tep_draw_input_field('pemail', (isset($_POST['pemail'])?$_POST['pemail']:$pe_email),'size="58"');?> 
                   </td>
                   <td>
                   <?php echo tep_image_submit('button_send_mail.gif', 'mail');?> 
                   </td>
                 </tr>
-              </table><br>
+              </table>
             </td>
           </tr>
           <tr>
-            <td>
-            <font size="2"><?php echo sprintf(PREORDER_SUCCESS_TEXT, '<a href="'.tep_href_link('email_trouble.php').'">'.PREORDER_SUCCESS_TEXT_LINK.'</a>');?></font>
+             <td colspan="3" class="main">
+               <br><?php echo PREORDER_ACTIVE_INFO_END_COMMENT; ?>
+             </td>
+            </tr> 
+            <tr>
+              <td colspan="3" align="center"><img src="images/design/mail_bottom.gif" alt=""></td>
+            </tr>
+          <tr>
+            <td class="main">
+            <?php echo PREORDER_ACTIVE_INFO_EMAIL_READ;?> 
             </td>
           </tr>
           <tr>
@@ -169,7 +192,6 @@
         </table>
         </form>         
         </div></td></tr></table>
-                <p class="pageBottom"></p>
       </td>
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>">
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>

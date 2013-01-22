@@ -2023,7 +2023,7 @@ line-height:16px;
 	line-height:1.5;
 }
 .option_name{
-	width:120px;
+	width:85px;
 	vertical-align:top;
 	padding-left:8px;
 	font-weight:bold;
@@ -2163,6 +2163,7 @@ line-height:16px;
 .preorder_option .option_name{
 	padding:0;
 	font-weight:normal;
+	width:120px;
 }
 .option_money{
 	float:right;

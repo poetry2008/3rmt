@@ -2092,6 +2092,8 @@ border:1px solid #CAC6BE;
 	vertical-align:top;
 	color:#FFFFFF;
 	font-weight:bold;
+	width:106px;
+	*width:100px;
 }
 .option_name td{ padding:3px 5px;}
 .option_input{

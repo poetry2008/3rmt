@@ -152,7 +152,7 @@
                   </td>
                 </tr>
               <tr>
-                <td width="90"><?php echo INPUT_PREORDER_SEND_MAIL;?></td> 
+                <td width="90"><b><?php echo INPUT_PREORDER_SEND_MAIL;?></b></td> 
                 <td width="365">
                 <?php echo tep_draw_input_field('pemail', (isset($_POST['pemail'])?$_POST['pemail']:$pe_email),'size="50"');?> 
                 </td>

@@ -1747,7 +1747,7 @@ searching
 	margin-left:-3px;
 }
 .option_name{
-	width:25%;
+	width:85px;
 	vertical-align:top;
 	font-weight:bold;
 }
@@ -1887,6 +1887,7 @@ searching
 	padding:0;
 	font-weight:normal;
 	font-size:10px;
+	width:25%;
 }
 .option_money{
 	float:right;
@@ -1897,7 +1898,7 @@ searching
 	margin-bottom:5px;
 	width:73%;
 }
-.option_info_text select{ float:left; width:100%; margin-left:0;}
+.option_info_text select{ float:left; width:100%; margin-left:0; font-size:10px;}
 #show_price{
 	font-size:20px;
 	font-weight:bold;

@@ -92,14 +92,18 @@
               <td>
               <table>
                 <tr>
-                <td style="color: rgb(255, 0, 0);" colspan="3">
-                <font size="3"><b><?php echo EMAIL_RED_TEXT_INFO;?></b></font>
-                </td>
-              </tr>
+                	<td colspan="3" align="center"><img src="images/design/mail_top.gif" alt=""></td>
+                </tr>
+                <tr>
+                  <td colspan="3" class="information_color">
+                  <?php
+                    echo sprintf(NOTICE_SEND_TO_EMAIL_TEXT, (isset($_POST['cemail'])?$_POST['cemail']:$cus_email)); 
+                  ?>
+                  </td>
+                </tr>
               <tr>
-                <td style="font-size:11px;" colspan="3">
-                <?php echo EMAIL_READ_INFO_TEXT;?>
-                <br>
+                  <td colspan="3" class="main">
+                  <br><?php echo ACTIVE_INFO_FRONT_COMMENT?><br><br> 
                 </td>
               </tr>
                 <tr>
@@ -113,12 +117,20 @@
                   <?php echo tep_image_submit('button_send_mail.gif', SENDMAIL_BUTTON);?> 
                   </td>
                 </tr>
+                <tr>
+                  <td colspan="3" class="main">
+                  <br><?php echo ACTIVE_INFO_END_COMMENT?>
+                  </td>
+                </tr>
               </table>
               </td>
             </tr>
+            <tr>
+              <td colspan="3" align="center"><img src="images/design/mail_bottom.gif" alt=""></td>
+            </tr>
             <tr> 
-              <td>
-              <?php echo ACTIVE_INFO_COMMENT;?> 
+              <td class="main">
+              <?php echo ACTIVE_INFO_EMAIL_READ;?> 
               </td>
             </tr>
             <tr> 

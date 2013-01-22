@@ -108,7 +108,7 @@
                   </td>
                 </tr>
                 <tr>
-                  <td width="95">
+                  <td width="98">
                   <b><?php echo INPUT_SEND_MAIL;?>:</b> 
                   </td>
                   <td width="338">

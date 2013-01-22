@@ -95,16 +95,14 @@
                   <td colspan="3"><img src="images/design/mail_top.gif" alt=""></td>
                 </tr>
                 <tr>
-                  <td colspan="3" class="information_color">
-                  <?php
-                    echo sprintf(NOTICE_SEND_TO_EMAIL_TEXT, (isset($_POST['cemail'])?$_POST['cemail']:$cus_email)); 
-                  ?>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="3">
-                  <br><?php echo ACTIVE_INFO_FRONT_COMMENT?><br><br> 
-                  </td>
+                <td colspan="3" class="information_color">
+                  <?php echo sprintf(NOTICE_SEND_TO_EMAIL_TEXT, (isset($_POST['cemail'])?$_POST['cemail']:$cus_email)); ?>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3">
+                <br><?php echo ACTIVE_INFO_FRONT_COMMENT?><br><br> 
+                </td>
                 </tr>
                 <tr>
                   <td width="90">

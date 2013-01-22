@@ -30,7 +30,7 @@ $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
           <table border="0" cellspacing="0" cellpadding="0" width="100%" align="center"> 
           <tr>
             <td>
-            <table width="100%">
+             <table border="0" cellpadding="0" cellspacing="0" width="100%" class="content_account">
               <?php
               if (!isset($_GET['show'])) { 
               ?>

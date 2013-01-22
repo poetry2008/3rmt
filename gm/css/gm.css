@@ -540,6 +540,7 @@ td,th{ border:0;font-size:14px; padding:2px;}
 #detail-div-number select ,#detail-div-number input ,#calculation{ float:left; margin-right:3px;}
 #detail-div-number p{margin:10px 0;font-weight:bold;}
 #calculation{ padding:0; /*margin:-4px 0 5px 0;*/ margin:8px 0 2px 0;}
+#calculation td{ margin-left:0; padding-left:0;}
 #calculation span{ float:left;margin:12px 0 0 0;}
 .calculation-add{ float:left; margin-top:5px;}
 .calculation-add a{ float:left; margin-right:3px;}

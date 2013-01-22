@@ -112,10 +112,10 @@
                   </td>
                 </tr>
                 <tr>
-                  <td width="100">
+                  <td width="120">
                   <b><?php echo INPUT_SEND_MAIL;?>:</b> 
                   </td>
-                  <td width="285">
+                  <td width="278">
                   <?php echo tep_draw_input_field('cemail', (isset($_POST['cemail'])?$_POST['cemail']:$cus_email),'size="37"');?> 
                   </td>
                   <td>
