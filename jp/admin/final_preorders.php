@@ -698,6 +698,26 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         $num_product = $num_product_res['products_quantity']; 
       }
       
+      $totals_email_str = '';
+      $totals_email_i = 0;
+      foreach($update_totals as $update_total_key=>$update_total_value){
+
+              if($update_total_value['class'] == 'ot_custom' && trim($update_total_value['title']) != '' && trim($update_total_value['value']) != ''){
+                $totals_email_i = $update_total_key;
+              }
+      }
+      foreach($update_totals as $update_totals_key=>$update_totals_value){
+
+              if($update_totals_value['class'] == 'ot_custom' && trim($update_totals_value['title']) != '' && trim($update_totals_value['value']) != ''){
+                $totals_len = mb_strlen($update_totals_value['title'],'utf8');
+                $totals_temp_str = str_repeat('　',7-$totals_len);
+                if($totals_email_i != $update_totals_key){
+                  $totals_email_str .= $update_totals_value['title'].$totals_temp_str.':'.$currencies->format($update_totals_value['value'])."\n";
+                }else{
+                  $totals_email_str .= $update_totals_value['title'].$totals_temp_str.':'.$currencies->format($update_totals_value['value']); 
+                }
+              }
+      }      
       $ensure_date_arr = explode(' ', $select_products_res['ensure_deadline']);
       $email = $_POST['comments']; 
       $email = str_replace(array(
@@ -732,8 +752,8 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         $ensure_date_arr[0],
         $num_product.PREORDER_PRODUCT_UNIT_TEXT,
         $num_product_res['products_name'],
-        $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']),
-        $currencies->format($ot_sub_total)
+        $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax'])."\n".$totals_email_str,
+        $currencies->format($newtotal)
       ),$email);
       
       if ($customer_guest['is_send_mail'] != '1') {
@@ -791,7 +811,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
             $num_product.PREORDER_PRODUCT_UNIT_TEXT,
             $num_product_res['products_name'],
             $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']),
-            $ot_sub_total
+            $newtotal 
           ),$preorder_email_title);
         }
         $s_status_raw = tep_db_query("select nomail from ".TABLE_PREORDERS_STATUS." where orders_status_id = '".$status."'");  

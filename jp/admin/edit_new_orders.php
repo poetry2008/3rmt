@@ -1166,11 +1166,31 @@ if($address_error == false){
             $payment_modules->admin_deal_mailoption($mailoption, $oID, payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE)); 
             $mailoption['ADD_INFO'] = isset($_SESSION['payment_bank_info'][$oID]['add_info'])?$_SESSION['payment_bank_info'][$oID]['add_info']:'';
             unset($_SESSION['orderinfo_mail_use']);
+            $totals_email_str = '';
+            $totals_email_i = 0;
+            foreach($update_totals as $update_total_key=>$update_total_value){
+
+              if($update_total_value['class'] == 'ot_custom' && trim($update_total_value['title']) != '' && trim($update_total_value['value']) != ''){
+                $totals_email_i = $update_total_key;
+              }
+            }
+            foreach($update_totals as $update_totals_key=>$update_totals_value){
+
+              if($update_totals_value['class'] == 'ot_custom' && trim($update_totals_value['title']) != '' && trim($update_totals_value['value']) != ''){
+                $totals_len = mb_strlen($update_totals_value['title'],'utf8');
+                $totals_temp_str = str_repeat('　',8-$totals_len);
+                if($totals_email_i != $update_totals_key){
+                  $totals_email_str .= '▼'.$update_totals_value['title'].$totals_temp_str.'：'.$currencies->format($update_totals_value['value'])."\n";
+                }else{
+                  $totals_email_str .= '▼'.$update_totals_value['title'].$totals_temp_str.'：'.str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($update_totals_value['value'])); 
+                }
+              }
+            }
             $point = $mailpoint;
             if ($point){
-              $mailoption['POINT']            = $point;
+              $mailoption['POINT']            = $point.TEXT_MONEY_SYMBOL."\n".$totals_email_str;
             }else {
-              $mailoption['POINT']            = 0;
+              $mailoption['POINT']            = '0'.TEXT_MONEY_SYMBOL."\n".$totals_email_str;
             }
             $total_mail_fee = $handle_fee;	    
             if(!isset($total_mail_fee)){
@@ -1508,6 +1528,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
       }
   $orders_comments = $pay_type_array[0] == $payment_method || $pay_type_array[2] == $payment_method ? $comment_arr['comment'] : $comments_text;  
   $point = !isset($point) ? 0 : $point;
+  $point = $point."\n".$totals_email_str.TEXT_MONEY_SYMBOL;
   $payment_replace = array(
                           tep_db_input(stripslashes($update_customer_name)),
                           $orders_site_name_array['name'],
