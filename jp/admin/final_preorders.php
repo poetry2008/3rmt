@@ -710,11 +710,11 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 
               if($update_totals_value['class'] == 'ot_custom' && trim($update_totals_value['title']) != '' && trim($update_totals_value['value']) != ''){
                 $totals_len = mb_strlen($update_totals_value['title'],'utf8');
-                $totals_temp_str = str_repeat('　',7-$totals_len);
+                $totals_temp_str = str_repeat('　',8-$totals_len);
                 if($totals_email_i != $update_totals_key){
-                  $totals_email_str .= $update_totals_value['title'].$totals_temp_str.':'.$currencies->format($update_totals_value['value'])."\n";
+                  $totals_email_str .= $update_totals_value['title'].$totals_temp_str.'：'.$currencies->format($update_totals_value['value'])."\n";
                 }else{
-                  $totals_email_str .= $update_totals_value['title'].$totals_temp_str.':'.$currencies->format($update_totals_value['value']); 
+                  $totals_email_str .= $update_totals_value['title'].$totals_temp_str.'：'.$currencies->format($update_totals_value['value']); 
                 }
               }
       }      
@@ -752,7 +752,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         $ensure_date_arr[0],
         $num_product.PREORDER_PRODUCT_UNIT_TEXT,
         $num_product_res['products_name'],
-        $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax'])."\n".$totals_email_str,
+        $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']).($totals_email_i != 0 ? "\n".$totals_email_str : ''),
         $currencies->format($newtotal)
       ),$email);
       
