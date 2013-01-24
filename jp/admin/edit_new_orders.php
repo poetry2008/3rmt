@@ -1169,37 +1169,29 @@ if($address_error == false){
             $totals_email_str = '';
             $print_totals_email_str = '';
             $totals_email_i = 0;
-            $totals_title_array = array();
             foreach($update_totals as $update_total_key=>$update_total_value){
 
               if($update_total_value['class'] == 'ot_custom' && trim($update_total_value['title']) != '' && trim($update_total_value['value']) != ''){
                 $totals_email_i = $update_total_key;
-                $totals_title_array[] = mb_strlen($update_total_value['title'],'utf8');;
               }
             }
-            $totals_max_len = max($totals_title_array);
-            $totals_max_len = $totals_max_len > 8 ? $totals_max_len : 8;
             foreach($update_totals as $update_totals_key=>$update_totals_value){
 
               if($update_totals_value['class'] == 'ot_custom' && trim($update_totals_value['title']) != '' && trim($update_totals_value['value']) != ''){
-                $totals_len = mb_strlen($update_totals_value['title'],'utf8');
-                $totals_temp_str = str_repeat('　',$totals_max_len-$totals_len);
                 if($totals_email_i != $update_totals_key){
-                  $totals_email_str .= '▼'.$update_totals_value['title'].$totals_temp_str.'：'.$currencies->format($update_totals_value['value'])."\n";
+                  $totals_email_str .= '▼'.$update_totals_value['title'].'：'.$currencies->format($update_totals_value['value'])."\n";
                 }else{
-                  $totals_email_str .= '▼'.$update_totals_value['title'].$totals_temp_str.'：'.str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($update_totals_value['value'])); 
+                  $totals_email_str .= '▼'.$update_totals_value['title'].'：'.str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($update_totals_value['value'])); 
                 }
               }
             }
             foreach($update_totals as $update_totals_key=>$update_totals_value){
 
               if($update_totals_value['class'] == 'ot_custom' && trim($update_totals_value['title']) != '' && trim($update_totals_value['value']) != ''){
-                $totals_len = mb_strlen($update_totals_value['title'],'utf8');
-                $totals_temp_str = str_repeat('　',$totals_max_len-$totals_len);
                 if($totals_email_i != $update_totals_key){
-                  $print_totals_email_str .= $update_totals_value['title'].$totals_temp_str.'：'.$currencies->format($update_totals_value['value'])."\n";
+                  $print_totals_email_str .= $update_totals_value['title'].'：'.$currencies->format($update_totals_value['value'])."\n";
                 }else{
-                  $print_totals_email_str .= $update_totals_value['title'].$totals_temp_str.'：'.str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($update_totals_value['value'])); 
+                  $print_totals_email_str .= $update_totals_value['title'].'：'.str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($update_totals_value['value'])); 
                 }
               }
             }
