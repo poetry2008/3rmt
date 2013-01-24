@@ -242,6 +242,5 @@ define('TEXT_PASSWORD_NOT','パスワードが違います');
 
 define('TEXT_PRODUCTS_NUM','商品の数量が足りません。注文を作成しますか？');
 define('TEXT_DATE_TIME_ERROR','過去の日時が選択されています。保存しますか？');
-define('ORDERS_PRODUCT_ERROR','商品がありませんが、商品を追加してください。');
-define('TEXT_YEN','円');
+define('ORDERS_PRODUCT_ERROR','商品がありません。商品を追加してください。');
 ?>

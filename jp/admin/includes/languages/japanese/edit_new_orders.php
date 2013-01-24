@@ -8,5 +8,4 @@ define('TEXT_BROWER_REJECTED','ブラウザに拒絶されました！\nブラ�
 define('TEXT_COPY_TO_CLIPBOARD','クリップボードにコピーしました！');
 define('TEXT_PLEASE_PASSWORD','ワンタイムパスワードを入力してください\r\n');
 define('TEXT_PASSWORD_NOT','パスワードが違います');
-define('TEXT_YEN','円');
 ?>
