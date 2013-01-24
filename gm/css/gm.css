@@ -1545,3 +1545,9 @@ top:70px;
 .input_box input,.input_box span{ float:left; line-height:17px;}
 .input_box input{ margin-right:2px;}
 .input_both{clear:both;}
+.content_distance{
+	margin-top:12px;
+}
+.content_distance td{
+	line-height:24px;
+}
