@@ -554,7 +554,7 @@ $email_order_text = $payment_modules->getOrderMailString($cpayment_code, $mailop
 $shipping_fee_value = !empty($_SESSION['preorder_shipping_fee']) ? $_SESSION['preorder_shipping_fee'] : 0; 
 $email_temp = '▼ポイント割引';
 $email_temp_str = '▼ ポイント割引';
-$email_shipping_fee = '▼配送料：'.$shipping_fee_value.'円
+$email_shipping_fee = '▼配送料　　　　　：'.$shipping_fee_value.'円
 '.$email_temp;
 $email_order_text = str_replace($email_temp,$email_shipping_fee,$email_order_text);
 $email_order_text = str_replace($email_temp_str,$email_shipping_fee,$email_order_text);
@@ -618,27 +618,27 @@ $email_printing_order .= '━━━━━━━━━━━━━━━━━━
 
 if (isset($_SESSION['preorder_campaign_fee'])) {
   if (abs($_SESSION['preorder_campaign_fee']) > 0) {
-      $email_printing_order .= '割引：' .  abs($_SESSION['preorder_campaign_fee']). '円' . "\n";
+      $email_printing_order .= '割引　　　　　　：' .  abs($_SESSION['preorder_campaign_fee']). '円' . "\n";
   }
 } else {
   if ($preorder_point > 0) {
-      $email_printing_order .= '割引：' . (int)$preorder_point . '円' . "\n";
+      $email_printing_order .= '割引　　　　　　：' . (int)$preorder_point . '円' . "\n";
   }
 }
 
 if (!empty($option_info_array['fee'])) {
-  $email_printing_order .= '手数料：'.$option_info_array['fee'].'円'."\n";
+  $email_printing_order .= '手数料　　　　　：'.$option_info_array['fee'].'円'."\n";
 } else {
   if (!empty($preoder['code_fee'])) {
-    $email_printing_order .= '手数料：'.$preorder['code_fee'].'円'."\n";
+    $email_printing_order .= '手数料　　　　　：'.$preorder['code_fee'].'円'."\n";
   }
 }
 
 $email_printing_order .= $totals_print_email_str;
 
-$email_printing_order .= 'お支払金額：' .  $currencies->format(abs($preorder_total_print_num)) . "\n";
+$email_printing_order .= 'お支払金額　　　：' .  $currencies->format(abs($preorder_total_print_num)) . "\n";
 
-$email_printing_order .= 'お支払方法：' . $preorder['payment_method'] . "\n";
+$email_printing_order .= 'お支払方法　　　：' . $preorder['payment_method'] . "\n";
   
 
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
