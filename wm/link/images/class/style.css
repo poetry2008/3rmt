@@ -7,7 +7,7 @@
 }
 body {
 font-size:12px;
-background-color:#FFFFFF;
+font-family:Osaka,Verdana,Arial,sans-serif;
 color:#656565;}
 ul {
 	list-style: none;
@@ -43,6 +43,7 @@ text-decoration:underline;
 a img {
 	border: 0px;
 }
+address{font-size:10px; font-style:normal}
 .myweb a:hover, #myweb-all a:hover, #email a:hover, .otherweb a:hover {
 	color: #FF0000;
 	text-decoration: underline;
@@ -1171,12 +1172,8 @@ width:100%;
 .web_3_top td{
 padding:5px 0 0 10px;
 }
-
-
-
-
 #footer {
-margin:0 auto;
+	margin:0 auto;
 	border: none;
 	width: 900px;
 	font-size: 10px;
@@ -1202,6 +1199,7 @@ margin:0 auto;
 }
 .footer_5{
 	width: 829px;
+	padding-top:3px;
 	background: url(../../../images/design/box/footer_07.gif) repeat-x;
 }
 .footer_6{
@@ -1217,7 +1215,7 @@ margin:0 auto;
 }
 .footer_games{
 	min-height: 27px;
-	line-height: 27px;
+	line-height: 12px;
 	margin: 0px 4px;
 	padding: 0px 5px;
 	color: #000;
@@ -1229,7 +1227,7 @@ margin:0 auto;
 	color: #000;
 }
 .footer_contacts{
-	margin-top: -3px;
+	margin-top: 3px;
 	*margin-top:0;
 }
 .footer_contacts a{

@@ -125,15 +125,16 @@ body .main {
 	margin:0;
 	padding:0;
 }
-.footer {
-	background:url(/images/design/oc/footer.jpg) no-repeat;
-    clear: both;
-    font-size: 12px;
-    height: 95px;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-    width: 790px;
+#footer {
+    clear:both;
+    width:790px;
+    height:49px;
+    background:url(../images/design/oc/footer.jpg) no-repeat;
+    text-align:center;
+    margin:0;
+	padding:46px 0 0 0;
+	*padding-bottom:15px;
+	color:#000;
 }
 .footer_games {
 	text-align:center;
@@ -209,7 +210,7 @@ body .main {
 	height:24px;
 	background:url(images/button02.gif) no-repeat;
 }
-.footer_links{ width:780px;}
+.footer_links{font-size:12px; background-color:#333333; *margin-top:-15px; width:780px;}
 #f_m{
 	width:780px;
 	text-align:center;
