@@ -5,7 +5,16 @@
   require(DIR_WS_CLASSES.'payment.php'); 
   $payment_modules = payment::getInstance(SITE_ID); 
   $error = false;  
-
+  if (isset($_SESSION['preorder_information'])) {
+    if (isset($_GET['ao_type'])) {
+      foreach ($_SESSION['preorder_information'] as $ao_key => $ao_value) {
+        $tmp_ao_single_str = substr($ao_key, 0, 3);
+        if ($tmp_ao_single_str == 'op_') {
+          unset($_SESSION['preorder_information'][$ao_key]); 
+        }
+      }
+    }
+  }
   $ad_option = new AD_Option();
 
   $preorder_raw = tep_db_query('select * from '.TABLE_PREORDERS." where check_preorder_str = '".$_GET['pid']."' and site_id = '".SITE_ID."' and is_active = '1'");

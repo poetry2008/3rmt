@@ -7837,3 +7837,151 @@ function tep_get_note_top_layer($belong_str)
   
   return $z_index;
 }
+
+//检查订单的商品的option是否不足
+function tep_check_less_option_product($opa_id, $is_pre_single = false)
+{
+  $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>"); 
+  if ($is_pre_single) {
+    $orders_products_raw = tep_db_query("select orders_id, products_id from ".TABLE_PREORDERS_PRODUCTS." where orders_products_id = '".$opa_id."'"); 
+  } else {
+    $orders_products_raw = tep_db_query("select orders_id, products_id from ".TABLE_ORDERS_PRODUCTS." where orders_products_id = '".$opa_id."'"); 
+  }
+  $orders_products = tep_db_fetch_array($orders_products_raw); 
+  //检查订单商品是否存在 
+  if ($orders_products) {
+    $exists_products_raw = tep_db_query("select belong_to_option from ".TABLE_PRODUCTS." where products_id = '".$orders_products['products_id']."'"); 
+    $exists_products = tep_db_fetch_array($exists_products_raw);
+    //检查商品是否存在 
+    if ($exists_products) {
+      if ($is_pre_single) {
+        $item_list_raw = tep_db_query("select * from ".TABLE_OPTION_ITEM." where status = '1' and group_id = '".$exists_products['belong_to_option']."' and place_type = '0'");  
+      } else {
+        $item_list_raw = tep_db_query("select * from ".TABLE_OPTION_ITEM." where status = '1' and group_id = '".$exists_products['belong_to_option']."'");  
+      }
+      //判断该商品说对应组的元素是否存在 
+      if (tep_db_num_rows($item_list_raw)) {
+        $item_list_array = array();
+        while ($item_list = tep_db_fetch_array($item_list_raw)) {
+          $item_list_array[] = $item_list; 
+        }
+        $orders_attr_array = array(); 
+        if ($is_pre_single) {
+          $orders_attr_raw = tep_db_query("select option_info, option_group_id, option_item_id from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_products_id = '".$opa_id."'"); 
+        } else {
+          $orders_attr_raw = tep_db_query("select option_info, option_group_id, option_item_id from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." where orders_products_id = '".$opa_id."'"); 
+        }
+        while ($orders_attr = tep_db_fetch_array($orders_attr_raw)) {
+          $orders_attr_array[] = $orders_attr; 
+        }
+        $attr_num = count($item_list_array);
+        if (!empty($orders_attr_array)) {
+          $attr_tmp_num = count($orders_attr_array);
+        } else {
+          $attr_tmp_num = 0;
+        }
+        if ($attr_num != $attr_tmp_num) {
+          return true; 
+        }
+        $at_exclude_array = array();
+        foreach ($orders_attr_array as $att_key => $att_value) {
+          $att_option_info = @unserialize(stripslashes($att_value['option_info'])); 
+          if ($att_value['option_group_id'] != '0' || $att_value['option_item_id'] != '0') {
+            $exists_item_raw = tep_db_query("select * from ".TABLE_OPTION_ITEM." where group_id = '".(int)$att_value['option_group_id']."' and id = '".$att_value['option_item_id']."' and status = '1'"); 
+            $exists_item = tep_db_fetch_array($exists_item_raw); 
+            if ($exists_item) {
+              $ao_option = @unserialize(stripslashes($exists_item['option'])); 
+              if ($exists_item['type'] == 'radio') {
+                $aop_single = false;
+                foreach ($ao_option['radio_image'] as $r_key => $r_value) {
+                  if (trim(str_replace($repalce_arr, '', nl2br(stripslashes($r_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($att_option_info['value']))))) {
+                    $aop_single = true;
+                    break;
+                  }
+                }
+                if (!$aop_single) {
+                  return true; 
+                }
+              } else if ($exists_item['type'] == 'text') {
+                if (trim(str_replace($replace_arr, '', nl2br(stripslashes($ao_option['itextarea'])))) != trim(str_replace($replace_arr, '', nl2br(stripslashes($att_option_info['value']))))) {
+                  return true; 
+                }
+              } else if ($exists_item['type'] == 'select') {
+                if (!empty($ao_option['se_option'])) {
+                  $ao_se_single = false; 
+                  foreach ($ao_option['se_option'] as $se_key => $se_value) {
+                    if ($se_value == $att_option_info['value']) {
+                      $ao_se_single = true;
+                      break;
+                    }
+                  }
+                  if (!$ao_se_single) {
+                    return true; 
+                  }
+                } else {
+                  return true; 
+                }
+              }
+              if (!empty($att_value['option_item_id'])) {
+                $at_exclude_array[] = $att_value['option_item_id']; 
+              }
+            } else {
+              return true; 
+            }
+          } else {
+            $is_exists = false; 
+            foreach ($item_list_array as $it_key => $item_list_info) {
+              if (in_array($item_list_info['id'], $at_exclude_array)) {
+                continue; 
+              }
+              if ($item_list_info['front_title'] = $att_option_info['title']) {
+                $ao_option = @unserialize(stripslashes($item_list_info['option_info'])); 
+                if ($item_list_info['type'] == 'radio') {
+                  foreach ($ao_option['radio_image'] as $r_key => $r_value) {
+                     if (trim(str_replace($repalce_arr, '', nl2br(stripslashes($r_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($att_option_info['value']))))) {
+                       $at_exclude_array[] = $item_list_info['id']; 
+                       $is_exists = true; 
+                       break;
+                     }
+                  }
+                } else if ($item_list_info['type'] == 'text') {
+                  if (trim(str_replace($replace_arr, '', nl2br(stripslashes($ao_option['itextarea'])))) != trim(str_replace($replace_arr, '', nl2br(stripslashes($att_option_info['value']))))) {
+                    $at_exclude_array[] = $item_list_info['id']; 
+                    $is_exists = true; 
+                  }
+                } else if ($item_list_info['type'] == 'select') {
+                  if (!empty($ao_option['se_option'])) {
+                    foreach ($ao_option['se_option'] as $se_key => $se_value) {
+                      if ($se_value == $att_option_info['value']) {
+                        $at_exclude_array[] = $item_list_info['id']; 
+                        $is_exists = true; 
+                        break;
+                      }
+                    }
+                  } 
+                } else {
+                  $at_exclude_array[] = $item_list_info['id']; 
+                }
+              }
+            }
+          }
+        }
+      } else {
+        if ($is_pre_single) {
+          $orders_attr_raw = tep_db_query("select option_info, option_group_id, option_item_id from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_products_id = '".$opa_id."' limit 1"); 
+        } else {
+          $orders_attr_raw = tep_db_query("select option_info, option_group_id, option_item_id from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." where orders_products_id = '".$opa_id."' limit 1"); 
+        }
+        $orders_attr = tep_db_fetch_array($orders_attr_raw);
+        if ($orders_attr) {
+          return true; 
+        }
+      }
+    } else {
+      return true; 
+    }
+  } else {
+    return true; 
+  }
+  return false;
+}

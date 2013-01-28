@@ -7,6 +7,20 @@ if ($cart->count_contents(true) < 1) {
    echo 'no_count';
    exit;
 }
+$check_products_info = tep_check_less_product_option();
+if (!empty($check_products_info)) {
+   $notice_msg_array = array();
+   $return_array = array(); 
+   foreach ($check_products_info as $cpo_key => $cpo_value) {
+     $tmp_cpo_info = explode('_', $cpo_value); 
+     $notice_msg_array[] = tep_get_products_name($tmp_cpo_info[0]);  
+   }
+   $return_array[] = 'check success'; 
+   $return_array[] = sprintf(NOTICE_LESS_PRODUCT_OPTION_TEXT, implode('、', $notice_msg_array));    
+   echo implode('|||', $return_array);
+   exit;
+} 
+
 if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['hour']) || !isset($_SESSION['min'])){
   echo 'error';
 }else{

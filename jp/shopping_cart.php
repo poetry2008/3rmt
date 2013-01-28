@@ -23,6 +23,29 @@
         $cart->update_quantity($tp_info[0], $tp_info[1]);
       }
       exit;
+    } else if ($_GET['action'] == 'check_products_op') {
+      $check_products_info = tep_check_less_product_option(); 
+      if (!empty($check_products_info)) {
+        $notice_msg_array = array(); 
+        foreach ($check_products_info as $cpo_key => $cpo_value) {
+          $tmp_cpo_info = explode('_', $cpo_value); 
+          $notice_msg_array[] = tep_get_products_name($tmp_cpo_info[0]);
+        }
+        $return_check_array[] = sprintf(NOTICE_LESS_PRODUCT_OPTION_TEXT, implode('、', $notice_msg_array)); 
+        $return_check_array[] = implode('>>>', $check_products_info); 
+      } else {
+        $return_check_array[] = 0; 
+      }
+      echo implode('|||', $return_check_array); 
+      exit; 
+    } else if ($_GET['action'] == 'delete_products_op') {
+      $delete_check_op = explode('>>>', $_POST['d_op_list']); 
+      if (!empty($delete_check_op)) {
+        foreach ($delete_check_op as $dc_key => $dc_value) {
+          $cart->remove($dc_value); 
+        }
+      }
+      exit; 
     }
   }
   
@@ -30,6 +53,32 @@
 ?>
 <?php page_head();?>
 <script type="text/javascript">
+<?php //检查不足的option?>
+function check_op_products() {
+  $.ajax({
+    url: '<?php echo tep_href_link(FILENAME_SHOPPING_CART, 'action=check_products_op', 'SSL');?>',     
+    type: 'POST', 
+    async: false,
+    success: function(msg) {
+      msg_arr = msg.split('|||');  
+      if (msg_arr[0] != '0') {
+        if (window.confirm(msg_arr[0])) {
+          $.ajax({
+            url: '<?php echo tep_href_link(FILENAME_SHOPPING_CART, 'action=delete_products_op', 'SSL');?>',     
+            data:'d_op_list='+msg_arr[1], 
+            type: 'POST', 
+            async: false,
+            success: function(msg) {
+              window.location.href = '<?php echo tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL');?>'; 
+            }
+          }); 
+        }
+      } else {
+        document.forms.cart_quantity.submit(); 
+      }
+    }
+  }); 
+}
 function dbc2sbc(str){   
   var result = '';   
   for (i=0 ; i<str.length; i++)   {   
@@ -151,7 +200,11 @@ function money_update(objid, targ, origin_qty, origin_small)
       old_option_pri = old_option_price.slice(-1);
       old_option_price_info =  old_option_price.slice(0, -1).replace(/,/g, '');
       new_option_price = Number(hop_array[hop_num])*Number(obj.value); 
-      $(this).html('<i>' + new_option_price + old_option_pri + '</i>');
+      if (new_option_price < 0) {
+        $(this).html('<i><font color="#ff0000">' + (0 - new_option_price) + '</font>' + old_option_pri + '</i>');
+      } else {
+        $(this).html('<i>' + new_option_price + old_option_pri + '</i>');
+      }
       hop_num++; 
     }
   });
@@ -216,7 +269,11 @@ function money_blur_update(objid, o_num, old_small)
       old_option_pri = old_option_price.slice(-1);
       old_option_price_info =  old_option_price.slice(0, -1).replace(/,/g, '');
       new_option_price = Number(hop_array[hop_num])*Number(obj.value); 
-      $(this).html('<i>' + new_option_price + old_option_pri + '</i>');
+      if (new_option_price < 0) {
+        $(this).html('<i><font color="#ff0000">' + (0 - new_option_price) + '</font>' + old_option_pri + '</i>');
+      } else {
+        $(this).html('<i>' + new_option_price + old_option_pri + '</i>');
+      }
       hop_num++; 
     }
   });
@@ -509,7 +566,8 @@ if (!empty($_SESSION['history_url'])) {
                     
                   </td>
                   <td align="left" class="main">
-  <input type="submit" name="checkout" value="" class="shopping_cart_checkout">
+  <input type="button" name="checkout_op" value="" class="shopping_cart_checkout" onclick="check_op_products();">
+  <input type="hidden" name="checkout" value=""> 
                   </td>
                 </tr>
                 <tr>

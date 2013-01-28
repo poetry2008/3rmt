@@ -1479,18 +1479,15 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
           while($show_option_row_item = tep_db_fetch_array($option_item_order_query)){
             $all_show_option_id[] = $show_option_row_item['id'];
           }
+          $op_include_array = array(); 
           for ($j = 0; $j < $k; $j++) {
             if (is_array($order->products[$i]['attributes'][$j]['option_info'])) {
-            $all_show_option[$order->products[$i]['attributes'][$j]['option_item_id']] =
-              $order->products[$i]['attributes'][$j];
-              /*
-              echo '<br><nobr>&nbsp; - ' .  $order->products[$i]['attributes'][$j]['option_info']['title'] . ': ' . str_replace(array("<br>", "<BR>"), "",$order->products[$i]['attributes'][$j]['option_info']['value']);
-              */
+              $all_show_option[$order->products[$i]['attributes'][$j]['option_item_id']] = $order->products[$i]['attributes'][$j];
             }
-            //if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
           }
           // new option list 
           foreach($all_show_option_id as $t_item_id){
+            $op_include_array[] = $all_show_option[$t_item_id]['id']; 
             if (is_array($all_show_option[$t_item_id]['option_info'])) {
               echo '<table><tr><td valign="top">-&nbsp; </td><td>' .  $all_show_option[$t_item_id]['option_info']['title'] . ': ' .  str_replace(array("<br>", "<BR>"), "",$all_show_option[$t_item_id]['option_info']['value']);
               if ($all_show_option[$t_item_id]['price'] != '0'){
@@ -1503,7 +1500,19 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               echo '</td></tr></table>';
             }
           }
-
+          foreach ($order->products[$i]['attributes'] as $ex_key => $ex_value) {
+            if (!in_array($ex_value['id'], $op_include_array)) {
+              echo '<table><tr><td valign="top">-&nbsp; </td><td>' .  $ex_value['option_info']['title'] . ': ' .  str_replace(array("<br>", "<BR>"), "",$ex_value['option_info']['value']);
+              if ($ex_value['price'] != '0'){
+                if ($ex_value['price'] < 0) {
+                  echo ' (<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '',$currencies->format($ex_value['price'], true, $order->info['currency'], $order->info['currency_value'])) . '</font>'.TEXT_MONEY_SYMBOL.')';
+                } else {
+                  echo ' (' .$currencies->format($ex_value['price'], true, $order->info['currency'], $order->info['currency_value']) . ')';
+                }
+              }
+              echo '</td></tr></table>';
+            }
+          }
         }
 
       if ( DISPLAY_PRICE_WITH_TAX == 'true' ) {

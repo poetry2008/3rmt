@@ -2225,12 +2225,16 @@ require("includes/note_js.php");
       }
       $op_info_str = implode('|||',$all_show_option_id_array); 
      }
+    $less_op_single = tep_check_less_option_product($orders_products_id, true);  
     $RowStyle = "dataTableContent";
     echo '    <tr class="dataTableRow">' . "\n" .
          '      <td class="' . $RowStyle . '" align="left" valign="top" width="6%">'
          . "<input type='hidden' name='update_products_real_quantity[$orders_products_id]' id='update_products_real_quantity_$orders_products_id' value='1'><input type='hidden' id='update_products_qty_$orders_products_id' value='" .  $order->products[$i]['qty'] . "'><input type='text' class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' onkeyup='clearLibNum(this);recalc_preorder_price(\"".$oID."\", \"".$orders_products_id."\", \"1\", \"".$op_info_str."\");' size='2' value='" . (isset($_SESSION['preorder_products'][$_GET['oID']]['qty']) ? $_SESSION['preorder_products'][$_GET['oID']]['qty'] : $order->products[$i]['qty']) . "'>&nbsp;x</td>\n" . 
          '      <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input name='update_products[$orders_products_id][name]' size='64' id='update_products_name_$orders_products_id' type='hidden' value='" . $order->products[$i]['name'] . "'>\n" . 
        '      &nbsp;&nbsp;';
+    if ($less_op_single) {
+      echo '<br><font color="#ff0000">'.NOTICE_LESS_PRODUCT_OPTION_TEXT.'</font>'; 
+    }
     // Has Attributes?
     $op_info_str = '';
     if ($order->products[$i]['attributes'] && sizeof($order->products[$i]['attributes']) > 0) {
@@ -2251,6 +2255,7 @@ require("includes/note_js.php");
       $option_item_order_query = tep_db_query($option_item_order_sql);
       $item_type_array = array();
       $item_option_array = array();
+      $op_include_array = array(); 
       while($show_option_row_item = tep_db_fetch_array($option_item_order_query)){
         $all_show_option_id[] = $show_option_row_item['id'];
         $item_type_array[$show_option_row_item['id']] = $show_option_row_item['item_type'];
@@ -2262,6 +2267,7 @@ require("includes/note_js.php");
       }
       echo '<div id="popup_window" class="popup_window"></div>';
       foreach($all_show_option_id as $t_item_id){
+        $op_include_array[] = $all_show_option[$t_item_id]['id']; 
         $item_type = $item_type_array[$t_item_id]; 
         $item_option_string = $item_option_array[$t_item_id];
         $item_option_string_array = unserialize($item_option_string);
@@ -2300,21 +2306,31 @@ require("includes/note_js.php");
         $item_default_value = tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;")) == '' ? TEXT_UNSET_DATA : tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;"));
         echo '<br><div class="order_option_width">&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' . tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;"))."<input type='hidden' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' value='" .  tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;")) . "'>: " . 
            '</div><div class="order_option_value">' . 
-           "<a onclick='popup_window(this,\"".$item_type."\",\"".tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;"))."\",\"".$item_list."\");' href='javascript:void(0);'><u>".$item_default_value."</u></a><input type='hidden' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' value='" .  tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;"));
-        //if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
+           "<a ".((!$less_op_single)?"onclick='popup_window(this,\"".$item_type."\",\"".tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;"))."\",\"".$item_list."\");'":'')." href='javascript:void(0);'><u>".$item_default_value."</u></a><input type='hidden' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' value='" .  tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;"));
         echo "'></div></div>";
         echo '<div class="order_option_price">';
         echo "<input type='text' size='9' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".(isset($_SESSION['preorder_products'][$_GET['oID']]['attr'][$orders_products_attributes_id]) ? $_SESSION['preorder_products'][$_GET['oID']]['attr'][$orders_products_attributes_id] : (int)$all_show_option[$t_item_id]['price'])."' onkeyup=\"clearNewLibNum(this);recalc_preorder_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."');\">"; 
         echo TEXT_MONEY_SYMBOL; 
-        //if ($order->products[$i]['attributes'][$j]['price'] != '0') {
-          //echo ' ('.$currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty']).')'; 
-        //}
         echo '</div>'; 
         echo '</i></div>';
         }
-
       }
-      
+      foreach ($order->products[$i]['attributes'] as $ex_key => $ex_value) {
+        if (!in_array($ex_value['id'], $op_include_array)) {
+          echo '<br>';
+          echo '<div class="order_option_width">&nbsp;<i>';
+          echo '<div class="order_option_info">';
+          echo '<div class="order_option_title"> - '.tep_parse_input_field_data($ex_value['option_info']['title'], array("'" => "&quot;"))."<input type='hidden' name='update_products[".$orders_products_id."][attributes][".$ex_value['id']."][option]' value='".tep_parse_input_field_data($ex_value['option_info']['title'], array("'" => "&quot;"))."'>".'</div>';
+          echo "<div class=\"order_option_value\"><a href=\"javascript:void(0);\"><u>".$ex_value['option_info']['value']."</u></a><input type='hidden' name='update_products[$orders_products_id][attributes][".$ex_value['id']."][value]' value='".tep_parse_input_field_data($ex_value['option_info']['value'], array("'" => "&quot;"))."'></div>";
+          echo '</div>'; 
+          echo '<div class="order_option_price">';
+          $tmp_op_price = (isset($_SESSION['preorder_products'][$_GET['oID']]['attr'][$ex_value['id']]))?$_SESSION['preorder_products'][$_GET['oID']]['attr'][$ex_value['id']]:(int)$ex_value['price']; 
+          echo "<input type='text' size='9' name='update_products[$orders_products_id][attributes][".$ex_value['id']."][price]' value='".$tmp_op_price."' onkeyup=\"clearNewLibNum(this);recalc_preorder_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."');\">"; 
+          echo TEXT_MONEY_SYMBOL; 
+          echo '</div>'; 
+          echo '</i></div>';
+        }
+      }
     } else {
       $all_show_option_id = array();
       $all_show_option = array();

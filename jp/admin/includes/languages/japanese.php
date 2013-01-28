@@ -755,3 +755,4 @@ define('TEXT_TIMEOUT_RELOGIN','無操作が一定時間を超えた為、自動�
 define('TEXT_PREORDER_ENSURE_DATE', '確保期限：');
 define('TEXT_PREORDER_ID_NUM', '予約番号：');
 define('TEXT_PREORDER_DATE_TEXT', '予約日：');
+define('NOTICE_LESS_PRODUCT_OPTION_TEXT', '商品の登録内容が更新されています。<br>この商品を変更したい場合は、削除してから再度追加してください。');

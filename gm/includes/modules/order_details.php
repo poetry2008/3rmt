@@ -198,7 +198,11 @@ height:2px; border-top:none; border-left:none; border-right:none; margin:10px
     
     if ($opa_value['price'] != 0) {
           if (!strstr($PHP_SELF, FILENAME_ACCOUNT_HISTORY_INFO)) {
-            echo '<br><small><i>' . $currencies->display_price($opa_value['price'], tep_get_tax_rate($products[$i]['tax_class_id']), $products[$i]['quantity']) . '</i></small>';
+            if ($opa_value['price'] < 0) {
+              echo '<br><small><i><font color="#ff0000">' .  str_replace(JPMONEY_UNIT_TEXT, '', $currencies->display_price($opa_value['price'], tep_get_tax_rate($products[$i]['tax_class_id']), $products[$i]['quantity'])) . '</font>'.JPMONEY_UNIT_TEXT.'</i></small>';
+            } else {
+              echo '<br><small><i>' . $currencies->display_price($opa_value['price'], tep_get_tax_rate($products[$i]['tax_class_id']), $products[$i]['quantity']) . '</i></small>';
+            }
           } else {
             echo '<br><small><i>' . $currencies->display_price($opa_value['price'], $products[$i]['tax'], $products[$i]['quantity']) . '</i></small>';
           }

@@ -3437,6 +3437,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       }
       $orders_products_id = $order->products[$i]['orders_products_id'];
       $all_p_info_array[] = $orders_products_id;  
+      $is_less_option = tep_check_less_option_product($orders_products_id); 
       $RowStyle = "dataTableContent";
       $order->products[$i]['qty'] = isset($_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['qty']) ? $_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['qty'] : $order->products[$i]['qty']; 
       echo '    <tr class="dataTableRow" id="products_list_'.$orders_products_id.'">' . "\n" .
@@ -3448,6 +3449,9 @@ if (($action == 'edit') && ($order_exists == true)) {
         $order->products[$i]['qty'] . "'><input type='text' class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" .  (isset($_POST['update_products'][$orders_products_id]['qty'])?$_POST['update_products'][$orders_products_id]['qty']:$order->products[$i]['qty']) . "' onkeyup='clearLibNum(this);recalc_order_price(\"".$oID."\", \"".$orders_products_id."\", \"2\", \"".$op_info_str."\",\"".$orders_products_list."\");price_total(\"".TEXT_MONEY_SYMBOL."\");;'>&nbsp;<input type='button' value='".IMAGE_DELETE."' onclick=\"delete_products( '".$orders_products_id."', '".TEXT_MONEY_SYMBOL."','".$customer_guest['is_calc_quantity']."');recalc_order_price('".$oID."', '".$orders_products_id."', '2', '".$op_info_str."','".$orders_products_list."');\">&nbsp;x</td>\n" . 
         '      <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input name='update_products[$orders_products_id][name]' size='64' id='update_products_name_$orders_products_id' type='hidden' value='" . $order->products[$i]['name'] . "'>\n" . 
         '      &nbsp;&nbsp;';
+      if ($is_less_option) {
+        echo '<br><font color="#ff0000">'.NOTICE_LESS_PRODUCT_OPTION_TEXT.'</font>'; 
+      }
       // Has Attributes?
       $op_info_str = '';
       if ($order->products[$i]['attributes'] && sizeof($order->products[$i]['attributes']) > 0) {
@@ -3468,6 +3472,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       $option_item_order_query = tep_db_query($option_item_order_sql);
       $item_type_array = array();
       $item_option_array = array(); 
+      $op_include_array = array(); 
       while($show_option_row_item = tep_db_fetch_array($option_item_order_query)){
         $all_show_option_id[] = $show_option_row_item['id'];
         $item_type_array[$show_option_row_item['id']] = $show_option_row_item['item_type'];
@@ -3483,6 +3488,7 @@ if (($action == 'edit') && ($order_exists == true)) {
           $order->products[$i]['attributes'][$j];
       }
       foreach($all_show_option_id as $t_item_id){
+        $op_include_array[] = $all_show_option[$t_item_id]['id'];
         $item_type = $item_type_array[$t_item_id]; 
         $item_option_string = $item_option_array[$t_item_id];
         $item_option_string_array = unserialize($item_option_string);
@@ -3521,7 +3527,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         echo '<br><div class="order_option_width">&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' 
           .tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;"))."<input type='hidden' onkeyup='recalc_order_price(\"".$oID."\", \"".$orders_products_id."\", \"2\", \"".$op_info_str."\",\"".$orders_products_list."\");price_total(\"".TEXT_MONEY_SYMBOL."\");' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' value='" .  (isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'])?tep_parse_input_field_data($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'], array("'"=>"&quot;")):tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;"))) . "'>" .
           '</div><div class="order_option_value">: ' .  
-          "<a onclick='popup_window(this,\"".$item_type."\",\"".tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;"))."\",\"".$item_list."\")' href='javascript:void(0);'><u>".$default_value."</u></a><input type='hidden' onkeyup='recalc_order_price(\"".$oID."\", \"".$orders_products_id."\", \"2\", \"".$op_info_str."\",\"".$orders_products_list."\");price_total(\"".TEXT_MONEY_SYMBOL."\");' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' value='" .  (isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['value'])?tep_parse_input_field_data($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['value'], array("'"=>"&quot;")):tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;")));
+          "<a ".((!$is_less_option)?"onclick='popup_window(this,\"".$item_type."\",\"".tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;"))."\",\"".$item_list."\")'":'')." href='javascript:void(0);'><u>".$default_value."</u></a><input type='hidden' onkeyup='recalc_order_price(\"".$oID."\", \"".$orders_products_id."\", \"2\", \"".$op_info_str."\",\"".$orders_products_list."\");price_total(\"".TEXT_MONEY_SYMBOL."\");' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' value='" .  (isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['value'])?tep_parse_input_field_data($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['value'], array("'"=>"&quot;")):tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;")));
           //if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
           echo "'></div></div>";
           echo '<div class="order_option_price">'; 
@@ -3529,6 +3535,19 @@ if (($action == 'edit') && ($order_exists == true)) {
           echo TEXT_MONEY_SYMBOL; 
           echo '</div>'; 
           echo '</i></div>';
+          }
+        }
+        foreach ($order->products[$i]['attributes'] as $ex_key => $ex_value) {
+          if (!in_array($ex_value['id'], $op_include_array)) {
+             echo '<br>';
+             echo '<div class="order_option_width">&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - '.tep_parse_input_field_data($ex_value['option_info']['title'], array("'"=>"&quot;"));
+             echo "<input type='hidden' class='option_input_width' name='update_products[".$orders_products_id."][attributes][".$ex_value['id']."][option]' value='".(isset($_POST['update_products'][$orders_products_id]['attributes'][$ex_value['id']]['option'])?:$ex_value['option_info']['title'])."'></div><div class=\"order_option_value\">: <a href=\"javascript:void(0);\"><u>".$ex_value['option_info']['value']."</u></a><input type='hidden' name='update_products[".$orders_products_id."][attributes][".$ex_value['id']."][value]'class='option_input_width' value='".$ex_value['option_info']['value']."'></div></div>";
+             echo '<div class="order_option_price">';
+             $tmp_op_price = (int)(isset($_POST['update_products'][$orders_products_id]['attributes'][$ex_value['id']]['price'])?$_POST['update_products'][$orders_products_id]['attributes'][$ex_value['id']]['price']:$ex_value['price']);   
+             echo "<input type='text' size='9' name='update_products[".$orders_products_id."][attributes][".$ex_value['id']."][price]' value='".$tmp_op_price."' onkeyup=\"clearLibNum(this);recalc_order_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."','".$orders_products_list."');price_total('".TEXT_MONEY_SYMBOL."');\">";   
+             echo TEXT_MONEY_SYMBOL; 
+             echo '</div>'; 
+             echo '</i></div>'; 
           }
         }
       }

@@ -475,4 +475,5 @@ define('TEXT_TIME_LINK', 'から');
 define('TEXT_JAVASCRIPT_ERROR','JavaScriptまたはCookieの設定がオンになっていません。お手数ですが設定を「オン」にして、ご利用ください。<br>※ 設定がオフになっていますと、ご利用いただけないサービスがあります。');
 define('JUMP_PAGE_TEXT', 'ページへ');
 define('JUMP_PAGE_BUTTON_TEXT', '移動');
+define('NOTICE_LESS_PRODUCT_OPTION_TEXT', "%sの商品情報に更新がありました。\r\nショッピングカートに商品が残っている場合は、削除する必要があります。\r\nお手数ですが、再度最初からお手続きをお願いいたします。");
 ?>
