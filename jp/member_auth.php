@@ -105,7 +105,7 @@
               <td>
               <table class="information_table">
                 <tr>
-                	<td colspan="3"><img src="images/design/mail_top.gif" alt=""></td>
+                <td colspan="3"><img src="images/design/mail_top.gif" alt=""></td>
                 </tr>
                 <tr>
                   <td colspan="3" class="information_color">
@@ -124,7 +124,8 @@
                   <b><?php echo INPUT_SEND_MAIL;?>:</b> 
                   </td>
                   <td width="360">
-                  <?php echo tep_draw_input_field('cemail', (isset($_POST['cemail'])?$_POST['cemail']:$cus_email),'size="56"');?> 
+                  <?php echo tep_draw_input_field('cemail',
+                      (isset($_POST['cemail'])?$_POST['cemail']:$cus_email),'size="56"');?> 
                   </td>
                   <td align="right">
                   <?php echo tep_image_submit('button_send_mail.gif', SENDMAIL_BUTTON);?>

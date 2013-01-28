@@ -953,17 +953,22 @@ Information
 	margin:10px auto 5px auto;
 	clear:both;
 	padding:10px 0;
+	line-height:18px;
+}
+.footer_address{
+	font-style: normal;
+    letter-spacing: 0.5mm;
+    line-height: 18px;
+    margin-top: -3px;
 }
 .footer_contacts{
-	margin-top: -3px;
-	*margin-top:0;
-	letter-spacing:0.5mm;
+	letter-spacing:0.6mm;
 	font-style: normal;
     line-height: 18px;
-  
 }
 .footer_contacts a{
 	color: #fff;
+	margin-left:8px;
 }
 /*link color*/
 .product_listing_content a{

@@ -219,7 +219,9 @@ margin-right:15px;
 .footer_link {
   /*  background: url(../images/design/footer_xian.gif) repeat-x scroll 0 0 transparent;*/
     height: 24px;
-	margin:-15px 0 12px 0;
+	margin:-15px 0 0 0;
+	*margin:0;
+	line-height:19px;
 }
 .footer_link a{     color: #FFFFFF;
     font-size: 12px;

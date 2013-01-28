@@ -103,6 +103,7 @@
 <?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <div id="layout" class="yui3-u">
 <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+<?php include('includes/search_include.php');?>
 <div id="main-content">
 <h2>
 <?php 
@@ -134,7 +135,7 @@
       <table border="0" width="100%" cellspacing="0" cellpadding="0" class="box_des">
         <tr>
           <td>
-            <table class="box_des" width="100%">
+           <table border="0" cellpadding="0" cellspacing="0" width="100%" class="content_account">
               <tr>
                 <td colspan="3" align="center"><img src="images/design/mail_top.gif" alt=""></td> 
               </tr>

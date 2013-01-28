@@ -1002,20 +1002,27 @@ Information
 --------------------------- */
 #footer {
 	width: 900px;
-	font-size: 10px;
+	font-size: 12px;
 	text-align: center;
 	margin:5px auto;
+	padding-top:15px;
 	clear:both;
 	height:85px;
+	line-height:20px;
 	background:url(../../../images/design/box/footer_bg.gif) repeat-x;
+	letter-spacing:0.5mm;
 }
 .footer_contacts{
 	letter-spacing:0.5mm;
-	padding-top:20px;
-	line-height:21px;
+	line-height:20px;
+	font-size:12px;
 }
 .footer_contacts a{
 	color: #0572A9;
+	font-weight:bold;
+}
+.footer_contacts a:hover{
+	color: #64a9f3;
 	font-weight:bold;
 }
 /*link color*/

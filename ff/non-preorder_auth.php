@@ -2,7 +2,7 @@
 /*
   $Id$
 */
-
+  
   require('includes/application_top.php');
   
   require(DIR_WS_LANGUAGES.$language.'/non-preorder_auth.php');
@@ -131,7 +131,7 @@
             <td>
               <table class="captcha_comment">
                 <tr>
-                	<td colspan="3"><img src="images/design/mail_top.gif" alt=""></td>
+                  <td colspan="3"><img src="images/design/mail_top.gif" alt=""></td>
                 </tr>
                 <tr>
                   <td colspan="3" class="information_color">
@@ -167,7 +167,7 @@
             </td>
           </tr>
           <tr>
-              <td align="center"><img src="images/design/mail_bottom.gif" alt=""></td>
+            <td align="center"><img src="images/design/mail_bottom.gif" alt=""></td>
             </tr>
           <tr>
             <td>

@@ -176,8 +176,8 @@ color:#AE0E30;
 }
 .footer_5 {
 	width: 900px;
-	height:81px;
-	background: url(.../images/design/footer_07.gif) repeat-x;
+	height:106px;
+	background: url(/images/design/box/footer_07.gif) repeat-x;
 }
 .footer_games_box {
 	width: 898px;
@@ -200,8 +200,7 @@ color:#AE0E30;
 	color: #000;
 }
 .footer_contacts {
-	margin-top: 2px;
- *margin-top: 2px;
+	margin-top: 4px;
 	color:#000000;
 	line-height:18px;
 }

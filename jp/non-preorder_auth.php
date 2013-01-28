@@ -160,7 +160,7 @@
                   </td>
                   <td width="360">
                   <?php echo tep_draw_input_field('pemail',
-                      (isset($_POST['pemail'])?$_POST['pemail']:$pe_email),'size="58"');?> 
+                      (isset($_POST['pemail'])?$_POST['pemail']:$pe_email),'size="56"');?> 
                   </td>
                   <td align="right">
                   <?php echo tep_image_submit('button_send_mail.gif', 'mail');?>

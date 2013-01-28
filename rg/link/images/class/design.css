@@ -997,16 +997,20 @@ Information
 	font-size: 10px;
 	text-align: center;
 	margin:5px auto;
+	padding-top:15px;
 	clear:both;
 	height:85px;
+	line-height:20px;
 	background:url(../../../images/design/box/footer_bg.gif) repeat-x;
+	letter-spacing:0.5mm;
 }
 .footer_contacts{
 	letter-spacing:0.5mm;
-	padding-top:25px;
+	line-height:20px;
 }
 .footer_contacts a{
 	color: #AE0E32;
+	margin-left:10px;
 }
 /*link color*/
 .product_listing_content a{

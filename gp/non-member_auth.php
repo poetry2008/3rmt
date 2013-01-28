@@ -1,7 +1,6 @@
 <?php
 /*
   $Id$
-
 */
 
   require('includes/application_top.php');
@@ -104,7 +103,7 @@
         <?php
           echo tep_draw_form('form', tep_href_link('non-member_auth.php', 'action=send'.(isset($_GET['cu'])?'&cu='.$_GET['cu']:''), 'SSL')); 
         ?>
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size:12px;"> 
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" class="product_info_box"> 
         <?php
         if ($_GET['cu'] == 1) {
         ?>
@@ -119,15 +118,20 @@
         <tr>
           <td>
           <table>
+              <tr>
+                <td colspan="3"><img src="images/design/mail_top.gif" alt=""></td>
+              </tr>
             <tr>
-                <td style="color: rgb(255, 0, 0);" colspan="3">
-                <font size="3"><b><?php echo sprintf(NOTICE_SEND_TO_EMAIL_TEXT, (isset($_post['cemail'])?$_post['cemail']:$cus_email));;?></b></font>
+                <td class="information_color" colspan="3">
+                <?php echo sprintf(NOTICE_SEND_TO_EMAIL_TEXT, (isset($_post['cemail'])?$_post['cemail']:$cus_email));;?>
                 </td>
               </tr>
               <tr>
-                <td style="font-size:12px;" colspan="3">
+                <td colspan="3" class="main">
+				<br>
                 <?php echo ACTIVE_INFO_FRONT_COMMENT;?>
                 <br>
+				<br>
                 </td>
               </tr>
             <tr>
@@ -145,11 +149,21 @@
           </td>
         </tr>
         <tr>
-          <td>
+          <td class="main" colspan="3">
+		  <br>
           <?php echo ACTIVE_INFO_END_COMMENT;?> 
           </td>
         </tr>
+          <tr>
+            <td colspan="3" align="center"><img src="images/design/mail_bottom.gif" alt=""></td>
+          </tr>
         <?php }?> 
+          <tr>
+            <td colspan="3" class="main">
+            <?php echo ACTIVE_INFO_EMAIL_READ;?> 
+            </td>
+          </tr>
+ 
         <tr>
           <td align="right"><br>
           <?php 

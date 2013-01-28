@@ -1908,7 +1908,8 @@ border:1px solid #CAC6BE;
  table-layout:fixed;
  width:690px;
 }
-.active_email input{ width:540px;}
+.active_email{width:77%;}
+.active_email input{ width:100%;}
 .product_name{ font-weight:bold;}
 .product_num{ font-weight:bold; float:left;}
 .product_num1{ float:left;}
@@ -1935,7 +1936,7 @@ border:1px solid #CAC6BE;
 .preorser_formArea{ background-color:#fff; font-size:13px; }
 .preorser_formArea td{ background-color:#373737; padding-left:2px; line-height:25px;}
 .formArea_td_info { width:530px\9; color:#FFFFFF; font-size:12px; padding:0; margin:0;}
-.active_email_name { font-size:11px;}
+.active_email_name { font-size:11px; width:80px;}
 .checkout_payment_info{
 	/*border:1px solid #ccc;*/
 	background-color:#393838;
@@ -2092,6 +2093,8 @@ border:1px solid #CAC6BE;
 	vertical-align:top;
 	color:#FFFFFF;
 	font-weight:bold;
+	width:106px;
+	*width:100px;
 }
 .option_name td{ padding:3px 5px;}
 .option_input{

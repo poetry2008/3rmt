@@ -23,8 +23,10 @@
         <!-- left_navigation_eof --> </td> 
       <!-- body_text --> 
       <td valign="top" id="contents"> 
-        <h1 class="pageHeading"><img align="top" alt="" src="images/menu_ico_a.gif"><?php echo HEADING_TITLE; ?></h1> 
-        
+       <div class="pageHeading">
+        <img align="top" alt="" src="images/menu_ico_a.gif">
+        <h1> <?php echo HEADING_TITLE; ?></h1> 
+       </div> 
         <div class="comment"> 
           <table border="0" cellspacing="0" cellpadding="0" class="msg"> 
           <tr>

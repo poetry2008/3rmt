@@ -990,23 +990,26 @@ Information
 	width: 900px;
 	font-size: 10px;
 	text-align: center;
-	margin:0 auto 5px auto;
+	margin:10px auto 0px auto;
 	clear:both;
-	height:85px;
+	height:89px;
 	background:url(../../../images/design/box/footer_bg.gif) repeat-x;
 	color: #FFFFFF;
+}
+.footer_address{
     letter-spacing: 0.5mm;
-    line-height: 20px;
-    padding-bottom: 16px;
-	padding-top:15px;
+    padding-top: 9px;
 }
 .footer_contacts{
-	letter-spacing:0.5mm;
-	padding-top:25px;
+	letter-spacing:0.6mm;
+	padding-top:3px;
+	line-height:19px;
 }
 .footer_contacts a{
-	color: #AE0E32;
+	color: #ccff00;
+	font-size:12px;
 }
+.footer_contacts a:hover{ color:#FFFFFF;}
 /*link color*/
 .product_listing_content a{
 	color: #237023;

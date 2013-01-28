@@ -59,7 +59,7 @@
             <td colspan="3" align="center"><img src="images/design/send_mail_bottom.gif" alt=""></td>
           </tr>
           <tr>
-            <td>
+            <td colspan="3" class="main">
             <?php echo ACTIVE_INFO_EMAIL_READ;?> 
             </td>
           </tr>

@@ -1166,11 +1166,40 @@ if($address_error == false){
             $payment_modules->admin_deal_mailoption($mailoption, $oID, payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE)); 
             $mailoption['ADD_INFO'] = isset($_SESSION['payment_bank_info'][$oID]['add_info'])?$_SESSION['payment_bank_info'][$oID]['add_info']:'';
             unset($_SESSION['orderinfo_mail_use']);
+            $totals_email_str = '';
+            $print_totals_email_str = '';
+            $totals_email_i = 0;
+            foreach($update_totals as $update_total_key=>$update_total_value){
+
+              if($update_total_value['class'] == 'ot_custom' && trim($update_total_value['title']) != '' && trim($update_total_value['value']) != ''){
+                $totals_email_i = $update_total_key;
+              }
+            }
+            foreach($update_totals as $update_totals_key=>$update_totals_value){
+
+              if($update_totals_value['class'] == 'ot_custom' && trim($update_totals_value['title']) != '' && trim($update_totals_value['value']) != ''){
+                if($totals_email_i != $update_totals_key){
+                  $totals_email_str .= '▼'.$update_totals_value['title'].'：'.$currencies->format($update_totals_value['value'])."\n";
+                }else{
+                  $totals_email_str .= '▼'.$update_totals_value['title'].'：'.str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($update_totals_value['value'])); 
+                }
+              }
+            }
+            foreach($update_totals as $update_totals_key=>$update_totals_value){
+
+              if($update_totals_value['class'] == 'ot_custom' && trim($update_totals_value['title']) != '' && trim($update_totals_value['value']) != ''){
+                if($totals_email_i != $update_totals_key){
+                  $print_totals_email_str .= $update_totals_value['title'].'：'.$currencies->format($update_totals_value['value'])."\n";
+                }else{
+                  $print_totals_email_str .= $update_totals_value['title'].'：'.str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($update_totals_value['value'])); 
+                }
+              }
+            }
             $point = $mailpoint;
             if ($point){
-              $mailoption['POINT']            = $point;
+              $mailoption['POINT']            = $point.($totals_email_i != 0 ? TEXT_MONEY_SYMBOL."\n".$totals_email_str : '');
             }else {
-              $mailoption['POINT']            = 0;
+              $mailoption['POINT']            = '0'.($totals_email_i != 0 ? TEXT_MONEY_SYMBOL."\n".$totals_email_str : '');
             }
             $total_mail_fee = $handle_fee;	    
             if(!isset($total_mail_fee)){
@@ -1508,6 +1537,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
       }
   $orders_comments = $pay_type_array[0] == $payment_method || $pay_type_array[2] == $payment_method ? $comment_arr['comment'] : $comments_text;  
   $point = !isset($point) ? 0 : $point;
+  $point = $point.($totals_email_i != 0 ? TEXT_MONEY_SYMBOL."\n".$print_totals_email_str : '');
   $payment_replace = array(
                           tep_db_input(stripslashes($update_customer_name)),
                           $orders_site_name_array['name'],
@@ -1968,7 +1998,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
 
     add_str += '<tr><td class="smallText" align="left"><?php echo EDIT_ORDERS_TOTALDETAIL_READ_ONE;?></td>'
             +'<td class="smallText" align="right"><INPUT type="button" id="button_add" value="<?php echo TEXT_BUTTON_ADD;?>" onclick="add_option();orders_session(\'orders_totals\','+(add_num+1)+');">&nbsp;<input value="" onkeyup="price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');" size="7" name="update_totals['+add_num+'][title]">'
-            +'</td><td class="smallText" align="right"><input id="update_total_'+add_num+'" value="" size="6" onkeyup="clearNoNum(this);price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');" name="update_totals['+add_num+'][value]"><input type="hidden" name="update_totals['+add_num+'][class]" value="ot_custom"><input type="hidden" name="update_totals['+add_num+'][total_id]" value="0"></td>'
+            +'</td><td class="smallText" align="right"><input id="update_total_'+add_num+'" value="" size="6" onkeyup="clearNoNum(this);price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');" name="update_totals['+add_num+'][value]"><input type="hidden" name="update_totals['+add_num+'][class]" value="ot_custom"><input type="hidden" name="update_totals['+add_num+'][total_id]" value="0"><b><?php echo TEXT_MONEY_SYMBOL;?></b></td>'
             +'<td><b><img height="17" width="1" border="0" alt="" src="images/pixel_trans.gif"></b></td></tr>'
             +'<tr id="add_option_total">'+add_option_total_str+'</tr>';
 
@@ -4661,8 +4691,8 @@ if($orders_exit_flag == true){
                 echo '  <tr>' . "\n" .
                   '    <td align="left" class="' . $TotalStyle . '">'.TEXT_CUSTOMER_INPUT.'<font color="red"><b>'.TEXT_REMAINING . $customer_point['point'] . TEXT_SUBTOTAL . $current_point . TEXT_RIGHT_BRACKETS.'</b></font>' . TEXT_INPUT_POSITIVE_NUM . 
                   '    <td align="right" class="' . $TotalStyle . '">' . trim($TotalDetails["Name"]) . '</td>' . "\n" .
-                  '    <td align="right" class="' . $TotalStyle . '" nowrap>−' . "<input name='update_totals[$TotalIndex][value]' id='point_id' onkeyup='clearNoNum(this);price_total(\"".TEXT_MONEY_SYMBOL."\");' size='6' value='" . $TotalDetails["Price"] . "'>" . 
-                  "<input type='hidden' name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . 
+                  '    <td align="right" class="' . $TotalStyle . '" nowrap>−' . "<input name='update_totals[$TotalIndex][value]' id='point_id' onkeyup='clearNoNum(this);price_total(\"".TEXT_MONEY_SYMBOL."\");' size='6' value='" . $TotalDetails["Price"] . "'>
+                  <b>" .TEXT_MONEY_SYMBOL.  "</b><input type='hidden' name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . 
                   "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
                   "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . 
                   "<input type='hidden' name='before_point' value='0'>" . 
@@ -4673,8 +4703,8 @@ if($orders_exit_flag == true){
                 echo '  <tr>' . "\n" .
                   '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_TOTALDETAIL_READ.'</td>' . 
                   '    <td align="right" class="' . $TotalStyle . '">' . trim($TotalDetails["Name"]) . '</td>' . "\n" .
-                  '    <td align="right" class="' . $TotalStyle . '">' . $TotalDetails["Price"] . 
-                  "<input type='hidden' name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . 
+                  '    <td align="right" class="' . $TotalStyle . '">' .  $TotalDetails["Price"] .'<b>'.TEXT_MONEY_SYMBOL. 
+                  "</b><input type='hidden' name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . 
                   "<input type='hidden' name='update_totals[$TotalIndex][value]' size='6' value='" . $TotalDetails["Price"] . "'>" . 
                   "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
                   "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . 
@@ -4691,8 +4721,8 @@ if($orders_exit_flag == true){
               echo '  <tr>' . "\n" .
                 '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_TOTALDETAIL_READ_ONE.'</td>' . 
                 '    <td style="min-width:188px;" align="right" class="' . $TotalStyle . '">' . $button_add ."<input name='update_totals[$TotalIndex][title]' onkeyup='price_total(\"".TEXT_MONEY_SYMBOL."\");' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
-                '    <td align="right" class="' . $TotalStyle . '">' . "<input name='update_totals[$TotalIndex][value]' id='update_total_".$TotalIndex."' onkeyup='clearNoNum(this);price_total(\"".TEXT_MONEY_SYMBOL."\");' size='6' value='" . $TotalDetails["Price"] . "'>" . 
-                "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
+                '    <td align="right" class="' . $TotalStyle . '" style="min-width: 60px;">' . "<input name='update_totals[$TotalIndex][value]' id='update_total_".$TotalIndex."' onkeyup='clearNoNum(this);price_total(\"".TEXT_MONEY_SYMBOL."\");' size='6' value='" . $TotalDetails["Price"] . "'><b>" .TEXT_MONEY_SYMBOL.  "</b>
+                <input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . 
                 '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
                 '   </td>' . "\n" .

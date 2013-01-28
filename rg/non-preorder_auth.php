@@ -111,7 +111,7 @@
       </td>
       
       <td valign="top" id="contents">
-        <div class="pageHeading"><img align="top" alt="img" src="images/menu_ico.gif"><h1><?php echo PREORDER_SUCCESS_UNACTIVE_HEAD_TITLE; ?></h1></div>
+        <div class="pageHeading"><img align="top" alt="img" src="images/menu_ico_a.gif"><h1><?php echo PREORDER_SUCCESS_UNACTIVE_HEAD_TITLE; ?></h1></div>
                 <div class="comment">
       <?php
       if ($error == true) {

@@ -1,7 +1,6 @@
 <?php
 /*
   $Id$
-
 */
 
   require('includes/application_top.php');
@@ -71,7 +70,7 @@
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
       <td valign="top" id="contents"> 
-      <div class="pageHeading"><h1><?php echo HEADING_TITLE ; ?></h1></div> 
+        <h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1> 
         
         <div class="comment"> 
          <?php
@@ -113,7 +112,7 @@
                   </td>
                   <td width="360">
                   <?php echo tep_draw_input_field('cemail',
-                      (isset($_POST['cemail'])?$_POST['cemail']:$cus_email),'size="58"');?> 
+                      (isset($_POST['cemail'])?$_POST['cemail']:$cus_email),'size="56"');?> 
                   </td>
                   <td align="right">
                   <?php echo tep_image_submit('button_send_mail.gif', SENDMAIL_BUTTON);?> 
