@@ -746,4 +746,4 @@ define('TEXT_TIMEOUT_RELOGIN','无操作时间过长，已自动退出。请重�
 define('TEXT_PREORDER_ENSURE_DATE', '确保期限：');
 define('TEXT_PREORDER_ID_NUM', '预约号码：');
 define('TEXT_PREORDER_DATE_TEXT', '预约日期：');
-define('NOTICE_LESS_PRODUCT_OPTION_TEXT', '商品的注册内容被更新了。如果想更改这个商品，请删掉然后再添加。');
+define('NOTICE_LESS_PRODUCT_OPTION_TEXT', '商品信息已变更。如要修改订单中商品信息，请删除当前商品，重新添加后，再修改。');

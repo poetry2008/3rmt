@@ -2333,8 +2333,13 @@ require("includes/note_js.php");
         if(is_array($all_show_option[$t_item_id]['option_info'])){
         $item_default_value = tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;")) == '' ? TEXT_UNSET_DATA : tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;"));
         echo '<br><div class="order_option_width">&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' . tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;"))."<input type='hidden' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' value='" .  tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;")) . "'>: " . 
-           '</div><div class="order_option_value">' . 
-           "<a ".((!$less_op_single)?"onclick='popup_window(this,\"".$item_type."\",\"".tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;"))."\",\"".$item_list."\");'":'')." href='javascript:void(0);'><u>".$item_default_value."</u></a><input type='hidden' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' value='" .  tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;"));
+           '</div><div class="order_option_value">'; 
+        if ($less_op_single) {
+          echo $item_default_value; 
+        } else {
+          echo "<a onclick='popup_window(this,\"".$item_type."\",\"".tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;"))."\",\"".$item_list."\");' href='javascript:void(0);'><u>".$item_default_value."</u></a>";
+        }
+        echo "<input type='hidden' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' value='" .  tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;"));
         echo "'></div></div>";
         echo '<div class="order_option_price">';
         if ($less_op_single) {
@@ -2353,7 +2358,7 @@ require("includes/note_js.php");
           echo '<div class="order_option_width">&nbsp;<i>';
           echo '<div class="order_option_info">';
           echo '<div class="order_option_title"> - '.tep_parse_input_field_data($ex_value['option_info']['title'], array("'" => "&quot;"))."<input type='hidden' name='update_products[".$orders_products_id."][attributes][".$ex_value['id']."][option]' value='".tep_parse_input_field_data($ex_value['option_info']['title'], array("'" => "&quot;"))."'>".'</div>';
-          echo "<div class=\"order_option_value\"><a href=\"javascript:void(0);\"><u>".$ex_value['option_info']['value']."</u></a><input type='hidden' name='update_products[$orders_products_id][attributes][".$ex_value['id']."][value]' value='".tep_parse_input_field_data($ex_value['option_info']['value'], array("'" => "&quot;"))."'></div>";
+          echo "<div class=\"order_option_value\">".$ex_value['option_info']['value']."<input type='hidden' name='update_products[$orders_products_id][attributes][".$ex_value['id']."][value]' value='".tep_parse_input_field_data($ex_value['option_info']['value'], array("'" => "&quot;"))."'></div>";
           echo '</div>'; 
           echo '<div class="order_option_price">';
           $tmp_op_price = (isset($_SESSION['preorder_products'][$_GET['oID']]['attr'][$ex_value['id']]))?$_SESSION['preorder_products'][$_GET['oID']]['attr'][$ex_value['id']]:(int)$ex_value['price']; 
