@@ -3437,7 +3437,12 @@ if (($action == 'edit') && ($order_exists == true)) {
       }
       $orders_products_id = $order->products[$i]['orders_products_id'];
       $all_p_info_array[] = $orders_products_id;  
-      $is_less_option = tep_check_less_option_product($orders_products_id); 
+      $tmp_op_str = substr($orders_products_id, 0, 2);
+      if ($tmp_op_str == 'o_') {
+        $is_less_option = tep_check_less_option_product_by_products_id($order->products[$i]['id'], $order->products[$i]['attributes']); 
+      } else {
+        $is_less_option = tep_check_less_option_product($orders_products_id); 
+      }
       $RowStyle = "dataTableContent";
       $order->products[$i]['qty'] = isset($_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['qty']) ? $_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['qty'] : $order->products[$i]['qty']; 
       echo '    <tr class="dataTableRow" id="products_list_'.$orders_products_id.'">' . "\n" .
@@ -3446,11 +3451,17 @@ if (($action == 'edit') && ($order_exists == true)) {
         name='update_products_real_quantity[$orders_products_id]'
         id='update_products_real_quantity_$orders_products_id' value='1'><input
         type='hidden' id='update_products_qty_$orders_products_id' value='" .
-        $order->products[$i]['qty'] . "'><input type='text' class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" .  (isset($_POST['update_products'][$orders_products_id]['qty'])?$_POST['update_products'][$orders_products_id]['qty']:$order->products[$i]['qty']) . "' onkeyup='clearLibNum(this);recalc_order_price(\"".$oID."\", \"".$orders_products_id."\", \"2\", \"".$op_info_str."\",\"".$orders_products_list."\");price_total(\"".TEXT_MONEY_SYMBOL."\");;'>&nbsp;<input type='button' value='".IMAGE_DELETE."' onclick=\"delete_products( '".$orders_products_id."', '".TEXT_MONEY_SYMBOL."','".$customer_guest['is_calc_quantity']."');recalc_order_price('".$oID."', '".$orders_products_id."', '2', '".$op_info_str."','".$orders_products_list."');\">&nbsp;x</td>\n" . 
+        $order->products[$i]['qty'] . "'>";
+      if ($is_less_option) {
+        echo "<input type='text' class='update_products_qty' style='background: none repeat scroll 0 0 #CCCCCC;' readonly id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" .  (isset($_POST['update_products'][$orders_products_id]['qty'])?$_POST['update_products'][$orders_products_id]['qty']:$order->products[$i]['qty']) . "'>";
+      } else {
+        echo "<input type='text' class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" .  (isset($_POST['update_products'][$orders_products_id]['qty'])?$_POST['update_products'][$orders_products_id]['qty']:$order->products[$i]['qty']) . "' onkeyup='clearLibNum(this);recalc_order_price(\"".$oID."\", \"".$orders_products_id."\", \"2\", \"".$op_info_str."\",\"".$orders_products_list."\");price_total(\"".TEXT_MONEY_SYMBOL."\");'>";
+      }
+      echo "&nbsp;<input type='button' value='".IMAGE_DELETE."' onclick=\"delete_products( '".$orders_products_id."', '".TEXT_MONEY_SYMBOL."','".$customer_guest['is_calc_quantity']."');recalc_order_price('".$oID."', '".$orders_products_id."', '2', '".$op_info_str."','".$orders_products_list."');\">&nbsp;x</td>\n" . 
         '      <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input name='update_products[$orders_products_id][name]' size='64' id='update_products_name_$orders_products_id' type='hidden' value='" . $order->products[$i]['name'] . "'>\n" . 
         '      &nbsp;&nbsp;';
       if ($is_less_option) {
-        echo '<br><font color="#ff0000">'.NOTICE_LESS_PRODUCT_OPTION_TEXT.'</font>'; 
+        echo '<br><font color="#ff0000" size="1">'.NOTICE_LESS_PRODUCT_OPTION_TEXT.'</font>'; 
       }
       // Has Attributes?
       $op_info_str = '';
@@ -3531,7 +3542,11 @@ if (($action == 'edit') && ($order_exists == true)) {
           //if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
           echo "'></div></div>";
           echo '<div class="order_option_price">'; 
-          echo "<input type='text' size='9' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".(int)(isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price'])?$_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price']:$all_show_option[$t_item_id]['price'])."' onkeyup=\"clearLibNum(this);recalc_order_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."','".$orders_products_list."');price_total('".TEXT_MONEY_SYMBOL."');\">";   
+          if ($is_less_option) {
+            echo "<input type='text' size='9' style='background: none repeat scroll 0 0 #CCCCCC' readonly name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".(int)(isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price'])?$_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price']:$all_show_option[$t_item_id]['price'])."'>";   
+          } else {
+            echo "<input type='text' size='9' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".(int)(isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price'])?$_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price']:$all_show_option[$t_item_id]['price'])."' onkeyup=\"clearNewLibNum(this);recalc_order_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."','".$orders_products_list."');price_total('".TEXT_MONEY_SYMBOL."');\">";   
+          }
           echo TEXT_MONEY_SYMBOL; 
           echo '</div>'; 
           echo '</i></div>';
@@ -3544,7 +3559,11 @@ if (($action == 'edit') && ($order_exists == true)) {
              echo "<input type='hidden' class='option_input_width' name='update_products[".$orders_products_id."][attributes][".$ex_value['id']."][option]' value='".(isset($_POST['update_products'][$orders_products_id]['attributes'][$ex_value['id']]['option'])?:$ex_value['option_info']['title'])."'></div><div class=\"order_option_value\">: <a href=\"javascript:void(0);\"><u>".$ex_value['option_info']['value']."</u></a><input type='hidden' name='update_products[".$orders_products_id."][attributes][".$ex_value['id']."][value]'class='option_input_width' value='".$ex_value['option_info']['value']."'></div></div>";
              echo '<div class="order_option_price">';
              $tmp_op_price = (int)(isset($_POST['update_products'][$orders_products_id]['attributes'][$ex_value['id']]['price'])?$_POST['update_products'][$orders_products_id]['attributes'][$ex_value['id']]['price']:$ex_value['price']);   
-             echo "<input type='text' size='9' name='update_products[".$orders_products_id."][attributes][".$ex_value['id']."][price]' value='".$tmp_op_price."' onkeyup=\"clearLibNum(this);recalc_order_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."','".$orders_products_list."');price_total('".TEXT_MONEY_SYMBOL."');\">";   
+             if ($is_less_option) {
+               echo "<input type='text' size='9' style='background: none repeat scroll 0 0 #CCCCCC' readonly name='update_products[".$orders_products_id."][attributes][".$ex_value['id']."][price]' value='".$tmp_op_price."'>";   
+             } else {
+               echo "<input type='text' size='9' name='update_products[".$orders_products_id."][attributes][".$ex_value['id']."][price]' value='".$tmp_op_price."' onkeyup=\"clearNewLibNum(this);recalc_order_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."','".$orders_products_list."');price_total('".TEXT_MONEY_SYMBOL."');\">";   
+             }
              echo TEXT_MONEY_SYMBOL; 
              echo '</div>'; 
              echo '</i></div>'; 
@@ -3558,7 +3577,11 @@ if (($action == 'edit') && ($order_exists == true)) {
         tep_display_tax_value($order->products[$i]['tax']) . "<input name='update_products[$orders_products_id][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order->products[$i]['tax']) . "'>" .  '%</td>' . "\n";
 
       $order->products[$i]['price'] = isset($_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['p_price']) ? $_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['p_price'] : $order->products[$i]['price']; 
-      echo '<td class="'.$RowStyle.'" align="right"><input type="text" class="once_pwd" style="text-align:right;" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['p_price'])?$_POST['update_products'][$orders_products_id]['p_price']:$order->products[$i]['price']), 2)).'" onkeyup="clearLibNum(this);recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\', \''.$op_info_str.'\',\''.$orders_products_list.'\');price_total(\''.TEXT_MONEY_SYMBOL.'\');">'.TEXT_MONEY_SYMBOL.'</td>'; 
+      if ($is_less_option) {
+        echo '<td class="'.$RowStyle.'" align="right"><input type="text" class="once_pwd" style="text-align:right;background: none repeat scroll 0 0 #CCCCCC" readonly name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['p_price'])?$_POST['update_products'][$orders_products_id]['p_price']:$order->products[$i]['price']), 2)).'">'.TEXT_MONEY_SYMBOL.'</td>'; 
+      } else {
+        echo '<td class="'.$RowStyle.'" align="right"><input type="text" class="once_pwd" style="text-align:right;" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['p_price'])?$_POST['update_products'][$orders_products_id]['p_price']:$order->products[$i]['price']), 2)).'" onkeyup="clearLibNum(this);recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\', \''.$op_info_str.'\',\''.$orders_products_list.'\');price_total(\''.TEXT_MONEY_SYMBOL.'\');">'.TEXT_MONEY_SYMBOL.'</td>'; 
+      }
 
       $order->products[$i]['final_price'] = isset($_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['final_price']) ? $_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['final_price'] : $order->products[$i]['final_price']; 
       echo  '<td class="' . $RowStyle . '" align="right">' . "<input type='hidden' style='text-align:right' class='once_pwd' name='update_products[$orders_products_id][final_price]' size='9' value='" .  tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['final_price'])?$_POST['update_products'][$orders_products_id]['final_price']:$order->products[$i]['final_price']),2)) .  "'" .' onkeyup="clearNoNum(this);recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'3\',\''.$op_info_str.'\',\''.$orders_products_list.'\');price_total(\''.TEXT_MONEY_SYMBOL.'\');" >'.  

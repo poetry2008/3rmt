@@ -2247,11 +2247,21 @@ require("includes/note_js.php");
     $RowStyle = "dataTableContent";
     echo '    <tr class="dataTableRow">' . "\n" .
          '      <td class="' . $RowStyle . '" align="left" valign="top" width="6%">'
-         . "<input type='hidden' name='update_products_real_quantity[$orders_products_id]' id='update_products_real_quantity_$orders_products_id' value='1'><input type='hidden' id='update_products_qty_$orders_products_id' value='" .  $order->products[$i]['qty'] . "'><input type='text' class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' onkeyup='clearLibNum(this);recalc_preorder_price(\"".$oID."\", \"".$orders_products_id."\", \"1\", \"".$op_info_str."\");' size='2' value='" . (isset($_SESSION['preorder_products'][$_GET['oID']]['qty']) ? $_SESSION['preorder_products'][$_GET['oID']]['qty'] : $order->products[$i]['qty']) . "'>&nbsp;x</td>\n" . 
+         . "<input type='hidden'
+         name='update_products_real_quantity[$orders_products_id]'
+         id='update_products_real_quantity_$orders_products_id' value='1'><input
+         type='hidden' id='update_products_qty_$orders_products_id' value='" .
+         $order->products[$i]['qty'] . "'>";
+    if ($less_op_single) {
+      echo "<input type='text' class='update_products_qty' style='background: none repeat scroll 0 0 #CCCCCC' readonly id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" . (isset($_SESSION['preorder_products'][$_GET['oID']]['qty']) ?  $_SESSION['preorder_products'][$_GET['oID']]['qty'] : $order->products[$i]['qty']) . "'>";
+    } else {
+      echo "<input type='text' class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' onkeyup='clearLibNum(this);recalc_preorder_price(\"".$oID."\", \"".$orders_products_id."\", \"1\", \"".$op_info_str."\");' size='2' value='" . (isset($_SESSION['preorder_products'][$_GET['oID']]['qty']) ?  $_SESSION['preorder_products'][$_GET['oID']]['qty'] : $order->products[$i]['qty']) . "'>";
+    }
+    echo "&nbsp;x</td>\n" . 
          '      <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input name='update_products[$orders_products_id][name]' size='64' id='update_products_name_$orders_products_id' type='hidden' value='" . $order->products[$i]['name'] . "'>\n" . 
        '      &nbsp;&nbsp;';
     if ($less_op_single) {
-      echo '<br><font color="#ff0000">'.NOTICE_LESS_PRODUCT_OPTION_TEXT.'</font>'; 
+      echo '<br><font color="#ff0000" size="1">'.NOTICE_LESS_PRODUCT_OPTION_TEXT.'</font>'; 
     }
     // Has Attributes?
     $op_info_str = '';
@@ -2327,7 +2337,11 @@ require("includes/note_js.php");
            "<a ".((!$less_op_single)?"onclick='popup_window(this,\"".$item_type."\",\"".tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;"))."\",\"".$item_list."\");'":'')." href='javascript:void(0);'><u>".$item_default_value."</u></a><input type='hidden' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' value='" .  tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;"));
         echo "'></div></div>";
         echo '<div class="order_option_price">';
-        echo "<input type='text' size='9' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".(isset($_SESSION['preorder_products'][$_GET['oID']]['attr'][$orders_products_attributes_id]) ? $_SESSION['preorder_products'][$_GET['oID']]['attr'][$orders_products_attributes_id] : (int)$all_show_option[$t_item_id]['price'])."' onkeyup=\"clearNewLibNum(this);recalc_preorder_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."');\">"; 
+        if ($less_op_single) {
+          echo "<input type='text' size='9' style='background: none repeat scroll 0 0 #CCCCCC' readonly name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".(isset($_SESSION['preorder_products'][$_GET['oID']]['attr'][$orders_products_attributes_id]) ? $_SESSION['preorder_products'][$_GET['oID']]['attr'][$orders_products_attributes_id] : (int)$all_show_option[$t_item_id]['price'])."'>"; 
+        } else {
+          echo "<input type='text' size='9' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".(isset($_SESSION['preorder_products'][$_GET['oID']]['attr'][$orders_products_attributes_id]) ? $_SESSION['preorder_products'][$_GET['oID']]['attr'][$orders_products_attributes_id] : (int)$all_show_option[$t_item_id]['price'])."' onkeyup=\"clearNewLibNum(this);recalc_preorder_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."');\">"; 
+        }
         echo TEXT_MONEY_SYMBOL; 
         echo '</div>'; 
         echo '</i></div>';
@@ -2343,7 +2357,11 @@ require("includes/note_js.php");
           echo '</div>'; 
           echo '<div class="order_option_price">';
           $tmp_op_price = (isset($_SESSION['preorder_products'][$_GET['oID']]['attr'][$ex_value['id']]))?$_SESSION['preorder_products'][$_GET['oID']]['attr'][$ex_value['id']]:(int)$ex_value['price']; 
-          echo "<input type='text' size='9' name='update_products[$orders_products_id][attributes][".$ex_value['id']."][price]' value='".$tmp_op_price."' onkeyup=\"clearNewLibNum(this);recalc_preorder_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."');\">"; 
+          if ($less_op_single) {
+            echo "<input type='text' size='9' style='background: none repeat scroll 0 0 #CCCCCC' readonly name='update_products[$orders_products_id][attributes][".$ex_value['id']."][price]' value='".$tmp_op_price."'>"; 
+          } else {
+            echo "<input type='text' size='9' name='update_products[$orders_products_id][attributes][".$ex_value['id']."][price]' value='".$tmp_op_price."' onkeyup=\"clearNewLibNum(this);recalc_preorder_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."');\">"; 
+          }
           echo TEXT_MONEY_SYMBOL; 
           echo '</div>'; 
           echo '</i></div>';
@@ -2431,7 +2449,12 @@ require("includes/note_js.php");
 
       $orders_products_type = '−';
     }
-    echo '<td class="'.$RowStyle.'" align="right">'.$orders_products_type.'<input type="text" style="text-align:right;" class="once_pwd" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.(isset($_SESSION['preorder_products'][$_GET['oID']]['price']) ? tep_display_currency(number_format(abs($_SESSION['preorder_products'][$_GET['oID']]['price']),2)) : tep_display_currency(number_format(abs($order->products[$i]['price']), 2))).'" onkeyup="clearLibNum(this);recalc_preorder_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\', \''.$op_info_str.'\');" >'.TEXT_MONEY_SYMBOL.'</td>'; 
+    if ($less_op_single) {
+      echo '<td class="'.$RowStyle.'" align="right">'.$orders_products_type.'<input type="text" style="text-align:right;background: none repeat scroll 0 0
+#CCCCCC" readonly class="once_pwd" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.(isset($_SESSION['preorder_products'][$_GET['oID']]['price']) ? tep_display_currency(number_format(abs($_SESSION['preorder_products'][$_GET['oID']]['price']),2)) : tep_display_currency(number_format(abs($order->products[$i]['price']), 2))).'">'.TEXT_MONEY_SYMBOL.'</td>'; 
+    } else {
+      echo '<td class="'.$RowStyle.'" align="right">'.$orders_products_type.'<input type="text" style="text-align:right;" class="once_pwd" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.(isset($_SESSION['preorder_products'][$_GET['oID']]['price']) ? tep_display_currency(number_format(abs($_SESSION['preorder_products'][$_GET['oID']]['price']),2)) : tep_display_currency(number_format(abs($order->products[$i]['price']), 2))).'" onkeyup="clearLibNum(this);recalc_preorder_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\', \''.$op_info_str.'\');" >'.TEXT_MONEY_SYMBOL.'</td>'; 
+    }
     
     echo '<td class="' . $RowStyle . '" align="right">';
     //if ($ocertify->npermission == 7) {

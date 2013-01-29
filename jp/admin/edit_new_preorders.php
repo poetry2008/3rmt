@@ -1652,12 +1652,17 @@ if (($action == 'edit') && ($order_exists == true)) {
     $order_products[$pid]['qty'] = isset($_SESSION['preorder_products'][$_GET['oID']]['qty']) ? $_SESSION['preorder_products'][$_GET['oID']]['qty'] : $order_products[$pid]['qty']; 
     $orders_products_num = isset($_POST['update_products'][$pid]['qty']) ? $_POST['update_products'][$pid]['qty'] : $order_products[$pid]['qty'];
     echo '    <tr class="dataTableRow">' . "\n" .
-         '      <td class="' . $RowStyle . '" align="left" valign="top" width="6%">'
-         . "<input name='update_products[$pid][qty]' id='p_".$pid."' size='2' value='" . $orders_products_num . "' onkeyup='clearLibNum(this);recalc_preorder_price(\"".$oID."\", \"".$pid."\", \"0\", \"".$op_info_str."\");' class='update_products_qty'>&nbsp;x</td>\n" . 
+         '      <td class="' . $RowStyle . '" align="left" valign="top" width="6%">';
+    if ($less_op_single) {
+      echo "<input name='update_products[$pid][qty]' id='p_".$pid."' size='2' class='update_products_qty' style='background: none repeat scroll 0 0 #CCCCCC' readonly value='" . $orders_products_num . "'>";
+    } else {
+      echo "<input name='update_products[$pid][qty]' id='p_".$pid."' size='2' value='" . $orders_products_num . "' onkeyup='clearLibNum(this);recalc_preorder_price(\"".$oID."\", \"".$pid."\", \"0\", \"".$op_info_str."\");' class='update_products_qty'>";
+    }
+    echo "&nbsp;x</td>\n" . 
          '      <td class="' . $RowStyle . '" width="35%">' . $order_products[$pid]['name'] . "<input name='update_products[$pid][name]' size='64' type='hidden' value='" . $order_products[$pid]['name'] . "'>\n" . 
        '      &nbsp;&nbsp;';
     if ($less_op_single) {
-      echo '<br><font color="#ff0000">'.NOTICE_LESS_PRODUCT_OPTION_TEXT.'</font>'; 
+      echo '<br><font color="#ff0000" size="1">'.NOTICE_LESS_PRODUCT_OPTION_TEXT.'</font>'; 
     }
     // Has Attributes? 
     if (sizeof($order_products_attributes[$pid]) > 0) {
@@ -1702,7 +1707,11 @@ if (($action == 'edit') && ($order_exists == true)) {
            '</div><div class="order_option_value"><a '.((!$less_op_single)?'onclick="popup_window(this,\''.$item_type.'\',\''.tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['title']), array("'"=>"&quot;")).'\',\''.$item_list.'\');"':'').' href="javascript:void(0);"><u>' .  $default_value.'</u></a><input type="hidden" class="option_input_width" name="update_products[' . $pid .  '][attributes]['.$j.'][value]" value=\'' .  tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['value']), array("'"=>"&quot;")).'\'></div></div>';
         echo '<div class="order_option_price">';
         $order_products_attributes[$pid][$j]['price'] = isset($_SESSION['preorder_products'][$_GET['oID']]['attr'][$j]) ? $_SESSION['preorder_products'][$_GET['oID']]['attr'][$j] : $order_products_attributes[$pid][$j]['price'];
-        echo "<input size='9' type='text' name='update_products[$pid][attributes][$j][price]' value='".(int)(isset($_POST['update_products'][$pid]['attributes'][$j]['price'])?$_POST['update_products'][$pid]['attributes'][$j]['price']:$order_products_attributes[$pid][$j]['price'])."' onkeyup=\"clearNewLibNum(this);recalc_preorder_price('".$oID."', '".$pid."', '0', '".$op_info_str."');\">";
+        if ($less_op_single) {
+          echo "<input size='9' type='text' style='background: none repeat scroll 0 0 #CCCCCC' readonly name='update_products[$pid][attributes][$j][price]' value='".(int)(isset($_POST['update_products'][$pid]['attributes'][$j]['price'])?$_POST['update_products'][$pid]['attributes'][$j]['price']:$order_products_attributes[$pid][$j]['price'])."'>";
+        } else {
+          echo "<input size='9' type='text' name='update_products[$pid][attributes][$j][price]' value='".(int)(isset($_POST['update_products'][$pid]['attributes'][$j]['price'])?$_POST['update_products'][$pid]['attributes'][$j]['price']:$order_products_attributes[$pid][$j]['price'])."' onkeyup=\"clearNewLibNum(this);recalc_preorder_price('".$oID."', '".$pid."', '0', '".$op_info_str."');\">";
+        }
         echo TEXT_MONEY_SYMBOL;
         echo '</div>'; 
         //if ($order_products_attributes[$pid][$j]['price'] != '0') {
@@ -1721,7 +1730,11 @@ if (($action == 'edit') && ($order_exists == true)) {
 
            $orders_products_type = '−';
          }
-         echo '<td class="'.$RowStyle.'" align="right">'.$orders_products_type.'<input type="text" style="text-align:right;" class="once_pwd" name="update_products['.$pid.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs(isset($_POST['update_products'][$pid]['p_price'])?$_POST['update_products'][$pid]['p_price']:$order_products[$pid]['price']), 2)).'" onkeyup="clearNoNum(this);recalc_preorder_price(\''.$oID.'\', \''.$pid.'\', \'0\',\''.$op_info_str.'\');">'.TEXT_MONEY_SYMBOL.'</td>';
+         if ($less_op_single) {
+           echo '<td class="'.$RowStyle.'" align="right">'.$orders_products_type.'<input type="text" style="text-align:right;background: none repeat scroll 0 0 #CCCCCC" readonly class="once_pwd" name="update_products['.$pid.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs(isset($_POST['update_products'][$pid]['p_price'])?$_POST['update_products'][$pid]['p_price']:$order_products[$pid]['price']), 2)).'">'.TEXT_MONEY_SYMBOL.'</td>';
+         } else {
+           echo '<td class="'.$RowStyle.'" align="right">'.$orders_products_type.'<input type="text" style="text-align:right;" class="once_pwd" name="update_products['.$pid.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs(isset($_POST['update_products'][$pid]['p_price'])?$_POST['update_products'][$pid]['p_price']:$order_products[$pid]['price']), 2)).'" onkeyup="clearNoNum(this);recalc_preorder_price(\''.$oID.'\', \''.$pid.'\', \'0\',\''.$op_info_str.'\');">'.TEXT_MONEY_SYMBOL.'</td>';
+         }
          $order_products[$pid]['final_price'] = isset($_SESSION['preorder_products'][$_GET['oID']]['final_price']) ? $_SESSION['preorder_products'][$_GET['oID']]['final_price'] : $order_products[$pid]['final_price'];
          echo '      <td class="' . $RowStyle . '" align="right">' . "<input type='hidden' name='update_products[$pid][final_price]' onkeyup='clearLibNum(this);recalc_preorder_price(\"".$oID."\", \"".$pid."\", \"1\", \"".$orders_price."\", \"".$op_price."\");' size='9' style='text-align:right;' value='" . tep_display_currency(number_format(abs($order_products[$pid]['final_price']),2)) 
          . "'  onkeyup='clearNoNum(this)' class='once_pwd' >" . 

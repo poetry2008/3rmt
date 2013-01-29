@@ -7986,3 +7986,75 @@ function tep_check_less_option_product($opa_id, $is_pre_single = false)
   }
   return false;
 }
+
+function tep_check_less_option_product_by_products_id($products_id, $pro_attr_info)
+{
+  $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>"); 
+  $exists_product_raw = tep_db_query("select belong_to_option from ".TABLE_PRODUCTS." where products_id = '".$products_id."'"); 
+  $exists_product = tep_db_fetch_array($exists_product_raw); 
+  if ($exists_product) {
+    $item_list_array = array(); 
+    $item_list_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where group_id = '".$exists_product['belong_to_option']."' and status = '1'");
+    if (tep_db_num_rows($item_list_query)) {
+      while ($item_list = tep_db_fetch_array($item_list_query)) {
+        $item_list_array[] = $item_list; 
+      }
+      $op_num = count($item_list_array); 
+      if (!empty($pro_attr_info)) {
+        $op_tmp_num = count($pro_attr_info);
+      } else {
+        $op_tmp_num = 0; 
+      }
+      if ($op_num != $op_tmp_num) {
+        return true; 
+      }
+      foreach ($pro_attr_info as $p_key => $p_value) {
+        $item_info_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".$p_value['option_item_id']."' and status = '1'"); 
+        $item_info = tep_db_fetch_array($item_info_query);
+        if ($item_info) {
+          $ao_option = @unserialize($item_info['option']); 
+          if ($item_info['type'] == 'radio') {
+            $aop_single = false;  
+            foreach ($ao_option['radio_image'] as $r_key => $r_value) {
+              if (trim(str_replace($replace_arr, '', nl2br(stripslashes($r_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($p_value['option_info']['value']))))) {
+                $aop_single = true;
+                break;
+              }
+            }
+            if (!$aop_single) {
+              return true; 
+            }
+          } else if ($item_info['type'] == 'text') {
+            if (trim(str_replace($replace_arr, '', nl2br(stripslashes($ao_option['itextarea'])))) != trim(str_replace($replace_arr, '', nl2br(stripslashes($p_value['option_info']['value']))))) {
+              return true; 
+            } 
+          } else if ($item_info['type'] == 'select') {
+            if (!empty($ao_option['se_option'])) {
+              $ao_se_single = false;
+              foreach ($ao_option['se_option'] as $se_key => $se_value) {
+                if ($se_value == $p_value['option_info']['value']) {
+                  $ao_se_single = true;
+                  break; 
+                }
+              }
+              if (!$ao_se_single) {
+                return true; 
+              }
+            } else {
+              return true; 
+            }
+          }
+        } else {
+          return true; 
+        } 
+      }
+    } else {
+      if (!empty($pro_attr_info)) {
+        return true; 
+      }
+    }
+  } else {
+    return true; 
+  }
+  return false;
+}
