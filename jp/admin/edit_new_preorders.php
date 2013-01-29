@@ -1662,7 +1662,7 @@ if (($action == 'edit') && ($order_exists == true)) {
          '      <td class="' . $RowStyle . '" width="35%">' . $order_products[$pid]['name'] . "<input name='update_products[$pid][name]' size='64' type='hidden' value='" . $order_products[$pid]['name'] . "'>\n" . 
        '      &nbsp;&nbsp;';
     if ($less_op_single) {
-      echo '<br><font color="#ff0000" size="1">'.NOTICE_LESS_PRODUCT_OPTION_TEXT.'</font>'; 
+      echo '<br><font color="#ff0000" size="1">'.NOTICE_LESS_PRODUCT_PRE_OPTION_TEXT.'</font>'; 
     }
     // Has Attributes? 
     if (sizeof($order_products_attributes[$pid]) > 0) {
