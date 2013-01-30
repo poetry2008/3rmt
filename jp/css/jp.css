@@ -2350,7 +2350,6 @@ searching
 }
 .float_right, .float_right_box{
 	float:right;
-	overflow:hidden;
 }
 .box_text{
 	overflow:hidden;
