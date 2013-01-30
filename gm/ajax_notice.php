@@ -38,7 +38,7 @@ if ($_GET['action'] == 'process') {
     if (!tep_not_null($products_name)) {
       $products_name = $preorder_products['products_name']; 
     }
-    echo sprintf(mb_substr(NOTICE_LESS_PRODUCT_OPTION_TEXT,0,17,'utf-8'), $products_name)."\r\n".mb_substr(NOTICE_LESS_PRODUCT_OPTION_TEXT,-26,26,'utf-8');
+    echo sprintf(mb_substr(NOTICE_LESS_PRODUCT_OPTION_TEXT,0,17,'utf-8'), $products_name)."\r\n".mb_substr(NOTICE_LESS_PRODUCT_OPTION_TEXT,-27,26,'utf-8');
     exit;
   }
   echo 'success';
@@ -56,7 +56,7 @@ if ($_GET['action'] == 'process') {
     if (!tep_not_null($products_name)) {
       $products_name = $preorder_products['products_name']; 
     }
-    echo sprintf(mb_substr(NOTICE_LESS_PRODUCT_OPTION_TEXT,0,17,'utf-8'), $products_name)."\r\n".mb_substr(NOTICE_LESS_PRODUCT_OPTION_TEXT,-26,26,'utf-8');
+    echo sprintf(mb_substr(NOTICE_LESS_PRODUCT_OPTION_TEXT,0,17,'utf-8'), $products_name)."\r\n".mb_substr(NOTICE_LESS_PRODUCT_OPTION_TEXT,-27,26,'utf-8');
     exit; 
   }
   echo 'success';
