@@ -5859,3 +5859,101 @@ function tep_pre_check_less_product_option($products_id)
   }
   return false;
 }
+
+//检查前台预约的option不足
+function tep_pre_check_less_product_option_by_products_info($op_info_array, $products_id) 
+{
+  $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>"); 
+  if (!empty($op_info_array)) {
+    $exists_products_query = tep_db_query("select belong_to_option from ".TABLE_PRODUCTS." where products_id = '".$products_id."'"); 
+    $exists_products = tep_db_fetch_array($exists_products_query);
+    if (!$exists_products) {
+      return true; 
+    }
+    $group_info_query = tep_db_query("select id from ".TABLE_OPTION_GROUP." where id = '".$exists_products['belong_to_option']."'"); 
+    $group_info = tep_db_fetch_array($group_info_query);
+    if (!$group_info) {
+      return true; 
+    }
+  
+    $tmp_op_array = array(); 
+    $item_list_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where group_id = '".$exists_products['belong_to_option']."' and status = '1' and place_type = '0'"); 
+    while ($item_list = tep_db_fetch_array($item_list_query)) {
+      $tmp_op_array[] = $item_list['id']; 
+    }
+    
+    if (empty($tmp_op_array)) {
+      return true; 
+    } 
+    $op_num = count($op_info_array);
+    $tmp_op_num = count($tmp_op_array);
+    
+    if ($op_num != $tmp_op_num) {
+      return true; 
+    }
+    
+    foreach ($op_info_array as $o_key => $o_value) {
+      $tmp_op_key = explode('_', $o_key); 
+      
+      $option_item_exists_query  = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$tmp_op_key[1]."' and id = '".$tmp_op_key[3]."' and group_id = '".$exists_products['belong_to_option']."' and status = '1' and place_type = '0'"); 
+      $option_item_exists = tep_db_fetch_array($option_item_exists_query); 
+      if ($option_item_exists) {
+        $cop_option = @unserialize(stripslashes($option_item_exists['option']));
+        if ($option_item_exists['type'] == 'radio') {
+          if (!empty($cop_option)) {
+            $cop_single = false; 
+            foreach ($cop_option['radio_image'] as $cor_key => $cor_value) {
+              if (trim(str_replace($replace_arr, '', nl2br(stripslashes($cor_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($o_value))))) {
+                $cop_single = true;
+                break;
+              }
+            }
+            if (!$cop_single) {
+              return true; 
+            }
+          } else {
+            if (!empty($o_value)) {
+              return true; 
+            }
+          }
+        } else if ($option_item_exists['type'] == 'text') {
+          if (trim(str_replace($replace_arr, '', nl2br(stripslashes($cop_option['itextarea'])))) != trim(str_replace($replace_arr, '', nl2br(stripslashes($o_value))))) {
+            return true; 
+          }
+        } else if ($option_item_exists['type'] == 'select') {
+          if (!empty($cop_option['se_option'])) {
+            $cop_se_single = false; 
+            foreach ($cop_option['se_option'] as $cse_key => $cse_value) {
+              if ($cse_value == $o_value) {
+                $cop_se_single = true;
+                break;
+              }
+            }
+            if (!$cop_se_single) {
+              return true; 
+            }
+          } else {
+            return true; 
+          }
+        }
+      } else {
+        return true; 
+      }
+    }
+  } else {
+    $exists_products_query = tep_db_query("select belong_to_option from ".TABLE_PRODUCTS." where products_id = '".$products_id."'"); 
+    $exists_products = tep_db_fetch_array($exists_products_query);
+    if ($exists_products) {
+      $group_info_query = tep_db_query("select id from ".TABLE_OPTION_GROUP." where id = '".$exists_products['belong_to_option']."'"); 
+      $group_info = tep_db_fetch_array($group_info_query);
+      if ($group_info) {
+        $item_exists_query  = tep_db_query("select * from ".TABLE_OPTION_ITEM." where group_id = '".$group_info['id']."' and status = '1' and place_type = '0' limit 1"); 
+        $item_exists = tep_db_fetch_array($item_exists_query); 
+        if ($item_exists) {
+          return true; 
+        }
+      }
+    }
+  }
+  return false;
+}
