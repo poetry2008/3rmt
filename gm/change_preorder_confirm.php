@@ -240,7 +240,7 @@ function check_preorder_op(pre_pid)
               <?php echo CHANGE_PREORDER_CONFIRM_BUTTON_INFO;?> 
               </div>
               <div class="checkout-bottom" align="right">
-                <a href="javascript:void(0);" onclick="check_preorder_op('<?php echo $_POST['pid'];?>')"><?php echo tep_image_button('button_confirm_order_hover.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></a> 
+                <a href="javascript:void(0);" onclick="check_preorder_op('<?php echo $_POST['pid'];?>');"><?php echo tep_image_button('button_confirm_order_hover.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></a> 
               </div>
           </div>
            <div class="checkout-conent">
