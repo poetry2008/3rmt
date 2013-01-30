@@ -64,7 +64,7 @@ function check_op_products() {
       if (msg_arr[0] != '0') {
         if (window.confirm(msg_arr[0])) {
           $.ajax({
-            url: '<?php echo tep_href_link(FILENAME_SHOPPING_CART, 'action=delete_products_op', 'SSL');?>',     
+            url: '<?php echo FILENAME_SHOPPING_CART.'?action=delete_products_op';?>',     
             data:'d_op_list='+msg_arr[1], 
             type: 'POST', 
             async: false,
