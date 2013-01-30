@@ -564,7 +564,7 @@ if (!empty($_SESSION['history_url'])) {
 <?php } ?>
                     </td>
                     <td align="left" class="main">
-                      <input type="button" name="checkout_op" value="" class="shopping_cart_checkout" onclick="check_op_products()">
+                      <input type="button" name="checkout_op" value="" class="shopping_cart_checkout" onclick="check_op_products();">
                       <input type="hidden" name="checkout" value=""> 
                     </td>
                   </tr>
