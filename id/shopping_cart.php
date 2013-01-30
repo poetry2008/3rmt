@@ -56,10 +56,10 @@
 <script type="text/javascript">
 <?php //检查不足的option?>
 function check_op_products() {
-  $.getJSON('http://<?php echo $_SERVER['HTTP_HOST'].'/'.FILENAME_SHOPPING_CART.'?action=check_products_op';?>', function (msg) {
+  $.getJSON('<?php echo ((getenv('HTTPS') == 'on')?HTTP_SERVER:'http://'.$_SERVER['HTTP_HOST']).'/'.FILENAME_SHOPPING_CART.'?action=check_products_op';?>', function (msg) {
     if (msg.msg_info != '0') {
       if (window.confirm(msg.msg_info)) {
-        $.getJSON('http://<?php echo $_SERVER['HTTP_HOST'].'/'.FILENAME_SHOPPING_CART.'?action=delete_products_op';?>'+'&d_op_list='+msg.list_info, function (data) {
+        $.getJSON('<?php echo ((getenv('HTTPS') == 'on')?HTTP_SERVER:'http://'.$_SERVER['HTTP_HOST']).'/'.FILENAME_SHOPPING_CART.'?action=delete_products_op';?>'+'&d_op_list='+msg.list_info, function (data) {
           window.location.href = window.location.href; 
         }); 
       } 

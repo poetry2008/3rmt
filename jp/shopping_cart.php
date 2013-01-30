@@ -56,7 +56,7 @@
 <?php //检查不足的option?>
 function check_op_products() {
   $.ajax({
-    url: '<?php echo tep_href_link(FILENAME_SHOPPING_CART, 'action=check_products_op', 'SSL');?>',     
+    url: '<?php echo FILENAME_SHOPPING_CART.'?action=check_products_op';?>',     
     type: 'POST', 
     async: false,
     success: function(msg) {
