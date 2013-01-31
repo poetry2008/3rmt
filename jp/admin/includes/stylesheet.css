@@ -1499,4 +1499,5 @@ a.pageResults{
 .date_bgcolor .date_today{
         background:url(../images/icon_today.png) center 0 no-repeat;
 	color:#fff;
+	height:15px;
 }
