@@ -1072,6 +1072,11 @@ a.s_column_bar {
 	padding:5px 50px;
 	min-width:550px;
 }
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+.popup_order_info input,.popup_order_info select{
+	margin-left:0;	
+}
+}
 .popup_order_info td{
 	vertical-align:top;
 	padding-top:2px;
@@ -1482,3 +1487,16 @@ a.pageResults{
       margin-top:-4px;
       margin-bottom:-2px;
 }}
+.date_title{
+	font-size:36px;
+	font-weight:bold;
+	font-family:"ＭＳ Ｐゴシック",Osaka,Verdana,Arial,sans-serif;
+}
+.date_bgcolor{
+	background-color:#cccccc;
+}
+.date_bgcolor td{ height:17px;}
+.date_bgcolor .date_today{
+        background:url(../images/icon_today.png) center 0 no-repeat;
+	color:#fff;
+}

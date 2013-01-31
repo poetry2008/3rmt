@@ -46,8 +46,9 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('LOCAL_EXE_UNZIP', '/usr/local/bin/unzip');
 
 // define the filenames used in the project
-  define('FILENAME_OPTION', 'option.php');
   define('FILENAME_MARKS', 'marks.php');
+  define('FILENAME_OPTION_GROUP', 'option_group.php');
+  define('FILENAME_OPTION_ITEM', 'option_item.php');
   define('FILENAME_RESET_PWD','reset_pwd.php');
   define('FILENAME_ALARM', 'alarm.php');
   define('FILENAME_CAMPAIGN', 'campaign.php');
@@ -121,7 +122,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('FILENAME_COMPUTERS', 'computers.php');
   
   //add files
-  define('FILENAME_BANK_CL', 'bank_cl.php');
+  define('FILENAME_BANK_CL', 'calendar.php');
   define('FILENAME_CONTENTS', 'contents.php');
   define('FILENAME_LATEST_NEWS', 'latest_news.php'); 
   define('FILENAME_PRODUCTS_UP', 'products_up.php'); 
@@ -133,6 +134,8 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('FILENAME_BILL_TEMPLATES', 'bill_templates.php');
   
   define('FILENAME_ADDRESS', 'address.php');
+  define('FILENAME_SHOW_USELESS_OPTION','show_useless_option.php');
+  define('FILENAME_SHOW_USELESS_ITEM','show_useless_item.php');
   define('FILENAME_CUSTOMERS_EXIT','customers_exit.php');
   define('FILENAME_HELP_INFO','help_info.php');
   define('FILENAME_PERSONAL_SETTING','personal_setting.php');
@@ -268,6 +271,8 @@ define('TABLE_PERMISSIONS','permissions');
   define('TABLE_COUNTRY_CITY','country_city');
   define('TABLE_OCONFIG',  'other_config');
   define('TABLE_CUSTOMERS_PIC_LIST', 'customers_pic_list'); 
+  define('TABLE_CALENDAR_STATUS','calendar_status');
+  define('TABLE_CALENDAR_DATE','calendar_date');
 // customization for the design layout
   define('BOX_WIDTH', 160); // how wide the boxes should be in pixels (default: 125)
 

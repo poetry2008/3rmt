@@ -19,7 +19,7 @@
                    //'<a href="' . tep_href_link(FILENAME_BACKUP) . '" class="menuBoxContent_Link">' . BOX_TOOLS_BACKUP . '</a><br>' .
                    '<a href="' . tep_href_link(FILENAME_BANNER_MANAGER) . '" class="menuBoxContent_Link">' . BOX_TOOLS_BANNER_MANAGER . '</a><br>' .
                    //'<a href="' . tep_href_link(FILENAME_CL) . '" class="menuBoxContent_Link">' . BOX_TOOLS_CL . '</a><br>' .
-                   '<a href="' . tep_href_link('bank_cl.php') . '" class="menuBoxContent_Link">銀行営業日</a><br>' .
+                   '<a href="' . tep_href_link('calendar.php') . '" class="menuBoxContent_Link">銀行営業日</a><br>' .
                    '<a href="' . tep_href_link(FILENAME_CACHE) . '" class="menuBoxContent_Link">' . BOX_TOOLS_CACHE . '</a><br>' .
                    '<a href="' . tep_href_link(FILENAME_PW_MANAGER) . '"
                    class="menuBoxContent_Link">' . 'パスワード管理' . '</a><br>' .
@@ -72,10 +72,10 @@
      }else{
      echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar"><span>'.  tep_image(DIR_WS_MENU_ICON .  'icon_banner.gif').'</span><span><a class="menuBoxContent_Link" href="' .  tep_href_link(FILENAME_BANNER_MANAGER) .  '">' . BOX_TOOLS_BANNER_MANAGER .  '</a></span></div>';
      }
-     if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == 'bank_cl.php'){
-     echo ' <div class="sidebarselected"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_business_day.gif').'</span><span><a class="menuBoxContent_Link" href="' . tep_href_link('bank_cl.php') .  '">'.FILENAME_BANK_CL_TEXT.'</a></span></div>';
+     if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == 'calendar.php'){
+     echo ' <div class="sidebarselected"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_business_day.gif').'</span><span><a class="menuBoxContent_Link" href="' . tep_href_link('calendar.php') .  '">'.FILENAME_BANK_CL_TEXT.'</a></span></div>';
      }else{
-     echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_business_day.gif').'</span><span><a class="menuBoxContent_Link" href="' . tep_href_link('bank_cl.php') .  '">'.FILENAME_BANK_CL_TEXT.'</a></span></div>';
+     echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_business_day.gif').'</span><span><a class="menuBoxContent_Link" href="' . tep_href_link('calendar.php') .  '">'.FILENAME_BANK_CL_TEXT.'</a></span></div>';
      }
      if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_CACHE){
      echo ' <div class="sidebarselected"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_cache_control.gif').'</span><span><a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_CACHE) . '">' .  BOX_TOOLS_CACHE .  '</a></span></div>';
@@ -88,9 +88,9 @@
      echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_identity.gif').'</span><span><a class="menuBoxContent_Link" href="' .  tep_href_link(FILENAME_PW_MANAGER) . '">' .FILENAME_PW_MANAGER_TEXT.  '</a></span></div>';
      }
      if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_DEFINE_LANGUAGE){
-     echo ' <div class="sidebarselected"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_language_file.gif').'</span><span> <a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_DEFINE_LANGUAGE) .  '">' .  BOX_TOOLS_DEFINE_LANGUAGE . '</a></span></div>';
+     echo ' <div class="sidebarselected"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_language_file.gif').'</span><span><a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_DEFINE_LANGUAGE) .  '">' .  BOX_TOOLS_DEFINE_LANGUAGE . '</a></span></div>';
      }else{
-     echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_language_file.gif').'</span><span> <a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_DEFINE_LANGUAGE) .  '">' .  BOX_TOOLS_DEFINE_LANGUAGE . '</a></span></div>';
+     echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_language_file.gif').'</span><span><a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_DEFINE_LANGUAGE) .  '">' .  BOX_TOOLS_DEFINE_LANGUAGE . '</a></span></div>';
      }
      if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_MAIL){
      echo ' <div class="sidebarselected"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_email.gif').'</span><span><a class="menuBoxContent_Link" href="' .  tep_href_link(FILENAME_MAIL) . '">' .  BOX_TOOLS_MAIL . '</a></span></div>';

@@ -4095,114 +4095,251 @@ function tep_get_first_products_name_by_orders_id($orders_id)
   return $p['products_name'];
 }
 
+//特殊处理日历重复的设置
+function tep_get_repeat_date($type,$cl_date){
+            
+    switch($type){
+
+      case 1:
+        $value = getdate(mktime(0,0,0,substr($cl_date,4,2),substr($cl_date,6,2),substr($cl_date,0,4))); 
+        $value = $value['wday'];
+        break;
+      case 2:
+        $value = substr($cl_date,6,2);
+        break;
+      case 3:
+        $temp_value = substr($cl_date,6,2);
+        $value = ceil($temp_value/7);
+        $week = getdate(mktime(0,0,0,substr($cl_date,4,2),substr($cl_date,6,2),substr($cl_date,0,4)));
+        $value = array($value,$week['wday']);
+        break;
+      case 4:
+        $value = substr($cl_date,4,2).substr($cl_date,6,2);
+        break;
+    } 
+    return $value;
+}
+
+//获取支付可用的日期
+function tep_get_pay_time($time,$cl_status_array,$repeat_array,$cl_repeat_array,$default_is_handle,$default_cl_id,$cl_week_array,$cl_month_day_array,$cl_month_week_array,$cl_year_month_array){
+
+  //读取相应日期的数据
+  $cl_date_str = date('Ymd',strtotime($time));
+  $calendar_date_query = tep_db_query("select * from ". TABLE_CALENDAR_DATE ." where cl_date='".$cl_date_str."'");
+  $calendar_date_array = tep_db_fetch_array($calendar_date_query);
+  $calendar_date_num = tep_db_num_rows($calendar_date_query);
+  tep_db_free_result($calendar_date_query); 
+  $repeat_sort_query = tep_db_query("select sort from ". TABLE_CALENDAR_STATUS ." where id='".$calendar_date_array['type']."'");
+  $repeat_sort_array = tep_db_fetch_array($repeat_sort_query);
+  tep_db_free_result($repeat_sort_query);
+
+  $calendar_date_id = $calendar_date_array['id'];
+  $calendar_repeat_flag = false;
+  $day = tep_get_repeat_date(2,$cl_date_str);
+  
+  $wday = tep_get_repeat_date(1,$cl_date_str);
+
+  $temp_num_week = ceil($day/7);
+
+  $temp_year_month_day = substr($cl_date_str,4,4); 
+
+  //状态重复设置，冲突时，以状态排序最小的一个为准 
+  $date_time_array = array();
+  $date_time_array = array('month'=>$repeat_array[$cl_month_day_array[$day]]['sort'],
+                           'week'=>$repeat_array[$cl_week_array[$wday]]['sort'],                     
+                           'month_week'=>$repeat_array[$cl_month_week_array[$temp_num_week][$wday]]['sort'],
+                           'year'=>$repeat_array[$cl_year_month_array[$temp_year_month_day]]['sort']
+                           );
+  arsort($date_time_array);
+  $date_time_array = array_filter($date_time_array);
+  $first_value_array = array_slice($date_time_array,0,1);
+  $first_value_type = array_keys($first_value_array);
+  if($first_value_array[$first_value_type[0]] != ''){
+    switch($first_value_type[0]){
+
+      case 'month':
+        $cl_date_temp = isset($calendar_date_array['type']) && $calendar_date_array['type'] == 0 && $repeat_array[$cl_month_day_array[$day]]['sort'] == -1 ? true : false;
+        if(($repeat_sort_array['sort'] != '' && $repeat_array[$cl_month_day_array[$day]]['sort'] != '' && $repeat_sort_array['sort'] < $repeat_array[$cl_month_day_array[$day]]['sort']) || ($repeat_sort_array['sort'] == '' && $repeat_array[$cl_month_day_array[$day]]['sort'] != '') || ($repeat_array[$cl_month_day_array[$day]]['sort'] == -1)){
+          $calendar_date_id  = array_key_exists($day,$cl_month_day_array) && $cl_date_temp == false ?  $cl_month_day_array[$day] : $calendar_date_id;
+          $calendar_repeat_flag = true;
+        } 
+        if($repeat_array[$cl_month_day_array[$day]]['sort'] == -1){ return date("Y-m-d");}
+        break;
+      case 'week':
+        $cl_date_temp = isset($calendar_date_array['type']) && $calendar_date_array['type'] == 0 && $repeat_array[$cl_week_array[$wday]]['sort'] == -1 ? true : false;
+        if(($repeat_sort_array['sort'] != '' && $repeat_array[$cl_week_array[$wday]]['sort'] != '' && $repeat_sort_array['sort'] < $repeat_array[$cl_week_array[$wday]]['sort']) || ($repeat_sort_array['sort'] == '' && $repeat_array[$cl_week_array[$wday]]['sort'] != '') || ($repeat_array[$cl_week_array[$wday]]['sort'] == -1)){
+          $calendar_date_id = array_key_exists($wday,$cl_week_array) && $cl_date_temp == false ? $cl_week_array[$wday] : $calendar_date_id; 
+          $calendar_repeat_flag = true;
+        }          
+        if($repeat_array[$cl_week_array[$wday]]['sort'] == -1){ return date("Y-m-d");}
+        break;
+      case 'month_week':
+        $cl_date_temp = isset($calendar_date_array['type']) && $calendar_date_array['type'] == 0 && $repeat_array[$cl_month_week_array[$temp_num_week][$wday]]['sort'] == -1 ? true : false;  
+        if(($repeat_sort_array['sort'] != '' && $repeat_array[$cl_month_week_array[$temp_num_week][$wday]]['sort'] != '' && $repeat_sort_array['sort'] < $repeat_array[$cl_month_week_array[$temp_num_week][$wday]]['sort']) || ($repeat_sort_array['sort'] == '' && $repeat_array[$cl_month_week_array[$temp_num_week][$wday]]['sort'] != '') || ($repeat_array[$cl_month_week_array[$temp_num_week][$wday]]['sort'] == -1)){ 
+          $temp_week_array = array_slice($cl_month_week_array,0,1);
+          $calendar_date_id = is_array($cl_month_week_array[$temp_num_week]) && $cl_date_temp == false ? $cl_month_week_array[$temp_num_week][$wday] : $calendar_date_id;
+          $calendar_repeat_flag = true;
+        }          
+        if($repeat_array[$cl_month_week_array[$temp_num_week][$wday]]['sort'] == -1){ return date("Y-m-d");}
+        break;
+      case 'year':
+        $cl_date_temp = isset($calendar_date_array['type']) && $calendar_date_array['type'] == 0 && $repeat_array[$cl_year_month_array[$temp_year_month_day]]['sort'] == -1 ? true : false; 
+        if(($repeat_sort_array['sort'] != '' && $repeat_array[$cl_year_month_array[$temp_year_month_day]]['sort'] != '' && $repeat_sort_array['sort'] < $repeat_array[$cl_year_month_array[$temp_year_month_day]]['sort']) ||($repeat_sort_array['sort'] == '' && $repeat_array[$cl_year_month_array[$temp_year_month_day]]['sort'] != '') || ($repeat_array[$cl_year_month_array[$temp_year_month_day]]['sort'] == -1)){ 
+          $calendar_date_id = array_key_exists($temp_year_month_day,$cl_year_month_array) && $cl_date_temp == false ? $cl_year_month_array[$temp_year_month_day] : $calendar_date_id;
+          $calendar_repeat_flag = true; 
+        }          
+        if($repeat_array[$cl_year_month_array[$temp_year_month_day]]['sort'] == -1){ return date("Y-m-d");}
+        break;
+    }
+  }
+
+  //读取相应日期的数据
+  $calendar_date_query = tep_db_query("select type from ". TABLE_CALENDAR_DATE ." where id='".$calendar_date_id."'");
+  $calendar_date_array = tep_db_fetch_array($calendar_date_query);
+  $calendar_type_num = tep_db_num_rows($calendar_date_query); 
+  tep_db_free_result($calendar_date_query);
+  $calendar_date_array['type'] = $calendar_type_num > 0 ? $calendar_date_array['type']: $default_cl_id;
+
+  if($calendar_repeat_flag == true){
+
+    if($cl_status_array[$calendar_date_array['type']]['is_handle'] == 1){
+      if(date('Y-m-d') == date('Y-m-d',strtotime($time))){
+        if(date('H:i',strtotime($time)) < $cl_status_array[$calendar_date_array['type']]['end_time'].':'.($cl_status_array[$calendar_date_array['type']]['end_min'] < 10 ? '0'.$cl_status_array[$calendar_date_array['type']]['end_min'] : $cl_status_array[$calendar_date_array['type']]['end_min'])){
+          return date('Y-m-d',strtotime($time));
+        }
+      }else{
+
+        return date('Y-m-d',strtotime($time));
+      }
+    }
+  }else{
+    if($calendar_date_num == 0){
+
+      if($default_is_handle == 1){
+
+        if(date('Y-m-d') == date('Y-m-d',strtotime($time))){
+          if(date('H:i',strtotime($time)) < $cl_status_array[$calendar_date_array['type']]['end_time'].':'.($cl_status_array[$calendar_date_array['type']]['end_min'] < 10 ? '0'.$cl_status_array[$calendar_date_array['type']]['end_min'] : $cl_status_array[$calendar_date_array['type']]['end_min'])){
+            return date('Y-m-d',strtotime($time));
+          }
+        }else{
+
+          return date('Y-m-d',strtotime($time));
+        }    
+      }
+    }else{
+      if($cl_status_array[$calendar_date_array['type']]['is_handle'] == 1){
+
+        if(date('Y-m-d') == date('Y-m-d',strtotime($time))){
+          if(date('H:i',strtotime($time)) < $cl_status_array[$calendar_date_array['type']]['end_time'].':'.($cl_status_array[$calendar_date_array['type']]['end_min'] < 10 ? '0'.$cl_status_array[$calendar_date_array['type']]['end_min'] : $cl_status_array[$calendar_date_array['type']]['end_min'])){
+            return date('Y-m-d',strtotime($time));
+          }
+        }else{
+
+          return date('Y-m-d',strtotime($time));
+        }    
+      }   
+    }
+  }
+
+  if($calendar_date_num == 0 && $calendar_repeat_flag == false){
+
+    return date('Y-m-d');
+  }
+
+  if($cl_date_temp == true){
+    return date('Y-m-d'); 
+  }
+  return tep_get_pay_time(date('Y-m-d H:i:s', strtotime($time.' + 1 day')),$cl_status_array,$repeat_array,$cl_repeat_array,$default_is_handle,$default_cl_id,$cl_week_array,$cl_month_day_array,$cl_month_week_array,$cl_year_month_array);
+}
+
 // 取得支付时间，当天或者下一个工作日。
 // orders.php
 function tep_get_pay_day($time = null){
-  //echo strtotime(date('Y-m-d H:00:00', strtotime($time)));
-  //echo strtotime(date('Y-m-d H:00:00'));
-  if ($time === null) {
+  if($time === null){
     $time = date('Y-m-d H:i:s');
   }
-  if (strtotime(date('Y-m-d 00:00:00', strtotime($time))) == strtotime(date('Y-m-d 00:00:00'))) {
-    $c = tep_db_fetch_array(tep_db_query("select * from " . TABLE_BANK_CALENDAR . " where cl_ym = '".date('Ym',strtotime($time))."'"));
-    for($i=date('d')-1;$i<strlen($c['cl_value']);$i++){
-      // 如果是当天
-      if (date('d')-1 == $i) {
-        // 如果当天营业
-        if ($c['cl_value'][$i] == '0') {
-          if (date('H',strtotime($time)) < 15) {
-            return date('Y-m',strtotime($time)).'-'.date('d');
-          }
-        }
-      } else {
-        // 如果下一天营业
-        if ($c['cl_value'][$i] == '0') {
-          return date('Y-m',strtotime($time)).'-'.($i+1);
-        }
-      }
-    }
-    //exit(date('Y-m-d H:i:s', $time));
-    switch(date('n')) {
-      case '1':
-        if (date('j') == 31) {
-          return tep_get_pay_day(date('Y-m-d H:i:s', strtotime($time.' + 1 day')));
-        }
-        break;
-      case '2':
-        if (date('L')) {
-          if (date('j') == 28) {
-            return tep_get_pay_day(date('Y-m-d H:i:s', strtotime($time.' + 1 day')));
-          }
-        } else {
-          if (date('j') == 29) {
-            return tep_get_pay_day(date('Y-m-d H:i:s', strtotime($time.' + 1 day')));
-          }
-        }
-        break;
-      case '3':
-        if (date('j') == 31) {
-          return tep_get_pay_day(date('Y-m-d H:i:s', strtotime($time.' + 1 day')));
-        }
-        break;
-      case '4':
-        if (date('j') == 30) {
-          return tep_get_pay_day(date('Y-m-d H:i:s', strtotime($time.' + 1 day')));
-        }
-        break;
-      case '5':
-        if (date('j') == 31) {
 
-          return tep_get_pay_day(date('Y-m-d H:i:s', strtotime($time.' + 1 day')));
-        }
-        break;
-      case '6':
-        if (date('j') == 30) {
-          return tep_get_pay_day(date('Y-m-d H:i:s', strtotime($time.' + 1 day')));
-        }
-        break;
-      case '7':
-        if (date('j') == 31) {
-          return tep_get_pay_day(date('Y-m-d H:i:s', strtotime($time.' + 1 day')));
-        }
-        break;
-      case '8':
-        if (date('j') == 31) {
-          return tep_get_pay_day(date('Y-m-d H:i:s', strtotime($time.' + 1 day')));
-        }
-        break;
-      case '9':
-        if (date('j') == 30) {
-          return tep_get_pay_day(date('Y-m-d H:i:s', strtotime($time.' + 1 day')));
-        }
-        break;
-      case '10':
-        if (date('j') == 31) {
-          return tep_get_pay_day(date('Y-m-d H:i:s', strtotime($time.' + 1 day')));
-        }
-        break;
-      case '11':
-        if (date('j') == 30) {
-          return tep_get_pay_day(date('Y-m-d H:i:s', strtotime($time.' + 1 day')));
-        }
-        break;
-      case '12':
-        if (date('j') == 31) {
-          return tep_get_pay_day(date('Y-m-d H:i:s', strtotime($time.' + 1 day')));
-        }
-        break;
-    }
-    return tep_get_pay_day(date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s', strtotime($time)).' + 1 month')));
-  } else {
-    $c = tep_db_fetch_array(tep_db_query("select * from " . TABLE_BANK_CALENDAR . " where cl_ym = '".date('Ym',strtotime($time))."'"));
-    for($i=0;$i<strlen($c['cl_value']);$i++){
-      if ($c['cl_value'][$i] == '0') {
-        return date('Y-m',strtotime($time)).'-'.($i+1);
-      }
-    }
+  //获取日历状态的信息
+  $cl_status_array = array();
+  $calendar_status_query = tep_db_query("select id,is_handle,end_time,end_min from ". TABLE_CALENDAR_STATUS ." order by sort asc,id asc");
+  $default_is_handle = '';
+  $default_cl_id = '';
+  while($calendar_status_array = tep_db_fetch_array($calendar_status_query)){
 
-    return tep_get_pay_day(date('Y-m-d H:i:s', strtotime($time.' + 1 day')));
+    if($default_is_handle == ''){
+
+      $default_is_handle = $calendar_status_array['is_handle'];
+      $default_cl_id = $calendar_status_array['id'];
+    }
+    $cl_status_array[$calendar_status_array['id']] = array('is_handle'=>$calendar_status_array['is_handle'],'end_time'=>$calendar_status_array['end_time'],'end_min'=>$calendar_status_array['end_min']);
   }
-  //echo $c['cl_value'];
+  tep_db_free_result($calendar_status_query);
+
+  //获取日历的重复设置信息 
+  $repeat_array = array(); 
+  $repeat_date_query = tep_db_query("select id,cl_date,type,repeat_type,date_update from ". TABLE_CALENDAR_DATE ." where repeat_type!=0 order by date_update asc");    
+  while($repeat_date_array = tep_db_fetch_array($repeat_date_query)){
+
+    $repeat_sort_query = tep_db_query("select sort from ". TABLE_CALENDAR_STATUS ." where id='".$repeat_date_array['type']."'");
+    $repeat_sort_array = tep_db_fetch_array($repeat_sort_query);
+    tep_db_free_result($repeat_sort_query);
+    $repeat_array[$repeat_date_array['id']] = array('cl_date'=>$repeat_date_array['cl_date'],'repeat'=>$repeat_date_array['repeat_type'],'type'=>$repeat_date_array['type'],'date_update'=>$repeat_date_array['date_update'],'sort'=>($repeat_date_array['type'] == 0 ? -1 :$repeat_sort_array['sort']));
+  }
+  tep_db_free_result($repeat_date_query);
+  //分类处理特殊重复设置
+
+  foreach($repeat_array as $cl_key=>$cl_value){
+
+    if($cl_value['repeat'] == 1){
+
+       $cl_repeat_array[1][$cl_key] = tep_get_repeat_date(1,$cl_value['cl_date']);
+    }
+
+    if($cl_value['repeat'] == 2){
+
+       $cl_repeat_array[2][$cl_key] = tep_get_repeat_date(2,$cl_value['cl_date']);
+    }
+
+    if($cl_value['repeat'] == 3){
+
+       $cl_repeat_array[3][$cl_key] = tep_get_repeat_date(3,$cl_value['cl_date']);
+    }
+
+    if($cl_value['repeat'] == 4){
+
+       $cl_repeat_array[4][$cl_key] = tep_get_repeat_date(4,$cl_value['cl_date']);
+    }
+  }
+
+  //重复周
+  $cl_week_array = array();
+  foreach($cl_repeat_array[1] as $cl_week_key=>$cl_week_value){
+
+      $cl_week_array[$cl_week_value] = $cl_week_key;
+  }
+
+  //每月重复的日
+  $cl_month_day_array = array();
+  foreach($cl_repeat_array[2] as $cl_month_key=>$cl_month_value){
+
+      $cl_month_day_array[$cl_month_value] = $cl_month_key;
+  }
+
+  //每月重复固定周
+  $cl_month_week_array = array();
+  foreach($cl_repeat_array[3] as $cl_month_week_key=>$cl_month_week_value){
+
+      $cl_month_week_array[$cl_month_week_value[0]][$cl_month_week_value[1]] = $cl_month_week_key;
+  }
+
+  //每年重复的月日
+  $cl_year_month_array = array();
+  foreach($cl_repeat_array[4] as $cl_year_month_key=>$cl_year_month_value){
+
+      $cl_year_month_array[$cl_year_month_value] = $cl_year_month_key; 
+  }
+  //获取可支付的时间 
+  return tep_get_pay_time($time,$cl_status_array,$repeat_array,$cl_repeat_array,$default_is_handle,$default_cl_id,$cl_week_array,$cl_month_day_array,$cl_month_week_array,$cl_year_month_array);  
 }
 
 

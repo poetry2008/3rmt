@@ -59,11 +59,11 @@ if ($_GET['action'] == 'show_category_info') {
   $page_str = '';
   
   if ($c_key > 0) {
-    $page_str .= '<a onclick="show_category_info(\''.$cid_array[$c_key-1].'\')" href="javascript:void(0);" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+    $page_str .= '<a onclick="show_category_info(\''.$cid_array[$c_key-1].'\')" href="javascript:void(0);"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
   }
  
   if ($c_key < (count($cid_array) - 1)) {
-    $page_str .= '<a onclick="show_category_info(\''.$cid_array[$c_key+1].'\')" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
+    $page_str .= '<a onclick="show_category_info(\''.$cid_array[$c_key+1].'\')" href="javascript:void(0);">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
   }
   
   $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
@@ -449,11 +449,11 @@ if ($_GET['action'] == 'show_category_info') {
   $page_str = '';
 
   if($p_key > 0){ 
-    $page_str .= '<a onclick="show_product_info(\''.$pid_arr[$p_key - 1].'\', \'\');" href="javascript:void(0);" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp';
+    $page_str .= '<a onclick="show_product_info(\''.$pid_arr[$p_key - 1].'\', \'\');" href="javascript:void(0);"><'.IMAGE_PREV.'</a>&nbsp;&nbsp';
   }
   
   if($p_key < count($pid_arr)-1){
-    $page_str .= '<a onclick="show_product_info(\''.$pid_arr[$p_key + 1].'\', \'\');" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp';
+    $page_str .= '<a onclick="show_product_info(\''.$pid_arr[$p_key + 1].'\', \'\');" href="javascript:void(0);">'.IMAGE_NEXT.'></a>&nbsp;&nbsp';
   } 
   
   $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
@@ -1097,508 +1097,570 @@ if ($_GET['action'] == 'show_category_info') {
   $notice_box->get_contents($pic_info_row, $buttons);
   $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice();
-} else if ($_GET['action'] == 'new_group') {
-  //新建option组 
-  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_OPTION);
-  include(DIR_FS_ADMIN.'classes/notice_box.php');
+}else if ($_GET['action'] == 'status_setting') {
+  //获取日历状态的信息
+  $cl_status_array = array();
+  $calendar_status_query = tep_db_query("select id,color,is_show from ". TABLE_CALENDAR_STATUS);
+  while($calendar_status_array = tep_db_fetch_array($calendar_status_query)){
+
+    $cl_status_array[$calendar_status_array['id']] = array('is_show'=>$calendar_status_array['is_show'],'color'=>$calendar_status_array['color']);
+  }
+  tep_db_free_result($calendar_status_query);
+ 
+  $repeat_array = array(); 
+  $repeat_date_query = tep_db_query("select id,cl_date,type,repeat_type,is_show,date_update from ". TABLE_CALENDAR_DATE ." where repeat_type!=0 order by date_update asc");    
+  while($repeat_date_array = tep_db_fetch_array($repeat_date_query)){
+
+    $repeat_sort_query = tep_db_query("select sort from ". TABLE_CALENDAR_STATUS ." where id='".$repeat_date_array['type']."'");
+    $repeat_sort_array = tep_db_fetch_array($repeat_sort_query);
+    tep_db_free_result($repeat_sort_query);
+    $repeat_array[$repeat_date_array['id']] = array('cl_date'=>$repeat_date_array['cl_date'],'repeat'=>$repeat_date_array['repeat_type'],'type'=>$repeat_date_array['type'],'is_show'=>$repeat_date_array['is_show'],'date_update'=>$repeat_date_array['date_update'],'sort'=>($repeat_date_array['type'] == 0 ? -1 :$repeat_sort_array['sort']));
+  }
+  tep_db_free_result($repeat_date_query);
+  //分类处理特殊重复设置
+
+  foreach($repeat_array as $cl_key=>$cl_value){
+
+    if($cl_value['repeat'] == 1){
+
+       $cl_repeat_array[1][$cl_key] = tep_get_repeat_date(1,$cl_value['cl_date']);
+    }
+
+    if($cl_value['repeat'] == 2){
+
+       $cl_repeat_array[2][$cl_key] = tep_get_repeat_date(2,$cl_value['cl_date']);
+    }
+
+    if($cl_value['repeat'] == 3){
+
+       $cl_repeat_array[3][$cl_key] = tep_get_repeat_date(3,$cl_value['cl_date']);
+    }
+
+    if($cl_value['repeat'] == 4){
+
+       $cl_repeat_array[4][$cl_key] = tep_get_repeat_date(4,$cl_value['cl_date']);
+    }
+  }
+
+  //重复周
+  $cl_week_array = array();
+  foreach($cl_repeat_array[1] as $cl_week_key=>$cl_week_value){
+
+      $cl_week_array[$cl_week_value] = $cl_week_key;
+  }
+
+  //每月重复的日
+  $cl_month_day_array = array();
+  foreach($cl_repeat_array[2] as $cl_month_key=>$cl_month_value){
+
+      $cl_month_day_array[$cl_month_value] = $cl_month_key;
+  }
+
+  //每月重复固定周
+  $cl_month_week_array = array();
+  foreach($cl_repeat_array[3] as $cl_month_week_key=>$cl_month_week_value){
+
+      $cl_month_week_array[$cl_month_week_value[0]][$cl_month_week_value[1]] = $cl_month_week_key;
+  }
+
+  //每年重复的月日
+  $cl_year_month_array = array();
+  foreach($cl_repeat_array[4] as $cl_year_month_key=>$cl_year_month_value){
+
+      $cl_year_month_array[$cl_year_month_value] = $cl_year_month_key; 
+  }
+
+  //读取相应日期的数据
+  $calendar_date_query = tep_db_query("select * from ". TABLE_CALENDAR_DATE ." where cl_date='".$_GET['date']."'");
+  $calendar_date_array = tep_db_fetch_array($calendar_date_query);
+  $calendar_date_num = tep_db_num_rows($calendar_date_query);
+  tep_db_free_result($calendar_date_query); 
+  $repeat_sort_query = tep_db_query("select sort from ". TABLE_CALENDAR_STATUS ." where id='".$calendar_date_array['type']."'");
+  $repeat_sort_array = tep_db_fetch_array($repeat_sort_query);
+  tep_db_free_result($repeat_sort_query);
+
+  $calendar_date_id = $calendar_date_array['id'];
+  $day = tep_get_repeat_date(2,$_GET['date']);
   
+  $wday = tep_get_repeat_date(1,$_GET['date']);
+  
+  $temp_num_week = ceil($day/7);
+  
+  $temp_year_month_day = substr($_GET['date'],4,4); 
+
+  //状态重复设置，冲突时，以状态排序最小的一个为准 
+  $date_time_array = array();
+  $date_time_array = array('month'=>$repeat_array[$cl_month_day_array[$day]]['sort'],
+                           'week'=>$repeat_array[$cl_week_array[$wday]]['sort'],                     
+                           'month_week'=>$repeat_array[$cl_month_week_array[$temp_num_week][$wday]]['sort'],
+                           'year'=>$repeat_array[$cl_year_month_array[$temp_year_month_day]]['sort']
+                           );
+  arsort($date_time_array);
+  $date_time_array = array_filter($date_time_array);
+  $first_value_array = array_slice($date_time_array,0,1);
+  $first_value_type = array_keys($first_value_array);
+  if($first_value_array[$first_value_type[0]] != ''){
+    switch($first_value_type[0]){
+
+      case 'month':
+        $cl_date_temp = isset($calendar_date_array['type']) && $calendar_date_array['type'] == 0 && $repeat_array[$cl_month_day_array[$day]]['sort'] == -1 ? true : false;
+        if(($repeat_sort_array['sort'] != '' && $repeat_array[$cl_month_day_array[$day]]['sort'] != '' && $repeat_sort_array['sort'] < $repeat_array[$cl_month_day_array[$day]]['sort']) || ($repeat_sort_array['sort'] == '' && $repeat_array[$cl_month_day_array[$day]]['sort'] != '') || ($repeat_array[$cl_month_day_array[$day]]['sort'] == -1)){
+          $calendar_date_id  = array_key_exists($day,$cl_month_day_array) && $cl_date_temp == false ?  $cl_month_day_array[$day] : $calendar_date_id;
+        } 
+        break;
+      case 'week':
+        $cl_date_temp = isset($calendar_date_array['type']) && $calendar_date_array['type'] == 0 && $repeat_array[$cl_week_array[$wday]]['sort'] == -1 ? true : false;
+        if(($repeat_sort_array['sort'] != '' && $repeat_array[$cl_week_array[$wday]]['sort'] != '' && $repeat_sort_array['sort'] < $repeat_array[$cl_week_array[$wday]]['sort']) || ($repeat_sort_array['sort'] == '' && $repeat_array[$cl_week_array[$wday]]['sort'] != '') || ($repeat_array[$cl_week_array[$wday]]['sort'] == -1)){
+          $calendar_date_id = array_key_exists($wday,$cl_week_array) && $cl_date_temp == false ? $cl_week_array[$wday] : $calendar_date_id; 
+        }          
+        break;
+      case 'month_week':
+        $cl_date_temp = isset($calendar_date_array['type']) && $calendar_date_array['type'] == 0 && $repeat_array[$cl_month_week_array[$temp_num_week][$wday]]['sort'] == -1 ? true : false;
+        if(($repeat_sort_array['sort'] != '' && $repeat_array[$cl_month_week_array[$temp_num_week][$wday]]['sort'] != '' && $repeat_sort_array['sort'] < $repeat_array[$cl_month_week_array[$temp_num_week][$wday]]['sort']) || ($repeat_sort_array['sort'] == '' && $repeat_array[$cl_month_week_array[$temp_num_week][$wday]]['sort'] != '') || ($repeat_array[$cl_month_week_array[$temp_num_week][$wday]]['sort'] == -1)){ 
+          $temp_week_array = array_slice($cl_month_week_array,0,1);
+          $calendar_date_id = is_array($cl_month_week_array[$temp_num_week]) && $cl_date_temp == false ? $cl_month_week_array[$temp_num_week][$wday] : $calendar_date_id;
+        }          
+        break;
+      case 'year':
+        $cl_date_temp = isset($calendar_date_array['type']) && $calendar_date_array['type'] == 0 && $repeat_array[$cl_year_month_array[$temp_year_month_day]]['sort'] == -1 ? true : false;
+        if(($repeat_sort_array['sort'] != '' && $repeat_array[$cl_year_month_array[$temp_year_month_day]]['sort'] != '' && $repeat_sort_array['sort'] < $repeat_array[$cl_year_month_array[$temp_year_month_day]]['sort']) || ($repeat_sort_array['sort'] == '' && $repeat_array[$cl_year_month_array[$temp_year_month_day]]['sort'] != '') || ($repeat_array[$cl_year_month_array[$temp_year_month_day]]['sort'] == -1)){ 
+          $calendar_date_id = array_key_exists($temp_year_month_day,$cl_year_month_array) && $cl_date_temp == false ? $cl_year_month_array[$temp_year_month_day] : $calendar_date_id;
+        }          
+        break;
+    }
+  }
+
+  //读取相应日期的数据
+  $calendar_date_query = tep_db_query("select * from ". TABLE_CALENDAR_DATE ." where id='".$calendar_date_id."'");
+  $calendar_date_array = tep_db_fetch_array($calendar_date_query);
+  tep_db_free_result($calendar_date_query);
+
+  //显示日期编辑的弹出框 
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_BANK_CL);
+  include(DIR_FS_ADMIN.'classes/notice_box.php'); 
+
   $notice_box = new notice_box('popup_order_title', 'popup_order_info');
  
-  $page_str = '<a onclick="close_option_info();" href="javascript:void(0);">X</a>';
-  
+  //头部内容
   $heading = array();
+  $date_str = substr($_GET['date'],0,4).'-'.substr($_GET['date'],4,2).'-'.substr($_GET['date'],6,2);
+  $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => '<b>'.HEADING_TITLE.'</b>'); 
-  $heading[] = array('align' => 'right', 'text' => $page_str); 
+  $heading[] = array('align' => 'left', 'text' => '<b>'.$date_str.'</b>');
+  $heading[] = array('align' => 'right', 'text' => $page_str);
+
+  //主体内容
+  $category_info_row = array();
   
+  $category_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_COMMENTS.'<input type="hidden" name="cl_date" value="'.$_GET['date'].'"><input type="hidden" id="repeat_flag" value="'.($calendar_date_num > 0 && $first_value_array[$first_value_type[0]] != '' && $cl_date_temp == false ? 1 : 0).'"><input type="hidden" id="special_flag" value="'.$calendar_date_array['is_special'].'">'), 
+        array('align' => 'left', 'params' => 'colspan="2"', 'text' => '&nbsp;') 
+      );
+
+  $category_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_SPECIAL), 
+        array('align' => 'left', 'params' => 'width="55" nowrap="nowrap"', 'text' => '<input type="radio" name="is_special" style="padding-left:0;margin-left:0;" value="1"'.($calendar_date_array['is_special'] == 1 ? ' checked="checked"' : '').' onclick="change_repeat_type(1);">'.TEXT_CALENDAR_YES),
+        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="radio" name="is_special" value="0"'.($calendar_date_array['is_special'] == 0 ? ' checked="checked"' : '').' onclick="change_repeat_type(0);">'.TEXT_CALENDAR_NO)
+      );
+
+  //银行营业状态下拉框
+  $status_select_list = '<select name="type">';
+  $status_select_list .= '<option value="">'.TEXT_CALENDAR_NOT_SETTING.'</option>';
+  $calendar_status_query = tep_db_query("select id,title from ". TABLE_CALENDAR_STATUS ." order by sort asc,id asc");
+  $selected = '';
+  while($calendar_status_array = tep_db_fetch_array($calendar_status_query)){
+
+    $selected = $calendar_date_array['type'] == $calendar_status_array['id'] ? ' selected="selected"' : '';
+    $status_select_list .= '<option value="'.$calendar_status_array['id'].'"'.$selected.'>'.$calendar_status_array['title'].'</option>';
+  } 
+  tep_db_free_result($calendar_status_query);
+  $status_select_list .= '</select>';
+  $category_info_row[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_TYPE), 
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $status_select_list.'&nbsp;<span id="status_type"></span>')
+      );
+  //重复类型 
+  $disabled = '';
+  $disabled = $calendar_date_array['is_special'] == 1 ? 'disabled="disabled"' : ''; 
+  $repeat_select_list = '<select name="repeat_type"'.$disabled.'>';
+  $repeat_select_list .= '<option value="0"'.($calendar_date_array['repeat_type'] == 0 ? ' selected="selected"' : '').'>'.TEXT_CALENDAR_REPEAT_TYPE_NO.'</option>';
+  $repeat_select_list .= '<option value="1"'.($calendar_date_array['repeat_type'] == 1 ? ' selected="selected"' : '').'>'.TEXT_CALENDAR_REPEAT_TYPE_WEEK.'</option>';
+  $repeat_select_list .= '<option value="2"'.($calendar_date_array['repeat_type'] == 2 ? ' selected="selected"' : '').'>'.TEXT_CALENDAR_REPEAT_TYPE_MONTH.'</option>';
+  $repeat_select_list .= '<option value="3"'.($calendar_date_array['repeat_type'] == 3 ? ' selected="selected"' : '').'>'.TEXT_CALENDAR_REPEAT_TYPE_MONTH_WEEK.'</option>';
+  $repeat_select_list .= '<option value="4"'.($calendar_date_array['repeat_type'] == 4 ? ' selected="selected"' : '').'>'.TEXT_CALENDAR_REPEAT_TYPE_YEAR.'</option>';
+  $repeat_select_list .= '</select>';
+  $category_info_row[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_REPEAT_TYPE), 
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $repeat_select_list)
+     ); 
+
+  $category_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_SHOW), 
+        array('align' => 'left', 'params' => 'width="55" nowrap="nowrap"', 'text' => '<input type="radio" name="is_show" style="padding-left:0;margin-left:0;" value="1"'.($calendar_date_array['is_show'] == 1 ? ' checked="checked"' : '').'>'.TEXT_CALENDAR_SHOW_YES),
+        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="radio" name="is_show" value="0"'.($calendar_date_array['is_show'] == 0 ? ' checked="checked"' : '').'>'.TEXT_CALENDAR_SHOW_NO)
+      );
+  $category_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_USER_ADDED), 
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => tep_not_null($calendar_date_array['user_added']) ? $calendar_date_array['user_added'] : TEXT_UNSET_DATA)
+      );
+
+  $category_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_DATE_ADDED), 
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => tep_not_null($calendar_date_array['date_added']) && tep_not_null($calendar_date_array['user_added']) ? $calendar_date_array['date_added'] : TEXT_UNSET_DATA)
+      );
+
+  $category_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_USER_UPDATE), 
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => tep_not_null($calendar_date_array['user_update']) ? $calendar_date_array['user_update'] : TEXT_UNSET_DATA)
+      );
+
+  $category_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_DATE_UPDATE), 
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => tep_not_null($calendar_date_array['date_update']) && tep_not_null($calendar_date_array['user_update']) ? $calendar_date_array['date_update'] : TEXT_UNSET_DATA)
+      );
+
+  //底部内容
   $buttons = array();
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_group_info(0, 0);" id="button_save"').'</a>'; 
-  $buttons = array('align' => 'center', 'button' => $button); 
- 
-  $new_group_row = array();
   
-  $new_group_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_NAME), 
-        array('align' => 'left', 'text' => tep_draw_input_field('name', '', 'id="name" class="campaign_input"').'<span id="name_error" style="color:#ff0000;"></span>') 
-      );
-  
-  $new_group_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_TITLE), 
-        array('align' => 'left', 'text' => tep_draw_input_field('title', '', 'id="title" class="campaign_input"').'<span id="title_error" style="color:#ff0000;"></span>') 
-      );
-  
-  $new_group_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_GROUP_IS_PREORDER), 
-        array('align' => 'left', 'text' => tep_draw_radio_field('is_preorder',1,false,'','id="is_preorder" style="padding-left:0;margin-left:0;"').OPTION_GROUP_IS_PREORDER.'&nbsp;'.tep_draw_radio_field('is_preorder',0,true,'','id="is_preorder"').OPTION_GROUP_IS_NOT_PREORDER) 
-      );
-  
-  $new_group_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_GROUP_DESC), 
-        array('align' => 'left', 'text' => tep_draw_textarea_field('comment', 'hard', '30', '10', '', 'class="campaign_input"')) 
-      );
-  
-  $new_group_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_SORT_NUM), 
-        array('align' => 'left', 'text' => tep_draw_input_field('sort_num', '1000', 'size="31" id="sort_num" style="text-align:right; width:20%;"')) 
-      );
-  
-  $form_str = tep_draw_form('option_group', FILENAME_OPTION, 'action=insert_group'); 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="if(document.getElementById(\'repeat_flag\').value == 1){if(confirm(\''.TEXT_CALENDAR_REPEAT_COMMENT.'\')){save_submit();}}else{save_submit();}"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="hidden_info_box();"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_RESET, 'onclick="date_reset();"').'</a></form>'; 
+
+  if (!empty($button)) {
+    $buttons = array('align' => 'center', 'button' => $button); 
+  }
+
+  $action_url_date = substr($_GET['date'],0,4) == date('Y') ? '' : '&y='.substr($_GET['date'],0,4);
+  $action_url = $calendar_date_num == 1 ? 'action=date_edit' : 'action=date';
+  $action_url .= $action_url_date;
+  $form_str = tep_draw_form('calendar_date', FILENAME_BANK_CL, $action_url);
+
+  //生成表单 
   $notice_box->get_form($form_str);
-  $notice_box->get_heading($heading);
-  $notice_box->get_contents($new_group_row, $buttons);
+  $notice_box->get_heading($heading);   
+  $notice_box->get_contents($category_info_row, $buttons);
   $notice_box->get_eof(tep_eof_hidden());
-  
-  echo $notice_box->show_notice().'||||||'.tep_get_note_top_layer(FILENAME_OPTION);
-} else if ($_GET['action'] == 'edit_group') {
-  //编辑option组 
-  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_OPTION);
-  include(DIR_FS_ADMIN.'classes/notice_box.php');
-  
+  echo $notice_box->show_notice();
+}else if ($_GET['action'] == 'status_edit') {
+  //显示银行状态编辑的弹出框 
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_BANK_CL);
+  include(DIR_FS_ADMIN.'classes/notice_box.php'); 
+
   $notice_box = new notice_box('popup_order_title', 'popup_order_info');
  
-  $group_raw = tep_db_query("select * from ".TABLE_OPTION_GROUP." where id = '".$_POST['group_id']."'"); 
-  $group = tep_db_fetch_array($group_raw);
+  //获取银行营业状态信息
+  $calendar_status_query = tep_db_query("select * from ". TABLE_CALENDAR_STATUS ." where id='".(int)$_GET['id']."'");
+  $calendar_status_array = tep_db_fetch_array($calendar_status_query);
+  tep_db_free_result($calendar_status_query);
   
-  foreach ($_POST as $p_key => $p_value) {
-    if (($p_key != 'group_id') && ($p_key != 'action')) {
-      $param_str .= $p_key.'='.$p_value.'&'; 
-    }
-  }
-  $param_str = substr($param_str, 0, -1); 
-  
-  $page_str = '';
-  
-  if (isset($_POST['search'])) {
-    if (isset($_POST['sort_name'])) {
-      $sort_type = isset($_POST['sort_type'])?$_POST['sort_type']:'asc'; 
-      if ($_POST['search'] == '2') {
-        $group_query_raw = 'select og.*, if((select p.products_id from products p where p.belong_to_option = og.id limit 1), 1, 0) as is_belong_to from '.TABLE_OPTION_GROUP.' og where og.name = \''.tep_replace_full_character($_POST['keyword']).'\' order by is_belong_to '.$sort_type.', og.sort_num, og.name asc';
-      } else {
-        $group_query_raw = 'select og.*, if((select p.products_id from products p where p.belong_to_option = og.id limit 1), 1, 0) as is_belong_to from '.TABLE_OPTION_GROUP.' og where og.name like \'%'.tep_replace_full_character($_POST['keyword']).'%\' order by is_belong_to '.$sort_type.', og.sort_num, og.name asc';
-      }
-    } else {
-      if ($_POST['search'] == '2') {
-        $group_query_raw = 'select * from '.TABLE_OPTION_GROUP.' where name = \''.tep_replace_full_character($_POST['keyword']).'\' order by sort_num, name asc';   
-      } else {
-        $group_query_raw = 'select * from '.TABLE_OPTION_GROUP.' where name like \'%'.tep_replace_full_character($_POST['keyword']).'%\' order by sort_num, name asc';   
-      }
-    }
-  } else {
-    if (isset($_POST['sort_name'])) {
-      $sort_type = isset($_POST['sort_type'])?$_POST['sort_type']:'asc'; 
-      $group_query_raw = 'select og.*, if((select p.products_id from products p where p.belong_to_option = og.id limit 1), 1, 0) as is_belong_to from '.TABLE_OPTION_GROUP.' og order by is_belong_to '.$sort_type.', og.sort_num asc ,og.name asc';
-    } else {
-      $group_query_raw = 'select * from '.TABLE_OPTION_GROUP.' order by sort_num, name asc'; 
-    }
-  }
-  $group_split = new splitPageResults($_POST['page'], MAX_DISPLAY_SEARCH_RESULTS, $group_query_raw, $group_query_numrows); 
-  $group_query = tep_db_query($group_query_raw); 
-  $gid_array = array(); 
-  while ($group_row = tep_db_fetch_array($group_query)) {
-    $gid_array[] = $group_row['id']; 
-  }
-  foreach ($gid_array as $g_key => $g_value) {
-     if ($_POST['group_id'] == $g_value) {
-       break; 
-     }
-  }
-  if ($g_key > 0) {
-    $page_str .= '<a id="option_prev" href="javascript:void(0);" onclick="show_link_group_info(\''.$gid_array[$g_key - 1].'\', \''.urlencode($param_str).'\')"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
-  }
-  
-  if ($g_key < count($gid_array)-1) {
-    $page_str .= '<a id="option_next" href="javascript:void(0);" onclick="show_link_group_info(\''.$gid_array[$g_key + 1].'\', \''.urlencode($param_str).'\')">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
-  }
-  
-  $page_str .= '<a onclick="close_option_info();" href="javascript:void(0);">X</a>';
-  
+  //头部内容
   $heading = array();
+  $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => '<b>'.$group['name'].'</b>'); 
-  $heading[] = array('align' => 'right', 'text' => $page_str); 
-  
-  $buttons = array();
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_NEW_PROJECT, 'onclick="create_option_group();"').'</a>'; 
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_group_info('.$group['id'].', 1);" id="button_save"').'</a>'; 
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if(confirm(\''.TEXT_DEL_OPTION.'\')) window.location.href = \''.tep_href_link(FILENAME_OPTION, 'action=delete_group_confirm&group_id='.$group['id'].'&'.$param_str).'\';"').'</a>'; 
-  
-  $buttons = array('align' => 'center', 'button' => $button); 
- 
-  $edit_group_row = array();
-  
+  $heading[] = array('align' => 'left', 'text' => '<b>'.$calendar_status_array['title'].'</b>');
+  $heading[] = array('align' => 'right', 'text' => $page_str);
 
+  //主体内容
+  $category_info_row = array();
   
-  $edit_group_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_NAME), 
-        array('align' => 'left', 'text' => tep_draw_input_field('name', $group['name'], 'id="name" class="campaign_input"').'<span id="name_error" style="color:#ff0000;"></span>') 
+  $category_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_COMMENTS.'<input type="hidden" name="cl_id" value="'.$_GET['id'].'">'), 
+        array('align' => 'left', 'params' => 'colspan="2"', 'text' => '&nbsp;') 
       );
   
-  $edit_group_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_TITLE), 
-        array('align' => 'left', 'text' => tep_draw_input_field('title', $group['title'], 'id="title" class="campaign_input"').'<span id="title_error" style="color:#ff0000;"></span>') 
+  $category_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_TITLE), 
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<input type="text" class="option_input" name="title" value="'.$calendar_status_array['title'].'"><span id="title_error">'.TEXT_FIELD_REQUIRED.'</span>')
       );
-  
-  if ($group['is_preorder'] == '1') {
-    $is_preorder_str .= tep_draw_radio_field('is_preorder',1,true,'','id="is_preorder" style="padding-left:0;margin-left:0;"').OPTION_GROUP_IS_PREORDER.'&nbsp;'.tep_draw_radio_field('is_preorder',0,false,'','id="is_preorder"').OPTION_GROUP_IS_NOT_PREORDER; 
-  } else {
-    $is_preorder_str .= tep_draw_radio_field('is_preorder',1,false,'','id="is_preorder" style="padding-left:0;margin-left:0;"').OPTION_GROUP_IS_PREORDER.'&nbsp;'.tep_draw_radio_field('is_preorder',0,true,'','id="is_preorder"').OPTION_GROUP_IS_NOT_PREORDER; 
+
+  //银行营业状态颜色选项 
+  $color_array = array('#FFFFFF','#DD1F2C','#DD6E1F','#FFFFCC','#82C31C','#1F67DD','#982DAC','#F1A9EB','#B36520','#BEBEBE');
+  $color_font_array = array(TEXT_CALENDAR_COLOR_WHITE,TEXT_CALENDAR_COLOR_RED,TEXT_CALENDAR_COLOR_BLUE_ORANGE,TEXT_CALENDAR_COLOR_BLUE_YELLOW,TEXT_CALENDAR_COLOR_BLUE_GREEN,TEXT_CALENDAR_COLOR_BLUE,TEXT_CALENDAR_COLOR_BLUE_PURPLE,TEXT_CALENDAR_COLOR_BLUE_PINK,TEXT_CALENDAR_COLOR_BLUE_BROWN,TEXT_CALENDAR_COLOR_BLUE_GRAY);
+  $color_select_list = '<select name="color">';
+  foreach($color_array as $color_key=>$color_value){
+    $selected = $color_value == $calendar_status_array['color'] ? ' selected="selected"' : '';
+    $color_select_list .= '<option value="'.$color_value.'"'.$selected.'>'.$color_font_array[$color_key].'</option>';
   }
-  
-  $edit_group_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_GROUP_IS_PREORDER), 
-        array('align' => 'left', 'text' => $is_preorder_str) 
+  $color_select_list .= '</select>';
+  $category_info_row[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_COLOR), 
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $color_select_list)
       );
-  
-  $edit_group_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_GROUP_DESC), 
-        array('align' => 'left', 'text' => tep_draw_textarea_field('comment', 'hard', '30', '10', $group['comment'], 'class="campaign_input"')) 
-      );
-  
-  $edit_group_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_SORT_NUM), 
-        array('align' => 'left', 'text' => tep_draw_input_field('sort_num', $group['sort_num'], 'size="31" id="sort_num" style="text-align:right;
-width:20%;"')) 
-      );
-  
-  $edit_group_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="25%"', 'text' => TEXT_USER_ADDED), 
-        array('align' => 'left', 'text' => ((tep_not_null($group['user_added']))?$group['user_added']:TEXT_UNSET_DATA)) 
-      );
-  
-  $edit_group_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="25%"', 'text' => TEXT_DATE_ADDED), 
-        array('align' => 'left', 'text' => ((tep_not_null($group['created_at']))?$group['created_at']:TEXT_UNSET_DATA)) 
-      );
-  
-  $edit_group_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="25%"', 'text' => TEXT_USER_UPDATE), 
-        array('align' => 'left', 'text' => ((tep_not_null($group['user_update']))?$group['user_update']:TEXT_UNSET_DATA)) 
-      );
-  
-  $edit_group_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="25%"', 'text' => TEXT_USER_ADDED), 
-        array('align' => 'left', 'text' => ((tep_not_null($group['date_update']))?$group['date_update']:TEXT_UNSET_DATA).tep_draw_hidden_field('group_id', $group['id'])) 
-      );
+  //是否受理  
+  $category_info_row[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_HANDLE), 
+       array('align' => 'left', 'params' => 'width="55" nowrap="nowrap"', 'text' => '<input type="radio" name="is_handle" style="padding-left:0;margin-left:0;" value="1"'.($calendar_status_array['is_handle'] == 1 ? ' checked="checked"' : '').' onclick="change_is_handle(1);">'.TEXT_CALENDAR_YES),
+       array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="radio" name="is_handle" value="0"'.($calendar_status_array['is_handle'] == 0 ? ' checked="checked"' : '').' onclick="change_is_handle(0);">'.TEXT_CALENDAR_NO)
+     ); 
 
-  $form_str = tep_draw_form('option_group', FILENAME_OPTION, 'action=update_group&'.$param_str); 
-  
-  $notice_box->get_form($form_str);
-  $notice_box->get_heading($heading);
-  $notice_box->get_contents($edit_group_row, $buttons);
-  $notice_box->get_eof(tep_eof_hidden());
-  echo $notice_box->show_notice().'||||||'.tep_get_note_top_layer(FILENAME_OPTION);
-} else if ($_GET['action'] == 'new_item') {
-  //新建option元素
-  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_OPTION);
-  include(DIR_FS_ADMIN.'classes/notice_box.php');
-  require_once(DIR_FS_ADMIN.'enabledoptionitem.php'); 
-  
-  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
- 
-  $page_str = '<a onclick="close_option_info();" href="javascript:void(0);">X</a>';
-  
-  $heading = array();
-  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => '<b>Item</b>'); 
-  $heading[] = array('align' => 'right', 'text' => $page_str); 
-  
-  $buttons = array();
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_item_info()" id="button_save"').'</a>'; 
-  $buttons = array('align' => 'center', 'button' => $button); 
- 
-  $new_item_row = array();
-  
-  $new_item_title_row = array();
-  $new_item_title_params = array('width' => '100%', 'border' => '0', 'cellspacing' => '0', 'cellpadding' => '0');
-  
-  $new_item_title_row[]['text'] = array(
-         array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_NAME),
-         array('align' => 'left', 'text' => tep_draw_input_field('title', '', 'id="title" class="option_text" autocomplete="off"').'&nbsp;<a href="javascript:void(0);" onclick="search_item_title(this, 0, 0);">'.tep_html_element_button(IMAGE_SEARCH, 'onclick=""').'</a>'.'<span id="title_error" style="color:#ff0000;"></span>')
-      );
-  
-  $new_item_title_row[]['text'] = array(
-         array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_TITLE),
-         array('align' => 'left', 'text' => tep_draw_input_field('front_title', '', 'id="front_title" class="option_text"').'<span id="front_error" style="color:#ff0000;"></span>')
-      );
-  
-  $select_str = '<div id="se_item">'; 
-  $select_str .= '<select id="type" name="type" onchange="change_option_item_type(0);" style="margin-left:0;padding-left:0;">'; 
-  $i=0; 
-  foreach ($enabled_item_array as $ekey => $evalue) {
-    if ($i == 0) {
-      $first_item = $ekey; 
+  //开始时间下拉框
+  $disabled = $calendar_status_array['is_handle'] == 1 ? '' : ' disabled="disabled"';
+  $start_time_select_list = '<select name="start_time"'.$disabled.'>';
+  //$start_time_select_list .= '<option value="">'.TEXT_CALENDAR_NOT_SETTING.'</option>';
+  $selected = '';
+  for($i = 0;$i <= 23;$i++){
+
+    if($calendar_status_array['is_handle'] == 1){ 
+      $selected = $calendar_status_array['start_time'] == $i && $calendar_status_array['start_time'] != '' ? ' selected="selected"' : '';
     }
-    $select_str .= '<option value="'.$ekey.'">'.strtolower($evalue).'</option>'; 
-    $i++; 
+    $start_time_select_list .= '<option value="'.$i.'"'.$selected.'>'.($i < 10 ? '0'.$i : $i).'</option>';
   }
-  $select_str .= '</select>'; 
-  $select_str .= '</div>'; 
+  $start_time_select_list .= '</select>';
 
-  $new_item_title_row[]['text'] = array(
-         array('align' => 'left', 'text' => TABLE_HEADING_OPTION_ITEM_TYPE),
-         array('align' => 'left', 'text' => $select_str)
-      );
-  $new_item_table_title_str = $notice_box->get_table($new_item_title_row, '', $new_item_title_params);
-  
-  $new_item_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="100%"', 'text' => $new_item_table_title_str) 
-      );
-  
-  $new_item_show_select_params = array('width' => '100%', 'border' => '0', 'cellspacing' => '0', 'cellpadding' => '0', 'parameters' => 'id="show_select" class="option_spacing"');
-  
-  $classname = 'HM_Option_Item_'.ucfirst($first_item);
-  require_once('option/'.$classname.'.php');
-  $item_instance = new $classname();
-  
-  $new_item_show_select_row = $item_instance->prepareFormWithParent($item['id']);
-  
-  $new_item_table_show_select_str = $notice_box->get_table($new_item_show_select_row, '', $new_item_show_select_params, true);  
+  if($calendar_status_array['is_handle'] == 1){
+    $start_min = $calendar_status_array['start_min'];
+    $start_min_left = $start_min != -1 ? $start_min < 10 ? 0 : substr($start_min,0,1) : '';
+    $start_min_right = $start_min < 10 ? $start_min : substr($start_min,1,1);
+    $end_min = $calendar_status_array['end_min'];
+    $end_min_left = $end_min < 10 ? 0 : substr($end_min,0,1);
+    $end_min_right = $end_min < 10 ? $end_min : substr($end_min,1,1);
+  }
+  //开始时间下拉框---前半部分 分
+  $left_min_select_list = '<select name="start_left_min"'.$disabled.'>';
+  //$left_min_select_list .= '<option value="">'.TEXT_CALENDAR_NOT_SETTING.'</option>';
+  for($i = 0;$i <= 5;$i++){
 
-  $new_item_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="100%"', 'text' => $new_item_table_show_select_str) 
-      );
-  
-  $new_item_other_row = array();
-  $new_item_other_params = array('width' => '100%', 'border' => '0', 'cellspacing' => '0', 'cellpadding' => '0');
+    $selected = $calendar_status_array['is_handle'] == 1 && $start_min_left == $i && $start_min_left != '' ? ' selected="selected"' : '';
+    $left_min_select_list .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
+  }
+  $left_min_select_list .= '</select>';
+
+  //开始时间下拉框---后半部分 分
+  $right_min_select_list = '<select name="start_right_min"'.$disabled.'>';
+  //$right_min_select_list .= '<option value="">'.TEXT_CALENDAR_NOT_SETTING.'</option>';
+  for($i = 0;$i <= 9;$i++){
     
-  $new_item_other_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="25%"' , 'text' => TABLE_HEADING_OPTION_ITEM_PRICE),
-        array('align' => 'left', 'text' => tep_draw_input_field('price', '', 'id="price" class="option_item_input"').'&nbsp;'.TEXT_MONEY_SYMBOL), 
+    $selected = $calendar_status_array['is_handle'] == 1 && $start_min_right == $i ? ' selected="selected"' : '';
+    $right_min_select_list .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
+  }
+  $right_min_select_list .= '</select>';
+  $category_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_START_TIME), 
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $start_time_select_list.'&nbsp;'.TEXT_TORIHIKI_HOUR_STR.'&nbsp;'.$left_min_select_list.$right_min_select_list.'&nbsp;'.TEXT_TORIHIKI_MIN_STR.'<span id="start_time_error"></span>')
       );
-  
-  $new_item_other_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="25%"' , 'text' => TABLE_HEADING_OPTION_SORT_NUM),
-        array('align' => 'left', 'text' => tep_draw_input_field('sort_num', '1000', 'id="sort_num" class="option_item_input"')), 
-      );
-  
-  $new_item_other_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="25%"' , 'text' => TABLE_HEADING_OPTION_ITEM_PLACE),
-        array('align' => 'left', 'text' => '<div id="p_type">'.tep_draw_radio_field('place_type', '0', true, '', 'style="padding-left:0;margin-left:0;"').OPTION_ITEM_TYPE_PRODUCT.'&nbsp;&nbsp;'.tep_draw_radio_field('place_type', '1').OPTION_ITEM_TYPE_LAST.'</div><input type="hidden" name="is_copy" value="0" id="is_copy">'), 
-      );
-  
-  $new_item_table_other_str = $notice_box->get_table($new_item_other_row, '', $new_item_other_params);  
 
-  $new_item_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="100%"', 'text' => $new_item_table_other_str) 
-      );
-  
-  
-  $form_str = tep_draw_form('option_item', FILENAME_OPTION, 'action=insert_item&g_id='.$_POST['group_id'].(!empty($_POST['gpage'])?'&gpage='.$_POST['gpage']:'').(isset($_POST['keyword'])?'&keyword='.$_POST['keyword']:'').(isset($_POST['search'])?'&search='.$_POST['search']:'').(!empty($_POST['page'])?'&page='.$_POST['page']:'').(isset($_POST['sort_name'])?'&sort_name='.$_POST['sort_name']:'').(isset($_POST['sort_type'])?'&sort_type='.$_POST['sort_type']:''), 'post', 'enctype="multipart/form-data"'); 
-  
-  $notice_box->get_form($form_str);
-  $notice_box->get_heading($heading);
-  $notice_box->get_contents($new_item_row, $buttons);
-  $notice_box->get_eof(tep_eof_hidden());
- 
-  $item_script_str = '<script>$(function() {
-      function format_item(item) {
-          return item.name;
-      }
-      $("#title").autocomplete(\'ajax_orders.php?action=search_title\', {
-        multipleSeparator: \'\',
-        dataType: "json",
-        parse: function(data) {
-        return $.map(data, function(row) {
-            return {
-             data: row,
-             value: row.name,
-             result: row.name
-            }
-          });
-        },
-        formatItem: function(item) {
-          return format_item(item);
-        }
-      }).result(function(e, item) {
-      });
-});</script>'; 
-  echo $item_script_str.$notice_box->show_notice().'||||||'.tep_get_note_top_layer(FILENAME_OPTION.'?g_id='.$_POST['group_id']);
-} else if ($_GET['action'] == 'edit_item') {
-  //编辑item
-  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_OPTION);
-  include(DIR_FS_ADMIN.'classes/notice_box.php');
-  require_once(DIR_FS_ADMIN.'enabledoptionitem.php'); 
-  
-  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
-  
-  $param_str = '';
-  foreach ($_POST as $p_key => $p_value) {
-    if (($p_key != 'item_id') && ($p_key != 'action')) {
-      $param_str .= $p_key.'='.$p_value.'&'; 
+  //结束时间下拉框
+  $end_time_select_list = '<select name="end_time"'.$disabled.'>';
+  //$end_time_select_list .= '<option value="">'.TEXT_CALENDAR_NOT_SETTING.'</option>';
+  $selected = '';
+  for($i = 0;$i <= 23;$i++){
+
+    if($calendar_status_array['is_handle'] == 1){ 
+      $selected = $calendar_status_array['end_time'] == $i && $calendar_status_array['start_time'] != '' ? ' selected="selected"' : '';
     }
+    $end_time_select_list .= '<option value="'.$i.'"'.$selected.'>'.($i < 10 ? '0'.$i : $i).'</option>';
   }
-  $param_str = substr($param_str, 0, -1);
-  
-  $page_str = '';
-  $item_raw = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".$_POST['item_id']."'"); 
-  $item = tep_db_fetch_array($item_raw); 
- 
-  $item_query_raw = 'select * from '.TABLE_OPTION_ITEM.' where group_id = \''.$_POST['g_id'].'\' order by sort_num, title asc';
-  
-  $item_split = new splitPageResults($_POST['page'], MAX_DISPLAY_SEARCH_RESULTS, $item_query_raw, $item_query_numrows);    
-  $item_query = tep_db_query($item_query_raw);  
-  
-  $item_id_array = array(); 
-  while ($item_row = tep_db_fetch_array($item_query)) {
-    $item_id_array[] = $item_row['id']; 
-  }
-  
-  foreach ($item_id_array as $i_key => $i_value) {
-     if ($_POST['item_id'] == $i_value) {
-       break; 
-     }
-  }
-  if ($i_key > 0) {
-    $page_str .= '<a id="option_prev" href="javascript:void(0);" onclick="show_link_item_info(\''.$item_id_array[$i_key - 1].'\', \''.urlencode($param_str).'\')"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
-  }
-  
-  if ($i_key < count($item_id_array)-1) {
-    $page_str .= '<a id="option_next" href="javascript:void(0);" onclick="show_link_item_info(\''.$item_id_array[$i_key + 1].'\', \''.urlencode($param_str).'\')">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
-  }
-  
+  $end_time_select_list .= '</select>';
 
-  $page_str .= '<a onclick="close_option_info();" href="javascript:void(0);">X</a>';
-  
-  $heading = array();
-  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => '<b>'.$item['title'].'</b>'); 
-  $heading[] = array('align' => 'right', 'text' => $page_str); 
-  
+  //结束时间下拉框---前半部分 分
+  $left_min_select_list = '<select name="end_left_min"'.$disabled.'>';
+  //$left_min_select_list .= '<option value="">'.TEXT_CALENDAR_NOT_SETTING.'</option>';
+  for($i = 0;$i <= 5;$i++){
+
+    $selected = $calendar_status_array['is_handle'] == 1 && $end_min_left == $i ? ' selected="selected"' : '';
+    $left_min_select_list .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
+  }
+  $left_min_select_list .= '</select>';
+
+  //结束时间下拉框---后半部分 分
+  $right_min_select_list = '<select name="end_right_min"'.$disabled.'>';
+  //$right_min_select_list .= '<option value="">'.TEXT_CALENDAR_NOT_SETTING.'</option>';
+  for($i = 0;$i <= 9;$i++){
+
+    $selected = $calendar_status_array['is_handle'] == 1 && $start_min_left == $i ? ' selected="selected"' : '';
+    $right_min_select_list .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
+  }
+  $right_min_select_list .= '</select>';
+  $category_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_END_TIME), 
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $end_time_select_list.'&nbsp;'.TEXT_TORIHIKI_HOUR_STR.'&nbsp;'.$left_min_select_list.$right_min_select_list.'&nbsp;'.TEXT_TORIHIKI_MIN_STR.'<span id="end_time_error"></span>')
+      );
+
+  $category_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_SHOW), 
+        array('align' => 'left', 'params' => 'width="55" nowrap="nowrap"', 'text' => '<input type="radio" name="is_show" style="padding-left:0;margin-left:0;" value="1"'.($calendar_status_array['is_show'] == 1 ? ' checked="checked"' : '').'>'.TEXT_CALENDAR_SHOW_YES),
+        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="radio" name="is_show" value="0"'.($calendar_status_array['is_show'] == 0 ? ' checked="checked"' : '').'>'.TEXT_CALENDAR_SHOW_NO)
+      );
+
+  $category_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_SORT), 
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<input type="text" name="sort" value="'.$calendar_status_array['sort'].'" style="text-align: right;">')
+      );
+
+  $category_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_USER_ADDED), 
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => tep_not_null($calendar_status_array['user_added']) ? $calendar_status_array['user_added'] : TEXT_UNSET_DATA)
+      );
+
+  $category_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_DATE_ADDED), 
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => tep_not_null($calendar_status_array['date_added']) && tep_not_null($calendar_status_array['user_added']) ? $calendar_status_array['date_added'] : TEXT_UNSET_DATA)
+      );
+
+  $category_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_USER_UPDATE), 
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => tep_not_null($calendar_status_array['user_update']) ? $calendar_status_array['user_update'] : TEXT_UNSET_DATA)
+      );
+
+  $category_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_DATE_UPDATE), 
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => tep_not_null($calendar_status_array['date_update']) && tep_not_null($calendar_status_array['user_update']) ? $calendar_status_array['date_update'] : TEXT_UNSET_DATA)
+      );
+
+  //底部内容
   $buttons = array();
   
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_NEW_PROJECT, 'onclick="create_option_item(\''.$_POST['g_id'].'\', \''.urlencode($param_str).'\');"').'</a>&nbsp;'; 
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_item_info();" id="button_save"').'</a>&nbsp;'; 
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if(confirm(\''.TEXT_DEL_OPTION.'\')) window.location.href = \''.tep_href_link(FILENAME_OPTION, 'action=delete_item_confirm&item_id='.$item['id'].'&g_id='.$_POST['g_id'].(!empty($_POST['gpage'])?'&gpage='.$_POST['gpage']:'').(isset($_POST['keyword'])?'&keyword='.$_POST['keyword']:'').(isset($_POST['search'])?'&search='.$_POST['search']:'').(!empty($_POST['page'])?'&page='.$_POST['page']:'').(isset($_POST['sort_name'])?'&sort_name='.$_POST['sort_name']:'').(isset($_POST['sort_type'])?'&sort_type='.$_POST['sort_type']:'')).'\';"').'</a>'; 
-  
-  $buttons = array('align' => 'center', 'button' => $button); 
- 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_submit(IMAGE_SAVE, '').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="hidden_info_box();"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if(confirm(\''.TEXT_CALENDAR_DELETE_COMMENTS.'\')){status_delete();}"').'</a></form>'; 
 
-  $edit_item_row = array();
-  
-  $edit_item_title_row = array();
-  $edit_item_title_params = array('width' => '100%', 'border' => '0', 'cellspacing' => '0', 'cellpadding' => '0');
-  
-  $edit_item_title_row[]['text'] = array(
-         array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_NAME.'<input type="hidden" name="item_id" value="'.$item['id'].'" id="item_uid">'),
-         array('align' => 'left', 'text' => tep_draw_input_field('title', $item['title'], 'id="title" class="option_text" autocomplete="off"').'&nbsp;<a href="javascript:void(0);" onclick="search_item_title(this, 1, '.$item['id'].');">'.tep_html_element_button(IMAGE_SEARCH, 'onclick=""').'</a><span id="title_error" style="color:#ff0000;"></span><input type="hidden" name="is_more" id="is_more" value="0">')
-      );
-  
-  $edit_item_title_row[]['text'] = array(
-         array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_TITLE),
-         array('align' => 'left', 'text' => tep_draw_input_field('front_title', $item['front_title'], 'id="front_title" class="option_text"').'<span id="front_error" style="color:#ff0000;"></span>')
-      );
-  
-  $item_select_str = '<select id="type" name="type" onchange="change_option_item_type(0);" style="margin-left:0;padding-left:0;">'; 
-  foreach ($enabled_item_array as $ekey => $evalue) {
-    if (strtolower($evalue) == $item['type']) {
-      $item_select_str .= '<option value="'.$ekey.'" selected>'.strtolower($evalue).'</option>'; 
-    } else {
-      $item_select_str .= '<option value="'.$ekey.'">'.strtolower($evalue).'</option>'; 
-    }
+  if (!empty($button)) {
+    $buttons = array('align' => 'center', 'button' => $button); 
   }
-  $html_str .= '</select>';
-  $edit_item_title_row[]['text'] = array(
-         array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_ITEM_TYPE),
-         array('align' => 'left', 'text' => '<div id="se_item">'.$item_select_str.'</div>')
-      );
-  $edit_item_table_title_str = $notice_box->get_table($edit_item_title_row, '', $edit_item_title_params);
-  
-  $edit_item_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="100%"', 'text' => $edit_item_table_title_str) 
-      );
-  
-  $edit_item_show_select_params = array('width' => '100%', 'border' => '0', 'cellspacing' => '0', 'cellpadding' => '0', 'parameters' => 'id="show_select" class="option_spacing"');
-  $classname = 'HM_Option_Item_'.ucfirst($item['type']);
-  require_once('option/'.$classname.'.php');
-  $item_instance = new $classname();
-  $edit_item_show_select_row = $item_instance->prepareFormWithParent($item['id']);
-  
-  $edit_item_table_title_str = $notice_box->get_table($edit_item_show_select_row, '', $edit_item_show_select_params, true);
 
-  $edit_item_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="100%"', 'text' => $edit_item_table_title_str) 
-      );
-  
-  $edit_item_other_row = array();
-  $edit_item_other_params = array('width' => '100%', 'border' => '0', 'cellspacing' => '0', 'cellpadding' => '0');
-   
-  if ($item['type'] != 'radio') {
-    $edit_item_other_row[]['text'] = array(
-           array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_ITEM_PRICE),
-           array('align' => 'left', 'text' => tep_draw_input_field('price', number_format($item['price']), 'id="price" class="option_item_input"').'&nbsp;'.TEXT_MONEY_SYMBOL)
-        );
-  }
-  
-  $edit_item_other_row[]['text'] = array(
-         array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_SORT_NUM),
-         array('align' => 'left', 'text' => tep_draw_input_field('sort_num', $item['sort_num'], 'id="sort_num" class="option_item_input"'))
-      );
-  
-  if ($item['place_type'] == 0) {
-    $item_place_str = tep_draw_radio_field('place_type', '0', true, '', 'style="padding-left:0;margin-left:0;"').OPTION_ITEM_TYPE_PRODUCT.'&nbsp;&nbsp;'.tep_draw_radio_field('place_type', '1').OPTION_ITEM_TYPE_LAST; 
-  } else {
-    $item_place_str = tep_draw_radio_field('place_type', '0', false, '', 'style="padding-left:0;margin-left:0;"').OPTION_ITEM_TYPE_PRODUCT.'&nbsp;&nbsp;'.tep_draw_radio_field('place_type', '1', true).OPTION_ITEM_TYPE_LAST; 
-  }
-  $edit_item_other_row[]['text'] = array(
-         array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_ITEM_PLACE),
-         array('align' => 'left', 'text' => '<div id="p_type">'.$item_place_str.'</div>')
-      );
-  
-  $edit_item_other_row[]['text'] = array(
-         array('align' => 'left', 'text' => TEXT_USER_ADDED),
-         array('align' => 'left', 'text' => ((tep_not_null($item['user_added']))?$item['user_added']:TEXT_UNSET_DATA))
-      );
-  
-  $edit_item_other_row[]['text'] = array(
-         array('align' => 'left', 'text' => TEXT_DATE_ADDED),
-         array('align' => 'left', 'text' => ((tep_not_null($item['created_at']))?$item['created_at']:TEXT_UNSET_DATA))
-      );
-  
-  $edit_item_other_row[]['text'] = array(
-         array('align' => 'left', 'text' => TEXT_USER_UPDATE),
-         array('align' => 'left', 'text' => ((tep_not_null($item['user_update']))?$item['user_update']:TEXT_UNSET_DATA))
-      );
-  
-  $edit_item_other_row[]['text'] = array(
-         array('align' => 'left', 'text' => TEXT_DATE_UPDATE),
-         array('align' => 'left', 'text' => ((tep_not_null($item['date_update']))?$item['date_update']:TEXT_UNSET_DATA).'<input type="hidden" name="is_copy" value="0" id="is_copy">')
-      );
+  $form_str = tep_draw_form('status_edit_form', FILENAME_BANK_CL, 'action=status_edit', 'post', 'onsubmit="return status_add_submit();"');
 
-  $edit_item_other_str = $notice_box->get_table($edit_item_other_row, '', $edit_item_other_params);
-  
-  $edit_item_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="100%"', 'text' => $edit_item_other_str) 
-      );
-  
-  $item_script_str = '<script>$(function() {
-      function format_item(item) {
-          return item.name;
-      }
-      $("#title").autocomplete(\'ajax_orders.php?action=search_title\', {
-        multipleSeparator: \'\',
-        dataType: "json",
-        parse: function(data) {
-        return $.map(data, function(row) {
-            return {
-             data: row,
-             value: row.name,
-             result: row.name
-            }
-          });
-        },
-        formatItem: function(item) {
-          return format_item(item);
-        }
-      }).result(function(e, item) {
-      });
-});</script>';
-
-  $form_str = tep_draw_form('option_item', FILENAME_OPTION, 'action=update_item&g_id='.$_POST['g_id'].(!empty($_POST['gpage'])?'&gpage='.$_POST['gpage']:'').(isset($_POST['keyword'])?'&keyword='.$_POST['keyword']:'').(isset($_POST['search'])?'&search='.$_POST['search']:'').(!empty($_POST['page'])?'&page='.$_POST['page']:'').(isset($_POST['sort_name'])?'&sort_name='.$_POST['sort_name']:'').(isset($_POST['sort_type'])?'&sort_type='.$_POST['sort_type']:''), 'post', 'enctype="multipart/form-data"'); 
-  
+  //生成表单 
   $notice_box->get_form($form_str);
-  $notice_box->get_heading($heading);
-  $notice_box->get_contents($edit_item_row, $buttons);
+  $notice_box->get_heading($heading);   
+  $notice_box->get_contents($category_info_row, $buttons);
   $notice_box->get_eof(tep_eof_hidden());
+  echo $notice_box->show_notice();
+}else if ($_GET['action'] == 'status_add') {
+  //显示银行状态添加的弹出框 
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_BANK_CL);
+  include(DIR_FS_ADMIN.'classes/notice_box.php'); 
+
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+ 
+  //头部内容
+  $heading = array();
+  $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => '<b>'.TEXT_CALENDAR_ADD.'</b>');
+  $heading[] = array('align' => 'right', 'text' => $page_str);
+
+  //主体内容
+  $category_info_row = array();
   
-  echo $item_script_str.$notice_box->show_notice().'||||||'.tep_get_note_top_layer(FILENAME_OPTION.'?g_id='.$_POST['g_id']);
+  $category_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_COMMENTS.'<input type="hidden" name="cl_id" value="'.$_GET['id'].'">'), 
+        array('align' => 'left', 'params' => 'colspan="2"', 'text' => '&nbsp;') 
+      );
+  
+  $category_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_TITLE), 
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<input type="text" class="option_input" name="title" value=""><span id="title_error">'.TEXT_FIELD_REQUIRED.'</span>')
+      );
+
+  //银行营业状态颜色选项 
+  $color_array = array('#FFFFFF','#DD1F2C','#DD6E1F','#FFFFCC','#82C31C','#1F67DD','#982DAC','#F1A9EB','#B36520','#BEBEBE'); 
+  $color_font_array = array(TEXT_CALENDAR_COLOR_WHITE,TEXT_CALENDAR_COLOR_RED,TEXT_CALENDAR_COLOR_BLUE_ORANGE,TEXT_CALENDAR_COLOR_BLUE_YELLOW,TEXT_CALENDAR_COLOR_BLUE_GREEN,TEXT_CALENDAR_COLOR_BLUE,TEXT_CALENDAR_COLOR_BLUE_PURPLE,TEXT_CALENDAR_COLOR_BLUE_PINK,TEXT_CALENDAR_COLOR_BLUE_BROWN,TEXT_CALENDAR_COLOR_BLUE_GRAY);  
+  $color_select_list = '<select name="color">';
+  foreach($color_array as $color_key=>$color_value){
+    $color_select_list .= '<option value="'.$color_value.'">'.$color_font_array[$color_key].'</option>';
+  }
+  $color_select_list .= '</select>';
+  $category_info_row[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_COLOR), 
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $color_select_list)
+      );
+  //是否受理  
+  $category_info_row[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_HANDLE), 
+       array('align' => 'left', 'params' => 'width="55" nowrap="nowrap"', 'text' => '<input type="radio" name="is_handle" value="1" style="padding-left:0;margin-left:0;" checked="checked" onclick="change_is_handle(1);">'.TEXT_CALENDAR_YES),
+       array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="radio" name="is_handle" value="0" onclick="change_is_handle(0);">'.TEXT_CALENDAR_NO)
+     ); 
+
+  //开始时间下拉框---时
+  $start_time_select_list = '<select name="start_time">';
+  //$start_time_select_list .= '<option value="">'.TEXT_CALENDAR_NOT_SETTING.'</option>';
+  for($i = 0;$i <= 23;$i++){
+
+    $start_time_select_list .= '<option value="'.$i.'">'.($i < 10 ? '0'.$i : $i).'</option>';
+  }
+  $start_time_select_list .= '</select>';
+
+  //开始时间下拉框---前半部分 分
+  $left_min_select_list = '<select name="start_left_min">';
+  //$left_min_select_list .= '<option value="">'.TEXT_CALENDAR_NOT_SETTING.'</option>';
+  for($i = 0;$i <= 5;$i++){
+
+    $left_min_select_list .= '<option value="'.$i.'">'.$i.'</option>';
+  }
+  $left_min_select_list .= '</select>';
+
+  //开始时间下拉框---后半部分 分
+  $right_min_select_list = '<select name="start_right_min">';
+  //$right_min_select_list .= '<option value="">'.TEXT_CALENDAR_NOT_SETTING.'</option>';
+  for($i = 0;$i <= 9;$i++){
+
+    $right_min_select_list .= '<option value="'.$i.'">'.$i.'</option>';
+  }
+  $right_min_select_list .= '</select>';
+  $category_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_START_TIME), 
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $start_time_select_list.'&nbsp;'.TEXT_TORIHIKI_HOUR_STR.'&nbsp;'.$left_min_select_list.$right_min_select_list.'&nbsp;'.TEXT_TORIHIKI_MIN_STR.'<span id="start_time_error"></span>')
+      );
+
+  //结束时间下拉框
+  $end_time_select_list = '<select name="end_time">';
+  //$end_time_select_list .= '<option value="">'.TEXT_CALENDAR_NOT_SETTING.'</option>';
+  for($i = 0;$i <= 23;$i++){
+  
+    $end_time_select_list .= '<option value="'.$i.'">'.($i < 10 ? '0'.$i : $i).'</option>';
+  }
+  $end_time_select_list .= '</select>';
+
+  //结束时间下拉框---前半部分 分
+  $left_min_select_list = '<select name="end_left_min">';
+  //$left_min_select_list .= '<option value="">'.TEXT_CALENDAR_NOT_SETTING.'</option>';
+  for($i = 0;$i <= 5;$i++){
+
+    $left_min_select_list .= '<option value="'.$i.'">'.$i.'</option>';
+  }
+  $left_min_select_list .= '</select>';
+
+  //结束时间下拉框---后半部分 分
+  $right_min_select_list = '<select name="end_right_min">';
+  //$right_min_select_list .= '<option value="">'.TEXT_CALENDAR_NOT_SETTING.'</option>';
+  for($i = 0;$i <= 9;$i++){
+
+    $right_min_select_list .= '<option value="'.$i.'">'.$i.'</option>';
+  }
+  $right_min_select_list .= '</select>';
+  $category_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_END_TIME), 
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $end_time_select_list.'&nbsp;'.TEXT_TORIHIKI_HOUR_STR.'&nbsp;'.$left_min_select_list.$right_min_select_list.'&nbsp;'.TEXT_TORIHIKI_MIN_STR.'<span id="end_time_error"></span>')
+      );
+
+  $category_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_SHOW), 
+        array('align' => 'left', 'params' => 'width="55" nowrap="nowrap"', 'text' => '<input type="radio" name="is_show" style="padding-left:0;margin-left:0;" value="1">'.TEXT_CALENDAR_SHOW_YES),
+        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="radio" name="is_show" value="0" checked="checked">'.TEXT_CALENDAR_SHOW_NO)
+      );
+
+  $category_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_SORT), 
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<input type="text" name="sort" value="1000" style="text-align: right;">')
+      );
+
+  //底部内容
+  $buttons = array();
+  
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_submit(IMAGE_SAVE, '').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="hidden_info_box();"').'</a>'; 
+
+  if (!empty($button)) {
+    $buttons = array('align' => 'center', 'button' => $button); 
+  }
+
+  $form_str = tep_draw_form('status_add_form', FILENAME_BANK_CL, 'action=status_add', 'post', 'onsubmit="return status_add_submit();"');
+
+  //生成表单 
+  $notice_box->get_form($form_str);
+  $notice_box->get_heading($heading);   
+  $notice_box->get_contents($category_info_row, $buttons);
+  $notice_box->get_eof(tep_eof_hidden());
+  echo $notice_box->show_notice();
 }

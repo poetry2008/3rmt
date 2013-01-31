@@ -387,7 +387,7 @@ define('TABLE_HEADING_STATUS', '状态');
 define('TABLE_HEADING_CATEGORIES_PRODUCTS', '分类 / 商品');
 define('OROSHI_DATA_MANAGE','数据');
 define('BOX_ONCE_PWD_LOG','日志');
-define('BANK_CL_TITLE_TEXT', '编辑日历');
+define('BANK_CL_TITLE_TEXT', '日历设置');
 define('BANK_CL_COMMON_WORK_TIME', '正常营业');
 define('BANK_CL_REST_TIME', '银行休业');
 define('BANK_CL_SEND_MAIL', '邮件回复停止');
@@ -468,7 +468,7 @@ define('FILENAME_REFERER_TEXT','访问排名');
 define('FILENAME_KEYWORDS_TEXT','关键字排名');
 
 //tools language 
-define('FILENAME_BANK_CL_TEXT','编辑日历');
+define('FILENAME_BANK_CL_TEXT','日历设置');
 define('FILENAME_PW_MANAGER_TEXT','ID管理');
 define('FILENAME_COMPUTERS_TEXT','按钮设置');
 define('FILENAME_MAG_UP_TEXT','电子杂志统一登记');

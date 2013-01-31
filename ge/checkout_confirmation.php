@@ -554,7 +554,7 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
 }
 ?>
       <tr>
-        <td style="padding-left:5px"><b><?php echo HEADING_BILLING_INFORMATION; ?></b></td>
+        <td style="padding-left:5px; padding-bottom:7px;"><b><?php echo HEADING_BILLING_INFORMATION; ?></b></td>
       </tr>
       <tr>
         <td>
@@ -695,7 +695,7 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
     if ($confirmation = $payment_modules->confirmation($payment)) {
 ?>
      <tr>
-        <td style="padding-left:5px"><b><?php echo HEADING_PAYMENT_INFORMATION; ?></b></td>
+        <td style="padding-left:5px; padding-bottom:7px;"><b><?php echo HEADING_PAYMENT_INFORMATION; ?></b></td>
       </tr>
       <tr>
         <td>

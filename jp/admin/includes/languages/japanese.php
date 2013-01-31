@@ -386,7 +386,7 @@ define('TABLE_HEADING_STATUS', 'ステータス');
 define('TABLE_HEADING_CATEGORIES_PRODUCTS', 'カテゴリー / 商品');
 define('OROSHI_DATA_MANAGE','データ');
 define('BOX_ONCE_PWD_LOG','ログ');
-define('BANK_CL_TITLE_TEXT', 'カレンダー編集');
+define('BANK_CL_TITLE_TEXT', 'カレンダー設定');
 define('BANK_CL_COMMON_WORK_TIME', '通常営業');
 define('BANK_CL_REST_TIME', '銀行休業');
 define('BANK_CL_SEND_MAIL', 'メール返信休業');
@@ -460,7 +460,7 @@ define('FILENAME_REFERER_TEXT','アクセスランキング');
 define('FILENAME_KEYWORDS_TEXT','キーワードランキング');
 
 //tools language 
-define('FILENAME_BANK_CL_TEXT','銀行営業日');
+define('FILENAME_BANK_CL_TEXT','カレンダー設定');
 define('FILENAME_PW_MANAGER_TEXT','ID管理');
 define('FILENAME_COMPUTERS_TEXT','ボタン管理');
 define('FILENAME_MAG_UP_TEXT','メールマガジン一括登録');

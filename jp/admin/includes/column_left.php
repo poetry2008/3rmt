@@ -92,6 +92,32 @@ function toggle_leftColumn()
       $("#popup_window").css('left',ele_obj.left-box_warp_left);
     }
   }
+
+if("undefined" != typeof ele_value_obj){
+  var ele_width = $(".box_warp").width(); 
+  var box_warp = '';
+  var box_warp_top = 0;
+  var box_warp_left = 0;
+  if($(".box_warp").offset()){
+    box_warp = $(".box_warp").offset();
+    box_warp_top = box_warp.top;
+    box_warp_left = box_warp.left;
+    //ele_width = ele_width-box_warp.left;
+  }
+  var ele_obj = '';
+  ele_obj = $("#show_date_edit").offset();
+  tmp_ele_obj = $(ele_value_obj).offset();
+  if(ele_obj.left-box_warp_left+$("#show_date_edit").width() > ele_width){
+
+    $("#show_date_edit").css('left',ele_width-$("#show_date_edit").width()); 
+  }else{
+    if(tmp_ele_obj.left-box_warp_left+$("#show_date_edit").width() < ele_width){
+      $("#show_date_edit").css('left',tmp_ele_obj.left-box_warp_left);
+    }else{
+      $("#show_date_edit").css('left',ele_width-$("#show_date_edit").width());
+    }
+  }
+}
 <?php if($_SERVER['PHP_SELF'] == '/admin/campaign.php'){ ?>
 setTimeout("show_campaign_info_offset()",10); 
 <?php } ?>
