@@ -163,7 +163,14 @@ require("includes/note_js.php");
   }
   ?>
 	  <input type="button" onClick = "goto()" value='<?php echo IMAGE_BACK;?>'>
-                 </td>
+          <?php
+          if ($ocertify->npermission > 7) {
+          ?>
+          <input type="button" onClick="location.href='cleate_dougyousya.php'" value="<?php echo HISTORY_SET_NAME_TEXT;?>"> 
+          <?php
+          }
+          ?>
+                </td>
               </tr>
               <tr>
                  <td>

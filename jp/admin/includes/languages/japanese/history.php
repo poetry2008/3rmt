@@ -7,4 +7,5 @@ define('TEXT_DELETE','削除');
 define('TEXT_CLASSIFICATION','カテゴリー / 商品');
 define('TEXT_SIGN_IN','登録');
 define('TEXT_UNIFIED','統一');
+define('HISTORY_SET_NAME_TEXT', '同業者の名前設定');
 ?>
