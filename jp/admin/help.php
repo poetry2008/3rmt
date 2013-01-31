@@ -56,7 +56,7 @@ if (isset($_GET['info_romaji']) && $_GET['info_romaji']) {
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <style>
 body {
-font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif;
+font-family: "宋体", Osaka, Verdana, Arial, sans-serif;
 font-size: 12px;
 color: #000000;
 padding:0;
