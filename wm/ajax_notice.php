@@ -30,5 +30,35 @@ if ($_GET['action'] == 'process') {
     }
   }
   echo 'success';
+} else if ($_GET['action'] == 'check_pre_op') {
+  $preorder_products_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$_POST['pre_pid']."'");
+  $preorder_products = tep_db_fetch_array($preorder_products_raw);
+  if (tep_pre_check_less_product_option($preorder_products['products_id'])) {
+    $products_name = tep_get_products_name($preorder_products['products_id']); 
+    if (!tep_not_null($products_name)) {
+      $products_name = $preorder_products['products_name']; 
+    }
+    echo sprintf(mb_substr(NOTICE_LESS_PRODUCT_OPTION_TEXT,0,17,'utf-8'), $products_name)."\r\n".mb_substr(NOTICE_LESS_PRODUCT_OPTION_TEXT,-27,27,'utf-8');
+    exit;
+  }
+  echo 'success';
+} else if ($_GET['action'] == 'check_pre_products_op') {
+  $op_info_array = array(); 
+  if (!empty($op_info_str)) {
+    $op_tmp_array = explode('<<<<<<', $op_info_str); 
+    foreach ($op_tmp_array as $key => $value) {
+      $tmp_value_array = explode('||||||', $value); 
+      $op_info_array[$tmp_value_array[0]] = $tmp_value_array[1]; 
+    }
+  }
+  if (tep_pre_check_less_product_option_by_products_info($op_info_array, $_POST['products_id_str'])) {
+    $products_name = tep_get_products_name($_POST['products_id_str']); 
+    if (!tep_not_null($products_name)) {
+      $products_name = $preorder_products['products_name']; 
+    }
+    echo sprintf(mb_substr(NOTICE_LESS_PRODUCT_OPTION_TEXT,0,17,'utf-8'), $products_name)."\r\n".mb_substr(NOTICE_LESS_PRODUCT_OPTION_TEXT,-27,27,'utf-8');
+    exit; 
+  }
+  echo 'success';
 }
 

@@ -219,8 +219,11 @@ td,th{ border:0; padding:3px; vertical-align:top;}
 	width:100%;
 	min-width:900px;
 	letter-spacing:0;
+	text-align:center;
+	color:#94969D;
 	width: expression(document.body.clientWidth < 900? "900px": "100%" );
 }
+#footer address{text-align:center;}
 .footer_links{ color:#fff;word-spacing:0;}
 #links,#footer-nav{
 	text-align:center; 

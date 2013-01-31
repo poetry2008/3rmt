@@ -154,8 +154,8 @@ $shipping_fee = $money_total > $free_value ? 0 : $weight_fee;
 <script type="text/javascript">
 </script>
 <script type="text/javascript" src="js/data.js"></script>
+<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript">
-<!--
 var a_vars = Array();
 var pagename='';
 var visitesSite = 1;
@@ -163,7 +163,23 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
 <?php
   require(DIR_WS_ACTIONS.'visites.js');
 ?>
-//-->
+function check_preorder_op(pre_pid) 
+{
+   $.ajax({
+     url: '<?php echo tep_href_link('ajax_notice.php', 'action=check_pre_op');?>',
+     type: 'POST',
+     data:'pre_pid='+pre_pid,
+     async: false,
+     success: function(msg) {
+       if (msg != 'success') {
+         alert(msg);
+         window.location.href = '<?php echo tep_href_link('change_preorder.php', 'pid='.$preorder_res['check_preorder_str'].'&ao_type=1');?>'; 
+       } else {
+         document.forms.order.submit(); 
+       }
+     }
+   });  
+}
 </script>
 </head>
 <body><div align="center"> 
@@ -230,7 +246,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
               <?php echo CHANGE_PREORDER_CONFIRM_BUTTON_INFO;?> 
               </td>
               <td class="main" align="right">
-                <?php echo tep_image_submit('button_confirm_order02.gif', IMAGE_BUTTON_CONFIRM_ORDER);?> 
+                <a href="javascript:void(0);" onclick="check_preorder_op('<?php echo $_POST['pid'];?>');"><?php echo tep_image_button('button_confirm_order02.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></a> 
               </td>
             </tr>
           </table>
@@ -371,7 +387,11 @@ foreach($all_show_option_id as $t_item_id){
             trim(str_replace($replace_arr, '', 
                 nl2br(stripslashes($all_show_option[$t_item_id]['of_value']))))) {
             if ($ro_value['money'] != '') {
-              echo ' ('.$currencies->format($ro_value['money']).')'; 
+              if ($ro_value['money'] < 0) {
+                echo ' (<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format($ro_value['money'])).'</font>'.JPMONEY_UNIT_TEXT.')'; 
+              } else {
+                echo ' ('.$currencies->format($ro_value['money']).')'; 
+              }
             }
             break; 
           }
@@ -379,7 +399,11 @@ foreach($all_show_option_id as $t_item_id){
       }
     } else {
       if ((int)$all_show_option[$t_item_id]['price'] != '0') {
-        echo ' ('.$currencies->format($all_show_option[$t_item_id]['price']).')'; 
+        if ($all_show_option[$t_item_id]['price'] < 0) {
+          echo ' (<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format($all_show_option[$t_item_id]['price'])).'</font>'.JPMONEY_UNIT_TEXT.')'; 
+        } else {
+          echo ' ('.$currencies->format($all_show_option[$t_item_id]['price']).')'; 
+        }
       }
     }
     if($all_show_option[$t_item_id]['front_title']){
@@ -737,7 +761,7 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
                 <?php
                 $payment_modules->preorder_process_button($con_payment_code, $_POST['pid'], $total_param); 
                 ?>
-                <?php echo tep_image_submit('button_confirm_order02.gif', IMAGE_BUTTON_CONFIRM_ORDER);?> 
+                <a href="javascript:void(0);" onclick="check_preorder_op('<?php echo $_POST['pid'];?>');"><?php echo tep_image_button('button_confirm_order02.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></a> 
               </td>
             </tr>
           </table> 

@@ -82,6 +82,22 @@
 <?php page_head();?>
 <script type="text/javascript" src="./js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript">
+function check_pre_products(op_info_str, products_id_str) {
+  $.ajax({
+    url: '<?php echo tep_href_link('ajax_notice.php', 'action=check_pre_products_op');?>',     
+    type: 'POST',
+    data: 'op_info_str='+op_info_str+'&products_id_str='+products_id_str,
+    async: false,
+    success: function(msg) {
+      if (msg != 'success') {
+        alert(msg); 
+        document.forms.form1.submit(0); 
+      } else {
+        document.forms.preorder_product.submit(0); 
+      }
+    }
+  });
+}
 function triggerHide(radio)
 {
  if ($(radio).attr("checked") == true) {
@@ -487,14 +503,17 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
               }
               echo tep_draw_hidden_field('quantity', $_POST['quantity']); 
               echo tep_draw_hidden_field('preorder_subtotal', $_POST['preorder_subtotal']); 
+              $op_info_array = array(); 
               foreach ($_POST as $op_s_key => $op_s_value) {
                 $ops_single_str = substr($op_s_key, 0, 3);
                 if ($ops_single_str == 'op_') {
                   echo tep_draw_hidden_field($op_s_key, stripslashes($op_s_value)); 
+                  $op_info_array[] = $op_s_key.'||||||'.stripslashes($op_s_value); 
                 }
               }
+              $op_info_tmp_str = implode('<<<<<<', $op_info_array); 
             ?>
-            <?php echo tep_image_submit('button_continue_02_hover.gif', IMAGE_BUTTON_CONTINUE); ?>
+            <a href="javascript:void(0);" onclick="check_pre_products('<?php echo $op_info_tmp_str;?>', '<?php echo $product_info['products_id'];?>');"><?php echo tep_image_button('button_continue_02_hover.gif', IMAGE_BUTTON_CONTINUE);?></a> 
           </td>
         </tr>
       </table>

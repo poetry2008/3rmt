@@ -220,7 +220,11 @@ if(array_key_exists($fixed_option_list_array[3],$ad_array)){
         echo '<br><small>&nbsp;<i> - ' . $all_show_option[$t_item_id]['front_title'] .
              ': ' .  str_replace(array("<br>", "<BR>"), '', $all_show_option[$t_item_id]['value']);
         if ($op_price != '0') {
-          echo ' ('.$currencies->format($op_price).')'; 
+          if ($op_price < 0) {
+            echo ' (<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format($op_price)).'</font>'.JPMONEY_UNIT_TEXT.')'; 
+          } else {
+            echo ' ('.$currencies->format($op_price).')'; 
+          }
         }
         echo '</i></small>';
       }

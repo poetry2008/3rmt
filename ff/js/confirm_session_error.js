@@ -7,7 +7,12 @@ function confirm_session_error(num,str){
        dataType: 'text',
        async : false,
        success: function(data){
-         if (data == 'no_count') {
+         data_tmp_str = data.substr(0, 13); 
+         if (data_tmp_str == 'check success') {
+           tmp_data_array = data.split('|||');
+           alert(tmp_data_array[1]);
+           window.location.href = $('#carturl').val();         
+         } else if (data == 'no_count') {
            window.location.href = $('#carturl').val();         
          }else if(data == 'error'){
            alert('一定時間が経過したか、複数のブラウザによって操作された為、接続が切断されました。お手数ではございますが、再度ご入力いただく必要がございます。');document.location.href='checkout_option.php';

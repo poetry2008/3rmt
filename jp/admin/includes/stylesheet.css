@@ -379,7 +379,7 @@ CHECKBOX, INPUT, RADIO, SELECT, TEXTAREA, FILE {
 	color: #ff0000;                                 
 }
 .smallText {
-	font-size: 10px;  
+	font-size: 11px;  
 	text-overflow:ellipsis;                              
 }
 .main {
