@@ -59,11 +59,11 @@ if ($_GET['action'] == 'show_category_info') {
   $page_str = '';
   
   if ($c_key > 0) {
-    $page_str .= '<a onclick="show_category_info(\''.$cid_array[$c_key-1].'\')" href="javascript:void(0);"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+    $page_str .= '<a onclick="show_category_info(\''.$cid_array[$c_key-1].'\')" href="javascript:void(0);" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
   }
  
   if ($c_key < (count($cid_array) - 1)) {
-    $page_str .= '<a onclick="show_category_info(\''.$cid_array[$c_key+1].'\')" href="javascript:void(0);">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
+    $page_str .= '<a onclick="show_category_info(\''.$cid_array[$c_key+1].'\')" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
   }
   
   $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
@@ -449,11 +449,11 @@ if ($_GET['action'] == 'show_category_info') {
   $page_str = '';
 
   if($p_key > 0){ 
-    $page_str .= '<a onclick="show_product_info(\''.$pid_arr[$p_key - 1].'\', \'\');" href="javascript:void(0);"><'.IMAGE_PREV.'</a>&nbsp;&nbsp';
+    $page_str .= '<a onclick="show_product_info(\''.$pid_arr[$p_key - 1].'\', \'\');" href="javascript:void(0);" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp';
   }
   
   if($p_key < count($pid_arr)-1){
-    $page_str .= '<a onclick="show_product_info(\''.$pid_arr[$p_key + 1].'\', \'\');" href="javascript:void(0);">'.IMAGE_NEXT.'></a>&nbsp;&nbsp';
+    $page_str .= '<a onclick="show_product_info(\''.$pid_arr[$p_key + 1].'\', \'\');" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp';
   } 
   
   $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
@@ -1097,6 +1097,510 @@ if ($_GET['action'] == 'show_category_info') {
   $notice_box->get_contents($pic_info_row, $buttons);
   $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice();
+} else if ($_GET['action'] == 'new_group') {
+  //新建option组 
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_OPTION);
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+  
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+ 
+  $page_str = '<a onclick="close_option_info();" href="javascript:void(0);">X</a>';
+  
+  $heading = array();
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => '<b>'.HEADING_TITLE.'</b>'); 
+  $heading[] = array('align' => 'right', 'text' => $page_str); 
+  
+  $buttons = array();
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_group_info(0, 0);" id="button_save"').'</a>'; 
+  $buttons = array('align' => 'center', 'button' => $button); 
+ 
+  $new_group_row = array();
+  
+  $new_group_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_NAME), 
+        array('align' => 'left', 'text' => tep_draw_input_field('name', '', 'id="name" class="campaign_input"').'<span id="name_error" style="color:#ff0000;"></span>') 
+      );
+  
+  $new_group_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_TITLE), 
+        array('align' => 'left', 'text' => tep_draw_input_field('title', '', 'id="title" class="campaign_input"').'<span id="title_error" style="color:#ff0000;"></span>') 
+      );
+  
+  $new_group_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_GROUP_IS_PREORDER), 
+        array('align' => 'left', 'text' => tep_draw_radio_field('is_preorder',1,false,'','id="is_preorder" style="padding-left:0;margin-left:0;"').OPTION_GROUP_IS_PREORDER.'&nbsp;'.tep_draw_radio_field('is_preorder',0,true,'','id="is_preorder"').OPTION_GROUP_IS_NOT_PREORDER) 
+      );
+  
+  $new_group_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_GROUP_DESC), 
+        array('align' => 'left', 'text' => tep_draw_textarea_field('comment', 'hard', '30', '10', '', 'class="campaign_input"')) 
+      );
+  
+  $new_group_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_SORT_NUM), 
+        array('align' => 'left', 'text' => tep_draw_input_field('sort_num', '1000', 'size="31" id="sort_num" style="text-align:right; width:20%;"')) 
+      );
+  
+  $form_str = tep_draw_form('option_group', FILENAME_OPTION, 'action=insert_group'); 
+  $notice_box->get_form($form_str);
+  $notice_box->get_heading($heading);
+  $notice_box->get_contents($new_group_row, $buttons);
+  $notice_box->get_eof(tep_eof_hidden());
+  
+  echo $notice_box->show_notice().'||||||'.tep_get_note_top_layer(FILENAME_OPTION);
+} else if ($_GET['action'] == 'edit_group') {
+  //编辑option组 
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_OPTION);
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+  
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+ 
+  $group_raw = tep_db_query("select * from ".TABLE_OPTION_GROUP." where id = '".$_POST['group_id']."'"); 
+  $group = tep_db_fetch_array($group_raw);
+  
+  foreach ($_POST as $p_key => $p_value) {
+    if (($p_key != 'group_id') && ($p_key != 'action')) {
+      $param_str .= $p_key.'='.$p_value.'&'; 
+    }
+  }
+  $param_str = substr($param_str, 0, -1); 
+  
+  $page_str = '';
+  
+  if (isset($_POST['search'])) {
+    if (isset($_POST['sort_name'])) {
+      $sort_type = isset($_POST['sort_type'])?$_POST['sort_type']:'asc'; 
+      if ($_POST['search'] == '2') {
+        $group_query_raw = 'select og.*, if((select p.products_id from products p where p.belong_to_option = og.id limit 1), 1, 0) as is_belong_to from '.TABLE_OPTION_GROUP.' og where og.name = \''.tep_replace_full_character($_POST['keyword']).'\' order by is_belong_to '.$sort_type.', og.sort_num, og.name asc';
+      } else {
+        $group_query_raw = 'select og.*, if((select p.products_id from products p where p.belong_to_option = og.id limit 1), 1, 0) as is_belong_to from '.TABLE_OPTION_GROUP.' og where og.name like \'%'.tep_replace_full_character($_POST['keyword']).'%\' order by is_belong_to '.$sort_type.', og.sort_num, og.name asc';
+      }
+    } else {
+      if ($_POST['search'] == '2') {
+        $group_query_raw = 'select * from '.TABLE_OPTION_GROUP.' where name = \''.tep_replace_full_character($_POST['keyword']).'\' order by sort_num, name asc';   
+      } else {
+        $group_query_raw = 'select * from '.TABLE_OPTION_GROUP.' where name like \'%'.tep_replace_full_character($_POST['keyword']).'%\' order by sort_num, name asc';   
+      }
+    }
+  } else {
+    if (isset($_POST['sort_name'])) {
+      $sort_type = isset($_POST['sort_type'])?$_POST['sort_type']:'asc'; 
+      $group_query_raw = 'select og.*, if((select p.products_id from products p where p.belong_to_option = og.id limit 1), 1, 0) as is_belong_to from '.TABLE_OPTION_GROUP.' og order by is_belong_to '.$sort_type.', og.sort_num asc ,og.name asc';
+    } else {
+      $group_query_raw = 'select * from '.TABLE_OPTION_GROUP.' order by sort_num, name asc'; 
+    }
+  }
+  $group_split = new splitPageResults($_POST['page'], MAX_DISPLAY_SEARCH_RESULTS, $group_query_raw, $group_query_numrows); 
+  $group_query = tep_db_query($group_query_raw); 
+  $gid_array = array(); 
+  while ($group_row = tep_db_fetch_array($group_query)) {
+    $gid_array[] = $group_row['id']; 
+  }
+  foreach ($gid_array as $g_key => $g_value) {
+     if ($_POST['group_id'] == $g_value) {
+       break; 
+     }
+  }
+  if ($g_key > 0) {
+    $page_str .= '<a id="option_prev" href="javascript:void(0);" onclick="show_link_group_info(\''.$gid_array[$g_key - 1].'\', \''.urlencode($param_str).'\')"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+  }
+  
+  if ($g_key < count($gid_array)-1) {
+    $page_str .= '<a id="option_next" href="javascript:void(0);" onclick="show_link_group_info(\''.$gid_array[$g_key + 1].'\', \''.urlencode($param_str).'\')">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
+  }
+  
+  $page_str .= '<a onclick="close_option_info();" href="javascript:void(0);">X</a>';
+  
+  $heading = array();
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => '<b>'.$group['name'].'</b>'); 
+  $heading[] = array('align' => 'right', 'text' => $page_str); 
+  
+  $buttons = array();
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_NEW_PROJECT, 'onclick="create_option_group();"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_group_info('.$group['id'].', 1);" id="button_save"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if(confirm(\''.TEXT_DEL_OPTION.'\')) window.location.href = \''.tep_href_link(FILENAME_OPTION, 'action=delete_group_confirm&group_id='.$group['id'].'&'.$param_str).'\';"').'</a>'; 
+  
+  $buttons = array('align' => 'center', 'button' => $button); 
+ 
+  $edit_group_row = array();
+  
+
+  
+  $edit_group_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_NAME), 
+        array('align' => 'left', 'text' => tep_draw_input_field('name', $group['name'], 'id="name" class="campaign_input"').'<span id="name_error" style="color:#ff0000;"></span>') 
+      );
+  
+  $edit_group_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_TITLE), 
+        array('align' => 'left', 'text' => tep_draw_input_field('title', $group['title'], 'id="title" class="campaign_input"').'<span id="title_error" style="color:#ff0000;"></span>') 
+      );
+  
+  if ($group['is_preorder'] == '1') {
+    $is_preorder_str .= tep_draw_radio_field('is_preorder',1,true,'','id="is_preorder" style="padding-left:0;margin-left:0;"').OPTION_GROUP_IS_PREORDER.'&nbsp;'.tep_draw_radio_field('is_preorder',0,false,'','id="is_preorder"').OPTION_GROUP_IS_NOT_PREORDER; 
+  } else {
+    $is_preorder_str .= tep_draw_radio_field('is_preorder',1,false,'','id="is_preorder" style="padding-left:0;margin-left:0;"').OPTION_GROUP_IS_PREORDER.'&nbsp;'.tep_draw_radio_field('is_preorder',0,true,'','id="is_preorder"').OPTION_GROUP_IS_NOT_PREORDER; 
+  }
+  
+  $edit_group_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_GROUP_IS_PREORDER), 
+        array('align' => 'left', 'text' => $is_preorder_str) 
+      );
+  
+  $edit_group_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_GROUP_DESC), 
+        array('align' => 'left', 'text' => tep_draw_textarea_field('comment', 'hard', '30', '10', $group['comment'], 'class="campaign_input"')) 
+      );
+  
+  $edit_group_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_SORT_NUM), 
+        array('align' => 'left', 'text' => tep_draw_input_field('sort_num', $group['sort_num'], 'size="31" id="sort_num" style="text-align:right;
+width:20%;"')) 
+      );
+  
+  $edit_group_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="25%"', 'text' => TEXT_USER_ADDED), 
+        array('align' => 'left', 'text' => ((tep_not_null($group['user_added']))?$group['user_added']:TEXT_UNSET_DATA)) 
+      );
+  
+  $edit_group_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="25%"', 'text' => TEXT_DATE_ADDED), 
+        array('align' => 'left', 'text' => ((tep_not_null($group['created_at']))?$group['created_at']:TEXT_UNSET_DATA)) 
+      );
+  
+  $edit_group_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="25%"', 'text' => TEXT_USER_UPDATE), 
+        array('align' => 'left', 'text' => ((tep_not_null($group['user_update']))?$group['user_update']:TEXT_UNSET_DATA)) 
+      );
+  
+  $edit_group_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="25%"', 'text' => TEXT_USER_ADDED), 
+        array('align' => 'left', 'text' => ((tep_not_null($group['date_update']))?$group['date_update']:TEXT_UNSET_DATA).tep_draw_hidden_field('group_id', $group['id'])) 
+      );
+
+  $form_str = tep_draw_form('option_group', FILENAME_OPTION, 'action=update_group&'.$param_str); 
+  
+  $notice_box->get_form($form_str);
+  $notice_box->get_heading($heading);
+  $notice_box->get_contents($edit_group_row, $buttons);
+  $notice_box->get_eof(tep_eof_hidden());
+  echo $notice_box->show_notice().'||||||'.tep_get_note_top_layer(FILENAME_OPTION);
+} else if ($_GET['action'] == 'new_item') {
+  //新建option元素
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_OPTION);
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+  require_once(DIR_FS_ADMIN.'enabledoptionitem.php'); 
+  
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+ 
+  $page_str = '<a onclick="close_option_info();" href="javascript:void(0);">X</a>';
+  
+  $heading = array();
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => '<b>Item</b>'); 
+  $heading[] = array('align' => 'right', 'text' => $page_str); 
+  
+  $buttons = array();
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_item_info()" id="button_save"').'</a>'; 
+  $buttons = array('align' => 'center', 'button' => $button); 
+ 
+  $new_item_row = array();
+  
+  $new_item_title_row = array();
+  $new_item_title_params = array('width' => '100%', 'border' => '0', 'cellspacing' => '0', 'cellpadding' => '0');
+  
+  $new_item_title_row[]['text'] = array(
+         array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_NAME),
+         array('align' => 'left', 'text' => tep_draw_input_field('title', '', 'id="title" class="option_text" autocomplete="off"').'&nbsp;<a href="javascript:void(0);" onclick="search_item_title(this, 0, 0);">'.tep_html_element_button(IMAGE_SEARCH, 'onclick=""').'</a>'.'<span id="title_error" style="color:#ff0000;"></span>')
+      );
+  
+  $new_item_title_row[]['text'] = array(
+         array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_TITLE),
+         array('align' => 'left', 'text' => tep_draw_input_field('front_title', '', 'id="front_title" class="option_text"').'<span id="front_error" style="color:#ff0000;"></span>')
+      );
+  
+  $select_str = '<div id="se_item">'; 
+  $select_str .= '<select id="type" name="type" onchange="change_option_item_type(0);" style="margin-left:0;padding-left:0;">'; 
+  $i=0; 
+  foreach ($enabled_item_array as $ekey => $evalue) {
+    if ($i == 0) {
+      $first_item = $ekey; 
+    }
+    $select_str .= '<option value="'.$ekey.'">'.strtolower($evalue).'</option>'; 
+    $i++; 
+  }
+  $select_str .= '</select>'; 
+  $select_str .= '</div>'; 
+
+  $new_item_title_row[]['text'] = array(
+         array('align' => 'left', 'text' => TABLE_HEADING_OPTION_ITEM_TYPE),
+         array('align' => 'left', 'text' => $select_str)
+      );
+  $new_item_table_title_str = $notice_box->get_table($new_item_title_row, '', $new_item_title_params);
+  
+  $new_item_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="100%"', 'text' => $new_item_table_title_str) 
+      );
+  
+  $new_item_show_select_params = array('width' => '100%', 'border' => '0', 'cellspacing' => '0', 'cellpadding' => '0', 'parameters' => 'id="show_select" class="option_spacing"');
+  
+  $classname = 'HM_Option_Item_'.ucfirst($first_item);
+  require_once('option/'.$classname.'.php');
+  $item_instance = new $classname();
+  
+  $new_item_show_select_row = $item_instance->prepareFormWithParent($item['id']);
+  
+  $new_item_table_show_select_str = $notice_box->get_table($new_item_show_select_row, '', $new_item_show_select_params, true);  
+
+  $new_item_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="100%"', 'text' => $new_item_table_show_select_str) 
+      );
+  
+  $new_item_other_row = array();
+  $new_item_other_params = array('width' => '100%', 'border' => '0', 'cellspacing' => '0', 'cellpadding' => '0');
+    
+  $new_item_other_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="25%"' , 'text' => TABLE_HEADING_OPTION_ITEM_PRICE),
+        array('align' => 'left', 'text' => tep_draw_input_field('price', '', 'id="price" class="option_item_input"').'&nbsp;'.TEXT_MONEY_SYMBOL), 
+      );
+  
+  $new_item_other_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="25%"' , 'text' => TABLE_HEADING_OPTION_SORT_NUM),
+        array('align' => 'left', 'text' => tep_draw_input_field('sort_num', '1000', 'id="sort_num" class="option_item_input"')), 
+      );
+  
+  $new_item_other_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="25%"' , 'text' => TABLE_HEADING_OPTION_ITEM_PLACE),
+        array('align' => 'left', 'text' => '<div id="p_type">'.tep_draw_radio_field('place_type', '0', true, '', 'style="padding-left:0;margin-left:0;"').OPTION_ITEM_TYPE_PRODUCT.'&nbsp;&nbsp;'.tep_draw_radio_field('place_type', '1').OPTION_ITEM_TYPE_LAST.'</div><input type="hidden" name="is_copy" value="0" id="is_copy">'), 
+      );
+  
+  $new_item_table_other_str = $notice_box->get_table($new_item_other_row, '', $new_item_other_params);  
+
+  $new_item_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="100%"', 'text' => $new_item_table_other_str) 
+      );
+  
+  
+  $form_str = tep_draw_form('option_item', FILENAME_OPTION, 'action=insert_item&g_id='.$_POST['group_id'].(!empty($_POST['gpage'])?'&gpage='.$_POST['gpage']:'').(isset($_POST['keyword'])?'&keyword='.$_POST['keyword']:'').(isset($_POST['search'])?'&search='.$_POST['search']:'').(!empty($_POST['page'])?'&page='.$_POST['page']:'').(isset($_POST['sort_name'])?'&sort_name='.$_POST['sort_name']:'').(isset($_POST['sort_type'])?'&sort_type='.$_POST['sort_type']:''), 'post', 'enctype="multipart/form-data"'); 
+  
+  $notice_box->get_form($form_str);
+  $notice_box->get_heading($heading);
+  $notice_box->get_contents($new_item_row, $buttons);
+  $notice_box->get_eof(tep_eof_hidden());
+ 
+  $item_script_str = '<script>$(function() {
+      function format_item(item) {
+          return item.name;
+      }
+      $("#title").autocomplete(\'ajax_orders.php?action=search_title\', {
+        multipleSeparator: \'\',
+        dataType: "json",
+        parse: function(data) {
+        return $.map(data, function(row) {
+            return {
+             data: row,
+             value: row.name,
+             result: row.name
+            }
+          });
+        },
+        formatItem: function(item) {
+          return format_item(item);
+        }
+      }).result(function(e, item) {
+      });
+});</script>'; 
+  echo $item_script_str.$notice_box->show_notice().'||||||'.tep_get_note_top_layer(FILENAME_OPTION.'?g_id='.$_POST['group_id']);
+} else if ($_GET['action'] == 'edit_item') {
+  //编辑item
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_OPTION);
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+  require_once(DIR_FS_ADMIN.'enabledoptionitem.php'); 
+  
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+  
+  $param_str = '';
+  foreach ($_POST as $p_key => $p_value) {
+    if (($p_key != 'item_id') && ($p_key != 'action')) {
+      $param_str .= $p_key.'='.$p_value.'&'; 
+    }
+  }
+  $param_str = substr($param_str, 0, -1);
+  
+  $page_str = '';
+  $item_raw = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".$_POST['item_id']."'"); 
+  $item = tep_db_fetch_array($item_raw); 
+ 
+  $item_query_raw = 'select * from '.TABLE_OPTION_ITEM.' where group_id = \''.$_POST['g_id'].'\' order by sort_num, title asc';
+  
+  $item_split = new splitPageResults($_POST['page'], MAX_DISPLAY_SEARCH_RESULTS, $item_query_raw, $item_query_numrows);    
+  $item_query = tep_db_query($item_query_raw);  
+  
+  $item_id_array = array(); 
+  while ($item_row = tep_db_fetch_array($item_query)) {
+    $item_id_array[] = $item_row['id']; 
+  }
+  
+  foreach ($item_id_array as $i_key => $i_value) {
+     if ($_POST['item_id'] == $i_value) {
+       break; 
+     }
+  }
+  if ($i_key > 0) {
+    $page_str .= '<a id="option_prev" href="javascript:void(0);" onclick="show_link_item_info(\''.$item_id_array[$i_key - 1].'\', \''.urlencode($param_str).'\')"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+  }
+  
+  if ($i_key < count($item_id_array)-1) {
+    $page_str .= '<a id="option_next" href="javascript:void(0);" onclick="show_link_item_info(\''.$item_id_array[$i_key + 1].'\', \''.urlencode($param_str).'\')">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
+  }
+  
+
+  $page_str .= '<a onclick="close_option_info();" href="javascript:void(0);">X</a>';
+  
+  $heading = array();
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => '<b>'.$item['title'].'</b>'); 
+  $heading[] = array('align' => 'right', 'text' => $page_str); 
+  
+  $buttons = array();
+  
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_NEW_PROJECT, 'onclick="create_option_item(\''.$_POST['g_id'].'\', \''.urlencode($param_str).'\');"').'</a>&nbsp;'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_item_info();" id="button_save"').'</a>&nbsp;'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if(confirm(\''.TEXT_DEL_OPTION.'\')) window.location.href = \''.tep_href_link(FILENAME_OPTION, 'action=delete_item_confirm&item_id='.$item['id'].'&g_id='.$_POST['g_id'].(!empty($_POST['gpage'])?'&gpage='.$_POST['gpage']:'').(isset($_POST['keyword'])?'&keyword='.$_POST['keyword']:'').(isset($_POST['search'])?'&search='.$_POST['search']:'').(!empty($_POST['page'])?'&page='.$_POST['page']:'').(isset($_POST['sort_name'])?'&sort_name='.$_POST['sort_name']:'').(isset($_POST['sort_type'])?'&sort_type='.$_POST['sort_type']:'')).'\';"').'</a>'; 
+  
+  $buttons = array('align' => 'center', 'button' => $button); 
+ 
+
+  $edit_item_row = array();
+  
+  $edit_item_title_row = array();
+  $edit_item_title_params = array('width' => '100%', 'border' => '0', 'cellspacing' => '0', 'cellpadding' => '0');
+  
+  $edit_item_title_row[]['text'] = array(
+         array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_NAME.'<input type="hidden" name="item_id" value="'.$item['id'].'" id="item_uid">'),
+         array('align' => 'left', 'text' => tep_draw_input_field('title', $item['title'], 'id="title" class="option_text" autocomplete="off"').'&nbsp;<a href="javascript:void(0);" onclick="search_item_title(this, 1, '.$item['id'].');">'.tep_html_element_button(IMAGE_SEARCH, 'onclick=""').'</a><span id="title_error" style="color:#ff0000;"></span><input type="hidden" name="is_more" id="is_more" value="0">')
+      );
+  
+  $edit_item_title_row[]['text'] = array(
+         array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_TITLE),
+         array('align' => 'left', 'text' => tep_draw_input_field('front_title', $item['front_title'], 'id="front_title" class="option_text"').'<span id="front_error" style="color:#ff0000;"></span>')
+      );
+  
+  $item_select_str = '<select id="type" name="type" onchange="change_option_item_type(0);" style="margin-left:0;padding-left:0;">'; 
+  foreach ($enabled_item_array as $ekey => $evalue) {
+    if (strtolower($evalue) == $item['type']) {
+      $item_select_str .= '<option value="'.$ekey.'" selected>'.strtolower($evalue).'</option>'; 
+    } else {
+      $item_select_str .= '<option value="'.$ekey.'">'.strtolower($evalue).'</option>'; 
+    }
+  }
+  $html_str .= '</select>';
+  $edit_item_title_row[]['text'] = array(
+         array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_ITEM_TYPE),
+         array('align' => 'left', 'text' => '<div id="se_item">'.$item_select_str.'</div>')
+      );
+  $edit_item_table_title_str = $notice_box->get_table($edit_item_title_row, '', $edit_item_title_params);
+  
+  $edit_item_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="100%"', 'text' => $edit_item_table_title_str) 
+      );
+  
+  $edit_item_show_select_params = array('width' => '100%', 'border' => '0', 'cellspacing' => '0', 'cellpadding' => '0', 'parameters' => 'id="show_select" class="option_spacing"');
+  $classname = 'HM_Option_Item_'.ucfirst($item['type']);
+  require_once('option/'.$classname.'.php');
+  $item_instance = new $classname();
+  $edit_item_show_select_row = $item_instance->prepareFormWithParent($item['id']);
+  
+  $edit_item_table_title_str = $notice_box->get_table($edit_item_show_select_row, '', $edit_item_show_select_params, true);
+
+  $edit_item_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="100%"', 'text' => $edit_item_table_title_str) 
+      );
+  
+  $edit_item_other_row = array();
+  $edit_item_other_params = array('width' => '100%', 'border' => '0', 'cellspacing' => '0', 'cellpadding' => '0');
+   
+  if ($item['type'] != 'radio') {
+    $edit_item_other_row[]['text'] = array(
+           array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_ITEM_PRICE),
+           array('align' => 'left', 'text' => tep_draw_input_field('price', number_format($item['price']), 'id="price" class="option_item_input"').'&nbsp;'.TEXT_MONEY_SYMBOL)
+        );
+  }
+  
+  $edit_item_other_row[]['text'] = array(
+         array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_SORT_NUM),
+         array('align' => 'left', 'text' => tep_draw_input_field('sort_num', $item['sort_num'], 'id="sort_num" class="option_item_input"'))
+      );
+  
+  if ($item['place_type'] == 0) {
+    $item_place_str = tep_draw_radio_field('place_type', '0', true, '', 'style="padding-left:0;margin-left:0;"').OPTION_ITEM_TYPE_PRODUCT.'&nbsp;&nbsp;'.tep_draw_radio_field('place_type', '1').OPTION_ITEM_TYPE_LAST; 
+  } else {
+    $item_place_str = tep_draw_radio_field('place_type', '0', false, '', 'style="padding-left:0;margin-left:0;"').OPTION_ITEM_TYPE_PRODUCT.'&nbsp;&nbsp;'.tep_draw_radio_field('place_type', '1', true).OPTION_ITEM_TYPE_LAST; 
+  }
+  $edit_item_other_row[]['text'] = array(
+         array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_ITEM_PLACE),
+         array('align' => 'left', 'text' => '<div id="p_type">'.$item_place_str.'</div>')
+      );
+  
+  $edit_item_other_row[]['text'] = array(
+         array('align' => 'left', 'text' => TEXT_USER_ADDED),
+         array('align' => 'left', 'text' => ((tep_not_null($item['user_added']))?$item['user_added']:TEXT_UNSET_DATA))
+      );
+  
+  $edit_item_other_row[]['text'] = array(
+         array('align' => 'left', 'text' => TEXT_DATE_ADDED),
+         array('align' => 'left', 'text' => ((tep_not_null($item['created_at']))?$item['created_at']:TEXT_UNSET_DATA))
+      );
+  
+  $edit_item_other_row[]['text'] = array(
+         array('align' => 'left', 'text' => TEXT_USER_UPDATE),
+         array('align' => 'left', 'text' => ((tep_not_null($item['user_update']))?$item['user_update']:TEXT_UNSET_DATA))
+      );
+  
+  $edit_item_other_row[]['text'] = array(
+         array('align' => 'left', 'text' => TEXT_DATE_UPDATE),
+         array('align' => 'left', 'text' => ((tep_not_null($item['date_update']))?$item['date_update']:TEXT_UNSET_DATA).'<input type="hidden" name="is_copy" value="0" id="is_copy">')
+      );
+
+  $edit_item_other_str = $notice_box->get_table($edit_item_other_row, '', $edit_item_other_params);
+  
+  $edit_item_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="100%"', 'text' => $edit_item_other_str) 
+      );
+  
+  $item_script_str = '<script>$(function() {
+      function format_item(item) {
+          return item.name;
+      }
+      $("#title").autocomplete(\'ajax_orders.php?action=search_title\', {
+        multipleSeparator: \'\',
+        dataType: "json",
+        parse: function(data) {
+        return $.map(data, function(row) {
+            return {
+             data: row,
+             value: row.name,
+             result: row.name
+            }
+          });
+        },
+        formatItem: function(item) {
+          return format_item(item);
+        }
+      }).result(function(e, item) {
+      });
+});</script>';
+
+  $form_str = tep_draw_form('option_item', FILENAME_OPTION, 'action=update_item&g_id='.$_POST['g_id'].(!empty($_POST['gpage'])?'&gpage='.$_POST['gpage']:'').(isset($_POST['keyword'])?'&keyword='.$_POST['keyword']:'').(isset($_POST['search'])?'&search='.$_POST['search']:'').(!empty($_POST['page'])?'&page='.$_POST['page']:'').(isset($_POST['sort_name'])?'&sort_name='.$_POST['sort_name']:'').(isset($_POST['sort_type'])?'&sort_type='.$_POST['sort_type']:''), 'post', 'enctype="multipart/form-data"'); 
+  
+  $notice_box->get_form($form_str);
+  $notice_box->get_heading($heading);
+  $notice_box->get_contents($edit_item_row, $buttons);
+  $notice_box->get_eof(tep_eof_hidden());
+  
+  echo $item_script_str.$notice_box->show_notice().'||||||'.tep_get_note_top_layer(FILENAME_OPTION.'?g_id='.$_POST['g_id']);
 }else if ($_GET['action'] == 'status_setting') {
   //获取日历状态的信息
   $cl_status_array = array();
