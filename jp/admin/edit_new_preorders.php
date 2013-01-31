@@ -2078,12 +2078,7 @@ if (($action == 'edit') && ($order_exists == true)) {
           </tr>
           </table>
     </td>
-      </tr>
-    <tr>
-      <td>
-      <?php echo EDIT_ORDERS_UPDATE_COMMENT;?> 
-      </td>
-    </tr>
+  </tr>
   <!-- End of Update Block -->
 <?php
   }

@@ -2730,7 +2730,7 @@ require("includes/note_js.php");
       <tr>
         <td class="main">
           
-<table border="0" cellspacing="0" cellpadding="2" class="dataTableRow">
+<table border="0" cellspacing="0" cellpadding="2" class="dataTableRow" width="100%">
   <tr class="dataTableHeadingRow">
     <td class="dataTableHeadingContent" align="left"><?php echo TABLE_HEADING_DATE_ADDED; ?></td>
     <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>
@@ -2749,7 +2749,7 @@ $orders_history_query = tep_db_query("select * from " . TABLE_PREORDERS_STATUS_H
 if (tep_db_num_rows($orders_history_query)) {
   while ($orders_history = tep_db_fetch_array($orders_history_query)) {
     echo '  <tr>' . "\n" .
-         '    <td class="smallText" align="center">' . tep_datetime_short($orders_history['date_added']) . '</td>' . "\n" .
+         '    <td class="smallText" align="left">' . tep_datetime_short($orders_history['date_added']) . '</td>' . "\n" .
          '    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>' . "\n" .
          '    <td class="smallText" align="center">';
     if ($orders_history['customer_notified'] == '1') {
@@ -2870,12 +2870,7 @@ if (tep_db_num_rows($orders_history_query)) {
           </tr>
           </table>
     </td>
-      </tr>
-    <tr>
-      <td>
-      <?php echo EDIT_PREORDERS_FINAL_CONFIRM_TEMPLATE;?> 
-      </td>
-    </tr>
+  </tr>
   <!-- End of Update Block -->
 <?php
 }

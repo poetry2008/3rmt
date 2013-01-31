@@ -3909,7 +3909,7 @@ if (($action == 'edit') && ($order_exists == true)) {
             <tr>
             <td class="main">
 
-            <table border="0" cellspacing="0" cellpadding="2" class="dataTableRow">
+            <table border="0" cellspacing="0" cellpadding="2" class="dataTableRow" width="100%">
             <tr class="dataTableHeadingRow">
             <td class="dataTableHeadingContent" align="left"><?php echo TABLE_HEADING_DATE_ADDED; ?></td>
             <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>
@@ -3929,7 +3929,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     $orders_status_history_str = '';
     while ($orders_history = tep_db_fetch_array($orders_history_query)) {
       echo '  <tr>' . "\n" .
-        '    <td class="smallText" align="center">' . tep_datetime_short($orders_history['date_added']) . '</td>' . "\n" .
+        '    <td class="smallText" align="left">' . tep_datetime_short($orders_history['date_added']) . '</td>' . "\n" .
         '    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>' . "\n" .
         '    <td class="smallText" align="center">';
       if ($orders_history['customer_notified'] == '1') {
@@ -4110,11 +4110,6 @@ if (($action == 'edit') && ($order_exists == true)) {
     <INPUT type="button" value="<?php echo TEXT_FOOTER_CHECK_SAVE;?>" onClick="if(date_time()){if(products_num_check('<?php echo $orders_products_list;?>','<?php echo $products_name_str;?>','<?php echo $products_id_str;?>')){submit_check_con();}}"></td>
     </tr>
     </table>
-    </td>
-    </tr>
-    <tr>
-    <td>
-    <?php echo EDIT_ORDERS_FINAL_CONFIRM_TEMPLATE;?> 
     </td>
     </tr>
     <!-- End of Update Block -->
