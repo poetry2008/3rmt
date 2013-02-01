@@ -4,6 +4,8 @@ require_once('includes/step-by-step/new_application_top.php');
 require(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_CREATE_ORDER);
 include(DIR_WS_CLASSES . 'order.php');
 require(DIR_WS_CLASSES . 'currencies.php');
+require('option/HM_Option.php');
+require('option/HM_Option_Group.php');
 $currencies = new currencies(2);
 $action = tep_db_prepare_input($_GET['action']);
 $step = tep_db_prepare_input($_POST['step']);
@@ -16,6 +18,7 @@ if(isset($Customer_mail) && $Customer_mail != '' && isset($site_id) && $site_id 
 }
 switch($action){
 case 'add_product':
+        $a_option = new HM_OPTION(); 
         if($step == 5)
         {
           // 2.1 GET ORDER INFO #####
@@ -33,7 +36,7 @@ case 'add_product':
               $op_tmp_value = str_replace(' ', '', $op_value);
               $op_tmp_value = str_replace('　', '', $op_value);
               if ($op_tmp_value == '') {
-                continue; 
+                $_POST[$op_key] = $a_option->msg_is_null; 
               }
               $op_info_array = explode('_', $op_key);
               $op_item_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$op_info_array[1]."' and id = '".$op_info_array[3]."'");
@@ -47,6 +50,17 @@ case 'add_product':
                         $AddedOptionsPrice += $or_value['money'];
                       }
                     }
+                  }
+                } else if ($op_item_res['type'] == 'textarea') {
+                  $t_option_array = @unserialize($op_item_res['option']);
+                  $tmp_t_single = false;
+                  if ($t_option_array['require'] == '0') {
+                    if ($op_tmp_value == '') {
+                      $tmp_t_single = true;
+                    }
+                  }
+                  if (!$tmp_t_single) {
+                    $AddedOptionsPrice += $op_item_res['price'];
                   }
                 } else {
                   $AddedOptionsPrice += $op_item_res['price'];
@@ -155,6 +169,19 @@ case 'add_product':
                         }
                       }
                     } 
+                  } else if ($ioption_item_res['type'] == 'textarea') {
+                    $to_option_array = @unserialize($ioption_item_res['option']);
+                    $to_tmp_single = false;
+                    if ($to_option_array['require'] == '0') {
+                      if ($op_i_value == $a_option->msg_is_null) {
+                        $to_tmp_single = true;
+                      }
+                    }
+                    if ($to_tmp_single) {
+                      $op_price = 0; 
+                    } else {
+                      $op_price = $ioption_item_res['price']; 
+                    }
                   } else {
                     $op_price = $ioption_item_res['price']; 
                   }

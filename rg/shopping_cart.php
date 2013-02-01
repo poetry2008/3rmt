@@ -410,6 +410,14 @@ function change_num(ob,targ, quan,a_quan, origin_qty, origin_small)
                   }
                 }
               }
+            } else if ($option_item_res['type'] == 'textarea') {
+              $c_option = @unserialize($option_item_res['option']);
+              $products[$i]['add_op_attributes'][$op_key]['price'] = $option_item_res['price'];
+              if ($c_option['require'] == '0') {
+                if ($op_value == MSG_TEXT_NULL) {
+                  $products[$i]['add_op_attributes'][$op_key]['price'] = 0;
+                }
+              } 
             } else {
               $products[$i]['add_op_attributes'][$op_key]['price'] = $option_item_res['price'];
             }

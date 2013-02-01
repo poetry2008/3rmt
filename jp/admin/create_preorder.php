@@ -8,6 +8,8 @@
   include(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/edit_preorders.php');
   require(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/step-by-step/edit_preorders.php');
   require(DIR_WS_CLASSES . 'currencies.php');
+  require('option/HM_Option.php');
+  require('option/HM_Option_Group.php');
   $currencies = new currencies(2);
   if (IsSet($_GET['cmail'])) {
     $cmail_arr = explode('|||', $_GET['cmail']);
@@ -45,7 +47,7 @@
     if($step == 5)
     {
       // 2.1 GET ORDER INFO #####
-      
+      $a_option = new HM_Option();
       //$oID = tep_db_prepare_input($_SESSION['create_preorder']['orders']['orders_id']);
       $oID = tep_db_prepare_input($_GET['oID']);
       //$order = $_SESSION['create_preorder']['orders']; 
@@ -71,7 +73,7 @@
             $op_tmp_value = str_replace(' ', '', $op_value);
             $op_tmp_value = str_replace('　', '', $op_value);
             if ($op_tmp_value == '') {
-              continue; 
+              $_POST[$op_key] = $a_option->msg_is_null; 
             }
             $op_info_array = explode('_', $op_key); 
             $op_item_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$op_info_array[1]."' and id = '".$op_info_array[3]."'"); 
@@ -883,8 +885,6 @@ if(!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['c
       print "<td class='dataTableContent' align='right'>&nbsp;</td>\n";
       print "</tr>\n";
     }
-    require('option/HM_Option.php');
-    require('option/HM_Option_Group.php');
     $hm_option = new HM_Option();
     
     if (($step == 3) && ($add_product_products_id > 0) && isset($_POST['action_process'])) {

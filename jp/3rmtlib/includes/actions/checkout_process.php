@@ -532,6 +532,19 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
                }
              }
            } 
+        } else if ($option_item_res['type'] == 'textarea') {
+          $to_option_array = @unserialize($option_item_res['option']);
+          $tmp_to_single = false; 
+          if ($to_option_array['require'] == '0') {
+            if ($op_value['value'] == MSG_TEXT_NULL) {
+              $tmp_to_single = true; 
+            }
+          }
+          if ($tmp_to_single) {
+            $op_price = 0; 
+          } else {
+            $op_price = $option_item_res['price']; 
+          }
         } else {
           $op_price = $option_item_res['price']; 
         }
@@ -589,6 +602,19 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
                }
              }
            } 
+        } else if ($coption_item_res['type'] == 'textarea') {
+          $aco_option_array = @unserialize($coption_item_res['option']);
+          $tco_tmp_single = false;
+          if ($aco_option_array['require'] == '0') {
+            if ($ck_value['value'] == MSG_TEXT_NULL) {
+              $tco_tmp_single = true;
+            }
+          }
+          if ($tco_tmp_single) {
+            $c_op_price = 0; 
+          } else {
+            $c_op_price = $coption_item_res['price']; 
+          }
         } else {
           $c_op_price = $coption_item_res['price']; 
         }

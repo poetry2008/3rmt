@@ -348,6 +348,21 @@
                     }
                   }
                 }
+              } else if ($attribute_price['type'] == 'textarea') {
+                $t_option = @unserialize($attribute_price['option']);  
+                $tmp_o_single = false; 
+                if ($t_option['require'] == '0') {
+                  if ($value == MSG_TEXT_NULL) {
+                    $tmp_o_single = true; 
+                  }
+                }
+                if ($tmp_o_single) {
+                  $this->total += $qty * tep_add_tax('0', $products_tax);
+                  $this->abs += abs($qty * tep_add_tax('0', $products_tax));
+                } else {
+                  $this->total += $qty * tep_add_tax($attribute_price['price'], $products_tax);
+                  $this->abs += abs($qty * tep_add_tax($attribute_price['price'], $products_tax));
+                }
               } else {
                 $this->total += $qty * tep_add_tax($attribute_price['price'], $products_tax);
                 $this->abs += abs($qty * tep_add_tax($attribute_price['price'], $products_tax));
@@ -372,6 +387,21 @@
                       break; 
                     } 
                   }
+                }
+              } else if ($ck_attribute_price['type'] == 'textarea') {
+                $tk_option = @unserialize($ck_attribute_price['option']);  
+                $tk_o_single = false; 
+                if ($tk_option['require'] == '0') {
+                  if ($ck_value == MSG_TEXT_NULL) {
+                    $tk_o_single = true; 
+                  }
+                }
+                if ($tk_o_single) {
+                  $this->total += $qty * tep_add_tax('0', $products_tax);
+                  $this->abs += abs($qty * tep_add_tax('0', $products_tax));
+                } else {
+                  $this->total += $qty * tep_add_tax($ck_attribute_price['price'], $products_tax);
+                  $this->abs += abs($qty * tep_add_tax($ck_attribute_price['price'], $products_tax));
                 }
               } else {
                 $this->total += $qty * tep_add_tax($ck_attribute_price['price'], $products_tax);
@@ -401,6 +431,19 @@
                     }
                   }
                 }
+              } else if ($attribute_price['type'] == 'textarea') { 
+                $t_option = @unserialize($attribute_price['option']);  
+                $tmp_o_single = false; 
+                if ($t_option['require'] == '0') {
+                  if ($value == MSG_TEXT_NULL) {
+                    $tmp_o_single = true; 
+                  }
+                }
+                if ($tmp_o_single) {
+                  $attributes_price += 0;
+                } else {
+                  $attributes_price += $attribute_price['price'];
+                }
               } else {
                 $attributes_price += $attribute_price['price'];
               }
@@ -423,6 +466,19 @@
                       break; 
                     } 
                   }
+                }
+              } else if ($ck_attribute_price['type'] == 'textarea') {
+                $tk_option = @unserialize($ck_attribute_price['option']);  
+                $tk_o_single = false; 
+                if ($tk_option['require'] == '0') {
+                  if ($ck_value == MSG_TEXT_NULL) {
+                    $tk_o_single = true; 
+                  }
+                }
+                if ($tk_o_single) {
+                  $attributes_price += 0;
+                } else {
+                  $attributes_price += $ck_attribute_price['price'];
                 }
               } else {
                 $attributes_price += $ck_attribute_price['price'];

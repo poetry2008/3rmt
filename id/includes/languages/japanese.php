@@ -479,4 +479,5 @@ define('TEXT_MANUFACTURERS_TITLE', 'メーカー一覧');
 define('CHANGE_DELIVERY','取引日時変更');
 define('REORDER_FORM','再配達フォーム');
 define('NOTICE_LESS_PRODUCT_OPTION_TEXT', "%sの商品情報に更新がありました。\r\nショッピングカートに商品が残っている場合は、削除する必要があります。\r\nお手数ですが、再度最初からお手続きをお願いいたします。");
+define('MSG_TEXT_NULL', '無し');
 ?>

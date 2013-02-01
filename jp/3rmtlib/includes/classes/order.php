@@ -361,6 +361,19 @@
                   }
                 }
               }
+            } else if ($attributes['type'] == 'textarea') {
+              $t_tmp_option = @unserialize($attributes['option']);
+              $t_tmp_single = false; 
+              if ($t_tmp_option['require'] == '0') {
+                if ($op_value == MSG_TEXT_NULL) {
+                  $t_tmp_single = true; 
+                }
+              }
+              if ($t_tmp_single) {
+                $tmp_r_price = 0;
+              } else {
+                $tmp_r_price = $attributes['price'];
+              }
             } else {
               $tmp_r_price = $attributes['price'];
             }
@@ -390,6 +403,19 @@
                     break;
                   }
                 }
+              }
+            } else if ($ck_attributes['type'] == 'textarea') {
+              $tck_tmp_option = @unserialize($ck_attributes['option']);
+              $tck_tmp_single = false; 
+              if ($tck_tmp_option['require'] == '0') {
+                if ($ca_value == MSG_TEXT_NULL) {
+                  $tck_tmp_single = true; 
+                }
+              }
+              if ($tck_tmp_single) {
+                $ck_tmp_r_price = 0;
+              } else {
+                $ck_tmp_r_price = $ck_attributes['price'];
               }
             } else {
               $ck_tmp_r_price = $ck_attributes['price'];

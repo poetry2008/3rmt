@@ -10,6 +10,8 @@ require('includes/application_top.php');
 require('includes/step-by-step/new_application_top.php');
 require('includes/address/AD_Option.php');
 require('includes/address/AD_Option_Group.php');
+require('option/HM_Option.php');
+require('option/HM_Option_Group.php');
 include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .  '/default.php');
 $ad_option = new AD_Option();
 require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_EDIT_ORDERS);
@@ -1253,7 +1255,7 @@ if($address_error == false){
 
       // 2. ADD A PRODUCT ###############################################################################################
     case 'add_product':
-
+      $a_option = new HM_Option();
       if($step == 5)
       {
         // 2.1 GET ORDER INFO #####
@@ -1274,12 +1276,12 @@ if($address_error == false){
           if ($op_pos == 'op_') {
             $op_tmp_value = str_replace(' ', '', $op_value);
             $op_tmp_value = str_replace('　', '', $op_value);
-            if ($op_tmp_value == '') {
-              continue; 
-            }
             $op_info_array = explode('_', $op_key);
             $op_item_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$op_info_array[1]."' and id = '".$op_info_array[3]."'");
             $op_item_res = tep_db_fetch_array($op_item_query); 
+            if ($op_tmp_value == '') {
+              $_POST[$op_key] = $a_option->msg_is_null; 
+            }
             if ($op_item_res) {
               if ($op_item_res['type'] == 'radio') {
                 $o_option_array = @unserialize($op_item_res['option']);
@@ -1291,6 +1293,17 @@ if($address_error == false){
                     }
                   }
                 }
+              } else if ($op_item_res['type'] == 'textarea') {
+                $t_option_array = @unserialize($op_item_res['option']);
+                $tmp_t_single = false; 
+                if ($t_option_array['require'] == '0') {
+                  if ($op_tmp_value == '') {
+                    $tmp_t_single = true; 
+                  }
+                }
+                if (!$tmp_t_single) {
+                  $AddedOptionsPrice += $op_item_res['price'];
+                }
               } else {
                 $AddedOptionsPrice += $op_item_res['price'];
               }
@@ -1301,7 +1314,6 @@ if($address_error == false){
           //$option_values_names[$option_value_id] = $opt_products_options_values_name;
           //$option_attributes_id[$option_value_id] = $opt_products_attributes_id;
         }
-        
         // 2.1.2 Get Product Info
         $InfoQuery = "
           select p.products_model, 
@@ -1352,6 +1364,19 @@ if($address_error == false){
                     break; 
                   }
                 }
+              }
+            } else if ($ioption_item_res['type'] == 'textarea') {
+              $iot_option_array = @unserialize($ioption_item_res['option']);
+              $tmp_iot_single = false; 
+              if ($iot_option_array['require'] == '0') {
+                if ($op_i_value == $a_option->msg_is_null) {
+                  $tmp_iot_single = true; 
+                }
+              }
+              if ($tmp_iot_single) {
+                $op_price = 0; 
+              } else {
+                $op_price = $ioption_item_res['price']; 
               }
             } else {
               $op_price = $ioption_item_res['price']; 
@@ -4215,8 +4240,12 @@ if($index_num > 0){
                   str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data($new_products_temp_add[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;"))); 
                 echo '</div></div>';
                 echo '<div class="order_option_price">';
-                echo (int)$new_products_temp_add[$i]['attributes'][$j]['price'];
-                echo TEXT_MONEY_SYMBOL;
+                if ((int)$new_products_temp_add[$i]['attributes'][$j]['price'] < 0) {
+                  echo '<font color="#ff0000">'.abs((int)$new_products_temp_add[$i]['attributes'][$j]['price']).'</font>'.TEXT_MONEY_SYMBOL;
+                } else {
+                  echo (int)$new_products_temp_add[$i]['attributes'][$j]['price'];
+                  echo TEXT_MONEY_SYMBOL;
+                }
                 echo '</div>';
                 echo '</i></small></div>';
               }
@@ -4396,8 +4425,6 @@ if($index_num > 0){
     print "</tr>\n";
   }
   
-  require('option/HM_Option.php');
-  require('option/HM_Option_Group.php');
   $hm_option = new HM_Option();
   
   if (($step == 3) && ($add_product_products_id > 0) && isset($_POST['action_process'])) {

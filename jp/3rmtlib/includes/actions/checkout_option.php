@@ -53,6 +53,8 @@
           $p_tmp_value = str_replace('　', '', $p_value);
           if ($p_tmp_value != '') {
             $option_array[$cart_products_id][$o_key_str] = str_replace('<BR>', '<br>', stripslashes($p_value)); 
+          } else {
+            $option_array[$cart_products_id][$o_key_str] = MSG_TEXT_NULL; 
           }
         }
       }

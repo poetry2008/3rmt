@@ -4,7 +4,7 @@ require_once 'Option_DbRecord.php';
 class HM_Option extends Option_DbRecord
 {
   var $option_error_array = array();
-  
+  var $msg_is_null = '無し'; 
   function __construct()
   {
   }

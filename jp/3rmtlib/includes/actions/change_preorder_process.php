@@ -439,6 +439,19 @@ if (isset($_SESSION['preorder_option_info'])) {
              }
            }
          } 
+      } else if ($option_attr_values['type'] == 'textarea') {
+        $to_option_array = @unserialize($option_attr_values['option']);
+        $to_tmp_single = false; 
+        if ($to_option_array['require'] == '0') {
+          if ($op_value == MSG_TEXT_NULL) {
+            $to_tmp_single = true; 
+          }
+        }
+        if ($to_tmp_single) {
+          $ao_price = 0; 
+        } else {
+          $ao_price = $option_attr_values['price']; 
+        }
       } else {
         $ao_price = $option_attr_values['price']; 
       }

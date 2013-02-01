@@ -38,6 +38,8 @@ if ($_GET['action'] == 'process') {
         $p_tmp_value = str_replace('　', '', $p_value);
         if (trim($p_tmp_value) != '') {
           $option_info_array[$p_key] = str_replace('<BR>', '<br>', stripslashes($p_value)); 
+        } else {
+          $option_info_array[$p_key] = MSG_TEXT_NULL; 
         }
       } 
     }

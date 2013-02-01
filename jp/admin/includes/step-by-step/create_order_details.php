@@ -764,8 +764,6 @@ if($index > 0){
           print "</tr>\n";
           //print "<tr><td colspan='3'>&nbsp;</td></tr>\n";
         }
-        require('option/HM_Option.php');
-        require('option/HM_Option_Group.php');
         $hm_option = new HM_Option();
         if(($step == 3) && ($add_product_products_id > 0) && isset($_POST['action_process'])) {
           if (!$hm_option->check()) {

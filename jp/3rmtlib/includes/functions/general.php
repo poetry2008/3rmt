@@ -4398,15 +4398,16 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
      if ($op_single_str == 'op_') {
        $op_tmp_value = str_replace(' ', '', $op_value);
        $op_tmp_value = str_replace('　', '', $op_value);
-       if ($op_tmp_value == '') {
-         continue; 
-       }
        $op_info_array = explode('_', $op_key);
        $item_raw = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$op_info_array[1]."' and id = '".$op_info_array[3]."'");
        $item_res = tep_db_fetch_array($item_raw); 
        if ($item_res) {
          $item_price = 0; 
-         $input_option_array = array('title' => $item_res['front_title'], 'value' => str_replace("<BR>", "<br>", stripslashes($op_value))); 
+         if ($op_tmp_value == '') {
+           $input_option_array = array('title' => $item_res['front_title'], 'value' => MSG_TEXT_NULL); 
+         } else {
+           $input_option_array = array('title' => $item_res['front_title'], 'value' => str_replace("<BR>", "<br>", stripslashes($op_value))); 
+         }
          if ($item_res['type'] == 'radio') {
            $ro_array = @unserialize($item_res['option']);
            if (!empty($ro_array)) {
@@ -4972,6 +4973,19 @@ function get_preorder_total_info($payment, $pid, $option_info_array)
               }
             }
           }
+        } else if ($option_item_res['type'] == 'textarea') {
+          $t_option_array = @unserialize($option_item_res['option']);
+          $tmp_t_single = false;
+          if ($t_option_array['require'] == '0') {
+            if ($tp_value == MSG_TEXT_NULL) {
+              $tmp_t_single = true;
+            }
+          }
+          if ($tmp_t_single) {
+            $attr_total += 0; 
+          } else {
+            $attr_total += $option_item_res['price']; 
+          }
         } else {
           $attr_total += $option_item_res['price']; 
         }
@@ -5037,6 +5051,19 @@ function tep_get_show_attributes_price($item_id, $group_id, $att_value)
             return $value['money']; 
           }
         }
+      }
+    } else if ($item_res['type'] == 'textarea') {
+      $t_option_array = @unserialize($item_res['option']);
+      $t_o_single = false; 
+      if ($t_option_array['require'] == '0') {
+        if ($att_value == MSG_TEXT_NULL) {
+          $t_o_single = true; 
+        }
+      } 
+      if ($t_o_single) {
+        return 0; 
+      } else {
+        return $item_res['price']; 
       }
     } else {
       return $item_res['price']; 

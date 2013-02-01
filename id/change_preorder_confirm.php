@@ -392,6 +392,23 @@ foreach($all_show_option_id as $t_item_id){
           }
         }
       }
+    } else if ($all_show_option[$t_item_id]['type'] == 'textarea') {
+      $t_option_array = @unserialize($all_show_option[$t_item_id]['option']);
+      $t_tmp_single = false;
+      if ($t_option_array['require'] == '0') {
+        if ($all_show_option[$t_item_id]['of_value'] == MSG_TEXT_NULL) {
+          $t_tmp_single = true;
+        }
+      }
+      if (!$t_tmp_single) {
+        if ((int)$all_show_option[$t_item_id]['price'] != '0') {
+          if ($all_show_option[$t_item_id]['price'] < 0) {
+            echo ' (<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format($all_show_option[$t_item_id]['price'])).'</font>'.JPMONEY_UNIT_TEXT.')'; 
+          } else {
+            echo ' ('.$currencies->format($all_show_option[$t_item_id]['price']).')'; 
+          }
+        }
+      } 
     } else {
       if ((int)$all_show_option[$t_item_id]['price'] != '0') {
         if ($all_show_option[$t_item_id]['price'] < 0) {
