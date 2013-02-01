@@ -1442,11 +1442,10 @@ function check_point(point_num) {
   <td class="main" width="30%"><?php echo TEXT_EXPECT_TRADE_DATE; ?></td>
     <td class="main" width="70%">
 <?php
-    $today = getdate();
-      $m_num = $today['mon'];
+      $m_num = date('m',strtotime("+".$db_set_day." minutes"));
       $d_num = date('d',strtotime("+".$db_set_day." minutes"));
       $shipping_time = strtotime("+".$shipping_time." minutes");
-      $year = $today['year'];
+      $year = date('Y',strtotime("+".$db_set_day." minutes"));
     
     $hours = date('H');
     $mimutes = date('i');

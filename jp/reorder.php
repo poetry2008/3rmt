@@ -680,11 +680,10 @@ document.onclick=function(e){
 
   
 
-  $today = getdate();
-  $m_num = $today['mon'];
+  $m_num = date('m',strtotime("+".$db_set_day." minutes"));
   $d_num = date('d',strtotime("+".$db_set_day." minutes"));
   $shipping_time = strtotime("+".$shipping_time." minutes");
-  $year = $today['year'];
+  $year = date('Y',strtotime("+".$db_set_day." minutes"));
     
   $hours = date('H');
   $mimutes = date('i');

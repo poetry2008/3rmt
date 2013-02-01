@@ -17,13 +17,13 @@ define('TEXT_CALENDAR_SHOW_NO','付けない');
 define('TEXT_CALENDAR_STATUS_ADD','タイプ追加');
 define('TEXT_CALENDAR_TITLE','タイトル');
 define('TEXT_CALENDAR_COLOR','色');
-define('TEXT_CALENDAR_COLOR_WHITE','白');
-define('TEXT_CALENDAR_COLOR_RED','红');
+define('TEXT_CALENDAR_COLOR_WHITE','ホワイト');
+define('TEXT_CALENDAR_COLOR_RED','レッド');
 define('TEXT_CALENDAR_COLOR_BLUE_ORANGE','オレンジ');
-define('TEXT_CALENDAR_COLOR_BLUE_YELLOW','黄色');
-define('TEXT_CALENDAR_COLOR_BLUE_GREEN','緑');
-define('TEXT_CALENDAR_COLOR_BLUE','蓝');
-define('TEXT_CALENDAR_COLOR_BLUE_PURPLE','紫');
+define('TEXT_CALENDAR_COLOR_BLUE_YELLOW','イエロー');
+define('TEXT_CALENDAR_COLOR_BLUE_GREEN','グリーン');
+define('TEXT_CALENDAR_COLOR_BLUE','ブルー');
+define('TEXT_CALENDAR_COLOR_BLUE_PURPLE','パープル');
 define('TEXT_CALENDAR_COLOR_BLUE_GRAY','グレー');
 define('TEXT_CALENDAR_COLOR_BLUE_PINK','ピンク');
 define('TEXT_CALENDAR_COLOR_BLUE_BROWN','ブラウン');
@@ -35,7 +35,6 @@ define('TEXT_CALENDAR_DELETE_COMMENTS','本当にこのステータスを削除�
 define('TEXT_CALENDAR_ADD','カレンダー追加');
 define('TEXT_CALENDAR_NOT_SETTING','未設定');
 define('TEXT_CALENDAR_MUST_INPUT','必須項目');
-//define('TEXT_CALENDAR_MUST_SETTING','タイプを設置して下さい。');
 define('TEXT_CALENDAR_SETTING_ERROR','開始時間は終了時間より大きいですので、もう一度設定して下さい。');
 define('TEXT_CALENDAR_REPEAT_COMMENT','該当ステータスを変更したら、その関連情報も変更されます。');
 ?>

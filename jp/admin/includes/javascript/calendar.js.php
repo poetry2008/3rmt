@@ -1,5 +1,6 @@
 <?php include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_BANK_CL);?>
 var ele_value_obj = '';
+<?php //银行状态添加弹出层?>
 function status_add(ele){
 
   //var ele_width = document.body.scrollWidth;
@@ -34,7 +35,7 @@ function status_add(ele){
     }
   });
 }
-
+<?php //银行状态编辑弹出层?>
 function status_edit(id,ele){
 
   //var ele_width = document.body.scrollWidth;
@@ -68,7 +69,7 @@ function status_edit(id,ele){
     }
   });
 }
-
+<?php //具体日期状态编辑弹出层?>
 function status_setting(date,ele){
 
   //var ele_width = document.body.scrollWidth;
@@ -103,10 +104,12 @@ function status_setting(date,ele){
   });
 }
 
+<?php //隐藏弹出层?>
 function hidden_info_box(){
   $('#show_date_edit').css('display','none');
 }
 
+<?php //切换个别设定，对重复设置的可选，不可选，进行控制?>
 function change_repeat_type(num){
 
   if(num == 1){
@@ -123,6 +126,7 @@ function change_repeat_type(num){
   }
 }
 
+<?php //切换是否受理，对开始时间，结束时间的可选，不可选，进行控制?>
 function change_is_handle(num){
 
   if(num == 0){
@@ -164,6 +168,7 @@ function change_is_handle(num){
   }
 }
 
+<?php //添加,编辑银行状态，提交时，判断数据是否完整?>
 function status_add_submit(){
 
   var error = false;
@@ -221,12 +226,14 @@ function status_add_submit(){
 return true;
 }
 
+<?php //删除银行状态时的提示信息?>
 function status_delete(){
 
   document.status_edit_form.action = '<?php echo FILENAME_BANK_CL;?>?action=status_delete';
   document.status_edit_form.submit();
 }
 
+<?php //浏览器窗口缩放时，对弹出层位置的控制?>
 window.onresize = resizepage;
 
 function resizepage(){
@@ -258,6 +265,7 @@ function resizepage(){
   }
 }
 
+<?php //具体日期状态设置，提交时的处理?>
 function save_submit(){
 
   //var status_type = document.getElementsByName("type")[0];
@@ -268,6 +276,7 @@ function save_submit(){
   //}
 }
 
+<?php //数据重置?>
 function date_reset(){
 
   document.calendar_date.reset();
