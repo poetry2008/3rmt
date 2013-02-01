@@ -595,6 +595,7 @@ if (!empty($_SESSION['history_url'])) {
 </td></tr></table></div>
 
 <?php if($h3_show_flag){ ?>
+<p class="pageBottom"></p>
 <h3 class="pageHeading"><?php echo TEXT_SHOPPING_CART_PICKUP_PRODUCTS;?></h3>
 <?php } ?>
   <div class="comment">
