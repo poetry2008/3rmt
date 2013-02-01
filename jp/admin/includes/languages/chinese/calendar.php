@@ -35,7 +35,6 @@ define('TEXT_CALENDAR_DELETE_COMMENTS','如果您删除了此状态，那么它�
 define('TEXT_CALENDAR_ADD','添加日历');
 define('TEXT_CALENDAR_NOT_SETTING','没有设置');
 define('TEXT_CALENDAR_MUST_INPUT','必须项目');
-//define('TEXT_CALENDAR_MUST_SETTING','请设置类型。');
 define('TEXT_CALENDAR_SETTING_ERROR','开始时间大于结束时间，请重新设置。');
 define('TEXT_CALENDAR_REPEAT_COMMENT','如果修改了此状态，那么它对应的关联信息也会被修改。');
 ?>
