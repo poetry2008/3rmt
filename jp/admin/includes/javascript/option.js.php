@@ -190,7 +190,7 @@ $(document).ready(function() {
         close_option_info();     
       }
     }
-    if (event.ctrlKey && event.which == 13) {
+    if (event.which == 13) {
       if ($("#show_popup_info").css("display") != "none") {
         $("#button_save").trigger("click");  
       }
