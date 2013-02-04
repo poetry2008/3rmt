@@ -190,13 +190,13 @@ $(document).ready(function() {
         close_option_info();     
       }
     }
-    if (event.which == 13) {
+    if (event.ctrlKey && event.which == 13) {
       if ($("#show_popup_info").css("display") != "none") {
         $("#button_save").trigger("click");  
       }
     }
     
-    if (event.which == 37) {
+    if (event.ctrlKey && event.which == 37) {
       if ($("#show_popup_info").css("display") != "none") {
         if ($("#option_prev")) {
           $("#option_prev").trigger("click");
@@ -204,7 +204,7 @@ $(document).ready(function() {
       }
     }
     
-    if (event.which == 39) {
+    if (event.ctrlKey && event.which == 39) {
       if ($("#show_popup_info").css("display") != "none") {
         if ($("#option_next")) {
           $("#option_next").trigger("click");
