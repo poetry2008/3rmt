@@ -1771,7 +1771,7 @@ $(document).ready(function() {
         hidden_info_box(); 
       }
     }
-    if (event.which == 13) {
+    if (event.ctrlKey && event.which == 13 || event.which == 10) {
       if ($('#show_popup_info').css('display') != 'none') {
         tmp_click_str = $("#show_popup_info").find('input:button').first().attr('onclick'); 
         tmp_click_symbol = '0'; 
@@ -1787,14 +1787,14 @@ $(document).ready(function() {
         }
       } 
     }
-    if (event.which == 37) {
+    if (event.which == 33) {
       if ($('#show_popup_info').css('display') != 'none') {
         if ($("#option_prev")) {
           $("#option_prev").trigger("click");
         }
       } 
     }
-    if (event.which == 39) {
+    if (event.which == 34) {
       if ($('#show_popup_info').css('display') != 'none') {
         if ($("#option_next")) {
           $("#option_next").trigger("click");
