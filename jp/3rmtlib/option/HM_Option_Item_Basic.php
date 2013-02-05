@@ -83,7 +83,7 @@ class HM_Option_Item_Basic
     
     if ($this->has_textarea_default) {
       $default_text = isset($item_value['itextarea'])?$item_value['itextarea']:''; 
-      $formString .= "<tr><td width='25%' align='left'>".TEXT_ITEM_TEXTAREA_HEAD."</td><td align='left'><textarea name='itextarea' cols='30' rows='10' class='option_text'>".stripslashes($default_text)."</textarea></td></tr>"; 
+      $formString .= "<tr><td width='25%' align='left'>".TEXT_ITEM_TEXTAREA_HEAD."</td><td align='left'><textarea name='itextarea' cols='30' rows='10' class='option_text' onfocus='o_submit_single = false;' onblur='o_submit_single = true;'>".stripslashes($default_text)."</textarea></td></tr>"; 
     }
   
     if ($this->hasSelect) {
@@ -120,7 +120,7 @@ class HM_Option_Item_Basic
     if ($this->has_radio) {
       if (!isset($item_value['radio_image'])) {
         for($i=1; $i<=5; $i++) {
-          $formString .= "<tr><td align='left'>".TEXT_ITEM_SELECT_HEAD."</td><td align='left'><textarea name='ro_".$i."' cols='30' rows='5' class='option_text'></textarea>&nbsp;<a href=\"javascript:void(0);\" onclick=\"delete_radio(this, ".$i.");\">".tep_html_element_button(TEXT_ITEM_DEL_LINK)."</a></td></tr>"; 
+          $formString .= "<tr><td align='left'>".TEXT_ITEM_SELECT_HEAD."</td><td align='left'><textarea name='ro_".$i."' onfocus='o_submit_single = false;' onblur='o_submit_single = true;' cols='30' rows='5' class='option_text'></textarea>&nbsp;<a href=\"javascript:void(0);\" onclick=\"delete_radio(this, ".$i.");\">".tep_html_element_button(TEXT_ITEM_DEL_LINK)."</a></td></tr>"; 
           
           $formString .= "<tr><td align='left'>".TEXT_ITEM_PIC_NAME."</td><td align='left'><input type='file' name='rop_".$i."[]' value=''>&nbsp;<a href=\"javascript:void(0);\" onclick=\"delete_item_pic(this);\">".tep_html_element_button(TEXT_ITEM_DELETE_PIC, 'onclick=""')."</a><a href=\"javascript:void(0);\" onclick=\"add_item_pic(this, ".$i.");\">".tep_html_element_button(TEXT_ITEM_ADD_PIC, 'onclick=""')."</a></td></tr>"; 
           
@@ -131,7 +131,7 @@ class HM_Option_Item_Basic
         if (!empty($item_value['radio_image'])) {
           $i = 1; 
           foreach ($item_value['radio_image'] as $ri_key => $ri_value) {
-            $formString .= "<tr><td align='left'>".TEXT_ITEM_SELECT_HEAD."</td><td align='left'><textarea name='ro_".$i."' cols='30' rows='5' class='option_text'>".stripslashes($ri_value['title'])."</textarea>&nbsp;<a href=\"javascript:void(0);\" onclick=\"delete_radio(this, ".$i.");\">".tep_html_element_button(TEXT_ITEM_DEL_LINK)."</a></td></tr>"; 
+            $formString .= "<tr><td align='left'>".TEXT_ITEM_SELECT_HEAD."</td><td align='left'><textarea name='ro_".$i."' onfocus='o_submit_single = false;' onblur='o_submit_single = true;' cols='30' rows='5' class='option_text'>".stripslashes($ri_value['title'])."</textarea>&nbsp;<a href=\"javascript:void(0);\" onclick=\"delete_radio(this, ".$i.");\">".tep_html_element_button(TEXT_ITEM_DEL_LINK)."</a></td></tr>"; 
           
             
             if (!empty($ri_value['images'])) {

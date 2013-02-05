@@ -607,7 +607,7 @@ require("includes/note_js.php");
               $pic_list_raw = tep_db_query("select * from ".TABLE_CUSTOMERS_PIC_LIST." order by sort_order asc"); 
               echo '<ul class="table_img_list">'; 
               while ($pic_list_res = tep_db_fetch_array($pic_list_raw)) {
-                echo '<li><input type="radio" name="pic_icon" value="'.$pic_list_res['pic_name'].'"'.(($cInfo->pic_icon == $pic_list_res['pic_name'])?' checked':'').' onclick="check_radio_status(this);"><img src="images/icon_list/'.$pic_list_res['pic_name'].'" alt="pic"></li>'; 
+                echo '<li><input type="radio" name="pic_icon" value="'.$pic_list_res['pic_name'].'"'.(($cInfo->pic_icon == $pic_list_res['pic_name'])?' checked':'').' onclick="check_radio_status(this);"><img src="images/icon_list/'.$pic_list_res['pic_name'].'" alt="'.$pic_list_res['pic_alt'].'" title="'.$pic_list_res['pic_alt'].'"></li>'; 
               }
               echo '</ul>'; 
               ?>

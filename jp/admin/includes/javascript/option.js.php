@@ -2,6 +2,7 @@
 var box_warp_height = 0;
 var origin_offset_symbol = 0;
 window.onresize = resize_option_page;
+var o_submit_single = true;
 function resize_option_page()
 {
   if ($(".box_warp").height() < $(".compatible").height()) {
@@ -69,6 +70,7 @@ function create_option_group()
       $('#show_popup_info').html(data_info_array[0]); 
       $('#show_popup_info').css('z-index', data_info_array[1]); 
       $('#show_popup_info').show(); 
+      o_submit_single = true;
     }
   });
 }
@@ -155,6 +157,7 @@ function show_link_group_info(gid, k_str)
       data_info_array = data.split('||||||'); 
       $('#show_popup_info').html(data_info_array[0]); 
       $('#show_popup_info').show(); 
+      o_submit_single = true;
     }
   });
 }
@@ -188,15 +191,18 @@ $(document).ready(function() {
     if (event.which == 27) {
       if ($("#show_popup_info").css("display") != "none") {
         close_option_info();     
+        o_submit_single = true;
       }
     }
     if (event.which == 13) {
       if ($("#show_popup_info").css("display") != "none") {
-        $("#button_save").trigger("click");  
+        if (o_submit_single) {
+          $("#button_save").trigger("click");  
+        }
       }
     }
     
-    if (event.which == 37) {
+    if (event.ctrlKey && event.which == 37) {
       if ($("#show_popup_info").css("display") != "none") {
         if ($("#option_prev")) {
           $("#option_prev").trigger("click");
@@ -204,7 +210,7 @@ $(document).ready(function() {
       }
     }
     
-    if (event.which == 39) {
+    if (event.ctrlKey && event.which == 39) {
       if ($("#show_popup_info").css("display") != "none") {
         if ($("#option_next")) {
           $("#option_next").trigger("click");
@@ -229,6 +235,7 @@ function create_option_item(gid, i_param_str)
       $('#show_popup_info').html(data_info_array[0]); 
       $('#show_popup_info').css('z-index', data_info_array[1]); 
       $('#show_popup_info').show(); 
+      o_submit_single = true;
     }
   });
 }
@@ -389,7 +396,7 @@ function add_option_radio()
   
   for (i=1; i<=5 ; i++) {
     i_num_add = i_num+i; 
-    html_str += '<tr><td align="left"><?php echo TEXT_OPTION_ITEM_SELECT;?></td><td align="left"><textarea cols="30" rows="5" class="option_text"name="ro_'+i_num_add+'"></textarea>&nbsp;<a href="javascript:void(0);"onclick="delete_radio(this, '+i_num_add+');"><input type="button" value="<?php echo IMAGE_DELETE;?>" class="element_button" onclick="redirect_new_url(this);"></a></td></tr>';   
+    html_str += '<tr><td align="left"><?php echo TEXT_OPTION_ITEM_SELECT;?></td><td align="left"><textarea cols="30" rows="5"  onfocus="o_submit_single = false;" onblur="o_submit_single = true;" class="option_text"name="ro_'+i_num_add+'"></textarea>&nbsp;<a href="javascript:void(0);"onclick="delete_radio(this, '+i_num_add+');"><input type="button" value="<?php echo IMAGE_DELETE;?>" class="element_button" onclick="redirect_new_url(this);"></a></td></tr>';   
     
     html_str += '<tr><td align="left"><?php echo TEXT_ITEM_PIC_NAME;?></td><td align="left"><input type="file" name="rop_'+i_num_add+'[]" value="">&nbsp;<a href="javascript:void(0);" onclick="delete_item_pic(this);"><input type="button" value="<?php echo TEXT_ITEM_DELETE_PIC;?>" class="element_button"></a><a href="javascript:void(0);" onclick="add_item_pic(this, '+i_num_add+');"><input type="button" value="<?php echo BUTTON_ADD_TEXT;?>" class="element_button"></a></td></tr>'; 
    
@@ -559,6 +566,7 @@ function show_link_item_info(item_id, s_param_str)
       data_info_array = data.split('||||||'); 
       $('#show_popup_info').html(data_info_array[0]); 
       $('#show_popup_info').show(); 
+      o_submit_single = true;
     }
   });
 
