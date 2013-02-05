@@ -103,6 +103,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         <?php } ?>
         </td>
     </tr>
+    <?}?>
     <tr>
     <td></td>
     <td align="left" class="open_button">
@@ -110,7 +111,6 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
       <a href="javascript:void(0);" onclick="document.open_form.reset();"><img src="includes/languages/japanese/images/buttons/open_users01.gif" /></a>
       <a href="javascript:void(0);" onClick='window.location.href="<?php echo FILENAME_CONTACT_US;?>";'><img src="includes/languages/japanese/images/buttons/open_users02.gif" /></a>
     </td>
-    </tr>
-    <?}?>
+    </tr> 
 </table> 
 </form>
