@@ -1,7 +1,8 @@
 <?php
 /*
     $Id$
-*/
+ */
+ini_set("display_errors", "Off");
 require_once('../../includes/configure.php');
 if(basename($_SERVER['SCRIPT_NAME'])==basename(__FILE__)) die('Kwaheri rafiki!'); //Say hi to our friend..
 //if(!file_exists('../../includes/ost/main.inc.php')) die('Fatal error..get tech support');

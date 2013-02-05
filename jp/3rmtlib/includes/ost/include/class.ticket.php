@@ -209,6 +209,33 @@ class Ticket{
     function getIP() {
         return $this->row['ip_address'];
     }
+
+    function get_customer_info(){
+      
+      require(DIR_WS_FUNCTIONS . 'visites.php');
+      $browser_info = $this->row['user_agent'] ? getBrowserInfo($this->row['user_agent']) : false;
+      $customer_info_array = array(array('title'=>'IPアドレス','value'=>$this->getIP()),
+                                   array('title'=>'ホスト名','value'=>$this->row['host_name'] ? $this->row['host_name'] : 'UNKNOW'),
+                                   array('title'=>'ユーザーエージェント','value'=>$this->row['user_agent'] ? $this->row['user_agent'] : 'UNKNOW'), 
+                                   array('title'=>'OS','value'=>$this->row['user_agent'] ? getOS($this->row['user_agent']) : 'UNKNOW'),
+                                   array('title'=>'ブラウザの種類','value'=>$browser_info ? $browser_info['longName'] . ' ' . $browser_info['version'] : 'UNKNOW'),
+                                   array('title'=>'ブラウザの言語','value'=>$this->row['http_accept_language'] ? $this->row['http_accept_language'] : 'UNKNOW'),
+                                   array('title'=>'パソコンの言語環境','value'=>$this->row['system_language'] ? $this->row['system_language'] : 'UNKNOW'),
+                                   array('title'=>'ユーザーの言語環境','value'=>$this->row['user_language'] ? $this->row['user_language'] : 'UNKNOW'), 
+                                   array('title'=>'画面の解像度','value'=>$this->row['screen_resolution'] ? $this->row['screen_resolution'] : 'UNKNOW'),
+                                   array('title'=>'画面の色','value'=>$this->row['color_depth'] ? $this->row['color_depth'] : 'UNKNOW'),
+                                   array('title'=>'Flash','value'=>$this->row['flash_enable'] === '1' ? 'YES' : ($this->row['flash_enable'] === '0' ? 'NO' : 'UNKNOW')),
+                                   array('title'=>'Flashのバージョン','value'=>$this->row['flash_enable'] && $this->row['flash_version'] ? $this->row['flash_version'] : 'UNKNOW'),
+                                   array('title'=>'Director','value'=>$this->row['director_enable'] === '1' ? 'YES' : ($this->row['director_enable'] === '0' ? 'NO' : 'UNKNOW')),
+                                   array('title'=>'Quick time','value'=>$this->row['quicktime_enable'] === '1' ? 'YES' : ($this->row['quicktime_enable'] === '0' ? 'NO' : 'UNKNOW')),
+                                   array('title'=>'Real player','value'=>$this->row['realplayer_enable'] === '1' ? 'YES' : ($this->row['realplayer_enable'] === '0' ? 'NO' : 'UNKNOW')),
+                                   array('title'=>'Windows media','value'=>$this->row['windows_media_enable'] === '1' ? 'YES' : ($this->row['windows_media_enable'] === '0' ? 'NO' : 'UNKNOW')),
+                                   array('title'=>'Pdf','value'=>$this->row['pdf_enable'] === '1' ? 'YES' : ($this->row['pdf_enable'] === '0' ? 'NO' : 'UNKNOW')),
+                                   array('title'=>'Java','value'=>$this->row['java_enable'] === '1' ? 'YES' : ($this->row['java_enable'] === '0' ? 'NO' : 'UNKNOW'))
+                                 );
+      return $customer_info_array;
+
+    }
     
     function getLock(){
         
@@ -1337,6 +1364,21 @@ class Ticket{
                 ',phone="'.db_input($var['phone'],false).'"'.
                 ',phone_ext='.db_input($var['phone_ext']?$var['phone_ext']:'').
                 ',ip_address='.db_input($ipaddress).        
+                ',host_name='.db_input(trim(strtolower(@gethostbyaddr($_SERVER['REMOTE_ADDR'])))).
+                ',user_agent='.db_input($_SERVER['HTTP_USER_AGENT']).
+                ',http_accept_language='.db_input($_SERVER['HTTP_ACCEPT_LANGUAGE']).
+                ',system_language='.db_input($_SESSION['systemLanguage']).
+                ',user_language='.db_input($_SESSION['userLanguage']).
+                ',screen_resolution='.db_input($_SESSION['screenResolution']).
+                ',color_depth='.db_input($_SESSION['colorDepth']).
+                ',flash_enable='.db_input($_SESSION['flashEnable']).
+                ',flash_version='.db_input($_SESSION['flashVersion']).
+                ',director_enable='.db_input($_SESSION['directorEnable']).
+                ',quicktime_enable='.db_input($_SESSION['quicktimeEnable']).
+                ',realplayer_enable='.db_input($_SESSION['realPlayerEnable']).
+                ',windows_media_enable='.db_input($_SESSION['windowsMediaEnable']).
+                ',pdf_enable='.db_input($_SESSION['pdfEnable']).
+                ',java_enable='.db_input($_SESSION['javaEnable']).
                 ',source='.db_input($source);
 
         //Make sure the origin is staff - avoid firebug hack!

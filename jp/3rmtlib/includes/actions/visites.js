@@ -162,6 +162,7 @@ function pmv_getUrlStat(pmv_urlPmv, pmv_site, pmv_urlDoc, pmv_pname, pmv_typeCli
 	}
 	
 	var pmv_da = new Date();
+        pmv_urlDoc = pmv_urlDoc.replace(/\//g,'%2F');
 	var pmv_src = pmv_urlPmv;
 	pmv_src += '?url='+escape(pmv_urlDoc)+'&pagename='+escape(pmv_pname)+pmv_getvars;
 	pmv_src += '&id='+pmv_site+'&res='+screen.width+'x'+screen.height+'&col='+screen.colorDepth;
