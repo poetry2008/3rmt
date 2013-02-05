@@ -167,14 +167,48 @@ if(findkeyword.length<=0){
                     echo Format::htmlchars($ht?$ht:'N/A');
                     ?>
                 </td>
-            </tr>
-            <tr>
-                <th>IPアドレス:</th>
-                <td><?=$ticket->getIP()?></td>
-            </tr>
+            </tr> 
             <tr><th nowrap>最終メッセージ:</th>
                 <td><?=Format::db_datetime($ticket->getLastMessageDate())?></td>
             </tr>
+        </table>
+     </td>
+    </tr>
+    <tr><td colspan=2 class="msg">Customer Info</td></tr>
+    <tr>
+     <td valign="top" width=50%>
+        <table align="center" class="ticketinfo" cellspacing="1" cellpadding="3" width="100%" border=0>
+        <?php 
+            $customer_info_array = $ticket->get_customer_info(); 
+            foreach($customer_info_array as $customer_key=>$customer_value){
+
+              if($customer_key % 2 == 0){
+        ?>
+            <tr>
+                <th><?php echo $customer_value['title'];?>:</th>
+                <td><?php echo $customer_value['value'];?></td>
+            </tr> 
+        <?php
+              }
+            }
+        ?>
+        </table>
+     </td>
+     <td width=50% valign="top">
+        <table align="center" class="ticketinfo" cellspacing="1" cellpadding="3" width="100%" border=0>
+        <?php 
+            foreach($customer_info_array as $customer_key=>$customer_value){
+
+              if($customer_key % 2 == 1){
+        ?>
+            <tr>
+                <th><?php echo $customer_value['title'];?>:</th>
+                <td><?php echo $customer_value['value'];?></td>
+            </tr> 
+        <?php
+              }
+            }
+        ?> 
         </table>
      </td>
     </tr>

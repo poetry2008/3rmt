@@ -1,4 +1,15 @@
 <?php page_head();?>
+<script type="text/javascript">
+<!--
+var a_vars = Array();
+var pagename='';
+var visitesSite = 1;
+var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERVER; ?>/visites.php";
+<?php
+  require(DIR_WS_ACTIONS.'visites.js');
+?>
+//-->
+</script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
   <div align="center">
