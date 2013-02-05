@@ -14,8 +14,8 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
     <?}?>
 </div>
 <div class="open_title">必要な情報をご入力ください.</div><br>
-<form action="open.php" method="POST" enctype="multipart/form-data">
-<table cellpadding=2 cellspacing=1 width="100%" class="open_users">
+<form name="open_form" action="open.php" method="POST" enctype="multipart/form-data">
+<table cellpadding="2" cellspacing="1" width="100%" class="open_users">
     <tr>
         <th width="20%">お名前</th>
         <td>
@@ -106,10 +106,10 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
     <?}?>
     <tr>
         <td></td>
-        <td>
-            <input class="button" type="submit" name="submit_x" value="送信">
-            <input class="button" type="reset" value="リセット">
-            <input class="button" type="button" name="cancel" value="キャンセル" onClick='window.location.href="<?php echo FILENAME_CONTACT_US ?>"'>
+        <td align="left" class="open_button">
+            <a href="javascript:void(0);" onclick="document.open_form.submit();"><img src="includes/languages/japanese/images/buttons/button_send_mail.gif" /></a>
+            <a href="javascript:void(0);" onclick="document.open_form.reset();"><img src="includes/languages/japanese/images/buttons/open_users01.gif" /></a>
+            <a href="javascript:void(0);" onClick='window.location.href="<?php echo FILENAME_CONTACT_US;?>";'><img src="includes/languages/japanese/images/buttons/open_users02.gif" /></a> 
         </td>
     </tr>
 </table>

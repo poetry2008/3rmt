@@ -14,7 +14,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
     <?}?>
 </div>
 <div><?php echo TEXT_OPEN_REQUIRED_INFORMATION;?></div>
-<form action="<?php echo tep_href_link('open.php','','SSL')?>" method="POST" enctype="multipart/form-data">
+<form name="open_form" action="<?php echo tep_href_link('open.php','','SSL')?>" method="POST" enctype="multipart/form-data">
 <table class="open_table" align="left" cellpadding=2 cellspacing=1 width="100%">
     <tr>
         <th width="27%" align="left"><?php echo TEXT_OPEN_YOUR_NAME;?></th>
@@ -102,10 +102,11 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
     </tr>
     <?}?>
     <tr>
-        <td colspan="2" align="center">
-            <button type="submit" class="button" style="padding:0;background:none;border:none;" value="<?php echo TEXT_OPEN_SEND_EMAIL;?>"><img src="includes/languages/japanese/images/buttons/button_send_mail.gif" /></button>
-            <button type="reset"  class="button" style="padding:0;background:none;border:none;" value="<?php echo TEXT_OPEN_RESET;?>"><img src="includes/languages/japanese/images/buttons/open_users01.gif" /></button>
-            <button type="button" class="button" style="padding:0;background:none;border:none;" value="<?php echo TEXT_OPEN_CANCELED;?>" onClick='window.location.href="<?php echo FILENAME_CONTACT_US;?>";'><img src="includes/languages/japanese/images/buttons/open_users02.gif" /></button>
+	<th></th>
+        <td align="left" class="open_button">
+            <a href="javascript:void(0);" onclick="document.open_form.submit();"><img src="includes/languages/japanese/images/buttons/button_send_mail.gif" /></a>
+            <a href="javascript:void(0);" onclick="document.open_form.reset();"><img src="includes/languages/japanese/images/buttons/open_users01.gif" /></a>
+            <a href="javascript:void(0);" onClick='window.location.href="<?php echo FILENAME_CONTACT_US;?>";'><img src="includes/languages/japanese/images/buttons/open_users02.gif" /></a>
         </td>
     </tr>
 </table>

@@ -84,7 +84,6 @@ H4 {
 	margin:1px 0 5px 1px;
  *margin-top:0px;
 	font-size:11px;
-	text-align:center;
 }
 .comment_05 {
 	overflow: hidden;
@@ -1341,12 +1340,6 @@ margin:10px 0 0 0;
 }
 .open_login_info span{float:left; width:100px; margin-top:2px; text-align:left;}
 /*.open_login_info input{ float:left; height:20px; width:140px;}*/
-.login_inc_button{
-	overflow:hidden;
-}
-.login_inc_button input{
-	float:right;
-}
 .msg{
 	font-size:12px;
 	text-align:left;
@@ -2651,3 +2644,4 @@ searching
 .input_box input,.input_box span{ float:left; line-height:22px; font-size:12px;}
 .input_both{clear:both;}
 .text_box{ margin-top:5px;}
+.open_button{ padding:5px 0 0 5px;}

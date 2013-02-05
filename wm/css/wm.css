@@ -1013,10 +1013,6 @@ h3.game_list a {
 .captcha_comment {
 	font-size:12px;
 }
-.login_inc_button {
-	padding-top:5px;
-	text-align:center;
-}
 .button {
 	cursor:pointer;
 }
@@ -1998,3 +1994,4 @@ color: #005c69;
 .input_box input,.input_box span{ float:left; line-height:22px;}
 .input_both{clear:both;}
 .text_box{ margin-top:3px;}
+.open_button{ padding-top:5px;}

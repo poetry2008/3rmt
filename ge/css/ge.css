@@ -1055,6 +1055,7 @@ background-color:#E0E0E0;
 .view_contents{width:452px; margin-bottom:10px;}
 .open_table{font-size:14px;}
 .open_table th{font-weight:400;}
+.open_table button{ margin-left:0;}
 .button{cursor:pointer;}
 a.Icon {padding-left:20px;padding-bottom:3px;}
 a.Icon:hover { text-decoration: underline;    }
@@ -1573,9 +1574,7 @@ TEXTAREA {
 }
 .img_clear img{
 	margin-top:1px;
-	*margin-top:-8px;
 }
-.img_clear input{ padding-top:5px;}
 #shipping_list_show_min{
   width:329px;
 }
@@ -1621,3 +1620,4 @@ TEXTAREA {
 .input_box{margin:0 2px 0 0px;*margin:0 2px 0 -4px; height:20px; float:left;}
 .input_box input,.input_box span{ float:left; line-height:22px;}
 .input_both{clear:both;}
+.open_button{ padding-top:10px;}

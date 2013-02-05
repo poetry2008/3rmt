@@ -103,7 +103,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
     <tr>
         <td valign="top" align="left"><?php echo TEXT_OPEN_CODE;?></td>
         <td><img src="captcha.php" border="0" align="left">
-        <span>&nbsp;&nbsp;<input id="input_text" type="text" name="captcha"
+        <span>&nbsp;&nbsp;<input type="text" name="captcha"
         value="">&nbsp;<i class="captcha_comment"><?php echo
         TEXT_OPEN_ENTER_CONTENTS;?></i></span>
         <?php if($errors['captcha']){ ?>
