@@ -135,6 +135,7 @@ function show_group_info(ele, gid, param_str)
       }
       $('#show_popup_info').css('z-index', data_info_array[1]); 
       $('#show_popup_info').show(); 
+      o_submit_single = true;
     }
   });
   if (box_warp_height < (offset+$("#show_popup_info").height())) {
@@ -542,6 +543,7 @@ function show_item_info(ele, item_id, i_param_str)
       }
       $('#show_popup_info').show(); 
       $('#show_popup_info').css('z-index', data_info_array[1]); 
+      o_submit_single = true;
     }
   });
 

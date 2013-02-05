@@ -129,7 +129,7 @@ if (isset($_GET['info_romaji']) && $_GET['info_romaji']) {
     echo '<div class="content_table">';
     echo '<table width="100%" cellpadding="2" cellspacing="0" border="0">
     <tr>
-    <td align="left"><img alt="img" src="images/icon_help_info.gif" class="help_pic">&nbsp;'.$_GET['keyword'].HELP_INFO_SEARCH.'</td>
+    <td align="left"><img alt="img" src="images/menu_icon/icon_help_info.gif" class="help_pic">&nbsp;'.$_GET['keyword'].HELP_INFO_SEARCH.'</td>
     <td align="right">
     <form action="help.php" method="get" >
     <input type="text" name="keyword" >
@@ -151,7 +151,7 @@ if (isset($_GET['info_romaji']) && $_GET['info_romaji']) {
 echo '<div class="content_table">';
 echo '<table width="100%" cellpadding="2" cellspacing="0" border="0">
 <tr>
-<td  align="left"><img alt="img" src="images/icon_help_info.gif" class="help_pic">&nbsp;'.$info_array['title'].'</td>
+<td  align="left"><img alt="img" src="images/menu_icon/icon_help_info.gif" class="help_pic">&nbsp;'.$info_array['title'].'</td>
 <td align="right">
 <form action="help.php" method="get" >
 <input type="text" name="keyword" >
@@ -179,7 +179,7 @@ if(isset($_GET['keyword']) && $_GET['keyword']){
     echo '<div class="content_table">';
     echo '<table width="100%" cellpadding="2" cellspacing="0" border="0">
     <tr>
-    <td align="left"><img alt="img" src="images/icon_help_info.gif" class="help_pic">&nbsp;'.$_GET['keyword'].HELP_INFO_SEARCH.'</td>
+    <td align="left"><img alt="img" src="images/menu_icon/icon_help_info.gif" class="help_pic">&nbsp;'.$_GET['keyword'].HELP_INFO_SEARCH.'</td>
     <td align="right">
     <form action="help.php" method="get" >
     <input type="text" name="keyword" >
@@ -199,7 +199,7 @@ if(isset($_GET['keyword']) && $_GET['keyword']){
     } else {
       while($info_array = tep_db_fetch_array($info_query)){
         echo '<div class="content">';
-        echo '<a href="'.tep_href_link("help.php","info_romaji=".urlencode($info_array['romaji'])).'"><h2><img alt="img" src="images/icon_help_info.gif" class="help_pic">&nbsp;'.$info_array['title'].'</h2></a></div>'; 
+        echo '<a href="'.tep_href_link("help.php","info_romaji=".urlencode($info_array['romaji'])).'"><h2><img alt="img" src="images/menu_icon/icon_help_info.gif" class="help_pic">&nbsp;'.$info_array['title'].'</h2></a></div>'; 
         echo '<div class="box_info">';
         echo '<a href="'.tep_href_link("help.php","info_romaji=".urlencode($info_array['romaji'])).'">'.mb_substr(strip_tags($info_array['content']),0,300,'utf-8').'......</a></div>';
       }
@@ -219,7 +219,7 @@ if (isset($_GET['keyword'])) {
     echo '<div class="content_table">';
     echo '<table width="100%" cellpadding="2" cellspacing="0" border="0">
     <tr>
-    <td align="left"><img alt="img" src="images/icon_help_info.gif" class="help_pic">&nbsp;'.$_GET['keyword'].HELP_INFO_SEARCH.'</td>
+    <td align="left"><img alt="img" src="images/menu_icon/icon_help_info.gif" class="help_pic">&nbsp;'.$_GET['keyword'].HELP_INFO_SEARCH.'</td>
     <td align="right">
     <form action="help.php" method="get" >
     <input type="text" name="keyword" >
