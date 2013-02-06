@@ -154,10 +154,10 @@ require("includes/note_js.php");
       <td class="dataTableHeadingContent" align="center" width="150"><?php echo TELECOM_UNKNOW_TABLE_TIME;?></td>
       <td class="dataTableHeadingContent" align="center"><?php echo TELECOM_UNKNOW_TABLE_CAL;?></td>
       <td class="dataTableHeadingContent" align="center"><?php echo TELECOM_UNKNOW_TABLE_YIN;?></td>
-      <td class="dataTableHeadingContent" align="center"><?php echo TELECOM_UNKNOW_TABLE_SURNAME;?></td>
-      <td class="dataTableHeadingContent" align="center"><?php echo TELECOM_UNKNOW_TABLE_TEL;?></td>
-      <td class="dataTableHeadingContent" align="center"><?php echo TELECOM_UNKNOW_TABLE_EMAIL;?></td>
-      <td class="dataTableHeadingContent" align="center"><?php echo TELECOM_UNKNOW_TABLE_PRICE;?></td>
+      <td class="dataTableHeadingContent" align="left"><?php echo TELECOM_UNKNOW_TABLE_SURNAME;?></td>
+      <td class="dataTableHeadingContent" align="left"><?php echo TELECOM_UNKNOW_TABLE_TEL;?></td>
+      <td class="dataTableHeadingContent" align="left"><?php echo TELECOM_UNKNOW_TABLE_EMAIL;?></td>
+      <td class="dataTableHeadingContent" align="right"><?php echo TELECOM_UNKNOW_TABLE_PRICE;?></td>
       <td class="dataTableHeadingContent" align="center">&nbsp;</td>
     </tr>
 <?php
