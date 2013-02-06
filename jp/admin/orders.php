@@ -2761,13 +2761,15 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                             <table width="100%" border="0" cellspacing="0" cellpadding="2" class="order02_link">
                             <tr>
                             <td class="main" valign="top" width="20%"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_name']);?>"><?php echo TEXT_CART_HOLDER;?></a></b></td>
-                            <td class="main" width="30%"><?php echo $order->info['telecom_name'];?></td>
-                            <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_tel']);?>"><?php echo TEXT_TEL_NUMBER;?></a></b></td>
-                            <td class="main"><?php echo tep_high_light_by_keywords($order->info['telecom_tel'],TELNO_KEYWORDS);?></a></td>
+                            <td class="main" colspan="3"><?php echo $order->info['telecom_name'].(isset($order->info['paypal_business']) && $order->info['paypal_business'] != '' ? ' / '.$order->info['paypal_business'] : '');?></td> 
                             </tr>
                             <tr>
                             <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_email']);?>"><?php echo TEXT_EMAIL_ADDRESS_INFO;?></a></b></td>
-                            <td class="main"><?php echo $order->info['telecom_email'];?></a></td>
+                            <td class="main" colspan="3"><?php echo $order->info['telecom_email'];?></a></td> 
+			    </tr>
+			    <tr>
+                            <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_tel']);?>"><?php echo TEXT_TEL_NUMBER;?></a></b></td>
+			    <td class="main"><?php echo tep_high_light_by_keywords($order->info['telecom_tel'],TELNO_KEYWORDS);?></a></td> 
                             <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_money']);?>"><?php echo TEXT_PRICE;?></a></b></td>
                             <td class="main"><?php echo $order->info['telecom_money'];?></a></td>
                             </tr>
