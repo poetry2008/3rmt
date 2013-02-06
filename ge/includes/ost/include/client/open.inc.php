@@ -23,7 +23,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
                 ?>
                 <input type="hidden" name="name" value="<?=$name?>"><?=$name?>
             <?}else {?>
-                <input type="text" name="name" size="25" value="<?=$info['name']?>"><?}?>&nbsp;<font class="error">*&nbsp;<?=$errors['name']?></font>
+                <input type="text" class="input_text" name="name" size="25" value="<?=$info['name']?>"><?}?>&nbsp;<font class="error">*&nbsp;<?=$errors['name']?></font>
         </td>
     </tr>
     <tr>
@@ -33,13 +33,13 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
                 ?>
                 <input type="hidden" name="email" size="25" value="<?=$email?>"><?=$email?>
             <?}else {?>             
-                <input type="text" name="email" size="25" value="<?=$info['email']?>"><?}?>&nbsp;<font class="error">*&nbsp;<?=$errors['email']?></font>
+                <input type="text" class="input_text" name="email" size="25" value="<?=$info['email']?>"><?}?>&nbsp;<font class="error">*&nbsp;<?=$errors['email']?></font>
         </td>
     </tr>
     <tr>
         <th align="left"><?php echo TEXT_OPEN_SUBJECT;?></th>
         <td>
-            <input type="text" name="subject" size="25" value="<?=isset($info['subject'])?$info['subject']:(isset($_GET['products'])?$_GET['products'].TEXT_OPEN_PART1:(isset($_GET['pname'])?$_GET['pname'].TEXT_OPEN_PART2:''))?>">&nbsp;<font class="error">*&nbsp;<?=$errors['subject']?></font>
+            <input type="text" class="input_text" name="subject" size="25" value="<?=isset($info['subject'])?$info['subject']:(isset($_GET['products'])?$_GET['products'].TEXT_OPEN_PART1:(isset($_GET['pname'])?$_GET['pname'].TEXT_OPEN_PART2:''))?>">&nbsp;<font class="error">*&nbsp;<?=$errors['subject']?></font>
         </td>
     </tr>
     <tr>

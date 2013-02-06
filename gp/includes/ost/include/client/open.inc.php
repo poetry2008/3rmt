@@ -23,7 +23,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
                 ?>
                 <input type="hidden" name="name" value="<?=$name?>"><?=$name?>
             <?}else {?>
-                <input type="text" name="name" size="25" value="<?=$info['name']?>">
+                <input type="text" class="input_text" name="name" size="25" value="<?=$info['name']?>">
           <?}?>
             &nbsp;<font class="error">*&nbsp;<?=$errors['name']?></font>
         </td>
@@ -35,7 +35,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
                 ?>
                 <input type="hidden" name="email" size="25" value="<?=$email?>"><?=$email?>
             <?}else {?>             
-                <input type="text" name="email" size="25" value="<?=$info['email']?>">
+                <input type="text" class="input_text" name="email" size="25" value="<?=$info['email']?>">
             <?}?>
             &nbsp;<font class="error">*&nbsp;<?=$errors['email']?></font>
         </td>
@@ -43,7 +43,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
     <tr>
         <th>件名</th>
         <td>
-            <input type="text" name="subject" size="35" value="<?=isset($info['subject'])?$info['subject']:(isset($_GET['products_name'])?$_GET['products_name'].'について':(isset($_GET['pname'])?$_GET['pname'].'の確保期限について':''))?>">
+            <input type="text" class="input_text" name="subject" size="35" value="<?=isset($info['subject'])?$info['subject']:(isset($_GET['products_name'])?$_GET['products_name'].'について':(isset($_GET['pname'])?$_GET['pname'].'の確保期限について':''))?>">
             &nbsp;<font class="error">*&nbsp;<?=$errors['subject']?></font>
         </td>
     </tr>
