@@ -498,10 +498,6 @@ footer
 .captcha_comment {
 	font-size:12px;
 }
-.login_inc_button {
-	padding-top:5px;
-	text-align:center;
-}
 .msg {
 	font-size:12px;
 	margin-bottom:10px;
@@ -1666,10 +1662,6 @@ page title
 }
 .captcha_comment {
 	font-size:12px;
-}
-.login_inc_button {
-	padding-top:5px;
-	text-align:center;
 }
 .msg {
 	font-size:12px;
