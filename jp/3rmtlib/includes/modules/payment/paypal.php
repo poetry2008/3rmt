@@ -341,7 +341,7 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
                   tep_db_perform('telecom_unknow', array(
         'payment_method' => 'paypal',
         '`option`'      => ' ',
-        'username'      => $paypalData['FIRSTNAME'] . '' . $paypalData['LASTNAME'],
+        'username'      => $paypalData['FIRSTNAME'] . '' . $paypalData['LASTNAME'] .(isset($paypalData['BUSINESS']) && $paypalData['BUSINESS'] != '' ? ' / '.$paypalData['BUSINESS'] : ''),
         'email'         => $paypalData['EMAIL'],
         'telno'         => $paypalData['PHONENUM'],
         'money'         => $paypalData['AMT'],
@@ -355,7 +355,7 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
                   tep_db_perform('telecom_unknow', array(
         'payment_method' => 'paypal',
         '`option`'      => ' ',
-        'username'      => $paypalData['FIRSTNAME'] . '' . $paypalData['LASTNAME'],
+        'username'      => $paypalData['FIRSTNAME'] . '' . $paypalData['LASTNAME'].(isset($paypalData['BUSINESS']) && $paypalData['BUSINESS'] != '' ? ' / '.$paypalData['BUSINESS'] : ''),
         'email'         => $paypalData['EMAIL'],
         'telno'         => $paypalData['PHONENUM'],
         'money'         => $paypalData['AMT'],
@@ -390,6 +390,7 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
                                      'paypal_payerstatus'   => $paypalData['PAYERSTATUS'],
                                      'paypal_paymentstatus' => $paypalData['PAYMENTSTATUS'],
                                      'paypal_countrycode'   => $paypalData['COUNTRYCODE'],
+				     'paypal_business'      => $paypalData['BUSINESS'],
                                      'telecom_email'        => $paypalData['EMAIL'],
                                      'telecom_money'        => $paypalData['AMT'],
                                      'telecom_name'         => $paypalData['FIRSTNAME'] . ''. $paypalData['LASTNAME'],
@@ -446,7 +447,7 @@ function getpreexpress($pre_value, $pre_pid){
                   tep_db_perform('telecom_unknow', array(
         'payment_method' => 'paypal',
         '`option`'      => ' ',
-        'username'      => $paypalData['FIRSTNAME'] . '' . $paypalData['LASTNAME'],
+        'username'      => $paypalData['FIRSTNAME'] . '' . $paypalData['LASTNAME'].(isset($paypalData['BUSINESS']) && $paypalData['BUSINESS'] != '' ? ' / '.$paypalData['BUSINESS'] : ''),
         'email'         => $paypalData['EMAIL'],
         'telno'         => $paypalData['PHONENUM'],
         'money'         => $paypalData['AMT'],
@@ -460,7 +461,7 @@ function getpreexpress($pre_value, $pre_pid){
                   tep_db_perform('telecom_unknow', array(
         'payment_method' => 'paypal',
         '`option`'      => ' ',
-        'username'      => $paypalData['FIRSTNAME'] . '' . $paypalData['LASTNAME'],
+        'username'      => $paypalData['FIRSTNAME'] . '' . $paypalData['LASTNAME'].(isset($paypalData['BUSINESS']) && $paypalData['BUSINESS'] != '' ? ' / '.$paypalData['BUSINESS'] : ''),
         'email'         => $paypalData['EMAIL'],
         'telno'         => $paypalData['PHONENUM'],
         'money'         => $paypalData['AMT'],
@@ -492,6 +493,7 @@ function getpreexpress($pre_value, $pre_pid){
                                      'paypal_payerstatus'   => $paypalData['PAYERSTATUS'],
                                      'paypal_paymentstatus' => $paypalData['PAYMENTSTATUS'],
                                      'paypal_countrycode'   => $paypalData['COUNTRYCODE'],
+				     'paypal_business'      => $paypalData['BUSINESS'],
                                      'telecom_email'        => $paypalData['EMAIL'],
                                      'telecom_money'        => $paypalData['AMT'],
                                      'telecom_name'         => $paypalData['FIRSTNAME'] . ''. $paypalData['LASTNAME'],

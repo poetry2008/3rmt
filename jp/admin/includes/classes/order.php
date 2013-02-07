@@ -90,6 +90,7 @@
 'paypal_paymenttype' => $order['paypal_paymenttype'],
 'paypal_payerstatus' => $order['paypal_payerstatus'],
 'paypal_paymentstatus' => $order['paypal_paymentstatus'],
+'paypal_business' => $order['paypal_business'],
 'paypal_countrycode' => $order['paypal_countrycode'],
 'flag_qaf' => $order['flag_qaf']);
 
@@ -111,6 +112,7 @@
 'paypal_paymenttype' => $order['paypal_paymenttype'],
 'paypal_payerstatus' => $order['paypal_payerstatus'],
 'paypal_paymentstatus' => $order['paypal_paymentstatus'],
+'paypal_business' => $order['paypal_business'],
 'paypal_countrycode' => $order['paypal_countrycode']);
 
 
