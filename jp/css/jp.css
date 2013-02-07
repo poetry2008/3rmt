@@ -2568,15 +2568,16 @@ searching
 }
 .option_show_border a{ 
 	color:#2864B4; 
-	/*display:block;*/
 	text-decoration:none;
 	display:block;
+	padding-right:15px;
 }
 
 .option_hide_border {
 	float:left;
 	margin-right:5px;
-	position:relative;
+	display:block;
+	word-wrap:break-word;
 }
 .option_hide_border .option_checkmark{
 	position:absolute;
@@ -2599,7 +2600,6 @@ searching
 	border:1px solid #ccc;
 	overflow:hidden;
 	padding:2px 2px 2px 0;
-	*display:inline-block;
 	float:left;
 	line-height:18px;
 	margin:2px 2px 2px 0;
@@ -2622,15 +2622,13 @@ searching
 }
 .option_product_radio_list{
 	overflow:hidden;
-	width:100%;
 	*margin-top:-5px;
 }
 
 .option_product_radio_img_list{
-	width:100%;
-	*float:left;
 	clear:both;
 	*margin-top:5px;
+	width:100%;
 }
 .option_radio_list{
 	width:100%;

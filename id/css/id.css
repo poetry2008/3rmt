@@ -2436,7 +2436,8 @@ searching
 .option_show_border a{ 
 	color:#2864B4; 
 	text-decoration:none;
-	display:block;
+	display:block;	
+	padding-right:15px;
 }
 
 .option_hide_border {

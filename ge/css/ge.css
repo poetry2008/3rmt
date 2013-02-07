@@ -1621,3 +1621,7 @@ TEXTAREA {
 .input_box input,.input_box span{ float:left; line-height:22px;}
 .input_both{clear:both;}
 .open_button{ padding-top:10px;}
+.option_show_border a{ 
+	padding-right:15px;
+	display:block;
+}

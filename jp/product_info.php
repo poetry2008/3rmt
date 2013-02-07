@@ -124,7 +124,8 @@ function select_item_radio(i_obj, t_str, o_str, p_str, r_price)
       } else {
         jq('#tp1_'+r_tmp_name).val(r_price);
       }
-      calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
+      actiontime =new Date().getTime();  
+      setTimeout(function (){ timeline_action("<?php echo (int)$_GET['products_id'];?>")},1000); 
 }
 
 function change_num(ob,targ, quan, a_quan)
@@ -176,8 +177,7 @@ function change_num(ob,targ, quan, a_quan)
 
   product_quantity.value = num_value;
   actiontime =new Date().getTime();  
-   setTimeout( function() {
-      timeline_action("<?php echo (int)$_GET['products_id'];?>");  
+   setTimeout( function() { timeline_action("<?php echo (int)$_GET['products_id'];?>");  
    }, 1000);    
 }
 function get_current_ts(){
@@ -187,7 +187,6 @@ function get_current_ts(){
 }
 
 function timeline_action(p){
-
   if (get_current_ts()-actiontime>=980){
   calc_product_final_price(p);
   };

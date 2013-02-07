@@ -124,7 +124,8 @@ function select_item_radio(i_obj, t_str, o_str, p_str, r_price)
       } else {
         jq('#tp1_'+r_tmp_name).val(r_price);
       }
-      calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
+      actiontime =new Date().getTime();  
+      setTimeout(function (){ timeline_action("<?php echo (int)$_GET['products_id'];?>")},1000); 
 }
 
 function change_num(ob,targ, quan, a_quan)
