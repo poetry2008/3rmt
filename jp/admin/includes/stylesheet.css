@@ -1099,15 +1099,12 @@ a.s_column_bar {
 }
 .option_show_border .option_checkmark{
 	position:absolute;
-	*position: absolute;
-	right:0px;
-	top:0px;
-	*right:0;
-	*top:0;
+	right:2px;
+	bottom:2px;
 	text-align:right;
-	opacity:1.0;
-	display:inline-block;
+	display:block;
 }
+.option_checkmark img{vertical-align:bottom;}
 .option_show_border span{ float:left;}
 .option_show_border .option_conent{
 	border:3px solid #FF6701;
@@ -1134,16 +1131,7 @@ a.s_column_bar {
   position:relative;
 }
 .option_hide_border .option_checkmark{
-	position: absolute;
-	*position: absolute;
-	right:0px;
-	top:0px;
-	*right:0;
-	*top:0;
-	opacity:0;
-	filter: Alpha(Opacity=0);
-	z-index:90;
-	display:inline-block;
+	display:none;
 	text-align:right;
 }
 

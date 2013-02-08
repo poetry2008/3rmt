@@ -1266,83 +1266,69 @@ top:70px;
 .option_product_single_radio{
 	float:left;
 	margin-bottom:5px;
+	overflow:hidden;
+	white-space: nowrap;
 }
 .option_show_border {
 	float:left;
 	margin-right:5px;
-	overflow:hidden;
 	position:relative;
+	overflow:hidden;
 }
 .option_show_border .option_checkmark{
-	position:absolute;
-	*position: absolute;
-	right:0px;
-	top:0px;
-	*right:0;
-	*top:0;
-	text-align:right;
-	opacity:1.0;
-	display:inline-block;
+	position: absolute;
+	right:1px;
+	_right:1px;
+	right:6px\9;
+	bottom:2px;
+	vertical-align:bottom;
 }
+.option_checkmark img{ vertical-align:bottom;}
 .option_show_border span{ float:left;}
 .option_show_border .option_conent{
-		border:3px solid #FF6701;
+		border:2px solid #FF6701;
 		overflow:hidden;
 	    padding:2px;
-		*display:inline-block;
 		float:left;
 		line-height:18px;
 }
 .option_show_border a{ 
-	color:#66DFFF; 
-	/*display:block;*/
+	color:#ce04e0; 
 	text-decoration:none;
 	display:block;
-	padding-right:15px;
+	padding-right:5px;
 }
 
 .option_hide_border {
 	float:left;
 	margin-right:5px;
 	position:relative;
+	word-wrap:break-word;
 }
 .option_hide_border .option_checkmark{
-	position:absolute;
-	*position: absolute;
-	right:0px;
-	top:0px;
-	*right:0;
-	*top:0;
-	opacity:0;
-	filter: Alpha(Opacity=0);
-	z-index:90;
-	display:inline-block;
-	text-align:right;
+	display:none;
 }
 .option_hide_border .option_conent a:hover, .option_show_border .option_conent a:hover{
 	text-decoration:none;
 	cursor:pointer;	
 }
 .option_hide_border .option_conent{
-	border:1px solid #ccc;
+	border:2px solid #ccc;
 	overflow:hidden;
 	padding:2px;
-	*display:inline-block;
 	float:left;
 	line-height:18px;
-	margin:2px;
 }
-.option_hide_border span{ float:left; overflow:hidden; color:#FFFFFF;}
+.option_hide_border span{ float:left;}
 .option_hide_border a{
-	color:#fff; 
+	color:#66DFFF;
 	display:block;
 	text-decoration:none;
+	padding-right:5px;
 	
 }
-/*.option_hide_border a:hover{
-	border:2px solid #2864B4;
-}
-*/.option_radio_img img{ float:left;}
+.option_show_border a:hover,.option_hide_border a:hover{color:#fe9002;}
+.option_radio_img img{ float:left; padding:0; margin:0;}
 .option_product_default_radio{
 	clear:both;
 	overflow:hidden;
@@ -1350,14 +1336,11 @@ top:70px;
 }
 .option_product_radio_list{
 	overflow:hidden;
-	width:100%;
 }
 
 .option_product_radio_img_list{
 	width:100%;
-	*float:left;
 	clear:both;
-	*margin-top:5px;
 }
 .option_radio_list{
 	width:100%;

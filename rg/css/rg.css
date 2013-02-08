@@ -1947,56 +1947,46 @@ border:2px solid #FF8080;
 .option_product_single_radio{
 	float:left;
 	margin-bottom:5px;
+	overflow:hidden;
+	white-space: nowrap;
 }
 .option_show_border {
 	float:left;
-	margin-right:5px;
+	margin-right:1px;
 	overflow:hidden;
 	position:relative;
 }
 .option_show_border .option_checkmark{
 	position:absolute;
-	*position: absolute;
-	right:0px;
-	top:0px;
-	*right:0;
-	*top:0;
+	right:4px;
+	bottom:1px;
 	text-align:right;
-	opacity:1.0;
-	display:inline-block;
+	display:block;
 }
-.option_show_border span{ float:left;}
+.option_checkmark img{vertical-align:bottom;}
+.option_show_border span{ float:left; overflow:hidden; padding:0 4px;}
 .option_show_border .option_conent{
-	border:3px solid #FF6701;
+	border:2px solid #FF6701;
 	overflow:hidden;
-	padding:2px;
-	*display:inline-block;
 	float:left;
-	line-height:18px;
+	line-height:27px;
+	margin:0 3px 0 0;
 }
 .option_show_border a{ 
-	color:#2864B4; 
+	color:#CC0000; 
 	text-decoration:none;
 	display:block;
-	padding-right:15px;
+	padding-right:5px;
 }
 
 .option_hide_border {
 	float:left;
-	margin-right:5px;
-	position:relative;
+	margin-right:1px;
+	display:block;
+	word-wrap:break-word;
 }
 .option_hide_border .option_checkmark{
-	position:absolute;
-	*position: absolute;
-	right:0px;
-	top:0px;
-	*right:0;
-	*top:0;
-	opacity:0;
-	filter: Alpha(Opacity=0);
-	z-index:90;
-	display:inline-block;
+	display:none;
 	text-align:right;
 }
 .option_hide_border .option_conent a:hover, .option_show_border .option_conent a:hover{
@@ -2004,22 +1994,22 @@ border:2px solid #FF8080;
 	cursor:pointer;	
 }
 .option_hide_border .option_conent{
-	border:1px solid #ccc;
+	border:2px solid #ccc;
 	overflow:hidden;
-	padding:2px;
-	*display:inline-block;
 	float:left;
-	line-height:18px;
-	margin:2px;
+	line-height:27px;
+	margin:0 3px 0 0;
 }
-.option_hide_border span{ float:left; overflow:hidden;}
+.option_hide_border span{ float:left;overflow:hidden; padding:0 4px;}
 .option_hide_border a{
-	color:#000000; 
+	color:#555; 
 	display:block;
 	text-decoration:none;
+	padding-right:5px;
 	
 }
-.option_radio_img img{ float:left;}
+.option_hide_border a:hover,.option_show_border a:hover{ color:#002226;}
+.option_radio_img img{ float:left; padding:0; margin:0;}
 .option_product_default_radio{
 	clear:both;
 	overflow:hidden;
@@ -2027,15 +2017,13 @@ border:2px solid #FF8080;
 }
 .option_product_radio_list{
 	overflow:hidden;
-	width:85%;
-	*margin-top:-5px;
+	*margin:5px 0 3px 0;
 }
 
 .option_product_radio_img_list{
-	width:100%;
-	*float:left;
 	clear:both;
 	*margin-top:5px;
+	width:100%;
 }
 .option_radio_list{
 	width:100%;
