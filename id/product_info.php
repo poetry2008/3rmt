@@ -52,6 +52,7 @@ jq(document).ready(function () {
      var radio_option_value = jq(this).next("span").children("input[type='hidden']").val();
      radio_option_value = radio_option_value.replace(/<br>/i,"<br>");
      radio_option_value = radio_option_value.replace(/<\/br>/i,"</br>");
+     var tmp_t_obj = jq(this); 
      jq(this).children(".option_product_radio_img_list").children(".option_product_single_radio").each(function(){
 
        var radio_list_option_value = jq(this).children().children(".option_conent").children("a").children("span:first").html();
@@ -60,6 +61,9 @@ jq(document).ready(function () {
        if(radio_list_option_value == radio_option_value ){
 
          jq(this).children().attr("class","option_show_border");
+         if (tmp_t_obj.children(".option_product_default_radio")) {
+           tmp_t_obj.children(".option_product_default_radio").find("div:first").attr("class","option_hide_border");
+         }
        }else{
          jq(this).children().attr("class","option_hide_border"); 
        }

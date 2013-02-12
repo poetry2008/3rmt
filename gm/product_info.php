@@ -78,6 +78,7 @@ $(document).ready(function () {
      var radio_option_value = $(this).next("span").children("input[type='hidden']").val();
      radio_option_value = radio_option_value.replace(/<br>/i,"<br>");
      radio_option_value = radio_option_value.replace(/<\/br>/i,"</br>");
+     var tmp_t_obj = $(this); 
      $(this).children(".option_product_radio_img_list").children(".option_product_single_radio").each(function(){
 
        var radio_list_option_value = $(this).children().children(".option_conent").children("a").children("span:first").html();
@@ -86,6 +87,9 @@ $(document).ready(function () {
        if(radio_list_option_value == radio_option_value ){
 
          $(this).children().attr("class","option_show_border");
+         if (tmp_t_obj.children(".option_product_default_radio")) {
+           tmp_t_obj.children(".option_product_default_radio").find("div:first").attr("class","option_hide_border");
+         }
        }else{
          $(this).children().attr("class","option_hide_border"); 
        }
