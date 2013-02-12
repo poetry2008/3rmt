@@ -41,7 +41,7 @@ case 'info_update':
 	
 	$res = tep_db_query("update help_info set title='".$title."',keyword='".$keyword."',content='".$content."' where romaji='".$romaji."'");
 	if($res){
-		tep_redirect($romaji);
+          tep_redirect('help_info.php?'.substr($_POST['opa'], 0, -1));
 	}
 break;
 case 'info_del':
@@ -64,7 +64,8 @@ default:
 			$info_list_sql = $info_con_sql;	
 		}
 	}
-	$info_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $info_list_sql, $num_rows); 
+        $info_list_sql .= " order by romaji"; 
+        $info_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $info_list_sql, $num_rows); 
 	$info_list_query = tep_db_query($info_list_sql);
 	
   $info_sql   = "select * from help_info";
