@@ -9,7 +9,6 @@ class google implements engine {
   var $resultCount;
   var $dbdriver;
   var $context;
-  //    <div id="bd"><div id="inf"><strong>bobhero</strong> で検索した結果　1～10件目 / 約452件 - 0.38秒</div>
   //  var $countPreg = "/<div\sid=\"bd\"><div\sid=\"inf\"><strong>.*<\/strong>(.*)<\/div>/";
   //var $countPreg = "/<div\s+id=resultStats>約\s+(.*)件中\s+\d+\s+ページ目<nobr>\s+.(.*)秒.&nbsp;<\/nobr><\/div>/";
   var $countPreg = "/<div id=resultStats>[^<]*<nobr>/";
@@ -65,7 +64,6 @@ class google implements engine {
   
 
   function getPageCount(){
-    //    <div id="bd"><div id="inf"><strong>bobhero</strong> で検索した結果　1～10件目 / 約452件 - 0.38秒</div>
     //    preg_match("(.*)",$this->currentHtml,$match);
     if(preg_match($this->countPreg,$this->currentHtml,$match)){
     preg_match("/(\d+,{0,})+/",$match[0],$match1);
@@ -93,7 +91,7 @@ class google implements engine {
     $resultArray = explode('<li class="g"',$html);
 //    $parsePreg = "/<a\shref=\"(.*)\">(.*)<\/a><div>(.*)<\/div>.*/";
     $parsePreg =
-      '/<h3[^>]*><a[^>]*href=\"([^"]*)\"(.*)<\/a><\/h3>.*<div[^>]*>(.*)<\/div>.*/';
+      '/<h3[^>]*><a[^>]*href=\"\/url\?q=([^"]*)\&amp;sa=U\&amp;ei=([^"]*)\"(.*)<\/a><\/h3>.*<span class=\"st\">(.*)<\/span>.*/';
     $recordArray = array();
     $count = 1;
     unset($resultArray[0]);
@@ -109,12 +107,12 @@ class google implements engine {
       if(preg_match($parsePreg,$result,$match)&&
           !preg_match('/(imagebox|videobox)/',$result)){
       //根据正则判断 该记录是否 有效搜索结果
-      preg_match("/>(.*)$/",$match[2],$title);
+      preg_match("/>(.*)$/",$match[3],$title);
       $recordArray[] = array(
                              'keyword'=>$this->keyword,
                              'title'=>$title[1],
                              'fullurl'=>$match[1],
-                             'description'=>$match[3],
+                             'description'=>$match[4],
                              'page_number'=>$this->currentPageNumber,
                              'order_number'=>$count,
                              'order_total_number'=>10*($this->currentPageNumber-1)+$count,
