@@ -132,7 +132,7 @@ class google implements engine {
   function getCurrentPageResult(){
   	//读取每个页面
     $this->currentHtml =
-      file_get_contents($this->makeUrl($this->currentPageNumber),false,$this->context);
+      file_get_contents($this->makeUrl($this->currentPageNumber),false);
     return $this->parseResult($this->currentHtml);
   }
 
