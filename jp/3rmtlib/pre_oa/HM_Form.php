@@ -214,14 +214,19 @@ class HM_Form extends DbRecord
   checkLockOrder();
   $("#qa_form").find("input").each(function (){
       $(this).keyup(function(){
-        checkLockOrder();
+        if($(this).val()!=''){
+          checkLockOrder();
+        }
         });
       $(this).click(function(ele){
-        checkLockOrder();
+        if(!$(this).attr('checked')){
+          if($(this).attr('type')!='text'){
+            $("#canEndDiv").hide();
+          }
+        }
         $("#qa_form").submit();
         });
       $(this).change(function(ele){
-        checkLockOrder();
         //                                   alert($("input|[name=dfossrrfwwkvomzw_6_1_107]").val());
         if ($(this).attr('type')!='checkbox') {
           $("#qa_form").submit();
@@ -236,7 +241,14 @@ class HM_Form extends DbRecord
         $(this).find('.outform').each(function(){
           if($(this).attr('name').substr(0,1)!='0'){
           $(this).attr('name','0'+$(this).attr('name'));}});
-        $(this).ajaxSubmit(function(){ $('#wait').hide();           $('body').css('cursor','');});
+        var options = {
+          success:function(){
+            $('#wait').hide();
+            $('body').css('cursor','');
+            checkLockOrder();
+            }
+        };
+        $(this).ajaxSubmit(options);
 
         $(this).find('.outform').each(function(){
           if($(this).attr('name').substr(0,1)=='0'){

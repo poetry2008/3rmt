@@ -14,7 +14,7 @@ class mission {
   var $dbdriver='resultSaver';
   public  static function getObj($id){
     $db = db::getConn();
-    $r = $db->query('select * from mission where id='.$id);
+    $r = $db->query("select * from mission where id='".$id."'");
     $m =  $r->fetch_object("mission");
     $r = $db->query('select distinct(record_siteurl) siteurl 
                      from site_filter where state = 1');
@@ -59,8 +59,7 @@ class mission {
         $this->session_id = $this->conn->insert_id;
             //删除一起的 session  和 record 
 
-    $sql = "delete from record where mission_id ='".$this->id."'
-           and session_id <> '".$this->session_id."'";
+    $sql = "delete from record where mission_id ='".$this->id."'";
     $this->conn->query($sql);
 
 

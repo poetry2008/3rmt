@@ -46,4 +46,4 @@ define('CUSTOMER_IS_SEAL','注文禁止');
 define('CUSTOMER_PIC_TEXT', 'マーク');
 define('CUSTOMER_NO_SEND_MAIL_TEXT', 'メールを送信しない');
 define('CUSTOMER_CALC_QUANTITY_TEXT', '在庫数量の増減を自動計算しない');
-define('TEXT_CUSTOMERS_ORDER_COUNT','注文数:');
+define('TEXT_CUSTOMERS_ORDER_COUNT','注文回数:');
