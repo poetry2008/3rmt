@@ -1091,7 +1091,7 @@ Footer
 	padding-left:0;
 	margin-left:0;
 }
-.formArea textarea { width:674px; height:160px;}
+.formArea textarea { width:674px;}
 .product_info_box .main p a{ color:#656565;}
 .main p a:hover{
 	text-decoration:underline;
@@ -2228,7 +2228,7 @@ border:1px solid #CAC6BE;
 	margin-bottom:5px;
 	*margin-left:3px;
 }
-.option_info_text textarea{ width:75%; height:80px;}
+.option_info_text textarea{ width:75%;}
 .option_info_text select{ float:left; margin-left:0;*margin-left:3px;}
 #show_price{
 	font-size:20px;
