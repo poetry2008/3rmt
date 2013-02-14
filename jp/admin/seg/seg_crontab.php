@@ -10,8 +10,10 @@ require_once(PRO_ROOT_DIR."/class/db.php");
 require_once(PRO_ROOT_DIR."/class/mission.php");
 define('LOG_FILE_NAME',LOG_DIR.date('Y-m-d_H_i_s',time()).'.log');
 define('LOG_FILE_NAME_LAST',LOG_DIR.'last.log');
+/*
 define('SLEEP_TIME','30');//设置 每个关键字检索间隔
 define('LIMIT_ROW','10');//设置 每次检索的关键字个数
+*/
 function cron_log($message){
   //如果文件不存在则建立
 
@@ -61,6 +63,19 @@ needrebuild
 FROM categories_to_mission cm
 LEFT JOIN mission m ON cm.mission_id = m.id
 ';
+
+$sleep_sql = "select * from configuration where 
+  configuration_key = 'SEG_CRONTAB_SLEEP' limit 1";
+$sleep_res = getResult($sleep_sql);
+$sleep = $sleep_res[0]['configuration_value'];
+
+$limit_sql = "select * from configuration where 
+  configuration_key = 'SEG_CRONTAB_ROW' limit 1";
+$limit_res = getResult($limit_sql);
+$limit = $limit_res[0]['configuration_value'];
+
+define('SLEEP_TIME',$sleep);//设置 每个关键字检索间隔
+define('LIMIT_ROW',$limit);//设置 每次检索的关键字个数
 $config_sql = "select * from configuration where 
   configuration_key = 'SEARCH_MISSION_ID' limit 1";
 $config_res = getResult($config_sql);

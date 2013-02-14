@@ -376,6 +376,8 @@ case 'edit':
             'ORDERS_EMPTY_EMAIL_TEXT',
             'ORDER_EFFECTIVE_DATE',
             'DS_ADMIN_SIGNAL_TIME',
+            'SEG_CRONTAB_ROW',
+            'SEG_CRONTAB_SLEEP',
             ))) 
     while($site = tep_db_fetch_array($select_site_configure)) {
   $site_romaji[] = $site['romaji'];
