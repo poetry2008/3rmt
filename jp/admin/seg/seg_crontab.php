@@ -1,6 +1,6 @@
 #!/usr/bin/env php
 <?php
-define('PRO_ROOT_DIR','/home/szn/project/3rmt/jp/admin/seg');
+define('PRO_ROOT_DIR','/home/.sites/28/site1/web/admin/seg/');
 //define('PRO_ROOT_DIR','/home/.sites/22/site13/vhosts/jp/admin/seg');
 ini_set('display_errors', 'On');
 error_reporting(E_ALL);
@@ -10,7 +10,10 @@ require_once(PRO_ROOT_DIR."/class/db.php");
 require_once(PRO_ROOT_DIR."/class/mission.php");
 define('LOG_FILE_NAME',LOG_DIR.date('Y-m-d_H_i_s',time()).'.log');
 define('LOG_FILE_NAME_LAST',LOG_DIR.'last.log');
-define('SLEEP_TIME','1');//number is second 睡眠设置
+/*
+define('SLEEP_TIME','30');//设置 每个关键字检索间隔
+define('LIMIT_ROW','10');//设置 每次检索的关键字个数
+*/
 function cron_log($message){
   //如果文件不存在则建立
 
@@ -60,10 +63,38 @@ needrebuild
 FROM categories_to_mission cm
 LEFT JOIN mission m ON cm.mission_id = m.id
 ';
-$sql = 'SELECT * from mission';
+
+$sleep_sql = "select * from configuration where 
+  configuration_key = 'SEG_CRONTAB_SLEEP' limit 1";
+$sleep_res = getResult($sleep_sql);
+$sleep = $sleep_res[0]['configuration_value'];
+
+$limit_sql = "select * from configuration where 
+  configuration_key = 'SEG_CRONTAB_ROW' limit 1";
+$limit_res = getResult($limit_sql);
+$limit = $limit_res[0]['configuration_value'];
+
+define('SLEEP_TIME',$sleep);//设置 每个关键字检索间隔
+define('LIMIT_ROW',$limit);//设置 每次检索的关键字个数
+$config_sql = "select * from configuration where 
+  configuration_key = 'SEARCH_MISSION_ID' limit 1";
+$config_res = getResult($config_sql);
+$mission_id = $config_res[0]['configuration_value'];
+
+$max_m_sql = "select max(id) as max from mission";
+$max_m_res = getResult($max_m_sql);
+$max_m_id = $max_m_res[0]['max'];
+
+$where_str = '';
+if($mission_id < $max_m_id){
+  $where_str  = " where id > '".$mission_id."' ";
+}
+
+$sql = 'SELECT * from mission '.$where_str.' limit '.LIMIT_ROW;
 $ctms = getResult($sql);
 
-cron_log('There is '.count($ctms).'  missions to process');
+
+//cron_log('There is '.count($ctms).'  missions to process');
 $needinsert=0;
 $needupdate=0;
 $needrebuild=0;
@@ -117,6 +148,7 @@ cron_log($m->name);
   }
   cron_log( "SLEEP:".SLEEP_TIME);
   sleep(SLEEP_TIME);
+  
 cron_log('');
   
 }

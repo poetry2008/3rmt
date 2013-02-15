@@ -93,7 +93,10 @@ class mission {
     }
     self::msg('end searcing');
     self::msg($err_code);
-
+    $mission_sql = "UPDATE `configuration` 
+      SET `configuration_value` = '".$this->id."'
+      WHERE `configuration_key` ='SEARCH_MISSION_ID'";
+    $this->conn->query($mission_sql);
 
 
     return 1;
