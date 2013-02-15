@@ -495,6 +495,7 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
      }
      
      echo '<span>'; 
+     $_SESSION['formname'] = $name_one = $this->formname;
      echo '<input id="'.$pre_item_str.'h_'.$this->formname.'" type="hidden" name="'.$pre_item_str.'op_'.$this->formname.'" value="'.(isset($default_i_value)?stripslashes($default_i_value):$default_value).'">'; 
      echo '</span>'; 
      echo '<span id="'.$pre_item_str.'error_'.$this->formname.'" class="option_error">'; 

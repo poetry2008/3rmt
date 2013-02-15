@@ -62,7 +62,7 @@ jq(document).ready(function () {
    var actiontime =new Date().getTime();  
    jq(".option_product_radio_list").each(function(){
 
-     var radio_option_value = jq(this).next("span").children("input[type='hidden']").val();
+     var radio_option_value = document.getElementById("h_<?php echo $_SESSION['formname']; ?>").value;
      radio_option_value = radio_option_value.replace(/<br>/i,"<br>");
      radio_option_value = radio_option_value.replace(/<\/br>/i,"</br>");
      var tmp_t_obj = jq(this); 

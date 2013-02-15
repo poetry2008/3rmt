@@ -48,7 +48,7 @@ jq(document).ready(function () {
    var actiontime =new Date().getTime();  
    jq(".option_product_radio_list").each(function(){
 
-     var radio_option_value = jq(this).next("span").children("input[type='hidden']").val();
+     var radio_option_value = document.getElementById("h_<?php echo $_SESSION['formname']; ?>").value;
      radio_option_value = radio_option_value.replace(/<br>/i,"<br>");
      radio_option_value = radio_option_value.replace(/<\/br>/i,"</br>");
      var tmp_t_obj = jq(this); 
@@ -181,7 +181,8 @@ function change_num(ob,targ, quan, a_quan)
 
   product_quantity.value = num_value;
   actiontime =new Date().getTime();  
-   setTimeout( function() { timeline_action("<?php echo (int)$_GET['products_id'];?>");  
+   setTimeout( function() {
+      timeline_action("<?php echo (int)$_GET['products_id'];?>");  
    }, 1000);    
 }
 function get_current_ts(){
