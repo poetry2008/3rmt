@@ -1,7 +1,7 @@
 <?php
-define('TEXT_PRIORITY','重要度');
-define('TEXT_PRIORITY_HEAD','重要');
-define('TEXT_INFO_PRIORITY','重要度');
+define('TEXT_PRIORITY','优先');
+define('TEXT_PRIORITY_HEAD','优先');
+define('TEXT_INFO_PRIORITY','优先');
 define('TEXT_LOGINURL','Login');
 define('TEXT_INFO_LOGINURL','LoginURL');
 define('TEXT_TITLE','ID管理历史记录');
@@ -46,7 +46,7 @@ define('TEXT_BUTTON_SHOW','预览');
 define('TEXT_BUTTON_BACK','返回');
 define('TEXT_NEXTDAT','日程表');
 define('PW_MANAGER_SELECT_NONE', '--请选择--');
-define('PW_MANAGER_SELECT_ONE', '重要');
+define('PW_MANAGER_SELECT_ONE', '优先');
 define('PW_MANAGER_SELECT_TWO', 'LoginURL');
 define('PW_MANAGER_SELECT_THREE', '标题');
 define('PW_MANAGER_SELECT_FOUR', '标题URL');

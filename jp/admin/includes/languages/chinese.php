@@ -348,7 +348,7 @@ define('BOX_TOOLS_CONTENTS', '内容管理');
 define('TEXT_DISPLAY_NUMBER_OF_CONTENS', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 项)');
 
 //latest news
-define('BOX_TOOLS_LATEST_NEWS', '最新信息管理');
+define('BOX_TOOLS_LATEST_NEWS', '网站新闻管理');
 
 //faq
 define('BOX_TOOLS_FAQ', 'FAQ');

@@ -5,7 +5,7 @@
 
 define('HEADING_TITLE', '网站新闻管理');
 
-define('TEXT_NEW_LATEST_NEWS', '最新信息管理');
+define('TEXT_NEW_LATEST_NEWS', '网站新闻管理');
 
 define('TABLE_HEADING_LATEST_NEWS_HEADLINE', '标题');
 define('TABLE_HEADING_LATEST_NEWS_ACTION', '操作');
