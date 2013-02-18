@@ -47,7 +47,7 @@ define('TEXT_BUTTON_MK_PWD','创建密码');
 define('TEXT_OPERATOR_INFO','勾选后才可以阅览。');
 define('PW_MANAGER_NOTICE_TEXT', '为了安全起见进行密码管理，但并不能充分确保密码安全。银行密码等与金钱相关的信息不能进行注册。<br>点击id和密码的时候会自动复制到剪贴板上。这个功能注重日常操作性，请谨慎使用。');
 define('PW_MANAGER_SELECT_NONE', '--请选择--');
-define('PW_MANAGER_SELECT_ONE', '重要');
+define('PW_MANAGER_SELECT_ONE', '优先');
 define('PW_MANAGER_SELECT_TWO', 'LoginURL');
 define('PW_MANAGER_SELECT_THREE', '标题');
 define('PW_MANAGER_SELECT_FOUR', '标题URL');

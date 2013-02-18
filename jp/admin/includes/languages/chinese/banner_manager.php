@@ -3,7 +3,7 @@
   $Id$
 */
 
-define('HEADING_TITLE', '广告管理');
+define('HEADING_TITLE', 'Banner管理');
 
 define('TABLE_HEADING_BANNERS', '广告');
 define('TABLE_HEADING_GROUPS', '组');

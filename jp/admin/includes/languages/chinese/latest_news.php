@@ -3,7 +3,7 @@
   $Id$
 */
 
-define('HEADING_TITLE', '最新信息管理');
+define('HEADING_TITLE', '网站新闻管理');
 
 define('TEXT_NEW_LATEST_NEWS', '最新信息管理');
 
