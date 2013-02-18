@@ -1,5 +1,5 @@
 <?php
-define('HEADING_TITLE','新建地址的设置');
+define('HEADING_TITLE','配送国别地区设置');
 define('TABLE_HEADING_BILL_TEMPLATES_NAME','新建地址');
 define('TABLE_TITLE_1','标题');
 define('TABLE_TITLE_2','显示名');
