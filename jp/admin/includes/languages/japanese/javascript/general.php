@@ -4,11 +4,9 @@ define('JS_TEXT_GENERAL_SHOW_REVIEW','この商品のレビューを非表示に
 define('JS_TEXT_GENERAL_ERROR_PREORDER_IS_SET','エラー: 予約が存在しません。');
 define('JS_TEXT_GENERAL_NOT_COPY','コピー先に同じURLが登録されているためコピー出来ません');
 define('JS_TEXT_GENERAL_ROMAJI_ERROR','ローマ字に禁止記号が含まれています。');
-define('JS_TEXT_GENERAL_SAVED','保存しました。');
 define('JS_TEXT_GENERAL_QUANTITY_INFO','個を実在個に保存しますか？架空在庫に保存しますか？\n\n「OK」なら実在庫、「キャンセル」なら架空在庫に足されます');
 define('JS_TEXT_GENERAL_INPUT_FORM_ERROR','入力フォームでエラーが起きています!\n次の項目を修正してください:\n\n');
 define('JS_TEXT_GENERAL_DELETE','削除');
-define('JS_TEXT_GENERAL_DELETE_SUCCESS','削除成功');
 define('JS_TEXT_GENERAL_PRODUCT_NOT_ZERO','商品個数に0を入力してはいけません。');
 define('JS_TEXT_GENERAL_MUST_INPUT','必須項目');
 define('JS_TEXT_GENERAL_IS_HAS','既に登録されているため使用できません。');

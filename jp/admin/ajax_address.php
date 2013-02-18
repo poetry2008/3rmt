@@ -349,7 +349,7 @@ if($id == 0 || $maxid == $minid){
 }
 ?>
 </table>
-<form name="form" method="post" id="addressform" action="address.php">
+<form name="address_form" method="post" id="addressform" action="address.php">
 <table border="0" width="100%" cellspacing="0" cellpadding="2" valign="top" bgcolor="yellow" class="campaign_body">
 
 <?php
