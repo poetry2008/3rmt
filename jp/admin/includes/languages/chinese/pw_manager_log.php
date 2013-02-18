@@ -58,3 +58,4 @@ define('PW_MANAGER_SELECT_NINE', '备注栏');
 define('TEXT_PERMISSION_STAFF','Staff以上');
 define('TEXT_PERMISSION_CHIEF','Chief以上');
 define('TEXT_HISTORY_DELETE','是否删除历史记录？');
+define('PW_MANAGER_SELECT_TEN', '网站名');
