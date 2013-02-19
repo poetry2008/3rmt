@@ -136,7 +136,6 @@ define('EDIT_ORDERS_ADD_PRO_READ', '商品追加と他の項目は同時に変�
 define('EDIT_ORDERS_FEE_TITLE_TEXT', '3. ポイント割引、手数料、値引き');
 define('TABLE_HEADING_FEE_MUST', '注意事項');
 define('EDIT_ORDERS_OTTOTAL_READ', '合計金額が合っているか必ず確認してください。');
-define('EDIT_ORDERS_OTSUBTOTAL_READ', '<table><tr class="smalltext"><td><font color="red">※</font>&nbsp;コピペ用:</td><td>調整額</td><td>事務手数料</td><td>値引き</td></tr></table>');
 define('EDIT_ORDERS_TOTALDETAIL_READ', 'このお客様はゲストです。ポイント割引の入力はできません。');
 define('EDIT_ORDERS_TOTALDETAIL_READ_ONE', '値引きする場合は、−（マイナス）符号を入力してください。');
 define('EDIT_ORDERS_PRICE_CONSTRUCT_READ', '<font color="red">ヒント:</font>&nbsp;価格構成要素を削除する場合は金額に「0」と入力して更新してください。');

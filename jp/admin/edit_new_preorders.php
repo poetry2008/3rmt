@@ -1895,7 +1895,7 @@ if (($action == 'edit') && ($order_exists == true)) {
            '  </tr>' . "\n";
     } elseif ($TotalDetails["Class"] == "ot_subtotal") {
       echo '  <tr>' . "\n" .
-           '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_OTSUBTOTAL_READ.'</td>' . 
+           '    <td align="left" class="' . $TotalStyle .  '">&nbsp;</td>' . 
            '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' .
            '    <td align="right" class="' . $TotalStyle . '"><b><div id="ot_subtotal_id">';
            $TotalDetails["Price"] = isset($_SESSION['preorder_products'][$_GET['oID']]['ot_subtotal']) ? $_SESSION['preorder_products'][$_GET['oID']]['ot_subtotal'] : $TotalDetails["Price"];

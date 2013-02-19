@@ -2638,7 +2638,7 @@ require("includes/note_js.php");
            '  </tr>' . "\n";
     } elseif ($TotalDetails["Class"] == "ot_subtotal") {
       echo '  <tr>' . "\n" .
-           '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_OTSUBTOTAL_READ.'</td>' . 
+           '    <td align="left" class="' . $TotalStyle .  '">&nbsp;</td>' . 
            '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' .
            '    <td align="right" class="' . $TotalStyle . '"><b><div id="ot_subtotal_id">';
                 if($TotalDetails["Price"]>=0){

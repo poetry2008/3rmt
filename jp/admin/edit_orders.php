@@ -3817,7 +3817,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       $TotalDetails["Price"] = isset($_SESSION['orders_update_products'][$_GET['oID']]['ot_subtotal']) ? $_SESSION['orders_update_products'][$_GET['oID']]['ot_subtotal'] : $TotalDetails["Price"];
       $shipping_fee_subtotal = $TotalDetails["Price"];
       echo '  <tr>' . "\n" .
-        '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_OTSUBTOTAL_READ.'</td>' . 
+        '    <td align="left" class="' . $TotalStyle .  '">&nbsp;</td>' . 
         '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' .
         '    <td align="right" class="' . $TotalStyle . '"><b><div id="ot_subtotal_id">';
       if($TotalDetails["Price"]>=0){

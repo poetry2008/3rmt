@@ -146,7 +146,6 @@ define('EDIT_ORDERS_ADD_PRO_READ', '商品添加和其他事项不能同时更�
 define('EDIT_ORDERS_FEE_TITLE_TEXT', '3. 点数折扣、手续费、减价');
 define('TABLE_HEADING_FEE_MUST', '注意事项');
 define('EDIT_ORDERS_OTTOTAL_READ', '务必确认合计金额一致。');
-define('EDIT_ORDERS_OTSUBTOTAL_READ', '<table><tr class="smalltext"><td><font color="red">※</font>&nbsp;更改:</td><td>调整额</td><td>事务手续费</td><td>减价</td></tr></table>');
 define('EDIT_ORDERS_TOTALDETAIL_READ', '这位顾客是非会员。不能填写点数折扣。');
 define('EDIT_ORDERS_TOTALDETAIL_READ_ONE', '如有折扣或减价金额，请输入负号和金额。');
 define('EDIT_ORDERS_PRICE_CONSTRUCT_READ', '<font color="red">提示:</font>&nbsp;删除价格组成要素时，请把金额变为"0"然后更新。');
