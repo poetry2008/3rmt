@@ -60,9 +60,11 @@ while($row=tep_db_fetch_array($query)){
 <script language="javascript">
 $(document).ready(function() { 
 var scroll_height = document.body.scrollHeight;
+scroll_height = parseInt(scroll_height);
 var max_height = '<?php echo max($height_arr);?>';
 max_height = parseInt(max_height);
-if(max_height > scroll_height){
+head_height = $(".compatible_head").height();
+if(max_height > scroll_height-head_height){
   $('.box_warp').height(<?php echo max($height_arr);?>);
 }
 <?php
