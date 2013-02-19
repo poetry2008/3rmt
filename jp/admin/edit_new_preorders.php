@@ -1972,8 +1972,7 @@ if (($action == 'edit') && ($order_exists == true)) {
   }
 ?>
 </table>
-<span class='smalltext'><?php echo EDIT_ORDERS_PRICE_CONSTRUCT_READ; ?></span>
-        </td>
+      </td>
       </tr>
       <tr>
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>

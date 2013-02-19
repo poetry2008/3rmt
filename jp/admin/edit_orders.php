@@ -2971,8 +2971,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
     <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
     <td class="pageHeading" align="right">
-    <INPUT type="button" class="element_button" value="<?php echo TEXT_FOOTER_CHECK_SAVE;?>" onClick="if(date_time()){if(products_num_check('<?php echo $products_orders_id_str;?>','<?php echo $products_name_str;?>','<?php echo $products_id_str;?>')){submit_check_con();}}">&nbsp;
-    <?php echo '<a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('clear_products'))) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; ?>
+    <INPUT type="button" class="element_button" value="<?php echo TEXT_FOOTER_CHECK_SAVE;?>" onClick="if(date_time()){if(products_num_check('<?php echo $products_orders_id_str;?>','<?php echo $products_name_str;?>','<?php echo $products_id_str;?>')){submit_check_con();}}">&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('clear_products'))) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; ?>
     </td>
     </tr>
     </table>
@@ -3129,7 +3128,6 @@ if (($action == 'edit') && ($order_exists == true)) {
            } 
          }
          echo '</table>'; 
-         echo EDIT_ORDERS_PAYMENT_METHOD_READ;
          $pay_array = explode("\n",trim($pay_info_array[0]));
          $bank_name = explode(':',$pay_array[0]);
          if(!isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_name'])){ 
@@ -3707,7 +3705,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <td>
     <table width="100%" cellpadding="0" cellspacing="0">
     <tr>
-    <td valign="top"><?php echo "<span class='smalltext'>" .  HINT_DELETE_POSITION . EDIT_ORDERS_ADD_PRO_READ."</span>"; ?></td>
+    <td valign="top">&nbsp;</td>
     <td align="right">
     <?php echo '<a href="' . $PHP_SELF . '?oID=' . $oID . '&action=add_product&step=1">' . tep_html_element_button(ADDING_TITLE) . '</a>'; ?>
     </td>
@@ -3915,7 +3913,6 @@ if (($action == 'edit') && ($order_exists == true)) {
   }
   ?>
     </table>
-    <span class='smalltext'><?php echo EDIT_ORDERS_PRICE_CONSTRUCT_READ;?></span>
     </td>
     </tr>
     <tr>
@@ -4125,14 +4122,14 @@ if (($action == 'edit') && ($order_exists == true)) {
     <td class="main" bgcolor="#FBE2C8" width="10">&nbsp;</td>
     <td class="main" bgcolor="#FFCC99" width="10">&nbsp;</td>
     <td class="main" bgcolor="#F8B061" width="10">&nbsp;</td>
-    <td class="main" bgcolor="#FF9933" width="120" align="center">
+    <td class="pageHeading" bgcolor="#FF9933" align="right">
     <?php
       foreach($orders_statuses as $o_status){
         echo '<input type="hidden" id="confrim_mail_title_'.$o_status['id'].
           '" value="'.$mo[$o_status['id']][0].'">';
       }
     ?>
-    <INPUT type="button" value="<?php echo TEXT_FOOTER_CHECK_SAVE;?>" onClick="if(date_time()){if(products_num_check('<?php echo $orders_products_list;?>','<?php echo $products_name_str;?>','<?php echo $products_id_str;?>')){submit_check_con();}}"></td>
+    <INPUT type="button" class="element_button" value="<?php echo TEXT_FOOTER_CHECK_SAVE;?>" onClick="if(date_time()){if(products_num_check('<?php echo $orders_products_list;?>','<?php echo $products_name_str;?>','<?php echo $products_id_str;?>')){submit_check_con();}}">&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('clear_products'))) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; ?></td>
     </tr>
     </table>
     </td>
