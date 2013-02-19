@@ -1486,94 +1486,32 @@ function show_text_products(id,ele,sort,flag){
 
 function hide_text(){
 
-        $("div#show").hide();
-        window.location.reload();
-        
+  $("div#show").hide(); 
 }
 
-function check(action){
-  var options = {
-    url: 'address.php?action='+action,
-    type:  'POST',
-    success: function() {
-      if(action == 'save'){
-        alert('<?php echo JS_TEXT_GENERAL_SAVED;?>');
-      }else{
-        alert('<?php echo JS_TEXT_GENERAL_DELETE_SUCCESS;?>');
-        window.location.reload();
-      }
-    }
-  };
-  $('#addressform').ajaxSubmit(options);
-  return false; 
+function check(action){   
+  document.address_form.action = 'address.php?action='+action;
+  document.address_form.submit();
 }
 
-function check_fee(action){
-  var options = {
-    url: 'country_fee.php?action='+action,
-    type:  'POST',
-    success: function() {
-      if(action == 'save'){
-        alert('<?php echo JS_TEXT_GENERAL_SAVED;?>');
-      }else{
-        alert('<?php echo JS_TEXT_GENERAL_DELETE_SUCCESS;?>');
-        window.location.reload();
-      }
-    }
-  };
-  $('#country_fee_form').ajaxSubmit(options);
-  return false; 
+function check_fee(action){ 
+  document.country_fee_form.action = 'country_fee.php?action='+action;
+  document.country_fee_form.submit();
 }
 
-function check_area(action){
-  var options = {
-    url: 'country_area.php?action='+action,
-    type:  'POST',
-    success: function() {
-      if(action == 'save'){
-        alert('<?php echo JS_TEXT_GENERAL_SAVED;?>');
-      }else{
-        alert('<?php echo JS_TEXT_GENERAL_DELETE_SUCCESS;?>');
-        window.location.reload();
-      }
-    }
-  };
-  $('#country_area_form').ajaxSubmit(options);
-  return false;
+function check_area(action){ 
+  document.country_area_form.action = 'country_area.php?action='+action;
+  document.country_area_form.submit();
 }
 
-function check_city(action){
-  var options = {
-    url: 'country_city.php?action='+action,
-    type:  'POST',
-    success: function() {
-      if(action == 'save'){
-        alert('<?php echo JS_TEXT_GENERAL_SAVED;?>');
-      }else{
-        alert('<?php echo JS_TEXT_GENERAL_DELETE_SUCCESS;?>');
-        window.location.reload();
-      }
-    }
-  };
-  $('#country_area_form').ajaxSubmit(options);
-  return false;
+function check_city(action){ 
+  document.country_city_form.action = 'country_city.php?action='+action;
+  document.country_city_form.submit();
 }
 
-function check_products(action){
-  var options = {
-    url: 'products_shipping_time.php?action='+action,
-    type:  'POST',
-    success: function() {
-      if(action == 'save'){
-        alert('<?php echo JS_TEXT_GENERAL_SAVED;?>');
-      }else{
-        alert('<?php echo JS_TEXT_GENERAL_DELETE_SUCCESS;?>');
-        window.location.reload();
-      }
-    }
-  };
-  $('#products_form').ajaxSubmit(options);
-  return false;
+function check_products(action){ 
+  document.products_shipping_time_form.action = 'products_shipping_time.php?action='+action;
+  document.products_shipping_time_form.submit();
 }
 
 function check_on(action,id){

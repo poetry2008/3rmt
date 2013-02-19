@@ -70,7 +70,7 @@ if($id == 0){
 }
 ?>
 </table>
-<form name="form" method="post" id="country_fee_form" action="country_fee.php">
+<form name="country_fee_form" method="post" id="country_fee_form" action="country_fee.php">
 <table border="0" width="100%" cellspacing="0" cellpadding="2" valign="top" bgcolor="yellow" class="campaign_body">
 <tr><td width="30%">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_1;?></td><td><input type="text" name="title" id="title" class="option_text" value="<?php echo $title;?>">&nbsp;<font color="red"><?php echo TABLE_REQUIRED;?></font><br><span id="error_title"></span><input type="hidden" name="cid" value="<?php echo $country_fee_array['id'];?>"></td></tr>
 <tr><td width="30%">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_2;?></td><td><input type="text" name="name" id="name" class="option_text" value="<?php echo $name;?>">&nbsp;<font color="red"><?php echo TABLE_REQUIRED;?></font><br><span id="error_name"></span></td></tr>

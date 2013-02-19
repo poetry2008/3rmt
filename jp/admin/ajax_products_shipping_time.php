@@ -109,7 +109,7 @@ if($id == 0 || $maxid == $minid){
 }
 ?>
 </table>
-<form name="form" method="post" id="products_form" action="products_shipping_time.php">
+<form name="products_shipping_time_form" method="post" id="products_form" action="products_shipping_time.php">
 <table border="0" width="100%" cellspacing="0" cellpadding="2" valign="top" bgcolor="yellow" class="campaign_body">
 <tr><td width="30%" align="left"><?php echo TABLE_LIST_1;?></td><td><input type="text" name="name" id="name" class="option_text" value="<?php echo $name;?>">&nbsp;<font color="red"><?php echo TABLE_REQUIRED;?></font><br><span id="error_name"></span><input type="hidden" name="cid" value="<?php echo $product_array['id'];?>"></td></tr>
 
