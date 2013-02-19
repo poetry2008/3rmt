@@ -3,7 +3,22 @@ $notes = '';
 $left='';  
 $top='';  
 $zindex='';  
-$query = tep_db_query("select * from notes where belong='".$belong."' and (attribute='1' or (attribute='0' and author='".$ocertify->auth_user."')) order by id desc");
+$mode_array = array(FILENAME_ORDERS_EDIT,FILENAME_FINAL_PREORDERS);
+$mode_flag = false;
+$mode_belong_value = '';
+foreach($mode_array as $mode_value){
+  preg_match_all('/'.$mode_value.'/',$belong,$mode_belong_array);
+  $mode_flag = $mode_belong_array[0][0] != '' ? true : false;
+  if($mode_flag){
+    $mode_belong_value = $mode_value; 
+    break; 
+  }
+}
+if($mode_flag){
+  $query = tep_db_query("select * from notes where (belong='".$belong."' or belong='".$mode_belong_value."') and (attribute='1' or (attribute='0' and author='".$ocertify->auth_user."')) order by id desc");
+}else{
+  $query = tep_db_query("select * from notes where belong='".$belong."' and (attribute='1' or (attribute='0' and author='".$ocertify->auth_user."')) order by id desc");
+}
 $note_arr = array();
 $height_arr = array();
 while($row=tep_db_fetch_array($query)){
