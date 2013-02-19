@@ -489,7 +489,7 @@ define('HEADER_TEXT_USERS','更改密码');
 define('HEADER_TEXT_PW_MANAGER','ID管理');
 define('HEADER_TEXT_MANAGERMENU','工具▼');
 define('HEADER_TEXT_MICRO_LOG','备忘录');
-define('HEADER_TEXT_LATEST_NEWS','最新信息管理');
+define('HEADER_TEXT_LATEST_NEWS','网站新闻管理');
 define('HEADER_TEXT_CUSTOMERS','顾客管理');
 define('HEADER_TEXT_CREATE_ORDER2','创建进货订单');
 define('HEADER_TEXT_CREATE_ORDER','创建订单');
