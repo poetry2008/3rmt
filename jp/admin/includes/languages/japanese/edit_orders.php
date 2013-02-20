@@ -152,7 +152,6 @@ define('EDIT_ORDERS_FINAL_CONFIRM_TEXT', '最終確認はしましたか？');
 define('EDIT_NEW_ORDERS_CREATE_TITLE', '注文書の作成');
 define('EDIT_NEW_ORDERS_CREATE_READ', '【重要】注文編集ではありません。新規注文作成システムです。');
 define('EDIT_ORDERS_ORIGIN_VALUE_TEXT', '（初期値）');
-define('EDIT_ORDERS_UPDATE_COMMENT', '<table width="100%" cellspacing="0" cellpadding="2"> <tr class="smalltext"><td valign="top" colspan="2"><font color="red">※</font>&nbsp;コピペ用フレーズです。トリプルクリックをすると全選択できます。</td></tr> <tr class="smalltext" bgcolor="#999999"><td>DBに登録されているキャラクター以外の場合</td><td>予備</td></tr> <tr class="smalltext" bgcolor="#CCCCCC"> <td valign="top">【重要】弊社キャラクター【】がお取り引きに伺います。</td> <td valign="top"> 予備 </td> </tr> </table>');
 define('ERROR_INPUT_PRICE_NOTICE', '単価を書いてください');
 define('EDIT_ORDERS_PRICE_UNIT', '円');
 define('EDIT_ORDERS_NUM_UNIT', '個');

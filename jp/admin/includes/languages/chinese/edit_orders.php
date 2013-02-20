@@ -154,7 +154,6 @@ define('EDIT_ORDERS_PRO_DUMMY_NAME', '交易人物名:');
 define('EDIT_NEW_ORDERS_CREATE_TITLE', '创建订单');
 define('EDIT_NEW_ORDERS_CREATE_READ', '【重要】并非编辑订单。是创建订单的系统。');
 define('EDIT_ORDERS_ORIGIN_VALUE_TEXT', '（初始值）');
-define('EDIT_ORDERS_UPDATE_COMMENT', '<table width="100%" cellspacing="0" cellpadding="2"> <tr class="smalltext"><td valign="top" colspan="2"><font color="red">※</font>&nbsp;复制粘贴用的短语。可以点三下或全选。</td></tr> <tr class="smalltext" bgcolor="#999999"><td>除了注册以DB为交易人物的时候</td><td>预备</td></tr> <tr class="smalltext" bgcolor="#CCCCCC"> <td valign="top">【重要】交易人物【】进行了交易。</td> <td valign="top"> 预备 </td> </tr> </table>');
 define('ERROR_INPUT_PRICE_NOTICE', '请写单价');
 define('EDIT_ORDERS_PRICE_UNIT', '日元');
 define('EDIT_ORDERS_NUM_UNIT', '个');
