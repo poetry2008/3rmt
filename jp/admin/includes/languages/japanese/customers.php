@@ -35,9 +35,6 @@ define('ERROR_EMAIL_EXISTS', 'メールアドレスはもう存在していま�
 define('BUTTON_CUSTOMERS_PRODUCTS_TEXT', '商品履歴');
 define('CUSTOMER_COMMUNITY_TEXT', '当社使用欄');
 define('CUSTOMER_COMMUNITY_SEARCH_TEXT', '信用調査:');
-define('CUSTOMER_COMMUNITY_SEARCH_OLD_CUSTOMER_TEXT', '常連客【HQ】&nbsp;&nbsp;注意【WA】&nbsp;&nbsp;発送禁止【BK】');
-define('CUSTOMER_COMMUNITY_SEARCH_CREDIT_TEXT', 'クレカ初回決済日：C2007/01/01&nbsp;&nbsp;&nbsp;&nbsp;エリア一致：Aok&nbsp;&nbsp;&nbsp;&nbsp;本人確認済：Hok&nbsp;&nbsp;&nbsp;&nbsp;YahooID更新日：Y2007/01 /01&nbsp;&nbsp;&nbsp;&nbsp;リファラー：R');
-define('CUSTOMER_COMMUNITY_SEARCH_EXAMPLE_TEXT', '記入例：WA-Aok-C2007/01/01-Hok-RグーグルFF11 RMT');
 define('CUSTOMER_SEARCH_READ_TITLE', '※検索対象：「顧客名（姓/名/）」「ふりがな（姓/名）」「メールアドレス」');
 define('CUSTOMER_RESET', 'パスワード変更依頼');
 define('TEXT_USER_ADDED','アカウント作成者:');

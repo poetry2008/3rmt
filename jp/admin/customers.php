@@ -616,14 +616,8 @@ require("includes/note_js.php");
             </tr>
             <tr>
               <td class="left_title_width"><?php echo CUSTOMER_COMMUNITY_SEARCH_TEXT;?></td>
-              <td class="main"><span class="table_space_left"></span><textarea name='customers_fax' style='width:100%;height:42px;*height:40px;'><?php echo isset($_POST['customers_fax'])?$_POST['customers_fax']:$cInfo->customers_fax;?></textarea>&nbsp;&nbsp;<?php echo CUSTOMER_COMMUNITY_SEARCH_OLD_CUSTOMER_TEXT;?></td>
-            </tr>
-            <tr>
-              <td class="main" colspan="2"><?php echo CUSTOMER_COMMUNITY_SEARCH_CREDIT_TEXT;?></td>
-            </tr>
-            <tr>
-              <td class="main" colspan="2"><b><?php echo CUSTOMER_COMMUNITY_SEARCH_EXAMPLE_TEXT;?></b></td>
-            </tr>
+              <td class="main"><span class="table_space_left"></span><textarea name='customers_fax' style='width:100%;height:42px;*height:40px;'><?php echo isset($_POST['customers_fax'])?$_POST['customers_fax']:$cInfo->customers_fax;?></textarea>              </td>
+            </tr> 
           </table>
         </td>
       </tr>
