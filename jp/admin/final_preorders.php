@@ -1907,9 +1907,7 @@ require("includes/note_js.php");
                 <td class="pageHeading" align="right">
     <?php echo '<a href="' . tep_href_link('handle_new_preorder.php', 'oID='.$_GET['oID']) . '">' . tep_html_element_button(BUTTON_WRITE_PREORDER) . '</a>'; ?>
     &nbsp; 
-    <?php echo tep_html_element_button(TEXT_FOOTER_CHECK_SAVE, 'onclick="submit_order_check('.$order->products[0]['id'].','.$order_products_id.');"');?>
-    &nbsp;
-    <?php echo '<a href="' . tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params()) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; ?>
+    <?php echo tep_html_element_button(TEXT_FOOTER_CHECK_SAVE, 'onclick="submit_order_check('.$order->products[0]['id'].','.$order_products_id.');"');?>&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params()) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; ?>
                 </td>
               </tr>
             </table>
@@ -2067,7 +2065,6 @@ require("includes/note_js.php");
                }
                echo '</table>'; 
                   ?>
-                  <?php echo EDIT_ORDERS_PAYMENT_METHOD_READ;?> 
                 </td>
               </tr>
               <!-- End Payment Block -->
@@ -2638,7 +2635,7 @@ require("includes/note_js.php");
            '  </tr>' . "\n";
     } elseif ($TotalDetails["Class"] == "ot_subtotal") {
       echo '  <tr>' . "\n" .
-           '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_OTSUBTOTAL_READ.'</td>' . 
+           '    <td align="left" class="' . $TotalStyle .  '">&nbsp;</td>' . 
            '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' .
            '    <td align="right" class="' . $TotalStyle . '"><b><div id="ot_subtotal_id">';
                 if($TotalDetails["Price"]>=0){
@@ -2711,8 +2708,7 @@ require("includes/note_js.php");
   }
 ?>
 </table>
-<span class='smalltext'><?php echo EDIT_ORDERS_PRICE_CONSTRUCT_READ;?></span>
-        </td>
+      </td>
       </tr>
       <tr>
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
@@ -2858,14 +2854,14 @@ if (tep_db_num_rows($orders_history_query)) {
               <td class="main" bgcolor="#FBE2C8" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FFCC99" width="10">&nbsp;</td>
               <td class="main" bgcolor="#F8B061" width="10">&nbsp;</td>
-              <td class="main" bgcolor="#FF9933" width="120" align="center">
+              <td class="pageHeading" bgcolor="#FF9933" align="right">
               <?php
               foreach($orders_statuses as $o_status){
                 echo '<input type="hidden" id="confrim_mail_title_'.$o_status['id'].
                   '" value="'.$mo[$o_status['id']][0].'">';
               }
               ?>
-              <?php echo tep_html_element_button(TEXT_FOOTER_CHECK_SAVE, 'onclick="submit_order_check('.$order->products[0]['products_id'].','.$order->products[0]['orders_products_id'].');"');?> 
+              <?php echo tep_html_element_button(TEXT_FOOTER_CHECK_SAVE, 'onclick="submit_order_check('.$order->products[0]['products_id'].','.$order->products[0]['orders_products_id'].');"');?>&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params()) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; ?> 
               </td>
           </tr>
           </table>

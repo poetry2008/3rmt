@@ -129,7 +129,6 @@ define('EDIT_ORDERS_PAYMENT_METHOD', '支払方法:');
 define('EDIT_ORDERS_FETCHTIME', 'お届け日時:');
 define('EDIT_ORDERS_TORI_TEXT', 'オプション:');
 define('EDIT_ORDERS_CUSTOMER_NAME_READ', '<font color="red">※</font>&nbsp;姓と名の間には<font color="red">半角スペース</font>を入力してください。');
-define('EDIT_ORDERS_PAYMENT_METHOD_READ', '<table><tr class="smalltext"><td><font color="red">※</font>&nbsp;コピペ用:</td><td>銀行振込</td><td>クレジットカード決済</td><td>銀行振込(買い取り)</td><td>ゆうちょ銀行（郵便局）</td><td>コンビニ決済</td></tr></table>');
 define('EDIT_ORDERS_FETCHTIME_READ', 
     '<font color="red">※</font>&nbsp;日付・時間の書式:&nbsp;2008-01-01 10:30:00～10:45:00');
 define('EDIT_ORDERS_TORI_READ', '<table><tr class="smalltext"><td><font color="red">※</font>&nbsp;コピペ用:</td><td>指定した時間どおりに取引して欲しい</td><td>指定した時間より早くできるなら早く来て欲しい</td></tr></table>');
@@ -144,10 +143,8 @@ define('EDIT_ORDERS_ADD_PRO_READ', '商品追加と他の項目は同時に変�
 define('EDIT_ORDERS_FEE_TITLE_TEXT', '3. ポイント割引、手数料、値引き');
 define('TABLE_HEADING_FEE_MUST', '注意事項');
 define('EDIT_ORDERS_OTTOTAL_READ', '合計金額が合っているか必ず確認してください。');
-define('EDIT_ORDERS_OTSUBTOTAL_READ', '<table><tr class="smalltext"><td><font color="red">※</font>&nbsp;コピペ用:</td><td>調整額</td><td>事務手数料</td><td>値引き</td></tr></table>');
 define('EDIT_ORDERS_TOTALDETAIL_READ', 'このお客様はゲストです。ポイント割引の入力はできません。');
 define('EDIT_ORDERS_TOTALDETAIL_READ_ONE', '値引きする場合は、−（マイナス）符号を入力してください。');
-define('EDIT_ORDERS_PRICE_CONSTRUCT_READ', '<font color="red">ヒント:</font>&nbsp;価格構成要素を削除する場合は金額に「0」と入力して更新してください。');
 define('EDIT_ORDERS_CONFIRMATION_READ', '<font color="red">重要:</font>&nbsp;<b>価格構成要素を変更した場合は「<font color="red">予約内容確認</font>」ボタンをクリックして合計金額が一致するか確認してください。&nbsp;⇒</b>');
 define('EDIT_ORDERS_CONFIRM_BUTTON', '予約内容確認');
 define('EDIT_ORDERS_ITEM_FOUR_TITLE', '4. 予約ステータス、コメント通知');
@@ -160,7 +157,6 @@ define('EDIT_ORDERS_FINAL_CONFIRM_TEXT', '最終確認はしましたか？');
 define('EDIT_NEW_ORDERS_CREATE_TITLE', '予約書の作成');
 define('EDIT_NEW_ORDERS_CREATE_READ', '【重要】予約編集ではありません。新規予約作成システムです。');
 define('EDIT_ORDERS_ORIGIN_VALUE_TEXT', '（初期値）');
-define('EDIT_ORDERS_UPDATE_COMMENT', '<table width="100%" cellspacing="0" cellpadding="2"> <tr class="smalltext"><td valign="top" colspan="2"><font color="red">※</font>&nbsp;コピペ用フレーズです。トリプルクリックをすると全選択できます。</td></tr> <tr class="smalltext" bgcolor="#999999"><td>DBに登録されているキャラクター以外の場合</td><td>予備</td></tr> <tr class="smalltext" bgcolor="#CCCCCC"> <td valign="top">【重要】弊社キャラクター【】がお取り引きに伺います。</td> <td valign="top"> 予備 </td> </tr> </table>');
 define('ERROR_INPUT_PRICE_NOTICE', '単価を書いてください');
 define('EDIT_ORDERS_PRICE_UNIT', '円');
 define('EDIT_ORDERS_NUM_UNIT', '個');

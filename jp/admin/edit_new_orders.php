@@ -4573,7 +4573,7 @@ if($orders_exit_flag == true){
             <td>
             <table width="100%" cellpadding="0" cellspacing="0">
             <tr>
-            <td valign="top"><?php echo "<span class='smalltext'>" .  HINT_DELETE_POSITION . "</span>"; ?></td> <td align="right"><?php echo '<a href="create_order.php?oID=' . $oID . '&Customer_mail='.$email_address_flag.'&site_id='.$site_id_flag.'">' . tep_html_element_button(ADDING_TITLE) . '</a>'; ?></td>
+            <td valign="top">&nbsp;</td> <td align="right"><?php echo '<a href="create_order.php?oID=' . $oID . '&Customer_mail='.$email_address_flag.'&site_id='.$site_id_flag.'">' . tep_html_element_button(ADDING_TITLE) . '</a>'; ?></td>
             </tr> 
             </table>
             </td>
@@ -4663,7 +4663,7 @@ if($orders_exit_flag == true){
               $TotalDetails["Price"] = isset($_SESSION['orders_update_products'][$_GET['oID']]['ot_subtotal']) ? $_SESSION['orders_update_products'][$_GET['oID']]['ot_subtotal'] : $TotalDetails["Price"];
               $shipping_ot_subtotal = $TotalDetails["Price"];
               echo '  <tr>' . "\n" .
-                '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_OTSUBTOTAL_READ.'</td>' . 
+                '    <td align="left" class="' . $TotalStyle .  '">&nbsp;</td>' . 
                 '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' .
                 '    <td align="right" class="' . $TotalStyle . '"><b><div id="ot_subtotal_id">';
               if($TotalDetails["Price"] >= 0){
@@ -4751,8 +4751,7 @@ if($orders_exit_flag == true){
             }
           }
           ?>
-            </table>
-            <span class='smalltext'><?php echo EDIT_ORDERS_PRICE_CONSTRUCT_READ;?></span>
+            </table> 
             </td>
             </tr>
             <tr>

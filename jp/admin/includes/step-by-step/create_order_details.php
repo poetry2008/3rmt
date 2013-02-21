@@ -869,20 +869,7 @@ echo tep_draw_input_field('telephone', $telephone) . '&nbsp;' . ENTRY_TELEPHONE_
 <td class="main" valign="top" nowrap="nowrap" style="padding-left:6px;"><?php echo CREATE_ORDER_COMMUNITY_SEARCH_TEXT;?></td>
 <td class="main">&nbsp;
 <textarea id='fax' name='fax_1' style='width:400px;height:42px;*height:40px;'><?php echo $fax;?></textarea>
-&nbsp;&nbsp;
-<?php
-echo CREATE_ORDER_COMMUNITY_SEARCH_READ;?></td>
-</tr>
-<tr>
-<td class="main" colspan="2">&nbsp;
-<?php
-echo CREATE_ORDER_COMMUNITY_SEARCH_READ_ONE;?></td>
-</tr>
-<tr>
-<td class="main" colspan="2">&nbsp;<b>
-
-<?php
-echo CREATE_ORDER_COMMUNITY_SEARCH_READ_TWO;?></b></td>
+</td>
 </tr>
 </table></td>
 </tr>
