@@ -13,9 +13,8 @@ define('HEADING_SUBTITLE', '編集したい部分の内容を入力し、更新�
 //define('ADDING_TITLE', '商品を追加する');
 
 define('HINT_UPDATE_TO_CC', '<font color="#FF0000">ヒント: </font>Set payment to "Credit Card" to show some additional fields.');
-define('HINT_DELETE_POSITION', '<font color="#FF0000">ヒント: </font>商品を削除する場合は個数に「0」と入力して更新してください。');
 define('HINT_TOTALS', '<font color="#FF0000">ヒント: </font>Feel free to give discounts by adding negative amounts to the list.<br>Fields with "0" values are deleted when updating the order (exception: shipping).');
-define('HINT_PRESS_UPDATE', '更新ボタンをクリックして、編集した内容を更新してください。');
+define('HINT_PRESS_UPDATE', '保存ボタンをクリックして、編集した内容を保存してください。');
 
 //define('TABLE_HEADING_COMMENTS', 'コメント');
 //define('TABLE_HEADING_CUSTOMERS', '顧客情報');

@@ -3,7 +3,7 @@ $notes = '';
 $left='';  
 $top='';  
 $zindex='';  
-$mode_array = array(FILENAME_ORDERS_EDIT,FILENAME_FINAL_PREORDERS);
+$mode_array = array(FILENAME_ORDERS_EDIT,FILENAME_FINAL_PREORDERS,FILENAME_CUSTOMERS.'\?cID=');
 $mode_flag = false;
 $mode_belong_value = '';
 foreach($mode_array as $mode_value){
@@ -59,13 +59,10 @@ while($row=tep_db_fetch_array($query)){
 <?php if(!empty($height_arr)){?>
 <script language="javascript">
 $(document).ready(function() { 
-var scroll_height = document.body.scrollHeight;
 var max_height = '<?php echo max($height_arr);?>';
 max_height = parseInt(max_height);
-if(max_height > scroll_height){
+if(max_height > $(".compatible").height()){
   $('.box_warp').height(<?php echo max($height_arr);?>);
-}else{
-  $('.box_warp').height(scroll_height);
 }
 <?php
 foreach($note_arr as $note_row){

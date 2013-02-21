@@ -11,9 +11,8 @@ define('HEADING_SUBTITLE', '输入要编辑部分的内容后请点击更新按�
 
 
 define('HINT_UPDATE_TO_CC', '<font color="#FF0000">提示: </font>Set payment to "Credit Card" to show some additional fields.');
-define('HINT_DELETE_POSITION', '<font color="#FF0000">提示: </font>删除商品时，请在个数处输入「0」后更新。');
 define('HINT_TOTALS', '<font color="#FF0000">提示: </font>Feel free to give discounts by adding negative amounts to the list.<br>Fields with "0" values are deleted when updating the order (exception: shipping).');
-define('HINT_PRESS_UPDATE', '请点击更新按钮、来更新编辑过的内容。');
+define('HINT_PRESS_UPDATE', '请点击保存按钮、来保存编辑过的内容。');
 
 
 define('TABLE_HEADING_UNIT_PRICE_TAXED', '价格 (含税)');

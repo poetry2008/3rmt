@@ -429,14 +429,8 @@ if(!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['c
 
               <tr>
                 <td class="main" valign="top">&nbsp;<?php echo CREATE_ORDER_COMMUNITY_SEARCH_TEXT;?></td>
-                <td class="main">&nbsp;<textarea name='fax_flag' style='width:400px;height:42px;*height:40px;'><?php echo $fax;?></textarea>&nbsp;&nbsp;<?php echo CREATE_ORDER_COMMUNITY_SEARCH_READ;?></td>
-              </tr>
-        <tr>
-          <td class="main" colspan="2">&nbsp;<?php echo CREATE_ORDER_COMMUNITY_SEARCH_READ_ONE;?></td>
-        </tr>
-        <tr>
-          <td class="main" colspan="2">&nbsp;<b><?php echo CREATE_ORDER_COMMUNITY_SEARCH_READ_TWO;?></b></td>
-        </tr>
+                <td class="main">&nbsp;<textarea name='fax_flag' style='width:400px;height:42px;*height:40px;'><?php echo $fax;?></textarea></td>
+              </tr> 
             </table></td>
         </tr>
       </table>
