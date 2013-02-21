@@ -160,6 +160,14 @@ class PHPlot{
 //BEGIN CODE
 //////////////////////////////////////////////////////
 	//Constructor: Setup Img pointer, Colors and Size of Image
+/*---------------------------------------
+ 功能: 绘图包
+ 参数：$which_width(number) 宽度
+ 参数: $which_height(number) 高度
+ 参数: $which_output_file(string) 输出文件
+ 参数：$which_input_file(string) 输入文件
+ 返回值：无
+ --------------------------------------*/
 	function PHPlot($which_width=600,$which_height=400,$which_output_file="",$which_input_file="") {
 
 		$this->SetRGBArray('2'); 
@@ -185,6 +193,11 @@ class PHPlot{
 	}
 	    
 	//Set up the image and colors
+/*--------------------------------------------
+ 功能：初始化图片  
+ 参数：无
+ 返回值：true(bool)
+ -------------------------------------------*/
 	function InitImage() {
 		//if ($this->img) { 
 		//	ImageDestroy($this->img);
@@ -192,27 +205,47 @@ class PHPlot{
 		$this->img = ImageCreate($this->image_width, $this->image_height);
 		return true;
 	}
-
+/*--------------------------------------------
+ 功能: 设置浏览器缓存
+ 参数: $which_browser_cache(string) 浏览器的缓存
+ 返回值: true(bool)
+ -------------------------------------------*/
 	function SetBrowserCache($which_browser_cache) {  //Submitted by Thiemo Nagel
 		$this->browser_cache = $which_browser_cache;
 		return true;
 	}
-
+/*-------------------------------------------
+ 功能: 设置打印图片
+ 参数: $which_pi(string)打印图像
+ 返回值: true(bool)
+ ------------------------------------------*/
 	function SetPrintImage($which_pi) {
 		$this->print_image = $which_pi;
 		return true;
 	}
-
+/*------------------------------------------
+ 功能: 设置是一致 
+ 参数: $which_ii(string)是一致的
+ 返回值: true(bool)
+ -----------------------------------------*/
 	function SetIsInline($which_ii) {
 		$this->is_inline = $which_ii;
 		return true;
 	}
-
+/*-----------------------------------------
+ 功能: 设置使用 
+ 参数: $which_ttf(string) 使用 
+ 返回值: true(bool)
+ -------------------------------------- -*/
 	function SetUseTTF($which_ttf) {
 		$this->use_ttf = $which_ttf;
 		return true;
 	}
-
+/*----------------------------------------
+ 功能: 设置标题的字体大小 
+ 参数：$which_tfs(string) 标题字体大小
+ 返回值: true(bool) 
+ ---------------------------------------*/
 	function SetTitleFontSize($which_tfs) {
 		//TTF
 		$this->title_ttffont_size = $which_tfs; //pt size
@@ -228,12 +261,20 @@ class PHPlot{
 		}
 		return true;
 	}
-
+/*-------------------------------------------
+ 功能：设置线条样式 
+ 参数：$which_sls(string) 线条样式
+ 返回值：true(bool)
+ ------------------------------------------*/
 	function SetLineStyles($which_sls){
 		$this->line_style = $which_sls;
 		return true;
 	}
-
+/*------------------------------------------
+ 功能：设置案例
+ 参数：$which_leg(string) 说明
+ 返回值：false(bool)
+ -----------------------------------------*/
 	function SetLegend($which_leg){
 		if (is_array($which_leg)) { 
 			$this->legend = $which_leg;
@@ -243,14 +284,24 @@ class PHPlot{
 			return false;
 		}
 	}
-
+/*----------------------------------------
+ 功能：图例像素集
+ 参数：$which_x(string) 图例X坐标 
+ 参数: $which_y(string) 图例y坐标
+ 返回值：true(bool)
+ ---------------------------------------*/
 	function SetLegendPixels($which_x,$which_y,$which_type) { 
 		//which_type not yet used
 		$this->legend_x_pos = $which_x;
 		$this->legend_y_pos = $which_y;
 		return true;
 	}
-
+/*---------------------------------------
+ 功能：图例坐标
+ 参数：$which_x(string) 图例X坐标
+ 参数：$which_y(string) 图例y坐标
+ 返回值：true(bool)
+ --------------------------------------*/
 	function SetLegendWorld($which_x,$which_y,$which_type='') { 
 		//which_type not yet used
 		//Must be called after scales are set up. 
@@ -281,6 +332,11 @@ class PHPlot{
 	}	
 
 *************************************** */
+/*----------------------------------
+ 功能：设置文件格式 
+ 参数: $which_file_format(string) 文件格式 
+ 返回值：true/false(bool)
+ ----------------------------------*/
 	function SetFileFormat($which_file_format) {
 	//eventually test to see if that is supported - if not then return false
 		$asked = strtolower(trim($which_file_format));
@@ -291,7 +347,11 @@ class PHPlot{
 			return false;
 		}
 	}
-
+/*---------------------------------
+ 功能：设置输入文件
+ 参数：$which_input_file(string) 输入文件
+ 返回值：true(bool)
+ --------------------------------*/
 	function SetInputFile($which_input_file) { 
 		//$this->SetFileFormat($which_frmt);
 		$size = GetImageSize($which_input_file);
@@ -333,12 +393,21 @@ class PHPlot{
 		return true;
 
 	}
-
+/*--------------------------------------------
+ 功能：设置输出文件
+ 参数：$which_output_file(string) 输出文件
+ 返回值：true(bool)
+ -------------------------------------------*/
 	function SetOutputFile($which_output_file) { 
 		$this->output_file = $which_output_file;
 		return true;
 	}
-
+/*-------------------------------------------
+ 功能：设置图像区域
+ 参数: $which_iw(string) 图片宽度
+ 参数：$which_ih(string) 图片高度
+ 返回值：true(bool)
+ ------------------------------------------*/
 	function SetImageArea($which_iw,$which_ih) {
 		//Note this is now an Internal function - please set w/h via PHPlot()
 		$this->image_width = $which_iw;
@@ -347,19 +416,38 @@ class PHPlot{
 		return true;
 	}
 
-
+/*------------------------------------------
+ 功能：设置Y轴的位置
+ 参数：$which_pos(string) Y轴位置 
+ 返回值：true(bool)
+ -----------------------------------------*/
 	function SetYAxisPosition($which_pos) {
 		$this->y_axis_position = $which_pos;
 		return true;
 	}
+/*----------------------------------------
+ 功能：设置X轴的位置
+ 参数：$which_pos(string) X轴位置 
+ 返回值：true(bool)
+ ---------------------------------------*/
 	function SetXAxisPosition($which_pos) {
 		$this->x_axis_position = $which_pos;
 		return true;
 	}
+/*---------------------------------------
+ 功能：设置X时间格式
+ 参数：$which_xtf(string) X时间格式
+ 返回值：true(bool)
+ --------------------------------------*/
 	function SetXTimeFormat($which_xtf) {
 		$this->x_time_format = $which_xtf;
 		return true;
 	}
+/*--------------------------------------
+ 功能：设置X数据标签的最大长度
+ 参数：$which_xdlm(string) 设置X数据标签的最大长度
+ 返回值：true(bool)
+ -------------------------------------*/
 	function SetXDataLabelMaxlength($which_xdlm) { 
 		if ($which_xdlm >0 ) { 
 			$this->x_datalabel_maxlength = $which_xdlm;
@@ -368,14 +456,29 @@ class PHPlot{
 			return false;
 		}
 	}
+/*-------------------------------------
+ 功能: 设置X数据标签角度  
+ 参数: $which_xdla(string) X数据标签角度
+ 返回值：true(bool)
+ ------------------------------------*/
 	function SetXDataLabelAngle($which_xdla) { 
 		$this->x_datalabel_angle = $which_xdla;
 		return true;
 	}
+/*-------------------------------------
+ 功能：设置X轴刻度类型
+ 参数：$which_xst(string) X轴刻度类型
+ 返回值: true(bool)
+ ------------------------------------*/
 	function SetXScaleType($which_xst) { 
 		$this->xscale_type = $which_xst;
 		return true;
 	}
+/*-------------------------------------
+ 功能：设置Y轴刻度类型
+ 参数：$which_yst(string) Y轴刻度类型
+ 返回值: true(bool)
+ ------------------------------------*/
 	function SetYScaleType($which_yst) { 
 		$this->yscale_type = $which_yst;
 		if ($this->x_axis_position <= 0) { 
@@ -383,17 +486,30 @@ class PHPlot{
 		}
 		return true;
 	}
-
+/*------------------------------------
+ 功能：设置高精度X
+ 参数：$which_prec(string) 高精度X
+ 返回值：true(bool)
+ ------------------------------------*/
 	function SetPrecisionX($which_prec) {
 		$this->x_precision = $which_prec;
 		return true;
 	}
+/*-----------------------------------
+ 功能: 设定精度Ÿ
+ 参数：$which_prec(string) 精度Ÿ
+ 返回值：true(bool)
+ ----------------------------------*/
 	function SetPrecisionY($which_prec) {
 		$this->y_precision = $which_prec;
 		return true;
 	}
 
-
+/*----------------------------------
+ 功能: 设置索引颜色
+ 参数：无
+ 返回值：true(bool)
+ ---------------------------------*/
 	function SetIndexColors() { //Internal Method called to set colors and preserve state
 		//These are the colors of the image that are used. They are initialized
 		//to work with sessions and PHP. 
@@ -435,7 +551,11 @@ class PHPlot{
 		return true;
 	}
 
-
+/*-------------------------------
+ 功能：设置默认颜色
+ 参数：无
+ 返回值：无
+ ------------------------------*/
 	function SetDefaultColors() {
 
 		$this->i_light = array(194,194,194);
@@ -454,7 +574,11 @@ class PHPlot{
 
 		$this->session_set = 1; //Mark it down for PHP session() usage.
 	}
-
+/*-------------------------------------
+ 功能：打印图像
+ 参数：无
+ 返回值：true(bool)
+ ------------------------------------*/
 	function PrintImage() {
 
 		if ( ($this->browser_cache == 0) && ($this->is_inline == 0)) { //Submitted by Thiemo Nagel
@@ -515,7 +639,11 @@ class PHPlot{
 		return true;
 	}
 
-
+/*---------------------------------
+ 功能：绘制背景
+ 参数：无
+ 返回值：true(bool)
+ --------------------------------*/
 	function DrawBackground() {
 		//if ($this->img == "") { $this->InitImage(); };
 		if ($this->background_done == 0) { //Don't draw it twice if drawing two plots on one image
@@ -525,7 +653,11 @@ class PHPlot{
 		}
 		return true;
 	}
-
+/*---------------------------------
+ 功能：绘制图像边框
+ 参数：无
+ 返回值：true(bool)
+ ---------------------------------*/
 	function DrawImageBorder() {
 		switch ($this->image_border_type) {
 			case "raised":
@@ -549,53 +681,103 @@ class PHPlot{
 		}
 		return true;
 	}
-
+/*--------------------------------------
+ 功能: 设置绘图边框类型
+ 参数：$which_pbt(string) 绘图边框类型
+ 返回值: 无 
+ --------------------------------------*/
 	function SetPlotBorderType($which_pbt) {
 		$this->plot_border_type = $which_pbt; //left, none, anything else=full
 	}
-
+/*--------------------------------------
+ 功能：设置图像边框类型
+ 参数：$which_sibt(string) 图像边框类型
+ 返回值：无
+ -------------------------------------*/
 	function SetImageBorderType($which_sibt) {
 		$this->image_border_type = $which_sibt; //raised, plain
 	}
-
+/*-------------------------------------
+ 功能：设置绘制绘图区背景
+ 参数: $which_dpab(string) 绘制绘图区背景
+ 返回值：无
+ ------------------------------------*/
 	function SetDrawPlotAreaBackground($which_dpab) {
 		$this->draw_plot_area_background = $which_dpab;  // 1=true or anything else=false
 	}
-
+/*-------------------------------------
+ 功能: 设置绘制数据标签
+ 参数：$which_ddl(string) 绘制数据标签
+ 返回值：无
+ ------------------------------------*/
 	function SetDrawDataLabels($which_ddl) {  //Draw next to datapoints
 		$this->draw_data_labels = $which_ddl;  // 1=true or anything else=false
 	}
-
+/*------------------------------------
+ 功能：设置绘制X数据标签
+ 参数：$which_dxdl(string) 绘制X数据标签
+ 返回值：无
+ ------------------------------------*/
 	function SetDrawXDataLabels($which_dxdl) {  //Draw on X Axis
 		$this->draw_x_data_labels = $which_dxdl;  // 1=true or anything else=false
 	}
-
+/*------------------------------------
+ 功能：设置绘制Y格
+ 参数：$which_dyg(string) 绘制Y网格
+ 返回值：无
+ -----------------------------------*/
 	function SetDrawYGrid($which_dyg) {
 		$this->draw_y_grid = $which_dyg;  // 1=true or anything else=false
 	}
-
+/*------------------------------------
+ 功能：设置网格绘制x
+ 参数：$which_dxg(string) 网格绘制x
+ 返回值：无
+ -----------------------------------*/
 	function SetDrawXGrid($which_dxg) {
 		$this->draw_x_grid = $which_dxg;  // 1=true or anything else=false
 	}
-
+/*-----------------------------------
+ 功能：设置Y格标签类型
+ 参数：$which_yglt(string) Y格标签类型
+ 返回值：true(bool)
+ ----------------------------------*/
 	function SetYGridLabelType($which_yglt) {
 		$this->y_grid_label_type = $which_yglt;
 		return true;
 	}
-
+/*-----------------------------------
+ 功能：设置X格标签类型
+ 参数：$which_xglt(string) X格标签类型
+ 返回值：true(bool)
+ ----------------------------------*/
 	function SetXGridLabelType($which_xglt) {
 		$this->x_grid_label_type = $which_xglt;
 		return true;
 	}
-
+/*-----------------------------------
+ 功能：设置X标签
+ 参数：$xlbl(string) X标签的文本
+ 返回值：true(bool)`
+ ----------------------------------*/
 	function SetXLabel($xlbl) {
 		$this->x_label_txt = $xlbl;
 		return true;
 	}
+/*-----------------------------------
+ 功能: 设置Y标签
+ 参数：Ÿ标签文本
+ 返回值：true(bool)
+ ----------------------------------*/
 	function SetYLabel($ylbl) {
 		$this->y_label_txt = $ylbl;
 		return true;
 	}
+/*----------------------------------
+ 功能：设置标题 
+ 参数：$title(string) 标题
+ 返回值：true(bool)
+ ---------------------------------*/
 	function SetTitle($title) {
 		$this->title_txt = $title;
 		return true;
@@ -606,14 +788,22 @@ class PHPlot{
 	//	$this->x_label_txt = $xlbl;
 	//	$this->y_label_txt = $ylbl;
 	//}
-
+/*---------------------------------
+ 功能: 绘制标签
+ 参数: 无
+ 返回值：true(bool)
+ --------------------------------*/
 	function DrawLabels() {
 		$this->DrawTitle();
 		$this->DrawXLabel();
 		$this->DrawYLabel();
 		return true;
 	}
-
+/*---------------------------------
+ 功能：绘制X标签
+ 参数：无
+ 返回值：true(bool)
+ --------------------------------*/
 	function DrawXLabel() {
 		if ($this->use_ttf == 1) { 
 			$xpos = $this->xtr(($this->plot_max_x + $this->plot_min_x)/2.0) ;
@@ -631,7 +821,11 @@ class PHPlot{
 		}
 		return true;
 	}
-
+/*----------------------------------
+ 功能：绘制Ÿ标签
+ 参数：无
+ 返回值：true(bool)
+ ---------------------------------*/
 	function DrawYLabel() {
 		if ($this->use_ttf == 1) { 
 			$size = $this->TTFBBoxSize($this->y_label_ttffont_size, 90, $this->y_label_ttffont, $this->y_label_txt);
@@ -648,7 +842,19 @@ class PHPlot{
 		}
 		return true;
 	}
-
+/*----------------------------------
+ 功能：绘制文本
+ 参数：$which_font(string) 字体
+ 参数：$which_angle(string) 角度
+ 参数：$which_xpos(string)  x坐标
+ 参数：$which_ypos(string)  y坐标
+ 参数：$which_color(string) 颜色
+ 参数：$which_size(string)  字号
+ 参数：$which_text(string) 文本
+ 参数：$which_halign(string) 右对齐
+ 参数: $which_valign(string) 对齐 
+ 返回值：true(bool) 
+ ---------------------------------*/
 	function DrawText($which_font,$which_angle,$which_xpos,$which_ypos,$which_color,$which_size,$which_text,$which_halign='left',$which_valign='') {
 
 		if ($this->use_ttf == 1 ) { 
@@ -688,6 +894,11 @@ class PHPlot{
 		return true; 
 
 	}
+/*------------------------------
+ 功能: 绘制标题
+ 参数：无
+ 返回值: true(bool)
+ -----------------------------*/
 	function DrawTitle() {
 		if ($this->use_ttf == 1 ) { 
 			$xpos = ($this->plot_area[0] + $this->plot_area_width / 2);
@@ -703,70 +914,119 @@ class PHPlot{
 		return true; 
 
 	}
-
+/*--------------------------------
+ 功能：画绘图区背景
+ 参数: 无
+ 返回值：无
+ -------------------------------*/
 	function DrawPlotAreaBackground() {
 		ImageFilledRectangle($this->img,$this->plot_area[0],
 			$this->plot_area[1],$this->plot_area[2],$this->plot_area[3],
 			$this->ndx_plot_bg_color);
 	}
-
+/*--------------------------------
+ 功能：设置背景颜色
+ 参数: $which_color(string) 颜色
+ 返回值：true(bool)
+ -------------------------------*/
 	function SetBackgroundColor($which_color) {
 		$this->bg_color= $which_color;
 		$this->ndx_bg_color= $this->SetIndexColor($which_color);
 		return true;
 	}
+/*-------------------------------
+ 功能：设置剧情背景颜色
+ 参数：$which_colo(string) 颜色
+ 返回值：true(bool)
+ ------------------------------*/
 	function SetPlotBgColor($which_color) {
 		$this->plot_bg_color= $which_color;
 		$this->ndx_plot_bg_color= $this->SetIndexColor($which_color);
 		return true;
 	}
-
+/*------------------------------
+ 功能：设置底纹
+ 参数：$which_s(string) 底纹
+ 返回值：true(bool)
+ -----------------------------*/
 	function SetShading($which_s) { 
 		$this->shading = $which_s;
 		return true;
 	}
-
+/*-----------------------------
+ 功能：设置标题颜色
+ 参数：$which_color(string) 颜色
+ 返回值: true(bool)
+ ----------------------------*/
 	function SetTitleColor($which_color) {
 		$this->title_color= $which_color;
 		$this->ndx_title_color= $this->SetIndexColor($which_color);
 		return true;
 	}
-
+/*----------------------------
+ 功能：设置勾选颜色 
+ 参数：$which_color(string) 颜色
+ 返回值: true(bool)
+ ---------------------------*/
 	function SetTickColor ($which_color) {
 		$this->tick_color= $which_color;
 		$this->ndx_tick_color= $this->SetIndexColor($which_color);
 		return true;
 	}
-
+/*----------------------------
+ 功能：设置标签颜色 
+ 参数：$which_color(string) 颜色
+ 返回值: true(bool)
+ ---------------------------*/
 	function SetLabelColor ($which_color) {
 		$this->label_color= $which_color;
 		$this->ndx_label_color= $this->SetIndexColor($which_color);
 		return true;
 	}
-
+/*----------------------------
+ 功能：设置文本颜色 
+ 参数：$which_color(string) 颜色
+ 返回值: true(bool)
+ ---------------------------*/
 	function SetTextColor ($which_color) {
 		$this->text_color= $which_color;
 		$this->ndx_text_color= $this->SetIndexColor($which_color);
 		return true;
 	}
-
+/*----------------------------
+ 功能: 集光电网颜色
+ 参数：$which_color(string) 颜色
+ 返回值: true(bool)
+ ---------------------------*/
 	function SetLightGridColor ($which_color) {
 		$this->light_grid_color= $which_color;
 		$this->ndx_light_grid_color= $this->SetIndexColor($which_color);
 		return true;
 	}
-
+/*----------------------------
+ 功能: 设置网格颜色
+ 参数：$which_color(string) 颜色
+ 返回值: true(bool)
+ ---------------------------*/
 	function SetGridColor ($which_color) {
 		$this->grid_color = $which_color;
 		$this->ndx_grid_color= $this->SetIndexColor($which_color);
 		return true;
 	}
-
+/*----------------------------
+ 功能：设置字符高度
+ 参数: 无
+ 返回值：true(bool)
+ ---------------------------*/
 	function SetCharacterHeight() {
 		//to be set
 		return true;
 	}
-
+/*-------------------------
+ 功能：设置图形类型 
+ 参数: $which_pt(string) 图形类型
+ 返回值: true/false(bool) 
+ ------------------------*/
 	function SetPlotType($which_pt) {
 		$accepted = "bars,lines,linepoints,area,points,pie,thinbarline";
 		$asked = trim($which_pt);
@@ -778,7 +1038,11 @@ class PHPlot{
 			return false;
 		}
 	}
-
+/*---------------------------
+ 功能：数据限制
+ 参数：无
+ 返回值：无
+ --------------------------*/
 	function FindDataLimits() {
 		//Text-Data is different than data-data graphs. For them what
 		// we have, instead of X values, is # of records equally spaced on data.
@@ -917,7 +1181,11 @@ class PHPlot{
 
 		//$this->data_count = $total_records ;
 	} // function FindDataLimits
-
+/*-------------------------
+ 功能：设置页边距
+ 参数：无
+ 返回值：无
+ ------------------------*/
 	function SetMargins() {
 		/////////////////////////////////////////////////////////////////
 		// When the image is first created - set the margins
@@ -969,13 +1237,27 @@ class PHPlot{
 			$this->SetTranslation();
 		}
 	}
-
+/*-----------------------------------
+ 功能：设置页边距像素
+ 参数：$which_lm(string) 左边距
+ 参数：$which_rm(string) 右边距 
+ 参数：$which_tm(string) 上边距 
+ 参数：$which_bm(string) 下边距 
+ 返回值：true(bool)
+ ----------------------------------*/
 	function SetMarginsPixels($which_lm,$which_rm,$which_tm,$which_bm) { 
 		//Set the plot area using margins in pixels (left, right, top, bottom)
 		$this->SetNewPlotAreaPixels($which_lm,$which_tm,($this->image_width - $which_rm),($this->image_height - $which_bm));
 		return true;
 	}
-
+/*----------------------------------
+ 功能：设置新的绘图区域像素
+ 参数：$x1(string) 左边距
+ 参数: $y1(string) 右边距
+ 参数: $x2(string) 上边距
+ 参数：$y2(string) 下边距
+ 返回值：true(bool)
+ ---------------------------------*/
 	function SetNewPlotAreaPixels($x1,$y1,$x2,$y2) {
 		//Like in GD 0,0 is upper left set via pixel Coordinates
 		$this->plot_area = array($x1,$y1,$x2,$y2);
@@ -987,7 +1269,14 @@ class PHPlot{
 		}
 		return true;
 	}
-
+/*---------------------------------
+ 功能：设置绘图区域像素
+ 参数：$x1(string) 左边距
+ 参数: $y1(string) 右边距
+ 参数: $x2(string) 上边距
+ 参数：$y2(string) 下边距
+ 返回值：true(bool)
+ --------------------------------*/
 	function SetPlotAreaPixels($x1,$y1,$x2,$y2) {
 		//Like in GD 0,0 is upper left
 		if (!$this->x_tot_margin) {
@@ -1007,7 +1296,14 @@ class PHPlot{
 		return true;
 
 	}
-
+/*-------------------------------
+ 功能：设置绘图区世界
+ 参数：$xmin(string) X坐标最小值
+ 参数：$ymin(string) Y坐标最小值
+ 参数：$xmax(string) X坐标最大值
+ 参数：$ymax(string) y坐标最大值
+ 返回值: true(bool) 
+ ------------------------------*/
 	function SetPlotAreaWorld($xmin,$ymin,$xmax,$ymax) {
 		if (($xmin == "")  && ($xmax == "")) {
 			//For automatic setting of data we need $this->max_x
@@ -1065,13 +1361,21 @@ class PHPlot{
 
 	} //function SetPlotAreaWorld
 
-
+/*-----------------------------
+ 功能: 打印错误
+ 参数：$error_message(string) 错误消息
+ 返回值: 无
+ ----------------------------*/
 	function PrintError($error_message) {
 	// prints the error message to stdout and die
 		echo "<p><b>Fatal error</b>: $error_message<p>";
 		die;
 	}
-
+/*-----------------------------
+ 功能：绘制错误
+ 参数：$error_message(string) 错误消息
+ 返回值：true(bool)
+ ----------------------------*/
 	function DrawError($error_message) {
 	// prints the error message inline into
 	// the generated image
@@ -1091,7 +1395,14 @@ class PHPlot{
 		$this->PrintImage();
 		return true;
 	}
-
+/*----------------------------------
+ 功能: 尺寸  
+ 参数：$size(string) 大小
+ 参数：$angle(string)角度
+ 参数：$font(string) 字体
+ 参数：$string(string) 字符串
+ 返回值：返回数组宽和高(array)
+ ---------------------------------*/
 	function TTFBBoxSize($size, $angle, $font, $string) {
 
 		//Assume angle < 90
@@ -1109,7 +1420,11 @@ class PHPlot{
 
 		return array($width, $height);
 	}
-
+/*-------------------------------
+ 功能：设置X标签高度
+ 参数： 无
+ 返回值：无
+ ------------------------------*/
 	function SetXLabelHeight() {
 
 		if ($this->use_ttf == 1) {
@@ -1143,7 +1458,11 @@ class PHPlot{
 
 		return true;
 	} //function SetXLabelHeight
-
+/*------------------------------
+ 功能：设置Y标签宽度
+ 参数: 无
+ 返回值：true(bool)
+ -----------------------------*/
 	function SetYLabelWidth() {
 		//$ylab = sprintf("%6.1f %s",$i,$si_units[0]);  //use for PHP2 compatibility
 		//the "." is for space. It isn't actually printed
@@ -1162,7 +1481,11 @@ class PHPlot{
 		$this->SetMargins();
 		return true;
 	}
-
+/*-------------------------------
+ 功能：设置等于X座标
+ 参数：无
+ 返回值：true(bool) 
+ ------------------------------*/
 	function SetEqualXCoord() {
 		//for plots that have equally spaced x variables and multiple bars per x-point.
 
@@ -1174,31 +1497,51 @@ class PHPlot{
 		$this->record_bar_width = $bar_width;
 		return true;
 	}
-
+/*-----------------------------
+ 功能：设置标签秤位置
+ 参数: $which_blp(string) 标签秤的位置
+ 返回值：true(bool)
+ ----------------------------*/
 	function SetLabelScalePosition($which_blp) {
 		//0 to 1
 		$this->label_scale_position = $which_blp;
 		return true;
 	}
-
+/*-----------------------------
+ 功能：设置错误的大小 
+ 参数：$which_ebs(string) 错误条的尺寸
+ 返回值：true(bool)
+ ----------------------------*/
 	function SetErrorBarSize($which_ebs) {
 		//in pixels
 		$this->error_bar_size = $which_ebs;
 		return true;
 	}
-
+/*-----------------------------
+ 功能：设置错误条状
+ 参数：$which_ebs(string) 错误条状
+ 返回值：true(bool)
+ ----------------------------*/
 	function SetErrorBarShape($which_ebs) {
 		//in pixels
 		$this->error_bar_shape = $which_ebs;
 		return true;
 	}
-
+/*-----------------------------
+ 功能：设置点状
+ 参数：$which_pt(string) 点状
+ 返回值：true(bool)
+ ----------------------------*/
 	function SetPointShape($which_pt) {
 		//in pixels
 		$this->point_shape = $which_pt;
 		return true;
 	}
-
+/*-----------------------------
+ 功能：设置点大小
+ 参数：$which_ps(string) 点大小
+ 返回值：true(bool)
+ ----------------------------*/
 	function SetPointSize($which_ps) {
 		//in pixels
 		SetType($which_ps,'integer');
@@ -1211,7 +1554,11 @@ class PHPlot{
 		}
 		return true;
 	}
-
+/*---------------------------
+ 功能：设置数据类型
+ 参数：$which_dt(string) 数据类型
+ 返回值：true(bool)
+ --------------------------*/
 	function SetDataType($which_dt) {
 		//The next three lines are for past compatibility.
 		if ($which_dt == "text-linear") { $which_dt = "text-data"; };
@@ -1221,7 +1568,11 @@ class PHPlot{
 		$this->data_type = $which_dt; //text-data, data-data, data-data-error
 		return true;
 	}
-
+/*---------------------------
+ 功能：设置数据值
+ 参数：$which_dv(string) 数据值
+ 返回值：true(bool)
+ --------------------------*/
 	function SetDataValues($which_dv) {
 		$this->data_values = $which_dv;
 //echo $this->data_values
@@ -1229,6 +1580,11 @@ class PHPlot{
 	}
 
 //////////////COLORS
+/*----------------------------
+ 功能：设置数组 
+ 参数：$which_color_array(array) 颜色数组
+ 返回值：true(bool)
+ ---------------------------*/
 	function SetRGBArray ($which_color_array) { 
 		if ( is_array($which_color_array) ) { 
 			//User Defined Array
@@ -1284,13 +1640,21 @@ class PHPlot{
 
 		return true;
 	}
-
+/*----------------------------
+ 功能：设置颜色
+ 参数：$which_color(string) 颜色
+ 返回值：true(bool)
+ ---------------------------*/
 	function SetColor($which_color) { 
 		//obsoleted by SetRGBColor
 		SetRgbColor($which_color);
 		return true;
 	}
-
+/*----------------------------
+ 功能：设置索引颜色
+ 参数：$which_color(string) 颜色
+ 返回值：图像色彩(string)
+ ---------------------------*/
 	function SetIndexColor($which_color) { //Color is passed in as anything
   		list ($r, $g, $b) = $this->SetRgbColor($which_color);  //Translate to RGB
 		$index = ImageColorExact($this->img, $r, $g, $b);
@@ -1303,11 +1667,20 @@ class PHPlot{
   		}
 	}
 	
+/*-------------------------------------
+ 功能：设置透明色
+ 参数：$which_color(string) 颜色
+ 返回值：true(bool)
+ ------------------------------------*/
 	function SetTransparentColor($which_color) { 
 		ImageColorTransparent($this->img,$this->SetIndexColor($which_color));
 		return true;
 	}
-
+/*------------------------------------
+ 功能：设置颜色 
+ 参数：$color_asked(string) 颜色要求
+ 返回值：颜色值(string)
+ -----------------------------------*/
 	function SetRgbColor($color_asked) {
 		//Returns an array in R,G,B format 0-255
 		if ($color_asked == "") { $color_asked = array(0,0,0); };
@@ -1323,7 +1696,12 @@ class PHPlot{
 		}
 		return $ret_val;
 	}
-
+/*-----------------------------
+ 功能：设置数据颜色
+ 参数：$which_data(string) 数据
+ 参数：$which_border(string) 边框
+ 返回值：true(bool)
+ -----------------------------*/
 	function SetDataColors($which_data,$which_border) {
 		//Set the data to be displayed in a particular color
 		if (!$which_data) {
@@ -1364,7 +1742,11 @@ class PHPlot{
 		return true;
 
 	} //function SetDataColors
-
+/*-----------------------------
+ 功能：设置错误条的颜色
+ 参数：$which_data(string)错误栏的颜色 
+ 返回值：true/false(bool)
+ ----------------------------*/
 	function SetErrorBarColors($which_data) {
 
 	 //Set the data to be displayed in a particular color
@@ -1383,7 +1765,11 @@ class PHPlot{
 	  return false;
 	} //function SetErrorBarColors
 
-
+/*--------------------------
+ 功能：绘制绘制边框
+ 参数：无
+ 返回值: true(bool)
+ -------------------------*/
 	function DrawPlotBorder() {
 		switch ($this->plot_border_type) {
 			case "left" :
@@ -1403,7 +1789,11 @@ class PHPlot{
 		return true;
 	}
 
-
+/*-------------------------
+ 功能：将水平刻度增量
+ 参数：$which_ti(string) 水平刻度增量
+ 返回值：true(bool)
+ ------------------------*/
 	function SetHorizTickIncrement($which_ti) {
 		//Use either this or NumHorizTicks to set where to place x tick marks
 		if ($which_ti) {
@@ -1418,12 +1808,20 @@ class PHPlot{
 		$this->num_horiz_ticks = ''; //either use num_vert_ticks or vert_tick_increment, not both
 		return true;
 	}
-
+/*-----------------------------
+ 功能：设置绘制垂直蜱
+ 参数：绘制垂直蜱
+ 返回值：true(bool)
+ ----------------------------*/
 	function SetDrawVertTicks($which_dvt) {
 		$this->draw_vert_ticks = $which_dvt;
 		return true;
 	} 
-
+/*-----------------------------
+ 功能：设置垂直刻度增量
+ 参数：$which_ti(string) 垂直刻度增量
+ 返回值：true(bool)
+ ----------------------------*/
 	function SetVertTickIncrement($which_ti) {
 		//Use either this or NumVertTicks to set where to place y tick marks
 		if ($which_ti) {
@@ -1438,32 +1836,58 @@ class PHPlot{
 		$this->num_vert_ticks = ''; //either use num_vert_ticks or vert_tick_increment, not both
 		return true;
 	}
-
+/*--------------------------
+ 功能：设置水平线蜱
+ 参数：$which_nt(string) 设置水平
+ 返回值：true(bool)
+ -------------------------*/
 	function SetNumHorizTicks($which_nt) {
 		$this->num_horiz_ticks = $which_nt;
 		$this->horiz_tick_increment = '';  //either use num_horiz_ticks or horiz_tick_increment, not both
 		return true;
 	}
-
+/*--------------------------
+ 功能：数设置垂直蜱
+ 参数：$which_nt(string) 号码垂直蜱
+ 返回值：true(bool)
+ -------------------------*/
 	function SetNumVertTicks($which_nt) {
 		$this->num_vert_ticks = $which_nt;
 		$this->vert_tick_increment = '';  //either use num_vert_ticks or vert_tick_increment, not both
 		return true;
 	}
+/*-------------------------
+ 功能：设置垂直刻度位置
+ 参数：$which_tp(string) 垂直刻度位置
+ 返回值：true(bool)
+ ------------------------*/
 	function SetVertTickPosition($which_tp) {
 		$this->vert_tick_position = $which_tp; //plotleft, plotright, both, yaxis
 		return true;
 	}
+/*-------------------------
+ 功能：设置跳过底部蜱
+ 参数：$which_sbt(string) 跳过底部蜱
+ 返回值：true(bool)
+ -------------------------*/
 	function SetSkipBottomTick($which_sbt) {
 		$this->skip_bottom_tick = $which_sbt;
 		return true;
 	}
-
+/*--------------------------
+ 功能：设置时钟长度
+ 参数：$which_tl(string) 勾选长度
+ 返回值：true(bool)
+ -------------------------*/
 	function SetTickLength($which_tl) {
 		$this->tick_length = $which_tl;
 		return true;
 	}
-
+/*--------------------------
+ 功能：绘制Y轴
+ 参数：无
+ 返回值：无
+ -------------------------*/
 	function DrawYAxis() { 
 		//Draw Line at left side or at this->y_axis_position
 		if ($this->y_axis_position != "") { 
@@ -1481,7 +1905,11 @@ class PHPlot{
 		}
 
 	} //function DrawYAxis
-
+/*----------------------------
+ 功能：绘制X轴
+ 参数：无
+ 返回值：true(bool)
+ ---------------------------*/
 	function DrawXAxis() {
 		//Draw Tick and Label for Y axis
 		$ylab =$this->FormatYTickLabel($this->x_axis_position);
@@ -1499,7 +1927,11 @@ class PHPlot{
 		}
 		return true;
 	}
-
+/*----------------------------
+ 功能：绘制水平蜱
+ 参数：无
+ 返回值：无
+ ---------------------------*/
 	function DrawHorizontalTicks() {
 		//Ticks and lables are drawn on the left border of PlotArea.
 		//Left Bottom
@@ -1603,7 +2035,11 @@ class PHPlot{
 		}
 
 	} // function DrawHorizontalTicks
-
+/*-------------------------
+ 功能：格式Y蜱标签
+ 参数：$which_ylab(string) Y网格标签类型
+ 返回值：返回类型(string)
+ ------------------------*/
 	function FormatYTickLabel($which_ylab) { 
 		switch ($this->y_grid_label_type) {
 			case "data":
@@ -1630,7 +2066,12 @@ class PHPlot{
 		return($ylab);
 
 	} //function FormatYTickLabel
-
+/*----------------------------
+ 功能：绘制垂直刻度
+ 参数：$which_ylab(string) Y坐标分析
+ 参数：$which_ypos(string) Y坐标
+ 返回值：无
+ ---------------------------*/
 	function DrawVerticalTick($which_ylab,$which_ypos) {  //ylab in world coord.
 		//Draw Just one Tick, called from DrawVerticalTicks
 		//Ticks and datalables can be left of plot only, right of plot only, 
@@ -1682,7 +2123,11 @@ class PHPlot{
 		ImageString($this->img, $this->small_font, ($yaxis_x - $this->y_label_width - $this->tick_length/2),
 			( -($this->small_font_height/2.0) + $y_pixels),$which_ylab, $this->ndx_text_color);
 	}
-
+/*---------------------------
+ 功能：绘制垂直蜱
+ 参数：无
+ 返回值：true(bool)
+ --------------------------*/
 	function DrawVerticalTicks() {
 
 		if ($this->skip_top_tick != 1) { //If tick increment doesn't hit the top 
@@ -1744,7 +2189,11 @@ class PHPlot{
 		return true;
 
 	} // function DrawVerticalTicks
-
+/*--------------------------
+ 功能：转换 
+ 参数: 无
+ 返回值：无
+ -------------------------*/
 	function SetTranslation() {
 		if ($this->xscale_type == "log") { 
 			$this->xscale = ($this->plot_area_width)/(log10($this->plot_max_x) - log10($this->plot_min_x));
@@ -1771,7 +2220,11 @@ class PHPlot{
 
 		$this->scale_is_set = 1;
 	} // function SetTranslation
-
+/*-------------------------------
+ 功能: X轴像素 
+ 参数: $x_world(string) X轴像素
+ 返回值：返回X轴像素值
+ ------------------------------*/
 	function xtr($x_world) {
 	//Translate world coordinates into pixel coordinates
 	//The pixel coordinates are those of the ENTIRE image, not just the plot_area
@@ -1784,7 +2237,11 @@ class PHPlot{
 		}
 		return($x_pixels);
 	}
-
+/*-------------------------------
+ 功能: Y轴像素 
+ 参数: $y_world(string) X轴像素
+ 返回值：返回y轴像素值
+ ------------------------------*/
 	function ytr($y_world) {
 		// translate y world coord into pixel coord
 		if ($this->yscale_type == "log") { 
@@ -1795,7 +2252,13 @@ class PHPlot{
 		return ($y_pixels);
 	}
 
-
+/*-------------------------------
+ 功能：绘制数据标签
+ 参数：$lab(string) 绘制大小
+ 参数：$x_world(string) X像素
+ 参数：$y_world(string) y像素
+ 返回值：无
+ ------------------------------*/
 	function DrawDataLabel($lab,$x_world,$y_world) {
 		//Depreciated. Use DrawText Instead.
 		//Data comes in in WORLD coordinates
@@ -1823,7 +2286,12 @@ class PHPlot{
 			}
 
 	}
-
+/*-----------------------------
+ 功能：绘制X数据标签
+ 参数：$xlab(string) X大小
+ 参数：$xpos(string) X坐标
+ 返回值: 无
+ ----------------------------*/
 	function DrawXDataLabel($xlab,$xpos) {
 		//xpos comes in in PIXELS not in world coordinates.
 		//Draw an x data label centered at xlab
@@ -1848,7 +2316,11 @@ class PHPlot{
 			}
 
 	}
-
+/*-----------------------------
+ 功能：绘制饼图
+ 参数：无
+ 返回值：无
+ ----------------------------*/
 	function DrawPieChart() {
 		//$pi = '3.14159265358979323846';
 		$xpos = $this->plot_area[0] + $this->plot_area_width/2;
@@ -1929,7 +2401,11 @@ class PHPlot{
 		}
 
 	}
-
+/*-----------------------------
+ 功能：绘制线条错误
+ 参数：无
+ 返回值：无
+ ----------------------------*/
 	function DrawLinesError() {
 		//Draw Lines with Error Bars - data comes in as array("title",x,y,error+,error-,y2,error2+,error2-,...);
 		$start_lines = 0;
@@ -1980,7 +2456,11 @@ class PHPlot{
 			}
 		}
 	}
-
+/*--------------------------
+ 功能：绘制点错误
+ 参数: 无
+ 返回值：无
+ -------------------------*/
 	function DrawDotsError() {
 		//Draw Dots - data comes in as array("title",x,y,error+,error-,y2,error2+,error2-,...);
 		reset($this->data_values);
@@ -2009,7 +2489,11 @@ class PHPlot{
 		}
 
 	}
-
+/*------------------------------
+ 功能：绘制点
+ 参数：无
+ 返回值：无
+ -----------------------------*/
 	function DrawDots() {
 		//Draw Dots - data comes in as array("title",x,y1,y2,y3,...);
 		reset($this->data_values);
@@ -2037,12 +2521,20 @@ class PHPlot{
 		}
 
 	} //function DrawDots
-
+/*-------------------------------
+ 功能：画点系列
+ 参数：无
+ 返回值：无
+ ------------------------------*/
 	function DrawDotSeries() {
 		//Depreciated: Use DrawDots
 		$this->DrawDots();
 	}
-
+/*-------------------------------
+ 功能：绘制细条线
+ 参数：无
+ 返回值：无
+ ------------------------------*/
 	function DrawThinBarLines() {
 		//A clean,fast routine for when you just want charts like stock volume charts
 		//Data must be text-data since I didn't see a graphing need for equally spaced thin lines. 
@@ -2073,7 +2565,15 @@ class PHPlot{
 		}
 
 	}  //function DrawThinBarLines
-
+/*-----------------------------
+ 功能：绘制Y误差 
+ 参数：$x_world(string) X像素
+ 参数：$y_world(string) Y像素
+ 参数：$error_height(string) 高度
+ 参数：$error_bar_type(string) 类型
+ 参数：$color(string) 颜色
+ 返回值：true(bool)
+ ----------------------------*/
 	function DrawYErrorBar($x_world,$y_world,$error_height,$error_bar_type,$color) {
 		$x1 = $this->xtr($x_world);
 		$y1 = $this->ytr($y_world);
@@ -2095,7 +2595,14 @@ class PHPlot{
 		}
 		return true;
 	}
-
+/*------------------------------
+ 功能：画点
+ 参数：$x_world(string) X像素
+ 参数：$y_world(string) Y像素
+ 参数：$dot_type(string) 类型
+ 参数：$color(string) 颜色
+ 返回值：true(bool)
+ -----------------------------*/
 	function DrawDot($x_world,$y_world,$dot_type,$color) {
 		$half_point = $this->point_size / 2;
 		$x1 = $this->xtr($x_world) - $half_point;
@@ -2144,13 +2651,21 @@ class PHPlot{
 		}
 		return true;
 	}
-
+/*-------------------------------
+ 功能：设置错误行宽
+ 参数：$which_seblw(string) 错误行宽
+ 返回值：true(bool)
+ ------------------------------*/
 	function SetErrorBarLineWidth($which_seblw) {
 		$this->error_bar_line_width = $which_seblw;
 		return true;
 	}
 
-
+/*-------------------------------
+ 功能：设置线宽
+ 参数：$which_lw(string) 线宽
+ 返回值：true(bool)
+ ------------------------------*/
 	function SetLineWidth($which_lw) {
 		$this->line_width = $which_lw;
 		if (!$this->error_bar_line_width) { 
@@ -2158,7 +2673,11 @@ class PHPlot{
 		}
 		return true;
 	}
-
+/*------------------------------
+ 功能：绘图区
+ 参数: 无
+ 返回值：无
+ -----------------------------*/
 	function DrawArea() {
 		//Data comes in as $data[]=("title",x,y,...);
 		//Set first and last datapoints of area
@@ -2212,7 +2731,11 @@ class PHPlot{
 //exit;
 
 	}
-
+/*------------------------------
+ 功能：绘图区系列
+ 参数：无
+ 返回值：无
+ -----------------------------*/
 	function DrawAreaSeries() {
 
 		//Set first and last datapoints of area
@@ -2263,7 +2786,11 @@ class PHPlot{
 		}
 
 	}
-
+/*---------------------------------
+ 功能：画线
+ 参数：无
+ 返回值：无
+ --------------------------------*/
 	function DrawLines() {
 		//Data comes in as $data[]=("title",x,y,...);
 		$start_lines = 0;
@@ -2327,14 +2854,28 @@ class PHPlot{
 	}
 
 		//Data comes in as $data[]=("title",x,y,e+,e-,y2,e2+,e2-,...);
-
+/*---------------------------------
+ 功能：画线系列
+ 参数：无
+ 返回值：false(bool)
+ --------------------------------*/
 	function DrawLineSeries() {
 		//This function is replaced by DrawLines
 		//Tests have shown not much improvement in speed by having separate routines for DrawLineSeries and DrawLines
 		//For ease of programming I have combined them
 		return false;
 	} //function DrawLineSeries
-
+/*---------------------------------
+ 功能：绘制虚线
+ 参数：$x1pix(string) X1像素
+ 参数：$y1pix(string) y1像素
+ 参数：$x2pix(string) X2像素
+ 参数：$y2pix(string) y2像素
+ 参数：$dash_length(string) 虚线长度
+ 参数：$dash_space(string) 破折号空间
+ 参数：$color(string) 颜色
+ 返回值：无
+ --------------------------------*/
 	function DrawDashedLine($x1pix,$y1pix,$x2pix,$y2pix,$dash_length,$dash_space,$color) {
 		//Code based on work by Ariel Garza and James Pine
 		//I've decided to have this be in pixels only as a replacement for ImageLine
@@ -2361,7 +2902,11 @@ class PHPlot{
 			$lasty = $ypix + ($dash_space * $dy);
 		}
 	} // function DrawDashedLine
-
+/*-------------------------------------
+ 功能：绘制 
+ 参数：无
+ 返回值：无
+ ------------------------------------*/
 	function DrawBars() {
 
 		if ($this->data_type != "text-data") { 
@@ -2424,7 +2969,13 @@ class PHPlot{
 			}
 		}
 	} //function DrawBars
-
+/*-----------------------------------
+ 功能：绘制图例 
+ 参数：$which_x1(string) X1像素
+ 参数：$which_y1(string) Y1x像素
+ 参数：$which_boxtype(string) 类型
+ 返回值：无
+ ----------------------------------*/
 	function DrawLegend($which_x1,$which_y1,$which_boxtype) {
 		//Base code submitted by Marlin Viss
 		$max_legend_length=0;
@@ -2496,7 +3047,11 @@ class PHPlot{
 		}
 	} //function DrawLegend
 
-
+/*-------------------------------------
+ 功能：绘制图表
+ 参数：无
+ 返回值：无
+ ------------------------------------*/
 	function DrawGraph() {
 
 		if (($this->img) == "") {

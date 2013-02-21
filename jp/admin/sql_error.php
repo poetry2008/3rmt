@@ -18,13 +18,13 @@ if($_SERVER["HTTP_ACCEPT_LANGUAGE"]){
 <table align="center" class="error_p">
   <tr>
     	<td valign="top"><img src="images/sql_error.gif"></td>
-        <td><div class="sql_text">
+        <td><div class="forma_text">
         	<?php echo TEXT_ERROR_PAGE_SHOW;?>
         </div>
-		<div class="sql_text01"><input type="button" onClick="window.location.href='<?php echo $_SERVER['HTTP_REFERER'];?>'" value="<?php echo TEXT_ERROR_LINK_BACK;?>">
+		<div class="forma_space"><input type="button" onClick="window.location.href='<?php echo $_SERVER['HTTP_REFERER'];?>'" value="<?php echo TEXT_ERROR_LINK_BACK;?>">
 <input type="button" onClick="window.location.href='index.php'" value="<?php echo TEXT_ERROR_LINK_INDEX;?>">
 		</div>
-        <div class="sql_text02">
+        <div class="forma_text_space">
 			<?php
             //echo "<br>";
             //echo "<a href='".$_SERVER['HTTP_REFERER']."'>".TEXT_ERROR_LINK_BACK."</a>";

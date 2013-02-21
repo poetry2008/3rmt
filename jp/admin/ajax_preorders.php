@@ -53,12 +53,25 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 if ($_POST['orders_id'] &&
     ($_POST['orders_comment']||$_POST['orders_comment_flag']=='true')) {
+/*------------------------------------------------
+ 功能: 订单注释标志
+ 参数: $_POST['orders_comment'] 获取orders_comment值
+ -----------------------------------------------*/
   // update orders_comment
   tep_db_perform('preorders', array('orders_comment' => $_POST['orders_comment']), 'update', "orders_id='".$_POST['orders_id']."'");
   tep_redirect(tep_href_link(FILENAME_PREORDERS,'page='.$_POST['page'].'&oID='.$_POST['orders_id'].'&action=edit'));
 } else if ($_GET['action'] == 'paydate') {
+/*-----------------------------------------------
+ 功能: 支付日期 
+ 参数: 无 
+ ----------------------------------------------*/
   echo date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day()));
 } else if ($_GET['action'] == 'set_quantity' && $_GET['products_id'] && $_GET['count']) {
+/*---------------------------------------------
+ 功能: 设置数量
+ 参数: $_GET['products_id'] 产品编号值为真
+ 参数: $_GET['count']  数值为真
+ --------------------------------------------*/
   $p  = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$_GET['products_id']."'"));
   $rp = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$p['relate_products_id']."'"));
 
@@ -69,26 +82,65 @@ if ($_POST['orders_id'] &&
     //print_r("update ".TABLE_PRODUCTS." set products_real_quantity='".$q."' where products_id='".$p['relate_products_id']."'"); 
   }
 } else if ($_GET['orders_id'] && $_POST['orders_credit']) {
+/*--------------------------------------------
+ 功能: 订单信用
+ 参数: $_GET['orders_id'] 订单编号值为真
+ 参数: $_POST['orders_credit'] 设置$_POST['orders_credit']
+ -------------------------------------------*/
   $order = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PREORDERS." where orders_id='".$_GET['orders_id']."'"));
   tep_db_perform('customers', array('customers_fax' => $_POST['orders_credit']), 'update', "customers_id='".$order['customers_id']."'");
   tep_redirect(tep_href_link(FILENAME_PREORDERS,'page='.$_POST['page'].'&oID='.$_POST['orders_id'].'&action=edit'));
 } else if ($_GET['orders_id'] && isset($_GET['orders_important_flag'])) {
+/*-------------------------------------------
+ 功能: 订单的重要标志  
+ 参数: $_GET['orders_id'] 订单编号值为真
+ 参数: $_GET['orders_important_flag'] 设置$_GET['orders_important_flag']订单标志
+ ------------------------------------------*/
   // 重要
   tep_db_perform('preorders', array('orders_important_flag' => $_GET['orders_important_flag']), 'update', "orders_id='".$_GET['orders_id']."'");
 } else if ($_GET['orders_id'] && isset($_GET['orders_care_flag'])) {
+/*------------------------------------------
+ 功能: 订单服务标志
+ 参数: $_GET['orders_id'] 订单编号值为真
+ 参数: $_GET['orders_care_flag'] 设置$_GET['orders_care_flag']
+ -----------------------------------------*/
   // 注意处理方式
   tep_db_perform('preorders', array('orders_care_flag' => $_GET['orders_care_flag']), 'update', "orders_id='".$_GET['orders_id']."'");
 } else if ($_GET['orders_id'] && isset($_GET['orders_wait_flag'])) {
+/*------------------------------------------
+ 功能: 订单等待标志
+ 参数: $_GET['orders_id'] 订单编号值为真
+ 参数: $_GET['orders_wait_flag'] 订单标志值
+ -----------------------------------------*/
   // 交易等待
   tep_db_perform('preorders', array('orders_wait_flag' => $_GET['orders_wait_flag']), 'update', "orders_id='".$_GET['orders_id']."'");
 }  else if ($_GET['orders_id'] && isset($_GET['orders_inputed_flag'])) {
+/*------------------------------------------
+ 功能: 订单填写会员标志
+ 参数: $_GET['orders_id'] 订单编号值为真
+ 参数: $_GET['orders_inputed_flag'] 订单会员标志值
+ -----------------------------------------*/
   // 输入完成
   tep_db_perform('preorders', array('orders_inputed_flag' => $_GET['orders_inputed_flag']), 'update', "orders_id='".$_GET['orders_id']."'");
 } else if ($_GET['action'] == 'delete' && $_GET['orders_id'] && $_GET['computers_id']) {
+/*-----------------------------------------
+ 功能: 删除订单 
+ 参数: $_GET['orders_id']  订单编号值
+ 参数: $_GET['computers_id'] 计算机ID值
+ ----------------------------------------*/
   tep_db_query("delete from ".TABLE_PREORDERS_TO_COMPUTERS." where orders_id='".$_GET['orders_id']."' and computers_id='".(int)$_GET['computers_id']."'");
 } else if ($_GET['action'] == 'insert' && $_GET['orders_id'] && $_GET['computers_id']) {
+/*----------------------------------------
+ 功能: 添加订单 
+ 参数: $_GET['orders_id']  订单编号值
+ 参数: $_GET['computers_id'] 计算机ID值
+ ---------------------------------------*/
   tep_db_query("insert into ".TABLE_PREORDERS_TO_COMPUTERS." (`orders_id`,`computers_id`) VALUES('".$_GET['orders_id']."','".(int)$_GET['computers_id']."')");
 } else if ($_GET['action'] == 'last_customer_action') {
+/*---------------------------------------
+ 功能: 最后顾客操作
+ 参数: 无
+ --------------------------------------*/
   echo PREORDER_LAST_CUSTOMER_ACTION;
 } else if (isset($_GET['orders_id']) && isset($_GET['work'])) {
   // A, B, C
@@ -282,6 +334,10 @@ if ($_POST['orders_id'] &&
         <?php 
         }
 }  else if(isset($_GET['action'])&&$_GET['action'] == 'getallpwd'){
+/*--------------------------------------------
+ 功能: 获得所有密码 
+ 参数: 无
+ -------------------------------------------*/
   $sql = "select u.userid,u.rule,l.letter from ".
     TABLE_USERS." u , ".TABLE_LETTERS." l 
 		where u.userid = l.userid and (l.letter != '' or l.letter != null)";
@@ -294,6 +350,10 @@ if ($_POST['orders_id'] &&
   $str = implode(',',$arr); 
   echo $str;
 }else if(isset($_GET['action'])&&$_GET['action'] == 'getpercent'){
+/*-------------------------------------------
+ 功能: 得到百分比   
+ 参数: $_POST['cid'] 获取$_POST['cid']值 
+ ------------------------------------------*/
   if(isset($_POST['cid'])&&$_POST['cid']){
     $sql = "select sac.percent as percent from ".TABLE_PRODUCTS_TO_CATEGORIES." 
 			p2c,set_auto_calc sac,".TABLE_PREORDERS_PRODUCTS." op 
@@ -317,6 +377,10 @@ if ($_POST['orders_id'] &&
     echo 0;
   }
 }else if(isset($_GET['action'])&&$_GET['action'] == 'faq_c_is_set_romaji'){
+/*-----------------------------------------
+ 功能: 常见问题解答罗马字 
+ 参数: $_POST['romaji']  罗马字值
+ ----------------------------------------*/
   $romaji = $_POST['romaji'];
   $romaji = str_replace('<11111111>','&',$romaji);
   $romaji = str_replace('<22222222>','+',$romaji);
@@ -337,6 +401,10 @@ if ($_POST['orders_id'] &&
     echo 'false';
   }
 }else if(isset($_GET['action'])&&$_GET['action'] == 'faq_q_is_set_romaji'){
+/*------------------------------------------
+ 功能: 常见问题罗马字 
+ 参数: $_POST['romaji']  罗马字值
+ -----------------------------------------*/
   $romaji = $_POST['romaji'];
   $romaji = str_replace('<11111111>','&',$romaji);
   $romaji = str_replace('<22222222>','+',$romaji);
@@ -358,6 +426,10 @@ if ($_POST['orders_id'] &&
     echo 'false';
   }
 }else if(isset($_GET['action'])&&$_GET['action'] == 'check_romaji'){
+/*-------------------------------------------
+ 功能: 检查罗马字 
+ 参数: $_POST['romaji']  罗马字值
+ ------------------------------------------*/
   $romaji = $_POST['romaji'];
   $romaji = str_replace('<11111111>','&',$romaji);
   $romaji = str_replace('<22222222>','+',$romaji);
@@ -378,6 +450,10 @@ if ($_POST['orders_id'] &&
     }
   }
 }else if(isset($_GET['action'])&&$_GET['action'] == 'c_is_set_romaji'){
+/*--------------------------------------------
+ 功能: 设置罗马字 
+ 参数: $_POST['romaji']  罗马字值
+ -------------------------------------------*/
   $romaji = $_POST['romaji'];
   $romaji = str_replace('<11111111>','&',$romaji);
   $romaji = str_replace('<22222222>','+',$romaji);
@@ -398,6 +474,10 @@ if ($_POST['orders_id'] &&
     echo 'false';
   }
 }else if(isset($_GET['action'])&&$_GET['action'] == 'p_is_set_romaji'){
+/*--------------------------------------------
+ 功能: 罗马字集 
+ 参数: $_POST['romaji']  罗马字值
+ -------------------------------------------*/
   $romaji = $_POST['romaji'];
   $romaji = str_replace('<11111111>','&',$romaji);
   $romaji = str_replace('<22222222>','+',$romaji);
@@ -419,6 +499,11 @@ if ($_POST['orders_id'] &&
     echo 'false';
   }
 }else if(isset($_GET['action'])&&$_GET['action'] == 'pwd_check_save'){
+/*---------------------------------------------
+ 功能: 密码检查保存  
+ 参数: $_POST['check_str'] 校验值 
+ 参数: $_POST['page_name'] 页面的名称
+ --------------------------------------------*/
   if(isset($_POST['check_str'])&&$_POST['check_str']){
     $check_arr = explode(',',$_POST['check_str']);
     if(in_array('admin',$check_arr)){
@@ -448,6 +533,10 @@ if ($_POST['orders_id'] &&
     echo "noall";
   }
 }else if(isset($_GET['action'])&&$_GET['action']=='getpwdcheckbox'){
+/*-------------------------------------------
+ 功能: 得到密码复选框 
+ 参数: $_POST['page_name'] 页面的名称
+ ------------------------------------------*/
   $page_name = $_POST['page_name'];
   if($_SESSION['last_page']!= $page_name){
     unset($_SESSION[$_SESSION['last_page']]);
@@ -492,8 +581,17 @@ if ($_POST['orders_id'] &&
     echo "false";
   }
 }else if(isset($_GET['action'])&&$_GET['action']=='save_pwd_log'){
+/*-------------------------------------------
+ 功能: 保存密码记录 
+ 参数: $_POST['one_time_pwd'] 一次密码 
+ 参数: $_POST['page_name'] 页面的名称
+ ------------------------------------------*/
   tep_insert_pwd_log($_POST['one_time_pwd'],$ocertify->auth_user,true,$_POST['page_name']);
 } else if (isset($_GET['action'])&&$_GET['action']=='show_right_order_info') {
+/*-------------------------------------------
+ 功能: 正确的顺序信息 
+ 参数: $_POST['oid'] 订单编号值 
+ ------------------------------------------*/
   $orders_info_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_POST['oid']."'"); 
   $orders_info = tep_db_fetch_array($orders_info_raw); 
   require(DIR_WS_FUNCTIONS . 'visites.php');
@@ -542,6 +640,11 @@ if ($_POST['orders_id'] &&
   }
   //取得 支付类型 及 支付方法
 } else if  (isset($_GET['action'])&&$_GET['action']=='get_oa_groups') {
+/*--------------------------------------
+ 功能: 得到OA组 
+ 参数: $_GET['payment'] 支付值 
+ 参数: $_GET['buytype'] 购买类型值
+ -------------------------------------*/
   $sql = 'select 
 		g.name gname,g.id gid,f.id form_id
 		from oa_group g,oa_form f,oa_form_group fg  
@@ -564,6 +667,11 @@ if ($_POST['orders_id'] &&
   echo json_encode($bigText);
 
 } else if  (isset($_GET['action'])&&$_GET['action']=='get_group_renderstring') {
+/*-------------------------------------
+ 功能: 获取提供的字符串 
+ 参数: $_GET['ids'] 订单编号
+ 参数: $_GET['group_id'] 组ID值
+ ------------------------------------*/
   $ids = $_GET['ids'];
   //  $ids = $_POST['ids'];
   $ids_array = explode('_',$ids);
@@ -618,6 +726,10 @@ if ($_POST['orders_id'] &&
   //  echo $bigRender;
 
 } else if (isset($_GET['action'])&&$_GET['action']=='show_right_preorder_info') {
+/*---------------------------------------------
+ 功能: 右序信息
+ 参数: $_POST['oid'] 订单编号
+ --------------------------------------------*/
   $orders_info_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_POST['oid']."'"); 
   $orders_info = tep_db_fetch_array($orders_info_raw); 
   require(DIR_WS_FUNCTIONS . 'visites.php');
@@ -677,6 +789,10 @@ if ($_POST['orders_id'] &&
   $html_str .= '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="cancel_del_preorder_info(\''.$_POST['oID'].'\', \''.urlencode($param_str).'\')"').'</a>'; 
   echo $html_str;
 } else if (isset($_GET['action']) && $_GET['action'] == 'cancel_del_preorder_info') {
+/*---------------------------------------------
+ 功能: 取消删除序信息 
+ 参数: $_POST['oID'] 订单编号 
+ -------------------------------------------*/
   $param_str = ''; 
   foreach ($_POST as $key => $value) {
     if (($key != 'oID') && ($key != 'popup')) {
@@ -692,6 +808,11 @@ if ($_POST['orders_id'] &&
   $html_str .= '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_preorder_info(\''.$_POST['oID'].'\', \''.urlencode($param_str).'\')"').'</a>'; 
   echo $html_str;
 } else if (isset($_GET['action'])&&$_GET['action']=='recalc_price') {
+/*-------------------------------------------
+ 功能: 重新计算价格
+ 参数: $_POST['oid'] 订单编号
+ 参数: $_POST['opd'] 订单产品编号
+ ------------------------------------------*/
   require(DIR_WS_CLASSES . 'payment.php');
   $orders_info_raw = tep_db_query("select currency, currency_value from ".TABLE_PREORDERS." where orders_id = '".$_POST['oid']."'");
   $orders_info = tep_db_fetch_array($orders_info_raw);
@@ -779,6 +900,13 @@ if ($_POST['orders_id'] &&
   $price_array[] = $handle_fee;
   echo implode('|||', $price_array);
 } else if ($_GET['action'] == 'handle_mark') {
+/*----------------------------------------
+ 功能: 处理标记 
+ 参数: $_GET['select_mark'] 选择标记 
+ 参数: $_GET['mark_symbol'] 标记符号
+ 参数: $_POST['param_other'] 参数
+ 参数: $_GET['c_site'] SITE_ID
+ ---------------------------------------*/
   $return_array = array();
   $select_mark = $_GET['select_mark'];
   $mark_symbol = $_GET['mark_symbol'];
@@ -816,7 +944,12 @@ if ($_POST['orders_id'] &&
   }
   echo implode('|||', $return_array);
 } else if ($_GET['action'] == 'read_flag') {
-
+/*-------------------------------------------
+ 功能: 读取标志 
+ 参数: $_POST['user'] 用户
+ 参数: $_POST['flag'] 标志
+ 参数: $_POST['oid'] 订单编号
+ ------------------------------------------*/
   $users_name = $_POST['user'];
   $read_flag = $_POST['flag'];
   $orders_id = $_POST['oid'];
@@ -842,6 +975,12 @@ if ($_POST['orders_id'] &&
     }
   }
 } else if ($_GET['action'] == 'select_site') {
+/*-----------------------------------------
+  功能: 选择站点 
+  参数: $_POST['site_list'] 站点列表中
+  参数: $_POST['site_id'] SITE_ID
+ ----------------------------------------*/
+
   if($_POST['site_list'] == ''){
     $orders_site_array = array();
     $orders_site_query = tep_db_query("select id from ". TABLE_SITES);
@@ -887,7 +1026,11 @@ if ($_POST['orders_id'] &&
     echo tep_href_link(FILENAME_PREORDERS, $_POST['param_url']); 
   }
 }else if($_GET['action'] == 'orders_session'){
-
+/*------------------------------------------
+ 功能: 订单会话 
+ 参数: $_POST['orders_session_type'] 订单会话类型
+ 参数: $_POST['orders_session_value'] 订单会话值
+ -----------------------------------------*/
   $session_type = $_POST['orders_session_type'];
   $session_value = $_POST['orders_session_value'];
   $session_orders_id = $_POST['orders_id'];

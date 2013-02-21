@@ -2881,13 +2881,13 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         </div>
         </div>
         </div> 
-        <div class="pageHeading_box02">
+        <div class="pageHeading_box_right">
         <div id="orders_comment">
         <h3>Order Comment</h3>
         <form action="ajax_orders.php" onsubmit="return validate_comment()" id='form_orders_comment' method="post">
 
         <textarea name="orders_comment" cols="100" rows="10" 
-        style = "overflow-y:auto"class="pageHeading_box03"><?php echo $order->info['orders_comment'];?></textarea><br>
+        style = "overflow-y:auto"class="pageHeading_box_textarea"><?php echo $order->info['orders_comment'];?></textarea><br>
         <input type="hidden" name="orders_id" value="<?php echo $order->info['orders_id'];?>">
         <input type="hidden" name="orders_comment_flag" value="">
         <input type="hidden" name="page" value="<?php echo $_GET['page'];?>">

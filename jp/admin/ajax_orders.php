@@ -61,12 +61,25 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 if ($_POST['orders_id'] &&
     ($_POST['orders_comment']||$_POST['orders_comment_flag']=='true')) {
+/*------------------------------------------------
+ 功能: 订单注释标志
+ 参数: $_POST['orders_comment'] 获取orders_comment值
+ -----------------------------------------------*/
   // update orders_comment
   tep_db_perform('orders', array('orders_comment' => $_POST['orders_comment']), 'update', "orders_id='".$_POST['orders_id']."'");
   tep_redirect(tep_href_link(FILENAME_ORDERS,'page='.$_POST['page'].'&oID='.$_POST['orders_id'].'&action=edit'));
 } else if ($_GET['action'] == 'paydate') {
+/*-----------------------------------------------
+ 功能: 支付日期 
+ 参数: 无 
+ ----------------------------------------------*/
   echo date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day()));
 } else if ($_GET['action'] == 'set_quantity' && $_GET['products_id'] && $_GET['count']) {
+/*---------------------------------------------
+ 功能: 设置数量
+ 参数: $_GET['products_id'] 产品编号值为真
+ 参数: $_GET['count']  数值为真
+ --------------------------------------------*/
   $p  = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$_GET['products_id']."'"));
   $rp = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$p['relate_products_id']."'"));
 
@@ -77,28 +90,72 @@ if ($_POST['orders_id'] &&
     //print_r("update ".TABLE_PRODUCTS." set products_real_quantity='".$q."' where products_id='".$p['relate_products_id']."'"); 
   }
 } else if ($_GET['orders_id'] && isset($_POST['orders_credit'])) {
+/*--------------------------------------------
+ 功能: 订单信用
+ 参数: $_GET['orders_id'] 订单编号值为真
+ 参数: $_POST['orders_credit'] 设置$_POST['orders_credit']
+ -------------------------------------------*/
   $order = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS." where orders_id='".$_GET['orders_id']."'"));
   tep_db_perform('customers', array('customers_fax' => $_POST['orders_credit']), 'update', "customers_id='".$order['customers_id']."'");
   tep_redirect(tep_href_link(FILENAME_ORDERS,'page='.$_POST['page'].'&oID='.$_POST['orders_id'].'&action=edit'));
 } else if ($_GET['orders_id'] && isset($_GET['orders_important_flag'])) {
+/*-------------------------------------------
+ 功能: 订单的重要标志  
+ 参数: $_GET['orders_id'] 订单编号值为真
+ 参数: $_GET['orders_important_flag'] 设置$_GET['orders_important_flag']订单标志
+ ------------------------------------------*/
   // 重要
   tep_db_perform('orders', array('orders_important_flag' => $_GET['orders_important_flag']), 'update', "orders_id='".$_GET['orders_id']."'");
 } else if ($_GET['orders_id'] && isset($_GET['orders_care_flag'])) {
+/*------------------------------------------
+ 功能: 订单服务标志
+ 参数: $_GET['orders_id'] 订单编号值为真
+ 参数: $_GET['orders_care_flag'] 设置$_GET['orders_care_flag']
+ -----------------------------------------*/
   // 注意处理方式
   tep_db_perform('orders', array('orders_care_flag' => $_GET['orders_care_flag']), 'update', "orders_id='".$_GET['orders_id']."'");
 } else if ($_GET['orders_id'] && isset($_GET['orders_wait_flag'])) {
+/*------------------------------------------
+ 功能: 订单等待标志
+ 参数: $_GET['orders_id'] 订单编号值为真
+ 参数: $_GET['orders_wait_flag'] 订单标志值
+ -----------------------------------------*/
   // 交易等待
   tep_db_perform('orders', array('orders_wait_flag' => $_GET['orders_wait_flag']), 'update', "orders_id='".$_GET['orders_id']."'");
 }  else if ($_GET['orders_id'] && isset($_GET['orders_inputed_flag'])) {
+/*------------------------------------------
+ 功能: 订单填写会员标志
+ 参数: $_GET['orders_id'] 订单编号值为真
+ 参数: $_GET['orders_inputed_flag'] 订单会员标志值
+ -----------------------------------------*/
   // 输入完成
   tep_db_perform('orders', array('orders_inputed_flag' => $_GET['orders_inputed_flag']), 'update', "orders_id='".$_GET['orders_id']."'");
 } else if ($_GET['action'] == 'delete' && $_GET['orders_id'] && $_GET['computers_id']) {
+/*-----------------------------------------
+ 功能: 删除订单 
+ 参数: $_GET['orders_id']  订单编号值
+ 参数: $_GET['computers_id'] 计算机ID值
+ ----------------------------------------*/
   tep_db_query("delete from ".TABLE_ORDERS_TO_COMPUTERS." where orders_id='".$_GET['orders_id']."' and computers_id='".(int)$_GET['computers_id']."'");
 } else if ($_GET['action'] == 'insert' && $_GET['orders_id'] && $_GET['computers_id']) {
+/*----------------------------------------
+ 功能: 添加订单 
+ 参数: $_GET['orders_id']  订单编号值
+ 参数: $_GET['computers_id'] 计算机ID值
+ ---------------------------------------*/
   tep_db_query("insert into ".TABLE_ORDERS_TO_COMPUTERS." (`orders_id`,`computers_id`) VALUES('".$_GET['orders_id']."','".(int)$_GET['computers_id']."')");
 } else if ($_GET['action'] == 'last_customer_action') {
+/*---------------------------------------
+ 功能: 最后顾客操作
+ 参数: 无
+ --------------------------------------*/
   echo LAST_CUSTOMER_ACTION;
 } else if (isset($_GET['orders_id']) && isset($_GET['work'])) {
+/*--------------------------------------
+ 功能: 订单编号工作 
+ 参数: $_GET['orders_id'] 订单编号值
+ 参数: $_GET['work']  订单工作值
+ -------------------------------------*/
   // A, B, C
   $exists_order_work_raw = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$_GET['orders_id']."'"); 
   $exists_order_work_res = tep_db_fetch_array($exists_order_work_raw);
@@ -301,6 +358,10 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
         <?php 
         }
 }  else if(isset($_GET['action'])&&$_GET['action'] == 'getallpwd'){
+/*--------------------------------------------
+ 功能: 获得所有密码 
+ 参数: 无
+ -------------------------------------------*/
   $sql = "select u.userid,u.rule,l.letter from ".
     TABLE_USERS." u , ".TABLE_LETTERS." l 
 		where u.userid = l.userid and (l.letter != '' or l.letter != null)";
@@ -313,6 +374,10 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $str = implode(',',$arr); 
   echo $str;
 }else if(isset($_GET['action'])&&$_GET['action'] == 'getpercent'){
+/*-------------------------------------------
+ 功能: 得到百分比   
+ 参数: $_POST['cid'] 获取$_POST['cid']值 
+ ------------------------------------------*/
   if(isset($_POST['cid'])&&$_POST['cid']){
     $sql = "select sac.percent as percent from ".TABLE_PRODUCTS_TO_CATEGORIES." 
 			p2c,set_auto_calc sac,".TABLE_ORDERS_PRODUCTS." op 
@@ -336,6 +401,10 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
     echo 0;
   }
 }else if(isset($_GET['action'])&&$_GET['action'] == 'faq_c_is_set_romaji'){
+/*-----------------------------------------
+ 功能: 常见问题解答罗马字 
+ 参数: $_POST['romaji']  罗马字值
+ ----------------------------------------*/
   $romaji = $_POST['romaji'];
   $romaji = str_replace('11111111','&',$romaji);
   $romaji = str_replace('22222222','+',$romaji);
@@ -379,6 +448,10 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
     echo 'false';
   }
 }else if(isset($_GET['action'])&&$_GET['action'] == 'faq_q_is_set_romaji'){
+/*------------------------------------------
+ 功能: 常见问题罗马字 
+ 参数: $_POST['romaji']  罗马字值
+ -----------------------------------------*/
   $romaji = $_POST['romaji'];
   $romaji = str_replace('11111111','&',$romaji);
   $romaji = str_replace('22222222','+',$romaji);
@@ -423,6 +496,10 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
     echo 'false';
   }
 }else if(isset($_GET['action'])&&$_GET['action'] == 'check_romaji'){
+/*-------------------------------------------
+ 功能: 检查罗马字 
+ 参数: $_POST['romaji']  罗马字值
+ ------------------------------------------*/
   $romaji = $_POST['romaji'];
   $romaji = str_replace('11111111','&',$romaji);
   $romaji = str_replace('22222222','+',$romaji);
@@ -466,6 +543,10 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
     }
   }
 }else if(isset($_GET['action'])&&$_GET['action'] == 'c_is_set_romaji'){
+/*--------------------------------------------
+ 功能: 设置罗马字 
+ 参数: $_POST['romaji']  罗马字值
+ -------------------------------------------*/
   $romaji = $_POST['romaji'];
   $romaji = str_replace('11111111','&',$romaji);
   $romaji = str_replace('22222222','+',$romaji);
@@ -509,6 +590,10 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
     echo 'false';
   }
 }else if(isset($_GET['action'])&&$_GET['action'] == 'p_is_set_romaji'){
+/*--------------------------------------------
+ 功能: 罗马字集 
+ 参数: $_POST['romaji']  罗马字值
+ -------------------------------------------*/
   $romaji = $_POST['romaji'];
   $romaji = str_replace('11111111','&',$romaji);
   $romaji = str_replace('22222222','+',$romaji);
@@ -553,6 +638,11 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
     echo 'false';
   }
 }else if(isset($_GET['action'])&&$_GET['action'] == 'pwd_check_save'){
+/*---------------------------------------------
+ 功能: 密码检查保存  
+ 参数: $_POST['check_str'] 校验值 
+ 参数: $_POST['page_name'] 页面的名称
+ --------------------------------------------*/
   if(isset($_POST['check_str'])&&$_POST['check_str']){
     $check_arr = explode(',',$_POST['check_str']);
     if(in_array('admin',$check_arr)){
@@ -582,6 +672,10 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
     echo "noall";
   }
 }else if(isset($_GET['action'])&&$_GET['action']=='getpwdcheckbox'){
+/*-------------------------------------------
+ 功能: 得到密码复选框 
+ 参数: $_POST['page_name'] 页面的名称
+ ------------------------------------------*/
   $page_name = $_POST['page_name'];
   if($_SESSION['last_page']!= $page_name){
     unset($_SESSION[$_SESSION['last_page']]);
@@ -626,12 +720,21 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
     echo "false";
   }
 }else if(isset($_GET['action'])&&$_GET['action']=='save_pwd_log'){
+/*-------------------------------------------
+ 功能: 保存密码记录 
+ 参数: $_POST['one_time_pwd'] 一次密码 
+ 参数: $_POST['page_name'] 页面的名称
+ ------------------------------------------*/
   tep_insert_pwd_log($_POST['one_time_pwd'],$ocertify->auth_user,true,$_POST['page_name']);
 } else if (isset($_GET['action'])&&$_GET['action']=='show_right_order_info') {
+/*-------------------------------------------
+ 功能: 正确的顺序信息 
+ 参数: $_POST['oid'] 订单编号值 
+ ------------------------------------------*/
   $orders_info_raw = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$_POST['oid']."'"); 
   $orders_info = tep_db_fetch_array($orders_info_raw); 
   require(DIR_WS_FUNCTIONS . 'visites.php');
-  $param_str = ''; 
+  $param_str = '';  
   foreach ($_POST as $key => $value) {
     if (($key != 'oid') && ($key != 'popup')) {
       $param_str .= $key.'='.$value.'&'; 
@@ -644,6 +747,10 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
     tep_get_orders_products_string($orders_info, true, false, $param_str);
   }
 } else if (isset($_GET['action'])&&$_GET['action']=='get_oa_type') {
+/*-----------------------------------------
+ 功能: 得到OA类型 
+ 参数: $_POST['oid'] 订单编号值 
+ ----------------------------------------*/
   $onsuit = false;
   $tnsuit = false;
   $notfinish = false;
@@ -686,6 +793,11 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   }
   //取得 支付类型 及 支付方法
 } else if  (isset($_GET['action'])&&$_GET['action']=='get_oa_groups') {
+/*--------------------------------------
+ 功能: 得到OA组 
+ 参数: $_GET['payment'] 支付值 
+ 参数: $_GET['buytype'] 购买类型值
+ -------------------------------------*/
   $sql = 'select 
 		g.name gname,g.id gid,f.id form_id
 		from oa_group g,oa_form f,oa_form_group fg  
@@ -708,6 +820,11 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   echo json_encode($bigText);
 
 } else if  (isset($_GET['action'])&&$_GET['action']=='get_group_renderstring') {
+/*-------------------------------------
+ 功能: 获取提供的字符串 
+ 参数: $_GET['ids'] 订单编号
+ 参数: $_GET['group_id'] 组ID值
+ ------------------------------------*/
   $ids = $_GET['ids'];
   //  $ids = $_POST['ids'];
   $ids_array = explode('_',$ids);
@@ -761,12 +878,20 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   //  echo $bigRender;
 
 } else if (isset($_GET['action'])&&$_GET['action']=='show_right_preorder_info') {
+/*---------------------------------------------
+ 功能: 右序信息
+ 参数: $_POST['oid'] 订单编号
+ --------------------------------------------*/
   $orders_info_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_POST['oid']."'"); 
   $orders_info = tep_db_fetch_array($orders_info_raw); 
   require(DIR_WS_FUNCTIONS . 'visites.php');
   tep_get_pre_orders_products_string($orders_info, true);
 
 }else if (isset($_GET['action'])&&$_GET['action']=='change_mail_list'){
+/*--------------------------------------------
+ 功能: 更改邮件列表 
+ 参数: $_POST['mail_list_action'] 邮件列表的作用 
+ -------------------------------------------*/
   if(isset($_SESSION['mail_sub_customer'])&&$_SESSION['mail_sub_customer']){
     $tmp_arr = explode(',',$_SESSION['mail_sub_customer']);
   }else{
@@ -783,10 +908,21 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   }
   $_SESSION['mail_sub_customer'] = implode(',',$tmp_arr);
 }else if (isset($_GET['action'])&&$_GET['action']=='save_mail_info'){
+/*-------------------------------------------
+ 功能: 保存邮件信息
+ 参数: $_POST['mail_info_from'] 邮件信息
+ 参数: $_POST['mail_info_subject'] 邮件信息主题
+ 参数: $_POST['mail_info_message'] 邮件信息消息
+ ------------------------------------------*/
   $_SESSION['mail_post_value']['from'] = $_POST['mail_info_from'];
   $_SESSION['mail_post_value']['subject'] = $_POST['mail_info_subject'];
   $_SESSION['mail_post_value']['message'] = $_POST['mail_info_message'];
 }else if (isset($_GET['action'])&&$_GET['action']=='mail_checkbox_validate'){
+/*------------------------------------------
+ 功能: 邮件复选框验证 
+ 参数: $_SESSION['mail_list'] 邮件列表
+ 参数: $_SESSION['mail_sub_customer'] 邮件客户
+ -----------------------------------------*/
   if(isset($_SESSION['mail_list'])&&$_SESSION['mail_list']&&
       isset($_SESSION['mail_sub_customer'])&&$_SESSION['mail_sub_customer']){
     $mail_list_query = tep_db_query($_SESSION['mail_list']);
@@ -800,6 +936,10 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
     echo "false";
   }
 } else if (isset($_GET['action'])&&$_GET['action']=='edit_campaign') {
+/*-----------------------------------------
+ 功能: 编辑活动
+ 参数: $_POST['cid'] ID值
+ ----------------------------------------*/
   require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_CAMPAIGN); 
   $campaign_query = tep_db_query("select * from ".TABLE_CAMPAIGN." where id = '".$_POST['cid']."'"); 
   $campaign_res = tep_db_fetch_array($campaign_query);
@@ -1071,6 +1211,10 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= '</form>'; 
   echo $html_str;
 } else if (isset($_GET['action'])&&$_GET['action']=='new_campaign') {
+/*------------------------------------------------
+ 功能: 新活动 
+ 参数: $_POST['site_id'] site id值 
+ -----------------------------------------------*/
   require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_CAMPAIGN); 
   $html_str = '';
   $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_top">';
@@ -1242,6 +1386,12 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= '</form>'; 
   echo $html_str;
 } else if (isset($_GET['action'])&&$_GET['action']=='check_campaign') {
+/*---------------------------------------------------
+ 功能: 检查活动
+ 参数: $_POST['title'] 标题值
+ 参数: $_POST['campaign_id'] 活动ID值
+ 参数: $_POST['site_id'] SITE_ID值
+ --------------------------------------------------*/
   require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_CAMPAIGN); 
   $error_array = array();
   $error_array['title'] = '';
@@ -1356,6 +1506,10 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
     }
     echo implode('|||', $error_array);
 } else if (isset($_GET['action'])&&$_GET['action']=='show_del_info') {
+/*-----------------------------------------------
+ 功能: 显示删除信息 
+ 参数: $_POST['oID'] 订单ID值
+ ----------------------------------------------*/
   require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_ORDERS);
   $param_str = ''; 
   foreach ($_POST as $key => $value) {
@@ -1383,6 +1537,10 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= '</table>'; 
   echo $html_str;
 } else if (isset($_GET['action'])&&$_GET['action']=='cancel_del_info') {
+/*---------------------------------------------
+ 功能: 取消删除信息
+ 参数: $_POST['oID'] 订单ID值
+ --------------------------------------------*/
   $param_str = ''; 
   foreach ($_POST as $key => $value) {
     if (($key != 'oID') && ($key != 'popup')) {
@@ -1394,6 +1552,10 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_order_info(\''.$_POST['oID'].'\', \''.urlencode($param_str).'\')"').'</a>';
   echo $html_str;
 } else if (isset($_GET['action'])&&$_GET['action']=='search_manual') {
+/*-------------------------------------------
+ 功能: 检索 
+ 参数: $_GET['q'] 要搜索的名字
+ ------------------------------------------*/
 $json_array=array();
 $search_cat_manual_query=tep_db_query("select categories_name,categories_id from ".TABLE_CATEGORIES_DESCRIPTION." where categories_name like '%".$_GET['q']."%' and site_id='0'");
 while($search_cat_manual_array=tep_db_fetch_array($search_cat_manual_query)){
@@ -1409,6 +1571,10 @@ $json_array[]=array('name'=>$search_pro_manual_array['products_name']);
 }
 echo json_encode($json_array);
 } else if (isset($_GET['action'])&&$_GET['action']=='search_group') {
+/*-----------------------------------------
+ 功能: 搜索组 
+ 参数: $_GET['q'] 要搜索的名字
+ ----------------------------------------*/
   $json_array = array(); 
   $search_group_query = tep_db_query("select name from ".TABLE_OPTION_GROUP." where name like '%".tep_replace_full_character($_GET['q'])."%' order by created_at desc");
     while ($search_group = tep_db_fetch_array($search_group_query)) {
@@ -1416,6 +1582,11 @@ echo json_encode($json_array);
     }
   echo json_encode($json_array); 
 } else if (isset($_GET['action'])&&$_GET['action']=='check_group') {
+/*----------------------------------------
+ 功能: 检查组 
+ 参数: $_POST['gname'] 组名
+ 参数: $_POST['gid']   组ID
+ ---------------------------------------*/
   //检查组的信息是否填写正确 
   require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_OPTION); 
   $error_array = array();
@@ -1450,18 +1621,32 @@ echo json_encode($json_array);
   }
   echo implode('||', $error_array);
 } else if (isset($_GET['action'])&&$_GET['action']=='change_item') {
+/*--------------------------------------------------
+ 功能: 更改项目 
+ 参数: $_POST['stype'] 类型
+ 参数: $_POST['item_id'] 项目编号
+ -------------------------------------------------*/
   //改变item类型的显示 
   $classname = 'HM_Option_Item_'.ucfirst($_POST['stype']);
   require_once('option/'.$classname.'.php');
   $item_instance = new $classname();
   echo $item_instance->prepareFormWithParent($_POST['item_id']);
 } else if (isset($_GET['action'])&&$_GET['action']=='handle_option') {
+/*-------------------------------------------------
+ 功能: 处理选项 
+ 参数: $_POST['keyword'] 关键词
+ ------------------------------------------------*/
   $option_group_exists_raw = tep_db_query("select id from ".TABLE_OPTION_GROUP." where name = '".$_POST['keyword']."'");
   if (!tep_db_num_rows($option_group_exists_raw)) {
     $insert_sql = "insert into `".TABLE_OPTION_GROUP."` values(NULL, '".$_POST['keyword']."', '".$_POST['keyword']."', '', '', '1', '1000', '".date('Y-m-d H:i:s', time())."')";
     tep_db_query($insert_sql);
   }
 } else if (isset($_GET['action'])&&$_GET['action']=='check_item') {
+/*-----------------------------------------------
+ 功能: 检查项目 
+ 参数: $_POST['ititle'] 标题 
+ 参数: $_POST['ifront_title'] 一个标题
+ ----------------------------------------------*/
   //检查item信息填写是否正确 
   require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_OPTION); 
   $error_array = array();
@@ -1501,6 +1686,11 @@ echo json_encode($json_array);
   }
   echo implode('||', $error_array);
 } else if (isset($_GET['action'])&&$_GET['action']=='search_item_title') {
+/*--------------------------------------------
+ 功能: 搜索项目的标题 
+ 参数: $_POST['sea_title'] 搜索标题
+ 参数: $_POST['s_item_id'] 搜索物品ID
+ -------------------------------------------*/
   //搜索标题相近的item 
   require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_OPTION); 
   $html_str = '';
@@ -1534,6 +1724,10 @@ echo json_encode($json_array);
   
   echo $html_str.'|||'.$html_str_add;
 } else if (isset($_GET['action'])&&$_GET['action']=='preview_title') {
+/*-------------------------------------------
+ 功能: 预览标题 
+ 参数: $_POST['preview_id'] 预览ID
+ ------------------------------------------*/
   require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_OPTION); 
   require_once('enabledoptionitem.php'); 
   $html_str = ''; 
@@ -1587,6 +1781,10 @@ echo json_encode($json_array);
   
   echo $html_str;
 } else if (isset($_GET['action'])&&$_GET['action']=='search_title') {
+/*-------------------------------------------
+ 功能: 标题搜索  
+ 参数: $_GET['q'] 标题  
+ ------------------------------------------*/
   $json_array = array(); 
   $search_item_query = tep_db_query("select title from ".TABLE_OPTION_ITEM." where title like '%".tep_replace_full_character($_GET['q'])."%' order by created_at desc");
   while ($search_item = tep_db_fetch_array($search_item_query)) {
@@ -1594,6 +1792,15 @@ echo json_encode($json_array);
   }
   echo json_encode($json_array); 
 } else if (isset($_GET['action'])&&$_GET['action']=='recalc_price') {
+/*-----------------------------------------
+ 功能: 重新计算价格 
+ 参数: $_POST['op_string'] 字符串
+ 参数: $_POST['op_string_title'] 字符串标题
+ 参数: $_POST['op_string_val'] 字符串值
+ 参数: $_POST['oid'] 订单ID值
+ 参数: $_POST['p_price'] 价格
+ 参数: $_POST['opd'] 订单产品编号
+ ----------------------------------------*/
   $op_str = $_POST['op_str'];
   $op_string = $_POST['op_string'];
   $op_string_title = $_POST['op_string_title'];
@@ -1677,6 +1884,11 @@ echo json_encode($json_array);
   
   echo implode('|||', $price_array);
 } else if (isset($_GET['action'])&&$_GET['action']=='recalc_all_price') {
+/*--------------------------------------------------
+ 功能: 重新计算所有价格
+ 参数: $_POST['oid'] 订单编号
+ 参数: $_POST['op_i'] 订单产品编号
+ -------------------------------------------------*/
   
   $op_array = explode('|||', $_POST['op_i']);
  
@@ -1734,13 +1946,21 @@ echo json_encode($json_array);
   }
   echo implode('|||', $price_tmp_array);
 }else if($_GET['action'] == 'validate_email'){
+/*--------------------------------------------
+ 功能: 验证电子邮件
+ 参数: $_POST['email'] 电子邮件值
+ -------------------------------------------*/
   require('includes/step-by-step/new_application_top.php');
   $email = $_POST['email'];
   if(tep_validate_email($email)){
     echo "true";
   }
 }else if($_GET['action'] == 'delete_products'){
-
+/*-------------------------------------------
+ 功能: 删除产品 
+ 参数: $_POST['orders_id'] 订单编号
+ 参数: $_POST['orders_products_id'] 订单产品编号
+ ------------------------------------------*/
   $session_orders_id = $_POST['orders_id'];
   $products_id_list_array = explode('_',$_POST['orders_products_id']);
   $products_delete_flag = false;
@@ -1768,6 +1988,17 @@ echo json_encode($json_array);
     echo 'true';
   }
 }else if($_GET['action'] == 'price_total'){
+/*-------------------------------------------
+ 功能: 总价格 
+ 参数: $_POST['total_value'] 总价值
+ 参数: $_POST['point_value'] 点值
+ 参数: $_POST['total_title'] 总标题
+ 参数: $_POST['total_key'] 总的关键词
+ 参数: $_POST['orders_id'] 订单编号
+ 参数: $_POST['point_value_temp'] 点值
+ 参数: $_POST['handle_fee'] 处理费
+ 参数: $_POST['session_site_id'] SITE_ID
+ ------------------------------------------*/
   require(DIR_WS_CLASSES . 'payment.php');
   $total_value = $_POST['total_value'];
   $point_value = $_POST['point_value'];
@@ -1867,6 +2098,13 @@ echo json_encode($json_array);
     echo $products_num_error_str;
   }
 } else if ($_GET['action'] == 'handle_mark') {
+/*-------------------------------------------
+ 功能: 处理标记  
+ 参数: $_GET['select_mark'] 选择标记
+ 参数: $_GET['mark_symbol'] 标记符号
+ 参数: $_GET['c_site'] SITE_ID
+ 参数: $_POST['param_other'] 参数
+ ------------------------------------------*/
   $return_array = array();
   $select_mark = $_GET['select_mark'];
   $mark_symbol = $_GET['mark_symbol'];
@@ -1904,7 +2142,12 @@ echo json_encode($json_array);
   }
   echo implode('|||', $return_array);
 } else if ($_GET['action'] == 'read_flag') {
-
+/*------------------------------------------
+ 功能: 读取标志 
+ 参数: $_POST['user'] 用户
+ 参数: $_POST['flag'] 标志
+ 参数: $_POST['oid'] 订单编号
+ -----------------------------------------*/
   $users_name = $_POST['user'];
   $read_flag = $_POST['flag'];
   $orders_id = $_POST['oid'];
@@ -1930,6 +2173,11 @@ echo json_encode($json_array);
     }
   }
 } else if ($_GET['action'] == 'select_site') {
+/*-----------------------------------------
+ 功能: 选择站点 
+ 参数: $_POST['site_list'] 站点列表中
+ 参数: $_POST['site_id'] SITE_ID
+ ----------------------------------------*/
   if($_POST['site_list'] == ''){
     $orders_site_array = array();
     $orders_site_query = tep_db_query("select id from ". TABLE_SITES);
@@ -1975,6 +2223,11 @@ echo json_encode($json_array);
     echo tep_href_link(FILENAME_ORDERS, $_POST['param_url']); 
   }
 } else if ($_GET['action'] == 'handle_split') {
+/*---------------------------------------------
+ 功能: 处理分组 
+ 参数: $_POST['split_total_page'] 分总页面
+ 参数: $_POST['j_page'] 页面 
+ --------------------------------------------*/
   if ($_POST['j_page'] > $_POST['split_total_page']) {
     $_POST['j_page'] = $_POST['split_total_page']; 
   } else if ($_POST['j_page'] == 0) {
@@ -1982,6 +2235,11 @@ echo json_encode($json_array);
   }
   tep_redirect(tep_href_link($_POST['current_file_info'], $_POST['split_param'].(($_POST['j_page'] != '1')?'page='.$_POST['j_page']:'')));
 } else if ($_GET['action'] == 'set_new_price') {
+/*--------------------------------------------
+ 功能: 设置新的价格
+ 参数: $_POST['products_id'] 产品编号
+ 参数: $_POST['new_price']   新价格
+ -------------------------------------------*/
   //设置新的商品价格
   $bflag_single = false;
   if (tep_get_bflag_by_product_id($_POST['products_id'])) {
@@ -2015,6 +2273,10 @@ echo json_encode($json_array);
   $html_str .= tep_get_signal_pic_info($products_info['products_last_modified']); 
   echo $html_str;
 } else if ($_GET['action'] == 'get_top_layer') {
+/*-----------------------------------------
+ 功能: 获得顶层 
+ 参数: $_POST['current_belong'] 目前属于
+ ----------------------------------------*/
   //获得页面最大的z-index值 
   $z_index = '1';
  

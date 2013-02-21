@@ -24,11 +24,10 @@ class user_certify {
 
     var $key = 'gf1a2';
 /* -------------------------------------
-    功  能 : 构造函数
-    参  数 : $s_sid             - (i) sessionID
-    返回值 : TRUE/FALSE
-    说  明 : 进行用户认证
- ------------------------------------ */
+    功  能 : 进行用户认证
+    参  数 : $s_sid(string)  sessionID
+    返回值 : TRUE/FALSE(bool)
+  ----------------------------------- */
     function user_certify($s_sid) {
       //判断用户IP是否是被封IP,如果是给出提示，并无法登录
     if(isset($_POST['loginuid'])){
@@ -290,11 +289,11 @@ class user_certify {
     }
 
 /* -------------------------------------
-    功  能 : 检查密码
-    参  数 : $s_sid             - (i) sessionID
-             $pwd               - (i) パスワード
-             $auth_user         - (i) 用户ID
-    返回值 : TRUE/FALSE
+    功能 : 检查密码
+    参数 : $s_sid(number)      sessionID
+    参数 ：$pwd(string)  密码 
+    参数 : $auth_user(string) 用户ID
+    返回值 : TRUE/FALSE(bool)
  ------------------------------------ */
     function password_check($s_sid,$pwd,$auth_user) {
         if (isset($GLOBALS['_POST']['execute_login']) && $GLOBALS['_POST']['execute_login']) {
@@ -317,8 +316,8 @@ class user_certify {
 
 /* -------------------------------------
     功  能 : 获取超时时刻
-    参  数 : 没有
-    返回值 : 超时时刻
+    参  数 : 无
+    返回值 : 超时时刻(date)
  ------------------------------------ */
     function time_out_time() {
         if (isset($GLOBALS['SESS_LIFE']) && $GLOBALS['SESS_LIFE']) {
@@ -332,10 +331,9 @@ class user_certify {
 
 /* -------------------------------------
     功  能 : 获取用户权限
-    参  数 : $s_sid             - (i) sessionID
-             $auth_user         - (i) 用户ID
+    参  数 : $s_sid(number)  sessionID
+    参  数 ：$auth_user(string) 用户ID
     返回值 : 认证完成：空字符串、异常终了：错误信息
-    说  明 : 将获取的用户权限放到类变量里
  ------------------------------------ */
     function user_parmission($s_sid,$auth_user) {
         // 获取用户权限
@@ -363,8 +361,8 @@ class user_certify {
     }
 /* -------------------------------------
     功  能 : 管理员（admin）注册
-    参  数 : 没有
-    返回值 : 没有
+    参  数 : 无 
+    返回值 : 无 
     说  明 : 用户一个也没有注册的时候，注册管理员（admin）
  ------------------------------------ */
     function user_admin_entry() {
@@ -380,10 +378,10 @@ class user_certify {
 
 /* -------------------------------------
     功  能 : 记载认证日志
-    参  数 : $s_sid             - (i) sessionID
-             $s_status          - (i) 状态
-             $auth_user         - (i) 用户ID
-    返回值 : 没有
+    参  数 : $s_sid(number)  sessionID
+    参  数 ：$s_status(string)    状态
+    参  数 ：$auth_user(string)   用户ID
+    返回值 : 无
  ------------------------------------ */
     function putCertifyLog($s_sid,$s_status,$auth_user) {
         $this->deleteCertifyLog();  // 经过一定期间删除旧的认证日志
@@ -431,9 +429,9 @@ class user_certify {
 
 /* -------------------------------------
     功  能 : 记载超时
-    参  数 : $s_sid             - (i) sessionID
-             $auth_user         - (i) 用户ID
-    返回值 : 没有
+    参  数 : $s_sid(number) sessionID
+    参  数 ：$auth_user(string) 用户ID
+    返回值 : 无
  ------------------------------------ */
     function putTimeOut($s_sid) {
         if ($this->flg) {
@@ -449,9 +447,9 @@ class user_certify {
 
 /* -------------------------------------
     功  能 : 经过一定时间将访问日志的状态更新为退出登录
-    参  数 : $actime            - (i) 超时时刻
-             $s_sid             - (i) 状态
-    返回值 : 没有
+    参  数 : $actime(date)  超时时刻
+    参  数 ：$s_sid(number) 状态
+    返回值 : 无
  ------------------------------------ */
     function logoutCertifyLog($actime,$s_sid) {
         // 不是现在的sessionID，并且和超时时刻比较是更早的最终访问时刻的话，就强制退出登录
@@ -460,8 +458,8 @@ class user_certify {
 
 /* -------------------------------------
     功  能 : 经过一定期间删除旧的认证日志
-    参  数 : 没有
-    返回值 : 没有
+    参  数 : 无
+    返回值 : 无
  ------------------------------------ */
     function deleteCertifyLog() {
         if ( 0 < $this->login_log_span) {
@@ -473,9 +471,9 @@ class user_certify {
 
 /* -------------------------------------
     功  能 : 退出登录
-    参  数 : $erf               - (i) 错误标签
-             $s_status          - (i) 状态
-    返回值 : 没有
+    参  数 : $erf(string)  错误标签
+    参  数 ：$s_status(string)  状态
+    返回值 : 无
  ------------------------------------ */
 function logout_user($erf='',$s_status='',$url='') {
     if ($s_status) {    // 记载退出登录

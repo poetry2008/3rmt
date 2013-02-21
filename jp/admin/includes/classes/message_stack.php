@@ -13,7 +13,11 @@
 
   class messageStack extends tableBlock {
     var $size = 0;
-
+/*----------------------------------------
+ 功能: 消息栈
+ 参数: 无
+ 返回值: 无
+ ---------------------------------------*/
     function messageStack() {
       global $messageToStack;
 
@@ -26,7 +30,12 @@
         tep_session_unregister('messageToStack');
       }
     }
-
+/*---------------------------------------
+ 功能: 添加消息
+ 参数: $message(string) 消息
+ 参数: $type(string) 类型
+ 返回值: 无
+ --------------------------------------*/
     function add($message, $type = 'error') {
       if ($type == 'error') {
         $this->errors[] = array('params' => 'class="messageStackError"', 'text' => tep_image(DIR_WS_ICONS . 'error.gif', ICON_ERROR) . '&nbsp;' . $message);
@@ -44,7 +53,12 @@
 
       $this->size++;
     }
-
+/*-------------------------------------
+ 功能: 添加会话
+ 参数: $message(string) 消息
+ 参数: $type(string) 类型
+ 返回值: 无
+ ------------------------------------*/
     function add_session($message, $type = 'error') {
       global $messageToStack;
 
@@ -77,12 +91,20 @@
       $_SESSION['messageToStack'] = $messageToStack;
       */
     }
-
+/*------------------------------------
+ 功能: 重置
+ 参数: 无
+ 返回值: 无
+ -----------------------------------*/
     function reset() {
       $this->errors = array();
       $this->size = 0;
     }
-
+/*-----------------------------------
+ 功能: 产品 
+ 参数: 无
+ 返回值:数据表错误 
+ ----------------------------------*/
     function output() {
       $this->table_data_parameters = 'class="messageBox"';
       return $this->tableBlock($this->errors);
