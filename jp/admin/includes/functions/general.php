@@ -323,7 +323,7 @@ function tep_get_all_get_params($exclude_array = '') {
 }
 
 /* -------------------------------------
-    功能: 把相应的英文月份、星期，替换为相应的日文月份、星期 
+    功能: 把相应的英文月份和星期替换为相应的日文月份和星期 
     参数: $raw_date(string) 日期 
     返回值: 格式化日期(string/boolean)
  ------------------------------------ */
@@ -391,7 +391,7 @@ function tep_datetime_short($raw_datetime) {
 }
 
 /* -------------------------------------
-    功能: 根据条件,合并数组     
+    功能: 合并数组     
     参数: $array1(array) 数组1
     参数: $array2(array) 数组2
     参数: $array3(array) 数组3
@@ -465,7 +465,7 @@ function tep_get_category_tree($parent_id = '0', $spacing = '', $exclude = '', $
 }
 
 /* -------------------------------------
-    功能: 根据商品分类id,获取起所关联的商品信息     
+    功能: 根据商品分类id,获取其所关联的商品信息     
     参数: $cid(int) 商品分类id  
     返回值: 商品信息(array)
  ------------------------------------ */
@@ -879,9 +879,9 @@ function tep_get_prid($uprid) {
 }
 
 /* -------------------------------------
-    功能: 获取当前语言下的相关信息  
+    功能: 获取当前语言的相关信息  
     参数: 无 
-    返回值: 当前语言下的相关信息(array)
+    返回值: 当前语言的相关信息(array)
  ------------------------------------ */
 function tep_get_languages() {
   global $languages_id;
@@ -1429,7 +1429,7 @@ function tep_get_country_zones($country_id) {
 }
 
 /* -------------------------------------
-    功能: 生成相应的区域列表  
+    功能: 生成指定国家的区域列表  
     参数: $country_id(int) 国家id 
     返回值: 区域列表(array)
  ------------------------------------ */
@@ -1461,7 +1461,7 @@ function tep_prepare_country_zones_pull_down($country_id = '') {
 /* -------------------------------------
     功能: 生成相应的国家列表  
     参数: $country_id(int) 国家id 
-    返回值: 列表(string)
+    返回值: 国家列表(string)
  ------------------------------------ */
 function tep_cfg_pull_down_country_list($country_id) {
   return tep_draw_pull_down_menu('configuration_value', tep_get_countries(), $country_id);
@@ -1661,9 +1661,9 @@ function tep_copy_uploaded_file($filename, $target) {
 }
 
 /* -------------------------------------
-    功能: 过滤路径  
+    功能: 如果路径的最后一个字符是/,则过滤掉  
     参数: $path(string) 路径 
-    返回值: 路径(string) 
+    返回值: 过滤后的路径(string) 
  ------------------------------------ */
 function tep_get_local_path($path) {
   if (substr($path, -1) == '/') $path = substr($path, 0, -1);
@@ -2342,7 +2342,7 @@ function tep_rand($min = null, $max = null) {
 }
 
 /* -------------------------------------
-    功能: 把字符串全角变半角 
+    功能: 把字符串全角字符变成半角字符 
     参数: $string(string) 字符串 
     返回值: 转换后的字符串(string) 
  ------------------------------------ */
@@ -2619,7 +2619,7 @@ function tep_parse_search_string($search_str = '', &$objects) {
 }
 
 /* -------------------------------------
-    功能: 配送时间 
+    功能: 格式化输出配送时间 
     参数: $raw_datetime(string) 时间 
     返回值: 格式化后的时间(string) 
  ------------------------------------ */
@@ -2996,11 +2996,11 @@ function tep_get_image_document_image($document_id)
 }
 
 /* -------------------------------------
-    功能: 获取该订单的商品的人物明描述 
+    功能: 获取该订单的商品的人物名描述 
     参数: $orders_id(string) 订单id 
     参数: $allorders(array) 订单数组 
     参数: $site_id(int) 网站id 
-    返回值: 该订单的商品的人物明描述(string) 
+    返回值: 该订单的商品的人物名描述(string) 
  ------------------------------------ */
 function orders_a($orders_id, $allorders = null, $site_id = 0)
 {
@@ -3379,7 +3379,7 @@ function tep_categories_description_exist($cid, $lid, $sid){
 }
 
 /* -------------------------------------
-    功能: 判断商品是否存在描述 
+    功能: 判断该商品是否存在描述 
     参数: $pid(int) 商品id 
     参数: $sid(int) 网站id 
     参数: $lid(int) 语言id 
@@ -3395,7 +3395,7 @@ function tep_products_description_exist($pid, $sid, $lid){
 }
 
 /* -------------------------------------
-    功能: 判断模块是否安装 
+    功能: 判断该模块是否安装 
     参数: $class(string) 类的名字 
     参数: $site_id(int) 网站id 
     返回值: 是否安装(boolean) 
@@ -3603,9 +3603,9 @@ function tep_get_product_by_id($pid,$site_id, $lid, $default = true){
 }
 
 /* -------------------------------------
-    功能: 获取faq分类的足id信息 
+    功能: 获取faq分类的组id信息 
     参数: 无 
-    返回值: faq分类的足id信息(string) 
+    返回值: faq分类的组id信息(string) 
  ------------------------------------ */
 function tep_get_faq_game_id_string(){
   $g_ids = array();
@@ -3831,7 +3831,7 @@ function tep_get_products_special_price($product_id) {
 }
 
 /* -------------------------------------
-    功能: 获取该商品的特价 
+    功能: 计算该商品的特价 
     参数: $price(float) 价格 
     参数: $offset(string) 间隔值 
     参数: $sum(string) 折扣 
@@ -3854,7 +3854,7 @@ function tep_get_special_price($price, $offset, $sum = '') {
 }
 
 /* -------------------------------------
-    功能: 获取该商品的价格 
+    功能: 计算该商品的价格 
     参数: $price(float) 价格 
     参数: $offset(string) 间隔值 
     参数: $sum(string) 折扣 
@@ -4160,7 +4160,7 @@ function cpathPart($cpath,$which=1) {
 }
 
 /* -------------------------------------
-    功能: 生成x选项的html 
+    功能: 生成选项的html 
     参数: $arrCategories(array) 分类数组 
     参数: $selectValue(string/boolean) 选择值 
     参数: $startName(string) 名 
@@ -4238,10 +4238,10 @@ if (!function_exists('json_encode'))
 }
 
 /* -------------------------------------
-    功能: 更新同业者 
+    功能: 把指定商品关联到指定同业者 
     参数: $product_id(int) 商品id 
     参数: $dougyousya_id(int) 同业者id 
-    返回值: 更新是否成功(boolean) 
+    返回值: 关联是否成功(boolean) 
  ------------------------------------ */
 function update_products_dougyousya($product_id, $dougyousya_id) {
   if (tep_db_num_rows(tep_db_query("select * from set_products_dougyousya where product_id = '".$product_id."'"))) {
@@ -4252,7 +4252,7 @@ function update_products_dougyousya($product_id, $dougyousya_id) {
 }
 
 /* -------------------------------------
-    功能: 更新同业者id 
+    功能: 获取同业者id 
     参数: $products_id(int) 商品id 
     返回值: 同业者id(int) 
  ------------------------------------ */
@@ -4334,10 +4334,10 @@ function tep_get_kakuukosuu_by_products_id($products_id) {
 }
 
 /* -------------------------------------
-    功能: 根据分类id和商品id获取价格信息 
+    功能: 根据分类id和商品id获取价格设定信息 
     参数: $categories_id(int) 分类id 
     参数: $products_id(int) 商品id 
-    返回值: 价格信息(int) 
+    返回值: 价格设定信息(int) 
  ------------------------------------ */
 function tep_get_kakaku_by_products_id($categories_id, $products_id){
   $data = tep_db_fetch_array(tep_db_query("select * from set_menu_list where categories_id='".$categories_id."' and products_id='".$products_id."'"));
@@ -4379,9 +4379,9 @@ function tep_get_category_tree_cpath($parent_id = '0', $spacing = '', $exclude =
 }
 
 /* -------------------------------------
-    功能: 获取该分类的父分类 
+    功能: 获取该分类的父分类,并用_连接自己 
     参数: $cid(int) 分类id 
-    返回值: 父分类(string) 
+    返回值: 分类路径(string) 
  ------------------------------------ */
 function tep_get_parent_cpath($cid){
   $p = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CATEGORIES." where categories_id='".$cid."'"));
@@ -5739,9 +5739,9 @@ function tep_display_google_results($from_url='', $c_type=false){
   }
 
 /* -------------------------------------
-    功能: 获取商品在库信息 
+    功能: 获取商品最大/最小库存 
     参数: $pid(int) 商品id 
-    返回值: 在库信息(array) 
+    返回值: 库存信息(array) 
  ------------------------------------ */
   function tep_get_product_inventory($pid) {
     $inventory_sql = "select max_inventory as `max`,min_inventory as `min` 
@@ -5804,7 +5804,7 @@ function tep_display_google_results($from_url='', $c_type=false){
   }
 
 /* -------------------------------------
-    功能: 判断分类描述是否存在 
+    功能: 判断该分类描述在指定网站是否存在 
     参数: $cid(int) 分类id 
     参数: $site_id(int) 网站id 
     返回值: 是否存在(boolean) 
@@ -5817,7 +5817,7 @@ function tep_display_google_results($from_url='', $c_type=false){
   }
 
 /* -------------------------------------
-    功能: 创建个别网站的分类信息
+    功能: 创建指定网站的分类信息
     参数: $cid(int) 分类id 
     参数: $site_id(int) 网站id 
     返回值: 无 
@@ -5847,7 +5847,7 @@ function tep_display_google_results($from_url='', $c_type=false){
   }
 
 /* -------------------------------------
-    功能: 更新分类的指定网站的状态
+    功能: 更新分类在指定网站的状态
     参数: $categories_id(int) 分类id 
     参数: $status(int) 状态id 
     参数: $site_id(int) 网站id 
@@ -5860,7 +5860,7 @@ function tep_display_google_results($from_url='', $c_type=false){
   }
 
 /* -------------------------------------
-    功能: 判断商品描述是否存在
+    功能: 判断该商品描述在指定网站是否存在
     参数: $pid(int) 商品id 
     参数: $site_id(int) 网站id 
     返回值: 是否存在(boolean) 
@@ -5872,7 +5872,7 @@ function tep_display_google_results($from_url='', $c_type=false){
   }
 
 /* -------------------------------------
-    功能: 创建个别网站的商品信息
+    功能: 创建指定网站的商品信息
     参数: $pid(int) 商品id 
     参数: $site_id(int) 网站id 
     返回值: 无 
@@ -5898,7 +5898,7 @@ function tep_display_google_results($from_url='', $c_type=false){
   }
 
 /* -------------------------------------
-    功能: 更新指定商品在个别网站的状态
+    功能: 更新指定商品在指定网站的状态
     参数: $products_id(int) 商品id 
     参数: $status(int) 状态id 
     参数: $site_id(int) 网站id 
@@ -6665,7 +6665,7 @@ function tep_display_google_results($from_url='', $c_type=false){
   }
 
 /* -------------------------------------
-    功能: 获取密码长度
+    功能: 获取idpw密码长度
     参数: 无 
     返回值: 长度(string) 
  ------------------------------------ */
@@ -6681,7 +6681,7 @@ function tep_display_google_results($from_url='', $c_type=false){
   }
 
 /* -------------------------------------
-    功能: 是否能编辑
+    功能: pw_manager是否能编辑
     参数: $pwid(int) idpw的值 
     参数: $self(string) 信息 
     参数: $permission(int) 权限值 
@@ -7015,7 +7015,7 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
   }
 
 /* -------------------------------------
-    功能: 生成同级前页/后页链接 
+    功能: 生成同级分类的前页/后页链接 
     参数: $cPath(string) 分类路径 
     参数: $current_category_id(int) 分类id 
     参数: $language_id(int) 语言id 
@@ -7508,7 +7508,7 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
   }
 
 /* -------------------------------------
-    功能: 随机生成指定字符长度的字符串 
+    功能: 随机生成指定字符长度的字符串(用于商品属性元素名) 
     参数: $length(int) 长度 
     返回值: 随机字符串(string) 
  ------------------------------------ */
@@ -7528,7 +7528,7 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
   }
 
 /* -------------------------------------
-    功能: 获取指定分类在个个网站的状态 
+    功能: 获取指定分类在各个网站的状态 
     参数: $category_id(int) 分类id 
     返回值: 状态集合(array) 
  ------------------------------------ */
@@ -7593,7 +7593,7 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
   }
 
 /* -------------------------------------
-    功能: 获取指定商品在个个网站的状态 
+    功能: 获取指定商品在各个网站的状态 
     参数: $product_id(int) 商品id 
     返回值: 状态集合(array) 
  ------------------------------------ */
@@ -7662,7 +7662,7 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
   }
 
 /* -------------------------------------
-    功能: 判断faq分类描述是否存在 
+    功能: 判断faq分类描述在指定网站是否存在 
     参数: $cid(int) 分类id 
     参数: $sid(int) 网站id 
     返回值: 是否存在(boolean) 
@@ -7678,7 +7678,7 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
   }
 
 /* -------------------------------------
-    功能: 判断faq问题描述是否存在 
+    功能: 判断faq问题描述在指定网站是否存在 
     参数: $qid(int) 问题id 
     参数: $sid(int) 网站id 
     返回值: 是否存在(boolean) 
@@ -7846,7 +7846,7 @@ function   tep_order_status_change($oID,$status){
   }
 
 /* -------------------------------------
-    功能: 更新指定faq分类的个别网站的状态 
+    功能: 更新指定faq分类在指定网站的状态 
     参数: $faq_category_id(int) 分类id 
     参数: $status(int) 状态id 
     参数: $site_id(int) 网站id 
@@ -7982,7 +7982,7 @@ function   tep_order_status_change($oID,$status){
   }
 
 /* -------------------------------------
-    功能: 判断faq的指定问题在个别网站是否存在 
+    功能: 判断faq的指定问题在指定网站是否存在 
     参数: $qid(int) 问题id 
     参数: $site_id(int) 网站id 
     返回值: 是否存在(boolean) 
@@ -8099,7 +8099,7 @@ function   tep_order_status_change($oID,$status){
   }
 
 /* -------------------------------------
-    功能: 获得faq的分类信息 
+    功能: 获得faq的指定分类的在指定网站的信息 
     参数: $cid(int) 分类id 
     参数: $site_id(int) 网站id 
     返回值: 分类信息(array) 
@@ -8638,7 +8638,7 @@ function tep_get_order_type_info($oID)
 }
 
 /* -------------------------------------
-    功能: 获取该商品在订单商品表里个别网站的平均最终价格 
+    功能: 获取该商品在订单商品表里指定网站的平均最终价格 
     参数: $products_id(int) 商品id 
     参数: $site_id(int) 网站id 
     返回值: 平均最终价格(float) 
@@ -8900,7 +8900,7 @@ function tep_get_order_history_sql_by_pid($pid,$start='',$end='',$sort=''){
 }
 
 /* -------------------------------------
-    功能: 获取指定商品在指定时间,在其关联的订单里的个别网站的购买数量的总和 
+    功能: 获取指定商品在指定时间,在其关联的订单里的指定网站的购买数量的总和 
     参数: $pid(int) 商品id 
     参数: $site_id(int) 网站id 
     参数: $start(string) 开始时间 
@@ -9290,7 +9290,7 @@ function get_campaion_fee($total, $orders_id, $site_id)
 }
 
 /* -------------------------------------
-    功能: 获取优惠券前页/后页链接 
+    功能: 获取优惠券的前页/后页链接 
     参数: $cid(int) 优惠券id 
     参数: $site_id(int) 网站id 
     参数: $st_id(int) 网站id 
@@ -9328,7 +9328,7 @@ function get_campaign_link_page($cid, $site_id, $st_id)
 }
 
 /* -------------------------------------
-    功能: 获取关联商品在指定时间内的个别网站的购买数量的总和 
+    功能: 获取关联商品在指定时间内的指定网站的购买数量的总和 
     参数: $relate_products_id(int) 商品id 
     参数: $date_sub(int) 时间 
     参数: $site_id(int) 网站id 
@@ -9681,7 +9681,7 @@ function new_nl2br($string) {
 } 
 
 /* -------------------------------------
-    功能: 该状态是否取消 
+    功能: 检查该状态是否取消 
     参数: $status_id(int) 状态id 
     返回值: 是否取消(boolean) 
  ------------------------------------ */
@@ -9926,7 +9926,7 @@ function tep_get_signal_pic_info($last_modified_info) {
 }
 
 /* -------------------------------------
-    功能: 获取该顾客在个别网站的订单数量 
+    功能: 获取该顾客在指定网站的订单数量 
     参数: $customers_id(int) 顾客id 
     参数: $site_id(int) 网站id 
     返回值: 订单数量(int) 
