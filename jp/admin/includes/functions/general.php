@@ -8841,12 +8841,12 @@ function tep_get_product_by_category_id($categories_id,$bflag,$site_id=0){
 }
 
 /* -------------------------------------
-    功能: 获取该商品在指定时间内,指定网站的最大取引时间 
+    功能: 获取该商品在指定时间内,指定网站的最大配送开始时间 
     参数: $pid(int) 商品id 
     参数: $site_id(int) 网站id 
     参数: $start(string) 开始时间 
     参数: $end(string) 结束时间 
-    返回值: 最大取引时间(string) 
+    返回值: 最大配送开始时间(string) 
  ------------------------------------ */
 function tep_get_relate_date($pid,$site_id=0,$start='',$end='')
 {
