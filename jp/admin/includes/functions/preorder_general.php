@@ -1,9 +1,9 @@
 <?php
 /* -----------------------------------------------------
  功能: 获取预约状态名称 
- 参数: $orders_status_id(string)        订单状态ID值
- 参数: $language_id(string)             语言ID值
- 返回值 : 预约名称(string)  
+ 参数: $orders_status_id(string) 订单状态ID值
+ 参数: $language_id(string) 语言ID值
+ 返回值: 预约名称(string)  
  -----------------------------------------------------*/
 function tep_get_preorders_status_name($orders_status_id, $language_id = '') {
   global $languages_id;
@@ -16,8 +16,8 @@ function tep_get_preorders_status_name($orders_status_id, $language_id = '') {
 }
 /*-----------------------------------------------------
  功能: 通过预约订单ID得到计算机名
- 参数: $orders_id(string)              订单ID值
- 返回值 : 计算机名(string)                  
+ 参数: $orders_id(string) 订单ID值
+ 返回值: 计算机名(string)                  
  ----------------------------------------------------*/
 function tep_get_computers_names_by_preorders_id($orders_id)
 {
@@ -30,8 +30,8 @@ function tep_get_computers_names_by_preorders_id($orders_id)
 }
 /*----------------------------------------------------
  功能: 计算机预约号 
- 参数: $oid(string)                   订单编号值
- 返回值 : 数组(array)                      
+ 参数: $oid(string) 订单编号值
+ 返回值: 数组(array)                      
  ---------------------------------------------------*/
 function tep_get_computers_by_preorders_id($oid)
 {
@@ -44,8 +44,8 @@ function tep_get_computers_by_preorders_id($oid)
 }
 /*---------------------------------------------------
  功能: 显示预约产品信息 
- 参数: $orders_id(string)             订单编号值
- 返回值 : HTML文本(string)                   
+ 参数: $orders_id(string) 订单编号值
+ 返回值: HTML文本(string)                   
 ---------------------------------------------------*/
 function tep_show_preorders_products_info($orders_id) {
   $str = '';
@@ -507,9 +507,9 @@ function tep_show_preorders_products_info($orders_id) {
 }
 /*---------------------------------------------------------
  功能: 预约产品删除属性 
- 参数: $order_id(string)                      订单编号值
- 参数: $restock(bool)                         储存
- 返回值：无
+ 参数: $order_id(string) 订单编号值
+ 参数: $restock(bool) 储存
+ 返回值: 无
  --------------------------------------------------------*/
 function tep_preorder_remove_attributes($order_id, $restock = false) {
   if ($restock == 'on') {
@@ -526,9 +526,9 @@ function tep_preorder_remove_attributes($order_id, $restock = false) {
 }
 /*---------------------------------------------------------
  功能: 预约删除订单
- 参数: $order_id(string)                      订单编号值
- 参数: $restock(bool)                         储存
- 返回值：无
+ 参数: $order_id(string) 订单编号值
+ 参数: $restock(bool) 储存
+ 返回值: 无
  --------------------------------------------------------*/
 function tep_preorder_remove_order($order_id, $restock = false) {
   tep_db_query("delete from " . TABLE_PREORDERS . " where orders_id = '" . tep_db_input($order_id) . "'");
@@ -542,8 +542,8 @@ function tep_preorder_remove_order($order_id, $restock = false) {
 }
 /*----------------------------------------------------------
  功能: 预约更新                       
- 参数: $orders_id(string)                      订单编号值 
- 返回值：无
+ 参数: $orders_id(string) 订单编号值 
+ 返回值: 无
  ---------------------------------------------------------*/
 function preorders_updated($orders_id) {
   tep_db_query("update ".TABLE_PREORDERS." set language_id = ( select language_id from ".TABLE_PREORDERS_STATUS." where preorders_status.orders_status_id=preorders.orders_status ) where orders_id='".$orders_id."'");
@@ -558,8 +558,8 @@ function preorders_updated($orders_id) {
 }
 /*----------------------------------------------------------
  功能: 预约标志
- 参数: $orders_id(string)                      订单编号值 
- 返回值：无
+ 参数: $orders_id(string) 订单编号值 
+ 返回值: 无
  ---------------------------------------------------------*/
 function preorders_wait_flag($orders_id) {
   $orders_query = tep_db_query("select * from " . TABLE_PREORDERS . " where orders_id = '".$orders_id."'");
@@ -574,8 +574,8 @@ function preorders_wait_flag($orders_id) {
 }
 /*--------------------------------------------------------
  功能: 预约总数订单编号 
- 参数: $orders_id(string)                    订单编号值
- 返回值：无
+ 参数: $orders_id(string) 订单编号值
+ 返回值: 无
  -------------------------------------------------------*/
 function tep_get_pre_ot_total_by_orders_id($orders_id, $single = false) {
   if ($single) {
@@ -599,7 +599,7 @@ function tep_get_pre_ot_total_by_orders_id($orders_id, $single = false) {
 }
 /*------------------------------------------------------
  功能: 网站名称
- 参数: $id(string)                         订单编号值 
+ 参数: $id(string) 订单编号值 
  返回值: 订单名称(string)
  -----------------------------------------------------*/
 function tep_get_pre_site_name_by_order_id($id){
@@ -614,7 +614,7 @@ function tep_get_pre_site_name_by_order_id($id){
 }
 /*-----------------------------------------------------
  功能: 预约SITE_ID值 
- 参数: $orders_id(string)                 订单编号值
+ 参数: $orders_id(string) 订单编号值
  返回值: site_id 或者 false (string/bool) 
  ----------------------------------------------------*/
 function tep_get_pre_site_id_by_orders_id($orders_id) {
@@ -627,9 +627,9 @@ function tep_get_pre_site_id_by_orders_id($orders_id) {
 }
 /*---------------------------------------------------
  功能: 预约产品名称 
- 参数: $orders_id(string)               订单编号值 
- 参数: $allorders(string)               所有訂單
- 参数: $site_id(string)                 SITE_ID值
+ 参数: $orders_id(string) 订单编号值 
+ 参数: $allorders(string) 所有訂單
+ 参数: $site_id(string) SITE_ID值
  返回值: 返回值有(products_name,products_attention_5) 产品名称 产品关注(string)                     
  --------------------------------------------------*/
 function preorders_a($orders_id, $allorders = null, $site_id = 0)
@@ -667,7 +667,7 @@ function preorders_a($orders_id, $allorders = null, $site_id = 0)
 }
 /*---------------------------------------------------
  功能: 获取产品ID 
- 参数: $orders_products_id(string)      ID值
+ 参数: $orders_products_id(string) ID值
  返回值: 返回产品价格 或者 false (string/bool) 
  --------------------------------------------------*/
 function tep_get_pre_product_by_op_id($orders_products_id,$type=''){
@@ -693,7 +693,7 @@ function tep_get_pre_product_by_op_id($orders_products_id,$type=''){
 }
 /*----------------------------------------------------
  功能: 检查订单类型 
- 参数: $oID(string)                      订单编号值
+ 参数: $oID(string) 订单编号值
  返回值: 1,2,3
 ----------------------------------------------------*/
 function tep_check_pre_order_type($oID)
@@ -714,7 +714,7 @@ function tep_check_pre_order_type($oID)
 }
 /*----------------------------------------------------
  功能: 获得预先支付订单ID 
- 参数: $oID(string)                      订单编号值
+ 参数: $oID(string) 订单编号值
  返回值: 付款方式(string)
  ---------------------------------------------------*/
 function tep_get_pre_payment_code_by_order_id($oID)
@@ -725,8 +725,8 @@ function tep_get_pre_payment_code_by_order_id($oID)
 }
 /*----------------------------------------------------
  功能: 订单状态的变化 
- 参数: $oID(string)                      订单编号值
- 返回值：无
+ 参数: $oID(string) 订单编号值
+ 返回值: 无
  ---------------------------------------------------*/
 function   tep_pre_order_status_change($oID,$status){
   require_once("pre_oa/HM_Form.php");
@@ -763,9 +763,9 @@ function   tep_pre_order_status_change($oID,$status){
 }
 /*-----------------------------------------
  功能：订单的产品系列
- 参数：$orders(array)   订单SQL
- 参数：$single(bool)    false或者ture
- 参数：$popup(bool)     false或者ture
+ 参数：$orders(array) 订单SQL
+ 参数：$single(bool) false或者ture
+ 参数：$popup(bool) false或者ture
  参数：$param_str(string) 自定义参数
  返回值: HTML文本(string)    
  -----------------------------------------*/
@@ -1294,18 +1294,18 @@ if(isset($orders['user_added']) && $orders['user_added'] != ""){
 
 /*---------------------------------------------------
  功能: 预约标志
- 参数：$orders_id(string)              订单编号
- 返回值：数值(string)      
+ 参数: $orders_id(string) 订单编号
+ 返回值: 数值(string)      
  --------------------------------------------------*/
 function tep_preorders_finishqa($orders_id) {
   $order = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PREORDERS." where orders_id='".$orders_id."'"));
   return $order['flag_qaf'];
 }
 /*--------------------------------------------------
- 功能：预约状态ID 
- 参数：$orders_id(string)              订单编号
- 参数：$language_id(string)            语言ID 
- 返回值：订单状态(string)
+ 功能: 预约状态ID 
+ 参数: $orders_id(string) 订单编号
+ 参数: $language_id(string) 语言ID 
+ 返回值: 订单状态(string)
  -------------------------------------------------*/
 function tep_get_preorders_status_id($orders_id, $language_id = '') {
   global $languages_id;
@@ -1316,9 +1316,9 @@ function tep_get_preorders_status_id($orders_id, $language_id = '') {
   return $orders['orders_status'];
 }
 /*-------------------------------------------------
- 功能：预约完成
- 参数：$orders_id(string)           订单编号
- 返回值：ture(bool)
+ 功能: 预约完成
+ 参数: $orders_id(string) 订单编号
+ 返回值: ture(bool)
  ------------------------------------------------*/
 function tep_get_preorder_canbe_finish($orders_id){
   //  如果是取消的可以结束 
@@ -1355,8 +1355,8 @@ return true;
 }
 /*------------------------------------------------------
  功能: 预约商品名称
- 参数:$orders_id(string)                订单编号
- 返回值：产品名称(string)       
+ 参数: $orders_id(string) 订单编号
+ 返回值: 产品名称(string)       
  -----------------------------------------------------*/
 function tep_get_preorders_products_names($orders_id) {
   $str = '';
@@ -1369,7 +1369,7 @@ function tep_get_preorders_products_names($orders_id) {
 /*-----------------------------------------------
  功能: 预约尾号
  参数: 无 
- 返回值: 01(number)  
+ 返回值: 01(string)  
  ----------------------------------------------*/
 function tep_get_preorder_end_num() 
 {
@@ -1398,10 +1398,10 @@ function preorder_last_customer_action() {
   tep_db_query("update ".TABLE_CONFIGURATION." set configuration_value=now() where configuration_key='PREORDER_LAST_CUSTOMER_ACTION'");
 }
 /*-------------------------------------------------
- 功能：前总订单编号
- 参数：$orders_id(string)            订单编号
- 参数：$single(bool)                 false
- 返回值：返回HTML文本
+ 功能: 前总订单编号
+ 参数: $orders_id(string) 订单编号
+ 参数: $single(bool) false
+ 返回值: 返回HTML文本
  ------------------------------------------------*/
 function tep_get_pre_ot_total_by_orders_id_no_abs($orders_id, $single = false) {
   if ($single) {
@@ -1429,9 +1429,9 @@ function tep_get_pre_ot_total_by_orders_id_no_abs($orders_id, $single = false) {
   }
 }
 /*--------------------------------------------
- 功能：预约邮件
- 参数：$orders_id(string)    订单编号
- 返回值：预约产品标题（string)  
+ 功能: 预约邮件
+ 参数: $orders_id(string) 订单编号
+ 返回值: 预约产品标题(string)  
  -------------------------------------------*/
 function tep_get_preorder_attr_mail($orders_id)
 {
@@ -1461,9 +1461,9 @@ function tep_get_preorder_attr_mail($orders_id)
   return $return_str;
 }
 /*---------------------------------------------
- 功能：检查产品类型
- 参数：$orders_products_id(string) 订单产品编号 
- 返回值：0(number)
+ 功能: 检查产品类型
+ 参数: $orders_products_id(string) 订单产品编号 
+ 返回值: 0(number)
  --------------------------------------------*/
 function tep_check_pre_product_type($orders_products_id)
 {
@@ -1484,10 +1484,10 @@ function tep_check_pre_product_type($orders_products_id)
   return 0;
 }
 /*------------------------------------------
- 功能：检查预约商品的option是否不足
- 参数：$products_id(string)    产品编号
- 参数：$pro_attr_info(string)  产品属性编号
- 返回值：false或者ture(bool)
+ 功能: 检查预约商品的option是否不足
+ 参数: $products_id(string) 产品编号
+ 参数: $pro_attr_info(string) 产品属性编号
+ 返回值: false或者ture(bool)
  -----------------------------------------*/
 function tep_pre_check_less_option_product($products_id, $pro_attr_info)
 {
