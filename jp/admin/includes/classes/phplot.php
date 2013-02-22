@@ -271,8 +271,8 @@ class PHPlot{
 		return true;
 	}
 /*------------------------------------------
- 功能：设置案例
- 参数：$which_leg(string) 说明
+ 功能：设置段标识
+ 参数：$which_leg(string) 段的信息
  返回值：设置成功(boolean)
  -----------------------------------------*/
 	function SetLegend($which_leg){
