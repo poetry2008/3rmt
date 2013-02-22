@@ -2,7 +2,6 @@
 /*
   $Id$
 
-
   Example usage:
 
   $heading = array();
