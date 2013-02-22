@@ -3,7 +3,7 @@
   class preorder {
     var $info, $totals, $products, $customer, $delivery;
 /*-----------------------
- 功能：预约
+ 功能：查询预约
  参数：$order_id(number) 订单编号
  返回值：无
  ----------------------*/
@@ -17,7 +17,7 @@
       $this->query($order_id);
     }
 /*---------------------------
- 功能：查询SQL 
+ 功能：预约订单的详细信息
  参数：$order_id(number) 订单编号
  返回值：无
  --------------------------*/
