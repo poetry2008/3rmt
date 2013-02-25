@@ -71,20 +71,29 @@ class HM_Item_Myname extends HM_Item_Basic
  $.ajax({
                  url:'oa_answer_process.php?fix=user&withz=1&oID=<?php echo $_GET["oID"]?><?php if($m){echo "&fake=1";}?>',
                      type:'post',    
-                     data:"form_id="+$('input|[name=form_id]').val()+"&<?php echo $this->formname;?>="+$('input|[name=<?php echo $this->formname;?>]').val(),
+                     data:"form_id="+$('input|[name=form_id]').val()+"&<?php echo $this->formname;?>="+$('input|[name=<?php echo $this->formname;?>]').val()+"&eof=eof",
                      beforeSend: function(){$('body').css('cursor','wait');$("#wait").show()},
+                     <?php //如果请求失败，弹出相应的出错信息?>
                      success: function(data){
-                               $("#<?php echo $this->formname;?>").text(data);		     
-                               <?php 
-                               if($m){
-                                 ?>
-                                 $("#hidden<?php echo $this->formname;?>").attr("value",data);		     
+                               if(data == 'eof_error'){
+                                 $("#wait").hide();
+                                 $('body').css('cursor','');
+                                 show_error_message();
+                                 $("#popup_info").show();
+                                 $("#popup_box").show();
+                               }else{
+                                 $("#<?php echo $this->formname;?>").text(data);		     
                                  <?php 
-                               }
-                               ?>
-                               $("#wait").hide();
-                               $('body').css('cursor','');
+                                 if($m){
+                                 ?>
+                                   $("#hidden<?php echo $this->formname;?>").attr("value",data);		     
+                                 <?php 
+                                  }
+                                 ?>
+                                 $("#wait").hide();
+                                 $('body').css('cursor','');
                                  checkLockOrder();
+                               }
                      //                     $("#<?php echo $this->formname;?>submit").show();
                           }
                  });

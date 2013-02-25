@@ -7,11 +7,21 @@
 
   if (isset($_GET['act']) && $_GET['act']) {
     switch ($_GET['act']) {
+/* -----------------------------------------------------
+   case 'update' 更新内容   
+   case 'insert' 新建内容   
+   case 'setflag' 设置内容的状态    
+   case 'deleteconfirm' 删除内容    
+------------------------------------------------------*/
       case 'update':
         $site_id = (isset($_GET['site_id']))?$_GET['site_id']:0;
- if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];//权限判断
-         else $site_arr="";
- forward401Unless(editPermission($site_arr, $site_id));
+        if(isset($_SESSION['site_permission'])) {
+          //权限判断
+          $site_arr=$_SESSION['site_permission'];
+        } else {
+          $site_arr="";
+        }
+        forward401Unless(editPermission($site_arr, $site_id));
 
         $an_cols = array('navbar_title','heading_title','text_information');
         $error = false; 
@@ -207,6 +217,7 @@ require("includes/note_js.php");
     <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
 <?php
   if (isset($_GET['action']) && $_GET['action'] == 'edit') {
+  //更新内容 
   $detail_query = tep_db_query("
       select * 
       from ".TABLE_INFORMATION_PAGE." 
@@ -278,6 +289,7 @@ require("includes/note_js.php");
         </tr> 
 <?php
   } elseif (isset($_GET['action']) && $_GET['action'] == 'insert') {
+  //新建内容
 ?>
         <tr> 
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
@@ -336,6 +348,7 @@ require("includes/note_js.php");
         </tr> 
 <?php
   } else {
+  //内容列表 
       $cID = trim(isset($_GET['cID'])?$_GET['cID']:'');
 ?> 
         <tr> 
@@ -451,6 +464,10 @@ require("includes/note_js.php");
   $heading = array();
   $contents = array();
   switch (isset($_GET['action']) ? $_GET['action'] : null) {
+/* -----------------------------------------------------
+   case 'confirm' 右侧删除内容页面  
+   default 右侧默认页面 
+------------------------------------------------------*/
   case 'confirm':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_CONTENTS . '</b>');
 

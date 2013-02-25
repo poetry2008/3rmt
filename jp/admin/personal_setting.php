@@ -5,7 +5,7 @@
 require('includes/application_top.php');
 
 if($_GET['action'] == 'update'){
-
+  //更新设定
   $orders_site = tep_db_prepare_input($_POST['orders_site']);
   $orders_work = tep_db_prepare_input($_POST['orders_work']);
   $orders_sort_list = tep_db_prepare_input($_POST['orders_sort_list']);
@@ -18,27 +18,33 @@ if($_GET['action'] == 'update'){
   $is_transaction = tep_db_prepare_input($_POST['is_transaction']);
   
   $error = false;
+  //订单管理页是否选择网站 
   if(empty($orders_site)){
     $error = true;
     $orders_site_error = TEXT_PERSONAL_SETTING_SITE_ERROR; 
   }
+  //订单管理页是否选择工作组 
   if(empty($orders_work)){
     $error = true;
     $orders_work_error = TEXT_PERSONAL_SETTING_SITE_ERROR; 
   }
+  //订单管理页的排序值和排序的方式要么全选,要么全不选 
   if(($orders_sort_list != '' && $orders_sort == '') || ($orders_sort_list == '' && $orders_sort != '')){
     $error = true;
     $orders_sort_error = TEXT_PERSONAL_SETTING_SORT_ERROR;
   }
 
+  //预约管理页是否选择网站 
   if(empty($preorders_site)){
     $error = true;
     $preorders_site_error = TEXT_PERSONAL_SETTING_SITE_ERROR; 
   }
+  //预约管理页是否选择工作组 
   if(empty($preorders_work)){
     $error = true;
     $preorders_work_error = TEXT_PERSONAL_SETTING_SITE_ERROR; 
   }
+  //预约管理页的排序值和排序的方式要么全选,要么全不选 
   if(($preorders_sort_list != '' && $preorders_sort == '') || ($preorders_sort_list == '' && $preorders_sort != '')){
     $error = true;
     $preorders_sort_error = TEXT_PERSONAL_SETTING_SORT_ERROR;

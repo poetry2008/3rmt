@@ -6,6 +6,9 @@
   define('MAX_DISPLAY_PRODUCTS',40);
   if(isset($_GET['action'])&&$_GET['action']){
      switch ($_GET['action']){
+/* -----------------------------------------------------
+   case 'refresh' 更新商品的在库状态   
+------------------------------------------------------*/
        case 'refresh':
          //更新
          $all_products_sql = "select products_id,products_real_quantity + products_virtual_quantity as products_quantity from ".

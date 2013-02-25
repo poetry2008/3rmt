@@ -31,9 +31,9 @@
   获取记录 sql 字符串生成函数（Select）
  ============================================== */
 /*--------------------------------------
-  功  能 : 访问日志列表显示
-  参  数 : $oresult   - (i) 记录项目
-  返回值 : 没有
+  功能: 访问日志列表显示
+  参数: $oresult(resource) 记录项目
+  返回值: 无
  --------------------------------------*/
 function show_once_pwd_log_list($oresult) {
 
@@ -93,9 +93,9 @@ if ($rec_c % 2) {
 }
 
 /*--------------------------------------
-  功  能 : 页面控制按钮显示
-  参  数 : $nrow    - (i) 记录件数（列表行数）
-  返回值 : 记录件数
+  功能: 页面控制按钮显示
+  参数: $nrow(int) 记录件数（列表行数）
+  返回值: 记录件数(int)
  --------------------------------------*/
 function show_page_ctl($nrow) {
   $c_page = 0;
@@ -138,9 +138,9 @@ function show_page_ctl($nrow) {
 }
 
 /*--------------------------------------
-  功  能 : 获取访问日志信息 sql 字符串生成
-  参  数 : 没有
-  返回值 : select 语句字符串
+  功能: 获取访问日志信息 sql 字符串生成
+  参数: 无
+  返回值: 语句字符串(string)
  --------------------------------------*/
 function makeSelectOncePwdLog() {
 
@@ -157,9 +157,9 @@ function makeSelectOncePwdLog() {
   画面显示函数（主要）
  ============================================= */
 /*--------------------------------------
-  功  能 : 访问日志信息列表显示
-  参  数 : 没有
-  返回值 : 没有
+  功能: 访问日志信息列表显示
+  参数: 无
+  返回值: 无
  --------------------------------------*/
 function UserOncePwdLog_list() {
 
@@ -227,9 +227,9 @@ function UserOncePwdLog_list() {
   处理执行函数
  ============================================= */
 /*--------------------------------------
-  功  能 : 经过一定时间删除就的认证日志
-  参  数 : 没有
-  返回值 : true/false
+  功能: 经过一定时间删除就的认证日志
+  参数: 无
+  返回值: 删除执行(boolean)
  --------------------------------------*/
 function OncePwdLogDelete_execute() {
 
@@ -244,9 +244,9 @@ function OncePwdLogDelete_execute() {
 }
 
 /*--------------------------------------
-  功  能 : 用于确认信息的JavaScript
-  参  数 : 没有
-  返回值 : true/false
+  功能: 用于确认信息的JavaScript
+  参数: 无
+  返回值: 无
  --------------------------------------*/
 function putJavaScript_ConfirmMsg() {
 
@@ -267,9 +267,9 @@ function formConfirm(type) {
 }
 
 /*--------------------------------------
-  功  能 : 显示页面头部
-  参  数 : 没有
-  返回值 : 没有
+  功能: 显示页面头部
+  参数: 无
+  返回值: 无
  --------------------------------------*/
 function PageHeader() {
   global $ocertify,$page_name,$notes;
@@ -297,9 +297,9 @@ function PageHeader() {
 }
 
 /*--------------------------------------
-  功  能 : 显示页面布局
-  参  数 : $mode    -(i)  字符串：模式（t:上、u:下）
-  返回值 : 没有
+  功能: 显示页面布局
+  参数: $mode(string) 模式（t:上、u:下）
+  返回值: 无
  --------------------------------------*/
 function PageBodyTable($mode='t') {
   switch ($mode) {
@@ -318,10 +318,10 @@ function PageBodyTable($mode='t') {
 }
 
 /*--------------------------------------
-  功  能 : 显示页面
-  参  数 : $mode    -(i)  字符串：模式（t:上、u:下）
-       $stitle  -(i)  字符串：body的标题
-  返回值 : 没有
+  功能: 显示页面
+  参数: $mode(string) 模式（t:上、u:下）
+  参数: $stitle(string) body的标题
+  返回值: 无
  --------------------------------------*/
 function PageBody($mode='t', $stitle = "") {
   global $notes;
@@ -352,9 +352,9 @@ function PageBody($mode='t', $stitle = "") {
 }
 
 /*--------------------------------------
-  功  能 : 显示页脚
-  参  数 : 没有
-  返回值 : 没有
+  功能: 显示页脚
+  参数: 无
+  返回值: 无
  --------------------------------------*/
 function PageFooter() {
   echo "<!-- footer //-->\n";
@@ -373,7 +373,8 @@ function PageFooter() {
 
   require('includes/application_top.php');
 
-  if (isset($execute_delete) && $execute_delete) {    // 删除访问日志信息
+  if (isset($execute_delete) && $execute_delete) {    
+    // 删除访问日志信息
     OncePwdLogDelete_execute();
     $lm = 0;
   }

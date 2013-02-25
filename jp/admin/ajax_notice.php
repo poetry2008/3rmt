@@ -42,6 +42,10 @@ if(!in_array('onetime',$request_one_time_arr)&&$_SESSION['user_permission']!=15)
 //end one time pwd
 
 if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
+/* -----------------------------------------------------
+    功能: 显示该用户的所有的notice
+    参数: 无 
+ -----------------------------------------------------*/
   $notice_order_sql = "select * from ".TABLE_NOTICE." where type = '0' and user = '".$ocertify->auth_user."'"; 
   
   $notice_micro_sql = "select * from ".TABLE_NOTICE." where type = '1' and id not in (select notice_id from ".TABLE_NOTICE_TO_MICRO_USER." n where n.user = '".$ocertify->auth_user."')";
@@ -101,6 +105,10 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
     echo '</table>'; 
   }
 } else if (isset($_GET['action'])&&$_GET['action']=='delete_alarm') {
+/* -----------------------------------------------------
+    功能: 删除指定的notce以及其关联的警报
+    参数: $_POST['nid'] notcie的id值 
+ -----------------------------------------------------*/
   $notice_raw = tep_db_query("select * from ".TABLE_NOTICE." where id = '".$_POST['nid']."' and type = '0'");
   $notice = tep_db_fetch_array($notice_raw);
   if ($notice) {
@@ -108,7 +116,15 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
     tep_db_query("delete from ".TABLE_NOTICE." where id = '".$_POST['nid']."'"); 
   }
 } else if (isset($_GET['action'])&&$_GET['action']=='delete_micro') {
+/* -----------------------------------------------------
+    功能: 把指定的micro_log的id和当前用户关联
+    参数: $_POST['nid'] micro_log的id值 
+ -----------------------------------------------------*/
   tep_db_query("insert into `".TABLE_NOTICE_TO_MICRO_USER."` values('".$_POST['nid']."', '".$ocertify->auth_user."')");
 } else if (isset($_GET['action'])&&$_GET['action']=='show_head_notice') {
+/* -----------------------------------------------------
+    功能: 获取头部的notcie信息
+    参数: 无 
+ -----------------------------------------------------*/
   echo tep_get_notice_info(1);
 }

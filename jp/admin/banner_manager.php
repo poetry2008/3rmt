@@ -8,9 +8,19 @@
   $banner_extension = tep_banner_image_extension();
 
   if (isset($_GET['action']) && $_GET['action']) {
- if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];//权限判断
-         else $site_arr="";
+  if(isset($_SESSION['site_permission'])) {
+    //权限判断
+    $site_arr=$_SESSION['site_permission'];
+  } else {
+    $site_arr="";
+  } 
     switch ($_GET['action']) {
+/* -----------------------------------------------------
+   case 'setflag' 设置banner状态   
+   case 'insert' 创建banner     
+   case 'update' 更新banner     
+   case 'deleteconfirm' 删除banner      
+------------------------------------------------------*/
       case 'setflag':
         $banner_exists_raw = tep_db_query("select * from ".TABLE_BANNERS." where banners_id = '".(int)$_GET['bID']."'");        
         $banner_exists = tep_db_fetch_array($banner_exists_raw);
@@ -300,6 +310,7 @@ require("includes/note_js.php");
       </tr>
 <?php
   if (isset($_GET['action']) && $_GET['action'] == 'new') {
+    //新建/编辑页面 
     $form_action = 'insert';
     if (isset($_GET['bID']) && $_GET['bID']) {
       $bID = tep_db_prepare_input($_GET['bID']);
@@ -452,6 +463,7 @@ $banner_query = tep_db_query("
       </form></tr>
 <?php
   } else {
+//列表页
 ?>
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -552,6 +564,10 @@ $banner_query = tep_db_query("
   $heading = array();
   $contents = array();
   switch (isset($_GET['action'])?$_GET['action']:null) {
+/* -----------------------------------------------------
+   case 'delete' 右侧删除页面 
+   default 右侧默认页面     
+------------------------------------------------------*/
     case 'delete':
       $heading[] = array('text' => '<b>' . $bInfo->banners_title . '</b>');
 

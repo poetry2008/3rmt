@@ -5,7 +5,13 @@
 include("includes/application_top.php");
 
 switch($_GET['action']){
-
+/* -----------------------------------------------------
+   case 'status_add' 新建状态 
+   case 'status_edit' 更新状态 
+   case 'status_delete' 删除状态 
+   case 'date' 新建日期 
+   case 'date_edit' 更新日期  
+------------------------------------------------------*/
   case 'status_add':
     $title = tep_db_prepare_input($_POST['title']);
     $color = tep_db_prepare_input($_POST['color']);
@@ -130,13 +136,16 @@ switch($_GET['action']){
 <script language="javascript" src="js2php.php?path=includes|javascript&name=calendar&type=js"></script>
 <script language="javascript">
 $(document).ready(function() {
+  <?php //监听按键?> 
   $(document).keyup(function(event) {
     if (event.which == 27) {
+      <?php //esc?> 
       if ($('#show_date_edit').css('display') != 'none') {
         hidden_info_box(); 
       }
     }
     if (event.which == 13) {
+      <?php //回车?> 
       if ($('#show_date_edit').css('display') != 'none') {
         tmp_click_str = $("#show_date_edit").find('input:button').first().attr('onclick'); 
         tmp_submit_str = $("#show_date_edit").find('form').first().attr('onsubmit');

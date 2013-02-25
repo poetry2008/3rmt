@@ -192,6 +192,7 @@
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script language="javascript" >
+<?php //验证表单信息是否正确?>
 function valadate_search(){
   if(
   !$("input[name=se_pname]").val()&&
@@ -206,6 +207,7 @@ function valadate_search(){
   }
 
 }
+<?php //把邮件信息放入session?>
 function save_mail_info(){
   mail_info_from = $("#mail_info_from").val();
   mail_info_subject = $("#mail_info_subject").val();
@@ -220,6 +222,7 @@ function save_mail_info(){
     }
   });
 }
+<?php //改变发送邮件用户?>
 function change_select_mail(_this){
   if($(_this).attr('checked')){
     mail_list_action = 'add';
@@ -236,10 +239,12 @@ function change_select_mail(_this){
     }
   });
 }
+<?php //返回前一页?>
 function back_to_mail(){
   document.mail.back_mail.value = 'back';
   document.mail.submit();
 }
+<?php //发送邮件验证?>
 function send_mail_validate(){
   save_mail_info();
   var flag_checkbox = true;

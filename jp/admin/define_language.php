@@ -9,6 +9,9 @@
 
   if (isset($_GET['action'])) {
     switch ($_GET['action']) {
+/* -----------------------------------------------------
+   case 'save' 保存翻译文件信息   
+------------------------------------------------------*/
       case 'save':
         if ( ($_GET['lngdir']) && ($_GET['filename']) ) {
           if ($_GET['filename'] == $_GET['lng_dir'] . '.php') {

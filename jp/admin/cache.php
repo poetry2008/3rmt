@@ -14,6 +14,7 @@
       tep_reset_cache_block($_GET['block']);
     }
 if(isset($_GET['action']) && $_GET['action']=="update_css_rand"){
+//更新css_rand_string的值
 $css_rand_query = tep_db_query("select value from other_config where keyword='css_random_string' and site_id='".$site_id."'");
 $css_rand_array = tep_db_fetch_array($css_rand_query);
 $rand_num = substr($css_rand_array['value'],0,4);

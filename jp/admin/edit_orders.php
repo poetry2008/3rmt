@@ -34,6 +34,7 @@ if(!isset($_SESSION['orders_update_time'][$_GET['oID']])){
   }
 }
 if(isset($_GET['clear_products']) && isset($_SESSION['clear_products_flag'])){ 
+  //重新计算新添加商品之后订单的小计,手续费,总计等相关信息 
   if($_GET['clear_products'] == 1){
     $orders_products_price_sum = 0;
     $orders_price_flag = $_SESSION['orders_update_products'][$_GET['oID']]['ot_subtotal'] > 0 ? true : false;
@@ -185,7 +186,10 @@ $customer_guest = tep_db_fetch_array($customer_guest_query);
 if (tep_not_null($action)) {
   $payment_modules = payment::getInstance($order->info['site_id']);
   switch ($action) {
-
+/* -----------------------------------------------------
+   case 'update_order' 更新订单信息    
+   case 'add_product' 更新添加商品后的订单的信息    
+------------------------------------------------------*/
     // 1. UPDATE ORDER ###############################################################################################
   case 'update_order':
 
@@ -393,12 +397,15 @@ if (tep_not_null($action)) {
       $update_tori_torihiki_end_date = $end_hour.':'.$end_min_1.$end_min_2.':00';
       $update_tori_torihiki_start_date = $update_tori_torihiki_date.' '.$update_tori_torihiki_start_date;
       $update_tori_torihiki_end_date = $update_tori_torihiki_date.' '.$update_tori_torihiki_end_date; 
-      if (isset($update_tori_torihiki_start_date)) { //日時が有効かチェック
-        if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/', $update_tori_torihiki_start_date, $m)) { // check the date format
+      if (isset($update_tori_torihiki_start_date)) { 
+        //判断配送开始时间是否正确
+        if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/', $update_tori_torihiki_start_date, $m)) { 
+          //判断配送开始时间是否符合规则
           $messageStack->add(TEXT_DATE_ERROR.'"2008-01-01 10:30:00"', 'error');
           $action = 'edit';
           break;
-        } elseif (!checkdate($m[2], $m[3], $m[1]) || $m[4] >= 24 || $m[5] >= 60 || $m[6] >= 60) { // make sure the date provided is a validate date
+        } elseif (!checkdate($m[2], $m[3], $m[1]) || $m[4] >= 24 || $m[5] >= 60 || $m[6] >= 60) { 
+          //判断配送开始时间是否是有效时间
           $messageStack->add(TEXT_DATE_NUM_ERROR.'"23:59:59"', 'error');
           $action = 'edit';
           break;
@@ -409,12 +416,15 @@ if (tep_not_null($action)) {
         break;
       }
 
-      if (isset($update_tori_torihiki_end_date)) { //日時が有効かチェック
-        if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/', $update_tori_torihiki_end_date, $m)) { // check the date format
+      if (isset($update_tori_torihiki_end_date)) { 
+        //判断配送结束时间是否正确
+        if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/', $update_tori_torihiki_end_date, $m)) { 
+          //判断配送结束时间是否符合规则
           $messageStack->add(TEXT_DATE_ERROR.'"2008-01-01 10:30:00"', 'error');
           $action = 'edit';
           break;
-        } elseif (!checkdate($m[2], $m[3], $m[1]) || $m[4] >= 24 || $m[5] >= 60 || $m[6] >= 60) { // make sure the date provided is a validate date
+        } elseif (!checkdate($m[2], $m[3], $m[1]) || $m[4] >= 24 || $m[5] >= 60 || $m[6] >= 60) { 
+          //判断配送结束时间是否是有效时间
           $messageStack->add(TEXT_DATE_NUM_ERROR.'"23:59:59"', 'error');
           $action = 'edit';
           break;
@@ -668,7 +678,8 @@ if($address_error == false){
           tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
         }
         
-        if($products_details["qty"] > 0) { // a.) quantity found --> add to list & sum
+        if($products_details["qty"] > 0) { 
+          // a.) quantity found --> add to list & sum
           if(count($products_session_string_array) <= 1){
             $Query = "update " . TABLE_ORDERS_PRODUCTS . " set
                            products_model = '" . $products_details["model"] . "',
@@ -720,7 +731,8 @@ if($address_error == false){
               }
             }
           }
-        } else { // b.) null quantity found --> delete
+        } else { 
+          // b.) null quantity found --> delete
           if(count($products_session_string_array) <= 1){
             $Query = "delete from " . TABLE_ORDERS_PRODUCTS . " where orders_products_id = '$orders_products_id';";
             tep_db_query($Query);
@@ -796,7 +808,8 @@ if($address_error == false){
             //        $ot_value = $RunningTotal-$RunningTax;
             $ot_value = $RunningTotal;
 
-            if ( !$ot_subtotal_found ) { // There was no subtotal on this order, lets add the running subtotal in.
+            if ( !$ot_subtotal_found ) { 
+              // There was no subtotal on this order, lets add the running subtotal in.
               //        $ot_value +=  $RunningSubTotal;
             }
           }
@@ -818,7 +831,8 @@ if($address_error == false){
             $ot_text = "<b>" . $ot_text . "</b>";
           }
 
-          if($ot_total_id > 0 || $ot_class == "ot_point") { // Already in database --> Update
+          if($ot_total_id > 0 || $ot_class == "ot_point") { 
+            // Already in database --> Update
             /*
                delete form query
                text = "' . tep_insert_currency_text($ot_text) . '",
@@ -829,7 +843,8 @@ if($address_error == false){
                     sort_order = "' . $sort_order . '"
                       WHERE orders_total_id = "' . $ot_total_id . '"';
             tep_db_query($Query);
-          } else { // New Insert
+          } else { 
+            // New Insert
             /*
                change form query
                text = "' . tep_insert_currency_text($ot_text) . '",
@@ -858,7 +873,8 @@ if($address_error == false){
         }
 
         //  print $ot_value."<br>";
-        } elseif (($ot_total_id > 0) && ($ot_class != "ot_shipping") && ($ot_class != "ot_point")) { // Delete Total Piece
+        } elseif (($ot_total_id > 0) && ($ot_class != "ot_shipping") && ($ot_class != "ot_point")) { 
+          // Delete Total Piece
           $Query = "delete from " . TABLE_ORDERS_TOTAL . " where orders_total_id = '$ot_total_id'";
           tep_db_query($Query);
         }
@@ -1633,6 +1649,7 @@ var session_site_id = '<?php echo $order->info['site_id'];?>';
 <script language="javascript" src="includes/jquery.form.js"></script>
 <script language="javascript" src="js2php.php?path=js&name=popup_window&type=js"></script>
 <script language="javascript">
+<?php //检查配送时间是否正确?>
 function date_time(){
     var fetch_year = document.getElementById('fetch_year').value; 
     var fetch_month = document.getElementById('fetch_month').value;
@@ -1653,7 +1670,7 @@ function date_time(){
     }
     return true;
 }
-
+<?php //检查订单商品的数量是否正确?>
 function products_num_check(orders_products_list_id,products_name,products_list_id){
 
     var _end = $("#mail_title_status").val();
@@ -1694,7 +1711,7 @@ function products_num_check(orders_products_list_id,products_name,products_list_
     }); 
     return products_error;
 }
-
+<?php //检查订单商品的重量是否超重?>
 function submit_check_con(){
 
     var options = {
@@ -1714,7 +1731,7 @@ function submit_check_con(){
   };
   $('#edit_order_id').ajaxSubmit(options);
 }
-
+<?php //添加输入框?>
 function add_option(){
     var add_num = $("#button_add_id").val();
     add_num = parseInt(add_num);
@@ -1739,7 +1756,11 @@ if($weight > 0){
   while($address_fixed_array = tep_db_fetch_array($address_fixed_query)){
 
     switch($address_fixed_array['fixed_option']){
-
+/* -----------------------------------------------------
+   case '1' 国家id的html值    
+   case '2' 区域id的html值   
+   case '3' 城市id的html值   
+------------------------------------------------------*/
     case '1':
       echo 'var country_fee_id = "ad_'. $address_fixed_array['name_flag'] .'";'."\n";
       echo 'var country_fee_id_one = "'. $address_fixed_array['name_flag'] .'";'."\n";
@@ -1758,7 +1779,7 @@ if($weight > 0){
     }
   }
 ?>
-
+<?php //生成所配送的国家列表?>
 function check(select_value){
 
   $("#td_"+country_fee_id_one).hide();
@@ -1792,6 +1813,7 @@ function check(select_value){
     } 
   }
 }
+<?php //生成所配送的区域列表?>
 function country_check(value,select_value){
    
    var arr = new Array();
@@ -1838,7 +1860,7 @@ function country_check(value,select_value){
   }
 
 }
-
+<?php //生成所配送的城市列表?>
 function country_area_check(value,select_value){
    
    var arr = new Array();
@@ -1888,6 +1910,7 @@ function country_area_check(value,select_value){
 <?php
 }
 ?>
+<?php //生成配送开始时间的小时列表?>
 function check_hour(value){
   var hour_1 = document.getElementById('hour_1');
   var hour_1_value = hour_1.value;
@@ -1945,7 +1968,7 @@ function check_hour(value){
     } 
   }
 }
-
+<?php //生成配送开始时间的分钟十位列表?>
 function check_min(value){
   var min_1 = document.getElementById('min_1');
   var min_1_value = min_1.value;
@@ -1980,7 +2003,7 @@ function check_min(value){
     }
   }
 }
-
+<?php //生成配送开始时间的分钟个位列表?>
 function check_min_1(value){
   var min = document.getElementById('min');
   var min_value = min.value;
@@ -2010,7 +2033,7 @@ function check_min_1(value){
 
   }
 }
-
+<?php //生成配送结束时间的小时列表?>
 function check_hour_1(value){
   var min = document.getElementById('min');
   var min_value = min.value;
@@ -2058,7 +2081,7 @@ function check_hour_1(value){
     
   }
 }
-
+<?php //生成配送结束时间的小时十位列表?>
 function check_end_min(value){
   var min = document.getElementById('min');
   var min_value = min.value;
@@ -2089,6 +2112,7 @@ function check_end_min(value){
 <?php
 if($weight > 0){
 ?>
+<?php //清除地址错误?>
 function address_clear_error(){
   
   var list_error = new Array();
@@ -2109,6 +2133,7 @@ function address_clear_error(){
     }
 
 }
+<?php //判断该值是否在数组里?>
 function in_array(value,arr){
 
   for(vx in arr){
@@ -2121,6 +2146,7 @@ function in_array(value,arr){
 }
 // end in_array
 var first_num = 0;
+//地址属性显示
 function address_option_show(action){
   switch(action){
 
@@ -2297,7 +2323,7 @@ function address_option_show(action){
     break;
   }
 }
-
+<?php //地址属性列表?>
 function address_option_list(value){
   var arr_list = new Array();
 <?php
@@ -2445,6 +2471,7 @@ foreach ($nomail as $oskey => $value){
 
 if($weight > 0){
 ?>
+<?php //切换地址显示?>
 function address_show(){
   
   var style = $("#address_show_id").css("display");
@@ -2458,7 +2485,7 @@ function address_show(){
     $("#address_font").html("<?php echo TEXT_ADDRESS_INFO_SHOW;?>");
   }
 }
-
+<?php //地址列表?>
 function address_list(){
 
   var arr_list = new Array();
@@ -2558,6 +2585,7 @@ $(document).ready(function(){
       }
       $handle_fee_code = $handle_fee_code == '' ? 0 : $handle_fee_code;
 ?>
+  <?php //隐藏支付方法的附加信息?> 
   function hidden_payment(num){
    if(document.edit_order){
      var idx = document.edit_order.elements["payment_method"].selectedIndex;
@@ -2738,7 +2766,7 @@ if($weight > 0){
   });
 
 });
-
+<?php //开启日历?>
 function open_calendar()
 {
   var is_open = $('#toggle_open').val(); 
@@ -2816,7 +2844,7 @@ function open_calendar()
     });
   }
 }
-
+<?php //判断日期是否正确?>
 function is_date(dateval)
 {
   var arr = new Array();
@@ -2850,6 +2878,7 @@ function is_date(dateval)
  
   return false;
 }
+<?php //把配送时间的日期复制到隐藏域中?>
 function change_fetch_date() {
   fetch_date_str = $("#fetch_year").val()+"-"+$("#fetch_month").val()+"-"+$("#fetch_day").val(); 
   if (!is_date(fetch_date_str)) {
@@ -2937,6 +2966,7 @@ if($action != "add_product"){
  <table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
 if (($action == 'edit') && ($order_exists == true)) {
+  //编辑订单 
   $order = new order($oID);
   $products_id_array = array();
   $products_name_array = array();
@@ -4139,7 +4169,7 @@ if (($action == 'edit') && ($order_exists == true)) {
 }
 if($action == "add_product")
 { 
-
+    //添加商品
     $new_products_temp_list = array();
     $new_products_temp_add = array();
     $oID = $_GET['oID'];

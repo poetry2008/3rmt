@@ -6,6 +6,12 @@
   require('includes/application_top.php');
   if (isset($_GET['action'])) 
   switch ($_GET['action']) {
+/* -----------------------------------------------------
+   case 'insert' 新建订单状态    
+   case 'save' 更新订单状态    
+   case 'deleteconfirm' 删除订单状态    
+   case 'delete' 判断该状态是否被删除    
+------------------------------------------------------*/
     case 'insert':
     case 'save':
       $orders_status_id = tep_db_prepare_input($_GET['oID']);
@@ -134,15 +140,18 @@
 
       $remove_status = true;
       if ($oID == DEFAULT_ORDERS_STATUS_ID) {
+        //该状态是否是默认状态 
         $remove_status = false;
         $messageStack->add(ERROR_REMOVE_DEFAULT_ORDER_STATUS, 'error');
       } elseif ($status['count'] > 0) {
+        //该状态是否在订单中出现 
         $remove_status = false;
         $messageStack->add(ERROR_STATUS_USED_IN_ORDERS, 'error');
       } else {
         $history_query = tep_db_query("select count(*) as count from " . TABLE_ORDERS_STATUS_HISTORY . " where orders_status_id = '" . tep_db_input($oID) . "'");
         $history = tep_db_fetch_array($history_query);
         if ($history['count'] > 0) {
+          //该状态是否在订单状态记录里出现 
           $remove_status = false;
           $messageStack->add(ERROR_STATUS_USED_IN_HISTORY, 'error');
         }
@@ -265,6 +274,12 @@ require("includes/note_js.php");
   $contents = array();
   $explanation = TEXT_ORDERS_STATUS_DESCRIPTION;
   switch (isset($_GET['action'])?$_GET['action']:null) {
+/* -----------------------------------------------------
+   case 'new' 右侧新建订单状态页面    
+   case 'edit' 右侧编辑订单状态页面   
+   case 'delete' 右侧删除订单状态页面    
+   default 右侧默认页面    
+------------------------------------------------------*/
     case 'new':
       $site_id   = isset($_GET['site_id']) ? (int)$_GET['site_id']:0;
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_NEW_ORDERS_STATUS . '</b>');

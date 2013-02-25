@@ -12,7 +12,10 @@ if ($ocertify->npermission>7) {
   $products = tep_get_products_by_categories_id($cID, 1);
 }
 switch ($_GET['action']){
-case update:
+/* -----------------------------------------------------
+   case 'update' 更新批发商的信息以及商品的数量    
+------------------------------------------------------*/
+case 'update':
   if ($_POST['oroshi_datas'])
   foreach($_POST['oroshi_datas'] as $h_id => $h){
     tep_db_perform('set_oroshi_datas',array(
@@ -116,7 +119,7 @@ color: #000000;
     kakaku[<?php echo $jp['products_id'];?>]     = <?php echo tep_get_kakaku_by_products_id($cID,$jp['products_id']);?>;
 <?php }?>
 
-
+    <?php //设置默认值?>
     function setDefault () {
       i = 1;
       $('.productSelect').each(function(){
@@ -129,7 +132,7 @@ color: #000000;
         $(this).trigger('change');
       });
     }
-
+    <?php //交换产品数据?>
     function exchange_product(x) {
       tmp_product = $('#td_product_'+x).html();
       tmp_product_value = $('#td_product_'+x+'>.productSelect').val();
@@ -163,6 +166,7 @@ color: #000000;
       bindActions();
 
     }
+    <?php //向上交换数据?> 
     function exchange (x, y) {
       tmp = $('#data_'+x+'_'+y).html();
       tmp_value = $('#oroshi_datas_'+x+'_'+y).val();
@@ -173,6 +177,7 @@ color: #000000;
       $('#data_'+(x-1)+'_'+y).html(tmp);
       $('#oroshi_datas_'+(x-1)+'_'+y).val(tmp_value);
     }
+    <?php //向下交换数据?> 
     function exchange_down (x, y) {
       tmp = $('#data_'+x+'_'+y).html();
       tmp_value = $('#oroshi_datas_'+x+'_'+y).val();
@@ -183,6 +188,7 @@ color: #000000;
       $('#data_'+(x+1)+'_'+y).html(tmp);
       $('#oroshi_datas_'+(x+1)+'_'+y).val(tmp_value);
     }
+    <?php //删除历史数据?> 
     function deleteHistory(x,y){
       $('#data_'+x+'_'+y).html(' ');
       $('#oroshi_datas_'+x+'_'+y).val(' ');
@@ -192,6 +198,7 @@ color: #000000;
         dhi++;
       }
     }
+    <?php //选择商品是否可以编辑?> 
     function selectProduct(index, value) {
       if (value == 0) {
         $('#kakaku_'+index).attr('disabled', true).val('');
@@ -201,6 +208,7 @@ color: #000000;
         $('#kakuukosuu_'+index).attr('disabled', false).val(kakuukosuu[value]);
       }
     }
+    <?php //绑定选择框动作?> 
     function bindActions() {
       $('.productSelect').bind('change', function(){
         selectProduct($(this).attr('name').substring($(this).attr('name').indexOf('[')+1,$(this).attr('name').indexOf(']')), $(this).val());
@@ -249,6 +257,7 @@ color: #000000;
       bindActions();
       setDefault();
     });
+    <?php //恢复默认?> 
     function reset_page(){
        products = new Array();
       $('.kakuukosuu_input').attr('disabled', true);
@@ -263,6 +272,7 @@ color: #000000;
         }
       }
     }
+    <?php //清除数据?> 
     function clear_page(){
        products = new Array();
       $('.kakuukosuu_input').attr('disabled', true);
@@ -282,6 +292,7 @@ color: #000000;
         }
       }
     }
+    <?php //设置输入框允许输入的最大长度?> 
     function check_input(pos){
 	    var value = pos.value;
 	    var arr = new Array();

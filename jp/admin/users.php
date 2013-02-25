@@ -53,9 +53,9 @@ if (isset($_POST['execute_c_permission'])) { $execute_change = $_POST['execute_c
  ============================================== */
 
 /*--------------------------------------
-  功  能 : 未输入检查
-  参  数 : $s_val - (i) 值
-  返回值 : "":ＯＫ,错误信息:ＮＧ
+  功能: 未输入检查
+  参数: $s_val(string) 值
+  返回值: 错误信息(string)
  --------------------------------------*/
 function checkNotnull($s_val) {
 
@@ -67,19 +67,18 @@ function checkNotnull($s_val) {
 }
 
 /*--------------------------------------
-  功  能 : 字符串项目检查（正规体现）
-       正则表达式模式和输入检查（全角半角混合）
-  参  数 : $s_val   -(i)  字符串. 字符串
-       $s_ereg  -(i)  字符串. 正则表达式模式（省略的时候:不进行正则表达式检查）
-  返回值 : "":ＯＫ,错误信息:ＮＧ
+  功能: 字符串项目检查（正规体现） 正则表达式模式和输入检查（全角半角混合）
+  参数: $s_val(string) 字符串
+  参数: $s_ereg(string) 正则表达式模式（省略的时候:不进行正则表达式检查）
+  返回值: 错误信息(string)
  -------------------------------------*/
 function checkStringEreg($s_val, $s_ereg = "") {
 
   // 未输入值的时候的处理
   if ($s_val == "") return '';
 
-  // 错误判断
   if ($s_ereg && (ereg($s_ereg,$s_val) == false)) {
+    // 错误判断
     return TEXT_ERRINFO_INPUT_ERR;
   }
 
@@ -87,10 +86,10 @@ function checkStringEreg($s_val, $s_ereg = "") {
 }
 
 /*--------------------------------------
-  功  能 : 字符串检查
-  参  数 : $s_val     -(i)  字符串. 字符串
-       $n_len     -(i)  整数. 字节数（省略的时候：空文字）
-  返回值 : "":ＯＫ,错误信息:ＮＧ
+  功能: 字符串检查
+  参数: $s_val(string) 字符串
+  参数: $n_len(int)字节数（省略的时候：空文字）
+  返回值: 错误信息(string)
  -------------------------------------*/
 function checkLength_ge($s_val, $n_len) {
 
@@ -107,9 +106,9 @@ function checkLength_ge($s_val, $n_len) {
 }
 
 /*--------------------------------------
-  功  能 : 错误信息显示
-  参  数 : $a_error -(i) 错误信息
-  返回值 : 没有
+  功能: 错误信息显示
+  参数: $a_error(array) 错误信息
+  返回值: 无
  --------------------------------------*/
 function print_err_message($a_error) {
 
@@ -131,10 +130,10 @@ function print_err_message($a_error) {
 }
 
 /* -------------------------------------
-  功  能 : 把错误信息放在错误信息数组里
-  参  数 : $a_error - (o) 错误信息数组
-       $s_errmsg - (i) 错误信息
-  返回值 : 没有
+  功能: 把错误信息放在错误信息数组里
+  参数: $a_error(array) 错误信息数组
+  参数: $s_errmsg(string) 错误信息
+  返回值: 无
  ------------------------------------ */
 function set_errmsg_array(&$a_error,$s_errmsg) {
 
@@ -145,9 +144,9 @@ function set_errmsg_array(&$a_error,$s_errmsg) {
   获取记录 sql 字符串生成函数（Select）
  ============================================== */
 /*--------------------------------------
-  功  能 : 获取用户信息 sql 字符串生成
-  参  数 : $s_user_ID - (i) 用户id（可以省略）
-  返回值 : select 语句字符串
+  功能: 获取用户信息 sql 字符串生成
+  参数: $s_user_ID(int) 用户id（可以省略）
+  返回值: select语句字符串(string)
  --------------------------------------*/
 function makeSelectUserInfo($s_user_ID = "") {
 
@@ -159,9 +158,9 @@ function makeSelectUserInfo($s_user_ID = "") {
 }
 
 /*--------------------------------------
-  功  能 : 获取包含用户权限的信息 sql 字符串生成
-  参  数 : $nmode   - (i) 整数：生成模式（0:获取一般用户[默认值]、1:获取管理员）
-  返回值 : select 句字符串
+  功能: 获取包含用户权限的信息 sql 字符串生成
+  参数: $nmode(int) 整数：生成模式（0:获取一般用户[默认值]、1:获取管理员）
+  返回值: select语句字符串(string)
  --------------------------------------*/
 function makeSelectUserParmission($nmode=0) {
 
@@ -181,10 +180,10 @@ function makeSelectUserParmission($nmode=0) {
   表更新 sql 字符串生成函数（Insert、Update、Delete）
  ============================================= */
 /*--------------------------------------
-  功  能 : 新用户的注册（用户管理、用户权限表添加注册）
-  参  数 : $aval    -(i)  关联数组：添加数据
-       $nmode   -(i)  整数：生成模式（0:用户管理表添加sql[默认值]、1:用户权限表添加sql）
-  返回值 : 没有
+  功能: 新用户的注册（用户管理、用户权限表添加注册）
+  参数: $aval(array) 添加数据
+  参数: $nmode(int) 生成模式（0:用户管理表添加sql[默认值]、1:用户权限表添加sql）
+  返回值: sql语句(string) 
  --------------------------------------*/
 function makeInsertUser($aval, $nmode=0) {
 
@@ -219,10 +218,10 @@ function makeInsertUser($aval, $nmode=0) {
 }
 
 /*--------------------------------------
-  功  能 : 用户信息表的更新
-  参  数 : $aval    -(i)  关联数组：更新数据
-       $nmode   -(i)  更新モード（0:姓名、e-mail、1:密码）
-  返回值 : 没有
+  功能: 用户信息表的更新
+  参数: $aval(array) 更新数据
+  参数: $nmode(int) 更新模式（0:姓名、e-mail、1:密码）
+  返回值: sql语句(string)
  --------------------------------------*/
 function makeUpdateUser($aval, $nmode=0) {
 
@@ -245,9 +244,9 @@ function makeUpdateUser($aval, $nmode=0) {
 }
 
 /*--------------------------------------
-  功  能 : 删除用户、（用户管理、从用户权限表里删除）
-  参  数 :  $nmode  -(i)  整数：生成模式（0:用户管理表删除sql[默认值]、1:用户权限表删除sql）
-  返回值 : 没有
+  功能: 删除用户、（用户管理、从用户权限表里删除）
+  参数:  $nmode(int) 生成模式（0:用户管理表删除sql[默认值]、1:用户权限表删除sql）
+  返回值: sql语句(string)
  --------------------------------------*/
 function makeDeleteUser($nmode=0) {
 
@@ -267,10 +266,10 @@ function makeDeleteUser($nmode=0) {
 }
 
 /*--------------------------------------
-  功  能 : 用户权限表更新
-  参  数 : $nmode   -(i) 更新模式（0:grant、1:revoke）
-       $susers  -(i) 用户ID
-  返回值 : 没有
+  功能: 用户权限表更新
+  参数: $nmode(int) 更新模式（0:grant、1:revoke）
+  参数: $susers(int) 用户ID
+  返回值: sql语句(string)
  --------------------------------------*/
 function makeUpdatePermission($nmode=0, $susers) {
 
@@ -304,9 +303,9 @@ function makeUpdatePermission($nmode=0, $susers) {
   画面显示函数（主要）
  ============================================= */
 /*--------------------------------------
-  功  能 : 访问日志信息列表显示
-  参  数 : 没有
-  返回值 : 没有
+  功能: 访问日志信息列表显示
+  参数: 无
+  返回值: 成功显示(boolean)
  --------------------------------------*/
 function UserManu_preview() {
 
@@ -319,7 +318,8 @@ function UserManu_preview() {
   if ($ocertify->npermission == 15) $ssql = makeSelectUserInfo();   // 管理员
 
   @$oresult = tep_db_query($ssql);
-  if (!$oresult) {                      //错误的时候
+  if (!$oresult) {                      
+    //错误的时候
     echo TEXT_ERRINFO_DB_NO_USERINFO;           // 显示错误信息
     echo "<br>\n";
     echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));            // <form>标签的输出
@@ -335,11 +335,13 @@ function UserManu_preview() {
   echo "<tr>\n";
   echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']),'','post',' id=\'useraction_form\'');    // <form>标签的输出
 
-  if ($nrow == 1) {                         // 对象数据是1件的时候
+  if ($nrow == 1) {                         
+    // 对象数据是1件的时候
     // 项目标题输出（1单元格）
     echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_USER . '</td>' . "\n";   // 用户
     $nLsize = 'size="1"';                     // 列表的尺寸变量设为1
-  } elseif ($nrow > 1) {                        // 对象数据超过1件的时候
+  } elseif ($nrow > 1) {                        
+    // 对象数据超过1件的时候
     // 项目标题输出（1单元格）
     echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_USER_LIST . '</td>' . "\n";  // 用户列表
     $nLsize = 'size="5"';                     // 列表的尺寸变量设为5
@@ -361,7 +363,8 @@ function UserManu_preview() {
   echo tep_draw_hidden_field("execute_password",BUTTON_CHANGE_PASSWORD);
 
   // 显示按钮
-  if ($ocertify->npermission == 15) {     // 管理员
+  if ($ocertify->npermission == 15) {     
+    // 管理员
     echo tep_draw_input_field("execute_new", BUTTON_INSERT_USER, '', FALSE, "submit", FALSE); // 用户添加
     echo tep_draw_input_field("execute_user", BUTTON_INFO_USER, '', FALSE, "submit", FALSE);  // 用户信息
     echo tep_draw_input_field("execute_password_button", BUTTON_CHANGE_PASSWORD,
@@ -385,9 +388,9 @@ function UserManu_preview() {
 }
 
 /*--------------------------------------
-  功  能 : 用户添加（主要显示）
-  参  数 : 没有
-  返回值 : 没有
+  功能: 用户添加（主要显示）
+  参数: 无
+  返回值: 显示成功(boolean)
  --------------------------------------*/
 function UserInsert_preview() {
 
@@ -486,11 +489,9 @@ function UserInsert_preview() {
 }
 
 /*--------------------------------------
-  功  能 : 保护用户信息（主要显示）
-  参  数 : 没有
-  返回值 : 没有
-
-
+  功能: 保护用户信息（主要显示）
+  参数: 无
+  返回值: 显示成功(boolean)
  --------------------------------------*/
 function UserInfo_preview() {
 
@@ -508,7 +509,8 @@ function UserInfo_preview() {
   }
   */
   @$oresult = tep_db_query($ssql);
-  if (!$oresult) {                      //错误的时候
+  if (!$oresult) {                      
+    //错误的时候
     echo TEXT_ERRINFO_DB_NO_USERINFO;           // 显示错误信息
     echo "<br>\n";
     echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));            // <form>标签的输出
@@ -519,7 +521,8 @@ function UserInfo_preview() {
   }
 
   $nrow = tep_db_num_rows($oresult);              // 获取记录件数
-  if ($nrow != 1) {                     // 获取记录件数不是1件的时候
+  if ($nrow != 1) {                     
+    // 获取记录件数不是1件的时候
     echo TEXT_ERRINFO_DB_NO_USER;             // 显示错误信息
     echo "<br>\n";
     echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));            // <form>标签的输出
@@ -647,8 +650,11 @@ function UserInfo_preview() {
   return TRUE;
 }
 
-
-//修改用户管理网站的权限
+/*--------------------------------------
+  功能: 修改用户管理网站的权限
+  参数: 无
+  返回值: 无
+ --------------------------------------*/
 function ChangePermission(){
 PageBody('t', PAGE_TITLE_CHANGE_PERMISSION); 
 
@@ -717,14 +723,20 @@ echo "</table>";
 echo ' </form>';
  echo '<a href="' . tep_href_link(basename($GLOBALS['PHP_SELF'])) . '">&laquo;&nbsp;' . BUTTON_BACK_MENU . '</a>'; 
 }
-//修改用户管理网站的权限的执行方法
+
+/*--------------------------------------
+  功能: 修改用户管理网站的权限的执行方法
+  参数: 无
+  返回值: 无
+ --------------------------------------*/
 function  ChangePermission_execute(){
   $y_n=true;
   PageBody('t', PAGE_TITLE_CHANGE_PERMISSION); 
   $sql=" SELECT * FROM `permissions` ";
   $result =tep_db_query($sql);  //获取用户的权限 （所有用户）
 while($userslist= tep_db_fetch_array($result)){
-  if($_POST[$userslist['userid']]){//获取页面 checkbox的值(数组)
+  if($_POST[$userslist['userid']]){
+    //获取页面 checkbox的值(数组)
     $u_s_id=$_POST[$userslist['userid']];
 $u_id_str=implode(",",$u_s_id);
 }else{
@@ -749,9 +761,9 @@ if(tep_db_query($permission_sid_sql)){
 }
 
 /*--------------------------------------
-  功  能 : 修改密码（主要显示）
-  参  数 : 没有
-  返回值 : 没有
+  功能: 修改密码（主要显示）
+  参数: 无
+  返回值: 无
  --------------------------------------*/
 function UserPassword_preview() {
 
@@ -857,9 +869,9 @@ function UserPassword_preview() {
 }
 
 /*--------------------------------------
-  功  能 : 管理者権限（主要显示）
-  参  数 : 没有
-  返回值 : 没有
+  功能: 管理者権限（主要显示）
+  参数: 无
+  返回值: 显示成功(boolean)
  --------------------------------------*/
 function UserPermission_preview() {
 
@@ -871,7 +883,8 @@ function UserPermission_preview() {
   $ssql = makeSelectUserParmission('7');             // 获取一般用户信息 sql 字符串生成
 
   @$oresult = tep_db_query($ssql);
-  if (!$oresult) {                      //错误的时候
+  if (!$oresult) {                      
+    //错误的时候
     echo TEXT_ERRINFO_DB_NO_USERINFO;           // 显示错误信息
     echo "<br>\n";
     echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));      // <form>标签的输出
@@ -896,7 +909,8 @@ function UserPermission_preview() {
   $ssql = makeSelectUserParmission('10');             // 获取一般用户信息 sql 字符串生成
 
   @$oresult = tep_db_query($ssql);
-  if (!$oresult) {                      //错误的时候
+  if (!$oresult) {                      
+    //错误的时候
     echo TEXT_ERRINFO_DB_NO_USERINFO;           // 显示错误信息
     echo "<br>\n";
     echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));      // <form>标签的输出
@@ -925,7 +939,8 @@ function UserPermission_preview() {
   $ssql = makeSelectUserParmission('15');            // 获取拥有管理员权限的数据 sql 字符串生成
 
   @$oresult = tep_db_query($ssql);
-  if (!$oresult) {                      //错误的时候
+  if (!$oresult) {                      
+    //错误的时候
     echo TEXT_ERRINFO_DB_NO_USERINFO;           // 显示错误信息
     echo "<br>\n";
     echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));      // <form>标签的输出
@@ -1037,10 +1052,9 @@ function UserPermission_preview() {
   处理执行函数
  ============================================= */
 /*--------------------------------------
-  功  能 : 执行用户添加处理
-  参  数 : 没有
-  返回值 : true/false
-  补  充 : [:print:] 可以打印的人物名（=受限文字以外的人物名）
+  功能: 执行用户添加处理
+  参数: 无
+  返回值: 执行成功(boolean) 注:[:print:] 可以打印的人物名（=受限文字以外的人物名）
  --------------------------------------*/
 function UserInsert_execute() {
 
@@ -1065,7 +1079,8 @@ function UserInsert_execute() {
 
   echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));      // <form>标签的输出
 
-  if (is_array($aerror)) {      // 输入错误的时候
+  if (is_array($aerror)) {      
+    // 输入错误的时候
     print_err_message($aerror);   // 错误信息表示
     echo "<br>\n";
     echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
@@ -1076,7 +1091,8 @@ function UserInsert_execute() {
   // 检查添加的数据是否注册了
   $ssql = makeSelectUserInfo($GLOBALS['aval']['userid']);   // 获取用户信息
   @$oresult = tep_db_query($ssql);
-  if (!$oresult) {                      //错误的时候
+  if (!$oresult) {                      
+    //错误的时候
     echo TEXT_ERRINFO_DB_USERCHACK;             // 显示错误信息
     echo "<br>\n";
     echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
@@ -1086,7 +1102,8 @@ function UserInsert_execute() {
   }
 
   $nrow = tep_db_num_rows($oresult);              // 获取记录件数
-  if ($nrow >= 1) {                     // 获取的数据不是0件的时候
+  if ($nrow >= 1) {                     
+    // 获取的数据不是0件的时候
     echo TEXT_ERRINFO_DB_EXISTING_USER;           // 显示错误信息
     echo "<br>\n";
     echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
@@ -1097,7 +1114,8 @@ function UserInsert_execute() {
 
   $ssql = makeInsertUser($GLOBALS['aval']);         // 获取用户管理表的添加sql字符串
   @$oresult = tep_db_query($ssql);
-  if (!$oresult) {                      //错误的时候
+  if (!$oresult) {                      
+    //错误的时候
     echo TEXT_ERRINFO_DB_INSERT_USER;           // 显示错误信息
     echo "<br>\n";
     echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
@@ -1108,7 +1126,8 @@ function UserInsert_execute() {
 
   $ssql = makeInsertUser($GLOBALS['aval'], 1);        // 获取用户权限表的添加sql字符串
   @$oresult = tep_db_query($ssql);
-  if (!$oresult) {                      //错误的时候
+  if (!$oresult) {                      
+    //错误的时候
     echo TEXT_ERRINFO_DB_INSERT_PERMISSION;         // 显示错误信息
     echo "<br>\n";
     echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
@@ -1149,10 +1168,9 @@ function UserInsert_execute() {
   return TRUE;
 }
 /*--------------------------------------
-  功  能 : 执行用户信息更新处理
-  参  数 : 没有
-  返回值 : true/false
-  补  充 : [:print:] 可以打印的人物名（=受限文字以外的人物名）
+  功能: 执行用户信息更新处理
+  参数: 无
+  返回值: 执行成功(boolean) 注:[:print:] 可以打印的人物名（=受限文字以外的人物名）
  --------------------------------------*/
 function UserInfor_execute() {
 
@@ -1220,9 +1238,9 @@ function UserInfor_execute() {
 }
 
 /*--------------------------------------
-  功  能 : 删除用户检查
-  参  数 : 没有
-  返回值 : true/false
+  功能: 删除用户检查
+  参数: 无
+  返回值: 执行成功(boolean)
  --------------------------------------*/
 function UserDelete_execute() {
 
@@ -1235,7 +1253,8 @@ function UserDelete_execute() {
 
   echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));    // <form>标签的输出
 
-  if (isset($aerror)&&is_array($aerror)) {      // 输入错误的时候
+  if (isset($aerror)&&is_array($aerror)) {      
+    // 输入错误的时候
     print_err_message($aerror);   // 错误信息表示
     echo "<br>\n";
     echo tep_draw_hidden_field('userslist', $GLOBALS['userid']);  // 把用户id放在隐藏项目里
@@ -1246,7 +1265,8 @@ function UserDelete_execute() {
 
   $ssql = makeDeleteUser(1);              // 用户权限表から対象ユーザを删除する 获取sql字符串
   @$oresult = tep_db_query($ssql);
-  if (!$oresult) {                  //错误的时候
+  if (!$oresult) {                  
+    //错误的时候
     echo TEXT_ERRINFO_DB_DELETE_USER;       // 显示错误信息
     echo "<br>\n";
     echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
@@ -1257,7 +1277,8 @@ function UserDelete_execute() {
 
   $ssql = makeDeleteUser();             // 获取从用户管理表里删除用户的sql字符串
   @$oresult = tep_db_query($ssql);
-  if (!$oresult) {                  //错误的时候
+  if (!$oresult) {                  
+    //错误的时候
     echo TEXT_ERRINFO_DB_DELETE_USER;       // 显示错误信息
     echo "<br>\n";
     echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
@@ -1373,10 +1394,9 @@ function UserDelete_execute() {
 }
 
 /*--------------------------------------
-  功  能 : 执行密码变更处理
-  参  数 : 没有
-  返回值 : true/false
-  补  充 : [:print:] 可以打印的人物名（=受限文字以外的人物名）
+  功能: 执行密码变更处理
+  参数: 无
+  返回值: 执行成功(boolean) 注:[:print:] 可以打印的人物名（=受限文字以外的人物名）
  --------------------------------------*/
 function UserPassword_execute() {
 
@@ -1394,7 +1414,8 @@ function UserPassword_execute() {
 
   echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));      // <form>标签的输出
 
-  if (isset($aerror) && is_array($aerror)) {      // 输入错误的时候
+  if (isset($aerror) && is_array($aerror)) {      
+    // 输入错误的时候
     print_err_message($aerror);   // 错误信息表示
     echo "<br>\n";
     echo tep_draw_hidden_field('userslist', $GLOBALS['userid']);    // 把用户id放在隐藏项目里
@@ -1405,7 +1426,8 @@ function UserPassword_execute() {
 
   $ssql = makeUpdateUser($GLOBALS['aval'], 1);    // 更新用户管理表的密码る 获取sql字符串
   @$oresult = tep_db_query($ssql);
-  if (!$oresult) {                  //错误的时候
+  if (!$oresult) {                  
+    //错误的时候
     echo TEXT_ERRINFO_DB_CHANGE_PASSWORD;     // 显示错误信息
     echo "<br>\n";
     echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
@@ -1427,9 +1449,9 @@ function UserPassword_execute() {
 }
 
 /*--------------------------------------
-  功  能 : 用户权限选择检查
-  参  数 : $nmode - (i) 更新模式（0:grant、1:revoke）
-  返回值 : true/false
+  功能: 用户权限选择检查
+  参数: $nmode(int) 更新模式（0:grant、1:revoke）
+  返回值: 检查成功(boolean)
  --------------------------------------*/
 function UserPermission_execute($nmode=0) {
 
@@ -1468,7 +1490,8 @@ function UserPermission_execute($nmode=0) {
   //add by szn chief permission  end
   echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));  // <form>标签的输出
 
-  if (is_array($aerror)) {                    // 输入错误的时候
+  if (is_array($aerror)) {                    
+    // 输入错误的时候
     print_err_message($aerror);                 // 错误信息表示
     echo "<br>\n";
     echo tep_draw_hidden_field('userslist', $GLOBALS['userid']);            // 把用户id放在隐藏项目里
@@ -1479,7 +1502,8 @@ function UserPermission_execute($nmode=0) {
 
   $ssql = makeUpdatePermission($nmode, $suserid);         // 更新用户权限表 获取sql字符串
   @$oresult = tep_db_query($ssql);
-  if (!$oresult) {                        //错误的时候
+  if (!$oresult) {                        
+    //错误的时候
     echo TEXT_ERRINFO_DB_CHANGE_USER;             // 显示错误信息
     echo "<br>\n";
     echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
@@ -1505,9 +1529,9 @@ function UserPermission_execute($nmode=0) {
 }
 
 /*--------------------------------------
-  功  能 : 用于确认信息的JavaScript
-  参  数 : 没有
-  返回值 : true/false
+  功能: 用于确认信息的JavaScript
+  参数: 无
+  返回值: 无
  --------------------------------------*/
 function putJavaScript_ConfirmMsg() {
 
@@ -1554,9 +1578,9 @@ function formConfirm(type) {
 }
 
 /*--------------------------------------
-  功  能 :  显示页面头部
-  参  数 : 没有
-  返回值 : 没有
+  功能: 显示页面头部
+  参数: 无
+  返回值: 无
  --------------------------------------*/
 function PageHeader() {
   global $ocertify,$page_name,$notes;
@@ -1572,8 +1596,8 @@ function PageHeader() {
     
   echo '<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">' . "\n";
 
-  // 修改用户信息、密码、管理员权限的时候显示确认信息 JavaScript 
   if ((isset($GLOBALS['execute_user']) && $GLOBALS['execute_user']) || (isset($GLOBALS['execute_password']) && $GLOBALS['execute_password']) || (isset($GLOBALS['execute_permission']) && $GLOBALS['execute_permission']) ) {
+    // 修改用户信息、密码、管理员权限的时候显示确认信息 JavaScript 
     putJavaScript_ConfirmMsg();           // 显示确认信息 JavaScript
   }
 
@@ -1595,9 +1619,9 @@ function PageHeader() {
 }
 
 /*--------------------------------------
-  功  能 : 显示页面布局
-  参  数 : $mode    -(i)  字符串：模式（t:上、u:下）
-  返回值 : 没有
+  功能: 显示页面布局
+  参数: $mode(string) 模式（t:上、u:下）
+  返回值: 无
  --------------------------------------*/
 function PageBodyTable($mode='t') {
   global $ocertify;
@@ -1619,10 +1643,10 @@ function PageBodyTable($mode='t') {
 }
 
 /*--------------------------------------
-  功  能 : 显示页面
-  参  数 : $mode    -(i)  字符串：模式（t:上、u:下）
-       $stitle  -(i)  字符串：body的标题
-  返回值 : 没有
+  功能: 显示页面
+  参数: $mode(string) 模式（t:上、u:下）
+  参数: $stitle(string) body的标题
+  返回值: 无
  --------------------------------------*/
 function PageBody($mode='t', $stitle = "") {
   global $notes;
@@ -1653,9 +1677,9 @@ function PageBody($mode='t', $stitle = "") {
 }
 
 /*--------------------------------------
-  功  能 : 显示页脚
-  参  数 : 没有
-  返回值 : 没有
+  功能: 显示页脚
+  参数: 无
+  返回值: 无
  --------------------------------------*/
 function PageFooter() {
   echo "<!-- footer -->\n";
@@ -1666,7 +1690,11 @@ function PageFooter() {
   echo "</html>\n";
 }
 
-//获取当前用户当天 登录次数
+/*--------------------------------------
+  功能: 获取当前用户当天 登录次数
+  参数: $user(string) 用户名
+  返回值: 登录次数(int)
+ --------------------------------------*/
 function get_login_count($user){
   $count_sql = "SELECT count( sessionid ) as len 
     FROM `login`
@@ -1679,7 +1707,14 @@ function get_login_count($user){
     return 0;
   }
 }
-//修改规则 并插入 数据库
+
+/*--------------------------------------
+  功能: 修改规则 并插入数据库
+  参数: $userid(int) 用户id
+  参数: $rule(string) 规则
+  参数: $letter(string) 算式
+  返回值: 是否更新成功(boolean)
+ --------------------------------------*/
 function update_rules($userid,$rule,$letter){
   $sql_user = "update ".TABLE_USERS. " set rule ='".$rule."'
     where userid = '".$userid."'";
@@ -1771,22 +1806,22 @@ if (isset($execute_password) && $execute_password) {
   echo "    </table></td>\n";
   }
 
-// 显示画面。输入检查，反应DB
   if ($ocertify->auth_user) {
-    // 用户管理菜单
+  // 显示画面。输入检查，反应DB
     if (isset($execute_menu) && $execute_menu) {
+    // 用户管理菜单
       UserManu_preview();               // 初期显示
 
-    // 添加用户
     } else if (isset($execute_new) && $execute_new) {
+    // 添加用户
       if (isset($execute_insert) && $execute_insert) {
         UserInsert_execute();    // 执行用户添加处理
       }else{
         UserInsert_preview();            // 添加用户页面显示
       }
 
-    // 保护用户信息
     } else if (isset($execute_user) && $execute_user) {
+    // 保护用户信息
       if (isset($execute_update) && $execute_update){
         UserInfor_execute();   // 执行用户信息更新处理
       }else if (isset($execute_delete) && $execute_delete){
@@ -1795,8 +1830,8 @@ if (isset($execute_password) && $execute_password) {
         UserInfo_preview();            // 用户信息页面显示
       }
 
-    // 修改密码
     } else if (isset($execute_permission) && $execute_permission) {
+    // 修改密码
 
 //permission start
 
@@ -1816,10 +1851,13 @@ if (isset($execute_password) && $execute_password) {
  
     } elseif (isset($execute_change) && $execute_change) {
       if (isset($execute_update) && $execute_update)   {
-        ChangePermission_execute();  } // 修改用户管理网站的权限的执行
-      else{ ChangePermission();}//用户权限页面
-    // 用户管理菜单
+        // 修改用户管理网站的权限的执行
+        ChangePermission_execute();  } 
+      else{ 
+        //用户权限页面 
+        ChangePermission();}
     } else {
+    // 用户管理菜单
       UserManu_preview();               // 初期显示
     }
   }
