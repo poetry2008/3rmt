@@ -134,6 +134,7 @@ if(isset($_GET['action'])){
     $oa_item_title_array = array();
     $oa_item_form_id_array = array();
     $oa_item_id_value = '';
+    //通过订单ID，来获取此订单的oa相关信息
     $oa_group_query = tep_db_query("select form_id,item_id from ". TABLE_OA_FORMVALUE ." where orders_id='".$orders_id."'");
     while($oa_group_array = tep_db_fetch_array($oa_group_query)){
 
@@ -142,6 +143,7 @@ if(isset($_GET['action'])){
     }
     $oa_item_num = tep_db_num_rows($oa_group_query);
     tep_db_free_result($oa_group_query);
+    //获取oa子元素的相应信息
     $oa_group_form_query = tep_db_query("select group_id from ". TABLE_OA_FORM_GROUP ." where form_id='".$oa_item_id_value."'");
     while($oa_group_form_array = tep_db_fetch_array($oa_group_form_query)){
 
@@ -158,6 +160,7 @@ if(isset($_GET['action'])){
         }
       }
     }
+    //判断oa的完整性
     $oa_item_str = implode(',',$oa_item_id_array);
     $complete_temp_flag = false;
     $oa_item_value_array = array();
@@ -179,6 +182,7 @@ if(isset($_GET['action'])){
       $oa_diff_name_array[] = $oa_item_title_array[$oa_value];
     }
     $oa_diff_name_array = array_unique($oa_diff_name_array);
+    //如果数据不完整，给出错误信息
     if($oa_item_num < count($oa_item_id_array)){
 
       $complete_flag = '「';
