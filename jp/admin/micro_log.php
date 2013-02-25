@@ -16,6 +16,15 @@
       # HTTP/1.0
       header("Pragma: no-cache");
     switch ($_GET['action']) {
+/* -----------------------------------------------------
+   case 'set_read' 设置只读标识    
+   case 'load' 获取20条备忘录的阅读标识    
+   case 'more' 获取指定条件的前20条备忘录   
+   case 'delete' 删除备忘录    
+   case 'new' 新建备忘录   
+   case 'update' 更新备忘录    
+   case 'chpos' 排序    
+------------------------------------------------------*/
       case 'set_read':
         $log_read_raw = tep_db_query("select * from micro_to_user where user = '".$ocertify->auth_user."' and micro_id = '".$_POST['lid']."'" ); 
         $log_read = tep_db_fetch_array($log_read_raw);
@@ -383,7 +392,7 @@ $(function() {
   
 
 });
-
+<?php //弹出新建日历?>
 function open_new_calendar()
 {
   var is_open = $('#toggle_open').val(); 
@@ -409,6 +418,7 @@ function open_new_calendar()
     });
   }
 }
+<?php //弹出编辑日历?>
 function open_update_calendar(mid)
 {
   var is_open = $('#toggle_open_'+mid).val(); 
@@ -433,6 +443,7 @@ function open_update_calendar(mid)
     });
   }
 }
+<?php //设置阅读标识?>
 function toggle_log_read(t_object, lid, is_read)
 {
   $.ajax({
@@ -450,7 +461,7 @@ function toggle_log_read(t_object, lid, is_read)
     }
     });
 }
-
+<?php //分割日期字符串?>
 function parseDate(str){  
   if(typeof str == 'string'){  
     var results = str.match(/^ *(\d{4})-(\d{1,2})-(\d{1,2}) *$/);  
@@ -465,6 +476,7 @@ function parseDate(str){
   }  
   return null;
 } 
+<?php //显示数据信息?>
 function log_html(text){
   t = new Date;
   var c_admin_name = '<?php echo $ocertify->auth_user;?>'; 
@@ -526,12 +538,12 @@ function log_html(text){
   $str += '</form>';
   return $str;
 }
-
+<?php //添加新数据?>
 function add_log(text){
   $('#div_logs').prepend(log_html(text));
   band_form(text['log_id']);
 }
-
+<?php //ajax提交表单?>
 function band_form(log_id){
 
   $('#log_form_'+log_id).ajaxForm({
@@ -544,7 +556,7 @@ function band_form(log_id){
   });
 
 }
-
+<?php //追加数据信息?>
 function append_log(text){
   $('#div_logs').append(log_html(text));
   $('#log_form_'+text['log_id']).ajaxForm({
@@ -554,7 +566,7 @@ function append_log(text){
     }
   });
 }
-
+<?php //编辑数据?>
 function edit_log(id)
 {
   $('#log_'+id+' .content').html('<textarea name="content" style="height:'+ ($('#log_'+id+' .content').height()+ 20) +'px">'+$('#log_'+id+' .content').html().replace(/<br>/ig,'\n')+'</textarea>');
@@ -572,6 +584,7 @@ function refresh()
 {
 }
 */
+<?php //删除数据?>
 function delete_log(id)
 {
   if (confirm("<?php echo DELETE_CONFIRMATION;?>")) {
@@ -586,6 +599,7 @@ function delete_log(id)
     });
   }
 }
+<?php //位置向上一位?>
 function up(id)
 {
   id1 = id;
@@ -599,6 +613,7 @@ function up(id)
     }
   });
 }
+<?php //位置向下一位?>
 function down(id)
 {
   id1 = id;
@@ -612,6 +627,7 @@ function down(id)
     }
   });
 }
+<?php //载入数据?>
 function load_log(){
    $.ajax({
     dataType: 'json',
@@ -625,6 +641,7 @@ function load_log(){
     }
   });
 }
+<?php //展开更多数据?>
 function more_log(){
   t = new Date;
   if ($('#div_logs .log:last').attr('class') == 'log alarm_off') {

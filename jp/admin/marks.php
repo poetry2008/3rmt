@@ -6,6 +6,9 @@ require('includes/application_top.php');
 require(DIR_FS_ADMIN . '/classes/notice_box.php');
 if (isset($_GET['action'])) {
   switch ($_GET['action']) {
+/* -----------------------------------------------------
+   case 'update_pic' 更新标记图片信息   
+------------------------------------------------------*/
     case 'update_pic':
       tep_isset_eof(); 
       $pic_alt_text = $_POST['pic_alt'];
@@ -37,10 +40,11 @@ $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 require("includes/note_js.php");
 ?>
 <script type="text/javascript">
+<?php //关闭弹出框?>
 function hidden_info_box(){
   $('#show_popup_info').css('display','none');
 }
-
+<?php //计算弹出框的位置?>
 function info_box_set(ele, current_belong)
 {
   $.ajax({
@@ -107,7 +111,7 @@ function info_box_set(ele, current_belong)
    }
   });
 }
-
+<?php //打开弹出页?>
 function show_popup_info(ele, pic_id)
 {
   url_str = 'ajax.php?action=show_update_pic_info';

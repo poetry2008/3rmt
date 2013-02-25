@@ -78,6 +78,10 @@
   
   if (tep_not_null($action)) {
     switch ($action) {
+/* -----------------------------------------------------
+   case 'check_session' 检查session    
+   case 'update_order' 创建预约订单      
+------------------------------------------------------*/
       case 'check_session':
         /*
         header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
@@ -184,7 +188,8 @@
 
 
 
-    if($products_details["qty"] > 0) { // a.) quantity found --> add to list & sum    
+    if($products_details["qty"] > 0) { 
+      // a.) quantity found --> add to list & sum    
       
       $_SESSION['create_preorder']['orders_products'][$orders_products_id]['products_model'] = $products_details["model"];
       $_SESSION['create_preorder']['orders_products'][$orders_products_id]['products_name'] = str_replace("'", "&#39;", $products_details["name"]);
@@ -276,7 +281,8 @@
         // I can't find out, WHERE the $RunningTotal is calculated - but the subtraction of the tax was wrong (in our shop)
         $ot_value = $RunningTotal;
         
-        if ( !$ot_subtotal_found ) { // There was no subtotal on this order, lets add the running subtotal in.
+        if ( !$ot_subtotal_found ) { 
+          // There was no subtotal on this order, lets add the running subtotal in.
         }
       }
   
@@ -321,7 +327,8 @@
       }
 
     } elseif (
-      ($ot_class != "ot_shipping") && ($ot_class != "ot_point")) { // Delete Total Piece
+      ($ot_class != "ot_shipping") && ($ot_class != "ot_point")) { 
+      // Delete Total Piece
       unset($_SESSION['create_preorder']['orders_total'][$ot_class]);
     }
   
@@ -707,6 +714,7 @@
 <script language="javascript" src="js2php.php?path=js&name=popup_window&type=js"></script>
 <script>
 var session_orders_id = '<?php echo $_GET['oID'];?>';
+<?php //把值放入session里?>
 function orders_session(type,value){
   
   $.ajax({
@@ -746,6 +754,7 @@ function orders_session(type,value){
   } 
   $op_info_str = implode('|||',$op_info_array);
 ?>
+  <?php //隐藏支付方法的附加信息?> 
   function hidden_payment(){
   var idx = document.edit_order.elements["payment_method"].selectedIndex;
   var CI = document.edit_order.elements["payment_method"].options[idx].value;
@@ -793,6 +802,7 @@ $(document).ready(function(){
     hidden_payment();
   });
 });
+<?php //添加输入框?>
 function add_option(){
     var add_num = $("#button_add_id").val();
     add_num = parseInt(add_num);
@@ -811,7 +821,7 @@ function add_option(){
 
     $("#add_option").append(add_str);
 }
-
+<?php //检查表单?>
 function submit_order_check(products_id,op_id){
   var qty = document.getElementById('p_'+op_id).value;
 
@@ -838,7 +848,7 @@ function submit_order_check(products_id,op_id){
   });
     
 }
-
+<?php //格式化输出价格?>
 function fmoney(s)
 {
    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(0) + "";
@@ -849,7 +859,7 @@ function fmoney(s)
               }
        return t.split("").reverse().join("");
 }
-
+<?php //计算价格?>
 function recalc_preorder_price(oid, opd, o_str, op_str)
 {
   
@@ -957,7 +967,7 @@ function recalc_preorder_price(oid, opd, o_str, op_str)
     }
   });
 }
-
+<?php //显示订单价格信息?>
 function price_total()
 {
       var ot_total = '';
@@ -1000,7 +1010,7 @@ function price_total()
         document.getElementById('ot_total_id').innerHTML = fmoney(ot_total)+'<?php echo TEXT_MONEY_SYMBOL;?>'; 
       } 
 }
-
+<?php //检查添加商品的价格?>
 function check_add(){
   price = document.getElementById('add_product_price').value;
   if(price != '' && price != 0  && price > 0){
@@ -1010,6 +1020,7 @@ function check_add(){
     return false;
   }
 }
+<?php //切换预约订单的状态?>
 function check_prestatus() {
   var s_value = document.getElementById('status').value;
 
@@ -1035,7 +1046,7 @@ function check_prestatus() {
     }
   });
 }  
-
+<?php //弹出日历?>
 function open_calendar()
 {
   var is_open = $('#toggle_open').val(); 
@@ -1109,6 +1120,7 @@ function open_calendar()
     });
   }
 }
+<?php //检查日期是否正确?>
 function is_date(dateval)
 {
   var arr = new Array();
@@ -1142,6 +1154,7 @@ function is_date(dateval)
  
   return false;
 }
+<?php //检查切换日期?>
 function change_predate_date() {
   predate_str = $("#predate_year").val()+"-"+$("#predate_month").val()+"-"+$("#predate_day").val(); 
   if (!is_date(predate_str)) {

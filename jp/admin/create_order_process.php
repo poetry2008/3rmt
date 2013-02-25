@@ -202,7 +202,8 @@ $payment_bank_info = array();
           //tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
         }
 
-        if($products_details["qty"] > 0) { // a.) quantity found --> add to list & sum    
+        if($products_details["qty"] > 0) { 
+          // a.) quantity found --> add to list & sum    
           $Query = "update " . TABLE_ORDERS_PRODUCTS . " set
             products_model = '" . $products_details["model"] . "',
             products_name = '" . str_replace("'", "&#39;", $products_details["name"]) . "',
@@ -224,7 +225,8 @@ $payment_bank_info = array();
               tep_db_query($Query);
             }
           }
-        }else{ // b.) null quantity found --> delete
+        }else{ 
+          // b.) null quantity found --> delete
           $Query = "delete from " . TABLE_ORDERS_PRODUCTS . " where orders_products_id
             = '$orders_products_id';";
           tep_db_query($Query);

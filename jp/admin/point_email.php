@@ -5,6 +5,11 @@
   require('includes/application_top.php');
   if (isset($_GET['action'])) {
     switch($_GET['action']){
+/* -----------------------------------------------------
+   case 'insert' 新建点数邮件 
+   case 'save' 更新点数邮件  
+   case 'deleteconfirm' 删除点数邮件   
+------------------------------------------------------*/
       case 'insert':
       case 'save':
         $point_mail_date = tep_db_prepare_input($_POST['mail_date']);
@@ -190,6 +195,12 @@ while($point_mail = tep_db_fetch_array($point_mail_query)){
   $contents = array();
   $explanation = TEXT_POINT_EMAIL_GLOBAL_TEXT;
   switch (isset($_GET['action'])?$_GET['action']:null) {
+/* -----------------------------------------------------
+   case 'new' 右侧新建点数邮件页面 
+   case 'edit' 右侧编辑点数邮件页面  
+   case 'delete' 右侧删除点数邮件页面  
+   default 右侧默认页面
+------------------------------------------------------*/
     case 'new':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_NEW . '</b>');
 

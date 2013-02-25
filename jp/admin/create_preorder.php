@@ -112,7 +112,7 @@
       $row = tep_db_fetch_array($result);
       extract($row, EXTR_PREFIX_ALL, "p");
       
-      // 特価を適用
+      // 商品的价格
       $p_products_price =
         tep_get_bflag_by_product_id($add_product_products_id)?0-$_POST['add_product_price']:$_POST['add_product_price'];
 
@@ -202,6 +202,7 @@
 <script language="javascript" src="includes/javascript/jquery.form.js"></script>
 <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
 <script type="text/javascript">
+<?php //下一步的提交?>
 function submit_next(){
 
   var fax_flag = document.getElementsByName('fax_flag')[0].value;
@@ -209,6 +210,7 @@ function submit_next(){
   fax.value = fax_flag;
   document.create_order.submit();  
 }
+<?php //提交检查?>
 function submit_check(){
   var qty = document.getElementById('add_product_quantity').value;
 
@@ -257,7 +259,7 @@ $(function() {
       }).result(function(e, item) {
       });
 });
-
+<?php //弹出日历?>
 function open_calendar()
 {
   var is_open = $('#toggle_open').val(); 
@@ -330,7 +332,7 @@ function open_calendar()
     });
   }
 }
-
+<?php //检查日期是否正确?>
 function is_date(dateval)
 {
   var arr = new Array();
@@ -364,6 +366,7 @@ function is_date(dateval)
  
   return false;
 }
+<?php //检查切换日期是否正确?>
 function change_predate_date() {
   predate_str = $("#predate_year").val()+"-"+$("#predate_month").val()+"-"+$("#predate_day").val(); 
   if (!is_date(predate_str)) {
@@ -528,7 +531,7 @@ require("includes/note_js.php");
     </tr>
   </table>
 <?php
-  //変数挿入
+  //插入信息
     $customer_id    = isset($account['customers_id'])           ? $account['customers_id']:'';
     $firstname      = isset($account['customers_firstname'])    ? $account['customers_firstname']:'';
     $lastname       = isset($account['customers_lastname'])     ? $account['customers_lastname']:'';

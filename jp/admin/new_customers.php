@@ -29,6 +29,9 @@
 //refresh TBALE_CUSTOMERS.cusotmers_firstorderat
  if(isset($_GET['action'])&&$_GET['action']){
     switch ($_GET['action']){
+/* -----------------------------------------------------
+   case 'refresh' 更新用户的第一次完成订单的时间 
+------------------------------------------------------*/
     case 'refresh':
    $ref_sql="update customers c , (SELECT o.customers_id as o_id ,min(osh.date_added) as osh_add
       FROM orders o LEFT JOIN orders_status_history as osh ON osh.orders_id = o.orders_id AND osh.orders_status_id in (2,5), customers c1

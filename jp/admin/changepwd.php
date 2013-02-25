@@ -20,6 +20,11 @@
 
 
 
+/* -----------------------------------------------------
+   功能: 判断字符串是否为空 
+   参数: $s_val(string) 字符串 
+   返回值: 为空的错误信息(string) 
+ -----------------------------------------------------*/
 function checkNotnull($s_val) {
 
   // 输入值的时候进行检查
@@ -29,6 +34,12 @@ function checkNotnull($s_val) {
   return '';        // 返回值
 }
 
+/* -----------------------------------------------------
+   功能: 判断字符串是否为空并且是否符合指定规则 
+   参数: $s_val(string) 字符串 
+   参数: $s_ereg(string) 规则 
+   返回值: 错误信息(string) 
+ -----------------------------------------------------*/
 function checkStringEreg($s_val, $s_ereg = "") {
 
   // 输入完成的时候，处理结束
@@ -42,6 +53,12 @@ function checkStringEreg($s_val, $s_ereg = "") {
   return '';            // 返回值
 }
 
+/* -----------------------------------------------------
+   功能: 判断字符串是否超出指定长度 
+   参数: $s_val(string) 字符串 
+   参数: $n_len(int) 长度 
+   返回值: 错误信息(string) 
+ -----------------------------------------------------*/
 function checkLength_ge($s_val, $n_len) {
 
   // 输入完成的时候，处理结束
@@ -56,6 +73,11 @@ function checkLength_ge($s_val, $n_len) {
   return '';            // 返回值
 }
 
+/* -----------------------------------------------------
+   功能: 输出错误信息 
+   参数: $a_error(string) 错误信息 
+   返回值: 错误信息的输出(string) 
+ -----------------------------------------------------*/
 function print_err_message($a_error) {
 
   $stable_bgcolor = 'bgcolor="#FFFFFF"';    // 表的背景色
@@ -75,11 +97,22 @@ function print_err_message($a_error) {
 
 }
 
+/* -----------------------------------------------------
+   功能: 赋值错误数组信息 
+   参数: $a_error(array) 错误数组 
+   参数: $s_errmsg(string) 错误信息 
+   返回值: 错误数组(array) 
+ -----------------------------------------------------*/
 function set_errmsg_array(&$a_error,$s_errmsg) {
 
   $a_error[] = $s_errmsg;
 }
 
+/* -----------------------------------------------------
+   功能: 倒序获取用户 
+   参数: $s_user_ID(int) 用户id 
+   返回值: 倒序获取用户的sql(string) 
+ -----------------------------------------------------*/
 function makeSelectUserInfo($s_user_ID = "") {
 
   $s_select = "select * from " . TABLE_USERS;
@@ -89,6 +122,11 @@ function makeSelectUserInfo($s_user_ID = "") {
 
 }
 
+/* -----------------------------------------------------
+   功能: 获取指定权限的用户 
+   参数: $nmode(int) 权限id 
+   返回值: 获取指定权限的用户的sql(string) 
+ -----------------------------------------------------*/
 function makeSelectUserParmission($nmode=0) {
 
   // 获取用话权限信息
@@ -103,6 +141,12 @@ function makeSelectUserParmission($nmode=0) {
 
 }
 
+/* -----------------------------------------------------
+   功能: 新建用户/权限数据 
+   参数: $aval(array) 新建信息数组 
+   参数: $nmode(int) 新建哪个表的数据 
+   返回值: 新建用户/权限数据的sql(string) 
+ -----------------------------------------------------*/
 function makeInsertUser($aval, $nmode=0) {
 
   $ssql = "insert into ";
@@ -131,6 +175,12 @@ function makeInsertUser($aval, $nmode=0) {
   return $ssql;
 }
 
+/* -----------------------------------------------------
+   功能: 更新用户数据 
+   参数: $aval(array) 更新信息数组 
+   参数: $nmode(int) 更新哪些信息 
+   返回值: 更新用户数据的sql(string) 
+ -----------------------------------------------------*/
 function makeUpdateUser($aval, $nmode=0) {
   $ssql = "update " . TABLE_USERS . " set";
   if ($nmode == 0) {
@@ -150,6 +200,11 @@ function makeUpdateUser($aval, $nmode=0) {
   return $ssql;
 }
 
+/* -----------------------------------------------------
+   功能: 删除用户/权限 
+   参数: $nmode(int) 删除哪个表 
+   返回值: 删除用户/权限的sql(string) 
+ -----------------------------------------------------*/
 function makeDeleteUser($nmode=0) {
 
   $ssql = "delete from ";
@@ -167,6 +222,11 @@ function makeDeleteUser($nmode=0) {
   return $ssql;
 }
 
+/* -----------------------------------------------------
+   功能: 用户密码一览 
+   参数: 无 
+   返回值: 用户密码一览的html(string) 
+ -----------------------------------------------------*/
 function UserPassword_preview() {
 
   PageBody('t', PAGE_TITLE_PASSWORD);   // 用户后台的标题显示（修改密码）
@@ -175,7 +235,8 @@ function UserPassword_preview() {
 
   $ssql = makeSelectUserInfo($GLOBALS['userslist']);      // 获取用户信息
   @$oresult = tep_db_query($ssql);
-  if (!$oresult) {                      // 错误的时候
+  if (!$oresult) {                      
+    // 错误的时候
     echo TEXT_ERRINFO_DB_NO_USERINFO;           // 显示信息
     echo "<br>\n";
     echo tep_draw_form('users', FILENAME_USERS);            // <form>标签的输出
@@ -186,7 +247,8 @@ function UserPassword_preview() {
   }
 
   $nrow = tep_db_num_rows($oresult);              // 获取记录件数
-  if ($nrow != 1) {                     // 获取的记录件数不是一件的时候
+  if ($nrow != 1) {                     
+    // 获取的记录件数不是一件的时候
     echo TEXT_ERRINFO_DB_NO_USER;             // 显示信息
     echo "<br>\n";
     echo tep_draw_form('users', FILENAME_USERS);            // <form>标签的输出
@@ -310,6 +372,11 @@ function UserPassword_preview() {
   return TRUE;
 }
 
+/* -----------------------------------------------------
+   功能: 更新成功页面 
+   参数: 无 
+   返回值: 更新成功的html(string) 
+ -----------------------------------------------------*/
 function UserInfor_execute() {
 
   PageBody('t', PAGE_TITLE_USERINFO);   // 用户管理换面的标题显示（用户信息）
@@ -331,7 +398,8 @@ function UserInfor_execute() {
 
   $ssql = makeUpdateUser($GLOBALS['aval']);         // 更新用户管理表的名字和邮件  获取sql字符串
   @$oresult = tep_db_query($ssql);
-  if (!$oresult) {                      // 错误的时候
+  if (!$oresult) {                      
+    // 错误的时候
     echo TEXT_ERRINFO_DB_UPDATE_USER;           // 显示信息
     echo "<br>\n";
     echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
@@ -375,6 +443,11 @@ function UserInfor_execute() {
   return TRUE;
 }
 
+/* -----------------------------------------------------
+   功能: 更新密码成功页面 
+   参数: 无 
+   返回值: 更新密码成功的html(string) 
+ -----------------------------------------------------*/
 function UserPassword_execute() {
 
   PageBody('t', PAGE_TITLE_PASSWORD);   // 用户管理画面的标题显示（修改密码）
@@ -390,7 +463,8 @@ function UserPassword_execute() {
 
   echo tep_draw_form('users',FILENAME_CHANGEPWD);      // <form>标签的输出
 
-  if (isset($aerror) && is_array($aerror)) {      // 输入错误的时候
+  if (isset($aerror) && is_array($aerror)) {      
+    // 输入错误的时候
     print_err_message($aerror);   // 显示错误信息
     echo "<br>\n";
     echo tep_draw_hidden_field('userslist', $GLOBALS['userid']);    // 把用户id方才隐藏项目里
@@ -402,7 +476,8 @@ function UserPassword_execute() {
 
   $ssql = makeUpdateUser($GLOBALS['aval'], 1);    // 更新用户管理表的密码  获取sql字符串
   @$oresult = tep_db_query($ssql);
-  if (!$oresult) {                  // 错误的时候
+  if (!$oresult) {                  
+    // 错误的时候
     echo TEXT_ERRINFO_DB_CHANGE_PASSWORD;     // 显示信息
     echo "<br>\n";
     echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
@@ -428,6 +503,11 @@ function UserPassword_execute() {
 
 }
 
+/* -----------------------------------------------------
+   功能: 生成js代码 
+   参数: 无 
+   返回值: 无 
+ -----------------------------------------------------*/
 function putJavaScript_ConfirmMsg() {
 
 echo '
@@ -476,6 +556,12 @@ function formConfirm(type) {
 ';
 
 }
+
+/* -----------------------------------------------------
+   功能: 页面的头部 
+   参数: 无 
+   返回值: 无 
+ -----------------------------------------------------*/
 function PageHeader() {
   global $ocertify,$page_name,$notes;
   echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">' . "\n";
@@ -507,6 +593,11 @@ function PageHeader() {
   echo '<!-- header_eof //-->' . "\n";
 }
 
+/* -----------------------------------------------------
+   功能: 页面内容的表格 
+   参数: $mode(string) 表格的开始/结束 
+   返回值: 无 
+ -----------------------------------------------------*/
 function PageBodyTable($mode='t') {
   global $ocertify;
   switch ($mode) {
@@ -526,6 +617,12 @@ function PageBodyTable($mode='t') {
   } 
 }
 
+/* -----------------------------------------------------
+   功能: 页面的内容 
+   参数: $mode(string) 开始/结束 
+   参数: $stitle(string) 标题 
+   返回值: 无 
+ -----------------------------------------------------*/
 function PageBody($mode='t', $stitle = "") {
   global $notes;
   switch ($mode) {
@@ -554,6 +651,11 @@ function PageBody($mode='t', $stitle = "") {
   } 
 }
 
+/* -----------------------------------------------------
+   功能: 页面的尾部 
+   参数: 无 
+   返回值: 无 
+ -----------------------------------------------------*/
 function PageFooter() {
   echo "<!-- footer //-->\n";
   require(DIR_WS_INCLUDES . 'footer.php');
@@ -582,7 +684,7 @@ if (isset($_POST['execute_change'])) { $execute_change = $_POST['execute_change'
 
   // 显示左侧导航
   if($ocertify->npermission >= 10){
-  echo "<!-- left_navigation //-->\n";    // 
+  echo "<!-- left_navigation //-->\n";     
   include_once(DIR_WS_INCLUDES . 'column_left.php');
   echo "\n<!-- left_navigation_eof //-->\n";
   echo "    </table></td>\n";

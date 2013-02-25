@@ -8,6 +8,11 @@
 
 if (isset($_GET['action']) and $_GET['action']) {
     switch ($_GET['action']) {
+/* -----------------------------------------------------
+   case 'insert' 新建按钮     
+   case 'save' 更新按钮     
+   case 'deleteconfirm' 删除按钮      
+------------------------------------------------------*/
       case 'insert':
         $computers_name = tep_db_prepare_input($_POST['computers_name']);
         $sort_order = tep_db_prepare_input($_POST['sort_order']);
@@ -152,6 +157,12 @@ require("includes/note_js.php");
   $heading = array();
   $contents = array();
 switch (isset($_GET['action'])? $_GET['action']:'') {
+/* -----------------------------------------------------
+   case 'new' 右侧新建按钮页面     
+   case 'edit' 右侧更新按钮页面     
+   case 'delete' 右侧删除按钮页面 
+   default 右侧默认页面
+------------------------------------------------------*/
     case 'new':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_NEW_COMPUTER . '</b>');
 

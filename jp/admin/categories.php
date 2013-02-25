@@ -13,8 +13,31 @@ $action = (isset($_GET['action']) ? $_GET['action'] : '');
 if ( eregi("(insert|update|setflag)", $action) ) include_once('includes/reset_seo_cache.php');
 
 if (isset($_GET['action']) && $_GET['action']) {
-
   switch ($_GET['action']) {
+/* -----------------------------------------------------
+   case 'get_last_order_date' 获得该商品最近一次被购买的时间 
+   case 'edit_category|new_product' 判断是否有权限操作该动作 
+   case 'all_update' 更新商品的价格及关联的同业者 
+   case 'simple_update_product' 更新商品及其关联的价格,实际库存,虚拟库存,最大/最小库存,更新者,更新时间 
+   case 'get_products' 关联商品的下拉列表 
+   case 'get_cart_products' 显示该商品的提醒商品名 
+   case 'toggle' 更新分类的状态 
+   case 'setflag' 更新商品的状态 
+   case 'simple_update' 商品价格和数量的简单更新 
+   case 'upload_inventory' 更新最大/最小在库数 
+   case 'insert_category' 创建分类  
+   case 'update_category' 更新分类 
+   case 'delete_product_description_confirm' 删除商品描述 
+   case 'delete_category_description_confirm' 删除分类描述  
+   case 'delete_category_confirm' 删除分类  
+   case 'delete_product_confirm' 删除商品 
+   case 'move_category_confirm' 移动分类  
+   case 'move_product_confirm' 移动商品  
+   case 'insert_product' 创建商品  
+   case 'update_product' 更新商品  
+   case 'copy_to_confirm' 复制商品  
+   case 'new_product_preview' 在商品预览页把提交的数据放到session里  
+------------------------------------------------------*/
     case 'get_last_order_date';
       echo intval(tep_calc_limit_time_by_order_id($_POST['pid'],$_POST['single'],$_POST['limit_time']));
     exit;
@@ -110,6 +133,7 @@ if (isset($_GET['action']) && $_GET['action']) {
       $c_page = (isset($_GET['page']))?'&page='.$_GET['page']:''; 
 
       if (isset($_GET['status']) && ($_GET['status'] == 0 || $_GET['status'] == 1 || $_GET['status'] == 2 || $_GET['status'] == 3)){
+        //0-绿色 1-红色 2-蓝色 3-黑色 
         tep_set_category_link_product_status($cID, $_GET['status'], $site_id, $up_rs); 
         if($site_id == "" || $site_id == 0){
           $update_sql = "update ".TABLE_CATEGORIES_DESCRIPTION." set last_modified=now(), user_last_modified='".$_SESSION['user_name']."' where categories_id='".$_GET['cID']."'";
@@ -156,6 +180,7 @@ if (isset($_GET['action']) && $_GET['action']) {
     }
 
     if ( ($_GET['flag'] == '0') || ($_GET['flag'] == '1') || ($_GET['flag'] == '2') || ($_GET['flag'] == '3')) {
+      //0-红色 1-绿色 2-蓝色 3-黑色 
       if ($_GET['pID']) {
         tep_set_product_status_by_site_id($_GET['pID'], $_GET['flag'], $_GET['site_id'], $up_rs);
       }
@@ -581,7 +606,7 @@ if (isset($_GET['action']) && $_GET['action']) {
       if(!empty($categories_new_id_code)){
 
         if(in_array($categories_id_code,$categories_new_id_code)){
-
+          //判断是否到其子分类下
           $messageStack->add(ERROR_MOVE_CATEGORY, 'error');
         }else{
           $move_flag = true; 
@@ -623,7 +648,7 @@ if (isset($_GET['action']) && $_GET['action']) {
     if(!empty($products_code_array)){
 
       if(in_array($products_id_code,$products_code_array)){
-
+        //判断该商品的罗马字在要移动要的分类下的商品的罗马字是否存在
         $messageStack->add(ERROR_MOVE_CATEGORY, 'error');
       }else{
         $move_flag = true; 
@@ -912,7 +937,7 @@ if (isset($_GET['action']) && $_GET['action']) {
         tep_db_free_result($products_code_id_query);
 
         if(!empty($products_code_array)){
-
+          //判断该商品罗马字在指定分类下的商品的罗马字是否重复
           if(in_array($products_id_code,$products_code_array)){
 
             $messageStack->add(ERROR_MOVE_CATEGORY, 'error');
@@ -955,6 +980,7 @@ if (isset($_GET['action']) && $_GET['action']) {
       }
       if($move_flag == true){ 
         if ($_POST['copy_as'] == 'link') {
+          //复制链接 
           if ($_POST['categories_id'] != $current_category_id) {
             $check_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($products_id) . "' and categories_id = '" . tep_db_input($categories_id) . "'");
             $check = tep_db_fetch_array($check_query);
@@ -965,6 +991,7 @@ if (isset($_GET['action']) && $_GET['action']) {
             $messageStack->add_session(ERROR_CANNOT_LINK_TO_SAME_CATEGORY, 'error');
           }
         } elseif ($_POST['copy_as'] == 'duplicate') {
+          //重复复制 
           $product_query = tep_db_query("
               select *
               from " . TABLE_PRODUCTS . " 
@@ -1271,6 +1298,7 @@ $belong = str_replace('0_','',$belong);
 </script>
 <script language="javascript">
 window.onresize = resizepage;
+<?php //浏览器窗口缩放时执行的函数?>
 function resizepage(){
   if($(".box_warp").height() < $(".compatible").height()){
     $(".box_warp").height($(".compatible").height());
@@ -1283,6 +1311,7 @@ $(document).ready(function(){
     $(".udlr").udlr(); 
     ajaxLoad('<?php echo $cPath;?>', '<?php echo empty($_GET['site_id'])?'1':'0';?>'); 
     }); 
+<?php //设置图片的说明?>
 function set_image_alt_and_title(_this,pid,limit_time_info,limit_flag){
   $.ajax({
 type:'POST',
@@ -1300,6 +1329,7 @@ success: function(text) {
 }
 });
 }
+<?php //关联商品的下拉列表?>
 function relate_products1(cid,rid){
   $.ajax({
 dataType: 'text',
@@ -1309,12 +1339,14 @@ $('#relate_products').html(text);
 }
 });
 }
+<?php //点击确认后跳转到指定页面?>
 function confirmg(question,url) {
   var x = confirm(question);
   if (x) {
     window.location = url;
   }
 }
+<?php //检查分类名字和罗马字是否正确?>
 function cmess(pid, cid, site_id) {
   if (document.getElementById('cname').value == "") {
     alert('<?php echo ERROR_CATEGORY_NAME_IS_NOT_NULL;?>'); 
@@ -1336,6 +1368,7 @@ function cmess(pid, cid, site_id) {
   }
 
 }
+<?php //检查商品名字和罗马字是否为空?>
 function mess(){
   if (document.getElementById('pname').value == "") {
     alert('<?php echo ERROR_PRODUCT_NAME_IS_NOT_NULL;?>'); 
@@ -1347,7 +1380,7 @@ function mess(){
     return false; 
   }
 }
-
+<?php //检查价格是否正确?>
 function check_price(new_id,old_price,percent){
   $('#'+new_id).css('border-color','');
   new_price = Math.abs($('#'+new_id).val());
@@ -1378,7 +1411,7 @@ function check_price(new_id,old_price,percent){
     return false;
   }
 }
-
+<?php //计算价格?>
 function calculate_price(){
   if (parseInt($('#pp').val()) != 0) {
     $('#a_1').html(Math.ceil(5000/$('#pp').val()));
@@ -1415,14 +1448,14 @@ function calculate_price(){
     $('#b_3').html('');
   }
 }
-
+<?php //给id等于qt的元素赋值?>
 function change_qt(ele){
   qt = ele.innerHTML;
   if (qt) {
     $('#qt').val(qt);
   }
 }
-
+<?php //开启提醒商品?>
 function get_cart_products(){
   tagstr = '';
 
@@ -1435,6 +1468,7 @@ function get_cart_products(){
   if (tagstr != '')
     window.open("categories.php?action=get_cart_products&products_id=<?php echo $_GET['pID'];?>&buyflag="+$("input[@type=radio][name=products_cart_buyflag][checked]").val()+tagstr, '','toolbar=0,location=0,directories=0,status=1,menubar=0,scrollbars=yes,resizable=yes,width=300');
 }
+<?php //分类树的开启和关闭?>
 function display(){
   var categories_tree = document.getElementById('categories_tree'); 
   if(categories_tree.style.display == 'none' || categories_tree.style.display == ''){
@@ -1443,12 +1477,12 @@ function display(){
     categories_tree.style.display = 'none';
   }
 }
-
+<?php //清除属性输入框的值?>
 function clear_option()
 {
   document.getElementById('option_keyword').value = '';
 }
-
+<?php //自动搜索组?>
 $(function() {
     function format(group) {
     return group.name;
@@ -1471,7 +1505,7 @@ return format(item);
 }).result(function(e, item) {
   });
 });
-
+<?php //跳转到指定的组的页面?>
 function handle_option()
 {
   var option_value = document.getElementById('option_keyword').value;
@@ -1489,7 +1523,7 @@ window.open(open_url, 'newwindow', '');
 });  
 } 
 }
-<?php // 浮动DIV 的ajax ?>
+<?php //设置弹出页面的位置 ?>
 function info_box_set(ele, current_belong){
   $.ajax({
 type:'POST',
@@ -1555,10 +1589,11 @@ $('#show_popup_info').css('left',leftset);
 }
 });
 }
-
+<?php //隐藏弹出页面?>
 function hidden_info_box(){
   $('#show_popup_info').css('display','none');
 }
+<?php //弹出商品信息?>
 function show_product_info(pid,ele){
   $.ajax({
 dataType: 'text',
@@ -1573,6 +1608,7 @@ $('#show_popup_info').css('display','block');
 }
 });
 }
+<?php //弹出商品移动页?>
 function show_product_move(pid){
   $.ajax({
 dataType: 'text',
@@ -1584,6 +1620,7 @@ $('#show_popup_info').css('display','block');
 }
 });
 }
+<?php //弹出商品复制页?>
 function show_product_copy(pid){
   $.ajax({
 dataType: 'text',
@@ -1595,6 +1632,7 @@ $('#show_popup_info').css('display','block');
 }
 });
 }
+<?php //弹出商品删除页?>
 function show_product_delete(pid){
   $.ajax({
 dataType: 'text',
@@ -1606,6 +1644,7 @@ $('#show_popup_info').css('display','block');
 }
 });
 }
+<?php //弹出商品删除描述页?>
 function show_product_description_delete(pid){
   $.ajax({
 dataType: 'text',
@@ -1617,7 +1656,7 @@ $('#show_popup_info').css('display','block');
 }
 });
 }
-
+<?php //弹出分类信息?>
 function show_category_info(cid,ele){
   $.ajax({
 dataType: 'text',
@@ -1631,7 +1670,7 @@ $('#show_popup_info').css('display','block');
 }
 });
 }
-
+<?php //弹出移动分类页?>
 function move_category_id(cid){
   $.ajax({
 dataType: 'text',
@@ -1642,7 +1681,7 @@ $('#show_popup_info').css('display','block');
 }
 });
 }
-
+<?php //弹出删除分类页?>
 function delete_category_info(cid, del_type){
   $.ajax({
 dataType: 'text',
@@ -1653,7 +1692,7 @@ $('#show_popup_info').css('display','block');
 }
 });
 }
-
+<?php //弹出更新商品价格/进货/库存页?>
 function show_update_info(ele, pid, update_type, cnt_num) {
   if (update_type == '1') {
     origin_quantity = $('#virtual_quantity_'+pid).html(); 
@@ -1690,6 +1729,7 @@ $('#new_confirm_price').select().focus();
 }
 });
 }
+<?php //弹出日历?>
 function open_new_calendar()
 {
   var is_open = $('#toggle_open').val(); 
@@ -1765,13 +1805,16 @@ calendar.on("selectionChange", function (ev) {
 }
 }
 $(document).ready(function() {
+  <?php //监听按键?> 
   $(document).keyup(function(event) {
     if (event.which == 27) {
+      <?php //esc?> 
       if ($('#show_popup_info').css('display') != 'none') {
         hidden_info_box(); 
       }
     }
     if (event.which == 13) {
+      <?php //回车?> 
       if ($('#show_popup_info').css('display') != 'none') {
         tmp_click_str = $("#show_popup_info").find('input:button').first().attr('onclick'); 
         tmp_click_symbol = '0'; 
@@ -1788,6 +1831,7 @@ $(document).ready(function() {
       } 
     }
     if (event.ctrlKey && event.which == 37) {
+      <?php //Ctrl+方向左?> 
       if ($('#show_popup_info').css('display') != 'none') {
         if ($("#option_prev")) {
           $("#option_prev").trigger("click");
@@ -1795,6 +1839,7 @@ $(document).ready(function() {
       } 
     }
     if (event.ctrlKey && event.which == 39) {
+      <?php //Ctrl+方向右?> 
       if ($('#show_popup_info').css('display') != 'none') {
         if ($("#option_next")) {
           $("#option_next").trigger("click");
@@ -1843,8 +1888,8 @@ color:#0066CC;
 </style>
 </head>
 <?php 
-// 数据传输错误 提示DIV 
 if(isset($_GET['eof'])&&$_GET['eof']=='error'){ 
+// 数据传输错误 提示信息 
   ?>
     <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onload="show_error_message()" >
     <div id="popup_info">
@@ -1890,6 +1935,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
             <table border="0" width="100%" cellspacing="0" cellpadding="2">
             <?php
             if (isset($_GET['action']) && $_GET['action'] == 'new_product') {
+              //新建/更新商品页 
               if ( isset($_GET['pID']) && ($_GET['pID']) && (!$_POST) ) {
                 $site_id = isset($_GET['site_id']) ?$_GET['site_id']:0;
                 $product_query = tep_db_query("
@@ -2673,6 +2719,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
 
                                     <?php
             } elseif (isset($_GET['action']) && $_GET['action'] == 'new_product_preview') {
+            //商品预览页 
               ?>                 
                 <script  type='text/javascript'>
                 $(document).ready(function (){ $("#pp").select().focus() }); 
@@ -2905,7 +2952,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     echo '</table>';
                     echo '</td>';
                     echo '<td width="50%" valign="top" align="right">';
-                    if (tep_get_bflag_by_product_id($pInfo->products_id)) { // 如果买取
+                    if (tep_get_bflag_by_product_id($pInfo->products_id)) { 
+                      // 如果买取
                       echo '<table width="95%" cellpadding="0" cellspacing="0" border="1">';
                       echo '  <tr>';
                       echo '  <td height="30"><button  type="button" onclick="calculate_price()">'.CATEGORY_CAL_TITLE_TEXT.'</button></td>';
@@ -3060,7 +3108,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   </td>
                   </tr>
                   <?php
-                  if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) || !$_GET['origin'])) { //限制显示
+                  if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) || !$_GET['origin'])) { 
+                    //限制显示
                     echo '<tr><td><b>'.CATEGORY_BUTTON_UPDATE_TEXT.'</b></td></tr>' . "\n";
                   } else {
                     ?>
@@ -3197,6 +3246,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   <?php
               }
             } elseif (isset($_GET['action']) && ($_GET['action'] == 'new_category' || $_GET['action'] == 'edit_category')) {
+              //新建/更新分类页 
               if ($_GET['action'] == 'edit_category') { 
                 $categories_query_raw = "
                   select * 
@@ -3570,6 +3620,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 </tr>
                 <?php
             } else {
+              //分类/商品列表页 
               ?>
                 <tr>
                 <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -3830,7 +3881,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 }
                 $categories_name_text .= '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$cPath.'&cID='.$categories['categories_id'].'&action=edit_category'.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').(isset($_GET['search'])?$_GET['search']:'')).'">'.tep_image(DIR_WS_ICONS.'preview.gif', ICON_PREVIEW).'</a>&nbsp;'; 
                 $categories_name_text .= '<a href="'.tep_href_link(FILENAME_ORDERS, 'search_type=categories_id&scategories_id='.$categories['categories_id']).(!empty($site_id)?'&site_id='.$site_id:'').'&order_sort=torihiki_date&order_type=desc">'.tep_image(DIR_WS_ICONS.'search.gif', IMAGE_SEARCH).'</a>&nbsp;'; 
-				   $categories_name_text .=  '<a href="' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . tep_image(DIR_WS_ICONS . 'folder.gif', ICON_FOLDER) .  '</a>&nbsp;'; 
+                $categories_name_text .=  '<a href="' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . tep_image(DIR_WS_ICONS . 'folder.gif', ICON_FOLDER) .  '</a>&nbsp;'; 
                 $categories_name_text .= '<a class="title_text_link" href="' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . '<b>'.$categories['categories_name'].'</b>&nbsp;' .  '</a>';
                 $tmp_count_cnt = 9 + $count_dougyousya['cnt']; 
                 if ( (isset($cInfo) && is_object($cInfo)) && ($categories['categories_id'] == $cInfo->categories_id) ) {

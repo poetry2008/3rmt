@@ -23,6 +23,9 @@
   if (isset($_GET['action']) && $_GET['action']) {
     $user_info = tep_get_user_info($ocertify->auth_user);
     switch ($_GET['action']) {
+/* -----------------------------------------------------
+   case 'deleteconfirm' 删除idpw的历史记录      
+------------------------------------------------------*/
       case 'deleteconfirm':
         //unlink();
         if(tep_has_pw_manager_log($pwid)){
@@ -437,6 +440,10 @@ require("includes/note_js.php");
   $heading = array();
   $contents = array();
 switch (isset($_GET['action'])? $_GET['action']:'') {
+/* -----------------------------------------------------
+   case 'delete' 右侧删除idpw的历史记录页面
+   default 右侧默认页面
+------------------------------------------------------*/
     case 'delete':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_PW_MANAGER_LOG . '</b>');
 

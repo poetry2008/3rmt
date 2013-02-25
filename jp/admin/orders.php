@@ -15,6 +15,11 @@ if ($_POST['orders_id'] && ($_POST['orders_comment']||$_POST['orders_comment_fla
   tep_db_perform('orders', array('orders_comment' => $_POST['orders_comment']), 'update', "orders_id='".$_POST['orders_id']."'");
   tep_redirect(tep_href_link(FILENAME_ORDERS,'page='.$_POST['page'].'&oID='.$_POST['orders_id'].'&action=edit'));
 }
+/* -----------------------------------------------------
+   功能: 显示订单的详细信息 
+   参数: $orders_id(string) 订单id 
+   返回值: 弹出的订单信息(string) 
+ -----------------------------------------------------*/
 function tep_show_orders_products_info($orders_id) {
   $str = '';
 
@@ -480,7 +485,11 @@ while ($orders_status = tep_db_fetch_array($orders_status_query)) {
 
 if (isset($_GET['action'])){ 
 switch ($_GET['action']) {
-  //批量修改----------------------------------
+/* -----------------------------------------------------
+   case 'sele_act' 给选择的订单更新状态并发送邮件 
+   case 'update_order' 更新订单相关信息并发送邮件 
+   case 'deleteconfirm' 删除订单 
+------------------------------------------------------*/
   case 'sele_act':
     if($_POST['chk'] == ""){
       $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
@@ -595,7 +604,7 @@ switch ($_GET['action']) {
         $customer_notified = '0';
 
         if ($_POST['notify'] == 'on') {
-
+          //发送邮件
           $ot_query = tep_db_query("select value from " . TABLE_ORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_total'");
           $ot_result = tep_db_fetch_array($ot_query);
           $otm = (int)$ot_result['value'] . TEXT_YEN;
@@ -939,7 +948,7 @@ switch ($_GET['action']) {
       $customer_notified = '0';
 
       if ($_POST['notify'] == 'on') {
-
+        //发送邮件
         $ot_query = tep_db_query("select value from " . TABLE_ORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_total'");
         $ot_result = tep_db_fetch_array($ot_query);
         $otm = (int)$ot_result['value'] . TEXT_YEN;
@@ -1172,6 +1181,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($_GET['oID']) ) {
       from " . TABLE_ORDERS . " 
       where orders_id = '" . tep_db_input($oID) . "'");
   $order_exists = true;
+  //判断订单是否存在 
   if (!tep_db_num_rows($orders_query)) {
     $order_exists = false;
     $messageStack->add(sprintf(ERROR_ORDER_DOES_NOT_EXIST, $oID), 'error');
@@ -1450,6 +1460,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
   }
   $site_list_string = implode('-',$site_array);
   if (isset($_GET['cEmail']) && $_GET['cEmail']) {
+    //邮件查询 
     $cEmail = tep_db_prepare_input($_GET['cEmail']);
     $orders_query_raw = "
       select distinct o.orders_id, 
@@ -1484,6 +1495,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                " . " and o.site_id in (". $site_list_str .")"  . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " " . $where_payment . $where_type . " order by ".$order_str;
     //torihiki_date_error DESC,o.torihiki_date DESC";
   } else if (isset($_GET['cID']) && $_GET['cID']) {
+    //顾客id查询 
     $cID = tep_db_prepare_input($_GET['cID']);
     $orders_query_raw = "
       select distinct o.orders_id, 
@@ -1519,6 +1531,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                " . $where_payment . $where_type . " order by ".$order_str;
     //torihiki_date_error DESC,o.torihiki_date DESC";
   } elseif (isset($_GET['status']) && $_GET['status']) {
+    //状态查询 
     $status = tep_db_prepare_input($_GET['status']);
     $orders_query_raw = "
       select distinct o.orders_id, 
@@ -1555,6 +1568,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                " . $where_payment . $where_type . " order by ".$order_str;
     //torihiki_date_error DESC,o.torihiki_date DESC";
   }  elseif (isset($_GET['keywords']) && isset($_GET['search_type']) && $_GET['search_type'] == 'products_name' && !$_GET['type'] && !$payment) {
+    //商品名查询 
     $orders_query_raw = " select distinct op.orders_id from " .  TABLE_ORDERS_PRODUCTS . " op, ".TABLE_ORDERS." o 
       ".$sort_table." where ".$sort_where." op.orders_id = o.orders_id and op.products_name ";
     if(isset($_GET['real_name'])&&$_GET['real_name']){
@@ -1565,10 +1579,12 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
     $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".str_replace('torihiki_date_error desc,date_purchased_error desc,', '', $order_str);
     //op.torihiki_date desc";
   } elseif (isset($_GET['products_id']) && isset($_GET['search_type']) && $_GET['search_type'] == 'products_id' ) {
+    //商品id查询 
     $orders_query_raw = " select distinct op.orders_id from " .  TABLE_ORDERS_PRODUCTS . " op, ".TABLE_ORDERS." o ".$sort_table." where ".$sort_where." op.orders_id = o.orders_id and op.products_id='".$_GET['products_id']."'";
 
     $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".str_replace('torihiki_date_error desc,date_purchased_error desc,', '', $order_str);
   } elseif (isset($_GET['scategories_id']) && isset($_GET['search_type']) && $_GET['search_type'] == 'categories_id') {
+    //分类id查询 
     if (isset($_GET['site_id'])) {
       $tmp_site_array = explode('-', $_GET['site_id']); 
     }
@@ -1576,6 +1592,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
     $orders_query_raw = " select distinct op.orders_id from " .  TABLE_ORDERS_PRODUCTS . " op, ".TABLE_ORDERS." o,".TABLE_PRODUCTS_TO_CATEGORIES." p2c " .$sort_table." where ".$sort_where." op.orders_id = o.orders_id and op.products_id = p2c.products_id and p2c.categories_id in (".implode(',', $relate_category_array).")";
     $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".str_replace('torihiki_date_error desc,date_purchased_error desc,', '', $order_str);
   } elseif (isset($_GET['keywords']) && isset($_GET['search_type']) && $_GET['search_type'] == 'sproducts_id' ) {
+    //未完成订单查询 
     $orders_query_raw = " select distinct op.orders_id from " . TABLE_ORDERS_PRODUCTS . " op
       ,".TABLE_ORDERS." o 
       ".$sort_table." where ".$sort_where." 
@@ -1585,6 +1602,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
       '".date('Y-m-d 00:00:00',strtotime('-'.((get_configuration_by_site_id('ORDER_EFFECTIVE_DATE') != '0')?(get_configuration_by_site_id('ORDER_EFFECTIVE_DATE')-1):'0').'day'))."' ";
     $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".str_replace('torihiki_date_error desc,date_purchased_error desc,', '', $order_str);
   } elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && preg_match('/^os_\d+$/', $_GET['search_type'])))) {
+    //订单状态查询 
     if (!empty($_GET['keywords'])) {
       $orders_query_raw = "
         select distinct(o.orders_id), 
@@ -1661,6 +1679,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                      //o.torihiki_date DESC';
                      }
                      } elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['search_type'] == 'orders_id'))) {
+                     //订单id查询 
                      $orders_query_raw = "
                      select o.orders_id, 
                      o.torihiki_date, 
@@ -1696,6 +1715,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                     //o.torihiki_date DESC';
                      } elseif ( isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['search_type'] == 'customers_name') or (isset($_GET['search_type']) && $_GET['search_type'] == 'email'))
                          ) {
+                       //顾客名/邮件查询 
                        $orders_query_raw = "
                          select o.orders_id, 
                                 o.torihiki_date, 
@@ -1767,7 +1787,8 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
   
   
  elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['search_type'] == 'value'))) {
-              $keywords = $_GET['keywords'];
+             //金额查询  
+             $keywords = $_GET['keywords'];
              $orders_total_query = tep_db_query("select * from ". TABLE_ORDERS_TOTAL ." where class='ot_total' and value='".$keywords.".0000'" );
              $orders_like_str = '';
              $orders_like_array = array();
@@ -1820,6 +1841,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
   
                     else if(isset($_GET['keywords']) && ((isset($_GET['search_type']) &&
                              preg_match('/^payment_method/', $_GET['search_type'])))){
+                       //支付方法查询 
                        $payment_m = explode('|',$_GET['search_type']);
                        if (!empty($_GET['keywords'])) {
                          $orders_query_raw = "
@@ -1894,7 +1916,13 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                      }
                      }else if(isset($_GET['keywords']) && ((isset($_GET['search_type']) &&
                              preg_match('/^type/', $_GET['search_type'])))){
+                       //订单类型查询 
                        $type_arr = explode('|',$_GET['search_type']);
+                      /* -----------------------------------------------------
+                         case 'sell' 贩卖
+                         case 'buy' 买取
+                         case 'mix' 混合
+                      -----------------------------------------------------*/
                        switch ($type_arr[1]) { 
                          case 'sell':
                            $w_type = 'orders_type = 1';  
@@ -1972,6 +2000,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                          $orders_query_raw .= " order by ".$order_str;
                        }
                      }elseif (isset($_GET['keywords']) && $_GET['keywords']) {
+                       //关键字查询 
                        $orders_query_raw = "
                          select distinct(o.orders_id), 
                                 o.torihiki_date, 
@@ -2099,6 +2128,11 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
 header("Cache-Control: post-check=0, pre-check=0", false);
 # HTTP/1.0
 header("Pragma: no-cache");
+/* -----------------------------------------------------
+   功能: 判断配送开始时间是否为空 
+   参数: $oid(string) 订单id 
+   返回值: 是否为空(boolean) 
+-----------------------------------------------------*/
 function check_torihiki_date_error($oid){
   $query = tep_db_query("select * from " . TABLE_ORDERS . " where orders_id='" . $oid . "'");
   $order = tep_db_fetch_array($query);
@@ -2155,11 +2189,13 @@ else { ?>
         <script language="javascript" src="includes/javascript/all_page.js"></script> 
         <script language="javascript">
 window.onresize = resizepage;
+<?php //浏览器窗口缩放时执行的函数?>
 function resizepage(){
   if($(".note_head").val()== ""&&$("#orders_list_table").width()< 714){
     $(".box_warp").css('height',$('.compatible').height());
   }
 }
+<?php //确认邮件标题?>
 function confrim_mail_title(){
   var _end = $("#mail_title_status").val();
   if($("#confrim_mail_title_"+_end).val()==$("#mail_title").val()){
@@ -2173,6 +2209,7 @@ function confrim_mail_title(){
   }
   return false;
 }
+        <?php //选中/非选中网站?> 
         function change_site(site_id,flag,site_list,param_url){  
           var ele = document.getElementById("site_"+site_id);
           $.ajax({
@@ -2193,10 +2230,12 @@ function confrim_mail_title(){
                  }
           });
         }
+        <?php //等待元素隐藏?> 
         function read_time(){
     
           $("#wait").hide();
         }
+        <?php //给订单加标识?> 
         function change_read(oid,user){
           var orders_id = document.getElementById("oid_"+oid); 
           var orders_id_src = orders_id.src;
@@ -2269,7 +2308,7 @@ foreach ($nomail as $oskey => $value){
    }
  */
 ?>
-// 以当前时间为如今日
+<?php //以当前时间为如今日?>
 function q_3_2(){
   if ($('#q_3_1').attr('checked') == true){
     if ($('#q_3_2_m').val() == '' || $('#q_3_2_m').val() == '') {
@@ -2279,7 +2318,7 @@ function q_3_2(){
   }
 }
 
-// 以当前时间为如今日
+<?php //以当前时间为如今日?>
 function q_4_3(){
   if ($('#q_4_2').attr('checked') == true){
     if ($('#q_4_3_m').val() == '' || $('#q_4_3_m').val() == '') {
@@ -2288,7 +2327,7 @@ function q_4_3(){
     }
   }
 }
-
+<?php //删除订单指定状态?>
 function del_confirm_payment_time(oid, status_id)
 {
   $.ajax({
@@ -2318,6 +2357,7 @@ window.location.reload;
 }
 });
 }
+<?php //更新orders_comment_flag的值?>
 function validate_comment(){
   var o_comment = $('textarea|[name=orders_comment]');
   if(o_comment.val()){
@@ -2476,7 +2516,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         </div>
         </td>
         </tr>
-        <?php // 三种状态 + A,B,C ?>
+        <?php // 三种状态 + A,B,C,D ?>
         <tr>
         <td width="100%">
         <div id="orders_flag">
@@ -3175,7 +3215,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
             </table>
             </td>
             </tr>
-	    <?php // 订单商品 ?>
+	    <?php // 订单状态历史记录 ?>
             <!-- orders status history -->
             <tr>
             <td class="main" align="left">
@@ -3339,6 +3379,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
                   <?php
                   // edit over
         } else if ($_GET['action']=='show_manual_info' && $_GET['oID'] && $_GET['pID']) {
+//显示订单的手册信息
 $oID=$_GET['oID'];
 $pID=$_GET['pID'];
 $page=$_GET['page'];
@@ -3444,6 +3485,7 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 
 <?php 
 }else if($_GET['action']=='search_manual_info'){
+//搜索手册信息
 $search_res_arr=array();
 
 
@@ -4054,6 +4096,7 @@ echo '<b><font color="red">'.MANUAL_SEARCH_NORES.'</font></b>';
 <?php
 //============================================================================================
 }else if($_GET['action']=='show_search_manual'){
+//显示搜索手册
 $site_id = 0;
 
 
@@ -4355,7 +4398,7 @@ if($c_parent_array['parent_id'] == 0){
 </td>
 <?php	}
 }else {
-          // list start
+          //订单列表 
           ?>
             <tr>
             <td width="100%" height="40">
