@@ -15,6 +15,7 @@ $belong = str_replace('/admin/','',$_SERVER['PHP_SELF']);
 $query = tep_db_query("select * from notes where belong='".$belong."' and (attribute='1' or (attribute='0' and (author='".$ocertify->auth_user."' or author=''))) order by id desc");
 $note_arr = array();
 $height_arr = array();
+//首页该用户的memo列表
 while($row=tep_db_fetch_array($query)){
   list($left,$top,$zindex,$xlen,$ylen) = explode('|',$row['xyz']); 
   $note_arr[] = $row['id'];
@@ -61,6 +62,7 @@ while($row=tep_db_fetch_array($query)){
 $(document).ready(function() { 
 $('.box_warp').height(<?php echo max($height_arr);?>);
 <?php
+//监听memo的缩放
 foreach($note_arr as $note_row){
   echo "$('#note_".$note_row."').resizable({ 
     alsoResize: '#note_text_".$note_row."',
@@ -85,6 +87,7 @@ foreach($note_arr as $note_row){
 }
 ?>
 });
+<?php //改变图层?>
 function changeLayer(obj) {
   arr = new Array(); 
   var i = 0 
