@@ -26,7 +26,7 @@ define('JS_TEXT_GENERAL_ADDORSUB_ERROR','增减的值已超过最大值。请设
 define('JS_TEXT_GENERAL_REAL_QUANTITY_ERROR','实际库存已超过最大值。请设为999,999,999,999,999以下。');
 define('JS_TEXT_GENERAL_PRICE_INFO_ERROR','商品的价格已超过最大值。请设为999,999,999,999,999以下。');
 define('JS_TEXT_GENERAL_CARTORDER_ERROR','显示顺序已超过最大值。请设为999,999,999,999,999以下。');
-define('JS_TEXT_GENERAL_CARTFLAG_TITLE_ERROR','提醒广告最小库存数以超过最大值。请设为999,999,999,999,999以下。');
+define('JS_TEXT_GENERAL_CARTFLAG_TITLE_ERROR','提醒banner最小库存数以超过最大值。请设为999,999,999,999,999以下。');
 define('JS_TEXT_GENERAL_WEIGHT_ERROR','重量已超过最大值。请设为999,999,999,999,999以下。');
 define('JS_TEXT_GENERAL_SELECT_OPTION','选择项');
 define('JS_TEXT_GENERAL_LINK_CHAR','～');

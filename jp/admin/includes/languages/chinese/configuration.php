@@ -8,7 +8,7 @@ define('TABLE_HEADING_ACTION', '操作');
 define('TEXT_INFO_EDIT_INTRO', '请添加必要的更改');
 define('TEXT_INFO_DATE_ADDED', '创建日:');
 define('TEXT_INFO_LAST_MODIFIED', '更新日:');
-define('HEADING_TITLE_901','店铺初期设置');
+define('HEADING_TITLE_901','商店初期设置');
 define('HEADING_TITLE_16','时间设置');
 define('HEADING_TITLE_2','最小值');
 define('HEADING_TITLE_3','最大值');
