@@ -8,7 +8,12 @@ class AD_Option extends AD_Option_DbRecord
   function __construct()
   {
   }
-
+/*-----------------------
+ 功能：获得组
+ 参数：$belong_option_str(string) 属于选项
+ 参数：$ptype(bool) 类型
+ 返回值：返回组(array)
+ ---------------------*/
   function getGroups($belong_option_str, $ptype = false)
   {
     if (empty($belong_option_str)) {
@@ -18,7 +23,12 @@ class AD_Option extends AD_Option_DbRecord
     $groups = $this->getResultObjects($sql, 'AD_Option_Group'); 
     return $groups; 
   }
-  
+/*---------------------
+ 功能：提供选项
+ 参数：$belong_option_str(string) 选项
+ 参数：$ptype(bool) 类型
+ 返回值：无
+ --------------------*/ 
   function render($belong_option_str, $ptype = false)
   {
     $this->groups = $this->getGroups($belong_option_str, $ptype); 
@@ -26,7 +36,11 @@ class AD_Option extends AD_Option_DbRecord
       $group->render($this->option_error_array); 
     }
   }
-
+/*-------------------------
+ 功能：审核 
+ 参数：无
+ 返回值: 返回错误(bool)
+ ------------------------*/
   function check() 
   {
     global $_POST; 
@@ -47,7 +61,11 @@ class AD_Option extends AD_Option_DbRecord
     }
     return $error_single; 
   }
-  
+/*--------------------------
+ 功能：普通用户是否显示
+ 参数: $belong_option_str(string)  选项
+ 返回值：true/false(bool)
+ ----------------------- -*/ 
   function whether_show($belong_option_str)
   {
     if (empty($belong_option_str)) {
@@ -59,7 +77,11 @@ class AD_Option extends AD_Option_DbRecord
      }
      return false; 
   }
-
+/*----------------------------
+ 功能：管理员是否显示 
+ 参数：$belong_option_str(string) 选项
+ 返回值：false/true(bool)
+ ---------------------------*/
   function admin_whether_show($belong_option_str)
   {
     if (empty($belong_option_str)) {

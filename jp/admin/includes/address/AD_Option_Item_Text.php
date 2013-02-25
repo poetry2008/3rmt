@@ -8,7 +8,11 @@ class AD_Option_Item_Text extends AD_Option_Item_Basic
   var $has_text_line = true;
   var $has_text_check_type = true;
   var $has_text_max_num = true; 
-
+/*-------------------------------
+ 功能：提供选项错误阵列
+ 参数：$option_error_array(array) 选项错误阵列
+ 返回值：无
+ ------------------------------*/
   function render($option_error_array)
   {
      if (strlen($this->front_title)) {
@@ -26,13 +30,20 @@ class AD_Option_Item_Text extends AD_Option_Item_Basic
      echo '</span>'; 
      echo '</td>';
   }
-  
+/*----------------------------------
+ 功能：准备表
+ 参数：$item_id(bumber) 项目编号
+ 返回值：格式字符串
+ ---------------------------------*/
   static public function prepareForm($item_id = NULL)
   {
     return $formString;
   }
-
-
+/*---------------------------------
+ 功能：检查选项错误数组
+ 参数：$option_error_array(array) 选项错误阵列
+ 返回值：true/false(bool)
+ --------------------------------*/ 
   function check(&$option_error_array)
   {
      global $_POST;
@@ -90,7 +101,11 @@ class AD_Option_Item_Text extends AD_Option_Item_Basic
      }
      return false; 
   }
-
+/*-------------------------------
+ 功能：检查字符
+ 参数：$c_str(string) 字符
+ 返回值：true/false(bool)
+ ------------------------------*/
   function check_character($c_str)
   {
     $character_array = array('ア' , 'ｱ', 'ぁ' , 'ァ', 'ｧ' ,'あ', 'イ' , 'ｲ' , 'ぃ' ,

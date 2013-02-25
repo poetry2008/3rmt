@@ -2,6 +2,11 @@
   require('includes/application_top.php');
 if (isset($_GET['action']) and $_GET['action']) {
     switch ($_GET['action']) {
+/*--------------------------------------------
+ case 'insert' 新建账单模板
+ case 'save'   更新账单模板 
+ case 'deleteconfirm' 确认删除模板
+ -------------------------------------------*/
       case 'insert':
         $name  = tep_db_prepare_input($_POST['name']);
         $data1 = tep_db_prepare_input($_POST['data1']);

@@ -99,13 +99,13 @@ require("includes/note_js.php");
   }
 ?>
 <!-- body_text -->
-<td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="0">
+<td width="100%" valign="top"><div class="box_warp"><div class="compatible"><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
       <td width="100%" colspan='2'>
   
   <table border="0" width="100%" cellspacing="2" cellpadding="0">
     <tr>
-      <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
+      <td class="pageHeading" height="40"><?php echo HEADING_TITLE; ?></td>
       <td align="right" class="smallText">
         <table width=""  border="0" cellspacing="1" cellpadding="0">
           <tr>
@@ -512,10 +512,11 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
 ?>
     </tr>
   </table>
+  </div></div>
       </td>
     </tr>
 
-    </table></div></td>
+    </table></td>
 <!-- body_text_eof -->
   </tr>
 </table>

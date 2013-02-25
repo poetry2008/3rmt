@@ -6,6 +6,10 @@
   require('includes/application_top.php');
   if (isset($_GET['action'])) {
     switch ($_GET['action']) {
+/*----------------------------
+ case 'update'  更新客户信息
+ case 'deleteconfirm' 确认删除客户信息 
+ ---------------------------*/
       case 'update':
         $an_cols = array('customers_email_address','customers_telephone','customers_fax','customers_dob','entry_postcode');
         foreach ($an_cols as $col) {
@@ -778,6 +782,9 @@ require("includes/note_js.php");
   $heading = array();
   $contents = array();
   switch (isset($_GET['action'])?$_GET['action']:null) {
+/*----------------------------------
+ case 'confirm' 确认正确的客户信息 
+ ---------------------------------*/
     case 'confirm':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_CUSTOMER . '</b>');
 

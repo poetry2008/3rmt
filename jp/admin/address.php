@@ -5,6 +5,11 @@
 require('includes/application_top.php');
 
 //生成随即16位name
+/*-------------------------
+ 功能：生成随即16位name 
+ 参数：无
+ 返回值：16位name(string)
+ ------------------------*/
 function rand_str(){
   
   $rand_string = '';
@@ -21,6 +26,11 @@ $action = $_GET['action'];
 if(isset($action) && $action != ''){
 
   switch($action){ 
+/*--------------------------
+  case 'save' 添加或者修改 配送地区设置
+  case 'del'  删除配送地区设置
+  case 'res'  更新配送地区设置
+  -------------------------*/
   case 'save': $address_id = tep_db_prepare_input($_POST['cid']);
     $address_title = tep_db_prepare_input($_POST['title']);
     $address_name = tep_db_prepare_input($_POST['name']);
@@ -289,7 +299,11 @@ while($address_array = tep_db_fetch_array($address_query)){
     $onmouseover = 'onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\';" onmouseout="this.className=\''.$nowColor.'\'"'; 
   }
   switch($address_array['type']){
-
+/*-----------------------------
+ case 'text'  设定值 文本
+ case 'textarea' 设定值 文本域
+ case 'option'  设定值option
+ ----------------------------*/
   case 'text':
     $address_type_str = TABLE_TEXT;
     break;

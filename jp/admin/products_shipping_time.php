@@ -8,7 +8,11 @@ $action = $_GET['action'];
 if(isset($action) && $action != ''){
 
   switch($action){
-
+/*-----------------------------------
+ case 'save' 添加或者修改 配送时间制定组 
+ case 'del'  删除配送时间制定组
+ case 'res'  更新配送时间制定组
+ ----------------------------------*/
   case 'save':
     $products_id = tep_db_prepare_input($_POST['cid']);
     $products_name = tep_db_prepare_input($_POST['name']);

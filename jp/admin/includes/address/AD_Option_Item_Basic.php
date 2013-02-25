@@ -8,12 +8,21 @@ class AD_Option_Item_Basic
   var $class;
   var $formname;
   
-  
+/*---------------------
+ 功能：初始化
+ 参数：$option(string) 选项
+ 返回值：无
+ --------------------*/  
   function init($option)
   {
     $this->parseOption($option);
     $this->formname = $this->name.'_'.$this->group_id.'_'.$this->id; 
   }
+/*--------------------
+ 功能：解析选项
+ 参数：$option(string) 选项
+ 返回值：无
+ -------------------*/
   function parseOption($option)
   {
     if($optionArray  = unserialize($option)){
@@ -22,7 +31,11 @@ class AD_Option_Item_Basic
       }
     }
   }
-
+/*--------------------
+ 功能：准备表 
+ 参数：$item_id(number) 项目编号
+ 返回值：格式字符串文本
+ -------------------*/
   public function prepareFormWithParent($item_id){
     $item_raw = tep_db_query("select * from ".TABLE_ADDRESS." where id = '".(int)$item_id."'"); 
     $item_res = tep_db_fetch_object($item_raw); 

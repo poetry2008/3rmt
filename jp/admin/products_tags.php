@@ -10,6 +10,10 @@
   header("Pragma: no-cache");
   if (isset($_GET['action']) and $_GET['action']) {
     switch ($_GET['action']) {
+/*----------------------------
+ case 'load_products_to_tags' 加载产品标签
+ case 'save' 更新产品标签
+ ---------------------------*/
       case 'load_products_to_tags':
         $query = tep_db_query("select * from products_to_tags where tags_id='".(int)$_GET['tags_id']."'");
         $arr = array();
@@ -48,7 +52,11 @@
         break;
     }
   }
-  
+/*-----------------------------------
+ 功能：产品盒 
+ 参数：$cid(string) 类别ID值
+ 返回值：无
+ ----------------------------------*/ 
   function products_box($cid){
       $products_query = tep_db_query("select * from products_to_categories p2c,products_description pd where p2c.products_id=pd.products_id and pd.site_id=0 and p2c.categories_id='".$cid."'");
       if (tep_db_num_rows($products_query)) {
@@ -72,6 +80,7 @@
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script>
+<?php //加载产品标签 ?>
 function load_products_to_tags(){
   count = checked_count();
   if (count == 1){
@@ -90,6 +99,7 @@ function load_products_to_tags(){
     $('.products_checkbox').removeAttr('checked');
   }
 }
+<?php //检查数量?>
 function checked_count(){
   var i = 0;
   $('.all_tags').each(function(){
@@ -97,7 +107,7 @@ function checked_count(){
   });
   return i;
 }
-
+<?php //获取标签ID ?>
 function get_tid(){
   tid = null;
   count = checked_count();
@@ -110,7 +120,7 @@ function get_tid(){
   }
   return tid;
 }
-
+<?php //类别ID开关 ?>
 function switch_categories(cid){
   if ($('#d_'+cid).css('display') == 'block') {
     $('#d_'+cid).css('display', 'none');
@@ -118,7 +128,7 @@ function switch_categories(cid){
     $('#d_'+cid).css('display', 'block');
   }
 }
-
+<?php //检查全部 ?>
 function check_all(cid){
   if ($('#categories_'+cid).attr('checked')) {
     $('#d_'+cid+' input[type=checkbox]').attr('checked','checked');

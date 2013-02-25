@@ -34,6 +34,7 @@ $(document).ready(function(){
   $('.columnLeft').parent().parent().parent().parent().attr('cellpadding', '0');
   $('.columnLeft').parent().addClass('leftmenu');
 });
+<?php //左侧栏切换 ?>
 function toggle_leftColumn()
 {
 

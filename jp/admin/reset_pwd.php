@@ -1,6 +1,11 @@
 <?php
 require('includes/application_top.php');
 if ($_GET['action'] == 'check_search') {
+/*-------------------------------------
+ 功能: 检查搜索 
+ 参数：$_POST['start'](string) 开始检查
+ 参数：$_POST['end'](string) 结束检查
+ ------------------------------------*/
   $error_msg = ''; 
   if (!preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/', $_POST['start']) || !preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/', $_POST['end'])) {
     $error_msg = SELECT_SEARCH_DATE_IS_WRONG; 
@@ -73,6 +78,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script>
+<?php //打开日历 ?>
 function open_new_calendar(c_type)
 {
   var is_open = $('#toggle_open_'+c_type).val(); 
@@ -102,6 +108,7 @@ function open_new_calendar(c_type)
     });
   }
 }
+<?php //选择完日历 确认查询 ?>
 function check_search_form()
 {
   start_str = document.getElementById('start').value; 
@@ -121,7 +128,7 @@ function check_search_form()
     }
   });
 }
-
+<?php //重置日历  ?>
 function reset_customers_pwd() {
   $.ajax({
     url: 'reset_pwd.php?action=reset_all',

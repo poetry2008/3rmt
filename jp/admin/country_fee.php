@@ -9,7 +9,11 @@ $action = $_GET['action'];
 if(isset($action) && $action != ''){
 
   switch($action){
-
+/*-----------------------------
+ case 'save' 添加或者修改 费用设置
+ case 'del'  删除费用设置
+ case 'res'  更新费用设置
+ ----------------------------*/
   case 'save':
     $country_fee_id = tep_db_prepare_input($_POST['cid']);
     $country_fee_title = tep_db_prepare_input($_POST['title']); $country_fee_name = tep_db_prepare_input($_POST['name']); $free_value = tep_db_prepare_input($_POST['free_value']);

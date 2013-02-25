@@ -7,7 +7,11 @@ $action = $_GET['action'];
 if(isset($action) && $action != ''){
 
   switch($action){
-
+/*--------------------------------
+ case 'save' 添加或者修改地域费用设置
+ case 'del'  删除地域费用设置
+ case 'res'  更新地域费用设置
+ -------------------------------*/
   case 'save':
     $area_fee_id = tep_db_prepare_input($_POST['cid']);
     $area_fee_fid = tep_db_prepare_input($_POST['fid']);

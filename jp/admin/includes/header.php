@@ -11,7 +11,7 @@ if (isset($messageStack) && $messageStack->size > 0) {
 $(function() {
    setTimeout(function() {show_head_notice(1)}, 35000);
 });
-
+<?php //检查存在的功能 ?>
 function check_exists_function(funcName){
   try{
     if(typeof(eval(funcName)) == "function") {
@@ -21,7 +21,7 @@ function check_exists_function(funcName){
     return false;
   }
 }
-
+<?php //表格处理的通知时间 ?>
 function calc_notice_time(leave_time, nid, start_calc)
 {
   
@@ -83,7 +83,7 @@ function calc_notice_time(leave_time, nid, start_calc)
     setTimeout(function(){calc_notice_time(leave_time, nid, 1)}, 5000); 
   } 
 }
-
+<?php //显示所有订单通知 ?>
 function expend_all_notice(aid)
 {
   if ($('#show_all_notice').css('display') == 'none') {
@@ -103,6 +103,7 @@ function expend_all_notice(aid)
     $('#show_all_notice').html(''); 
   }
 }
+<?php //删除报警通知 ?>
 function delete_alarm_notice(nid, e_type)
 {
   $.ajax({
@@ -118,6 +119,7 @@ function delete_alarm_notice(nid, e_type)
       } 
       });
 }
+<?php //删除通知 ?>
 function delete_micro_notice(nid, e_type)
 {
   $.ajax({
@@ -133,6 +135,7 @@ function delete_micro_notice(nid, e_type)
       } 
       });
 }
+<?php //显示头部通知 ?> 
 function show_head_notice(no_type)
 {
   $.ajax({
@@ -174,14 +177,17 @@ function show_head_notice(no_type)
       } 
       });
 }
+<?php //显示菜单?>
 function showmenu(elmnt)
 {
   document.getElementById(elmnt).style.visibility="visible"
 }
+<?php //隐藏菜单 ?>
 function hidemenu(elmnt)
 {
   document.getElementById(elmnt).style.visibility="hidden"
 }
+<?php //切换标题菜单 ?>
 function toggle_header_menu(elmnt)
 {
   if (document.getElementById(elmnt).style.visibility == 'visible') {
@@ -213,6 +219,7 @@ function toggle_header_menu(elmnt)
     }
   }
 }
+<?php //跳转到更改密码 ?>
 function goto_changepwd(id){
   document.getElementById(id).action="<?php echo FILENAME_CHANGEPWD;?>";
   document.getElementById(id).submit();
@@ -224,6 +231,7 @@ if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {
 var cfg_head_last_customer_action = '<?php echo PREORDER_LAST_CUSTOMER_ACTION;?>';
 var prev_head_customer_action = '';
 var check_head_pre_o_single = '0';
+<?php //检查头部的订单?>
 function checkHeadPreOrders(t)
 {
   $.ajax({
@@ -238,6 +246,7 @@ function checkHeadPreOrders(t)
     }
   });
 }
+<?php // ?>
 function playHeadSound()  
 {  
   var hnode=document.getElementById('head_sound');  

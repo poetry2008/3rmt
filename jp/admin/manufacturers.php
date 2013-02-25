@@ -7,6 +7,11 @@
 
   if (isset($_GET['action'])) 
   switch ($_GET['action']) {
+/*----------------------------------
+ case 'insert'  添加制造商
+ case 'save'    更新制造商
+ case 'deleteconfirm' 删除制造商
+ ---------------------------------*/
     case 'insert':
     case 'save':
 	    //print_r($_POST);exit;
@@ -205,6 +210,11 @@ require("includes/note_js.php");
   $heading = array();
   $contents = array();
   switch (isset($_GET['action'])?$_GET['action']:null) {
+/*----------------------------------
+ case 'new'  新建制造商
+ case 'edit' 修改制造商
+ case 'delete' 删除制造商
+ ---------------------------------*/
     case 'new':
       $heading[] = array('text' => '<b>' . TEXT_HEADING_NEW_MANUFACTURER . '</b>');
 

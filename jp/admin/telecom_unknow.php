@@ -29,6 +29,7 @@
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script>
+<?php //隐藏结算 ?>
   function hide(id, ele){
     $.ajax({
       dataType: 'text',
@@ -41,6 +42,7 @@
     });
   }
 // 全选
+<?php //检查所有结算?>
 function all_check(ele){
   var error = false;
   if (ele.checked) {
@@ -65,6 +67,7 @@ function all_check(ele){
 
   }
 }
+<?php //检查一个 ?>
 function check_one(ele){
   if(ele.value=='false') {
     alert('<?php echo TEXT_CAN_NOT_SHOW; ?>');

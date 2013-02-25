@@ -1845,14 +1845,3 @@ google hack
       margin-top:-4px;
       margin-bottom:-2px;
 }}
-/* ---------------------------
-hr  line
---------------------------- */
-.line_solid{
-	border:1px solid #000000;
-	margin:0;
-}
-.line_dashed{
-	border:1px dashed #000000;
-	margin:0;
-}

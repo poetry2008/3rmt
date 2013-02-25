@@ -3,6 +3,11 @@
     var $modules;
 
 // class constructor
+/*--------------------------
+ 功能：订单总额
+ 参数：无
+ 返回值：无
+ -------------------------*/
     function order_total() {
       global $language;
 	  
@@ -22,7 +27,11 @@
         }
       }
     }
-
+/*--------------------------
+ 功能：订单总额过程
+ 参数：无
+ 返回值：订单总额数组列表(string)
+ -------------------------*/
     function process() {
       $order_total_array = array();
       if (is_array($this->modules)) {
@@ -47,7 +56,11 @@
 
       return $order_total_array;
     }
-
+/*----------------------------------
+ 功能：订单输出
+ 参数：无
+ 返回值：输出的字符串(string)
+ ---------------------------------*/
     function output() {
       $output_string = '';
       if (is_array($this->modules)) {

@@ -42,11 +42,7 @@
         $this->errors[] = array('params' => 'class="messageStackWarning"', 'text' => tep_image(DIR_WS_ICONS . 'warning.gif', ICON_WARNING) . '&nbsp;' . $message);
       } elseif ($type == 'success') {
         $this->errors[] = array('params' => 'class="messageStackSuccess"', 'text' => tep_image(DIR_WS_ICONS . 'success.gif', ICON_SUCCESS) . '&nbsp;' . $message);
-      } else if($type == 'alert'){
-        $this->errors[] = array('params' => 'class="messageStackError"', 'text' =>
-            tep_image(DIR_WS_ICONS . 'error.gif', ICON_ERROR) . '&nbsp;' . $message.
-            "<script language='javascript'>alert('".$message."')</script>");
-      }else {
+      } else {
         $this->errors[] = array('params' => 'class="messageStackError"', 'text' => $message);
       }
 
@@ -75,17 +71,8 @@
       }
       $messageToStack = array();
       */
-      $exists_single = false; 
-      if (!empty($messageToStack)) {
-        foreach ($messageToStack as $key => $value) {
-          if (($value['text'] == $message) && ($value['type'] == $type)) {
-            $exists_single = true; 
-          }
-        }
-      }
-      if (!$exists_single) {
-        $messageToStack[] = array('text' => $message, 'type' => $type);
-      }
+
+      $messageToStack[] = array('text' => $message, 'type' => $type);
       /*
       $_SESSION['messageToStack'] = $messageToStack;
       */

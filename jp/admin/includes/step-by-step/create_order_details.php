@@ -35,7 +35,7 @@ $t_year = $t_today['year'];
 $t_hour = $t_today['hours'];
 $t_min = $t_today['minutes'];
 ?>
-
+<?php //检查一年 ?>
 function check_year(value){
   var mon = document.getElementById('mon');
   var mon_value = mon.value;
@@ -115,7 +115,7 @@ function check_year(value){
     } 
   } 
 }
-
+<?php //检查是否周一 ?>
 function check_mon(value){
   var year = document.getElementById('year');
   var year_value = year.value;
@@ -188,7 +188,7 @@ function check_mon(value){
     }
   }
 }
-
+<?php //检查日期 ?>
 function check_day(value){
   var year = document.getElementById('year');
   var year_value = year.value;
@@ -221,7 +221,7 @@ function check_day(value){
     } 
   }
 }
-
+<?php //检查小时 ?>
 function check_hour(value){
   var hour_1 = document.getElementById('hour_1');
   var hour_1_value = hour_1.value;
@@ -234,7 +234,7 @@ function check_hour(value){
       hour_1.options[hour_1.options.length]=new Option(h_i_str,h_i_str,h_i_str==value); 
     }
 }
-
+<?php //检查分钟 ?>
 function check_min(value){
   var min_1 = document.getElementById('min_1');
   var min_1_value = min_1.value;
@@ -244,7 +244,7 @@ function check_min(value){
       min_1.options[min_1.options.length]=new Option(mi_i,mi_i,mi_i==value); 
     }
 }
-
+<?php //最后配送的小时和分钟 ?>
 function check_hour_1(value){
   var min_1 = document.getElementById('min_1');
   var min_1_value = min_1.value;

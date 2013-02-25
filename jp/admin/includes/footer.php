@@ -13,6 +13,7 @@ echo "</form>";
 
 <script type="text/javascript" src="includes/javascript/split_page.js"></script>
 <script type="text/javascript">
+<?php //更改新的URL?>
 function redirect_new_url(new_object)
 {
   var url_str = $(new_object).parent().attr('href');
@@ -75,6 +76,7 @@ if($_SESSION['user_permission'] == 15 ){
   ?>
   </div>
   <script language='javascript' >
+  <?php //保存密码复选框 ?>
     function save_once_pwd_checkbox(){
       var check_str = '';
       $("input|[name=pwd_check]").each(function(){

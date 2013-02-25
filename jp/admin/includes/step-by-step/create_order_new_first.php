@@ -13,6 +13,7 @@
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/jquery.form.js"></script>
 <script type="text/javascript">
+<?php //检查提交  ?>
 function check_submit(){
   var options = {
     url: 'ajax_orders_weight.php?action=create_orders',

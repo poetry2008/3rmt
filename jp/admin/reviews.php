@@ -7,6 +7,12 @@
 
   if (isset($_GET['action']) && $_GET['action']) {
     switch ($_GET['action']) {
+/*------------------------------------
+ case 'new_preview'  添加评论
+ case 'setflag'      设置标志
+ case 'update'       更新评论 
+ case 'deleteconfirm' 删除评论
+ -----------------------------------*/
       case 'new_preview':
         $sql_array = array(
           'reviews_id' => 'null',
@@ -582,6 +588,9 @@ require("includes/note_js.php");
     $heading = array();
     $contents = array();
     switch (isset($_GET['action'])?$_GET['action']:'') {
+/*---------------------------------
+ case 'delete'  删除评论 
+ --------------------------------*/
       case 'delete':
         $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_REVIEW . '</b>');
 

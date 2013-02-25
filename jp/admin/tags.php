@@ -6,6 +6,11 @@ $sort_str = '&sort='.$_GET['sort'];
 }
 if (isset($_GET['action']) and $_GET['action']) {
     switch ($_GET['action']) {
+/*-----------------------------------
+ case 'insert' 添加标签  
+ case 'save'   更新标签
+ case 'deleteconfirm' 删除标签
+ ----------------------------------*/
       case 'insert':
         $tags_name = tep_db_prepare_input($_POST['tags_name']);
 
@@ -161,6 +166,12 @@ require("includes/note_js.php");
       select t.tags_id, t.tags_name, t.tags_images, t.tags_checked
       from " . TABLE_TAGS ." t ";
     switch($_GET['sort']){
+/*----------------------------
+ case '4a'  排列顺序(a-z) 递增
+ case '4d'  排列顺序(z-a) 递减
+ case '5a'  排列顺序(あ-ん) 递增
+ case '5d'  排列顺序(ん-あ) 递减
+ ---------------------------*/
       case '4a':
         $tags_query_raw .=' order by t.tags_name asc'; 
         break;
@@ -231,6 +242,11 @@ require("includes/note_js.php");
   $heading = array();
   $contents = array();
 switch (isset($_GET['action'])? $_GET['action']:'') {
+/*----------------------------------
+ case 'new'    新建标签
+ case 'edit'   修改标签
+ case 'delect' 删除标签
+ ---------------------------------*/
     case 'new':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_NEW_TAG . '</b>');
 

@@ -30,6 +30,11 @@ if(isset($_GET['cID'])){
 if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];//权限判断
          else $site_arr="";
     switch  ($_GET['action']) {
+/*----------------------------------------
+ case 'save' 判断该配置是添加或者更新
+ case 'tdel' 删除配置
+ case 'edit' 修改配置
+ ---------------------------------------*/
     case 'save': 
         $configuration_value = tep_db_prepare_input($_POST['configuration_value']);
         $cID = tep_db_prepare_input($_GET['cID']);

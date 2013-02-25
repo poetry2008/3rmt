@@ -8,6 +8,17 @@ $currencies = new currencies(2);
 require(DIR_FS_ADMIN . '/classes/notice_box.php');
 if (isset($_GET['action']) && $_GET['action']) {
   switch ($_GET['action']) {
+/*------------------------------
+ case 'update_group' 更新组
+ case 'insert_group' 添加组
+ case 'delete_group_confirm' 删除组
+ case 'del_select_group' 删除指定组
+ case 'insert_item'   新建项目
+ case 'update_item'   编辑项目
+ case 'delete_item_confirm' 删除项目
+ case 'setflag'   设置项目状态
+ case 'del_select_item' 删除选中的项目
+ -----------------------------*/
     case 'update_group':
     case 'insert_group':
       //添加／删除组 
@@ -235,6 +246,11 @@ if (isset($_GET['action']) && $_GET['action']) {
       
       if (!$error) {
         if ($_GET['action'] == 'update_item') {
+/*---------------------------------
+ 功能：更新项目
+ 参数：$_POST['item_id'](string) 项目ID值
+ 返回值：无
+ --------------------------------*/
           $option_array['eid'] = $_POST['item_id'];
           $update_sql = "update `".TABLE_OPTION_ITEM."` set `title` =
             '".tep_db_prepare_input($_POST['title'])."', `front_title` =
@@ -248,6 +264,16 @@ if (isset($_GET['action']) && $_GET['action']) {
             '".$_POST['item_id']."'"; 
           tep_db_query($update_sql); 
         } else if ($_GET['action'] == 'insert_item') {
+/*---------------------------------
+ 功能：新建项目
+ 参数：$_GET['g_id'](string) 项目ID值
+ 参数：$_POST['title'](string) 标题
+ 参数：$_POST['front_title'](string) 前标题
+ 参数：$_POST['type'](string) 类型
+ 参数：$_POST['sort_num'](string) 排序号
+ 参数：$_POST['place_type'](string) 本地类型
+ 返回值：无
+ --------------------------------*/
           $insert_sql = "insert into `".TABLE_OPTION_ITEM."` values(NULL,
             '".$_GET['g_id']."', '".tep_db_prepare_input($_POST['title'])."',
             '".tep_db_prepare_input($_POST['front_title'])."',

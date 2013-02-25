@@ -6,6 +6,11 @@ require(DIR_WS_CLASSES . 'currencies.php');
 $currencies = new currencies();
 $cPath=$_POST['cpath'];
 switch ($HTTP_GET_VARS['action']){
+/*---------------------------
+ case 'edit_oroshi' 编辑商品名称 
+ case 'set_oroshi' 设置商品名称
+ case 'delete' 删除商品名称
+ --------------------------*/
 case 'edit_oroshi':
   $cpath = $HTTP_GET_VARS['cpath'];
   $orrshi_id = $HTTP_GET_VARS['id'];
@@ -137,6 +142,7 @@ case 'delete':
   <script type="text/javascript">
   var html = new Array();
 var i=0;
+<?php //添加输入形式 ?>
 function input_add(){
       
   var cbox_head = "<div class='add_link'><?php echo BUTTON_ADD_TEXT;?>:<input type='text' name='set_oroshi[]'></div>"; 
@@ -159,17 +165,20 @@ function input_add(){
   }
   i++;
 }
+<?php //链接cleate_list.php页面 ?>
 function jump_oroshi_data(id,oid){
   location.href = 'cleate_list.php?cPath='+id+'&cpath='+id+'&oid='+oid;
 }
+<?php //跳跃页面 ?>
 function resset_cb(){
   location.href="cleate_oroshi.php";
 }
 var valmethod = true;
+<?php //更新顺序 ?>
 function notval(){
   valmethod = false;
 }
-    
+<?php //关闭设置 ?>    
 function w_close(){
   if(valmethod){
   if((!document.getElementById("orrshi_id")||document.getElementsByName('set_oroshi[]')[0])&&html.length==1){
@@ -271,7 +280,7 @@ function w_close(){
   return true;
   //  window.close(); 
 }
-    
+<?php //删除商品名称 ?> 
 function del_oroshi(id){
   var flg=confirm('<?php echo DELETE;?>');
   if(flg){
@@ -281,7 +290,7 @@ function del_oroshi(id){
       
   }
 }
-
+<?php //编辑商品名称 ?>
 function edit_oroshi(id){
   var selectName = 'parent_id_'+id;
   var oroName = 'name_'+id;
@@ -291,6 +300,7 @@ function edit_oroshi(id){
 
 }
 //var sort_changed = false;
+<?php //往上排一级 排序 ?>
 function ex(id){
   for(exi=1;exi<6;exi++){
     tmp = document.getElementById('tr_'+id+'_'+exi).innerHTML;

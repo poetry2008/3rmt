@@ -4,7 +4,11 @@ class AD_Option_Item_Option extends AD_Option_Item_Basic
 {
   var $hasSelect = true; 
   var $hasComment = true;
-
+/*--------------------------
+ 功能：提供选项错误阵列
+ 参数：$option_error_array(array) 选项错误阵列 
+ 返回值：无
+ -------------------------*/
   function render($option_error_array)
   {
      if (strlen($this->front_title)) {
@@ -59,11 +63,20 @@ class AD_Option_Item_Option extends AD_Option_Item_Basic
      echo '</span>'; 
      echo '</td>'; 
   }
+/*----------------------------------
+ 功能：准备表
+ 参数：$item_id(bumber) 项目编号
+ 返回值：格式字符串
+ ---------------------------------*/
   static public function prepareForm($item_id = NULL)
   {
     return $formString;
   }
-  
+/*---------------------------------
+ 功能：检查选项错误数组
+ 参数：$option_error_array(array) 选项错误阵列
+ 返回值：false(bool)
+ --------------------------------*/ 
   function check(&$option_error_array)
   {
     return false; 

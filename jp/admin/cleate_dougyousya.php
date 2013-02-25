@@ -5,6 +5,11 @@ require(DIR_WS_CLASSES . 'currencies.php');
 $currencies = new currencies();
 $cPath=$_POST['cpath'];
 switch ($HTTP_GET_VARS['action']){
+/*--------------------------
+ case 'edit_oroshi' 编辑名称
+ case 'set_oroshi'  设置名称
+ case 'delete' 删除名称
+ -------------------------*/
 case 'edit_oroshi':
   $cpath = $HTTP_GET_VARS['cpath'];
   $orrshi_id = $HTTP_GET_VARS['id'];
@@ -153,6 +158,7 @@ case 'delete':
   <script type="text/javascript">
   var html = new Array();
 var i=0;
+<?php //添加输入形式 ?>
 function input_add(){
       
   var cbox_head  = "<div class='add_link'><?php echo TEXT_ADD;?><input type='text' name='set_oroshi[]'></div>"; 
@@ -177,14 +183,16 @@ function input_add(){
   i++;
 }
 
+<?php //跳跃页面 ?>
 function resset_cb(){
   location.href= 'cleate_dougyousya.php'; 
 }
 var valmethod = true;
+<?php //更新顺序 ?>
 function notval(){
   valmethod = false;
 }
-    
+<?php //关闭设置 ?>    
 function w_close(){
   if (valmethod){
   if((!document.getElementById("orrshi_id")||document.getElementsByName('set_oroshi[]')[0])&&html.length==1){
@@ -286,7 +294,7 @@ function w_close(){
   return true;
   //  window.close(); 
 }
-
+<?php //删除名称 ?> 
 function show_history(id){
   location.href= 'history.php?action=dougyousya&cid='+id;
 }
@@ -300,6 +308,7 @@ function del_oroshi(id){
   }
 }
 
+<?php //往上排一级 排序 ?>
 function ex(id){
   //alert(document.getElementsByName['sort_order[]']);
   for(exi=1;exi<5;exi++){

@@ -8,6 +8,11 @@ class AD_Option_Group extends AD_Option_DbRecord
   {
     $this->items = $this->getItems();
   }
+/*------------------------------
+ 功能：获得的元素
+ 参数：无
+ 返回值：返回的元素
+ -----------------------------*/
   function getItems()
   {
     $sql = "select * from ".TABLE_ADDRESS." where id = ".$this->id  ." and status = '0' order by sort";
@@ -17,7 +22,11 @@ class AD_Option_Group extends AD_Option_DbRecord
     }
     return $items;
   }
-
+/*------------------------------
+ 功能：提供选项错误阵列
+ 参数：$option_error_array(array)选项错误阵列
+ 返回值：无
+ -----------------------------*/
   function render($option_error_array)
   {
     //echo '<table border="0" width="100%" cellspacing="0" cellpadding="2">';

@@ -4,6 +4,12 @@
  */
 
 require('includes/application_top.php');
+/*----------------------------------------
+   case info_save         提交表单
+   case info_update       更新数据 
+   case info_del          删除数据
+   case default           默认 
+  --------------------------------------*/
 switch ($_GET['action']){
 case 'info_save':
 	$title   = tep_db_prepare_input(addslashes($_POST['title']));

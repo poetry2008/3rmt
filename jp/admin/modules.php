@@ -15,6 +15,11 @@ define('HEADING_TITLE', $tmp  =
 
 if (isset($_GET['action'])) 
   switch ($_GET['action']) {
+/*-----------------------------------
+ case 'save'  更新模块
+ case 'install' 安装模块
+ case 'remove' 清除模块
+ ----------------------------------*/
   case 'save':
     $post_configuration = $_POST['configuration'];
     $site_id = isset($_POST['site_id'])?(int)$_POST['site_id']:0;
@@ -420,6 +425,9 @@ $heading = array();
 $contents = array();
 
 switch (isset($_GET['action'])?$_GET['action']:'') {
+/*-----------------------------------------
+ case 'edit' 编辑模块内容 
+ ----------------------------------------*/
 case 'edit':
 
   $keys = '';
