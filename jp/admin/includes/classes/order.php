@@ -2,7 +2,11 @@
 
   class order {
     var $info, $totals, $products, $customer, $delivery;
-
+/*--------------------------------
+ 功能: 查询订单
+ 参数: $order_id(string) 订单ID
+ 返回值: 无
+ -------------------------------*/
     function order($order_id) {
       $this->info     = array();
       $this->totals   = array();
@@ -12,7 +16,11 @@
 
       $this->query($order_id);
     }
-
+/*------------------------------
+ 功能: 订单的详细信息
+ 参数: $order_id(string) 订单ID
+ 返回值: 无 
+ -----------------------------*/
     function query($order_id) {
       $order_query = tep_db_query("
         select * 

@@ -3,8 +3,13 @@
   $Id$
 */
 
-////
-// The HTML href link wrapper function
+/* -------------------------------------
+    功能: 生成url 
+    参数: $page(string) 链接页面 
+    参数: $parameters(string) url参数 
+    参数: $connection(string) ssl/nossl链接 
+    返回值: 生成的url(string) 
+------------------------------------ */
   function tep_href_link($page = '', $parameters = '', $connection = 'NONSSL') {
     if ($page == '') {
       die('</td></tr></table></td></tr></table><br><br><font color="#ff0000"><b>Error!</b></font><br><br><b>Unable to determine the page link!<br><br>Function used:<br><br>tep_href_link(\'' . $page . '\', \'' . $parameters . '\', \'' . $connection . '\')</b>');
@@ -42,6 +47,13 @@
 
   }
 
+/* -------------------------------------
+    功能: 生成url 
+    参数: $page(string) 链接页面 
+    参数: $parameters(string) url参数 
+    参数: $connection(string) ssl/nossl链接 
+    返回值: 生成的url(string) 
+------------------------------------ */
   function tep_catalog_href_link($page = '', $parameters = '', $connection = 'NONSSL') {
     if ($connection == 'NONSSL') {
       $link = HTTP_CATALOG_SERVER . DIR_WS_CATALOG;
@@ -65,8 +77,15 @@
     return $link;
   }
 
-////
-// The HTML image wrapper function
+/* -------------------------------------
+    功能: 生成img的html 
+    参数: $src(string) 图片路径 
+    参数: $alt(string) 图片说明 
+    参数: $width(int) 图片宽度 
+    参数: $height(int) 图片高度 
+    参数: $params(string) 其它参数 
+    返回值: 生成的img(string) 
+------------------------------------ */
   function tep_image($src, $alt = '', $width = '', $height = '', $params = '') {
     $image = '<img src="' . $src . '" border="0" alt="' . $alt . '"';
     if ($alt) {
@@ -86,38 +105,59 @@
     return $image;
   }
 
-////
-// The HTML form submit button wrapper function
-// Outputs a button in the selected language
+/* -------------------------------------
+    功能: 生成带图片的submit 
+    参数: $image(string) 图片名字 
+    参数: $alt(string) 按钮说明 
+    参数: $params(string) 其它参数 
+    返回值: 生成的submit(string) 
+------------------------------------ */
   function tep_image_submit($image, $alt, $params = '') {
     global $language;
 
     return '<input type="image" src="' . DIR_WS_LANGUAGES . $language . '/images/buttons/' . $image . '" border="0" alt="' . $alt . '"' . (($params) ? ' ' . $params : '') . '>';
   }
 
-////
-// Draw a 1 pixel black line
+/* -------------------------------------
+    功能: 带黑线的图片 
+    参数: 无 
+    返回值: 带黑线的图片的html(string) 
+------------------------------------ */
   function tep_black_line() {
     return tep_image(DIR_WS_IMAGES . 'pixel_black.gif', '', '100%', '1');
   }
 
-////
-// Output a separator either through whitespace, or with an image
+/* -------------------------------------
+    功能: 带黑线的图片(可以设置宽度和高度) 
+    参数: $image(string) 图片名字 
+    参数: $width(string) 图片宽度 
+    参数: $height(string) 图片高度 
+    返回值: 带黑线的图片的html(string) 
+------------------------------------ */
   function tep_draw_separator($image = 'pixel_black.gif', $width = '100%', $height = '1') {
     return tep_image(DIR_WS_IMAGES . $image, '', $width, $height);
   }
 
-////
-// Output a function button in the selected language
+/* -------------------------------------
+    功能: 生成图片的img标签 
+    参数: $image(string) 图片名字 
+    参数: $alt(string) 图片说明 
+    参数: $params(string) 其它参数 
+    返回值: 生成图片的img标签(string) 
+------------------------------------ */
   function tep_image_button($image, $alt = '', $params = '') {
     global $language;
 
     return tep_image(DIR_WS_LANGUAGES . $language . '/images/buttons/' . $image, $alt, '', '', $params);
   }
 
-////
-// javascript to dynamically update the states/provinces list when the country is changed
-// TABLES: zones
+/* -------------------------------------
+    功能: 生成区域的选择元素
+    参数: $country(int) 国家id 
+    参数: $form(string) 表单的名字 
+    参数: $field(string) 字段名字 
+    返回值: 生成区域的选择元素(string) 
+------------------------------------ */
   function tep_js_zone_list($country, $form, $field) {
     $countries_query = tep_db_query("select distinct zone_country_id from " . TABLE_ZONES . " order by zone_country_id");
     $num_country = 1;
@@ -146,8 +186,15 @@
     return $output_string;
   }
 
-////
-// Output a form
+/* -------------------------------------
+    功能: 生成form的html 
+    参数: $name(string) 表单的名字 
+    参数: $action(string) 表单跳转的页面 
+    参数: $parameters(string) 跳转页面的参数 
+    参数: $method(string) 表单的提交方式 
+    参数: $params(string) 其它参数 
+    返回值: 生成form的html(string) 
+------------------------------------ */
   function tep_draw_form($name, $action, $parameters = '', $method = 'post', $params = '') {
     $form = '<form name="' . $name . '" action="';
     if ($parameters) {
@@ -164,8 +211,16 @@
     return $form;
   }
 
-////
-// Output a form input field
+/* -------------------------------------
+    功能: 生成input的html 
+    参数: $name(string) 文本框的名字 
+    参数: $value(string) 文本框的默认值 
+    参数: $parameters(string) 其它参数 
+    参数: $required(boolean) 是否添加必须注释 
+    参数: $type(string) 文本框类型 
+    参数: $reinsert_value(boolean) 是否保存值 
+    返回值: 生成input的html(string) 
+------------------------------------ */
   function tep_draw_input_field($name, $value = '', $parameters = '', $required = false, $type = 'text', $reinsert_value = true) {
     $field = '<input type="' . $type . '" name="' . $name . '"';
     if ( isset($GLOBALS[$name]) && ($GLOBALS[$name]) && ($reinsert_value) ) {
@@ -183,8 +238,14 @@
     return $field;
   }
 
-////
-// Output a form password field
+/* -------------------------------------
+    功能: 生成输入密码的input的html 
+    参数: $name(string) 文本框的名字 
+    参数: $value(string) 文本框的默认值 
+    参数: $required(boolean) 是否添加必须注释 
+    参数: $parameters(string) 其它参数 
+    返回值: 生成输入密码的input的html(string) 
+------------------------------------ */
   function tep_draw_password_field($name, $value = '', $required =
       false,$parameters='') {
     $field = tep_draw_input_field($name, $value, 'maxlength="40" '.$parameters, $required, 'password', false);
@@ -192,16 +253,28 @@
     return $field;
   }
 
-////
-// Output a form filefield
+/* -------------------------------------
+    功能: 生成上传文件的input的html 
+    参数: $name(string) 文本框的名字 
+    参数: $required(boolean) 是否添加必须注释 
+    返回值: 生成上传文件的input的html(string) 
+------------------------------------ */
   function tep_draw_file_field($name, $required = false) {
     $field = tep_draw_input_field($name, '', '', $required, 'file');
 
     return $field;
   }
 
-////
-// Output a selection field - alias function for tep_draw_checkbox_field() and tep_draw_radio_field()
+/* -------------------------------------
+    功能: 生成radio/checkbox的input的html 
+    参数: $name(string) 名字 
+    参数: $type(string) 类型 
+    参数: $value(string) 默认值 
+    参数: $checked(boolean) 是否选中 
+    参数: $compare(string) 对比的值 
+    参数: $parameters(string) 其它参数 
+    返回值: 生成radio/checkbox的input的html(string) 
+------------------------------------ */
   function tep_draw_selection_field($name, $type, $value = '', $checked = false, $compare = '', $parameters = '') {
     $selection = '<input type="' . $type . '" name="' . $name . '"';
     if ($value != '') {
@@ -220,20 +293,43 @@
     return $selection;
   }
 
-////
-// Output a form checkbox field
+/* -------------------------------------
+    功能: 生成checkbox的input的html 
+    参数: $name(string) 名字 
+    参数: $value(string) 默认值 
+    参数: $checked(boolean) 是否选中 
+    参数: $compare(string) 对比的值 
+    参数: $parameters(string) 其它参数 
+    返回值: 生成checkbox的input的html(string) 
+------------------------------------ */
   function tep_draw_checkbox_field($name, $value = '', $checked = false, $compare = '', $parameters = '') {
     return tep_draw_selection_field($name, 'checkbox', $value, $checked, $compare, $parameters);
   }
 
-////
-// Output a form radio field
+/* -------------------------------------
+    功能: 生成radio的input的html 
+    参数: $name(string) 名字 
+    参数: $value(string) 默认值 
+    参数: $checked(boolean) 是否选中 
+    参数: $compare(string) 对比的值 
+    参数: $parameters(string) 其它参数 
+    返回值: 生成radio的input的html(string) 
+------------------------------------ */
   function tep_draw_radio_field($name, $value = '', $checked = false, $compare = '', $parameters='') {
     return tep_draw_selection_field($name, 'radio', $value, $checked, $compare, $parameters);
   }
 
-////
-// Output a form textarea field
+/* -------------------------------------
+    功能: 生成textarea的html 
+    参数: $name(string) 名字 
+    参数: $wrap(string) 是否换行 
+    参数: $width(int) 文本域的宽度 
+    参数: $height(int) 文本域的高度 
+    参数: $text(string) 默认值 
+    参数: $params(string) 其它参数 
+    参数: $reinsert_value(boolean) 是否保存值 
+    返回值: 生成textarea的html(string) 
+------------------------------------ */
   function tep_draw_textarea_field($name, $wrap, $width, $height, $text = '', $params = '', $reinsert_value = true) {
     $field = '<textarea name="' . $name . '" wrap="' . $wrap . '" cols="' . $width . '" rows="' . $height . '"';
     if ($params) $field .= ' ' . $params;
@@ -248,8 +344,12 @@
     return $field;
   }
 
-////
-// Output a form hidden field
+/* -------------------------------------
+    功能: 生成隐藏的input的html 
+    参数: $name(string) 名字 
+    参数: $value(string) 默认值 
+    返回值: 生成隐藏的input的html(string) 
+------------------------------------ */
   function tep_draw_hidden_field($name, $value = '') {
     $field = '<input type="hidden" name="' . $name . '" value="';
     if ($value != '') {
@@ -262,8 +362,15 @@
     return $field;
   }
 
-////
-// Output a form pull down menu
+/* -------------------------------------
+    功能: 生成select的html 
+    参数: $name(string) 名字 
+    参数: $value(array) 选择的值的数组 
+    参数: $default(string) 默认值 
+    参数: $params(string) 其它参数 
+    参数: $required(boolean) 是否添加必须注释 
+    返回值: 生成select的html(string) 
+------------------------------------ */
   function tep_draw_pull_down_menu($name, $values, $default = '', $params = '', $required = false) {
     $field = '<select name="' . $name . '"';
     if ($params) $field .= ' ' . $params;
@@ -282,6 +389,11 @@
     return $field;
   }
 
+/* -------------------------------------
+    功能: 生成指定客户的select的html 
+    参数: 无 
+    返回值: 生成指定客户的select的html(string) 
+------------------------------------ */
 function tep_customer_list_pull_down_menu()
 {
    $select_str = '<select name="cmail">';
@@ -303,7 +415,13 @@ function tep_customer_list_pull_down_menu()
    return $select_str;
 }
 
-
+/* -------------------------------------
+    功能: 生成button的html 
+    参数: $value(string) 默认值 
+    参数: $other_str(string) 其它参数 
+    参数: $class_name(string) class的名字 
+    返回值: 生成button的html(string) 
+------------------------------------ */
 function tep_html_element_button($value, $other_str = '', $class_name = 'element_button') {
   if(preg_match('/onclick/',$other_str)){
   $button_str = '<input type="button" class="'.$class_name.'" value="'.$value.'"';
@@ -318,6 +436,13 @@ function tep_html_element_button($value, $other_str = '', $class_name = 'element
   return $button_str;
 }
 
+/* -------------------------------------
+    功能: 生成submit的html 
+    参数: $value(string) 默认值 
+    参数: $other_str(string) 其它参数 
+    参数: $class_name(string) class的名字 
+    返回值: 生成submit的html(string) 
+------------------------------------ */
 function tep_html_element_submit($value, $other_str = '', $class_name = 'element_button') {
   $button_str = '<input type="submit" class="'.$class_name.'" value="'.$value.'"';
    
@@ -327,6 +452,12 @@ function tep_html_element_submit($value, $other_str = '', $class_name = 'element
   $button_str .= '>'; 
   return $button_str;
 }
+
+/* -------------------------------------
+    功能: 生成eof的隐藏input 
+    参数: 无 
+    返回值: eof的隐藏input(string) 
+------------------------------------ */
 function tep_eof_hidden(){
   //判断 POST 值 是否存在
   $hidden_str = '<input type="hidden" name="eof" value="eof">';

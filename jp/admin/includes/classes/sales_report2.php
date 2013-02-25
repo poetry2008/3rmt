@@ -5,7 +5,16 @@
 
   class sales_report {
     var $mode, $globalStartDate, $startDate, $endDate, $actDate, $showDate, $showDateEnd, $sortString, $status, $outlet, $method;
-
+/*----------------------------------------------------
+ 功能: 销售报告
+ 参数: $mode(string) 模式
+ 参数: $startDate(string) 开始日期
+ 参数: $endDate(string) 结束日期 
+ 参数: $sort(string) 分类
+ 参数: $statusFilter(string) 状态过滤器
+ 参数: $filter(string) 过滤器
+ 返回值: 无
+ ---------------------------------------------------*/
     function sales_report($mode, $startDate = 0, $endDate = 0, $sort = 0, $statusFilter = 0, $filter = 0, $srMethod = 0) {
       // startDate and endDate have to be a unix timestamp. Use mktime !
       // if set then both have to be valid startDate and endDate
@@ -102,11 +111,19 @@
       }
 
     }
-
+/*---------------------------------------------
+ 功能：下一个日期
+ 参数: 无
+ 返回值: 时间(boolean) 
+ --------------------------------------------*/
     function hasNext() {
         return ($this->actDate < $this->endDate);
     }
-
+/*--------------------------------------------
+ 功能: 时间戳 
+ 参数: 无
+ 返回值：返回的时间戳值(string)
+ -------------------------------------------*/
     function next() {
   $sd = time();
   $ed = time();

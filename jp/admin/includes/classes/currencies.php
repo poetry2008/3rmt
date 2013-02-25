@@ -8,6 +8,11 @@
     var $currencies;
 
 // class constructor
+/*-------------------------------------
+ 功能: 货币方法
+ 参数: $decimal_places(string)  小数位数
+ 返回值: 无
+ ------------------------------------*/
     function currencies($decimal_places = null) {
       $this->currencies = array();
       $currencies_query = tep_db_query("select code, title, symbol_left, symbol_right, decimal_point, thousands_point, decimal_places, value from " . TABLE_CURRENCIES);
@@ -23,6 +28,14 @@
     }
 
 // class methods
+/*------------------------------------
+ 功能: 格式
+ 参数: $number(string) 金额
+ 参数: $calculate_currency_value(boolean) 计算货币价值
+ 参数: $currency_type(string)  货币类型
+ 参数: $currency_value(string) 货币的价值
+ 返回值: 格式输出(string) 
+ -----------------------------------*/
     function format($number, $calculate_currency_value = true, $currency_type =
         DEFAULT_CURRENCY, $currency_value = '',$is_abs = true) {
       if($is_abs){
@@ -50,7 +63,14 @@
       }
       return str_replace($arr,$arr2,$format_string);
     }
-    // 负数红色
+/*---------------------------------
+ 功能: 格式化总价输出(负数红色)
+ 参数: $number(string) 金额
+ 参数: $calculate_currency_value(boolean) 计算货币价值
+ 参数: $currency_type(string)  货币类型
+ 参数: $currency_value(string) 货币的价值
+ 返回值: 总价输出(string) 
+ --------------------------------*/
     function format_total($number, $calculate_currency_value = true, $currency_type = '', $currency_value = '') {
       $tmp_number = $number; 
       $number = abs($number);
@@ -86,7 +106,14 @@
     }
     
 // class methods
-    // 区分正负的方法
+/*----------------------------------------
+ 功能: 区分正负的方法 
+ 参数: $number(string) 金额
+ 参数: $calculate_currency_value(boolean) 计算货币价值
+ 参数: $currency_type(string)  货币类型
+ 参数: $currency_value(string) 货币的价值
+ 返回值: 格式字符串(string)
+ ---------------------------------------*/
     function format2($number, $calculate_currency_value = true, $currency_type = DEFAULT_CURRENCY, $currency_value = '') {
       //$number = abs($number);
       if ($calculate_currency_value) {
@@ -111,7 +138,14 @@
       return str_replace($arr,$arr2,$format_string);
     }
     
-
+/*-------------------------------------
+ 功能: 格式化总计    
+ 参数: $number(string) 金额
+ 参数: $calculate_currency_value(boolean) 计算货币价值
+ 参数: $currency_type(string)  货币类型
+ 参数: $currency_value(string) 货币的价值
+ 返回值: 格式化总计输出(string)
+ ------------------------------------*/
     function ot_total_format($number, $calculate_currency_value = true, $currency_type = DEFAULT_CURRENCY, $currency_value = '') {
       $number = abs($number);
       if ($calculate_currency_value) {
@@ -125,19 +159,32 @@
       }
       return $format_string;
     }
-
+/*-----------------------------------
+ 功能: 获取的值
+ 参数: $code(string) 代码
+ 返回值: 货币代码值
+ ----------------------------------*/
     function get_value($code) {
       return $this->currencies[$code]['value'];
     }
-
+/*----------------------------------
+ 功能: 显示价格
+ 参数: $products_price(string) 产品价格
+ 参数: $products_tax(string) 产品税
+ 参数: $quantity(int)  数量
+ 返回值: 返回的价格(string)
+ ---------------------------------*/
     function display_price($products_price, $products_tax, $quantity = 1) {
       return $this->format(tep_add_tax($products_price, $products_tax) * $quantity);
     }
 
-// 进行金额的尾数处理
-// $number: 金额
-// $round_type: 尾数处理的类型  'drop'=舍去, 'round'=四舍五入, 'raise'=舍尾进一
-// $currency_type: 货币代码 (例) 'JPY'
+/*----------------------------------
+ 功能:进行金额的尾数处理
+ 参数: $number(number) 金额
+ 参数: $round_type(string) 尾数处理的类型 
+ 参数: $currency_type(string) 货币代码 (例) 'JPY'
+ 返回值: 返回的价格(string)
+ ---------------------------------*/
     function round_off($number, $round_type = '', $currency_type = '') {
       global $currency;
       $a_comp = array('drop'=>0.00001, 'round'=>0.50001, 'raise'=>0.99999);

@@ -270,7 +270,7 @@ $belong = str_replace($pcode_array[1][0],urlencode($pcode_array[1][0]),$belong);
           echo tep_draw_form('form', FILENAME_OA_ITEM, 'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&action=insert');
         }
         ?> 
-        <table border="0" width="100%" cellpadding="2" cellspacing="1" class="oa_item_bg">
+        <table border="0" width="100%" cellpadding="2" cellspacing="1" class="parts_item_bg">
           <tr>
             <td width="150">
             <?php echo OA_ITEM_TITLE_TEXT;?>

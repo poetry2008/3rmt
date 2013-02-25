@@ -4,9 +4,16 @@
 
 */
 
-////
-// calls routines to initialize defaults, set up table
-// print data, and close table.
+/* -------------------------------------
+    功能: 画图 
+    参数: $names(array) 名
+    参数: $values(array) 宽度值 
+    参数: $bars(array) 柱的颜色 
+    参数: $vals(array) 相应的信息 
+    参数: $dvalues(int) 宽度值 
+    参数: $bars(int) 柱的颜色 
+    返回值: 生成画图的html(string) 
+------------------------------------ */
   function html_graph($names, $values, $bars, $vals, $dvalues = 0, $dbars = 0) {
 // set the error level on entry and exit so as not to interfear with anyone elses error checking.
     $er = error_reporting(1);
@@ -33,10 +40,11 @@
     return $html_graph_string;
   }
 
-////
-// sets up the $vals array by initializing all values to null. Used to avoid
-// warnings from error_reporting being set high. This routine only needs to be
-// called if you are worried about using uninitialized variables.
+/* -------------------------------------
+    功能: 初始化画图的相关信息 
+    参数: 无 
+    返回值: 画图的相关信息(array) 
+------------------------------------ */
   function html_graph_init() {
     $vals = array('vlabel'=>'',
                   'hlabel'=>'',
@@ -65,8 +73,12 @@
     return($vals);
   }
 
-////
-// prints out the table header and graph labels
+/* -------------------------------------
+    功能: 生成图表的头部和标签 
+    参数: $vals(array) 标签的样式和值以及头部的相关信息 
+    参数: $names(array) 名 
+    返回值: 图表的头部和标签的html(string) 
+------------------------------------ */
   function start_graph($vals, $names) {
     $start_graph_string = '<table cellpadding="' . $vals['cellpadding'] . '" cellspacing="' . $vals['cellspacing'] . '" border="' . $vals['border'] . '"';
 
@@ -107,14 +119,20 @@
     return $start_graph_string;
   }
 
-////
-// prints out the table footer
+/* -------------------------------------
+    功能: 生成图表的尾部 
+    参数: 无 
+    返回值: 图表的尾部的html(string) 
+------------------------------------ */
   function end_graph() {
     return '</table>' . "\n";
   }
 
-////
-// sets the default values for the $vals array
+/* -------------------------------------
+    功能: 设置图表的默认参数 
+    参数: $vals(array) 相关信息 
+    返回值: 图表的默认参数(array) 
+------------------------------------ */
   function hv_graph_defaults($vals) {
     if (!$vals['vfcolor']) $vals['vfcolor'] = '#000000';
     if (!$vals['hfcolor']) $vals['hfcolor'] = '#000000';
@@ -133,8 +151,14 @@
     return $vals;
   }
 
-////
-// prints out the actual data for the horizontal chart
+/* -------------------------------------
+    功能: 画水平图表 
+    参数: $names(array) 名 
+    参数: $values(array) 宽度值 
+    参数: $bars(array) 柱的颜色 
+    参数: $vals(array) 相应的信息 
+    返回值: 水平图表(string) 
+------------------------------------ */
   function horizontal_graph($names, $values, $bars, $vals) {
     $horizontal_graph_string = '';
     for($i = 0, $n = sizeof($values); $i < $n; $i++) { 
@@ -173,8 +197,14 @@
     return $horizontal_graph_string;
   }
 
-////
-// prints out the actual data for the vertical chart
+/* -------------------------------------
+    功能: 画垂直图表 
+    参数: $names(array) 名 
+    参数: $values(array) 标记 
+    参数: $bars(array) 图片 
+    参数: $vals(array) 相应的信息 
+    返回值: 垂直图表(string) 
+------------------------------------ */
   function vertical_graph($names, $values, $bars, $vals) {
     $vertical_graph_string = '  <tr>' . "\n";
 
@@ -221,8 +251,16 @@
     return $vertical_graph_string;
   }
 
-////
-// prints out the actual data for the double horizontal chart
+/* -------------------------------------
+    功能: 画双水平图表 
+    参数: $names(array) 名 
+    参数: $values(array) 标记 
+    参数: $bars(array) 图片/背景色 
+    参数: $vals(array) 相应的信息 
+    参数: $dvalues(array) 宽度值 
+    参数: $dbars(array) 背景色 
+    返回值: 双水平图表(string) 
+------------------------------------ */
   function double_horizontal_graph($names, $values, $bars, $vals, $dvalues, $dbars) {
     $double_horizontal_graph_string = '';
     for($i = 0, $n = sizeof($values); $i < $n; $i++) {
@@ -281,8 +319,16 @@
     return $double_horizontal_graph_string;
   }
 
-////
-// prints out the actual data for the double vertical chart
+/* -------------------------------------
+    功能: 画双垂直图表 
+    参数: $names(array) 名 
+    参数: $values(array) 标记 
+    参数: $bars(array) 图片
+    参数: $vals(array) 相应的信息 
+    参数: $dvalues(array) 标记 
+    参数: $dbars(array) 图片 
+    返回值: 双垂直图表(string) 
+------------------------------------ */
   function double_vertical_graph($names, $values, $bars, $vals, $dvalues, $dbars) {
     $double_vertical_graph_string = '  <tr>' . "\n";
     for ($i = 0, $n = sizeof($values); $i < $n; $i++) {
@@ -354,8 +400,12 @@
     return $double_vertical_graph_string;
   }
 
-////
-// draws a double vertical bar graph for the banner views vs clicks statistics
+/* -------------------------------------
+    功能: 画双垂直柱状图表 
+    参数: $banner_id(int) bannerID 
+    参数: $days(string) 指定时间 
+    返回值: 双垂直柱状图表(string) 
+------------------------------------ */
   function tep_banner_graph_infoBox($banner_id, $days) {
     $values = $names = $dvalues = array();
     $banner_stats_query = tep_db_query("select dayofmonth(banners_history_date) as name, banners_shown as value, banners_clicked as dvalue from " . TABLE_BANNERS_HISTORY . " where banners_id = '" . $banner_id . "' and to_days(now()) - to_days(banners_history_date) < " . $days . " order by banners_history_date");
@@ -398,8 +448,11 @@
     return html_graph($names, $values, $bars, $graph_vals, $dvalues, $dbars);
   }
 
-////
-// draws a double vertical bar graph for the banner views vs clicks statistics
+/* -------------------------------------
+    功能: 画双垂直柱状年度图表 
+    参数: $banner_id(int) bannerID 
+    返回值: 双垂直柱状图表(string) 
+------------------------------------ */
   function tep_banner_graph_yearly($banner_id) {
     global $banner, $_GET;
 
@@ -444,8 +497,11 @@
     return html_graph($names, $values, $bars, $graph_vals, $dvalues, $dbars);
   }
 
-////
-// draws a double vertical bar graph for the banner views vs clicks statistics
+/* -------------------------------------
+    功能: 画双垂直柱状月度图表 
+    参数: $banner_id(int) bannerID 
+    返回值: 双垂直柱状图表(string) 
+------------------------------------ */
   function tep_banner_graph_monthly($banner_id) {
     global $banner, $_GET;
 
@@ -498,8 +554,11 @@
     return html_graph($names, $values, $bars, $graph_vals, $dvalues, $dbars);
   }
 
-////
-// draws a double vertical bar graph for the banner views vs clicks statistics
+/* -------------------------------------
+    功能: 画双垂直柱状日度图表 
+    参数: $banner_id(int) bannerID 
+    返回值: 双垂直柱状图表(string) 
+------------------------------------ */
   function tep_banner_graph_daily($banner_id) {
     global $banner, $_GET;
 

@@ -2,7 +2,6 @@
 /*
   $Id$
 
-
   Example usage:
 
   $heading = array();
@@ -18,11 +17,21 @@
 */
 
   class box extends tableBlock {
+/*-------------------------------------
+ 功能: 框
+ 参数: 无
+ 返回值: 无
+ ------------------------------------*/
     function box() {
       $this->heading = array();
       $this->contents = array();
     }
-
+/*-------------------------------------
+ 功能: 信息框
+ 参数: $heading(string)  标题
+ 参数: $contents(string) 内容
+ 返回值: 返回标题和内容(string) 
+ ------------------------------------*/
     function infoBox($heading, $contents) {
       $this->table_row_parameters = 'class="infoBoxHeading"';
       $this->table_data_parameters = 'class="infoBoxHeading"';
@@ -34,7 +43,12 @@
 
       return $this->heading . $this->contents;
     }
-
+/*-------------------------------------
+ 功能: 菜单框
+ 参数: $heading(string)  标题
+ 参数: $contents(string) 内容
+ 返回值: 返回标题和内容(string) 
+ ------------------------------------*/
     function menuBox($heading, $contents) {
       $this->table_data_parameters = 'class="menuBoxHeading"';
       if (isset($heading[0]['link']) && $heading[0]['link']) {

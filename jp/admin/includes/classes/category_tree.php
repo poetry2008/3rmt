@@ -22,11 +22,15 @@
        $i = 0,
        $end = false
    ;
-
+/*--------------------------------------
+ 功能: 分类树
+ 参数: $load_from_database(boolean) 加载数据库
+ 参数: $green (boolean) 是否全部显示
+ 返回值: 无 
+ -------------------------------------*/
    function osC_CategoryTree($load_from_database = true,$green = false) {
      global $languages_id;
      $site_id = isset($_GET['site_id'])&&$_GET['site_id'] ? $_GET['site_id'] : 0;
-//ccdd
     if ($green) {
       $this->categories_count = tep_db_num_rows(tep_db_query("select * from categories_description where site_id='0' and categories_status='0'"));
     } else {
@@ -94,7 +98,13 @@
             $this->data[$cID][$id] = array('name' => $categories['categories_name'], 'count' => 0);
          } // eof While loop
     } //eof Function
-
+/*--------------------------------------------------
+ 功能: 建立分支 
+ 参数: $parent_id(string) 父id
+ 参数: $level(string)     级别
+ 参数: $filename(string)  文件名
+ 返回值: HTML文本(string)
+ -------------------------------------------------*/
    function buildBranch($parent_id, $level = 0,$filename='') {
      if($level == 0){
        if($filename == ''){
@@ -161,15 +171,23 @@
      }
      return $result;
    }
-
+/*-----------------------------------------------
+ 功能: 构建树
+ 参数: $filename(string) 文件名
+ 返回值: 构建树(string)  
+ ----------------------------------------------*/
    function buildTree($filename='') {
      return $this->buildBranch($this->root_category_id,0,$filename);
    }
  }
 
-
+/*----------------------------------------------
+ 功能: 获取父类 
+ 参数: $categories(string) 类别
+ 参数: $categories_id(string) 类别ID
+ 返回值: 无
+ ---------------------------------------------*/
   function tep_get_parent_categories(&$categories, $categories_id) {
-    //ccdd
     $parent_categories_query = tep_db_query("select parent_id from " . TABLE_CATEGORIES . " where categories_id = '" . (int)$categories_id . "'");
     while ($parent_categories = tep_db_fetch_array($parent_categories_query)) {
       if ($parent_categories['parent_id'] == 0) return true;
