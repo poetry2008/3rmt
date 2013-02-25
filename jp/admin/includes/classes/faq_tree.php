@@ -23,9 +23,9 @@
        $end = false
    ;
 /*---------------------------------------
- 功能: OSC常见问题 
- 参数: $load_from_database(bool) 加载数据库
- 参数: $green(bool) 通过
+ 功能: FAQ常见问题 
+ 参数: $load_from_database(boolean) 加载数据库
+ 参数: $green(boolean) 是否全部显示
  返回值: 无 
  --------------------------------------*/
    function osC_FaqTree($load_from_database = true,$green = false) {
@@ -178,7 +178,7 @@
 /*-----------------------------------------------
  功能: 构建树
  参数: $filename(string) 文件名
- 返回值: 分页文本(string)  
+ 返回值: 构建树 (string)  
  ----------------------------------------------*/
    function buildTree($filename='') {
      return $this->buildBranch($this->root_category_id,0,$filename);

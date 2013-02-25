@@ -22,7 +22,7 @@ define('BUTTON_JUMP_PAGE', '跳转到');
 
 define('TABLE_HEADING_LOGINID', 'ID');
 define('TABLE_HEADING_LOGINTIME', '登入日期和时间');
-define('TABLE_HEADING_LAST_ACCESSTIME', '最后访问的日期时间');
+define('TABLE_HEADING_LAST_ACCESSTIME', '最后访问时间');
 define('TABLE_HEADING_USER', '用户');
 define('TABLE_HEADING_STATUS', '状态');
 define('TABLE_HEADING_ADDRESS', '地址');

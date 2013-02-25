@@ -31,10 +31,10 @@
 /*------------------------------------
  功能: 格式
  参数: $number(string) 金额
- 参数: $calculate_currency_value(bool) 计算货币价值
+ 参数: $calculate_currency_value(boolean) 计算货币价值
  参数: $currency_type(string)  货币类型
  参数: $currency_value(string) 货币的价值
- 返回值: 格式字符串(string) 
+ 返回值: 格式输出(string) 
  -----------------------------------*/
     function format($number, $calculate_currency_value = true, $currency_type =
         DEFAULT_CURRENCY, $currency_value = '',$is_abs = true) {
@@ -64,12 +64,12 @@
       return str_replace($arr,$arr2,$format_string);
     }
 /*---------------------------------
- 功能: 总的格式(负数红色)
+ 功能: 格式化总价输出(负数红色)
  参数: $number(string) 金额
- 参数: $calculate_currency_value(bool) 计算货币价值
+ 参数: $calculate_currency_value(boolean) 计算货币价值
  参数: $currency_type(string)  货币类型
  参数: $currency_value(string) 货币的价值
- 返回值: 格式字符串(string) 
+ 返回值: 总价输出(string) 
  --------------------------------*/
     function format_total($number, $calculate_currency_value = true, $currency_type = '', $currency_value = '') {
       $tmp_number = $number; 
@@ -109,7 +109,7 @@
 /*----------------------------------------
  功能: 区分正负的方法 
  参数: $number(string) 金额
- 参数: $calculate_currency_value(bool) 计算货币价值
+ 参数: $calculate_currency_value(boolean) 计算货币价值
  参数: $currency_type(string)  货币类型
  参数: $currency_value(string) 货币的价值
  返回值: 格式字符串(string)
@@ -139,12 +139,12 @@
     }
     
 /*-------------------------------------
- 功能: 全部的格式方法    
+ 功能: 格式化总计    
  参数: $number(string) 金额
- 参数: $calculate_currency_value(bool) 计算货币价值
+ 参数: $calculate_currency_value(boolean) 计算货币价值
  参数: $currency_type(string)  货币类型
  参数: $currency_value(string) 货币的价值
- 返回值: 格式字符串(string)
+ 返回值: 格式化总计输出(string)
  ------------------------------------*/
     function ot_total_format($number, $calculate_currency_value = true, $currency_type = DEFAULT_CURRENCY, $currency_value = '') {
       $number = abs($number);
@@ -171,7 +171,7 @@
  功能: 显示价格
  参数: $products_price(string) 产品价格
  参数: $products_tax(string) 产品税
- 参数: $quantity(number)  数量
+ 参数: $quantity(int)  数量
  返回值: 返回的价格(string)
  ---------------------------------*/
     function display_price($products_price, $products_tax, $quantity = 1) {
