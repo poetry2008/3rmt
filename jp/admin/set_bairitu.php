@@ -8,6 +8,10 @@ $currencies = new currencies();
 $cID=$_POST['cID_list'];
 $cpath = $_POST['cpath'];
 switch ($HTTP_GET_VARS['action']){
+/* -----------------------------------------------------
+   case 'set_bai'设置分类的计算设定    
+   case 'set_time' 设置分类的限制时间     
+------------------------------------------------------*/
   case 'set_bai':
     $bai     = $_POST['bai'];
     $keisan  = $_POST['kei'];

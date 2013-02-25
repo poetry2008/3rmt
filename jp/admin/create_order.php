@@ -17,6 +17,9 @@ if(isset($Customer_mail) && $Customer_mail != '' && isset($site_id) && $site_id 
   $param_str = "&Customer_mail=$Customer_mail&site_id=$site_id";
 }
 switch($action){
+/* -----------------------------------------------------
+   case 'add_product' 添加商品    
+------------------------------------------------------*/
 case 'add_product':
         $a_option = new HM_OPTION(); 
         if($step == 5)
@@ -344,21 +347,21 @@ $lastemail      = $email;
 $account        = tep_get_customer_by_id($customerId);
 $address        = tep_get_address_by_cid($customer);
   }
-$customer_id    = isset($account['customers_id'])           ? $account['customers_id']:'';  //d
-$firstname      = isset($account['customers_firstname'])    ? $account['customers_firstname']:'';//d
-$lastname       = isset($account['customers_lastname'])     ? $account['customers_lastname']:'';//d
-$email_address  = isset($account['customers_email_address'])? $account['customers_email_address']:'';//d
-$telephone      = isset($account['customers_telephone'])    ? $account['customers_telephone']:'';//n
-$fax            = isset($account['customers_fax'])          ? $account['customers_fax']:'';//n
-$zone_id        = isset($account['entry_zone_id'])          ? $account['entry_zone_id']:'';//n
+$customer_id    = isset($account['customers_id'])           ? $account['customers_id']:'';
+$firstname      = isset($account['customers_firstname'])    ? $account['customers_firstname']:'';
+$lastname       = isset($account['customers_lastname'])     ? $account['customers_lastname']:'';
+$email_address  = isset($account['customers_email_address'])? $account['customers_email_address']:'';
+$telephone      = isset($account['customers_telephone'])    ? $account['customers_telephone']:'';
+$fax            = isset($account['customers_fax'])          ? $account['customers_fax']:'';
+$zone_id        = isset($account['entry_zone_id'])          ? $account['entry_zone_id']:'';
 //$site_id        = isset($account['site_id'])                ? $account['site_id']:'';
-$street_address = isset($address['entry_street_address'])   ? $address['entry_street_address']:'';//n
-$company        = isset($address['entry_company'])          ? $address['entry_company']:'';//n
-$suburb         = isset($address['entry_suburb'])           ? $address['entry_suburb']:'';//n
-$postcode       = isset($address['entry_postcode'])         ? $address['entry_postcode']:'';//n
-$city           = isset($address['entry_city'])             ? $address['entry_city']:'';//n
-$state          = isset($address['entry_zone_id'])          ? tep_get_zone_name($address['entry_zone_id']):'';//n
-$country        = isset($address['entry_country_id'])       ? tep_get_country_name($address['entry_country_id']):'';//n
+$street_address = isset($address['entry_street_address'])   ? $address['entry_street_address']:'';
+$company        = isset($address['entry_company'])          ? $address['entry_company']:'';
+$suburb         = isset($address['entry_suburb'])           ? $address['entry_suburb']:'';
+$postcode       = isset($address['entry_postcode'])         ? $address['entry_postcode']:'';
+$city           = isset($address['entry_city'])             ? $address['entry_city']:'';
+$state          = isset($address['entry_zone_id'])          ? tep_get_zone_name($address['entry_zone_id']):'';
+$country        = isset($address['entry_country_id'])       ? tep_get_country_name($address['entry_country_id']):'';
 $customers_guest_chk = isset($account['customers_guest_chk']) ? $account['customers_guest_chk'] : '';
 
 $cpayment = payment::getInstance((int)$_GET['site_id']);

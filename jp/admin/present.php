@@ -12,16 +12,19 @@ require('includes/application_top.php');
   $dd = $today['mday'];
   $pd = $dd + 1;
 
-//获取文件的扩展名
+/* -----------------------------------------------------
+    功能: 获取文件的扩展名 
+    参数: $filepath(string) 文件名
+    返回值: 文件的扩展名(string)
+ -----------------------------------------------------*/
   function GetExt($filepath){
     $f = strrev($filepath);
     $ext = substr($f,0,strpos($f,"."));
     return strrev($ext);
   }
 
-//注册处理
   if(isset($_GET['action']) && $_GET['action'] == 'insert'){
-
+    //新建赠品
     $site_id  = tep_db_prepare_input($_POST['site_id']);
     $ins_title = tep_db_prepare_input($_POST['title']);
 
@@ -70,16 +73,20 @@ now(),
     header("location: present.php");
   }
 
-//更新处理
   if(isset($_GET['action']) && $_GET['action'] == 'update'){
+    //更新赠品 
     $up_id = tep_db_prepare_input($_GET['cID']);
     $up_ht = tep_db_prepare_input($_POST['ht']);
     $up_title = tep_db_prepare_input($_POST['title']);
     $present = tep_get_present_by_id($_GET['cID']);
   $site_id=$present['site_id'];
     if(!$site_id) $site_id=0;
-   if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];//权限判断
-         else $site_arr="";
+   if(isset($_SESSION['site_permission'])) {
+     //权限判断
+     $site_arr=$_SESSION['site_permission'];
+   } else {
+     $site_arr="";
+   }
    forward401Unless(editPermission($site_arr, $site_id));
     if($_FILES['file']['tmp_name'] != ""){
       $filepath = tep_get_upload_dir($present['site_id'])."present/"."image".".".date("YmdHis").".".GetExt($_FILES['file']['name']);
@@ -104,8 +111,8 @@ now(),
     header("location: present.php");
   }
 
-//删除处理
   if(isset($_GET['action']) && $_GET['action'] == 'delete'){
+    //删除赠品 
     $dele_id = tep_db_prepare_input($_GET['cID']);
 
     $dele = "delete from ".TABLE_PRESENT_GOODS." where goods_id = '".$dele_id."'";
@@ -167,6 +174,7 @@ require("includes/note_js.php");
   </script>
 <?php }?>
 <script language="javascript">
+<?php //新建表单验证?>
 function msg(){
   if(document.apply.title.value == ""){
 	  alert("<?php echo PRESENT_PLEASE_INPUT_TEXT; ?>");
@@ -184,7 +192,7 @@ function msg(){
     return false;
   }
 }
-
+<?php //更新表单验证?>
 function msg2(){
   if(document.view.title.value == ""){
 	  alert("<?php echo PRESENT_PLEASE_INPUT_TEXT; ?>");
@@ -224,6 +232,13 @@ function msg2(){
           <td><!-- insert -->
             <?php
 switch(isset($_GET['action'])?$_GET['action']:''){
+/* -----------------------------------------------------
+   case 'input' 新建赠品    
+   case 'view' 编辑赠品   
+   case 'listview' 应征者的信息    
+   case 'list' 应征者列表
+   default 赠品列表
+------------------------------------------------------*/
 case 'input' :
 ?>
             <form onSubmit="return msg()" name="apply" action="present.php?action=insert" method="post" enctype="multipart/form-data">
@@ -871,6 +886,10 @@ default:
           $heading = array();
           $present = array();
           switch (isset($_GET['action'])?$_GET['action']:'') {
+/* -----------------------------------------------------
+   case 'deleform' 右侧删除赠品页    
+   default 右侧默认页
+------------------------------------------------------*/
           case 'deleform':
             $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_PRESENT . '</b>');
         

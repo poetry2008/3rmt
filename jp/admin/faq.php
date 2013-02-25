@@ -12,6 +12,16 @@
   //require(DIR_WS_LANGUAGES . $language . '/' .  FILENAME_FAQ);
   if (isset($_GET['action']) && $_GET['action']) {
     switch ($_GET['action']) {
+/* -----------------------------------------------------
+   case 'toggle' 设置faq分类的状态 
+   case 'setflag' 设置faq问题的状态 
+   case 'delete_faq_category_confirm' 删除faq分类 
+   case 'delete_faq_question_confirm' 删除faq问题 
+   case 'insert_faq_question' 新建faq问题 
+   case 'update_faq_question' 更新faq问题 
+   case 'insert_faq_category' 新建faq分类 
+   case 'update_faq_category' 更新faq分类 
+------------------------------------------------------*/
         case 'toggle':
         if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];
         else $site_arr="";
@@ -335,6 +345,7 @@ $faq_query = tep_db_query("select title from ".TABLE_FAQ_CATEGORIES_DESCRIPTION.
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script language="javascript">
+<?php //显示/关闭分类树?>
 function display(){
     var categories_tree = document.getElementById('categories_tree'); 
       if(categories_tree.style.display == 'none'){
@@ -938,6 +949,15 @@ if(isset($_GET['action'])&& $_GET['action']&&(!isset($site_id)||$site_id==0)){
   $_action = $_GET['action'];
 }
 switch (isset($_action)? $_action:'') {
+/* -----------------------------------------------------
+   case 'new_faq_category' 右侧新建faq分类页  
+   case 'new_faq_question' 右侧新建faq问题页   
+   case 'edit_faq_category' 右侧编辑faq分类页   
+   case 'edit_faq_question' 右侧编辑faq问题页   
+   case 'delete_faq_category' 右侧删除faq分类页   
+   case 'delete_faq_question' 右侧删除faq问题页 
+   default 右侧默认页
+------------------------------------------------------*/
   case 'new_faq_category':
     $dc_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
     $heading[] = array('text' => '<b>' .TEXT_INFO_HEADING_NEW_FAQ_CATEGORY.'</b>');

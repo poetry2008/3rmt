@@ -121,6 +121,9 @@
   if (tep_not_null($action)) {
     $payment_modules = payment::getInstance($order->info['site_id']);
     switch ($action) {
+/* -----------------------------------------------------
+   case 'update_order' 更新预约订单信息    
+------------------------------------------------------*/
       
   // 1. UPDATE ORDER ###############################################################################################
   case 'update_order':
@@ -166,12 +169,15 @@
     }
     */
     //valadate email 
-    if (isset($_POST['h_deadline'])) { //日期时间是否有效检查
-      if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d)$/', $_POST['h_deadline'], $m1)) { // check the date format
+    if (isset($_POST['h_deadline'])) { 
+      //日期时间是否有效检查
+      if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d)$/', $_POST['h_deadline'], $m1)) { 
+        // check the date format
         $messageStack->add(EDIT_ORDERS_NOTICE_DATE_WRONG_TEXT, 'error');
         $action = 'edit';
         break;
-      } elseif (!checkdate($m1[2], $m1[3], $m1[1])) { // make sure the date provided is a validate date
+      } elseif (!checkdate($m1[2], $m1[3], $m1[1])) { 
+        // make sure the date provided is a validate date
         if ($_POST['h_deadline'] != '0000-00-00') {
           $messageStack->add(EDIT_ORDERS_NOTICE_NOUSE_DATE_TEXT, 'error');
           $action = 'edit';
@@ -330,7 +336,8 @@
       //tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
     }
 
-    if($products_details["qty"] > 0) { // a.) quantity found --> add to list & sum
+    if($products_details["qty"] > 0) { 
+      // a.) quantity found --> add to list & sum
       $Query = "update " . TABLE_PREORDERS_PRODUCTS . " set
           products_model = '" . $products_details["model"] . "',
           products_name = '" . str_replace("'", "&#39;", $products_details["name"]) . "',
@@ -369,7 +376,8 @@
           }
         }
       }
-    } else { // b.) null quantity found --> delete
+    } else { 
+      // b.) null quantity found --> delete
       $Query = "delete from " . TABLE_PREORDERS_PRODUCTS . " where orders_products_id = '$orders_products_id';";
       tep_db_query($Query);
       $Query = "delete from " . TABLE_PREORDERS_PRODUCTS_ATTRIBUTES . " where orders_products_id = '$orders_products_id';";
@@ -440,7 +448,8 @@
 //        $ot_value = $RunningTotal-$RunningTax;
         $ot_value = $RunningTotal;
         
-        if ( !$ot_subtotal_found ) { // There was no subtotal on this order, lets add the running subtotal in.
+        if ( !$ot_subtotal_found ) { 
+          // There was no subtotal on this order, lets add the running subtotal in.
 //        $ot_value +=  $RunningSubTotal;
         }
       }
@@ -451,7 +460,8 @@
   
       $order = new preorder($oID);
 
-      if ($customer_guest['customers_guest_chk'] == 0 && $ot_class == "ot_point" && $ot_value != $before_point) { //如果是会员的话会进行对应的返点
+      if ($customer_guest['customers_guest_chk'] == 0 && $ot_class == "ot_point" && $ot_value != $before_point) { 
+        //如果是会员的话会进行对应的返点
         $point_difference = ($ot_value - $before_point);
         //tep_db_query("update " . TABLE_CUSTOMERS . " set point = point - " . $point_difference . " where customers_id = '" . $order->customer['id'] . "'"); 
       }
@@ -462,7 +472,8 @@
         $ot_text = "<b>" . $ot_text . "</b>";
       }
   
-      if($ot_total_id > 0 || $ot_class == "ot_point") { // Already in database --> Update
+      if($ot_total_id > 0 || $ot_class == "ot_point") { 
+        // Already in database --> Update
         /*
            delete form query
             text = "' . tep_insert_currency_text($ot_text) . '",
@@ -473,7 +484,8 @@
             sort_order = "' . $sort_order . '"
             WHERE orders_total_id = "' . $ot_total_id . '"';
             tep_db_query($Query);
-      } else { // New Insert
+      } else { 
+        // New Insert
         /*
            change form query
             text = "' . tep_insert_currency_text($ot_text) . '",
@@ -502,7 +514,8 @@
       }
 
       //  print $ot_value."<br>";
-    } elseif (($ot_total_id > 0) && ($ot_class != "ot_shipping") && ($ot_class != "ot_point")) { // Delete Total Piece
+    } elseif (($ot_total_id > 0) && ($ot_class != "ot_shipping") && ($ot_class != "ot_point")) { 
+      // Delete Total Piece
       $Query = "delete from " . TABLE_PREORDERS_TOTAL . " where orders_total_id = '$ot_total_id'";
       tep_db_query($Query);
     }
@@ -1064,6 +1077,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 <script language="javascript">
 var session_orders_id = '<?php echo $_GET['oID'];?>';
 var session_site_id = '<?php echo $order->info['site_id'];?>';
+<?php //把相应的值放入session?>
 function orders_session(type,value){
   
   $.ajax({
@@ -1076,6 +1090,7 @@ function orders_session(type,value){
     }
   });
 }
+<?php //检查表单是否正确?>
 function submit_order_check(products_id,op_id){
   var _end = $("#status").val();
   if($("#confrim_mail_title_"+_end).val()==$("#mail_title").val()){
@@ -1146,6 +1161,7 @@ function submit_order_check(products_id,op_id){
     tep_db_free_result($products_id_query);
     $products_id_str = $products_id_array['orders_products_id'];
 ?>
+  <?php //隐藏支付方法的附加信息?> 
   function hidden_payment(){
      var idx = document.edit_order.elements["payment_method"].selectedIndex;
      var CI =  document.edit_order.elements["payment_method"].options[idx].value;
@@ -1161,7 +1177,7 @@ function submit_order_check(products_id,op_id){
      price_total();
      recalc_preorder_price("<?php echo $_GET['oID'];?>", "<?php echo $products_id_str;?>", "1", "<?php echo $op_info_str;?>");
   }
-
+  <?php //添加输入框?>
   function add_option(){
     var add_num = $("#button_add_id").val();
     add_num = parseInt(add_num);
@@ -1249,6 +1265,7 @@ $(document).ready(function() {
     }
   });
 });
+<?php //检查是否填写确保期限?>
 function check_mail_product_status(pid)
 {
    var direct_single = false; 
@@ -1329,6 +1346,7 @@ $(".once_pwd").each(function(index) {
    }
   }
 }
+<?php //切换预约状态?>
 function check_prestatus() {
   var s_value = document.getElementById('status').value;
   $.ajax({
@@ -1364,7 +1382,7 @@ function check_prestatus() {
     }
   });
 }  
-
+<?php //格式化货币输出?>
 function fmoney(s)
 {
    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(0) + "";
@@ -1375,7 +1393,7 @@ function fmoney(s)
               }
        return t.split("").reverse().join("");
 }
-
+<?php //计算预约订单的价格方面的信息?>
 function recalc_preorder_price(oid, opd, o_str, op_str)
 {
   var op_array = op_str.split('|||');
@@ -1472,7 +1490,7 @@ function recalc_preorder_price(oid, opd, o_str, op_str)
     }
   });
 }
-
+<?php //计算价格信息?>
 function price_total()
 {
       var ot_total = '';
@@ -1515,7 +1533,7 @@ function price_total()
         document.getElementById('ot_total_id').innerHTML = fmoney(ot_total)+'<?php echo TEXT_MONEY_SYMBOL;?>'; 
       } 
 }
-
+<?php //弹出日历?>
 function open_calendar()
 {
   var is_open = $('#toggle_open').val(); 
@@ -1593,7 +1611,7 @@ function open_calendar()
     });
   }
 }
-
+<?php //弹出确保期限的日历?>
 function open_ensure_calendar()
 {
   var is_open = $('#toggle_ensure').val(); 
@@ -1676,6 +1694,7 @@ function open_ensure_calendar()
     });
   }
 }
+<?php //判断日期是否正确?>
 function is_date(dateval)
 {
   var arr = new Array();
@@ -1709,6 +1728,8 @@ function is_date(dateval)
  
   return false;
 }
+
+<?php //检查切换日期?>
 function change_predate_date() {
   update_predate_str = $("#update_predate_year").val()+"-"+$("#update_predate_month").val()+"-"+$("#update_predate_day").val(); 
   if (!is_date(update_predate_str)) {
@@ -1717,7 +1738,7 @@ function change_predate_date() {
     $("#date_predate").val(update_predate_str); 
   }
 }
-
+<?php //检查切换确保期限的日期?>
 function change_ensure_date() {
   update_ensure_str = $("#update_ensure_year").val()+"-"+$("#update_ensure_month").val()+"-"+$("#update_ensure_day").val(); 
   if (!is_date(update_ensure_str)) {

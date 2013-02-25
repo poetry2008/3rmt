@@ -178,6 +178,7 @@
 <script language="javascript" src="includes/javascript/jquery.form.js"></script>
 <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
 <script type="text/javascript">
+<?php //下一步提交?>
 function submit_next(){
 
   var fax_flag = document.getElementsByName('fax_flag')[0].value;
@@ -207,7 +208,7 @@ $(function() {
       }).result(function(e, item) {
       });
 });
-
+<?php //弹出日历?>
 function open_calendar()
 {
   var is_open = $('#toggle_open').val(); 
@@ -280,7 +281,7 @@ function open_calendar()
     });
   }
 }
-
+<?php //判断日期是否正确?>
 function is_date(dateval)
 {
   var arr = new Array();
@@ -314,6 +315,7 @@ function is_date(dateval)
  
   return false;
 }
+<?php //判断切换日期是否正确?>
 function change_predate_date() {
   predate_str = $("#predate_year").val()+"-"+$("#predate_month").val()+"-"+$("#predate_day").val(); 
   if (!is_date(predate_str)) {

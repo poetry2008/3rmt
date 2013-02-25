@@ -7,6 +7,17 @@
 
   if (isset($_GET['action']) && $_GET['action']) {
     switch ($_GET['action']) {
+/* -----------------------------------------------------
+   case 'lock' 开启锁定   
+   case 'unlock' 解除锁定    
+   case 'insert' 新建邮件杂志    
+   case 'update' 更新邮件杂志   
+   case 'deleteconfirm' 删除邮件杂志    
+   case 'delete' 显示不能删除没解锁的邮件杂志的错误信息
+   case 'new' 显示不能编辑没解锁的邮件杂志的错误信息 
+   case 'send' 显示不能发送没解锁的邮件杂志的错误信息
+   case 'confirm_send' 显示不能发送没解锁的邮件杂志的错误信息
+------------------------------------------------------*/
       case 'lock':
       case 'unlock':
         $newsletter_id = tep_db_prepare_input($_GET['nID']);
@@ -180,6 +191,7 @@ require("includes/note_js.php");
       </tr>
 <?php
   if (isset($_GET['action']) && $_GET['action'] == 'new') {
+    //新建/编辑邮件杂志 
     $form_action = 'insert';
     if (@$_GET['nID']) {
       $nID = tep_db_prepare_input($_GET['nID']);
@@ -274,6 +286,7 @@ require("includes/note_js.php");
       </form></tr>
 <?php
   } elseif (@$_GET['action'] == 'preview') {
+    //预览邮件杂志 
     $nID = tep_db_prepare_input($_GET['nID']);
 
     $newsletter_query = tep_db_query("select title, content, module from " . TABLE_NEWSLETTERS . " where newsletters_id = '" . tep_db_input($nID) . "'");
@@ -292,6 +305,7 @@ require("includes/note_js.php");
       </tr>
 <?php
   } elseif (@$_GET['action'] == 'send') {
+    //发送邮件杂志 
     $nID = tep_db_prepare_input($_GET['nID']);
 
     $newsletter_query = tep_db_query("select title, content, module from " . TABLE_NEWSLETTERS . " where newsletters_id = '" . tep_db_input($nID) . "'");
@@ -311,6 +325,7 @@ require("includes/note_js.php");
       </tr>
 <?php
   } elseif (isset($_GET['action']) && $_GET['action'] == 'confirm') {
+    //邮件杂志确认 
     $nID = tep_db_prepare_input($_GET['nID']);
 
     $newsletter_query = tep_db_query("select title, content, module from " . TABLE_NEWSLETTERS . " where newsletters_id = '" . tep_db_input($nID) . "'");
@@ -328,6 +343,7 @@ require("includes/note_js.php");
       </tr>
 <?php
   } elseif (isset($_GET['action']) && $_GET['action'] == 'confirm_send') {
+    //确认发送邮件杂志 
     $nID = tep_db_prepare_input($_GET['nID']);
 
     $newsletter_query = tep_db_query("
@@ -386,6 +402,7 @@ require("includes/note_js.php");
       </tr>
 <?php
   } else {
+//邮件杂志列表
 ?>
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -471,6 +488,10 @@ require("includes/note_js.php");
   $heading = array();
   $contents = array();
   switch (@$_GET['action']) {
+/* -----------------------------------------------------
+   case 'delete' 右侧邮件杂志删除页面   
+   default 右侧默认页面  
+------------------------------------------------------*/
     case 'delete':
       $heading[] = array('text' => '<b>' . $nInfo->title . '</b>');
 

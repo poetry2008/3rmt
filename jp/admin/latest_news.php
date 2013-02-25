@@ -6,7 +6,14 @@
 
   if (isset($_GET['action']) && $_GET['action']) {
     switch ($_GET['action']) {
-      case 'setflag': //set the status of a news item.
+/* -----------------------------------------------------
+   case 'setflag' 设置新闻是否显示    
+   case 'setfirst' 置顶    
+   case 'delete_latest_news_confirm' 删除新闻    
+   case 'insert_latest_news' 新建新闻    
+   case 'update_latest_news' 更新新闻    
+------------------------------------------------------*/
+      case 'setflag':
         if ( ($_GET['flag'] == '0') || ($_GET['flag'] == '1') ) {
           if ($_GET['latest_news_id']) {
             tep_db_query("update " . TABLE_LATEST_NEWS . " set status = '" . $_GET['flag'] . "' where news_id = '" . $_GET['latest_news_id'] . "'");
@@ -43,7 +50,7 @@
 tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, (isset($_GET['site_id'])?('site_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):'')));
 
         break;
-      case 'delete_latest_news_confirm': //user has confirmed deletion of news article.
+      case 'delete_latest_news_confirm':
         if ($_POST['latest_news_id']) {
           $latest_news_id = tep_db_prepare_input($_POST['latest_news_id']);
           tep_db_query("delete from " . TABLE_LATEST_NEWS . " where news_id = '" . tep_db_input($latest_news_id) . "'");
@@ -52,7 +59,7 @@ tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, (isset($_GET['site_id'])?('site
 
         break;
 
-      case 'insert_latest_news': //insert a new news article.
+      case 'insert_latest_news':
         if ($_POST['headline']) {
 		
           $sql_data_array = array('headline'   => tep_db_prepare_input($_POST['headline']),
@@ -90,7 +97,7 @@ tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, (isset($_GET['site_id'])?('site
         tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, isset($_GET['lsite_id'])?('site_id='.$_GET['lsite_id']):''));
         break;
 
-      case 'update_latest_news': //user wants to modify a news article.
+      case 'update_latest_news':
     
         if($_GET['latest_news_id']) {
           $latest_news = tep_get_latest_news_by_id($_GET['latest_news_id']);
@@ -179,8 +186,10 @@ require("includes/note_js.php");
 <!-- body_text //-->
     <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
-  if (isset($_GET['action']) && $_GET['action'] == 'new_latest_news') { //insert or edit a news item
-    if ( isset($_GET['latest_news_id']) ) { //editing exsiting news item
+  if (isset($_GET['action']) && $_GET['action'] == 'new_latest_news') { 
+    //insert or edit a news item
+    if ( isset($_GET['latest_news_id']) ) { 
+      //editing exsiting news item
       $latest_news_query = tep_db_query("
           select news_id, 
                  headline,  
@@ -385,7 +394,11 @@ if (isset($_GET['latest_news_id']) and $latest_news['news_id'] == $_GET['latest_
     $heading = array();
     $contents = array();
     switch (isset($_GET['action'])?$_GET['action']:null) {
-      case 'delete_latest_news': //generate box for confirming a news article deletion
+/* -----------------------------------------------------
+   case 'delete_latest_news' 右侧删除新闻页面    
+   default 右侧默认页面     
+------------------------------------------------------*/
+      case 'delete_latest_news':
         $heading[] = array('text'   => '<b>' . TEXT_INFO_HEADING_DELETE_ITEM . '</b>');
         
         $contents = array('form'    => tep_draw_form('news', FILENAME_LATEST_NEWS, 'action=delete_latest_news_confirm'.(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):'')) . tep_draw_hidden_field('latest_news_id', $_GET['latest_news_id']));
@@ -398,7 +411,8 @@ if (isset($_GET['latest_news_id']) and $latest_news['news_id'] == $_GET['latest_
 
       default:
         if ($rows > 0) {
-          if (is_array($selected_item)) { //an item is selected, so make the side box
+          if (is_array($selected_item)) { 
+            //an item is selected, so make the side box
             $heading[] = array('text' => '<b>' . $selected_item['headline'] . '</b>');
 
             $contents[] = array('align' => 'center', 

@@ -35,6 +35,12 @@ if(isset($_GET['action']) &&
 
   if (isset($_GET['action']) && $_GET['action']) {
     switch ($_GET['action']) {
+/* -----------------------------------------------------
+   case 'redirect' 跳转到指定页    
+   case 'insert' 新建idpw  
+   case 'update' 更新idpw   
+   case 'deleteconfirm' 删除idpw    
+------------------------------------------------------*/
       case 'redirect':
           tep_redirect(urldecode($_GET['url']));
         break;
@@ -362,6 +368,7 @@ if(isset($_GET['action']) &&
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
 <script language="javascript" >
+<?php //弹出日历?>
 function open_new_calendar()
 {
   var is_open = $('#toggle_open').val(); 
@@ -409,6 +416,7 @@ $(function() {
       }
   }); 
 })
+<?php //复制代码?>
 function copyCode(idpw,name){
   var testCode;
   $.post('<?php echo
@@ -450,10 +458,12 @@ copy2Clipboard=function(txt){
         clip.setData(trans,null,clipid.kGlobalClipboard);
     }
 }
+<?php //搜索表单提交?>
 function search_type_changed(elem){
 	if ($('#keywords').val() && elem.selectedIndex != 0) 
       document.forms.pw_manager1.submit();
 }
+<?php //检查url?>
 function checkurl(url){
   var str = url;
   var objExp = new RegExp(/http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w-.\/?%&=]*)?/);
@@ -464,6 +474,7 @@ function checkurl(url){
   }
 
 }
+<?php //验证表单?>
 function valdata(){
   if (document.getElementById('url').value!=''&&
       !checkurl(document.getElementById('url').value)) {
@@ -476,6 +487,7 @@ function valdata(){
     return false; 
   }
 }
+<?php //创建密码?>
 function mk_pwd(){
   var len = $('input:checkbox[name=pattern[]]:checked').length;
   var check = '';
@@ -1071,6 +1083,12 @@ require("includes/note_js.php");
   $heading = array();
   $contents = array();
 switch (isset($_GET['action'])? $_GET['action']:'') {
+/* -----------------------------------------------------
+   case 'new' 右侧新建idpw页面  
+   case 'edit' 右侧更新idpw页面   
+   case 'delete' 右侧删除idpw页面 
+   default 右侧默认页面
+------------------------------------------------------*/
   case 'new':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_NEW . '</b>');
 

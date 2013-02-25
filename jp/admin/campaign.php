@@ -11,6 +11,12 @@
   }
   if (isset($_GET['action']) && $_GET['action']) {
     switch ($_GET['action']) {
+/* -----------------------------------------------------
+   case 'setflag' 设置优惠券状态   
+   case 'update' 更新优惠券    
+   case 'insert' 新建优惠券    
+   case 'deleteconfirm' 删除优惠券    
+------------------------------------------------------*/
       case 'setflag';
         tep_db_query("update `".TABLE_CAMPAIGN."` set `status` = '".(int)$_GET['flag']."' where id = '".$_GET['campaign_id']."'");
         tep_redirect(tep_href_link(FILENAME_CAMPAIGN, isset($_GET['site_id'])?('site_id='.$_GET['site_id']):'')); 
@@ -137,6 +143,7 @@
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script style="text/javascript">
+<?php //弹出页的前页/后页的链接?>
 function show_link_campaign_info(cid, sid)
 {
   $.ajax({
@@ -152,6 +159,7 @@ function show_link_campaign_info(cid, sid)
   });
 }
 var temp_id = '';
+<?php //更新优惠券弹出页面?>
 function show_campaign_info(ele, cid, sid)
 {
   temp_id = cid;
@@ -190,6 +198,7 @@ function show_campaign_info(ele, cid, sid)
   });
 }
 window.onresize = show_campaign_info_offset; 
+<?php //浏览器窗口缩放的函数?>
 function show_campaign_info_offset(){
    var show_value = '';
    var box_warp = '';
@@ -206,12 +215,13 @@ function show_campaign_info_offset(){
    $("#show_campaign_info").css('left',show_value.left-box_warp_left);
  }
 }
+<?php //关闭弹出框?>
 function close_campaign_info()
 {
   $('#show_campaign_info').html('');  
   $('#show_campaign_info').hide(); 
 }
-
+<?php //新建优惠券弹出框?>
 function show_new_campaign(std)
 {
   $.ajax({
@@ -226,7 +236,7 @@ function show_new_campaign(std)
     }
   });
 }
-
+<?php //检查信息是否正确?>
 function check_campaign_info(cid, check_type, site_id)
 {
    var chkObjs = document.getElementsByName("type");
@@ -258,7 +268,7 @@ function check_campaign_info(cid, check_type, site_id)
     }
   });
 }
-
+<?php //切换动作?>
 function toggle_type_info(ele)
 {
   if (ele.value == '1') {
