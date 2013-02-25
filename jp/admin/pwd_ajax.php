@@ -3,6 +3,10 @@
 require('includes/application_top.php');
 $action = $_POST['action'];
 switch($action){
+/* -----------------------------------------------------
+   case 'make_pw' 生成随机密码    
+   case 'load' 取得idpw的指定字段的值   
+------------------------------------------------------*/
   case 'make_pw':
 if(isset($_POST['pattern'])&&$_POST['pattern']&&
 isset($_POST['pwd_len'])&&$_POST['pwd_len']){

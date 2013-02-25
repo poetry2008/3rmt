@@ -7,6 +7,14 @@ require('includes/application_top.php');
 $action = (isset($_GET['action']) ? $_GET['action'] : '');
 
 switch($_GET['action']){
+/* -----------------------------------------------------
+   case 'show_products_manual' 商品手册信息    
+   case 'show_categories_manual' 分类手册信息     
+   case 'p_categories_manual' 来自订单页的商品手册信息     
+   case 'save_products_manual' 保存商品手册信息     
+   case 'save_categories_manual' 保存分类手册信息     
+   case 'save_p_categories_manual' 保存来自订单页的手册信息     
+------------------------------------------------------*/
 case 'show_products_manual':
 //来自订单
 if(isset($_GET['oID']) && $_GET['oID']){
@@ -637,13 +645,12 @@ require("includes/note_js.php");
 <?php echo $form_info;?>
 <table width="100%">
 
-<tr><td id="emd">
+<tr><td id="emd" >
 <textarea id="elm1" class="" cols="207" rows="20" name="manual" style="width:100%;height:100%;"><?php echo stripcslashes($manual_content);?></textarea>
 
 
 <td></tr>
-<tr>
-<td align="right" id="button_width">
+<tr><td align="right" id="button_width">
 <input type="submit" value="<?php echo MANUAL_SAVE;?>">
 <?php echo $return_button;?>
 </td></tr>

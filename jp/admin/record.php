@@ -4,6 +4,11 @@
     $from_url = $_GET['from'];
   }
   switch($_GET['action']){
+/* -----------------------------------------------------
+   case 'rename' 判断是新建还是更新   
+   case 'insert' 新建网站名以及url  
+   case 'update' 更新网站名以及url  
+------------------------------------------------------*/
     case 'rename':
      $siteurl = str_replace('_','.',$_GET['url']); 
      $site_sql = "select * from ".TABLE_SITENAME."

@@ -6,6 +6,11 @@
 
   if (isset($_GET['action']) && $_GET['action']) {
     switch ($_GET['action']) {
+/* -----------------------------------------------------
+   case 'add_more_alarm'添加警报html 
+   case 'process' 保存警报    
+   case 'check_alarm' 检查警报信息是否正确   
+------------------------------------------------------*/
       case 'add_more_alarm':
         $now_year = date('Y', time());   
         $now_month = date('m', time());   
@@ -158,6 +163,7 @@
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script type="text/javascript">
+<?php //添加警报?>
 function add_more_alarm()
 {
   $.ajax({
@@ -171,6 +177,7 @@ function add_more_alarm()
     }
   });
 }
+<?php //检查警报信息是否填写正确?>
 function check_alarm()
 {
    param_str = ''; 
@@ -200,7 +207,7 @@ function check_alarm()
        }
        });
 }
-
+<?php //删除新添加的警报?>
 function delete_add_line(obj) 
 {
   $(obj).parent().parent().html('');

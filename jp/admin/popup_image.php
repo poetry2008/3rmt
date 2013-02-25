@@ -48,6 +48,9 @@ if(!in_array('onetime',$request_one_time_arr)&&$_SESSION['user_permission']!=15)
   reset($_GET);
   while (list($key, ) = each($_GET)) {
     switch ($key) {
+/* -----------------------------------------------------
+   case 'banner' 显示指定的banner图片      
+------------------------------------------------------*/
       case 'banner':
         $banners_id = tep_db_prepare_input($_GET['banner']);
 
