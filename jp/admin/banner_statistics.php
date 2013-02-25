@@ -84,8 +84,7 @@ require("includes/note_js.php");
 <div class="compatible">
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
-        <td width="100%">
-        <table border="0" width="100%" cellspacing="0" cellpadding="0">
+        <td width="100%"><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr><?php echo tep_draw_form('year', FILENAME_BANNER_STATISTICS, '', 'get'); ?>
             <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', '1', HEADING_IMAGE_HEIGHT); ?></td>
@@ -177,12 +176,7 @@ require("includes/note_js.php");
       <tr>
         <td class="main" align="right"><?php echo '<a href="' .  tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] . '&bID=' .  $_GET['bID']) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; ?></td>
       </tr>
-<<<<<<< HEAD
-    </table>
-    </div></td>
-=======
-    </table></div></td>
->>>>>>> 544fc4cbe7e31c9107502ecb529d7b84f0f9344d
+    </table></div></div></td>
 <!-- body_text_eof //-->
   </tr>
 </table>
