@@ -127,7 +127,7 @@ if(isset($_GET['action'])){
 //tep_redirect(tep_href_link(FILENAME_ORDERS, 'oID='.$_GET['oID'].'&action=edit'));
 
     break;
-  case 'complete': //判断oa信息的完整性
+  case 'complete': //判断oa信息的完整性,如果不完整，给出相应的提示
     $orders_id = $_GET['oID'];
     $complete_flag = '';
     $oa_item_id_array = array();
