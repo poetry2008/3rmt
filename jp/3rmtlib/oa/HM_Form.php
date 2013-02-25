@@ -176,12 +176,13 @@ class HM_Form extends DbRecord
 
       <?php //检测数据库中的数据是否完整?>
       var complete_flag_str = ''; 
+      var complete_status = '<?php echo check_order_transaction_button($this->status);?>';
       $.ajax({
         url:'oa_ajax.php?action=complete&oID=<?php echo $_GET["oID"]?>',
             type:'post',    
             async : false,
             success: function(data){
-              if(data != ''){
+              if(data != '' && complete_status != '1'){
                 complete_flag = false; 
                 complete_flag_str = data;
               }
