@@ -42,6 +42,10 @@ if(!in_array('onetime',$request_one_time_arr)&&$_SESSION['user_permission']!=15)
   }
 }
 //end one time pwd
+if(!isset($_POST['eof'])||$_POST['eof']!='eof'){
+  echo 'eof_error';
+  exit;
+}
 $form_id = $_POST['form_id'];
 $oid = $_GET['oID'];
 if(isset($_GET['fake']) or isset($_POST['fake'])){
@@ -67,6 +71,7 @@ if(strpos($oid,'_')){
 }
 
 unset($_POST['form_id']);
+unset($_POST['eof']);
 foreach ($_POST as $key=> $value){
   if (substr($key,0,1)=='0' and !$_GET['withz']){
     continue;

@@ -59,15 +59,23 @@ class HM_Item_Date extends HM_Item_Basic
                $.ajax({
                  url:'oa_answer_process.php?withz=1&fix=date&oID=<?php echo $_GET["oID"]?>',
                      type:'post',    
-                     data:"form_id="+$('input|[name=form_id]').val()+"&<?php echo $this->formname;?>="+$('input|[name=<?php echo $this->formname;?>]').val(),
+                     data:"form_id="+$('input|[name=form_id]').val()+"&<?php echo $this->formname;?>="+$('input|[name=<?php echo $this->formname;?>]').val()+"&eof=eof",
 		     beforeSend: function(){$('body').css('cursor','wait');$("#wait").show()},
                      success: function(data){
 
-		              $("#<?php echo $this->formname;?>showvalue").text(data);
-			      $("#<?php echo $this->formname;?>").val(data);
-			      $("#wait").hide();
-			      $('body').css('cursor','');
-                  checkLockOrder();
+                              if(data == 'eof_error'){
+                                $("#wait").hide();
+                                $('body').css('cursor','');  
+                                show_error_message();
+                                $("#popup_info").show();
+                                $("#popup_box").show();
+                              }else{
+		                $("#<?php echo $this->formname;?>showvalue").text(data);
+			        $("#<?php echo $this->formname;?>").val(data);
+			        $("#wait").hide();
+			        $('body').css('cursor','');
+                                checkLockOrder();
+                              }
                    }
                  });
              });

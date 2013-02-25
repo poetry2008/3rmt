@@ -127,5 +127,73 @@ if(isset($_GET['action'])){
 //tep_redirect(tep_href_link(FILENAME_ORDERS, 'oID='.$_GET['oID'].'&action=edit'));
 
     break;
+  case 'complete': //判断oa信息的完整性
+    $orders_id = $_GET['oID'];
+    $complete_flag = '';
+    $oa_item_id_array = array();
+    $oa_item_title_array = array();
+    $oa_item_form_id_array = array();
+    $oa_item_id_value = '';
+    $oa_group_query = tep_db_query("select form_id,item_id from ". TABLE_OA_FORMVALUE ." where orders_id='".$orders_id."'");
+    while($oa_group_array = tep_db_fetch_array($oa_group_query)){
+
+      if($oa_item_id_value == ''){$oa_item_id_value = $oa_group_array['form_id'];} 
+      $oa_item_form_id_array[] = $oa_group_array['item_id'];
+    }
+    $oa_item_num = tep_db_num_rows($oa_group_query);
+    tep_db_free_result($oa_group_query);
+    $oa_group_form_query = tep_db_query("select group_id from ". TABLE_OA_FORM_GROUP ." where form_id='".$oa_item_id_value."'");
+    while($oa_group_form_array = tep_db_fetch_array($oa_group_form_query)){
+
+      $oa_item_form_query = tep_db_query("select id,title,group_id,`option` as option_value from ". TABLE_OA_ITEM ." where group_id='".$oa_group_form_array['group_id']."'");
+      while($oa_item_form_array = tep_db_fetch_array($oa_item_form_query)){
+
+        $oa_item_option_array = unserialize($oa_item_form_array['option_value']); 
+        if($oa_item_option_array['require'] == 'on'){
+          $oa_item_id_array[] = $oa_item_form_array['id']; 
+          $oa_group_id_query = tep_db_query("select name from ". TABLE_OA_GROUP ." where id='".$oa_item_form_array['group_id']."'");
+          $oa_group_id_array = tep_db_fetch_array($oa_group_id_query);
+          tep_db_free_result($oa_group_id_query);
+          $oa_item_title_array[$oa_item_form_array['id']] = $oa_group_id_array['name'];
+        }
+      }
+    }
+    $oa_item_str = implode(',',$oa_item_id_array);
+    $complete_temp_flag = false;
+    $oa_item_value_array = array();
+    $oa_form_query = tep_db_query("select item_id,value from ". TABLE_OA_FORMVALUE ." where orders_id='".$orders_id."' and item_id in (".$oa_item_str.")");
+    while($oa_form_array = tep_db_fetch_array($oa_form_query)){
+
+      if(trim($oa_form_array['value']) == ''){
+
+        $complete_temp_flag = true;
+        $oa_item_value_array[] = $oa_form_array['item_id'];
+      }
+    }
+    tep_db_free_result($oa_form_query);
+    $oa_diff_array = array_diff($oa_item_id_array,$oa_item_form_id_array);
+    $oa_diff_array = array_merge($oa_diff_array,$oa_item_value_array);
+    $oa_diff_name_array = array();
+    foreach($oa_diff_array as $oa_value){
+
+      $oa_diff_name_array[] = $oa_item_title_array[$oa_value];
+    }
+    $oa_diff_name_array = array_unique($oa_diff_name_array);
+    if($oa_item_num < count($oa_item_id_array)){
+
+      $complete_flag = '「';
+      $complete_flag .= implode('」、「',$oa_diff_name_array);
+      $complete_flag .= '」';
+    }else{
+
+      if($complete_temp_flag == true){
+
+        $complete_flag = '「';
+        $complete_flag .= implode('」、「',$oa_diff_name_array);
+        $complete_flag .= '」';
+      }
+    }
+    echo $complete_flag;
+    break;
   }
 }

@@ -44,6 +44,7 @@ class HM_Form extends DbRecord
       $group->render();
     }
     echo "<tr><td class='main' colspan='3' align='right'>&nbsp;"; 
+    echo tep_eof_hidden();
     echo "<input type='hidden' name='form_id' value='".$this->id."' /><div id='canEndDiv'>";
     echo $this->end_user;
     echo "<button onclick='finishTheOrder()'  id='canEnd' >".OA_FORM_ORDER_FINISH."</button></div>";
@@ -118,7 +119,9 @@ class HM_Form extends DbRecord
     }
     function INPUThiddenRequire(ele)
     {
-      return $(ele).val().length>0;
+      var ele_value = $(ele).val();
+      ele_value = ele_value.replace(/\s/g,'');
+      return ele_value.length > 0;
     }
     function cleanthisrow(ele){
       $(ele).parent().parent().children().find('input').each(
@@ -163,8 +166,26 @@ class HM_Form extends DbRecord
 
 
     }
+    var complete_flag = true;
+    var finish_flag = true;
     function finishTheOrder()
     {
+
+      var complete_flag_str = ''; 
+      $.ajax({
+        url:'oa_ajax.php?action=complete&oID=<?php echo $_GET["oID"]?>',
+            type:'post',    
+            async : false,
+            success: function(data){
+              if(data != ''){
+                complete_flag = false; 
+                complete_flag_str = data;
+              }
+            }
+        }
+        );
+    if(complete_flag){
+      finish_flag = false;
       $.ajax({
         url:'oa_ajax.php?action=finish&oID=<?php echo $_GET["oID"]?>',
             type:'post',    
@@ -179,6 +200,10 @@ class HM_Form extends DbRecord
           }
         }
         );
+    }else{
+        alert(complete_flag_str+'<?php echo NOTICE_COMPLETE_ERROR_TEXT;?>');
+        window.location.href='orders.php?page=<?php echo $_GET['page'];?>&oID=<?php echo $_GET["oID"];?>&action=edit';
+    }
     }
     $(document).ready(
                       function()
@@ -235,20 +260,32 @@ class HM_Form extends DbRecord
       });
   $("#qa_form").submit(function(){
 
+     if(complete_flag){
         $('body').css('cursor','wait');
         $('#wait').show();
+     }
 
         $(this).find('.outform').each(function(){
           if($(this).attr('name').substr(0,1)!='0'){
           $(this).attr('name','0'+$(this).attr('name'));}});
         var options = {
-          success:function(){
-            $('#wait').hide();
-            $('body').css('cursor','');
-            checkLockOrder();
+          success:function(data){
+              if(data == 'eof_error' && finish_flag == true){
+                $('#wait').hide();
+                $('body').css('cursor','');
+                show_error_message();
+                $("#popup_info").show();
+                $("#popup_box").show(); 
+              }else{
+                $('#wait').hide();
+                $('body').css('cursor','');
+                checkLockOrder();
+              }
             }
         };
+      if(complete_flag){
         $(this).ajaxSubmit(options);
+      }
 
         $(this).find('.outform').each(function(){
           if($(this).attr('name').substr(0,1)=='0'){

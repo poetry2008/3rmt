@@ -2152,6 +2152,7 @@ else { ?>
         <script language="javascript" src="js2php.php?path=includes|javascript&name=all_order&type=js"></script>
         <script language="javascript" src="includes/javascript/jquery_include.js"></script>
         <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+        <script language="javascript" src="includes/javascript/all_page.js"></script> 
         <script language="javascript">
 window.onresize = resizepage;
 function resizepage(){
@@ -2388,6 +2389,11 @@ require("includes/note_js.php");
 ?>
 </head>
 <body>
+<div id="popup_info" style="display:none;">
+<div class="popup_img"><img onclick="close_error_message()" src="images/close_error_message.gif" alt="close" /></div>
+<span><?php echo TEXT_EOF_ERROR_MSG;?></span>
+</div>
+<div id="popup_box" style="display:none;"></div>
 <?php
 if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']&&false){?>
   <script language='javascript'>

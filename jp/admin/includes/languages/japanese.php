@@ -757,3 +757,4 @@ define('TEXT_PREORDER_ID_NUM', '予約番号：');
 define('TEXT_PREORDER_DATE_TEXT', '予約日：');
 define('NOTICE_LESS_PRODUCT_OPTION_TEXT', '商品の登録内容が更新されています。この商品を変更したい場合は、削除してから再度追加してください。');
 define('NOTICE_LESS_PRODUCT_PRE_OPTION_TEXT', '商品の登録内容が更新されています。この商品を変更したい場合は、最初から予約注文を作成しなおす必要があります。');
+define('NOTICE_COMPLETE_ERROR_TEXT','のデータに不備があります。ページを更新し、最初からやりなおしてください。');
