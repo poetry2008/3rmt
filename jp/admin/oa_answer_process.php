@@ -42,6 +42,7 @@ if(!in_array('onetime',$request_one_time_arr)&&$_SESSION['user_permission']!=15)
   }
 }
 //end one time pwd
+//判断请求是否成功，如果失败，终止程序，并返回错误信息
 if(!isset($_POST['eof'])||$_POST['eof']!='eof'){
   echo 'eof_error';
   exit;

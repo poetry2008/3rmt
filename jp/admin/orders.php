@@ -2389,6 +2389,7 @@ require("includes/note_js.php");
 ?>
 </head>
 <body>
+<?php //oa数据请求失败时的弹出层?>
 <div id="popup_info" style="display:none;">
 <div class="popup_img"><img onclick="close_error_message()" src="images/close_error_message.gif" alt="close" /></div>
 <span><?php echo TEXT_EOF_ERROR_MSG;?></span>

@@ -73,6 +73,7 @@ class HM_Item_Myname extends HM_Item_Basic
                      type:'post',    
                      data:"form_id="+$('input|[name=form_id]').val()+"&<?php echo $this->formname;?>="+$('input|[name=<?php echo $this->formname;?>]').val()+"&eof=eof",
                      beforeSend: function(){$('body').css('cursor','wait');$("#wait").show()},
+                     <?php //如果请求失败，弹出相应的出错信息?>
                      success: function(data){
                                if(data == 'eof_error'){
                                  $("#wait").hide();
