@@ -169,7 +169,7 @@ function input_add(){
 function jump_oroshi_data(id,oid){
   location.href = 'cleate_list.php?cPath='+id+'&cpath='+id+'&oid='+oid;
 }
-<?php //跳跃页面 ?>
+<?php //跳转cleate_oroshi.php页 ?>
 function resset_cb(){
   location.href="cleate_oroshi.php";
 }

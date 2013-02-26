@@ -10,7 +10,7 @@ class AD_Option extends AD_Option_DbRecord
   }
 /*-----------------------
  功能：获得组
- 参数：$belong_option_str(string) 属于选项
+ 参数：$belong_option_str(string) 选项
  参数：$ptype(bool) 类型
  返回值：返回组(array)
  ---------------------*/

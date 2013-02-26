@@ -183,7 +183,7 @@ function input_add(){
   i++;
 }
 
-<?php //跳跃页面 ?>
+<?php //跳转cleate_dougyousya.php页 ?>
 function resset_cb(){
   location.href= 'cleate_dougyousya.php'; 
 }

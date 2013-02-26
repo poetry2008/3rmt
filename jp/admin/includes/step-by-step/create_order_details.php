@@ -35,7 +35,7 @@ $t_year = $t_today['year'];
 $t_hour = $t_today['hours'];
 $t_min = $t_today['minutes'];
 ?>
-<?php //检查一年 ?>
+<?php //检查年份 ?>
 function check_year(value){
   var mon = document.getElementById('mon');
   var mon_value = mon.value;
