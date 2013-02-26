@@ -20,8 +20,8 @@ class AD_Option_Item extends AD_Option_DbRecord
     return $this;
   }
 /*---------------------
- 功能：提供选项错误阵列
- 参数：$option_error_array(array) 选项错误阵列
+ 功能：提供选项错误数组
+ 参数：$option_error_array(array) 选项错误数组
  返回值：无
  --------------------*/
   function render($option_error_array)

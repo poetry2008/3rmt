@@ -5,8 +5,8 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
   var $has_textarea_default = true; 
 
 /*-------------------------------
- 功能：提供选项错误阵列
- 参数：$option_error_array(array) 选项错误阵列
+ 功能：提供选项错误数组
+ 参数：$option_error_array(array) 选项错误数组
  返回值：无
  ------------------------------*/
   function render($option_error_array)
@@ -70,7 +70,7 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
   }
 /*---------------------------------
  功能：检查选项错误数组
- 参数：$option_error_array(array) 选项错误阵列
+ 参数：$option_error_array(array) 选项错误数组
  返回值：true/false(bool)
  --------------------------------*/ 
   function check(&$option_error_array)

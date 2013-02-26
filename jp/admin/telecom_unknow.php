@@ -67,7 +67,7 @@ function all_check(ele){
 
   }
 }
-<?php //检查一个 ?>
+<?php //检查一个结算数据  ?>
 function check_one(ele){
   if(ele.value=='false') {
     alert('<?php echo TEXT_CAN_NOT_SHOW; ?>');

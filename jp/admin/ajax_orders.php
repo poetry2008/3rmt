@@ -879,7 +879,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
 
 } else if (isset($_GET['action'])&&$_GET['action']=='show_right_preorder_info') {
 /*---------------------------------------------
- 功能: 右序信息
+ 功能: 显示右侧预约信息
  参数: $_POST['oid'] 订单编号
  --------------------------------------------*/
   $orders_info_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_POST['oid']."'"); 
@@ -1212,7 +1212,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   echo $html_str;
 } else if (isset($_GET['action'])&&$_GET['action']=='new_campaign') {
 /*------------------------------------------------
- 功能: 新活动 
+ 功能: 新建活动 
  参数: $_POST['site_id'] site id值 
  -----------------------------------------------*/
   require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_CAMPAIGN); 
