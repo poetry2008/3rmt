@@ -3,7 +3,7 @@
   $Id$
 */
 
-define('HEADING_TITLE', 'banner统计');
+define('HEADING_TITLE', 'Banner统计');
 
 define('TABLE_HEADING_SOURCE', '日期');
 define('TABLE_HEADING_VIEWS', '显示');
