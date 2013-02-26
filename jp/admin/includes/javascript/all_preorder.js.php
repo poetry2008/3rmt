@@ -8,7 +8,7 @@ var auto_submit_able = true;
 // 最后检查时间
 var prev_customer_action = '';
 var check_pre_o_single = '0';
-// 全选
+<?php //全选检查 ?>
 function all_check(){
   field_on();
   var chk_flag = document.sele_act.all_chk.checked;
@@ -51,9 +51,8 @@ if((select_send_top+select_send_height) > box_warp_top){
   $(".box_warp").height(select_send_top+select_send_height);
 }
 }
-
+<?php //保持邮件发送框显示 ?>
 function chg_tr_color(aaa){
-  // 保持邮件发送框显示
   field_on();
   var c_flag = aaa.checked;
   var tr_id = 'tr_' + aaa.value;
@@ -81,35 +80,36 @@ function chg_tr_color(aaa){
 function chg_td_color(bbb){
 }
 
-// 打开邮件框
+<?php //打开邮件框 ?>
 function field_on(){
   if(f_flag == 'off'){
     f_flag = 'on';
     document.getElementById("select_send").style.display = "block";
   }
 }
-// 关闭邮件框
+<?php //关闭邮件框 ?>
 function field_off(){
   if(f_flag == 'on'){
     f_flag = 'off';
     document.getElementById("select_send").style.display = "none";
   }
 }
-
+<?php //传真的颜色 ?>
 function fax_over_color(ele){
   old_color = ele.style.backgroundColor
     ele.style.backgroukdColor = "#ffcc99";
 }
+<?php //传真的颜色 ?>
 function fax_over_color(ele){
   ele.style.backgroukdColor = old_color;
 }
 
-// 订单搜索
+<?php //订单搜索 ?>
 function search_type_changed(elem){
   //if ($('#keywords').val() && elem.selectedIndex != 0) 
   document.forms.orders1.submit();
 }
-
+<?php //得到复选框值 ?>
 function getCheckboxValue(ccName)
 {
   var aa     =   document.getElementsByName(ccName);
@@ -125,6 +125,7 @@ function getCheckboxValue(ccName)
 //st => form中select的name
 //tt => form中textarea的name  邮件内容
 //ot => form中input的name 邮件标题
+<?php //邮件正文 ?>
 function mail_text(st,tt,ot){
 
   // 选中的索引
@@ -197,7 +198,7 @@ if (nomail[CI] == '1') {
 }
 
 
-// 当有新订单自动在列表顶部插入一行
+<?php // 当有新订单自动在列表顶部插入一行 ?>
 function newOrders(t)
 {
   $.ajax({
@@ -209,13 +210,13 @@ $(text).insertAfter('#orders_list_table tr:eq(0)');
 });
 }
 
-// 验证order comment ajax提交
+<?php // 验证order comment ajax提交 ?>
 function showRequest(formData, jqForm, options) { 
   //var queryString = $.param(formData); 
   return true; 
 } 
 
-// 列表右侧的订单信息显示
+<?php // 列表右侧的订单信息显示 ?>
 function showOrdersInfo(oID,ele){
 
   $.ajax({
@@ -251,7 +252,7 @@ if((orders_info_box_top+orders_info_box_height) > box_warp_heiht){
 
 }
 
-// 列表右侧的订单信息隐藏
+<?php // 列表右侧的订单信息隐藏 ?>
 function hideOrdersInfo(popup_type){
   if (popup_type == 1) {
     popup_num = 1; 
@@ -260,7 +261,7 @@ function hideOrdersInfo(popup_type){
   $('#orders_info_box').hide();
 }
 
-//播放提示音，需要warn_sound
+<?php //播放提示音，需要warn_sound ?>
 function playSound()  
 {  
   var node=document.getElementById('warn_sound');  
@@ -273,17 +274,18 @@ function playSound()
    }
   }
 }
-// 当ele选中，则id必须同时被选中
+<?php // 当ele选中，则id必须同时被选中 ?>
 function auto_radio(ele, id){
   if (ele.checked)
     document.getElementById(id).checked = true;
 }
-// 当ele被选中，则id取消选择
+<?php // 当ele被选中，则id取消选择 ?>
 function exclude(ele, id){
   if (ele.checked)
     document.getElementById(id).checked = false;
 }
 var change_option_enable = true;
+<?php //更改选项 ?>
 function change_option(ele){
   if (change_option_enable) {
     // 自动保存
@@ -292,6 +294,7 @@ function change_option(ele){
     show_submit_button();
   }
 }
+<?php //更改属性选项 ?>
 function propertychange_option(ele){
   change_option_enable = false;
   // 自动保存
@@ -304,7 +307,7 @@ $(function(){
     // 每分钟检查状态是否有修改
     setTimeout(function(){checkChange()}, 60000);
     });
-// 每分钟自动检查最新订单和修改
+<?php // 每分钟自动检查最新订单和修改 ?>
 function checkChange(){
   $.ajax({
 dataType: 'text',
@@ -334,7 +337,7 @@ check_pre_o_single = '0';
 setTimeout(function(){checkChange()}, 60000);
 }
 
-// 点击按钮
+<?php // 点击按钮 ?>
 function orders_flag(ele, type, oid) {
   if (ele.className == 'orders_flag_checked') {
     $.ajax({
@@ -353,7 +356,7 @@ ele.className='orders_flag_checked';
 }
 }
 
-// 点击A,B,C
+<?php // 点击A,B,C ?>
 function orders_work(ele, work, oid) {
   document.getElementById('work_a').className = 'orders_flag_unchecked';
   document.getElementById('work_b').className = 'orders_flag_unchecked';
@@ -373,7 +376,7 @@ ele.className='orders_flag_checked';
 });
 }
 
-// 点击PC号码
+<?php // 点击PC号码 ?>
 function orders_computers(ele, cid, oid) {
   if (ele.className == 'orders_computer_checked') {
     $.ajax({
@@ -392,7 +395,7 @@ ele.className='orders_computer_checked';
 }
 }
 
-// 清楚选项
+<?php // 清除选项 ?>
 function clean_option(n,oid){
   // 自动保存
   // auto_save_questions();
@@ -408,6 +411,7 @@ var form_id = '';
 var ids = '';
 var order_can_end = 1;
 var lastid = '';
+<?php //显示问题 ?>
 function show_questions(ele){
     ids = '';
     lastid = ele.value;
@@ -457,6 +461,7 @@ function show_questions(ele){
     }
     return true;
 }
+<?php //显示问题的DIV ?>
     function show_questiondiv(show){
     if(show){
         $('#oa_dynamic_groups').html('');
@@ -555,7 +560,7 @@ $("#oa_dynamic_submit").click(function(){
 
 
 
-// 点击关联商品前的checkbox
+<?php // 点击关联商品前的checkbox ?>
 function click_relate(pid,ele){
   // 增加库存
   if ($(ele).parent().parent().find('#checkbox_'+pid).attr('checked')) {
@@ -576,7 +581,7 @@ success: function(data) {
 }
 }
 
-// 清空库存输入框
+<?php // 清空库存输入框 ?>
 function clear_quantity(){
   $('#relate_products_box input[type=checkbox]').each(function(){
       if ($(this).attr('checked')) {
@@ -587,11 +592,11 @@ function clear_quantity(){
       });
 }
 
-// 计算增加的库存数并实时显示
+<?php // 计算增加的库存数并实时显示 ?>
 function print_quantity(pid){
   $('#relate_product_'+pid).html($('#quantity_'+pid).html()-$('#offset_'+pid).val())
 }
-
+<?php //复制到剪切板 ?>
 function copyToClipboard(txt) {   
   if(window.clipboardData) {   
     window.clipboardData.clearData();   
@@ -625,7 +630,7 @@ function copyToClipboard(txt) {
   }   
   alert("<?php echo JS_TEXT_ALL_PREORDER_COPY_TO_CLIPBOARD;?>")   
 }  
-
+<?php //显示监视器的错误 ?>
 function show_monitor_error(e_id,flag,_this){
   //改变DIV
   if(flag){
@@ -634,9 +639,11 @@ function show_monitor_error(e_id,flag,_this){
     document.getElementById(e_id).style.display="none";
   }
 }
+<?php //获取ID ?>
 function obj_obj(obj){
   return typeof(obj)=="string"?document.getElementById(obj):obj;
 }
+<?php //添加属性 ?>
 function allt(id,div_id){ 
   //div 赋值
   e=obj_obj(id) 
@@ -652,6 +659,7 @@ function allt(id,div_id){
   div_e.style.top=(et+20) + "px"; 
   div_e.style.display=''; 
 } 
+<?php //定义密码新的URL ?>
 function once_pwd_redircet_new_url(url_str){
   //window.location.href = url_str;
   $.ajax({
@@ -670,7 +678,7 @@ window.alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>");
 }
 });
 }
-
+<?php //新的邮件文本 ?>
 function new_mail_text(ele,st,tt,ot){
   // 选中的索引
   var idx = document.sele_act.elements[st].selectedIndex;
@@ -744,7 +752,7 @@ if ($(ele).val() == 20) {
   $('#notify').attr('checked', false);  
 }
 }
-
+<?php //预约标志 ?>
 function preorders_flag(ele, type, oid) {
   if (ele.className == 'orders_flag_checked') {
     $.ajax({
@@ -762,7 +770,7 @@ ele.className='orders_flag_checked';
 });
 }
 }
-
+<?php //预约工作 ?>
 function preorders_work(ele, work, oid) {
   document.getElementById('work_a').className = 'orders_flag_unchecked';
   document.getElementById('work_b').className = 'orders_flag_unchecked';
@@ -782,7 +790,7 @@ ele.className='orders_flag_checked';
 }
 });
 }
-
+<?php //预约的订单电脑检查 ?>
 function preorders_computers(ele, cid, oid) {
   if (ele.className == 'orders_computer_checked') {
     $.ajax({
@@ -801,6 +809,7 @@ ele.className='orders_computer_checked';
 }
 }
 var temp_oid = '';
+<?php //显示前台的订单信息 ?>
 function showPreOrdersInfo(oID,ele,popup_type,param_str){
   temp_oid = oID;
   param_str = decodeURIComponent(param_str);
@@ -899,7 +908,7 @@ function preorders_info_box_offset(){
   }
 }
 
-
+<?php //删除预约信息 ?>
 function delete_preorder_info(oID, param_str)
 {
   param_str = decodeURIComponent(param_str);
@@ -921,6 +930,7 @@ success: function(msg) {
 }
 });
 }
+<?php //取消删除预约信息 ?>
 function cancel_del_preorder_info(oID, param_str)
 {
   param_str = decodeURIComponent(param_str);
@@ -935,6 +945,8 @@ success: function(msg) {
 });
 }
 
+
+<?php //处理标记 ?>
 function mark_work(ele, mark_symbol, select_mark, c_site, param_other)
 {
   $.ajax({
@@ -956,7 +968,7 @@ function mark_work(ele, mark_symbol, select_mark, c_site, param_other)
     }
   });
 }
-
+<?php //检查新的预约 ?>
 function checkNewPreOrders(t)
 {
   $.ajax({
