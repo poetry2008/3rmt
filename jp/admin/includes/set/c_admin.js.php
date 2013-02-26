@@ -53,13 +53,13 @@ function read_space_time()
 {
   $('#wait').hide(); 
 }
-<?php //跳转指定页面 ?>
+<?php //表单提交 ?>
 function cleat_set(url){
   window.document.myForm1.action = url;
   window.document.myForm1.method = "POST"; 
   window.document.myForm1.submit();
 }
-<?php //显示列表 ?>
+<?php //跳转到list_display.php页 ?>
 function list_display(path,cid,fullpath){
   location.href="list_display.php?cpath="+path+"&cid="+cid+'&fullpath='+fullpath;
 }
@@ -105,7 +105,7 @@ function update_virtual_quantity(pid){
     });
   }
 }
-<?php //价格事件 ?>
+<?php //失去焦点时触发事件 ?>
 function event_onblur(i){
   /*
   var this_price=document.getElementsByName("this_price[]");
@@ -127,7 +127,7 @@ function event_onblur(i){
     $('#price_input_'+i).css('color','red');
   }*/
 }
-<?php //价格事件变化?>
+<?php //变化时触发事件?>
 function event_onchange(i){
   var this_price=document.getElementsByName("pprice[]");
   $('#price_input_'+i).val(SBC2DBC($('#price_input_'+i).val()));
