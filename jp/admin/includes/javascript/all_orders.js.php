@@ -1055,6 +1055,7 @@ function price_total(str)
         if(document.getElementById('update_total_'+i)){
           update_total_temp = document.getElementById('update_total_'+i).value; 
           if(update_total_temp == ''){update_total_temp = 0;temp_flag = true;}
+          if(update_total_temp == '-'){update_total_temp = 0;}
           update_total_temp = parseInt(update_total_temp);
           update_total_num += update_total_temp;
           if(temp_flag == true){update_total_temp = '';temp_flag == false}
