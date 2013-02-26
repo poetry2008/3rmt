@@ -71,7 +71,7 @@
   }
 
   function tep_session_is_registered($variable) {
-    return session_is_registered($variable);
+    return isset($_SESSION[$variable]);
   }
 
   function tep_session_unregister($variable) {
