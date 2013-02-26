@@ -41,6 +41,14 @@ if(!in_array('onetime',$request_one_time_arr)&&$_SESSION['user_permission']!=15)
 //end one time pwd
 if(isset($_GET['action'])){
   switch ($_GET['action']){
+/* -----------------------------------------------------
+   case 'updateoaorder' 更新oa组在表单里的序号  
+   case 'updategrouporder' 更新oa组的序号   
+   case 'updateitemorder' 更新oa元素的序号   
+   case 'getTime' 获得当前时间   
+   case 'finish' 更新订单完成标识 
+   case 'complete' 判断oa信息的完整性,如果不完整，给出相应的提示   
+------------------------------------------------------*/
   case 'updateoaorder':
     $id = $_GET['id'];
     $order = substr($_GET['order'],1);
@@ -127,7 +135,7 @@ if(isset($_GET['action'])){
 //tep_redirect(tep_href_link(FILENAME_ORDERS, 'oID='.$_GET['oID'].'&action=edit'));
 
     break;
-  case 'complete': //判断oa信息的完整性,如果不完整，给出相应的提示
+  case 'complete':
     $orders_id = $_GET['oID'];
     $complete_flag = '';
     $oa_item_id_array = array();

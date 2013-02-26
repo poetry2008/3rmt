@@ -8,6 +8,9 @@ $oid = $_GET['o_id'];
 $action = $HTTP_GET_VARS['action'];
 
 switch ($HTTP_GET_VARS['action']){
+/* -----------------------------------------------------
+   case 'data_cleate' 新建批发商的数据   
+------------------------------------------------------*/
 case 'data_cleate':
   $cPath=cpathPart($_POST['cpath']);
   $setdata=$_POST['set_list'];

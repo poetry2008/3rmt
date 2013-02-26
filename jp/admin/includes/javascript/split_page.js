@@ -1,3 +1,4 @@
+//jump to page
 function jump_page(j_ele, j_total_page, j_c_page)
 {
   var jump_page = j_ele.parentNode.childNodes[1].value;
@@ -7,7 +8,7 @@ function jump_page(j_ele, j_total_page, j_c_page)
     }
   }
 }
-
+//replace special characters then jump to page
 function page_change(j_page)
 {
   while (true) {

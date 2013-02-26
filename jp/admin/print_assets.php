@@ -257,7 +257,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     }
   }
   if(isset($_GET['show_status'])&&$_GET['show_status']=='info'){
-
+    //显示详细
     if(count($category_asset_arr)==0&&count($products)==0){
       echo "<div class='no_result'>".TEXT_NO_RESULT."</div>";
     }else{
@@ -337,6 +337,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
           $bflag,$site_id,$start,$end);
     if(isset($_GET['show_status'])&&$_GET['show_status']=='info'
         &&(count($category_asset_arr)!=0||count($products)!=0)){
+      //显示详细信息并且分类数组或者商品数组其中一个不为空 
       echo "<tr class='assets_c'>";
       echo "<td rowspan='3' ";
       if(count($products)>0){
@@ -370,6 +371,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       echo "</table>";
     }else{
       if(count($category_asset_arr)!=0||count($products)!=0){
+      //分类数组或者商品数组其中一个不为空
       echo "<table cellpadding='0' cellspacing='1' border='0' width='99%' class='asset_easy'>";
       echo "<tr class='assets_c'>";
       echo "<td class='asstes_easy_left'>";
