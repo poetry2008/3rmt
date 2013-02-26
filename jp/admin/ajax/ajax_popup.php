@@ -1,6 +1,12 @@
 <?php
 if ($_GET['action'] == 'show_category_info') {
-  //显示分类信息的弹出框 
+/* -----------------------------------------------------
+    功能: 显示分类信息的弹出框
+    参数: $_GET['current_cid'] 分类id 
+    参数: $_GET['site_id'] 网站id 
+    参数: $_GET['search'] 搜索字符串 
+    参数: $_GET['cPath'] 分类路径 
+ -----------------------------------------------------*/
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_CATEGORIES);
   include(DIR_FS_ADMIN.'classes/notice_box.php');
   $site_id = isset($_GET['site_id'])?$_GET['site_id']:0; 
@@ -125,7 +131,11 @@ if ($_GET['action'] == 'show_category_info') {
   $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice();
 } else if ($_GET['action'] == 'move_category') {
-  //移动分类信息的弹出框 
+/* -----------------------------------------------------
+    功能: 移动分类信息的弹出框
+    参数: $_GET['current_cid'] 分类id 
+    参数: $_GET['site_id'] 网站id 
+ -----------------------------------------------------*/
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_CATEGORIES);
   include(DIR_FS_ADMIN.'classes/notice_box.php');
   $site_id = isset($_GET['site_id'])?$_GET['site_id']:0; 
@@ -168,7 +178,14 @@ if ($_GET['action'] == 'show_category_info') {
 
   echo $notice_box->show_notice();
 } else if ($_GET['action'] == 'delete_category') {
-  //删除分类的弹出框 
+/* -----------------------------------------------------
+    功能: 删除分类的弹出框
+    参数: $_GET['current_cid'] 分类id 
+    参数: $_GET['site_id'] 网站id 
+    参数: $_GET['cPath'] 分类路径 
+    参数: $_GET['search'] 搜索字符串 
+    参数: $_GET['page'] 当前页 
+ -----------------------------------------------------*/
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_CATEGORIES);
   include(DIR_FS_ADMIN.'classes/notice_box.php');
   $site_id = isset($_GET['site_id'])?$_GET['site_id']:0; 
@@ -233,7 +250,11 @@ if ($_GET['action'] == 'show_category_info') {
   $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice();
 } else if ($_GET['action'] == 'update_virtual_quantity') {
-  //更新商品虚拟库存的弹出框 
+/* -----------------------------------------------------
+    功能: 更新商品虚拟库存的弹出框
+    参数: $_POST['pid'] 商品id 
+    参数: $_POST['origin_num'] 数量 
+ -----------------------------------------------------*/
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_CATEGORIES);
   include(DIR_FS_ADMIN.'classes/notice_box.php');
   
@@ -276,7 +297,11 @@ if ($_GET['action'] == 'show_category_info') {
   $notice_box->get_contents($update_info_array, $buttons);
   echo $notice_box->show_notice();
 } else if ($_GET['action'] == 'update_real_quantity') {
-  //更新商品数量的弹出框 
+/* -----------------------------------------------------
+    功能: 更新商品数量的弹出框
+    参数: $_POST['pid'] 商品id 
+    参数: $_POST['origin_num'] 数量 
+ -----------------------------------------------------*/
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_CATEGORIES);
   include(DIR_FS_ADMIN.'classes/notice_box.php');
   
@@ -319,7 +344,12 @@ if ($_GET['action'] == 'show_category_info') {
   $notice_box->get_contents($update_info_array, $buttons);
   echo $notice_box->show_notice();
 } else if ($_GET['action'] == 'set_new_price') {
-  //设置商品价格的弹出框 
+/* -----------------------------------------------------
+    功能: 设置商品价格的弹出框
+    参数: $_POST['pid'] 商品id 
+    参数: $_POST['origin_price'] 价格 
+    参数: $_POST['cnt_num'] 目标代号 
+ -----------------------------------------------------*/
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_CATEGORIES);
   include(DIR_FS_ADMIN.'classes/notice_box.php');
   
@@ -362,7 +392,14 @@ if ($_GET['action'] == 'show_category_info') {
   $notice_box->get_contents($update_info_array, $buttons);
   echo $notice_box->show_notice();
 } else if ($_GET['action'] == 'product_info_box') {
-  //显示商品信息的弹出框
+/* -----------------------------------------------------
+    功能: 显示商品信息的弹出框
+    参数: $_GET['pID'] 商品id 
+    参数: $_GET['site_id'] 网站id 
+    参数: $_GET['page'] 当前页 
+    参数: $_GET['cPath'] 分类路径 
+    参数: $_GET['search'] 搜索字符串 
+ -----------------------------------------------------*/
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_CATEGORIES);
   include(DIR_FS_ADMIN.'classes/notice_box.php');
   $site_id = isset($_GET['site_id'])?$_GET['site_id']:0; 
@@ -825,7 +862,15 @@ if ($_GET['action'] == 'show_category_info') {
   $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice();
 } else if ($_GET['action'] == 'product_description_delete_box') {
-  //删除商品的弹出框
+/* -----------------------------------------------------
+    功能: 删除商品描述的弹出框
+    参数: $_GET['pID'] 商品id 
+    参数: $_GET['site_id'] 网站id 
+    参数: $_GET['page'] 当前页 
+    参数: $_GET['cPath'] 分类路径 
+    参数: $_GET['search'] 搜索字符串 
+    参数: $_GET['rdirect'] 跳转标识 
+ -----------------------------------------------------*/
   include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .'/'. $language. '/'.FILENAME_CATEGORIES);
   include(DIR_FS_ADMIN.'classes/notice_box.php');
   $site_id = isset($_GET['site_id']) ?$_GET['site_id']:0;
@@ -868,7 +913,14 @@ if ($_GET['action'] == 'show_category_info') {
   $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice();
 } else if ($_GET['action'] == 'product_delete_box') {
-  //删除商品的弹出框
+/* -----------------------------------------------------
+    功能: 删除商品的弹出框
+    参数: $_GET['pID'] 商品id 
+    参数: $_GET['site_id'] 网站id 
+    参数: $_GET['page'] 当前页 
+    参数: $_GET['cPath'] 分类路径 
+    参数: $_GET['search'] 搜索字符串 
+ -----------------------------------------------------*/
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_CATEGORIES);
   include(DIR_FS_ADMIN.'classes/notice_box.php');
   $site_id = isset($_GET['site_id'])?$_GET['site_id']:0; 
@@ -923,7 +975,14 @@ if ($_GET['action'] == 'show_category_info') {
   $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice();
 } else if ($_GET['action'] == 'product_move_box') {
-  //移动商品的弹出框
+/* -----------------------------------------------------
+    功能: 移动商品的弹出框
+    参数: $_GET['pID'] 商品id 
+    参数: $_GET['site_id'] 网站id 
+    参数: $_GET['page'] 当前页 
+    参数: $_GET['cPath'] 分类路径 
+    参数: $_GET['search'] 搜索字符串 
+ -----------------------------------------------------*/
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_CATEGORIES);
   include(DIR_FS_ADMIN.'classes/notice_box.php');
   $site_id = isset($_GET['site_id'])?$_GET['site_id']:0; 
@@ -965,7 +1024,14 @@ if ($_GET['action'] == 'show_category_info') {
   $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice();
 } else if ($_GET['action'] == 'product_copy_to_box') {
-  //拷贝商品的弹出框
+/* -----------------------------------------------------
+    功能: 拷贝商品的弹出框
+    参数: $_GET['pID'] 商品id 
+    参数: $_GET['site_id'] 网站id 
+    参数: $_GET['page'] 当前页 
+    参数: $_GET['cPath'] 分类路径 
+    参数: $_GET['search'] 搜索字符串 
+ -----------------------------------------------------*/
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_CATEGORIES);
   include(DIR_FS_ADMIN.'classes/notice_box.php');
   $site_id = isset($_GET['site_id'])?$_GET['site_id']:0; 
@@ -1010,7 +1076,10 @@ if ($_GET['action'] == 'show_category_info') {
   $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice();
 } else if ($_GET['action'] == 'show_update_pic_info') {
-  //图片更新的弹出框 
+/* -----------------------------------------------------
+    功能: 图片更新的弹出框
+    参数: $_POST['pic_id'] 图片id 
+ -----------------------------------------------------*/
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_MARKS);
   include(DIR_FS_ADMIN.'classes/notice_box.php');
   $notice_box = new notice_box('popup_order_title', 'popup_order_info');
@@ -1098,7 +1167,10 @@ if ($_GET['action'] == 'show_category_info') {
   $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice();
 } else if ($_GET['action'] == 'new_group') {
-  //新建option组 
+/* -----------------------------------------------------
+    功能: 新建option组
+    参数: 无 
+ -----------------------------------------------------*/
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_OPTION);
   include(DIR_FS_ADMIN.'classes/notice_box.php');
   
@@ -1150,7 +1222,15 @@ if ($_GET['action'] == 'show_category_info') {
   
   echo $notice_box->show_notice().'||||||'.tep_get_note_top_layer(FILENAME_OPTION);
 } else if ($_GET['action'] == 'edit_group') {
-  //编辑option组 
+/* -----------------------------------------------------
+    功能: 编辑option组
+    参数: $_POST['group_id'] 组id 
+    参数: $_POST['search'] 搜索的类型 
+    参数: $_POST['sort_name'] 排序的名字 
+    参数: $_POST['sort_type'] 排序的类型 
+    参数: $_POST['keyword'] 关键字 
+    参数: $_POST['page'] 当前页 
+ -----------------------------------------------------*/
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_OPTION);
   include(DIR_FS_ADMIN.'classes/notice_box.php');
   
@@ -1288,7 +1368,16 @@ width:20%;"'))
   $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice().'||||||'.tep_get_note_top_layer(FILENAME_OPTION);
 } else if ($_GET['action'] == 'new_item') {
-  //新建option元素
+/* -----------------------------------------------------
+    功能: 新建option元素
+    参数: $_POST['group_id'] 组id 
+    参数: $_POST['gpage'] 组的当前页 
+    参数: $_POST['keyword'] 关键字 
+    参数: $_POST['search'] 搜索的类型 
+    参数: $_POST['sort_name'] 排序的名字 
+    参数: $_POST['sort_type'] 排序的类型 
+    参数: $_POST['page'] 当前页 
+ -----------------------------------------------------*/
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_OPTION);
   include(DIR_FS_ADMIN.'classes/notice_box.php');
   require_once(DIR_FS_ADMIN.'enabledoptionitem.php'); 
@@ -1414,7 +1503,17 @@ width:20%;"'))
 });</script>'; 
   echo $item_script_str.$notice_box->show_notice().'||||||'.tep_get_note_top_layer(FILENAME_OPTION.'?g_id='.$_POST['group_id']);
 } else if ($_GET['action'] == 'edit_item') {
-  //编辑item
+/* -----------------------------------------------------
+    功能: 编辑item
+    参数: $_POST['item_id'] 元素id 
+    参数: $_POST['g_id'] 组id 
+    参数: $_POST['page'] 当前页 
+    参数: $_POST['gpage'] 组的当前页 
+    参数: $_POST['keyword'] 关键字 
+    参数: $_POST['search'] 搜索的类型 
+    参数: $_POST['sort_name'] 排序的名字 
+    参数: $_POST['sort_type'] 排序的类型 
+ -----------------------------------------------------*/
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_OPTION);
   include(DIR_FS_ADMIN.'classes/notice_box.php');
   require_once(DIR_FS_ADMIN.'enabledoptionitem.php'); 
@@ -1602,7 +1701,10 @@ width:20%;"'))
   
   echo $item_script_str.$notice_box->show_notice().'||||||'.tep_get_note_top_layer(FILENAME_OPTION.'?g_id='.$_POST['g_id']);
 }else if ($_GET['action'] == 'status_setting') {
-  //获取日历状态的信息
+/* -----------------------------------------------------
+    功能: 获取日历状态的信息
+    参数: $_GET['date'] 日期 
+ -----------------------------------------------------*/
   $cl_status_array = array();
   $calendar_status_query = tep_db_query("select id,color,is_show from ". TABLE_CALENDAR_STATUS);
   while($calendar_status_array = tep_db_fetch_array($calendar_status_query)){
@@ -1846,7 +1948,10 @@ width:20%;"'))
   $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice();
 }else if ($_GET['action'] == 'status_edit') {
-  //显示银行状态编辑的弹出框 
+/* -----------------------------------------------------
+    功能: 显示银行状态编辑的弹出框
+    参数: $_GET['id'] 状态id 
+ -----------------------------------------------------*/
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_BANK_CL);
   include(DIR_FS_ADMIN.'classes/notice_box.php'); 
 
@@ -2031,7 +2136,10 @@ width:20%;"'))
   $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice();
 }else if ($_GET['action'] == 'status_add') {
-  //显示银行状态添加的弹出框 
+/* -----------------------------------------------------
+    功能: 显示银行状态添加的弹出框
+    参数: 无 
+ -----------------------------------------------------*/
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_BANK_CL);
   include(DIR_FS_ADMIN.'classes/notice_box.php'); 
 
