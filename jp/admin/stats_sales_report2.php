@@ -232,13 +232,17 @@
   
   $sr = new sales_report($srView, $startDate, $endDate, $srSort, $srStatus, isset($srFilter)?$srFilter:'', $srMethod);
   if ($srCompare > SR_COMPARE_NO) {
+    //比较 
     if ($srCompare == SR_COMPARE_DAY) {
+      //与前天相比 
       $compStartDate = mktime(0, 0, 0, date("m", $startDate), date("d", $startDate) - 1, date("Y", $startDate));
       $compEndDate = mktime(0, 0, 0, date("m", $endDate), date("d", $endDate) - 1, date("Y", $endDate));
     } else if ($srCompare == SR_COMPARE_MONTH) {
+      //与上个月相比 
       $compStartDate = mktime(0, 0, 0, date("m", $startDate) - 1, date("d", $startDate), date("Y", $startDate));
       $compEndDate = mktime(0, 0, 0, date("m", $endDate) - 1, date("d", $endDate), date("Y", $endDate));
     } else if ($srCompare == SR_COMPARE_YEAR) {
+      //与前年相比 
       $compStartDate = mktime(0, 0, 0, date("m", $startDate), date("d", $startDate), date("Y", $startDate) - 1);
       $compEndDate = mktime(0, 0, 0, date("m", $endDate), date("d", $endDate), date("Y", $endDate) - 1);
     }
