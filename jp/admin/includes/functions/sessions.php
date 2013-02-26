@@ -116,7 +116,7 @@
     返回值: 是否注册(boolean) 
 ------------------------------------ */
   function tep_session_is_registered($variable) {
-    return session_is_registered($variable);
+    return isset($_SESSION[$variable]);
   }
 
 /* -------------------------------------
