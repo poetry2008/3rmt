@@ -61,6 +61,7 @@ require("includes/note_js.php");
             <?php
             $list_status_arr = array(); 
             $list_num = 0; 
+            //所有订单状态信息 
             $orders_status_query = tep_db_query("select orders_status_name, orders_status_id from ".TABLE_ORDERS_STATUS." where language_id = '".$languages_id."'"); 
             while ($orders_status_res = tep_db_fetch_array($orders_status_query)) {
               $site_id = (isset($_GET['site_id'])?$_GET['site_id']:1); 
@@ -68,15 +69,16 @@ require("includes/note_js.php");
               $site_orders_pending_res = tep_db_fetch_array($site_orders_pending_query); 
               $list_status_arr[]= array($orders_status_res['orders_status_name'], $site_orders_pending_res['count']); 
             } 
+            //各个网站所拥有的顾客数量 
             $site_customers_query = tep_db_query("select count(*) as count from ".TABLE_CUSTOMERS." where site_id = ".$site_id); 
             $site_customers_res = tep_db_fetch_array($site_customers_query); 
              
             $list_status_arr[] = array(HEADER_ENTRY_CAL_CUSTOMERS, $site_customers_res['count']); 
-            
+            //商品数量 
             $site_products_query = tep_db_query("select count(*) as count from ".TABLE_PRODUCTS); 
                                 $site_products_res = tep_db_fetch_array($site_products_query); 
             $list_status_arr[] = array(HEADER_ENTRY_CAL_PRODUCTS, $site_products_res['count']); 
-            
+            //各个网站的评论数量 
             $site_reviews_query = tep_db_query("select count(*) as count from ".TABLE_REVIEWS." where site_id = ".$site_id); 
             $site_reviews_res = tep_db_fetch_array($site_reviews_query); 
             $list_status_arr[] = array(HEADER_ENTRY_CAL_REVIEWS, $site_reviews_res['count']); 
