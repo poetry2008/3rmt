@@ -5,7 +5,9 @@ require('includes/application_top.php');
 require(DIR_WS_CLASSES . 'currencies.php');
 $currencies = new currencies();
 switch ($_GET['action']){
-
+/* -----------------------------------------------------
+   case 'ajax' 获取该分类的计算设定信息   
+------------------------------------------------------*/
     case 'ajax':
       $cPath=cpathPart($_GET['cPath'],2);
       $res=tep_db_query("select * from set_auto_calc where parent_id='".$cPath."'");

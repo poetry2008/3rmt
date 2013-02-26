@@ -45,7 +45,11 @@
     }
   }
 
-// language
+/* -----------------------------------------------------
+   功能: 获得默认语言id 
+   参数: 无 
+   返回值: 语言id(int) 
+ -----------------------------------------------------*/
 function tep_get_default_language_id(){
     $language_id_query = mysql_query("select languages_id, directory from 
         language where code = '" . DEFAULT_LANGUAGE . "'");
