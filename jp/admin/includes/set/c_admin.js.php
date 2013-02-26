@@ -2,14 +2,14 @@ var zaiko_input_obj=document.getElementsByName("zaiko[]");<?php //虚拟 ?>
 var target_input_obj=document.getElementsByName("TARGET_INPUT[]");<?php//同行 ?>
 var price_obj=document.getElementsByName("price[]");<?php//特价 ?>
 var error_msg='';
-
+<?php //点击确认跳转到指定页面 ?>
 function confirmg(question,url) {
   var x = confirm(question);
   if (x) {
     window.location = url;
   }
 }
-
+<?php //全部更新 ?>
 function all_update(){
   check_error();
   if (error_msg != '') {
@@ -25,7 +25,7 @@ function all_update(){
     alert("<?php echo JS_TEXT_C_ADMIN_UPDATE_CLEAR;?>");
   }
 }
-
+<?php //检查 radio ?>
 function chek_radio(cnt){
   var radio_cnt=document.getElementsByName("chk["+cnt+"]");
   var proid = document.getElementsByName("proid[]");
@@ -48,22 +48,22 @@ function chek_radio(cnt){
     }
   }   
 }
-
+<?php //隐藏wait ID ?>
 function read_space_time()
 {
   $('#wait').hide(); 
 }
-
+<?php //跳转指定页面 ?>
 function cleat_set(url){
   window.document.myForm1.action = url;
   window.document.myForm1.method = "POST"; 
   window.document.myForm1.submit();
 }
-
+<?php //显示列表 ?>
 function list_display(path,cid,fullpath){
   location.href="list_display.php?cpath="+path+"&cid="+cid+'&fullpath='+fullpath;
 }
-
+<?php //更新数量 ?>
 function update_quantity(pid){
   nquantity = $('#real_pro_num').val();
   if (nquantity && false == /^\d+$/.test(nquantity)) {
@@ -84,7 +84,7 @@ function update_quantity(pid){
     });
   }
 }
-
+<?php //更新虚拟数量 ?>
 function update_virtual_quantity(pid){
   nquantity = $('#virtual_pro_num').val();
   if (nquantity && false == /^\d+$/.test(nquantity)) {
@@ -105,7 +105,7 @@ function update_virtual_quantity(pid){
     });
   }
 }
-
+<?php //价格事件 ?>
 function event_onblur(i){
   /*
   var this_price=document.getElementsByName("this_price[]");
@@ -127,7 +127,7 @@ function event_onblur(i){
     $('#price_input_'+i).css('color','red');
   }*/
 }
-
+<?php //价格事件变化?>
 function event_onchange(i){
   var this_price=document.getElementsByName("pprice[]");
   $('#price_input_'+i).val(SBC2DBC($('#price_input_'+i).val()));
@@ -139,6 +139,7 @@ function event_onchange(i){
     $('#price_input_'+i).css('color','blue');
   }
 }
+<?php //过滤字符串 ?>
 function SBC2DBC(str) {
   var arr = new Array('０','１','２','３','４','５','６','７','８','９');
   for(i in arr) {
@@ -249,6 +250,7 @@ function set_money(num,warning, single_type){
 }
 
 var calc;
+<?php //加载AJAX ?>
 function ajaxLoad(path, single_type){
     var send_url="set_ajax.php?action=ajax&cPath="+path;
   $.ajax({
@@ -260,23 +262,23 @@ function ajaxLoad(path, single_type){
     });
 }
 //var spprice=document.getElementsByName("pprice[]");
-
+<?php //履历  ?>
 function history(url,cpath,cid,action){
   var url=url+"?cpath="+cpath+"&cid="+cid+"&action="+action;
   window.open(url,'ccc',"width=1000,height=800,scrollbars=yes");
 }
-
+<?php //商品名称履历 ?> 
 function oro_history(url,cid,action){
   var url=url+"?cid="+cid+"&action="+action;
   window.open(url,'ccc',"width=1000,height=800,scrollbars=yes");
 }
-
+<?php //同行名称履历 ?>
 function dougyousya_history(url,cpath,cid,action,did,fullpath){
   var url=url+"?cPath="+cpath+"&cid="+cid+"&did="+did+"&action="+action+"&fullpath="+fullpath;
   location.href=url;
   //window.open(url,'ccc',"width=1000,height=800,scrollbars=yes");
 }
-
+<?php //通过onload事件计算 ?>
 function onload_keisan(warning, single_type){
 
   var trader_input_obj=$(".TRADER_INPUT");<?php //工商业者?>
@@ -285,6 +287,7 @@ function onload_keisan(warning, single_type){
       set_money(i,warning,single_type);<?php //特価価格設定?>
   }
 }
+<?php //检查错误 ?>
 function check_error(){
 
       var trader_input_obj=$(".TRADER_INPUT");<?php //工商业者?>
@@ -351,7 +354,7 @@ function check_error(){
         $(focus_id).focus();
       }
 }
-
+<?php //设置新的价格 ?>
 function set_new_price(pid, cnt) {
   default_price = $('#h_edit_p_'+pid).html(); 
   nquantity = $('#new_confirm_price').val();

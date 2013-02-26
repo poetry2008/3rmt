@@ -1,7 +1,7 @@
 <script language="javascript"><!--
 
 var submitted = false;
-
+<?php //检查form是否提交 ?>
 function check_form() {
   var error = 0;
   var error_message = "<?php echo JS_ERROR; ?>";
