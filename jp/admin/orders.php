@@ -4653,6 +4653,9 @@ if($c_parent_array['parent_id'] == 0){
             $work_array = explode('|',$work_setting_str); 
             $work_str = implode('-',$work_array);
           }
+        if(!is_array($get_mark_info)&&$get_mark_info==null){
+          $get_mark_info = array();
+        }
           ?>
           <table border="0" width="100%" cellpadding="1" cellspacing="1">
             <tr>
@@ -4999,7 +5002,11 @@ if($c_parent_array['parent_id'] == 0){
         error_reporting(E_ALL);
  $orders_split = new splitPageResults($_GET['page'], MAX_DISPLAY_ORDERS_RESULTS, $orders_query_raw, $orders_query_numrows, $sql_count_query);
         //echo $orders_query_raw;
-        $oid_is_inpage = tep_is_in_order_page($orders_query_raw,$_GET['oID']);
+        if(isset($_GET['oID'])){
+          $oid_is_inpage = tep_is_in_order_page($orders_query_raw,$_GET['oID']);
+        }else{
+          $oid_is_inpage = false;
+        }
         $orders_query = tep_db_query($orders_query_raw);
         $allorders    = $allorders_ids = array();
         $orders_i = 0;
