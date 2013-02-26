@@ -1,6 +1,8 @@
 <?php
-  error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_WARNING);
-  ini_set("display_errors", "Off");
+/* *********************************************************
+   $Id$
+********************************************************* */
+  ini_set('display_errors', 'off'); 
   define('TABLE_CONFIGURATION', 'configuration');
   define('TABLE_LANGUAGES',     'languages');
   define('FILENAME_DEFAULT',    'index.php');
@@ -27,7 +29,8 @@
 // lets start our session
   tep_session_start();
 
-
+  //删除session的id
+  //用php的session名作为cookie名来记录
   setcookie(session_name(), '', time() - 3600, '/');
   setcookie(session_name(), '', time() - 3600, substr(DIR_WS_ADMIN, 0, -1));
 
@@ -45,7 +48,11 @@
     }
   }
 
-// language
+/* -----------------------------------------------------
+   功能: 获得默认语言id 
+   参数: 无 
+   返回值: 语言id(int) 
+ -----------------------------------------------------*/
 function tep_get_default_language_id(){
     $language_id_query = mysql_query("select languages_id, directory from 
         language where code = '" . DEFAULT_LANGUAGE . "'");
@@ -70,6 +77,19 @@ if (file_exists(DIR_WS_LANGUAGES . $language . '/user_certify.php')) {
   include(DIR_WS_LANGUAGES . $language . '/user_certify.php');
 }
 
+  header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+  # 永远是改动过的
+  header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT");
+  # HTTP/1.1
+  header("Cache-Control: no-store, no-cache, must-revalidate");
+  header("Cache-Control: post-check=0, pre-check=0", false);
+  # HTTP/1.0
+  header("Pragma: no-cache");
+/* -------------------------------------
+  显示登录页面
+ ------------------------------------ */
+//错误信息
+
 $msg = (isset($erf) && $erf ? '<div align="center"><font color="#FF0000">'.TEXT_ERRINFO_LOGIN.'</font></div>' : '');
 
 if (isset($erf)) {
@@ -81,11 +101,6 @@ if (isset($erf)) {
 echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">' . "\n";
 echo '<html ' . HTML_PARAMS . '>' . "\n";
 echo '<head>' . "\n";
-header('Expires:'.date('D, d M Y H:i:s',0).' GMT');
-header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . 'GMT');
-header('Cache-Control: no-store, no-cache, must-revalidate');
-header('Cache-Control: post-check=0, pre-check=0', false);
-header('Pragma: no-cache');
 echo '<meta http-equiv="Content-Type" content="text/html; charset=' . CHARSET . '">' . "\n";
 echo '<title>' . TITLE . '</title>' . "\n";
 echo '<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">' . "\n";
@@ -95,11 +110,12 @@ echo '<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" left
 if(isset($_GET['his_url'])&&$_GET['his_url']){
 
 echo tep_draw_form('defaultpage', FILENAME_DEFAULT . "?SID=" .
-    session_id()."&his_url=".$_GET['his_url']);   }else{
-echo tep_draw_form('defaultpage', FILENAME_DEFAULT . "?SID=" . session_id());   
+    session_id()."&his_url=".$_GET['his_url']);  //<form>开始 
+}else{
+echo tep_draw_form('defaultpage', FILENAME_DEFAULT . "?SID=" . session_id()); //<form>开始 
 }
 
-echo '<!-- body_text //-->' . "\n";
+echo '<!-- body_text -->' . "\n";
 echo '<table border="0" cellspacing="0" cellpadding="2">' . "\n";
 echo '<tr>' . "\n";
 echo '<td align="center">';
@@ -126,7 +142,7 @@ echo '</tr>' . "\n";
 echo '<tr>';
 echo '<td>&nbsp;</td>' . "\n";
 echo '<td align="left"><br>';
-echo tep_draw_input_field("execute_login", BUTTON_LOGIN, "", FALSE, "submit", FALSE); 
+echo tep_draw_input_field("execute_login", BUTTON_LOGIN, "", FALSE, "submit", FALSE); //登录 
 echo '</td>' . "\n";
 echo '</tr>' . "\n";
 echo '</table>' . "\n";
@@ -137,7 +153,7 @@ echo '</td>' . "\n";
 echo '</tr>' . "\n";
 echo '</table>' . "\n";
 
-echo "</form>\n";           
+echo "</form>\n";           //<form>结束
 
 echo "</body>\n";
 echo "</html>\n";

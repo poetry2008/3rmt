@@ -10,6 +10,10 @@
     $se_arr = explode(',', $_SESSION['l_select_box']); 
   }
   switch ($_POST['action']) {
+/* -----------------------------------------------------
+   case 'insert' 记录左侧栏打开的窗口   
+   case 'del' 删除左侧关闭的窗口   
+------------------------------------------------------*/
     case 'insert':
       $se_arr[] = $obj_id;
       $tmp_arr = array_unique($se_arr);

@@ -19,6 +19,16 @@
 
   if (isset($_GET['action'])) {
     switch ($_GET['action']) {
+/* -----------------------------------------------------
+   case 'get_products' 获得商品下拉列表   
+   case 'init' 初始化该顾客订单信息   
+   case 'check_one' 选择一个复选框    
+   case 'clear_one' 清除一个服选框    
+   case 'check_all' 全选   
+   case 'clear_all' 清除所选择    
+   case 'get_bill_template' 获得模板    
+   case 'print' 打印    
+------------------------------------------------------*/
       case 'get_products':
         echo tep_draw_pull_down_menu('',array_merge(array(array('id' => '0','text' => ' -- ')),tep_get_products_tree($_GET['cid'])),$_GET['rid'],'onchange=\'$(name_ele).val(this.options[this.selectedIndex].innerHTML);name_over();\'');
         exit;
@@ -40,19 +50,19 @@
         }
         echo json_encode($res);
         exit;
-      case 'check_one': // 跨页复选框
+      case 'check_one':
         $_SESSION['customers_products']['orders_selected'][$_GET['customers_id']][$_GET['orders_id']] = $_GET['orders_id'];
         exit;
-      case 'clear_one': // 跨页复选框
+      case 'clear_one':
         unset($_SESSION['customers_products']['orders_selected'][$_GET['customers_id']][$_GET['orders_id']]);
         exit;
-      case 'check_all': // 跨页复选框
+      case 'check_all':
         $orders_query = tep_db_query("select * from orders o where o.customers_id='".$_GET['customers_id']."'");
         while($o = tep_db_fetch_array($orders_query)){
           $_SESSION['customers_products']['orders_selected'][$_GET['customers_id']][$o['orders_id']] = $o['orders_id'];
         }
         exit;
-      case 'clear_all': // 跨页复选框
+      case 'clear_all':
         unset($_SESSION['customers_products']['orders_selected'][$_GET['customers_id']]);
         exit;
       case 'get_bill_template':
@@ -73,6 +83,7 @@
 <link media="print" href="includes/print.css" rel="stylesheet" type="text/css" />
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script>
+<?php //检查文本域?>
 function textarea_check(ele){
     var comment_str = $(ele).val();
     var comment_str_array = comment_str.split("\n");
@@ -112,19 +123,19 @@ $(document).ready(function(){
    textarea_check(this); 
   });
 });
-  // 数据保存
+  <?php //数据保存?>
   var table_data = new Array();
-  // 平均高度
+  <?php  //平均高度?>
   //var row_height = 20.65;
   var row_height = 19.20;
-  // 单页显示个数
+  <?php //单页显示个数?>
   var count  = 45;
   //var total_count = 45;
-  // 页高
+  <?php //页高?>
   //var page_height = row_height * count;
   var page_height = 900;
   
-  // 千位分隔符
+  <?php //千位分隔符?>
   function number_format(num)
   { 
      num  =  num+""; 
@@ -136,7 +147,7 @@ $(document).ready(function(){
      return  num; 
   }
   
-  // 加载初始数据
+  <?php //加载初始数据?>
   function init() {
     $.ajax({
       dataType: 'json',
@@ -157,15 +168,17 @@ $(document).ready(function(){
       } 
     });
   }
-  
+  <?php //创建表格?> 
   function create_table (data) {
 
     one_count = Math.floor((page_height - $('#content_html').height())/row_height)-2;
     html = "";
     
     empty = 0;
-    j = 0; // tr计数器
-    k = 0; // table计数器
+    <?php //tr计数器?>
+    j = 0; 
+    <?php //table计数器?> 
+    k = 0; 
     html += table_header(k);
     for(i in data){
       if (j != 0 && (j == one_count || (j+1-one_count)%count == 1)) {
@@ -200,7 +213,7 @@ $(document).ready(function(){
     $('#table_html').html(html);
     calc_cost();
   }
-  
+  <?php //表格头部?> 
   function table_header (num) {
     html =  "<div class=\"data_box\" style=\"width:100%\">\n";
     html += "<table cellpadding=\"0\" cellspacing=\"1\" border=\"0\" width=\"100%\" class=\"data_table\" id=\"data_table_" + num + "\" align=\"center\">\n";
@@ -216,7 +229,7 @@ $(document).ready(function(){
     html += "</tr></thead>";
     return html;
   }
-  
+  <?php //表格尾部?> 
   function table_footer (num,pagebreak) {
     html = "</table>";
     html += "<table width=\"100%\" class=\"text_x\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"";
@@ -232,7 +245,7 @@ $(document).ready(function(){
   }
 
   
-  // 增加页面
+  <?php //增加页面?>
   function add_empty () {
     for (i=0;i<count;i++) {
       table_data.push({
@@ -246,7 +259,7 @@ $(document).ready(function(){
     }
     create_table(table_data);
   }
-  
+  <?php //删除页面?> 
   function delete_empty () {
     for (j in table_data) {
       for (i in table_data) {
@@ -266,7 +279,7 @@ $(document).ready(function(){
   }
   
   
-  // 添加一行的html
+  <?php //添加一行的html?>
   function add_tr (number, data) {
     data['price'] = Math.abs(data['price']);
     html = "<tr class=\"data\" align=\"center\" style=\"font-size:15px;\">\n";
@@ -302,7 +315,7 @@ $(document).ready(function(){
     return html;
   }
 
-  // 添加一行
+  <?php //添加一行?>
   function add_one(data){
     table_data.push({
       date     : data['torihiki_date'],
@@ -314,18 +327,18 @@ $(document).ready(function(){
     });
   }
   
-  // 删除一行
+  <?php //删除一行?>
   function remove_one(num) {
     table_data.splice(num, 1);
     create_table(table_data);
     
   }
-  // 激活百分比
+  <?php //激活百分比?>
   function percent(no) {
     document.getElementById('percent_display_'+no).style.display='none';
     document.getElementById('percent_'+no).style.display='block';
   }
-  // 推出百分比选择
+  <?php //推出百分比选择?>
   function percent_out(no){
     data_empty(no);
     ele = document.getElementById('select_'+no);
@@ -335,14 +348,14 @@ $(document).ready(function(){
     document.getElementById('percent_display_'+no).style.display='block';
     calc_cost();
   }
-  // 动作
+  <?php //动作?>
   function percent_change(no){
     data_empty(no);
     ele = document.getElementById('select_'+no);
     table_data[no]['percent'] = ele.options[ele.selectedIndex].value;
     document.getElementById('percent_display_'+no).innerHTML = ele.options[ele.selectedIndex].value;
   }
-  // 重新计算总价
+  <?php //重新计算总价?>
   function calc_cost() {
     var total = 0;
     var cost = 0;
@@ -367,7 +380,7 @@ $(document).ready(function(){
     $('#cost_print').html(number_format(total.toFixed(0)).replace('-',''));
   }
 
-  // 选择模板
+  <?php //选择模板?>
   function bill_template_change(ele) {
     bid = ele.options[ele.selectedIndex].value;
     if (bid != '') {
@@ -395,10 +408,10 @@ $(document).ready(function(){
         }
       });
     }
-    // 重新生成表格
+    <?php //重新生成表格?>
     create_table(table_data);
   }
-
+  <?php //设置空数据?>
   function data_empty(num){
     if (typeof(table_data[num]) == 'undefined') {
       table_data[num] = {
@@ -411,23 +424,25 @@ $(document).ready(function(){
       }
     }
   }
-
+  <?php //数据赋值?>
   function date_change(ele, num){
     data_empty(num);
     table_data[num]['date'] = ele.value;
   }
   
+  <?php //类型赋值?>
   function type_change(ele, num){
     data_empty(num);
     table_data[num]['type'] = ele.value;
   }
   
+  <?php //名赋值?>
   function name_change(ele, num){
     data_empty(num);
     table_data[num]['name'] = ele.value;
   }
   
-  // 单价发生改变要重新计算总价格
+  <?php //单价发生改变要重新计算总价格?>
   function price_change(ele,num){
     data_empty(num);
     table_data[num]['price'] = ele.value;
@@ -437,7 +452,7 @@ $(document).ready(function(){
     calc_cost();
   }
   
-  // 单价发生改变要重新计算总价格 onchange
+  <?php //单价发生改变要重新计算总价格 onchange?>
   /*
   function price_display(ele,num){
     table_data[num]['price'] = ele.value;
@@ -448,7 +463,7 @@ $(document).ready(function(){
   }
   */
   
-  // 个数发生改变要重新计算总价格
+  <?php //个数发生改变要重新计算总价格?>
   function quantity_change(ele,num){
     data_empty(num);
     table_data[num]['quantity'] = ele.value;
@@ -456,7 +471,7 @@ $(document).ready(function(){
     calc_cost();
   }
   
-  // 上部文本发生改动时要重新分表格
+  <?php //上部文本发生改动时要重新分表格?>
   function textarea_change(){
     data_empty(num);
     create_table(table_data);
@@ -578,6 +593,7 @@ $(document).ready(function(){
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script>
+<?php //检查所选择的信息?>
 function all_check(ajax) 
 {
   var sel_p = document.getElementById("allcheck");
@@ -595,6 +611,7 @@ function all_check(ajax)
     }
   }
 }
+<?php //检查是否有选择?>
 function check_select()
 {
   var sel_p_list = document.getElementsByName('oid[]');
@@ -606,6 +623,7 @@ function check_select()
   }
   return false;
 }
+<?php //选择一个?>
 function click_one(ele,oid,cid){
   if (ele.checked == true) {
     check_one(oid,cid);
@@ -613,17 +631,20 @@ function click_one(ele,oid,cid){
     clear_one(oid,cid);
   }
 }
+<?php //检查一个?>
 function check_one(oid,cid){
   $.ajax({
     dataType: 'text',
     url: 'customers_products.php?action=check_one&orders_id='+oid+'&customers_id='+cid
   });
 }
+<?php //清除一个?>
 function clear_one(oid,cid) {
   $.ajax({
     url: 'customers_products.php?action=clear_one&orders_id='+oid+'&customers_id='+cid
   });
 }
+<?php //全选?>
 function check_all(ele,cid) {
   $.ajax({
     url: 'customers_products.php?action=check_all&customers_id='+cid,
@@ -633,6 +654,7 @@ function check_all(ele,cid) {
     }
   });
 }
+<?php //清楚所有选择?>
 function clear_all(ele,cid) {
   $.ajax({
     url: 'customers_products.php?action=clear_all&customers_id='+cid,

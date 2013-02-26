@@ -161,6 +161,7 @@ require("includes/note_js.php");
               </tr>
 <?php
   if ($_GET['type'] == 'adsense') {
+  //各个网站的访问排名 
   $ref_site_query = tep_db_query("
     select * from (
       select count(orders_id) as cnt,orders_adurl
@@ -187,6 +188,7 @@ require("includes/note_js.php");
     $i++;
   }
   } else {
+  //全部访问排名 
   $ref_site_query = tep_db_query("
     select * from (
       select count(orders_id) as cnt , concat( ifnull( orders_ref_site, '' ) , if( orders_adurl is null, '', '(Adsense)' ) ) AS orders_ref_site2

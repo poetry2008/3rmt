@@ -314,7 +314,8 @@ document.onclick=function(e){
     tep_mail('', SEND_EXTRA_ORDER_EMAILS_TO, $mail_title, $email_order, $o->customer['name'], $o->customer['email_address'], '');
   }
       }
-    } else if (tep_orders_status_finished($order['orders_status'])) {
+    //判断订单状态是否完成 或者 是否取引失败 或者 是否交易完成
+    } else if (tep_orders_status_finished($order['orders_status']) || tep_order_transaction_status($order['orders_status']) || tep_orders_transaction_finished($oID)) {
         // status can not change
         echo '<div class="comment">'.TEXT_REORDER_COMMERN_STATUS.'<div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" width="74" height="25" alt="'.TEXT_BACK_TO_HISTORY.'" title="'.TEXT_BACK_TO_HISTORY.'"></a></div></div>';
     } else {

@@ -1,7 +1,7 @@
 <?php
 require('includes/application_top.php');
 if($_GET['action'] == 'ip_unlock'){
-
+  //解锁ip
   $ip = $_POST['ip'];
   $user = $_POST['user'];
   if(trim($user) != ''){

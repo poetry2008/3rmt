@@ -6,6 +6,10 @@
   
   if (isset($_GET['action'])) {
     switch ($_GET['action']) {
+/* -----------------------------------------------------
+   case 'update' 更新oa的表单属性    
+   case 'del_link_group' 删除关联的组 
+------------------------------------------------------*/
       case 'update':
         tep_db_query("update `".TABLE_OA_FORM."` set `option` = '".tep_db_prepare_input($_POST['option'])."' where id = '".$_GET['form_id']."'");  
         tep_redirect(tep_href_link(FILENAME_MODULES, 'set=payment')); 
@@ -64,7 +68,7 @@
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+  <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
@@ -148,6 +152,7 @@ $belong = str_replace($pcode_array[1][0],urlencode($pcode_array[1][0]),$belong);
 
 
 <script type='text/javascript'>
+    <?php //排序?> 
     function editorder (ele){
     x = $(ele).parent().parent();      
     oid = x.attr('id').substr(1);
@@ -182,6 +187,7 @@ $belong = str_replace($pcode_array[1][0],urlencode($pcode_array[1][0]),$belong);
                                        );
 
   }
+<?php //更改序号值?>
 function ajaxUpdate(id,order){
   $.ajax({
   url: "oa_ajax.php",
