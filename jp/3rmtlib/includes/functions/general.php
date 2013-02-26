@@ -7,15 +7,22 @@
   required by application_top.php
 */
 
-////
-// Stop from parsing any further PHP code
+/* -------------------------------------
+    功能: session关闭 
+    参数: 无   
+    返回值: 无 
+------------------------------------ */
   function tep_exit() {
    tep_session_close();
    exit();
   }
 
-////
-// Redirect to another page or site
+/* -------------------------------------
+    功能: 页面跳转 
+    参数: $url(string) url地址  
+    参数: $suc(string) 成功标识 
+    返回值: 无 
+------------------------------------ */
   function tep_redirect($url,$suc='') {
     /*
     echo "<pre>";
@@ -42,7 +49,11 @@
     tep_exit();
   }
 
-
+/* -------------------------------------
+    功能: 页面404 
+    参数: 无   
+    返回值: 无 
+------------------------------------ */
 function forward404()
 { 
   header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
@@ -51,7 +62,11 @@ function forward404()
   //throw new Exception();
 }
 
-//在条件成立的时候，404
+/* -------------------------------------
+    功能: 页面404 
+    参数: $condition(string) 条件
+    返回值: 无 
+------------------------------------ */
 function forward404If($condition)
 {
   if ($condition)
@@ -60,7 +75,11 @@ function forward404If($condition)
   }
 }
 
-//在条件不成立时，404
+/* -------------------------------------
+    功能: 页面404 
+    参数: $condition(string) 条件
+    返回值: 无 
+------------------------------------ */
 function forward404Unless($condition)
 {
   if (!$condition)
@@ -69,12 +88,23 @@ function forward404Unless($condition)
   }
 }
 
-////
-// Parse the data used in the html tags to ensure the tags will not break
+/* -------------------------------------
+    功能: 替换文字 
+    参数: $data(string) 数据 
+    参数: $parse(array) 替换的内容 例：array('替换前的内容' => ‘替换后的内容’) 
+    返回值: 替换后的文字(string) 
+------------------------------------ */
   function tep_parse_input_field_data($data, $parse) {
     return strtr(trim($data), $parse);
   }
 
+/* -------------------------------------
+    功能: 输出文字 
+    参数: $string(string) 文字 
+    参数: $translate(boolean) 是否转义 
+    参数: $protected(boolean) 是否转义输出  
+    返回值: 替换后的文字(string) 
+------------------------------------ */
   function tep_output_string($string, $translate = false, $protected = false) {
     if ($protected == true) {
       return htmlspecialchars($string);
@@ -87,10 +117,20 @@ function forward404Unless($condition)
     }
   }
 
+/* -------------------------------------
+    功能: 输出文字 
+    参数: $string(string) 文字 
+    返回值: string 
+------------------------------------ */
   function tep_output_string_protected($string) {
     return tep_output_string($string, false, true);
   }
 
+/* -------------------------------------
+    功能: 替换掉文字里的 + 
+    参数: $string(string) 文字 
+    返回值: 替换后的字符串(string) 
+------------------------------------ */
   function tep_sanitize_string($string) {
     $string = ereg_replace(' +', ' ', trim($string));
 
@@ -99,10 +139,13 @@ function forward404Unless($condition)
     return $string;
   }
 
-////
-// Error message wrapper
-// When optional parameters are provided, it closes the application
-// (ie, halts the current application execution task)
+/* -------------------------------------
+    功能: 输出错误信息 
+    参数: $error_message(string) 错误文字 
+    参数: $close_application(boolean) 是否关闭应用 
+    参数: $close_application_error(string) 关闭应用的文字 
+    返回值: 无 
+------------------------------------ */
   function tep_error_message($error_message, $close_application = false, $close_application_error = '') {
     echo $error_message;
 
@@ -111,11 +154,13 @@ function forward404Unless($condition)
     }
   }
 
-////
-// Return a random row from a database query
+/* -------------------------------------
+    功能: 按照指定的sql随机取一条数据 
+    参数: $query(string) sql语句
+    返回值: 随机数据的信息(array) 
+------------------------------------ */
   function tep_random_select($query) {
     $random_product = '';
-    // ccdd
     $random_query = tep_db_query($query);
     $num_rows = tep_db_num_rows($random_query);
     if ($num_rows > 0) {
@@ -127,14 +172,16 @@ function forward404Unless($condition)
     return $random_product;
   }
 
-////
-// Return a product's name
-// TABLES: products
+/* -------------------------------------
+    功能: 获得商品的名字 
+    参数: $product_id(int) 商品的id 
+    参数: $language(string) 语言
+    返回值: 商品的名字(string) 
+------------------------------------ */
   function tep_get_products_name($product_id, $language = '') {
     global $languages_id;
 
     if (empty($language)) $language = $languages_id;
-    //ccdd
     $product_query = tep_db_query("
         select products_name 
         from " .  TABLE_PRODUCTS_DESCRIPTION . " 
@@ -148,14 +195,16 @@ function forward404Unless($condition)
     return $product['products_name'];
   }
 
-
-// Return a product's description
-// TABLES: products
+/* -------------------------------------
+    功能: 获得商品的描述 
+    参数: $product_id(int) 商品的id 
+    参数: $language(string) 语言
+    返回值: 商品的描述(string) 
+------------------------------------ */
   function tep_get_products_description($product_id, $language = '') {
     global $languages_id;
 
     if (empty($language)) $language = $languages_id;
-    //ccdd
     $product_query = tep_db_query("
         select products_description 
         from " .  TABLE_PRODUCTS_DESCRIPTION . " 
@@ -169,11 +218,13 @@ function forward404Unless($condition)
     return replace_store_name($product['products_description']);
   }
 
-////
-// 从商品ID调用说明书
+/* -------------------------------------
+    功能: 获得商品的描述(去掉html并且替换STORE_NAME) 
+    参数: $products_id(int) 商品的id 
+    返回值: 商品的描述(string) 
+------------------------------------ */
   function ds_tep_get_description($products_id) {
     global $languages_id;
-//ccdd
     $description_query = tep_db_query("
         select products_description 
         from ".TABLE_PRODUCTS_DESCRIPTION." 
@@ -204,11 +255,13 @@ function forward404Unless($condition)
   }*/
 
 ////
-// Return a product's stock
-// TABLES: products
+/* -------------------------------------
+    功能: 获得商品的库存数 
+    参数: $products_id(int) 商品的id 
+    返回值: 商品的库存数(int) 
+------------------------------------ */
   function tep_get_products_stock($products_id) {
     //$products_id = tep_get_prid($products_id);
-    //ccdd
     $stock_query = tep_db_query("
     select * from (
       select p.products_real_quantity + p.products_virtual_quantity as products_quantity, pd.products_status, p.products_id, pd.site_id 
@@ -222,9 +275,13 @@ function forward404Unless($condition)
     return ($stock_values['products_status'] == '1') ? $stock_values['products_quantity'] : 0;
   }
 
-////
-// Check if the required stock is available
-// If insufficent stock is available return an out of stock message
+/* -------------------------------------
+    功能: 检测商品的库存是否充足 
+    参数: $products_id(int) 商品的id 
+    参数: $products_quantity(int) 商品的数量 
+    参数: $link_single(boolean) 是否显示链接  
+    返回值: 检测商品库存不足的信息(string) 
+------------------------------------ */
   function tep_check_stock($products_id, $products_quantity, $link_single = false) {
     $stock_left = tep_get_products_stock($products_id) - $products_quantity;
     $out_of_stock = '';
@@ -263,8 +320,13 @@ function forward404Unless($condition)
   }
   */
 
-////
-// Break a word in a string if it is longer than a specified length ($len)
+/* -------------------------------------
+    功能: 输出字符串 
+    参数: $string(string) 字符串 
+    参数: $len(int) 长度 
+    参数: $break_char(string) 换行字符 
+    返回值: 处理后的字符串(string) 
+------------------------------------ */
   function tep_break_string($string, $len, $break_char = '-') {
     /*
     $l = 0;
@@ -288,8 +350,11 @@ function forward404Unless($condition)
     return $string;
   }
 
-////
-// Return all HTTP GET variables, except those passed as a parameter
+/* -------------------------------------
+    功能: 获得get所得数据 
+    参数: $exclude_array(array) 不包括参数的数组 
+    返回值: 获得的参数以及值(string) 
+------------------------------------ */
   function tep_get_all_get_params($exclude_array = '') {
     global $_GET;
 
@@ -308,14 +373,16 @@ function forward404Unless($condition)
     return $get_url;
   }
 
-////
-// Returns an array with countries
-// TABLES: countries
+/* -------------------------------------
+    功能: 获得国家信息 
+    参数: $countries_id(int) 国家id 
+    参数: $with_iso_codes(boolean) 是否显示iso_code 
+    返回值: 获得相关信息(array) 
+------------------------------------ */
   function tep_get_countries($countries_id = '', $with_iso_codes = false) {
     $countries_array = array();
     if (tep_not_null($countries_id)) {
       if ($with_iso_codes == true) {
-//ccdd
         $countries = tep_db_query("
             select countries_name, 
                    countries_iso_code_2, 
@@ -329,13 +396,11 @@ function forward404Unless($condition)
                                  'countries_iso_code_2' => $countries_values['countries_iso_code_2'],
                                  'countries_iso_code_3' => $countries_values['countries_iso_code_3']);
       } else {
-//ccdd
         $countries = tep_db_query("select countries_name from " . TABLE_COUNTRIES . " where countries_id = '" . (int)$countries_id . "'");
         $countries_values = tep_db_fetch_array($countries);
         $countries_array = array('countries_name' => $countries_values['countries_name']);
       }
     } else {
-//ccdd
       $countries = tep_db_query("select countries_id, countries_name from " . TABLE_COUNTRIES . " order by countries_name");
       while ($countries_values = tep_db_fetch_array($countries)) {
         $countries_array[] = array('countries_id' => $countries_values['countries_id'],
@@ -346,14 +411,20 @@ function forward404Unless($condition)
     return $countries_array;
   }
 
-////
-// Alias function to tep_get_countries, which also returns the countries iso codes
+/* -------------------------------------
+    功能: 获得国家信息 
+    参数: $countries_id(int) 国家id 
+    返回值: 获得带iso的相关信息(array) 
+------------------------------------ */
   function tep_get_countries_with_iso_codes($countries_id) {
     return tep_get_countries($countries_id, true);
   }
 
-////
-// Generate a path to categories
+/* -------------------------------------
+    功能: 根据当前分类id寻找其父结点的路径 
+    参数: $current_category_id(int) 当前分类id 
+    返回值: 获得分类路径(string) 
+------------------------------------ */
   function tep_get_path($current_category_id = '') {
     global $cPath_array;
 
@@ -363,11 +434,9 @@ function forward404Unless($condition)
         $cPath_new = $current_category_id;
       } else {
         $cPath_new = '';
-//ccdd
         $last_category_query = tep_db_query("select parent_id from " . TABLE_CATEGORIES . " where categories_id = '" . (int)$cPath_array[($cp_size-1)] . "'");
         $last_category = tep_db_fetch_array($last_category_query);
 
-//ccdd
         $current_category_query = tep_db_query("select parent_id from " . TABLE_CATEGORIES . " where categories_id = '" . (int)$current_category_id . "'");
         $current_category = tep_db_fetch_array($current_category_query);
 
@@ -393,16 +462,22 @@ function forward404Unless($condition)
     return 'cPath=' . $cPath_new;
   }
 
-////
-// Returns the clients browser
+/* -------------------------------------
+    功能: 检测浏览器类型 
+    参数: $component(string) 浏览器类型 
+    返回值: 浏览器信息(string) 
+------------------------------------ */
   function tep_browser_detect($component) {
     global $HTTP_USER_AGENT;
 
     return stristr($HTTP_USER_AGENT, $component);
   }
 
-////
-// Alias function to tep_get_countries()
+/* -------------------------------------
+    功能: 获得国家的名字 
+    参数: $country_id(int) 国家id 
+    返回值: 国家阿的名字(string) 
+------------------------------------ */
   function tep_get_country_name($country_id) {
     $country_array = tep_get_countries($country_id);
 
@@ -410,11 +485,14 @@ function forward404Unless($condition)
     return $country_array['countries_name'];
   }
 
-////
-// Returns the zone (State/Province) name
-// TABLES: zones
+/* -------------------------------------
+    功能: 获得区域的名字 
+    参数: $country_id(int) 国家id 
+    参数: $zone_id(int) 区域id
+    参数: $default_zone(string) 默认区域
+    返回值: 区域的名字(string) 
+------------------------------------ */
   function tep_get_zone_name($country_id, $zone_id, $default_zone) {
-//ccdd
     $zone_query = tep_db_query("
         select zone_name 
         from " . TABLE_ZONES . " 
@@ -429,11 +507,14 @@ function forward404Unless($condition)
     }
   }
 
-////
-// Returns the zone (State/Province) code
-// TABLES: zones
+/* -------------------------------------
+    功能: 获得区域的编码 
+    参数: $country_id(int) 国家id 
+    参数: $zone_id(int) 区域id
+    参数: $default_zone(string) 默认区域
+    返回值: 区域的编码(string) 
+------------------------------------ */
   function tep_get_zone_code($country_id, $zone_id, $default_zone) {
-//ccdd
     $zone_query = tep_db_query("
         select zone_code 
         from " . TABLE_ZONES . " 
@@ -448,8 +529,12 @@ function forward404Unless($condition)
     }
   }
 
-////
-// Wrapper function for round() for php3 compatibility
+/* -------------------------------------
+    功能: 对浮点数进行四舍五入 
+    参数: $value(float) 数值 
+    参数: $precision(int) 小数点后的位数
+    返回值: 处理后的数值(float) 
+------------------------------------ */
   function tep_round($value, $precision) {
     if (PHP_VERSION < 4) {
       $exp = pow(10, $precision);
@@ -459,9 +544,13 @@ function forward404Unless($condition)
     }
   }
 
-////
-// Returns the tax rate for a zone / class
-// TABLES: tax_rates, zones_to_geo_zones
+/* -------------------------------------
+    功能: 获得稅率 
+    参数: $class_id(int) 稅率id 
+    参数: $country_id(int) 国家id
+    参数: $zone_id(int) 区域id
+    返回值: 税率(int) 
+------------------------------------ */
   function tep_get_tax_rate($class_id, $country_id = -1, $zone_id = -1) {
     global $customer_zone_id, $customer_country_id;
 
@@ -474,7 +563,6 @@ function forward404Unless($condition)
         $zone_id = $customer_zone_id;
       }
     }
-//ccdd
     $tax_query = tep_db_query("
         select sum(tax_rate) as tax_rate 
         from " . TABLE_TAX_RATES . " tr 
@@ -495,11 +583,14 @@ function forward404Unless($condition)
     }
   }
 
-////
-// Return the tax description for a zone / class
-// TABLES: tax_rates;
+/* -------------------------------------
+    功能: 获得稅率的描述 
+    参数: $class_id(int) 稅率id 
+    参数: $country_id(int) 国家id
+    参数: $zone_id(int) 区域id
+    返回值: 税率的描述(string) 
+------------------------------------ */
   function tep_get_tax_description($class_id, $country_id, $zone_id) {
-//ccdd
     $tax_query = tep_db_query("
         select tax_description 
         from " . TABLE_TAX_RATES . " tr 
@@ -522,8 +613,12 @@ function forward404Unless($condition)
     }
   }
 
-////
-// Add tax to a products price
+/* -------------------------------------
+    功能: 获得商品税率后的价格 
+    参数: $price(float) 商品的价格 
+    参数: $tax(float) 税率
+    返回值: 税后价格(float) 
+------------------------------------ */
   function tep_add_tax($price, $tax) {
     global $currencies;
 
@@ -534,7 +629,12 @@ function forward404Unless($condition)
     }
   }
 
-// Calculates Tax rounding the result
+/* -------------------------------------
+    功能: 获得商品税率值 
+    参数: $price(float) 商品的价格 
+    参数: $tax(float) 税率
+    返回值: 税率值(float) 
+------------------------------------ */
   function tep_calculate_tax($price, $tax) {
     global $currencies;
 
@@ -542,13 +642,15 @@ function forward404Unless($condition)
     return $currencies->round_off($price * $tax / 100);
   }
 
-////
-// Return the number of products in a category
-// TABLES: products, products_to_categories, categories
+/* -------------------------------------
+    功能: 获得该分类下商品的个数 
+    参数: $category_id(int) 分类id 
+    参数: $include_inactive(boolean) 是否包含不显示的商品 
+    返回值: 商品个数(int) 
+------------------------------------ */
   function tep_count_products_in_category($category_id, $include_inactive = false) {
     $products_count = 0;
     if ($include_inactive == true) {
-//ccdd
       $products_query = tep_db_query("
           select count(*) as total 
           from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c 
@@ -556,12 +658,10 @@ function forward404Unless($condition)
             and p2c.categories_id = '" . (int)$category_id . "'
       ");
     } else {
-//ccdd
       $products_query = tep_db_query("select count(*) as total from " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, ".TABLE_PRODUCTS_DESCRIPTION." pd where p.products_id = pd.products_id and p.products_id = p2c.products_id and pd.products_status != '0' and pd.products_status != '3' and p2c.categories_id = '" . (int)$category_id . "'");
     }
     $products = tep_db_fetch_array($products_query);
     $products_count += $products['total'];
-//ccdd
     $child_categories_query = tep_db_query("select categories_id from " . TABLE_CATEGORIES . " where parent_id = '" . (int)$category_id . "'");
     if (tep_db_num_rows($child_categories_query)) {
       while ($child_categories = tep_db_fetch_array($child_categories_query)) {
@@ -572,11 +672,12 @@ function forward404Unless($condition)
     return $products_count;
   }
 
-////
-// Return true if the category has subcategories
-// TABLES: categories
+/* -------------------------------------
+    功能: 判断该分类下是否有子分类 
+    参数: $category_id(int) 分类id 
+    返回值: 是否有子分类(boolean) 
+------------------------------------ */
   function tep_has_category_subcategories($category_id) {
-//ccdd
     $child_category_query = tep_db_query("select count(*) as count from " . TABLE_CATEGORIES . " where parent_id = '" . (int)$category_id . "'");
     $child_category = tep_db_fetch_array($child_category_query);
 
@@ -587,11 +688,12 @@ function forward404Unless($condition)
     }
   }
 
-////
-// Returns the address_format_id for the given country
-// TABLES: countries;
+/* -------------------------------------
+    功能: 获得地址规格编号 
+    参数: $country_id(int) 国家id 
+    返回值: 地址规格编号(string) 
+------------------------------------ */
   function tep_get_address_format_id($country_id) {
-//ccdd
     $address_format_query = tep_db_query("select address_format_id as format_id from " . TABLE_COUNTRIES . " where countries_id = '" . (int)$country_id . "'");
     if (tep_db_num_rows($address_format_query)) {
       $address_format = tep_db_fetch_array($address_format_query);
@@ -601,11 +703,16 @@ function forward404Unless($condition)
     }
   }
 
-////
-// Return a formatted address
-// TABLES: address_format
+/* -------------------------------------
+    功能: 获得住址规格 
+    参数: $address_format_id(int) 住址规格id 
+    参数: $address(array) 住址的信息 
+    参数: $html(boolean) 是否是html显示 
+    参数: $boln(string) 开始符号 
+    参数: $eoln(string) 结束符号 
+    返回值: 住址规格(string) 
+------------------------------------ */
   function tep_address_format($address_format_id, $address, $html, $boln, $eoln) {
-//ccdd
     $address_format_query = tep_db_query("select address_format as format from " . TABLE_ADDRESS_FORMAT . " where address_format_id = '" . (int)$address_format_id . "'");
     $address_format = tep_db_fetch_array($address_format_query);
 
@@ -631,14 +738,15 @@ function forward404Unless($condition)
     $zip       = $postcode;
     $country   = tep_get_country_name($country_id);
     $state     = tep_get_zone_code($country_id, $zone_id, $state);
-    $statename = tep_get_zone_name($country_id,$zone_id,$state); // for Japanese Localize
+    $statename = tep_get_zone_name($country_id,$zone_id,$state);
     $telephone = tep_output_string_protected($address['telephone']);
 
     if ($html) {
-// HTML Mode
+    // HTML Mode
       $HR = '<hr>';
       $hr = '<hr>';
-      if ( ($boln == '') && ($eoln == "\n") ) { // Values not specified, use rational defaults
+      if ( ($boln == '') && ($eoln == "\n") ) { 
+      // Values not specified, use rational defaults
         $CR = '<br>';
         $cr = '<br>';
         $eoln = $cr;
@@ -647,7 +755,7 @@ function forward404Unless($condition)
         $cr = $CR;
       }
     } else {
-// Text Mode
+    // Text Mode
       $CR = $eoln;
       $cr = $CR;
       $HR = '----------------------------------------';
@@ -674,11 +782,16 @@ function forward404Unless($condition)
     return $boln . $address . $eoln;
   }
 
-////
-// Return a formatted address
-// TABLES: customers, address_book
+/* -------------------------------------
+    功能: 获得该顾客的住址规格
+    参数: $customers_id(int) 顾客id 
+    参数: $address_id(int) 住址id 
+    参数: $html(boolean) 是否是html显示 
+    参数: $boln(string) 开始符号 
+    参数: $eoln(string) 结束符号 
+    返回值: 住址规格(string) 
+------------------------------------ */
   function tep_address_label($customers_id, $address_id = 1, $html = false, $boln = '', $eoln = "\n") {
-//ccdd
     $address_query = tep_db_query("select entry_firstname as firstname, entry_lastname as lastname, entry_firstname_f as firstname_f, entry_lastname_f as lastname_f, entry_company as company, entry_street_address as street_address, entry_suburb as suburb, entry_city as city, entry_postcode as postcode, entry_state as state, entry_zone_id as zone_id, entry_country_id as country_id, entry_telephone as telephone from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . (int)$customers_id . "' and address_book_id = '" . (int)$address_id . "'");
     $address = tep_db_fetch_array($address_query);
 
@@ -687,13 +800,15 @@ function forward404Unless($condition)
     return tep_address_format($format_id, $address, $html, $boln, $eoln);
   }
 
-////
-// Return a formatted address
-// TABLES: address_book, address_format
+/* -------------------------------------
+    功能: 获得该顾客的住址简要
+    参数: $customers_id(int) 顾客id 
+    参数: $address_id(int) 住址id 
+    返回值: 住址简要(string) 
+------------------------------------ */
   function tep_address_summary($customers_id, $address_id) {
     $customers_id = tep_db_prepare_input($customers_id);
     $address_id = tep_db_prepare_input($address_id);
-//ccdd
     $address_query = tep_db_query("select ab.entry_street_address, ab.entry_suburb, ab.entry_postcode, ab.entry_city, ab.entry_state, ab.entry_country_id, ab.entry_zone_id, c.countries_name, c.address_format_id from " . TABLE_ADDRESS_BOOK . " ab, " . TABLE_COUNTRIES . " c where ab.address_book_id = '" . tep_db_input($address_id) . "' and ab.customers_id = '" . tep_db_input($customers_id) . "' and ab.entry_country_id = c.countries_id");
     $address = tep_db_fetch_array($address_query);
 
@@ -704,10 +819,9 @@ function forward404Unless($condition)
     $state = tep_get_zone_code($address['entry_country_id'], $address['entry_zone_id'], $address['entry_state']);
     $country = tep_output_string_protected($address['countries_name']);
 
-//ccdd
     $address_format_query = tep_db_query("select address_summary from " . TABLE_ADDRESS_FORMAT . " where address_format_id = '" . (int)$address['address_format_id'] . "'");
     $address_format = tep_db_fetch_array($address_format_query);
-    $statename = tep_get_zone_name($address['entry_country_id'], $address['entry_zone_id'],''); // for Japanese Localize
+    $statename = tep_get_zone_name($address['entry_country_id'], $address['entry_zone_id'],'');
 
 //    eval("\$address = \"{$address_format['address_summary']}\";");
     $address_summary = $address_format['address_summary'];
@@ -716,19 +830,30 @@ function forward404Unless($condition)
     return $address;
   }
 
+/* -------------------------------------
+    功能: 格式化输出数字
+    参数: $number(int) 数字 
+    返回值: 格式化数字(string) 
+------------------------------------ */
   function tep_row_number_format($number) {
     if ( ($number < 10) && (substr($number, 0, 1) != '0') ) $number = '0' . $number;
 
     return $number;
   }
 
+/* -------------------------------------
+    功能: 获得该分类相关的分类信息
+    参数: $categories_array(array) 分类的 
+    参数: $parent_id(int) 父结点
+    参数: $indent(string) 索进的标识
+    返回值: 分类数组(array) 
+------------------------------------ */
   function tep_get_categories($categories_array = '', $parent_id = '0', $indent = '') {
     global $languages_id;
 
     $parent_id = tep_db_prepare_input($parent_id);
 
     if (!is_array($categories_array)) $categories_array = array();
-    //ccdd
     $categories_query = tep_db_query("
       select *
       from (
@@ -755,9 +880,13 @@ function forward404Unless($condition)
     return $categories_array;
   }
 
+/* -------------------------------------
+    功能: 获得生产商的相关信息
+    参数: $manufacturers_array(array) 生产商信息的数组 
+    返回值: 生产商的相关信息(array) 
+------------------------------------ */
   function tep_get_manufacturers($manufacturers_array = '') {
     if (!is_array($manufacturers_array)) $manufacturers_array = array();
-    //ccdd
     $manufacturers_query = tep_db_query("select manufacturers_id, manufacturers_name from " . TABLE_MANUFACTURERS . " order by manufacturers_name");
     while ($manufacturers = tep_db_fetch_array($manufacturers_query)) {
       $manufacturers_array[] = array('id' => $manufacturers['manufacturers_id'], 'text' => $manufacturers['manufacturers_name']);
@@ -766,11 +895,13 @@ function forward404Unless($condition)
     return $manufacturers_array;
   }
 
-////
-// Return all subcategory IDs
-// TABLES: categories
+/* -------------------------------------
+    功能: 获得该分类的子分类
+    参数: $subcategories_array(array) 子分类信息的数组 
+    参数: $parent_id(int) 父节点 
+    返回值: 子分类(array) 
+------------------------------------ */
   function tep_get_subcategories(&$subcategories_array, $parent_id = 0) {
-    //ccdd
     $subcategories_query = tep_db_query("select categories_id from " . TABLE_CATEGORIES . " where parent_id = '" . (int)$parent_id . "'");
     while ($subcategories = tep_db_fetch_array($subcategories_query)) {
       $subcategories_array[sizeof($subcategories_array)] = $subcategories['categories_id'];
@@ -780,8 +911,11 @@ function forward404Unless($condition)
     }
   }
 
-// Output a raw date string in the selected locale date format
-// $raw_date needs to be in this format: YYYY-MM-DD HH:MM:SS
+/* -------------------------------------
+    功能: 格式化输出时间
+    参数: $raw_date(string) 时间 
+    返回值: 格式化后的时间(string) 
+------------------------------------ */
   function tep_date_long($raw_date) {
     if (is_numeric($raw_date))$raw_date = date('Y-m-d H:i:s', $raw_date);
 
@@ -800,10 +934,11 @@ function forward404Unless($condition)
     return str_replace($oarr, $newarr, $returntime);
   }
 
-////
-// Output a raw date string in the selected locale date format
-// $raw_date needs to be in this format: YYYY-MM-DD HH:MM:SS
-
+/* -------------------------------------
+    功能: 简要的格式化输出时间
+    参数: $raw_date(string) 时间 
+    返回值: 格式化后的时间(string) 
+------------------------------------ */
   function tep_date_short($raw_date) {
     if ( ($raw_date == '0000-00-00 00:00:00') || ($raw_date == '') ) return false;
 
@@ -822,8 +957,12 @@ function forward404Unless($condition)
     }
   }
 
-////
-// Parse search string into indivual objects
+/* -------------------------------------
+    功能: 分割字符串
+    参数: $search_str(string) 字符串 
+    参数: $objects(object) 分割后的对象 
+    返回值: 分割是否成功(boolean) 
+------------------------------------ */
   function tep_parse_search_string($search_str = '', &$objects) {
     $search_str = trim(strtolower($search_str));
 
@@ -976,8 +1115,13 @@ function forward404Unless($condition)
     }
   }
 
-////
-// Check date
+/* -------------------------------------
+    功能: 判断日期是否按照指定格式输出
+    参数: $date_to_check(string) 要检查的日期 
+    参数: $format_string(string) 检查的格式 
+    参数: $date_array(array) 日期的数组 
+    返回值: 是否按照格式输出(boolean) 
+------------------------------------ */
   function tep_checkdate($date_to_check, $format_string, &$date_array) {
     $separator_idx = -1;
 
@@ -1081,8 +1225,11 @@ function forward404Unless($condition)
     return true;
   }
 
-////
-// Check if year is a leap year
+/* -------------------------------------
+    功能: 判断是否是闰年
+    参数: $year(int) 年数 
+    返回值: 是否是闰年(boolean) 
+------------------------------------ */
   function tep_is_leap_year($year) {
     if ($year % 100 == 0) {
       if ($year % 400 == 0) return true;
@@ -1093,8 +1240,13 @@ function forward404Unless($condition)
     return false;
   }
 
-////
-// Return table heading with sorting capabilities
+/* -------------------------------------
+    功能: 排序的标题头
+    参数: $sortby(int) 排序的代号 
+    参数: $colnum(string) 列 
+    参数: $heading(string) 头部信息 
+    返回值: 标题头(string) 
+------------------------------------ */
   function tep_create_sort_heading($sortby, $colnum, $heading) {
     global $PHP_SELF;
 
@@ -1109,11 +1261,13 @@ function forward404Unless($condition)
     return $sort_prefix . $heading . $sort_suffix;
   }
 
-////
-// Recursively go through the categories and retreive all parent categories IDs
-// TABLES: categories
+/* -------------------------------------
+    功能: 获得其分类的父分类
+    参数: $categories(array) 分类的信息 
+    参数: $categories_id(int) 分类的id 
+    返回值: 父分类(array) 
+------------------------------------ */
   function tep_get_parent_categories(&$categories, $categories_id) {
-    //ccdd
     $parent_categories_query = tep_db_query("select parent_id from " . TABLE_CATEGORIES . " where categories_id = '" . (int)$categories_id . "'");
     while ($parent_categories = tep_db_fetch_array($parent_categories_query)) {
       if ($parent_categories['parent_id'] == 0) return true;
@@ -1124,18 +1278,18 @@ function forward404Unless($condition)
     }
   }
 
-////
-// Construct a category path to the product
-// TABLES: products_to_categories
+/* -------------------------------------
+    功能: 获得该商品所在的关联分类
+    参数: $products_id(int) 商品id 
+    返回值: 关联分类(string) 
+------------------------------------ */
   function tep_get_product_path($products_id) {
     $cPath = '';
-    //ccdd
     $cat_count_sql = tep_db_query("select count(*) as count from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . (int)$products_id . "'");
     $cat_count_data = tep_db_fetch_array($cat_count_sql);
 
     if ($cat_count_data['count'] == 1) {
       $categories = array();
-      //ccdd
       $cat_id_sql = tep_db_query("select categories_id from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . (int)$products_id . "'");
       $cat_id_data = tep_db_fetch_array($cat_id_sql);
       tep_get_parent_categories($categories, $cat_id_data['categories_id']);
@@ -1152,8 +1306,12 @@ function forward404Unless($condition)
     return $cPath;
   }
 
-////
-// Return a product ID with attributes
+/* -------------------------------------
+    功能: 获得商品的prid
+    参数: $prid(int) 商品id 
+    参数: $params(array) 相关参数 
+    返回值: 重新生成的prid(string) 
+------------------------------------ */
   function tep_get_uprid($prid, $params) {
     $uprid = $prid;
     if ( (is_array($params)) && (!strstr($prid, '{')) ) {
@@ -1165,16 +1323,22 @@ function forward404Unless($condition)
     return $uprid;
   }
 
-////
-// Return a product ID from a product ID with attributes
+/* -------------------------------------
+    功能: 获得商品的id
+    参数: $uprid(int) 商品id的信息 
+    返回值: 过滤后的商品id(string) 
+------------------------------------ */
   function tep_get_prid($uprid) {
     $pieces = split('[{]', $uprid, 2);
 
     return $pieces[0];
   }
 
-////
-// Return a customer greeting
+/* -------------------------------------
+    功能: 输出顾客的欢迎语
+    参数: 无 
+    返回值: 欢迎语(string) 
+------------------------------------ */
   function tep_customer_greeting() {
     global $customer_id, $customer_first_name;
     global $customer_last_name, $language; 
@@ -1195,18 +1359,16 @@ function forward404Unless($condition)
     return $greeting_string;
   }
 
-////
-//! Send email (text/html) using MIME
-// This is the central mail function. The SMTP Server should be configured
-// correct in php.ini
-// Parameters:
-// $to_name           The name of the recipient, e.g. "Jan Wildeboer"
-// $to_email_address  The eMail address of the recipient, 
-// $email_subject     The subject of the eMail
-// $email_text        The text of the eMail, may contain HTML entities
-// $from_email_name   The name of the sender, e.g. Shop Administration
-// $from_email_adress The eMail address of the sender, 
-
+/* -------------------------------------
+    功能: 发送邮件
+    参数: $to_name(string) 收信人的名字
+    参数: $to_email_address(string) 收信人的邮箱 
+    参数: $email_subject(string) 邮件标题 
+    参数: $email_text(string) 邮件内容 
+    参数: $from_email_name(string) 寄信人的名字 
+    参数: $from_email_address(string) 寄信人的邮箱 
+    返回值: 无 
+------------------------------------ */
 
   function tep_mail($to_name, $to_email_address, $email_subject, $email_text, $from_email_name, $from_email_address) {
     if (SEND_EMAILS != 'true') return false;
@@ -1227,10 +1389,12 @@ function forward404Unless($condition)
     $message->send($to_name, $to_email_address, $from_email_name, $from_email_address, $email_subject);
   }
 
-////
-// Check if product has attributes
+/* -------------------------------------
+    功能: 判断该商品是否有属性
+    参数: $products_id(int) 商品id 
+    返回值: 商品是否有属性(boolean) 
+------------------------------------ */
   function tep_has_product_attributes($products_id) {
-    //ccdd
     $attributes_query = tep_db_query("
         select count(*) as count 
         from " . TABLE_PRODUCTS_ATTRIBUTES . " 
@@ -1245,9 +1409,12 @@ function forward404Unless($condition)
     }
   }
 
-////
-// Get the number of times a word/character is present in a string
-// return string length in Japanese
+/* -------------------------------------
+    功能: 获得字符个数
+    参数: $string(string) 字符串 
+    参数: $needle(string) 分割的标识 
+    返回值: 字符个数(int) 
+------------------------------------ */
   function tep_word_count($string, $needle) {
     global $language;
     if ($language == 'japanese') {
@@ -1258,6 +1425,11 @@ function forward404Unless($condition)
     return sizeof($temp_array);
   }
 
+/* -------------------------------------
+    功能: 获得模块个数
+    参数: $modules(string) 模块的信息 
+    返回值: 模块个数(int) 
+------------------------------------ */
   function tep_count_modules($modules = '') {
     $count = 0;
 
@@ -1283,10 +1455,21 @@ function forward404Unless($condition)
     return tep_count_modules(MODULE_PAYMENT_INSTALLED);
   }
 */
+/* -------------------------------------
+    功能: 获得配送模块个数
+    参数: 无 
+    返回值: 配送模块个数(int) 
+------------------------------------ */
   function tep_count_shipping_modules() {
     return tep_count_modules(MODULE_SHIPPING_INSTALLED);
   }
 
+/* -------------------------------------
+    功能: 获得随即数
+    参数: $length(int) 随机数的长度 
+    参数: $type(string) 类型 
+    返回值: 随即数(int) 
+------------------------------------ */
   function tep_create_random_value($length, $type = 'mixed') {
     if ( ($type != 'mixed') && ($type != 'chars') && ($type != 'digits')) return false;
 
@@ -1298,10 +1481,13 @@ function forward404Unless($condition)
         $char = chr(tep_rand(0,255));
       }
       if ($type == 'mixed') {
+        //字母和数字
         if (eregi('^[a-z0-9]$', $char)) $rand_value .= $char;
       } elseif ($type == 'chars') {
+        //字母
         if (eregi('^[a-z]$', $char)) $rand_value .= $char;
       } elseif ($type == 'digits') {
+        //数字
         if (ereg('^[0-9]$', $char)) $rand_value .= $char;
       }
     }
@@ -1309,10 +1495,23 @@ function forward404Unless($condition)
     return $rand_value;
   }
 
+/* -------------------------------------
+    功能: 格式化警告信息
+    参数: $warning(string) 警告语 
+    返回值: 警告信息(string) 
+------------------------------------ */
   function tep_output_warning($warning) {
     new errorBox(array(array('text' => tep_image(DIR_WS_ICONS . 'warning.gif', ICON_WARNING) . ' ' . $warning)));
   }
 
+/* -------------------------------------
+    功能: 把数组格式化成字符串
+    参数: $array(array) 格式化数组 
+    参数: $exclude(string) 排除的字符串
+    参数: $equals(string) 等于的符号
+    参数: $separator(string) 分割符 
+    返回值: 格式化后的字符串(string) 
+------------------------------------ */
   function tep_array_to_string($array, $exclude = '', $equals = '=', $separator = '&') {
     if (!is_array($exclude)) $exclude = array();
 
@@ -1330,6 +1529,11 @@ function forward404Unless($condition)
     return $get_string;
   }
 
+/* -------------------------------------
+    功能: 判断输入是否为空
+    参数: $value(string) 字符串 
+    返回值: 值是否为空(boolean) 
+------------------------------------ */
   function tep_not_null($value) {
     if (is_array($value)) {
       if (sizeof($value) > 0) {
@@ -1346,8 +1550,12 @@ function forward404Unless($condition)
     }
   }
 
-////
-// Output the tax percentage with optional padded decimals
+/* -------------------------------------
+    功能: 输出税后的值
+    参数: $value(string) 字符串
+    参数: $padding(string) 分割符 
+    返回值: 税后的值(string) 
+------------------------------------ */
   function tep_display_tax_value($value, $padding = TAX_DECIMAL_PLACES) {
     if (strpos($value, '.')) {
       $loop = true;
@@ -1380,11 +1588,12 @@ function forward404Unless($condition)
     return $value;
   }
 
-////
-// Checks to see if the currency code exists as a currency
-// TABLES: currencies
+/* -------------------------------------
+    功能: 判断给货币是否存在
+    参数: $code(int) 货币代号
+    返回值: 货币是否存在(boolean) 
+------------------------------------ */
   function tep_currency_exists($code) {
-    //ccdd
     $currency_code = tep_db_query("select currencies_id from " . TABLE_CURRENCIES . " where code = '" . tep_db_input($code) . "'");
     if (tep_db_num_rows($currency_code)) {
       return $code;
@@ -1393,12 +1602,20 @@ function forward404Unless($condition)
     }
   }
 
+/* -------------------------------------
+    功能: 把字符串转换成整数 
+    参数: $string(string) 字符串 
+    返回值: 转换后的整数(int) 
+------------------------------------ */
   function tep_string_to_int($string) {
     return (int)$string;
   }
 
-////
-// Parse and secure the cPath parameter values
+/* -------------------------------------
+    功能: 分割分类的字符串
+    参数: $cPath(string) 分类信息
+    返回值: 分割后的数组(array) 
+------------------------------------ */
   function tep_parse_category_path($cPath) {
 // make sure the category IDs are integers
     $cPath_array = array_map('tep_string_to_int', explode('_', $cPath));
@@ -1415,8 +1632,12 @@ function forward404Unless($condition)
     return $tmp_array;
   }
 
-////
-// Return a random value
+/* -------------------------------------
+    功能: 数字生成的随机数
+    参数: $min(int) 最小值
+    参数: $max(int) 最大值 
+    返回值: 随机数(int) 
+------------------------------------ */
   function tep_rand($min = null, $max = null) {
     static $seeded;
 
@@ -1436,13 +1657,21 @@ function forward404Unless($condition)
     }
   }
 
+/* -------------------------------------
+    功能: 把字符串全角转为半角
+    参数: $string(string) 字符串
+    返回值: 转换后的字符串(string) 
+------------------------------------ */
   function tep_an_zen_to_han($string) {
     return mb_convert_kana($string, "a");
   }
 
-////
-// Return fullname
-// for Japanese Localize
+/* -------------------------------------
+    功能: 获得名字的全名
+    参数: $firstname(string) 名
+    参数: $lastname(string) 姓 
+    返回值: 全名(string) 
+------------------------------------ */
   function tep_get_fullname($firstname, $lastname) {
     global $language;
     $separator = ' ';
@@ -1453,31 +1682,34 @@ function forward404Unless($condition)
     }
   }
 
-////
-// 从商品ID调用说明书
+/* -------------------------------------
+    功能: 获得该生产商所拥有的商品个数
+    参数: $manufacturers_id(int) 生产商id 
+    返回值: 所拥有的商品个数(int) 
+------------------------------------ */
   function ds_tep_get_count_manufactures($manufacturers_id) {
-//ccdd
     $manufactures_query = tep_db_query("select count(*) as total from ".TABLE_PRODUCTS." where manufacturers_id = '".$manufacturers_id."'");
     $manufactures = tep_db_fetch_array($manufactures_query);
     
   return $manufactures['total'];
   }
    
-
-////
-// 从商品ID调用说明书
+/* -------------------------------------
+    功能: 获得生产商的相关信息
+    参数: $manufacturers_id(int) 生产商id 
+    参数: $return(int) 返回类型 
+    返回值: 生产商的相关信息(string) 
+------------------------------------ */
   function ds_tep_get_manufactures($manufacturers_id, $return) {
   
   if($return == 1) {
     //返回厂商名
-//ccdd
     $manufactures_query = tep_db_query("select manufacturers_name from ".TABLE_MANUFACTURERS." where manufacturers_id = '".$manufacturers_id."'");
     $manufactures = tep_db_fetch_array($manufactures_query);
     
     $mreturn = $manufactures['manufacturers_name'];
   } elseif($return == 2) {
     //厂商图像
-//ccdd
     $manufactures_query = tep_db_query("select manufacturers_image from ".TABLE_MANUFACTURERS." where manufacturers_id = '".$manufacturers_id."'");
     $manufactures = tep_db_fetch_array($manufactures_query);
     
@@ -1487,13 +1719,21 @@ function forward404Unless($condition)
   return $mreturn;
   }
   
-////
-////
-// Ajax用文字代码转换
+/* -------------------------------------
+    功能: 转换字符串编码(UTF-8->EUC-JP)
+    参数: $string(string) 字符串 
+    返回值: 转换后的字符串(string) 
+------------------------------------ */
   function ds_convert_Ajax($string) {
     return mb_convert_encoding($string,'UTF-8','EUC-JP');
   }
 
+/* -------------------------------------
+    功能: 获得商品数量的乘积
+    参数: $cnt(int) 乘积值 
+    参数: $pid(int) 商品id 
+    返回值: 商品数量的乘积(string) 
+------------------------------------ */
   function tep_get_full_count2($cnt, $pid){
     $p = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
     
@@ -1502,6 +1742,13 @@ function forward404Unless($condition)
     . number_format($p['products_attention_1_3'] * $cnt) 
     . ')';
   }
+/* -------------------------------------
+    功能: 获得商品数量的乘积
+    参数: $cnt(int) 乘积值 
+    参数: $pid(int) 商品id 
+    参数: $flag(boolean) 是否显示乘积值 
+    返回值: 商品数量的乘积(string) 
+------------------------------------ */
   function tep_get_full_count_in_order2($cnt, $pid,$flag=false){
     $p = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
     if($flag){
@@ -1512,6 +1759,12 @@ function forward404Unless($condition)
     }
   }
   
+/* -------------------------------------
+    功能: 获得商品的选择时间
+    参数: $product_ids(array) 乘积值 
+    参数: $select_name(string) select的名字 
+    返回值: 选择时间(string) 
+------------------------------------ */
   function tep_get_torihiki_select_by_products($product_ids = null,$select_name='')
   {
     $torihiki_list = array();
@@ -1529,13 +1782,17 @@ function forward404Unless($condition)
     }
   }
   
+/* -------------------------------------
+    功能: 获得商品的选择时间
+    参数: $product_ids(array) 乘积值 
+    返回值: 选择时间(array/null) 
+------------------------------------ */
   function tep_get_torihiki_by_products($product_ids = null)
   {
     $option_types = array();
     if ($product_ids) {
       $sql = "select * from `" . TABLE_PRODUCTS . "` where products_id IN (" . implode(',', $product_ids) . ")";
     
-      // ccdd
     $product_query = tep_db_query($sql);
     while($product = tep_db_fetch_array($product_query)){
       $option_types[] = $product['option_type'];
@@ -1562,7 +1819,11 @@ function forward404Unless($condition)
     }
   }
   
-  // return all types with options
+/* -------------------------------------
+    功能: 获得选择时间的相关信息
+    参数: 无 
+    返回值: 选择时间的相关信息(array) 
+------------------------------------ */
   function tep_get_torihiki_houhou()
   {
     $types = $return = array();
@@ -1578,6 +1839,11 @@ function forward404Unless($condition)
     return $return;
   }
   
+/* -------------------------------------
+    功能: 获得选择时间的详细信息
+    参数: 无 
+    返回值: 选择时间的详细信息(array) 
+------------------------------------ */
   function tep_get_option_array()
   {
       $return = array();
@@ -1591,11 +1857,15 @@ function forward404Unless($condition)
       return $return;
   }
   
+/* -------------------------------------
+    功能: 获得无用的分类
+    参数: 无 
+    返回值: 分类的数组(array) 
+------------------------------------ */
   function tep_get_disabled_categories()
   {
     $categories_ids = array();
     $categories = array();
-    // ccdd
   $categories_query = tep_db_query("select * from (select c.parent_id, cd.site_id, cd.categories_status, c.categories_id from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd  where c.categories_id = cd.categories_id order by site_id DESC) c  where site_id = ".SITE_ID." or site_id = 0 group by categories_id");
   while($category = tep_db_fetch_array($categories_query)){
     if($category['categories_status']){
@@ -1620,6 +1890,11 @@ function forward404Unless($condition)
   return $categories_ids;
   }
   
+/* -------------------------------------
+    功能: 获得无用的分类
+    参数: 无 
+    返回值: 分类的信息(string) 
+------------------------------------ */
   function tep_not_in_disabled_categories()
   {
     static $disabled_categories_ids = null;
@@ -1633,9 +1908,13 @@ function forward404Unless($condition)
     }
   }
   
+/* -------------------------------------
+    功能: 获得无用的商品
+    参数: 无 
+    返回值: 无用的商品的数组(array) 
+------------------------------------ */
   function tep_get_disabled_products(){
     $products_ids = array();
-    // ccdd 
     $products_query = tep_db_query("select p.products_id from `" . TABLE_CATEGORIES . "` c," . TABLE_PRODUCTS . " p, "  . TABLE_PRODUCTS_TO_CATEGORIES . " p2c where p.products_id = p2c.products_id and p2c.categories_id = c.categories_id and c.categories_id in".tep_not_in_disabled_categories());
   while($product = tep_db_fetch_array($products_query)){
     $products_ids[] = $product['products_id'];
@@ -1643,6 +1922,11 @@ function forward404Unless($condition)
   return $products_ids;
   }
 
+/* -------------------------------------
+    功能: 获得无用的商品
+    参数: 无 
+    返回值: 商品的信息(string) 
+------------------------------------ */
   function tep_not_in_disabled_products()
   {
     static $disabled_products_ids = null;
@@ -1656,34 +1940,57 @@ function forward404Unless($condition)
     }
   }
   
+/* -------------------------------------
+    功能: 判断该商品是否为买取
+    参数: $products_id(int) 商品id 
+    返回值: 商品是否为买取(string) 
+------------------------------------ */
   function tep_get_bflag_by_product_id($product_id) {
     // 0 => sell   1 => buy
-    // ccdd
     $product_query = tep_db_query("select products_bflag from " . TABLE_PRODUCTS . " where products_id = '" . (int)$product_id . "'");
     $product = tep_db_fetch_array($product_query);
 
     return $product['products_bflag'];
   }
 
+/* -------------------------------------
+    功能: 判断该商品的cflag标识
+    参数: $products_id(int) 商品id 
+    返回值: cflag标识(string) 
+------------------------------------ */
   function tep_get_cflag_by_product_id($product_id) {
     // 0 => no   1=> yes
-    // ccdd
     $product_query = tep_db_query("select products_cflag from " . TABLE_PRODUCTS . " where products_id = '" . (int)$product_id . "'");
     $product = tep_db_fetch_array($product_query);
 
     return $product['products_cflag'];
   }
 
+/* -------------------------------------
+    功能: 获得文件头名字
+    参数: $filename(string) 文件名 
+    返回值: 文件名(string) 
+------------------------------------ */
   function tep_get_filename($filename){
     $arr = explode('.', $filename);
     return $arr[0];
   }
   
+/* -------------------------------------
+    功能: 获得常量的值
+    参数: $const_name(string) 常量的名字 
+    返回值 : 常量的值(string) 
+------------------------------------ */
   function tep_get_value_by_const_name($const_name) {
     eval('$value = ' . $const_name . ';');
     return $value;
   }
 
+/* -------------------------------------
+    功能: html的头部
+    参数: 无 
+    返回值: html的头部(string) 
+------------------------------------ */
   function page_head(){
     global $HTTP_GET_VARS, $request_type, $breadcrumb;
     $title       = C_TITLE;
@@ -2287,6 +2594,11 @@ if($_SERVER['HTTPS'] == 'on'){
 <?php
   }
 
+/* -------------------------------------
+    功能: 获得生产商的meta的信息 
+    参数: $manufacturers_id(int) 生产商id 
+    返回值: meta的信息(array) 
+------------------------------------ */
   function tep_get_metas_by_manufacturers_id($manufacturers_id)
   {
         //Step 1. Construct the general Query!
@@ -2320,7 +2632,6 @@ if($_SERVER['HTTPS'] == 'on'){
         }
         
         //Step 3. Extract the info from the DB
-        // ccdd
         $metaQueryResult = tep_db_query ( $metaQuery );
         
         $metaProductsNames = array();
@@ -2398,7 +2709,12 @@ if($_SERVER['HTTPS'] == 'on'){
           'description' => $metaDescription
         );
   }
-  // checkout_confirmation.php
+
+/* -------------------------------------
+    功能: 获得用-符号分割的日期 
+    参数: $string(string) 日期字符串 
+    返回值: 处理后的年月日(string) 
+------------------------------------ */
   function str_string($string='') {
     if(ereg("-", $string)) {
     $string_array = explode("-", $string);
@@ -2415,7 +2731,11 @@ if($_SERVER['HTTPS'] == 'on'){
   }
   }*/
   // checkout_process.php
-  # Random
+/* -------------------------------------
+    功能: 获得指定长度的数字随机数 
+    参数: $len(int) 随机数长度 
+    返回值: 随机数(string) 
+------------------------------------ */
   function ds_makeRandStr( $len=2 ) {
 
     $strElem = "0123456789";
@@ -2435,10 +2755,11 @@ if($_SERVER['HTTPS'] == 'on'){
     return $retStr;
 
   }
-// download.php
-// Returns a random name, 16 to 20 characters long
-// There are more than 10^28 combinations
-// The directory is "hidden", i.e. starts with '.'
+/* -------------------------------------
+    功能: 获得随机长度的随机字母组成的字符串 
+    参数: 无 
+    返回值: 随机字符串(string) 
+------------------------------------ */
 function tep_random_name()
 {
   $letters = 'abcdefghijklmnopqrstuvwxyz';
@@ -2450,9 +2771,11 @@ function tep_random_name()
   }
   return $dirname;
 }
-// download.php
-// Unlinks all subdirectories and files in $dir
-// Works only on one subdir level, will not recurse
+/* -------------------------------------
+    功能: 删除指定目录下的文件以及该目录 
+    参数: $dir(string) 目录路径 
+    返回值: 无 
+------------------------------------ */
 function tep_unlink_temp_dir($dir)
 {
   $h1 = opendir($dir);
@@ -2472,7 +2795,13 @@ function tep_unlink_temp_dir($dir)
   }
   closedir($h1);
 }
-// ggsitemap.php
+
+/* -------------------------------------
+    功能: 获得cPath路径 
+    参数: $id(int) 数组的键值
+    参数: $categories(array) 分类的信息
+    返回值: 路径(string) 
+------------------------------------ */
   function get_cPath($id, $categories)
   {
       if($categories[$id]['parent_id'] == '0'){
@@ -2481,7 +2810,15 @@ function tep_unlink_temp_dir($dir)
         return ($categories[$categories[$id]['parent_id']]['parent_id'] == 0 ? $categories[$categories[$id]['parent_id']]['categories_id'] : $categories[$categories[$id]['parent_id']]['parent_id'].'_'.$categories[$categories[$id]['parent_id']]['categories_id']) . '_' . $categories[$id]['categories_id'];
       }
   }
-// ggsitemap.php
+
+/* -------------------------------------
+    功能: rss的url信息 
+    参数: $loc(string) url值
+    参数: $lastmod(string) 上次访问时间
+    参数: $changefreq(string) 改变频率
+    参数: $priority(string) 优先级
+    返回值: rss部分信息(string) 
+------------------------------------ */
   function gg_url($loc, $lastmod = null, $changefreq = 'daily', $priority = 0.3)
   {
 ?>
@@ -2493,9 +2830,15 @@ function tep_unlink_temp_dir($dir)
   </url>
 <?php
   }
-// present_confirmation.php
+
+/* -------------------------------------
+    功能: 获得区域列表 
+    参数: $name(string) 下拉框的名字
+    参数: $selected(string) 默认值 
+    参数: $country_code(string) 国家代码
+    返回值: 区域列表(string) 
+------------------------------------ */
       function tep_get_zone_list2($name, $selected = '', $country_code = '107') {
-        // ccdd
         $zones_query = tep_db_query("select zone_name, zone_id from ".TABLE_ZONES." where zone_country_id = '107' order by zone_code");
         $string = '<select name="'.$name.'">';
         while ($zones_values = tep_db_fetch_array($zones_query)) {
@@ -2507,7 +2850,12 @@ function tep_unlink_temp_dir($dir)
         return $string;
       }  
 
-// Get Categories_image & subcategories_name
+/* -------------------------------------
+    功能: 获得该商品所在的分类的名字 
+    参数: $products_id(int) 商品id
+    参数: $return(boolean) 返回类型
+    返回值: 分类的名字(string) 
+------------------------------------ */
   function ds_tep_get_categories($products_id, $return) {
     global $languages_id;
   
@@ -2516,7 +2864,6 @@ function tep_unlink_temp_dir($dir)
   
   if($return == 1) {
     //返回一级分类的图像
-    // ccdd
     $categories_query = tep_db_query("
         select categories_name
         from ".TABLE_CATEGORIES_DESCRIPTION." 
@@ -2529,7 +2876,6 @@ function tep_unlink_temp_dir($dir)
     $creturn = $categories['categories_name'];
   } elseif($return == 2) {
     //返回二级分类名
-    // ccdd
     $categories_query = tep_db_query("
       select categories_name 
       from ".TABLE_CATEGORIES_DESCRIPTION." 
@@ -2546,13 +2892,15 @@ function tep_unlink_temp_dir($dir)
   return $creturn;
   }
 
-////
-// Get Point
+/* -------------------------------------
+    功能: 获得该商品的点数 
+    参数: $products_id(int) 商品id
+    返回值: 返回的点数(int) 
+------------------------------------ */
   function ds_tep_get_point_value($products_id) {
   if ($new_price = tep_get_products_special_price($products_id)) {
     $price = $new_price;
   } else {
-    // ccdd
     $query = tep_db_query("select products_price from ".TABLE_PRODUCTS." where products_id = '".$products_id."'");
     $result = tep_db_fetch_array($query);
     $price = $result['products_price'];
@@ -2564,8 +2912,12 @@ function tep_unlink_temp_dir($dir)
   return $point_value;
   }
 
-////
-// Options stock check
+/* -------------------------------------
+    功能: 检查是否超库存 
+    参数: $options_stock(int) 库存数
+    参数: $orders_quantity(int) 所要数量 
+    返回值: string 
+------------------------------------ */
   function tep_check_opstock($options_stock, $orders_quantity) {
     $stock_left = $options_stock - $orders_quantity;
     $out_of_stock = '';
@@ -2577,17 +2929,24 @@ function tep_unlink_temp_dir($dir)
     return $out_of_stock;
   }
 
-////
-// 存在买取商品吗？
+/* -------------------------------------
+    功能: 是否存在买取商品 
+    参数: 无 
+    返回值: 是否存在买取商品(string/boolean) 
+------------------------------------ */
   function ds_count_bflag() {
     global $cart;
     return $cart->show_total() < 0 ? 'View' : false;
   }
   
-////
-// 调查库存  
+/* -------------------------------------
+    功能: 通过商品的数量以及是否买取返回相应的信息 
+    参数: $pID(int) 商品id
+    参数: $qty(int) 数量
+    参数: $string(string) 信息 
+    返回值: 相应的信息(string) 
+------------------------------------ */
   function ds_replace_plist($pID, $qty, $string) {
-    // ccdd
     $query = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".(int)tep_get_prid($pID)."'");
     $result = mysql_fetch_array($query);
   
@@ -2604,6 +2963,14 @@ function tep_unlink_temp_dir($dir)
     }
   }
 
+/* -------------------------------------
+    功能: 通过分类id返回其相关信息 
+    参数: $cid(int) 分类id
+    参数: $site_id(int) 网站id 
+    参数: $lid(int) 语言id 
+    参数: $default(boolean) 是否返回默认数据 
+    返回值: 分类的相关信息(array) 
+------------------------------------ */
   function tep_get_category_by_id($cid, $site_id, $lid, $default = true){
     $sql = "
         select c.categories_id,
@@ -2641,6 +3008,16 @@ function tep_unlink_temp_dir($dir)
     return $category;
   }
 
+/* -------------------------------------
+    功能: 通过商品id返回其相关信息 
+    参数: $pid(int) 商品id
+    参数: $site_id(int) 网站id 
+    参数: $lid(int) 语言id 
+    参数: $default(boolean) 是否返回默认数据 
+    参数: $page(string) 指定页面 
+    参数: $show(boolean) 是否显示关闭数据 
+    返回值: 商品的相关信息(array) 
+------------------------------------ */
   function tep_get_product_by_id($pid,$site_id, $lid, $default = true,$page='', $show=false){ 
     if ($default) {
     $sql = "
@@ -2772,6 +3149,13 @@ function tep_unlink_temp_dir($dir)
       }
     }
 */
+/* -------------------------------------
+    功能: 商品描述是否存在 
+    参数: $pid(int) 商品id
+    参数: $sid(int) 网站id 
+    参数: $lid(int) 语言id 
+    返回值: 描述是否存在(boolean) 
+------------------------------------ */
     function tep_products_description_exist($pid, $sid, $lid){
       $query = tep_db_query("
           select * 
@@ -2786,9 +3170,11 @@ function tep_unlink_temp_dir($dir)
       }
     }
 
-  //function tep_module_installed(){
-  //}
-
+/* -------------------------------------
+    功能: 获得faq的分类的信息 
+    参数: $c_id(int) id
+    返回值: faq的分类的信息(array/false) 
+------------------------------------ */
   function tep_get_faq_categories($c_id){
     $query = tep_db_query("
         select * 
@@ -2798,6 +3184,11 @@ function tep_unlink_temp_dir($dir)
     return tep_db_fetch_array($query);
   }
 
+/* -------------------------------------
+    功能: 获得faq的问题的信息 
+    参数: $q_id(int) id
+    返回值: faq的问题的信息(array/false) 
+------------------------------------ */
   function tep_get_faq_questions($q_id){
     $query = tep_db_query("
         select * 
@@ -2807,6 +3198,11 @@ function tep_unlink_temp_dir($dir)
     return tep_db_fetch_array($query);
   }
 
+/* -------------------------------------
+    功能: 获得faq的分类的信息 
+    参数: $g_id(int) id
+    返回值: faq的分类的信息(array) 
+------------------------------------ */
   function tep_get_faq_categories_by_g_id($g_id){
     $categories = array();
     $query = tep_db_query("
@@ -2820,6 +3216,11 @@ function tep_unlink_temp_dir($dir)
     return $categories;
   }
 
+/* -------------------------------------
+    功能: 获得faq的问题的信息 
+    参数: $c_id(int) id
+    返回值: faq的问题的信息(array) 
+------------------------------------ */
   function  tep_get_questions_by_c_id($c_id){
     $questions = array();
     $query = tep_db_query("
@@ -2850,6 +3251,11 @@ function tep_unlink_temp_dir($dir)
     return $buying_fee; 
   }
 */
+/* -------------------------------------
+    功能: 判断订单是否完成 
+    参数: $osid(int) 订单状态id
+    返回值: 订单是否完成(boolean) 
+------------------------------------ */
 function tep_orders_status_finished($osid){
     $query = tep_db_query("
         select * 
@@ -2860,7 +3266,11 @@ function tep_orders_status_finished($osid){
     return isset($os['finished']) && $os['finished'];
 }
 
-
+/* -------------------------------------
+    功能: 根据url获得rss内容 
+    参数: $url(string) 网站地址
+    返回值: rss内容(string) 
+------------------------------------ */
   function tep_get_rss($url){
 
     $input_arr = array();
@@ -2901,6 +3311,11 @@ function tep_orders_status_finished($osid){
     return $input_arr;
   }
   
+/* -------------------------------------
+    功能: 获得该分类的rss数据 
+    参数: $cid(int) 分类id
+    返回值: 分类的rss数据(string) 
+------------------------------------ */
   function tep_get_categories_rss($cid){
     $rss = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CATEGORIES_RSS." where categories_id='".$cid."'"));
     if($rss && isset($rss['categories_rss']) && $rss['categories_rss']){
@@ -2910,6 +3325,12 @@ function tep_orders_status_finished($osid){
     }
   }
 
+/* -------------------------------------
+    功能: 获得该分类下的字节点的信息 
+    参数: $parent_id(int) 分类id
+    参数: $languages_id(int) 语言id 
+    返回值: 字节点的信息(array) 
+------------------------------------ */
   function tep_get_categories_by_parent_id($parent_id, $languages_id = 4) {
     $categories = array();
 
@@ -2933,6 +3354,13 @@ function tep_orders_status_finished($osid){
     }
     return $categories;
   }
+
+/* -------------------------------------
+    功能: 是否显示警告 
+    参数: $categories_id(int) 分类id
+    参数: $languages_id(int) 语言id 
+    返回值: 显示警告(string/boolean) 
+------------------------------------ */
 function tep_show_warning($categories_id, $languages_id = 4) {
   $categories_query = tep_db_query("select * from (select c.categories_id, c.parent_id, cd.categories_status, cd.site_id, cd.categories_name, c.sort_order from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id = cd.categories_id and cd.language_id = '".$languages_id."' and c.categories_id = '".$categories_id."' order by site_id DESC) c where site_id = '".SITE_ID."' or site_id = 0 group by categories_id order by sort_order, categories_name");
   $categories = tep_db_fetch_array($categories_query);
@@ -2949,13 +3377,22 @@ function tep_show_warning($categories_id, $languages_id = 4) {
   }
 }
 
+/* -------------------------------------
+    功能: 获得跟该商品所关联的分类id 
+    参数: $products_id(int) 商品id
+    返回值: 关联的分类id(string) 
+------------------------------------ */
 function tep_get_products_categories_id($products_id) {
   $query = tep_db_query("select * from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . $products_id . "'");
   $c = tep_db_fetch_array($query);
   return $c['categories_id'];
 }
 
-
+/* -------------------------------------
+    功能: 获得该商品的特价 
+    参数: $products_id(int) 商品id
+    返回值: 商品的特价(float/boolean) 
+------------------------------------ */
 function tep_get_products_special_price($product_id) {
   $product_query = tep_db_query("select * from " . TABLE_PRODUCTS . " where products_id = '" . (int)$product_id . "'");
   $product = tep_db_fetch_array($product_query);
@@ -2963,6 +3400,13 @@ function tep_get_products_special_price($product_id) {
   return tep_get_special_price($product['products_price'], $product['products_price_offset'], $product['products_small_sum']);
 }
 
+/* -------------------------------------
+    功能: 获得该商品的特价 
+    参数: $price(float) 价格
+    参数: $offset(string) 间隔值 
+    参数: $sum(string) 折扣 
+    返回值: 商品的特价(float/boolean) 
+------------------------------------ */
 function tep_get_special_price($price, $offset, $sum = '') {
   if ($price && $sum) {
     $lprice = $price;
@@ -2979,6 +3423,14 @@ function tep_get_special_price($price, $offset, $sum = '') {
   }
 }
 
+/* -------------------------------------
+    功能: 获得该商品的价格 
+    参数: $price(float) 价格
+    参数: $offset(string) 间隔值 
+    参数: $sum(string) 折扣 
+    参数: $bflag(int) 是否为买取 
+    返回值: 商品的价格(float) 
+------------------------------------ */
 function tep_get_price ($price, $offset, $sum = '', $bflag = 0) {
   if ($price && $sum) {
     $hprice = $price;
@@ -2995,6 +3447,14 @@ function tep_get_price ($price, $offset, $sum = '', $bflag = 0) {
   }
 }
 
+/* -------------------------------------
+    功能: 获得该商品的最终价格 
+    参数: $price(float) 价格
+    参数: $offset(string) 间隔值 
+    参数: $sum(string) 折扣 
+    参数: $quantity(int) 数量 
+    返回值: 商品的最终价格(float) 
+------------------------------------ */
 function tep_get_final_price($price, $offset, $sum, $quantity) {
   if ($price && $sum) {
     $lprice = $price;
@@ -3017,6 +3477,11 @@ function tep_get_final_price($price, $offset, $sum, $quantity) {
   }
 }
 
+/* -------------------------------------
+    功能: 获得该商品的价格信息 
+    参数: $products_id(int) 商品id 
+    返回值: 商品的价格信息(array) 
+------------------------------------ */
 function tep_get_products_price ($products_id) {
   $product_query = tep_db_query("select * from " . TABLE_PRODUCTS . " where products_id = '" . (int)$products_id . "'");
   $product = tep_db_fetch_array($product_query);
@@ -3033,7 +3498,11 @@ function tep_get_products_price ($products_id) {
   }
 }
 
-
+/* -------------------------------------
+    功能: 获得折扣信息 
+    参数: $small_num(string) 折扣字符串 
+    返回值: 折扣信息(array) 
+------------------------------------ */
 function tep_get_wari_array_by_sum($small_sum) {
   $wari_array = array();
   if(tep_not_null($small_sum)) {
@@ -3062,6 +3531,13 @@ function calculate_special_price($price, $offset) {
   return $special;
 }*/
 
+/* -------------------------------------
+    功能: 计算特价 
+    参数: $price(float) 价格 
+    参数: $offset(string) 折扣值 
+    参数: $bflag(int) 是否为买取 
+    返回值: 特价(float) 
+------------------------------------ */
 function calculate_special_price($price, $offset, $bflag = 0) {
   $price = (float) $price;
   $offset = trim($offset);
@@ -3085,7 +3561,11 @@ function calculate_special_price($price, $offset, $bflag = 0) {
   return $special;
 }
 
-// 代替触发器
+/* -------------------------------------
+    功能: 更新订单状态 
+    参数: $orders_status_id(int) 订单状态id 
+    返回值: 无 
+------------------------------------ */
 function orders_status_updated($orders_status_id) {
   $orders_status = tep_db_fetch_array(tep_db_query("select * from orders_status where orders_status_id='".$orders_status_id."'"));
   tep_db_query("
@@ -3093,7 +3573,11 @@ function orders_status_updated($orders_status_id) {
   ");
 }
 
-// 代替存储过程
+/* -------------------------------------
+    功能: 更新订单相关信息 
+    参数: $orders_id(int) 订单id 
+    返回值: 无 
+------------------------------------ */
 function orders_updated($orders_id) {
   tep_db_query("update ".TABLE_ORDERS." set language_id = ( select language_id from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
   tep_db_query("update ".TABLE_ORDERS." set finished = ( select finished from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
@@ -3102,10 +3586,21 @@ function orders_updated($orders_id) {
   tep_db_query("update ".TABLE_ORDERS_PRODUCTS." set torihiki_date = ( select torihiki_date from ".TABLE_ORDERS." where orders.orders_id=orders_products.orders_id ) where orders_id='".$orders_id."'");
 }
 
+/* -------------------------------------
+    功能: 替换网站名字 
+    参数: $str(string) 字符串 
+    返回值: 替换后的文字(string) 
+------------------------------------ */
 function replace_store_name($str) {
   return str_replace('#STORE_NAME#', STORE_NAME, $str);
 }
 
+/* -------------------------------------
+    功能: 获得该分类下的子分类 
+    参数: $categories_id(int) 分类id 
+    参数: $languages_id(int) 语言id 
+    返回值: 子分类(array) 
+------------------------------------ */
 function tep_get_categories_id_by_parent_id($categories_id, $languages_id = 4) {
   $arr = array();
   $categories = tep_get_categories_by_parent_id($categories_id, $languages_id);
@@ -3115,6 +3610,11 @@ function tep_get_categories_id_by_parent_id($categories_id, $languages_id = 4) {
   return $arr;
 }
 
+/* -------------------------------------
+    功能: 获得该订单的总价 
+    参数: $orders_id(int) 订单id 
+    返回值: 总价(string) 
+------------------------------------ */
 function tep_get_ot_total($orders_id)
 {
   $ot = tep_db_fetch_array(tep_db_query("
@@ -3126,10 +3626,20 @@ function tep_get_ot_total($orders_id)
   return $ot['text'];
 }
 
+/* -------------------------------------
+    功能: 显示正值的数量 
+    参数: $quantity(int) 数量 
+    返回值: 正值的数量(int) 
+------------------------------------ */
 function tep_show_quantity($quantity) {
   return $quantity > 0 ? $quantity : 0;
 }
 
+/* -------------------------------------
+    功能: 添加rmt标识 
+    参数: $name(string) 名字 
+    返回值: 处理后的字符串(string) 
+------------------------------------ */
 function tep_add_rmt($name) {
   if (!strpos($name, 'RMT')){
     return $name . ' RMT';
@@ -3137,6 +3647,11 @@ function tep_add_rmt($name) {
   return $name;
 }
 
+/* -------------------------------------
+    功能: 根据指定格式判断$_SERVER['REQUEST_URI']是否标准 
+    参数: $p(string) 规则 
+    返回值: 无 
+------------------------------------ */
 function check_uri($p) {
   //print_r($_SERVER['REQUEST_URI']);
   if (preg_match($p, $_SERVER['REQUEST_URI'])) {
@@ -3144,6 +3659,11 @@ function check_uri($p) {
   }
 }
 
+/* -------------------------------------
+    功能: 获得url的网站名 
+    参数: $url(string) 网站地址 
+    返回值: 网站名(string/boolean) 
+------------------------------------ */
 function tep_get_domain($url)
 {
   if (preg_match('/https?:\/\/([^\/?]*)/', $url, $out)) {
@@ -3153,11 +3673,20 @@ function tep_get_domain($url)
   }
 }
 
-//LAST_CUSTOMER_ACTION
+/* -------------------------------------
+    功能: 更新顾客最新下订单时间 
+    参数: 无 
+    返回值: 无 
+------------------------------------ */
 function last_customer_action() {
   tep_db_query("update ".TABLE_CONFIGURATION." set configuration_value=now() where configuration_key='LAST_CUSTOMER_ACTION'");
 }
 
+/* -------------------------------------
+    功能: 把全角转为半角 
+    参数: $str(string) 字符串 
+    返回值: 处理后的字符串(string) 
+------------------------------------ */
 function SBC2DBC($str) {
   $arr = array(
     'Ａ','Ｂ','Ｃ','Ｄ','Ｅ','Ｆ','Ｇ','Ｈ','Ｉ','Ｊ','Ｋ','Ｌ','Ｍ','Ｎ','Ｏ','Ｐ','Ｑ','Ｒ','Ｓ','Ｔ','Ｕ','Ｖ','Ｗ','Ｘ','Ｙ','Ｚ',
@@ -3176,14 +3705,16 @@ function SBC2DBC($str) {
   return str_replace($arr, $arr2, $str);
 }
 
-
-
+/* -------------------------------------
+    功能: 根据分类id获得该分类的罗马字 
+    参数: $cpath(string) 分类路径 
+    返回值: 分类的罗马字(string) 
+------------------------------------ */
 function tep_get_romaji_cpath($cpath)
 {
     global $languages_id;
 
     if (empty($language)) $language = $languages_id;
-    //ccdd
     $queryString = "
         select `romaji` 
         from " .  TABLE_CATEGORIES_DESCRIPTION . "
@@ -3196,6 +3727,14 @@ function tep_get_romaji_cpath($cpath)
     $category = tep_db_fetch_array($category_query);
     return $category['romaji'];
 }
+
+/* -------------------------------------
+    功能: 根据商品的罗马字查询商品id 
+    参数: $romaji(string) 罗马字 
+    参数: $categories_id(int) 分类id 
+    参数: $single(boolean) 是否取默认数据 
+    返回值: 分类的罗马字(string/int) 
+------------------------------------ */
 function tep_get_pid_by_romaji($romaji, $categories_id = 0, $single = false) {
   global $languages_id;
   if (empty($language)){
@@ -3272,13 +3811,19 @@ function tep_get_pid_by_romaji($romaji, $categories_id = 0, $single = false) {
   return $product['products_id'];
   }
 }
+
+/* -------------------------------------
+    功能: 根据分类的罗马字获取分类id 
+    参数: $cname(string) 罗马字 
+    参数: $parent_id(int) 父分类id 
+    返回值: 分类id(string) 
+------------------------------------ */
 function tep_get_cpath_by_cname($cname, $parent_id = 0)
 {
   global $languages_id;
   if (empty($language)){
     $language = $languages_id;
   }
-  //ccdd
   $queryString = "
       select cd.`categories_id` 
       from " .  TABLE_CATEGORIES . " c, " .  TABLE_CATEGORIES_DESCRIPTION . " cd
@@ -3293,6 +3838,12 @@ function tep_get_cpath_by_cname($cname, $parent_id = 0)
   return $category['categories_id'];
 }
 
+/* -------------------------------------
+    功能: 根据商品id获取所在的分类信息 
+    参数: $pid(int) 商品id 
+    参数: $romaji(boolean) 是否返回罗马字 
+    返回值: 分类信息(array) 
+------------------------------------ */
 function tep_get_categories_by_pid($pid,$romaji=true)
 {
   static $romaji_arr = array();
@@ -3335,7 +3886,12 @@ function tep_get_categories_by_pid($pid,$romaji=true)
   }
   return array_reverse($categories);
 }
-// 根据产品id返回分类id
+
+/* -------------------------------------
+    功能: 根据商品id获取其直接关联的分类id
+    参数: $pid(int) 商品id 
+    返回值: 分类信息(array) 
+------------------------------------ */
 function tep_get_categories_by_products_id($pid){
   $carr = array();
   $query = tep_db_query("select * from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id='".$pid."'");
@@ -3348,7 +3904,11 @@ function tep_get_categories_by_products_id($pid){
   }
   return $carr;
 }
-//返回该产品的url文字
+/* -------------------------------------
+    功能: 根据商品id获取其罗马字
+    参数: $id(int) 商品id 
+    返回值: 罗马字(string/int) 
+------------------------------------ */
 function tep_get_romaji_by_pid($id)
 {
   //return $id;
@@ -3366,13 +3926,22 @@ function tep_get_romaji_by_pid($id)
   }
 }
 
+/* -------------------------------------
+    功能: 获得商品的乘积率
+    参数: $pid(int) 商品id 
+    返回值: 信息(string) 
+------------------------------------ */
 function tep_get_products_rate($pid) {
   $n = str_replace(',','',tep_get_full_count_in_order2(1, $pid));
   preg_match_all('/(\d+)/',$n,$out);
   return $out[1][0];
 }
   
-
+/* -------------------------------------
+    功能: 判断url里是否有指定字符 
+    参数: $url(string) url 
+    返回值: 是否符合规则(string/boolean) 
+------------------------------------ */
 function tep_get_google_adsense_adurl($url) {
   /*
   $arr = parse_url($url);
@@ -3402,7 +3971,11 @@ function tep_get_google_adsense_adurl($url) {
   }
 }
 
-// id 子域名解析专用
+/* -------------------------------------
+    功能: 子域名解析专用 
+    参数: 无 
+    返回值: (无/boolean) 
+------------------------------------ */
 function tep_parseURI()
 {
   if (defined('URL_SUB_SITE_ENABLED') && URL_SUB_SITE_ENABLED) {
@@ -3458,7 +4031,12 @@ function tep_parseURI()
       unset($temp_cname);
       $_GET['cPath'] = $firstId;
     }
-
+    /* -----------------------------------------------------
+    case 'firstFolder' 一级分类
+    case 'secondFolder' 二级分类
+    case 'product' 产品页
+    case 'x' 其他
+    -----------------------------------------------------*/
     switch($router){
     case 'firstFolder':
       $firstFolder = substr($subSiteUri,1);
@@ -3547,6 +4125,13 @@ function tep_parseURI()
         $router = $tmp_router; 
       }
     }
+    /* -----------------------------------------------------
+    case 'firstFolder' 一级分类
+    case 'secondFolder' 二级分类
+    case 'thirdFolder' 三级分类
+    case 'product' 产品页
+    case 'x' 其他
+    -----------------------------------------------------*/
     switch($router){
     case 'firstFolder':
     case 'secondFolder':
@@ -3597,6 +4182,11 @@ function tep_parseURI()
   }
 }
 
+/* -------------------------------------
+    功能: 根据分类数组获得一级分类的信息 
+    参数: $cPath_array(array) 分类信息 
+    返回值: 一级分类信息(array) 
+------------------------------------ */
 function tep_get_top_category_by_cpath($cPath_array)
 {
   if (!empty($cPath_array)) {
@@ -3606,6 +4196,11 @@ function tep_get_top_category_by_cpath($cPath_array)
   return '';
 }
 
+/* -------------------------------------
+    功能: 判断该分类状态是否为黑色 
+    参数: $category_id(int) 分类id 
+    返回值: 是否黑色(boolean) 
+------------------------------------ */
 function tep_check_black_category($category_id)
 {
   $category_query = tep_db_query("select * from ".TABLE_CATEGORIES_DESCRIPTION." where (site_id = '0' or site_id = '".SITE_ID."') and categories_id = '".(int)$category_id."' order by site_id desc limit 1");
@@ -3619,6 +4214,11 @@ function tep_check_black_category($category_id)
   return false;
 }
 
+/* -------------------------------------
+    功能: 判断该商品是否为黑色 
+    参数: $products_id(int) 商品id 
+    返回值: 是否黑色(boolean) 
+------------------------------------ */
 function tep_check_black_product($products_id)
 {
   $product_query = tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where (site_id = '0' or site_id = '".SITE_ID."') and products_id = '".(int)$products_id."' order by site_id desc limit 1");
@@ -3631,6 +4231,11 @@ function tep_check_black_product($products_id)
   return false;
 }
 
+/* -------------------------------------
+    功能: 判断该商品是否为显示 
+    参数: $products_id(int) 商品id 
+    返回值: 是否显示(boolean) 
+------------------------------------ */
 function tep_whether_show_products($products_id)
 {
   $product_query = tep_db_query("select products_status from ".TABLE_PRODUCTS_DESCRIPTION." where (site_id ='0' or site_id = '".SITE_ID."') and products_id = '".(int)$products_id."' order by site_id desc limit 1");
@@ -3665,6 +4270,11 @@ function tep_whether_show_products($products_id)
   return false;
 }
   
+/* -------------------------------------
+    功能: 获得网站的罗马字 
+    参数: $id(int) 网站id 
+    返回值: 罗马字(string) 
+------------------------------------ */
 function tep_get_site_romaji_by_id($id){
     //static $arr;
     if ($id == 0){
@@ -3691,7 +4301,11 @@ function tep_get_site_romaji_by_id($id){
     #return isset($site['romaji'])?$site['romaji']:'';
 }
 
-// 根据pid数据取得提醒商品
+/* -------------------------------------
+    功能: 获得提醒商品 
+    参数: $pid(array) 商品id 
+    返回值: 提醒商品的id(array) 
+------------------------------------ */
 function tep_get_cart_products($pid){
   if (empty($pid)) {
     $pid = array(0); 
@@ -3718,7 +4332,11 @@ function tep_get_cart_products($pid){
   return $arr;
 }
 
-// 根据shopping_cart中商品集取到商品id数组
+/* -------------------------------------
+    功能: 根据shopping_cart中商品集取到商品id数组 
+    参数: $products(array) 商品信息 
+    返回值: 商品的id(array) 
+------------------------------------ */
 function tep_get_products_by_shopiing_cart($products){
   $arr = array();
   foreach ($products as $p) {
@@ -3727,16 +4345,12 @@ function tep_get_products_by_shopiing_cart($products){
   return $arr;
 }
 
-
-/**
- * Send HTTP POST Request
- *
- * @param string  The API method name
- * @param string  The POST Message fields in &name=value pair format
- * @return  array Parsed HTTP Response body
- */
-
-
+/* -------------------------------------
+    功能: 根据shopping_cart中其他商品 
+    参数: $pid(array) 商品id
+    参数: $cid_arr(array) 分类id
+    返回值: 商品的id(array) 
+------------------------------------ */
 function tep_get_cart_other_products($pid, $cid_arr){
   $pid_str = join(',', $pid);
   if (empty($pid_str)) {
@@ -3766,7 +4380,11 @@ function tep_get_cart_other_products($pid, $cid_arr){
   }
   return $arr;
 }
-  // product_info 显示个数
+/* -------------------------------------
+    功能: product_info 显示个数 
+    参数: $str(string) 数值信息
+    返回值: 处理后的数值信息(string) 
+------------------------------------ */
   function tep_display_attention_1_32($str) {
     $str2 = $str;
     if (strlen($str) > 8) {
@@ -3781,7 +4399,11 @@ function tep_get_cart_other_products($pid, $cid_arr){
     }
   }
 
-  // product_info 显示个数
+/* -------------------------------------
+    功能: product_info 显示个数 
+    参数: $str(string) 数值信息
+    返回值: 处理后的数值信息(string) 
+------------------------------------ */
   function tep_display_attention_1_3($str) {
     $str2 = $str;
     if (strlen($str) > 8) {
@@ -3810,6 +4432,11 @@ function tep_get_cart_other_products($pid, $cid_arr){
     }
   }
   
+/* -------------------------------------
+    功能: 分割评论的描述(当全是数字时，每24个字符一换行) 
+    参数: $desc(string) 评论描述
+    返回值: 处理后的描述(string) 
+------------------------------------ */
 function  tep_show_review_des($desc) {
   if (preg_match('/^[0-9]+$/', $desc)) {
     $i = 1; 
@@ -3827,6 +4454,12 @@ function  tep_show_review_des($desc) {
   }
 }
 
+/* -------------------------------------
+    功能: 获得该分类所关联的所有分类 
+    参数: $categories_id(int) 分类id
+    参数: $languages_id(int) 语言id
+    返回值: 关联分类数组(array) 
+------------------------------------ */
 function tep_other_get_categories_id_by_parent_id($categories_id, $languages_id = 4) {
   $arr = array();
   $categories = tep_get_categories_by_parent_id($categories_id, $languages_id);
@@ -3840,6 +4473,11 @@ function tep_other_get_categories_id_by_parent_id($categories_id, $languages_id 
   return $arr;
 }
 
+/* -------------------------------------
+    功能: 判断购物车里是否只有买取商品 
+    参数: 无
+    返回值: 是否只有买取商品(boolean) 
+------------------------------------ */
 function tep_only_buy_product(){
   global $cart;
   foreach($cart->get_products() as $p){
@@ -3849,6 +4487,12 @@ function tep_only_buy_product(){
   }
   return true;
 }
+
+/* -------------------------------------
+    功能: 判断购物车里是否只有贩卖商品 
+    参数: 无
+    返回值: 是否只有贩卖商品(boolean) 
+------------------------------------ */
 function tep_only_sell_product(){
   global $cart;
   foreach($cart->get_products() as $value){
@@ -3860,6 +4504,11 @@ function tep_only_sell_product(){
 
 }
   
+/* -------------------------------------
+    功能: 获得该分类下的所有子节点 
+    参数: $parent_id(int) 父节点id 
+    返回值: 子节点(array) 
+------------------------------------ */
 function tep_get_all_subcategories($parent_id) 
 {
     $subcategories_array = array();
@@ -3875,6 +4524,12 @@ function tep_get_all_subcategories($parent_id)
     return $subcategories_array;
 }
 
+/* -------------------------------------
+    功能: 判断分类的罗马字和给的罗马字是否一样 
+    参数: $cPath(string) 分类路径 
+    参数: $cName(string) 分类罗马字 
+    返回值: 是否一样 (boolean) 
+------------------------------------ */
 function tep_check_exists_category($cPath, $cName)
 {
   $cpath_arr = explode('_', $cPath);
@@ -3891,7 +4546,11 @@ function tep_check_exists_category($cPath, $cName)
   return false;
 }
 
-
+/* -------------------------------------
+    功能: 获得指定长度的大小写字母的随机字符串 
+    参数: $length(int) 字符长度 
+    返回值: 随机字符串(string) 
+------------------------------------ */
 function tep_get_random_ac_code($length = 10)
 {
   $letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
@@ -3904,6 +4563,13 @@ function tep_get_random_ac_code($length = 10)
   return $return_str;
 }
 
+/* -------------------------------------
+    功能: 判断除了指定客户以外的该邮箱是否存在 
+    参数: $email_address(string) 邮箱地址 
+    参数: $customer_id(int) 客户id 
+    参数: $ctype(int) 类型 
+    返回值: 是否存在(boolean) 
+------------------------------------ */
 function tep_check_exists_cu_email($email_address, $customer_id, $ctype)
 {
    $customers_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id != '".$customer_id."' and site_id = '".SITE_ID."' and customers_email_address = '".$email_address."'");
@@ -3912,9 +4578,15 @@ function tep_check_exists_cu_email($email_address, $customer_id, $ctype)
    }
    return false;
 }
+
+/* -------------------------------------
+    功能: 根据faq的罗马字获得其分类id 
+    参数: $cname(string) 罗马字 
+    参数: $parent_id(int) 父结点 
+    返回值: 分类id(int) 
+------------------------------------ */
 function tep_get_faq_cpath_by_cname($cname, $parent_id = 0)
 {
-  //ccdd
   $queryString = "
       select cd.`faq_category_id` 
       from " .  TABLE_FAQ_CATEGORIES . " c, " .  TABLE_FAQ_CATEGORIES_DESCRIPTION . " cd
@@ -3956,6 +4628,12 @@ function tep_get_faq_cpath_by_cname($cname, $parent_id = 0)
 
   }
 }
+
+/* -------------------------------------
+    功能: 获得faq的分类信息 
+    参数: $c_id(int) 分类id 
+    返回值: 分类信息(array) 
+------------------------------------ */
 function tep_get_faq_category_info($c_id){
   $sql = "select * from ".TABLE_FAQ_CATEGORIES." fc ,"
          .TABLE_FAQ_CATEGORIES_DESCRIPTION." fcd 
@@ -3966,6 +4644,12 @@ function tep_get_faq_category_info($c_id){
   $query = tep_db_query($sql);
   return tep_db_fetch_array($query);
 }
+
+/* -------------------------------------
+    功能: 获得faq的问题信息 
+    参数: $q_id(int) 问题id 
+    返回值: 问题信息(array) 
+------------------------------------ */
 function tep_get_faq_question_info($q_id){
   $sql = "select * from ".TABLE_FAQ_QUESTION." fq ,"
          .TABLE_FAQ_QUESTION_DESCRIPTION." fqd 
@@ -3976,6 +4660,13 @@ function tep_get_faq_question_info($q_id){
   $query = tep_db_query($sql);
   return tep_db_fetch_array($query);
 }
+
+/* -------------------------------------
+    功能: 根据罗马字获得faq问题的id 
+    参数: $qname(string) 问题的罗马字 
+    参数: $qpath(int) 分类id 
+    返回值: 问题id(int) 
+------------------------------------ */
 function tep_get_faq_qid_by_qname($qname,$qpath){
    $sql = "select * from ".TABLE_FAQ_QUESTION." fq,
         ".TABLE_FAQ_QUESTION_DESCRIPTION." fqd,
@@ -4020,6 +4711,13 @@ function tep_get_faq_qid_by_qname($qname,$qpath){
    return $question['faq_question_id'];
  }
 }
+
+/* -------------------------------------
+    功能: 获取faq问题于分类关联表的信息 
+    参数: $qid(int) 问题id 
+    参数: $cath(int) 分类id 
+    返回值: 信息(mixed) 
+------------------------------------ */
 function tep_question_in_category_by_id($qid,$cid){
   $pro_to_ca_query = tep_db_query("select * from ".TABLE_FAQ_QUESTION_TO_CATEGORIES." 
       where faq_category_id = '".$cid."'
@@ -4027,9 +4725,14 @@ function tep_question_in_category_by_id($qid,$cid){
   return tep_db_fetch_array($pro_to_ca_query);
 }
 
+/* -------------------------------------
+    功能: 随机获取指定条数的评论信息 
+    参数: $query(string) 评论的sql 
+    参数: $limit_num(int) 条数 
+    返回值: 评论信息(array) 
+------------------------------------ */
 function tep_reviews_random_select($query, $limit_num) {
   $random_product = array();
-  // ccdd
   $random_query = tep_db_query($query);
   $num_rows = tep_db_num_rows($random_query);
   if ($num_rows > 0) {
@@ -4048,7 +4751,14 @@ function tep_reviews_random_select($query, $limit_num) {
 
   return $random_product;
 }
-function   tep_order_status_change($oID,$status){
+
+/* -------------------------------------
+    功能: 订单的确认支付时间或者订单等待标识更新 
+    参数: $oID(int) 订单id 
+    参数: $status(int) 状态id 
+    返回值: 无 
+------------------------------------ */
+function tep_order_status_change($oID,$status){
   require_once("oa/HM_Form.php");
   require_once("oa/HM_Group.php");
   require_once("oa/HM_Item_Checkbox.php");
@@ -4082,6 +4792,12 @@ function   tep_order_status_change($oID,$status){
       }
     }}
   }
+
+/* -------------------------------------
+    功能: 判断订单的类型 
+    参数: $oID(int) 订单id 
+    返回值: 订单的类型(int 注：1为贩卖 2为买取 3为混合) 
+------------------------------------ */
   function tep_check_order_type($oID)
   {
     $sql = "  SELECT avg( products_bflag ) bflag FROM orders_products op, products p  WHERE 1 AND p.products_id = op.products_id AND op.orders_id = '".$oID."'";
@@ -4099,12 +4815,24 @@ function   tep_order_status_change($oID,$status){
 
   }
 
+/* -------------------------------------
+    功能: 获得该订单的支付方法 
+    参数: $oID(int) 订单id 
+    返回值: 支付方法(string) 
+------------------------------------ */
   function tep_get_payment_code_by_order_id($oID)
   {
     $orders_raw = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$oID."'");
     $orders_res = tep_db_fetch_array($orders_raw);
     return $orders_res['payment_method'];
   }
+
+/* -------------------------------------
+    功能: 获取mysql的fetch对象 
+    参数: $result(object) 结果集 
+    参数: $classname(string) 类名字 
+    返回值: 对象信息(obj) 
+------------------------------------ */
   function tep_db_fetch_object($result, $classname = '')
   {
     if (empty($classname)) {
@@ -4113,6 +4841,11 @@ function   tep_order_status_change($oID,$status){
     return mysql_fetch_object($result, $classname); 
   }
 
+/* -------------------------------------
+    功能: 生成订单id最后两位 
+    参数: 无 
+    返回值: 信息(string) 
+------------------------------------ */
 function tep_get_order_end_num() 
 {
   $last_orders_raw = tep_db_query("select * from ".TABLE_ORDERS." order by orders_id desc limit 1"); 
@@ -4131,6 +4864,12 @@ function tep_get_order_end_num()
   
   return '01';
 }
+
+/* -------------------------------------
+    功能: 生成预约商品的确保时间下拉列表 
+    参数: $product_id(int) 商品id 
+    返回值: 列表的html(string) 
+------------------------------------ */
   function tep_get_torihiki_select_by_pre_products($product_id)
   {
     $torihiki_list = array();
@@ -4144,13 +4883,17 @@ function tep_get_order_end_num()
     return tep_draw_pull_down_menu('ensure_deadline', $torihiki_list, $torihikihouhou);
   }
   
+/* -------------------------------------
+    功能: 生成预约商品的时间选择信息 
+    参数: $product_id(int) 商品id 
+    返回值: 时间选择信息(array/null) 
+------------------------------------ */
   function tep_get_torihiki_by_pre_products($product_id)
   {
     $option_types = array();
     if ($product_id) {
       $sql = "select * from `" . TABLE_PRODUCTS . "` where products_id = '".  $product_id . "'";
     
-      // ccdd
     $product_query = tep_db_query($sql);
     while($product = tep_db_fetch_array($product_query)){
       $option_types[] = $product['option_type'];
@@ -4177,6 +4920,13 @@ function tep_get_order_end_num()
     }
   }
  
+/* -------------------------------------
+    功能: 创建游客 
+    参数: $email(string) 邮箱地址 
+    参数: $last_anme(string) 姓  
+    参数: $first_name(string) 名 
+    返回值: 客户id(int) 
+------------------------------------ */
 function tep_create_tmp_guest($email, $last_name, $first_name)
 { 
   
@@ -4218,6 +4968,11 @@ function tep_create_tmp_guest($email, $last_name, $first_name)
     return $customer_id; 
 }
 
+/* -------------------------------------
+    功能: 更新预约订单相关信息 
+    参数: $orders_id(int) 订单id 
+    返回值: 无 
+------------------------------------ */
 function preorders_updated($orders_id) {
   tep_db_query("update ".TABLE_PREORDERS." set language_id = ( select language_id from ".TABLE_PREORDERS_STATUS." where preorders_status.orders_status_id=preorders.orders_status ) where orders_id='".$orders_id."'");
   tep_db_query("update ".TABLE_PREORDERS." set finished = ( select finished from ".TABLE_PREORDERS_STATUS." where preorders_status.orders_status_id=preorders.orders_status ) where orders_id='".$orders_id."'");
@@ -4226,6 +4981,15 @@ function preorders_updated($orders_id) {
   tep_db_query("update ".TABLE_PREORDERS_PRODUCTS." set torihiki_date = ( select torihiki_date from ".TABLE_PREORDERS." where preorders.orders_id=preorders_products.orders_id ) where orders_id='".$orders_id."'");
 }
   
+/* -------------------------------------
+    功能: 创建预约订单 
+    参数: $pInfo(array) 预约信息 
+    参数: $preorder_id(int) 预约id 
+    参数: $cid(int) 顾客id 
+    参数: $tmp_cid(int) 游客id 
+    参数: $exists_single(boolean) 是否有已有的名字 
+    返回值: 无 
+------------------------------------ */
 function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $exists_single = false) 
 {
    global $currency, $currencies, $payment_modules, $languages_id; 
@@ -4281,7 +5045,6 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
   ");
   $shipping_address = tep_db_fetch_array($shipping_address_query);
   
-  // ccdd
   $billing_address_query = tep_db_query("
       select ab.entry_firstname, ab.entry_lastname, ab.entry_firstname_f, ab.entry_lastname_f, ab.entry_telephone, ab.entry_company, ab.entry_street_address, ab.entry_suburb, ab.entry_postcode, ab.entry_city, ab.entry_zone_id, z.zone_name, ab.entry_country_id, c.countries_id, c.countries_name, c.countries_iso_code_2, c.countries_iso_code_3, c.address_format_id, ab.entry_state 
       from " . TABLE_ADDRESS_BOOK . " ab left join " . TABLE_ZONES . " z on (ab.entry_zone_id = z.zone_id) left join " . TABLE_COUNTRIES . " c on (ab.entry_country_id = c.countries_id) 
@@ -4441,6 +5204,11 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
    }
 }
 
+/* -------------------------------------
+    功能: 生成预约订单号的后两位数字 
+    参数: 无 
+    返回值: 两位数字(string) 
+------------------------------------ */
 function tep_get_preorder_end_num() 
 {
   $last_orders_raw = tep_db_query("select * from ".TABLE_PREORDERS." order by orders_id desc limit 1"); 
@@ -4504,10 +5272,20 @@ function preorder_get_mail_string($payment_code, $mailoption) {
   return $mailstring;
 }
 */
+/* -------------------------------------
+    功能: 更新顾客最新下预约订单时间 
+    参数: 无 
+    返回值: 无 
+------------------------------------ */
 function preorder_last_customer_action() {
   tep_db_query("update ".TABLE_CONFIGURATION." set configuration_value=now() where configuration_key='PREORDER_LAST_CUSTOMER_ACTION'");
 }
 
+/* -------------------------------------
+    功能: 是否显示预约的支付方法 
+    参数: $limit_setting(string) 在会员显示还是游客显示的设定 
+    返回值: 是否显示(boolean) 
+------------------------------------ */
 function tep_whether_show_preorder_payment($limit_setting) {
   $payment_arr = unserialize($limit_setting);  
   
@@ -4579,6 +5357,11 @@ function tep_whether_show_preorder_payment($limit_setting) {
   return true;
 }
 
+/* -------------------------------------
+    功能: 通过GET获得的信息取得商品id 
+    参数: 无 
+    返回值: 商品id(int/boolean) 
+------------------------------------ */
 function tep_preorder_get_products_id_by_param()
 {
    global $languages_id;
@@ -4632,6 +5415,13 @@ function tep_preorder_get_products_id_by_param()
    
    return false;
 }
+
+/* -------------------------------------
+    功能: 生成时间信息的html元素  
+    参数: $start_time(string) 开始时间 
+    参数: $radio_name(string) 元素名字 
+    返回值: html元素(string) 
+------------------------------------ */
 function tep_get_torihiki_date_radio($start_time,$radio_name="torihiki_time"){
   $arr = array();
   $time_str = date('H:i',$start_time);
@@ -4736,6 +5526,11 @@ function tep_get_address_by_cid_aid($customers_id, $address_id = 1, $html = fals
     return $res_arr;
   }
  */
+/* -------------------------------------
+    功能: 获得该订单的商品id 
+    参数: $oid(string) 订单id 
+    返回值: 商品id(array) 
+------------------------------------ */
   function tep_get_products_list_by_order_id($oid){
   $sql = "select * from " . TABLE_ORDERS_PRODUCTS . " where orders_id
     = '" . $oid. "'";
@@ -4789,17 +5584,29 @@ function tep_get_graph_value_info()
   return $axis_value_array;
 }
 */
-//３１号删掉{{
+/* -------------------------------------
+    功能: 是否显示支付方法 
+    参数: 无 
+    返回值: 是否显示(boolean) 
+------------------------------------ */
 function tep_whether_show_payment(){
   return true;
 }
+/* -------------------------------------
+    功能: 是否金额超值 
+    参数: 无 
+    返回值: 是否超值(boolean) 
+------------------------------------ */
 function check_money_limit() {
   return false;
 }
-//}}
 
 
-//统一的输出 
+/* -------------------------------------
+    功能: 输出支付方法 
+    参数: $is_show(boolean) 是否增加html元素 
+    返回值: 支付方法html(string) 
+------------------------------------ */
 function tep_payment_out_selection($is_show = false){
 global $selection;
 global $payment_modules;
@@ -4908,7 +5715,11 @@ if (isset($_SESSION['campaign_fee'])) {
 <?php
   }
 
-
+/* -------------------------------------
+    功能: 判断该顾客是否是会员 
+    参数: $customer_id(int) 顾客id 
+    返回值: 是否是会员(boolean) 
+------------------------------------ */
 function tep_is_member_customer($customer_id){
   $sql = "select customers_guest_chk from ".TABLE_CUSTOMERS." 
     where customers_id='".$customer_id."' 
@@ -4923,6 +5734,11 @@ function tep_is_member_customer($customer_id){
   }
 }
 
+/* -------------------------------------
+    功能: 过滤优惠券信息 
+    参数: $c_str(string) 优惠券信息 
+    返回值: 过滤后的信息(string) 
+------------------------------------ */
 function get_strip_campaign_info($c_str)
 {
   $c_str = str_replace('　', '', $c_str);
@@ -4946,6 +5762,13 @@ function get_strip_campaign_info($c_str)
   return $c_str;
 }
 
+/* -------------------------------------
+    功能: 在预约转正式的最终确认页获得小计，总价等相关信息 
+    参数: $payment(string) 支付方法 
+    参数: $pid(string) 预约订单id 
+    参数: $option_info_array(array) 预约订单的属性 
+    返回值: 相关信息(array) 
+------------------------------------ */
 function get_preorder_total_info($payment, $pid, $option_info_array) 
 {
   global $payment_modules;
@@ -5036,6 +5859,13 @@ function get_preorder_total_info($payment, $pid, $option_info_array)
   return $preorder_total_info;
 }
 
+/* -------------------------------------
+    功能: 获得属性的价格 
+    参数: $item_id(int) 属性元素id 
+    参数: $group_id(int) 属性组id 
+    参数: $att_value(string) 属性值 
+    返回值: 属性价格(float) 
+------------------------------------ */
 function tep_get_show_attributes_price($item_id, $group_id, $att_value) 
 {
   $item_raw = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".$item_id."' and group_id = '".$group_id."'"); 
@@ -5073,6 +5903,11 @@ function tep_get_show_attributes_price($item_id, $group_id, $att_value)
   return 0;
 }
 
+/* -------------------------------------
+    功能: 判断购物车里的商品是否有登录属性 
+    参数: 无 
+    返回值: 是否有登录属性(boolean) 
+------------------------------------ */
 function tep_check_also_products_attr()
 {
    global $cart, $hm_option;
@@ -5098,6 +5933,11 @@ function tep_check_also_products_attr()
    return $return_single;
 }
 
+/* -------------------------------------
+    功能: 判断该顾客重置标识是否为真 
+    参数: $id(int) 顾客id 
+    返回值: 是否为真(boolean) 
+------------------------------------ */
 function tep_customer_in_reset_range($id){
   $sql = "select reset_flag from ".TABLE_CUSTOMERS_INFO." 
     where customers_Info_Id ='".$id."'";
@@ -5105,8 +5945,12 @@ function tep_customer_in_reset_range($id){
   $query = tep_db_fetch_array($query);
   return $query['reset_flag']==1;	 
 }
+/* -------------------------------------
+    功能: 替换顾客邮件指定参数 
+    参数: $msg(string) 邮件信息 
+    返回值: 处理后的信息(string) 
+------------------------------------ */
 function tep_get_replaced_reset_msg($msg){
-//	 todo :fix it
   $customer_id = $_SESSION['reset_customers_id'];
   $c_sql = "select * from ".TABLE_CUSTOMERS." where customers_id='".
     $customer_id."' limit 1 ";
@@ -5137,6 +5981,11 @@ function tep_get_replaced_reset_msg($msg){
 	 
 }
 
+/* -------------------------------------
+    功能: 获得弹出层的url 
+    参数: 无 
+    返回值: url地址(string) 
+------------------------------------ */
 function tep_get_popup_url(){
   $customer_id = $_SESSION['reset_customers_id'];
   $c_sql = "select * from ".TABLE_CUSTOMERS." where customers_id='".
@@ -5149,6 +5998,12 @@ function tep_get_popup_url(){
     return '';
   }
 }
+
+/* -------------------------------------
+    功能: 替换商品描述的指定元素 
+    参数: $string(string) 商品描述 
+    返回值: 处理后的信息(string) 
+------------------------------------ */
 function tep_replace_product_des($string){
   if(preg_match('|<td>(([^<]*)(<b>)*[^<]*(</b>)*[^<]*)</td><td>([^<]*)</td><td>([^<]*(<b>)*[^<]*(</b>)*[^<]*)</td>|',
   $string)){
@@ -5158,6 +6013,12 @@ function tep_replace_product_des($string){
   }
   return str_replace('<td','<td valign="top" ',$string);
 }
+
+/* -------------------------------------
+    功能: 把全角的数字和字母替换成半角 
+    参数: $c_str(string) 字符串 
+    返回值: 替换后的字符串(string) 
+------------------------------------ */
 function tep_replace_all_full_character($c_str)
 {
   $arr = array(
@@ -5176,6 +6037,11 @@ function tep_replace_all_full_character($c_str)
   $c_str = str_replace($arr, $arr2, $c_str);
   return $c_str;
 }
+/* -------------------------------------
+    功能: 判断该图片是否存在 
+    参数: $src(string) 图片路径 
+    返回值: 是否存在(boolean) 
+------------------------------------ */
 function file_exists3($src) {
   if(substr(DIR_FS_CATALOG,-1)=='/'){
     $fs_catalog = DIR_FS_CATALOG;
@@ -5190,12 +6056,22 @@ function file_exists3($src) {
   return file_exists($src);
   }
 
-
+/* -------------------------------------
+    功能: 转换回车字符 
+    参数: $string(string) 字符串 
+    返回值: 处理后的字符串(string) 
+------------------------------------ */
 function new_nl2br($string) {
   $string = str_replace(array("\r\n", "\r", "\n"), "<br>", $string);
   return $string;
 } 
 
+/* -------------------------------------
+    功能: 缓存已购买页的信息 
+    参数: $auto_expire(boolean) 是否自动过期 
+    参数: $refresh(boolean) 是否刷新 
+    返回值: 缓存页的信息(string) 
+------------------------------------ */
   function tep_cache_also_purchaseds($auto_expire = false, $refresh = false) {
     global $_GET, $language, $languages_id;
 
@@ -5209,6 +6085,12 @@ function new_nl2br($string) {
 
     return $cache_output;
   }
+
+/* -------------------------------------
+    功能: 显示支付方法的html 
+    参数: 无 
+    返回值: 支付方法的html(string) 
+------------------------------------ */
 function tep_payment_out_selections(){
 global $selection;
 global $payment_modules;
@@ -5327,6 +6209,11 @@ if (isset($_SESSION['campaign_fee'])) {
   }
 ?>
 <?php
+/* -------------------------------------
+    功能: 显示最终确认金额的信息 
+    参数: 无 
+    返回值: 确认金额的信息的html(string) 
+------------------------------------ */
 function outputs() {
       global $order;
       global $cart;
@@ -5411,7 +6298,11 @@ function outputs() {
       return $output_string;
     }
 
-
+/* -------------------------------------
+    功能: 把GET获得的信息整理成url的参数  
+    参数: $exclude_array(string/array) 不包括的参数名 
+    返回值: url的参数(string) 
+------------------------------------ */
 function tep_get_all_get_param($exclude_array = '') {
     global $_GET;
 
@@ -5430,7 +6321,15 @@ function tep_get_all_get_param($exclude_array = '') {
     return $get_url;
   }
 
-
+/* -------------------------------------
+    功能: 分页html  
+    参数: $query_numrows(int) 总行数 
+    参数: $max_rows_per_page(int) 每页显示行数 
+    参数: $max_page_links(int) 显示的页数 
+    参数: $current_page_number(int) 当前页数 
+    参数: $parameters(string) 其它参数 
+    返回值: 分页的html(string) 
+------------------------------------ */
  function display_linkst($query_numrows, $max_rows_per_page, $max_page_links, $current_page_number, $parameters = '') {
       global $PHP_SELF;
       $class = 'class="pageResults"';
@@ -5585,7 +6484,11 @@ function tep_get_all_get_param($exclude_array = '') {
       echo '<input type="button" onclick="jump_page(\''.$jump_page_name.'\', \''.$cu_self.'\', \''.urlencode($parameters).'\', \''.$jump_query_str.'\', '.$tag_page_single.', '.$total_pg.');" value="'.JUMP_PAGE_BUTTON_TEXT.'">';
     }
 
-
+/* -------------------------------------
+    功能: 获得订单地址 
+    参数: $oid(string) 订单id 
+    返回值: 订单地址(string) 
+------------------------------------ */
 function tep_get_orders_address($oid){
   $sql = "SELECT ao.value FROM ".TABLE_ADDRESS_ORDERS." ao 
     right join ".TABLE_ADDRESS." a
@@ -5605,6 +6508,11 @@ function tep_get_orders_address($oid){
   return mb_substr($address_str,0,17,'UTF-8');
 }
 
+/* -------------------------------------
+    功能: 检测商品是否缺失属性 
+    参数: $check_type(boolean) 是否检测登录后的商品属性 
+    返回值: 是否缺失(boolean) 
+------------------------------------ */
 function tep_check_less_product_option($check_type = false)
 {
   global $cart;
@@ -5784,6 +6692,11 @@ function tep_check_less_product_option($check_type = false)
   return $return_array;
 }
 
+/* -------------------------------------
+    功能: 检测商品预约是否缺失属性 
+    参数: 无 
+    返回值: 是否缺失(boolean) 
+------------------------------------ */
 function tep_pre_check_less_product_option($products_id)
 {
   $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>"); 
@@ -5887,7 +6800,12 @@ function tep_pre_check_less_product_option($products_id)
   return false;
 }
 
-//检查前台预约的option不足
+/* -------------------------------------
+    功能: 检查前台预约的商品属性是否缺失 
+    参数: $op_info_array(array) 属性信息 
+    参数: $products_id(int) 商品id 
+    返回值: 是否缺失(boolean) 
+------------------------------------ */
 function tep_pre_check_less_product_option_by_products_info($op_info_array, $products_id) 
 {
   $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>"); 
@@ -5998,4 +6916,15 @@ function tep_order_transaction_status($status_id)
     return true;
   }
   return false;
+}
+
+/* -------------------------------------
+    功能: 获取订单完成标识 
+    参数: $orders_id(int) 订单id 
+    返回值: 完成标识(string) 
+ ------------------------------------ */
+function tep_orders_transaction_finished($orders_id) 
+{
+  $order = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS." where orders_id='".$orders_id."'"));
+  return $order['flag_qaf'];
 }
