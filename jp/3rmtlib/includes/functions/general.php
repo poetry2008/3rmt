@@ -6902,3 +6902,29 @@ function tep_pre_check_less_product_option_by_products_info($op_info_array, $pro
   }
   return false;
 }
+
+/* -------------------------------------
+    功能: 检查该状态是否取消 
+    参数: $status_id(int) 状态id 
+    返回值: 是否取消(boolean) 
+ ------------------------------------ */
+function tep_order_transaction_status($status_id)
+{
+  $order_status_raw = tep_db_query("select is_cancle from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$status_id."'");
+  $order_status = tep_db_fetch_array($order_status_raw);
+  if ($order_status['is_cancle'] == '1') {
+    return true;
+  }
+  return false;
+}
+
+/* -------------------------------------
+    功能: 获取订单完成标识 
+    参数: $orders_id(int) 订单id 
+    返回值: 完成标识(string) 
+ ------------------------------------ */
+function tep_orders_transaction_finished($orders_id) 
+{
+  $order = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS." where orders_id='".$orders_id."'"));
+  return $order['flag_qaf'];
+}
