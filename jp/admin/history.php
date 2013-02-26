@@ -20,10 +20,12 @@ charset=<?php echo CHARSET; ?>">
   <script language="javascript" src="includes/javascript/jquery.js"></script>
   <script type="text/javascript" src="includes/javascript/udlr.js"></script>
   <script language="javascript" >
+    <?php //跳转页面?> 
     function goto(){
       var link = document.getElementById('back_link').href;
       location.href=link;
     }
+    <?php //删除数据提示?> 
     function delete_one_data(){
       return confirm('<?php echo TEXT_OK_TO_DELETE; ?>');
     }
@@ -99,7 +101,7 @@ $(function() {
         }
     });
 });
-
+<?php //交换数据?>
 function ex(id,tr_len){
   tr_len = tr_len+1;
   for(exi=1;exi<tr_len;exi++){
@@ -181,6 +183,14 @@ require("includes/note_js.php");
   <?php
   $back_url = 'cleate_dougyousya.php'; 
 switch ($HTTP_GET_VARS['action']){
+/* -----------------------------------------------------
+   case 'oroshi' 批发商的历史记录     
+   case 'oroshi_c' 批发商的指定分类的历史记录    
+   case 'd_submit' 更新同行指定分类数据   
+   case 'dougyousya' 获取该同行关联的分类 
+   case 'deletePoint' 删除该历史记录    
+   case 'dougyousya_categories' 显示同行分类价格页面    
+------------------------------------------------------*/
 case 'oroshi':
   $back_url = 'cleate_oroshi.php'; 
   $oid = $_GET['o_id'];
@@ -576,6 +586,7 @@ case 'dougyousya_categories':
       }
     }
     ?>
+    <?php //获得最近的日期?> 
     function get_last_date() {
       for(i in last_history){
         for(j in last_history[i]){
@@ -583,6 +594,7 @@ case 'dougyousya_categories':
         }
       }
     }
+    <?php //获得在该行最近的日期?> 
     function get_last_date_line(i) {
       for(j in last_history[i]){
         $('#ti_'+i+'_'+j).val(last_history[i][j]);

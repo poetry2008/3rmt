@@ -2,6 +2,13 @@
 require('includes/application_top.php');
 if(isset($_GET['action'])){
   switch ($_GET['action']){
+/* -----------------------------------------------------
+   case 'updateoaorder' 更新oa组在表单里的序号  
+   case 'updategrouporder' 更新oa组的序号   
+   case 'updateitemorder' 更新oa元素的序号   
+   case 'getTime' 获得当前时间   
+   case 'finish' 更新预约订单完成标识 
+------------------------------------------------------*/
   case 'updateoaorder':
     $id = $_GET['id'];
     $order = substr($_GET['order'],1);

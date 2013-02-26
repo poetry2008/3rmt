@@ -6,6 +6,13 @@
   
   if (isset($_GET['action'])) {
     switch ($_GET['action']) {
+/* -----------------------------------------------------
+   case 'checkname' 检查名字是否唯一    
+   case 'insert' 新建组    
+   case 'update' 更新组    
+   case 'del' 删除组    
+   case 'link_group' 把组和表单关联    
+------------------------------------------------------*/
     case 'checkname':
       $oa_group =  tep_db_query('select count(*) cnt from '.TABLE_OA_GROUP.' where name="'.$_GET['name'].'"');
       //      die('select count(*) cnt from '.TABLE_OA_GROUP.' where name="'.$_GET['name'].'"');
@@ -60,6 +67,7 @@
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script type="text/javascript">
+<?php //全选/反选?>
 function select_all_group()
 {
    var chk_flag = document.selt_group.allgroup.checked;
@@ -113,7 +121,7 @@ $belong = str_replace($pcode_array[1][0],urlencode($pcode_array[1][0]),$belong);
           if ($_GET['action'] == 'edit') { 
           ?>
 <script type='text/javascript'>
-
+    <?php //排序?>
     function editorder (ele){
     x = $(ele).parent().parent();      
     oid = x.attr('id').substr(1);
@@ -149,6 +157,7 @@ $belong = str_replace($pcode_array[1][0],urlencode($pcode_array[1][0]),$belong);
                                        );
 
   }
+<?php //更新序号值?>
 function ajaxUpdate(id,order){
   $.ajax({
   url: "oa_ajax.php",
@@ -204,7 +213,7 @@ function ajaxUpdate(id,order){
           <?php echo TEXT_SELECT_GROUP_READ;?> 
           <?php echo tep_draw_form('selt_group', FILENAME_OA_GROUP, 'pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&action=link_group');?> 
 <script type='text/javascript'>
-
+    <?php //排序?>
     function editorder (ele){
     x = $(ele).parent().parent();      
     oid = x.attr('id').substr(1);
@@ -240,6 +249,7 @@ function ajaxUpdate(id,order){
                                        );
 
   }
+<?php //更新序号值?>
 function ajaxUpdate(id,order){
   $.ajax({
   url: "oa_ajax.php",
@@ -326,7 +336,7 @@ if ($g_num % 2 == 0) {
             ?>
             </table>
 <script type='text/javascript'>
-
+                <?php //检查是否选择?>
                 function checkclicked(){
 
                 var couldSubmit = false;

@@ -6,6 +6,13 @@
   
   if (isset($_GET['action'])) {
     switch ($_GET['action']) {
+/* -----------------------------------------------------
+   case 'checkname' 检查名字是否唯一    
+   case 'insert' 新建组    
+   case 'update' 更新组    
+   case 'del' 删除组    
+   case 'link_group' 把组和表单关联    
+------------------------------------------------------*/
     case 'checkname':
       if (isset($_GET['gid'])) {
         $oa_group =  tep_db_query('select count(*) cnt from '.TABLE_OA_GROUP.' where
@@ -83,7 +90,7 @@
               $(".oa_bg").hover(function(){if(!($(this).hasClass('dataTableRowSelected'))){$(this).removeClass('oa_bg').addClass('dataTableRowOver')}},function(){ if(!$(this).hasClass('dataTableRowSelected')){$(this).removeClass('dataTableRowOver').addClass('oa_bg')}});
 		});
 
-
+<?php //全选/反选?>
 function select_all_group()
 {
    var chk_flag = document.selt_group.allgroup.checked;
@@ -198,7 +205,7 @@ $belong = str_replace($pcode_array[1][0],urlencode($pcode_array[1][0]),$belong);
                 }
                 ?>
 <script type='text/javascript'>
-
+          <?php //检查名字是否存在?>
           function checkexist()
           {
             if ($('input|[name=gname]').val().length==0){
@@ -246,7 +253,7 @@ $belong = str_replace($pcode_array[1][0],urlencode($pcode_array[1][0]),$belong);
           ?>
 <script type='text/javascript'>
 
-
+    <?php //排序?>
     function editorder (ele){
     x = $(ele).parent().parent();      
     oid = x.attr('id').substr(1);
@@ -282,6 +289,7 @@ $belong = str_replace($pcode_array[1][0],urlencode($pcode_array[1][0]),$belong);
                                        );
 
   }
+<?php //更新序号值?>
 function ajaxUpdate(id,order){
   $.ajax({
   url: "oa_ajax.php",
@@ -344,7 +352,7 @@ function ajaxUpdate(id,order){
           ?>
           <?php echo tep_draw_form('selt_group', FILENAME_OA_GROUP, 'pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&action=link_group');?> 
 <script type='text/javascript'>
-
+    <?php //排序?>
     function editorder (ele){
     x = $(ele).parent().parent();      
     oid = x.attr('id').substr(1);
@@ -380,6 +388,7 @@ function ajaxUpdate(id,order){
                                        );
 
   }
+<?php //更新序号值?>
 function ajaxUpdate(id,order){
   $.ajax({
   url: "oa_ajax.php",

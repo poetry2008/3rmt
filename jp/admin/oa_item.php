@@ -4,6 +4,11 @@
 */
   require('includes/application_top.php');
   require_once('enableditem.php');
+/* -------------------------------------
+    功能: 过滤post的提交信息 
+    参数: 无 
+    返回值: 过滤后的信息(array) 
+ ------------------------------------ */
 function prepareInsert()
 {
         $na_list_arr = array(); 
@@ -43,10 +48,20 @@ function prepareInsert()
         $option_info_arr['eid'] = $_GET['eid'];        
         return $option_info_arr;
 }
+/* -------------------------------------
+    功能: 判读是否空值 
+    参数: $value(string) 字符串 
+    返回值: 是否空值(boolean) 
+ ------------------------------------ */
 function filter_trim_empty($value){
   $value = trim($value);
   return !empty($value);
 }
+/* -------------------------------------
+    功能: 新建元素 
+    参数: 无 
+    返回值: 无 
+ ------------------------------------ */
 function insertItem()
 {
          $belong = $_GET['belong'];
@@ -69,6 +84,11 @@ function insertItem()
           }
           tep_db_free_result($notes_query);
 }
+/* -------------------------------------
+    功能: 删除元素 
+    参数: 无 
+    返回值: 无 
+ ------------------------------------ */
 function deleteItem()
 {
   $item_info_raw = tep_db_query("select * from ".TABLE_OA_ITEM." where id = '".$_GET['eid']."'"); 
@@ -83,6 +103,11 @@ function deleteItem()
   tep_db_query("delete from ".TABLE_OA_ITEM." where id = '".$_GET['eid']."'"); 
   tep_db_query("delete from ".TABLE_OA_FORMVALUE." where item_id = '".$_GET['eid']."'"); 
 }
+/* -------------------------------------
+    功能: 更新元素 
+    参数: 无 
+    返回值: 无 
+ ------------------------------------ */
 function updateItem()
 {
   
@@ -103,6 +128,11 @@ $origin_form_raw = tep_db_query("select * from ".TABLE_OA_FORM." where payment_r
 
   if (isset($_GET['action'])) {
     switch ($_GET['action']) {
+/* -----------------------------------------------------
+   case 'insert' 新建元素     
+   case 'update' 更新元素     
+   case 'del' 删除元素      
+------------------------------------------------------*/
       case 'insert':
         insertItem();
         tep_redirect(tep_href_link(FILENAME_OA_GROUP, 'action=edit&gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'])); 
@@ -165,6 +195,7 @@ $(document).ready(function() {
     }
   });
 });
+<?php //改变元素类型?>
 function change_item_type()
 {
   $.ajax({
@@ -201,6 +232,7 @@ $(document).ready(function() {
     }
   });
 });
+<?php //改变元素类型?>
 function change_item_type()
 {
   $.ajax({
@@ -216,11 +248,13 @@ function change_item_type()
 <?php
 }
 ?>
+<?php //添加一行?>
 function add_option() {    
   var $table = $("#tab tr"); 
   var len = $table.length;
   $("#tab").append("<tr id="+(len+1)+"><td><input type=\"text\" name=\"na_"+(len+1)+"\"></td><td><input type=\"text\" name=\"va_"+(len+1)+"\"></td><td><a href=\"javascript:void(0);\" onclick=\"deltr('"+(len+1)+"')\"><?php echo DEL_TR_DATA;?></a></td></tr>");
 }
+<?php //删除一行?>
 function deltr(index)
 {
   $table = $("#tab tr");
