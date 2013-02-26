@@ -395,17 +395,17 @@
          ? mkdir ($cachedir, 0777)
          : @chmod($cachedir, 0777);
 
-       (!isset ($x) || ereg ('^[0-9]{1,}$', $x, $regs)) &&
-       (!isset ($y) || ereg ('^[0-9]{1,}$', $y, $regs)) &&
+       (!isset ($x) || preg_match ('/^[0-9]{1,}$/', $x, $regs)) &&
+       (!isset ($y) || preg_match ('/^[0-9]{1,}$/', $y, $regs)) &&
        (isset ($x) || isset ($y))
             ? true
           : DIE ('Image width or height undefine!');
 
-     !isset ($resize) || !ereg ('^[0|1]$', $resize, $regs)
+     !isset ($resize) || !preg_match ('/^[0|1]$/', $resize, $regs)
           ? $resize = 0
           : $resize;
 
-     !isset ($aspectratio) || !ereg ('^[0|1]$', $aspectratio, $regs)
+     !isset ($aspectratio) || !preg_match ('/^[0|1]$/', $aspectratio, $regs)
           ? isset ($x) && isset ($y)
                  ? $aspectratio = 1
                  : $aspectratio = 0
@@ -495,17 +495,17 @@
          ? mkdir ($cachedir, 0777)
          : @chmod($cachedir, 0777);
 
-       (!isset ($x) || ereg ('^[0-9]{1,}$', $x, $regs)) &&
-       (!isset ($y) || ereg ('^[0-9]{1,}$', $y, $regs)) &&
+       (!isset ($x) || preg_match ('/^[0-9]{1,}$/', $x, $regs)) &&
+       (!isset ($y) || preg_match ('/^[0-9]{1,}$/', $y, $regs)) &&
        (isset ($x) || isset ($y))
             ? true
-          : DIE ('Fehlende(r) oder ung繝ｻtige(r) Gr繝ｻenparameter!');
+          : DIE ('Image width or height undefine!');
 
-     !isset ($resize) || !ereg ('^[0|1]$', $resize, $regs)
+     !isset ($resize) || !preg_match ('/^[0|1]$/', $resize, $regs)
           ? $resize = 0
           : $resize;
 
-     !isset ($aspectratio) || !ereg ('^[0|1]$', $aspectratio, $regs)
+     !isset ($aspectratio) || !preg_match ('/^[0|1]$/', $aspectratio, $regs)
           ? isset ($x) && isset ($y)
                  ? $aspectratio = 1
                  : $aspectratio = 0
@@ -597,17 +597,17 @@ return $image;
          ? mkdir ($cachedir, 0777)
          : @chmod($cachedir, 0777);
 
-       (!isset ($x) || ereg ('^[0-9]{1,}$', $x, $regs)) &&
-       (!isset ($y) || ereg ('^[0-9]{1,}$', $y, $regs)) &&
+       (!isset ($x) || preg_match ('/^[0-9]{1,}$/', $x, $regs)) &&
+       (!isset ($y) || preg_match ('/^[0-9]{1,}$/', $y, $regs)) &&
        (isset ($x) || isset ($y))
             ? true
-          : DIE ('Fehlende(r) oder ung繝ｻtige(r) Gr繝ｻenparameter!');
+          : DIE ('Image width or height undefine!');
 
-     !isset ($resize) || !ereg ('^[0|1]$', $resize, $regs)
+     !isset ($resize) || !preg_match ('/^[0|1]$/', $resize, $regs)
           ? $resize = 0
           : $resize;
 
-     !isset ($aspectratio) || !ereg ('^[0|1]$', $aspectratio, $regs)
+     !isset ($aspectratio) || !preg_match ('/^[0|1]$/', $aspectratio, $regs)
           ? isset ($x) && isset ($y)
                  ? $aspectratio = 1
                  : $aspectratio = 0
