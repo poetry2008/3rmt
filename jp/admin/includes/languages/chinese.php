@@ -749,3 +749,4 @@ define('TEXT_PREORDER_DATE_TEXT', '预约日期：');
 define('NOTICE_LESS_PRODUCT_OPTION_TEXT', '商品信息已变更。如要修改订单中商品信息，请删除当前商品，重新添加后，再修改。');
 define('NOTICE_LESS_PRODUCT_PRE_OPTION_TEXT', '商品信息已变更。如要修改订单中商品信息，请重新下预约订单。');
 define('NOTICE_COMPLETE_ERROR_TEXT','的数据不完整，请在页面刷新后重新填写。');
+define('NOTICE_STOCK_ERROR_TEXT','当前显示的数据和数据库不一致，是旧数据，请在页面刷新后重新填写。');

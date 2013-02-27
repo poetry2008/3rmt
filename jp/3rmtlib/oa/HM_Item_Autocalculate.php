@@ -163,6 +163,27 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       }
     }
     function <?php echo $this->formname."Change_option(pid,ele,t)";?>{
+
+      var status = 0;
+      if($(ele).attr('checked')){
+        status = 1;
+      }
+      var stock_flag = true;
+      $.ajax({
+        url:'oa_ajax.php?action=stock&num='+parseInt(1000*Math.random()),
+            type:'post',    
+            data:'oID=<?php echo $this->order_id;?>&name=<?php echo $this->formname;?>&status='+status+'&pid='+pid,
+            async : false,
+            beforeSend: function(){$('body').css('cursor','wait');$("#wait").show()},
+            success: function(data){
+              if(data == 'true'){
+                stock_flag = false; 
+                $("#wait").hide();
+                $('body').css('cursor','');
+              }
+            }
+      });
+   if(stock_flag){
       var <?php echo $this->formname;?>val ='';
       //循环 checkbox 把 checkbox状态 和input 值保存起来
       var i =0;
@@ -238,7 +259,13 @@ class HM_Item_Autocalculate extends HM_Item_Basic
 
       }   
       checkLockOrder();
-        $("#qa_form").ajaxSubmit();
+      $("#qa_form").ajaxSubmit();
+      $("#wait").hide();
+      $('body').css('cursor','');
+    }else{ 
+      alert('<?php echo NOTICE_STOCK_ERROR_TEXT;?>');
+      window.location.href='orders.php?page=<?php echo $_GET['page'];?>&oID=<?php echo $this->order_id;?>&action=edit';
+    }
     }
     </script>
         <?php

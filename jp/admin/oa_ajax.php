@@ -207,5 +207,36 @@ if(isset($_GET['action'])){
     }
     echo $complete_flag;
     break;
+  case 'stock':
+    $orders_id = $_POST['oID'];
+    $oa_name = $_POST['name'];
+    $oa_status = $_POST['status'];
+    $products_id = $_POST['pid'];
+    $oa_form_query = tep_db_query("select * from ". TABLE_OA_FORMVALUE ." where orders_id='".$orders_id."' and name='".$oa_name."'");
+    $oa_form_array = tep_db_fetch_array($oa_form_query);
+    $oa_form_num = tep_db_num_rows($oa_form_query);
+    tep_db_free_result($oa_form_query);
+
+    $split_array = array();
+    $split_array = explode('|',$oa_form_array['value']);
+ 
+    if($oa_status == 1 && $oa_form_num == 1){
+       
+      if($split_array[0] == $products_id){
+
+        echo 'true';
+        exit;
+      }
+    }
+
+    if($oa_status == 0 && $oa_form_num == 1){
+
+      if($split_array[0] == 0){
+
+        echo 'true';
+        exit;
+      }
+    }
+    break;
   }
 }
