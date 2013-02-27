@@ -174,7 +174,7 @@ function resset_cb(){
   location.href="cleate_oroshi.php";
 }
 var valmethod = true;
-<?php //更新顺序 ?>
+<?php //更新排序 ?>
 function notval(){
   valmethod = false;
 }

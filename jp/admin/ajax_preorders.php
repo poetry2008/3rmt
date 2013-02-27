@@ -121,14 +121,14 @@ if ($_POST['orders_id'] &&
   tep_db_perform('preorders', array('orders_inputed_flag' => $_GET['orders_inputed_flag']), 'update', "orders_id='".$_GET['orders_id']."'");
 } else if ($_GET['action'] == 'delete' && $_GET['orders_id'] && $_GET['computers_id']) {
 /*-----------------------------------------
- 功能: 删除订单 
+ 功能: 删除订单和计算机的关联 
  参数: $_GET['orders_id']  订单ID
  参数: $_GET['computers_id'] 计算机ID值
  ----------------------------------------*/
   tep_db_query("delete from ".TABLE_PREORDERS_TO_COMPUTERS." where orders_id='".$_GET['orders_id']."' and computers_id='".(int)$_GET['computers_id']."'");
 } else if ($_GET['action'] == 'insert' && $_GET['orders_id'] && $_GET['computers_id']) {
 /*----------------------------------------
- 功能: 添加订单 
+ 功能: 添加订单和计算机关联 
  参数: $_GET['orders_id']  订单ID
  参数: $_GET['computers_id'] 计算机ID值
  ---------------------------------------*/
@@ -379,7 +379,7 @@ if ($_POST['orders_id'] &&
   }
 }else if(isset($_GET['action'])&&$_GET['action'] == 'faq_c_is_set_romaji'){
 /*-----------------------------------------
- 功能: 常见问题解答罗马字 
+ 功能: 常见问题 解答罗马字 
  参数: $_POST['romaji']  罗马字值
  ----------------------------------------*/
   $romaji = $_POST['romaji'];
@@ -584,13 +584,13 @@ if ($_POST['orders_id'] &&
 }else if(isset($_GET['action'])&&$_GET['action']=='save_pwd_log'){
 /*-------------------------------------------
  功能: 保存密码记录 
- 参数: $_POST['one_time_pwd'] 一次密码 
+ 参数: $_POST['one_time_pwd'] 记录第一次密码 
  参数: $_POST['page_name'] 页面的名称
  ------------------------------------------*/
   tep_insert_pwd_log($_POST['one_time_pwd'],$ocertify->auth_user,true,$_POST['page_name']);
 } else if (isset($_GET['action'])&&$_GET['action']=='show_right_order_info') {
 /*-------------------------------------------
- 功能: 正确的顺序信息 
+ 功能: 显示右侧的订单信息
  参数: $_POST['oid'] 订单编号值 
  ------------------------------------------*/
   $orders_info_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_POST['oid']."'"); 
@@ -732,7 +732,7 @@ if ($_POST['orders_id'] &&
 
 } else if (isset($_GET['action'])&&$_GET['action']=='show_right_preorder_info') {
 /*---------------------------------------------
- 功能: 右序信息
+ 功能: 显示右侧预约信息
  参数: $_POST['oid'] 订单编号
  --------------------------------------------*/
   $orders_info_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_POST['oid']."'"); 

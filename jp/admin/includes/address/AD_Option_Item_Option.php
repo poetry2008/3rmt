@@ -64,7 +64,7 @@ class AD_Option_Item_Option extends AD_Option_Item_Basic
      echo '</td>'; 
   }
 /*----------------------------------
- 功能：准备表
+ 功能：准备ITEM表
  参数：$item_id(bumber) 项目编号
  返回值：格式字符串
  ---------------------------------*/
@@ -75,7 +75,7 @@ class AD_Option_Item_Option extends AD_Option_Item_Basic
 /*---------------------------------
  功能：检查选项错误数组
  参数：$option_error_array(array) 选项错误数组
- 返回值：false(bool)
+ 返回值：false(boolean)
  --------------------------------*/ 
   function check(&$option_error_array)
   {

@@ -129,14 +129,14 @@ if ($_POST['orders_id'] &&
   tep_db_perform('orders', array('orders_inputed_flag' => $_GET['orders_inputed_flag']), 'update', "orders_id='".$_GET['orders_id']."'");
 } else if ($_GET['action'] == 'delete' && $_GET['orders_id'] && $_GET['computers_id']) {
 /*-----------------------------------------
- 功能: 删除订单 
+ 功能: 删除订单和计算机的关联 
  参数: $_GET['orders_id']  订单ID
  参数: $_GET['computers_id'] 计算机ID值
  ----------------------------------------*/
   tep_db_query("delete from ".TABLE_ORDERS_TO_COMPUTERS." where orders_id='".$_GET['orders_id']."' and computers_id='".(int)$_GET['computers_id']."'");
 } else if ($_GET['action'] == 'insert' && $_GET['orders_id'] && $_GET['computers_id']) {
 /*----------------------------------------
- 功能: 添加订单 
+ 功能: 添加订单和计算机关联 
  参数: $_GET['orders_id']  订单ID
  参数: $_GET['computers_id'] 计算机ID值
  ---------------------------------------*/
@@ -718,19 +718,19 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
 }else if(isset($_GET['action'])&&$_GET['action']=='save_pwd_log'){
 /*-------------------------------------------
  功能: 保存密码记录 
- 参数: $_POST['one_time_pwd'] 一次密码 
+ 参数: $_POST['one_time_pwd'] 记录第一次密码 
  参数: $_POST['page_name'] 页面的名称
  ------------------------------------------*/
   tep_insert_pwd_log($_POST['one_time_pwd'],$ocertify->auth_user,true,$_POST['page_name']);
 } else if (isset($_GET['action'])&&$_GET['action']=='show_right_order_info') {
 /*-------------------------------------------
- 功能: 正确的顺序信息 
+ 功能: 显示右侧的订单信息
  参数: $_POST['oid'] 订单编号值 
  ------------------------------------------*/
   $orders_info_raw = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$_POST['oid']."'"); 
   $orders_info = tep_db_fetch_array($orders_info_raw); 
   require(DIR_WS_FUNCTIONS . 'visites.php');
-  $param_str = '';  
+  $param_str = ''; 
   foreach ($_POST as $key => $value) {
     if (($key != 'oid') && ($key != 'popup')) {
       $param_str .= $key.'='.$value.'&'; 
@@ -933,7 +933,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   }
 } else if (isset($_GET['action'])&&$_GET['action']=='edit_campaign') {
 /*-----------------------------------------
- 功能: 编辑活动
+ 功能: 编辑优惠劵
  参数: $_POST['cid'] ID值
  ----------------------------------------*/
   require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_CAMPAIGN); 
@@ -1208,7 +1208,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   echo $html_str;
 } else if (isset($_GET['action'])&&$_GET['action']=='new_campaign') {
 /*------------------------------------------------
- 功能: 新建活动 
+ 功能: 新建优惠劵
  参数: $_POST['site_id'] site id值 
  -----------------------------------------------*/
   require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_CAMPAIGN); 
@@ -1383,7 +1383,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   echo $html_str;
 } else if (isset($_GET['action'])&&$_GET['action']=='check_campaign') {
 /*---------------------------------------------------
- 功能: 检查活动
+ 功能: 检查优惠劵
  参数: $_POST['title'] 标题值
  参数: $_POST['campaign_id'] 活动ID值
  参数: $_POST['site_id'] SITE_ID值
@@ -1639,9 +1639,9 @@ echo json_encode($json_array);
   }
 } else if (isset($_GET['action'])&&$_GET['action']=='check_item') {
 /*-----------------------------------------------
- 功能: 检查项目 
+ 功能: 检查item信息填写是否正确
  参数: $_POST['ititle'] 标题 
- 参数: $_POST['ifront_title'] 一个标题
+ 参数: $_POST['ifront_title'] 检查第一个标题
  ----------------------------------------------*/
   //检查item信息填写是否正确 
   require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_OPTION); 
@@ -1992,7 +1992,7 @@ echo json_encode($json_array);
  参数: $_POST['total_key'] 总的关键词
  参数: $_POST['orders_id'] 订单编号
  参数: $_POST['point_value_temp'] 点值
- 参数: $_POST['handle_fee'] 处理费
+ 参数: $_POST['handle_fee'] 手续费
  参数: $_POST['session_site_id'] SITE_ID
  ------------------------------------------*/
   require(DIR_WS_CLASSES . 'payment.php');

@@ -11,7 +11,7 @@ class AD_Option extends AD_Option_DbRecord
 /*-----------------------
  功能：获得组
  参数：$belong_option_str(string) 选项
- 参数：$ptype(bool) 类型
+ 参数：$ptype(boolean) 类型
  返回值：返回组(array)
  ---------------------*/
   function getGroups($belong_option_str, $ptype = false)
@@ -26,7 +26,7 @@ class AD_Option extends AD_Option_DbRecord
 /*---------------------
  功能：提供选项
  参数：$belong_option_str(string) 选项
- 参数：$ptype(bool) 类型
+ 参数：$ptype(boolean) 类型
  返回值：无
  --------------------*/ 
   function render($belong_option_str, $ptype = false)
@@ -39,7 +39,7 @@ class AD_Option extends AD_Option_DbRecord
 /*-------------------------
  功能：审核 
  参数：无
- 返回值: 返回错误(bool)
+ 返回值: 返回错误(boolean)
  ------------------------*/
   function check() 
   {
@@ -64,7 +64,7 @@ class AD_Option extends AD_Option_DbRecord
 /*--------------------------
  功能：普通用户是否显示
  参数: $belong_option_str(string)  选项
- 返回值：true/false(bool)
+ 返回值：true/false(boolean)
  ----------------------- -*/ 
   function whether_show($belong_option_str)
   {
@@ -80,7 +80,7 @@ class AD_Option extends AD_Option_DbRecord
 /*----------------------------
  功能：管理员是否显示 
  参数：$belong_option_str(string) 选项
- 返回值：false/true(bool)
+ 返回值：false/true(boolean)
  ---------------------------*/
   function admin_whether_show($belong_option_str)
   {

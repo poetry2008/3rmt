@@ -31,7 +31,7 @@ class AD_Option_Item extends AD_Option_DbRecord
 /*--------------------
  功能：获取实例
  参数：无
- 返回值：返回当前例
+ 返回值：返回当前实例
  -------------------*/
   function getInstance()
   {
@@ -67,7 +67,7 @@ class AD_Option_Item extends AD_Option_DbRecord
 /*---------------------------
  功能：检查选项错误数组
  参数：$option_error_array(array) 选项错误数组
- 返回值：错误数组
+ 返回值：错误数组(array)
  --------------------------*/ 
   function check(&$option_error_array)
   {
