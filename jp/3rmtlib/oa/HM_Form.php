@@ -256,7 +256,15 @@ class HM_Form extends DbRecord
             $("#canEndDiv").hide();
           }
         }
-        $("#qa_form").submit();
+        var pid_id = $(this).attr('id');
+        var pid_name = $(this).attr('name'); 
+        pid_name = pid_name.substr(1);
+        var pid_real_value = $('#'+pid_name+'real').val();
+        var pid_array = new Array();
+        pid_array = pid_real_value.split("|");
+        if(!(pid_id.substr(0,5) == 'spid_')){
+          $("#qa_form").submit();
+        }
         });
       $(this).change(function(ele){
         //                                   alert($("input|[name=dfossrrfwwkvomzw_6_1_107]").val());

@@ -72,12 +72,21 @@ if($_GET['action'] == 'update'){
       $orders_site_temp_array = $orders_site_setting_array;
     }
     $orders_site_str = serialize($orders_site_temp_array);
+    //把当前用户的更新日期，存入到数据库
     $configuration_row = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='PERSONAL_SETTING_ORDERS_SITE'"));
-    if($configuration_row['user_update'] == $_SESSION['user_name']){
-    tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$orders_site_str."',user_update='".$_SESSION['user_name']."',last_modified='".date('Y-m-d H:i:s',time())."'  where configuration_key='PERSONAL_SETTING_ORDERS_SITE'");
+    $update_user_array = array();
+    if($configuration_row['configuration_description'] != ''){
+
+      $update_user_array = unserialize($configuration_row['configuration_description']);
+      $update_user_array[$ocertify->auth_user]['user'] = $user_info['name'];
+      $update_user_array[$ocertify->auth_user]['time'] = date('Y-m-d H:i:s',time()); 
+      $orders_site_update_str = serialize($update_user_array);
     }else{
-   tep_db_query("insert into ".TABLE_CONFIGURATION."  (`configuration_value`,`configuration_key`,`user_update`,`last_modified`)  values('".$orders_site_str."','PERSONAL_SETTING_ORDERS_SITE','".$_SESSION['user_name']."','".date('Y-m-d H:i:s',time())."')");
+      $update_user_array[$ocertify->auth_user]['user'] = $user_info['name'];
+      $update_user_array[$ocertify->auth_user]['time'] = date('Y-m-d H:i:s',time()); 
+      $orders_site_update_str = serialize($update_user_array); 
     }
+    tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$orders_site_str."',configuration_description='".$orders_site_update_str."',user_update='".$_SESSION['user_name']."',last_modified='".date('Y-m-d H:i:s',time())."'  where configuration_key='PERSONAL_SETTING_ORDERS_SITE'");
     $orders_work_temp_array = array();
     $orders_work_setting_str = implode('|',$orders_work);
     if(PERSONAL_SETTING_ORDERS_WORK == ''){
@@ -491,18 +500,22 @@ require("includes/note_js.php");
               </tr>
               <tr><td align="right"><input type="submit" value="<?php echo TEXT_SAVE;?>"></td></tr>
               <?php 
-               $configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where  configuration_key='PERSONAL_SETTING_ORDERS_SITE' and  user_update = '".$_SESSION['user_name']."'"));  
+               //读取当前用户的更新日期
+               $configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where  configuration_key='PERSONAL_SETTING_ORDERS_SITE'"));  
+               $update_users = TEXT_UNSET_DATA;
+               $update_time = TEXT_UNSET_DATA;
+               if($configuration['configuration_description'] != ''){
+                 $update_users_array = unserialize($configuration['configuration_description']);
+                 if(array_key_exists($ocertify->auth_user,$update_users_array)){
+
+                   $update_users = $update_users_array[$ocertify->auth_user]['user'];
+                   $update_time = $update_users_array[$ocertify->auth_user]['time'];
+                 }
+               }
                echo '<tr><td>'.TEXT_USER_ADDED.'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';
                echo '<tr><td>'.TEXT_DATE_ADDED.'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';
-               if(tep_not_null($configuration['user_update'])){
-               echo '<tr><td>'.TEXT_USER_UPDATE.'&nbsp;'.$configuration['user_update'].'</td></tr>';
-               }else{
-               echo '<tr><td>'.TEXT_USER_UPDATE.'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';
-               }if(tep_not_null($configuration['last_modified'])){
-               echo '<tr><td>'.TEXT_DATE_UPDATE.'&nbsp;'.$configuration['last_modified'].'</td></tr>';
-               }else{
-               echo '<tr><td>'.TEXT_DATE_UPDATE.'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';
-               }
+               echo '<tr><td>'.TEXT_USER_UPDATE.'&nbsp;'.$update_users.'</td></tr>';
+               echo '<tr><td>'.TEXT_DATE_UPDATE.'&nbsp;'.$update_time.'</td></tr>';
               ?>
 </table>
 </form>
