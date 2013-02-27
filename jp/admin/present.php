@@ -174,7 +174,7 @@ require("includes/note_js.php");
   </script>
 <?php }?>
 <script language="javascript">
-<?php //新建表单验证?>
+<?php //新建时的表单验证?>
 function msg(){
   if(document.apply.title.value == ""){
 	  alert("<?php echo PRESENT_PLEASE_INPUT_TEXT; ?>");
@@ -192,7 +192,7 @@ function msg(){
     return false;
   }
 }
-<?php //更新表单验证?>
+<?php //更新时的表单验证?>
 function msg2(){
   if(document.view.title.value == ""){
 	  alert("<?php echo PRESENT_PLEASE_INPUT_TEXT; ?>");
