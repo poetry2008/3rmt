@@ -36,15 +36,24 @@ class BasePayment
   }
 
   function loadSettings($site_id = 0){
-
-    $this->title        = constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_TITLE");
-    $this->description  = constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_DESCRIPTION");
-    $this->explain      = constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_EXPLAIN");     
-    $this->email_footer = constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_EMAIL_FOOTER");
+    if(defined("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_TITLE")){
+      $this->title        = constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_TITLE");
+    }
+    if(defined("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_DESCRIPTION")){
+      $this->description  = constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_DESCRIPTION");
+    }
+    if(defined("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_EXPLAIN")){
+      $this->explain      = constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_EXPLAIN");     
+    }
+    if(defined("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_EMAIL_FOOTER")){
+      $this->email_footer = constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_EMAIL_FOOTER");
+    }
     $this->sort_order  = get_configuration_by_site_id_or_default("MODULE_PAYMENT_".strtoupper($this->code)."_SORT_ORDER",$site_id);
     $this->enabled     = get_configuration_by_site_id_or_default("MODULE_PAYMENT_".strtoupper($this->code)."_STATUS",$site_id) === 'True' ? true : false;
     $this->cost  = get_configuration_by_site_id_or_default("MODULE_PAYMENT_".strtoupper($this->code)."_COST",$site_id);
-    $this->fields_description = constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_FIELDS_DESCRIPTION");
+    if(defined("TS_MODULE_PAYMENT_".strtoupper($this->code)."_FIELDS_DESCRIPTION")){
+      $this->fields_description = constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_FIELDS_DESCRIPTION");
+    }
 
   }
   function selectionError($key,$message){

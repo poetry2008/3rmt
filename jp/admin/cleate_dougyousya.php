@@ -183,12 +183,12 @@ function input_add(){
   i++;
 }
 
-<?php //跳跃页面 ?>
+<?php //跳转cleate_dougyousya.php页 ?>
 function resset_cb(){
   location.href= 'cleate_dougyousya.php'; 
 }
 var valmethod = true;
-<?php //更新顺序 ?>
+<?php //更新排序 ?>
 function notval(){
   valmethod = false;
 }
@@ -294,7 +294,7 @@ function w_close(){
   return true;
   //  window.close(); 
 }
-<?php //删除名称 ?> 
+<?php //显示履历 ?> 
 function show_history(id){
   location.href= 'history.php?action=dougyousya&cid='+id;
 }

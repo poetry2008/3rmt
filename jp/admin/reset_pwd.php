@@ -31,14 +31,14 @@ if ($_GET['action'] == 'check_search') {
   tep_db_query("update `".TABLE_OCONFIG."` set `value` = '' where `keyword` = 'reset_pwd_enddate'");  
   exit;
 }
-
 if($_SERVER['REQUEST_METHOD']=='POST'){
   if($_GET['type'] =='saveRange'){
     //检查是否合法后更新数据库，并把所有用户reset_flag设置成0 ,范围内的用户的 reset_flag设置成1 
 
     $reset_pwd_startdate = trim($_POST['start']);
     $reset_pwd_enddate   = trim($_POST['end']);
-    tep_db_query('update  '.TABLE_OCONFIG.' set value = "'.$reset_pwd_startdate.'",user_update = "'.$_SESSION['user_name'].'",date_update = "'.date('Y-m-d H:i:s',time()).'" where  keyword = "reset_pwd_startdate"');
+    tep_db_query('update  '.TABLE_OCONFIG.' set value = "'.
+        $reset_pwd_startdate.'",user_update = "'.$_SESSION['user_name'].'",date_update = "'.date('Y-m-d H:i:s',time()).'" where  keyword = "reset_pwd_startdate"');
     tep_db_query('update  '.TABLE_OCONFIG.' set value = "'.$reset_pwd_enddate.'",user_update = "'.$_SESSION['user_name'].'",date_update = "'.date('Y-m-d H:i:s',time()).'" where  keyword = "reset_pwd_enddate"');
 //    tep_db_query('update  '.TABLE_CUSTOMERS_INFO .' set reset_flag = 0');
 

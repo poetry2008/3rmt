@@ -75,7 +75,7 @@ if(!in_array('onetime',$request_one_time_arr)&&$_SESSION['user_permission']!=15)
 <title><?php echo $page_title; ?></title>
 <script language="javascript"><!--
 var i=0;
-
+<?php //设定弹出框的位置?>
 function resize() {
   if (navigator.appName == 'Netscape') i = 40;
   window.resizeTo(document.images[0].width + 30, document.images[0].height + 60 - i);

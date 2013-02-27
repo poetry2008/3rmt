@@ -790,7 +790,7 @@ ele.className='orders_flag_checked';
 }
 });
 }
-<?php //预约的订单电脑检查 ?>
+<?php //检查预约的订单 ?>
 function preorders_computers(ele, cid, oid) {
   if (ele.className == 'orders_computer_checked') {
     $.ajax({

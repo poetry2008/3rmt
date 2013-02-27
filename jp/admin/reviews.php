@@ -11,7 +11,7 @@
  case 'new_preview'  添加评论
  case 'setflag'      设置标志
  case 'update'       更新评论 
- case 'deleteconfirm' 删除评论
+ case 'deleteconfirm' 确认删除评论
  -----------------------------------*/
       case 'new_preview':
         $sql_array = array(

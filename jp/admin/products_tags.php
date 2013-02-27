@@ -53,7 +53,7 @@
     }
   }
 /*-----------------------------------
- 功能：产品盒 
+ 功能：产品复选框
  参数：$cid(string) 类别ID值
  返回值：无
  ----------------------------------*/ 
@@ -182,12 +182,10 @@ require("includes/note_js.php");
         <td>
   <?php echo tep_draw_form('products_to_tags','products_tags.php', 'action=save', 'post');?>
   <input type="submit" value="<?php echo IMAGE_SAVE;?>">
-  <table border="0" width="100%" cellspacing="2" cellpadding="0">
+  <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td valign="top" width="50%">
-
 <?php
-    
   $tags_query = tep_db_query("select * from tags order by tags_name");
   if (tep_db_num_rows($tags_query)) {
     echo "<ul>\n";
@@ -263,13 +261,12 @@ require("includes/note_js.php");
            ?>
            </td>
           </tr>
-
          <?php 
              $tags_date = tep_db_query("select * from tags order by date_update desc ");
              $tags_row = tep_db_fetch_array($tags_date);
              if(tep_not_null($tags_row['user_update'])){
          ?>
-                   <tr>
+          <tr>
            <td colspan="2">
            <?php 
             echo TEXT_USER_UPDATE.'&nbsp;';

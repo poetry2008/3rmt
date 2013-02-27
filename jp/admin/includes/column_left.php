@@ -134,6 +134,7 @@ setTimeout("orders_info_box_offset()",10);
       $(".box_warp").height($(".compatible").height());
   }
 }
+<?php //左侧的栏目展开/关闭?>
 function toggle_lan(sobj)
 {
   var current_status = $('#'+sobj).css('display');

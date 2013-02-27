@@ -246,7 +246,7 @@ function checkHeadPreOrders(t)
     }
   });
 }
-<?php // ?>
+<?php //声音播放 ?>
 function playHeadSound()  
 {  
   var hnode=document.getElementById('head_sound');  
@@ -259,6 +259,7 @@ function playHeadSound()
    }
   }
 }
+<?php //检查预约头部 ?>
 function check_preorder_head() {
   $.ajax({
     dataType: 'text',
@@ -291,7 +292,7 @@ if ($_SERVER['PHP_SELF'] != '/admin/orders.php') {
 var cfg_ohead_last_customer_action = '<?php echo LAST_CUSTOMER_ACTION;?>';
 var prev_ohead_customer_action = '';
 var check_head_o_single = '0';
-
+<?php //检查头部订单 ?>
 function checkHeadOrders(t)
 {
   $.ajax({
@@ -306,6 +307,7 @@ function checkHeadOrders(t)
     }
   });
 }
+<?php //播放订单音乐 ?>
 function playOrderHeadSound()  
 {  
   var ohnode=document.getElementById('head_warn');  
@@ -318,6 +320,7 @@ function playOrderHeadSound()
    }
   }
 }
+<?php //检查头部订单 ?>
 function check_order_head() {
   $.ajax({
     dataType: 'text',
@@ -344,10 +347,10 @@ $(function(){
 <?php
 }
 ?>
-</script><noscript>
+</script>
+<noscript>
 <div class="messageStackError"><?php echo TEXT_JAVASCRIPT_ERROR;?></div> 
 </noscript>
-
 <div class="compatible_head">
 <table border="0" width="100%" cellspacing="0" cellpadding="0" class="preorder_head">
 <tr>

@@ -109,9 +109,9 @@ function set_errmsg_array(&$a_error,$s_errmsg) {
 }
 
 /* -----------------------------------------------------
-   功能: 倒序获取用户 
+   功能: 按照用户id顺序获取用户 
    参数: $s_user_ID(int) 用户id 
-   返回值: 倒序获取用户的sql(string) 
+   返回值: 获取用户的sql(string) 
  -----------------------------------------------------*/
 function makeSelectUserInfo($s_user_ID = "") {
 

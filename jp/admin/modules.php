@@ -40,7 +40,8 @@ if (isset($_GET['action']))
  tep_db_query("update " . TABLE_CONFIGURATION . " set user_update = '".$_SESSION['user_name']."', last_modified = '".date('Y-m-d H:i:s',time())."' where configuration_key =  'MODULE_".strtoupper($set)."_".strtoupper($_GET['module'])."_STATUS' and site_id = '".$_POST['site_id']."'");
  tep_db_query("update " . TABLE_CONFIGURATION . " set user_update =  '".$_SESSION['user_name']."', last_modified = '".date('Y-m-d H:i:s',time())."' where configuration_key =  'MODULE_".strtoupper($set)."_".str_replace('OT_','',strtoupper($_GET['module']))."_STATUS' and site_id = '".$_POST['site_id']."'");
 
- tep_db_query("update " . TABLE_CONFIGURATION . " set user_update = '".$_SESSION['user_name']."', last_modified = '".date('Y-m-d H:i:s',time())."'
+ tep_db_query("update " . TABLE_CONFIGURATION . " set user_update =
+     '".$_SESSION['user_name']."', last_modified = '".date('Y-m-d H:i:s',time())."'
      where configuration_key =
      'MODULE_".strtoupper($set)."_".strtoupper($_GET['module'])."_TITLE' and site_id = '".$_POST['site_id']."'");
     if ($_GET['set'] == 'payment') { 
@@ -149,7 +150,7 @@ if (isset($_GET['action']))
 
         $cp_configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$key."' and site_id='0'"));
         if ($cp_configuration) {
-          $sql=tep_db_query("
+          tep_db_query("
               INSERT INTO `configuration` (
               `configuration_id` ,
               `configuration_title` ,
@@ -608,7 +609,6 @@ default:
     // 临时隐藏
     // $contents[] = array('text' => '<br>' . $mInfo->description . "<hr>");
     $contents[] = array('text' => '<div style="word-wrap:break-word;width:200px;overflow:hidden;"><br>' . $keys . '</div>');
-
   } else {
     $contents[] = array('text' => isset($mInfo->description)?$mInfo->description:'');
   }
@@ -626,8 +626,7 @@ if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {
 
 ?>
 </tr>
-</table>
-</td>
+</table></td>
 </tr>
 </table>
 </div>
