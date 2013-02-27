@@ -1202,6 +1202,7 @@ $__orders_status_ids   = array();
 while($__orders_status = tep_db_fetch_array($__orders_status_query)){
   $__orders_status_ids[] = $__orders_status['orders_status_id'];
 }
+if(join(',', $__orders_status_ids)!=''){
 $select_query = tep_db_query("
     select om.orders_status_mail,
     om.orders_status_title,
@@ -1230,6 +1231,7 @@ while($select_result = tep_db_fetch_array($select_query)){
   $mt[$osid][$select_result['site_id']?$select_result['site_id']:0] = $select_result['orders_status_mail'];
   $mo[$osid][$select_result['site_id']?$select_result['site_id']:0] = $select_result['orders_status_title'];
   $nomail[$osid] = $select_result['nomail'];
+}
 }
 
 //------------------------------------------------
