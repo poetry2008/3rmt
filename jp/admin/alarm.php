@@ -7,7 +7,7 @@
   if (isset($_GET['action']) && $_GET['action']) {
     switch ($_GET['action']) {
 /* -----------------------------------------------------
-   case 'add_more_alarm'添加警报html 
+   case 'add_more_alarm' 添加警报html 
    case 'process' 保存警报    
    case 'check_alarm' 检查警报信息是否正确   
 ------------------------------------------------------*/
