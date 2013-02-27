@@ -56,7 +56,7 @@
 function tep_get_default_language_id(){
     $language_id_query = mysql_query("select languages_id, directory from 
         language where code = '" . DEFAULT_LANGUAGE . "'");
-    if(mysql_num_rows($language_id_query)){
+    if(@mysql_num_rows($language_id_query)){
       $lan_id_row = mysql_fetch_array($language_id_query);
       $languages_id = $lan_id_row['languages_id'];
     }
