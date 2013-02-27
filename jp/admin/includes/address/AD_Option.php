@@ -24,8 +24,8 @@ class AD_Option extends AD_Option_DbRecord
     return $groups; 
   }
 /*---------------------
- 功能：提供选项
- 参数：$belong_option_str(string) 选项
+ 功能：显示输出
+ 参数：$belong_option_str(string) 选项错误
  参数：$ptype(boolean) 类型
  返回值：无
  --------------------*/ 

@@ -294,7 +294,7 @@ function w_close(){
   return true;
   //  window.close(); 
 }
-<?php //删除名称 ?> 
+<?php //显示履历 ?> 
 function show_history(id){
   location.href= 'history.php?action=dougyousya&cid='+id;
 }

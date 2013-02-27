@@ -5,8 +5,8 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
   var $has_textarea_default = true; 
 
 /*-------------------------------
- 功能：提供选项错误数组
- 参数：$option_error_array(array) 选项错误数组
+ 功能：显示输出
+ 参数：$option_error_array(array) 错误选项
  返回值：无
  ------------------------------*/
   function render($option_error_array)
@@ -60,7 +60,7 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
     }
   }
 /*----------------------------------
- 功能：准备ITEM表
+ 功能：住所地址
  参数：$item_id(bumber) 项目编号
  返回值：格式字符串
  ---------------------------------*/

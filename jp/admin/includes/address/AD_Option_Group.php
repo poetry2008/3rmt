@@ -23,8 +23,8 @@ class AD_Option_Group extends AD_Option_DbRecord
     return $items;
   }
 /*------------------------------
- 功能：提供选项错误数组
- 参数：$option_error_array(array)选项错误数组
+ 功能：显示输出
+ 参数：$option_error_array(array) 错误选项
  返回值：无
  -----------------------------*/
   function render($option_error_array)

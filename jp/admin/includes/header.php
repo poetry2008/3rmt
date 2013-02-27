@@ -347,10 +347,10 @@ $(function(){
 <?php
 }
 ?>
-</script><noscript>
+</script>
+<noscript>
 <div class="messageStackError"><?php echo TEXT_JAVASCRIPT_ERROR;?></div> 
 </noscript>
-
 <div class="compatible_head">
 <table border="0" width="100%" cellspacing="0" cellpadding="0" class="preorder_head">
 <tr>

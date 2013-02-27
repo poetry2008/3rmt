@@ -7,9 +7,9 @@ $currencies = new currencies();
 $cPath=$_POST['cpath'];
 switch ($HTTP_GET_VARS['action']){
 /*---------------------------
- case 'edit_oroshi' 编辑商品名称 
- case 'set_oroshi' 设置商品名称
- case 'delete' 删除商品名称
+ case 'edit_oroshi' 编辑批发商名称 
+ case 'set_oroshi' 设置批发商名称
+ case 'delete' 删除批发商名称
  --------------------------*/
 case 'edit_oroshi':
   $cpath = $HTTP_GET_VARS['cpath'];
@@ -280,7 +280,7 @@ function w_close(){
   return true;
   //  window.close(); 
 }
-<?php //删除商品名称 ?> 
+<?php //删除批发商名称 ?> 
 function del_oroshi(id){
   var flg=confirm('<?php echo DELETE;?>');
   if(flg){
@@ -290,7 +290,7 @@ function del_oroshi(id){
       
   }
 }
-<?php //编辑商品名称 ?>
+<?php //编辑批发商名称 ?>
 function edit_oroshi(id){
   var selectName = 'parent_id_'+id;
   var oroName = 'name_'+id;
