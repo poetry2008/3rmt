@@ -257,7 +257,13 @@ class HM_Form extends DbRecord
           }
         }
         var pid_id = $(this).attr('id');
-        if(!(pid_id.substr(0,5) == 'spid_')){
+        var stock_flag = true;
+        if(pid_id){
+          if(pid_id.substr(0,5) == 'spid_'){
+            stock_flag = false;
+          }
+        }
+        if(stock_flag){
           $("#qa_form").submit();
         }
         });
