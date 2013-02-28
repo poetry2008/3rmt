@@ -528,6 +528,9 @@ if(isset($_GET['his_url'])&&$_GET['his_url']){
       in_array('staff',$one_time_arr)){
     $_SESSION['onetime_pwd'] = false;
   }
+  if(!isset($languages_id)||$languages_id==''){
+    $languages_id = tep_get_default_language_id();
+  }
 
 
 
