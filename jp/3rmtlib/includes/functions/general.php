@@ -120,14 +120,14 @@ function forward404Unless($condition)
 /* -------------------------------------
     功能: 输出文字 
     参数: $string(string) 文字 
-    返回值: string 
+    返回值: 处理后的文字(string) 
 ------------------------------------ */
   function tep_output_string_protected($string) {
     return tep_output_string($string, false, true);
   }
 
 /* -------------------------------------
-    功能: 替换掉文字里的 + 
+    功能: 把文字里的 +换成空格 
     参数: $string(string) 文字 
     返回值: 替换后的字符串(string) 
 ------------------------------------ */
@@ -174,8 +174,8 @@ function forward404Unless($condition)
 
 /* -------------------------------------
     功能: 获得商品的名字 
-    参数: $product_id(int) 商品的id 
-    参数: $language(string) 语言
+    参数: $product_id(int) 商品id 
+    参数: $language(string) 语言id
     返回值: 商品的名字(string) 
 ------------------------------------ */
   function tep_get_products_name($product_id, $language = '') {
@@ -197,8 +197,8 @@ function forward404Unless($condition)
 
 /* -------------------------------------
     功能: 获得商品的描述 
-    参数: $product_id(int) 商品的id 
-    参数: $language(string) 语言
+    参数: $product_id(int) 商品id 
+    参数: $language(string) 语言id
     返回值: 商品的描述(string) 
 ------------------------------------ */
   function tep_get_products_description($product_id, $language = '') {
@@ -220,7 +220,7 @@ function forward404Unless($condition)
 
 /* -------------------------------------
     功能: 获得商品的描述(去掉html并且替换STORE_NAME) 
-    参数: $products_id(int) 商品的id 
+    参数: $products_id(int) 商品id 
     返回值: 商品的描述(string) 
 ------------------------------------ */
   function ds_tep_get_description($products_id) {
@@ -257,7 +257,7 @@ function forward404Unless($condition)
 ////
 /* -------------------------------------
     功能: 获得商品的库存数 
-    参数: $products_id(int) 商品的id 
+    参数: $products_id(int) 商品id 
     返回值: 商品的库存数(int) 
 ------------------------------------ */
   function tep_get_products_stock($products_id) {
@@ -277,8 +277,8 @@ function forward404Unless($condition)
 
 /* -------------------------------------
     功能: 检测商品的库存是否充足 
-    参数: $products_id(int) 商品的id 
-    参数: $products_quantity(int) 商品的数量 
+    参数: $products_id(int) 商品id 
+    参数: $products_quantity(int) 商品数量 
     参数: $link_single(boolean) 是否显示链接  
     返回值: 检测商品库存不足的信息(string) 
 ------------------------------------ */
@@ -422,7 +422,7 @@ function forward404Unless($condition)
 
 /* -------------------------------------
     功能: 根据当前分类id寻找其父结点的路径 
-    参数: $current_category_id(int) 当前分类id 
+    参数: $current_category_id(int) 分类id 
     返回值: 获得分类路径(string) 
 ------------------------------------ */
   function tep_get_path($current_category_id = '') {
@@ -476,7 +476,7 @@ function forward404Unless($condition)
 /* -------------------------------------
     功能: 获得国家的名字 
     参数: $country_id(int) 国家id 
-    返回值: 国家阿的名字(string) 
+    返回值: 国家的名字(string) 
 ------------------------------------ */
   function tep_get_country_name($country_id) {
     $country_array = tep_get_countries($country_id);
@@ -546,7 +546,7 @@ function forward404Unless($condition)
 
 /* -------------------------------------
     功能: 获得稅率 
-    参数: $class_id(int) 稅率id 
+    参数: $class_id(int) 稅率类id 
     参数: $country_id(int) 国家id
     参数: $zone_id(int) 区域id
     返回值: 税率(int) 
@@ -585,7 +585,7 @@ function forward404Unless($condition)
 
 /* -------------------------------------
     功能: 获得稅率的描述 
-    参数: $class_id(int) 稅率id 
+    参数: $class_id(int) 稅率类id 
     参数: $country_id(int) 国家id
     参数: $zone_id(int) 区域id
     返回值: 税率的描述(string) 
@@ -843,10 +843,10 @@ function forward404Unless($condition)
 
 /* -------------------------------------
     功能: 获得该分类相关的分类信息
-    参数: $categories_array(array) 分类的 
+    参数: $categories_array(array) 分类信息的数组 
     参数: $parent_id(int) 父结点
-    参数: $indent(string) 索进的标识
-    返回值: 分类数组(array) 
+    参数: $indent(string) 缩进的标识
+    返回值: 分类信息(array) 
 ------------------------------------ */
   function tep_get_categories($categories_array = '', $parent_id = '0', $indent = '') {
     global $languages_id;
@@ -1264,7 +1264,7 @@ function forward404Unless($condition)
 /* -------------------------------------
     功能: 获得其分类的父分类
     参数: $categories(array) 分类的信息 
-    参数: $categories_id(int) 分类的id 
+    参数: $categories_id(int) 分类id 
     返回值: 父分类(array) 
 ------------------------------------ */
   function tep_get_parent_categories(&$categories, $categories_id) {
@@ -1324,7 +1324,7 @@ function forward404Unless($condition)
   }
 
 /* -------------------------------------
-    功能: 获得商品的id
+    功能: 获得商品id
     参数: $uprid(int) 商品id的信息 
     返回值: 过滤后的商品id(string) 
 ------------------------------------ */
@@ -1465,10 +1465,10 @@ function forward404Unless($condition)
   }
 
 /* -------------------------------------
-    功能: 获得随即数
+    功能: 获得随机数
     参数: $length(int) 随机数的长度 
     参数: $type(string) 类型 
-    返回值: 随即数(int) 
+    返回值: 随机数(int) 
 ------------------------------------ */
   function tep_create_random_value($length, $type = 'mixed') {
     if ( ($type != 'mixed') && ($type != 'chars') && ($type != 'digits')) return false;
@@ -1589,7 +1589,7 @@ function forward404Unless($condition)
   }
 
 /* -------------------------------------
-    功能: 判断给货币是否存在
+    功能: 判断该货币是否存在
     参数: $code(int) 货币代号
     返回值: 货币是否存在(boolean) 
 ------------------------------------ */
@@ -1760,10 +1760,10 @@ function forward404Unless($condition)
   }
   
 /* -------------------------------------
-    功能: 获得商品的选择时间
+    功能: 生成商品的选择时间的下拉列表
     参数: $product_ids(array) 乘积值 
-    参数: $select_name(string) select的名字 
-    返回值: 选择时间(string) 
+    参数: $select_name(string) 下拉列表的名字 
+    返回值: 选择时间的下拉列表(string) 
 ------------------------------------ */
   function tep_get_torihiki_select_by_products($product_ids = null,$select_name='')
   {
@@ -1858,7 +1858,7 @@ function forward404Unless($condition)
   }
   
 /* -------------------------------------
-    功能: 获得无用的分类
+    功能: 获得无用的分类的信息数组
     参数: 无 
     返回值: 分类的数组(array) 
 ------------------------------------ */
@@ -1909,7 +1909,7 @@ function forward404Unless($condition)
   }
   
 /* -------------------------------------
-    功能: 获得无用的商品
+    功能: 获得无用的商品的信息数组
     参数: 无 
     返回值: 无用的商品的数组(array) 
 ------------------------------------ */
@@ -1979,7 +1979,7 @@ function forward404Unless($condition)
 /* -------------------------------------
     功能: 获得常量的值
     参数: $const_name(string) 常量的名字 
-    返回值 : 常量的值(string) 
+    返回值: 常量的值(string) 
 ------------------------------------ */
   function tep_get_value_by_const_name($const_name) {
     eval('$value = ' . $const_name . ';');
@@ -2800,7 +2800,7 @@ function tep_unlink_temp_dir($dir)
     功能: 获得cPath路径 
     参数: $id(int) 数组的键值
     参数: $categories(array) 分类的信息
-    返回值: 路径(string) 
+    返回值: 分类路径(string) 
 ------------------------------------ */
   function get_cPath($id, $categories)
   {
@@ -2833,7 +2833,7 @@ function tep_unlink_temp_dir($dir)
 
 /* -------------------------------------
     功能: 获得区域列表 
-    参数: $name(string) 下拉框的名字
+    参数: $name(string) 下拉列表的名字
     参数: $selected(string) 默认值 
     参数: $country_code(string) 国家代码
     返回值: 区域列表(string) 
@@ -2916,7 +2916,7 @@ function tep_unlink_temp_dir($dir)
     功能: 检查是否超库存 
     参数: $options_stock(int) 库存数
     参数: $orders_quantity(int) 所要数量 
-    返回值: string 
+    返回值: 超出的错误信息(string) 
 ------------------------------------ */
   function tep_check_opstock($options_stock, $orders_quantity) {
     $stock_left = $options_stock - $orders_quantity;
@@ -2940,11 +2940,11 @@ function tep_unlink_temp_dir($dir)
   }
   
 /* -------------------------------------
-    功能: 通过商品的数量以及是否买取返回相应的信息 
+    功能: 通过商品的数量以及是否买取返回相应的商品信息 
     参数: $pID(int) 商品id
     参数: $qty(int) 数量
     参数: $string(string) 信息 
-    返回值: 相应的信息(string) 
+    返回值: 相应的商品信息(string) 
 ------------------------------------ */
   function ds_replace_plist($pID, $qty, $string) {
     $query = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".(int)tep_get_prid($pID)."'");
@@ -3150,7 +3150,7 @@ function tep_unlink_temp_dir($dir)
     }
 */
 /* -------------------------------------
-    功能: 商品描述是否存在 
+    功能: 商品描述在指定网站是否存在 
     参数: $pid(int) 商品id
     参数: $sid(int) 网站id 
     参数: $lid(int) 语言id 
@@ -3173,7 +3173,7 @@ function tep_unlink_temp_dir($dir)
 /* -------------------------------------
     功能: 获得faq的分类的信息 
     参数: $c_id(int) id
-    返回值: faq的分类的信息(array/false) 
+    返回值: faq的分类的信息(array) 
 ------------------------------------ */
   function tep_get_faq_categories($c_id){
     $query = tep_db_query("
@@ -3187,7 +3187,7 @@ function tep_unlink_temp_dir($dir)
 /* -------------------------------------
     功能: 获得faq的问题的信息 
     参数: $q_id(int) id
-    返回值: faq的问题的信息(array/false) 
+    返回值: faq的问题的信息(array) 
 ------------------------------------ */
   function tep_get_faq_questions($q_id){
     $query = tep_db_query("
@@ -3199,7 +3199,7 @@ function tep_unlink_temp_dir($dir)
   }
 
 /* -------------------------------------
-    功能: 获得faq的分类的信息 
+    功能: 获得faq的分类的信息数组 
     参数: $g_id(int) id
     返回值: faq的分类的信息(array) 
 ------------------------------------ */
@@ -3218,7 +3218,7 @@ function tep_unlink_temp_dir($dir)
 
 /* -------------------------------------
     功能: 获得faq的问题的信息 
-    参数: $c_id(int) id
+    参数: $c_id(int) 问题id
     返回值: faq的问题的信息(array) 
 ------------------------------------ */
   function  tep_get_questions_by_c_id($c_id){
@@ -3326,10 +3326,10 @@ function tep_orders_status_finished($osid){
   }
 
 /* -------------------------------------
-    功能: 获得该分类下的字节点的信息 
+    功能: 获得该分类下的子节点的信息 
     参数: $parent_id(int) 分类id
     参数: $languages_id(int) 语言id 
-    返回值: 字节点的信息(array) 
+    返回值: 子节点的信息(array) 
 ------------------------------------ */
   function tep_get_categories_by_parent_id($parent_id, $languages_id = 4) {
     $categories = array();
@@ -3391,7 +3391,7 @@ function tep_get_products_categories_id($products_id) {
 /* -------------------------------------
     功能: 获得该商品的特价 
     参数: $products_id(int) 商品id
-    返回值: 商品的特价(float/boolean) 
+    返回值: 商品的特价(float) 
 ------------------------------------ */
 function tep_get_products_special_price($product_id) {
   $product_query = tep_db_query("select * from " . TABLE_PRODUCTS . " where products_id = '" . (int)$product_id . "'");
@@ -3733,7 +3733,7 @@ function tep_get_romaji_cpath($cpath)
     参数: $romaji(string) 罗马字 
     参数: $categories_id(int) 分类id 
     参数: $single(boolean) 是否取默认数据 
-    返回值: 分类的罗马字(string/int) 
+    返回值: 商品id(int) 
 ------------------------------------ */
 function tep_get_pid_by_romaji($romaji, $categories_id = 0, $single = false) {
   global $languages_id;
@@ -3929,7 +3929,7 @@ function tep_get_romaji_by_pid($id)
 /* -------------------------------------
     功能: 获得商品的乘积率
     参数: $pid(int) 商品id 
-    返回值: 信息(string) 
+    返回值: 商品的乘积率(string) 
 ------------------------------------ */
 function tep_get_products_rate($pid) {
   $n = str_replace(',','',tep_get_full_count_in_order2(1, $pid));
@@ -3974,7 +3974,7 @@ function tep_get_google_adsense_adurl($url) {
 /* -------------------------------------
     功能: 子域名解析专用 
     参数: 无 
-    返回值: (无/boolean) 
+    返回值: 无 
 ------------------------------------ */
 function tep_parseURI()
 {
@@ -4381,7 +4381,7 @@ function tep_get_cart_other_products($pid, $cid_arr){
   return $arr;
 }
 /* -------------------------------------
-    功能: product_info 显示个数 
+    功能: 格式化输出价格信息 
     参数: $str(string) 数值信息
     返回值: 处理后的数值信息(string) 
 ------------------------------------ */
@@ -4400,7 +4400,7 @@ function tep_get_cart_other_products($pid, $cid_arr){
   }
 
 /* -------------------------------------
-    功能: product_info 显示个数 
+    功能: 格式化输出价格信息 
     参数: $str(string) 数值信息
     返回值: 处理后的数值信息(string) 
 ------------------------------------ */
@@ -4844,7 +4844,7 @@ function tep_order_status_change($oID,$status){
 /* -------------------------------------
     功能: 生成订单id最后两位 
     参数: 无 
-    返回值: 信息(string) 
+    返回值: 最后两位信息(string) 
 ------------------------------------ */
 function tep_get_order_end_num() 
 {
@@ -4925,7 +4925,7 @@ function tep_get_order_end_num()
     参数: $email(string) 邮箱地址 
     参数: $last_anme(string) 姓  
     参数: $first_name(string) 名 
-    返回值: 客户id(int) 
+    返回值: 游客id(int) 
 ------------------------------------ */
 function tep_create_tmp_guest($email, $last_name, $first_name)
 { 
@@ -5207,7 +5207,7 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
 /* -------------------------------------
     功能: 生成预约订单号的后两位数字 
     参数: 无 
-    返回值: 两位数字(string) 
+    返回值: 后两位数字(string) 
 ------------------------------------ */
 function tep_get_preorder_end_num() 
 {
@@ -5763,7 +5763,7 @@ function get_strip_campaign_info($c_str)
 }
 
 /* -------------------------------------
-    功能: 在预约转正式的最终确认页获得小计，总价等相关信息 
+    功能: 在预约转正式的最终确认页获得小计,总价等相关信息 
     参数: $payment(string) 支付方法 
     参数: $pid(string) 预约订单id 
     参数: $option_info_array(array) 预约订单的属性 
