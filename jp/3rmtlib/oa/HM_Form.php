@@ -46,6 +46,7 @@ class HM_Form extends DbRecord
     echo "<tr><td class='main' colspan='3' align='right'>&nbsp;"; 
     //加入EOF标识，用于判断请求是否成功
     echo tep_eof_hidden();
+    echo "<input type='hidden' id='stock_value_flag' name='stock_flag' value='0'>";
     echo "<input type='hidden' name='form_id' value='".$this->id."' /><div id='canEndDiv'>";
     echo $this->end_user;
     echo "<button onclick='finishTheOrder()'  id='canEnd' >".OA_FORM_ORDER_FINISH."</button></div>";
@@ -255,18 +256,8 @@ class HM_Form extends DbRecord
           if($(this).attr('type')!='text'){
             $("#canEndDiv").hide();
           }
-        }
-        <?php //对OA中关于库存问题的处理?>
-        var pid_id = $(this).attr('id');
-        var stock_flag = true;
-        if(pid_id){
-          if(pid_id.substr(0,5) == 'spid_'){
-            stock_flag = false;
-          }
-        }
-        if(stock_flag){
+        } 
           $("#qa_form").submit();
-        }
         });
       $(this).change(function(ele){
         //                                   alert($("input|[name=dfossrrfwwkvomzw_6_1_107]").val());

@@ -185,6 +185,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
             }
       });
    if(stock_flag){
+      $("#stock_value_flag").val('1');
       var <?php echo $this->formname;?>val ='';
       //循环 checkbox 把 checkbox状态 和input 值保存起来
       var i =0;
@@ -261,6 +262,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       }   
       checkLockOrder();
       $("#qa_form").ajaxSubmit();
+      $("#stock_value_flag").val('0');
       $("#wait").hide();
       $('body').css('cursor','');
     }else{ 
