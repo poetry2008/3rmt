@@ -256,6 +256,7 @@ class HM_Form extends DbRecord
             $("#canEndDiv").hide();
           }
         }
+        <?php //对OA中关于库存问题的处理?>
         var pid_id = $(this).attr('id');
         var stock_flag = true;
         if(pid_id){

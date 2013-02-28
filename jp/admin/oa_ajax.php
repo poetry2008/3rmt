@@ -48,6 +48,7 @@ if(isset($_GET['action'])){
    case 'getTime' 获得当前时间   
    case 'finish' 更新订单完成标识 
    case 'complete' 判断oa信息的完整性,如果不完整，给出相应的提示   
+   case 'stock' 判断提交过来的数据是否与数据库储存的数据一致
 ------------------------------------------------------*/
   case 'updateoaorder':
     $id = $_GET['id'];

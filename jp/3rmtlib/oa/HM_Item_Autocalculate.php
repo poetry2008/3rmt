@@ -164,6 +164,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
     }
     function <?php echo $this->formname."Change_option(pid,ele,t)";?>{
 
+      <?php //判断当前的操作是否数据库储存的数据一致?>
       var status = 0;
       if($(ele).attr('checked')){
         status = 1;
@@ -263,6 +264,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       $("#wait").hide();
       $('body').css('cursor','');
     }else{ 
+      <?php //如果当前的操作与数据库中的数据不一致，给出提示，并跳转?>
       alert('<?php echo NOTICE_STOCK_ERROR_TEXT;?>');
       window.location.href='orders.php?page=<?php echo $_GET['page'];?>&oID=<?php echo $this->order_id;?>&action=edit';
     }
