@@ -3,11 +3,12 @@
   $Id$
 */
 
-////
-//! Write out serialized data.
-//  write_cache uses serialize() to store $var in $filename.
-//  $var      -  The variable to be written out.
-//  $filename -  The name of the file to write to.
+/* -------------------------------------
+    功能: 写入缓存 
+    参数: $var(string) 值  
+    参数: $filename(string) 文件名   
+    返回值: 是否写入成功(boolean) 
+------------------------------------ */
   function write_cache(&$var, $filename) {
     $filename = DIR_FS_CACHE . $filename;
     $success = false;
@@ -27,12 +28,13 @@
     return $success;
   }
 
-////
-//! Read in seralized data.
-//  read_cache reads the serialized data in $filename and
-//  fills $var using unserialize().
-//  $var      -  The variable to be filled.
-//  $filename -  The name of the file to read.
+/* -------------------------------------
+    功能: 读出缓存 
+    参数: $var(string) 值  
+    参数: $filename(string) 文件名   
+    参数: $auto_expire(boolean) 是否过期   
+    返回值: 是否读出成功(boolean) 
+------------------------------------ */
   function read_cache(&$var, $filename, $auto_expire = false){
     $filename = DIR_FS_CACHE . $filename;
     $success = false;
@@ -61,14 +63,14 @@
     return $success;
   }
 
-////
-//! Get data from the cache or the database.
-//  get_db_cache checks the cache for cached SQL data in $filename
-//  or retreives it from the database is the cache is not present.
-//  $SQL      -  The SQL query to exectue if needed.
-//  $filename -  The name of the cache file.
-//  $var      -  The variable to be filled.
-//  $refresh  -  Optional.  If true, do not read from the cache.
+/* -------------------------------------
+    功能: 从缓存或者数据库中取得数据 
+    参数: $sql(string) sql语句  
+    参数: $var(string) 值  
+    参数: $filename(string) 文件名   
+    参数: $refresh(boolean) 是否刷新   
+    返回值: 无 
+------------------------------------ */
   function get_db_cache($sql, &$var, $filename, $refresh = false){
     $var = array();
 
@@ -88,9 +90,13 @@
     }
   }
 
-////
-//! Cache the categories box
-// Cache the categories box
+/* -------------------------------------
+    功能: 缓存分类栏 
+    参数: $auto_expire(boolean) 是否过期   
+    参数: $refresh(boolean) 是否刷新   
+    参数: $tmp_id_array(array) 分类数组  
+    返回值: 缓存信息(string) 
+------------------------------------ */
   function tep_cache_categories_box($auto_expire = false, $refresh = false, $tmp_id_array = array()) {
     global $cPath, $foo, $language, $languages_id, $id, $categories_string;
     if (!empty($tmp_id_array)) {
@@ -109,9 +115,12 @@
     return $cache_output;
   }
 
-////
-//! Cache the manufacturers box
-// Cache the manufacturers box
+/* -------------------------------------
+    功能: 缓存制造商栏 
+    参数: $auto_expire(boolean) 是否过期   
+    参数: $refresh(boolean) 是否刷新   
+    返回值: 缓存信息(string) 
+------------------------------------ */
   function tep_cache_manufacturers_box($auto_expire = false, $refresh = false) {
     global $_GET, $language;
 
@@ -126,9 +135,12 @@
     return $cache_output;
   }
 
-////
-//! Cache the also purchased module
-// Cache the also purchased module
+/* -------------------------------------
+    功能: 缓存已购买商品栏 
+    参数: $auto_expire(boolean) 是否过期   
+    参数: $refresh(boolean) 是否刷新   
+    返回值: 缓存信息(string) 
+------------------------------------ */
   function tep_cache_also_purchased($auto_expire = false, $refresh = false) {
     global $_GET, $language, $languages_id;
 

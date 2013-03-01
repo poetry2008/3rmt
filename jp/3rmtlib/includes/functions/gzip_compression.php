@@ -4,6 +4,11 @@
 
 */
 
+/* -------------------------------------
+    功能: 检查是否是gzip压缩 
+    参数: 无   
+    返回值: 是否是gzip压缩(boolean) 
+------------------------------------ */
   function tep_check_gzip() {
     global $HTTP_ACCEPT_ENCODING;
 
@@ -18,7 +23,11 @@
     return false;
   }
 
-/* $level = compression level 0-9, 0=none, 9=max */
+/* -------------------------------------
+    功能: 压缩输出 
+    参数: $level(int) 压缩等级   
+    返回值: 压缩输出(string) 
+------------------------------------ */
   function tep_gzip_output($level = 5) {
     if ($encoding = tep_check_gzip()) {
       $contents = ob_get_contents();

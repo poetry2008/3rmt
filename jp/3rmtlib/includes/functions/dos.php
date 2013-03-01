@@ -1,4 +1,10 @@
 <?php
+/* -------------------------------------
+    功能: 是否在禁止列表里  
+    参数: $pdo_con(object) pdo对象   
+    参数: $ip_info(string) ip地址   
+    返回值: 是否在禁止列表里(boolean)  
+------------------------------------ */
 function is_at_ban_list($pdo_con, $ip_info)
 {
   $res = $pdo_con->query("select count(*) from banlist where ip = '".$ip_info."'"); 
@@ -13,11 +19,26 @@ function is_at_ban_list($pdo_con, $ip_info)
   return false;
 }
 
+/* -------------------------------------
+    功能: 新建日志记录  
+    参数: $pdo_con(object) pdo对象   
+    参数: $ip_info(string) ip地址   
+    参数: $host_info(string) 网站地址   
+    返回值: 无 
+------------------------------------ */
 function write_vlog($pdo_con, $ip_info, $host_info)
 {
    $pdo_con->exec("insert into accesslog set ip = '".$ip_info."',vtime='".date('Y-m-d H:i:s', time())."', site='".$host_info."'");
 }
 
+/* -------------------------------------
+    功能: 是否超过访问次数  
+    参数: $pdo_con(object) pdo对象   
+    参数: $ip_info(string) ip地址   
+    参数: $unit_time(string) 间隔时间   
+    参数: $unit_total(string) 间隔次数   
+    返回值: 是否超过访问次数(boolean) 
+------------------------------------ */
 function is_large_visit($pdo_con, $ip_info, $unit_time, $unit_total)
 {
   $res = $pdo_con->query("select count(*) from accesslog where ip = '".$ip_info."' and vtime <= '".date('Y-m-d H:i:s', time())."' and vtime >= '".date('Y-m-d H:i:s', time()-$unit_time)."'"); 
@@ -35,6 +56,12 @@ function is_large_visit($pdo_con, $ip_info, $unit_time, $unit_total)
   return false;
 }
 
+/* -------------------------------------
+    功能: 分析日志  
+    参数: $pdo_con(object) pdo对象   
+    参数: $ip_info(string) ip地址   
+    返回值: 无 
+------------------------------------ */
 function analyze_ban_log($pdo_con, $ip_info)
 {
   foreach( $pdo_con->query("select count(*) as con from prebanlist where ip =
@@ -62,6 +89,16 @@ function analyze_ban_log($pdo_con, $ip_info)
   $pdo_con->exec("delete from accesslog where ip = '".$ip_info."'"); 
 }
 
+/* -------------------------------------
+    功能: 发送邮件  
+    参数: $sTo(string) 收信人邮箱   
+    参数: $sTitle(string) 标题   
+    参数: $sMessage(string) 内容   
+    参数: $sFrom(string) 寄信人名   
+    参数: $sReply(string) 寄信人邮箱   
+    参数: $sName(string) 寄信人邮箱   
+    返回值: 是否发送成功(boolean) 
+------------------------------------ */
 function send_mail($sTo, $sTitle, $sMessage, $sFrom = null, $sReply = null, $sName = NULL)
 {
   $sTitle = stripslashes($sTitle);
@@ -83,6 +120,12 @@ function send_mail($sTo, $sTitle, $sMessage, $sFrom = null, $sReply = null, $sNa
   return @mail($sTo, $sTitle, $sMessage, $sAdditionalheader);
 }
 
+/* -------------------------------------
+    功能: 是否重置限制ip  
+    参数: $pdo_con(object) pdo对象   
+    参数: $ip_info(string) ip地址   
+    返回值: 是否重置成功(boolean) 
+------------------------------------ */
 function is_reset_blocked_ip($pdo_con, $ip_info){
   $res = $pdo_con->query("select count(*) from banlist where ip = '".$ip_info."' 
     and betime < '".date('Y-m-d H:i:s', time())."'"); 
