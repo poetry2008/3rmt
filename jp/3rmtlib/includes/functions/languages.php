@@ -3,6 +3,11 @@
   $Id$
 */
 
+/* -------------------------------------
+    功能: 获取指定的语言目录 
+    参数: $code(int) 语言编号   
+    返回值: 语言目录(string) 
+------------------------------------ */
   function tep_get_languages_directory($code) {
     global $languages_id;
     //set default language to language_id 

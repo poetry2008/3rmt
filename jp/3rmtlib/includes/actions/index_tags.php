@@ -21,7 +21,7 @@
       if ($value) $column_list[] = $column;
     }
   if (tep_session_is_registered('customer_id')) {
-    // ccdd
+    //判断该顾客是否登录 
     $products_query = "
         select p.products_id,
                p.products_real_quantity + p.products_virtual_quantity as products_quantity,
@@ -67,7 +67,6 @@
       order by pd.site_id DESC
       ";
   } else {
-    // ccdd
     $products_query = "
         select p.products_id,
                p.products_real_quantity + p.products_virtual_quantity as products_quantity,

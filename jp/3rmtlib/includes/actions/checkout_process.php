@@ -9,18 +9,24 @@ require(DIR_WS_FUNCTIONS . 'visites.php');
 // load selected payment module
 require(DIR_WS_CLASSES . 'payment.php');
 
-// user new point value it from checkout_confirmation.php 
 if(isset($real_point)){
+// user new point value it from checkout_confirmation.php 
   $point = $real_point;
 }
-// if the customer is not logged on, redirect them to the login page
 if (!tep_session_is_registered('customer_id')) {
+// if the customer is not logged on, redirect them to the login page
   $navigation->set_snapshot(array('mode' => 'SSL', 'page' => FILENAME_CHECKOUT_PAYMENT));
   tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
 }
 
 if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['hour']) || !isset($_SESSION['min'])){
-
+//判断购物车信息或者配送时间信息丢失就弹出错误页面
+/* -------------------------------------
+    功能: 高亮显示指定字符 
+    参数: $str(string) 字符串   
+    参数: $keywords(string) 高亮显示的字符串   
+    返回值: 处理后的字符串(string) 
+------------------------------------ */
   function tep_high_light_by_keywords($str, $keywords){ 
       $k = $rk= explode('|',$keywords);
       foreach($k as $key => $value){
@@ -136,6 +142,7 @@ $seal_user_sql = "select is_seal from ".TABLE_CUSTOMERS." where customers_id
 $seal_user_query = tep_db_query($seal_user_sql);
 if ($seal_user_row = tep_db_fetch_array($seal_user_query)){
   if($seal_user_row['is_seal']){
+    //判断该顾客是否能下订单 
     tep_redirect(tep_href_link(FILENAME_CHECKOUT_CONFIRMATION, 'is_finish=1', 'SSL')); 
     exit;
   }
@@ -143,14 +150,14 @@ if ($seal_user_row = tep_db_fetch_array($seal_user_query)){
 if ((tep_not_null(MODULE_PAYMENT_INSTALLED)) && (!tep_session_is_registered('payment')) ) {
   tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL')); 
 }
-// avoid hack attempts during the checkout procedure by checking the internal cartID
 if (isset($cart->cartID) && tep_session_is_registered('cartID')) {
+// avoid hack attempts during the checkout procedure by checking the internal cartID
   if ($cart->cartID != $cartID) {
     tep_redirect(tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL'));
   }
 }
-// Stock Check
 if ( (STOCK_CHECK == 'true') && (STOCK_ALLOW_CHECKOUT != 'true') ) {
+// Stock Check
   $products = $cart->get_products();
   for ($i=0, $n=sizeof($products); $i<$n; $i++) {
     if (tep_check_stock((int)$products[$i]['id'], $products[$i]['quantity'])) {
@@ -164,7 +171,6 @@ include(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_PROCESS);
 $payment_modules = payment::getInstance(SITE_ID);
 $insert_id = date("Ymd") . '-' . date("His") . tep_get_order_end_num();
 # Check
-//ccdd
 $NewOidQuery = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS." where orders_id = '".$insert_id."' and site_id = '".SITE_ID."'");
 $NewOid = tep_db_fetch_array($NewOidQuery);
 if($NewOid['cnt'] > 0) {
@@ -350,9 +356,8 @@ if (isset($_POST['code_fee'])) {
 } else{
   $sql_data_array['code_fee'] = 0;
 }
-//配送费用
 if(isset($_SESSION['h_shipping_fee'])){
-
+//配送费用
   $sql_data_array['shipping_fee'] = intval($_SESSION['h_shipping_fee']);
 }else{
   $sql_data_array['shipping_fee'] = 0;
@@ -366,7 +371,6 @@ if ($bflag_single == 'View') {
   $sql_data_array['code_fee'] = $orign_hand_fee + $buy_handle_fee; 
   $new_handle_fee = $sql_data_array['code_fee'];
 }
-// ccdd
 //$sql_data_array['orders_status'] = 30;
 tep_db_perform(TABLE_ORDERS, $sql_data_array);
 tep_order_status_change($insert_id,$sql_data_array['orders_status']);
@@ -379,7 +383,6 @@ for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
                           'class' => $order_totals[$i]['code'], 
                           'sort_order' => $order_totals[$i]['sort_order'],
                           );
-  // ccdd
   if($telecom_option_ok!=true){
   $telecom_option_ok = $payment_modules->getExpress($payment,$order_totals,$i);
   }
@@ -397,7 +400,6 @@ $sql_data_array = array('orders_id' => $insert_id,
                         'customer_notified' => $customer_notification,
                         'comments' => $order->info['comments'],
                         'user_added' => tep_get_fullname($order->customer['firstname'],$order->customer['lastname']));
-// ccdd
 tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
   
 //# 添加部分（买取信息）
@@ -410,7 +412,6 @@ if ($telecom_option_ok == true) {
                           'customer_notified' => '0',
                           'comments' => 'checkout',
                           'user_added' => tep_get_fullname($order->customer['firstname'],$order->customer['lastname']));
-  // ccdd
   tep_order_status_change($orders['orders_id'],30);
   tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
   orders_updated($insert_id);
@@ -454,9 +455,8 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
     }
   }
 
-  // Update products_ordered (for bestsellers list)
-  //ccdd
   if ($customers_referer_array['is_calc_quantity'] != '1') {
+  // Update products_ordered (for bestsellers list)
     tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . sprintf('%d', $order->products[$i]['qty']) . " where products_id = '" . (int)$order->products[$i]['id'] . "'");
   }
   $chara = '';
@@ -479,7 +479,6 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
                           'products_rate' => tep_get_products_rate((int)$order->products[$i]['id']),
                           'site_id' => SITE_ID,
                           );
-  // ccdd
   tep_db_perform(TABLE_ORDERS_PRODUCTS, $sql_data_array);
   $order_products_id = tep_db_insert_id();
 
@@ -511,6 +510,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
   }
   
   if (!empty($order->products[$i]['op_attributes'])) {
+    //商品的option信息 
     $attributes_exist = '1';
      
     foreach ($order->products[$i]['op_attributes'] as $op_key => $op_value) {
@@ -559,7 +559,6 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
                               'option_group_id' => $op_value['group_id'], 
                               'option_item_id' => $op_value['item_id'] 
                               );
-      // ccdd
       tep_db_perform(TABLE_ORDERS_PRODUCTS_ATTRIBUTES, $sql_data_array);
 
       if ((DOWNLOAD_ENABLED == 'true') && isset($attributes_values['products_attributes_filename']) && tep_not_null($attributes_values['products_attributes_filename'])) {
@@ -568,7 +567,6 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
                                 'orders_products_filename' => $attributes_values['products_attributes_filename'], 
                                 'download_maxdays' => $attributes_values['products_attributes_maxdays'], 
                                 'download_count' => $attributes_values['products_attributes_maxcount']);
-        // ccdd
         tep_db_perform(TABLE_ORDERS_PRODUCTS_DOWNLOAD, $sql_data_array);
       }
       $products_ordered_attributes .= "\n" 
@@ -584,6 +582,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
   }
   
   if (!empty($order->products[$i]['ck_attributes'])) {
+    //登录后选择商品的option信息 
     foreach ($order->products[$i]['ck_attributes'] as $ck_key => $ck_value) {
       $input_option_array = array('title' => $ck_value['front_title'], 'value' => $ck_value['value']);
       
@@ -630,7 +629,6 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
                               'option_group_id' => $ck_value['group_id'], 
                               'option_item_id' => $ck_value['item_id'] 
                               );
-      // ccdd
       tep_db_perform(TABLE_ORDERS_PRODUCTS_ATTRIBUTES, $sql_data_array);
 
       if ((DOWNLOAD_ENABLED == 'true') && isset($attributes_values['products_attributes_filename']) && tep_not_null($attributes_values['products_attributes_filename'])) {
@@ -639,7 +637,6 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
                                 'orders_products_filename' => $attributes_values['products_attributes_filename'], 
                                 'download_maxdays' => $attributes_values['products_attributes_maxdays'], 
                                 'download_count' => $attributes_values['products_attributes_maxcount']);
-        // ccdd
         tep_db_perform(TABLE_ORDERS_PRODUCTS_DOWNLOAD, $sql_data_array);
       }
       $products_ordered_attributes .= "\n" 
@@ -717,7 +714,6 @@ $email_orders_history .= "\n";
   
 $order_history_query_raw = "select o.orders_id, o.customers_name, o.customers_id,
   o.date_purchased, s.orders_status_name, ot.value as order_total_value from " . TABLE_ORDERS . " o left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s where o.customers_id = '" . tep_db_input($customer_id) . "' and o.orders_status = s.orders_status_id and s.language_id = '" . $languages_id . "' and ot.class = 'ot_total' order by o.date_purchased DESC limit 0,5";  
-//ccdd
 $order_history_query = tep_db_query($order_history_query_raw);
 while ($order_history = tep_db_fetch_array($order_history_query)) {
   $email_orders_history .= $order_history['date_purchased'] . '　　' .
@@ -798,10 +794,12 @@ if(isset($_SESSION['options']) && !empty($_SESSION['options'])){
   $email_order = str_replace($email_address,$email_address_str,$email_order);
 }
 if ($customers_referer_array['is_send_mail'] != '1') {
+  //判断是否给该顾客发送邮件 
   tep_mail(tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], EMAIL_TEXT_SUBJECT, $email_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
 }
   
 if (SENTMAIL_ADDRESS != '') {
+  //给管理者发送邮件 
   tep_mail('', SENTMAIL_ADDRESS, EMAIL_TEXT_SUBJECT2, $email_order, tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], '');
 }
   
@@ -861,8 +859,8 @@ if (method_exists($payment_class,'getMailString')){
   $email_printing_order .=$payment_class->getMailString($ot['value']);
 }
 # ------------------------------------------
-// send emails to other people
 if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
+  //发送打印邮件 
   tep_mail('', PRINT_EMAIL_ADDRESS, STORE_NAME, $email_printing_order, tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], '');
 }
 
@@ -878,14 +876,12 @@ $payment_modules->after_process($payment);
 
 $cart->reset(true);
 
-//Add point
 if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
+//Add point
   if(MODULE_ORDER_TOTAL_POINT_ADD_STATUS == '0') {
-    //ccdd
 
     tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . intval($get_point - $point) . " where customers_id = " . $customer_id );
   } else {
-    //ccdd
 
     tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point - " . intval($point) . " where customers_id = " . $customer_id );
   }
@@ -914,9 +910,8 @@ if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
 }
   
   
-// 游客购买的时候重新设置点数
 if($guestchk == '1') {
-  //ccdd
+// 游客购买的时候重新设置点数
   tep_db_query("update ".TABLE_CUSTOMERS." set point = '0' where customers_id = '".$customer_id."'");
 }  
   

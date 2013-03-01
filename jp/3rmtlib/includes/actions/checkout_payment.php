@@ -1,12 +1,13 @@
 <?php
 require_once DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_PAYMENT;
-// if the customer is not logged on, redirect them to the login page
 if (!tep_session_is_registered('customer_id')) {
+// if the customer is not logged on, redirect them to the login page
   $navigation->set_snapshot();
   tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
 }else{
   $check_before_pos = strpos($_SERVER['HTTP_REFERER'], 'login.php');
   if ($check_before_pos !== false) {
+    //判断上一页是否来自登录页 
     if ($cart->count_contents(true) > 0) {
       $c_products_list = $cart->get_products();  
       $check_op_single = false; 
@@ -51,20 +52,20 @@ if (!tep_session_is_registered('customer_id')) {
 
 $page_url_array = explode('/',$_SERVER['REQUEST_URI']);
 $_SESSION['shipping_page_str'] = end($page_url_array);
-// if there is nothing in the customers cart, redirect them to the shopping cart page
 if ($cart->count_contents(true) < 1) {
+// if there is nothing in the customers cart, redirect them to the shopping cart page
   tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
 }
 
-// avoid hack attempts during the checkout procedure by checking the internal cartID
 if (isset($cart->cartID) && tep_session_is_registered('cartID')) {
+// avoid hack attempts during the checkout procedure by checking the internal cartID
   if ($cart->cartID != $cartID) {
     tep_redirect(tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL'));
   }
 }
 
-// Stock Check
 if ( (STOCK_CHECK == 'true') && (STOCK_ALLOW_CHECKOUT != 'true') ) {
+// Stock Check
   $products = $cart->get_products();
   for ($i=0, $n=sizeof($products); $i<$n; $i++) {
     if (tep_check_stock((int)$products[$i]['id'], $products[$i]['quantity'])) {
@@ -196,7 +197,6 @@ if (!tep_session_is_registered('billto')) {
   $billto = $customer_default_address_id;
 } else {
   // verify the selected billing address
-  //ccdd
   $check_address_query = tep_db_query("select count(*) as total from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . (int)$customer_id . "' and address_book_id = '" . (int)$billto . "'");
   $check_address = tep_db_fetch_array($check_address_query);
 
@@ -221,7 +221,6 @@ $breadcrumb->add(NAVBAR_TITLE_2, tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'S
 
 
 if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
-  //ccdd
   $point_query = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "'");
   $point = tep_db_fetch_array($point_query);
 }

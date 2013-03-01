@@ -10,6 +10,7 @@
   $preorder_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_POST['pid']."' and site_id = '".SITE_ID."'");
   $preorder_res = tep_db_fetch_array($preorder_raw);
   if (!$preorder_res) {
+    //判断该预约订单是否存在 
     forward404(); 
   } 
   $payment_modules = payment::getInstance(SITE_ID); 
@@ -42,6 +43,7 @@
   $preorder_option_info = $option_info_array;
   
   if (!tep_session_is_registered('preorder_option_info')) {
+    //把option信息放入session 
     tep_session_register('preorder_option_info'); 
   }
  
@@ -109,6 +111,7 @@
   }
   
   if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
+    //把点数放入session 
     if (@$_POST['preorder_point'] < $preorder_subtotal) {
       $preorder_point = isset($_POST['preorder_point'])?$_POST['preorder_point']:0; 
     } else {
@@ -122,7 +125,7 @@
     if (!tep_session_is_registered('preorder_real_point')) {
       tep_session_register('preorder_real_point'); 
     } 
-  
+    //把优惠券信息放入session 
     $campaign_query = tep_db_query("select * from ".TABLE_CAMPAIGN." where id = '".$_POST['preorder_campaign_id']."' and (site_id = '".SITE_ID."' or site_id = '0') and status = '1' and is_preorder = '1' order by site_id desc limit 1");
     $campaign_res = tep_db_fetch_array($campaign_query); 
     if ($campaign_res) {

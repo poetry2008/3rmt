@@ -33,6 +33,15 @@
       }
 
       switch ($column_list[$col]) {
+/* -----------------------------------------------------
+   case 'PRODUCT_LIST_MODEL' 商品型号    
+   case 'PRODUCT_LIST_NAME' 商品名字和描述    
+   case 'PRODUCT_LIST_MANUFACTURER' 制造商的名字    
+   case 'PRODUCT_LIST_QUANTITY' 商品的数量    
+   case 'PRODUCT_LIST_IMAGE' 商品的图片名    
+   case 'PRODUCT_LIST_WEIGHT' 商品的重量    
+   case 'PRODUCT_LIST_ORDERED' 商品被购买的次数    
+------------------------------------------------------*/
         case 'PRODUCT_LIST_MODEL':
           $select_column_list .= 'p.products_model';
           break;
@@ -65,8 +74,8 @@
       from (
     ";
 
-// show the products of a specified manufacturer
     if (isset($_GET['manufacturers_id'])) {
+// show the products of a specified manufacturer
       if (isset($_GET['filter_id'])) {
 // We are asked to show only a specific category
         $listing_sql .= "

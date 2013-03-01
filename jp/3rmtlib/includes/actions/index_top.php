@@ -24,7 +24,6 @@
     }
     
     $sql = "select * from " . TABLE_CATEGORIES . " where categories.categories_id = '" . $cPath . "'";
-    // ccdd
     $category_query = tep_db_query($sql);
     $category = tep_db_fetch_array($category_query);
     if ($category && $category['parent_id'] == 0) {
@@ -78,9 +77,9 @@
       and pd2.products_status !=0 
       and pd2.products_status !=3";
     $categories_products_query = tep_db_query($categories_products_sql);
-    // ccdd
     $cateqories_products = tep_db_fetch_array($categories_products_query);
     if ($cateqories_products['total'] > 0) {
+      //判断该分类下是否有商品 
       $category_depth = 'products'; // display products
       
       if (!defined('URL_SUB_SITE_ENABLED')) {
@@ -92,7 +91,6 @@
       }
     } else {
       $category_parent_query = tep_db_query("select count(*) as total from " . TABLE_CATEGORIES . " where parent_id = '" . $current_category_id . "'");
-      // ccdd
       $category_parent = tep_db_fetch_array($category_parent_query);
       if ($category_parent['total'] > 0) {
         $category_depth = 'nested'; // navigate through the categories
@@ -112,13 +110,11 @@
   }
   if (isset($_GET['manufacturers_id'])) {
     $m_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS . " p, ".TABLE_PRODUCTS_DESCRIPTION." pd where p.products_id = pd.products_id and p.manufacturers_id = '" . $_GET['manufacturers_id'] . "' and pd.products_status != 0 and pd.products_status != 3 and site_id = ".SITE_ID);
-    // ccdd
     $m = tep_db_fetch_array($m_query);
     check_uri('/sort=(\d+)/');
     if ($_GET['page'] * MAX_DISPLAY_SEARCH_RESULTS > $m['total'] + MAX_DISPLAY_SEARCH_RESULTS) {
       forward404();
     }
-    // ccdd
     $seo_manufacturers_query = tep_db_query("
       select manufacturers_id, manufacturers_name 
       from " . TABLE_MANUFACTURERS . " 
@@ -128,7 +124,6 @@
 
   if (isset($_GET['tags_id']))
   {
-    // ccdd
     $seo_tags_query = tep_db_query("
       select * 
       from " . TABLE_TAGS. " 

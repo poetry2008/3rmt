@@ -1,14 +1,17 @@
+//check navigator's mime_type exists
 function pmv_plugMoz(pmv_pl) {
 	if (pmv_tm.indexOf(pmv_pl) != -1 && (navigator.mimeTypes[pmv_pl].enabledPlugin != null))
 		return '1';
 	return '0';
 }
+//add error script code
 function pmv_plugIE(pmv_plug){
 	pmv_find = false;
 	document.write('<SCR' + 'IPT LANGUAGE=VBScript>\n on error resume next \n pmv_find = IsObject(CreateObject("' + pmv_plug + '")) <' + '/' + 'S' + 'C' + 'R' + 'IPT>\n');
 	if (pmv_find) return '1';
 	return '0';
 }
+//if flash plugin exists , use this
 function getFlashVer() {
  var f="",n=navigator;
  if (n.plugins && n.plugins.length) {
@@ -43,7 +46,7 @@ function getSystemLanguage(){
 		return navigator.systemLanguage;
 	else{return '';}
 } 
-
+//check obj whether is null
 function objChk(pObj){
 	if (pObj==null){return false;}
 	if (pObj=="undefined"){return false;}

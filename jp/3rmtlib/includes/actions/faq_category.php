@@ -5,6 +5,7 @@ $link_arr[] = 'faq';
 $breadcrumb->add(TEXT_FAQ,HTTP_SERVER.'/'.$link_url.'/');
 $parent_info = null;
 if(isset($_GET['faq_name'])&&$_GET['faq_name']!=''){
+  //faq的名字是否为空 
   if(!preg_match('|\/$|',$_GET['faq_name'])){
       forward404();
   }
@@ -23,10 +24,12 @@ $romaji_arr = explode('/',$_GET['faq_name']);
     $link_url .= '/'.urlencode($value);
     $link_arr[] = $value;
     $last_faq_category_id = $temp_parent_id;
+    //获取该分类的子分类id 
     $temp_parent_id = tep_get_faq_cpath_by_cname($value,$temp_parent_id);
     if(!$temp_parent_id){
       forward404();
     }
+    //获取该分类的信息 
     $temp_category_info = tep_get_faq_category_info($temp_parent_id);
     $breadcrumb->add($temp_category_info['title'],HTTP_SERVER.'/'.$link_url.'/');
   }
