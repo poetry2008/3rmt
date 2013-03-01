@@ -1162,7 +1162,23 @@ function UserInsert_execute() {
   echo '<br><br>';
   echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
   echo "</form>\n";           // form的footer
+  if($oresult){
+    
+    //获取个人设定中创建者，创建时间，更新者，更新时间的信息，进行更新
+    $update_users_query = tep_db_query("select configuration_description from ". TABLE_CONFIGURATION ." where configuration_key='PERSONAL_SETTING_ORDERS_SITE'");
+    $update_users_array = tep_db_fetch_array($update_users_query);
+    tep_db_free_result($update_users_query);
+    $users_array = array();
+    if($update_users_array['configuration_description'] != ''){
 
+      $users_array = unserialize($update_users_array['configuration_description']);
+      
+    }
+    $users_array[$GLOBALS['aval']['userid']]['create_users'] = $_SESSION['user_name'];
+    $users_array[$GLOBALS['aval']['userid']]['create_time'] = date('Y-m-d H:i:s');
+    $update_users_str = serialize($users_array);
+    tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_description='".$update_users_str."' where configuration_key='PERSONAL_SETTING_ORDERS_SITE'");
+  }
   if ($oresult) @tep_db_free_result($oresult);    // 开放结果项目
 
   return TRUE;
