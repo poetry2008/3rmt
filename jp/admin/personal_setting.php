@@ -533,9 +533,9 @@ require("includes/note_js.php");
 </form>
 </td></tr></table></td></tr>
 </table>
-</div></div></td>
+</div></td>
 </tr>
-</table></td>
+</table></div></td>
 <!-- body_text_eof -->
 </tr>
 </table>
