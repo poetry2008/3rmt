@@ -500,7 +500,7 @@ require("includes/note_js.php");
               </tr>
               <tr><td align="right"><input type="submit" value="<?php echo TEXT_SAVE;?>"></td></tr>
               <?php 
-               //读取当前用户的更新日期
+               //读取当前用户的创建者、创建时间以及个人设定的更新者、更新时间
                $configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where  configuration_key='PERSONAL_SETTING_ORDERS_SITE'"));  
                $create_users = TEXT_UNSET_DATA;
                $create_time = TEXT_UNSET_DATA;
