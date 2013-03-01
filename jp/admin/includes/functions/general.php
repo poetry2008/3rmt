@@ -420,7 +420,9 @@ function tep_array_merge($array1, $array2, $array3 = '') {
  ------------------------------------ */
 function tep_in_array($lookup_value, $lookup_array) {
   if (function_exists('in_array')) {
-    if (in_array($lookup_value, $lookup_array)) return true;
+    if (is_array($lookup_array)){
+      if (in_array($lookup_value, $lookup_array)) return true;
+    }
   } else {
     reset($lookup_array);
     while (list($key, $value) = each($lookup_array)) {

@@ -147,7 +147,7 @@ function getOs($userAgent)
   for (@reset($GLOBALS['osNameToId']), $ok = false; 
     (list($key, $value) = @each($GLOBALS['osNameToId'])) && !$ok;)
   {
-    if ($ok = ereg($key, $userAgent))
+    if ($ok = preg_match('/'.$key.'/', $userAgent))
     {
       return $value;
       return $key;
