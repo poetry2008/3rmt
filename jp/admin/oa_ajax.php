@@ -144,10 +144,15 @@ if(isset($_GET['action'])){
     $oa_item_form_id_array = array();
     $oa_item_id_value = '';
     //通过订单ID，来获取此订单的oa相关信息
+    $formtype = tep_check_order_type($orders_id);
+    $payment_romaji = tep_get_payment_code_by_order_id($orders_id);
+    $oa_form_sql = tep_db_query("select id from ".TABLE_OA_FORM." where formtype = '".$formtype."' and payment_romaji = '".$payment_romaji."'");
+    $oa_form_id_array = tep_db_fetch_array($oa_form_sql);
+    tep_db_free_result($oa_form_sql);
+    $oa_item_id_value = $oa_form_id_array['id'];
     $oa_group_query = tep_db_query("select form_id,item_id from ". TABLE_OA_FORMVALUE ." where orders_id='".$orders_id."'");
     while($oa_group_array = tep_db_fetch_array($oa_group_query)){
-
-      if($oa_item_id_value == ''){$oa_item_id_value = $oa_group_array['form_id'];} 
+ 
       $oa_item_form_id_array[] = $oa_group_array['item_id'];
     }
     $oa_item_num = tep_db_num_rows($oa_group_query);
