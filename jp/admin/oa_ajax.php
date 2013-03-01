@@ -141,6 +141,7 @@ if(isset($_GET['action'])){
     $complete_flag = '';
     $oa_item_id_array = array();
     $oa_item_title_array = array();
+    $oa_item_title_sort_array = array();
     $oa_item_form_id_array = array();
     $oa_item_id_value = '';
     //通过订单ID，来获取此订单的oa相关信息
@@ -158,7 +159,7 @@ if(isset($_GET['action'])){
     $oa_item_num = tep_db_num_rows($oa_group_query);
     tep_db_free_result($oa_group_query);
     //获取oa子元素的相应信息
-    $oa_group_form_query = tep_db_query("select group_id from ". TABLE_OA_FORM_GROUP ." where form_id='".$oa_item_id_value."'");
+    $oa_group_form_query = tep_db_query("select group_id,ordernumber from ". TABLE_OA_FORM_GROUP ." where form_id='".$oa_item_id_value."'");
     while($oa_group_form_array = tep_db_fetch_array($oa_group_form_query)){
 
       $oa_item_form_query = tep_db_query("select id,title,group_id,`option` as option_value from ". TABLE_OA_ITEM ." where group_id='".$oa_group_form_array['group_id']."'");
@@ -171,6 +172,7 @@ if(isset($_GET['action'])){
           $oa_group_id_array = tep_db_fetch_array($oa_group_id_query);
           tep_db_free_result($oa_group_id_query);
           $oa_item_title_array[$oa_item_form_array['id']] = $oa_group_id_array['name'];
+          $oa_item_title_sort_array[$oa_item_form_array['id']] = $oa_group_form_array['ordernumber'];
         }
       }
     }
@@ -193,9 +195,10 @@ if(isset($_GET['action'])){
     $oa_diff_name_array = array();
     foreach($oa_diff_array as $oa_value){
 
-      $oa_diff_name_array[] = $oa_item_title_array[$oa_value];
+      $oa_diff_name_array[$oa_item_title_sort_array[$oa_value]] = $oa_item_title_array[$oa_value];
     }
     $oa_diff_name_array = array_unique($oa_diff_name_array);
+    ksort($oa_diff_name_array);
     //如果数据不完整，给出错误信息
     if($oa_item_num < count($oa_item_id_array)){
 
