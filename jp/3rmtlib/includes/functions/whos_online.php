@@ -3,13 +3,17 @@
   $Id$
 */
 
+/* -------------------------------------
+    功能: 更新在线用户 
+    参数: 无   
+    返回值: 无 
+------------------------------------ */
   function tep_update_whos_online() {
     global $customer_id;
 
     if (tep_session_is_registered('customer_id')) {
       $wo_customer_id = $customer_id;
 
-      // ccdd
       $customer_query = tep_db_query("
           select customers_firstname, 
                  customers_lastname 
@@ -33,14 +37,12 @@
     $xx_mins_ago = ($current_time - 900);
 
 // remove entries that have expired
-    // ccdd
     tep_db_query("
         delete from " . TABLE_WHOS_ONLINE . " 
         where time_last_click < '" . $xx_mins_ago . "'
           and site_id = '".SITE_ID."'
     ");
 
-    // ccdd
     $stored_customer_query = tep_db_query("
         select count(*) as count 
         from " . TABLE_WHOS_ONLINE . " 
@@ -50,7 +52,6 @@
     $stored_customer = tep_db_fetch_array($stored_customer_query);
 
     if ($stored_customer['count'] > 0) {
-      // ccdd
       tep_db_query("
           update " . TABLE_WHOS_ONLINE . " 
           set customer_id = '" . $wo_customer_id . "', 
@@ -62,7 +63,6 @@
             and site_id = '".SITE_ID."'
       ");
     } else {
-      // ccdd
       tep_db_query("
           insert into " . TABLE_WHOS_ONLINE . " (
             customer_id, 

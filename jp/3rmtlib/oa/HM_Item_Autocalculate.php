@@ -164,6 +164,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
     }
     function <?php echo $this->formname."Change_option(pid,ele,t)";?>{
 
+      <?php //判断当前的操作是否数据库储存的数据一致?>
       var status = 0;
       if($(ele).attr('checked')){
         status = 1;
@@ -184,6 +185,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
             }
       });
    if(stock_flag){
+      $("#stock_value_flag").val('1');
       var <?php echo $this->formname;?>val ='';
       //循环 checkbox 把 checkbox状态 和input 值保存起来
       var i =0;
@@ -260,9 +262,11 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       }   
       checkLockOrder();
       $("#qa_form").ajaxSubmit();
+      $("#stock_value_flag").val('0');
       $("#wait").hide();
       $('body').css('cursor','');
     }else{ 
+      <?php //如果当前的操作与数据库中的数据不一致，给出提示，并跳转?>
       alert('<?php echo NOTICE_STOCK_ERROR_TEXT;?>');
       window.location.href='orders.php?page=<?php echo $_GET['page'];?>&oID=<?php echo $this->order_id;?>&action=edit';
     }
