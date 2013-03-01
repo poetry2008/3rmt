@@ -27,8 +27,8 @@ $gender = tep_db_prepare_input($_POST['gender']);
     $error = false;
     //-------------------------------------------------------
     
-    //gender
     if (ACCOUNT_GENDER == 'true') {
+    //gender
     if (($gender == 'm') || ($gender == 'f')) {
       $entry_gender_error = false;
     } else {
@@ -37,70 +37,69 @@ $gender = tep_db_prepare_input($_POST['gender']);
     }
     }
 
-    //first_name
     if (strlen($firstname) < ENTRY_FIRST_NAME_MIN_LENGTH) {
+    //名是否小于指定长度
     $error = true;
     $entry_firstname_error = true;
     } else {
     $entry_firstname_error = false;
     }
   
-    //last_name
     if (strlen($lastname) < ENTRY_LAST_NAME_MIN_LENGTH) {
+    //姓是否小于指定长度
     $error = true;
     $entry_lastname_error = true;
     } else {
     $entry_lastname_error = false;
     }
     
-    //email-1
     if (strlen($email_address) < ENTRY_EMAIL_ADDRESS_MIN_LENGTH) {
+    //邮箱地址是否小于指定长度
     $error = true;
     $entry_email_address_error = true;
     } else {
     $entry_email_address_error = false;
     }
   
-    //email-2
     if (!tep_validate_email($email_address)) {
+    //邮箱地址是否符合规范
     $error = true;
     $entry_email_address_check_error = true;
     } else {
     $entry_email_address_check_error = false;
     }
   
-    //street_address
     if (strlen($street_address) < ENTRY_STREET_ADDRESS_MIN_LENGTH) {
+    //街道地址是否小于指定长度
     $error = true;
     $entry_street_address_error = true;
     } else {
     $entry_street_address_error = false;
     }
   
-    //postcode
     if (strlen($postcode) < ENTRY_POSTCODE_MIN_LENGTH) {
+    //邮政编码是否小于指定长度
     $error = true;
     $entry_post_code_error = true;
     } else {
     $entry_post_code_error = false;
     }
   
-    //city
     if (strlen($city) < ENTRY_CITY_MIN_LENGTH) {
+    //城市是否小于指定长度
     $error = true;
     $entry_city_error = true;
     } else {
     $entry_city_error = false;
     }
   
-    //state
     if (ACCOUNT_STATE == 'true') {
+    //state
     if ($entry_country_error == true) {
       $entry_state_error = true;
     } else {
       $zone_id = 0;
       $entry_state_error = false;
-//ccdd
       $check_query = tep_db_query("
           select count(*) as total 
           from " . TABLE_ZONES . " 
@@ -109,7 +108,6 @@ $gender = tep_db_prepare_input($_POST['gender']);
       $check_value = tep_db_fetch_array($check_query);
       $entry_state_has_zones = ($check_value['total'] > 0);
       if ($entry_state_has_zones == true) {
-//ccdd
       $zone_query = tep_db_query("
           select zone_id 
           from " . TABLE_ZONES . " 
@@ -120,7 +118,6 @@ $gender = tep_db_prepare_input($_POST['gender']);
         $zone_values = tep_db_fetch_array($zone_query);
         $zone_id = $zone_values['zone_id'];
       } else {
-//ccdd
         $zone_query = tep_db_query("
             select zone_id 
             from " . TABLE_ZONES . " 
@@ -144,16 +141,16 @@ $gender = tep_db_prepare_input($_POST['gender']);
     }
     }
   
-    //telephone
     if (strlen($telephone) < ENTRY_TELEPHONE_MIN_LENGTH) {
+      //电话号码是否小于指定长度 
       $error = true;
       $entry_telephone_error = true;
     } else {
       $entry_telephone_error = false;
     }
     
-    //password check
     if(!empty($password)) {
+    //password check
       //password( lengh )
     $passlen = strlen($password);
       if ($passlen < ENTRY_PASSWORD_MIN_LENGTH) {
@@ -163,16 +160,15 @@ $gender = tep_db_prepare_input($_POST['gender']);
       $entry_password_error = false;
       }
     
-    //password confirmation check
       if ($password != $confirmation) {
+      //password confirmation check
       $error = true;
       $entry_password_error = true;
       }
     }
   
-    //check_email_count for regist user
     if(!empty($password)) {
-//ccdd
+    //check_email_count for regist user
       $check_email = tep_db_query("
           select customers_email_address 
           from " .  TABLE_CUSTOMERS . " 
@@ -207,7 +203,6 @@ $gender = tep_db_prepare_input($_POST['gender']);
         if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;
         if (ACCOUNT_DOB == 'true') $sql_data_array['customers_dob'] = tep_date_raw($dob);
   
-        // ccdd
         tep_db_perform(TABLE_CUSTOMERS, $sql_data_array);
   
         $customer_id = tep_db_insert_id();
@@ -235,9 +230,7 @@ $gender = tep_db_prepare_input($_POST['gender']);
           }
         }
   
-        // ccdd
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
-        //ccdd
         tep_db_query("
             insert into " . TABLE_CUSTOMERS_INFO . " (
               customers_info_id, 
@@ -286,7 +279,8 @@ $gender = tep_db_prepare_input($_POST['gender']);
         tep_session_register('zone_id');
       
         tep_redirect(tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.$goods_id, 'SSL'));
-      } else {//游客（只是用于此次）
+      } else {
+        //游客（只是用于此次）
         $pc_id = 0;
         tep_session_register('pc_id');
         

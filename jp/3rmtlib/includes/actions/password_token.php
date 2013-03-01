@@ -14,15 +14,18 @@
   $pa_time = strtotime($customers_res['created_at']);
  
   if ($customers_res['is_update'] == '1') {
+    //判断该顾客信息是否已更新 
     forward404(); 
   }
   
   if (($now_time - $pa_time) > 60*60*24*3) {
+    //是否超过72小时 
     forward404(); 
   }
   
   $customers_info_raw = tep_db_query("select site_id, customers_password from customers where customers_id = '".$customers_res['customers_id']."' and site_id = '".SITE_ID."'"); 
   if (!tep_db_num_rows($customers_info_raw)) {
+    //该顾客是否存在 
     forward404(); 
   }
   
@@ -31,11 +34,13 @@
   $error = false; 
   if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
     if (($_POST['u_password'] == '') || ($_POST['up_password'] == '')) {
+      //不能为空 
       $error = true; 
       $error_msg = UPDATE_ENTRY_PASSWORD_WORNG; 
     }
     
     if ($_POST['u_password'] != $_POST['up_password']) {
+      //密码是否一致 
       $error = true; 
       $error_msg = UPDATE_ENTRY_PASSWORD_IS_NOT_SAME; 
     }
@@ -43,11 +48,13 @@
     $passlen = strlen($_POST['u_password']);
     $pass_a_len = strlen($_POST['up_password']);
     if (($passlen < ENTRY_PASSWORD_MIN_LENGTH) || ($pass_a_len < ENTRY_PASSWORD_MIN_LENGTH)) {
+      //密码长度是否符合要求 
       $error = true; 
       $error_msg = UPDATE_ENTRY_PASSWORD_LEN_SHORT; 
     }
    
     if (!preg_match('/^(?=.*?[a-zA-Z])(?=.*?[0-9])[a-zA-Z0-9]{0,}$/', $_POST['u_password'])) {
+      //密码格式是否正确 
       $error = true; 
       if (preg_match('/^[0-9]+$/', $_POST['u_password'])) {
         $error_msg = UPDATE_ENTRY_PASSWORD_IS_NUM; 
@@ -59,6 +66,7 @@
     }
     
     if (!preg_match('/^(?=.*?[a-zA-Z])(?=.*?[0-9])[a-zA-Z0-9]{0,}$/', $_POST['up_password'])) {
+      //密码格式是否正确 
       $error = true; 
       if (preg_match('/^[0-9]+$/', $_POST['up_password'])) {
         $error_msg = UPDATE_ENTRY_PASSWORD_IS_NUM; 

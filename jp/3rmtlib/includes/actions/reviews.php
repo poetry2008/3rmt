@@ -42,9 +42,9 @@
   ";
   
   $reviews_split = new splitPageResults($_GET['page'], MAX_DISPLAY_NEW_REVIEWS, $reviews_query_raw, $reviews_numrows);
-//ccdd
   $reviews_query = tep_db_query($reviews_query_raw);
   while ($reviews = tep_db_fetch_array($reviews_query)) {
+    //评论列表页相关信息 
     $reviews_array[] = array('id' => $reviews['reviews_id'],
                              'products_id'    => $reviews['products_id'],
                              'reviews_id'     => $reviews['reviews_id'],

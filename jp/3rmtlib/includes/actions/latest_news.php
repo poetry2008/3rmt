@@ -16,7 +16,6 @@ if(preg_match('/^[0-9][0-9][0-9][0-9]\/[0-9][0-9]\/[0-9][0-9]$/',trim(SITE_OPEN_
   $start_open_time = '';
 }
 if (isset($_GET['news_id'])) {
-    //ccdd
 $check_array = array();
 $check_news_id_query = tep_db_query("SELECT * FROM " . TABLE_LATEST_NEWS . 
     " WHERE status = 1 
@@ -28,6 +27,7 @@ $check_array[] = $check_news_id_array['news_id'];
 }
 //print_r($check_array);
 if(!in_array($_GET['news_id'],$check_array)){
+//判断该新闻是否显示
 forward404Unless($latest_news);
 
 }
@@ -50,5 +50,6 @@ forward404Unless($latest_news);
       ";
     $latest_news_split = new splitPageResults($_GET['page'], MAX_DISPLAY_LATEST_NEWS, $latest_news_query_raw, $latest_news_numrows);
     $latest_news_query = tep_db_query($latest_news_query_raw);
+    //是否有新闻 
     forward404Unless(tep_db_num_rows($latest_news_query));
   }

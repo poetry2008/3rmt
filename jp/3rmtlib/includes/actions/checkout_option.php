@@ -1,17 +1,17 @@
 <?php
-  // if the customer is not logged on, redirect them to the login page
   if (!tep_session_is_registered('customer_id')) {
+  // if the customer is not logged on, redirect them to the login page
     $navigation->set_snapshot();
     tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
   }
 
-  // if there is nothing in the customers cart, redirect them to the shopping cart page
   if ($cart->count_contents(true) < 1) {
+  // if there is nothing in the customers cart, redirect them to the shopping cart page
     tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
   }
   
-// Stock Check
   if ( (STOCK_CHECK == 'true') && (STOCK_ALLOW_CHECKOUT != 'true') ) {
+  // Stock Check
     $products = $cart->get_products();
     for ($i=0, $n=sizeof($products); $i<$n; $i++) {
       if (tep_check_stock((int)$products[$i]['id'], $products[$i]['quantity'])) {
@@ -42,6 +42,7 @@
   
   if ($_POST['action'] == 'process') {
     if (!$hm_option->check(1)) {
+      //验证option信息是否填写正确 
       $option_array = array(); 
       foreach ($_POST as $p_key => $p_value) {
         $op_pos = strpos($p_key, 'op_');

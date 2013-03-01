@@ -1,6 +1,6 @@
 <?php
-// if the customer is not logged on, redirect them to the login page
 if (!tep_session_is_registered('customer_id')) {
+// if the customer is not logged on, redirect them to the login page
   $navigation->set_snapshot(array('mode' => 'SSL', 'page' => FILENAME_CHECKOUT_OPTION));
   tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
 }else{
@@ -22,13 +22,13 @@ if (!tep_session_is_registered('customer_id')) {
   }
 }
 
-// if there is nothing in the customers cart, redirect them to the shopping cart page
 if ($cart->count_contents(true) < 1) {
+// if there is nothing in the customers cart, redirect them to the shopping cart page
   tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
 }
 
-// avoid hack attempts during the checkout procedure by checking the internal cartID
 if (isset($cart->cartID) && tep_session_is_registered('cartID')) {
+// avoid hack attempts during the checkout procedure by checking the internal cartID
   if ($cart->cartID != $cartID) {
     tep_redirect(tep_href_link(FILENAME_CHECKOUT_OPTION, '', 'SSL'));
   }
@@ -57,8 +57,8 @@ $_SESSION['mailcomments'] = $_POST['comments'];
 
 // load the selected payment module
 
-//判断支付方法是否存在， 支付方法是否被允许 
 if (!$payment_modules->moduleIsEnabled($payment)){
+//判断支付方法是否存在， 支付方法是否被允许 
     tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'error_message=' . urlencode(ERROR_NO_PAYMENT_MODULE_SELECTED), 'SSL'));
 }
 
@@ -85,9 +85,9 @@ page_head();?>
   <script type="text/javascript" src="./js/payment.js">
   </script>
   <?php
-  //输出payment 的javascript验证
   if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') 
     {
+      //输出payment 的javascript验证
       echo $payment_modules->javascript_validation($current_point['point']); 
     }
 ?>
@@ -132,6 +132,7 @@ foreach ($payment_selection as $pay_key => $pay_single) {
   $allow_payment_list[] = $pay_single['id'];
 }
 if (!in_array($payment, $allow_payment_list)) {
+  //判断所选的支付方法是否在可选的支付方法列表里 
   tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL'));
 }
 
@@ -146,8 +147,8 @@ if (STOCK_CHECK == 'true') {
       $any_out_of_stock = true;
     }
   }
-  // Out of Stock
   if ( (STOCK_ALLOW_CHECKOUT != 'true') && ($any_out_of_stock == true) ) {
+  // Out of Stock
     tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
   }
 }
@@ -169,9 +170,9 @@ page_head();?>
   <script type="text/javascript" src="./js/payment.js">
   </script>
   <?php
-  //输出payment 的javascript验证
   if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') 
     {
+      //输出payment 的javascript验证
       $point_query = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "'");
       $current_point = tep_db_fetch_array($point_query);
       echo $payment_modules->javascript_validation($current_point['point']); 

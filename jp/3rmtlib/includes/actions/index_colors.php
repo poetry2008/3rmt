@@ -1,8 +1,8 @@
 <?php
+  //颜色的名字 
   $colors_title_query = tep_db_query("select color_name from ".TABLE_COLOR." where color_id = '".(int)$_GET['colors']."'");
   $colors_title = tep_db_fetch_array($colors_title_query);
   
-  // ccdd
   $listing_sql = "
   select * 
   from (

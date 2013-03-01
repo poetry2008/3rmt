@@ -1,5 +1,6 @@
 <?php 
 if(isset($_GET['question_romaji'])&&$_GET['question_romaji']!=''){
+  //判断faq问题的罗马字是否为空 
   $qromaji = $_GET['question_romaji'];
   $link_url = 'faq';
   $link_url_arr = array();
@@ -7,6 +8,7 @@ if(isset($_GET['question_romaji'])&&$_GET['question_romaji']!=''){
   $breadcrumb->add(TEXT_FAQ,HTTP_SERVER.'/'.$link_url.'/');
   $temp_parent_id = 0;
   if(isset($_GET['qPath'])&&$_GET['qPath']!=''){
+    //是否有分类路径 
     $category_romaji_arr = explode('/',$_GET['qPath']);
     foreach($category_romaji_arr as $value){
       $temp_parent_id = tep_get_faq_cpath_by_cname($value,$temp_parent_id);
