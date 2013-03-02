@@ -170,7 +170,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       $.ajax({
         url:'oa_ajax.php?action=stock&num='+parseInt(1000*Math.random()),
             type:'post',    
-            data:'oID=<?php echo $this->order_id;?>&name=<?php echo $this->formname;?>&status='+status+'&pid='+pid,
+            data:'oID=<?php echo $this->order_id;?>&name=<?php echo $this->formname;?>&status='+status+'&pid='+pid+'&n='+t,
             async : false,
             beforeSend: function(){$('body').css('cursor','wait');$("#wait").show()},
             success: function(data){
