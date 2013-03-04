@@ -43,7 +43,7 @@
  参数：$calculate_currency_value(boolean) 计算货币价值
  参数：$currency_type(string) 货币类型
  参数：$currency_value(string) 货币的价值
- 返回值：货币的价格
+ 返回值：货币的价格(string) 
  ----------------------------*/
     function format($number, $calculate_currency_value = true, $currency_type = '', $currency_value = '') {
       $number = abs($number);
@@ -78,7 +78,7 @@
  参数：$calculate_currency_value(boolean) 计算货币价值
  参数：$currency_type(string) 货币类型
  参数：$currency_value(string) 货币的价值
- 返回值：货币的价格
+ 返回值：货币的价格(string) 
  ----------------------------*/
  
     function format_total($number, $calculate_currency_value = true, $currency_type = '', $currency_value = '') {
@@ -118,7 +118,7 @@
 /*-------------------------
  功能：获取价格
  参数：$code(string) 货币值
- 返回值：货币价格
+ 返回值：货币价格(string) 
  ------------------------*/
     function get_value($code) {
       return $this->currencies[$code]['value'];
@@ -126,7 +126,7 @@
 /*------------------------
  功能：获取货币价值的小数位数 
  参数：$code(string) 价值
- 返回值：货币价值的小数位数
+ 返回值：货币价值的小数位数(string) 
  -----------------------*/
     function get_decimal_places($code) {
       return $this->currencies[$code]['decimal_places'];
@@ -147,7 +147,7 @@
  参数：$number: 金额
  参数: $round_type: 零头处理的类型  'drop'=取整, 'round'=四舍五入, 'raise'=进位
  参数: $currency_type: 货币代码 (例) 'JPY'
- 返回值：返回处理后金额
+ 返回值：返回处理后金额(string)
 ------------------------*/
     function round_off($number, $round_type = '', $currency_type = '') {
       global $currency;

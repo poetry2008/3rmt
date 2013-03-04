@@ -69,7 +69,7 @@ class BasePayment
  功能：验证错误 
  参数：$key(string) 关键字
  参数：$message(string) 信息
- 返回值：验证成功
+ 返回值：验证成功(string)
  -------------------------*/
   function selectionError($key,$message){
     $_SESSION[$session_error_name][$key] = $message;
@@ -80,7 +80,7 @@ class BasePayment
   参数：$selection(string) 选项
   参数：$value(string) 数值
   参数：$show_type(string) 是否显示类型
-  返回值：判断选项是否为真
+  返回值：判断选项是否为真(string)
  -------------------------*/
   function validate_selection(&$selection,$value, $show_type = false)
   {
@@ -143,7 +143,7 @@ class BasePayment
 /*------------------------------
  功能：验证是否为空 
  参数：$value(string) 数值
- 返回值：判断是否为空
+ 返回值：判断是否为空(string)
  -----------------------------*/  
   function validation_not_null($value)
   {
@@ -161,7 +161,7 @@ class BasePayment
 /*-----------------------------
  功能：验证数字
  参数：$value(string) 数值
- 返回值：判断是否验证数字成功
+ 返回值：判断是否验证数字成功(string)
  ----------------------------*/
   function validation_is_number($value)
   {
@@ -179,7 +179,7 @@ class BasePayment
 /*---------------------------
  功能：验证邮箱
  参数：$value(string) 参数值
- 返回值:判断是否验证邮箱成功
+ 返回值:判断是否验证邮箱成功(string)
  --------------------------*/
   function validation_email($value){
     /*
@@ -207,7 +207,7 @@ class BasePayment
  功能：验证是否相同 
  参数：$value1(string) 参数1
  参数：$value2(string) 参数2
- 返回值：判断是否相同
+ 返回值：判断是否相同(string)
  -------------------------*/
   function validation_same_to($value1,$value2){
     $cmp_int = strcmp($value1, $value2); 
@@ -223,7 +223,7 @@ class BasePayment
 /*-------------------------------
  功能：验证检查电话 
  参数：$value(string) 参数值
- 返回值：判断验证电话是否成功
+ 返回值：判断验证电话是否成功(string)
  ------------------------------*/
   function validation_check_tel($value) {
     if (!preg_match("/^(\+\d{2}){0,1}((\d{2}(-){0,1}\d{4})|(\d{3}(-){0,1}\d{3})|(\d{3}(-){0,1}\d{4}))(-){0,1}\d{4}$/", $value)) {
@@ -238,7 +238,7 @@ class BasePayment
 /*-----------------------------
  功能：手续费
  参数：$money(string) 费用
- 返回值：手续费
+ 返回值：手续费(string)
  ----------------------------*/
   function calc_fee($money){
     if(!$this->cost){

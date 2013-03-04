@@ -8,7 +8,7 @@
 /*------------------------------
  功能：构造函数 语言 
  参数：$lng(string) 目录语言
- 返回值: 返回是哪种语言
+ 返回值: 返回是哪种语言(string)
  -----------------------------*/
     function language($lng = '') {
       $this->languages = array('ar' => array('ar([-_][[:alpha:]]{2})?|arabic', 'arabic', 'ar'),
@@ -55,7 +55,6 @@
 
 
       $this->catalog_languages = array();
-//ccdd
       $languages_query = tep_db_query("
           select languages_id, 
                  name, 

@@ -17,7 +17,7 @@
 /*---------------------------------
  功能：获取顾客的个人信息 
  参数：无
- 返回值：顾客的个人信息
+ 返回值：顾客的个人信息(string)
  --------------------------------*/
     // private
     function getOrderCategoryPersonal(){
@@ -40,7 +40,7 @@
 /*--------------------------------
  功能：获取顾客的公司 
  参数：无
- 返回值：顾客公司的信息
+ 返回值：顾客公司的信息(string) 
  -------------------------------*/
     function getOrderCategoryCompany(){
         return (ACCOUNT_COMPANY == 'true') ? array('company') : array();
@@ -50,7 +50,7 @@
 /*-------------------------------
  功能：获取顾客的地址信息
  参数：无
- 返回值：顾客的地址信息
+ 返回值：顾客的地址信息(string) 
  ------------------------------*/
     function getOrderCategoryAddress(){
         $orders = array();
@@ -111,7 +111,6 @@
  返回值：无
  ---------------------------------*/
     function storeAddressFormat($address_format_id){
-//ccdd
         $query = tep_db_query("
             select address_format 
             from " . TABLE_ADDRESS_FORMAT . " 
@@ -149,7 +148,7 @@
 /*--------------------------------
  功能：查看有没有国家名
  参数：$name(string) 国家名
- 返回值：搜索有没有国家名
+ 返回值：搜索有没有国家名(string) 
  -------------------------------*/
     function inForm($name){
         if (count($this->address_format) == 0) {

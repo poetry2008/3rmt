@@ -23,7 +23,6 @@
  --------------------------*/
    function osC_CategoryTree($load_from_database = true) {
      global $languages_id;
-//ccdd
          $categories_query = tep_db_query("
            select *
            from (
@@ -41,7 +40,7 @@
             where site_id = '0'
                or site_id = '".SITE_ID."' 
             group by categories_id
-            having c.categories_status != '3' and  c.categories_status != '1'
+            having c.categories_status != '3' 
             order by parent_id, sort_order, categories_name");
      
          $this->data = array();
@@ -71,7 +70,7 @@
  功能：建立分支 
  参数：$parent_id(string) 父ID值
  参数：$level(string) 分支层次
- 返回值：返回分支
+ 返回值：返回分支(string)
  ------------------------------*/
    function buildBranch($parent_id, $level = 0) {
      if($level == 0){
@@ -114,7 +113,7 @@
 /*----------------------
  功能：构建树 
  参数：无
- 返回值：分支
+ 返回值：分支(string)
  ----------------------*/
    function buildTree() {
      return $this->buildBranch($this->root_category_id);

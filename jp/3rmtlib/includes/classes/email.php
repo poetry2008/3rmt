@@ -84,7 +84,7 @@
 /*---------------------------------
  功能：获取文件 
  参数：$filename(string) 文件名字
- 返回值：判断是否获取成功
+ 返回值：判断是否获取成功(string)
  --------------------------------*/
     function get_file($filename) {
       $return = '';
@@ -225,7 +225,7 @@
  功能：添加文本到mime_part对象
  参数：$obj(string) 对象 
  参数：$text(string) 文本
- 返回值：返回mime_part对象
+ 返回值：返回mime_part对象(string)
  ----------------------*/
     function add_text_part(&$obj, $text) {
       $params['content_type'] = 'text/plain';
@@ -248,7 +248,7 @@
 /*-----------------------------
  功能：添加HTML到mime_part对象
  参数：$obj(string) 对象
- 返回值：返回mime_part对象 
+ 返回值：返回mime_part对象 (string)
  -----------------------------*/
     function add_html_part(&$obj) {
       $params['content_type'] = 'text/html';
@@ -271,7 +271,7 @@
 /*-------------------------------
  功能：添加混合部分信息 
  参数：无
- 返回值：信息
+ 返回值：信息(string)
  ------------------------------*/
     function add_mixed_part() {
       $params['content_type'] = 'multipart/mixed';
@@ -288,7 +288,7 @@
 /*-------------------------------
  功能：添加一个替代部分到mime_part对象 
  参数：$obj(string) 对象
- 返回值：mime_part对象
+ 返回值：mime_part对象(string)
  ------------------------------*/
     function add_alternative_part(&$obj) {
       $params['content_type'] = 'multipart/alternative';
@@ -309,7 +309,7 @@
 /*------------------------------
  功能：添加HTML部位到mime_part对象 
  参数：$obj($obj) 对象 
- 返回值：mime_part对象
+ 返回值：mime_part对象(string)
  -----------------------------*/
     function add_related_part(&$obj) {
       $params['content_type'] = 'multipart/related';
@@ -388,7 +388,7 @@
 /*-------------------------
  功能：构建分支信息
  参数：$params(string) 建立参数
- 返回值：判断构建分支信息是否成功
+ 返回值：判断构建分支信息是否成功(string)
  ------------------------*/
     function build_message($params = '') {
       if ($params == '') $params = array();
@@ -550,7 +550,7 @@
  参数：$subject(string) 主题
  参数：$headers(string) 头部 
  参数：$from_page(string) 页面
- 返回值：判断发送邮件是否成功
+ 返回值：判断发送邮件是否成功(string)
  ------------------------*/
     function send($to_name, $to_addr, $from_name, $from_addr, $subject = '',
         $headers = '',$from_page="") {
@@ -682,7 +682,7 @@
  参数：$subject(string) 主题
  参数：$headers(string) 头部 
  参数：$from_page(string) 页面
- 返回值：返回电子邮件 
+ 返回值：返回电子邮件 (string)
  --------------------------------*/
     function get_rfc822($to_name, $to_addr, $from_name, $from_addr, $subject = '', $headers = '') {
 // Make up the date header as according to RFC822

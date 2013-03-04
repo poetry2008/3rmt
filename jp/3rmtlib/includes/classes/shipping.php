@@ -40,10 +40,10 @@
       }
     }
 /*------------------------
- 功能：商品报价 
+ 功能：商品价格
  参数：$method(string) 方法
  参数：$module(string) 模板
- 返回值：商品报价数组
+ 返回值：商品价格数组(array)
  -----------------------*/
     function quote($method = '', $module = '') {
       global $total_weight, $shipping_weight, $shipping_quoted, $shipping_num_boxes;
@@ -92,7 +92,7 @@
 /*---------------------
  功能：优惠的商品
  参数：无
- 返回值：优惠商品
+ 返回值：优惠商品(string)
  --------------------*/
     function cheapest() {
       if (is_array($this->modules)) {

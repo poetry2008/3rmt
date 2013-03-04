@@ -54,16 +54,13 @@
             } 
           }
           tep_db_free_result($products_diff_query);
-//ccdd
           $product_query = tep_db_query("select products_id from " . TABLE_CUSTOMERS_BASKET . " where customers_id = '" . $customer_id . "' and products_id = '" . $products_id . "'");
           if (!tep_db_num_rows($product_query) && $products_id_temp == false) {
-//ccdd
             tep_db_query("insert into " . TABLE_CUSTOMERS_BASKET . " (customers_id, products_id, customers_basket_quantity, customers_basket_date_added) values ('" . $customer_id . "', '" . $products_id . "', '" . $qty . "', '" . date('Ymd') . "')");
             if (isset($this->contents[$products_id]['op_attributes'])) {
               tep_db_query("insert into " . TABLE_CUSTOMERS_BASKET_OPTIONS . " (customers_id, products_id, option_info) values ('" . $customer_id . "', '" . $products_id . "', '" .  tep_db_input(serialize($this->contents[$products_id]['op_attributes'])) . "')");
             }
           } else {
-//ccdd
             $p_info_array = explode('_', $products_id);
             $products_id_array = array(); 
             $basket_info_raw = tep_db_query("select products_id from ".TABLE_CUSTOMERS_BASKET." where products_id like '".$p_info_array[0]."_%' and customers_id = '".$customer_id."'");
@@ -135,13 +132,11 @@
 
 // reset per-session cart contents, but not the database contents
       $this->reset(false);
-//ccdd
       $products_query = tep_db_query("select products_id, customers_basket_quantity from " . TABLE_CUSTOMERS_BASKET . " where customers_id = '" . $customer_id . "'");
       while ($products = tep_db_fetch_array($products_query)) {
         $this->contents[$products['products_id']] = array('qty' => $products['customers_basket_quantity']);
         //$this->contents[$products['products_id']]['qty'] = $products['customers_basket_quantity'];
 // attributes
-//ccdd
         $attributes_query = tep_db_query("select option_info from " . TABLE_CUSTOMERS_BASKET_OPTIONS . " where customers_id = '" . $customer_id . "' and products_id = '" . $products['products_id'] . "'");
         while ($attributes = tep_db_fetch_array($attributes_query)) {
           $this->contents[$products['products_id']]['op_attributes'] = @unserialize(stripslashes($attributes['option_info']));
@@ -165,9 +160,7 @@
       $this->content_type = false;
 
       if (tep_session_is_registered('customer_id') && ($reset_database == true)) {
-//ccdd
         tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET . " where customers_id = '" . $customer_id . "'");
-//ccdd
         tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET_OPTIONS . " where customers_id = '" . $customer_id . "'");
       }
 
@@ -202,7 +195,6 @@
         $this->contents[] = array($products_id);
         $this->contents[$products_id]['qty'] =  $qty;
 // insert into database
-//ccdd
         if (tep_session_is_registered('customer_id')) tep_db_query("insert into " . TABLE_CUSTOMERS_BASKET . " (customers_id, products_id, customers_basket_quantity, customers_basket_date_added) values ('" . $customer_id . "', '" . $products_id . "', '" . $qty . "', '" . date('Ymd') . "')");
 
         if (!empty($option_info)) {
@@ -230,7 +222,6 @@
 
       $this->contents[$products_id]['qty'] =  $quantity;
 // update database
-//ccdd
       if (tep_session_is_registered('customer_id')) tep_db_query("update " . TABLE_CUSTOMERS_BASKET . " set customers_basket_quantity = '" . $quantity . "' where customers_id = '" . $customer_id . "' and products_id = '" . $products_id . "'");
 
       if (!empty($option_info)) {
@@ -253,9 +244,7 @@
           unset($this->contents[$key]);
 // remove from database
           if (tep_session_is_registered('customer_id')) {
-//ccdd
             tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET . " where customers_id = '" . $customer_id . "' and products_id = '" . $key . "'");
-//ccdd
             tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET_OPTIONS . " where customers_id = '" . $customer_id . "' and products_id = '" . $key . "'");
           }
         }
@@ -264,7 +253,7 @@
 /*---------------------------
  功能：购物车数量内容 
  参数：$_ctype(string) 类型
- 返回值：返回购物车总项目内容
+ 返回值：返回购物车总项目内容(string)
  --------------------------*/
     function count_contents($c_type = false) {  // get total number of items in cart 
       $total_items = 0;
@@ -290,7 +279,7 @@
 /*-------------------------------
  功能：获取数量 
  参数：$products_id(string) 产品ID
- 返回值：判断是否获取数量成功
+ 返回值：判断是否获取数量成功(string)
  ------------------------------*/
     function get_quantity($products_id) {
       if (isset($this->contents[$products_id])) {
@@ -302,7 +291,7 @@
 /*------------------------------
  功能：产品是否在购物车里面 
  参数：$products_id(string) 产品ID
- 参数：判断产品是否在购物车里面
+ 返回值：判断产品是否在购物车里面(boolean)
  -----------------------------*/
     function in_cart($products_id) {
       if (isset($this->contents[$products_id])) {
@@ -321,9 +310,7 @@
       unset($this->contents[$products_id]);
 // remove from database
       if (tep_session_is_registered('customer_id')) {
-//ccdd
         tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET . " where customers_id = '" . $customer_id . "' and products_id = '" . $products_id . "'");
-//ccdd
         tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET_OPTIONS . " where customers_id = '" . $customer_id . "' and products_id = '" . $products_id . "'");
       }
 
@@ -341,7 +328,7 @@
 /*-----------------------------
  功能：获取产品编号列表 
  参数：无
- 返回值：产品编号列表
+ 返回值：产品编号列表(string)
  ----------------------------*/
     function get_product_id_list() {
       $product_id_list = '';
@@ -373,7 +360,6 @@
         $qty = $this->contents[$products_id]['qty'];
 
 // products price
-//ccdd
         $product_query = tep_db_query("select products_id, products_price, products_price_offset, products_tax_class_id, products_weight, products_small_sum from " . TABLE_PRODUCTS . " where products_id='" . tep_get_prid($products_id) . "'");
         if ($product = tep_db_fetch_array($product_query)) {
           $prid = $product['products_id'];
@@ -474,7 +460,7 @@
 /*-----------------------------------
  功能：购物车属性价格 
  参数：$products_id(string) 产品ID
- 返回值：属性价格
+ 返回值：属性价格(string)
  ----------------------------------*/
     function attributes_price($products_id) {
       $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>");
@@ -555,7 +541,7 @@
 /*---------------------------------
  功能：获取产品 
  参数：无
- 返回值：返回产品数组
+ 返回值：返回产品数组(array)
  --------------------------------*/
     function get_products() {
       global $languages_id;
@@ -597,7 +583,7 @@
 /*------------------------------
  功能：全部显示 
  参数：无
- 返回值：显示全部
+ 返回值：显示全部(string)
  -----------------------------*/
     function show_total() {
       $this->calculate();
@@ -607,7 +593,7 @@
 /*------------------------------
  功能：显示ABS 
  参数：无
- 返回值：ABS
+ 返回值：ABS(string)
  -----------------------------*/    
     function show_abs() {
       $this->calculate();
@@ -617,7 +603,7 @@
 /*------------------------------
  功能：显示重量 
  参数：无
- 返回值：重量
+ 返回值：重量(string)
  -----------------------------*/
     function show_weight() {
       $this->calculate();
@@ -627,7 +613,7 @@
 /*-----------------------------
  功能：生成购物车ID 
  参数：$length(string) 长度
- 返回值：创建购物车的随机ID值
+ 返回值：创建购物车的随机ID值(string)
  ----------------------------*/
     function generate_cart_id($length = 5) {
       return tep_create_random_value($length, 'digits');
@@ -635,7 +621,7 @@
 /*----------------------------
  功能：获取内容的类型 
  参数：无
- 返回值: 返回内容的类型
+ 返回值: 返回内容的类型(string)
  ---------------------------*/
     function get_content_type() {
       $this->content_type = false;
@@ -689,7 +675,7 @@
  功能：获取产品ID 
  参数：$products_id(string) 产品ID
  参数：$option_info_array(string) 选项信息数组
- 返回值：产品ID
+ 返回值：产品ID(string)
  -------------------------*/    
     function get_products_uprid($products_id, $option_info_array)
     {

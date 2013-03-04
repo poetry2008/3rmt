@@ -15,7 +15,7 @@
 /*----------------------------
  功能：数据表格 
  参数：$contents(string) 内容信息
- 返回值：表格中的字符串
+ 返回值：表格中的字符串(string)
  ---------------------------*/
     function tableBlock($contents) {
       $tableBox_string = '<table border="' . $this->table_border . '" width="' . $this->table_width . '" cellspacing="' . $this->table_cellspacing . '" cellpadding="' . $this->table_cellpadding . '"';

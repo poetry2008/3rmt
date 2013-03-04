@@ -31,7 +31,7 @@
  功能：信息框
  参数：$heading(string) 头部标题
  参数：$contents(string) 内容
- 返回值：返回信息
+ 返回值：返回信息(string)
  -----------------------*/
     function infoBox($heading, $contents) {
       $this->table_row_parameters = 'class="infoBoxHeading"';
@@ -48,7 +48,7 @@
  功能：菜单框 
  参数：$heading(string) 头部标题
  参数：$contents(string) 内容
- 返回值：返回菜单
+ 返回值：返回菜单(string)
  ------------------------*/
     function menuBox($heading, $contents) {
       $this->table_data_parameters = 'class="menuBoxHeading"';

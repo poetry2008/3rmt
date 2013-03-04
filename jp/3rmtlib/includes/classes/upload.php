@@ -8,7 +8,7 @@
  参数：$prefix(string) 设置前缀
  参数：$permissions(string) 设置权限
  参数：$extensions(string) 设置扩展
- 返回值：判断上传文件是否成功
+ 返回值：判断上传文件是否成功(string)
  --------------------------*/
     function upload($file = '', $destination = '', $prefix = '', $permissions = '777', $extensions = '') {
       $this->set_file($file);
@@ -32,7 +32,7 @@
 /*-------------------------------
  功能：解析上传的文件
  参数: 无
- 返回值：判断是否解析成功
+ 返回值：判断是否解析成功(string)
  ------------------------------*/
     function parse() {
       global $HTTP_POST_FILES, $messageStack;
@@ -86,7 +86,7 @@
 /*-----------------------------
  功能：提交文件 
  参数：无
- 返回值：判断是否提交成功
+ 返回值：判断是否提交成功(string)
  ----------------------------*/
     function save() {
       global $messageStack;
@@ -185,7 +185,7 @@
 /*------------------------
  功能：检查目标文件 
  参数：无
- 返回值：判断检查是否成功
+ 返回值：判断检查是否成功(string)
  -----------------------*/
     function check_destination() {
       global $messageStack;
@@ -242,7 +242,7 @@
  参数：$prefix(string) 设置前缀
  参数：$permissions(string) 设置权限
  参数：$extensions(string) 设置扩展
- 返回值：判断上传是否成功
+ 返回值：判断上传是否成功(string)
  --------------------*/
     function upload_quiet($file = '', $destination = '', $prefix = '', $permissions = '777', $extensions = '') {
       $this->set_file($file);

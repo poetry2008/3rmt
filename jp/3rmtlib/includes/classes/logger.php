@@ -30,7 +30,7 @@
 /*---------------------
  功能：记录定时停止
  参数：$display(boolean) 是否显示
- 返回值：判断是否显示定时器
+ 返回值：判断是否显示定时器(string)
  --------------------*/
     function timer_stop($display = 'false') {
       $this->timer_stop = microtime();
@@ -49,7 +49,7 @@
 /*---------------------
  功能：定时器显示
  参数：无
- 返回值：显示一共的时间
+ 返回值：显示一共的时间(string)
  --------------------*/
     function timer_display() {
       return '<span class="smallText">Parse Time: ' . $this->timer_total . 's</span>';

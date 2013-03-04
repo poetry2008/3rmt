@@ -33,7 +33,7 @@
 /*------------------------
  功能：追踪字符串
  参数：$separator(string) 分割字符串
- 返回值：字符串
+ 返回值：字符串(array)
  -----------------------*/
     function trail($separator = ' - ') {
       $trail_string = '';
@@ -55,7 +55,7 @@
 /*------------------------
  功能：面包屑标题
  参数：$separator(string) 分割字符串
- 返回值：面包屑标题
+ 返回值：面包屑标题(string) 
  -----------------------*/
     function trail_title($separator = ' - ') {
       $trail_string = '';

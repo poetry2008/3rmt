@@ -78,7 +78,7 @@
 /*-----------------------------
  功能：输出 
  参数：$class(string) 类
- 返回值: 返回信息数组
+ 返回值: 返回信息数组(array)
  ----------------------------*/
     function output($class) {
       $this->table_data_parameters = 'class="messageBox"';
@@ -95,7 +95,7 @@
 /*-------------------------
  功能：字号大小 
  参数：$class(string) 类
- 返回值：字号数值
+ 返回值：字号数值(string)
  ------------------------*/
     function size($class) {
       $count = 0;

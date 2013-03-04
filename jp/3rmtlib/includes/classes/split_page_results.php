@@ -8,7 +8,7 @@
 /*------------------------------
  功能：缩减订单字符串 
  参数：$sql(string) SQL语句
- 返回值：缩减完之后的订单字符串
+ 返回值：缩减完之后的订单字符串(string)
  -----------------------------*/
     function cutOrderString($sql)
     {
@@ -212,7 +212,7 @@
  参数: $max_rows_per_page(string) 每页最大的行数
  参数：$current_page_number(string) 当前页码
  参数：$text_output(string) 文本输出 
- 返回值：产品总数
+ 返回值：产品总数(string)
  --------------------------*/
     function display_count($query_numrows, $max_rows_per_page, $current_page_number, $text_output) {
       $total_page = intval($query_numrows / $max_rows_per_page);

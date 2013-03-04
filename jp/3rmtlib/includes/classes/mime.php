@@ -104,7 +104,7 @@
 /*------------------------
  功能：编码和返回的电子邮件
  参数：无
- 返回值：返回一个关联数组 BODY和headers
+ 返回值：返回一个关联数组 BODY和headers(array)
  -----------------------*/
     function encode() {
 /* HPDL PHP3 */
@@ -166,7 +166,7 @@
  功能：添加一个部分
  参数：$body(string) BODY部分
  参数：$params(string) 参数的部分
- 返回值：返回新添加的部分
+ 返回值：返回新添加的部分(string)
  ------------------------------------*/
     function addSubPart($body, $params) {
       $this->_subparts[] = new mime($body, $params);
@@ -219,7 +219,7 @@
  功能：使用quoted-printable标准对数据进行编码 
  参数：$input(string) 数据进行编码
  参数：$line_max(string) 最大的长度  不能超过76个字符
- 返回值：返回编码过的数据
+ 返回值：返回编码过的数据(string)
  ----------------------------*/
     function _quotedPrintableEncode($input , $line_max = 76) {
       $lines = preg_split("/\r\n|\r|\n/", $input);

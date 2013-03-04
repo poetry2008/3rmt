@@ -18,7 +18,7 @@
  功能：把内容信息放在表格中输出
  参数：$contents(string) 内容信息
  参数：$direct_output(string) 是否直接输出
- 返回值：表格的字符串输出
+ 返回值：表格的字符串输出(string)
  ----------------------*/
     function tableBox($contents, $direct_output = false) {
       $tableBox_string = '<table summary="table" border="' . $this->table_border . '" width="' . $this->table_width . '" cellspacing="' . $this->table_cellspacing . '" cellpadding="' . $this->table_cellpadding . '"';
@@ -89,7 +89,7 @@
 /*---------------------------
  功能：信息框内容 
  参数：$contents(string) 内容
- 返回值：信息框内容
+ 返回值：信息框内容(string)
  --------------------------*/
     function infoBoxContents($contents) {
       $this->table_cellpadding = '3';
@@ -171,7 +171,7 @@
 /*-------------------------------
  功能：放在内容框里面的信息 
  参数：$contents(string) 内容
- 返回值：内容框里面的信息
+ 返回值：内容框里面的信息(string)
  ------------------------------*/
     function contentBoxContents($contents) {
       $this->table_cellpadding = '4';

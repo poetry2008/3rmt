@@ -11,7 +11,7 @@
  参数：$number(string) 数字
  参数：$expiry_m(string) 到期的月份
  参数：$expiry_y(string) 到期的年份
- 返回值：判断返回验证是否成功
+ 返回值：判断返回验证是否成功(string)
  -------------------------------*/
     function validate($number, $expiry_m, $expiry_y) {
       $this->cc_number = ereg_replace('[^0-9]', '', $number);
@@ -59,7 +59,7 @@
 /*----------------------------
  功能：验证是否是有效的 
  参数：无 
- 返回值：如果总额没有余数 验证则是有效的
+ 返回值：如果总额没有余数 验证则是有效的(string)
  ---------------------------*/
     function is_valid() {
       $cardNumber = strrev($this->cc_number);

@@ -80,7 +80,7 @@
 /*-----------------------------
  功能：设置协议版本 
  参数：$version(string) 版本
- 返回值：设置协议版本成功
+ 返回值：设置协议版本成功(string)
  ----------------------------*/
     function setProtocolVersion($version) {
       if ( ($version > 0) && ($version <= 1.1) ) {
@@ -167,7 +167,7 @@
  功能：链接服务器 
  参数：$host(string) 主机
  参数：$port(string) 端口
- 返回值：链接服务器成功
+ 返回值：链接服务器成功(string)
  ----------------------------*/
     function Connect($host, $port = '') {
       $this->url['scheme'] = 'http';
@@ -224,7 +224,7 @@
 /*----------------------------
  功能：获取HTTP服务请求 
  参数：$url(string) URL
- 返回值：返回字符串响应状态
+ 返回值：返回字符串响应状态(string)
  ---------------------------*/
     function Get($url) {
       $this->responseHeaders = $this->responseBody = '';
@@ -252,7 +252,7 @@
  功能：发出POST HTTP请求
  参数：$uri(string) URL
  参数：$query_params(string) 查询参数
- 返回值: 返回响应状态
+ 返回值: 返回响应状态(string)
  -----------------------------*/
     function Post($uri, $query_params = '') {
       $uri = $this->makeUri($uri);
@@ -294,7 +294,7 @@
  功能：发出一个PUT请求  
  参数：$uri(string) URL
  参数：$filecontent(string) 文件内容
- 返回值：返回响应状态
+ 返回值：返回响应状态(string)
  --------------------------*/
     function Put($uri, $filecontent) {
       $uri = $this->makeUri($uri);
@@ -317,7 +317,7 @@
 /*-------------------------------
  功能：获取头部标题 
  参数：无
- 返回值：返回响应的头部标题
+ 返回值：返回响应的头部标题(string)
  ------------------------------*/
     function getHeaders() {
       return $this->responseHeaders;
@@ -332,7 +332,7 @@
 /*-------------------------------
  功能：获取头部名称
  参数：$headername(string) 头部名称
- 返回值：返回响应的头部名称
+ 返回值：返回响应的头部名称(string)
  ------------------------------*/
     function getHeader($headername) {
       return $this->responseHeaders[$headername];
@@ -348,7 +348,7 @@
 /*--------------------------------
  功能：获取BODY 
  参数：无
- 返回值：返回响应的BODY
+ 返回值：返回响应的BODY(string)
  -------------------------------*/
     function getBody() {
       return $this->responseBody;
@@ -367,7 +367,7 @@
 /*----------------------------
  功能：获取状态返回服务器的响应状态代码 
  参数：无
- 返回值：返回字符串的状态
+ 返回值：返回字符串的状态(string)
  ---------------------------*/
     function getStatus() {
       return $this->reply;
@@ -381,7 +381,7 @@
 /*----------------------------
  功能：获取状态信息 
  参数：无
- 返回值：返回状态信息
+ 返回值：返回状态信息(string)
  ---------------------------*/
     function getStatusMessage() {
       return $this->replyString;
@@ -402,7 +402,7 @@
 /*-------------------------
  功能：发送请求 
  参数：$command(string) 请求
- 返回值: 返回服务器的回应状态
+ 返回值: 返回服务器的回应状态(string)
  ------------------------*/
     function sendCommand($command) {
       $this->responseHeaders = array();
@@ -452,7 +452,7 @@
 /*--------------------------------
  功能：回复过程 
  参数：无
- 返回值：回复的内容
+ 返回值：回复的内容(string)
  -------------------------------*/
     function processReply() {
       $this->replyString = trim(fgets($this->socket, 1024));
@@ -478,7 +478,7 @@
 /*----------------------------
  功能：头部过程 
  参数：$lastLine(string) 最后一行换行
- 返回值：返回数组的头文件，头文件名作为值作为键名和标题内容
+ 返回值：返回数组的头文件，头文件名作为值作为键名和标题内容(string)
  ---------------------------*/
     function processHeader($lastLine = "\r\n") {
       $headers = array();
@@ -510,7 +510,7 @@
 /*--------------------------
  功能：读取BODY的过程 
  参数：无
- 返回值：返回BODY的内容
+ 返回值：返回BODY的内容(string)
  -------------------------*/
     function processBody() {
       $data = '';
@@ -546,7 +546,7 @@
 /*----------------------------
  功能：计算并返回发送
  参数：$uri(string) URL
- 返回值：返回URL用于HTTP请求中
+ 返回值：返回URL用于HTTP请求中(string)
  ---------------------------*/
     function makeUri($uri) {
       $a = parse_url($uri);

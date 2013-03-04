@@ -36,7 +36,7 @@ class payment {
 /*----------------------------
  功能：获取实例
  参数：$site_id(site_id) SITE_ID值
- 返回值：返回对象实例
+ 返回值：返回对象实例(string)
  ---------------------------*/
   public static function getInstance($site_id=0)
   { //如果对象实例还没有被创建，则创建一个新的实例
@@ -169,7 +169,7 @@ class payment {
  功能：判断 支付方法是否可以支付对应的 帐目
  参数：$payment(string) 支付方法名称
  参数：$total(string) 总数
- 返回值：支付对应的账目 
+ 返回值：支付对应的账目 (string)
   ------------------------------*/
   function moneyInRange($payment,$total){
     
@@ -213,7 +213,7 @@ class payment {
 /*------------------------------
  功能：集中输出各个支付方法的js验证
  参数：$num(number) 数目
- 返回值: 输出JS验证的支付方法
+ 返回值: 输出JS验证的支付方法(string)
  -----------------------------*/
   function javascript_validation($num) {
     $js = '';
@@ -262,7 +262,7 @@ class payment {
         '    return true;' . "\n" .
         '  }' . "\n" .
         '}' . "\n" .
-        '//--></script>' . "\n";
+        '--></script>' . "\n";
     }
     return $js;
   }
@@ -270,7 +270,7 @@ class payment {
 /*-------------------------
   功能：选择支付方法
   参数：$type(string) 型号
-  返回值：支付方法
+  返回值：支付方法(string)
   -----------------------*/
   function selection($type = 0) {
     if (!$type) { 
@@ -370,7 +370,7 @@ class payment {
 /*---------------------------
  功能：后台管理的处理意见
  参数：$payment(string) 支付方法
- 返回值：处理意见
+ 返回值：处理意见(string)
  --------------------------*/
   function admin_deal_comment($payment) {
     $module = $this->getModule($payment);
@@ -384,7 +384,7 @@ class payment {
 /*---------------------------
  功能：后台管理显示支付信息 
  参数：$payment(string) 支付方法
- 返回值：判断显示的支付信息
+ 返回值：判断显示的支付信息(string)
  --------------------------*/ 
   function admin_show_payment_info($payment)
   {
@@ -418,7 +418,7 @@ class payment {
 /*-----------------------------
  功能：预约确认检查支付方法
  参数：$payment(string) 支付方法
- 返回值：返回检查支付方法
+ 返回值：返回检查支付方法(string)
  ----------------------------*/
   function preorder_confirmation_check($payment)
   {
@@ -434,7 +434,7 @@ class payment {
  功能：得到预约错误
  参数：$payment(string) 支付方法
  参数：$sn_type(string) 错误类型
- 返回值：返回预约错误
+ 返回值：返回预约错误(string)
  --------------------------*/
   function get_preorder_error($payment, $sn_type)
   {
@@ -449,7 +449,7 @@ class payment {
 /*--------------------------------
  功能：确认支付方法 
  参数：$payment(string) 支付方法
- 返回值：支付方法
+ 返回值：支付方法(string)
  -------------------------------*/    
   function confirmation($payment) {
     $p = $this->getModule($payment);
@@ -460,7 +460,7 @@ class payment {
 /*------------------------------
  功能：检查方法是否存在
  参数：$payment(string) 支付方法
- 返回值：支付方法的名称
+ 返回值：支付方法的名称(string)
  -----------------------------*/    
   function specialOutput($payment) {
     $p = $this->getModule($payment);
@@ -472,7 +472,7 @@ class payment {
 /*-----------------------------
  功能：支付过程按钮
  参数：$payment(string) 支付方法 
- 返回值：支付过程按钮
+ 返回值：支付过程按钮(string)
  ----------------------------*/
   function process_button($payment) {
     $p = $this->getModule($payment);
@@ -481,7 +481,7 @@ class payment {
 /*---------------------------
  功能：处理前面的方法
  参数：$payment(string) 支付方法
- 返回值：处理方法
+ 返回值：处理方法(string)
  --------------------------*/
   function before_process($payment) {
     $p = $this->getModule($payment);
@@ -490,7 +490,7 @@ class payment {
 /*--------------------------
  功能：处理后面的方法
  参数：$payment(string) 支付方法
- 返回值：处理方法
+ 返回值：处理方法(string)
  -------------------------*/
   function after_process($payment) {
     $p = $this->getModule($payment);
@@ -499,7 +499,7 @@ class payment {
 /*------------------------
  功能：获取错误 
  参数：$payment(string) 支付方法
- 返回值：返回错误
+ 返回值：返回错误(string)
  -----------------------*/
   function get_error($payment) {
     $p = $this->getModule($payment);
@@ -509,7 +509,7 @@ class payment {
  功能: 快速获取支付方法金额
  参数：$payment(string) 支付方法
  参数：$amt(string)  订单金额
- 返回值：获取的金额
+ 返回值：获取的金额(string)
  ----------------------*/
   function getExpress($payment,$amt,$token){
     if($p = $this->getModule($payment)){
@@ -523,7 +523,7 @@ class payment {
  功能：处理没有的方法
  参数：$payment(string)支付方法
  参数：$sqldata(string) SQL数据
- 返回值：处理完的方法
+ 返回值：处理完的方法(string)
  ---------------------*/
   function dealUnknow($payment,&$sqldata){
     if($p = $this->getModule($payment)){
@@ -537,7 +537,7 @@ class payment {
  功能：处理评论 
  参数: $payment(string) 支付方法
  参数：$comment(string) 评论
- 返回值：处理完之后的评论
+ 返回值：处理完之后的评论(string)
  ----------------------*/
   function dealComment($payment,$comment){
     if($p = $this->getModule($payment)){
@@ -551,7 +551,7 @@ class payment {
   功能：获取订单电子邮件的字符串
   参数：$payment(string) 支付方法
   参数：$option(string) 选项
-  返回值：电子邮件的字符串
+  返回值：电子邮件的字符串(array)
  ---------------------*/
   function getOrderMailString($payment,$option){
     
@@ -565,7 +565,7 @@ class payment {
  功能：获取订单打印电子邮件的字符串
  参数：$payment(string) 支付方法
  参数：$option(string) 选项
- 返回值：电子邮件的字符串
+ 返回值：电子邮件的字符串(array)
  ---------------------*/
   function getOrderPrintMailString($payment,$option){
     $mailstring = get_configuration_by_site_id_or_default("MODULE_PAYMENT_".strtoupper($payment).
@@ -580,7 +580,7 @@ class payment {
 /*-------------------------
  功能：获取支付方法列表
  参数：$type(string) 类型
- 返回值：返回支付方法列表
+ 返回值：返回支付方法列表(string)
  ------------------------*/
   public static function getPaymentList($type='') {
     global $language;
@@ -627,7 +627,7 @@ class payment {
 /*-----------------------------
  功能：支付方法列表的下拉菜单 
  参数：$payment_method(string) 支付方式
- 返回值：返回下拉菜单
+ 返回值：返回下拉菜单(string)
  ----------------------------*/
   public static   function makePaymentListPullDownMenu($payment_method = "") {
     //修改 变量名称
@@ -648,7 +648,7 @@ class payment {
  功能：更改支付方法罗马字
  参数：$string(string) 字符串
  参数：$res_type(string) 类型
- 返回值：返回罗马字
+ 返回值：返回罗马字(string)
  ---------------------------*/
   public static function changeRomaji($string,$res_type=''){
     //获取 支付方法列表
@@ -699,7 +699,7 @@ class payment {
  功能：计算手续费   
  参数：$payment_method(string) 支付方式
  参数：$total_cost(string) 总花费
- 返回值：总花费的手续费
+ 返回值：总花费的手续费(string)
  -------------------------------*/
   public function handle_calc_fee($payment_method,$total_cost){
     $p = $this->getModule($payment_method);
@@ -708,7 +708,7 @@ class payment {
 /*-------------------------------
  功能：传递到SESSION
  参数：无
- 返回值：$_POST
+ 返回值：$_POST(string)
  ------------------------------*/
   function postToSession(){
     $_SESSION[$this->session_paymentvalue_name] = $_POST;
@@ -725,7 +725,7 @@ class payment {
 /*----------------------------
  功能：获取SESSION 
  参数：无
- 返回值：SESSION 支付方法名称
+ 返回值：SESSION 支付方法名称(string)
  ---------------------------*/
   function getPostSession(){
     return $_SESSION[$this->session_paymentvalue_name];
@@ -734,7 +734,7 @@ class payment {
  功能：处理预约附加的信息
  参数：$pInfo(string) 预约信息
  参数：$sql_data_array(string) SQL数据
- 返回值：预约的附加信息
+ 返回值：预约的附加信息(string)
  --------------------------*/
   function deal_preorder_additional($pInfo, &$sql_data_array)
   {
@@ -751,7 +751,7 @@ class payment {
  参数：$payment(string) 支付方法
  参数：$pid(string) 预约ID
  参数：$total_param(string) 总参数
- 返回值：支付按钮
+ 返回值：支付按钮(string)
  -------------------------*/ 
   function preorder_process_button($payment, $pid, $total_param)
   {
@@ -767,7 +767,7 @@ class payment {
  功能：预约支付方法处理 
  参数：$sql_data_array(string) SQL数据
  参数：$payment(string) 支付方法
- 返回值：预约的支付方法
+ 返回值：预约的支付方法(string)
  ------------------------------*/  
   function preorderDealUnknow(&$sql_data_array, $payment)
   {
@@ -784,7 +784,7 @@ class payment {
  参数：$total_value(string) 总价值
  参数：$oid(string) ID 值
  参数：$payment(string) 支付方法
- 返回值：支付方法
+ 返回值：支付方法(string)
  ---------------------------------*/ 
   function getPreexpress($total_value, $oid, $payment)
   {
@@ -801,7 +801,7 @@ class payment {
  参数：$mailoption(string) 邮件选项
  参数：$payment(string) 支付方法
  参数: $pInfo(string) 预约信息
- 返回值：预约的邮件选项
+ 返回值：预约的邮件选项(string)
  ---------------------------*/
   function preorder_deal_mailoption(&$mailoption, $payment, $pInfo)
   {
@@ -815,7 +815,7 @@ class payment {
  功能：处理邮件选项
  参数：$mailoption(string) 邮件选项
  参数：$payment(string) 支付方法
- 返回值：邮件选项
+ 返回值：邮件选项(string)
  --------------------------*/
   function deal_mailoption(&$mailoption, $payment)
   {
@@ -829,7 +829,7 @@ class payment {
  功能：处理预约信息 
  参数：$pInfo(string) 预约信息
  参数: $sql_data_array(string) SQL数据
- 返回值：预约信息
+ 返回值：预约信息(string)
  ------------------------*/
   function deal_preorder_info($pInfo, &$sql_data_array)
   {
@@ -844,7 +844,7 @@ class payment {
  功能：后台管理邮件处理选项
  参数：$mailoption(string) 邮件选项
  参数：$payment(string) 支付方法 
- 返回值：邮件选项
+ 返回值：邮件选项(string)
  ----------------------*/ 
   function admin_deal_mailoption(&$mailoption, $oID, $payment)
   {
@@ -859,7 +859,7 @@ class payment {
  功能：处理其他信息
  参数：$payment(string) 支付方法
  参数：$pInfo(string) 信息
- 返回值：返回信息
+ 返回值：返回信息(string)
  ---------------------*/
   function deal_other_info($payment, $pInfo)
   {
@@ -874,7 +874,7 @@ class payment {
  功能：获取预约添加信息 
  参数：$payment(string) 支付方法
  参数：$order_info(string) 订单信息
- 返回值：预约的添加信息
+ 返回值：预约的添加信息(string)
  ---------------------*/
   function get_preorder_add_info($payment, $order_info)
   {
@@ -890,7 +890,7 @@ class payment {
  功能：显示支付方法目录
  参数：$payment(string) 支付方法
  参数：$pay_info_array(string) 支付信息的数组 
- 返回值：支付方法的目录
+ 返回值：支付方法的目录(string)
  --------------------*/
   function admin_show_payment_list($payment,$pay_info_array){
 
@@ -905,7 +905,7 @@ class payment {
  功能：获取到的点
  参数：$payment(string) 支付方法
  参数：$point_value(string) 点值
- 返回值：返回的点值
+ 返回值：返回的点值(string)
  ---------------------*/
   function admin_get_point($payment,$point_value){
 
@@ -923,7 +923,7 @@ class payment {
  参数：$payment(string) 支付方法
  参数：$point_value(string) 点值
  参数：$customer_id(string) 顾客ID
- 返回值：顾客的点数
+ 返回值：顾客的点数(string)
  --------------------------*/
   function admin_get_customer_point($payment,$point_value,$customer_id){
 
@@ -938,7 +938,7 @@ class payment {
  功能：获取订单点数 
  参数：$payment(string) 支付方法
  参数：$orders_id(string) 订单ID
- 返回值：订单点数
+ 返回值：订单点数(string)
  -----------------------*/
   function admin_get_orders_point($payment,$orders_id){
 
@@ -954,7 +954,7 @@ class payment {
  功能：获得取点 
  参数: $payment(string) 支付方法
  参数：$point_value(string) 点值
- 返回值：返回取点
+ 返回值：返回取点(string)
  ------------------------*/
   function admin_get_fetch_point($payment,$point_value){
 
@@ -970,7 +970,7 @@ class payment {
 /*-----------------------
  功能：获取支付方法标志  
  参数：$payment(string) 支付方法
- 返回值: 支付方法标志
+ 返回值: 支付方法标志(string)
  ----------------------*/
   function admin_get_payment_symbol($payment){
 
@@ -988,7 +988,7 @@ class payment {
  参数：$payment(string) 支付方法
  参数：$mailoption(string) 邮件选项
  参数：$comment_arr(string) 评论
- 返回值: 支付购买方法 
+ 返回值: 支付购买方法 (string)
  ----------------------*/
   function admin_get_payment_buying($payment,&$mailoption,$comment_arr){
 
@@ -1003,7 +1003,7 @@ class payment {
  功能：获取支付购买方法类型 
  参数: $payment(string) 支付方法
  参数：$buying_type(string) 购买类型
- 返回值：支付购买方法类型
+ 返回值：支付购买方法类型(string)
  -----------------------------*/
   function admin_get_payment_buying_type($payment,$buying_type){
 
@@ -1020,7 +1020,7 @@ class payment {
  功能：获取支付方法信息 
  参数：$payment(string) 支付方法
  参数：$payment_info(string) 支付方法信息
- 返回值：支付方法信息
+ 返回值：支付方法信息(string)
  ----------------------------*/
   function admin_get_payment_info($payment,$payment_info){
 
@@ -1038,7 +1038,7 @@ class payment {
  参数：$customers_email(string) 客户的电子邮件
  参数：$site_id(string) SITE_ID 值
  参数：$orders_type(string) 订单类型
- 返回值：支付方法的信息评论
+ 返回值：支付方法的信息评论(string)
  -------------------------*/
   function admin_get_payment_info_comment($payment,$customers_email,$site_id,$orders_type=1){
 
@@ -1053,7 +1053,7 @@ class payment {
 /*--------------------------
  功能：获取点值 
  参数：$payment(string) 支付方法
- 返回值：点值 
+ 返回值：点值 (string)
  -------------------------*/
   function is_get_point($payment)
   {
@@ -1069,7 +1069,7 @@ class payment {
  功能：后台获取点数 
  参数：$payment(string) 支付方法
  参数：$site_id(string) SITE_ID值
- 返回值：点数
+ 返回值：点数(string)
  -------------------------*/  
   function admin_is_get_point($payment, $site_id)
   {
@@ -1085,7 +1085,7 @@ class payment {
  功能：后台获取点率
  参数：$payment(string) 支付方法
  参数：$site_id(string) SITE_ID值
- 返回值：点率
+ 返回值：点率(string)
  -------------------------*/  
   function admin_get_point_rate($payment, $site_id)
   {
@@ -1103,7 +1103,7 @@ class payment {
  参数：$orders_id(string) 订单ID
  参数：$point_rate(string) 点率
  参数：$site_id(string) SITE_ID值
- 返回值：点数 
+ 返回值：点数 (string)
  -----------------------*/  
   function admin_calc_get_point($payment, $orders_id, $point_rate, $site_id)
   {
@@ -1118,7 +1118,7 @@ class payment {
 /*----------------------------
  功能：获取点率 
  参数：$payment(string) 支付方法
- 返回值：点率
+ 返回值：点率(string)
  ---------------------------*/ 
   function get_point_rate($payment)
   {
@@ -1134,7 +1134,7 @@ class payment {
  功能：后台获取评论 
  参数：$payment(string) 支付方法
  参数：$comment(string) 评论
- 返回值：返回评论信息
+ 返回值：返回评论信息(string)
  --------------------------*/
   function admin_get_comment($payment,$comment)
   {
