@@ -2,7 +2,6 @@
 /*
   $Id$
 
-
   Example usage:
 
   $messageStack = new messageStack();
@@ -14,6 +13,11 @@
   class messageStack extends tableBox {
 
 // class constructor
+/*------------------------------
+ 功能：消息栈 
+ 参数：无
+ 返回值：无
+ -----------------------------*/
     function messageStack() {
       global $messageToStack;
 
@@ -28,6 +32,13 @@
     }
 
 // class methods
+/*----------------------------
+ 功能：添加信息 
+ 参数：$class(string) 类
+ 参数：$message(string) 信息
+ 参数：$type(string) 类型
+ 返回值: 无
+ ---------------------------*/
     function add($class, $message, $type = 'error') {
       if ($type == 'error') {
         $this->messages[] = array('params' => 'class="messageStackError"', 'class' => $class, 'text' => tep_image(DIR_WS_ICONS . 'error.gif', ICON_ERROR) . '&nbsp;' . $message);
@@ -39,7 +50,13 @@
         $this->messages[] = array('params' => 'class="messageStackError"', 'class' => $class, 'text' => $message);
       }
     }
-
+/*--------------------------
+ 功能：添加SESSION信息 
+ 参数：$class(string) 类 
+ 参数：$message(string) 信息
+ 参数：$tyle(string) 类型
+ 返回值：无
+ -------------------------*/
     function add_session($class, $message, $type = 'error') {
       global $messageToStack;
 
@@ -50,11 +67,19 @@
 
       $messageToStack[] = array('class' => $class, 'text' => $message, 'type' => $type);
     }
-
+/*------------------------------
+ 功能：重置 
+ 参数：无
+ 返回值：无
+ -----------------------------*/
     function reset() {
       $this->messages = array();
     }
-
+/*-----------------------------
+ 功能：输出 
+ 参数：$class(string) 类
+ 返回值: 返回信息数组
+ ----------------------------*/
     function output($class) {
       $this->table_data_parameters = 'class="messageBox"';
 
@@ -67,7 +92,11 @@
 
       return $this->tableBox($output);
     }
-
+/*-------------------------
+ 功能：字号大小 
+ 参数：$class(string) 类
+ 返回值：字号数值
+ ------------------------*/
     function size($class) {
       $count = 0;
 

@@ -1,11 +1,11 @@
 <?php
-/*
-  JP、GM共通文件
-*/
-
   class order {
     var $info, $totals, $products, $customer, $delivery;
-
+/*-----------------------------
+ 功能：订单查询 
+ 参数：$order_id(string) 订单ID
+ 返回值：无
+ ----------------------------*/
     function order($order_id) {
       $this->info = array();
       $this->totals = array();
@@ -15,7 +15,11 @@
 
       $this->query($order_id);
     }
-
+/*---------------------------
+ 功能：通过订单ID查询 
+ 参数：$order_id(string) 订单ID
+ 返回值：无
+ --------------------------*/
     function query($order_id) {
 
       $order_query = tep_db_query("select customers_name, customers_id, customers_name_f, customers_company, customers_street_address, customers_suburb, customers_city, customers_postcode, customers_state, customers_country, customers_telephone, customers_email_address, customers_address_format_id, delivery_name, delivery_name_f, delivery_company, delivery_street_address, delivery_suburb, delivery_city, delivery_postcode, delivery_state, delivery_country, delivery_telephone, delivery_address_format_id, billing_name, billing_name_f, billing_company, billing_street_address, billing_suburb, billing_city, billing_postcode, billing_state, billing_country, billing_telephone, billing_address_format_id, payment_method, cc_type, cc_owner, cc_number, cc_expires, currency, currency_value, date_purchased, orders_status, last_modified, torihiki_Bahamut, torihiki_houhou, torihiki_date from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($order_id) . "'");

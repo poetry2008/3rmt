@@ -8,6 +8,11 @@
     var $modules;
 
 // class constructor
+/*-----------------------
+ 功能：构造函数 
+ 参数：$module(string) 模块
+ 返回值：无
+ ----------------------*/
     function shipping($module = '') {
       global $language, $PHP_SELF;
 
@@ -34,7 +39,12 @@
         }
       }
     }
-
+/*------------------------
+ 功能：商品报价 
+ 参数：$method(string) 方法
+ 参数：$module(string) 模板
+ 返回值：商品报价数组
+ -----------------------*/
     function quote($method = '', $module = '') {
       global $total_weight, $shipping_weight, $shipping_quoted, $shipping_num_boxes;
 
@@ -79,7 +89,11 @@
 
       return $quotes_array;
     }
-
+/*---------------------
+ 功能：优惠的商品
+ 参数：无
+ 返回值：优惠商品
+ --------------------*/
     function cheapest() {
       if (is_array($this->modules)) {
         $rates = array();

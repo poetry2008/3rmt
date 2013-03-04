@@ -21,36 +21,59 @@ class _YuuPack {
   var $Length = 0;
   var $Width  = 0;
   var $Height = 0;
-
-  // 构造函数
-  // $id:   module id
-  // $titl: module name
-  // $zone: 省市县代码 '01'～'47'
-  // $country: country code
+/*-----------------------------
+  功能：构造函数
+  参数：$id(string)  module id
+  参数：$titl(string) module name
+  参数：$zone(string) 省市县代码 '01'～'47'
+  参数：$country(string) country code
+  返回值：无
+ ----------------------------*/
   function _YuuPack($id, $title, $zone = NULL, $country = NULL) {
     $this->quote = array('id' => $id, 'title' => $title);
     if($zone) {
       $this->SetOrigin($zone, $country);
     }
   }
-  // 设置发送地
-  // $zone: 省市县代码 '01'～'47'
-  // $country: country code
+/*---------------------------
+ 功能：设置发送地
+ 参数：$zone(string)  省市县代码'01'～'47'
+ 参数：$country(string)  country code
+ 返回值：无
+ --------------------------*/
   function SetOrigin($zone, $country = NULL) {
     $this->OriginZone = $zone;
     if($country) {
       $this->OriginCountryCode = $country;
     }
   }
+/*--------------------------
+ 功能：设置目标 
+ 参数：$zone(string)  省市县代码'01'～'47'
+ 参数：$country(string)  country code
+ 返回值：无
+ -------------------------*/
   function SetDest($zone, $country = NULL) {
     $this->DestZone = $zone;
     if($country) {
       $this->DestCountryCode = $country;
     }
   }
+/*-------------------------
+ 功能：设置重量 
+ 参数：$weight(string) 重量
+ 返回值：无
+ ------------------------*/
   function SetWeight($weight) {
     $this->Weight = $weight;
   }
+/*-----------------------
+ 功能：设置大小 
+ 参数：$length(string) 长度
+ 参数：$width(string) 宽度
+ 参数；$height(string) 高度
+ 返回值：无
+ ----------------------*/
   function SetSize($length = NULL, $width = NULL, $height = NULL) {
     if($length) {
       $this->Length = $length;
@@ -62,8 +85,8 @@ class _YuuPack {
       $this->Height = $height;
     }
   }
-    // 返回尺寸区分(0～4)
-    // 规格以外的时候返回-1
+  // 返回尺寸区分(0～4)
+  // 规格以外的时候返回-1
   //
   // 区分    3边合计   重量
   // ---------------------------------
@@ -105,7 +128,11 @@ class _YuuPack {
     return -1;  // 规格外
   }
   // 从送货地点和收货地点来获取地域rank(1～4)
-  //
+/*--------------------------
+ 功能：获取地区排名 
+ 参数：无
+ 返回值：返回排名
+ -------------------------*/
   function GetDistRank() {
     // 地域-地域间的价格顺
 
@@ -173,7 +200,11 @@ class _YuuPack {
     }
     return $n_rank;
   }
-
+/*---------------------------------
+ 功能：获取报价 
+ 参数：无
+ 返回值：返回报价值
+ --------------------------------*/
   function GetQuote() {
     // 按照距离划分的价格顺: rank => 价格([2],[4],[6],[8]...[20],[25],[30])
     $a_pricerank = array(

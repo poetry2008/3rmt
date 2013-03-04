@@ -5,7 +5,11 @@
 
   class language {
     var $languages, $catalog_languages, $browser_languages, $language;
-
+/*------------------------------
+ 功能：构造函数 语言 
+ 参数：$lng(string) 目录语言
+ 返回值: 返回是哪种语言
+ -----------------------------*/
     function language($lng = '') {
       $this->languages = array('ar' => array('ar([-_][[:alpha:]]{2})?|arabic', 'arabic', 'ar'),
                                'bg-win1251' => array('bg|bulgarian', 'bulgarian-win1251', 'bg'),
@@ -77,7 +81,11 @@
         $this->language = $this->catalog_languages[DEFAULT_LANGUAGE];
       }
     }
-
+/*-------------------------------
+ 功能：获取浏览器语言 
+ 参数：无
+ 返回值：无
+ ------------------------------*/
     function get_browser_language() {
       $this->browser_languages = explode(',', getenv('HTTP_ACCEPT_LANGUAGE'));
 

@@ -14,6 +14,12 @@
     var $table_data_parameters = '';
 
 // class constructor
+/*-----------------------
+ 功能：把内容信息放在表格中输出
+ 参数：$contents(string) 内容信息
+ 参数：$direct_output(string) 是否直接输出
+ 返回值：表格的字符串输出
+ ----------------------*/
     function tableBox($contents, $direct_output = false) {
       $tableBox_string = '<table summary="table" border="' . $this->table_border . '" width="' . $this->table_width . '" cellspacing="' . $this->table_cellspacing . '" cellpadding="' . $this->table_cellpadding . '"';
       if (tep_not_null($this->table_parameters)) $tableBox_string .= ' ' . $this->table_parameters;
@@ -68,6 +74,11 @@
   }
 
   class infoBox extends tableBox {
+/*-----------------------------
+ 功能：信息框 
+ 参数：$contents(string) 内容
+ 返回值：无
+ ----------------------------*/
     function infoBox($contents) {
       $info_box_contents = array();
       $info_box_contents[] = array('text' => $this->infoBoxContents($contents));
@@ -75,7 +86,11 @@
       $this->table_parameters = 'class="infoBox"';
       $this->tableBox($info_box_contents, true);
     }
-
+/*---------------------------
+ 功能：信息框内容 
+ 参数：$contents(string) 内容
+ 返回值：信息框内容
+ --------------------------*/
     function infoBoxContents($contents) {
       $this->table_cellpadding = '3';
       $this->table_parameters = 'class="infoBoxContents"';
@@ -101,6 +116,14 @@
   }
 
   class infoBoxHeading extends tableBox {
+/*-----------------------------
+ 功能：信息框的标题 
+ 参数：$contents(string) 内容
+ 参数：$left_corner(string) 左上
+ 参数：$right_corner(string) 右上
+ 参数：$right_arrow(string) 右箭头
+ 返回值：无
+ ----------------------------*/
     function infoBoxHeading($contents, $left_corner = true, $right_corner = true, $right_arrow = false) {
       $this->table_cellpadding = '0';
 
@@ -133,6 +156,11 @@
   }
 
   class contentBox extends tableBox {
+/*--------------------------------
+ 功能：内容框 
+ 参数：$contents(string) 内容
+ 返回值：无
+ -------------------------------*/
     function contentBox($contents) {
       $info_box_contents = array();
       $info_box_contents[] = array('text' => $this->contentBoxContents($contents));
@@ -140,7 +168,11 @@
      // $this->table_parameters = 'class="infoBox"';
       $this->tableBox($info_box_contents, true);
     }
-
+/*-------------------------------
+ 功能：放在内容框里面的信息 
+ 参数：$contents(string) 内容
+ 返回值：内容框里面的信息
+ ------------------------------*/
     function contentBoxContents($contents) {
       $this->table_cellpadding = '4';
     //  $this->table_parameters = 'class="infoBoxContents"';
@@ -149,6 +181,11 @@
   }
 
   class contentBoxHeading extends tableBox {
+/*--------------------------------
+ 功能：内容框标题 
+ 参数：$contents(string) 内容
+ 返回值：无
+ -------------------------------*/
     function contentBoxHeading($contents) {
       $this->table_width = '100%';
       $this->table_cellpadding = '0';
@@ -166,6 +203,11 @@
   }
 
   class errorBox extends tableBox {
+/*------------------------------
+ 功能：错误信息 
+ 参数：$contents(string) 信息
+ 返回值：无
+ -----------------------------*/
     function errorBox($contents) {
       $this->table_data_parameters = 'class="errorBox"';
       $this->tableBox($contents, true);

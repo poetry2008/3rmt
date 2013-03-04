@@ -12,7 +12,11 @@
     var $table_parameters = '';
     var $table_row_parameters = '';
     var $table_data_parameters = '';
-
+/*----------------------------
+ 功能：数据表格 
+ 参数：$contents(string) 内容信息
+ 返回值：表格中的字符串
+ ---------------------------*/
     function tableBlock($contents) {
       $tableBox_string = '<table border="' . $this->table_border . '" width="' . $this->table_width . '" cellspacing="' . $this->table_cellspacing . '" cellpadding="' . $this->table_cellpadding . '"';
       if ($this->table_parameters != '') $tableBox_string .= ' ' . $this->table_parameters;

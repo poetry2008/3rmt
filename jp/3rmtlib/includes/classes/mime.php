@@ -25,7 +25,12 @@
  *                  description  - Content description
  * @access public
  */
-
+/*--------------------------------
+ 功能： 设置的对象
+ 参数：$body(string) BODY部分
+ 参数：$params(string) 参数的关联数组
+ 返回值：无
+ -------------------------------*/
     function mime($body, $params = '') {
       if ($params == '') $params = array();
 
@@ -96,7 +101,11 @@
  *         an indexed array.
  * @access public
  */
-
+/*------------------------
+ 功能：编码和返回的电子邮件
+ 参数：无
+ 返回值：返回一个关联数组 BODY和headers
+ -----------------------*/
     function encode() {
 /* HPDL PHP3 */
 //      $encoded =& $this->_encoded;
@@ -153,6 +162,12 @@
 
 /* HPDL PHP3 */
 //    function &addSubPart($body, $params) {
+/*-------------------------------------
+ 功能：添加一个部分
+ 参数：$body(string) BODY部分
+ 参数：$params(string) 参数的部分
+ 返回值：返回新添加的部分
+ ------------------------------------*/
     function addSubPart($body, $params) {
       $this->_subparts[] = new mime($body, $params);
 
@@ -169,7 +184,12 @@
  *                  or quoted-printable.
  * @access private
  */
-
+/*---------------------------------
+ 功能：获取编码的数据 
+ 参数：$data(string) 数据编码
+ 参数：$encoding(string) 编码累心
+ 返回值：无
+ --------------------------------*/
     function _getEncodedData($data, $encoding) {
       switch ($encoding) {
        case '7bit':
@@ -195,7 +215,12 @@
  *
  * @access private
  */
-
+/*-----------------------------
+ 功能：使用quoted-printable标准对数据进行编码 
+ 参数：$input(string) 数据进行编码
+ 参数：$line_max(string) 最大的长度  不能超过76个字符
+ 返回值：返回编码过的数据
+ ----------------------------*/
     function _quotedPrintableEncode($input , $line_max = 76) {
       $lines = preg_split("/\r\n|\r|\n/", $input);
       $eol = $this->lf;

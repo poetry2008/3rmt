@@ -5,11 +5,19 @@
 
   class shoppingCart {
     var $contents, $total, $weight, $cartID, $content_type;
-
+/*---------------------------
+ 功能：购物车 
+ 参数：无
+ 返回值：无
+ --------------------------*/
     function shoppingCart() {
       $this->reset();
     }
-
+/*--------------------------
+ 功能：恢复购物车的内容
+ 参数：无
+ 返回值：无
+ -------------------------*/
     function restore_contents() {
       global $customer_id;
 
@@ -142,7 +150,11 @@
 
       $this->cleanup();
     }
-
+/*--------------------------------
+ 功能：重置购物车 
+ 参数：$reset_database(string) 重置数据库
+ 返回值：无
+ -------------------------------*/
     function reset($reset_database = false) {
       global $customer_id;
 
@@ -162,7 +174,15 @@
       unset($this->cartID);
       if (tep_session_is_registered('cartID')) tep_session_unregister('cartID');
     }
-
+/*------------------------
+ 功能：添加产品到购物车 
+ 参数：$products_id(string) 产品ID
+ 参数：$qty(string) 数量
+ 参数：$attributes(string) 属性
+ 参数：$notify(string) 通知
+ 参数：$option_info(string) 选项信息
+ 返回值：无
+ -----------------------*/
     function add_cart($products_id, $qty = '1', $attributes = '', $notify = true, $option_info = array()) {
       global $new_products_id_in_cart, $customer_id;
       // check quantity
@@ -195,7 +215,14 @@
 // assign a temporary unique ID to the order contents to prevent hack attempts during the checkout procedure
       $this->cartID = $this->generate_cart_id();
     }
-
+/*--------------------------
+ 功能：更新数量
+ 参数：$products_id(string) 产品ID
+ 参数：$quantity(string) 数量
+ 参数：$attributes(srting) 属性
+ 参数：$option_info(string) 选项信息
+ 返回值：无
+ -------------------------*/
     function update_quantity($products_id, $quantity = '', $attributes = '', $option_info = array()) {
       global $customer_id;
 
@@ -212,7 +239,11 @@
         if (tep_session_is_registered('customer_id')) tep_db_query("update " .  TABLE_CUSTOMERS_BASKET_OPTIONS . " set option_info = '" .  tep_db_input(@serialize($option_info)) . "' where customers_id = '" . $customer_id .  "' and products_id = '" . $products_id . "'");
       }
     }
-
+/*----------------------------
+ 功能：购物车清理 
+ 参数：无
+ 返回值：无
+ ---------------------------*/
     function cleanup() {
       global $customer_id;
 
@@ -230,7 +261,11 @@
         }
       }
     }
-
+/*---------------------------
+ 功能：购物车数量内容 
+ 参数：$_ctype(string) 类型
+ 返回值：返回购物车总项目内容
+ --------------------------*/
     function count_contents($c_type = false) {  // get total number of items in cart 
       $total_items = 0;
       if (is_array($this->contents)) {
@@ -252,7 +287,11 @@
 
       return $total_items;
     }
-
+/*-------------------------------
+ 功能：获取数量 
+ 参数：$products_id(string) 产品ID
+ 返回值：判断是否获取数量成功
+ ------------------------------*/
     function get_quantity($products_id) {
       if (isset($this->contents[$products_id])) {
         return $this->contents[$products_id]['qty'];
@@ -260,7 +299,11 @@
         return 0;
       }
     }
-
+/*------------------------------
+ 功能：产品是否在购物车里面 
+ 参数：$products_id(string) 产品ID
+ 参数：判断产品是否在购物车里面
+ -----------------------------*/
     function in_cart($products_id) {
       if (isset($this->contents[$products_id])) {
         return true;
@@ -268,7 +311,11 @@
         return false;
       }
     }
-
+/*------------------------------
+ 功能：在购物车中删除 
+ 参数：$products_id(string) 产品ID
+ 返回值：无
+ -----------------------------*/
     function remove($products_id) {
       global $customer_id;
       unset($this->contents[$products_id]);
@@ -283,11 +330,19 @@
 // assign a temporary unique ID to the order contents to prevent hack attempts during the checkout procedure
       $this->cartID = $this->generate_cart_id();
     }
-
+/*-----------------------------
+ 功能：全部删除 
+ 参数：无
+ 返回值：无
+ ----------------------------*/
     function remove_all() {
       $this->reset();
     }
-
+/*-----------------------------
+ 功能：获取产品编号列表 
+ 参数：无
+ 返回值：产品编号列表
+ ----------------------------*/
     function get_product_id_list() {
       $product_id_list = '';
       if (is_array($this->contents)) {
@@ -299,7 +354,11 @@
 
       return substr($product_id_list, 2);
     }
-
+/*-----------------------------
+ 功能：购物车计算金额 
+ 参数：无
+ 返回值：无
+ ----------------------------*/
     function calculate() {
       // 支付金额
       $this->total = 0;
@@ -412,7 +471,11 @@
         }
       }
     }
-
+/*-----------------------------------
+ 功能：购物车属性价格 
+ 参数：$products_id(string) 产品ID
+ 返回值：属性价格
+ ----------------------------------*/
     function attributes_price($products_id) {
       $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>");
       if (isset($this->contents[$products_id]['op_attributes'])) {
@@ -489,7 +552,11 @@
       if(!isset($attributes_price)) $attributes_price = NULL;
       return $attributes_price;
     }
-
+/*---------------------------------
+ 功能：获取产品 
+ 参数：无
+ 返回值：返回产品数组
+ --------------------------------*/
     function get_products() {
       global $languages_id;
       if (!is_array($this->contents)) return false;
@@ -527,29 +594,49 @@
 
       return $products_array;
     }
-
+/*------------------------------
+ 功能：全部显示 
+ 参数：无
+ 返回值：显示全部
+ -----------------------------*/
     function show_total() {
       $this->calculate();
 
       return $this->total;
     }
-    
+/*------------------------------
+ 功能：显示ABS 
+ 参数：无
+ 返回值：ABS
+ -----------------------------*/    
     function show_abs() {
       $this->calculate();
 
       return $this->abs;
     }
-
+/*------------------------------
+ 功能：显示重量 
+ 参数：无
+ 返回值：重量
+ -----------------------------*/
     function show_weight() {
       $this->calculate();
 
       return $this->weight;
     }
-
+/*-----------------------------
+ 功能：生成购物车ID 
+ 参数：$length(string) 长度
+ 返回值：创建购物车的随机ID值
+ ----------------------------*/
     function generate_cart_id($length = 5) {
       return tep_create_random_value($length, 'digits');
     }
-
+/*----------------------------
+ 功能：获取内容的类型 
+ 参数：无
+ 返回值: 返回内容的类型
+ ---------------------------*/
     function get_content_type() {
       $this->content_type = false;
 
@@ -586,7 +673,11 @@
 
       return $this->content_type;
     }
-
+/*---------------------------
+ 功能：购物车的反序列化 
+ 参数：$broken(string) 打乱
+ 返回值：无
+ --------------------------*/
     function unserialize($broken) {
       for(reset($broken);$kv=each($broken);) {
         $key=$kv['key'];
@@ -594,7 +685,12 @@
         $this->$key=$kv['value'];
       }
     }
-    
+/*--------------------------
+ 功能：获取产品ID 
+ 参数：$products_id(string) 产品ID
+ 参数：$option_info_array(string) 选项信息数组
+ 返回值：产品ID
+ -------------------------*/    
     function get_products_uprid($products_id, $option_info_array)
     {
       $p_num_array = array();
@@ -642,7 +738,11 @@
       
       return $products_id.'_1';
     }
-   
+/*---------------------------------
+ 功能：添加结账选项 
+ 参数：$option_array(string) 选项数组
+ 返回值：无
+ --------------------------------*/   
     function add_checkout_option($option_array)
     {
       if (!is_array($this->contents)) return false;
@@ -652,7 +752,11 @@
         }
       }
     }
-   
+/*---------------------------------
+ 功能：清除结账属性  
+ 参数：无
+ 返回值：无
+ --------------------------------*/   
     function clean_checkout_attributes()
     {
       if (is_array($this->contents)) {

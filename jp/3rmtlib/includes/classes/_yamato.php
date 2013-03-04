@@ -21,36 +21,59 @@ class _Yamato {
     var $Length = 0;
     var $Width  = 0;
     var $Height = 0;
-
-    // 构造函数
-    // $id:   module id
-    // $titl: module name
-    // $zone: 省市县代码 '01'～'47'
-    // $country: country code
+/*-----------------------------
+  功能：构造函数
+  参数：$id(string)  module id
+  参数：$titl(string) module name
+  参数：$zone(string) 省市县代码 '01'～'47'
+  参数：$country(string) country code
+  返回值：无
+ ----------------------------*/
     function _Yamato($id, $title, $zone = NULL, $country = NULL) {
         $this->quote = array('id' => $id, 'title' => $title);
         if($zone) {
             $this->SetOrigin($zone, $country);
         }
     }
-    // 设置发送地
-    // $zone: 省市县代码'01'～'47'
-    // $country: country code
+/*---------------------------
+ 功能：设置发送地
+ 参数：$zone(string)  省市县代码'01'～'47'
+ 参数：$country(string)  country code
+ 返回值：无
+ --------------------------*/
     function SetOrigin($zone, $country = NULL) {
         $this->OriginZone = $zone;
         if($country) {
             $this->OriginCountryCode = $country;
         }
     }
+/*--------------------------
+ 功能：设置目标 
+ 参数：$zone(string)  省市县代码'01'～'47'
+ 参数：$country(string)  country code
+ 返回值：无
+ -------------------------*/
     function SetDest($zone, $country = NULL) {
         $this->DestZone = $zone;
         if($country) {
             $this->DestCountryCode = $country;
         }
     }
+/*-------------------------
+ 功能：设置重量 
+ 参数：$weight(string) 重量
+ 返回值：无
+ ------------------------*/
     function SetWeight($weight) {
         $this->Weight = $weight;
     }
+/*-----------------------
+ 功能：设置大小 
+ 参数：$length(string) 长度
+ 参数：$width(string) 宽度
+ 参数；$height(string) 高度
+ 返回值：无
+ ----------------------*/
     function SetSize($length = NULL, $width = NULL, $height = NULL) {
         if($length) {
             $this->Length = $length;
@@ -95,6 +118,11 @@ class _Yamato {
     }
     // 用送货地点和收货地点来做成key
     //
+/*----------------------
+ 功能：获取地点 
+ 参数：无
+ 返回值：返回送货地点和收货地点
+ ---------------------*/
     function GetDistKey() {
         $s_key = '';
         $s_z1 = $this->GetLZone($this->OriginZone);
@@ -109,8 +137,11 @@ class _Yamato {
         }
         return $s_key;
     }
-    // 通过省市县代码来获取地域代码
-    // $zone: 省市县代码
+/*--------------------------------
+  功能：通过省市县代码来获取地域代码
+  参数： $zone: 省市县代码
+  返回值：返回区域代码数组  
+-------------------------------*/
     function GetLZone($zone) {
         // 把省市县代码替换成地域代码('A'～'M')
         //  北海道:'A' = 北海道
@@ -176,7 +207,11 @@ class _Yamato {
         );
         return $a_zonemap[$zone];
     }
-
+/*-------------------------
+ 功能：获取价格 
+ 参数：无
+ 返回值：返回价格
+ ------------------------*/
     function GetQuote() {
         // [通常邮寄] 按照距离定的价格顺
         // rankcode => 价格(60,80,100,120,140,160)

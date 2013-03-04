@@ -16,7 +16,11 @@
        $child_end_string = '</li>',
        $spacer_string = '',
        $spacer_multiplier = 1;
-
+/*---------------------------
+ 功能：常见问题分类树 
+ 参数：$load_from_database(string) 加载数据库
+ 返回值：无
+ --------------------------*/
    function osC_CategoryTree($load_from_database = true) {
      global $languages_id;
 //ccdd
@@ -63,7 +67,12 @@
            $this->data[$cID][$id] = array('name' => $categories['categories_name'], 'count' => 0);
          } // eof While loop
     } //eof Function
-
+/*-------------------------------
+ 功能：建立分支 
+ 参数：$parent_id(string) 父ID值
+ 参数：$level(string) 分支层次
+ 返回值：返回分支
+ ------------------------------*/
    function buildBranch($parent_id, $level = 0) {
      if($level == 0){
        $result = '<ul>';
@@ -102,7 +111,11 @@
      }
      return $result;
    }
-
+/*----------------------
+ 功能：构建树 
+ 参数：无
+ 返回值：分支
+ ----------------------*/
    function buildTree() {
      return $this->buildBranch($this->root_category_id);
    }

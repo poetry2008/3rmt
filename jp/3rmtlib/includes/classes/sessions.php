@@ -51,7 +51,12 @@
 
       return true;
     }
-
+/*-----------------------
+ 功能：关闭SESSION 
+ 参数：$save_path(string) 保存路径
+ 参数：$sess_name(string) SESSION名称
+ 返回值：关闭SESSION
+ ----------------------*/
     function close($save_path, $sess_name) {
       $func = $this->close_func;
       if (function_exists($func)) {
@@ -60,19 +65,32 @@
 
       return true;
     }
-
+/*----------------------
+ 功能：浏览SESSION 
+ 参数：$sess_id(string) SESSION ID值
+ 返回值：SESSION
+ ---------------------*/
     function read($sess_id) {
       $func = $this->read_func;
 
       return $func($sess_id);
     }
-
+/*---------------------
+ 功能：编写SESSION
+ 参数：$sess_id(string) session id
+ 参数：$val(string) session 值
+ 返回值：编写SESSION完成
+ --------------------*/
     function write($sess_id, $val) {
       $func = $this->write_func;
 
       return $func($sess_id, $val);
     }
-
+/*--------------------
+ 功能：消除SESSION 
+ 参数：$sess_id(string) session id
+ 返回值：消除成功
+ -------------------*/
     function destroy($sess_id) {
       $func = $this->destroy_func;
       if (function_exists($func)) {
@@ -81,7 +99,11 @@
 
       return true;
     }
-
+/*-------------------
+ 功能：SESSION的最大时长 
+ 参数：$max_lifetime(string) 最大时长
+ 返回值：最大时长
+ ------------------*/
     function gc($max_lifetime) {
       $func = $this->gc_func;
       if (function_exists($func)) {
@@ -93,14 +115,28 @@
   }
 
   class php3session_files {
+/*--------------------
+ 功能：打开文件 
+ 参数：$save_path(string) 保存路径
+ 参数：$sess_name(string) SESSION名称
+ 返回值：打开成功
+ -------------------*/
     function open($save_path, $sess_name) {
       return true;
     }
-
+/*-------------------
+ 功能：关闭 
+ 参数：无
+ 返回值：关闭成功
+ ------------------*/
     function close() {
       return true;
     }
-
+/*------------------
+ 功能：阅读文件 
+ 参数：$sess_id(string) SESSION ID
+ 返回值：阅读文件成功
+ -----------------*/
     function read($sess_id) {
       global $session;
 
@@ -116,7 +152,12 @@
 
       return $val;
     }
-
+/*------------------------
+ 功能：写入文件 
+ 参数：$sess_id(string) SESSION ID
+ 参数：$val(string) SESSION值
+ 返回值：写入成功
+ -----------------------*/
     function write($sess_id, $val) {
       global $session;
 
@@ -128,7 +169,11 @@
 
       return true;
     }
-
+/*-----------------------
+ 功能：取消文件链接
+ 参数：$sess_id(string) SESSION ID
+ 返回值：消除成功
+ ----------------------*/
     function destroy($sess_id) {
       global $session;
 
@@ -137,18 +182,30 @@
 
       return true;
     }
-
+/*----------------------
+ 功能：查看最大时长
+ 参数：$max_lifetime(string) 最大时长
+ 返回值：查看成功
+ ---------------------*/
     function gc($max_lifetime) {
 // We return true, since all cleanup should be handled by
 // an external entity (i.e. find -ctime x | xargs rm)
       return true;
     }
   }
-
+/*----------------------
+ 功能：创建SESSION ID
+ 参数：无
+ 返回值：MD5加密SESSION ID
+ ---------------------*/
   function _session_create_id() {
     return md5(uniqid(microtime()));
   }
-
+/*---------------------
+ 功能：SESSION 缓存限制
+ 参数：无
+ 返回值：无
+ --------------------*/
   function _session_cache_limiter() {
     global $session;
 
@@ -175,7 +232,11 @@
                       die('Caching method ' . $session->cache_limiter . ' not implemented.');
     }
   }
-
+/*---------------------------
+ 功能：PHP编码
+ 参数：无
+ 返回值：返回PHP编码
+ --------------------------*/
   function _php_encode() {
     global $session;
 
@@ -187,7 +248,11 @@
 
     return $ret;
   }
-
+/*--------------------------
+ 功能：PHP解码 
+ 参数：$data(string) 数据
+ 返回值：无
+ -------------------------*/
   function _php_decode($data) {
     global $session;
 
@@ -203,7 +268,11 @@
       $session->vars[] = trim($name);
     }
   }
-
+/*-------------------------
+ 功能：SESSION 文件WDDX编码  
+ 参数：$data(string) 数据
+ 返回值：返回文件编码
+ ------------------------*/
   function _wddx_encode($data) {
     global $session;
 
@@ -211,11 +280,19 @@
 
     return $ret;
   }
-
+/*------------------------ 
+ 功能：SESSION 文件WDDX解码 
+ 参数：$data(string) 数据
+ 参数：返回文件WDDX解码
+ -----------------------*/
   function _wddx_decode($data) {
     return wddx_deserialize($data);
   }
-
+/*------------------------
+ 功能：SESSION 名字 
+ 参数：$name(string) 名字
+ 返回值：无
+ -----------------------*/
   function session_name($name = '') {
     global $session;
 
@@ -225,7 +302,15 @@
 
     $session->name = $name;
   }
-
+/*-----------------------
+ 功能：设置SESSION保存文件
+ 参数：$open(string) 打开文件
+ 参数：$close(string) 关闭
+ 参数：$read(string) 阅读文件
+ 参数：$write(string) 写入文件
+ 参数：$destroy(string) 消除文件
+ 返回值：无 
+ -----------------------*/
   function session_set_save_handler($open, $close, $read, $write, $destroy, $gc) {
     global $session, $php3session_user;
 
@@ -238,7 +323,11 @@
     $php3session_user->gc_func = $gc;
     $session->mod_name = 'php3session_user';
   }
-
+/*--------------------------
+ 功能：SESSION 模块名称
+ 参数：$name(string) 名称
+ 返回值：无
+ -------------------------*/
   function session_module_name($name = '') {
     global $session;
 
@@ -248,7 +337,11 @@
 
     $session->mod_name = $name;
   }
-
+/*-------------------------
+ 功能：SESSION 保存路径
+ 参数：$path(string) 路径
+ 返回值：无
+ ------------------------*/
   function session_save_path($path = '') {
     global $session;
 
@@ -258,7 +351,11 @@
 
     $session->save_path = $path;
   }
-
+/*-------------------------
+ 功能：SESSION ID 
+ 参数：$id(string) ID值
+ 返回值：无
+ ------------------------*/
   function session_id($id = '') {
     global $session;
 
@@ -268,7 +365,11 @@
 
     $session->id = $id;
   }
-
+/*-----------------------
+ 功能：SESSION 注册 
+ 参数：$var(string) 打开SESSION
+ 返回值：无
+ ----------------------*/
   function session_register($var) {
     global $session;
 
@@ -278,7 +379,11 @@
 
     $session->vars[] = trim($var);
   }
-
+/*-----------------------
+ 功能：SESSION 注销 
+ 参数：$var(string) SESSION 注销
+ 返回值：无
+ ----------------------*/
   function session_unregister($var) {
     global $session;
 
@@ -289,7 +394,11 @@
       }
     }
   }
-
+/*------------------------
+ 功能: SESSION 注册 
+ 参数：$var(string) SESSION 注册值
+ 返回值：注册成功
+ -----------------------*/
   function session_is_registered($var) {
     global $session;
 
@@ -301,7 +410,11 @@
 
     return false;
   }
-
+/*-----------------------
+ 功能：SESSION 编码 
+ 参数：无
+ 返回值：SESSION 编码序列化
+ -----------------------*/
   function session_encode() {
     global $session;
 
@@ -310,7 +423,11 @@
 
     return $ret;
   }
-
+/*------------------------
+ 功能：SESSION 解码 
+ 参数：$data(string) 数据
+ 返回值：SESSION 解码序列化 
+ -----------------------*/
   function session_decode($data) {
     global $session;
 
@@ -319,7 +436,11 @@
 
     return $ret;
   }
-
+/*------------------------
+ 功能：SESSION 开始 
+ 参数：无
+ 返回值：SESSION 开始成功
+ -----------------------*/
   function session_start() {
     global $session, $SID, $HTTP_COOKIE_VARS, $_GET, $_POST;
 
@@ -446,7 +567,11 @@
 
     return true;
   }
-
+/*----------------------
+ 功能：SESSION 消除 
+ 参数：无
+ 返回值：判断是否消除成功
+ ---------------------*/
   function session_destroy() {
     global $session;
 
@@ -464,7 +589,11 @@
 
     return true;
   }
-
+/*-----------------------
+ 功能：关闭 SESSION 
+ 参数：无
+ 返回值：判断是否关闭成功 
+ ----------------------*/
   function session_close() {
     global $session, $SID;
 

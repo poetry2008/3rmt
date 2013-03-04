@@ -1,7 +1,15 @@
 <?php
   class upload {
     var $file, $filename, $destination, $prefix, $permissions, $extensions, $tmp_filename, $message_location;
-
+/*---------------------------
+ 功能：上传文件
+ 参数：$file(string) 文件
+ 参数：$destination(string) 目标
+ 参数：$prefix(string) 设置前缀
+ 参数：$permissions(string) 设置权限
+ 参数：$extensions(string) 设置扩展
+ 返回值：判断上传文件是否成功
+ --------------------------*/
     function upload($file = '', $destination = '', $prefix = '', $permissions = '777', $extensions = '') {
       $this->set_file($file);
       $this->set_destination($destination);
@@ -21,7 +29,11 @@
         }
       }
     }
-
+/*-------------------------------
+ 功能：解析上传的文件
+ 参数: 无
+ 返回值：判断是否解析成功
+ ------------------------------*/
     function parse() {
       global $HTTP_POST_FILES, $messageStack;
 
@@ -71,7 +83,11 @@
         return false;
       }
     }
-
+/*-----------------------------
+ 功能：提交文件 
+ 参数：无
+ 返回值：判断是否提交成功
+ ----------------------------*/
     function save() {
       global $messageStack;
 
@@ -102,30 +118,59 @@
         return false;
       }
     }
-
+/*-------------------------
+ 功能：设置文件 
+ 参数: $file(string) 文件
+ 返回值：无
+ ------------------------*/
     function set_file($file) {
       $this->file = $file;
     }
-
+/*-------------------------
+ 功能：设置目标 
+ 参数：$destination(string) 目标 
+ 返回值：无
+ ------------------------*/
     function set_destination($destination) {
       $this->destination = $destination;
     }
-
+/*------------------------
+ 功能：设置前缀 
+ 参数: $prefix(string) 前缀
+ 返回值：无
+ ------------------------*/
     function set_prefix($prefix) {
       $this->prefix= $prefix;
     }
+/*------------------------
+ 功能：设置权限 
+ 参数：$permissions(string) 权限
+ 返回值：无
+ -----------------------*/
     function set_permissions($permissions) {
       $this->permissions = octdec($permissions);
     }
-
+/*------------------------
+ 功能：设置文件名 
+ 参数：$filename(string) 文件名
+ 返回值: 无
+ ------------------------*/
     function set_filename($filename) {
       $this->filename = $filename;
     }
-
+/*-----------------------
+ 功能：设置TMP文件名 
+ 参数：$filename(string) 文件名
+ 返回值：无
+ ----------------------*/
     function set_tmp_filename($filename) {
       $this->tmp_filename = $filename;
     }
-
+/*----------------------
+ 功能: 设置扩展 
+ 参数：$extensions(string) 扩展
+ 返回值：无
+ ---------------------*/
     function set_extensions($extensions) {
       if (tep_not_null($extensions)) {
         if (is_array($extensions)) {
@@ -137,7 +182,11 @@
         $this->extensions = array();
       }
     }
-
+/*------------------------
+ 功能：检查目标文件 
+ 参数：无
+ 返回值：判断检查是否成功
+ -----------------------*/
     function check_destination() {
       global $messageStack;
 
@@ -165,7 +214,11 @@
         return true;
       }
     }
-
+/*-----------------------
+ 功能：设置输出信息 
+ 参数：$location(string) 位置
+ 返回值：无
+ ----------------------*/
     function set_output_messages($location) {
       switch ($location) {
         case 'session':
@@ -182,7 +235,15 @@
 // BOF: Additional Images
 
   class upload_quiet extends upload {
-
+/*---------------------
+ 功能: 上传信息  
+ 参数：$file(string) 文件
+ 参数：$destination(string) 目标
+ 参数：$prefix(string) 设置前缀
+ 参数：$permissions(string) 设置权限
+ 参数：$extensions(string) 设置扩展
+ 返回值：判断上传是否成功
+ --------------------*/
     function upload_quiet($file = '', $destination = '', $prefix = '', $permissions = '777', $extensions = '') {
       $this->set_file($file);
       $this->set_destination($destination);

@@ -13,7 +13,12 @@
     var $build_params;
     var $attachments;
     var $headers;
-
+/*------------------------------
+ 功能：电子邮件 
+ 参数：$headers(string) 头部
+ 参数：$site_id(string) SITE_ID值
+ 返回值：无
+ -----------------------------*/
     function email($headers = '', $site_id = null) {
       if ($headers == '') $headers = array();
       if ($site_id) {
@@ -76,7 +81,11 @@
  * argument of the the functions
  * add_html_image() or add_attachment().
  */
-
+/*---------------------------------
+ 功能：获取文件 
+ 参数：$filename(string) 文件名字
+ 返回值：判断是否获取成功
+ --------------------------------*/
     function get_file($filename) {
       $return = '';
 
@@ -103,7 +112,11 @@
  *
  * Function contributed by Dan Allen
  */
-
+/*-------------------------------
+ 功能：查找HTML的图像目录
+ 参数：$images_dir(string) 图像目录
+ 返回值：无
+ -------------------------------*/
     function find_html_images($images_dir) {
 // Build the list of image extensions
       while (list($key, ) = each($this->image_types)) {
@@ -137,7 +150,11 @@
  * Adds plain text. Use this function
  * when NOT sending html email
  */
-
+/*-----------------------------
+ 功能：添加文本
+ 参数：$text(string) 文本
+ 返回值：无
+ ----------------------------*/
     function add_text($text = '') {
       $this->text = mb_convert_encoding(mb_convert_kana($text, "KV"),
           'UTF-8' );
@@ -148,7 +165,13 @@
  * Also replaces image names with
  * content-id's.
  */
-
+/*--------------------------
+ 功能：添加HTML文本 
+ 参数：$html(string) html 文本
+ 参数：$text(string) 文本
+ 参数：$images_dir(string) 图片目录
+ 返回值：无
+ -------------------------*/
     function add_html($html, $text = NULL, $images_dir = NULL) {
       $this->html = $html;
       $this->html_text = $text;
@@ -160,7 +183,13 @@
  * Adds an image to the list of embedded
  * images.
  */
-
+/*-------------------------
+ 功能：添加HTML图片 
+ 参数：$file(string) 文件
+ 参数：$name(string) 名字
+ 参数：$c_type(string) 目录路径
+ 返回值：无
+ ------------------------*/
     function add_html_image($file, $name = '', $c_type='application/octet-stream') {
       $this->html_images[] = array('body' => $file,
                                    'name' => $name,
@@ -171,7 +200,14 @@
 /**
  * Adds a file to the list of attachments.
  */
-
+/*------------------------
+ 功能：添加到列表的附件 
+ 参数：$file(string) 文件
+ 参数：$name(string) 名字
+ 参数：$c_type(string) 路径
+ 参数：$encoding(string) 编码
+ 返回值：无
+ -----------------------*/
     function add_attachment($file, $name = '', $c_type='application/octet-stream', $encoding = 'base64') {
       $this->attachments[] = array('body' => $file,
                                    'name' => $name,
@@ -185,6 +221,12 @@
 
 /* HPDL PHP3 */
 //    function &add_text_part(&$obj, $text) {
+/*-----------------------
+ 功能：添加文本到mime_part对象
+ 参数：$obj(string) 对象 
+ 参数：$text(string) 文本
+ 返回值：返回mime_part对象
+ ----------------------*/
     function add_text_part(&$obj, $text) {
       $params['content_type'] = 'text/plain';
       $params['encoding'] = $this->build_params['text_encoding'];
@@ -203,6 +245,11 @@
 
 /* HPDL PHP3 */
 //    function &add_html_part(&$obj) {
+/*-----------------------------
+ 功能：添加HTML到mime_part对象
+ 参数：$obj(string) 对象
+ 返回值：返回mime_part对象 
+ -----------------------------*/
     function add_html_part(&$obj) {
       $params['content_type'] = 'text/html';
       $params['encoding'] = $this->build_params['html_encoding'];
@@ -221,6 +268,11 @@
 
 /* HPDL PHP3 */
 //    function &add_mixed_part() {
+/*-------------------------------
+ 功能：添加混合部分信息 
+ 参数：无
+ 返回值：信息
+ ------------------------------*/
     function add_mixed_part() {
       $params['content_type'] = 'multipart/mixed';
 
@@ -233,6 +285,11 @@
 
 /* HPDL PHP3 */
 //    function &add_alternative_part(&$obj) {
+/*-------------------------------
+ 功能：添加一个替代部分到mime_part对象 
+ 参数：$obj(string) 对象
+ 返回值：mime_part对象
+ ------------------------------*/
     function add_alternative_part(&$obj) {
       $params['content_type'] = 'multipart/alternative';
 
@@ -249,6 +306,11 @@
 
 /* HPDL PHP3 */
 //    function &add_related_part(&$obj) {
+/*------------------------------
+ 功能：添加HTML部位到mime_part对象 
+ 参数：$obj($obj) 对象 
+ 返回值：mime_part对象
+ -----------------------------*/
     function add_related_part(&$obj) {
       $params['content_type'] = 'multipart/related';
 
@@ -265,6 +327,12 @@
 
 /* HPDL PHP3 */
 //    function &add_html_image_part(&$obj, $value) {
+/*-----------------------------
+ 功能：添加一个图片到mime_part对象 
+ 参数：$obj(string) 对象
+ 参数：$value(string) 内容类型 
+ 返回值：无
+ ----------------------------*/
     function add_html_image_part(&$obj, $value) {
       $params['content_type'] = $value['c_type'];
       $params['encoding'] = 'base64';
@@ -281,6 +349,11 @@
 
 /* HPDL PHP3 */
 //    function &add_attachment_part(&$obj, $value) {
+/*----------------------------
+ 功能：添加一个附加部分到mime_part对象 
+ 参数：$obj(string) 对象
+ 参数：$value(string) 内容类型
+ ---------------------------*/
     function add_attachment_part(&$obj, $value) {
       $params['content_type'] = $value['c_type'];
       $params['encoding'] = $value['encoding'];
@@ -312,6 +385,11 @@
 
 /* HPDL PHP3 */
 //    function build_message($params = array()) {
+/*-------------------------
+ 功能：构建分支信息
+ 参数：$params(string) 建立参数
+ 返回值：判断构建分支信息是否成功
+ ------------------------*/
     function build_message($params = '') {
       if ($params == '') $params = array();
 
@@ -463,7 +541,17 @@
 /**
  * Sends the mail.
  */
-
+/*-------------------------
+ 功能：发送邮件 
+ 参数: $to_name(string)命名
+ 参数：$to_addr(string) 地址
+ 参数：$from_name(string) 名称
+ 参数：$from_addr(string) mail 地址
+ 参数：$subject(string) 主题
+ 参数：$headers(string) 头部 
+ 参数：$from_page(string) 页面
+ 返回值：判断发送邮件是否成功
+ ------------------------*/
     function send($to_name, $to_addr, $from_name, $from_addr, $subject = '',
         $headers = '',$from_page="") {
       // $from_name 是 "" ， $from_addr 是 "Name <someone@abc.com>" 格式的情况下
@@ -509,9 +597,8 @@
       $from_name = mb_convert_encoding($from_name, 'ISO-2022-JP'); // 添加
         $from_addr = mb_convert_encoding($from_addr, 'ISO-2022-JP'); // 添加
         */
-        
       $from_name = mb_convert_encoding($from_name, 'UTF-8'); // 添加
-      $from_addr = mb_convert_encoding($from_addr, 'UTF-8'); // 添加
+        $from_addr = mb_convert_encoding($from_addr, 'UTF-8'); // 添加
     }
     
     /*
@@ -525,9 +612,10 @@
       $to    = ($to_name != '')
           ? ('"' . mb_encode_mimeheader(mb_convert_kana($to_name, "KV"), 'UTF-8') . '" <' . $to_addr . '>')
           : $to_addr;
-       
-      $from  = ($from_name != '') ? ('"' .  mb_encode_mimeheader(mb_convert_kana($from_name, "KV"), 'UTF-8')  . '" <' . $from_addr. '>') : $from_addr;
-      
+      $from  = ($from_name != '')
+          ? ('"' . mb_encode_mimeheader(mb_convert_kana($from_name, "KV"), 'UTF-8')  . '" <' . $from_addr. '>')
+          : $from_addr;
+
       if (is_string($headers)) {
         $headers = explode($this->lf, trim($headers));
       }
@@ -585,7 +673,17 @@
  *       [string Subject,
  *        string Extra headers])
  */
-
+/*---------------------------------
+ 功能：返回的电子邮件 
+ 参数: $to_name(string)命名
+ 参数：$to_addr(string) 地址
+ 参数：$from_name(string) 名称
+ 参数：$from_addr(string) mail 地址
+ 参数：$subject(string) 主题
+ 参数：$headers(string) 头部 
+ 参数：$from_page(string) 页面
+ 返回值：返回电子邮件 
+ --------------------------------*/
     function get_rfc822($to_name, $to_addr, $from_name, $from_addr, $subject = '', $headers = '') {
 // Make up the date header as according to RFC822
       $date = 'Date: ' . date('D, d M y H:i:s');

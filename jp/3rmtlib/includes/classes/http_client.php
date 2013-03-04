@@ -41,6 +41,12 @@
  * Note: when host and port are defined, the connection is immediate
  * @seeAlso connect
  **/
+/*--------------------------------
+ 功能: HTTP 客户端 
+ 参数：$host(string) 主机
+ 参数：$port(string) 端口
+ 返回值：无
+ -------------------------------*/
     function httpClient($host = '', $port = '') {
       if (tep_not_null($host)) {
         $this->connect($host, $port);
@@ -52,6 +58,12 @@
  * @param proxyHost proxy host address eg "proxy.mycorp.com"
  * @param proxyPort proxy port usually 80 or 8080
  **/
+/*-----------------------------
+ 功能：设置代理
+ 参数：$proxyHost(string) 代理主机
+ 参数：$proxyPort(string) 代理服务器端口
+ 返回值：无
+ ----------------------------*/
     function setProxy($proxyHost, $proxyPort) {
       $this->useProxy = true;
       $this->proxyHost = $proxyHost;
@@ -65,6 +77,11 @@
  * when using 1.1, you MUST set the mandatory headers "Host"
  * @return boolean false if the version number is bad, true if ok
  **/
+/*-----------------------------
+ 功能：设置协议版本 
+ 参数：$version(string) 版本
+ 返回值：设置协议版本成功
+ ----------------------------*/
     function setProtocolVersion($version) {
       if ( ($version > 0) && ($version <= 1.1) ) {
         $this->protocolVersion = $version;
@@ -80,6 +97,12 @@
  * @param username string - identifier
  * @param password string - clear password
  **/
+/*------------------------------
+ 功能：设置验证 
+ 参数：$username(string) 用户名
+ 参数：$password(string) 密码
+ 返回值：无
+ -----------------------------*/
     function setCredentials($username, $password) {
       $this->addHeader('Authorization', 'Basic ' . base64_encode($username . ':' . $password));
      }
@@ -89,6 +112,11 @@
  * header names are lowercased to avoid duplicated headers
  * @param headers hash array containing the headers as headerName => headerValue pairs
  **/
+/*-----------------------------
+ 功能：设置头部标题 
+ 参数：$headers(string) 头部标题
+ 返回值：无
+ ----------------------------*/
     function setHeaders($headers) {
       if (is_array($headers)) {
         reset($headers);
@@ -104,6 +132,12 @@
  * @param headerName the header name
  * @param headerValue the header value, ( unencoded)
  **/
+/*-----------------------------
+ 功能：添加一个头部标题
+ 参数：$headerName(string) 标题名称
+ 参数：$headerValue(string) 标题值
+ 返回值：无
+ ----------------------------*/
     function addHeader($headerName, $headerValue) {
       $this->requestHeaders[$headerName] = $headerValue;
     }
@@ -113,6 +147,11 @@
  * unset a request header
  * @param headerName the header name
  **/
+/*----------------------------
+ 功能：删除头部标题 
+ 参数：$headName(string) 头部名称
+ 返回值：无
+ ---------------------------*/
     function removeHeader($headerName) {
       unset($this->requestHeaders[$headerName]);
     }
@@ -124,6 +163,12 @@
  * @param port string server listening port - defaults to 80
  * @return boolean false is connection failed, true otherwise
  **/
+/*-----------------------------
+ 功能：链接服务器 
+ 参数：$host(string) 主机
+ 参数：$port(string) 端口
+ 返回值：链接服务器成功
+ ----------------------------*/
     function Connect($host, $port = '') {
       $this->url['scheme'] = 'http';
       $this->url['host'] = $host;
@@ -136,6 +181,11 @@
  * Disconnect
  * close the connection to the  server
  **/
+/*---------------------------
+ 功能：关闭链接的服务器 
+ 参数：无
+ 返回值：无
+ --------------------------*/
     function Disconnect() {
       if ($this->socket) fclose($this->socket);
     }
@@ -147,6 +197,11 @@
  * @return string response status code (200 if ok)
  * @seeAlso getHeaders()
  **/
+/*---------------------------
+ 功能：头部标题
+ 参数：$uri(string) URL
+ 参数：判断是否返回头部标题
+ --------------------------*/
     function Head($uri) {
       $this->responseHeaders = $this->responseBody = '';
 
@@ -166,6 +221,11 @@
  * @return string response status code (200 if ok)
  * @seeAlso getHeaders(), getBody()
  **/
+/*----------------------------
+ 功能：获取HTTP服务请求 
+ 参数：$url(string) URL
+ 返回值：返回字符串响应状态
+ ---------------------------*/
     function Get($url) {
       $this->responseHeaders = $this->responseBody = '';
 
@@ -188,6 +248,12 @@
  * $params = array( "login" => "tiger", "password" => "secret" );
  * $http->post( "/login.php", $params );
  **/
+/*------------------------------
+ 功能：发出POST HTTP请求
+ 参数：$uri(string) URL
+ 参数：$query_params(string) 查询参数
+ 返回值: 返回响应状态
+ -----------------------------*/
     function Post($uri, $query_params = '') {
       $uri = $this->makeUri($uri);
 
@@ -224,6 +290,12 @@
  * @return string response status code 201 (Created) if ok
  * @see RFC2518 "HTTP Extensions for Distributed Authoring WEBDAV"
  **/
+/*---------------------------
+ 功能：发出一个PUT请求  
+ 参数：$uri(string) URL
+ 参数：$filecontent(string) 文件内容
+ 返回值：返回响应状态
+ --------------------------*/
     function Put($uri, $filecontent) {
       $uri = $this->makeUri($uri);
       $this->requestBody = $filecontent;
@@ -242,6 +314,11 @@
  * @return array headers received from server in the form headername => value
  * @seeAlso get, head
  **/
+/*-------------------------------
+ 功能：获取头部标题 
+ 参数：无
+ 返回值：返回响应的头部标题
+ ------------------------------*/
     function getHeaders() {
       return $this->responseHeaders;
     }
@@ -252,6 +329,11 @@
  * @param headername the name of the header
  * @return header value or NULL if no such header is defined
  **/
+/*-------------------------------
+ 功能：获取头部名称
+ 参数：$headername(string) 头部名称
+ 返回值：返回响应的头部名称
+ ------------------------------*/
     function getHeader($headername) {
       return $this->responseHeaders[$headername];
     }
@@ -263,6 +345,11 @@
  * @return string body content
  * @seeAlso get, head
  **/
+/*--------------------------------
+ 功能：获取BODY 
+ 参数：无
+ 返回值：返回响应的BODY
+ -------------------------------*/
     function getBody() {
       return $this->responseBody;
     }
@@ -277,6 +364,11 @@
  *  - 50x : server error 
  * @see RFC2616 "Hypertext Transfer Protocol -- HTTP/1.1"
  **/
+/*----------------------------
+ 功能：获取状态返回服务器的响应状态代码 
+ 参数：无
+ 返回值：返回字符串的状态
+ ---------------------------*/
     function getStatus() {
       return $this->reply;
     }
@@ -286,6 +378,11 @@
  * eg. "404 Document not found"
  * @return string the message 
  **/
+/*----------------------------
+ 功能：获取状态信息 
+ 参数：无
+ 返回值：返回状态信息
+ ---------------------------*/
     function getStatusMessage() {
       return $this->replyString;
     }
@@ -302,6 +399,11 @@
  * c) the request body if defined
  * @return string the server repsonse status code
  **/
+/*-------------------------
+ 功能：发送请求 
+ 参数：$command(string) 请求
+ 返回值: 返回服务器的回应状态
+ ------------------------*/
     function sendCommand($command) {
       $this->responseHeaders = array();
       $this->responseBody = '';
@@ -347,7 +449,11 @@
         return true;
       }
     }
-
+/*--------------------------------
+ 功能：回复过程 
+ 参数：无
+ 返回值：回复的内容
+ -------------------------------*/
     function processReply() {
       $this->replyString = trim(fgets($this->socket, 1024));
 
@@ -369,6 +475,11 @@
  * @scope protected
  * @return array of headers with header names as keys and header content as values
  **/
+/*----------------------------
+ 功能：头部过程 
+ 参数：$lastLine(string) 最后一行换行
+ 返回值：返回数组的头文件，头文件名作为值作为键名和标题内容
+ ---------------------------*/
     function processHeader($lastLine = "\r\n") {
       $headers = array();
       $finished = false;
@@ -396,6 +507,11 @@
  * @return string body content 
  * @scope private
  **/
+/*--------------------------
+ 功能：读取BODY的过程 
+ 参数：无
+ 返回值：返回BODY的内容
+ -------------------------*/
     function processBody() {
       $data = '';
       $counter = 0;
@@ -427,6 +543,11 @@
  * @return URI to be used in the HTTP request
  * @scope private
  **/
+/*----------------------------
+ 功能：计算并返回发送
+ 参数：$uri(string) URL
+ 返回值：返回URL用于HTTP请求中
+ ---------------------------*/
     function makeUri($uri) {
       $a = parse_url($uri);
 

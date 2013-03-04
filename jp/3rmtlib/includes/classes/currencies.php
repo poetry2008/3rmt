@@ -7,9 +7,13 @@
     var $currencies;
 
 // class constructor
+/*--------------------
+ 功能：查看货币
+ 参数：无
+ 返回值：无
+ -------------------*/
     function currencies() {
       $this->currencies = array();
-//ccdd
       $currencies_query = tep_db_query("
           select code, 
                  title, 
@@ -33,6 +37,14 @@
     }
 
 // class methods
+/*-----------------------------
+ 功能：货币价格格式 
+ 参数；$number(number) 价格
+ 参数：$calculate_currency_value(boolean) 计算货币价值
+ 参数：$currency_type(string) 货币类型
+ 参数：$currency_value(string) 货币的价值
+ 返回值：货币的价格
+ ----------------------------*/
     function format($number, $calculate_currency_value = true, $currency_type = '', $currency_value = '') {
       $number = abs($number);
       global $currency;
@@ -60,6 +72,15 @@
     }
     
     // 负数红色
+/*-----------------------------
+ 功能：货币价格负数显示红色 
+ 参数；$number(number) 价格
+ 参数：$calculate_currency_value(boolean) 计算货币价值
+ 参数：$currency_type(string) 货币类型
+ 参数：$currency_value(string) 货币的价值
+ 返回值：货币的价格
+ ----------------------------*/
+ 
     function format_total($number, $calculate_currency_value = true, $currency_type = '', $currency_value = '') {
       $tmp_number = $number; 
       $number = abs($number);
@@ -94,23 +115,40 @@
 
       return $format_string;
     }
-
+/*-------------------------
+ 功能：获取价格
+ 参数：$code(string) 货币值
+ 返回值：货币价格
+ ------------------------*/
     function get_value($code) {
       return $this->currencies[$code]['value'];
     }
-
+/*------------------------
+ 功能：获取货币价值的小数位数 
+ 参数：$code(string) 价值
+ 返回值：货币价值的小数位数
+ -----------------------*/
     function get_decimal_places($code) {
       return $this->currencies[$code]['decimal_places'];
     }
-
+/*------------------------
+ 功能: 显示价格
+ 参数: $products_price(string) 产品价格
+ 参数: $products_tax(string) 产品税
+ 参数: $quantity(int)  数量
+ 返回值: 返回的价格(string)
+-------------------------*/
     function display_price($products_price, $products_tax, $quantity = 1) {
       return $this->format(tep_add_tax($products_price, $products_tax) * $quantity);
     }
 
-// 进行金额的零头处理
-// $number: 金额
-// $round_type: 零头处理的类型  'drop'=取整, 'round'=四舍五入, 'raise'=进位
-// $currency_type: 货币代码 (例) 'JPY'
+/*------------------------
+ 功能：进行金额的零头处理
+ 参数：$number: 金额
+ 参数: $round_type: 零头处理的类型  'drop'=取整, 'round'=四舍五入, 'raise'=进位
+ 参数: $currency_type: 货币代码 (例) 'JPY'
+ 返回值：返回处理后金额
+------------------------*/
     function round_off($number, $round_type = '', $currency_type = '') {
       global $currency;
       $a_comp = array('drop'=>0.00001, 'round'=>0.50001, 'raise'=>0.99999);

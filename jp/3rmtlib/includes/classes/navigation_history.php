@@ -5,16 +5,28 @@
 
   class navigationHistory {
     var $path, $snapshot;
-
+/*------------------------
+ 功能：导航历史记录 
+ 参数：无
+ 返回值：无
+ -----------------------*/
     function navigationHistory() {
       $this->reset();
     }
-
+/*----------------------
+ 功能：重置 
+ 参数：无
+ 返回值：无
+ ---------------------*/
     function reset() {
       $this->path = array();
       $this->snapshot = array();
     }
-
+/*---------------------
+ 功能：添加当前页面
+ 参数：无
+ 返回值：无
+ --------------------*/
     function add_current_page() {
       global $PHP_SELF, $_GET, $_POST, $_SERVER, $cPath;
 
@@ -57,7 +69,11 @@
                               'post' => $_POST);
       }
     }
-
+/*-------------------------
+ 功能：删除当前页面
+ 参数：无
+ 返回值：无
+ ------------------------*/
     function remove_current_page() {
       global $PHP_SELF;
 
@@ -66,7 +82,11 @@
         unset($this->path[$last_entry_position]);
       }
     }
-
+/*-----------------------
+ 功能：设置快照 
+ 参数：$page(string) 分页
+ 返回值：无
+ ----------------------*/
     function set_snapshot($page = '') {
       global $PHP_SELF, $_GET, $_POST, $_SERVER;
 
@@ -82,11 +102,19 @@
                                 'post' => $_POST);
       }
     }
-
+/*---------------------------
+ 功能: 清除快照
+ 参数：无
+ 返回值：无
+ --------------------------*/
     function clear_snapshot() {
       $this->snapshot = array();
     }
-
+/*--------------------------
+ 功能：设置路径快照 
+ 参数：$history(string) 历史路径
+ 返回值：无
+ -------------------------*/
     function set_path_as_snapshot($history = 0) {
       $pos = (sizeof($this->path)-1-$history);
       $this->snapshot = array('page' => $this->path[$pos]['page'],
@@ -94,7 +122,11 @@
                               'get' => $this->path[$pos]['get'],
                               'post' => $this->path[$pos]['post']);
     }
-
+/*------------------------
+ 功能：调试导航
+ 参数：无
+ 返回值：无
+ -----------------------*/
     function debug() {
       for ($i=0, $n=sizeof($this->path); $i<$n; $i++) {
         echo $this->path[$i]['page'] . '?';
@@ -116,7 +148,11 @@
         echo $this->snapshot['mode'] . ' ' . $this->snapshot['page'] . '?' . tep_array_to_string($this->snapshot['get'], array(tep_session_name())) . '<br>';
       }
     }
-
+/*------------------------------
+ 功能：反，序列化
+ 参数：$broken(string) 打破常规序列 
+ 返回值：无
+ -----------------------------*/
     function unserialize($broken) {
       for(reset($broken);$kv=each($broken);) {
         $key=$kv['key'];

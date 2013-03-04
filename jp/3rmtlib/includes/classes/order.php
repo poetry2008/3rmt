@@ -5,7 +5,11 @@
 
   class order {
     var $info, $totals, $products, $customer, $delivery, $content_type;
-
+/*-------------------------------
+ 功能：订单查询
+ 参数：$order_id(string) 订单ID
+ 返回值：无
+ ------------------------------*/
     function order($order_id = '') {
       $this->info = array();
       $this->totals = array();
@@ -19,7 +23,11 @@
         $this->cart();
       }
     }
-
+/*-------------------------------
+ 功能：通过订单ID查询 
+ 参数：$order_id(string) 订单ID
+ 返回值：无
+ ------------------------------*/
     function query($order_id) {
       global $languages_id;
 
@@ -192,7 +200,11 @@
         $index++;
       }
     }
-
+/*----------------------------------
+ 功能：订单购物车
+ 参数：无
+ 返回值：无
+ ---------------------------------*/
     function cart() {
       global $customer_id, $sendto, $billto, $cart, $languages_id, $currency, $currencies, $shipping, $payment;
 

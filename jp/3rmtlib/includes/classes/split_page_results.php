@@ -5,11 +5,24 @@
 
   class splitPageResults {
 /* class constructor */
+/*------------------------------
+ 功能：缩减订单字符串 
+ 参数：$sql(string) SQL语句
+ 返回值：缩减完之后的订单字符串
+ -----------------------------*/
     function cutOrderString($sql)
     {
       return preg_replace('/order by [a-z0-9A-Z\.\_]+ \w*$/','',trim($sql));
     }
-    
+/*----------------------------
+ 功能：分页的结果 
+ 参数：$current_page_number(string) 当前页码
+ 参数：$max_rows_per_page(string) 每页最大的行数
+ 参数：$sql_query(string) SQL查询
+ 参数：$query_num_rows(string) 查询行数
+ 参数：$sql_count_query(string) SQL计数查询
+ 返回值：无
+ ---------------------------*/    
     function splitPageResults(&$current_page_number, $max_rows_per_page, &$sql_query, &$query_num_rows, $sql_count_query = null) {
       if (empty($current_page_number)) $current_page_number = 1;
       $offset = ($max_rows_per_page * ($current_page_number - 1));
@@ -36,6 +49,15 @@
 /* class functions */
 
 // display split-page-number-links
+/*---------------------------------
+ 功能：显示连接 
+ 参数：$query_numrows(string) 查询行数
+ 参数: $max_rows_per_page(string) 每页最大的行数
+ 参数：$max_page_links(string) 最大的页面连接
+ 参数：$current_page_number(string) 当前页码
+ 参数：$parameters(string) 自定义参数
+ 返回值：无
+ --------------------------------*/
     function display_links($query_numrows, $max_rows_per_page, $max_page_links, $current_page_number, $parameters = '') {
       global $PHP_SELF;
 
@@ -184,6 +206,14 @@
     }
 
 // display number of total products found
+/*---------------------------
+ 功能：显示产品的总数 
+ 参数：$query_numrows(string) 查询行数
+ 参数: $max_rows_per_page(string) 每页最大的行数
+ 参数：$current_page_number(string) 当前页码
+ 参数：$text_output(string) 文本输出 
+ 返回值：产品总数
+ --------------------------*/
     function display_count($query_numrows, $max_rows_per_page, $current_page_number, $text_output) {
       $total_page = intval($query_numrows / $max_rows_per_page);
       if ($query_numrows % $max_rows_per_page) $total_page++; 

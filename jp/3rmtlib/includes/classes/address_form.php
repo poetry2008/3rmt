@@ -14,7 +14,11 @@
 
     function addressForm(){
     }
-
+/*---------------------------------
+ 功能：获取顾客的个人信息 
+ 参数：无
+ 返回值：顾客的个人信息
+ --------------------------------*/
     // private
     function getOrderCategoryPersonal(){
         if (in_array('firstname', $this->address_format)
@@ -33,11 +37,21 @@
     }
 
     // private
+/*--------------------------------
+ 功能：获取顾客的公司 
+ 参数：无
+ 返回值：顾客公司的信息
+ -------------------------------*/
     function getOrderCategoryCompany(){
         return (ACCOUNT_COMPANY == 'true') ? array('company') : array();
     }
 
     // private
+/*-------------------------------
+ 功能：获取顾客的地址信息
+ 参数：无
+ 返回值：顾客的地址信息
+ ------------------------------*/
     function getOrderCategoryAddress(){
         $orders = array();
         foreach ($this->address_format as $element) {
@@ -68,6 +82,11 @@
     }
 
     // private
+/*----------------------------------
+ 功能：打印表格行列
+ 参数：无
+ 返回值：无
+ ---------------------------------*/
     function printTableLine($orders){
         foreach ($orders as $name) {
           if (!isset($this->formlines[$name])) $this->formlines[$name]=NULL;
@@ -86,6 +105,11 @@
     }
 
     // public
+/*----------------------------------
+ 功能：实体店地址格式
+ 参数：$address_format_id(number) 地址格式ID
+ 返回值：无
+ ---------------------------------*/
     function storeAddressFormat($address_format_id){
 //ccdd
         $query = tep_db_query("
@@ -106,6 +130,11 @@
     }
 
     // public
+/*---------------------------------
+ 功能：设置国家 
+ 参数：$countries_id(nhumber) 国家ID
+ 返回值：无
+ --------------------------------*/
     function setCountry($countries_id=0){
         global $account;
         if (!$countries_id) {
@@ -117,6 +146,11 @@
     }
 
     // public
+/*--------------------------------
+ 功能：查看有没有国家名
+ 参数：$name(string) 国家名
+ 返回值：搜索有没有国家名
+ -------------------------------*/
     function inForm($name){
         if (count($this->address_format) == 0) {
             $this->setCountry();
@@ -125,22 +159,45 @@
     }
 
     // public
+/*-----------------------------
+ 功能：设置粗体标题
+ 参数：无
+ 返回值：无
+ ---------------------------*/
     function setBoldTitle($is_bold=true){
         $this->boldtitle = $is_bold;
     }
 
     // public
+/*---------------------------
+ 功能：设置表格
+ 参数：$name(string) 名字
+ 参数：$title(string) 标题
+ 参数：$value(string) 绘制输入字段 
+ 返回值：无
+ --------------------------*/
     function setFormLine($name, $title, $value){
         $this->formlines[$name]['title'] = $title;
         $this->formlines[$name]['value'] = $value;
     }
 
     // public
+/*---------------------------
+ 功能：设置表格隐藏 
+ 参数：$name(string) 名字
+ 参数：$value(string) 输入字段  
+ 返回值：无
+ --------------------------*/
     function setFormHidden($name, $value){
         $this->formhiddens[$name] = $value;
     }
 
     // public
+/*--------------------------
+ 功能：打印顾客信息 
+ 参数：无
+ 返回值：无
+ -------------------------*/
     function printCategoryPersonal(){
         if (count($this->address_format) == 0) {
             $this->setCountry();
@@ -149,6 +206,11 @@
     }
 
     // public
+/*--------------------------
+ 功能：打印顾客公司
+ 参数：无
+ 返回值：无
+ -------------------------*/
     function printCategoryCompany(){
         if (count($this->address_format) == 0) {
             $this->setCountry();
@@ -157,6 +219,11 @@
     }
 
     // public
+/*--------------------------
+ 功能：打印顾客地址
+ 参数：无
+ 返回值：无
+ -------------------------*/
     function printCategoryAddress(){
         if (count($this->address_format) == 0) {
             $this->setCountry();

@@ -7,6 +7,11 @@
     var $site_id, $modules;
 
 // class constructor
+/*------------------------
+ 功能：构造函数(订单总量)
+ 参数：$site_id(string) SITE_ID 值
+ 返回值：无
+ -----------------------*/
     function order_total($site_id = 0) {
       global $language;
 
@@ -23,7 +28,11 @@
         }
       }
     }
-
+/*-------------------------
+ 功能：订单总量 
+ 参数：无
+ 返回值：订单总量数组
+ ------------------------*/
     function process() {
       $order_total_array = array();
       if (is_array($this->modules)) {
@@ -48,7 +57,11 @@
 
       return $order_total_array;
     }
-    
+/*---------------------------
+ 功能：订单总量的处理流程 
+ 参数：无
+ 返回值：订单总量数组
+ --------------------------*/ 
     function pre_process() {
       $order_total_array = array();
       if (is_array($this->modules)) {
@@ -99,7 +112,11 @@
       return $output_string;
     }
     */
-    
+/*-------------------------------
+ 功能：订单的总量的配送费用
+ 参数：无
+ 返回值：配送费送的字符串
+ ------------------------------*/ 
     function output() {
       global $order;
       global $cart;
@@ -202,7 +219,11 @@
 
       return $output_string;
     }
-    
+/*-----------------------------
+ 功能：订单标志 
+ 参数：无
+ 返回值：判断是否返回View
+ ----------------------------*/
     function ds_count_bflags() {
       global $cart;
       $products = $cart->get_products();
