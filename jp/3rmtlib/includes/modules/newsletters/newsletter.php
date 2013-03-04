@@ -7,16 +7,32 @@
   class newsletter {
     var $show_choose_audience, $title, $content;
 
+/* -------------------------------------
+    功能: 构造函数 
+    参数: $title(string) 标题   
+    参数: $content(string) 内容   
+    返回值: 无 
+------------------------------------ */
     function newsletter($title, $content) {
       $this->show_choose_audience = false;
       $this->title = $title;
       $this->content = $content;
     }
 
+/* -------------------------------------
+    功能: 选择观众 
+    参数: 无 
+    返回值: 是否选择(boolean) 
+------------------------------------ */
     function choose_audience() {
       return false;
     }
 
+/* -------------------------------------
+    功能: 确认信息 
+    参数: $site_id(int) 网站id 
+    返回值: 确认信息的html(string) 
+------------------------------------ */
     function confirm($site_id='') {
       global $_GET;
 
@@ -71,6 +87,12 @@
       return $confirm_string;
     }
 
+/* -------------------------------------
+    功能: 发送邮件 
+    参数: $newsletter_id(int) 杂志id 
+    参数: $site_id(int) 网站id 
+    返回值: 无 
+------------------------------------ */
     function send($newsletter_id,$site_id='') {
       if($site_id){
       $mail_query = tep_db_query("select customers_firstname, customers_lastname,

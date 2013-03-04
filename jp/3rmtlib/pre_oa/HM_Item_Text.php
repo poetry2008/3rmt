@@ -21,7 +21,11 @@ class HM_Item_Text extends HM_Item_Basic
   var $size_comment = TEXT_TEXT_SIZE_COMMENT;
   var $must_comment = TEXT_TEXT_MUST_COMMENT;
  
-
+/* -------------------------------------
+    功能: 获得默认值 
+    参数: 无   
+    返回值: 获得默认值(string) 
+------------------------------------ */
   function getDefaultValue()
   {
     if ($this->loaded){
@@ -32,6 +36,11 @@ class HM_Item_Text extends HM_Item_Basic
 
   }
 
+/* -------------------------------------
+    功能: 输出元素的html 
+    参数: 无   
+    返回值: 无 
+------------------------------------ */
   function render()
   {
     if(strlen($this->thename)){
@@ -40,8 +49,8 @@ class HM_Item_Text extends HM_Item_Basic
       echo "</td>";
     }
     echo "<td>";
-    //如果不允许为空
     if($this->require){
+    //如果不允许为空
       $classrequire = 'require';
     }else {
       $classrequire = '';
@@ -50,6 +59,12 @@ class HM_Item_Text extends HM_Item_Basic
       value='".$this->getDefaultValue()."' />"."<div>".$this->afterInput."</div>";
     echo "</td>";
   }
+
+/* -------------------------------------
+    功能: 输出javascript 
+    参数: 无   
+    返回值: 无 
+------------------------------------ */
   function renderScript()
   {
     if($this->require){
@@ -66,6 +81,12 @@ class HM_Item_Text extends HM_Item_Basic
       <?php
     }
   }
+
+/* -------------------------------------
+    功能: 输出构成元素的html 
+    参数: $item_id(int) 元素id   
+    返回值: 构成元素的html(string) 
+------------------------------------ */
   static public function prepareForm($item_id = NULL)
   {/*
     $item_raw = tep_db_query("select * from ".TABLE_OA_ITEM." where id = '".(int)$item_id."'"); 

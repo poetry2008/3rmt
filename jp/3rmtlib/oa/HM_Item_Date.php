@@ -21,6 +21,14 @@ class HM_Item_Date extends HM_Item_Basic
   var $submit_name_comment = TEXT_DATE_SUBMIT_NAME_COMMENT;
   var $after_comment = TEXT_DATE_AFTER_COMMENT;
   
+/* -------------------------------------
+    功能: 更新数据 
+    参数: $order_id(string) 订单id   
+    参数: $form_id(int) 表单id   
+    参数: $group_id(int) 组id   
+    参数: $item_id(int) 元素id   
+    返回值: 是否更新成功(boolean) 
+------------------------------------ */
   function statusChange($order_id,$form_id,$group_id,$item_id)
   {
     $value =date('Y/m/d H:i',time());
@@ -28,6 +36,11 @@ class HM_Item_Date extends HM_Item_Basic
 
   }
 
+/* -------------------------------------
+    功能: 输出元素的html 
+    参数: 无   
+    返回值: 无 
+------------------------------------ */
   function render()
   {
 
@@ -87,11 +100,23 @@ class HM_Item_Date extends HM_Item_Basic
       echo "</td>";
   }
 
+/* -------------------------------------
+    功能: 初始化默认值 
+    参数: $order_id(string) 订单id   
+    参数: $form_id(int) 表单id   
+    参数: $group_id(int) 组id   
+    返回值: 无 
+------------------------------------ */
   function initDefaultValue($order_id,$form_id,$group_id)
   {
   }
 
 
+/* -------------------------------------
+    功能: 输出构成元素的html 
+    参数: $item_id(int) 元素id   
+    返回值: 构成元素的html(string) 
+------------------------------------ */
   static public function prepareForm($item_id = NULL)
   {
     /*

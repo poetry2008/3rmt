@@ -8,12 +8,22 @@ class HM_Option_Item_Basic
   var $class;
   var $formname;
   
-  
+/* -------------------------------------
+    功能: 初始化信息 
+    参数: 无   
+    返回值: 无 
+------------------------------------ */
   function init($option)
   {
     $this->parseOption($option);
     $this->formname = $this->name.'_'.$this->group_id.'_'.$this->id; 
   }
+
+/* -------------------------------------
+    功能: 格式化信息 
+    参数: $option(string) 信息   
+    返回值: 无 
+------------------------------------ */
   function parseOption($option)
   {
     if($optionArray  = unserialize($option)){
@@ -22,7 +32,12 @@ class HM_Option_Item_Basic
       }
     }
   }
-  //根据类型不同输出相应的项
+
+/* -------------------------------------
+    功能: 根据类型不同输出相应的项 
+    参数: $item_id(int) 元素id   
+    返回值: 相应的项的html(string) 
+------------------------------------ */
   public function prepareFormWithParent($item_id){
     $item_raw = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".(int)$item_id."'"); 
     $item_res = tep_db_fetch_object($item_raw); 

@@ -13,6 +13,11 @@ class HM_Item_Autocalculate extends HM_Item_Basic
   var $must_comment = TEXT_AUTO_MUST_COMMENT;  
   var $project_name_comment = TEXT_AUTO_NAME_COMMENT; 
   
+/* -------------------------------------
+    功能: 输出该元素信息的html 
+    参数: 无   
+    返回值: 无 
+------------------------------------ */
   function render()
   {
     if(strlen($this->thename)){
@@ -87,8 +92,8 @@ class HM_Item_Autocalculate extends HM_Item_Basic
         $check = 'checked';
       }
 
-      if(!$op){ //if no products  ,continue;
-	  
+      if(!$op){ 
+        //if no products  ,continue;
         echo "<input class='".$classrequire."'
           value='".$opp['products_id']."|".$opp['orders_products_id']."'  
         onchange='".$this->formname."Change_option(".$opp['products_id'].",this,".$i.")' 
@@ -143,6 +148,12 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       //noproducts;
       }
   }
+
+/* -------------------------------------
+    功能: 输出javascript 
+    参数: 无   
+    返回值: 无 
+------------------------------------ */
   function renderScript()
   {
     //关联商品的javascript 脚本写在这里
@@ -164,9 +175,10 @@ class HM_Item_Autocalculate extends HM_Item_Basic
         }
       }
     }
+    <?php //改变指定元素的值?> 
     function <?php echo $this->formname."Change_option(pid,ele,t)";?>{
       var <?php echo $this->formname;?>val ='';
-      //循环 checkbox 把 checkbox状态 和input 值保存起来
+      <?php //循环 checkbox 把 checkbox状态 和input 值保存起来?>
       var i =0;
       $("input|[name=0<?php echo $this->formname;?>]").each(function(){
           var check_var_tmp = new Array();
@@ -207,7 +219,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       $('#<?php echo $this->formname;?>real').val( <?php echo  $this->formname;?>val);
 
 
-      // 增加库存
+      <?php //增加库存?>
       var tmp_pid = $(ele).val(); 
       tmp_pid = tmp_pid.replace('|','_');
       if ($(ele).attr('checked')) {
@@ -226,7 +238,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       } else {
         $("#"+tmp_pid+"<?php echo "_input_".$this->formname;?>").attr('readonly', false);
         if(!sub_flag[t]){
-        // 减库存
+        <?php //减库存?>
         $.ajax({
           url:
           'ajax_preorders.php?action=set_quantity&products_id='+pid+'&count=-'+($("#quantity_"+t+"_"+tmp_pid).html()-$("#"+tmp_pid+"<?php echo "_input_".$this->formname;?>").val()),
@@ -246,6 +258,13 @@ class HM_Item_Autocalculate extends HM_Item_Basic
         <?php
         }
 
+/* -------------------------------------
+    功能: 初始化默认值 
+    参数: $order_id(string) 预约订单id   
+    参数: $form_id(string) 表单id   
+    参数: $group_id(string) 组id   
+    返回值: 无 
+------------------------------------ */
   function initDefaultValue($order_id,$form_id,$group_id)
   {
     //    $sql = 'select '.$this->datetype.' dp from orders where orders_id = "'.$order_id.'"';
@@ -262,7 +281,13 @@ class HM_Item_Autocalculate extends HM_Item_Basic
     $this->order_id = $order_id;
   }
 
-  //删除时会激活这个操作 把加进的数量 再减回去
+/* -------------------------------------
+    功能: 删除时会激活这个操作 把加进的数量 再减回去 
+    参数: $eid(int) 元素id   
+    参数: $gid(string) 组id   
+    参数: $form_id(string) 表单id   
+    返回值: 无 
+------------------------------------ */
   static public function deleteTrigger($eid,$gid=0,$form_id=0)
   {
     $sql = 'select * from preorders_oa_formvalue where item_id ='.$eid.' ';
@@ -291,6 +316,12 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       }
     };
   }
+
+/* -------------------------------------
+    功能: 输出信息 
+    参数: $item_id(int) 元素id   
+    返回值: 信息的html(string) 
+------------------------------------ */
   static public function prepareForm($item_id = NULL)
   {
     $item_raw = tep_db_query("select * from ".TABLE_OA_ITEM." where id = '".(int)$item_id."'"); 
