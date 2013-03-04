@@ -141,19 +141,25 @@ if(isset($_GET['action'])){
     $complete_flag = '';
     $oa_item_id_array = array();
     $oa_item_title_array = array();
+    $oa_item_title_sort_array = array();
     $oa_item_form_id_array = array();
     $oa_item_id_value = '';
     //通过订单ID，来获取此订单的oa相关信息
+    $formtype = tep_check_order_type($orders_id);
+    $payment_romaji = tep_get_payment_code_by_order_id($orders_id);
+    $oa_form_sql = tep_db_query("select id from ".TABLE_OA_FORM." where formtype = '".$formtype."' and payment_romaji = '".$payment_romaji."'");
+    $oa_form_id_array = tep_db_fetch_array($oa_form_sql);
+    tep_db_free_result($oa_form_sql);
+    $oa_item_id_value = $oa_form_id_array['id'];
     $oa_group_query = tep_db_query("select form_id,item_id from ". TABLE_OA_FORMVALUE ." where orders_id='".$orders_id."'");
     while($oa_group_array = tep_db_fetch_array($oa_group_query)){
-
-      if($oa_item_id_value == ''){$oa_item_id_value = $oa_group_array['form_id'];} 
+ 
       $oa_item_form_id_array[] = $oa_group_array['item_id'];
     }
     $oa_item_num = tep_db_num_rows($oa_group_query);
     tep_db_free_result($oa_group_query);
     //获取oa子元素的相应信息
-    $oa_group_form_query = tep_db_query("select group_id from ". TABLE_OA_FORM_GROUP ." where form_id='".$oa_item_id_value."'");
+    $oa_group_form_query = tep_db_query("select group_id,ordernumber from ". TABLE_OA_FORM_GROUP ." where form_id='".$oa_item_id_value."'");
     while($oa_group_form_array = tep_db_fetch_array($oa_group_form_query)){
 
       $oa_item_form_query = tep_db_query("select id,title,group_id,`option` as option_value from ". TABLE_OA_ITEM ." where group_id='".$oa_group_form_array['group_id']."'");
@@ -166,6 +172,7 @@ if(isset($_GET['action'])){
           $oa_group_id_array = tep_db_fetch_array($oa_group_id_query);
           tep_db_free_result($oa_group_id_query);
           $oa_item_title_array[$oa_item_form_array['id']] = $oa_group_id_array['name'];
+          $oa_item_title_sort_array[$oa_item_form_array['id']] = $oa_group_form_array['ordernumber'];
         }
       }
     }
@@ -188,9 +195,10 @@ if(isset($_GET['action'])){
     $oa_diff_name_array = array();
     foreach($oa_diff_array as $oa_value){
 
-      $oa_diff_name_array[] = $oa_item_title_array[$oa_value];
+      $oa_diff_name_array[$oa_item_title_sort_array[$oa_value]] = $oa_item_title_array[$oa_value];
     }
     $oa_diff_name_array = array_unique($oa_diff_name_array);
+    ksort($oa_diff_name_array);
     //如果数据不完整，给出错误信息
     if($oa_item_num < count($oa_item_id_array)){
 
@@ -213,13 +221,17 @@ if(isset($_GET['action'])){
     $oa_name = $_POST['name'];
     $oa_status = $_POST['status'];
     $products_id = $_POST['pid'];
+    $products_num = $_POST['n'];
     $oa_form_query = tep_db_query("select * from ". TABLE_OA_FORMVALUE ." where orders_id='".$orders_id."' and name='".$oa_name."'");
     $oa_form_array = tep_db_fetch_array($oa_form_query);
     $oa_form_num = tep_db_num_rows($oa_form_query);
     tep_db_free_result($oa_form_query);
 
+    $oa_form_array['value'] = substr($oa_form_array['value'],0,-1);
+    $products_split_array = array();
     $split_array = array();
-    $split_array = explode('|',$oa_form_array['value']);
+    $products_split_array = explode('_',$oa_form_array['value']);
+    $split_array = explode('|',$products_split_array[$products_num]);
  
     if($oa_status == 1 && $oa_form_num == 1){
        

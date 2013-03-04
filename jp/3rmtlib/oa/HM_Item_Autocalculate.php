@@ -4,10 +4,7 @@ require_once "HM_Item_Basic.php";
 require_once DIR_WS_LANGUAGES . $language . '/oa/HM_Item_Autocalculate.php';
 class HM_Item_Autocalculate extends HM_Item_Basic
 {
-  /*
-    必须：○　必须
-    项目名_____ _____　
-  */
+  
   var $hasRequire = true;
   var $hasTheName = true;
   var $must_comment = TEXT_AUTO_MUST_COMMENT;  
@@ -177,7 +174,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
     <?php //改变指定元素的值?> 
     function <?php echo $this->formname."Change_option(pid,ele,t)";?>{
 
-      <?php //判断当前的操作是否数据库储存的数据一致?>
+      <?php //判断当前的操作是否与数据库储存的数据一致?>
       var status = 0;
       if($(ele).attr('checked')){
         status = 1;
@@ -186,7 +183,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       $.ajax({
         url:'oa_ajax.php?action=stock&num='+parseInt(1000*Math.random()),
             type:'post',    
-            data:'oID=<?php echo $this->order_id;?>&name=<?php echo $this->formname;?>&status='+status+'&pid='+pid,
+            data:'oID=<?php echo $this->order_id;?>&name=<?php echo $this->formname;?>&status='+status+'&pid='+pid+'&n='+t,
             async : false,
             beforeSend: function(){$('body').css('cursor','wait');$("#wait").show()},
             success: function(data){

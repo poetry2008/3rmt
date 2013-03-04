@@ -500,20 +500,32 @@ require("includes/note_js.php");
               </tr>
               <tr><td align="right"><input type="submit" value="<?php echo TEXT_SAVE;?>"></td></tr>
               <?php 
-               //读取当前用户的更新日期
+               //读取当前用户的创建者、创建时间以及个人设定的更新者、更新时间
                $configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where  configuration_key='PERSONAL_SETTING_ORDERS_SITE'"));  
+               $create_users = TEXT_UNSET_DATA;
+               $create_time = TEXT_UNSET_DATA;
                $update_users = TEXT_UNSET_DATA;
                $update_time = TEXT_UNSET_DATA;
                if($configuration['configuration_description'] != ''){
                  $update_users_array = unserialize($configuration['configuration_description']);
                  if(array_key_exists($ocertify->auth_user,$update_users_array)){
 
-                   $update_users = $update_users_array[$ocertify->auth_user]['user'];
-                   $update_time = $update_users_array[$ocertify->auth_user]['time'];
+                   if(isset($update_users_array[$ocertify->auth_user]['user']) && $update_users_array[$ocertify->auth_user]['user'] != ''){
+                     $update_users = $update_users_array[$ocertify->auth_user]['user'];
+                   }
+                   if(isset($update_users_array[$ocertify->auth_user]['time']) && $update_users_array[$ocertify->auth_user]['time'] != ''){
+                     $update_time = $update_users_array[$ocertify->auth_user]['time'];
+                   }
+                   if(isset($update_users_array[$ocertify->auth_user]['create_users']) && $update_users_array[$ocertify->auth_user]['create_users'] != ''){
+                     $create_users = $update_users_array[$ocertify->auth_user]['create_users'];
+                   }
+                   if(isset($update_users_array[$ocertify->auth_user]['create_time']) && $update_users_array[$ocertify->auth_user]['create_time'] != ''){
+                     $create_time = $update_users_array[$ocertify->auth_user]['create_time']; 
+                   }
                  }
                }
-               echo '<tr><td>'.TEXT_USER_ADDED.'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';
-               echo '<tr><td>'.TEXT_DATE_ADDED.'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';
+               echo '<tr><td>'.TEXT_USER_ADDED.'&nbsp;'.$create_users.'</td></tr>';
+               echo '<tr><td>'.TEXT_DATE_ADDED.'&nbsp;'.$create_time.'</td></tr>';
                echo '<tr><td>'.TEXT_USER_UPDATE.'&nbsp;'.$update_users.'</td></tr>';
                echo '<tr><td>'.TEXT_DATE_UPDATE.'&nbsp;'.$update_time.'</td></tr>';
               ?>
@@ -521,9 +533,9 @@ require("includes/note_js.php");
 </form>
 </td></tr></table></td></tr>
 </table>
-</div></div></td>
+</div></td>
 </tr>
-</table></td>
+</table></div></td>
 <!-- body_text_eof -->
 </tr>
 </table>

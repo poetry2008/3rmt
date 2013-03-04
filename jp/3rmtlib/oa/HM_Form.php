@@ -288,8 +288,8 @@ class HM_Form extends DbRecord
           if($(this).attr('type')!='text'){
             $("#canEndDiv").hide();
           }
-        } 
-          $("#qa_form").submit();
+        }
+        $("#qa_form").submit();
         });
       $(this).change(function(ele){
         //                                   alert($("input|[name=dfossrrfwwkvomzw_6_1_107]").val());
