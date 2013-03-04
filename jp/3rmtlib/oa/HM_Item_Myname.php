@@ -19,6 +19,12 @@ class HM_Item_Myname extends HM_Item_Basic
   var $front_comment = TEXT_MYNAME_FRONT_COMMENT;
   var $after_comment = TEXT_MYNAME_AFTER_COMMENT;
   var $submit_name_comment = TEXT_MYNAME_SUBMIT_NAME_COMMENT; 
+
+/* -------------------------------------
+    功能: 获得默认值 
+    参数: 无   
+    返回值: 获得默认值(string) 
+------------------------------------ */
   function getDefaultValue()
   {
     if ($this->loaded){
@@ -28,6 +34,15 @@ class HM_Item_Myname extends HM_Item_Basic
     }
 
   }
+
+/* -------------------------------------
+    功能: 更新数据 
+    参数: $order_id(string) 订单id   
+    参数: $form_id(int) 表单id   
+    参数: $group_id(int) 组id   
+    参数: $item_id(int) 元素id   
+    返回值: 是否更新成功(boolean) 
+------------------------------------ */
   function statusChange($order_id,$form_id,$group_id,$item_id)
   {
     global $ocertify;
@@ -37,6 +52,11 @@ class HM_Item_Myname extends HM_Item_Basic
 
   }
 
+/* -------------------------------------
+    功能: 输出元素的html 
+    参数: $m(boolean) 标识   
+    返回值: 无 
+------------------------------------ */
   function render($m)
   {
     if(!$m){
@@ -48,8 +68,8 @@ class HM_Item_Myname extends HM_Item_Basic
     }
     echo "<td>";
 
-    //如果不允许为空
     if($this->require){
+    //如果不允许为空
       $classrequire = 'require';
     }else {
       $classrequire = '';
@@ -61,6 +81,12 @@ class HM_Item_Myname extends HM_Item_Basic
     echo "<button type='button' id = '".$this->formname.'submit'."' >$this->submitName</button>".$this->afterInput;
     echo "</td>";
   }
+
+/* -------------------------------------
+    功能: 输出javascript 
+    参数: 无   
+    返回值: 无 
+------------------------------------ */
   function renderScript($m)
   {
       ?>
@@ -103,6 +129,12 @@ class HM_Item_Myname extends HM_Item_Basic
       <?php
 
   }
+
+/* -------------------------------------
+    功能: 输出构成元素的html 
+    参数: $item_id(int) 元素id   
+    返回值: 构成元素的html(string) 
+------------------------------------ */
   static public function prepareForm($item_id = NULL)
   {
 

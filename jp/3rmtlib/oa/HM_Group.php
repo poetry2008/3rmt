@@ -5,10 +5,22 @@ class HM_Group extends DbRecord
   var $items;
   var $form_id;
   var $name;
+
+/* -------------------------------------
+    功能: 构造函数 
+    参数: 无   
+    返回值: 无 
+------------------------------------ */
   function __construct()
   {
     $this->items = $this->getItems();
   }
+
+/* -------------------------------------
+    功能: 获得该组关联的元素 
+    参数: 无   
+    返回值: 关联的元素(array) 
+------------------------------------ */
   function getItems()
   {
     $sql = "select *,group_id,".$this->form_id ." as form_id from ".TABLE_OA_ITEM." where group_id = ".$this->id  ." order by  ordernumber ,id";
@@ -19,6 +31,11 @@ class HM_Group extends DbRecord
     return $items;
   }
 
+/* -------------------------------------
+    功能: 输出组以及其关联的元素信息的html 
+    参数: 无   
+    返回值: 组以及其关联的元素信息的html(string) 
+------------------------------------ */
   function render()
   {
     echo "<tr>";

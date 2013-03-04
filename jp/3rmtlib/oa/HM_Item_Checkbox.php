@@ -19,6 +19,14 @@ class HM_Item_Checkbox extends HM_Item_Basic
   var $front_comment = TEXT_CHECKBOX_FRONT_COMMENT;
   var $html_form_end = true;
 
+/* -------------------------------------
+    功能: 更新数据 
+    参数: $order_id(string) 订单id   
+    参数: $form_id(int) 表单id   
+    参数: $group_id(int) 组id   
+    参数: $item_id(int) 元素id   
+    返回值: 是否更新成功(boolean) 
+------------------------------------ */
   function statusChange($order_id,$form_id,$group_id,$item_id)
   {
     $item_raw = tep_db_query("select * from ".TABLE_OA_ITEM." where id = '".(int)$item_id."'"); 
@@ -34,6 +42,12 @@ class HM_Item_Checkbox extends HM_Item_Basic
     return $this->updateValue($order_id,$form_id,$group_id,$item_id,$result);
 
   }
+
+/* -------------------------------------
+    功能: 输出javascript 
+    参数: 无   
+    返回值: 无 
+------------------------------------ */
   function renderScript()
   {
     ?>
@@ -51,6 +65,12 @@ class HM_Item_Checkbox extends HM_Item_Basic
     </script>
 <?php
   }
+
+/* -------------------------------------
+    功能: 输出元素的html 
+    参数: 无   
+    返回值: 无 
+------------------------------------ */
   function render()
   {
     if(strlen($this->thename)){
@@ -91,6 +111,11 @@ class HM_Item_Checkbox extends HM_Item_Basic
    echo "</td>";
   }
 
+/* -------------------------------------
+    功能: 输出构成元素的html 
+    参数: $item_id(int) 元素id   
+    返回值: 构成元素的html(string) 
+------------------------------------ */
   static public function prepareForm($item_id = NULL)
   {
     $item_raw = tep_db_query("select * from ".TABLE_OA_ITEM." where id = '".(int)$item_id."'"); 
