@@ -11,7 +11,7 @@
  参数：$number(string) 数字
  参数：$expiry_m(string) 到期的月份
  参数：$expiry_y(string) 到期的年份
- 返回值：判断返回验证是否成功(string)
+ 返回值：判断返回验证是否成功(int)
  -------------------------------*/
     function validate($number, $expiry_m, $expiry_y) {
       $this->cc_number = ereg_replace('[^0-9]', '', $number);

@@ -80,7 +80,7 @@
 /*-----------------------------
  功能：设置协议版本 
  参数：$version(string) 版本
- 返回值：设置协议版本成功(string)
+ 返回值：设置协议版本成功(boolean)
  ----------------------------*/
     function setProtocolVersion($version) {
       if ( ($version > 0) && ($version <= 1.1) ) {
@@ -167,7 +167,7 @@
  功能：链接服务器 
  参数：$host(string) 主机
  参数：$port(string) 端口
- 返回值：链接服务器成功(string)
+ 返回值：链接服务器成功(boolean)
  ----------------------------*/
     function Connect($host, $port = '') {
       $this->url['scheme'] = 'http';
@@ -200,7 +200,7 @@
 /*---------------------------
  功能：头部标题
  参数：$uri(string) URL
- 参数：判断是否返回头部标题
+ 参数：判断是否返回头部标题(string) 
  --------------------------*/
     function Head($uri) {
       $this->responseHeaders = $this->responseBody = '';

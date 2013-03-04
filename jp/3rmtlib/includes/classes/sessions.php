@@ -55,7 +55,7 @@
  功能：关闭SESSION 
  参数：$save_path(string) 保存路径
  参数：$sess_name(string) SESSION名称
- 返回值：关闭SESSION(string)
+ 返回值：关闭SESSION(string/boolean)
  ----------------------*/
     function close($save_path, $sess_name) {
       $func = $this->close_func;
@@ -89,7 +89,7 @@
 /*--------------------
  功能：消除SESSION 
  参数：$sess_id(string) session id
- 返回值：消除成功(string)
+ 返回值：消除成功(boolean)
  -------------------*/
     function destroy($sess_id) {
       $func = $this->destroy_func;
@@ -102,7 +102,7 @@
 /*-------------------
  功能：SESSION的最大时长 
  参数：$max_lifetime(string) 最大时长
- 返回值：最大时长(string)
+ 返回值：最大时长(string/boolean)
  ------------------*/
     function gc($max_lifetime) {
       $func = $this->gc_func;
@@ -119,7 +119,7 @@
  功能：打开文件 
  参数：$save_path(string) 保存路径
  参数：$sess_name(string) SESSION名称
- 返回值：打开成功(string)
+ 返回值：打开成功(boolean)
  -------------------*/
     function open($save_path, $sess_name) {
       return true;
@@ -127,7 +127,7 @@
 /*-------------------
  功能：关闭 
  参数：无
- 返回值：关闭成功(string)
+ 返回值：关闭成功(boolean)
  ------------------*/
     function close() {
       return true;
@@ -156,7 +156,7 @@
  功能：写入文件 
  参数：$sess_id(string) SESSION ID
  参数：$val(string) SESSION值
- 返回值：写入成功(string)
+ 返回值：写入成功(boolean)
  -----------------------*/
     function write($sess_id, $val) {
       global $session;
@@ -172,7 +172,7 @@
 /*-----------------------
  功能：取消文件链接
  参数：$sess_id(string) SESSION ID
- 返回值：消除成功(string)
+ 返回值：消除成功(boolean)
  ----------------------*/
     function destroy($sess_id) {
       global $session;
@@ -185,7 +185,7 @@
 /*----------------------
  功能：查看最大时长
  参数：$max_lifetime(string) 最大时长
- 返回值：查看成功(string)
+ 返回值：查看成功(boolean)
  ---------------------*/
     function gc($max_lifetime) {
 // We return true, since all cleanup should be handled by
@@ -439,7 +439,7 @@
 /*------------------------
  功能：SESSION 开始 
  参数：无
- 返回值：SESSION 开始成功(string)
+ 返回值：SESSION 开始成功(boolean)
  -----------------------*/
   function session_start() {
     global $session, $SID, $HTTP_COOKIE_VARS, $_GET, $_POST;
@@ -570,7 +570,7 @@
 /*----------------------
  功能：SESSION 消除 
  参数：无
- 返回值：判断是否消除成功(string)
+ 返回值：判断是否消除成功(boolean)
  ---------------------*/
   function session_destroy() {
     global $session;
@@ -592,7 +592,7 @@
 /*-----------------------
  功能：关闭 SESSION 
  参数：无
- 返回值：判断是否关闭成功 (string)
+ 返回值：判断是否关闭成功 (boolean)
  ----------------------*/
   function session_close() {
     global $session, $SID;

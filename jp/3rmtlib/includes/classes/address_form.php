@@ -131,7 +131,7 @@
     // public
 /*---------------------------------
  功能：设置国家 
- 参数：$countries_id(nhumber) 国家ID
+ 参数：$countries_id(number) 国家ID
  返回值：无
  --------------------------------*/
     function setCountry($countries_id=0){
@@ -148,7 +148,7 @@
 /*--------------------------------
  功能：查看有没有国家名
  参数：$name(string) 国家名
- 返回值：搜索有没有国家名(string) 
+ 返回值：搜索有没有国家名(boolean) 
  -------------------------------*/
     function inForm($name){
         if (count($this->address_format) == 0) {

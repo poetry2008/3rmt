@@ -84,7 +84,7 @@
 /*---------------------------------
  功能：获取文件 
  参数：$filename(string) 文件名字
- 返回值：判断是否获取成功(string)
+ 返回值：判断是否获取成功(boolean/string)
  --------------------------------*/
     function get_file($filename) {
       $return = '';
@@ -225,7 +225,7 @@
  功能：添加文本到mime_part对象
  参数：$obj(string) 对象 
  参数：$text(string) 文本
- 返回值：返回mime_part对象(string)
+ 返回值：返回mime_part对象(OBJ)
  ----------------------*/
     function add_text_part(&$obj, $text) {
       $params['content_type'] = 'text/plain';
@@ -248,7 +248,7 @@
 /*-----------------------------
  功能：添加HTML到mime_part对象
  参数：$obj(string) 对象
- 返回值：返回mime_part对象 (string)
+ 返回值：返回mime_part对象 (obj)
  -----------------------------*/
     function add_html_part(&$obj) {
       $params['content_type'] = 'text/html';
@@ -288,7 +288,7 @@
 /*-------------------------------
  功能：添加一个替代部分到mime_part对象 
  参数：$obj(string) 对象
- 返回值：mime_part对象(string)
+ 返回值：mime_part对象(obj)
  ------------------------------*/
     function add_alternative_part(&$obj) {
       $params['content_type'] = 'multipart/alternative';
@@ -309,7 +309,7 @@
 /*------------------------------
  功能：添加HTML部位到mime_part对象 
  参数：$obj($obj) 对象 
- 返回值：mime_part对象(string)
+ 返回值：mime_part对象(obj)
  -----------------------------*/
     function add_related_part(&$obj) {
       $params['content_type'] = 'multipart/related';

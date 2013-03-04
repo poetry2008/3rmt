@@ -36,7 +36,7 @@ class _SagawaEx {
         }
     }
 /*-------------------------
-  功能：设置发送地
+  功能：设置发货地址
   参数：$zone(string) 省市县代码 '01'～'47'
   参数：$country(string) country code
   返回值：无
@@ -48,7 +48,7 @@ class _SagawaEx {
         }
     }
 /*-------------------------
-  功能：设置目标
+  功能：设置收货地址
   参数：$zone(string) 省市县代码 '01'～'47'
   参数：$country(string) country code
   返回值：无

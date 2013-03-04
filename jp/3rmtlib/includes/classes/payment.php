@@ -60,9 +60,9 @@ class payment {
     return self::$instance;
   } 
 /*--------------------------
- 功能：获取模板
+ 功能：获取模块对象
  参数：$payment(string) 支付的方法名称
- 返回值：返回模板或者FALSE(string/boolean)
+ 返回值：返回模块对象或者FALSE(obj/boolean)
  -------------------------*/
   public function getModule($payment)
   {
@@ -101,7 +101,7 @@ class payment {
   }
 /*----------------------------
  功能：判断支付方法是否被 enabled
- 参数：$module(string) 模板
+ 参数：$module(string) 模块名
  返回值：支付方法是否被 enabled true/false(boolean)
  ---------------------------*/
   public function moduleIsEnabled($module){
@@ -113,7 +113,7 @@ class payment {
     return false;
   }
 /*---------------------------
- 功能：初始化模板
+ 功能：初始化模块
  参数：无
  返回值: 无
  --------------------------*/
@@ -324,9 +324,9 @@ class payment {
     return $selection_array;
   }
  /*-------------------------
-  功能：后台管理确认检查模板
+  功能：后台管理确认检查模块
   参数：$payment(string) 支付方法
-  返回值：判断是否检查模板(string/boolean)
+  返回值：判断是否检查模块(string/boolean)
   ------------------------*/ 
   function admin_confirmation_check($payment) {
     $module = $this->getModule($payment);

@@ -279,7 +279,7 @@
 /*-------------------------------
  功能：获取数量 
  参数：$products_id(string) 产品ID
- 返回值：判断是否获取数量成功(string)
+ 返回值：获取数量(int)
  ------------------------------*/
     function get_quantity($products_id) {
       if (isset($this->contents[$products_id])) {
@@ -661,7 +661,7 @@
     }
 /*---------------------------
  功能：购物车的反序列化 
- 参数：$broken(string) 打乱
+ 参数：$broken(string) 字符串
  返回值：无
  --------------------------*/
     function unserialize($broken) {
