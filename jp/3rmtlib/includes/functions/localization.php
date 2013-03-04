@@ -4,6 +4,12 @@
 
 */
 
+/* -------------------------------------
+    功能: 从指定网站获取信息 
+    参数: $code(string) 编号   
+    参数: $base(string) 默认货币   
+    返回值: 信息(string/boolean) 
+------------------------------------ */
   function quote_oanda_currency($code, $base = DEFAULT_CURRENCY) {
     $err_num = '';
     $err_msg = '';
@@ -17,7 +23,8 @@
         while ($resp != "\r\n") {
           $resp = fgets($s, 128);
         }
-        if (!$resp = fgets($s, 128)) { // timeout? then skip
+        if (!$resp = fgets($s, 128)) { 
+          // timeout? then skip
           $resp = 'na';
         }
       } else {
@@ -31,6 +38,12 @@
     return trim($resp);
   }
   
+/* -------------------------------------
+    功能: 从指定网站获取信息 
+    参数: $to(string) 目的   
+    参数: $from(string) 默认货币   
+    返回值: 信息(string/boolean) 
+------------------------------------ */
   function quote_xe_currency($to, $from = DEFAULT_CURRENCY) {
     $regex = "/[0-9.]+\s*$from\s*=\s*([0-9.]+)\s*$to/";
     $return = file('http://www.xe.net/ucc/convert.cgi?Amount=1&From=' . $from . '&To=' . $to);

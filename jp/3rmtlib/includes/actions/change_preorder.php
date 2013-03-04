@@ -20,6 +20,7 @@
   $preorder_raw = tep_db_query('select * from '.TABLE_PREORDERS." where check_preorder_str = '".$_GET['pid']."' and site_id = '".SITE_ID."' and is_active = '1'");
   $preorder_res = tep_db_fetch_array($preorder_raw); 
   if (!$preorder_res) {
+    //判断该预约订单是否存在 
     forward404(); 
   }
   
@@ -32,6 +33,7 @@
   }
   
   if (!tep_session_is_registered('customer_id')) {
+      //判断是否登录 
       if ($customer_info_res['customers_guest_chk'] == '0') {
         $navigation->set_snapshot();
         tep_redirect(tep_href_link(FILENAME_LOGIN, 'pid='.$_GET['pid'], 'SSL'));
@@ -40,6 +42,7 @@
     if ($is_member_single) { 
       if ($guestchk == '0') {
         if ($customer_emailaddress != $preorder_res['customers_email_address']) {
+          //判断登录的邮箱是否和预约订单中的邮箱是否一致 
           $navigation->set_snapshot();
           
           tep_session_unregister('customer_id');
@@ -76,6 +79,7 @@
   $year_info = explode('-', $ensure_date_info[0]);
   $ensure_datetime = mktime(23, 59, 59, $year_info[1], $year_info[2], $year_info[0]);
   if (time() > $ensure_datetime) {
+    //判断该预约订单的确保期限是否过期 
     $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$preorder_id."'"); 
     $preorder_product_res = tep_db_fetch_array($preorder_product_raw); 
     tep_redirect(tep_href_link('change_preorder_timeout.php?pname='.urlencode($preorder_product_res['products_name']))); 
@@ -156,6 +160,7 @@
     }
     
     if (isset($_POST['preorder_point'])) {
+      //判断点数或者优惠券信息是否正确 
       $_POST['preorder_point'] = get_strip_campaign_info($_POST['preorder_point']); 
       if (!empty($_POST['preorder_point'])) { 
       if (is_numeric($_POST['preorder_point'])) {
@@ -205,6 +210,7 @@
     }
     
     if (!empty($_POST['camp_preorder_point'])) {
+      //判断优惠券信息是否正确 
       $_POST['camp_preorder_point'] = get_strip_campaign_info($_POST['camp_preorder_point']); 
       $campaign_query = tep_db_query("select * from ".TABLE_CAMPAIGN." where keyword = '".trim($_POST['camp_preorder_point'])."' and (site_id = '".SITE_ID."' or site_id = '0') and status = '1' and is_preorder = '1' and end_date >= '".date('Y-m-d', time())."' and start_date <= '".date('Y-m-d', time())."' and type = '2' order by site_id desc limit 1"); 
       $campaign_res = tep_db_fetch_array($campaign_query);

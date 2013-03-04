@@ -2011,6 +2011,9 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
             $work_array = explode('|',$work_setting_str); 
             $work_str = implode('-',$work_array);
           }
+          if(!is_array($get_mark_info)){
+            $get_mark_info = array();
+          }
           ?>
           <table border="0" width="100%" cellpadding="1" cellspacing="1">
             <tr>

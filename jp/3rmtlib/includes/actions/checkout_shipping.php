@@ -30,11 +30,12 @@ if ($check_before_pos !== false || !isset($_SERVER['HTTP_REFERER'])) {
 }
 
 if ($cart->count_contents(true) < 1) {
+  //判断购物车是否为空 
   tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
 }
 
 if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
-  //ccdd
+  //获取当前顾客的点数 
   $point_query = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "'");
   $point = tep_db_fetch_array($point_query);
 }
@@ -54,6 +55,7 @@ if (isset($_SESSION['ischeck']) && $_SESSION['ischeck'] == 1) {
 }
 
 if (!empty($_POST['camp_point'])) {
+  //检查优惠券信息是否正确 
   $_POST['camp_point'] = get_strip_campaign_info($_POST['camp_point']); 
   if ($cart->show_total() > 0) {
     $campaign_query = tep_db_query("select * from ".TABLE_CAMPAIGN." where keyword = '".trim($_POST['camp_point'])."' and (site_id = '".SITE_ID."' or site_id = '0') and status = '1' and end_date >= '".date('Y-m-d', time())."' and start_date <= '".date('Y-m-d', time())."' and type='1' order by site_id desc limit 1"); 
@@ -107,6 +109,7 @@ if (!empty($_POST['camp_point'])) {
   }
 } else {
 if (!empty($_POST['point'])) {
+  //检查点数或者优惠券信息是否正确 
   $_POST['point'] = get_strip_campaign_info($_POST['point']); 
   if (preg_match('/^[0-9a-zA-Z]+$/', $_POST['point'])) {
     if (!preg_match('/^[0-9]+$/', $_POST['point'])) {
@@ -176,6 +179,7 @@ if ($campaign_error) {
 
 if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') 
 {
+  //获取当前顾客的点数 
   $current_point_raw = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "'");
   $current_point_res = tep_db_fetch_array($current_point_raw);
 }

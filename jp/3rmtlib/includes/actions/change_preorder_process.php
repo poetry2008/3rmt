@@ -4,6 +4,7 @@
 */
 
 if (!isset($_SESSION['preorder_info_id'])) {
+  //判断是否有预约订单id 
   forward404();
 }
 
@@ -26,6 +27,7 @@ if ($preorder) {
   $seal_user_query = tep_db_query($seal_user_sql);
   if ($seal_user_row = tep_db_fetch_array($seal_user_query)){
     if($seal_user_row['is_seal']){
+      //判断该顾客是否可以下订单 
       tep_redirect(tep_href_link('change_preorder_confirm.php')); 
       exit;
     }
@@ -222,6 +224,7 @@ if($address_error == false){
   $totals_custom_array = array();
   while ($preorder_total_res = tep_db_fetch_array($preorder_total_raw)) {
     if ($preorder_total_res['class'] == 'ot_total') {
+      //总价 
       if (isset($_SESSION['preorder_campaign_fee'])) {
         if (isset($option_info_array['total'])) {
           $preorder_total_num = $option_info_array['total'] + (int)$_SESSION['preorder_campaign_fee']+(int)$_SESSION['preorder_shipping_fee']; 
@@ -240,14 +243,17 @@ if($address_error == false){
         }
       }
     } else if ($preorder_total_res['class'] == 'ot_point') {
+      //点数 
       $preorder_total_num = (int)$preorder_point; 
     } else if ($preorder_total_res['class'] == 'ot_subtotal') {
+      //小计 
       if (isset($option_info_array['subtotal'])) {
         $preorder_total_num = $option_info_array['subtotal']; 
       } else {
         $preorder_total_num = $preorder_total_res['value']; 
       }
     } else {
+      //其它 
       $preorder_total_num = $preorder_total_res['value']; 
     }
     
@@ -314,7 +320,6 @@ if($address_error == false){
                             'comments' => 'checkout',
                             'user_added' => $preorder['customers_name']
                             );
-    // ccdd
     //tep_order_status_change($orders_id,30);
     tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
     orders_updated($orders_id);
@@ -382,7 +387,7 @@ if($cl_max_len < 4) {
   }
   $products_ordered_atttibutes_text = '';
 
-
+//option信息
 $mold_attr_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$_SESSION['preorder_info_id']."'");
 while ($mold_attr_res = tep_db_fetch_array($mold_attr_raw)) {
   $mold_attr_info = @unserialize(stripslashes($mold_attr_res['option_info'])); 
@@ -402,7 +407,6 @@ while ($mold_attr_res = tep_db_fetch_array($mold_attr_raw)) {
                             'orders_products_filename' => $attributes_values['products_attributes_filename'], 
                             'download_maxdays' => $attributes_values['products_attributes_maxdays'], 
                             'download_count' => $attributes_values['products_attributes_maxcount']);
-    // ccdd
     tep_db_perform(TABLE_ORDERS_PRODUCTS_DOWNLOAD, $sql_data_array);
   }
 
@@ -420,6 +424,7 @@ while ($mold_attr_res = tep_db_fetch_array($mold_attr_raw)) {
 }
 
 if (isset($_SESSION['preorder_option_info'])) {
+   //预约转正式时的option信息
    foreach ($_SESSION['preorder_option_info'] as $op_key => $op_value) {
       $op_key_info = explode('_', $op_key);
       $option_attr_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$op_key_info['1']."' and id = '".$op_key_info[3]."'");
@@ -470,7 +475,6 @@ if (isset($_SESSION['preorder_option_info'])) {
                                 'orders_products_filename' => $attributes_values['products_attributes_filename'], 
                                 'download_maxdays' => $attributes_values['products_attributes_maxdays'], 
                                 'download_count' => $attributes_values['products_attributes_maxcount']);
-        // ccdd
         tep_db_perform(TABLE_ORDERS_PRODUCTS_DOWNLOAD, $sql_data_array);
       }
       
@@ -600,11 +604,13 @@ if(!empty($add_list)){
 }
 
 if ($seal_user_row['is_send_mail'] != '1') {
+  //是否给该顾客发送邮件 
   tep_mail($preorder['customers_name'], $preorder['customers_email_address'], EMAIL_TEXT_SUBJECT, $email_order_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
 }
   
 if (SENTMAIL_ADDRESS != '') {
-    tep_mail('', SENTMAIL_ADDRESS, EMAIL_TEXT_SUBJECT2, $email_order_text, $preorder['customers_name'], $preorder['customers_email_address'], '');
+  //给管理者发送邮件   
+  tep_mail('', SENTMAIL_ADDRESS, EMAIL_TEXT_SUBJECT2, $email_order_text, $preorder['customers_name'], $preorder['customers_email_address'], '');
 }
 
 $email_printing_order = '';
@@ -683,7 +689,6 @@ if ($credit_inquiry['customers_guest_chk'] == '1') { $email_printing_order .= '�
   $email_printing_order .= "\n";
     
   $order_history_query_raw = "select o.orders_id, o.customers_name, o.customers_id, o.date_purchased, s.orders_status_name, ot.value as order_total_value from " .  TABLE_ORDERS . " o left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s where o.customers_id = '" .  tep_db_input($preorder_cus_id) . "' and o.orders_status = s.orders_status_id and s.language_id = '" . $languages_id . "' and ot.class = 'ot_total' order by o.date_purchased DESC limit 0,5";  
-    //ccdd
     $order_history_query = tep_db_query($order_history_query_raw);
     while ($order_history = tep_db_fetch_array($order_history_query)) {
         $email_printing_order .= $order_history['date_purchased'] . '　　' .  tep_output_string_protected($order_history['customers_name']) . '　　' .  abs(intval($order_history['order_total_value'])) . '円　　' .  $order_history['orders_status_name'] . "\n";
@@ -697,6 +702,7 @@ if (method_exists($cpayment_class,'getMailString')){
 }
 
 if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
+  //发送打印邮件 
   tep_mail('', PRINT_EMAIL_ADDRESS, STORE_NAME, $email_printing_order, $preorder['customers_name'], $preorder['customers_email_address'], '');
 }
 
@@ -738,7 +744,7 @@ if (isset($_SESSION['preorder_campaign_fee'])) {
       );
   tep_db_perform(TABLE_CUSTOMER_TO_CAMPAIGN, $sql_data_array);
 }
-
+//预约转正式之后删除该预约订单的所有信息
 tep_db_query("delete from ".TABLE_PREORDERS." where orders_id = '".$_SESSION['preorder_info_id']."' and site_id = '".SITE_ID."'"); 
 tep_db_query("delete from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
 tep_db_query("delete from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$_SESSION['preorder_info_id']."'"); 

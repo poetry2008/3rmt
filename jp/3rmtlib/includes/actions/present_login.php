@@ -2,6 +2,7 @@
 /*
   $Id$
 */
+    //全角转半角 
     $_POST['email_address'] = tep_an_zen_to_han($_POST['email_address']);
 
     $email_address = tep_db_prepare_input($_POST['email_address']);
@@ -10,7 +11,6 @@
       
     //check
     $login_error = false;
-//ccdd
     $check_customer_query = tep_db_query("
         select customers_id, 
                customers_firstname, 
@@ -23,12 +23,12 @@
           and site_id = '".SITE_ID."'
       ");
       if (tep_db_num_rows($check_customer_query)) {
+        //判断该顾客是否存在 
         $check_customer = tep_db_fetch_array($check_customer_query);
         // Check that password is good
         if (tep_validate_password($password, $check_customer['customers_password'])) {
           $pc_id = $check_customer['customers_id'];
       tep_session_register('pc_id');
-      //ccdd
       $customers_query = tep_db_query("
           select * 
           from ".TABLE_CUSTOMERS." 
@@ -36,7 +36,6 @@
             and site_id = '".SITE_ID."'
       ");
       $customers_result = tep_db_fetch_array($customers_query);
-      //ccdd
       $address_query = tep_db_query("
           select * 
           from ".TABLE_ADDRESS_BOOK." 

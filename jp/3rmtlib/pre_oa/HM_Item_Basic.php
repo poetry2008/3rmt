@@ -8,12 +8,23 @@ class HM_Item_Basic
   var $class;
   var $formname;
 
+/* -------------------------------------
+    功能: 初始化信息 
+    参数: $option(string) 信息   
+    返回值: 无 
+------------------------------------ */
   function init($option)
   {
     //    var_dump($option);
     $this->parseOption($option);
     $this->formname= $this->name.'_'.$this->form_id.'_'.$this->group_id.'_'.$this->id;
   }
+
+/* -------------------------------------
+    功能: 格式化信息 
+    参数: $option(string) 信息   
+    返回值: 无 
+------------------------------------ */
   function parseOption($option)
   {
     if($optionArray  = unserialize($option)){
@@ -23,6 +34,15 @@ class HM_Item_Basic
     }
   }
 
+/* -------------------------------------
+    功能: 往preorders_oa_formvalue插入数据 
+    参数: $orders_id(string) 预约订单id   
+    参数: $form_id(int) 表单id   
+    参数: $group_id(int) 组id   
+    参数: $item_id(int) 元素id   
+    参数: $result(string) 值   
+    返回值: 是否插入成功(resource/boolean) 
+------------------------------------ */
   function updateValue($order_id,$form_id,$group_id,$item_id,$result)
     {
     $sql = 'delete from '. TABLE_PREORDERS_OA_FORMVALUE. " where form_id = '" . tep_db_input($form_id) . "' and orders_id ='".tep_db_input($order_id)."' and item_id='". tep_db_input($item_id) . "' and group_id='". tep_db_input($group_id) . "'";
@@ -31,6 +51,12 @@ class HM_Item_Basic
     return tep_db_query($sql);
     
     }
+
+/* -------------------------------------
+    功能: 生成元素的html 
+    参数: $item_id(int) 元素id   
+    返回值: 元素的html(string) 
+------------------------------------ */
   public function prepareFormWithParent($item_id){
     $item_raw = tep_db_query("select * from ".TABLE_OA_ITEM." where id = '".(int)$item_id."'"); 
     $item_res = tep_db_fetch_object($item_raw); 

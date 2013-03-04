@@ -4,6 +4,12 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
 {
   var $has_textarea_default = true; 
 
+/* -------------------------------------
+    功能: 输出该元素 
+    参数: $option_error_array(array) 错误信息   
+    参数: $is_space(array) 是否空行   
+    返回值: 无 
+------------------------------------ */
   function render($option_error_array,$is_space = false)
   {
     if (strlen($this->front_title)) {
@@ -75,12 +81,21 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
     }
   }
   
-  
+/* -------------------------------------
+    功能: 指定元素的项目 
+    参数: $item_id(int) 元素id  
+    返回值: 元素的项目的html(string) 
+------------------------------------ */
   static public function prepareForm($item_id = NULL)
   {
     return $formString;
   }
 
+/* -------------------------------------
+    功能: 检查信息是否正确 
+    参数: $option_error_array(array) 错误信息  
+    返回值: 是否正确(boolean) 
+------------------------------------ */
   function check(&$option_error_array)
   {
      global $_POST;
@@ -116,6 +131,13 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
        $type_limit_array = unserialize($this->option);
        $type_limit = $type_limit_array['type_limit']; 
        switch ($type_limit) {
+/* -----------------------------------------------------
+   case 'false_name' 片假名    
+   case 'english_num' 英文和数字    
+   case 'english' 英文    
+   case 'num' 数字    
+   case 'email' 邮箱    
+------------------------------------------------------*/
          case 'false_name';
            $item_type_error = $this->check_character($input_text_str); 
            break;
@@ -157,6 +179,11 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
      return false; 
   }
 
+/* -------------------------------------
+    功能: 检查字符串的字符是否在指定范围里 
+    参数: $c_str(string) 字符串  
+    返回值: 是否在指定范围里(boolean) 
+------------------------------------ */
   function check_character($c_str)
   {
     $character_array = array('ア' , 'ｱ', 'ぁ' , 'ァ', 'ｧ' ,'あ', 'イ' , 'ｲ' , 'ぃ' ,

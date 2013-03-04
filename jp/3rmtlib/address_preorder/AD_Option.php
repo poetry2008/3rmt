@@ -5,10 +5,21 @@ class AD_Option extends AD_Option_DbRecord
 {
   var $option_error_array = array();
   
+/* -------------------------------------
+    功能: 构造函数 
+    参数: 无   
+    返回值: 无 
+------------------------------------ */
   function __construct()
   {
   }
 
+/* -------------------------------------
+    功能: 获得组的信息 
+    参数: $belong_option_str(string) 信息   
+    参数: $ptype(boolean) 类型   
+    返回值: 组的信息(array) 
+------------------------------------ */
   function getGroups($belong_option_str, $ptype = false)
   {
     if (empty($belong_option_str)) {
@@ -19,6 +30,12 @@ class AD_Option extends AD_Option_DbRecord
     return $groups; 
   }
   
+/* -------------------------------------
+    功能: 输出组的信息 
+    参数: $belong_option_str(string) 信息   
+    参数: $ptype(boolean) 类型   
+    返回值: 无 
+------------------------------------ */
   function render($belong_option_str, $ptype = false)
   {
     $this->groups = $this->getGroups($belong_option_str, $ptype); 
@@ -27,6 +44,11 @@ class AD_Option extends AD_Option_DbRecord
     }
   }
 
+/* -------------------------------------
+    功能: 检查信息是否正确 
+    参数: 无   
+    返回值: 是否正确(boolean) 
+------------------------------------ */
   function check() 
   {
     global $_POST; 
@@ -48,6 +70,11 @@ class AD_Option extends AD_Option_DbRecord
     return $error_single; 
   }
   
+/* -------------------------------------
+    功能: 地址组是否显示 
+    参数: $belong_option_str(string) 信息   
+    返回值: 是否显示(boolean) 
+------------------------------------ */
   function whether_show($belong_option_str)
   {
     if (empty($belong_option_str)) {
@@ -60,6 +87,11 @@ class AD_Option extends AD_Option_DbRecord
      return false; 
   }
 
+/* -------------------------------------
+    功能: 地址组是否显示(用户后台) 
+    参数: $belong_option_str(string) 信息   
+    返回值: 是否显示(boolean) 
+------------------------------------ */
   function admin_whether_show($belong_option_str)
   {
     if (empty($belong_option_str)) {

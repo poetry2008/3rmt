@@ -6,10 +6,22 @@ class HM_Form extends DbRecord
 {
   var $id;
   var $groups;
+
+/* -------------------------------------
+    功能: 构造函数 
+    参数: 无   
+    返回值: 无 
+------------------------------------ */
   function __construct()
   {
     $this->groups = $this->getGroups();
   }
+
+/* -------------------------------------
+    功能: 载入默认值 
+    参数: $orders_id(string) 订单id   
+    返回值: 无 
+------------------------------------ */
   function loadOrderValue($orders_id)
   {
     $id  = $this->id;
@@ -25,6 +37,12 @@ class HM_Form extends DbRecord
       }
     }
   }
+
+/* -------------------------------------
+    功能: 获得组的对象的集合 
+    参数: 无   
+    返回值: 组的对象的集合(array) 
+------------------------------------ */
   function getGroups()
   {
     $sql = "select g.*,$this->id as form_id ";
@@ -35,6 +53,12 @@ class HM_Form extends DbRecord
     $groups =  $this->getResultObjects($sql,'HM_Group');
     return $groups;
   }
+
+/* -------------------------------------
+    功能: 输出表单的html 
+    参数: 无   
+    返回值: 无 
+------------------------------------ */
   function render()
   {
     echo "<div >";
@@ -46,6 +70,7 @@ class HM_Form extends DbRecord
     echo "<tr><td class='main' colspan='3' align='right'>&nbsp;"; 
     //加入EOF标识，用于判断请求是否成功
     echo tep_eof_hidden();
+    echo "<input type='hidden' id='stock_value_flag' name='stock_flag' value='0'>";
     echo "<input type='hidden' name='form_id' value='".$this->id."' /><div id='canEndDiv'>";
     echo $this->end_user;
     echo "<button onclick='finishTheOrder()'  id='canEnd' >".OA_FORM_ORDER_FINISH."</button></div>";
@@ -78,6 +103,7 @@ class HM_Form extends DbRecord
     }
     ?>
     　var canEnd = false;
+    <?php //是否显示取引完了按钮?> 
     function checkLockOrder()
     {
       if (finished==true){
@@ -101,18 +127,22 @@ class HM_Form extends DbRecord
       return false;
 
     }
+    <?php //是否为空?> 
     function SPANRequire(ele)
     {
       return $(ele).text().length>0;
     }
+    <?php //是否为空?> 
     function SPANtextRequire(ele)
     {
       return SPANRequire(ele);
     }
-	function  INPUTcheckboxRequire(ele)
+        <?php //checkbox被选中?>
+        function  INPUTcheckboxRequire(ele)
 	{
 		return ele.checked;
 	}
+    <?php //input框的值是否为空?> 
     function INPUTtextRequire(ele)
 	
     {
@@ -125,6 +155,7 @@ class HM_Form extends DbRecord
       ele_value = ele_value.replace(/\s/g,'');
       return ele_value.length > 0;
     }
+    <?php //删除元素?> 
     function cleanthisrow(ele){
       $(ele).parent().parent().children().find('input').each(
                                                              function(){
@@ -148,9 +179,11 @@ class HM_Form extends DbRecord
       $("#qa_form").ajaxSubmit();
 
     }
+    <?php //值是否为空?> 
     function INPUTtext(e){
       return jQuery.trim($(e).val()).length > 0;
     }
+    <?php //是元素失效?> 
     function disableQA()
     {
       $("#qa_form").find('input').each(function(){
@@ -256,10 +289,7 @@ class HM_Form extends DbRecord
             $("#canEndDiv").hide();
           }
         }
-        var pid_id = $(this).attr('id');
-        if(!(pid_id.substr(0,5) == 'spid_')){
-          $("#qa_form").submit();
-        }
+        $("#qa_form").submit();
         });
       $(this).change(function(ele){
         //                                   alert($("input|[name=dfossrrfwwkvomzw_6_1_107]").val());
@@ -314,6 +344,11 @@ class HM_Form extends DbRecord
 
 
       }
+/* -------------------------------------
+    功能: 设置跳转页面 
+    参数: $actionPage(string) 页面   
+    返回值: 无 
+------------------------------------ */
 function setAction($actionPage)
 {
   $this->action = $actionPage;

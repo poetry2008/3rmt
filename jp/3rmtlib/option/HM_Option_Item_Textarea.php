@@ -11,6 +11,14 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
   var $has_text_check_type = true;
   var $has_text_max_num = true; 
 
+/* -------------------------------------
+    功能: 输出元素的html 
+    参数: $option_error_array(array) 错误信息   
+    参数: $pre_item_str(string) 变量名前缀   
+    参数: $$cart_obj(obj) 购物车对象   
+    参数: $ptype(boolean) 是否是预约转正式   
+    返回值: 无 
+------------------------------------ */
   function render($option_error_array, $pre_item_str = '', $cart_obj = '', $ptype = false)
   {
      $sp_pos = strpos($_SERVER['PHP_SELF'], 'checkout_option.php');
@@ -208,12 +216,23 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
      echo '</td>';
   }
   
+/* -------------------------------------
+    功能: 输出相应的项 
+    参数: $item_id(int) 元素id   
+    返回值: 相应的项的html(string) 
+------------------------------------ */
   static public function prepareForm($item_id = NULL)
   {
     return $formString;
   }
 
-
+/* -------------------------------------
+    功能: 检查信息是否正确 
+    参数: $option_error_array(array) 错误信息   
+    参数: $check_type(int) 类型   
+    参数: $pre_error_str(string) 名字前缀   
+    返回值: 是否正确(boolean) 
+------------------------------------ */
   function check(&$option_error_array, $check_type = 0, $pre_error_str = '')
   {
      global $_POST;
@@ -236,6 +255,13 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
      if ($input_text_str != '') {
        $item_type_error = false; 
        switch ($this->ictype) {
+/* -----------------------------------------------------
+   case '1' 是否是片假名    
+   case '2' 是否是数字和字母    
+   case '3' 是否是字母   
+   case '4' 是否是数字   
+   case '5' 是否是邮箱   
+------------------------------------------------------*/
          case 1;
            $item_type_error = $this->check_character($input_text_str); 
            break;
@@ -271,6 +297,11 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
      return false; 
   }
 
+/* -------------------------------------
+    功能: 检查字符串的字符是否在指定字符范围内 
+    参数: $c_str(string) 字符串   
+    返回值: 是否在指定字符范围内(boolean) 
+------------------------------------ */
   function check_character($c_str)
   {
     $character_array = array('ア' , 'ｱ', 'ぁ' , 'ァ', 'ｧ' ,'あ', 'イ' , 'ｲ' , 'ぃ' ,

@@ -5,6 +5,11 @@ require_once DIR_WS_LANGUAGES . $language . '/oa/HM_Item_Specialbank.php';
 class HM_Item_Specialbank extends HM_Item_Basic
 {
 
+/* -------------------------------------
+    功能: 过滤信息 
+    参数: $sboption(string) 信息   
+    返回值: 处理后的信息(array) 
+------------------------------------ */
   function parseSbOption($sboption)
   {
     //    $options = explode("\n|[|(",$sboption);
@@ -28,6 +33,12 @@ class HM_Item_Specialbank extends HM_Item_Basic
     }
     return $radios;
   }
+
+/* -------------------------------------
+    功能: 输出元素的html 
+    参数: 无   
+    返回值: 无 
+------------------------------------ */
   function render()
   {
     if(strlen($this->thename)){
@@ -105,6 +116,12 @@ class HM_Item_Specialbank extends HM_Item_Basic
     echo "\n";    echo "\n";
     echo "</td>"; 
   }
+
+/* -------------------------------------
+    功能: 输出javascript 
+    参数: 无   
+    返回值: 无 
+------------------------------------ */
   function renderScript()
   {
     ?>
@@ -140,6 +157,12 @@ class HM_Item_Specialbank extends HM_Item_Basic
 </script>
   <?
 }
+
+/* -------------------------------------
+    功能: 输出构成元素的html 
+    参数: $item_id(int) 元素id   
+    返回值: 无 
+------------------------------------ */
 static public function prepareForm($item_id = NULL)
 {
   $item_raw = tep_db_query("select * from ".TABLE_OA_ITEM." where id = '".(int)$item_id."'"); 

@@ -420,7 +420,9 @@ function tep_array_merge($array1, $array2, $array3 = '') {
  ------------------------------------ */
 function tep_in_array($lookup_value, $lookup_array) {
   if (function_exists('in_array')) {
-    if (in_array($lookup_value, $lookup_array)) return true;
+    if (is_array($lookup_array)){
+      if (in_array($lookup_value, $lookup_array)) return true;
+    }
   } else {
     reset($lookup_array);
     while (list($key, $value) = each($lookup_array)) {
@@ -4639,7 +4641,7 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
      default:
        break;
     }
-    $str .= date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($orders['torihiki_date'])).' '.$week_str.'&nbsp;'.$tmp_date_start[1].'&nbsp;'.TEXT_TIME_LINK.'&nbsp;'.$tmp_date_end[1]; 
+    $str .= date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($orders['torihiki_date'])).' '.$week_str.'&nbsp;'.$tmp_date_start[1].'&nbsp;'.TEXT_TIME_LINK.'&nbsp;'.$tmp_date_end[1]; 
     $str .= '</td>'; 
     $str .= '</tr>'; 
 
@@ -4658,11 +4660,37 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
     $str .= $orders['orders_id']; 
     $str .= '</td>'; 
     $str .= '</tr>'; 
-  
+
+    $create_week = date('D', strtotime($orders['date_purchased'])); 
+    switch(strtolower($create_week)) {
+      case 'mon':
+       $week_string = TEXT_DATE_MONDAY; 
+       break;
+      case 'tue':
+       $week_string = TEXT_DATE_TUESDAY; 
+       break;
+      case 'wed':
+       $week_string = TEXT_DATE_WEDNESDAY; 
+       break;
+     case 'thu':
+       $week_string = TEXT_DATE_THURSDAY; 
+       break;
+     case 'fri':
+       $week_string = TEXT_DATE_FRIDAY; 
+       break;
+     case 'sat':
+       $week_string = TEXT_DATE_STATURDAY; 
+       break;
+     case 'sun':
+       $week_string = TEXT_DATE_SUNDAY; 
+       break;
+     default:
+       break;
+    } 
     $str .= '<tr>'; 
     $str .= '<td class="main">'.TEXT_FUNCTION_HEADING_DATE_PURCHASED.'</td>';
     $str .= '<td class="main">';
-    $str .= tep_date_long($orders['date_purchased']); 
+    $str .= date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($orders['date_purchased'])).' '.$week_string; 
     $str .= '</td>'; 
     $str .= '</tr>'; 
   

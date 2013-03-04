@@ -34,7 +34,7 @@ while ($category = tep_db_fetch_array($categories_query))  {
   $categories[] = $category;
 }
 if($cPath){
-  $id = split('_', $cPath);
+  $id = preg_split('/_/', $cPath);
 }
 
 $left_show_single = false;

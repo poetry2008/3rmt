@@ -3,30 +3,22 @@
    $Id$
  */
 
-////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// Function    : tep_validate_email
-//
-// Arguments   : email   email address to be checked
-//
-// Return      : true  - valid email address
-//               false - invalid email address
-//
-// Sample Valid Addresses:
-//
-//    first.last@host.com
-//    firstlast@host.to
-//    "first last"@host.com
-//    "first@last"@host.com
-//    first-last@host.com
-//    first.last@[123.123.123.123]
-//
-// Invalid Addresses:
-//
-//    first last@host.com
-//
-//
-////////////////////////////////////////////////////////////////////////////////////////////////
+/* -------------------------------------
+    功能: 验证邮件是否正确 
+    参数: $email(string) 邮箱地址   
+    返回值: 是否正确(boolean)
+    附加说明:
+             有效的邮箱地址的例子:
+                first.last@host.com
+                firstlast@host.to
+                "first last"@host.com
+                "first@last"@host.com
+                first-last@host.com
+                first.last@[123.123.123.123]
+
+             无效的邮箱地址:
+                first last@host.com
+------------------------------------ */
 function tep_validate_email($email) {
   $isValid = true;
   $atIndex = strrpos($email, "@");

@@ -3,24 +3,28 @@
   $Id$
 */
 
-////
-// Sets the status of a banner
+/* -------------------------------------
+    功能: 设置banner的状态 
+    参数: $banners_id(int) banner id   
+    参数: $status(string) 状态   
+    返回值: 是否成功设置(resource/int) 
+------------------------------------ */
   function tep_set_banner_status($banners_id, $status) {
     if ($status == '1') {
-//ccdd
       return tep_db_query("update " . TABLE_BANNERS . " set status = '1', date_status_change = now(), date_scheduled = NULL where banners_id = '" .  $banners_id . "' and site_id = '".SITE_ID."'");
     } elseif ($status == '0') {
-  // ccdd
       return tep_db_query("update " . TABLE_BANNERS . " set status = '0', date_status_change = now() where banners_id = '" . $banners_id . "' and site_id = '".SITE_ID."'");
     } else {
       return -1;
     }
   }
 
-////
-// Auto activate banners
+/* -------------------------------------
+    功能: 激活banner的状态 
+    参数: 无  
+    返回值: 无 
+------------------------------------ */
   function tep_activate_banners() {
-//ccdd
     $banners_query = tep_db_query("select banners_id, date_scheduled from " .  TABLE_BANNERS . " where date_scheduled != '' and site_id = ".SITE_ID);
     if (tep_db_num_rows($banners_query)) {
       while ($banners = tep_db_fetch_array($banners_query)) {
@@ -31,10 +35,12 @@
     }
   }
 
-////
-// Auto expire banners
+/* -------------------------------------
+    功能: 设置过期的banner 
+    参数: 无  
+    返回值: 无 
+------------------------------------ */
   function tep_expire_banners() {
-//ccdd
     $banners_query = tep_db_query("select b.banners_id, b.expires_date, b.expires_impressions, sum(bh.banners_shown) as banners_shown from " .  TABLE_BANNERS . " b, " . TABLE_BANNERS_HISTORY . " bh where b.status = '1' and b.banners_id = bh.banners_id and b.site_id = ".SITE_ID."group by b.banners_id");
     if (tep_db_num_rows($banners_query)) {
       while ($banners = tep_db_fetch_array($banners_query)) {
@@ -51,11 +57,16 @@
     }
   }
 
-////
-// Display a banner from the specified group or banner id ($identifier)
+/* -------------------------------------
+    功能: 显示banner 
+    参数: $action(string) 动作类型  
+    参数: $identifier(array) banner组的信息 
+    参数: $width(int) 宽度 
+    参数: $height(int) 高度  
+    返回值: 显示的html(string) 
+------------------------------------ */
   function tep_display_banner($action, $identifier, $width = null, $height = null) {
     if ($action == 'dynamic') {
-//ccdd
       $banners_query = tep_db_query("select count(*) as count from " . TABLE_BANNERS . " where status = '1' and banners_group = '" . $identifier . "' and site_id = '".SITE_ID."'");
       $banners = tep_db_fetch_array($banners_query);
       if ($banners['count'] > 0) {
@@ -67,7 +78,6 @@
       if (is_array($identifier)) {
         $banner = $identifier;
       } else {
-//ccdd
         $banner_query = tep_db_query("select banners_id, banners_title, banners_url,banners_image, banners_html_text from " . TABLE_BANNERS . " where status = '1' and banners_id = '" . $identifier . "' and site_id = '".SITE_ID."'");
         if (tep_db_num_rows($banner_query)) {
           $banner = tep_db_fetch_array($banner_query);
@@ -102,17 +112,19 @@
     return $banner_string;
   }
 
-////
-// Check to see if a banner exists
+/* -------------------------------------
+    功能: 检查是否有banner存在 
+    参数: $action(string) 动作类型  
+    参数: $identifier(array) banner组的信息 
+    返回值: 是否存在(resource/boolean) 
+------------------------------------ */
   function tep_banner_exists($action, $identifier) {
     if ($action == 'dynamic') {
-//ccdd
       //return tep_random_select("select banners_id, banners_title, banners_image,banners_url, banners_html_text from " . TABLE_BANNERS . " where status = '1' and banners_group = '" . $identifier . "' and site_id = '".SITE_ID."'");
       $banner_query = tep_db_query("select banners_id, banners_title, banners_image,banners_url, banners_html_text from " . TABLE_BANNERS . " where status = '1' and banners_group = '" . $identifier . "' and site_id = '".SITE_ID."'");
       return tep_db_fetch_array($banner_query);
     } else 
     if ($action == 'static') {
-//ccdd
       $banner_query = tep_db_query("select banners_id, banners_title, banners_image,banners_url, banners_html_text from " . TABLE_BANNERS . " where status = '1' and banners_id = '" . $identifier . "' and site_id = '".SITE_ID."'");
       return tep_db_fetch_array($banner_query);
     } else {
@@ -120,26 +132,28 @@
     }
   }
 
-////
-// Update the banner display statistics
+/* -------------------------------------
+    功能: 更新该banner的历史记录 
+    参数: $banner_id(int) banner id  
+    返回值: 无
+------------------------------------ */
   function tep_update_banner_display_count($banner_id) {
-//ccdd
     $banner_check_query = tep_db_query("select count(*) as count from " . TABLE_BANNERS_HISTORY . " where banners_id = '" . $banner_id . "' and date_format(banners_history_date, '%Y%m%d') = date_format(now(), '%Y%m%d')");
     $banner_check = tep_db_fetch_array($banner_check_query);
 
     if ($banner_check['count'] > 0) {
-//ccdd
       tep_db_query("update " . TABLE_BANNERS_HISTORY . " set banners_shown = banners_shown + 1 where banners_id = '" . $banner_id . "' and date_format(banners_history_date, '%Y%m%d') = date_format(now(), '%Y%m%d')");
     } else {
-//ccdd
       tep_db_query("insert into " . TABLE_BANNERS_HISTORY . " (banners_id, banners_shown, banners_history_date) values ('" . $banner_id . "', 1, now())");
     }
   }
 
-////
-// Update the banner click statistics
+/* -------------------------------------
+    功能: 更新该banner被点击的次数 
+    参数: $banner_id(int) banner id  
+    返回值: 无
+------------------------------------ */
   function tep_update_banner_click_count($banner_id) {
-//ccdd
     tep_db_query("update " . TABLE_BANNERS_HISTORY . " set banners_clicked = banners_clicked + 1 where banners_id = '" . $banner_id . "' and date_format(banners_history_date, '%Y%m%d') = date_format(now(), '%Y%m%d')");
   }
 ?>

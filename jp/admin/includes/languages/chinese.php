@@ -750,3 +750,10 @@ define('NOTICE_LESS_PRODUCT_OPTION_TEXT', '商品信息已变更。如要修改�
 define('NOTICE_LESS_PRODUCT_PRE_OPTION_TEXT', '商品信息已变更。如要修改订单中商品信息，请重新下预约订单。');
 define('NOTICE_COMPLETE_ERROR_TEXT','的数据不完整，请在页面刷新后重新填写。');
 define('NOTICE_STOCK_ERROR_TEXT','当前显示的数据和数据库不一致，是旧数据，请在页面刷新后重新填写。');
+define('TEXT_DATE_MONDAY', '星期一');
+define('TEXT_DATE_TUESDAY', '星期二');
+define('TEXT_DATE_WEDNESDAY', '星期三');
+define('TEXT_DATE_THURSDAY', '星期四');
+define('TEXT_DATE_FRIDAY', '星期五');
+define('TEXT_DATE_STATURDAY', '星期六');
+define('TEXT_DATE_SUNDAY', '星期日');

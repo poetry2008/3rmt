@@ -3,11 +3,11 @@
   $Id$
 */
 
-/**
-* get visitor browser 
-* 
-* @param string $userAgent
-*/
+/* -------------------------------------
+    功能: 获取浏览器信息 
+    参数: $userAgent(string) 用户信息   
+    返回值: 浏览器信息(array) 
+------------------------------------ */
 function getBrowserInfo($userAgent)
 {
   $browser = '';
@@ -95,14 +95,11 @@ function getBrowserInfo($userAgent)
   return $info; 
 }
 
-/**
-* get the visitor os
-* 
-* @param string $userAgent
-* @param array $osList
-* 
-* @return string 
-*/
+/* -------------------------------------
+    功能: 获取访问者的系统信息 
+    参数: $userAgent(string) 用户信息   
+    返回值: 系统信息(string) 
+------------------------------------ */
 function getOs($userAgent)
 {
   $GLOBALS['osNameToId'] = Array(
@@ -147,7 +144,7 @@ function getOs($userAgent)
   for (@reset($GLOBALS['osNameToId']), $ok = false; 
     (list($key, $value) = @each($GLOBALS['osNameToId'])) && !$ok;)
   {
-    if ($ok = ereg($key, $userAgent))
+    if ($ok = preg_match('/'.$key.'/', $userAgent))
     {
       return $value;
       return $key;
@@ -156,19 +153,11 @@ function getOs($userAgent)
   return 'UNK';
 }
 
-
-
-
-/**
-* returns valid phpmv hostname extension (site.co.jp in fvae.VARG.ceaga.site.co.jp)
-* from the complete hostname
-* 
-* @param string $hostname
-
-
-
-* @return string
-*/
+/* -------------------------------------
+    功能: 获取主机名的扩展名 
+    参数: $hostname(string) 主机名   
+    返回值: 主机名的扩展名(string) 
+------------------------------------ */
 function getHostnameExt($hostname)
 {
   $extToExclude = array(
@@ -199,6 +188,11 @@ function getHostnameExt($hostname)
   }
 }
 
+/* -------------------------------------
+    功能: 分割关键字 
+    参数: $referer(string) 来源信息   
+    返回值: 分割后的信息(string) 
+------------------------------------ */
 function parseKeyword($referer){
 $searchEngines = array(
 

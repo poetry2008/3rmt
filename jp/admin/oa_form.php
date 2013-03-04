@@ -3,7 +3,9 @@
   $Id$
 */
   require('includes/application_top.php');
-  
+  require_once(DIR_WS_CLASSES . 'payment.php');
+  //针对中文语言时，把支付方式的中文名称替换成相对应的日文名称
+  $_GET['pcode'] = payment::changeRomaji($_GET['preturn'],PAYMENT_RETURN_TYPE_TITLE);
   if (isset($_GET['action'])) {
     switch ($_GET['action']) {
 /* -----------------------------------------------------
@@ -46,8 +48,12 @@
     $form_id = $oaform_exists_res['id'];
     $form_option = $oaform_exists_res['option'];
   } else {
-    tep_db_query("insert into `".TABLE_OA_FORM."` values(NULL, '".$_GET['pcode']."', '".$_GET['type']."', '')"); 
-    $form_id = tep_db_insert_id(); 
+    $type_array = range(1,4);
+    //如果获取到的支付方式名称为空，或者类型无效，不添加数据
+    if(trim($_GET['pcode']) != '' && in_array($_GET['type'],$type_array)){
+      tep_db_query("insert into `".TABLE_OA_FORM."` values(NULL, '".$_GET['pcode']."', '".$_GET['type']."', '')"); 
+      $form_id = tep_db_insert_id(); 
+    }
   }
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">

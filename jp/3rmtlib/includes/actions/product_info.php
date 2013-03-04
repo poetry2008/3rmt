@@ -11,7 +11,6 @@ $the_product_name        = strip_tags ($the_product_info['products_name'], "");
 $the_product_description = mb_substr (strip_tags (replace_store_name($the_product_info['products_description']), ""),0,65);
 $the_product_model       = strip_tags ($the_product_info['products_model'], "");
 
-// ccdd
 $the_manufacturer_query = tep_db_query("
     SELECT m.manufacturers_id, 
            m.manufacturers_name 
@@ -31,6 +30,7 @@ $hm_option = new HM_Option();
 if ($_GET['action'] == 'process') {
   $option_info_array = array(); 
   if (!$hm_option->check()) {
+    //检查option是否正确 
     foreach ($_POST as $p_key => $p_value) {
       $op_single_str = substr($p_key, 0, 3);
       if ($op_single_str == 'op_') {
@@ -44,6 +44,7 @@ if ($_GET['action'] == 'process') {
       } 
     }
     if (isset($_POST['products_id']) && is_numeric($_POST['products_id'])) {
+      //添加到购物车 
       $cart->add_cart($_POST['products_id'], $cart->get_quantity($cart->get_products_uprid($_POST['products_id'], $option_info_array))+$_POST['quantity'], '', true, $option_info_array);   
     }
     tep_redirect(tep_href_link($goto, tep_get_all_get_params($parameters))); 

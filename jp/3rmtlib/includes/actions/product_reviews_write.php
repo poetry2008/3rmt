@@ -1,5 +1,4 @@
 <?php
-// ccdd
   $product_query = tep_db_query("
       select pd.products_name, 
              p.products_image 
@@ -15,8 +14,8 @@
   forward404Unless($valid_product);
   if (isset($_GET['action']) && $_GET['action'] == 'process') {
     $form_error = false;
-    if ($valid_product == true) { // We got to the process but it is an illegal product, don't write
-      // ccdd
+    if ($valid_product == true) { 
+      // We got to the process but it is an illegal product, don't write
       $customer = tep_db_query("
           SELECT customers_firstname, 
                  customers_lastname 
@@ -27,16 +26,19 @@
       $customer_values = tep_db_fetch_array($customer);
       $date_now = date('Ymd');
     if($_POST['reviews_name'] && tep_not_null($_POST['reviews_name'])) {
+      //评论的名字是否为空 
       $reviews_name = $_POST['reviews_name'];
     } else {
       require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRODUCT_REVIEWS_WRITE);
       $reviews_name = REVIEWS_NO_NAMES;
     }
     if (mb_strlen($_POST['review'], 'UTF-8') < REVIEW_TEXT_MIN_LENGTH) {
+      //评论的内容是否小于指定字符 
       $form_error = true;
       $error_message .= JS_REVIEW_TEXT;
     }
     if (!in_array($_POST['rating'], array('1','2','3','4','5'))) {
+      //是否选择评论等级 
       $form_error = true;
       $error_message .= JS_REVIEW_RATING;
     }
@@ -58,7 +60,6 @@
       $form_error = true;
       $error_message .= "投稿が制限されています。時間をおいてお試しください。";
     }
-    // ccdd
     if ($form_error === false) {
       tep_db_query("
           INSERT INTO " . TABLE_REVIEWS . " (
@@ -81,7 +82,6 @@
             '".SITE_ID."'
           )");
         $insert_id = tep_db_insert_id();
-        // ccdd
         tep_db_query("
             insert into " . TABLE_REVIEWS_DESCRIPTION . " (
               reviews_id, 
@@ -113,7 +113,6 @@
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRODUCT_REVIEWS_WRITE);
 
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_PRODUCT_REVIEWS, $get_params));
-  // ccdd
   $customer_info_query = tep_db_query("
       select customers_firstname, 
              customers_lastname 
