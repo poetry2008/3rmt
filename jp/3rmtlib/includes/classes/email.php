@@ -225,7 +225,7 @@
  功能：添加文本到mime_part对象
  参数：$obj(string) 对象 
  参数：$text(string) 文本
- 返回值：返回mime_part对象(OBJ)
+ 返回值：返回mime_part对象(obj)
  ----------------------*/
     function add_text_part(&$obj, $text) {
       $params['content_type'] = 'text/plain';
