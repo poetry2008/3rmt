@@ -525,9 +525,9 @@ $("#oa_dynamic_submit").unbind('click');
 $("#oa_dynamic_submit").click(function(){
     if($("#endtheseorder").val()==1){
     var finish = 1;
-    urloa = 'oa_ajax.php?action=finish';
+    urloa = 'pre_oa_ajax.php?action=finish';
     }else{
-    urloa = 'oa_answer_process.php?action=muliUpdateOa';
+    urloa = 'pre_oa_answer_process.php?action=muliUpdateOa';
     }
     longstring = '';
     $("#oa_dynamic_group_item").find('input').each(function(key){
