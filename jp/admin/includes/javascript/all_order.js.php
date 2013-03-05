@@ -591,6 +591,7 @@ $("#oa_dynamic_submit").click(function(){
     longstring+='&oID='+ids;
     longstring+='&form_id='+form_id;
     longstring+='&finish=1';
+    longstring+='&eof=eof';
     $.ajax(
       {
 	  type:"POST",
