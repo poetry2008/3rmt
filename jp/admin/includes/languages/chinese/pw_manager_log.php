@@ -1,7 +1,7 @@
 <?php
-define('TEXT_PRIORITY','优先');
-define('TEXT_PRIORITY_HEAD','优先');
-define('TEXT_INFO_PRIORITY','优先');
+define('TEXT_PRIORITY','重要');
+define('TEXT_PRIORITY_HEAD','重要');
+define('TEXT_INFO_PRIORITY','重要');
 define('TEXT_LOGINURL','Login');
 define('TEXT_INFO_LOGINURL','LoginURL');
 define('TEXT_TITLE','ID管理历史记录');
@@ -21,9 +21,9 @@ define('TEXT_INFO_MEMO','备忘栏');
 define('TEXT_INFO_CREATED','注册日期时间');
 define('TEXT_INFO_UPDATED','更新日期时间');
 define('TEXT_INFO_HEADING_NEW','新建');
-define('TEXT_PRIORITY_1','优先1');
-define('TEXT_PRIORITY_2','优先2');
-define('TEXT_PRIORITY_3','优先3');
+define('TEXT_PRIORITY_1','重要1');
+define('TEXT_PRIORITY_2','重要2');
+define('TEXT_PRIORITY_3','重要3');
 define('TEXT_INFO_URL','标题URL');
 define('TEXT_INFO_DELETE_INTRO','确定删除吗？');
 define('TEXT_FIREFOX_ERROR','由于firefox的安全性限制，所以不能复制、’打开about:config’、把signed.applets.code
@@ -46,7 +46,7 @@ define('TEXT_BUTTON_SHOW','预览');
 define('TEXT_BUTTON_BACK','返回');
 define('TEXT_NEXTDAT','日程表');
 define('PW_MANAGER_SELECT_NONE', '--请选择--');
-define('PW_MANAGER_SELECT_ONE', '优先');
+define('PW_MANAGER_SELECT_ONE', '重要');
 define('PW_MANAGER_SELECT_TWO', 'LoginURL');
 define('PW_MANAGER_SELECT_THREE', '标题');
 define('PW_MANAGER_SELECT_FOUR', '标题URL');
