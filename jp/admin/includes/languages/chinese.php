@@ -403,7 +403,7 @@ define('KEYWORDS_TABLE_COLUMN_THREE_TEXT', '名次');
 define('LIST_DISPLAY_PRODUCT_SELECT', '选择商品');
 define('LIST_DISPLAY_JIAKONGZAIKU', '虚拟库存');
 define('LIST_DISPLAY_YEZHE_PRICE', '同业单价');
-define('MAG_DL_TITLE_TEXT', '电子杂志数据下载');
+define('MAG_DL_TITLE_TEXT', '电子杂志订阅者数据下载');
 define('MAG_UP_TITLE_TEXT', '电子杂志订阅者统一上传');
 define('PRODUCTS_TO_TAGS_TITLE', '标签关联设置');
 define('REFERER_TITLE_TEXT', '访问排名');
@@ -472,7 +472,7 @@ define('FILENAME_BANK_CL_TEXT','日历设置');
 define('FILENAME_PW_MANAGER_TEXT','ID管理');
 define('FILENAME_COMPUTERS_TEXT','按钮设置');
 define('FILENAME_MAG_UP_TEXT','电子杂志订阅者统一上传');
-define('FILENAME_MAG_DL_TEXT','电子杂志数据下载');
+define('FILENAME_MAG_DL_TEXT','电子杂志订阅者数据下载');
 define('BUTTON_MAG_UP','上传');
 define('BUTTON_MAG_DL','下载');
 
