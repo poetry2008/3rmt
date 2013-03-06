@@ -2325,6 +2325,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
   $where_payment = '';
   $sort_table = '';
   $sort_where = ''; 
+  //预约完成的订单是否显示到预约订单列表中
   $is_show_transaction = false; 
   if (PERSONAL_SETTING_PREORDERS_TRANSACTION_FINISH != '') {
     $show_transaction_array = @unserialize(PERSONAL_SETTING_PREORDERS_TRANSACTION_FINISH);  

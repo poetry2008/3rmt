@@ -246,8 +246,13 @@ function tep_show_preorders_products_info($orders_id) {
     $str .= '</td>'; 
     $str .= '</tr>'; 
   
+    if(defined(constant("SITE_TOPIC_".$orders['site_id']))){
+      $t_topicid = constant("SITE_TOPIC_".$orders['site_id']);
+    }else{
+      $t_topicid = '';
+    }
     $ostGetPara = array( "name"=>urlencode($orders['customers_name']),
-                         "topicid"=>urlencode(constant("SITE_TOPIC_".$orders['site_id'])),
+                         "topicid"=>urlencode($t_topicid),
                          "source"=>urlencode('Email'), 
                          "email"=>urlencode($orders['customers_email_address']));
     $parmStr = '';
