@@ -22,6 +22,7 @@ define('TEXT_DELETE_REVIEWS', 'レビューも削除（投稿数: %s ）');
 define('TEXT_INFO_HEADING_DELETE_CUSTOMER', '顧客を削除');
 define('TYPE_BELOW', '下に入力してください');
 define('PLEASE_SELECT', '選択してください');
+define('REFRESH','更新');
 define('REFRESH_TIME','操作時間 :');
 define('REFRESH_NUM','顧客を影響する数目:');
 
@@ -31,7 +32,7 @@ define('TABLE_HEADING_MEMBER_TYPE_GUEST', 'ゲスト');
 define('TABLE_HEADING_MEMBER_TYPE_MEMBER', '会員');
 
 define('ERROR_EMAIL_EXISTS', 'メールアドレスはもう存在しています。');
-define('NEW_CUSTOMERS_TITLE_TEXT', 'ステータスが処理された日付で集計結果を出力します。最新の情報を取得するにはREFRESHをクリックしてください。');
+define('NEW_CUSTOMERS_TITLE_TEXT', 'ステータスが処理された日付で集計結果を出力します。最新の情報を取得するには更新をクリックしてください。');
 define('NEW_CUSTOMERS_SITES_SELECT', 'サイト:');
 define('NEW_CUSTOMERS_SEARCH_START', '開始日:');
 define('NEW_CUSTOMERS_SEARCH_END', '終了日:');

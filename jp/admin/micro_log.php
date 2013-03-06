@@ -188,17 +188,32 @@
 }
 a.dpicker {
 	width: 16px;
-	height: 16px;
+	height: 18px;
 	border: none;
 	color: #fff;
 	padding: 0;
-	margin: 0;
+	margin:2px 0 0 2px;
 	overflow: hidden;
-        display:block;	
-        cursor: pointer;
+    display:block;	
+    cursor: pointer;
 	background: url(./includes/calendar.png) no-repeat; 
 	float:left;
 } 
+@media screen and (-webkit-min-device-pixel-ratio:0){
+a.dpicker {
+	width: 16px;
+	height: 18px;
+	border: none;
+	color: #fff;
+	padding: 0;
+	margin:1px 0 0 0;
+	overflow: hidden;
+    display:block;	
+    cursor: pointer;
+	background: url(./includes/calendar.png) no-repeat; 
+	float:left;
+} 
+}
 .popup-calendar {
 top:20px;
 left:-95px;
@@ -261,6 +276,12 @@ padding:0 5px;
 text-align:center;
   font-size:10px;
 }
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+.log .action{
+  font-size:10px;
+  text-align:left;
+}
+}
 .edit_action{
   display:none;
 /*float:right;*/
@@ -294,18 +315,11 @@ float:left;
 }
 
 #new_yui3 {
-	margin-left:-170px;
-	margin-left:-19px\9;
-	top:235px;
-	top:208px\9;
 	position: absolute;
 	z-index:200px;
 }
 @media screen and (-webkit-min-device-pixel-ratio:0) {
 #new_yui3{
-	top:208px;
-	margin-left:-430px;
-    padding-left:260px;
 	position: absolute;
 	z-index:200px;
 }
@@ -326,7 +340,7 @@ require("includes/note_js.php");
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <!-- header_eof -->
 <!-- body -->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
 <!-- left_navigation -->
@@ -340,7 +354,7 @@ require("includes/note_js.php");
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-	  <td class="pageHeading"><?php echo HEADING_TITLE;?></td>
+	  <td class="pageHeading" height="40"><?php echo HEADING_TITLE;?></td>
             <td class="pageHeading" align="right"></td>
           </tr>
         </table></td>
@@ -353,7 +367,7 @@ require("includes/note_js.php");
           <td colspan="3" id="div_input"><textarea name="content"></textarea></td>
           </tr>
           <tr>
-            <td width="250px">
+            <td width="200">
               <input type="radio" name="level" value="0" checked="checked" id="level_0"><?php echo TYPEA;?>
               <input type="radio" name="level" value="1" id="level_1"><?php echo TYPEB;?>
               <input type="radio" name="level" value="2" id="level_2"><?php echo TYPEC;?>
@@ -525,7 +539,7 @@ function log_html(text){
   var log_date_len = text['date_added'].length;
   var log_date_str = log_date.substring(0, log_date_len-3); 
   
-  $str += '      <td style="background:#fff;"><div style="background:#fff;"><div class="content">'+text['content'].replace(/\n/g,'<br>')+'</div><div class="info">'+log_date_str+'</div></div></td>';
+  $str += '      <td style="background:#fff;"><div style="background:#fff;"><div class="micro_content">'+text['content'].replace(/\n/g,'<br>')+'</div><div class="info">'+log_date_str+'</div></div></td>';
   $str += '      <td class="info02">';
   $str += '           <div class="level">'+parseInt(text['level'])+'</div>';
   $str += '           <div class="alarm">'+text['alarm']+'</div>';
@@ -569,7 +583,7 @@ function append_log(text){
 <?php //编辑数据?>
 function edit_log(id)
 {
-  $('#log_'+id+' .content').html('<textarea name="content" style="height:'+ ($('#log_'+id+' .content').height()+ 20) +'px">'+$('#log_'+id+' .content').html().replace(/<br>/ig,'\n')+'</textarea>');
+  $('#log_'+id+' .micro_content').html('<textarea name="content" style="height:'+ ($('#log_'+id+' .micro_content').height()+ 20) +'px">'+$('#log_'+id+' .micro_content').html().replace(/<br>/ig,'\n')+'</textarea>');
   
   $('#log_'+id+' .alarm').html('<div id="demo" class="yui3-skin-sam yui3-g"><a id="dpk_'+id+'" href="javascript:void(0);" class="dpicker" onclick="open_update_calendar('+id+');"></a><input class="alarm_input" id="alarm_date_'+id+'" type="text" name="alarm" value="'+$('#log_'+id+' .alarm').html()+'"><input type="hidden" name="toggle_open_'+id+'" id="toggle_open_'+id+'" value="0"><div id="pos_m_'+id+'" class="yui3-u"><div id="calc_'+id+'_show"></div></div></div></div>');
 

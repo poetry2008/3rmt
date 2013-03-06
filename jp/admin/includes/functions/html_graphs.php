@@ -379,21 +379,24 @@
       }
 
       $double_vertical_graph_string .= '"></td>' . "\n" .
-                                       '      </tr>' . "\n" .
-                                       '    </table></td>' . "\n";
-    } // endfor
-
-    $double_vertical_graph_string .= '  </tr>' . "\n" .
-                                     '  <tr>' . "\n";
-
-    for ($i = 0, $n = sizeof($values); $i < $n; $i++) {
+                                       '      </tr>' . "\n" ;
       $double_vertical_graph_string .= '    <td align="center" valign="top"';
 
 // if a background was choosen don't print cell BGCOLOR
       if (!$vals['background']) $double_vertical_graph_string .= ' bgcolor="' . $vals['namebgcolor'] . '"';
-
+         
       $double_vertical_graph_string .= '><font size="-1" color="' . $vals['namefcolor'] . '" style="' . $vals['namefstyle'] . '">' . $names[$i] . '</font></td>' . "\n";
+
+     
+    $double_vertical_graph_string .= '  </table></td>' . "\n";
+    if($i == 15){
+    $double_vertical_graph_string .= '  </tr>' . "\n" ;
+    $double_vertical_graph_string .= '  <tr>' . "\n" ;
+    }
     } // endfor
+    
+    $double_vertical_graph_string .= '  </tr>' . "\n" .
+                                     '  <tr>' . "\n";
 
     $double_vertical_graph_string .= '  </tr>' . "\n";
 

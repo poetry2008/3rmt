@@ -18,6 +18,7 @@ forms
 CHECKBOX, INPUT, RADIO, SELECT, TEXTAREA, FILE {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif;
 	font-size: 12px;
+	margin-top:0;
 }
 /* ---------------------------
 h3
@@ -231,6 +232,10 @@ google hack
 	width: expression(document.body.clientWidth < 750? "750px": "100%" );
 	
 }}
+.compatible_print{
+	min-width:750px;
+	height:750px;
+}
 /* ---------------------------
 left
 --------------------------- */
@@ -961,7 +966,7 @@ a.date-picker {
     color: #FFFFFF;
     cursor: pointer;
     float: left;
-    height: 16px;
+    height: 18px;
     margin: 0;
     overflow:hidden;
     padding: 0;
@@ -1714,6 +1719,7 @@ content
 .content{
 	width:100%;
 	overflow:hidden;
+	min-width:750px;
 	width: expression(document.body.clientWidth < 750? "750px": "100%" );
 }
 /* ---------------------------
@@ -1831,6 +1837,9 @@ menusidebar
 	background-color: #E0E0E0;
 	line-height:18px;                     
 }
+.menusidebar span, .menusidebarover span{
+	margin-right:5px;
+}
 .dataTableHeadingContent .title_link{
     font-size: 11px;
     font-weight:bold;
@@ -1845,3 +1854,7 @@ google hack
       margin-top:-4px;
       margin-bottom:-2px;
 }}
+.micro_content{
+	width:100%;
+	overflow:hidden;
+}

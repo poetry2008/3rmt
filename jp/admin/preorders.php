@@ -1636,8 +1636,8 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     <!-- orders status history -->
       <tr>
         <td class="main" align="left">
-    <table border="1" cellspacing="0" cellpadding="5">
-      <tr>
+    <table border="0" cellspacing="2" cellpadding="5" bgcolor="#cccccc">
+      <tr bgcolor="#ffffff">
         <td class="smallText" align="center"><b><?php echo TABLE_HEADING_DATE_ADDED; ?></b></td>
         <td class="smallText" align="center" nowrap="true"><b><?php echo TABLE_HEADING_CUSTOMER_NOTIFIED; ?></b></td>
         <td class="smallText" align="center" nowrap="true"><b><?php echo TABLE_HEADING_STATUS; ?></b></td>
@@ -1651,7 +1651,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
         while ($orders_history = tep_db_fetch_array($orders_history_query)) {
           $select_select = $orders_history['orders_status_id'];
           echo 
-             '    <tr>' . "\n" .
+             '    <tr bgcolor="#ffffff">' . "\n" .
              '      <td class="smallText" align="center">' . tep_datetime_short($orders_history['date_added']) . '</td>' . "\n" .
              '      <td class="smallText" align="center">';
           if ($orders_history['customer_notified'] == '1') {
@@ -1671,8 +1671,8 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
           }
       } else {
         echo
-           '    <tr>' . "\n" .
-           '      <td class="smallText" colspan="5">' . TEXT_NO_ORDER_HISTORY . '</td>' . "\n" .
+           '    <tr bgcolor="#ffffff">' . "\n" .
+           '      <td class="smallText" colspan="6">' . TEXT_NO_ORDER_HISTORY . '</td>' . "\n" .
            '    </tr>' . "\n";
       }
   ?>

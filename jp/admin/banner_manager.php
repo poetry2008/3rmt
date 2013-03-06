@@ -248,8 +248,58 @@
 <title><?php echo HEADING_TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
+<script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script language="javascript"><!--
+<?php //弹出新建日历?>
+function open_new_calendar()
+{
+  var is_open = $('#toggle_open').val(); 
+  if (is_open == 0) {
+    browser_str = navigator.userAgent.toLowerCase(); 
+    if (browser_str.indexOf("msie 9.0") > 0) {
+      $('#new_yui3').css('margin-left', '-170px'); 
+    }
+    $('#toggle_open').val('1'); 
+    YUI().use('calendar', 'datatype-date',  function(Y) {
+        var calendar = new Y.Calendar({
+            contentBox: "#mycalendar",
+            width:'170px',
+        }).render();
+      var dtdate = Y.DataType.Date;
+      calendar.on("selectionChange", function (ev) {
+        var newDate = ev.newSelection[0];
+        $("#input_date_scheduled").val(dtdate.format(newDate)); 
+        $('#toggle_open').val('0');
+        $('#toggle_open').next().html('<div id="mycalendar"></div>');
+      });
+    });
+  }
+}
+function open_update_calendar()
+{
+  var is_open = $('#toggle_open_end').val(); 
+  if (is_open == 0) {
+    browser_str = navigator.userAgent.toLowerCase(); 
+    if (browser_str.indexOf("msie 9.0") > 0) {
+      $('#end_yui3').css('margin-left', '-170px'); 
+    }
+    $('#toggle_open_end').val('1'); 
+    YUI().use('calendar', 'datatype-date',  function(Y) {
+        var calendar = new Y.Calendar({
+            contentBox: "#mycalendar_end",
+            width:'170px',
+        }).render();
+      var dtdate = Y.DataType.Date;
+      calendar.on("selectionChange", function (ev) {
+        var newDate = ev.newSelection[0];
+        $("#input_expires_date").val(dtdate.format(newDate)); 
+        $('#toggle_open_end').val('0');
+        $('#toggle_open_end').next().html('<div id="mycalendar_end"></div>');
+      });
+    });
+  }
+}
 function popupImageWindow(url) {
   window.open(url,'popupImageWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=100,height=100,screenX=150,screenY=150,top=150,left=150')
 }
@@ -277,6 +327,29 @@ if($belong_temp_array[0][0] != ''){
 }
 require("includes/note_js.php");
 ?>
+<style>
+#new_yui3 {
+	position: absolute;
+	z-index:200px;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+#new_yui3{
+	position: absolute;
+	z-index:200px;
+}
+}
+#end_yui3 {
+	position: absolute;
+	z-index:200px;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+#end_yui3{
+	position: absolute;
+	z-index:200px;
+}
+}
+
+</style>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
@@ -290,7 +363,7 @@ require("includes/note_js.php");
 <!-- header_eof //-->
 
 <!-- body //-->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top">
   <table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
@@ -437,14 +510,32 @@ $banner_query = tep_db_query("
           </tr>
           <tr>
             <td class="main" nowrap><?php echo TEXT_BANNERS_SCHEDULED_AT; ?><br><small>(dd/mm/yyyy)</small></td>
-            <td valign="top" class="main"><script language="javascript">dateScheduled.writeControl(); dateScheduled.dateFormat="dd/MM/yyyy";</script></td>
+            <td valign="top" class="main">
+            <div class="yui3-skin-sam yui3-g">
+            <input type="text" name="date_scheduled" id="input_date_scheduled" value="<?php $text_date_scheduled = explode('/',$bInfo->date_scheduled); 
+            if($text_date_scheduled[2] != null){ echo $text_date_scheduled[2].'-'.$text_date_scheduled[1].'-'.$text_date_scheduled[0];} ?>"/><a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"><img src="includes/calendar.png" ></a> <input type="hidden" name="toggle_open" value="0" id="toggle_open"> 
+            <div class="yui3-u" id="new_yui3">
+            <div id="mycalendar"></div>
+            </div> 
+            </div>
+            </td>
           </tr>
           <tr>
             <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
           <tr>
             <td valign="top" class="main" nowrap><?php echo TEXT_BANNERS_EXPIRES_ON; ?><br><small>(dd/mm/yyyy)</small></td>
-            <td class="main"><script language="javascript">dateExpires.writeControl(); dateExpires.dateFormat="dd/MM/yyyy";</script><?php echo TEXT_BANNERS_OR_AT . '<br>' . tep_draw_input_field('impressions', isset($bInfo->expires_impressions)?$bInfo->expires_impressions:'', 'maxlength="7" size="7"') . ' ' . TEXT_BANNERS_IMPRESSIONS; ?></td>
+            <td class="main">
+            <div class="yui3-skin-sam yui3-g">
+            <input type="text" name="expires_date" id="input_expires_date" value="<?php $text_expires_date = explode('/',$bInfo->expires_date); 
+            if($text_expires_date[2] != null && $text_expires_date[2] != 0000 ){ 
+              echo $text_expires_date[2].'-'.$text_expires_date[1].'-'.$text_expires_date[0];} ?>" /><a href="javascript:void(0);" onclick="open_update_calendar();" class="dpicker"><img src="includes/calendar.png" ></a>
+            <input type="hidden" name="toggle_open_end" value="0" id="toggle_open_end"> 
+            <div class="yui3-u" id="end_yui3">
+            <div id="mycalendar_end"></div>
+            </div> 
+            </div>
+          <?php echo TEXT_BANNERS_OR_AT . '<br>' . tep_draw_input_field('impressions', isset($bInfo->expires_impressions)?$bInfo->expires_impressions:'', 'maxlength="7" size="7"') . ' ' . TEXT_BANNERS_IMPRESSIONS; ?></td>
           </tr>
         </table></td>
       </tr>
@@ -454,7 +545,6 @@ $banner_query = tep_db_query("
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="2">
           <tr>
-            <td class="main"><?php echo TEXT_BANNERS_BANNER_NOTE . '<br>' . TEXT_BANNERS_INSERT_NOTE . '<br>' . TEXT_BANNERS_EXPIRCY_NOTE . '<br>' . TEXT_BANNERS_SCHEDULE_NOTE; ?></td>
             <td class="main" align="right" valign="top" nowrap><?php echo
             (($form_action == 'insert') ? tep_html_element_submit(IMAGE_INSERT) :
              tep_html_element_submit(IMAGE_SAVE)). '&nbsp;&nbsp;<a class="new_product_reset" href="' .  tep_href_link(FILENAME_BANNER_MANAGER, 'page=' .(isset($_GET['page'])?$_GET['page']:'') . '&bID=' .  (isset($_GET['bID'])?$_GET['bID']:'') .  (isset($_GET['lsite_id'])?('&site_id='.$_GET['lsite_id']):'')) .  '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?></td>

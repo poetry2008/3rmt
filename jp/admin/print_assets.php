@@ -93,7 +93,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="compatible_print">
 <tr>
 <td width="100%" valign="top">
 <div class="print_assets_title">
@@ -102,13 +102,17 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
 <div class="breadcreumb_asset">
 <?php 
   if(isset($_GET['pid'])&&$_GET['pid']){
+  echo "<a href='/admin/index.php'>";
   echo TEXT_TOP;
+  echo "</a>";
   echo '&nbsp;&gt;&gt;&nbsp;';
   echo tep_output_generated_category_path_asset($_GET['pid'], 'product');
   echo '&nbsp;&gt;&gt;&nbsp;';
   echo  tep_get_products_name($_GET['pid'],0,$_GET['site_id']);
   }else{
+    echo "<a href='/admin/index.php'>";
     echo TEXT_TOP;
+    echo "</a>";
     if($_GET['product_categories_id']){
       echo '&nbsp;&gt;&gt;&nbsp;';
       echo tep_output_generated_category_path_asset($_GET['product_categories_id'], 'category');

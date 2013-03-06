@@ -3201,14 +3201,14 @@ color: #FF6600;
 }
 a.dpicker {
 	width: 16px;
-	height: 16px;
+	height: 18px;
 	border: none;
 	color: #fff;
 	padding: 0;
 	margin: 0;
 	overflow: hidden;
-        display:block;	
-        cursor: pointer;
+    display:block;	
+    cursor: pointer;
 	background: url(./includes/calendar.png) no-repeat; 
 	float:left;
 }

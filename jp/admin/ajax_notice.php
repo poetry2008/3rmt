@@ -95,9 +95,9 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
       echo '</td>';
       echo '<td align="right">'; 
       if ($notice_list['type'] == '0') {
-        echo '&nbsp;<a href="javascript:void(0);" onclick="delete_alarm_notice(\''.$notice_list['id'].'\', \'1\');"><img src="images/icons/note_close.gif" alt="close"></a>'; 
+        echo '&nbsp;<a href="javascript:void(0);" onclick="delete_alarm_notice(\''.$notice_list['id'].'\', \'1\');"><img src="images/icons/del_img.gif" alt="close"></a>'; 
       } else {
-        echo '&nbsp;<a href="javascript:void(0);" onclick="delete_micro_notice(\''.$notice_list['id'].'\', \'1\');"><img src="images/icons/note_close.gif" alt="close"></a>'; 
+        echo '&nbsp;<a href="javascript:void(0);" onclick="delete_micro_notice(\''.$notice_list['id'].'\', \'1\');"><img src="images/icons/del_img.gif" alt="close"></a>'; 
       }
       echo '</td>'; 
       echo '</tr>'; 

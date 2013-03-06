@@ -98,7 +98,7 @@ require("includes/note_js.php");
     require(DIR_WS_INCLUDES . 'header.php');
     ?>
     </div>
-    <table border="0" width="100%" cellspacing="2" cellpadding="2">
+    <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
     <tr>
     <?php
     if ($ocertify->npermission >= 10) {

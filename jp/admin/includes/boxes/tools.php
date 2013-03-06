@@ -48,8 +48,7 @@
 ?>
             <table cellspacing="0" cellpadding="2" border="0" width="150"> 
               <tr>
-              <td onmouseout="this.className='menusidebar'" onmouseover="this.className='menusidebarover';this.style.cursor='hand'" class="menusidebar" style="">&nbsp;<?php 
-              echo tep_image(DIR_WS_MENU_ICON . 'icon_tool.gif');?> <a class="menuBoxHeading_Link" href="javascript:void(0);" onclick="toggle_lan('col7');"><?php echo BOX_HEADING_TOOLS;?></a>&nbsp; 
+              <td onmouseout="this.className='menusidebar'" onmouseover="this.className='menusidebarover';this.style.cursor='hand'" class="menusidebar" style="">&nbsp;<span><?php echo tep_image(DIR_WS_MENU_ICON . 'icon_tool.gif');?></span><span><a class="menuBoxHeading_Link" href="javascript:void(0);" onclick="toggle_lan('col7');"><?php echo BOX_HEADING_TOOLS;?></a></span>&nbsp; 
               </td>
               </tr>
             </table> 
@@ -108,7 +107,7 @@
      echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_points.gif').'</span><span><a class="menuBoxContent_Link" href="' .  tep_href_link(FILENAME_POINT_EMAIL) .  '">' . BOX_TOOLS_POINT_EMAIL_MANAGER .  '</a></span></div>';
      }
      if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_WHOS_ONLINE){
-     echo ' <div class="sidebarselected">' .  tep_image(DIR_WS_MENU_ICON . 'icon_online_user.gif').'</span><span><a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_WHOS_ONLINE) .  '">' . BOX_TOOLS_WHOS_ONLINE . '</a></span></div>';
+     echo ' <div class="sidebarselected"><span>' .  tep_image(DIR_WS_MENU_ICON . 'icon_online_user.gif').'</span><span><a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_WHOS_ONLINE) .  '">' . BOX_TOOLS_WHOS_ONLINE . '</a></span></div>';
      }else{
      echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar"><span class="menuBoxContent_image">' .  tep_image(DIR_WS_MENU_ICON . 'icon_online_user.gif').'</span><span><a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_WHOS_ONLINE) .  '">' . BOX_TOOLS_WHOS_ONLINE . '</a></span></div>';
      }

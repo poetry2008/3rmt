@@ -337,25 +337,29 @@ require("includes/note_js.php");
                 <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
               <tr>
-                <td class="smallText"><b><?php echo SEARCH_MAIL_PRODUCTS_NAME; ?></b><br><?php echo $_POST['se_pname']; ?></td>
+                <td class="main"><?php echo SEARCH_MAIL_PRODUCTS_NAME; ?></td>
+                <td><?php echo $_POST['se_pname']; ?></td>
               </tr>
               <tr>
                 <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
               <tr>
-                <td class="smallText"><b><?php echo SEARCH_MAIL_TITLE; ?></b><br><?php echo $_POST['se_mail']; ?></td>
+                <td class="main" nowrap><?php echo SEARCH_MAIL_TITLE; ?></td>
+                <td><?php echo $_POST['se_mail']; ?></td>
               </tr>
               <tr>
                 <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
               <tr>
-                <td class="smallText"><b><?php echo SEARCH_MAIL_CUSTOMERS_NAME; ?></b><br><?php echo $_POST['se_cname']; ?></td>
+                <td class="main"><?php echo SEARCH_MAIL_CUSTOMERS_NAME; ?></td>
+                <td><?php echo $_POST['se_cname']; ?></td>
               </tr>
               <tr>
                 <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
               <tr>
-                <td class="smallText"><b><?php echo SEARCH_MAIL_SITENAME; ?></b><br><?php echo $_POST['se_site']; ?></td>
+                <td class="main"><?php echo SEARCH_MAIL_SITENAME; ?></td>
+                <td><?php echo $_POST['se_site']; ?></td>
               </tr>
               <tr>
                 <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>

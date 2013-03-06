@@ -223,34 +223,34 @@ require("includes/note_js.php");
         <td><table border="0" cellspacing="0" cellpadding="2">
           <tr>
             <td class="main" width="120"><?php echo ENTRY_SITE; ?></td>
-            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . (isset($_GET['latest_news_id']) && $_GET['latest_news_id'] && $latest_news?tep_get_site_name_by_id($latest_news['site_id']):tep_site_pull_down_menu(isset($latest_news['site_id'])?$latest_news['site_id']:'',true,true)); ?></td>
+            <td class="main"><?php echo (isset($_GET['latest_news_id']) && $_GET['latest_news_id'] && $latest_news?tep_get_site_name_by_id($latest_news['site_id']):tep_site_pull_down_menu(isset($latest_news['site_id'])?$latest_news['site_id']:'',true,true)); ?></td>
           </tr>
           <tr>
             <td class="main" width="120"><?php echo TEXT_LATEST_NEWS_HEADLINE; ?></td>
-            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('headline', isset($latest_news['headline'])?$latest_news['headline']:'', '', true); ?></td>
+            <td class="main"><?php echo tep_draw_input_field('headline', isset($latest_news['headline'])?$latest_news['headline']:'', '', true); ?></td>
           </tr>
           <tr>
             <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
           <tr>
             <td class="main" width="120" valign="top"><?php echo TEXT_LATEST_NEWS_CONTENT; ?></td>
-            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_textarea_field('content', 'soft', '70', '15',isset($latest_news['content'])? stripslashes($latest_news['content']):''); ?>
-  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#STORE_NAME#
+            <td class="main"><?php echo tep_draw_textarea_field('content', 'soft', '70', '15',isset($latest_news['content'])? stripslashes($latest_news['content']):''); ?>
+  <br>#STORE_NAME#
   </td>
           </tr>
           <tr>
             <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
           <tr>
-            <td class="main"><?php echo TEXT_LATEST_NEWS_IMAGE; ?></td>
-            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_file_field('news_image') . '<br>' . tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . (isset($latest_news['news_image'])?$latest_news['news_image']:'') . tep_draw_hidden_field('news_image',isset($latest_news['news_image'])? $latest_news['news_image']:''); ?></td>
+            <td class="main" valign="top"><?php echo TEXT_LATEST_NEWS_IMAGE; ?></td>
+            <td class="main"><?php echo tep_draw_file_field('news_image') . '<br>' . tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . (isset($latest_news['news_image'])?$latest_news['news_image']:'') . tep_draw_hidden_field('news_image',isset($latest_news['news_image'])? $latest_news['news_image']:''); ?></td>
           </tr>     
           <tr>
             <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
           <tr>
             <td class="main" valign="top"><?php echo TEXT_LATEST_NEWS_IMAGE_DESCRIPTION; ?></td>
-            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_textarea_field('news_image_description', 'soft', '70', '7', isset($latest_news['news_image_description'])?stripslashes($latest_news['news_image_description']):''); ?></td>
+            <td class="main"><?php echo tep_draw_textarea_field('news_image_description', 'soft', '70', '7', isset($latest_news['news_image_description'])?stripslashes($latest_news['news_image_description']):''); ?></td>
           </tr>     
         </table></td>
       </tr>

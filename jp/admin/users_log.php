@@ -427,7 +427,7 @@ function PageBodyTable($mode='t') {
   switch ($mode) {
   case 't':
     echo '<!-- body //-->' . "\n";
-    echo '<table border="0" width="100%" cellspacing="2" cellpadding="2">' . "\n";
+    echo '<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">' . "\n";
     echo '  <tr>' . "\n";
     echo '    <td width="' . BOX_WIDTH . '" valign="top"><table border="0" width="' . BOX_WIDTH . '" cellspacing="1" cellpadding="1" class="columnLeft">' . "\n";
     break;
@@ -483,6 +483,7 @@ function PageBody($mode='t', $stitle = "", $notes_flag='') {
   返回值: 无
  --------------------------------------*/
 function PageFooter() {
+  echo "</table>";
   echo "<!-- footer //-->\n";
   require(DIR_WS_INCLUDES . 'footer.php');
   echo "\n<!-- footer_eof //-->\n";
@@ -538,7 +539,7 @@ function PageFooter() {
 
   PageBody('u');        // 页面：结束
   PageBodyTable('u');     // 页面布局表：结束
-  PageFooter();       // 页脚的显示
 
+  PageFooter();       // 页脚的显示
   require(DIR_WS_INCLUDES . 'application_bottom.php');
 ?>

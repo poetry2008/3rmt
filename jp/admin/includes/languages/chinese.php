@@ -201,7 +201,7 @@ define('PASSWORD_HIDDEN', '********');
 // images
 define('IMAGE_ANI_SEND_EMAIL', '发送E-Mail');
 define('IMAGE_BACK', '返回');
-define('IMAGE_NEXT', '向下');
+define('IMAGE_NEXT', '下一项');
 define('IMAGE_BACKUP', '备份');
 define('IMAGE_CANCEL', '取消');
 define('IMAGE_CONFIRM', '确认');
@@ -728,7 +728,7 @@ define('TEXT_DATE_UPDATE','更新日:');
 define('MESSAGE_FINISH_ORDER_TEXT', '订单ID%s的成功：交易完了');
 define('TEXT_EOF_ERROR_MSG','数据发送失败。请重新发送。');
 define('TEXT_UNSET_DATA','没有数据');
-define('IMAGE_PREV', '向上');
+define('IMAGE_PREV', '上一项');
 define('TEXT_POPUP_WINDOW_SHOW','旧');
 define('TEXT_POPUP_WINDOW_EDIT','新');
 define('SIGNAL_GREEN', '绿');

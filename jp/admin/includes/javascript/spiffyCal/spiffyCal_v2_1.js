@@ -714,6 +714,7 @@ function ctlSpiffyCalendarBox(strVarName, strFormName, strTextBoxName, strBtnNam
 			}
 			else {
 				strTempVal=strDefaultValue;
+                                alert(strTempVal);
 			}
 		}
 		else {

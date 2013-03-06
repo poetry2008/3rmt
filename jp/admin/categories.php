@@ -1470,8 +1470,10 @@ function get_cart_products(){
 }
 <?php //分类树的开启和关闭?>
 function display(){
+  offset = $(".pageHeading").offset();
   var categories_tree = document.getElementById('categories_tree'); 
   if(categories_tree.style.display == 'none' || categories_tree.style.display == ''){
+    categories_tree.style.top = offset.top + 'px';
     categories_tree.style.display = 'block';
   }else{
     categories_tree.style.display = 'none';
@@ -1856,7 +1858,7 @@ require("includes/note_js.php");
 <style type="text/css">
 a.dpicker {
 width: 16px;
-height: 16px;
+height: 18px;
 border: none;
 color: #fff;
 padding: 0;

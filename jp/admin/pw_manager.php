@@ -518,14 +518,14 @@ function mk_pwd(){
 }
 a.dpicker {
 	width: 16px;
-	height: 16px;
+	height: 18px;
 	border: none;
 	color: #fff;
 	padding: 0;
-	margin: 0;
+	margin:1px 0 0 1px;
 	overflow: hidden;
-        display:block;	
-        cursor: pointer;
+    display:block;	
+    cursor: pointer;
 	background: url(./includes/calendar.png) no-repeat; 
 	float:left;
 } 
@@ -764,7 +764,7 @@ require("includes/note_js.php");
 ?>
 <!-- header_eof -->
 <!-- body -->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
 <?php
   if ($ocertify->npermission >= 10) {

@@ -194,7 +194,7 @@ echo  REFRESH_TIME.$ref_s."&nbsp".SECOND_TEXT;
 </td>
 <td align="right">
 <?php 
-echo "<a   href='".tep_href_link(FILENAME_NEW_CUSTOMERS,"action=refresh")."'>".REFRESH."</a>";
+echo "<a href='".tep_href_link(FILENAME_NEW_CUSTOMERS,"action=refresh")."'><button type='button'>".REFRESH."</button></a>";
  ?>
 </td>
 </tr></table>        

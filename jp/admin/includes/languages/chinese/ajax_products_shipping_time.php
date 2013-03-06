@@ -4,8 +4,8 @@
  */
 
 define('TABLE_TITLE_1','的设置');
-define('TABLE_PREV','＜前');
-define('TABLE_NEXT','后＞');
+define('TABLE_PREV','＜上一项');
+define('TABLE_NEXT','下一项＞');
 define('TABLE_LIST_1','显示名');
 define('TABLE_LIST_2','送达时间');
 define('TABLE_LIST_3','时间段');

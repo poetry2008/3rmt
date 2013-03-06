@@ -35,7 +35,7 @@ require("includes/note_js.php");
 <!-- header_eof -->
 
 <!-- body -->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
 <!-- left_navigation -->
@@ -64,15 +64,12 @@ require("includes/note_js.php");
   */ ?>
       <tr>
         <td>
-        <div align="center">
-
     <form action="<?php echo tep_href_link('referer.php'); ?>" method="get">
     <input type="hidden" name="" value="">
     <input type="hidden" name="" vlaue="">
-    <fieldset>
-    <table  border="0" align="center" cellpadding="0" cellspacing="0">
+    <table  border="0"  cellpadding="0" cellspacing="0">
     <tr>
-      <td class="smallText">
+      <td>
       <input type="hidden" name="site_id" value="<?php echo $_GET['site_id'];?>">
       <input type="hidden" name="type" value="<?php echo $_GET['type'];?>">
       <?php echo KEYWORDS_SEARCH_START_TEXT;?> 
@@ -104,7 +101,7 @@ require("includes/note_js.php");
       </select>
       <?php echo DAY_TEXT;?> </td>
       <td width="40" align="center">～</td>
-      <td class="smallText">
+      <td>
       <?php echo KEYWORDS_SEARCH_END_TEXT;?> 
       <select name="ey">
       <?php
@@ -145,11 +142,8 @@ require("includes/note_js.php");
         <td>&nbsp;</td>
         <td><input type="submit" value="<?php echo IMAGE_SEARCH?>"></td>
       </tr>
-    </table></fieldset>
+    </table><br>
     </form>
-
-
-        </div>
         <?php tep_site_filter('referer.php');?>
         <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>

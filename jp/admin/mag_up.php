@@ -109,16 +109,72 @@ require("includes/note_js.php");
   }
     echo '</P>';
     fclose($file);
-    echo "<font color='#CC0000'><b>".$cnt.NUMBERS_UP."</b></font>";
-  }else{
-    echo "<font color='#CC0000'><b>".UNABLE_UP."<br>".REFERENCE_CSV."</b></font>";
-  }
-  
-  echo '<br><br><br><a href="mag_up.php">'.BUTTON_BACK.'</a>';
+    echo "<font color='#CC0000' size='2'><b>".$cnt.NUMBERS_UP."</b></font>";
+  }else{ 
+    $image_upload_error = "<font color='#CC0000' size='2'><b>".UNABLE_UP."<br>".REFERENCE_CSV."</b></font>";
+    ?>
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
+  <tr>
+    <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
+<!-- left_navigation -->
+<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
+<!-- left_navigation_eof -->
+    </table></td>
+<!-- body_text -->
+    <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="100%"><table border="0" width="100%" cellspacing="0" cellpadding="0">
+          <tr>
+
+            <td class="pageHeading"><?php echo MAG_UP_TITLE_TEXT;?></td>
+            <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?></td>
+          </tr>
+        </table></td>
+      </tr>
+      <tr>
+        <td><table border="0" width="100%" cellspacing="0" cellpadding="2">
+          <tr><FORM method="POST" action="mag_up.php?action=upload" enctype="multipart/form-data">
+            <td><table border="0" cellpadding="0" cellspacing="2">
+                <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+              </tr>
+              <tr>
+                <td colspan="2"><?php echo tep_site_pull_down_menu('', false);?></td>
+              </tr>
+              <tr>
+                <td colspan="2" align="right"><input type=file name=products_csv size=50></td>
+              </tr>
+              <tr>
+                <td><?php echo $image_upload_error; ?></td>
+              </tr>
+              <tr>
+	      <td colspan="2" align="left"><input type=submit name=download value="<?php echo BUTTON_MAG_UP;?>"></td>
+              </tr>
+            </table></td>
+      <input type="hidden" name="max_file_size" value="1000000">
+          </form></tr>
+<!-- body_text_eof -->
+        </table></td>
+      </tr>
+    </table>
+    </div> 
+    </div>
+    </td>
+  </tr>
+</table>
+<!-- body_eof -->
+<!-- footer -->
+<?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
+<!-- footer_eof -->
+<br>
+</body>
+</html>
+
+<?php 
+   }
   } else {
 ?>
 <!-- body -->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
 <!-- left_navigation -->
@@ -169,8 +225,6 @@ require("includes/note_js.php");
   </tr>
 </table>
 <!-- body_eof -->
-
-
 <!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 <!-- footer_eof -->

@@ -348,7 +348,9 @@ $faq_query = tep_db_query("select title from ".TABLE_FAQ_CATEGORIES_DESCRIPTION.
 <?php //显示/关闭分类树?>
 function display(){
     var categories_tree = document.getElementById('categories_tree'); 
+    offset = $("#categories_block").offset();
       if(categories_tree.style.display == 'none'){
+           categories_tree.style.top = offset.top + 'px';
            categories_tree.style.display = 'block';
               }else{
                     categories_tree.style.display = 'none';
@@ -407,7 +409,7 @@ require("includes/note_js.php");
                 ?>
                 </div>
 <!-- body //-->
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
 <!-- left_navigation //-->
@@ -463,7 +465,7 @@ require("includes/note_js.php");
           </tr>
         </table></td>
       </tr>
-      <tr>
+      <tr id="categories_block">
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td valign="top">
@@ -811,14 +813,13 @@ require("includes/note_js.php");
 
                     $even = 'dataTableSecondRow';
                     $odd = 'dataTableRow';
-                    if(isset($newColor) && $newColor == $odd) {
+                    if(isset($nowColor) && $nowColor == $odd) {
                       $nowColor = $even;
                     }else{
                       $nowColor = $odd;
                     }
 
-                    if((isset($qInfo)&&is_object($qInfo))&&
-                        ($_faq_info['faq_question_id'] == $qInfo->faq_question_id)){
+                    if((isset($qInfo)&&is_object($qInfo))&& ($_faq_info['faq_question_id'] == $qInfo->faq_question_id)){
                       echo '<tr class="dataTableRowSelected" 
                         onmouseover="this.style.cursor=\'hand\'" 
                         >' . "\n";
