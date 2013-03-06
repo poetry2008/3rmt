@@ -71,7 +71,7 @@ class HM_Form extends DbRecord
     echo "<input type='hidden' name='form_id' value='".$this->id."' /><span id='canEndDiv'>";
     echo $this->end_user;
     echo '</span>';
-    echo "<span id='preorders_finish' style='display:none;'><button onclick='finishTheOrder()'  id='canEnd' disabled='disabled'>".OA_FORM_PREORDER_FINISH."</button></span>";
+    echo "<span id='preorders_finish' style='display:none;'><button onclick='finishTheOrder()'  id='canEnd'>".OA_FORM_PREORDER_FINISH."</button></span>";
     echo "</td>";
     // if(!tep_orders_finishqa($this->orders_id)) {
     //echo "<button onclick='finishTheOrder()'  id='canEnd' >取引完了</button>";
