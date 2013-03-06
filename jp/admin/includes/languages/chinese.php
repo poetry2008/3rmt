@@ -757,3 +757,4 @@ define('TEXT_DATE_THURSDAY', '星期四');
 define('TEXT_DATE_FRIDAY', '星期五');
 define('TEXT_DATE_STATURDAY', '星期六');
 define('TEXT_DATE_SUNDAY', '星期日');
+define('REVIEWS_CHARACTER_TOTAL','评论字数 ');

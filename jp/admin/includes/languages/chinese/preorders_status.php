@@ -28,7 +28,7 @@ define('TEXT_INFO_ORDERS_STATUS_TITLE', '邮件标题');
 
 define('TEXT_EDIT_ORDERS_STATUS_IMAGE', '指定在状态里显示的图标');
 
-define('TEXT_ORDERS_STATUS_FINISHED', '订单结束');
+define('TEXT_ORDERS_STATUS_FINISHED', '预约结束');
 
 define('PREORDERS_STATUS_EXPLANATION_TEXT', '姓名：${NAME}<br>邮箱地址：${MAIL}<br>订购日期：${PREORDER_D}<br>订单号码：${PREORDER_N}<br>支付方式：${PAY}<br>订单金额：${ORDER_M}<br>交易方式：${TRADING}<br>订单状态：${ORDER_S}<br>交易人物名：${ORDER_A}<br>网站名：${SITE_NAME}<br>网站URL：${SITE_URL}<br>联系邮箱：${SUPPORT_EMAIL}<br>确保期限：${ENSURE_TIME}<br>期望个数:${PRODUCTS_QUANTITY}<br>期限:${EFFECTIVE_TIME}<br>商品名:${PRODUCTS_NAME}<br>商品单价:${PRODUCTS_PRICE}<br>小计:${SUB_TOTAL}');
 

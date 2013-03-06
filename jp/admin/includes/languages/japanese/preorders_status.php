@@ -28,7 +28,7 @@ define('TEXT_INFO_ORDERS_STATUS_TITLE', 'メールタイトル');
 //define('TEXT_EDIT_ORDERS_STATUS_IMAGE', 'メール&#22270;像');
 define('TEXT_EDIT_ORDERS_STATUS_IMAGE', 'ステータスに表示するアイコンを指定');
 
-define('TEXT_ORDERS_STATUS_FINISHED', '完了注文');
+define('TEXT_ORDERS_STATUS_FINISHED', '予約終了');
 //mail本文 add end
 define('PREORDERS_STATUS_EXPLANATION_TEXT', '名前：${NAME}<br>メールアドレス：${MAIL}<br>注文日：${PREORDER_D}<br>注文番号：${PREORDER_N}<br>支払い方法：${PAY}<br>注文金額：${ORDER_M}<br>注文ステータス：${ORDER_S}<br>自社キャラ名：${ORDER_A}<br>サイト名：${SITE_NAME}<br>サイトのURL：${SITE_URL}<br>お問い合わせ用メールアドレス：${SUPPORT_EMAIL}<br>確保期限：${ENSURE_TIME}<br>希望個数:${PRODUCTS_QUANTITY}<br>商品名:${PRODUCTS_NAME}<br>商品単価:${PRODUCTS_PRICE}<br>小計:${SUB_TOTAL}');
 

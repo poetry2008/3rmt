@@ -759,3 +759,6 @@ define('NOTICE_LESS_PRODUCT_OPTION_TEXT', '商品の登録内容が更新され�
 define('NOTICE_LESS_PRODUCT_PRE_OPTION_TEXT', '商品の登録内容が更新されています。この商品を変更したい場合は、最初から予約注文を作成しなおす必要があります。');
 define('NOTICE_COMPLETE_ERROR_TEXT','のデータに不備があります。ページを更新し、最初からやりなおしてください。');
 define('NOTICE_STOCK_ERROR_TEXT','現状がデータベースと一致しません。表示されている情報が古いので、ページを更新してから再度入力してください。');
+define('BUTTON_MAG_UP','アップロード');
+define('BUTTON_MAG_DL','ダウンロード');
+define('REVIEWS_CHARACTER_TOTAL','レビュー文字数 ');
