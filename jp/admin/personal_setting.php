@@ -16,6 +16,7 @@ if($_GET['action'] == 'update'){
   $preorders_sort = tep_db_prepare_input($_POST['preorders_sort']);
   $personal_language = tep_db_prepare_input($_POST['personal_language']);
   $is_transaction = tep_db_prepare_input($_POST['is_transaction']);
+  $preorders_is_transaction = tep_db_prepare_input($_POST['preorders_is_transaction']);
   
   $error = false;
   //订单管理页是否选择网站 
@@ -161,6 +162,18 @@ if($_GET['action'] == 'update'){
     }
     $personal_is_transaction_str = serialize($personal_is_transaction_temp_array);
     tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$personal_is_transaction_str."' where configuration_key='PERSONAL_SETTING_TRANSACTION_FINISH'");
+
+    //预约订单取引完了，是否在列表中显示
+    $personal_preorders_is_transaction_temp_array = array();
+    if(PERSONAL_SETTING_PREORDERS_TRANSACTION_FINISH == ''){
+      $personal_preorders_is_transaction_temp_array = array($ocertify->auth_user=>$preorders_is_transaction);
+    }else{
+      $personal_preorders_is_transaction_array = unserialize(PERSONAL_SETTING_PREORDERS_TRANSACTION_FINISH); 
+      $personal_preorders_is_transaction_array[$ocertify->auth_user] = $preorders_is_transaction;
+      $personal_preorders_is_transaction_temp_array = $personal_preorders_is_transaction_array;
+    }
+    $personal_preorders_is_transaction_str = serialize($personal_preorders_is_transaction_temp_array);
+    tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$personal_preorders_is_transaction_str."' where configuration_key='PERSONAL_SETTING_PREORDERS_TRANSACTION_FINISH'");
     
     $messageStack->add_session(TEXT_ONE_TIME_CONFIG_SAVE, 'success');
     tep_redirect(tep_href_link(FILENAME_PERSONAL_SETTING,''));
@@ -490,6 +503,26 @@ require("includes/note_js.php");
                  <option value="">--
                  <option value="0"<?php echo $preorders_sort == '0' ? ' selected' : '';?>><?php echo TEXT_SELECT_ASC;?>
                  <option value="1"<?php echo $preorders_sort == '1' ? ' selected' : '';?>><?php echo TEXT_SELECT_DESC?>
+               </select>
+               <?php
+               //预约订单取引完了，是否在订单列表中显示
+               if (PERSONAL_SETTING_PREORDERS_TRANSACTION_FINISH != '') {
+                 $personal_preorders_is_transaction_array = unserialize(PERSONAL_SETTING_PREORDERS_TRANSACTION_FINISH);
+                 if(array_key_exists($ocertify->auth_user, $personal_preorders_is_transaction_array)){
+                   $preorders_is_transaction = $personal_preorders_is_transaction_array[$ocertify->auth_user]; 
+                 }else{
+                   $preorders_is_transaction = '0'; 
+                 }
+               } else {
+                 $preorders_is_transaction = '0'; 
+               }
+               if (isset($_POST['preorders_is_transaction'])) {
+                 $preorders_is_transaction = $_POST['preorders_is_transaction']; 
+               }
+               ?>
+               <select name="preorders_is_transaction">
+                 <option value="0"<?php echo $preorders_is_transaction == '0' ? ' selected' : '';?>><?php echo TEXT_PERSONAL_SETTING_PREORDERS_HIDE_TRANSACTION_FINISH;?></option> 
+                 <option value="1"<?php echo $preorders_is_transaction == '1' ? ' selected' : '';?>><?php echo TEXT_PERSONAL_SETTING_PREORDERS_SHOW_TRANSACTION_FINISH;?></option> 
                </select>
                <?php
                  if(isset($preorders_sort_error) && $preorders_sort_error != ''){

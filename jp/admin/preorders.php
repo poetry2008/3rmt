@@ -2325,6 +2325,16 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
   $where_payment = '';
   $sort_table = '';
   $sort_where = ''; 
+  //预约终止的订单是否显示到预约订单列表中
+  $is_show_transaction = false; 
+  if (PERSONAL_SETTING_PREORDERS_TRANSACTION_FINISH != '') {
+    $show_transaction_array = @unserialize(PERSONAL_SETTING_PREORDERS_TRANSACTION_FINISH);  
+    if (isset($show_transaction_array[$ocertify->auth_user])) {
+      if ($show_transaction_array[$ocertify->auth_user] == '1') {
+        $is_show_transaction = true; 
+      }
+    }
+  }
   if (!isset($_GET['order_sort']) || $_GET['order_sort'] == '') {
     if(PERSONAL_SETTING_PREORDERS_SORT == '' || $sort_setting_flag == true){
       $order_str = 'o.date_purchased DESC'; 
@@ -2914,11 +2924,11 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
                o.site_id,
                o.read_flag
          from " . TABLE_PREORDERS . " o " . $from_payment . $sort_table ."
-         where ".$sort_where." 
-          o.flag_qaf = 0".(($mark_sql_str != '')?' and '.$mark_sql_str:'')." 
+         where ".$sort_where. 
+          (($mark_sql_str != '')?' '.$mark_sql_str:'')." 
           -- and o.orders_status != '6'
           -- and o.orders_status != '8'
-          " . " and o.site_id in (". $site_list_str .")" . $where_payment . $where_type . "
+          " . " and o.site_id in (". $site_list_str .")" .((!$is_show_transaction)?" and o.flag_qaf = 0":''). $where_payment . $where_type . "
          order by ".$order_str;
   }
   // old sort is  order by torihiki_date_error DESC,o.torihiki_date DESC

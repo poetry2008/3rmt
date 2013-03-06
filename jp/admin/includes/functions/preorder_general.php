@@ -246,8 +246,13 @@ function tep_show_preorders_products_info($orders_id) {
     $str .= '</td>'; 
     $str .= '</tr>'; 
   
+    if(defined(constant("SITE_TOPIC_".$orders['site_id']))){
+      $t_topicid = constant("SITE_TOPIC_".$orders['site_id']);
+    }else{
+      $t_topicid = '';
+    }
     $ostGetPara = array( "name"=>urlencode($orders['customers_name']),
-                         "topicid"=>urlencode(constant("SITE_TOPIC_".$orders['site_id'])),
+                         "topicid"=>urlencode($t_topicid),
                          "source"=>urlencode('Email'), 
                          "email"=>urlencode($orders['customers_email_address']));
     $parmStr = '';
@@ -1559,4 +1564,19 @@ function tep_pre_check_less_option_product($products_id, $pro_attr_info)
     return true; 
   }
   return false;
+}
+
+/* -------------------------------------
+    功能: 判断预约订单是否结束 
+    参数: $osid(string) 订单状态id
+    返回值: 预约订单是否结束(boolean) 
+------------------------------------ */
+function tep_preorders_status_finished($osid){
+    $query = tep_db_query("
+        select * 
+        from  ".TABLE_PREORDERS_STATUS."
+        where orders_status_id = '".(int)$osid."'
+        ");
+    $os = tep_db_fetch_array($query);
+    return isset($os['finished']) && $os['finished'];
 }

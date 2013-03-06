@@ -68,9 +68,10 @@ class HM_Form extends DbRecord
       $group->render();
     }
     echo "<tr><td class='main' colspan='3' align='right'>&nbsp;"; 
-    echo "<input type='hidden' name='form_id' value='".$this->id."' /><div id='canEndDiv'>";
+    echo "<input type='hidden' name='form_id' value='".$this->id."' /><span id='canEndDiv'>";
     echo $this->end_user;
-    //echo "<button onclick='finishTheOrder()'  id='canEnd' >".OA_FORM_ORDER_FINISH."</button></div>";
+    echo '</span>';
+    echo "<span id='preorders_finish' style='display:none;'><button onclick='finishTheOrder()'  id='canEnd'>".OA_FORM_PREORDER_FINISH."</button></span>";
     echo "</td>";
     // if(!tep_orders_finishqa($this->orders_id)) {
     //echo "<button onclick='finishTheOrder()'  id='canEnd' >取引完了</button>";
@@ -87,9 +88,10 @@ class HM_Form extends DbRecord
        }else {
          echo "var finished = false;";
        }
-    if($this->status == 6 or $this->status == 8){
+    if(tep_preorders_status_finished($this->status)){
       ?>
       disableQA();
+      $("#preorders_finish").show();
       var canceled = true;
       <?php 
     }else {
@@ -97,8 +99,9 @@ class HM_Form extends DbRecord
       var canceled = false;
 
       <?php 
-    }
+    } 
     ?>
+    if(finished == true){$("#preorders_finish").show();}
     　var canEnd = false;
     <?php //是否显示取引完了按钮?> 
     function checkLockOrder()
@@ -192,8 +195,7 @@ class HM_Form extends DbRecord
         });
       $("#qa_form").find('.clean').each(function(){
           $(this).hide();
-        });
-
+        }); 
 
     }
     <?php //完成预约订单?> 
