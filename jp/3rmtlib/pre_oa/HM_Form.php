@@ -99,8 +99,9 @@ class HM_Form extends DbRecord
       var canceled = false;
 
       <?php 
-    }
+    } 
     ?>
+    if(finished == true){$("#preorders_finish").show();}
     　var canEnd = false;
     <?php //是否显示取引完了按钮?> 
     function checkLockOrder()
