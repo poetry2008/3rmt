@@ -1340,14 +1340,14 @@ function tep_get_preorder_canbe_finish($orders_id){
   $payment_romaji = tep_get_pre_payment_code_by_order_id($orders_id); 
   $oa_form_sql = "select * from ".TABLE_OA_FORM."   where formtype = '".$formtype."' and payment_romaji = '".$payment_romaji."'";
   $res = tep_db_fetch_array(tep_db_query($oa_form_sql));;
-  if(!$res){
+  if(!tep_db_num_rows(tep_db_query($oa_form_sql))){
 
     return false;
   }
   $form_id = $res['id'] ;
   $sql = 'select i.* from oa_form_group fg ,oa_item i where  i.group_id = fg.group_id and i.option like "%require%" and fg.form_id = "'.$form_id .'"';
   $res3  = tep_db_query($sql);
-  if(!tep_db_fetch_array($res3)){
+  if(!tep_db_num_rows($res3)){
 
     return false;
   }
