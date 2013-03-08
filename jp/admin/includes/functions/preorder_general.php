@@ -1347,7 +1347,7 @@ function tep_get_preorder_canbe_finish($orders_id){
   $form_id = $res['id'] ;
   $sql = 'select i.* from oa_form_group fg ,oa_item i where  i.group_id = fg.group_id and i.option like "%require%" and fg.form_id = "'.$form_id .'"';
   $res3  = tep_db_query($sql);
-  if($res3){
+  if(!tep_db_fetch_array($res3)){
 
     return false;
   }
