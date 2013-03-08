@@ -752,10 +752,12 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $notfinish = false;
   $ids = $_POST['oid'];
   $ids_array = explode('_',$ids);
+  $orders_status_finish = true;
+  $orders_finish = false;
   foreach($ids_array as $oid){
     if($oid==''){continue;}
     unset($orders_info_raw);
-	$orders_info_raw = tep_db_query("select payment_method  from ".TABLE_ORDERS." where orders_id = '".$oid."'"); 
+	$orders_info_raw = tep_db_query("select payment_method,orders_status  from ".TABLE_ORDERS." where orders_id = '".$oid."'"); 
     $finish          = tep_get_order_canbe_finish($oid)?1:0;
     $type            = tep_check_order_type($oid);
 	$orders_info = tep_db_fetch_array($orders_info_raw); 
@@ -782,10 +784,19 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
       $notfinish = true;
       }
     }
+    if(!check_order_transaction_button($orders_info['orders_status']) && $orders_status_finish == true){
+
+      $orders_status_finish = false;
+    }
+    if(tep_orders_finishqa($oid) && $orders_finish == false){
+
+      $orders_finish = true;
+    }
   }
   if(!$onsuit && !$tnsuit){
     echo urlencode($orders_info['payment_method']).'_'.$type.'_';
-    echo $notfinish?0:$finish_first;
+    $notfinish = $notfinish?0:$finish_first;
+    echo $notfinish == 0 && $orders_status_finish == true && $orders_finish == false ? 1 : $notfinish;
   }
   //取得 支付类型 及 支付方法
 } else if  (isset($_GET['action'])&&$_GET['action']=='get_oa_groups') {
@@ -831,10 +842,27 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   require_once 'oa/HM_Group.php';
   $res = tep_db_query($sql);
   $bigRender ='';
+  $orders_status_finish_flag = false;
+  $orders_status_finish_js = '';
   foreach($ids_array as $key=>$oid){
     if ($oid ==''){
       unset($ids_array[$key]);
+    }else{
+
+      $orders_status_finish_query = tep_db_query("select orders_status from ". TABLE_ORDERS ." where orders_id='".$oid."'");
+      $orders_status_finish_array = tep_db_fetch_array($orders_status_finish_query);
+      tep_db_free_result($orders_status_finish_query);
+
+      if((tep_orders_finishqa($oid) || check_order_transaction_button($orders_status_finish_array['orders_status'])) && $orders_status_finish_flag == false){
+
+        $orders_status_finish_flag = true;
+      }
     }
+  }
+  if($orders_status_finish_flag == true){
+    $orders_status_finish_js = '<script type="text/javascript">';
+    $orders_status_finish_js .= 'orders_disable();';
+    $orders_status_finish_js .= '</script>';
   }
   while ($item = tep_db_fetch_object($res,'HM_Item')){
     unset($exampleOrder);
@@ -871,6 +899,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
     $bigRender.= $item->init()->render(true).'';
     echo "</tr>";
   }
+  echo $orders_status_finish_js;
   //  echo $bigRender;
 
 } else if (isset($_GET['action'])&&$_GET['action']=='show_right_preorder_info') {
