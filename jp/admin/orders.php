@@ -2471,6 +2471,18 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
 ?>
 <script>
 $(document).ready(function(){ 
+  if($(".dataTableContent").find('input|[type=checkbox][checked]').length!=0){
+    if(document.sele_act.elements["chk[]"]){
+      document.getElementsByName("all_chk")[0].checked = false;
+      for(i = 0; i < document.sele_act.elements["chk[]"].length; i++){
+        document.sele_act.elements["chk[]"][i].checked = false;
+        var tr_id = 'tr_' + document.sele_act.elements["chk[]"][i].value;
+        if(document.getElementById(tr_id).className != 'dataTableRowSelected'){
+          document.getElementById(tr_id).style.backgroundColor = "";
+        }
+      }
+    }
+  }
   if($(".note_head").val()== ""&&$("#orders_list_table").width()< 714){
     $(".box_warp").css('height','100%');
   }

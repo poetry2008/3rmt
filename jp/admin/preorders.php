@@ -706,6 +706,20 @@
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script language="javascript">
+$(document).ready(function(){ 
+  if($(".dataTableContent").find('input|[type=checkbox][checked]').length!=0){
+    if(document.sele_act.elements["chk[]"]){
+      document.getElementsByName("all_chk")[0].checked = false;
+      for(i = 0; i < document.sele_act.elements["chk[]"].length; i++){
+        document.sele_act.elements["chk[]"][i].checked = false;
+        var tr_id = 'tr_' + document.sele_act.elements["chk[]"][i].value;
+        if(document.getElementById(tr_id).className != 'dataTableRowSelected'){
+          document.getElementById(tr_id).style.backgroundColor = "";
+        }
+      }
+    }
+  }
+});
   <?php //选中/非选中网站?>
   function change_site(site_id,flag,site_list,param_url){  
           var ele = document.getElementById("site_"+site_id);
