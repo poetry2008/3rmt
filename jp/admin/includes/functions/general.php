@@ -9682,8 +9682,8 @@ function tep_get_notice_info($return_type = 0)
     $html_str .= '<a href="'.tep_href_link('micro_log.php').'">'.$micro_notice_array['title'].'</a>'; 
     $html_str .= '</td>'; 
     $html_str .= '<td align="right">'; 
-    $html_str .= '<a href="javascript:void(0);"
-      onclick="delete_micro_notice(\''.$micro_notice_array['id'].'\', \'0\');"><img src="images/icons/del_img.gif" alt="close"></a>'; $html_str .= '<script type="text/javascript">$(function () {calc_notice_time(\''.strtotime($micro_notice_array['set_time']).'\', '.$micro_notice_array['id'].', 0);});</script>'; 
+    $html_str .= '<a href="javascript:void(0);" onclick="delete_micro_notice(\''.$micro_notice_array['id'].'\', \'0\');"><img src="images/icons/del_img.gif" alt="close"></a>'; 
+    $html_str .= '<script type="text/javascript">$(function () {calc_notice_time(\''.strtotime($micro_notice_array['set_time']).'\', '.$micro_notice_array['id'].', 0);});</script>'; 
     $html_str .= '</td>'; 
     $html_str .= '</tr>'; 
     $html_str .= '</table>'; 

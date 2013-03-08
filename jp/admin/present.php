@@ -268,9 +268,8 @@ case 'input' :
                             <tr>
                               <td class="main" valign="top" bgcolor="#FFFFFF"><?php echo PRESENT_COMMENT_TEXT;?></td>
                               <td class="main" bgcolor="#FFFFFF">
-                                  <input type="checkbox" name="ht" value="1"><?php echo PRESENT_HTML_READ;?><br>
-                                  <textarea name="text" style="width:65%; height:100px;"></textarea>
-                              </td>
+                <input type="checkbox" name="ht" value="1"><?php echo PRESENT_HTML_READ;?><br>
+                                <textarea name="text" style="width:65%; height:100px;"></textarea></td>
                             </tr>
                             <tr>
                               <td class="main" valign="top" bgcolor="#FFFFFF"><?php echo PRESENT_DATE_TEXT;?></td>

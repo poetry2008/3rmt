@@ -275,10 +275,18 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     </table>
     </div>
     </td>
+    <td>
+    <input type="hidden" name="search" value="1">
+    <?php
+    echo tep_html_element_submit(TEXT_SEARCH,'','assets_submit');
+  ?>
+    </td>
     </tr>
     <tr>
+    <td nowrap >
+    <?php echo TEXT_SEARCH_CATEGORY;?>
+    </td>
     <td>
-    <?php echo TEXT_SEARCH_CATEGORY;?><br>
     <?php
     echo tep_draw_pull_down_menu('product_categories_id',tep_get_category_tree(),
         $current_category_id);
@@ -355,14 +363,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     </tr>
     </table>
     </td>
-    </tr>
-    <tr>
-     <td align="right" colspan="3">
-    <input type="hidden" name="search" value="1">
-    <?php
-    echo tep_html_element_submit(TEXT_SEARCH,'','assets_submit');
-  ?>
-    
+    <td>
     <?php ?>
     <input type="button" class="assets_input" value="<?php echo
     TEXT_ASSETS_PRINT;?>" onclick="window.open('<?php echo 

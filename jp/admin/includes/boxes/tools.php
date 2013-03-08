@@ -19,7 +19,7 @@
                    //'<a href="' . tep_href_link(FILENAME_BACKUP) . '" class="menuBoxContent_Link">' . BOX_TOOLS_BACKUP . '</a><br>' .
                    '<a href="' . tep_href_link(FILENAME_BANNER_MANAGER) . '" class="menuBoxContent_Link">' . BOX_TOOLS_BANNER_MANAGER . '</a><br>' .
                    //'<a href="' . tep_href_link(FILENAME_CL) . '" class="menuBoxContent_Link">' . BOX_TOOLS_CL . '</a><br>' .
-                   '<a href="' . tep_href_link('calendar.php') . '" class="menuBoxContent_Link">銀行営業日</a><br>' .
+                   '<a href="' . tep_href_link('calendar.php') . '" class="menuBoxContent_Link">カレンダー設定</a><br>' .
                    '<a href="' . tep_href_link(FILENAME_CACHE) . '" class="menuBoxContent_Link">' . BOX_TOOLS_CACHE . '</a><br>' .
                    '<a href="' . tep_href_link(FILENAME_PW_MANAGER) . '"
                    class="menuBoxContent_Link">' . 'パスワード管理' . '</a><br>' .
@@ -48,7 +48,8 @@
 ?>
             <table cellspacing="0" cellpadding="2" border="0" width="150"> 
               <tr>
-              <td onmouseout="this.className='menusidebar'" onmouseover="this.className='menusidebarover';this.style.cursor='hand'" class="menusidebar" style="">&nbsp;<span><?php echo tep_image(DIR_WS_MENU_ICON . 'icon_tool.gif');?></span><span><a class="menuBoxHeading_Link" href="javascript:void(0);" onclick="toggle_lan('col7');"><?php echo BOX_HEADING_TOOLS;?></a></span>&nbsp; 
+              <td onmouseout="this.className='menusidebar'" onmouseover="this.className='menusidebarover';this.style.cursor='hand'" class="menusidebar" style="">&nbsp;
+              <span><?php echo tep_image(DIR_WS_MENU_ICON . 'icon_tool.gif');?></span><span><a class="menuBoxHeading_Link" href="javascript:void(0);" onclick="toggle_lan('col7');"><?php echo BOX_HEADING_TOOLS;?></a></span>&nbsp; 
               </td>
               </tr>
             </table> 
