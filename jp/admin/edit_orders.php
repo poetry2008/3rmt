@@ -2934,8 +2934,8 @@ a.dpicker {
 	padding: 0;
 	margin: 0;
 	overflow: hidden;
-    display:block;	
-    cursor: pointer;
+        display:block;	
+        cursor: pointer;
 	background: url(./includes/calendar.png) no-repeat; 
 	float:left;
 }
@@ -2977,18 +2977,25 @@ if (($action == 'edit') && ($order_exists == true)) {
     $products_orders_id_array[] = $products_orders_list_array['orders_products_id'];
   }
   tep_db_free_result($products_orders_list_query);
+  if(is_array($_SESSION['new_products_list'][$oID]['orders_products'])||
+      is_object($_SESSION['new_products_list'][$_GET['oID']]['orders_products'])){
   foreach($_SESSION['new_products_list'][$oID]['orders_products'] as $orders_products_id_key=>$orders_products_id_value){
 
     $products_orders_id_array[] = 'o_'.$orders_products_id_key;
   }
+  }
+  if(is_array($order->products)||is_object($order->products)){
   foreach($order->products as $order_key=>$order_val){
 
     $products_id_array[] = $order_val['id'];
     $products_name_array[] = $order_val['name']; 
   }
+  }
+  if(is_array($_SESSION['new_products_list'][$_GET['oID']]['orders_products'])||is_object($_SESSION['new_products_list'][$_GET['oID']]['orders_products'])){
   foreach($_SESSION['new_products_list'][$_GET['oID']]['orders_products'] as $new_value){
     $products_id_array[] = $new_value['products_id']; 
     $products_name_array[] = $new_value['products_name'];
+  }
   }
   $products_name_str = implode('|||',$products_name_array);
   $products_id_str = implode('|||',$products_id_array);
@@ -3133,6 +3140,9 @@ if (($action == 'edit') && ($order_exists == true)) {
           } 
           echo '<table>';
           foreach ($selections as $se){
+            if(!is_array($se['fields'])&&!is_object($se['fields'])){
+              continue;
+            }
             foreach($se['fields'] as $field ){
               echo '<tr class="rowHide rowHide_'.$se['id'].'">';
               echo '<td class="main">';
@@ -3445,6 +3455,8 @@ if (($action == 'edit') && ($order_exists == true)) {
 
     <?php
     $new_products_temp_list = array();
+    if(is_array($_SESSION['new_products_list'][$oID]['orders_products'])||
+      is_object($_SESSION['new_products_list'][$oID]['orders_products'])){
     foreach($_SESSION['new_products_list'][$oID]['orders_products'] as $list_key=>$list_value){
 
       $new_products_list_attributes_array = array();
@@ -3471,6 +3483,7 @@ if (($action == 'edit') && ($order_exists == true)) {
                                     );
       $order->products[] = $new_products_temp_list;
     } 
+    }
     $all_p_info_array = array(); 
     $orders_products_array = array(); 
     $orders_products_list = '';

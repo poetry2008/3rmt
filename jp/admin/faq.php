@@ -819,7 +819,8 @@ require("includes/note_js.php");
                       $nowColor = $odd;
                     }
 
-                    if((isset($qInfo)&&is_object($qInfo))&& ($_faq_info['faq_question_id'] == $qInfo->faq_question_id)){
+                    if((isset($qInfo)&&is_object($qInfo))&&
+                        ($_faq_info['faq_question_id'] == $qInfo->faq_question_id)){
                       echo '<tr class="dataTableRowSelected" 
                         onmouseover="this.style.cursor=\'hand\'" 
                         >' . "\n";

@@ -1770,8 +1770,8 @@ a.dpicker {
 	padding: 0;
 	margin: 0;
 	overflow: hidden;
-    display:block;	
-    cursor: pointer;
+        display:block;	
+        cursor: pointer;
 	background: url(./includes/calendar.png) no-repeat; 
 	float:left;
 } 
