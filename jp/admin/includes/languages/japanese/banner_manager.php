@@ -24,10 +24,10 @@ define('TEXT_BANNERS_EXPIRES_ON', '終了日:');
 define('TEXT_BANNERS_OR_AT', ' または');
 define('TEXT_BANNERS_IMPRESSIONS', '表示回数');
 define('TEXT_BANNERS_SCHEDULED_AT', '開始日:');
-define('TEXT_BANNERS_BANNER_NOTE', '<b>バナーについて:</b><ul><li>バナーには、画像かHTMLテキストのいずれかを使用します。両方は使用できません。</li><li>HTMLテキストが画像よりも優先されます。</li></ul>');
-define('TEXT_BANNERS_INSERT_NOTE', '<b>画像について:</b><ul><li>バナー画像保存先ディレクトリには、適切な書き込み権限を与えてください。</li><li>ウェブサーバにバナー画像をアップロードしない場合は、&quot;画像の保存先&quot; 欄は入力しないでください 。(この場合は、サーバ側の画像を使用することになります)</li><li>&quot;画像の保存先&quot; を指定する場合は、存在するディレクトリ、またはディレクトリを先に作成しておく必要があります。また、ディレクトリの末尾にスラッシュが必要となります。(例: banners/)</li></ul>');
-define('TEXT_BANNERS_EXPIRCY_NOTE', '<b>終了日について:</b><ul><li>終了日と表示回数の２つの入力欄のうち、ひとつだけが登録されます。</li><li>バナーを自動的に終了させない場合は、これらの欄を空欄のままにしてください。</li></ul>');
-define('TEXT_BANNERS_SCHEDULE_NOTE', '<b>開始日について:</b><ul><li>開始日が登録されると、バナーは登録された日付から有効になります。</li><li>開始日が登録されたバナーは、開始日が来るまで表示されません。</li></ul>');
+define('TEXT_BANNERS_BANNER_NOTE', 'バナーには、画像かHTMLテキストのいずれかを使用します。両方は使用できません。<br>HTMLテキストが画像よりも優先されます。');
+define('TEXT_BANNERS_INSERT_NOTE', 'バナー画像保存先ディレクトリには、適切な書き込み権限を与えてください。<br>ウェブサーバにバナー画像をアップロードしない場合は、&quot;画像の保存先&quot; 欄は入力しないでください 。(この場合は、サーバ側の画像を使用することになります)<br>&quot;画像の保存先&quot; を指定する場合は、存在するディレクトリ、またはディレクトリを先に作成しておく必要があります。また、ディレクトリの末尾にスラッシュが必要となります。(例: banners/)');
+define('TEXT_BANNERS_EXPIRCY_NOTE', '終了日と表示回数の２つの入力欄のうち、ひとつだけが登録されます。<br>バナーを自動的に終了させない場合は、これらの欄を空欄のままにしてください。');
+define('TEXT_BANNERS_SCHEDULE_NOTE', '開始日が登録されると、バナーは登録された日付から有効になります。<br>開始日が登録されたバナーは、開始日が来るまで表示されません。');
 
 define('TEXT_BANNERS_DATE_ADDED', '登録日:');
 define('TEXT_BANNERS_SCHEDULED_AT_DATE', '開始日: <b>%s</b>');

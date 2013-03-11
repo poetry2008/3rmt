@@ -23,10 +23,10 @@ define('TEXT_BANNERS_EXPIRES_ON', '结束日期:');
 define('TEXT_BANNERS_OR_AT', ' 或');
 define('TEXT_BANNERS_IMPRESSIONS', '显示次数');
 define('TEXT_BANNERS_SCHEDULED_AT', '开始日期:');
-define('TEXT_BANNERS_BANNER_NOTE', '<b>banner:</b><ul><li>banner可以使用图片和HTML文本中的任意一个，但两者不能同时使用。</li><li>HTML文本优先于图片使用。</li></ul>');
-define('TEXT_BANNERS_INSERT_NOTE', '<b>图片:</b><ul><li>请在banner图片保存路径目录下给予适当的编辑权限。</li><li>不在网站上传banner图片时,&quot;图片的保存路径&quot; 输入框里请不要输入任何值 。(这种情况下，会默认使用服务器端的图片)</li><li>&quot;图片的保存路径&quot; 未被指定的时候、需要用已存在的目录或者是新建一个目录。另外，目录要用“/”结尾。(例: banners/)</li></ul>');
-define('TEXT_BANNERS_EXPIRCY_NOTE', '<b>结束日期:</b><ul><li>结束日期和显示次数的两个输入框里面，只有一个能被保存。</li><li>如果不想让banner自动终止，请保持这些输入框空白。</li></ul>');
-define('TEXT_BANNERS_SCHEDULE_NOTE', '<b>开始日期:</b><ul><li>如果保存了开始日期,banner就从保存的日期开始有效。</li><li>如果保存了开始日期,不到开始日期banner不显示。</li></ul>');
+define('TEXT_BANNERS_BANNER_NOTE', 'banner可以使用图片和HTML文本中的任意一个，但两者不能同时使用。<br>HTML文本优先于图片使用。');
+define('TEXT_BANNERS_INSERT_NOTE', '请在banner图片保存路径目录下给予适当的编辑权限。<br>不在网站上传banner图片时,&quot;图片的保存路径&quot; 输入框里请不要输入任何值 。(这种情况下，会默认使用服务器端的图片)<br>&quot;图片的保存路径&quot; 未被指定的时候、需要用已存在的目录或者是新建一个目录。另外，目录要用“/”结尾。(例: banners/)>');
+define('TEXT_BANNERS_EXPIRCY_NOTE', '结束日期和显示次数的两个输入框里面，只有一个能被保存。<br>如果不想让banner自动终止，请保持这些输入框空白。');
+define('TEXT_BANNERS_SCHEDULE_NOTE', '如果保存了开始日期,banner就从保存的日期开始有效。<br>如果保存了开始日期,不到开始日期banner不显示。');
 
 define('TEXT_BANNERS_DATE_ADDED', '创建日:');
 define('TEXT_BANNERS_SCHEDULED_AT_DATE', '开始日期: <b>%s</b>');
