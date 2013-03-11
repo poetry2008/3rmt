@@ -111,7 +111,7 @@ class HM_Form extends DbRecord
       }
       canEnd = true;
       if($('.require').length ==0 ){
-        canEnd = true;
+        canEnd = false;
       }else{
         $('.require').each(function(ele){
             if(canEnd == true){
