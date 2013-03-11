@@ -9723,9 +9723,9 @@ function new_nl2br($string) {
  ------------------------------------ */
 function check_order_transaction_button($status_id)
 {
-  $order_status_raw = tep_db_query("select is_cancle from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$status_id."'");
+  $order_status_raw = tep_db_query("select finished,is_cancle from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$status_id."'");
   $order_status = tep_db_fetch_array($order_status_raw);
-  if ($order_status['is_cancle'] == '1') {
+  if ($order_status['is_cancle'] == '1' || $order_status['finished'] == '1') {
     return true;
   }
   return false;
