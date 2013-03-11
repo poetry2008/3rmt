@@ -516,6 +516,7 @@ function show_questions(ele){
     function show_questiondiv(show){
 
     if(show){
+        $("#oa_dynamic_submit").attr('disabled',false);
         $('#oa_dynamic_groups').html('');
 	$('#oa_dynamic_group_item').html('');
 	$.ajax({ url: "ajax_orders.php?payment="+order_payment_type+"&buytype="+order_buy_type+"&action=get_oa_groups", success: function(msg){
@@ -549,7 +550,8 @@ function show_questions(ele){
 		return true;
 	    }
 	    if($(this).selected().val()=='end'){
-		$("#oa_dynamic_submit").show();
+                $("#oa_dynamic_submit").show();
+                $("#oa_dynamic_submit").attr('disabled',false);
 		$("#oa_dynamic_submit").html('<?php echo JS_TEXT_ALL_ORDER_COMPLETION_TRANSACTION;?>');
 		msg = '<input type="hidden" id="endtheseorder" value="1"/>';
 		$("#oa_dynamic_group_item").html(msg);
@@ -1038,4 +1040,15 @@ function checkNewOrders(t)
       }
     }
   });
+}
+<?php //使指定元素失效?> 
+function orders_disable()
+{
+  $("#oa_dynamic_group_item").find('input').each(function(){
+    $(this).attr('disabled',true);
+  });
+  $("#oa_dynamic_group_item").find('button').each(function(){
+    $(this).attr('disabled',true);
+  });
+  $("#oa_dynamic_submit").attr('disabled',true);
 }

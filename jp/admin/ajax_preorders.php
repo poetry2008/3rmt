@@ -607,10 +607,12 @@ if ($_POST['orders_id'] &&
   $notfinish = false;
   $ids = $_POST['oid'];
   $ids_array = explode('_',$ids);
+  $preorders_status_finish = true;
+  $preorders_finish = false;
   foreach($ids_array as $oid){
     if($oid==''){continue;}
     unset($orders_info_raw);
-	$orders_info_raw = tep_db_query("select payment_method  from ".TABLE_PREORDERS." where orders_id = '".$oid."'"); 
+	$orders_info_raw = tep_db_query("select payment_method,orders_status  from ".TABLE_PREORDERS." where orders_id = '".$oid."'"); 
     $finish          = tep_get_preorder_canbe_finish($oid)?1:0;
     //$type            = tep_check_pre_order_type($oid);
     $type            = 4;
@@ -638,10 +640,19 @@ if ($_POST['orders_id'] &&
       $notfinish = true;
       }
     }
+    if(!tep_preorders_status_finished($orders_info['orders_status']) && $preorders_status_finish == true){
+
+      $preorders_status_finish = false;
+    }
+    if(tep_preorders_finishqa($oid) && $preorders_finish == false){
+
+      $preorders_finish = true;
+    }
   }
   if(!$onsuit && !$tnsuit){
     echo urlencode($orders_info['payment_method']).'_'.$type.'_';
-    echo $notfinish?0:$finish_first;
+    $notfinish = $notfinish?0:$finish_first;
+    echo $notfinish == 0 && $preorders_status_finish == true && $preorders_finish == false ? 1 : $notfinish;
   }
   //取得 支付类型 及 支付方法
 } else if  (isset($_GET['action'])&&$_GET['action']=='get_oa_groups') {
@@ -687,10 +698,26 @@ if ($_POST['orders_id'] &&
   require_once 'pre_oa/HM_Group.php';
   $res = tep_db_query($sql);
   $bigRender ='';
+  $preorders_status_finish_flag = false;
   foreach($ids_array as $key=>$oid){
     if ($oid ==''){
       unset($ids_array[$key]);
+    }else{
+
+      $preorders_status_finish_query = tep_db_query("select orders_status from ". TABLE_PREORDERS ." where orders_id='".$oid."'");
+      $preorders_status_finish_array = tep_db_fetch_array($preorders_status_finish_query);
+      tep_db_free_result($preorders_status_finish_query);
+
+      if((tep_preorders_finishqa($oid) || tep_preorders_status_finished($preorders_status_finish_array['orders_status'])) && $preorders_status_finish_flag == false){
+
+        $preorders_status_finish_flag = true;
+      }
     }
+  }
+  if($preorders_status_finish_flag == true){
+    $preorders_status_finish_js = '<script type="text/javascript">';
+    $preorders_status_finish_js .= 'preorders_disable();';
+    $preorders_status_finish_js .= '</script>';
   }
   while ($item = tep_db_fetch_object($res,'HM_Item')){
     unset($exampleOrder);
@@ -728,6 +755,7 @@ if ($_POST['orders_id'] &&
     $bigRender.= $item->init()->render(true).'';
     echo "</tr>";
   }
+  echo $preorders_status_finish_js;
   //  echo $bigRender;
 
 } else if (isset($_GET['action'])&&$_GET['action']=='show_right_preorder_info') {

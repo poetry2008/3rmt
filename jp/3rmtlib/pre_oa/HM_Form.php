@@ -111,6 +111,7 @@ class HM_Form extends DbRecord
       }
       canEnd = true;
       if($('.require').length ==0 ){
+        $("#preorders_finish").show();
         canEnd = true;
       }else{
         $('.require').each(function(ele){

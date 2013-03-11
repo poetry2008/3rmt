@@ -706,6 +706,20 @@
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script language="javascript">
+$(document).ready(function(){ 
+  if($(".dataTableContent").find('input|[type=checkbox][checked]').length!=0){
+    if(document.sele_act.elements["chk[]"]){
+      document.getElementsByName("all_chk")[0].checked = false;
+      for(i = 0; i < document.sele_act.elements["chk[]"].length; i++){
+        document.sele_act.elements["chk[]"][i].checked = false;
+        var tr_id = 'tr_' + document.sele_act.elements["chk[]"][i].value;
+        if(document.getElementById(tr_id).className != 'dataTableRowSelected'){
+          document.getElementById(tr_id).style.backgroundColor = "";
+        }
+      }
+    }
+  }
+});
   <?php //选中/非选中网站?>
   function change_site(site_id,flag,site_list,param_url){  
           var ele = document.getElementById("site_"+site_id);
@@ -1416,6 +1430,16 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
   $payment_romaji = tep_get_pre_payment_code_by_order_id($order_id); 
   $oa_form_sql = "select * from ".TABLE_OA_FORM." where formtype = '".$formtype."' and payment_romaji = '".$payment_romaji."'";
   $form = tep_db_fetch_object(tep_db_query($oa_form_sql), "HM_Form");
+  if(!$form){
+
+    $oa_form_temp_sql = "select * from ".TABLE_OA_FORM." limit 0,1";  
+    $form = tep_db_fetch_object(tep_db_query($oa_form_temp_sql), "HM_Form");
+    $form->id = '';
+    $form->groups = array();
+    $form->payment_romaji = $payment_romaji;
+    $form->formtype = $formtype;
+    $form->option = '';
+  }
                        if($form){
   $form->loadOrderValue($order_id);
   $form->setAction('pre_oa_answer_process.php?oID='.$order_id);
