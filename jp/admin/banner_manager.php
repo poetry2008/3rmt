@@ -482,6 +482,9 @@ $banner_query = tep_db_query("
             <td class="main"><?php echo tep_draw_pull_down_menu('banners_group', $groups_array, isset($bInfo->banners_group)?$bInfo->banners_group:'') . TEXT_BANNERS_NEW_GROUP . '<br>' . tep_draw_input_field('new_banners_group', '', '', ((sizeof($groups_array) > 0) ? false : true)); ?><br><?php echo TEXT_ADVERTISEMENT_INFO;?></td>
           </tr>
           <tr>
+            <td></td><td><?php echo TEXT_BANNERS_BANNER_NOTE;?></td>
+          </tr>
+          <tr>
             <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
           <tr>
@@ -492,6 +495,9 @@ $banner_query = tep_db_query("
 </td>
           </tr>
           <tr>
+            <td></td><td><?php echo TEXT_BANNERS_INSERT_NOTE; ?></td>
+          </tr>
+          <tr>
             <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
           <tr>
@@ -499,7 +505,7 @@ $banner_query = tep_db_query("
             <td class="main"><?php echo (tep_get_upload_root().'x/') . tep_draw_input_field('banners_image_target'); ?></td>
           </tr>
           <tr>
-            <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+            <td></td><td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
           <tr>
             <td valign="top" class="main" nowrap><?php echo TEXT_BANNERS_HTML_TEXT; ?></td>
@@ -520,6 +526,7 @@ $banner_query = tep_db_query("
             </div>
             </td>
           </tr>
+          <tr><td></td><td><?php echo TEXT_BANNERS_SCHEDULE_NOTE; ?></td></tr>
           <tr>
             <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
@@ -537,6 +544,7 @@ $banner_query = tep_db_query("
             </div>
           <?php echo TEXT_BANNERS_OR_AT . '<br>' . tep_draw_input_field('impressions', isset($bInfo->expires_impressions)?$bInfo->expires_impressions:'', 'maxlength="7" size="7"') . ' ' . TEXT_BANNERS_IMPRESSIONS; ?></td>
           </tr>
+          <tr><td></td><td><?php echo TEXT_BANNERS_EXPIRCY_NOTE;?></td> </tr>
         </table></td>
       </tr>
       <tr>
@@ -545,7 +553,7 @@ $banner_query = tep_db_query("
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="2">
           <tr>
-            <td class="main" align="right" valign="top" nowrap><?php echo
+            <td height="65" class="main" align="right" valign="top" nowrap><?php echo
             (($form_action == 'insert') ? tep_html_element_submit(IMAGE_INSERT) :
              tep_html_element_submit(IMAGE_SAVE)). '&nbsp;&nbsp;<a class="new_product_reset" href="' .  tep_href_link(FILENAME_BANNER_MANAGER, 'page=' .(isset($_GET['page'])?$_GET['page']:'') . '&bID=' .  (isset($_GET['bID'])?$_GET['bID']:'') .  (isset($_GET['lsite_id'])?('&site_id='.$_GET['lsite_id']):'')) .  '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?></td>
           </tr>

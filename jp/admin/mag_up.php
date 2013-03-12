@@ -141,7 +141,7 @@ require("includes/note_js.php");
                 <td colspan="2"><?php echo tep_site_pull_down_menu('', false);?></td>
               </tr>
               <tr>
-                <td colspan="2" align="right"><input type=file name=products_csv size=50></td>
+                <td colspan="2"><input type=file name=products_csv size=50></td>
               </tr>
               <tr>
                 <td><?php echo $image_upload_error; ?></td>
@@ -202,7 +202,7 @@ require("includes/note_js.php");
                 <td colspan="2"><?php echo tep_site_pull_down_menu('', false);?></td>
               </tr>
               <tr>
-                <td colspan="2" align="right"><input type=file name=products_csv size=50></td>
+                <td colspan="2"><input type=file name=products_csv size=50></td>
               </tr>
               <tr>
                 <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '5'); ?></td>

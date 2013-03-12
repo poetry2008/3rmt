@@ -9638,7 +9638,7 @@ function tep_get_notice_info($return_type = 0)
     $html_str .= '<a href="'.tep_href_link(FILENAME_ORDERS, 'oID='.$alarm['orders_id'].'&action=edit').'">'.$order_notice_array['title'].'</a>'; 
     $html_str .= '</td>'; 
     $html_str .= '<td align="right">'; 
-    $html_str .= '<a href="javascript:void(0);" onclick="delete_alarm_notice(\''.$order_notice_array['id'].'\', \'0\');"><img src="images/icons/note_close.gif" alt="close"></a>'; 
+    $html_str .= '<a href="javascript:void(0);" onclick="delete_alarm_notice(\''.$order_notice_array['id'].'\', \'0\');"><img src="images/icons/del_img.gif" alt="close"></a>'; 
     $html_str .= '<script type="text/javascript">$(function(){calc_notice_time(\''.strtotime($order_notice_array['set_time']).'\', '.$order_notice_array['id'].', 0);});</script>'; 
     $html_str .= '</td>'; 
     $html_str .= '</tr>'; 

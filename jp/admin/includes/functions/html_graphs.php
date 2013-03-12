@@ -350,7 +350,7 @@
         $double_vertical_graph_string .= '<i><font size="-2" color="' . $vals['valuefcolor'] . '" style="' . $vals['valuefstyle'] . '">(' . $values[$i] . ')</font></i><br>';
       }
 
-      $double_vertical_graph_string .= '<img src="' . $bars[$i] . '" width="10" height="';
+      $double_vertical_graph_string .= '<img src="' . $bars[$i] . '" width="9" height="';
 
       if ($values[$i] != 0) {
         $double_vertical_graph_string .= $values[$i] * $vals['scale'];
@@ -370,7 +370,7 @@
         $double_vertical_graph_string .= '<i><font size="-2" color="' . $vals['doublefcolor'] . '" style="' . $vals['valuefstyle'] . '">(' . $dvalues[$i] . ')</font></i><br>';
       }
 
-      $double_vertical_graph_string .= '<img src="' . $dbars[$i] . '" width="10" height="';
+      $double_vertical_graph_string .= '<img src="' . $dbars[$i] . '" width="9" height="';
 
       if ($dvalues[$i] != 0) {
         $double_vertical_graph_string .= $dvalues[$i] * $vals['scale'];
