@@ -35,6 +35,14 @@ class SEO_DataBase{
  * @param string $db
  * @param string $pass  
  */ 
+/*----------------------
+ 功能：MySQL_DataBase类的构造函数
+ 参数: $host(string) 主机
+ 参数：$user(string) 用户
+ 参数：$db(string) 数据库
+ 参数：$pass(string) 密码
+ 返回值：无
+ ---------------------*/
   function SEO_DataBase($host, $user, $db, $pass){
           //date_default_timezone_set('UTC');
     $this->host = $host;
@@ -48,6 +56,11 @@ class SEO_DataBase{
 /**
  * Function to connect to MySQL 
  */ 
+/*----------------------
+ 功能：链接MYSQL
+ 参数：无
+ 返回值：无
+ ---------------------*/
   function ConnectDB(){
     $this->link_id = mysql_connect($this->host, $this->user, $this->pass);
   } # end function
@@ -56,6 +69,11 @@ class SEO_DataBase{
  * Function to select the database
  * @return resoource 
  */ 
+/*----------------------
+ 功能：选择数据库 
+ 参数：无
+ 返回值：无
+ ---------------------*/
   function SelectDB(){
     return mysql_select_db($this->db);
   } # end function
@@ -65,6 +83,11 @@ class SEO_DataBase{
  * @param string $query SQL statement
  * @return resource 
  */ 
+/*----------------------
+ 功能：查询MYSQL 
+ 参数：$query(string) SQL字符串
+ 返回值：返回sql字符串(string) 
+ ---------------------*/
   function Query($query){
     return @mysql_query($query, $this->link_id);
   } # end function
@@ -75,6 +98,12 @@ class SEO_DataBase{
  * @param string $type MYSQL_BOTH or MYSQL_ASSOC
  * @return array 
  */ 
+/*----------------------
+ 功能：获取数组
+ 参数：$resource_id(string) ID值
+ 参数：$type(string) 数据库类型
+ 返回值：数组(array)
+ ---------------------*/
   function FetchArray($resource_id, $type = MYSQL_BOTH){
     return @mysql_fetch_array($resource_id, $type);
   } # end function
@@ -83,7 +112,12 @@ class SEO_DataBase{
  * Function to fetch the number of rows
  * @param resource $resource_id
  * @return mixed  
- */ 
+ */
+/*---------------------
+ 功能：获取行数
+ 参数：$resource_id(string) ID值
+ 返回值：数据行数(string) 
+ --------------------*/
   function NumRows($resource_id){
     return @mysql_num_rows($resource_id);
   } # end function
@@ -92,6 +126,11 @@ class SEO_DataBase{
  * Function to fetch the last insertID
  * @return integer  
  */ 
+/*--------------------
+ 功能：获取最后插入的ID 
+ 参数：无
+ 返回值：返回值ID值(string) 
+ -------------------*/
   function InsertID() {
     return mysql_insert_id();
   }
@@ -101,6 +140,11 @@ class SEO_DataBase{
  * @param resource $resource_id
  * @return boolean
  */ 
+/*---------------------
+ 功能：释放资源
+ 参数：$resource_id(string) ID值
+ 返回值：释放的资源(string) 
+ --------------------*/
   function Free($resource_id){
     return @mysql_free_result($resource_id);
   } # end function
@@ -110,6 +154,11 @@ class SEO_DataBase{
  * @param string $data
  * @return string 
  */ 
+/*--------------------
+ 功能：添加字符串
+ 参数：$data(string) 数据
+ 返回值：返回字符串(string) 
+ -------------------*/
   function Slashes($data){
     return addslashes($data);
   } # end function
@@ -121,6 +170,13 @@ class SEO_DataBase{
  * @param string $parameters
  * @return resource
  */ 
+/*--------------------
+ 功能：添加或者更新数据 
+ 参数：$table(string) 数据库表名
+ 参数: $action(string) 插入或者更新
+ 参数：$parameters(string) 自定义参数
+ 返回值：添加或者更新的数据(string) 
+ -------------------*/
   function DBPerform($table, $data, $action = 'insert', $parameters = '') {
     reset($data);
     if ($action == 'insert') {
@@ -266,6 +322,11 @@ class SEO_URL{
  * SEO_URL class constructor 
  * @param integer $languages_id
  */ 
+/*----------------------------
+ 功能：SEO_URL类的构造函数
+ 参数：$languages_id(string) 语言ID
+ 返回值：无
+ ---------------------------*/
   function SEO_URL($languages_id){
       global $session_started, $SID;
         //date_default_timezone_set('UTC');
@@ -364,6 +425,14 @@ class SEO_URL{
  * @param boolean $add_session_id Switch to add sid
  * @return string Formed href link 
  */ 
+/*----------------------------
+ 功能：错误回退SEO URL链接 
+ 参数：$page(string) 分页
+ 参数：$parameters(string) 自定义参数
+ 参数：$connection(string) NONSSL/ SSL
+ 参数：$add_session_id(string) 添加SID开关
+ 返回值：返回字符串形成href链接
+ ---------------------------*/
   function href_link($page = '', $parameters = '', $connection = 'NONSSL', $add_session_id = true){
     global $request_type;
     $this->start($this->timestamp);
@@ -429,7 +498,15 @@ class SEO_URL{
  * Stock function, fallback use 
  */ 
  
- 
+/*------------------------
+ 功能：备用功能
+ 参数：$page(string) 分页
+ 参数：$parameters(string) 自定义参数
+ 参数：$connection(string) NONSSL/ SSL
+ 参数：$add_session_id(string) 添加SID开关
+ 参数：$search_engine_safe(string) 安全开关
+ 返回值：链接(string) 
+ -----------------------*/ 
   function stock_href_link($page = '', $parameters = '', $connection = 'NONSSL', $add_session_id = true, $search_engine_safe = true) {
     global $request_type, $session_started, $SID;
     if (!$this->not_null($page)) {
@@ -556,6 +633,15 @@ class SEO_URL{
  * @param string $separator
  * @return string
  */ 
+
+/*------------------------------
+ 功能：追加SID 
+ 参数：$link(string) 链接
+ 参数：$add_session_id(string) SID
+ 参数：$connection(string) 关联
+ 参数；$separator(string) 分离器
+ 返回值：链接(string) 
+ -----------------------------*/
   function add_sid( $link, $add_session_id, $connection, $separator ){
     global $request_type; // global variable
     if ( ($add_session_id == true) && ($this->attributes['SESSION_STARTED'] == true) && (SESSION_FORCE_COOKIE_USE == 'False') ) {
@@ -618,6 +704,13 @@ class SEO_URL{
  * @param string $separator NOTE: passed by reference
  * @return string 
  */ 
+/*---------------------------
+ 功能: 解析SEO URL的参数
+ 参数：$page(string) 分页
+ 参数：$params(string) 参数
+ 参数：$separator(string) 分离器
+ 返回值：URL(string) 
+ --------------------------*/
   function parse_parameters($page, $params, &$separator){
     $p = @explode('&', $params);
     krsort($p);
@@ -763,7 +856,18 @@ class SEO_URL{
  * @param string $extension Default = .html
  * @param string $separator NOTE: passed by reference
  * @return string
- */ 
+ */
+/*----------------------------
+ 功能：生成的搜索引擎优化的URL
+ 参数：$page(string) 分页
+ 参数：$string(string) 字符串
+ 参数：$anchor_type(string) 参数类型
+ 参数：$id(string) ID
+ 参数：$extension(string) Default = .html
+ 参数：$separator(string) 通过引用传递
+ 参数：$urlType(string) URL类型
+ 返回值：返回字符串(string) `
+ ---------------------------*/
       function make_url($page, $string, $anchor_type, $id, $extension = '.html', &$separator,$urlType=null){
     // Right now there is but one rewrite method since cName was dropped
     // In the future there will be additional methods here in the switch
@@ -833,6 +937,11 @@ class SEO_URL{
  * @param integer $pID
  * @return string Stripped anchor text
  */ 
+/*------------------------
+ 功能：获取产品名称
+ 参数：$pID(string) 产品ID值
+ 返回值：返回字符串(string)
+ -----------------------*/
   function get_product_name($pID){
     switch(true){
       case ($this->attributes['USE_SEO_CACHE_GLOBAL'] == 'true' && defined('PRODUCT_NAME_' . $pID)):
@@ -868,6 +977,11 @@ class SEO_URL{
  * @param integer $cID NOTE: passed by reference
  * @return string Stripped anchor text
  */ 
+/*------------------------
+ 功能：获取功能类别名称
+ 参数：$cID(string) ID值
+ 返回值：返回名称(string) 
+ -----------------------*/
   function get_category_name(&$cID){
     $full_cPath = $this->get_full_cPath($cID, $single_cID); // full cPath needed for uniformity
     switch(true){
@@ -928,6 +1042,11 @@ class SEO_URL{
  * @param integer $mID
  * @return string
  */ 
+/*------------------------------
+ 功能：获取制造商名称
+ 参数：$mID(string) ID值
+ 返回值：返回名称(string) 
+ -----------------------------*/
   function get_manufacturer_name($mID){
     switch(true){
       case ($this->attributes['USE_SEO_CACHE_GLOBAL'] == 'true' && defined('MANUFACTURER_NAME_' . $mID)):
@@ -1066,6 +1185,12 @@ class SEO_URL{
  * @param integer $original Single category_id passed back by reference
  * @return string Full cPath string
  */ 
+/*------------------------
+ 功能：类别ID检索 
+ 参数：$cID(string) ID值
+ 参数：$original(string) 原ID
+ 返回值：ID值(string) 
+ -----------------------*/
   function get_full_cPath($cID, &$original){
     if ( is_numeric(strpos($cID, '_')) ){
       $temp = @explode('_', $cID);
@@ -1087,6 +1212,12 @@ class SEO_URL{
  * @param mixed $categories Passed by reference
  * @param integer $categories_id
  */ 
+/*-----------------------------
+ 功能：检索父类ID 
+ 参数：$categories(string) 通过引用传递值
+ 参数：$categories_id(string) categories_id值
+ 返回值：无
+ ----------------------------*/
   function GetParentCategories(&$categories, $categories_id) {
     $sql = "SELECT parent_id 
             FROM " . TABLE_CATEGORIES . " 
@@ -1106,6 +1237,11 @@ class SEO_URL{
  * @param mixed $value
  * @return boolean
  */ 
+/*--------------------
+ 功能：检查是否为空
+ 参数：$value(string) 参数值
+ 返回值：判断是否为空(boolean)
+ -------------------*/
   function not_null($value) {
     if (is_array($value)) {
       if (sizeof($value) > 0) {
@@ -1127,6 +1263,11 @@ class SEO_URL{
  * @param integer $pID
  * @return boolean
  */ 
+/*------------------------
+ 功能：检查的products_id包含一个属性
+ 参数：$pID(string) 产品ID
+ 返回值：判断是否成功(string) 
+ -----------------------*/
   function is_attribute_string($pID){
     if ( is_numeric(strpos($pID, '{')) ){
       return true;
@@ -1140,6 +1281,11 @@ class SEO_URL{
  * @param string $params
  * @return boolean
  */ 
+/*----------------------
+ 功能：检查参数中包含products_id
+ 参数：$params(string) 参数
+ 返回值：判断是否包含(boolean)
+ ---------------------*/
   function is_product_string($params){
     if ( is_numeric(strpos('products_id', $params)) ){
       return true;
@@ -1153,6 +1299,11 @@ class SEO_URL{
  * @param string $params
  * @return boolean
  */ 
+/*----------------------
+ 功能：检查参数字符串
+ 参数：$params(string) 参数
+ 返回值：判断是否检查成功(boolean)
+ ---------------------*/
   function is_cPath_string($params){
     if ( eregi('cPath', $params) ){
       return true;
@@ -1164,6 +1315,11 @@ class SEO_URL{
 /**
  * Function used to output class profile
  */ 
+/*----------------------
+ 功能：输出类配置功能
+ 参数：无
+ 返回值：无
+ ---------------------*/
   function profile(){
     $this->calculate_performance();
     $this->PrintArray($this->attributes, 'Class Attributes');
@@ -1174,6 +1330,11 @@ class SEO_URL{
  * Function used to calculate and output the performance metrics of the class
  * @return mixed Output of performance data wrapped in HTML pre tags
  */ 
+/*---------------------
+ 功能：计算和输出的类标签
+ 参数：无
+ 返回值：输出标签(string) 
+ --------------------*/
   function calculate_performance(){
     foreach ($this->cache as $type){
       $this->performance['TOTAL_CACHED_PER_PAGE_RECORDS'] += sizeof($type);     
@@ -1187,6 +1348,11 @@ class SEO_URL{
  * @param string $string
  * @return string Stripped text. Removes all non-alphanumeric characters.
  */ 
+/*--------------------
+ 功能：去除标点符号和空格的字符串
+ 参数：$string(string) 字符串
+ 返回值：字符串(string)
+ -------------------*/
   function strip($string){
     $pattern = $this->attributes['SEO_REMOVE_ALL_SPEC_CHARS'] == 'true'
             ? "([^[:alnum:]])+"
@@ -1203,6 +1369,11 @@ class SEO_URL{
  * @param string $set
  * @return mixed
  */ 
+/*-------------------
+ 功能：功能扩大的SEO_CONVERT_SET组
+ 参数：$set(string) 组
+ 返回值：判断是否返回组(boolean)
+ ------------------*/
   function expand($set){
     if ( $this->not_null($set) ){
       if ( $data = @explode(',', $set) ){
@@ -1224,6 +1395,12 @@ class SEO_URL{
  * @param integer $limit
  * @return string Short word filtered
  */ 
+/*----------------------
+ 功能：过滤的字符串
+ 参数：$str(string) 字符串
+ 参数：$limit(string) 参数整数
+ 返回值：字符串名称过滤(string) 
+ ---------------------*/
   function short_name($str, $limit=3){
     $container = array();
     if ( $this->attributes['SEO_URLS_FILTER_SHORT_WORDS'] != 'false' ) $limit = (int)$this->attributes['SEO_URLS_FILTER_SHORT_WORDS'];
@@ -1248,6 +1425,13 @@ class SEO_URL{
  * @param string $outer_glue
  * @return string
  */ 
+/*--------------------------
+ 功能：关联数组
+ 参数：$array(array) 数组
+ 参数：$inner_glue(string) 等于
+ 参数：outer_glue(string) 并且
+ 返回值：关联数组(string) 
+ -------------------------*/
   function implode_assoc($array, $inner_glue='=', $outer_glue='&') {
     $output = array();
     foreach( $array as $key => $item ){
@@ -1277,6 +1461,11 @@ class SEO_URL{
  * Function to start time for performance metric 
  * @param float $start_time
  */ 
+/*---------------------
+ 功能：开始时间  
+ 参数: $start_time(string) 开始时间
+ 返回值：无
+ --------------------*/
   function start(&$start_time){
     $start_time = explode(' ', microtime());
   }
@@ -1286,6 +1475,12 @@ class SEO_URL{
  * @param float $start
  * @param float $time NOTE: passed by reference
  */ 
+/*----------------------------
+ 功能：停止时间
+ 参数：$start(string) 开始
+ 参数：$time(string) 时间
+ 返回值：无
+ ---------------------------*/
   function stop($start, &$time){
     $end = explode(' ', microtime());
     $time = number_format( array_sum($end) - array_sum($start), 8, '.', '' );
@@ -1297,6 +1492,12 @@ class SEO_URL{
  * @param array $parse Array of tarnslation variables
  * @return string
  */ 
+/*--------------------------- 
+ 功能：字符串转换
+ 参数：$data(string) 字符串数据
+ 参数：$parse(string) 变量数组
+ 返回值：返回字符串(string) 
+ --------------------------*/
   function parse_input_field_data($data, $parse) {
     return strtr(trim($data), $parse);
   }
@@ -1308,6 +1509,13 @@ class SEO_URL{
  * @param boolean $protected Switch for htemlspecialchars processing
  * @return string
  */ 
+/*--------------------------
+ 功能：输出翻译或者消除字符串
+ 参数：$string(string) 字符串
+ 参数：$translate(string) 翻译字符串数组
+ 参数：$protected(string) 开关
+ 返回值：返回字符串(string) 
+ -------------------------*/
   function output_string($string, $translate = false, $protected = false) {
     if ($protected == true) {
       return htmlspecialchars($string);
@@ -1325,6 +1533,11 @@ class SEO_URL{
  * @param string $sessid
  * @return string
  */ 
+/*--------------------
+ 功能：SESSION ID
+ 参数：$sessid(string) SESSION ID
+ 返回值：SESSION ID(string)
+ -------------------*/
   function SessionID($sessid = '') {
     if (!empty($sessid)) {
       return tep_session_id($sessid);
@@ -1338,6 +1551,11 @@ class SEO_URL{
  * @param string $name
  * @return string
  */ 
+/*------------------
+ 功能：SESSION 名称
+ 参数: $name(string) 名称
+ 返回值：SESSION 名称
+ -----------------*/
   function SessionName($name = '') {
     if (!empty($name)) {
       return tep_session_name($name);
@@ -1349,6 +1567,11 @@ class SEO_URL{
 /**
  * Function to generate products cache entries 
  */ 
+/*-----------------------------
+ 功能：生成产品缓存目录 
+ 参数：无
+ 返回值：无
+ ----------------------------*/
   function generate_products_cache(){
     $this->is_cached($this->cache_file . 'products', $is_cached, $is_expired);    
     if ( !$is_cached || $is_expired ) {
@@ -1385,6 +1608,11 @@ class SEO_URL{
 /**
  * Function to generate manufacturers cache entries 
  */ 
+/*--------------------------
+ 功能：生成制造商缓存目录 
+ 参数：无
+ 返回值：无
+ -------------------------*/
   function generate_manufacturers_cache(){
     $this->is_cached($this->cache_file . 'manufacturers', $is_cached, $is_expired);   
     if ( !$is_cached || $is_expired ) { // it's not cached so create it
@@ -1411,6 +1639,11 @@ class SEO_URL{
 /**
  * Function to generate categories cache entries 
  */ 
+/*--------------------------------
+ 功能：生成类缓存目录
+ 参数：无
+ 返回值：无
+ -------------------------------*/
   function generate_categories_cache(){
     $this->is_cached($this->cache_file . 'categories', $is_cached, $is_expired);    
     if ( !$is_cached || $is_expired ) { // it's not cached so create it
@@ -1554,6 +1787,16 @@ class SEO_URL{
  * @param integer $global Sets whether cache record is global is scope
  * @param string $expires Sets the expiration
  */ 
+/*--------------------------
+ 功能：生成缓存保存到数据库
+ 参数：$name(string) 缓存名称
+ 参数：$value(string) 缓存值
+ 参数：$method(string) 方法
+ 参数：$gzip(string) Gzip已启用压缩
+ 参数：$global(string) 全局缓存记录
+ 参数：$expires(string) 过期设置
+ 返回值：无
+ --------------------------*/
   function save_cache($name, $value, $method='RETURN', $gzip=1, $global=0, $expires = '30/days'){
     $expires = $this->convert_time($expires);   
     if ($method == 'ARRAY' ) $value = serialize($value);
@@ -1590,6 +1833,12 @@ class SEO_URL{
  * @param boolean $local_memory
  * @return mixed
  */ 
+/*-------------------------
+ 功能：获取缓存
+ 参数：$name(string) 名称
+ 参数：$local_memory(boolean) 本地内存
+ 返回值：获取成功(boolean) 
+ ------------------------*/
   function get_cache($name = 'GLOBAL', $local_memory = false){
     $select_list = 'cache_id, cache_language_id, cache_name, cache_data, cache_global, cache_gzip, cache_method, cache_date, cache_expires';
     $global = ( $name == 'GLOBAL' ? true : false ); // was GLOBAL passed or is using the default?
@@ -1656,6 +1905,12 @@ class SEO_URL{
  * @param string $method
  * @return mixed
  */ 
+/*--------------------------
+ 功能：获取内存中的缓存 
+ 参数：$name(string) 名称
+ 参数：$method(string) 方法
+ 返回值：是否获取成功(boolean)
+ -------------------------*/
   function get_cache_memory($name, $method = 'RETURN'){
     $data = ( isset($this->data['GLOBAL'][$name]) ? $this->data['GLOBAL'][$name] : $this->data[$name] );
     if ( isset($data) && !empty($data) && $data != false ){ 
@@ -1678,6 +1933,11 @@ class SEO_URL{
 /**
  * Function to perform basic garbage collection for database cache system 
  */ 
+/*------------------------
+ 功能：删除数据库缓存
+ 参数：无
+ 返回值：无
+ -----------------------*/
   function cache_gc(){
           //date_default_timezone_set('UTC');
           $this->DB->Query("DELETE FROM cache WHERE cache_expires <= '" . date("Y-m-d H:i:s") . "'" );
@@ -1688,6 +1948,11 @@ class SEO_URL{
  * @param string $expires
  * @return string
  */ 
+/*-----------------------
+ 功能：转换时间为缓存方法
+ 参数：$expires(string) 参数字符串
+ 返回值：字符串(string) 
+ ----------------------*/
   function convert_time($expires){ //expires date interval must be spelled out and NOT abbreviated !!
     $expires = explode('/', $expires);
     switch( strtolower($expires[1]) ){ 
@@ -1722,6 +1987,13 @@ class SEO_URL{
  * @param boolean $is_cached NOTE: passed by reference
  * @param boolean $is_expired NOTE: passed by reference
  */ 
+/*---------------------------
+ 功能：检查缓存是否在数据库中过期
+ 参数：$name(string) 名称
+ 参数：$is_cached(string) 缓存
+ 参数：$is_expired(string) 过期时间
+ 返回值：无
+ --------------------------*/
   function is_cached($name, &$is_cached, &$is_expired){ // NOTE: $is_cached and $is_expired is passed by reference !!
     $this->cache_query = $this->DB->Query("SELECT cache_expires FROM cache WHERE cache_id='".md5($name)."' AND cache_language_id='".(int)$this->languages_id."' LIMIT 1");
     $is_cached = ( $this->DB->NumRows($this->cache_query ) > 0 ? true : false );
@@ -1736,6 +2008,11 @@ class SEO_URL{
 /**
  * Function to initialize the redirect logic
  */ 
+/*-------------------------
+ 功能：检查重定向 
+ 参数：无
+ 返回值：无
+ ------------------------*/
   function check_redirect(){
     $this->need_redirect = false; 
     $this->path_info = ltrim(getenv('PATH_INFO'), '/');
@@ -1752,6 +2029,11 @@ class SEO_URL{
 /**
  * Function to check if the URL needs to be redirected 
  */ 
+/*---------------------------
+ 功能：是否需要被重定向的URL
+ 参数：无
+ 返回值：无
+ --------------------------*/
   function need_redirect(){
     if ( is_numeric(strpos($this->real_uri, '{')) ){
       $this->need_redirect = false;
@@ -1774,6 +2056,11 @@ class SEO_URL{
 /**
  * Function to check if it's a valid redirect page 
  */ 
+/*------------------------
+ 功能：检查是否是一个重定向的页面 
+ 参数：无
+ 返回值：无
+ -----------------------*/
   function check_seo_page(){
     !defined('SEO_URLS') 
       ? $this->is_seopage = false 
@@ -1789,6 +2076,11 @@ class SEO_URL{
  * @param string $path_info
  * @return array
  */ 
+/*-------------------------
+ 功能：解析路径
+ 参数：$path_infoa(string) 路径信息
+ 返回值：路径数组(array)
+ ------------------------*/
   function parse_path($path_info){ 
     $tmp = @explode('/', $path_info);     
     if ( sizeof($tmp) > 2 ){
@@ -1806,6 +2098,11 @@ class SEO_URL{
 /**
  * Function to perform redirect 
  */ 
+/*-------------------------
+ 功能：执行重定向
+ 参数：无
+ 返回值：无
+ ------------------------*/
   function do_redirect(){
     $p = @explode('&', $this->uri_parsed['query']);
     foreach( $p as $index => $value ){              

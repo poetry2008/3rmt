@@ -7,16 +7,29 @@ class postalmoneyorder extends basePayment  implements paymentInterface  {
   var $site_id, $code, $title, $description, $enabled, $n_fee, $email_footer, $s_error,$c_prefix, $show_payment_info;
 
   // class constructor
+/*------------------------------
+ 功能：加载邮政银行支付方法设置
+ 参数：$site_id (string) SITE_ID值
+ 返回值：无
+ -----------------------------*/
   function loadSpecialSettings($site_id=0){
     $this->code        = 'postalmoneyorder';
     $this->site_id      = $site_id;
     $this->show_payment_info = 0;
   }
-  
+/*------------------------------
+ 功能：JS验证
+ 参数：无
+ 返回值：JS验证(boolean)
+ ------------------------------*/  
   function javascript_validation() {
     return false;
   }
-
+/*----------------------------
+ 功能：选择支付方法
+ 参数：$theData(string) 数据
+ 返回值：支付方法数组(array)
+ ---------------------------*/
   function selection($theData) {
 
     global $currencies;
@@ -35,7 +48,12 @@ class postalmoneyorder extends basePayment  implements paymentInterface  {
   }
      
 
-
+/*----------------------------
+ 功能：编辑邮政银行
+ 参数：$theData(boolean) 数据
+ 参数：$back(boolean) true/false
+ 返回值：无
+ ---------------------------*/
   function fields($theData=false, $back=false){
     if (!$back) {
     global $order;
@@ -52,10 +70,19 @@ class postalmoneyorder extends basePayment  implements paymentInterface  {
 		       ));
     }
   }
+/*--------------------------
+ 功能：确认检查前台支付方法 
+ 参数：无
+ 返回值：是否检查成功(boolean)
+ -------------------------*/
   function pre_confirmation_check() {
     return true;
   }
-
+/*----------------------------
+ 功能：确认邮政银行支付方法
+ 参数：无
+ 返回值：邮政银行支付方法数据(array)
+ ----------------------------*/  
   function confirmation() {
     global $currencies;
     global $_POST;
@@ -70,7 +97,11 @@ class postalmoneyorder extends basePayment  implements paymentInterface  {
                  );
 
   }
-
+ /*----------------------
+ 功能：判断支付方法返回的信息
+ 参数：无
+ 返回值：隐藏INPUT购买订单的信息(string)
+ ---------------------*/
   function process_button() {
     global $currencies;
     global $_POST; 
@@ -86,18 +117,30 @@ class postalmoneyorder extends basePayment  implements paymentInterface  {
     return tep_draw_hidden_field('postal_money_order_message', htmlspecialchars($s_message)). tep_draw_hidden_field('code_fee', $_SESSION['h_code_fee']);
     //return false;
   }
-
+/*-----------------------
+ 功能：邮政银行支付前
+ 参数：无
+ 返回值：无
+ ----------------------*/
   function before_process() {
     global $_POST;
 
     $this->email_footer = str_replace("\r\n", "\n", $_POST['postal_money_order_message']);
     return false;
   }
-
+/*-----------------------
+ 功能：邮政银行支付后
+ 参数：无
+ 返回值：false(boolean)
+ ----------------------*/
   function after_process() {
     return false;
   }
-
+/*-----------------------
+ 功能：获取错误
+ 参数：无
+ 返回值：判断是否获取成功(boolean) 
+ -----------------------*/
   function get_error() {
     global $_POST, $_GET;
 
@@ -110,7 +153,11 @@ class postalmoneyorder extends basePayment  implements paymentInterface  {
     }
     return false;
   }
-
+/*---------------------------
+ 功能：检查SQL
+ 参数：无
+ 返回值：SQL(string)
+ --------------------------*/  
   function check() {
     if (!isset($this->_check)) {
       $check_query = tep_db_query("select configuration_value from " . TABLE_CONFIGURATION . " where configuration_key = 'MODULE_PAYMENT_POSTALMONEYORDER_STATUS' and site_id = '".$this->site_id."'");
@@ -118,7 +165,11 @@ class postalmoneyorder extends basePayment  implements paymentInterface  {
     }
     return $this->_check;
   }
-
+/*--------------------------------
+ 功能：添加支付方法的SQL
+ 参数：无
+ 返回值：无
+ -------------------------------*/
   function install() {
     tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added,user_added, site_id) values ('ゆうちょ銀行（郵便局）を有効にする', 'MODULE_PAYMENT_POSTALMONEYORDER_STATUS', 'True', 'ゆうちょ銀行（郵便局）による支払いを受け付けますか?', '6', '1', 'tep_cfg_select_option(array(\'True\', \'False\'), ', now(),'".$_SESSION['user_name']."', ".$this->site_id.");");
     tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('お振込先:', 'MODULE_PAYMENT_POSTALMONEYORDER_PAYTO', '', 'お振込先名義を設定してください.', '6', '1', now(), ".$this->site_id.");");
@@ -137,12 +188,21 @@ class postalmoneyorder extends basePayment  implements paymentInterface  {
     tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('ポイント', 'MODULE_PAYMENT_POSTALMONEYORDER_IS_GET_POINT', '1', 'ポイント', '6', '1', 'tep_cfg_payment_new_checkbox(', now(), ".$this->site_id.");");
     tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('ポイント還元率', 'MODULE_PAYMENT_POSTALMONEYORDER_POINT_RATE', '0.01', 'ポイント還元率', '6', '0', now(), ".$this->site_id.")");
   }
-
+/*--------------------------------
+ 功能：删除SQL
+ 参数：无
+ 返回值：无
+ --------------------------------*/
   function remove() {
     tep_db_query("delete from " . TABLE_CONFIGURATION . " where configuration_key in ('" . implode("', '", $this->keys()) . "') and site_id = '".$this->site_id."'");
   }
 
 
+/*-----------------------------
+ 功能：编辑邮政银行支付方法
+ 参数：无
+ 返回值：来店邮政银行方法数据
+ ----------------------------*/
     function keys() {
       return array('MODULE_PAYMENT_POSTALMONEYORDER_STATUS',
                    'MODULE_PAYMENT_POSTALMONEYORDER_LIMIT_SHOW',
@@ -160,8 +220,11 @@ class postalmoneyorder extends basePayment  implements paymentInterface  {
                    'MODULE_PAYMENT_POSTALMONEYORDER_PRINT_MAILSTRING',
 );
     }
-    
-
+/*----------------------------
+ 功能：获取邮件的字符串
+ 参数：$option(string) 选项
+ 返回值：邮件字符串(string)
+ ---------------------------*/
   function getMailString($option=''){
     $email_printing_order .= 'この注文は【販売】です。' . "\n";
     $email_printing_order .=
@@ -205,10 +268,20 @@ class postalmoneyorder extends basePayment  implements paymentInterface  {
     $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
     return $email_printing_order;
   }
-
+/*-------------------------------
+ 功能：获取邮件配置
+ 参数：$site_id(string) SITE_ID值
+ 参数：$oid(string) ID值
+ 返回值：邮件配置(string) 
+ ------------------------------*/
   function get_email_configuration($site_id,$oid=0){
     return get_configuration_by_site_id('C_POSTAL',$site_id);
   }
+/*-----------------------------
+ 功能：显示后台支付方法列表 
+ 参数：$pay_info_array(string) 支付信息数组
+ 返回值：无
+ ----------------------------*/
   function admin_show_payment_list($pay_info_array){
 
    global $_POST;
@@ -284,21 +357,40 @@ class postalmoneyorder extends basePayment  implements paymentInterface  {
 EOT;
    echo "\n";
   }
-  
+ /*----------------------------
+ 功能：获取后台顾客点值 
+ 参数：$point_value(string) 点值
+ 参数：$customer_id(string) 顾客ID
+ 返回值：无
+ ---------------------------*/    
   function admin_get_customer_point($point_value,$customer_id){
     tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $point_value .  " where customers_id = '" .$customer_id."' and customers_guest_chk = '0' ");
   } 
-  
+/*--------------------------
+ 功能：后台获取点值
+ 参数：$site_id(string) SITE_ID值
+ 返回值：点值(string)
+ -------------------------*/  
   function admin_is_get_point($site_id)
   {
     return get_configuration_by_site_id_or_default('MODULE_PAYMENT_POSTALMONEYORDER_IS_GET_POINT', (int)$site_id); 
   }
-  
+/*------------------------
+ 功能：后台获取点率
+ 参数：$site_id(string) SITE_ID值
+ 返回值：点率(string) 
+ -----------------------*/  
   function admin_get_point_rate($site_id)
   {
     return get_configuration_by_site_id_or_default('MODULE_PAYMENT_POSTALMONEYORDER_POINT_RATE', (int)$site_id); 
   }
-  
+/*----------------------
+ 功能：后台计算得到的点数
+ 参数：$orders_id(string) 订单ID
+ 参数：$point_rate(string) 点率
+ 参数：$site_id(string) SITE_ID值
+ 返回值：点数(string) 
+ ---------------------*/
   function admin_calc_get_point($orders_id, $point_rate, $site_id)
   {
     $order_point_raw = tep_db_query("select value from ".TABLE_ORDERS_TOTAL." where class = 'ot_point' and orders_id = '".$orders_id."'"); 
@@ -324,12 +416,20 @@ EOT;
       }
     }
   }
-  
+ /*--------------------------
+ 功能：获取点率
+ 参数：无
+ 返回值：点率(string)
+ -------------------------*/  
   function get_point_rate()
   {
     return MODULE_PAYMENT_POSTALMONEYORDER_POINT_RATE; 
   }
-
+/*--------------------------
+ 功能：后台获得评论
+ 参数：$comment(string) 评论
+ 返回值：评论信息(string)
+ -------------------------*/
   function admin_get_comment($comment){
 
     $payment_comment_array = array(TS_TEXT_BANK_NAME,

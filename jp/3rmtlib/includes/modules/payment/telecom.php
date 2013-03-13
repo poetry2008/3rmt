@@ -7,12 +7,23 @@ class telecom  extends basePayment  implements paymentInterface  {
   var $site_id, $code, $title, $description, $enabled, $n_fee, $s_error, $email_footer, $show_payment_info;
 
   // class constructor
+/*------------------------------
+ 功能：加载信用卡结算支付方法设置
+ 参数：$site_id (string) SITE_ID值
+ 返回值：无
+ -----------------------------*/
   function loadSpecialSettings($site_id=0){
     $this->site_id = $site_id;
     $this->code        = 'telecom';    
     $this->form_action_url = MODULE_PAYMENT_TELECOM_CONNECTION_URL;
     $this->show_payment_info = 1;
   }
+/*----------------------------
+ 功能：编辑信用卡结算
+ 参数：$theData(boolean) 数据
+ 参数：$back(boolean) true/false
+ 返回值：返回乐天银行类型数据(array)
+ ---------------------------*/
   function fields($theData=false, $back=false){
     if (!$back) { 
     global $order;
@@ -33,14 +44,27 @@ class telecom  extends basePayment  implements paymentInterface  {
 		       ));
     }
   }
+/*--------------------------
+ 功能：JS验证
+ 参数：无
+ 返回值：验证成功(boolean) 
+ -------------------------*/
   function javascript_validation() {
     return false;
   }
-
+/*--------------------------
+ 功能：确认检查前台支付方法 
+ 参数：无
+ 返回值：是否检查成功(boolean)
+ -------------------------*/
   function pre_confirmation_check() {
     return true;
   }
-
+/*----------------------------
+ 功能：确认支付方法
+ 参数：无
+ 返回值：支付方法数据(array)
+ ----------------------------*/  
   function confirmation() {
     global $currencies;
     global $_POST;
@@ -62,8 +86,11 @@ class telecom  extends basePayment  implements paymentInterface  {
 		 );      
 
   }
-
-    
+/*----------------------
+ 功能：判断支付方法返回的信息
+ 参数：无
+ 返回值：隐藏INPUT购买订单的信息(string)
+ ---------------------*/
   function process_button() { 
     global $order, $currencies, $currency;   
     global $point,$cart,$languages_id;
@@ -180,6 +207,11 @@ class telecom  extends basePayment  implements paymentInterface  {
   
   
 
+/*-----------------------
+ 功能：支付前
+ 参数：无
+ 返回值：无
+ ----------------------*/
   function before_process() {
     global $_POST;
 
@@ -187,7 +219,11 @@ class telecom  extends basePayment  implements paymentInterface  {
       
     return false;
   }
-
+/*-----------------------
+ 功能：支付后
+ 参数：无
+ 返回值：false(boolean)
+ ----------------------*/
   function after_process() {
     //update telecom_unknow table by order telecom_option
     if(isset($_SESSION['insert_id'])){
@@ -249,11 +285,20 @@ class telecom  extends basePayment  implements paymentInterface  {
     }
     return false;
   }
-
+/*--------------------------
+ 功能：输出错误 
+ 参数：无
+ 返回值：是否输出错误信息(boolean)
+ -------------------------*/
   function output_error() {
     return false;
   }
 
+/*---------------------------
+ 功能：检查SQL
+ 参数：无
+ 返回值：SQL(string)
+ --------------------------*/  
   function check() {
     if (!isset($this->_check)) {
       $check_query = tep_db_query("select configuration_value from " . TABLE_CONFIGURATION . " where configuration_key = 'MODULE_PAYMENT_TELECOM_STATUS' and site_id = '".$this->site_id."'");
@@ -261,7 +306,11 @@ class telecom  extends basePayment  implements paymentInterface  {
     }
     return $this->_check;
   }
-
+/*--------------------------------
+ 功能：添加支付方法的SQL
+ 参数：无
+ 返回值：无
+ -------------------------------*/
   function install() {
     tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added,user_added, site_id) values ('TELECOM 支払いを有効にする', 'MODULE_PAYMENT_TELECOM_STATUS', 'True', 'TELECOM での支払いを受け付けますか?', '6', '3', 'tep_cfg_select_option(array(\'True\', \'False\'), ', now(),'".$_SESSION['user_name']."', ".$this->site_id.")");
     tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('表示の整列順', 'MODULE_PAYMENT_TELECOM_SORT_ORDER', '0', '表示の整列順を設定できます。数字が小さいほど上位に表示されます.', '6', '0', now(), ".$this->site_id.")");
@@ -289,11 +338,19 @@ class telecom  extends basePayment  implements paymentInterface  {
     
     tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('ポイント還元率', 'MODULE_PAYMENT_TELECOM_POINT_RATE', '0.01', 'ポイント還元率', '6', '0', now(), ".$this->site_id.")");
   }
-
+/*------------------------------
+ 功能：删除SQL
+ 参数：无
+ 返回值：无
+ -----------------------------*/
   function remove() {
     tep_db_query("delete from " . TABLE_CONFIGURATION . " where configuration_key in ('" . implode("', '", $this->keys()) . "') and site_id = '".$this->site_id."'");
   }
-
+/*-----------------------------
+ 功能：编辑信用卡结算支付方法
+ 参数：无
+ 返回值：信用卡结算支付方法数据(array)
+ ----------------------------*/
   function keys() {
     return array(
                  'MODULE_PAYMENT_TELECOM_STATUS',
@@ -316,6 +373,11 @@ class telecom  extends basePayment  implements paymentInterface  {
   }
   
   //错误
+/*----------------------
+ 功能：获取错误
+ 参数：无
+ 返回值：错误信息(boolean/array)
+ ----------------------*/
   function get_error() {
     global $_GET;
     
@@ -324,7 +386,11 @@ class telecom  extends basePayment  implements paymentInterface  {
     return array('title' => MODULE_PAYMENT_TELECOM_TEXT_ERROR,
                  'error' => $error_message);
   }
-
+/*------------------------
+ 功能：更新信用卡结算
+ 参数：$sql_data_array(string) SQL数据
+ 返回值：判断是否更新成功(boolean)
+ -----------------------*/
   function dealUnknow(&$sql_data_array){
     $telecom_option_ok = false;
     if ($_SESSION['option']) {
@@ -340,6 +406,11 @@ class telecom  extends basePayment  implements paymentInterface  {
     }
   return $telecom_option_ok;
   }
+/*------------------------------
+ 功能：获取电子邮件字符串 
+ 参数：$option(string) 选项
+ 返回值：电子邮件字符串(string) 
+ -----------------------------*/
   function getMailString($option='')
   {
     $email_printing_order ='';
@@ -380,7 +451,12 @@ class telecom  extends basePayment  implements paymentInterface  {
     $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
   return $email_printing_order;
   }
-  
+/*----------------------------------
+  功能：信用卡结算预约按钮
+  参数：$pid(string) 预约ID
+  参数：$preorder_total(string) 预约总额
+  返回值：无
+  ---------------------------------*/
   function preorder_process_button($pid, $preorder_total) { 
     global $currencies;   
     global $languages_id;
@@ -447,7 +523,11 @@ class telecom  extends basePayment  implements paymentInterface  {
     $hidden_param_str .= tep_draw_hidden_field('redirect_back_url', HTTP_SERVER.'/change_preorder.php?pid='.$preorder_info['check_preorder_str']);
     echo $hidden_param_str; 
   }
-  
+/*------------------------------
+ 功能：更新预约信用卡结算
+ 参数：$sql_data_array(string) SQL数据
+ 返回值：判断是否更新成功(boolean) 
+ -----------------------------*/  
   function preorderDealUnknow(&$sql_data_array){
     $telecom_option_ok = false;
     if ($_SESSION['preorder_option']) {
@@ -463,6 +543,12 @@ class telecom  extends basePayment  implements paymentInterface  {
     }
   return $telecom_option_ok;
   }
+/*-----------------------------
+ 功能：处理后台支付电子邮件 
+ 参数：$order(string) 订单数组
+ 参数：$total_price_mail(string) 总价邮件
+ 返回值：返回处理之后的电子邮件(string) 
+ ----------------------------*/
   function admin_process_pay_email($order,$total_price_mail){
     $email_credit = '';
     $email_credit .= $order->customer['name'] . '様' . "\n\n";
@@ -485,11 +571,20 @@ class telecom  extends basePayment  implements paymentInterface  {
     $email_credit .= '━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
     return $email_credit;
   }
-
+/*-------------------------
+ 功能：获取支付标志值
+ 参数：无
+ 返回值：标志值(string) 
+ ------------------------*/
   function admin_get_payment_symbol(){
 
     return 1;
   }
+/*----------------------------
+ 功能：显示后台支付方法列表 
+ 参数：$pay_info_array(array) 支付信息数组
+ 返回值：无
+ ---------------------------*/  
   function admin_show_payment_list($pay_info_array){
 
    global $_POST;
@@ -565,21 +660,40 @@ class telecom  extends basePayment  implements paymentInterface  {
 EOT;
    echo "\n";
   }
-
+/*------------------------------
+ 功能：获取后台顾客点值 
+ 参数：$point_value(string) 点值
+ 参数：$customer_id(string) 顾客ID
+ 返回值：无
+ -----------------------------*/
   function admin_get_customer_point($point_value,$customer_id){
     tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $point_value .  " where customers_id = '" .$customer_id."' and customers_guest_chk = '0' ");
   } 
-  
+/*--------------------------
+ 功能：后台获取点值
+ 参数：$site_id(string) SITE_ID值
+ 返回值：点值(string)
+ -------------------------*/  
   function admin_is_get_point($site_id)
   {
     return get_configuration_by_site_id_or_default('MODULE_PAYMENT_TELECOM_IS_GET_POINT', (int)$site_id); 
   }
-  
+/*------------------------
+ 功能：后台获取点率
+ 参数：$site_id(string) SITE_ID值
+ 返回值：点率(string) 
+ -----------------------*/  
   function admin_get_point_rate($site_id)
   {
     return get_configuration_by_site_id_or_default('MODULE_PAYMENT_TELECOM_POINT_RATE', (int)$site_id); 
   }
-  
+/*----------------------
+ 功能：后台计算得到的点数
+ 参数：$orders_id(string) 订单ID
+ 参数：$point_rate(string) 点率
+ 参数：$site_id(string) SITE_ID值
+ 返回值：点数(string) 
+ ---------------------*/
   function admin_calc_get_point($orders_id, $point_rate, $site_id)
   {
     $order_point_raw = tep_db_query("select value from ".TABLE_ORDERS_TOTAL." where class = 'ot_point' and orders_id = '".$orders_id."'"); 
@@ -605,12 +719,20 @@ EOT;
       }
     }
   }
-  
+/*--------------------------
+ 功能：获取点率
+ 参数：无
+ 返回值：点率(string)
+ -------------------------*/  
   function get_point_rate()
   {
     return MODULE_PAYMENT_TELECOM_POINT_RATE; 
   }
-
+/*--------------------------
+ 功能：后台获得评论
+ 参数：$comment(string) 评论
+ 返回值：评论信息(string)
+ -------------------------*/
   function admin_get_comment($comment){
 
     $payment_comment_array = array(TS_TEXT_BANK_NAME,

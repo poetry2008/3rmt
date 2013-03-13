@@ -7,6 +7,11 @@
 require_once (DIR_WS_CLASSES . 'basePayment.php');
 class convenience_store extends basePayment  implements paymentInterface  { 
   var $site_id, $code, $title, $description, $enabled, $n_fee, $s_error, $email_footer, $show_payment_info;
+/*------------------------------
+ 功能：加载便利店结算
+ 参数：$site_id (string) SITE_ID值
+ 返回值：无
+ -----------------------------*/
   function loadSpecialSettings($site_id = 0){
     $this->site_id = $site_id;
     $this->code        = 'convenience_store';
@@ -14,6 +19,12 @@ class convenience_store extends basePayment  implements paymentInterface  {
     $this->show_payment_info = 0;
 
   }
+/*----------------------------
+ 功能：编辑便利店结算
+ 参数：$theData(boolean) 数据
+ 参数：$back(boolean) true/false
+ 返回值：返回便利店结算类型数据(array)
+ ---------------------------*/
   function fields($theData=false, $back=false){
     if ($back) {
     return array(
@@ -44,8 +55,7 @@ class convenience_store extends basePayment  implements paymentInterface  {
                  array(
                        "code"=>'convenience_email_again',
                        "title"=>TS_MODULE_PAYMENT_CONVENIENCE_EMAIL_CONFIRMATION_TEXT,
-                       "field"=>tep_draw_input_field('convenience_email_again',
-                         isset($_SESSION['customer_emailaddress'])?$_SESSION['customer_emailaddress']:$theData['convenience_email_again'],'onpaste="return false"'.$style_width.$input_text_id.'').'&nbsp;&nbsp;'.TS_MODULE_PAYMENT_CONVENIENCE_MUST_INPUT,
+                       "field"=>tep_draw_input_field('convenience_email_again', isset($_SESSION['customer_emailaddress'])?$_SESSION['customer_emailaddress']:$theData['convenience_email_again'],'onpaste="return false"'.$style_width.$input_text_id.'').'&nbsp;&nbsp;'.TS_MODULE_PAYMENT_CONVENIENCE_MUST_INPUT,
                        "rule"=>array(basePayment::RULE_NOT_NULL, basePayment::RULE_SAME_TO,basePayment::RULE_EMAIL),
                        "params_code"=>'convenience_email',
                        "error_msg" => array(TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE, TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE_NOE, TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE) 
@@ -60,10 +70,19 @@ class convenience_store extends basePayment  implements paymentInterface  {
     }
   }
   // class methods
+/*-----------------------------
+ 功能：JS验证
+ 参数：无
+ 返回值：JS验证是否成功(boolean)
+ ----------------------------*/
   function javascript_validation() {
     return false;
   }
-
+/*---------------------------------
+ 功能： 检查后台便利店结算电子邮件
+ 参数：无
+ 返回值：判断是否检查成功(boolean)
+ ---------------------------------*/
   function checkAdminSelection(){
     if(isset($_POST['con_email']) and !empty($_POST['con_email'])){
       return true;
@@ -71,6 +90,11 @@ class convenience_store extends basePayment  implements paymentInterface  {
       return false;
     }
   }
+/*--------------------------------
+ 功能：选择后台便利店
+ 参数：无
+ 返回值：便利店信息(array)
+ -------------------------------*/
     function adminSelection()
     {
       return array(
@@ -133,6 +157,11 @@ class convenience_store extends basePayment  implements paymentInterface  {
 
       return $selection;
       }*/
+/*--------------------------
+ 功能：确认检查前台支付方法 
+ 参数：无
+ 返回值：是否检查成功(boolean)
+ -------------------------*/
     function pre_confirmation_check() {
       return true;
     }
@@ -197,7 +226,11 @@ class convenience_store extends basePayment  implements paymentInterface  {
       }
     }
     */
-    
+ /*--------------------------------
+ 功能：检查预约支付方法 
+ 参数：无
+ 返回值：返回支付方法值名(string)
+ ------------------------------*/
     function preorder_confirmation_check() {
       global $_POST;
       
@@ -233,7 +266,11 @@ class convenience_store extends basePayment  implements paymentInterface  {
       }
       return 0; 
     }
-    
+ /*----------------------------
+ 功能：确认支付方法
+ 参数：无
+ 返回值：支付方法数据(array)
+ ----------------------------*/  
     function confirmation() {
       global $currencies;
       global $_POST;
@@ -255,7 +292,11 @@ class convenience_store extends basePayment  implements paymentInterface  {
                    );
 
     }
-
+/*----------------------
+ 功能：判断支付方法返回的信息
+ 参数：无
+ 返回值：隐藏INPUT购买订单的信息(string)
+ ---------------------*/
     function process_button() {
       global $currencies;
       global $_POST;
@@ -292,17 +333,29 @@ class convenience_store extends basePayment  implements paymentInterface  {
         . tep_draw_hidden_field('convenience_email', $_SESSION['h_convenience_email']) 
         . tep_draw_hidden_field('code_fee',$_SESSION['h_code_fee']); // for ot_codt
     }
-
+/*------------------------------
+ 功能：便利店结算前 
+ 参数：无
+ 返回值：无
+ -----------------------------*/
     function before_process() {
       global $_POST;
 
       $this->email_footer = $_POST['codt_message'];
     }
-
+/*------------------------------
+ 功能：便利店结算后
+ 参数：无
+ 参数：无
+ -----------------------------*/
     function after_process() {
       return false;
     }
-
+/*----------------------
+ 功能：获取错误
+ 参数：无
+ 返回值：错误信息(boolean/array)
+ ----------------------*/
     function get_error() {
       global $_POST,$_GET;
 
@@ -327,7 +380,11 @@ class convenience_store extends basePayment  implements paymentInterface  {
         return false;
       }
     }
-    
+ /*----------------------
+ 功能：获取预约错误
+ 参数：$error_type(string) 错误类型
+ 返回值：错误信息(string)
+ ---------------------*/
     function get_preorder_error($error_type) {
       if ($error_type == 1)
         {
@@ -343,7 +400,11 @@ class convenience_store extends basePayment  implements paymentInterface  {
         }
       return $error_message; 
     }
-
+/*---------------------------
+ 功能：检查SQL
+ 参数：无
+ 返回值：SQL(string)
+ --------------------------*/  
     function check() {
       if (!isset($this->_check)) {
         $check_query = tep_db_query("select configuration_value from " . TABLE_CONFIGURATION . " where configuration_key = 'MODULE_PAYMENT_CONVENIENCE_STORE_STATUS' and site_id = '".$this->site_id."'");
@@ -351,7 +412,11 @@ class convenience_store extends basePayment  implements paymentInterface  {
       }
       return $this->_check;
     }
-
+/*--------------------------------
+ 功能：添加支付方法的SQL
+ 参数：无
+ 返回值：无
+ -------------------------------*/
     function install() {
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title,
         configuration_key, configuration_value, configuration_description,
@@ -378,12 +443,20 @@ class convenience_store extends basePayment  implements paymentInterface  {
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('ポイント', 'MODULE_PAYMENT_CONVENIENCE_STORE_IS_GET_POINT', '1', 'ポイント', '6', '1', 'tep_cfg_payment_new_checkbox(',now(), ".$this->site_id.");");
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('ポイント還元率', 'MODULE_PAYMENT_CONVENIENCE_STORE_POINT_RATE', '0.01', 'ポイント還元率', '6', '0' , now(), ".$this->site_id.")");
     }
-
+/*------------------------------
+ 功能：删除SQL
+ 参数：无
+ 返回值：无
+ -----------------------------*/
     function remove() {
       tep_db_query("delete from " . TABLE_CONFIGURATION . " where configuration_key in ('" . implode("', '", $this->keys()) . "') and site_id = '".$this->site_id."'");
     }
 
-
+/*-----------------------------
+ 功能：编辑便利店结算方法
+ 参数：无
+ 返回值：便利店结算方法数据(array)
+ ----------------------------*/
     function keys() {
       return array( 
                    'MODULE_PAYMENT_CONVENIENCE_STORE_STATUS',
@@ -404,7 +477,12 @@ class convenience_store extends basePayment  implements paymentInterface  {
                     );
     }
 
-
+/*--------------------------
+ 功能：处理评论
+ 参数：$comment(string) 评论
+ 参数：$session_paymentinfo_name(string) 支付方法名称
+ 返回值：返回评论信息和支付银行信息(array)
+ -------------------------*/
     function dealComment($comment, $session_paymentinfo_name)
     {
       if($_POST['convenience_email']){ 
@@ -419,11 +497,22 @@ class convenience_store extends basePayment  implements paymentInterface  {
           'payment_bank_info' => $payment_bank_info);
       return $res_arr;
     }
-
+/*---------------------------
+ 功能：便利店预约按钮
+ 参数：$pid(string) 预约ID
+ 参数：$preorder_total(string) 预约总额
+ 返回值：无
+ --------------------------*/
     function preorder_process_button($pid, $preorder_total)
     {
     
     }
+/*--------------------------------
+ 功能：处理预约额外的评论
+ 参数：$pInfo(string) 银行数组输出
+ 参数：$sql_data_array(string) SQL数据
+ 返回值：评论信息(string)
+ -------------------------------*/  
     function deal_preorder_additional($pInfo, &$sql_data_array)
     {
       $pay_comments = 'PCメールアドレス:'.$pInfo['convenience_email']; 
@@ -431,6 +520,11 @@ class convenience_store extends basePayment  implements paymentInterface  {
        
       return $pay_comments ."\n".$pInfo['yourmessage'];
     } 
+/*-------------------------------
+ 功能：检查预约的电子邮箱
+ 参数：$email(string) 电子邮箱
+ 返回值：检查电子邮箱是否正确(boolean)
+ ------------------------------*/
     function checkPreorderConvEmail($email)
     {
       if (!empty($email)) {
@@ -438,7 +532,11 @@ class convenience_store extends basePayment  implements paymentInterface  {
       }
       return false; 
     }
-
+/*----------------------------
+ 功能：获取邮件的字符串
+ 参数：$option(string) 选项
+ 返回值：邮件字符串(string)
+ ---------------------------*/
     function getMailString($option=''){
       $email_printing_order .= 'この注文は【販売】です。' . "\n";
       $email_printing_order .=
@@ -482,28 +580,49 @@ class convenience_store extends basePayment  implements paymentInterface  {
       $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
       return $email_printing_order;
     }
-
+/*-----------------------------------
+ 功能：后台添加信息 
+ 参数：$sql_data_array(string) SQL数据
+ 返回值：无
+ ----------------------------------*/  
     function admin_add_additional_info(&$sql_data_array)
     {
       global $_POST; 
       $sql_data_array['cemail_text'] = 'PCメールアドレス:'.$_POST['con_email']; 
     }
-    
+/*---------------------------------
+ 功能：后台处理评论信息
+ 参数：$order_info(string) 订单信息
+ 返回值：评论信息(string)
+ --------------------------------*/  
     function admin_deal_comment($order_info)
     {
       return $order_info['cemail_text']; 
     }
-
+/*--------------------------------
+ 功能：处理其他信息 
+ 参数：$pInfo(string) 便利店数组
+ 返回值：无
+ -------------------------------*/
     function deal_other_info($pInfo)
     {
       $_SESSION['h_convenience_email'] = $pInfo['convenience_email']; 
     }
-  
-    function get_preorder_add_info($order_info)
+/*-----------------------------
+ 功能：获取预约添加信息 
+ 参数：$order_info(string) 订单信息
+ 返回值：预约添加信息(string)
+ ----------------------------*/
+ function get_preorder_add_info($order_info)
     {
       return $order_info['cemail_text'] ."\n".$order_info['comment_msg'];
     }
 
+/*----------------------------
+ 功能：显示后台支付方法列表 
+ 参数：$pay_info_array(array) 支付信息数组
+ 返回值：无
+ ---------------------------*/  
   function admin_show_payment_list($pay_info_array){
 
    global $_POST;
@@ -580,15 +699,33 @@ EOT;
    echo "\n";
   }
     
+/*------------------------------
+ 功能：获取后台顾客点值 
+ 参数：$point_value(string) 点值
+ 参数：$customer_id(string) 顾客ID
+ 返回值：无
+ -----------------------------*/
   function admin_get_customer_point($point_value,$customer_id){
     tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $point_value .  " where customers_id = '" .$customer_id."' and customers_guest_chk = '0' ");
   } 
 
+/*---------------------------
+ 功能：获取后台支付方法信息
+ 参数：$payment_info(string) 支付信息
+ 返回值：支付银行信息(string)
+ --------------------------*/
   function admin_get_payment_info($payment_info){
     $cemail_text = $payment_info;  
     return "cemail_text = '{$cemail_text}',";
   }
 
+/*----------------------------
+ 功能：获取后台支付方法信息评论 
+ 参数：$customers_email(string) 顾客的邮件
+ 参数：$site_id(string) SITE_ID值
+ 参数：$orders_type(string) 订单类型
+ 返回值：支付方法的订单ID(string) 
+ ---------------------------*/
   function admin_get_payment_info_comment($customers_email,$site_id,$orders_type){
 
     $orders_type_str = $orders_type == 1 ? TABLE_ORDERS : TABLE_PREORDERS; 
@@ -605,16 +742,31 @@ EOT;
     return array(1,$orders_id);
   }
   
+/*--------------------------
+ 功能：后台获取点值
+ 参数：$site_id(string) SITE_ID值
+ 返回值：点值(string)
+ -------------------------*/  
   function admin_is_get_point($site_id)
   {
     return get_configuration_by_site_id_or_default('MODULE_PAYMENT_CONVENIENCE_STORE_IS_GET_POINT', (int)$site_id); 
   }
-  
+/*------------------------
+ 功能：后台获取点率
+ 参数：$site_id(string) SITE_ID值
+ 返回值：点率(string) 
+ -----------------------*/  
   function admin_get_point_rate($site_id)
   {
     return get_configuration_by_site_id_or_default('MODULE_PAYMENT_CONVENIENCE_STORE_POINT_RATE', (int)$site_id); 
   }
-  
+/*----------------------
+ 功能：后台计算得到的点数
+ 参数：$orders_id(string) 订单ID
+ 参数：$point_rate(string) 点率
+ 参数：$site_id(string) SITE_ID值
+ 返回值：点数(string) 
+ ---------------------*/
   function admin_calc_get_point($orders_id, $point_rate, $site_id)
   {
     $order_point_raw = tep_db_query("select value from ".TABLE_ORDERS_TOTAL." where class = 'ot_point' and orders_id = '".$orders_id."'"); 
@@ -640,12 +792,20 @@ EOT;
       }
     }
   }
-  
+/*--------------------------
+ 功能：获取点率
+ 参数：无
+ 返回值：点率(string)
+ -------------------------*/  
   function get_point_rate()
   {
     return MODULE_PAYMENT_CONVENIENCE_STORE_POINT_RATE; 
   }
-
+/*--------------------------
+ 功能：后台获得评论
+ 参数：$comment(string) 评论
+ 返回值：评论信息(string)
+ -------------------------*/
   function admin_get_comment($comment){
 
     $payment_comment_array = array(TS_TEXT_BANK_NAME,

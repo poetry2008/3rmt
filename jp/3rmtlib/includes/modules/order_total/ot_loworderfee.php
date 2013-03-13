@@ -6,7 +6,11 @@
 
   class ot_loworderfee {
     var $site_id, $title, $output;
-
+/*--------------------------------
+ 功能：构造函数
+ 参数：$site_id(string) SITE_ID 值
+ 返回值：无
+ -------------------------------*/
     function ot_loworderfee($site_id = 0) {
 
       $this->site_id = $site_id;
@@ -19,7 +23,11 @@
 
       $this->output = array();
     }
-
+/*--------------------------------
+ 功能：处理手续费
+ 参数：无
+ 返回值：无
+ -------------------------------*/
     function process() {
       global $order, $currencies;
 
@@ -50,40 +58,55 @@
         }
       }
     }
-
+/*-------------------------------
+ 功能：检查处理手续费
+ 参数：无
+ 返回值：检查处理手续费SQL(string)
+ ------------------------------*/
     function check() {
       if (!isset($this->_check)) {
-        // ccdd
         $check_query = tep_db_query("select configuration_value from " .  TABLE_CONFIGURATION . " where configuration_key = 'MODULE_ORDER_TOTAL_LOWORDERFEE_STATUS' and site_id = '".$this->site_id."'");
         $this->_check = tep_db_num_rows($check_query);
       }
 
       return $this->_check;
     }
-
+/*-------------------------------
+ 功能：配置关键字
+ 参数：无
+ 返回值：配置关键字值(string)
+ ------------------------------*/
     function keys() {
       return array('MODULE_ORDER_TOTAL_LOWORDERFEE_STATUS', 'MODULE_ORDER_TOTAL_LOWORDERFEE_SORT_ORDER', 'MODULE_ORDER_TOTAL_LOWORDERFEE_LOW_ORDER_FEE', 'MODULE_ORDER_TOTAL_LOWORDERFEE_ORDER_UNDER', 'MODULE_ORDER_TOTAL_LOWORDERFEE_FEE', 'MODULE_ORDER_TOTAL_LOWORDERFEE_DESTINATION', 'MODULE_ORDER_TOTAL_LOWORDERFEE_TAX_CLASS');
     }
-
+/*-----------------------------
+ 功能：添加处理手续费
+ 参数：无
+ 返回值：无
+ ----------------------------*/
     function install() {
-      // ccdd
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added,user_added, site_id) values ('低額取扱い手数料の表示', 'MODULE_ORDER_TOTAL_LOWORDERFEE_STATUS', 'true', '低額取扱い手数料の表示をしますか?', '6', '1','tep_cfg_select_option(array(\'true\', \'false\'), ', now(),'".$_SESSION['user_name']."', ".$this->site_id.")");
-      // ccdd
+
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title,
+        configuration_key, configuration_value, configuration_description,
+        configuration_group_id, sort_order, set_function, date_added,user_added,
+        site_id) values ('低額取扱い手数料の表示',
+          'MODULE_ORDER_TOTAL_LOWORDERFEE_STATUS', 'true',
+          '低額取扱い手数料の表示をしますか?', '6',
+          '1','tep_cfg_select_option(array(\'true\', \'false\'), ',
+            now(),'".$_SESSION['user_name']."', ".$this->site_id.")");
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('表示の整列順', 'MODULE_ORDER_TOTAL_LOWORDERFEE_SORT_ORDER', '4', '表示の整列順を設定できます. 数字が小さいほど上位に表示されます.', '6', '2', now(), ".$this->site_id.")");
-      // ccdd
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('低額取扱い手数料設定', 'MODULE_ORDER_TOTAL_LOWORDERFEE_LOW_ORDER_FEE', 'false', '低額取扱い手数料設定を有効にしますか?', '6', '3', 'tep_cfg_select_option(array(\'true\', \'false\'), ', now(), ".$this->site_id.")");
-      // ccdd
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, date_added, site_id) values ('取扱い手数料を課金する注文金額', 'MODULE_ORDER_TOTAL_LOWORDERFEE_ORDER_UNDER', '5000', 'この注文金額未満で手数料を課金します.', '6', '4', 'currencies->format', now(), ".$this->site_id.")");
-      // ccdd
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, date_added, site_id) values ('取扱い手数料', 'MODULE_ORDER_TOTAL_LOWORDERFEE_FEE', '50', '手数料金額.', '6', '5', 'currencies->format', now(), ".$this->site_id.")");
-      // ccdd
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('取扱い手数料適用地域', 'MODULE_ORDER_TOTAL_LOWORDERFEE_DESTINATION', 'both', '設定した配送地域に対して低額取扱い手数料が課金されます.', '6', '6', 'tep_cfg_select_option(array(\'national\', \'international\', \'both\'), ', now(), ".$this->site_id.")");
-      // ccdd
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added, site_id) values ('税種別', 'MODULE_ORDER_TOTAL_LOWORDERFEE_TAX_CLASS', '0', '低額取扱い手数料金額に適用される税種別', '6', '7', 'tep_get_tax_class_title', 'tep_cfg_pull_down_tax_classes(', now(), ".$this->site_id.")");
     }
-
+/*----------------------------
+ 功能：删除处理手续费SQL 
+ 参数：无
+ 返回值：无
+ ---------------------------*/
     function remove() {
-      // ccdd
       tep_db_query("delete from " . TABLE_CONFIGURATION . " where configuration_key in ('" . implode("', '", $this->keys()) . "') and site_id = '".$this->site_id."'");
     }
   }
