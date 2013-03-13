@@ -283,10 +283,9 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     </td>
     </tr>
     <tr>
-    <td nowrap >
-    <?php echo TEXT_SEARCH_CATEGORY;?>
-    </td>
     <td>
+    <?php echo TEXT_SEARCH_CATEGORY;?>
+    <br>
     <?php
     echo tep_draw_pull_down_menu('product_categories_id',tep_get_category_tree(),
         $current_category_id);
