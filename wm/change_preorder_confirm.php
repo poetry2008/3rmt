@@ -618,15 +618,15 @@ foreach($all_show_option_id as $t_item_id){
                     } else if ($preorder_total_res['class'] == 'ot_total') {
                       if (isset($_SESSION['preorder_campaign_fee'])) {
                         if (isset($preorder_total_info_array['total'])) {
-                          echo $currencies->format_total($preorder_total_info_array['total']+(int)$_SESSION['preorder_campaign_fee']+(int)$shipping_fee);
+                          echo $currencies->format_total($preorder_total_info_array['total']+(int)$_SESSION['preorder_campaign_fee']+(int)$shipping_fee+(int)$handle_fee);
                         } else {
-                          echo $currencies->format_total($preorder_total_res['value']+(int)$_SESSION['preorder_campaign_fee']+(int)$shipping_fee);
+                          echo $currencies->format_total($preorder_total_res['value']+(int)$_SESSION['preorder_campaign_fee']+(int)$shipping_fee+(int)$handle_fee);
                         }
                       } else {
                         if (isset($preorder_total_info_array['total'])) {
-                          echo $currencies->format_total($preorder_total_info_array['total']-(int)$preorder_point+(int)$shipping_fee);
+                          echo $currencies->format_total($preorder_total_info_array['total']-(int)$preorder_point+(int)$shipping_fee+(int)$handle_fee);
                         } else {
-                          echo $currencies->format_total($preorder_total_res['value']-(int)$preorder_point+(int)$shipping_fee);
+                          echo $currencies->format_total($preorder_total_res['value']-(int)$preorder_point+(int)$shipping_fee+(int)$handle_fee);
                         }
                       }
                     } else if($preorder_total_res['class'] == 'ot_subtotal') {
@@ -656,11 +656,20 @@ foreach($all_show_option_id as $t_item_id){
                       </tr>
                  <?php
                       } else {
-                        if ($preorder_res['code_fee']) {
+                        //获取相应的手续费
+                        $payment_handle = payment::getInstance($preorder_res['site_id']);
+                        if (isset($preorder_total_info_array['subtotal'])) {
+                          $handle_fee = $payment_handle->handle_calc_fee(payment::changeRomaji($preorder_res['payment_method'],PAYMENT_RETURN_TYPE_CODE),$preorder_total_info_array['subtotal']);
+                        } else {
+                          $handle_fee = $payment_handle->handle_calc_fee(payment::changeRomaji($preorder_res['payment_method'],PAYMENT_RETURN_TYPE_CODE),$preorder_total_res['value']);
+                        }
+                        $handle_fee = $handle_fee == '' ? 0 : $handle_fee;
+                        $_SESSION['preorders_code_fee'] = $handle_fee;
+                        if ($handle_fee) {
                  ?>
                       <tr>
                         <td class="main" align="right"><?php echo CHANGE_PREORDER_HANDLE_FEE_TEXT;?></td> 
-                        <td class="main" align="right"><?php echo $currencies->format_total($preorder_res['code_fee']);?></td> 
+                        <td class="main" align="right"><?php echo $currencies->format_total($handle_fee);?></td> 
                       </tr>
                       <?php
                           }
