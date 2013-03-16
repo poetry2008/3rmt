@@ -657,6 +657,7 @@ foreach($all_show_option_id as $t_item_id){
                       </tr>
                   <?php
                       } else {
+                        //获取相应的手续费
                         $payment_handle = payment::getInstance($preorder_res['site_id']);
                         if (isset($preorder_total_info_array['subtotal'])) {
                           $handle_fee = $payment_handle->handle_calc_fee(payment::changeRomaji($preorder_res['payment_method'],PAYMENT_RETURN_TYPE_CODE),$preorder_total_info_array['subtotal']);
