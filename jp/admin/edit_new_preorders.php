@@ -404,7 +404,7 @@
   }
   
   $payment_code = payment::changeRomaji($payment_method, PAYMENT_RETURN_TYPE_CODE); 
-  $handle_fee = $cpayment->handle_calc_fee($payment_code, $newtotal); 
+  $handle_fee = 0; 
   
   $newtotal = $newtotal+$handle_fee;
   if(!$total_value_more_zero){
@@ -729,19 +729,7 @@ function orders_session(type,value){
 }
   //todo:修改通性用
 <?php
-      $payment_array = payment::getPaymentList();
-      foreach($payment_array[0] as $pay_key=>$pay_value){ 
-        $payment_info = $cpayment->admin_get_payment_info_comment($pay_value,$_SESSION['create_preorder']['orders']['customers_email_address'],$_SESSION['create_preorder']['orders']['site_id']);
-        if(is_array($payment_info)){
-
-          switch($payment_info[0]){
-          case 1: 
-            $handle_fee_code = $cpayment->handle_calc_fee( payment::changeRomaji($pay_value,PAYMENT_RETURN_TYPE_CODE), $_SESSION['create_preorder']['orders_total']['ot_total']['value']);
-            $pay_type_str = $pay_value;
-            break;  
-          }
-        } 
-      }
+  $payment_array = payment::getPaymentList(); 
   $op_info_str = '';
   $op_info_array = array();
   foreach($_SESSION['create_preorder']['orders_products'] as $orders_key=>$orders_value){
@@ -761,12 +749,7 @@ function orders_session(type,value){
   $(".rowHide").hide();
   $(".rowHide").find("input").attr("disabled","true");
   $(".rowHide_"+CI).show();
-  $(".rowHide_"+CI).find("input").removeAttr("disabled");
-  if(CI == '<?php echo $pay_type_str;?>'){
-    $("#handle_fee_id").html('<?php echo $handle_fee_code.TEXT_MONEY_SYMBOL;?>');
-  }else{
-    $("#handle_fee_id").html(0+'<?php echo TEXT_MONEY_SYMBOL;?>'); 
-  }
+  $(".rowHide_"+CI).find("input").removeAttr("disabled"); 
   price_total();
   recalc_preorder_price("<?php echo $_GET['oID'];?>", "<?php echo $products_id_str;?>", "0", "<?php echo $op_info_str;?>");
   }
