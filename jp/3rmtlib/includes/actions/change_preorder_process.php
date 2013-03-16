@@ -651,7 +651,7 @@ if (isset($_SESSION['preorder_campaign_fee'])) {
 if (!empty($option_info_array['fee'])) {
   $email_printing_order .= '手数料　　　　　：'.$option_info_array['fee'].'円'."\n";
 } else {
-  if (!empty($preoder['code_fee'])) {
+  if (!empty($_SESSION['preorders_code_fee'])) {
     $email_printing_order .= '手数料　　　　　：'.$_SESSION['preorders_code_fee'].'円'."\n";
   }
 }
