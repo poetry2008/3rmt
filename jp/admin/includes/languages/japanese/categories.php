@@ -140,7 +140,7 @@ define('TEXT_PRODUCT_SHUZHI_TEXT', '数値:');
 define('TEXT_PRODUCT_ATTTWO_TEXT', 'テキスト２:');
 define('TEXT_PRODUCT_PROJECT_TEXT', '項目');
 define('TEXT_PRODUCT_PROJECT_READ', '項目名とデータは「//」スラッシュ2本で区切ってください。例）サイズ//H1000　W560');
-define('TEXT_PRODUCT_ATTFIVE_TITLE', 'キャラクタ名');
+define('TEXT_PRODUCT_ATTFIVE_TITLE', 'メールに記載する注意書き');
 define('TEXT_PRODUCT_SHUOMING_TEXT', '商品の説明文/オプション登録');
 define('TEXT_PRODUCT_DESC_HTML_READ', 'HTMLによる入力可');
 define('TEXT_PRODUCT_OPTIONS_TITLE', 'オプション登録');

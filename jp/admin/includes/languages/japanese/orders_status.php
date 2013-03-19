@@ -31,7 +31,7 @@ define('TEXT_ORDERS_STATUS_FINISHED', '完了注文');
 define('TEXT_ORDERS_STATUS_SET_PRICE_CALCULATION','平均単価の算出条件に設定');
 //mail本文 add end
 
-define('TEXT_ORDERS_STATUS_DESCRIPTION','名前：${NAME}<br>メールアドレス：${MAIL}<br>注文日：${ORDER_D}<br>注文番号：${ORDER_N}<br>支払い方法：${PAY}<br>注文金額：${ORDER_M}<br>お届け日時：${SHIPPING_TIME}<br>注文ステータス：${ORDER_S}<br>自社キャラ名：${ORDER_A}<br>サイト名：${SITE_NAME}<br>サイトのURL：${SITE_URL}<br>お問い合わせ用メールアドレス：${SUPPORT_EMAIL}<br>銀行営業日：${PAY_DATE}');
+define('TEXT_ORDERS_STATUS_DESCRIPTION','名前：${NAME}<br>メールアドレス：${MAIL}<br>注文日：${ORDER_D}<br>注文番号：${ORDER_N}<br>支払い方法：${PAY}<br>注文金額：${ORDER_M}<br>お届け日時：${SHIPPING_TIME}<br>注文ステータス：${ORDER_S}<br>自社メールに記載する注意書き：${ORDER_A}<br>サイト名：${SITE_NAME}<br>サイトのURL：${SITE_URL}<br>お問い合わせ用メールアドレス：${SUPPORT_EMAIL}<br>銀行営業日：${PAY_DATE}');
 define('TEXT_ORDERS_FETCH_CONDITION', '取引状況');
 define('TEXT_USER_ADDED','作成者:');
 define('TEXT_USER_UPDATE','更新者:');

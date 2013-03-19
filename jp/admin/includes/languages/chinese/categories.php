@@ -140,7 +140,7 @@ define('TEXT_PRODUCT_SHUZHI_TEXT', '数值:');
 define('TEXT_PRODUCT_ATTTWO_TEXT', '文本2:');
 define('TEXT_PRODUCT_PROJECT_TEXT', '项目');
 define('TEXT_PRODUCT_PROJECT_READ', '项目名和数据请用二个斜线「//」分开。例）规格//H1000　W560');
-define('TEXT_PRODUCT_ATTFIVE_TITLE', '交易人物名');
+define('TEXT_PRODUCT_ATTFIVE_TITLE', '本公司邮件内容的注意事项');
 define('TEXT_PRODUCT_SHUOMING_TEXT', '商品的说明/option注册');
 define('TEXT_PRODUCT_DESC_HTML_READ', '可以根据HTML输入');
 define('TEXT_PRODUCT_OPTIONS_TITLE', 'option注册');

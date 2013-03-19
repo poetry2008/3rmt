@@ -516,9 +516,9 @@ $products_ordered_text .= '小計'.str_repeat('　', intval(($cl_max_len-mb_strl
 $products_ordered_text .= "------------------------------------------\n";
 if (tep_get_cflag_by_product_id($preorder_prodct_res['products_id'])) {
   if (tep_get_bflag_by_product_id($preorder_prodct_res['products_id'])) {
-    $products_ordered_text .= SENDMAIL_TEXT_CHARACTER_NAME_SEND_MAIL;
+    $products_ordered_text .= "※ 当社キャラクター名は、お取引10分前までに電子メールにてお知らせいたします。\n\n";
   } else {
-    $products_ordered_text .= SENDMAIL_TEXT_CHARACTER_NAME_CONFIRM_SEND_MAIL;
+    $products_ordered_text .= "※ 当社キャラクター名は、お支払い確認後に電子メールにてお知らせいたします。\n\n";
   }
 }
 
