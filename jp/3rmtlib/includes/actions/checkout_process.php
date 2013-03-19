@@ -8,7 +8,7 @@ ini_set("display_errors","Off");
 require(DIR_WS_FUNCTIONS . 'visites.php');
 // load selected payment module
 require(DIR_WS_CLASSES . 'payment.php');
-
+require(DIR_WS_LANGUAGES . 'default.php');
 if(isset($real_point)){
 // user new point value it from checkout_confirmation.php 
   $point = $real_point;
@@ -674,9 +674,9 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
   $products_ordered .= "------------------------------------------\n";
   if (tep_get_cflag_by_product_id((int)$order->products[$i]['id'])) {
     if (tep_get_bflag_by_product_id((int)$order->products[$i]['id'])) {
-      $products_ordered .= "※ 当社キャラクター名は、お取引10分前までに電子メールにてお知らせいたします。\n\n";
+      $products_ordered .= SENDMAIL_TEXT_CHARACTER_NAME_SEND_MAIL;
     } else {
-      $products_ordered .= "※ 当社キャラクター名は、お支払い確認後に電子メールにてお知らせいたします。\n\n";
+      $products_ordered .= SENDMAIL_TEXT_CHARACTER_NAME_CONFIRM_SEND_MAIL;
     }
   }
 }
@@ -744,7 +744,6 @@ $mailoption['ORDER_TMETHOD']    = $insert_torihiki_date;
 $mailoption['SITE_NAME']        = STORE_NAME ;
 $mailoption['SITE_MAIL']        = SUPPORT_EMAIL_ADDRESS ;
 $mailoption['SITE_URL']         = HTTP_SERVER ;
-
 $payment_modules->deal_mailoption($mailoption, $payment);
 
 if ($point){

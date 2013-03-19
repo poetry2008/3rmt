@@ -6,7 +6,7 @@ define('TEXT_ERRINFO_DB_NO_LOGINFO', '无法获得访问信息');
 
 
 define('TEXT_INFO_DELETE_DAY', '删除访问信息');
-define('TEXT_INFO_DELETE_FORMER_DAY', '一天以前的数据');
+define('TEXT_INFO_DELETE_FORMER_DAY', '天以前的数据');
 
 define('TEXT_PAGE', '( %s / %s Page [ %s / %s Rows ] )');
 

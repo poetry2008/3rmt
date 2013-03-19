@@ -63,7 +63,6 @@ define('TEXT_CATEGORIES_IMAGE', '分类图片:');
 define('TEXT_SORT_ORDER', '排列顺序:');
 
 define('TEXT_PRODUCTS_STATUS', '商品状态:');
-define('TEXT_PRODUCTS_CHARACTER', '交易人物名:');
 define('TEXT_PRODUCTS_BUY_AND_SELL', '交易状态:');
 define('TEXT_PRODUCTS_SMALL_SUM', '小额折扣:');
 define('TEXT_PRODUCTS_DATE_AVAILABLE', '发售日期:');
@@ -175,7 +174,7 @@ define('CATEGORY_AVERAGE_PRICE', '实际库存的平均采购价格：');
 define('CATEGORY_SHIKU_TEXT', '实际&nbsp;在&nbsp;&nbsp;库：&nbsp;');
 define('CATEGORY_GE_UNIT_TEXT', '个');
 define('CATEGORY_JIAKONGZAIKU_TEXT', '虚拟库存：');
-define('CATEGORY_RULI_TEXT', '本公司人物名的输入框：');
+define('CATEGORY_RULI_TEXT', '本公司邮件内容的注意事项的输入栏：');
 define('CATEGORY_CAL_TITLE_TEXT', '计算');
 define('CATEGORY_NEXTLINE_TEXT', '下一位');
 define('CATEGORY_CAL_ORIGIN_SELECT', '整数');

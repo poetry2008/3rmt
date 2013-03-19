@@ -165,7 +165,7 @@ define('ERROR_VILADATE_NEW_PREORDERS', '更新をキャンセルしました。'
 define('ERROR_NEW_PREORDERS_POINT', 'ポイントが足りません。入力可能なポイントは <b>%s</b> です。');
 define('NOTICE_NEW_PRERODERS_PRODUCTS_DEL', '商品を削除しました。<font color="red">メールは送信されていません。</font>');
 define('ERROR_NEW_PREORDERS_UPDATE', 'エラーが発生しました。正常に処理が行われていない可能性があります。');
-define('NEW_PREORDERS_CHARACTER_TEXT', '当社のキャラクター名:');
+define('NEW_PREORDERS_CHARACTER_TEXT', '当社のメールに記載する注意書き:');
 define('TEXT_EMAIL_TITLE','メールタイトル：');
 define('TEXT_DATE_NUM_ERROR','お届け日時を正しく入力してください');
 define('NOTICE_NEW_PREORDERS_PRODUCTS_DEL','商品の削除は成功しました。');

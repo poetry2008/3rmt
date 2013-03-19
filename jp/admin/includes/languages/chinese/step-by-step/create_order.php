@@ -53,7 +53,6 @@ define('TABLE_HEADING_PRICE_BEFORE', '价格(税前)');
 define('TABLE_HEADING_PRICE_AFTER', '价格(税后)');
 define('TABLE_HEADING_TOTAL_BEFORE', '合计(税前)');
 define('TABLE_HEADING_TOTAL_AFTER', '合计(税后)');
-define('EDIT_ORDERS_DUMMY_TITLE', '交易人物名：');
 define('EDIT_ORDERS_ADD_PRO_READ', '商品添加和其他项目不能同时更改。<b>请单独进行「 商品的添加 」。</b>');
 define('TABLE_HEADING_PRODUCTS_MODEL', '型号');
 define('CREATE_ORDER_PRODUCTS_WEIGHT','总重量已找过规定的范围。请删除商品、或更改商品数量使重量在（');

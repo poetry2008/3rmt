@@ -583,7 +583,6 @@ define('TEXT_PREORDER_PRODUCTS_NOENTRANCE', '未进项');
 define('TEXT_PREORDER_PRODUCTS_ENTRANCE', '进项');
 define('TEXT_PREORDER_PRODUCTS_NUM', '个数：');
 define('TEXT_PREORDER_PRODUCTS_UNIT', '个');
-define('TEXT_PREORDER_PRODUCTS_CHARACTER_NAME', '交易人物名：');
 
 
 
@@ -602,7 +601,6 @@ define('NOTICE_DIFF_TIME_TEXT', '剩余');
 define('TEXT_DISPLAY_NUMBER_OF_MANUAL', '当前显示<b>%d</b> &sim; <b>%d</b> (共<b>%d</b> 项)');
 define('FILENAME_FILENAME_RESET_PWD_TEXT','统一重置密码');
 define('FILENAME_CUSTOMERS_EXIT_TEXT','退会客户管理');
-define('OPTION_CHARACTER_NAME', '客户的交易人物名');
 define('NEXT_ORDER_TEXT', '下面的订单');
 define('BEFORE_ORDER_TEXT', '历史订单');
 define('CUSTOMER_INFO_TEXT', '客户信息');

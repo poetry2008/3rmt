@@ -174,7 +174,7 @@ define('CATEGORY_AVERAGE_PRICE', '実在庫の平均仕入価格：');
 define('CATEGORY_SHIKU_TEXT', '実&nbsp;在&nbsp;&nbsp;庫：&nbsp;');
 define('CATEGORY_GE_UNIT_TEXT', '個');
 define('CATEGORY_JIAKONGZAIKU_TEXT', '架空在庫：');
-define('CATEGORY_RULI_TEXT', '当社キャラクター名の入力欄：');
+define('CATEGORY_RULI_TEXT', '当社メールに記載する注意書きの入力欄：');
 define('CATEGORY_CAL_TITLE_TEXT', '計算する');
 define('CATEGORY_NEXTLINE_TEXT', '下一桁');
 define('CATEGORY_CAL_ORIGIN_SELECT', 'ズバリ');
