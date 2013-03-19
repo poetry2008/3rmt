@@ -3030,7 +3030,7 @@ function orders_a($orders_id, $allorders = null, $site_id = 0)
       $sql = "select pd.products_name,p.products_attention_5,p.products_id from `".TABLE_PRODUCTS_DESCRIPTION."` pd,".TABLE_PRODUCTS." p WHERE p.products_id=pd.products_id and p.`products_id`='".$orders_products['products_id']."' and pd.site_id = '".$site_id."'";
       $products_description = tep_db_fetch_array(tep_db_query($sql));
       if ($products_description['products_attention_5']) {
-        $str .= $orders_products['products_name']." 当社の当社のメールに記載する注意書：\n";
+        $str .= $orders_products['products_name']." 当社のメールに記載する注意書：\n";
         $str .= $products_description['products_attention_5'] . "\n";
       }
     }
