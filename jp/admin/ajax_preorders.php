@@ -926,10 +926,9 @@ if ($_POST['orders_id'] &&
     }else{
       $_SESSION['create_preorder']['orders']['payment_method'] = $_POST['payment_method'];
     }
-    $handle_fee = $cpayment->handle_calc_fee($_POST['payment_method'], $_SESSION['preorder_products'][$_POST['oid']]['ot_subtotal']);
   }
-  $handle_fee = $handle_fee == '' ? 0 : $handle_fee;
-  $_SESSION['preorder_products'][$_POST['oid']]['ot_total'] = $_SESSION['preorder_products'][$_POST['oid']]['ot_subtotal']+$update_total_num+$handle_fee;
+  $handle_fee = 0;
+  $_SESSION['preorder_products'][$_POST['oid']]['ot_total'] = $_SESSION['preorder_products'][$_POST['oid']]['ot_subtotal']+$update_total_num;
   $price_array[] = $handle_fee;
   echo implode('|||', $price_array);
 } else if ($_GET['action'] == 'handle_mark') {

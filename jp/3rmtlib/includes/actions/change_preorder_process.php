@@ -102,7 +102,7 @@ if ($preorder) {
                            'torihiki_houhou' => $_SESSION['preorder_info_tori'], 
                            'torihiki_date' => $torihikihouhou_date_str, 
                            'torihiki_date_end' => $torihikihouhou_date_end_str,
-                           'code_fee' => (isset($option_info_array['fee']))?$option_info_array['fee']:$preorder['code_fee'], 
+                           'code_fee' => (isset($option_info_array['fee']))?$option_info_array['fee']:$_SESSION['preorders_code_fee'], 
                            'shipping_fee' => $_SESSION['preorder_shipping_fee'],
                            'language_id' => $preorder['language_id'], 
                            'orders_status_name' => $default_status_res['orders_status_name'], 
@@ -262,6 +262,9 @@ if($address_error == false){
       //$preorder_subtotal_num = $preorder_total_res['value']; 
     //}
     $_SESSION['insert_id'] = $insert_id;
+    if ($preorder_total_res['class'] == 'ot_total') {
+      $preorder_total_num += (int)$_SESSION['preorders_code_fee'];
+    }
     $sql_data_array = array('orders_id' => $orders_id,
                             'title' => $preorder_total_res['title'], 
                             'text' => $preorder_total_res['text'], 
@@ -553,8 +556,8 @@ if (isset($_SESSION['preorder_campaign_fee'])) {
   $mailoption['POINT']          = str_replace('円', '', $currencies->format(abs($_SESSION['preorder_campaign_fee'])));
 }
 
-if (!empty($preorder['code_fee'])) {
-  $mailoption['MAILFEE']          = str_replace('円', '', $currencies->format(isset($option_info_array['fee'])?abs($option_info_array['fee']):abs($preorder['code_fee'])));
+if (!empty($_SESSION['preorders_code_fee'])) {
+  $mailoption['MAILFEE']          = str_replace('円', '', $currencies->format(isset($option_info_array['fee'])?abs($option_info_array['fee']):abs($_SESSION['preorders_code_fee'])));
 } else {
   $mailoption['MAILFEE']          = '0';
 }
@@ -649,8 +652,8 @@ if (isset($_SESSION['preorder_campaign_fee'])) {
 if (!empty($option_info_array['fee'])) {
   $email_printing_order .= '手数料　　　　　：'.$option_info_array['fee'].'円'."\n";
 } else {
-  if (!empty($preoder['code_fee'])) {
-    $email_printing_order .= '手数料　　　　　：'.$preorder['code_fee'].'円'."\n";
+  if (!empty($_SESSION['preorders_code_fee'])) {
+    $email_printing_order .= '手数料　　　　　：'.$_SESSION['preorders_code_fee'].'円'."\n";
   }
 }
 
@@ -785,6 +788,7 @@ unset($_SESSION['referer_adurl']);
 
 unset($_SESSION['preorder_campaign_fee']);
 unset($_SESSION['preorder_camp_id']);
+unset($_SESSION['preorders_code_fee']);
 
 tep_redirect(tep_href_link('change_preorder_success.php'));
 

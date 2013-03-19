@@ -583,7 +583,7 @@
   //  $newtotal = '0';
   //}
   
-  $handle_fee = $cpayment->handle_calc_fee($_POST['payment_method'], $newtotal);
+  $handle_fee = 0;
   //$newtotal = $newtotal + $_POST['payment_code_fee']; 
   $newtotal = $newtotal+$handle_fee;
   /*
@@ -1128,20 +1128,7 @@ function submit_order_check(products_id,op_id){
 
 //todo:修改通性用
 <?php
-      $cpayment = payment::getInstance();
-      $payment_array = payment::getPaymentList();
-      foreach($payment_array[0] as $pay_key=>$pay_value){ 
-        $payment_info = $cpayment->admin_get_payment_info_comment($pay_value,$order->customer['email_address'],$order->info['site_id']);
-        if(is_array($payment_info)){
-
-          switch($payment_info[0]){
-          case 1: 
-            $handle_fee_code = $cpayment->handle_calc_fee( payment::changeRomaji($pay_value,PAYMENT_RETURN_TYPE_CODE), 0);
-            $pay_type_str = $pay_value;
-            break;  
-          }
-        } 
-      }
+    $cpayment = payment::getInstance(); 
     $attr_query_str = "select * from " . TABLE_PREORDERS_PRODUCTS_ATTRIBUTES . " where orders_id = '" . tep_db_input($_GET['oID']) . "'";
     $attr_query = tep_db_query($attr_query_str);
 
@@ -1168,12 +1155,7 @@ function submit_order_check(products_id,op_id){
      $(".rowHide").hide();
      $(".rowHide").find("input").attr("disabled","true");
      $(".rowHide_"+CI).show();
-     $(".rowHide_"+CI).find("input").removeAttr("disabled");
-     if(CI == '<?php echo $pay_type_str;?>'){
-       $("#handle_fee_id").html('<?php echo $handle_fee_code.TEXT_MONEY_SYMBOL;?>');
-     }else{
-       $("#handle_fee_id").html(0+'<?php echo TEXT_MONEY_SYMBOL;?>'); 
-     }
+     $(".rowHide_"+CI).find("input").removeAttr("disabled"); 
      price_total();
      recalc_preorder_price("<?php echo $_GET['oID'];?>", "<?php echo $products_id_str;?>", "1", "<?php echo $op_info_str;?>");
   }
