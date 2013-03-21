@@ -215,29 +215,6 @@ echo "<a   href='".tep_href_link(FILENAME_NEW_CUSTOMERS,"action=refresh")."'><bu
                 <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACCOUNT_CREATED; ?></td>
               </tr>
 <?php
-          /*
-    $search = '';
-    if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'])) ) {
-      $keywords = tep_db_input(tep_db_prepare_input($_GET['search']));
-      $search = "and (c.customers_lastname like '%" . $keywords . "%' or c.customers_firstname like '%" . $keywords . "%' or c.customers_email_address like '%" . $keywords . "%' or c.customers_firstname_f like '%" . $keywords . "%'  or c.customers_lastname_f like '%" . $keywords . "%')";
-    }
-    $customers_query_raw = "
-      select c.customers_id, 
-             c.site_id,
-             c.customers_lastname, 
-             c.customers_firstname, 
-             c.customers_email_address, 
-             c.customers_guest_chk,
-             ci.customers_info_date_account_created as date_account_created, 
-            from " . TABLE_CUSTOMERS . " c left join " . TABLE_ADDRESS_BOOK . " a on c.customers_id = a.customers_id and c.customers_default_address_id = a.address_book_id, ".TABLE_CUSTOMERS_INFO." ci
-        where c.customers_id = ci.customers_info_id
-          and ci.customers_info_date_account_created > '" . $startTime . "'
-          and ci.customers_info_date_account_created < '" . $endTime . "'
-        " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and c.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-        " . $search . " 
-      order by ci.customers_info_date_account_created desc
-    ";
-    */
 
     $customers_query_raw = "
       SELECT c.customers_id,

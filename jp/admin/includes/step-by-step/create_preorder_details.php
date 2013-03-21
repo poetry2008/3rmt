@@ -99,7 +99,7 @@ $PHP_SELF = 'create_preorder.php';
 if(isset($email_address) && $email_address != '' && isset($site_id) && $site_id != ''){
   $param_str = "&Customer_mail=$email_address&site_id=$site_id";
 }
-//start
+//开始输出
 ?>
 <?php
 if(isset($_SESSION['create_preorder']['orders_products']) && !empty($_SESSION['create_preorder']['orders_products'])){
@@ -144,7 +144,7 @@ if(isset($_SESSION['create_preorder']['orders_products']) && !empty($_SESSION['c
             echo '<tr>' . "\n" .
                  '<td class="' . $RowStyle . '" align="left" valign="top" width="20">&nbsp;'
                  .$porducts_qty."&nbsp;x</td>\n" .  '<td class="' . $RowStyle . '">' . $new_products_temp_add['products_name'] . "\n"; 
-            // Has Attributes?
+            // 判断是否存在 Attributes
             if (sizeof($_SESSION['create_preorder']['orders_products_attributes']) > 0) { 
               $orders_products_attributes_array = $_SESSION['create_preorder']['orders_products_attributes'][$new_products_temp_add['products_id']];
               for ($j=0; $j<sizeof($orders_products_attributes_array); $j++) {
@@ -227,9 +227,7 @@ if(!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['c
         </td>
       </tr>
 <?php
-  // ############################################################################
-  //   Get List of All Products
-  // ############################################################################
+  //  获得所有产品列表 
 
     $result = tep_db_query("
         SELECT products_name, 
@@ -249,7 +247,6 @@ if(!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['c
       $LastCategory = $db_categories_name;
     }
     
-    // ksort($ProductList);
     
     $LastOptionTag = "";
     $ProductSelectOptions = "<option value='0'>Don't Add New Product" . $LastOptionTag . "\n";
@@ -272,20 +269,18 @@ if(!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['c
     }
   
   
-  // ############################################################################
-  //   Add Products Steps
-  // ############################################################################
+  //   添加产品步骤
   
     print "<tr><td><table border='0' width='100%' class='option_box_space' cellspacing='1' cellpadding='2'>\n";
     
-    // Set Defaults
+    //   设置默认
       if(!IsSet($add_product_categories_id))
       $add_product_categories_id = 0;
 
       if(!IsSet($add_product_products_id))
       $add_product_products_id = 0;
     
-    // Step 1: Choose Category
+    // 步骤1 原则分类 
       print "<tr>\n";
       print "<td class='dataTableContent' width='70'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 1:</b></td>\n";
       print "<td class='dataTableContent' valign='top'>";
@@ -309,7 +304,7 @@ if(!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['c
       echo "</td>\n";
       print "</tr>\n";
 
-    // Step 2: Choose Product
+    // 步骤2 选择产品 
     if(($step > 1) && ($add_product_categories_id > 0))
     {
       print "<tr>\n";
@@ -350,7 +345,7 @@ if(!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['c
         $step = 4; 
       }
     }
-    // Step 3: Choose Options
+    // 步骤3 选择 Options
     if(($step > 2) && ($add_product_products_id > 0))
     {
       $option_product_raw = tep_db_query("select products_cflag, belong_to_option from ".TABLE_PRODUCTS." where products_id = '".$add_product_products_id."'"); 
@@ -390,7 +385,7 @@ if(!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['c
 
     }
 
-    // Step 4: Confirm
+    // 步骤 4: 确认信息
     if($step > 3)
     {
       echo "<tr><form action='$PHP_SELF?oID=$oID&action=add_product$param_str' method='POST' id='edit_order_id' name='edit_order_id'>\n";
@@ -417,7 +412,7 @@ if(!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['c
     
     echo "</table></td></tr>\n";
 }
-//end
+// 功能结束
 ?>
   <tr>
     <td class="formAreaTitle"><br><?php echo CREATE_ORDER_COMMUNITY_TITLE_TEXT;?></td>

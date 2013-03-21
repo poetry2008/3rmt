@@ -22,7 +22,6 @@ class AD_Option_Item_Text extends AD_Option_Item_Basic
      }
      echo '<td class="main" width="70%">';
      echo '<div style="width:90%;">'.$this->comment.'</div>'; 
-     //echo '</pre>';
      echo '<span id="error_'.$this->formname.'" class="option_error">';
      if (isset($option_error_array[$this->formname])) {
        echo $option_error_array[$this->formname]; 

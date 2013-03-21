@@ -41,7 +41,6 @@ require("includes/note_js.php");
     $file = fopen($products_csv,"r");
   
   //SQL弄成空
-  //mysql_query("TRUNCATE TABLE mail_magazine");
   mysql_query("delete from ".TABLE_MAIL_MAGAZINE." where site_id = '".(int)$_POST['site_id']."'");
   
   $cnt = "0"; 
@@ -61,7 +60,6 @@ require("includes/note_js.php");
     if($chk_input){
       
       //插入
-      //if(!empty($dat[1]) && !empty($dat[2])) {
       if(!empty($dat[1])) {
             
         $dat0 = tep_db_prepare_input($dat[0]);
@@ -80,7 +78,6 @@ require("includes/note_js.php");
         $updated = true;
         }
         
-        //--------------------------------------
         //mail_magazine Update
         if($updated == false) {
           //重复检查

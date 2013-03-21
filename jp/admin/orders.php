@@ -2,7 +2,6 @@
 /*
    $Id$
  */
-//ob_start();
 require('includes/application_top.php');
 include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .  '/default.php');
 require_once(DIR_WS_CLASSES . 'payment.php');
@@ -471,16 +470,12 @@ require(DIR_WS_FUNCTIONS . 'visites.php');
 require(DIR_WS_CLASSES . 'currencies.php');
 $currencies          = new currencies(2);
 $orders_statuses     = $all_orders_statuses = $orders_status_array = array();
-//$all_payment_method = explode("\n",tep_get_list_payment());
 $all_payment_method = payment::getPaymentList(2);
 $all_search_status = array(); 
 $orders_status_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_ORDERS_STATUS . " where language_id = '" . $languages_id . "'");
 
 while ($orders_status = tep_db_fetch_array($orders_status_query)) {
-  if (
-      $orders_status['orders_status_id'] != 17 
-      //&& $orders_status['orders_status_id'] != 31
-     )
+  if ( $orders_status['orders_status_id'] != 17 )
     $orders_statuses[] = array('id' => $orders_status['orders_status_id'],'text' => $orders_status['orders_status_name']);
 
   $all_orders_statuses[] = array('id' => $orders_status['orders_status_id'], 'text' => $orders_status['orders_status_name']);
@@ -500,7 +495,6 @@ switch ($_GET['action']) {
       $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
       tep_redirect(tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action'))));
     }
-    //tep_redirect(tep_href_link(FILENAME_ORDERS));
     $update_user_info = tep_get_user_info($ocertify->auth_user);
     foreach($_POST['chk'] as $value){
       $oID      = $value;
@@ -550,7 +544,6 @@ switch ($_GET['action']) {
                 $total_buyed_date += ($cltotal_subtotal['value'] - $cltotal_point['value']);
               }
             }
-            //----------------------------------------------
             //这次的订单金额除外
             $total_buyed_date = $total_buyed_date - ($result3['value'] - (int)$result2['value']);
 
@@ -572,7 +565,6 @@ switch ($_GET['action']) {
                 $back_rate_name = $back_rate_array[0];
               }
             }
-            //----------------------------------------------
             $point_rate = $back_rate;
           } else {
             $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
@@ -584,7 +576,6 @@ switch ($_GET['action']) {
           } else {
             $get_point = $cpayment->admin_get_fetch_point(payment::changeRomaji($check_status['payment_method'],'code'),$result3['value']);
           }
-          //$cpayment->admin_get_customer_point(payment::changeRomaji($check_status['payment_method'],'code'),intval($get_point),$result1['customers_id']); 
         } else {
           $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
           $os_result = tep_db_fetch_array($os_query);
@@ -594,9 +585,6 @@ switch ($_GET['action']) {
             $get_point = $cpayment->admin_get_orders_point(payment::changeRomaji($check_status['payment_method'],'code'),$oID);
             $point_done_query =tep_db_query("select count(orders_status_history_id) cnt from ".TABLE_ORDERS_STATUS_HISTORY." where orders_status_id = '".$status."' and orders_id = '".tep_db_input($oID)."'");
             $point_done_row  =  tep_db_fetch_array($point_done_query);
-            if($point_done_row['cnt'] <1 ){
-              //tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  intval($get_point) . " where customers_id = '" . $result1['customers_id']."' and customers_guest_chk = '0'");
-            }
           }
         }
       }   
@@ -819,7 +807,6 @@ switch ($_GET['action']) {
 
 
     break;
-    //------------------------------------------
   case 'update_order':
     $update_user_info = tep_get_user_info($ocertify->auth_user);
     $oID      = tep_db_prepare_input($_GET['oID']);
@@ -843,15 +830,7 @@ switch ($_GET['action']) {
     $check_status = tep_db_fetch_array($check_status_query);
     $cpayment = payment::getInstance($check_status['site_id']);
     //oa start 如果状态发生改变，找到当前的订单的
-    //if ($check_status['orders_status']!=$status){
     tep_order_status_change($oID,$status);
-    //}
-    //OA_END
-    /*
-       if ($status == '9') {
-       tep_db_query("update `".TABLE_ORDERS."` set `confirm_payment_time` = '".date('Y-m-d H:i:s', time())."' where `orders_id` = '".$oID."'");
-       }
-     */ 
     //Add Point System
     if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && MODULE_ORDER_TOTAL_POINT_ADD_STATUS != '0') {
       $pcount_query = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS_STATUS_HISTORY." where orders_status_id = '".MODULE_ORDER_TOTAL_POINT_ADD_STATUS."' and orders_id = '".$oID."'");
@@ -889,7 +868,6 @@ switch ($_GET['action']) {
               $total_buyed_date += ($cltotal_subtotal['value'] - $cltotal_point['value']);
             }
           }
-          //----------------------------------------------
           //这次的订单金额除外
           $total_buyed_date = $total_buyed_date - ($result3['value'] - (int)$result2['value']);
 
@@ -911,7 +889,6 @@ switch ($_GET['action']) {
               $back_rate_name = $back_rate_array[0];
             }
           }
-          //----------------------------------------------
           $point_rate = $back_rate;
         } else {
           $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
@@ -922,9 +899,6 @@ switch ($_GET['action']) {
         } else {
           $get_point = $cpayment->admin_get_fetch_point(payment::changeRomaji($check_status['payment_method'],'code'),$result3['value']);
         }
-        //$plus = $result4['point'] + $get_point;
-
-        //$cpayment->admin_get_customer_point(payment::changeRomaji($check_status['payment_method'],'code'),intval($get_point),$result1['customers_id']); 
 
       }else{
         $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
@@ -939,9 +913,6 @@ switch ($_GET['action']) {
               ".TABLE_ORDERS_STATUS_HISTORY." where orders_status_id = '".$status."' and 
               orders_id = '".tep_db_input($oID)."'");
           $point_done_row  =  tep_db_fetch_array($point_done_query);
-          if($point_done_row['cnt'] <1 ){
-            //tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  intval($get_point) . " where customers_id = '" . $result1['customers_id']."' and customers_guest_chk = '0'");
-          }
         }
       }
     }
@@ -1152,7 +1123,6 @@ switch ($_GET['action']) {
       }
       tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments, user_added) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '', '".tep_db_input($update_user_info['name'])."')");
       // 同步问答
-      //    orders_status_updated_for_question($oID,tep_db_input($status),$_POST['notify_comments'] == 'on', $_POST['qu_type']);
       $order_updated = true;
     }
 
@@ -1161,16 +1131,11 @@ switch ($_GET['action']) {
     } else {
       $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
     }
-    //if ($status == 6 or $status == 8) {
-    //  tep_redirect(tep_href_link(FILENAME_ORDERS));
-    //} else {
     tep_redirect(tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action')) . 'action=edit'));
-    //}
     break;
   case 'deleteconfirm':
     $oID = tep_db_prepare_input($_GET['oID']);
 
-    //tep_remove_attributes($oID, $_POST['restock']);
 
     tep_remove_order($oID, $_POST['restock']);
 
@@ -1195,7 +1160,6 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($_GET['oID']) ) {
 
 include(DIR_WS_CLASSES . 'order.php');
 
-//------------------------------------------------
 $suu = 0;
 $text_suu = 0;  
 $__orders_status_query = tep_db_query("
@@ -1239,7 +1203,6 @@ while($select_result = tep_db_fetch_array($select_query)){
 }
 }
 
-//------------------------------------------------
 if(isset($_GET['reload'])) {
   switch($_GET['reload']) {
     case 'Yes':
@@ -1500,7 +1463,6 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                where ".$sort_where." o.customers_email_address = '" . tep_db_input($cEmail) . "' 
                " . " and o.site_id in (". $site_list_str .")"  . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " " . $where_payment . $where_type . " order by ".$order_str;
-    //torihiki_date_error DESC,o.torihiki_date DESC";
   } else if (isset($_GET['cID']) && $_GET['cID']) {
     //顾客id查询 
     $cID = tep_db_prepare_input($_GET['cID']);
@@ -1536,7 +1498,6 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                where ".$sort_where." o.customers_id = '" . tep_db_input($cID) . "' 
                " . " and o.site_id in (". $site_list_str .")"  . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . "
                " . $where_payment . $where_type . " order by ".$order_str;
-    //torihiki_date_error DESC,o.torihiki_date DESC";
   } elseif (isset($_GET['status']) && $_GET['status']) {
     //状态查询 
     $status = tep_db_prepare_input($_GET['status']);
@@ -1573,7 +1534,6 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                o.orders_status = '" . tep_db_input($status) . "' 
                " . " and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . "
                " . $where_payment . $where_type . " order by ".$order_str;
-    //torihiki_date_error DESC,o.torihiki_date DESC";
   }  elseif (isset($_GET['keywords']) && isset($_GET['search_type']) && $_GET['search_type'] == 'products_name' && !$_GET['type'] && !$payment) {
     //商品名查询 
     $orders_query_raw = " select distinct op.orders_id from " .  TABLE_ORDERS_PRODUCTS . " op, ".TABLE_ORDERS." o 
@@ -1584,7 +1544,6 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
       $orders_query_raw .=  "like '%".$_GET['keywords']."%' " ;
     }
     $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".str_replace('torihiki_date_error desc,date_purchased_error desc,', '', $order_str);
-    //op.torihiki_date desc";
   } elseif (isset($_GET['products_id']) && isset($_GET['search_type']) && $_GET['search_type'] == 'products_id' ) {
     //商品id查询 
     $orders_query_raw = " select distinct op.orders_id from " .  TABLE_ORDERS_PRODUCTS . " op, ".TABLE_ORDERS." o ".$sort_table." where ".$sort_where." op.orders_id = o.orders_id and op.products_id='".$_GET['products_id']."'";
@@ -1648,7 +1607,6 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                    '%".$_GET['keywords']."%' or op.products_name like
                    '%".$_GET['keywords']."%') " . $where_payment . $where_type ."  order by
                   ".$order_str;
-                  //o.torihiki_date DESC';
                   } else {
                   $orders_query_raw = "
                   select distinct(o.orders_id), 
@@ -1683,7 +1641,6 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                     " o.site_id in (". $site_list_str .")" .  (($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and '). "
                      o.orders_status = '".substr($_GET['search_type'], 3)."'" . $where_payment
                      . $where_type ."  order by ".$order_str;
-                     //o.torihiki_date DESC';
                      }
                      } elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['search_type'] == 'orders_id'))) {
                      //订单id查询 
@@ -1719,7 +1676,6 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                        where " . $sort_where.
                        " o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and ') . " o.orders_id like '%".$_GET['keywords']."%'" .
                        $where_payment . $where_type."  order by ".$order_str;
-                    //o.torihiki_date DESC';
                      } elseif ( isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['search_type'] == 'customers_name') or (isset($_GET['search_type']) && $_GET['search_type'] == 'email'))
                          ) {
                        //顾客名/邮件查询 
@@ -1773,22 +1729,18 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                break;
                              default:
                                $keyword = tep_db_prepare_input($search_keywords[$i]);
-                               //$orders_query_raw .= "(";
                                if (isset($_GET['search_type']) && $_GET['search_type'] == 'customers_name') {
                                  $orders_query_raw .= "(o.customers_name like '%" . tep_db_input($keyword) . "%' or ";
                                  $orders_query_raw .= "o.customers_name_f like '%" . tep_db_input($keyword) . "%')";
                                } else if (isset($_GET['search_type']) && $_GET['search_type'] == 'email') {
                                  $orders_query_raw .= "o.customers_email_address like '%" . tep_db_input($keyword) . "%'";
                                }
-                               //$orders_query_raw .= ")";
                                break;
                            }
                          } 
-                         //$orders_query_raw .= ")";  
                        }
 
                        $orders_query_raw .= " order by ".$order_str;
-                       //o.torihiki_date DESC";
                      }
   
   
@@ -1806,7 +1758,6 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
              if(count($orders_like_array) == 1){
                $orders_str = "='".$orders_like_str."'";
              }else{
-              // $orders_str = "'%".$orders_like_str."%'";
                $orders_str = " in ('".$orders_like_str."')";
               }
 	     $orders_query_raw = "
@@ -1841,7 +1792,6 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
 	       where " . $sort_where.
 	       " o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and ') . " o.orders_id" .$orders_str.
 	       $where_payment . $where_type.' order by '.$order_str;
-	    //o.torihiki_date DESC';
 	     }
 
   
@@ -2108,12 +2058,9 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                   o.site_id in (".$site_list_str.")". 
                                   ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str:'')." 
                                   " . $where_payment . $where_type . " order by ".$order_str;
-                       //o.torihiki_date DESC";
                      }
   // old sort is  order by torihiki_date_error DESC,o.torihiki_date DESC
   // new sort is  order by o.torihiki_date DESC
-  //where
-  //(o.q_8_1 IS NULL or o.q_8_1 = '')
   $from_pos = strpos($orders_query_raw, 'from orders');
   $order_pos = strpos($orders_query_raw, 'order by');
   $op_pos = strpos($orders_query_raw, 'distinct op.orders_id'); 
@@ -2304,17 +2251,7 @@ foreach ($nomail as $oskey => $value){
   echo 'nomail['.$oskey.'] = "' . $value . '";' . "\n";
 }
 ?>
-<?php
-/*
-   if($reload == 'yes') {
-   if((int)DS_ADMIN_ORDER_RELOAD < 1) {
-   $reloadcnt = '60';
-   } else {
-   $reloadcnt = DS_ADMIN_ORDER_RELOAD;
-   }
-   }
- */
-?>
+
 <?php //以当前时间为付款日?>
 function q_3_2(){
   if ($('#q_3_1').attr('checked') == true){
@@ -3169,10 +3106,6 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
                 '      <td align="right" class="smallText">' . $order->totals[$i]['title'] . $totals_str .'</td>' . "\n" .
                 '      <td align="right" class="smallText">';
               // add font color for '-' value
-              /*
-                 echo
-                 $currencies->format_total($order->totals[$i]['value'],true,$order->info['currency'],$order->info['currency_value']);
-               */
 
               if ($order->totals[$i]['class'] == 'ot_point') {
                 $campaign_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$_GET['oID']."' and site_id = '".$order->info['site_id']."'"); 
@@ -3311,13 +3244,11 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
             $ma_se = "select * from ".TABLE_ORDERS_MAIL." where ";
           if(!isset($_GET['status']) || $_GET['status'] == ""){
             $ma_se .= " orders_status_id = '".$order->info['orders_status']."' ";
-            //echo '<input type="hidden" name="status" value="' .$order->info['orders_status'].'">';
 
             // 用来判断是否选中 送信&通知，如果nomail==1则不选中
             $ma_s = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$order->info['orders_status']."'"));
           }else{
             $ma_se .= " orders_status_id = '".$_GET['status']."' ";
-            //echo '<input type="hidden" name="status" value="' .$_GET['status'].'">';
 
             // 用来判断是否选中 送信&通知，如果nomail==1则不选中
             $ma_s = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$_GET['status']."'"));
@@ -3412,10 +3343,6 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
 $oID=$_GET['oID'];
 $pID=$_GET['pID'];
 $page=$_GET['page'];
-//$site_id=isset($_GET['site_id']) ? $_GET['site_id']:0;
-
-//$products_info_query=tep_db_query("select products_id,site_id from ".TABLE_ORDERS_PRODUCTS." where orders_id='".$oID."' and products_id='".$pID."'");
-//$products_info_array=tep_db_fetch_array($products_info_query);
 $site_id=0;
 $categories_info_query=tep_db_query("select categories_id from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id='".$pID."'");
 $categories_info_array=tep_db_fetch_array($categories_info_query);
@@ -3445,7 +3372,6 @@ $params="oID=".$oID."&page=".$page;
             <tr>
             <td class="smallText" valign='top'>
 	    
-<?php // echo tep_draw_form('manual',FILENAME_ORDERS,'action=search_manual_info', 'get');?> 
 
 	    <form name="manual" action="orders.php" method="get">
 <input name="keyword" style="width:200px;" type="text" id="keyword" size="40" value="" onclick="CtoH(this.id);">
@@ -3572,7 +3498,6 @@ if (isset($_GET['keyword'])) {
 <table border="0" width="100%" cellspacing="0" cellpadding="2" >
 <tr>
 <td>
-<?php //tep_site_filter(FILENAME_ORDERS);?>
 </td>
 </tr>
 </table>
@@ -3589,12 +3514,6 @@ $odd            = "dataTableSecondRow";
 $even="dataTableRow";
 $products_query = tep_db_query("select products_id from ".TABLE_PRODUCTS_TO_CATEGORIES." where categories_id='".$cid."'");
 $products_info_sql = "select products_id from ".TABLE_PRODUCTS_TO_CATEGORIES." where categories_id='".$cid."'";
-/*$products_numrows  = tep_db_num_rows($products_query);
-if($products_numrows == 0){
-$categories_query = tep_db_query("select categories_id from ".TABLE_CATEGOTIES." where categories_id='".$cid."'");
-$categories_array = tep_db_fetch_array($categories_query);
-}
- */
 $products_split    = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $products_info_sql, $products_numrows);
 $products_query    = tep_db_query($products_info_sql);
 if(isset($_GET['p_pid']) && $_GET['p_pid']!=""){
@@ -3711,7 +3630,6 @@ if (isset($_GET['keyword'])) {
 <table border="0" width="100%" cellspacing="0" cellpadding="2" >
 <tr>
 <td>
-<?php //tep_site_filter(FILENAME_ORDERS);?>
 </td>
 </tr>
 </table>
@@ -3849,7 +3767,6 @@ if (isset($_GET['keyword'])) {
 <table border="0" width="100%" cellspacing="0" cellpadding="2" >
 <tr>
 <td>
-<?php //tep_site_filter(FILENAME_ORDERS);?>
 </td>
 </tr>
 </table>
@@ -3939,9 +3856,7 @@ $num = mysql_num_rows($categories_info_query);
 while($categories_info_array=tep_db_fetch_array($categories_info_query)){
 $check_query=tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$categories_info_array['categories_id']."'");
 $check_array=tep_db_fetch_array($check_query);
-//if($check_array['parent_id']==0){
 $search_res_arr[]=array('c_id'=>$categories_info_array['categories_id'],'c_name'=>$categories_info_array['categories_name'],'c_manual'=>$categories_info_array['c_manual'],'parent_id'=>$check_array['parent_id']);
-//}
 }
 $products_info_sql   = "select products_id,products_name,p_manual from ".TABLE_PRODUCTS_DESCRIPTION." where (products_name like '%".$keyword."%' or p_manual like '%".$keyword."%') and site_id='".$site_id."'";
 $products_info_query = tep_db_query($products_info_sql);
@@ -3986,16 +3901,6 @@ if (isset($_GET['keyword'])) {
 
 <tr>
 <td>
-<table border="0" width="100%" cellspacing="0" cellpadding="2" >
-<tr>
-<td>
-<?php
-
-//tep_site_filter(FILENAME_ORDERS);?>
-
-</td>
-</tr>
-</table>
 <table border="0" width="100%" cellspacing="0" cellpadding="2" >
 <tr class="dataTableHeadingRow">
 <td class="dataTableHeadingContent"><?php echo SEARCH_CAT_PRO_TITLE;?> </td>
@@ -4064,8 +3969,6 @@ echo "<font color='red'>".SHOW_MANUAL_NONE."</font>";
 ?>
 
 <?php
-//$products_info_sql="select products_id,products_name,p_manual from ".TABLE_PRODUCTS_DESCRIPTION." where (products_name like '%".$keyword."%' or p_manual like '%".$keyword."%') and site_id='".$site_id."'";
-//$products_query_numrows=mysql_num_rows($products_info_query);
 $manual_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $products_info_sql, $products_query_numrows);
     $products_query = tep_db_query($products_info_sql);
 if(isset($_GET['s_pid']) && $_GET['s_pid']){
@@ -4109,8 +4012,8 @@ echo  $products_info_array['p_manual']=='' ? $manual_content : substr(strip_tags
 		  <td  valign="top"><?php 
 if($num==0){
 echo '<b><font color="red">'.MANUAL_SEARCH_NORES.'</font></b>';
-}//echo $manual_split->display_count($products_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?></td>
-                    <td class="smallText" align="right"><?php //echo $manual_split->display_links($products_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'pID'))); ?></td>
+} ?></td>
+                    <td class="smallText" align="right"></td>
                   </tr>
 
 </table>
@@ -4119,11 +4022,9 @@ echo '<b><font color="red">'.MANUAL_SEARCH_NORES.'</font></b>';
 <?php
 
 }
-	
 ?>
 
 <?php
-//============================================================================================
 }else if($_GET['action']=='show_search_manual'){
 //显示搜索手册
 $site_id = 0;
@@ -4339,14 +4240,12 @@ if($c_parent_array['parent_id']==0){
 $c_manual_query   = tep_db_query("select categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$cpath."' and site_id='0'");
 $c_manual_array   = tep_db_fetch_array($c_manual_query);
 $c_title          = $c_manual_array['categories_name'].SHOW_MANUAL_TITLE;
-//$c_manual_content = $c_manual_array['c_manual']!='' ? stripslashes($c_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';
 }else{
 $c_manual_query   = tep_db_query("select categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$cpath."' and site_id='0'");
 $c_manual_array   = tep_db_fetch_array($c_manual_query);
 $cp_manual_query  = tep_db_query("select categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$c_parent_array['parent_id']."' and site_id='0'");
 $cp_manual_array  = tep_db_fetch_array($cp_manual_query);
 $c_title          = $cp_manual_array['categories_name'].'/'.$c_manual_array['categories_name'].SHOW_MANUAL_TITLE;
-//$c_manual_content = $cp_manual_array['c_manual']!='' ? stripslashes($c_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';
 
 }
 ?>
@@ -4519,97 +4418,6 @@ if($c_parent_array['parent_id'] == 0){
 
                 </td>
                 </tr>
-                <?php
-                /*
-                   if ($ocertify->npermission == 15) {
-                   ?>
-                   <tr>
-                   <td>
-                   <!--ORDER EXPORT SCRIPT -->
-                   <form action="<?php echo tep_href_link('orders_csv_exe.php','csv_exe=true', 'SSL') ; ?>" method="post">
-                   <fieldset><legend class="smallText"><b>
-                   <?php echo TEXT_ORDER_DOWNLOPAD;?></b></legend>
-                   <span class="smallText">
-                   <?php echo TEXT_ORDER_SERVER_BUSY;?></span>
-                   <table  border="0" align="center" cellpadding="0" cellspacing="2">
-                   <tr>
-                   <td class="smallText" width='120'>
-                   <?php echo TEXT_ORDER_SITE_TEXT;?>:
-                   <?php echo tep_site_pull_down_menu_with_all(isset($_GET['site_id']) ? $_GET['site_id'] :'', false);?>
-                   </td>
-                   <td class="smallText">
-                   <?php echo TEXT_ORDER_START_DATE;?>
-                   <select name="s_y">
-                   <?php for($i=2002; $i<=date('Y'); $i++) { if($i == date('Y')){ echo '<option value="'.$i.'" selected>'.$i.'</option>'."\n" ; }else{ echo '<option value="'.$i.'">'.$i.'</option>'."\n" ;} } ?>
-                   </select>
-                   <?php echo TEXT_ORDER_YEAR;?>
-                   <select name="s_m">
-                   <?php for($i=1; $i<13; $i++) { if($i == date('m')-1){ echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'" selected>'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n"; }else{ echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'">'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n"; }  } ?>    
-                   </select>
-                   <?php echo TEXT_ORDER_MONTH;?>
-                   <select name="s_d">
-                   <?php
-                   for($i=1; $i<32; $i++) {
-                   if($i == date('d')){
-                   echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'" selected>'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
-                   }else{
-                   echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'">'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
-                   } 
-                   }
-                   ?>    
-                   </select>
-                   <?php echo TEXT_ORDER_DAY;?></td>
-                   <td width="80" align="center">～</td>
-                   <td class="smallText"><?php echo TEXT_ORDER_END_DATE;?>
-                   <select name="e_y">
-                   <?php
-                   for($i=2002; $i<=date('Y'); $i++) {
-                   if($i == date('Y')){
-                   echo '<option value="'.$i.'" selected>'.$i.'</option>'."\n" ;
-                   }else{
-                   echo '<option value="'.$i.'">'.$i.'</option>'."\n" ;
-                   } 
-                   }
-                   ?>    
-                   </select>
-                   <?php echo TEXT_ORDER_YEAR;?>
-                   <select name="e_m">
-                   <?php
-                   for($i=1; $i<13; $i++) {
-                   if($i == date('m')){
-                   echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'" selected>'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
-                   }else{
-                   echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'">'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
-                   } 
-                   }
-                   ?>    
-                   </select>
-                   <?php echo TEXT_ORDER_MONTH;?>
-                   <select name="e_d">
-                   <?php
-                   for($i=1; $i<32; $i++) {
-                   if($i == date('d')){
-                   echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'" selected>'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
-                   }else{
-                echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'">'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
-        } 
-        }
-        ?>    
-          </select>
-          <?php echo TEXT_ORDER_DAY;?></td>
-          <td class="smallText"><?php echo HEADING_TITLE_STATUS . ' ' . tep_draw_pull_down_menu('status', tep_array_merge(array(array('id' => '', 'text' => TEXT_ALL_ORDERS)), $all_orders_statuses), '', ''); ?></td>
-          <td>&nbsp;</td>
-          <td><?php echo tep_html_element_submit(TEXT_ORDER_CSV_OUTPUT);?></td>
-          </tr>
-          </table></fieldset>
-          </form>
-          <!--ORDER EXPORT SCRIPT EOF -->
-          </td>
-          </tr>
-          <?php
-        }
-        */
-          ?>
           <tr>
           <td>
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -5084,14 +4892,12 @@ if($c_parent_array['parent_id'] == 0){
             $nowColor = $odd; 
           }
           if ( (isset($oInfo) && is_object($oInfo)) && ($orders['orders_id'] == $oInfo->orders_id) ) {
-            //echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRowSelected" onmouseover="showOrdersInfo(\''.tep_get_orders_products_string($orders).'\',this);this.style.cursor=\'hand\'" onmouseout="hideOrdersInfo()" ondblclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']).'\'">' . "\n";
             if($orders_i == 1 && !isset($_GET['oID'])){ 
               echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'">' . "\n";
             }else{
               echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'">' . "\n"; 
             }
           } else {
-            //echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow" onmouseover="showOrdersInfo(\''.tep_get_orders_products_string($orders).'\',this);this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="hideOrdersInfo();this.className=\'dataTableRow\'" ondblclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']).'\'">' . "\n";
             echo '    <tr id="tr_' . $orders['orders_id'] . '" class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'">' . "\n";
           }
           ?>
@@ -5182,7 +4988,6 @@ if($c_parent_array['parent_id'] == 0){
                                         <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="center" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><span style="color:#999999;"><?php echo tep_datetime_short_torihiki($orders['date_purchased']); ?></span></td>
                                         <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="center" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';">
                                         <?php 
-                                        // ===============================================================
                                         // 订单历史记录的图标
                                         $___orders_status_query = tep_db_query("select orders_status_id from `".TABLE_ORDERS_STATUS_HISTORY."` WHERE `orders_id`='".$orders['orders_id']."' order by `date_added` asc");
           $___orders_status_ids   = array();
@@ -5208,52 +5013,20 @@ if($c_parent_array['parent_id'] == 0){
           if(!$_osi){
             echo '　';
           }
-          // ===============================================================
           ?>
             </td>
             <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';">
             <font color="<?php echo $today_color; ?>">
             <?php 
-            /* 
-               $o_history_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS_HISTORY." where orders_id = '".$orders['orders_id']."' order by date_added desc limit 1"); 
-               $o_history_res = tep_db_fetch_array($o_history_raw); 
-               if (!$o_history_res) {
-               $default_status_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".DEFAULT_ORDERS_STATUS_ID."'"); 
-               $default_status_res = tep_db_fetch_array($default_status_raw);
-               echo $default_status_res['orders_status_name']; 
-               } else {
-               $default_status_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$o_history_res['orders_status_id']."'"); 
-               $default_status_res = tep_db_fetch_array($default_status_raw);
-               echo $default_status_res['orders_status_name']; 
-               }
-             */ 
-            /*
-               $o_history_sql = "select os.orders_status_name from
-               ".TABLE_ORDERS_STATUS_HISTORY. " osh , ".TABLE_ORDERS_STATUS. " os 
-               WHERE osh.orders_status_id = os.orders_status_id 
-               and osh.orders_id = '".$orders['orders_id']."' 
-               order by date_added desc limit 1";
-               $o_history_query = tep_db_query($o_history_sql);
-               if($o_history_row = tep_db_fetch_array($o_history_query)){
-               echo $o_history_row['orders_status_name'];
-               }
-             */
             echo $orders['orders_status_name'];
           ?>
             <input type="hidden" name="os[]" id="orders_status_<?php echo $orders['orders_id']; ?>" value="<?php echo $orders['orders_status']; ?>"></font></td>
             <?php 
-            //if ( isset($oInfo) && (is_object($oInfo)) && ($orders['orders_id'] == $oInfo->orders_id) ) { 
-            if (false) { 
-              ?>
-                <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right">
-                <?php
-                echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); 
-            } else { 
               echo '<td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"  onmouseout="if(popup_num == 1) hideOrdersInfo(0);">';
               ?>
 
                 <?php echo '<a href="javascript:void(0);" onclick="showOrdersInfo(\''.$orders['orders_id'].'\', this, 1, \''.urlencode(tep_get_all_get_params(array('oID', 'action'))).'\');">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
-            } ?>&nbsp;</td>
+             ?>&nbsp;</td>
           </tr>
             <?php }?>
             </table>
@@ -5402,29 +5175,12 @@ if($c_parent_array['parent_id'] == 0){
                   }
                   $contents[] = array('text' => '<br>' . TEXT_DATE_ORDER_CREATED . ' ' . tep_date_short($oInfo->date_purchased));
                   if (tep_not_null($oInfo->last_modified)) $contents[] = array('text' => TEXT_DATE_ORDER_LAST_MODIFIED . ' ' . tep_date_short($oInfo->last_modified));
-                  //$contents[] = array('text' => '<br>' . TEXT_INFO_PAYMENT_METHOD . ' '  . $oInfo->payment_method);
                   $contents[] = array('text' => tep_show_orders_products_info($oInfo->orders_id)); 
                 }
                 break;
             }
 
-
-            //echo '      <td width="20%" style="padding-top:20px;" valign="top">' . "\n";
-            //if (!isset($_GET['action']) && $orders_query_numrows > 0) {
-            //echo '<div id="rightinfo" style="background-color:#FFD700;">'; 
-            //}
-            //if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {
-            //$box = new box;
-            //echo $box->infoBox($heading, $contents);
-            //}
             ?>
-              <?php
-              //if (!isset($_GET['action']) && $orders_query_numrows > 0) {
-              //echo '</div>'; 
-              //}
-              //echo '      </td>' . "\n";
-
-              ?>
               </tr>
               </table>
               </td>
@@ -5448,5 +5204,4 @@ if($c_parent_array['parent_id'] == 0){
               </body>
               </html>
               <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); 
-            //ob_end_flush();
             ?>

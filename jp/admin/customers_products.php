@@ -126,13 +126,10 @@ $(document).ready(function(){
   <?php //数据保存?>
   var table_data = new Array();
   <?php  //平均高度?>
-  //var row_height = 20.65;
   var row_height = 19.20;
   <?php //单页显示个数?>
   var count  = 45;
-  //var total_count = 45;
   <?php //页高?>
-  //var page_height = row_height * count;
   var page_height = 900;
   
   <?php //千位分隔符?>
@@ -363,7 +360,6 @@ $(document).ready(function(){
     $('.data_box').each(function(){
       $(this).find('.data').each(function(){
         if ($(this).find('.price input').val() != '' && $(this).find('.quantity input').val() != ''){
-         // fp = parseFloat($(this).find('.price input').val()) 
           fp = $(this).find('.price_flag').val()*parseFloat($(this).find('.price input').val()) 
             * parseFloat($(this).find('.quantity input').val()) 
             * parseFloat($(this).find('.percent_select').val());
@@ -451,17 +447,6 @@ $(document).ready(function(){
     $('#fprice_flag_'+num).val(1);
     calc_cost();
   }
-  
-  <?php //单价发生改变要重新计算总价格 onchange?>
-  /*
-  function price_display(ele,num){
-    table_data[num]['price'] = ele.value;
-    
-    ele.value = parseFloat(ele.value).toFixed(1);
-    $('#price_display_'+num).html('¥'+parseFloat(ele.value).toFixed(1));
-    calc_cost();
-  }
-  */
   
   <?php //个数发生改变要重新计算总价格?>
   function quantity_change(ele,num){

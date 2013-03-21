@@ -7,9 +7,6 @@
 
   require('includes/application_top.php');
 
-  //require(DIR_WS_CLASSES . 'currencies.php');
-  //$currencies = new currencies();
-
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
@@ -52,16 +49,6 @@ require("includes/note_js.php");
           </tr>
         </table></td>
       </tr>
-  <?php /*
-      <tr>
-        <td>
-          <div class="list_type">
-            <span<?php if($_GET['type'] != 'adsense'){?> class="site_filter_selected"<?php }?>><a href="<?php echo tep_href_link('referer.php','type=referer'); ?>">Referer</a></span>
-            <span<?php if($_GET['type'] == 'adsense'){?> class="site_filter_selected"<?php }?>><a href="<?php echo tep_href_link('referer.php','type=adsense'); ?>">Adsense</a></span>
-          </div>
-        </td>
-      </tr>
-  */ ?>
       <tr>
         <td>
     <form action="<?php echo tep_href_link('referer.php'); ?>" method="get">
@@ -199,7 +186,6 @@ require("includes/note_js.php");
       ");
     $i = 1;
     while ($ref_site = tep_db_fetch_array($ref_site_query)) {
-      //$ad_cnt = tep_db_fetch_array(tep_db_query("select count(orders_id) as cnt from orders where orders_adurl='".$ref_site['orders_ref_site']."'"));
       $even = 'dataTableSecondRow';
       $odd  = 'dataTableRow';
       if (isset($nowColor) && $nowColor == $odd) {
@@ -210,7 +196,7 @@ require("includes/note_js.php");
   ?>
                 <tr class="<?php echo $nowColor;?>" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='<?php echo $nowColor;?>'">
                   <td class="dataTableContent"><?php echo $ref_site['orders_ref_site2'];?></td>
-                  <td class="dataTableContent"><?php echo $ref_site['cnt'];?><?php //echo $ad_cnt['cnt']?'('.$ad_cnt['cnt'].')':'';?></td>
+                  <td class="dataTableContent"><?php echo $ref_site['cnt'];?></td>
                   <td class="dataTableContent"><?php echo $i;?></td>
                 </tr>
   <?php
@@ -219,7 +205,7 @@ require("includes/note_js.php");
   }
 ?>
               <tr>
-                <td class="smallText" colspan="7"><?php //echo sprintf(TEXT_NUMBER_OF_CUSTOMERS, tep_db_num_rows($whos_online_query)); ?></td>
+                <td class="smallText" colspan="7"></td>
               </tr>
             </table></td>
           </tr>

@@ -28,12 +28,6 @@ case 'set_oroshi':
   $orrshi_id = $_POST['orrshi_id'];
 
   if (isset($_POST['sort'])) {
-    /**
-    echo "<pre>";
-    print_r($_POST);
-    echo "</pre>";
-    exit;
-    /**/
     foreach($_POST['sort_order'] as $oid => $sort_order) {
       tep_db_perform('set_dougyousya_names', array('sort_order' => (int)$sort_order), 'update', "dougyousya_id='".$oid."'");
     }
@@ -95,39 +89,10 @@ case 'set_oroshi':
           FROM set_dougyousya_categories sdc
           WHERE dougyousya_id = "'.$orrshi_id.'"
           ))';
-/*
-  $sql = 'delete from set_dougyousya_history where dougyousya_id = "'.$orrshi_id.'"and categories_id not in (select sdc.categories_id from set_dougyousya_categories sdc where dougyousya_id ="'.$orrshi_id.'")';
-  tep_db_query($sql);
-*/
   $sql = 'update set_dougyousya_names set dougyousya_name="'.$name[$orrshi_id].'",user_update="'.$_SESSION['user_name'].'",date_update="'.date('Y-m-d H:i:s',time()).'" where dougyousya_id="'.$orrshi_id.'"';
   tep_db_query($sql);
   }
   
-  /*
-  $updata=$_POST['up_oroshi'];
-  $res=tep_db_query("select * from set_dougyousya_names where parent_id='".$cPath."'");
-  $cnt = count($updata);
-  $i=0;
-  while($col=tep_db_fetch_array($res)){
-    if(($updata[$i] != $col['dougyousya_name'])&&($_POST['cpath'] == $col['parent_id'] ) || $updata[$i] != ""){
-      if($updata[$i] != ""){
-        tep_db_query("update set_dougyousya_names set dougyousya_name = '".$updata[$i]."' where  dougyousya_id = '".$col['dougyousya_id']."'");
-      }         
-    }else{
-      tep_db_query("delete from set_dougyousya_names where dougyousya_id = '".$col['dougyousya_id']. "'");
-    }
-    $i++;
-  }
-  
-  $setdata=$_POST['set_oroshi'];
-  if(isset($setdata)){
-    foreach($setdata as $val){
-      if($val != ""){
-        tep_db_query("insert into set_dougyousya_names (parent_id,dougyousya_name) values ('".$cPath."','".$val."')");
-      }
-    } 
-  }
-  */
   tep_redirect(tep_href_link('cleate_dougyousya.php','action=edit_oroshi&id='.$_POST['orrshi_id']));
   break;
   

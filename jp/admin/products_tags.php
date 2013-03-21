@@ -24,11 +24,6 @@
         exit;
         break;
       case 'save':
-        /*
-        echo "<pre>";
-        print_r($_POST);
-        exit;
-        */
         if($_POST['categories_id']){
          $tags_query = tep_db_query("select * from tags where tags_id");
          $tags_array = tep_db_fetch_array($tags_query);
@@ -41,7 +36,6 @@
                foreach($_POST['products_id'] as $pid) {
                 tep_db_perform("products_to_tags", array('products_id' => (int)$pid, 'tags_id' => (int)$tid));
               }
-              //tep_db_query("delete from products_to_tags where tags_id='".$_POST['tags_id']."'");
             }
           }
         if($tid){

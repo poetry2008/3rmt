@@ -48,9 +48,7 @@
     {
       // 2.1 GET ORDER INFO #####
       $a_option = new HM_Option();
-      //$oID = tep_db_prepare_input($_SESSION['create_preorder']['orders']['orders_id']);
       $oID = tep_db_prepare_input($_GET['oID']);
-      //$order = $_SESSION['create_preorder']['orders']; 
       $currency_text  = DEFAULT_CURRENCY . ",1";
       $currency_array = explode(",", $currency_text);
       $currency = $currency_array[0];
@@ -553,11 +551,6 @@ require("includes/note_js.php");
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php echo tep_draw_form('create_order', 'create_preorder_process.php'.$url_action, '', 'post', '', '') . tep_draw_hidden_field('customers_id', isset($account['customers_id'])?$account['customers_id']:''); ?>
 <?php
-/*
-   $Id$
-  
-*/
-
     tep_draw_hidden_field($customer_id);    
 ?>
   <tr>
@@ -774,9 +767,7 @@ if(!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['c
         </td>
       </tr>
 <?php
-  // ############################################################################
   //   Get List of All Products
-  // ############################################################################
 
     $result = tep_db_query("
         SELECT products_name, 
@@ -796,7 +787,6 @@ if(!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['c
       $LastCategory = $db_categories_name;
     }
     
-    // ksort($ProductList);
     
     $LastOptionTag = "";
     $ProductSelectOptions = "<option value='0'>Don't Add New Product" . $LastOptionTag . "\n";
@@ -819,9 +809,7 @@ if(!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['c
     }
   
   
-  // ############################################################################
   //   Add Products Steps
-  // ############################################################################
   
     print "<tr><td><table border='0' width='100%' class='option_box_space' cellspacing='1' cellpadding='2'>\n";
     

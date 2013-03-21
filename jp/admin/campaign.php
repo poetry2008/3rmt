@@ -173,10 +173,6 @@ function show_campaign_info(ele, cid, sid)
     success: function (data) {
       $('#show_campaign_info').html(data); 
       if (document.documentElement.clientHeight < document.body.scrollHeight) {
-      /*
-          offset = ele.offsetTop + ele.offsetHeight + $('#show_campaign_info').height() > $('#campaign_list_box').height()?  ele.offsetTop+$("#campaign_list_box").position().top-$('#show_campaign_info').height()-$('#offsetHeight').height():ele.offsetTop+$("#campaign_list_box").position().top+ele.offsetHeight;
-        $('#show_campaign_info').css('top', offset).show(); 
-      */
         if (ele.offsetTop+$('#campaign_list_box').position().top+ele.offsetHeight+$('#show_campaign_info').height() > document.body.scrollHeight) {
           offset = ele.offsetTop+$('#campaign_list_box').position().top-$('#show_campaign_info').height()-$('#offsetHeight').height();
           $('#show_campaign_info').css('top', offset).show(); 
@@ -371,7 +367,6 @@ require("includes/note_js.php");
     $campaign_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $campaign_query_raw, $campaign_query_numrows);
     $campaign_query = tep_db_query($campaign_query_raw);
     while ($campaign = tep_db_fetch_array($campaign_query)) {
-      //$campaign_count++;
       $rows++;
       
       if ( ((!isset($_GET['campaign_id']) || !$_GET['campaign_id']) || ($_GET['campaign_id'] == $campaign['id'])) && (!isset($selected_item) || !$selected_item) && (!isset($_GET['action']) || substr($_GET['action'], 0, 4) != 'new_') ) {
@@ -549,14 +544,6 @@ echo $campaign['start_date'].'～'.$campaign['end_date'];
         break;
     }
 
-    if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {
-      //echo '            <td width="25%" valign="top">' . "\n";
-
-      //$box = new box;
-      //echo $box->infoBox($heading, $contents);
-
-      //echo '            </td>' . "\n";
-    }
 ?>
           </tr>
         </table></td>

@@ -133,22 +133,14 @@
   } else {
     $srMax = $srDefaultMax;
   }
-  /*
-  if (!is_numeric($srMax)) {
-    $srMax = $srDefaultMax;
-  }*/
-      
+        
   // order status
   if ( isset($_GET['status']) && (tep_not_null($_GET['status'])) ) {
     $srStatus = $_GET['status'];
   } else {
     $srStatus = $srDefaultStatus;
   }
-  /*
-  if (!is_numeric($srStatus)) {
-    $srStatus = $srDefaultStatus;
-  }*/
-  
+    
   // sort
   if ( isset($_GET['sort']) && ($_GET['sort']) && (tep_not_null($_GET['sort'])) ) {
     $srSort = $_GET['sort'];

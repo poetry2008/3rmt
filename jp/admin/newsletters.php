@@ -70,9 +70,6 @@
             $sql_data_array['status'] = '0';
             $sql_data_array['locked'] = '0';
             $sql_data_array['site_id'] = $site_id;
-	    //$sql_data_array['user_added'] = $_POST['user_added'];
-	    //$sql_data_array['user_update'] = $_POST['user_update'];
-	    //$sql_data_array['last_modified'] = 'now()';
             tep_db_perform(TABLE_NEWSLETTERS, $sql_data_array);
             $newsletter_id = tep_db_insert_id();
           } elseif ($_GET['action'] == 'update') {
@@ -222,7 +219,6 @@ require("includes/note_js.php");
     if (!$dir = dir($libpath.'includes/modules/'. 'newsletters/')) $dir =  dir($libpath.'includes/modules/'.'newsletters/'); 
     if($dir)
   {
-//    if ($dir = dir(DIR_WS_MODULES . 'newsletters/') or dir($libpath.'includes/modules/'.'newsletters/')) {
     
       while ($file = $dir->read()) {
         if (!is_dir(DIR_WS_MODULES . 'newsletters/' . $file)) {

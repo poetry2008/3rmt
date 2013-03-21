@@ -83,16 +83,6 @@
    case 'update_order' 创建预约订单      
 ------------------------------------------------------*/
       case 'check_session':
-        /*
-        header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-        # 永远是改动过的
-        header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT");
-        # HTTP/1.1
-        header("Cache-Control: no-store, no-cache, must-revalidate");
-        header("Cache-Control: post-check=0, pre-check=0", false);
-        # HTTP/1.0
-        header("Pragma: no-cache");
-        */
         if (
              !$_SESSION['create_preorder']['orders'] 
           || !$_SESSION['create_preorder']['orders']['orders_id'] 
@@ -273,7 +263,6 @@
       }           
       if ($ot_class == "ot_tax") {
         $ot_value = $RunningTax;
-        // print "ot_value = $ot_value<br>\n";
       }
   
       // Check for existence of subtotals (CWS)                      
@@ -288,9 +277,7 @@
   
       $order = $_SESSION['create_preorder']['orders'];
 
-/*
-需要加到订单生成中去
-*/
+/* 需要加到订单生成中去 */
 
       $ot_text = $currencies->format($ot_value, true, $order['currency'], $order['currency_value']);
   
@@ -317,7 +304,6 @@
           'sort_order' => $sort_order 
         );
       }
-      //echo $ot_class;
 
       if ($ot_class == "ot_shipping" || $ot_class == "ot_lev_discount" || $ot_class == "ot_customer_discount" || $ot_class == "ot_custom" || $ot_class == "ot_cod_fee") {
         // Again, because products are calculated in terms of default currency, we need to align shipping, custom etc. values with default currency
@@ -334,7 +320,6 @@
   
   }
 
-  //exit;
   
   $order = $_SESSION['create_preorder']['orders'];
   $RunningSubTotal = 0;
@@ -1716,9 +1701,6 @@ if (($action == 'edit') && ($order_exists == true)) {
         }
         echo TEXT_MONEY_SYMBOL;
         echo '</div>'; 
-        //if ($order_products_attributes[$pid][$j]['price'] != '0') {
-          //echo ' ('.$currencies->format($order_products_attributes[$pid][$j]['price'] * $order_products[$pid]['qty']).')'; 
-        //}
         echo '</i></div>';
       }
     }
@@ -1781,7 +1763,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         <td>
           <table width="100%" cellpadding="0" cellspacing="0">
             <tr>
-              <td valign="top"><?php //echo "<span class='smalltext'>" .  HINT_DELETE_POSITION . EDIT_ORDERS_ADD_PRO_READ . "</span>"; ?></td>
+              <td valign="top"></td>
               <?php 
               if (!(count($order_products) > 0)) {
               ?> 

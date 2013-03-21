@@ -141,7 +141,6 @@ if (isset($_GET['action']))
     $key = '';
     $value = '';
     foreach($post_configuration as $key => $value){
-    //while (list($key, $value) = each($_POST['configuration'])) {
 
       if (
           !tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$key."' and site_id='".$site_id."'")
@@ -258,7 +257,7 @@ require("includes/note_js.php");
   <?php
   if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
   <script language='javascript'>
-     //one_time_pwd('<?php echo $page_name;?>');
+     one_time_pwd('<?php echo $page_name;?>');
 </script>
    <?php }?>
      <!-- header //-->
@@ -319,13 +318,9 @@ for ($i = 0, $n = sizeof($directory_array); $i < $n; $i++) {
     $directory_array_sorted[$module->sort_order][] = $file;
   }
 }
-//print_r($directory_array_sorted);
 ksort($directory_array_sorted);
 foreach ($directory_array_sorted as $i => $files) {
 
-  //$file = $directory_array_sorted[$i];
-  //include(DIR_WS_LANGUAGES . $language . '/modules/' . $module_type . '/' . $file);
-  //include($module_directory . $file);
   foreach ($files as $j => $file) {
     $class = substr($file, 0, strrpos($file, '.'));
     if (tep_class_exists($class)) {
@@ -462,9 +457,6 @@ case 'edit':
       }
       $keys .= '<br><br>';
     }
-    if (preg_match("/MODULE_PAYMENT_.*_LIMIT_SHOW/",$key)) {
-      //      $keys .= '<input type="hidden" name="configuration['.$key.'][] value=0 "/>';
-    }     
   }
   $keys = substr($keys, 0, strrpos($keys, '<br><br>'));
   $heading[] = array('text' => '<b>' . $mInfo->title . '</b>');
@@ -481,28 +473,6 @@ default:
   if (isset($mInfo->status) && $mInfo->status == '1') {
 
     $keys = '';
-    /* 临时隐藏 
-       reset($mInfo->keys);
-       while (list(, $value) = each($mInfo->keys)) {
-       $keys .= '<b>' . $value['title'] . '</b><br>';
-       if ($value['use_function']) {
-       $use_function = $value['use_function'];
-       if (ereg('->', $use_function)) {
-       $class_method = explode('->', $use_function);
-       if (!is_object(${$class_method[0]})) {
-       include(DIR_WS_CLASSES . $class_method[0] . '.php');
-       ${$class_method[0]} = new $class_method[0]();
-       }
-       $keys .= tep_call_function($class_method[1], $value['value'], ${$class_method[0]});
-       } else {
-       $keys .= tep_call_function($use_function, $value['value']);
-       }
-       } else {
-       $keys .= $value['value'];
-       }
-       $keys .= '<br><br>';
-       }
-    */
 
     foreach(tep_get_sites() as $s){
       $keys .= "<br>".$s['romaji']."<hr>";
@@ -606,7 +576,6 @@ default:
       }
     }
     // 临时隐藏
-    // $contents[] = array('text' => '<br>' . $mInfo->description . "<hr>");
     $contents[] = array('text' => '<div style="word-wrap:break-word;width:200px;overflow:hidden;"><br>' . $keys . '</div>');
   } else {
     $contents[] = array('text' => isset($mInfo->description)?$mInfo->description:'');

@@ -314,12 +314,6 @@ while($address_array = tep_db_fetch_array($address_query)){
     $address_type_str = TABLE_SELECT;
     break;
   }
-  //$status = $address_array['status'] == 0 ? '<font color="blue">'. TABLE_STATUS .'</font>' : '<font color="red">'. TABLE_STATUS .'</font>';
-  
-  //if($address_array['status'] == 0){
-
-    //$status = '<a title="del" href="javascript:check(\'del\');"><img border="0" alt="" src="images/icon_status_blue.gif"></a>'; 
-  //}
   echo '<tr id = "show_value_'.$address_array['id'].'" class="'.$nowColor.'" '. $onmouseover .'>' . "\n";
   echo '<td onclick="document.location.href=\'?page='. $_GET['page'] .'&id='. $address_array['id'] .'\'">'.$address_array['title'].'</td>';
   echo '<td onclick="document.location.href=\'?page='. $_GET['page'] .'&id='. $address_array['id'] .'\'">'.$address_array['name'].'</td>';

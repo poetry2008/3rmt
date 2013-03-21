@@ -53,7 +53,6 @@ function show_loginlog_list($oresult) {
 
     if ($rec_c % 2) echo "<tr " . $GLOBALS['TdnBgcolor'] . ">\n";
     else echo "<tr>\n";
-//    echo '<td class="main">' . $arec['sessionid'] . "</td>\n";    // Session ID
 
     // 用户
     echo '<td class="main" >' . $arec['account'] . "</td>\n";
@@ -293,7 +292,6 @@ function UserLoginLog_list() {
     // 表标签的开始
     echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
     echo "<tr>\n";
-//    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_LOGINID . '</td>' . "\n";      // Session ID
     echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_USER . '</td>' . "\n";       // 用户
     echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_LOGINTIME . '</td>' . "\n";      // 登录日 
     echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_LAST_ACCESSTIME . '</td>' . "\n";  // 最最终访问日期时间
@@ -369,7 +367,6 @@ function ip_unlock(ip,num,user){
           url: "ajax_users_log.php?action=ip_unlock",
           success: function(data) {
             if (data == "success") {
-              //$("#ip_"+num).remove();   
               location.href="users_log.php";
             }
           }

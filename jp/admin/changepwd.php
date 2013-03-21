@@ -159,9 +159,6 @@ function makeInsertUser($aval, $nmode=0) {
     $ssql .= ",'$cryot_password'";
     $ssql .= ",'" . $aval['name'] . "'";
     $ssql .= ",'" . $aval['email'] . "'";
-    /*
-    $ssql .= ",'" . $aval['pwd_is_rand'] . "'";
-    */
     $ssql .= ",'" . $aval['rule'] . "'";
     $ssql .= ")";
   } else {
@@ -190,10 +187,6 @@ function makeUpdateUser($aval, $nmode=0) {
     // 用DES加密
     $cryot_password = (string) crypt($aval['password']);
     $ssql .= " password='$cryot_password'";
-    /*
-    $ssql .= ",'" . $aval['pwd_is_rand'] . "'";
-    $ssql .= ",'" . $aval['pwd_rules'] . "'";
-    */
   }
   $ssql .= ",user_update = '".$_SESSION['user_name']."',date_update = '".date('Y-m-d H:i:s',time())."'  where userid='" . $GLOBALS['userid'] . "'";
 
@@ -365,9 +358,6 @@ function UserPassword_preview() {
 
   echo "</form>\n";                 // form的footer
 
-  /*
-  echo '<a href="' . tep_href_link(FILENAME_USERS) . '">&laquo;&nbsp;' . BUTTON_BACK_MENU . '</a>'; // 返回用户管理菜单
-  */
 
   return TRUE;
 }
@@ -492,9 +482,6 @@ function UserPassword_execute() {
   echo TEXT_SUCCESSINFO_CHANGE_PASSWORD;    // 完成信息
   echo "</font>";
   echo "<br><br>\n";
-/*
-  echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
-  */
   echo "</form>\n";           // form的footer
 
   if ($oresult) @tep_db_free_result($oresult);    // 开放结果项目

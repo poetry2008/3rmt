@@ -2,15 +2,16 @@
 <?php 
 set_time_limit(0);
 //file patch
+define('ROOT_DIR','/home/.sites/28/site1/web/admin');
 //define('ROOT_DIR','/home/.sites/22/site13/vhosts/jp/admin');
-define('ROOT_DIR','/home/szn/project/3rmt/jp/admin');
+//define('ROOT_DIR','/home/szn/project/3rmt/jp/admin');
 require(ROOT_DIR.'/includes/configure.php');
 // default sleep second
 define('SLEEP_SECOND',3);//以秒为单位设置
 // default send row to sleep
 define('SEND_ROWS',2);
 // debug module flag
-define('POINT_DEBUG_MODULE_FLAG','On'); // On or Off
+define('POINT_DEBUG_MODULE_FLAG','Off'); // On or Off
 // default log file name
 define('LOG_FILE_NAME','cron___point_alert_send_mail_to_customer.log');
 
@@ -89,14 +90,13 @@ o.customers_name AS customer_name,
         DAY ) > now( ) , DATE_ADD( o.date_purchased, INTERVAL con.configuration_value
           DAY ) > now( ) )
   AND o.customers_id = c.customers_id
-  AND c.customers_guest_chk = 0 
   AND c.point > 0 
-AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
+  AND c.customers_guest_chk = 0 
+  AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
   AND con.configuration_key = 'MODULE_ORDER_TOTAL_POINT_LIMIT'
   ORDER BY o.date_purchased DESC";
 
   $customer_query = mysql_query($customer_sql);
-  //var_dump($customer_sql);
   // replace str to value for email template
   $sum_user = 0;
   while($customer_info = mysql_fetch_array($customer_query)){
@@ -110,7 +110,6 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
         exit;
       }
       //get time 
-      //$last_login = strtotime($customer_info['point_date']);
       $customer_info_arr =
         get_customer_info_by_site_id_email($customer_info['site_id'],
             $customer_info['customer_email']);
@@ -123,16 +122,8 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
       $mon = substr($customer_info_arr['point_date'],5,2);
       $day = substr($customer_info_arr['point_date'],8,2);
       $out_time = mktime(0,0,0,$mon,$day+$customer_info['config_date'],$year);
-      /*
-         var_dump($last_login."=====".$customer_info_arr['point_date']."===".date('Y-m-d',$out_time).
-         "=====".$customer_info['customer_email']."\n---------------------\n");
-       */
       if(($out_time>$now_time)&&($customer_info['config_date']>=$value)&&
           intval(($out_time-$now_time)/86400)==$value+1){
-        /*
-           var_dump($customer_info_arr['point_date'].">>>".$value.">>>".$customer_info['customer_email']);
-         */
-        //replace ${} to true value
         $point_out_date = date('Y年m月d日',$out_time-86400);
         $show_email_template = str_replace(
             array('${NAME}','${MAIL}','${POINT}','${POINT_DATE}','${SITE_NAME}','${POINT_OUT_DATE}'
@@ -204,7 +195,7 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
           $log_str .= "==============================================";
           $log_str .= "\n";
           if($send_row == 1){
-            $to = '"=?UTF-8?B?'.base64_encode($customer_info['customer_name']).'?=" <lankankon@hotmail.co.jp>'. "\r\n";
+            $to = '"=?UTF-8?B?'.base64_encode($customer_info['customer_name']).'?=" <iimy34jp@yahoo.co.jp>'. "\r\n";
             mail($to, $subject, $message, $headers,$parameter);
           }
         }

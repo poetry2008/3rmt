@@ -72,7 +72,6 @@ function getDomains(){
     db_query('update monitor set next="0" where enable="on" and id="'.$run_id.'"');
     //给下一个有效记录标记
     db_query('update monitor set next="1" where enable="on" and id>"'.$run_id.'" order by id limit 1');
-    //    mysql_close($conn);
   }
   return $domains;
 }
@@ -98,18 +97,14 @@ class Monitor {
     $sqlCount = "
       SELECT count(*) as cnt
       FROM monitor_log ";
-    //    WHERE m_id = ".$this->id;
     $resRes = db_query($sqlCount);
-    //echo mysql_errno() . ": " . mysql_error() . "\n";
     $res = mysql_fetch_array($resRes);
 
 
     if($haveToDel = ($limit = (int)$res['cnt']-LOG_LIMIT)>0){
-      //                          WHERE m_id = ".$this->id."
       $sqlDel = "
         DELETE FROM monitor_log
         order by id limit ".$limit;
-      //                echo $sqlDel;
       db_query($sqlDel);
     }
   }
