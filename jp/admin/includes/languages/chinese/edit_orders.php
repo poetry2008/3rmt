@@ -135,7 +135,6 @@ define('TABLE_HEADING_PRICE_BEFORE', '价格(税前)');
 define('TABLE_HEADING_PRICE_AFTER', '价格(税后)');
 define('TABLE_HEADING_TOTAL_BEFORE', '合计(不含税)');
 define('TABLE_HEADING_TOTAL_AFTER', '合计(含税)');
-define('EDIT_ORDERS_DUMMY_TITLE', '交易人物名：');
 define('EDIT_ORDERS_FEE_TITLE_TEXT', '3. 点数折扣、手续费、减价');
 define('TABLE_HEADING_FEE_MUST', '注意事项');
 define('EDIT_ORDERS_OTTOTAL_READ', '务必确认合计金额一致。');
