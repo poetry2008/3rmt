@@ -6,26 +6,6 @@
 <!-- modules -->
           <tr>
             <td>
-<?php
-  /* 
-  $heading = array();
-  $contents = array();
-
-  $heading[] = array('text'  => BOX_HEADING_MODULES,
-                     'link'  => tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('selected_box')) . 'selected_box=modules'));
-
-  if ($selected_box == 'modules') {
-    $contents[] = array('text'  => '<a href="' . tep_href_link(FILENAME_MODULES, 'set=payment', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_MODULES_PAYMENT . '</a><br>' .
-                                   //'<a href="' . tep_href_link(FILENAME_MODULES, 'set=shipping', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_MODULES_SHIPPING . '</a><br>' .
-                                   '<a href="' . tep_href_link(FILENAME_MODULES, 'set=ordertotal', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_MODULES_ORDER_TOTAL . '</a><br>'.
-                                   '<a href="' . tep_href_link(FILENAME_MODULES, 'set=metaseo', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_MODULES_METASEO . '</a><br>'
-                                   );
-  }
-
-  $box = new box;
-  echo $box->menuBox($heading, $contents);
-  */
-?>
             <table cellspacing="0" cellpadding="2" border="0" width="150"> 
               <tr>
               <td onmouseout="this.className='menusidebar'" onmouseover="this.className='menusidebarover';this.style.cursor='hand'" class="menusidebar" style=""> &nbsp;

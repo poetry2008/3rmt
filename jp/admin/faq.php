@@ -4,12 +4,9 @@
    
    GM的FAQ管理
 */
-  //define(MAX_DISPLAY_FAQ_ADMIN,5);
   require('includes/application_top.php');
 
-  //define('FILENAME_FAQ', 'faq.php');
 
-  //require(DIR_WS_LANGUAGES . $language . '/' .  FILENAME_FAQ);
   if (isset($_GET['action']) && $_GET['action']) {
     switch ($_GET['action']) {
 /* -----------------------------------------------------
@@ -25,7 +22,6 @@
         case 'toggle':
         if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];
         else $site_arr="";
-        //   $edit_per=editPermission($site_arr, $site_id);//判断是否拥有相应网站的管理权限
         $site_id = (isset($_GET['site_id']))?$_GET['site_id']:0;
         forward401Unless(editPermission($site_arr, $site_id));
         tep_insert_pwd_log($_GET['once_pwd'],$ocertify->auth_user);
@@ -42,7 +38,6 @@
       case 'setflag':
         if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];
         else $site_arr="";
-        //   $edit_per=editPermission($site_arr, $site_id);//判断是否拥有相应网站的管理权限
         forward401Unless(editPermission($site_arr, $site_id));
         tep_insert_pwd_log($_GET['once_pwd'],$ocertify->auth_user);
         $c_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
@@ -60,7 +55,6 @@
       case 'delete_faq_category_confirm':
          if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];
          else $site_arr="";
-         //   $edit_per=editPermission($site_arr, $site_id);//判断是否拥有相应网站的管理权限
          forward401Unless(editPermission($site_arr, $site_id));
          $dc_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
          $dc_site = (isset($_POST['site_id']))?'&site_id='.$_POST['site_id']:'';
@@ -111,7 +105,6 @@
       case 'delete_faq_question_confirm':
          if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];
          else $site_arr="";
-         //   $edit_per=editPermission($site_arr, $site_id);//判断是否拥有相应网站的管理权限
          forward401Unless(editPermission($site_arr, $site_id));
          $d_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
          $d_site = (isset($_POST['site_id']))?'&site_id='.$_POST['site_id']:'';
@@ -139,7 +132,6 @@
          $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
          if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];
          else $site_arr="";
-         //   $edit_per=editPermission($site_arr, $site_id);//判断是否拥有相应网站的管理权限
          forward401Unless(editPermission($site_arr, $site_id));
          $faq_question_id = tep_db_prepare_input($_POST['faq_question_id']);
          $sort_order = tep_db_prepare_input($_POST['sort_order']);
@@ -235,7 +227,6 @@
         $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
          if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];
          else $site_arr="";
-         //   $edit_per=editPermission($site_arr, $site_id);//判断是否拥有相应网站的管理权限
          forward401Unless(editPermission($site_arr, $site_id));
          $faq_category_id = tep_db_prepare_input($_POST['faq_category_id']);
          $sort_order = tep_db_prepare_input($_POST['sort_order']);

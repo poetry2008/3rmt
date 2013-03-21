@@ -15,8 +15,6 @@ while ($sr->hasNext()) {
   echo $info[$last - 1]['totitem'] . SR_SEPARATOR1;
   echo (int)$info[$last - 1]['totsum'] . SR_SEPARATOR1;
   echo (int)$info[0]['shipping'] . SR_NEWLINE;
-  //echo $currencies->format($info[$last - 1]['totsum']) . SR_SEPARATOR1;
-  //echo $currencies->format($info[0]['shipping']) . SR_NEWLINE;
 
   if ($srDetail) {
     for ($i = 0; $i < $last; $i++) {
@@ -47,13 +45,11 @@ while ($sr->hasNext()) {
                 echo " ";
               }
               echo (int)$price. ')';
-			  //echo $currencies->format($price). ')';
             }
             echo ")" . SR_SEPARATOR2;
             if ($srDetail == 2) {
               echo $attr['quant'] . SR_SEPARATOR2;
               echo (int)$attr['quant'] * ($info[$i]['price'] + $price) . SR_NEWLINE;
-              //echo $currencies->format( $attr['quant'] * ($info[$i]['price'] + $price)) . SR_NEWLINE;
             } else {
               echo $attr['quant'] . SR_NEWLINE;
             }
@@ -65,7 +61,6 @@ while ($sr->hasNext()) {
           if ($srDetail == 2) {
             echo $info[$i]['pquant'] . SR_SEPARATOR2;
             echo (int)$info[$i]['pquant'] * $info[$i]['price'] . SR_NEWLINE;
-            //echo $currencies->format($info[$i]['pquant'] * $info[$i]['price']) . SR_NEWLINE;
           } else {
             echo $info[$i]['pquant'] . SR_NEWLINE;
           }
@@ -74,7 +69,7 @@ while ($sr->hasNext()) {
     }
   }
 }
-exit;
+
 if ($srCompare > SR_COMPARE_NO) {
   $sum = 0;
   while ($sr2->hasNext()) {
@@ -87,8 +82,6 @@ if ($srCompare > SR_COMPARE_NO) {
     echo $info[$last - 1]['totitem'] . SR_SEPARATOR1;
     echo (int)$info[$last - 1]['totsum'] . SR_SEPARATOR1;
     echo (int)$info[0]['shipping'] . SR_NEWLINE;
-    //echo $currencies->format($info[$last - 1]['totsum']) . SR_SEPARATOR1;
-    //echo $currencies->format($info[0]['shipping']) . SR_NEWLINE;
 
     if ($srDetail) {
       for ($i = 0; $i < $last; $i++) {
@@ -119,13 +112,11 @@ if ($srCompare > SR_COMPARE_NO) {
                   echo " ";
                 }
                 echo $price. ')';
-                //echo $currencies->format($price). ')';
               }
               echo ")" . SR_SEPARATOR2;
               if ($srDetail == 2) {
                 echo $attr['quant'] . SR_SEPARATOR2;
                 echo (int)$attr['quant'] * ($info[$i]['price'] + $price) . SR_NEWLINE;
-                //echo $currencies->format( $attr['quant'] * ($info[$i]['price'] + $price)) . SR_NEWLINE;
               } else {
                 echo $attr['quant'] . SR_NEWLINE;
               }
@@ -137,7 +128,6 @@ if ($srCompare > SR_COMPARE_NO) {
             if ($srDetail == 2) {
               echo $info[$i]['pquant'] . SR_SEPARATOR2;
               echo (int)$info[$i]['pquant'] * $info[$i]['price'] . SR_NEWLINE;
-              //echo $currencies->format($info[$i]['pquant'] * $info[$i]['price']) . SR_NEWLINE;
             } else {
               echo $info[$i]['pquant'] . SR_NEWLINE;
             }

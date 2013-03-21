@@ -95,9 +95,7 @@
     返回值: 是否开启(boolean) 
 ------------------------------------ */
   function tep_session_start() {
-    //if(strpos($_SERVER['HTTP_USER_AGENT'],"MSIE")) {
       session_cache_limiter('public');
-    //}
     return session_start();
   }
 
@@ -107,7 +105,7 @@
     返回值: 是否注册成功(boolean) 
 ------------------------------------ */
   function tep_session_register($variable) {
-    return session_register($variable);
+    return isset($_SESSION[$variable]);
   }
 
 /* -------------------------------------
@@ -116,7 +114,7 @@
     返回值: 是否注册(boolean) 
 ------------------------------------ */
   function tep_session_is_registered($variable) {
-    return isset($_SESSION[$variable]);
+    return session_is_registered($variable);
   }
 
 /* -------------------------------------

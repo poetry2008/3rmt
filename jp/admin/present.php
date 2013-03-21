@@ -416,8 +416,6 @@ $sele1 = tep_db_query("
       and g.site_id = s.id
     ");
 $sql1 = tep_db_fetch_array($sele1);
-//图像
-//$pic = HTTP_CATALOG_SERVER . DIR_WS_CATALOG . DIR_WS_IMAGES . "present/".$sql1['image'];
 //期间
 $sele_sty = substr($sql1['start_date'],0,4);
 $sele_stm = substr($sql1['start_date'],5,2);

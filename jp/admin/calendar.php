@@ -316,17 +316,13 @@ require("includes/note_js.php");
     <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
     <?php
-    //$default_array = array_slice($cl_status_array,0,1);
-    //$default_bgcolor = $default_array[0]['color'];
     $default_bgcolor = '#FFFFFF';
     $search_year = isset($_GET['y']) ? $_GET['y'] : date('Y');
     $now = $search_year.'-1';
     $m_num = date('m',strtotime($now.'-1 00:00:00')) - 1;
     $year = date('Y',strtotime($now.'-1 00:00:00'));
 
-    //----------------------------------------------------
     for($ii = 1;$ii<=12;$ii++){
-    //----------------------------------------------------
     $today2 = getdate(mktime(0,0,0,$m_num+$ii,1,$year));
     $m_num2 = $today2['mon'];
     $year2 = $today2['year'];

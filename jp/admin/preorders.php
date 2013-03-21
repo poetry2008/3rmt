@@ -2,7 +2,6 @@
 /*
    $Id$
 */
-  //ob_start();
   require('includes/application_top.php');
   require_once('pre_oa/HM_Form.php'); 
   require_once('pre_oa/HM_Group.php'); 
@@ -20,10 +19,7 @@
   $orders_status_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_PREORDERS_STATUS . " where language_id = '" . $languages_id . "'");
 
   while ($orders_status = tep_db_fetch_array($orders_status_query)) {
-    if (
-      $orders_status['orders_status_id'] != 17 
-      //&& $orders_status['orders_status_id'] != 31
-      )
+    if ( $orders_status['orders_status_id'] != 17 )
       $orders_statuses[] = array('id' => $orders_status['orders_status_id'],'text' => $orders_status['orders_status_name']);
     
     $all_orders_statuses[] = array('id' => $orders_status['orders_status_id'], 'text' => $orders_status['orders_status_name']);
@@ -45,7 +41,6 @@
       tep_redirect(tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('action'))));
     }
     $update_user_info = tep_get_user_info($ocertify->auth_user);
-      //tep_redirect(tep_href_link(FILENAME_ORDERS));
 
       foreach($_POST['chk'] as $value){
       $oID      = $value;
@@ -93,7 +88,6 @@
               $total_buyed_date += ($cltotal_subtotal['value'] - $cltotal_point['value']);
             }
           }
-          //----------------------------------------------
           //这次的订单金额除外
           $total_buyed_date = $total_buyed_date - ($result3['value'] - (int)$result2['value']);
       
@@ -115,24 +109,10 @@
             $back_rate_name = $back_rate_array[0];
           }
           }
-          //----------------------------------------------
           $point_rate = $back_rate;
         } else {
           $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
         }
-        // 计算各个不同顾客的返点率到此结束============================================================
-          /* 
-          if ($result3['value'] >= 0) {
-            $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
-            //tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $get_point . " where customers_id = " . $result1['customers_id'] );
-          } else {
-            if ($check_status['payment_method'] == 'ポイント(買い取り)') {
-              $get_point = abs($result3['value']);
-            } else {
-              $get_point = 0;
-            }
-          }
-          */ 
         }
         }   
     
@@ -258,7 +238,6 @@
           }
           tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS',$site_id), $title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
         } 
-        //tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
         $customer_notified = '1';
       }
       
@@ -286,7 +265,6 @@
 
     
     break;
-    //------------------------------------------
   case 'update_order':
       $update_user_info = tep_get_user_info($ocertify->auth_user);
       $oID      = tep_db_prepare_input($_GET['oID']);
@@ -309,15 +287,8 @@
           where orders_id = '" . tep_db_input($oID) . "'");
       $check_status = tep_db_fetch_array($check_status_query);
       //oa start 如果状态发生改变，找到当前的订单的
-      //if ($check_status['orders_status']!=$status){
         tep_pre_order_status_change($oID,$status);
-      //}
       //OA_END
-    /*
-    if ($status == '9') {
-      tep_db_query("update `".TABLE_ORDERS."` set `confirm_payment_time` = '".date('Y-m-d H:i:s', time())."' where `orders_id` = '".$oID."'");
-    }
-    */ 
     //Add Point System
     if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && MODULE_ORDER_TOTAL_POINT_ADD_STATUS != '0') {
       $pcount_query = tep_db_query("select count(*) as cnt from ".TABLE_PREORDERS_STATUS_HISTORY." where orders_status_id = '".MODULE_ORDER_TOTAL_POINT_ADD_STATUS."' and orders_id = '".$oID."'");
@@ -355,7 +326,6 @@
           $total_buyed_date += ($cltotal_subtotal['value'] - $cltotal_point['value']);
         }
       }
-      //----------------------------------------------
       //这次的订单金额除外
       $total_buyed_date = $total_buyed_date - ($result3['value'] - (int)$result2['value']);
       
@@ -377,57 +347,11 @@
           $back_rate_name = $back_rate_array[0];
         }
       }
-      //----------------------------------------------
       $point_rate = $back_rate;
     } else {
       $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
     }
-    // 计算各个不同顾客的返点率到此结束============================================================
-      /* 
-      if ($result3['value'] >= 0) {
-        $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
-      } else {
-        if ($result3['value'] > -200) {
-          if ($check_status['payment_method'] == '来店支払い') {
-            $get_point = 0;
-          } else {
-            $get_point = abs($result3['value']);
-          }
-        } else {
-          $get_point = 0;
-        }
-      }
-      */ 
-      //$plus = $result4['point'] + $get_point;
-      
-      //if($check_status['payment_method'] != 'ポイント(買い取り)'){
-      //tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $get_point . " where customers_id = " . $result1['customers_id'] );
-      //}
     }
-    //else{
-      /* 
-      $os_query = tep_db_query("select orders_status_name from " . TABLE_PREORDERS_STATUS . " where orders_status_id = '".$status."'");
-      $os_result = tep_db_fetch_array($os_query);
-      if($os_result['orders_status_name']=='支払通知*'){
-       $query1 = tep_db_query("select customers_id from " . TABLE_PREORDERS . " where orders_id = '".$oID."'");
-       $result1 = tep_db_fetch_array($query1);
-       if ($check_status['payment_method'] == 'ポイント(買い取り)') {
-         $query_t = tep_db_query("select value from ".TABLE_PREORDERS_TOTAL." where class = 'ot_total' and orders_id = '".tep_db_input($oID)."'");
-         $result_t = tep_db_fetch_array($query_t);
-         $get_point = abs(intval($result_t['value']));
-       } else {
-         $get_point = 0;
-       }
-       $point_done_query =tep_db_query("select count(orders_status_history_id) cnt from
-         ".TABLE_PREORDERS_STATUS_HISTORY." where orders_status_id = '".$status."' and 
-         orders_id = '".tep_db_input($oID)."'");
-       $point_done_row  =  tep_db_fetch_array($point_done_query);
-       if($point_done_row['cnt'] <1 ){
-      //tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  $get_point . " where customers_id = " . $result1['customers_id'] );
-       }
-      }
-      */ 
-    //}
     }
     
     if ($check_status['orders_status'] != $status || $comments != '') {
@@ -545,7 +469,6 @@
         tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, str_replace($num_product_res['products_name'],$search_products_name_array['products_name'],$comments), get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
         tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS',$site_id), $title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
       }
-      //tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
       $customer_notified = '1';
     }
     
@@ -556,7 +479,6 @@
     }
     tep_db_query("insert into " . TABLE_PREORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments, user_added) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" .  $customer_notified . "', '', '".tep_db_input($update_user_info['name'])."')");
     // 同步问答
-    //    orders_status_updated_for_question($oID,tep_db_input($status),$_POST['notify_comments'] == 'on', $_POST['qu_type']);
     $order_updated = true;
   }
 
@@ -565,11 +487,7 @@
       } else {
         $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
       }
-      //if ($status == 6 or $status == 8) {
-      //  tep_redirect(tep_href_link(FILENAME_ORDERS));
-      //} else {
         tep_redirect(tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('action')) . 'action=edit'));
-      //}
       break;
     case 'deleteconfirm':
       $oID = tep_db_prepare_input($_GET['oID']);
@@ -596,7 +514,6 @@
 
   include(DIR_WS_CLASSES . 'preorder.php');
   
-  //------------------------------------------------
   $suu = 0;
   $text_suu = 0;  
   $__orders_status_query = tep_db_query("
@@ -638,7 +555,6 @@
     $nomail[$osid] = $select_result['nomail'];
   }
 
-  //------------------------------------------------
   if(isset($_GET['reload'])) {
     switch($_GET['reload']) {
     case 'Yes':
@@ -810,17 +726,6 @@ $(document).ready(function(){
     echo 'nomail['.$oskey.'] = "' . $value . '";' . "\n";
   }
 ?>
-<?php
-/*
-if($reload == 'yes') {
-  if((int)DS_ADMIN_ORDER_RELOAD < 1) {
-    $reloadcnt = '60';
-  } else {
-    $reloadcnt = DS_ADMIN_ORDER_RELOAD;
-  }
-}
-*/
-?>
 <?php //删除预约订单指定状态?>
 function del_confirm_payment_time(oid, status_id)
 {
@@ -970,7 +875,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     $order = new preorder($oID);
     $cpayment = payment::getInstance($order->info['site_id']);
     $payment_code = payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE);
-   // $show_payment_info = $cpayment->admin_show_payment_info($payment_code);
 ?>
 <script>
   // 游戏人物名，订单详细页用来替换邮件内容
@@ -1607,10 +1511,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
        '      <td align="right" class="smallText">' . $order->totals[$i]['title'] . '</td>' . "\n" .
        '      <td align="right" class="smallText">';
         // add font color for '-' value
-        /*
-        echo
-          $currencies->format_total($order->totals[$i]['value'],true,$order->info['currency'],$order->info['currency_value']);
-        */
         if($order->totals[$i]['value']>=0){
           echo $currencies->format($order->totals[$i]['value']);
         }else{
@@ -1723,13 +1623,11 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
         $ma_se = "select * from ".TABLE_PREORDERS_MAIL." where ";
         if(!isset($_GET['status']) || $_GET['status'] == ""){
           $ma_se .= " orders_status_id = '".$order->info['orders_status']."' ";
-          //echo '<input type="hidden" name="status" value="' .$order->info['orders_status'].'">';
           
           // 用来判断是否选中 送信&通知，如果nomail==1则不选中
           $ma_s = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PREORDERS_STATUS." where orders_status_id = '".$order->info['orders_status']."'"));
         }else{
           $ma_se .= " orders_status_id = '".$_GET['status']."' ";
-          //echo '<input type="hidden" name="status" value="' .$_GET['status'].'">';
           
           // 用来判断是否选中 送信&通知，如果nomail==1则不选中
           $ma_s = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PREORDERS_STATUS." where orders_status_id = '".$_GET['status']."'"));
@@ -1817,7 +1715,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
 
 
 <?php
-  // edit over
   } else {
   // 预约订单列表
 ?>
@@ -2970,7 +2867,6 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
       }
     }
     $orders_split = new splitPageResults($_GET['page'], MAX_DISPLAY_ORDERS_RESULTS, $orders_query_raw, $orders_query_numrows, $sql_count_query);
-    //echo $orders_query_raw;
     $orders_query = tep_db_query($orders_query_raw);
     $allorders    = $allorders_ids = array();
     $orders_i = 0;
@@ -3000,11 +2896,7 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
       $next_mark = '';
     }
   } else {
-    #if ($ocertify->npermission) {
       $today_color = 'black';
-    #} else {
-      #$today_color = '#999';
-    #}
     $next_mark = '';
   }
   $even = 'dataTableSecondRow';
@@ -3015,14 +2907,12 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
     $nowColor = $odd; 
   }
   if ( (isset($oInfo) && is_object($oInfo)) && ($orders['orders_id'] == $oInfo->orders_id) ) {
-    //echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRowSelected" onmouseover="showOrdersInfo(\''.tep_get_orders_products_string($orders).'\',this);this.style.cursor=\'hand\'" onmouseout="hideOrdersInfo()" ondblclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']).'\'">' . "\n";
     if($orders_i == 1 && !isset($_GET['oID'])){ 
       echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'">' . "\n";
     }else{
       echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'">' . "\n";
     }
   } else {
-    //echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow" onmouseover="showOrdersInfo(\''.tep_get_orders_products_string($orders).'\',this);this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="hideOrdersInfo();this.className=\'dataTableRow\'" ondblclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']).'\'">' . "\n";
     echo '    <tr id="tr_' . $orders['orders_id'] . '" class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'">' . "\n";
   }
 ?>
@@ -3204,7 +3094,6 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="center" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><span style="color:#999999;"><?php echo tep_datetime_short($orders['date_purchased']); ?></span></td>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="center" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';">
     <?php 
-    // ===============================================================
     // 订单历史记录的图标
       $___orders_status_query = tep_db_query("select orders_status_id from `".TABLE_PREORDERS_STATUS_HISTORY."` WHERE `orders_id`='".$orders['orders_id']."' order by `date_added` asc");
       $___orders_status_ids   = array();
@@ -3228,7 +3117,6 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
       if(!$_osi){
         echo '　';
       }
-    // ===============================================================
     ?>
     </td>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';">
@@ -3260,7 +3148,6 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
     ?>
     </td>
     <?php 
-    //if ( isset($oInfo) && (is_object($oInfo)) && ($orders['orders_id'] == $oInfo->orders_id) ) { 
     if (false) { 
     ?>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right">
@@ -3367,7 +3254,6 @@ function submit_confirm()
                       '" value="'.$mo[$o_status['id']][0].'">';
                   }
                 echo TEXT_ORDER_HAS_ERROR;?></b><br><br>
-                <?php //echo tep_image_submit('button_update.gif', IMAGE_UPDATE, 'onclick="return submit_confirm()&&check_question_form();"'); ?>
                 <?php echo tep_html_element_button(IMAGE_UPDATE,'onclick="if(submit_confirm()) document.sele_act.submit();"');?> 
                 </td>
               </tr>
@@ -3436,28 +3322,10 @@ function submit_confirm()
         }
         $contents[] = array('text' => '<br>' . TEXT_DATE_ORDER_CREATED . ' ' . tep_date_short($oInfo->date_purchased));
         if (tep_not_null($oInfo->last_modified)) $contents[] = array('text' => TEXT_DATE_ORDER_LAST_MODIFIED . ' ' . tep_date_short($oInfo->last_modified));
-        //$contents[] = array('text' => '<br>' . TEXT_INFO_PAYMENT_METHOD . ' '  . $oInfo->payment_method);
         $contents[] = array('text' => tep_show_preorders_products_info($oInfo->orders_id)); 
       }
       break;
   }
-
-
-  //echo '      <td width="20%" style="padding-top:20px;" valign="top">' . "\n";
-  //if (!isset($_GET['action']) && $orders_query_numrows > 0) {
-    //echo '<div id="rightinfo" style="background-color:#FFD700;">'; 
-  //}
-  //if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {
-    //$box = new box;
-    //echo $box->infoBox($heading, $contents);
-  //}
-  ?>
-  <?php
-  //if (!isset($_GET['action']) && $orders_query_numrows > 0) {
-    //echo '</div>'; 
-  //}
-    //echo '      </td>' . "\n";
-
 ?>
     </tr>
   </table>
@@ -3481,6 +3349,4 @@ function submit_confirm()
 <div id="wait" style="position:fixed; left:45%; top:45%; display:none;"><img src="images/load.gif" alt="img"></div>
 </body>
 </html>
-<?php require(DIR_WS_INCLUDES . 'application_bottom.php'); 
-   //ob_end_flush();
-?>
+<?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

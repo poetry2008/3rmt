@@ -8,7 +8,6 @@ $maxAttachSize=2097152;
 $upExt='txt,rar,zip,jpg,jpeg,gif,png,swf,wmv,avi,wma,mp3,mid';
 $msgType=2;
 $immediate=isset($_GET['immediate'])?$_GET['immediate']:0;
-//ini_set('date.timezone','Asia/Shanghai');//时区
 
 $err = "";
 $msg = "''";

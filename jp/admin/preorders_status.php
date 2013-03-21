@@ -48,9 +48,7 @@
         } elseif ($_GET['action'] == 'save') {
           tep_db_perform(TABLE_PREORDERS_STATUS, $sql_data_array, 'update', "orders_status_id = '" . tep_db_input($orders_status_id) . "' and language_id = '" . $language_id . "'");
         }
-        //orders_status_image upload => UPDATE
         $orders_status_image = tep_get_uploaded_file('orders_status_image');
-        //$image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES);
         $image_directory = tep_get_local_path(tep_get_upload_dir().'orders_status/');
         if (is_uploaded_file($orders_status_image['tmp_name'])) {
           tep_db_query("update " . TABLE_PREORDERS_STATUS . " set orders_status_image = '" . $orders_status_image['name'] . "' where orders_status_id = '" . tep_db_input($orders_status_id) . "'");
@@ -58,7 +56,6 @@
         }
         if(isset($_POST['delete_image']) && $_POST['delete_image']){
           tep_db_query("update " . TABLE_PREORDERS_STATUS . " set orders_status_image = '' where orders_status_id = '" . tep_db_input($orders_status_id) . "'");
-          //unlink();
         }
       }
     
@@ -342,7 +339,6 @@ require("includes/note_js.php");
       $contents[] = array('text' => '<br>' . TEXT_INFO_ORDERS_STATUS_NAME . $orders_status_inputs_string);
       if (DEFAULT_PREORDERS_STATUS_ID != $oInfo->orders_status_id) $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('default') . ' ' . TEXT_SET_DEFAULT);
       
-      //if(!is_dir(tep_get_local_path(DIR_FS_CATALOG_IMAGES).DIRECTORY_SEPARATOR.$oInfo->orders_status_image) && file_exists(tep_get_local_path(DIR_FS_CATALOG_IMAGES).DIRECTORY_SEPARATOR.$oInfo->orders_status_image)) {
       if(!is_dir(tep_get_upload_dir().'orders_status/'.$oInfo->orders_status_image) && file_exists(tep_get_upload_dir().'orders_status/'.$oInfo->orders_status_image)) {
         $contents[] = array('text' => '<br>' . tep_image(tep_get_web_upload_dir() .'orders_status/'. $oInfo->orders_status_image, $oInfo->orders_status_name, 15, 15));
         $contents[] = array('text' => '<br><input type="checkbox" name="delete_image" value="1" >'.TEXT_ORDERS_STATUS_PIC_DEL);
@@ -371,12 +367,6 @@ require("includes/note_js.php");
         $contents[] = array('align' => 'ledt', 'text' => 
           '<a href="' . tep_href_link(FILENAME_PREORDERS_STATUS, 'page=' .  $_GET['page'] . '&oID=' . $oInfo->orders_status_id . '&action=edit') .  '">' . tep_html_element_button(IMAGE_EDIT) . '</a>' . ($ocertify->npermission == 15 ? (' <a href="' .  tep_href_link(FILENAME_PREORDERS_STATUS, 'page=' . $_GET['page'] . '&oID=' . $oInfo->orders_status_id . '&action=delete') . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'):'')
         );
-/*
-        foreach(tep_get_sites() as $s){
-          $contents[] = array('text' => '<b>' . $s['romaji'] . '</b>');
-          $contents[] = array('align' => 'ledt', 'text' => '<a href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page'] . '&oID=' . $oInfo->orders_status_id . '&action=edit&site_id=' . $s['id']) . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>');
-        }
-*/
         $orders_status_inputs_string = '';
         $languages = tep_get_languages();
         for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {

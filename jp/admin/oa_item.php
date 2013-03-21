@@ -96,7 +96,6 @@ function deleteItem()
   $type = ucfirst($item_info_res['type']);
   $class= 'HM_Item_'.$type;
   require_once "oa/".$class.'.php';
-  //var_dump($class);
   if(method_exists($class,'deleteTrigger')){
     call_user_func(array($class,'deleteTrigger'),$_GET['eid'])     ;
   }

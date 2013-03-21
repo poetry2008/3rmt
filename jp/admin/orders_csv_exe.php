@@ -59,18 +59,6 @@ if(!in_array('onetime',$request_one_time_arr)&&$_SESSION['user_permission']!=15)
   $e_d = $_POST['e_d'] ; //结束日　日
   $end = $e_y.$e_m.$e_d ;
 
-// 指定下载范围
-    //if($_POST['order_status'] && $_POST['order_status'] !=""){
-      //$csv_query = tep_db_query("
-          //select o.*, op.* 
-          //from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op 
-          //where o.orders_id = op.orders_id 
-            //and o.date_purchased >= '" . $start . "' 
-            //and o.date_purchased <= '" . $end . "' 
-            //and o.orders_status = '".(int)$_POST['order_status']."' 
-          //order by o.orders_id, op.orders_products_id
-      //");
-	//}else{
       $csv_query = tep_db_query("
           select o.*, op.*, s.romaji
           from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op, ".TABLE_SITES." s
@@ -82,7 +70,6 @@ if(!in_array('onetime',$request_one_time_arr)&&$_SESSION['user_permission']!=15)
             ".(isset($_POST['site_id']) && $_POST['site_id'] ? ("and o.site_id = '".(int)$_POST['site_id'] . "'") : '')."
           order by o.orders_id, op.orders_products_id
       ");
-    //}
 
   header("Content-Type: application/force-download");
   header('Pragma: public');
@@ -224,14 +211,6 @@ if(defined('JPTAX') && JPTAX == "on"){
     print $csv."\r\n";
 
   }
-/*
-  if($start_id && $end_id) {
-    $sql_data_array = array('start' => $start_id, 
-                            'end' => $end_id, 
-                            'download_date' => 'now()');
-    tep_db_perform(TABLE_ORDERCSV_LOG, $sql_data_array);
-  }
-*/
   function precsv($query) {
     global $result;
     $result = $query;

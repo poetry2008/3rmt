@@ -16,38 +16,6 @@
 
   $ThBgcolor = 'bgcolor="Gainsboro"';     // 头部：背景色
   $TdnBgcolor = 'bgcolor="WhiteSmoke"';   // 表格：项目名背景色
-
-  /*
-  if (isset($_POST['userid'])) { $userid = $_POST['userid']; }
-  if (isset($_POST['aval'])) { $aval = $_POST['aval']; }
-  if (isset($_POST['userslist'])) { $userslist = $_POST['userslist']; }
-  if (isset($_POST['no_permission_list'])) { $no_permission_list = $_POST['no_permission_list']; }
-  if (isset($_POST['staff_permission_list'])) { $staff_permission_list =
-    $_POST['staff_permission_list']; }
-  if (isset($_POST['chief_permission_list'])) { $chief_permission_list =
-    $_POST['chief_permission_list']; }
-  if (isset($_POST['permission_list'])) { $permission_list = $_POST['permission_list']; }
-  if (isset($_POST['execute_user'])) { $execute_user = $_POST['execute_user']; }
-  if (isset($_POST['execute_password'])) { $execute_password = $_POST['execute_password']; }
-  if (isset($_POST['execute_permission'])) { $execute_permission = $_POST['execute_permission']; }
-//修改权限
-if (isset($_POST['execute_change'])) { $execute_change = $_POST['execute_change'];}
-        if (isset($_POST['execute_new'])) { $execute_new = $_POST['execute_new']; }
-        if (isset($_POST['execute_insert'])) { $execute_insert = $_POST['execute_insert']; }
-        if (isset($_POST['execute_update'])) { $execute_update = $_POST['execute_update']; }
-        if (isset($_POST['execute_delete'])) { $execute_delete = $_POST['execute_delete']; }
-        if (isset($_POST['execute_grant'])) { $execute_grant = $_POST['execute_grant']; }
-        if (isset($_POST['execute_reset'])) { $execute_reset = $_POST['execute_reset']; }
-        if (isset($_POST['execute_staff2chief'])) { $execute_staff2chief =
-          $_POST['execute_staff2chief']; }
-        if (isset($_POST['execute_chief2staff'])) { $execute_chief2staff =
-          $_POST['execute_chief2staff']; }
-        if (isset($_POST['execute_chief2admin'])) { $execute_chief2admin =
-          $_POST['execute_chief2admin']; }
-        if (isset($_POST['execute_admin2chief'])) { $execute_admin2chief =
-          $_POST['execute_admin2chief']; }
-if (isset($_POST['execute_c_permission'])) { $execute_change = $_POST['execute_c_permission'];}
-*/
 /* ===============================================
   输入检查函数
  ============================================== */
@@ -197,9 +165,6 @@ function makeInsertUser($aval, $nmode=0) {
     $ssql .= ",'$cryot_password'";
     $ssql .= ",'" . $aval['name'] . "'";
     $ssql .= ",'" . $aval['email'] . "'";
-    /*
-    $ssql .= ",'" . $aval['pwd_is_rand'] . "'";
-    */
     $ssql .= ",'" . $aval['rule'] . "'";
     $ssql .= ",'" . $_SESSION['user_name']."'";
     $ssql .= ",'" . date('Y-m-d H:i:s',time())."'";
@@ -233,10 +198,6 @@ function makeUpdateUser($aval, $nmode=0) {
     // 用DES加密
     $cryot_password = (string) crypt($aval['password']);
     $ssql .= " password='$cryot_password'";
-    /*
-    $ssql .= ",'" . $aval['pwd_is_rand'] . "'";
-    $ssql .= ",'" . $aval['pwd_rules'] . "'";
-    */
   }
   $ssql .= " where userid='" . $GLOBALS['userid'] . "'";
 
@@ -288,11 +249,6 @@ function makeUpdatePermission($nmode=0, $susers) {
        $ssql .= " permission=10";
       break;
   }
-  /*
-  if ($nmode == 0)            // 给予权限
-    $ssql .= " permission=15";
-  else $ssql .= " permission=7";      // 取消权限
-  */
   $ssql .= " where userid='$susers'";
 
   return $ssql;
@@ -374,7 +330,6 @@ function UserManu_preview() {
  echo tep_draw_input_field("execute_change",BUTTON_CHANGE_PERMISSION , '', FALSE, "submit", FALSE);
     echo "\n";
   } else {
-    //echo tep_draw_input_field("execute_user", BUTTON_INFO_USER, '', FALSE, "submit", FALSE);  // 用户信息
     echo tep_draw_input_field("execute_password_button", BUTTON_CHANGE_PASSWORD, 
         'onclick="goto_changepwd(\'useraction_form\')"', FALSE,
         "button", FALSE);  // 修改密码
@@ -438,28 +393,6 @@ function UserInsert_preview() {
   echo '</td>';
   echo "</tr>\n";
 
-  /*
-  //pwd pwd_is_rand 
-  echo "<tr>\n";
-  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_IS_RAND_PWD . '</td>'; 
-  echo '<td>';
-  echo  tep_draw_selection_field('aval[pwd_is_rand]', 'radio', '1', $arec['pwd_is_arnd']);
-  echo "ON";
-  echo  tep_draw_selection_field('aval[pwd_is_rand]', 'radio', '0', !$arec['pwd_is_rand']);
-  echo "OFF";
-  echo '</td>';
-  echo "</tr>\n";
-
-  //pwd rules
-  echo "<tr>\n";
-  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_PWD_RULES . '</td>';   
-  echo '<td>';
-  echo tep_draw_input_field("aval['pwd_rules']", '', 'size="32" maxlength="64"',
-      FALSE, 'text', FALSE);
-  echo '</td>';
-  echo "</tr>\n";
-  */
-
 
 
   echo "<tr>\n";
@@ -502,12 +435,6 @@ function UserInfo_preview() {
   echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));        // <form>标签的输出
 
   $ssql = makeSelectUserInfo($GLOBALS['userslist']);      // 获取用户信息
-  /*
-  if(isset($GLOBALS['aval']['name'])&&$GLOBALS['aval']['name']!='')
-  {
-    $ssql = makeSelectUserInfo($_POST['aval']['name']);
-  }
-  */
   @$oresult = tep_db_query($ssql);
   if (!$oresult) {                      
     //错误的时候
@@ -668,13 +595,8 @@ putJavaScript_ConfirmMsg();
     $site_romaji[$site['id']]=$site['romaji'];//将网站siteid 与romaji 组合成数组 格式($site_id=>$romaji)
     }           
 
-  //  echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));      // <form>
 
-  echo
-    tep_draw_form('users',basename($GLOBALS['PHP_SELF']),'execute_change=change');
-  /*
-  echo '<form name="users" action="'.HTTP_SERVER.'/admin/users.php?execute_change=change" method="post">';
-  */
+  echo tep_draw_form('users',basename($GLOBALS['PHP_SELF']),'execute_change=change');
   echo "<table>";
   echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
     echo "<tr>\n";
@@ -682,10 +604,6 @@ putJavaScript_ConfirmMsg();
     echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' .SITE_PREM. '</td>' . "\n";
     echo "</tr>\n";
 while($userslist= tep_db_fetch_array($result)){
-  /*
-  if($userslist['userid']=='admin'){//admin 用户 不显示 默认拥有所有权限
-  }else{
-  */
     echo "<tr><td>";
     echo $userslist['userid'];//输出用户名
    echo "</td><td>";
@@ -713,7 +631,6 @@ while($userslist= tep_db_fetch_array($result)){
    }
    echo "</td></tr>";
   //admin 权限 显示
- // }
 }
 echo "</table>";
 //点击执行onclick 弹出y/n对话框
@@ -769,103 +686,6 @@ function UserPassword_preview() {
 
   tep_redirect(tep_href_link(FILENAME_CHANGEPWD,
         'execute_password='.$GLOBALS['execute_password'].'&userslist='.$GLOBALS['userslist']));
-  /*
-  PageBody('t', PAGE_TITLE_PASSWORD);   // 用户管理画面的标题显示（修改密码）
-
-  echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));              // <form>标签的输出
-
-  $ssql = makeSelectUserInfo($GLOBALS['userslist']);      // 获取用户信息
-  @$oresult = tep_db_query($ssql);
-  if (!$oresult) {                      //错误的时候
-    echo TEXT_ERRINFO_DB_NO_USERINFO;           // 显示错误信息
-    echo "<br>\n";
-    echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));            // <form>标签的输出
-    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
-    echo "</form>\n";                   // form的footer
-    if ($oresult) @tep_db_free_result($oresult);      // 开放结果项目
-    return FALSE;
-  }
-
-  $nrow = tep_db_num_rows($oresult);              // 获取记录件数
-  if ($nrow != 1) {                     // 获取记录件数不是一件的时候
-    echo TEXT_ERRINFO_DB_NO_USER;             // 显示错误信息
-    echo "<br>\n";
-    echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));            // <form>标签的输出
-    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
-    echo "</form>\n";                   // form的footer
-    if ($oresult) @tep_db_free_result($oresult);      // 开放结果项目
-    return FALSE;                     // 退出处理
-  }
-
-  $arec = tep_db_fetch_array($oresult);
-  if ($oresult) @tep_db_free_result($oresult);    // 开放结果项目
-
-  // 启动表标签
-  echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
-  echo "<tr>\n";
-  // 用户名称（用户ID）
-  echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . ' colspan="2" nowrap>' .
-    $arec['name'] . "（" . $GLOBALS['userslist'] . '）</td>' . "\n";
-  echo "</tr>\n";
-
-  echo "<tr>\n";
-  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TABLE_HEADING_NEW_PASSWORD . '</td>';    // 新密码
-  // 输入项目输出
-  echo '<td>';
-  echo tep_draw_password_field("aval[password]", '', TRUE);
-  echo '</td>';
-  echo "</tr>\n";
-
-  echo "<tr>\n";
-  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TABLE_HEADING_CONFIRM_PASSWORD . '</td>';  // 为了确认再次输入
-  // 输入项目输出
-  echo '<td>';
-  echo tep_draw_password_field("aval[chk_password]", '', TRUE);
-  echo '</td>';
-  echo "</tr>\n";
-
-  /*
-  //pwd pwd_is_rand 
-  echo "<tr>\n";
-  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_IS_RAND_PWD . '</td>'; 
-  echo '<td>';
-  echo  tep_draw_selection_field('aval[pwd_is_rand]', 'radio', '1', $arec['pwd_is_arnd']);
-  echo "ON";
-  echo  tep_draw_selection_field('aval[pwd_is_rand]', 'radio', '0', !$arec['pwd_is_rand']);
-  echo "OFF";
-  echo '</td>';
-  echo "</tr>\n";
-
-  //pwd rules
-  echo "<tr>\n";
-  echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TEXT_PWD_RULES . '</td>';   
-  echo '<td>';
-  echo tep_draw_input_field("aval['pwd_rules']", '', 'size="32" maxlength="64"',
-      FALSE, 'text', FALSE);
-  echo '</td>';
-  echo "</tr>\n";
-  */
-  
-
-  /* move this ro change pwd
-  echo "</table>\n";
-
-  echo '<br>';
-
-  echo tep_draw_hidden_field("execute_password");         // 把处理模式放到隐藏项目里
-  echo tep_draw_hidden_field("userid", $GLOBALS['userslist']);    // 把用户id放在隐藏项目里
-
-  // 显示按钮
-  echo tep_draw_input_field("execute_update", BUTTON_CHANGE, "onClick=\"return formConfirm('password')\"", FALSE, "submit", FALSE); // 变更
-  echo tep_draw_input_field("clear", BUTTON_CLEAR, '', FALSE, "reset", FALSE);  // 清除
-  echo "\n";
-
-  echo "</form>\n";                 // form的footer
-
-  echo '<a href="' . tep_href_link(basename($GLOBALS['PHP_SELF'])) . '">&laquo;&nbsp;' . BUTTON_BACK_MENU . '</a>'; // 返回用户管理菜单
-
-  return TRUE;
-  */
 }
 
 /*--------------------------------------
@@ -1135,9 +955,6 @@ function UserInsert_execute() {
     if ($oresult) @tep_db_free_result($oresult);      // 开放结果项目
     return FALSE;
   }
-  //var_dump($GLOBALS['ip_limit']);
-  //var_dump(!empty($GLOBALS['ip_limit']));
-  //var_dump(explode("\n", $GLOBALS['ip_limit']));
   if (!empty($GLOBALS['ip_limit'])) {
     $ip_limit_arr = explode("\n", $GLOBALS['ip_limit']); 
     foreach ($ip_limit_arr as $ip_key => $ip_value) {
@@ -1475,18 +1292,6 @@ function UserPermission_execute($nmode=0) {
 
   PageBody('t', PAGE_TITLE_PERMISSION);   // 用户管理画面的标题显示（管理者権限）
 
-  /*
-  if ($nmode == 0) {    // 给予权利处理：没有选择用户
-    $suserid = $GLOBALS['no_permission_list'];
-    if ($suserid == "") set_errmsg_array($aerror, TEXT_ERRINFO_USER_GRANT);
-  } else {        // 取消权利处理：没有选择用户
-    $suserid = $GLOBALS['permission_list'];
-    if ($suserid == "") set_errmsg_array($aerror, TEXT_ERRINFO_USER_REVOKE);
-  }
-  // 取消权利处理：用户本人的时候
-  if ($nmode == 1 && strcmp($suserid,$ocertify->auth_user) == 0) 
-      set_errmsg_array($aerror, TEXT_ERRINFO_USER_REVOKE_ONESELF);
-  */
   //add by szn chief permission  start
   if ($nmode == 'staff2chief' ) {    
     $suserid = $GLOBALS['staff_permission_list'];
@@ -1798,19 +1603,6 @@ if (isset($_POST['execute_change'])) { $execute_change = $_POST['execute_change'
 if (isset($_POST['execute_c_permission'])) { $execute_change = $_POST['execute_c_permission'];}
 if (isset($_POST['rule'])) { $rule = $_POST['rule'];}
 if (isset($_POST['letter'])) { $letter = $_POST['letter'];}
-/*
-if ($ocertify->auth_user) {
-if (isset($execute_password) && $execute_password) {
-      if (isset($execute_update) && $execute_update){
-        UserPassword_execute();  // 执行修改密码处理
-      }else{
-        UserPassword_preview();          // 显示修改密码页面
-      }
-    // 管理员权限
-}
-}
-*/
-
   PageHeader();       // 显示页面头部
   PageBodyTable('t');     // 页面布局表：开始（启动包括导航的表）
 

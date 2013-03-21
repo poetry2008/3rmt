@@ -23,7 +23,6 @@ if (isset($_GET['action']) and $_GET['action']) {
     
     $tags_images = tep_get_uploaded_file('tags_images');
 
-        //$image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES) . DIRECTORY_SEPARATOR . 'tags' . DIRECTORY_SEPARATOR;
         $image_directory = tep_get_local_path(tep_get_upload_dir().'tags/');
     if (is_uploaded_file($tags_images['tmp_name'])) {
           tep_copy_uploaded_file($tags_images, $image_directory);
@@ -48,14 +47,12 @@ if (isset($_GET['action']) and $_GET['action']) {
         }
 
         if(isset($_POST['delete_image']) && $_POST['delete_image']){
-          //unlink(DIR_FS_CATALOG_IMAGES . $t_res['tags_images']);
           unlink(tep_get_upload_dir(). $t_res['tags_images']);
           tep_db_query("update " . TABLE_TAGS . " set tags_images = '' where tags_id = '" . tep_db_input($tags_id) . "'");
         }
 
         $tags_image = tep_get_uploaded_file('tags_images');
 
-        //$image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES) . DIRECTORY_SEPARATOR . 'tags' . DIRECTORY_SEPARATOR;
         $image_directory = tep_get_local_path(tep_get_upload_dir().'tags/');
         if (is_uploaded_file($tags_image['tmp_name'])) {
           tep_copy_uploaded_file($tags_image, $image_directory);
@@ -66,7 +63,6 @@ if (isset($_GET['action']) and $_GET['action']) {
         break;
       case 'deleteconfirm':
         $tags_id = tep_db_prepare_input($_GET['cID']);
-        //unlink();
         tep_db_query("delete from " . TABLE_TAGS . " where tags_id = '" . tep_db_input($tags_id) . "'");
         tep_db_query("delete from " . TABLE_PRODUCTS_TO_TAGS . " where tags_id = '" . tep_db_input($tags_id) . "'");
         tep_redirect(tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'].$sort_str));
@@ -157,7 +153,6 @@ require("includes/note_js.php");
                 <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
               </tr>
 <?php
-  //echo MAX_DISPLAY_SEARCH_RESULTS;
   $tags_query_raw = "
   select t.tags_id, t.tags_name, t.tags_images, t.tags_checked, t.user_added,t.date_added,t.user_update,t.date_update
   from " . TABLE_TAGS . " t order by t.tags_order,t.tags_name";
@@ -224,7 +219,6 @@ require("includes/note_js.php");
                   </tr>
 <?php
         if (!isset($_GET['action'])) {
-//  if (!$_GET['action']) {
 ?>
                   <tr>
                     <td colspan="2" align="right"><?php echo '<a href="' .
@@ -257,7 +251,6 @@ $contents[] = array('text' => '<input type="hidden" name="user_update" value="'.
       $contents[] = array('text' => TEXT_INFO_INSERT_INTRO);
       $contents[] = array('text' => '<br>' . TEXT_INFO_TAGS_NAME . '<br>' . tep_draw_input_field('tags_name'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_TAGS_IMAGE . '<br>' . tep_draw_file_field('tags_images')) ;
-      //$contents[] = array('text' => '<br>' . TEXT_INFO_TAGS_IMAGE . '<br>' . tep_draw_input_field('tags_images'));
       $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_SAVE) . '&nbsp;<a href="' .  tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'].$sort_str) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     case 'edit':
@@ -269,13 +262,11 @@ $contents[] = array('text' => '<input type="hidden" name="user_update" value="'.
       $contents[] = array('text' => '<br>' . TEXT_INFO_TAGS_NAME . '<br>' . tep_draw_input_field('tags_name', $cInfo->tags_name));
       $contents[] = array('text' => '<br>' . TEXT_INFO_TAGS_IMAGE . '<br>' . tep_draw_file_field('tags_images')) ;
       
-      //if(!is_dir(DIR_FS_CATALOG_IMAGES.$cInfo->tags_images) && file_exists(DIR_FS_CATALOG_IMAGES.$cInfo->tags_images)) {
       if(!is_dir(tep_get_upload_dir().$cInfo->tags_images) && file_exists(tep_get_upload_dir().$cInfo->tags_images)) {
         $contents[] = array('text' => '<br>' . tep_image(DIR_WS_CATALOG_IMAGES . $cInfo->tags_images, $cInfo->tags_name));
         $contents[] = array('text' => '<br><input type="checkbox" name="delete_image" value="1" >'.TEXT_CONFIRM_DELETE_TAG);
       }
       
-      //$contents[] = array('text' => '<br>' . TEXT_INFO_TAGS_IMAGE . '<br>' . tep_image(DIR_WS_CATALOG_IMAGES . $cInfo->tags_images)) ;
       $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_SAVE) . '&nbsp;<a href="' .  tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' .  $cInfo->tags_id.$sort_str) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     case 'delete':

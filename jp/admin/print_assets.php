@@ -335,7 +335,6 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
   }
   ?>
   <?php
-    //$all_product_info = tep_get_all_asset($start,$end);
     $all_product_info =
       tep_get_all_asset_category_by_cid($_GET['product_categories_id'],
           $bflag,$site_id,$start,$end);

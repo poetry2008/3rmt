@@ -175,11 +175,6 @@
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script>
-//function auto_reload(){
-//  window.location.reload();
-//}
-
-//timerID = setInterval("auto_reload()", 15 * 60 * 1000); //1秒：1000
 
 </script>
 <style type="text/css">
@@ -260,13 +255,6 @@ padding:0;
   font-size:10px;
   background:#fff;
   text-align:right;
-  /*
-  position:relative;
-  right:0;
-  bottom:0;
-  */
-  /*padding-left:18px;
-  background:url(images/icons/info.gif) no-repeat left center;*/
 }
 .info02{
 width:50px;
@@ -284,7 +272,6 @@ text-align:center;
 }
 .edit_action{
   display:none;
-/*float:right;*/
   font-size:10px;
 line-height:24px;
 padding-right:5px;
@@ -593,11 +580,6 @@ function edit_log(id)
   $('#log_'+id+' .alarm').show();
   $('#log_'+id+' .action').hide();
 }
-/*
-function refresh()
-{
-}
-*/
 <?php //删除数据?>
 function delete_log(id)
 {
@@ -669,9 +651,7 @@ function more_log(){
     success: function(text) {
       
       for(i=0;i<text.length;i++){
-        //if (false == $('#log_'+text[i-1]['log_id']).length > 0) {
         append_log(text[i]);
-        //}
       }
       
     }

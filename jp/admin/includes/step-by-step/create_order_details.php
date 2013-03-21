@@ -4,14 +4,6 @@
 */
 ?>
 <script type="text/javascript">
-  function hidden_payment(){
-  //var idx = document.create_order.elements["payment_method"].selectedIndex;
-  //var CI = document.create_order.elements["payment_method"].options[idx].value;
-  //$(".rowHide").hide();
-  //$(".rowHide").find("input").attr("disabled","true");
-  //$(".rowHide_"+CI).show();
-  //$(".rowHide_"+CI).find("input").removeAttr("disabled");
- }
    $(document).ready(function(){hidden_payment()});
 
 $(document).ready(function(){
@@ -545,7 +537,7 @@ if($index > 0){
             echo '    <tr>' . "\n" .
               '      <td class="' . $RowStyle . '" align="left" valign="top" width="35">&nbsp;'
               . "<input type='hidden' id='update_products_qty_$orders_products_id' value='" . $order->products[$i]['qty'] . "'><input type='hidden' class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" . $porducts_qty . "' onkeyup=\"clearLibNum(this);\">".$porducts_qty."&nbsp;x</td>\n" .  '      <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input id='update_products_name_$orders_products_id' name='update_products[$orders_products_id][name]' size='64' type='hidden' value='" . $order->products[$i]['name'] . "'>\n"; 
-            // Has Attributes?
+            // 判断是否存在Attributes?
             if (sizeof($order->products[$i]['attributes']) > 0) {
               $op_info_array = array();
                  for ($i_num = 0; $i_num < sizeof($order->products[$i]['attributes']); $i_num++) {
@@ -562,16 +554,9 @@ if($index > 0){
                   class="order_option_info"><div class="order_option_title"> - ' .str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;"))) . ': <input type="hidden" name="update_products[' . $orders_products_id .  '][attributes][' . $orders_products_attributes_id . '][option]" size="10" value="' .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")) . '">' . 
                   '</div><div class="order_option_value">' . 
                   str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;"))).'<input type="hidden" name="update_products[' . $orders_products_id .  '][attributes][' . $orders_products_attributes_id . '][value]" size="35" value="' .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;"));
-                //if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
                 echo '"></div></div>';
                 echo '<div class="order_option_price">';
-                echo "<input type='hidden' size='9' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".(int)(isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price'])?$_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price']:$order->products[$i]['attributes'][$j]['price'])."' onkeyup=\"recalc_order_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."');\">";                  
-                $tmp_a_price = (int)(isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price'])?$_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price']:$order->products[$i]['attributes'][$j]['price']);
-                if ($tmp_a_price < 0) {
-                  echo '<font color="#ff0000">'.abs($tmp_a_price).'</font>'; 
-                } else {
-                  echo $tmp_a_price; 
-                }
+                echo "<input type='hidden' size='9' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".(int)(isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price'])?$_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price']:$order->products[$i]['attributes'][$j]['price'])."' onkeyup=\"recalc_order_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."');\">";                  echo (int)(isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price'])?$_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price']:$order->products[$i]['attributes'][$j]['price']);
                 echo TEXT_MONEY_SYMBOL;
                 echo '</div>';
                 echo '</i></small></div>';
@@ -643,9 +628,7 @@ if($index > 0){
   <td class="main"><input type="hidden" name="oID" value="<?php echo $oID;?>">  
 
           <?php
-          // ############################################################################
-          //   Get List of All Products
-          // ############################################################################
+          //   获得全部商品列表
 
           $result = tep_db_query("
               SELECT products_name, 
@@ -665,7 +648,6 @@ if($index > 0){
           $LastCategory = $db_categories_name;
         }
 
-        // ksort($ProductList);
 
         $LastOptionTag = "";
         $ProductSelectOptions = "<option value='0'>Don't Add New Product" . $LastOptionTag . "\n";
@@ -688,9 +670,7 @@ if($index > 0){
         }
 
 
-        // ############################################################################
-        //   Add Products Steps
-        // ############################################################################
+        //  添加商品步骤 
         if(isset($Customer_mail) && $Customer_mail != '' && isset($site_id) && $site_id != ''){
           $param_str = "&Customer_mail=$Customer_mail&site_id=$site_id";
         }
@@ -698,18 +678,15 @@ if($index > 0){
         
         $Customer_mail = tep_db_prepare_input($_GET['Customer_mail']);
         $site_id = tep_db_prepare_input($_GET['site_id']);
-        // Set Defaults
+        // 设置默认值 
         if(!isset($add_product_categories_id))
           $add_product_categories_id = 0;
 
         if(!isset($add_product_products_id))
           $add_product_products_id = 0;
 
-        // Step 1: Choose Category
+        // 步骤 1: 选择分类
         $product_error = isset($products_error) && $products_error == true ? PRODUCT_ERROR : '';
-        //if($_GET['error']){
-          //$product_error = $index > 0 ? '' : PRODUCT_ERROR;
-        //}
         $PHP_SELF = 'create_order.php';
         print "<tr>\n";
         print "<td class='dataTableContent' width='70'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 1:</b></td>\n";
@@ -729,9 +706,8 @@ if($index > 0){
         print "</td>\n";
         print "<td class='dataTableContent'>&nbsp;<span><font color='red'>".$product_error."</font></span></td>\n";
         print "</tr>\n";
-        //print "<tr><td colspan='3'>&nbsp;</td></tr>\n";
 
-        // Step 2: Choose Product
+        // 步骤 2: 选择商品
         if(($step > 1) && ($add_product_categories_id > 0))
         {
           print "<tr>\n";
@@ -762,7 +738,6 @@ if($index > 0){
           print "</td>\n";
           print "<td class='dataTableContent'>&nbsp;</td>\n";
           print "</tr>\n";
-          //print "<tr><td colspan='3'>&nbsp;</td></tr>\n";
         }
         $hm_option = new HM_Option();
         if(($step == 3) && ($add_product_products_id > 0) && isset($_POST['action_process'])) {
@@ -770,7 +745,7 @@ if($index > 0){
             $step = 4; 
           }
         }
-        // Step 3: Choose Options
+        // 步骤 3: 选择 Options
         if(($step > 2) && ($add_product_products_id > 0))
         {
           $option_product_raw = tep_db_query("select products_cflag, belong_to_option from ".TABLE_PRODUCTS." where products_id = '".$add_product_products_id."'"); 
@@ -792,7 +767,6 @@ if($index > 0){
             print $hm_option->render($option_product['belong_to_option'], false, 2, '', '', $p_cflag); 
             print "</td>";
             print "<td class='dataTableContent' align='center' valign='top'>";
-            //print "<input type='submit' value='" . ADDPRODUCT_TEXT_OPTIONS_CONFIRM . "'>";
             print "<input type='hidden' name='add_product_categories_id' value='$add_product_categories_id'>";
             print "<input type='hidden' name='add_product_products_id' value='$add_product_products_id'>";
             print "<input type='hidden' name='step' value='3'>";
@@ -806,10 +780,9 @@ if($index > 0){
             print "</tr>"; 
           }
 
-          //echo "<tr><td colspan='3'>&nbsp;</td></tr>\n";
         }
 
-        // Step 4: Confirm
+        // 步骤 4: 最终确认
         if($step > 3)
         {
           $products_query = tep_db_query("select products_price from ".TABLE_PRODUCTS." where products_id = '".$add_product_products_id."'");

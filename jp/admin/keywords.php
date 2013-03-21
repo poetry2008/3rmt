@@ -176,7 +176,7 @@ require("includes/note_js.php");
   }
 ?>
               <tr>
-                <td class="smallText" colspan="7"><?php //echo sprintf(TEXT_NUMBER_OF_CUSTOMERS, tep_db_num_rows($whos_online_query)); ?></td>
+                <td class="smallText" colspan="7"></td>
               </tr>
             </table></td>
           </tr>

@@ -1,5 +1,4 @@
 <?php
-//header("Content-Type: text/xml");
 require('includes/application_top.php');
 $action = $_POST['action'];
 switch($action){

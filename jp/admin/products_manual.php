@@ -568,7 +568,6 @@ $tmp_categories_array[] = tep_db_fetch_array($categories_query);
 }
 $products_query = tep_db_query("select products_name from ".TABLE_PRODUCTS_DESCRIPTION." where products_id='".$_GET['pID']."' and site_id='0'");
 $products_array = tep_db_fetch_array($products_query);
-//print_r($tmp_categories_array);exit;
 foreach($tmp_categories_array as $key1=>$val1){
 $title_str .= $val1['categories_name']."/";
 }

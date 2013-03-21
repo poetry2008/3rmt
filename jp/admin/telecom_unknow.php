@@ -4,8 +4,6 @@
 */
 
   require('includes/application_top.php');
-  //require(DIR_WS_CLASSES . 'currencies.php');
-  //$currencies          = new currencies();
   if ($_GET['action'] == 'hide' && $_GET['id']) {
     tep_db_perform('telecom_unknow', array('type' => 'hide'), 'update', "id='".$_GET['id']."'") && print('success');
     exit;
@@ -164,31 +162,6 @@ require("includes/note_js.php");
       <td class="dataTableHeadingContent" align="center">&nbsp;</td>
     </tr>
 <?php
-        /* 
-    if (isset($_GET['keywords']) && tep_not_null($_GET['keywords'])) {
-        $where_str .= " and (";
-        $where_str .= "(username = '" . $_GET['keywords'] . "' or email = '" .  $_GET['keywords'] . "' or telno = '" . $_GET['keywords'] . "' or money = '" . $_GET['keywords'] . "')";
-        $where_str .= " )";
-      if (tep_parse_search_string(stripslashes($_GET['keywords']), $search_keywords)) {
-        $where_str .= " and (";
-        for ($i=0, $n=sizeof($search_keywords); $i<$n; $i++ ) {
-          switch ($search_keywords[$i]) {
-            case '(':
-            case ')':
-            case 'and':
-            case 'or':
-              $where_str .= " " . $search_keywords[$i] . " ";
-              break;
-            default:
-              $where_str .= "(username like '%" . addslashes($search_keywords[$i]) . "%' or email like '%" . addslashes($search_keywords[$i]) . "%' or telno like '%" . addslashes($search_keywords[$i]) . "%' or money like '%" . addslashes($search_keywords[$i]) . "%'";
-              $where_str .= ')';
-              break;
-          }
-        }
-        $where_str .= " )";
-      }
-    }
-      */ 
     if (isset($_GET['search_type']) && tep_not_null($_GET['search_type'])) {
       if (isset($_GET['keywords']) && tep_not_null($_GET['keywords'])) {
         switch ($_GET['search_type']) {
@@ -312,11 +285,6 @@ require("includes/note_js.php");
         }
       } 
     }
-    /*
-    if ($_GET['rel']) {
-      $where_str .= " and rel='".$_GET['rel']."'";
-    }
-    */
     if ($_GET['rel_yes'] && !$_GET['rel_no']) {
       $where_str .= " and rel='yes'";
     }
@@ -340,7 +308,6 @@ require("includes/note_js.php");
         where 1 ".$where_str."
       ";
       
-      //echo $orders_query_raw;
 
     $orders_split = new splitPageResults($_GET['page'], MAX_DISPLAY_ORDERS_RESULTS, $orders_query_raw, &$orders_query_numrows, $orders_query_numrows_raw);
     $orders_query = tep_db_query($orders_query_raw);

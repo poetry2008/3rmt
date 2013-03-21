@@ -1,6 +1,4 @@
 <?php
-//global $language;
-//require_once DIR_WS_LANGUAGES . $language . '/option/HM_Option_Item_Basic.php';
 
 class AD_Option_Item_Basic 
 {
@@ -49,10 +47,6 @@ class AD_Option_Item_Basic
       $formString .= "<tr><td width='220'>".TEXT_ITEM_TEXT_COMMENT_HEAD."</td><td><input type='text' name='icomment' value='".$default_text."' class='option_text'></td></tr>"; 
     } 
     
-    //if ($this->has_text_line) {
-      //$default_text = isset($item_value['iline'])?$item_value['iline']:''; 
-      //$formString .= "<tr><td>".TEXT_ITEM_TEXT_LINE_HEAD."</td><td><input type='text' name='iline' value='".$default_text."'  class='option_input'>&nbsp;".TEXT_ITEM_LINE_UNIT."</td></tr>"; 
-    //} 
     
     if ($this->has_text_check_type) {
       $check_type_array = array(TEXT_ITEM_CHECK_TYPE_ALL, TEXT_ITEM_CHECK_TYPE_JAP, TEXT_ITEM_CHECK_TYPE_ALPHA_NUM, TEXT_ITEM_CHECK_TYPE_ALPHA, TEXT_ITEM_CHECK_TYPE_NUM, 'Email'); 

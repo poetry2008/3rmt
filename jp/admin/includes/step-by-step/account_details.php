@@ -16,7 +16,7 @@
   $address_form = new addressForm;
 
 
-  // gender
+  // 性别 
   $male   = (isset($account['customers_gender']) && $account['customers_gender'] == 'm') ? true : false;
   $female = (isset($account['customers_gender']) && $account['customers_gender'] == 'f') ? true : false;
   if ($is_read_only == true) {
@@ -35,7 +35,7 @@
   }
   $address_form->setFormLine('gender',ENTRY_GENDER,$a_value);
 
-  // firstname
+  // firstname 名字1
   if ($is_read_only == true) {
       $a_value = tep_output_string($account['customers_firstname'],false,true);
   } elseif ($error == true) {
@@ -49,7 +49,7 @@
   }
   $address_form->setFormLine('firstname',ENTRY_FIRST_NAME,$a_value);
 
-  // lastname
+  // lastname 名字2
   if ($is_read_only == true) {
       $a_value = tep_output_string($account['customers_lastname'],false,true);
   } elseif ($error == true) {
@@ -77,7 +77,7 @@
   }
   $address_form->setFormLine('dob',ENTRY_DATE_OF_BIRTH,$a_value);
 
-  // email_address
+  // 邮箱地址
   if ($is_read_only == true) {
       $a_value = tep_output_string(isset($account['customers_email_address'])?$account['customers_email_address']:'',false,true);
   } elseif ($error == true) {
@@ -95,7 +95,7 @@
   }
   $address_form->setFormLine('email_address',ENTRY_EMAIL_ADDRESS,$a_value);
 
-  // company
+  // 公司 
   if ($is_read_only == true) {
       $a_value = tep_output_string(isset($account['entry_company'])?$account['entry_company']:'',false,true);
     } elseif ($error == true) {
@@ -109,7 +109,7 @@
   }
   $address_form->setFormLine('company',ENTRY_COMPANY,$a_value);
 
-  // street_address
+  //  地址（街道）
   if ($is_read_only == true) {
       $a_value = tep_output_string(isset($account['entry_street_address'])?$account['entry_street_address']:'',false,true);
   } elseif ($error == true) {
@@ -137,7 +137,7 @@
   }
   $address_form->setFormLine('suburb',ENTRY_SUBURB,$a_value);
 
-  // postcode
+  //  邮编
   if ($is_read_only == true) {
       $a_value = tep_output_string(isset($account['entry_postcode'])?$account['entry_postcode']:'',false,true);
   } elseif ($error) {
@@ -151,7 +151,7 @@
   }
   $address_form->setFormLine('postcode',ENTRY_POST_CODE,$a_value);
 
-  // city
+  // 城市
   if ($is_read_only == true) {
       $a_value = tep_output_string(isset($account['entry_city'])?$account['entry_city']:'',false,true);
   } elseif ($error) {
@@ -181,7 +181,6 @@
       }
   } else {
       $state = '';
-	  //$state = tep_get_zone_name($account['entry_country_id'], $account['entry_zone_id'], $account['entry_state']);
       if ($address_form->inForm('country')) {
           $a_value = tep_draw_input_field('state', $state) . '&nbsp;' . ENTRY_STATE_TEXT;
       } else {
@@ -190,25 +189,9 @@
   }
   $address_form->setFormLine('state',ENTRY_STATE,$a_value);
 
-//  // country
-//  if ($is_read_only == true) {
-//    $a_value = tep_get_country_name($account['entry_country_id']);
-//  } elseif ($error == true) {
-//    if ($entry_country_error == true) {
-//      $a_value = tep_get_country_list('country') . '&nbsp;' . ENTRY_COUNTRY_ERROR;
-//    } else {
-//      $a_value = tep_get_country_name($country) . tep_draw_hidden_field('country');
-//    }
-//  } else {
-//    $a_value = tep_get_country_list('country', $account['entry_country_id']) . '&nbsp;' . ENTRY_COUNTRY_TEXT;
-//  }
-//  $address_form->setFormLine('country',ENTRY_COUNTRY,$a_value);
-//  $a_hidden = tep_draw_hidden_field('country',$account['entry_country_id'] ? $account['entry_country_id'] : STORE_COUNTRY);
-//  $address_form->setFormHidden('country',$a_hidden); // in case without country
 
 	if (isset($account['entry_country_id']) && $account['entry_country_id']) { $country = $account['entry_country_id']; }
 	else if (!$country) { $country = STORE_COUNTRY; } 
-	  // coutry
 	  if ($is_read_only == true) {
 	    $a_value = tep_get_country_name($account['entry_country_id']);
 	  } elseif ($error == true) {
@@ -222,8 +205,7 @@
 	  }
 	  $address_form->setFormLine('country',ENTRY_COUNTRY,$a_value);
 	  $a_hidden = tep_draw_hidden_field('country',$country);
-	  $address_form->setFormHidden('country',$a_hidden); // in case without country
-
+	  $address_form->setFormHidden('country',$a_hidden); 
 ?>
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
 

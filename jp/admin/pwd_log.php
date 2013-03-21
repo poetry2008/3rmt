@@ -48,10 +48,6 @@ function show_once_pwd_log_list($oresult) {
       $naddress >>= 8;
     }
 
-/*
-    if ($rec_c % 2) echo "<tr " . $GLOBALS['TdnBgcolor'] . ">\n";
-    else echo "<tr>\n";
-    */
 $even = 'dataTableSecondRow';
 $odd = 'dataTableRow';
 if ($rec_c % 2) {
@@ -80,7 +76,6 @@ if ($rec_c % 2) {
         tep_href_link(FILENAME_PWD_LOG,"log_id=".$arec['id'])
         .'\'" >';
     }
-//    echo '<td class="main">' . $arec['sessionid'] . "</td>\n";    // Session ID
 
     echo '<td class="main" >' . $arec['username'] . "</td>\n";
     echo '<td class="main" >' . $arec['pwd_username'] . "</td>\n";
