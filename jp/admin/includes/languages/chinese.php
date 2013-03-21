@@ -590,7 +590,7 @@ define('TEXT_PREORDER_PRODUCTS_UNIT', '个');
 define('TEXT_PAYMENT_NULL_TXT','请选择支付方式');
 define('TEXT_TORIHIKI_LIST_DEFAULT_TXT','请选择');
 define('BOX_TOOLS_CAMPAIGN', '优惠券设置');
-define('TEXT_CURRENT_CHARACTER_NAME', '本公司交易人物名：');
+define('TEXT_CURRENT_CHARACTER_NAME', '邮件内容的注意事项：');
 define('BOX_CATALOG_SHOW_USELESS_OPTION','删除未使用选项');
 define('TEXT_ORDER_ALARM_LINK', '警报');
 define('HOUR_TEXT', '时');
