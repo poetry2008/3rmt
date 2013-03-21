@@ -185,7 +185,6 @@ define('TABLE_HEADING_DANJIA', '単価');
 define('TABLE_HEADING_OSTATUS', 'ステータス');
 define('CATEGORY_TOTALNUM_TEXT', '合計:');
 define('CATEGORY_AVERAGENUM_TEXT', '平均:'); 
-define('CATEGORY_BOTTOM_READ', '<table width="100%" cellspacing="0"  cellpadding="5" border="0" class="smalltext"><tr><td><b>販売</b></td></tr><tr><td>所持金上限や、弊社メールに記載する注意書きの在庫の都合上、複数のメールに記載する注意書きにて<br>分割してお届けする場合がございます。ご注文いただきました数量に達する<br>まで受領操作をお願いいたします。<br>【】または【】よりお届けいたします。</td></tr><tr><td><b>買取</b></td></tr><tr><td>メールに記載する注意書き【】または【】にトレードをお願いいたします。</td></tr></table>');
 define('TABLE_HEADING_JIAGE_TEXT', '価格');
 define('TABLE_HEADING_NUM_TEXT', '数量');
 define('CATEGORY_PRO_ZAIKU_TEXT', '在庫切れ');

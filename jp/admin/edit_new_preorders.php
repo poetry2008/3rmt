@@ -2036,7 +2036,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <?php
     $order_a_str = '';
     foreach ($order_products as $okey => $ovalue) {
-      $order_a_str .= $ovalue['name'].NEW_PREORDERS_CHARACTER_TEXT."\n"; 
+      $order_a_str .= $ovalue['name'].NEW_PREORDERS_NOTE_TEXT."\n"; 
       $order_a_str .= $ovalue['character']."\n"; 
     }
     ?>

@@ -185,7 +185,6 @@ define('TABLE_HEADING_DANJIA', '单价');
 define('TABLE_HEADING_OSTATUS', '状态');
 define('CATEGORY_TOTALNUM_TEXT', '合计:');
 define('CATEGORY_AVERAGENUM_TEXT', '平均:');
-define('CATEGORY_BOTTOM_READ', '<table width="100%" cellspacing="0" cellpadding="5" border="0" class="smalltext"><tr><td><b>出售</b></td><td><b>买入</b></td></tr><tr><td>根据所持金额上限和邮件内容的注意事项里的库存状况，根据邮件内容的注意事项<br>有时分别递送。达到订单数量后<br>请领取。<br>由【】或者【】递送。</td><td>向该公司的【】或者【】报告。</td></tr></table><hr size="2" noshade>');
 define('TABLE_HEADING_JIAGE_TEXT', '价格');
 define('TABLE_HEADING_NUM_TEXT', '数量');
 define('CATEGORY_PRO_ZAIKU_TEXT', '没有库存');
