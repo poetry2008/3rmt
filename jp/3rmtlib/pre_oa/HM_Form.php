@@ -122,8 +122,10 @@ class HM_Form extends DbRecord
       }
       if ((canEnd == true ) || (canceled == true)){
         $("#canEndDiv").show();
+        $("#preorders_finish").show();
       }else{
         $("#canEndDiv").hide();
+        $("#preorders_finish").hide();
       }
       return false;
 

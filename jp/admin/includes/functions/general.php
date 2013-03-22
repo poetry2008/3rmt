@@ -6274,13 +6274,13 @@ function tep_display_google_results($from_url='', $c_type=false){
   function tep_get_order_cnt_by_pid($pid, $site_id = ''){
     $query = (tep_db_query("select
           orders_products.products_quantity as pq 
-          ,finished,flag_qaf 
+          ,finished,flag_qaf,orders_status 
           from orders_products left join
           orders on orders.orders_id=orders_products.orders_id 
           where products_id='".$pid."' and date(orders.date_purchased) >= '".date('Y-m-d 00:00:00',strtotime('-'.((get_configuration_by_site_id('ORDER_EFFECTIVE_DATE') != '0')?(get_configuration_by_site_id('ORDER_EFFECTIVE_DATE')-1):'0').'day'))."'".(!empty($site_id)?" and orders.site_id = '".$site_id."'":"").""));
     $cnt = 0;
     while($row = tep_db_fetch_array($query)){
-      if($row['finished']=='0'&&$row['flag_qaf']=='0'){
+      if($row['finished']=='0'&&$row['flag_qaf']=='0' && !check_order_transaction_button($row['orders_status'])){
         $cnt += $row['pq'];
       }
     }
