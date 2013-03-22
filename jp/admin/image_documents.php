@@ -30,7 +30,6 @@
   if (tep_not_null($action)) {
     switch ($action) {
 // Actions for the second pass
-////
 
       case 'file_move':
         $documents_id = $_POST['document_id'];
@@ -66,7 +65,6 @@
       case 'process_new_type':
         if (is_writeable(DIR_FS_CATALOG_IMAGE_DOCUMENTS)) {
           if (file_exists(DIR_FS_CATALOG_IMAGE_DOCUMENTS . $_POST['type_name'])) {
-            //$messageStack->add_session('directory exists', 'error');
           } else {
             mkdir(DIR_FS_CATALOG_IMAGE_DOCUMENTS . $_POST['type_name']);
             @chmod(DIR_FS_CATALOG_IMAGE_DOCUMENTS . $_POST['type_name'], 0777);
@@ -91,7 +89,6 @@
             where 
               type_name = '" . $documents_type . "'
           ";
-//          print $type_query_raw . "<br>\n";
           $type_query = tep_db_query ($type_query_raw);
           $type = tep_db_fetch_array ($type_query);
           
@@ -138,7 +135,6 @@
             where 
               document_types_id = " . $document_types_id . "
           ";
-//          print $products_query_raw . "<br>\n";
           $products_query = tep_db_query ($products_query_raw);
           while ($products_data = tep_db_fetch_array ($products_query)) {
             tep_db_query ("delete from " . TABLE_PRODUCTS_TO_IMAGE_DOCUMENTS . "
@@ -202,7 +198,6 @@
             where 
               document_types_id = " . $doc_path . "
           ";
-          // print $type_query_raw . "<br>\n";
           $type_query = tep_db_query ($type_query_raw);
 
           $type = tep_db_fetch_array ($type_query);
@@ -220,7 +215,6 @@
             where 
              document_types_id = '" . $doc_path . "'
           ";
-//          print $documents_query_raw . "<br>\n";
           $documents_query = tep_db_query ($documents_query_raw);
 
           if (tep_db_num_rows ($documents_query) > 0) {

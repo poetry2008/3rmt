@@ -8,7 +8,7 @@ ini_set("display_errors","Off");
 require(DIR_WS_FUNCTIONS . 'visites.php');
 // load selected payment module
 require(DIR_WS_CLASSES . 'payment.php');
-
+require(DIR_WS_LANGUAGES . 'default.php');
 if(isset($real_point)){
 // user new point value it from checkout_confirmation.php 
   $point = $real_point;
@@ -744,7 +744,6 @@ $mailoption['ORDER_TMETHOD']    = $insert_torihiki_date;
 $mailoption['SITE_NAME']        = STORE_NAME ;
 $mailoption['SITE_MAIL']        = SUPPORT_EMAIL_ADDRESS ;
 $mailoption['SITE_URL']         = HTTP_SERVER ;
-
 $payment_modules->deal_mailoption($mailoption, $payment);
 
 if ($point){

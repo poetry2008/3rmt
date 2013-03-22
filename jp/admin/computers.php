@@ -42,7 +42,6 @@ if (isset($_GET['action']) and $_GET['action']) {
         break;
       case 'deleteconfirm':
         $computers_id = tep_db_prepare_input($_GET['cID']);
-        //unlink();
         tep_db_query("delete from " . TABLE_COMPUTERS . " where computers_id = '" . tep_db_input($computers_id) . "'");
         tep_db_query("delete from " . TABLE_ORDERS_TO_COMPUTERS . " where computers_id = '" . tep_db_input($computers_id) . "'");
         tep_redirect(tep_href_link(FILENAME_COMPUTERS, 'page=' . $_GET['page']));
@@ -139,7 +138,6 @@ require("includes/note_js.php");
                   </tr>
 <?php
         if (!isset($_GET['action'])) {
-//  if (!$_GET['action']) {
 ?>
                   <tr>
                     <td colspan="2" align="right"><?php echo '<a href="' .

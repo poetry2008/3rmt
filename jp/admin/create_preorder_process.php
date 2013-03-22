@@ -148,7 +148,6 @@
   $customer = $account['customers_id'];
   $address_query = tep_db_query("select * from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $_GET['Customer'] . "'");
   $address = tep_db_fetch_array($address_query);
-  //$customer = $account['customers_id'];
   } elseif (IsSet($_GET['Customer_nr']))
   {
   $account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_id = '" . $_GET['Customer_nr'] . "'");
@@ -156,7 +155,6 @@
   $customer = $account['customers_id'];
   $address_query = tep_db_query("select * from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $_GET['Customer_nr'] . "'");
   $address = tep_db_fetch_array($address_query);
-  //$customer = $account['customers_id'];
   }
 
   $from_page = 'create_preorder_process';
@@ -516,7 +514,6 @@ require("includes/note_js.php");
    
   $currency = $currency_array[0];
   $currency_value = $currency_array[1];
-  //$insert_id = date("Ymd") . '-' . date("His") . '00';
   $insert_id = $_GET['oID'];
    
   $sql_data_array = array('orders_id'     => $insert_id,

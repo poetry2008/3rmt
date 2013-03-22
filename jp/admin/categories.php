@@ -64,12 +64,10 @@ if (isset($_GET['action']) && $_GET['action']) {
     //指定%的情况下，计算价格
     $HTTP_POST_VARS['products_price_offset'] = SBC2DBC($HTTP_POST_VARS['products_price_offset']);
     $update_sql_data = array(
-        //'products_price_offset'     => tep_db_prepare_input($HTTP_POST_VARS['products_price_offset']),
         'max_inventory'             => tep_db_prepare_input($_POST['inventory_max']),
         'min_inventory'             => tep_db_prepare_input($_POST['inventory_min']),
         'products_real_quantity'    => tep_db_prepare_input($_POST['products_real_quantity']),
         'products_virtual_quantity' => tep_db_prepare_input($_POST['products_virtual_quantity']),
-        //'products_attention_5'      => tep_db_prepare_input($_POST['products_attention_5']),
         'products_price'            => tep_get_bflag_by_product_id($products_id) ? 0 - abs(tep_db_prepare_input($_POST['products_price'])): abs(tep_db_prepare_input($_POST['products_price'])));
     tep_db_perform(TABLE_PRODUCTS, $update_sql_data, 'update', 'products_id = \'' . tep_db_input($products_id) . '\'');
     if(isset($relate_products_id)&&$relate_products_id){
@@ -77,12 +75,10 @@ if (isset($_GET['action']) && $_GET['action']) {
       $HTTP_POST_VARS['relate_products_price_offset'] = SBC2DBC($HTTP_POST_VARS['relate_products_price_offset']);
       // jiakong
       $relate_update_sql_data = array(
-          //'products_price_offset'     => tep_db_prepare_input($HTTP_POST_VARS['relate_products_price_offset']),
           'max_inventory'             => tep_db_prepare_input($_POST['relate_inventory_max']),
           'min_inventory'             => tep_db_prepare_input($_POST['relate_inventory_min']),
           'products_real_quantity'    => tep_db_prepare_input($_POST['relate_products_real_quantity']),
           'products_virtual_quantity' => tep_db_prepare_input($_POST['relate_products_virtual_quantity']),
-          //'products_attention_5'      => tep_db_prepare_input($_POST['relate_products_attention_5']),
           'products_price'            => tep_get_bflag_by_product_id($relate_products_id) ? 0 - abs(tep_db_prepare_input($_POST['relate_products_price'])): abs(tep_db_prepare_input($_POST['relate_products_price'])));
       tep_db_perform(TABLE_PRODUCTS, $relate_update_sql_data, 'update', 'products_id = \'' . tep_db_input($relate_products_id) . '\'');
 
@@ -339,7 +335,6 @@ if (isset($_GET['action']) && $_GET['action']) {
         tep_db_perform(TABLE_CATEGORIES_DESCRIPTION, $sql_data_array);
         //categories_image2 upload => INSERT
         $categories_image2 = tep_get_uploaded_file('categories_image2');
-        //$image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES);
         $image_directory = tep_get_local_path(tep_get_upload_dir($site_id) . 'categories/');
 
         if (is_uploaded_file($categories_image2['tmp_name'])) {
@@ -783,7 +778,6 @@ if (isset($_GET['action']) && $_GET['action']) {
         if($site_id=="" || $site_id==0){
           $update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now(),products_user_update='".$_POST['products_user_update']."' where products_id='".$products_id."'";
           tep_db_query($update_sql);
-          //	  tep_db_perform(TABLE_CATEGORIES_DESCRIPTION, $update_sql_data, 'update', 'categories_id = \'' . $categories_id . '\'');
         }else{
           $update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now(),products_user_update='".$_POST['products_user_update']."' where products_id='".$products_id."' and site_id='".$site_id."'";
           tep_db_query($update_sql);
@@ -821,9 +815,7 @@ if (isset($_GET['action']) && $_GET['action']) {
         tep_db_query($sql); 
       }
 
-      //-----------------------------------------
       // 按照颜色划分图像开始插入
-      //-----------------------------------------
       $color_query = tep_db_query("select * from ".TABLE_COLOR." order by color_name");
       $cnt=0;
       while($color = tep_db_fetch_array($color_query)) {
@@ -853,9 +845,7 @@ if (isset($_GET['action']) && $_GET['action']) {
           }
         }
       } // end color while
-      //-----------------------------------------
       // 按照颜色划分图像插入完成
-      //-----------------------------------------
 
       $languages = tep_get_languages();
       for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
@@ -893,9 +883,7 @@ if (isset($_GET['action']) && $_GET['action']) {
           tep_db_query("update `".TABLE_PRODUCTS_DESCRIPTION."` set `preorder_status` = '".$_POST['preorder_status']."' where products_id = '".$products_id."' and `site_id` != '0'"); 
         }
       }
-      //-----------------------------------------
       // option值插入完成
-      //-----------------------------------------
 
       if (USE_CACHE == 'true') {
         tep_reset_cache_block('categories');
@@ -1583,11 +1571,6 @@ if($('.show_left_menu').width()){
 }
 $('#show_popup_info').css('z-index', msg);
 $('#show_popup_info').css('left',leftset);
-//if($('.compatible').height()<box_warp_height){
-  //$('.box_warp').css('height',box_warp_height);
-//}else{
-  //$('.box_warp').css('height',$('.compatible').height());
-//}
 }
 });
 }
@@ -1996,7 +1979,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 }
                 $pInfo = new objectInfo($product);
               } elseif ($_POST) {
-                //print_r($_POST);
                 $pInfo = new objectInfo($_POST);
                 $products_name = $_POST['products_name'];
                 $products_description = $_POST['products_description'];
@@ -2576,7 +2558,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                     <table>
                                     <tr>
                                     <td><fieldset><legend style="color:#009900 "><?php echo TEXT_PRODUCTS_TAGS;?></legend> 
-                                    <?php if($site_id){/*echo ' class="readonly"';*/}?> 
                                     <?php
                                     //show tags 
                                     $checked_tags = array();
@@ -2774,9 +2755,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   } else {
                     $products_cart_image_name = $_POST['products_cart_image'];
                   }
-                  //========================================
                   //color image upload    
-                  //========================================
                   $color_query = tep_db_query("select * from ".TABLE_COLOR." order by color_name");
                   $cnt=0;
                   $color_image_hidden = '';
@@ -2790,7 +2769,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       $color_image_hidden .= tep_draw_hidden_field('image_'.$color['color_id'], $color_image['name']);
                     } 
                   }
-                  //========================================
 
                 } else {
                   $site_id = isset($_GET['site_id']) ? $_GET['site_id'] : '0';

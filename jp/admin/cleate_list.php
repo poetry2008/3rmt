@@ -133,7 +133,6 @@ while ($col = tep_db_fetch_array($res)){
   echo "<td><a href=
     'cleate_list.php?action=prelist&cid=".$cate_id."&oid=".$_GET['o_id']."' >".$cate_name.'</a></td>';
   echo "</tr>";
-//  echo "</table>";
 }
 
   }

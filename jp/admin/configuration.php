@@ -251,14 +251,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
         && (!isset($_GET['action']) or substr($_GET['action'], 0, 3) != 'new')
     ) {
   $cfg_extra_query = tep_db_query("select  configuration_key, configuration_description, date_added, last_modified, use_function, set_function,user_added,user_update from " . TABLE_CONFIGURATION . " where configuration_id = '" . $configuration['configuration_id'] . "'");
-//  $cfg_extra_query = tep_db_query("select configuration_key,configuration_description,date_added,last_modified,use_function,set_function  from ".TABLE_CONFIGURATION. " where configuration_key = ( select configuration_key from " . TABLE_CONFIGURATION . " where configuration_id = '" . $configuration['configuration_id'] . "')");
   $cfg_extra= tep_db_fetch_array($cfg_extra_query);
-/*  while($cfg_extra = tep_db_fetch_array($cfg_extra_query))
-  {
-  // $cInfo_array = tep_array_merge($configuration, $cfg_extra);
-  $cInfos_array[]=$cfg_extra;
-  }
-*/
   $cInfo_array = tep_array_merge($configuration, $cfg_extra);
   $cInfo = new objectInfo($cInfo_array);
     }
@@ -311,7 +304,6 @@ case 'edit':
       if($cInfo->configuration_key == 'ADMINPAGE_LOGO_IMAGE') {
         $value_field = tep_draw_file_field('upfile') . '<br>' . $cInfo->configuration_value;
       } else {
-    //$value_field = tep_draw_input_field('configuration_value', $cInfo->configuration_value);
         $value_field = '<textarea name="configuration_value" rows="5" cols="35">'. $cInfo->configuration_value .'</textarea>';
       }
     }
@@ -331,7 +323,6 @@ case 'edit':
       $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_UPDATE) . '&nbsp;<a class="new_product_reset" href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] .  '&cID=' . $cInfo->configuration_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
     }
 
-//----------------------------------
 
     $contents_sites_array = array();
     $select_site_configure = tep_db_query('select * from sites order by order_num');
@@ -395,8 +386,6 @@ case 'edit':
       $fetch_result['site_id']=$site['id'];
   }
   if($fetch_result['set_function']) {
-      //eval('$value_field = ' . $cInfo->set_function . '\'' . htmlspecialchars($cInfo->configuration_value) . '\');');
-      //$value_field = htmlspecialchars_decode($value_field);
     
       eval('$value_field = ' . $fetch_result['set_function'] . '\'' .  htmlspecialchars(addcslashes($fetch_result['configuration_value'], '\'')) . '\');');
   } else {
@@ -411,14 +400,12 @@ case 'edit':
   } else {
       $contents_site = array('form' => tep_draw_form('configuration', FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $fetch_result['configuration_id'] . '&action=save'));
   }
-//  $contents_site[] = array('text' => TEXT_INFO_EDIT_INTRO); 
   $contents_site[] = array('text' => '<br><b>' . $fetch_result['configuration_title'] . '</b><br>' . $fetch_result['configuration_description'] . '<br>' . $value_field);
   //if exists ,can be delete ,or  can not 
   if (is_numeric($fetch_result['configuration_id'])){
   $contents_site[] = array(
       'align' => 'center',
       'text' => '<br>' .  tep_html_element_submit(IMAGE_UPDATE) .'&nbsp;<a href="' .  tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] .  '&action=tdel&cID=' .  $fetch_result['configuration_id'].'_'.$cInfo->configuration_id) .  '">'.tep_html_element_button(IMAGE_DEFFECT).'</a>'. '&nbsp;<a class="new_product_reset" href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $cInfo->configuration_id) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>');
-//      $contents_site[] = array('align' => 'center', 'text' => '<br>' . '<a href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&action=tdel&cID=' . $fetch_result['configuration_id'].'_'.$cInfo->configuration_id) . '">'.tep_image_button('button_delete.gif',IMAGE_DELETE).'</a>');
   }else {
     $contents_site[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_EFFECT) . '&nbsp;<a class="new_product_reset" href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] .  '&cID=' . $cInfo->configuration_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
   }

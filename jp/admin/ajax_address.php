@@ -377,14 +377,7 @@ if($type == 'text'){
 
 
   echo '<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'. TABLE_LIST_4_1 .'</td><td><input type="hidden" id="comment" value="'.$comment.'"><textarea name="comment" rows="6" cols="30" class="option_text">'. $comment_text .'</textarea></td></tr>';
-  /*
-  echo '<tr><td width="30%" height="30" align="left">&nbsp;'. TABLE_LIST_9 .'</td><td><input type="text" name="limit" value="'. $limit.'"></td></tr>';
-  $required_true = $required == 'true' ? 'checked' : '';
-  $required_false = $required == 'false' ? 'checked' : '';
-  $required_true = $required == '' && $required_true == '' ? 'checked' : 'checked';
-  echo '<tr><td width="30%" height="30" align="left">&nbsp;'. TABLE_LIST_10 .'</td><td><input type="radio" name="required" value="true" '. $required_true .'>True&nbsp;<input type="radio" name="required" value="false" '. $required_false .'>False</td></tr>';
-   */
-
+  
 }elseif($type == 'textarea'){
 
  $type_comment_array = unserialize($type_comment);
@@ -449,14 +442,11 @@ if($fixed_option == 0){
     tep_db_close();
     $options_str_1 = '<option value="'. $parent_id .'">'. $parent_row['name'] .'</option>';
     $options_str .= $options_str_1;
-    //$options_string .= '<option value="'. $parent_name .'">'. $parent_name .'</option>'; 
 
     foreach($parent_type_array as $value){
 
-      //if($parent_name != $value){
         $selected = $value == $parent_type_comment['select_value'] ? ' selected' : '';
         $options_string .= '<option value="'. $value .'"'. $selected .'>'. $value .'</option>'; 
-      //}
     }
   }
   $options_str_temp = str_replace($options_str_1,'',$options_str_temp);
@@ -466,9 +456,6 @@ if($fixed_option == 0){
   echo '<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'. TABLE_LIST_6     .'</td><td><input type="text" id="comment" name="comment" class="option_text" value="'. $comment .'"></td></tr>';
   //option 所属上一级
 
-  //if($parent_id != '' || $id == 0){
-    //echo '<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'. TABLE_LIST_12_1 .'</td><td>'. $options_str .'&nbsp;<select name="parent_option[]" id="parent" onchange="check_option_show(this.value);">'. $options_string .'</select></td></tr>';
-  //}
   echo '<tr><td colspan="2"><table border="0" width="100%" cellspacing="0" cellpadding="0" id="show_id">';
   $select_value = $type_start == 'option' ? $select_value : '';
   echo '<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'. TABLE_LIST_12 .'</td><td><input type="text" name="option_comment[]" value="'. $select_value .'"><input type="radio" name="option_value" value="0" checked></td></tr>';

@@ -1,6 +1,5 @@
 <?php
-////
-// FILENAMES
+//定义文件名常量 
 define('FILENAME_CREATE_ACCOUNT', 'create_account.php');
 define('FILENAME_CREATE_ACCOUNT_PROCESS', 'create_account_process.php');
 define('FILENAME_CREATE_ACCOUNT_SUCCESS', 'create_account_success.php');
@@ -14,12 +13,10 @@ define('FILENAME_EDIT_NEW_ORDERS', 'edit_new_orders.php');
 define('FILENAME_CREATE_ORDER_PROCESS2', 'create_order_process2.php');
 define('FILENAME_CREATE_ORDER2', 'create_order2.php');
 define('FILENAME_EDIT_NEW_ORDERS2', 'edit_new_orders2.php');
-////
-// Languages
+// 翻译文件
 require('includes/languages/'.$language.'/step-by-step/'.$language.'.php');
 require(DIR_WS_CLASSES . 'payment.php');
 
-// check_email
 /*------------------------------------
  功能：验证邮件
  参数: $email(string) 用户邮件
@@ -68,8 +65,6 @@ function tep_validate_email($email) {
   return $isValid;
 }
 
-////
-// Output a form pull down menu
 /*-----------------------------------
  功能：绘制下拉菜单目录
  参数：$name(string) 名字
@@ -97,8 +92,6 @@ function tep_draw_pull_down_menu_catalog($name, $values, $default = '', $params 
   return $field;
 }  
 
-////
-// Creates a pull-down list of countries
 /*-------------------------------------
  功能：获得国家名单
  参数：$name(string) 名字
@@ -117,9 +110,6 @@ function tep_get_country_list($name, $selected = '', $parameters = '') {
   return tep_draw_pull_down_menu_catalog($name, $countries_array, $selected, $parameters);
 }
 
-////
-// Returns an array with countries
-// TABLES: countries
 /*-----------------------------------
  功能：获得国家下拉目录
  参数：$countries_id(string) 国家编号值
@@ -151,9 +141,6 @@ function tep_get_countries_catalog($countries_id = '', $with_iso_codes = false) 
   return $countries_array;
 }
 
-////
-// Creates a pull-down list of states
-// added for Japanese localize
 /*---------------------------------
  功能：获得地区列表
  参数：$name(string) 名字
@@ -173,8 +160,6 @@ function tep_get_zone_list($name, $country_code = '', $selected = '', $parameter
   return tep_draw_pull_down_menu($name, $zones_array, $selected, $parameters);
 }
 
-////
-// This function makes a new password from a plaintext password. 
 /*---------------------------------
  功能: 加密密码
  参数：$plain(string) 简单的密码值
@@ -204,8 +189,6 @@ function sbs_get_zone_name($country_id, $zone_id) {
   }
 }
 
-// Returns an array with countries
-// TABLES: countries
 /*-------------------------------
  功能：获得国家列表信息
  参数：$countries_id(string) 国家编号值
@@ -236,7 +219,6 @@ function sbs_get_countries($countries_id = '', $with_iso_codes = false) {
 
   return $countries_array;
 } 
-////
 /*------------------------------
  功能：获得国家名单
  参数：$name(string) 名字

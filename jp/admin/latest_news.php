@@ -19,7 +19,6 @@
             tep_db_query("update " . TABLE_LATEST_NEWS . " set status = '" . $_GET['flag'] . "' where news_id = '" . $_GET['latest_news_id'] . "'");
           }
         }
-//tep_redirect(FILENAME_LATEST_NEWS,$params);
 
         tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, (isset($_GET['site_id'])?('site_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):'')));
         break;
@@ -31,21 +30,9 @@
           }
         }
         if ($_GET['isfirst'] == '1') {
-          /*
-          $listAllQuery = tep_db_query("select * from " . TABLE_LATEST_NEWS . " where isfirst = '1' and site_id = '".$latest_news['site_id']."'");
-          $listAllRes = tep_db_fetch_array($listAllQuery);
-
-          if (!$listAllRes) {
             if ($_GET['latest_news_id']) {
               tep_db_query("update " . TABLE_LATEST_NEWS . " set isfirst = '" . $_GET['isfirst'] . "' where news_id = '" . $_GET['latest_news_id'] . "'");
             }
-          } else {
-            tep_db_query("update " . TABLE_LATEST_NEWS . " set isfirst = '0' where news_id = '" . $listAllRes['news_id'] . "'");
-            */
-            if ($_GET['latest_news_id']) {
-              tep_db_query("update " . TABLE_LATEST_NEWS . " set isfirst = '" . $_GET['isfirst'] . "' where news_id = '" . $_GET['latest_news_id'] . "'");
-            }
-          //}
         }
 tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, (isset($_GET['site_id'])?('site_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):'')));
 
@@ -85,7 +72,6 @@ tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, (isset($_GET['site_id'])?('site
         } else {
           $news_image_name = ''; 
         }
-        //$image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES . 'news/');
         $image_directory = tep_get_local_path(tep_get_upload_dir($sql_data_array['site_id']) . 'news/');
     $path = 'news/';
     
@@ -118,7 +104,6 @@ tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, (isset($_GET['site_id'])?('site
         } else {
           $news_image_name = ''; 
         }
-        //$image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES . 'news/');
         $image_directory = tep_get_local_path(tep_get_upload_dir($latest_news['site_id']) . 'news/');
     $path = 'news/';
     

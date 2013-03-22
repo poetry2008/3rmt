@@ -10,6 +10,7 @@ if (!isset($_SESSION['preorder_info_id'])) {
 
 require(DIR_WS_FUNCTIONS . 'visites.php');
 require(DIR_WS_CLASSES . 'payment.php');
+require(DIR_WS_LANGUAGES . 'default.php');
 
 if (isset($preorder_real_point)) {
   $preorder_point = $preorder_real_point;

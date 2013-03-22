@@ -6,26 +6,6 @@
 <!-- customers -->
           <tr>
             <td>
-<?php
-  /*  
-  $heading = array();
-  $contents = array();
-
-  $heading[] = array('text'  => BOX_HEADING_CUSTOMERS,
-                     'link'  => tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('selected_box')) . 'selected_box=customers'));
-
-  if ($selected_box == 'customers') {
-    $contents[] = array('text'  => '<a href="' . tep_href_link(FILENAME_CUSTOMERS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CUSTOMERS_CUSTOMERS . '</a><br>' .
-                                   '<a href="' . tep_href_link(FILENAME_ORDERS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CUSTOMERS_ORDERS . '</a><br>'.
-                                   '<a href="' . tep_href_link('telecom_unknow.php') . '" class="menuBoxContent_Link">決算管理</a><br>' . 
-                                   '<a href="' . tep_href_link('bill_templates.php') . '" class="menuBoxContent_Link">請求書のテンプレート</a><br>' . 
-                   '<!--<a href="customers_dl.php" class="menuBoxContent_Link">顧客データダウンロード</a>-->');
-  }
-
-  $box = new box;
-  echo $box->menuBox($heading, $contents);
-  */
-?>
             <table cellspacing="0" cellpadding="2" border="0" width="150"> 
               <tr>
               <td onmouseout="this.className='menusidebar'" onmouseover="this.className='menusidebarover';this.style.cursor='hand'" class="menusidebar" style="">&nbsp;<span><?php echo tep_image(DIR_WS_MENU_ICON . 'icon_customer.gif'); ?></span><span><a class="menuBoxHeading_Link" href="javascript:void(0);" onclick="toggle_lan('col4');"><?php echo BOX_HEADING_CUSTOMERS;?></a></span> 

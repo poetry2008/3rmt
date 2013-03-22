@@ -14,24 +14,6 @@ define('FILENAME_ONCE_PWD_LOG', 'pwd_log.php');
           <tr>
             <td>
 <?php
-  /* 
-  $heading = array();
-  $contents = array();
-
-  $heading[] = array('text'  => BOX_HEADING_USER,
-                     'link'  => tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('selected_box')) . 'selected_box=users'));
-
-  if ($selected_box == 'users') {
-    if ($ocertify->npermission == 15) $loginlog = '<a href="' . tep_href_link(FILENAME_USERS_LOGINLOG, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_USER_LOG . '</a>';
-	else $loginlog = '';
-    $contents[] = array('text'  => '<a href="' . tep_href_link(FILENAME_USERS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_USER_ADMIN . '</a><br>' .
-                                   '<a href="' . tep_href_link(basename($PHP_SELF), '', 'NONSSL') . '?execute_logout_user=1" class="menuBoxContent_Link">' . BOX_USER_LOGOUT . '</a><br>' .
-                                   $loginlog);
-  }
-
-  $box = new box;
-  echo $box->menuBox($heading, $contents);
-  */
 ?>
             <table cellspacing="0" cellpadding="2" border="0" width="150"> 
               <tr>

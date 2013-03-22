@@ -26,10 +26,6 @@ if($_SERVER["HTTP_ACCEPT_LANGUAGE"]){
 		</div>
         <div class="forma_text_space">
 			<?php
-            //echo "<br>";
-            //echo "<a href='".$_SERVER['HTTP_REFERER']."'>".TEXT_ERROR_LINK_BACK."</a>";
-            //echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-            //echo "<a href='index.php'>".TEXT_ERROR_LINK_INDEX."</a>";
             if(isset($_GET['string'])&&$_GET['string']){
 			    echo "<br>";
                 echo '<font color="#ff0000">'.$_GET['string'].'</font>';

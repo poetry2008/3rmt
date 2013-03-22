@@ -45,9 +45,6 @@
     if($_POST['back_mail']==''){
     //Let's build a message object using the email class
     // add the message to the object
-    //while ($mail = tep_db_fetch_array($mail_query)) {
-      //$mimemessage->send(tep_get_fullname($mail['customers_firstname'], $mail['customers_lastname']), $mail['customers_email_address'], '', $from, $subject);
-    //}
     $mail_sum=0;
     $mail_sql = $_SESSION['mail_list'];
     if(isset($_SESSION['mail_sub_customer'])&&$_SESSION['mail_sub_customer']){
@@ -143,7 +140,6 @@
     }
     
     if (!empty($_POST['se_cname'])) {
-      //$mail_or_sql .= ' or c.customers_firstname like \'%'.$_POST['se_cname'].'%\' or c.customers_lastname like \'%'.$_POST['se_cname'].'%\''; 
       $mail_or_sql .= ' and concat(c.customers_lastname, \' \', c.customers_firstname) like \'%'.$_POST['se_cname'].'%\''; 
     }
     
@@ -160,7 +156,6 @@
       $_SESSION['mail_list'] = $mail_sql; 
     }
 
-    //$messageStack->add(ERROR_NO_CUSTOMER_SELECTED, 'error');
   }
 
   if (isset($_GET['mail_sent_to']) && $_GET['mail_sent_to']) {

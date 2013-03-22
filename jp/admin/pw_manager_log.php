@@ -27,7 +27,6 @@
    case 'deleteconfirm' 删除idpw的历史记录      
 ------------------------------------------------------*/
       case 'deleteconfirm':
-        //unlink();
         if(tep_has_pw_manager_log($pwid)){
         if($_GET['select']=='all'){
         tep_db_query("delete from " . TABLE_IDPW_LOG. " where idpw_id='".$pwid."'");
@@ -155,20 +154,7 @@ require("includes/note_js.php");
     <?php
       //add order 
       $order_str = ''; 
-      /*
       if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
-        $order_str = '`updated_at` desc, `title` asc'; 
-      } else {
-        if($HTTP_GET_VARS['sort'] == 'nextdate'){
-        $order_str = '`date_order` '.$HTTP_GET_VARS['type']; 
-        }else{
-        $order_str = '`'.$HTTP_GET_VARS['sort'].'` '.$HTTP_GET_VARS['type']; 
-        }
-      }
-      */
-      if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
-        //$next_str = "IF(nextdate = '0000-00-00', '1', '0') as date_order, ";
-        //$order_str = '`date_order`,`nextdate` asc, `title` asc'; 
         $next_str = '';
         $order_str = '`nextdate` desc, `title` asc'; 
       } else {
@@ -324,7 +310,6 @@ require("includes/note_js.php");
     }
     $pw_manager_split = new splitPageResults($_GET['page'],
         MAX_DISPLAY_PW_MANAGER_LOG_RESULTS, $pw_manager_query_raw, $pw_manager_query_numrows);
-    //var_dump($pw_manager_query_raw);
        
     $pw_manager_query = tep_db_query($pw_manager_query_raw);
     while($pw_manager_row = tep_db_fetch_array($pw_manager_query)){
@@ -462,11 +447,6 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           ."'\">" .
           TEXT_BUTTON_CLEAR."</button>" 
           );
-          /*
-          tep_image_submit('button_delete.gif', IMAGE_DELETE) . '&nbsp;<a href="' .
-          tep_href_link(FILENAME_PW_MANAGER_LOG, 'page=' . $_GET['page'] . '&pw_l_id=' .
-            $pwInfo->id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
-            */
       break;
   default:
       $heading[] = array('text' => '');

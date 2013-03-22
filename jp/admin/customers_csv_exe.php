@@ -4,34 +4,6 @@
   
   function Jcode_EUCtoSJIS(&$str_EUC) {
     return $str_EUC;
-    /*
-  $str_SJIS = '';
-  $b = unpack('C*', $str_EUC);
-  $n = count($b);
-
-  for ($i = 1; $i <= $n; ++$i) {
-    $b1 = $b[$i];
-    if ($b1 > 0x8E) {
-      $b2 = $b[++$i];
-      if ($b1 & 0x01) {
-        $b1 >>= 1;
-        if ($b1 < 0x6F) $b1 += 0x31; else $b1 += 0x71;
-        if ($b2 > 0xDF) $b2 -= 0x60; else $b2 -= 0x61;
-      } else {
-        $b1 >>= 1;
-        if ($b1 <= 0x6F) $b1 += 0x30; else $b1 += 0x70;
-        $b2 -= 0x02;
-      }
-      $str_SJIS .= chr($b1).chr($b2);
-    } elseif ($b1 == 0x8E) {
-      $str_SJIS .= chr($b[++$i]);
-    } else {
-      $str_SJIS .= chr($b1);
-    }
-  }
-
-  return $str_SJIS;
-  */
   }
   
   

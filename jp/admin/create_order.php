@@ -121,33 +121,6 @@ case 'add_product':
 
           // 2.2.1 Update inventory Quantity
           $p = tep_db_fetch_array(tep_db_query("select * from products where products_id='".$add_product_products_id."'"));
-          /* 
-          if ((int)$add_product_quantity > $p['products_real_quantity']) {
-            // 买取商品大于实数
-            tep_db_perform('products',array(
-                  //'products_quantity' => $p['products_quantity'] - (int)$add_product_quantity,
-                  'products_real_quantity' => 0,
-                  // 'products_virtual_quantity' => $p['products_virtual_quantity'] - ((int)$add_product_quantity - $p['products_real_quantity'])
-                  'products_virtual_quantity' => $p['products_virtual_quantity'] - (int)$add_product_quantity + $p['products_real_quantity']
-                  ),
-                'update',
-                "products_id = '" . $add_product_products_id . "'");
-          } else {
-            tep_db_perform('products',array(
-                  //'products_quantity' => $p['products_quantity'] - (int)$add_product_quantity,
-                  'products_real_quantity' => $p['products_real_quantity'] - (int)$add_product_quantity
-                  // 'products_real_quantity' => $p['products_virtual_quantity'] - (int)$add_product_quantity
-                  ),
-                'update',
-                "products_id = '" . $add_product_products_id . "'");
-          }
-          // 增加销售量
-          tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . (int)$add_product_quantity . " where products_id = '" . $add_product_products_id . "'");
-          // 处理负数问题
-          //tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = 0 where products_quantity < 0 and products_id = '" . $add_product_products_id . "'");
-          tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . $add_product_products_id . "'");
-          tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . $add_product_products_id . "'");
-          */ 
             foreach($_POST as $op_i_key => $op_i_value) {
               $op_pos = substr($op_i_key, 0, 3);
               if ($op_pos == 'op_') {
@@ -203,9 +176,7 @@ case 'add_product':
           // TOTAL START
       $order_total_query = tep_db_query("select * from ". TABLE_ORDERS_TOTAL ." where orders_id='".$oID."'");
       if(!tep_db_num_rows($order_total_query)){
-          //require(DIR_FS_CATALOG . 'includes/classes/order.php');
           $order = new order($oID);
-          //require(DIR_WS_CLASSES . 'currencies.php');
           $currencies = new currencies;
           require(DIR_WS_CLASSES . 'order_total.php');
           $order_total = new order_total($site_id);
@@ -254,18 +225,12 @@ case 'add_product':
           $new_subtotal = $RunningSubTotal;
           $new_tax = $RunningTax;
           //subtotal
-          /*
-             , text = '".$currencies->format($new_subtotal, true, $order->info['currency'])."'
-           */
           tep_db_query("update " . TABLE_ORDERS_TOTAL . " set value = '".$new_subtotal."' where class='ot_subtotal' and orders_id = '".$oID."'");
 
           //tax
           $plustax_query = tep_db_query("select count(*) as cnt from " . TABLE_ORDERS_TOTAL . " where class = 'ot_tax' and orders_id = '".$oID."'");
           $plustax = tep_db_fetch_array($plustax_query);
           if($plustax['cnt'] > 0) {
-            /*
-               , text = '".tep_insert_currency_text($currencies->format($new_tax, true, $order->info['currency']))."'
-             */
             tep_db_query("update " . TABLE_ORDERS_TOTAL . " set value = '".tep_insert_currency_value($new_tax)."' where class='ot_tax' and orders_id = '".$oID."'");
           }
 
@@ -282,13 +247,8 @@ case 'add_product':
               $newtotal = $total_value["total_value"];
             }
           }
-          //$handle_fee = new_calc_handle_fee($order->info['payment_method'], $newtotal, $oID);
-          //$handle_fee = $payment_modules->handle_calc_fee(payment::changeRomaji($order->info['payment_method'],PAYMENT_RETURN_TYPE_CODE), $newtotal);
 
           $newtotal = $newtotal+$handle_fee+$shipping_fee;    
-          /*
-             , text = '<b>".$currencies->ot_total_format(intval(floor($newtotal)), true, $order->info['currency'])."</b>'
-           */
           $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '".intval(floor($newtotal))."' where class='ot_total' and orders_id = '".$oID."'";
           tep_db_query($totals);
           // shipping total
@@ -303,17 +263,6 @@ case 'add_product':
       }
 
 $order_exists = true;
-/*
-if (isset($_GET['oID'])) {
-    $oID = tep_db_prepare_input($_GET['oID']);
-
-    $orders_query = tep_db_query("select orders_id from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
-    if (!tep_db_num_rows($orders_query)) {
-      $order_exists = false;
-      $messageStack->add(sprintf(ERROR_ORDER_DOES_NOT_EXIST, $oID), 'error');
-    }
-}
-*/
 if(isset($_SESSION['payment_bank_info'])){
   unset($_SESSION['payment_bank_info']); 
 }
@@ -354,7 +303,6 @@ $email_address  = isset($account['customers_email_address'])? $account['customer
 $telephone      = isset($account['customers_telephone'])    ? $account['customers_telephone']:'';
 $fax            = isset($account['customers_fax'])          ? $account['customers_fax']:'';
 $zone_id        = isset($account['entry_zone_id'])          ? $account['entry_zone_id']:'';
-//$site_id        = isset($account['site_id'])                ? $account['site_id']:'';
 $street_address = isset($address['entry_street_address'])   ? $address['entry_street_address']:'';
 $company        = isset($address['entry_company'])          ? $address['entry_company']:'';
 $suburb         = isset($address['entry_suburb'])           ? $address['entry_suburb']:'';

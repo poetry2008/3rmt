@@ -2,7 +2,6 @@
   class order_total {
     var $modules;
 
-// class constructor
 /*--------------------------
  功能：订单总额
  参数：无

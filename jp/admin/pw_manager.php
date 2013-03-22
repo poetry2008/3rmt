@@ -60,14 +60,6 @@ if(isset($_GET['action']) &&
             $pw_operator = $user_info['name'];
             $user_self = '';
           }
-          /*
-          if(tep_db_prepare_input($_POST['nextdate'])!=''&&
-              tep_db_prepare_input($_POST['nextdate'])!='0000-00-00'){
-            $order_date = tep_db_prepare_input($_POST['nextdate']);
-          }else{
-            $order_date = '9999-12-30';
-          }
-          */
           $privilege_str .= 'admin';
           $sql_data_array = array(
             'title' => tep_db_prepare_input($_POST['title']),
@@ -145,27 +137,10 @@ if(isset($_GET['action']) &&
         }
         break;
       case 'deleteconfirm':
-        //unlink();
         $sql_del = 'delete from '.TABLE_IDPW.' where id = "'.$pwid.'"';
         tep_db_query($sql_del);
         $sql_del_log = 'delete from '.TABLE_IDPW_LOG.' where idpw_id = "'.$pwid.'"';
         tep_db_query($sql_del_log);
-        /*
-        tep_db_perform(TABLE_IDPW, array('onoff' => '0'), 'update', 'id = \'' . $pwid . '\'');
-        $res = tep_db_query("select * from ".TABLE_IDPW. " where id =
-            '".$pwid."'");
-        $sql_data_array_log = array();
-        if($row = tep_db_fetch_array($res)){
-          foreach($row as $key => $value){
-            if($key == 'id'){
-              $sql_data_array_log['idpw_id'] = $value;
-            }else{
-              $sql_data_array_log[$key] = $value;
-            }
-          }
-        }
-        tep_db_perform(TABLE_IDPW_LOG,$sql_data_array_log);
-        */
         tep_redirect(tep_href_link(FILENAME_PW_MANAGER, 'page=' . $_GET['page']));
         break;
 
@@ -174,8 +149,6 @@ if(isset($_GET['action']) &&
       //add order 
       $order_str = ''; 
       if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
-        //$next_str = "IF(nextdate = '0000-00-00', '1', '0') as date_order,";
-        //$order_str = '`date_order` asc,`nextdate` asc, `title` asc'; 
         $next_str = '';
         $order_str = '`nextdate` asc, `title` asc'; 
       } else {
@@ -574,13 +547,6 @@ padding:0;
   font-size:10px;
   background:#fff;
   text-align:right;
-  /*
-  position:relative;
-  right:0;
-  bottom:0;
-  */
-  /*padding-left:18px;
-  background:url(images/icons/info.gif) no-repeat left center;*/
 }
 .info02{
 width:50px;
@@ -592,7 +558,6 @@ text-align:center;
 }
 .edit_action{
   display:none;
-/*float:right;*/
   font-size:10px;
 line-height:24px;
 padding-right:5px;
@@ -642,9 +607,6 @@ a.date-picker {
     display: block;
     float: none;
 }
-/*
-   a.date-picker{ left:1000px; height:20px;}
-*/
 .number{
 font-size:24px;
 font-weight:bold;
@@ -687,13 +649,6 @@ padding:0;
   font-size:10px;
   background:#fff;
   text-align:right;
-  /*
-  position:relative;
-  right:0;
-  bottom:0;
-  */
-  /*padding-left:18px;
-  background:url(images/icons/info.gif) no-repeat left center;*/
 }
 .info02{
 width:50px;
@@ -704,7 +659,6 @@ text-align:center;
 }
 .edit_action{
   display:none;
-/*float:right;*/
   font-size:10px;
 line-height:24px;
 padding-right:5px;
@@ -735,12 +689,8 @@ overflow:hidden;
 	right:163px;
 	position: absolute;
 }
-/*.popup-calendar{ *margin-top:-95px;}*/
 .popup-calendar-wrapper{
 float:left;
-/*position: absolute;
-top:-9px;
-right:5px;*/
 }
 .popup-calendar-wrapper table{ width:100%;}
 .weekend ,.weekday,.inactive  { text-align:center; background-color:#eee;}
@@ -947,7 +897,6 @@ require("includes/note_js.php");
     <?php 
     $pw_manager_split = new splitPageResults($_GET['page'],
         MAX_DISPLAY_PW_MANAGER_RESULTS, $pw_manager_query_raw, $pw_manager_query_numrows);
-    //var_dump($pw_manager_query_raw);
        
     $pw_manager_query = tep_db_query($pw_manager_query_raw);
     $i=0;
@@ -1006,21 +955,6 @@ require("includes/note_js.php");
         onclick='copyCode(\"".$pw_manager_row['id']."\",\"username\")'>".mb_substr($pw_manager_row['username'],0,8,'utf-8')."</td>";
       echo "<td class='dataTableContent_line' id='pwd_".$i."'
         onclick='copyCode(\"".$pw_manager_row['id']."\",\"password\")'>".mb_substr($pw_manager_row['password'],0,8,'utf-8')."</td>";
-      /*
-      $privilege_arr = array();
-      if($pw_manager_row['privilege_s']){
-        $privilege_arr[] = 'staff';
-      }
-      if($pw_manager_row['privilege_c']){
-        $privilege_arr[] = 'chief';
-      }
-      if(count($privilege_arr)>1){
-        $privilege_str = implode(',',$privilege_arr);
-      }else{
-        $privilege_str = $privilege_arr[0];
-      }
-      echo "<td class='dataTableContent'".$onclick." >".$privilege_str."</td>";
-      */
       echo "<td class='dataTableContent'".$onclick." >";
         if($pw_manager_row['privilege'] =='7'){
          echo TEXT_PERMISSION_STAFF;
@@ -1153,13 +1087,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
         tep_get_user_select($selected_user)
         ."</div>"
           );
-      /*
-      $contents[] = array('text' => '<br>' . TEXT_INFO_OPERATOR . '<br>' .
-          tep_draw_input_field('operator'));
-      $contents[] = array('text' => '<br>' . TEXT_INFO_ONOFF . '<br>' .
-          tep_draw_input_field('onoff'));
-      $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_insert.gif', IMAGE_INSERT) . '&nbsp;<a href="' . tep_href_link(FILENAME_PW_MANAGER, 'page=' . $_GET['page']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
-      */
+      
       $contents[] = array('align' => 'center', 'text' => '<br>' . 
           "<button type='submit' >".IMAGE_SAVE."</button>"
           . '&nbsp;' .
@@ -1233,15 +1161,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           tep_draw_radio_field('privilege','10',$pwInfo->privilege==10?true:false,'','class="privilege"
             id="privilege_c"').TEXT_PERMISSION_CHIEF."<br>"
           );
-      /*
-      $contents[] = array('text' => '<br>' . TEXT_INFO_PRIVILEGE . '<br>' .
-          tep_draw_checkbox_field('self','1',$pwInfo->self,'','id="self"').TEXT_SELF.
-          tep_draw_checkbox_field('privilege_s','1',$pwInfo->privilege_s?true:false,'','class="privilege"
-            id="privilege_s"')."Staff".
-          tep_draw_checkbox_field('privilege_c','1',$pwInfo->privilege_c?true:false,'','class="privilege"
-            id="privilege_c"')."Chief<br>"
-          );
-      */
+      
       if($pwInfo->self!=''){
         $pw_select_display = 'block';
       }else{
@@ -1275,9 +1195,6 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents[] = array('text' => TEXT_INFO_DELETE_INTRO);
       $contents[] = array('text' => '<br><b>' . $pwInfo->title . '</b>');
       $contents[] = array('align' => 'center', 'text' => '<br>' .
-          /*
-          tep_image_submit('button_delete.gif', IMAGE_DELETE) 
-          */ 
           "<button type='submit' >".TEXT_BUTTON_DELETE."</button>"
           . '&nbsp;' .
           "<button type='button'
@@ -1346,11 +1263,6 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
         <table width=""  border="0" cellspacing="1" cellpadding="0" class = "new_pwmanager">
         <tr><td>
         <?php
-        /*
-          echo "<a href='".tep_href_link(FILENAME_PW_MANAGER,'action=new')."'>";
-          echo tep_image_button('button_create.gif',IMAGE_CREATE);
-          echo "</a>";
-          */
           ?>
           </td></tr></table>
           <?php

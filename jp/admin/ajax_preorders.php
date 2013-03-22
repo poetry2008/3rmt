@@ -76,10 +76,8 @@ if ($_POST['orders_id'] &&
   $rp = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$p['relate_products_id']."'"));
 
   if ($rp) {
-    //print_r($rp);
     $q  = $rp['products_real_quantity'] + (int)$_GET['count'];
     tep_db_query("update ".TABLE_PRODUCTS." set products_real_quantity='".$q."' where products_id='".$p['relate_products_id']."'");
-    //print_r("update ".TABLE_PRODUCTS." set products_real_quantity='".$q."' where products_id='".$p['relate_products_id']."'"); 
   }
 } else if ($_GET['orders_id'] && $_POST['orders_credit']) {
 /*--------------------------------------------
@@ -180,9 +178,6 @@ if ($_POST['orders_id'] &&
 						"));
     }
     $allorders[] = $orders;
-    //if (((!isset($_GET['oID']) || !$_GET['oID']) || ($_GET['oID'] == $orders['orders_id'])) && (!isset($oInfo) || !$oInfo)) {
-    //  $oInfo = new objectInfo($orders);
-    //}
 
     //如果是今天的交易的话，显示红色
     $trade_array = getdate(strtotime(tep_datetime_short($orders['predate'])));
@@ -195,19 +190,11 @@ if ($_POST['orders_id'] &&
         $next_mark = '';
       }
     } else {
-      #if ($ocertify->npermission) {
         $today_color = 'black';
-        #} else {
-        #$today_color = '#999';
-        #}
         $next_mark = '';
     }
 
 
-    //echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow" onmouseover="showOrdersInfo(\''.tep_get_orders_products_string($orders).'\');this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="hideOrdersInfo();this.className=\'dataTableRow\'" ondblclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action', 'page')) . 'oID='.$orders['orders_id']).'\'">' . "\n";
-    /*
-      echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow" onmouseover="showOrdersInfo(\''.$orders['orders_id'].'\', this);this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="hideOrdersInfo();this.className=\'dataTableRow\'" ondblclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action', 'page')) . 'oID='.$orders['orders_id']).'\'">' . "\n";
-    */
     echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow"
 			onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'"
 			onmouseout="this.className=\'dataTableRow\'">' .      "\n";
@@ -614,7 +601,6 @@ if ($_POST['orders_id'] &&
     unset($orders_info_raw);
 	$orders_info_raw = tep_db_query("select payment_method,orders_status  from ".TABLE_PREORDERS." where orders_id = '".$oid."'"); 
     $finish          = tep_get_preorder_canbe_finish($oid)?1:0;
-    //$type            = tep_check_pre_order_type($oid);
     $type            = 4;
 	$orders_info = tep_db_fetch_array($orders_info_raw); 
     if(!isset($orders_info_first)){
@@ -679,7 +665,6 @@ if ($_POST['orders_id'] &&
     $bigText.= $group['form_id'];
     $bigText.="_";
   }
-  //  $bigText['result'] = $bigText;
   echo json_encode($bigText);
 
 } else if  (isset($_GET['action'])&&$_GET['action']=='get_group_renderstring') {
@@ -689,7 +674,6 @@ if ($_POST['orders_id'] &&
  参数: $_GET['group_id'] 组ID值
  ------------------------------------*/
   $ids = $_GET['ids'];
-  //  $ids = $_POST['ids'];
   $ids_array = explode('_',$ids);
   $sql  = 'select * from oa_item where group_id = "'.$_GET['group_id'].'" and type!="autocalculate" order by  ordernumber';
   require_once 'pre_oa/DbRecord.php';
@@ -747,7 +731,6 @@ if ($_POST['orders_id'] &&
       $exampleOrder['orders_id']=$ids_array[0];
     }
     if($exampleOrder!=false){
-      //$orders_info_raw = tep_db_fetch_array(tep_db_query("select oa_form.id from ".TABLE_PREORDERS." o, oa_form  where oa_form.payment_romaji = o.payment_method and o.orders_id = '".$exampleOrder['orders_id']."' and oa_form.formtype=".tep_check_pre_order_type($exampleOrder['orders_id']))); 
       $orders_info_raw = tep_db_fetch_array(tep_db_query("select oa_form.id from ".TABLE_PREORDERS." o, oa_form  where oa_form.payment_romaji = o.payment_method and o.orders_id = '".$exampleOrder['orders_id']."' and oa_form.formtype=4")); 
       $item->init()->loadDefaultValue($exampleOrder['orders_id'],$orders_info_raw['id'],$_GET['group_id']);
     }
@@ -756,7 +739,6 @@ if ($_POST['orders_id'] &&
     echo "</tr>";
   }
   echo $preorders_status_finish_js;
-  //  echo $bigRender;
 
 } else if (isset($_GET['action'])&&$_GET['action']=='show_right_preorder_info') {
 /*---------------------------------------------

@@ -220,10 +220,6 @@ function check_form() {
   var customers_email_address = document.customers.customers_email_address.value;  
   customers_email_address = customers_email_address.replace(/\u200b/g, '');
   document.customers.customers_email_address.value=customers_email_address;  
-  //var entry_street_address = document.customers.entry_street_address.value;
-  //var entry_postcode = document.customers.entry_postcode.value;
-  //var entry_city = document.customers.entry_city.value;
-  //var customers_telephone = document.customers.customers_telephone.value;
 
 <?php if (ACCOUNT_GENDER == 'true') { ?>
   if (document.customers.customers_gender[0].checked || document.customers.customers_gender[1].checked) {
@@ -272,10 +268,6 @@ function check_form() {
   }
 <?php } ?>
 
-  //if (document.customers.entry_country_id.value == 0) {
-    //error_message = error_message + "<?php echo JS_COUNTRY; ?>";
-    //error = 1;
-  //}
   if (error == 1) {
     alert(error_message);
     return false;
@@ -686,15 +678,6 @@ require("includes/note_js.php");
     $customers_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $customers_query_raw, $customers_query_numrows);
     $customers_query = tep_db_query($customers_query_raw);
     while ($customers = tep_db_fetch_array($customers_query)) {
-      //$info_query = tep_db_query("
-          //select customers_info_date_account_created as date_account_created, 
-                 //customers_info_date_account_last_modified as date_account_last_modified, 
-                 //customers_info_date_of_last_logon as date_last_logon, 
-                 //customers_info_number_of_logons as number_of_logons 
-          //from " . TABLE_CUSTOMERS_INFO . " 
-          //where customers_info_id = '" . $customers['customers_id'] . "'
-      //");
-      //$info = tep_db_fetch_array($info_query);
 
       if (
           ((!isset($_GET['cID']) || !$_GET['cID']) || (@$_GET['cID'] == $customers['customers_id'])) 

@@ -1,5 +1,4 @@
 <?php
-//header("Content-Type: text/xml");
 require('includes/application_top.php');
 
 require(DIR_WS_CLASSES . 'currencies.php');
@@ -25,22 +24,7 @@ switch ($_GET['action']){
           'percent'   => ''
         ));
       }
-      
-      //    $xmlbody .= "<data>";
-      //    $xmlbody .= "<calc bai=\"".$col['bairitu']."\" kei=\"".$col['keisan']."\"  shisoku=\"".$col['shisoku']."\"></calc>";
-      //    $xmlbody .= "</data>"; 
-    
-      //    echo $xmlbody;          
       break;
-    
-      /*case 'cleate_menu':
-    $cID=$_GET['cid'];
-    $proid=$_GET['pid'];
-    $pname=$_GET['pname'];
-    tep_db_query("insert into set_menu_list (categories_id,products_id,products_name) values ('".$cID."','".$proid."','".$pname."')");
-    
-    break;
-      */
-}
+   }
 
 ?>

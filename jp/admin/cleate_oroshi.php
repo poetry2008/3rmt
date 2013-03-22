@@ -22,20 +22,10 @@ case 'edit_oroshi':
     $ckstr[] = $col['categories_id'];
   }
 
-//  $sql = 'update set_oroshi_names set oroshi_name = "'.$name.'"';
-//  $sql.=', parent_id = '.$cpath;
-//  $sql.=' where oroshi_id = '.$orrshi_id;
-//  tep_db_query($sql);
   break;
 case 'set_oroshi':
   $orrshi_id = $_POST['orrshi_id'];
   if (isset($_POST['sort'])) {
-    /**
-    echo "<pre>";
-    print_r($_POST);
-    echo "</pre>";
-    exit;
-    /**/
     foreach($_POST['sort_order'] as $oid => $sort_order) {
       tep_db_perform('set_oroshi_names', array('sort_order' => (int)$sort_order), 'update', "oroshi_id='".$oid."'");
     }
@@ -85,37 +75,11 @@ case 'set_oroshi':
        tep_db_query($sql);
   }
 
-//  $sql = 'delete from set_oroshi_datas where oroshi_id = "'.$orrshi_id.'" and parent_id not in (select soc.categories_id from set_oroshi_categories soc where oroshi_id ="'.$orrshi_id.'")';
-//  tep_db_query($sql);
   
     $name = $_POST['up_oroshi'];
     $sql = 'update set_oroshi_names set oroshi_name="'.$name[$orrshi_id].'",user_update="'.$_SESSION['user_name'].'",date_update = "'.date("Y-m-d H:i:s",time()).'"  where oroshi_id="'.$orrshi_id.'"';
     tep_db_query($sql);
   }
-  /*
-  $updata=$_POST['up_oroshi'];
-  $res=tep_db_query("select * from set_oroshi_names where parent_id='".$cPath."'");
-  $cnt = count($updata);
-  $i=0;
-  while($col=tep_db_fetch_array($res)){
-    if(($updata[$i] != $col['oroshi_name'])&&($_POST['cpath'] == $col['parent_id'] ) || $updata[$i] != ""){
-      if($updata[$i] != ""){
-        tep_db_query("update set_oroshi_names set oroshi_name = '".$updata[$i]."' where  oroshi_id = '".$col['oroshi_id']."'");
-      }         
-    }else{
-      tep_db_query("delete from  set_oroshi_names  where oroshi_id = '".$col['oroshi_id']. "'");
-    }
-    $i++;
-  }
-
-  $setdata=$_POST['set_oroshi'];
-  if(isset($setdata)){
-    foreach($setdata as $val){
-      if($val != ""){
-        tep_db_query("insert into set_oroshi_names (parent_id,oroshi_name) values ('".$cPath."','".$val."')");
-      }
-    }
-  }*/
   tep_redirect(tep_href_link('cleate_oroshi.php','action=edit_oroshi&id='.$_POST['orrshi_id']));
   break;
   
@@ -278,28 +242,21 @@ function w_close(){
   }
   }
   return true;
-  //  window.close(); 
 }
 <?php //删除批发商名称 ?> 
 function del_oroshi(id){
   var flg=confirm('<?php echo DELETE;?>');
   if(flg){
     location.href="cleate_oroshi.php?action=delete&id="+id;
-    //    location.href="cleate_oroshi.php?action=delete&id="+id+"&cpath="+path;
-  }else{
-      
   }
 }
 <?php //编辑批发商名称 ?>
 function edit_oroshi(id){
   var selectName = 'parent_id_'+id;
   var oroName = 'name_'+id;
-//  var path = document.getElementById(selectName).value;
-//  var name = document.getElementById(oroName).value;
   location.href= 'cleate_oroshi.php?action=edit_oroshi&id='+id; 
 
 }
-//var sort_changed = false;
 <?php //往上排一级 排序 ?>
 function ex(id){
   for(exi=1;exi<6;exi++){
@@ -322,8 +279,6 @@ require("includes/note_js.php");
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
-<?php  //<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onLoad="SetFocus();">
-  ?>
   <div id="spiffycalendar" class="text"></div>
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
   <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">

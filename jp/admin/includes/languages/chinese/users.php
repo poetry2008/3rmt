@@ -37,7 +37,7 @@ define('TEXT_ERRINFO_DB_CHANGE_PERMISSION','用户权限无法更改');
 
 define('TEXT_SUCCESSINFO_INSERT_USER', '已添加用户');
 define('TEXT_SUCCESSINFO_UPDATE_USER', '用户信息已更新');
-define('TEXT_SUCCESSINFO_DELETE_USER', '户信息已删除');
+define('TEXT_SUCCESSINFO_DELETE_USER', '用户信息已删除');
 define('TEXT_SUCCESSINFO_CHANGE_PASSWORD', '密码已更改');
 define('TEXT_SUCCESSINFO_PERMISSION_GIVE', '已给予用户权限');
 define('TEXT_SUCCESSINFO_PERMISSION_CLEAR', '已取消用户权限');
@@ -112,4 +112,6 @@ define('TEXT_ERRINFO_USER_STAFF', '<b>给予权限</b>:请选择Staff');
 define('TEXT_ERRINFO_USER_CHIEF', '<b>取消权限</b>:请选择Chief');
 define('TEXT_ERRINFO_USER_ADMIN', '<b>取消权限</b>:请选择Admin');
 define('USER_EMAIL_ERROR','输入的邮箱地址有误!');
+define('USER','用户');
+define('SITE_PREM','网站权限');
 ?>

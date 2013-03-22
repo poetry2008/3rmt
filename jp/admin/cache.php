@@ -156,28 +156,6 @@ require("includes/note_js.php");
               <tr>
                 <td class="smallText" colspan="3"><?php echo TEXT_CACHE_DIRECTORY . ' ' . $dir_fs_cache; ?></td>
               </tr>
-<?php 
-  /*$site_id = isset($_GET['site_id']) ? $_GET['site_id']:0;
-$css_rand_query = tep_db_query("select id,value from other_config where keyword='css_random_string' and site_id='".$site_id."'");
-
-$css_rand_array = tep_db_fetch_array($css_rand_query)
-	?>
-<tr>
-<td class="smallText" colspan="3" align="right">
-<?php echo CSS_RANDOM_STRING;?>
-<?php echo $css_rand_array['value']; ?>
-&nbsp;&nbsp;
-<?php echo CSS_RANDOM_INFO; ?>
-<a href="<?php echo tep_href_link(FILENAME_CACHE,"action=update_css_rand&site_id=".$site_id)?>"><img src="images/icon_reset.gif
-"></a>
-</td>
-</tr>
-<tr>
-<td class="smallText" colspan="3" align="right">
-<?php echo CSS_EXAMPLE."(".NOW_RANDOM_VALUE."jp.css?v=".$css_rand_array['value'].")"?>
-</td>
-</tr>
-<?php */?>
             </table></td>
           </tr>
         </table></td>

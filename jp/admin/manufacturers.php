@@ -14,7 +14,6 @@
  ---------------------------------*/
     case 'insert':
     case 'save':
-	    //print_r($_POST);exit;
       $manufacturers_id = tep_db_prepare_input($_GET['mID']);
       $manufacturers_name = tep_db_prepare_input($_POST['manufacturers_name']);
 
@@ -32,7 +31,6 @@
       }
 
       $manufacturers_image = tep_get_uploaded_file('manufacturers_image');
-      //$image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES);
       $image_directory = tep_get_local_path(tep_get_upload_dir().'manufacturers/');
 
       if (is_uploaded_file($manufacturers_image['tmp_name'])) {
@@ -294,8 +292,6 @@ $contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .tep_datetime_short($mInfo-
 $contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .TEXT_UNSET_DATA);
 }
 
- //       $contents[] = array('text' => '<br>' . TEXT_DATE_ADDED . ' ' . tep_date_short($mInfo->date_added));
-  //      if (tep_not_null($mInfo->last_modified)) $contents[] = array('text' => TEXT_LAST_MODIFIED . ' ' . tep_date_short($mInfo->last_modified));
         $contents[] = array('text' => '<br>' . tep_info_image('manufacturers/' . $mInfo->manufacturers_image, $mInfo->manufacturers_name));
         $contents[] = array('text' => '<br>' . TEXT_PRODUCTS . ' ' . $mInfo->products_count);
       }

@@ -40,7 +40,6 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     tep_db_query('update  '.TABLE_OCONFIG.' set value = "'.
         $reset_pwd_startdate.'",user_update = "'.$_SESSION['user_name'].'",date_update = "'.date('Y-m-d H:i:s',time()).'" where  keyword = "reset_pwd_startdate"');
     tep_db_query('update  '.TABLE_OCONFIG.' set value = "'.$reset_pwd_enddate.'",user_update = "'.$_SESSION['user_name'].'",date_update = "'.date('Y-m-d H:i:s',time()).'" where  keyword = "reset_pwd_enddate"');
-//    tep_db_query('update  '.TABLE_CUSTOMERS_INFO .' set reset_flag = 0');
 
     $reset_pwd_startdate.=' 00:00:00';
     $reset_pwd_enddate.=' 00:00:00';

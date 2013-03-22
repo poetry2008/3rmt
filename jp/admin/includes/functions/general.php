@@ -11,10 +11,8 @@
 function forward401()
 { 
   header($_SERVER["SERVER_PROTOCOL"] . " 401Not Found");
-  //  require("/home/hansir/project/OSC_3RMT/jp/".DIR_WS_MODULES  . '401.html');
   require( DIR_WS_MODULES. '401.html');
   exit;
-  //throw new Exception();
 }
 
 /* -------------------------------------
@@ -25,10 +23,8 @@ function forward401()
 function forward404()
 { 
   header($_SERVER["SERVER_PROTOCOL"] . " 404Not Found");
-  //  require("/home/hansir/project/OSC_3RMT/jp/".DIR_WS_MODULES  . '401.html');
   require( DIR_WS_MODULES. '404.html');
   exit;
-  //throw new Exception();
 }
 
 /* -------------------------------------
@@ -70,11 +66,9 @@ function one_time_pwd_forward401($page_name)
   }
   if($inpagelist){
   header($_SERVER["SERVER_PROTOCOL"] . " 401Not Found");
-  //  require("/home/hansir/project/OSC_3RMT/jp/".DIR_WS_MODULES  . '401.html');
   require( DIR_WS_MODULES. '401.html');
   exit;
   }
-  //throw new Exception();
 }
 
 /* -------------------------------------
@@ -479,30 +473,6 @@ function tep_get_products_tree($cid){
   }
   return $category_tree_array;
 }
-/*
-   function tep_get_products_tree($parent_id = '0', $spacing = '', $exclude = '', $category_tree_array = '') {
-   global $languages_id;
-
-   if (!is_array($category_tree_array)) $category_tree_array = array();
-   if ( (sizeof($category_tree_array) < 1) && ($exclude != '0') ) $category_tree_array[] = array('id' => '0', 'text' => TEXT_TOP);
-
-   $categories_query = tep_db_query("select c.categories_id, cd.categories_name, c.parent_id from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where c.categories_id = cd.categories_id and cd.language_id = '" . $languages_id . "' and c.parent_id = '" . $parent_id . "' and site_id ='0' order by c.sort_order, cd.categories_name");
-   while ($categories = tep_db_fetch_array($categories_query)) {
-//if ($exclude != $categories['categories_id']) $category_tree_array[] = array('id' => $categories['categories_id'], 'text' => $spacing . $categories['categories_name']);
-if ($exclude != $categories['categories_id']) $category_tree_array[] = array('id' => '', 'text' => $spacing . $categories['categories_name']);
-$category_tree_array = tep_get_products_tree($categories['categories_id'], $spacing . '&nbsp;&nbsp;&nbsp;', $exclude, $category_tree_array);
-
-$products_query = tep_db_query("select * from products_description pd,products_to_categories p2c where pd.products_id=p2c.products_id and pd.site_id=0 and p2c.categories_id='".$categories['categories_id']."'");
-while($p = tep_db_fetch_array($products_query)){
-//exit(1);
-$category_tree_array[] = array('id' => $p['products_id'], 'text' => $spacing . $spacing . $p['products_name']);
-}
-}
-
-return $category_tree_array;
-}
- */
-
 /* -------------------------------------
     功能: 根据条件生成商品的下拉框     
     参数: $name(string) 下拉框的名字  
@@ -570,9 +540,6 @@ function tep_values_name($values_id) {
     返回值: 图片的html(string)
  ------------------------------------ */
 function tep_info_image($image, $alt, $width = '', $height = '', $site_id = '0') {
-  //if ( ($image) && (file_exists(DIR_FS_CATALOG_IMAGES . $image)) ) {
-  //$image = tep_image(DIR_WS_CATALOG_IMAGES . $image, $alt, $width, $height);
-  //echo tep_get_upload_dir($site_id) . $image;
   if ( ($image) && (file_exists(tep_get_upload_dir($site_id). $image)) ) {
     $image = tep_image(tep_get_web_upload_dir($site_id). $image, $alt, $width, $height);
   } else {
@@ -591,25 +558,7 @@ function tep_info_image($image, $alt, $width = '', $height = '', $site_id = '0')
     返回值: 转换后的字符串(string)
  ------------------------------------ */
 function tep_break_string($string, $len, $break_char = '-') {
-  /*
-     $l = 0;
-     $output = '';
-     for ($i = 0; $i < strlen($string); $i++) {
-     $char = substr($string, $i, 1);
-     if ($char != ' ') {
-     $l++;
-     } else {
-     $l = 0;
-     }
-     if ($l > $len) {
-     $l = 1;
-     $output .= $break_char;
-     }
-     $output .= $char;
-     }
-
-     return $output;
-   */
+  //原有的 截取处理删除 暂时不做处理
   return $string;
 }
 
@@ -1359,7 +1308,6 @@ function tep_products_in_category_count($categories_id, $include_deactivated = f
   if ($include_deactivated) {
     $products_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c where p.products_id = p2c.products_id and p2c.categories_id = '" . $categories_id . "'");
   } else {
-    //$products_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c where p.products_id = p2c.products_id and p.products_status != '0' and p2c.categories_id = '" . $categories_id . "'");
     $products_query = tep_db_query("select count(*) as total from " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c where p.products_id = p2c.products_id and p2c.categories_id = '" . $categories_id . "'");
   }
 
@@ -1525,20 +1473,6 @@ function tep_set_banner_status($banners_id, $status, $site_id) {
   }
 }
 
-////
-// Sets the status of a product on special
-/*
-   function tep_set_specials_status($specials_id, $status) {
-   if ($status == '1') {
-   return tep_db_query("update " . TABLE_SPECIALS . " set status = '1', expires_date = NULL, date_status_change = NULL where specials_id = '" . $specials_id . "'");
-   } elseif ($status == '0') {
-   return tep_db_query("update " . TABLE_SPECIALS . " set status = '0', date_status_change = now() where specials_id = '" . $specials_id . "'");
-   } else {
-   return -1;
-   }
-   }
- */
-
 /* -------------------------------------
     功能: 设置最大可执行时间  
     参数: $limit(int) 执行时间(单位秒) 
@@ -1654,10 +1588,6 @@ function tep_copy_uploaded_file($filename, $target) {
   if (substr($target, -1) != '/') $target .= '/';
 
   $target .= $filename['name'];
-  //if (!file_exists($target)) {
-  //@mkdir($target);
-  //@chmod($target, 0777);
-  //}
   move_uploaded_file($filename['tmp_name'], $target);
   chmod($target, 0666);
 }
@@ -1788,11 +1718,6 @@ function tep_remove_category($category_id) {
   $duplicate_image_query = tep_db_query("select count(*) as total from " . TABLE_CATEGORIES . " where categories_image = '" . tep_db_input($category_image['categories_image']) . "'");
   $duplicate_image = tep_db_fetch_array($duplicate_image_query);
 
-  //if ($duplicate_image['total'] < 2) {
-  //if (file_exists(DIR_FS_CATALOG_IMAGES . $category_image['categories_image'])) {
-  //@unlink(DIR_FS_CATALOG_IMAGES . $category_image['categories_image']);
-  //}
-  //}
 
   tep_db_query("delete from " . TABLE_CATEGORIES . " where categories_id = '" . tep_db_input($category_id) . "'");
   tep_db_query("delete from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '" . tep_db_input($category_id) . "'");
@@ -1816,17 +1741,9 @@ function tep_remove_product($product_id) {
   $duplicate_image_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS . " where products_image = '" . tep_db_input($product_image['products_image']) . "'");
   $duplicate_image = tep_db_fetch_array($duplicate_image_query);
 
-  //if ($duplicate_image['total'] < 2) {
-  //if (file_exists(DIR_FS_CATALOG_IMAGES . $product_image['products_image'])) {
-  //@unlink(DIR_FS_CATALOG_IMAGES . $product_image['products_image']);
-  //}
-  //}
-
-  //tep_db_query("delete from " . TABLE_SPECIALS . " where products_id = '" . tep_db_input($product_id) . "'");
   tep_db_query("delete from " . TABLE_PRODUCTS . " where products_id = '" . tep_db_input($product_id) . "'");
   tep_db_query("delete from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($product_id) . "'");
   tep_db_query("delete from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . tep_db_input($product_id) . "'");
-  //tep_db_query("delete from " . TABLE_PRODUCTS_ATTRIBUTES . " where products_id = '" . tep_db_input($product_id) . "'");
   tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET . " where products_id like ('%" . tep_db_input($product_id) . "%')");
   tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET_OPTIONS . " where products_id like ('%" . $product_id . "%')");
 
@@ -2097,7 +2014,6 @@ function tep_mail($to_name, $to_email_address, $email_subject, $email_text, $fro
   $message = new email(array('X-Mailer: iimy Mailer'), $site_id);
 
   // Build the text version
-  //$text = strip_tags($email_text);
   $text = $email_text;
   if (EMAIL_USE_HTML == 'true') {
     $message->add_html(nl2br($email_text), $text);
@@ -2646,7 +2562,6 @@ function tep_torihiki($raw_datetime) {
 function tep_get_torihiki_houhou()
 {
   $types = $return = array();
-  //DS_TORIHIKI_HOUHOU
   $types = explode("\n", DS_TORIHIKI_HOUHOU);
   if ($types) {
     foreach($types as $type){
@@ -3320,17 +3235,6 @@ function tep_get_site_name_by_order_id($id){
   return isset($order['name'])?$order['name']:'';
 }
 
-////
-// categories.php
-// Return a product's special price (returns nothing if there is no offer)
-// TABLES: products
-/*
-   function tep_get_products_special_price($product_id) {
-   $product_query = tep_db_query("select specials_new_products_price from " . TABLE_SPECIALS . " where products_id = '" . (int)$product_id . "' and status");
-   $product = tep_db_fetch_array($product_query);
-
-   return $product['specials_new_products_price'];
-   }*/
 
 /* -------------------------------------
     功能: 获取属性名字 
@@ -3424,7 +3328,6 @@ function tep_get_upload_dir($site_id = '0'){
  ------------------------------------ */
 function tep_get_web_upload_dir($site_id = '0'){
   if (!trim($site_id)) $site_id = '0';
-  //return DIR_WS_CATALOG . 'upload_images/' . $site_id . '/';
   return 'upload_images/' . $site_id . '/';
 }
 
@@ -3434,7 +3337,6 @@ function tep_get_web_upload_dir($site_id = '0'){
     返回值: 图片目录路径(string) 
  ------------------------------------ */
 function tep_get_upload_root(){
-  //echo DIR_FS_CATALOG;
   return DIR_FS_CATALOG . 'upload_images/';
 }
 
@@ -3635,92 +3537,6 @@ function tep_get_faq_question($q_id){
 function tep_get_faq_category($c_id){
   return tep_db_fetch_array(tep_db_query("select * from ".TABLE_FAQ_CATEGORIES." where c_id = '".$c_id."'"));
 }
-/*
-function calc_handle_fee($payment_name, $products_total)
-{
-  if ($products_total == 0) {
-    return 0; 
-  }
-  $handle_fee = 0; 
-  if ($payment_name == '銀行振込(買い取り)') {
-    $handle_fee = calc_fee_final(MODULE_PAYMENT_BUYING_COST, $products_total); 
-  } else if ($payment_name == 'コンビニ決済') {
-    $handle_fee = calc_fee_final(MODULE_PAYMENT_CONVENIENCE_STORE_COST, $products_total); 
-  } else if ($payment_name == '銀行振込') {
-    $handle_fee = calc_fee_final(MODULE_PAYMENT_MONEYORDER_COST, $products_total); 
-  } else if ($payment_name == 'ゆうちょ銀行（郵便局）') {
-    $handle_fee = calc_fee_final(MODULE_PAYMENT_POSTALMONEYORDER_COST, $products_total); 
-  } else if ($payment_name == 'クレジットカード決済') {
-    $handle_fee = calc_fee_final(MODULE_PAYMENT_TELECOM_COST, $products_total); 
-  } else {
-    return 0; 
-  }
-  return $handle_fee;
-}
-*/
-/*
-function new_calc_handle_fee($payment_name, $products_total, $oID)
-{
-  $oid_query = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$oID."'"); 
-  $oid_res = tep_db_fetch_array($oid_query);
-  if ($oid_res) {
-    $site_id = $oid_res['site_id']; 
-  } else {
-    $site_id = 0; 
-  } 
-
-  if ($products_total == 0) {
-    return 0; 
-  }
-  $handle_fee = 0; 
-  if ($payment_name == '銀行振込(買い取り)') {
-    $pay_cost_query = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MODULE_PAYMENT_BUYING_COST' and (site_id = 0 or site_id = ".$site_id.") order by site_id DESC limit 1"); 
-    $pay_cost_res = tep_db_fetch_array($pay_cost_query); 
-
-    $handle_fee = calc_fee_final($pay_cost_res['configuration_value'], $products_total); 
-  } else if ($payment_name == 'コンビニ決済') {
-    $pay_cost_query = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MODULE_PAYMENT_CONVENIENCE_STORE_COST' and (site_id = 0 or site_id = ".$site_id.") order by site_id DESC limit 1"); 
-    $pay_cost_res = tep_db_fetch_array($pay_cost_query); 
-
-    $handle_fee = calc_fee_final($pay_cost_res['configuration_value'], $products_total); 
-  } else if ($payment_name == '銀行振込') {
-    $pay_cost_query = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MODULE_PAYMENT_MONEYORDER_COST' and (site_id = 0 or site_id = ".$site_id.") order by site_id DESC limit 1"); 
-    $pay_cost_res = tep_db_fetch_array($pay_cost_query); 
-
-    $handle_fee = calc_fee_final($pay_cost_res['configuration_value'], $products_total); 
-  } else if ($payment_name == 'ゆうちょ銀行（郵便局）') {
-    $pay_cost_query = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MODULE_PAYMENT_POSTALMONEYORDER_COST' and (site_id = 0 or site_id = ".$site_id.") order by site_id DESC limit 1"); 
-    $pay_cost_res = tep_db_fetch_array($pay_cost_query); 
-
-    $handle_fee = calc_fee_final($pay_cost_res['configuration_value'], $products_total); 
-  } else if ($payment_name == 'クレジットカード決済') {
-    $pay_cost_query = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MODULE_PAYMENT_TELECOM_COST' and (site_id = 0 or site_id = ".$site_id.") order by site_id DESC limit 1"); 
-    $pay_cost_res = tep_db_fetch_array($pay_cost_query); 
-    $handle_fee = calc_fee_final($pay_cost_res['configuration_value'], $products_total); 
-  } else {
-    return 0; 
-  }
-  return $handle_fee;
-}
-*/
-/*
-function calc_fee_final($fee_set, $total_cost)
-{
-  $return_fee = 0; 
-  $table_fee = split("[:,]", $fee_set);
-  for ($i = 0; $i < count($table_fee); $i+=2) {
-    if ($total_cost <= $table_fee[$i]) {
-      $additional_fee = $total_cost.$table_fee[$i+1];
-      @eval("\$additional_fee = $additional_fee;");
-      if (is_numeric($additional_fee)) {
-        $return_fee = $additional_fee; 
-      }
-      break; 
-    }
-  }
-  return $return_fee;
-}
-*/
 /* -------------------------------------
     功能: 更新分类状态 
     参数: $categories_id(int) 分类id  
@@ -3729,24 +3545,7 @@ function calc_fee_final($fee_set, $total_cost)
  ------------------------------------ */
 function tep_set_categories_status($categories_id, $status)
 {
-  /*
-  // c 0 => g 1 => r 2 => b
-  // p 0 => r 1 => g 2 => b
-  if ($status == 1) {
-  $products_status = 0;
-  } else if ($status == 0) {
-  $products_status = 1;
-  } else {
-  $products_status = 2;
-  }
-
-  $categories_query = tep_db_query("SELECT * FROM ".TABLE_CATEGORIES." WHERE parent_id = '".$categories_id."'");
-  while ( $categories = tep_db_fetch_array($categories_query) ) {
-  tep_set_categories_status($categories['categories_id'], $status);
-  }
-   */
   tep_db_query("UPDATE `".TABLE_CATEGORIES."` SET `categories_status` = '".intval($status)."' WHERE `categories_id` =".$categories_id." LIMIT 1 ;");
-  //tep_db_query("UPDATE ".TABLE_PRODUCTS." SET products_status = '".$products_status."' WHERE products_id IN (select products_id from ".TABLE_PRODUCTS_TO_CATEGORIES." where categories_id = '".$categories_id."')");
   return true;
 }
 
@@ -3902,7 +3701,6 @@ function tep_get_final_price($price, $offset, $sum, $quantity) {
     }
     return $price + $lprice;
   } else if ($price && $offset && $offset != 0) {
-    //return calculate_special_price($price, $offset);
     return $price;
   } else {
     return $price;
@@ -4049,7 +3847,6 @@ function orders_wait_flag($orders_id) {
       tep_db_query("update ".TABLE_ORDERS." set orders_wait_flag = '0' where orders_id='".$orders_id."'");
     }
   }
-  //exit;
 }
 
 /* -------------------------------------
@@ -4152,7 +3949,6 @@ function cpathPart($cpath,$which=1) {
     if($which ==1){
       $b = substr($a,0,strpos($a,'_'));
     }else {
-      //$b = substr($a,strpos($a,'_')+1);
       $arr = explode('_',$a);
       return $arr[count($arr)-1];
     }
@@ -4170,7 +3966,6 @@ function cpathPart($cpath,$which=1) {
  ------------------------------------ */
 function makeSelectOption($arrCategories,$selectValue = Fales,$startName='')
 {
-  //echo $selectValue;
   $result = '';
 
   foreach ($arrCategories as $cate1 ) {
@@ -4327,7 +4122,6 @@ function tep_get_kakuukosuu_by_products_id($products_id) {
   if (!isset($data[$products_id])){
     $data[$products_id] = tep_db_fetch_array(tep_db_query("select * from products where products_id = '".$products_id."'"));
   }
-  //$data = tep_db_fetch_array(tep_db_query("select * from set_menu_list where categories_id='".$categories_id."' and products_id='".$products_id."'"));
   if ($data) {
     return (int)$data[$products_id]['products_virtual_quantity'];
   } else {
@@ -5224,7 +5018,6 @@ function tep_match_by_keywords($str, $keywords)
   $k = explode('|',$keywords);
   foreach($k as $key => $value){
     if (preg_match('/'.$value.'/', $str)) {
-      //exit($value.'+'.$keywords);
       return true;
     }
   }
@@ -5510,28 +5303,6 @@ function tep_get_pay_day($time = null){
 }
 
 
-/*
-   function tep_get_order_type($orders_id){
-   $type = 0;
-   $query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." op,".TABLE_PRODUCTS." p where p.products_id=op.products_id and op.orders_id='".$orders_id."'");
-   while($op = tep_db_fetch_array($query)){
-   if ($op['products_bflag'] == 0) {
-   if ($type == 1 || $type == 0) {
-   $type = 1;
-   } else {
-   $type = 3;
-   }
-   } else {
-   if ($type == 2 || $type == 0) {
-   $type = 2;
-   } else {
-   $type = 3;
-   }
-   }
-   }
-   return $type;
-   }
- */
 
 /* -------------------------------------
     功能: 显示google搜索结果 
@@ -5551,14 +5322,6 @@ function tep_display_google_results($from_url='', $c_type=false){
   }
   if(isset($_GET['cPath'])&&$_GET['cPath']!=''){
     $categories_id = array_pop(explode('_',$_GET['cPath']));
-    /*
-       $record_sql = "select tr.siteurl as url 
-       from ".TABLE_RECORD." tr
-       where tr.session_id =(select max(r.session_id) from ".TABLE_RECORD." r left
-       join ".TABLE_CATEGORIES_TO_MISSION." c2m on c2m.mission_id =
-       r.mission_id where c2m.categories_id ='".$categories_id."')
-       order by tr.order_total_number";
-     */
     $record_sql = "select tr.siteurl as url
       from ".TABLE_RECORD." tr left join "
       .TABLE_CATEGORIES_TO_MISSION." c2m
@@ -5600,7 +5363,6 @@ function tep_display_google_results($from_url='', $c_type=false){
           }
           $i++;
         }
-        //  while($record_res = tep_db_fetch_array($record_query)){
         $icount = 1; //序号
         foreach($url_arr as $distinct_url){
           if($icount%2==0){
@@ -5613,11 +5375,6 @@ function tep_display_google_results($from_url='', $c_type=false){
             echo "<td class='dataTableContent search_class_td' style='width:22px' nowrap='nowrap'>&nbsp;".$icount++.":"."</td>";
             echo "<td class='dataTableContent' ><b>".tep_get_siteurl_name($distinct_url)."</b></td>";
             echo "<td class='dataTableContent' >";
-            /*
-               echo "<a href='".tep_href_link(FILENAME_RECORD,
-               'action=unshow&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url).
-               "'>".TEXT_UNSHOW."</a>";
-             */
             if(isset($from_url)&&$from_url){
               echo "<a href='".tep_href_link(FILENAME_RECORD,
                   'from='.$from_url.'&action=rename&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url.$tmp_param_str).
@@ -5634,12 +5391,6 @@ function tep_display_google_results($from_url='', $c_type=false){
           echo "<td class='dataTableContent search_class_td' style='width:22px' nowrap='nowrap'>&nbsp;".$icount++.":"."</td>";
           echo "<td class='dataTableContent' >".tep_get_siteurl_name($distinct_url)."</td>";
           echo "<td class='dataTableContent' >";
-          /*
-             echo "<a href='".tep_href_link(FILENAME_RECORD,
-             'action=unshow&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url).
-             "'>".TEXT_UNSHOW."</a>";
-           */
-
           if(isset($from_url)&&$from_url){
             echo "<a href='".tep_href_link(FILENAME_RECORD,
                 'from='.$from_url.'&action=rename&act='.$_GET['action'].'&cID='.$_GET['cID'].'&cPath='.$_GET['cPath'].'&url='.$prama_url.$tmp_param_str).
@@ -5746,11 +5497,6 @@ function tep_display_google_results($from_url='', $c_type=false){
     返回值: 是否存在(boolean) 
  ------------------------------------ */
   function tep_check_romaji($romaji){
-    /*
-       if (!preg_match('/^[a-zA-Z0-9\-]+$/', $romaji)) {
-       return false;
-       }*/
-
     $keywords = array(
         'page',
         'reviews',
@@ -5934,11 +5680,6 @@ function tep_display_google_results($from_url='', $c_type=false){
     返回值: 是否更新成功(boolean/int) 
  ------------------------------------ */
   function tep_set_product_status_by_site_id($products_id, $status, $site_id, $up_rs = false) {
-    /*
-       if (!tep_check_products_exists($products_id,$site_id)) {
-       tep_create_products_by_site_id($products_id,$site_id);
-       }
-     */
     if ($status == '1') {
       return tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_status = '1' where products_id = '" . $products_id . "' and site_id = '".$site_id."'");
     } elseif ($status == '2') {
@@ -5994,7 +5735,6 @@ function tep_display_google_results($from_url='', $c_type=false){
 
     foreach ($site_arr as $key => $value) {
       if (!tep_check_products_exists($pID, $value)) {
-        //      tep_create_products_by_site_id($pID, $value); 
       }
    
       tep_db_query("UPDATE `".TABLE_PRODUCTS_DESCRIPTION."` SET `products_status` = '".$pstatus."' where `products_id` = '".$pID."' and `site_id` = '".$value."'");  
@@ -6068,16 +5808,10 @@ function tep_display_google_results($from_url='', $c_type=false){
 
     foreach ($site_arr as $skey => $svalue) {
       foreach ($category_total_arr as $ckey => $cvalue) {
-        //      if (!tep_check_categories_exists($cvalue, $svalue)) {
-        //        tep_create_site_categories($cvalue, $svalue);
-        //      }
         tep_set_categories_status_by_site_id($cvalue, $cstatus, $svalue);
       }
 
       foreach ($product_total_arr as $pkey => $pvalue) {
-        //     if (!tep_check_products_exists($pvalue, $svalue)) {
-        //      tep_create_products_by_site_id($pvalue, $svalue);
-        //     }
         tep_set_product_status_by_site_id($pvalue, $pstatus, $svalue, $up_rs); 
       }
     }
@@ -6131,7 +5865,6 @@ function tep_display_google_results($from_url='', $c_type=false){
       and p.products_id = p2t.products_id
       and p.products_id != ".$pid."
       "; 
-      //echo $raw;
       $query = tep_db_query($raw);
     $arr = array();
     while($p = tep_db_fetch_array($query)){
@@ -6196,7 +5929,6 @@ function tep_display_google_results($from_url='', $c_type=false){
     } else {
       return 0;
     }
-    //return 100;
   }
 
 /* -------------------------------------
@@ -6307,7 +6039,6 @@ function tep_display_google_results($from_url='', $c_type=false){
       }
     }
     if(!$str){
-      //$str = "-".$date_arr['y'].$date_arr['m'].$date_arr['d'];
       $str = false;
     }
 
@@ -6547,7 +6278,6 @@ function tep_display_google_results($from_url='', $c_type=false){
           from orders_products left join
           orders on orders.orders_id=orders_products.orders_id 
           where products_id='".$pid."' and date(orders.date_purchased) >= '".date('Y-m-d 00:00:00',strtotime('-'.((get_configuration_by_site_id('ORDER_EFFECTIVE_DATE') != '0')?(get_configuration_by_site_id('ORDER_EFFECTIVE_DATE')-1):'0').'day'))."'".(!empty($site_id)?" and orders.site_id = '".$site_id."'":"").""));
-    //$r = tep_db_fetch_array(tep_db_query("select count(orders_products.orders_id) as cnt from orders_products left join orders on orders.orders_id=orders_products.orders_id where products_id='".$pid."' and finished = '1'"));
     $cnt = 0;
     while($row = tep_db_fetch_array($query)){
       if($row['finished']=='0'&&$row['flag_qaf']=='0' && !check_order_transaction_button($row['orders_status'])){
@@ -6974,12 +6704,10 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
           $show_ca_query = tep_db_query("select * from (select c.categories_id ,cd.site_id, cd.categories_name from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id = cd.categories_id and c.categories_id = '".$tmp_ca_id."' and cd.language_id = '".$language_id."' order by site_id DESC) c where site_id = '0' or site_id = '".$site_id."'group by categories_id limit 1"); 
           $show_ca_res = tep_db_fetch_array($show_ca_query);
 
-          //$return_str .= $show_ca_res['categories_name'].':&nbsp;';  
           if($td_flag){
           $return_str .= "<td class='smallText' align='right'>";
           }
           if ($cur_key !== false) {
-           //   $return_str .= '<div style="float:left;width:120px">&nbsp;';
             if (isset($level_category_arr[$cur_key-1])) {
               $prev_id =  $level_category_arr[$cur_key-1];
               $link_cpath = get_link_parent_category($prev_id); 
@@ -6989,9 +6717,7 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
                 $return_str .= '<input type="button" style="width:102px;float:left;margin-left:70px;" value="'.TEXT_CATEGORY_HEAD_IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID')).'cPath='.$link_cpath).'\'">&nbsp;'; 
 	      }
             }
-            //  $return_str .= '</div>';
 
-             // $return_str .= '<div style="float:left;width:120px">&nbsp;';
             if (isset($level_category_arr[$cur_key+1])) {
               $next_id =  $level_category_arr[$cur_key+1];
               $link_cpath = get_link_parent_category($next_id); 
@@ -7001,7 +6727,6 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
                 $return_str .= '&nbsp;<input style="width:102px;float:left;margin-left:182px;" type="button" value="'.TEXT_CATEGORY_HEAD_IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID')).'cPath='.$link_cpath).'\'">&nbsp;'; 
 	      }
             }
-              //$return_str .= '</div>';
           }
 
         }
@@ -7074,13 +6799,11 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
             cd.categories_id and c.categories_id = '".$current_category_id."' and cd.language_id = '".$language_id."' order by site_id DESC) c where site_id = '0' or site_id = '".$site_id."'group by categories_id limit 1"); 
             $show_ca_res = tep_db_fetch_array($show_ca_query);
 
-          //$return_str .= $show_ca_res['categories_name'].':&nbsp;';  
           if($td_flag){
           $return_str .= "<td class='smallText' align='right' >";
           }
           if ($cur_pos !== false) {
               $link_path = get_link_parent_category($category_arr[$cur_pos-1]);
-              //$return_str .= '<div style="float:left;width:120px">&nbsp;';
             if (isset($category_arr[$cur_pos-1])) {
               if (isset($category_arr[$cur_pos+1])) {
                 $return_str .= '<input type="button" style="width:102px;float:left;margin-left:70px;" value="'.TEXT_CATEGORY_HEAD_IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link($page, 'cPath='.$link_path.'&site_id='.(int)$site_id).'\'">&nbsp;'; 
@@ -7088,8 +6811,6 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
                 $return_str .= '<input type="button" style="width:102px;float:left;margin-left:70px;" value="'.TEXT_CATEGORY_HEAD_IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link($page, 'cPath='.$link_path.'&site_id='.(int)$site_id).'\'">&nbsp;'; 
 	      }
             }
-              //$return_str .= '</div>';
-              //$return_str .= '<div style="float:left;width:120px">&nbsp;';
             if (isset($category_arr[$cur_pos+1])) {
               $link_path = get_link_parent_category($category_arr[$cur_pos+1]); 
               if (isset($category_arr[$cur_pos-1])) {
@@ -7098,7 +6819,6 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
                 $return_str .= '&nbsp;<input type="button" style="width:102px;float:left;margin-left:182px;" value="'.TEXT_CATEGORY_HEAD_IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link($page, 'cPath='.$link_path.'&site_id='.(int)$site_id).'\'">'; 
 	      }
             }
-              //$return_str .= '</div>';
           }
         }
       }
@@ -7238,12 +6958,6 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
       } else {
         $before_time = strtotime("-".$limit_time." days", $now_time); 
       }
-      /*
-      $order_query = tep_db_query("select o.orders_id from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where o.orders_id = op.orders_id and op.products_id = '".$products_id."' and o.date_purchased >= '".date('Y-m-d H:i:s', $before_time)."' limit 1");
-      if (tep_db_num_rows($order_query)) {
-        return true; 
-      }
-      */
       $order_arr = array();
       $order_query = tep_db_query("select orders_id from ".TABLE_ORDERS." where date_purchased >= '".date('Y-m-d H:i:s', $before_time)."'");
       while($order_row = tep_db_fetch_array($order_query)){
@@ -8001,7 +7715,6 @@ function   tep_order_status_change($oID,$status){
 
     foreach ($site_arr as $key => $value) {
       if (!tep_check_question_exists($qID, $value)) {
-        //      tep_create_products_by_site_id($pID, $value); 
       }
       tep_db_query("UPDATE `".TABLE_FAQ_QUESTION_DESCRIPTION."` SET 
           `is_show` = '".$pstatus."' where `faq_question_id` = '".$qID."' 
@@ -8977,9 +8690,6 @@ function tep_output_generated_category_path_asset($id, $from = 'category') {
       $calculated_category_path_string .= $calculated_category_path[$i][$j]['text'];
       $calculated_category_path_string .= '&nbsp;&gt;&gt;&nbsp;';
     }
-    /*
-      $calculated_category_path_string = substr($calculated_category_path_string, 0, -16) . '<br>';
-    */
   }
   $calculated_category_path_string = substr($calculated_category_path_string, 0, -20);
 
@@ -9247,38 +8957,6 @@ function tep_get_products_list_by_order_id($oid){
   }
   return $products_list;
 }
-/*
-function orders_products_updated($orders_id,$shipping_info){
-  $time_arr = explode('-',$shipping_info['shipping_time']);
-  $start = $shipping_info['shipping_date']." ".$time_arr[0];
-  $end = $shipping_info['shipping_date']." ".$time_arr[1];
-  //这里修改 订单的产品
-  $sql = "UPDATE ".TABLE_ORDERS_PRODUCTS." SET
-    `torihiki_date`='".$start."',
-    `torihiki_date_end`='".$end."',
-    `address_book_id`='".$shipping_info['shipping_address']."',
-    `shipping_method`='".$shipping_info['shipping_method']."',
-    `torihiki_houhou`='".$shipping_info['torihiki_houhou']."'
-    WHERE `orders_id` = '".$orders_id."'";
-  tep_db_query($sql);
-}
-function tep_get_shipping_products($oid){
-  $sql = "SELECT shipping_pid FROM ".TABLE_ORDERS_TOTAL." WHERE orders_id ='"
-    .$oid."'";
-  $query = tep_db_query($sql);
-  $pid_arr = array();
-  while($row = tep_db_fetch_array($query)){
-    if($row['shipping_pid']){
-      $pid_arr[] = $row['shipping_pid'];
-    }
-  }
-  if(empty($pid_arr)){
-    return false;
-  }else{
-    return $pid_arr;
-  }
-}
-*/
 /* -------------------------------------
     功能: 获取优惠券费用 
     参数: $total(int) 总计 

@@ -133,14 +133,7 @@
     $order = new preorder($oID);
     $status = tep_db_prepare_input($_POST['status']);
     $goods_check = $order_query;
-    /*
-    if (tep_db_num_rows($goods_check) == 0) {
-      $messageStack->add('商品が追加されていません。', 'error');
-      $action = 'edit';
-      break;
-    }
-    */
-    //viladate
+        //viladate
   $viladate = tep_db_input($_POST['update_viladate']);//viladate pwd 
   if($viladate!='_false'&&$viladate!=''){
       tep_insert_pwd_log($viladate,$ocertify->auth_user);
@@ -151,24 +144,6 @@
     tep_redirect(tep_href_link(FILENAME_FINAL_PREORDERS, tep_get_all_get_params(array('action')) . 'action=edit'));
     break;
   }
-    /*
-    if (isset($update_tori_torihiki_date)) { //日期时间是否有效检查
-      if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/', $update_tori_torihiki_date, $m)) { // check the date format
-        $messageStack->add(EDIT_ORDERS_NOTICE_DATE_WRONG_TEXT, 'error');
-        $action = 'edit';
-        break;
-      } elseif (!checkdate($m[2], $m[3], $m[1]) || $m[4] >= 24 || $m[5] >= 60 || $m[6] >= 60) { // make sure the date provided is a validate date
-        $messageStack->add(EDIT_ORDERS_NOTICE_NOUSE_DATE_TEXT, 'error');
-        $action = 'edit';
-        break;
-      }
-    } else {
-      $messageStack->add(EDIT_ORDERS_NOTICE_MUST_INPUT_DATE_TEXT, 'error');
-      $action = 'edit';
-      break;
-    }
-    */
-    //valadate email 
     if (isset($_POST['h_deadline'])) { 
       //日期时间是否有效检查
       if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d)$/', $_POST['h_deadline'], $m1)) { 
@@ -251,9 +226,6 @@
 
     $UpdateOrders .= $payment_modules->admin_get_payment_info($payment_method,$comment_arr['comment']);
     
-    //if(isset($comment_arr['comment']) && !empty($comment_arr['comment'])){
-        //$UpdateOrders .= "orders_comment = '{$comment_arr['comment']}',";
-    //}
 
     if(substr($update_info_cc_number,0,8) != "(Last 4)") {
       $UpdateOrders .= "cc_number = '$update_info_cc_number',";
@@ -261,9 +233,6 @@
     $UpdateOrders .= "cc_expires = '$update_info_cc_expires',
       orders_status = '" . tep_db_input($status) . "'";
     
-    if(!$CommentsWithStatus) {
-      //$UpdateOrders .= ", comments = '" . tep_db_input($comments) . "'";
-    }
     $UpdateOrders .= " where orders_id = '" . tep_db_input($oID) . "';";
 
     tep_db_query($UpdateOrders);
@@ -328,12 +297,6 @@
           $pr_quantity -= $quantity_difference;
         }
       }
-      // 如果是业者，不更新
-      //if(!tep_is_oroshi($check_status['customers_id']))
-      //tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = ".$pr_quantity.", products_virtual_quantity = ".$pv_quantity.", products_ordered = products_ordered + " . $quantity_difference . " where products_id = '" . (int)$order['products_id'] . "'");
-      
-      //tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
-      //tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
     }
 
     if($products_details["qty"] > 0) { 
@@ -445,25 +408,18 @@
       // Check for existence of subtotals (CWS)                      
       if ($ot_class == "ot_total") {
         // I can't find out, WHERE the $RunningTotal is calculated - but the subtraction of the tax was wrong (in our shop)
-//        $ot_value = $RunningTotal-$RunningTax;
         $ot_value = $RunningTotal;
         
-        if ( !$ot_subtotal_found ) { 
-          // There was no subtotal on this order, lets add the running subtotal in.
-//        $ot_value +=  $RunningSubTotal;
-        }
       }
   
 // Set $ot_text (display-formatted value)
   
-//      $ot_text = "\$" . number_format($ot_value, 2, ',', '');
   
       $order = new preorder($oID);
 
       if ($customer_guest['customers_guest_chk'] == 0 && $ot_class == "ot_point" && $ot_value != $before_point) { 
         //如果是会员的话会进行对应的返点
         $point_difference = ($ot_value - $before_point);
-        //tep_db_query("update " . TABLE_CUSTOMERS . " set point = point - " . $point_difference . " where customers_id = '" . $order->customer['id'] . "'"); 
       }
 
       $ot_text = $currencies->format($ot_value, true, $order->info['currency'], $order->info['currency_value']);
@@ -474,10 +430,6 @@
   
       if($ot_total_id > 0 || $ot_class == "ot_point") { 
         // Already in database --> Update
-        /*
-           delete form query
-            text = "' . tep_insert_currency_text($ot_text) . '",
-           */
         $Query = 'UPDATE ' . TABLE_PREORDERS_TOTAL . ' SET
             title = "' . $ot_title . '",
             value = "' . tep_insert_currency_value($ot_value) . '",
@@ -486,12 +438,6 @@
             tep_db_query($Query);
       } else { 
         // New Insert
-        /*
-           change form query
-            text = "' . tep_insert_currency_text($ot_text) . '",
-            to
-            text = ""
-           */
             $Query = 'INSERT INTO ' . TABLE_PREORDERS_TOTAL . ' SET
             orders_id = "' . $oID . '",
             title = "' . $ot_title . '",
@@ -506,14 +452,11 @@
         // Again, because products are calculated in terms of default currency, we need to align shipping, custom etc. values with default currency
         $RunningTotal += $ot_value / $order->info['currency_value'];
 
-//} elseif ($ot_class == "ot_point") {
-//$RunningTotal -= $ot_value; // 返点折扣
 
       } else {
         $RunningTotal += $ot_value;
       }
 
-      //  print $ot_value."<br>";
     } elseif (($ot_total_id > 0) && ($ot_class != "ot_shipping") && ($ot_class != "ot_point")) { 
       // Delete Total Piece
       $Query = "delete from " . TABLE_PREORDERS_TOTAL . " where orders_total_id = '$ot_total_id'";
@@ -522,7 +465,6 @@
   
   }
 //  print "Totale ".$RunningTotal;
-//  exit;   
   
   $order = new preorder($oID);
   $RunningSubTotal = 0;
@@ -543,10 +485,6 @@
   $new_tax = $RunningTax;
   
   //subtotal
-  /*delete text = '".tep_insert_currency_text($currencies->format($new_subtotal,
-    true, $order->info['currency']))."'
-    for all update TABLE_ORDERS_TOTAL
-     */
   tep_db_query("update " . TABLE_PREORDERS_TOTAL . " set value = '".tep_insert_currency_value($new_subtotal)."' where class='ot_subtotal' and orders_id = '".$oID."'");
   
   //tax
@@ -575,21 +513,12 @@
   }
   
   // 返回pint
-  //if (($newtotal - $total_point["total_point"]) >= 1) {
   if ($newtotal > 0) {
     $newtotal -= $total_point["total_point"];
   }
-  //} else {
-  //  $newtotal = '0';
-  //}
   
   $handle_fee = 0;
-  //$newtotal = $newtotal + $_POST['payment_code_fee']; 
   $newtotal = $newtotal+$handle_fee;
-  /*
-  delete form  $totals = update .....
-, text = '<b>" . $currencies->ot_total_format(intval(floor($newtotal)), true, $order->info['currency']) . "</b>'
-     */
   $totals = "update " . TABLE_PREORDERS_TOTAL . " set value = '" . intval(floor($newtotal)) . "' where class='ot_total' and orders_id = '" . $oID . "'";
   tep_db_query($totals);
   
@@ -615,7 +544,6 @@
     if (isset($_POST['notify']) && ($_POST['notify'] == 'on')) {
       $products_ordered_mail = '';
       for ($i=0; $i<sizeof($order->products); $i++) {
-        //$orders_products_id = $order->products[$i]['orders_products_id'];
         $products_ordered_mail .= "\t" . FORDERS_MAIL_PRODUCTS_NAME . $order->products[$i]['name'] . '（' . $order->products[$i]['model'] . '）' . "\n";
         // Has Attributes?
         if (sizeof($order->products[$i]['attributes']) > 0) {
@@ -676,7 +604,6 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       $email .= $products_ordered_mail;
       $email .= $total_details_mail;
       $email .= "\n\n\n\n";
-//      $email .= '会員のお客様は' . EMAIL_TEXT_INVOICE_URL . ' ' . tep_catalog_href_link(FILENAME_CATALOG_ACCOUNT_HISTORY_INFO, 'order_id=' . $oID, 'SSL') . "\n\n\n\n";
       $email .= FORDERS_MAIL_CONFIRM_OID_TEXT. "\n";
       $email .= '「' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '」'.FORDERS_MAIL_CONTACT_SITE_TEXT . "\n\n";
       $email .= '['.FORDERS_MAIL_CONTACT_NEXT_TEXT.']━━━━━━━━━━━━' . "\n";
@@ -837,7 +764,6 @@ while ($totals = tep_db_fetch_array($totals_query)) {
           tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS', $order->info['site_id']), $preorder_email_title, $email, $check_status['customers_name'], $check_status['customers_email_address'], $order->info['site_id']);
         }
       } 
-      //tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS', $order->info['site_id']), FORDERS_MAIL_UPDATE_CONTENT_MAIL.'【' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
       $customer_notified = '1';
     }
     tep_db_query("insert into " . TABLE_PREORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments, user_added) values ('" .  tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" .  tep_db_input($customer_notified) . "', '" .  mysql_real_escape_string($comment_arr['comment'].$comments_text) . "', '".tep_db_input($update_user_info['name'])."')");
@@ -935,31 +861,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       
       // 2.2.1 Update inventory Quantity
       $p = tep_db_fetch_array(tep_db_query("select * from products where products_id='".$add_product_products_id."'"));
-      if ((int)$add_product_quantity > $p['products_real_quantity']) {
-        // 买取商品大于实数
-        /* 
-        tep_db_perform('products',array(
-          'products_real_quantity' => 0,
-          'products_virtual_quantity' => $p['products_virtual_quantity'] - (int)$add_product_quantity + $p['products_real_quantity']
-        ),
-        'update',
-        "products_id = '" . $add_product_products_id . "'");
-        */ 
-      } else {
-        /* 
-        tep_db_perform('products',array(
-          'products_real_quantity' =>$p['products_real_quantity']  - (int)$add_product_quantity
-        ),
-        'update',
-        "products_id = '" . $add_product_products_id . "'");
-        */ 
-      }
-      // 增加销售量
-      //tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . (int)$add_product_quantity . " where products_id = '" . $add_product_products_id . "'");
-      // 处理负数问题
-      //tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . $add_product_products_id . "'");
-      //tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . $add_product_products_id . "'");
-
+      
       if (IsSet($add_product_options)) {
       
         foreach($add_product_options as $option_id => $option_value_id) {
@@ -995,20 +897,11 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       $new_tax = $RunningTax;
       
       //subtotal
-      /*
-         delete
-, text = '".tep_insert_currency_text($currencies->format($new_subtotal, true, $order->info['currency']))."'
-         */
       tep_db_query("update " . TABLE_PREORDERS_TOTAL . " set value = '".tep_insert_currency_value($new_subtotal)."' where class='ot_subtotal' and orders_id = '".$oID."'");
       
       //tax
       $plustax_query = tep_db_query("select count(*) as cnt from " . TABLE_PREORDERS_TOTAL . " where class = 'ot_tax' and orders_id = '".$oID."'");
       $plustax = tep_db_fetch_array($plustax_query);
-      /*
-         delete from update 
-         text = '".tep_insert_currency_text
-         ($currencies->format($new_tax, true, $order->info['currency']))."'
-      */
       if($plustax['cnt'] > 0) {
         tep_db_query("update " . TABLE_PREORDERS_TOTAL . " set value = '".tep_insert_currency_value($new_tax)."' where class='ot_tax' and orders_id = '".$oID."'");
       }
@@ -1030,10 +923,6 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       $handle_fee = $cpayment->handle_calc_fee($payment_code, $newtotal);
       $newtotal   = $newtotal+$handle_fee;
       
-      /* delete text for update 
-         text = '<b>".$currencies->ot_total_format
-         (intval(floor($newtotal)), true, $order->info['currency'])."</b>'
-      */
       $totals = "update " . TABLE_PREORDERS_TOTAL . " set value = '".intval(floor($newtotal))."' where class='ot_total' and orders_id = '".$oID."'";
       tep_db_query($totals);
       
@@ -1730,13 +1619,6 @@ function change_ensure_date() {
   }
 }
 </script>
-<script language="javascript">
-//$(function() {
- //$.datePicker.setDateFormat('ymd', '-');
- //$('#date_predate').datePicker();
- //$('#date_ensure_deadline').datePicker();
-//});
-</script>
 <style type="text/css">
 .yui3-skin-sam .redtext {
     color:#0066CC;
@@ -1824,9 +1706,6 @@ padding:0 3px;
 textarea,input{
   font-size:12px;
 }
-textarea{
-/*  width:100%;
-*/}
 .alarm_on{
   border:2px solid #ff8e90;
   background:#ffe6e6;
@@ -2136,7 +2015,7 @@ require("includes/note_js.php");
                     <div id="ecalendar"></div>
                     </div>
                   </div>
-                  <span class="smalltext"><?php //echo EDIT_ORDERS_FETCHTIME_READ;?></span>
+                  <span class="smalltext"></span>
                   <input type="hidden" name='update_tori_torihiki_date' size='25' value='<?php echo $order->tori['date']; ?>'>
                   <input type="hidden" name='update_tori_torihiki_houhou' size='45' value='<?php echo $order->tori['houhou']; ?>'>
                   <input type="hidden" name="update_viladate" value="true">
@@ -2462,11 +2341,7 @@ require("includes/note_js.php");
     }
     
     echo '<td class="' . $RowStyle . '" align="right">';
-    //if ($ocertify->npermission == 7) {
       echo "<input type='hidden' style='text-align:right;' class='once_pwd' name='update_products[$orders_products_id][final_price]' size='9' value='" .  tep_display_currency(number_format(abs($order->products[$i]['final_price']),2)) .  "'" .' onkeyup="clearNoNum(this);recalc_preorder_price(\''.$oID.'\', \''.$orders_products_id.'\', \'3\', \''.$op_info_str.'\');" >';
-    //} else {
-      //echo "<input type='hidden' name='update_products[$orders_products_id][final_price]' value='" .  tep_display_currency(number_format(abs($order->products[$i]['final_price']),2)) .  "'" .'>'.tep_display_currency(number_format(abs($order->products[$i]['final_price']),2));
-    //}
     echo '<input type="hidden" name="op_id_'.$orders_products_id.'" 
       value="'.tep_get_pre_product_by_op_id($orders_products_id).'"><div id="update_products['.$orders_products_id.'][final_price]">'; 
     if ($order->products[$i]['final_price'] < 0) {
@@ -2511,16 +2386,7 @@ require("includes/note_js.php");
 </table>
 
         </td>
-      <tr>
-        <td>
-          <table width="100%" cellpadding="0" cellspacing="0">
-            <tr>
-              <td valign="top"><?php //echo "<span class='smalltext'>" .  HINT_DELETE_POSITION . EDIT_ORDERS_ADD_PRO_READ."</span>"; ?></td>
-              <td align="right"><?php //echo '<a href="' . $PHP_SELF . '?oID=' . $oID . '&action=add_product&step=1">' . tep_html_element_button(ADDING_TITLE) . '</a>'; ?></td>
-            </tr>
-          </table>
-        </td>
-      </tr>     
+      </tr>
   <!-- End Products Listings Block -->
   <!-- Begin Order Total Block -->
       <tr>
@@ -2893,7 +2759,6 @@ if($action == "add_product")
   //   Get List of All Products
   // ############################################################################
 
-    //$result = tep_db_query("SELECT products_name, p.products_id, x.categories_name, ptc.categories_id FROM " . TABLE_PRODUCTS . " p LEFT JOIN " . TABLE_PRODUCTS_DESCRIPTION . " pd ON pd.products_id=p.products_id LEFT JOIN " . TABLE_PRODUCTS_TO_CATEGORIES . " ptc ON ptc.products_id=p.products_id LEFT JOIN " . TABLE_CATEGORIES_DESCRIPTION . " cd ON cd.categories_id=ptc.categories_id LEFT JOIN " . TABLE_CATEGORIES_DESCRIPTION . " x ON x.categories_id=ptc.categories_id ORDER BY categories_id");
     $result = tep_db_query("
         SELECT products_name, 
                p.products_id, 
@@ -2912,7 +2777,6 @@ if($action == "add_product")
       $LastCategory = $db_categories_name;
     }
     
-    // ksort($ProductList);
     
     $LastOptionTag = "";
     $ProductSelectOptions = "<option value='0'>Don't Add New Product" . $LastOptionTag . "\n";
