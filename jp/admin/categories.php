@@ -4324,7 +4324,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 //同行专用
                 $target_cnt=$products_count-1;
                 $products_preorder_params .= 'class="dataTableContent" align="center"';
-                $preorder_products_raw = tep_db_query("select sum(prep.products_quantity) as pre_total from ".TABLE_PREORDERS_PRODUCTS." prep ,".TABLE_PREORDERS." pre where  prep.products_id = '".$products['products_id']."' and prep.orders_id = pre.orders_id and pre.finished !='1' ".(!empty($site_id)?" and pre.site_id = '".$site_id."'":"")); 
+                $preorder_products_raw = tep_db_query("select sum(prep.products_quantity) as pre_total from ".TABLE_PREORDERS_PRODUCTS." prep ,".TABLE_PREORDERS." pre where  prep.products_id = '".$products['products_id']."' and prep.orders_id = pre.orders_id and pre.finished !='1' and pre.flag_qaf != '1' ".(!empty($site_id)?" and pre.site_id = '".$site_id."'":"")); 
                 $preorder_products_res = tep_db_fetch_array($preorder_products_raw);
                 if ($preorder_products_res) {
                   if ($preorder_products_res['pre_total']) {
