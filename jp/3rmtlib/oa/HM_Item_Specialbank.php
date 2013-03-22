@@ -174,28 +174,6 @@ static public function prepareForm($item_id = NULL)
   echo  $item_value['dataoption'];
   echo "</textarea>";
   echo TEXT_SPECIALBAN_INFO;
-  /*
-  echo "</br>";
-  echo   '() は radio';
-  echo "</br>";
-  echo   '[] は checkbox';
-  echo "</br>";
-  echo   ' 例';    echo "</br>";
-  echo   '()  Y  ()N-> [ ] 済';  
-  echo "</br>";
-  echo   '() ２回目以降';    echo "</br>";
-  echo   '[] 常連（以下のチェック必要無）';    echo "</br>";
-  echo   '   []   1.過去に本人確認をしている';    echo "</br>";
-  echo    '  []   2.決算内容に変更がない';    echo "</br>";
-  echo     ' []   3.短期間に高額決算がない';    echo "</br>";
-  echo  '    ()初回';    echo "</br>";
-  echo    '  [] IP・ホストのチェック';    echo "</br>";
-  echo     ' []カード名義・商品名・キャラ名一致';    echo "</br>";
-  echo     ' []本人確認日：月日';    echo "</br>";
-  echo     ' []信用調査入力';    echo "</br>";
-  echo '必ず半角符号を使ってください';    echo "</br>";
-  */
-
 
 
 
