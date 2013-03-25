@@ -164,14 +164,20 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       var sub_flag = new Array();
       function <?php echo $this->formname."Chage_span(p_value,e_input,span_id)";?>{
       var v_input = e_input.value;
-      if(v_input > p_value){
+      var re = /^-?[0-9]+$/;
+      if(!re.test(v_input) && v_input != ''){
         e_input.value = 0;
         $("#"+span_id).text(p_value);
       }else{
-        if(v_input!=''){
-          $("#"+span_id).text(p_value-v_input);
+        if(v_input > p_value){
+          e_input.value = 0;
+          $("#"+span_id).text(p_value);
         }else{
-          $("#"+span_id).text(0);
+          if(v_input!=''){
+            $("#"+span_id).text(p_value-v_input);
+          }else{
+            $("#"+span_id).text(0);
+          }
         }
       }
     }

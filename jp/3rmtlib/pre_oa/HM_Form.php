@@ -120,6 +120,13 @@ class HM_Form extends DbRecord
             }
           });
       }
+
+      $("#qa_form").find("input[type=text]").each(function (){
+        if( $(this).val().length >$($("#size_"+$(this).attr('name'))).val()){
+          canEnd = false; 
+        }
+      });
+
       if ((canEnd == true ) || (canceled == true)){
         $("#canEndDiv").show();
         $("#preorders_finish").show();
@@ -161,7 +168,14 @@ class HM_Form extends DbRecord
       $(ele).parent().parent().children().find('input').each(
                                                              function(){
                                                                if($(this).attr("type")=='text' || $(this).attr("type") =='hidden'){
-                                                                 $(this).val('');
+                                                                 if($(this).attr("type") =='hidden'){ 
+                                                                   var input_size = $(this).attr("name");
+                                                                   if(!input_size.substr(0,5) == 'size_'){
+                                                                     $(this).val('');
+                                                                   }
+                                                                 }else{
+                                                                   $(this).val('');
+                                                                 }
                                                                }
                                                                if(this.checked ==true ){
                                                                  $(this).removeAttr('checked');
@@ -236,12 +250,12 @@ class HM_Form extends DbRecord
                             if($(this).attr('size')){
                               $(this).bind('keyup',function(){
                                   checkLockOrder();
-                                  if( $(this).val().length >$(this).attr('size')){
+                                  if( $(this).val().length >$($("#size_"+$(this).attr('name'))).val()){
                                     //               	$(this).val($(this).val().substr(0,$(this).attr('size')));
                                     $(this).parent().parent().find('.alertmsg').remove();
                                     $("<span class='alertmsg'><?php echo
-                                      OA_FORM_TEXT_MAX_INPUT;?>"+$(this).attr('size')+"<?php
-                                      echo OA_FORM_TEXT_MAX_INPUT_END;?>"+$(this).attr('size')+"<?php
+                                      OA_FORM_TEXT_MAX_INPUT;?>"+$($("#size_"+$(this).attr('name'))).val()+"<?php
+                                      echo OA_FORM_TEXT_MAX_INPUT_END;?>"+$($("#size_"+$(this).attr('name'))).val()+"<?php
                                       echo OA_FORM_TEXT_MAX_INPUT_IN;?></span>").insertAfter($(this).next());
                                   }else{
           $(this).parent().parent().find('.alertmsg').remove();
@@ -273,9 +287,17 @@ class HM_Form extends DbRecord
         });
       });
   $("#qa_form").submit(function(){
-
-        $('body').css('cursor','wait');
-        $('#wait').show();
+ 
+        var submit_flag = true;
+        $("#qa_form").find("input[type=text]").each(function (){
+          if( $(this).val().length >$($("#size_"+$(this).attr('name'))).val()){
+            submit_flag = false; 
+          }
+        });
+        if(submit_flag){
+          $('body').css('cursor','wait');
+          $('#wait').show();
+        }
 
         $(this).find('.outform').each(function(){
           if($(this).attr('name').substr(0,1)!='0'){
@@ -287,7 +309,9 @@ class HM_Form extends DbRecord
             checkLockOrder();
             }
         };
-        $(this).ajaxSubmit(options);
+        if(submit_flag){
+          $(this).ajaxSubmit(options);
+        }
 
         $(this).find('.outform').each(function(){
           if($(this).attr('name').substr(0,1)=='0'){
