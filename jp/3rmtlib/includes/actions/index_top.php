@@ -30,36 +30,6 @@
       setcookie('quick_categories_id', $category['categories_id'], time()+(86400*30), '/');
     }
 
-    /* 
-    if(tep_get_category_is_set_in_site($current_category_id)){
-      $categories_products_sql ="select count(*) as total 
-      from ".TABLE_PRODUCTS_TO_CATEGORIES." p2c,
-           ".TABLE_PRODUCTS_DESCRIPTION." pd
-      where p2c.categories_id = '".$current_category_id."' 
-      and p2c.products_id = pd.products_id 
-      and site_id = '".SITE_ID."' 
-      and pd.products_status <> 0 
-      and pd.products_status <> 3";
-    }else{
-      $categories_products_sql ="select count(*) as total 
-      from ".TABLE_PRODUCTS_TO_CATEGORIES." p2c,
-           ".TABLE_PRODUCTS_DESCRIPTION." pd
-      where p2c.categories_id = '".$current_category_id."' 
-      and p2c.products_id = pd.products_id 
-      and site_id = '0'  
-      and pd.products_status <> 0 
-      and pd.products_status <> 3";
-    }
-      $categories_products_sql ="select count(*) as total 
-      from ".TABLE_PRODUCTS_TO_CATEGORIES." p2c,
-           ".TABLE_PRODUCTS_DESCRIPTION." pd
-      where p2c.categories_id = '".$current_category_id."' 
-      and p2c.products_id = pd.products_id 
-      and site_id = '0' or site_id = '".SITE_ID."' 
-      group by pd.products_id
-      having pd.products_status != '0' and pd.products_status != '3'  
-      ";
-    */
     $categories_products_sql = "select count(*) as total from 
       (
        SELECT count( pd.products_id ) AS pcount, pd.products_id as p_id 
@@ -82,10 +52,6 @@
       //判断该分类下是否有商品 
       $category_depth = 'products'; // display products
       
-      if (!defined('URL_SUB_SITE_ENABLED')) {
-        //check_uri('/page=(\d+)/');
-      }
-      
       if ($_GET['page'] * MAX_DISPLAY_SEARCH_RESULTS  > $cateqories_products['total'] + MAX_DISPLAY_SEARCH_RESULTS) {
         forward404();
       }
@@ -96,7 +62,6 @@
         $category_depth = 'nested'; // navigate through the categories
       } else {
         $category_depth = 'products'; // category has no products, but display the 'no products' message
-        //echo $_SERVER['REQUEST_URI'];
         check_uri('/page=(\d+)/');
         if ($_GET['page'] * MAX_DISPLAY_SEARCH_RESULTS > $cateqories_products['total'] + MAX_DISPLAY_SEARCH_RESULTS) {
           forward404();

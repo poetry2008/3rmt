@@ -84,9 +84,6 @@ class HM_Item extends DbRecord
 ------------------------------------ */
   function loadDefaultValue($order_id,$form_id,$group_id)
   {
-    //        var_dump($order_id,$form_id,$group_id);
-
-    //echo $order_id,'form',$form_id,'group',$group_id;
     define("TABLE_OA_FORMVALUE",'oa_formvalue');
     $sql = 'select value from '.TABLE_OA_FORMVALUE.' where ';
     $sql .= ' orders_id="' .$order_id.'"';

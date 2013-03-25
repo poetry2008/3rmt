@@ -7,7 +7,6 @@
 <?php
   if (!strstr($PHP_SELF, FILENAME_ACCOUNT_HISTORY_INFO)) {
 // Get last order id for checkout_success
-    // ccdd
     $orders_query = tep_db_query("
         select orders_id 
         from " . TABLE_ORDERS . " 
@@ -23,7 +22,6 @@
   }
 
 // Now get all downloadable products in that order
-// ccdd
   $downloads_query = tep_db_query("
       select date_format(o.date_purchased, '%Y-%m-%d') as date_purchased_day, 
       opd.download_maxdays, 

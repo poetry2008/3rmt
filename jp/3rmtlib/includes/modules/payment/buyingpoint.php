@@ -56,11 +56,7 @@ class buyingpoint extends basePayment  implements paymentInterface  {
 
     $s_result = !$_POST['point_order_fee_error'];
     $this->calc_fee($order->info['total']);
-    if (!empty($this->n_fee)) {
-      $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['point_order_fee_error'].'</font>'); 
-    } else {
-      $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['point_order_fee_error'].'</font>'); 
-    }
+    $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['point_order_fee_error'].'</font>'); 
     return array(
         'title' => nl2br(constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION")),
         'fields' => array(
@@ -69,7 +65,6 @@ class buyingpoint extends basePayment  implements paymentInterface  {
           )           
         );
 
-    //return false;
   }
 /*----------------------
  功能：检查购买的商品
@@ -98,7 +93,6 @@ class buyingpoint extends basePayment  implements paymentInterface  {
     $s_message = $_POST['point_order_fee_error']?$_POST['point_order_fee_error']:sprintf(TS_MODULE_PAYMENT_BUYINGPOINT_TEXT_MAILFOOTER, $currencies->format($total), $currencies->format($_POST['point_order_fee']));
 
     return tep_draw_hidden_field('point_order_message', htmlspecialchars($s_message)). tep_draw_hidden_field('point_order_fee', $_POST['point_order_fee']);
-    //return false;
   }
 /*-----------------------
  功能：购买前
@@ -109,7 +103,6 @@ class buyingpoint extends basePayment  implements paymentInterface  {
     global $_POST;
 
     $this->email_footer = str_replace("\r\n", "\n", $_POST['point_order_message']);
-    //return false;
   }
 /*-----------------------
  功能：购买后

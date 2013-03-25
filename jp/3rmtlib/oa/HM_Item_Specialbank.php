@@ -12,7 +12,6 @@ class HM_Item_Specialbank extends HM_Item_Basic
 ------------------------------------ */
   function parseSbOption($sboption)
   {
-    //    $options = explode("\n|[|(",$sboption);
     $options = preg_split("/(\n|\[|\()/",$sboption);
     $radios = array();
     foreach($options as $option){
@@ -46,7 +45,6 @@ class HM_Item_Specialbank extends HM_Item_Basic
     echo $this->thename.':';
       echo "</td>";
     }
-    // echo "<td>";
     $this->dataoption=$this->parseSbOption($this->dataoption);
     if ($this->loaded){
       $this->defaultValue = $this->loadedValue;
@@ -174,6 +172,7 @@ static public function prepareForm($item_id = NULL)
   echo  $item_value['dataoption'];
   echo "</textarea>";
   echo TEXT_SPECIALBAN_INFO;
+
 
 
 

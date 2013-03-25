@@ -48,9 +48,18 @@
       } elseif ( $height==0 ) {
         unset($height);
       }
-      //print(DIR_FS_CATALOG . '/' .$src. $width. $height. DIR_FS_CATALOG . '/' . DIR_WS_IMAGES . 'imagecache');
       $src = thumbimage(DIR_FS_CATALOG . '/' .$src, $width, $height, 1, 1, DIR_FS_CATALOG . '/' . DIR_WS_IMAGES . 'imagecache');
-      if ((($image_size[1]/$height) > ($image_size[0]/$width) ) && $height>0){
+      if($height==0){
+        $t_height = 0;
+      }else{
+        $t_height = ($image_size[1]/$height);
+      }
+      if($width==0){
+        $t_width = 0;
+      }else{
+        $t_width = ($image_size[0]/$width);
+      }
+      if ((($t_height) > ($t_width) ) && $height>0){
          $width=ceil(($image_size[0]/$image_size[1])* $height);
       } elseif ($width>0) {
          $height=ceil($width/($image_size[0]/$image_size[1]));
@@ -65,11 +74,6 @@
 // alt is added to the img tag even if it is null to prevent browsers from outputting
 // the image filename as default
     $image = '<img src="' . tep_output_string($src) . '" alt="' . tep_output_string($alt) . '"';
-
-    /*if (tep_not_null($alt)) {
-      $image .= ' title=" ' . tep_output_string($alt) . ' "';
-    }*/
-
 
     if (tep_not_null($width) && tep_not_null($height)) {
       $image .= ' width="' . tep_output_string($width) . '" height="' . tep_output_string($height) . '"';
@@ -129,11 +133,6 @@
 // the image filename as default
     $image = '<img src="' . tep_output_string($src) . '" alt="' . tep_output_string($alt) . '"';
 
-    /*if (tep_not_null($alt)) {
-      $image .= ' title=" ' . tep_output_string($alt) . ' "';
-    }*/
-
-
     if (tep_not_null($width) && tep_not_null($height)) {
       $image .= ' width="' . tep_output_string($width) . '" height="' . tep_output_string($height) . '"';
     }
@@ -155,7 +154,6 @@
     返回值: 生成的img(string) 
 ------------------------------------ */
   function tep_image3($src, $alt = '', $width = '', $height = '', $parameters = '') {
-    //echo 'tep_image3';
     if ( (empty($src) || ($src == DIR_WS_IMAGES)) && (IMAGE_REQUIRED == 'false') ) {
       return false;
     }
@@ -192,12 +190,6 @@
 // alt is added to the img tag even if it is null to prevent browsers from outputting
 // the image filename as default
     $image = '<img src="' . tep_output_string($src) . '" border="0" alt="' . tep_output_string($alt) . '"';
-
-    /*if (tep_not_null($alt)) {
-      $image .= ' title=" ' . tep_output_string($alt) . ' "';
-    }*/
-
-
     if (tep_not_null($width) && tep_not_null($height)) {
       $image .= ' width="' . tep_output_string($width) . '" height="' . tep_output_string($height) . '"';
     }
@@ -221,7 +213,6 @@
 
     $image_submit = '<input type="image" src="' . tep_parse_input_field_data(DIR_WS_LANGUAGES . $language . '/images/buttons/' . $image, array('"' => '&quot;')) . '" alt="' . tep_parse_input_field_data($alt, array('"' => '&quot;')) . '"';
 
-    //if (tep_not_null($alt)) $image_submit .= ' title=" ' . tep_parse_input_field_data($alt, array('"' => '&quot;')) . ' "';
 
     if (tep_not_null($parameters)) $image_submit .= ' ' . $parameters;
 
@@ -838,7 +829,6 @@ function info_tep_href_link($romaji)
           $returnstr .= "info/".urlencode($romaji).".html";
         }
       } else {
-        //$returnstr .= "info/".urlencode($romaji).".html";
         if ($request_type == 'SSL' && $connection == 'SSL') {
           // 不同域名间ssl间跳转不加sid
           $returnstr .= "info/".urlencode($romaji).".html";
@@ -860,7 +850,6 @@ function info_tep_href_link($romaji)
 ------------------------------------ */
 function tags_tep_href_link($tags_id)
 {
-  //$returnstr = HTTP_SERVER . DIR_WS_CATALOG;
   $returnstr = DIR_WS_CATALOG;
   
   $returnstr .= "tags/t-".$tags_id.".html";
@@ -873,7 +862,6 @@ function tags_tep_href_link($tags_id)
     返回值: 是否是数字(int/boolean) 
 ------------------------------------ */
 function toNumber($var){
-  //  echo $var;
   if( is_numeric( $var ) )
     {
       if( (float)$var != (int)$var )

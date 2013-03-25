@@ -182,11 +182,6 @@
           $max_campaign_res = tep_db_fetch_array($max_campaign_query);
           if ((int)$max_campaign_res['total'] < $campaign_res['max_use']) {
             $preorder_subtotal = 0; 
-            //$preorder_subtotal_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$preorder_res['orders_id']."' and class = 'ot_subtotal'");
-            //$preorder_subtotal_res = tep_db_fetch_array($preorder_subtotal_raw);
-            //if ($preorder_subtotal_res) {
-              //$preorder_subtotal = number_format($preorder_subtotal_res['value'], 0, '.', ''); 
-            //}
             $preorder_total_info_array = get_preorder_total_info(payment::changeRomaji($preorder_res['payment_method'], PAYMENT_RETURN_TYPE_CODE), $preorder_res['orders_id'], $n_option_info_array);  
             $preorder_subtotal = $preorder_total_info_array['subtotal'];            
             if ($campaign_res['limit_value'] < $preorder_subtotal) {
@@ -219,11 +214,6 @@
           $max_campaign_res = tep_db_fetch_array($max_campaign_query);
           if ((int)$max_campaign_res['total'] < $campaign_res['max_use']) {
             $preorder_subtotal = 0; 
-            //$preorder_subtotal_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$preorder_res['orders_id']."' and class = 'ot_subtotal'");
-            //$preorder_subtotal_res = tep_db_fetch_array($preorder_subtotal_raw);
-            //if ($preorder_subtotal_res) {
-              //$preorder_subtotal = number_format($preorder_subtotal_res['value'], 0, '.', ''); 
-            //}
             $preorder_total_info_array = get_preorder_total_info(payment::changeRomaji($preorder_res['payment_method'], PAYMENT_RETURN_TYPE_CODE), $preorder_res['orders_id'], $n_option_info_array);  
             $preorder_subtotal = $preorder_total_info_array['subtotal'];            
             

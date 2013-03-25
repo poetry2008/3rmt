@@ -25,7 +25,6 @@ $gender = tep_db_prepare_input($_POST['gender']);
     
     // start check
     $error = false;
-    //-------------------------------------------------------
     
     if (ACCOUNT_GENDER == 'true') {
     //gender
@@ -151,7 +150,6 @@ $gender = tep_db_prepare_input($_POST['gender']);
     
     if(!empty($password)) {
     //password check
-      //password( lengh )
     $passlen = strlen($password);
       if ($passlen < ENTRY_PASSWORD_MIN_LENGTH) {
       $error = true;
@@ -182,7 +180,6 @@ $gender = tep_db_prepare_input($_POST['gender']);
       $entry_email_address_exists = false;
       }
     }
-    //-----------------------------------
     // end check
     if($error == false) {
       //会员注册希望（密码没输入的情况）
@@ -193,7 +190,6 @@ $gender = tep_db_prepare_input($_POST['gender']);
                   'customers_email_address' => $email_address,
                   'customers_telephone' => $telephone,
                   'customers_fax' => $fax,
-                  //'customers_newsletter' => $newsletter,
                   'customers_newsletter' => 1,
                   'customers_password' => tep_encrypt_password($password),
                   'customers_default_address_id' => 1,

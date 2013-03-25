@@ -24,21 +24,6 @@
     返回值: 无 
 ------------------------------------ */
   function tep_redirect($url,$suc='') {
-    /*
-    echo "<pre>";
-    print_r($_POST);
-    print_r($_GET);
-    print_r(debug_backtrace());
-    exit;
-    */
-    // id 要求登录后自动跳转到非ssl首页，所以需要让此代码在id下失效
-    /*
-    if ( (ENABLE_SSL == true) && (getenv('HTTPS') == 'on') && (SITE_ID != 4 && SITE_ID != 5)) { // We are loading an SSL page // 要求id登陆跳回非SSL页面
-      if (substr($url, 0, strlen(HTTP_SERVER)) == HTTP_SERVER) { // NONSSL url
-        $url = HTTPS_SERVER . substr($url, strlen(HTTP_SERVER)); // Change it to SSL
-      }
-    }
-    */
 
     header('Location: ' . $url);
   
@@ -59,7 +44,6 @@ function forward404()
   header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
   require(DIR_WS_MODULES  . '404.html');
   exit;
-  //throw new Exception();
 }
 
 /* -------------------------------------
@@ -133,9 +117,6 @@ function forward404Unless($condition)
 ------------------------------------ */
   function tep_sanitize_string($string) {
     $string = ereg_replace(' +', ' ', trim($string));
-
-    //return str_replace(array('<', '>'), array('＜', '＞'), $string);
-    //return preg_replace("/[<>]/", '_', $string);
     return $string;
   }
 
@@ -237,31 +218,12 @@ function forward404Unless($condition)
     return strip_tags(replace_store_name($description['products_description'])) ;
   }
 
-////
-// Return a product's special price (returns nothing if there is no offer)
-// TABLES: products
-/*
-  function tep_get_products_special_price($product_id) {
-    //ccdd
-    $product_query = tep_db_query("
-        select specials_new_products_price 
-        from " . TABLE_SPECIALS . " 
-        where products_id = '" . (int)$product_id . "' 
-          and status
-    ");
-    $product = tep_db_fetch_array($product_query);
-
-    return $product['specials_new_products_price'];
-  }*/
-
-////
 /* -------------------------------------
     功能: 获得商品的库存数 
     参数: $products_id(int) 商品id 
     返回值: 商品的库存数(int) 
 ------------------------------------ */
   function tep_get_products_stock($products_id) {
-    //$products_id = tep_get_prid($products_id);
     $stock_query = tep_db_query("
     select * from (
       select p.products_real_quantity + p.products_virtual_quantity as products_quantity, pd.products_status, p.products_id, pd.site_id 
@@ -299,26 +261,6 @@ function forward404Unless($condition)
     return $out_of_stock;
   }
 
-// 购物车专用的检查方法，如果购买个数大于实际数量显示提示信息
-  /*
-  function tep_check_stock_in_cart($products_id, $products_quantity) {
-    $stock = tep_get_products_stock($products_id);
-    if ($stock) {
-      $product = tep_get_product_by_id($products_id, SITE_ID, 4);
-      $stock_left = $product['products_real_quantity'] - $products_quantity;
-    } else {
-      $stock_left = -1;
-    }
-    
-    $out_of_stock = '';
-
-    if ($stock_left < 0) {
-      $out_of_stock = '<span class="markProductOutOfStock"><a style="" href="'.tep_href_link('open.php', 'products='.urlencode($product['products_name'])).'">' . STOCK_MARK_PRODUCT_OUT_OF_STOCK . '</a></span>';
-    }
-
-    return $out_of_stock;
-  }
-  */
 
 /* -------------------------------------
     功能: 输出字符串 
@@ -328,25 +270,6 @@ function forward404Unless($condition)
     返回值: 处理后的字符串(string) 
 ------------------------------------ */
   function tep_break_string($string, $len, $break_char = '-') {
-    /*
-    $l = 0;
-    $output = '';
-    for ($i=0, $n=strlen($string); $i<$n; $i++) {
-      $char = substr($string, $i, 1);
-      if ($char != ' ') {
-        $l++;
-      } else {
-        $l = 0;
-      }
-      if ($l > $len) {
-        $l = 1;
-        $output .= $break_char;
-      }
-      $output .= $char;
-    }
-
-    return $output;
-    */
     return $string;
   }
 
@@ -637,8 +560,6 @@ function forward404Unless($condition)
 ------------------------------------ */
   function tep_calculate_tax($price, $tax) {
     global $currencies;
-
-  // return tep_round($price * $tax / 100, $currencies->currencies[DEFAULT_CURRENCY]['decimal_places']);
     return $currencies->round_off($price * $tax / 100);
   }
 
@@ -823,7 +744,6 @@ function forward404Unless($condition)
     $address_format = tep_db_fetch_array($address_format_query);
     $statename = tep_get_zone_name($address['entry_country_id'], $address['entry_zone_id'],'');
 
-//    eval("\$address = \"{$address_format['address_summary']}\";");
     $address_summary = $address_format['address_summary'];
     eval("\$address = \"$address_summary\";");
 
@@ -1376,7 +1296,6 @@ function forward404Unless($condition)
     $message = new email(array('X-Mailer: iimy Mailer'));
 
     // Build the text version
-    //$text = strip_tags($email_text);
     $text = $email_text;
     if (EMAIL_USE_HTML == 'true') {
       $message->add_html(nl2br($email_text), $text);
@@ -1450,11 +1369,6 @@ function forward404Unless($condition)
 
     return $count;
   }
-/*
-  function tep_count_payment_modules() {
-    return tep_count_modules(MODULE_PAYMENT_INSTALLED);
-  }
-*/
 /* -------------------------------------
     功能: 获得配送模块个数
     参数: 无 
@@ -2224,7 +2138,6 @@ header("Expires:".date("D, d M Y H:i:s",0)." GMT");
         $title = TITLE;
         break;
     }
-    //exit($title);
     if(!$use_mate_seo){
     $script_name = tep_get_filename(str_replace('/', '', $_SERVER['SCRIPT_NAME']));
     
@@ -2257,7 +2170,6 @@ header("Expires:".date("D, d M Y H:i:s",0)." GMT");
     if (defined($copyright_const_name) && strlen(tep_get_value_by_const_name($copyright_const_name))) {
       $copyright = tep_get_value_by_const_name($copyright_const_name);
     }
-    //echo $_SERVER['SCRIPT_NAME'];
     switch (str_replace('/', '', $_SERVER['SCRIPT_NAME'])) {
       case FILENAME_CATEGORY:
       case FILENAME_MANUFACTURER:
@@ -2279,9 +2191,6 @@ header("Expires:".date("D, d M Y H:i:s",0)." GMT");
                $copyright   = tep_get_value_by_const_name('MODULE_METASEO_CATEGORY_COPYRIGHT');
              }
              // MAX_DISPLAY_SEARCH_RESULTS
-             //$page    = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1 ;
-             //$search  = array_merge($search,  array('#SEO_PAGE#'));
-             //$replace = array_merge($replace, array($page . 'ページ目'));
              $search  = array_merge($search, array('#CATEGORIES_NAME#','#SEO_NAME#','#SEO_DESCRIPTION#','#CATEGORIES_META_TEXT#','#CATEGORIES_HEADER_TEXT#','#CATEGORIES_FOOTER_TEXT#','#TEXT_INFORMATION#','#META_KEYWORDS#','#META_DESCRIPTION#','#CATEGORIES_ID#',));
              $replace = array_merge($replace, array($seo_category['categories_name'],$seo_category['seo_name'],$seo_category['seo_description_' . ABBR_SITENAME],$seo_category['categories_meta_text'],$seo_category['categories_header_text_' . ABBR_SITENAME],$seo_category['categories_footer_text_' . ABBR_SITENAME],$seo_category['text_information_' . ABBR_SITENAME],$seo_category['meta_keywords_' . ABBR_SITENAME],$seo_category['meta_description_' . ABBR_SITENAME],$seo_category['categories_id'],));
            }
@@ -2396,22 +2305,6 @@ header("Expires:".date("D, d M Y H:i:s",0)." GMT");
         }
         break;
       case FILENAME_TAGS:
-          /*
-          if (defined('MODULE_METASEO_TAGS_TITLE') && strlen(tep_get_value_by_const_name('MODULE_METASEO_TAGS_TITLE'))) {
-            $title       = tep_get_value_by_const_name('MODULE_METASEO_TAGS_TITLE');
-          }
-          if (defined('MODULE_METASEO_TAGS_KEYWORDS') && strlen(tep_get_value_by_const_name('MODULE_METASEO_TAGS_KEYWORDS'))) {
-            $keywords    = tep_get_value_by_const_name('MODULE_METASEO_TAGS_KEYWORDS');
-          }
-          if (defined('MODULE_METASEO_TAGS_DESCRIPTION') && strlen(tep_get_value_by_const_name('MODULE_METASEO_TAGS_DESCRIPTION'))) {
-            $description = tep_get_value_by_const_name('MODULE_METASEO_TAGS_DESCRIPTION');
-          }
-          if (defined('MODULE_METASEO_TAGS_ROBOTS') && strlen(tep_get_value_by_const_name('MODULE_METASEO_TAGS_ROBOTS'))) {
-            $robots      = tep_get_value_by_const_name('MODULE_METASEO_TAGS_ROBOTS');
-          }
-          if (defined('MODULE_METASEO_TAGS_COPYRIGHT') && strlen(tep_get_value_by_const_name('MODULE_METASEO_TAGS_COPYRIGHT'))) {
-            $copyright   = tep_get_value_by_const_name('MODULE_METASEO_TAGS_COPYRIGHT');
-          }*/
           $page    = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1 ;
           if ($page != 1) {
             $search  = array_merge($search,  array('#SEO_PAGE#'));
@@ -2515,7 +2408,6 @@ header("Expires:".date("D, d M Y H:i:s",0)." GMT");
     $keywords    = str_replace($search, $replace, $keywords);
     $description = str_replace($search, $replace, $description);
     $copyright   = str_replace($search, $replace, $copyright);
-    //
     
     $title = str_replace('#SEO_PAGE#', '', $title); 
     $keywords = str_replace('#SEO_PAGE#', '', $keywords); 
@@ -2721,16 +2613,7 @@ if($_SERVER['HTTPS'] == 'on'){
     return $string_array[0] . '年' . $string_array[1] . '月' . $string_array[2] . '日';
   }
   }
-  // checkout_process.php
-  // reorder.php
-/*
-  function str_string($string='') {
-    if(ereg("-", $string)) {
-    $string_array = explode("-", $string);
-    return $string_array[0] . '年' . $string_array[1] . '月' . $string_array[2] . '日';
-  }
-  }*/
-  // checkout_process.php
+
 /* -------------------------------------
     功能: 获得指定长度的数字随机数 
     参数: $len(int) 随机数长度 
@@ -3134,21 +3017,10 @@ function tep_unlink_temp_dir($dir)
           AND pd.site_id='" . $site_id . "' 
       ";
     }
-    //echo $sql;
     $product_query = tep_db_query($sql);
     $product = tep_db_fetch_array($product_query);
     return $product;
   }
-/*
-    function tep_categories_description_exist($cid, $sid, $lid){
-      $query = tep_db_query("select * from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$cid."' and site_id = '".$sid."' and language_id='".$lid."'");
-      if(tep_db_num_rows($query)) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-*/
 /* -------------------------------------
     功能: 商品描述在指定网站是否存在 
     参数: $pid(int) 商品id
@@ -3233,24 +3105,6 @@ function tep_unlink_temp_dir($dir)
     }
     return $questions;
   }
-/*  
-  function calc_buy_handle($total)
-  {
-    $buy_table_fee = split("[:,]", MODULE_PAYMENT_BUYING_COST);
-    $buying_fee = 0;
-    for ($i = 0; $i < count($buy_table_fee); $i+=2) {
-      if ($total <= $buy_table_fee[$i]) {
-        $buy_add_fee = $total.$buy_table_fee[$i+1]; 
-        @eval("\$buy_add_fee = $buy_add_fee;");
-        if (is_numeric($buy_add_fee)) {
-          $buying_fee = $buy_add_fee; 
-        }
-        break; 
-      }
-    }
-    return $buying_fee; 
-  }
-*/
 /* -------------------------------------
     功能: 判断订单是否完成 
     参数: $osid(int) 订单状态id
@@ -3275,15 +3129,6 @@ function tep_orders_status_finished($osid){
 
     $input_arr = array();
     $i = 0; 
-    /*
-    $cache_file = '/tmp/' . base64_encode($url);
-    if(file_exists($cache_file) && time() - filemtime($cache_file) > ){
-      file_get_contents($cache_file);
-    } else {
-      $rss_str = file_get_contents($url);
-      file_put_contents($cache_file, $rss_str);
-    }
-    */
     $rss_str = @file_get_contents($url);
     preg_match_all("/\<item rdf:about=\"([^\"]*)\"\>(.*?)\<\/item\>/s", $rss_str, $gamearr);
 
@@ -3469,9 +3314,6 @@ function tep_get_final_price($price, $offset, $sum, $quantity) {
       }
     }
     return $price + $lprice;
-  } else if ($price && $offset && $offset != 0) {
-    //return calculate_special_price($price, $offset);
-    return $price;
   } else {
     return $price;
   }
@@ -3515,22 +3357,6 @@ function tep_get_wari_array_by_sum($small_sum) {
   @krsort($wari_array);
   return $wari_array;
 }
-/*
-function calculate_special_price($price, $offset) {
-  $price = (float) $price;
-  $offset = trim($offset);
-  
-  $special = $price;
-  
-  if (substr($offset, -1) == '%') {
-    $special = $price +(($offset / 100) * $price);
-  } else {
-    $offset = (float) $offset;
-    $special = $price + $offset;
-  }
-  return $special;
-}*/
-
 /* -------------------------------------
     功能: 计算特价 
     参数: $price(float) 价格 
@@ -3653,7 +3479,6 @@ function tep_add_rmt($name) {
     返回值: 无 
 ------------------------------------ */
 function check_uri($p) {
-  //print_r($_SERVER['REQUEST_URI']);
   if (preg_match($p, $_SERVER['REQUEST_URI'])) {
     forward404();
   }
@@ -3805,7 +3630,6 @@ function tep_get_pid_by_romaji($romaji, $categories_id = 0, $single = false) {
         and pd.language_id = '" . (int)$language . "' 
         and (pd.site_id = '" . SITE_ID . "' or pd.site_id = '0')
       order by pd.site_id DESC" ;
-        //and p2c.categories_id = '" . $categories_id. "'
   $product_query = tep_db_query($queryString);
   $product       = tep_db_fetch_array($product_query);
   return $product['products_id'];
@@ -3911,7 +3735,6 @@ function tep_get_categories_by_products_id($pid){
 ------------------------------------ */
 function tep_get_romaji_by_pid($id)
 {
-  //return $id;
   $p = tep_db_fetch_array(tep_db_query("
         select * 
         from ".TABLE_PRODUCTS_DESCRIPTION." 
@@ -3943,27 +3766,7 @@ function tep_get_products_rate($pid) {
     返回值: 是否符合规则(string/boolean) 
 ------------------------------------ */
 function tep_get_google_adsense_adurl($url) {
-  /*
-  $arr = parse_url($url);
-  $q_arr = array();
-  if ($arr['query']) {
-    $queries = explode("&",$arr['query']);
-    foreach($queries as $q) {
-      $tmp = explode('=',$q);
-      $q_arr[$tmp[0]] = $tmp[1];
-    }
-    if ($q_arr['sa'] && $q_arr['ai'] && $q_arr['adurl']) {
-      return $q_arr['adurl'];
-    }
-    return false;
-  } else {
-    return false;
-  }
-  */
-  
-  if (
-    preg_match('/from=adwords/',$url)
-  ) {
+  if ( preg_match('/from=adwords/',$url)) {
     return '1';
   } else {
     
@@ -4008,7 +3811,6 @@ function tep_parseURI()
                          "product"      => '/\.html$/'                    //   /asd/xcv/xcv.html  /zxv.html /xcv/xcv/xc.html
                          );
     foreach ($rewriteRule as $ruler=>$value){
-      //if (preg_match($value, $rewriteRule)) {
       if (preg_match($value, $subSiteUri)) {
         $router = $ruler;
       }
@@ -4276,16 +4078,9 @@ function tep_whether_show_products($products_id)
     返回值: 罗马字(string) 
 ------------------------------------ */
 function tep_get_site_romaji_by_id($id){
-    //static $arr;
     if ($id == 0){
-      //return 'all';
       return '';
     }
-     
-    //if (isset($arr[$id])) {
-      //return $arr[$id];
-    //}
-    
     $site_query = tep_db_query("
         select * 
         from sites 
@@ -4293,12 +4088,10 @@ function tep_get_site_romaji_by_id($id){
     ");
     $site = tep_db_fetch_array($site_query);
     if (isset($site['romaji'])) {
-      //$arr[$id] = $site['romaji'];
       return $site['romaji'];
     } else {
       return '';
     }
-    #return isset($site['romaji'])?$site['romaji']:'';
 }
 
 /* -------------------------------------
@@ -5227,51 +5020,6 @@ function tep_get_preorder_end_num()
   
   return '01';
 }
-/*
-function tep_preorder_get_payment_list()
-{
-  global $language; 
-  $return_arr = '';
-  if (defined('MODULE_PAYMENT_INSTALLED') && tep_not_null(MODULE_PAYMENT_INSTALLED)) {
-    $modules_array = explode(';', MODULE_PAYMENT_INSTALLED); 
-    $include_modules = array(); 
-    while (list(, $value) = each($modules_array)) {
-      $class = substr($value, 0, strrpos($value, '.')); 
-      $include_modules[] = array('class' => $class, 'file' => $value); 
-    }
-    
-    for ($i=0, $n=sizeof($include_modules); $i<$n; $i++) {
-      include(DIR_WS_LANGUAGES.$language.'/modules/payment/'.$include_modules[$i]['file']); 
-      include(DIR_WS_MODULES.'payment/'.$include_modules[$i]['file']); 
-      $cpayment = new $include_modules[$i]['class']; 
-      $return_arr[$cpayment->code] = $cpayment->title; 
-      unset($cpayment); 
-    }
-  }
-  return $return_arr;
-}
-*/
-/*
-function tep_preorder_get_payment_type($payment_list, $payment_method)
-{
-  foreach ($payment_list as $key => $value) {
-    if ($value == $payment_method) {
-      return $key; 
-    } 
-  }
-  return ''; 
-}
-*/
-/*
-function preorder_get_mail_string($payment_code, $mailoption) {
-  $mailstring = constant("MODULE_PAYMENT_".strtoupper($payment_code).'_MAILSTRING');
-  foreach ($mailoption as $key => $value) {
-    $mailstring = str_replace('${'.strtoupper($key).'}', $value, $mailstring); 
-  }
-  
-  return $mailstring;
-}
-*/
 /* -------------------------------------
     功能: 更新顾客最新下预约订单时间 
     参数: 无 
@@ -5473,59 +5221,6 @@ function tep_get_torihiki_date_radio($start_time,$radio_name="torihiki_time"){
 
 
 
-/*
-  取得唯一值
-*/
-
-
-//以下是配送使用的方法
-  /* 
-  function tep_get_address_by_customers_id($customers_id, $address_id = 1, $html = false, $boln = '', $eoln = "\n") {
-//ccdd
-    $address_sql = "select address_book_id,entry_firstname as firstname,
-        entry_lastname as lastname, entry_firstname_f as firstname_f,
-        entry_lastname_f as lastname_f, entry_company as company,
-        entry_street_address as street_address, entry_suburb as suburb, entry_city
-        as city, entry_postcode as postcode, entry_state as state, entry_zone_id as
-        zone_id, entry_country_id as country_id, entry_telephone as telephone from "
-        . TABLE_ADDRESS_BOOK . " where customers_id = '" . (int)$customers_id . "'";
-    $res_arr = array();
-    $address_query = tep_db_query($address_sql);
-    while($address = tep_db_fetch_array($address_query)){
-      $temp_arr = array();
-      $format_id = tep_get_address_format_id($address['country_id']);
-      $temp_arr['text'] = tep_address_format($format_id, $address, $html, $boln, $eoln);
-      $temp_arr['value'] = $address['address_book_id']; 
-      $res_arr[] = $temp_arr;
-    
-    }
-    return $res_arr;
-  }
-
-
-function tep_get_address_by_cid_aid($customers_id, $address_id = 1, $html = false, $boln = '', $eoln = "\n") {
-//ccdd
-    $address_sql = "select address_book_id,entry_firstname as firstname,
-        entry_lastname as lastname, entry_firstname_f as firstname_f,
-        entry_lastname_f as lastname_f, entry_company as company,
-        entry_street_address as street_address, entry_suburb as suburb, entry_city
-        as city, entry_postcode as postcode, entry_state as state, entry_zone_id as
-        zone_id, entry_country_id as country_id, entry_telephone as telephone from "
-        . TABLE_ADDRESS_BOOK . " where customers_id = '" . (int)$customers_id . "' 
-        and address_book_id ='".$address_id."'";
-    $res_arr = array();
-    $address_query = tep_db_query($address_sql);
-    while($address = tep_db_fetch_array($address_query)){
-      $temp_arr = array();
-      $format_id = tep_get_address_format_id($address['country_id']);
-      $temp_arr['text'] = tep_address_format($format_id, $address, $html, $boln, $eoln);
-      $temp_arr['value'] = $address['address_book_id']; 
-      $res_arr[] = $temp_arr;
-    
-    }
-    return $res_arr;
-  }
- */
 /* -------------------------------------
     功能: 获得该订单的商品id 
     参数: $oid(string) 订单id 
@@ -5541,49 +5236,6 @@ function tep_get_address_by_cid_aid($customers_id, $address_id = 1, $html = fals
   }
   return $products_list;
 }
-/*
-function tep_get_graph_axis_info() 
-{
-   $time_array = array();
-   $now_time = strtotime(date('Y-m-d H:00:00', time())); 
-   $now_time = strtotime('2011-12-17 10:00:00'); 
-   $time_str = strtotime('-1 hours', $now_time); 
-   $time_array[] = array($time_str, date('G', $time_str), date('Y-m-d H:i:s', $time_str));  
-   $time_array[] = array($now_time, date('G', $now_time), date('Y-m-d H:i:s', $now_time));  
-   
-   for($i=1; $i<=24; $i++) {
-     $time_str = strtotime('+ '.$i.' hours', $now_time); 
-     $hour_str = date('G', $time_str); 
-     $time_array[] = array($time_str, $hour_str, date('Y-m-d H:i:s', $time_str));  
-   }
-   return $time_array;
-}
-
-function tep_get_graph_value_info()
-{
-  global $languages_id;
-  $axis_info_array = tep_get_graph_axis_info();
-  $orders_status_array = array();
-  $axis_value_array = array();
-
-  $orders_status_raw = tep_db_query("select orders_status_id from ".TABLE_ORDERS_STATUS." where is_thzk = '1' and language_id = '".$languages_id."'"); 
-  while ($orders_status = tep_db_fetch_array($orders_status_raw)) {
-    $orders_status_array[] = $orders_status['orders_status_id']; 
-  }
-  foreach ($axis_info_array as $key => $value) {
-    $time_start = date('Y-m-d H:00:00', $value[0]);
-    $time_end = date('Y-m-d H:59:59', $value[0]);
-    if (!empty($orders_status_array)) {
-      $orders_products_count_raw = tep_db_query("select count(distinct o.orders_id) as total from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where o.orders_id = op.orders_id and op.torihiki_date >= '".$time_start."' and op.torihiki_date_end <= '".$time_end."' and o.orders_status in (".implode(',', $orders_status_array).") and o.language_id = '".$languages_id."' and o.site_id = '".SITE_ID."'"); 
-      $orders_products_count = tep_db_fetch_array($orders_products_count_raw);  
-      $axis_value_array[] = (int)$orders_products_count['total']; 
-    } else {
-      $axis_value_array[] = 0;      
-    }
-  }
-  return $axis_value_array;
-}
-*/
 /* -------------------------------------
     功能: 是否显示支付方法 
     参数: 无 

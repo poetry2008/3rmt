@@ -17,7 +17,6 @@
       $this->description = MODULE_METASEO_REORDER2_TEXT_DESCRIPTION;
     $this->explain = MODULE_METASEO_REORDER2_TEXT_EXPLAIN;
       $this->sort_order = MODULE_METASEO_REORDER2_SORT_ORDER;
-      //$this->enabled = ((MODULE_METASEO_REORDER2_STATUS == 'True') ? true : false);
       $this->link = 'reorder2.php';
 
     }

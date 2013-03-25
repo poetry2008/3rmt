@@ -33,12 +33,7 @@ if ($preorder) {
       exit;
     }
   }
-  //$order_query = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
-  //$orders_id = $_SESSION['preorder_info_id'];
-  
-  //if (tep_db_num_rows($order_query)) {
     $orders_id = date('Ymd').'-'.date('His').tep_get_order_end_num(); 
-  //}
   $payment_modules = payment::getInstance($preorder['site_id']);   
   $cpayment_code = payment::changeRomaji($preorder['payment_method'], PAYMENT_RETURN_TYPE_CODE);   
   
@@ -258,9 +253,6 @@ if($address_error == false){
       $preorder_total_num = $preorder_total_res['value']; 
     }
     
-    //if ($preorder_total_res['class'] == 'ot_subtotal') {
-      //$preorder_subtotal_num = $preorder_total_res['value']; 
-    //}
     $_SESSION['insert_id'] = $insert_id;
     if ($preorder_total_res['class'] == 'ot_total') {
       $preorder_total_num += (int)$_SESSION['preorders_code_fee'];
@@ -296,12 +288,6 @@ if($address_error == false){
   } 
   $order_comment_str = '';
   
-  //$comment_raw = tep_db_query("select comments from ".TABLE_PREORDERS_STATUS_HISTORY." where orders_id = '".$_SESSION['preorder_info_id']."' and comments != '' order by orders_status_history_id asc limit 1");
- 
-  //$comment_res = tep_db_fetch_array($comment_raw);
-  //if ($comment_res) {
-    //$order_comment_str = $comment_res['comments'];
-  //}
   
   $order_comment_str = $payment_modules->get_preorder_add_info($cpayment_code, $preorder); 
   
@@ -324,7 +310,6 @@ if($address_error == false){
                             'comments' => 'checkout',
                             'user_added' => $preorder['customers_name']
                             );
-    //tep_order_status_change($orders_id,30);
     tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
     orders_updated($orders_id);
   }
@@ -420,7 +405,6 @@ while ($mold_attr_res = tep_db_fetch_array($mold_attr_raw)) {
         .'：'.str_replace($replace_arr, "", $mold_attr_info['value']);
       if ($mold_attr_res['options_values_price'] != '0') {
         if ($preorder_product_res['products_price'] != '0') {
-          //$products_ordered_attributes .= '　('.$currencies->format($mold_attr_res['options_values_price']*$preorder_product_res['products_quantity']).')';
           $products_ordered_attributes .= '　('.$currencies->format($mold_attr_res['options_values_price']).')';
         } 
       }
@@ -485,7 +469,6 @@ if (isset($_SESSION['preorder_option_info'])) {
       $products_ordered_attributes .= "\n"
         .$option_attr_values['front_title'] .str_repeat('　', intval(($cl_max_len-mb_strlen($option_attr_values['front_title'],'utf-8')))) .'：'.str_replace($replace_arr, "", $op_value);
       if ($ao_price != '0') {
-        //$products_ordered_attributes .= '　('.$currencies->format($ao_price*$preorder_product_res['products_quantity']).')';
         $products_ordered_attributes .= '　('.$currencies->format($ao_price).')';
       }
    }

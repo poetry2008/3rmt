@@ -44,7 +44,6 @@ class SEO_DataBase{
  返回值：无
  ---------------------*/
   function SEO_DataBase($host, $user, $db, $pass){
-          //date_default_timezone_set('UTC');
     $this->host = $host;
     $this->user = $user;
     $this->db = $db;
@@ -329,9 +328,6 @@ class SEO_URL{
  ---------------------------*/
   function SEO_URL($languages_id){
       global $session_started, $SID;
-        //date_default_timezone_set('UTC');
-        
-    //$this->installer = new SEO_URL_INSTALLER;
     
     $this->DB = new SEO_DataBase(DB_SERVER, DB_SERVER_USERNAME, DB_DATABASE, DB_SERVER_PASSWORD);
     
@@ -370,7 +366,6 @@ class SEO_URL{
                   'SEO_CHAR_CONVERT_SET' => defined('SEO_CHAR_CONVERT_SET') ? $this->expand(SEO_CHAR_CONVERT_SET) : 'false',
                   'SEO_REMOVE_ALL_SPEC_CHARS' => defined('SEO_REMOVE_ALL_SPEC_CHARS') ? SEO_REMOVE_ALL_SPEC_CHARS : 'false',
                   'SEO_PAGES' => $seo_pages,
-                  //'SEO_INSTALLER' => $this->installer->attributes
                   );    
     
     $this->base_url = HTTP_SERVER . DIR_WS_CATALOG;
@@ -382,7 +377,6 @@ class SEO_URL{
                    'cPath' => 'c-',
                    'manufacturers_id' => 'm-',
                    'pID' => 'pi-',
-                   //'tPath' => 't-',
                    'articles_id' => 'a-',
                    'products_id_review' => 'pr-',
                    'products_id_review_info' => 'pr-',
@@ -440,8 +434,6 @@ class SEO_URL{
     if ( !in_array($page, $this->attributes['SEO_PAGES']) || $this->attributes['SEO_ENABLED'] == 'false' ) {
       return $this->stock_href_link($page, $parameters, $connection, $add_session_id);
     }
-    //$link = $connection == 'NONSSL' ? $this->base_url : $this->base_url_ssl;
-    //$link = '';  
     if (defined('URL_SUB_SITE_ENABLED')) {
       if (URL_SUB_SITE_ENABLED) {
         $link = '';
@@ -514,7 +506,6 @@ class SEO_URL{
     }
   if ($page == '/') $page = '';
     if ($connection == 'NONSSL') {
-      //$link = HTTP_SERVER . DIR_WS_CATALOG;
       $link = HTTP_SERVER . DIR_WS_CATALOG;
       if ($request_type == 'SSL') {
         $link = HTTP_SERVER . DIR_WS_CATALOG;
@@ -524,7 +515,6 @@ class SEO_URL{
     } elseif ($connection == 'SSL') {
       if ($request_type == 'SSL') {
         $link = HTTPS_SERVER . DIR_WS_CATALOG;
-        //$link = DIR_WS_CATALOG;
       } else {
         if (ENABLE_SSL) {
           $link = HTTPS_SERVER . DIR_WS_CATALOG;
@@ -645,9 +635,7 @@ class SEO_URL{
   function add_sid( $link, $add_session_id, $connection, $separator ){
     global $request_type; // global variable
     if ( ($add_session_id == true) && ($this->attributes['SESSION_STARTED'] == true) && (SESSION_FORCE_COOKIE_USE == 'False') ) {
-      //if ($this->not_null($this->attributes['SID'])) {
       if ($this->not_null($SID)) {
-        //$_sid = $this->attributes['SID'];
         // add variable 
         if (SESSION_RECREATE == 'True') {
           $_sid = tep_session_name().'='.tep_session_id(); 
@@ -656,7 +644,6 @@ class SEO_URL{
         }
       } elseif ( ( ($request_type == 'NONSSL') && ($connection == 'SSL') && (ENABLE_SSL == true) ) || ( ($request_type == 'SSL') && ($connection == 'NONSSL') ) ) {
       if (HTTP_COOKIE_DOMAIN != HTTPS_COOKIE_DOMAIN) {
-        //$_sid = $this->SessionName() . '=' . $this->SessionID();
         if (SESSION_RECREATE == 'True') {
           $_sid = tep_session_name().'='.tep_session_id(); 
         } else {
@@ -736,7 +723,6 @@ class SEO_URL{
               $url = $this->make_url($page, REWRITE_PRODUCTS, $p2[0], $p2[1], '.html', $separator,URL_TYPE_PRODUCT);
               break;
             case ( $page == FILENAME_PRODUCT_REVIEWS ):
-              //$url = $this->make_url($page, 'reviews/', 'products_id_review', $p2[1], '/', $separator,URL_TYPE_PRODUCT);
               //del URL_TYPE_PRODUCT 
               $url = $this->make_url($page, 'reviews/', 'products_id_review', $p2[1], '/', $separator);
               break;
@@ -766,11 +752,9 @@ class SEO_URL{
           switch(true){
             case ($page == FILENAME_DEFAULT):
               if (preg_match('/page=(\d+)/', $params, $out)) {
-                //$url = $this->make_url($page, REWRITE_CATEGORIES, $p2[0], $p2[1], '_page'.$out[1].'.html', $separator,URL_TYPE_CPATH);
                 $url = $this->make_url($page, REWRITE_CATEGORIES, $p2[0], $p2[1], '_page'.$out[1].'.html', $separator,'cpath');
                 unset($container['page']);
               } else {
-                //$url = $this->make_url($page, REWRITE_CATEGORIES, $p2[0], $p2[1], '.html', $separator,URL_TYPE_CPATH);
                 $url = $this->make_url($page, REWRITE_CATEGORIES, $p2[0], $p2[1], '.html', $separator,'cpath');
               }
               break;
@@ -800,30 +784,20 @@ class SEO_URL{
             case ($page == FILENAME_POPUP_IMAGE):
             $url = $this->make_url($page, REWRITE_PRODUCTS, $p2[0], $p2[1], '.html', $separator);
             break;
-              //==========================
               // Contents page
               case ($page == FILENAME_PAGE):
             $url = $this->make_url($page, '', $p2[0], $p2[1], '.html', $separator);
             break;
-              //==========================
           default:
             $container[$p2[0]] = $p2[1];
             break;
           } # end switch
           break;
-        //===========================================
         // 添加
         case 'colors':
           $url = $this->make_url($page, REWRITE_PRODUCTS, $p2[0], $p2[1], '.html', $separator);
           break;
-        //case 'reviews_id':
-          //$container[$p2[1]] = $p2[1];
-          #$container[$p2[0]] = 'test'; 
-          #$container[$p2[1]] = 'ffff'; 
-          //break;
-        //===========================================
         case 'tags_id':
-          //$url = $this->make_url($page, 'tags/t-'.$_GET['tags_id'].'-', '', $p2[1], '.html', $separator);
           if (preg_match('/page=(\d+)/', $params, $out)) {
             $url = $this->make_url($page, 'tags/t-', $p2[0], $p2[1].'_page'.$out[1], '.html', $separator);
             unset($container['page']);
@@ -1074,110 +1048,6 @@ class SEO_URL{
     return $return;
   } # end function
 
-/**
- * Function to get the article name. Use evaluated cache, per page cache, or database query in that order of precedent.
- * @param integer $aID
- * @return string
- */ 
-  /*
-  function get_article_name($aID){
-    switch(true){
-      case ($this->attributes['USE_SEO_CACHE_GLOBAL'] == 'true' && defined('ARTICLE_NAME_' . $mID)):
-        $this->performance['CACHE_QUERY_SAVINGS']++;
-        $return = constant('ARTICLE_NAME_' . $aID);
-        $this->cache['ARTICLES'][$aID] = $return;
-        break;
-      case ($this->attributes['USE_SEO_CACHE_GLOBAL'] == 'true' && isset($this->cache['ARTICLES'][$aID])):
-        $this->performance['CACHE_QUERY_SAVINGS']++;
-        $return = $this->cache['ARTICLES'][$aID];
-        break;
-      default:
-        $this->performance['NUMBER_QUERIES']++;
-        $sql = "SELECT articles_name as aName 
-            FROM ".TABLE_ARTICLES_DESCRIPTION." 
-            WHERE articles_id='".(int)$aID."' 
-            AND language_id='".(int)$this->languages_id."' 
-            LIMIT 1";
-        $result = $this->DB->FetchArray( $this->DB->Query( $sql ) );
-        $aName = $this->strip( $result['aName'] );
-        $this->cache['ARTICLES'][$aID] = $aName;
-        $this->performance['QUERIES']['ARTICLES'][] = $sql;
-        $return = $aName;
-        break;                
-    } # end switch    
-    return $return;
-  } # end function
-  */
-
-/**
- * Function to get the topic name. Use evaluated cache, per page cache, or database query in that order of precedent.
- * @param integer $tID
- * @return string
- */ 
-  /*
-  function get_topic_name($tID){
-    switch(true){
-      case ($this->attributes['USE_SEO_CACHE_GLOBAL'] == 'true' && defined('TOPIC_NAME_' . $tID)):
-        $this->performance['CACHE_QUERY_SAVINGS']++;
-        $return = constant('TOPIC_NAME_' . $tID);
-        $this->cache['TOPICS'][$tID] = $return;
-        break;
-      case ($this->attributes['USE_SEO_CACHE_GLOBAL'] == 'true' && isset($this->cache['TOPICS'][$tID])):
-        $this->performance['CACHE_QUERY_SAVINGS']++;
-        $return = $this->cache['TOPICS'][$tID];
-        break;
-      default:
-        $this->performance['NUMBER_QUERIES']++;
-        $sql = "SELECT topics_name as tName 
-            FROM ".TABLE_TOPICS_DESCRIPTION." 
-            WHERE topics_id='".(int)$tID."' 
-            AND language_id='".(int)$this->languages_id."' 
-            LIMIT 1";
-        $result = $this->DB->FetchArray( $this->DB->Query( $sql ) );
-        $tName = $this->strip( $result['tName'] );
-        $this->cache['ARTICLES'][$aID] = $tName;
-        $this->performance['QUERIES']['TOPICS'][] = $sql;
-        $return = $tName;
-        break;                
-    } # end switch    
-    return $return;
-  } # end function
-  */
-
-/**
- * Function to get the informatin name. Use evaluated cache, per page cache, or database query in that order of precedent.
- * @param integer $iID
- * @return string
- */ 
-  /*
-  function get_information_name($iID){
-    switch(true){
-      case ($this->attributes['USE_SEO_CACHE_GLOBAL'] == 'true' && defined('INFO_NAME_' . $iID)):
-        $this->performance['CACHE_QUERY_SAVINGS']++;
-        $return = constant('INFO_NAME_' . $iID);
-        $this->cache['INFO'][$iID] = $return;
-        break;
-      case ($this->attributes['USE_SEO_CACHE_GLOBAL'] == 'true' && isset($this->cache['INFO'][$iID])):
-        $this->performance['CACHE_QUERY_SAVINGS']++;
-        $return = $this->cache['INFO'][$iID];
-        break;
-      default:
-        $this->performance['NUMBER_QUERIES']++;
-        $sql = "SELECT info_title as iName 
-            FROM ".TABLE_INFORMATION." 
-            WHERE information_id='".(int)$iID."' 
-            AND languages_id='".(int)$this->languages_id."' 
-            LIMIT 1";
-        $result = $this->DB->FetchArray( $this->DB->Query( $sql ) );
-        $iName = $this->strip( $result['iName'] );
-        $this->cache['INFO'][$iID] = $iName;
-        $this->performance['QUERIES']['INFO'][] = $sql;
-        $return = $iName;
-        break;                
-    } # end switch    
-    return $return;
-  } # end function
-  */
 
 /**
  * Function to retrieve full cPath from category ID 
@@ -1443,21 +1313,6 @@ class SEO_URL{
   }
 
 /**
- * Function to print an array within pre tags, debug use 
- * @param mixed $array
- */ 
-  /*
-  function PrintArray($array, $heading = ''){
-    echo '<fieldset style="border-style:solid; border-width:1px;">' . "\n";
-    echo '<legend style="background-color:#FFFFCC; border-style:solid; border-width:1px;">' . $heading . '</legend>' . "\n";
-    echo '<pre style="text-align:left;">' . "\n";
-    print_r($array);
-    echo '</pre>' . "\n";
-    echo '</fieldset><br>' . "\n";
-  } # end function
-  */
-
-/**
  * Function to start time for performance metric 
  * @param float $start_time
  */ 
@@ -1699,84 +1554,6 @@ class SEO_URL{
       $this->get_cache($this->cache_file . 'categories');   
     }
   } # end function
-
-/**
- * Function to generate articles cache entries 
- */ 
-  /*
-  function generate_articles_cache(){
-    $this->is_cached($this->cache_file . 'articles', $is_cached, $is_expired);    
-    if ( !$is_cached || $is_expired ) { // it's not cached so create it
-      $sql = "SELECT articles_id as id, articles_name as name 
-          FROM ".TABLE_ARTICLES_DESCRIPTION." 
-          WHERE language_id = '".(int)$this->languages_id."'";
-      $article_query = $this->DB->Query( $sql );
-      $article_cache = '';
-      while ($article = $this->DB->FetchArray($article_query)) {
-        $define = 'define(\'ARTICLE_NAME_' . $article['id'] . '\', \'' . $this->strip($article['name']) . '\');';
-        $article_cache .= $define . "\n";
-        eval("$define");
-      }
-      $this->DB->Free($article_query);
-      $this->save_cache($this->cache_file . 'articles', $article_cache, 'EVAL', 1 , 1);
-      unset($article_cache);
-    } else {
-      $this->get_cache($this->cache_file . 'articles');   
-    }
-  } # end function
-  */
-
-/**
- * Function to generate topics cache entries 
- */ 
-  /*
-  function generate_topics_cache(){
-    $this->is_cached($this->cache_file . 'topics', $is_cached, $is_expired);    
-    if ( !$is_cached || $is_expired ) { // it's not cached so create it
-      $sql = "SELECT topics_id as id, topics_name as name 
-          FROM ".TABLE_TOPICS_DESCRIPTION." 
-          WHERE language_id='".(int)$this->languages_id."'";
-      $topic_query = $this->DB->Query( $sql );
-      $topic_cache = '';
-      while ($topic = $this->DB->FetchArray($topic_query)) {
-        $define = 'define(\'TOPIC_NAME_' . $topic['id'] . '\', \'' . $this->strip($topic['name']) . '\');';
-        $topic_cache .= $define . "\n";
-        eval("$define");
-      }
-      $this->DB->Free($topic_query);
-      $this->save_cache($this->cache_file . 'topics', $topic_cache, 'EVAL', 1 , 1);
-      unset($topic_cache);
-    } else {
-      $this->get_cache($this->cache_file . 'topics');   
-    }
-  } # end function
-  */
-
-/**
- * Function to generate information cache entries 
- */ 
-  /*
-  function generate_information_cache(){
-    $this->is_cached($this->cache_file . 'information', $is_cached, $is_expired);   
-    if ( !$is_cached || $is_expired ) { // it's not cached so create it
-      $sql = "SELECT information_id as id, info_title as name 
-          FROM ".TABLE_INFORMATION." 
-          WHERE languages_id='".(int)$this->languages_id."'";
-      $information_query = $this->DB->Query( $sql );
-      $information_cache = '';
-      while ($information = $this->DB->FetchArray($information_query)) {
-        $define = 'define(\'INFO_NAME_' . $information['id'] . '\', \'' . $this->strip($information['name']) . '\');';
-        $information_cache .= $define . "\n";
-        eval("$define");
-      }
-      $this->DB->Free($information_query);
-      $this->save_cache($this->cache_file . 'information', $information_cache, 'EVAL', 1 , 1);
-      unset($information_cache);
-    } else {
-      $this->get_cache($this->cache_file . 'information');    
-    }
-  } # end function
-  */
 
 /**
  * Function to save the cache to database 

@@ -106,57 +106,6 @@ class convenience_store extends basePayment  implements paymentInterface  {
                                          "message"=>"",
                                          )));
     }
-    /*
-    function selection($theData) {
-      global $currencies;
-      global $order;
-
-      $total_cost = $order->info['total'];      // 包括税收的总价格
-      $f_result = $this->calc_fee($total_cost); // 手续费
-
-      $added_hidden = $f_result
-        ? tep_draw_hidden_field('codt_fee', $this->n_fee).tep_draw_hidden_field('cod_total_cost', $total_cost)
-        : tep_draw_hidden_field('codt_fee_error', $this->s_error);
-      if (!empty($this->n_fee)) {
-        $s_message = $f_result ? (MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_FEE . '&nbsp;' . $currencies->format($this->n_fee)) : ('<font color="#FF0000">' . $this->s_error . '</font>');
-      } else {
-        $s_message = $f_result ? '': ('<font color="#FF0000">' . $this->s_error . '</font>');
-      }
-      //$s_message = $f_result ? (MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_FEE . '&nbsp;' . $currencies->format($this->n_fee)) : ('<font color="#FF0000">' . $this->s_error . '</font>');
-      $email_default_str = ''; 
-      if (isset($_SESSION['customer_emailaddress'])) {
-        $email_default_str = $_SESSION['customer_emailaddress']; 
-      }
-      $selection = array(
-                         'id' => $this->code,
-                         'module' => $this->title,
-                         'fields' => array(array('title' => MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_PROCESS,
-                                                 'field' => ''),
-                                           array('title' => '<div class="rowHide rowHide_'.$this->code.'" id="cemail" style="display:none;">'.MODULE_PAYMENT_CONVENIENCE_INFO_TEXT.'<div
-                              class="cemail_input_info"><div class="cemail_front_text">'
-                                                 .MODULE_PAYMENT_CONVENIENCE_EMAIL_TEXT.'</div><div
-                              class="con_email01">'.tep_draw_input_field('convenience_email',
-                                                                         $email_default_str, 'onpaste="return
-                                false"').'
-                              '.MODULE_PAYMENT_CONVENIENCE_MUST_INPUT."</div></div><div
-                              class='cemail_input_info'><div
-                              class='cemail_front_text'>"
-                                                 .MODULE_PAYMENT_CONVENIENCE_EMAIL_CONFIRMATION_TEXT."</div><div
-                              class='con_email02'>".tep_draw_input_field('convenience_email_again',
-                                                                         $email_default_str, 'onpaste="return false"').'
-                              '.MODULE_PAYMENT_CONVENIENCE_MUST_INPUT.'</div></div></div>', 
-                                                 'field' => '' 
-                                                 ), 
-                                           array('title' => '<div class="rowHide rowHide_'.$this->code.'" id="caemail" style="display:none;"><div class="cemail_input_02">'.'<div class="con_email02">'.'</div></div><p>'.MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_FOOTER.'</p>'. $added_hidden.'</div>',
-                                                 'field' => '' 
-                                                 ), 
-                                           array('title' => $s_message,
-                                                 'field' => '')
-                                           )
-                         );
-
-      return $selection;
-      }*/
 /*--------------------------
  功能：确认检查前台支付方法 
  参数：无
@@ -165,67 +114,6 @@ class convenience_store extends basePayment  implements paymentInterface  {
     function pre_confirmation_check() {
       return true;
     }
-    /*    function pre_confirmation_check() {
-      if ($_POST['convenience_email'] == "" || $_POST['convenience_email_again'] == "") {
-        $payment_error_return = 'payment_error=' . $this->code ;
-        tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return, 'SSL', true, false));
-       
-      } else if
-          (!ereg("^([^@])+@([a-za-z0-9_-])+(\.[a-za-z0-9_-])+",$_POST['convenience_email'])
-           || !ereg("^([^@])+@([a-za-z0-9_-])+(\.[a-za-z0-9_-])+",$_POST['convenience_email_again'])){
-        $payment_error_return = 'payment_error=' . $this->code ;
-        tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return, 'SSL', true, false));
-      } else if ($_POST['convenience_email'] != $_POST['convenience_email_again']) {
-        $payment_error_return = 'payment_error=' . $this->code; 
-        $redirect_url = tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return . '&type=noe', 'SSL', true, false);
-        //do for &type turn into &amp;type url ,fix it afterlater
-        $url_test = explode('?',$redirect_url);
-        if ($url_test[1] == 'payment_error=convenience_store&amp;type=noe')
-          {
-            $url_test[1] = 'payment_error=convenience_store&type=noe';
-            $redirect_url = $url_test[0] .'?'. $url_test[1]; 
-          }
-        //do for &type turn into &amp;type url ,fix it afterlater
-        //tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return . '&type=noe', 'SSL', true, false));
-        tep_redirect($redirect_url);
-      
-      } else {
-        $pc_email_single = false;
-        $pc_email_again_single = false;
-
-        $pc_pos = strrpos($_POST['convenience_email'], '@');
-        $pc_new_email = substr($_POST['convenience_email'], $pc_pos+1);
-        if (preg_match('/^(docomo\.|softbank\.|i\.softbank\.|disney\.|ezweb\.|vodafone\.|.*\.vodafone\.|biz\.ezweb\.|.*biz\.ezweb\.|ezweb\.|sky\.ttk\.|sky\.tkc\.|sky\.tu\-ka\.|pdx\.|emnet\.)(.*)$/i', $pc_new_email)) {
-          $pc_email_single = true; 
-        }
-        
-        $pc_apos = strrpos($_POST['convenience_email_again'], '@');
-        $pc_anew_email = substr($_POST['convenience_email_again'], $pc_apos+1);
-        if (preg_match('/^(docomo\.|softbank\.|i\.softbank\.|disney\.|ezweb\.|vodafone\.|.*\.vodafone\.|biz\.ezweb\.|.*biz\.ezweb\.|ezweb\.|sky\.ttk\.|sky\.tkc\.|sky\.tu\-ka\.|pdx\.|emnet\.)(.*)$/i', $pc_anew_email)) {
-          $pc_email_again_single = true; 
-        }
-        
-        if (!$pc_email_single && !$pc_email_again_single) {
-          return false; 
-        } else {
-          $payment_error_return = 'payment_error=' . $this->code . '&type=nom' ;
-
-          //do for &type turn into &amp;type url ,fix it afterlater
-          $redirect_url = tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return, 'SSL', true, false);
-          $url_test = explode('?',$redirect_url);
-          if ($url_test[1] == 'payment_error=convenience_store&amp;type=nom')
-            {
-              $url_test[1] = 'payment_error=convenience_store&type=nom';
-              $redirect_url = $url_test[0] .'?'. $url_test[1]; 
-            }
-
-          //tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return, 'SSL', true, false));
-          tep_redirect($redirect_url);
-          //do for &type turn into &amp;type url ,fix it afterlater
-        }
-      }
-    }
-    */
  /*--------------------------------
  功能：检查预约支付方法 
  参数：无
@@ -277,12 +165,7 @@ class convenience_store extends basePayment  implements paymentInterface  {
 
       $s_result = !$_POST['code_fee_error'];
       
-      if (!empty($_SESSION['h_code_fee'])) {
-        //$s_message = $s_result ? (MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_FEE . '&nbsp;' . $currencies->format($_POST['codt_fee'])) : ('<font color="#FF0000">' . $_POST['codt_fee_error'] . '</font>');
-        $s_message = $s_result ? '' : ('<font color="#FF0000">' . $_POST['code_fee_error'] . '</font>');
-      } else {
-        $s_message = $s_result ? '' : ('<font color="#FF0000">' . $_POST['code_fee_error'] . '</font>');
-      }
+      $s_message = $s_result ? '' : ('<font color="#FF0000">' . $_POST['code_fee_error'] . '</font>');
       return array(
                    'title' => str_replace("#USER_MAIL#",$_SESSION['h_convenience_email'],nl2br(constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION"))),
                    'fields' => array(

@@ -120,7 +120,6 @@
 ------------------------------------ */
   function tep_banner_exists($action, $identifier) {
     if ($action == 'dynamic') {
-      //return tep_random_select("select banners_id, banners_title, banners_image,banners_url, banners_html_text from " . TABLE_BANNERS . " where status = '1' and banners_group = '" . $identifier . "' and site_id = '".SITE_ID."'");
       $banner_query = tep_db_query("select banners_id, banners_title, banners_image,banners_url, banners_html_text from " . TABLE_BANNERS . " where status = '1' and banners_group = '" . $identifier . "' and site_id = '".SITE_ID."'");
       return tep_db_fetch_array($banner_query);
     } else 

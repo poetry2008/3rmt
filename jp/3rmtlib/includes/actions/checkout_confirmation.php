@@ -34,10 +34,6 @@ if (isset($cart->cartID) && tep_session_is_registered('cartID')) {
   }
 }
 $sendto = false;
-// if no shipping method has been selected, redirect the customer to the shipping method selection page
-//  if (!tep_session_is_registered('shipping')) {
-//    tep_redirect(tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL'));
-//  }
 require(DIR_WS_CLASSES . 'payment.php');
 $payment_modules = payment::getInstance(SITE_ID);
 
@@ -46,7 +42,6 @@ $order = new order;
 
 if (!isset($_GET['is_finish'])) {
 $payment = $_POST['payment']; tep_session_register('payment');
-//if (!tep_session_is_registered('payment'))
 if (!tep_session_is_registered('comments')) tep_session_register('comments');
 if (isset($_POST['comments_added']) && $_POST['comments_added'] != '') {
   $comments = tep_db_prepare_input($_POST['comments']);
@@ -78,7 +73,6 @@ if (is_array($payment_modules->modules) ){
 
     }
     require_once DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_PAYMENT;
-    //{{
 page_head();?>
 <script type="text/javascript" src="./js/jquery-1.3.2.min.js">
   </script>
@@ -92,7 +86,6 @@ page_head();?>
     }
 ?>
 </head><?php
-    //}}
     
     require_once "checkout_payment_template.php";    
     exit();

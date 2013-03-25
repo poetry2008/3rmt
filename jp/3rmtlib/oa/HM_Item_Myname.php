@@ -120,7 +120,6 @@ class HM_Item_Myname extends HM_Item_Basic
                                  $('body').css('cursor','');
                                  checkLockOrder();
                                }
-                     //                     $("#<?php echo $this->formname;?>submit").show();
                           }
                  });
              });

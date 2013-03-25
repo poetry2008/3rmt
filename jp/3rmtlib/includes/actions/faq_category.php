@@ -122,8 +122,4 @@ $faq_question_sql = "select * from (
                       group by c.faq_question_id 
                       order by c.sort_order,c.ask,c.faq_question_id 
                       ";
-/*
-$faq_question_split = new splitPageResults($page,10,
-    $faq_question_sql,$faq_query_number);
-*/
 $faq_question_query = tep_db_query($faq_question_sql);

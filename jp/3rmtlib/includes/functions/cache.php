@@ -77,10 +77,7 @@
 // check for the refresh flag and try to the data
     if (($refresh == true)|| !read_cache($var, $filename)) {
 // Didn' get cache so go to the database.
-//      $conn = mysql_connect("localhost", "apachecon", "apachecon");
-      // ccdd
       $res = tep_db_query($sql);
-//      if ($err = mysql_error()) trigger_error($err, E_USER_ERROR);
 // loop through the results and add them to an array
       while ($rec = tep_db_fetch_array($res)) {
         $var[] = $rec;

@@ -2,7 +2,6 @@
 /*
   $Id$
  */
-//unset($_SESSION['cart']);
 header("Content-type:text/html;charset=utf-8");
 ini_set("display_errors","Off");
 require(DIR_WS_FUNCTIONS . 'visites.php');
@@ -175,7 +174,6 @@ $NewOidQuery = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS." where 
 $NewOid = tep_db_fetch_array($NewOidQuery);
 if($NewOid['cnt'] > 0) {
   # OrderNo
-    //$insert_id = date("Ymd") . '-' . date("His") . ds_makeRandStr(2);
     $insert_id = date("Ymd") . '-' . date("His") . tep_get_order_end_num();
 }
 
@@ -199,7 +197,6 @@ $customers_referer_query = tep_db_query("select referer, is_send_mail, is_calc_q
 $customers_referer_array = tep_db_fetch_array($customers_referer_query);
 $referer = $customers_referer_array['referer'];
 # Select
-//$cnt = strlen($NewOid);
 
 $_SESSION['insert_id'] = $insert_id;
 $sql_data_array = array('orders_id'         => $insert_id,
@@ -371,7 +368,6 @@ if ($bflag_single == 'View') {
   $sql_data_array['code_fee'] = $orign_hand_fee + $buy_handle_fee; 
   $new_handle_fee = $sql_data_array['code_fee'];
 }
-//$sql_data_array['orders_status'] = 30;
 tep_db_perform(TABLE_ORDERS, $sql_data_array);
 tep_order_status_change($insert_id,$sql_data_array['orders_status']);
 $total_data_arr = array();
@@ -460,14 +456,6 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
     tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . sprintf('%d', $order->products[$i]['qty']) . " where products_id = '" . (int)$order->products[$i]['id'] . "'");
   }
   $chara = '';
-  //$character_id = $order->products[$i]['id'];
-  /* 
-  foreach($_SESSION['character'] as $st => $en) {
-    if($_SESSION['character'][$character_id] == $_SESSION['character'][$st]) {
-      $chara = $_SESSION['character'][$character_id];
-    }
-  }
-  */ 
   $sql_data_array = array('orders_id' => $insert_id, 
                           'products_id' => (int)$order->products[$i]['id'], 
                           'products_model' => $order->products[$i]['model'], 
@@ -575,7 +563,6 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
         . '：' . str_replace($replace_arr, "", $op_value['value']);
       
       if ($op_price != '0') {
-        //$products_ordered_attributes .= '　('.$currencies->format($op_price*$order->products[$i]['qty']).')'; 
         $products_ordered_attributes .= '　('.$currencies->format($op_price).')'; 
       }
     }
@@ -668,9 +655,6 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
   $products_ordered .= '個数'.str_repeat('　',intval(($attribute_max_len-mb_strlen('個数', 'utf-8')))).'：' . $order->products[$i]['qty'] . '個' .  tep_get_full_count2($order->products[$i]['qty'], (int)$order->products[$i]['id']) . "\n";
   $products_ordered .= '単価'.str_repeat('　',intval(($attribute_max_len-mb_strlen('単価', 'utf-8')))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
   $products_ordered .= '小計'.str_repeat('　',intval(($attribute_max_len-mb_strlen('小計', 'utf-8')))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
-  //if(tep_not_null($chara)) {
-    //$products_ordered .= 'キャラクター名　　：' .  (EMAIL_USE_HTML === 'true' ? htmlspecialchars(stripslashes($chara)) : stripslashes($chara)) . "\n";
-  //}
   $products_ordered .= "------------------------------------------\n";
   if (tep_get_cflag_by_product_id((int)$order->products[$i]['id'])) {
     if (tep_get_bflag_by_product_id((int)$order->products[$i]['id'])) {
@@ -863,13 +847,6 @@ if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
   tep_mail('', PRINT_EMAIL_ADDRESS, STORE_NAME, $email_printing_order, tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], '');
 }
 
-// require(DIR_WS_INCLUDES . 'affiliate_checkout_process.php');
-
-//$ac_total = tep_add_tax($affiliate_total,0);
-  
-  
-//tep_session_register('ac_total');
-
 // load the after_process function from the payment modules
 $payment_modules->after_process($payment);
 
@@ -940,14 +917,7 @@ tep_session_unregister('address_option');
 tep_session_unregister('insert_torihiki_date');
 tep_session_unregister('insert_torihiki_date_end');
 tep_session_unregister('address_show_list');
-/*
-tep_session_unregister('bank_name');
-tep_session_unregister('bank_shiten');
-tep_session_unregister('bank_kamoku');
-tep_session_unregister('bank_kouza_num');
-tep_session_unregister('bank_kouza_name');
-*/
-#convenience_store
+
 unset($_SESSION['insert_id']);
 unset($_SESSION['option_list']);
 unset($_SESSION['character']);
@@ -962,15 +932,6 @@ unset($_SESSION['options_type_array']);
 unset($_SESSION['weight_fee']);
 unset($_SESSION['free_value']);
 unset($_SESSION['shipping_page_str']);
-//$pr = '?SID=' . $convenience_sid;
-  
-/*
-  echo '<pre>';
-  foreach ($log_queries as $qk => $qv) {
-  echo '[' . $log_times[$qk] . ']' . $qk . "\t=>\t" . $qv."\n";
-  }
-  exit;
-*/
 
 tep_session_unregister('h_code_fee');
 tep_session_unregister('h_point');

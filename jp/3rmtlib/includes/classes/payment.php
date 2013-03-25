@@ -122,7 +122,6 @@ class payment {
     foreach($this->payment_enabled as $key=>$value){
       $languageFile = DIR_WS_LANGUAGES . $language . '/modules/payment/' . $value['file'];
       $classFile = DIR_WS_MODULES . 'payment/' .$value['file'];
-      //      if(file_exists($languageFile) and file_exists($classFile)){
       require_once $languageFile;
       require_once $classFile;
       $class = strtolower($value['class']);
@@ -192,23 +191,6 @@ class payment {
 
     return !($a<=$total and $total<=$b);
   }
-  /*
-  function update_status() {
-    if (is_array($this->modules)) {
-      if (is_object($GLOBALS[$this->selected_module])) {
-        if (function_exists('method_exists')) {
-          if (method_exists($GLOBALS[$this->selected_module], 'update_status')) {
-            $GLOBALS[$this->selected_module]->update_status();
-          }
-        } else { // PHP3 compatibility
-          @call_user_method('update_status', $GLOBALS[$this->selected_module]);
-        }
-      }
-    }
-  }
-  */
-
-  //todo:查看下面两个常量的定义位置  去掉global
   
 /*------------------------------
  功能：集中输出各个支付方法的js验证
@@ -239,9 +221,7 @@ class payment {
         '  }' . "\n\n";
 
       reset($this->modules);
-      //while (list(, $value) = each($this->modules)) {
       foreach($this->modules as $value){
-        //$class = substr($value, 0, strrpos($value, '.'));
         $class = $value->code;
         if ($GLOBALS[$class]->enabled) {
             

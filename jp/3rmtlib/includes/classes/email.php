@@ -52,10 +52,6 @@
 
       $this->build_params['html_encoding'] = 'quoted-printable';
       $this->build_params['text_encoding'] = '7bit';
-      /*
-      $this->build_params['html_charset']  = 'iso-2022-jp';
-      $this->build_params['text_charset']  = 'iso-2022-jp';
-      */
       $this->build_params['html_charset']  = 'utf-8';
       $this->build_params['text_charset']  = 'utf-8';
       $this->build_params['text_wrap'] = 998;
@@ -220,7 +216,6 @@
  */
 
 /* HPDL PHP3 */
-//    function &add_text_part(&$obj, $text) {
 /*-----------------------
  功能：添加文本到mime_part对象
  参数：$obj(string) 对象 
@@ -244,7 +239,6 @@
  */
 
 /* HPDL PHP3 */
-//    function &add_html_part(&$obj) {
 /*-----------------------------
  功能：添加HTML到mime_part对象
  参数：$obj(string) 对象
@@ -267,7 +261,6 @@
  */
 
 /* HPDL PHP3 */
-//    function &add_mixed_part() {
 /*-------------------------------
  功能：添加混合部分信息 
  参数：无
@@ -284,7 +277,6 @@
  */
 
 /* HPDL PHP3 */
-//    function &add_alternative_part(&$obj) {
 /*-------------------------------
  功能：添加一个替代部分到mime_part对象 
  参数：$obj(string) 对象
@@ -305,7 +297,6 @@
  */
 
 /* HPDL PHP3 */
-//    function &add_related_part(&$obj) {
 /*------------------------------
  功能：添加HTML部位到mime_part对象 
  参数：$obj($obj) 对象 
@@ -326,7 +317,6 @@
  */
 
 /* HPDL PHP3 */
-//    function &add_html_image_part(&$obj, $value) {
 /*-----------------------------
  功能：添加一个图片到mime_part对象 
  参数：$obj(string) 对象
@@ -348,7 +338,6 @@
  */
 
 /* HPDL PHP3 */
-//    function &add_attachment_part(&$obj, $value) {
 /*----------------------------
  功能：添加一个附加部分到mime_part对象 
  参数：$obj(string) 对象
@@ -384,7 +373,6 @@
  */
 
 /* HPDL PHP3 */
-//    function build_message($params = array()) {
 /*-------------------------
  功能：构建分支信息
  参数：$params(string) 建立参数
@@ -415,13 +403,9 @@
 
       switch (true) {
         case (($text == true) && ($attachments == false)):
-/* HPDL PHP3 */
-//          $message =& $this->add_text_part($null, $this->text);
           $message = $this->add_text_part($null, $this->text);
           break;
         case (($text == false) && ($attachments == true) && ($html == false)):
-/* HPDL PHP3 */
-//          $message =& $this->add_mixed_part();
           $message = $this->add_mixed_part();
 
           for ($i=0; $i<count($this->attachments); $i++) {
@@ -429,8 +413,6 @@
           }
           break;
         case (($text == true) && ($attachments == true)):
-/* HPDL PHP3 */
-//          $message =& $this->add_mixed_part();
           $message = $this->add_mixed_part();
           $this->add_text_part($message, $this->text);
 
@@ -440,30 +422,19 @@
           break;
         case (($html == true) && ($attachments == false) && ($html_images == false)):
           if (tep_not_null($this->html_text)) {
-/* HPDL PHP3 */
-//            $message =& $this->add_alternative_part($null);
             $message = $this->add_alternative_part($null);
             $this->add_text_part($message, $this->html_text);
             $this->add_html_part($message);
           } else {
-/* HPDL PHP3 */
-//            $message =& $this->add_html_part($null);
             $message = $this->add_html_part($null);
           }
           break;
         case (($html == true) && ($attachments == false) && ($html_images == true)):
           if (tep_not_null($this->html_text)) {
-/* HPDL PHP3 */
-//            $message =& $this->add_alternative_part($null);
             $message = $this->add_alternative_part($null);
             $this->add_text_part($message, $this->html_text);
-/* HPDL PHP3 */
-//            $related =& $this->add_related_part($message);
             $related = $this->add_related_part($message);
           } else {
-/* HPDL PHP3 */
-//            $message =& $this->add_related_part($null);
-//            $related =& $message;
             $message = $this->add_related_part($null);
             $related = $message;
           }
@@ -474,12 +445,8 @@
           }
           break;
         case (($html == true) && ($attachments == true) && ($html_images == false)):
-/* HPDL PHP3 */
-//          $message =& $this->add_mixed_part();
           $message = $this->add_mixed_part();
           if (tep_not_null($this->html_text)) {
-/* HPDL PHP3 */
-//            $alt =& $this->add_alternative_part($message);
             $alt = $this->add_alternative_part($message);
             $this->add_text_part($alt, $this->html_text);
             $this->add_html_part($alt);
@@ -492,21 +459,13 @@
           }
           break;
         case (($html == true) && ($attachments == true) && ($html_images == true)):
-/* HPDL PHP3 */
-//          $message =& $this->add_mixed_part();
           $message = $this->add_mixed_part();
 
           if (tep_not_null($this->html_text)) {
-/* HPDL PHP3 */
-//            $alt =& $this->add_alternative_part($message);
             $alt = $this->add_alternative_part($message);
             $this->add_text_part($alt, $this->html_text);
-/* HPDL PHP3 */
-//            $rel =& $this->add_related_part($alt);
             $rel = $this->add_related_part($alt);
           } else {
-/* HPDL PHP3 */
-//            $rel =& $this->add_related_part($message);
             $rel = $this->add_related_part($message);
           }
           $this->add_html_part($rel);
@@ -568,47 +527,22 @@
       }else{
       $subject = mb_convert_encoding($subject, 'ISO-2022-JP'); // 添加
       }
-      //$subject = mb_convert_encoding($subject, 'UTF-8', 'ECU-JP');
-      //echo '<br>';
-      //echo $subject;
-      //$subject = mb_encode_mimeheader(mb_convert_kana($subject, "KV"), 'ISO-2022-JP');
-      //$subject = mb_encode_mimeheader($subject, 'ISO-2022-JP');
-      //$subject = '=?ISO-2022-JP?B?'.base64_encode(mb_convert_kana($subject, "KV"))."?=";
       if($from_page=='mail'){
       $subject = '=?UTF-8?B?'.base64_encode($subject)."?=";
       }else{
       $subject = '=?ISO-2022-JP?B?'.base64_encode(mb_convert_kana($subject, "KV"))."?=";
       }
       }
-      //echo '<br>';
-      //echo $subject;
     
     if($to_name != '') {
-      /*
-      $to_name = mb_convert_encoding($to_name, 'ISO-2022-JP'); // 添加
-        $to_addr = mb_convert_encoding($to_addr, 'ISO-2022-JP'); // 添加
-        */
       $to_name = mb_convert_encoding($to_name, 'UTF-8'); // 添加
         $to_addr = mb_convert_encoding($to_addr, 'UTF-8'); // 添加
     }
     
     if($from_name != '') {
-      /*
-      $from_name = mb_convert_encoding($from_name, 'ISO-2022-JP'); // 添加
-        $from_addr = mb_convert_encoding($from_addr, 'ISO-2022-JP'); // 添加
-        */
       $from_name = mb_convert_encoding($from_name, 'UTF-8'); // 添加
         $from_addr = mb_convert_encoding($from_addr, 'UTF-8'); // 添加
     }
-    
-    /*
-      $to    = ($to_name != '')
-          ? ('"' . mb_encode_mimeheader(mb_convert_kana($to_name, "KV"), 'ISO-2022-JP') . '" <' . $to_addr . '>')
-          : $to_addr;
-      $from  = ($from_name != '')
-          ? ('"' . mb_encode_mimeheader(mb_convert_kana($from_name, "KV"), 'ISO-2022-JP')  . '" <' . $from_addr. '>')
-          : $from_addr;
-          */
       $to    = ($to_name != '')
           ? ('"' . mb_encode_mimeheader(mb_convert_kana($to_name, "KV"), 'UTF-8') . '" <' . $to_addr . '>')
           : $to_addr;
@@ -651,12 +585,6 @@
           $bounce_mail_option
         );
       }
-/*
-    if (EMAIL_TRANSPORT == 'smtp') {
-        return mail($to_addr, $subject, $this->output, 'From: ' . $from . $this->lf . 'To: ' . $to . $this->lf . implode($this->lf, $this->headers) . $this->lf . implode($this->lf, $xtra_headers));
-      } else {
-        return mail($to, $subject, $this->output, 'From: '.$from.$this->lf.implode($this->lf, $this->headers).$this->lf.implode($this->lf, $xtra_headers));
-      }*/
     }
 
 /**
