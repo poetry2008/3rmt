@@ -165,7 +165,6 @@
       $info_box_contents = array();
       $info_box_contents[] = array('text' => $this->contentBoxContents($contents));
       $this->table_cellpadding = '1';
-     // $this->table_parameters = 'class="infoBox"';
       $this->tableBox($info_box_contents, true);
     }
 /*-------------------------------
@@ -175,7 +174,6 @@
  ------------------------------*/
     function contentBoxContents($contents) {
       $this->table_cellpadding = '4';
-    //  $this->table_parameters = 'class="infoBoxContents"';
       return $this->tableBox($contents);
     }
   }

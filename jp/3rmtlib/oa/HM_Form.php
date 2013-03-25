@@ -75,9 +75,6 @@ class HM_Form extends DbRecord
     echo $this->end_user;
     echo "<button onclick='finishTheOrder()'  id='canEnd' >".OA_FORM_ORDER_FINISH."</button></div>";
     echo "</td>";
-    // if(!tep_orders_finishqa($this->orders_id)) {
-    //echo "<button onclick='finishTheOrder()'  id='canEnd' >取引完了</button>";
-    //    }
     echo "</tr>";
     echo '</form>';
     echo "</div>";
@@ -270,7 +267,6 @@ class HM_Form extends DbRecord
                               $(this).bind('keyup',function(){
                                   checkLockOrder();
                                   if( $(this).val().length >$($("#size_"+$(this).attr('name'))).val()){
-                                    //               	$(this).val($(this).val().substr(0,$(this).attr('size')));
                                     $(this).parent().parent().find('.alertmsg').remove();
                                     $("<span class='alertmsg'><?php echo
                                       OA_FORM_TEXT_MAX_INPUT;?>"+$($("#size_"+$(this).attr('name'))).val()+"<?php
@@ -299,7 +295,6 @@ class HM_Form extends DbRecord
         $("#qa_form").submit();
         });
       $(this).change(function(ele){
-        //                                   alert($("input|[name=dfossrrfwwkvomzw_6_1_107]").val());
         if ($(this).attr('type')!='checkbox') {
           $("#qa_form").submit();
         }

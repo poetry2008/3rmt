@@ -135,7 +135,6 @@
       $products_query = tep_db_query("select products_id, customers_basket_quantity from " . TABLE_CUSTOMERS_BASKET . " where customers_id = '" . $customer_id . "'");
       while ($products = tep_db_fetch_array($products_query)) {
         $this->contents[$products['products_id']] = array('qty' => $products['customers_basket_quantity']);
-        //$this->contents[$products['products_id']]['qty'] = $products['customers_basket_quantity'];
 // attributes
         $attributes_query = tep_db_query("select option_info from " . TABLE_CUSTOMERS_BASKET_OPTIONS . " where customers_id = '" . $customer_id . "' and products_id = '" . $products['products_id'] . "'");
         while ($attributes = tep_db_fetch_array($attributes_query)) {
@@ -356,7 +355,6 @@
 
       reset($this->contents);
       while (list($products_id, ) = each($this->contents)) {
-        //if (!isset($this->contents[$products_id]['qty'])) $this->contents[$products_id]['qty']=NULL;
         $qty = $this->contents[$products_id]['qty'];
 
 // products price

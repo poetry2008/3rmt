@@ -5,7 +5,6 @@ interface paymentInterface
   public function loadSpecialSettings($site_id=0);
   public function calc_fee($money);
   public function fields($theData=false, $back=false);
-  //  public function selection($theData);
   public function pre_confirmation_check();
   public function confirmation() ;
 }
@@ -97,7 +96,6 @@ class BasePayment
               $validateResult = $this->$rule($value[$singleValue['code']],$value[$singleValue['params_code']],$p_error_msg);
               if ($validateResult !== true){
                 $pass = false;
-                //  $selection['error'][]=$validateResult;
                 if ($show_type) {
                   $selection['fields'][$key]['message'] = str_replace(
                       array(self::RULE_NOT_NULL_MSG,
@@ -109,7 +107,6 @@ class BasePayment
                     $_SESSION['payment_error'][$this->code]=$validateResult;
                   }
                 }
-                //                $selection['fields'][$key]['message'] = $validateResult;
               }
               $i_num++; 
             }
@@ -131,7 +128,6 @@ class BasePayment
                   $_SESSION['payment_error'][$this->code]=$validateResult;
                 }
               }
-                //              $selection['error'][]=$validateResult;
             }
           }
         }
@@ -182,17 +178,6 @@ class BasePayment
  返回值:判断是否验证邮箱成功(string)
  --------------------------*/
   function validation_email($value){
-    /*
-    $e = "/^[-+\\.0-9=a-z_]+@([-0-9a-z]+\\.)+([0-9a-z]){2,4}$/i";
-    if(!preg_match($e, $value)) {
-      if (!empty($this->p_error_msg)) {
-        return $this->p_error_msg; 
-      } else {
-        return self::RULE_EMAIL_MSG;
-      } 
-    }
-    */
-
     $value  = str_replace("\xe2\x80\x8b", '', $value);
     if(!tep_validate_email($value)){
       if (!empty($this->p_error_msg)) {
@@ -250,7 +235,6 @@ class BasePayment
       if ($money <= $table_fee[$i]) { 
         $additional_fee = $money.$table_fee[$i+1]; 
         @eval("\$additional_fee = $additional_fee;"); 
-        //$this->n_fee = $table_fee[$i+1]; 
         if (is_numeric($additional_fee)) {
           $this->n_fee = intval($additional_fee); 
         } else {
@@ -264,7 +248,6 @@ class BasePayment
       $this->s_error = 'over flow';
     }
 
-    //return $f_find;
     return $this->n_fee;
 
   }

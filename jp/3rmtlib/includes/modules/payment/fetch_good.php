@@ -67,7 +67,6 @@ class fetch_good extends basePayment  implements paymentInterface {
     } else {
       $s_message = $f_result ? '':('<font color="#FF0000">'.$this->s_error.'</font>'); 
     }
-    //return array();
     return array('id' => $this->code,
                  'module' => '来店による支払い',
                  'fields' => array(
@@ -96,12 +95,7 @@ class fetch_good extends basePayment  implements paymentInterface {
       
     $s_result = !$_POST['fetch_good_order_fee_error'];
     $this->calc_fee($order->info['total']);
-    if (!empty($this->n_fee)) {
-      //$s_message = $s_result ? (MODULE_PAYMENT_POINT_TEXT_FEE . '&nbsp;' .  $currencies->format($this->n_fee)):('<font color="#FF0000">'.$_POST['point_order_fee_error'].'</font>'); 
-      $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['fetch_good_order_fee_error'].'</font>'); 
-    } else {
-      $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['fetch_good_order_fee_error'].'</font>'); 
-    }
+    $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['fetch_good_order_fee_error'].'</font>'); 
       
     return array(
                  'title' => nl2br(constant("MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION")),
@@ -153,7 +147,6 @@ class fetch_good extends basePayment  implements paymentInterface {
       $_POST['fetch_good_order_fee_error']?$_POST['fetch_good_order_fee_error']:sprintf(MODULE_PAYMENT_FETCH_GOOD_TEXT_MAILFOOTER, $currencies->format($total), $currencies->format($_POST['fetch_good_order_fee']));
       
     return tep_draw_hidden_field('fetch_good_order_message', htmlspecialchars($s_message)). tep_draw_hidden_field('fetch_good_order_fee', $_POST['fetch_good_order_fee']);
-    //return false;
   }
 /*-----------------------
  功能：来店支付前
@@ -164,7 +157,6 @@ class fetch_good extends basePayment  implements paymentInterface {
     global $_POST;
 
     $this->email_footer = str_replace("\r\n", "\n", $_POST['fetch_good_order_message']);
-    //return false;
   }
 /*-----------------------
  功能：来店支付后
@@ -189,7 +181,6 @@ class fetch_good extends basePayment  implements paymentInterface {
     } else {
       return false;
     }
-    //return false;
   }
 
 /*---------------------------
@@ -224,10 +215,6 @@ class fetch_good extends basePayment  implements paymentInterface {
     
     tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('ポイント還元率', 'MODULE_PAYMENT_FETCH_GOOD_POINT_RATE', '0', 'ポイント還元率', '6', '0', now(), ".$this->site_id.")");
   }
-
-  //function remove() {
-  //  tep_db_query("delete from " . TABLE_CONFIGURATION . " where configuration_key in ('" . implode("', '", $this->keys()) . "') and site_id = '".$this->site_id."'");
-  //}
 
 /*-----------------------------
  功能：编辑来店支付方法

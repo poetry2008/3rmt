@@ -119,7 +119,6 @@ function getOs($userAgent)
   'Windows NT 4.0' => 'Windows NT 4.0',
   'WinNT'          => 'Windows NT',
   'Windows NT'     => 'Windows NT',
-  //'Win 9x 4.90'    => 'WME',
   'Win 9x 4.90'    => 'Win 9x 4.90',
   'Windows Me'     => 'Windows Me',
   'Win32'          => 'Win32',
@@ -196,7 +195,6 @@ function getHostnameExt($hostname)
 function parseKeyword($referer){
 $searchEngines = array(
 
-//" "   => array(" ", " " [, " "]),
 
 // 1
 "1.cz"        => array("1.cz", "q", "iso-8859-2"),

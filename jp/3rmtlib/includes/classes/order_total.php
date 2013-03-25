@@ -90,28 +90,6 @@
       return $order_total_array;
     }
 
-    /*
-    function output() {
-      $output_string = '';
-      if (is_array($this->modules)) {
-        reset($this->modules);
-        while (list(, $value) = each($this->modules)) {
-          $class = substr($value, 0, strrpos($value, '.'));
-          if ($GLOBALS[$class]->enabled) {
-            $size = sizeof($GLOBALS[$class]->output);
-            for ($i=0; $i<$size; $i++) {
-              $output_string .= '              <tr>' . "\n" .
-                                '                <td align="right" class="main">' . $GLOBALS[$class]->output[$i]['title'] . '</td>' . "\n" .
-                                '                <td align="right" class="main">' . $GLOBALS[$class]->output[$i]['text'] . '</td>' . "\n" .
-                                '              </tr>';
-            }
-          }
-        }
-      }
-
-      return $output_string;
-    }
-    */
 /*-------------------------------
  功能：订单的总量的配送费用
  参数：无

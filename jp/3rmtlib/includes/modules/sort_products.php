@@ -5,13 +5,6 @@
 
 
   if ( ((!$_COOKIE['sort']) || (!ereg('1?[0-9][ad]', $_COOKIE['sort'])) || (substr($_COOKIE['sort'],0,1) > sizeof($column_list)))) {
-    /*for ($col=0, $n=sizeof($column_list); $col<$n; $col++) {
-      if ($column_list[$col] == 'PRODUCT_LIST_NAME') {
-        $_COOKIE['sort'] = $col+1 . 'a';
-        $listing_sql .= " order by products_name";
-        break;
-      }
-    }*/
     $listing_sql .= "order by sort_order " . ($sort_order == 'd' ? 'desc' : '') . ", products_name, products_id";
     
   } else {
@@ -70,10 +63,6 @@ $sort_type = 'd';
 }else{
 $sort_type = 'a';
 }
-  //define('PRODUCT_SORT_BY_CHARACTER', 'アルファベット順');
-  //define('PRODUCT_SORT_BY_PRICE', '価格順');
-  //define('PRODUCT_SORT_BY_POPULAR', '人気順');
-
   define('LISTING_DISPLAY_OPTION','表示形式:');
   define('LISTING_SORT_BY','並び替え:');
   define('LISTING_PRICE_LOW','価格が安い');

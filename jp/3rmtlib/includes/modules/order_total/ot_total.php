@@ -30,7 +30,6 @@
 
       $total = @$order->info['total'];
       if ((MODULE_ORDER_TOTAL_CODT_STATUS == 'true')
-          //          && ($payment == 'cod_table')
           && isset($_SESSION['h_code_fee'])
           && (0 < intval($_SESSION['h_code_fee']))) {
         $total += intval($_SESSION['h_code_fee']);
@@ -72,15 +71,6 @@
         $total += $_SESSION['weight_fee'];  
       }
     } 
-
-                              /*
-                              'text' => '<b>' . $currencies->format_total(
-                                $total, 
-                                true, 
-                                isset($order->info['currency'])?$order->info['currency']:'', 
-                                isset($order->info['currency_value'])?$order->info['currency_value']:''
-                                ) . '</b>',
-                                */
       $this->output[] = array('title' => $this->title . ':',
                               'text' => '',
                               'value' => $total);

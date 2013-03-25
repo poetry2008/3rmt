@@ -3,18 +3,6 @@
   $Id$
 
 
-  Example usage:
-
-  $heading = array();
-  $heading[] = array('params' => 'class="menuBoxHeading"',
-                     'text'  => BOX_HEADING_TOOLS,
-                     'link'  => tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('selected_box')) . 'selected_box=tools'));
-
-  $contents = array();
-  $contents[] = array('text'  => SOME_TEXT);
-
-  $box = new box;
-  echo $box->infoBox($heading, $contents);
 */
 
   class box extends tableBlock {

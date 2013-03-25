@@ -177,7 +177,6 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
           $redirect_url = $url_test[0] .'?'. $url_test[1]; 
         }
         //do for &type turn into &amp;type url ,fix it afterlater
-        //tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return . '&type=noe', 'SSL', true, false));
         tep_redirect($redirect_url);
 
       } 
@@ -210,12 +209,7 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
 
     $s_result = !$_POST['codt_fee_error'];
 
-    if (!empty($_POST['codt_fee'])) {
-      //$s_message = $s_result ? (MODULE_PAYMENT_RAKUTEN_BANK_TEXT_FEE . '&nbsp;' . $currencies->format($_POST['codt_fee'])) : ('<font color="#FF0000">' . $_POST['codt_fee_error'] . '</font>');
-      $s_message = $s_result ? '' : ('<font color="#FF0000">' . $_POST['codt_fee_error'] . '</font>');
-    } else {
-      $s_message = $s_result ? '' : ('<font color="#FF0000">' . $_POST['codt_fee_error'] . '</font>');
-    }
+    $s_message = $s_result ? '' : ('<font color="#FF0000">' . $_POST['codt_fee_error'] . '</font>');
     return array(
                  'title' => str_replace("#TELNUMBER#",$_SESSION['h_rakuten_telnumber'],nl2br(constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION"))),
 		 'fields' => array(
@@ -390,10 +384,6 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
  返回值：乐天银行支付方法数据(array)
  ----------------------------*/
   function keys() {
-    /*
-       'MODULE_PAYMENT_RAKUTEN_BANK_IP', 
-       'MODULE_PAYMENT_RAKUTEN_BANK_URL', 
-     */
     return array( 
         'MODULE_PAYMENT_RAKUTEN_BANK_STATUS', 
         'MODULE_PAYMENT_RAKUTEN_BANK_LIMIT_SHOW', 

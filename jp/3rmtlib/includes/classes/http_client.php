@@ -1,28 +1,6 @@
 <?php
 /*
   $Id$
-
-  Minimal Example:
-
-  $http = new httpClient();
-  $http->Connect("somehost", 80) or die("Connect problem");
-  $status = $http->Get("/index.html");
-  if ($status != 200) {
-    die("Problem : " . $http->getStatusMessage());
-  } else {
-    echo $http->getBody();
-  }
-  $http->Disconnect();
-
-  Persistent Example:
-
-  $http = new httpClient("dir.yahoo.com", 80);
-  $http->addHeader("Host", "dir.yahoo.com");
-  $http->addHeader("Connection", "keep-alive");
-
-  if ($http->Get("/Reference/Libraries/") == 200) $page1 = $http->getBody();
-  if ($http->Get("/News_and_Media/") == 200 ) $page2 = $http->getBody();
-  $http->disconnect();
 */
 
   class httpClient {

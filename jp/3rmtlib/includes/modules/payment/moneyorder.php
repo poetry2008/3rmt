@@ -14,7 +14,6 @@ class moneyorder extends basePayment implements paymentInterface {
  -----------------------------*/
   public function loadSpecialSettings($site_id=0)
   {
-    //            global $order;
     $this->site_id = $site_id;
     $this->code        = 'moneyorder';
     $this->show_payment_info = 0;
@@ -83,38 +82,6 @@ class moneyorder extends basePayment implements paymentInterface {
 		       ),);
     }
   }
-  /*
-  public function selection($theData) {
-
-    global $currencies;
-    global $order;
-    $returnArray = array(
-			 "id"=>$this->code,
-			 'module' => '銀行振込',
-			 'description'=>TS_MODULE_PAYMENT_MONEYORDER_TEXT_DESCRIPTION,
-			 'field_description'=>'',
-			 'footer'=>"",
-			 'fields'=>$this->fields($theData),
-			 );
-    $this->selection = $returnArray;
-    return $returnArray;
-
-
-    global $currencies;
-      
-    if (!empty($this->n_fee)) {
-      $s_message = $f_result ? (TS_MODULE_PAYMENT_MONEY_ORDER_TEXT_FEE . '&nbsp;' .  $currencies->format($this->n_fee)):('<font color="#FF0000">'.$this->s_error.'</font>'); 
-    } else {
-      $s_message = $f_result ? '':('<font color="#FF0000">'.$this->s_error.'</font>'); 
-    }
-    return array('id' => $this->code,
-                 'module' => $this->title,
-                 'fields' => array(array('title' => $this->explain,'field' => ''),
-                                   array('title' => $s_message, 'field' => $added_hidden) 
-                                   ));
-    
-  }
-*/
 /*--------------------------
  功能：确认检查前台支付方法 
  参数：无
@@ -131,12 +98,7 @@ class moneyorder extends basePayment implements paymentInterface {
   function confirmation() {
     global $currencies;
     $s_result = $_SESSION['h_code_fee'];
-    if (!empty($_SESSION['h_code_fee'])) {
-      //$s_message = $s_result ? (MODULE_PAYMENT_MONEY_ORDER_TEXT_FEE . '&nbsp;' .  $currencies->format($_POST['money_order_fee'])):('<font color="#FF0000">'.$_POST['money_order_fee_error'].'</font>'); 
-      $s_message = $s_result ? '':('<font color="#FF0000">'.$_SESSION['h_code_fee'].'</font>'); 
-    } else {
-      $s_message = $s_result ? '':('<font color="#FF0000">'.$_SESSION['h_code_fee'].'</font>'); 
-    }
+    $s_message = $s_result ? '':('<font color="#FF0000">'.$_SESSION['h_code_fee'].'</font>'); 
     return array(
                  'title' => nl2br(constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION")),
                  'fields' => array(
@@ -164,7 +126,6 @@ class moneyorder extends basePayment implements paymentInterface {
     $s_message = $_POST['code_fee_error']?$_POST['money_order_fee_error']:sprintf(TS_MODULE_PAYMENT_MONEY_ORDER_TEXT_MAILFOOTER, $currencies->format($total), $currencies->format($_SESSION['h_code_fee']));
       
     return tep_draw_hidden_field('money_order_message', htmlspecialchars($s_message)). tep_draw_hidden_field('code_fee', $_SESSION['h_code_fee']);
-    //return false;
   }
 /*-----------------------
  功能：银行转账前
@@ -176,7 +137,6 @@ class moneyorder extends basePayment implements paymentInterface {
 
     $this->email_footer = str_replace("\r\n", "\n", $_POST['money_order_message']);
       
-    //return false;
   }
 /*-------------------------
  功能：银行转账后 

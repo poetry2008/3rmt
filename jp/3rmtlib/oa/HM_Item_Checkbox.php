@@ -8,12 +8,7 @@ class HM_Item_Checkbox extends HM_Item_Basic
   var $hasRequire = true;
   var $hasThename = true;
   var $hasSelect  = true;
-  //  var $hasSubmit = true;
   var $hasFrontText  = true;  
-  //  var $hasBackText  = true;  
-  //  var $hasDefaultValue  = true;
-  //  var $hasSize  = true;
-  
   var $must_comment = TEXT_CHECKBOX_MUST_COMMENT;
   var $status_comment = TEXT_CHECKBOX_STATUS_COMMENT;
   var $front_comment = TEXT_CHECKBOX_FRONT_COMMENT;
@@ -135,7 +130,6 @@ class HM_Item_Checkbox extends HM_Item_Basic
       onClick='insertAitem(this)' >";
     if(count($radios)){
       foreach($radios as $key=>$radio){
-        //$result.= "<table width='100%' border='0'><tr><td width='5%' valign='top'>Checkbox</td><td width='15%' class='checkbox_item'><input type='text' size='40' name='radios[]' value=$radio />".$_result."</td><td valign='top'><font size='2' color='#ff0000'>*前方文字 チェックボックス ○○○○ </font>";
         $result.= "<tr><td width='5%' valign='top'>Checkbox</td><td width='15%'
           class='checkbox_item'><input type='text' size='40' name='radios[]'
           value=$radio />".$_result."</td><td valign='top'><font size='2'

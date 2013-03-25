@@ -30,11 +30,6 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       $this->defaultValue = $this->loadedValue;
     }  
  
-/*    if(strlen($this->thename)){
-      echo "<div >";
-      echo $this->thename;
-      echo "</div>";
-    }*/
     if($this->require){
       $classrequire = 'require';
     }else{
@@ -54,7 +49,6 @@ class HM_Item_Autocalculate extends HM_Item_Basic
     $i = 0;
 
     // 重新取一次 订单类型
-    //$order_type =  tep_check_pre_order_type($this->order_id);
     $order_type =  4;
     $noproduct = true;
     while ($opp = tep_db_fetch_array($orders_products_query)) {
@@ -103,10 +97,8 @@ class HM_Item_Autocalculate extends HM_Item_Basic
         $i++;
         continue;
       }
-      //      echo $op['products_bflag'];
       $noproduct = false;
       if ($order_type==3 and $op['products_bflag']==1){
-        // $i++;
         continue;
       }
       //checkbox 和 input 值 使用|分隔
@@ -144,9 +136,6 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       $i++;
       echo "</div>";
     }
-    if($noproduct){
-      //noproducts;
-      }
   }
 
 /* -------------------------------------
@@ -273,17 +262,6 @@ class HM_Item_Autocalculate extends HM_Item_Basic
 ------------------------------------ */
   function initDefaultValue($order_id,$form_id,$group_id)
   {
-    //    $sql = 'select '.$this->datetype.' dp from orders where orders_id = "'.$order_id.'"';
-    //    $result = tep_db_fetch_array(tep_db_query($sql));
-    //    $theDate = $result['dp'];
-    /*
-      $theDate = time();
-      $this->defaultValue = date('Y-m-d',$theDate);
-      $this->m= date('m',strtotime($theDate));
-      $this->d= date('d',strtotime($theDate));
-      $this->y= date('Y',strtotime($theDate));
-    */
-    //ORDER id
     $this->order_id = $order_id;
   }
 
@@ -316,7 +294,6 @@ class HM_Item_Autocalculate extends HM_Item_Basic
           $id_to_qua = explode('|',$value);
           $id = $id_to_qua[2];
           $qua = $id_to_qua[1];
-          //          echo ("update ".TABLE_PRODUCTS." set products_real_quantity=`products_real_quantity`-".(int)$qua." where products_id='".$id."'");          
           tep_db_query("update ".TABLE_PRODUCTS." set products_real_quantity=`products_real_quantity`-".(int)$qua." where products_id='".$id."'");   
         }
       }
@@ -336,8 +313,6 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       $item_value = unserialize($item_res->option); 
     }
     $formString  = '';
-    //    $formString .= "必須<input type='checkbox' name='require' ".$checked."/></br>\n";
-    //    $formString .= "项目名<input type='text' name='thename' value='".(isset($item_value['thename'])?$item_value['thename']:'')."'/>";
     $formString .= "</br>\n";
     return $formString;
   }

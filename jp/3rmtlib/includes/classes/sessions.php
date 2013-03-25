@@ -485,18 +485,6 @@
       }
     }
 
-/*
-// Check the REQUEST_URI symbol for a string of the form
-// '<session-name>=<session-id>' to allow URLs of the form
-// http://yoursite/<session-name>=<session-id>/script.php 
-    if (empty($session->id)) {
-      eregi($session->name . '=([^/]+)', $GLOBALS['REQUEST_URI'], $regs);
-      $regs[1] = trim($regs[1]);
-      if (!empty($regs[1])) {
-        $session->id = $regs[1];
-      }
-    }
-*/
 
 // Check whether the current request was referred to by
 // an external site which invalidates the previously found ID

@@ -91,11 +91,7 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
       
       $s_result = !$_POST['free_payment_order_fee_error'];
       $this->calc_fee($order->info['total']);
-      if (!empty($this->n_fee)) {
-        $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['free_payment_order_fee_error'].'</font>'); 
-      } else {
-        $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['free_payment_order_fee_error'].'</font>'); 
-      }
+      $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['free_payment_order_fee_error'].'</font>'); 
     return array(
 		 'title' => nl2br(constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION")),
 		 'fields' => array(
@@ -193,9 +189,6 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('ポイント還元率', 'MODULE_PAYMENT_FREE_PAYMENT_POINT_RATE', '0', 'ポイント還元率', '6', '0', now(), ".$this->site_id.")");
     }
 
-    //function remove() {
-    //  tep_db_query("delete from " . TABLE_CONFIGURATION . " where configuration_key in ('" . implode("', '", $this->keys()) . "') and site_id = '".$this->site_id."'");
-    //}
 
 /*-----------------------------
  功能：编辑来店支付方法
