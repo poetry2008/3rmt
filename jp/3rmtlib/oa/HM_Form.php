@@ -119,6 +119,13 @@ class HM_Form extends DbRecord
             }
           });
       }
+
+      $("#qa_form").find("input[type=text]").each(function (){
+        if( $(this).val().length >$($("#size_"+$(this).attr('name'))).val()){
+          canEnd = false; 
+        }
+      });
+
       if ((canEnd == true ) || (canceled == true)){
         $("#canEndDiv").show();
       }else{
@@ -262,12 +269,12 @@ class HM_Form extends DbRecord
                             if($(this).attr('size')){
                               $(this).bind('keyup',function(){
                                   checkLockOrder();
-                                  if( $(this).val().length >$(this).attr('size')){
+                                  if( $(this).val().length >$($("#size_"+$(this).attr('name'))).val()){
                                     //               	$(this).val($(this).val().substr(0,$(this).attr('size')));
                                     $(this).parent().parent().find('.alertmsg').remove();
                                     $("<span class='alertmsg'><?php echo
-                                      OA_FORM_TEXT_MAX_INPUT;?>"+$(this).attr('size')+"<?php
-                                      echo OA_FORM_TEXT_MAX_INPUT_END;?>"+$(this).attr('size')+"<?php
+                                      OA_FORM_TEXT_MAX_INPUT;?>"+$($("#size_"+$(this).attr('name'))).val()+"<?php
+                                      echo OA_FORM_TEXT_MAX_INPUT_END;?>"+$($("#size_"+$(this).attr('name'))).val()+"<?php
                                       echo OA_FORM_TEXT_MAX_INPUT_IN;?></span>").insertAfter($(this).next());
                                   }else{
           $(this).parent().parent().find('.alertmsg').remove();
@@ -300,7 +307,14 @@ class HM_Form extends DbRecord
       });
   $("#qa_form").submit(function(){
 
-     if(complete_flag){
+     var submit_flag = true;
+     $("#qa_form").find("input[type=text]").each(function (){
+        if( $(this).val().length >$($("#size_"+$(this).attr('name'))).val()){
+          submit_flag = false; 
+        }
+     });
+
+     if(complete_flag && submit_flag){
         $('body').css('cursor','wait');
         $('#wait').show();
      }
@@ -324,7 +338,7 @@ class HM_Form extends DbRecord
               }
             }
         };
-      if(complete_flag){
+      if(complete_flag && submit_flag){
         $(this).ajaxSubmit(options);
       }
 

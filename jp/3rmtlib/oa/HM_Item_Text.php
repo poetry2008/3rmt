@@ -55,8 +55,9 @@ class HM_Item_Text extends HM_Item_Basic
     }else {
       $classrequire = '';
     }
-    echo $this->beforeInput."<input type='text' class='".$classrequire."'size='".$this->size."' name='".$this->formname."'
-      value='".$this->getDefaultValue()."' />"."<div>".$this->afterInput."</div>";
+    $input_size = $this->size > 28 ? 28 : $this->size;
+    echo $this->beforeInput."<input type='text' class='".$classrequire."'size='".$input_size."' name='".$this->formname."'
+      value='".$this->getDefaultValue()."' /><input type='hidden' id='size_".$this->formname."' value='".$this->size."'>"."<div>".$this->afterInput."</div>";
     echo "</td>";
   }
 

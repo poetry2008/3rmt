@@ -1838,7 +1838,8 @@ menusidebar
 	line-height:18px;                     
 }
 .menusidebar span, .menusidebarover span{
-	margin-right:5px;
+	margin-left:5px;
+	float:left;
 }
 .dataTableHeadingContent .title_link{
     font-size: 11px;
