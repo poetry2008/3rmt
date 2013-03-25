@@ -164,7 +164,18 @@ class HM_Form extends DbRecord
       $(ele).parent().parent().children().find('input').each(
                                                              function(){
                                                                if($(this).attr("type")=='text' || $(this).attr("type") =='hidden'){
-                                                                 $(this).val('');
+                                                                 if($(this).attr("type") =='hidden'){
+                                                                   if($(this).attr("id")){
+                                                                     var input_size = $(this).attr("id");
+                                                                     if(!(input_size.substr(0,5) == 'size_')){
+                                                                       $(this).val('');
+                                                                     }
+                                                                   }else{
+                                                                     $(this).val('');
+                                                                   }
+                                                                 }else{
+                                                                   $(this).val('');
+                                                                 }
                                                                }
                                                                if(this.checked ==true ){
                                                                  $(this).removeAttr('checked');
