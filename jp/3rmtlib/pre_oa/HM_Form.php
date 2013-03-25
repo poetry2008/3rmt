@@ -169,8 +169,12 @@ class HM_Form extends DbRecord
                                                              function(){
                                                                if($(this).attr("type")=='text' || $(this).attr("type") =='hidden'){
                                                                  if($(this).attr("type") =='hidden'){ 
-                                                                   var input_size = $(this).attr("name");
-                                                                   if(!input_size.substr(0,5) == 'size_'){
+                                                                   if($(this).attr("id")){
+                                                                     var input_size = $(this).attr("id");
+                                                                     if(!(input_size.substr(0,5) == 'size_')){
+                                                                       $(this).val('');
+                                                                     }
+                                                                   }else{
                                                                      $(this).val('');
                                                                    }
                                                                  }else{
