@@ -575,7 +575,6 @@ default:
       $contents[] = array('align' => 'left', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.TEXT_UNSET_DATA);
       }
     }
-    // 临时隐藏
     $contents[] = array('text' => '<div style="word-wrap:break-word;width:200px;overflow:hidden;"><br>' . $keys . '</div>');
   } else {
     $contents[] = array('text' => isset($mInfo->description)?$mInfo->description:'');
