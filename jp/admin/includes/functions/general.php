@@ -6272,12 +6272,29 @@ function tep_display_google_results($from_url='', $c_type=false){
     返回值: 注文数(int) 
  ------------------------------------ */
   function tep_get_order_cnt_by_pid($pid, $site_id = ''){
+    $query_str = ''; 
+    $query_num = '';
+    if(!empty($site_id)){
+
+      if(get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',$site_id) != ''){
+          $query_num = get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',$site_id);
+      }
+    }else{
+      if(get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
+          $query_num = get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
+      }
+    }
+
+    if($query_num != ''){
+
+      $query_str = " and date_format(orders.date_purchased,'%Y-%m-%d %H:%i:%s') >= '".date('Y-m-d H:i:s',strtotime('-'.$query_num.' minutes'))."'";
+    }
     $query = (tep_db_query("select
           orders_products.products_quantity as pq 
           ,finished,flag_qaf,orders_status 
           from orders_products left join
           orders on orders.orders_id=orders_products.orders_id 
-          where products_id='".$pid."' and date(orders.date_purchased) >= '".date('Y-m-d 00:00:00',strtotime('-'.((get_configuration_by_site_id('ORDER_EFFECTIVE_DATE') != '0')?(get_configuration_by_site_id('ORDER_EFFECTIVE_DATE')-1):'0').'day'))."'".(!empty($site_id)?" and orders.site_id = '".$site_id."'":"").""));
+          where products_id='".$pid."'".$query_str.(!empty($site_id)?" and orders.site_id = '".$site_id."'":"").""));
     $cnt = 0;
     while($row = tep_db_fetch_array($query)){
       if($row['finished']=='0'&&$row['flag_qaf']=='0' && !check_order_transaction_button($row['orders_status'])){

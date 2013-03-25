@@ -4300,9 +4300,26 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   }
                 }
                 //同行专用
+                $query_str = ''; 
+                $query_num = '';
+                if(!empty($site_id)){
+
+                  if(get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',$site_id) != ''){
+                    $query_num = get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',$site_id);
+                  }
+                }else{
+                  if(get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
+                    $query_num = get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
+                  }
+                }
+
+                if($query_num != ''){
+
+                  $query_str = " and date_format(pre.date_purchased,'%Y-%m-%d %H:%i:%s') >= '".date('Y-m-d H:i:s',strtotime('-'.$query_num.' minutes'))."'";
+                }
                 $target_cnt=$products_count-1;
                 $products_preorder_params .= 'class="dataTableContent" align="center"';
-                $preorder_products_raw = tep_db_query("select sum(prep.products_quantity) as pre_total from ".TABLE_PREORDERS_PRODUCTS." prep ,".TABLE_PREORDERS." pre where  prep.products_id = '".$products['products_id']."' and prep.orders_id = pre.orders_id and pre.finished !='1' and pre.flag_qaf != '1' and date(pre.date_purchased) >= '".date('Y-m-d 00:00:00',strtotime('-'.((get_configuration_by_site_id('ORDER_EFFECTIVE_DATE') != '0')?(get_configuration_by_site_id('ORDER_EFFECTIVE_DATE')-1):'0').'day'))."'".(!empty($site_id)?" and pre.site_id = '".$site_id."'":"")); 
+                $preorder_products_raw = tep_db_query("select sum(prep.products_quantity) as pre_total from ".TABLE_PREORDERS_PRODUCTS." prep ,".TABLE_PREORDERS." pre where  prep.products_id = '".$products['products_id']."' and prep.orders_id = pre.orders_id and pre.finished !='1' and pre.flag_qaf != '1'".$query_str.(!empty($site_id)?" and pre.site_id = '".$site_id."'":"")); 
                 $preorder_products_res = tep_db_fetch_array($preorder_products_raw);
                 if ($preorder_products_res) {
                   if ($preorder_products_res['pre_total']) {
