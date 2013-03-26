@@ -2478,13 +2478,35 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
       $orders_query_raw = " select distinct op.orders_id from " .  TABLE_PREORDERS_PRODUCTS . " op, ".TABLE_PREORDERS." o ".$sort_table." where ".$sort_where." op.orders_id = o.orders_id and op.products_name like '%".$_GET['keywords']."%' " . " and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".$order_str;
     }  elseif (isset($_GET['keywords']) && isset($_GET['search_type']) &&
         $_GET['search_type'] == 'sproducts_id' && !$_GET['type'] && !$payment) {
-      //未完成订单查询 
+        //未完成订单查询 
+        $query_str = ''; 
+        $query_num = '';
+        if(!empty($site_id)){
+
+           if(get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',$site_id) != ''){
+               $query_num = get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',$site_id);
+           }else{
+
+               if(get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
+                    $query_num = get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
+               }
+           }
+        }else{
+               if(get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
+                    $query_num = get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
+               }
+        }
+
+        if($query_num != ''){
+
+             $query_str = "and date_format(o.date_purchased,'%Y-%m-%d %H:%i:%s') >= '".date('Y-m-d H:i:s',strtotime('-'.$query_num.' minutes'))."' ";
+        }   
       $orders_query_raw = " select distinct op.orders_id from " .  
         TABLE_PREORDERS_PRODUCTS . " op, ".TABLE_PREORDERS." o ".
         $sort_table." where ".$sort_where." op.orders_id = o.orders_id 
         and op.products_id = '".$_GET['keywords']."' " . " 
-        and o.finished != '1' 
-        and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".$order_str;
+        and o.finished != '1' and o.flag_qaf != '1' ".$query_str
+        ."and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".$order_str;
     }elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && preg_match('/^os_\d+$/', $_GET['search_type'])))) {
     //状态查询 
     if (!empty($_GET['keywords'])) {

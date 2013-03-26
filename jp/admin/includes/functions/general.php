@@ -6278,6 +6278,11 @@ function tep_display_google_results($from_url='', $c_type=false){
 
       if(get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',$site_id) != ''){
           $query_num = get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',$site_id);
+      }else{
+
+          if(get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
+            $query_num = get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
+          }
       }
     }else{
       if(get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){

@@ -1559,13 +1559,34 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
     $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".str_replace('torihiki_date_error desc,date_purchased_error desc,', '', $order_str);
   } elseif (isset($_GET['keywords']) && isset($_GET['search_type']) && $_GET['search_type'] == 'sproducts_id' ) {
     //未完成订单查询 
+    $query_str = ''; 
+    $query_num = '';
+    if(!empty($site_id)){
+
+      if(get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',$site_id) != ''){
+          $query_num = get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',$site_id);
+      }else{
+
+          if(get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
+            $query_num = get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
+          }
+      }
+    }else{
+      if(get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
+          $query_num = get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
+      }
+    }
+
+    if($query_num != ''){
+
+      $query_str = " and date_format(o.date_purchased,'%Y-%m-%d %H:%i:%s') >= '".date('Y-m-d H:i:s',strtotime('-'.$query_num.' minutes'))."'";
+    } 
     $orders_query_raw = " select distinct op.orders_id from " . TABLE_ORDERS_PRODUCTS . " op
-      ,".TABLE_ORDERS." o 
+      ,".TABLE_ORDERS." o,".TABLE_ORDERS_STATUS." o_s 
       ".$sort_table." where ".$sort_where." 
-      o.orders_id = op.orders_id and op.products_id ";
+      o.orders_id = op.orders_id and o.orders_status = o_s.orders_status_id and op.products_id ";
     $orders_query_raw .=  "= '".$_GET['keywords']."' " ;
-    $orders_query_raw .= " and o.finished = '0' and flag_qaf = '0' and date(o.date_purchased) >=
-      '".date('Y-m-d 00:00:00',strtotime('-'.((get_configuration_by_site_id('ORDER_EFFECTIVE_DATE') != '0')?(get_configuration_by_site_id('ORDER_EFFECTIVE_DATE')-1):'0').'day'))."' ";
+    $orders_query_raw .= " and o.finished = '0' and flag_qaf = '0'and o_s.is_cancle = 0".$query_str;
     $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".str_replace('torihiki_date_error desc,date_purchased_error desc,', '', $order_str);
   } elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && preg_match('/^os_\d+$/', $_GET['search_type'])))) {
     //订单状态查询 
