@@ -38,12 +38,10 @@ class AD_Option_Group extends AD_Option_DbRecord
 ------------------------------------ */
   function render($option_error_array,$is_space = false)
   {
-    //echo '<table border="0" width="100%" cellspacing="0" cellpadding="2">';
     foreach ($this->items as $item){
       echo '<tr id="td_'.$item->name_flag.'">';
       $item->render($option_error_array,$is_space);
       echo "</tr>";
     }
-    //echo '</table>';
   }
 }

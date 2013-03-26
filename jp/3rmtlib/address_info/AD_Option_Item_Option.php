@@ -15,9 +15,6 @@ class AD_Option_Item_Option extends AD_Option_Item_Basic
   {
      if (strlen($this->front_title)) {
        echo '<td class="main" width="93">';
-       if (NEW_STYLE_WEB !== true) {
-         //echo '&nbsp;'; 
-       }
        echo $this->front_title.':';
        echo '</td>';
      }
