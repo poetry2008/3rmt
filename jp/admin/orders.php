@@ -2933,7 +2933,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         <h3><?php echo TEXT_ORDER_ANSWER;?></h3>
         <!--new order answer{{-->
           <?php
-            $order_id = $order->info['orders_id'];
+          $order_id = $order->info['orders_id'];
           $formtype = tep_check_order_type($order_id);
           $payment_romaji = tep_get_payment_code_by_order_id($order_id); 
           $oa_form_sql = "select * from ".TABLE_OA_FORM." where formtype = '".$formtype."' and payment_romaji = '".$payment_romaji."'";
