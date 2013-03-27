@@ -3,7 +3,7 @@
   $Id$
 */
   require('includes/application_top.php');
-
+  
   if (tep_session_is_registered('customer_id')) {
     // ccdd
     $account = tep_db_query("
@@ -108,7 +108,34 @@ if (!isset($_GET['send_to'])) $_GET['send_to']=NULL;
     } else {
       $fromname_error = false;
     }
-
+    
+    $random_code_info = '';
+    if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
+      if (empty($_POST['random_code'])) {
+        //验证码为空 
+        $random_code_error = true;
+        $random_code_info = VALIDATE_RANDOM_CODE_IS_NULL; 
+        $error = true;
+      } else {
+        if (md5(strtolower($_POST['random_code'])) != $_SESSION['random_code']) {
+          //验证码不一致 
+          $random_code_error = true;
+          $random_code_info = VALIDATE_RANDOM_CODE_NOT_SAME; 
+          $error = true;
+        } else {
+          if ($error == true) {
+            $random_code_error = true;
+            $random_code_info = VALIDATE_RANDOM_CODE_IS_NULL; 
+            $error = true;
+          } else {
+            $random_code_error = false;
+          }
+        }
+      }
+    } else {
+      $random_code_error = false;
+    }
+    
     if (isset($_GET['action']) && ($_GET['action'] == 'process') && ($error == false)) {
       $email_subject = sprintf(TEXT_EMAIL_SUBJECT, $from_name, STORE_NAME);
       $email_body = sprintf(TEXT_EMAIL_INTRO, $_POST['friendname'], $from_name, $_POST['products_name'], STORE_NAME) . "\n\n";
@@ -183,6 +210,30 @@ if (!isset($_GET['send_to'])) $_GET['send_to']=NULL;
             </tr> 
           </table></td> 
         </tr> 
+        <tr>
+          <td class="main">
+          <br> 
+          <table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
+            <tr>
+              <td class="main">
+                <table border="0" cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td class="main"><?php echo VALIDATE_RANDOM_CODE_TEXT;?></td>
+                    <td class="main">
+                      <img src="random_code.php" border="0" align="left">&nbsp;&nbsp;<input type="text" name="random_code" size="7" value=""> 
+                      <?php
+                       if ($random_code_error == true) {
+                         echo '<span class="errorText">'.$random_code_info.'</span>'; 
+                       }
+                      ?>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+          </td>
+        </tr>
         <tr> 
           <td class="formAreaTitle"><br> 
           <?php echo FORM_TITLE_FRIEND_MESSAGE; ?></td> 
