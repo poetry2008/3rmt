@@ -6290,9 +6290,11 @@ function tep_display_google_results($from_url='', $c_type=false){
       }
     }
 
-    if($query_num != ''){
+    if(!empty($site_id) && $site_id != 0){ 
+      if($query_num != ''){
 
-      $query_str = " and date_format(orders.date_purchased,'%Y-%m-%d %H:%i:%s') >= '".date('Y-m-d H:i:s',strtotime('-'.$query_num.' minutes'))."'";
+        $query_str = " and date_format(orders.date_purchased,'%Y-%m-%d %H:%i:%s') >= '".date('Y-m-d H:i:s',strtotime('-'.$query_num.' minutes'))."'";
+      }
     }else{
 
       $site_id_query = tep_db_query("select id from ".TABLE_SITES);
