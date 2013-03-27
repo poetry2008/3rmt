@@ -4222,24 +4222,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                         $query_temp_num = get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
                       }
                     } 
-                    $site_time_array[$site_temp_id] = $query_temp_num; 
-                    $orders_query_temp_num = '';
-                    if(!empty($site_temp_id)){
-
-                      if(get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',$site_temp_id) != ''){
-                        $orders_query_temp_num = get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',$site_temp_id);
-                      }else{
-
-                        if(get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
-                          $orders_query_temp_num = get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
-                        }
-                      }
-                    }else{
-                      if(get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
-                        $orders_query_temp_num = get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
-                      }
-                    }
-                    $orders_site_time_array[$site_temp_id] = $orders_query_temp_num;
+                    $site_time_array[$site_temp_id] = $query_temp_num;  
               }
               tep_db_free_result($site_id_query); 
               if(in_array('',$site_time_array)){
