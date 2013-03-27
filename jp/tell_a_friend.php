@@ -3,7 +3,7 @@
   $Id$
 */
   require('includes/application_top.php');
-  
+
   if (tep_session_is_registered('customer_id')) {
     // ccdd
     $account = tep_db_query("
