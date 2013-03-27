@@ -28,6 +28,6 @@ define('TEXT_EMAIL_LINK', '＊この商品をご覧になるには、下のリ�
 . '  リンクをブラウザにコピー＆ペーストしてください:' . "\n\n" . '%s');
 define('TEXT_EMAIL_SIGNATURE', 'ご来店をお待ちいたします。' . "\n\n" . EMAIL_SIGNATURE);
 define('VALIDATE_RANDOM_CODE_TEXT', '認証コード:');
-define('VALIDATE_RANDOM_CODE_NOT_SAME', '認証コードを入力しなおしてください!');
+define('VALIDATE_RANDOM_CODE_NOT_SAME', '認証コードを再度入力してください。');
 define('VALIDATE_RANDOM_CODE_IS_NULL', '必須項目エラー');
 ?>
