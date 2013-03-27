@@ -1580,6 +1580,39 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
     if($query_num != ''){
 
       $query_str = " and date_format(o.date_purchased,'%Y-%m-%d %H:%i:%s') >= '".date('Y-m-d H:i:s',strtotime('-'.$query_num.' minutes'))."'";
+    }else{
+
+      $site_id_query = tep_db_query("select id from ".TABLE_SITES);
+      $query_str = ' and (';
+      while($site_id_array = tep_db_fetch_array($site_id_query)){
+
+        $site_temp_id = $site_id_array['id'];
+        $query_temp_num = '';
+        if(!empty($site_temp_id)){
+
+          if(get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',$site_temp_id) != ''){
+            $query_temp_num = get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',$site_temp_id);
+          }else{
+
+            if(get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
+              $query_temp_num = get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
+            }
+          }
+        }else{
+            if(get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
+              $query_temp_num = get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
+            }
+        } 
+        $query_str .= "(o.site_id = ".$site_temp_id;
+        if($query_temp_num != ''){
+          $query_str .= " and date_format(o.date_purchased,'%Y-%m-%d %H:%i:%s') >= '".date('Y-m-d H:i:s',strtotime('-'.$query_temp_num.' minutes'))."') or ";
+        }else{
+          $query_str .= ') or ';
+        }
+      }
+      tep_db_free_result($site_id_query);
+      $query_str = substr($query_str,0,-4);
+      $query_str .= ')';
     } 
     $orders_query_raw = " select distinct op.orders_id from " . TABLE_ORDERS_PRODUCTS . " op
       ,".TABLE_ORDERS." o,".TABLE_ORDERS_STATUS." o_s 

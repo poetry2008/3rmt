@@ -4318,9 +4318,44 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   }
                 }
 
-                if($query_num != ''){
+                if(!empty($site_id) && $site_id != 0){
+                  if($query_num != ''){
 
-                  $query_str = " and date_format(pre.date_purchased,'%Y-%m-%d %H:%i:%s') >= '".date('Y-m-d H:i:s',strtotime('-'.$query_num.' minutes'))."'";
+                    $query_str = " and date_format(pre.date_purchased,'%Y-%m-%d %H:%i:%s') >= '".date('Y-m-d H:i:s',strtotime('-'.$query_num.' minutes'))."'";
+                  }
+                }else{
+
+                  $site_id_query = tep_db_query("select id from ".TABLE_SITES);
+                  $query_str = ' and (';
+                  while($site_id_array = tep_db_fetch_array($site_id_query)){
+
+                    $site_temp_id = $site_id_array['id'];
+                    $query_temp_num = '';
+                    if(!empty($site_temp_id)){
+
+                      if(get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',$site_temp_id) != ''){
+                        $query_temp_num = get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',$site_temp_id);
+                      }else{
+
+                        if(get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
+                          $query_temp_num = get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
+                        }
+                      }
+                    }else{
+                      if(get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
+                        $query_temp_num = get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
+                      }
+                    } 
+                    $query_str .= "(pre.site_id = ".$site_temp_id;
+                    if($query_temp_num != ''){
+                      $query_str .= " and date_format(pre.date_purchased,'%Y-%m-%d %H:%i:%s') >= '".date('Y-m-d H:i:s',strtotime('-'.$query_temp_num.' minutes'))."') or ";
+                    }else{
+                      $query_str .= ') or ';
+                    }
+                  }
+                  tep_db_free_result($site_id_query);
+                  $query_str = substr($query_str,0,-4);
+                  $query_str .= ')';
                 }
                 $target_cnt=$products_count-1;
                 $products_preorder_params .= 'class="dataTableContent" align="center"';
