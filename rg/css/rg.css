@@ -2150,3 +2150,12 @@ border:2px solid #FF8080;
 .input_box input,.input_box span{ float:left; line-height:22px;}
 .input_both{clear:both;}
 .text_box{ margin-top:5px;}
+.input_number_box{
+	margin-top:0;
+	float:left;
+        height:20px;
+}
+.img_box{
+	float:left;
+	*margin:0 5px 0 -3px;
+}

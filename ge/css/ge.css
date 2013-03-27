@@ -1620,3 +1620,12 @@ TEXTAREA {
 	display:block;
 	padding-right:5px;
 }
+.input_number_box{
+	margin-top:0;
+	float:left;
+	height:20px;
+}
+.img_box{
+	float:left;
+	*margin-left:-3px;
+}

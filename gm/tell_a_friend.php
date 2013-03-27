@@ -60,8 +60,13 @@
     <?php
   if ($valid_product == false) {
 ?>
-    <p><?php echo HEADING_TITLE_ERROR; ?><br>
-      <?php echo ERROR_INVALID_PRODUCT; ?> </p>
+    <h2><?php echo HEADING_TITLE_ERROR; ?></h2>
+	<table width="100%" cellspacing="0" cellpadding="0" border="0" id="detail-table-noframe">
+	<tr><td>
+      <?php echo ERROR_INVALID_PRODUCT; ?>
+	  </td>
+	  </tr>
+	  </table>
     <?php
   } else {
     $product_info = tep_db_fetch_array($product_info_query);
