@@ -1977,3 +1977,11 @@ color: #005c69;
 .input_both{clear:both;}
 .text_box{ margin-top:3px;}
 .open_button{ padding-top:5px;}
+.input_number_box{
+	float:left;
+	height:20px;
+}
+.img_box{
+	float:left;
+	*margin:0 5px 0 -3px;
+}

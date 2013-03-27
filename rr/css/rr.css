@@ -2328,9 +2328,10 @@ border:1px solid #CAC6BE;
 .input_box input,.input_box span{ float:left; line-height:22px;}
 .input_both{clear:both;}
 .text_box{ margin-top:5px;}
-.input_box{
+.input_number_box{
 	margin-top:0;
 	float:left;
+        height:20px;
 }
 .img_box{
 	float:left;

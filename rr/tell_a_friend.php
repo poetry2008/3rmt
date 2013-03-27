@@ -223,7 +223,7 @@
                     <td class="main"><?php echo VALIDATE_RANDOM_CODE_TEXT;?></td>
                     <td class="main">
                       <div class="img_box"><img src="random_code.php" border="0" align="left"></div>
-					 <input type="text" class="input_box" name="random_code" size="7" value="">
+					 <input type="text" class="input_number_box" name="random_code" size="7" value="">
                       <?php
                        if ($random_code_error == true) {
                          echo '<span class="errorText">'.$random_code_info.'</span>'; 
