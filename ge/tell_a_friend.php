@@ -59,8 +59,8 @@
     <?php
   if ($valid_product == false) {
 ?>
-    <p class="main"><?php echo HEADING_TITLE_ERROR; ?><br>
-      <?php echo ERROR_INVALID_PRODUCT; ?> </p>
+	<h1 class="pageHeading"><?php echo HEADING_TITLE_ERROR; ?></h1>
+      <p><?php echo ERROR_INVALID_PRODUCT; ?> </p>
     <?php
   } else {
     $product_info = tep_db_fetch_array($product_info_query);
@@ -243,7 +243,8 @@
                 <tr>
                   <td class="main" width="150"><?php echo VALIDATE_RANDOM_CODE_TEXT;?></td>
                   <td class="main">
-                    <img src="random_code.php" border="0" align="left">&nbsp;&nbsp;<input type="text" name="random_code" size="7" value=""> 
+                    <div class="img_box"><img src="random_code.php" border="0" align="left"></div>
+					<input type="text" class="input_box" name="random_code" size="7" value=""> 
                     <?php
                      if ($random_code_error == true) {
                        echo '<br><span class="errorText">'.$random_code_info.'</span>'; 

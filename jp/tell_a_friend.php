@@ -58,8 +58,8 @@ if (!isset($_GET['send_to'])) $_GET['send_to']=NULL;
       <td valign="top" id="contents"> <?php
   if ($valid_product == false) {
 ?> 
-      <p class="main"><?php echo HEADING_TITLE_ERROR; ?><br> 
-        <?php echo ERROR_INVALID_PRODUCT; ?> </p> 
+	<h1 class="pageHeading"><?php echo HEADING_TITLE_ERROR; ?></h1>
+		<div id="contents"> <?php echo ERROR_INVALID_PRODUCT; ?></div>
       <?php
   } else {
     $product_info = tep_db_fetch_array($product_info_query);

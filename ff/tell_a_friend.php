@@ -59,7 +59,15 @@
 ?> 
       
       <h1 class="pageHeading"><?php echo HEADING_TITLE_ERROR; ?></h1> 
-      <div class="comment"><div class="product_info_box"><?php echo ERROR_INVALID_PRODUCT; ?></div></div>
+      <div class="comment">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" summary="table" class="product_info_box"> 
+        <tr>
+          <td class="main">
+            <?php echo ERROR_INVALID_PRODUCT; ?>
+          </td>
+        </tr>
+      </table>
+      </div>
       <?php
   } else {
     $product_info = tep_db_fetch_array($product_info_query);
@@ -150,8 +158,13 @@
       tep_mail($_POST['friendname'], $_POST['friendemail'], $email_subject, stripslashes($email_body), '', $from_email_address);
 ?> 
       <div class="comment"> 
-        <p class="main"><?php echo sprintf(TEXT_EMAIL_SUCCESSFUL_SENT, stripslashes($_POST['products_name']), $_POST['friendemail']); ?></p> 
-        <div align="right"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $_GET['products_id']) . '">' . tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></div> 
+      <table width="100%" cellspacing="0" cellpadding="0" border="0" class="product_info_box" summary="table"> 
+        <tbody>
+		<tr>
+          <td class="main"><?php echo sprintf(TEXT_EMAIL_SUCCESSFUL_SENT, stripslashes($_POST['products_name']), $_POST['friendemail']); ?></td>
+        </tr>
+        <tr><td align="right"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $_GET['products_id']) . '">' . tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td></tr>
+		</table>
       </div>
       <?php
     } else {
