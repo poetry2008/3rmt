@@ -35,7 +35,6 @@ class AD_Option_Item_Text extends AD_Option_Item_Basic
      } else {
        echo '<div style="margin-left:4px;">'.$this->comment.'</div>'; 
      }
-     //echo '</pre>';
      echo '<span id="error_'.$this->formname.'" class="option_error">';
      if (isset($option_error_array[$this->formname])) {
        echo $option_error_array[$this->formname]; 
