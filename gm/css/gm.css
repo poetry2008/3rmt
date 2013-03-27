@@ -526,7 +526,7 @@ td,th{ border:0;font-size:14px; padding:2px;}
 	letter-spacing:0;
     word-spacing:0;
 }
-#detail-table-noframe input{
+#detail-table-noframe input,#detail-table-noframe img{
 	margin-left:-2px;
 }
 #detail-div{
