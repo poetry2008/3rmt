@@ -7,7 +7,6 @@ ini_set("display_errors","Off");
 require(DIR_WS_FUNCTIONS . 'visites.php');
 // load selected payment module
 require(DIR_WS_CLASSES . 'payment.php');
-require(DIR_WS_LANGUAGES . 'default.php');
 if(isset($real_point)){
 // user new point value it from checkout_confirmation.php 
   $point = $real_point;
