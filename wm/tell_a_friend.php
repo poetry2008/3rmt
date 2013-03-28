@@ -178,7 +178,7 @@
             <tr> 
               <td class="main"><table border="0" cellspacing="0" cellpadding="2" summary="table" width="100%"> 
                 <tr> 
-                  <td class="main" width="105"><?php echo FORM_FIELD_CUSTOMER_NAME; ?></td> 
+                  <td class="main" width="110"><?php echo FORM_FIELD_CUSTOMER_NAME; ?></td> 
                   <td class="main"><?php echo $your_name_prompt; ?></td> 
                 </tr> 
                 <tr> 
@@ -198,7 +198,7 @@
             <tr> 
               <td class="main"><table border="0" cellspacing="0" summary="table" cellpadding="2" width="100%"> 
                 <tr> 
-                  <td class="main" width="105"><?php echo FORM_FIELD_FRIEND_NAME; ?></td> 
+                  <td class="main" width="110"><?php echo FORM_FIELD_FRIEND_NAME; ?></td> 
                   <td class="main">
                   <?php if (!isset($_GET['friendname'])) $_GET['friendname'] = NULL;?>
                   <?php if (!isset($_POST['friendname'])) $_POST['friendname'] = NULL;?>
@@ -220,7 +220,7 @@
                 <td class="main">
                   <table border="0" cellspacing="0" summary="table" cellpadding="2" width="100%"> 
                     <tr>
-                      <td class="main" width="105"><?php echo VALIDATE_RANDOM_CODE_TEXT;?></td> 
+                      <td class="main" width="110"><?php echo VALIDATE_RANDOM_CODE_TEXT;?></td> 
                       <td class="main">
                       <div class="img_box"><img src="random_code.php" border="0" align="left"></div>
 					  <input type="text" name="random_code" size="7" class="input_number_box" value=""> 
