@@ -59,8 +59,8 @@
     <?php
   if ($valid_product == false) {
 ?>
-    <p class="main"><?php echo HEADING_TITLE_ERROR; ?><br>
-      <?php echo ERROR_INVALID_PRODUCT; ?> </p>
+	<h1 class="pageHeading"><?php echo HEADING_TITLE_ERROR; ?></h1>
+      <p><?php echo ERROR_INVALID_PRODUCT; ?> </p>
     <?php
   } else {
     $product_info = tep_db_fetch_array($product_info_query);
@@ -182,9 +182,9 @@
           <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
             <tr>
               <td class="main">
-                <table border="0" cellspacing="0" cellpadding="2" class="box_des">
+                <table border="0" cellspacing="0" cellpadding="2" class="box_des"  width="100%">
                   <tr>
-                    <td class="main" width="150"><?php echo FORM_FIELD_CUSTOMER_NAME; ?></td>
+                    <td class="main" width="120"><?php echo FORM_FIELD_CUSTOMER_NAME; ?></td>
                     <td class="main"><?php echo $your_name_prompt; ?></td>
                   </tr>
                   <tr>
@@ -206,9 +206,9 @@
           <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
             <tr>
               <td class="main">
-                <table class="box_des" border="0" cellspacing="0" cellpadding="2">
+                <table class="box_des" border="0" cellspacing="0" cellpadding="2" width="100%">
                   <tr>
-                    <td class="main" width="150"><?php echo FORM_FIELD_FRIEND_NAME; ?></td>
+                    <td class="main" width="120"><?php echo FORM_FIELD_FRIEND_NAME; ?></td>
                     <td class="main">
                     <?php 
                     if (!isset($_GET['friendname'])) $_GET['friendname'] = NULL; 
@@ -239,12 +239,12 @@
         <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
           <tr>
             <td class="main">
-              <table class="box_des" border="0" cellspacing="0" cellpadding="2">
+              <table class="box_des" border="0" cellspacing="0" cellpadding="2"  width="100%">
                 <tr>
-                  <td class="main" width="150"><?php echo VALIDATE_RANDOM_CODE_TEXT;?></td>
+                  <td class="main" width="120" valign="top"><?php echo VALIDATE_RANDOM_CODE_TEXT;?></td>
                   <td class="main">
-                    <img src="random_code.php" border="0" align="left">&nbsp;&nbsp;<input type="text" name="random_code" size="7" value=""> 
-                    <?php
+                    <div class="img_box"><img src="random_code.php" border="0" align="left"></div>
+					<input type="text" name="random_code" size="7" value=""><?php
                      if ($random_code_error == true) {
                        echo '<br><span class="errorText">'.$random_code_info.'</span>'; 
                      }
