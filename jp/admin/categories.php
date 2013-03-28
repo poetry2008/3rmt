@@ -4202,7 +4202,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               //获取各网站对应的时间限制
               $site_id_query = tep_db_query("select id from ".TABLE_SITES);
               $site_time_array = array();
+              $orders_site_time_array = array();
               $site_time_str = '';
+              $orders_query_str = '';
               while($site_id_array = tep_db_fetch_array($site_id_query)){
 
                     $site_temp_id = $site_id_array['id'];
@@ -4223,6 +4225,31 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       }
                     } 
                     $site_time_array[$site_temp_id] = $query_temp_num;  
+
+                    //注文
+                    $orders_query_temp_num = '';
+                    if(!empty($site_temp_id)){
+
+                      if(get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',$site_temp_id) != ''){
+                        $orders_query_temp_num = get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',$site_temp_id);
+                      }else{
+
+                        if(get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
+                          $orders_query_temp_num = get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
+                        }
+                      }
+                    }else{
+                      if(get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
+                        $orders_query_temp_num = get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
+                      }
+                    } 
+                    $orders_site_time_array[$site_temp_id] = $orders_query_temp_num; 
+                    $orders_query_str .= "(orders.site_id = ".$site_temp_id;
+                    if($orders_query_temp_num != ''){
+                      $orders_query_str .= " and date_format(orders.date_purchased,'%Y-%m-%d %H:%i:%s') >= '".date('Y-m-d H:i:s',strtotime('-'.$orders_query_temp_num.' minutes'))."') or ";
+                    }else{
+                      $orders_query_str .= ') or ';
+                    } 
               }
               tep_db_free_result($site_id_query); 
               if(in_array('',$site_time_array)){
@@ -4232,6 +4259,10 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
 
                 $site_time_max = max($site_time_array);
                 $site_time_str = " and date_format(pre.date_purchased,'%Y-%m-%d %H:%i:%s') >= '".date('Y-m-d H:i:s',strtotime('-'.$site_time_max.' minutes'))."'";
+              }
+              if(!empty($site_id) && $site_id != 0){
+                $query_num = $site_time_array[$site_id];
+                $orders_query_num = $orders_site_time_array[$site_id];
               }
               while ($products = tep_db_fetch_array($products_query)) {
                 $products_count++;
@@ -4336,23 +4367,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 }
                 //同行专用
                 $query_str = ''; 
-                $query_num = '';
-                if(!empty($site_id)){
-
-                  if(get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',$site_id) != ''){
-                    $query_num = get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',$site_id);
-                  }else{
-
-                    if(get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
-                      $query_num = get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
-                    }
-                  }
-                }else{
-                  if(get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
-                    $query_num = get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
-                  }
-                }
-
+                
                 if(!empty($site_id) && $site_id != 0){
                   if($query_num != ''){
 
@@ -4395,7 +4410,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 $products_preorder_params .= 'class="dataTableContent" align="center"'; 
                 $products_table_content_row[] = array('params'=>$products_preorder_params, 'text'=>$products_preorder_text);
                 $products_order_params .= 'eclass="dataTableContent" align="center"';
-                $tmp_order_product_num = tep_get_order_cnt_by_pid($products['products_id'], $site_id); 
+                $tmp_order_product_num = tep_get_order_cnt_by_pid($products['products_id'], $site_id,$orders_query_str,$orders_query_num); 
                 if($tmp_order_product_num){
                   $products_order_text .= '<a href="orders.php?keywords='.urlencode($products['products_id']).'&search_type=sproducts_id'.(!empty($site_id)?'&site_id='.$site_id:'').'" style="text-decoration:underline;">';
                   $products_order_text .= $tmp_order_product_num;
