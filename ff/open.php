@@ -24,7 +24,7 @@ if($_POST):
         if(!$_POST['captcha'])
             $errors['captcha']='認証コードを入力してください';
         elseif(strcmp($_SESSION['captcha'],md5(strtolower($_POST['captcha']))))
-            $errors['captcha']='認証コードを入力しなおしてください!';
+            $errors['captcha']='認証コードを再度入力してください!';
     }
     //Ticket::create...checks for errors..
     if(($ticket=Ticket::create($_POST,$errors,SOURCE))){

@@ -170,28 +170,28 @@
         $your_email_address_prompt = $account_values['customers_email_address'];
       } else {
         if (!isset($_GET['yourname'])) $_GET['yourname'] = NULL; 
-        $your_name_prompt = tep_draw_input_field('yourname', (($fromname_error == true) ? $_POST['yourname'] : $_GET['yourname']));
+        $your_name_prompt = tep_draw_input_field('yourname', (($fromname_error == true) ? $_POST['yourname'] : $_GET['yourname']), 'style="width:35%"');
         if ($fromname_error == true) $your_name_prompt .= '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';
       if (!isset($_GET['from'])) $_GET['from'] = NULL; 
-        $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $_POST['from'] : $_GET['from']));
-        if ($fromemail_error == true) $your_email_address_prompt .= ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
+        $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $_POST['from'] : $_GET['from']), 'style="width:35%"');
+        if ($fromemail_error == true) $your_email_address_prompt .= '<br><span class="error_information">'.strip_tags(ENTRY_EMAIL_ADDRESS_CHECK_ERROR).'</span>';
       }
 ?>
     <?php echo tep_draw_form('email_friend', tep_href_link(FILENAME_TELL_A_FRIEND, 'action=process&products_id=' . $_GET['products_id'])) . tep_draw_hidden_field('products_name', $product_info['products_name']); ?>
     <table id="detail-table-noframe" width="100%" cellpadding="0" cellspacing="0" border="0">
       <tr>
-        <td><h3><?php echo FORM_TITLE_CUSTOMER_DETAILS; ?></h3></td>
+        <td colspan="2"><h3><?php echo FORM_TITLE_CUSTOMER_DETAILS; ?></h3></td>
       </tr>
       <tr>
-                    <td width="40%">&nbsp;<?php echo FORM_FIELD_CUSTOMER_NAME; ?></td>
+                    <td width="15%">&nbsp;<?php echo FORM_FIELD_CUSTOMER_NAME; ?></td>
                     <td><?php echo $your_name_prompt; ?></td>
                   </tr>
                   <tr>
-                    <td width="30%">&nbsp;<?php echo FORM_FIELD_CUSTOMER_EMAIL; ?></td>
+                    <td width="15%">&nbsp;<?php echo FORM_FIELD_CUSTOMER_EMAIL; ?></td>
                     <td><?php echo $your_email_address_prompt; ?></td>
                      </tr>
       <tr>
-        <td>
+        <td colspan="2">
           <h3><?php echo FORM_TITLE_FRIEND_DETAILS; ?></h3></td>
       </tr>
       <tr>
@@ -199,7 +199,7 @@
                     <td>
                     <?php 
                     if (!isset($_GET['friendname'])) $_GET['friendname'] = NULL; 
-                    echo tep_draw_input_field('friendname', (($friendname_error == true) ? $_POST['friendname'] : $_GET['friendname'])); if ($friendname_error == true) echo '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';
+                    echo tep_draw_input_field('friendname', (($friendname_error == true) ? $_POST['friendname'] : $_GET['friendname']), 'style="width:35%"'); if ($friendname_error == true) echo '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';
                     ?>
                     </td>
                   </tr>
@@ -208,7 +208,7 @@
                     <td>
                     <?php 
                     if (!isset($_GET['send_to'])) $_GET['send_to'] = NULL; 
-                    echo tep_draw_input_field('friendemail', (($friendemail_error == true) ? $_POST['friendemail'] : $_GET['send_to'])); if ($friendemail_error == true) echo ENTRY_EMAIL_ADDRESS_CHECK_ERROR; 
+                    echo tep_draw_input_field('friendemail', (($friendemail_error == true) ? $_POST['friendemail'] : $_GET['send_to']), 'style="width:35%"'); if ($friendemail_error == true) echo '<br><span class="error_information">'.strip_tags(ENTRY_EMAIL_ADDRESS_CHECK_ERROR).'</span>'; 
                     ?>
                     </td>
                   </tr>
@@ -224,7 +224,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>
+                    <td colspan="2">
                       <h3><?php echo FORM_TITLE_FRIEND_MESSAGE; ?></h3></td>
                   </tr>
                   <tr>

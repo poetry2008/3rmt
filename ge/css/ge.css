@@ -1628,4 +1628,11 @@ TEXTAREA {
 .img_box{
 	float:left;
 	*margin-left:-3px;
+	*margin-top:2px;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+.img_box{
+	float:left;
+	margin-top:3px;
+}
 }

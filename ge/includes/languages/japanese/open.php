@@ -1,6 +1,6 @@
 <?php
 define('TEXT_OPEN_INPUT_CAPTCHA','認証コードを入力してください');
-define('TEXT_OPEN_INPUT_CAPTCHA_AGAIN','認証コードを入力しなおしてください!');
+define('TEXT_OPEN_INPUT_CAPTCHA_AGAIN','認証コードを再度入力してください!');
 define('TEXT_OPEN_MAIL_SEND','お客様のご質問は %s へ送信されました。');
 define('TEXT_OPEN_INPUT_ERROR','必要な情報を正しくご入力ください');
 define('NAVBAR_TITLE','お問い合わせ');
