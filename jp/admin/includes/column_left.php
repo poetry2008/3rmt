@@ -119,6 +119,22 @@ if("undefined" != typeof ele_value_obj){
     }
   }
 }
+
+if("undefined" != typeof ele_tags_obj && ele_tags_obj != ''){
+      var box_warp = '';
+      var box_warp_top = 0;
+      var box_warp_left = 0;
+      if($(".box_warp").offset()){
+        box_warp = $(".box_warp").offset();
+        box_warp_top = box_warp.top;
+        box_warp_left = box_warp.left;
+      }
+      ele_obj = $(ele_tags_obj).offset();
+       
+      $("#show_popup_info").css('top',ele_obj.top+$(ele_tags_obj).height());
+      $("#show_popup_info").css('left',ele_obj.left); 
+}
+
 <?php if($_SERVER['PHP_SELF'] == '/admin/campaign.php'){ ?>
 setTimeout("show_campaign_info_offset()",10); 
 <?php } ?>
@@ -128,7 +144,9 @@ setTimeout("orders_info_box_offset()",10);
   if($('#show_info_id').length > 0){
     show_info_str = $('#show_info_id').val();
     leftset = $('.leftmenu').width()+$('.show_left_menu').width()+parseInt($('.leftmenu').css('padding-left'))+parseInt($('.show_left_menu').css('padding-right'))+parseInt($('#categories_right_td table').attr('cellpadding'));
-    $('#'+show_info_str).css('left',leftset);
+   if(ele_tags_obj == ''){
+     $('#'+show_info_str).css('left',leftset);
+   }
   }
   if($(".box_warp").height() < $(".compatible").height()){
       $(".box_warp").height($(".compatible").height());

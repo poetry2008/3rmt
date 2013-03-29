@@ -42,12 +42,7 @@
        echo ' <div class="sidebarselected"><span>' .  tep_image(DIR_WS_MENU_ICON . 'icon_tags.gif') . '</span><span><a href="' .  tep_href_link(FILENAME_TAGS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CATALOG_PRODUCTS_TAGS . '</a></span></div>';
        }else{
        echo ' <div class="sidebar" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" onmouseout="this.className=\'sidebar\'" style=""><span>' .  tep_image(DIR_WS_MENU_ICON . 'icon_tags.gif') . '</span><span><a href="' .  tep_href_link(FILENAME_TAGS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CATALOG_PRODUCTS_TAGS . '</a></span></div>';
-       }
-       if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == 'products_tags.php'){
-       echo ' <div class="sidebarselected"><span>' .  tep_image(DIR_WS_MENU_ICON . 'icon_products_tags.gif').'</span><span><a href="' . tep_href_link('products_tags.php', '', 'NONSSL') . '" class="menuBoxContent_Link">'.FILENAME_PRODUCTS_TAGS_TEXT.'</a></span></div>';
-       }else{
-       echo ' <div class="sidebar" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" onmouseout="this.className=\'sidebar\'" style=""><span>' .  tep_image(DIR_WS_MENU_ICON . 'icon_products_tags.gif').'</span><span><a href="' . tep_href_link('products_tags.php', '', 'NONSSL') . '" class="menuBoxContent_Link">'.FILENAME_PRODUCTS_TAGS_TEXT.'</a></span></div>';
-       }
+       } 
        if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_MANUFACTURERS){
        echo ' <div class="sidebarselected"><span>' .  tep_image(DIR_WS_MENU_ICON . 'icon_maker.gif').'</span><span><a href="' .  tep_href_link(FILENAME_MANUFACTURERS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CATALOG_MANUFACTURERS .  '</a></span></div>';
        }else{

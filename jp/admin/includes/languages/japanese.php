@@ -404,7 +404,7 @@ define('LIST_DISPLAY_JIAKONGZAIKU', '架空在庫');
 define('LIST_DISPLAY_YEZHE_PRICE', '業者単価');
 define('MAG_DL_TITLE_TEXT', 'メールマガジン購読者データダウンロード');
 define('MAG_UP_TITLE_TEXT', 'メールマガジン購読者一括アップロード');
-define('PRODUCTS_TO_TAGS_TITLE', 'タグ関連設定');
+define('PRODUCTS_TO_TAGS_TITLE', '指定なカテゴリと関連する');
 define('REFERER_TITLE_TEXT', 'アクセスランキング');
 define('REFERER_TITLE_URL', 'アクセス来たソース');
 define('REFERER_TITLE_NUM', '件数');
@@ -446,7 +446,6 @@ define('BOX_TOOLS_POINT_EMAIL_MANAGER','ポイントお知らせ');
 define('BOX_CAL_SITES_INFO_TEXT', '統計');
 
 //catalog language
-define('FILENAME_PRODUCTS_TAGS_TEXT','タグ関連設定');
 define('FILENAME_CLEATE_OROSHI_TEXT','卸業者の名前設定');
 define('FILENAME_CLEATE_DOUGYOUSYA_TEXT','同業者の名前設定');
 define('FILENAME_CATEGORIES_ADMIN_TEXT','商品卸価格管理');
@@ -582,7 +581,7 @@ define('TEXT_PREORDER_PRODUCTS_UNIT', '個');
 define('TEXT_PAYMENT_NULL_TXT','支払方法を選択してください');
 define('TEXT_TORIHIKI_LIST_DEFAULT_TXT','選択してください');
 define('BOX_TOOLS_CAMPAIGN', 'キャンペーンコード設置');
-define('TEXT_CURRENT_CHARACTER_NAME', 'メールに記載する注意書き：');
+define('TEXT_CURRENT_CHARACTER_NAME', '当社のキャラクター名：');
 define('BOX_CATALOG_SHOW_USELESS_OPTION','未使用オプション削除');
 define('TEXT_ORDER_ALARM_LINK', 'アラーム');
 define('HOUR_TEXT', '時');
@@ -762,3 +761,8 @@ define('NOTICE_STOCK_ERROR_TEXT','現状がデータベースと一致しませ�
 define('BUTTON_MAG_UP','アップロード');
 define('BUTTON_MAG_DL','ダウンロード');
 define('REVIEWS_CHARACTER_TOTAL','レビュー文字数 ');
+define('TEXT_PRODUCTS_TAGS_TITLE','カテゴリを確認してください');
+define('TEXT_PRODUCTS_TAGS_ALL_CHECK','カテゴリリスト（すべてカテゴリ）');
+define('TEXT_PRODUCTS_TAGS_CHECK','少なくとも1つの商品を選択して下さい。');
+define('TEXT_CHECK_FILE_EXISTS','このファイルは既に存在します。上書きしますか？');
+define('TEXT_CHECK_FILE_EXISTS_DELETE','このファイルは他の設定で使用しています。それでも削除しますか？');
