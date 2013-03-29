@@ -90,7 +90,7 @@ function tep_show_orders_products_info($orders_id) {
   }else if(tep_check_order_type($orders['orders_id'])!=2){
     $time_str = TEXT_NO_RECEIVABLES; 
   }
-  if($time_str){
+  if(isset($time_str)&&$time_str){
     $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_UN_GIVE_MONY_DAY.'</b></td><td class="main" style="color:red;"><b>'.$time_str.'</b></td></tr>';
   }
   $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_OPTION.'</b></td><td class="main" style="color:blue;"><b>'.$orders['torihiki_houhou'].'</b></td></tr>';
@@ -139,7 +139,6 @@ function tep_show_orders_products_info($orders_id) {
         $str .= '<tr><td class="main"><b>PC：</b></td><td class="main">'.implode('&nbsp;,&nbsp;', $names).'</td></tr>';
       }
       $str .= '<tr><td class="main"></td><td class="main"></td></tr>';
-      $i++;
     }
     $str .= '<tr><td colspan="2"><hr></td></tr>'; 
   }
