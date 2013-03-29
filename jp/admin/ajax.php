@@ -61,3 +61,4 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
 include_once('ajax/ajax_popup.php');
+include_once('ajax/ajax_check.php');

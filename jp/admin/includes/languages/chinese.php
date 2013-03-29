@@ -405,7 +405,7 @@ define('LIST_DISPLAY_JIAKONGZAIKU', '虚拟库存');
 define('LIST_DISPLAY_YEZHE_PRICE', '同业单价');
 define('MAG_DL_TITLE_TEXT', '电子杂志订阅者数据下载');
 define('MAG_UP_TITLE_TEXT', '电子杂志订阅者统一上传');
-define('PRODUCTS_TO_TAGS_TITLE', '标签关联设置');
+define('PRODUCTS_TO_TAGS_TITLE', '关联指定的分类');
 define('REFERER_TITLE_TEXT', '访问排名');
 define('REFERER_TITLE_URL', '访问来源');
 define('REFERER_TITLE_NUM', '次数');
@@ -454,7 +454,6 @@ define('BOX_TOOLS_POINT_EMAIL_MANAGER','点数通知邮件');
 define('BOX_CAL_SITES_INFO_TEXT', '统计');
 
 //catalog language
-define('FILENAME_PRODUCTS_TAGS_TEXT','标签关联设置');
 define('FILENAME_CLEATE_OROSHI_TEXT','批发商名称设置');
 define('FILENAME_CLEATE_DOUGYOUSYA_TEXT','同行名称设置');
 define('FILENAME_CATEGORIES_ADMIN_TEXT','商品批发价格管理');
@@ -583,6 +582,7 @@ define('TEXT_PREORDER_PRODUCTS_NOENTRANCE', '未进项');
 define('TEXT_PREORDER_PRODUCTS_ENTRANCE', '进项');
 define('TEXT_PREORDER_PRODUCTS_NUM', '个数：');
 define('TEXT_PREORDER_PRODUCTS_UNIT', '个');
+define('TEXT_PREORDER_PRODUCTS_CHARACTER_NAME', '交易人物名：');
 
 
 
@@ -590,7 +590,7 @@ define('TEXT_PREORDER_PRODUCTS_UNIT', '个');
 define('TEXT_PAYMENT_NULL_TXT','请选择支付方式');
 define('TEXT_TORIHIKI_LIST_DEFAULT_TXT','请选择');
 define('BOX_TOOLS_CAMPAIGN', '优惠券设置');
-define('TEXT_CURRENT_CHARACTER_NAME', '邮件内容的注意事项：');
+define('TEXT_CURRENT_CHARACTER_NAME', '本公司交易人物名：');
 define('BOX_CATALOG_SHOW_USELESS_OPTION','删除未使用选项');
 define('TEXT_ORDER_ALARM_LINK', '警报');
 define('HOUR_TEXT', '时');
@@ -601,6 +601,7 @@ define('NOTICE_DIFF_TIME_TEXT', '剩余');
 define('TEXT_DISPLAY_NUMBER_OF_MANUAL', '当前显示<b>%d</b> &sim; <b>%d</b> (共<b>%d</b> 项)');
 define('FILENAME_FILENAME_RESET_PWD_TEXT','统一重置密码');
 define('FILENAME_CUSTOMERS_EXIT_TEXT','退会客户管理');
+define('OPTION_CHARACTER_NAME', '客户的交易人物名');
 define('NEXT_ORDER_TEXT', '下面的订单');
 define('BEFORE_ORDER_TEXT', '历史订单');
 define('CUSTOMER_INFO_TEXT', '客户信息');
@@ -756,3 +757,8 @@ define('TEXT_DATE_FRIDAY', '星期五');
 define('TEXT_DATE_STATURDAY', '星期六');
 define('TEXT_DATE_SUNDAY', '星期日');
 define('REVIEWS_CHARACTER_TOTAL','评论字数 ');
+define('TEXT_PRODUCTS_TAGS_TITLE','请确认分类');
+define('TEXT_PRODUCTS_TAGS_ALL_CHECK','分类列表（全部分类）');
+define('TEXT_PRODUCTS_TAGS_CHECK','请至少选择一个商品。');
+define('TEXT_CHECK_FILE_EXISTS','上传的这个文件已经存在，确定要覆盖吗？');
+define('TEXT_CHECK_FILE_EXISTS_DELETE','删除的这个文件，在别的地方也使用了，确定要删除吗？');
