@@ -229,12 +229,10 @@ if (isset($_GET['action']) && $_GET['action']) {
     //指定%的情况下，计算价格
     $HTTP_POST_VARS['products_price_offset'] = SBC2DBC($HTTP_POST_VARS['products_price_offset']);
     $update_sql_data = array(
-        //'products_price_offset'     => tep_db_prepare_input($HTTP_POST_VARS['products_price_offset']),
         'max_inventory'             => tep_db_prepare_input($_POST['inventory_max']),
         'min_inventory'             => tep_db_prepare_input($_POST['inventory_min']),
         'products_real_quantity'    => tep_db_prepare_input($_POST['products_real_quantity']),
         'products_virtual_quantity' => tep_db_prepare_input($_POST['products_virtual_quantity']),
-        //'products_attention_5'      => tep_db_prepare_input($_POST['products_attention_5']),
         'products_price'            => tep_get_bflag_by_product_id($products_id) ? 0 - abs(tep_db_prepare_input($_POST['products_price'])): abs(tep_db_prepare_input($_POST['products_price'])));
     tep_db_perform(TABLE_PRODUCTS, $update_sql_data, 'update', 'products_id = \'' . tep_db_input($products_id) . '\'');
     if(isset($relate_products_id)&&$relate_products_id){
@@ -242,12 +240,10 @@ if (isset($_GET['action']) && $_GET['action']) {
       $HTTP_POST_VARS['relate_products_price_offset'] = SBC2DBC($HTTP_POST_VARS['relate_products_price_offset']);
       // jiakong
       $relate_update_sql_data = array(
-          //'products_price_offset'     => tep_db_prepare_input($HTTP_POST_VARS['relate_products_price_offset']),
           'max_inventory'             => tep_db_prepare_input($_POST['relate_inventory_max']),
           'min_inventory'             => tep_db_prepare_input($_POST['relate_inventory_min']),
           'products_real_quantity'    => tep_db_prepare_input($_POST['relate_products_real_quantity']),
           'products_virtual_quantity' => tep_db_prepare_input($_POST['relate_products_virtual_quantity']),
-          //'products_attention_5'      => tep_db_prepare_input($_POST['relate_products_attention_5']),
           'products_price'            => tep_get_bflag_by_product_id($relate_products_id) ? 0 - abs(tep_db_prepare_input($_POST['relate_products_price'])): abs(tep_db_prepare_input($_POST['relate_products_price'])));
       tep_db_perform(TABLE_PRODUCTS, $relate_update_sql_data, 'update', 'products_id = \'' . tep_db_input($relate_products_id) . '\'');
 
@@ -504,7 +500,6 @@ if (isset($_GET['action']) && $_GET['action']) {
         tep_db_perform(TABLE_CATEGORIES_DESCRIPTION, $sql_data_array);
         //categories_image2 upload => INSERT
         $categories_image2 = tep_get_uploaded_file('categories_image2');
-        //$image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES);
         $image_directory = tep_get_local_path(tep_get_upload_dir($site_id) . 'categories/');
 
         if (is_uploaded_file($categories_image2['tmp_name'])) {
@@ -1020,7 +1015,6 @@ if (isset($_GET['action']) && $_GET['action']) {
         if($site_id=="" || $site_id==0){
           $update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now(),products_user_update='".$_POST['products_user_update']."' where products_id='".$products_id."'";
           tep_db_query($update_sql);
-          //	  tep_db_perform(TABLE_CATEGORIES_DESCRIPTION, $update_sql_data, 'update', 'categories_id = \'' . $categories_id . '\'');
         }else{
           $update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now(),products_user_update='".$_POST['products_user_update']."' where products_id='".$products_id."' and site_id='".$site_id."'";
           tep_db_query($update_sql);
@@ -1096,9 +1090,7 @@ if (isset($_GET['action']) && $_GET['action']) {
         tep_db_query($sql); 
       }
 
-      //-----------------------------------------
       // 按照颜色划分图像开始插入
-      //-----------------------------------------
       $color_query = tep_db_query("select * from ".TABLE_COLOR." order by color_name");
       $cnt=0;
       while($color = tep_db_fetch_array($color_query)) {
@@ -1128,9 +1120,7 @@ if (isset($_GET['action']) && $_GET['action']) {
           }
         }
       } // end color while
-      //-----------------------------------------
       // 按照颜色划分图像插入完成
-      //-----------------------------------------
 
       $languages = tep_get_languages();
       for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
@@ -1168,9 +1158,7 @@ if (isset($_GET['action']) && $_GET['action']) {
           tep_db_query("update `".TABLE_PRODUCTS_DESCRIPTION."` set `preorder_status` = '".$_POST['preorder_status']."' where products_id = '".$products_id."' and `site_id` != '0'"); 
         }
       }
-      //-----------------------------------------
       // option值插入完成
-      //-----------------------------------------
 
       if (USE_CACHE == 'true') {
         tep_reset_cache_block('categories');
@@ -2193,11 +2181,6 @@ if($('.show_left_menu').width()){
 }
 $('#show_popup_info').css('z-index', msg);
 $('#show_popup_info').css('left',leftset);
-//if($('.compatible').height()<box_warp_height){
-  //$('.box_warp').css('height',box_warp_height);
-//}else{
-  //$('.box_warp').css('height',$('.compatible').height());
-//}
 }
 });
 }
@@ -3008,7 +2991,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 }
                 $pInfo = new objectInfo($product);
               } elseif ($_POST) {
-                //print_r($_POST);
                 $pInfo = new objectInfo($_POST);
                 $products_name = $_POST['products_name'];
                 $products_description = $_POST['products_description'];
@@ -3917,9 +3899,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   } else {
                     $products_cart_image_name = $_POST['products_cart_image'];
                   }
-                  //========================================
                   //color image upload    
-                  //========================================
                   $color_query = tep_db_query("select * from ".TABLE_COLOR." order by color_name");
                   $cnt=0;
                   $color_image_hidden = '';
@@ -3933,7 +3913,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       $color_image_hidden .= tep_draw_hidden_field('image_'.$color['color_id'], $color_image['name']);
                     } 
                   }
-                  //========================================
 
                 } else {
                   $site_id = isset($_GET['site_id']) ? $_GET['site_id'] : '0';
@@ -5365,6 +5344,72 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 $res_kaku_list[] = $col_kaku; 
               } 
               $products_query = tep_db_query($products_query_raw);
+
+              //获取各网站对应的时间限制
+              $site_id_query = tep_db_query("select id from ".TABLE_SITES);
+              $site_time_array = array();
+              $orders_site_time_array = array();
+              $site_time_str = '';
+              $orders_query_str = '';
+              while($site_id_array = tep_db_fetch_array($site_id_query)){
+
+                    $site_temp_id = $site_id_array['id'];
+                    $query_temp_num = '';
+                    if(!empty($site_temp_id)){
+
+                      if(get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',$site_temp_id) != ''){
+                        $query_temp_num = get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',$site_temp_id);
+                      }else{
+
+                        if(get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
+                          $query_temp_num = get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
+                        }
+                      }
+                    }else{
+                      if(get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
+                        $query_temp_num = get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
+                      }
+                    } 
+                    $site_time_array[$site_temp_id] = $query_temp_num;  
+
+                    //注文
+                    $orders_query_temp_num = '';
+                    if(!empty($site_temp_id)){
+
+                      if(get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',$site_temp_id) != ''){
+                        $orders_query_temp_num = get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',$site_temp_id);
+                      }else{
+
+                        if(get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
+                          $orders_query_temp_num = get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
+                        }
+                      }
+                    }else{
+                      if(get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
+                        $orders_query_temp_num = get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
+                      }
+                    } 
+                    $orders_site_time_array[$site_temp_id] = $orders_query_temp_num; 
+                    $orders_query_str .= "(orders.site_id = ".$site_temp_id;
+                    if($orders_query_temp_num != ''){
+                      $orders_query_str .= " and date_format(orders.date_purchased,'%Y-%m-%d %H:%i:%s') >= '".date('Y-m-d H:i:s',strtotime('-'.$orders_query_temp_num.' minutes'))."') or ";
+                    }else{
+                      $orders_query_str .= ') or ';
+                    } 
+              }
+              tep_db_free_result($site_id_query); 
+              if(in_array('',$site_time_array)){
+
+                $site_time_str = '';
+              }else{
+
+                $site_time_max = max($site_time_array);
+                $site_time_str = " and date_format(pre.date_purchased,'%Y-%m-%d %H:%i:%s') >= '".date('Y-m-d H:i:s',strtotime('-'.$site_time_max.' minutes'))."'";
+              }
+              if(!empty($site_id) && $site_id != 0){
+                $query_num = $site_time_array[$site_id];
+                $orders_query_num = $orders_site_time_array[$site_id];
+              }
               while ($products = tep_db_fetch_array($products_query)) {
                 $products_count++;
                 $rows++;
@@ -5468,22 +5513,51 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   }
                 }
                 //同行专用
-                $target_cnt=$products_count-1;
-                $products_preorder_params .= 'class="dataTableContent" align="center"';
-                $preorder_products_raw = tep_db_query("select sum(prep.products_quantity) as pre_total from ".TABLE_PREORDERS_PRODUCTS." prep ,".TABLE_PREORDERS." pre where  prep.products_id = '".$products['products_id']."' and prep.orders_id = pre.orders_id and pre.finished !='1' and pre.flag_qaf != '1' ".(!empty($site_id)?" and pre.site_id = '".$site_id."'":"")); 
-                $preorder_products_res = tep_db_fetch_array($preorder_products_raw);
-                if ($preorder_products_res) {
-                  if ($preorder_products_res['pre_total']) {
-                    $products_preorder_text .= '<a href="preorders.php?keywords='.urlencode($products['products_id']).'&search_type=sproducts_id'.(!empty($site_id)?'&site_id='.$site_id:'').'" style="text-decoration:underline;">';
-                    $products_preorder_text .= $preorder_products_res['pre_total'];
-                    $products_preorder_text .= '</a>';
-                  } else {
-                    $products_preorder_text .=  ''; 
+                $query_str = ''; 
+                
+                if(!empty($site_id) && $site_id != 0){
+                  if($query_num != ''){
+
+                    $query_str = " and date_format(pre.date_purchased,'%Y-%m-%d %H:%i:%s') >= '".date('Y-m-d H:i:s',strtotime('-'.$query_num.' minutes'))."'";
                   }
-                } 
+                  $preorder_products_raw = tep_db_query("select sum(prep.products_quantity) as pre_total from ".TABLE_PREORDERS_PRODUCTS." prep ,".TABLE_PREORDERS." pre where  prep.products_id = '".$products['products_id']."' and prep.orders_id = pre.orders_id and pre.finished !='1' and pre.flag_qaf != '1'".$query_str.(!empty($site_id)?" and pre.site_id = '".$site_id."'":"")); 
+                  $preorder_products_res = tep_db_fetch_array($preorder_products_raw);
+                  if ($preorder_products_res) {
+                    if ($preorder_products_res['pre_total']) {
+                      $products_preorder_text .= '<a href="preorders.php?keywords='.urlencode($products['products_id']).'&search_type=sproducts_id'.(!empty($site_id)?'&site_id='.$site_id:'').'" style="text-decoration:underline;">';
+                      $products_preorder_text .= $preorder_products_res['pre_total'];
+                      $products_preorder_text .= '</a>';
+                    } else {
+                      $products_preorder_text .=  ''; 
+                    }
+                  }
+                }else{
+                  $preorder_products_raw = tep_db_query("select pre.site_id site_id,pre.date_purchased date_purchased,prep.products_quantity products_total from ".TABLE_PREORDERS_PRODUCTS." prep ,".TABLE_PREORDERS." pre where  prep.products_id = '".$products['products_id']."' and prep.orders_id = pre.orders_id and pre.finished !='1' and pre.flag_qaf != '1'".$site_time_str); 
+                  $products_num = 0;
+                  while($preorder_products_res = tep_db_fetch_array($preorder_products_raw)){
+
+                    foreach($site_time_array as $site_key=>$site_value){
+
+                      if($preorder_products_res['site_id'] == $site_key && $preorder_products_res['date_purchased'] >= date('Y-m-d H:i:s',strtotime('-'.$site_value.' minutes'))){
+                        $products_num += $preorder_products_res['products_total']; 
+                      }
+                    }
+                  }
+
+                  if ($products_num) {
+                      $products_preorder_text .= '<a href="preorders.php?keywords='.urlencode($products['products_id']).'&search_type=sproducts_id'.(!empty($site_id)?'&site_id='.$site_id:'').'" style="text-decoration:underline;">';
+                      $products_preorder_text .= $products_num;
+                      $products_preorder_text .= '</a>';
+                  } else {
+                      $products_preorder_text .=  ''; 
+                  }
+                  
+                }
+                $target_cnt=$products_count-1;
+                $products_preorder_params .= 'class="dataTableContent" align="center"'; 
                 $products_table_content_row[] = array('params'=>$products_preorder_params, 'text'=>$products_preorder_text);
                 $products_order_params .= 'eclass="dataTableContent" align="center"';
-                $tmp_order_product_num = tep_get_order_cnt_by_pid($products['products_id'], $site_id); 
+                $tmp_order_product_num = tep_get_order_cnt_by_pid($products['products_id'], $site_id,$orders_query_str,$orders_query_num); 
                 if($tmp_order_product_num){
                   $products_order_text .= '<a href="orders.php?keywords='.urlencode($products['products_id']).'&search_type=sproducts_id'.(!empty($site_id)?'&site_id='.$site_id:'').'" style="text-decoration:underline;">';
                   $products_order_text .= $tmp_order_product_num;
