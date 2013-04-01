@@ -191,7 +191,7 @@
   }
   
   #$from_str = "(( " . TABLE_PRODUCTS . " p ) left join " . TABLE_MANUFACTURERS . " m using(manufacturers_id), " . TABLE_PRODUCTS_DESCRIPTION . " pd )left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id, " . TABLE_CATEGORIES . " c, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, ".TABLE_COLOR_TO_PRODUCTS." cp";
-  $from_str = "( " . TABLE_PRODUCTS . " p ) left join " . TABLE_MANUFACTURERS . " m using(manufacturers_id), ". TABLE_TAGS ." t, ". TABLE_PRODUCTS_TO_TAGS ." p_t, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_CATEGORIES . " c, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c ";
+  $from_str = "( " . TABLE_PRODUCTS . " p ) left join " . TABLE_MANUFACTURERS . " m using(manufacturers_id), " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_CATEGORIES . " c, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c ";
 
   if ( (DISPLAY_PRICE_WITH_TAX == 'true') && ( (isset($_GET['pfrom']) && tep_not_null($_GET['pfrom'])) || (isset($_GET['pto']) && tep_not_null($_GET['pto']))) ) {
     if (!tep_session_is_registered('customer_country_id')) {
@@ -202,7 +202,7 @@
     $from_str = '(('.$from_str.") left join " . TABLE_TAX_RATES . " tr on p.products_tax_class_id = tr.tax_class_id) left join " . TABLE_ZONES_TO_GEO_ZONES . " gz on tr.tax_zone_id = gz.geo_zone_id and (gz.zone_country_id is null or gz.zone_country_id = '0' or gz.zone_country_id = '" . $customer_country_id . "') and (gz.zone_id is null or gz.zone_id = '0' or gz.zone_id = '" . $customer_zone_id . "')";
   }
 
-  $where_str = " where p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and p.products_id = p2c.products_id and p2c.categories_id = c.categories_id and p.products_id = p_t.products_id and p_t.tags_id = t.tags_id ";
+  $where_str = " where p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and p.products_id = p2c.products_id and p2c.categories_id = c.categories_id ";
 
   if (isset($_GET['categories_id']) && tep_not_null($_GET['categories_id'])) {
     if ($_GET['inc_subcat'] == '1') {
@@ -230,7 +230,9 @@
 
   if (isset($_GET['keywords']) && tep_not_null($_GET['keywords'])) {
     if (tep_parse_search_string(stripslashes($_GET['keywords']), $search_keywords)) {
+      $tags_id_array = array();
       $where_str .= " and (";
+      $where_tags_str = $where_str;
       for ($i=0, $n=sizeof($search_keywords); $i<$n; $i++ ) {
         switch ($search_keywords[$i]) {
           case '(':
@@ -240,22 +242,35 @@
             $where_str .= " " . $search_keywords[$i] . " ";
             break;
           default:
+            $tags_query = tep_db_query("select tags_id from ". TABLE_TAGS ." where tags_name like '%".addslashes($search_keywords[$i])."%'");
+            while($tags_array = tep_db_fetch_array($tags_query)){
+
+              $products_tags_query = tep_db_query("select products_id from ". TABLE_PRODUCTS_TO_TAGS ." where tags_id='".$tags_array['tags_id']."'");
+
+              while($products_tags_array = tep_db_fetch_array($products_tags_query)){
+                $tags_id_array[] = $products_tags_array['products_id'];
+              }
+              tep_db_free_result($products_tags_query);
+            }
+            tep_db_free_result($tags_query);
             $where_str .= "(pd.products_name like '%" . addslashes($search_keywords[$i]) . "%' or p.products_model like '%" . addslashes($search_keywords[$i]) . "%' or m.manufacturers_name like '%" . addslashes($search_keywords[$i]) . "%'";
-            if (isset($_GET['search_in_description']) && ($_GET['search_in_description'] == '1')) $where_str .= " or pd.products_description like '%" . addslashes($search_keywords[$i]) . "%' or t.tags_name like '%".addslashes($search_keywords[$i])  ."%'";
+            if (isset($_GET['search_in_description']) && ($_GET['search_in_description'] == '1')) $where_str .= " or pd.products_description like '%" . addslashes($search_keywords[$i]) . "%'";
               $where_str .= ')';
             break;
         }
       }
+      $where_tags_str = $where_tags_str."p.products_id in (".implode(',',$tags_id_array).")";
+      $where_tags_str .= " )";
       $where_str .= " )";
     }
   }
 
   if (isset($_GET['dfrom']) && tep_not_null($_GET['dfrom']) && ($_GET['dfrom'] != DOB_FORMAT_STRING)) {
-    $where_str .= " and p.products_date_added >= '" . tep_date_raw($dfrom_to_check) . "'";
+    $where_str_temp .= " and p.products_date_added >= '" . tep_date_raw($dfrom_to_check) . "'";
   }
 
   if (isset($_GET['dto']) && tep_not_null($_GET['dto']) && ($_GET['dto'] != DOB_FORMAT_STRING)) {
-    $where_str .= " and p.products_date_added <= '" . tep_date_raw($dto_to_check) . "'";
+    $where_str_temp .= " and p.products_date_added <= '" . tep_date_raw($dto_to_check) . "'";
   }
 
   $rate = $currencies->get_value($currency);
@@ -265,20 +280,27 @@
   }
 
   if (DISPLAY_PRICE_WITH_TAX == 'true') {
-    if ($pfrom) $where_str .= " and (IF(p.products_price_offset, p.products_price + p.products_price_offset, p.products_price) * if(gz.geo_zone_id is null, 1, 1 + (tr.tax_rate / 100) ) >= " . $pfrom . ")";
-    if ($pto)   $where_str .= " and (IF(p.products_price_offset, p.products_price + p.products_price_offset, p.products_price) * if(gz.geo_zone_id is null, 1, 1 + (tr.tax_rate / 100) ) <= " . $pto . ")";
+    if ($pfrom) $where_str_temp .= " and (IF(p.products_price_offset, p.products_price + p.products_price_offset, p.products_price) * if(gz.geo_zone_id is null, 1, 1 + (tr.tax_rate / 100) ) >= " . $pfrom . ")";
+    if ($pto)   $where_str_temp .= " and (IF(p.products_price_offset, p.products_price + p.products_price_offset, p.products_price) * if(gz.geo_zone_id is null, 1, 1 + (tr.tax_rate / 100) ) <= " . $pto . ")";
   } else {
-    if ($pfrom) $where_str .= " and (IF(p.products_price_offset, p.products_price + p.products_price_offset, p.products_price) >= " . $pfrom . ")";
-    if ($pto)   $where_str .= " and (IF(p.products_price_offset, p.products_price + p.products_price_offset, p.products_price) <= " . $pto . ")";
+    if ($pfrom) $where_str_temp .= " and (IF(p.products_price_offset, p.products_price + p.products_price_offset, p.products_price) >= " . $pfrom . ")";
+    if ($pto)   $where_str_temp .= " and (IF(p.products_price_offset, p.products_price + p.products_price_offset, p.products_price) <= " . $pto . ")";
   }
   
   // $where_str .= " and pd.site_id = '".SITE_ID."'";
   
   if ( (DISPLAY_PRICE_WITH_TAX == 'true') && ((isset($_GET['pfrom']) && tep_not_null($_GET['pfrom'])) || (isset($_GET['pto']) && tep_not_null($_GET['pto']))) ) {
-    $where_str .= " group by p.products_id, tr.tax_priority
+    $where_str_temp .= " group by p.products_id, tr.tax_priority
       ";
   }
-  $where_str .= "
+  $where_str .= $where_str_temp."
+    order by pd.site_id DESC ) p 
+    where site_id = 0
+       or site_id = ".SITE_ID."
+    group by products_id
+    having p.products_status != '0' and p.products_status != '3' 
+    ";
+  $where_tags_str .= $where_str_temp."
     order by pd.site_id DESC ) p 
     where site_id = 0
        or site_id = ".SITE_ID."
@@ -286,7 +308,10 @@
     having p.products_status != '0' and p.products_status != '3' 
     ";
   $listing_sql = $select_str . ' from ' . $from_str . $where_str;
-  
+  $listing_tags_sql = $select_str . ' from ' . $from_str . $where_tags_str;
+  if(count($tags_id_array) > 0){
+    $listing_sql = "select * from ((".$listing_sql.") union (".$listing_tags_sql.")) t_p ";
+  }
   require(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING);
 ?>
 <br>

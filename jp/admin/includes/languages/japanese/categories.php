@@ -275,3 +275,4 @@ define('TEXT_TAGS_MUST_SELECT', '少なくとも1つの選択肢を選んでく�
 define('TEXT_TAGS_DELETE_CONFIRM', '本当に選択した項目を削除しますか？');
 define('TEXT_EDIT_TAGS_TITLE','商品タグ関連設定');
 define('TEXT_EDIT_TAGS_ALL_SELECT','全選択');
+define('TEXT_EDIT_TAGS_SAVE','確定');

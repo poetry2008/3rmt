@@ -761,8 +761,7 @@ define('NOTICE_STOCK_ERROR_TEXT','現状がデータベースと一致しませ�
 define('BUTTON_MAG_UP','アップロード');
 define('BUTTON_MAG_DL','ダウンロード');
 define('REVIEWS_CHARACTER_TOTAL','レビュー文字数 ');
-define('TEXT_PRODUCTS_TAGS_TITLE','カテゴリを確認してください');
-define('TEXT_PRODUCTS_TAGS_ALL_CHECK','カテゴリリスト（すべてカテゴリ）');
+define('TEXT_PRODUCTS_TAGS_ALL_CHECK','すべてを選択');
 define('TEXT_PRODUCTS_TAGS_CHECK','少なくとも1つの商品を選択して下さい。');
 define('TEXT_CHECK_FILE_EXISTS','このファイルは既に存在します。上書きしますか？');
 define('TEXT_CHECK_FILE_EXISTS_DELETE','このファイルは他の設定で使用しています。それでも削除しますか？');

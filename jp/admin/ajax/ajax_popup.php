@@ -2369,6 +2369,8 @@ width:20%;"'))
  
   if ($tags_id_num < (count($tags_id_page_array) - 1)) {
     $page_str .= '<a id="tags_next" onclick="show_link_tags_info(\''.$tags_id_next.'\',\''.$param_str.'\')" href="javascript:void(0);">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
+  }else{
+    $page_str .= '<font color="#000000">'.IMAGE_NEXT.'></font>&nbsp;&nbsp;';
   }
 
   $page_str .= '<a onclick="close_tags_info();" href="javascript:void(0);">X</a>';
@@ -2520,7 +2522,18 @@ width:20%;"'))
   $tags_type = $_POST['type'];
   $tags_url = $_POST['url'];
   $products_id = $_POST['pid'];
+  $tags_url_array = explode('|||',$tags_url);
+  foreach($tags_url_array as $tags_value){
 
+    $tags_site_array = explode('=',$tags_value);
+    if($tags_site_array[0] == 'site_id'){
+
+      $site_id = $tags_site_array[1]; 
+      break;
+    }
+  }
+
+  $site_id_flag = !isset($site_id) || $site_id == '0' ? true : false;
   $checked_array = array();
   $table_str = $tags_type == 1 ? TABLE_PRODUCTS_TO_TAGS : 'products_to_carttag';
   $checked_tags_query = tep_db_query("select tags_id from ". $table_str ." where products_id='".$products_id."'");   
@@ -2533,10 +2546,11 @@ width:20%;"'))
   $tags_query = tep_db_query("select * from ". TABLE_TAGS ." where tags_id in (".$tags_id_list.")");
   $tags_list_str = '<table width="100%" cellspacing="0" cellpadding="2" border="0"><tr>';
   $tags_i = 1;
+  $disabled = $site_id_flag == false ? ' disabled="disabled"' : '';
   while($tags_array = tep_db_fetch_array($tags_query)){
 
-    $checked_str = in_array($tags_array['tags_id'],$checked_array) ? ' checked="checked"' : '';
-    $tags_list_str .= '<td width="20%"><input type="checkbox" name="tags_id[]" value="'.$tags_array['tags_id'].'"'.$checked_str.'>'.$tags_array['tags_name'].'</td>';
+    $checked_str = in_array($tags_array['tags_id'],$checked_array) ? ' checked="checked"' : '';  
+    $tags_list_str .= '<td width="20%"><input type="checkbox" name="tags_id[]" value="'.$tags_array['tags_id'].'"'.$checked_str.$disabled.'>'.$tags_array['tags_name'].'</td>';
     if($tags_i % 5 == 0){
 
       $tags_list_str .= '</tr><tr>';
@@ -2551,9 +2565,9 @@ width:20%;"'))
   //底部内容
   $buttons = array();
   
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="edit_products_tags_check(\'tags_id[]\');"').'</a>'; 
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_EDIT_TAGS_ALL_SELECT, 'onclick="all_select_tags(\'tags_id[]\');"').'</a>'; 
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(OPTION_CLEAR, 'onclick="all_reset_tags(\'tags_id[]\');"').'</a>';
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_EDIT_TAGS_SAVE, 'onclick="edit_products_tags_check(\'tags_id[]\');"'.$disabled).'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_EDIT_TAGS_ALL_SELECT, 'onclick="all_select_tags(\'tags_id[]\');"'.$disabled).'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(OPTION_CLEAR, 'onclick="all_reset_tags(\'tags_id[]\');"'.$disabled).'</a>';
 
   if (!empty($button)) {
     $buttons = array('align' => 'center', 'button' => $button); 
