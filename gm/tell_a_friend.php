@@ -183,11 +183,11 @@
         <td colspan="2"><h3><?php echo FORM_TITLE_CUSTOMER_DETAILS; ?></h3></td>
       </tr>
       <tr>
-                    <td width="15%">&nbsp;<?php echo FORM_FIELD_CUSTOMER_NAME; ?></td>
+                    <td width="15%"><?php echo FORM_FIELD_CUSTOMER_NAME; ?></td>
                     <td><?php echo $your_name_prompt; ?></td>
                   </tr>
                   <tr>
-                    <td width="15%">&nbsp;<?php echo FORM_FIELD_CUSTOMER_EMAIL; ?></td>
+                    <td width="15%"><?php echo FORM_FIELD_CUSTOMER_EMAIL; ?></td>
                     <td><?php echo $your_email_address_prompt; ?></td>
                      </tr>
       <tr>
@@ -195,7 +195,7 @@
           <h3><?php echo FORM_TITLE_FRIEND_DETAILS; ?></h3></td>
       </tr>
       <tr>
-                           <td>&nbsp;<?php echo FORM_FIELD_FRIEND_NAME; ?></td>
+                           <td><?php echo FORM_FIELD_FRIEND_NAME; ?></td>
                     <td>
                     <?php 
                     if (!isset($_GET['friendname'])) $_GET['friendname'] = NULL; 
@@ -204,7 +204,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>&nbsp;<?php echo FORM_FIELD_FRIEND_EMAIL; ?></td>
+                    <td><?php echo FORM_FIELD_FRIEND_EMAIL; ?></td>
                     <td>
                     <?php 
                     if (!isset($_GET['send_to'])) $_GET['send_to'] = NULL; 
@@ -213,7 +213,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>&nbsp;<?php echo VALIDATE_RANDOM_CODE_TEXT;?></td>
+                    <td><?php echo VALIDATE_RANDOM_CODE_TEXT;?></td>
                     <td>
                     <img src="random_code.php" border="0" align="left">&nbsp;&nbsp;<input type="text" name="random_code" size="7" value=""> 
                     <?php
