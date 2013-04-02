@@ -3721,6 +3721,11 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                     tep_db_free_result($categories_parent_query);
                                     }
                                   }
+                                  $carttag_temp_query = tep_db_query("select * from products_to_carttag where products_id='".$_GET['pID']."'");
+                                  while ($carttag_temp = tep_db_fetch_array($carttag_temp_query)) {
+                                    $products_tags_id_list_array[] = $carttag_temp['tags_id'];
+                                  }
+                                  tep_db_free_result($carttag_temp_query);
                                   $query_str = ' where 1>1';
                                   $url_str = $_SERVER['QUERY_STRING'];
                                   $url_str = str_replace('&','|||',$url_str);
@@ -3739,6 +3744,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                     $tags_array[] = $tags_temp_array['tags_id'];
                                   }
                                   tep_db_free_result($tags_temp_query);
+ 
                                   $tags_i = 1;
                                   while ($tag = tep_db_fetch_array($t_query)) {
                                     $tag_array[] = $tag; 
