@@ -5955,7 +5955,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       <select name="products_to_tags" onchange="products_tags_change(this.value);">
                       <option value="0"><?php echo TEXT_PRODUCTS_TAGS_SELECT;?></option>
                       <option value="1"><?php echo TEXT_PRODUCTS_TO_TAGS;?></option>
+                      <?php if($ocertify->npermission == 15 or $ocertify->npermission == 10){?>
                       <option value="2"><?php echo TEXT_PRODUCTS_TAGS_DELETE;?></option>
+                      <?php }?>
                       </select>
                       </td>
                       </tr>
