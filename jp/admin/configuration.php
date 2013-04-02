@@ -80,6 +80,7 @@ now(),
         "','".$_SESSION['user_name']."','".$_SESSION['user_name']."' FROM ".TABLE_CONFIGURATION." 
 WHERE
 `configuration_id` = ".$config_id);
+
         tep_redirect(tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] .  '&cID=' . $config_id.'&action=edit&site_id='.$site_id));
       }
  $site_id= tep_get_conf_sid_by_id($cID);
@@ -402,7 +403,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     }
     $configuration_info[] = array(
         'params' => 'class="dataTableContent" ',
-        'text'   =>  $configuration['configuration_key'].$configuration_key
+        'text'   =>  $configuration_key
         );
    $configuration_info[] = array(
         'params' => 'class="dataTableContent" align="right"',
