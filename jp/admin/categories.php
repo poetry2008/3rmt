@@ -106,7 +106,6 @@ if (isset($_GET['action']) && $_GET['action']) {
           }
           $_SESSION['carttags_id_list_array'][$tags_key] = $tags_key_array;  
         }
-        tep_redirect(tep_href_link(FILENAME_CATEGORIES.'?'.$tags_url));
     break;
     case 'products_tags_save': 
         $tags_id_list = $_POST['tags_id_list'];
@@ -117,6 +116,7 @@ if (isset($_GET['action']) && $_GET['action']) {
           tep_db_query("delete from products_to_tags where tags_id='".$tid."'");
             if ($_POST['products_id']) {
                foreach($_POST['products_id'] as $pid) {
+                tep_db_query("update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now(),products_user_update='".$_SESSION['user_name']."' where products_id='".$pid."'");
                 tep_db_perform("products_to_tags", array('products_id' => (int)$pid, 'tags_id' => (int)$tid));
                }
             }
@@ -1590,6 +1590,7 @@ $belong = str_replace('0_','',$belong);
 </script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
+<script language="javascript" src="includes/jquery.form.js"></script>
 <script language="javascript" >
 <?php tep_get_javascript('one_time_pwd','includes|javascript');?>
 </script>
@@ -1674,8 +1675,15 @@ function delete_select_products_tags(tags_list_id)
 <?php //商品关联标签时，判断多选框是否被选中?>
 function edit_products_tags_check(tags_list_id)
 { 
-  document.edit_tags.action = '<?php echo FILENAME_CATEGORIES;?>?action=edit_products_tags';
-  document.edit_tags.submit(); 
+  var options = {
+    url: 'categories.php?action=edit_products_tags',
+    type:  'POST',
+    success: function() {
+        alert('<?php echo TEXT_EDIT_TAGS_SAVE_SUCCESS;?>');
+    }
+  };
+  $('#edit_tags_id').ajaxSubmit(options);
+  return false; 
 }
 
 <?php //标签关联商品时，判断多选框是否被选中?>
@@ -1911,6 +1919,15 @@ function resizepage(){
   }
 }
 $(document).ready(function(){
+    if(document.getElementsByName("select_edit_tags")[0]){
+      document.getElementsByName("select_edit_tags")[0].value = 0;
+    }
+    if(document.getElementsByName("select_edit_tags")[1]){
+      document.getElementsByName("select_edit_tags")[1].value = 0;
+    }
+    if(document.getElementsByName("products_to_tags")[0]){
+      document.getElementsByName("products_to_tags")[0].value = 0;
+    }
     if($(".box_warp").height() < $(".compatible").height()){
       $(".box_warp").height($(".compatible").height()+100);
     }
@@ -3752,20 +3769,21 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                     <tr><td width="150"><?php echo TEXT_PRODUCT_CARTFLAG_TITLE;?></td><td width="100"><input type="radio" <?php echo ($site_id)?'disabled':'';?> name="products_cartflag" value="0"<?php if(!$pInfo->products_cartflag){?> checked<?php }?> onclick="cattags_show(0);"><?php echo
                                     TEXT_PRODUCT_CARTFLAG_NO;?> </td><td><input type="radio" <?php echo ($site_id)?'disabled':'';?> name="products_cartflag" value="1"<?php if($pInfo->products_cartflag){?> checked<?php }?> onclick="cattags_show(1);"><?php echo TEXT_PRODUCT_CARTFLAG_YES;?>
                                     </td></tr>
-                                    <tr id="cattags_list"<?php echo !$pInfo->products_cart_buyflag ? ' style="display:none;"' : '';?>>
+                                    <tr id="cattags_list"<?php echo !$pInfo->products_cartflag ? ' style="display:none;"' : '';?>>
                                     <td width="150" align="left">&nbsp;</td>
                                     <td nowrap="nowrap" width="100"><input type="radio" <?php echo ($site_id)?'disabled':'';?> name="products_cart_buyflag" value='0'<?php if(!$pInfo->products_cart_buyflag){?> checked<?php }?>><?php echo TEXT_PRODUCT_BUYFLAG_SELL;?> </td><td><input type="radio"  <?php echo ($site_id)?'disabled':'';?> name="products_cart_buyflag" value='1'<?php if($pInfo->products_cart_buyflag){?> checked<?php }?>><?php echo TEXT_PRODUCT_BUYFLAG_BUY;?></td> 
                                       </tr>
-                                    <tr><td colspan="3">
-                                    <?php 
+                                    <tr><td colspan="3"> 
+                                          </td></tr>
+                                          </table>
+                                          <?php 
                                     $carttag_array = array();
                                   $carttag_query = tep_db_query("select * from products_to_carttag where products_id='".$_GET['pID']."'");
                                   while ($carttag = tep_db_fetch_array($carttag_query)) {
                                     $carttag_array[$carttag['tags_id']] = $carttag;
                                   }
                                   ?>
-                                    <table id="cattags_title" width="100%"<?php echo !$pInfo->products_cart_buyflag ? ' style="display:none;"' : '';?>> 
-                                      <tr><td colspan='2'><table border="0" cellspacing="0" cellpadding="2" width="100%"><tr>
+                                      <table id="cattags_title" border="0" cellspacing="0" cellpadding="2" width="100%"<?php echo !$pInfo->products_cartflag ? ' style="display:none;"' : '';?>><tr>
                                        <?php 
                                        $tags_i = 1;
                                        foreach($tag_array as $tag){ 
@@ -3789,14 +3807,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                             echo '<tr><td colspan="5"><input type="button" value="'.OPTION_EDIT.'" onclick="edit_products_tags(this,\''.$tags_list_str.'\',2,\''.$url_str.'\',\''.$_GET['pID'].'\');"></td></tr>';
                                           }
                                           ?>
-                                          </table>
-                                          </td></tr>
-                                          </table>
-                                          </td>
-                                          </tr>
-                                          </table>
-
-                                          <table id="cattags_contents" width="100%"<?php echo !$pInfo->products_cart_buyflag ? ' style="display:none;"' : '';?>>
+                                          </table>  
+                                          <table id="cattags_contents" width="100%"<?php echo !$pInfo->products_cartflag ? ' style="display:none;"' : '';?>>
                                           <td></tr>
                                           <tr><td width="150"><?php echo TEXT_PRODUCT_CART_MIN_TEXT;?></td> <td><input id="products_cart_min" <?php echo ($site_id)?'class="readonly" disabled':'';?> name="products_cart_min" type="text" value="<?php echo $pInfo->products_cart_min?$pInfo->products_cart_min:0;?>" onkeyup="clearLibNum(this);">
                                           </td></tr>

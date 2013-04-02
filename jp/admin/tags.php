@@ -108,14 +108,17 @@ if (isset($_GET['action']) and $_GET['action']) {
       case 'delete_products_tags':
         $tags_list_array = $_POST['tags_list_id'];
         $tags_list_str = implode(',',$tags_list_array);
+        $tags_url = $_POST['tags_url'];
         tep_db_query("delete from " . TABLE_PRODUCTS_TO_TAGS . " where tags_id in (" . $tags_list_str . ")");
-        tep_redirect(tep_href_link(FILENAME_TAGS, $param_str));
+        tep_redirect(tep_href_link(FILENAME_TAGS, $tags_url));
         break;
       case 'products_tags_save': 
         $tags_id_list = $_POST['tags_id_list'];
+        $tags_url = $_POST['tags_url'];
         $tags_id_list_array = explode(',',$tags_id_list);
         if (is_array($tags_id_list_array) && !empty($tags_id_list_array)) {
           foreach($tags_id_list_array as $tid) {
+          tep_db_query("update " . TABLE_TAGS . " set user_update='".$_SESSION['user_name']."',date_update=now() where tags_id = '" . tep_db_input($tid) . "'");
           tep_db_query("delete from products_to_tags where tags_id='".$tid."'");
             if ($_POST['products_id']) {
                foreach($_POST['products_id'] as $pid) {
@@ -124,7 +127,7 @@ if (isset($_GET['action']) and $_GET['action']) {
             }
           } 
         }
-        tep_redirect(tep_href_link(FILENAME_TAGS));
+        tep_redirect(tep_href_link(FILENAME_TAGS,$tags_url));
         break;
     }
   }
@@ -702,7 +705,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'setting_products_tags'){
   <?php echo tep_draw_form('products_to_tags','tags.php', 'action=products_tags_save', 'post');?>
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr> 
-          <td valign="top" align="left">&nbsp;<input type="checkbox" name="all_check" onclick="all_select_products('categories_id[]');all_select_products('products_id[]')"><?php echo TEXT_PRODUCTS_TAGS_ALL_CHECK;?><input type="hidden" name="tags_id_list" value="<?php echo $tags_id_str;?>"><br><td align="right"><input type="button" value="<?php echo IMAGE_SAVE;?>" onclick="products_tags_submit();"></td><table width="100%" class="box_ul"><tr>
+          <td valign="top" align="left">&nbsp;<input type="checkbox" name="all_check" onclick="all_select_products('categories_id[]');all_select_products('products_id[]')"><?php echo TEXT_PRODUCTS_TAGS_ALL_CHECK;?><input type="hidden" name="tags_id_list" value="<?php echo $tags_id_str;?>"><input type="hidden" name="tags_url" value="<?php echo $_POST['tags_url'];?>"><br><td align="right"><input type="button" value="<?php echo IMAGE_SAVE;?>" onclick="products_tags_submit();"></td><table width="100%" class="box_ul"><tr>
 <?php
   $i = 0;
   $j = 0;
@@ -847,7 +850,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'setting_products_tags'){
           <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2" id="tags_list_box"> 
               <form name="edit_tags" method="post" action="<?php echo FILENAME_TAGS;?>">
               <tr class="dataTableHeadingRow">
-                <td class="dataTableHeadingContent" width="10%"><input type="checkbox" name="all_check" onclick="all_select_tags('tags_list_id[]');"></td>
+              <td class="dataTableHeadingContent" width="10%"><input type="checkbox" name="all_check" onclick="all_select_tags('tags_list_id[]');"><input type="hidden" name="tags_url" value="<?php echo $_SERVER['QUERY_STRING'];?>"></td>
                 <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_TAGS_NAME; ?></td>
                 <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
               </tr>
@@ -933,10 +936,10 @@ if(isset($_GET['action']) && $_GET['action'] == 'setting_products_tags'){
                   <tr>
                     <td colspan="2" align="right"><?php echo '<a href="javascript:void(0);" onclick="create_tags_info(this);">' . tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?>
                     <select name="select_edit_tags" onchange="select_type_changed(this.value);">
-                      <option value="0"><?php echo TEXT_TAGS_SELECT;?></option>
-                      <option value="1"><?php echo TEXT_TAGS_DELETE;?></option>
+                      <option value="0"><?php echo TEXT_TAGS_SELECT;?></option> 
+                      <option value="3"><?php echo TEXT_TAGS_ASSOCIATE_SETTING;?></option> 
                       <option value="2"><?php echo TEXT_TAGS_ASSOCIATE_DELETE;?></option>
-                      <option value="3"><?php echo TEXT_TAGS_ASSOCIATE_SETTING;?></option>
+                      <option value="1"><?php echo TEXT_TAGS_DELETE;?></option> 
                     </select>
                     </td>
                   </tr>

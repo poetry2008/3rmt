@@ -267,4 +267,5 @@ define('TEXT_TAGS_DELETE_CONFIRM', '确定删除勾选项目吗?');
 define('TEXT_EDIT_TAGS_TITLE','商品标签关联');
 define('TEXT_EDIT_TAGS_ALL_SELECT','全选择');
 define('TEXT_EDIT_TAGS_SAVE','确定');
+define('TEXT_EDIT_TAGS_SAVE_SUCCESS','已保存。');
 ?>
