@@ -95,7 +95,7 @@ define('ERROR_CANNOT_LINK_TO_SAME_CATEGORY', '错误: 不能链接到同一分�
 define('ERROR_CATALOG_IMAGE_DIRECTORY_NOT_WRITEABLE', '错误: 无法编辑分类图片的目录: ' . DIR_FS_CATALOG_IMAGES);
 define('ERROR_CATALOG_IMAGE_DIRECTORY_DOES_NOT_EXIST', '错误: 分类图片的目录不存在: ' . DIR_FS_CATALOG_IMAGES);
 
-define('TEXT_PRODUCTS_TAGS', '商品标签:');
+define('TEXT_PRODUCTS_TAGS', '商品标签');
 define('TEXT_GOOGLE_SEARCH','在GOOGLE下以%s为关键字的搜索结果');
 define('TEXT_RENAME','重命名');
 define('TEXT_INFO_KEYWORD','更改关键字');
