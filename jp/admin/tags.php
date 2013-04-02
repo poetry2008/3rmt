@@ -716,7 +716,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'setting_products_tags'){
   $products_num = ($products_num/5);
   $categories_query = tep_db_query("select * from categories c,categories_description cd where c.categories_id=cd.categories_id and c.parent_id='0' and cd.site_id='0' order by c.sort_order, cd.categories_name");
   if (tep_db_num_rows($categories_query)) {
-    echo "<td width='25%' valign='top'><ul style='padding-left:0;'>"."\n";
+    echo "<td width='25%' valign='top'><ul style='padding-left:1px;'>"."\n";
     while($categories = tep_db_fetch_array($categories_query)){
       echo '<li>'."\n";
       echo '<input onclick="check_all('.$categories['categories_id'].')" type="checkbox" name="categories_id[]" id="categories_'.$categories['categories_id'].'" value="'.$categories['categories_id'].'"><a href="javascript:void(0)" onclick="switch_categories('.$categories['categories_id'].')">'.$categories['categories_name'].'</a>'."\n";

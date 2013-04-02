@@ -2533,6 +2533,42 @@ width:20%;"'))
     }
   }
 
+  foreach($tags_url_array as $tags_url_value){
+
+          $tags_url_value_array = explode('=',$tags_url_value);
+          if($tags_url_value_array[0] == 'pID'){
+            
+            $tags_pid_key = $tags_url_value_array[1];
+          }
+
+          if($tags_url_value_array[0] == 'cPath'){
+
+            $tags_path_key = $tags_url_value_array[1];
+          }
+  }
+
+  if($tags_pid_key){
+
+          $tags_key = $tags_pid_key;
+  }else{
+
+          if($tags_path_key){
+
+            $tags_key = $tags_path_key;
+          }else{
+
+            $tags_key = 0;
+          }
+  }
+
+  $checked_temp_array = array();
+  if($tags_type == 1){
+          
+          $checked_temp_array = $_SESSION['pid_tags_id_list_array'][$tags_key]; 
+  }else{ 
+          $checked_temp_array = $_SESSION['carttags_id_list_array'][$tags_key];  
+  } 
+
   $site_id_flag = !isset($site_id) || $site_id == '0' ? true : false;
   $checked_array = array();
   $table_str = $tags_type == 1 ? TABLE_PRODUCTS_TO_TAGS : 'products_to_carttag';
@@ -2550,6 +2586,9 @@ width:20%;"'))
   while($tags_array = tep_db_fetch_array($tags_query)){
 
     $checked_str = in_array($tags_array['tags_id'],$checked_array) ? ' checked="checked"' : '';  
+    if(!empty($checked_temp_array)){
+      $checked_str = in_array($tags_array['tags_id'],$checked_temp_array) ? ' checked="checked"' : '';
+    }
     $tags_list_str .= '<td width="20%"><input type="checkbox" name="tags_id[]" value="'.$tags_array['tags_id'].'"'.$checked_str.$disabled.'>'.$tags_array['tags_name'].'</td>';
     if($tags_i % 5 == 0){
 

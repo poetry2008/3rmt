@@ -33,7 +33,7 @@ define('TEXT_TAGS_MUST_INPUT','必须项目');
 define('TEXT_PRODUCTS_TO_TAGS_TITLE','编辑关联标签');
 define('TEXT_PRODUCTS_TO_TAGS_TITLE_SELECT','请选择标签');
 define('TEXT_PRODUCTS_TO_TAGS_SELECT','请选择');
-define('TEXT_PRODUCTS_TO_TAGS_SETTING','关联指定的分类');
-define('TEXT_PRODUCTS_TO_TAGS_DELETE','清除指定的分类的关联');
-define('TEXT_PRODUCTS_DELETE_TAGS_CONFIRM', '确定删除指定分类的关联吗?');
+define('TEXT_PRODUCTS_TO_TAGS_SETTING','关联指定的内容');
+define('TEXT_PRODUCTS_TO_TAGS_DELETE','清除指定内容的关联');
+define('TEXT_PRODUCTS_DELETE_TAGS_CONFIRM', '确定删除指定内容的关联吗?');
 ?>

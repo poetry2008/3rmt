@@ -35,7 +35,7 @@ if (isset($_GET['action']) && $_GET['action']) {
 /* -----------------------------------------------------
    cale 'edit_products_tags' 单个商品关联标签
    case 'products_tags_save' 保存商品关联标签 
-   case 'products_tags_delete' 保存商品关联标签
+   case 'products_tags_delete' 删除商品关联标签
    case 'get_last_order_date' 获得该商品最近一次被购买的时间 
    case 'edit_category|new_product' 判断是否有权限操作该动作 
    case 'all_update' 更新商品的价格及关联的同业者 
@@ -130,6 +130,8 @@ if (isset($_GET['action']) && $_GET['action']) {
         $categories_id_list = explode(',',$categories_id_list);
         $products_id_list = explode(',',$products_id_list); 
         $tags_url = $_POST['tags_url'];
+        $tags_id = $_POST['tags_list_id'];
+        $tags_id_str = implode(',',$tags_id);
         $products_tags_array = array();
         foreach($categories_id_list as $categories_id_value){
 
@@ -200,7 +202,8 @@ if (isset($_GET['action']) && $_GET['action']) {
                   $products_tags_array[] = $products_id_value;
         }
         foreach($products_tags_array as $products_tags_value) {
-          tep_db_query("delete from products_to_tags where products_id='".$products_tags_value."'");
+          tep_db_query("update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now(),products_user_update='".$_SESSION['user_name']."' where products_id='".$products_tags_value."'");
+          tep_db_query("delete from products_to_tags where products_id='".$products_tags_value."' and tags_id in (".$tags_id_str.")");
             
         } 
         tep_redirect(tep_href_link(FILENAME_CATEGORIES.'?'.$tags_url));
@@ -1661,7 +1664,21 @@ function all_select_tags(tags_list_id)
 <?php //删除商品的关联时的确认提示?>
 function delete_select_products_tags(tags_list_id)
 {
-   
+  sel_num = 0;
+  if (document.edit_tags.elements[tags_list_id].length == null) {
+    if (document.edit_tags.elements[tags_list_id].checked == true) {
+      sel_num = 1;
+    }
+  } else {
+    for (i = 0; i < document.edit_tags.elements[tags_list_id].length; i++) {
+      if (document.edit_tags.elements[tags_list_id][i].checked == true) {
+        sel_num = 1;
+        break;
+      }
+    }
+  } 
+
+  if(sel_num == 1){
     if (confirm('<?php echo TEXT_PRODUCTS_DELETE_TAGS_CONFIRM;?>')) {
       document.edit_tags.action = '<?php echo FILENAME_CATEGORIES;?>?action=products_tags_delete';
       document.edit_tags.submit(); 
@@ -1670,6 +1687,11 @@ function delete_select_products_tags(tags_list_id)
       document.getElementsByName("select_edit_tags")[0].value = 0;
       document.getElementsByName("select_edit_tags")[1].value = 0;
     } 
+  }else{
+    document.getElementsByName("select_edit_tags")[0].value = 0;
+    document.getElementsByName("select_edit_tags")[1].value = 0;
+    alert('<?php echo TEXT_TAGS_MUST_SELECT;?>'); 
+  }
 }
 
 <?php //商品关联标签时，判断多选框是否被选中?>
@@ -1680,6 +1702,7 @@ function edit_products_tags_check(tags_list_id)
     type:  'POST',
     success: function() {
         alert('<?php echo TEXT_EDIT_TAGS_SAVE_SUCCESS;?>');
+        $("#show_popup_info").hide();
     }
   };
   $('#edit_tags_id').ajaxSubmit(options);
@@ -2887,7 +2910,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
   $products_num = ($products_num/5);
   $categories_query = tep_db_query("select * from categories c,categories_description cd where c.categories_id=cd.categories_id and c.parent_id='0' and cd.site_id='0' order by c.sort_order, cd.categories_name");
   if (tep_db_num_rows($categories_query)) {
-    echo "<td width='25%' valign='top'><ul style='padding-left:0;'>"."\n";
+    echo "<td width='25%' valign='top'><ul style='padding-left:1px;'>"."\n";
     while($categories = tep_db_fetch_array($categories_query)){
       echo '<li>'."\n";
       echo '<input onclick="check_all('.$categories['categories_id'].')" type="checkbox" name="categories_id[]" id="categories_'.$categories['categories_id'].'" value="'.$categories['categories_id'].'"><a href="javascript:void(0)" onclick="switch_categories('.$categories['categories_id'].')">'.$categories['categories_name'].'</a>'."\n";

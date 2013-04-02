@@ -34,7 +34,7 @@ define('TEXT_TAGS_MUST_INPUT','必須項目');
 define('TEXT_PRODUCTS_TO_TAGS_TITLE','タグ関連を編集する');
 define('TEXT_PRODUCTS_TO_TAGS_TITLE_SELECT','タグを選択してください');
 define('TEXT_PRODUCTS_TO_TAGS_SELECT','選択したタグを');
-define('TEXT_PRODUCTS_TO_TAGS_SETTING','指定なカテゴリと関連する');
-define('TEXT_PRODUCTS_TO_TAGS_DELETE','指定なカテゴリの関連をクリアする');
-define('TEXT_PRODUCTS_DELETE_TAGS_CONFIRM', '本当に指定なカテゴリの関連を削除しますか？');
+define('TEXT_PRODUCTS_TO_TAGS_SETTING','指定な内容と関連する');
+define('TEXT_PRODUCTS_TO_TAGS_DELETE','指定な内容の関連をクリアする');
+define('TEXT_PRODUCTS_DELETE_TAGS_CONFIRM', '本当に指定な内容の関連を削除しますか？');
 ?>
