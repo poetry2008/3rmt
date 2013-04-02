@@ -1701,7 +1701,6 @@ function edit_products_tags_check(tags_list_id)
     url: 'categories.php?action=edit_products_tags',
     type:  'POST',
     success: function() {
-        alert('<?php echo TEXT_EDIT_TAGS_SAVE_SUCCESS;?>');
         $("#show_popup_info").hide();
     }
   };
