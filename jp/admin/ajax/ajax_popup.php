@@ -2620,4 +2620,237 @@ width:20%;"'))
   $notice_box->get_contents($category_info_row, $buttons);
   $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice();
+}else if ($_GET['action'] == 'edit_configuration'){
+/*-------------------------------------------------
+  功能：显示配置弹出框 
+  参数：$_GET['cID'] 获取configuration表的ID值
+  参数：$_GET['gID'] 获取configuration_group表的ID值
+ ------------------------------------------------*/
+include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_CONFIGURATION);
+include(DIR_FS_ADMIN.'classes/notice_box.php');
+$notice_box = new notice_box('popup_order_title','popup_order_info');
+$configuration_query = tep_db_query(" select configuration_id, configuration_title, configuration_key, configuration_value, use_function from " . TABLE_CONFIGURATION . " where configuration_group_id = '" . $_GET['gID'] . "' and `site_id` = '0'  order by sort_order");
+$site_id = $_GET['site_id'];
+while ($configuration = tep_db_fetch_array($configuration_query)) {
+   $cid_array[] = $configuration['configuration_id'];
+    if (tep_not_null($configuration['use_function'])) {
+  $use_function = $configuration['use_function'];
+  if (ereg('->', $use_function)) {
+      $class_method = explode('->', $use_function);
+      if (!is_object(${$class_method[0]})) {
+    include(DIR_WS_CLASSES . $class_method[0] . '.php');
+    ${$class_method[0]} = new $class_method[0]();
+      }
+      $cfgValue = tep_call_function($class_method[1], $configuration['configuration_value'], ${$class_method[0]});
+  } else {
+      $cfgValue = tep_call_function($use_function, $configuration['configuration_value']);
+  }
+    } else {
+  $cfgValue = $configuration['configuration_value'];
+    }
+
+    if (
+        ((!isset($_GET['cID']) || !$_GET['cID']) || ($_GET['cID'] == $configuration['configuration_id'])) 
+        && (!isset($cInfo) || !$cInfo) 
+        && (!isset($_GET['action']) or substr($_GET['action'], 0, 3) != 'new')
+    ) {
+  $cfg_extra_query = tep_db_query("select  configuration_key, configuration_description, date_added, last_modified, use_function, set_function,user_added,user_update from " . TABLE_CONFIGURATION . " where configuration_id = '" . $configuration['configuration_id'] . "'");
+  $cfg_extra= tep_db_fetch_array($cfg_extra_query);
+  $cInfo_array = tep_array_merge($configuration, $cfg_extra);
+  $cInfo = new objectInfo($cInfo_array);
+    }
+  }
+  $heading = array();
+  $contents = array();
+  foreach ($cid_array as $c_key => $c_value) {
+    if ($_GET['cID'] == $c_value) {
+      break; 
+    }
+  }
+  $page_str = '';
+  if ($c_key > 0) {
+    $page_str .= '<a id="option_prev"" onclick=\'show_text_configuration("",'.$_GET['gID'].','.$cid_array[$c_key-1].','.$site_id.')\' href="javascript:void(0);" id="option_next">'.TEXT_CAMPAIGN_PREV.'</a>&nbsp;&nbsp;'; 
+  }
+ 
+  if ($c_key < (count($cid_array) - 1)) { 
+    $page_str .= '<a id="option_next" onclick=\'show_text_configuration("",'.$_GET['gID'].','.$cid_array[$c_key+1].','.$site_id.')\' href="javascript:void(0);" id="option_next">'.TEXT_CAMPAIGN_NEXT.'</a>&nbsp;&nbsp;'; 
+  }
+    $configuration_key_array = array(
+            'MAX_DISPLAY_CUSTOMER_MAIL_RESULTS',
+            'MAX_DISPLAY_FAQ_ADMIN',
+            'POINT_EMAIL_TEMPLATE',
+            'POINT_EMAIL_DATE',
+            'ADMINPAGE_LOGO_IMAGE',
+            'MAX_DISPLAY_PW_MANAGER_RESULTS',
+            'MAX_DISPLAY_ORDERS_RESULTS',
+            'USER_AGENT_LIGHT_KEYWORDS',
+            'HOST_NAME_LIGHT_KEYWORDS',
+            'USER_AGENT_LIGHT_KEYWORDS',
+            'HOST_NAME_LIGHT_KEYWORDS',
+            'IP_LIGHT_KEYWORDS',
+            'OS_LIGHT_KEYWORDS',
+            'BROWSER_LIGHT_KEYWORDS',
+            'HTTP_ACCEPT_LANGUAGE_LIGHT_KEYWORDS',
+            'SYSTEM_LANGUAGE_LIGHT_KEYWORDS',
+            'USER_LANGUAGE_LIGHT_KEYWORDS',
+            'SCREEN_RESOLUTION_LIGHT_KEYWORDS',
+            'COLOR_DEPTH_LIGHT_KEYWORDS',
+            'FLASH_LIGHT_KEYWORDS',
+            'FLASH_VERSION_LIGHT_KEYWORDS',
+            'DIRECTOR_LIGHT_KEYWORDS',
+            'QUICK_TIME_LIGHT_KEYWORDS',
+            'REAL_PLAYER_LIGHT_KEYWORDS',
+            'WINDOWS_MEDIA_LIGHT_KEYWORDS',
+            'PDF_LIGHT_KEYWORDS',
+            'JAVA_LIGHT_KEYWORDS',
+            'TELNO_KEYWORDS', 
+            'ORDER_INFO_TRANS_NOTICE', 
+            'ORDER_INFO_TRANS_WAIT', 
+            'ORDER_INFO_INPUT_FINISH', 
+            'ORDER_INFO_ORDER_INFO', 
+            'ORDER_INFO_CUSTOMER_INFO', 
+            'ORDER_INFO_REFERER_INFO', 
+            'ORDER_INFO_ORDER_HISTORY', 
+            'ORDER_INFO_REPUTAION_SEARCH', 
+            'ORDER_INFO_PRODUCT_LIST', 
+            'ORDER_INFO_ORDER_COMMENT', 
+            'ORDER_INFO_BASIC_TEXT',
+            'DB_CALC_PRICE_HISTORY_DATE',
+            'ORDERS_EMPTY_EMAIL_TITLE',
+            'ORDERS_EMPTY_EMAIL_TEXT',
+            'ORDER_EFFECTIVE_DATE',
+            'DS_ADMIN_SIGNAL_TIME',
+            'SEG_CRONTAB_ROW',
+            'SEG_CRONTAB_SLEEP',
+            );
+  //头部内容
+  $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => '<b>'.constant($cInfo->configuration_title) .'</b>&nbsp;&nbsp;');
+  $heading[] = array('align' => 'right', 'text' => $page_str);
+    if ($cInfo->set_function) {
+      if ($cInfo->configuration_key == 'DS_ADMIN_SIGNAL_TIME') {
+        eval('$value_field = '.$cInfo->set_function."'".$cInfo->configuration_value."');"); 
+      } else {
+        eval('$value_field = ' . $cInfo->set_function . '\'' .  htmlspecialchars(addcslashes($cInfo->configuration_value, '\'')) . '\');');
+        $value_field = str_replace('<br>','',$value_field);
+      }
+      $value_field = htmlspecialchars_decode($value_field);
+    } else {
+      if($cInfo->configuration_key == 'ADMINPAGE_LOGO_IMAGE') {
+        $value_field = tep_draw_file_field('upfile') . '<br>' . $cInfo->configuration_value;
+      } else {
+        $value_field = '<textarea name="configuration_value" rows="5" cols="35">'. $cInfo->configuration_value .'</textarea>';
+      }
+    }
+// 针对 logo—image 做特殊处理
+   if($cInfo->configuration_key == 'ADMINPAGE_LOGO_IMAGE') {
+  $form_str = tep_draw_form('configuration', FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $cInfo->configuration_id . '&action=save', 'post', 'enctype="multipart/form-data"');
+    } else {
+  $form_str = tep_draw_form('configuration', FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $cInfo->configuration_id . '&action=save');
+    }
+   //主体all内容
+    $configuration_contents[]['text'] = array(
+      array('align' => 'center','params' => 'colspan="3"','text' => '<input type="hidden" name="user_update" value="'.$user_info['name'].'">'),
+   );
+    $configuration_contents[]['text'] = array(
+      array('text' => constant($cInfo->configuration_title) .  '<br>'),
+      array('text' => $value_field.'<br>'.$cInfo->configuration_description)
+   );
+  $configuration_contents[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="50%%"', 'text' => TEXT_USER_ADDED.((tep_not_null($cInfo->user_added))?$cInfo->user_added:TEXT_UNSET_DATA)), 
+        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.((tep_not_null($cInfo->user_update))?$cInfo->user_update:TEXT_UNSET_DATA))
+      );
+  
+  $configuration_contents[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.((tep_not_null($cInfo->date_added))?$cInfo->date_added:TEXT_UNSET_DATA)), 
+        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.((tep_not_null($cInfo->last_modified))?$cInfo->last_modified:TEXT_UNSET_DATA))
+      );
+  
+    //button 内容 
+    if ($cInfo->configuration_key == 'DS_ADMIN_SIGNAL_TIME') {
+      $configuration_button[] = '<br>' .  tep_html_element_button(IMAGE_UPDATE, 'onclick="check_signal_time_select()"') . '&nbsp;';
+    } else {
+      $configuration_button[] = '<br>' .  tep_html_element_submit(IMAGE_UPDATE) . '&nbsp;';
+    }
+   if(!empty($configuration_button)){
+      $configuration_buttons = array('align' => 'center', 'button' => $configuration_button); 
+   }
+   if($site_id == 0){
+   $notice_box->get_form($form_str);
+   $notice_box->get_heading($heading);
+   $notice_box->get_contents($configuration_contents, $configuration_buttons);
+   $notice_box->get_eof(tep_eof_hidden());
+   echo $notice_box->show_notice();
+   }
+    $contents_sites_array = array();
+    $select_site_configure = tep_db_query('select * from sites order by order_num');
+    // configuration admin page only
+    if(!in_array($cInfo->configuration_key,$configuration_key_array)) 
+  $site = tep_db_fetch_array($select_site_configure);
+  $site_romaji[] = $site['romaji'];
+  $select_configurations = tep_db_query('select * from configuration where configuration_key =\''.$cInfo->configuration_key.'\' and site_id = '.$_GET['site_id']);
+        $fetch_result = tep_db_fetch_array($select_configurations);
+  // if not exist ,copy from which site_id = 0
+        if (!$fetch_result){
+      $fetch_result = tep_db_fetch_array(tep_db_query('select * from configuration where configuration_key=\''.$cInfo->configuration_key.'\' and site_id = 0'));
+      $fetch_result['configuration_id'].='_'.$site_id;
+      $fetch_result['site_id']=$site['id'];
+  }
+  if($fetch_result['set_function']) {
+   if(in_array($cInfo->configuration_key,$configuration_key_array)){
+      $value_field = $fetch_result['configuration_value'];
+   }else{
+      eval('$value_field = ' . $fetch_result['set_function'] . '\'' .  htmlspecialchars(addcslashes($fetch_result['configuration_value'], '\'')) . '\');');
+   }
+  } else {
+      if($fetch_result['configuration_key'] == 'ADMINPAGE_LOGO_IMAGE') {
+    $value_field = tep_draw_file_field('upfile'). '<br>' . $fetch_result['configuration_value'];
+      } else {
+          if(in_array($cInfo->configuration_key,$configuration_key_array)){
+          $value_field = $fetch_result['configuration_value'];
+          }else{
+          $value_field = '<textarea name="configuration_value" rows="5" cols="35">'. $fetch_result['configuration_value'] .'</textarea>';
+          }
+      }
+  }
+  if($fetch_result['configuration_key'] == 'ADMINPAGE_LOGO_IMAGE') {
+      $configuration_form = tep_draw_form('configuration', FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $fetch_result['configuration_id'] . '&action=save', 'post', 'enctype="multipart/form-data"');
+  } else {
+      $configuration_form = tep_draw_form('configuration', FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $fetch_result['configuration_id'] . '&action=save');
+  }
+  //主体内容
+  $contents[]['text'] = array(
+    array('text' => constant($fetch_result['configuration_title']).'<br>'),
+    array('text' => $value_field.'<br>'.$cInfo->configuration_description)
+    );
+  $contents[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.((tep_not_null($cInfo->user_added))?$cInfo->user_added:TEXT_UNSET_DATA)), 
+        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.((tep_not_null($cInfo->user_update))?$cInfo->user_update:TEXT_UNSET_DATA))
+      );
+  
+  $contents[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.((tep_not_null($cInfo->date_added))?$cInfo->date_added:TEXT_UNSET_DATA)), 
+        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.((tep_not_null($cInfo->last_modified))?$cInfo->last_modified:TEXT_UNSET_DATA))
+      );
+ 
+  //if exists ,can be delete ,or  can not 
+  if (is_numeric($fetch_result['configuration_id'])){
+  $button[] = '<br>' .  tep_html_element_submit(IMAGE_UPDATE) .'&nbsp;<a href="' .  tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] .  '&action=tdel&cID=' .  $fetch_result['configuration_id'].'_'.$cInfo->configuration_id) .  '">'.tep_html_element_button(IMAGE_DEFFECT).'</a>'. '&nbsp;';
+  }else {
+    $button[] = '<br>' .  tep_html_element_submit(IMAGE_EFFECT) . '&nbsp;';
+  }
+   if(!empty($button)){
+     if(!in_array($cInfo->configuration_key,$configuration_key_array)){
+      $buttons = array('align' => 'center', 'button' => $button); 
+     }
+   }
+   if($site_id != 0){
+   $notice_box->get_form($configuration_form);
+   $notice_box->get_heading($heading);
+   $notice_box->get_contents($contents, $buttons);
+   $notice_box->get_eof(tep_eof_hidden());
+   echo $notice_box->show_notice();
+   }
+ 
 }
