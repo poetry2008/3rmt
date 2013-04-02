@@ -95,7 +95,7 @@ define('ERROR_CANNOT_LINK_TO_SAME_CATEGORY', 'エラー: 同じカテゴリー�
 define('ERROR_CATALOG_IMAGE_DIRECTORY_NOT_WRITEABLE', 'エラー: カテゴリー画像のディレクトリに書き込みできません: ' . DIR_FS_CATALOG_IMAGES);
 define('ERROR_CATALOG_IMAGE_DIRECTORY_DOES_NOT_EXIST', 'エラー: カテゴリー画像のディレクトリが存在しません: ' . DIR_FS_CATALOG_IMAGES);
 
-define('TEXT_PRODUCTS_TAGS', '商品タグ:');
+define('TEXT_PRODUCTS_TAGS', '商品タグ');
 define('TEXT_GOOGLE_SEARCH','はGOOGLEで%sがキーワードとしての検索結果');
 define('TEXT_RENAME','リネーム');
 define('TEXT_INFO_KEYWORD','キーワードを変更する');
