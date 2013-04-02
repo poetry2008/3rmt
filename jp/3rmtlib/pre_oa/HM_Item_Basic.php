@@ -15,7 +15,6 @@ class HM_Item_Basic
 ------------------------------------ */
   function init($option)
   {
-    //    var_dump($option);
     $this->parseOption($option);
     $this->formname= $this->name.'_'.$this->form_id.'_'.$this->group_id.'_'.$this->id;
   }
@@ -94,7 +93,6 @@ class HM_Item_Basic
          $formString .= "<option ".$selcted. " value=".$orders_status['orders_status_id'].">".$orders_status['orders_status_name']."</option>";
       }
       $formString .="</select></td><td><font size='2' color='#ff0000'>".$this->status_comment."</font></td></tr>";
-      //    $formString .= "<input type='text' name='status' value='".(isset($item_value['status'])?$item_value['status']:'')."'/></br>\n";
     }
     if ($this->hasTheName){
       $formString .= "<tr><td width='5%' nowrap >".TEXT_OA_BASEIC_P_NAME."</td><td width='15%'><input type='text' size='40' name='thename' value='".(isset($item_value['thename'])?$item_value['thename']:'')."'/></td><td><font size='2' color='#ff0000'>".$this->project_name_comment."</font></td></tr>";

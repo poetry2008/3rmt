@@ -29,7 +29,6 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
     $options = unserialize($this->option);
     $type_limit = $options['type_limit'];
     $style_color = isset($_POST['op_'.$this->formname]) && $_POST['op_'.$this->formname] != $this->comment ?'color:#000;':'color:#999;';
-    //$maxlen = $this->num_limit == 0 ? '' : ' maxlength="'. $this->num_limit .'"';
     if($options['rows'] == 1){
       
       $style_size = $type_limit == 'num' ? 'size="25" ' : 'class="width:75%;" ';

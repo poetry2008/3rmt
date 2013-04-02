@@ -2479,12 +2479,68 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
     }  elseif (isset($_GET['keywords']) && isset($_GET['search_type']) &&
         $_GET['search_type'] == 'sproducts_id' && !$_GET['type'] && !$payment) {
       //未完成订单查询 
+        $query_str = ''; 
+        $query_num = '';
+        if(!empty($site_id)){
+
+           if(get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',$site_id) != ''){
+               $query_num = get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',$site_id);
+           }else{
+
+               if(get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
+                    $query_num = get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
+               }
+           }
+        }else{
+               if(get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
+                    $query_num = get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
+               }
+        }
+        if(!empty($site_id) && $site_id != 0){
+          if($query_num != ''){
+
+            $query_str = "and date_format(o.date_purchased,'%Y-%m-%d %H:%i:%s') >= '".date('Y-m-d H:i:s',strtotime('-'.$query_num.' minutes'))."' ";
+          }
+        }else{
+
+          $site_id_query = tep_db_query("select id from ".TABLE_SITES);
+          $query_str = 'and (';
+          while($site_id_array = tep_db_fetch_array($site_id_query)){
+
+           $site_temp_id = $site_id_array['id'];
+           $query_temp_num = '';
+           if(!empty($site_temp_id)){
+
+             if(get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',$site_temp_id) != ''){
+               $query_temp_num = get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',$site_temp_id);
+             }else{
+
+               if(get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
+                 $query_temp_num = get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
+               }
+             }
+          }else{
+               if(get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
+                 $query_temp_num = get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
+               }
+          } 
+          $query_str .= "(o.site_id = ".$site_temp_id;
+          if($query_temp_num != ''){
+            $query_str .= " and date_format(o.date_purchased,'%Y-%m-%d %H:%i:%s') >= '".date('Y-m-d H:i:s',strtotime('-'.$query_temp_num.' minutes'))."') or ";
+          }else{
+            $query_str .= ') or ';
+          }
+        }
+        tep_db_free_result($site_id_query);
+        $query_str = substr($query_str,0,-4);
+        $query_str .= ') ';
+      }   
       $orders_query_raw = " select distinct op.orders_id from " .  
         TABLE_PREORDERS_PRODUCTS . " op, ".TABLE_PREORDERS." o ".
         $sort_table." where ".$sort_where." op.orders_id = o.orders_id 
         and op.products_id = '".$_GET['keywords']."' " . " 
-        and o.finished != '1' 
-        and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".$order_str;
+        and o.finished != '1' and o.flag_qaf != '1' ".$query_str
+        ."and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".$order_str;
     }elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && preg_match('/^os_\d+$/', $_GET['search_type'])))) {
     //状态查询 
     if (!empty($_GET['keywords'])) {

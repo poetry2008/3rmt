@@ -31,13 +31,6 @@
 
   $listing_query = tep_db_query($listing_sql);
   while ($listing = tep_db_fetch_array($listing_query)) {
-    //price
-    /*
-      if (tep_not_null($listing['specials_new_products_price'])) {
-        $price = '<s>' .  $currencies->display_price($listing['products_price'], tep_get_tax_rate($listing['products_tax_class_id'])) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price($listing['specials_new_products_price'], tep_get_tax_rate($listing['products_tax_class_id'])) . '</span>&nbsp;';
-      } else {
-        $price = $currencies->display_price($listing['products_price'], tep_get_tax_rate($listing['products_tax_class_id'])) . '&nbsp;';
-      }*/
       if (tep_get_special_price($listing['products_price'], $listing['products_price_offset'], $listing['products_small_sum'])) {
         $price = '<s>' .
           $currencies->display_price(tep_get_price($listing['products_price'], $listing['products_price_offset'], $listing['products_small_sum'], $listing['products_bflag'])) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($listing['products_price'], $listing['products_price_offset'], $listing['products_small_sum'])) . '</span>&nbsp;';
@@ -48,7 +41,6 @@
       
        //Image
        $image = 'colors/' . $listing['color_image'];
-     //$color_link = '&color_id='.$_GET['colors'];
      $color_link = '';
      
      $description = strip_tags(mb_substr (replace_store_name($listing['products_description']),0,60));

@@ -482,13 +482,6 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
           
          echo '</span>';
          
-         /*
-         if ($sp_pos !== false) {
-           if ($value['money'] != '0') {
-             echo '<span class="option_money">'.$value['money'].OPTION_ITEM_MONEY_UNIT.'</span>'; 
-           }
-         }
-         */ 
          echo '</div>';
          echo '</a>';
          echo '</div>';

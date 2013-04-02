@@ -29,11 +29,7 @@ class telecom  extends basePayment  implements paymentInterface  {
     global $order;
     $total_cost = $order->info['total'];
     $code_fee = $this->calc_fee($total_cost); 
-    //if($code_fee<=0){
-    //$added_hidden = tep_draw_hidden_field('code_fee', $code_fee);
-    //}else{
     $added_hidden = tep_draw_hidden_field('code_fee', $code_fee);
-    //}
     return array(
 		 array(
 		       "code"=>'',
@@ -70,13 +66,7 @@ class telecom  extends basePayment  implements paymentInterface  {
     global $_POST;
       
     $s_result = !$_POST['telecom_order_fee_error'];
-     
-    if (!empty($_SESSION['h_code_fee'])) {
-      //$s_message = $s_result ? (MODULE_PAYMENT_TELECOM_TEXT_FEE . '&nbsp;' .  $currencies->format($_POST['telecom_order_fee'])):('<font color="#FF0000">'.$_POST['telecom_order_fee_error'].'</font>'); 
-      $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['telecom_order_fee_error'].'</font>'); 
-    } else {
-      $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['telecom_order_fee_error'].'</font>'); 
-    }
+    $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['telecom_order_fee_error'].'</font>'); 
     return array(
 		 'title' => nl2br(constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION")),
 		 'fields' => array(
@@ -121,9 +111,6 @@ class telecom  extends basePayment  implements paymentInterface  {
     
     # 用户信息----------------------------
       $mail_body .= '━━━━━━━━━━━━━━━━━━━━━'."\n";
-    /*
-      $mail_body .= '▼注文番号　　　　：2007****-********'."\n";
-    */
     $mail_body .= '▼注文日　　　　　：' . tep_date_long(time())."\n";
     $mail_body .= '▼お名前　　　　　：' . $order->customer["lastname"] . ' ' . $order->customer["firstname"]."\n";
     $mail_body .= '▼メールアドレス　：' . $order->customer["email_address"]."\n";
@@ -166,13 +153,6 @@ class telecom  extends basePayment  implements paymentInterface  {
        }
     }
 
-    /*    
-          foreach($order->products as $key => $val){
-          $char_id = $val["id"];
-          $mail_body .= "\t" . $val["name"] . '×' . $val["qty"] . '個（キャラクター名：' . $_SESSION["character"][$char_id] . '）' . "\n";
-          $mail_body .= "\t" . 'オプション：不明・・・' . "\n";
-          }
-    */    
     $mail_body .= "\t" . '------------------------------------------'."\n";
     
     # 配送时间----------------------------
@@ -197,10 +177,6 @@ class telecom  extends basePayment  implements paymentInterface  {
       tep_draw_hidden_field('money', $total) .
       tep_draw_hidden_field('redirect_url', tep_href_link(MODULE_PAYMENT_OK_URL, '', 'SSL')) .
       tep_draw_hidden_field('redirect_back_url', tep_href_link(MODULE_PAYMENT_NO_URL, '', 'SSL'));
-    
-    //tep_draw_hidden_field('redirect_url', HTTPS_SERVER . tep_href_link(MODULE_PAYMENT_OK_URL, '', 'SSL')) .
-    //tep_draw_hidden_field('redirect_back_url', HTTPS_SERVER . tep_href_link(MODULE_PAYMENT_NO_URL, '', 'SSL'));
-   
     $process_button_string .= tep_draw_hidden_field('telecom_order_message', htmlspecialchars($s_message)). tep_draw_hidden_field('code_fee', $_SESSION['h_code_fee']);
     return $process_button_string;
   }

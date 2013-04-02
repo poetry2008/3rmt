@@ -128,61 +128,6 @@ class buying extends basePayment  implements paymentInterface  {
   function pre_confirmation_check() {
     return true;
   }
-  /*
-    $bank_name = tep_db_prepare_input($_POST['bank_name']);
-    $bank_shiten = tep_db_prepare_input($_POST['bank_shiten']);
-    $bank_kamoku = tep_db_prepare_input($_POST['bank_kamoku']);
-    $bank_kouza_num = tep_db_prepare_input($_POST['bank_kouza_num']);
-    $bank_kouza_name = tep_db_prepare_input($_POST['bank_kouza_name']);
-  
-    tep_session_register('bank_kouza_name');
-    $_SESSION['bank_kamoku']      = $bank_kamoku;
-    $_SESSION['bank_shiten']      = $bank_shiten;
-    $_SESSION['bank_name']        = $bank_name;
-    $_SESSION['bank_kouza_num']   = $bank_kouza_num;
-    $_SESSION['bank_kouza_name']  = $bank_kouza_name;
-    
-    $payment_error_return = 'payment_error='.$this->code;
-    if($bank_name == '') {
-      $_SESSION['bank_error'] =true;
-      $_SESSION['bank_error_info'] =TEXT_BANK_ERROR_NAME;
-      tep_session_unregister('bank_name');
-      tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return, 'SSL', true, false));
-    }
-    if($bank_shiten == '') {
-      $_SESSION['bank_error'] =true;
-      $_SESSION['bank_error_info'] =TEXT_BANK_ERROR_SHITEN;
-      tep_session_unregister('bank_shiten');
-      tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return, 'SSL', true, false));
-    }
-    if($bank_kamoku == '') {
-      $_SESSION['bank_error'] =true;
-      $_SESSION['bank_error_info'] =TEXT_BANK_ERROR_KAMOKU;
-      tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return, 'SSL', true, false));
-    }
-    if($bank_kouza_num == '') {
-      $_SESSION['bank_error'] =true;
-      $_SESSION['bank_error_info'] =TEXT_BANK_ERROR_KOUZA_NUM;
-      tep_session_unregister('bank_kouza_num');
-      tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return, 'SSL', true, false));
-
-    }
-    if (!preg_match("/^[0-9]+$/", $bank_kouza_num)) {
-      $_SESSION['bank_error'] =true;
-      $_SESSION['bank_error_info'] =TEXT_BANK_ERROR_KOUZA_NUM2;
-      tep_session_unregister('bank_kouza_num');
-      tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return, 'SSL', true, false));
-    } 
-    if($bank_kouza_name == '') {
-      $_SESSION['bank_error'] =true;
-      $_SESSION['bank_error_info'] =TEXT_BANK_ERROR_KOUZA_NAME;
-      tep_session_unregister('bank_kouza_name');
-      tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return, 'SSL', true, false)); 
-    }
-
-    return false;
-  }
-  */
 /*--------------------------------
  功能：检查预约支付方法 
  参数：无
@@ -231,11 +176,7 @@ class buying extends basePayment  implements paymentInterface  {
       
     $s_result = !$_POST['buying_order_fee_error'];
     $this->calc_fee($order->info['total']);
-    if (!empty($this->n_fee)) {
-      $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['buying_order_fee_error'].'</font>'); 
-    } else {
-      $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['buying_order_fee_error'].'</font>'); 
-    }
+    $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['buying_order_fee_error'].'</font>'); 
     return array(
                  'title' => nl2br(constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION")),
                  'fields' => array(
@@ -272,7 +213,6 @@ class buying extends basePayment  implements paymentInterface  {
     $s_message  = $_POST['buying_order_fee_error']?$_POST['buying_order_fee_error']:sprintf($mailFooter, $currencies->format($total), $currencies->format($_POST['buying_order_fee']));
       
     return tep_draw_hidden_field('buying_order_message', htmlspecialchars($s_message)). tep_draw_hidden_field('buying_order_fee', $_POST['buying_order_fee']);
-    //return false;
   }
 /*-----------------------
  功能：购买前
@@ -283,7 +223,6 @@ class buying extends basePayment  implements paymentInterface  {
     global $_POST;
 
     $this->email_footer = str_replace("\r\n", "\n", $_POST['buying_order_message']);
-    //return false;
   }
 /*-----------------------
  功能：购买后
@@ -364,7 +303,6 @@ class buying extends basePayment  implements paymentInterface  {
         'True', '銀行振込による支払いを受け付けますか?', '6', '1',
         'tep_cfg_select_option(array(\'True\', \'False\'), ', now(),
           '".$_SESSION['user_name']."',".$this->site_id.");");
-    //tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('お振込先:', 'MODULE_PAYMENT_BUYING_PAYTO', '', 'お振込先名義を設定してください.', '6', '1', now(), ".$this->site_id.");");
     tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('表示の整列順', 'MODULE_PAYMENT_BUYING_SORT_ORDER', '0', '表示の整列順を設定できます。数字が小さいほど上位に表示されます.', '6', '0', now(), ".$this->site_id.")");
     tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added, site_id) values ('適用地域', 'MODULE_PAYMENT_BUYING_ZONE', '0', '適用地域を選択すると、選択した地域のみで利用可能となります.', '6', '2', 'tep_get_zone_class_title', 'tep_cfg_pull_down_zone_classes(', now(), ".$this->site_id.")");
     tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, use_function, date_added, site_id) values ('初期注文ステータス', 'MODULE_PAYMENT_BUYING_ORDER_STATUS_ID', '0', '設定したステータスが受注時に適用されます.', '6', '0', 'tep_cfg_pull_down_order_statuses(', 'tep_get_order_status_name', now(), ".$this->site_id.")");

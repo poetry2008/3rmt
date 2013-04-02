@@ -75,9 +75,6 @@ class HM_Form extends DbRecord
     echo $this->end_user;
     echo "<button onclick='finishTheOrder()'  id='canEnd' >".OA_FORM_ORDER_FINISH."</button></div>";
     echo "</td>";
-    // if(!tep_orders_finishqa($this->orders_id)) {
-    //echo "<button onclick='finishTheOrder()'  id='canEnd' >取引完了</button>";
-    //    }
     echo "</tr>";
     echo '</form>';
     echo "</div>";
@@ -119,6 +116,13 @@ class HM_Form extends DbRecord
             }
           });
       }
+
+      $("#qa_form").find("input[type=text]").each(function (){
+        if( $(this).val().length >$($("#size_"+$(this).attr('name'))).val()){
+          canEnd = false; 
+        }
+      });
+
       if ((canEnd == true ) || (canceled == true)){
         $("#canEndDiv").show();
       }else{
@@ -160,7 +164,18 @@ class HM_Form extends DbRecord
       $(ele).parent().parent().children().find('input').each(
                                                              function(){
                                                                if($(this).attr("type")=='text' || $(this).attr("type") =='hidden'){
-                                                                 $(this).val('');
+                                                                 if($(this).attr("type") =='hidden'){
+                                                                   if($(this).attr("id")){
+                                                                     var input_size = $(this).attr("id");
+                                                                     if(!(input_size.substr(0,5) == 'size_')){
+                                                                       $(this).val('');
+                                                                     }
+                                                                   }else{
+                                                                     $(this).val('');
+                                                                   }
+                                                                 }else{
+                                                                   $(this).val('');
+                                                                 }
                                                                }
                                                                if(this.checked ==true ){
                                                                  $(this).removeAttr('checked');
@@ -262,12 +277,11 @@ class HM_Form extends DbRecord
                             if($(this).attr('size')){
                               $(this).bind('keyup',function(){
                                   checkLockOrder();
-                                  if( $(this).val().length >$(this).attr('size')){
-                                    //               	$(this).val($(this).val().substr(0,$(this).attr('size')));
+                                  if( $(this).val().length >$($("#size_"+$(this).attr('name'))).val()){
                                     $(this).parent().parent().find('.alertmsg').remove();
                                     $("<span class='alertmsg'><?php echo
-                                      OA_FORM_TEXT_MAX_INPUT;?>"+$(this).attr('size')+"<?php
-                                      echo OA_FORM_TEXT_MAX_INPUT_END;?>"+$(this).attr('size')+"<?php
+                                      OA_FORM_TEXT_MAX_INPUT;?>"+$($("#size_"+$(this).attr('name'))).val()+"<?php
+                                      echo OA_FORM_TEXT_MAX_INPUT_END;?>"+$($("#size_"+$(this).attr('name'))).val()+"<?php
                                       echo OA_FORM_TEXT_MAX_INPUT_IN;?></span>").insertAfter($(this).next());
                                   }else{
           $(this).parent().parent().find('.alertmsg').remove();
@@ -292,7 +306,6 @@ class HM_Form extends DbRecord
         $("#qa_form").submit();
         });
       $(this).change(function(ele){
-        //                                   alert($("input|[name=dfossrrfwwkvomzw_6_1_107]").val());
         if ($(this).attr('type')!='checkbox') {
           $("#qa_form").submit();
         }
@@ -300,7 +313,14 @@ class HM_Form extends DbRecord
       });
   $("#qa_form").submit(function(){
 
-     if(complete_flag){
+     var submit_flag = true;
+     $("#qa_form").find("input[type=text]").each(function (){
+        if( $(this).val().length >$($("#size_"+$(this).attr('name'))).val()){
+          submit_flag = false; 
+        }
+     });
+
+     if(complete_flag && submit_flag){
         $('body').css('cursor','wait');
         $('#wait').show();
      }
@@ -324,7 +344,7 @@ class HM_Form extends DbRecord
               }
             }
         };
-      if(complete_flag){
+      if(complete_flag && submit_flag){
         $(this).ajaxSubmit(options);
       }
 

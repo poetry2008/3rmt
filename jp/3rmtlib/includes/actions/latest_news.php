@@ -25,7 +25,6 @@ $check_news_id_query = tep_db_query("SELECT * FROM " . TABLE_LATEST_NEWS .
 while($check_news_id_array = tep_db_fetch_array($check_news_id_query)){
 $check_array[] = $check_news_id_array['news_id'];
 }
-//print_r($check_array);
 if(!in_array($_GET['news_id'],$check_array)){
 //判断该新闻是否显示
 forward404Unless($latest_news);

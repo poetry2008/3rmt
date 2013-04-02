@@ -73,7 +73,6 @@ class guidance extends basePayment  implements paymentInterface  {
  返回值：是否检查成功(boolean)
  -------------------------*/
   function pre_confirmation_check() {
-    //    tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'payment_error='.$this->code, 'SSL', true, false)); 
     return false;
   }
 /*--------------------------

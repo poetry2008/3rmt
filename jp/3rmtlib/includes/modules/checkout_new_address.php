@@ -153,21 +153,6 @@
   }
   $address_form->setFormLine('state',ENTRY_STATE,$a_value);
 
-  // country
-  /*
-  if ($process == true) {
-    if ($country_error == true) {
-      $a_value = tep_get_country_list('country') . '&nbsp;' . ENTRY_COUNTRY_ERROR;
-    } else {
-      $a_value = tep_get_country_name($country) . tep_draw_hidden_field('country');
-    }
-  } else {
-    $a_value = tep_get_country_list('country', (isset($country) ? $country : STORE_COUNTRY)) . '&nbsp;' . ENTRY_COUNTRY_TEXT;
-  }
-  $address_form->setFormLine('country',ENTRY_COUNTRY,$a_value);
-  $a_hidden = tep_draw_hidden_field('country',(isset($country) ? $country : STORE_COUNTRY));
-  $address_form->setFormHidden('country',$a_hidden); // in case without country
-  */
 
 
   // telephone

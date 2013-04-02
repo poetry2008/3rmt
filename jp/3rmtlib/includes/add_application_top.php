@@ -57,9 +57,6 @@ if ($pdo_con) {
 // start the timer for the page parse time log
   define('PAGE_PARSE_START_TIME', microtime());
 
-// set the level of error reporting
-  //error_reporting(0);
-//  ini_set("display_errors", "On");
 
 // check if register_globals is enabled.
 // since this is a temporary measure this message is hardcoded. The requirement will be removed before 2.2 is finalized.
@@ -70,11 +67,6 @@ if ($pdo_con) {
 // disable use_trans_sid as tep_href_link() does this manually
   if (function_exists('ini_set')) @ini_set('session.use_trans_sid', 0);
 
-// Set the local configuration parameters - mainly for developers
-  //if (file_exists('includes/local/configure.php')) include('includes/local/configure.php');
-
-// include server parameters
-  //require('includes/configure.php');
 
 // Set lib path
   ini_set('include_path',ini_get('include_path').':'.DIR_FS_3RMTLIB);
@@ -175,9 +167,7 @@ if ($pdo_con) {
   define('FILENAME_TELL_A_FRIEND', 'tell_a_friend.php');
   define('FILENAME_UPCOMING_PRODUCTS', 'upcoming_products.php'); // This is the bottom of default.php (found in modules)
   define('FILENAME_EMAIL_TROUBLE', 'email_trouble.php');
-  define('FILENAME_ACCOUNT_EXIT', 'account_exit.php');
 // define the database table names used in the project
-  define('TABLE_CUSTOMERS_EXIT','customers_exit');
   define('TABLE_OPTION_GROUP', 'option_group');
   define('TABLE_OPTION_ITEM', 'option_item');
   define('TABLE_CUSTOMERS_BASKET_OPTIONS', 'customers_basket_options');
@@ -265,17 +255,12 @@ if ($pdo_con) {
   define('TABLE_LATEST_NEWS', 'latest_news'); //latest_news
   define('TABLE_COLOR', 'color');//Color setting
   define('TABLE_COLOR_TO_PRODUCTS', 'color_to_products');//products_id <-> color_id
-  define("LATEST_NEWS_CACHETIME",20);
-  define("TELL_A_FRIEND_CACHETIME",20);
-  define("SITEMAP_CACHETIME",20);
-  define("MANUFACTURERS_CACHETIME",20);
-  
+
 // customization for the design layout
   define('BOX_WIDTH', 171); // how wide the boxes should be in pixels (default: 125)
 
 // check if sessions are supported, otherwise use the php3 compatible session class
   if (!function_exists('session_start')) {
-    //define('PHP_SESSION_NAME', 'SID');
     if(SITE_ID == 5){
       define('PHP_SESSION_NAME', 'sid');
     } else {
@@ -304,7 +289,6 @@ if ($pdo_con) {
   tep_db_connect() or die('Unable to connect to database server!');
 
 // set the application parameters (can be modified through the administration tool)
-  // ccdd
   $configuration_query = mysql_query('select configuration_key as cfgKey, configuration_value as cfgValue from ' . TABLE_CONFIGURATION . ' where site_id = ' . SITE_ID);
   while ($configuration = mysql_fetch_array($configuration_query)) {
     define($configuration['cfgKey'], $configuration['cfgValue']);
@@ -369,14 +353,6 @@ if ($pdo_con) {
 // some code to solve compatibility issues
   require(DIR_WS_FUNCTIONS . 'compatibility.php');
 
-// lets start our session
-   /* 
-   if (isset($_POST[tep_session_name()])) {
-     tep_session_id($_POST[tep_session_name()]);
-   } elseif ( (getenv('HTTPS') == 'on') && isset($_GET[tep_session_name()]) ) {
-     tep_session_id($_GET[tep_session_name()]);
-   }
-   */ 
    //add new panduan 
    if (isset($_POST[tep_session_name()])) {
      tep_session_id($_POST[tep_session_name()]);
@@ -387,7 +363,6 @@ if ($pdo_con) {
    }
   
   if (function_exists('session_set_cookie_params')) {
-    //session_set_cookie_params(0, substr(DIR_WS_CATALOG, 0, -1));
     if ($request_type == 'SSL'){
       session_set_cookie_params(0, '/', $_SERVER['HTTP_SERVER']);
     } else {
@@ -480,7 +455,6 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
       tep_parseURI();
     }
   } elseif ((defined('URL_ROMAJI_ENABLED') && URL_ROMAJI_ENABLED)) {
-    //if (basename($_SERVER['SCRIPT_NAME']) == FILENAME_DEFAULT) {
     if (SITE_ID == 6 || SITE_ID == 9) {
       if (
            basename($_SERVER['SCRIPT_NAME']) != FILENAME_LATEST_NEWS
@@ -492,7 +466,6 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_FAQ
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PREORDER
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_FAQ_INFO
-        //&& ((!isset($_GET['manufacturers_id']) && basename($_SERVER['SCRIPT_NAME']) != FILENAME_DEFAULT))
         && !isset($_GET['manufacturers_id']) && !isset($_GET['tags_id']) 
       ) {
         tep_parseURI();
@@ -507,7 +480,6 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PREORDER
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_FAQ
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_FAQ_INFO
-        //&& ((!isset($_GET['manufacturers_id']) && basename($_SERVER['SCRIPT_NAME']) != FILENAME_DEFAULT))
         && !isset($_GET['manufacturers_id']) 
       ) {
         tep_parseURI();
@@ -616,23 +588,6 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
                                 }
                               }
                               break;
-      // customer adds a product from the products page
-      /*case 'add_product' :    if (isset($_POST['products_id']) && is_numeric($_POST['products_id'])) {
-                                $cart->add_cart($_POST['products_id'], $cart->get_quantity(tep_get_uprid($_POST['products_id'], $_POST['id']))+$_POST['quantity'], $_POST['id']);
-      }
-                              $_SESSION['cname'][tep_get_uprid($_POST['products_id'], $_POST['id'])] = $_POST['cname']; 
-                              unset($_SESSION['character']);
-                                
-                              foreach($cart as $key => $val){
-                                if($key == 'contents'){
-                                  foreach($val as $key2 => $val2){
-                                    $_SESSION['character'][$key2] = $_SESSION['cname'][$key2];
-                                  }
-                                }
-                              }
-
-                              tep_redirect(tep_href_link($goto, tep_get_all_get_params($parameters)));
-                              break;*/
       // performed by the 'buy now' button in product listings and review page
       case 'buy_now' :        forward404();
                               if (isset($_GET['products_id'])) {
@@ -656,7 +611,6 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
                                 }
                                 if (!is_array($notify)) $notify = array($notify);
                                 for ($i=0, $n=sizeof($notify); $i<$n; $i++) {
-                                  // ccdd
                                   $check_query = tep_db_query("
                                       select count(*) as count 
                                       from " . TABLE_PRODUCTS_NOTIFICATIONS . " 
@@ -665,7 +619,6 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
                                   ");
                                   $check = tep_db_fetch_array($check_query);
                                   if ($check['count'] < 1) {
-                                    // ccdd
                                     tep_db_query("
                                         insert into " . TABLE_PRODUCTS_NOTIFICATIONS . " (
                                           products_id, 
@@ -686,7 +639,6 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
                               }
                               break;
       case 'notify_remove' :  if (tep_session_is_registered('customer_id') && isset($_GET['products_id'])) {
-                                // ccdd
                                 $check_query = tep_db_query("
                                     select count(*) as count 
                                     from " . TABLE_PRODUCTS_NOTIFICATIONS . " 
@@ -695,7 +647,6 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
                                 ");
                                 $check = tep_db_fetch_array($check_query);
                                 if ($check['count'] > 0) {
-                                  // ccdd
                                   tep_db_query("
                                       delete from " . TABLE_PRODUCTS_NOTIFICATIONS . " 
                                       where products_id = '" . $_GET['products_id'] . "' 
@@ -726,7 +677,6 @@ if(!preg_match ("#".HTTP_SERVER."#", $_SERVER["HTTP_REFERER"]) && !preg_match ("
     $_SESSION['referer'] = $_SERVER["HTTP_REFERER"];
 	  }
     // 统计 Google Adsense
-    // $adurl = tep_get_google_adsense_adurl($_SERVER['HTTP_REFERER']);
     if (isset($_GET['from']) && $_GET['from'] == 'adwords') {
       $_SESSION['referer_adurl'] = '1';
     }
@@ -752,7 +702,6 @@ if(!preg_match ("#".HTTP_SERVER."#", $_SERVER["HTTP_REFERER"]) && !preg_match ("
 // auto activate and expire banners
   require(DIR_WS_FUNCTIONS . 'banner.php');
   tep_activate_banners();
-  //tep_expire_banners();
 
 // auto expire special products
   require(DIR_WS_FUNCTIONS . 'specials.php');
@@ -787,7 +736,6 @@ if(!preg_match ("#".HTTP_SERVER."#", $_SERVER["HTTP_REFERER"]) && !preg_match ("
   require(DIR_WS_CLASSES . 'breadcrumb.php');
   $breadcrumb = new breadcrumb;
 
-  //$breadcrumb->add(HEADER_TITLE_TOP, HTTP_SERVER);
   
   //add new variable 
   $breadcrumb->add(HEADER_TITLE_TOP, HTTP_SERVER);
@@ -795,7 +743,6 @@ if(!preg_match ("#".HTTP_SERVER."#", $_SERVER["HTTP_REFERER"]) && !preg_match ("
 // add category names or the manufacturer name to the breadcrumb trail
   if (isset($cPath_array)) {
     for ($i=0, $n=sizeof($cPath_array); $i<$n; $i++) {
-      // ccdd
       $categories_query = tep_db_query("
           select categories_name, categories_status 
           from " .  TABLE_CATEGORIES_DESCRIPTION . " 
@@ -827,51 +774,7 @@ if(!preg_match ("#".HTTP_SERVER."#", $_SERVER["HTTP_REFERER"]) && !preg_match ("
           if ($categories['categories_status'] == 1) {
             $breadcrumb->add($categories['categories_name']);
           } else {
-            /*
-            $add_single = false; 
-            if (isset($cPath_array[$i+1])) {
-              $pre_categories_query = tep_db_query("
-                  select categories_name, categories_status 
-                  from " .  TABLE_CATEGORIES_DESCRIPTION . " 
-                  where categories_id = '" .  $cPath_array[$i+1] . "' 
-                    and language_id='" . $languages_id . "' 
-                    and (site_id = ".SITE_ID." or site_id = 0)
-                  order by site_id DESC
-                  limit 1" 
-              );
-              $pre_categories_res = tep_db_fetch_array($pre_categories_query);
-              if ($pre_categories_res) {
-                if ($pre_categories_res['categories_status'] == 1) {
-                  $add_single = true; 
-                  $breadcrumb->add($categories['categories_name']);
-                }
-              }
-            }
-            
-            if (isset($cPath_array[$i+2]) && !$add_single) {
-              $pre_categories_query = tep_db_query("
-                  select categories_name, categories_status 
-                  from " .  TABLE_CATEGORIES_DESCRIPTION . " 
-                  where categories_id = '" .  $cPath_array[$i+2] . "' 
-                    and language_id='" . $languages_id . "' 
-                    and (site_id = ".SITE_ID." or site_id = 0)
-                  order by site_id DESC
-                  limit 1" 
-              );
-              $pre_categories_res = tep_db_fetch_array($pre_categories_query);
-              if ($pre_categories_res) {
-                if ($pre_categories_res['categories_status'] == 1) {
-                  $add_single = true; 
-                  $breadcrumb->add($categories['categories_name']);
-                }
-              }
-            }
-            if (!$add_single) {
-            */
-              $breadcrumb->add($categories['categories_name'], tep_href_link(FILENAME_DEFAULT, 'cPath=' . implode('_', array_slice($cPath_array, 0, ($i+1)))));
-            /*
-            }
-            */
+            $breadcrumb->add($categories['categories_name'], tep_href_link(FILENAME_DEFAULT, 'cPath=' . implode('_', array_slice($cPath_array, 0, ($i+1)))));
           }
         }
       } else {
@@ -879,7 +782,6 @@ if(!preg_match ("#".HTTP_SERVER."#", $_SERVER["HTTP_REFERER"]) && !preg_match ("
       }
     }
   } elseif (isset($_GET['manufacturers_id'])) {
-    // ccdd
     $manufacturers_query = tep_db_query("
         select manufacturers_name 
         from " . TABLE_MANUFACTURERS . " 
@@ -893,7 +795,6 @@ if(!preg_match ("#".HTTP_SERVER."#", $_SERVER["HTTP_REFERER"]) && !preg_match ("
 
 // add the products model to the breadcrumb trail
   if (isset($_GET['products_id'])) {
-  // ccdd
     $model_query = tep_db_query("
         select products_name 
         from " .  TABLE_PRODUCTS_DESCRIPTION . " 
@@ -911,7 +812,6 @@ if(!preg_match ("#".HTTP_SERVER."#", $_SERVER["HTTP_REFERER"]) && !preg_match ("
     $tags_query = tep_db_query("select * from ".TABLE_TAGS." where tags_id = '".$_GET['tags_id']."'");
     $tags_res = tep_db_fetch_array($tags_query);
     if ($tags_res) {
-      //$breadcrumb->add($tags_res['tags_name'], tep_href_link(FILENAME_DEFAULT, 'tags_id='.$_GET['tags_id']));
       $breadcrumb->add(TEXT_TAGS, 'tags/');
     }
    }

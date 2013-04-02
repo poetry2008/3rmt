@@ -31,6 +31,9 @@ while ($category = tep_db_fetch_array($categories_query))  {
 }
 if($cPath){
   $id = preg_split('/_/', $cPath);
+  if(empty($id)){
+    $id = array();
+  }
 }
 
 $left_show_single = false;
@@ -164,9 +167,9 @@ if (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) {
                 <a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id'].'_'.$subcategory['categories_id']);?>"><?php echo $subcategory['categories_name'];?></a>
               </li>
             <?php }?>
-          <?}?>
+          <?php }?>
           </ul>
-      <?php } else {?>
+      <?php } else { ?>
         <li class='l_m_category_li'><a  class='l_m_category_a' href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>"><?php echo $category['categories_name'];?></a></li>
       <?php }?>
     <?php }?>

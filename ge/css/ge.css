@@ -1620,3 +1620,19 @@ TEXTAREA {
 	display:block;
 	padding-right:5px;
 }
+.input_number_box{
+	margin-top:0;
+	float:left;
+	height:20px;
+}
+.img_box{
+	float:left;
+	*margin-left:-3px;
+	*margin-top:2px;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+.img_box{
+	float:left;
+	margin-top:3px;
+}
+}

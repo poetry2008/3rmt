@@ -2773,3 +2773,11 @@ searching
 .input_both{clear:both;}
 .text_box{ margin-top:5px;}
 .open_button{ padding:2px 0;}
+.input_number_box{
+	margin-top:0;
+	float:left;
+}
+.img_box{
+	float:left;
+	*margin:0 5px 0 -3px;
+}

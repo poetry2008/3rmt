@@ -2275,4 +2275,349 @@ width:20%;"'))
   $notice_box->get_contents($category_info_row, $buttons);
   $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice();
+}else if ($_GET['action'] == 'edit_tags') {
+/* -----------------------------------------------------
+    功能: 显示标签编辑的弹出框
+    参数: $_POST['tags_id'] 标签ID 
+    参数: $_POST['param_str'] URL参数
+ -----------------------------------------------------*/
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_TAGS);
+  include(DIR_FS_ADMIN.'classes/notice_box.php'); 
+
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+
+  //根据tags_id来读取相应的标签信息 
+  $tags_id = $_POST['tags_id'];
+  $param_str = $_POST['param_str'];
+  if(trim($param_str) != ''){
+    $param_str_array = explode('|||',$param_str);
+    foreach($param_str_array as $param_value){
+
+      $param_value_array = explode('=',$param_value); 
+      if($param_value_array[0] == 'sort'){
+
+        $sort_str = $param_value_array[1];
+      }
+      if($param_value_array[0] == 'page'){
+
+        $page_str = $param_value_array[1];
+      } 
+    }
+  }
+  $tags_query = tep_db_query("select * from ". TABLE_TAGS ." where tags_id='".$tags_id."'");
+  $tags_array = tep_db_fetch_array($tags_query);
+  tep_db_free_result($tags_query);
+
+  //生成tags的上一个，下一个的tags_id
+  $tags_query_raw = "select tags_id from " . TABLE_TAGS . " order by tags_order,tags_name";
+  if(isset($sort_str) && $sort_str != ''){
+    $tags_query_raw = "select tags_id from " . TABLE_TAGS;
+    switch($sort_str){
+    /*----------------------------
+    case '4a'  排列顺序(a-z) 递增
+    case '4d'  排列顺序(z-a) 递减
+    case '5a'  排列顺序(あ-ん) 递增
+    case '5d'  排列顺序(ん-あ) 递减
+    ---------------------------*/
+      case '4a':
+        $tags_query_raw .=' order by tags_name asc'; 
+        break;
+      case '4d':
+        $tags_query_raw .=' order by tags_name desc'; 
+        break;
+      case '5a':
+        $tags_query_raw .=' order by tags_name asc'; 
+        break;
+      case '5d':
+        $tags_query_raw .=' order by tags_name desc'; 
+        break;
+    }
+  }
+  $tags_id_array = array();
+  $tags_id_query = tep_db_query($tags_query_raw);
+  while($tags_query_array = tep_db_fetch_array($tags_id_query)){
+
+    $tags_id_array[] = $tags_query_array['tags_id']; 
+  } 
+  tep_db_free_result($tags_id_query);
+
+  $page_str = isset($page_str) && $page_str != '' ? $page_str : 1;
+  $page_num_start = ($page_str-1) * MAX_DISPLAY_SEARCH_RESULTS;
+  $page_num_end = $page_str * MAX_DISPLAY_SEARCH_RESULTS - 1;
+  $tags_id_page_array = array();
+  for($i = $page_num_start;$i <= $page_num_end;$i++){
+
+    $tags_id_page_array[] = $tags_id_array[$i];
+  }
+  $tags_id_num = array_search($tags_id,$tags_id_page_array);
+  if($tags_id_num > 0){
+    $tags_id_prev = $tags_id_page_array[$tags_id_num-1];
+  }
+  if($tags_id_num < count($tags_id_page_array) - 1){
+    $tags_id_next = $tags_id_page_array[$tags_id_num+1];
+  }
+
+  //头部内容
+  $heading = array();
+
+  //显示上一个，下一个按钮
+  $page_str = '';
+  
+  if ($tags_id_num > 0) {
+    $page_str .= '<a id="tags_prev" onclick="show_link_tags_info(\''.$tags_id_prev.'\',\''.$param_str.'\')" href="javascript:void(0);" ><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+  }
+ 
+  if ($tags_id_num < (count($tags_id_page_array) - 1)) {
+    $page_str .= '<a id="tags_next" onclick="show_link_tags_info(\''.$tags_id_next.'\',\''.$param_str.'\')" href="javascript:void(0);">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
+  }else{
+    $page_str .= '<font color="#000000">'.IMAGE_NEXT.'></font>&nbsp;&nbsp;';
+  }
+
+  $page_str .= '<a onclick="close_tags_info();" href="javascript:void(0);">X</a>';
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => '<b>'.$tags_array['tags_name'].'</b>');
+  $heading[] = array('align' => 'right', 'text' => $page_str);
+
+  //主体内容
+  $category_info_row = array();
+   
+  //标签名称编辑框 
+  $tags_images_array = explode('/',$tags_array['tags_images']);
+  $tags_images_str = end($tags_images_array);
+  $category_info_row[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => TEXT_INFO_TAGS_NAME.'<input type="hidden" name="tags_id" value="'.$tags_array['tags_id'].'"><input type="hidden" name="param_str" value="'.$param_str.'"><input type="hidden" id="tags_images_id" value="'.$tags_images_str.'">'), 
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<input type="text" class="option_input" name="tags_name" value="'.$tags_array['tags_name'].'"><span id="tags_name_error">'.TEXT_FIELD_REQUIRED.'</span>')
+      );
+  //标签图片上传框  
+  $category_info_row[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => TEXT_INFO_TAGS_IMAGE), 
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => tep_draw_file_field('tags_images'))
+     ); 
+  if(!is_dir(tep_get_upload_dir().$tags_array['tags_images']) && file_exists(tep_get_upload_dir().$tags_array['tags_images'])){
+    //显示图片
+    $category_info_row[]['text'] = array(
+         array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => '&nbsp;'), 
+         array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => tep_image(DIR_WS_CATALOG_IMAGES . $tags_array['tags_images'], $tags_array['tags_name']))
+       ); 
+    //显示是否删除图片的选择框
+    $category_info_row[]['text'] = array(
+         array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => '&nbsp;'), 
+         array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<input type="checkbox" name="delete_image" value="1" >'.TEXT_CONFIRM_DELETE_TAG)
+       );
+  }
+
+  //作成者，作成时间，更新者，更新时间 
+  $category_info_row[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => TEXT_USER_ADDED),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => ((tep_not_null($tags_array['user_added'])?$tags_array['user_added']:TEXT_UNSET_DATA)))
+      );
+  $category_info_row[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => TEXT_DATE_ADDED),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => ((tep_not_null(tep_datetime_short($tags_array['date_added'])))?tep_datetime_short($tags_array['date_added']):TEXT_UNSET_DATA))
+      );
+  
+  $category_info_row[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => TEXT_USER_UPDATE),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => ((tep_not_null($tags_array['user_update'])?$tags_array['user_update']:TEXT_UNSET_DATA)))
+      );
+  $category_info_row[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => TEXT_DATE_UPDATE),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => ((tep_not_null(tep_datetime_short($tags_array['date_update'])))?tep_datetime_short($tags_array['date_update']):TEXT_UNSET_DATA))
+      );
+  //底部内容
+  $buttons = array();
+  
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="edit_tags_submit(\'save\');"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="edit_tags_submit(\'deleteconfirm\');"').'</a>';
+
+  if (!empty($button)) {
+    $buttons = array('align' => 'center', 'button' => $button); 
+  }
+
+  $form_str = tep_draw_form('tags_form', FILENAME_TAGS, '', 'post', 'enctype="multipart/form-data" onsubmit="return edit_tags_submit();"');
+
+  //生成表单 
+  $notice_box->get_form($form_str);
+  $notice_box->get_heading($heading);   
+  $notice_box->get_contents($category_info_row, $buttons);
+  $notice_box->get_eof(tep_eof_hidden());
+  echo $notice_box->show_notice();
+}else if ($_GET['action'] == 'create_tags') {
+/* -----------------------------------------------------
+    功能: 显示标签添加的弹出框
+    参数: $_POST['param_str'] URL参数
+ -----------------------------------------------------*/
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_TAGS);
+  include(DIR_FS_ADMIN.'classes/notice_box.php'); 
+
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+
+  //头部内容
+  $heading = array();
+
+  $page_str = '';
+  
+  $page_str .= '<a onclick="close_tags_info();" href="javascript:void(0);">X</a>';
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => '<b>'.IMAGE_NEW_PROJECT.'</b>');
+  $heading[] = array('align' => 'right', 'text' => $page_str);
+
+  //主体内容
+  $category_info_row = array();
+   
+  //标签名称编辑框 
+  $category_info_row[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => TEXT_INFO_TAGS_NAME.'<input type="hidden" name="param_str" value="'.$param_str.'">'), 
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<input type="text" class="option_input" name="tags_name" value=""><span id="tags_name_error">'.TEXT_FIELD_REQUIRED.'</span>')
+      );
+  //标签图片上传框  
+  $category_info_row[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => TEXT_INFO_TAGS_IMAGE), 
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => tep_draw_file_field('tags_images'))
+     ); 
+   
+  //底部内容
+  $buttons = array();
+  
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_submit(IMAGE_SAVE, '').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="close_tags_info();"').'</a>'; 
+
+  if (!empty($button)) {
+    $buttons = array('align' => 'center', 'button' => $button); 
+  }
+
+  $form_str = tep_draw_form('tags_form', FILENAME_TAGS, 'action=insert', 'post', 'enctype="multipart/form-data" onsubmit="return create_tags_submit();"');
+
+  //生成表单 
+  $notice_box->get_form($form_str);
+  $notice_box->get_heading($heading);   
+  $notice_box->get_contents($category_info_row, $buttons);
+  $notice_box->get_eof(tep_eof_hidden());
+  echo $notice_box->show_notice();
+}else if ($_GET['action'] == 'edit_products_tags') {
+/* -----------------------------------------------------
+    功能: 显示商品关联标签弹出框
+    参数: $_POST['tags_id_list'] 标签列表 
+ -----------------------------------------------------*/
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_CATEGORIES);
+  include(DIR_FS_ADMIN.'classes/notice_box.php'); 
+
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+
+  //头部内容
+  $heading = array();
+
+  $page_str = '';
+  
+  $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => '<b>'.TEXT_EDIT_TAGS_TITLE.'</b>');
+  $heading[] = array('align' => 'right', 'text' => $page_str);
+
+  //主体内容
+  $category_info_row = array();
+   
+  //标签列表 
+  $tags_id_list = $_POST['tags_id_list'];
+  $tags_type = $_POST['type'];
+  $tags_url = $_POST['url'];
+  $products_id = $_POST['pid'];
+  $tags_url_array = explode('|||',$tags_url);
+  foreach($tags_url_array as $tags_value){
+
+    $tags_site_array = explode('=',$tags_value);
+    if($tags_site_array[0] == 'site_id'){
+
+      $site_id = $tags_site_array[1]; 
+      break;
+    }
+  }
+
+  foreach($tags_url_array as $tags_url_value){
+
+          $tags_url_value_array = explode('=',$tags_url_value);
+          if($tags_url_value_array[0] == 'pID'){
+            
+            $tags_pid_key = $tags_url_value_array[1];
+          }
+
+          if($tags_url_value_array[0] == 'cPath'){
+
+            $tags_path_key = $tags_url_value_array[1];
+          }
+  }
+
+  if($tags_pid_key){
+
+          $tags_key = $tags_pid_key;
+  }else{
+
+          if($tags_path_key){
+
+            $tags_key = $tags_path_key;
+          }else{
+
+            $tags_key = 0;
+          }
+  }
+
+  $checked_temp_array = array();
+  if($tags_type == 1){
+          
+          $checked_temp_array = $_SESSION['pid_tags_id_list_array'][$tags_key]; 
+  }else{ 
+          $checked_temp_array = $_SESSION['carttags_id_list_array'][$tags_key];  
+  } 
+
+  $site_id_flag = !isset($site_id) || $site_id == '0' ? true : false;
+  $checked_array = array();
+  $table_str = $tags_type == 1 ? TABLE_PRODUCTS_TO_TAGS : 'products_to_carttag';
+  $checked_tags_query = tep_db_query("select tags_id from ". $table_str ." where products_id='".$products_id."'");   
+  while($checked_tags_array = tep_db_fetch_array($checked_tags_query)){
+
+    $checked_array[] = $checked_tags_array['tags_id'];
+  }
+  tep_db_free_result($checked_tags_query);
+
+  $tags_query = tep_db_query("select * from ". TABLE_TAGS ." where tags_id in (".$tags_id_list.")");
+  $tags_list_str = '<table width="100%" cellspacing="0" cellpadding="2" border="0"><tr>';
+  $tags_i = 1;
+  $disabled = $site_id_flag == false ? ' disabled="disabled"' : '';
+  while($tags_array = tep_db_fetch_array($tags_query)){
+
+    $checked_str = in_array($tags_array['tags_id'],$checked_array) ? ' checked="checked"' : '';  
+    if(!empty($checked_temp_array)){
+      $checked_str = in_array($tags_array['tags_id'],$checked_temp_array) ? ' checked="checked"' : '';
+    }
+    $tags_list_str .= '<td width="20%"><input type="checkbox" name="tags_id[]" value="'.$tags_array['tags_id'].'"'.$checked_str.$disabled.'>'.$tags_array['tags_name'].'</td>';
+    if($tags_i % 5 == 0){
+
+      $tags_list_str .= '</tr><tr>';
+    }
+    $tags_i++;
+  } 
+  $tags_list_str .= '</tr></table>';
+  $category_info_row[]['text'] = array(
+       array('align' => 'left', 'params' => '', 'text' => $tags_list_str.'<input type="hidden" name="tags_type" value="'.$tags_type.'"><input type="hidden" name="tags_url" value="'.$tags_url.'">'), 
+      );
+   
+  //底部内容
+  $buttons = array();
+  
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_EDIT_TAGS_SAVE, 'onclick="return edit_products_tags_check(\'tags_id[]\');"'.$disabled).'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_EDIT_TAGS_ALL_SELECT, 'onclick="all_select_tags(\'tags_id[]\');"'.$disabled).'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(OPTION_CLEAR, 'onclick="all_reset_tags(\'tags_id[]\');"'.$disabled).'</a>';
+
+  if (!empty($button)) {
+    $buttons = array('align' => 'center', 'button' => $button); 
+  }
+
+  $form_str = tep_draw_form('edit_tags', FILENAME_CATEGORIES, 'action=edit_products_tags', 'post', 'id="edit_tags_id"');
+
+  //生成表单 
+  $notice_box->get_form($form_str);
+  $notice_box->get_heading($heading);   
+  $notice_box->get_contents($category_info_row, $buttons);
+  $notice_box->get_eof(tep_eof_hidden());
+  echo $notice_box->show_notice();
 }

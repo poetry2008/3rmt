@@ -59,7 +59,15 @@
 ?> 
       
       <h1 class="pageHeading"><?php echo HEADING_TITLE_ERROR; ?></h1> 
-      <div class="comment"><div class="product_info_box"><?php echo ERROR_INVALID_PRODUCT; ?></div></div>
+      <div class="comment">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" summary="table" class="product_info_box"> 
+        <tr>
+          <td class="main">
+            <?php echo ERROR_INVALID_PRODUCT; ?>
+          </td>
+        </tr>
+      </table>
+      </div>
       <?php
   } else {
     $product_info = tep_db_fetch_array($product_info_query);
@@ -109,6 +117,33 @@
       $fromname_error = false;
     }
 
+    $random_code_info = '';
+    if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
+      if (empty($_POST['random_code'])) {
+        //验证码为空 
+        $random_code_error = true;
+        $random_code_info = VALIDATE_RANDOM_CODE_IS_NULL; 
+        $error = true;
+      } else {
+        if (md5(strtolower($_POST['random_code'])) != $_SESSION['random_code']) {
+          //验证码不一致 
+          $random_code_error = true;
+          $random_code_info = VALIDATE_RANDOM_CODE_NOT_SAME; 
+          $error = true;
+        } else {
+          if ($error == true) {
+            $random_code_error = true;
+            $random_code_info = VALIDATE_RANDOM_CODE_IS_NULL; 
+            $error = true;
+          } else {
+            $random_code_error = false;
+          }
+        }
+      }
+    } else {
+      $random_code_error = false;
+    }
+    
     if (isset($_GET['action']) && ($_GET['action'] == 'process') && ($error == false)) {
       $email_subject = sprintf(TEXT_EMAIL_SUBJECT, $from_name, STORE_NAME);
       $email_body = sprintf(TEXT_EMAIL_INTRO, $_POST['friendname'], $from_name, $_POST['products_name'], STORE_NAME) . "\n\n";
@@ -123,8 +158,13 @@
       tep_mail($_POST['friendname'], $_POST['friendemail'], $email_subject, stripslashes($email_body), '', $from_email_address);
 ?> 
       <div class="comment"> 
-        <p class="main"><?php echo sprintf(TEXT_EMAIL_SUCCESSFUL_SENT, stripslashes($_POST['products_name']), $_POST['friendemail']); ?></p> 
-        <div align="right"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $_GET['products_id']) . '">' . tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></div> 
+      <table width="100%" cellspacing="0" cellpadding="0" border="0" class="product_info_box" summary="table"> 
+        <tbody>
+		<tr>
+          <td class="main"><?php echo sprintf(TEXT_EMAIL_SUCCESSFUL_SENT, stripslashes($_POST['products_name']), $_POST['friendemail']); ?></td>
+        </tr>
+        <tr><td align="right"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $_GET['products_id']) . '">' . tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td></tr>
+		</table>
       </div>
       <?php
     } else {
@@ -137,7 +177,7 @@
         if ($fromname_error == true) $your_name_prompt .= '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';
         if (!isset($_GET['from'])) $_GET['from'] = NULL;
         $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $_POST['from'] : $_GET['from']),'class="input_text"');
-        if ($fromemail_error == true) $your_email_address_prompt .= '<br>'.ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
+        if ($fromemail_error == true) $your_email_address_prompt .= '<br><span class="errorText">'.strip_tags(ENTRY_EMAIL_ADDRESS_CHECK_ERROR).'</span>';
       }
 ?> 
       <?php echo tep_draw_form('email_friend', tep_href_link(FILENAME_TELL_A_FRIEND, 'action=process&amp;products_id=' . $_GET['products_id'])) . tep_draw_hidden_field('products_name', $product_info['products_name']); ?> 
@@ -149,9 +189,9 @@
         <tr> 
           <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" summary="table" class="formArea"> 
             <tr> 
-              <td class="main"><table border="0" cellspacing="0" cellpadding="2" summary="table"> 
+              <td class="main"><table border="0" cellspacing="0" cellpadding="2" summary="table" width="100%"> 
                 <tr> 
-                  <td class="main"><?php echo FORM_FIELD_CUSTOMER_NAME; ?></td> 
+                  <td class="main" width="120"><?php echo FORM_FIELD_CUSTOMER_NAME; ?></td> 
                   <td class="main"><?php echo $your_name_prompt; ?></td> 
                 </tr> 
                 <tr> 
@@ -169,22 +209,47 @@
         <tr> 
           <td class="main"><table border="0" width="100%" cellspacing="0" summary="table" cellpadding="2" class="formArea"> 
             <tr> 
-              <td class="main"><table border="0" cellspacing="0" summary="table" cellpadding="2"> 
+              <td class="main"><table border="0" cellspacing="0" summary="table" cellpadding="2" width="100%"> 
                 <tr> 
-                  <td class="main"><?php echo FORM_FIELD_FRIEND_NAME; ?></td> 
+                  <td class="main" width="120"><?php echo FORM_FIELD_FRIEND_NAME; ?></td> 
                   <td class="main">
-                  <?php if (!isset($_GET['friendname'])) $_GET['friendname'] = NULL;//del notice?>
-                  <?php if (!isset($_POST['friendname'])) $_POST['friendname'] = NULL;//del notice?>
+                  <?php if (!isset($_GET['friendname'])) $_GET['friendname'] = NULL;?>
+                  <?php if (!isset($_POST['friendname'])) $_POST['friendname'] = NULL;?>
                   <?php echo tep_draw_input_field('friendname', (($friendname_error == true) ? $_POST['friendname'] : $_GET['friendname']),'class="input_text"'); if ($friendname_error == true) echo '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';?></td> 
                 </tr> 
                 <tr> 
                   <td class="main"><?php echo FORM_FIELD_FRIEND_EMAIL; ?></td> 
-                  <td class="main"><?php echo tep_draw_input_field('friendemail', (($friendemail_error == true) ? $_POST['friendemail'] : $_GET['send_to']),'class="input_text"'); if ($friendemail_error == true) echo '<br>'.ENTRY_EMAIL_ADDRESS_CHECK_ERROR; ?></td> 
+                  <td class="main"><?php echo tep_draw_input_field('friendemail', (($friendemail_error == true) ? $_POST['friendemail'] : $_GET['send_to']),'class="input_text"'); if ($friendemail_error == true) echo '<br><span class="errorText">'.strip_tags(ENTRY_EMAIL_ADDRESS_CHECK_ERROR).'</span>'; ?></td> 
                 </tr> 
               </table></td> 
             </tr> 
           </table></td> 
         </tr> 
+        <tr>
+          <td class="main">
+          <br> 
+          <table border="0" width="100%" cellspacing="0" summary="table" cellpadding="2" class="formArea">
+            <tr>
+              <td class="main">
+                <table border="0" cellspacing="0" summary="table" cellpadding="2" width="100%">
+                  <tr>
+                    <td class="main" width="120"><?php echo VALIDATE_RANDOM_CODE_TEXT;?></td>
+                    <td class="main">
+                      <div class="img_box"><img src="random_code.php" border="0" align="left"></div>
+					  <input type="text" name="random_code" size="7" class="input_number_box" value=""> 
+                      <?php
+                       if ($random_code_error == true) {
+                         echo '&nbsp;<span class="errorText">'.$random_code_info.'</span>'; 
+                       }
+                      ?>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+          </td>
+        </tr>
         <tr> 
           <td class="formAreaTitle"><br> 
           <?php echo FORM_TITLE_FRIEND_MESSAGE; ?></td> 

@@ -259,4 +259,12 @@ define('CATEGORY_SEO_TITLE', '分类的seo');
 define('TEXT_CATEGORY_KEYWORD', 'Google关键字:');
 define('TEXT_NEW_CATEGORY', '&quot;%s&quot;的分类注册');
 define('ERROR_MOVE_CATEGORY','错误：目标下的分类已经存在相同url文字，所以不能移动。');
+define('TEXT_PRODUCTS_TAGS_SELECT','请选择');
+define('TEXT_PRODUCTS_TO_TAGS','编辑勾选项目对应的标签');
+define('TEXT_PRODUCTS_TAGS_DELETE','删除勾选项目');
+define('TEXT_TAGS_MUST_SELECT', '请至少选择一项');
+define('TEXT_TAGS_DELETE_CONFIRM', '确定删除勾选项目吗?');
+define('TEXT_EDIT_TAGS_TITLE','商品标签关联');
+define('TEXT_EDIT_TAGS_ALL_SELECT','全选择');
+define('TEXT_EDIT_TAGS_SAVE','确定');
 ?>

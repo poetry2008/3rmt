@@ -90,7 +90,7 @@ function tep_show_orders_products_info($orders_id) {
   }else if(tep_check_order_type($orders['orders_id'])!=2){
     $time_str = TEXT_NO_RECEIVABLES; 
   }
-  if($time_str){
+  if(isset($time_str)&&$time_str){
     $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_UN_GIVE_MONY_DAY.'</b></td><td class="main" style="color:red;"><b>'.$time_str.'</b></td></tr>';
   }
   $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_OPTION.'</b></td><td class="main" style="color:blue;"><b>'.$orders['torihiki_houhou'].'</b></td></tr>';
@@ -139,7 +139,6 @@ function tep_show_orders_products_info($orders_id) {
         $str .= '<tr><td class="main"><b>PC：</b></td><td class="main">'.implode('&nbsp;,&nbsp;', $names).'</td></tr>';
       }
       $str .= '<tr><td class="main"></td><td class="main"></td></tr>';
-      $i++;
     }
     $str .= '<tr><td colspan="2"><hr></td></tr>'; 
   }
@@ -1559,13 +1558,69 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
     $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".str_replace('torihiki_date_error desc,date_purchased_error desc,', '', $order_str);
   } elseif (isset($_GET['keywords']) && isset($_GET['search_type']) && $_GET['search_type'] == 'sproducts_id' ) {
     //未完成订单查询 
+    $query_str = ''; 
+    $query_num = '';
+    if(!empty($site_id)){
+
+      if(get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',$site_id) != ''){
+          $query_num = get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',$site_id);
+      }else{
+
+          if(get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
+            $query_num = get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
+          }
+      }
+    }else{
+      if(get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
+          $query_num = get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
+      }
+    }
+
+    if(!empty($site_id) && $site_id != 0){
+      if($query_num != ''){
+
+        $query_str = " and date_format(o.date_purchased,'%Y-%m-%d %H:%i:%s') >= '".date('Y-m-d H:i:s',strtotime('-'.$query_num.' minutes'))."'";
+      }
+    }else{
+
+      $site_id_query = tep_db_query("select id from ".TABLE_SITES);
+      $query_str = ' and (';
+      while($site_id_array = tep_db_fetch_array($site_id_query)){
+
+        $site_temp_id = $site_id_array['id'];
+        $query_temp_num = '';
+        if(!empty($site_temp_id)){
+
+          if(get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',$site_temp_id) != ''){
+            $query_temp_num = get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',$site_temp_id);
+          }else{
+
+            if(get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
+              $query_temp_num = get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
+            }
+          }
+        }else{
+            if(get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
+              $query_temp_num = get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
+            }
+        } 
+        $query_str .= "(o.site_id = ".$site_temp_id;
+        if($query_temp_num != ''){
+          $query_str .= " and date_format(o.date_purchased,'%Y-%m-%d %H:%i:%s') >= '".date('Y-m-d H:i:s',strtotime('-'.$query_temp_num.' minutes'))."') or ";
+        }else{
+          $query_str .= ') or ';
+        }
+      }
+      tep_db_free_result($site_id_query);
+      $query_str = substr($query_str,0,-4);
+      $query_str .= ')';
+    } 
     $orders_query_raw = " select distinct op.orders_id from " . TABLE_ORDERS_PRODUCTS . " op
-      ,".TABLE_ORDERS." o 
+      ,".TABLE_ORDERS." o,".TABLE_ORDERS_STATUS." o_s 
       ".$sort_table." where ".$sort_where." 
-      o.orders_id = op.orders_id and op.products_id ";
+      o.orders_id = op.orders_id and o.orders_status = o_s.orders_status_id and op.products_id ";
     $orders_query_raw .=  "= '".$_GET['keywords']."' " ;
-    $orders_query_raw .= " and o.finished = '0' and flag_qaf = '0' and date(o.date_purchased) >=
-      '".date('Y-m-d 00:00:00',strtotime('-'.((get_configuration_by_site_id('ORDER_EFFECTIVE_DATE') != '0')?(get_configuration_by_site_id('ORDER_EFFECTIVE_DATE')-1):'0').'day'))."' ";
+    $orders_query_raw .= " and o.finished = '0' and flag_qaf = '0'and o_s.is_cancle = 0".$query_str;
     $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".str_replace('torihiki_date_error desc,date_purchased_error desc,', '', $order_str);
   } elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && preg_match('/^os_\d+$/', $_GET['search_type'])))) {
     //订单状态查询 
@@ -2912,7 +2967,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         <h3><?php echo TEXT_ORDER_ANSWER;?></h3>
         <!--new order answer{{-->
           <?php
-            $order_id = $order->info['orders_id'];
+          $order_id = $order->info['orders_id'];
           $formtype = tep_check_order_type($order_id);
           $payment_romaji = tep_get_payment_code_by_order_id($order_id); 
           $oa_form_sql = "select * from ".TABLE_OA_FORM." where formtype = '".$formtype."' and payment_romaji = '".$payment_romaji."'";
