@@ -342,7 +342,9 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   }
   $configuration_key_one = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = '".$configuration['configuration_key']."' and `site_id` = '".$_GET['site_id']."'");
   $configuration_key_row = tep_db_fetch_array($configuration_key_one);
+  if($configuration['configuration_key'] != 'DS_ADMIN_SIGNAL_TIME'){
   $configuration['configuration_value'] = $configuration_key_row['configuration_value'];
+  }
     if (tep_not_null($configuration['use_function'])) {
   $use_function = $configuration['use_function'];
    if (ereg('->', $use_function)) {

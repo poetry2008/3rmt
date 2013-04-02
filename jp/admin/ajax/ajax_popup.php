@@ -2648,7 +2648,6 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     } else {
   $cfgValue = $configuration['configuration_value'];
     }
-
     if (
         ((!isset($_GET['cID']) || !$_GET['cID']) || ($_GET['cID'] == $configuration['configuration_id'])) 
         && (!isset($cInfo) || !$cInfo) 
@@ -2659,6 +2658,13 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   $cInfo_array = tep_array_merge($configuration, $cfg_extra);
   $cInfo = new objectInfo($cInfo_array);
     }
+      if($configuration['configuration_key'] == 'DS_ADMIN_SIGNAL_TIME'){
+       $tmp_setting_array = @unserialize(stripslashes($cfgValue));
+       $configuration_key_tmp = '';
+       $configuration_key_tmp .= SIGNAL_GREEN.'&nbsp;&nbsp;'.NOW_TIME_TEXT.'<br>'.(int)($tmp_setting_array['green'][0].$tmp_setting_array['green'][1].$tmp_setting_array['green'][2].$tmp_setting_array['green'][3]).'&nbsp;&nbsp;'.NOW_TIME_LINK_TEXT.'<br>';
+       $configuration_key_tmp .= SIGNAL_YELLOW.'&nbsp;&nbsp;'.NOW_TIME_TEXT.'<br>'.(int)($tmp_setting_array['yellow'][0].$tmp_setting_array['yellow'][1].$tmp_setting_array['yellow'][2].$tmp_setting_array['yellow'][3]).'&nbsp;&nbsp;'.NOW_TIME_LINK_TEXT.'<br>';
+       $configuration_key_tmp .= SIGNAL_RED.'&nbsp;&nbsp;'.NOW_TIME_TEXT.'<br>'.(int)($tmp_setting_array['red'][0].$tmp_setting_array['red'][1].$tmp_setting_array['red'][2].$tmp_setting_array['red'][3]).'&nbsp;&nbsp;'.NOW_TIME_LINK_TEXT.'<br>';
+      } 
   }
   $heading = array();
   $contents = array();
@@ -2755,7 +2761,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
    );
     $configuration_contents[]['text'] = array(
       array('text' => constant($cInfo->configuration_title) .  '<br>'),
-      array('text' => $value_field.'<br>'.$cInfo->configuration_description)
+      array('text' => $value_field.'<br><font size="1">'.$cInfo->configuration_description.'</font>')
    );
   $configuration_contents[]['text'] = array(
         array('align' => 'left', 'params' => 'width="50%%"', 'text' => TEXT_USER_ADDED.((tep_not_null($cInfo->user_added))?$cInfo->user_added:TEXT_UNSET_DATA)), 
@@ -2799,7 +2805,11 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   }
   if($fetch_result['set_function']) {
    if(in_array($cInfo->configuration_key,$configuration_key_array)){
-      $value_field = $fetch_result['configuration_value'];
+      if($cInfo->configuration_key == 'DS_ADMIN_SIGNAL_TIME'){
+      $value_field = $configuration_key_tmp; 
+      }else{
+       $value_field = $fetch_result['configuration_value'];
+      }
    }else{
       eval('$value_field = ' . $fetch_result['set_function'] . '\'' .  htmlspecialchars(addcslashes($fetch_result['configuration_value'], '\'')) . '\');');
    }
@@ -2822,7 +2832,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   //主体内容
   $contents[]['text'] = array(
     array('text' => constant($fetch_result['configuration_title']).'<br>'),
-    array('text' => $value_field.'<br>'.$cInfo->configuration_description)
+    array('text' => $value_field.'<br><font size="1">'.$cInfo->configuration_description.'</font>')
     );
   $contents[]['text'] = array(
         array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.((tep_not_null($cInfo->user_added))?$cInfo->user_added:TEXT_UNSET_DATA)), 
