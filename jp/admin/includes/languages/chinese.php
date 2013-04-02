@@ -582,7 +582,6 @@ define('TEXT_PREORDER_PRODUCTS_NOENTRANCE', '未进项');
 define('TEXT_PREORDER_PRODUCTS_ENTRANCE', '进项');
 define('TEXT_PREORDER_PRODUCTS_NUM', '个数：');
 define('TEXT_PREORDER_PRODUCTS_UNIT', '个');
-define('TEXT_PREORDER_PRODUCTS_CHARACTER_NAME', '交易人物名：');
 
 
 
@@ -590,7 +589,7 @@ define('TEXT_PREORDER_PRODUCTS_CHARACTER_NAME', '交易人物名：');
 define('TEXT_PAYMENT_NULL_TXT','请选择支付方式');
 define('TEXT_TORIHIKI_LIST_DEFAULT_TXT','请选择');
 define('BOX_TOOLS_CAMPAIGN', '优惠券设置');
-define('TEXT_CURRENT_CHARACTER_NAME', '本公司交易人物名：');
+define('TEXT_CURRENT_CHARACTER_NAME', '邮件内容的注意事项：');
 define('BOX_CATALOG_SHOW_USELESS_OPTION','删除未使用选项');
 define('TEXT_ORDER_ALARM_LINK', '警报');
 define('HOUR_TEXT', '时');
@@ -601,7 +600,6 @@ define('NOTICE_DIFF_TIME_TEXT', '剩余');
 define('TEXT_DISPLAY_NUMBER_OF_MANUAL', '当前显示<b>%d</b> &sim; <b>%d</b> (共<b>%d</b> 项)');
 define('FILENAME_FILENAME_RESET_PWD_TEXT','统一重置密码');
 define('FILENAME_CUSTOMERS_EXIT_TEXT','退会客户管理');
-define('OPTION_CHARACTER_NAME', '客户的交易人物名');
 define('NEXT_ORDER_TEXT', '下面的订单');
 define('BEFORE_ORDER_TEXT', '历史订单');
 define('CUSTOMER_INFO_TEXT', '客户信息');
