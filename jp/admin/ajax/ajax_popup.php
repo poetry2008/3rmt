@@ -2760,8 +2760,8 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
       array('align' => 'center','params' => 'colspan="3"','text' => '<input type="hidden" name="user_update" value="'.$user_info['name'].'">'),
    );
     $configuration_contents[]['text'] = array(
-      array('text' => constant($cInfo->configuration_title) .  '<br>'),
-      array('text' => $value_field.'<br><font size="1">'.$cInfo->configuration_description.'</font>')
+      array('text' => constant($cInfo->configuration_title)),
+      array('text' => $value_field.  '<br><font size="1">'.$cInfo->configuration_description.'</font>')
    );
   $configuration_contents[]['text'] = array(
         array('align' => 'left', 'params' => 'width="50%%"', 'text' => TEXT_USER_ADDED.((tep_not_null($cInfo->user_added))?$cInfo->user_added:TEXT_UNSET_DATA)), 
@@ -2831,7 +2831,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   }
   //主体内容
   $contents[]['text'] = array(
-    array('text' => constant($fetch_result['configuration_title']).'<br>'),
+    array('text' => constant($fetch_result['configuration_title'])),
     array('text' => $value_field.'<br><font size="1">'.$cInfo->configuration_description.'</font>')
     );
   $contents[]['text'] = array(
