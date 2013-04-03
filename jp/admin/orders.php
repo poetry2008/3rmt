@@ -789,7 +789,11 @@ switch ($_GET['action']) {
         } else {
           $customer_notified = '0';
         }
-        tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments, user_added) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '', '".tep_db_input($update_user_info['name'])."')");
+        //获取订单最后一次备注信息
+        $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".tep_db_input($oID)."' order by date_added desc limit 0,1");
+        $orders_status_history_array = tep_db_fetch_array($orders_status_history_query);
+        tep_db_free_result($orders_status_history_query);
+        tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments, user_added) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '".$orders_status_history_array['comments']."', '".tep_db_input($update_user_info['name'])."')");
 
         $order_updated = true;
 
@@ -1120,7 +1124,11 @@ switch ($_GET['action']) {
       } else {
         $customer_notified = '0';
       }
-      tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments, user_added) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '', '".tep_db_input($update_user_info['name'])."')");
+      //获取订单最后一次备注信息
+      $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".tep_db_input($oID)."' order by date_added desc limit 0,1");
+      $orders_status_history_array = tep_db_fetch_array($orders_status_history_query);
+      tep_db_free_result($orders_status_history_query);
+      tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments, user_added) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '".$orders_status_history_array['comments']."', '".tep_db_input($update_user_info['name'])."')");
       // 同步问答
       $order_updated = true;
     }
@@ -2832,15 +2840,15 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                             <td class="main"><?php echo $order->info['telecom_money'];?></a></td>
                             </tr>
                             <tr>
-                            <td class="main" valign="top" width="20%"><b><?php echo TEXT_COUNTRY_CODE?></b></td>
+                            <td class="main" valign="top" width="20%"><?php echo TEXT_COUNTRY_CODE?></td>
                             <td class="main" width="30%"><?php echo $order->info['paypal_countrycode'];?></td>
-                            <td class="main" valign="top"><b><?php echo TEXT_PAYER_STATUS;?></b></td>
+                            <td class="main" valign="top"><?php echo TEXT_PAYER_STATUS;?></td>
                             <td class="main"><?php echo $order->info['paypal_payerstatus'];?></a></td>
                             </tr>
                             <tr>
-                            <td class="main" valign="top"><b><?php echo TEXT_PAYMENT_STATUS;?></b></td>
+                            <td class="main" valign="top"><?php echo TEXT_PAYMENT_STATUS;?></td>
                             <td class="main"><?php echo $order->info['paypal_paymentstatus'];?></a></td>
-                            <td class="main" valign="top"><b><?php echo TEXT_PAYMENT_TYPE;?></b></td>
+                            <td class="main" valign="top"><?php echo TEXT_PAYMENT_TYPE;?></td>
                             <td class="main"><?php echo $order->info['paypal_paymenttype'];?></a></td>
                             </tr>
                             </table>
@@ -3248,6 +3256,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
             <?php
             $cpayment = payment::getInstance($orders['site_id']);
             $orders_history_query = tep_db_query("select orders_status_history_id, orders_status_id, date_added, customer_notified, comments, user_added from " . TABLE_ORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($oID) . "' order by date_added");
+          $orders_status_history_str = '';
           if (tep_db_num_rows($orders_history_query)) {
             while ($orders_history = tep_db_fetch_array($orders_history_query)) {
               $select_select = $orders_history['orders_status_id'];
@@ -3261,9 +3270,38 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
                 echo tep_image(DIR_WS_ICONS . 'cross.gif', ICON_CROSS) . "</td>\n";
               }
               echo '      <td class="smallText">' .  $orders_status_array[$orders_history['orders_status_id']];
-              echo '</td>' . "\n" .
-                '      <td class="smallText"><p style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;width:170px;">' . nl2br(tep_db_output($cpayment->admin_get_comment(payment::changeRomaji($order->info['payment_method'],PAYMENT_RETURN_TYPE_CODE),$orders_history['comments']))) . '&nbsp;</p></td>' . "\n";
+              echo '</td>' . "\n";
+              //不显示重复备注信息
+              $orders_explode_array = array();
+              $orders_explode_all_array = explode("\n",$orders_history['comments']);
+              $orders_explode_array = explode(':',$orders_explode_all_array[0]);
+              if(count($orders_explode_all_array) > 1){
+
+                if(strlen(trim($orders_explode_array[1])) == 0){ 
+                  unset($orders_explode_all_array[0]);
+                  $orders_history_comment = implode("\n",$orders_explode_all_array); 
+                }else{ 
+                  $orders_temp_str = end($orders_explode_all_array);
+                  array_pop($orders_explode_all_array);
+                  $orders_comments_old_str = implode("\n",$orders_explode_all_array);
+                  if(trim($orders_comments_old_str) == trim($orders_status_history_str) && $orders_status_history_str != ''){
+
+                    $orders_history_comment = $orders_temp_str;
+                  }else{
+                    $orders_history_comment = $orders_history['comments']; 
+                  }
+               }
+           }else{
+               $orders_history_comment = $orders_history['comments'];
+           }
+           if($orders_history['comments'] != $orders_status_history_str){
+             echo '      <td class="smallText"><p style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;width:170px;">' . nl2br(tep_db_output($cpayment->admin_get_comment(payment::changeRomaji($order->info['payment_method'],PAYMENT_RETURN_TYPE_CODE),$orders_history['comments']))) . '&nbsp;</p></td>' . "\n";
+           }else{
+
+             echo '      <td class="smallText"><p style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;width:170px;">&nbsp;</p></td>' . "\n";
+           }
               echo '<td class="smallText">'.$orders_history['user_added'].'</td>'; 
+              $orders_status_history_str = $orders_history['comments'];
               echo '<td>';
               $order_confirm_payment_raw = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".tep_db_input($oID)."'"); 
               $order_confirm_payment_res = tep_db_fetch_array($order_confirm_payment_raw); 

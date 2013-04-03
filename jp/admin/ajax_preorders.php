@@ -314,7 +314,7 @@ if ($_POST['orders_id'] &&
 							tep_get_all_get_params(array('oID', 'action')) .
 							'oID='.$orders['orders_id']);?>';"><font color="<?php echo $today_color; ?>"><?php echo $orders['orders_status_name']; ?></font></td>
                                                                                                                                                          <td style="border-bottom:1px solid
-#000000;background-color: darkred;" class="dataTableContent" align="right" onmouseover="if(popup_num == 1) showPreOrdersInfo('<?php echo $orders['orders_id']?>', this, 0 , '<?php echo urlencode(tep_get_all_get_params(array('oID', 'action')));?>');" onmouseout="if(popup_num == 1) hideOrdersInfo(0);">
+#000000;background-color: darkred;" class="dataTableContent" align="right">
                                                                                                                                                          <?php
                                                                                                                                                          echo '<a href="javascript:void(0);" onclick="showPreOrdersInfo(\''.$orders['orders_id'].'\', this, 1, \''.urlencode(tep_get_all_get_params(array('oID', 'action'))).'\');">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
     ?>&nbsp;</td>
