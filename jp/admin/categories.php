@@ -2632,8 +2632,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
           <tr>
             <td><?php echo TEXT_PRODUCTS_TO_TAGS_TITLE_SELECT; ?></td>
             <td class="pageHeading" align="right">
-                    <?php 
+                   <?php 
                     $tags_url_string = str_replace('action=products_to_tags&','',$_SERVER['QUERY_STRING']); 
+                    $tags_url_string = str_replace('action=products_to_tags','',$tags_url_string);
                     echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, $tags_url_string) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; 
                     ?>
                     <select name="select_edit_tags" onchange="select_type_changed(this.value);">
