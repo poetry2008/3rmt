@@ -5929,7 +5929,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               echo $notice_box->show_notice();
                     // end table list
                     ?>
-                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="padding-left: 6px;">
                     <tr>
                     <td class="smallText" valign="top"><?php echo $products_split->display_count($products_query_numrows, MAX_DISPLAY_PRODUCTS_ADMIN, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CATEGORIES); ?></td>
                     <td class="smallText" align="right" colspan="3">
@@ -5937,8 +5937,19 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     </td>
                     </tr>
                     <tr>
-                    <td class="smallText"><?php echo TEXT_CATEGORIES . '&nbsp;' . $categories_count . '<br>' . TEXT_PRODUCTS . '&nbsp;' . $products_query_numrows; ?></td>
-                    <td class="smallText" align="right" colspan="3">
+                    <td class="smallText"><?php echo TEXT_CATEGORIES . '&nbsp;' . $categories_count . '&nbsp;&nbsp;' . TEXT_PRODUCTS . '&nbsp;' . $products_query_numrows; ?></td>
+                    </tr>
+                    <tr>
+                    <td class="smallText" valign="top" style="padding-top: 3px;">
+                      <select name="products_to_tags" onchange="products_tags_change(this.value);">
+                      <option value="0"><?php echo TEXT_PRODUCTS_TAGS_SELECT;?></option>
+                      <option value="1"><?php echo TEXT_PRODUCTS_TO_TAGS;?></option>
+                      <?php if($ocertify->npermission == 15){?>
+                      <option value="2"><?php echo TEXT_PRODUCTS_TAGS_DELETE;?></option>
+                      <?php }?>
+                      </select>
+                    </td>
+                    <td class="smallText" align="right" colspan="3" valign="top">
                     <?php
                     if ($cPath) {
                       if (!empty($cPath_back)) {
@@ -5959,14 +5970,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       <?php }?>
                       &nbsp;<input type='button' value='<?php echo CATEGORY_BUTTON_XIEYE_PRICE;?>' onClick="list_display('<?php echo $cPath_yobi?$cPath_yobi:0;?>','<?php echo $current_category_id;?>','<?php echo $_GET['cPath'];?>')">
                       &nbsp;<input type='button' name='x' value="<?php echo CATEGORY_BUTTON_ALL_UPDATE;?>" onClick="all_update()"> 
-                      <?php }?> 
-                      <select name="products_to_tags" onchange="products_tags_change(this.value);">
-                      <option value="0"><?php echo TEXT_PRODUCTS_TAGS_SELECT;?></option>
-                      <option value="1"><?php echo TEXT_PRODUCTS_TO_TAGS;?></option>
-                      <?php if($ocertify->npermission == 15){?>
-                      <option value="2"><?php echo TEXT_PRODUCTS_TAGS_DELETE;?></option>
-                      <?php }?>
-                      </select>
+                      <?php }?>  
                       </td>
                       </tr>
                       <?php
