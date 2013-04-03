@@ -111,12 +111,13 @@ WHERE
   tep_redirect(tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' .  tep_get_default_configuration_id_by_id($cID).'&site_id='.$site_id['site_id']));
   break;
     case 'tdel':
+  $site_id= tep_get_conf_sid_by_id($cID);
   $two_id = explode('_',$_GET['cID']);
   $config_id =$two_id[0];
   $default_id = $two_id[1];
 
   tep_db_query("DELETE FROM ".TABLE_CONFIGURATION." WHERE configuration_id = ".$config_id);
-        tep_redirect(tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $default_id.'&action=edit'));
+        tep_redirect(tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] .  '&cID=' . $default_id.'&action=edit&site_id='.$site_id['site_id']));
 break;
 
 
