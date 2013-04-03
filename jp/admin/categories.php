@@ -2637,6 +2637,10 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       <option value="1"><?php echo TEXT_PRODUCTS_TO_TAGS_SETTING;?></option>
                       <option value="2"><?php echo TEXT_PRODUCTS_TO_TAGS_DELETE;?></option>
                     </select>
+                    <?php 
+                    $tags_url_string = str_replace('action=products_to_tags&','',$_SERVER['QUERY_STRING']); 
+                    echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, $tags_url_string) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; 
+                    ?> 
           </tr>
         </table></td>
       </tr>
@@ -2762,6 +2766,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       <option value="1"><?php echo TEXT_PRODUCTS_TO_TAGS_SETTING;?></option>
                       <option value="2"><?php echo TEXT_PRODUCTS_TO_TAGS_DELETE;?></option>
                     </select>
+                    <?php 
+                    echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, $tags_url_string) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; 
+                    ?>
                     </td>
                   </tr>
                 </table></td>
@@ -2898,7 +2905,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
   <?php echo tep_draw_form('products_to_tags',FILENAME_CATEGORIES, 'action=products_tags_save', 'post');?>
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr> 
-          <td valign="top" align="left">&nbsp;<input type="checkbox" name="all_check" onclick="all_select_products('categories_id[]');all_select_products('products_id[]')"><?php echo TEXT_PRODUCTS_TAGS_ALL_CHECK;?><input type="hidden" name="tags_id_list" value="<?php echo $tags_id_str;?>"><input type="hidden" name="tags_url" value="<?php echo $tags_url;?>"><br><td align="right"><input type="button" value="<?php echo IMAGE_SAVE;?>" onclick="products_tags_submit();"></td><table width="100%" class="box_ul"><tr>
+          <td valign="top" align="left">&nbsp;<input type="checkbox" name="all_check" onclick="all_select_products('categories_id[]');all_select_products('products_id[]')"><?php echo TEXT_PRODUCTS_TAGS_ALL_CHECK;?><input type="hidden" name="tags_id_list" value="<?php echo $tags_id_str;?>"><input type="hidden" name="tags_url" value="<?php echo $tags_url;?>"><br><td align="right"><input type="button" class="element_button" value="<?php echo IMAGE_SAVE;?>" onclick="products_tags_submit();"><?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'action=products_to_tags&'.$tags_url) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>';?></td><table width="100%" class="box_ul"><tr>
 <?php
   $i = 0;
   $j = 0;
@@ -2984,7 +2991,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
           </tr>
           <tr>
            <td colspan="2" align="right">
-           <input type="button" value="<?php echo IMAGE_SAVE;?>" onclick="products_tags_submit();"> 
+           <input type="button" class="element_button" value="<?php echo IMAGE_SAVE;?>" onclick="products_tags_submit();"><?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'action=products_to_tags&'.$tags_url) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>';?> 
            </td>
           </tr> 
          </table>
