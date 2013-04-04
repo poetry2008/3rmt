@@ -84,6 +84,7 @@ if (isset($_GET['action']) and $_GET['action']) {
         break;
       case 'deleteconfirm':
         $tags_id = tep_db_prepare_input($_POST['tags_id']);
+        $param_str = tep_db_prepare_input($_POST['param_str']);
         $t_query = tep_db_query("select * from ". TABLE_TAGS . " where tags_id = '" . tep_db_input($tags_id) . "'");
         $t_res = tep_db_fetch_array($t_query); 
         tep_db_free_result($t_query);
@@ -94,6 +95,7 @@ if (isset($_GET['action']) and $_GET['action']) {
         break;
       case 'delete_tags':
         $tags_list_array = $_POST['tags_list_id'];
+        $tags_url = $_POST['tags_url'];
         $tags_list_str = implode(',',$tags_list_array);
         $t_query = tep_db_query("select * from ". TABLE_TAGS . " where tags_id in (" . $tags_list_str . ")");
         while($t_res = tep_db_fetch_array($t_query)){
@@ -103,7 +105,7 @@ if (isset($_GET['action']) and $_GET['action']) {
         tep_db_free_result($t_query); 
         tep_db_query("delete from " . TABLE_TAGS . " where tags_id in (" . $tags_list_str . ")");
         tep_db_query("delete from " . TABLE_PRODUCTS_TO_TAGS . " where tags_id in (" . $tags_list_str . ")");
-        tep_redirect(tep_href_link(FILENAME_TAGS, $param_str));
+        tep_redirect(tep_href_link(FILENAME_TAGS, $tags_url));
         break;
       case 'delete_products_tags':
         $tags_list_array = $_POST['tags_list_id'];
@@ -808,19 +810,14 @@ require("includes/note_js.php");
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?></td>
           </tr>
           <tr>
-            <td><?php echo TEXT_PRODUCTS_TO_TAGS_TITLE_SELECT; ?></td>
+            <td style="padding-left: 8px;"><?php echo TEXT_PRODUCTS_TO_TAGS_TITLE_SELECT; ?></td>
             <td class="pageHeading" align="right">
                    <?php 
                     $tags_url_string = str_replace('action=products_to_tags&','',$_SERVER['QUERY_STRING']); 
                     $tags_url_string = str_replace('action=products_to_tags','',$tags_url_string);
                     $tags_url_string = preg_replace("/sort=.+/",'',$tags_url_string);
                     echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, $tags_url_string) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; 
-                    ?>
-                    <select name="select_edit_tags" onchange="select_type_changed_products(this.value);">
-                      <option value="0"><?php echo TEXT_PRODUCTS_TO_TAGS_SELECT;?></option>
-                      <option value="1"><?php echo TEXT_PRODUCTS_TO_TAGS_SETTING;?></option>
-                      <option value="2"><?php echo TEXT_PRODUCTS_TO_TAGS_DELETE;?></option>
-                    </select> 
+                    ?> 
           </tr>
         </table></td>
       </tr>
@@ -829,7 +826,14 @@ require("includes/note_js.php");
           <tr>
           <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2" id="tags_list_box">
               <tr>
-              <td colspan='4' align="right">
+              <td style="padding-left: 8px;">
+              <select name="select_edit_tags" onchange="select_type_changed_products(this.value);">
+              <option value="0"><?php echo TEXT_PRODUCTS_TO_TAGS_SELECT;?></option>
+              <option value="1"><?php echo TEXT_PRODUCTS_TO_TAGS_SETTING;?></option>
+              <option value="2"><?php echo TEXT_PRODUCTS_TO_TAGS_DELETE;?></option>
+              </select>
+              </td>
+              <td colspan='3' align="right">
                  <select onchange="if(options[selectedIndex].value) change_sort_tags(options[selectedIndex].value)">
                  <?php if(!isset($_GET['sort'])){ ?>
                     <option selected="" value="4a"><?php echo LISTING_TITLE_A_TO_Z;?></option> <option value="4d"><?php echo LISTING_TITLE_Z_TO_A;?></option>
@@ -955,17 +959,19 @@ require("includes/note_js.php");
               </tr>
               </form>
               <tr>
-                <td colspan="4"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+                <td colspan="4"><table border="0" width="100%" cellspacing="0" cellpadding="2" style="padding-left: 4px;"> 
                   <tr>
-                    <td colspan="2" align="right">
-                    <?php 
-                    echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, $tags_url_string) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; 
-                    ?> 
+                    <td>
                     <select name="select_edit_tags" onchange="select_type_changed_products(this.value);">
                       <option value="0"><?php echo TEXT_PRODUCTS_TO_TAGS_SELECT;?></option>
                       <option value="1"><?php echo TEXT_PRODUCTS_TO_TAGS_SETTING;?></option>
                       <option value="2"><?php echo TEXT_PRODUCTS_TO_TAGS_DELETE;?></option>
-                    </select> 
+                    </select>
+                    </td>
+                    <td align="right">
+                    <?php 
+                    echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, $tags_url_string) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; 
+                    ?>  
                     </td>
                   </tr>
                 </table></td>
