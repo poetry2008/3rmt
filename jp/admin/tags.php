@@ -1,7 +1,7 @@
 <?php
 require('includes/application_top.php');
 //把指定页面设置为不缓存
-if(isset($_GET['action']) && $_GET['action'] == 'setting_products_tags'){
+if(isset($_GET['action']) && ($_GET['action'] == 'setting_products_tags' || $_GET['action'] == 'setting_products_to_tags')){
 
   header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
   # 永远是改动过的
@@ -84,6 +84,7 @@ if (isset($_GET['action']) and $_GET['action']) {
         break;
       case 'deleteconfirm':
         $tags_id = tep_db_prepare_input($_POST['tags_id']);
+        $param_str = tep_db_prepare_input($_POST['param_str']);
         $t_query = tep_db_query("select * from ". TABLE_TAGS . " where tags_id = '" . tep_db_input($tags_id) . "'");
         $t_res = tep_db_fetch_array($t_query); 
         tep_db_free_result($t_query);
@@ -94,6 +95,7 @@ if (isset($_GET['action']) and $_GET['action']) {
         break;
       case 'delete_tags':
         $tags_list_array = $_POST['tags_list_id'];
+        $tags_url = $_POST['tags_url'];
         $tags_list_str = implode(',',$tags_list_array);
         $t_query = tep_db_query("select * from ". TABLE_TAGS . " where tags_id in (" . $tags_list_str . ")");
         while($t_res = tep_db_fetch_array($t_query)){
@@ -103,7 +105,7 @@ if (isset($_GET['action']) and $_GET['action']) {
         tep_db_free_result($t_query); 
         tep_db_query("delete from " . TABLE_TAGS . " where tags_id in (" . $tags_list_str . ")");
         tep_db_query("delete from " . TABLE_PRODUCTS_TO_TAGS . " where tags_id in (" . $tags_list_str . ")");
-        tep_redirect(tep_href_link(FILENAME_TAGS, $param_str));
+        tep_redirect(tep_href_link(FILENAME_TAGS, $tags_url));
         break;
       case 'delete_products_tags':
         $tags_list_array = $_POST['tags_list_id'];
@@ -235,6 +237,88 @@ function resize_option_page()
     $(".box_warp").height($(".compatible").height()); 
   }
 }
+
+<?php //商品管理页跳转过来的，排序处理?>
+function change_sort_tags(sort_type)
+{
+  url = 'tags.php?<?php echo preg_replace("/&sort=.+/","",$_SERVER['QUERY_STRING']);?>&sort=' +sort_type;
+  window.location.href = url;
+}
+
+<?php //商品管理页跳转过来的，针对不同的方法，执行不同的动作?>
+function select_type_changed_products(value)
+{
+  switch(value){
+ 
+  case '1':
+    setting_products_to_tags('tags_list_id[]');
+    break;
+  case '2': 
+    delete_select_products_to_tags('tags_list_id[]');
+    break;
+  }
+}
+
+<?php //商品管理页跳转过来的标签关联商品时，判断多选框是否被选中?>
+function setting_products_to_tags(tags_list_id)
+{
+  sel_num = 0;
+  if (document.edit_tags.elements[tags_list_id].length == null) {
+    if (document.edit_tags.elements[tags_list_id].checked == true) {
+      sel_num = 1;
+    }
+  } else {
+    for (i = 0; i < document.edit_tags.elements[tags_list_id].length; i++) {
+      if (document.edit_tags.elements[tags_list_id][i].checked == true) {
+        sel_num = 1;
+        break;
+      }
+    }
+  }
+  
+  if (sel_num == 1) {
+    document.edit_tags.action = '<?php echo FILENAME_TAGS;?>?action=setting_products_to_tags';
+    document.edit_tags.submit(); 
+  } else {
+    document.getElementsByName("select_edit_tags")[0].value = 0;
+    document.getElementsByName("select_edit_tags")[1].value = 0;
+    alert('<?php echo TEXT_TAGS_MUST_SELECT;?>'); 
+  }
+}
+
+<?php //商品管理页跳转过来，删除商品的关联时的确认提示?>
+function delete_select_products_to_tags(tags_list_id)
+{
+  sel_num = 0;
+  if (document.edit_tags.elements[tags_list_id].length == null) {
+    if (document.edit_tags.elements[tags_list_id].checked == true) {
+      sel_num = 1;
+    }
+  } else {
+    for (i = 0; i < document.edit_tags.elements[tags_list_id].length; i++) {
+      if (document.edit_tags.elements[tags_list_id][i].checked == true) {
+        sel_num = 1;
+        break;
+      }
+    }
+  } 
+
+  if(sel_num == 1){
+    if (confirm('<?php echo TEXT_PRODUCTS_DELETE_TAGS_CONFIRM;?>')) {
+      document.edit_tags.action = '<?php echo FILENAME_CATEGORIES;?>?action=products_tags_delete';
+      document.edit_tags.submit(); 
+    }else{
+
+      document.getElementsByName("select_edit_tags")[0].value = 0;
+      document.getElementsByName("select_edit_tags")[1].value = 0;
+    } 
+  }else{
+    document.getElementsByName("select_edit_tags")[0].value = 0;
+    document.getElementsByName("select_edit_tags")[1].value = 0;
+    alert('<?php echo TEXT_TAGS_MUST_SELECT;?>'); 
+  }
+}
+
 <?php //提交时，对数据完成型的判断?>
 function create_tags_submit(){
 
@@ -247,7 +331,7 @@ function create_tags_submit(){
     error = true; 
     $("#tags_name_error").html('&nbsp;<font color="#FF0000"><?php echo TEXT_TAGS_MUST_INPUT;?></font>');
   }else{
-
+    if(!document.getElementsByName("tags_id")[0]){
       var tags_images = document.getElementsByName("tags_images")[0];
       tags_images = tags_images.value;
       tags_images = tags_images.split('\\');
@@ -276,6 +360,7 @@ function create_tags_submit(){
       }else{
         error = false; 
       }
+    }
   }
 
   if(error == true){
@@ -699,8 +784,427 @@ require("includes/note_js.php");
 <!-- body_text //-->
     <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible">
 <?php
+            //商品关联标签时，标签显示页面 
+            if(isset($_GET['action']) && $_GET['action'] == 'products_to_tags'){
+
+              if(isset($_POST['products_id_list']) && is_array($_POST['products_id_list']) && !empty($_POST['products_id_list']) && empty($_POST['categories_id_list'])){
+
+                if(count($_POST['products_id_list']) == 1){
+
+                  $products_id_num = $_POST['products_id_list'][0];
+                  $products_tags_list_array = array();
+                  $products_tags_query = tep_db_query("select tags_id from products_to_tags where products_id='".$products_id_num."'");
+                  while($products_tags_array = tep_db_fetch_array($products_tags_query)){
+
+                    $products_tags_list_array[] = $products_tags_array['tags_id']; 
+                  }
+                  tep_db_free_result($products_tags_query);
+                }
+              }
+            ?>
+            <table border="0" width="100%" cellspacing="0" cellpadding="2">
+      <tr>
+        <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
+          <tr>
+            <td class="pageHeading"><?php echo TEXT_PRODUCTS_TO_TAGS_TITLE; ?></td>
+            <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?></td>
+          </tr>
+          <tr>
+            <td style="padding-left: 8px;"><?php echo TEXT_PRODUCTS_TO_TAGS_TITLE_SELECT; ?></td>
+            <td class="pageHeading" align="right">
+                   <?php 
+                    $tags_url_string = str_replace('action=products_to_tags&','',$_SERVER['QUERY_STRING']); 
+                    $tags_url_string = str_replace('action=products_to_tags','',$tags_url_string);
+                    $tags_url_string = preg_replace("/sort=.+/",'',$tags_url_string);
+                    echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, $tags_url_string) . '"><input type="button" value="'.IMAGE_BACK.'" onclick="redirect_new_url(this);"></a>'; 
+                    ?> 
+          </tr>
+        </table></td>
+      </tr>
+      <tr>
+        <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
+          <tr>
+          <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2" id="tags_list_box">
+              <tr>
+              <td style="padding-left: 8px;">
+              <select name="select_edit_tags" onchange="select_type_changed_products(this.value);">
+              <option value="0"><?php echo TEXT_PRODUCTS_TO_TAGS_SELECT;?></option>
+              <option value="1"><?php echo TEXT_PRODUCTS_TO_TAGS_SETTING;?></option>
+              <option value="2"><?php echo TEXT_PRODUCTS_TO_TAGS_DELETE;?></option>
+              </select>
+              </td>
+              <td colspan='3' align="right">
+                 <select onchange="if(options[selectedIndex].value) change_sort_tags(options[selectedIndex].value)">
+                 <?php if(!isset($_GET['sort'])){ ?>
+                    <option selected="" value="4a"><?php echo LISTING_TITLE_A_TO_Z;?></option> <option value="4d"><?php echo LISTING_TITLE_Z_TO_A;?></option>
+                    <option value="5a"><?php echo LISTING_TITLE_A_TO_N;?></option>
+                    <option value="5d"><?php echo LISTING_TITLE_N_TO_A;?></option>
+                    <?php }else{ 
+                    if($_GET['sort']=='4a'){
+                      echo '<option selected="" value="4a">'.LISTING_TITLE_A_TO_Z.'</option>';
+                    }else{
+                      echo '<option value="4a">'.LISTING_TITLE_A_TO_Z.'</option>';
+                    }
+                    if($_GET['sort']=='4d'){
+                      echo '<option selected="" value="4d">'.LISTING_TITLE_Z_TO_A.'</option>';
+                    }else{
+                      echo '<option value="4d">'.LISTING_TITLE_Z_TO_A.'</option>';
+                    } if($_GET['sort']=='5a'){
+                      echo '<option selected="" value="5a">'.LISTING_TITLE_A_TO_N.'</option>';
+                    }else{
+                      echo '<option value="5a">'.LISTING_TITLE_A_TO_N.'</option>';
+                    }
+                    if($_GET['sort']=='5d'){
+                      echo '<option selected="" value="5d">'.LISTING_TITLE_N_TO_A.'</option>';
+                    }else{
+                      echo '<option value="5d">'.LISTING_TITLE_N_TO_A.'</option>';
+                    }
+                    }
+                    ?>
+                 </select>
+              </td>
+              </tr>
+              <form name="edit_tags" method="post" action="<?php echo FILENAME_TAGS;?>">
+              <tr>
+                <td><table border="0" width="100%" cellspacing="0" cellpadding="2"><tr><td><input type="checkbox" name="all_check" onclick="all_select_tags('tags_list_id[]');"><?php echo TEXT_PRODUCTS_TAGS_ALL_CHECK; ?></td></tr></table></td>
+                <?php
+            if(isset($_POST['categories_id_list']) && is_array($_POST['categories_id_list'])){
+
+              $categories_id_list_str = implode(',',$_POST['categories_id_list']);
+              $_SESSION['categories_id_list_string'] = $categories_id_list_str;
+            }else{
+              if(isset($_SESSION['categories_id_list_string']) && !isset($_POST['categories_id_list']) && !isset($_POST['products_id_list'])){
+
+                $categories_id_list_str = $_SESSION['categories_id_list_string'];
+              }else{
+                unset($_SESSION['categories_id_list_string']); 
+              } 
+            }
+            if(isset($_POST['products_id_list']) && is_array($_POST['products_id_list'])){
+
+              $products_id_list_str = implode(',',$_POST['products_id_list']);
+              $_SESSION['products_id_list_string'] = $products_id_list_str;
+            }else{
+
+              if(isset($_SESSION['products_id_list_string']) && !isset($_POST['categories_id_list']) && !isset($_POST['products_id_list'])){
+
+                $products_id_list_str = $_SESSION['products_id_list_string'];
+              }else{
+                unset($_SESSION['products_id_list_string']); 
+              }
+            }
+            $tags_url = $_SERVER['QUERY_STRING'];
+            $tags_url_array = explode('&',$tags_url); 
+            unset($tags_url_array[0]);
+            $tags_url = implode('&',$tags_url_array);
+                ?>
+                  <td cols="3">&nbsp;<input type="hidden" name="categories_id_list" value="<?php echo $categories_id_list_str;?>"><input type="hidden" name="products_id_list" value="<?php echo $products_id_list_str;?>"><input type="hidden" name="tags_url" value="<?php echo $tags_url;?>"></td>
+              </tr>
+<?php
+  //echo MAX_DISPLAY_SEARCH_RESULTS;
+  $tags_query_raw = "
+  select t.tags_id, t.tags_name, t.tags_images, t.tags_checked, t.user_added,t.date_added,t.user_update,t.date_update
+  from " . TABLE_TAGS . " t order by t.tags_order,t.tags_name";
+  if(isset($_GET['sort'])&&$_GET['sort']){
+    $tags_query_raw = "
+      select t.tags_id, t.tags_name, t.tags_images, t.tags_checked
+      from " . TABLE_TAGS ." t ";
+    switch($_GET['sort']){
+/*----------------------------
+ case '4a'  排列顺序(a-z) 递增
+ case '4d'  排列顺序(z-a) 递减
+ case '5a'  排列顺序(あ-ん) 递增
+ case '5d'  排列顺序(ん-あ) 递减
+ ---------------------------*/
+      case '4a':
+        $tags_query_raw .=' order by t.tags_name asc'; 
+        break;
+      case '4d':
+        $tags_query_raw .=' order by t.tags_name desc'; 
+        break;
+      case '5a':
+        $tags_query_raw .=' order by t.tags_name asc'; 
+        break;
+      case '5d':
+        $tags_query_raw .=' order by t.tags_name desc'; 
+        break;
+    }
+  }
+  $tags_query = tep_db_query($tags_query_raw);
+  $tags_sum = tep_db_num_rows($tags_query);
+  $tags_cols = ceil($tags_sum/4);
+  $tags_number = 0;
+  echo '<tr><td width="25%" class="dataTableContent" valign="top"><table width="100%" cellspacing="0" cellpadding="2" border="0">';
+  while ($tags = tep_db_fetch_array($tags_query)) {
+      if (( (!@$_GET['cID']) || (@$_GET['cID'] == $tags['tags_id'])) && (!@$cInfo) && (substr(@$_GET['action'], 0, 3) != 'new')) {
+      $cInfo = new objectInfo($tags);
+    }
+ 
+    echo '              <tr>' . "\n";
+?>
+  <td class="dataTableContent" width="10%" valign="top"><input type="checkbox" name="tags_list_id[]" value="<?php echo $tags['tags_id'];?>"<?php echo in_array($tags['tags_id'],$products_tags_list_array) ? ' checked="checked"' : '';?>></td>      
+                <td class="dataTableContent"><?php echo $tags['tags_name']; ?></td> 
+                <td class="dataTableContent" align="right">&nbsp;</td>
+              </tr>
+<?php
+    $tags_number++;
+    if($tags_number % $tags_cols == 0){
+
+      echo '</table></td><td width="25%" class="dataTableContent" valign="top"><table width="100%" cellspacing="0" cellpadding="2" border="0">';
+    } 
+  }
+?>
+              </table>
+              </td>
+              </tr>
+              </form>
+              <tr>
+                <td colspan="4"><table border="0" width="100%" cellspacing="0" cellpadding="2" style="padding-left: 4px;"> 
+                  <tr>
+                    <td>
+                    <select name="select_edit_tags" onchange="select_type_changed_products(this.value);">
+                      <option value="0"><?php echo TEXT_PRODUCTS_TO_TAGS_SELECT;?></option>
+                      <option value="1"><?php echo TEXT_PRODUCTS_TO_TAGS_SETTING;?></option>
+                      <option value="2"><?php echo TEXT_PRODUCTS_TO_TAGS_DELETE;?></option>
+                    </select>
+                    </td>
+                    <td align="right">
+                    <?php 
+                    echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, $tags_url_string) . '"><input type="button" value="'.IMAGE_BACK.'" onclick="redirect_new_url(this);"></a>'; 
+                    ?>  
+                    </td>
+                  </tr>
+                </table></td>
+              </tr>
+            </table></td>
+          </tr>
+        </table></td>
+      </tr>
+    </table>
+           <?php
+            //商品管理页跳转过来的商品关联标签时,所有商品显示页面
+            }else if(isset($_GET['action']) && $_GET['action'] == 'setting_products_to_tags'){
+              if(isset($_GET['action']) && $_GET['action'] == 'setting_products_to_tags' && isset( $_POST['tags_list_id']) &&  is_array($_POST['tags_list_id'])){
+
+                $tags_id_array = $_POST['tags_list_id'];
+                $tags_id_str = implode(',',$tags_id_array);
+                $categories_id_list = $_POST['categories_id_list'];
+                $products_id_list = $_POST['products_id_list']; 
+                if(trim($categories_id_list) != ''){
+                  $categories_id_list = explode(',',$categories_id_list);
+                }
+                if(trim($products_id_list) != ''){
+                  $products_id_list = explode(',',$products_id_list); 
+                }
+                $products_tags_array = array();
+               if(!empty($categories_id_list)){
+                foreach($categories_id_list as $categories_id_value){
+
+                  $parent_categories_query = tep_db_query("select parent_id from categories  where categories_id='".$categories_id_value."'");
+                  $parent_categories_array = tep_db_fetch_array($parent_categories_query);
+                  tep_db_free_result($parent_categories_query);
+
+                  $products_id_list_query = tep_db_query("select products_id from ". TABLE_PRODUCTS_TO_CATEGORIES ." where categories_id='".$categories_id_value."'");
+                  while($products_id_list_array = tep_db_fetch_array($products_id_list_query)){
+
+
+                     $products_tags_array[] = $products_id_list_array['products_id'];
+                  }
+                  tep_db_free_result($products_id_list_query);
+                  if($parent_categories_array['parent_id'] == '0'){
+
+                    $child_categories_query = tep_db_query("select categories_id from categories  where parent_id='".$categories_id_value."'");
+                    while($child_categories_array = tep_db_fetch_array($child_categories_query)){
+
+                      $parent_categories_id_query = tep_db_query("select categories_id from categories  where parent_id='".$child_categories_array['categories_id']."'");
+                      
+                      if(tep_db_num_rows($parent_categories_id_query)){
+                        
+                        while($parent_categories_id_array = tep_db_fetch_array($parent_categories_id_query)){
+                          $products_id_list_query = tep_db_query("select products_id from ". TABLE_PRODUCTS_TO_CATEGORIES ." where categories_id='".$parent_categories_id_array['categories_id']."'");
+                          while($products_id_list_array = tep_db_fetch_array($products_id_list_query)){
+
+
+                            $products_tags_array[] = $products_id_list_array['products_id'];
+                          }
+                          tep_db_free_result($products_id_list_query);
+                        }
+                        tep_db_free_result($parent_categories_id_query);
+                        $products_id_list_query = tep_db_query("select products_id from ". TABLE_PRODUCTS_TO_CATEGORIES ." where categories_id='".$child_categories_array['categories_id']."'");
+                        while($products_id_list_array = tep_db_fetch_array($products_id_list_query)){
+
+
+                          $products_tags_array[] = $products_id_list_array['products_id'];
+                        }
+                        tep_db_free_result($products_id_list_query);
+                      }else{
+
+                        $products_id_list_query = tep_db_query("select products_id from ". TABLE_PRODUCTS_TO_CATEGORIES ." where categories_id='".$child_categories_array['categories_id']."'");
+                        while($products_id_list_array = tep_db_fetch_array($products_id_list_query)){
+
+
+                          $products_tags_array[] = $products_id_list_array['products_id'];
+                        }
+                        tep_db_free_result($products_id_list_query);
+                      }
+                    }
+                    tep_db_free_result($child_categories_query);
+                  }else{
+
+                    $parent_categories_id_query = tep_db_query("select categories_id from categories  where parent_id='".$categories_id_value."'");
+                      
+                      if(tep_db_num_rows($parent_categories_id_query)){
+                        
+                        while($parent_categories_id_array = tep_db_fetch_array($parent_categories_id_query)){
+                          $products_id_list_query = tep_db_query("select products_id from ". TABLE_PRODUCTS_TO_CATEGORIES ." where categories_id='".$parent_categories_id_array['categories_id']."'");
+                          while($products_id_list_array = tep_db_fetch_array($products_id_list_query)){
+
+
+                            $products_tags_array[] = $products_id_list_array['products_id'];
+                          }
+                          tep_db_free_result($products_id_list_query);
+                        }
+                        tep_db_free_result($parent_categories_id_query);
+                        $products_id_list_query = tep_db_query("select products_id from ". TABLE_PRODUCTS_TO_CATEGORIES ." where categories_id='".$categories_id_value."'");
+                        while($products_id_list_array = tep_db_fetch_array($products_id_list_query)){
+
+
+                          $products_tags_array[] = $products_id_list_array['products_id'];
+                        }
+                        tep_db_free_result($products_id_list_query);
+                      }else{
+
+                        $products_id_list_query = tep_db_query("select products_id from ". TABLE_PRODUCTS_TO_CATEGORIES ." where categories_id='".$categories_id_value."'");
+                        while($products_id_list_array = tep_db_fetch_array($products_id_list_query)){
+
+
+                          $products_tags_array[] = $products_id_list_array['products_id'];
+                        }
+                        tep_db_free_result($products_id_list_query);
+                      }
+                  }
+                }
+               }
+               if(!empty($products_id_list)){
+                foreach($products_id_list as $products_id_value){
+
+                  $products_tags_array[] = $products_id_value;
+                }
+               }
+              }
+              $tags_url = $_POST['tags_url'];
+            ?>
+            <table border="0" width="100%" cellspacing="0" cellpadding="2">
+      <tr>
+        <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
+          <tr>
+            <td class="pageHeading"><?php echo PRODUCTS_TO_TAGS_TITLE;?></td> 
+            <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?></td>
+          </tr> 
+        </table></td>
+      </tr>
+      <tr>
+        <td>
+  <?php echo tep_draw_form('products_to_tags',FILENAME_CATEGORIES, 'action=products_tags_save', 'post');?>
+  <table border="0" width="100%" cellspacing="0" cellpadding="0">
+          <tr> 
+          <td valign="top" align="left">&nbsp;<input type="checkbox" name="all_check" onclick="all_select_products('categories_id[]');all_select_products('products_id[]')"><?php echo TEXT_PRODUCTS_TAGS_ALL_CHECK;?><input type="hidden" name="tags_id_list" value="<?php echo $tags_id_str;?>"><input type="hidden" name="tags_url" value="<?php echo preg_replace("/&sort=.+/","",$tags_url);?>"><br><td align="right"><?php echo '<a href="' . tep_href_link(FILENAME_TAGS, 'action=products_to_tags&'.$tags_url) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>';?><input type="button" class="element_button" value="<?php echo IMAGE_SAVE;?>" onclick="products_tags_submit();"></td><table width="100%" class="box_ul"><tr>
+<?php
+  $i = 0;
+  $j = 0;
+  $temp_array = array();
+  $products_num_query = tep_db_query("select products_id from ". TABLE_PRODUCTS);
+  $products_num = tep_db_num_rows($products_num_query);
+  tep_db_free_result($products_num_query);
+  $products_num = ($products_num/5);
+  $categories_query = tep_db_query("select * from categories c,categories_description cd where c.categories_id=cd.categories_id and c.parent_id='0' and cd.site_id='0' order by c.sort_order, cd.categories_name");
+  if (tep_db_num_rows($categories_query)) {
+    echo "<td width='25%' valign='top'><ul style='padding-left:1px;'>"."\n";
+    while($categories = tep_db_fetch_array($categories_query)){
+      echo '<li>'."\n";
+      echo '<input onclick="check_all('.$categories['categories_id'].')" type="checkbox" name="categories_id[]" id="categories_'.$categories['categories_id'].'" value="'.$categories['categories_id'].'"><a href="javascript:void(0)" onclick="switch_categories('.$categories['categories_id'].')">'.$categories['categories_name'].'</a>'."\n";
+      echo '<div id="d_'.$categories['categories_id'].'" class="categories_box">';
+      $subcategories_query = tep_db_query("select * from categories c,categories_description cd where c.categories_id=cd.categories_id and c.parent_id='".$categories['categories_id']."' and cd.site_id='0' order by c.sort_order, cd.categories_name");
+      if (tep_db_num_rows($subcategories_query)) {
+        echo '<ul id="c_'.$categories['categories_id'].'">'."\n";
+        $categories_checked_flag = true;
+        while($subcategories = tep_db_fetch_array($subcategories_query)) { echo '<li>'."\n";
+          echo '<input onclick="check_all('.$subcategories['categories_id'].')" type="checkbox" name="categories_id[]" id="categories_'.$subcategories['categories_id'].'" value="'.$subcategories['categories_id'].'"><a href="javascript:void(0)" onclick="switch_categories('.$subcategories['categories_id'].')">'.$subcategories['categories_name'].'</a>'."\n";
+          echo '<div id="d_'.$subcategories['categories_id'].'" class="categories_box">';
+          $subsubcategories_query = tep_db_query("select * from categories c,categories_description cd where c.categories_id=cd.categories_id and c.parent_id='".$subcategories['categories_id']."' and cd.site_id='0' order by c.sort_order, cd.categories_name");
+          if (tep_db_num_rows($subsubcategories_query)) {
+            echo '<ul id="c_'.$subcategories['categories_id'].'">';
+            while($subsubcategories = tep_db_fetch_array($subsubcategories_query)) {
+              echo '<li>'."\n";
+              echo '<input onclick="check_all('.$subsubcategories['categories_id'].')" type="checkbox" name="categories_id[]" id="categories_'.$subsubcategories['categories_id'].'" value="'.$subsubcategories['categories_id'].'"><a href="javascript:void(0)" onclick="switch_categories('.$subsubcategories['categories_id'].')">'.$subsubcategories['categories_name'].'</a>'."\n";
+              echo '<div id="d_'.$subsubcategories['categories_id'].'" class="categories_box">';
+              $checked_flag = true;
+              products_box($subsubcategories['categories_id'],$products_tags_array);
+              if($checked_flag == true && !empty($products_tags_array)){
+
+                echo '<script language="javascript">';
+                echo '$("#categories_'.$subsubcategories['categories_id'].'").attr("checked","checked");';
+                echo '</script>';
+              }
+              echo '</div>'."\n";
+              echo '</li>'."\n";
+            }
+            echo '</ul>'."\n";
+          }
+          $checked_flag = true;
+          products_box($subcategories['categories_id'],$products_tags_array);
+          if($checked_flag == true && !empty($products_tags_array)){
+
+            echo '<script language="javascript">';
+            echo '$("#categories_'.$subcategories['categories_id'].'").attr("checked","checked");';
+            echo '</script>';
+          }else{
+
+            $categories_checked_flag = false;
+          }
+          echo '</div>'."\n";
+          echo '</li>'."\n";
+        }
+        if($categories_checked_flag == true && !empty($products_tags_array)){
+
+          echo '<script language="javascript">';
+          echo '$("#categories_'.$categories['categories_id'].'").attr("checked","checked");';
+          echo '</script>';
+        }
+        echo '</ul>'."\n";
+      }
+      products_box($categories['categories_id'],$products_tags_array);
+      echo '</div>'."\n";
+      echo '</li>'."\n";  
+      if (!in_array(intval($i/$products_num),$temp_array) && intval($i/$products_num) != 0 && $i-$j >= $products_num) {
+        $temp_array[] = intval($i/$products_num);
+        echo '</ul></td><td width="25%" valign="top"><ul style="padding-left:0;">';  
+        $j = $i;
+      }
+    }
+    echo "</ul>";
+    products_box(0,$products_tags_array);
+    echo "</td>"."\n"; 
+  } else {
+    echo '<td width="100%">'.TEXT_P_TAGS_NO_TAG.'<td>';
+  }
+?>
+            </tr></table>
+            </td>
+          </tr>
+          <tr>
+           <td colspan="2" align="right">
+           <?php echo '<a href="' . tep_href_link(FILENAME_TAGS, 'action=products_to_tags&'.$tags_url) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>';?><input type="button" class="element_button" value="<?php echo IMAGE_SAVE;?>" onclick="products_tags_submit();"> 
+           </td>
+          </tr> 
+         </table>
+         </form>
+        </td>
+      </tr>
+  </table>
+<?php
 //标签关联商品时，所有商品显示页面
-if(isset($_GET['action']) && $_GET['action'] == 'setting_products_tags'){
+}else if(isset($_GET['action']) && $_GET['action'] == 'setting_products_tags'){
 ?>
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
@@ -937,25 +1441,24 @@ if(isset($_GET['action']) && $_GET['action'] == 'setting_products_tags'){
               <tr>
                 <td colspan="4"><table border="0" width="100%" cellspacing="0" cellpadding="2" style="padding-left: 2px;">
                   <tr>
+                  <td>
+                  <select name="select_edit_tags" onchange="select_type_changed(this.value);">
+                  <option value="0"><?php echo TEXT_TAGS_SELECT;?></option> 
+                  <option value="3"><?php echo TEXT_TAGS_ASSOCIATE_SETTING;?></option> 
+                  <option value="2"><?php echo TEXT_TAGS_ASSOCIATE_DELETE;?></option>
+                  <option value="1"><?php echo TEXT_TAGS_DELETE;?></option> 
+                  </select>
+                  </td>
+                  <td align="right"><?php echo '<a href="javascript:void(0);" onclick="create_tags_info(this);">' . tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?></td>
+                  </tr>
+                  <tr>
                     <td class="smallText" valign="top"><?php echo $tags_split->display_count($tags_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_TAGS); ?></td>
                     <?php if(isset($_GET['sort'])&&$_GET['sort']){ ?>
                     <td class="smallText" align="right"><?php echo $tags_split->display_links($tags_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'],'sort='.$_GET['sort']); ?></td>
                     <?php }else{ ?>
                     <td class="smallText" align="right"><?php echo $tags_split->display_links($tags_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page']); ?></td>
                      <?php }?>
-                  </tr>
-                  <tr>
-                    <td>
-                     <select name="select_edit_tags" onchange="select_type_changed(this.value);">
-                      <option value="0"><?php echo TEXT_TAGS_SELECT;?></option> 
-                      <option value="3"><?php echo TEXT_TAGS_ASSOCIATE_SETTING;?></option> 
-                      <option value="2"><?php echo TEXT_TAGS_ASSOCIATE_DELETE;?></option>
-                      <option value="1"><?php echo TEXT_TAGS_DELETE;?></option> 
-                     </select>
-                    </td>
-                    <td colspan="2" align="right"><?php echo '<a href="javascript:void(0);" onclick="create_tags_info(this);">' . tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?> 
-                    </td>
-                  </tr>
+                  </tr> 
                 </table></td>
               </tr>
             </table></td>

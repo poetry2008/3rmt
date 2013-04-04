@@ -48,7 +48,7 @@ class HM_Option_Item_Basic
    
     if ($this->has_text_comment) {
       $default_text = isset($item_value['icomment'])?$item_value['icomment']:''; 
-      $formString .= "<tr><td width='25%' align='left'>".TEXT_ITEM_TEXT_COMMENT_HEAD."</td><td align='left'><input type='text' name='icomment' value='".stripslashes($default_text)."' class='option_text'></td></tr>"; 
+      $formString .= "<tr><td width='25%' align='left'>".TEXT_ITEM_TEXT_COMMENT_HEAD."</td><td align='left'><textarea name='icomment' cols='30' rows='2' class='option_text' onfocus='o_submit_single = false;' onblur='o_submit_single = true;'>".stripslashes($default_text)."</textarea></td></tr>"; 
     } 
     
     if ($this->has_text_line) {
