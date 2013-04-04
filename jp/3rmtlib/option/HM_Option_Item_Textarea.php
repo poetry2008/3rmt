@@ -139,14 +139,16 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
        }
       
        echo '</div>'; 
+       echo '<span id="'.$pre_item_str.'error_'.$this->formname.'" class="option_error">';
+       if (isset($option_error_array[$pre_item_str.$this->formname])) {
+         echo $option_error_array[$pre_item_str.$this->formname]; 
+       }
+       echo '</span>';
+       echo '<div class="option_info_text">'; 
        if ($this->icomment) {
          echo $this->icomment; 
        }
-       echo '<span id="'.$pre_item_str.'error_'.$this->formname.'" class="option_error">';
-       if (isset($option_error_array[$pre_item_str.$this->formname])) {
-         echo '<br>'.$option_error_array[$pre_item_str.$this->formname]; 
-       }
-       echo '</span>';
+       echo '</div>'; 
      } else {
        echo '<div class="option_info_text">'; 
        if ($this->require == '1') {
@@ -179,17 +181,16 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
          }
        }
        echo '</div>'; 
-       if ($this->icomment) {
-         echo $this->icomment;  
-       }
        echo '<span id="'.$pre_item_str.'error_'.$this->formname.'" class="option_error">';
        if (isset($option_error_array[$pre_item_str.$this->formname])) {
-         if ($this->icomment) {
-           echo '<br>'; 
-         }
          echo $option_error_array[$pre_item_str.$this->formname]; 
        }
        echo '</span>';
+       echo '<div class="option_info_text">'; 
+       if ($this->icomment) {
+         echo $this->icomment; 
+       }
+       echo '</div>';
      }
     
      if ($pro_pos !== false) {
