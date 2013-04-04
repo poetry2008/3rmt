@@ -400,6 +400,7 @@ echo "</form>";
 echo "<a class='head_link' href =
 '".tep_href_link(basename($GLOBALS['PHP_SELF']),'action=re_login&num='.time(),'NONSSL')."'>";
 $user_info = tep_get_user_info($ocertify->auth_user);
+$_SESSION['loginuid'] = $user_info['userid'];
 $_SESSION['user_name'] = $user_info['name'];
 if (isset($ocertify) && $ocertify->npermission == 15) {
   echo '<font color="blue">'.$user_info['name'].'</font>';
