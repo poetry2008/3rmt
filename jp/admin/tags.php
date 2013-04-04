@@ -1441,25 +1441,24 @@ require("includes/note_js.php");
               <tr>
                 <td colspan="4"><table border="0" width="100%" cellspacing="0" cellpadding="2" style="padding-left: 2px;">
                   <tr>
+                  <td>
+                  <select name="select_edit_tags" onchange="select_type_changed(this.value);">
+                  <option value="0"><?php echo TEXT_TAGS_SELECT;?></option> 
+                  <option value="3"><?php echo TEXT_TAGS_ASSOCIATE_SETTING;?></option> 
+                  <option value="2"><?php echo TEXT_TAGS_ASSOCIATE_DELETE;?></option>
+                  <option value="1"><?php echo TEXT_TAGS_DELETE;?></option> 
+                  </select>
+                  </td>
+                  <td align="right"><?php echo '<a href="javascript:void(0);" onclick="create_tags_info(this);">' . tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?></td>
+                  </tr>
+                  <tr>
                     <td class="smallText" valign="top"><?php echo $tags_split->display_count($tags_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_TAGS); ?></td>
                     <?php if(isset($_GET['sort'])&&$_GET['sort']){ ?>
                     <td class="smallText" align="right"><?php echo $tags_split->display_links($tags_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'],'sort='.$_GET['sort']); ?></td>
                     <?php }else{ ?>
                     <td class="smallText" align="right"><?php echo $tags_split->display_links($tags_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page']); ?></td>
                      <?php }?>
-                  </tr>
-                  <tr>
-                    <td>
-                     <select name="select_edit_tags" onchange="select_type_changed(this.value);">
-                      <option value="0"><?php echo TEXT_TAGS_SELECT;?></option> 
-                      <option value="3"><?php echo TEXT_TAGS_ASSOCIATE_SETTING;?></option> 
-                      <option value="2"><?php echo TEXT_TAGS_ASSOCIATE_DELETE;?></option>
-                      <option value="1"><?php echo TEXT_TAGS_DELETE;?></option> 
-                     </select>
-                    </td>
-                    <td colspan="2" align="right"><?php echo '<a href="javascript:void(0);" onclick="create_tags_info(this);">' . tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?> 
-                    </td>
-                  </tr>
+                  </tr> 
                 </table></td>
               </tr>
             </table></td>

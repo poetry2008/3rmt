@@ -5340,16 +5340,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     ?>
                     <table width="100%" cellpadding="0" cellspacing="0" border="0" style="padding-left: 6px;">
                     <tr>
-                    <td class="smallText" valign="top"><?php echo $products_split->display_count($products_query_numrows, MAX_DISPLAY_PRODUCTS_ADMIN, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CATEGORIES); ?></td>
-                    <td class="smallText" align="right" colspan="3">
-                    <?php echo $products_split->display_links($products_query_numrows, MAX_DISPLAY_PRODUCTS_ADMIN, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'pID'))); ?>
-                    </td>
-                    </tr>
-                    <tr>
-                    <td class="smallText"><?php echo TEXT_CATEGORIES . '&nbsp;' . $categories_count . '&nbsp;&nbsp;' . TEXT_PRODUCTS . '&nbsp;' . $products_query_numrows; ?></td>
-                    </tr>
-                    <tr>
-                    <td class="smallText" valign="top" style="padding-top: 3px;">
+                    <td class="smallText" valign="top" height="20"colspan="2">
                       <select name="products_to_tags" onchange="products_tags_change(this.value);">
                       <option value="0"><?php echo TEXT_PRODUCTS_TAGS_SELECT;?></option>
                       <option value="1"><?php echo TEXT_PRODUCTS_TO_TAGS;?></option>
@@ -5358,7 +5349,20 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       <?php }?>
                       </select>
                     </td>
-                    <td class="smallText" align="right" colspan="3" valign="top">
+                    </tr>
+                    </tr>
+                    <td class="smallText">
+                    <?php echo $products_split->display_count($products_query_numrows, MAX_DISPLAY_PRODUCTS_ADMIN, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CATEGORIES); ?>
+                    </td>
+                    <td class="smallText" align="right">
+                    <?php echo $products_split->display_links($products_query_numrows, MAX_DISPLAY_PRODUCTS_ADMIN, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'pID'))); ?>
+                    </td>
+                    </tr> 
+                    <tr>
+                    <td class="smallText" valign="top">
+                     <?php echo TEXT_CATEGORIES . '&nbsp;' . $categories_count . '&nbsp;&nbsp;' . TEXT_PRODUCTS . '&nbsp;' . $products_query_numrows; ?>  
+                    </td>
+                    <td class="smallText" align="right" valign="top">
                     <?php
                     if ($cPath) {
                       if (!empty($cPath_back)) {
