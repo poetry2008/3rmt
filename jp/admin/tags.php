@@ -816,7 +816,7 @@ require("includes/note_js.php");
                     $tags_url_string = str_replace('action=products_to_tags&','',$_SERVER['QUERY_STRING']); 
                     $tags_url_string = str_replace('action=products_to_tags','',$tags_url_string);
                     $tags_url_string = preg_replace("/sort=.+/",'',$tags_url_string);
-                    echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, $tags_url_string) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; 
+                    echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, $tags_url_string) . '"><input type="button" value="'.IMAGE_BACK.'" onclick="redirect_new_url(this);"></a>'; 
                     ?> 
           </tr>
         </table></td>
@@ -970,7 +970,7 @@ require("includes/note_js.php");
                     </td>
                     <td align="right">
                     <?php 
-                    echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, $tags_url_string) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; 
+                    echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, $tags_url_string) . '"><input type="button" value="'.IMAGE_BACK.'" onclick="redirect_new_url(this);"></a>'; 
                     ?>  
                     </td>
                   </tr>
