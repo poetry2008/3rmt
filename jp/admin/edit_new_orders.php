@@ -4661,59 +4661,11 @@ if($orders_exit_flag == true){
             </tr>
             <!-- End Order Total Block -->
             <!-- Begin Update Block -->
-                    <!-- End of Update Block -->
-                    <!-- Begin Status Block -->
-                    <tr>
-                    <td class="SubTitle"><?php echo EDIT_ORDERS_ITEM_FOUR_TITLE;?></td>
-                    </tr>
-                    <tr>
-                    <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '1'); ?></td>
-                    </tr> 
-                    <tr>
-                    <td class="main">
-
-                    <table border="0" cellspacing="0" cellpadding="2" class="dataTableRow" width="100%">
-                    <tr class="dataTableHeadingRow">
-                    <td class="dataTableHeadingContent" align="left"><?php echo TABLE_HEADING_DATE_ADDED; ?></td>
-                    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>
-                    <td class="dataTableHeadingContent" align="center"><?php echo TABLE_HEADING_CUSTOMER_NOTIFIED; ?></td>
-                    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>
-                    <td class="dataTableHeadingContent" align="left"><?php echo TABLE_HEADING_STATUS; ?></td>
-                    <?php if($CommentsWithStatus) { ?>
-                      <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>
-                        <td class="dataTableHeadingContent" align="left"><?php echo TABLE_HEADING_COMMENTS; ?></td>
-                        <?php } ?>
-                        </tr>
-                        <?php
-                        $orders_history_query = tep_db_query("select * from " . TABLE_ORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($oID) . "' order by date_added");
-          if (tep_db_num_rows($orders_history_query)) {
-            while ($orders_history = tep_db_fetch_array($orders_history_query)) {
-              echo '  <tr>' . "\n" .
-                '    <td class="smallText" align="left">' . tep_datetime_short($orders_history['date_added']) . '</td>' . "\n" .
-                '    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>' . "\n" .
-                '    <td class="smallText" align="center">';
-              if ($orders_history['customer_notified'] == '1') {
-                echo tep_image(DIR_WS_ICONS . 'tick.gif', ICON_TICK) . "</td>\n";
-              } else {
-                echo tep_image(DIR_WS_ICONS . 'cross.gif', ICON_CROSS) . "</td>\n";
-              }
-              echo '    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>' . "\n" .
-                '    <td class="smallText" align="left">' . $orders_status_array[$orders_history['orders_status_id']] . '</td>' . "\n";
-              if ($CommentsWithStatus) {
-                echo '    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>' . "\n" .
-                  '    <td class="smallText" align="left">' . nl2br(tep_db_output($orders_history['comments'])) . '&nbsp;</td>' . "\n";
-              }
-              echo '  </tr>' . "\n";
-            }
-          } else {
-              '    <td class="smallText" colspan="5">' . TEXT_NO_ORDER_HISTORY . '</td>' . "\n" .
-              '  </tr>' . "\n";
-          }
-          ?>
-            </table>
-
-            </td>
-            </tr>
+            <!-- End of Update Block -->
+            <!-- Begin Status Block -->
+            <tr>
+            <td class="SubTitle"><?php echo EDIT_ORDERS_ITEM_FOUR_TITLE;?></td>
+            </tr> 
             <tr>
             <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '1'); ?></td>
             </tr>

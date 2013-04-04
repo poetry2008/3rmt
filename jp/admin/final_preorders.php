@@ -2612,6 +2612,7 @@ require("includes/note_js.php");
 <?php
 $orders_history_query = tep_db_query("select * from " . TABLE_PREORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($oID) . "' order by date_added");
 if (tep_db_num_rows($orders_history_query)) {
+  $orders_status_history_str = '';
   while ($orders_history = tep_db_fetch_array($orders_history_query)) {
     echo '  <tr>' . "\n" .
          '    <td class="smallText" align="left">' . tep_datetime_short($orders_history['date_added']) . '</td>' . "\n" .
@@ -2623,14 +2624,44 @@ if (tep_db_num_rows($orders_history_query)) {
       echo tep_image(DIR_WS_ICONS . 'cross.gif', ICON_CROSS) . "</td>\n";
     }
     echo '    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>' . "\n" .
-         '    <td class="smallText" align="left">' . $orders_status_array[$orders_history['orders_status_id']] . '</td>' . "\n";
-    if ($CommentsWithStatus) {
+      '    <td class="smallText" align="left">' . $orders_status_array[$orders_history['orders_status_id']] . '</td>' . "\n";
+      //不显示重复备注信息
+      $orders_explode_array = array();
+      $orders_explode_all_array = explode("\n",$orders_history['comments']);
+      $orders_explode_array = explode(':',$orders_explode_all_array[0]);
+      if(count($orders_explode_all_array) > 1){
+
+       if(strlen(trim($orders_explode_array[1])) == 0){ 
+         unset($orders_explode_all_array[0]);
+         $orders_history_comment = implode("\n",$orders_explode_all_array); 
+       }else{ 
+         $orders_temp_str = end($orders_explode_all_array);
+         array_pop($orders_explode_all_array);
+         $orders_comments_old_str = implode("\n",$orders_explode_all_array);
+         if(trim($orders_comments_old_str) == trim($orders_status_history_str) && $orders_status_history_str != ''){
+
+           $orders_history_comment = $orders_temp_str;
+         }else{
+           $orders_history_comment = $orders_history['comments']; 
+         }
+       }
+      }else{
+        $orders_history_comment = $orders_history['comments'];
+      }
+    if ($CommentsWithStatus && $orders_history['comments'] != $orders_status_history_str) {
       echo '    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>' . "\n" .
            '    <td class="smallText" align="left">' . nl2br(tep_db_output($cpayment->admin_get_comment(payment::changeRomaji($order->info['payment_method'],PAYMENT_RETURN_TYPE_CODE),$orders_history['comments']))) . '&nbsp;</td>' . "\n";
+    }else{
+      if($CommentsWithStatus){
+
+        echo '    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>' . "\n" .
+           '    <td class="smallText" align="left">&nbsp;</td>' . "\n";
+      } 
     } 
     echo '    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>' . "\n" .
          '    <td class="smallText" align="left">' . $orders_history['user_added'] . '</td>' . "\n";
     echo '  </tr>' . "\n";
+    $orders_status_history_str = $orders_history['comments'];
   }
 } else {
   echo '  <tr>' . "\n" .
