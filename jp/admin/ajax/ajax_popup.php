@@ -2631,6 +2631,13 @@ include(DIR_FS_ADMIN.'classes/notice_box.php');
 $notice_box = new notice_box('popup_order_title','popup_order_info');
 $configuration_query = tep_db_query(" select configuration_id, configuration_title, configuration_key, configuration_value, use_function from " . TABLE_CONFIGURATION . " where configuration_group_id = '" . $_GET['gID'] . "' and `site_id` = '0'  order by sort_order");
 $site_id = $_GET['site_id'];
+$sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$_SESSION['loginuid']."' limit 0,1");
+while($userslist= tep_db_fetch_array($sites_id)){
+     $site_permission = $userslist['site_permission']; 
+}
+if(isset($site_permission)) $site_arr=$site_permission;//权限判断
+else $site_arr="";
+$site_array = explode(',',$site_arr);
 while ($configuration = tep_db_fetch_array($configuration_query)) {
    $cid_array[] = $configuration['configuration_id'];
     if (tep_not_null($configuration['use_function'])) {
@@ -2745,13 +2752,14 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
       } else {
         eval('$value_field = ' . $cInfo->set_function . '\'' .  htmlspecialchars(addcslashes($cInfo->configuration_value, '\'')) . '\');');
         $value_field = str_replace('<br>','',$value_field);
+        $value_field .= '<input type="hidden" name="hidden_configuration_value" value="'.$cInfo->configuration_value.'">';
       }
       $value_field = htmlspecialchars_decode($value_field);
     } else {
       if($cInfo->configuration_key == 'ADMINPAGE_LOGO_IMAGE') {
         $value_field = tep_draw_file_field('upfile') . '<br>' . $cInfo->configuration_value;
       } else {
-        $value_field = '<textarea name="configuration_value" rows="5" cols="35">'. $cInfo->configuration_value .'</textarea>';
+        $value_field = '<textarea name="configuration_value" rows="5" cols="35">'. $cInfo->configuration_value .'</textarea><input type="hidden" name="hidden_configuration_value" value="'.$cInfo->configuration_value.'">';
       }
     }
 // 针对 logo—image 做特殊处理
@@ -2770,19 +2778,29 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
    );
   $configuration_contents[]['text'] = array(
         array('align' => 'left', 'params' => 'width="50%%"', 'text' => TEXT_USER_ADDED.((tep_not_null($cInfo->user_added))?$cInfo->user_added:TEXT_UNSET_DATA)), 
-        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.((tep_not_null($cInfo->user_update))?$cInfo->user_update:TEXT_UNSET_DATA))
+        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.((tep_not_null($cInfo->date_added))?$cInfo->date_added:TEXT_UNSET_DATA))
       );
   
   $configuration_contents[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.((tep_not_null($cInfo->date_added))?$cInfo->date_added:TEXT_UNSET_DATA)), 
+        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.((tep_not_null($cInfo->user_update))?$cInfo->user_update:TEXT_UNSET_DATA)),
         array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.((tep_not_null($cInfo->last_modified))?$cInfo->last_modified:TEXT_UNSET_DATA))
       );
   
     //button 内容 
+    if(in_array($site_id,$site_array)) { 
     if ($cInfo->configuration_key == 'DS_ADMIN_SIGNAL_TIME') {
       $configuration_button[] = '<br>' .  tep_html_element_button(IMAGE_UPDATE, 'onclick="check_signal_time_select()"') . '&nbsp;';
     } else {
       $configuration_button[] = '<br>' .  tep_html_element_submit(IMAGE_UPDATE) . '&nbsp;';
+    }
+    }else{
+    if ($cInfo->configuration_key == 'DS_ADMIN_SIGNAL_TIME') {
+      $configuration_button[] = '<br>' .  tep_html_element_button(IMAGE_UPDATE, 'disabled="disabled";onclick="check_signal_time_select()"') . '&nbsp;';
+    } else {
+      $configuration_button[] = '<br>' .
+        tep_html_element_submit(IMAGE_UPDATE,'disabled="disabled"') . '&nbsp;';
+    }
+ 
     }
    if(!empty($configuration_button)){
       $configuration_buttons = array('align' => 'center', 'button' => $configuration_button); 
@@ -2817,6 +2835,8 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
       }
    }else{
       eval('$value_field = ' . $fetch_result['set_function'] . '\'' .  htmlspecialchars(addcslashes($fetch_result['configuration_value'], '\'')) . '\');');
+        $value_field = str_replace('<br>','',$value_field);
+        $value_field .= '<input type="hidden" name="hidden_configuration_value" value="'.$cInfo->configuration_value.'">';
    }
   } else {
       if($fetch_result['configuration_key'] == 'ADMINPAGE_LOGO_IMAGE') {
@@ -2825,7 +2845,8 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
           if(in_array($cInfo->configuration_key,$configuration_key_array)){
           $value_field = $fetch_result['configuration_value'];
           }else{
-          $value_field = '<textarea name="configuration_value" rows="5" cols="35">'. $fetch_result['configuration_value'] .'</textarea>';
+          $value_field = '<textarea name="configuration_value" rows="5" cols="35">'. $fetch_result['configuration_value'] .'</textarea> <input type="hidden" name="hidden_configuration_value" value="'.$fetch_result['configuration_value'].'">
+            ';
           }
       }
   }
@@ -2847,19 +2868,28 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     );
   $contents[]['text'] = array(
         array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.((tep_not_null($configuration_user_update['user_added']))?$configuration_user_update['user_added']:TEXT_UNSET_DATA)), 
-        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.((tep_not_null($configuration_user_update['user_update']))?$configuration_user_update['user_update']:TEXT_UNSET_DATA))
+        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.((tep_not_null($configuration_user_update['date_added']))?$configuration_user_update['date_added']:TEXT_UNSET_DATA))
       );
   
   $contents[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.((tep_not_null($configuration_user_update['date_added']))?$configuration_user_update['date_added']:TEXT_UNSET_DATA)), 
+        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.((tep_not_null($configuration_user_update['user_update']))?$configuration_user_update['user_update']:TEXT_UNSET_DATA)),
         array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.((tep_not_null($configuration_user_update['last_modified']))?$configuration_user_update['last_modified']:TEXT_UNSET_DATA))
       );
  
   //if exists ,can be delete ,or  can not 
+  if(in_array($site_id,$site_array)) { 
   if (is_numeric($fetch_result['configuration_id'])){
   $button[] = '<br>' .  tep_html_element_submit(IMAGE_UPDATE) .'&nbsp;<a href="' .  tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] .  '&action=tdel&cID=' .  $fetch_result['configuration_id'].'_'.$cInfo->configuration_id) .  '">'.tep_html_element_button(IMAGE_DEFFECT).'</a>'. '&nbsp;';
   }else {
     $button[] = '<br>' .  tep_html_element_submit(IMAGE_EFFECT) . '&nbsp;';
+  }
+  }else{
+    if (is_numeric($fetch_result['configuration_id'])){
+  $button[] = '<br>' .  tep_html_element_submit(IMAGE_UPDATE,'disabled="disabled"') .'&nbsp;<a href="' .  tep_href_link(FILENAME_CONFIGURATION, 'gID=' .  $_GET['gID'] .  '&action=tdel&cID=' .  $fetch_result['configuration_id'].'_'.$cInfo->configuration_id) .  '">'.tep_html_element_button(IMAGE_DEFFECT,'disabled="disabled"').'</a>'. '&nbsp;';
+  }else {
+    $button[] = '<br>' .  tep_html_element_submit(IMAGE_EFFECT,'disabled="disabled"') . '&nbsp;';
+  }
+
   }
    if(!empty($button)){
      if(!in_array($cInfo->configuration_key,$configuration_key_array)){
