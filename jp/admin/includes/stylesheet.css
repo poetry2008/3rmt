@@ -537,6 +537,10 @@ order
 	margin-bottom: 10px;
 	background: #f0f1f1;
 }
+#orders_paypal {
+	margin-bottom: 10px;
+	background: #f0f1f1;
+}
 .orders_computer_checked {
 	color: #fff;
 	background: #ff0000;

@@ -2632,11 +2632,16 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
           <tr>
             <td><?php echo TEXT_PRODUCTS_TO_TAGS_TITLE_SELECT; ?></td>
             <td class="pageHeading" align="right">
+                   <?php 
+                    $tags_url_string = str_replace('action=products_to_tags&','',$_SERVER['QUERY_STRING']); 
+                    $tags_url_string = str_replace('action=products_to_tags','',$tags_url_string);
+                    echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, $tags_url_string) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; 
+                    ?>
                     <select name="select_edit_tags" onchange="select_type_changed(this.value);">
                       <option value="0"><?php echo TEXT_PRODUCTS_TO_TAGS_SELECT;?></option>
                       <option value="1"><?php echo TEXT_PRODUCTS_TO_TAGS_SETTING;?></option>
                       <option value="2"><?php echo TEXT_PRODUCTS_TO_TAGS_DELETE;?></option>
-                    </select>
+                    </select> 
           </tr>
         </table></td>
       </tr>
@@ -2757,11 +2762,14 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <td colspan="4"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                   <tr>
                     <td colspan="2" align="right">
+                    <?php 
+                    echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, $tags_url_string) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; 
+                    ?> 
                     <select name="select_edit_tags" onchange="select_type_changed(this.value);">
                       <option value="0"><?php echo TEXT_PRODUCTS_TO_TAGS_SELECT;?></option>
                       <option value="1"><?php echo TEXT_PRODUCTS_TO_TAGS_SETTING;?></option>
                       <option value="2"><?php echo TEXT_PRODUCTS_TO_TAGS_DELETE;?></option>
-                    </select>
+                    </select> 
                     </td>
                   </tr>
                 </table></td>
@@ -2898,7 +2906,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
   <?php echo tep_draw_form('products_to_tags',FILENAME_CATEGORIES, 'action=products_tags_save', 'post');?>
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr> 
-          <td valign="top" align="left">&nbsp;<input type="checkbox" name="all_check" onclick="all_select_products('categories_id[]');all_select_products('products_id[]')"><?php echo TEXT_PRODUCTS_TAGS_ALL_CHECK;?><input type="hidden" name="tags_id_list" value="<?php echo $tags_id_str;?>"><input type="hidden" name="tags_url" value="<?php echo $tags_url;?>"><br><td align="right"><input type="button" value="<?php echo IMAGE_SAVE;?>" onclick="products_tags_submit();"></td><table width="100%" class="box_ul"><tr>
+          <td valign="top" align="left">&nbsp;<input type="checkbox" name="all_check" onclick="all_select_products('categories_id[]');all_select_products('products_id[]')"><?php echo TEXT_PRODUCTS_TAGS_ALL_CHECK;?><input type="hidden" name="tags_id_list" value="<?php echo $tags_id_str;?>"><input type="hidden" name="tags_url" value="<?php echo $tags_url;?>"><br><td align="right"><?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'action=products_to_tags&'.$tags_url) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>';?><input type="button" class="element_button" value="<?php echo IMAGE_SAVE;?>" onclick="products_tags_submit();"></td><table width="100%" class="box_ul"><tr>
 <?php
   $i = 0;
   $j = 0;
@@ -2984,7 +2992,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
           </tr>
           <tr>
            <td colspan="2" align="right">
-           <input type="button" value="<?php echo IMAGE_SAVE;?>" onclick="products_tags_submit();"> 
+           <?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'action=products_to_tags&'.$tags_url) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>';?><input type="button" class="element_button" value="<?php echo IMAGE_SAVE;?>" onclick="products_tags_submit();"> 
            </td>
           </tr> 
          </table>
@@ -5921,7 +5929,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               echo $notice_box->show_notice();
                     // end table list
                     ?>
-                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="padding-left: 6px;">
                     <tr>
                     <td class="smallText" valign="top"><?php echo $products_split->display_count($products_query_numrows, MAX_DISPLAY_PRODUCTS_ADMIN, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CATEGORIES); ?></td>
                     <td class="smallText" align="right" colspan="3">
@@ -5929,8 +5937,19 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     </td>
                     </tr>
                     <tr>
-                    <td class="smallText"><?php echo TEXT_CATEGORIES . '&nbsp;' . $categories_count . '<br>' . TEXT_PRODUCTS . '&nbsp;' . $products_query_numrows; ?></td>
-                    <td class="smallText" align="right" colspan="3">
+                    <td class="smallText"><?php echo TEXT_CATEGORIES . '&nbsp;' . $categories_count . '&nbsp;&nbsp;' . TEXT_PRODUCTS . '&nbsp;' . $products_query_numrows; ?></td>
+                    </tr>
+                    <tr>
+                    <td class="smallText" valign="top" style="padding-top: 3px;">
+                      <select name="products_to_tags" onchange="products_tags_change(this.value);">
+                      <option value="0"><?php echo TEXT_PRODUCTS_TAGS_SELECT;?></option>
+                      <option value="1"><?php echo TEXT_PRODUCTS_TO_TAGS;?></option>
+                      <?php if($ocertify->npermission == 15){?>
+                      <option value="2"><?php echo TEXT_PRODUCTS_TAGS_DELETE;?></option>
+                      <?php }?>
+                      </select>
+                    </td>
+                    <td class="smallText" align="right" colspan="3" valign="top">
                     <?php
                     if ($cPath) {
                       if (!empty($cPath_back)) {
@@ -5951,14 +5970,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       <?php }?>
                       &nbsp;<input type='button' value='<?php echo CATEGORY_BUTTON_XIEYE_PRICE;?>' onClick="list_display('<?php echo $cPath_yobi?$cPath_yobi:0;?>','<?php echo $current_category_id;?>','<?php echo $_GET['cPath'];?>')">
                       &nbsp;<input type='button' name='x' value="<?php echo CATEGORY_BUTTON_ALL_UPDATE;?>" onClick="all_update()"> 
-                      <?php }?> 
-                      <select name="products_to_tags" onchange="products_tags_change(this.value);">
-                      <option value="0"><?php echo TEXT_PRODUCTS_TAGS_SELECT;?></option>
-                      <option value="1"><?php echo TEXT_PRODUCTS_TO_TAGS;?></option>
-                      <?php if($ocertify->npermission == 15){?>
-                      <option value="2"><?php echo TEXT_PRODUCTS_TAGS_DELETE;?></option>
-                      <?php }?>
-                      </select>
+                      <?php }?>  
                       </td>
                       </tr>
                       <?php

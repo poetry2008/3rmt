@@ -1579,7 +1579,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       </tr>
   <?php
       $orders_history_query = tep_db_query("select orders_status_history_id, orders_status_id, date_added, customer_notified, comments, user_added from " . TABLE_PREORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($oID) . "' order by date_added");
-    if (tep_db_num_rows($orders_history_query)) {
+      if (tep_db_num_rows($orders_history_query)) {
         $orders_status_history_str = '';
         while ($orders_history = tep_db_fetch_array($orders_history_query)) {
           $select_select = $orders_history['orders_status_id'];
