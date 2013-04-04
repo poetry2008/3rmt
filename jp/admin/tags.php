@@ -663,7 +663,18 @@ function check_all(cid){
 }
 </style>
 <?php 
-$belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
+$href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
+$belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
+$belong = preg_replace('/\?XSID=[^&]+/','',$belong);
+preg_match_all('/action=[^&]+/',$belong,$belong_array);
+if($belong_array[0][0] != ''){
+
+  $belong = $href_url.'?'.$belong_array[0][0];
+
+}else{
+
+  $belong = $href_url;
+}
 require("includes/note_js.php");
 ?>
 </head>
@@ -924,7 +935,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'setting_products_tags'){
 ?>
               </form>
               <tr>
-                <td colspan="4"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+                <td colspan="4"><table border="0" width="100%" cellspacing="0" cellpadding="2" style="padding-left: 2px;">
                   <tr>
                     <td class="smallText" valign="top"><?php echo $tags_split->display_count($tags_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_TAGS); ?></td>
                     <?php if(isset($_GET['sort'])&&$_GET['sort']){ ?>
@@ -934,13 +945,15 @@ if(isset($_GET['action']) && $_GET['action'] == 'setting_products_tags'){
                      <?php }?>
                   </tr>
                   <tr>
-                    <td colspan="2" align="right"><?php echo '<a href="javascript:void(0);" onclick="create_tags_info(this);">' . tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?>
-                    <select name="select_edit_tags" onchange="select_type_changed(this.value);">
+                    <td>
+                     <select name="select_edit_tags" onchange="select_type_changed(this.value);">
                       <option value="0"><?php echo TEXT_TAGS_SELECT;?></option> 
                       <option value="3"><?php echo TEXT_TAGS_ASSOCIATE_SETTING;?></option> 
                       <option value="2"><?php echo TEXT_TAGS_ASSOCIATE_DELETE;?></option>
                       <option value="1"><?php echo TEXT_TAGS_DELETE;?></option> 
-                    </select>
+                     </select>
+                    </td>
+                    <td colspan="2" align="right"><?php echo '<a href="javascript:void(0);" onclick="create_tags_info(this);">' . tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?> 
                     </td>
                   </tr>
                 </table></td>
