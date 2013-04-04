@@ -2730,9 +2730,14 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
             'SEG_CRONTAB_SLEEP',
             );
   //头部内容
+  if(constant($cInfo->configuration_title) == null){
+     $cInfo_configuration_title = $cInfo->configuration_title;
+  }else{
+     $cInfo_configuration_title =  strip_tags(constant($cInfo->configuration_title));
+  }
   $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => '<b>'.constant($cInfo->configuration_title) .'</b>&nbsp;&nbsp;');
+  $heading[] = array('align' => 'left', 'text' => '<b>'.$cInfo_configuration_title.'</b>&nbsp;&nbsp;');
   $heading[] = array('align' => 'right', 'text' => $page_str);
     if ($cInfo->set_function) {
       if ($cInfo->configuration_key == 'DS_ADMIN_SIGNAL_TIME') {
@@ -2760,8 +2765,8 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
       array('align' => 'center','params' => 'colspan="3"','text' => '<input type="hidden" name="user_update" value="'.$user_info['name'].'">'),
    );
     $configuration_contents[]['text'] = array(
-      array('text' => constant($cInfo->configuration_title)),
-      array('text' => $value_field.  '<br><font size="1">'.$cInfo->configuration_description.'</font>')
+      array('text' => $cInfo_configuration_title),
+      array('text' => $value_field.'<br><font size="1">'.$cInfo->configuration_description.'</font>')
    );
   $configuration_contents[]['text'] = array(
         array('align' => 'left', 'params' => 'width="50%%"', 'text' => TEXT_USER_ADDED.((tep_not_null($cInfo->user_added))?$cInfo->user_added:TEXT_UNSET_DATA)), 
@@ -2830,18 +2835,24 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
       $configuration_form = tep_draw_form('configuration', FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $fetch_result['configuration_id'] . '&action=save');
   }
   //主体内容
+  if(constant($fetch_result['configuration_title']) == null){
+     $fetch_result_configuration_title = $fetch_result['configuration_title']; 
+  }else{
+     $fetch_result_configuration_title = strip_tags(constant($fetch_result['configuration_title'])); 
+  }
+  $configuration_user_update = tep_db_fetch_array(tep_db_query('select * from configuration where configuration_key="'.$cInfo->configuration_key.'" and site_id = "'.$site_id.'"'));
   $contents[]['text'] = array(
-    array('text' => constant($fetch_result['configuration_title'])),
+    array('text' => $fetch_result_configuration_title),
     array('text' => $value_field.'<br><font size="1">'.$cInfo->configuration_description.'</font>')
     );
   $contents[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.((tep_not_null($cInfo->user_added))?$cInfo->user_added:TEXT_UNSET_DATA)), 
-        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.((tep_not_null($cInfo->user_update))?$cInfo->user_update:TEXT_UNSET_DATA))
+        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.((tep_not_null($configuration_user_update['user_added']))?$configuration_user_update['user_added']:TEXT_UNSET_DATA)), 
+        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.((tep_not_null($configuration_user_update['user_update']))?$configuration_user_update['user_update']:TEXT_UNSET_DATA))
       );
   
   $contents[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.((tep_not_null($cInfo->date_added))?$cInfo->date_added:TEXT_UNSET_DATA)), 
-        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.((tep_not_null($cInfo->last_modified))?$cInfo->last_modified:TEXT_UNSET_DATA))
+        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.((tep_not_null($configuration_user_update['date_added']))?$configuration_user_update['date_added']:TEXT_UNSET_DATA)), 
+        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.((tep_not_null($configuration_user_update['last_modified']))?$configuration_user_update['last_modified']:TEXT_UNSET_DATA))
       );
  
   //if exists ,can be delete ,or  can not 
