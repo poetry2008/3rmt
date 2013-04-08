@@ -4960,7 +4960,7 @@ if($c_parent_array['parent_id'] == 0){
 
           //过期订单的警告提示
           $expired_orders = '';
-          $orders_transaction_time = date('YmdHi',$orders['torihiki_date_end']); 
+          $orders_transaction_time = date('YmdHi',strtotime($orders['torihiki_date_end'])); 
           $orders_today_time = date('YmdHi');
           if($orders_today_time > $orders_transaction_time && check_orders_transaction_expired($orders['orders_status'])){
 
