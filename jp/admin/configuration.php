@@ -106,7 +106,10 @@ WHERE
   if ($signal_single) {
     tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" .  tep_db_input(serialize($configuration_value)) . "', last_modified = now(),user_update='".$_SESSION['user_name']."' where configuration_id = '" . tep_db_input($cID) . "'");
   } else {
-    tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" .  tep_db_input($configuration_value) . "', last_modified = now(),user_update='".$_SESSION['user_name']."' where configuration_id = '" . tep_db_input($cID) . "'");
+    if($hidden_configuration_value == null && $configuration_value != null){
+      $update_user_added = 'user_added=\''.$_SESSION['user_name'].'\',date_added=now(),';  
+    }
+    tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" .  tep_db_input($configuration_value) . "',".$update_user_added." last_modified = now(),user_update='".$_SESSION['user_name']."' where configuration_id = '" . tep_db_input($cID) . "'");
   }
   tep_redirect(tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' .  tep_get_default_configuration_id_by_id($cID).'&site_id='.$site_id['site_id']));
   break;

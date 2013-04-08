@@ -144,7 +144,11 @@ setTimeout("orders_info_box_offset()",10);
   if($('#show_info_id').length > 0){
     show_info_str = $('#show_info_id').val();
     leftset = $('.leftmenu').width()+$('.show_left_menu').width()+parseInt($('.leftmenu').css('padding-left'))+parseInt($('.show_left_menu').css('padding-right'))+parseInt($('#categories_right_td table').attr('cellpadding'));
+   if("undefined" != typeof ele_tags_obj){
    if(ele_tags_obj == ''){
+     $('#'+show_info_str).css('left',leftset);
+   }
+   }else{
      $('#'+show_info_str).css('left',leftset);
    }
   }
