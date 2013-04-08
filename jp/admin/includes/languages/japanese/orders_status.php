@@ -42,5 +42,5 @@ define('TEXT_ORDERS_STATUS_OPTION', 'オプション');
 define('TEXT_ORDERS_STATUS_OPTION_NORMAL', '取引最中');
 define('TEXT_ORDERS_STATUS_OPTION_SUCCESS', '取引成功');
 define('TEXT_ORDERS_STATUS_OPTION_FAIL', '取引失敗');
-define('TEXT_TRANSACTION_EXPIRED_COMMENT', 'お届け日時を過ぎた際に、選択したステータスになっていれば警告アイコンを表示しま す。複数選択可。');
+define('TEXT_TRANSACTION_EXPIRED_COMMENT', 'お届け日時を過ぎた際に、選択したステータスになっていれば警告アイコンを表示します。複数選択可。');
 
