@@ -1527,6 +1527,10 @@ option
     overflow: hidden;
     width: 100%;
 }
+.option_info_text .red{
+	background:none;
+	border:none;
+}
 .option_table{ 
 	width:100%;
 }
