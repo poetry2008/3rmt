@@ -339,7 +339,7 @@ require("includes/note_js.php");
     <input type="hidden" name="keywords" value="<?php echo $_GET['keywords'];?>">
     <input type="hidden" name="rel" value="<?php echo $_GET['rel'];?>">
   </form>
-        <table border="0" width="100%" cellspacing="0" cellpadding="2" class="table_list_box">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" class="table_list_box">
           <tr>
             <td class="smallText" ><input type="button" onclick="if(confirm('<?php echo TELECOM_UNKNOW_SELECT_NOTICE;?>')) { document.forms.t_form.submit(); }" value="<?php echo TELECOM_UNKNOW_TABLE_DISPLAY;?>"><?php echo $orders_split->display_count($orders_query_numrows, MAX_DISPLAY_ORDERS_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_ORDERS); ?></td>
             <td class="smallText" align="right">

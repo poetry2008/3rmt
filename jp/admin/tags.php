@@ -1439,7 +1439,7 @@ require("includes/note_js.php");
 ?>
               </form>
             </table>
-			<table border="0" width="100%" cellspacing="0" cellpadding="2" class="table_list_box">
+			<table border="0" width="100%" cellspacing="0" cellpadding="0" class="table_list_box">
                   <tr>
                   <td class="smallText" valign="top">
                   <select name="select_edit_tags" onchange="select_type_changed(this.value);">

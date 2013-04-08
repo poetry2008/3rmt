@@ -691,7 +691,7 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
               </tr>
               <tr>
                 <td>
-                  <table border="0" width="100%" cellspacing="0" cellpadding="2">
+                  <table border="0" width="100%" cellspacing="0" cellpadding="0">
                     <tr>
                       <td class="smallText" valign="top">
                       <?php 

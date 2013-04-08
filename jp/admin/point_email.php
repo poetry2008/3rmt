@@ -162,7 +162,7 @@ while($point_mail = tep_db_fetch_array($point_mail_query)){
 ?>
             </table>
 			<table border="0" width="100%" cellspacing="0"
-      cellpadding="2">
+      cellpadding="0">
       <tr>
       <td class="smallText" valign="top"><?php echo
       $point_mail_split->display_count($point_mail_query_numrows,
