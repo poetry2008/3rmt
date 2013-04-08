@@ -765,3 +765,4 @@ define('TEXT_PRODUCTS_TAGS_ALL_CHECK','すべてを選択');
 define('TEXT_PRODUCTS_TAGS_CHECK','少なくとも1つの商品を選択して下さい。');
 define('TEXT_CHECK_FILE_EXISTS','このファイルは既に存在します。上書きしますか？');
 define('TEXT_CHECK_FILE_EXISTS_DELETE','このファイルは他の設定で使用しています。それでも削除しますか？');
+define('TEXT_TRANSACTION_EXPIRED', 'お届け忘れ警告');
