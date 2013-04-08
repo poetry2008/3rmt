@@ -1062,7 +1062,6 @@ OA
 }
 .element_button { 
 	font-size:13px;
-	padding:2px 9px\9;
 	margin-bottom:2px;
 	margin-top:2px;
 }
@@ -1893,6 +1892,10 @@ google hack
 	margin:0;
 	padding:0;
 }
+.td_button{
+	margin-right:-3px;
+	overflow:hidden;
+}
 .td_box{
 	margin-right:-6px;
 	overflow:hidden;
@@ -1901,7 +1904,4 @@ google hack
 .td_box{
 	margin-right:-7px;
 	overflow:hidden;
-}
-.td_button{
-	margin-right:-3px;
 }

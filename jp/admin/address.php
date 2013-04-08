@@ -357,7 +357,7 @@ tep_db_close();
 <?php echo $address_page->display_links($address_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page'))); ?>
 </td>
 </tr>
-<tr><td align="right" colspan="2"><button onclick="show_text(0,this,'text',0);"><?php echo TABLE_BUTTON;?></button></td></tr>
+<tr><td align="right" colspan="2"><div class="td_button"><button onclick="show_text(0,this,'text',0);"><?php echo TABLE_BUTTON;?></button></div></td></tr>
 </table>
 </td></tr></table></td></tr>
 </table></td>

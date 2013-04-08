@@ -904,6 +904,7 @@ require("includes/note_js.php");
 
     $cPath_back = isset($cPath_back) && $cPath_back ? 'cPath=' . $cPath_back : '';
                   // new faq category and new faq button
+				  echo '<div class="td_box">';
                   if($cPath){
                     echo '<a href="'.tep_href_link(FILENAME_FAQ,$cPath_back.'&cID='.$current_category_id.  '&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))).'">'.tep_html_element_button(IMAGE_BACK).'<a>';
                     echo '&nbsp;';
@@ -915,7 +916,7 @@ require("includes/note_js.php");
                     echo '&nbsp;';
                     echo '<a href="'.tep_href_link(FILENAME_FAQ, 'cPath='.$cPath.'&action=new_faq_question'.'&site_id='.$site_id).'">'.tep_html_element_button(IMAGE_NEW_FAQ).'</a>';
                   }
-
+                  echo '</div>';
 
                   ?>
                 </td>
