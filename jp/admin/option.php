@@ -703,6 +703,7 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                       ?>
                       </td>
                       <td class="smallText" align="right">
+					  <div class="td_box">
                       <?php 
                         if (isset($_GET['g_id'])) {
                           echo $item_split->display_links($item_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'item_id'))); 
@@ -710,10 +711,13 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                           echo $group_split->display_links($group_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'group_id'))); 
                         }
                       ?>
+					  </div>
                       </td>
                     </tr>
                     <tr>
-                      <td colspan="2" align="right" class="smallText">
+					  <td class="smallText" valign="top">&nbsp;</td>
+                      <td align="right" class="smallText">
+					  <div class="td_button">
                       <?php 
                       if (isset($_GET['g_id'])) {
                         echo '&nbsp;<a href="'.tep_href_link(FILENAME_OPTION, str_replace('gpage=', 'page=', tep_get_all_get_params(array('page', 'info', 'x', 'y', 'item_id', 'action','g_id')))).'">'.tep_html_element_button(IMAGE_BACK).'</a>'; 
@@ -730,7 +734,7 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                         echo '&nbsp;<a href="javascript:void(0);" onclick="create_option_group();">' .tep_html_element_button(IMAGE_NEW_PROJECT, 'onclick=""') . '</a>'; 
                       }
                       ?>
-                      &nbsp;
+					  </div>
                       </td>
                     </tr> 
                   </table>

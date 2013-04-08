@@ -986,32 +986,28 @@ require("includes/note_js.php");
 
     ?>
 
-    <tr>
-      <td colspan="8">
-        <table border="0" width="100%" cellspacing="0" cellpadding="2">
+  </table>
+          <table border="0" width="100%" cellspacing="0" cellpadding="2">
           <tr>
             <td class="smallText" valign="top"><?php echo
             $pw_manager_split->display_count($pw_manager_query_numrows,
                 MAX_DISPLAY_PW_MANAGER_RESULTS, $_GET['page'],
                 TEXT_DISPLAY_NUMBER_OF_PW_MANAGERS); ?></td>
-            <td class="smallText" align="right"><?php echo
+            <td class="smallText" align="right"><div class="td_box"><?php echo
             $pw_manager_split->display_links($pw_manager_query_numrows,
                 MAX_DISPLAY_PW_MANAGER_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'],
-                tep_get_all_get_params(array('page',  'action','pw_id'))); ?></td>
+                tep_get_all_get_params(array('page',  'action','pw_id'))); ?></div></td>
           </tr>
-        </table>
-      </td>
-    </tr>
     <?php
-      echo "<tr><td colspan='8' align='right' >";
-        echo '<button type=\'button\'
+      echo "<tr><td align='right' colspan='2'>";
+        echo '<div class="td_button"><button type=\'button\'
         onclick="location.href=\''.tep_href_link(FILENAME_PW_MANAGER,'action=new&sort='.$_GET['sort'].'&type='.$_GET['type']).'\'" >';
         echo IMAGE_NEW_PROJECT;
-        echo "</button>";
+        echo "</button></div>";
       echo "</td></tr>";
 
     ?>
-  </table>
+	  </table>
       </td>
 <?php
   $heading = array();

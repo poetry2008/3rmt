@@ -744,10 +744,10 @@ require("includes/note_js.php");
     }
 ?>
               <tr>
-                <td colspan="6"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+                <td colspan="6"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="table_list_box">
                   <tr>
                     <td class="smallText" valign="top"><?php echo $customers_split->display_count($customers_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?></td>
-                    <td class="smallText" align="right"><?php echo $customers_split->display_links($customers_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'cID'))); ?></td>
+                    <td class="smallText" align="right"><div class="td_box"><?php echo $customers_split->display_links($customers_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'cID'))); ?></div></td>
                   </tr>
 <?php
                                                                       if (isset($_GET['search']) and tep_not_null($_GET['search'])) {

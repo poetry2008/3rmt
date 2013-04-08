@@ -5338,7 +5338,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               echo $notice_box->show_notice();
                     // end table list
                     ?>
-                    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="padding-left: 6px;">
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
                     <tr>
                     <td class="smallText" valign="top" height="20"colspan="2">
                       <select name="products_to_tags" onchange="products_tags_change(this.value);">

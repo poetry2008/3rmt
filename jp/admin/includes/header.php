@@ -347,10 +347,10 @@ $(function(){
 <?php
 }
 ?>
-</script>
-<noscript>
+</script><noscript>
 <div class="messageStackError"><?php echo TEXT_JAVASCRIPT_ERROR;?></div> 
 </noscript>
+
 <div class="compatible_head">
 <table border="0" width="100%" cellspacing="0" cellpadding="0" class="preorder_head">
 <tr>
@@ -388,7 +388,6 @@ echo "<a href=".tep_href_link($cur_page,tep_get_all_get_params(array('language')
 echo '<a href="' . tep_href_link('help.php', 'info_romaji='.urlencode(str_replace('/admin/','',$current_page_tp)), 'NONSSL') . '" class="headerLink"  target="_blank"><img src="images/menu_icon/icon_help_info.gif" alt="img"></a>';
 ?>
 </div>
-
 <?php echo tep_draw_form('changepwd', FILENAME_CHANGEPWD,'','post','
     id=\'changepwd_form\'');
 echo tep_draw_hidden_field("execute_password",TEXT_ECECUTE_PASSWORD_USER);
