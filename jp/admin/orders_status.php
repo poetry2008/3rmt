@@ -28,6 +28,7 @@
             'calc_price' => tep_db_prepare_input((int)$_POST['calc_price']),
 	    'user_update' => $_POST['user_update'],
             'date_update' => 'now()',
+            'transaction_expired' => tep_db_prepare_input((int)$_POST['transaction_expired']),
             );
         switch($_POST['option_status']) {
           case '1':
@@ -312,6 +313,11 @@ require("includes/note_js.php");
       
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('is_thzk', '1') . ' ' . TEXT_ORDERS_FETCH_CONDITION);
 
+      //交易过期警告设置
+      $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('transaction_expired', '1') . ' ' . TEXT_TRANSACTION_EXPIRED);
+
+      $contents[] = array('text' => TEXT_TRANSACTION_EXPIRED_COMMENT);
+
       $contents[] = array('align' => 'center', 'text' => '<br>' .
           tep_html_element_submit(IMAGE_SAVE) . ' <a class="new_product_reset" href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page']) .  '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
@@ -370,6 +376,11 @@ require("includes/note_js.php");
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('nomail', '1', $oInfo->nomail) . ' ' . 'DON\'T SEND MAIL');
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('calc_price', '1', $oInfo->calc_price) . ' ' . TEXT_ORDERS_STATUS_SET_PRICE_CALCULATION);
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('is_thzk', '1', $oInfo->is_thzk) . ' ' . TEXT_ORDERS_FETCH_CONDITION);
+
+      //交易过期警告设置
+      $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('transaction_expired', '1', $oInfo->transaction_expired) . ' ' . TEXT_TRANSACTION_EXPIRED);
+
+      $contents[] = array('text' => TEXT_TRANSACTION_EXPIRED_COMMENT);
       
       $contents[] = array('align' => 'center', 'text' => '<br>' .
           tep_html_element_submit(IMAGE_SAVE) . ' <a class="new_product_reset" href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page'] .  '&oID=' . $oInfo->orders_status_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');

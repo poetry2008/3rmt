@@ -40,4 +40,5 @@ define('TEXT_ORDERS_STATUS_OPTION', '选项');
 define('TEXT_ORDERS_STATUS_OPTION_NORMAL', '交易中');
 define('TEXT_ORDERS_STATUS_OPTION_SUCCESS', '交易成功');
 define('TEXT_ORDERS_STATUS_OPTION_FAIL', '交易失败');
+define('TEXT_TRANSACTION_EXPIRED_COMMENT', '超过送货时间，并且是勾选了此项目的状态对应的订单，显示警告图标。可以在多个状态下勾选此项目。');
 ?>

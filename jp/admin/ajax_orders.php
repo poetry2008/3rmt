@@ -187,12 +187,23 @@ if ($_POST['orders_id'] &&
     }
     $allorders[] = $orders;
 
+    //过期订单的警告提示
+    $expired_orders = '';
+    $orders_transaction_time = date('YmdHi',$orders['torihiki_date_end']); 
+    $orders_today_time = date('YmdHi');
+    if($orders_today_time > $orders_transaction_time && check_orders_transaction_expired($orders['orders_status'])){
+
+      $expired_orders = tep_image(DIR_WS_ICONS . 'arrow_exclamation.gif', TEXT_TRANSACTION_EXPIRED);
+    }
+
     //如果是今天的交易的话，显示红色
-    $trade_array = getdate(strtotime(tep_datetime_short($orders['torihiki_date'])));
+    $trade_array = getdate(strtotime(tep_datetime_short($orders['torihiki_date_end'])));
     $today_array = getdate();
     if ($trade_array["year"] == $today_array["year"] && $trade_array["mon"] == $today_array["mon"] && $trade_array["mday"] == $today_array["mday"]) {
       $today_color = 'red';
-      if ($trade_array["hours"] >= $today_array["hours"]) {
+      $trade_minutes = $trade_array["minutes"] < 10 ? '0'.$trade_array["minutes"] : $trade_array["minutes"];
+      $today_minutes = $today_array["minutes"] < 10 ? '0'.$today_array["minutes"] : $today_array["minutes"];
+      if ($trade_array["hours"].$trade_minutes >= $today_array["hours"].$today_minutes) {
         $next_mark = tep_image(DIR_WS_ICONS . 'arrow_blinking.gif', NEXT_ORDER_TEXT); //标记下个订单
       } else {
         $next_mark = '';
@@ -280,7 +291,8 @@ if ($_POST['orders_id'] &&
 				window.location.href='<?php echo
 					tep_href_link(FILENAME_ORDERS,
 							tep_get_all_get_params(array('oID', 'action')) .
-							'oID='.$orders['orders_id']);?>';"><?php echo $next_mark; ?><font color="<?php echo !$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)?'#999':$today_color; ?>"><?php echo tep_datetime_short_torihiki($orders['torihiki_date']);
+                                                        'oID='.$orders['orders_id']);?>';"><?php echo $expired_orders.$next_mark; ?><font color="<?php echo !$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)?'#999':$today_color; ?>">
+<?php echo tep_datetime_short_torihiki($orders['torihiki_date']);
 $tmp_date_end = explode(' ',$orders['torihiki_date_end']); 
 echo TEXT_TIME_LINK.$tmp_date_end[1]; 
 ?></font></td>
