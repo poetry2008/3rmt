@@ -466,7 +466,7 @@ require("includes/note_js.php");
     }
 ?>
             </table>
-			<table border="0" width="100%" cellspacing="0" cellpadding="2">
+			<table border="0" width="100%" cellspacing="0" cellpadding="0">
                   <tr>
                     <td class="smallText" valign="top"><?php echo $newsletters_split->display_count($newsletters_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_NEWSLETTERS); ?></td>
                     <td class="smallText" align="right"><div class="td_box"><?php echo $newsletters_split->display_links($newsletters_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page']); ?></div></td>

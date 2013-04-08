@@ -859,7 +859,7 @@ default:
 //While结束
 ?>
                         </table>
-						<table border="0" width="100%" cellspacing="0" cellpadding="2">
+						<table border="0" width="100%" cellspacing="0" cellpadding="0">
                                 <tr>
                                   <td class="smallText" valign="top"><?php echo $present_split->display_count($present_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CONTENS); ?></td>
                                   <td class="smallText" align="right"><div class="td_box"><?php echo $present_split->display_links($present_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'cID'))); ?></div></td>

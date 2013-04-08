@@ -987,7 +987,7 @@ require("includes/note_js.php");
     ?>
 
   </table>
-          <table border="0" width="100%" cellspacing="0" cellpadding="2">
+          <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td class="smallText" valign="top"><?php echo
             $pw_manager_split->display_count($pw_manager_query_numrows,

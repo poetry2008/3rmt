@@ -190,7 +190,7 @@ require("includes/note_js.php");
   }
 ?>
               <tr>
-                <td colspan="4"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+                <td colspan="4"><table border="0" width="100%" cellspacing="0" cellpadding="0">
                   <tr>
                     <td class="smallText" valign="top"><?php echo $bill_templates_split->display_count($bill_templates_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_BILL_TEMPLATES); ?></td>
                     <?php if(isset($_GET['sort'])&&$_GET['sort']){ ?>

@@ -235,7 +235,7 @@ require("includes/note_js.php");
 ?>
 
             </table>
-			<table border="0" width="100%" cellspacing="0" cellpadding="2">
+			<table border="0" width="100%" cellspacing="0" cellpadding="0">
                   <tr>
                     <td class="smallText" valign="top"><?php echo
                     $orders_status_split->display_count($orders_status_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PREORDERS_STATUS); ?></td>

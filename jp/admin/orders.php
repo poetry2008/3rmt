@@ -5231,7 +5231,7 @@ if($c_parent_array['parent_id'] == 0){
                   </td></tr></table>
                   </form>
                   <!-- display add end-->
-                  <table border="0" width="100%" cellspacing="0" cellpadding="2">
+                  <table border="0" width="100%" cellspacing="0" cellpadding="0">
                   <tr>
                   <td class="smallText" valign="top"><?php echo $orders_split->display_count($orders_query_numrows, MAX_DISPLAY_ORDERS_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_ORDERS); ?></td>
                   <td class="smallText" align="right">

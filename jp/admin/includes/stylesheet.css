@@ -1878,6 +1878,11 @@ google hack
 	margin-right:-1px;
 	margin-bottom:3px;
 }
+@media all and (-webkit-min-device-pixel-ratio:0){
+.table_wrapper{
+	margin-right:0;
+	margin-bottom:3px;
+}}
 .text_box{
 	margin-right:3px;
 }
@@ -1890,6 +1895,11 @@ google hack
 }
 .td_box{
 	margin-right:-6px;
+	overflow:hidden;
+}
+@media all and (-webkit-min-device-pixel-ratio:0){
+.td_box{
+	margin-right:-7px;
 	overflow:hidden;
 }
 .td_button{

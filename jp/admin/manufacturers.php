@@ -183,7 +183,7 @@ require("includes/note_js.php");
   }
 ?>
             </table>
-							<table border="0" width="100%" cellspacing="0" cellpadding="2" class="table_list_box">
+							<table border="0" width="100%" cellspacing="0" cellpadding="0" class="table_list_box">
                   <tr>
                     <td class="smallText" valign="top"><?php echo $manufacturers_split->display_count($manufacturers_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_MANUFACTURERS); ?></td>
                     <td class="smallText" align="right">
