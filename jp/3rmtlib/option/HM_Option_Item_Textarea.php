@@ -30,9 +30,9 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
      
      if (strlen($this->front_title)) {
        if ($ptype) {
-         echo '<td class="preorder_option_name">';
+         echo '<td class="preorder_option_name" valign="top">';
        } else {
-         echo '<td class="option_name">';
+         echo '<td class="option_name" valign="top">';
        }
        echo $this->front_title.':';
        echo '</td>';
