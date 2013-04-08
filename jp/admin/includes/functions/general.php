@@ -170,7 +170,7 @@ function tep_minitor_info(){
   }
   $returnString = '';
   foreach ($errorString as $error){
-    $returnString .= '<tr><td></td><td align="right">'.$error.'</td></tr>';
+    $returnString .= '<tr><td></td><td align="right"><div class="text_box">'.$error.'</div></td></tr>';
   }
   if($no_error_string!=""){
     return $no_error_string;

@@ -360,21 +360,22 @@ if (isset($_GET['latest_news_id']) and $latest_news['news_id'] == $_GET['latest_
     }
 
 ?>
-              <tr>
-                <td colspan="6"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+
+            </table>
+			<table border="0" width="100%" cellspacing="0" cellpadding="2">
                   <tr>
                     <td class="smallText" valign="top"><?php echo $latest_news_split->display_count($latest_news_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_LATEST_NEWS); ?></td>
-                    <td class="smallText" align="right"><?php echo $latest_news_split->display_links($latest_news_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'latest_news_id'))); ?></td>
+                    <td class="smallText" align="right"><div class="td_box"><?php echo $latest_news_split->display_links($latest_news_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'latest_news_id'))); ?></div></td>
                   </tr>
                   <tr>
-                    <td colspan="2" align="right" class="smallText"><?php echo
+				  <td valign="top" class="smallText">&nbsp;</td>
+                    <td align="right" class="smallText"><div class="td_button"><?php echo
                     '&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS,
                     'action=new_latest_news'.(isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):''))
-                    . '">' .tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?>&nbsp;</td>
+                    . '">' .tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?></div></td>
                   </tr>
-                </table></td>
-              </tr>
-            </table></td>
+                </table>
+			</td>
 <?php
     $heading = array();
     $contents = array();

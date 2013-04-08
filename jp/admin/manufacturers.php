@@ -182,28 +182,29 @@ require("includes/note_js.php");
 <?php
   }
 ?>
-              <tr>
-                <td colspan="2"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+            </table>
+							<table border="0" width="100%" cellspacing="0" cellpadding="2" class="table_list_box">
                   <tr>
                     <td class="smallText" valign="top"><?php echo $manufacturers_split->display_count($manufacturers_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_MANUFACTURERS); ?></td>
-                    <td class="smallText" align="right"><?php echo $manufacturers_split->display_links($manufacturers_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page']); ?></td>
+                    <td class="smallText" align="right">
+					<div class="td_box">
+					<?php echo $manufacturers_split->display_links($manufacturers_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page']); ?></div></td>
                   </tr>
-                </table></td>
-              </tr>
-<?php
+				  <?php
   if (!isset($_GET['action']) || $_GET['action'] != 'new') {
 ?>
               <tr>
-                <td align="right" colspan="2" class="smallText"><?php echo '<a
+                <td align="right" colspan="2" class="smallText"><div class="td_button"><?php echo '<a
                 href="' . tep_href_link(FILENAME_MANUFACTURERS, 'page=' .
                 $_GET['page'] . '&mID=' . (isset($mInfo->manufacturers_id)
                     ?$mInfo->manufacturers_id:'') . '&action=new') . '">' .
-                    tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?></td>
+                    tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?></div></td>
               </tr>
 <?php
   }
 ?>
-            </table></td>
+                </table>
+			</td>
 <?php
   $heading = array();
   $contents = array();

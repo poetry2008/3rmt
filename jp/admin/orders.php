@@ -4555,7 +4555,7 @@ if($c_parent_array['parent_id'] == 0){
           }
         ?>
           <?php echo tep_draw_form('sele_act', FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) .  'action=sele_act','post','onsubmit="return confrim_mail_title()"'); ?>
-          <table width="100%">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
           <td>
           <?php tep_site_filter(FILENAME_ORDERS);?>
@@ -4587,7 +4587,7 @@ if($c_parent_array['parent_id'] == 0){
           $get_mark_info = array();
         }
           ?>
-          <table border="0" width="100%" cellpadding="1" cellspacing="1">
+          <table border="0" width="100%" cellpadding="0" cellspacing="1" class="table_wrapper">
             <tr>
               <td id="mark_o" class="<?php echo (in_array('0', $get_mark_info) || (!isset($_GET['mark']) && in_array('0', $work_array)))?'mark_flag_checked':'mark_flag_unchecked';?>" align="center" onclick="mark_work(this,'0','<?php echo isset($_GET['mark']) ? $_GET['mark'] : $work_str;?>', '<?php echo $_GET['site_id'];?>', '<?php echo urlencode(tep_get_all_get_params(array('page', 'oID', 'action', 'mark', 'site_id')));?>')">&nbsp;</td> 
               <td id="mark_a" class="<?php echo (in_array('1', $get_mark_info) || (!isset($_GET['mark']) && in_array('1', $work_array)))?'mark_flag_checked':'mark_flag_unchecked';?>" align="center" onclick="mark_work(this,'1','<?php echo isset($_GET['mark']) ? $_GET['mark'] : $work_str;?>', '<?php echo $_GET['site_id'];?>', '<?php echo urlencode(tep_get_all_get_params(array('page', 'oID', 'action', 'mark', 'site_id')));?>')">A</td> 
@@ -5231,17 +5231,11 @@ if($c_parent_array['parent_id'] == 0){
                   </td></tr></table>
                   </form>
                   <!-- display add end-->
-
-                  <table border="0" width="100%" cellspacing="0" cellpadding="2">
-                  <tr>
-                  <td colspan="5">
                   <table border="0" width="100%" cellspacing="0" cellpadding="2">
                   <tr>
                   <td class="smallText" valign="top"><?php echo $orders_split->display_count($orders_query_numrows, MAX_DISPLAY_ORDERS_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_ORDERS); ?></td>
-                  <td class="smallText" align="right"><?php echo $orders_split->display_links($orders_query_numrows, MAX_DISPLAY_ORDERS_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'oID', 'action'))); ?></td>
-                  </tr>
-                  </table>
-                  </td>
+                  <td class="smallText" align="right">
+				  <div class="td_box"><?php echo $orders_split->display_links($orders_query_numrows, MAX_DISPLAY_ORDERS_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'oID', 'action'))); ?></div></td>
                   </tr>
                   </table>
                   </td>

@@ -858,20 +858,19 @@ default:
     }
 //While结束
 ?>
-                          <tr>
-                            <td colspan="4"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+                        </table>
+						<table border="0" width="100%" cellspacing="0" cellpadding="2">
                                 <tr>
                                   <td class="smallText" valign="top"><?php echo $present_split->display_count($present_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CONTENS); ?></td>
-                                  <td class="smallText" align="right"><?php echo $present_split->display_links($present_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'cID'))); ?></td>
+                                  <td class="smallText" align="right"><div class="td_box"><?php echo $present_split->display_links($present_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'cID'))); ?></div></td>
                                 </tr>
-                              </table></td>
-                          </tr>
-                          <tr>
-                            <td align="right" colspan="4"><a
+								 <tr>
+                            <td align="right" colspan="2"><div class="td_button"><a
                             href="present.php?action=input"><?php echo
-                            tep_html_element_button(IMAGE_NEW_PROJECT); ?></a></td>
+                            tep_html_element_button(IMAGE_NEW_PROJECT); ?></a></div></td>
                           </tr>
-                        </table></td>
+                              </table>
+						</td>
                       <?php
           if(isset($cID) && $cID && tep_not_null($cID)) {
           $cquery = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".$cID."'");
