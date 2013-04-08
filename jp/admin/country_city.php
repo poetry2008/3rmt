@@ -266,6 +266,8 @@ while($area_fee_array = tep_db_fetch_array($area_fee_query)){
 tep_db_free_result($area_fee_query);
 tep_db_close();
 ?>
+</table>
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
 <tr>
 <td colspan="4">
 <?php echo $area_fee_page->display_count($area_fee_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_COUNTRY_CITY); ?>
@@ -274,7 +276,7 @@ tep_db_close();
 <?php echo $area_fee_page->display_links($area_fee_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page','fid'=>$_GET['fid']))); ?>
 </td>
 </tr>
-<tr><td align="right" colspan="9"><button onclick="javascript:location.href='country_area.php?fid=<?php echo $ff_id;?>';"><?php echo TABLE_HISTROY;?></button>&nbsp;<button onclick="show_text_city(0,this,<?php echo $_GET['fid']; ?>);"><?php echo TABLE_BUTTON;?></button></td></tr>
+<tr><td align="right" colspan="9"><div class="td_button"><button onclick="javascript:location.href='country_area.php?fid=<?php echo $ff_id;?>';"><?php echo TABLE_HISTROY;?></button>&nbsp;<button onclick="show_text_city(0,this,<?php echo $_GET['fid']; ?>);"><?php echo TABLE_BUTTON;?></button></div></td></tr>
 </table>
 <?php if($area_fee_array['id'] == 0){
 echo '<div id="show" style="display:none;position:absolute;"></div>';
