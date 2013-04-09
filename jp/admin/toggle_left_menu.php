@@ -8,6 +8,8 @@
   $se_arr = array(); 
   if (isset($_SESSION['l_select_box'])) {
     $se_arr = explode(',', $_SESSION['l_select_box']); 
+  }else{
+    $_SESSION['l_select_box']='';
   }
   switch ($_POST['action']) {
 /* -----------------------------------------------------
@@ -18,7 +20,9 @@
       $se_arr[] = $obj_id;
       $tmp_arr = array_unique($se_arr);
       $l_select_box = implode(',', $tmp_arr);
-      tep_session_register('l_select_box'); 
+      if(tep_session_register('l_select_box')){
+        $_SESSION['l_select_box'] = $l_select_box;
+      }
       break; 
     case 'del':
       $tmp_arr = array(); 
@@ -29,5 +33,8 @@
       }
       $l_select_box = implode(',', $tmp_arr);
       tep_session_register('l_select_box'); 
+      if(tep_session_register('l_select_box')){
+        $_SESSION['l_select_box'] = $l_select_box;
+      }
       break; 
   }
