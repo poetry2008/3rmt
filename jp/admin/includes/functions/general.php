@@ -123,10 +123,9 @@ function tep_minitor_info(){
     $fiftheenbefore = date('Y-m-d H:i:s',time()-60*15);
     $logIn15 = tep_db_query("select * from monitor_log where ng > 0 and m_id =".$monitor['id'].' and created_at > "'.$fiftheenbefore.'"');
     $tmpRow = tep_db_fetch_array($logIn15);
-    if(mysql_num_rows($logIn15)){ //十五分钟内多于两件
-
-      $tmpString  = '回線障害発生： '.$tmpRow['name'].' <font
-        class="error_monitor">'.date('m月d日H時i分s秒',strtotime($tmpRow['created_at'])).'</font><br/><a ';
+    if(mysql_num_rows($logIn15)){ 
+      //十五分钟内多于两件
+      $tmpString  = TEXT_HEADER_NOTICE_ACCIDENT_HAPPEN.$tmpRow['name'].' <font class="error_monitor">'.date('m'.MONTH_TEXT.'d'.DAY_TEXT.'H'.HOUR_TEXT.'i'.MINUTE_TEXT.'s'.SECOND_TEXT,strtotime($tmpRow['created_at'])).'</font><br/><a ';
       if($show_div){
         $tmpString .='
           onMouseOver="show_monitor_error(\'minitor_'.$monitor['name'].'\',1,this)" 
@@ -134,7 +133,7 @@ function tep_minitor_info(){
       }
       $tmpString .=  'id="moni_'.$tmpRow['name'].'" class="monitor"
         href="'.$monitor['url'].'"
-        target="_blank">こちら</a>をクリックして状況を確認してください。</div>';
+        target="_blank">'.TEXT_HEADER_NOTICE_CLICK_CONFIRM_LINK.'</a>'.TEXT_HEADER_NOTICE_CLICK_CONFIRM.'</div>';
       $tmpString2 = "<div class='monitor_error' style='display:none;' id='minitor_".$monitor['name']."'>";
       $tmpString2.= '<table width="100%"><tr><td>'.$tmpRow['created_at']."</td><td
         width='50%'>".nl2br($tmpRow['obj'])."</td></tr>";
@@ -149,12 +148,12 @@ function tep_minitor_info(){
       $log = "select name,obj, created_at from monitor_log where ng >0 and m_id = ".$monitor['id']. " order by id  desc limit 1";
       $logsResult = tep_db_fetch_array(tep_db_query($log));
       if ($logsResult){
-        $aString = '回線障害の最終日： ' . $logsResult['name'] . ' <a ';
+        $aString = TEXT_HEADER_NOTICE_ACCIDENT_HAPPEN_FINAL_DAY . $logsResult['name'] . ' <a ';
         if($show_div){
           $aString.=  'onMouseOver="show_monitor_error(\'minitor_'.$logsResult['name'].'\',1,this)"
             onMouseOut="show_monitor_error(\'minitor_'.$logsResult['name'].'\',0,this)"';
         }
-        $aString.=  'class="monitor_right" id="moni_'.$logsResult['name'].'" href="'.$monitor['url'].'"  target="_blank">'.date('m月d日H時i分s秒',strtotime($logsResult['created_at'])).'</a>';
+        $aString.=  'class="monitor_right" id="moni_'.$logsResult['name'].'" href="'.$monitor['url'].'" target="_blank">'.date('m'.MONTH_TEXT.'d'.DAY_TEXT.'H'.HOUR_TEXT.'i'.MINUTE_TEXT.'s'.SECOND_TEXT,strtotime($logsResult['created_at'])).'</a>';
         $aString.= '<div class="monitor_error" style="display:none;" id ="minitor_'.$logsResult['name'].'">';
         $aString.= '<table
           width="100%"><tr><td>'.$logsResult['created_at']."</td><td
@@ -166,7 +165,7 @@ function tep_minitor_info(){
   }
   if(count($errorString)<1){
     $no_error_string = '<tr><td></td><td align="right"><font
-      color="green">システムの動作状況： 正常</font></td></tr>';
+      color="green">'.TEXT_HEADER_NOTICE_SYSTEM_CONDITION.'</font></td></tr>';
   }
   $returnString = '';
   foreach ($errorString as $error){

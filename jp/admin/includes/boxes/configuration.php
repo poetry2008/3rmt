@@ -8,8 +8,8 @@
             <td>
             <table cellspacing="0" cellpadding="2" border="0" width="150"> 
               <tr>
-              <td onmouseout="this.className='menusidebar'" onmouseover="this.className='menusidebarover';this.style.cursor='hand'" class="menusidebar" style="">&nbsp;<span><?php echo tep_image(DIR_WS_MENU_ICON . 'icon_settings.gif'); ?></span><span>
-              <a class="menuBoxHeading_Link" href="javascript:void(0);" onclick="toggle_lan('col1');"><?php echo BOX_HEADING_CONFIGURATION;?></a></span>&nbsp; 
+              <td onclick="toggle_lan('col1');" onmouseout="this.className='menusidebar'" onmouseover="this.className='menusidebarover';this.style.cursor='hand'" class="menusidebar" style="">&nbsp;<span><?php echo tep_image(DIR_WS_MENU_ICON . 'icon_settings.gif'); ?></span><span>
+              <a class="menuBoxHeading_Link" href="javascript:void(0);"><?php echo BOX_HEADING_CONFIGURATION;?></a></span>&nbsp; 
               </td>
               </tr>
             </table> 
@@ -54,21 +54,21 @@ $configuration_groups_img = array("901"=>"icon_shop_settings.gif",
                 $configuration_groups_query = tep_db_query("select configuration_group_id as cgID, configuration_group_title as cgTitle from " . TABLE_CONFIGURATION_GROUP . " where visible = '1' order by sort_order");
                 while ($configuration_groups = tep_db_fetch_array($configuration_groups_query)) {
                  if(str_replace('/admin/','',$_SERVER['PHP_SELF']).'?gID='.$_GET['gID'] == FILENAME_CONFIGURATION.'?gID='.$configuration_groups['cgID']){
-                   echo '<div class="sidebarselected"><span >'.tep_image(DIR_WS_MENU_ICON.$configuration_groups_img[$configuration_groups['cgID']]).'</span><span ><a href="' .  tep_href_link(FILENAME_CONFIGURATION, 'gID=' .  $configuration_groups['cgID'], 'NONSSL') . '" class="menuBoxContent_Link">';
+                   echo '<div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_CONFIGURATION, 'gID=' .  $configuration_groups['cgID'], 'NONSSL').'\';"><span>'.tep_image(DIR_WS_MENU_ICON.$configuration_groups_img[$configuration_groups['cgID']]).'</span><span>';
                   if(constant($configuration_groups['cgTitle'])){
                     echo constant($configuration_groups['cgTitle']);
                   }else{
                     echo $configuration_groups['cgTitle']; 
                   }
-                  echo '</a></span></div>';
+                  echo '</span></div>';
                  }else{
-                  echo '<div onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar"><span >'.tep_image(DIR_WS_MENU_ICON.$configuration_groups_img[$configuration_groups['cgID']]).'</span><span ><a href="' .  tep_href_link(FILENAME_CONFIGURATION, 'gID=' .  $configuration_groups['cgID'], 'NONSSL') . '" class="menuBoxContent_Link">';
+                  echo '<div onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_CONFIGURATION, 'gID=' .  $configuration_groups['cgID'], 'NONSSL').'\';"><span>'.tep_image(DIR_WS_MENU_ICON.$configuration_groups_img[$configuration_groups['cgID']]).'</span><span>';
                   if(constant($configuration_groups['cgTitle'])){
                     echo constant($configuration_groups['cgTitle']);
                   }else{
                     echo $configuration_groups['cgTitle']; 
                   }
-                  echo '</a></span></div>';
+                  echo '</span></div>';
                  }
                 ?>
                 <?php
