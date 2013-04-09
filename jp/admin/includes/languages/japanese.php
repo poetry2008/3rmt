@@ -773,4 +773,4 @@ define('TEXT_HEADER_NOTICE_ACCIDENT_HAPPEN_FINAL_DAY', '回線障害の最終日
 define('TEXT_HEADER_NOTICE_SYSTEM_CONDITION', 'システムの動作状況： 正常');
 define('IMAGE_ICON_FRONTENT','フロントエンド');
 define('IMAGE_ICON_BACKEND','バックエンド');
-define('FOREGROUND_TO_BACKGROUND','フロントエンド／バックエンド');
+define('FOREGROUND_TO_BACKGROUND','FE／BE');
