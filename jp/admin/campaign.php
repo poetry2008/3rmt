@@ -143,6 +143,12 @@
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script style="text/javascript">
+var bw_height;
+var client_height;
+var scrollHeight;
+$(document).ready(function() { 
+ bw_height = $('.box_warp').height();
+});
 <?php //弹出页的前页/后页的链接?>
 function show_link_campaign_info(cid, sid)
 {
@@ -175,17 +181,50 @@ function show_campaign_info(ele, cid, sid)
       if (document.documentElement.clientHeight < document.body.scrollHeight) {
         if (ele.offsetTop+$('#campaign_list_box').position().top+ele.offsetHeight+$('#show_campaign_info').height() > document.body.scrollHeight) {
           offset = ele.offsetTop+$('#campaign_list_box').position().top-$('#show_campaign_info').height()-$('#offsetHeight').height();
+          div_height =  $('#show_campaign_info').height();
+          if((div_height+offset)>$('.box_warp').height()){
+            $('.box_warp').height(div_height+offset);
+          }else if ((div_height+offset)>bw_height){
+            $('.box_warp').height(bw_height);
+          }
           $('#show_campaign_info').css('top', offset).show(); 
         } else {
           offset = ele.offsetTop+$('#campaign_list_box').position().top+ele.offsetHeight;
+          div_height =  $('#show_campaign_info').height();
+          if((div_height+offset)<$('.box_warp').height()){
+            if ((div_height+offset)>bw_height){
+              $('.box_warp').height(div_height+offset);
+            }else{
+              $('.box_warp').height(bw_height);
+            }
+	  }else{
+            $('.box_warp').height(div_height+offset);
+	  }
+          t_offset = ele.offsetTop+$('#campaign_list_box').position().top-$('#show_campaign_info').height()-$('#offsetHeight').height();
+          min_height = ($('#tep_site_filter').height()+$('.pageHeading').height());
+          if ((div_height+offset)>bw_height&&t_offset>min_height){
+            offset = ele.offsetTop+$('#campaign_list_box').position().top-$('#show_campaign_info').height()-$('#offsetHeight').height();
+          }
           $('#show_campaign_info').css('top', offset).show(); 
         }
       } else {
         if (ele.offsetTop+$('#campaign_list_box').position().top+ele.offsetHeight+$('#show_campaign_info').height() > document.documentElement.clientHeight) {
-          offset = ele.offsetTop+$('#campaign_list_box').position().top-$('#show_campaign_info').height()-$('#offsetHeight').height()-ele.offsetHeight;
+          offset = ele.offsetTop+$('#campaign_list_box').position().top-$('#show_campaign_info').height()-$('#offsetHeight').height();
+          div_height =  $('#show_campaign_info').height();
+          if((div_height+offset)>$('.box_warp').height()){
+            $('.box_warp').height(div_height+offset);
+          }else if ((div_height+offset)>bw_height){
+            $('.box_warp').height(bw_height);
+          }
           $('#show_campaign_info').css('top', offset).show(); 
         } else {
           offset = ele.offsetTop+$('#campaign_list_box').position().top+ele.offsetHeight;
+          div_height =  $('#show_campaign_info').height();
+          if((div_height+offset)>$('.box_warp').height()){
+            $('.box_warp').height(div_height+offset);
+          }else if ((div_height+offset)>bw_height){
+            $('.box_warp').height(div_height+offset);
+          }
           $('#show_campaign_info').css('top', offset).show(); 
         }
       }
