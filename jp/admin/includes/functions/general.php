@@ -1412,8 +1412,8 @@ function tep_prepare_country_zones_pull_down($country_id = '') {
     参数: $country_id(int) 国家id 
     返回值: 国家列表(string)
  ------------------------------------ */
-function tep_cfg_pull_down_country_list($country_id) {
-  return tep_draw_pull_down_menu('configuration_value', tep_get_countries(), $country_id);
+function tep_cfg_pull_down_country_list($country_id,$empty_params,$params) {
+  return tep_draw_pull_down_menu('configuration_value', tep_get_countries(), $country_id,$params);
 }
 
 /* -------------------------------------
@@ -1421,8 +1421,8 @@ function tep_cfg_pull_down_country_list($country_id) {
     参数: $zone_id(int) 区域id 
     返回值: 区域列表(string)
  ------------------------------------ */
-function tep_cfg_pull_down_zone_list($zone_id) {
-  return tep_draw_pull_down_menu('configuration_value', tep_get_country_zones(STORE_COUNTRY), $zone_id);
+function tep_cfg_pull_down_zone_list($zone_id,$empty_params,$params) {
+  return tep_draw_pull_down_menu('configuration_value', tep_get_country_zones(STORE_COUNTRY), $zone_id,$params);
 }
 
 /* -------------------------------------
@@ -1449,8 +1449,8 @@ function tep_cfg_pull_down_tax_classes($tax_class_id, $key = '') {
     参数: $text(string) 默认的内容 
     返回值: 指定的文本域(string)
  ------------------------------------ */
-function tep_cfg_textarea($text) {
-  return tep_draw_textarea_field('configuration_value', false, 35, 5, $text);
+function tep_cfg_textarea($text,$empty_params,$params) {
+  return tep_draw_textarea_field('configuration_value', false, 35, 5, $text, $params);
 }
 
 /* -------------------------------------
@@ -1490,11 +1490,11 @@ function tep_set_time_limit($limit) {
     参数: $key(string) 单选框的名字
     返回值: 生成的单选框(string)
  ------------------------------------ */
-function tep_cfg_select_option($select_array, $key_value, $key = '') {
+function tep_cfg_select_option($select_array, $key_value, $key = '',$parameter) {
   $string = '';
   for ($i = 0, $n = sizeof($select_array); $i < $n; $i++) {
     $name = (($key) ? 'configuration[' . $key . ']' : 'configuration_value');
-    $string .= '<br><input type="radio" name="' . $name . '" value="' . $select_array[$i] . '"';
+    $string .= '<br><input type="radio" '.$parameter.'name="' . $name . '" value="' . $select_array[$i] . '"';
     if ($key_value == $select_array[$i]) $string .= ' CHECKED';
     $string .= '> ' . $select_array[$i];
   }

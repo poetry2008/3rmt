@@ -2740,7 +2740,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   if(constant($cInfo->configuration_title) == null){
      $cInfo_configuration_title = $cInfo->configuration_title;
   }else{
-     $cInfo_configuration_title =  strip_tags(constant($cInfo->configuration_title));
+     $cInfo_configuration_title = strip_tags(str_replace('F_','',constant($cInfo->configuration_title)));
   }
   $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
@@ -2750,16 +2750,28 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
       if ($cInfo->configuration_key == 'DS_ADMIN_SIGNAL_TIME') {
         eval('$value_field = '.$cInfo->set_function."'".$cInfo->configuration_value."');"); 
       } else {
+        if(in_array($site_id,$site_array)){
         eval('$value_field = ' . $cInfo->set_function . '\'' .  htmlspecialchars(addcslashes($cInfo->configuration_value, '\'')) . '\');');
+        }else{
+        eval('$value_field = ' . $cInfo->set_function . '\'' .  htmlspecialchars(addcslashes($cInfo->configuration_value, '\'')) .  '\',\'\',\'disabled="disabled"\');');
+        }
         $value_field = str_replace('<br>','',$value_field);
         $value_field .= '<input type="hidden" name="hidden_configuration_value" value="'.$cInfo->configuration_value.'">';
       }
       $value_field = htmlspecialchars_decode($value_field);
     } else {
       if($cInfo->configuration_key == 'ADMINPAGE_LOGO_IMAGE') {
-        $value_field = tep_draw_file_field('upfile') . '<br>' . $cInfo->configuration_value;
+        if(in_array($site_id,$site_array)) { 
+          $value_field = tep_draw_file_field('upfile') . '<br>' . $cInfo->configuration_value;
+        }else{
+          $value_field = tep_draw_file_field('upfile','','disabled="disabled"') . '<br>' . $cInfo->configuration_value;
+        }
       } else {
+       if(in_array($site_id,$site_array)) { 
         $value_field = '<textarea name="configuration_value" rows="5" cols="35">'. $cInfo->configuration_value .'</textarea><input type="hidden" name="hidden_configuration_value" value="'.$cInfo->configuration_value.'">';
+       }else{
+        $value_field = '<textarea name="configuration_value" rows="5" cols="35" disabled="disabled">'. $cInfo->configuration_value .'</textarea><input type="hidden" name="hidden_configuration_value" value="'.$cInfo->configuration_value.'">';
+       }
       }
     }
 // 针对 logo—image 做特殊处理
@@ -2834,22 +2846,39 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
        $value_field = $fetch_result['configuration_value'];
       }
    }else{
+      if(in_array($site_id,$site_array)){
       eval('$value_field = ' . $fetch_result['set_function'] . '\'' .  htmlspecialchars(addcslashes($fetch_result['configuration_value'], '\'')) . '\');');
+      }else{
+      eval('$value_field = ' . $fetch_result['set_function'] . '\'' .  htmlspecialchars(addcslashes($fetch_result['configuration_value'], '\'')) . '\',\'\',\'disabled="disabled"\');');
+      }
         $value_field = str_replace('<br>','',$value_field);
         $value_field .= '<input type="hidden" name="hidden_configuration_value" value="'.$cInfo->configuration_value.'">';
    }
   } else {
       if($fetch_result['configuration_key'] == 'ADMINPAGE_LOGO_IMAGE') {
-    $value_field = tep_draw_file_field('upfile'). '<br>' . $fetch_result['configuration_value'];
+       if(in_array($site_id,$site_array)) { 
+         $value_field = tep_draw_file_field('upfile'). '<br>' . $fetch_result['configuration_value'];
+       }else{
+         $value_field = tep_draw_file_field('upfile','','disabled="disabled"'). '<br>' . $fetch_result['configuration_value'];
+       }
       } else {
           if(in_array($cInfo->configuration_key,$configuration_key_array)){
-          $value_field = $fetch_result['configuration_value'];
+            if($cInfo->configuration_key == 'TELNO_KEYWORDS'){
+              $value_field = str_replace('|',' | ',$fetch_result['configuration_value']);
+            }else{
+              $value_field = $fetch_result['configuration_value'];
+            }
           }else{
+       if(in_array($site_id,$site_array)) { 
           $value_field = '<textarea name="configuration_value" rows="5" cols="35">'. $fetch_result['configuration_value'] .'</textarea> <input type="hidden" name="hidden_configuration_value" value="'.$fetch_result['configuration_value'].'">
             ';
+       }else{
+          $value_field = '<textarea name="configuration_value" rows="5" cols="35" disabled="disabled">'.  $fetch_result['configuration_value'] .'</textarea> <input type="hidden" name="hidden_configuration_value" value="'.$fetch_result['configuration_value'].'">';
+       }
           }
       }
   }
+
   if($fetch_result['configuration_key'] == 'ADMINPAGE_LOGO_IMAGE') {
       $configuration_form = tep_draw_form('configuration', FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $fetch_result['configuration_id'] . '&action=save', 'post', 'enctype="multipart/form-data"');
   } else {
@@ -2859,7 +2888,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   if(constant($fetch_result['configuration_title']) == null){
      $fetch_result_configuration_title = $fetch_result['configuration_title']; 
   }else{
-     $fetch_result_configuration_title = strip_tags(constant($fetch_result['configuration_title'])); 
+     $fetch_result_configuration_title = strip_tags(str_replace('F_','',constant($fetch_result['configuration_title']))); 
   }
   $configuration_user_update = tep_db_fetch_array(tep_db_query('select * from configuration where configuration_key="'.$cInfo->configuration_key.'" and site_id = "'.$site_id.'"'));
   $contents[]['text'] = array(

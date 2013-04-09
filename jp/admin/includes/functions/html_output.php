@@ -259,8 +259,8 @@
     参数: $required(boolean) 是否添加必须注释 
     返回值: 生成上传文件的input的html(string) 
 ------------------------------------ */
-  function tep_draw_file_field($name, $required = false) {
-    $field = tep_draw_input_field($name, '', '', $required, 'file');
+  function tep_draw_file_field($name, $required = false,$params) {
+    $field = tep_draw_input_field($name, '', $params, $required, 'file');
 
     return $field;
   }
