@@ -405,7 +405,7 @@ define('LIST_DISPLAY_JIAKONGZAIKU', '虚拟库存');
 define('LIST_DISPLAY_YEZHE_PRICE', '同业单价');
 define('MAG_DL_TITLE_TEXT', '电子杂志订阅者数据下载');
 define('MAG_UP_TITLE_TEXT', '电子杂志订阅者统一上传');
-define('PRODUCTS_TO_TAGS_TITLE', '关联指定的分类');
+define('PRODUCTS_TO_TAGS_TITLE', '设置关联标签');
 define('REFERER_TITLE_TEXT', '访问排名');
 define('REFERER_TITLE_URL', '访问来源');
 define('REFERER_TITLE_NUM', '次数');
