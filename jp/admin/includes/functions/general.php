@@ -1502,11 +1502,15 @@ function tep_set_time_limit($limit) {
     参数: $key(string) 单选框的名字
     返回值: 生成的单选框(string)
  ------------------------------------ */
-function tep_cfg_select_option($select_array, $key_value, $key = '',$parameter) {
+function tep_cfg_select_option($select_array, $key_value, $key = '',$parameter = '') {
   $string = '';
   for ($i = 0, $n = sizeof($select_array); $i < $n; $i++) {
     $name = (($key) ? 'configuration[' . $key . ']' : 'configuration_value');
+   if($parameter != ''){
     $string .= '<br><input type="radio" '.$parameter.'name="' . $name . '" value="' . $select_array[$i] . '"';
+   }else{
+    $string .= '<br><input type="radio" name="' . $name . '" value="' . $select_array[$i] . '"';
+   }
     if ($key_value == $select_array[$i]) $string .= ' CHECKED';
     $string .= '> ' . $select_array[$i];
   }
