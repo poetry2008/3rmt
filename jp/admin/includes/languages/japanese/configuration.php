@@ -68,7 +68,7 @@ define('TEXT_CATEGORIES_PAGE_DISPLAYED_PREORDERS_NUMBER_VALID',tep_image(DIR_WS_
 define('TEXT_REDIRECT_DOMAIN_NAME',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;リダイレクトドメイン');
 define('TEXT_COMPANY_NAME',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'&nbsp;'.tep_image(DIR_WS_IMAGES .'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;会社名称');
 define('TEXT_DOMAIN_NAME',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;ドメイン');
-define('TEXT_ALL_COMMODITIES_RSS_ADDRESS',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;全てのゲームのRSSアドレス');
+define('TEXT_ALL_COMMODITIES_RSS_ADDRESS',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;全ての商品のRSSアドレス');
 define('TEXT_SHOP_NAME',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'&nbsp;'.tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;ショップ名');
 define('TEXT_SHOP_HOLDER_NAME',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'&nbsp;'.tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;ショップ・オーナー名');
 define('TEXT_MAIL_ADDRESS',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'&nbsp;'.tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;E-Mail アドレス');
@@ -117,8 +117,8 @@ define('TEXT_SEND_MAIL_CUSTOMER',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IM
 define('TEXT_DISPLAY_ID_MANAGEMENT',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;ID管理表示数');
 define('TEXT_FAQ_DISPLAY_MAXIMUM',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;FAQ表示の最大値');
 define('TEXT_LATEST_INFO',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;最新情報');
-define('TEXT_HOME_GOODS_NEWS_DISPLAY',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;トップページのゲームニュースの表示数');
-define('TEXT_CATEGORY_PAGE_NEWS_SHOW_NUMBER',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;カテゴリのゲームニュース表示数');
+define('TEXT_HOME_GOODS_NEWS_DISPLAY',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;トップページの商品ニュースの表示数');
+define('TEXT_CATEGORY_PAGE_NEWS_SHOW_NUMBER',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;カテゴリの商品ニュース表示数');
 define('TEXT_ADDRESS_LOGIN_TIMES',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;アドレス帳の登録数');
 define('TEXT_SET_ORDERS_MAXIMUM_AMOUNT',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;注文上限金額設定');
 define('TEXT_SEARCH_RESULTS_SHOW_NUMBER',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'&nbsp;'.tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;検索結果表示数');
