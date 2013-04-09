@@ -160,36 +160,36 @@ while($point_mail = tep_db_fetch_array($point_mail_query)){
   <?php
 }
 ?>
-  <tr>
-      <td colspan="4"><table border="0" width="100%" cellspacing="0"
-      cellpadding="2">
+            </table>
+			<table border="0" width="100%" cellspacing="0"
+      cellpadding="0">
       <tr>
       <td class="smallText" valign="top"><?php echo
       $point_mail_split->display_count($point_mail_query_numrows,
           MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'],
           TEXT_DISPLAY_NUMBER_OF_POINT_EMAIL); ?></td>
-      <td class="smallText" align="right"><?php echo
+      <td class="smallText" align="right"><div class="td_box"><?php echo
       $point_mail_split->display_links($point_mail_query_numrows,
           MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page']);
-  ?></td>
+  ?></div></td>
   </tr>
 <?php
   if (!isset($_GET['action']) || substr($_GET['action'], 0, 3) != 'new') {
 ?>
                   <tr>
                     <td colspan="2" align="right">
+					<div class="td_button">
                     <?php 
                     echo '<a href="'.tep_href_link(FILENAME_POINT_EMAIL, 'page=' .
                     $_GET['page'] .
                     '&action=new').'">'.tep_html_element_button(IMAGE_NEW_PROJECT).'</a>';
-                    ?></td>
+                    ?></div></td>
                   </tr>
 <?php
   }
 ?>
-                </table></td>
-              </tr>
-            </table></td>
+                </table>
+			</td>
 <?php
   $heading = array();
   $contents = array();

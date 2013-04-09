@@ -190,23 +190,23 @@ require("includes/note_js.php");
   }
 ?>
               <tr>
-                <td colspan="4"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+                <td colspan="4"><table border="0" width="100%" cellspacing="0" cellpadding="0">
                   <tr>
                     <td class="smallText" valign="top"><?php echo $bill_templates_split->display_count($bill_templates_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_BILL_TEMPLATES); ?></td>
                     <?php if(isset($_GET['sort'])&&$_GET['sort']){ ?>
-                    <td class="smallText" align="right"><?php echo $bill_templates_split->display_links($bill_templates_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'],'sort='.$_GET['sort']); ?></td>
+                    <td class="smallText" align="right"><div class="td_box"><?php echo $bill_templates_split->display_links($bill_templates_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'],'sort='.$_GET['sort']); ?></div></td>
                     <?php }else{ ?>
-                    <td class="smallText" align="right"><?php echo $bill_templates_split->display_links($bill_templates_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page']); ?></td>
+                    <td class="smallText" align="right"><div class="td_box"><?php echo $bill_templates_split->display_links($bill_templates_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page']); ?></div></td>
                      <?php }?>
                   </tr>
 <?php
         if (!isset($_GET['action'])) {
 ?>
                   <tr>
-                    <td colspan="2" align="right"><?php echo '<a href="' .
+                    <td colspan="2" align="right"><div class="td_button"><?php echo '<a href="' .
                     tep_href_link(FILENAME_BILL_TEMPLATES, 'page=' . $_GET['page'] .
                         '&action=new') . '">' .
-                    tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?></td>
+                    tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?></div></td>
                   </tr>
 <?php
   }

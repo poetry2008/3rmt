@@ -28,6 +28,7 @@
             'calc_price' => tep_db_prepare_input((int)$_POST['calc_price']),
 	    'user_update' => $_POST['user_update'],
             'date_update' => 'now()',
+            'transaction_expired' => tep_db_prepare_input((int)$_POST['transaction_expired']),
             );
         switch($_POST['option_status']) {
           case '1':
@@ -246,27 +247,27 @@ require("includes/note_js.php");
 <?php
   }
 ?>
-              <tr>
-                <td colspan="2"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+
+            </table>
+			<table border="0" width="100%" cellspacing="0" cellpadding="0">
                   <tr>
                     <td class="smallText" valign="top"><?php echo $orders_status_split->display_count($orders_status_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_ORDERS_STATUS); ?></td>
-                    <td class="smallText" align="right"><?php echo $orders_status_split->display_links($orders_status_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page']); ?></td>
+                    <td class="smallText" align="right"><div class="td_box"><?php echo $orders_status_split->display_links($orders_status_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page']); ?></div></td>
                   </tr>
 <?php
   if (!isset($_GET['action']) || substr($_GET['action'], 0, 3) != 'new') {
 ?>
                   <tr>
-                    <td colspan="2" align="right"><?php echo '<a href="' .
+                    <td colspan="2" align="right"><div class="td_button"><?php echo '<a href="' .
                     tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page'] .
                         '&action=new') . '">' .
-                    tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?></td>
+                    tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?></div></td>
                   </tr>
 <?php
   }
 ?>
-                </table></td>
-              </tr>
-            </table></td>
+                </table>
+			</td>
 <?php
   $heading = array();
   $contents = array();
@@ -311,6 +312,11 @@ require("includes/note_js.php");
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('calc_price', '1') . ' ' . TEXT_ORDERS_STATUS_SET_PRICE_CALCULATION);
       
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('is_thzk', '1') . ' ' . TEXT_ORDERS_FETCH_CONDITION);
+
+      //交易过期警告设置
+      $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('transaction_expired', '1') . ' ' . TEXT_TRANSACTION_EXPIRED);
+
+      $contents[] = array('text' => TEXT_TRANSACTION_EXPIRED_COMMENT);
 
       $contents[] = array('align' => 'center', 'text' => '<br>' .
           tep_html_element_submit(IMAGE_SAVE) . ' <a class="new_product_reset" href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page']) .  '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
@@ -370,6 +376,11 @@ require("includes/note_js.php");
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('nomail', '1', $oInfo->nomail) . ' ' . 'DON\'T SEND MAIL');
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('calc_price', '1', $oInfo->calc_price) . ' ' . TEXT_ORDERS_STATUS_SET_PRICE_CALCULATION);
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('is_thzk', '1', $oInfo->is_thzk) . ' ' . TEXT_ORDERS_FETCH_CONDITION);
+
+      //交易过期警告设置
+      $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('transaction_expired', '1', $oInfo->transaction_expired) . ' ' . TEXT_TRANSACTION_EXPIRED);
+
+      $contents[] = array('text' => TEXT_TRANSACTION_EXPIRED_COMMENT);
       
       $contents[] = array('align' => 'center', 'text' => '<br>' .
           tep_html_element_submit(IMAGE_SAVE) . ' <a class="new_product_reset" href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page'] .  '&oID=' . $oInfo->orders_status_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');

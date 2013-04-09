@@ -759,3 +759,4 @@ define('TEXT_PRODUCTS_TAGS_ALL_CHECK','全选择');
 define('TEXT_PRODUCTS_TAGS_CHECK','请至少选择一个商品。');
 define('TEXT_CHECK_FILE_EXISTS','上传的这个文件已经存在，确定要覆盖吗？');
 define('TEXT_CHECK_FILE_EXISTS_DELETE','删除的这个文件，在别的地方也使用了，确定要删除吗？');
+define('TEXT_TRANSACTION_EXPIRED', '过期订单警告');

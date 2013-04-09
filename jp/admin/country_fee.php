@@ -235,16 +235,20 @@ while($country_fee_array = tep_db_fetch_array($country_fee_query)){
 tep_db_free_result($country_fee_query);
 tep_db_close();
 ?>
+</table>
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
 <tr>
-<td colspan="4">
+<td>
 <?php echo $country_fee_page->display_count($country_fee_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_COUNTRY_FEE); ?>
 </td>
-<td colspan="5" align="right">
+<td align="right">
 <?php echo $country_fee_page->display_links($country_fee_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page'))); ?>
 </td>
 </tr>
-<tr><td align="right" colspan="9"><button onclick="show_text_fee(0,this);"><?php echo TABLE_BUTTON;?></button></td></tr>
-</table></td></tr></table></td></tr>
+<tr><td align="right" colspan="2"><div class="td_button"><button onclick="show_text_fee(0,this);"><?php echo TABLE_BUTTON;?></button></div></td></tr>
+</table>
+</td></tr></table>
+</td></tr>
 </table></td>
 </tr>
 </table>

@@ -241,14 +241,16 @@ while($products_array = tep_db_fetch_array($products_query)){
 tep_db_free_result($products_query);
 tep_db_close();
 ?>
-<td colspan="4">
+</table>
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
+<td>
 <?php echo $products_page->display_count($products_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_SHIPPING_TIME); ?>
 </td>
-<td colspan="5" align="right">
+<td align="right">
 <?php echo $products_page->display_links($products_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page'))); ?>
 </td>
 </tr>
-<tr><td align="right" colspan="9"><button onclick="show_text_products(0,this);"><?php echo TABLE_BUTTON;?></button></td></tr>
+<tr><td align="right" colspan="2"><button onclick="show_text_products(0,this);"><?php echo TABLE_BUTTON;?></button></td></tr>
 </table></td></tr></table></td></tr>
 </table></td>
 </tr>

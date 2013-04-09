@@ -437,21 +437,22 @@ require("includes/note_js.php");
                     </tr> <?php
     }
 ?> 
-                    <tr> 
-                      <td colspan="5"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+ 
+                  </table>
+				  <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                           <tr> 
                             <td class="smallText" valign="top"><?php echo $contents_split->display_count($contents_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CONTENS); ?></td> 
-                            <td class="smallText" align="right"><?php echo $contents_split->display_links($contents_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'cID'))); ?></td> 
+                            <td class="smallText" align="right"><div class="td_box"><?php echo $contents_split->display_links($contents_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'cID'))); ?></div></td> 
                           </tr> 
-                        </table></td> 
-                    </tr> 
+                    
           <tr>
-            <td align="right" colspan="5"><a href="<?php echo
+            <td align="right" colspan="2"><div class="td_button"><a href="<?php echo
             tep_href_link(FILENAME_CONTENTS,
                 $site_id?'site_id='.$site_id.'&action=insert':'action=insert');
-?>"><?php echo tep_html_element_button(IMAGE_NEW_PROJECT); ?></a></td>
+?>"><?php echo tep_html_element_button(IMAGE_NEW_PROJECT); ?></a></div></td>
           </tr>
-                  </table></td> 
+		   </table>
+				  </td> 
                 <?php
   if($cID && tep_not_null($cID)) {
   $cquery = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where pID = '".$cID."'");

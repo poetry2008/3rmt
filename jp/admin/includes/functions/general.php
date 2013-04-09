@@ -170,7 +170,7 @@ function tep_minitor_info(){
   }
   $returnString = '';
   foreach ($errorString as $error){
-    $returnString .= '<tr><td></td><td align="right">'.$error.'</td></tr>';
+    $returnString .= '<tr><td></td><td align="right"><div class="text_box">'.$error.'</div></td></tr>';
   }
   if($no_error_string!=""){
     return $no_error_string;
@@ -9916,6 +9916,21 @@ function tep_check_less_option_product_by_products_id($products_id, $pro_attr_in
     }
   } else {
     return true; 
+  }
+  return false;
+}
+
+/* -------------------------------------
+    功能: 检查指定状态是否标记了交易过期警告 
+    参数: $status_id(int) 状态id 
+    返回值: 是否标记了交易过期警告(boolean) 
+ ------------------------------------ */
+function check_orders_transaction_expired($status_id)
+{
+  $order_status_raw = tep_db_query("select transaction_expired from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$status_id."'");
+  $order_status = tep_db_fetch_array($order_status_raw);
+  if ($order_status['transaction_expired'] == '1') {
+    return true;
   }
   return false;
 }

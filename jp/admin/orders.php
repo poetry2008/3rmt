@@ -4555,7 +4555,7 @@ if($c_parent_array['parent_id'] == 0){
           }
         ?>
           <?php echo tep_draw_form('sele_act', FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) .  'action=sele_act','post','onsubmit="return confrim_mail_title()"'); ?>
-          <table width="100%">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
           <td>
           <?php tep_site_filter(FILENAME_ORDERS);?>
@@ -4587,7 +4587,7 @@ if($c_parent_array['parent_id'] == 0){
           $get_mark_info = array();
         }
           ?>
-          <table border="0" width="100%" cellpadding="1" cellspacing="1">
+          <table border="0" width="100%" cellpadding="0" cellspacing="1" class="table_wrapper">
             <tr>
               <td id="mark_o" class="<?php echo (in_array('0', $get_mark_info) || (!isset($_GET['mark']) && in_array('0', $work_array)))?'mark_flag_checked':'mark_flag_unchecked';?>" align="center" onclick="mark_work(this,'0','<?php echo isset($_GET['mark']) ? $_GET['mark'] : $work_str;?>', '<?php echo $_GET['site_id'];?>', '<?php echo urlencode(tep_get_all_get_params(array('page', 'oID', 'action', 'mark', 'site_id')));?>')">&nbsp;</td> 
               <td id="mark_a" class="<?php echo (in_array('1', $get_mark_info) || (!isset($_GET['mark']) && in_array('1', $work_array)))?'mark_flag_checked':'mark_flag_unchecked';?>" align="center" onclick="mark_work(this,'1','<?php echo isset($_GET['mark']) ? $_GET['mark'] : $work_str;?>', '<?php echo $_GET['site_id'];?>', '<?php echo urlencode(tep_get_all_get_params(array('page', 'oID', 'action', 'mark', 'site_id')));?>')">A</td> 
@@ -4958,12 +4958,23 @@ if($c_parent_array['parent_id'] == 0){
             $oInfo = new objectInfo($orders);
           }
 
+          //过期订单的警告提示
+          $expired_orders = '';
+          $orders_transaction_time = date('YmdHi',strtotime($orders['torihiki_date_end'])); 
+          $orders_today_time = date('YmdHi');
+          if($orders_today_time > $orders_transaction_time && check_orders_transaction_expired($orders['orders_status'])){
+
+            $expired_orders = tep_image(DIR_WS_ICONS . 'arrow_exclamation.gif', TEXT_TRANSACTION_EXPIRED);
+          }
+
           //如果是红色显示
-          $trade_array = getdate(strtotime(tep_datetime_short_torihiki($orders['torihiki_date'])));
+          $trade_array = getdate(strtotime(tep_datetime_short_torihiki($orders['torihiki_date_end'])));
           $today_array = getdate();
           if ($trade_array["year"] == $today_array["year"] && $trade_array["mon"] == $today_array["mon"] && $trade_array["mday"] == $today_array["mday"]) {
             $today_color = 'red';
-            if ($trade_array["hours"] >= $today_array["hours"]) {
+            $trade_minutes = $trade_array["minutes"] < 10 ? '0'.$trade_array["minutes"] : $trade_array["minutes"];
+            $today_minutes = $today_array["minutes"] < 10 ? '0'.$today_array["minutes"] : $today_array["minutes"];
+            if ($trade_array["hours"].$trade_minutes >= $today_array["hours"].$today_minutes) {
               $next_mark = tep_image(DIR_WS_ICONS . 'arrow_blinking.gif',
                   TEXT_ORDER_NEXT_ORDER); //标记下个订单
             } else {
@@ -5049,7 +5060,7 @@ if($c_parent_array['parent_id'] == 0){
                                   <?php echo tep_get_ot_total_by_orders_id_no_abs($orders['orders_id'], true);?>
                                     <?php }?>
                                     </td>
-                                    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><?php echo $next_mark; ?><font color="<?php echo !$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)?'#999':$today_color; ?>" id="tori_<?php echo $orders['orders_id']; ?>">
+                                    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><?php echo $expired_orders.$next_mark; ?><font color="<?php echo !$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)?'#999':$today_color; ?>" id="tori_<?php echo $orders['orders_id']; ?>">
                                     <?php 
                                     echo tep_datetime_short_torihiki($orders['torihiki_date']); 
                                     $tmp_date_end = explode(' ', $orders['torihiki_date_end']); 
@@ -5231,17 +5242,11 @@ if($c_parent_array['parent_id'] == 0){
                   </td></tr></table>
                   </form>
                   <!-- display add end-->
-
-                  <table border="0" width="100%" cellspacing="0" cellpadding="2">
-                  <tr>
-                  <td colspan="5">
-                  <table border="0" width="100%" cellspacing="0" cellpadding="2">
+                  <table border="0" width="100%" cellspacing="0" cellpadding="0">
                   <tr>
                   <td class="smallText" valign="top"><?php echo $orders_split->display_count($orders_query_numrows, MAX_DISPLAY_ORDERS_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_ORDERS); ?></td>
-                  <td class="smallText" align="right"><?php echo $orders_split->display_links($orders_query_numrows, MAX_DISPLAY_ORDERS_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'oID', 'action'))); ?></td>
-                  </tr>
-                  </table>
-                  </td>
+                  <td class="smallText" align="right">
+				  <div class="td_box"><?php echo $orders_split->display_links($orders_query_numrows, MAX_DISPLAY_ORDERS_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'oID', 'action'))); ?></div></td>
                   </tr>
                   </table>
                   </td>

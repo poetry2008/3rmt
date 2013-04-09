@@ -614,21 +614,20 @@ $banner_query = tep_db_query("
 <?php
     }
 ?>
-              <tr>
-                <td colspan="6"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+            </table>
+			<table border="0" width="100%" cellspacing="0" cellpadding="0">
                   <tr>
                     <td class="smallText" valign="top"><?php echo $banners_split->display_count($banners_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_BANNERS); ?></td>
-                    <td class="smallText" align="right"><?php echo $banners_split->display_links($banners_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'bID'))); ?></td>
+                    <td class="smallText" align="right"><div class="td_box"><?php echo $banners_split->display_links($banners_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'bID'))); ?></div></td>
                   </tr>
                   <tr>
-                    <td align="right" colspan="2"><?php echo '<a href="' .
+                    <td align="right" colspan="2"><div class="td_button"><?php echo '<a href="' .
                     tep_href_link(FILENAME_BANNER_MANAGER, 'action=new' .
                         (isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):''))
-                    . '">' . tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?></td>
+                    . '">' . tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?></div></td>
                   </tr>
-                </table></td>
-              </tr>
-            </table></td>
+                </table>
+			</td>
 <?php
   $heading = array();
   $contents = array();

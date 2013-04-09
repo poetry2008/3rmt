@@ -465,21 +465,20 @@ require("includes/note_js.php");
 <?php
     }
 ?>
-              <tr>
-                <td colspan="7"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+            </table>
+			<table border="0" width="100%" cellspacing="0" cellpadding="0">
                   <tr>
                     <td class="smallText" valign="top"><?php echo $newsletters_split->display_count($newsletters_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_NEWSLETTERS); ?></td>
-                    <td class="smallText" align="right"><?php echo $newsletters_split->display_links($newsletters_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page']); ?></td>
+                    <td class="smallText" align="right"><div class="td_box"><?php echo $newsletters_split->display_links($newsletters_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page']); ?></div></td>
                   </tr>
                   <tr>
-                    <td align="right" colspan="2"><?php echo '<a href="' .
+                    <td align="right" colspan="2"><div class="td_button"><?php echo '<a href="' .
                     tep_href_link(FILENAME_NEWSLETTERS, 'action=new') .
                     (isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):'').'">'
-                    . tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?></td>
+                    . tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?></div></td>
                   </tr>
-                </table></td>
-              </tr>
-            </table></td>
+                </table>
+			</td>
 <?php
   $heading = array();
   $contents = array();
