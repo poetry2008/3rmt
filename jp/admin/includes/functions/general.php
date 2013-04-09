@@ -1412,8 +1412,12 @@ function tep_prepare_country_zones_pull_down($country_id = '') {
     参数: $country_id(int) 国家id 
     返回值: 国家列表(string)
  ------------------------------------ */
-function tep_cfg_pull_down_country_list($country_id,$empty_params,$params) {
-  return tep_draw_pull_down_menu('configuration_value', tep_get_countries(), $country_id,$params);
+function tep_cfg_pull_down_country_list($country_id,$empty_params ='',$params = '') {
+  if($params != ''){
+    return tep_draw_pull_down_menu('configuration_value', tep_get_countries(), $country_id,$params);
+  }else{
+    return tep_draw_pull_down_menu('configuration_value', tep_get_countries(), $country_id);
+  }
 }
 
 /* -------------------------------------
@@ -1421,8 +1425,12 @@ function tep_cfg_pull_down_country_list($country_id,$empty_params,$params) {
     参数: $zone_id(int) 区域id 
     返回值: 区域列表(string)
  ------------------------------------ */
-function tep_cfg_pull_down_zone_list($zone_id,$empty_params,$params) {
-  return tep_draw_pull_down_menu('configuration_value', tep_get_country_zones(STORE_COUNTRY), $zone_id,$params);
+function tep_cfg_pull_down_zone_list($zone_id,$empty_params = '',$params = '') {
+  if($params != ''){
+    return tep_draw_pull_down_menu('configuration_value', tep_get_country_zones(STORE_COUNTRY), $zone_id,$params);
+  }else{
+    return tep_draw_pull_down_menu('configuration_value', tep_get_country_zones(STORE_COUNTRY), $zone_id);
+  }
 }
 
 /* -------------------------------------
@@ -1449,8 +1457,12 @@ function tep_cfg_pull_down_tax_classes($tax_class_id, $key = '') {
     参数: $text(string) 默认的内容 
     返回值: 指定的文本域(string)
  ------------------------------------ */
-function tep_cfg_textarea($text,$empty_params,$params) {
-  return tep_draw_textarea_field('configuration_value', false, 35, 5, $text, $params);
+function tep_cfg_textarea($text,$empty_params = '',$params = '') {
+  if($params != ''){
+    return tep_draw_textarea_field('configuration_value', false, 35, 5, $text, $params);
+  }else{
+    return tep_draw_textarea_field('configuration_value', false, 35, 5, $text);
+  }
 }
 
 /* -------------------------------------
