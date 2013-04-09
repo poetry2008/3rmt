@@ -766,3 +766,8 @@ define('TEXT_PRODUCTS_TAGS_CHECK','少なくとも1つの商品を選択して�
 define('TEXT_CHECK_FILE_EXISTS','このファイルは既に存在します。上書きしますか？');
 define('TEXT_CHECK_FILE_EXISTS_DELETE','このファイルは他の設定で使用しています。それでも削除しますか？');
 define('TEXT_TRANSACTION_EXPIRED', 'お届け忘れ警告');
+define('TEXT_HEADER_NOTICE_ACCIDENT_HAPPEN', '回線障害発生： ');
+define('TEXT_HEADER_NOTICE_CLICK_CONFIRM_LINK', 'こちら');
+define('TEXT_HEADER_NOTICE_CLICK_CONFIRM', 'をクリックして状況を確認してください。');
+define('TEXT_HEADER_NOTICE_ACCIDENT_HAPPEN_FINAL_DAY', '回線障害の最終日： ');
+define('TEXT_HEADER_NOTICE_SYSTEM_CONDITION', 'システムの動作状況： 正常');
