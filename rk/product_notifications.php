@@ -24,7 +24,6 @@
     $remove = substr($remove, 0, -1);
 
     if (tep_not_null($remove)) {
-      // ccdd
       tep_db_query("
           delete 
           from " . TABLE_PRODUCTS_NOTIFICATIONS . " 
@@ -36,14 +35,12 @@
     tep_redirect(tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, '', 'SSL'));
   } elseif (isset($_GET['action']) && ($_GET['action'] == 'global_notify')) {
     if (isset($_POST['global']) && ($_POST['global'] == 'enable')) {
-      // ccdd
       tep_db_query("
           update " . TABLE_CUSTOMERS_INFO . " 
           set global_product_notifications = '1' 
           where customers_info_id = '" . $customer_id . "'
       ");
     } else {
-      // ccdd
       $check_query = tep_db_query("
           select count(*) as count 
           from " . TABLE_CUSTOMERS_INFO . " 
@@ -52,7 +49,6 @@
       ");
       $check = tep_db_fetch_array($check_query);
       if ($check['count'] > 0) {
-        // ccdd
         tep_db_query("
             update " . TABLE_CUSTOMERS_INFO . " 
             set global_product_notifications = '0' 
@@ -69,7 +65,6 @@
   $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_ACCOUNT, '', 'SSL'));
   $breadcrumb->add(NAVBAR_TITLE_2, tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, '', 'SSL'));
 
-  //ccdd
   $global_status_query = tep_db_query("
       SELECT global_product_notifications 
       FROM " . TABLE_CUSTOMERS_INFO . " 
@@ -125,7 +120,7 @@
           </tr>
           </table>
           <?php echo tep_draw_form('global', tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, 'action=global_notify', 'SSL')); ?>
-          <table>
+          <table width="100%">
           <tr>
             <td class="main"><?php echo tep_draw_checkbox_field('global', 'enable', true) . '&nbsp;' . TEXT_ENABLE_GLOBAL_NOTIFICATIONS; ?></td>
           </tr>
@@ -134,9 +129,8 @@
           </tr>
           <tr>
             <td class="main"><?php echo tep_image_submit('button_update.gif', IMAGE_BUTTON_UPDATE); ?></td>
-          </tr>
-          </table>
           </form>
+          <td class="smallText" align="right">
           <table width="100%">
 <?php
   } else {
@@ -193,7 +187,6 @@
           <?php echo tep_draw_form('notifications', tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, 'action=update_notifications', 'SSL')); ?>
           <table width="100%">
 <?php
-    // ccdd
     $products_query = tep_db_query("
       select *
       from (
