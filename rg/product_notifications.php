@@ -125,7 +125,7 @@
           </tr>
           </table>
           <?php echo tep_draw_form('global', tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, 'action=global_notify', 'SSL')); ?>
-          <table>
+          <table width="100%">
           <tr>
             <td class="main"><?php echo tep_draw_checkbox_field('global', 'enable', true) . '&nbsp;' . TEXT_ENABLE_GLOBAL_NOTIFICATIONS; ?></td>
           </tr>
@@ -134,9 +134,8 @@
           </tr>
           <tr>
             <td class="main"><?php echo tep_image_submit('button_update.gif', IMAGE_BUTTON_UPDATE); ?></td>
-          </tr>
-          </table>
           </form>
+          <td class="smallText" align="right">
           <table width="100%">
 <?php
   } else {
@@ -193,7 +192,6 @@
           <?php echo tep_draw_form('notifications', tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, 'action=update_notifications', 'SSL')); ?>
           <table width="100%">
 <?php
-    // ccdd
     $products_query = tep_db_query("
       select *
       from (
@@ -219,24 +217,22 @@
     }
 ?>
           <tr>
-            <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
+            <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
           </tr>
           <tr>
             <td class="main"><?php echo tep_image_submit('button_remove_notifications.gif', IMAGE_BUTTON_REMOVE_NOTIFICATIONS); ?></td>
-          </tr>
-          </table>
-          </form>
-          <table width="100%">
+            <td class="main">     <table width="100%">
 <?php
   }
 ?>
           <tr>
-            <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-          </tr>
-          <tr>
             <td align="right" class="smallText"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td>
           </tr>
         </table></td>
+          </tr>
+          </table>
+          </form>
+     </td>
       </tr>
     </table>
     </div>
@@ -251,6 +247,7 @@
   <!-- footer --> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
   <!-- footer_eof --> 
+</div>
 </div>
 </body>
 </html>
