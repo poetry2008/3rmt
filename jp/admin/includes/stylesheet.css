@@ -1912,13 +1912,13 @@ google hack
 .box_ul ul{
    padding-left:25px;
 }
+@media all and (-webkit-min-device-pixel-ratio:0){
+.table_wrapper{
+	margin-right:-2px;
+}}
 .table_wrapper{
 	margin-right:-1px;
 }
-@media all and (-webkit-min-device-pixel-ratio:0){
-.table_wrapper{
-	margin-right:0;
-}}
 .text_box{
 	margin-right:3px;
 }
@@ -1944,4 +1944,7 @@ google hack
 }
 .td_box_button{
 	margin-right:-2px;
+}
+.right_space{
+	margin-right:-3px;
 }

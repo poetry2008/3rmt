@@ -4431,6 +4431,7 @@ if($c_parent_array['parent_id'] == 0){
             <table width=""  border="0" cellspacing="1" cellpadding="0">
             <tr>
             <td class="smallText" valign='top' align="right">
+			<div class="right_space">
             <?php echo tep_draw_form('orders1', FILENAME_ORDERS, '',
                 'get','id="orders1" onsubmit="return false"'); ?><?php echo
             TEXT_ORDER_FIND;?> 
@@ -4479,6 +4480,7 @@ if($c_parent_array['parent_id'] == 0){
                 }
             ?>
             </form>
+			</div>
             </td>
             </tr>
             </table>
