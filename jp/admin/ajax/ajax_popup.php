@@ -2914,7 +2914,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   }
   }else{
     if (is_numeric($fetch_result['configuration_id'])){
-  $button[] = '<br>' .  tep_html_element_submit(IMAGE_UPDATE,'disabled="disabled"') .'&nbsp;<a href="' .  tep_href_link(FILENAME_CONFIGURATION, 'gID=' .  $_GET['gID'] .  '&action=tdel&cID=' .  $fetch_result['configuration_id'].'_'.$cInfo->configuration_id) .  '">'.tep_html_element_button(IMAGE_DEFFECT,'disabled="disabled"').'</a>'. '&nbsp;';
+  $button[] = '<br>' .  tep_html_element_submit(IMAGE_UPDATE,'disabled="disabled"') .'&nbsp;'.tep_html_element_button(IMAGE_DEFFECT,'disabled="disabled"').'&nbsp;';
   }else {
     $button[] = '<br>' .  tep_html_element_submit(IMAGE_EFFECT,'disabled="disabled"') . '&nbsp;';
   }
