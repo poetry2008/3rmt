@@ -781,16 +781,8 @@ require("includes/note_js.php");
       </td>
     </tr>
     <tr>
-      <td valign="top">
-   <table width="100%" style=" height:27px;">
-      <tr>
-        <td>
+      <td>
        <?php tep_pw_site_filter(FILENAME_PW_MANAGER);?>
-       </td>
-        <td align="right">
-        </td>
-      </tr>
-    </table>
     <table border="0" width="100%" cellspacing="0" cellpadding="2" id='orders_list_table'>
     <tr class="dataTableHeadingRow">
 <?php 

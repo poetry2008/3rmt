@@ -4557,7 +4557,7 @@ if($c_parent_array['parent_id'] == 0){
           <?php echo tep_draw_form('sele_act', FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) .  'action=sele_act','post','onsubmit="return confrim_mail_title()"'); ?>
           <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
-          <td>
+          <td valign="bottom">
           <?php tep_site_filter(FILENAME_ORDERS);?>
           </td>
           <td align="right">

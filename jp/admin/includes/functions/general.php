@@ -9765,7 +9765,7 @@ function tep_check_less_option_product($opa_id, $is_pre_single = false)
               if ($exists_item['type'] == 'radio') {
                 $aop_single = false;
                 foreach ($ao_option['radio_image'] as $r_key => $r_value) {
-                  if (trim(str_replace($repalce_arr, '', nl2br(stripslashes($r_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($att_option_info['value']))))) {
+                  if (trim(str_replace($replace_arr, '', nl2br(stripslashes($r_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($att_option_info['value']))))) {
                     $aop_single = true;
                     break;
                   }
@@ -9809,7 +9809,7 @@ function tep_check_less_option_product($opa_id, $is_pre_single = false)
                 $ao_option = @unserialize(stripslashes($item_list_info['option_info'])); 
                 if ($item_list_info['type'] == 'radio') {
                   foreach ($ao_option['radio_image'] as $r_key => $r_value) {
-                     if (trim(str_replace($repalce_arr, '', nl2br(stripslashes($r_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($att_option_info['value']))))) {
+                     if (trim(str_replace($replace_arr, '', nl2br(stripslashes($r_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($att_option_info['value']))))) {
                        $at_exclude_array[] = $item_list_info['id']; 
                        $is_exists = true; 
                        break;
