@@ -1929,8 +1929,11 @@ google hack
 	margin:0;
 	padding:0;
 }
+.td_box_button{
+	margin-right:-2px;
+}
 .td_button{
-	margin-right:-3px;
+	margin-right:-1px;
 	overflow:hidden;
 }
 .td_box{
@@ -1941,9 +1944,6 @@ google hack
 .td_box{
 	margin-right:-7px;
 	overflow:hidden;
-}
-.td_box_button{
-	margin-right:-2px;
 }
 .right_space{
 	margin-right:-3px;
