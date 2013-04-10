@@ -1765,6 +1765,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
         <table width=""  border="0" cellspacing="1" cellpadding="0">
           <tr>
             <td class="smallText" valign='top' align="right">
+			<div class="right_space">
               <?php echo tep_draw_form('orders1', FILENAME_PREORDERS, '',
                   'get','id="orders1" onsubmit="return false"'); ?><?php echo
               TEXT_ORDER_FIND;?> 
@@ -1866,6 +1867,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
   }
 ?>
               </form>
+			  </div>
             </td>
           </tr>
         </table>
@@ -1944,7 +1946,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
     <?php echo tep_draw_form('sele_act', FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'action=sele_act'); ?>
     <table width="100%" cellpadding="0" cellspacing="0" border="0">
       <tr>
-        <td align="left">
+        <td valign="bottom">
         <?php tep_site_filter(FILENAME_PREORDERS);?>
         </td>
         <td align="right">

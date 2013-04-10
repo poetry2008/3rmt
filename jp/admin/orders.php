@@ -4431,6 +4431,7 @@ if($c_parent_array['parent_id'] == 0){
             <table width=""  border="0" cellspacing="1" cellpadding="0">
             <tr>
             <td class="smallText" valign='top' align="right">
+			<div class="right_space">
             <?php echo tep_draw_form('orders1', FILENAME_ORDERS, '',
                 'get','id="orders1" onsubmit="return false"'); ?><?php echo
             TEXT_ORDER_FIND;?> 
@@ -4479,6 +4480,7 @@ if($c_parent_array['parent_id'] == 0){
                 }
             ?>
             </form>
+			</div>
             </td>
             </tr>
             </table>
@@ -4557,7 +4559,7 @@ if($c_parent_array['parent_id'] == 0){
           <?php echo tep_draw_form('sele_act', FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) .  'action=sele_act','post','onsubmit="return confrim_mail_title()"'); ?>
           <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
-          <td>
+          <td valign="bottom">
           <?php tep_site_filter(FILENAME_ORDERS);?>
           </td>
           <td align="right">
@@ -4940,6 +4942,9 @@ if($c_parent_array['parent_id'] == 0){
         $orders_query = tep_db_query($orders_query_raw);
         $allorders    = $allorders_ids = array();
         $orders_i = 0;
+        //获取订单状态标记的过期警告数组
+        $orders_expired_array = array();
+        $orders_expired_array = check_orders_transaction_expired();
         while ($orders = tep_db_fetch_array($orders_query)) {
           $orders_i++;
           if (!isset($orders['site_id'])) {
@@ -4962,9 +4967,9 @@ if($c_parent_array['parent_id'] == 0){
           $expired_orders = '';
           $orders_transaction_time = date('YmdHi',strtotime($orders['torihiki_date_end'])); 
           $orders_today_time = date('YmdHi');
-          if($orders_today_time > $orders_transaction_time && check_orders_transaction_expired($orders['orders_status'])){
+          if($orders_today_time > $orders_transaction_time && $orders_expired_array[$orders['orders_status']] == 1){
 
-            $expired_orders = tep_image(DIR_WS_ICONS . 'arrow_exclamation.gif', TEXT_TRANSACTION_EXPIRED);
+            $expired_orders = tep_image(DIR_WS_ICONS . 'blink_exclamation.gif', TEXT_TRANSACTION_EXPIRED);
           }
 
           //如果是红色显示

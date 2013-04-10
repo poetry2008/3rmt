@@ -461,11 +461,10 @@ require("includes/note_js.php");
           <tr>
             <td valign="top">
             <table border="0" width="100%" cellspacing="0" cellpadding="2">
-              <tr>
-                <td ><div ><?php tep_faq_site_filter(FILENAME_FAQ,true);?></div></td>
-              </tr>
+              
               <tr>
                 <td >
+                <?php tep_faq_site_filter(FILENAME_FAQ,true);?>
                 <table border="0" width="100%" cellspacing="0" cellpadding="2">
                 <?php /* faq infor table */?>
                   <tr class="dataTableHeadingRow">

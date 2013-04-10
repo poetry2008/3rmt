@@ -318,10 +318,10 @@ require("includes/note_js.php");
                      $notice_box = new notice_box('','',$configuration_table_params);
                      $configuration_table_row = array();
                      $configuration_title_row = array();
-                     $configuration_title_row[] = array('params' => 'class="dataTableHeadingContent"', 'text' => TABLE_HEADING_CONFIGURATION_TITLE);
-                     $configuration_title_row[] = array('params' => 'class="dataTableHeadingContent"', 'text' => TABLE_HEADING_CONFIGURATION_VALUE);
-                     $configuration_title_row[] = array('params' => 'class="dataTableHeadingContent" align="right" ', 'text' => TABLE_HEADING_ACTION);
-
+                     $configuration_title_row[] = array('params' => 'class="dataTableHeadingContent" width="40%"', 'text' => TABLE_HEADING_CONFIGURATION_TITLE);
+                     $configuration_title_row[] = array('params' => 'class="dataTableHeadingContent" width="40%"', 'text' => TABLE_HEADING_CONFIGURATION_VALUE);
+                     $configuration_title_row[] = array('params' => 'class="dataTableHeadingContent" width="10%"', 'text' => FOREGROUND_TO_BACKGROUND);
+                     $configuration_title_row[] = array('params' => 'class="dataTableHeadingContent" align="right" width="10%"', 'text' => TABLE_HEADING_ACTION);
                      $configuration_table_row[] = array('params' => 'class="dataTableHeadingRow"', 'text' => $configuration_title_row);
                     ?> 
 
@@ -393,10 +393,10 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     }else{
       $configuration_title_constant = constant($configuration['configuration_title']);
     }
-
+    $configuration_title_image = explode("F_",$configuration_title_constant);
     $configuration_info[] = array( 
         'params' => 'class="dataTableContent" ',
-        'text'   => $configuration_title_constant
+        'text'   => str_replace('&nbsp;',' ',$configuration_title_image[1])
         );
     if ($configuration['configuration_key'] == 'DS_ADMIN_SIGNAL_TIME') {
       $tmp_setting_array = @unserialize(stripslashes($cfgValue));
@@ -411,6 +411,11 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
         'params' => 'class="dataTableContent" ',
         'text'   =>  $configuration_key
         );
+    $configuration_info[] = array(
+        'params' => 'class="dataTableContent" ',
+        'text'   => $configuration_title_image[0] 
+        );
+ 
    $configuration_info[] = array(
         'params' => 'class="dataTableContent" align="right"',
         'text'   => '<a href="javascript:void(0)"

@@ -177,6 +177,9 @@ if ($_POST['orders_id'] &&
     }
     exit; 
   }
+  //获取订单状态标记的过期警告数组
+  $orders_expired_array = array();
+  $orders_expired_array = check_orders_transaction_expired();
   while ($orders = tep_db_fetch_array($orders_query)) {
     if (!isset($orders['site_id'])) {
       $orders = tep_db_fetch_array(tep_db_query("
@@ -191,9 +194,9 @@ if ($_POST['orders_id'] &&
     $expired_orders = '';
     $orders_transaction_time = date('YmdHi',strtotime($orders['torihiki_date_end'])); 
     $orders_today_time = date('YmdHi');
-    if($orders_today_time > $orders_transaction_time && check_orders_transaction_expired($orders['orders_status'])){
+    if($orders_today_time > $orders_transaction_time && $orders_expired_array[$orders['orders_status']] == 1){
 
-      $expired_orders = tep_image(DIR_WS_ICONS . 'arrow_exclamation.gif', TEXT_TRANSACTION_EXPIRED);
+      $expired_orders = tep_image(DIR_WS_ICONS . 'blink_exclamation.gif', TEXT_TRANSACTION_EXPIRED);
     }
 
     //如果是今天的交易的话，显示红色

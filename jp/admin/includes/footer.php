@@ -23,7 +23,7 @@ function redirect_new_url(new_object)
 <?php
 if($_SESSION['user_permission'] == 15 ){
   ?>
-  <div class="compatible">
+  <div class="bottom_content">
   <?php 
     $sql_check = "select * from ".TABLE_PWD_CHECK." where
     page_name='".$_SERVER['PHP_SELF']."'";
@@ -40,7 +40,7 @@ if($_SESSION['user_permission'] == 15 ){
   <input type='checkbox' name='pwd_check' value='onetime'><?php echo 
     TEXT_FOOTER_ONE_TIME;?>&nbsp;
   <input type='button' onclick="save_once_pwd_checkbox()" value="<?php echo
-    TEXT_FOOTER_CHECK_SAVE;?>">
+    PRIVILEGE_SET_TEXT;?>">
   <?php }else{ 
     if(in_array('staff',$arr_check)){
       echo "<input type='checkbox' name='pwd_check' value='staff'
@@ -71,7 +71,7 @@ if($_SESSION['user_permission'] == 15 ){
         >".TEXT_FOOTER_ONE_TIME."&nbsp;";
     }
   echo "<input type='button' onclick='save_once_pwd_checkbox()'
-    value='".TEXT_FOOTER_CHECK_SAVE."'>";
+    value='".PRIVILEGE_SET_TEXT."'>";
   }
   ?>
   </div>

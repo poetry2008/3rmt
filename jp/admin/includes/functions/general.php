@@ -123,10 +123,9 @@ function tep_minitor_info(){
     $fiftheenbefore = date('Y-m-d H:i:s',time()-60*15);
     $logIn15 = tep_db_query("select * from monitor_log where ng > 0 and m_id =".$monitor['id'].' and created_at > "'.$fiftheenbefore.'"');
     $tmpRow = tep_db_fetch_array($logIn15);
-    if(mysql_num_rows($logIn15)){ //十五分钟内多于两件
-
-      $tmpString  = '回線障害発生： '.$tmpRow['name'].' <font
-        class="error_monitor">'.date('m月d日H時i分s秒',strtotime($tmpRow['created_at'])).'</font><br/><a ';
+    if(mysql_num_rows($logIn15)){ 
+      //十五分钟内多于两件
+      $tmpString  = TEXT_HEADER_NOTICE_ACCIDENT_HAPPEN.$tmpRow['name'].' <font class="error_monitor">'.date('m'.MONTH_TEXT.'d'.DAY_TEXT.'H'.HOUR_TEXT.'i'.MINUTE_TEXT.'s'.SECOND_TEXT,strtotime($tmpRow['created_at'])).'</font><br/><a ';
       if($show_div){
         $tmpString .='
           onMouseOver="show_monitor_error(\'minitor_'.$monitor['name'].'\',1,this)" 
@@ -134,7 +133,7 @@ function tep_minitor_info(){
       }
       $tmpString .=  'id="moni_'.$tmpRow['name'].'" class="monitor"
         href="'.$monitor['url'].'"
-        target="_blank">こちら</a>をクリックして状況を確認してください。</div>';
+        target="_blank">'.TEXT_HEADER_NOTICE_CLICK_CONFIRM_LINK.'</a>'.TEXT_HEADER_NOTICE_CLICK_CONFIRM.'</div>';
       $tmpString2 = "<div class='monitor_error' style='display:none;' id='minitor_".$monitor['name']."'>";
       $tmpString2.= '<table width="100%"><tr><td>'.$tmpRow['created_at']."</td><td
         width='50%'>".nl2br($tmpRow['obj'])."</td></tr>";
@@ -149,12 +148,12 @@ function tep_minitor_info(){
       $log = "select name,obj, created_at from monitor_log where ng >0 and m_id = ".$monitor['id']. " order by id  desc limit 1";
       $logsResult = tep_db_fetch_array(tep_db_query($log));
       if ($logsResult){
-        $aString = '回線障害の最終日： ' . $logsResult['name'] . ' <a ';
+        $aString = TEXT_HEADER_NOTICE_ACCIDENT_HAPPEN_FINAL_DAY . $logsResult['name'] . ' <a ';
         if($show_div){
           $aString.=  'onMouseOver="show_monitor_error(\'minitor_'.$logsResult['name'].'\',1,this)"
             onMouseOut="show_monitor_error(\'minitor_'.$logsResult['name'].'\',0,this)"';
         }
-        $aString.=  'class="monitor_right" id="moni_'.$logsResult['name'].'" href="'.$monitor['url'].'"  target="_blank">'.date('m月d日H時i分s秒',strtotime($logsResult['created_at'])).'</a>';
+        $aString.=  'class="monitor_right" id="moni_'.$logsResult['name'].'" href="'.$monitor['url'].'" target="_blank">'.date('m'.MONTH_TEXT.'d'.DAY_TEXT.'H'.HOUR_TEXT.'i'.MINUTE_TEXT.'s'.SECOND_TEXT,strtotime($logsResult['created_at'])).'</a>';
         $aString.= '<div class="monitor_error" style="display:none;" id ="minitor_'.$logsResult['name'].'">';
         $aString.= '<table
           width="100%"><tr><td>'.$logsResult['created_at']."</td><td
@@ -166,7 +165,7 @@ function tep_minitor_info(){
   }
   if(count($errorString)<1){
     $no_error_string = '<tr><td></td><td align="right"><font
-      color="green">システムの動作状況： 正常</font></td></tr>';
+      color="green">'.TEXT_HEADER_NOTICE_SYSTEM_CONDITION.'</font></td></tr>';
   }
   $returnString = '';
   foreach ($errorString as $error){
@@ -1413,8 +1412,12 @@ function tep_prepare_country_zones_pull_down($country_id = '') {
     参数: $country_id(int) 国家id 
     返回值: 国家列表(string)
  ------------------------------------ */
-function tep_cfg_pull_down_country_list($country_id) {
-  return tep_draw_pull_down_menu('configuration_value', tep_get_countries(), $country_id);
+function tep_cfg_pull_down_country_list($country_id,$empty_params ='',$params = '') {
+  if($params != ''){
+    return tep_draw_pull_down_menu('configuration_value', tep_get_countries(), $country_id,$params);
+  }else{
+    return tep_draw_pull_down_menu('configuration_value', tep_get_countries(), $country_id);
+  }
 }
 
 /* -------------------------------------
@@ -1422,8 +1425,12 @@ function tep_cfg_pull_down_country_list($country_id) {
     参数: $zone_id(int) 区域id 
     返回值: 区域列表(string)
  ------------------------------------ */
-function tep_cfg_pull_down_zone_list($zone_id) {
-  return tep_draw_pull_down_menu('configuration_value', tep_get_country_zones(STORE_COUNTRY), $zone_id);
+function tep_cfg_pull_down_zone_list($zone_id,$empty_params = '',$params = '') {
+  if($params != ''){
+    return tep_draw_pull_down_menu('configuration_value', tep_get_country_zones(STORE_COUNTRY), $zone_id,$params);
+  }else{
+    return tep_draw_pull_down_menu('configuration_value', tep_get_country_zones(STORE_COUNTRY), $zone_id);
+  }
 }
 
 /* -------------------------------------
@@ -1450,8 +1457,12 @@ function tep_cfg_pull_down_tax_classes($tax_class_id, $key = '') {
     参数: $text(string) 默认的内容 
     返回值: 指定的文本域(string)
  ------------------------------------ */
-function tep_cfg_textarea($text) {
-  return tep_draw_textarea_field('configuration_value', false, 35, 5, $text);
+function tep_cfg_textarea($text,$empty_params = '',$params = '') {
+  if($params != ''){
+    return tep_draw_textarea_field('configuration_value', false, 35, 5, $text, $params);
+  }else{
+    return tep_draw_textarea_field('configuration_value', false, 35, 5, $text);
+  }
 }
 
 /* -------------------------------------
@@ -1491,11 +1502,15 @@ function tep_set_time_limit($limit) {
     参数: $key(string) 单选框的名字
     返回值: 生成的单选框(string)
  ------------------------------------ */
-function tep_cfg_select_option($select_array, $key_value, $key = '') {
+function tep_cfg_select_option($select_array, $key_value, $key = '',$parameter = '') {
   $string = '';
   for ($i = 0, $n = sizeof($select_array); $i < $n; $i++) {
     $name = (($key) ? 'configuration[' . $key . ']' : 'configuration_value');
+   if($parameter != ''){
+    $string .= '<br><input type="radio" '.$parameter.'name="' . $name . '" value="' . $select_array[$i] . '"';
+   }else{
     $string .= '<br><input type="radio" name="' . $name . '" value="' . $select_array[$i] . '"';
+   }
     if ($key_value == $select_array[$i]) $string .= ' CHECKED';
     $string .= '> ' . $select_array[$i];
   }
@@ -9750,7 +9765,7 @@ function tep_check_less_option_product($opa_id, $is_pre_single = false)
               if ($exists_item['type'] == 'radio') {
                 $aop_single = false;
                 foreach ($ao_option['radio_image'] as $r_key => $r_value) {
-                  if (trim(str_replace($repalce_arr, '', nl2br(stripslashes($r_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($att_option_info['value']))))) {
+                  if (trim(str_replace($replace_arr, '', nl2br(stripslashes($r_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($att_option_info['value']))))) {
                     $aop_single = true;
                     break;
                   }
@@ -9794,7 +9809,7 @@ function tep_check_less_option_product($opa_id, $is_pre_single = false)
                 $ao_option = @unserialize(stripslashes($item_list_info['option_info'])); 
                 if ($item_list_info['type'] == 'radio') {
                   foreach ($ao_option['radio_image'] as $r_key => $r_value) {
-                     if (trim(str_replace($repalce_arr, '', nl2br(stripslashes($r_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($att_option_info['value']))))) {
+                     if (trim(str_replace($replace_arr, '', nl2br(stripslashes($r_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($att_option_info['value']))))) {
                        $at_exclude_array[] = $item_list_info['id']; 
                        $is_exists = true; 
                        break;
@@ -9921,16 +9936,18 @@ function tep_check_less_option_product_by_products_id($products_id, $pro_attr_in
 }
 
 /* -------------------------------------
-    功能: 检查指定状态是否标记了交易过期警告 
-    参数: $status_id(int) 状态id 
-    返回值: 是否标记了交易过期警告(boolean) 
+    功能: 读取所有订单状态是否标记了交易过期警告 
+    参数: 无 
+    返回值: 是否标记了交易过期警告的数组(array) 
  ------------------------------------ */
-function check_orders_transaction_expired($status_id)
+function check_orders_transaction_expired()
 {
-  $order_status_raw = tep_db_query("select transaction_expired from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$status_id."'");
-  $order_status = tep_db_fetch_array($order_status_raw);
-  if ($order_status['transaction_expired'] == '1') {
-    return true;
-  }
-  return false;
+  $orders_expired_array = array();
+  $order_status_raw = tep_db_query("select orders_status_id,transaction_expired from ".TABLE_ORDERS_STATUS);
+  while($order_status = tep_db_fetch_array($order_status_raw)){
+
+    $orders_expired_array[$order_status['orders_status_id']] = $order_status['transaction_expired'];
+  } 
+  tep_db_free_result($order_status_raw);
+  return $orders_expired_array;
 }
