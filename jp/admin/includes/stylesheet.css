@@ -199,6 +199,11 @@ header
 /* ---------------------------
 width 750px
 --------------------------- */
+@media all and (-webkit-min-device-pixel-ratio:0){
+.bottom_content{
+	float:right;
+	margin:0 -1px 5px 0;
+}}
 .bottom_content{
 	float:right;
 	margin-bottom:5px;
