@@ -623,12 +623,16 @@ order
 #redirecturl td {
 	background:#000;
 	padding:1px;
+	width:119px;
+	word-wrap:break-word;
+	overflow:hidden;
 }
 #redirecturl td a {
 	color:#fff;
 	font-weight:bold;
-	padding:2px 17px 2px 17px;
+	padding:2px 6px 2px 8px;
 	text-align:left;
+	width:119px;
 }
 #redirecturl td a:hover {
 	color:#000;
