@@ -5363,6 +5363,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                      <?php echo TEXT_CATEGORIES . '&nbsp;' . $categories_count . '&nbsp;&nbsp;' . TEXT_PRODUCTS . '&nbsp;' . $products_query_numrows; ?>  
                     </td>
                     <td class="smallText" align="right" valign="top">
+					<div class="td_box_button">
                     <?php
                     if ($cPath) {
                       if (!empty($cPath_back)) {
@@ -5384,6 +5385,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       &nbsp;<input type='button' value='<?php echo CATEGORY_BUTTON_XIEYE_PRICE;?>' onClick="list_display('<?php echo $cPath_yobi?$cPath_yobi:0;?>','<?php echo $current_category_id;?>','<?php echo $_GET['cPath'];?>')">
                       &nbsp;<input type='button' name='x' value="<?php echo CATEGORY_BUTTON_ALL_UPDATE;?>" onClick="all_update()"> 
                       <?php }?> 
+					  </div>
                       </td>
                       </tr>
                       <?php
