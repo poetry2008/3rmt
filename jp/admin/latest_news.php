@@ -362,7 +362,7 @@ if (isset($_GET['latest_news_id']) and $latest_news['news_id'] == $_GET['latest_
 ?>
 
             </table>
-			<table border="0" width="100%" cellspacing="0" cellpadding="0">
+			<table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin-top:5px;">
                   <tr>
                     <td class="smallText" valign="top"><?php echo $latest_news_split->display_count($latest_news_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_LATEST_NEWS); ?></td>
                     <td class="smallText" align="right"><div class="td_box"><?php echo $latest_news_split->display_links($latest_news_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'latest_news_id'))); ?></div></td>
