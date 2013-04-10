@@ -1944,7 +1944,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
     <?php echo tep_draw_form('sele_act', FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'action=sele_act'); ?>
     <table width="100%" cellpadding="0" cellspacing="0" border="0">
       <tr>
-        <td align="left">
+        <td valign="bottom">
         <?php tep_site_filter(FILENAME_PREORDERS);?>
         </td>
         <td align="right">
