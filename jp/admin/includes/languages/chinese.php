@@ -480,13 +480,13 @@ define('HEADER_TEXT_SITE_NAME',COMPANY_NAME);
 define('HEADER_TEXT_LOGINED','正在登录中。');
 define('HEADER_TEXT_ORDERS','订单管理');
 define('HEADER_TEXT_TELECOM_UNKNOW','结算管理');
-define('HEADER_TEXT_TUTORIALS','商品调整▼');
+define('HEADER_TEXT_TUTORIALS','▼商品调整');
 define('HEADER_TEXT_CATEGORIES','商品注册');
 define('HEADER_TEXT_LOGOUT','退出');
-define('HEADER_TEXT_REDIRECTURL','相关网站▼');
+define('HEADER_TEXT_REDIRECTURL','▼相关网站');
 define('HEADER_TEXT_USERS','更改密码');
 define('HEADER_TEXT_PW_MANAGER','ID管理');
-define('HEADER_TEXT_MANAGERMENU','工具▼');
+define('HEADER_TEXT_MANAGERMENU','▼工具');
 define('HEADER_TEXT_MICRO_LOG','备忘录');
 define('HEADER_TEXT_LATEST_NEWS','网站新闻管理');
 define('HEADER_TEXT_CUSTOMERS','顾客管理');
@@ -560,7 +560,7 @@ define('FILENAME_ORDER_DOWNLOPAD','订单数据导出');
 define('FRONT_CONFIGURATION_TITLE_TEXT', '前台：');
 define('ADMIN_CONFIGURATION_TITLE_TEXT', '后台：');
 define('FRONT_OR_ADMIN_CONFIGURATION_TITLE_TEXT', '前台・后台：');
-define('HEADER_TEXT_ORDER_INFO', '订单信息▼');
+define('HEADER_TEXT_ORDER_INFO', '▼订单信息');
 
 
 //note
