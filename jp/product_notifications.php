@@ -126,7 +126,7 @@
           </tr>
           </table>
           <?php echo tep_draw_form('global', tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, 'action=global_notify', 'SSL')); ?>
-          <table>
+          <table width="100%">
           <tr>
             <td class="main"><?php echo tep_draw_checkbox_field('global', 'enable', true) . '&nbsp;' . TEXT_ENABLE_GLOBAL_NOTIFICATIONS; ?></td>
           </tr>
@@ -135,9 +135,8 @@
           </tr>
           <tr>
             <td class="main"><?php echo tep_image_submit('button_update.gif', IMAGE_BUTTON_UPDATE); ?></td>
-          </tr>
-          </table>
           </form>
+          <td class="smallText" align="right">
           <table width="100%">
 <?php
   } else {
