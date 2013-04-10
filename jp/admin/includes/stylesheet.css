@@ -611,6 +611,16 @@ order
 	text-decoration:none;
 	background:#ffd700;
 }
+#redirecturl{
+	width:118px;
+	*width:119px;
+	width:119px\9;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){
+#redirecturl{
+	width:112px;
+}
+}
 #redirecturl td {
 	background:#000;
 	padding:1px;
