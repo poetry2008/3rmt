@@ -588,7 +588,7 @@ order
 #headerorder td a {
 	color:#fff;
 	font-weight:bold;
-	padding:2px 7px 2px 11px;
+	padding:2px 11px 2px 11px;
 	text-decoration: underline;
 	text-align:left;
 }
@@ -612,13 +612,12 @@ order
 	background:#ffd700;
 }
 #redirecturl{
-	width:118px;
-	*width:119px;
-	width:119px\9;
+	*width:123px;
+	width:123px\9;
 }
 @media screen and (-webkit-min-device-pixel-ratio:0){
 #redirecturl{
-	width:112px;
+	width:116px;
 }
 }
 #redirecturl td {
@@ -628,7 +627,7 @@ order
 #redirecturl td a {
 	color:#fff;
 	font-weight:bold;
-	padding:2px 7px 2px 17px;
+	padding:2px 17px 2px 17px;
 	text-align:left;
 }
 #redirecturl td a:hover {
@@ -810,7 +809,7 @@ tutorials table
 #tutorials td a {
 	color:#fff;
 	font-weight:bold;
-	padding:2px 7px 2px 15px;
+	padding:2px 15px 2px 15px;
 	text-decoration: underline;
 	text-align:left;
 }
@@ -1026,7 +1025,7 @@ add managermenu
 #managermenu td a {
 	color:#fff;
 	font-weight:bold;
-	padding:2px 5px 2px 15px;
+	padding:2px 15px 2px 15px;
 	text-align:left;
 }
 #managermenu td a:hover {
