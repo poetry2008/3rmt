@@ -199,6 +199,10 @@ header
 /* ---------------------------
 width 750px
 --------------------------- */
+.bottom_content{
+	float:right;
+	margin-bottom:5px;
+}
 .compatible{
 	min-width:564px;
 	*min-width:576px;
@@ -1925,7 +1929,7 @@ google hack
 	overflow:hidden;
 }
 .td_box{
-	margin-right:-6px;
+	margin-right:-4px;
 	overflow:hidden;
 }
 @media all and (-webkit-min-device-pixel-ratio:0){

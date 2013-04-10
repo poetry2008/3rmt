@@ -774,3 +774,4 @@ define('TEXT_HEADER_NOTICE_SYSTEM_CONDITION', 'システムの動作状況： �
 define('IMAGE_ICON_FRONTENT','フロントエンド');
 define('IMAGE_ICON_BACKEND','バックエンド');
 define('FOREGROUND_TO_BACKGROUND','FE／BE');
+define('PRIVILEGE_SET_TEXT', '権限設定');

@@ -768,3 +768,4 @@ define('TEXT_HEADER_NOTICE_SYSTEM_CONDITION', '系统运行情况：正常');
 define('IMAGE_ICON_FRONTENT','前台');
 define('IMAGE_ICON_BACKEND','后台');
 define('FOREGROUND_TO_BACKGROUND','FE/BE');
+define('PRIVILEGE_SET_TEXT', '设置权限');
