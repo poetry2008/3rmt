@@ -338,6 +338,7 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
                  'MODULE_PAYMENT_PAYPAL_IS_GET_POINT',
                  'MODULE_PAYMENT_PAYPAL_POINT_RATE',
                  'MODULE_PAYMENT_PAYPAL_ORDER_STATUS_ID',
+                 'MODULE_PAYMENT_PAYPAL_PREORDER_STATUS_ID',
                  'MODULE_PAYMENT_PAYPAL_SORT_ORDER',
                  'MODULE_PAYMENT_PAYPAL_CONNECTION_URL',
                  'MODULE_PAYMENT_OK_URL',

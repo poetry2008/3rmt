@@ -4797,7 +4797,9 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
    }
    $cpayment = $payment_modules->getModule($pInfo['pre_payment']); 
    $payment_method = $cpayment->title;
-   $orders_status = DEFAULT_PREORDERS_STATUS_ID;
+   //获取相应支付方式的默认预约订单状态
+   $orders_status_id = get_configuration_by_site_id('MODULE_PAYMENT_'.strtoupper($pInfo['pre_payment']).'_PREORDER_STATUS_ID',SITE_ID);
+   $orders_status = $orders_status_id != 0 ? $orders_status_id : DEFAULT_PREORDERS_STATUS_ID;
    $orders_status_raw = tep_db_query("select * from ".TABLE_PREORDERS_STATUS." where orders_status_id = '".$orders_status."'"); 
    $orders_status_res = tep_db_fetch_array($orders_status_raw);
    

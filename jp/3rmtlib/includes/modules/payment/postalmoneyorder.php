@@ -210,6 +210,7 @@ class postalmoneyorder extends basePayment  implements paymentInterface  {
                    'MODULE_PAYMENT_POSTALMONEYORDER_POINT_RATE',
                    'MODULE_PAYMENT_POSTALMONEYORDER_ZONE',
                    'MODULE_PAYMENT_POSTALMONEYORDER_ORDER_STATUS_ID',
+                   'MODULE_PAYMENT_POSTALMONEYORDER_PREORDER_STATUS_ID',
                    'MODULE_PAYMENT_POSTALMONEYORDER_SORT_ORDER',
                    'MODULE_PAYMENT_POSTALMONEYORDER_PAYTO',
                    'MODULE_PAYMENT_POSTALMONEYORDER_COST',
