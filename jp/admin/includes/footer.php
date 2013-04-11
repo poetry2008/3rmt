@@ -34,43 +34,43 @@ if($_SESSION['user_permission'] == 15 ){
     }
     if(empty($arr_check)){
   ?>
-  <input type='checkbox' name='pwd_check' value='staff'>Staff&nbsp;
-  <input type='checkbox' name='pwd_check' value='chief'>Chief&nbsp;
-  <input type='checkbox' name='pwd_check' value='admin' checked="checked">Admin&nbsp;
-  <input type='checkbox' name='pwd_check' value='onetime'><?php echo 
-    TEXT_FOOTER_ONE_TIME;?>&nbsp;
+  <input type='checkbox' name='pwd_check' value='staff' class="bottom_input"><span>Staff&nbsp;</span>
+  <input type='checkbox' name='pwd_check' value='chief' class="bottom_input"><span>Chief&nbsp;</span>
+  <input type='checkbox' name='pwd_check' value='admin' checked="checked" class="bottom_input"><span>Admin&nbsp;</span>
+  <input type='checkbox' name='pwd_check' value='onetime' class="bottom_input"><div class="bottom_text"><?php echo 
+    TEXT_FOOTER_ONE_TIME;?>&nbsp;</div>
   <input type='button' onclick="save_once_pwd_checkbox()" value="<?php echo
-    PRIVILEGE_SET_TEXT;?>">
+    PRIVILEGE_SET_TEXT;?>" class="bottom_input_button">
   <?php }else{ 
     if(in_array('staff',$arr_check)){
       echo "<input type='checkbox' name='pwd_check' value='staff'
-        checked='checked'>Staff&nbsp;";
+        checked='checked' class='bottom_input'><span>Staff&nbsp;</span>";
     }else{
-      echo "<input type='checkbox' name='pwd_check' value='staff'
-        >Staff&nbsp;";
+      echo "<input type='checkbox' name='pwd_check' value='staff' class='bottom_input'
+        ><span>Staff&nbsp;</span>";
     }
     if(in_array('chief',$arr_check)){
-      echo "<input type='checkbox' name='pwd_check' value='chief'
-        checked='checked'>Chief&nbsp;";
+      echo "<input type='checkbox' name='pwd_check' value='chief' class='bottom_input'
+        checked='checked'><span>Chief&nbsp;</span>";
     }else{
-      echo "<input type='checkbox' name='pwd_check' value='chief'
-        >Chief&nbsp;";
+      echo "<input type='checkbox' name='pwd_check' value='chief' class='bottom_input'
+        ><span>Chief&nbsp;</span>";
     }
     if(in_array('admin',$arr_check)){
-      echo "<input type='checkbox' name='pwd_check' value='admin'
-        checked='checked'>Admin&nbsp;";
+      echo "<input type='checkbox' name='pwd_check' value='admin' class='bottom_input'
+        checked='checked'><span>Admin&nbsp;</span>";
     }else{
-      echo "<input type='checkbox' name='pwd_check' value='admin'
-        >Admin&nbsp;";
+      echo "<input type='checkbox' name='pwd_check' value='admin' class='bottom_input'
+        ><span>Admin&nbsp;</span>";
     }
     if(in_array('onetime',$arr_check)){
-      echo "<input type='checkbox' name='pwd_check' value='onetime'
-        checked='checked'>".TEXT_FOOTER_ONE_TIME."&nbsp;";
+      echo "<input type='checkbox' name='pwd_check' value='onetime' class='bottom_input'
+        checked='checked'><div class='bottom_text'>".TEXT_FOOTER_ONE_TIME."&nbsp;</div>";
     }else{
-      echo "<input type='checkbox' name='pwd_check' value='onetime'
-        >".TEXT_FOOTER_ONE_TIME."&nbsp;";
+      echo "<input type='checkbox' name='pwd_check' value='onetime' class='bottom_input'
+        ><span>".TEXT_FOOTER_ONE_TIME."&nbsp;</span>";
     }
-  echo "<input type='button' onclick='save_once_pwd_checkbox()'
+  echo "<input type='button' class='bottom_input_button' onclick='save_once_pwd_checkbox()'
     value='".PRIVILEGE_SET_TEXT."'>";
   }
   ?>

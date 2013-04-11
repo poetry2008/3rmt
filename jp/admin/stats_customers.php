@@ -54,7 +54,7 @@ require("includes/note_js.php");
         <?php tep_site_filter(FILENAME_STATS_CUSTOMERS);?>
         <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+            <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2" style="margin-bottom:5px;">
               <tr class="dataTableHeadingRow">
                 <td class="dataTableHeadingContent" width="60"><?php echo TABLE_HEADING_NUMBER; ?></td>
                 <td class="dataTableHeadingContent" width="60"><?php echo TABLE_HEADING_SITE; ?></td>
