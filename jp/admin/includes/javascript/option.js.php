@@ -397,7 +397,7 @@ function add_option_radio()
   
   for (i=1; i<=5 ; i++) {
     i_num_add = i_num+i; 
-    html_str += '<tr><td align="left"><?php echo TEXT_OPTION_ITEM_SELECT;?></td><td align="left"><textarea cols="30" rows="5"  onfocus="o_submit_single = false;" onblur="o_submit_single = true;" class="option_text"name="ro_'+i_num_add+'"></textarea>&nbsp;<a href="javascript:void(0);"onclick="delete_radio(this, '+i_num_add+');"><input type="button" value="<?php echo IMAGE_DELETE;?>" class="element_button" onclick="redirect_new_url(this);"></a></td></tr>';   
+    html_str += '<tr><td align="left"><?php echo TEXT_OPTION_ITEM_SELECT;?></td><td align="left"><textarea cols="30" rows="5"  onfocus="o_submit_single = false;" onblur="o_submit_single = true;" class="option_text"name="ro_'+i_num_add+'" style="resize:vertical;"></textarea>&nbsp;<a href="javascript:void(0);"onclick="delete_radio(this, '+i_num_add+');"><input type="button" value="<?php echo IMAGE_DELETE;?>" class="element_button" onclick="redirect_new_url(this);"></a></td></tr>';   
     
     html_str += '<tr><td align="left"><?php echo TEXT_ITEM_PIC_NAME;?></td><td align="left"><input type="file" name="rop_'+i_num_add+'[]" value="">&nbsp;<a href="javascript:void(0);" onclick="delete_item_pic(this);"><input type="button" value="<?php echo TEXT_ITEM_DELETE_PIC;?>" class="element_button"></a><a href="javascript:void(0);" onclick="add_item_pic(this, '+i_num_add+');"><input type="button" value="<?php echo BUTTON_ADD_TEXT;?>" class="element_button"></a></td></tr>'; 
    
