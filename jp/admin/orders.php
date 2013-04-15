@@ -3484,6 +3484,14 @@ $params="oID=".$oID."&page=".$page;
 <table border="0" width="100%" cellspacing="0" cellpadding="10">
 <tr>
 <td>
+<h2>
+□<?php echo ORDER_TOP_MANUAL_TEXT;?>
+<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=edit_top_categories_manual')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
+</h2>
+<?php 
+$tmp_top_manual = get_configuration_by_site_id('TOP_MANUAL_CONTENT');
+echo (!empty($tmp_top_manual)?$tmp_top_manual:'<font color="red">'.SHOW_MANUAL_NONE.'</font>');?>
+<hr>
 <?php 
 $check_categories_query = tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$cp_manual_array['categories_id']."'");
 $check_categories_array = tep_db_fetch_array($check_categories_query);
