@@ -9991,3 +9991,24 @@ function tep_get_preorder_status_name($order_status_id, $language_id = '') {
 
   return $status['orders_status_name'];
 }
+
+/* -------------------------------------
+    功能: 生成月份列表  
+    参数: $month(int) 几个月 
+    参数: $empty_params(string) URL参数
+    参数: $params(string) URL参数
+    返回值: 月份列表(string)
+ ------------------------------------ */
+function tep_cfg_pull_down_month_list($month,$empty_params ='',$params = '') {
+
+  $month_array = array();
+  for($i=1;$i<=12;$i++){
+
+    $month_array[] = array('id'=>$i,'text'=>$i);
+  }
+  if($params != ''){
+    return TEXT_CALENDAR_SETTING_MONTH_START.tep_draw_pull_down_menu('configuration_value', $month_array, $month,$params).TEXT_CALENDAR_SETTING_MONTH_END;
+  }else{
+    return TEXT_CALENDAR_SETTING_MONTH_START.tep_draw_pull_down_menu('configuration_value', $month_array, $month).TEXT_CALENDAR_SETTING_MONTH_END;
+  }
+}

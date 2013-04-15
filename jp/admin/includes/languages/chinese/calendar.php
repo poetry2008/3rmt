@@ -37,4 +37,7 @@ define('TEXT_CALENDAR_NOT_SETTING','没有设置');
 define('TEXT_CALENDAR_MUST_INPUT','必须项目');
 define('TEXT_CALENDAR_SETTING_ERROR','开始时间大于结束时间，请重新设置。');
 define('TEXT_CALENDAR_REPEAT_COMMENT','如果修改了此状态，那么它对应的关联信息也会被修改。');
+define('TEXT_CALENDAR_NAME','显示名');
+define('TEXT_CALENDAR_FRONT_DESK_SHOW','是否在前台显示');
+define('TEXT_CALENDAR_FRONT_DESK_COMMENT_SHOW','是否在前台注释显示');
 ?>

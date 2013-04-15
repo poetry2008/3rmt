@@ -860,6 +860,8 @@ if(!preg_match ("#".HTTP_SERVER."#", $_SERVER["HTTP_REFERER"]) && !preg_match ("
   define('TABLE_COUNTRY_CITY','country_city');
   define('TABLE_ADDRESS_ORDERS','address_orders');
   define('TABLE_ADDRESS_HISTORY','address_history');
+  define('TABLE_CALENDAR_STATUS','calendar_status');
+  define('TABLE_CALENDAR_DATE','calendar_date'); 
   
   if(!preg_match('/^\d+$/',trim($_GET['page']))&&trim($_GET['page'])){
     forward404();

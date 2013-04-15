@@ -6582,3 +6582,33 @@ function tep_orders_transaction_finished($orders_id)
   $order = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS." where orders_id='".$orders_id."'"));
   return $order['flag_qaf'];
 }
+
+/* -------------------------------------
+    功能: 特殊处理日历重复的设置 
+    参数: $type(int) 类型 
+    参数: $cl_date(string) 日期 
+    返回值: 特殊处理后的数据(string) 
+ ------------------------------------ */
+function tep_get_repeat_date($type,$cl_date){
+            
+    switch($type){
+
+      case 1:
+        $value = getdate(mktime(0,0,0,substr($cl_date,4,2),substr($cl_date,6,2),substr($cl_date,0,4))); 
+        $value = $value['wday'];
+        break;
+      case 2:
+        $value = substr($cl_date,6,2);
+        break;
+      case 3:
+        $temp_value = substr($cl_date,6,2);
+        $value = ceil($temp_value/7);
+        $week = getdate(mktime(0,0,0,substr($cl_date,4,2),substr($cl_date,6,2),substr($cl_date,0,4)));
+        $value = array($value,$week['wday']);
+        break;
+      case 4:
+        $value = substr($cl_date,4,2).substr($cl_date,6,2);
+        break;
+    } 
+    return $value;
+}
