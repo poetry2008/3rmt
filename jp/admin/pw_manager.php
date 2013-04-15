@@ -746,7 +746,7 @@ require("includes/note_js.php");
       <tr>
       <td align="left" class="smallText">
         <table width=""  border="0" cellspacing="1" cellpadding="0"
-        style="margin-top:10px;">
+        style="margin:10px 0;">
           <tr>
             <td class="smallText" valign='top'>
               <?php echo tep_draw_form('pw_manager1', FILENAME_PW_MANAGER, '',
@@ -781,7 +781,7 @@ require("includes/note_js.php");
       </td>
     </tr>
     <tr>
-      <td>
+      <td valign="top">
        <?php tep_pw_site_filter(FILENAME_PW_MANAGER);?>
     <table border="0" width="100%" cellspacing="0" cellpadding="2" id='orders_list_table'>
     <tr class="dataTableHeadingRow">
@@ -977,30 +977,24 @@ require("includes/note_js.php");
     }
 
     ?>
-
   </table>
-          <table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin-top:5px;">
-          <tr>
-            <td class="smallText" valign="top"><?php echo
-            $pw_manager_split->display_count($pw_manager_query_numrows,
-                MAX_DISPLAY_PW_MANAGER_RESULTS, $_GET['page'],
-                TEXT_DISPLAY_NUMBER_OF_PW_MANAGERS); ?></td>
-            <td class="smallText" align="right"><div class="td_box"><?php echo
-            $pw_manager_split->display_links($pw_manager_query_numrows,
-                MAX_DISPLAY_PW_MANAGER_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'],
-                tep_get_all_get_params(array('page',  'action','pw_id'))); ?></div></td>
-          </tr>
-    <?php
-      echo "<tr><td align='right' colspan='2'>";
-        echo '<div class="td_button"><button type=\'button\'
-        onclick="location.href=\''.tep_href_link(FILENAME_PW_MANAGER,'action=new&sort='.$_GET['sort'].'&type='.$_GET['type']).'\'" >';
-        echo IMAGE_NEW_PROJECT;
-        echo "</button></div>";
-      echo "</td></tr>";
-
-    ?>
-	  </table>
+  <table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <tr>
+      <td class="smallText" valign="top"><?php echo $pw_manager_split->display_count($pw_manager_query_numrows, MAX_DISPLAY_PW_MANAGER_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PW_MANAGERS); ?></td>
+      <td class="smallText" align="right"><div class="td_box"><?php echo $pw_manager_split->display_links($pw_manager_query_numrows, MAX_DISPLAY_PW_MANAGER_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page',  'action','pw_id'))); ?></div></td>
+    </tr>
+    <tr>
+      <td colspan="2" align="right" class="smallText">
+      <div class="td_button"> 
+      <?php 
+      echo '<button type=\'button\' onclick="location.href=\''.tep_href_link(FILENAME_PW_MANAGER,'action=new&sort='.$_GET['sort'].'&type='.$_GET['type']).'\'" >'; echo IMAGE_NEW_PROJECT;
+      echo "</button>";
+      ?> 
+      </div> 
       </td>
+    </tr>
+  </table>    
+  </td>
 <?php
   $heading = array();
   $contents = array();

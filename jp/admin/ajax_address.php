@@ -376,7 +376,7 @@ if($fixed_option == 0){
 if($type == 'text'){
 
 
-  echo '<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'. TABLE_LIST_4_1 .'</td><td><input type="hidden" id="comment" value="'.$comment.'"><textarea name="comment" rows="6" cols="30" class="option_text">'. $comment_text .'</textarea></td></tr>';
+  echo '<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'. TABLE_LIST_4_1 .'</td><td><input type="hidden" id="comment" value="'.$comment.'"><textarea name="comment" rows="6" cols="30" class="option_text" style="resize:vertical;">'. $comment_text .'</textarea></td></tr>';
   
 }elseif($type == 'textarea'){
 
