@@ -37,4 +37,7 @@ define('TEXT_CALENDAR_NOT_SETTING','未設定');
 define('TEXT_CALENDAR_MUST_INPUT','必須項目');
 define('TEXT_CALENDAR_SETTING_ERROR','開始時間は終了時間より大きいですので、もう一度設定して下さい。');
 define('TEXT_CALENDAR_REPEAT_COMMENT','該当ステータスを変更したら、その関連情報も変更されます。');
+define('TEXT_CALENDAR_NAME','表示名');
+define('TEXT_CALENDAR_FRONT_DESK_SHOW','フロントエンド表示');
+define('TEXT_CALENDAR_FRONT_DESK_COMMENT_SHOW','フロントエンドコメント表示');
 ?>

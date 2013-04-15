@@ -1821,7 +1821,6 @@ content
 --------------------------- */
 .content{
 	width:100%;
-	overflow:hidden;
 	min-width:750px;
 	width: expression(document.body.clientWidth < 750? "750px": "100%" );
 }
