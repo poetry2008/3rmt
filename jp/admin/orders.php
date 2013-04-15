@@ -3485,7 +3485,7 @@ $params="oID=".$oID."&page=".$page;
 <tr>
 <td>
 <h2>
-□<?php echo ORDER_TOP_MANUAL_TEXT;?>
+□<?php echo 'TOP'.SHOW_MANUAL_TITLE;?>
 <a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=edit_top_categories_manual')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
 </h2>
 <?php 
