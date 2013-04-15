@@ -3490,7 +3490,7 @@ $params="oID=".$oID."&page=".$page;
 </h2>
 <?php 
 $tmp_top_manual = get_configuration_by_site_id('TOP_MANUAL_CONTENT');
-echo (!empty($tmp_top_manual)?$tmp_top_manual:'<font color="red">'.SHOW_MANUAL_NONE.'</font>');?>
+echo (!empty($tmp_top_manual)?stripslashes($tmp_top_manual):'<font color="red">'.SHOW_MANUAL_NONE.'</font>');?>
 <hr>
 <?php 
 $check_categories_query = tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$cp_manual_array['categories_id']."'");

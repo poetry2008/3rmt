@@ -5372,7 +5372,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                         $manual_category_query = tep_db_query("select categories_name from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id = '".(int)$tmp_c_path_info."' and site_id = '0'"); 
                         $manual_category_res = tep_db_fetch_array($manual_category_query); 
                         if ($manual_category_res) {
-                          echo '<a href="'.tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('info', 'x', 'y', 'action', 'site_id')).'&action=show_categories_manual_link').'">'.tep_html_element_button(sprintf(MANUAL_LINK_TEXT, $manual_category_res['categories_name'])).'</a>&nbsp;'; 
+                          echo '<a href="'.tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('info', 'x', 'y', 'action', 'site_id')).'&action=show_categories_manual_link').'">'.tep_html_element_button(MANUAL_LINK_TEXT).'</a>&nbsp;'; 
                         }
                       }
                     }
@@ -5387,7 +5387,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <?php
                 if ((!isset($_GET['search']) || !$_GET['search']) && $ocertify->npermission >= 10) { //限制显示
                   if (empty($_GET['cPath']) && empty($site_id)) {
-                    echo '<a href="'.tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action', 'info', 'x', 'y', 'site_id')).'&action=edit_top_manual').'">'.tep_html_element_button(TOP_MANUAL_TEXT).'</a>&nbsp;'; 
+                    echo '<a href="'.tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action', 'info', 'x', 'y', 'site_id')).'&action=edit_top_manual').'">'.tep_html_element_button(MANUAL_LINK_TEXT).'</a>&nbsp;'; 
                   }
                   echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&action=new_category') . '">' . tep_html_element_button(IMAGE_NEW_CATEGORY) .  '</a>&nbsp;<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&action=new_product'.(isset($_GET['page'])?'&page='.$_GET['page']:'')) . '">' . tep_html_element_button(IMAGE_NEW_PRODUCT) . '</a>';
                 }
