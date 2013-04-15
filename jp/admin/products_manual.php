@@ -22,7 +22,7 @@ switch($_GET['action']){
    case 'save_p_categories_manual' 保存来自订单页的手册信息     
 ------------------------------------------------------*/
 case 'edit_top_manual':
-  $title_char = 'TOP'.MANUAL_TITLE; 
+  $title_char = TOP_MANUAL_TEXT.MANUAL_TITLE; 
   $form_info = '<form action="'.tep_href_link(FILENAME_PRODUCTS_MANUAL,tep_get_all_get_params(array('action', 'info', 'x', 'y'))."action=save_top_manual").'" method="post">';
   $manual_content = get_configuration_by_site_id('TOP_MANUAL_CONTENT');
   $return_button = '<a href="'.tep_href_link(FILENAME_CATEGORIES, tep_get_all_get_params(array('action', 'info', 'x', 'y'))).'">'.tep_html_element_button(MANUAL_RETURN).'</a>';
@@ -53,7 +53,7 @@ case 'save_categories_manual_link':
   tep_redirect(tep_href_link(FILENAME_CATEGORIES, tep_get_all_get_params(array('action', 'info', 'x', 'y')))); 
   break;
 case 'edit_top_categories_manual':
-  $title_char = 'TOP'.MANUAL_TITLE; 
+  $title_char = TOP_MANUAL_TEXT.MANUAL_TITLE; 
   $form_info = '<form action="'.tep_href_link(FILENAME_PRODUCTS_MANUAL,tep_get_all_get_params(array('action', 'info', 'x', 'y'))."action=save_top_categories_manual").'" method="post">';
   $manual_content = get_configuration_by_site_id('TOP_MANUAL_CONTENT');
   $return_button='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action"))."action=show_manual_info").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
