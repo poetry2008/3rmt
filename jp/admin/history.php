@@ -154,7 +154,7 @@ require("includes/note_js.php");
         <div class="compatible">
            <table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr>
-                 <td class = "pageHeading">
+                 <td class = "pageHeading" height="40">
   <?php
   if ($HTTP_GET_VARS['action'] == 'oroshi') {
     echo HISTORY_TITLE_THREE; 

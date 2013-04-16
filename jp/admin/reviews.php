@@ -590,16 +590,16 @@ require("includes/note_js.php");
  case 'delete'  删除评论 
  --------------------------------*/
       case 'delete':
-        $heading[] = array('text' => '' . TEXT_INFO_HEADING_DELETE_REVIEW . '');
+        $heading[] = array('text' => TEXT_INFO_HEADING_DELETE_REVIEW);
 
         $contents = array('form' => tep_draw_form('reviews', FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' . $rInfo->reviews_id . '&action=deleteconfirm'.(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')));
         $contents[] = array('text' => TEXT_INFO_DELETE_REVIEW_INTRO);
-        $contents[] = array('text' => '<br>' . $rInfo->products_name . '');
+        $contents[] = array('text' => '<br>' . $rInfo->products_name);
         $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_DELETE) . ' <a href="' .  tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' .  $rInfo->reviews_id) .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'') . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>');
         break;
       default:
       if (isset($rInfo) && is_object($rInfo)) {
-        $heading[] = array('text' => '' . $rInfo->products_name . '');
+        $heading[] = array('text' => $rInfo->products_name);
 
         $contents[] = array('align' => 'center', 'text' => 
           '<a href="' . tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] .  '&rID=' . $rInfo->reviews_id . '&action=edit' .  (isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a>' . ($ocertify->npermission == 15 ? (' <a href="' .  tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' .  $rInfo->reviews_id . '&action=delete' .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'):'')

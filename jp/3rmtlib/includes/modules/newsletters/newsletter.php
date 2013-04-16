@@ -55,15 +55,24 @@
     $mag_count = $mail['count'] + $mag['count'];
     
     $confirm_string = '<table border="0" cellspacing="0" cellpadding="2">' . "\n" .
-                        '  <tr>' . "\n" .
-                        '    <td class="main"><font color="#ff0000"><b>' . sprintf(TEXT_COUNT_CUSTOMERS, $mag_count) . '</b></font></td>' . "\n" .
-                        '  </tr>' . "\n" .
+                        '  <tr>' . "\n";
+    if (defined('DIR_WS_ADMIN')) {
+      $confirm_string .=  '    <td class="main"><font color="#ff0000">' .  sprintf(TEXT_COUNT_CUSTOMERS, $mag_count) . '</font></td>' . "\n";
+    } else {
+      $confirm_string .=  '    <td class="main"><font color="#ff0000"><b>' .  sprintf(TEXT_COUNT_CUSTOMERS, $mag_count) . '</b></font></td>' . "\n";
+    }
+    
+    $confirm_string .= '  </tr>' . "\n" .
                         '  <tr>' . "\n" .
                         '    <td>' . tep_draw_separator('pixel_trans.gif', '1', '10') . '</td>' . "\n" .
                         '  </tr>' . "\n" .
-                        '  <tr>' . "\n" .
-                        '    <td class="main"><b>' . $this->title . '</b></td>' . "\n" .
-                        '  </tr>' . "\n" .
+                        '  <tr>' . "\n";
+    if (defined('DIR_WS_ADMIN')) {
+      $confirm_string .= '    <td class="main">' . $this->title . '</td>' .  "\n";
+    } else {
+      $confirm_string .= '    <td class="main"><b>' . $this->title . '</b></td>' .  "\n";
+    }
+    $confirm_string .=  '  </tr>' . "\n" .
                         '  <tr>' . "\n" .
                         '    <td>' . tep_draw_separator('pixel_trans.gif', '1', '10') . '</td>' . "\n" .
                         '  </tr>' . "\n" .

@@ -935,7 +935,7 @@ switch (isset($_action)? $_action:'') {
 ------------------------------------------------------*/
   case 'new_faq_category':
     $dc_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
-    $heading[] = array('text' => '' .TEXT_INFO_HEADING_NEW_FAQ_CATEGORY.'');
+    $heading[] = array('text' => TEXT_INFO_HEADING_NEW_FAQ_CATEGORY);
     $contents = array('form' =>
         tep_draw_form('newfaqcategory',FILENAME_FAQ,'action=insert_faq_category&cPath='.$cPath,
           'post','onsubmit="return faq_category_form_validator(\''.$current_category_id.'\',\'\',\''.$site_id.'\')"'));
@@ -968,7 +968,7 @@ switch (isset($_action)? $_action:'') {
     break;
   case 'new_faq_question':
     $dc_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
-    $heading[] = array('text' => '' .TEXT_INFO_HEADING_NEW_FAQ_QUESTION.'');
+    $heading[] = array('text' => TEXT_INFO_HEADING_NEW_FAQ_QUESTION);
     $contents = array('form' =>
         tep_draw_form('newfaqcategory',FILENAME_FAQ,'action=insert_faq_question&cPath='.$cPath.
           '&site_id='.$site_id.'&qID='.$_GET['qID'],'post',
@@ -1002,7 +1002,7 @@ switch (isset($_action)? $_action:'') {
     break;
   case 'edit_faq_category':
     $dc_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
-    $heading[] = array('text' => '' .TEXT_INFO_HEADING_EDIT_FAQ_CATEGORY.'');
+    $heading[] = array('text' => TEXT_INFO_HEADING_EDIT_FAQ_CATEGORY);
     $contents = array('form' =>
         tep_draw_form('newfaqcategory',FILENAME_FAQ,'action=update_faq_category&cPath='.$cPath,
           'post','onsubmit="return faq_category_form_validator(\''.$current_category_id.'\',\''.$faq_info->faq_category_id.'\',\''.$site_id.'\')"'));
@@ -1034,7 +1034,7 @@ switch (isset($_action)? $_action:'') {
     break;
   case 'edit_faq_question':
     $dc_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
-    $heading[] = array('text' => '' .TEXT_INFO_HEADING_EDIT_FAQ_QUESTION.'');
+    $heading[] = array('text' => TEXT_INFO_HEADING_EDIT_FAQ_QUESTION);
     $contents = array('form' =>
         tep_draw_form('newfaqcategory',FILENAME_FAQ,'action=update_faq_question&cPath='.$cPath.
           '&site_id='.$site_id.'&qID='.$_GET['qID'],'post',
@@ -1067,8 +1067,7 @@ switch (isset($_action)? $_action:'') {
         href="'.tep_href_link(FILENAME_FAQ,'cPath='.$cPath.'&site_id='.$site_id.$dc_page.'&qID='.$_GET['qID']).'">'.tep_html_element_button(IMAGE_CANCEL).'</a>');
     break;
   case 'delete_faq_category':
-      $heading[] = array('text' => '' . TEXT_INFO_HEADING_DELETE_CATEGORY .
-          '');
+      $heading[] = array('text' => TEXT_INFO_HEADING_DELETE_CATEGORY);
       $dc_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
       $contents = array('form' => tep_draw_form('categories', FILENAME_FAQ,
             'action=delete_faq_category_confirm&cPath=' . $cPath.$dc_page) .
@@ -1091,7 +1090,7 @@ switch (isset($_action)? $_action:'') {
           ;
     break;
   case 'delete_faq_question':
-    $heading[] = array('text' => '' . TEXT_INFO_HEADING_DELETE_FAQ_QUESTION . '');
+    $heading[] = array('text' => TEXT_INFO_HEADING_DELETE_FAQ_QUESTION);
     $d_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
       $contents = array('form' => tep_draw_form('question', FILENAME_FAQ,
             'action=delete_faq_question_confirm&cPath=' .  $cPath.$d_page,
@@ -1121,7 +1120,7 @@ switch (isset($_action)? $_action:'') {
   default:
     if ($rows > 0){
       if(isset($faq_info)&&is_object($faq_info)){
-        $heading[] = array('text' => ''.$faq_info->title.'');
+        $heading[] = array('text' => $faq_info->title);
         if($ocertify->npermission >= 10 ){
           if (isset($_GET['site_id'])&&$_GET['site_id']!=0){
             foreach(tep_get_sites() as $site){
@@ -1155,7 +1154,7 @@ $contents[] = array('text' =>  TEXT_UPDATED_AT. ' ' .TEXT_UNSET_DATA);
 }
 
       }else if(isset($qInfo)&&is_object($qInfo)){
-        $heading[] = array('text' => ''.$qInfo->ask.'');
+        $heading[] = array('text' => $qInfo->ask);
         if($ocertify->npermission >= 10) {  
           //limit for permission
           if(isset($_GET['site_id'])){
@@ -1191,7 +1190,7 @@ $contents[] = array('text' =>  TEXT_UPDATED_AT. ' '  .TEXT_UNSET_DATA);
       }
 
     }else{
-      $heading[] = array('text' => '' .EMPTY_FAQ_CATEGORY .'');
+      $heading[] = array('text' => EMPTY_FAQ_CATEGORY);
     }
     break;
   
