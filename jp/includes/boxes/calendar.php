@@ -145,7 +145,7 @@
     echo '
       <tr><td valign="top"><table border="0" cellspacing="0" cellpadding="2" width="100%" class="date_bgcolor" style="font-size:12px; margin-top:5px;">
       <tr>
-      <td nowrap colspan="7" align="center"><b>'.str_replace('${MONTH}',$m_num2,$date_title).'</b></td> 
+      <td colspan="7" align="center"><b>'.str_replace('${MONTH}',$m_num2,$date_title).'</b></td> 
       </tr>
       <tr bgcolor="#EEEEEE">
         <td align="middle" height="15">'.CL_TEXT_DATE_SUNDAY.'</font></td>
