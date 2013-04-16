@@ -101,7 +101,7 @@ require("includes/note_js.php");
          <div class="compatible">
          <table border="0" width="100%" cellspacing="0" cellpadding="2">
             <tr>
-               <td class = "pageHeading"><?php echo CLEATE_LIST_TITLE;?>
+               <td class = "pageHeading" height="40"><?php echo CLEATE_LIST_TITLE;?>
                <input type="button" onClick = "goto()" value='<?php echo IMAGE_BACK;?>'>
   <?php if ($ocertify->npermission >7){?>
                <input type="button" onClick="location.href='cleate_oroshi.php'" value="<?php echo CLEATE_LIST_SETNAME_BUTTON;?>">
