@@ -485,17 +485,17 @@ require("includes/note_js.php");
    default 右侧默认页面  
 ------------------------------------------------------*/
     case 'delete':
-      $heading[] = array('text' => '' . $nInfo->title . '');
+      $heading[] = array('text' => $nInfo->title);
 
       $contents = array('form' => tep_draw_form('newsletters', FILENAME_NEWSLETTERS, 'page=' . $_GET['page'] . '&nID=' . $nInfo->newsletters_id . '&action=deleteconfirm'.(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')));
       $contents[] = array('text' => TEXT_INFO_DELETE_INTRO);
-      $contents[] = array('text' => '<br>' . $nInfo->title . '');
+      $contents[] = array('text' => '<br>' . $nInfo->title);
       $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_DELETE) . ' <a href="' .  tep_href_link(FILENAME_NEWSLETTERS, 'page=' . $_GET['page'] . '&nID=' .  $_GET['nID'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     default:
   if (isset($nInfo) && is_object($nInfo)) {
         $site_id = $nInfo->site_id;
-        $heading[] = array('text' => '' . $nInfo->title . '');
+        $heading[] = array('text' => $nInfo->title);
 
         if ($nInfo->locked > 0) {
           $contents[] = array('align' => 'center', 'text' => 

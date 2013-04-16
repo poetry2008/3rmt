@@ -3531,7 +3531,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     echo '<table  width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="left">';
                     // add abs for products_price 
                     echo CATEGORY_JIAGE_TEXT.'：&nbsp;' .  tep_draw_input_field('products_price',
-                        number_format(abs($pInfo->products_price)?abs($pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)" id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;' . CATEGORY_MONEY_UNIT_TEXT .  '&nbsp;&nbsp;&larr;&nbsp;' . (int)$pInfo->products_price . CATEGORY_MONEY_UNIT_TEXT.' ' . "\n";
+                        number_format(abs($pInfo->products_price)?abs($pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)" id="pp" size="8" style="text-align: right; ime-mode: disabled;"') . '&nbsp;' . CATEGORY_MONEY_UNIT_TEXT .  '&nbsp;&nbsp;&larr;&nbsp;' . (int)$pInfo->products_price . CATEGORY_MONEY_UNIT_TEXT.' ' . "\n";
                     echo '</td><td align="right">';
                     if (!$pInfo->products_bflag && $pInfo->relate_products_id)
                       echo CATEGORY_AVERAGE_PRICE.' '.@display_price(tep_get_avg_by_pid($pInfo->products_id)).CATEGORY_MONEY_UNIT_TEXT;
@@ -3539,11 +3539,11 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     echo '  </td>';
                     echo '  </tr><tr><td><hr size="2" noshade></td></tr><tr>';
                     echo '  <td height="30">';
-                    echo CATEGORY_SHIKU_TEXT . tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"') . '&nbsp;' .CATEGORY_GE_UNIT_TEXT. '&nbsp;&nbsp;&larr;&nbsp;' . $pInfo->products_real_quantity .CATEGORY_GE_UNIT_TEXT. "\n";
+                    echo CATEGORY_SHIKU_TEXT . tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="qt" style="text-align: right;ime-mode: disabled;" onkeyup="clearLibNum(this);"') . '&nbsp;' .CATEGORY_GE_UNIT_TEXT. '&nbsp;&nbsp;&larr;&nbsp;' . $pInfo->products_real_quantity .CATEGORY_GE_UNIT_TEXT. "\n";
                     echo '  </td>';
                     echo '  </tr><tr><td><hr size="2" noshade style="border:0;"></td></tr><tr>';
                     echo '  <td height="42" style="background-color:#ccc; padding-top:5px;">';
-                    echo CATEGORY_JIAKONGZAIKU_TEXT.'&nbsp;' .  tep_draw_input_field('products_virtual_quantity', $pInfo->products_virtual_quantity,' size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"') . '&nbsp;'.CATEGORY_GE_UNIT_TEXT. '&nbsp;&nbsp;&larr;&nbsp;' . $pInfo->products_virtual_quantity . CATEGORY_GE_UNIT_TEXT . "\n";
+                    echo CATEGORY_JIAKONGZAIKU_TEXT.'&nbsp;' .  tep_draw_input_field('products_virtual_quantity', $pInfo->products_virtual_quantity,' size="8" id="qt" style="text-align: right;ime-mode: disabled;" onkeyup="clearLibNum(this);"') . '&nbsp;'.CATEGORY_GE_UNIT_TEXT. '&nbsp;&nbsp;&larr;&nbsp;' . $pInfo->products_virtual_quantity . CATEGORY_GE_UNIT_TEXT . "\n";
                     echo '  </td>';
                     echo '  </tr>';
                     echo '</table>';
@@ -3589,13 +3589,13 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       <br>
                       <table width="95%" border="1" cellspacing="0" cellpadding="2">
                       <tr>
-                      <th colspan="4" align="left"><?php echo TABLE_HEADING_PRODUCT_HISTORY;?></th>
+                      <td colspan="4" align="left"><?php echo TABLE_HEADING_PRODUCT_HISTORY;?></td>
                       </tr>
                       <tr>
-                      <th><?php echo TABLE_HEADING_FETCHTIME_TEXT;?></th>
-                      <th><?php echo TABLE_HEADING_GESHU;?></th>
-                      <th><?php echo TABLE_HEADING_DANJIA;?></th>
-                      <th><?php echo TABLE_HEADING_OSTATUS;?></th>
+                      <td><?php echo TABLE_HEADING_FETCHTIME_TEXT;?></td>
+                      <td><?php echo TABLE_HEADING_GESHU;?></td>
+                      <td><?php echo TABLE_HEADING_DANJIA;?></td>
+                      <td><?php echo TABLE_HEADING_OSTATUS;?></td>
                       </tr>
                       <?php
                       if (tep_db_num_rows($order_history_query)) {
@@ -3619,7 +3619,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                         }
                         ?>
                           <tr>
-                          <th></th>
+                          <td></td>
                           <td class="main" align="right"><table cellspacing="0" cellpadding="0" border='0' width="100%"><tr><td align="left"><?php echo CATEGORY_TOTALNUM_TEXT;?></td><td align="right"><?php echo $sum_quantity;?><?php echo CATEGORY_GE_UNIT_TEXT;?></td></tr></table></td>
                           <td class="main" align="right"><table cellspacing="0" cellpadding="0" border='0' width="100%"><tr><td align="left"><?php echo CATEGORY_AVERAGENUM_TEXT;?></td><td align="right"><?php echo display_price($sum_price/$sum_quantity);?><?php echo CATEGORY_MONEY_UNIT_TEXT;?></td></tr></table></td>
                           <td class="main"> </td>
@@ -3646,14 +3646,14 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                           <br>
                           <table width="95%" border="1" cellspacing="0" cellpadding="2">
                           <tr>
-                          <th colspan="4" align="left"><?php echo TEXT_PRODUCT_LINK_PRODUCT_TEXT;?><?php 
-                          echo $relate_products_name;?></th>
+                          <td colspan="4" align="left"><?php echo TEXT_PRODUCT_LINK_PRODUCT_TEXT;?><?php 
+                          echo $relate_products_name;?></td>
                           </tr>
                           <tr>
-                          <th><?php echo TABLE_HEADING_FETCHTIME_TEXT;?></th>
-                          <th><?php echo TABLE_HEADING_GESHU;?></th>
-                          <th><?php echo TABLE_HEADING_DANJIA;?></th>
-                          <th><?php echo TABLE_HEADING_OSTATUS;?></th>
+                          <td><?php echo TABLE_HEADING_FETCHTIME_TEXT;?></td>
+                          <td><?php echo TABLE_HEADING_GESHU;?></td>
+                          <td><?php echo TABLE_HEADING_DANJIA;?></td>
+                          <td><?php echo TABLE_HEADING_OSTATUS;?></td>
                           </tr>
                           <?php
                           if (tep_db_num_rows($order_history_query)) {
@@ -3677,7 +3677,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                             }
                             ?>
                               <tr>
-                              <th></th>
+                              <td></td>
                               <td class="main" align="right"><table border='0' cellspacing="0" cellpadding="0" width="100%"><tr><td align="left"><?php echo CATEGORY_TOTALNUM_TEXT;?></td><td align="right"><?php echo $sum_quantity;?><?php echo CATEGORY_GE_UNIT_TEXT;?></td></tr></table></td>
                               <td class="main" align="right"><table border='0' cellspacing="0" cellpadding="0" width="100%"><tr><td align="left"><?php echo CATEGORY_AVERAGENUM_TEXT;?></td><td align="right"><?php echo @display_price($sum_price/$sum_quantity);?><?php echo CATEGORY_MONEY_UNIT_TEXT;?></td></tr></table></td>
                               <td class="main"> </td>

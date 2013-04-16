@@ -744,15 +744,15 @@ require("includes/note_js.php");
  case 'confirm' 确认正确的客户信息 
  ---------------------------------*/
     case 'confirm':
-      $heading[] = array('text' => '' . TEXT_INFO_HEADING_DELETE_CUSTOMER . '');
+      $heading[] = array('text' => TEXT_INFO_HEADING_DELETE_CUSTOMER);
 
       $contents = array('form' => tep_draw_form('customers', FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cInfo->customers_id . '&action=deleteconfirm'));
-      $contents[] = array('text' => TEXT_DELETE_INTRO . '<br><br>' . tep_get_fullname($cInfo->customers_firstname, $cInfo->customers_lastname) . '');
+      $contents[] = array('text' => TEXT_DELETE_INTRO . '<br><br>' . tep_get_fullname($cInfo->customers_firstname, $cInfo->customers_lastname));
       if ($cInfo->number_of_reviews > 0) $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('delete_reviews', 'on', true) . ' ' . sprintf(TEXT_DELETE_REVIEWS, $cInfo->number_of_reviews)); $contents[] = array('align' => 'center', 'text' => '<br>' .tep_html_element_submit(IMAGE_DELETE) . ' <a class = "new_product_reset" href="' .  tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' .  $cInfo->customers_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     default:
       if (isset($cInfo) && is_object($cInfo)) {
-        $heading[] = array('text' => '' . tep_get_fullname($cInfo->customers_firstname, $cInfo->customers_lastname) . '');
+        $heading[] = array('text' => tep_get_fullname($cInfo->customers_firstname, $cInfo->customers_lastname));
 
         $contents[] = array('align' => 'center', 'text' => '<a class =
             "new_product_reset" href="' .  tep_href_link(FILENAME_CUSTOMERS,
