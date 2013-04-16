@@ -25,7 +25,7 @@ define('TEXT_PRODUCTS_VIRTUAL_QUANTITY', '虚拟库存:');
 define('TEXT_DATE_ADDED', '创建日:');
 define('TEXT_DATE_AVAILABLE', '发售日期:');
 define('TEXT_LAST_MODIFIED', '更新日:');
-define('TEXT_NO_CHILD_CATEGORIES_OR_PRODUCTS', '请追加新分类或商品<br>&nbsp;<br><b>%s</b>');
+define('TEXT_NO_CHILD_CATEGORIES_OR_PRODUCTS', '请追加新分类或商品<br>&nbsp;<br>%s');
 define('TEXT_PRODUCT_MORE_INFORMATION', '详细信息请参阅商品页面<a class="order_link" href="http://%s" target="blank"></a>。');
 define('TEXT_PRODUCT_DATE_ADDED', '这个商品保存在 %s 目录里。');
 define('TEXT_PRODUCT_DATE_AVAILABLE', '这个商品预定到 %s 里。');
@@ -50,12 +50,12 @@ define('TEXT_INFO_HEADING_COPY_TO', '复制到');
 define('TEXT_DELETE_CATEGORY_INTRO', '确定删除这个分类吗？');
 define('TEXT_DELETE_PRODUCT_INTRO', '确定删除这个商品吗？');
 
-define('TEXT_DELETE_WARNING_CHILDS', '<b>警告:</b>  %s 个子分类链接到这个分类!');
-define('TEXT_DELETE_WARNING_PRODUCTS', '<b>警告:</b>  %s 个商品链接到这个分类!');
+define('TEXT_DELETE_WARNING_CHILDS', '警告:  %s 个子分类链接到这个分类!');
+define('TEXT_DELETE_WARNING_PRODUCTS', '警告:  %s 个商品链接到这个分类!');
 
-define('TEXT_MOVE_PRODUCTS_INTRO', '请选择移动到的分类<b>%s</b> ');
-define('TEXT_MOVE_CATEGORIES_INTRO', '请选择移动到的分类<b>%s</b> ');
-define('TEXT_MOVE', '<b>%s</b> 移动到:');
+define('TEXT_MOVE_PRODUCTS_INTRO', '请选择移动到的分类%s ');
+define('TEXT_MOVE_CATEGORIES_INTRO', '请选择移动到的分类%s ');
+define('TEXT_MOVE', '%s 移动到:');
 
 define('TEXT_NEW_CATEGORY_INTRO', '请输入新分类的信息');
 define('TEXT_CATEGORIES_NAME', '新分类:');
@@ -132,7 +132,7 @@ define('TEXT_PRODUCT_SMALLNUM_READ_ITEM_TWO', '&nbsp; 1:20,50:10,100:0');
 define('TEXT_PRODUCT_SMALLNUM_READ_ITEM_THREE', '&nbsp; 从1到49的合计数是20→商品单价是120日元');
 define('TEXT_PRODUCT_SMALLNUM_READ_ITEM_FOUR', '&nbsp; 从50个到99个的合计数是10→商品单价是110日元');
 define('TEXT_PRODUCT_SMALLNUM_READ_ITEM_FIVE', '&nbsp; 打折的时候，请把合计数变成像-20那样的负值。');
-define('TEXT_PRODUCT_SMALLNUM_READ_ITEM_SIX', '&nbsp; <b>折扣未认证，不输入内容！</b>');
+define('TEXT_PRODUCT_SMALLNUM_READ_ITEM_SIX', '&nbsp; 折扣未认证，不输入内容！');
 define('TEXT_PRODUCT_KUSHUOMING_TEXT', '计算库存时请输入。计算库存时请设置　基本设置→库存管理　。');
 define('TEXT_PRODUCT_XIANGMU_NAME', '项目名称:');
 define('TEXT_PRODUCT_ATTONE_TEXT', '文本1:');

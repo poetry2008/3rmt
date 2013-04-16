@@ -233,7 +233,7 @@ echo "</tr>";
 if($oroname){
 echo "<tr>";  
   foreach ($oroname as $value){
-    echo "<th align='left'>$value</th>";
+    echo "<td align='left'>$value</td>";
   }
 
 echo "</tr>";

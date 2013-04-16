@@ -79,7 +79,7 @@ if ($_GET['action'] == 'show_category_info') {
   
   $heading = array();
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => '<b>'.$category_info_res['categories_name'].'</b>');
+  $heading[] = array('align' => 'left', 'text' => $category_info_res['categories_name']);
   $heading[] = array('align' => 'right', 'text' => $page_str);
   
   $buttons = array();
@@ -147,7 +147,7 @@ if ($_GET['action'] == 'show_category_info') {
   
   $heading = array();
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => '<b>'.TEXT_INFO_HEADING_MOVE_CATEGORY.'</b>');
+  $heading[] = array('align' => 'left', 'text' => TEXT_INFO_HEADING_MOVE_CATEGORY);
   $heading[] = array('align' => 'right', 'text' => '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>');
 
   $buttons = array();
@@ -197,7 +197,7 @@ if ($_GET['action'] == 'show_category_info') {
   
   $heading = array();
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => '<b>'.TEXT_INFO_HEADING_DELETE_CATEGORY.'</b>');
+  $heading[] = array('align' => 'left', 'text' => TEXT_INFO_HEADING_DELETE_CATEGORY);
   $heading[] = array('align' => 'right', 'text' => '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>');
 
   $buttons = array();
@@ -267,7 +267,7 @@ if ($_GET['action'] == 'show_category_info') {
   
   $heading = array();
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => '<b>'.TABLE_HEADING_CATEGORIES_PRODUCT_VIRTUAL_STORE.'</b>');
+  $heading[] = array('align' => 'left', 'text' => TABLE_HEADING_CATEGORIES_PRODUCT_VIRTUAL_STORE);
   $heading[] = array('align' => 'right', 'text' => $page_str);
 
   $buttons = array();
@@ -314,7 +314,7 @@ if ($_GET['action'] == 'show_category_info') {
   
   $heading = array();
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => '<b>'.TABLE_HEADING_CATEGORIES_PRODUCT_REAL_QUANTITY.'</b>');
+  $heading[] = array('align' => 'left', 'text' => TABLE_HEADING_CATEGORIES_PRODUCT_REAL_QUANTITY);
   $heading[] = array('align' => 'right', 'text' => $page_str);
 
   $buttons = array();
@@ -362,7 +362,7 @@ if ($_GET['action'] == 'show_category_info') {
   
   $heading = array();
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => '<b>'.TABLE_HEADING_DANJIA.'</b>');
+  $heading[] = array('align' => 'left', 'text' => TABLE_HEADING_DANJIA);
   $heading[] = array('align' => 'right', 'text' => $page_str);
 
   $buttons = array();
@@ -497,7 +497,7 @@ if ($_GET['action'] == 'show_category_info') {
 
   $heading = array();
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => '<b>'.$pInfo->products_name.'</b>');
+  $heading[] = array('align' => 'left', 'text' => $pInfo->products_name);
   $heading[] = array('align' => 'right', 'text' => $page_str);
 
   $buttons = array();
@@ -596,7 +596,7 @@ if ($_GET['action'] == 'show_category_info') {
     $inventory = tep_get_product_inventory($relate_pInfo->products_id);
     
     $relate_product_info_array[]['text'] = array(
-          array('params' => 'colspan="2"', 'text' => '<b>'.TEXT_PRODUCT_LINK_PRODUCT_TEXT.$relate_pInfo->products_name.'</b>') 
+          array('params' => 'colspan="2"', 'text' => TEXT_PRODUCT_LINK_PRODUCT_TEXT.$relate_pInfo->products_name) 
         );
     
     $relate_product_info_array[]['text'] = array(
@@ -685,13 +685,13 @@ if ($_GET['action'] == 'show_category_info') {
   ");
   $product_history_array = array();
   $product_history_array[]['text'] = array(
-        array('align' => 'left', 'params' => 'colspan="4"', 'text' => '<b>'.TABLE_HEADING_PRODUCT_HISTORY.'</b>') 
+        array('align' => 'left', 'params' => 'colspan="4"', 'text' => TABLE_HEADING_PRODUCT_HISTORY) 
       ); 
   $product_history_array[]['text'] = array(
-        array('align' => 'center', 'params' => 'width="30%"', 'text' => '<b>'.TABLE_HEADING_FETCHTIME_TEXT.'</b>'), 
-        array('align' => 'center', 'params' => 'width="15%"', 'text' => '<b>'.TABLE_HEADING_GESHU.'</b>'), 
-        array('align' => 'center', 'params' => 'width="25%"', 'text' => '<b>'.TABLE_HEADING_DANJIA.'</b>'), 
-        array('align' => 'center', 'text' => '<b>'.TABLE_HEADING_OSTATUS.'</b>'), 
+        array('align' => 'center', 'params' => 'width="30%"', 'text' => TABLE_HEADING_FETCHTIME_TEXT), 
+        array('align' => 'center', 'params' => 'width="15%"', 'text' => TABLE_HEADING_GESHU), 
+        array('align' => 'center', 'params' => 'width="25%"', 'text' => TABLE_HEADING_DANJIA), 
+        array('align' => 'center', 'text' => TABLE_HEADING_OSTATUS), 
       );      
 
   if (tep_db_num_rows($order_history_query)) {
@@ -761,13 +761,13 @@ if ($_GET['action'] == 'show_category_info') {
     
     $relate_product_history_array = array();
     $relate_product_history_array[]['text'] = array(
-          array('align' => 'left', 'params' => 'colspan="4"', 'text' => '<b>'.TEXT_PRODUCT_LINK_PRODUCT_TEXT.$relate_products_name.'</b>') 
+          array('align' => 'left', 'params' => 'colspan="4"', 'text' => TEXT_PRODUCT_LINK_PRODUCT_TEXT.$relate_products_name) 
         );
     $relate_product_history_array[]['text'] = array(
-        array('align' => 'center', 'params' => 'width="30%"', 'text' => '<b>'.TABLE_HEADING_FETCHTIME_TEXT.'</b>'), 
-        array('align' => 'center', 'params' => 'width="15%"', 'text' => '<b>'.TABLE_HEADING_GESHU.'</b>'), 
-        array('align' => 'center', 'params' => 'width="25%"', 'text' => '<b>'.TABLE_HEADING_DANJIA.'</b>'), 
-        array('align' => 'center', 'text' => '<b>'.TABLE_HEADING_OSTATUS.'</b>'), 
+        array('align' => 'center', 'params' => 'width="30%"', 'text' => TABLE_HEADING_FETCHTIME_TEXT), 
+        array('align' => 'center', 'params' => 'width="15%"', 'text' => TABLE_HEADING_GESHU), 
+        array('align' => 'center', 'params' => 'width="25%"', 'text' => TABLE_HEADING_DANJIA), 
+        array('align' => 'center', 'text' => TABLE_HEADING_OSTATUS), 
       );      
     if (tep_db_num_rows($relate_order_history_query)) {
       $sum_price = 0;
@@ -884,7 +884,7 @@ if ($_GET['action'] == 'show_category_info') {
   
   $heading = array();
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => '<b>'.TEXT_INFO_HEADING_DELETE_PRODUCT.'</b>');
+  $heading[] = array('align' => 'left', 'text' => TEXT_INFO_HEADING_DELETE_PRODUCT);
   $heading[] = array('align' => 'right', 'text' => $page_str);
   
   $buttons = array();
@@ -898,7 +898,7 @@ if ($_GET['action'] == 'show_category_info') {
         array('text' => TEXT_DELETE_PRODUCT_INTRO) 
       );
   $delete_product_info[]['text'] = array(
-        array('text' => '<br><b>' . $pInfo->products_name . '</b>') 
+        array('text' => '<br>' . $pInfo->products_name . '</b>') 
       );
   if (isset($_GET['rdirect'])) {
     $form_str = tep_draw_form('products', FILENAME_CATEGORIES, 'action=delete_product_description_confirm&site_id=' .  $_GET['site_id'] . '&pID=' . $_GET['pID'] . '&cPath=' .  $cPath.'&rdirect=all'.$d_page.($_GET['search']?'&search='.$_GET['search']:''), 'post');
@@ -934,7 +934,7 @@ if ($_GET['action'] == 'show_category_info') {
   
   $heading = array();
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => '<b>'.TEXT_INFO_HEADING_DELETE_PRODUCT.'</b>');
+  $heading[] = array('align' => 'left', 'text' => TEXT_INFO_HEADING_DELETE_PRODUCT);
   $heading[] = array('align' => 'right', 'text' => $page_str);
   
   $buttons = array();
@@ -948,7 +948,7 @@ if ($_GET['action'] == 'show_category_info') {
         array('text' => TEXT_DELETE_PRODUCT_INTRO) 
       );
   $delete_product_info[]['text'] = array(
-        array('text' => '<br><b>' . $pInfo->products_name . '</b>'.tep_draw_hidden_field('products_id', $pInfo->products_id)) 
+        array('text' => '<br>' . $pInfo->products_name . tep_draw_hidden_field('products_id', $pInfo->products_id)) 
       );
   
   $product_categories_string = '';
@@ -995,7 +995,7 @@ if ($_GET['action'] == 'show_category_info') {
   
   $heading = array();
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => '<b>'.TEXT_INFO_HEADING_MOVE_PRODUCT.'</b>');
+  $heading[] = array('align' => 'left', 'text' => TEXT_INFO_HEADING_MOVE_PRODUCT);
   $heading[] = array('align' => 'right', 'text' => $page_str);
   
   $buttons = array();
@@ -1009,7 +1009,7 @@ if ($_GET['action'] == 'show_category_info') {
         array('text' => sprintf(TEXT_MOVE_PRODUCTS_INTRO, $pInfo->products_name)) 
       );
   $move_product_info[]['text'] = array(
-        array('text' => '<br>' . TEXT_INFO_CURRENT_CATEGORIES . '<br><b>' . tep_output_generated_category_path($pInfo->products_id, 'product') .  '</b>'.tep_draw_hidden_field('products_id', $pInfo->products_id)) 
+        array('text' => '<br>' . TEXT_INFO_CURRENT_CATEGORIES . '<br>' . tep_output_generated_category_path($pInfo->products_id, 'product') . tep_draw_hidden_field('products_id', $pInfo->products_id)) 
       );
   $move_product_info[]['text'] = array(
         array('text' => '<br>' . sprintf(TEXT_MOVE, $pInfo->products_name) . '<br>' . tep_draw_pull_down_menu('move_to_category_id', tep_get_category_tree('0','','','',false),$current_category_id)) 
@@ -1044,7 +1044,7 @@ if ($_GET['action'] == 'show_category_info') {
   
   $heading = array();
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => '<b>'.TEXT_INFO_HEADING_COPY_TO.'</b>');
+  $heading[] = array('align' => 'left', 'text' => TEXT_INFO_HEADING_COPY_TO);
   $heading[] = array('align' => 'right', 'text' => $page_str);
   
   $buttons = array();
@@ -1058,7 +1058,7 @@ if ($_GET['action'] == 'show_category_info') {
         array('text' => TEXT_INFO_COPY_TO_INTRO.tep_draw_hidden_field('products_id', $pInfo->products_id)) 
       );
   $copy_product_info[]['text'] = array(
-        array('text' => '<br>' . TEXT_INFO_CURRENT_CATEGORIES . '<br><b>' . tep_output_generated_category_path($pInfo->products_id, 'product') . '</b>') 
+        array('text' => '<br>' . TEXT_INFO_CURRENT_CATEGORIES . '<br>' . tep_output_generated_category_path($pInfo->products_id, 'product')) 
       );
   $copy_product_info[]['text'] = array(
         array('text' => '<br>' . TEXT_CATEGORIES . '<br>' . tep_draw_pull_down_menu('categories_id', tep_get_category_tree('0','','','',false), $current_category_id)) 
@@ -1115,7 +1115,7 @@ if ($_GET['action'] == 'show_category_info') {
   
   $heading = array();
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => '<b>'.$pic_info_res['pic_alt'].'</b>');
+  $heading[] = array('align' => 'left', 'text' => $pic_info_res['pic_alt']);
   $heading[] = array('align' => 'right', 'text' => $page_str);
   
   $buttons = array();
@@ -1180,7 +1180,7 @@ if ($_GET['action'] == 'show_category_info') {
   
   $heading = array();
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => '<b>'.HEADING_TITLE.'</b>'); 
+  $heading[] = array('align' => 'left', 'text' => HEADING_TITLE); 
   $heading[] = array('align' => 'right', 'text' => $page_str); 
   
   $buttons = array();
@@ -1294,7 +1294,7 @@ if ($_GET['action'] == 'show_category_info') {
   
   $heading = array();
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => '<b>'.$group['name'].'</b>'); 
+  $heading[] = array('align' => 'left', 'text' => $group['name']); 
   $heading[] = array('align' => 'right', 'text' => $page_str); 
   
   $buttons = array();
@@ -1388,7 +1388,7 @@ width:20%;"'))
   
   $heading = array();
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => '<b>Item</b>'); 
+  $heading[] = array('align' => 'left', 'text' => 'Item'); 
   $heading[] = array('align' => 'right', 'text' => $page_str); 
   
   $buttons = array();
@@ -1560,7 +1560,7 @@ width:20%;"'))
   
   $heading = array();
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => '<b>'.$item['title'].'</b>'); 
+  $heading[] = array('align' => 'left', 'text' => $item['title']); 
   $heading[] = array('align' => 'right', 'text' => $page_str); 
   
   $buttons = array();
@@ -1852,7 +1852,7 @@ width:20%;"'))
   $date_str = substr($_GET['date'],0,4).'-'.substr($_GET['date'],4,2).'-'.substr($_GET['date'],6,2);
   $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => '<b>'.$date_str.'</b>');
+  $heading[] = array('align' => 'left', 'text' => $date_str);
   $heading[] = array('align' => 'right', 'text' => $page_str);
 
   //主体内容
@@ -1966,7 +1966,7 @@ width:20%;"'))
   $heading = array();
   $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => '<b>'.$calendar_status_array['title'].'</b>');
+  $heading[] = array('align' => 'left', 'text' => $calendar_status_array['title']);
   $heading[] = array('align' => 'right', 'text' => $page_str);
 
   //主体内容
@@ -2149,7 +2149,7 @@ width:20%;"'))
   $heading = array();
   $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => '<b>'.TEXT_CALENDAR_ADD.'</b>');
+  $heading[] = array('align' => 'left', 'text' => TEXT_CALENDAR_ADD);
   $heading[] = array('align' => 'right', 'text' => $page_str);
 
   //主体内容
@@ -2375,7 +2375,7 @@ width:20%;"'))
 
   $page_str .= '<a onclick="close_tags_info();" href="javascript:void(0);">X</a>';
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => '<b>'.$tags_array['tags_name'].'</b>');
+  $heading[] = array('align' => 'left', 'text' => $tags_array['tags_name']);
   $heading[] = array('align' => 'right', 'text' => $page_str);
 
   //主体内容
@@ -2459,7 +2459,7 @@ width:20%;"'))
   
   $page_str .= '<a onclick="close_tags_info();" href="javascript:void(0);">X</a>';
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => '<b>'.IMAGE_NEW_PROJECT.'</b>');
+  $heading[] = array('align' => 'left', 'text' => IMAGE_NEW_PROJECT);
   $heading[] = array('align' => 'right', 'text' => $page_str);
 
   //主体内容
@@ -2511,7 +2511,7 @@ width:20%;"'))
   
   $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => '<b>'.TEXT_EDIT_TAGS_TITLE.'</b>');
+  $heading[] = array('align' => 'left', 'text' => TEXT_EDIT_TAGS_TITLE);
   $heading[] = array('align' => 'right', 'text' => $page_str);
 
   //主体内容
@@ -2744,7 +2744,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   }
   $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => '<b>'.$cInfo_configuration_title.'</b>&nbsp;&nbsp;');
+  $heading[] = array('align' => 'left', 'text' => $cInfo_configuration_title.'&nbsp;&nbsp;');
   $heading[] = array('align' => 'right', 'text' => $page_str);
     if ($cInfo->set_function) {
       if ($cInfo->configuration_key == 'DS_ADMIN_SIGNAL_TIME') {

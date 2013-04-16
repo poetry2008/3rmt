@@ -350,7 +350,7 @@ require("includes/note_js.php");
           break;
 
       }
-      $priority_str .= "' ><b>".$pw_manager_row['priority']."</b></font>";
+      $priority_str .= "' >".$pw_manager_row['priority']."</font>";
       echo "<td class='dataTableContent' ".$onclick." >".$priority_str."</td>";
       echo "<td class='dataTableContent'>".$pw_manager_row['loginurl']."</td>";
       echo "<td class='dataTableContent'>".mb_substr($pw_manager_row['title'],0,12,'utf-8')."</td>";
@@ -430,13 +430,13 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
    default 右侧默认页面
 ------------------------------------------------------*/
     case 'delete':
-      $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_PW_MANAGER_LOG . '</b>');
+      $heading[] = array('text' => '' . TEXT_INFO_HEADING_DELETE_PW_MANAGER_LOG . '');
 
       $contents = array('form' => tep_draw_form('pw_manager', FILENAME_PW_MANAGER_LOG,
             'page=' . $_GET['page'] . '&pw_l_id=' . $pwInfo->id .
             '&action=deleteconfirm'.'&site_id='.$site_id.'&pw_id='.$pwid));
       $contents[] = array('text' => TEXT_INFO_DELETE_INTRO);
-      $contents[] = array('text' => '<br><b>' . $pwInfo->title . '</b>');
+      $contents[] = array('text' => '<br>' . $pwInfo->title . '');
       $contents[] = array('align' => 'center', 'text' => '<br>' .
           "<button type='submit' >".TEXT_BUTTON_DELETE."</button>"
           . '&nbsp;' .

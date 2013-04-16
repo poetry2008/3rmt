@@ -62,10 +62,10 @@ function show_loginlog_list($oresult) {
     echo '<td class="main" >' . $arec['lastaccesstime'] . "</td>\n"; 
     // 退出登录状态
     if ($arec['logoutstatus']) {
-      echo '<td class="main" >' .$arec['loginstatus'] . ' <small>[' . $GLOBALS['a_sts_in'][$arec['loginstatus']] . ']</small>&nbsp;&nbsp;'. $arec['logoutstatus'] . ' <small>[' . $GLOBALS['a_sts_out'][$arec['logoutstatus']] . ']</small>' . "</td>\n";
+      echo '<td class="main" >' .$arec['loginstatus'] . ' [' . $GLOBALS['a_sts_in'][$arec['loginstatus']] . ']&nbsp;&nbsp;'. $arec['logoutstatus'] . ' [' . $GLOBALS['a_sts_out'][$arec['logoutstatus']] . ']' . "</td>\n";
     }
     else {
-      echo '<td class="main" >'.$arec['loginstatus'] . ' <small>[' . $GLOBALS['a_sts_in'][$arec['loginstatus']] . ']</small></small>' . "</td>\n";
+      echo '<td class="main" >'.$arec['loginstatus'] . ' [' . $GLOBALS['a_sts_in'][$arec['loginstatus']] . ']' . "</td>\n";
     }
     // 地址
     echo '<td class="main" >' . $saddress . "</td>\n";

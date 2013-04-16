@@ -230,7 +230,7 @@ require("includes/note_js.php");
             <form name="personal_setting" method="post" action="<?php echo FILENAME_PERSONAL_SETTING;?>?action=update">
             <table border="0" width="100%" cellspacing="0" cellpadding="5">
               <tr><td>
-              <b><?php echo TEXT_PERSONAL_SETTING_LANGUAGE_OPTION;?></b> 
+              <?php echo TEXT_PERSONAL_SETTING_LANGUAGE_OPTION;?> 
               <?php
                if(PERSONAL_SETTING_LANGUAGE == ''){
                  $language_flag = 'jp';
@@ -248,7 +248,7 @@ require("includes/note_js.php");
               <option value="ch"<?php echo $language_flag == 'ch' ? 'selected' : '';?>>CH</option>
               </select>
               </td></tr>
-              <tr><td><b><?php echo TEXT_ORDERS_SETTING;?></b></td></tr>
+              <tr><td><?php echo TEXT_ORDERS_SETTING;?></td></tr>
               <tr>
               <?php
                $orders_site_array = array();
@@ -395,7 +395,7 @@ require("includes/note_js.php");
                ?><br><br>
                </td>
               </tr>
-              <tr><td><b><?php echo TEXT_PREORDERS_SETTING;?></b></td></tr>
+              <tr><td><?php echo TEXT_PREORDERS_SETTING;?></td></tr>
               <tr>
               <?php  
                if(!isset($_POST['preorders_site']) && !isset($_GET['action'])){

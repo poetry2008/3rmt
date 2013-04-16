@@ -291,9 +291,6 @@ require("includes/note_js.php");
     $nInfo = new objectInfo($newsletter);
 ?>
       <tr>
-        <td align="right"><!--<?php echo '<a href="' .  tep_href_link(FILENAME_NEWSLETTERS, 'page=' . $_GET['page'] . '&nID=' .  $_GET['nID'] .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_BACK) . '</a>'; ?>--></td>
-      </tr>
-      <tr>
         <td><tt><?php echo nl2br($nInfo->content); ?></tt></td>
       </tr>
       <tr>
@@ -365,9 +362,9 @@ require("includes/note_js.php");
             <?php
             if (!isset($_GET['send_finish'])) { 
             ?>
-            <b><?php echo TEXT_PLEASE_WAIT; ?></b>
+            <?php echo TEXT_PLEASE_WAIT; ?>
             <?php } else {?> 
-            <font color="#ff0000"><b><?php echo TEXT_FINISHED_SENDING_EMAILS; ?></b></font>
+            <font color="#ff0000"><?php echo TEXT_FINISHED_SENDING_EMAILS; ?></font>
             <?php }?> 
             </td>
           </tr>
@@ -488,17 +485,17 @@ require("includes/note_js.php");
    default 右侧默认页面  
 ------------------------------------------------------*/
     case 'delete':
-      $heading[] = array('text' => '<b>' . $nInfo->title . '</b>');
+      $heading[] = array('text' => '' . $nInfo->title . '');
 
       $contents = array('form' => tep_draw_form('newsletters', FILENAME_NEWSLETTERS, 'page=' . $_GET['page'] . '&nID=' . $nInfo->newsletters_id . '&action=deleteconfirm'.(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')));
       $contents[] = array('text' => TEXT_INFO_DELETE_INTRO);
-      $contents[] = array('text' => '<br><b>' . $nInfo->title . '</b>');
+      $contents[] = array('text' => '<br>' . $nInfo->title . '');
       $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_DELETE) . ' <a href="' .  tep_href_link(FILENAME_NEWSLETTERS, 'page=' . $_GET['page'] . '&nID=' .  $_GET['nID'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     default:
   if (isset($nInfo) && is_object($nInfo)) {
         $site_id = $nInfo->site_id;
-        $heading[] = array('text' => '<b>' . $nInfo->title . '</b>');
+        $heading[] = array('text' => '' . $nInfo->title . '');
 
         if ($nInfo->locked > 0) {
           $contents[] = array('align' => 'center', 'text' => 

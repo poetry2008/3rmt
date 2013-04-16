@@ -535,34 +535,9 @@ require("includes/note_js.php");
 <?php
     }
 ?>
-      <!-- <tr>
-        <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-      </tr>
-      <tr>
-        <td class="formAreaTitle"><?php echo CATEGORY_ADDRESS; ?></td>
-      </tr>
-      <tr>
-        <td class="formArea"><table border="0" cellspacing="2" cellpadding="2">
-<?php
-    $address_form->printCategoryAddress();
-?>
-        </table></td>
-      </tr>
-      <tr>
-        <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-      </tr>
-      <tr>
-        <td class="formAreaTitle"><?php echo CATEGORY_CONTACT; ?></td>
-      </tr>
-      <tr>
-        <td class="formArea"><table border="0" cellspacing="2" cellpadding="2">
-          <tr>
-            <td class="main"><?php echo ENTRY_TELEPHONE_NUMBER; ?></td>
-            <td class="main"><?php echo tep_draw_input_field('customers_telephone', $cInfo->customers_telephone, 'maxlength="32"', true); ?></td>
-          </tr>
-        </table></td>
-      </tr> -->
-    <?php if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {//Add Point System 
+    <?php 
+    if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
+      //Add Point System 
     $cpoint_query = tep_db_query("select point ,reset_flag,reset_success from " . TABLE_CUSTOMERS . " where customers_id = '".$_GET['cID']."'");
     $cpoint = tep_db_fetch_array($cpoint_query);
     ?>
@@ -769,15 +744,15 @@ require("includes/note_js.php");
  case 'confirm' 确认正确的客户信息 
  ---------------------------------*/
     case 'confirm':
-      $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_CUSTOMER . '</b>');
+      $heading[] = array('text' => '' . TEXT_INFO_HEADING_DELETE_CUSTOMER . '');
 
       $contents = array('form' => tep_draw_form('customers', FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cInfo->customers_id . '&action=deleteconfirm'));
-      $contents[] = array('text' => TEXT_DELETE_INTRO . '<br><br><b>' . tep_get_fullname($cInfo->customers_firstname, $cInfo->customers_lastname) . '</b>');
+      $contents[] = array('text' => TEXT_DELETE_INTRO . '<br><br>' . tep_get_fullname($cInfo->customers_firstname, $cInfo->customers_lastname) . '');
       if ($cInfo->number_of_reviews > 0) $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('delete_reviews', 'on', true) . ' ' . sprintf(TEXT_DELETE_REVIEWS, $cInfo->number_of_reviews)); $contents[] = array('align' => 'center', 'text' => '<br>' .tep_html_element_submit(IMAGE_DELETE) . ' <a class = "new_product_reset" href="' .  tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' .  $cInfo->customers_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     default:
       if (isset($cInfo) && is_object($cInfo)) {
-        $heading[] = array('text' => '<b>' . tep_get_fullname($cInfo->customers_firstname, $cInfo->customers_lastname) . '</b>');
+        $heading[] = array('text' => '' . tep_get_fullname($cInfo->customers_firstname, $cInfo->customers_lastname) . '');
 
         $contents[] = array('align' => 'center', 'text' => '<a class =
             "new_product_reset" href="' .  tep_href_link(FILENAME_CUSTOMERS,

@@ -96,12 +96,9 @@ if($order_exists == true){
   <div class="compatible">
   <table border='0' bgcolor='#7c6bce' width='100%'>
       <tr>
-        <td class="main"><font color="#ffffff"><b><?php echo CREATE_ORDER_STEP_ONE;?></b></font></td>
+        <td class="main"><font color="#ffffff"><?php echo CREATE_ORDER_STEP_ONE;?></font></td>
       </tr>
     </table>
-  <?php 
-  //if ($_SERVER['PHP_SELF'] != '/admin/create_order_process.php') {
-  ?>
   <p class="pageHeading"><?php echo CREATE_ORDER_TITLE_TEXT;?></p>
 <?php
                                                                 //显示用户查询表单
@@ -113,10 +110,6 @@ if($order_exists == true){
   echo '</form>' . "\n";
 ?>
   <br>
-  <?php 
-  //}
-?>
-
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
       <td class="pageHeading">

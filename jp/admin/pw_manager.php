@@ -781,7 +781,7 @@ require("includes/note_js.php");
       </td>
     </tr>
     <tr>
-      <td>
+      <td valign="top">
        <?php tep_pw_site_filter(FILENAME_PW_MANAGER);?>
     <table border="0" width="100%" cellspacing="0" cellpadding="2" id='orders_list_table'>
     <tr class="dataTableHeadingRow">
@@ -932,7 +932,7 @@ require("includes/note_js.php");
           break;
 
       }
-      $priority_str .= "' ><b>".$pw_manager_row['priority']."</b></font>";
+      $priority_str .= "' >".$pw_manager_row['priority']."</font>";
       echo "<td class='dataTableContent' ".$onclick." >".$priority_str."</td>";
       echo "<td class='dataTableContent' >"
         ."<a target='_blank' href='" 
@@ -1012,7 +1012,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
    default 右侧默认页面
 ------------------------------------------------------*/
   case 'new':
-      $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_NEW . '</b>');
+      $heading[] = array('text' => '' . TEXT_INFO_HEADING_NEW . '');
 
       $contents = array('form' => tep_draw_form('pw_manager', FILENAME_PW_MANAGER,
             'page=' . $_GET['page'] . '&type='.$_GET['type'].'&sort='.$_GET['sort'].'&action=insert', 'post',
@@ -1088,7 +1088,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
     break;
   case 'edit':
       
-      $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_EDIT . '</b>');
+      $heading[] = array('text' => '' . TEXT_INFO_HEADING_EDIT . '');
       $contents = array('form' => tep_draw_form('pw_manager', FILENAME_PW_MANAGER,
             'page=' . $_GET['page'] . '&site_id='.$site_id.'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&action=update&pw_id='.$pwInfo->id, 'post',
             'enctype="multipart/form-data" onsubmit="return valdata(this)"'));
@@ -1176,12 +1176,12 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           );
     break;
     case 'delete':
-      $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_PW_MANAGER . '</b>');
+      $heading[] = array('text' => '' . TEXT_INFO_HEADING_DELETE_PW_MANAGER . '');
 
       $contents = array('form' => tep_draw_form('pw_manager', FILENAME_PW_MANAGER,
             'page=' . $_GET['page'] . '&pw_id=' . $pwInfo->id . '&action=deleteconfirm'));
       $contents[] = array('text' => TEXT_INFO_DELETE_INTRO);
-      $contents[] = array('text' => '<br><b>' . $pwInfo->title . '</b>');
+      $contents[] = array('text' => '<br>' . $pwInfo->title . '');
       $contents[] = array('align' => 'center', 'text' => '<br>' .
           "<button type='submit' >".TEXT_BUTTON_DELETE."</button>"
           . '&nbsp;' .

@@ -194,10 +194,10 @@ require("includes/note_js.php");
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td class="main" valign="top">
-      <b><?php echo ENTRY_SITE; ?>:</b> <?php echo tep_site_pull_down_menu();?><br>
-      <b><?php echo ENTRY_PRODUCT; ?></b> <?php echo $rInfo->products_name; ?><br>
-      <b><?php echo ENTRY_FROM; ?></b> <input type="text" name="customers_name" value="" /> <br>
-      <b><?php echo ENTRY_DATE; ?></b> 
+      <?php echo ENTRY_SITE; ?>: <?php echo tep_site_pull_down_menu();?><br>
+      <?php echo ENTRY_PRODUCT; ?><?php echo $rInfo->products_name; ?><br>
+      <?php echo ENTRY_FROM; ?> <input type="text" name="customers_name" value="" /> <br>
+      <?php echo ENTRY_DATE; ?> 
   <select name='year'>
   <?php for ($i=0;$i<10;$i++) {?>
     <option value="<?php echo date('Y')-$i;?>" <?php $i==intval(date('Y')) && print('selected');?>><?php echo date('Y')-$i;?></option>
@@ -224,16 +224,15 @@ require("includes/note_js.php");
   <?php }?>
   </select>
   <br>
-      <b><?php echo TEXT_PRODUCTS_STATUS; ?></b> <?php echo tep_draw_radio_field('reviews_status', '1') . '&nbsp;' . TEXT_PRODUCT_AVAILABLE . '&nbsp;' . tep_draw_radio_field('reviews_status', '0', 1) . '&nbsp;' . TEXT_PRODUCT_NOT_AVAILABLE; ?>
+      <?php echo TEXT_PRODUCTS_STATUS; ?> <?php echo tep_draw_radio_field('reviews_status', '1') . '&nbsp;' . TEXT_PRODUCT_AVAILABLE . '&nbsp;' . tep_draw_radio_field('reviews_status', '0', 1) . '&nbsp;' . TEXT_PRODUCT_NOT_AVAILABLE; ?>
       </td>
-            <td class="main" align="right" valign="top"><?php //echo tep_image(HTTP_CATALOG_SERVER . DIR_WS_CATALOG_IMAGES . $rInfo->products_image, $rInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"'); ?></td>
           </tr>
         </table></td>
       </tr>
       <tr>
         <td><table witdh="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td class="main" valign="top" colspan='2'><b><?php echo ENTRY_REVIEW; ?></b><br><br><?php echo tep_draw_textarea_field('reviews_text', 'soft', '60', '15', '', 'id="reviews_text" onkeypress="word_count(this)" onchange="word_count(this)"'); ?></td>
+            <td class="main" valign="top" colspan='2'><?php echo ENTRY_REVIEW; ?><br><br><?php echo tep_draw_textarea_field('reviews_text', 'soft', '60', '15', '', 'id="reviews_text" onkeypress="word_count(this)" onchange="word_count(this)"'); ?></td>
           </tr>
           <tr>
             <td class="smallText"><?php echo REVIEWS_CHARACTER_TOTAL;?><span id="count_box"></span></td>
@@ -245,7 +244,7 @@ require("includes/note_js.php");
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
       </tr>
       <tr>
-        <td class="main"><b><?php echo ENTRY_RATING; ?></b>&nbsp;<?php echo TEXT_BAD; ?>&nbsp;<?php for ($i=1; $i<=5; $i++) echo tep_draw_radio_field('reviews_rating', $i, '', $i == 5) . '&nbsp;'; echo TEXT_GOOD; ?></td>
+        <td class="main"><?php echo ENTRY_RATING; ?>&nbsp;<?php echo TEXT_BAD; ?>&nbsp;<?php for ($i=1; $i<=5; $i++) echo tep_draw_radio_field('reviews_rating', $i, '', $i == 5) . '&nbsp;'; echo TEXT_GOOD; ?></td>
       </tr>
       <tr>
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
@@ -310,10 +309,10 @@ require("includes/note_js.php");
           <tr>
             <td class="main" valign="top">
 	    <input type="hidden" name="user_update" value="<?php echo $user_info['name']?>">
-      <b><?php echo ENTRY_SITE; ?>:</b> <?php echo $reviews['site_name']; ?><br>
-      <b><?php echo ENTRY_PRODUCT; ?></b> <?php echo $rInfo->products_name; ?><br>
-      <b><?php echo ENTRY_FROM; ?></b> <input type="text" name="customers_name" value="<?php echo tep_output_string_protected($rInfo->customers_name); ?>" /><br>
-      <b><?php echo ENTRY_DATE; ?></b> <?php //echo tep_date_short($rInfo->date_added); ?>
+      <?php echo ENTRY_SITE; ?>: <?php echo $reviews['site_name']; ?><br>
+      <?php echo ENTRY_PRODUCT; ?> <?php echo $rInfo->products_name; ?><br>
+      <?php echo ENTRY_FROM; ?> <input type="text" name="customers_name" value="<?php echo tep_output_string_protected($rInfo->customers_name); ?>" /><br>
+      <?php echo ENTRY_DATE; ?> 
 
   <select name='year'>
   <?php for ($i=0;$i<10;$i++) {?>
@@ -343,7 +342,7 @@ require("includes/note_js.php");
       
       
       <br>
-      <b><?php echo TEXT_PRODUCTS_STATUS; ?></b> <?php echo tep_draw_radio_field('reviews_status', '1', $in_status) . '&nbsp;' . TEXT_PRODUCT_AVAILABLE . '&nbsp;' . tep_draw_radio_field('reviews_status', '0', $out_status) . '&nbsp;' . TEXT_PRODUCT_NOT_AVAILABLE; ?>
+      <?php echo TEXT_PRODUCTS_STATUS; ?><?php echo tep_draw_radio_field('reviews_status', '1', $in_status) . '&nbsp;' . TEXT_PRODUCT_AVAILABLE . '&nbsp;' . tep_draw_radio_field('reviews_status', '0', $out_status) . '&nbsp;' . TEXT_PRODUCT_NOT_AVAILABLE; ?>
 
       </td>
             <td class="main" align="right" valign="top"><?php echo tep_image(HTTP_CATALOG_SERVER . DIR_WS_CATALOG_IMAGES . $rInfo->products_image, $rInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"'); ?></td>
@@ -353,7 +352,7 @@ require("includes/note_js.php");
       <tr>
         <td><table witdh="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td class="main" valign="top" colspan='2'><b><?php echo ENTRY_REVIEW; ?></b><br><br><?php echo tep_draw_textarea_field('reviews_text', 'soft', '60', '15', $rInfo->reviews_text, 'id="reviews_text" onkeypress="word_count(this)" onchange="word_count(this)"'); ?></td>
+            <td class="main" valign="top" colspan='2'><?php echo ENTRY_REVIEW; ?><br><br><?php echo tep_draw_textarea_field('reviews_text', 'soft', '60', '15', $rInfo->reviews_text, 'id="reviews_text" onkeypress="word_count(this)" onchange="word_count(this)"'); ?></td>
           </tr>
           <tr>
             <td class="smallText"><?php echo REVIEWS_CHARACTER_TOTAL;?><span id="count_box"></span></td>
@@ -365,7 +364,7 @@ require("includes/note_js.php");
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
       </tr>
       <tr>
-        <td class="main"><b><?php echo ENTRY_RATING; ?></b>&nbsp;<?php echo TEXT_BAD; ?>&nbsp;<?php for ($i=1; $i<=5; $i++) echo tep_draw_radio_field('reviews_rating', $i, '', $rInfo->reviews_rating) . '&nbsp;'; echo TEXT_GOOD; ?></td>
+        <td class="main"><?php echo ENTRY_RATING; ?>&nbsp;<?php echo TEXT_BAD; ?>&nbsp;<?php for ($i=1; $i<=5; $i++) echo tep_draw_radio_field('reviews_rating', $i, '', $rInfo->reviews_rating) . '&nbsp;'; echo TEXT_GOOD; ?></td>
       </tr>
       <tr>
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
@@ -376,7 +375,6 @@ require("includes/note_js.php");
 <?php
   } elseif (isset($_GET['action']) && $_GET['action'] == 'preview') {
     if ($_POST) {
-      //print_r($_POST);
       $rInfo = new objectInfo($_POST);
     } else {
       $reviews_query = tep_db_query("
@@ -418,7 +416,7 @@ require("includes/note_js.php");
       <tr><?php echo tep_draw_form('update', FILENAME_REVIEWS, 'page=' . $_GET['page'] . (isset($_GET['lsite_id'])?('&lsite_id='.$_GET['lsite_id']):'').'&rID=' . $_GET['rID'] . '&action=update', 'post', 'enctype="multipart/form-data"'); ?>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td class="main" valign="top"><b><?php echo ENTRY_PRODUCT; ?></b> <?php echo $rInfo->products_name; ?><br><b><?php echo ENTRY_FROM; ?></b> <?php echo tep_output_string_protected($_POST['customers_name']); ?><br><br><b><?php echo ENTRY_DATE; ?></b> <?php echo tep_date_short(date('Y-m-d H:i:s', strtotime($_POST['year'].'-'.$_POST['m'].'-'.$_POST['d'].' '.$_POST['h'].':'.$_POST['i'].':'.$_POST['s']))); ?></td>
+            <td class="main" valign="top"><?php echo ENTRY_PRODUCT; ?><?php echo $rInfo->products_name; ?><br><?php echo ENTRY_FROM; ?> <?php echo tep_output_string_protected($_POST['customers_name']); ?><br><br><?php echo ENTRY_DATE; ?> <?php echo tep_date_short(date('Y-m-d H:i:s', strtotime($_POST['year'].'-'.$_POST['m'].'-'.$_POST['d'].' '.$_POST['h'].':'.$_POST['i'].':'.$_POST['s']))); ?></td>
             <td class="main" align="right" valign="top"><?php echo tep_image(HTTP_CATALOG_SERVER . DIR_WS_CATALOG_IMAGES . $rInfo->products_image, $rInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"'); ?></td>
           </tr>
         </table>
@@ -426,7 +424,7 @@ require("includes/note_js.php");
       <tr>
         <td><table witdh="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td valign="top" class="main"><b><?php echo ENTRY_REVIEW; ?></b><br><br><?php echo nl2br(tep_db_output(tep_break_string($rInfo->reviews_text, 15))); ?></td>
+            <td valign="top" class="main"><?php echo ENTRY_REVIEW; ?><br><br><?php echo nl2br(tep_db_output(tep_break_string($rInfo->reviews_text, 15))); ?></td>
           </tr>
         </table></td>
       </tr>
@@ -434,7 +432,7 @@ require("includes/note_js.php");
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
       </tr>
       <tr>
-        <td class="main"><b><?php echo ENTRY_RATING; ?></b>&nbsp;<?php echo tep_image(DIR_WS_CATALOG_IMAGES . 'stars_' . $rInfo->reviews_rating . '.gif', sprintf(TEXT_OF_5_STARS, $rInfo->reviews_rating)); ?>&nbsp;<small>[<?php echo sprintf(TEXT_OF_5_STARS, $rInfo->reviews_rating); ?>]</small></td>
+        <td class="main"><?php echo ENTRY_RATING; ?>&nbsp;<?php echo tep_image(DIR_WS_CATALOG_IMAGES . 'stars_' . $rInfo->reviews_rating . '.gif', sprintf(TEXT_OF_5_STARS, $rInfo->reviews_rating)); ?>&nbsp;<small>[<?php echo sprintf(TEXT_OF_5_STARS, $rInfo->reviews_rating); ?>]</small></td>
       </tr>
       <tr>
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
@@ -592,16 +590,16 @@ require("includes/note_js.php");
  case 'delete'  删除评论 
  --------------------------------*/
       case 'delete':
-        $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_REVIEW . '</b>');
+        $heading[] = array('text' => '' . TEXT_INFO_HEADING_DELETE_REVIEW . '');
 
         $contents = array('form' => tep_draw_form('reviews', FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' . $rInfo->reviews_id . '&action=deleteconfirm'.(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')));
         $contents[] = array('text' => TEXT_INFO_DELETE_REVIEW_INTRO);
-        $contents[] = array('text' => '<br><b>' . $rInfo->products_name . '</b>');
+        $contents[] = array('text' => '<br>' . $rInfo->products_name . '');
         $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_DELETE) . ' <a href="' .  tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' .  $rInfo->reviews_id) .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'') . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>');
         break;
       default:
       if (isset($rInfo) && is_object($rInfo)) {
-        $heading[] = array('text' => '<b>' . $rInfo->products_name . '</b>');
+        $heading[] = array('text' => '' . $rInfo->products_name . '');
 
         $contents[] = array('align' => 'center', 'text' => 
           '<a href="' . tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] .  '&rID=' . $rInfo->reviews_id . '&action=edit' .  (isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a>' . ($ocertify->npermission == 15 ? (' <a href="' .  tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' .  $rInfo->reviews_id . '&action=delete' .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'):'')
@@ -624,8 +622,6 @@ $contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .tep_datetime_short($rInfo-
 $contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .TEXT_UNSET_DATA);
 }
 
-//        $contents[] = array('text' => '<br>' . TEXT_INFO_DATE_ADDED . ' ' . tep_date_short($rInfo->date_added));
-//        if (tep_not_null($rInfo->last_modified)) $contents[] = array('text' => TEXT_INFO_LAST_MODIFIED . ' ' . tep_date_short($rInfo->last_modified));
         $contents[] = array('text' => '<br>' . tep_info_image('products/'.$rInfo->products_image, $rInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, $rInfo->site_id));
         $contents[] = array('text' => '<br>' . TEXT_INFO_REVIEW_AUTHOR . ' ' . tep_output_string_protected($rInfo->customers_name));
         $contents[] = array('text' => TEXT_INFO_REVIEW_RATING . ' ' . tep_image(HTTP_CATALOG_SERVER . DIR_WS_CATALOG_IMAGES . 'stars_' . $rInfo->reviews_rating . '.gif'));

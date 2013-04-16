@@ -205,7 +205,7 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                       $pic_info_table_title[] = array('align' => 'left', 'params' => 'class=dataTableHeadingContent', 'text' => TABLE_HEADING_MARKS_PIC_LIST_NAME);
                       $pic_info_table_title[] = array('align' => 'left', 'params' => 'class=dataTableHeadingContent', 'text' => TABLE_HEADING_MARKS_PIC_LIST_TITLE);
                       $pic_info_table_title[] = array('align' => 'left', 'params' => 'class=dataTableHeadingContent', 'text' => TABLE_HEADING_MARKS_PIC_LIST_SORT);
-                      $pic_info_table_title[] = array('align' => 'right', 'params' => 'class=dataTableHeadingContent width="25"', 'text' => TABLE_HEADING_ACTION);
+                      $pic_info_table_title[] = array('align' => 'right', 'params' => 'class=dataTableHeadingContent width="30"', 'text' => TABLE_HEADING_ACTION);
                       $pic_info_table_list_row[] = array('params' => 'class="dataTableHeadingRow"', 'text' => $pic_info_table_title); 
                       
                       $pic_list_query = tep_db_query("select * from ".TABLE_CUSTOMERS_PIC_LIST." order by sort_order asc");

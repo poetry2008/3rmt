@@ -307,7 +307,6 @@ require("includes/note_js.php");
     $latest_news_query = tep_db_query($latest_news_query_raw);
     
     while ($latest_news = tep_db_fetch_array($latest_news_query)) {
-      //$latest_news_count++;
       $rows++;
       
       if ( ((!isset($_GET['latest_news_id']) || !$_GET['latest_news_id']) || ($_GET['latest_news_id'] == $latest_news['news_id'])) && (!isset($selected_item) || !$selected_item) && (!isset($_GET['action']) || substr($_GET['action'], 0, 4) != 'new_') ) {
@@ -385,11 +384,11 @@ if (isset($_GET['latest_news_id']) and $latest_news['news_id'] == $_GET['latest_
    default 右侧默认页面     
 ------------------------------------------------------*/
       case 'delete_latest_news':
-        $heading[] = array('text'   => '<b>' . TEXT_INFO_HEADING_DELETE_ITEM . '</b>');
+        $heading[] = array('text'   => '' . TEXT_INFO_HEADING_DELETE_ITEM . '');
         
         $contents = array('form'    => tep_draw_form('news', FILENAME_LATEST_NEWS, 'action=delete_latest_news_confirm'.(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):'')) . tep_draw_hidden_field('latest_news_id', $_GET['latest_news_id']));
         $contents[] = array('text'  => TEXT_DELETE_ITEM_INTRO);
-        $contents[] = array('text'  => '<br><b>' . $selected_item['headline'] . '</b>');
+        $contents[] = array('text'  => '<br>' . $selected_item['headline'] . '');
         
         $contents[] = array('align' => 'center',
                             'text'  => '<br>' .  tep_html_element_submit(IMAGE_DELETE) . ' <a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $selected_item['news_id'].(isset($_GET['page'])?('&page='.$_GET['page']):'')) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>');
@@ -399,7 +398,7 @@ if (isset($_GET['latest_news_id']) and $latest_news['news_id'] == $_GET['latest_
         if ($rows > 0) {
           if (is_array($selected_item)) { 
             //an item is selected, so make the side box
-            $heading[] = array('text' => '<b>' . $selected_item['headline'] . '</b>');
+            $heading[] = array('text' => '' . $selected_item['headline'] . '');
 
             $contents[] = array('align' => 'center', 
                                 'text' => '<a href="' .  tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $selected_item['news_id'] .  '&action=new_latest_news') .  (isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):'').'">' . tep_html_element_button(IMAGE_EDIT) . '</a> <a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $selected_item['news_id'] .  '&action=delete_latest_news'.  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').  (isset($_GET['page'])?('&page='.$_GET['page']):'')) .  '">' . tep_html_element_button(IMAGE_DELETE) .  '</a>');
@@ -423,7 +422,7 @@ $contents[] = array('text' => TEXT_DATE_UPDATE. '&nbsp;'.TEXT_UNSET_DATA);
 }
           }
         } else { // create category/product info
-          $heading[] = array('text' => '<b>' . EMPTY_CATEGORY . '</b>');
+          $heading[] = array('text' => '' . EMPTY_CATEGORY . '');
 
           $contents[] = array('text' => sprintf(TEXT_NO_CHILD_CATEGORIES_OR_PRODUCTS, $parent_categories_name));
         }

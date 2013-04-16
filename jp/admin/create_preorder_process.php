@@ -462,7 +462,7 @@ require("includes/note_js.php");
 <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
   <table border='0' bgcolor='#7c6bce' width='100%'>
       <tr>
-        <td class="main"><font color="#ffffff"><b><?php echo TEXT_STEP_1 ?></b></font></td>
+        <td class="main"><font color="#ffffff"><?php echo TEXT_STEP_1 ?></font></td>
       </tr>
     </table>
  <?php if (empty($customer_id)) {?> 

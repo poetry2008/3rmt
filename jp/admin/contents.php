@@ -470,15 +470,15 @@ require("includes/note_js.php");
    default 右侧默认页面 
 ------------------------------------------------------*/
   case 'confirm':
-      $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_CONTENTS . '</b>');
+      $heading[] = array('text' => '' . TEXT_INFO_HEADING_DELETE_CONTENTS . '');
 
       $contents = array('form' => tep_draw_form('contents', FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&act=deleteconfirm'));
-      $contents[] = array('text' => TEXT_DELETE_INTRO . '<br><br><b>' . $c_title . '</b>');
+      $contents[] = array('text' => TEXT_DELETE_INTRO . '<br><br>' . $c_title . '');
       $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_DELETE) . ' <a href="' .  tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     default:
       if ($cID && tep_not_null($cID)) {
-    $heading[] = array('text' => '<b>' . $c_title . '</b>');
+    $heading[] = array('text' => '' . $c_title . '');
 
         $contents[] = array('align' => 'center', 'text' => '<br>'.TEXT_CONTENT_MSG.'<br>'.tep_draw_textarea_field('link','soft',30,5,'<a href="'.tep_catalog_href_link('page.php','pID='.(isset($_GET['cID'])?$_GET['cID']:'')).'">'.$c_title.'</a>').'<br><a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID .  '&action=edit') . '">' . tep_html_element_button(IMAGE_EDIT) . '</a>' .  ($ocertify->npermission == 15 ? ( ' <a href="' .  tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID .  '&action=confirm') . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'):''));
       }

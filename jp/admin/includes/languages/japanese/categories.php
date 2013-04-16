@@ -25,7 +25,7 @@ define('TEXT_PRODUCTS_VIRTUAL_QUANTITY', '架空在庫:');
 define('TEXT_DATE_ADDED', '登録日:');
 define('TEXT_DATE_AVAILABLE', '発売日:');
 define('TEXT_LAST_MODIFIED', '更新日:');
-define('TEXT_NO_CHILD_CATEGORIES_OR_PRODUCTS', '新しいカテゴリーまたは商品を追加してください<br>&nbsp;<br><b>%s</b>');
+define('TEXT_NO_CHILD_CATEGORIES_OR_PRODUCTS', '新しいカテゴリーまたは商品を追加してください<br>&nbsp;<br>%s');
 define('TEXT_PRODUCT_MORE_INFORMATION', 'もっと詳しい情報は、この商品の<a class="order_link" href="http://%s" target="blank">ウェブページをご覧ください</a>。');
 define('TEXT_PRODUCT_DATE_ADDED', 'この商品は %s にカタログに登録されました。');
 define('TEXT_PRODUCT_DATE_AVAILABLE', 'この商品は %s に入荷予定です。');
@@ -50,12 +50,12 @@ define('TEXT_INFO_HEADING_COPY_TO', 'コピー先');
 define('TEXT_DELETE_CATEGORY_INTRO', '本当にこのカテゴリーを削除しますか？');
 define('TEXT_DELETE_PRODUCT_INTRO', '本当にこの商品を削除しますか？');
 
-define('TEXT_DELETE_WARNING_CHILDS', '<b>警告:</b> このカテゴリーには %s 個のサブカテゴリーがリンクされています!');
-define('TEXT_DELETE_WARNING_PRODUCTS', '<b>警告:</b> このカテゴリーには %s 個の商品がリンクされています!');
+define('TEXT_DELETE_WARNING_CHILDS', '警告: このカテゴリーには %s 個のサブカテゴリーがリンクされています!');
+define('TEXT_DELETE_WARNING_PRODUCTS', '警告: このカテゴリーには %s 個の商品がリンクされています!');
 
-define('TEXT_MOVE_PRODUCTS_INTRO', '<b>%s</b> を移動する先のカテゴリーを選んでください');
-define('TEXT_MOVE_CATEGORIES_INTRO', '<b>%s</b> を移動する先のカテゴリーを選んでください');
-define('TEXT_MOVE', '<b>%s</b> の移動先:');
+define('TEXT_MOVE_PRODUCTS_INTRO', '%s を移動する先のカテゴリーを選んでください');
+define('TEXT_MOVE_CATEGORIES_INTRO', '%s を移動する先のカテゴリーを選んでください');
+define('TEXT_MOVE', '%s の移動先:');
 
 define('TEXT_NEW_CATEGORY_INTRO', '新しいカテゴリーの情報を入力してください');
 define('TEXT_CATEGORIES_NAME', '新しいカテゴリー:');
@@ -132,7 +132,7 @@ define('TEXT_PRODUCT_SMALLNUM_READ_ITEM_TWO', '&nbsp; 1:20,50:10,100:0');
 define('TEXT_PRODUCT_SMALLNUM_READ_ITEM_THREE', '&nbsp; 1個から49個までの加算値は20→商品単価は120円');
 define('TEXT_PRODUCT_SMALLNUM_READ_ITEM_FOUR', '&nbsp; 50個～99個までの加算値は10→商品単価は110円');
 define('TEXT_PRODUCT_SMALLNUM_READ_ITEM_FIVE', '&nbsp; 割引の場合は、加算値を-20の様なマイナス値にして下さい。');
-define('TEXT_PRODUCT_SMALLNUM_READ_ITEM_SIX', '&nbsp; <b>割引は未検証なので入力しないこと！</b>');
+define('TEXT_PRODUCT_SMALLNUM_READ_ITEM_SIX', '&nbsp; 割引は未検証なので入力しないこと！');
 define('TEXT_PRODUCT_KUSHUOMING_TEXT', '在庫計算する場合は入力してください。在庫を計算する場合は　基本設定→在庫管理　を設定してください。');
 define('TEXT_PRODUCT_XIANGMU_NAME', '項目名:');
 define('TEXT_PRODUCT_ATTONE_TEXT', 'テキスト1:');

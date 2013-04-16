@@ -117,7 +117,7 @@ define('SELECT_STEP_THREE', 'STEP 3:');
 define('SELECT_STEP_FOUR', 'STEP 4:');
 define('TEXT_CODE_HANDLE_FEE', '手数料:');
 define('TEXT_CODE_SHIPPING_FEE', '配送料:');
-define('EDIT_ORDERS_UPDATE_NOTICE', '変更したい内容を慎重に入力してください。<b>空白などの余分な文字が入力されていないかチェックするように！</b>');
+define('EDIT_ORDERS_UPDATE_NOTICE', '変更したい内容を慎重に入力してください。空白などの余分な文字が入力されていないかチェックするように！');
 define('EDIT_ORDERS_ID_TEXT', '注文番号:');
 define('EDIT_ORDERS_DATE_TEXT', '注文日:');
 define('EDIT_ORDERS_CUSTOMER_NAME', '顧客名:');

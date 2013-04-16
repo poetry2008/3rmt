@@ -106,9 +106,9 @@ require("includes/note_js.php");
   }
     echo '</P>';
     fclose($file);
-    echo "<font color='#CC0000' size='2'><b>".$cnt.NUMBERS_UP."</b></font>";
+    echo "<font color='#CC0000' size='2'>".$cnt.NUMBERS_UP."</font>";
   }else{ 
-    $image_upload_error = "<font color='#CC0000' size='2'><b>".UNABLE_UP."<br>".REFERENCE_CSV."</b></font>";
+    $image_upload_error = "<font color='#CC0000' size='2'>".UNABLE_UP."<br>".REFERENCE_CSV."</font>";
     ?>
 <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>

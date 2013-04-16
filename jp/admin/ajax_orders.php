@@ -212,11 +212,7 @@ if ($_POST['orders_id'] &&
         $next_mark = '';
       }
     } else {
-      #if ($ocertify->npermission) {
         $today_color = 'black';
-        #} else {
-        #$today_color = '#999';
-        #}
         $next_mark = '';
     }
 
@@ -244,14 +240,10 @@ if ($_POST['orders_id'] &&
 					. 'oID='.$orders['orders_id']);?>';">
                                                                                                                         <a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $orders['orders_id'] . '&action=edit');?>"><?php echo tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW);?></a>&nbsp;
     <a href="<?php echo tep_href_link('orders.php', 'cEmail=' .  tep_output_string_protected($orders['customers_email_address']));?>"><?php echo tep_image(DIR_WS_ICONS . 'search.gif', BEFORE_ORDER_TEXT);?></a>
-                                                                                                                                                                                                           <?php
-                                                                                                                                                                                                           if (false) {?>
-                                                                                                                                                                                                           &nbsp;<a href="<?php echo tep_href_link('customers.php', 'page=1&cID=' .  tep_output_string_protected($orders['customers_id']) .  '&action=edit');?>"><?php echo tep_image(DIR_WS_ICONS .  'arrow_r_red.gif', CUSTOMER_INFO_TEXT);?></a>&nbsp;&nbsp;
-                                                                                                                                                                                                           <?php }?>
                                                                                                                                                                                                            <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
                                                                                                                                                                                                            <font color="#999">
       <?php }?>
-      <a style="text-decoration:underline;" href="<?php echo tep_href_link('customers.php', 'page=1&cID='.tep_output_string_protected($orders['customers_id']).'&action=edit');?>"><b><?php echo tep_output_string_protected($orders['customers_name']);?></b></a>
+      <a style="text-decoration:underline;" href="<?php echo tep_href_link('customers.php', 'page=1&cID='.tep_output_string_protected($orders['customers_id']).'&action=edit');?>"><?php echo tep_output_string_protected($orders['customers_name']);?></a>
                     <?php 
                     $customers_info_raw = tep_db_query("select pic_icon from ".TABLE_CUSTOMERS." where customers_id = '".$orders['customers_id']."'"); 
                     $customers_info_res = tep_db_fetch_array($customers_info_raw);
@@ -979,7 +971,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= tep_image(DIR_WS_IMAGES . 'icon_info.gif',IMAGE_ICON_INFO,16,16)."&nbsp;";
   $html_str .= '</td>'; 
   $html_str .= '<td align="left">'; 
-  $html_str .= '<b>'.$campaign_res['title'].'</b>'; 
+  $html_str .= $campaign_res['title']; 
   $html_str .= '</td>'; 
   $html_str .= '<td align="right">'; 
   $html_str .= get_campaign_link_page($campaign_res['id'], $campaign_res['site_id'], $_POST['st_id']); 
@@ -1252,7 +1244,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= tep_image(DIR_WS_IMAGES . 'icon_info.gif',IMAGE_ICON_INFO,16,16)."&nbsp;";
   $html_str .= '</td>'; 
   $html_str .= '<td align="left">'; 
-  $html_str .= '<b>'.HEADING_TITLE.'</b>'; 
+  $html_str .= HEADING_TITLE; 
   $html_str .= '</td>'; 
   $html_str .= '<td align="right">'; 
   $html_str .= '<a href="javascript:void(0);" onclick="close_campaign_info()">X</a>';  

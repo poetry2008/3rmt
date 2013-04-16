@@ -31,7 +31,7 @@
               </tr>
               <tr>
                 <td class="main">&nbsp;<?php echo ENTRY_EMAIL_ADDRESS; ?></td>
-                <td class="main">&nbsp;<?php echo tep_draw_hidden_field('email_address', $email_address) . '<font color="red"><b>' . $email_address . '</b></font>'; ?><?php if (isset($entry_email_address_error) && $entry_email_address_error == true) { echo '&nbsp;&nbsp;<font color="red">'.CREATE_PREORDER_MUST_INPUT.'</font>'; }; ?></td>
+                <td class="main">&nbsp;<?php echo tep_draw_hidden_field('email_address', $email_address) . '<font color="red">' . $email_address . '</font>'; ?><?php if (isset($entry_email_address_error) && $entry_email_address_error == true) { echo '&nbsp;&nbsp;<font color="red">'.CREATE_PREORDER_MUST_INPUT.'</font>'; }; ?></td>
               </tr>
             </table></td>
         </tr>
@@ -50,7 +50,7 @@
                 <td class="main">&nbsp;
                 <?php 
                 $s_account = tep_get_customer_by_id((int)$customer_id); 
-                echo isset($s_account) && $s_account?( '<font color="#FF0000"><b>'.tep_get_site_romaji_by_id($s_account['site_id']).'</b></font>'.tep_draw_hidden_field('site_id', $s_account['site_id'])):(tep_site_pull_down_menu($site_id) . '&nbsp;' . ENTRY_SITE_TEXT); ?></td>
+                echo isset($s_account) && $s_account?( '<font color="#FF0000">'.tep_get_site_romaji_by_id($s_account['site_id']).'</font>'.tep_draw_hidden_field('site_id', $s_account['site_id'])):(tep_site_pull_down_menu($site_id) . '&nbsp;' . ENTRY_SITE_TEXT); ?></td>
               </tr>
             </table></td>
         </tr>
@@ -194,13 +194,13 @@ if(isset($_SESSION['create_preorder']['orders_products']) && !empty($_SESSION['c
               echo $currencies->format($new_products_temp_add['final_price'] * $new_products_temp_add['products_quantity'], true, $currency, $currency_value);
             }
             echo '</div></td>' . "\n" . 
-                 '<td class="' . $RowStyle . '" align="right"><div id="update_products['.$orders_products_id.'][c_price]"><b>';
+                 '<td class="' . $RowStyle . '" align="right"><div id="update_products['.$orders_products_id.'][c_price]">';
             if ($new_products_temp_add['final_price'] < 0) {
               echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($new_products_temp_add['final_price'], $new_products_temp_add['products_tax']) * $new_products_temp_add['products_quantity'], true, $currency, $currency_value)).'</font>'.TEXT_MONEY_SYMBOL;
             } else {
               echo $currencies->format(tep_add_tax($new_products_temp_add['final_price'], $new_products_temp_add['products_tax']) * $new_products_temp_add['products_quantity'], true, $currency, $currency_value);
             }
-            echo '</b></div></td>' . "\n" . 
+            echo '</div></td>' . "\n" . 
                  '</tr>' . "\n";
           }
           ?>
@@ -282,7 +282,7 @@ if(!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['c
     
     // 步骤1 原则分类 
       print "<tr>\n";
-      print "<td class='dataTableContent' width='70'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 1:</b></td>\n";
+      print "<td class='dataTableContent' width='70'>&nbsp;" . ADDPRODUCT_TEXT_STEP . " 1:</td>\n";
       print "<td class='dataTableContent' valign='top'>";
       echo "<form action='$PHP_SELF?oID=$oID&action=add_product$param_str' method='POST'>";
       echo "<table>";
@@ -308,7 +308,7 @@ if(!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['c
     if(($step > 1) && ($add_product_categories_id > 0))
     {
       print "<tr>\n";
-      print "<td class='dataTableContent'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 2: </b></td>\n";
+      print "<td class='dataTableContent'>&nbsp;" . ADDPRODUCT_TEXT_STEP . " 2: </td>\n";
       print "<td class='dataTableContent' valign='top'>";
       echo "<form action='$PHP_SELF?oID=$oID&action=add_product$param_str' method='POST'>";
       print "<table>";
@@ -353,7 +353,7 @@ if(!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['c
       if(!$hm_option->admin_whether_show($option_product['belong_to_option'], 1, $option_product['products_cflag']))
       {
         print "<tr>\n"; 
-        print "<td class=\"dataTableContent\" valign='top'>&nbsp;<b>".ADDPRODUCT_TEXT_STEP." 3: </b></td>\n"; 
+        print "<td class=\"dataTableContent\" valign='top'>&nbsp;".ADDPRODUCT_TEXT_STEP." 3: </td>\n"; 
         print "<td class=\"dataTableContent\" valign='top' colspan='2'><i>".ADDPRODUCT_TEXT_OPTIONS_NOTEXIST."</i></td>\n"; 
         print "</tr>\n"; 
         $step = 4; 
@@ -364,7 +364,7 @@ if(!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['c
       
         $p_cflag = tep_get_cflag_by_product_id($add_product_products_id);
         print "<tr>";
-        print "<td class='dataTableContent' valign='top'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td><td class='dataTableContent' valign='top'>";
+        print "<td class='dataTableContent' valign='top'>&nbsp;" . ADDPRODUCT_TEXT_STEP . " 3: </td><td class='dataTableContent' valign='top'>";
         print "<div class=\"pro_option\">"; 
         print "<form action='$PHP_SELF?oID=$oID&action=add_product$param_str' method='POST' name='aform'>\n";
         
@@ -389,7 +389,7 @@ if(!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['c
     if($step > 3)
     {
       echo "<tr><form action='$PHP_SELF?oID=$oID&action=add_product$param_str' method='POST' id='edit_order_id' name='edit_order_id'>\n";
-      echo "<td class='dataTableContent'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP .  " 4: </b></td>";
+      echo "<td class='dataTableContent'>&nbsp;" . ADDPRODUCT_TEXT_STEP .  " 4: </td>";
       $products_num = isset($_POST['add_product_quantity']) ? $_POST['add_product_quantity'] : 1;
       $products_price = isset($_POST['add_product_price']) ? $_POST['add_product_price'] : 0;
       echo '<td class="dataTableContent" valign="top">&nbsp;' .

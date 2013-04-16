@@ -219,7 +219,7 @@ require("includes/note_js.php");
   $contents = array();
 switch (isset($_GET['action'])? $_GET['action']:'') {
     case 'new':
-      $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_NEW_BILL_TEMPLATE . '</b>');
+      $heading[] = array('text' => '' . TEXT_INFO_HEADING_NEW_BILL_TEMPLATE . '');
 
       $contents = array('form' => tep_draw_form('bill_templates', FILENAME_BILL_TEMPLATES, 'page=' . $_GET['page'] . '&action=insert', 'post', 'enctype="multipart/form-data"'));
       $contents[] = array('text' => TEXT_INFO_INSERT_INTRO);
@@ -246,7 +246,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_INSERT) . '&nbsp;<a href="' .  tep_href_link(FILENAME_BILL_TEMPLATES, 'page=' . $_GET['page']) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     case 'edit':
-      $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_EDIT_BILL_TEMPLATE . '</b>');
+      $heading[] = array('text' => '' . TEXT_INFO_HEADING_EDIT_BILL_TEMPLATE . '');
 
       $contents = array('form' => tep_draw_form('bill_templates', FILENAME_BILL_TEMPLATES, 'page=' . $_GET['page'] . '&cID=' . $cInfo->id . '&action=save', 'post', 'enctype="multipart/form-data"'));
       $contents[] = array('text' => TEXT_INFO_EDIT_INTRO);
@@ -272,16 +272,16 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           tep_html_element_submit(IMAGE_SAVE) . '&nbsp;<a href="' .  tep_href_link(FILENAME_BILL_TEMPLATES, 'page=' . $_GET['page'] . '&cID=' .  $cInfo->id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     case 'delete':
-      $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_BILL_TEMPLATE . '</b>');
+      $heading[] = array('text' => '' . TEXT_INFO_HEADING_DELETE_BILL_TEMPLATE . '');
 
       $contents = array('form' => tep_draw_form('bill_templates', FILENAME_BILL_TEMPLATES, 'page=' . $_GET['page'] . '&cID=' . $cInfo->id . '&action=deleteconfirm'));
       $contents[] = array('text' => TEXT_INFO_DELETE_INTRO);
-      $contents[] = array('text' => '<br><b>' . $cInfo->name . '</b>');
+      $contents[] = array('text' => '<br>' . $cInfo->name . '');
       $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_DELETE) . '&nbsp;<a href="' .  tep_href_link(FILENAME_BILL_TEMPLATES, 'page=' . $_GET['page'] . '&cID=' .  $cInfo->id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     default:
       if (is_object($cInfo)) {
-        $heading[] = array('text' => '<b>' . $cInfo->name . '</b>');
+        $heading[] = array('text' => '' . $cInfo->name . '');
 
         $contents[] = array('align' => 'center', 'text' => '<a href="' . tep_href_link(FILENAME_BILL_TEMPLATES, 'page=' .  $_GET['page'] . '&cID=' . $cInfo->id . '&action=edit') . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a>' . ($ocertify->npermission == 15 ? (' <a href="' .  tep_href_link(FILENAME_BILL_TEMPLATES, 'page=' . $_GET['page'] .  '&cID=' . $cInfo->id . '&action=delete') . '">' . tep_html_element_button(IMAGE_DELETE) . '</a>'):'')
         );

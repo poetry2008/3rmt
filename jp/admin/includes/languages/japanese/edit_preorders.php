@@ -120,7 +120,7 @@ define('SELECT_STEP_TWO', 'STEP 2:');
 define('SELECT_STEP_THREE', 'STEP 3:');
 define('SELECT_STEP_FOUR', 'STEP 4:');
 define('TEXT_CODE_HANDLE_FEE', '手数料:');
-define('EDIT_ORDERS_UPDATE_NOTICE', '変更したい内容を慎重に入力してください。<b>空白などの余分な文字が入力されていないかチェックするように！</b>');
+define('EDIT_ORDERS_UPDATE_NOTICE', '変更したい内容を慎重に入力してください。空白などの余分な文字が入力されていないかチェックするように！');
 define('EDIT_ORDERS_ID_TEXT', '予約番号:');
 define('EDIT_ORDERS_DATE_TEXT', '予約日:');
 define('EDIT_ORDERS_CUSTOMER_NAME', '顧客名:');

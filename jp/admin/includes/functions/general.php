@@ -3191,7 +3191,6 @@ function tep_get_site_romaji_by_id($id){
   } else {
     return '';
   }
-#return isset($site['romaji'])?$site['romaji']:'';
 }
 
 /* -------------------------------------
@@ -3933,17 +3932,17 @@ function makeCheckbox($arrCategories,$selectValue = Fales,$startName='')
           if($select == $cate1['cid']) {
             $result .= '<li class="change_one_list_main"><input type = "checkbox"
               checked="checked" name="ocid[]" value =
-              "'.$cate1['cid'].'"><b>'.$cate1['cname']. '</b></li>';
+              "'.$cate1['cid'].'">'.$cate1['cname']. '</li>';
             $flag=false;
           }
         }
         if($flag) {
           $result .= '<li class="change_one_list_main"><input type = "checkbox" name="ocid[]" value =
-            "'.$cate1['cid'].'"><b>'.$cate1['cname']. '</b></li>';
+            "'.$cate1['cid'].'">'.$cate1['cname']. '</li>';
         }
       }else{
         $result .= '<li class="change_one_list_main"><input type = "checkbox" name="ocid[]" value =
-          "'.$cate1['cid'].'"><b>'.$cate1['cname']. '</b></li>';
+          "'.$cate1['cid'].'">'.$cate1['cname']. '</li>';
 
       }
     }
@@ -4298,7 +4297,7 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
   $str .= '<table border="0" cellpadding="2" cellspacing="0" class="popup_order_title" width="100%">';
   $str .= '<tr>';
   $str .= '<td width="22">'.tep_image(DIR_WS_IMAGES.'icon_info.gif', IMAGE_ICON_INFO,16,16).'&nbsp;</td>'; 
-  $str .= '<td align="left"><b>['.$orders['orders_id'].']&nbsp;&nbsp;'.tep_datetime_short_torihiki($orders['date_purchased']).'</b></td>'; 
+  $str .= '<td align="left">['.$orders['orders_id'].']&nbsp;&nbsp;'.tep_datetime_short_torihiki($orders['date_purchased']).'</td>'; 
   $str .= '<td align="right"><a href="javascript:void(0);" onclick="hideOrdersInfo(1);">X</a></td>';
   $str .= '</tr>';
   $str .= '</table>';
@@ -5328,8 +5327,6 @@ function tep_get_pay_day($time = null){
 function tep_display_google_results($from_url='', $c_type=false){
   // 谷歌关键字结果显示停止条件
   $stop_site_url = array(
-      //"iimy.co.jp",
-      //"www.iimy.co.jp",
       );
   $tmp_param_str = ''; 
   if ($c_type == true) {
@@ -7647,13 +7644,6 @@ function   tep_order_status_change($oID,$status){
     $pstatus = $cstatus;
 
     if ($site_id == 0) {
-      /*
-         $site_arr[] = '0'; 
-         $site_query = tep_db_query("select * from ".TABLE_SITES);
-         while ($site_res = tep_db_fetch_array($site_query)) {
-         $site_arr[] = $site_res['id']; 
-         }
-       */
       $site_arr = array($site_id); 
     } else {
       $site_arr = array($site_id); 

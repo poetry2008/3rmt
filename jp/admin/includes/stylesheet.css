@@ -26,7 +26,7 @@ h3
 h3 {
 	height:15px;
 	background:#888;
-	font-size:11px;
+	font-size:12px;
 	color:#fff;
 	margin:0;
 	line-height:15px;
@@ -72,49 +72,49 @@ a.headerLink:hover {
 	text-decoration: underline;                     
 }
 a.menuBoxHeading_Link:link {
-	font-size: 11px;
-	color: #000;                                
-	font-weight: bold;                              
-	text-decoration: none;                          
+	font-size: 12px;
+	color: #000;                                                   
+	text-decoration: none;  
+	font-weight: bold;                        
 }
 a.menuBoxHeading_Link:visited {
-	font-size: 11px;
-	color: #000;                                 
-	font-weight: bold;                              
-	text-decoration: none;                         
+	font-size: 12px;
+	color: #000;                                                              
+	text-decoration: none; 
+	font-weight: bold;                        
 }
 a.menuBoxHeading_Link:active {
-	font-size: 11px;
-	color: #000;                                
-	font-weight: bold;                              
-	text-decoration: none;                          
+	font-size: 12px;
+	color: #000;                                                           
+	text-decoration: none;
+	font-weight: bold;                         
 }
 a.menuBoxHeading_Link:hover {
-	font-size: 11px;
-	color: #000;                                 
-	font-weight: bold;                              
-	text-decoration: none;                          
+	font-size: 12px;
+	color: #000;                                                             
+	text-decoration: none;
+	font-weight: bold;                          
 }
 a.menuBoxContent_Link:link {
-	font-size: 11px;                                
+	font-size: 12px;                                
 	color: #000;                                 
 	font-weight: normal;                           
 	text-decoration: none;                          
 }
 a.menuBoxContent_Link:visited {
-	font-size: 11px;
+	font-size: 12px;
 	color: #000;                                
 	font-weight: normal;                           
 	text-decoration: none;                          
 }
 a.menuBoxContent_Link:active {
-	font-size: 11px;
+	font-size: 12px;
 	color: #000;                                 
 	font-weight: normal;                          
 	text-decoration: none;                         
 }
 a.menuBoxContent_Link:hover {
-	font-size: 11px;
+	font-size: 12px;
 	color: #000;                                
 	font-weight: normal;                           
 	text-decoration: underline;                     
@@ -172,7 +172,7 @@ header
 }
 .headerBarContent {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; 
-	font-size: 11px;                                
+	font-size: 12px;                                
 	color: #ffffff;                                 
 	font-weight: bold;                              
 	padding:2px;                               
@@ -199,31 +199,17 @@ header
 /* ---------------------------
 width 750px
 --------------------------- */
-@media all and (-webkit-min-device-pixel-ratio:0){
 .bottom_content{
-	float:right;
-	margin:0 -1px 5px 0;
-}}
-.bottom_content{
-	float:right;
 	margin-bottom:5px;
-}
-.bottom_content span{
-	float:left;
-	margin-top:6px;
-}
-.bottom_content .bottom_text{
-	float:left;
-	margin-top:5px;
+    min-width: 750px;
+    text-align: right;
+    width: 100%;
 }
 .bottom_content .bottom_input{
-	float:left;
-	margin-top:6px;
-	margin-top:2px\9;
+	margin-top:2px;
+	margin-top:0\9;
 }
-.bottom_content .bottom_input_button{
-	float:left;
-}
+
 .compatible{
 	min-width:564px;
 	*min-width:576px;
@@ -316,7 +302,7 @@ date
 }
 .dataTableHeadingContent {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; 
-	font-size: 11px;
+	font-size: 12px;
 	color: #ffffff;                                 
 	font-weight: bold; 
 	overflow:hidden;
@@ -442,7 +428,6 @@ account
 }
 .formAreaTitle {
 	font-size: 12px;                                
-	font-weight: bold;                              
 }
 /* ---------------------------
 attributes
@@ -466,7 +451,7 @@ miscellaneous
 	color: #ff0000;                                 
 }
 .smallText {
-	font-size: 10px;  
+	font-size: 12px;  
 	text-overflow:ellipsis;                              
 }
 .main {
@@ -516,7 +501,6 @@ order
 	border: 1px solid #000;
 	border-top: 2px solid #000;
 	border-left: 2px solid #000;
-	font-weight:bold;
 }
 .orders_flag_unchecked {
 	color: #000;
@@ -526,7 +510,6 @@ order
 	border: 1px solid #000;
 	border-bottom: 2px solid #000;
 	border-right: 2px solid #000;
-	font-weight:bold;
 }
 #orders_info,#orders_client,#orders_referer,#orders_history,#orders_comment ,#orders_answer,#orders_credit,#orders_telecom{
 	width:100%;
@@ -689,7 +672,7 @@ order
 }
 @media screen and (-webkit-min-device-pixel-ratio:0) {
 a.headerLink{
-	font-size:10px;!important;
+	font-size:12px;!important;
 }
 }
 .order_link{
@@ -710,7 +693,6 @@ a.headerLink{
 }
 #tep_site_filter .site_filter_selected a {
 	color: #fff;
-	font-weight: bold;
 }
 .readonly {
 	background: #ccc;
@@ -753,7 +735,6 @@ search table
 }
 .search_class_td {
 	font-size:12px;
-	font-weight:bold;
 }
 .questions_date {
 	border: 0;
@@ -1090,7 +1071,7 @@ add managermenu
 }
 .gotomenu_out_div{ 
 	float:right; 
-	font-size:10px;
+	font-size:12px;
 }
 .datatablecontent_warpper{
 	overflow:hidden;
@@ -1302,7 +1283,6 @@ assets search
 	margin-left:5px;
 	background-color:#676767;
 	color:#000;
-	font-weight:bold;
 	height:30px;
 	line-height:30px;
 }
@@ -1796,7 +1776,6 @@ mark
 	border: 1px solid #000;
 	border-top: 2px solid #000;
 	border-left: 2px solid #000;
-	font-weight:bold;
     width:10px;
 }
 .mark_flag_unchecked {
@@ -1821,7 +1800,6 @@ content
 --------------------------- */
 .content{
 	width:100%;
-	overflow:hidden;
 	min-width:750px;
 	width: expression(document.body.clientWidth < 750? "750px": "100%" );
 }
@@ -1932,7 +1910,7 @@ sidebar
 }
 .sidebar span,.sidebarover span,.sidebarselected span{ 
 	margin-right:5px;
-	font-size:11px;
+	font-size:12px;
 	color:#000000;
 }
 #col1, #col2, #col3, #col4, #col5, #col6, #col7, #col8{ width:150px;}
@@ -1956,7 +1934,7 @@ menusidebar
 	float:left;
 }
 .dataTableHeadingContent .title_link{
-    font-size: 11px;
+    font-size: 12px;
     font-weight:bold;
     color:#FFFFFF;
     text-decoration:underline;

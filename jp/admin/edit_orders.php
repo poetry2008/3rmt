@@ -835,7 +835,6 @@ if($address_error == false){
             // Again, because products are calculated in terms of default currency, we need to align shipping, custom etc. values with default currency
             $RunningTotal += $ot_value / $order->info['currency_value'];
 
-            //$RunningTotal -= $ot_value; // 返点折扣
 
         } else {
           $RunningTotal += $ot_value;
@@ -1680,7 +1679,7 @@ function add_option(){
 
     add_str += '<tr><td class="smallText" align="left"><?php echo EDIT_ORDERS_TOTALDETAIL_READ_ONE;?></td>'
       +'<td class="smallText" align="right" style="min-width:188px;"><INPUT type="button" id="button_add" value="<?php echo TEXT_BUTTON_ADD;?>" onclick="add_option();orders_session(\'orders_totals\','+(add_num+1)+');">&nbsp;<input style="text-align:right;" value="" size="7" name="update_totals['+add_num+'][title]" onkeyup="price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');">'
-            +'</td><td class="smallText" align="right"><input style="text-align:right;" id="update_total_'+add_num+'" value="" size="6" onkeyup="clearNewLibNum(this);price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');" name="update_totals['+add_num+'][value]"><input type="hidden" name="update_totals['+add_num+'][class]" value="ot_custom"><input type="hidden" name="update_totals['+add_num+'][total_id]" value="0"><b><?php echo TEXT_MONEY_SYMBOL;?></b></td>'
+            +'</td><td class="smallText" align="right"><input style="text-align:right;" id="update_total_'+add_num+'" value="" size="6" onkeyup="clearNewLibNum(this);price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');" name="update_totals['+add_num+'][value]"><input type="hidden" name="update_totals['+add_num+'][class]" value="ot_custom"><input type="hidden" name="update_totals['+add_num+'][total_id]" value="0"><?php echo TEXT_MONEY_SYMBOL;?></td>'
             +'<td><b><img height="17" width="1" border="0" alt="" src="images/pixel_trans.gif"></b></td></tr>'
             +'<tr id="add_option_total">'+add_option_total_str+'</tr>';
 
@@ -2963,32 +2962,32 @@ if (($action == 'edit') && ($order_exists == true)) {
     <span class="SubTitle"><?php echo MENUE_TITLE_CUSTOMER; ?></span>
     <table width="100%" border="0" class="dataTableRow" cellpadding="2" cellspacing="0">
     <tr>
-    <td class="main" valign="top" width="30%"><b><?php echo ENTRY_SITE;?>:</b></td>
+    <td class="main" valign="top" width="30%"><?php echo ENTRY_SITE;?>:</td>
     <td class="main" width="70%"><?php echo tep_get_site_name_by_order_id($oID);?></td>
     </tr>
     <tr>
-    <td class="main" valign="top" width="30%"><b><?php echo EDIT_ORDERS_ID_TEXT;?></b></td>
+    <td class="main" valign="top" width="30%"><?php echo EDIT_ORDERS_ID_TEXT;?></td>
     <td class="main" width="70%"><?php echo $oID;?></td>
     </tr>
     <tr>
-    <td class="main" valign="top"><b><?php echo EDIT_ORDERS_DATE_TEXT;?></b></td>
+    <td class="main" valign="top"><?php echo EDIT_ORDERS_DATE_TEXT;?></td>
     <td class="main"><?php echo tep_date_long($order->info['date_purchased']);?></td>
     </tr>
     <tr>
-    <td class="main" valign="top"><b><?php echo EDIT_ORDERS_CUSTOMER_NAME;?></b></td>
+    <td class="main" valign="top"><?php echo EDIT_ORDERS_CUSTOMER_NAME;?></td>
     <td class="main">
     <input name="update_customer_name" size="25" value="<?php echo tep_html_quotes(isset($_SESSION['orders_update_products'][$_GET['oID']]['update_customer_name']) ? $_SESSION['orders_update_products'][$_GET['oID']]['update_customer_name']: $order->customer['name']); ?>">
     <span class="smalltext"><?php echo EDIT_ORDERS_CUSTOMER_NAME_READ;?></span>
     </td>
     </tr>
     <tr>
-    <td class="main" valign="top"><b><?php echo EDIT_ORDERS_EMAIL;?></b></td>
+    <td class="main" valign="top"><?php echo EDIT_ORDERS_EMAIL;?></td>
     <td class="main"><input name="update_customer_email_address" size="45" value="<?php echo isset($_SESSION['orders_update_products'][$_GET['oID']]['update_customer_email_address']) ? $_SESSION['orders_update_products'][$_GET['oID']]['update_customer_email_address'] : $order->customer['email_address']; ?>"></td>
     </tr>
     <!-- End Addresses Block -->
     <!-- Begin Payment Block -->
     <tr>
-    <td class="main" valign="top"><b><?php echo EDIT_ORDERS_PAYMENT_METHOD;?></b></td>
+    <td class="main" valign="top"><?php echo EDIT_ORDERS_PAYMENT_METHOD;?></td>
     <td class="main">
 <?php 
       $pay_method = isset($_SESSION['orders_update_products'][$_GET['oID']]['payment_method']) ? $_SESSION['orders_update_products'][$_GET['oID']]['payment_method'] : payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE);
@@ -3133,7 +3132,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     </td>
     </tr>
     <tr>
-    <td class="main" valign="top"><b><?php echo EDIT_ORDERS_FETCHTIME;?></b></td>
+    <td class="main" valign="top"><?php echo EDIT_ORDERS_FETCHTIME;?></td>
     <td class="main">
     <?php
       $date_array = explode('_',$order->tori['date']);
@@ -3268,7 +3267,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       if($count_num > 0){
     ?>
     <tr>
-    <td class="main" valign="top"><a href="javascript:void(0);" onclick="address_show();"><font color="blue"><b><u><span id="address_font"><?php echo TEXT_SHIPPING_ADDRESS;?></span></u></b></font></a></td>
+    <td class="main" valign="top"><a href="javascript:void(0);" onclick="address_show();"><font color="blue"><u><span id="address_font"><?php echo TEXT_SHIPPING_ADDRESS;?></span></u></font></a></td>
     <td class="main">
     </td>
     </tr>
@@ -3530,7 +3529,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         }
         $orders_products_attributes_id = $all_show_option[$t_item_id]['id'];
         if(is_array($all_show_option[$t_item_id]['option_info'])){
-        $default_value = tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;")) == '' ? TEXT_UNSET_DATA : tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;"));
+        $default_value = tep_parse_input_field_data($all_show_option[$t_item_id]['option_info<b>']['value'], array("'"=>"&quot;")) == '' ? TEXT_UNSET_DATA : tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;"));
         echo '<br><div class="order_option_width">&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' 
           .tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;"))."<input type='hidden' onkeyup='recalc_order_price(\"".$oID."\", \"".$orders_products_id."\", \"2\", \"".$op_info_str."\",\"".$orders_products_list."\");price_total(\"".TEXT_MONEY_SYMBOL."\");' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' value='" .  (isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'])?tep_parse_input_field_data($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'], array("'"=>"&quot;")):tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;"))) . "'>" .
           '</div><div class="order_option_value">: ';
@@ -3654,12 +3653,12 @@ if (($action == 'edit') && ($order_exists == true)) {
       if (isset($_POST['update_products'][$orders_products_id]['ch_price'])) {
         $symbol_str = substr($_POST['update_products'][$orders_products_id]['ch_price'], 0, 1); 
         if ($symbol_str == '+') {
-          echo '<b>'.substr($_POST['update_products'][$orders_products_id]['ch_price'], 1).TEXT_MONEY_SYMBOL.'</b>'; 
+          echo substr($_POST['update_products'][$orders_products_id]['ch_price'], 1).TEXT_MONEY_SYMBOL; 
         } else {
-          echo '<b><font color="#ff0000">'.substr($_POST['update_products'][$orders_products_id]['ch_price'], 1).'</font>'.TEXT_MONEY_SYMBOL.'</b>'; 
+          echo '<font color="#ff0000">'.substr($_POST['update_products'][$orders_products_id]['ch_price'], 1).'</font>'.TEXT_MONEY_SYMBOL; 
         }
       } else {
-        echo '<b>'.$c_price_str.'</b>'; 
+        echo $c_price_str; 
       }
       
       
@@ -3769,63 +3768,63 @@ if (($action == 'edit') && ($order_exists == true)) {
       
       echo '  <tr id="add_option_total">' . "\n" .
         '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_OTTOTAL_READ.'</td>' . 
-        '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' . 
-        '    <td align="right" class="' . $TotalStyle . '"><b><div id="ot_total_id">';
+        '    <td align="right" class="' . $TotalStyle . '">' . $TotalDetails["Name"] . '</td>' . 
+        '    <td align="right" class="' . $TotalStyle . '"><div id="ot_total_id">';
       if($TotalDetails["Price"] >= 0 ){
         echo $currencies->ot_total_format(($TotalDetails["Price"]), true, $order->info['currency'], $order->info['currency_value']);
       }else{
         echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->ot_total_format(($TotalDetails["Price"]), true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
       }
-      echo '</div></b>' . 
+      echo '</div>' . 
         "<input name='update_totals[$TotalIndex][title]' type='hidden' value='" . trim($TotalDetails["Name"]) . "' size='" . strlen($TotalDetails["Name"]) . "' >" . 
         "<input name='update_totals[$TotalIndex][value]' type='hidden' value='" . $TotalDetails["Price"] . "' size='6' >" . 
         "<input name='update_totals[$TotalIndex][class]' type='hidden' value='" . $TotalDetails["Class"] . "'>\n" . 
-        "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . '</b></td>' . 
-        '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
+        "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . '</td>' . 
+        '    <td align="right" class="' . $TotalStyle . '"><b>' .  tep_draw_separator('pixel_trans.gif', '1', '17') . '</b></td>' . 
         '  </tr>' . "\n";
     } elseif ($TotalDetails["Class"] == "ot_subtotal") {
       $TotalDetails["Price"] = isset($_SESSION['orders_update_products'][$_GET['oID']]['ot_subtotal']) ? $_SESSION['orders_update_products'][$_GET['oID']]['ot_subtotal'] : $TotalDetails["Price"];
       $shipping_fee_subtotal = $TotalDetails["Price"];
       echo '  <tr>' . "\n" .
         '    <td align="left" class="' . $TotalStyle .  '">&nbsp;</td>' . 
-        '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' .
-        '    <td align="right" class="' . $TotalStyle . '"><b><div id="ot_subtotal_id">';
+        '    <td align="right" class="' . $TotalStyle . '">' . $TotalDetails["Name"] . '</td>' .
+        '    <td align="right" class="' . $TotalStyle . '"><div id="ot_subtotal_id">';
       if($TotalDetails["Price"]>=0){
         echo $currencies->ot_total_format($TotalDetails["Price"], true,
             $order->info['currency'], $order->info['currency_value']);
       }else{
         echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($TotalDetails["Price"], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
       } 
-      echo '</div></b>' . 
+      echo '</div>' . 
         "<input name='update_totals[$TotalIndex][title]' type='hidden' value='" . trim($TotalDetails["Name"]) . "' size='" . strlen($TotalDetails["Name"]) . "' >" . 
         "<input name='update_totals[$TotalIndex][value]' type='hidden' value='" . $TotalDetails["Price"] . "' size='6' >" . 
         "<input name='update_totals[$TotalIndex][class]' type='hidden' value='" . $TotalDetails["Class"] . "'>\n" . 
-        "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . '</b></td>' . 
-        '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
+        "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . '</td>' . 
+        '    <td align="right" class="' . $TotalStyle . '"><b>' .  tep_draw_separator('pixel_trans.gif', '1', '17') . '</b></td>' . 
         '  </tr>' . "\n".       
         '  <tr>' . "\n" .
         '    <td align="left" class="' . $TotalStyle . '">&nbsp;</td>' . 
-        '    <td align="right" class="' . $TotalStyle . '"><b>'.TEXT_CODE_HANDLE_FEE.'</b></td>' .
-        '    <td align="right" class="' . $TotalStyle . '"><b><div id="handle_fee_id">' . $currencies->format(isset($_SESSION['orders_update_products'][$_GET['oID']]['code_fee']) ? $_SESSION['orders_update_products'][$_GET['oID']]['code_fee'] : $order->info["code_fee"]) .  '</div></b><input type="hidden" name="payment_code_fee" value="'.(isset($_SESSION['orders_update_products'][$_GET['oID']]['code_fee']) ? $_SESSION['orders_update_products'][$_GET['oID']]['code_fee'] : $order->info["code_fee"]).'">' . 
+        '    <td align="right" class="' . $TotalStyle . '">'.TEXT_CODE_HANDLE_FEE.'</td>' .
+        '    <td align="right" class="' . $TotalStyle . '"><div id="handle_fee_id">' . $currencies->format(isset($_SESSION['orders_update_products'][$_GET['oID']]['code_fee']) ? $_SESSION['orders_update_products'][$_GET['oID']]['code_fee'] : $order->info["code_fee"]) .  '</div><input type="hidden" name="payment_code_fee" value="'.(isset($_SESSION['orders_update_products'][$_GET['oID']]['code_fee']) ? $_SESSION['orders_update_products'][$_GET['oID']]['code_fee'] : $order->info["code_fee"]).'">' . 
         '</td>' . 
-        '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
+        '    <td align="right" class="' . $TotalStyle . '"><b>' .  tep_draw_separator('pixel_trans.gif', '1', '17') . '</b></td>' . 
         '  </tr>' . "\n".
         '  <tr>' . "\n" .
         '    <td align="left" class="' . $TotalStyle .  '">&nbsp;</td>' . 
-        '    <td align="right" class="' . $TotalStyle . '"><b>' . TEXT_SHIPPING_FEE . '</b></td>' .
-        '    <td align="right" class="' . $TotalStyle . '"><b><div id="shipping_fee_id">'.
-        $currencies->format($shipping_fee) .'</div></b><input type="hidden" name="shipping_fee_num" value="'. $shipping_fee .'">'.
+        '    <td align="right" class="' . $TotalStyle . '">' . TEXT_SHIPPING_FEE . '</td>' .
+        '    <td align="right" class="' . $TotalStyle . '"><div id="shipping_fee_id">'.
+        $currencies->format($shipping_fee) .'</div><input type="hidden" name="shipping_fee_num" value="'. $shipping_fee .'">'.
         '  </tr>'. "\n"; 
     } elseif ($TotalDetails["Class"] == "ot_tax") {
       $shipping_fee_tax = $TotalDetails["Price"];
       echo '  <tr>' . "\n" . 
         '    <td align="left" class="' . $TotalStyle . '">&nbsp;</td>' . 
-        '    <td align="right" class="' . $TotalStyle . '"><b>' . trim($TotalDetails["Name"]) . "</b><input name='update_totals[$TotalIndex][title]' type='hidden' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
-        '    <td align="right" class="' . $TotalStyle . '"><b>' . $currencies->format($TotalDetails["Price"], true, $order->info['currency'], $order->info['currency_value']) . '</b>' . 
+        '    <td align="right" class="' . $TotalStyle . '">' . trim($TotalDetails["Name"]) . "<input name='update_totals[$TotalIndex][title]' type='hidden' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
+        '    <td align="right" class="' . $TotalStyle . '">' . $currencies->format($TotalDetails["Price"], true, $order->info['currency'], $order->info['currency_value']) . '' . 
         "<input name='update_totals[$TotalIndex][value]' type='hidden' value='" . $TotalDetails["Price"] . "' size='6' >" . 
         "<input name='update_totals[$TotalIndex][class]' type='hidden' value='" . $TotalDetails["Class"] . "'>\n" . 
-        "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . '</b></td>' . 
-        '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
+        "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . '</td>' . 
+        '    <td align="right" class="' . $TotalStyle . '"><b>' .  tep_draw_separator('pixel_trans.gif', '1', '17') . '</b></td>' . 
         '  </tr>' . "\n";
     } elseif ($TotalDetails["Class"] == "ot_point") {
       $shipping_fee_point = $TotalDetails["Price"];
@@ -3833,7 +3832,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       if ($customer_guest['customers_guest_chk'] == 0) { //会員
         $current_point = $customer_point['point'] + $TotalDetails["Price"];
         echo '  <tr>' . "\n" .
-          '    <td align="left" class="' . $TotalStyle . '">'.TEXT_CUSTOMER_INPUT.'<font color="red"><b>'.TEXT_REMAINING . $customer_point['point'] . TEXT_SUBTOTAL . $current_point . TEXT_RIGHT_BRACKETS.'</b></font>'.TEXT_INPUT_POSITIVE_NUM.'</td>' . 
+          '    <td align="left" class="' . $TotalStyle . '">'.TEXT_CUSTOMER_INPUT.'<font color="red">'.TEXT_REMAINING . $customer_point['point'] . TEXT_SUBTOTAL . $current_point . TEXT_RIGHT_BRACKETS.'</font>'.TEXT_INPUT_POSITIVE_NUM.'</td>' . 
           '    <td align="right" class="' . $TotalStyle . '">' .
           trim($TotalDetails["Name"]) . '</td>' . "\n";
         
@@ -3842,9 +3841,9 @@ if (($action == 'edit') && ($order_exists == true)) {
           $campaign_res = tep_db_fetch_array($campaign_query);
           if ($campaign_res) {
             $campaign_res['campaign_fee'] = isset($_SESSION['orders_update_products'][$_GET['oID']]['point']) ? $_SESSION['orders_update_products'][$_GET['oID']]['point'] : $campaign_res['campaign_fee'];
-            echo "<input type='hidden' id='point_value_temp' value='".(int)$campaign_res['campaign_fee']."'><input style='text-align:right;' name='update_totals[$TotalIndex][value]' id='point_id' onkeyup='clearNoNum(this);price_total(\"".TEXT_MONEY_SYMBOL."\");' size='6' value='" .abs((int)$campaign_res['campaign_fee']) .  "'><b>".TEXT_MONEY_SYMBOL.'</b>';
+            echo "<input type='hidden' id='point_value_temp' value='".(int)$campaign_res['campaign_fee']."'><input style='text-align:right;' name='update_totals[$TotalIndex][value]' id='point_id' onkeyup='clearNoNum(this);price_total(\"".TEXT_MONEY_SYMBOL."\");' size='6' value='" .abs((int)$campaign_res['campaign_fee']) .  "'>".TEXT_MONEY_SYMBOL.'';
           } else {
-            echo "<input style='text-align:right;' name='update_totals[$TotalIndex][value]' id='point_id' onkeyup='clearNoNum(this);price_total(\"".TEXT_MONEY_SYMBOL."\");' size='6' value='" . $point_session_id . "'><b>".TEXT_MONEY_SYMBOL.'</b>';
+            echo "<input style='text-align:right;' name='update_totals[$TotalIndex][value]' id='point_id' onkeyup='clearNoNum(this);price_total(\"".TEXT_MONEY_SYMBOL."\");' size='6' value='" . $point_session_id . "'>".TEXT_MONEY_SYMBOL.'';
           }
           echo "<input type='hidden' name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . 
           "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
@@ -3875,8 +3874,8 @@ if (($action == 'edit') && ($order_exists == true)) {
       echo '  <tr>' . "\n" .
         '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_TOTALDETAIL_READ_ONE.'</td>' . 
         '    <td style="min-width:188px;" align="right" class="' . $TotalStyle . '">' . $button_add ."<input style='text-align:right;' name='update_totals[$TotalIndex][title]' onkeyup='price_total(\"".TEXT_MONEY_SYMBOL."\");' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
-        '    <td align="right" class="' . $TotalStyle . '">' . "<input style='text-align:right;' name='update_totals[$TotalIndex][value]' id='update_total_".$TotalIndex."' onkeyup='clearNewLibNum(this);price_total(\"".TEXT_MONEY_SYMBOL."\");' size='6' value='" . $TotalDetails["Price"] . "'><b>" . TEXT_MONEY_SYMBOL .
-        "</b><input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
+        '    <td align="right" class="' . $TotalStyle . '">' . "<input style='text-align:right;' name='update_totals[$TotalIndex][value]' id='update_total_".$TotalIndex."' onkeyup='clearNewLibNum(this);price_total(\"".TEXT_MONEY_SYMBOL."\");' size='6' value='" . $TotalDetails["Price"] . "'>" . TEXT_MONEY_SYMBOL .
+        "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
         "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . 
         '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
         '   </td>' . "\n" .
@@ -4008,7 +4007,7 @@ if (($action == 'edit') && ($order_exists == true)) {
           $select_select = isset($_SESSION['orders_update_products'][$_GET['oID']]['s_status']) ? $_SESSION['orders_update_products'][$_GET['oID']]['s_status'] : $select_select;
 ?>
     <tr>
-    <td class="main" width="82" style="min-width:45px;"><b><?php echo ENTRY_STATUS; ?></b></td>
+    <td class="main" width="82" style="min-width:45px;"><?php echo ENTRY_STATUS; ?></td>
     <td class="main"><?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_select,'onChange="new_mail_text_orders(this, \'s_status\',\'comments\',\'title\')"; style="width:80px;" id="mail_title_status"'); ?></td> 
     </tr>
     <?php
@@ -4034,20 +4033,20 @@ if (($action == 'edit') && ($order_exists == true)) {
           ?>
 
             <tr>
-            <td class="main"><b><?php echo ENTRY_EMAIL_TITLE; ?></b></td>
+            <td class="main"><?php echo ENTRY_EMAIL_TITLE; ?></td>
             <td class="main"><?php echo tep_draw_input_field('title', $mail_sql['orders_status_title'],'style="width:100%;" id="mail_title"'); ?></td>
             </tr>
     <tr>
-    <td class="main"><b><?php echo EDIT_ORDERS_SEND_MAIL_TEXT;?></b></td>
+    <td class="main"><?php echo EDIT_ORDERS_SEND_MAIL_TEXT;?></td>
     <td class="main"><table bgcolor="red" cellspacing="5"><tr><td><?php echo tep_draw_checkbox_field('notify', '', $customer_notified); ?></td></tr></table></td>
     </tr>
     <?php if($CommentsWithStatus) { ?>
       <tr>
-        <td class="main"><b><?php echo EDIT_ORDERS_RECORD_TEXT;?></b></td>
-        <td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', $notify_comments_checked); ?>&nbsp;&nbsp;<b style="color:#FF0000;"><?php echo EDIT_ORDERS_RECORD_READ;?></b></td>
+        <td class="main"><?php echo EDIT_ORDERS_RECORD_TEXT;?></td>
+        <td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', $notify_comments_checked); ?>&nbsp;&nbsp;<font style="color:#FF0000;"><?php echo EDIT_ORDERS_RECORD_READ;?></font></td>
         </tr>
       <tr>
-        <td class="main" valign="top"><b><?php echo TABLE_HEADING_COMMENTS;?>:</b></td>
+        <td class="main" valign="top"><?php echo TABLE_HEADING_COMMENTS;?>:</td>
         <td class="main"><?php echo tep_draw_textarea_field('comments_text', 'hard', '74', '5', $_SESSION['orders_update_products'][$_GET['oID']]['comments_text'],'style=" font-family:monospace; font-size:12px; width:100%;"'); ?></td>
       </tr>
         <?php } ?>
@@ -4086,7 +4085,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <td>
     <table width="100%" border="0" cellpadding="2" cellspacing="1">
     <tr>
-    <td class="main" bgcolor="#FAEDDE"><b><?php echo EDIT_ORDERS_FINAL_CONFIRM_TEXT;?></b>&nbsp;<?php echo HINT_PRESS_UPDATE; ?></td>
+    <td class="main" bgcolor="#FAEDDE"><?php echo EDIT_ORDERS_FINAL_CONFIRM_TEXT;?>&nbsp;<?php echo HINT_PRESS_UPDATE; ?></td>
     <td class="main" bgcolor="#FBE2C8" width="10">&nbsp;</td>
     <td class="main" bgcolor="#FFCC99" width="10">&nbsp;</td>
     <td class="main" bgcolor="#F8B061" width="10">&nbsp;</td>
@@ -4248,13 +4247,13 @@ if($index_num > 0){
               echo $currencies->format($new_products_temp_add[$i]['final_price'] * $new_products_temp_add[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']);
             }
             echo '</div></td>' . "\n" . 
-                 '<td class="' . $RowStyle . '" align="right"><div id="update_products['.$orders_products_id.'][c_price]"><b>';
+                 '<td class="' . $RowStyle . '" align="right"><div id="update_products['.$orders_products_id.'][c_price]">';
             if ($new_products_temp_add[$i]['final_price'] < 0) {
               echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($new_products_temp_add[$i]['final_price'], $new_products_temp_add[$i]['tax']) * $new_products_temp_add[$i]['qty'], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
             } else {
               echo $currencies->format(tep_add_tax($new_products_temp_add[$i]['final_price'], $new_products_temp_add[$i]['tax']) * $new_products_temp_add[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']);
             }
-            echo '</b></div></td>' . "\n" . 
+            echo '</div></td>' . "\n" . 
                  '</tr>' . "\n";
           }
           ?>
@@ -4330,7 +4329,7 @@ if($index_num > 0){
 
   // Step 1: Choose Category
   print "<tr>\n";
-  print "<td class='dataTableContent' width='80'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 1:</b></td>\n";
+  print "<td class='dataTableContent' width='80'>&nbsp;" . ADDPRODUCT_TEXT_STEP . " 1:</td>\n";
   print "<td class='dataTableContent' valign='top'>";
   print "<form action='$PHP_SELF?oID=$oID&action=$action' method='POST'>";
   print "<table>";
@@ -4356,7 +4355,7 @@ if($index_num > 0){
   if(($step > 1) && ($add_product_categories_id > 0))
   {
     print "<tr>\n";
-    print "<td class='dataTableContent'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 2: </b></td>\n";
+    print "<td class='dataTableContent'>&nbsp;" . ADDPRODUCT_TEXT_STEP . " 2: </td>\n";
     print "<td class='dataTableContent' valign='top'>";
     print "<form action='$PHP_SELF?oID=$oID&action=$action' method='POST'>";
     print "<table>";
@@ -4401,7 +4400,7 @@ if($index_num > 0){
     if(!$hm_option->admin_whether_show($option_product['belong_to_option'], 0, $option_product['products_cflag']))
     {
       print "<tr>\n";
-      print "<td class='dataTableContent'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td>\n";
+      print "<td class='dataTableContent'>&nbsp;" . ADDPRODUCT_TEXT_STEP . " 3: </td>\n";
       print "<td class='dataTableContent' valign='top' colspan='2'><i>" . ADDPRODUCT_TEXT_OPTIONS_NOTEXIST . "</i></td>\n";
       print "</tr>\n";
       $step = 4;
@@ -4411,7 +4410,7 @@ if($index_num > 0){
 
       $p_cflag = tep_get_cflag_by_product_id($add_product_products_id);
       print "<tr>";
-      print "<td class='option_title_space' valign='top'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td><td class='dataTableContent' valign='top'>";
+      print "<td class='option_title_space' valign='top'>&nbsp;" . ADDPRODUCT_TEXT_STEP . " 3: </td><td class='dataTableContent' valign='top'>";
       print "<div class=\"pro_option\">"; 
       print "<form name='aform' action='$PHP_SELF?oID=$oID&action=$action' method='POST'>\n";
          
@@ -4434,7 +4433,7 @@ if($index_num > 0){
   if($step > 3)
   {
     print "<tr><form action='$PHP_SELF?oID=$oID&action=$action' method='POST'>\n";
-    print "<td class='dataTableContent'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 4: </b></td>";
+    print "<td class='dataTableContent'>&nbsp;" . ADDPRODUCT_TEXT_STEP . " 4: </td>";
     print "<td class='dataTableContent'>&nbsp;" .  ADDPRODUCT_TEXT_CONFIRM_QUANTITY . "<input name='add_product_quantity' size='2' value='1' onkeyup='clearLibNum(this);'>&nbsp;".EDIT_ORDERS_NUM_UNIT."&nbsp;&nbsp;&nbsp;&nbsp;</td>";
     print "<td class='dataTableContent' align='right'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
 

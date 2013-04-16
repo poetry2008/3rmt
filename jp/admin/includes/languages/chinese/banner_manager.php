@@ -29,9 +29,9 @@ define('TEXT_BANNERS_EXPIRCY_NOTE', '结束日期和显示次数的两个输入�
 define('TEXT_BANNERS_SCHEDULE_NOTE', '如果保存了开始日期,banner就从保存的日期开始有效。<br>如果保存了开始日期,不到开始日期banner不显示。');
 
 define('TEXT_BANNERS_DATE_ADDED', '创建日:');
-define('TEXT_BANNERS_SCHEDULED_AT_DATE', '开始日期: <b>%s</b>');
-define('TEXT_BANNERS_EXPIRES_AT_DATE', '结束日期: <b>%s</b>');
-define('TEXT_BANNERS_EXPIRES_AT_IMPRESSIONS', '结束日期: <b>%s</b> 点击次数');
+define('TEXT_BANNERS_SCHEDULED_AT_DATE', '开始日期: %s');
+define('TEXT_BANNERS_EXPIRES_AT_DATE', '结束日期: %s');
+define('TEXT_BANNERS_EXPIRES_AT_IMPRESSIONS', '结束日期: %s 点击次数');
 define('TEXT_BANNERS_STATUS_CHANGE', '状态变更: %s');
 
 define('TEXT_BANNERS_DATA', '次<br>数');
