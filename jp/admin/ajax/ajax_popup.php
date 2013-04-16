@@ -3065,7 +3065,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     }
     $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
     $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-    $heading[] = array('align' => 'left', 'text' => '<b>'.$products_name.'</b>&nbsp;&nbsp;');
+    $heading[] = array('align' => 'left', 'text' => $products_name.'&nbsp;&nbsp;');
     $heading[] = array('align' => 'right', 'text' => $page_str);
     if($_GET['site_id'] == 0){
         $site_name = array(
