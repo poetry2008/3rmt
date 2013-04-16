@@ -3296,7 +3296,7 @@ function submit_confirm()
 <table width="100%"><tr><td width="70%">
       <table width="100%" id="select_send" style="display:none">
         <tr>
-          <td class="main" width="100" nowrap="nowrap"><b><?php echo ENTRY_STATUS; ?></b></td>
+          <td class="main" width="100" nowrap="nowrap"><?php echo ENTRY_STATUS; ?></td>
         <td class="main"><?php echo tep_draw_pull_down_menu('status',
             $orders_statuses, $select_select,
             'onChange="mail_text(\'status\',\'comments\',\'os_title\')" id="mail_title_status"'); ?> <?php
@@ -3308,14 +3308,14 @@ function submit_confirm()
           <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
         </tr>
         <tr>
-          <td class="main" nowrap="nowrap"><b><?php echo ENTRY_EMAIL_TITLE; ?></b></td>
+          <td class="main" nowrap="nowrap"><?php echo ENTRY_EMAIL_TITLE; ?></td>
         <td class="main"><?php echo tep_draw_input_field('os_title', $select_title,' style=" width:400px;" id="mail_title"'); ?></td>
         </tr>
         <tr>
           <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
         </tr>
         <tr>
-          <td class="main" valign="top" nowrap="nowrap"><b><?php echo TABLE_HEADING_COMMENTS . ':'; ?></b></td>
+          <td class="main" valign="top" nowrap="nowrap"><?php echo TABLE_HEADING_COMMENTS . ':'; ?></td>
         <td class="main">
           <?php echo TEXT_MAIL_CONTENT_INFO;?>
           <table><tr class="smalltext"><td><font
@@ -3334,19 +3334,19 @@ function submit_confirm()
             <table width="100%" border="0" cellspacing="0" cellpadding="2">
               <tr>
                 <td class="main"><?php echo tep_draw_checkbox_field('notify', '',
-                    !$select_nomail, '', 'id="notify"'); ?><b><?php echo
-                TEXT_ORDER_SEND_MAIL;?></b></td>
+                    !$select_nomail, '', 'id="notify"'); ?><?php echo
+                TEXT_ORDER_SEND_MAIL;?></td>
                 <td class="main" align="right"><?php echo
                 tep_draw_checkbox_field('notify_comments', '', !$select_nomail, '',
-                    'id="notify_comments"'); ?><b><?php echo TEXT_ORDER_STATUS;?></b></td>
+                    'id="notify_comments"'); ?><?php echo TEXT_ORDER_STATUS;?></td>
               </tr>
               <tr>
-                <td class="main" colspan="2"><br><b style="color:#FF0000;"><?php
+                <td class="main" colspan="2"><br><font color="#FF0000;"><?php
                   foreach($orders_statuses as $o_status){
                     echo '<input type="hidden" id="confrim_mail_title_'.$o_status['id'].
                       '" value="'.$mo[$o_status['id']][0].'">';
                   }
-                echo TEXT_ORDER_HAS_ERROR;?></b><br><br>
+                echo TEXT_ORDER_HAS_ERROR;?></font><br><br>
                 <?php echo tep_html_element_button(IMAGE_UPDATE,'onclick="if(submit_confirm()) document.sele_act.submit();"');?> 
                 </td>
               </tr>
