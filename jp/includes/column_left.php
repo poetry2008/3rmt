@@ -3,7 +3,6 @@
   $Id$
 */
 
-  //require(DIR_WS_BOXES . 'quick_link.php');
 
   if ( (USE_CACHE == 'true') && !SID ) {
     $tmp_id_array = array();
@@ -30,20 +29,13 @@
   } else {
     include(DIR_WS_BOXES . 'categories.php');
   }
-/*
-  //Color
-  if(COLOR_SEARCH_BOX_TF == 'true') {
-    include(DIR_WS_BOXES . 'color.php');
-  }
-*/
-  require(DIR_WS_BOXES . 'information.php');
-  require(DIR_WS_BOXES . 'banners.php');
-  //require(DIR_WS_BOXES . 'cl.php');
 
-/*s
-  require(DIR_WS_BOXES . 'whats_new.php');*/
-    
-  /*if (substr(basename($PHP_SELF), 0, 5) == 'index' && (int)$current_category_id == 0) {
-   require(DIR_WS_BOXES . 'banners.php');
-  }*/
+  require(DIR_WS_BOXES . 'information.php');
+  //获取日历是否在前台显示 
+  $date_show = get_configuration_by_site_id('CALENDAR_FRONT_DESK_SETTING_SHOW',SITE_ID);
+  $date_show = $date_show == '' ? get_configuration_by_site_id('CALENDAR_FRONT_DESK_SETTING_SHOW',0) : $date_show;
+  if($date_show == 'true'){
+    require(DIR_WS_BOXES . 'calendar.php');
+  }
+  require(DIR_WS_BOXES . 'banners.php'); 
 ?>

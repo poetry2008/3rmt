@@ -242,7 +242,7 @@ tep_db_free_result($products_query);
 tep_db_close();
 ?>
 </table>
-<table border="0" width="100%" cellspacing="0" cellpadding="0">
+<table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin-top:5px;">
 <td>
 <?php echo $products_page->display_count($products_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_SHIPPING_TIME); ?>
 </td>

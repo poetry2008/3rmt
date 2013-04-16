@@ -220,6 +220,7 @@ class moneyorder extends basePayment implements paymentInterface {
                    'MODULE_PAYMENT_MONEYORDER_POINT_RATE',
                    'MODULE_PAYMENT_MONEYORDER_ZONE',
                    'MODULE_PAYMENT_MONEYORDER_ORDER_STATUS_ID',
+                   'MODULE_PAYMENT_MONEYORDER_PREORDER_STATUS_ID',
                    'MODULE_PAYMENT_MONEYORDER_SORT_ORDER',
                    'MODULE_PAYMENT_MONEYORDER_PAYTO',
                    'MODULE_PAYMENT_MONEYORDER_COST',

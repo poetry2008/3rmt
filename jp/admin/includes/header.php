@@ -439,7 +439,7 @@ if(preg_match("/".FILENAME_ORDERS."/",$PHP_SELF)){
 <td colspan='3'>
 <table width="100%">
 <tr>
-<td class="headerBarContent">&nbsp;&nbsp;<?php 
+<td class="headerBarContent">&nbsp;<?php 
 if($current_page_tp == "modules.php"){
   preg_match("#set=[^&]+#",$_SERVER["REQUEST_URI"],$set_mod_array);
  $current_page_tp .= "?".$set_mod_array[0];
@@ -557,10 +557,10 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
   echo '</table></td>';
   echo ' 
     <td>&nbsp;
-  <a href="' . tep_href_link(str_replace('/admin/','',$_SERVER['SCRIPT_NAME']), 'execute_logout_user=1&num='.time(), 'NONSSL') .  '" class="headerLink">'.HEADER_TEXT_LOGOUT.'</a></td></tr></table>';
+  <a href="' . tep_href_link(str_replace('/admin/','',$_SERVER['SCRIPT_NAME']), 'execute_logout_user=1&num='.time(), 'NONSSL') .  '" class="headerLink">'.HEADER_TEXT_LOGOUT.'</a>&nbsp;</td></tr></table>';
 } else {
   echo '|&nbsp;
-  <a href="' . tep_href_link(str_replace('/admin/','',$_SERVER['SCRIPT_NAME']), 'execute_logout_user=1&num='.time(), 'NONSSL') .  '" class="headerLink">'.HEADER_TEXT_LOGOUT.'</a>';
+  <a href="' . tep_href_link(str_replace('/admin/','',$_SERVER['SCRIPT_NAME']), 'execute_logout_user=1&num='.time(), 'NONSSL') .  '" class="headerLink">'.HEADER_TEXT_LOGOUT.'</a>&nbsp;';
 }
 ?>
 

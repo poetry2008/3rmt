@@ -208,6 +208,22 @@ width 750px
 	float:right;
 	margin-bottom:5px;
 }
+.bottom_content span{
+	float:left;
+	margin-top:6px;
+}
+.bottom_content .bottom_text{
+	float:left;
+	margin-top:5px;
+}
+.bottom_content .bottom_input{
+	float:left;
+	margin-top:6px;
+	margin-top:2px\9;
+}
+.bottom_content .bottom_input_button{
+	float:left;
+}
 .compatible{
 	min-width:564px;
 	*min-width:576px;
@@ -581,15 +597,18 @@ order
 	font-weight:bold;
 	text-align:center;
 }
+#headerorder{
+	margin-top:3px;
+}
 #headerorder td {
 	background:#000;
 	padding:1px;
 }
 #headerorder td a {
 	color:#fff;
-	font-weight:bold;
-	padding:2px 7px 2px 11px;
-	text-decoration: underline;
+	/*font-weight:bold;*/
+	padding:2px 13px;
+	text-decoration: none;
 	text-align:left;
 }
 #headerorder td a:hover {
@@ -612,24 +631,52 @@ order
 	background:#ffd700;
 }
 #redirecturl{
-	width:118px;
-	*width:119px;
-	width:119px\9;
+	*width:123px;
+	width:123px\9;
+	margin-top:3px;
 }
 @media screen and (-webkit-min-device-pixel-ratio:0){
 #redirecturl{
-	width:112px;
+	overflow:hidden;
+	display:block;
+	margin-top:4px;
 }
 }
 #redirecturl td {
 	background:#000;
 	padding:1px;
+	width:119px\9;
+	*width:119px;
+	word-wrap:break-word;
+	overflow:hidden;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){
+#redirecturl td {
+	background:#000;
+	padding:1px;
+	word-wrap:break-word;
+	overflow:hidden;
+}
 }
 #redirecturl td a {
 	color:#fff;
-	font-weight:bold;
-	padding:2px 7px 2px 17px;
+	/*font-weight:bold;*/
+	padding:2px 16px 2px 16px;
+	padding:2px 10px 2px 16px\9;
+	*padding:2px 10px 2px 16px;
 	text-align:left;
+	width:119px\9;
+	*width:119px;
+	text-decoration:none;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){
+#redirecturl td a {
+	color:#fff;
+	/*font-weight:bold;*/
+	padding:2px 16px 2px 16px;
+	text-align:left;
+	text-decoration:none;
+}
 }
 #redirecturl td a:hover {
 	color:#000;
@@ -803,15 +850,18 @@ table.menu01 {
 /* ---------------------------
 tutorials table
 --------------------------- */
+#tutorials {
+	margin-top:3px;
+}
 #tutorials td {
 	background:#000;
 	padding:1px;
 }
 #tutorials td a {
 	color:#fff;
-	font-weight:bold;
-	padding:2px 7px 2px 15px;
-	text-decoration: underline;
+	/*font-weight:bold;*/
+	padding:2px 16px;
+	text-decoration: none;
 	text-align:left;
 }
 #tutorials td a:hover {
@@ -1019,15 +1069,19 @@ div.date-picker-holder input {
 /* ---------------------------
 add managermenu
 --------------------------- */
+#managermenu{
+	margin-top:3px;
+}
 #managermenu td{
 	background-color:#000;
 	padding:1px;
 }
 #managermenu td a {
 	color:#fff;
-	font-weight:bold;
-	padding:2px 5px 2px 15px;
+	/*font-weight:bold;*/
+	padding:2px 16px;
 	text-align:left;
+	text-decoration:none;
 }
 #managermenu td a:hover {
 	color:#000;
@@ -1767,7 +1821,6 @@ content
 --------------------------- */
 .content{
 	width:100%;
-	overflow:hidden;
 	min-width:750px;
 	width: expression(document.body.clientWidth < 750? "750px": "100%" );
 }

@@ -400,15 +400,7 @@ tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
 //# 添加部分（买取信息）
 
 if ($telecom_option_ok == true) {
-  tep_db_perform(TABLE_ORDERS, array('orders_status' => '30'), 'update', "orders_id='".$insert_id."'");
-  $sql_data_array = array('orders_id' => $insert_id, 
-                          'orders_status_id' => '30', 
-                          'date_added' => 'now()', 
-                          'customer_notified' => '0',
-                          'comments' => 'checkout',
-                          'user_added' => tep_get_fullname($order->customer['firstname'],$order->customer['lastname']));
   tep_order_status_change($orders['orders_id'],30);
-  tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
   orders_updated($insert_id);
 }
 

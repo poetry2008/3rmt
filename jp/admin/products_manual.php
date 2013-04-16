@@ -8,6 +8,12 @@ $action = (isset($_GET['action']) ? $_GET['action'] : '');
 
 switch($_GET['action']){
 /* -----------------------------------------------------
+   case 'edit_top_manual' 编辑top手册
+   case 'save_top_manual' 保存top手册
+   case 'show_categories_manual_link' 显示分类手册
+   case 'save_categories_manual_link' 保存分类手册
+   case 'edit_top_categories_manual' 编辑分类手册
+   case 'save_top_categories_manual' 保存分类手册
    case 'show_products_manual' 商品手册信息    
    case 'show_categories_manual' 分类手册信息     
    case 'p_categories_manual' 来自订单页的商品手册信息     
@@ -15,6 +21,47 @@ switch($_GET['action']){
    case 'save_categories_manual' 保存分类手册信息     
    case 'save_p_categories_manual' 保存来自订单页的手册信息     
 ------------------------------------------------------*/
+case 'edit_top_manual':
+  $title_char = TOP_MANUAL_TEXT.MANUAL_TITLE; 
+  $form_info = '<form action="'.tep_href_link(FILENAME_PRODUCTS_MANUAL,tep_get_all_get_params(array('action', 'info', 'x', 'y'))."action=save_top_manual").'" method="post">';
+  $manual_content = get_configuration_by_site_id('TOP_MANUAL_CONTENT');
+  $return_button = '<a href="'.tep_href_link(FILENAME_CATEGORIES, tep_get_all_get_params(array('action', 'info', 'x', 'y'))).'">'.tep_html_element_button(MANUAL_RETURN).'</a>';
+  break;
+case 'save_top_manual':
+  tep_db_query("update `".TABLE_CONFIGURATION."` set `configuration_value` = '".addslashes($_POST['manual'])."' where `configuration_key` = 'TOP_MANUAL_CONTENT'");
+   
+  tep_redirect(tep_href_link(FILENAME_CATEGORIES, tep_get_all_get_params(array('action', 'info', 'x', 'y')))); 
+  break;
+case 'show_categories_manual_link':
+  $tmp_path_info = explode('_', $_GET['cPath']);
+  $tmp_c_path_info = $tmp_path_info[count($tmp_path_info) - 1];
+  $manual_category_query = tep_db_query("select categories_name, c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id = '".(int)$tmp_c_path_info."' and site_id = '0'"); 
+  $manual_category_res = tep_db_fetch_array($manual_category_query); 
+  $title_char = $manual_category_res['categories_name'].MANUAL_TITLE;
+  $form_info = '<form action="'.tep_href_link(FILENAME_PRODUCTS_MANUAL,tep_get_all_get_params(array('action', 'info', 'x', 'y'))."action=save_categories_manual_link").'" method="post">';
+  $manual_content = $manual_category_res['c_manual'];
+  $return_button = '<a href="'.tep_href_link(FILENAME_CATEGORIES, tep_get_all_get_params(array('action', 'info', 'x', 'y'))).'">'.tep_html_element_button(MANUAL_RETURN).'</a>';
+  break;
+case 'save_categories_manual_link':
+  $tmp_path_info = explode('_', $_GET['cPath']);
+  $tmp_c_path_info = $tmp_path_info[count($tmp_path_info) - 1];
+  $manual_category_query = tep_db_query("select categories_name, c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id = '".(int)$tmp_c_path_info."' and site_id = '0'"); 
+  $manual_category_res = tep_db_fetch_array($manual_category_query); 
+  if ($manual_category_res) {
+    tep_db_query("update ".TABLE_CATEGORIES_DESCRIPTION." set c_manual='".addslashes($_POST['manual'])."' where categories_id='".(int)$tmp_c_path_info."' and site_id = '0'");
+  }
+  tep_redirect(tep_href_link(FILENAME_CATEGORIES, tep_get_all_get_params(array('action', 'info', 'x', 'y')))); 
+  break;
+case 'edit_top_categories_manual':
+  $title_char = TOP_MANUAL_TEXT.MANUAL_TITLE; 
+  $form_info = '<form action="'.tep_href_link(FILENAME_PRODUCTS_MANUAL,tep_get_all_get_params(array('action', 'info', 'x', 'y'))."action=save_top_categories_manual").'" method="post">';
+  $manual_content = get_configuration_by_site_id('TOP_MANUAL_CONTENT');
+  $return_button='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action"))."action=show_manual_info").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
+  break;
+case 'save_top_categories_manual':
+  tep_db_query("update `".TABLE_CONFIGURATION."` set `configuration_value` = '".addslashes($_POST['manual'])."' where `configuration_key` = 'TOP_MANUAL_CONTENT'");
+  tep_redirect(tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action"))."action=show_manual_info")); 
+  break;
 case 'show_products_manual':
 //来自订单
 if(isset($_GET['oID']) && $_GET['oID']){
@@ -573,6 +620,8 @@ $title_str .= $val1['categories_name']."/";
 }
 $title_str .= $products_array['products_name'].MANUAL_TITLE;
 echo $title_str;
+} else if ($_GET['action'] == 'show_categories_manual_link' || $_GET['action'] == 'edit_top_manual') {
+  echo $title_char;
 }
 ?>
 </title>

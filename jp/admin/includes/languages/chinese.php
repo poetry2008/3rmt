@@ -482,7 +482,7 @@ define('HEADER_TEXT_ORDERS','订单管理');
 define('HEADER_TEXT_TELECOM_UNKNOW','结算管理');
 define('HEADER_TEXT_TUTORIALS','▼商品调整');
 define('HEADER_TEXT_CATEGORIES','商品注册');
-define('HEADER_TEXT_LOGOUT','退出');
+define('HEADER_TEXT_LOGOUT','退出登录');
 define('HEADER_TEXT_REDIRECTURL','▼相关网站');
 define('HEADER_TEXT_USERS','更改密码');
 define('HEADER_TEXT_PW_MANAGER','ID管理');

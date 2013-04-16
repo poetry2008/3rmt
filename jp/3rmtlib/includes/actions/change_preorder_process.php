@@ -41,7 +41,10 @@ if ($preorder) {
   
   $torihikihouhou_date_str = $_SESSION['preorder_info_date'].' '. $_SESSION['preorder_info_start_hour'] .':'. $_SESSION['preorder_info_start_min'] .':00';
   $torihikihouhou_date_end_str = $_SESSION['preorder_info_date'].' '. $_SESSION['preorder_info_end_hour'] .':'. $_SESSION['preorder_info_end_min'] .':00';
-  $default_status_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".DEFAULT_ORDERS_STATUS_ID."'");
+  //获取相应支付方式的默认注文订单状态
+  $orders_status_id = get_configuration_by_site_id('MODULE_PAYMENT_'.strtoupper($cpayment_code).'_ORDER_STATUS_ID',SITE_ID);
+  $orders_status_id = $orders_status_id != 0 ? $orders_status_id : DEFAULT_ORDERS_STATUS_ID;
+  $default_status_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$orders_status_id."'");
   $default_status_res = tep_db_fetch_array($default_status_raw); 
   $preorder_cus_id = $preorder['customers_id']; 
   $sql_data_array = array('orders_id' => $orders_id,
@@ -88,7 +91,7 @@ if ($preorder) {
                            'cc_expires' => $preorder['cc_expires'], 
                            'last_modified' => $preorder['last_modified'], 
                            'date_purchased' => 'now()', 
-                           'orders_status' => DEFAULT_ORDERS_STATUS_ID, 
+                           'orders_status' => $orders_status_id, 
                            'orders_date_finished' => $preorder['orders_date_finished'], 
                            'currency' => $preorder['currency'], 
                            'currency_value' => $preorder['currency_value'], 
@@ -292,7 +295,7 @@ if($address_error == false){
   
   $customer_notification = (SEND_EMAILS == 'true') ? '1' : '0'; 
   $sql_data_array = array('orders_id' => $orders_id,
-                          'orders_status_id' => DEFAULT_ORDERS_STATUS_ID, 
+                          'orders_status_id' => $orders_status_id, 
                           'date_added' => date('Y-m-d H:i:s', time()), 
                           'customer_notified' => $customer_notification, 
                           'comments' => $order_comment_str,
@@ -301,15 +304,6 @@ if($address_error == false){
   tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
  
   if ($telecom_option_ok) {
-    tep_db_perform(TABLE_ORDERS, array('orders_status' => '30'), 'update', "orders_id='".$orders_id."'");
-    $sql_data_array = array('orders_id' => $orders_id, 
-                            'orders_status_id' => '30', 
-                            'date_added' => 'now()', 
-                            'customer_notified' => '0',
-                            'comments' => 'checkout',
-                            'user_added' => $preorder['customers_name']
-                            );
-    tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
     orders_updated($orders_id);
   }
   $products_ordered_text = ''; 

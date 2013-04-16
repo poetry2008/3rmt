@@ -2781,3 +2781,9 @@ searching
 	float:left;
 	*margin:0 5px 0 -3px;
 }
+.date_bgcolor .date_today{
+        background:url(../images/design/box/icon_today.png) center 0 no-repeat;
+	color:#fff;
+	height:15px;
+        line-height:15px;
+}

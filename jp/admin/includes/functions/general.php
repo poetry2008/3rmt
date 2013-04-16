@@ -9951,3 +9951,64 @@ function check_orders_transaction_expired()
   tep_db_free_result($order_status_raw);
   return $orders_expired_array;
 }
+
+/* -------------------------------------
+    功能: 获取预约订单状态的下拉列表 
+    参数: $order_status_id(int) 预约订单状态id 
+    参数: $key(string) 列表名 
+    返回值: 预约订单状态的下拉列表(string) 
+ ------------------------------------ */
+function tep_cfg_pull_down_preorder_statuses($order_status_id, $key = '') {
+  global $languages_id;
+
+  $name = (($key) ? 'configuration[' . $key . ']' : 'configuration_value');
+
+  $statuses_array = array(array('id' => '0', 'text' => TEXT_DEFAULT));
+  $statuses_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_PREORDERS_STATUS . " where language_id = '" . $languages_id . "' order by orders_status_name");
+  while ($statuses = tep_db_fetch_array($statuses_query)) {
+    $statuses_array[] = array('id' => $statuses['orders_status_id'],
+        'text' => $statuses['orders_status_name']);
+  }
+
+  return tep_draw_pull_down_menu($name, $statuses_array, $order_status_id);
+}
+
+/* -------------------------------------
+    功能: 获取指定的预约订单状态的名字 
+    参数: $order_status_id(int) 预约订单状态id 
+    参数: $language_id(int) 语言id 
+    返回值: 预约订单状态的名字(string) 
+ ------------------------------------ */
+function tep_get_preorder_status_name($order_status_id, $language_id = '') {
+  global $languages_id;
+
+  if ($order_status_id < 1) return TEXT_DEFAULT;
+
+  if (!is_numeric($language_id)) $language_id = $languages_id;
+
+  $status_query = tep_db_query("select orders_status_name from " . TABLE_PREORDERS_STATUS . " where orders_status_id = '" . $order_status_id . "' and language_id = '" . $language_id . "'");
+  $status = tep_db_fetch_array($status_query);
+
+  return $status['orders_status_name'];
+}
+
+/* -------------------------------------
+    功能: 生成月份列表  
+    参数: $month(int) 几个月 
+    参数: $empty_params(string) URL参数
+    参数: $params(string) URL参数
+    返回值: 月份列表(string)
+ ------------------------------------ */
+function tep_cfg_pull_down_month_list($month,$empty_params ='',$params = '') {
+
+  $month_array = array();
+  for($i=1;$i<=12;$i++){
+
+    $month_array[] = array('id'=>$i,'text'=>$i);
+  }
+  if($params != ''){
+    return TEXT_CALENDAR_SETTING_MONTH_START.tep_draw_pull_down_menu('configuration_value', $month_array, $month,$params).TEXT_CALENDAR_SETTING_MONTH_END;
+  }else{
+    return TEXT_CALENDAR_SETTING_MONTH_START.tep_draw_pull_down_menu('configuration_value', $month_array, $month).TEXT_CALENDAR_SETTING_MONTH_END;
+  }
+}
