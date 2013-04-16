@@ -3134,7 +3134,7 @@ function tep_siteurl_pull_down_menu($default = '',$require = false){
     参数: $all(boolean) 是否有默认选项 
     返回值: 网站的下拉列表(string) 
  ------------------------------------ */
-function tep_site_pull_down_menu($default = '',$require = true,$all = false){
+function tep_site_pull_down_menu($default = '',$require = true,$all = false,$params = ''){
   $sites_array = array();
   $sites = tep_get_sites();
   if ($all) {
@@ -3143,7 +3143,11 @@ function tep_site_pull_down_menu($default = '',$require = true,$all = false){
   foreach($sites as $site){
     $sites_array[] = array('id' => $site['id'], 'text' => $site['name']);
   }
+  if($params == ''){
   return tep_draw_pull_down_menu('site_id', $sites_array, $default, $params = '', $require);
+  }else{
+  return tep_draw_pull_down_menu('site_id', $sites_array, $default, $params, $require);
+  }
 }
 
 /* -------------------------------------
