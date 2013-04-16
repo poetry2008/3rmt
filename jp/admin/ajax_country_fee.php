@@ -101,11 +101,11 @@ foreach($weight_fee_array as $weight_fee_value){
 <br><?php echo TABLE_PROMPT_2;?></td></tr>
 
 <tr><td width="30%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_6;?></td><td>
-<textarea name="email_comment" id="email_comment" rows="5" cols="30" class="option_text"><?php echo $email_comment; ?></textarea>
+<textarea name="email_comment" id="email_comment" rows="5" cols="30" class="option_text" style="resize:vertical;"><?php echo $email_comment; ?></textarea>
 <br><?php echo TABLE_PROMPT_3;?></td></tr>
 
 <tr><td width="30%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_7;?></td><td>
-<textarea name="email_comment_1" id="email_comment_1" rows="5" cols="30" class="option_text"><?php echo $email_comment_1; ?></textarea>
+<textarea name="email_comment_1" id="email_comment_1" rows="5" cols="30" class="option_text" style="resize:vertical;"><?php echo $email_comment_1; ?></textarea>
 <br><?php echo TABLE_PROMPT_4;?></td></tr>
 
 <?php 

@@ -232,3 +232,8 @@ define('TEXT_CREDIT_SURVEY',tep_image(DIR_WS_IMAGES .'icon_backend.gif',IMAGE_IC
 define('TEXT_QUANTITY_TRADE_NAME',tep_image(DIR_WS_IMAGES .'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;数量/商品名');
 define('TEXT_ORDER_COMMENT',tep_image(DIR_WS_IMAGES .'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;Order Comment');
 define('TEXT_CUSTOMER_NAME',tep_image(DIR_WS_IMAGES .'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;顾客名');
+define('TEXT_CALENDAR_SETTING_TITLE',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;前台日历显示标题');
+define('TEXT_CALENDAR_SETTING_SHOW',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;是否在前台显示日历');
+define('TEXT_CALENDAR_SETTING_MONTH',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;前台日历显示数');
+define('TEXT_CALENDAR_SETTING_MONTH_START','包含本月');
+define('TEXT_CALENDAR_SETTING_MONTH_END','个月');

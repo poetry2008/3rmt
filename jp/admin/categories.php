@@ -2575,7 +2575,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <input type="hidden" name="products_user_update" value="<?php echo $user_info['name']?>">
                 <td><table border="0" cellspacing="0" cellpadding="2" width="100%">
                 <tr>
-                <td class="main" valign="top"><?php echo $site_id?('<br>'.tep_get_site_name_by_id($site_id).''):'';?></td>
+                <td class="main" valign="top"><?php echo $site_id?('<br>'.tep_get_site_name_by_id($site_id)):'';?></td>
                 <td class="main" align="right"><?php 
                 echo tep_html_element_submit(IMAGE_PREVIEW) .  '&nbsp;&nbsp;';
               if (isset($_GET['rdirect'])) {
@@ -2750,7 +2750,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
                 </tr>
                 <tr bgcolor="#CCCCCC">
-                <td class="main"><?php echo '<font color="blue">' . TEXT_PRODUCTS_PRICE . '></font>'; ?></td>
+                <td class="main"><?php echo '<font color="blue">' . TEXT_PRODUCTS_PRICE . '</font>'; ?></td>
                 <?php //add abs fro products ?>
                 <td class="main"><?php echo
                 tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' .
@@ -4028,7 +4028,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       echo '<br>';
                       echo tep_get_upload_dir($site_id).'categories/'; 
                       echo '<br>';
-                      echo ''.$cInfo->categories_image2.''; 
+                      echo $cInfo->categories_image2; 
                     }
                   ?>
                     </td> 
@@ -4047,7 +4047,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     echo '<br>';
                     echo tep_get_upload_dir($site_id).'categories/'; 
                     echo '<br>';
-                    echo ''.$cInfo->categories_image3.''; 
+                    echo $cInfo->categories_image3; 
                   }
                   ?>
                     </td> 
@@ -4066,7 +4066,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   echo '<br>';
                   echo tep_get_upload_dir($site_id).'categories/'; 
                   echo '<br>';
-                  echo ''.$cInfo->categories_image.''; 
+                  echo $cInfo->categories_image; 
                 }
               ?>
                 </td>
@@ -4484,7 +4484,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 $categories_name_text .= '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$cPath.'&cID='.$categories['categories_id'].'&action=edit_category'.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').(isset($_GET['search'])?$_GET['search']:'')).'">'.tep_image(DIR_WS_ICONS.'preview.gif', ICON_PREVIEW).'</a>&nbsp;'; 
                 $categories_name_text .= '<a href="'.tep_href_link(FILENAME_ORDERS, 'search_type=categories_id&scategories_id='.$categories['categories_id']).(!empty($site_id)?'&site_id='.$site_id:'').'&order_sort=torihiki_date&order_type=desc">'.tep_image(DIR_WS_ICONS.'search.gif', IMAGE_SEARCH).'</a>&nbsp;'; 
                 $categories_name_text .=  '<a href="' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . tep_image(DIR_WS_ICONS . 'folder.gif', ICON_FOLDER) .  '</a>&nbsp;'; 
-                $categories_name_text .= '<a class="title_text_link" href="' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . ''.$categories['categories_name'].'&nbsp;' .  '</a>';
+                $categories_name_text .= '<a class="title_text_link" href="' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . $categories['categories_name'].'&nbsp;' .  '</a>';
                 $tmp_count_cnt = 9 + $count_dougyousya['cnt']; 
                 if ( (isset($cInfo) && is_object($cInfo)) && ($categories['categories_id'] == $cInfo->categories_id) ) {
                   $categories_colspan_params .= 'class="dataTableContent" align="right" colspan="'.$tmp_count_cnt.'" onclick="document.location.href=\'' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '\'"';
@@ -5044,12 +5044,12 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 if (empty($site_id)) {
                   $products_storage_params .= 'class="dataTableContent" align="right" onmouseover=\'this.style.cursor="pointer"\' id=\'virtual_quantity_'.$products['products_id'].'\' onclick="show_update_info(this, '. $products['products_id'].', \'1\', \'1\')"';
                   $products_storage_text .= $imaginary;
-                  $products_inventory_params .= 'class="dataTableContent" align="right" onmouseover=\'this.style.cursor="pointer"\' style="" id=\'quantity_'.$products['products_id'].'\' onclick="show_update_info(this, '.$products['products_id'].', \'2\', \'1\')"';
+                  $products_inventory_params .= 'class="dataTableContent" align="right" onmouseover=\'this.style.cursor="pointer"\' style="font-weight:bold;" id=\'quantity_'.$products['products_id'].'\' onclick="show_update_info(this, '.$products['products_id'].', \'2\', \'1\')"';
                   $products_inventory_text .= $products['products_real_quantity'];
                 } else {
                   $products_storage_params .= 'class="dataTableContent" align="right" onclick="document.location.href=\''.tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'')).'\';"';
                   $products_storage_text .= $imaginary;
-                  $products_inventory_params .= 'class="dataTableContent" align="right" style="" onclick="document.location.href=\''.tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'')).'\';"';
+                  $products_inventory_params .= 'class="dataTableContent" align="right" style="font-weight:bold;" onclick="document.location.href=\''.tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'')).'\';"';
                   $products_inventory_text .= $products['products_real_quantity'];
                 }
                 $products_table_content_row[] = array('params'=>$products_storage_params, 'text'=>$products_storage_text);
@@ -5137,7 +5137,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 if ($product_price['sprice']) {
                   $products_price_text .= '<span class="specialPrice">' .  $currencies->format($product_price['sprice']) . '</span>';
                 } else {
-                  $products_price_text .= ''.$currencies->format($product_price['price']).'';
+                  $products_price_text .= $currencies->format($product_price['price']);
                 }
                 $products_price_text .= '</span>'; 
                 $products_price_text .= '<span style="display:none;" id="h_edit_p_'.$products['products_id'].'">'.$tmp_p_price.'</span>'; 
@@ -5365,6 +5365,17 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     <td class="smallText" align="right" valign="top">
 					<div class="td_box_button">
                     <?php
+                    if ($ocertify->npermission >= 10) {
+                      if (empty($site_id) && !empty($_GET['cPath'])) {
+                        $tmp_path_info = explode('_', $_GET['cPath']); 
+                        $tmp_c_path_info = $tmp_path_info[count($tmp_path_info) - 1]; 
+                        $manual_category_query = tep_db_query("select categories_name from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id = '".(int)$tmp_c_path_info."' and site_id = '0'"); 
+                        $manual_category_res = tep_db_fetch_array($manual_category_query); 
+                        if ($manual_category_res) {
+                          echo '<a href="'.tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('info', 'x', 'y', 'action', 'site_id')).'&action=show_categories_manual_link').'">'.tep_html_element_button(MANUAL_LINK_TEXT).'</a>&nbsp;'; 
+                        }
+                      }
+                    }
                     if ($cPath) {
                       if (!empty($cPath_back)) {
                         echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, $cPath_back . '&cID=' .  $current_category_id.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>';
@@ -5375,6 +5386,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               ?>
                 <?php
                 if ((!isset($_GET['search']) || !$_GET['search']) && $ocertify->npermission >= 10) { //限制显示
+                  if (empty($_GET['cPath']) && empty($site_id)) {
+                    echo '<a href="'.tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action', 'info', 'x', 'y', 'site_id')).'&action=edit_top_manual').'">'.tep_html_element_button(MANUAL_LINK_TEXT).'</a>&nbsp;'; 
+                  }
                   echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&action=new_category') . '">' . tep_html_element_button(IMAGE_NEW_CATEGORY) .  '</a>&nbsp;<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&action=new_product'.(isset($_GET['page'])?'&page='.$_GET['page']:'')) . '">' . tep_html_element_button(IMAGE_NEW_PRODUCT) . '</a>';
                 }
               ?>

@@ -746,7 +746,7 @@ require("includes/note_js.php");
       <tr>
       <td align="left" class="smallText">
         <table width=""  border="0" cellspacing="1" cellpadding="0"
-        style="margin-top:10px;">
+        style="margin:10px 0;">
           <tr>
             <td class="smallText" valign='top'>
               <?php echo tep_draw_form('pw_manager1', FILENAME_PW_MANAGER, '',
@@ -977,30 +977,24 @@ require("includes/note_js.php");
     }
 
     ?>
-
   </table>
-          <table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin-top:5px;">
-          <tr>
-            <td class="smallText" valign="top"><?php echo
-            $pw_manager_split->display_count($pw_manager_query_numrows,
-                MAX_DISPLAY_PW_MANAGER_RESULTS, $_GET['page'],
-                TEXT_DISPLAY_NUMBER_OF_PW_MANAGERS); ?></td>
-            <td class="smallText" align="right"><div class="td_box"><?php echo
-            $pw_manager_split->display_links($pw_manager_query_numrows,
-                MAX_DISPLAY_PW_MANAGER_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'],
-                tep_get_all_get_params(array('page',  'action','pw_id'))); ?></div></td>
-          </tr>
-    <?php
-      echo "<tr><td align='right' colspan='2'>";
-        echo '<div class="td_button"><button type=\'button\'
-        onclick="location.href=\''.tep_href_link(FILENAME_PW_MANAGER,'action=new&sort='.$_GET['sort'].'&type='.$_GET['type']).'\'" >';
-        echo IMAGE_NEW_PROJECT;
-        echo "</button></div>";
-      echo "</td></tr>";
-
-    ?>
-	  </table>
+  <table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <tr>
+      <td class="smallText" valign="top"><?php echo $pw_manager_split->display_count($pw_manager_query_numrows, MAX_DISPLAY_PW_MANAGER_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PW_MANAGERS); ?></td>
+      <td class="smallText" align="right"><div class="td_box"><?php echo $pw_manager_split->display_links($pw_manager_query_numrows, MAX_DISPLAY_PW_MANAGER_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page',  'action','pw_id'))); ?></div></td>
+    </tr>
+    <tr>
+      <td colspan="2" align="right" class="smallText">
+      <div class="td_button"> 
+      <?php 
+      echo '<button type=\'button\' onclick="location.href=\''.tep_href_link(FILENAME_PW_MANAGER,'action=new&sort='.$_GET['sort'].'&type='.$_GET['type']).'\'" >'; echo IMAGE_NEW_PROJECT;
+      echo "</button>";
+      ?> 
+      </div> 
       </td>
+    </tr>
+  </table>    
+  </td>
 <?php
   $heading = array();
   $contents = array();
@@ -1012,7 +1006,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
    default 右侧默认页面
 ------------------------------------------------------*/
   case 'new':
-      $heading[] = array('text' => '' . TEXT_INFO_HEADING_NEW . '');
+      $heading[] = array('text' => TEXT_INFO_HEADING_NEW);
 
       $contents = array('form' => tep_draw_form('pw_manager', FILENAME_PW_MANAGER,
             'page=' . $_GET['page'] . '&type='.$_GET['type'].'&sort='.$_GET['sort'].'&action=insert', 'post',
@@ -1088,7 +1082,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
     break;
   case 'edit':
       
-      $heading[] = array('text' => '' . TEXT_INFO_HEADING_EDIT . '');
+      $heading[] = array('text' => TEXT_INFO_HEADING_EDIT);
       $contents = array('form' => tep_draw_form('pw_manager', FILENAME_PW_MANAGER,
             'page=' . $_GET['page'] . '&site_id='.$site_id.'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&action=update&pw_id='.$pwInfo->id, 'post',
             'enctype="multipart/form-data" onsubmit="return valdata(this)"'));
@@ -1176,12 +1170,12 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           );
     break;
     case 'delete':
-      $heading[] = array('text' => '' . TEXT_INFO_HEADING_DELETE_PW_MANAGER . '');
+      $heading[] = array('text' => TEXT_INFO_HEADING_DELETE_PW_MANAGER);
 
       $contents = array('form' => tep_draw_form('pw_manager', FILENAME_PW_MANAGER,
             'page=' . $_GET['page'] . '&pw_id=' . $pwInfo->id . '&action=deleteconfirm'));
       $contents[] = array('text' => TEXT_INFO_DELETE_INTRO);
-      $contents[] = array('text' => '<br>' . $pwInfo->title . '');
+      $contents[] = array('text' => '<br>' . $pwInfo->title);
       $contents[] = array('align' => 'center', 'text' => '<br>' .
           "<button type='submit' >".TEXT_BUTTON_DELETE."</button>"
           . '&nbsp;' .

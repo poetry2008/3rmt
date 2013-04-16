@@ -173,8 +173,11 @@ function status_add_submit(){
 
   var error = false;
   var title = document.getElementsByName("title")[0];  
+  var name = document.getElementsByName("name")[0];
   title = title.value;
   title = title.replace(/\s/g,"");
+  name = name.value;
+  name = name.replace(/\s/g,"");
   var is_handle = document.getElementsByName("is_handle")[0]; 
   if(is_handle.value == 1 && is_handle.checked == true){
   
@@ -217,6 +220,13 @@ function status_add_submit(){
     $("#title_error").html('&nbsp;<font color="#FF0000"><?php echo TEXT_CALENDAR_MUST_INPUT;?></font>'); 
   }else{
     $("#title_error").html('<?php echo TEXT_FIELD_REQUIRED;?>');
+  }
+
+  if(name == ""){
+    error = true;
+    $("#name_error").html('&nbsp;<font color="#FF0000"><?php echo TEXT_CALENDAR_MUST_INPUT;?></font>'); 
+  }else{
+    $("#name_error").html('<?php echo TEXT_FIELD_REQUIRED;?>');
   }
   
   if(error == true){

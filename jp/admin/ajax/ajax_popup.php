@@ -1206,7 +1206,7 @@ if ($_GET['action'] == 'show_category_info') {
   
   $new_group_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_GROUP_DESC), 
-        array('align' => 'left', 'text' => tep_draw_textarea_field('comment', 'hard', '30', '10', '', 'class="campaign_input" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"')) 
+        array('align' => 'left', 'text' => tep_draw_textarea_field('comment', 'hard', '30', '10', '', 'class="campaign_input" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize:vertical;"')) 
       );
   
   $new_group_row[]['text'] = array(
@@ -1331,7 +1331,7 @@ if ($_GET['action'] == 'show_category_info') {
   
   $edit_group_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_GROUP_DESC), 
-        array('align' => 'left', 'text' => tep_draw_textarea_field('comment', 'hard', '30', '10', $group['comment'], 'class="campaign_input" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"')) 
+        array('align' => 'left', 'text' => tep_draw_textarea_field('comment', 'hard', '30', '10', $group['comment'], 'class="campaign_input" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize:vertical;"')) 
       );
   
   $edit_group_row[]['text'] = array(
@@ -1982,6 +1982,32 @@ width:20%;"'))
         array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<input type="text" class="option_input" name="title" value="'.$calendar_status_array['title'].'"><span id="title_error">'.TEXT_FIELD_REQUIRED.'</span>')
       );
 
+  //名称
+  $category_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_NAME), 
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<input type="text" class="option_input" name="name" value="'.$calendar_status_array['name'].'"><span id="name_error">'.TEXT_FIELD_REQUIRED.'</span>')
+      );
+
+  //是否在前台显示
+  $category_info_row[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_FRONT_DESK_SHOW), 
+       array('align' => 'left', 'params' => 'width="55" nowrap="nowrap"', 'text' => '<input type="radio" name="front_desk_show" value="1" style="padding-left:0;margin-left:0;"'.($calendar_status_array['front_desk_show'] == 1 ? 'checked="checked"' : '').'>'.TEXT_CALENDAR_YES),
+       array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="radio" name="front_desk_show" value="0"'.($calendar_status_array['front_desk_show'] == 0 ? 'checked="checked"' : '').'>'.TEXT_CALENDAR_NO)
+     );
+
+  //是否在前台注释显示
+  $category_info_row[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_FRONT_DESK_COMMENT_SHOW), 
+       array('align' => 'left', 'params' => 'width="55" nowrap="nowrap"', 'text' => '<input type="radio" name="front_desk_comment_show" value="1" style="padding-left:0;margin-left:0;"'.($calendar_status_array['front_desk_comment_show'] == 1 ? 'checked="checked"' : '').'>'.TEXT_CALENDAR_YES),
+       array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="radio" name="front_desk_comment_show" value="0"'.($calendar_status_array['front_desk_comment_show'] == 0 ? 'checked="checked"' : '').'>'.TEXT_CALENDAR_NO)
+     );
+  //是否在日历上标记
+  $category_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_SHOW), 
+        array('align' => 'left', 'params' => 'width="55" nowrap="nowrap"', 'text' => '<input type="radio" name="is_show" style="padding-left:0;margin-left:0;" value="1"'.($calendar_status_array['is_show'] == 1 ? ' checked="checked"' : '').'>'.TEXT_CALENDAR_SHOW_YES),
+        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="radio" name="is_show" value="0"'.($calendar_status_array['is_show'] == 0 ? ' checked="checked"' : '').'>'.TEXT_CALENDAR_SHOW_NO)
+      );
+
   //银行营业状态颜色选项 
   $color_array = array('#FFFFFF','#DD1F2C','#DD6E1F','#FFFFCC','#82C31C','#1F67DD','#982DAC','#F1A9EB','#B36520','#BEBEBE');
   $color_font_array = array(TEXT_CALENDAR_COLOR_WHITE,TEXT_CALENDAR_COLOR_RED,TEXT_CALENDAR_COLOR_BLUE_ORANGE,TEXT_CALENDAR_COLOR_BLUE_YELLOW,TEXT_CALENDAR_COLOR_BLUE_GREEN,TEXT_CALENDAR_COLOR_BLUE,TEXT_CALENDAR_COLOR_BLUE_PURPLE,TEXT_CALENDAR_COLOR_BLUE_PINK,TEXT_CALENDAR_COLOR_BLUE_BROWN,TEXT_CALENDAR_COLOR_BLUE_GRAY);
@@ -2086,12 +2112,6 @@ width:20%;"'))
       );
 
   $category_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_SHOW), 
-        array('align' => 'left', 'params' => 'width="55" nowrap="nowrap"', 'text' => '<input type="radio" name="is_show" style="padding-left:0;margin-left:0;" value="1"'.($calendar_status_array['is_show'] == 1 ? ' checked="checked"' : '').'>'.TEXT_CALENDAR_SHOW_YES),
-        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="radio" name="is_show" value="0"'.($calendar_status_array['is_show'] == 0 ? ' checked="checked"' : '').'>'.TEXT_CALENDAR_SHOW_NO)
-      );
-
-  $category_info_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_SORT), 
         array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<input type="text" name="sort" value="'.$calendar_status_array['sort'].'" style="text-align: right;">')
       );
@@ -2120,7 +2140,6 @@ width:20%;"'))
   $buttons = array();
   
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_submit(IMAGE_SAVE, '').'</a>'; 
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="hidden_info_box();"').'</a>'; 
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if(confirm(\''.TEXT_CALENDAR_DELETE_COMMENTS.'\')){status_delete();}"').'</a></form>'; 
 
   if (!empty($button)) {
@@ -2163,6 +2182,33 @@ width:20%;"'))
   $category_info_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_TITLE), 
         array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<input type="text" class="option_input" name="title" value=""><span id="title_error">'.TEXT_FIELD_REQUIRED.'</span>')
+      );
+
+  //名称
+  $category_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_NAME), 
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<input type="text" class="option_input" name="name" value=""><span id="name_error">'.TEXT_FIELD_REQUIRED.'</span>')
+      );
+
+  //是否在前台显示
+  $category_info_row[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_FRONT_DESK_SHOW), 
+       array('align' => 'left', 'params' => 'width="55" nowrap="nowrap"', 'text' => '<input type="radio" name="front_desk_show" value="1" style="padding-left:0;margin-left:0;" checked="checked">'.TEXT_CALENDAR_YES),
+       array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="radio" name="front_desk_show" value="0">'.TEXT_CALENDAR_NO)
+     );
+
+  //是否在前台注释显示
+  $category_info_row[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_FRONT_DESK_COMMENT_SHOW), 
+       array('align' => 'left', 'params' => 'width="55" nowrap="nowrap"', 'text' => '<input type="radio" name="front_desk_comment_show" value="1" style="padding-left:0;margin-left:0;" checked="checked">'.TEXT_CALENDAR_YES),
+       array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="radio" name="front_desk_comment_show" value="0">'.TEXT_CALENDAR_NO)
+     );
+
+  //是否在日期上显示
+  $category_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_SHOW), 
+        array('align' => 'left', 'params' => 'width="55" nowrap="nowrap"', 'text' => '<input type="radio" name="is_show" style="padding-left:0;margin-left:0;" value="1">'.TEXT_CALENDAR_SHOW_YES),
+        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="radio" name="is_show" value="0" checked="checked">'.TEXT_CALENDAR_SHOW_NO)
       );
 
   //银行营业状态颜色选项 
@@ -2247,12 +2293,6 @@ width:20%;"'))
       );
 
   $category_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_SHOW), 
-        array('align' => 'left', 'params' => 'width="55" nowrap="nowrap"', 'text' => '<input type="radio" name="is_show" style="padding-left:0;margin-left:0;" value="1">'.TEXT_CALENDAR_SHOW_YES),
-        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="radio" name="is_show" value="0" checked="checked">'.TEXT_CALENDAR_SHOW_NO)
-      );
-
-  $category_info_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_SORT), 
         array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<input type="text" name="sort" value="1000" style="text-align: right;">')
       );
@@ -2261,7 +2301,6 @@ width:20%;"'))
   $buttons = array();
   
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_submit(IMAGE_SAVE, '').'</a>'; 
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="hidden_info_box();"').'</a>'; 
 
   if (!empty($button)) {
     $buttons = array('align' => 'center', 'button' => $button); 
@@ -2750,10 +2789,19 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
       if ($cInfo->configuration_key == 'DS_ADMIN_SIGNAL_TIME') {
         eval('$value_field = '.$cInfo->set_function."'".$cInfo->configuration_value."');"); 
       } else {
+        $textarea_pos = strpos($cInfo->set_function, 'tep_cfg_textarea');
         if(in_array($site_id,$site_array)){
-        eval('$value_field = ' . $cInfo->set_function . '\'' .  htmlspecialchars(addcslashes($cInfo->configuration_value, '\'')) . '\');');
+          if ($textarea_pos !== false) {
+            eval('$value_field = ' . $cInfo->set_function . '\'' .  htmlspecialchars(addcslashes($cInfo->configuration_value, '\'')) .  '\', \'\', \'style="resize:vertical;"\');');
+          } else {
+            eval('$value_field = ' . $cInfo->set_function . '\'' .  htmlspecialchars(addcslashes($cInfo->configuration_value, '\'')) . '\');');
+          }
         }else{
-        eval('$value_field = ' . $cInfo->set_function . '\'' .  htmlspecialchars(addcslashes($cInfo->configuration_value, '\'')) .  '\',\'\',\'disabled="disabled"\');');
+          if ($textarea_pos !== false) {
+            eval('$value_field = ' . $cInfo->set_function . '\'' .  htmlspecialchars(addcslashes($cInfo->configuration_value, '\'')) .  '\',\'\',\'disabled="disabled" style="resize:vertical;"\');');
+          } else {
+            eval('$value_field = ' . $cInfo->set_function . '\'' .  htmlspecialchars(addcslashes($cInfo->configuration_value, '\'')) .  '\',\'\',\'disabled="disabled"\');');
+          }
         }
         $value_field = str_replace('<br>','',$value_field);
         $value_field .= '<input type="hidden" name="hidden_configuration_value" value="'.$cInfo->configuration_value.'">';
@@ -2768,9 +2816,9 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
         }
       } else {
        if(in_array($site_id,$site_array)) { 
-        $value_field = '<textarea name="configuration_value" rows="5" cols="35">'. $cInfo->configuration_value .'</textarea><input type="hidden" name="hidden_configuration_value" value="'.$cInfo->configuration_value.'">';
+        $value_field = '<textarea name="configuration_value" rows="5" cols="35" style="resize:vertical;">'. $cInfo->configuration_value .'</textarea><input type="hidden" name="hidden_configuration_value" value="'.$cInfo->configuration_value.'">';
        }else{
-        $value_field = '<textarea name="configuration_value" rows="5" cols="35" disabled="disabled">'. $cInfo->configuration_value .'</textarea><input type="hidden" name="hidden_configuration_value" value="'.$cInfo->configuration_value.'">';
+        $value_field = '<textarea name="configuration_value" rows="5" cols="35" disabled="disabled" style="resize:vertical;">'. $cInfo->configuration_value .'</textarea><input type="hidden" name="hidden_configuration_value" value="'.$cInfo->configuration_value.'">';
        }
       }
     }
@@ -2785,11 +2833,11 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
       array('align' => 'center','params' => 'colspan="3"','text' => '<input type="hidden" name="user_update" value="'.$user_info['name'].'">'),
    );
     $configuration_contents[]['text'] = array(
-      array('text' => $cInfo_configuration_title),
+      array('text' => str_replace('&nbsp;','',$cInfo_configuration_title)),
       array('text' => $value_field.'<br><font size="1">'.$cInfo->configuration_description.'</font>')
    );
   $configuration_contents[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="50%%"', 'text' => TEXT_USER_ADDED.((tep_not_null($cInfo->user_added))?$cInfo->user_added:TEXT_UNSET_DATA)), 
+        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.((tep_not_null($cInfo->user_added))?$cInfo->user_added:TEXT_UNSET_DATA)), 
         array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.((tep_not_null($cInfo->date_added))?$cInfo->date_added:TEXT_UNSET_DATA))
       );
   
@@ -2846,10 +2894,19 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
        $value_field = $fetch_result['configuration_value'];
       }
    }else{
+      $textarea_pos_tmp = strpos($fetch_result['set_function'], 'tep_cfg_textarea');
       if(in_array($site_id,$site_array)){
-      eval('$value_field = ' . $fetch_result['set_function'] . '\'' .  htmlspecialchars(addcslashes($fetch_result['configuration_value'], '\'')) . '\');');
+        if ($textarea_pos_tmp !== false) {
+          eval('$value_field = ' . $fetch_result['set_function'] . '\'' .  htmlspecialchars(addcslashes($fetch_result['configuration_value'], '\'')) . '\', \'\', \'style="resize:vertical;"\');');
+        } else {
+          eval('$value_field = ' . $fetch_result['set_function'] . '\'' .  htmlspecialchars(addcslashes($fetch_result['configuration_value'], '\'')) . '\');');
+        }
       }else{
-      eval('$value_field = ' . $fetch_result['set_function'] . '\'' .  htmlspecialchars(addcslashes($fetch_result['configuration_value'], '\'')) . '\',\'\',\'disabled="disabled"\');');
+        if ($textarea_pos_tmp !== false) {
+          eval('$value_field = ' . $fetch_result['set_function'] . '\'' .  htmlspecialchars(addcslashes($fetch_result['configuration_value'], '\'')) . '\',\'\',\'disabled="disabled" style="resize:vertical;"\');');
+        } else {
+          eval('$value_field = ' . $fetch_result['set_function'] . '\'' .  htmlspecialchars(addcslashes($fetch_result['configuration_value'], '\'')) . '\',\'\',\'disabled="disabled"\');');
+        }
       }
         $value_field = str_replace('<br>','',$value_field);
         $value_field .= '<input type="hidden" name="hidden_configuration_value" value="'.$cInfo->configuration_value.'">';
@@ -2870,10 +2927,10 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
             }
           }else{
        if(in_array($site_id,$site_array)) { 
-          $value_field = '<textarea name="configuration_value" rows="5" cols="35">'. $fetch_result['configuration_value'] .'</textarea> <input type="hidden" name="hidden_configuration_value" value="'.$fetch_result['configuration_value'].'">
+          $value_field = '<textarea name="configuration_value" rows="5" cols="35" style="resize:vertical;">'. $fetch_result['configuration_value'] .'</textarea> <input type="hidden" name="hidden_configuration_value" value="'.$fetch_result['configuration_value'].'">
             ';
        }else{
-          $value_field = '<textarea name="configuration_value" rows="5" cols="35" disabled="disabled">'.  $fetch_result['configuration_value'] .'</textarea> <input type="hidden" name="hidden_configuration_value" value="'.$fetch_result['configuration_value'].'">';
+          $value_field = '<textarea name="configuration_value" rows="5" cols="35" disabled="disabled" style="resize:vertical;">'.  $fetch_result['configuration_value'] .'</textarea> <input type="hidden" name="hidden_configuration_value" value="'.$fetch_result['configuration_value'].'">';
        }
           }
       }

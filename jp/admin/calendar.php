@@ -14,6 +14,9 @@ switch($_GET['action']){
 ------------------------------------------------------*/
   case 'status_add':
     $title = tep_db_prepare_input($_POST['title']);
+    $name = tep_db_prepare_input($_POST['name']);
+    $front_desk_show = tep_db_prepare_input($_POST['front_desk_show']);
+    $front_desk_comment_show = tep_db_prepare_input($_POST['front_desk_comment_show']);
     $color = tep_db_prepare_input($_POST['color']);
     $is_handle = tep_db_prepare_input($_POST['is_handle']);
     $start_time = tep_db_prepare_input($_POST['start_time']);
@@ -32,6 +35,9 @@ switch($_GET['action']){
     $sort = tep_db_prepare_input($_POST['sort']);
 
     $sql_data_array = array('title'=>$title,
+                             'name'=>$name,
+                             'front_desk_show'=>$front_desk_show,
+                             'front_desk_comment_show'=>$front_desk_comment_show,
                              'color'=>$color, 
                              'is_handle'=>$is_handle,
                              'start_time'=>$start_time,
@@ -51,6 +57,9 @@ switch($_GET['action']){
   case 'status_edit':
     $cl_id = tep_db_prepare_input($_POST['cl_id']); 
     $title = tep_db_prepare_input($_POST['title']);
+    $name = tep_db_prepare_input($_POST['name']);
+    $front_desk_show = tep_db_prepare_input($_POST['front_desk_show']);
+    $front_desk_comment_show = tep_db_prepare_input($_POST['front_desk_comment_show']);
     $color = tep_db_prepare_input($_POST['color']);
     $is_handle = tep_db_prepare_input($_POST['is_handle']);
     $start_time = tep_db_prepare_input($_POST['start_time']);
@@ -63,6 +72,9 @@ switch($_GET['action']){
     $sort = tep_db_prepare_input($_POST['sort']);
 
     $sql_data_array = array('title'=>$title,
+                             'name'=>$name,
+                             'front_desk_show'=>$front_desk_show,
+                             'front_desk_comment_show'=>$front_desk_comment_show,
                              'color'=>$color, 
                              'is_handle'=>$is_handle,
                              'start_time'=>$start_time,
