@@ -258,8 +258,8 @@ function UserPassword_preview() {
   echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
   echo "<tr>\n";
   // 用户名（用户ID）
-  echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . ' colspan="2" nowrap>' .
-    $arec['name'] . "（" . $GLOBALS['userslist'] . '）</td>' . "\n";
+  echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . ' colspan="2" nowrap><b>' .
+    $arec['name'] . "（" . $GLOBALS['userslist'] . '）</b></td>' . "\n";
   echo "</tr>\n";
 
   echo "<tr>\n";

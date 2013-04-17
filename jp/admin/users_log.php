@@ -149,11 +149,11 @@ function UserLoginIp_list(){
     echo '</tr><tr><td>';
     echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
     echo "<tr>\n";
-    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_ADDRESS . '</td>' . "\n";    
-    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_LOGINTIME . '</td>' . "\n";
-    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_PERMISSIONS . '</td>' . "\n";
-    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_USER . '</td>' . "\n";
-    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_OPERATE . '</td>' . "\n";
+    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '><b>' .  TABLE_HEADING_ADDRESS . '</b></td>' . "\n";    
+    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '><b>' .  TABLE_HEADING_LOGINTIME . '</b></td>' . "\n";
+    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '><b>' .  TABLE_HEADING_PERMISSIONS . '</b></td>' . "\n";
+    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '><b>' . TABLE_HEADING_USER .  '</b></td>' . "\n";
+    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '><b>' . TABLE_HEADING_OPERATE .  '</b></td>' . "\n";
     echo "</tr>\n";
     $j = 1;
     $user_login_query = tep_db_query("select address,count(*) as num from ". TABLE_LOGIN ." where loginstatus!='a' and time_format(timediff(now(),logintime),'%H')<24 and status='0' group by address having num>=5 order by logintime desc");
@@ -292,11 +292,11 @@ function UserLoginLog_list() {
     // 表标签的开始
     echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
     echo "<tr>\n";
-    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_USER . '</td>' . "\n";       // 用户
-    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_LOGINTIME . '</td>' . "\n";      // 登录日 
-    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_LAST_ACCESSTIME . '</td>' . "\n";  // 最最终访问日期时间
-    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_STATUS . '</td>' . "\n";       // 状态
-    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_ADDRESS . '</td>' . "\n";      // 地址
+    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '><b>' . TABLE_HEADING_USER .  '</b></td>' . "\n";       // 用户
+    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '><b>' . TABLE_HEADING_LOGINTIME . '</b></td>' . "\n";      // 登录日 
+    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '><b>' . TABLE_HEADING_LAST_ACCESSTIME . '</b></td>' . "\n";  // 最最终访问日期时间
+    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '><b>' . TABLE_HEADING_STATUS . '</b></td>' . "\n";       // 状态
+    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '><b>' . TABLE_HEADING_ADDRESS . '</b></td>' . "\n";      // 地址
     echo "</tr>\n";
     show_loginlog_list($oresult);   // 列表显示访问日志信息
     echo "</table>\n";
@@ -311,8 +311,10 @@ function UserLoginLog_list() {
     echo "<tr>\n";
 
     // 日志的删除
-    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TEXT_INFO_DELETE_DAY . "</td>\n";
-    echo '<td class="main" colspan="2">';
+    echo '<td colspan="2" class="main" ' . $GLOBALS['ThBgcolor'] . '><b>' . TEXT_INFO_DELETE_DAY . "</b></td>\n";
+    echo "</tr>";
+    echo "<tr>";
+    echo '<td class="main">';
     echo tep_draw_input_field("aval[span]", $ocertify->login_log_span, 'size="1" maxlength="3"', FALSE, 'text', FALSE);
     echo TEXT_INFO_DELETE_FORMER_DAY . "</td>\n";
 

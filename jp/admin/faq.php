@@ -395,7 +395,7 @@ require("includes/note_js.php");
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td class="pageHeading">
+            <td class="pageHeading" height="40">
             <div style="float:left;width:50px;" >
             <?php echo HEADING_TITLE; ?>
             </div>
@@ -404,9 +404,6 @@ require("includes/note_js.php");
             echo tep_get_faq_breadcreumb_by_cpath($_GET['cPath'],$_GET['site_id']);
             ?>
             </div> 
-            </td>
-            <td class="pageHeading" align="right">
-            <?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?>
             </td>
             <td class="smallText" align="right">
             <?php 
