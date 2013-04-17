@@ -3068,18 +3068,11 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     $heading[] = array('align' => 'left', 'text' => $products_name.'&nbsp;&nbsp;');
     $heading[] = array('align' => 'right', 'text' => $page_str);
     if($_GET['site_id'] == 0){
-        $site_name = array(
-             'RMTジャックポット' => '1',
-             'RMTゲームマネー'   => '2',
-             'RMTワールドマネー' => '3',
-             'RMTアイテムデポ'   => '4',
-             'RMTカメズ'         => '5',
-             'RMT学園'           => '6',
-             'RedStone-RMT.com'  => '7',
-             'FF14-RMT.com'      => '8',
-           'RMTゲームプラネット' => '9',
-             'GM-Exchange'       => '10'
-            );
+      $site_list_query = tep_db_query("select * from sites");  
+      $site_name = array(); 
+      while ($site_list_info = tep_db_fetch_array($site_list_query)) { 
+        $site_name[$site_list_info['name']] = $site_list_info['id']; 
+      }
       $_GET['site_id'] = $site_name[$rInfo->site_name];
     }
     $contents[]['text'] = array(

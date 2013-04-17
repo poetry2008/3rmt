@@ -163,8 +163,8 @@ define('TYPE_BELOW', '下に入力');
 // javascript messages
 define('JS_ERROR', '入力フォームでエラーが起きています!\n次の項目を修正してください:\n\n');
 
-define('JS_REVIEW_TEXT', '* レビューの文章は少なくても ' . REVIEW_TEXT_MIN_LENGTH . ' 文字以上必要です。\n');
-define('JS_REVIEW_RATING', '* 商品の採点をしてください。\n');
+define('JS_REVIEW_TEXT', '※ レビューの文章は少なくても ' . REVIEW_TEXT_MIN_LENGTH . ' 文字以上必要です。\n');
+define('JS_REVIEW_RATING', '※ 商品の採点をしてください。\n');
 
 define('JS_GENDER', '* \'性別\' が選択されていません。\n');
 define('JS_FIRST_NAME', '* \'名\' は少なくても ' . ENTRY_FIRST_NAME_MIN_LENGTH . ' 文字以上必要です。\n');
@@ -486,5 +486,5 @@ define('CL_TEXT_DATE_THURSDAY', '木');
 define('CL_TEXT_DATE_FRIDAY', '金');
 define('CL_TEXT_DATE_STATURDAY', '土');
 define('CL_TEXT_DATE_SUNDAY', '日');
-define('JS_REVIEW_BAN_CHARACTER','* 投稿禁止ワードが含まれているため投稿できません。'.'\n');
+define('JS_REVIEW_BAN_CHARACTER','※ 投稿禁止ワードが含まれているため投稿できません。'.'\n');
 ?>
