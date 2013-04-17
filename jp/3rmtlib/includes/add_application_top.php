@@ -91,6 +91,7 @@ if ($pdo_con) {
   define('FILENAME_PREORDER_UNSUCCESS', 'preorder_unsuccess.php');
   define('FILENAME_FAQ_INFO', 'faq_info.php');
   define('FILENAME_ACCOUNT', 'account.php');
+  define('FILENAME_ACCOUNT_EXIT', 'account_exit.php');
   define('FILENAME_TAGS', 'tags.php');
   define('FILENAME_SEND_MAIL', 'send_mail.php');
   define('FILENAME_SEND_SUCCESS', 'send_success.php');

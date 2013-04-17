@@ -45,18 +45,20 @@ $update_customer_orders = tep_db_query("update ".TABLE_ORDERS." set customer_is_
 <?php page_head();?>
 </head>
 <body>
-<div class="body_shadow" align="center">
+<!-- header --> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-  <!-- header_eof //-->
-  <!-- body //-->
-  <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border">
-    <tr>
-      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"><!-- left_navigation //-->
+  <!-- header_eof --> 
+  <!-- body --> 
+  <div id="main">
+  <!-- left_navigation -->
+    <div id="l_menu">
       <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-      <!-- left_navigation_eof //-->
-      </td>
-      <!-- body_text //-->
-      <td valign="top" id="contents"><h1 class="pageHeading">
+    </div>
+      <!-- left_navigation_eof -->
+      <!-- body_text -->
+<div id="content">
+<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
+<h1 class="pageHeading">
 <?php 
   if(isset($_GET['action']) && $_GET['action']=="quit_success"){
     echo EXIT_SUCCESS_TITLE;
@@ -65,16 +67,7 @@ $update_customer_orders = tep_db_query("update ".TABLE_ORDERS." set customer_is_
   }
 ?>
 </h1>
-<div class="comment">
-      <table width="100%" border="0" cellpadding="0" cellspacing="0">
-        
-               <tr>
-          <td><table border="0" cellpadding="0" cellspacing="0" width="100%">
-                        <tr>
-              <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="0" >
-
-                <tr>
-                  <td class="main"><table border="0" cellspacing="0" cellpadding="2" width="100%">
+      <table class="box_des" width="95%" border="0" cellpadding="0" cellspacing="0"> 
 <?php
   if(isset($_GET['action']) && $_GET['action']=="quit_success" && isset($_GET['check_flag']) && $_GET['check_flag']!=""){
 ?>
@@ -119,18 +112,8 @@ if(!isset($_GET['check_from']) ){
 <?php
   }
 ?>
-                  </table></td>
-                </tr>
-              </table></td>
-            </tr>
-          </table></td>
-        </tr>
-        
         <tr>
-          <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-        </tr>
-        <tr>
-          <td><table border="0" width="100%" cellspacing="0" cellpadding="2" align="center">
+          <td><table border="0" width="100%" cellspacing="0" cellpadding="2">
             <tr>
 <?php
 if(isset($_GET['action']) && $_GET['action']=="quit_success"){
@@ -139,29 +122,26 @@ if(isset($_GET['action']) && $_GET['action']=="quit_success"){
 <?php
 }else{
 ?>
-<td class="main" align="center"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
+<td align="center" class="main"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
                <td align="center" class="main"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT_EXIT, 'action=quit_success&check_flag='.time(), 'SSL') . '" onclick="return confirm(\''.TEXT_ACCOUNT_EXIT_CONFIRM.'\');">' . tep_image_button('button_exit.gif', IMAGE_BUTTON_ACCOUNT_EXIT) . '</a>'; ?></td>
-<td align="center" class="main"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . tep_image_button('button_cancel.gif', TEXT_ACCOUNT_EXIT_CANCEL) . '</a>'; ?></td>
-	       <?php
+<td align="center" class="main"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . tep_image_button('button_cancel.gif', TEXT_ACCOUNT_EXIT_CANCEL) . '</a>'; ?></td> 
+<?php
 }
 ?>
             </tr>
           </table></td>
         </tr>
-      </table>
+      </table></div>
+      <!-- body_text_eof --> 
+<!-- right_navigation --> 
+<div id="r_menu">
+<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
 </div>
-<p class="pageBottom"></p>
-</td>
-      <!-- body_text_eof //-->
-      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"><!-- right_navigation //-->
-      <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
-      <!-- right_navigation_eof //-->
-      </td>
-  </table>
-  <!-- body_eof //-->
-  <!-- footer //-->
+<!-- right_navigation_eof -->
+  <!-- body_eof -->
+  <!-- footer -->
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-  <!-- footer_eof //-->
+  <!-- footer_eof -->
 </div>
 </body>
 </html>

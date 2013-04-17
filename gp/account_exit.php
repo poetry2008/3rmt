@@ -1,4 +1,4 @@
- <?php
+<?php
 /*
   $Id$
 
@@ -6,6 +6,7 @@
 */
 
   require('includes/application_top.php');
+//如果没有登陆 则在历史中加上此页，并跳转到登录页
   if (!tep_session_is_registered('customer_id')) {
  //$navigation->set_snapshot();
     tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
@@ -38,9 +39,8 @@ $update_customer_orders = tep_db_query("update ".TABLE_ORDERS." set customer_is_
   tep_session_unregister('customer_zone_id');
   tep_session_unregister('comments');
   tep_session_unregister('comment_emailaddress');
- $navigation->clear_snapshot();
-}
-  
+  $navigation->clear_snapshot();
+} 
 ?>
 <?php page_head();?>
 </head>
@@ -59,9 +59,9 @@ $update_customer_orders = tep_db_query("update ".TABLE_ORDERS." set customer_is_
       <td valign="top" id="contents"><h1 class="pageHeading">
 <?php 
   if(isset($_GET['action']) && $_GET['action']=="quit_success"){
- echo EXIT_SUCCESS_TITLE;
+    echo EXIT_SUCCESS_TITLE;
   }else{
-  echo HEADING_TITLE;
+    echo HEADING_TITLE;
   }
 ?>
 </h1>
@@ -77,104 +77,44 @@ $update_customer_orders = tep_db_query("update ".TABLE_ORDERS." set customer_is_
                   <td class="main"><table border="0" cellspacing="0" cellpadding="2" width="100%">
 <?php
   if(isset($_GET['action']) && $_GET['action']=="quit_success" && isset($_GET['check_flag']) && $_GET['check_flag']!=""){
-	  ?>
+?>
 <tr>
-<td class="main">今まで、RMTジャックポットでご利用いただいてありがとうございます。</td>
+<td class="main"><?php echo TEXT_ACCOUNT_EXIT_SUCCESS_COMMENT;?></td>
 </tr>
 <tr> 
               <td align="right"> <br> 
   
-                <?php echo '<a href="' . tep_href_link(FILENAME_DEFAULT) . '">' . tep_image_button('button_continue02.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?> </td> 
+              <?php echo '<a href="' . tep_href_link(FILENAME_DEFAULT) . '">' . tep_image_button('button_continue02.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?> </td> 
             </tr> 
 <?php
   }else{
 if(!isset($_GET['check_from']) ){
 	tep_redirect(tep_href_link(FILENAME_DEFAULT, '', 'SSL'));
 	  }
-
     ?>
                     <tr>
-                      <td class="main">「退会」とは、RMTジャックポットでご利用いただいているすべてのサービスを終了させる手続きのことです。</td>
+                    <td class="main"><?php echo str_replace('${SITE_NAME}',STORE_NAME,TEXT_ACCOUNT_EXIT_COMMENT_SITE);?></td>
 </tr>
 <tr>
-   <td class="formAreaTitle">
-<br>
-手順
-</td>
-                    </tr>
-<tr>
-   <td class="main">
-<table border="0" width="100%" cellspacing="0" cellpadding="2" >
-<tr>
-<td class="main" valign="top" width="10">
-&nbsp;&nbsp;1
-</td>
-<td class="main">
-ログインメールアドレス、パスワードを入力し て、「ログイン」をクリックする。
-</td>
+<td class="main"><?php echo TEXT_ACCOUNT_EXIT_COMMENT_LOGIN;?></td>
 </tr>
 <tr>
-<td class="main">
-</td>
-<td class="main">
-お客さまのログイン状態によっては、この画面が表示されず、すぐに次の手順の画面になることもあります。<br>
-</td>
+<td class="main"><br><br><br></td>
 </tr>
 <tr>
-<td class="main" valign="top">
- &nbsp;&nbsp;2
-</td>
-<td class="main">
-お客様情報、ご利用中のサービスをを確認し、内容が正しければ、「退会する」ボタンをクリックする。<br> 
-</td>
+<td class="main"><?php echo TEXT_ACCOUNT_EXIT_COMMENT_POINT;?></td>
 </tr>
 <tr>
-<td class="main" valign="top">
- &nbsp;&nbsp;3
-</td>
-<td class="main">
-「本当に退会しますか？」という確認メッセージが表示されます。<br>
-「OK」→退会申し込み完了画面へ<br>
-「キャンセル」→そのまま<br> 
-</td></tr></table>
-</td>
-                    </tr>
-<tr>
-
-<td class="formAreaTitle">
-<br>
-注意点
-</td>
+<td class="main"><?php echo TEXT_ACCOUNT_EXIT_COMMENT_REGISTER;?></td>
 </tr>
 <tr>
-<td class="main">
-<table border="0" width="100%" cellspacing="0" cellpadding="2" >
-<tr>
-<td class="main" valign="top" width="10">
- &nbsp;&nbsp;1
-</td>
-<td class="main">
-RMTジャックポットから退会すると、退会日が記録され、次回同じメールアドレスで会員になったとしても、前退会日以前の注文履歴を非表示とします。<br>
-</td>
+<td class="main"><?php echo TEXT_ACCOUNT_EXIT_COMMENT_EXIT;?></td>
 </tr>
 <tr>
-<td class="main" valign="top">
- &nbsp;&nbsp;2
-</td>
-<td class="main">
-RMTジャックポットから退会すると、会員でなくなり、ゲストになります。<br>
-</td>
+<td class="main"><?php echo TEXT_ACCOUNT_EXIT_COMMENT_CONTACT;?></td>
 </tr>
 <tr>
-<td class="main" valign="top">
- &nbsp;&nbsp;3
-</td>
-<td class="main">
-RMTジャックポットから退会すると、会員の残ったポイントも利用できなくなり、0になります。<br>
-</td>
-</tr>
-</table>
-</td>
+<td class="main"><br><br><br><br><br><br><br></td>
 </tr>
 <?php
   }
@@ -195,12 +135,13 @@ RMTジャックポットから退会すると、会員の残ったポイント�
 <?php
 if(isset($_GET['action']) && $_GET['action']=="quit_success"){
 ?>
-
+<td class="main">&nbsp;</td>
 <?php
 }else{
 ?>
-<td class="smallText"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
-               <td align="right" class="main"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT_EXIT, 'action=quit_success&check_flag='.time(), 'SSL') . '" onclick="return confirm(\'本当に退会しますか？\');">' . tep_image_button('button_exit.gif', IMAGE_BUTTON_ACCOUNT_EXIT) . '</a>'; ?></td>
+<td align="center" class="main"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
+               <td align="center" class="main"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT_EXIT, 'action=quit_success&check_flag='.time(), 'SSL') . '" onclick="return confirm(\''.TEXT_ACCOUNT_EXIT_CONFIRM.'\');">' . tep_image_button('button_exit.gif', IMAGE_BUTTON_ACCOUNT_EXIT) . '</a>'; ?></td>
+<td align="center" class="main"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . tep_image_button('button_cancel.gif', TEXT_ACCOUNT_EXIT_CANCEL) . '</a>'; ?></td>
 	       <?php
 }
 ?>
