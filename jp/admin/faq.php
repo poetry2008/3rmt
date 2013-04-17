@@ -395,15 +395,11 @@ require("includes/note_js.php");
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td class="pageHeading" height="40">
-            <div style="float:left;width:50px;" >
+            <td class="pageHeading" height="40" width="50%">
             <?php echo HEADING_TITLE; ?>
-            </div>
-            <div>
             <?php
             echo tep_get_faq_breadcreumb_by_cpath($_GET['cPath'],$_GET['site_id']);
             ?>
-            </div> 
             </td>
             <td class="smallText" align="right">
             <?php 

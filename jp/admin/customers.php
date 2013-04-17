@@ -477,7 +477,7 @@ require("includes/note_js.php");
         </table></td>
       </tr>
       <tr>
-        <td class="formAreaTitle"><?php echo CATEGORY_PERSONAL; ?></td>
+        <td class="formAreaTitle"><br><?php echo CATEGORY_PERSONAL; ?></td>
       </tr>
       <tr>
         <td class="formArea">
@@ -523,7 +523,7 @@ require("includes/note_js.php");
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
       </tr>
       <tr>
-        <td class="formAreaTitle"><?php echo CATEGORY_COMPANY; ?></td>
+        <td class="formAreaTitle"><br><?php echo CATEGORY_COMPANY; ?></td>
       </tr>
       <tr>
         <td class="formArea"><table border="0" cellspacing="2" cellpadding="2">
@@ -542,7 +542,7 @@ require("includes/note_js.php");
     $cpoint = tep_db_fetch_array($cpoint_query);
     ?>
       <tr>
-        <td class="formAreaTitle"><?php echo CATEGORY_OPTIONS; ?></td>
+        <td class="formAreaTitle"><br><?php echo CATEGORY_OPTIONS; ?></td>
       </tr>
       <tr>
         <td class="formArea">

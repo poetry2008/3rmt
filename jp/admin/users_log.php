@@ -302,19 +302,15 @@ function UserLoginLog_list() {
     echo "</table>\n";
 
     echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));    // <form>标签的输出
-    echo "<br>\n";
     show_page_ctl($nrow);       // 页面控制按钮的显示
-    echo "<br>\n";
 
     // 表标签的开始
     echo '<table border="0" cellspacing="1" cellpadding="1">' . "\n";
     echo "<tr>\n";
 
     // 日志的删除
-    echo '<td colspan="2" class="main" ' . $GLOBALS['ThBgcolor'] . '><b>' . TEXT_INFO_DELETE_DAY . "</b></td>\n";
-    echo "</tr>";
-    echo "<tr>";
-    echo '<td class="main">';
+    echo '<td class="main">' . TEXT_INFO_DELETE_DAY . "</td>\n";
+    echo '<td class="main">&nbsp;&nbsp;&nbsp;&nbsp;'; 
     echo tep_draw_input_field("aval[span]", $ocertify->login_log_span, 'size="1" maxlength="3"', FALSE, 'text', FALSE);
     echo TEXT_INFO_DELETE_FORMER_DAY . "</td>\n";
 
