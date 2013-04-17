@@ -444,7 +444,7 @@ case 'edit':
     if ($site_id == 0 && !preg_match('/.*SORT_ORDER$/', $key)) {
       $keys .= tep_draw_hidden_field('configuration[' . $key . ']', $value['value']);
     } else {
-      $keys .= '<b>' . $value['title'] . '</b><br>' . $value['description'] . '<br>';
+      $keys .=  $value['title'] . '<br>' . $value['description'] . '<br>';
       if ($value['set_function']) {
         eval('$keys .= ' . $value['set_function'] . "'" . $value['value'] . "', '" . $key . "');");
 
@@ -459,7 +459,7 @@ case 'edit':
     }
   }
   $keys = substr($keys, 0, strrpos($keys, '<br><br>'));
-  $heading[] = array('text' => '<b>' . $mInfo->title . '</b>');
+  $heading[] = array('text' => $mInfo->title);
 
   $contents = array('form' => tep_draw_form('modules', FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $_GET['module'] . '&action=save'));
   $contents[] = array('text' => $keys);
@@ -469,7 +469,7 @@ case 'edit':
   break;
 default:
 
-  $heading[] = array('text' => '<b>' . (isset($mInfo->title)?$mInfo->title:'') . '</b>');
+  $heading[] = array('text' => (isset($mInfo->title)?$mInfo->title:''));
   if (isset($mInfo->status) && $mInfo->status == '1') {
 
     $keys = '';
@@ -482,7 +482,7 @@ default:
         if ($module_item === false) {
           $module_item = tep_db_fetch_array(tep_db_query("select * from configuration where configuration_key = '".$k."' and site_id = '0'"));
         }
-        $keys .= '<b>' . $module_item['configuration_title'] . '</b><br>';
+        $keys .=  $module_item['configuration_title'] . '<br>';
         if ($module_item['use_function']) {
           $use_function = $module_item['use_function'];
           if (ereg('->', $use_function)) {
@@ -555,7 +555,7 @@ default:
      $check_query = tep_db_query(" select *  from " .  TABLE_CONFIGURATION . "
          where configuration_key =  'MODULE_".strtoupper($set)."_".$get_module."_".$suffix."'  and site_id = '".$s['id']."'");
      $check = tep_db_fetch_array($check_query);
-      $contents[] = array('text' => '<b>'.$s['romaji'].'</b>');
+      $contents[] = array('text' => $s['romaji']);
       $contents[] = array('align' => 'left', 'text' => '<a href="' .  tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' .  @$_GET['module'] . '&action=edit&site_id='.$s['id']) . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a>');
       if(tep_not_null($check['user_added'])){
       $contents[] = array('align' => 'left', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$check['user_added']);

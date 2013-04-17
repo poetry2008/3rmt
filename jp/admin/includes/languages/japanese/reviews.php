@@ -43,4 +43,13 @@ define('TEXT_DATE_ADDED','投稿日:');
 define('TEXT_DATE_UPDATE','更新日:');
 define('TEXT_NO_NAME','匿名');
 define('REVIEWS_NOTICE_TOTALNUM_ERROR', 'レビューの内容は50文字以上を入力してください');
+define('TEXT_CAMPAIGN_PREV', '<前へ');
+define('TEXT_CAMPAIGN_NEXT', '次へ>');
+define('TEXT_CATEGORY_SELECT','カテゴリ選択:');
+define('TEXT_SELECT_PRODUCT','商品を選択');
+define('TEXT_DEL_REVIEW', '本当に削除しますか？');
+define('TEXT_REVIEW_MUST_SELECT', '少なくとも1つの選択肢を選んでください。');
+define('TEXT_CLEAR_SELECTION','選択して下さい。');
+define('TEXT_ERROR_NULL','入力して下さい。');
+define('TEXT_CATEGORY_NAME','商品名称');
 ?>

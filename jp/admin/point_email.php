@@ -202,14 +202,14 @@ while($point_mail = tep_db_fetch_array($point_mail_query)){
    default 右侧默认页面
 ------------------------------------------------------*/
     case 'new':
-      $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_NEW . '</b>');
+      $heading[] = array('text' => TEXT_INFO_HEADING_NEW);
 
       $contents = array('form' => tep_draw_form('status', FILENAME_POINT_EMAIL, 'page=' . $_GET['page'] . '&action=insert', 'post', 'enctype="multipart/form-data"'));
 $contents[] = array('text' => '<input type="hidden" name="user_added" value="'.$user_info['name'].'">');
 $contents[] = array('text' => '<input type="hidden" name="user_update" value="'.$user_info['name'].'">');
 
     //point mail date
-    $point_mail_inputs_string .= '' . TEXT_INFO_POINT_MAIL_DATE .
+    $point_mail_inputs_string .= TEXT_INFO_POINT_MAIL_DATE .
       '<br>' . tep_draw_input_field('mail_date');
     //point mail title
     $point_mail_inputs_string .= '<br><br>' . TEXT_INFO_POINT_MAIL_TITLE .
@@ -226,7 +226,7 @@ $contents[] = array('text' => '<input type="hidden" name="user_update" value="'.
           '<a href="'.tep_href_link(FILENAME_POINT_EMAIL,'page=' .  $_GET['page']).'">'.tep_html_element_button(IMAGE_CANCEL).'</a>');
       break;
     case 'edit':
-      $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_EDIT_POINT_MAIL . '</b>');
+      $heading[] = array('text' => TEXT_INFO_HEADING_EDIT_POINT_MAIL);
 
       $contents = array('form' => tep_draw_form('status', FILENAME_POINT_EMAIL,
             'page=' . $_GET['page'] . '&id=' . $point_info->id  . '&action=save', 'post', 'enctype="multipart/form-data"'));
@@ -237,7 +237,7 @@ $contents[] = array('text' => '<input type="hidden" name="user_update" value="'.
       $point_mail_inputs_string = '';
 
       //mail date
-      $point_mail_inputs_string .= '' . TEXT_INFO_POINT_MAIL_DATE .
+      $point_mail_inputs_string .= TEXT_INFO_POINT_MAIL_DATE .
         '<br>' . tep_draw_input_field('mail_date', $point_info->mail_date);
       //mail title 
       $point_mail_inputs_string .= '<br><br>' . TEXT_INFO_POINT_MAIL_TITLE .
@@ -254,22 +254,22 @@ $contents[] = array('text' => '<input type="hidden" name="user_update" value="'.
           '<a href="'.tep_href_link(FILENAME_POINT_EMAIL,'page=' .  $_GET['page'].'id='.$point_mail->id).'">'.tep_html_element_button(IMAGE_CANCEL).'</a>');
       break;
     case 'delete':
-      $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE . '</b>');
+      $heading[] = array('text' => TEXT_INFO_HEADING_DELETE);
 
       $contents = array('form' => tep_draw_form('status', FILENAME_POINT_EMAIL,
             'page=' . $_GET['page'] . '&id=' . $point_info->id  . '&action=deleteconfirm'));
       $contents[] = array('text' => TEXT_INFO_DELETE);
-      $contents[] = array('text' => '<br><b>' . $point_info->mail_date . '</b>');
-      $contents[] = array('text' => '<br><b>' .
-          preg_replace("/\r\n|\n/",'<br>',$point_info->description) . '</b>');
+      $contents[] = array('text' => '<br>' . $point_info->mail_date);
+      $contents[] = array('text' => '<br>' .
+          preg_replace("/\r\n|\n/",'<br>',$point_info->description));
       $contents[] = array('align' => 'center' , 'text' => '<br>' .
           tep_html_element_submit(IMAGE_DELETE).
           '<a href="'.tep_href_link(FILENAME_POINT_EMAIL,'page=' .  $_GET['page'].'id='.$point_mail->id).'">'.tep_html_element_button(IMAGE_CANCEL).'</a>');
       break;
     default:
   if (isset($point_info) and is_object($point_info)) {
-        $heading[] = array('text' => '<b>' .TABLE_HEADING_MAIL_DATE.":"
-            . $point_info->mail_date . '</b>');
+        $heading[] = array('text' => TABLE_HEADING_MAIL_DATE.":"
+            . $point_info->mail_date);
         $point_mail_inputs_string = '';
         $point_mail_inputs_string .= '<br><br>'.TEXT_INFO_POINT_MAIL_TITLE.
           "<br><br>".$point_info->mail_title;

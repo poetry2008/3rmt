@@ -761,7 +761,7 @@ $c_id = tep_db_prepare_input($_GET['cID']);
           switch ($_GET['action']) {
           default:
             if (isset($list_id) && $list_id && tep_not_null($list_id)) {
-            $heading[] = array('text' => '<b>' . $c_title . '</b>');
+            $heading[] = array('text' => $c_title);
         
             $present[] = array('align' => 'center', 'text' => '<br><br><a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action','list_id')) . 'list_id=' .  $list_id  .'&action=listview') . '">' .  tep_html_element_button(PRESENT_SHOW) .'</a> <a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action'))) . '">' . tep_html_element_button(PRESENT_BACK) . '</a>');
             }
@@ -888,15 +888,15 @@ default:
    default 右侧默认页
 ------------------------------------------------------*/
           case 'deleform':
-            $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_PRESENT . '</b>');
+            $heading[] = array('text' => TEXT_INFO_HEADING_DELETE_PRESENT);
         
             $present = array('form' => tep_draw_form('present', FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=delete'));
-            $present[] = array('text' => TEXT_DELETE_INTRO . '<br><br><b>' . $c_title . '</b>');
+            $present[] = array('text' => TEXT_DELETE_INTRO . '<br><br>' . $c_title);
             $present[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_DELETE) . ' <a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
             break;
           default:
             if (isset($cID) && $cID && tep_not_null($cID)) {
-            $heading[] = array('text' => '<b>' . $c_title . '</b>');
+            $heading[] = array('text' => $c_title);
         
             $present[] = array('align' => 'center', 'text' => '<br><br><a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=view') . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a> <a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=deleform') . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a> <a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action','page')) . 'cID=' . $cID . '&action=list') . '">' .  tep_html_element_button(PRESENT_LIST) . '</a>' );
 $present_query = tep_db_query("select * from present_goods where goods_id='".$cID."'");

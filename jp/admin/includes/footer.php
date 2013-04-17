@@ -23,7 +23,8 @@ function redirect_new_url(new_object)
 <?php
 if($_SESSION['user_permission'] == 15 ){
   ?>
-  <div class="bottom_content">
+  <table class="bottom_content" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
   <?php 
     $sql_check = "select * from ".TABLE_PWD_CHECK." where
     page_name='".$_SERVER['PHP_SELF']."'";
@@ -34,47 +35,48 @@ if($_SESSION['user_permission'] == 15 ){
     }
     if(empty($arr_check)){
   ?>
-  <input type='checkbox' name='pwd_check' value='staff' class="bottom_input"><span>Staff&nbsp;</span>
-  <input type='checkbox' name='pwd_check' value='chief' class="bottom_input"><span>Chief&nbsp;</span>
-  <input type='checkbox' name='pwd_check' value='admin' checked="checked" class="bottom_input"><span>Admin&nbsp;</span>
-  <input type='checkbox' name='pwd_check' value='onetime' class="bottom_input"><div class="bottom_text"><?php echo 
-    TEXT_FOOTER_ONE_TIME;?>&nbsp;</div>
-  <input type='button' onclick="save_once_pwd_checkbox()" value="<?php echo
-    PRIVILEGE_SET_TEXT;?>" class="bottom_input_button">
+  <td width="80%"><input type='checkbox' name='pwd_check' value='staff' class="bottom_input"></td><td><span>Staff&nbsp;</span></td>
+  <td><input type='checkbox' name='pwd_check' value='chief' class="bottom_input"></td><td><span>Chief&nbsp;</span></td>
+  <td><input type='checkbox' name='pwd_check' value='admin' checked="checked" class="bottom_input"></td><td><span>Admin&nbsp;</span></td>
+  <td><input type='checkbox' name='pwd_check' value='onetime' class="bottom_input"></td><td nowrap><div class="bottom_text"><?php echo 
+    TEXT_FOOTER_ONE_TIME;?>&nbsp;</div></td>
+  <td><input type='button' onclick="save_once_pwd_checkbox()" value="<?php echo
+    PRIVILEGE_SET_TEXT;?>" class="bottom_input_button"></td>
   <?php }else{ 
     if(in_array('staff',$arr_check)){
-      echo "<input type='checkbox' name='pwd_check' value='staff'
-        checked='checked' class='bottom_input'><span>Staff&nbsp;</span>";
+      echo "<td width='80%'><input type='checkbox' name='pwd_check' value='staff' checked='checked'
+        class='bottom_input'></td><td><span>Staff&nbsp;</span></td>";
     }else{
-      echo "<input type='checkbox' name='pwd_check' value='staff' class='bottom_input'
-        ><span>Staff&nbsp;</span>";
+      echo "<td width='80%'><input type='checkbox' name='pwd_check' value='staff' class='bottom_input'
+        ></td><td><span>Staff&nbsp;</span></td>";
     }
     if(in_array('chief',$arr_check)){
-      echo "<input type='checkbox' name='pwd_check' value='chief' class='bottom_input'
-        checked='checked'><span>Chief&nbsp;</span>";
+      echo "<td><input type='checkbox' name='pwd_check' value='chief' class='bottom_input'
+        checked='checked'></td><td><span>Chief&nbsp;</span></td>";
     }else{
-      echo "<input type='checkbox' name='pwd_check' value='chief' class='bottom_input'
-        ><span>Chief&nbsp;</span>";
+      echo "<td><input type='checkbox' name='pwd_check' value='chief' class='bottom_input'
+        ></td><td><span>Chief&nbsp;</span></td>";
     }
     if(in_array('admin',$arr_check)){
-      echo "<input type='checkbox' name='pwd_check' value='admin' class='bottom_input'
-        checked='checked'><span>Admin&nbsp;</span>";
+      echo "<td><input type='checkbox' name='pwd_check' value='admin' class='bottom_input'
+        checked='checked'></td><td><span>Admin&nbsp;</span></td>";
     }else{
-      echo "<input type='checkbox' name='pwd_check' value='admin' class='bottom_input'
-        ><span>Admin&nbsp;</span>";
+      echo "<td><input type='checkbox' name='pwd_check' value='admin' class='bottom_input'
+        ></td><td><span>Admin&nbsp;</span></td>";
     }
     if(in_array('onetime',$arr_check)){
-      echo "<input type='checkbox' name='pwd_check' value='onetime' class='bottom_input'
-        checked='checked'><div class='bottom_text'>".TEXT_FOOTER_ONE_TIME."&nbsp;</div>";
+      echo "<td><input type='checkbox' name='pwd_check' value='onetime' class='bottom_input'
+        checked='checked'></td><td nowrap><div class='bottom_text'>".TEXT_FOOTER_ONE_TIME."&nbsp;</div></td>";
     }else{
-      echo "<input type='checkbox' name='pwd_check' value='onetime' class='bottom_input'
-        ><span>".TEXT_FOOTER_ONE_TIME."&nbsp;</span>";
+      echo "<td><input type='checkbox' name='pwd_check' value='onetime' class='bottom_input'
+        ></td><td nowrap><span>".TEXT_FOOTER_ONE_TIME."&nbsp;</span></td>";
     }
-  echo "<input type='button' class='bottom_input_button' onclick='save_once_pwd_checkbox()'
-    value='".PRIVILEGE_SET_TEXT."'>";
+  echo "<td><input type='button' class='bottom_input_button' onclick='save_once_pwd_checkbox()'
+    value='".PRIVILEGE_SET_TEXT."'></td>";
   }
   ?>
-  </div>
+  </tr> 
+  </table>
   <script language='javascript' >
   <?php //保存密码复选框 ?>
     function save_once_pwd_checkbox(){

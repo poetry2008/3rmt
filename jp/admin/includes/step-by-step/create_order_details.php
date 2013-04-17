@@ -356,7 +356,7 @@ echo ENTRY_EMAIL_ADDRESS;
 ?></td>
 <td class="main">&nbsp;
 <?php
-echo tep_draw_hidden_field('email_address', $email_address) . '<font color="red"><b>' . $email_address . '</b></font>';
+echo tep_draw_hidden_field('email_address', $email_address) . '<font color="red">' . $email_address . '</font>';
 ?>
   
 <?php
@@ -383,7 +383,7 @@ echo ENTRY_SITE;
 ?>:</td>
 <td class="main">&nbsp;
 <?php
-echo isset($account) && $account?( '<font color="#FF0000"><b>'.tep_get_site_romaji_by_id($account['site_id']).'</b></font>'.tep_draw_hidden_field('site_id', $account['site_id'])):(tep_site_pull_down_menu($site_id) . '&nbsp;' . ENTRY_SITE_TEXT);
+echo isset($account) && $account?( '<font color="#FF0000">'.tep_get_site_romaji_by_id($account['site_id']).'</font>'.tep_draw_hidden_field('site_id', $account['site_id'])):(tep_site_pull_down_menu($site_id) . '&nbsp;' . ENTRY_SITE_TEXT);
 ?></td>
 </tr>
 </table></td>
@@ -598,13 +598,13 @@ if($index > 0){
               echo $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $orders_exit_flag == true ? $order->info['currency'] : $currency, $orders_exit_flag == true ? $order->info['currency_value'] : $currency_value);
             }
             echo '</div></td>' . "\n" . 
-              '      <td class="' . $RowStyle . '" align="right"><div id="update_products['.$orders_products_id.'][c_price]"><b>';
+              '      <td class="' . $RowStyle . '" align="right"><div id="update_products['.$orders_products_id.'][c_price]">';
             if ($order->products[$i]['final_price'] < 0) {
               echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $orders_exit_flag == true ? $order->info['currency'] : $currency, $orders_exit_flag == true ? $order->info['currency_value'] : $currency_value)).'</font>'.TEXT_MONEY_SYMBOL;
             } else {
               echo $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $orders_exit_flag == true ? $order->info['currency'] : $currency, $orders_exit_flag == true ? $order->info['currency_value'] : $currency_value);
             }
-            echo '</b></div></td>' . "\n" . 
+            echo '</div></td>' . "\n" . 
               '    </tr>' . "\n";
           }
           ?>
@@ -689,7 +689,7 @@ if($index > 0){
         $product_error = isset($products_error) && $products_error == true ? PRODUCT_ERROR : '';
         $PHP_SELF = 'create_order.php';
         print "<tr>\n";
-        print "<td class='dataTableContent' width='70'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 1:</b></td>\n";
+        print "<td class='dataTableContent' width='70'>&nbsp;" . ADDPRODUCT_TEXT_STEP . " 1:</td>\n";
         print "<td class='dataTableContent'>";
         print "<form action='$PHP_SELF?oID=$oID&action=add_product$param_str' method='POST'>\n";
         print '<table>'; 
@@ -711,7 +711,7 @@ if($index > 0){
         if(($step > 1) && ($add_product_categories_id > 0))
         {
           print "<tr>\n";
-          print "<td class='dataTableContent'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 2: </b></td>\n";
+          print "<td class='dataTableContent'>&nbsp;" . ADDPRODUCT_TEXT_STEP . " 2: </td>\n";
           print "<td class='dataTableContent'>";
           print "<form action='$PHP_SELF?oID=$oID&action=$action$param_str' method='POST'>\n";
           print "<table>"; 
@@ -753,7 +753,7 @@ if($index > 0){
           if(!$hm_option->admin_whether_show($option_product['belong_to_option'], 0, $option_product['products_cflag']))
           {
             print "<tr>\n";
-            print "<td class='dataTableContent' valign='top'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td>\n";
+            print "<td class='dataTableContent' valign='top'>&nbsp;" . ADDPRODUCT_TEXT_STEP . " 3: </td>\n";
             print "<td class='dataTableContent' valign='top' colspan='2'><i>" . ADDPRODUCT_TEXT_OPTIONS_NOTEXIST . "</i></td>\n";
             print "</tr>\n";
             $step = 4;
@@ -762,7 +762,7 @@ if($index > 0){
           {
             $p_cflag = tep_get_cflag_by_product_id($add_product_products_id);
             print "<tr>\n";
-            print "<td class='option_title_space' valign='top'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td><td class='dataTableContent' valign='top'>";
+            print "<td class='option_title_space' valign='top'>&nbsp;" . ADDPRODUCT_TEXT_STEP . " 3: </td><td class='dataTableContent' valign='top'>";
             print "<form name='coform' action='$PHP_SELF?oID=$oID&action=$action$param_str' method='POST'>";
             print $hm_option->render($option_product['belong_to_option'], false, 2, '', '', $p_cflag); 
             print "</td>";
@@ -789,7 +789,7 @@ if($index > 0){
           $products_array = tep_db_fetch_array($products_query);
           tep_db_free_result($products_query);  
           echo "<tr><form action='$PHP_SELF?oID=$oID&action=$action$param_str' method='POST'>\n";
-          echo "<td class='dataTableContent'>&nbsp;<b>" . ADDPRODUCT_TEXT_STEP . " 4: </b></td>";
+          echo "<td class='dataTableContent'>&nbsp;" . ADDPRODUCT_TEXT_STEP . " 4: </td>";
           echo '<td class="dataTableContent">&nbsp;' .
             ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input name="add_product_quantity" size="2" value="1" onkeyup="clearLibNum(this);">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'&nbsp;&nbsp;&nbsp;&nbsp;';
           echo '<input type="hidden" style="text-align:right;" class="once_pwd" onkeyup="clearNoNum_1(this);" value="'. (int)$products_array['products_price'] .'" size="9" name="add_product_price">&nbsp;</td>';
@@ -823,21 +823,6 @@ if($index > 0){
   <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
   <tr>
   <td class="main"><table border="0" cellspacing="0" cellpadding="2">
-
-  <!--
-
-  <tr>
-  <td class="main">&nbsp;
-<?php
-echo ENTRY_TELEPHONE_NUMBER;
-?></td>
-<td class="main">&nbsp;
-<?php
-echo tep_draw_input_field('telephone', $telephone) . '&nbsp;' . ENTRY_TELEPHONE_NUMBER_TEXT;?></td>
-</tr>
-
--->
-
 <tr>
 <td class="main" valign="top" nowrap="nowrap" style="padding-left:6px;"><?php echo CREATE_ORDER_COMMUNITY_SEARCH_TEXT;?></td>
 <td class="main">&nbsp;
@@ -849,35 +834,4 @@ echo tep_draw_input_field('telephone', $telephone) . '&nbsp;' . ENTRY_TELEPHONE_
 </table>
 </td>
 </tr>
-<!--
-
-<tr>
-<td class="formAreaTitle"><br>
-                                                                                 
-  <?php
-  echo CATEGORY_ORDER_DETAILS;
-?></td>
-</tr>
-<tr>
-<td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
-  <tr>
-  <td class="main"><table border="0" cellspacing="0" cellpadding="2">
-  <tr>
-  <td class="main">&nbsp;
-<?php
-echo ENTRY_CURRENCY;
-?></td>
-<td class="main">
-                                                                                 
-<?php
-  echo $SelectCurrencyBox;
-?></td>
-</tr>
-</table></td>
-</tr>
-</table></td>
-</tr>
-
--->
-
 </table>

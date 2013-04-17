@@ -118,7 +118,7 @@
      echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link('mag_dl.php', '', 'NONSSL').'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_magazine_data.gif').'</span><span>'.FILENAME_MAG_DL_TEXT.'</span></div>';
      }
      if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_ORDERS_DOWNLOAD){
-     echo ' <div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS_DOWNLOAD, '', 'NONSSL').'\';"><span>'.  tep_image(DIR_WS_MENU_ICON . 'icon_date_export.gif').'</span><span>>'.FILENAME_ORDER_DOWNLOAD.'</span></div>';
+     echo ' <div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS_DOWNLOAD, '', 'NONSSL').'\';"><span>'.  tep_image(DIR_WS_MENU_ICON . 'icon_date_export.gif').'</span><span>'.FILENAME_ORDER_DOWNLOAD.'</span></div>';
      }else{
      echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS_DOWNLOAD, '', 'NONSSL').'\';"><span>'.  tep_image(DIR_WS_MENU_ICON . 'icon_date_export.gif').'</span><span>'.FILENAME_ORDER_DOWNLOAD.'</span></div>';
      }

@@ -93,7 +93,11 @@
         for ($i = 1; $i <= $num_pages; $i++) {
           if ($i == $current_page_number) {
             if ($num_pages > 1) {
-              echo '&nbsp;<b>'.$i.'</b>&nbsp;'; 
+              if (!defined('DIR_WS_ADMIN')) {
+                echo '&nbsp;<b>'.$i.'</b>&nbsp;'; 
+              } else {
+                echo '&nbsp;'.$i.'&nbsp;'; 
+              }
             }
           } else {
             echo '&nbsp;<a '.$class.' href="'.tep_href_link(basename($PHP_SELF), $parameters.(($i != 1)?'page='.$i:'')).'">'.$i.'</a>&nbsp;'; 
@@ -111,7 +115,11 @@
           echo '&nbsp;<a '.$class.' href="'.tep_href_link(basename($PHP_SELF), $parameters.(($front_start != 1)?'page='.$front_start:'')).'">'.$front_start.'</a>&nbsp;'; 
         }
         
-        echo '&nbsp;<b>'.$current_page_number.'</b>&nbsp;';
+        if (!defined('DIR_WS_ADMIN')) {
+          echo '&nbsp;<b>'.$current_page_number.'</b>&nbsp;';
+        } else {
+          echo '&nbsp;'.$current_page_number.'&nbsp;';
+        }
         
         for ($j = 1; $j <= $diff_num; $j++) {
           $end_start = $current_page_number + $j;
@@ -125,7 +133,11 @@
           echo '&nbsp;<a '.$class.' href="'.tep_href_link(basename($PHP_SELF), $parameters.(($front_start != 1)?'page='.$front_start:'')).'">'.$front_start.'</a>&nbsp;'; 
         }
         
-        echo '&nbsp;<b>'.$current_page_number.'</b>&nbsp;';
+        if (!defined('DIR_WS_ADMIN')) {
+          echo '&nbsp;<b>'.$current_page_number.'</b>&nbsp;';
+        } else {
+          echo '&nbsp;'.$current_page_number.'&nbsp;';
+        }
         
         for ($j = 1; $j <= (10 - $diff_num); $j++) {
           $end_start = $current_page_number + $j;
@@ -150,7 +162,11 @@
           echo '&nbsp;<a '.$class.' href="'.tep_href_link(basename($PHP_SELF), $parameters.(($i != 1)?'page='.$i:'')).'">'.$i.'</a>&nbsp;'; 
         }
 
-        echo '&nbsp;<b>'.$current_page_number.'</b>&nbsp;';
+        if (!defined('DIR_WS_ADMIN')) {
+          echo '&nbsp;<b>'.$current_page_number.'</b>&nbsp;';
+        } else {
+          echo '&nbsp;'.$current_page_number.'&nbsp;';
+        }
       
         $end_start = 5;
         if ($num_pages > $end_start && ($current_page_number + $end_start) < $num_pages) {
@@ -231,7 +247,14 @@
         $from_num++;
       }
 
-      return sprintf($text_output, $from_num, $to_num, $query_numrows);
+      if (!defined('DIR_WS_ADMIN')) {
+        return sprintf($text_output, $from_num, $to_num, $query_numrows);
+      } else {
+        $replace_array = array('<b>', '</b>'); 
+        $return_str = sprintf($text_output, $from_num, $to_num, $query_numrows);
+        $return_str = str_replace($replace_array, '', $return_str); 
+        return $return_str; 
+      }
     }
   }
   

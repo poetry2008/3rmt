@@ -5,6 +5,8 @@
 
   require('includes/application_top.php');
   require(DIR_WS_ACTIONS.'product_reviews_write.php');
+  $review_query = tep_db_query("select * from `configuration` where configuration_key ='REVIEWS_BAN_CHARACTER' and site_id='0'");
+  $review_rows = tep_db_fetch_array($review_query);
 ?>
 <?php page_head();?>
 <script type="text/javascript"><!--
@@ -13,7 +15,25 @@ function checkForm() {
   var error_message = "<?php echo JS_ERROR; ?>";
 
   var review = document.product_reviews_write.review.value;
-
+  var reviews_name = document.product_reviews_write.reviews_name.value;
+  str="<?php echo $review_rows['configuration_value']; ?>"; //这是一字符串
+  var strs= new Array(); //定义一数组
+  strs=str.split(","); //字符分割    
+  for(var i=0;i<strs.length;i++){
+  var patt = new RegExp(strs[i]);
+  if(patt.test(review) == true || patt.test(reviews_name) == true){
+     result = true;
+     break;
+    }else{
+     result = false;
+    }
+  }
+  if(result == true){
+     error_message = error_message + "<?php echo JS_REVIEW_BAN_CHARACTER;?>";
+     error = 1;
+  }else{
+     error_message = error_message;
+  }
   if (review.length < <?php echo REVIEW_TEXT_MIN_LENGTH; ?>) {
     error_message = error_message + "<?php echo JS_REVIEW_TEXT; ?>";
     error = 1;

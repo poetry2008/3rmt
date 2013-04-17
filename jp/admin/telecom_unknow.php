@@ -128,8 +128,8 @@ require("includes/note_js.php");
   
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
-      <td class="pageHeading" width="43%" height="40"><a href="telecom_unknow.php"><?php echo TELECOM_UNKNOW_TITLE;?></a></td>
-      <td align="left" nowrap>
+      <td class="pageHeading" width="43%" height="40"><?php echo TELECOM_UNKNOW_TITLE;?></td>
+      <td align="left" nowrap class="main">
         <form action="?" method="get">
           <input type="text" name="keywords" value="<?php echo $_GET['keywords'];?>">
           <input type="checkbox" name="rel_yes" value="1" <?php if (!(!$_GET['rel_yes'] && $_GET['rel_no'])) {echo 'checked';} ?>><?php echo TELECOM_UNKNOW_SEARCH_SUCCESS;?> 
@@ -151,7 +151,7 @@ require("includes/note_js.php");
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
     <tr class="dataTableHeadingRow">
       <td class="dataTableHeadingContent" align="left" width="20"><input type="checkbox" onclick="all_check(this)"></td>
-      <td class="dataTableHeadingContent" align="center" width="50"><?php echo TELECOM_UNKNOW_TABLE_CAL_METHOD;?></td>
+      <td class="dataTableHeadingContent" align="center" width="55"><?php echo TELECOM_UNKNOW_TABLE_CAL_METHOD;?></td>
       <td class="dataTableHeadingContent" align="center" width="150"><?php echo TELECOM_UNKNOW_TABLE_TIME;?></td>
       <td class="dataTableHeadingContent" align="center"><?php echo TELECOM_UNKNOW_TABLE_CAL;?></td>
       <td class="dataTableHeadingContent" align="center"><?php echo TELECOM_UNKNOW_TABLE_YIN;?></td>

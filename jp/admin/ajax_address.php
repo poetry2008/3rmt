@@ -326,7 +326,7 @@ $(document).ready(function(){
 <?php
 if($id == 0 || $maxid == $minid){
 ?>
-  <tr><td width="20"><?php echo tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO); ?></td><td><b><?php echo TABLE_NEW.TABLE_TITLE_1;?></b></td><td align="right"><a href="javascript:hide_text();"><?php echo TEXT_CLOSE;?></a></td></tr>
+  <tr><td width="20"><?php echo tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO); ?></td><td><?php echo TABLE_NEW.TABLE_TITLE_1;?></td><td align="right"><a href="javascript:hide_text();"><?php echo TEXT_CLOSE;?></a></td></tr>
 <?php
 }else{
   $prev_str = '';
@@ -344,7 +344,7 @@ if($id == 0 || $maxid == $minid){
     $next_str = '<a href="javascript:show_text('. $id .',\'\',\'\','. $sort .',1);">'. TABLE_NEXT .'</a>';
   }
 ?>
-  <tr><td width="20"><?php echo tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO); ?></td><td><b><?php echo $title.TABLE_TITLE_1;?></b></td><td align="right" onmouseover="this.style.cursor='hand';"><?php echo $prev_str;?>&nbsp;<?php echo $next_str;?>&nbsp;<a href="javascript:hide_text();">X</a></td></tr>
+  <tr><td width="20"><?php echo tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO); ?></td><td><?php echo $title.TABLE_TITLE_1;?></td><td align="right" onmouseover="this.style.cursor='hand';"><?php echo $prev_str;?>&nbsp;<?php echo $next_str;?>&nbsp;<a href="javascript:hide_text();">X</a></td></tr>
 <?php
 }
 ?>

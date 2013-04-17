@@ -964,36 +964,36 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               <h3>Order Info</h3>
               <table width="100%" border="0" cellspacing="0" cellpadding="2">
                 <tr>
-                  <td class="main" valign="top" width="30%"><b><?php echo TEXT_ORDER_SITE_TEXT;?>:</b></td>
-                  <td class="main"><b style=" color:#FF0000"><?php echo tep_get_pre_site_name_by_order_id($oID);?></b></td>
+                  <td class="main" valign="top" width="30%"><?php echo TEXT_ORDER_SITE_TEXT;?>:</td>
+                  <td class="main"><font color="#FF0000"><?php echo tep_get_pre_site_name_by_order_id($oID);?></font></td>
                 </tr>
                 <tr>
-                  <td class="main"><b><?php echo ENTRY_ENSURE_DATE;?></b></td> 
-                  <td class="main"><b style=" color:#0000FF">
+                  <td class="main"><?php echo ENTRY_ENSURE_DATE;?></td> 
+                  <td class="main"><font color="#0000FF">
                   <?php 
                   echo $order->info['ensure_deadline'];
                   ?> 
-                  </b> 
+                  </font> 
                   </td> 
                 </tr>
                 <tr>
-                  <td class="main" valign="top"><b><?php echo TEXT_PREORDER_ID_TEXT;?></b></td>
+                  <td class="main" valign="top"><?php echo TEXT_PREORDER_ID_TEXT;?></td>
                   <td class="main"><?php echo $_GET['oID'] ?></td>
                 </tr>
                 <tr>
-                  <td class="main" valign="top"><b><?php echo TEXT_PREORDER_DAY;?></b></td>
+                  <td class="main" valign="top"><?php echo TEXT_PREORDER_DAY;?></td>
                   <td class="main"><?php echo tep_date_long($order->customer['date']); ?></td>
                 </tr>
                 <tr>
-                  <td class="main" valign="top"><b><?php echo TEXT_ORDER_CUSTOMER_TYPE;?></b></td>
+                  <td class="main" valign="top"><?php echo TEXT_ORDER_CUSTOMER_TYPE;?></td>
                   <td class="main"><?php echo get_guest_chk($order->customer['id'])?TEXT_ORDER_GUEST:TEXT_ORDER_CUSTOMER_VIP;?></td>
                 </tr>
                 <tr>
-                  <td class="main" valign="top"><b><?php echo ENTRY_CUSTOMER; ?></b></td>
+                  <td class="main" valign="top"><?php echo ENTRY_CUSTOMER; ?></td>
                   <td class="main" style="text-decoration: underline; "><a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, 'action=edit&cID='.$order->customer['id']);?>"><?php echo $order->customer['name']; ?></a></td>
                 </tr>
                 <tr>
-                  <td class="main"><b><?php echo ENTRY_EMAIL_ADDRESS; ?></b></td>
+                  <td class="main"><?php echo ENTRY_EMAIL_ADDRESS; ?></td>
                   <td class="main">
 <?php 
     //osticket
@@ -1016,7 +1016,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
 ?></td>
                 </tr>
                 <tr>
-                  <td class="main" valign="top" width="30%"><b><?php echo ENTRY_PAYMENT_METHOD; ?></b></td>
+                  <td class="main" valign="top" width="30%"><?php echo ENTRY_PAYMENT_METHOD; ?></td>
                   <td class="main"><?php echo $order->info['payment_method']; ?></td>
                 </tr>
             <?php
@@ -1050,24 +1050,24 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               <h3>Customer Info</h3>
               <table width="100%" border="0" cellspacing="0" cellpadding="2">
                 <tr>
-                  <td class="main" valign="top" width="30%" nowrap><b><?php echo TEXT_ORDER_IP_ADDRESS;?></b></td>
+                  <td class="main" valign="top" width="30%" nowrap><?php echo TEXT_ORDER_IP_ADDRESS;?></td>
                   <td class="main"><?php echo tep_high_light_by_keywords($order->info['orders_ip'] ? $order->info['orders_ip'] : 'UNKNOW',IP_LIGHT_KEYWORDS);?></td>
                 </tr>
                 <tr>
-                  <td class="main" valign="top" width="30%"><b><?php echo TEXT_ORDER_HOSTNAME;?></b></td>
+                  <td class="main" valign="top" width="30%"><?php echo TEXT_ORDER_HOSTNAME;?></td>
                   <td class="main"><?php echo tep_high_light_by_keywords($order->info['orders_host_name']?'<font'.($order->info['orders_host_name'] == $order->info['orders_ip'] ? ' color="red"':'').'>'.$order->info['orders_host_name'].'</font>':'UNKNOW',HOST_NAME_LIGHT_KEYWORDS);?></td>
                 </tr>
                 <tr>
-                  <td class="main" valign="top" width="30%"><b><?php echo TEXT_ORDER_USERAGENT;?></b></td>
+                  <td class="main" valign="top" width="30%"><?php echo TEXT_ORDER_USERAGENT;?></td>
                   <td class="main" style="word-break:break-all;width:250px;word-wrap:break-word;overflow:hidden;display:block;"><?php echo tep_high_light_by_keywords($order->info['orders_user_agent'] ? $order->info['orders_user_agent'] : 'UNKNOW',USER_AGENT_LIGHT_KEYWORDS);?></td>
                 </tr>
                 <?php if ($order->info['orders_user_agent']) {?>
                 <tr>
-                  <td class="main" valign="top" width="30%"><b><?php echo TEXT_ORDER_OS;?></b></td>
+                  <td class="main" valign="top" width="30%"><?php echo TEXT_ORDER_OS;?></td>
                   <td class="main"><?php echo tep_high_light_by_keywords(getOS($order->info['orders_user_agent']),OS_LIGHT_KEYWORDS);?></td>
                 </tr>
                 <tr>
-                  <td class="main" valign="top" width="30%"><b><?php echo TEXT_ORDER_BROWSER_INFO;?></b></td>
+                  <td class="main" valign="top" width="30%"><?php echo TEXT_ORDER_BROWSER_INFO;?></td>
                   <td class="main">
                   <?php $browser_info = getBrowserInfo($order->info['orders_user_agent']);?>
                   <?php echo tep_high_light_by_keywords($browser_info['longName'] . ' ' . $browser_info['version'],BROWSER_LIGHT_KEYWORDS); ?>
@@ -1075,27 +1075,27 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                 </tr>
                 <?php }?>
                 <tr>
-                  <td class="main" valign="top" width="30%"><b><?php echo TEXT_ORDER_HTTP_LAN;?></b></td>
+                  <td class="main" valign="top" width="30%"><?php echo TEXT_ORDER_HTTP_LAN;?></td>
                   <td class="main"><?php echo tep_high_light_by_keywords($order->info['orders_http_accept_language'] ? $order->info['orders_http_accept_language'] : 'UNKNOW',HTTP_ACCEPT_LANGUAGE_LIGHT_KEYWORDS);?></td>
                 </tr>
                 <tr>
-                  <td class="main" valign="top" width="30%"><b><?php echo TEXT_ORDER_SYS_LAN;?></b></td>
+                  <td class="main" valign="top" width="30%"><?php echo TEXT_ORDER_SYS_LAN;?></td>
                   <td class="main"><?php echo tep_high_light_by_keywords($order->info['orders_system_language'] ? $order->info['orders_system_language'] : 'UNKNOW',SYSTEM_LANGUAGE_LIGHT_KEYWORDS);?></td>
                 </tr>
                 <tr>
-                  <td class="main" valign="top" width="30%"><b><?php echo TEXT_ORDER_USER_LAN;?></b></td>
+                  <td class="main" valign="top" width="30%"><?php echo TEXT_ORDER_USER_LAN;?></td>
                   <td class="main"><?php echo tep_high_light_by_keywords($order->info['orders_user_language'] ? $order->info['orders_user_language'] : 'UNKNOW',USER_LANGUAGE_LIGHT_KEYWORDS);?></td>
                 </tr>
                 <tr>
-                  <td class="main" valign="top" width="30%"><b><?php echo TEXT_ORDER_SCREEN_RES;?></b></td>
+                  <td class="main" valign="top" width="30%"><?php echo TEXT_ORDER_SCREEN_RES;?></td>
                   <td class="main"><?php echo tep_high_light_by_keywords($order->info['orders_screen_resolution'] ? $order->info['orders_screen_resolution'] : 'UNKNOW',SCREEN_RESOLUTION_LIGHT_KEYWORDS);?></td>
                 </tr>
                 <tr>
-                  <td class="main" valign="top" width="30%"><b><?php echo TEXT_ORDER_COLOR_DEPTH;?></b></td>
+                  <td class="main" valign="top" width="30%"><?php echo TEXT_ORDER_COLOR_DEPTH;?></td>
                   <td class="main"><?php echo tep_high_light_by_keywords($order->info['orders_color_depth'] ? $order->info['orders_color_depth'] : 'UNKNOW',COLOR_DEPTH_LIGHT_KEYWORDS);?></td>
                 </tr>
                 <tr>
-                  <td class="main" valign="top" width="30%"><b>Flash:</b></td>
+                  <td class="main" valign="top" width="30%">Flash:</td>
                   <td class="main">
                     <?php echo tep_high_light_by_keywords($order->info['orders_flash_enable'] === '1' ? 'YES' : ($order->info['orders_flash_enable'] === '0' ? 'NO' : 'UNKNOW'),FLASH_LIGHT_KEYWORDS);?>
                   </td>
@@ -1104,42 +1104,42 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                   if ($order->info['orders_flash_enable']) {
                 ?>
                 <tr>
-                  <td class="main" valign="top" width="30%"><b><?php echo TEXT_ORDER_FLASH_VERS;?></b></td>
+                  <td class="main" valign="top" width="30%"><?php echo TEXT_ORDER_FLASH_VERS;?></td>
                   <td class="main"><?php echo tep_high_light_by_keywords($order->info['orders_flash_version'],FLASH_VERSION_LIGHT_KEYWORDS);?></td>
                 </tr>
                 <?php } ?>
                 <tr>
-                  <td class="main" valign="top" width="30%"><b>Director:</b></td>
+                  <td class="main" valign="top" width="30%">Director:</td>
                   <td class="main">
                   <?php echo tep_high_light_by_keywords($order->info['orders_director_enable'] === '1' ? 'YES' : ($order->info['orders_director_enable'] === '0' ? 'NO' : 'UNKNOW'),DIRECTOR_LIGHT_KEYWORDS);?>
                   </td>
                 </tr>
                 <tr>
-                  <td class="main" valign="top" width="30%"><b>Quick time:</b></td>
+                  <td class="main" valign="top" width="30%">Quick time:</td>
                   <td class="main">
                   <?php echo tep_high_light_by_keywords($order->info['orders_quicktime_enable'] === '1' ? 'YES' : ($order->info['orders_quicktime_enable'] === '0' ? 'NO' : 'UNKNOW'),QUICK_TIME_LIGHT_KEYWORDS);?>
                   </td>
                 </tr>
                 <tr>
-                  <td class="main" valign="top" width="30%"><b>Real player:</b></td>
+                  <td class="main" valign="top" width="30%">Real player:</td>
                   <td class="main">
                   <?php echo tep_high_light_by_keywords($order->info['orders_realplayer_enable'] === '1' ? 'YES' : ($order->info['orders_realplayer_enable'] === '0' ? 'NO' : 'UNKNOW'),REAL_PLAYER_LIGHT_KEYWORDS);?>
                   </td>
                 </tr>
                 <tr>
-                  <td class="main" valign="top" width="30%"><b>Windows media:</b></td>
+                  <td class="main" valign="top" width="30%">Windows media:</td>
                   <td class="main">
                   <?php echo tep_high_light_by_keywords($order->info['orders_windows_media_enable'] === '1' ? 'YES' : ($order->info['orders_windows_media_enable'] === '0' ? 'NO' : 'UNKNOW'),WINDOWS_MEDIA_LIGHT_KEYWORDS);?>
                   </td>
                 </tr>
                 <tr>
-                  <td class="main" valign="top" width="30%"><b>Pdf:</b></td>
+                  <td class="main" valign="top" width="30%">Pdf:</td>
                   <td class="main">
                   <?php echo tep_high_light_by_keywords($order->info['orders_pdf_enable'] === '1' ? 'YES' : ($order->info['orders_pdf_enable'] === '0' ? 'NO' : 'UNKNOW'),PDF_LIGHT_KEYWORDS);?>
                   </td>
                 </tr>
                 <tr>
-                  <td class="main" valign="top" width="30%"><b>Java:</b></td>
+                  <td class="main" valign="top" width="30%">Java:</td>
                   <td class="main">
                   <?php echo tep_high_light_by_keywords($order->info['orders_java_enable'] === '1' ? 'YES' : ($order->info['orders_java_enable'] === '0' ? 'NO' : 'UNKNOW'),JAVA_LIGHT_KEYWORDS);?>
                   </td>
@@ -1151,13 +1151,13 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               <h3>Referer Info</h3>
               <table width="100%" border="0" cellspacing="0" cellpadding="2">
                 <tr>
-                  <td class="main" valign="top" width="30%"><b>Referer:</b></td>
+                  <td class="main" valign="top" width="30%">Referer:</td>
                   <td class="main"><p
                   style="word-break:break-all;width:250px;word-wrap:break-word;overflow:hidden;display:block;"><?php echo urldecode($order->info['orders_ref']);?></p></td>
                 </tr>
                 <?php if ($order->info['orders_ref_keywords']) { ?>
                 <tr>
-                  <td class="main" valign="top" width="30%"><b>Keywords:</b></td>
+                  <td class="main" valign="top" width="30%">Keywords:</td>
                   <td class="main"><?php echo $order->info['orders_ref_keywords'];?></td>
                 </tr>
                 <?php } ?>
@@ -1170,15 +1170,15 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               <h3><?php echo TEXT_ORDER_CREDITCARD_TITLE;?></h3>
               <table width="100%" border="0" cellspacing="0" cellpadding="2" class="order02_link">
                 <tr>
-                  <td class="main" valign="top" width="20%"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_name']);?>&search_type=username"><?php echo TEXT_ORDER_CREDITCARD_NAME;?></a></b></td>
+                  <td class="main" valign="top" width="20%"><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_name']);?>&search_type=username"><?php echo TEXT_ORDER_CREDITCARD_NAME;?></a></td>
                   <td class="main" width="30%"><?php echo $order->info['telecom_name'];?></td>
-                  <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_tel']);?>&search_type=telno"><?php echo TEXT_ORDER_CREDITCARD_TEL;?></a></b></td>
+                  <td class="main" valign="top"><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_tel']);?>&search_type=telno"><?php echo TEXT_ORDER_CREDITCARD_TEL;?></a></td>
                   <td class="main"><?php echo tep_high_light_by_keywords($order->info['telecom_tel'],TELNO_KEYWORDS);?></a></td>
                 </tr>
                 <tr>
-                  <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_email']);?>&search_type=email"><?php echo TEXT_ORDER_CREDITCARD_EMAIL;?></a></b></td>
+                  <td class="main" valign="top"><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_email']);?>&search_type=email"><?php echo TEXT_ORDER_CREDITCARD_EMAIL;?></a></td>
                   <td class="main"><?php echo $order->info['telecom_email'];?></a></td>
-                  <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_money']);?>&search_type=money"><?php echo TEXT_ORDER_CREDITCARD_MONEY;?></a></b></td>
+                  <td class="main" valign="top"><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_money']);?>&search_type=money"><?php echo TEXT_ORDER_CREDITCARD_MONEY;?></a></td>
                   <td class="main"><?php echo $order->info['telecom_money'];?></a></td>
                 </tr>
               </table>
@@ -1191,15 +1191,15 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               <h3><?php echo TEXT_ORDER_CREDITCARD_TITLE;?></h3>
               <table width="100%" border="0" cellspacing="0" cellpadding="2" class="order02_link">
                 <tr>
-                  <td class="main" valign="top" width="20%"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_name']);?>"><?php echo TEXT_ORDER_CREDITCARD_NAME;?></a></b></td>
+                  <td class="main" valign="top" width="20%"><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_name']);?>"><?php echo TEXT_ORDER_CREDITCARD_NAME;?></a></td>
                   <td class="main" width="30%"><?php echo $order->info['telecom_name'];?></td>
-                  <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_tel']);?>"><?php echo TEXT_ORDER_CREDITCARD_TEL;?></a></b></td>
+                  <td class="main" valign="top"><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_tel']);?>"><?php echo TEXT_ORDER_CREDITCARD_TEL;?></a></td>
                   <td class="main"><?php echo tep_high_light_by_keywords($order->info['telecom_tel'],TELNO_KEYWORDS);?></a></td>
                 </tr>
                 <tr>
-                  <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_email']);?>"><?php echo TEXT_ORDER_CREDITCARD_EMAIL;?></a></b></td>
+                  <td class="main" valign="top"><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_email']);?>"><?php echo TEXT_ORDER_CREDITCARD_EMAIL;?></a></td>
                   <td class="main"><?php echo $order->info['telecom_email'];?></a></td>
-                  <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_money']);?>"><?php echo TEXT_ORDER_CREDITCARD_MONEY;?></a></b></td>
+                  <td class="main" valign="top"><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_money']);?>"><?php echo TEXT_ORDER_CREDITCARD_MONEY;?></a></td>
                   <td class="main"><?php echo $order->info['telecom_money'];?></a></td>
                 </tr>
                 <tr>
@@ -1482,8 +1482,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
         echo '      </td>' . "\n" .
        '      <td class="dataTableContent" valign="top" nowrap>' . $order->products[$i]['model'] . '</td>' . "\n" .
        '      <td class="dataTableContent" align="right" valign="top">' . tep_display_tax_value($order->products[$i]['tax']) . '%</td>' . "\n" .
-       '      <!--<td class="dataTableContent" align="right" valign="top"><b>' . $currencies->format($order->products[$i]['final_price'], true, $order->info['currency'], $order->info['currency_value']) . '</b></td>-->' . "\n" .
-       '      <td class="dataTableContent" align="right" valign="top" nowrap><b>';
+       '      <td class="dataTableContent" align="right" valign="top" nowrap>';
         if ($price_with_tax != '---') {
           if ($order->products[$i]['final_price'] < 0) {
             echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL,'', $price_with_tax).'</font>'.TEXT_MONEY_SYMBOL;
@@ -1493,9 +1492,8 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
         } else {
           echo $price_with_tax;
         }
-        echo '</b></td>' . "\n" .
-       '      <!--<td class="dataTableContent" align="right" valign="top"><b>' . $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'],true,$order->info['currency'],$order->info['currency_value']) . '</b></td>-->' . "\n" .
-       '      <td class="dataTableContent" align="right" valign="top" nowrap><b>';
+        echo '</td>' . "\n" .
+       '      <td class="dataTableContent" align="right" valign="top" nowrap>';
         if ($price_with_tax != '---') {
           if ($order->products[$i]['final_price'] < 0) {
             echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL,'', $tprice_with_tax).'</font>'.TEXT_MONEY_SYMBOL;
@@ -1505,7 +1503,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
         } else {
           echo $tprice_with_tax; 
         }
-          echo '</b></td>' . "\n";
+          echo '</td>' . "\n";
         echo '    </tr>' . "\n";
       }
   ?>
@@ -1570,12 +1568,12 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
         <td class="main" align="left">
     <table border="0" cellspacing="2" cellpadding="5" bgcolor="#cccccc">
       <tr bgcolor="#ffffff">
-        <td class="smallText" align="center"><b><?php echo TABLE_HEADING_DATE_ADDED; ?></b></td>
-        <td class="smallText" align="center" nowrap="true"><b><?php echo TABLE_HEADING_CUSTOMER_NOTIFIED; ?></b></td>
-        <td class="smallText" align="center" nowrap="true"><b><?php echo TABLE_HEADING_STATUS; ?></b></td>
-        <td class="smallText" align="center"><b><?php echo TABLE_HEADING_COMMENTS; ?></b></td>
-        <td class="smallText" align="center"><b><?php echo TEXT_OPERATE_USER; ?></b></td>
-        <td class="smallText" align="center"><b></b></td>
+        <td class="smallText" align="center"><?php echo TABLE_HEADING_DATE_ADDED; ?></td>
+        <td class="smallText" align="center" nowrap="true"><?php echo TABLE_HEADING_CUSTOMER_NOTIFIED; ?></td>
+        <td class="smallText" align="center" nowrap="true"><?php echo TABLE_HEADING_STATUS; ?></td>
+        <td class="smallText" align="center"><?php echo TABLE_HEADING_COMMENTS; ?></td>
+        <td class="smallText" align="center"><?php echo TEXT_OPERATE_USER; ?></td>
+        <td class="smallText" align="center"></td>
       </tr>
   <?php
       $orders_history_query = tep_db_query("select orders_status_history_id, orders_status_id, date_added, customer_notified, comments, user_added from " . TABLE_PREORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($oID) . "' order by date_added");
@@ -1650,7 +1648,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       <?php echo tep_draw_form('sele_act', FILENAME_PREORDERS, tep_get_all_get_params(array('action')) . 'action=update_order', 'post', 'onsubmit="return check_mail_product_status(\''.$_GET['oID'].'\');"'); ?>
       <table width="100%" border="0">
       <tr>
-        <td class="main"><b><?php echo ENTRY_STATUS; ?></b>
+        <td class="main"><?php echo ENTRY_STATUS; ?>
         
           <?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_select, 'onChange="new_mail_text(this, \'s_status\',\'comments\',\'title\')" id="s_status"'); ?>
         </td>
@@ -1675,11 +1673,11 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
         $sta       = isset($_GET['status'])?$_GET['status']:'';
       ?>
       <tr>
-        <td class="main"><b><?php echo ENTRY_EMAIL_TITLE; ?></b><?php echo tep_draw_input_field('title', $mail_sql['orders_status_title'],'style=" width:315px;" id="mail_title"'); ?></td>
+        <td class="main"><?php echo ENTRY_EMAIL_TITLE; ?><?php echo tep_draw_input_field('title', $mail_sql['orders_status_title'],'style=" width:315px;" id="mail_title"'); ?></td>
       </tr>
       <tr>
         <td class="main">
-        <b><?php echo TABLE_HEADING_COMMENTS; ?>:</b>
+        <?php echo TABLE_HEADING_COMMENTS; ?>:
         <?php echo TEXT_MAIL_CONTENT_INFO;?>
         <table><tr class="smalltext"><td><font color="red">※</font>&nbsp;
         <?php echo TEXT_ORDER_COPY;?></td><td>
@@ -1696,21 +1694,21 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
         <td>
           <table width="100%" border="0" cellspacing="0" cellpadding="2">
             <tr>
-              <td class="main"><?php echo tep_draw_checkbox_field('notify', '', true && $ma_s['nomail'] != '1', '', 'id="notify"'); ?><b>
-              <?php echo TEXT_ORDER_SEND_MAIL;?></b></td>
-              <td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', true && $ma_s['nomail'] != '1', '', 'id="notify_comments"'); ?><b>
-              <?php echo TEXT_ORDER_STATUS;?></b></td>
+              <td class="main"><?php echo tep_draw_checkbox_field('notify', '', true && $ma_s['nomail'] != '1', '', 'id="notify"'); ?>
+              <?php echo TEXT_ORDER_SEND_MAIL;?></td>
+              <td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', true && $ma_s['nomail'] != '1', '', 'id="notify_comments"'); ?>
+              <?php echo TEXT_ORDER_STATUS;?></td>
             </tr>
             <tr>
               <td class="main" colspan="2">
               <?php echo tep_draw_hidden_field('qu_type', $orders_questions_type);?> 
-              <br><b style="color:#FF0000;">
+              <br><font color="#FF0000;">
               <?php 
                   foreach($orders_statuses as $o_status){
                     echo '<input type="hidden" id="confrim_mail_title_'.$o_status['id'].
                       '" value="'.$mo[$o_status['id']][0].'">';
                   }
-              echo TEXT_ORDER_HAS_ERROR;?></b><br><br><?php echo tep_html_element_submit(IMAGE_UPDATE); ?></td>
+              echo TEXT_ORDER_HAS_ERROR;?></font><br><br><?php echo tep_html_element_submit(IMAGE_UPDATE); ?></td>
             </tr>
           </table>
         </td>
@@ -1730,7 +1728,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
         </tr>
         <?php foreach ($computers as $computer) { ?>
         <tr>
-          <td onclick="preorders_computers(this, <?php echo $computer['computers_id'];?>, '<?php echo $order->info['orders_id'];?>')" class="<?php echo in_array($computer['computers_id'], $o2c) ? 'orders_computer_checked' : 'orders_computer_unchecked' ;?>" style="font-size:20px;padding:5px 10px;"><?php echo $computer['computers_name'];?></td>
+          <td onclick="preorders_computers(this, <?php echo $computer['computers_id'];?>, '<?php echo $order->info['orders_id'];?>')" class="<?php echo in_array($computer['computers_id'], $o2c) ? 'orders_computer_checked' : 'orders_computer_unchecked' ;?>" style="font-size:18px;padding:5px 10px;"><?php echo $computer['computers_name'];?></td>
         </tr>
         <?php } ?>
       </table>
@@ -3078,7 +3076,7 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
   <font color="#000">
   <?php } ?>
   <?php } ?>
-          <b><?php echo tep_output_string_protected($orders['customers_name']);?></b>
+          <?php echo tep_output_string_protected($orders['customers_name']);?>
           <?php
   if ($orders['is_active'] == '0') {
   ?>
@@ -3130,7 +3128,7 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
       ?>
       <?php 
       if ($orders['is_active'] == '1') {
-        echo tep_get_pre_ot_total_by_orders_id_no_abs($orders['orders_id'],true);
+        echo str_replace(array('<b>', '</b>'), '', tep_get_pre_ot_total_by_orders_id_no_abs($orders['orders_id'],true));
       } else {
         echo strip_tags(tep_get_pre_ot_total_by_orders_id_no_abs($orders['orders_id'],true));
       }
@@ -3153,7 +3151,7 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
       <?php }?> 
       <?php 
       if ($orders['is_active'] == '1') {
-        echo tep_get_pre_ot_total_by_orders_id_no_abs($orders['orders_id'], true);
+        echo str_replace(array('<b>', '</b>'), '', tep_get_pre_ot_total_by_orders_id_no_abs($orders['orders_id'], true));
       } else {
         echo strip_tags(tep_get_pre_ot_total_by_orders_id_no_abs($orders['orders_id'], true));
       }
@@ -3298,7 +3296,7 @@ function submit_confirm()
 <table width="100%"><tr><td width="70%">
       <table width="100%" id="select_send" style="display:none">
         <tr>
-          <td class="main" width="100" nowrap="nowrap"><b><?php echo ENTRY_STATUS; ?></b></td>
+          <td class="main" width="100" nowrap="nowrap"><?php echo ENTRY_STATUS; ?></td>
         <td class="main"><?php echo tep_draw_pull_down_menu('status',
             $orders_statuses, $select_select,
             'onChange="mail_text(\'status\',\'comments\',\'os_title\')" id="mail_title_status"'); ?> <?php
@@ -3310,14 +3308,14 @@ function submit_confirm()
           <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
         </tr>
         <tr>
-          <td class="main" nowrap="nowrap"><b><?php echo ENTRY_EMAIL_TITLE; ?></b></td>
+          <td class="main" nowrap="nowrap"><?php echo ENTRY_EMAIL_TITLE; ?></td>
         <td class="main"><?php echo tep_draw_input_field('os_title', $select_title,' style=" width:400px;" id="mail_title"'); ?></td>
         </tr>
         <tr>
           <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
         </tr>
         <tr>
-          <td class="main" valign="top" nowrap="nowrap"><b><?php echo TABLE_HEADING_COMMENTS . ':'; ?></b></td>
+          <td class="main" valign="top" nowrap="nowrap"><?php echo TABLE_HEADING_COMMENTS . ':'; ?></td>
         <td class="main">
           <?php echo TEXT_MAIL_CONTENT_INFO;?>
           <table><tr class="smalltext"><td><font
@@ -3336,19 +3334,19 @@ function submit_confirm()
             <table width="100%" border="0" cellspacing="0" cellpadding="2">
               <tr>
                 <td class="main"><?php echo tep_draw_checkbox_field('notify', '',
-                    !$select_nomail, '', 'id="notify"'); ?><b><?php echo
-                TEXT_ORDER_SEND_MAIL;?></b></td>
+                    !$select_nomail, '', 'id="notify"'); ?><?php echo
+                TEXT_ORDER_SEND_MAIL;?></td>
                 <td class="main" align="right"><?php echo
                 tep_draw_checkbox_field('notify_comments', '', !$select_nomail, '',
-                    'id="notify_comments"'); ?><b><?php echo TEXT_ORDER_STATUS;?></b></td>
+                    'id="notify_comments"'); ?><?php echo TEXT_ORDER_STATUS;?></td>
               </tr>
               <tr>
-                <td class="main" colspan="2"><br><b style="color:#FF0000;"><?php
+                <td class="main" colspan="2"><br><font color="#FF0000;"><?php
                   foreach($orders_statuses as $o_status){
                     echo '<input type="hidden" id="confrim_mail_title_'.$o_status['id'].
                       '" value="'.$mo[$o_status['id']][0].'">';
                   }
-                echo TEXT_ORDER_HAS_ERROR;?></b><br><br>
+                echo TEXT_ORDER_HAS_ERROR;?></font><br><br>
                 <?php echo tep_html_element_button(IMAGE_UPDATE,'onclick="if(submit_confirm()) document.sele_act.submit();"');?> 
                 </td>
               </tr>

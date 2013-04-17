@@ -402,7 +402,6 @@
       }           
       if ($ot_class == "ot_tax") {
         $ot_value = $RunningTax;
-        // print "ot_value = $ot_value<br>\n";
       }
   
       // Check for existence of subtotals (CWS)                      
@@ -805,7 +804,6 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       {
         foreach($add_product_options as $option_id => $option_value_id)
         {
-          //echo 'a';
           $result = tep_db_query("SELECT * FROM " . TABLE_PRODUCTS_ATTRIBUTES . " pa LEFT JOIN " . TABLE_PRODUCTS_OPTIONS . " po ON po.products_options_id=pa.options_id LEFT JOIN " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov ON pov.products_options_values_id=pa.options_values_id WHERE products_id='$add_product_products_id' and options_id=$option_id and options_values_id=$option_value_id and po.language_id = '" . (int)$languages_id . "' and pov.language_id = '" . (int)$languages_id . "'");
           $row = tep_db_fetch_array($result);
           extract($row, EXTR_PREFIX_ALL, "opt");
@@ -928,7 +926,6 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       
       $update_orders_sql = "update ".TABLE_PREORDERS." set code_fee = '".$handle_fee."' where orders_id = '".$oID."'";
       tep_db_query($update_orders_sql);
-      //exit;
       tep_redirect(tep_href_link(FILENAME_FINAL_PREORDERS, tep_get_all_get_params(array('action')) . 'action=edit'));
     }
     break;
@@ -1061,7 +1058,7 @@ function submit_order_check(products_id,op_id){
 
     add_str += '<tr><td class="smallText" align="left"><?php echo EDIT_ORDERS_TOTALDETAIL_READ_ONE;?></td>'
             +'<td class="smallText" align="right"><INPUT type="button" id="button_add" value="<?php echo TEXT_BUTTON_ADD;?>" onClick="add_option();orders_session(\'customers_add_num\','+(add_num+1)+');">&nbsp;<input style="text-align:right;" value="" size="7" name="update_totals['+add_num+'][title]" onblur="orders_session(\'customers_total_'+add_num+'\',this.value);">'
-            +'</td><td class="smallText" align="right"><input style="text-align:right;" id="update_totals_'+add_num+'" value="" size="6" onkeyup="clearNewLibNum(this);price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');recalc_preorder_price(\'<?php echo $_GET['oID'];?>\', \'<?php echo $products_id_str;?>\', \'0\', \'<?php echo $op_info_str;?>\');" name="update_totals['+add_num+'][value]"><b><?php echo TEXT_MONEY_SYMBOL;?></b><input type="hidden" name="update_totals['+add_num+'][class]" value="ot_custom"><input type="hidden" name="update_totals['+add_num+'][total_id]" value="0"></td>'
+            +'</td><td class="smallText" align="right"><input style="text-align:right;" id="update_totals_'+add_num+'" value="" size="6" onkeyup="clearNewLibNum(this);price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');recalc_preorder_price(\'<?php echo $_GET['oID'];?>\', \'<?php echo $products_id_str;?>\', \'0\', \'<?php echo $op_info_str;?>\');" name="update_totals['+add_num+'][value]"><?php echo TEXT_MONEY_SYMBOL;?><input type="hidden" name="update_totals['+add_num+'][class]" value="ot_custom"><input type="hidden" name="update_totals['+add_num+'][total_id]" value="0"></td>'
             +'<td><b><img height="17" width="1" border="0" alt="" src="images/pixel_trans.gif"></b></td></tr>'
             +'<tr id="add_option_total">'+add_option_total_str+'</tr>';
 
@@ -1200,7 +1197,6 @@ $(".once_pwd").each(function(index) {
   $("input[name=update_viladate]").val('_false');
   $("input[name=x]").val('43');
   $("input[name=y]").val('12');
-  //document.edit_order.submit();
   return false;
   }
   }else{
@@ -1325,9 +1321,9 @@ function recalc_preorder_price(oid, opd, o_str, op_str)
         document.getElementById('update_products['+opd+'][b_price]').innerHTML = msg_info[5]; 
       }
       if(o_str != 3){
-        document.getElementById('update_products['+opd+'][c_price]').innerHTML = '<b>'+msg_info[3]+'</b>';
+        document.getElementById('update_products['+opd+'][c_price]').innerHTML = msg_info[3];
       }else{
-        document.getElementById('update_products['+opd+'][c_price]').innerHTML = '<b>'+msg_info[6]+'</b>'; 
+        document.getElementById('update_products['+opd+'][c_price]').innerHTML = msg_info[6]; 
       }
       document.getElementById('ot_subtotal_id').innerHTML = document.getElementById('update_products['+opd+'][c_price]').innerHTML;
       document.getElementById('handle_fee_id').innerHTML = msg_info[8]+'<?php echo TEXT_MONEY_SYMBOL;?>';
@@ -1814,32 +1810,32 @@ require("includes/note_js.php");
             <span class="SubTitle"><?php echo MENUE_TITLE_CUSTOMER; ?></span>
             <table width="100%" border="0" class="dataTableRow" cellpadding="2" cellspacing="0">
               <tr>
-                <td class="main" valign="top" width="30%"><b><?php echo ENTRY_SITE;?>:</b></td>
+                <td class="main" valign="top" width="30%"><?php echo ENTRY_SITE;?>:</td>
                 <td class="main" width="70%"><?php echo tep_get_pre_site_name_by_order_id($oID);?></td>
               </tr>
               <tr>
-                <td class="main" valign="top" width="30%"><b><?php echo EDIT_ORDERS_ID_TEXT;?></b></td>
+                <td class="main" valign="top" width="30%"><?php echo EDIT_ORDERS_ID_TEXT;?></td>
                 <td class="main" width="70%"><?php echo $oID;?></td>
               </tr>
               <tr>
-                <td class="main" valign="top"><b><?php echo EDIT_ORDERS_DATE_TEXT;?></b></td>
+                <td class="main" valign="top"><?php echo EDIT_ORDERS_DATE_TEXT;?></td>
                 <td class="main"><?php echo tep_date_long($order->info['date_purchased']);?></td>
               </tr>
               <tr>
-                <td class="main" valign="top"><b><?php echo EDIT_ORDERS_CUSTOMER_NAME;?></b></td>
+                <td class="main" valign="top"><?php echo EDIT_ORDERS_CUSTOMER_NAME;?></td>
                 <td class="main">
                   <input class="edit_input" name="update_customer_name" size="25" value="<?php echo tep_html_quotes(isset($_SESSION['orders_update_products'][$_GET['oID']]['update_customer_name']) ? $_SESSION['orders_update_products'][$_GET['oID']]['update_customer_name'] : $order->customer['name']); ?>">
                   <br><span class="smalltext"><?php echo EDIT_ORDERS_CUSTOMER_NAME_READ;?></span>
                 </td>
               </tr>
               <tr>
-                <td class="main" valign="top"><b><?php echo EDIT_ORDERS_EMAIL;?></b></td>
+                <td class="main" valign="top"><?php echo EDIT_ORDERS_EMAIL;?></td>
                 <td class="main"><input class="edit_new_input" name="update_customer_email_address" size="45" value="<?php echo isset($_SESSION['orders_update_products'][$_GET['oID']]['update_customer_email_address']) ? $_SESSION['orders_update_products'][$_GET['oID']]['update_customer_email_address'] : $order->customer['email_address']; ?>"></td>
               </tr>
               <!-- End Addresses Block -->
               <!-- Begin Payment Block -->
               <tr>
-                <td class="main" valign="top"><b><?php echo EDIT_ORDERS_PAYMENT_METHOD;?></b></td>
+                <td class="main" valign="top"><?php echo EDIT_ORDERS_PAYMENT_METHOD;?></td>
                 <td class="main">
                   <?php 
                   $payment_code = payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
@@ -1951,24 +1947,8 @@ require("includes/note_js.php");
               </tr>
               <!-- End Payment Block -->
               <!-- Begin Trade Date Block -->
-              <?php if (false) {?> 
               <tr>
-                <td class="main" valign="top"><b><?php echo EDIT_ORDERS_FETCHTIME;?></b></td>
-                <td class="main">
-                  <input name='update_tori_torihiki_date' size='25' value='<?php echo $order->tori['date']; ?>'>
-                  <span class="smalltext"><?php echo EDIT_ORDERS_FETCHTIME_READ;?></span>
-                </td>
-              </tr>
-              <tr>
-                <td class="main" valign="top"><b><?php echo EDIT_ORDERS_TORI_TEXT;?></b></td>
-                <td class="main">
-                  <input name='update_tori_torihiki_houhou' size='45' value='<?php echo $order->tori['houhou']; ?>'>
-                  <?php echo EDIT_ORDERS_TORI_READ;?> 
-                </td>
-              </tr>
-              <?php }?> 
-              <tr>
-                <td class="main" valign="top"><b><?php echo EDIT_ORDERS_ENSUREDATE;?></b></td>
+                <td class="main" valign="top"><?php echo EDIT_ORDERS_ENSUREDATE;?></td>
                 <td class="main">
                   <?php
                   $ensure_arr = explode(' ', $order->info['ensure_deadline']);  
@@ -2377,7 +2357,7 @@ require("includes/note_js.php");
     } else {
       $c_price_str = $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']);
     }
-    echo '<b>'.$c_price_str.'</b>'; 
+    echo $c_price_str; 
     echo '</div>'; 
     echo '</td>' . "\n" . 
          '    </tr>' . "\n";
@@ -2487,55 +2467,55 @@ require("includes/note_js.php");
     if ($TotalDetails["Class"] == "ot_total") {
       echo '  <tr id="add_option_total">' . "\n" .
            '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_OTTOTAL_READ.'</td>' . 
-           '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' . 
-           '    <td align="right" class="' . $TotalStyle . '"><b><div id="ot_total_id">';
+           '    <td align="right" class="' . $TotalStyle . '">' . $TotalDetails["Name"] . '</td>' . 
+           '    <td align="right" class="' . $TotalStyle . '"><div id="ot_total_id">';
                 if($TotalDetails["Price"] >= 0 ){
                   echo $currencies->ot_total_format($TotalDetails["Price"], true,
                     $order->info['currency'], $order->info['currency_value']);
                 }else{
                   echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL ,'', $currencies->ot_total_format($TotalDetails["Price"], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
                 }
-                echo '</div></b>' . 
+                echo '</div>' . 
                 "<input name='update_totals[$TotalIndex][title]' type='hidden' value='" . trim($TotalDetails["Name"]) . "' size='" . strlen($TotalDetails["Name"]) . "' >" . 
                 "<input name='update_totals[$TotalIndex][value]' type='hidden' value='" . $TotalDetails["Price"] . "' size='6' >" . 
                 "<input name='update_totals[$TotalIndex][class]' type='hidden' value='" . $TotalDetails["Class"] . "'>\n" . 
-                "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . '</b></td>' . 
-           '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
+                "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . '</td>' . 
+           '    <td align="right" class="' . $TotalStyle . '"><b>' .  tep_draw_separator('pixel_trans.gif', '1', '17') . '</b></td>' . 
            '  </tr>' . "\n";
     } elseif ($TotalDetails["Class"] == "ot_subtotal") {
       echo '  <tr>' . "\n" .
            '    <td align="left" class="' . $TotalStyle .  '">&nbsp;</td>' . 
-           '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' .
-           '    <td align="right" class="' . $TotalStyle . '"><b><div id="ot_subtotal_id">';
+           '    <td align="right" class="' . $TotalStyle . '">' . $TotalDetails["Name"] . '</td>' .
+           '    <td align="right" class="' . $TotalStyle . '"><div id="ot_subtotal_id">';
                 if($TotalDetails["Price"]>=0){
                   echo $currencies->ot_total_format($TotalDetails["Price"], true,
                     $order->info['currency'], $order->info['currency_value']);
                 }else{
                   echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL ,'', $currencies->format($TotalDetails["Price"], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
                 }
-                echo '</div></b>' . 
+                echo '</div>' . 
                 "<input name='update_totals[$TotalIndex][title]' type='hidden' value='" . trim($TotalDetails["Name"]) . "' size='" . strlen($TotalDetails["Name"]) . "' >" . 
                 "<input name='update_totals[$TotalIndex][value]' type='hidden' value='" . $TotalDetails["Price"] . "' size='6' >" . 
                 "<input name='update_totals[$TotalIndex][class]' type='hidden' value='" . $TotalDetails["Class"] . "'>\n" . 
-                "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . '</b></td>' . 
-           '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
+                "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . '</td>' . 
+           '    <td align="right" class="' . $TotalStyle . '"><b>' .  tep_draw_separator('pixel_trans.gif', '1', '17') . '</b></td>' . 
            '  </tr>' . "\n".
            '  <tr>' . "\n" .
            '    <td align="left" class="' . $TotalStyle . '">&nbsp;</td>' . 
-           '    <td align="right" class="' . $TotalStyle . '"><b>'.TEXT_CODE_HANDLE_FEE.'</b></td>' .
-           '    <td align="right" class="' . $TotalStyle . '"><b><div id="handle_fee_id">' . $currencies->format($order->info["code_fee"]) . '</div></b><input type="hidden" name="payment_code_fee" value="'.$order->info["code_fee"].'">' . 
+           '    <td align="right" class="' . $TotalStyle . '">'.TEXT_CODE_HANDLE_FEE.'</td>' .
+           '    <td align="right" class="' . $TotalStyle . '"><div id="handle_fee_id">' . $currencies->format($order->info["code_fee"]) . '</div><input type="hidden" name="payment_code_fee" value="'.$order->info["code_fee"].'">' . 
                 '</td>' . 
-           '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
+           '    <td align="right" class="' . $TotalStyle . '"><b>' .  tep_draw_separator('pixel_trans.gif', '1', '17') . '</b></td>' . 
            '  </tr>' . "\n";
     } elseif ($TotalDetails["Class"] == "ot_tax") {
       echo '  <tr>' . "\n" . 
            '    <td align="left" class="' . $TotalStyle . '">&nbsp;</td>' . 
-           '    <td align="right" class="' . $TotalStyle . '"><b>' . trim($TotalDetails["Name"]) . "</b><input name='update_totals[$TotalIndex][title]' type='hidden' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
-           '    <td align="right" class="' . $TotalStyle . '"><b>' . $currencies->format($TotalDetails["Price"], true, $order->info['currency'], $order->info['currency_value']) . '</b>' . 
+           '    <td align="right" class="' . $TotalStyle . '">' . trim($TotalDetails["Name"]) . "<input name='update_totals[$TotalIndex][title]' type='hidden' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
+           '    <td align="right" class="' . $TotalStyle . '">' . $currencies->format($TotalDetails["Price"], true, $order->info['currency'], $order->info['currency_value']) . 
                 "<input name='update_totals[$TotalIndex][value]' type='hidden' value='" . $TotalDetails["Price"] . "' size='6' >" . 
                 "<input name='update_totals[$TotalIndex][class]' type='hidden' value='" . $TotalDetails["Class"] . "'>\n" . 
-                "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . '</b></td>' . 
-           '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
+                "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . '</td>' . 
+           '    <td align="right" class="' . $TotalStyle . '"><b>' .  tep_draw_separator('pixel_trans.gif', '1', '17') . '</b></td>' . 
            '  </tr>' . "\n";
     } elseif ($TotalDetails["Class"] == "ot_point") {
       if ($customer_guest['customers_guest_chk'] == 0) { //会员
@@ -2556,7 +2536,7 @@ require("includes/note_js.php");
                 "<input type='hidden' name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][value]' size='6' value='" . $TotalDetails["Price"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
-                "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . 
+                "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'></td>" . 
              '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
              '   </td>' . "\n" .
              '  </tr>' . "\n";
@@ -2567,8 +2547,8 @@ require("includes/note_js.php");
       echo '  <tr>' . "\n" .
            '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_TOTALDETAIL_READ_ONE.'</td>' . 
            '    <td style="min-width:180px;" align="right" class="' . $TotalStyle .  '">' . $button_add ."<input style='text-align:right;' name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "' onblur='orders_session(\"customers_total_".$TotalIndex."\",this.value);'>" . '</td>' . "\n" .
-           '    <td align="right" class="' . $TotalStyle . '" style="min-width: 60px;">' . "<input style='text-align:right;' name='update_totals[$TotalIndex][value]' id='update_totals_$TotalIndex' onkeyup='clearNewLibNum(this);price_total();recalc_preorder_price(\"".$oID."\", \"".$orders_products_id."\", \"1\", \"".$op_info_str."\");' size='6' value='" . (isset($_SESSION['preorder_products'][$_GET['oID']]['customer'][$TotalIndex]) ? $_SESSION['preorder_products'][$_GET['oID']]['customer'][$TotalIndex] : $TotalDetails["Price"]) . "'><b>" .TEXT_MONEY_SYMBOL . 
-                "</b><input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
+           '    <td align="right" class="' . $TotalStyle . '" style="min-width: 60px;">' . "<input style='text-align:right;' name='update_totals[$TotalIndex][value]' id='update_totals_$TotalIndex' onkeyup='clearNewLibNum(this);price_total();recalc_preorder_price(\"".$oID."\", \"".$orders_products_id."\", \"1\", \"".$op_info_str."\");' size='6' value='" . (isset($_SESSION['preorder_products'][$_GET['oID']]['customer'][$TotalIndex]) ? $_SESSION['preorder_products'][$_GET['oID']]['customer'][$TotalIndex] : $TotalDetails["Price"]) . "'>" .TEXT_MONEY_SYMBOL . 
+                "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . 
            '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
            '   </td>' . "\n" .
@@ -2689,7 +2669,7 @@ if (tep_db_num_rows($orders_history_query)) {
     <td valign="top" width="40%">
       <table border="0" cellspacing="0" cellpadding="2">
         <tr>
-          <td class="main" width="82" style="min-width:45px;"><b><?php echo ENTRY_STATUS; ?></b></td>
+          <td class="main" width="82" style="min-width:45px;"><?php echo ENTRY_STATUS; ?></td>
           <td class="main"><?php 
           $is_nyuuka_raw = tep_db_query("select * from ".TABLE_PREORDERS_STATUS." where is_nyuuka = '1' order by orders_status_id asc limit 1"); 
           $is_nyuuka_res = tep_db_fetch_array($is_nyuuka_raw);
@@ -2704,16 +2684,16 @@ if (tep_db_num_rows($orders_history_query)) {
           </td>
         </tr>
         <tr>
-          <td class="main"><b><?php echo EDIT_ORDERS_SEND_MAIL_TEXT;?></b></td>
+          <td class="main"><?php echo EDIT_ORDERS_SEND_MAIL_TEXT;?></td>
           <td class="main"><table bgcolor="red" cellspacing="5"><tr><td><?php echo tep_draw_checkbox_field('notify', '', isset($_SESSION['orders_update_products'][$_GET['oID']]['notify']) && $_SESSION['orders_update_products'][$_GET['oID']]['notify'] == 0 ? false : true); ?></td></tr></table></td>
         </tr>
         <?php if($CommentsWithStatus) { ?>
         <tr>
-          <td class="main"><b><?php echo EDIT_ORDERS_RECORD_TEXT;?></b></td>
-          <td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', isset($_SESSION['orders_update_products'][$_GET['oID']]['notify_comments']) && $_SESSION['orders_update_products'][$_GET['oID']]['notify_comments'] == 0 ? false : true); ?>&nbsp;&nbsp;<b style="color:#FF0000;"><?php echo EDIT_ORDERS_RECORD_READ;?></b></td>
+          <td class="main"><?php echo EDIT_ORDERS_RECORD_TEXT;?></td>
+          <td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', isset($_SESSION['orders_update_products'][$_GET['oID']]['notify_comments']) && $_SESSION['orders_update_products'][$_GET['oID']]['notify_comments'] == 0 ? false : true); ?>&nbsp;&nbsp;<font color="#FF0000;"><?php echo EDIT_ORDERS_RECORD_READ;?></font></td>
         </tr>
         <tr>
-          <td class="main" valign="top"><b><?php echo TABLE_HEADING_COMMENTS;?>:</b></td>
+          <td class="main" valign="top"><?php echo TABLE_HEADING_COMMENTS;?>:</td>
           <td class="main"><?php echo tep_draw_textarea_field('comments_text', 'hard', '74', '5', isset($_SESSION['orders_update_products'][$_GET['oID']]['comments_text']) ? $_SESSION['orders_update_products'][$_GET['oID']]['comments_text'] : '', 'style="font-family:monospace; font-size:12px; width:100%;"');?></td> 
         </tr>
         <?php } ?>
@@ -2726,7 +2706,7 @@ if (tep_db_num_rows($orders_history_query)) {
       $mail_sele = tep_db_query($ma_se); 
       $mail_sql = tep_db_fetch_array($mail_sele); 
     ?>
-    <?php echo '<b>'.ENTRY_EMAIL_TITLE.'</b>'.tep_draw_input_field('etitle', isset($_SESSION['orders_update_products'][$_GET['oID']]['etitle']) ? $_SESSION['orders_update_products'][$_GET['oID']]['etitle'] : $mail_sql['orders_status_title'],' style="width:230px;" id="mail_title"');?> 
+    <?php echo ENTRY_EMAIL_TITLE.tep_draw_input_field('etitle', isset($_SESSION['orders_update_products'][$_GET['oID']]['etitle']) ? $_SESSION['orders_update_products'][$_GET['oID']]['etitle'] : $mail_sql['orders_status_title'],' style="width:230px;" id="mail_title"');?> 
     <br> 
     <br> 
     <textarea style="font-family:monospace; font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo isset($_SESSION['orders_update_products'][$_GET['oID']]['comments']) ? $_SESSION['orders_update_products'][$_GET['oID']]['comments'] : str_replace('${ORDER_A}', preorders_a($order->info['orders_id']), $mail_sql['orders_status_mail']);?></textarea> 
@@ -2750,7 +2730,7 @@ if (tep_db_num_rows($orders_history_query)) {
       <td>
           <table width="100%" border="0" cellpadding="2" cellspacing="1">
             <tr>
-              <td class="main" bgcolor="#FAEDDE"><b><?php echo EDIT_ORDERS_FINAL_CONFIRM_TEXT;?></b>&nbsp;<?php echo HINT_PRESS_UPDATE; ?></td>
+              <td class="main" bgcolor="#FAEDDE"><?php echo EDIT_ORDERS_FINAL_CONFIRM_TEXT;?>&nbsp;<?php echo HINT_PRESS_UPDATE; ?></td>
               <td class="main" bgcolor="#FBE2C8" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FFCC99" width="10">&nbsp;</td>
               <td class="main" bgcolor="#F8B061" width="10">&nbsp;</td>

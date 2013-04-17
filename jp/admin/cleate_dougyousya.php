@@ -21,8 +21,6 @@ case 'edit_oroshi':
   while($col = tep_db_fetch_array($res)){
   $ckstr[] = $col['categories_id'];   
   }
-//  $sql = 'update set_dougyousya_names set dougyousya_name = "'.$name.'", parent_id = '.$cpath .' where dougyousya_id = '.$orrshi_id;
-//  tep_db_query($sql);
   break;
 case 'set_oroshi':
   $orrshi_id = $_POST['orrshi_id'];
@@ -98,7 +96,6 @@ case 'set_oroshi':
   
 case 'delete':
   $dougyousya_id=$_GET['id'];
-  //  $cPath=$_GET['cpath'];
   $sql = "delete from  set_dougyousya_names  where dougyousya_id ='".$dougyousya_id.
     "'";
   tep_db_query($sql);
@@ -257,7 +254,6 @@ function w_close(){
   }
   }
   return true;
-  //  window.close(); 
 }
 <?php //显示履历 ?> 
 function show_history(id){
@@ -275,7 +271,6 @@ function del_oroshi(id){
 
 <?php //往上排一级 排序 ?>
 function ex(id){
-  //alert(document.getElementsByName['sort_order[]']);
   for(exi=1;exi<5;exi++){
     tmp = document.getElementById('tr_'+id+'_'+exi).innerHTML;
     document.getElementById('tr_'+id+'_'+exi).innerHTML =
@@ -291,7 +286,6 @@ $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 require("includes/note_js.php");
 ?>
 </head>
-<?php // marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF"> ?>
 <body>
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
   <script language='javascript'>
@@ -396,7 +390,7 @@ if(empty($HTTP_GET_VARS['id'])){
     $oroshi = tep_db_fetch_array($oroshi_query);
     echo '<table width="100%" cellspacing="0" cellpadding="2" border="0">
     <tr><td class="infoBoxContent"
-    align="left"><b>'.$oroshi['dougyousya_name'].'</b></td></tr>';
+    align="left">'.$oroshi['dougyousya_name'].'</td></tr>';
     if(tep_not_null($oroshi['user_added'])){
     echo '<tr><td>'.TEXT_USER_ADDED.'&nbsp;'.$oroshi['user_added'].'</td></tr>';
     }else{

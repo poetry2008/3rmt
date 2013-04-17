@@ -161,7 +161,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
    default 右侧默认页面
 ------------------------------------------------------*/
     case 'new':
-      $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_NEW_COMPUTER . '</b>');
+      $heading[] = array('text' => TEXT_INFO_HEADING_NEW_COMPUTER);
 
       $contents = array('form' => tep_draw_form('computers', FILENAME_COMPUTERS, 'page=' . $_GET['page'] . '&action=insert', 'post', 'enctype="multipart/form-data"'));
       $contents[] = array('text' => TEXT_INFO_INSERT_INTRO);
@@ -174,7 +174,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           tep_html_element_submit(IMAGE_SAVE) . '&nbsp;<a href="' .  tep_href_link(FILENAME_COMPUTERS, 'page=' . $_GET['page']) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     case 'edit':
-      $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_EDIT_COMPUTER . '</b>');
+      $heading[] = array('text' => TEXT_INFO_HEADING_EDIT_COMPUTER);
 
       $contents = array('form' => tep_draw_form('computers', FILENAME_COMPUTERS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->computers_id . '&action=save', 'post', 'enctype="multipart/form-data"'));
       $contents[] = array('text' => TEXT_INFO_EDIT_INTRO);
@@ -186,16 +186,16 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           tep_html_element_submit(IMAGE_SAVE) . '&nbsp;<a href="' .  tep_href_link(FILENAME_COMPUTERS, 'page=' . $_GET['page'] . '&cID=' .  $cInfo->computers_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     case 'delete':
-      $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_COMPUTER . '</b>');
+      $heading[] = array('text' => TEXT_INFO_HEADING_DELETE_COMPUTER);
 
       $contents = array('form' => tep_draw_form('computers', FILENAME_COMPUTERS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->computers_id . '&action=deleteconfirm'));
       $contents[] = array('text' => TEXT_INFO_DELETE_INTRO);
-      $contents[] = array('text' => '<br><b>' . $cInfo->computers_name . '</b>');
+      $contents[] = array('text' => '<br>' . $cInfo->computers_name);
       $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_DELETE) . '&nbsp;<a href="' .  tep_href_link(FILENAME_COMPUTERS, 'page=' . $_GET['page'] . '&cID=' .  $cInfo->computers_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     default:
       if (is_object($cInfo)) {
-        $heading[] = array('text' => '<b>' . $cInfo->computers_name . '</b>');
+        $heading[] = array('text' => $cInfo->computers_name);
 
         $contents[] = array('align' => 'center', 'text' => '<a href="' . tep_href_link(FILENAME_COMPUTERS, 'page=' . $_GET['page'] .  '&cID=' . $cInfo->computers_id . '&action=edit') . '">' . tep_html_element_button(IMAGE_EDIT) . '</a>' 
           . ($ocertify->npermission == 15 ? (' <a href="' .  tep_href_link(FILENAME_COMPUTERS, 'page=' . $_GET['page'] . '&cID=' .  $cInfo->computers_id . '&action=delete') . '">' . tep_html_element_button(IMAGE_DELETE) . '</a>'):'')

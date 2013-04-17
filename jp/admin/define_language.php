@@ -124,7 +124,7 @@ require("includes/note_js.php");
           <tr><?php echo tep_draw_form('language', FILENAME_DEFINE_LANGUAGE, 'lngdir=' . $_GET['lngdir'] . '&filename=' . $_GET['filename'] . '&action=save'); ?>
             <td><table border="0" cellspacing="0" cellpadding="2">
               <tr>
-                <td class="main"><b><?php echo $_GET['filename']; ?></b></td>
+                <td class="main"><?php echo $_GET['filename']; ?></td>
               </tr>
               <tr>
                 <td class="main"><?php echo tep_draw_textarea_field('file_contents', 'soft', '80', '20', $file_contents, (($file_writeable) ? '' : 'readonly')); ?></td>
@@ -141,7 +141,7 @@ require("includes/note_js.php");
     } else {
 ?>
           <tr>
-            <td class="main"><b><?php echo TEXT_FILE_DOES_NOT_EXIST; ?></b></td>
+            <td class="main"><?php echo TEXT_FILE_DOES_NOT_EXIST; ?></td>
           </tr>
           <tr>
             <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
@@ -157,7 +157,7 @@ require("includes/note_js.php");
           <tr>
             <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
-                <td class="smallText"><a href="<?php echo tep_href_link(FILENAME_DEFINE_LANGUAGE, 'lngdir=' . $_GET['lngdir'] . '&filename=' . $filename); ?>"><b><?php echo $filename; ?></b></a></td>
+                <td class="smallText"><a href="<?php echo tep_href_link(FILENAME_DEFINE_LANGUAGE, 'lngdir=' . $_GET['lngdir'] . '&filename=' . $filename); ?>"><?php echo $filename; ?></a></td>
 <?php
     $dir = dir(DIR_FS_CATALOG_LANGUAGES . $_GET['lngdir']);
     $left = false;

@@ -118,7 +118,7 @@ define('SELECT_STEP_THREE', 'STEP 3:');
 define('SELECT_STEP_FOUR', 'STEP 4:');
 define('TEXT_CODE_HANDLE_FEE', '手续费:');
 define('TEXT_CODE_SHIPPING_FEE', '运费:');
-define('EDIT_ORDERS_UPDATE_NOTICE', '请谨慎填写要更改的内容。<b>请检查是否输入了空格等多余的文字</b>');
+define('EDIT_ORDERS_UPDATE_NOTICE', '请谨慎填写要更改的内容。请检查是否输入了空格等多余的文字');
 define('EDIT_ORDERS_ID_TEXT', '订单号:');
 define('EDIT_ORDERS_DATE_TEXT', '订购日期:');
 define('EDIT_ORDERS_CUSTOMER_NAME', '客户名:');

@@ -30,9 +30,9 @@ define('TEXT_BANNERS_EXPIRCY_NOTE', '終了日と表示回数の２つの入力�
 define('TEXT_BANNERS_SCHEDULE_NOTE', '開始日が登録されると、バナーは登録された日付から有効になります。<br>開始日が登録されたバナーは、開始日が来るまで表示されません。');
 
 define('TEXT_BANNERS_DATE_ADDED', '登録日:');
-define('TEXT_BANNERS_SCHEDULED_AT_DATE', '開始日: <b>%s</b>');
-define('TEXT_BANNERS_EXPIRES_AT_DATE', '終了日: <b>%s</b>');
-define('TEXT_BANNERS_EXPIRES_AT_IMPRESSIONS', '終了日: <b>%s</b> クリック回数');
+define('TEXT_BANNERS_SCHEDULED_AT_DATE', '開始日: %s');
+define('TEXT_BANNERS_EXPIRES_AT_DATE', '終了日: %s');
+define('TEXT_BANNERS_EXPIRES_AT_IMPRESSIONS', '終了日: %s クリック回数');
 define('TEXT_BANNERS_STATUS_CHANGE', 'ステータス変更: %s');
 
 define('TEXT_BANNERS_DATA', '回<br>数');

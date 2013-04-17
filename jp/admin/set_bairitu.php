@@ -65,9 +65,9 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
 <?php }?>
 <form method="post" action="set_bairitu.php?action=set_bai"  onsubmit="alert('<?php echo SET_BAIRITU_UPDATE_NOTICE;?>')">
 <p><?php echo SET_BAIRITU_CURSET;?><input type="text" value="<?php echo isset($col['bairitu'])?$col['bairitu']:1.1?>" name="bai" ></p>
-<p><b><?php echo SET_BAIRITU_SINGLE_PRICE;?></b></p>
+<p><?php echo SET_BAIRITU_SINGLE_PRICE;?></p>
 <p><?php echo SET_BAIRITU_PERCENT;?><input type="text" value="<?php echo $col['percent']?>" name="percent" size="10">%</p>
-<p><b><?php echo SET_BAIRITU_SPRICE;?></b></p>
+<p><?php echo SET_BAIRITU_SPRICE;?></p>
 <p><?php echo SET_BAIRITU_CAL;?><select  name="shisoku">
 <?php 
   if($col['shisoku'] == "+"){

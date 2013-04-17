@@ -2575,7 +2575,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <input type="hidden" name="products_user_update" value="<?php echo $user_info['name']?>">
                 <td><table border="0" cellspacing="0" cellpadding="2" width="100%">
                 <tr>
-                <td class="main" valign="top"><?php echo $site_id?('<br><b>'.tep_get_site_name_by_id($site_id).'</b>'):'';?></td>
+                <td class="main" valign="top"><?php echo $site_id?('<br>'.tep_get_site_name_by_id($site_id)):'';?></td>
                 <td class="main" align="right"><?php 
                 echo tep_html_element_submit(IMAGE_PREVIEW) .  '&nbsp;&nbsp;';
               if (isset($_GET['rdirect'])) {
@@ -2750,7 +2750,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
                 </tr>
                 <tr bgcolor="#CCCCCC">
-                <td class="main"><?php echo '<font color="blue"><b>' . TEXT_PRODUCTS_PRICE . '</b></font>'; ?></td>
+                <td class="main"><?php echo '<font color="blue">' . TEXT_PRODUCTS_PRICE . '</font>'; ?></td>
                 <?php //add abs fro products ?>
                 <td class="main"><?php echo
                 tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' .
@@ -2763,7 +2763,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
                 </tr>
                 <tr bgcolor="#CCCCCC">
-                <td class="main"><?php echo '<font color="blue"><b>'.TEXT_PRODUCT_ADDORSUB_VALUE.'</b></font>'; ?></td>
+                <td class="main"><?php echo '<font color="blue">'.TEXT_PRODUCT_ADDORSUB_VALUE.'</font>'; ?></td>
                 <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_price_offset', $pInfo->products_price_offset, ($site_id ? 'class="readonly" readonly' : 'id="products_add_del"')); ?></td>
                 </tr>
                 <tr>
@@ -2796,7 +2796,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
                 </tr>
                 <tr bgcolor="#CCCCCC">
-                <td class="main"><?php echo '<font color="blue"><b>' . TEXT_PRODUCTS_REAL_QUANTITY . '</b></font>'; ?></td>
+                <td class="main"><?php echo '<font color="blue">' . TEXT_PRODUCTS_REAL_QUANTITY . '</font>'; ?></td>
                 <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_real_quantity', isset($pInfo->products_real_quantity)?$pInfo->products_real_quantity:'', ($site_id ? 'class="readonly" readonly' : 'id="products_real_quantity" onkeyup="clearLibNum(this);"')); ?></td>
                 </tr>
                 <tr>
@@ -3531,7 +3531,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     echo '<table  width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="left">';
                     // add abs for products_price 
                     echo CATEGORY_JIAGE_TEXT.'：&nbsp;' .  tep_draw_input_field('products_price',
-                        number_format(abs($pInfo->products_price)?abs($pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)" id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;' . CATEGORY_MONEY_UNIT_TEXT .  '&nbsp;&nbsp;&larr;&nbsp;' . (int)$pInfo->products_price . CATEGORY_MONEY_UNIT_TEXT.' ' . "\n";
+                        number_format(abs($pInfo->products_price)?abs($pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)" id="pp" size="8" style="text-align: right; ime-mode: disabled;"') . '&nbsp;' . CATEGORY_MONEY_UNIT_TEXT .  '&nbsp;&nbsp;&larr;&nbsp;' . (int)$pInfo->products_price . CATEGORY_MONEY_UNIT_TEXT.' ' . "\n";
                     echo '</td><td align="right">';
                     if (!$pInfo->products_bflag && $pInfo->relate_products_id)
                       echo CATEGORY_AVERAGE_PRICE.' '.@display_price(tep_get_avg_by_pid($pInfo->products_id)).CATEGORY_MONEY_UNIT_TEXT;
@@ -3539,11 +3539,11 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     echo '  </td>';
                     echo '  </tr><tr><td><hr size="2" noshade></td></tr><tr>';
                     echo '  <td height="30">';
-                    echo CATEGORY_SHIKU_TEXT . tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"') . '&nbsp;' .CATEGORY_GE_UNIT_TEXT. '&nbsp;&nbsp;&larr;&nbsp;' . $pInfo->products_real_quantity .CATEGORY_GE_UNIT_TEXT. "\n";
+                    echo CATEGORY_SHIKU_TEXT . tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="qt" style="text-align: right;ime-mode: disabled;" onkeyup="clearLibNum(this);"') . '&nbsp;' .CATEGORY_GE_UNIT_TEXT. '&nbsp;&nbsp;&larr;&nbsp;' . $pInfo->products_real_quantity .CATEGORY_GE_UNIT_TEXT. "\n";
                     echo '  </td>';
                     echo '  </tr><tr><td><hr size="2" noshade style="border:0;"></td></tr><tr>';
                     echo '  <td height="42" style="background-color:#ccc; padding-top:5px;">';
-                    echo CATEGORY_JIAKONGZAIKU_TEXT.'&nbsp;' .  tep_draw_input_field('products_virtual_quantity', $pInfo->products_virtual_quantity,' size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"') . '&nbsp;'.CATEGORY_GE_UNIT_TEXT. '&nbsp;&nbsp;&larr;&nbsp;' . $pInfo->products_virtual_quantity . CATEGORY_GE_UNIT_TEXT . "\n";
+                    echo CATEGORY_JIAKONGZAIKU_TEXT.'&nbsp;' .  tep_draw_input_field('products_virtual_quantity', $pInfo->products_virtual_quantity,' size="8" id="qt" style="text-align: right;ime-mode: disabled;" onkeyup="clearLibNum(this);"') . '&nbsp;'.CATEGORY_GE_UNIT_TEXT. '&nbsp;&nbsp;&larr;&nbsp;' . $pInfo->products_virtual_quantity . CATEGORY_GE_UNIT_TEXT . "\n";
                     echo '  </td>';
                     echo '  </tr>';
                     echo '</table>';
@@ -3589,13 +3589,13 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       <br>
                       <table width="95%" border="1" cellspacing="0" cellpadding="2">
                       <tr>
-                      <th colspan="4" align="left"><?php echo TABLE_HEADING_PRODUCT_HISTORY;?></th>
+                      <td colspan="4" align="left"><?php echo TABLE_HEADING_PRODUCT_HISTORY;?></td>
                       </tr>
                       <tr>
-                      <th><?php echo TABLE_HEADING_FETCHTIME_TEXT;?></th>
-                      <th><?php echo TABLE_HEADING_GESHU;?></th>
-                      <th><?php echo TABLE_HEADING_DANJIA;?></th>
-                      <th><?php echo TABLE_HEADING_OSTATUS;?></th>
+                      <td><?php echo TABLE_HEADING_FETCHTIME_TEXT;?></td>
+                      <td><?php echo TABLE_HEADING_GESHU;?></td>
+                      <td><?php echo TABLE_HEADING_DANJIA;?></td>
+                      <td><?php echo TABLE_HEADING_OSTATUS;?></td>
                       </tr>
                       <?php
                       if (tep_db_num_rows($order_history_query)) {
@@ -3619,7 +3619,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                         }
                         ?>
                           <tr>
-                          <th></th>
+                          <td></td>
                           <td class="main" align="right"><table cellspacing="0" cellpadding="0" border='0' width="100%"><tr><td align="left"><?php echo CATEGORY_TOTALNUM_TEXT;?></td><td align="right"><?php echo $sum_quantity;?><?php echo CATEGORY_GE_UNIT_TEXT;?></td></tr></table></td>
                           <td class="main" align="right"><table cellspacing="0" cellpadding="0" border='0' width="100%"><tr><td align="left"><?php echo CATEGORY_AVERAGENUM_TEXT;?></td><td align="right"><?php echo display_price($sum_price/$sum_quantity);?><?php echo CATEGORY_MONEY_UNIT_TEXT;?></td></tr></table></td>
                           <td class="main"> </td>
@@ -3646,14 +3646,14 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                           <br>
                           <table width="95%" border="1" cellspacing="0" cellpadding="2">
                           <tr>
-                          <th colspan="4" align="left"><?php echo TEXT_PRODUCT_LINK_PRODUCT_TEXT;?><?php 
-                          echo $relate_products_name;?></th>
+                          <td colspan="4" align="left"><?php echo TEXT_PRODUCT_LINK_PRODUCT_TEXT;?><?php 
+                          echo $relate_products_name;?></td>
                           </tr>
                           <tr>
-                          <th><?php echo TABLE_HEADING_FETCHTIME_TEXT;?></th>
-                          <th><?php echo TABLE_HEADING_GESHU;?></th>
-                          <th><?php echo TABLE_HEADING_DANJIA;?></th>
-                          <th><?php echo TABLE_HEADING_OSTATUS;?></th>
+                          <td><?php echo TABLE_HEADING_FETCHTIME_TEXT;?></td>
+                          <td><?php echo TABLE_HEADING_GESHU;?></td>
+                          <td><?php echo TABLE_HEADING_DANJIA;?></td>
+                          <td><?php echo TABLE_HEADING_OSTATUS;?></td>
                           </tr>
                           <?php
                           if (tep_db_num_rows($order_history_query)) {
@@ -3677,7 +3677,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                             }
                             ?>
                               <tr>
-                              <th></th>
+                              <td></td>
                               <td class="main" align="right"><table border='0' cellspacing="0" cellpadding="0" width="100%"><tr><td align="left"><?php echo CATEGORY_TOTALNUM_TEXT;?></td><td align="right"><?php echo $sum_quantity;?><?php echo CATEGORY_GE_UNIT_TEXT;?></td></tr></table></td>
                               <td class="main" align="right"><table border='0' cellspacing="0" cellpadding="0" width="100%"><tr><td align="left"><?php echo CATEGORY_AVERAGENUM_TEXT;?></td><td align="right"><?php echo @display_price($sum_price/$sum_quantity);?><?php echo CATEGORY_MONEY_UNIT_TEXT;?></td></tr></table></td>
                               <td class="main"> </td>
@@ -3711,7 +3711,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   <?php
                   if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) || !$_GET['origin'])) { 
                     //限制显示
-                    echo '<tr><td><b>'.CATEGORY_BUTTON_UPDATE_TEXT.'</b></td></tr>' . "\n";
+                    echo '<tr><td>'.CATEGORY_BUTTON_UPDATE_TEXT.'</td></tr>' . "\n";
                   } else {
                     ?>
                       <tr>
@@ -4028,7 +4028,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       echo '<br>';
                       echo tep_get_upload_dir($site_id).'categories/'; 
                       echo '<br>';
-                      echo '<b>'.$cInfo->categories_image2.'</b>'; 
+                      echo $cInfo->categories_image2; 
                     }
                   ?>
                     </td> 
@@ -4047,7 +4047,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     echo '<br>';
                     echo tep_get_upload_dir($site_id).'categories/'; 
                     echo '<br>';
-                    echo '<b>'.$cInfo->categories_image3.'</b>'; 
+                    echo $cInfo->categories_image3; 
                   }
                   ?>
                     </td> 
@@ -4066,7 +4066,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   echo '<br>';
                   echo tep_get_upload_dir($site_id).'categories/'; 
                   echo '<br>';
-                  echo '<b>'.$cInfo->categories_image.'</b>'; 
+                  echo $cInfo->categories_image; 
                 }
               ?>
                 </td>
@@ -4361,7 +4361,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               $categories_title_row[] = array('align'=>'right','params'=>'class="dataTableHeadingContent"', 
                   'text'=>TABLE_HEADING_ACTION.'&nbsp');
               // 商品列表标题
-              $categories_table_row[] = array('params' => 'valign="top" class="dataTableHeadingRow"',
+              $categories_table_row[] = array('params' => 'class="dataTableHeadingRow"',
                   'text' => $categories_title_row);
               $categories_count = 0;
               $rows = 0;
@@ -4484,7 +4484,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 $categories_name_text .= '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$cPath.'&cID='.$categories['categories_id'].'&action=edit_category'.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').(isset($_GET['search'])?$_GET['search']:'')).'">'.tep_image(DIR_WS_ICONS.'preview.gif', ICON_PREVIEW).'</a>&nbsp;'; 
                 $categories_name_text .= '<a href="'.tep_href_link(FILENAME_ORDERS, 'search_type=categories_id&scategories_id='.$categories['categories_id']).(!empty($site_id)?'&site_id='.$site_id:'').'&order_sort=torihiki_date&order_type=desc">'.tep_image(DIR_WS_ICONS.'search.gif', IMAGE_SEARCH).'</a>&nbsp;'; 
                 $categories_name_text .=  '<a href="' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . tep_image(DIR_WS_ICONS . 'folder.gif', ICON_FOLDER) .  '</a>&nbsp;'; 
-                $categories_name_text .= '<a class="title_text_link" href="' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . '<b>'.$categories['categories_name'].'</b>&nbsp;' .  '</a>';
+                $categories_name_text .= '<a class="title_text_link" href="' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . $categories['categories_name'].'&nbsp;' .  '</a>';
                 $tmp_count_cnt = 9 + $count_dougyousya['cnt']; 
                 if ( (isset($cInfo) && is_object($cInfo)) && ($categories['categories_id'] == $cInfo->categories_id) ) {
                   $categories_colspan_params .= 'class="dataTableContent" align="right" colspan="'.$tmp_count_cnt.'" onclick="document.location.href=\'' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '\'"';
@@ -5135,9 +5135,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 $product_price = tep_get_products_price($products['products_id'], $products);
                 $products_price_text .= '<span id="edit_p_'.$products['products_id'].'">'; 
                 if ($product_price['sprice']) {
-                  $products_price_text .= '<span class="specialPrice"><b>' .  $currencies->format($product_price['sprice']) . '</b></span>';
+                  $products_price_text .= '<span class="specialPrice">' .  $currencies->format($product_price['sprice']) . '</span>';
                 } else {
-                  $products_price_text .= '<b>'.$currencies->format($product_price['price']).'</b>';
+                  $products_price_text .= $currencies->format($product_price['price']);
                 }
                 $products_price_text .= '</span>'; 
                 $products_price_text .= '<span style="display:none;" id="h_edit_p_'.$products['products_id'].'">'.$tmp_p_price.'</span>'; 
@@ -5365,6 +5365,15 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     <td class="smallText" align="right" valign="top">
 					<div class="td_box_button">
                     <?php
+                    
+                    if ($cPath) {
+                      if (!empty($cPath_back)) {
+                        echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, $cPath_back . '&cID=' .  $current_category_id.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . tep_html_element_button(IMAGE_BACK) .  '</a>&nbsp;';
+                      } else {
+                        echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cID=' .  $current_category_id.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>&nbsp;';
+                      }
+                    }
+                    
                     if ($ocertify->npermission >= 10) {
                       if (empty($site_id) && !empty($_GET['cPath'])) {
                         $tmp_path_info = explode('_', $_GET['cPath']); 
@@ -5376,14 +5385,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                         }
                       }
                     }
-                    if ($cPath) {
-                      if (!empty($cPath_back)) {
-                        echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, $cPath_back . '&cID=' .  $current_category_id.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>';
-                      } else {
-                        echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cID=' .  $current_category_id.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>';
-                      }
-                    }
-              ?>
+                    ?>
                 <?php
                 if ((!isset($_GET['search']) || !$_GET['search']) && $ocertify->npermission >= 10) { //限制显示
                   if (empty($_GET['cPath']) && empty($site_id)) {

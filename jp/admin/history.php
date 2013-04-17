@@ -154,7 +154,7 @@ require("includes/note_js.php");
         <div class="compatible">
            <table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr>
-                 <td class = "pageHeading">
+                 <td class = "pageHeading" height="40">
   <?php
   if ($HTTP_GET_VARS['action'] == 'oroshi') {
     echo HISTORY_TITLE_THREE; 
@@ -208,7 +208,7 @@ case 'oroshi':
   if($games){
   foreach ($games as $gid=>$game){
 
-      echo "<table width='100%' cellspacing='1' cellpadding='2' border='0'><tr class='dataTableHeadingRow'><td width='160' height='30' class='dataTableHeadingContent'>";
+      echo "<table width='100%' cellspacing='1' cellpadding='2' border='0'><tr class='dataTableHeadingRow'><td width='160' height='30' class='main'>";
       echo $game[0]['categories_name'];
       echo "</td>";
       echo "<td width='300' class='dataTableHeadingContent'><a href=
@@ -280,7 +280,7 @@ case 'oroshi_c':
         for($i=0;$i<$cnt;$i++){
           $res=tep_db_query("select son.oroshi_name from set_oroshi_names son,set_oroshi_datas sod  where sod.oroshi_id = son.oroshi_id and sod.parent_id='".$cPath."' && sod.oroshi_id='".$o_id[$i]."' ORDER BY list_id DESC");
           $col=tep_db_fetch_array($res);
-          echo "<th align='center'>".$col['oroshi_name']."</th>";
+          echo "<td align='center'>".$col['oroshi_name']."</td>";
         }
     ?>
     </tr>
@@ -388,11 +388,11 @@ case 'dougyousya':
       $colmunLimit = 2;//分几行
       $colmunLimit_add_1 = $colmunLimit+1;
       echo "<table border='0' class='table_box'>";
-      echo "<th width='200'>";
-      echo "<th width='200'>";
+      echo "<td width='200'>";
+      echo "<td width='200'>";
       echo $cate_name;
-      echo "</th>";
-      echo "<th width='200'>";
+      echo "</td>";
+      echo "<td width='200'>";
       echo "<tbody>";
       $getSubCategories = 'select cd.categories_name,cd.categories_id from
         categories_description cd, categories c where
@@ -506,14 +506,14 @@ case 'dougyousya_categories':
   </table>
   <table border="0" class="table_box">
      <tr>
-     <th <?php if ($ocertify->npermission>7) {?>colspan ='2'<?php }?>><?php echo TEXT_CLASSIFICATION;?></th>
+     <td <?php if ($ocertify->npermission>7) {?>colspan ='2'<?php }?>><?php echo TEXT_CLASSIFICATION;?></td>
 <?php 
   for($i=0;$i<$cnt;$i++){
-    $html .= "<th>".$d_name[$i]."</th>";
+    $html .= "<td>".$d_name[$i]."</td>";
   }
   echo $html;
 ?>
-    <th>&nbsp;</th>
+    <td>&nbsp;</td>
   </tr>
       <?php 
       $res=tep_db_query("select count(*) as cnt from set_dougyousya_names sdn

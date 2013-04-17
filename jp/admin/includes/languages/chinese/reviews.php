@@ -44,4 +44,13 @@ define('TEXT_DATE_ADDED','投稿日期:');
 define('TEXT_DATE_UPDATE','更新日:');
 define('TEXT_NO_NAME','匿名');
 define('REVIEWS_NOTICE_TOTALNUM_ERROR', '评论内容不能小于50');
+define('TEXT_CAMPAIGN_PREV','＜上一项');
+define('TEXT_CAMPAIGN_NEXT','下一项＞');
+define('TEXT_CATEGORY_SELECT','分类选择:');
+define('TEXT_SELECT_PRODUCT','选择商品:');
+define('TEXT_DEL_REVIEW', '确定要删除吗？');
+define('TEXT_REVIEW_MUST_SELECT', '请至少选择一项');
+define('TEXT_CLEAR_SELECTION','请选择。');
+define('TEXT_ERROR_NULL','请输入。');
+define('TEXT_CATEGORY_NAME','商品名称');
 ?>

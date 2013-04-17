@@ -329,8 +329,6 @@ if(empty($HTTP_GET_VARS['id'])){
    echo '<tr>';
  }
   ?>
-  <!--卸業者：<input type='text' name='up_oroshi[]' value='<?php echo $col['oroshi_name'];?>'>
-  <input type='button' value='削除' name='b[]' onclick='del_oroshi(<?php echo $col['oroshi_id'];?>, <?php echo $cPath;?>)'><br>-->
   <td width="10"><?php if ($i) {?><a href="javascript:void(0);" onclick="ex(<?php echo $i;?>)">↑</a><?php }?></td>
   <td id="tr_<?php echo $i;?>_1">
     <input type="hidden" name="sort_order[<?php echo $col['oroshi_id'];?>]" value="<?php echo $i;?>" class="sort_order_input">
@@ -375,7 +373,7 @@ if(empty($HTTP_GET_VARS['id'])){
     $oroshi = tep_db_fetch_array($oroshi_query);
     echo '<table width="100%" cellspacing="0" cellpadding="2" border="0">
     <tr><td class="infoBoxContent"
-    align="left"><b>'.$oroshi['oroshi_name'].'</b></td></tr>';
+    align="left">'.$oroshi['oroshi_name'].'</td></tr>';
     if(tep_not_null($oroshi['user_added'])){  
     echo '<tr><td>'.TEXT_USER_ADDED.'&nbsp;'.$oroshi['user_added'].'</td></tr>';
     }else{
