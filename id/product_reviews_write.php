@@ -21,7 +21,7 @@ function checkForm() {
   strs=str.split(","); //字符分割    
   for(var i=0;i<strs.length;i++){
   var patt = new RegExp(strs[i]);
-  if(patt.test(review) == true){
+  if(patt.test(review) == true || patt.test(reviews_name) == true){
      result = true;
      break;
     }else{
