@@ -352,8 +352,8 @@ function UserPassword_preview() {
   echo tep_draw_hidden_field("userslist", $GLOBALS['userslist']);    // 把用户id放在隐藏项目里
 
   // 显示按钮
-  echo tep_draw_input_field("execute_update", BUTTON_CHANGE, "onClick=\"return formConfirm('password')\"", FALSE, "submit", FALSE); // 变更
-  echo tep_draw_input_field("clear", BUTTON_CLEAR, '', FALSE, "reset", FALSE);  // 清除
+  echo tep_draw_input_field("execute_update", BUTTON_CHANGE, "onClick=\"return formConfirm('password')\" class=\"element_button\"", FALSE, "submit", FALSE); // 变更
+  echo tep_draw_input_field("clear", BUTTON_CLEAR, 'class="element_button"', FALSE, "reset", FALSE);  // 清除
   echo "\n";
 
   echo "</form>\n";                 // form的footer
