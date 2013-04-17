@@ -636,7 +636,7 @@ require("includes/note_js.php");
                         tep_get_faq_path($faq_category['faq_category_id']).'&site_id='.
                       ((isset($_GET['site_id'])?$_GET['site_id']:0))). '">' .
                       tep_image(DIR_WS_ICONS.'folder.gif',ICON_FOLDER) .'</a>&nbsp;
-                    '.$faq_category['title'].'';
+                    '.$faq_category['title'];
                     echo '</td>';
                     echo "<td align='center'>";
                     //faq category is show 

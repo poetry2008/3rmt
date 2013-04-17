@@ -898,7 +898,7 @@ if ($_GET['action'] == 'show_category_info') {
         array('text' => TEXT_DELETE_PRODUCT_INTRO) 
       );
   $delete_product_info[]['text'] = array(
-        array('text' => '<br>' . $pInfo->products_name . '</b>') 
+        array('text' => '<br>' . $pInfo->products_name) 
       );
   if (isset($_GET['rdirect'])) {
     $form_str = tep_draw_form('products', FILENAME_CATEGORIES, 'action=delete_product_description_confirm&site_id=' .  $_GET['site_id'] . '&pID=' . $_GET['pID'] . '&cPath=' .  $cPath.'&rdirect=all'.$d_page.($_GET['search']?'&search='.$_GET['search']:''), 'post');
