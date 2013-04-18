@@ -70,7 +70,7 @@
     ");
     $last_reviews = tep_db_fetch_array($last_reviews_query);
     if ($last_reviews && time() - strtotime($last_reviews['date_added']) < REVIEWS_TIME_LIMIT) {
-      $form_error = true; 
+      $form_error = true;
       $error_message .= '※ 投稿が制限されています。時間をおいてお試しください。\n';
     }
     if ($form_error === false) {
