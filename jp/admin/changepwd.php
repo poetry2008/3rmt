@@ -443,10 +443,10 @@ function UserPassword_execute() {
   PageBody('t', PAGE_TITLE_PASSWORD);   // 用户管理画面的标题显示（修改密码）
   // 新密码的输入检查
   $ret_err = checkNotnull($GLOBALS['aval']['password']);
-  if ($ret_err != "") set_errmsg_array($aerror, '<b>' . TABLE_HEADING_NEW_PASSWORD . '</b>:' . $ret_err);
+  if ($ret_err != "") set_errmsg_array($aerror, TABLE_HEADING_NEW_PASSWORD . ':' . $ret_err);
   $ret_err = checkLength_ge($GLOBALS['aval']['password'], 2);
   if ($ret_err == "") $ret_err = checkStringEreg($GLOBALS['aval']['password'], "[[:print:]]");
-  if ($ret_err != "") set_errmsg_array($aerror, '<b>' . TABLE_HEADING_NEW_PASSWORD . '</b>:' . $ret_err);
+  if ($ret_err != "") set_errmsg_array($aerror, TABLE_HEADING_NEW_PASSWORD . ':' . $ret_err);
   // 为了确认请再次输入的检查
   if (strcmp($GLOBALS['aval']['password'],$GLOBALS['aval']['chk_password']) != 0)
     set_errmsg_array($aerror, TEXT_ERRINFO_CONFIRM_PASSWORD);
@@ -459,7 +459,7 @@ function UserPassword_execute() {
     echo "<br>\n";
     echo tep_draw_hidden_field('userslist', $GLOBALS['userid']);    // 把用户id方才隐藏项目里
     echo tep_draw_hidden_field('execute_password', $GLOBALS['execute_password']);
-    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
+    echo tep_draw_input_field("back", IMAGE_BACK, 'class="element_button"', FALSE, "submit", FALSE);  // 返回用户管理菜单
     echo "</form>\n";       // form的footer
     return FALSE;
   }
@@ -470,7 +470,7 @@ function UserPassword_execute() {
     // 错误的时候
     echo TEXT_ERRINFO_DB_CHANGE_PASSWORD;     // 显示信息
     echo "<br>\n";
-    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
+    echo tep_draw_input_field("back", IMAGE_BACK, 'class="element_button"', FALSE, "submit", FALSE);  // 返回用户管理菜单
     echo "</form>\n";               // form的footer
     if ($oresult) @tep_db_free_result($oresult);  // 开放结果项目
     return FALSE;
@@ -478,7 +478,7 @@ function UserPassword_execute() {
 
   echo "<br>\n";
   echo "&nbsp;&nbsp;&nbsp;&nbsp;";
-  echo "<font size='4' color='red'>";
+  echo "<font size='2' color='red'>";
   echo TEXT_SUCCESSINFO_CHANGE_PASSWORD;    // 完成信息
   echo "</font>";
   echo "<br><br>\n";

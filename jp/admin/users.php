@@ -279,7 +279,7 @@ function UserManu_preview() {
     echo TEXT_ERRINFO_DB_NO_USERINFO;           // 显示错误信息
     echo "<br>\n";
     echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));            // <form>标签的输出
-    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
+    echo tep_draw_input_field("back", IMAGE_BACK, 'class="element_button"', FALSE, "submit", FALSE);  // 返回用户管理菜单
     echo "</form>\n";                   // form的footer
     if ($oresult) @tep_db_free_result($oresult);      // 开放结果项目
     return FALSE;
@@ -441,7 +441,7 @@ function UserInfo_preview() {
     echo TEXT_ERRINFO_DB_NO_USERINFO;           // 显示错误信息
     echo "<br>\n";
     echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));            // <form>标签的输出
-    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
+    echo tep_draw_input_field("back", IMAGE_BACK, 'class="element_button"', FALSE, "submit", FALSE);  // 返回用户管理菜单
     echo "</form>\n";                   // form的footer
     if ($oresult) @tep_db_free_result($oresult);      // 开放结果项目
     return FALSE;
@@ -453,7 +453,7 @@ function UserInfo_preview() {
     echo TEXT_ERRINFO_DB_NO_USER;             // 显示错误信息
     echo "<br>\n";
     echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));            // <form>标签的输出
-    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
+    echo tep_draw_input_field("back", IMAGE_BACK, 'class="element_button"', FALSE, "submit", FALSE);  // 返回用户管理菜单
     echo "</form>\n";                   // form的footer
     if ($oresult) @tep_db_free_result($oresult);      // 开放结果项目
     return FALSE;                     // 退出处理
@@ -669,12 +669,12 @@ if(tep_db_query($permission_sid_sql)){
 }
 }
   if($y_n) {
-    echo   TEXT_SUCCESSINFO_CHANGE_PERMISSION."<br>";//修改成功  输出成功语句
+    echo   TEXT_SUCCESSINFO_CHANGE_PERMISSION."<br><br>";//修改成功  输出成功语句
 
    }
-  else {echo TEXT_ERRINFO_DB_CHANGE_PERMISSION."<BR>";
+  else {echo TEXT_ERRINFO_DB_CHANGE_PERMISSION."<br><br>";
    }
-   echo '<a href="' . tep_href_link(basename($GLOBALS['PHP_SELF'])) . '">&laquo;&nbsp;' . BUTTON_BACK_MENU . '</a>'; 
+   echo '<a href="' . tep_href_link(basename($GLOBALS['PHP_SELF'])) .  '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; 
 }
 
 /*--------------------------------------
@@ -708,7 +708,7 @@ function UserPermission_preview() {
     echo TEXT_ERRINFO_DB_NO_USERINFO;           // 显示错误信息
     echo "<br>\n";
     echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));      // <form>标签的输出
-    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
+    echo tep_draw_input_field("back", IMAGE_BACK, 'class="element_button"', FALSE, "submit", FALSE);  // 返回用户管理菜单
     echo "</form>\n";                   // form的footer
     if ($oresult) @tep_db_free_result($oresult);      // 开放结果项目
     return FALSE;
@@ -734,7 +734,7 @@ function UserPermission_preview() {
     echo TEXT_ERRINFO_DB_NO_USERINFO;           // 显示错误信息
     echo "<br>\n";
     echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));      // <form>标签的输出
-    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
+    echo tep_draw_input_field("back", IMAGE_BACK, 'class="element_button"', FALSE, "submit", FALSE);  // 返回用户管理菜单
     echo "</form>\n";                   // form的footer
     if ($oresult) @tep_db_free_result($oresult);      // 开放结果项目
     return FALSE;
@@ -764,7 +764,7 @@ function UserPermission_preview() {
     echo TEXT_ERRINFO_DB_NO_USERINFO;           // 显示错误信息
     echo "<br>\n";
     echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));      // <form>标签的输出
-    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
+    echo tep_draw_input_field("back", IMAGE_BACK, 'class="element_button"', FALSE, "submit", FALSE);  // 返回用户管理菜单
     echo "</form>\n";                   // form的footer
     if ($oresult) @tep_db_free_result($oresult);      // 开放结果项目
     return FALSE;
@@ -885,17 +885,17 @@ function UserInsert_execute() {
   $ret_err = checkLength_ge($GLOBALS['aval']['userid'], 2);
   if ($ret_err == "") $ret_err = checkNotnull($GLOBALS['aval']['userid']);
   if ($ret_err == "") $ret_err = checkStringEreg($GLOBALS['aval']['userid'], "[[:print:]]");
-  if ($ret_err != "") set_errmsg_array($aerror, '<b>' . TABLE_HEADING_USER_ID . '</b>:' . $ret_err);  // 用户ID
+  if ($ret_err != "") set_errmsg_array($aerror, TABLE_HEADING_USER_ID . ':' . $ret_err);  // 用户ID
 
   // 密码的输入检查
   $ret_err = checkLength_ge($GLOBALS['aval']['password'], 2);
   if ($ret_err == "") $ret_err = checkNotnull($GLOBALS['aval']['password']);
   if ($ret_err == "") $ret_err = checkStringEreg($GLOBALS['aval']['password'], "[[:print:]]");
-  if ($ret_err != "") set_errmsg_array($aerror, '<b>' . TABLE_HEADING_PASSWORD . '</b>:' . $ret_err); // 密码
+  if ($ret_err != "") set_errmsg_array($aerror, TABLE_HEADING_PASSWORD . ':' . $ret_err); // 密码
 
   // 姓名的输入检查
   $ret_err = checkNotnull($GLOBALS['aval']['name']);
-  if ($ret_err != "") set_errmsg_array($aerror, '<b>' . TABLE_HEADING_NAME . '</b>:' . $ret_err);   // 姓名
+  if ($ret_err != "") set_errmsg_array($aerror, TABLE_HEADING_NAME . ':' . $ret_err);   // 姓名
 
   echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));      // <form>标签的输出
 
@@ -903,7 +903,7 @@ function UserInsert_execute() {
     // 输入错误的时候
     print_err_message($aerror);   // 错误信息表示
     echo "<br>\n";
-    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
+    echo tep_draw_input_field("back", IMAGE_BACK, 'class="element_button"', FALSE, "submit", FALSE);  // 返回用户管理菜单
     echo "</form>\n";       // form的footer
     return FALSE;
   }
@@ -915,7 +915,7 @@ function UserInsert_execute() {
     //错误的时候
     echo TEXT_ERRINFO_DB_USERCHACK;             // 显示错误信息
     echo "<br>\n";
-    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
+    echo tep_draw_input_field("back", IMAGE_BACK, 'class="element_button"', FALSE, "submit", FALSE);  // 返回用户管理菜单
     echo "</form>\n";                   // form的footer
     if ($oresult) @tep_db_free_result($oresult);      // 开放结果项目
     return FALSE;
@@ -926,7 +926,7 @@ function UserInsert_execute() {
     // 获取的数据不是0件的时候
     echo TEXT_ERRINFO_DB_EXISTING_USER;           // 显示错误信息
     echo "<br>\n";
-    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
+    echo tep_draw_input_field("back", IMAGE_BACK, 'class="element_button"', FALSE, "submit", FALSE);  // 返回用户管理菜单
     echo "</form>\n";                   // form的footer
     if ($oresult) @tep_db_free_result($oresult);      // 开放结果项目
     return FALSE;                     // 退出处理
@@ -938,7 +938,7 @@ function UserInsert_execute() {
     //错误的时候
     echo TEXT_ERRINFO_DB_INSERT_USER;           // 显示错误信息
     echo "<br>\n";
-    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
+    echo tep_draw_input_field("back", IMAGE_BACK, 'class="element_button"', FALSE, "submit", FALSE);  // 返回用户管理菜单
     echo "</form>\n";                   // form的footer
     if ($oresult) @tep_db_free_result($oresult);      // 开放结果项目
     return FALSE;
@@ -950,7 +950,7 @@ function UserInsert_execute() {
     //错误的时候
     echo TEXT_ERRINFO_DB_INSERT_PERMISSION;         // 显示错误信息
     echo "<br>\n";
-    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
+    echo tep_draw_input_field("back", IMAGE_BACK, 'class="element_button"', FALSE, "submit", FALSE);  // 返回用户管理菜单
     echo "</form>\n";                   // form的footer
     if ($oresult) @tep_db_free_result($oresult);      // 开放结果项目
     return FALSE;
@@ -977,7 +977,7 @@ function UserInsert_execute() {
   echo "<br>\n";
   echo TEXT_SUCCESSINFO_INSERT_USER;    // 完成信息
   echo '<br><br>';
-  echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
+  echo tep_draw_input_field("back", IMAGE_BACK, 'class="element_button"', FALSE, "submit", FALSE);  // 返回用户管理菜单
   echo "</form>\n";           // form的footer
   if($oresult){
     
@@ -1019,7 +1019,7 @@ function UserInfor_execute() {
     print_err_message($aerror);   // 错误信息表示
     echo "<br>\n";
     echo tep_draw_hidden_field('userslist', $GLOBALS['userid']);            // 把用户id放在隐藏项目里
-    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
+    echo tep_draw_input_field("back", IMAGE_BACK, 'class="element_button"', FALSE, "submit", FALSE);  // 返回用户管理菜单
     echo "</form>\n";       // form的footer
     return FALSE;
   }
@@ -1029,7 +1029,7 @@ function UserInfor_execute() {
   if (!$oresult) {                      //错误的时候
     echo TEXT_ERRINFO_DB_UPDATE_USER;           // 显示错误信息
     echo "<br>\n";
-    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
+    echo tep_draw_input_field("back", IMAGE_BACK, 'class="element_button"', FALSE, "submit", FALSE);  // 返回用户管理菜单
     echo "</form>\n";                   // form的footer
     if ($oresult) @tep_db_free_result($oresult);      // 开放结果项目
     return FALSE;
@@ -1058,7 +1058,7 @@ function UserInfor_execute() {
   echo "<br>\n";
   echo TEXT_SUCCESSINFO_UPDATE_USER;    // 完成信息
   echo "<br><br>\n";
-  echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
+  echo tep_draw_input_field("back", IMAGE_BACK, 'class="element_button"', FALSE, "submit", FALSE);  // 返回用户管理菜单
   echo "</form>\n";           // form的footer
 
   if ($oresult) @tep_db_free_result($oresult);    // 开放结果项目
@@ -1091,7 +1091,7 @@ function UserDelete_execute() {
     print_err_message($aerror);   // 错误信息表示
     echo "<br>\n";
     echo tep_draw_hidden_field('userslist', $GLOBALS['userid']);  // 把用户id放在隐藏项目里
-    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
+    echo tep_draw_input_field("back", IMAGE_BACK, 'class="element_button"', FALSE, "submit", FALSE);  // 返回用户管理菜单
     echo "</form>\n";       // form的footer
     return FALSE;
   }
@@ -1102,7 +1102,7 @@ function UserDelete_execute() {
     //错误的时候
     echo TEXT_ERRINFO_DB_DELETE_USER;       // 显示错误信息
     echo "<br>\n";
-    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
+    echo tep_draw_input_field("back", IMAGE_BACK, 'class="element_button"', FALSE, "submit", FALSE);  // 返回用户管理菜单
     echo "</form>\n";               // form的footer
     if ($oresult) @tep_db_free_result($oresult);  // 开放结果项目
     return FALSE;
@@ -1114,7 +1114,7 @@ function UserDelete_execute() {
     //错误的时候
     echo TEXT_ERRINFO_DB_DELETE_USER;       // 显示错误信息
     echo "<br>\n";
-    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
+    echo tep_draw_input_field("back", IMAGE_BACK, 'class="element_button"', FALSE, "submit", FALSE);  // 返回用户管理菜单
     echo "</form>\n";               // form的footer
     if ($oresult) @tep_db_free_result($oresult);  // 开放结果项目
     return FALSE;
@@ -1124,7 +1124,7 @@ function UserDelete_execute() {
   echo "<br>\n";
   echo TEXT_SUCCESSINFO_DELETE_USER;          // 完成信息
   echo "<br><br>\n";
-  echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);    // 返回用户管理菜单
+  echo tep_draw_input_field("back", IMAGE_BACK, 'class="element_button"', FALSE, "submit", FALSE);    // 返回用户管理菜单
   echo "</form>\n";                 // form的footer
 
   if ($oresult) @tep_db_free_result($oresult);    // 开放结果项目
@@ -1252,7 +1252,7 @@ function UserPassword_execute() {
     print_err_message($aerror);   // 错误信息表示
     echo "<br>\n";
     echo tep_draw_hidden_field('userslist', $GLOBALS['userid']);    // 把用户id放在隐藏项目里
-    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
+    echo tep_draw_input_field("back", IMAGE_BACK, 'class="element_button"', FALSE, "submit", FALSE);  // 返回用户管理菜单
     echo "</form>\n";       // form的footer
     return FALSE;
   }
@@ -1263,7 +1263,7 @@ function UserPassword_execute() {
     //错误的时候
     echo TEXT_ERRINFO_DB_CHANGE_PASSWORD;     // 显示错误信息
     echo "<br>\n";
-    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
+    echo tep_draw_input_field("back", IMAGE_BACK, 'class="element_button"', FALSE, "submit", FALSE);  // 返回用户管理菜单
     echo "</form>\n";               // form的footer
     if ($oresult) @tep_db_free_result($oresult);  // 开放结果项目
     return FALSE;
@@ -1272,7 +1272,7 @@ function UserPassword_execute() {
   echo "<br>\n";
   echo TEXT_SUCCESSINFO_CHANGE_PASSWORD;    // 完成信息
   echo "<br><br>\n";
-  echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
+  echo tep_draw_input_field("back", IMAGE_BACK, 'class="element_button"', FALSE, "submit", FALSE);  // 返回用户管理菜单
   echo "</form>\n";           // form的footer
 
   if ($oresult) @tep_db_free_result($oresult);    // 开放结果项目
@@ -1316,7 +1316,7 @@ function UserPermission_execute($nmode=0) {
     print_err_message($aerror);                 // 错误信息表示
     echo "<br>\n";
     echo tep_draw_hidden_field('userslist', $GLOBALS['userid']);            // 把用户id放在隐藏项目里
-    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
+    echo tep_draw_input_field("back", IMAGE_BACK, 'class="element_button"', FALSE, "submit", FALSE);  // 返回用户管理菜单
     echo "</form>\n";                     // form的footer
     return FALSE;
   }
@@ -1327,7 +1327,7 @@ function UserPermission_execute($nmode=0) {
     //错误的时候
     echo TEXT_ERRINFO_DB_CHANGE_USER;             // 显示错误信息
     echo "<br>\n";
-    echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // 返回用户管理菜单
+    echo tep_draw_input_field("back", IMAGE_BACK, 'class="element_button"', FALSE, "submit", FALSE);  // 返回用户管理菜单
     echo "</form>\n";                     // form的footer
     if ($oresult) @tep_db_free_result($oresult);        // 开放结果项目
     return FALSE;
@@ -1340,7 +1340,7 @@ function UserPermission_execute($nmode=0) {
   }
   echo "<br><br>\n";
   echo tep_draw_input_field("execute_permission", BUTTON_BACK_PERMISSION, '', FALSE, "submit", FALSE);  // 返回管理员权限
-  echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);            // 返回用户管理菜单
+  echo tep_draw_input_field("back", IMAGE_BACK, 'class="element_button"', FALSE, "submit", FALSE);            // 返回用户管理菜单
   echo "</form>\n";                 // form的footer
 
   if ($oresult) @tep_db_free_result($oresult);    // 开放结果项目
