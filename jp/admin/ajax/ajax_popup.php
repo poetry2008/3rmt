@@ -2774,6 +2774,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
             'DS_ADMIN_SIGNAL_TIME',
             'SEG_CRONTAB_ROW',
             'SEG_CRONTAB_SLEEP',
+            'REVIEWS_BAN_CHARACTER',
             );
   //头部内容
   if(constant($cInfo->configuration_title) == null){
@@ -3027,17 +3028,15 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
           and site_id = '0'
           and language_id = '" . $languages_id . "'");
     $products_name = tep_db_fetch_array($products_name_query);
-   
+     
     $reviews_query_raw = " select r.reviews_id, r.products_id, r.date_added, r.last_modified, r.user_added, r.user_update, r.reviews_rating, r.reviews_status , s.romaji, s.name as site_name, pd.products_name from " . TABLE_REVIEWS . " r, ".TABLE_SITES." s, ".TABLE_PRODUCTS_DESCRIPTION." pd where r.site_id = s.id and r.products_id = pd.products_id and pd.language_id = '".$languages_id."' and pd.site_id = 0 " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and s.id = '" .  intval($_GET['site_id']) . "' " : '') . " order by date_added DESC";
     $reviews_raw_query = tep_db_query($reviews_query_raw);
     while ($reviews_id = tep_db_fetch_array($reviews_raw_query)) {
          $cid_array[] = $reviews_id['reviews_id']; 
     }
-
-
+   
     $rInfo_array = tep_array_merge($reviews, $products, $products_name);
     $rInfo = new objectInfo($rInfo_array);
-  
     switch ($rInfo->reviews_status) {
       case '0': $in_status = false; $out_status = true; break;
       case '1':
@@ -3067,38 +3066,32 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
     $heading[] = array('align' => 'left', 'text' => $products_name.'&nbsp;&nbsp;');
     $heading[] = array('align' => 'right', 'text' => $page_str);
-    if($_GET['site_id'] == 0){
-        $site_name = array(
-             'RMTジャックポット' => '1',
-             'RMTゲームマネー'   => '2',
-             'RMTワールドマネー' => '3',
-             'RMTアイテムデポ'   => '4',
-             'RMTカメズ'         => '5',
-             'RMT学園'           => '6',
-             'RedStone-RMT.com'  => '7',
-             'FF14-RMT.com'      => '8',
-           'RMTゲームプラネット' => '9',
-             'GM-Exchange'       => '10'
-            );
-      $_GET['site_id'] = $site_name[$rInfo->site_name];
+    if($_GET['site_id'] == null || $_GET['rID'] == -1){
+      $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$_GET['site_id']));
+      $rInfo->site_name = $site_name['name'];
     }
     $contents[]['text'] = array(
         array('text' => ENTRY_SITE.':'),
-        array('text' => tep_site_pull_down_menu($_GET['site_id'],'','','id="site_id"').'<input type="hidden" name="site_hidden" value="'.$_GET['site_id'].'">')
+        array('text' => $rInfo->site_name.'<input id="site_id" type="hidden" value="'.$_GET['site_id'].'"><input id="site_hidden" type="hidden" value="'.$_GET['site_id'].'">')
     );
+    if($_GET['rID'] != -1){
+    $products_id = tep_db_fetch_array(tep_db_query("select * from ".  TABLE_REVIEWS ." where reviews_id=".$_GET['rID']));
+    $category_id = tep_db_fetch_array(tep_db_query("select * from ".  TABLE_PRODUCTS_TO_CATEGORIES  ." where products_id=".$products_id['products_id']));
+    }
     if(isset($_GET['review_products_id_info']) && $_GET['review_products_id_info']){
         $review_products_id_info = $_GET['review_products_id_info']; 
+    }else if(isset($category_id['categories_id']) && $category_id['categories_id']){
+        $review_products_id_info = $category_id['categories_id']; 
     }else{
         $review_products_id_info = 0;
     }
-    if($_GET['rID'] == -1){
+    /*if($_GET['rID'] == -1){
         $_GET['site_id'] = 1;
-    }
+    }*/
   $contents[]['text'] = array(
         array('text' => TEXT_CATEGORY_SELECT),
         array('text' => tep_draw_pull_down_menu('review_products_id', tep_get_category_tree(),$review_products_id_info,'id="review_products_id" onchange="change_review_products_id(this,'.$_GET['page'].','.$_GET['rID'].','.$_GET['site_id'].')"') ), 
     );
-
    $result = tep_db_query(" SELECT products_name, p.products_id, cd.categories_name, ptc.categories_id FROM " . TABLE_PRODUCTS . " p LEFT JOIN " .  TABLE_PRODUCTS_DESCRIPTION . " pd ON pd.products_id=p.products_id LEFT JOIN " . TABLE_PRODUCTS_TO_CATEGORIES . " ptc ON ptc.products_id=p.products_id LEFT JOIN " . TABLE_CATEGORIES_DESCRIPTION . " cd ON cd.categories_id=ptc.categories_id where pd.language_id = '" . (int)$languages_id . "' and cd.site_id = '0' and pd.site_id = '0' ORDER BY categories_name");
     while($row = tep_db_fetch_array($result)){
           extract($row,EXTR_PREFIX_ALL,"db");
@@ -3123,7 +3116,11 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
           }
      }
       if(!isset($_GET['review_products_id_info'])){
+        if(isset($review_products_id_info) && $review_products_id_info){
+          $add_product_categories_id = $review_products_id_info;
+        }else{
           $add_product_categories_id = 0;
+        }
       }else{
           $add_product_categories_id = $_GET['review_products_id_info'];
       }
@@ -3136,7 +3133,11 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
       $ProductOptions = $select_value;
              asort($ProductList[$add_product_categories_id]);
              foreach($ProductList[$add_product_categories_id] as $ProductID => $ProductName){
+                 if($rInfo->products_id == $ProductID){
+                 $ProductOptions .= "<option value='$ProductID' selected> $ProductName\n";
+                 }else{
                  $ProductOptions .= "<option value='$ProductID'> $ProductName\n";
+                 }
              }
              $ProductOptions = str_replace("value='$add_product_products_id'","value='$add_product_products_id' selected", $ProductOptions);
     $review_select_end = "</select>";
@@ -3159,16 +3160,30 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
             $selected = '';
         }
         $date_y = date('Y')-$i;
+        if($_GET['rID'] == -1){
+         if(date('Y') == $date_y){
+          $date_y = date('Y');
+          $selected = 'selected';
+         }
+        }
         $date_posted .= '<option value="'.$date_y.'" '.$selected.'>'.$date_y.'</option>';
    }
         $date_posted .= '</select>';
         $date_posted .= '<select name="m">';
-  for ($i=1;$i<13;$i++) {
+  for ($i=01;$i<13;$i++) {
          if($i==intval(date('m', strtotime($rInfo->date_added)))){
             $selected = 'selected';
          }else{
             $selected = '';
          }
+       if($_GET['rID'] == -1){
+         if(date('m') == $i){
+          $i = date('m');
+          $selected = 'selected';
+         }else{
+           $selected = '';
+         }
+        }
          $date_posted .= '<option value="'.$i.'" '.$selected.'>'.$i.'</option>';
   }
         $date_posted .= '</select>';
@@ -3179,7 +3194,15 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
         }else{
            $selected = '';
         }
-        $date_posted .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
+       if($_GET['rID'] == -1){
+         if(date('d') == $i){
+          $i = date('d');
+          $selected = 'selected';
+         }else{
+          $selected = '';
+        }
+        } 
+       $date_posted .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
   }
         $date_posted .= '</select>';
         $date_posted .= '<select name="h">';
@@ -3188,6 +3211,14 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
            $selected = 'selected';
         }else{
            $selected = '';
+        }
+       if($_GET['rID'] == -1){
+         if(date('H') == $i){
+          $i = date('H');
+          $selected = 'selected';
+         }else{
+          $selected = ''; 
+         }
         }
         $date_posted .= '<option value="'.$i.'" '.$selected.'>'.$i.'</option>';
   }
@@ -3199,6 +3230,12 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
         }else{
            $selected = '';
         } 
+       if($_GET['rID'] == -1){
+         if(date('i') == $i){
+          $i = date('i');
+          $selected = 'selected';
+         }
+        }
         $date_posted .= '<option value="'.$i.'" '.$selected.'>'.$i.'</option>';
   }
         $date_posted .= '</select>';
@@ -3249,11 +3286,15 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     );
     $contents[]['text'] = array(
         array('text' => ENTRY_REVIEW),
-        array('text' => tep_draw_textarea_field('reviews_text', 'soft', '60', '15', $rInfo->reviews_text, 'id="reviews_text" onkeypress="word_count(this)" onchange="word_count(this)"'))
+        array('text' => tep_draw_textarea_field('reviews_text', 'soft', '60', '15', $rInfo->reviews_text, 'style="resize: vertical;" id="reviews_text" onkeypress="word_count(this)" onchange="word_count(this)"'))
     );
     $contents[]['text'] = array(
         array('text' => ''),
-        array('align' => 'right','params' => 'class="smallText"','text' => '<span style="float:left">'.REVIEWS_CHARACTER_TOTAL.'</span><span style="float:left"id="count_box"></span>'.ENTRY_REVIEW_TEXT.'&nbsp;&nbsp;&nbsp;&nbsp;')
+        array('align' => 'right','params' => 'class="smallText"','text' => '<span style="float:left">'.REVIEWS_CHARACTER_TOTAL.'</span><span style="float:left"id="count_box"></span>')
+    );
+    $contents[]['text'] = array(
+        array('text' => ''),
+        array('params' => 'class="smallText"','text' => ENTRY_REVIEW_TEXT)
     );
    $contents[]['text'] = array(
         array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.((tep_not_null($rInfo->user_added))?$rInfo->user_added:TEXT_UNSET_DATA)), 
@@ -3267,7 +3308,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     if(!empty($reviews_button)){
         $buttons = array('align' => 'center', 'button' => $reviews_button);
      }
-$reviews_form =  tep_draw_form('review', FILENAME_REVIEWS, 'page=' .  $_GET['page'] .  (isset($_GET['lsite_id'])?('&lsite_id='.$_GET['lsite_id']):'').'&rID=' .  $_GET['rID'] . '&action=update', 'post' , 'onsubmit="return check_review()"');
+$reviews_form =  tep_draw_form('review', FILENAME_REVIEWS, 'page=' .  $_GET['page'] .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').'&rID=' .  $_GET['rID'] . '&action=update', 'post' , 'onsubmit="return check_review()"');
 $notice_box->get_form($reviews_form);
 $notice_box->get_heading($heading);
 $notice_box->get_contents($contents, $buttons);

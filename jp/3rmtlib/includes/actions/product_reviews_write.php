@@ -68,18 +68,24 @@
             customers_name, 
             reviews_rating, 
             date_added, 
+            last_modified,
             reviews_status,
             reviews_ip,
-            site_id
+            site_id,
+            user_added,
+            user_update
           ) values (
             '" . $_GET['products_id'] . "', 
             '" . $customer_id . "', 
             '" . addslashes($reviews_name) . "', 
             '" . $_POST['rating'] . "',
             now(), 
+            now(),
             '0', 
             '".$_SERVER['REMOTE_ADDR']."',
-            '".SITE_ID."'
+            '".SITE_ID."',
+            '".$_SESSION['customer_last_name'].$_SESSION['customer_first_name']."',
+            '".$_SESSION['customer_last_name'].$_SESSION['customer_first_name']."'
           )");
         $insert_id = tep_db_insert_id();
         tep_db_query("

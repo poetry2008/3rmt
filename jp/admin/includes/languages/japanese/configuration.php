@@ -239,3 +239,4 @@ define('TEXT_CALENDAR_SETTING_SHOW',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif
 define('TEXT_CALENDAR_SETTING_MONTH',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;カレンダー表示数');
 define('TEXT_CALENDAR_SETTING_MONTH_START','当月含めて');
 define('TEXT_CALENDAR_SETTING_MONTH_END','か月分');
+define('TEXT_COMMENTS_BAN_CHARACTER',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;投稿禁止ワード');

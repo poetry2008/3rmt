@@ -19,7 +19,7 @@ define('ENTRY_PRODUCT', '商品名:');
 define('ENTRY_FROM', '投稿者:');
 define('ENTRY_DATE', '日付:');
 define('ENTRY_REVIEW', 'レビュー内容:');
-define('ENTRY_REVIEW_TEXT', '<small><font color="#ff0000"><b>注:</b></font></small>&nbsp;HTML は使用できません!&nbsp;');
+define('ENTRY_REVIEW_TEXT', '<font color="#ff0000">注:</font>&nbsp;HTML は使用できません!&nbsp;');
 define('ENTRY_RATING', '採点:');
 
 define('TEXT_INFO_DELETE_REVIEW_INTRO', '本当にこのレビューを削除しますか?');
@@ -34,8 +34,8 @@ define('TEXT_INFO_REVIEW_SIZE', 'サイズ:');
 define('TEXT_INFO_PRODUCTS_AVERAGE_RATING', '平均点:');
 
 define('TEXT_OF_5_STARS', '5点中の %s点!');
-define('TEXT_GOOD', '<small><font color="#ff0000"><b>良い</b></font></small>');
-define('TEXT_BAD', '<small><font color="#ff0000"><b>悪い</b></font></small>');
+define('TEXT_GOOD', '<font color="#ff0000">良い</font>');
+define('TEXT_BAD', '<font color="#ff0000">悪い</font>');
 define('TEXT_INFO_HEADING_DELETE_REVIEW', 'レビューを削除');
 define('TEXT_USER_ADDED','投稿者:');
 define('TEXT_USER_UPDATE','更新者:');

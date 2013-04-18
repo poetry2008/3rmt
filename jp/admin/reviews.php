@@ -57,7 +57,7 @@
              $add_products = 0;  
         }else{
              $add_products = 1;  
-        }
+        } 
         $reviews_id     = tep_db_prepare_input($_GET['rID']);
         $site_id=tep_get_rev_sid_by_id($reviews_id);
          if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];//权限判断
@@ -67,7 +67,7 @@
         $last_modified  = tep_db_prepare_input($_POST['last_modified']);
         $reviews_text   = tep_db_prepare_input($_POST['reviews_text']);
         $reviews_status = tep_db_prepare_input($_POST['reviews_status']);
-        $date_added     = $_POST['year'].'-'.$_POST['m'].'-'.$_POST['d'].' '.$_POST['h'].':'.$_POST['i'].':'.$_POST['s'];
+        $date_added     = $_POST['year'].'-'.$_POST['m'].'-'.$_POST['d'].' '.$_POST['h'].':'.$_POST['i'].':00';
         $customers_name = $_POST['customers_name'] ? $_POST['customers_name'] : TEXT_NO_NAME;
         $add_product_products_id = $_POST['add_product_products_id'];
        if($add_products == 1){
@@ -80,7 +80,7 @@
           'date_added' => $_POST['year'].'-'.$_POST['m'].'-'.$_POST['d'].' '.$_POST['h'].':'.$_POST['i'].':'.$_POST['s'],
           'last_modified' => 'now()',
           'reviews_read' => '0',
-          'site_id' => $_POST['site_id'],
+          'site_id' => $_GET['site_id'],
           'reviews_status' => $_POST['reviews_status'],
           'user_added'  => $_SESSION['user_name'],
           'user_update' => $_SESSION['user_name'],
@@ -93,7 +93,7 @@
           'reviews_text' => $_POST['reviews_text']
         );
         tep_db_perform(TABLE_REVIEWS_DESCRIPTION, $sql_description_array);
-        tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] .  '&site_id='.$_POST['site_id']));
+        tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] .  '&site_id='.$_GET['site_id']));
         break;
        } 
         tep_db_query("
@@ -111,7 +111,7 @@
             set reviews_text = '" . tep_db_input($reviews_text) . "' 
             where reviews_id = '" . tep_db_input($reviews_id) . "'");
 
-        tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] .  '&site_id='.$_POST['site_id']));
+        tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] .  '&site_id='.$_GET['site_id']));
         break;
       case 'deleteconfirm':
         if (!empty($_POST['review_id'])) {
@@ -723,7 +723,7 @@ require("includes/note_js.php");
       );
        $review_info[] = array(
           'params' => 'class="dataTableContent" align="right"',
-          'text'   =>  tep_image(HTTP_CATALOG_SERVER . DIR_WS_CATALOG_IMAGES .  'stars_' . $reviews['reviews_rating'] . '.gif') 
+          'text'   => tep_image(HTTP_CATALOG_SERVER . DIR_WS_CATALOG_IMAGES .  'stars_' . $reviews['reviews_rating'] . '.gif') 
       );
        $review_info[] = array(
           'params' => 'class="dataTableContent" align="right"',
@@ -737,7 +737,7 @@ require("includes/note_js.php");
       );
     $review_table_row[] = array('params' => $review_params, 'text' => $review_info);
     }
-    $review_form = tep_draw_form('del_review', FILENAME_REVIEWS, '?page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&action=deleteconfirm');
+    $review_form = tep_draw_form('del_review', FILENAME_REVIEWS, 'page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&action=deleteconfirm');
     $notice_box->get_form($review_form);
     $notice_box->get_contents($review_table_row);
     $notice_box->get_eof(tep_eof_hidden());
@@ -754,7 +754,9 @@ require("includes/note_js.php");
                     <td class="smallText" align="right" colspan="2">
                      <div class="td_button">   
                       <a href="javascript:void(0);" onclick="delete_select_review('review_id[]');"><?php echo tep_html_element_button(IMAGE_DELETE, 'onclick=""');?></a>
+                      <?php if($_GET['site_id'] != null){ ?>
                       <button type="button" onclick="show_text_reviews(this,<?php echo $_GET['page']; ?>,'-1',<?php echo $_GET['site_id'];?>)"><?php echo IMAGE_NEW_PROJECT;?></button>
+                       <?php }?>
                       </div>
                     </td>
                   </tr>

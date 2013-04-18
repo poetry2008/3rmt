@@ -237,3 +237,4 @@ define('TEXT_CALENDAR_SETTING_SHOW',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif
 define('TEXT_CALENDAR_SETTING_MONTH',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;前台日历显示数');
 define('TEXT_CALENDAR_SETTING_MONTH_START','包含本月');
 define('TEXT_CALENDAR_SETTING_MONTH_END','个月');
+define('TEXT_COMMENTS_BAN_CHARACTER',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;评论禁止字符');
