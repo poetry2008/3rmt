@@ -3291,7 +3291,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
         $buttons = array('align' => 'center', 'button' => $reviews_button);
      }
   }else{
- $reviews_button[] = tep_html_element_button(IMAGE_SAVE,''.$_GET['rID'].','.$_GET['page'].')"');
+   $reviews_button[] = tep_html_element_button(IMAGE_SAVE,'onclick="check_review_submit('.$_GET['rID'].','.$_GET['page'].')"');
     if(!empty($reviews_button)){
         $buttons = array('align' => 'center', 'button' => $reviews_button);
      }
