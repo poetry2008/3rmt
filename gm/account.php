@@ -78,6 +78,7 @@
               tep_href_link(FILENAME_ACCOUNT_HISTORY, '', 'SSL') . '">' .
               tep_image_button('button_history.gif',
                   IMAGE_BUTTON_HISTORY,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_history.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_history_hover.gif\'"') . '</a>'; ?></td>
+              <td align="center" class="main"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT_EXIT, 'check_from='.time(), 'SSL') . '">' . tep_image_button('button_out.gif', IMAGE_BUTTON_CUSTOMERS_EXIT,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_out.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_out_hover.gif\'"') . '</a>'; ?></td>
               <td align="center"><?php echo '<a href="' .
               tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, '', 'SSL') . '">' .
               tep_image_button('button_notifications.gif',

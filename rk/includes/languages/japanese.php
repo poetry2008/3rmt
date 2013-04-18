@@ -163,32 +163,32 @@ define('TYPE_BELOW', '下に入力');
 // javascript messages
 define('JS_ERROR', '入力フォームでエラーが起きています!\n次の項目を修正してください:\n\n');
 
-define('JS_REVIEW_TEXT', '* レビューの文章は少なくても ' . REVIEW_TEXT_MIN_LENGTH . ' 文字以上必要です。\n');
-define('JS_REVIEW_RATING', '* 商品の採点をしてください。\n');
+define('JS_REVIEW_TEXT', '※ レビューの文章は少なくても ' . REVIEW_TEXT_MIN_LENGTH . ' 文字以上必要です。\n');
+define('JS_REVIEW_RATING', '※ 商品の採点をしてください。\n');
 
-define('JS_GENDER', '* \'性別\' が選択されていません。\n');
-define('JS_FIRST_NAME', '* \'名\' は少なくても ' . ENTRY_FIRST_NAME_MIN_LENGTH . ' 文字以上必要です。\n');
-define('JS_LAST_NAME', '* \'姓\' は少なくても ' . ENTRY_LAST_NAME_MIN_LENGTH . ' 文字以上必要です。\n');
+define('JS_GENDER', '※ \'性別\' が選択されていません。\n');
+define('JS_FIRST_NAME', '※ \'名\' は少なくても ' . ENTRY_FIRST_NAME_MIN_LENGTH . ' 文字以上必要です。\n');
+define('JS_LAST_NAME', '※ \'姓\' は少なくても ' . ENTRY_LAST_NAME_MIN_LENGTH . ' 文字以上必要です。\n');
 
-define('JS_FIRST_NAME_F', '* \'名前(フリガナ)\' は少なくても ' . ENTRY_FIRST_NAME_MIN_LENGTH . ' 文字以上必要です。\n');
-define('JS_LAST_NAME_F', '* \'姓(フリガナ)\' は少なくても ' . ENTRY_LAST_NAME_MIN_LENGTH . ' 文字以上必要です。\n');
+define('JS_FIRST_NAME_F', '※ \'名前(フリガナ)\' は少なくても ' . ENTRY_FIRST_NAME_MIN_LENGTH . ' 文字以上必要です。\n');
+define('JS_LAST_NAME_F', '※ \'姓(フリガナ)\' は少なくても ' . ENTRY_LAST_NAME_MIN_LENGTH . ' 文字以上必要です。\n');
 
-define('JS_DOB', '* \'生年月日\' は次の形式で入力してください: xxxx/xx/xx (年/月/日).\n');
-define('JS_EMAIL_ADDRESS', '* \'メールアドレス\' は少なくても ' . ENTRY_EMAIL_ADDRESS_MIN_LENGTH . ' 文字以上必要です。\n');
-define('JS_ADDRESS', '* \'住所1\' は少なくても ' . ENTRY_STREET_ADDRESS_MIN_LENGTH . ' 文字以上必要です。\n');
-define('JS_POST_CODE', '* \'郵便番号\' は少なくても ' . ENTRY_POSTCODE_MIN_LENGTH . ' 文字以上必要です。\n');
-define('JS_CITY', '* \'市区町村\' は少なくても ' . ENTRY_CITY_MIN_LENGTH . ' 文字以上必要です。\n');
-define('JS_STATE', '* \'都道府県\' を選択または入力してください。\n');
-define('JS_COUNTRY', '* \'国\' を選択してください。');
-define('JS_TELEPHONE', '* \'電話番号\' は少なくても ' . ENTRY_TELEPHONE_MIN_LENGTH . ' 文字以上必要です。\n');
-define('JS_PASSWORD', '* \'パスワード\' と \'パスワードを再入力\' は一致していて ' . ENTRY_PASSWORD_MIN_LENGTH . ' 文字以上必要です。\n');
-define('JS_AGREEMENT', '* \'利用規約\' に同意してください。');
+define('JS_DOB', '※ \'生年月日\' は次の形式で入力してください: xxxx/xx/xx (年/月/日).\n');
+define('JS_EMAIL_ADDRESS', '※ \'メールアドレス\' は少なくても ' . ENTRY_EMAIL_ADDRESS_MIN_LENGTH . ' 文字以上必要です。\n');
+define('JS_ADDRESS', '※ \'住所1\' は少なくても ' . ENTRY_STREET_ADDRESS_MIN_LENGTH . ' 文字以上必要です。\n');
+define('JS_POST_CODE', '※ \'郵便番号\' は少なくても ' . ENTRY_POSTCODE_MIN_LENGTH . ' 文字以上必要です。\n');
+define('JS_CITY', '※ \'市区町村\' は少なくても ' . ENTRY_CITY_MIN_LENGTH . ' 文字以上必要です。\n');
+define('JS_STATE', '※ \'都道府県\' を選択または入力してください。\n');
+define('JS_COUNTRY', '※ \'国\' を選択してください。');
+define('JS_TELEPHONE', '※ \'電話番号\' は少なくても ' . ENTRY_TELEPHONE_MIN_LENGTH . ' 文字以上必要です。\n');
+define('JS_PASSWORD', '※ \'パスワード\' と \'パスワードを再入力\' は一致していて ' . ENTRY_PASSWORD_MIN_LENGTH . ' 文字以上必要です。\n');
+define('JS_AGREEMENT', '※ \'利用規約\' に同意してください。');
 
-define('JS_ERROR_NO_PAYMENT_MODULE_SELECTED', '* ご注文商品のお支払方法を選択してください。\n');
+define('JS_ERROR_NO_PAYMENT_MODULE_SELECTED', '※ ご注文商品のお支払方法を選択してください。\n');
 define('JS_ERROR_SUBMITTED', 'このフォームは既に送信されています。Okボタンを押し処理が完了するまでもうしばらくお待ちください。');
 define('JS_ERROR_POINT','獲得ポイントより多くのポイントを指定しているか、マイナスの値を指定しています。');
 
-define('ERROR_NO_PAYMENT_MODULE_SELECTED', '* ご注文商品のお支払方法を選択してください。');
+define('ERROR_NO_PAYMENT_MODULE_SELECTED', '※ ご注文商品のお支払方法を選択してください。');
 
 define('CATEGORY_COMPANY', '会社情報');
 define('CATEGORY_PERSONAL', '個人情報');
@@ -477,5 +477,5 @@ define('TEXT_MANUFACTURERS_PRODUCT_LIST', 'このメーカー一覧の商品一�
 define('TEXT_MANUFACTURERS_TITLE', 'メーカー一覧');
 define('NOTICE_LESS_PRODUCT_OPTION_TEXT', "%sの商品情報に更新がありました。\r\nショッピングカートに商品が残っている場合は、削除する必要があります。\r\nお手数ですが、再度最初からお手続きをお願いいたします。");
 define('MSG_TEXT_NULL', '無し');
-define('JS_REVIEW_BAN_CHARACTER','* 投稿禁止ワードが含まれているため投稿できません。'.'\n');
+define('JS_REVIEW_BAN_CHARACTER','※ 投稿禁止ワードが含まれているため投稿できません。'.'\n');
 ?>

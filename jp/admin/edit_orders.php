@@ -3529,7 +3529,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         }
         $orders_products_attributes_id = $all_show_option[$t_item_id]['id'];
         if(is_array($all_show_option[$t_item_id]['option_info'])){
-        $default_value = tep_parse_input_field_data($all_show_option[$t_item_id]['option_info<b>']['value'], array("'"=>"&quot;")) == '' ? TEXT_UNSET_DATA : tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;"));
+        $default_value = tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;")) == '' ? TEXT_UNSET_DATA : tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;"));
         echo '<br><div class="order_option_width">&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' 
           .tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;"))."<input type='hidden' onkeyup='recalc_order_price(\"".$oID."\", \"".$orders_products_id."\", \"2\", \"".$op_info_str."\",\"".$orders_products_list."\");price_total(\"".TEXT_MONEY_SYMBOL."\");' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' value='" .  (isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'])?tep_parse_input_field_data($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'], array("'"=>"&quot;")):tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;"))) . "'>" .
           '</div><div class="order_option_value">: ';

@@ -427,7 +427,8 @@ account
 	border-width: 1px;                             
 }
 .formAreaTitle {
-	font-size: 12px;                                
+	font-size: 12px;
+	font-weight:bold;                                
 }
 /* ---------------------------
 attributes

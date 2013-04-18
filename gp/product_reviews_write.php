@@ -13,12 +13,11 @@
 function checkForm() {
   var error = 0;
   var error_message = "<?php echo JS_ERROR; ?>";
-
   var review = document.product_reviews_write.review.value;
   var reviews_name = document.product_reviews_write.reviews_name.value;
-  str="<?php echo $review_rows['configuration_value']; ?>"; //这是一字符串
-  var strs= new Array(); //定义一数组
-  strs=str.split(","); //字符分割    
+  str="<?php echo $review_rows['configuration_value']; ?>"; // this is string
+  var strs= new Array(); //define array
+  strs=str.split(","); //split string    
   for(var i=0;i<strs.length;i++){
   var patt = new RegExp(strs[i]);
   if(patt.test(review) == true || patt.test(reviews_name) == true){

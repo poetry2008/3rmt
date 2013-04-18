@@ -395,18 +395,11 @@ require("includes/note_js.php");
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td class="pageHeading">
-            <div style="float:left;width:50px;" >
+            <td class="pageHeading" height="40" width="50%">
             <?php echo HEADING_TITLE; ?>
-            </div>
-            <div>
             <?php
             echo tep_get_faq_breadcreumb_by_cpath($_GET['cPath'],$_GET['site_id']);
             ?>
-            </div> 
-            </td>
-            <td class="pageHeading" align="right">
-            <?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?>
             </td>
             <td class="smallText" align="right">
             <?php 
@@ -643,7 +636,7 @@ require("includes/note_js.php");
                         tep_get_faq_path($faq_category['faq_category_id']).'&site_id='.
                       ((isset($_GET['site_id'])?$_GET['site_id']:0))). '">' .
                       tep_image(DIR_WS_ICONS.'folder.gif',ICON_FOLDER) .'</a>&nbsp;
-                    '.$faq_category['title'].'';
+                    '.$faq_category['title'];
                     echo '</td>';
                     echo "<td align='center'>";
                     //faq category is show 

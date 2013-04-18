@@ -294,12 +294,12 @@ function UserManu_preview() {
   if ($nrow == 1) {                         
     // 对象数据是1件的时候
     // 项目标题输出（1单元格）
-    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_USER . '</td>' . "\n";   // 用户
+    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '><b>' . TABLE_HEADING_USER .  '</b></td>' . "\n";   // 用户
     $nLsize = 'size="1"';                     // 列表的尺寸变量设为1
   } elseif ($nrow > 1) {                        
     // 对象数据超过1件的时候
     // 项目标题输出（1单元格）
-    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_USER_LIST . '</td>' . "\n";  // 用户列表
+    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '><b>' .  TABLE_HEADING_USER_LIST . '</b></td>' . "\n";  // 用户列表
     $nLsize = 'size="5"';                     // 列表的尺寸变量设为5
   }
   echo "</tr>\n";
@@ -357,8 +357,8 @@ function UserInsert_preview() {
   echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor']. '>' . "\n";
   echo "<tr>\n";
   // 项目标题输出（1单元格）
-  echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_COLUMN . '</td>' . "\n"; // 列
-  echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' . TABLE_HEADING_DATA . '</td>' . "\n"; // 数据
+  echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '><b>' . TABLE_HEADING_COLUMN .  '</b></td>' . "\n"; // 列
+  echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '><b>' . TABLE_HEADING_DATA .  '</b></td>' . "\n"; // 数据
   echo "</tr>\n";
 
   echo "<tr>\n";
@@ -408,14 +408,14 @@ function UserInsert_preview() {
 
   echo tep_draw_hidden_field("execute_new");        // 把处理模式放到隐藏项目里
 
+  // 返回用户管理菜单
+  echo '<a href="' . tep_href_link(basename($GLOBALS['PHP_SELF'])) .  '">'.tep_html_element_button(IMAGE_BACK) . '</a>'; // 返回用户管理菜单
   // 显示按钮
-  echo tep_draw_input_field("execute_insert", BUTTON_INSERT, '', FALSE, "submit", FALSE);   // 添加
-  echo tep_draw_input_field("clear", BUTTON_CLEAR, '', FALSE, "reset", FALSE);        // 清除
+  echo tep_draw_input_field("execute_insert", BUTTON_INSERT, 'class="element_button"', FALSE, "submit", FALSE);   // 添加
+  echo tep_draw_input_field("clear", BUTTON_CLEAR, 'class="element_button"', FALSE, "reset", FALSE);        // 清除
 
   echo "</form>\n";           // form的footer
 
-  // 返回用户管理菜单
-  echo '<a href="' . tep_href_link(basename($GLOBALS['PHP_SELF'])) . '">&laquo;&nbsp;' . BUTTON_BACK_MENU . '</a>'; // 返回用户管理菜单
 
   return TRUE;
 
@@ -467,8 +467,8 @@ function UserInfo_preview() {
   echo "<tr><td><table>\n";
   echo "<tr>\n";
   // 用户名称（用户ID）
-  echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . ' colspan="2" nowrap>' .
-    $arec['name'] . "（" . $_POST['userslist'] . '）</td>' . "\n";
+  echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . ' colspan="2" nowrap><b>' .
+    $arec['name'] . "（" . $_POST['userslist'] . '）</b></td>' . "\n";
   echo "</tr>\n";
 
   echo "<tr>\n";
@@ -548,8 +548,8 @@ function UserInfo_preview() {
   echo "<tr>\n";
   echo "<td colspan='2' align='center'>\n";
   echo tep_draw_hidden_field("userslist", $arec['userid']);    
-  echo tep_draw_input_field("execute_user", IMAGE_PREVIEW, '', FALSE, "submit", FALSE);  // 用户信息
-  echo tep_draw_input_field("reset", IMAGE_RESET, '', FALSE, "reset", FALSE);  // 返回原来的值
+  echo tep_draw_input_field("execute_user", IMAGE_PREVIEW, 'class="element_button"', FALSE, "submit", FALSE);  // 用户信息
+  echo tep_draw_input_field("reset", IMAGE_RESET, 'class="element_button"', FALSE, "reset", FALSE);  // 返回原来的值
   echo "</td>\n";
   echo "</tr>\n";
   echo "</table></td><td valign='top'>".TEXT_RAND_PWD_INFO."</td></tr>\n";
@@ -560,19 +560,19 @@ function UserInfo_preview() {
 
   echo '<br>';
 
+  echo '<a href="' . tep_href_link(basename($GLOBALS['PHP_SELF'])) .  '">'.tep_html_element_button(IMAGE_BACK) . '</a>'; // 返回用户管理菜单
   // 显示按钮
-  echo tep_draw_input_field("execute_update", BUTTON_UPDATE, "onClick=\"return formConfirm('update')\"", FALSE, "submit", FALSE); // 更新
+  echo tep_draw_input_field("execute_update", BUTTON_UPDATE, "onClick=\"return formConfirm('update')\" class=\"element_button\"", FALSE, "submit", FALSE); // 更新
 
   // 管理员的时候，显示删除按钮
   if ($ocertify->npermission == 15) 
-    echo tep_draw_input_field("execute_delete", BUTTON_DELETE, "onClick=\"return formConfirm('delete')\"", FALSE, "submit", FALSE); // 删除
+    echo tep_draw_input_field("execute_delete", BUTTON_DELETE, "onClick=\"return formConfirm('delete')\" class=\"element_button\"", FALSE, "submit", FALSE); // 删除
 
-  echo tep_draw_input_field("reset", BUTTON_RESET, '', FALSE, "reset", FALSE);  // 返回原来的值
+  echo tep_draw_input_field("reset", BUTTON_RESET, 'class="element_button"', FALSE, "reset", FALSE);  // 返回原来的值
   echo "\n";
 
   echo "</form>\n";                 // form的footer
 
-  echo '<a href="' . tep_href_link(basename($GLOBALS['PHP_SELF'])) . '">&laquo;&nbsp;' . BUTTON_BACK_MENU . '</a>'; // 返回用户管理菜单
 
   return TRUE;
 }
@@ -600,8 +600,8 @@ putJavaScript_ConfirmMsg();
   echo "<table>";
   echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
     echo "<tr>\n";
-  echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' .USER. '</td>' . "\n"; 
-    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' .SITE_PREM. '</td>' . "\n";
+  echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '><b>' .USER. '</b></td>' . "\n"; 
+    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '><b>' .SITE_PREM. '</b></td>' . "\n";
     echo "</tr>\n";
 while($userslist= tep_db_fetch_array($result)){
     echo "<tr><td>";
@@ -634,11 +634,11 @@ while($userslist= tep_db_fetch_array($result)){
 }
 echo "</table>";
 //点击执行onclick 弹出y/n对话框
-    echo tep_draw_input_field("execute_update", BUTTON_CHANGE, "onClick=\"return formConfirm('c_permission')\"", FALSE, "submit", FALSE); // 变更
+    echo '<a href="' . tep_href_link(basename($GLOBALS['PHP_SELF'])) . '">' .  tep_html_element_button(IMAGE_BACK) . '</a>'; 
+    echo tep_draw_input_field("execute_update", BUTTON_CHANGE, "onClick=\"return formConfirm('c_permission')\" class=\"element_button\"", FALSE, "submit", FALSE); // 变更
 
 
 echo ' </form>';
- echo '<a href="' . tep_href_link(basename($GLOBALS['PHP_SELF'])) . '">&laquo;&nbsp;' . BUTTON_BACK_MENU . '</a>'; 
 }
 
 /*--------------------------------------
@@ -791,8 +791,8 @@ function UserPermission_preview() {
     // 启动表标签（一般用户的列表框）
     echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
     echo "<tr>\n";
-    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' .
-      TABLE_HEADING_USER_STAFF . '</td>' . "\n"; // 一般用户
+    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '><b>' .
+      TABLE_HEADING_USER_STAFF . '</b></td>' . "\n"; // 一般用户
     echo "</tr>\n";
 
     echo "<td>\n";                  // 数据单元格
@@ -817,8 +817,8 @@ function UserPermission_preview() {
     // 启动表标签（一般用户的列表框）
     echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
     echo "<tr>\n";
-    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' .
-      TABLE_HEADING_USER_CHIEF . '</td>' . "\n"; // 一般用户
+    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '><b>' .
+      TABLE_HEADING_USER_CHIEF . '</b></td>' . "\n"; // 一般用户
     echo "</tr>\n";
 
     echo "<td>\n";                  // 数据单元格
@@ -845,8 +845,8 @@ function UserPermission_preview() {
     // 启动表标签（拥有管理员权限的用户列表框）
     echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
     echo "<tr>\n";
-    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '>' .
-      TABLE_HEADING_USER_ADMIN . '</td>' . "\n";    // 网站管理员
+    echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . '><b>' .
+      TABLE_HEADING_USER_ADMIN . '</b></td>' . "\n";    // 网站管理员
     echo "</tr>\n";
 
     echo "<td>\n";                  // 数据单元格
@@ -863,7 +863,7 @@ function UserPermission_preview() {
 
   echo "</form>\n";           // form的footer
 
-  echo '<a href="' . tep_href_link(basename($GLOBALS['PHP_SELF'])) . '">&laquo;&nbsp;' . BUTTON_BACK_MENU . '</a>'; // 返回用户管理菜单
+  echo '<a href="' . tep_href_link(basename($GLOBALS['PHP_SELF'])) . '">' .  tep_html_element_button(IMAGE_BACK) . '</a>'; // 返回用户管理菜单
 
   return TRUE;
 }

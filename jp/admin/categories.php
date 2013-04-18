@@ -4361,7 +4361,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               $categories_title_row[] = array('align'=>'right','params'=>'class="dataTableHeadingContent"', 
                   'text'=>TABLE_HEADING_ACTION.'&nbsp');
               // 商品列表标题
-              $categories_table_row[] = array('params' => 'valign="top" class="dataTableHeadingRow"',
+              $categories_table_row[] = array('params' => 'class="dataTableHeadingRow"',
                   'text' => $categories_title_row);
               $categories_count = 0;
               $rows = 0;
@@ -5365,6 +5365,15 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     <td class="smallText" align="right" valign="top">
 					<div class="td_box_button">
                     <?php
+                    
+                    if ($cPath) {
+                      if (!empty($cPath_back)) {
+                        echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, $cPath_back . '&cID=' .  $current_category_id.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . tep_html_element_button(IMAGE_BACK) .  '</a>&nbsp;';
+                      } else {
+                        echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cID=' .  $current_category_id.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>&nbsp;';
+                      }
+                    }
+                    
                     if ($ocertify->npermission >= 10) {
                       if (empty($site_id) && !empty($_GET['cPath'])) {
                         $tmp_path_info = explode('_', $_GET['cPath']); 
@@ -5376,14 +5385,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                         }
                       }
                     }
-                    if ($cPath) {
-                      if (!empty($cPath_back)) {
-                        echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, $cPath_back . '&cID=' .  $current_category_id.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>';
-                      } else {
-                        echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cID=' .  $current_category_id.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>';
-                      }
-                    }
-              ?>
+                    ?>
                 <?php
                 if ((!isset($_GET['search']) || !$_GET['search']) && $ocertify->npermission >= 10) { //限制显示
                   if (empty($_GET['cPath']) && empty($site_id)) {

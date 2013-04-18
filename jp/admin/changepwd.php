@@ -258,8 +258,8 @@ function UserPassword_preview() {
   echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
   echo "<tr>\n";
   // 用户名（用户ID）
-  echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . ' colspan="2" nowrap>' .
-    $arec['name'] . "（" . $GLOBALS['userslist'] . '）</td>' . "\n";
+  echo '<td class="main" ' . $GLOBALS['ThBgcolor'] . ' colspan="2" nowrap><b>' .
+    $arec['name'] . "（" . $GLOBALS['userslist'] . '）</b></td>' . "\n";
   echo "</tr>\n";
 
   echo "<tr>\n";
@@ -352,8 +352,8 @@ function UserPassword_preview() {
   echo tep_draw_hidden_field("userslist", $GLOBALS['userslist']);    // 把用户id放在隐藏项目里
 
   // 显示按钮
-  echo tep_draw_input_field("execute_update", BUTTON_CHANGE, "onClick=\"return formConfirm('password')\"", FALSE, "submit", FALSE); // 变更
-  echo tep_draw_input_field("clear", BUTTON_CLEAR, '', FALSE, "reset", FALSE);  // 清除
+  echo tep_draw_input_field("execute_update", BUTTON_CHANGE, "onClick=\"return formConfirm('password')\" class=\"element_button\"", FALSE, "submit", FALSE); // 变更
+  echo tep_draw_input_field("clear", BUTTON_CLEAR, 'class="element_button"', FALSE, "reset", FALSE);  // 清除
   echo "\n";
 
   echo "</form>\n";                 // form的footer
