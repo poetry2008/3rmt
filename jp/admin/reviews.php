@@ -116,6 +116,7 @@
         tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] .  '&site_id='.$_POST['site_id']));
         break;
       case 'deleteconfirm':
+        if($ocertify->npermission == 15){
         if (!empty($_POST['review_id'])) {
                    foreach ($_POST['review_id'] as $ge_key => $ge_value) {
                    tep_db_query(" delete from " . TABLE_REVIEWS . " where reviews_id = '" . $ge_value . "'");
@@ -126,6 +127,7 @@
         $reviews_id = tep_db_prepare_input($_GET['rID']);
         tep_db_query(" delete from " . TABLE_REVIEWS . " where reviews_id = '" . tep_db_input($reviews_id) . "'");
         tep_db_query("delete from " . TABLE_REVIEWS_DESCRIPTION . " where reviews_id = '" . tep_db_input($reviews_id) . "'");
+        }
         tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')));
         break;
     }
@@ -660,10 +662,11 @@ require("includes/note_js.php");
                   <tr>
                     <td class="smallText" align="right" colspan="2">
                      <div class="td_button">   
+                     <?php if($ocertify->npermission == 15){?>
                       <a href="javascript:void(0);" onclick="delete_select_review('review_id[]');"><?php echo tep_html_element_button(IMAGE_DELETE, 'onclick=""');?></a>
                       <?php if($_GET['site_id'] != null){ ?>
                       <button type="button" onclick="show_text_reviews(this,<?php echo $_GET['page']; ?>,'-1',<?php echo $_GET['site_id'];?>)"><?php echo IMAGE_NEW_PROJECT;?></button>
-                       <?php }?>
+                       <?php } }?>
                       </div>
                     </td>
                   </tr>

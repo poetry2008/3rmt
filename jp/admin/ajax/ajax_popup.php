@@ -3090,9 +3090,6 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     }else{
         $review_products_id_info = 0;
     }
-    /*if($_GET['rID'] == -1){
-        $_GET['site_id'] = 1;
-    }*/
   $contents[]['text'] = array(
         array('text' => TEXT_CATEGORY_SELECT),
         array('text' => tep_draw_pull_down_menu('review_products_id', tep_get_category_tree(),$review_products_id_info,'id="review_products_id" onchange="change_review_products_id(this,'.$_GET['page'].','.$_GET['rID'].','.$_GET['site_id'].')"') ), 
@@ -3306,11 +3303,12 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
         array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.((tep_not_null($rInfo->user_update))?$rInfo->user_update:TEXT_UNSET_DATA)),
         array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.((tep_not_null($rInfo->last_modified))?$rInfo->last_modified:TEXT_UNSET_DATA))
       );
-   $reviews_button[] =
-     tep_html_element_button(IMAGE_SAVE,'onclick="check_review_submit('.$_GET['rID'].','.$_GET['page'].')"').  '&nbsp;<a href="'.tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' .  $rInfo->reviews_id) .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').'&action=deleteconfirm">'.tep_html_element_button(IMAGE_DELETE).'</a>';
+  if($ocertify->npermission == 15){
+   $reviews_button[] = tep_html_element_button(IMAGE_SAVE,''.$_GET['rID'].','.$_GET['page'].')"').  '&nbsp;<a href="'.tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' .  $rInfo->reviews_id) .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').'&action=deleteconfirm">'.tep_html_element_button(IMAGE_DELETE).'</a>';
     if(!empty($reviews_button)){
         $buttons = array('align' => 'center', 'button' => $reviews_button);
      }
+  }
   if($_GET['site_id'] == 0){
        $_GET['site_id'] = $reviews['site_id']; 
   }
