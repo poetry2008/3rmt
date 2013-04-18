@@ -3070,8 +3070,13 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
       $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$_GET['site_id']));
       $reviews['romaji'] = $site_name['romaji'];
     }
+    if($_GET['rID'] == -1){
+       $action_type = 'insert'; 
+    }else{
+       $action_type = 'update'; 
+    }
     $contents[]['text'] = array(
-        array('text' => ENTRY_SITE.':'),
+        array('text' => ENTRY_SITE.':<input type="hidden" name="action_type" value="'.$action_type.'">'),
         array('text' => $reviews['romaji'].'<input id="site_id" name="site_id" type="hidden" value="'.$_GET['site_id'].'"><input id="site_hidden" name="site_hidden" type="hidden" value="'.$_GET['site_id'].'">')
     );
     if($_GET['rID'] != -1){
