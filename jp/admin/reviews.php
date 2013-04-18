@@ -71,7 +71,6 @@
         $customers_name = $_POST['customers_name'] ? $_POST['customers_name'] : TEXT_NO_NAME;
         $add_product_products_id = $_POST['add_product_products_id'];
        if($add_products == 1){
-         var_dump($_POST['action_type']);
         if(isset($_POST['action_type'])&&$_POST['action_type']=='insert'){
           $sql_array = array(
             'reviews_id' => 'null',
