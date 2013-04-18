@@ -62,6 +62,9 @@
         $site_id=tep_get_rev_sid_by_id($reviews_id);
          if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];//权限判断
         else $site_arr="";
+        if(!$site_id['site_id']){
+          $site_id['site_id'] = $_GET['site_id'];
+        }
         forward401Unless(editPermission($site_arr, $site_id['site_id']));
         $reviews_rating = tep_db_prepare_input($_POST['reviews_rating']);
         $last_modified  = tep_db_prepare_input($_POST['last_modified']);
