@@ -681,11 +681,11 @@ require("includes/note_js.php");
                   <tr>
                     <td class="smallText" align="right" colspan="2">
                      <div class="td_button">   
-                     <?php if($ocertify->npermission == 15){?>
+                      <?php if($ocertify->npermission == 15){?>
                       <a href="javascript:void(0);" onclick="delete_select_review('review_id[]');"><?php echo tep_html_element_button(IMAGE_DELETE, 'onclick=""');?></a>
-                      <?php if($_GET['site_id'] != null){ ?>
+                      <?php } if($_GET['site_id'] != null){ ?>
                       <button type="button" onclick="show_text_reviews(this,<?php echo $_GET['page']; ?>,'-1',<?php echo $_GET['site_id'];?>)"><?php echo IMAGE_NEW_PROJECT;?></button>
-                       <?php } }?>
+                       <?php  }?>
                       </div>
                     </td>
                   </tr>

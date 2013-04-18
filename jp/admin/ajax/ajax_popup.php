@@ -3308,6 +3308,12 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     if(!empty($reviews_button)){
         $buttons = array('align' => 'center', 'button' => $reviews_button);
      }
+  }else{
+ $reviews_button[] = tep_html_element_button(IMAGE_SAVE,''.$_GET['rID'].','.$_GET['page'].')"');
+    if(!empty($reviews_button)){
+        $buttons = array('align' => 'center', 'button' => $reviews_button);
+     }
+
   }
   if($_GET['site_id'] == 0){
        $_GET['site_id'] = $reviews['site_id']; 
