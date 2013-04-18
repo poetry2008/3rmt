@@ -71,30 +71,49 @@
         $customers_name = $_POST['customers_name'] ? $_POST['customers_name'] : TEXT_NO_NAME;
         $add_product_products_id = $_POST['add_product_products_id'];
        if($add_products == 1){
-        $sql_array = array(
-          'reviews_id' => 'null',
-          'products_id' => $add_product_products_id,
-          'customers_id' => '0',
-          'customers_name' => $_POST['customers_name'] ? $_POST['customers_name'] : TEXT_NO_NAME,
-          'reviews_rating' => $_POST['reviews_rating'],
-          'date_added' => $_POST['year'].'-'.$_POST['m'].'-'.$_POST['d'].' '.$_POST['h'].':'.$_POST['i'].':'.$_POST['s'],
-          'last_modified' => 'now()',
-          'reviews_read' => '0',
-          'site_id' => $_GET['site_id'],
-          'reviews_status' => $_POST['reviews_status'],
-          'user_added'  => $_SESSION['user_name'],
-          'user_update' => $_SESSION['user_name'],
-        );
-        tep_db_perform(TABLE_REVIEWS, $sql_array);
-        $insert_id = tep_db_insert_id();
-        $sql_description_array = array(
-          'reviews_id' => $insert_id,
-          'languages_id' => '4',
-          'reviews_text' => $_POST['reviews_text']
-        );
-        tep_db_perform(TABLE_REVIEWS_DESCRIPTION, $sql_description_array);
-        tep_db_query(" delete from " . TABLE_REVIEWS . " where reviews_id = '" . tep_db_input($reviews_id) . "'");
-        tep_db_query("delete from " . TABLE_REVIEWS_DESCRIPTION . " where reviews_id = '" . tep_db_input($reviews_id) . "'");
+         var_dump($_POST['action_type']);
+        if(isset($_POST['action_type'])&&$_POST['action_type']=='insert'){
+          $sql_array = array(
+            'reviews_id' => 'null',
+            'products_id' => $add_product_products_id,
+            'customers_id' => '0',
+            'customers_name' => $_POST['customers_name'] ? $_POST['customers_name'] : TEXT_NO_NAME,
+            'reviews_rating' => $_POST['reviews_rating'],
+            'date_added' => $_POST['year'].'-'.$_POST['m'].'-'.$_POST['d'].' '.$_POST['h'].':'.$_POST['i'].':'.$_POST['s'],
+            'last_modified' => 'now()',
+            'reviews_read' => '0',
+            'site_id' => $_GET['site_id'],
+            'reviews_status' => $_POST['reviews_status'],
+            'user_added'  => $_SESSION['user_name'],
+            'user_update' => $_SESSION['user_name'],
+          );
+          tep_db_perform(TABLE_REVIEWS, $sql_array);
+          $insert_id = tep_db_insert_id();
+          $sql_description_array = array(
+            'reviews_id' => $insert_id,
+            'languages_id' => '4',
+            'reviews_text' => $_POST['reviews_text']
+          );
+          tep_db_perform(TABLE_REVIEWS_DESCRIPTION, $sql_description_array);
+          tep_db_query(" delete from " . TABLE_REVIEWS . " where reviews_id = '" . tep_db_input($reviews_id) . "'");
+          tep_db_query("delete from " . TABLE_REVIEWS_DESCRIPTION . " where reviews_id = '" . tep_db_input($reviews_id) . "'");
+        }else{
+          tep_db_query("
+            update " . TABLE_REVIEWS . " 
+            set products_id = '".$add_product_products_id."',
+                reviews_rating = '" . tep_db_input($reviews_rating) . "', 
+                last_modified = now(), 
+	        user_update = '".$_SESSION['user_name']."',
+                reviews_status = '".$reviews_status."',
+                date_added = '".$date_added."',
+                customers_name = '".$customers_name."'
+            where reviews_id = '" . tep_db_input($reviews_id) . "'");
+        
+          tep_db_query("
+              update " . TABLE_REVIEWS_DESCRIPTION . " 
+              set reviews_text = '" . tep_db_input($reviews_text) . "' 
+              where reviews_id = '" . tep_db_input($reviews_id) . "'");
+        }
         tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] .  '&site_id='.$_POST['site_id']));
         break;
        } 
