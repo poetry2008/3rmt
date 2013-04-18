@@ -3068,11 +3068,11 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     $heading[] = array('align' => 'right', 'text' => $page_str);
     if($_GET['site_id'] == null || $_GET['rID'] == -1){
       $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$_GET['site_id']));
-      $rInfo->site_name = $site_name['name'];
+      $reviews['romaji'] = $site_name['romaji'];
     }
     $contents[]['text'] = array(
         array('text' => ENTRY_SITE.':'),
-        array('text' => $rInfo->site_name.'<input id="site_id" type="hidden" value="'.$_GET['site_id'].'"><input id="site_hidden" type="hidden" value="'.$_GET['site_id'].'">')
+        array('text' => $reviews['romaji'].'<input id="site_id" name="site_id" type="hidden" value="'.$_GET['site_id'].'"><input id="site_hidden" name="site_hidden" type="hidden" value="'.$_GET['site_id'].'">')
     );
     if($_GET['rID'] != -1){
     $products_id = tep_db_fetch_array(tep_db_query("select * from ".  TABLE_REVIEWS ." where reviews_id=".$_GET['rID']));
@@ -3243,12 +3243,9 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
         array('text' => ENTRY_DATE),
         array('text' => $date_posted)
     );
-  if(isset($_GET['customers_name']) && $_GET['customers_name'] == null){
-     $error_info = '<span style="color:#ff0000;">'.TEXT_ERROR_NULL.'</span>';
-  }
   $contents[]['text'] = array(
         array('text' => ENTRY_FROM),
-        array('text' => '<input type="text" id="customers_name" name="customers_name" value="'.tep_output_string_protected($rInfo->customers_name).'" />'.$error_info)
+        array('text' => '<input type="text" id="customers_name" name="customers_name" value="'.tep_output_string_protected($rInfo->customers_name).'" />')
     );
     $review_radio = '';
     for ($i=1; $i<=5; $i++) {
@@ -3304,10 +3301,14 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
         array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.((tep_not_null($rInfo->user_update))?$rInfo->user_update:TEXT_UNSET_DATA)),
         array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.((tep_not_null($rInfo->last_modified))?$rInfo->last_modified:TEXT_UNSET_DATA))
       );
-   $reviews_button[] = tep_html_element_button(IMAGE_SAVE,'onclick="check_review_submit('.$_GET['rID'].','.$_GET['page'].')"').   '<a href="'.tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' .  $rInfo->reviews_id) .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').'&action=deleteconfirm"><button type="button">'.IMAGE_DELETE.'</button></a>';
+   $reviews_button[] =
+     tep_html_element_button(IMAGE_SAVE,'onclick="check_review_submit('.$_GET['rID'].','.$_GET['page'].')"').  '&nbsp;<a href="'.tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' .  $rInfo->reviews_id) .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').'&action=deleteconfirm">'.tep_html_element_button(IMAGE_DELETE).'</a>';
     if(!empty($reviews_button)){
         $buttons = array('align' => 'center', 'button' => $reviews_button);
      }
+  if($_GET['site_id'] == 0){
+       $_GET['site_id'] = $reviews['site_id']; 
+  }
 $reviews_form =  tep_draw_form('review', FILENAME_REVIEWS, 'page=' .  $_GET['page'] .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').'&rID=' .  $_GET['rID'] . '&action=update', 'post' , 'onsubmit="return check_review()"');
 $notice_box->get_form($reviews_form);
 $notice_box->get_heading($heading);
