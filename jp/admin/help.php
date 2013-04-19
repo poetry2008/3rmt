@@ -4,7 +4,16 @@
 */
 
 require('includes/application_top.php');
-
+if (!empty($_GET)) {
+  $get_count = count($_GET);
+  if ($get_count == 1) {
+    if (isset($_GET[session_name()])) {
+      tep_redirect(tep_href_link(FILENAME_DEFAULT));
+    }
+  }
+} else {
+  tep_redirect(tep_href_link(FILENAME_DEFAULT));
+}
 if ($_GET['action'] == 'save_content') {
   ///更新内容 
   $help_romaji = urldecode($_POST['h_romaji']); 
@@ -98,6 +107,15 @@ border-right:1px solid #cccccc;
 background-color:#EEEEEE;
 padding:5px 18px;
 }
+.box_content{ 
+margin:0 8px 5px 8px;
+border-top:4px solid #cccccc;
+border-bottom:1px solid #cccccc;
+border-left:1px solid #cccccc;
+border-right:1px solid #cccccc;
+background-color:#EEEEEE;
+padding:5px;
+}
 .content{
 	width:100%;
 	min-width:750px;
@@ -171,17 +189,19 @@ if ($_GET['action'] == 'modify_content') {
 //编辑内容
 echo tep_draw_form('m_form', 'help.php', 'action=save_content');
 ?>
+<div class="content_table">
 <table width="100%" border="0" cellpadding="2" cellspacing="0">
   <tr>
-    <td class="pageHeading"><?php echo $info_array['title'];?></td> 
+    <td><?php echo $info_array['title'];?></td> 
   </tr>
-  <tr>
-    <td>
-      <table width="100%">
+</table>
+</div>
+<div class="box_content">
+<table width="100%" border="0" cellpadding="2" cellspacing="0">
         <tr>
           <td id="emd">
             <textarea id="elm1" class="" cols="207" rows="20" name="help_content" style="width:100%;height:100%;"><?php echo stripslashes($info_array['content']);?></textarea>
-          <td>
+          </td>
         </tr>
         <tr>
           <td align="right" id="button_width">
@@ -191,9 +211,7 @@ echo tep_draw_form('m_form', 'help.php', 'action=save_content');
           </td>
         </tr>
       </table>
-    </td>
-  </tr>
-</table>
+</div>
 </form>
 <?php
 } else {
@@ -211,8 +229,8 @@ if (isset($_GET['info_romaji']) && $_GET['info_romaji']) {
     </td>
     </tr>
     </table>';
-    echo '</div><br>';
-    echo '<div class="box_info">'; 
+    echo '</div>';
+    echo '<div class="box_info" style="height:697px;height:730px\0;">'; 
     echo '<font color="red"><b>';
     echo HELP_INFO_NO_INFO;
     echo '</b></font>';
@@ -236,7 +254,11 @@ echo '</td>
 </tr>
 </table>';
 echo '</div>';
-echo '<div class="box_info">';
+if (empty($info_array['content'])) {
+  echo '<div class="box_info" style="height:697px;height:730px\0;">';
+} else {
+  echo '<div class="box_info">';
+}
 echo stripslashes($info_array['content']).'<br>';
 }
 ?>
@@ -263,10 +285,10 @@ if(isset($_GET['keyword']) && $_GET['keyword']){
     </td>
     </tr>
     </table>';
-    echo '</div><br>';
+    echo '</div>';
     $num_info = tep_db_num_rows($info_query);
     if ($num_info == 0) {
-    echo '<div class="box_info">'; 
+    echo '<div class="box_info" style="height:697px;height:730px\0;">'; 
     echo '<font color="red"><b>';
     echo HELP_INFO_NO_SEARCH_INFO;
     echo '</b></font>';
@@ -304,7 +326,7 @@ if (isset($_GET['keyword'])) {
     </tr>
     </table>';
     echo '</div><br>';
-    echo '<div class="box_info">'; 
+    echo '<div class="box_info" style="height:697px;height:730px\0;">'; 
     echo '<font color="red"><b>';
     echo HELP_INFO_NO_SEARCH_INFO;
     echo '</b></font>';
