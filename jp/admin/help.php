@@ -4,7 +4,16 @@
 */
 
 require('includes/application_top.php');
-
+if (!empty($_GET)) {
+  $get_count = count($_GET);
+  if ($get_count == 1) {
+    if (isset($_GET[session_name()])) {
+      tep_redirect(tep_href_link(FILENAME_DEFAULT));
+    }
+  }
+} else {
+  tep_redirect(tep_href_link(FILENAME_DEFAULT));
+}
 if ($_GET['action'] == 'save_content') {
   ///更新内容 
   $help_romaji = urldecode($_POST['h_romaji']); 
@@ -220,7 +229,7 @@ if (isset($_GET['info_romaji']) && $_GET['info_romaji']) {
     </td>
     </tr>
     </table>';
-    echo '</div><br>';
+    echo '</div>';
     echo '<div class="box_info">'; 
     echo '<font color="red"><b>';
     echo HELP_INFO_NO_INFO;
@@ -272,7 +281,7 @@ if(isset($_GET['keyword']) && $_GET['keyword']){
     </td>
     </tr>
     </table>';
-    echo '</div><br>';
+    echo '</div>';
     $num_info = tep_db_num_rows($info_query);
     if ($num_info == 0) {
     echo '<div class="box_info">'; 
