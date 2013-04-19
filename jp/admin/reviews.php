@@ -134,7 +134,7 @@
             set reviews_text = '" . tep_db_input($reviews_text) . "' 
             where reviews_id = '" . tep_db_input($reviews_id) . "'");
 
-        tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] .  '&site_id='.$_POST['site_id']));
+        tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] .  '&site_id='.$_POST['site_id'].(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'')));
         break;
       case 'deleteconfirm':
         if($ocertify->npermission == 15){
@@ -315,9 +315,10 @@ $(document).ready(function() {
 });
 
 function show_text_reviews(ele,page,rID,site_id){
+ var product_name = document.getElementById('keyword').value;
  $.ajax({
  url: 'ajax.php?&action=edit_reviews',
- data: {page:page,rID:rID,site_id:site_id} ,
+ data: {page:page,rID:rID,site_id:site_id,product_name:product_name} ,
  dataType: 'text',
  async : false,
  success: function(data){
