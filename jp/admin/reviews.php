@@ -143,7 +143,7 @@
                    tep_db_query(" delete from " . TABLE_REVIEWS . " where reviews_id = '" . $ge_value . "'");
                    tep_db_query("delete from " . TABLE_REVIEWS_DESCRIPTION . " where reviews_id = '" . $ge_value . "'");
                    }
-                   tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')));
+                   tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'')));
         }
         $reviews_id = tep_db_prepare_input($_GET['rID']);
         tep_db_query(" delete from " . TABLE_REVIEWS . " where reviews_id = '" . tep_db_input($reviews_id) . "'");
@@ -579,7 +579,7 @@ require("includes/note_js.php");
       );
     $review_table_row[] = array('params' => $review_params, 'text' => $review_info);
     }
-    $review_form = tep_draw_form('del_review', FILENAME_REVIEWS, 'page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&action=deleteconfirm');
+    $review_form = tep_draw_form('del_review', FILENAME_REVIEWS, 'page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&action=deleteconfirm'.(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):''));
     $notice_box->get_form($review_form);
     $notice_box->get_contents($review_table_row);
     $notice_box->get_eof(tep_eof_hidden());
