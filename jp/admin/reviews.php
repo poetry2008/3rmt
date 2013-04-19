@@ -116,7 +116,7 @@
               set reviews_text = '" . tep_db_input($reviews_text) . "' 
               where reviews_id = '" . tep_db_input($reviews_id) . "'");
         }
-        tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] .  '&site_id='.$_POST['site_id']));
+        tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] .  '&site_id='.$_POST['site_id'].(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'')));
         break;
        } 
         tep_db_query("
@@ -149,7 +149,7 @@
         tep_db_query(" delete from " . TABLE_REVIEWS . " where reviews_id = '" . tep_db_input($reviews_id) . "'");
         tep_db_query("delete from " . TABLE_REVIEWS_DESCRIPTION . " where reviews_id = '" . tep_db_input($reviews_id) . "'");
         }
-        tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')));
+        tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'')));
         break;
     }
   }
@@ -239,9 +239,10 @@
       refresh(rID,page,review_products_id_info,site_id);
      }
     function refresh(rID,page,review_products_id_info,site_id){
+         var product_name = document.getElementById('keyword').value;
          $.ajax({
                url: "ajax.php?&action=edit_reviews",
-               data: {rID:rID,page:page,review_products_id_info:review_products_id_info,site_id:site_id},
+               data: {rID:rID,page:page,review_products_id_info:review_products_id_info,site_id:site_id,product_name:product_name},
                async: "false",
                success: function(data){
                   $("#show_text_reviews").html(data);
@@ -253,9 +254,10 @@
           var site_id = document.getElementById('site_id').value;
           var add_id = document.getElementById('add_product_products_id').value;
           var customers_name = document.getElementById('customers_name').value;
+          var product_name = document.getElementById('keyword').value;
           $.ajax({
                url: "ajax.php?&action=edit_reviews",
-               data: {rID:rID,page:page,site_id:site_id,add_id:add_id,customers_name:customers_name},
+               data: {rID:rID,page:page,site_id:site_id,add_id:add_id,customers_name:customers_name,product_name:product_name},
                async: "false",
                success: function(data){
                   $("#show_text_reviews").html(data);
