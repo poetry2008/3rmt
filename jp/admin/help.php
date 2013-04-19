@@ -96,10 +96,10 @@ font-size:14px;
 font-weight:bold;
 background-color:#cccccc;
 padding:8px 15px;
-margin:5px 8px 0 8px;
+margin:5px 8px 0 0;
 }
 .box_info{ 
-margin:0 8px 5px 8px;
+margin:0 8px 5px 0;
 border-bottom:1px solid #cccccc;
 border-left:1px solid #cccccc;
 border-right:1px solid #cccccc;
@@ -107,7 +107,7 @@ background-color:#EEEEEE;
 padding:5px 18px;
 }
 .box_content{ 
-margin:0 8px 5px 8px;
+margin:0 8px 5px 0;
 border-bottom:1px solid #cccccc;
 border-left:1px solid #cccccc;
 border-right:1px solid #cccccc;
@@ -187,6 +187,10 @@ if ($_GET['action'] == 'modify_content') {
 //编辑内容
 echo tep_draw_form('m_form', 'help.php', 'action=save_content');
 ?>
+<table border="0" width="100%" cellpadding="0" cellspacing="0">
+<tr>
+<td width="8">&nbsp;</td> 
+<td valign="top"> 
 <div class="content_table">
 <table width="100%" border="0" cellpadding="2" cellspacing="0">
   <tr>
@@ -214,11 +218,20 @@ echo tep_draw_form('m_form', 'help.php', 'action=save_content');
         </tr>
       </table>
 </div>
+</td>
+</tr>
+</table>
 </form>
 <?php
 } else {
 if (isset($_GET['info_romaji']) && $_GET['info_romaji']) {
   if (empty($info_array)) {
+?>
+<table border="0" width="100%" cellpadding="0" cellspacing="0">
+<tr>
+<td width="8" style="height:770px;height:800px\0;">&nbsp;</td> 
+<td valign="top"> 
+<?php
     echo '<div class="content_table">';
     echo '<table width="100%" cellpadding="2" cellspacing="0" border="0">
     <tr>
@@ -232,13 +245,22 @@ if (isset($_GET['info_romaji']) && $_GET['info_romaji']) {
     </tr>
     </table>';
     echo '</div>';
-    echo '<div class="box_info" style="height:697px;height:730px\0;">'; 
+    echo '<div class="box_info">'; 
     echo '<font color="red">';
     echo HELP_INFO_NO_INFO;
     echo '</font>';
     echo '</div>';
+?>
+</td>
+</tr>
+</table>
+<?php
   } else {
 ?>
+<table border="0" width="100%" cellpadding="0" cellspacing="0">
+<tr>
+<td width="8" style="height:770px;height:800px\0;">&nbsp;</td> 
+<td valign="top"> 
 <div class="content">
 <?php
 echo '<div class="content_table">';
@@ -256,24 +278,24 @@ echo '</td>
 </tr>
 </table>';
 echo '</div>';
-if (empty($info_array['content'])) {
-  echo '<div class="box_info" style="height:697px;height:730px\0;">';
-} else {
-  echo '<div class="box_info">';
-}
+echo '<div class="box_info">';
 echo stripslashes($info_array['content']).'<br>';
 }
 ?>
 </div>
 </div>
+</td>
+</tr>
+</table>
 <?php 
 }
 }
 if(isset($_GET['keyword']) && $_GET['keyword']){
 ?>
-<table  width="100%" >
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
   <tr>
-    <td>
+    <td width="3" style="height:770px;height:800px\0;">&nbsp;</td> 
+    <td valign="top"> 
     <?php
     echo '<div class="content_table">';
     echo '<table width="100%" cellpadding="2" cellspacing="0" border="0">
@@ -290,7 +312,7 @@ if(isset($_GET['keyword']) && $_GET['keyword']){
     echo '</div>';
     $num_info = tep_db_num_rows($info_query);
     if ($num_info == 0) {
-    echo '<div class="box_info" style="height:697px;height:730px\0;">'; 
+    echo '<div class="box_info">'; 
     echo '<font color="red">';
     echo HELP_INFO_NO_SEARCH_INFO;
     echo '</font>';
@@ -311,9 +333,10 @@ if(isset($_GET['keyword']) && $_GET['keyword']){
 } else {
 if (isset($_GET['keyword'])) {
 ?>
-<table  width="100%" >
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
   <tr>
-    <td>
+    <td width="3" style="height:770px;height:800px\0;">&nbsp;</td> 
+    <td valign="top"> 
     <?php
     echo '<div class="content_table">';
     echo '<table width="100%" cellpadding="2" cellspacing="0" border="0">
@@ -327,8 +350,8 @@ if (isset($_GET['keyword'])) {
     </td>
     </tr>
     </table>';
-    echo '</div><br>';
-    echo '<div class="box_info" style="height:697px;height:730px\0;">'; 
+    echo '</div>';
+    echo '<div class="box_info">'; 
     echo '<font color="red">';
     echo HELP_INFO_NO_SEARCH_INFO;
     echo '</font>';
