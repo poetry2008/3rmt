@@ -3300,7 +3300,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   if($_GET['site_id'] == 0){
        $_GET['site_id'] = $reviews['site_id']; 
   }
-$reviews_form =  tep_draw_form('review', FILENAME_REVIEWS, 'page=' .  $_GET['page'] .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').'&rID=' .  $_GET['rID'] . '&action=update', 'post' , 'onsubmit="return check_review()"');
+$reviews_form =  tep_draw_form('review', FILENAME_REVIEWS, 'page=' .  $_GET['page'] .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').'&rID=' .  $_GET['rID'] .  (isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):''). '&action=update', 'post' , 'onsubmit="return check_review()"');
 $notice_box->get_form($reviews_form);
 $notice_box->get_heading($heading);
 $notice_box->get_contents($contents, $buttons);

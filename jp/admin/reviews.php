@@ -134,7 +134,7 @@
             set reviews_text = '" . tep_db_input($reviews_text) . "' 
             where reviews_id = '" . tep_db_input($reviews_id) . "'");
 
-        tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] .  '&site_id='.$_POST['site_id']));
+        tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] .  '&site_id='.$_POST['site_id'].(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'')));
         break;
       case 'deleteconfirm':
         if($ocertify->npermission == 15){
@@ -263,7 +263,7 @@
             });
 
        if(document.getElementById('add_product_products_id').value != 0){
-        if (document.getElementById('reviews_text').value.length < 50) {
+        if (document.getElementById('reviews_text').value.length < <?php echo REVIEW_TEXT_MIN_LENGTH;?>) {
                      alert("<?php echo REVIEWS_NOTICE_TOTALNUM_ERROR;?>");
          }else{
                      document.forms.review.submit();
@@ -315,9 +315,10 @@ $(document).ready(function() {
 });
 
 function show_text_reviews(ele,page,rID,site_id){
+ var product_name = document.getElementById('keyword').value;
  $.ajax({
  url: 'ajax.php?&action=edit_reviews',
- data: {page:page,rID:rID,site_id:site_id} ,
+ data: {page:page,rID:rID,site_id:site_id,product_name:product_name} ,
  dataType: 'text',
  async : false,
  success: function(data){
@@ -446,97 +447,6 @@ require("includes/note_js.php");
           </tr>
         </table></td>
       </tr>
-<?php
-  if (isset($_GET['action']) && $_GET['action'] == 'new') {
-    if (!isset($_GET['products_id'])) {
-      tep_redirect('reviews.php');
-    }
-    $products_query = tep_db_query("
-        select products_image 
-        from " . TABLE_PRODUCTS . " 
-        where products_id = '" . $_GET['products_id'] . "'");
-    $products = tep_db_fetch_array($products_query);
-
-    $products_name_query = tep_db_query("
-        select *
-        from " . TABLE_PRODUCTS_DESCRIPTION . " 
-        where products_id = '" . $_GET['products_id'] . "' 
-          and site_id = '0'
-          and language_id = '" . $languages_id . "'");
-    $products_name = tep_db_fetch_array($products_name_query);
-
-    $rInfo_array = tep_array_merge($products, $products_name);
-    $rInfo = new objectInfo($rInfo_array);
-?>
-      <tr><?php echo tep_draw_form('review', FILENAME_REVIEWS, 'action=new_preview', 'post', 'onsubmit="return check_review()"'); ?>
-        <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
-          <tr>
-            <td class="main" valign="top">
-      <?php echo ENTRY_SITE; ?>: <?php echo tep_site_pull_down_menu();?><br>
-      <?php echo ENTRY_PRODUCT; ?><?php echo $rInfo->products_name; ?><br>
-      <?php echo ENTRY_FROM; ?> <input type="text" name="customers_name" value="" /> <br>
-      <?php echo ENTRY_DATE; ?> 
-  <select name='year'>
-  <?php for ($i=0;$i<10;$i++) {?>
-    <option value="<?php echo date('Y')-$i;?>" <?php $i==intval(date('Y')) && print('selected');?>><?php echo date('Y')-$i;?></option>
-  <?php }?>
-  </select>/<select name='m'>
-  <?php for ($i=1;$i<13;$i++) {?>
-    <option value="<?php echo $i;?>" <?php $i==intval(date('m')) && print('selected');?>><?php echo $i;?></option>
-  <?php }?>
-  </select>/<select name='d'>
-  <?php for ($i=1;$i<31;$i++) {?>
-    <option value="<?php echo $i;?>" <?php $i==intval(date('d')) && print('selected');?>><?php echo $i;?></option>
-  <?php }?>
-  </select> <select name='h'>
-  <?php for ($i=0;$i<24;$i++) {?>
-    <option value="<?php echo $i;?>" <?php $i==intval(date('H')) && print('selected');?>><?php printf('%02d', $i);?></option>
-  <?php }?>
-  </select>:<select name='i'>
-  <?php for ($i=0;$i<60;$i++) {?>
-    <option value="<?php echo $i;?>" <?php $i==intval(date('i')) && print('selected');?>><?php printf('%02d', $i);?></option>
-  <?php }?>
-  </select>:<select name='s'>
-  <?php for ($i=0;$i<60;$i++) {?>
-    <option value="<?php echo $i;?>" <?php $i==intval(date('s')) && print('selected');?>><?php printf('%02d', $i);?></option>
-  <?php }?>
-  </select>
-  <br>
-      <?php echo TEXT_PRODUCTS_STATUS; ?> <?php echo tep_draw_radio_field('reviews_status', '1') . '&nbsp;' . TEXT_PRODUCT_AVAILABLE . '&nbsp;' . tep_draw_radio_field('reviews_status', '0', 1) . '&nbsp;' . TEXT_PRODUCT_NOT_AVAILABLE; ?>
-      </td>
-          </tr>
-        </table></td>
-      </tr>
-      <tr>
-        <td><table witdh="100%" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td class="main" valign="top" colspan='2'><?php echo ENTRY_REVIEW; ?><br><br><?php echo tep_draw_textarea_field('reviews_text', 'soft', '60', '15', '', 'id="reviews_text" onkeypress="word_count(this)" onchange="word_count(this)"'); ?></td>
-          </tr>
-          <tr>
-            <td class="smallText"><?php echo REVIEWS_CHARACTER_TOTAL;?><span id="count_box"></span></td>
-            <td class="smallText" align="right"><?php echo ENTRY_REVIEW_TEXT; ?></td>
-          </tr>
-        </table></td>
-      </tr>
-      <tr>
-        <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-      </tr>
-      <tr>
-        <td class="main"><?php echo ENTRY_RATING; ?>&nbsp;<?php echo TEXT_BAD; ?>&nbsp;<?php for ($i=1; $i<=5; $i++) echo tep_draw_radio_field('reviews_rating', $i, '', $i == 5) . '&nbsp;'; echo TEXT_GOOD; ?></td>
-      </tr>
-      <tr>
-        <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-      </tr>
-      <tr>
-        <td align="right" class="main"><?php 
-        if (isset($_GET['search'])) {
-          echo tep_draw_hidden_field('search', $_GET['search']); 
-        }
-        echo tep_draw_hidden_field('cPath', $_GET['cPath']) . tep_draw_hidden_field('products_id', $rInfo->products_id) . tep_html_element_submit( IMAGE_SAVE) . ' <a href="' . tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' . $_GET['rID']) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?></td>
-      </form></tr>
-<?php
-  } else {
-?>
       <tr>
         <td>
         <?php echo tep_site_filter(FILENAME_REVIEWS);?>
@@ -556,11 +466,11 @@ require("includes/note_js.php");
                     $review_title_row[] = array('params' => 'class="dataTableHeadingContent" align="right"', 'text' => TABLE_HEADING_DATE_ADDED);
                     $review_title_row[] = array('params' => 'class="dataTableHeadingContent" align="right"', 'text' => TABLE_HEADING_ACTION);
                     $review_table_row[] = array('params' => 'class="dataTableHeadingRow"', 'text' => $review_title_row);
-    if(isset($_GET['product_name'])){
+    if(isset($_GET['product_name']) && $_GET['product_name']){
        $sql_keyword = 'and pd.products_name like "%'.$_GET['product_name'].'%"';
     }
     $reviews_query_raw = "
-      select r.reviews_id, 
+      select distinct(r.reviews_id), 
              r.products_id, 
              r.date_added, 
              r.last_modified, 
@@ -575,7 +485,7 @@ require("includes/note_js.php");
      where r.site_id = s.id
            and r.products_id = pd.products_id
            and pd.language_id = '".$languages_id."'
-           and pd.site_id = 0
+           and (pd.site_id = '".$_GET['site_id']."' or pd.site_id=0) 
         " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and s.id = '" .  intval($_GET['site_id']) . "' " : '') . "".$sql_keyword."
      order by date_added DESC";
     
@@ -746,9 +656,6 @@ $contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .TEXT_UNSET_DATA);
           </tr>
         </table></td>
       </tr>
-<?php
-  }
-?>
     </table>
     </div> 
     </div>
