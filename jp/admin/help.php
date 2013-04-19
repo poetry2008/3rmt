@@ -5,6 +5,13 @@
 
 require('includes/application_top.php');
 
+if ($_GET['action'] == 'save_content') {
+  ///更新内容 
+  $help_romaji = urldecode($_POST['h_romaji']); 
+  tep_db_query("update `help_info` set `content` = '".addslashes($_POST['help_content'])."' where romaji = '".$help_romaji."'"); 
+  tep_redirect(tep_href_link('help.php', 'info_romaji='.urlencode($help_romaji))); 
+}
+
 if (isset($_GET['info_romaji']) && $_GET['info_romaji']) {
   $romaji = $_GET['info_romaji'];
   $info_sql = "select * from help_info where romaji='".$romaji."'";
@@ -89,7 +96,13 @@ border-bottom:1px solid #cccccc;
 border-left:1px solid #cccccc;
 border-right:1px solid #cccccc;
 background-color:#EEEEEE;
-padding:5px 12px;
+padding:5px 18px;
+}
+.content{
+	width:100%;
+	min-width:750px;
+	overflow:hidden;
+	width: expression(document.body.clientWidth < 750? "750px": "100%" );
 }
 @media all and (-webkit-min-device-pixel-ratio:0){
 .footer_copyright{
@@ -114,8 +127,38 @@ padding:5px 12px;
 .help_pic{
        margin-top:-5px;
 }
+.pageHeading {
+	font-size: 18px;                                
+	color: #727272;                                 
+	font-weight: bold;                             
+}
 </style>
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
+<script language="javascript" src="lib/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+<script type="text/javascript">
+tinyMCE.init({
+        mode : "textareas",
+        theme : "advanced",
+        height: "800", 
+        plugins : "imageupload,pagebreak,style,layer,table,advhr,advlink,emotions,iespell,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,inlinepopups",
+         
+        theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,formatselect,fontsizeselect,forecolor,backcolor,imageupload,|,cut,copy,paste,|,search,replace,|,bullist,numlist,|,undo,redo,|,link,unlink,anchor,|,code",
+        theme_advanced_toolbar_location : "top",
+        theme_advanced_toolbar_align : "left",
+        theme_advanced_statusbar_location : "bottom",
+        theme_advanced_resizing : false,
+        
+        skin : "o2k7",
+        skin_variant : "silver",
+});
+
+<?php //跳转URL?>
+function redirect_new_url(new_object)
+{
+  var url_str = $(new_object).parent().attr('href');
+  window.location.href = url_str;
+}
+</script>
 </head>
 <body>
 <?php if (!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']) {?>
@@ -124,6 +167,36 @@ padding:5px 12px;
 </script>
 <?php }?>
 <?php 
+if ($_GET['action'] == 'modify_content') {
+//编辑内容
+echo tep_draw_form('m_form', 'help.php', 'action=save_content');
+?>
+<table width="100%" border="0" cellpadding="2" cellspacing="0">
+  <tr>
+    <td class="pageHeading"><?php echo $info_array['title'];?></td> 
+  </tr>
+  <tr>
+    <td>
+      <table width="100%">
+        <tr>
+          <td id="emd">
+            <textarea id="elm1" class="" cols="207" rows="20" name="help_content" style="width:100%;height:100%;"><?php echo stripslashes($info_array['content']);?></textarea>
+          <td>
+        </tr>
+        <tr>
+          <td align="right" id="button_width">
+            <input type="hidden" name="h_romaji" value="<?php echo urlencode($info_array['romaji']);?>">   
+            <input type="submit" value="<?php echo IMAGE_SAVE;?>">
+            <a href="<?php echo tep_href_link('help.php', 'info_romaji='.urlencode($info_array['romaji']));?>"><?php echo tep_html_element_button(IMAGE_BACK);?></a> 
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</form>
+<?php
+} else {
 if (isset($_GET['info_romaji']) && $_GET['info_romaji']) {
   if (empty($info_array)) {
     echo '<div class="content_table">';
@@ -151,7 +224,9 @@ if (isset($_GET['info_romaji']) && $_GET['info_romaji']) {
 echo '<div class="content_table">';
 echo '<table width="100%" cellpadding="2" cellspacing="0" border="0">
 <tr>
-<td  align="left"><img alt="img" src="images/menu_icon/icon_help_info.gif" class="help_pic">&nbsp;'.$info_array['title'].'</td>
+<td  align="left"><img alt="img" src="images/menu_icon/icon_help_info.gif" class="help_pic">&nbsp;'.$info_array['title'];
+echo '&nbsp;&nbsp;<a href="'.tep_href_link('help.php', 'action=modify_content&info_romaji='.urlencode($_GET['info_romaji'])).'">'.tep_html_element_button(IMAGE_EDIT).'</a>';
+echo '</td>
 <td align="right">
 <form action="help.php" method="get" >
 <input type="text" name="keyword" >
@@ -161,14 +236,14 @@ echo '<table width="100%" cellpadding="2" cellspacing="0" border="0">
 </tr>
 </table>';
 echo '</div>';
-echo '</h2>';
 echo '<div class="box_info">';
-echo $info_array['content'].'<br>';
+echo stripslashes($info_array['content']).'<br>';
 }
 ?>
 </div>
 </div>
 <?php 
+}
 }
 if(isset($_GET['keyword']) && $_GET['keyword']){
 ?>
@@ -201,7 +276,7 @@ if(isset($_GET['keyword']) && $_GET['keyword']){
         echo '<div class="content">';
         echo '<a href="'.tep_href_link("help.php","info_romaji=".urlencode($info_array['romaji'])).'"><h2><img alt="img" src="images/menu_icon/icon_help_info.gif" class="help_pic">&nbsp;'.$info_array['title'].'</h2></a></div>'; 
         echo '<div class="box_info">';
-        echo '<a href="'.tep_href_link("help.php","info_romaji=".urlencode($info_array['romaji'])).'">'.mb_substr(strip_tags($info_array['content']),0,300,'utf-8').'......</a></div>';
+        echo '<a href="'.tep_href_link("help.php","info_romaji=".urlencode($info_array['romaji'])).'">'.mb_substr(strip_tags(stripslashes($info_array['content'])),0,300,'utf-8').'......</a></div>';
       }
     }
     ?>
