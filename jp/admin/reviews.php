@@ -469,7 +469,7 @@ require("includes/note_js.php");
        $sql_keyword = 'and pd.products_name like "%'.$_GET['product_name'].'%"';
     }
     $reviews_query_raw = "
-      select r.reviews_id, 
+      select distinct(r.reviews_id), 
              r.products_id, 
              r.date_added, 
              r.last_modified, 
