@@ -108,7 +108,6 @@ padding:5px 18px;
 }
 .box_content{ 
 margin:0 8px 5px 8px;
-border-top:4px solid #cccccc;
 border-bottom:1px solid #cccccc;
 border-left:1px solid #cccccc;
 border-right:1px solid #cccccc;
