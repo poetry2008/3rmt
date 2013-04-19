@@ -3586,7 +3586,7 @@ $params="oID=".$oID."&page=".$page;
             <td align="right" class="smallText" valign="top">
             <table width="275px"  border="0" cellspacing="1" cellpadding="0">
             <tr>
-            <td class="smallText" valign='top'>
+            <td class="smallText" valign='top' align="right">
 	    
 
 	    <form name="manual" action="orders.php" method="get">
@@ -3724,7 +3724,7 @@ if (isset($_GET['keyword'])) {
             <td align="right" class="smallText" valign="top">
             <table width="275px"  border="0" cellspacing="1" cellpadding="0">
             <tr>
-            <td class="smallText" valign='top'>
+            <td class="smallText" valign='top' align="right">
 <form name="manual" action="orders.php" method="get">
 <input name="keyword" style="width:200px;" type="text" id="keyword" onclick="CtoH(this.id);" size="40" value="<?php echo$p_keyword; ?>">
 <input type="submit"  onclick="return check_manual_search_form();" value="<?php echo SHOW_MANUAL_SEARCH;?>">
@@ -3755,7 +3755,7 @@ if (isset($_GET['keyword'])) {
 <tr class="dataTableHeadingRow">
 <td class="dataTableHeadingContent"><?php echo SEARCH_CAT_PRO_TITLE;?> </td>
 <td class="dataTableHeadingContent"><?php echo SEARCH_MANUAL_CONTENT;?> </td>
-<td class="dataTableHeadingContent" align="right"><?php echo SEARCH_MANUAL_LOOK;?> </td>
+<td class="dataTableHeadingContent" align="right" nowrap><?php echo SEARCH_MANUAL_LOOK;?> </td>
 </tr>
 
 <?php
@@ -3854,7 +3854,7 @@ if (isset($_GET['keyword'])) {
             <td align="right" class="smallText" valign="top">
             <table width="275px"  border="0" cellspacing="1" cellpadding="0">
             <tr>
-            <td class="smallText">
+            <td class="smallText"  align="right">
 <form name="manual" action="orders.php" method="get">
 <input name="keyword" style="width:200px;" type="text" id="keyword" onclick="CtoH(this.id);" size="40" value="<?php echo $_GET['keyword'];?>">
 <input type="submit"  onclick="return check_manual_search_form();" value="<?php echo SHOW_MANUAL_SEARCH;?>">
@@ -3887,7 +3887,7 @@ if (isset($_GET['keyword'])) {
 <tr class="dataTableHeadingRow">
 <td class="dataTableHeadingContent"><?php echo SEARCH_CAT_PRO_TITLE;?> </td>
 <td class="dataTableHeadingContent"><?php echo SEARCH_MANUAL_CONTENT;?> </td>
-<td class="dataTableHeadingContent" align="right"><?php echo SEARCH_MANUAL_LOOK;?> </td>
+<td class="dataTableHeadingContent" align="right" nowrap><?php echo SEARCH_MANUAL_LOOK;?> </td>
 </tr>
 
 <?php
@@ -3991,7 +3991,7 @@ if (isset($_GET['keyword'])) {
             <td align="right" class="smallText" valign="top">
             <table width="275px"  border="0" cellspacing="1" cellpadding="0">
             <tr>
-            <td class="smallText">
+            <td class="smallText"  align="right">
 <form name="manual" action="orders.php" method="get">
 <input name="keyword" style="width:200px;" type="text" id="keyword" size="40" onclick="CtoH(this.id);" value="<?php echo$_GET['keyword'];?>">
 <input type="submit"  onclick="return check_manual_search_form();" value="<?php echo SHOW_MANUAL_SEARCH;?>">
@@ -4024,7 +4024,7 @@ if (isset($_GET['keyword'])) {
 <tr class="dataTableHeadingRow">
 <td class="dataTableHeadingContent"><?php echo SEARCH_CAT_PRO_TITLE;?> </td>
 <td class="dataTableHeadingContent"><?php echo SEARCH_MANUAL_CONTENT;?> </td>
-<td class="dataTableHeadingContent" align="right"><?php echo SEARCH_MANUAL_LOOK;?> </td>
+<td class="dataTableHeadingContent" align="right" nowrap><?php echo SEARCH_MANUAL_LOOK;?> </td>
 </tr>
 
 <?php
@@ -4130,7 +4130,7 @@ if (isset($_GET['keyword'])) {
             <td align="right" class="smallText" valign="top">
             <table width="275px"  border="0" cellspacing="1" cellpadding="0">
             <tr>
-            <td class="smallText" valign='top'>
+            <td class="smallText" valign='top' align="right">
 <form name="manual" action="orders.php" method="get">
 <input name="keyword" style="width:200px;" type="text" id="keyword" onclick="CtoH(this.id);" size="40" value="<?php echo $_GET['keyword'];?>">
 <input type="submit"  onclick="return check_manual_search_form();" value="<?php echo SHOW_MANUAL_SEARCH;?>">
@@ -4154,7 +4154,7 @@ if (isset($_GET['keyword'])) {
 <tr class="dataTableHeadingRow">
 <td class="dataTableHeadingContent"><?php echo SEARCH_CAT_PRO_TITLE;?> </td>
 <td class="dataTableHeadingContent"><?php echo SEARCH_MANUAL_CONTENT;?> </td>
-<td class="dataTableHeadingContent" align="right"><?php echo SEARCH_MANUAL_LOOK;?> </td>
+<td class="dataTableHeadingContent" align="right" nowrap><?php echo SEARCH_MANUAL_LOOK;?> </td>
 </tr>
 <?php 
 $odd="dataTableSecondRow";
@@ -4318,7 +4318,7 @@ $title_cp = $get_categories_title['categories_name'].'/';
             <td align="right" class="smallText" valign="top">
             <table width="275px"  border="0" cellspacing="1" cellpadding="0">
             <tr>
-            <td class="smallText" >
+            <td class="smallText" align="right">
 <form name="manual" action="orders.php" method="get">
 <input name="keyword" style="width:200px;" type="text" id="keyword" onclick="CtoH(this.id);" size="40" value="<?php echo $keyword ?>">
 <input type="submit"  onclick="return check_manual_search_form();" value="<?php echo SHOW_MANUAL_SEARCH;?>">
@@ -4438,7 +4438,7 @@ $title_cp = $get_categories_title['categories_name'].'/';
             <table width="275px"  border="0" cellspacing="1" cellpadding="0">
             <tr>
             <td class="smallText" valign='top'>
-<form name="manual" action="orders.php" method="get">
+<form name="manual" action="orders.php" method="get" align="right">
 <input name="keyword" style="width:200px;" type="text" id="keyword" size="40" onclick="CtoH(this.id);" value="<?php echo $p_keyword?>">
 <input type="submit"  onclick="return check_manual_search_form();" value="<?php echo SHOW_MANUAL_SEARCH;?>">
 <input type="hidden" name="action" value="search_manual_info">
@@ -4545,7 +4545,7 @@ $c_title          = $cp_manual_array['categories_name'].'/'.$c_manual_array['cat
             <td align="right" class="smallText" valign="top">
             <table width="275px"  border="0" cellspacing="1" cellpadding="0">
             <tr>
-            <td class="smallText" valign='top'>
+            <td class="smallText" valign='top' align="right">
 <form name="manual" action="orders.php" method="get">
 <input name="keyword" style="width:200px;" type="text" id="keyword" size="40" onclick="CtoH(this.id);" value="<?php echo $keyword?>">
 <input type="submit"  onclick="return check_manual_search_form();" value="<?php echo SHOW_MANUAL_SEARCH;?>">
