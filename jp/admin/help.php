@@ -230,7 +230,7 @@ if (isset($_GET['info_romaji']) && $_GET['info_romaji']) {
     </tr>
     </table>';
     echo '</div>';
-    echo '<div class="box_info">'; 
+    echo '<div class="box_info" style="height:697px;height:730px\0;">'; 
     echo '<font color="red"><b>';
     echo HELP_INFO_NO_INFO;
     echo '</b></font>';
@@ -254,7 +254,11 @@ echo '</td>
 </tr>
 </table>';
 echo '</div>';
-echo '<div class="box_info">';
+if (empty($info_array['content'])) {
+  echo '<div class="box_info" style="height:697px;height:730px\0;">';
+} else {
+  echo '<div class="box_info">';
+}
 echo stripslashes($info_array['content']).'<br>';
 }
 ?>
@@ -284,7 +288,7 @@ if(isset($_GET['keyword']) && $_GET['keyword']){
     echo '</div>';
     $num_info = tep_db_num_rows($info_query);
     if ($num_info == 0) {
-    echo '<div class="box_info">'; 
+    echo '<div class="box_info" style="height:697px;height:730px\0;">'; 
     echo '<font color="red"><b>';
     echo HELP_INFO_NO_SEARCH_INFO;
     echo '</b></font>';
@@ -322,7 +326,7 @@ if (isset($_GET['keyword'])) {
     </tr>
     </table>';
     echo '</div><br>';
-    echo '<div class="box_info">'; 
+    echo '<div class="box_info" style="height:697px;height:730px\0;">'; 
     echo '<font color="red"><b>';
     echo HELP_INFO_NO_SEARCH_INFO;
     echo '</b></font>';
