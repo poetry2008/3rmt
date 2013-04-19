@@ -15,7 +15,7 @@ if (!empty($_GET)) {
   tep_redirect(tep_href_link(FILENAME_DEFAULT));
 }
 if ($_GET['action'] == 'save_content') {
-  ///更新内容 
+  //更新内容 
   $help_romaji = urldecode($_POST['h_romaji']); 
   tep_db_query("update `help_info` set `content` = '".addslashes($_POST['help_content'])."', `title` = '".addslashes($_POST['help_title'])."' where romaji = '".$help_romaji."'"); 
   tep_redirect(tep_href_link('help.php', 'info_romaji='.urlencode($help_romaji))); 
@@ -72,7 +72,7 @@ if (isset($_GET['info_romaji']) && $_GET['info_romaji']) {
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <style>
 body {
-font-family: "宋体", Osaka, Verdana, Arial, sans-serif;
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif;
 font-size: 12px;
 color: #000000;
 padding:0;
@@ -120,6 +120,14 @@ padding:5px;
 	overflow:hidden;
 	width: expression(document.body.clientWidth < 750? "750px": "100%" );
 }
+.td_height{
+	height:770px;
+	height:800px\0;
+}
+@media all and (-webkit-min-device-pixel-ratio:0){
+.td_height{
+	height:870px;
+}}
 @media all and (-webkit-min-device-pixel-ratio:0){
 .footer_copyright{
 	min-width:750px;
@@ -229,7 +237,7 @@ if (isset($_GET['info_romaji']) && $_GET['info_romaji']) {
 ?>
 <table border="0" width="100%" cellpadding="0" cellspacing="0">
 <tr>
-<td width="8" style="height:770px;height:800px\0;">&nbsp;</td> 
+<td width="8" class="td_height">&nbsp;</td> 
 <td valign="top"> 
 <?php
     echo '<div class="content_table">';
@@ -259,7 +267,7 @@ if (isset($_GET['info_romaji']) && $_GET['info_romaji']) {
 ?>
 <table border="0" width="100%" cellpadding="0" cellspacing="0">
 <tr>
-<td width="8" style="height:770px;height:800px\0;">&nbsp;</td> 
+<td width="8" class="td_height">&nbsp;</td> 
 <td valign="top"> 
 <div class="content">
 <?php
@@ -294,7 +302,7 @@ if(isset($_GET['keyword']) && $_GET['keyword']){
 ?>
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
   <tr>
-    <td width="3" style="height:770px;height:800px\0;">&nbsp;</td> 
+    <td width="3" class="td_height">&nbsp;</td> 
     <td valign="top"> 
     <?php
     echo '<div class="content_table">';
@@ -335,7 +343,7 @@ if (isset($_GET['keyword'])) {
 ?>
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
   <tr>
-    <td width="3" style="height:770px;height:800px\0;">&nbsp;</td> 
+    <td width="3" class="td_height">&nbsp;</td> 
     <td valign="top"> 
     <?php
     echo '<div class="content_table">';
