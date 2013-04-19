@@ -17,7 +17,7 @@ if (!empty($_GET)) {
 if ($_GET['action'] == 'save_content') {
   ///更新内容 
   $help_romaji = urldecode($_POST['h_romaji']); 
-  tep_db_query("update `help_info` set `content` = '".addslashes($_POST['help_content'])."' where romaji = '".$help_romaji."'"); 
+  tep_db_query("update `help_info` set `content` = '".addslashes($_POST['help_content'])."', `title` = '".addslashes($_POST['help_title'])."' where romaji = '".$help_romaji."'"); 
   tep_redirect(tep_href_link('help.php', 'info_romaji='.urlencode($help_romaji))); 
 }
 
@@ -60,7 +60,7 @@ if (isset($_GET['keyword']) && $_GET['keyword']!="") {
 <title>
 <?php 
 if (isset($_GET['info_romaji']) && $_GET['info_romaji']) {
-  echo $info_array['title']=="" ? HELP_INFO_NO_INFO : $info_array['title'];
+  echo $info_array['title']=="" ? HELP_INFO_NO_INFO : stripslashes($info_array['title']);
 } elseif (isset($_GET['keyword']) && $_GET['keyword']!="") {
   echo $keyword.HELP_INFO_SEARCH;
 } else {
@@ -100,7 +100,6 @@ margin:5px 8px 0 8px;
 }
 .box_info{ 
 margin:0 8px 5px 8px;
-border-top:4px solid #cccccc;
 border-bottom:1px solid #cccccc;
 border-left:1px solid #cccccc;
 border-right:1px solid #cccccc;
@@ -192,7 +191,11 @@ echo tep_draw_form('m_form', 'help.php', 'action=save_content');
 <div class="content_table">
 <table width="100%" border="0" cellpadding="2" cellspacing="0">
   <tr>
-    <td><?php echo $info_array['title'];?></td> 
+    <td>
+    <?php 
+      echo tep_draw_input_field('help_title', stripslashes($info_array['title']), 'size=50');
+    ?>
+    </td> 
   </tr>
 </table>
 </div>
@@ -231,9 +234,9 @@ if (isset($_GET['info_romaji']) && $_GET['info_romaji']) {
     </table>';
     echo '</div>';
     echo '<div class="box_info" style="height:697px;height:730px\0;">'; 
-    echo '<font color="red"><b>';
+    echo '<font color="red">';
     echo HELP_INFO_NO_INFO;
-    echo '</b></font>';
+    echo '</font>';
     echo '</div>';
   } else {
 ?>
@@ -242,7 +245,7 @@ if (isset($_GET['info_romaji']) && $_GET['info_romaji']) {
 echo '<div class="content_table">';
 echo '<table width="100%" cellpadding="2" cellspacing="0" border="0">
 <tr>
-<td  align="left"><img alt="img" src="images/menu_icon/icon_help_info.gif" class="help_pic">&nbsp;'.$info_array['title'];
+<td  align="left"><img alt="img" src="images/menu_icon/icon_help_info.gif" class="help_pic">&nbsp;'.stripslashes($info_array['title']);
 echo '&nbsp;&nbsp;<a href="'.tep_href_link('help.php', 'action=modify_content&info_romaji='.urlencode($_GET['info_romaji'])).'">'.tep_html_element_button(IMAGE_EDIT).'</a>';
 echo '</td>
 <td align="right">
@@ -289,14 +292,14 @@ if(isset($_GET['keyword']) && $_GET['keyword']){
     $num_info = tep_db_num_rows($info_query);
     if ($num_info == 0) {
     echo '<div class="box_info" style="height:697px;height:730px\0;">'; 
-    echo '<font color="red"><b>';
+    echo '<font color="red">';
     echo HELP_INFO_NO_SEARCH_INFO;
-    echo '</b></font>';
+    echo '</font>';
     echo '</div>';
     } else {
       while($info_array = tep_db_fetch_array($info_query)){
         echo '<div class="content">';
-        echo '<a href="'.tep_href_link("help.php","info_romaji=".urlencode($info_array['romaji'])).'"><h2><img alt="img" src="images/menu_icon/icon_help_info.gif" class="help_pic">&nbsp;'.$info_array['title'].'</h2></a></div>'; 
+        echo '<a href="'.tep_href_link("help.php","info_romaji=".urlencode($info_array['romaji'])).'"><h2><img alt="img" src="images/menu_icon/icon_help_info.gif" class="help_pic">&nbsp;'.stripslashes($info_array['title']).'</h2></a></div>'; 
         echo '<div class="box_info">';
         echo '<a href="'.tep_href_link("help.php","info_romaji=".urlencode($info_array['romaji'])).'">'.mb_substr(strip_tags(stripslashes($info_array['content'])),0,300,'utf-8').'......</a></div>';
       }
@@ -327,9 +330,9 @@ if (isset($_GET['keyword'])) {
     </table>';
     echo '</div><br>';
     echo '<div class="box_info" style="height:697px;height:730px\0;">'; 
-    echo '<font color="red"><b>';
+    echo '<font color="red">';
     echo HELP_INFO_NO_SEARCH_INFO;
-    echo '</b></font>';
+    echo '</font>';
     echo '</div>';
     ?>
     </td>
