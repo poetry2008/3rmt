@@ -34,7 +34,7 @@
           'reviews_text' => $_POST['reviews_text']
         );
         tep_db_perform(TABLE_REVIEWS_DESCRIPTION, $sql_description_array);
-        tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath='.$_POST['cPath'].($_POST['search']?'&search='.$_POST['search']:'')));
+        tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath='.$_POST['cPath'].(trim($_POST['search'])?'&search='.trim($_POST['search']):'')));
         break;
       case 'setflag':
         $site_id = isset($_GET['site_id']) ? $_GET['site_id'] :0;
@@ -440,7 +440,7 @@ require("includes/note_js.php");
             <td class="pageHeading" height="40"><?php echo HEADING_TITLE; ?></td>
             <td class="pageHeading" align="right">
             <form method="GET" action="reviews.php?site_id=<?php echo $_GET['site_id'];?>"> 
-            <input type="text" value="<?php echo isset($_GET['product_name'])?$_GET['product_name']:'';?>" id="keyword" name="product_name" size="40">&nbsp;&nbsp;<input type="submit" value="<?php echo IMAGE_SEARCH;?>"> 
+            <input type="text" value="<?php echo isset($_GET['product_name'])?trim($_GET['product_name']):'';?>" id="keyword" name="product_name" size="40">&nbsp;&nbsp;<input type="submit" value="<?php echo IMAGE_SEARCH;?>"> 
             <input type="hidden" name="site_id" value="<?php echo $_GET['site_id'];?>">
             </form>
             </td>
