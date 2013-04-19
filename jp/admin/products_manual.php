@@ -289,6 +289,17 @@ $categories_id=$categories_array['categories_id'];
 $categories_pid_query=tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$categories_id."'");
 $categories_pid_array=tep_db_fetch_array($categories_pid_query);
 $categories_pid=$categories_pid_array['parent_id'];
+//判断是否还有上级分类
+if(isset($_GET['parent']) && $_GET['parent'] == 1){ 
+  $parent_categories_pid_query = tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$categories_pid."'");
+  $parent_categories_pid_array = tep_db_fetch_array($parent_categories_pid_query);
+  $parent_categories_pid_num = tep_db_num_rows($parent_categories_pid_query);
+  tep_db_free_result($parent_categories_pid_query);
+  if($parent_categories_pid_num > 0){
+
+    $categories_pid = $parent_categories_pid_array['parent_id'];
+  }
+}
 $categories_p_query=tep_db_query("select categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$categories_pid."' and site_id='".$site_id."'");
 $categories_p_array=tep_db_fetch_array($categories_p_query);
 $title_char=$categories_p_array['categories_name'].MANUAL_TITLE;
@@ -504,9 +515,20 @@ $categories_pid_query=tep_db_query("select parent_id from ".TABLE_CATEGORIES." w
 $categories_pid_array=tep_db_fetch_array($categories_pid_query);
 $categories_pid=$categories_pid_array['parent_id'];
 
+//判断是否还有上级分类
+if(isset($_GET['parent']) && $_GET['parent'] == 1){ 
+  $parent_categories_pid_query = tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$categories_pid."'");
+  $parent_categories_pid_array = tep_db_fetch_array($parent_categories_pid_query);
+  $parent_categories_pid_num = tep_db_num_rows($parent_categories_pid_query);
+  tep_db_free_result($parent_categories_pid_query);
+  if($parent_categories_pid_num > 0){
+
+    $categories_pid = $parent_categories_pid_array['parent_id'];
+  }
+}
 $categories_manual_sql="update ".TABLE_CATEGORIES_DESCRIPTION." set c_manual='".addslashes($_POST['manual'])."' where categories_id='".(int)$categories_pid."' and site_id='".$site_id."'";
 tep_db_query($categories_manual_sql);
-$param_str=tep_get_all_get_params(array("action"))."action=show_manual_info";
+$param_str=tep_get_all_get_params(array("action","parent"))."action=show_manual_info";
 tep_redirect(tep_href_link(FILENAME_ORDERS, $param_str)); 
 break;
 }
