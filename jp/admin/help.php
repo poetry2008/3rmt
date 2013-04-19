@@ -98,6 +98,15 @@ border-right:1px solid #cccccc;
 background-color:#EEEEEE;
 padding:5px 18px;
 }
+.box_content{ 
+margin:0 8px 5px 8px;
+border-top:4px solid #cccccc;
+border-bottom:1px solid #cccccc;
+border-left:1px solid #cccccc;
+border-right:1px solid #cccccc;
+background-color:#EEEEEE;
+padding:5px;
+}
 .content{
 	width:100%;
 	min-width:750px;
@@ -171,17 +180,19 @@ if ($_GET['action'] == 'modify_content') {
 //编辑内容
 echo tep_draw_form('m_form', 'help.php', 'action=save_content');
 ?>
+<div class="content_table">
 <table width="100%" border="0" cellpadding="2" cellspacing="0">
   <tr>
-    <td class="pageHeading"><?php echo $info_array['title'];?></td> 
+    <td><?php echo $info_array['title'];?></td> 
   </tr>
-  <tr>
-    <td>
-      <table width="100%">
+</table>
+</div>
+<div class="box_content">
+<table width="100%" border="0" cellpadding="2" cellspacing="0">
         <tr>
           <td id="emd">
             <textarea id="elm1" class="" cols="207" rows="20" name="help_content" style="width:100%;height:100%;"><?php echo stripslashes($info_array['content']);?></textarea>
-          <td>
+          </td>
         </tr>
         <tr>
           <td align="right" id="button_width">
@@ -191,9 +202,7 @@ echo tep_draw_form('m_form', 'help.php', 'action=save_content');
           </td>
         </tr>
       </table>
-    </td>
-  </tr>
-</table>
+</div>
 </form>
 <?php
 } else {
