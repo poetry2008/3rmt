@@ -15,7 +15,7 @@ if (!empty($_GET)) {
   tep_redirect(tep_href_link(FILENAME_DEFAULT));
 }
 if ($_GET['action'] == 'save_content') {
-  ///更新内容 
+  //更新内容 
   $help_romaji = urldecode($_POST['h_romaji']); 
   tep_db_query("update `help_info` set `content` = '".addslashes($_POST['help_content'])."', `title` = '".addslashes($_POST['help_title'])."' where romaji = '".$help_romaji."'"); 
   tep_redirect(tep_href_link('help.php', 'info_romaji='.urlencode($help_romaji))); 
