@@ -25,6 +25,19 @@
       ");
       $customer_values = tep_db_fetch_array($customer);
       $date_now = date('Ymd');
+    
+    $ban_list_array = explode(',', REVIEWS_BAN_CHARACTER);
+    if (!empty($ban_list_array)) {
+      foreach($ban_list_array as $b_key => $b_value) {
+        $check_name_pos = strpos($_POST['reviews_name'], $b_value); 
+        $check_content_pos = strpos($_POST['review'], $b_value); 
+        if (($check_name_pos !== false) || ($check_content_pos !== false)) {
+          $form_error = true;
+          $error_message .= JS_REVIEW_BAN_CHARACTER;
+          break;
+        }
+      }
+    }
     if($_POST['reviews_name'] && tep_not_null($_POST['reviews_name'])) {
       //评论的名字是否为空 
       $reviews_name = $_POST['reviews_name'];
@@ -50,7 +63,7 @@
         and site_id = '" . SITE_ID . "'
       ")) > REVIEWS_DAY_LIMIT) {
       $form_error = true;
-      $error_message .= "今日あまりにも多いコメントを送りました、明日送ってください.";
+      $error_message .= '※ 今日あまりにも多いコメントを送りました、明日送ってください。\n';
     }
     $last_reviews_query = tep_db_query("
       select * from ".TABLE_REVIEWS." where reviews_ip = '".$_SERVER['REMOTE_ADDR']."' order by date_added DESC
@@ -58,7 +71,7 @@
     $last_reviews = tep_db_fetch_array($last_reviews_query);
     if ($last_reviews && time() - strtotime($last_reviews['date_added']) < REVIEWS_TIME_LIMIT) {
       $form_error = true;
-      $error_message .= "投稿が制限されています。時間をおいてお試しください。";
+      $error_message .= '※ 投稿が制限されています。時間をおいてお試しください。\n';
     }
     if ($form_error === false) {
       tep_db_query("
@@ -107,8 +120,8 @@
   }
 
 // lets retrieve all $_GET keys and values..
-  $get_params      = tep_get_all_get_params();
-  $get_params_back = tep_get_all_get_params(array('reviews_id')); // for back button
+  $get_params      = tep_get_all_get_params(array('action'));
+  $get_params_back = tep_get_all_get_params(array('reviews_id', 'action')); // for back button
   $get_params      = substr($get_params, 0, -1); //remove trailing &
   if (tep_not_null($get_params_back)) {
     $get_params_back = substr($get_params_back, 0, -1); //remove trailing &

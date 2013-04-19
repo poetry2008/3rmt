@@ -9,11 +9,11 @@ define('TABLE_HEADING_ERRINFO', '!!!!! エラーメッセージ !!!!!');
 define('TEXT_ERRINFO_INPUT_NOINPUT', '未入力です');
 define('TEXT_ERRINFO_INPUT_ERR', '正しく入力されていません');
 define('TEXT_ERRINFO_INPUT_LENGTH', '%d 文字以上入力してください');
-define('TEXT_ERRINFO_USER_DELETE', '<b>ユーザ情報の削除</b>:ユーザ本人の情報は削除できません');
-define('TEXT_ERRINFO_USER_GRANT', '<b>権限を与える</b>:ユーザを選択してください');
-define('TEXT_ERRINFO_USER_REVOKE', '<b>権限を取消す</b>:ユーザを選択してください');
-define('TEXT_ERRINFO_USER_REVOKE_ONESELF', '<b>権限を取消す</b>:ユーザ本人の権限を取消すことはできません');
-define('TEXT_ERRINFO_CONFIRM_PASSWORD', '<b>確認のため再入力</b>:確認のため再入力したパスワードが違います');
+define('TEXT_ERRINFO_USER_DELETE', 'ユーザ情報の削除:ユーザ本人の情報は削除できません');
+define('TEXT_ERRINFO_USER_GRANT', '権限を与える:ユーザを選択してください');
+define('TEXT_ERRINFO_USER_REVOKE', '権限を取消す:ユーザを選択してください');
+define('TEXT_ERRINFO_USER_REVOKE_ONESELF', '権限を取消す:ユーザ本人の権限を取消すことはできません');
+define('TEXT_ERRINFO_CONFIRM_PASSWORD', '確認のため再入力:確認のため再入力したパスワードが違います');
 
 // 访问表错误信息
 define('TEXT_ERRINFO_DB_NO_USERINFO', 'ユーザ情報が取得できませんでした');
@@ -101,9 +101,9 @@ define('JAVA_SCRIPT_INFO_STAFF2CHIEF', 'Chief権限を与えます。\nよろし
 define('JAVA_SCRIPT_INFO_CHIEF2STAFF', 'Chief権限を取り消します。\nよろしいですか？');
 define('JAVA_SCRIPT_INFO_CHIEF2ADMIN', 'Admin権限を与えます。\nよろしいですか？');
 define('JAVA_SCRIPT_INFO_ADMIN2CHIEF', 'Admin権限を取り消します。\nよろしいですか？');
-define('TEXT_ERRINFO_USER_STAFF', '<b>権限を与える</b>:Staffを選択してください');
-define('TEXT_ERRINFO_USER_CHIEF', '<b>権限を取消す</b>:Chiefを選択してください');
-define('TEXT_ERRINFO_USER_ADMIN', '<b>権限を取消す</b>:Adminを選択してください');
+define('TEXT_ERRINFO_USER_STAFF', '権限を与える:Staffを選択してください');
+define('TEXT_ERRINFO_USER_CHIEF', '権限を取消す:Chiefを選択してください');
+define('TEXT_ERRINFO_USER_ADMIN', '権限を取消す:Adminを選択してください');
 define('USER_EMAIL_ERROR','入力されたメールアドレスは不正です!');
 define('USER','ユーザー');
 define('SITE_PREM','サイト権限');

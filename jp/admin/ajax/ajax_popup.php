@@ -1206,7 +1206,7 @@ if ($_GET['action'] == 'show_category_info') {
   
   $new_group_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_GROUP_DESC), 
-        array('align' => 'left', 'text' => tep_draw_textarea_field('comment', 'hard', '30', '10', '', 'class="campaign_input" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize:vertical;"')) 
+        array('align' => 'left', 'text' => tep_draw_textarea_field('comment', 'hard', '30', '10', '', 'class="campaign_input" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"')) 
       );
   
   $new_group_row[]['text'] = array(
@@ -1331,7 +1331,7 @@ if ($_GET['action'] == 'show_category_info') {
   
   $edit_group_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_HEADING_OPTION_GROUP_DESC), 
-        array('align' => 'left', 'text' => tep_draw_textarea_field('comment', 'hard', '30', '10', $group['comment'], 'class="campaign_input" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize:vertical;"')) 
+        array('align' => 'left', 'text' => tep_draw_textarea_field('comment', 'hard', '30', '10', $group['comment'], 'class="campaign_input" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"')) 
       );
   
   $edit_group_row[]['text'] = array(
@@ -2790,19 +2790,10 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
       if ($cInfo->configuration_key == 'DS_ADMIN_SIGNAL_TIME') {
         eval('$value_field = '.$cInfo->set_function."'".$cInfo->configuration_value."');"); 
       } else {
-        $textarea_pos = strpos($cInfo->set_function, 'tep_cfg_textarea');
         if(in_array($site_id,$site_array)){
-          if ($textarea_pos !== false) {
-            eval('$value_field = ' . $cInfo->set_function . '\'' .  htmlspecialchars(addcslashes($cInfo->configuration_value, '\'')) .  '\', \'\', \'style="resize:vertical;"\');');
-          } else {
-            eval('$value_field = ' . $cInfo->set_function . '\'' .  htmlspecialchars(addcslashes($cInfo->configuration_value, '\'')) . '\');');
-          }
+        eval('$value_field = ' . $cInfo->set_function . '\'' .  htmlspecialchars(addcslashes($cInfo->configuration_value, '\'')) . '\');');
         }else{
-          if ($textarea_pos !== false) {
-            eval('$value_field = ' . $cInfo->set_function . '\'' .  htmlspecialchars(addcslashes($cInfo->configuration_value, '\'')) .  '\',\'\',\'disabled="disabled" style="resize:vertical;"\');');
-          } else {
-            eval('$value_field = ' . $cInfo->set_function . '\'' .  htmlspecialchars(addcslashes($cInfo->configuration_value, '\'')) .  '\',\'\',\'disabled="disabled"\');');
-          }
+        eval('$value_field = ' . $cInfo->set_function . '\'' .  htmlspecialchars(addcslashes($cInfo->configuration_value, '\'')) .  '\',\'\',\'disabled="disabled"\');');
         }
         $value_field = str_replace('<br>','',$value_field);
         $value_field .= '<input type="hidden" name="hidden_configuration_value" value="'.$cInfo->configuration_value.'">';
@@ -2817,9 +2808,9 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
         }
       } else {
        if(in_array($site_id,$site_array)) { 
-        $value_field = '<textarea name="configuration_value" rows="5" cols="35" style="resize:vertical;">'. $cInfo->configuration_value .'</textarea><input type="hidden" name="hidden_configuration_value" value="'.$cInfo->configuration_value.'">';
+        $value_field = '<textarea name="configuration_value" rows="5" cols="35">'. $cInfo->configuration_value .'</textarea><input type="hidden" name="hidden_configuration_value" value="'.$cInfo->configuration_value.'">';
        }else{
-        $value_field = '<textarea name="configuration_value" rows="5" cols="35" disabled="disabled" style="resize:vertical;">'. $cInfo->configuration_value .'</textarea><input type="hidden" name="hidden_configuration_value" value="'.$cInfo->configuration_value.'">';
+        $value_field = '<textarea name="configuration_value" rows="5" cols="35" disabled="disabled">'. $cInfo->configuration_value .'</textarea><input type="hidden" name="hidden_configuration_value" value="'.$cInfo->configuration_value.'">';
        }
       }
     }
@@ -2895,19 +2886,10 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
        $value_field = $fetch_result['configuration_value'];
       }
    }else{
-      $textarea_pos_tmp = strpos($fetch_result['set_function'], 'tep_cfg_textarea');
       if(in_array($site_id,$site_array)){
-        if ($textarea_pos_tmp !== false) {
-          eval('$value_field = ' . $fetch_result['set_function'] . '\'' .  htmlspecialchars(addcslashes($fetch_result['configuration_value'], '\'')) . '\', \'\', \'style="resize:vertical;"\');');
-        } else {
-          eval('$value_field = ' . $fetch_result['set_function'] . '\'' .  htmlspecialchars(addcslashes($fetch_result['configuration_value'], '\'')) . '\');');
-        }
+      eval('$value_field = ' . $fetch_result['set_function'] . '\'' .  htmlspecialchars(addcslashes($fetch_result['configuration_value'], '\'')) . '\');');
       }else{
-        if ($textarea_pos_tmp !== false) {
-          eval('$value_field = ' . $fetch_result['set_function'] . '\'' .  htmlspecialchars(addcslashes($fetch_result['configuration_value'], '\'')) . '\',\'\',\'disabled="disabled" style="resize:vertical;"\');');
-        } else {
-          eval('$value_field = ' . $fetch_result['set_function'] . '\'' .  htmlspecialchars(addcslashes($fetch_result['configuration_value'], '\'')) . '\',\'\',\'disabled="disabled"\');');
-        }
+      eval('$value_field = ' . $fetch_result['set_function'] . '\'' .  htmlspecialchars(addcslashes($fetch_result['configuration_value'], '\'')) . '\',\'\',\'disabled="disabled"\');');
       }
         $value_field = str_replace('<br>','',$value_field);
         $value_field .= '<input type="hidden" name="hidden_configuration_value" value="'.$cInfo->configuration_value.'">';
@@ -2928,10 +2910,10 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
             }
           }else{
        if(in_array($site_id,$site_array)) { 
-          $value_field = '<textarea name="configuration_value" rows="5" cols="35" style="resize:vertical;">'. $fetch_result['configuration_value'] .'</textarea> <input type="hidden" name="hidden_configuration_value" value="'.$fetch_result['configuration_value'].'">
+          $value_field = '<textarea name="configuration_value" rows="5" cols="35">'. $fetch_result['configuration_value'] .'</textarea> <input type="hidden" name="hidden_configuration_value" value="'.$fetch_result['configuration_value'].'">
             ';
        }else{
-          $value_field = '<textarea name="configuration_value" rows="5" cols="35" disabled="disabled" style="resize:vertical;">'.  $fetch_result['configuration_value'] .'</textarea> <input type="hidden" name="hidden_configuration_value" value="'.$fetch_result['configuration_value'].'">';
+          $value_field = '<textarea name="configuration_value" rows="5" cols="35" disabled="disabled">'.  $fetch_result['configuration_value'] .'</textarea> <input type="hidden" name="hidden_configuration_value" value="'.$fetch_result['configuration_value'].'">';
        }
           }
       }
@@ -3068,11 +3050,16 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     $heading[] = array('align' => 'right', 'text' => $page_str);
     if($_GET['site_id'] == null || $_GET['rID'] == -1){
       $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$_GET['site_id']));
-      $rInfo->site_name = $site_name['name'];
+      $reviews['romaji'] = $site_name['romaji'];
+    }
+    if($_GET['rID'] == -1){
+       $action_type = 'insert'; 
+    }else{
+       $action_type = 'update'; 
     }
     $contents[]['text'] = array(
-        array('text' => ENTRY_SITE.':'),
-        array('text' => $rInfo->site_name.'<input id="site_id" type="hidden" value="'.$_GET['site_id'].'"><input id="site_hidden" type="hidden" value="'.$_GET['site_id'].'">')
+        array('text' => ENTRY_SITE.':<input type="hidden" name="action_type" value="'.$action_type.'">'),
+        array('text' => $reviews['romaji'].'<input id="site_id" name="site_id" type="hidden" value="'.$_GET['site_id'].'"><input id="site_hidden" name="site_hidden" type="hidden" value="'.$_GET['site_id'].'">')
     );
     if($_GET['rID'] != -1){
     $products_id = tep_db_fetch_array(tep_db_query("select * from ".  TABLE_REVIEWS ." where reviews_id=".$_GET['rID']));
@@ -3085,9 +3072,6 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     }else{
         $review_products_id_info = 0;
     }
-    /*if($_GET['rID'] == -1){
-        $_GET['site_id'] = 1;
-    }*/
   $contents[]['text'] = array(
         array('text' => TEXT_CATEGORY_SELECT),
         array('text' => tep_draw_pull_down_menu('review_products_id', tep_get_category_tree(),$review_products_id_info,'id="review_products_id" onchange="change_review_products_id(this,'.$_GET['page'].','.$_GET['rID'].','.$_GET['site_id'].')"') ), 
@@ -3243,12 +3227,9 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
         array('text' => ENTRY_DATE),
         array('text' => $date_posted)
     );
-  if(isset($_GET['customers_name']) && $_GET['customers_name'] == null){
-     $error_info = '<span style="color:#ff0000;">'.TEXT_ERROR_NULL.'</span>';
-  }
   $contents[]['text'] = array(
         array('text' => ENTRY_FROM),
-        array('text' => '<input type="text" id="customers_name" name="customers_name" value="'.tep_output_string_protected($rInfo->customers_name).'" />'.$error_info)
+        array('text' => '<input type="text" id="customers_name" name="customers_name" value="'.tep_output_string_protected($rInfo->customers_name).'" />')
     );
     $review_radio = '';
     for ($i=1; $i<=5; $i++) {
@@ -3304,10 +3285,21 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
         array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.((tep_not_null($rInfo->user_update))?$rInfo->user_update:TEXT_UNSET_DATA)),
         array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.((tep_not_null($rInfo->last_modified))?$rInfo->last_modified:TEXT_UNSET_DATA))
       );
-   $reviews_button[] = tep_html_element_button(IMAGE_SAVE,'onclick="check_review_submit('.$_GET['rID'].','.$_GET['page'].')"').   '<a href="'.tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' .  $rInfo->reviews_id) .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').'&action=deleteconfirm"><button type="button">'.IMAGE_DELETE.'</button></a>';
+  if($ocertify->npermission == 15){
+   $reviews_button[] = tep_html_element_button(IMAGE_SAVE,'onclick="check_review_submit('.$_GET['rID'].','.$_GET['page'].')"').  '&nbsp;<a href="'.tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' .  $rInfo->reviews_id) .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').'&action=deleteconfirm">'.tep_html_element_button(IMAGE_DELETE).'</a>';
     if(!empty($reviews_button)){
         $buttons = array('align' => 'center', 'button' => $reviews_button);
      }
+  }else{
+   $reviews_button[] = tep_html_element_button(IMAGE_SAVE,'onclick="check_review_submit('.$_GET['rID'].','.$_GET['page'].')"');
+    if(!empty($reviews_button)){
+        $buttons = array('align' => 'center', 'button' => $reviews_button);
+     }
+
+  }
+  if($_GET['site_id'] == 0){
+       $_GET['site_id'] = $reviews['site_id']; 
+  }
 $reviews_form =  tep_draw_form('review', FILENAME_REVIEWS, 'page=' .  $_GET['page'] .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').'&rID=' .  $_GET['rID'] . '&action=update', 'post' , 'onsubmit="return check_review()"');
 $notice_box->get_form($reviews_form);
 $notice_box->get_heading($heading);

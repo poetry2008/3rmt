@@ -18,6 +18,7 @@ function checkForm() {
   str="<?php echo $review_rows['configuration_value']; ?>"; // this is string
   var strs= new Array(); //define array
   strs=str.split(","); //split string    
+  if(str != ''){
   for(var i=0;i<strs.length;i++){
   var patt = new RegExp(strs[i]);
   if(patt.test(review) == true || patt.test(reviews_name) == true){
@@ -32,6 +33,7 @@ function checkForm() {
      error = 1;
   }else{
      error_message = error_message;
+  }
   }
   if (review.length < <?php echo REVIEW_TEXT_MIN_LENGTH; ?>) {
     error_message = error_message + "<?php echo JS_REVIEW_TEXT; ?>";
