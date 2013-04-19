@@ -34,7 +34,7 @@
           'reviews_text' => $_POST['reviews_text']
         );
         tep_db_perform(TABLE_REVIEWS_DESCRIPTION, $sql_description_array);
-        tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath='.$_POST['cPath'].($_POST['search']?'&search='.$_POST['search']:'')));
+        tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath='.$_POST['cPath'].(trim($_POST['search'])?'&search='.trim($_POST['search']):'')));
         break;
       case 'setflag':
         $site_id = isset($_GET['site_id']) ? $_GET['site_id'] :0;
@@ -116,7 +116,7 @@
               set reviews_text = '" . tep_db_input($reviews_text) . "' 
               where reviews_id = '" . tep_db_input($reviews_id) . "'");
         }
-        tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] .  '&site_id='.$_POST['site_id']));
+        tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] .  '&site_id='.$_POST['site_id'].(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'')));
         break;
        } 
         tep_db_query("
@@ -143,13 +143,13 @@
                    tep_db_query(" delete from " . TABLE_REVIEWS . " where reviews_id = '" . $ge_value . "'");
                    tep_db_query("delete from " . TABLE_REVIEWS_DESCRIPTION . " where reviews_id = '" . $ge_value . "'");
                    }
-                   tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')));
+                   tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'')));
         }
         $reviews_id = tep_db_prepare_input($_GET['rID']);
         tep_db_query(" delete from " . TABLE_REVIEWS . " where reviews_id = '" . tep_db_input($reviews_id) . "'");
         tep_db_query("delete from " . TABLE_REVIEWS_DESCRIPTION . " where reviews_id = '" . tep_db_input($reviews_id) . "'");
         }
-        tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')));
+        tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'')));
         break;
     }
   }
@@ -239,9 +239,10 @@
       refresh(rID,page,review_products_id_info,site_id);
      }
     function refresh(rID,page,review_products_id_info,site_id){
+         var product_name = document.getElementById('keyword').value;
          $.ajax({
                url: "ajax.php?&action=edit_reviews",
-               data: {rID:rID,page:page,review_products_id_info:review_products_id_info,site_id:site_id},
+               data: {rID:rID,page:page,review_products_id_info:review_products_id_info,site_id:site_id,product_name:product_name},
                async: "false",
                success: function(data){
                   $("#show_text_reviews").html(data);
@@ -253,9 +254,10 @@
           var site_id = document.getElementById('site_id').value;
           var add_id = document.getElementById('add_product_products_id').value;
           var customers_name = document.getElementById('customers_name').value;
+          var product_name = document.getElementById('keyword').value;
           $.ajax({
                url: "ajax.php?&action=edit_reviews",
-               data: {rID:rID,page:page,site_id:site_id,add_id:add_id,customers_name:customers_name},
+               data: {rID:rID,page:page,site_id:site_id,add_id:add_id,customers_name:customers_name,product_name:product_name},
                async: "false",
                success: function(data){
                   $("#show_text_reviews").html(data);
@@ -440,7 +442,7 @@ require("includes/note_js.php");
             <td class="pageHeading" height="40"><?php echo HEADING_TITLE; ?></td>
             <td class="pageHeading" align="right">
             <form method="GET" action="reviews.php?site_id=<?php echo $_GET['site_id'];?>"> 
-            <input type="text" value="<?php echo isset($_GET['product_name'])?$_GET['product_name']:'';?>" id="keyword" name="product_name" size="40">&nbsp;&nbsp;<input type="submit" value="<?php echo IMAGE_SEARCH;?>"> 
+            <input type="text" value="<?php echo isset($_GET['product_name'])?trim($_GET['product_name']):'';?>" id="keyword" name="product_name" size="40">&nbsp;&nbsp;<input type="submit" value="<?php echo IMAGE_SEARCH;?>"> 
             <input type="hidden" name="site_id" value="<?php echo $_GET['site_id'];?>">
             </form>
             </td>
@@ -577,7 +579,7 @@ require("includes/note_js.php");
       );
     $review_table_row[] = array('params' => $review_params, 'text' => $review_info);
     }
-    $review_form = tep_draw_form('del_review', FILENAME_REVIEWS, 'page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&action=deleteconfirm');
+    $review_form = tep_draw_form('del_review', FILENAME_REVIEWS, 'page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&action=deleteconfirm'.(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):''));
     $notice_box->get_form($review_form);
     $notice_box->get_contents($review_table_row);
     $notice_box->get_eof(tep_eof_hidden());
