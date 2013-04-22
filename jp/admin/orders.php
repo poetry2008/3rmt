@@ -2468,64 +2468,66 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     }
 ?>
 <script>
+<?php //显示手册全部内容?>
 function manual_show(action){
 
   switch(action){
 
   case 'top':
-    $("#manual_top_show").css({"height":"","overflow":""}); 
-    $("#manual_top_all").html('<a href="javascript:void(0);" onclick="manual_hide(\'top\');"><u><?php echo IMAGE_BACK;?></u></a>');
+    $("#manual_top_show").css({"height":"","overflow":"hidden"}); 
+    $("#manual_top_all").html('<a href="javascript:void(0);" onclick="manual_hide(\'top\');"><u><?php echo ORDER_MANUAL_ALL_HIDE;?></u></a>');
     break;
   case 'top_categories':
-    $("#manual_top_categories_show").css({"height":"","overflow":""}); 
-    $("#manual_top_categories_all").html('<a href="javascript:void(0);" onclick="manual_hide(\'top_categories\');"><u><?php echo IMAGE_BACK;?></u></a>');
+    $("#manual_top_categories_show").css({"height":"","overflow":"hidden"}); 
+    $("#manual_top_categories_all").html('<a href="javascript:void(0);" onclick="manual_hide(\'top_categories\');"><u><?php echo ORDER_MANUAL_ALL_HIDE;?></u></a>');
     break;
   case 'categories':
-    $("#manual_categories_show").css({"height":"","overflow":""}); 
-    $("#manual_categories_all").html('<a href="javascript:void(0);" onclick="manual_hide(\'categories\');"><u><?php echo IMAGE_BACK;?></u></a>');
+    $("#manual_categories_show").css({"height":"","overflow":"hidden"}); 
+    $("#manual_categories_all").html('<a href="javascript:void(0);" onclick="manual_hide(\'categories\');"><u><?php echo ORDER_MANUAL_ALL_HIDE;?></u></a>');
     break;
   case 'categories_children':
-    $("#manual_categories_children_show").css({"height":"","overflow":""}); 
-    $("#manual_categories_children_all").html('<a href="javascript:void(0);" onclick="manual_hide(\'categories_children\');"><u><?php echo IMAGE_BACK;?></u></a>');
+    $("#manual_categories_children_show").css({"height":"","overflow":"hidden"}); 
+    $("#manual_categories_children_all").html('<a href="javascript:void(0);" onclick="manual_hide(\'categories_children\');"><u><?php echo ORDER_MANUAL_ALL_HIDE;?></u></a>');
     break;
   case 'products':
-    $("#manual_products_show").css({"height":"","overflow":""}); 
-    $("#manual_products_all").html('<a href="javascript:void(0);" onclick="manual_hide(\'products\');"><u><?php echo IMAGE_BACK;?></u></a>');
+    $("#manual_products_show").css({"height":"","overflow":"hidden"}); 
+    $("#manual_products_all").html('<a href="javascript:void(0);" onclick="manual_hide(\'products\');"><u><?php echo ORDER_MANUAL_ALL_HIDE;?></u></a>');
     break;
   }   
 }
-
+<?php //显示手册部分内容?>
 function manual_hide(action){
 
   switch(action){
 
   case 'top':
     $("#manual_top_show").css({"height":"200px","overflow":"hidden"});
-    $("#manual_top_all").html('<a href="javascript:void(0);" onclick="manual_show(\'top\');"><u><?php echo ORDER__MANUAL_ALL_SHOW;?></u></a>');
+    $("#manual_top_all").html('<a href="javascript:void(0);" onclick="manual_show(\'top\');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a>');
     break;
   case 'top_categories':
     $("#manual_top_categories_show").css({"height":"200px","overflow":"hidden"});
-    $("#manual_top_categories_all").html('<a href="javascript:void(0);" onclick="manual_show(\'top_categories\');"><u><?php echo ORDER__MANUAL_ALL_SHOW;?></u></a>');
+    $("#manual_top_categories_all").html('<a href="javascript:void(0);" onclick="manual_show(\'top_categories\');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a>');
     break;
   case 'categories':
     $("#manual_categories_show").css({"height":"200px","overflow":"hidden"});
-    $("#manual_categories_all").html('<a href="javascript:void(0);" onclick="manual_show(\'categories\');"><u><?php echo ORDER__MANUAL_ALL_SHOW;?></u></a>');
+    $("#manual_categories_all").html('<a href="javascript:void(0);" onclick="manual_show(\'categories\');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a>');
     break;
   case 'categories_children':
     $("#manual_categories_children_show").css({"height":"200px","overflow":"hidden"});
-    $("#manual_categories_children_all").html('<a href="javascript:void(0);" onclick="manual_show(\'categories_children\');"><u><?php echo ORDER__MANUAL_ALL_SHOW;?></u></a>');
+    $("#manual_categories_children_all").html('<a href="javascript:void(0);" onclick="manual_show(\'categories_children\');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a>');
     break;
   case 'products':
     $("#manual_products_show").css({"height":"200px","overflow":"hidden"});
-    $("#manual_products_all").html('<a href="javascript:void(0);" onclick="manual_show(\'products\');"><u><?php echo ORDER__MANUAL_ALL_SHOW;?></u></a>');
+    $("#manual_products_all").html('<a href="javascript:void(0);" onclick="manual_show(\'products\');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a>');
     break;
   }  
 }
 $(document).ready(function(){ 
 <?php
+  //当请求为手册显示时执行
   if($_GET['action'] == 'show_manual_info' || $_GET['action'] == 'show_search_manual'){
 ?>
-    <?php //手册隐藏，显示?>
+    <?php //手册内容隐藏，显示?>
     var show_height = 200;
     var manual_top = $("#manual_top").height();
     manual_top = parseInt(manual_top);
@@ -3613,7 +3615,8 @@ $params="oID=".$oID."&page=".$page;
 </h2>
 <div id="manual_top_show">
 </div>
-<div align="right" style="display:none;" id="manual_top_all"><a href="javascript:void(0);" onclick="manual_show('top');"><u><?php echo ORDER__MANUAL_ALL_SHOW;?></u></a></div>
+<br>
+<div align="left" style="display:none;" id="manual_top_all"><a href="javascript:void(0);" onclick="manual_show('top');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_top" style="display:none;">
 <?php 
 $tmp_top_manual = get_configuration_by_site_id('TOP_MANUAL_CONTENT');
@@ -3633,7 +3636,8 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 </h2>
 <div id="manual_top_categories_show">
 </div>
-<div align="right" style="display:none;" id="manual_top_categories_all"><a href="javascript:void(0);" onclick="manual_show('top_categories');"><u><?php echo ORDER__MANUAL_ALL_SHOW;?></u></a></div>
+<br>
+<div align="left" style="display:none;" id="manual_top_categories_all"><a href="javascript:void(0);" onclick="manual_show('top_categories');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_top_categories" style="display:none;">
 <?php echo $get_categories_array['c_manual']!='' ? stripslashes($get_categories_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 </div>
@@ -3648,7 +3652,8 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 </h2>
 <div id="manual_categories_show">
 </div>
-<div align="right" style="display:none;" id="manual_categories_all"><a href="javascript:void(0);" onclick="manual_show('categories');"><u><?php echo ORDER__MANUAL_ALL_SHOW;?></u></a></div>
+<br>
+<div align="left" style="display:none;" id="manual_categories_all"><a href="javascript:void(0);" onclick="manual_show('categories');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_categories" style="display:none;">
 <?php echo $cp_manual_array['c_manual']!='' ? stripslashes($cp_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 </div>
@@ -3659,7 +3664,8 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 </h2>
 <div id="manual_categories_children_show">
 </div>
-<div align="right" style="display:none;" id="manual_categories_children_all"><a href="javascript:void(0);" onclick="manual_show('categories_children');"><u><?php echo ORDER__MANUAL_ALL_SHOW;?></u></a></div>
+<br>
+<div align="left" style="display:none;" id="manual_categories_children_all"><a href="javascript:void(0);" onclick="manual_show('categories_children');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_categories_children" style="display:none;">
 <?php echo $c_manual_array['c_manual']!='' ? stripslashes($c_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 </div>
@@ -3670,7 +3676,8 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 </h2>
 <div id="manual_products_show">
 </div>
-<div align="right" style="display:none;" id="manual_products_all"><a href="javascript:void(0);" onclick="manual_show('products');"><u><?php echo ORDER__MANUAL_ALL_SHOW;?></u></a></div>
+<br>
+<div align="left" style="display:none;" id="manual_products_all"><a href="javascript:void(0);" onclick="manual_show('products');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_products" style="display:none;">
 <?php echo $pro_manual_array['p_manual']!='' ? stripslashes($pro_manual_array['p_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>'?>
 </div>
@@ -4350,7 +4357,8 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 </h2>
 <div id="manual_top_categories_show">
 </div>
-<div align="right" style="display:none;" id="manual_top_categories_all"><a href="javascript:void(0);" onclick="manual_show('top_categories');"><u><?php echo ORDER__MANUAL_ALL_SHOW;?></u></a></div>
+<br>
+<div align="left" style="display:none;" id="manual_top_categories_all"><a href="javascript:void(0);" onclick="manual_show('top_categories');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_top_categories" style="display:none;">
 <?php echo $get_categories_array['c_manual']!='' ? stripslashes($get_categories_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 </div>
@@ -4366,7 +4374,8 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 </h2>
 <div id="manual_categories_show">
 </div>
-<div align="right" style="display:none;" id="manual_categories_all"><a href="javascript:void(0);" onclick="manual_show('categories');"><u><?php echo ORDER__MANUAL_ALL_SHOW;?></u></a></div>
+<br>
+<div align="left" style="display:none;" id="manual_categories_all"><a href="javascript:void(0);" onclick="manual_show('categories');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_categories" style="display:none;">
 <?php echo $cp_manual_array['c_manual']!='' ? stripslashes($cp_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 </div>
@@ -4377,7 +4386,8 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 </h2>
 <div id="manual_categories_children_show">
 </div>
-<div align="right" style="display:none;" id="manual_categories_children_all"><a href="javascript:void(0);" onclick="manual_show('categories_children');"><u><?php echo ORDER__MANUAL_ALL_SHOW;?></u></a></div>
+<br>
+<div align="left" style="display:none;" id="manual_categories_children_all"><a href="javascript:void(0);" onclick="manual_show('categories_children');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_categories_children" style="display:none;">
 <?php echo $c_manual_array['c_manual']!='' ? stripslashes($c_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 </div>
@@ -4389,7 +4399,8 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 </h2>
 <div id="manual_products_show">
 </div>
-<div align="right" style="display:none;" id="manual_products_all"><a href="javascript:void(0);" onclick="manual_show('products');"><u><?php echo ORDER__MANUAL_ALL_SHOW;?></u></a></div>
+<br>
+<div align="left" style="display:none;" id="manual_products_all"><a href="javascript:void(0);" onclick="manual_show('products');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_products" style="display:none;">
 <?php echo $pro_manual_array['p_manual']!='' ? stripslashes($pro_manual_array['p_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>'?>
 </div>
@@ -4470,7 +4481,8 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 </h2>
 <div id="manual_top_categories_show">
 </div>
-<div align="right" style="display:none;" id="manual_top_categories_all"><a href="javascript:void(0);" onclick="manual_show('top_categories');"><u><?php echo ORDER__MANUAL_ALL_SHOW;?></u></a></div>
+<br>
+<div align="left" style="display:none;" id="manual_top_categories_all"><a href="javascript:void(0);" onclick="manual_show('top_categories');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_top_categories" style="display:none;">
 <?php echo $get_categories_array['c_manual']!='' ? stripslashes($get_categories_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 </div>
@@ -4485,7 +4497,8 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
  </h2>
 <div id="manual_categories_show">
 </div>
-<div align="right" style="display:none;" id="manual_categories_all"><a href="javascript:void(0);" onclick="manual_show('categories');"><u><?php echo ORDER__MANUAL_ALL_SHOW;?></u></a></div>
+<br>
+<div align="left" style="display:none;" id="manual_categories_all"><a href="javascript:void(0);" onclick="manual_show('categories');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_categories" style="display:none;">
 <?php echo $cp_manual_array['c_manual']!='' ? stripslashes($cp_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 </div>
@@ -4496,7 +4509,8 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 </h2>
 <div id="manual_categories_children_show">
 </div>
-<div align="right" style="display:none;" id="manual_categories_children_all"><a href="javascript:void(0);" onclick="manual_show('categories_children');"><u><?php echo ORDER__MANUAL_ALL_SHOW;?></u></a></div>
+<br>
+<div align="left" style="display:none;" id="manual_categories_children_all"><a href="javascript:void(0);" onclick="manual_show('categories_children');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_categories_children" style="display:none;">
 <?php echo $c_manual_array['c_manual']!='' ? stripslashes($c_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 </div>
@@ -4575,7 +4589,8 @@ if($c_parent_array['parent_id'] == 0){
  </h2>
 <div id="manual_products_show">
 </div>
-<div align="right" style="display:none;" id="manual_products_all"><a href="javascript:void(0);" onclick="manual_show('products');"><u><?php echo ORDER__MANUAL_ALL_SHOW;?></u></a></div>
+<br>
+<div align="left" style="display:none;" id="manual_products_all"><a href="javascript:void(0);" onclick="manual_show('products');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_products" style="display:none;">
 <?php echo $c_manual_content = $c_manual_array['c_manual']!='' ? stripslashes($c_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';
 ?>
@@ -4590,7 +4605,8 @@ if($c_parent_array['parent_id'] == 0){
  </h2>
 <div id="manual_products_show">
 </div>
-<div align="right" style="display:none;" id="manual_products_all"><a href="javascript:void(0);" onclick="manual_show('products');"><u><?php echo ORDER__MANUAL_ALL_SHOW;?></u></a></div>
+<br>
+<div align="left" style="display:none;" id="manual_products_all"><a href="javascript:void(0);" onclick="manual_show('products');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_products" style="display:none;">
 <?php echo $cp_manual_array['c_manual']!='' ? stripslashes($cp_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 </div>
@@ -4601,7 +4617,8 @@ if($c_parent_array['parent_id'] == 0){
 </h2>
 <div id="manual_categories_show">
 </div>
-<div align="right" style="display:none;" id="manual_categories_all"><a href="javascript:void(0);" onclick="manual_show('categories');"><u><?php echo ORDER__MANUAL_ALL_SHOW;?></u></a></div>
+<br>
+<div align="left" style="display:none;" id="manual_categories_all"><a href="javascript:void(0);" onclick="manual_show('categories');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_categories" style="display:none;">
 <?php echo $c_manual_array['c_manual']!='' ? stripslashes($c_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 </div>
