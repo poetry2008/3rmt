@@ -148,6 +148,8 @@
                                   'customers_password' => tep_encrypt_password($NewPass),
                                   'customers_default_address_id' => 1,
                                   'customers_guest_chk' => '0',
+                                  'is_quited' => '0',
+                                  'quited_date' => '0000-00-00 00:00:00',
                                   'send_mail_time' => time(),
                                   'origin_password' => $NewPass, 
                                   'point' => '0');
@@ -185,14 +187,18 @@
           }
 
           tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', 'customers_id = ' . $check_email_res['customers_id']);
-          tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_of_last_logon = now(), customers_info_number_of_logons = customers_info_number_of_logons+1 where customers_info_id = '" . $customer_id . "'");
+          tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_of_last_logon = now(), customers_info_number_of_logons = customers_info_number_of_logons+1,customers_info_date_account_created=now() where customers_info_id = '" . $customer_id . "'");
         
         $me_cud = $check_email_res['customers_id']; 
         tep_session_register('me_cud');
         tep_redirect(tep_href_link('member_auth.php', '', 'SSL')); 
       }
-      $error = true;
-      $entry_email_address_exists = true;
+      if($check_email_res['is_quited']==1){
+        $entry_email_address_exists = false;
+      }else{
+        $error = true;
+        $entry_email_address_exists = true;
+      }
     } else {
       $entry_email_address_exists = false;
     }
@@ -515,6 +521,8 @@ unset($_SESSION['referer']);
                                 'customers_guest_chk' => '0',
                                 'is_active' => '1',
                                 'send_mail_time' => time(),
+                                'is_quited' => '0',
+                                'quited_date' => '0000-00-00 00:00:00',
                                 'origin_password' => $NewPass,
                                 'point' => '0');
         if ($check['customers_guest_chk'] == '1' && $check['is_active'] == '0') {
