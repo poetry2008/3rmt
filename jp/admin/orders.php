@@ -4417,6 +4417,8 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 
 </td>
 </tr>
+</table>
+</td>
 
 <?php
 	}else if(!(isset($_GET['pID']) && $_GET['pID']!='') && (isset($_GET['cID']) && $_GET['cID']!='')){
