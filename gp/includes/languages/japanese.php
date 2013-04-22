@@ -438,6 +438,7 @@ define('LEFT_SEARCH_CATEGORY_EIGHT_TEXT', 'ヤ');
 define('LEFT_SEARCH_CATEGORY_NINE_TEXT', 'ラ');
 define('LEFT_SEARCH_CATEGORY_TEN_TEXT', 'ワ');
 define('CONNECT_SYMBOL_TEXT', '～');
+define('BOX_REVIEWS_LINK_TEXT', 'のレビュー');
 
 define('DATE_YEAR_TEXT', '年');
 define('DATE_MONTH_TEXT', '月');

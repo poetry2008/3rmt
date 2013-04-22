@@ -3286,7 +3286,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
         array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.((tep_not_null($rInfo->last_modified))?$rInfo->last_modified:TEXT_UNSET_DATA))
       );
   if($ocertify->npermission == 15){
-   $reviews_button[] = tep_html_element_button(IMAGE_SAVE,'onclick="check_review_submit('.$_GET['rID'].','.$_GET['page'].')"').  '&nbsp;<a href="'.tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' .  $rInfo->reviews_id) .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').'&action=deleteconfirm">'.tep_html_element_button(IMAGE_DELETE).'</a>';
+   $reviews_button[] = tep_html_element_button(IMAGE_SAVE,'onclick="check_review_submit('.$_GET['rID'].','.$_GET['page'].')"').  '&nbsp;<a href="'.tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' .  $rInfo->reviews_id) .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').  (isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'').  '&action=deleteconfirm">'.tep_html_element_button(IMAGE_DELETE).'</a>';
     if(!empty($reviews_button)){
         $buttons = array('align' => 'center', 'button' => $reviews_button);
      }
