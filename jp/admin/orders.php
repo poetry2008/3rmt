@@ -2468,6 +2468,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     }
 ?>
 <script>
+<?php //显示手册全部内容?>
 function manual_show(action){
 
   switch(action){
@@ -2494,7 +2495,7 @@ function manual_show(action){
     break;
   }   
 }
-
+<?php //显示手册部分内容?>
 function manual_hide(action){
 
   switch(action){
@@ -2523,9 +2524,10 @@ function manual_hide(action){
 }
 $(document).ready(function(){ 
 <?php
+  //当请求为手册显示时执行
   if($_GET['action'] == 'show_manual_info' || $_GET['action'] == 'show_search_manual'){
 ?>
-    <?php //手册隐藏，显示?>
+    <?php //手册内容隐藏，显示?>
     var show_height = 200;
     var manual_top = $("#manual_top").height();
     manual_top = parseInt(manual_top);
