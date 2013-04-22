@@ -5,9 +5,7 @@
 ?>
 <!-- reviews //-->
 <?php
-    // ccdd
   if(basename($PHP_SELF) == FILENAME_PRODUCT_INFO){
-    // ccdd
     $reviews_query = tep_db_query("
         select r.reviews_rating, 
                r.reviews_id, 
