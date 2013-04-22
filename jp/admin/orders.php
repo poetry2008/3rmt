@@ -4279,7 +4279,8 @@ echo '<b><font color="red">'.MANUAL_SEARCH_NORES.'</font></b>';
 
 }
 ?>
-
+</table>
+</td>
 <?php
 }else if($_GET['action']=='show_search_manual'){
 //显示搜索手册
