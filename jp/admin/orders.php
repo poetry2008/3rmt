@@ -2422,7 +2422,7 @@ if($belong_temp_array[0][0] != ''){
     preg_match_all('/pID=[^&]+/',$belong,$belong_array);
     if($belong_array[0][0] != ''){
 
-      $belong = $href_url.'?'.$belong_array[0][0];
+      $belong = $href_url.'?action=show_manual_info|||'.$belong_array[0][0];
     }else{
 
       $belong = $href_url;
@@ -2436,7 +2436,7 @@ if($belong_temp_array[0][0] != ''){
     }else{
       preg_match_all('/pID=[^&]+/',$belong,$belong_array); 
       if($belong_array[0][0] != ''){
-        $belong = $href_url.'?action=show_search_manual|||'.$belong_array[0][0]; 
+        $belong = $href_url.'?action=show_manual_info|||'.$belong_array[0][0]; 
       }
     }
   }else{
@@ -3813,11 +3813,7 @@ if(((!isset($_GET['p_pid']) || !$_GET['p_pid'])&& (!isset($p_pid) || !$p_pid)) |
 $p_pid=$products_array['products_id'];
 }
 
-if(isset($p_pid)  && ($products_array['products_id']==$p_pid)){
-echo '<tr class="dataTableRowSelected">'; 
-}else{
 echo '<tr class='.$now_class.'>';
-}
 ?>
 
 
@@ -3941,11 +3937,7 @@ $now_class=$odd	;
 if(((!isset($_GET['s_cid2']) || !$_GET['s_cid2']) &&(!isset($s_cid2) && !$s_cid2))|| ($categories_array['categories_id']==$_GET['s_cid2'])){
 $s_cid2=$categories_array['categories_id'];
 }
-if(isset($s_cid2)  && ($categories_array['categories_id']==$s_cid2)){
-echo '<tr class="dataTableRowSelected">'; 
-}else{
 echo '<tr class='.$now_class.'>';
-}
 ?>
 <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("s_cid2")).'s_cid2='.$categories_array['categories_id']);?>'">
 	<?php
@@ -4079,11 +4071,7 @@ if(((!isset($_GET['s_cpath']) || !$_GET['s_cpath']) &&(!isset($s_cpath) && !$s_c
 $s_cpath=$categories_s_array['categories_id'];
 
 }
-if(isset($s_cpath)  && ($categories_s_array['categories_id']==$s_cpath)){
-echo '<tr class="dataTableRowSelected">'; 
-}else{
 echo '<tr class='.$now_class.'>';
-}
 ?>
 	<td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_ORDERS,tep_get_all_get_params().'&s_cpath='.$categories_s_array['categories_id']);?>'">
 	<?php
@@ -4201,11 +4189,7 @@ $now_class=$odd	;
 if(((!isset($_GET['s_cid']) || !$_GET['s_cid']) && (!isset($s_cid) || !$s_cid)) || ($val['c_id']==$_GET['s_cid'])){
 $s_cid=$val['c_id'];
 }
-if(isset($s_cid)  && ($val['c_id']==$s_cid)){
-echo '<tr class="dataTableRowSelected">'; 
-}else{
 echo '<tr class='.$now_class.'>';
-}
 ?>
 	<td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('s_cid')).'s_cid='.$val['c_id']);?>'">
 <?php 
@@ -4263,11 +4247,7 @@ if(((!isset($_GET['s_pid']) || !$_GET['s_pid'] ) && (!isset($s_pid) || !$s_pid))
 $s_pid=$products_info_array['products_id'];
 
 }
-if(isset($s_pid)  && ($products_info_array['products_id']==$s_pid)){
-echo '<tr class="dataTableRowSelected">'; 
-}else{
 echo '<tr class='.$now_class.'>';
-}
 
 
 ?>
@@ -4370,6 +4350,20 @@ $title_cp = $get_categories_title['categories_name'].'/';
 <table border="0" width="100%" cellspacing="0" cellpadding="10" >
 <tr>
 <td>
+<h2>
+<?php echo ORDER_TOP_MANUAL_TEXT.SHOW_MANUAL_TITLE;?>
+<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=edit_top_categories_manual')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
+</h2>
+<div id="manual_top_show">
+</div>
+<br>
+<div align="left" style="display:none;" id="manual_top_all"><a href="javascript:void(0);" onclick="manual_show('top');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div id="manual_top" style="display:none;">
+<?php 
+$tmp_top_manual = get_configuration_by_site_id('TOP_MANUAL_CONTENT');
+echo (!empty($tmp_top_manual)?stripslashes($tmp_top_manual):'<font color="red">'.SHOW_MANUAL_NONE.'</font>');?>
+</div>
+<hr>
 <?php 
 if($check_categories_array['parent_id']!=0){
 $get_categories_info = tep_db_query("select categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$check_categories_array['parent_id']."' and site_id='".$site_id."'");
@@ -4494,6 +4488,20 @@ $title_cp = $get_categories_title['categories_name'].'/';
 <table border="0" width="100%" cellspacing="0" cellpadding="10" >
 <tr>
 <td>
+<h2>
+<?php echo ORDER_TOP_MANUAL_TEXT.SHOW_MANUAL_TITLE;?>
+<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=edit_top_categories_manual')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
+</h2>
+<div id="manual_top_show">
+</div>
+<br>
+<div align="left" style="display:none;" id="manual_top_all"><a href="javascript:void(0);" onclick="manual_show('top');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div id="manual_top" style="display:none;">
+<?php 
+$tmp_top_manual = get_configuration_by_site_id('TOP_MANUAL_CONTENT');
+echo (!empty($tmp_top_manual)?stripslashes($tmp_top_manual):'<font color="red">'.SHOW_MANUAL_NONE.'</font>');?>
+</div>
+<hr>
 <?php 
 $check_categories_query = tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$cp_manual_array['categories_id']."'");
 $check_categories_array = tep_db_fetch_array($check_categories_query);
@@ -4605,6 +4613,20 @@ $c_title          = $cp_manual_array['categories_name'].'/'.$c_manual_array['cat
 <table border="0" width="100%" cellspacing="0" cellpadding="10" >
 <tr>
 <td>
+<h2>
+<?php echo ORDER_TOP_MANUAL_TEXT.SHOW_MANUAL_TITLE;?>
+<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=edit_top_categories_manual')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
+</h2>
+<div id="manual_top_show">
+</div>
+<br>
+<div align="left" style="display:none;" id="manual_top_all"><a href="javascript:void(0);" onclick="manual_show('top');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div id="manual_top" style="display:none;">
+<?php 
+$tmp_top_manual = get_configuration_by_site_id('TOP_MANUAL_CONTENT');
+echo (!empty($tmp_top_manual)?stripslashes($tmp_top_manual):'<font color="red">'.SHOW_MANUAL_NONE.'</font>');?>
+</div>
+<hr>
 <?php 
 if($c_parent_array['parent_id'] == 0){
 ?>
