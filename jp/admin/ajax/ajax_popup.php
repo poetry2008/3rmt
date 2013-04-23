@@ -3018,10 +3018,10 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     //判断新建还是 编辑
     if(isset($rID)&&$rID){
        $action_type = 'update'; 
-       $site_permission = editPermission($site_arr, $reviews['site_id']);
+       $site_permission = editPermission($site_arr, $reviews['site_id'],true);
     }else{
        $action_type = 'insert'; 
-       $site_permission = editPermission($site_arr, $_GET['site_id']);
+       $site_permission = editPermission($site_arr, $_GET['site_id'],true);
     }
     if(!$site_permission){
       $str_disabled = ' disabled="disabled" ';
@@ -3042,14 +3042,61 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
           and language_id = '" . $languages_id . "'");
     $products_name = tep_db_fetch_array($products_name_query);
      
-    $reviews_query_raw = " select r.reviews_id, r.products_id, r.date_added,
-      r.last_modified, r.user_added, r.user_update, r.reviews_rating,
-      r.reviews_status , s.romaji, s.name as site_name, pd.products_name from " .
-        TABLE_REVIEWS . " r, ".TABLE_SITES." s, ".TABLE_PRODUCTS_DESCRIPTION." pd
-        where r.site_id = s.id and r.products_id = pd.products_id and pd.language_id
-        = '".$languages_id."' and pd.site_id = 0 " . (isset($_GET['site_id']) &&
-        intval($_GET['site_id']) ? " and s.id = '" .  intval($_GET['site_id']) . "'
-        " : '') . " and pd.products_name like '%".$_GET['product_name']."%' order by date_added DESC";
+    if(isset($_GET['product_name']) && $_GET['product_name']){
+       $p_list_arr = array();
+       $p_list_arr_site = array();
+       if(isset($_GET['site_id'])&&$_GET['site_id']){
+         $p_list_arr_site_sql = "select products_id,products_name from ".
+           TABLE_PRODUCTS_DESCRIPTION." where 
+           products_name like '%".trim($_GET['product_name'])."%' 
+           and site_id = '".$_GET['site_id']."'";
+         $p_list_arr_site_query = tep_db_query($p_list_arr_site_sql);
+         while($p_list_arr_site_res = tep_db_fetch_array($p_list_arr_site_query)){
+           $p_list_arr[] = $p_list_arr_site_res['products_id'];
+           $p_list_arr_site[$p_list_arr_site_res['products_id']] =
+           $p_list_arr_site_res['products_name'];
+         }
+       }
+       if(isset($_GET['site_id'])&&$_GET['site_id']){
+         $p_list_arr_sql = "SELECT products_id FROM ".TABLE_PRODUCTS_DESCRIPTION." 
+           WHERE site_id = 0 
+           and products_name like '%".trim($_GET['product_name'])."%'
+           and products_id not in 
+           (select products_id FROM ".TABLE_PRODUCTS_DESCRIPTION." 
+            where site_id ='".$_GET['site_id']."')";
+       }else{
+         $p_list_arr_sql = "select products_id from ".
+           TABLE_PRODUCTS_DESCRIPTION." where 
+           products_name like '%".trim($_GET['product_name'])."%' 
+           and site_id = 0";
+       }
+         $p_list_arr_query = tep_db_query($p_list_arr_sql);
+         while($p_list_arr_res = tep_db_fetch_array($p_list_arr_query)){
+           if(!in_array($p_list_arr_res['products_id'],$p_list_arr)){
+             $p_list_arr[] = $p_list_arr_res['products_id'];
+             $p_list_arr_site[$p_list_arr_res['products_id']] =
+             $p_list_arr_res['products_name'];
+           }
+         }
+         $where_str = ' and r.products_id in ('.implode(',',$p_list_arr).') ';
+    }
+    $reviews_query_raw = "
+      select r.reviews_id, 
+             r.products_id, 
+             r.date_added, 
+             r.last_modified, 
+	     r.user_added,
+	     r.user_update,
+             r.site_id,
+             r.reviews_rating, 
+             r.reviews_status ,
+             s.romaji,
+             s.name as site_name
+     from " . TABLE_REVIEWS . " r, ".TABLE_SITES." s
+     where r.site_id = s.id
+        " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and s.id = '" .  intval($_GET['site_id']) . "' " : '') . "".$where_str."
+     order by date_added DESC";
+
     $reviews_raw_query = tep_db_query($reviews_query_raw);
     while ($reviews_id = tep_db_fetch_array($reviews_raw_query)) {
          $rid_array[] = $reviews_id['reviews_id']; 
@@ -3175,6 +3222,8 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
       $ProductOptions = $select_value;
              asort($ProductList[$add_product_categories_id]);
              foreach($ProductList[$add_product_categories_id] as $ProductID => $ProductName){
+               $ProductName  =
+                 tep_get_products_name($ProductID,$languages_id,$_GET['site_id'],true);
                  if($df_pid == $ProductID){
                  $ProductOptions .= "<option value='$ProductID' selected> $ProductName\n";
                  }else{
@@ -3363,12 +3412,13 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
 
 
   if($ocertify->npermission == 15){
-   $reviews_button[] = tep_html_element_button(IMAGE_SAVE,'onclick="check_review_submit('.$_GET['rID'].','.$_GET['page'].')"').  '&nbsp;<a href="'.tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' .  $rInfo->reviews_id) .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').  (isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'').  '&action=deleteconfirm">'.tep_html_element_button(IMAGE_DELETE).'</a>';
+   $reviews_button[] =
+     tep_html_element_button(IMAGE_SAVE,$str_disabled.'onclick="check_review_submit('.$_GET['rID'].','.$_GET['page'].')"').  '&nbsp;<a href="'.tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] .  '&rID=' .  $rInfo->reviews_id) .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').  (isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'').  '&action=deleteconfirm">'.tep_html_element_button(IMAGE_DELETE,$str_disabled).'</a>';
     if(!empty($reviews_button)){
         $buttons = array('align' => 'center', 'button' => $reviews_button);
      }
   }else{
-   $reviews_button[] = tep_html_element_button(IMAGE_SAVE,'onclick="check_review_submit('.$_GET['rID'].','.$_GET['page'].')"'.$str_disabled);
+   $reviews_button[] = tep_html_element_button(IMAGE_SAVE,$str_disabled.'onclick="check_review_submit('.$_GET['rID'].','.$_GET['page'].')"'.$str_disabled);
     if(!empty($reviews_button)){
         $buttons = array('align' => 'center', 'button' => $reviews_button);
      }

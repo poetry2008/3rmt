@@ -5953,7 +5953,7 @@ function tep_display_google_results($from_url='', $c_type=false){
     参数: $site_id(int) 网站id 
     返回值: 是否有权限(boolean) 
  ------------------------------------ */
-  function  editPermission($site_permission,$site_id){
+  function  editPermission($site_permission,$site_id,$all_change=false){
 
     $edit_p=FALSE;
     $site_arr=array();
@@ -5966,7 +5966,11 @@ function tep_display_google_results($from_url='', $c_type=false){
       $edit_p=true;//true 说明有管理权限 可以在点击新闻时进行修改 
     }else if($_SESSION['user_permission'] == 15){
       //判断 管理员 可以修改全部(all)
-      $edit_p=true;
+      if($all_change){
+        $edit_p=false;
+      }else{
+        $edit_p=true;
+      }
     }
     return $edit_p;
   }
