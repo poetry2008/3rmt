@@ -2972,10 +2972,28 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
    $notice_box->get_eof(tep_eof_hidden());
    echo $notice_box->show_notice();
    }
- }else if ($_GET['action'] == 'edit_reviews'){
- include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_REVIEWS);
- include(DIR_FS_ADMIN.'classes/notice_box.php');
- $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+}else if ($_GET['action'] == 'edit_reviews'){
+ if(isset($_GET['default_value'])&&$_GET['default_value']=='save'){
+   $_SESSION['r_default_value'] = array(
+       'df_status' => $_GET['df_status'],
+       'df_rating' => $_GET['df_rating'],
+       'df_year' => $_GET['df_year'],
+       'df_m' => $_GET['df_m'],
+       'df_d' => $_GET['df_d'],
+       'df_h' => $_GET['df_h'],
+       'df_i' => $_GET['df_i'],
+       'df_cid' => $_GET['df_cid'],
+       'df_pid' => $_GET['df_pid']
+       );
+   exit;
+  }
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_REVIEWS);
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+  $sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$_SESSION['loginuid']."' limit 0,1");
+  while($userslist= tep_db_fetch_array($sites_id)){
+    $site_arr = $userslist['site_permission']; 
+  }
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
     $rID = tep_db_prepare_input($_GET['rID']);
     $reviews_query = tep_db_query("
         select r.reviews_id, 
@@ -2983,8 +3001,8 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
                r.customers_name, 
                r.date_added, 
                r.last_modified, 
-	       r.user_added,
-	       r.user_update,
+               r.user_added,
+               r.user_update,
                r.reviews_read, 
                rd.reviews_text, 
                r.reviews_rating, 
@@ -2997,6 +3015,19 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
           and s.id = r.site_id
           and r.reviews_id = rd.reviews_id");
     $reviews = tep_db_fetch_array($reviews_query);
+    //判断新建还是 编辑
+    if(isset($rID)&&$rID){
+       $action_type = 'update'; 
+       $site_permission = editPermission($site_arr, $reviews['site_id']);
+    }else{
+       $action_type = 'insert'; 
+       $site_permission = editPermission($site_arr, $_GET['site_id']);
+    }
+    if(!$site_permission){
+      $str_disabled = ' disabled="disabled" ';
+    }else{
+      $str_disabled = '';
+    }
     $products_query = tep_db_query("
         select products_image 
         from " . TABLE_PRODUCTS . " 
@@ -3011,70 +3042,101 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
           and language_id = '" . $languages_id . "'");
     $products_name = tep_db_fetch_array($products_name_query);
      
-    $reviews_query_raw = " select r.reviews_id, r.products_id, r.date_added, r.last_modified, r.user_added, r.user_update, r.reviews_rating, r.reviews_status , s.romaji, s.name as site_name, pd.products_name from " . TABLE_REVIEWS . " r, ".TABLE_SITES." s, ".TABLE_PRODUCTS_DESCRIPTION." pd where r.site_id = s.id and r.products_id = pd.products_id and pd.language_id = '".$languages_id."' and pd.site_id = 0 " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and s.id = '" .  intval($_GET['site_id']) . "' " : '') . " order by date_added DESC";
+    $reviews_query_raw = " select r.reviews_id, r.products_id, r.date_added,
+      r.last_modified, r.user_added, r.user_update, r.reviews_rating,
+      r.reviews_status , s.romaji, s.name as site_name, pd.products_name from " .
+        TABLE_REVIEWS . " r, ".TABLE_SITES." s, ".TABLE_PRODUCTS_DESCRIPTION." pd
+        where r.site_id = s.id and r.products_id = pd.products_id and pd.language_id
+        = '".$languages_id."' and pd.site_id = 0 " . (isset($_GET['site_id']) &&
+        intval($_GET['site_id']) ? " and s.id = '" .  intval($_GET['site_id']) . "'
+        " : '') . " and pd.products_name like '%".$_GET['product_name']."%' order by date_added DESC";
     $reviews_raw_query = tep_db_query($reviews_query_raw);
     while ($reviews_id = tep_db_fetch_array($reviews_raw_query)) {
-         $cid_array[] = $reviews_id['reviews_id']; 
+         $rid_array[] = $reviews_id['reviews_id']; 
     }
    
     $rInfo_array = tep_array_merge($reviews, $products, $products_name);
     $rInfo = new objectInfo($rInfo_array);
-    switch ($rInfo->reviews_status) {
-      case '0': $in_status = false; $out_status = true; break;
-      case '1':
-      default: $in_status = true; $out_status = false;
+//编辑的时候有默认值 新建的时候没有默认值 
+//AJAX 验证的时候有默认值
+ if(isset($_GET['validate'])&&$_GET['validate']){
+  $df_status = $_SESSION['r_default_value']['df_status'];
+  $df_rating = $_SESSION['r_default_value']['df_rating'];
+  $df_year = $_SESSION['r_default_value']['df_year'];
+  $df_m = $_SESSION['r_default_value']['df_m'];
+  $df_d = $_SESSION['r_default_value']['df_d'];
+  $df_h = $_SESSION['r_default_value']['df_h'];
+  $df_i = $_SESSION['r_default_value']['df_i'];
+  $df_cid = $_SESSION['r_default_value']['df_cid'];
+  $df_pid = $_SESSION['r_default_value']['df_pid'];
+}else if(isset($rID)&&$rID){
+  $df_pinfo = tep_db_fetch_array(tep_db_query("select products_id from ".  TABLE_REVIEWS ." where reviews_id='".$rID."' limit 1"));
+  if(!empty($df_pinfo)){
+    $df_pid = $df_pinfo['products_id'];
+  }else{
+    $df_pid = 0;
+  }
+  $df_cinfo = tep_db_fetch_array(tep_db_query("select categories_id from ".  TABLE_PRODUCTS_TO_CATEGORIES  ." where products_id='".$df_pid."' limit 1"));
+  if(!empty($df_cinfo)){
+    $df_cid = $df_cinfo['categories_id'];
+  }else{
+    $df_cid = 0;
+  }
+  $df_year = intval(date('Y', strtotime($rInfo->date_added)));
+  $df_m = intval(date('m', strtotime($rInfo->date_added)));
+  $df_d = intval(date('d', strtotime($rInfo->date_added)));
+  $df_h = intval(date('H', strtotime($rInfo->date_added)));
+  $df_i = intval(date('i', strtotime($rInfo->date_added)));
+  $df_rating = $rInfo->reviews_rating;
+  $df_status = $rInfo->reviews_status;
+  $df_title = tep_output_string_protected($rInfo->customers_name);
+  $df_text = $rInfo->reviews_text;
+}
+// 输出表格
+  $heading   = array(); 
+  foreach ($rid_array as $r_key => $r_value) {
+    if ($rID == $r_value) {
+      break;
     }
-    $heading   = array(); 
-    foreach ($cid_array as $c_key => $c_value) {
-           if ($_GET['rID'] == $c_value) {
-               break;
-            }
-    }
-     $page_str = '';
-     if($_GET['rID'] != '-1'){
-     if ($c_key > 0) { 
-       $page_str .= '<a id="option_prev" onclick=\'show_text_reviews("",'.$_GET['page'].','.$cid_array[$c_key-1].','.$_GET['site_id'].')\' href="javascript:void(0);" id="option_next">'.TEXT_CAMPAIGN_PREV.'</a>&nbsp;&nbsp;';
+  }
+  $page_str = '';
+  //标题
+  if(isset($rID)&&$rID){
+     if ($r_key > 0) { 
+       $page_str .= '<a id="option_prev" onclick=\'show_text_reviews("",'.$_GET['page'].','.$rid_array[$r_key-1].','.$_GET['site_id'].')\' href="javascript:void(0);" id="option_next">'.TEXT_CAMPAIGN_PREV.'</a>&nbsp;&nbsp;';
      }
-     if ($c_key < (count($cid_array) - 1)) {
-       $page_str .= '<a id="option_next" onclick=\'show_text_reviews("",'.$_GET['page'].','.$cid_array[$c_key+1].','.$_GET['site_id'].')\' href="javascript:void(0);" id="option_next">'.TEXT_CAMPAIGN_NEXT.'</a>&nbsp;&nbsp;';
+     if ($r_key < (count($rid_array) - 1)) {
+       $page_str .= '<a id="option_next" onclick=\'show_text_reviews("",'.$_GET['page'].','.$rid_array[$r_key+1].','.$_GET['site_id'].')\' href="javascript:void(0);" id="option_next">'.TEXT_CAMPAIGN_NEXT.'</a>&nbsp;&nbsp;';
      }
-     }
-    if($_GET['rID'] == -1){
-       $products_name = TEXT_CATEGORY_NAME;
-    }else{
-       $products_name = $rInfo->products_name;
-    }
-    $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
-    $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-    $heading[] = array('align' => 'left', 'text' => $products_name.'&nbsp;&nbsp;');
-    $heading[] = array('align' => 'right', 'text' => $page_str);
-    if($_GET['site_id'] == null || $_GET['rID'] == -1){
-      $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$_GET['site_id']));
-      $reviews['romaji'] = $site_name['romaji'];
-    }
-    if($_GET['rID'] == -1){
-       $action_type = 'insert'; 
-    }else{
-       $action_type = 'update'; 
-    }
-    $contents[]['text'] = array(
-        array('text' => ENTRY_SITE.':<input type="hidden" name="action_type" value="'.$action_type.'">'),
-        array('text' => $reviews['romaji'].'<input id="site_id" name="site_id" type="hidden" value="'.$_GET['site_id'].'"><input id="site_hidden" name="site_hidden" type="hidden" value="'.$_GET['site_id'].'">')
-    );
-    if($_GET['rID'] != -1){
-    $products_id = tep_db_fetch_array(tep_db_query("select * from ".  TABLE_REVIEWS ." where reviews_id=".$_GET['rID']));
-    $category_id = tep_db_fetch_array(tep_db_query("select * from ".  TABLE_PRODUCTS_TO_CATEGORIES  ." where products_id=".$products_id['products_id']));
-    }
-    if(isset($_GET['review_products_id_info']) && $_GET['review_products_id_info']){
-        $review_products_id_info = $_GET['review_products_id_info']; 
-    }else if(isset($category_id['categories_id']) && $category_id['categories_id']){
-        $review_products_id_info = $category_id['categories_id']; 
-    }else{
-        $review_products_id_info = 0;
-    }
+  }
+  if(isset($rID)&&$rID){
+    $products_name = TEXT_CATEGORY_NAME;
+  }else{
+    $products_name = $rInfo->products_name;
+  }
+  $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => $products_name.'&nbsp;&nbsp;');
+  $heading[] = array('align' => 'right', 'text' => $page_str);
+//信息列表
+  if(isset($_GET['site_id'])&&$_GET['site_id']){
+    $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$_GET['site_id']));
+    $reviews['romaji'] = $site_name['romaji'];
+  }
+  $contents[]['text'] = array( 
+      array('text' => ENTRY_SITE.':<input type="hidden" name="action_type" value="'.$action_type.'">'),
+      array('text' => $reviews['romaji'].'<input id="site_id" name="site_id" type="hidden" value="'.$_GET['site_id'].'"><input id="site_hidden" name="site_hidden" type="hidden" value="'.$_GET['site_id'].'">')
+  );
+  if(isset($_GET['review_products_id_info']) && $_GET['review_products_id_info']){
+    $review_products_id_info = $_GET['review_products_id_info']; 
+  }else if(isset($df_cid) && $df_cid){
+    $review_products_id_info = $df_cid; 
+  }else{
+    $review_products_id_info = 0;
+  }
   $contents[]['text'] = array(
         array('text' => TEXT_CATEGORY_SELECT),
-        array('text' => tep_draw_pull_down_menu('review_products_id', tep_get_category_tree(),$review_products_id_info,'id="review_products_id" onchange="change_review_products_id(this,'.$_GET['page'].','.$_GET['rID'].','.$_GET['site_id'].')"') ), 
+        array('text' => tep_draw_pull_down_menu('review_products_id', tep_get_category_tree(),$review_products_id_info,'id="review_products_id" onchange="change_review_products_id(this,'.$_GET['page'].','.$rID.','.$_GET['site_id'].')"'.$str_disabled) .'<input type="hidden" id="r_cid" value="'.$df_cid.'">') 
     );
    $result = tep_db_query(" SELECT products_name, p.products_id, cd.categories_name, ptc.categories_id FROM " . TABLE_PRODUCTS . " p LEFT JOIN " .  TABLE_PRODUCTS_DESCRIPTION . " pd ON pd.products_id=p.products_id LEFT JOIN " . TABLE_PRODUCTS_TO_CATEGORIES . " ptc ON ptc.products_id=p.products_id LEFT JOIN " . TABLE_CATEGORIES_DESCRIPTION . " cd ON cd.categories_id=ptc.categories_id where pd.language_id = '" . (int)$languages_id . "' and cd.site_id = '0' and pd.site_id = '0' ORDER BY categories_name");
     while($row = tep_db_fetch_array($result)){
@@ -3108,16 +3170,12 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
       }else{
           $add_product_categories_id = $_GET['review_products_id_info'];
       }
-      if(isset($rInfo->products_name) && $add_product_categories_id == 0 && $rInfo->products_name){
-            $select_value = "<option value='1'>".$rInfo->products_name; 
-      }else{
-            $select_value = "<option value='0'>".TEXT_SELECT_PRODUCT;      
-      }
-      $review_select = "<select id='add_product_products_id' name=\"add_product_products_id\" onchange='change_hidden_select(this.options[this.selectedIndex].text)'>";
+      $select_value = "<option value='0'>".TEXT_SELECT_PRODUCT;      
+      $review_select = "<select id='add_product_products_id' name=\"add_product_products_id\" onchange='change_hidden_select(this)' ".$str_disabled.">";
       $ProductOptions = $select_value;
              asort($ProductList[$add_product_categories_id]);
              foreach($ProductList[$add_product_categories_id] as $ProductID => $ProductName){
-                 if($rInfo->products_id == $ProductID){
+                 if($df_pid == $ProductID){
                  $ProductOptions .= "<option value='$ProductID' selected> $ProductName\n";
                  }else{
                  $ProductOptions .= "<option value='$ProductID'> $ProductName\n";
@@ -3125,118 +3183,120 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
              }
              $ProductOptions = str_replace("value='$add_product_products_id'","value='$add_product_products_id' selected", $ProductOptions);
     $review_select_end = "</select>";
-    if(isset($_GET['add_id']) && $_GET['add_id'] == 0 && !isset($rInfo->products_name)){
-      $error_add_id = '<span style="color:#ff0000;">'.TEXT_CLEAR_SELECTION.'</span>'; 
+    if(!isset($df_pid)||$df_pid==0){
+      $error_add_id = '<span id="p_error" style="color:#ff0000;">'.TEXT_CLEAR_SELECTION.'</span>'; 
     }
     $contents[]['text'] = array(
         array('text' => ENTRY_PRODUCT),
         array('text' => $review_select.$ProductOptions.$review_select_end.$error_add_id),
-        array('text' => '<input type="hidden" id="hidden_select" name="hidden_select" value="'.$rInfo->products_name.'"><input type="hidden" name="hidden_products_name" value="'.$rInfo->products_name.'">')
+        array('text' => '<input type="hidden" id="hidden_select" name="hidden_select" value="'.$df_pid.'"><input type="hidden" name="hidden_products_name" value="'.$rInfo->products_id.'">'.'<input type="hidden" id="r_pid" value="'.$df_pid.'">')
     );
 
 
-        $date_posted = '';
-        $date_posted .= '<select name="year">'; 
+  $date_posted = '';
+  if(isset($df_year)&&$df_year){
+    $date_posted .= '<input type="hidden" id="r_year" value="'.$df_year.'">';
+  }else{
+    $date_posted .= '<input type="hidden" id="r_year" value="'.date('Y').'">';
+    $df_year = date('Y');
+  }
+  $date_posted .= '<select name="year" onchange="set_ryear(this)"'.$str_disabled.'>'; 
+  $now_year = date('Y');
   for ($i=0;$i<10;$i++) {
-        if(date('Y')-$i == intval(date('Y', strtotime($rInfo->date_added)))){
-            $selected = 'selected';
-        }else{
-            $selected = '';
-        }
-        $date_y = date('Y')-$i;
-        if($_GET['rID'] == -1){
-         if(date('Y') == $date_y){
-          $date_y = date('Y');
-          $selected = 'selected';
-         }
-        }
-        $date_posted .= '<option value="'.$date_y.'" '.$selected.'>'.$date_y.'</option>';
-   }
-        $date_posted .= '</select>';
-        $date_posted .= '<select name="m">';
+    $date_y = intval($now_year - $i);
+    if($date_y == $df_year){
+      $selected = 'selected';
+    }else{
+      $selected = '';
+    }
+    $date_posted .= '<option value="'.$date_y.'" '.$selected.'>'.$date_y.'</option>';
+  }
+  $date_posted .= '</select>';
+  if(isset($df_m)&&$df_m){
+    $date_posted .= '<input type="hidden" id="r_month" value="'.$df_m.'">';
+  }else{
+    $date_posted .= '<input type="hidden" id="r_month" value="'.date('m').'">';
+    $df_m = date('m');
+  }
+  $date_posted .= '<select name="m" onchange="set_rmonth(this)"'.$str_disabled.'>';
   for ($i=01;$i<13;$i++) {
-         if($i==intval(date('m', strtotime($rInfo->date_added)))){
-            $selected = 'selected';
-         }else{
-            $selected = '';
-         }
-       if($_GET['rID'] == -1){
-         if(date('m') == $i){
-          $i = date('m');
-          $selected = 'selected';
-         }else{
-           $selected = '';
-         }
-        }
-         $date_posted .= '<option value="'.$i.'" '.$selected.'>'.$i.'</option>';
+    if($i==$df_m){
+      $selected = 'selected';
+    }else{
+      $selected = '';
+    }
+    $date_posted .= '<option value="'.$i.'" '.$selected.'>'.$i.'</option>';
   }
-        $date_posted .= '</select>';
-        $date_posted .= '<select name="d">';
+  $date_posted .= '</select>';
+  if(isset($df_d)&&$df_d){
+    $date_posted .= '<input type="hidden" id="r_day" value="'.$df_d.'">';
+  }else{
+    $date_posted .= '<input type="hidden" id="r_day" value="'.date('d').'">';
+    $df_d = date('d');
+  }
+  $date_posted .= '<select name="d" onchange="set_rday(this)"'.$str_disabled.'>';
   for ($i=1;$i<31;$i++) {
-        if($i==intval(date('d', strtotime($rInfo->date_added)))){
-           $selected = 'selected'; 
-        }else{
-           $selected = '';
-        }
-       if($_GET['rID'] == -1){
-         if(date('d') == $i){
-          $i = date('d');
-          $selected = 'selected';
-         }else{
-          $selected = '';
-        }
-        } 
-       $date_posted .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
+    if($i==$df_d){
+      $selected = 'selected'; 
+    }else{
+      $selected = '';
+    }
+    $date_posted .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
   }
-        $date_posted .= '</select>';
-        $date_posted .= '<select name="h">';
+  $date_posted .= '</select>';
+  if(isset($df_h)&&$df_h!=''){
+    $date_posted .= '<input type="hidden" id="r_hour" value="'.$df_h.'">';
+  }else{
+    $date_posted .= '<input type="hidden" id="r_hour" value="'.date('H').'">';
+    $df_h = date('H');
+  }
+  $date_posted .= '<select name="h" onchange="set_rhour(this)"'.$str_disabled.'>';
   for ($i=0;$i<24;$i++) {
-        if($i==intval(date('H', strtotime($rInfo->date_added)))){
-           $selected = 'selected';
-        }else{
-           $selected = '';
-        }
-       if($_GET['rID'] == -1){
-         if(date('H') == $i){
-          $i = date('H');
-          $selected = 'selected';
-         }else{
-          $selected = ''; 
-         }
-        }
-        $date_posted .= '<option value="'.$i.'" '.$selected.'>'.$i.'</option>';
+    if($i==$df_h){
+      $selected = 'selected';
+    }else{
+      $selected = '';
+    }
+    $date_posted .= '<option value="'.$i.'" '.$selected.'>'.$i.'</option>';
   }
-        $date_posted .= '</select>:';
-        $date_posted .= '<select name="i">';
+  $date_posted .= '</select>:';
+  if(isset($df_i)&&$df_i!=''){
+    $date_posted .= '<input type="hidden" id="r_minute" value="'.$df_i.'">';
+  }else{
+    $date_posted .= '<input type="hidden" id="r_minute" value="'.date('i').'">';
+    $df_i = date('i');
+  }
+  $date_posted .= '<select name="i" onchange="set_rminute(this)"'.$str_disabled.'>';
   for ($i=0;$i<60;$i++) {
-        if($i==intval(date('i', strtotime($rInfo->date_added)))){
-           $selected = 'selected';
-        }else{
-           $selected = '';
-        } 
-       if($_GET['rID'] == -1){
-         if(date('i') == $i){
-          $i = date('i');
-          $selected = 'selected';
-         }
-        }
-        $date_posted .= '<option value="'.$i.'" '.$selected.'>'.$i.'</option>';
+    if($i==$df_i){
+      $selected = 'selected';
+    }else{
+      $selected = '';
+    } 
+    $date_posted .= '<option value="'.$i.'" '.$selected.'>'.$i.'</option>';
   }
-        $date_posted .= '</select>';
+  $date_posted .= '</select>';
+
   $contents[]['text'] = array(
         array('text' => ENTRY_DATE),
         array('text' => $date_posted)
     );
   $contents[]['text'] = array(
         array('text' => ENTRY_FROM),
-        array('text' => '<input type="text" id="customers_name" name="customers_name" value="'.tep_output_string_protected($rInfo->customers_name).'" />')
+        array('text' => '<input type="text" id="customers_name" name="customers_name" value="'.tep_output_string_protected($rInfo->customers_name).'"'.$str_disabled.' />')
     );
     $review_radio = '';
+    if(isset($df_rating)&&$df_rating){
+      $review_radio = '<input type="hidden" value="'.$df_rating.'" id="r_rating">';
+    }else{
+      $review_radio = '<input type="hidden" value="5" id="r_rating">';
+      $df_rating = 5;
+    }
     for ($i=1; $i<=5; $i++) {
-     if($_GET['rID'] == -1){
-     $review_radio .= tep_draw_radio_field('reviews_rating', $i, '', '5');
+     if($i==$df_rating){
+       $review_radio .= tep_draw_radio_field('reviews_rating', $i, true,'',' onclick="set_rating(this)"'.$str_disabled );
      }else{
-     $review_radio .= tep_draw_radio_field('reviews_rating', $i, '', $rInfo->reviews_rating);
+       $review_radio .= tep_draw_radio_field('reviews_rating', $i, false,'',' onclick="set_rating(this)"'.$str_disabled );
      }
     }
     $contents[]['text'] = array(
@@ -3261,37 +3321,54 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
         array('text' =>  number_format($reviews_average_row['average_rating'], 2) . '%')
     );
     }
-    $contents[]['text'] = array(
-        array('text' => TEXT_PRODUCTS_STATUS),
-        array('text' =>  tep_draw_radio_field('reviews_status', '1', $in_status) .  '&nbsp;' . TEXT_PRODUCT_AVAILABLE . '&nbsp;' .  tep_draw_radio_field('reviews_status', '0', $out_status) . '&nbsp;' .  TEXT_PRODUCT_NOT_AVAILABLE)
-    );
-    $contents[]['text'] = array(
-        array('text' => ENTRY_REVIEW),
-        array('text' => tep_draw_textarea_field('reviews_text', 'soft', '60', '15', $rInfo->reviews_text, 'style="resize: vertical;" id="reviews_text" onkeypress="word_count(this)" onchange="word_count(this)"'))
-    );
-    $contents[]['text'] = array(
-        array('text' => ''),
-        array('align' => 'right','params' => 'class="smallText"','text' => '<span style="float:left">'.REVIEWS_CHARACTER_TOTAL.'</span><span style="float:left"id="count_box"></span>')
-    );
-    $contents[]['text'] = array(
-        array('text' => ''),
-        array('params' => 'class="smallText"','text' => ENTRY_REVIEW_TEXT)
-    );
-   $contents[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.((tep_not_null($rInfo->user_added))?$rInfo->user_added:TEXT_UNSET_DATA)), 
-        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.((tep_not_null($rInfo->date_added))?$rInfo->date_added:TEXT_UNSET_DATA))
-      );
-   $contents[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.((tep_not_null($rInfo->user_update))?$rInfo->user_update:TEXT_UNSET_DATA)),
-        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.((tep_not_null($rInfo->last_modified))?$rInfo->last_modified:TEXT_UNSET_DATA))
-      );
+  if($df_status){
+    $str_rstatus = tep_draw_radio_field('reviews_status','1',true,'',' onclick="set_rstatus(this)" '.$str_disabled)
+      .'&nbsp;'.TEXT_PRODUCT_AVAILABLE . '&nbsp;' .
+      tep_draw_radio_field('reviews_status','0',false,'',' onclick="set_rstatus(this)" '.$str_disabled).
+      '&nbsp;' .  TEXT_PRODUCT_NOT_AVAILABLE;
+    $str_rstatus .= '<input type="hidden" value="1" id="r_status">';
+  }else{
+    $str_rstatus = tep_draw_radio_field('reviews_status','1',false,'',' onclick="set_rstatus(this)" '.$str_disabled)
+      .'&nbsp;'.TEXT_PRODUCT_AVAILABLE . '&nbsp;' .
+      tep_draw_radio_field('reviews_status','0',true,'',' onclick="set_rstatus(this)" '.$str_disabled).
+      '&nbsp;' .  TEXT_PRODUCT_NOT_AVAILABLE;
+    $str_rstatus .= '<input type="hidden" value="0" id="r_status">';
+  }
+  $contents[]['text'] = array(
+    array('text' => TEXT_PRODUCTS_STATUS),
+    array('text' => $str_rstatus)
+  );
+  $contents[]['text'] = array(
+      array('text' => ENTRY_REVIEW),
+      array('text' => tep_draw_textarea_field('reviews_text', 'soft', '60', '15', $rInfo->reviews_text, 'style="resize: vertical;" id="reviews_text" onkeypress="word_count(this)" onchange="word_count(this)"'.$str_disabled))
+  );
+
+//信息输出结束
+  $contents[]['text'] = array(
+    array('text' => ''),
+    array('align' => 'right','params' => 'class="smallText"','text' => '<span style="float:left">'.REVIEWS_CHARACTER_TOTAL.'</span><span style="float:left"id="count_box"></span>')
+  );
+  $contents[]['text'] = array(
+    array('text' => ''),
+    array('params' => 'class="smallText"','text' => ENTRY_REVIEW_TEXT)
+  );
+ $contents[]['text'] = array(
+   array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.((tep_not_null($rInfo->user_added))?$rInfo->user_added:TEXT_UNSET_DATA)), 
+   array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.((tep_not_null($rInfo->date_added))?$rInfo->date_added:TEXT_UNSET_DATA))
+  );
+  $contents[]['text'] = array(
+    array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.((tep_not_null($rInfo->user_update))?$rInfo->user_update:TEXT_UNSET_DATA)),
+    array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.((tep_not_null($rInfo->last_modified))?$rInfo->last_modified:TEXT_UNSET_DATA))
+  );
+
+
   if($ocertify->npermission == 15){
    $reviews_button[] = tep_html_element_button(IMAGE_SAVE,'onclick="check_review_submit('.$_GET['rID'].','.$_GET['page'].')"').  '&nbsp;<a href="'.tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' .  $rInfo->reviews_id) .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').  (isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'').  '&action=deleteconfirm">'.tep_html_element_button(IMAGE_DELETE).'</a>';
     if(!empty($reviews_button)){
         $buttons = array('align' => 'center', 'button' => $reviews_button);
      }
   }else{
-   $reviews_button[] = tep_html_element_button(IMAGE_SAVE,'onclick="check_review_submit('.$_GET['rID'].','.$_GET['page'].')"');
+   $reviews_button[] = tep_html_element_button(IMAGE_SAVE,'onclick="check_review_submit('.$_GET['rID'].','.$_GET['page'].')"'.$str_disabled);
     if(!empty($reviews_button)){
         $buttons = array('align' => 'center', 'button' => $reviews_button);
      }
@@ -3300,10 +3377,18 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   if($_GET['site_id'] == 0){
        $_GET['site_id'] = $reviews['site_id']; 
   }
+
+//生产 表格
 $reviews_form =  tep_draw_form('review', FILENAME_REVIEWS, 'page=' .  $_GET['page'] .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').'&rID=' .  $_GET['rID'] .  (isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):''). '&action=update', 'post' , 'onsubmit="return check_review()"');
+
+ if(!isset($_GET['default_value'])||!$_GET['default_value']){
+   unset($_SESSION['r_default_value']);
+ }
+  
 $notice_box->get_form($reviews_form);
 $notice_box->get_heading($heading);
 $notice_box->get_contents($contents, $buttons);
 $notice_box->get_eof(tep_eof_hidden());
 echo $notice_box->show_notice();
-}?>
+}
+?>
