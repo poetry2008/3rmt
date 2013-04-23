@@ -69,7 +69,7 @@ $(function(){
 });
 
 var zIndex = 0;
-function make_draggable(elements){ 
+function make_draggable(elements){
   elements.mousedown(function(e){
     $("#manual_info_id").show();
     if(e.which == 1){

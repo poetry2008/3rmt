@@ -716,7 +716,7 @@ if($belong_array[0][0] != ''){
 $belong = str_replace('&','|||',$belong);
 require("includes/note_js.php");
 ?>
-<script>
+<script type="text/javascript">
 $(document).ready(function(){
   var box_warp_height = $(".box_warp").height();
   var box_warp_height = parseInt(box_warp_height);
