@@ -2418,13 +2418,36 @@ $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
 $belong = preg_replace('/\?XSID=[^&]+/','',$belong);
 preg_match_all('/action=[^&]+/',$belong,$belong_temp_array);
 if($belong_temp_array[0][0] != ''){
-  preg_match_all('/oID=[^&]+/',$belong,$belong_array);
-  if($belong_array[0][0] != ''){
+  if($belong_temp_array[0][0] == 'action=show_manual_info'){
+    preg_match_all('/pID=[^&]+/',$belong,$belong_array);
+    if($belong_array[0][0] != ''){
 
-    $belong = $href_url.'?'.$belong_array[0][0];
+      $belong = $href_url.'?'.$belong_array[0][0];
+    }else{
+
+      $belong = $href_url;
+    }
+  }else if($belong_temp_array[0][0] == 'action=search_manual_info'){
+    $belong = $href_url.'?action=search_manual_info';
+  }else if($belong_temp_array[0][0] == 'action=show_search_manual'){
+    preg_match_all('/cPath=[^&]+/',$belong,$belong_array);
+    if($belong_array[0][0] != ''){
+      $belong = $href_url.'?action=show_search_manual|||'.$belong_array[0][0];
+    }else{
+      preg_match_all('/pID=[^&]+/',$belong,$belong_array); 
+      if($belong_array[0][0] != ''){
+        $belong = $href_url.'?action=show_search_manual|||'.$belong_array[0][0]; 
+      }
+    }
   }else{
+    preg_match_all('/oID=[^&]+/',$belong,$belong_array);
+    if($belong_array[0][0] != ''){
 
-    $belong = $href_url;
+      $belong = $href_url.'?'.$belong_array[0][0];
+    }else{
+
+      $belong = $href_url;
+    }
   }
 }else{
 
