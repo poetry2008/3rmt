@@ -9,7 +9,7 @@
   while($userslist= tep_db_fetch_array($sites_id)){
     $site_arr = $userslist['site_permission']; 
   }
-  $site_permission = editPermission($site_arr, $_GET['site_id']);
+  $site_permission = editPermission($site_arr, $_GET['site_id'],true);
   if(!$site_permission){
     $str_disabled = ' disabled="disabled" ';
   }else{
@@ -48,7 +48,7 @@
         break;
       case 'setflag':
         $site_id = isset($_GET['site_id']) ? $_GET['site_id'] :0;
-        forward401Unless(editPermission($site_arr, $site_id));
+        forward401Unless(editPermission($site_arr, $site_id,true));
         if ( ($_GET['flag'] == '0') || ($_GET['flag'] == '1') ) {
           if ($_GET['pID']) {
             $pID = (int)$_GET['pID'];
@@ -73,7 +73,7 @@
         if(!$site_id['site_id']){
           $site_id['site_id'] = $_GET['site_id'];
         }
-        forward401Unless(editPermission($site_arr, $site_id['site_id']));
+        forward401Unless(editPermission($site_arr, $site_id['site_id'],true));
         $reviews_rating = tep_db_prepare_input($_POST['reviews_rating']);
         $last_modified  = tep_db_prepare_input($_POST['last_modified']);
         $reviews_text   = tep_db_prepare_input($_POST['reviews_text']);
@@ -552,27 +552,58 @@ require("includes/note_js.php");
                     $review_title_row[] = array('params' => 'class="dataTableHeadingContent" align="right"', 'text' => TABLE_HEADING_ACTION);
                     $review_table_row[] = array('params' => 'class="dataTableHeadingRow"', 'text' => $review_title_row);
     if(isset($_GET['product_name']) && $_GET['product_name']){
-       $sql_keyword = " and pd.products_name like '%".trim($_GET['product_name'])."%'";
+       $p_list_arr = array();
+       $p_list_arr_site = array();
+       if(isset($_GET['site_id'])&&$_GET['site_id']){
+         $p_list_arr_site_sql = "select products_id,products_name from ".
+           TABLE_PRODUCTS_DESCRIPTION." where 
+           products_name like '%".trim($_GET['product_name'])."%' 
+           and site_id = '".$_GET['site_id']."'";
+         $p_list_arr_site_query = tep_db_query($p_list_arr_site_sql);
+         while($p_list_arr_site_res = tep_db_fetch_array($p_list_arr_site_query)){
+           $p_list_arr[] = $p_list_arr_site_res['products_id'];
+           $p_list_arr_site[$p_list_arr_site_res['products_id']] =
+           $p_list_arr_site_res['products_name'];
+         }
+       }
+       if(isset($_GET['site_id'])&&$_GET['site_id']){
+         $p_list_arr_sql = "SELECT products_id FROM ".TABLE_PRODUCTS_DESCRIPTION." 
+           WHERE site_id = 0 
+           and products_name like '%".trim($_GET['product_name'])."%'
+           and products_id not in 
+           (select products_id FROM ".TABLE_PRODUCTS_DESCRIPTION." 
+            where site_id ='".$_GET['site_id']."')";
+       }else{
+         $p_list_arr_sql = "select products_id from ".
+           TABLE_PRODUCTS_DESCRIPTION." where 
+           products_name like '%".trim($_GET['product_name'])."%' 
+           and site_id = 0";
+       }
+         $p_list_arr_query = tep_db_query($p_list_arr_sql);
+         while($p_list_arr_res = tep_db_fetch_array($p_list_arr_query)){
+           if(!in_array($p_list_arr_res['products_id'],$p_list_arr)){
+             $p_list_arr[] = $p_list_arr_res['products_id'];
+             $p_list_arr_site[$p_list_arr_res['products_id']] =
+             $p_list_arr_res['products_name'];
+           }
+         }
+         $where_str = ' and r.products_id in ('.implode(',',$p_list_arr).') ';
     }
     $reviews_query_raw = "
-      select distinct(r.reviews_id), 
+      select r.reviews_id, 
              r.products_id, 
              r.date_added, 
              r.last_modified, 
 	     r.user_added,
 	     r.user_update,
+             r.site_id,
              r.reviews_rating, 
              r.reviews_status ,
              s.romaji,
-             s.name as site_name,
-             pd.products_name
-     from " . TABLE_REVIEWS . " r, ".TABLE_SITES." s, ".TABLE_PRODUCTS_DESCRIPTION." pd
+             s.name as site_name
+     from " . TABLE_REVIEWS . " r, ".TABLE_SITES." s
      where r.site_id = s.id
-           and (pd.site_id = '".$_GET['site_id']."' or pd.site_id=0) 
-           and r.products_id = pd.products_id
-           and pd.language_id = '".$languages_id."'
-           and (pd.site_id = '".$_GET['site_id']."' or pd.site_id=0) 
-        " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and s.id = '" .  intval($_GET['site_id']) . "' " : '') . "".$sql_keyword."
+        " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and s.id = '" .  intval($_GET['site_id']) . "' " : '') . "".$where_str."
      order by date_added DESC";
     
     $reviews_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $reviews_query_raw, $reviews_query_numrows);
@@ -636,7 +667,8 @@ require("includes/note_js.php");
       );
       $review_info[] = array(
           'params' => 'class="dataTableContent"',
-          'text'   =>  $reviews['products_name']
+          'text'   =>
+          tep_get_products_name($reviews['products_id'],$languages_id,$reviews['site_id'],true)
       );
       if ($reviews['reviews_status'] == '1') {
         $review_image = tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_REVIEWS, 'action=setflag&flag=0'.(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').'&page=' . (isset($_GET['page'])?$_GET['page']:'') . '&pID=' . $reviews['reviews_id'].(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>';
@@ -659,7 +691,8 @@ require("includes/note_js.php");
       $review_info[] = array(
           'params' => 'class="dataTableContent" align="right"',
           'text'   => '<a href="javascript:void(0);"
-          onclick="show_text_reviews(this,'.$_GET['page'].','.$reviews['reviews_id'].','.$_GET['site_id'].')">'.tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO).'</a>'
+          onclick="show_text_reviews(this,'.$_GET['page'].','.$reviews['reviews_id'].','.$_GET['site_id'].')">'.
+          tep_get_signal_pic_info($reviews['last_modified']).'</a>'
       );
     $review_table_row[] = array('params' => $review_params, 'text' => $review_info);
     }
@@ -689,56 +722,6 @@ require("includes/note_js.php");
                   </tr>
                 </table>
 			</td>
-<?php
-    $heading = array();
-    $contents = array();
-    switch (isset($_GET['action'])?$_GET['action']:'') {
-/*---------------------------------
- case 'delete'  删除评论 
- --------------------------------*/
-      case 'delete':
-        $heading[] = array('text' => '' . TEXT_INFO_HEADING_DELETE_REVIEW . '');
-
-        $contents = array('form' => tep_draw_form('reviews', FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' . $rInfo->reviews_id . '&action=deleteconfirm'.(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')));
-        $contents[] = array('text' => TEXT_INFO_DELETE_REVIEW_INTRO);
-        $contents[] = array('text' => '<br>' . $rInfo->products_name . '');
-        $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_DELETE) . ' <a href="' .  tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' .  $rInfo->reviews_id) .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'') . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>');
-        break;
-      default:
-      if (isset($rInfo) && is_object($rInfo)) {
-        $heading[] = array('text' => '' . $rInfo->products_name . '');
-
-        $contents[] = array('align' => 'center', 'text' => 
-          '<a href="' . tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] .  '&rID=' . $rInfo->reviews_id . '&action=edit' .  (isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a>' . ($ocertify->npermission == 15 ? (' <a href="' .  tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' .  $rInfo->reviews_id . '&action=delete' .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'):'')
-        );
-if(tep_not_null($rInfo->customers_name)){
-$contents[] = array('text' =>  TEXT_USER_ADDED. ' ' .$rInfo->customers_name);
-}else{
-$contents[] = array('text' =>  TEXT_USER_ADDED. ' ' .TEXT_UNSET_DATA);
-}if(tep_not_null(tep_datetime_short($rInfo->date_added))){
-$contents[] = array('text' =>  TEXT_DATE_ADDED. ' ' .tep_datetime_short($rInfo->date_added));
-}else{
-$contents[] = array('text' =>  TEXT_DATE_ADDED. ' ' .TEXT_UNSET_DATA);
-}if(tep_not_null($rInfo->user_update)){
-$contents[] = array('text' =>  TEXT_USER_UPDATE. ' ' .$rInfo->user_update);
-}else{
-$contents[] = array('text' =>  TEXT_USER_UPDATE. ' ' .TEXT_UNSET_DATA);
-}if(tep_not_null(tep_datetime_short($rInfo->last_modified))){
-$contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .tep_datetime_short($rInfo->last_modified));
-}else{
-$contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .TEXT_UNSET_DATA);
-}
-
-        $contents[] = array('text' => '<br>' . tep_info_image('products/'.$rInfo->products_image, $rInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, $rInfo->site_id));
-        $contents[] = array('text' => '<br>' . TEXT_INFO_REVIEW_AUTHOR . ' ' . tep_output_string_protected($rInfo->customers_name));
-        $contents[] = array('text' => TEXT_INFO_REVIEW_RATING . ' ' . tep_image(HTTP_CATALOG_SERVER . DIR_WS_CATALOG_IMAGES . 'stars_' . $rInfo->reviews_rating . '.gif'));
-        $contents[] = array('text' => TEXT_INFO_REVIEW_READ . ' ' . $rInfo->reviews_read);
-        $contents[] = array('text' => '<br>' . TEXT_INFO_REVIEW_SIZE . ' ' . $rInfo->reviews_text_size . ' bytes');
-        $contents[] = array('text' => '<br>' . TEXT_INFO_PRODUCTS_AVERAGE_RATING . ' ' . number_format($rInfo->average_rating, 2) . '%');
-      }
-        break;
-    }
-?>
           </tr>
         </table></td>
       </tr>
