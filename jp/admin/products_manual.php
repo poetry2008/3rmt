@@ -653,8 +653,13 @@ echo $title_str;
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script type="text/javascript" src="lib/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 <script type="text/javascript">
+function manual_open(){
+
+  $("#manual_info_id").hide();
+}
 tinyMCE.init({
-        mode : "textareas",
+        mode : "exact",
+        elements : "elm1",
         theme : "advanced",
         height: "800", 
         plugins : "imageupload,pagebreak,style,layer,table,advhr,advlink,emotions,iespell,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,inlinepopups",
@@ -675,9 +680,35 @@ $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
 $belong = preg_replace('/\?XSID=[^&]+/','',$belong);
 preg_match_all('/action=[^&]+/',$belong,$belong_array);
 if($belong_array[0][0] != ''){
+    $pid     = $_GET['pID'];
+    $pro_to_cate_query=tep_db_query("select categories_id from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id='".$pid."'");
+    $categories_array=tep_db_fetch_array($pro_to_cate_query);
+    $categories_id=$categories_array['categories_id'];
+    $categories_pid_query=tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$categories_id."'");
+    $categories_pid_array=tep_db_fetch_array($categories_pid_query);
+    tep_db_free_result($categories_pid_query);
+    $categories_pid=$categories_pid_array['parent_id'];
+    //判断是否还有上级分类
+    if(isset($_GET['parent']) && $_GET['parent'] == 1){ 
+      $parent_categories_pid_query = tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$categories_pid."'");
+      $parent_categories_pid_array = tep_db_fetch_array($parent_categories_pid_query);
+      $parent_categories_pid_num = tep_db_num_rows($parent_categories_pid_query);
+      tep_db_free_result($parent_categories_pid_query);
+      if($parent_categories_pid_num > 0){
 
-  $belong = preg_replace('/&site_id=[^&]*/','',$belong); 
-  $belong = preg_replace('/&page=[^&]*/','',$belong);
+        $categories_pid = $parent_categories_pid_array['parent_id'];
+      }
+    }
+  if($belong_array[0][0] == 'action=edit_top_categories_manual'){
+
+    $belong = $href_url.'?action=edit_top_categories_manual';
+  }else if($belong_array[0][0] == 'action=p_categories_manual'){   
+    $belong = $href_url.'?action=p_categories_manual&cPath='.$categories_pid;
+  }else if($belong_array[0][0] == 'action=show_categories_manual'){
+    $belong = $href_url.'?action=show_categories_manual&cPath='.$categories_id; 
+  }else if($belong_array[0][0] == 'action=show_products_manual'){
+    $belong = $href_url.'?action=show_products_manual&pID='.$pid; 
+  }
 }else{
 
   $belong = $href_url;
@@ -685,7 +716,15 @@ if($belong_array[0][0] != ''){
 $belong = str_replace('&','|||',$belong);
 require("includes/note_js.php");
 ?>
-
+<script type="text/javascript">
+$(document).ready(function(){
+  var box_warp_height = $(".box_warp").height();
+  var box_warp_height = parseInt(box_warp_height);
+  if(box_warp_height < 826){
+    $(".box_warp").height('');
+  }
+});
+</script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onload="SetFocus();">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
@@ -704,7 +743,7 @@ require("includes/note_js.php");
 <!-- left_navigation --> <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> <!-- left_navigation_eof -->
     </td></tr></table>
 <!-- body_text -->
-<td width="100%" valign = "top" id='categories_right_td'><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+<td width="100%" valign = "top" id='categories_right_td'><div id="manual_info_id" style="position:absolute;width:100%;height:100%;margin-left:0;z-index:1;opacity:0;display:none;" onclick="manual_open();"></div><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
 <tr>
 
 <td class="pageHeading"><?php echo $title_char;  ?></td>
