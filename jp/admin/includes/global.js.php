@@ -69,8 +69,9 @@ $(function(){
 });
 
 var zIndex = 0;
-function make_draggable(elements){
+function make_draggable(elements){ 
   elements.mousedown(function(e){
+    $("#manual_info_id").show();
     if(e.which == 1){
       var box_warp_height = $('.box_warp').height();
       var leftmenu_height = $(".leftmenu").height();
