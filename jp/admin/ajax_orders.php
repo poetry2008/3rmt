@@ -2313,4 +2313,19 @@ echo json_encode($json_array);
     $z_index = max($note_list_array) + 1; 
   }
   echo $z_index;
+} else if ($_GET['action'] == 'hide_note') {
+/*-----------------------------------------
+ 功能: 不显示窗口
+ 参数: $_POST['note_id'] note的id值 
+ ----------------------------------------*/
+  tep_db_query("update `notes` set `is_show` = '0' where `id` = '".$_POST['note_id']."'");
+  $hide_note_query = tep_db_query("select * from notes where id = '".$_POST['note_id']."'");
+  $hide_note = tep_db_fetch_array($hide_note_query);
+  echo $hide_note['color'].'|||'.$hide_note['title'];
+} else if ($_GET['action'] == 'show_note'){
+/*-----------------------------------------
+ 功能: 显示窗口
+ 参数: $_POST['note_id'] note的id值 
+ ----------------------------------------*/
+  tep_db_query("update `notes` set `is_show` = '1' where `id` = '".$_POST['note_id']."'");
 }

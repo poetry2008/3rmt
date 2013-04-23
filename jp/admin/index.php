@@ -25,7 +25,7 @@ while($row=tep_db_fetch_array($query)){
   $attribute_image = $attribute == 1 ? '<image id="image_id_'.$row['id'].'" alt="'.TEXT_ATTRIBUTE_PUBLIC.'" src="images/icons/public.gif">' : '<image id="image_id_'.$row['id'].'" alt="'.TEXT_ATTRIBUTE_PRIVATE.'" src="images/icons/private.gif">';
   $notes.= '
     <div id="note_'.$row['id'].'" ondblclick="changeLayer(this);" class="note '.$row['color'].'" 
-    style="left:'.$left.'px;top:'.$top.'px;z-index:'.$zindex.';height:'.$ylen.'px;width:'.$xlen.'px">
+    style="left:'.$left.'px;top:'.$top.'px;z-index:'.$zindex.';height:'.$ylen.'px;width:'.$xlen.'px;'.(($row['is_show'] == '1')?'display:block;':'display:none;').'">
     <div class="note_head">
     <div id="note_title_'.$row['id'].'" class="note_title">
     <input type="button" onclick="note_save_text(\''.$row['id'].'\')"
@@ -33,8 +33,8 @@ while($row=tep_db_fetch_array($query)){
     '.substr($row['addtime'],0,strlen($row['addtime'])-3).'
     </div><div class="note_close">
     <input type="hidden" value="'.$row['id'].'" class="hidden">
-    <input type="image" onclick="note_desplay_none(\''.$row['id'].'\')" alt="close"
-    src="images/icons/note_close.gif"></div>
+    <a href="javascript:void(0);" onclick="note_min_window(\''.$row['id'].'\')"><img alt="min" title="min" src="images/icons/note_min_window.gif"></a>&nbsp; 
+    <a href="javascript:void(0);" onclick="note_desplay_none(\''.$row['id'].'\')"><img alt="close" title="close" src="images/icons/note_close.gif"></a></div>
     </div><div id="note_text_'.$row['id'].'" class="note_textarea"
     style="height:'.($ylen-37).'px">'
     .'<textarea style="overflow:auto;resize: none;font-size:11px;" id="note_textarea_'.$row['id'].'">'
@@ -57,6 +57,38 @@ while($row=tep_db_fetch_array($query)){
 <link rel="stylesheet" type="text/css" href="includes/fancybox.css" />
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css" />
 <link rel="stylesheet" type="text/css" href="includes/base/jquery.ui.all.css" />
+<script type="text/javascript">
+<?php //最小化窗口?>
+function note_min_window(n_id)
+{
+  $.ajax({
+    type: 'POST',
+    data:'note_id='+n_id,
+    async:false,
+    url: 'ajax_orders.php?action=hide_note',
+    success: function(msg) {
+      msg_note_info = msg.split('|||');  
+      $('#note_'+n_id).css('display', 'none'); 
+      note_add_str = '<li><a href="javascript:void(0);" onclick="note_revert_window(this, \''+n_id+'\');"><img src="images/icons/note_'+msg_note_info[0]+'_window.gif" title="'+msg_note_info[1]+'" alt="'+msg_note_info[1]+'"></a></li>'; 
+      $('.note_hide_list').append(note_add_str); 
+    }
+  });
+}
+<?php //还原窗口?>
+function note_revert_window(n_obj, n_id)
+{
+  $.ajax({
+    type: 'POST',
+    data:'note_id='+n_id,
+    async:false,
+    url: 'ajax_orders.php?action=show_note',
+    success: function(msg) {
+      $(n_obj).remove();
+      $('#note_'+n_id).css('display', 'block');
+    } 
+  });
+}
+</script>
 <?php if(!empty($height_arr)){?>
 <script language="javascript">
 $(document).ready(function() { 
