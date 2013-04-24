@@ -33,7 +33,7 @@ while($row=tep_db_fetch_array($query)){
     <div class="note_head">
     <div id="note_title_'.$row['id'].'" class="note_title">
     <input type="button" onclick="note_save_text(\''.$row['id'].'\')"
-     value=" '.IMAGE_SAVE.'" >&nbsp;'.$attribute_image.'&nbsp;'.$row['title'].'&nbsp;&nbsp;
+     value="'.IMAGE_SAVE.'" >&nbsp;'.$attribute_image.'&nbsp;'.$row['title'].'&nbsp;&nbsp;
     '.substr($row['addtime'],0,strlen($row['addtime'])-3).'
     </div><div class="note_close">
     <input type="hidden" value="'.$row['id'].'" class="hidden">
