@@ -156,7 +156,12 @@ $testArray = array();
 if($mode_flag){
   $note_hide_query = tep_db_query("select * from notes where (belong='".$belong."' or belong='".$mode_belong_value."') and (attribute='1' or (attribute='0' and author='".$ocertify->auth_user."')) and is_show = '0' order by id desc");
 }else{
-  $note_hide_query = tep_db_query("select * from notes where belong='".$belong."' and (attribute='1' or (attribute='0' and author='".$ocertify->auth_user."')) and is_show = '0' order by id desc");
+  $first_pos = strpos($_SERVER['PHP_SELF'], FILENAME_DEFAULT);
+  if ($first_pos !== false) {
+    $note_hide_query = tep_db_query("select * from notes where belong='".$belong."' and (attribute='1' or (attribute='0' and (author='".$ocertify->auth_user."' or author = ''))) and is_show = '0' order by id desc");
+  } else {
+    $note_hide_query = tep_db_query("select * from notes where belong='".$belong."' and (attribute='1' or (attribute='0' and author='".$ocertify->auth_user."')) and is_show = '0' order by id desc");
+  }
 }
 echo '<ul class="note_hide_list">'; 
 while ($note_hide_list = tep_db_fetch_array($note_hide_query)) {
