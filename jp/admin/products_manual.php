@@ -95,6 +95,7 @@ $title_char = "";
 $cPath      = $_GET['cPath'];
 $page       = $_GET['page'];
 $pid        = $_GET['pID'];
+$search = $_GET['search'];
 $site_id = 0;
 
 $categories_id=explode('_',$_GET['cPath']);
@@ -114,10 +115,10 @@ $products_info_query=tep_db_query("select products_name,p_manual from ".TABLE_PR
 $products_info_arr=tep_db_fetch_array($products_info_query);
 $title_char=($categories_p_info['categories_name'] !='' ? $categories_p_info['categories_name'].'/' : '').($categories_s_info['categories_name'] != '' ? $categories_s_info['categories_name'].'/' : '').($categories_parent_info['categories_name'] != '' ? $categories_parent_info['categories_name'].'/' : '').($products_info_arr['products_name'] != '' ? $products_info_arr['products_name'] : '').MANUAL_TITLE;
 $manual_content=$products_info_arr['p_manual'];
-$param_str='cPath='.$cPath.'&pID='.$pid.'&site_id='.$site_id.'&page='.$page.'';
+$param_str='cPath='.$cPath.'&pID='.$pid.'&site_id='.$site_id.'&page='.$page.($search != '' ? '&search='.$search : '');
 $return_button='<a onclick="location=this.href" href="categories.php?'.$param_str.'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
 
-$form_info='<form action="products_manual.php?cPath='.$cPath.'&action=save_products_manual&pID='.$pid.'&site_id='.$site_id.'&page='.$page.'" method="post">';
+$form_info='<form action="products_manual.php?cPath='.$cPath.'&action=save_products_manual&pID='.$pid.'&site_id='.$site_id.'&page='.$page.($search != '' ? '&search='.$search : '').'" method="post">';
 }
 break;
 }
@@ -163,12 +164,13 @@ if(isset($_GET['cPath']) && $_GET['cPath']==''){
 $cPath      = $_GET['cPath'];
 $page       = $_GET['page'];
 $cid        = $_GET['cID'];
+$search = $_GET['search'];
 $categories_s_info_query=tep_db_query("select categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$_GET['cID']."' and site_id='".$site_id."'");
 $categories_s_info=tep_db_fetch_array($categories_s_info_query);
 $title_char=$categories_s_info['categories_name'].MANUAL_TITLE;
 $manual_content=$categories_s_info['c_manual'];
-$form_info='<form action="products_manual.php?cPath='.$cPath.'&action=save_categories_manual&cID='.$cid.'&site_id='.$site_id.'&page='.$page.'" method="post">';
-$param_str='cPath='.$cPath.'&cID='.$cid.'&site_id='.$site_id.'&page='.$page.'';
+$form_info='<form action="products_manual.php?cPath='.$cPath.'&action=save_categories_manual&cID='.$cid.'&site_id='.$site_id.'&page='.$page.($search != '' ? '&search='.$search : '').'" method="post">';
+$param_str='cPath='.$cPath.'&cID='.$cid.'&site_id='.$site_id.'&page='.$page.($search != '' ? '&search='.$search : '');
 $return_button='<a onclick="location=this.href" href="categories.php?'.$param_str.'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
 break;
 } 
@@ -429,7 +431,7 @@ $products_manual_sql="update ".TABLE_PRODUCTS_DESCRIPTION." set p_manual='".adds
 
 tep_db_query($products_manual_sql);
 if(isset($_GET['cPath']) && !isset($_GET['keyword'])){
-$param_str='cPath='.$cPath.'&pID='.$pid.'&site_id='.$site_id.'&page='.$page.'';
+$param_str='cPath='.$cPath.'&pID='.$pid.'&site_id='.$site_id.'&page='.$page.($search != '' ? '&search='.$search : '');
 tep_redirect(tep_href_link(FILENAME_CATEGORIES, $param_str)); 
 
 }else{
@@ -472,7 +474,7 @@ break;
 
 //categories
 else{
-$param_str='cPath='.$cPath.'&cID='.$cid.'&site_id='.$site_id.'&page='.$page.'';
+$param_str='cPath='.$cPath.'&cID='.$cid.'&site_id='.$site_id.'&page='.$page.($search != '' ? '&search='.$search : '');
 tep_redirect(tep_href_link(FILENAME_CATEGORIES, $param_str)); 
 
 break;
