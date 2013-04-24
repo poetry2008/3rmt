@@ -3592,6 +3592,19 @@ $categories_pid_array=tep_db_fetch_array($categories_pid_query);
 $cp_manual_query=tep_db_query("select categories_id,categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$categories_pid_array['parent_id']."' and site_id='".$site_id."'");
 $cp_manual_array=tep_db_fetch_array($cp_manual_query);
 
+//判断是否存在上级分类
+$categories_parent_query = tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$categories_pid_array['parent_id']."'");
+$categories_parent_num = tep_db_num_rows($categories_parent_query);
+
+if($categories_parent_num > 0){
+ 
+  $categories_parent_array = tep_db_fetch_array($categories_parent_query);
+  $parent_manual_query = tep_db_query("select categories_id,categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$categories_parent_array['parent_id']."' and site_id='".$site_id."'");
+  $parent_manual_array = tep_db_fetch_array($parent_manual_query);
+  tep_db_free_result($parent_manual_query);
+}
+tep_db_free_result($categories_parent_query);
+
 $c_manual_query=tep_db_query("select categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$categories_info_array['categories_id']."' and site_id='".$site_id."'");
 $c_manual_array=tep_db_fetch_array($c_manual_query);
 
@@ -3607,7 +3620,7 @@ $params="oID=".$oID."&page=".$page;
 
             <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
-            <td class="pageHeading"><?php echo $cp_manual_array['categories_name'].'/'.$c_manual_array['categories_name'].'/'.$pro_manual_array['products_name'].SHOW_MANUAL_TITLE; ?></td>
+            <td class="pageHeading"><?php echo ($parent_manual_array['categories_name'] != '' ? $parent_manual_array['categories_name'].'/' : '').($cp_manual_array['categories_name'] != '' ? $cp_manual_array['categories_name'].'/' : '').($c_manual_array['categories_name'] != '' ? $c_manual_array['categories_name'].'/' : '').$pro_manual_array['products_name'].SHOW_MANUAL_TITLE; ?></td>
             <td align="right" class="smallText" valign="top">
             <table width="275px"  border="0" cellspacing="1" cellpadding="0">
             <tr>
