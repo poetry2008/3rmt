@@ -10,7 +10,17 @@ echo tep_draw_hidden_field("execute_password",TEXT_ECECUTE_PASSWORD_USER);
 echo tep_draw_hidden_field("userslist",$ocertify->auth_user);
 echo "</form>";
 ?>
-
+<script language="JavaScript" type="text/javascript">
+function note_popup_list(){
+   var note_obj = document.getElementById("note_hide_content");
+   var tmp_top = document.body.scrollTop | document.documentElement.scrollTop; 
+   note_obj.style.top = tmp_top+document.documentElement.clientHeight-$("#note_hide_content").height()+"px"; 
+   setTimeout(function(){note_popup_list();},50);
+}
+$(function() {
+  note_popup_list();
+});
+</script>
 <script type="text/javascript" src="includes/javascript/split_page.js"></script>
 <script type="text/javascript">
 <?php //更改新的URL?>
@@ -110,7 +120,7 @@ if($_SESSION['user_permission'] == 15 ){
     <?
 }
 echo '<div class="footer_copyright">';
-echo sprintf(TEXT_SITE_COPYRIGHT.COMPANY_NAME,date('Y'));
+echo sprintf(TEXT_SITE_COPYRIGHT,date('Y'));
 echo '</div>';
 $page_name = $_SERVER['PHP_SELF'];
 if($_SESSION['last_page']!= $page_name){
@@ -138,7 +148,22 @@ $testArray = array();
     }
   print_r($_SESSION);
   ?>
-    <?php //print_r($logger->times);?>
     </pre>
     </div>
     <?php }?>
+<div style="position:absolute;right:0;z-index:20000;" id="note_hide_content">
+<?php
+if($mode_flag){
+  $note_hide_query = tep_db_query("select * from notes where (belong='".$belong."' or belong='".$mode_belong_value."') and (attribute='1' or (attribute='0' and author='".$ocertify->auth_user."')) and is_show = '0' order by id desc");
+}else{
+  $note_hide_query = tep_db_query("select * from notes where belong='".$belong."' and (attribute='1' or (attribute='0' and author='".$ocertify->auth_user."')) and is_show = '0' order by id desc");
+}
+echo '<ul class="note_hide_list">'; 
+while ($note_hide_list = tep_db_fetch_array($note_hide_query)) {
+  echo '<li>';
+  echo '<a href="javascript:void(0);" onclick="note_revert_window(this, \''.$note_hide_list['id'].'\');"><img src="images/icons/note_'.$note_hide_list['color'].'_window.gif" title="'.$note_hide_list['title'].'" alt="'.$note_hide_list['title'].'"></a>'; 
+  echo '</li>';
+}
+echo '</ul>'; 
+?>
+</div>

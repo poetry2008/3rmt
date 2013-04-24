@@ -535,9 +535,9 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                           ); 
                       
                       if ($item['status'] == '1') {
-                        $item_status_str = tep_image(DIR_WS_IMAGES .  'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;&nbsp;<a href="' .  tep_href_link(FILENAME_OPTION, tep_get_all_get_params(array('item_id', 'action', 'flag')).'action=setflag&flag=0&item_id='.$item['id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>';
+                        $item_status_str = tep_image(DIR_WS_IMAGES .  'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;&nbsp;<a href="' .  tep_href_link(FILENAME_OPTION, tep_get_all_get_params(array('item_id', 'action', 'flag')).'action=setflag&flag=0&item_id='.$item['id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT) . '</a>';
                       } else {
-                        $item_status_str = '<a href="' .  tep_href_link(FILENAME_OPTION, tep_get_all_get_params(array('item_id', 'action', 'flag')).'action=setflag&flag=1&item_id='.$item['id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10);
+                        $item_status_str = '<a href="' .  tep_href_link(FILENAME_OPTION, tep_get_all_get_params(array('item_id', 'action', 'flag')).'action=setflag&flag=1&item_id='.$item['id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED);
                       }
                       $option_item_info[] = array(
                           'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_OPTION, tep_get_all_get_params(array('item_id', 'action')).'item_id='.$item['id']).'\'"', 

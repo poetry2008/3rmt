@@ -415,9 +415,9 @@ require("includes/note_js.php");
                       <td class="dataTableContent" align="center">
             <?php
               if ($contents['status'] == '1') {
-              echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_CONTENTS, 'act=setflag&flag=0&cID=' . $contents['pID']) . '&page='.$_GET['page'].'">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>';
+              echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_CONTENTS, 'act=setflag&flag=0&cID=' . $contents['pID']) . '&page='.$_GET['page'].'">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT) . '</a>';
               } else {
-              echo '<a href="' . tep_href_link(FILENAME_CONTENTS, 'act=setflag&flag=1&cID=' . $contents['pID']) . '&page='.$_GET['page'].'">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10);
+              echo '<a href="' . tep_href_link(FILENAME_CONTENTS, 'act=setflag&flag=1&cID=' . $contents['pID']) . '&page='.$_GET['page'].'">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED);
               }
             ?></td>
             <td class="dataTableContent" align="right"><?php echo htmlspecialchars($contents['sort_id']); ?></td> 
