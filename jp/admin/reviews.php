@@ -546,9 +546,9 @@ require("includes/note_js.php");
                     $review_title_row[] = array('params' => 'class="dataTableHeadingContent"', 'text' => '<input type="checkbox" name="all_check" onclick="all_select_review(\'review_id[]\');">' );
                     $review_title_row[] = array('params' => 'class="dataTableHeadingContent"', 'text' => TABLE_HEADING_SITE);
                     $review_title_row[] = array('params' => 'class="dataTableHeadingContent"', 'text' => TABLE_HEADING_PRODUCTS);
+                    $review_title_row[] = array('params' => 'class="dataTableHeadingContent" align="center"', 'text' => TABLE_HEADING_RATING);
+                    $review_title_row[] = array('params' => 'class="dataTableHeadingContent" align="center"', 'text' => TABLE_HEADING_DATE_ADDED);
                     $review_title_row[] = array('params' => 'class="dataTableHeadingContent" align="center"', 'text' => TABLE_HEADING_STATUS);
-                    $review_title_row[] = array('params' => 'class="dataTableHeadingContent" align="right"', 'text' => TABLE_HEADING_RATING);
-                    $review_title_row[] = array('params' => 'class="dataTableHeadingContent" align="right"', 'text' => TABLE_HEADING_DATE_ADDED);
                     $review_title_row[] = array('params' => 'class="dataTableHeadingContent" align="right"', 'text' => TABLE_HEADING_ACTION);
                     $review_table_row[] = array('params' => 'class="dataTableHeadingRow"', 'text' => $review_title_row);
     if(isset($_GET['product_name']) && $_GET['product_name']){
@@ -677,15 +677,15 @@ require("includes/note_js.php");
       }
       $review_info[] = array(
           'params' => 'class="dataTableContent" align="center"',
-          'text'   => ''.$review_image 
+          'text'   => $reviews['reviews_rating'] 
       );
        $review_info[] = array(
-          'params' => 'class="dataTableContent" align="right"',
-          'text'   => tep_image(HTTP_CATALOG_SERVER . DIR_WS_CATALOG_IMAGES .  'stars_' . $reviews['reviews_rating'] . '.gif') 
-      );
-       $review_info[] = array(
-          'params' => 'class="dataTableContent" align="right"',
+          'params' => 'class="dataTableContent" align="center"',
           'text'   =>  tep_date_short($reviews['date_added']) . ' ' .date('H:i:s', strtotime($reviews['date_added'])) 
+      );
+      $review_info[] = array(
+          'params' => 'class="dataTableContent" align="center"',
+          'text'   => ''.$review_image 
       );
       if(empty($_GET['site_id'])){ $_GET['site_id'] = 0; } 
       $review_info[] = array(
