@@ -383,7 +383,6 @@ require("includes/note_js.php");
 <?php
     $rows = 0;
 
-    //$latest_news_count = 0;
     $campaign_query_raw = '
         select c.id, 
                c.name, 

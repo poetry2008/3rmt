@@ -2277,9 +2277,9 @@ echo json_encode($json_array);
   $products_new_price = tep_get_products_price($_POST['products_id']);
   $html_str = '<span id="edit_p_'.$_POST['products_id'].'">';
   if ($products_new_price['sprice']) {
-    $html_str .= '<span class="specialPrice"><b>'.$currencies->format($products_new_price['sprice']).'</b></span>'; 
+    $html_str .= '<span class="specialPrice">'.$currencies->format($products_new_price['sprice']).'</span>'; 
   } else {
-    $html_str .= '<b>'.$currencies->format($products_new_price['price']).'</b>'; 
+    $html_str .= $currencies->format($products_new_price['price']); 
   }
   $html_str .= '</span>';
   $html_str .= '<span style="display:none;" id="h_edit_p_'.$_POST['products_id'].'">'.abs($_POST['new_price']).'</span>';

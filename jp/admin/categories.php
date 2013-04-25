@@ -3053,7 +3053,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                     <td colspan="2">
                                     <fieldset><legend style="color:#009900 "><?php echo TEXT_PRODUCTS_TAGS;?></legend>                                    <table border="0" cellspacing="0" cellpadding="2" width="100%">
                                     <tr>
-                                    <?php if($site_id){/*echo ' class="readonly"';*/}?> 
                                     <?php
                                     //show tags 
                                     $checked_tags = array();
@@ -4356,8 +4355,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   'text'=>'&nbsp;');
               $categories_title_row[] = array('align'=>'center','params'=>'class="dataTableHeadingContent"', 
                   'text'=>TABLE_HEADING_STATUS);
-              $categories_title_row[] = array('align'=>'center','params'=>'class="dataTableHeadingContent"', 
-                  'text'=>IMAGE_UPDATE);
               $categories_title_row[] = array('align'=>'right','params'=>'class="dataTableHeadingContent"', 
                   'text'=>TABLE_HEADING_ACTION.'&nbsp');
               // 商品列表标题
@@ -4730,10 +4727,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 $categories_table_content_row[] = array('params'=>$categories_name_params,'text'=>$categories_name_text);
                 $categories_table_content_row[] = array('params'=>$categories_colspan_params,'text'=>$categories_colspan_text);
                 $categories_table_content_row[] = array('params'=>$categories_status_params, 'text'=>$categories_status_text);
-                $categories_table_content_row[] = array('params'=>' class="dataTableContent"', 'text'=>'&nbsp');
-                $categories_table_content_row[] = array('params'=>' class="dataTableContent" align="right"',
-                    'text'=>'<a href="javascript:void(0);" onclick="show_category_info(\''.
-                  $categories['categories_id'].'\', this)">'.tep_image(DIR_WS_IMAGES .  'icon_info.gif', IMAGE_ICON_INFO).'</a>&nbsp;');
+                $categories_table_content_row[] = array('params'=>' class="dataTableContent" align="right"', 'text'=>'<a href="javascript:void(0);" onclick="show_category_info(\''.  $categories['categories_id'].'\', this)">'.tep_get_signal_pic_info($categories['last_modified']).'</a>&nbsp;');
                 $categories_table_row[] = array('params'=>$categories_table_row_params, 'text'=>$categories_table_content_row);
               }
               // categories show list end 
@@ -5290,17 +5284,16 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   }
                 }
                 $products_table_content_row[] = array('params'=>$products_status_params, 'text'=>$products_status_text);
-                $products_change_params .= 'class="dataTableContent" align="center"';
+                $products_operation_params .= 'class="dataTableContent" align="right"';
+                $products_operation_text .= '<a href="javascript:void(0)" onclick="show_product_info(\''.$products['products_id'].'\',this)">';
                 if (empty($_GET['site_id'])) {
-                  $products_change_text .= tep_get_signal_pic_info($products['products_last_modified']); 
+                  $products_operation_text .= tep_get_signal_pic_info($products['products_last_modified']); 
                 } else {
                   $pro_singal_raw = tep_db_query("select products_last_modified from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$products['products_id']."' and site_id = '0'"); 
                   $pro_signal_res = tep_db_fetch_array($pro_singal_raw); 
-                  $products_change_text .= tep_get_signal_pic_info($pro_signal_res['products_last_modified']); 
+                  $products_operation_text .= tep_get_signal_pic_info($pro_signal_res['products_last_modified']); 
                 }
-                $products_table_content_row[] = array('params'=>$products_change_params, 'text'=>$products_change_text);
-                $products_operation_params .= 'class="dataTableContent" align="right"';
-                $products_operation_text .= '<a href="javascript:void(0)" onclick="show_product_info(\''.$products['products_id'].'\',this)">'.tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO).'</a>&nbsp;'; 
+                $products_operation_text .= '</a>&nbsp;'; 
                 $products_table_content_row[] = array('params'=>$products_operation_params, 'text'=>$products_operation_text);
                 $categories_table_row[] = array('params'=>$products_table_row_params, 'text'=>$products_table_content_row);
               }
