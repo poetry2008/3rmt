@@ -686,6 +686,8 @@ $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
 $belong = preg_replace('/\?XSID=[^&]+/','',$belong);
 preg_match_all('/action=[^&]+/',$belong,$belong_array);
 $categories_url = $_GET['cPath'];
+$categories_cid = $_GET['cID'];;
+$categories_url = $_GET['action'] != 'show_categories_manual_link' && $categories_cid != '' ? $categories_cid : $categories_url;
 if($belong_array[0][0] != ''){
     $pid     = $_GET['pID'];
     $pro_to_cate_query=tep_db_query("select categories_id from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id='".$pid."'");
@@ -704,28 +706,40 @@ if($belong_array[0][0] != ''){
       if($parent_categories_pid_num > 0){
 
         $categories_pid = $parent_categories_pid_array['parent_id'];
+        $categories_parent_id = $parent_categories_pid_array['parent_id'];
       }
     }
+    $categories_url_array = explode('_',$categories_url);
+    $categories_pid = $categories_url != '' ? end($categories_url_array) : $categories_pid;
   if($belong_array[0][0] == 'action=edit_top_categories_manual' || $belong_array[0][0] == 'action=edit_top_manual'){
 
     $belong = $href_url.'?action=edit_top_categories_manual';
-  }else if($belong_array[0][0] == 'action=p_categories_manual' || $belong_array[0][0] == 'action=show_categories_manual_link'){   
-    $categories_url_array = explode('_',$categories_url);
-    $categories_pid = $categories_url != '' ? end($categories_url_array) : $categories_pid;
-    $categories_pid_query = tep_db_query("select * from ".TABLE_CATEGORIES." where parent_id='".end($categories_url_array)."'");
-    $categories_parent_num = tep_db_num_rows($categories_pid_query);
-    tep_db_free_result($categories_pid_query);
-    if($categories_url != ''){
-      if($categories_parent_num > 0){
-        $belong = $href_url.'?action=p_categories_manual&cPath='.$categories_pid;
+  }else if($belong_array[0][0] == 'action=p_categories_manual' || $belong_array[0][0] == 'action=show_categories_manual_link' || $belong_array[0][0] == 'action=show_categories_manual'){    
+
+    if($belong_array[0][0] == 'action=p_categories_manual'){ 
+      if(isset($_GET['parent']) && $_GET['parent'] == 1){
+        $belong = $href_url.'?action=show_categories_manual&cPath='.$categories_parent_id;  
       }else{
-        $belong = $href_url.'?action=show_categories_manual&cPath='.$categories_pid; 
+        $belong = $href_url.'?action=show_categories_manual&cPath='.$categories_pid;
       }
     }else{
-      $belong = $href_url.'?action=p_categories_manual&cPath='.$categories_pid; 
+      $categories_pid_query = tep_db_query("select * from ".TABLE_CATEGORIES." where parent_id='".$categories_id."'");
+      $categories_parent_num = tep_db_num_rows($categories_pid_query);
+      tep_db_free_result($categories_pid_query);
+      if($categories_parent_num > 0){
+        if($categories_cid != ''){
+          $belong = $href_url.'?action=show_categories_manual&cPath='.$categories_pid; 
+        }else{
+          if($belong_array[0][0] == 'action=show_categories_manual_link'){
+            $belong = $href_url.'?action=show_categories_manual&cPath='.$categories_pid; 
+          }else{
+            $belong = $href_url.'?action=show_categories_manual&cPath='.$categories_id; 
+          }
+        }
+      }else{
+        $belong = $href_url.'?action=show_categories_manual&cPath='.$categories_id; 
+      }
     }
-  }else if($belong_array[0][0] == 'action=show_categories_manual'){
-    $belong = $href_url.'?action=show_categories_manual&cPath='.$categories_id; 
   }else if($belong_array[0][0] == 'action=show_products_manual'){
     $belong = $href_url.'?action=show_products_manual&pID='.$pid; 
   }
