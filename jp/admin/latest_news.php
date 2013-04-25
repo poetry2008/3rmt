@@ -3,7 +3,7 @@
   $Id$
 */
   require('includes/application_top.php');
-
+  require(DIR_FS_ADMIN . 'classes/notice_box.php');
   if (isset($_GET['action']) && $_GET['action']) {
     switch ($_GET['action']) {
 /* -----------------------------------------------------
@@ -16,7 +16,7 @@
       case 'setflag':
         if ( ($_GET['flag'] == '0') || ($_GET['flag'] == '1') ) {
           if ($_GET['latest_news_id']) {
-            tep_db_query("update " . TABLE_LATEST_NEWS . " set status = '" . $_GET['flag'] . "' where news_id = '" . $_GET['latest_news_id'] . "'");
+            tep_db_query("update " . TABLE_LATEST_NEWS . " set status = '" .  $_GET['flag'] . "',update_editor = '".$_SESSION['user_name']."', latest_update_date = '".tep_db_prepare_input(time())."' where news_id = '" . $_GET['latest_news_id'] . "'");
           }
         }
 
@@ -26,26 +26,30 @@
         $latest_news = tep_get_latest_news_by_id($_GET['latest_news_id']);
         if ($_GET['isfirst'] == '0') {
           if ($_GET['latest_news_id']) {
-            tep_db_query("update " . TABLE_LATEST_NEWS . " set isfirst = '" . $_GET['isfirst'] . "' where news_id = '" . $_GET['latest_news_id'] . "'");
+            tep_db_query("update " . TABLE_LATEST_NEWS . " set isfirst = '" .  $_GET['isfirst'] . "',update_editor = '".$_SESSION['user_name']."',latest_update_date = '".tep_db_prepare_input(time())."' where news_id = '" . $_GET['latest_news_id'] . "'");
           }
         }
         if ($_GET['isfirst'] == '1') {
             if ($_GET['latest_news_id']) {
-              tep_db_query("update " . TABLE_LATEST_NEWS . " set isfirst = '" . $_GET['isfirst'] . "' where news_id = '" . $_GET['latest_news_id'] . "'");
+              tep_db_query("update " . TABLE_LATEST_NEWS . " set isfirst = '" .  $_GET['isfirst'] . "',update_editor = '".$_SESSION['user_name']."',latest_update_date = '".tep_db_prepare_input(time())."' where news_id = '" . $_GET['latest_news_id'] . "'");
             }
         }
 tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, (isset($_GET['site_id'])?('site_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):'')));
 
         break;
       case 'delete_latest_news_confirm':
-        if ($_POST['latest_news_id']) {
-          $latest_news_id = tep_db_prepare_input($_POST['latest_news_id']);
-          tep_db_query("delete from " . TABLE_LATEST_NEWS . " where news_id = '" . tep_db_input($latest_news_id) . "'");
+        if(!empty($_POST['news_id'])){
+            foreach ($_POST['news_id'] as $ge_key => $ge_value) {
+            tep_db_query("delete from " . TABLE_LATEST_NEWS . " where news_id = '" .$ge_value. "'");
+            }
         }
-tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, (isset($_GET['site_id'])?('site_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):'')));
-
+        if ($_GET['latest_news_id']) {
+          $latest_news_id = tep_db_prepare_input($_GET['latest_news_id']);
+         tep_db_query("delete from " . TABLE_LATEST_NEWS . " where news_id = '" . tep_db_input($latest_news_id) . "'");
+        }
+        print_r($_GET);
+        tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, (isset($_GET['site_id'])?('site_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):'')));
         break;
-
       case 'insert_latest_news':
         if ($_POST['headline']) {
 		
@@ -80,7 +84,7 @@ tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, (isset($_GET['site_id'])?('site
           tep_copy_uploaded_file($news_image, $image_directory);
         }
         
-        tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, isset($_GET['lsite_id'])?('site_id='.$_GET['lsite_id']):''));
+        tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, isset($_GET['site_id'])?('site_id='.$_GET['site_id']):''));
         break;
 
       case 'update_latest_news':
@@ -110,11 +114,12 @@ tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, (isset($_GET['site_id'])?('site
     if (is_uploaded_file($news_image['tmp_name'])) {
       tep_db_query("
           update " . TABLE_LATEST_NEWS . " 
-          set news_image = '" . $path . $news_image_name . "' 
+          set news_image = '" . $path . $news_image_name . "',update_editor =
+          '".$_SESSION['']."' 
           where news_id = '" . $_GET['latest_news_id'] . "'");
           tep_copy_uploaded_file($news_image, $image_directory);
     }
-        tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, (isset($_GET['lsite_id'])?('site_id='.$_GET['lsite_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):'').(isset($_GET['latest_news_id'])?('&latest_news_id='.$_GET['latest_news_id']):'')));
+        tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, (isset($_GET['site_id'])?('site_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):'').(isset($_GET['latest_news_id'])?('&latest_news_id='.$_GET['latest_news_id']):'')));
         break;
     }
   }
@@ -129,6 +134,175 @@ tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, (isset($_GET['site_id'])?('site
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<script>
+$(document).ready(function() {
+  <?php //监听按键?> 
+  $(document).keyup(function(event) {
+    if (event.which == 27) {
+      <?php //esc?> 
+      if ($('#show_latest_news').css('display') != 'none') {
+        hidden_info_box(); 
+      }
+    }
+     if (event.which == 13) {
+           <?php //回车?>
+        if ($('#show_latest_news').css('display') != 'none') {
+               $("#show_latest_news").find('input:button').first().trigger("click");
+            }
+        }
+
+     if (event.ctrlKey && event.which == 37) {
+      <?php //Ctrl+方向左?> 
+      if ($('#show_latest_news').css('display') != 'none') {
+        if ($("#option_prev")) {
+          $("#option_prev").trigger("click");
+        }
+      } 
+    }
+    if (event.ctrlKey && event.which == 39) {
+      <?php //Ctrl+方向右?> 
+      if ($('#show_latest_news').css('display') != 'none') {
+        if ($("#option_next")) {
+          $("#option_next").trigger("click");
+        }
+      } 
+    }
+  });    
+});
+
+ function check_news_info(){
+       var headline = document.getElementById('headline').value; 
+       var content  = document.getElementById('content').value;
+       var news_image_description = document.getElementById('news_image_description').value;
+       $.ajax({
+         url: 'ajax.php?action=edit_latest_news',
+         type: 'POST',
+         dataType: 'text',
+         data:'headline='+headline+'&content='+content+'&news_image_description='+news_image_description, 
+         async:false,
+         success: function (data){
+          if (headline != '') {
+            document.forms.new_latest_news.submit(); 
+          }else{
+            $("#title_error").html('<?php echo TEXT_ERROR_NULL;?>'); 
+          }
+         }
+        });
+}
+function all_select_news(news_str){
+      var check_flag = document.del_news.all_check.checked;
+         if (document.del_news.elements[news_str]) {
+           if (document.del_news.elements[news_str].length == null){
+                if (check_flag == true) {
+                    document.del_news.elements[news_str].checked = true;
+                   } else {
+                       document.del_news.elements[news_str].checked = false;
+                   }
+            } else {
+              for (i = 0; i < document.del_news.elements[news_str].length; i++){
+                if (check_flag == true) {
+                   document.del_news.elements[news_str][i].checked = true;
+                } else {
+                 document.del_news.elements[news_str][i].checked = false;
+                }
+               }
+            }
+          }
+}
+
+function delete_select_news(news_str){
+         sel_num = 0;
+         if (document.del_news.elements[news_str].length == null) {
+              if (document.del_news.elements[news_str].checked == true){
+                   sel_num = 1;
+              }
+         } else {
+           for (i = 0; i < document.del_news.elements[news_str].length; i++) {
+             if(document.del_news.elements[news_str][i].checked == true) {
+                 sel_num = 1;
+                 break;
+             }
+            }
+         }
+        if (sel_num == 1) {
+           if (confirm('<?php echo TEXT_DEL_NEWS;?>')) {
+              document.forms.del_news.submit(); 
+           }
+         } else {
+            alert('<?php echo TEXT_NEWS_MUST_SELECT;?>'); 
+         }
+}
+function show_latest_news(ele,page,latest_news_id,site_id){
+ $.ajax({
+ url: 'ajax.php?&action=edit_latest_news',
+ data: {page:page,latest_news_id:latest_news_id,site_id:site_id} ,
+ dataType: 'text',
+ async : false,
+ success: function(data){
+  $("div#show_latest_news").html(data);
+ele = ele.parentNode;
+head_top = $('.compatible_head').height();
+box_warp_height = 0;
+if(latest_news_id != -1){
+if(document.documentElement.clientHeight < document.body.scrollHeight){
+if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
+if(ele.offsetTop < $('#show_latest_news').height()){
+offset = ele.offsetTop+$("#show_text_list").position().top+ele.offsetHeight+head_top;
+box_warp_height = offset-head_top;
+}else{
+if (((head_top+ele.offsetTop+$('#show_latest_news').height()) > $('.box_warp').height())&&($('#show_latest_news').height()<ele.offsetTop+parseInt(head_top)-$("#show_text_list").position().top-1)) {
+offset = ele.offsetTop+$("#show_text_list").position().top-1-$('#show_latest_news').height()+head_top;
+} else {
+offset = ele.offsetTop+$("#show_text_list").position().top+$(ele).height()+head_top;
+offset = offset + parseInt($('#show_text_list').attr('cellpadding'))+parseInt($('.compatible table').attr('cellpadding'));
+}
+box_warp_height = offset-head_top;
+}
+}else{
+  if (((head_top+ele.offsetTop+$('#show_latest_news').height()) > $('.box_warp').height())&&($('#show_latest_news').height()<ele.offsetTop+parseInt(head_top)-$("#show_text_list").position().top-1)) {
+    offset = ele.offsetTop+$("#show_text_list").position().top-1-$('#show_latest_news').height()+head_top;
+  } else {
+    offset = ele.offsetTop+$("#show_text_list").position().top+$(ele).height()+head_top;
+    offset = offset + parseInt($('#show_text_list').attr('cellpadding'))+parseInt($('.compatible table').attr('cellpadding'));
+  }
+}
+$('#show_latest_news').css('top',offset);
+}else{
+  if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
+    if (((head_top+ele.offsetTop+$('#show_latest_news').height()) > $('.box_warp').height())&&($('#show_latest_news').height()<ele.offsetTop+parseInt(head_top)-$("#show_text_list").position().top-1)) {
+      offset = ele.offsetTop+$("#show_text_list").position().top-1-$('#show_latest_news').height()+head_top;
+    } else {
+      offset = ele.offsetTop+$("#show_text_list").position().top+$(ele).height()+head_top;
+      offset = offset + parseInt($('#show_text_list').attr('cellpadding'))+parseInt($('.compatible table').attr('cellpadding'));
+    }
+    box_warp_height = offset-head_top;
+  }else{
+    offset = ele.offsetTop+$("#show_text_list").position().top+ele.offsetHeight+head_top;
+    box_warp_height = offset-head_top;
+  }
+  $('#show_latest_news').css('top',offset);
+}
+}
+box_warp_height = box_warp_height + $('#show_latest_news').height();
+if($('.show_left_menu').width()){
+  leftset = $('.leftmenu').width()+$('.show_left_menu').width()+parseInt($('.leftmenu').css('padding-left'))+parseInt($('.show_left_menu').css('padding-right'))+parseInt($('#categories_right_td table').attr('cellpadding'));
+}else{
+  leftset = parseInt($('.content').attr('cellspacing'))+parseInt($('.content').attr('cellpadding'))*2+parseInt($('.columnLeft').attr('cellspacing'))*2+parseInt($('.columnLeft').attr('cellpadding'))*2+parseInt($('.compatible table').attr('cellpadding'));
+} 
+if(latest_news_id == -1){
+  show_text_list = $('#show_text_list').offset();
+  $('#show_latest_news').css('top',show_text_list.top);
+}
+$('#show_latest_news').css('z-index','1');
+$('#show_latest_news').css('left',leftset);
+$('#show_latest_news').css('display', 'block');
+  }
+  }); 
+}
+function hidden_info_box(){
+   $('#show_latest_news').css('display','none');
+}
+</script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
@@ -161,6 +335,8 @@ require("includes/note_js.php");
 <!-- header_eof //-->
 
 <!-- body //-->
+<input type="hidden" name="show_info_id" value="show_latest_news" id="show_info_id">
+<div style="min-width: 550px; position: absolute; background: none repeat scroll 0% 0% rgb(255, 255, 0); width: 70%; display:none;" id="show_latest_news"></div>
 <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
@@ -169,92 +345,9 @@ require("includes/note_js.php");
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-    <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <td width="100%" valign="top" id="categories_right_td"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
-  if (isset($_GET['action']) && $_GET['action'] == 'new_latest_news') { 
-    //insert or edit a news item
-    if ( isset($_GET['latest_news_id']) ) { 
-      //editing exsiting news item
-      $latest_news_query = tep_db_query("
-          select news_id, 
-                 headline,  
-                 content, 
-                 news_image, 
-                 news_image_description,
-                 site_id
-          from " . TABLE_LATEST_NEWS . " 
-          where news_id = '" . (int)$_GET['latest_news_id'] . "'");
-      $latest_news = tep_db_fetch_array($latest_news_query);
-    
-    $nInfo = new objectInfo($latest_news);
-    } else { //adding new news item
-      $latest_news = array();
-    }
-?>
-      <tr>
-        <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
-          <tr>
-            <td class="pageHeading"><?php echo TEXT_NEW_LATEST_NEWS; ?></td>
-            <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?></td>
-          </tr>
-        </table></td>
-      </tr>
-      <tr>
-        <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-      </tr>
-      <tr><?php echo tep_draw_form('new_latest_news', FILENAME_LATEST_NEWS, (isset($_GET['latest_news_id']) ? ('latest_news_id=' . $_GET['latest_news_id'] . '&action=update_latest_news') : 'action=insert_latest_news').(isset($_GET['lsite_id'])?('&lsite_id='.$_GET['lsite_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):''), 'post', 'enctype="multipart/form-data"'); ?>
-    <input type="hidden" name="author" value="<?php echo $user_info['name'];?>">
-    <input type="hidden" name="update_editor" value="<?php echo $user_info['name']?>">
-        <td><table border="0" cellspacing="0" cellpadding="2">
-          <tr>
-            <td class="main" width="120"><?php echo ENTRY_SITE; ?></td>
-            <td class="main"><?php echo (isset($_GET['latest_news_id']) && $_GET['latest_news_id'] && $latest_news?tep_get_site_name_by_id($latest_news['site_id']):tep_site_pull_down_menu(isset($latest_news['site_id'])?$latest_news['site_id']:'',true,true)); ?></td>
-          </tr>
-          <tr>
-            <td class="main" width="120"><?php echo TEXT_LATEST_NEWS_HEADLINE; ?></td>
-            <td class="main"><?php echo tep_draw_input_field('headline', isset($latest_news['headline'])?$latest_news['headline']:'', '', true); ?></td>
-          </tr>
-          <tr>
-            <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-          </tr>
-          <tr>
-            <td class="main" width="120" valign="top"><?php echo TEXT_LATEST_NEWS_CONTENT; ?></td>
-            <td class="main"><?php echo tep_draw_textarea_field('content', 'soft', '70', '15',isset($latest_news['content'])? stripslashes($latest_news['content']):''); ?>
-  <br>#STORE_NAME#
-  </td>
-          </tr>
-          <tr>
-            <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-          </tr>
-          <tr>
-            <td class="main" valign="top"><?php echo TEXT_LATEST_NEWS_IMAGE; ?></td>
-            <td class="main"><?php echo tep_draw_file_field('news_image') . '<br>' . tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . (isset($latest_news['news_image'])?$latest_news['news_image']:'') . tep_draw_hidden_field('news_image',isset($latest_news['news_image'])? $latest_news['news_image']:''); ?></td>
-          </tr>     
-          <tr>
-            <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-          </tr>
-          <tr>
-            <td class="main" valign="top"><?php echo TEXT_LATEST_NEWS_IMAGE_DESCRIPTION; ?></td>
-            <td class="main"><?php echo tep_draw_textarea_field('news_image_description', 'soft', '70', '7', isset($latest_news['news_image_description'])?stripslashes($latest_news['news_image_description']):''); ?></td>
-          </tr>     
-        </table></td>
-      </tr>
-      <tr>
-        <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-      </tr>
-      <tr>
-        <td class="main" align="right">
-          <?php
-            isset($_GET['latest_news_id']) ? $cancel_button = '&nbsp;&nbsp;<a class="new_product_reset" href="' . tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id='. $_GET['latest_news_id'].(isset($_GET['lsite_id']) ? '&site_id='.$_GET['lsite_id']:'').(isset($_GET['page']) ? '&page='.$_GET['page']:'')) . '">' .
-    tep_html_element_button(IMAGE_CANCEL) . '</a>' : $cancel_button = '';
-            echo tep_html_element_submit(IMAGE_SAVE) . $cancel_button;
-          ?>
-        </td>
-    
-      </form></tr>
-<?php
-
-  } else {
+  if (!isset($_GET['action']) && $_GET['action'] != 'new_latest_news') { 
 ?>
       <tr>
         <td>
@@ -269,19 +362,22 @@ require("includes/note_js.php");
       <tr>
         <td>
         <?php tep_site_filter(FILENAME_LATEST_NEWS);?>
-        <table border="0" width="100%" cellspacing="0" cellpadding="0">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" id="show_text_list">
           <tr>
-            <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
-              <tr class="dataTableHeadingRow">
-                <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_SITE; ?></td>
-                <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_LATEST_NEWS_HEADLINE; ?></td>
-                <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_DATE_ADDED; ?></td>
-
-                <td class="dataTableHeadingContent" align="center"><?php echo TABLE_HEADING_LATEST_NEWS_STATUS; ?></td>
-                <td class="dataTableHeadingContent" align="center"><?php echo TABLE_HEADING_LATEST_NEWS_ISFIRST; ?></td>
-                <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_LATEST_NEWS_ACTION; ?>&nbsp;</td>
-              </tr>
-<?php
+            <td valign="top">
+             <?php
+               $news_table_params = array('width'=>'100%','cellpadding'=>'2','border'=>'0', 'cellspacing'=>'0');
+               $notice_box = new notice_box('','',$news_table_params);       
+               $news_table_row = array();
+               $news_title_row = array();
+               $news_title_row[] = array('params' => 'class="dataTableHeadingContent"','text' => '<input type="checkbox" name="all_check" onclick="all_select_news(\'news_id[]\');">');
+               $news_title_row[] = array('params' => 'class="dataTableHeadingContent"','text' => TABLE_HEADING_SITE);
+               $news_title_row[] = array('params' => 'class="dataTableHeadingContent"','text' => TABLE_HEADING_LATEST_NEWS_HEADLINE);
+               $news_title_row[] = array('params' => 'class="dataTableHeadingContent"','text' => TABLE_HEADING_DATE_ADDED);
+               $news_title_row[] = array('params' => 'class="dataTableHeadingContent" align="center"','text' => TABLE_HEADING_LATEST_NEWS_STATUS);
+               $news_title_row[] = array('params' => 'class="dataTableHeadingContent" align="center"','text' => TABLE_HEADING_LATEST_NEWS_ISFIRST);
+               $news_title_row[] = array('params' => 'class="dataTableHeadingContent" align="right" nowrap','text' => TABLE_HEADING_LATEST_NEWS_ACTION);
+               $news_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $news_title_row);
     $rows = 0;
 
     //$latest_news_count = 0;
@@ -300,7 +396,7 @@ require("includes/note_js.php");
                n.site_id
         from ' . TABLE_LATEST_NEWS . ' n
         where 1 
-        ' . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and (n.site_id = '" . intval($_GET['site_id']) . "' or site_id='0') " : '') . '
+        ' . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and (n.site_id = '" . intval($_GET['site_id']) . "') " : '') . '
         order by date_added desc
     ';
     $latest_news_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $latest_news_query_raw, $latest_news_query_numrows);
@@ -320,45 +416,59 @@ require("includes/note_js.php");
         $nowColor = $odd; 
       }
       if ( (isset($selected_item) && is_array($selected_item)) && ($latest_news['news_id'] == $selected_item['news_id']) ) {
-        echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_LATEST_NEWS, 'page='.$_GET['page'].'&latest_news_id=' . $latest_news['news_id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '\'">' . "\n";
+        $news_params = 'class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'"';
       } else {
-        echo '              <tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_LATEST_NEWS, 'page='.$_GET['page'].'&latest_news_id=' . $latest_news['news_id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '\'">' . "\n";
+        $news_params = 'class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
       }
-?>
-                <td class="dataTableContent"><?php echo '&nbsp;'.tep_get_site_romaji_by_id($latest_news['site_id']); ?></td>
-                <td class="dataTableContent"><?php echo '&nbsp;' . $latest_news['headline']; ?></td>
-                <td class="dataTableContent"><?php echo '&nbsp;' . date("Y-m-d",strtotime($latest_news['date_added'])); ?></td>
-
-                <td class="dataTableContent" align="center">
-<?php
-      if ($latest_news['status'] == '1') {
-        echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'page='.$_GET['page'].'&action=setflag&flag=0&latest_news_id=' . $latest_news['news_id']. (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>';
+      $news_info = array();
+      $news_info[] = array(
+          'params' => 'class="dataTableContent"',
+          'text'   => '<input type="checkbox" name="news_id[]" value="'.$latest_news['news_id'].'">'
+          );
+      $news_info[] = array(
+          'params' => 'class="dataTableContent"',
+          'text'   => '&nbsp;'.tep_get_site_romaji_by_id($latest_news['site_id']) 
+          );
+      $news_info[] = array(
+          'params' => 'class="dataTableContent"',
+          'text'   => '&nbsp;' . $latest_news['headline']
+          );
+      $news_info[] = array(
+          'params' => 'class="dataTableContent"',
+          'text'   => '&nbsp;' . date("Y-m-d",strtotime($latest_news['date_added']))
+          );
+  if ($latest_news['status'] == '1') {
+        $latest_news_status = tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'page='.$_GET['page'].'&action=setflag&flag=0&latest_news_id=' . $latest_news['news_id']. (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT) . '</a>';
       } else {
-        echo '<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'page='.$_GET['page'].'&action=setflag&flag=1&latest_news_id=' . $latest_news['news_id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10);
+        $latest_news_status = '<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'page='.$_GET['page'].'&action=setflag&flag=1&latest_news_id=' . $latest_news['news_id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED);
       }
-?></td>
-                <td class="dataTableContent" align="center">
-              <?php
+      $news_info[] = array(
+          'params' => 'class="dataTableContent" align="center"',
+          'text'   => $latest_news_status
+          );
   if ($latest_news['isfirst']) {
-     echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'action=setfirst&isfirst=0&latest_news_id=' . $latest_news['news_id']. (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '"> ' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>';
-
+     $latest_news_isfirst = tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'action=setfirst&isfirst=0&latest_news_id=' . $latest_news['news_id']. (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '"> ' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT) . '</a>';
   } else {
- 
-   echo '<a href="' . tep_href_link(FILENAME_LATEST_NEWS,'action=setfirst&isfirst=1&latest_news_id=' . $latest_news['news_id']. (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10);
+     $latest_news_isfirst =  '<a href="' . tep_href_link(FILENAME_LATEST_NEWS,'action=setfirst&isfirst=1&latest_news_id=' . $latest_news['news_id']. (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED);
  }
-                ?>
-                             </td>
-                <td class="dataTableContent" align="right">
-<?php
-if (isset($_GET['latest_news_id']) and $latest_news['news_id'] == $_GET['latest_news_id']) { 
-    echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); 
-} else { 
-    echo '<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $latest_news['news_id']. (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):''). (isset($_GET['page'])?('&page='.$_GET['page']):'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
-              </tr>
-<?php
-    }
 
-?>
+      $news_info[] = array(
+          'params' => 'class="dataTableContent" align="center"',
+          'text'   => $latest_news_isfirst
+          );
+      $news_info[] = array(
+          'params' => 'class="dataTableContent" align="right"',
+          'text'   => '<a href="javascript:void(0)" onclick="show_latest_news(this,'.$_GET['page'].','.$latest_news['news_id'].','.(isset($_GET['site_id'])?($_GET['site_id']):'0').')">' .  tep_get_signal_pic_info(date('Y-m-d H:i:s',$latest_news['latest_update_date'])). '</a>'
+          );
+  $news_table_row[] = array('params' => $news_params, 'text' => $news_info);
+  } 
+  $news_form = tep_draw_form('del_news',FILENAME_LATEST_NEWS,'action=delete_latest_news_confirm&site_id='.$_GET['site_id'].'&page='.$_GET['page']);
+  $notice_box->get_form($news_form);
+  $notice_box->get_contents($news_table_row);
+  $notice_box->get_eof(tep_eof_hidden());
+  echo $notice_box->show_notice();
+?>&nbsp;</td>
+              </tr>
 
             </table>
 			<table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin-top:5px;">
@@ -367,11 +477,35 @@ if (isset($_GET['latest_news_id']) and $latest_news['news_id'] == $_GET['latest_
                     <td class="smallText" align="right"><div class="td_box"><?php echo $latest_news_split->display_links($latest_news_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'latest_news_id'))); ?></div></td>
                   </tr>
                   <tr>
-				  <td valign="top" class="smallText">&nbsp;</td>
-                    <td align="right" class="smallText"><div class="td_button"><?php echo
-                    '&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS,
-                    'action=new_latest_news'.(isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):''))
-                    . '">' .tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?></div></td>
+                    <td valign="top" class="smallText">&nbsp;</td>
+                    <td align="right" class="smallText">
+                    <div class="td_button"><?php
+                    if($_GET['site_id'] == null){
+                      $site_id = 0;
+                    }else{
+                      $site_id = $_GET['site_id'];
+                    }
+                    $sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$_SESSION['loginuid']."' limit 0,1");
+                    while($userslist= tep_db_fetch_array($sites_id)){
+                         $site_permission = $userslist['site_permission'];
+                    }
+                    if(isset($site_permission)) $site_arr=$site_permission;//权限判断
+                    else $site_arr="";
+                    $site_array = explode(',',$site_arr);
+                    if(in_array($site_id,$site_array)){
+                      echo '&nbsp;<a href="javascript:void(0)" onclick="show_latest_news(this,'.$_GET['page'].',-1,'.$site_id.')">' .tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; 
+                    }else{
+                      echo tep_html_element_button(IMAGE_NEW_PROJECT,'disabled="disabled"'); 
+                    }
+                    if($ocertify->npermission == 15){
+                       if(in_array($site_id,$site_array)){
+                          echo '<a href="javascript:void(0);" onclick="delete_select_news(\'news_id[]\');">'.tep_html_element_button(IMAGE_DELETE, 'onclick=""').'</a>';
+                       }else{
+                          echo tep_html_element_button(IMAGE_DELETE, 'disabled="disabled" ');
+                       }
+                    }
+                    ?>
+                    </div></td>
                   </tr>
                 </table>
 			</td>
@@ -429,14 +563,14 @@ $contents[] = array('text' => TEXT_DATE_UPDATE. '&nbsp;'.TEXT_UNSET_DATA);
         break;
     }
 
-    if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {
+/*    if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {
       echo '            <td width="25%" valign="top">' . "\n";
 
       $box = new box;
       echo $box->infoBox($heading, $contents);
 
       echo '            </td>' . "\n";
-    }
+    }*/
 ?>
           </tr>
         </table></td>

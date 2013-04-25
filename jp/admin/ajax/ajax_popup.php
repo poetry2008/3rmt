@@ -3306,4 +3306,125 @@ $notice_box->get_heading($heading);
 $notice_box->get_contents($contents, $buttons);
 $notice_box->get_eof(tep_eof_hidden());
 echo $notice_box->show_notice();
-}?>
+
+}else if ($_GET['action'] == 'edit_latest_news'){
+ include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_LATEST_NEWS);
+ include(DIR_FS_ADMIN.'classes/notice_box.php');
+$sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$_SESSION['loginuid']."' limit 0,1");
+while($userslist= tep_db_fetch_array($sites_id)){
+     $site_permission = $userslist['site_permission']; 
+}
+if(isset($site_permission)) $site_arr=$site_permission;//权限判断
+else $site_arr="";
+$site_array = explode(',',$site_arr);
+if(!in_array($site_id,$site_array)){
+   $disable = 'disabled="disabled"';
+}
+ $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+ $get_news_id = $_GET['latest_news_id'];
+ $site_id = $_GET['site_id'];
+   if ( isset($_GET['latest_news_id']) ) { 
+    $latest_news_query = tep_db_query("
+          select news_id, 
+                 headline,  
+                 content, 
+                 news_image, 
+                 news_image_description,
+                 site_id,
+                 date_added,
+                 latest_update_date,
+                 update_editor,
+                 author
+          from " . TABLE_LATEST_NEWS . " 
+          where news_id = '" . (int)$_GET['latest_news_id'] . "'");
+      $latest_news = tep_db_fetch_array($latest_news_query);
+    $nInfo = new objectInfo($latest_news);
+    } else {
+      $latest_news = array();
+    }
+     $latest_news_query_raw = ' select n.news_id, n.headline, n.date_added, n.author, n.update_editor, n.latest_update_date, n.content, n.status, n.news_image, n.news_image_description, n.isfirst, n.site_id from ' . TABLE_LATEST_NEWS . ' n where 1 ' . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and (n.site_id = '" .  intval($_GET['site_id']) . "') " : '') . ' order by date_added desc ';
+     $latest_news_id_query = tep_db_query($latest_news_query_raw);
+     while ($latest_news_id = tep_db_fetch_array($latest_news_id_query)) {
+         $cid_array[] = $latest_news_id['news_id'];
+     }
+
+ foreach ($cid_array as $c_key => $c_value) {
+           if ($_GET['latest_news_id'] == $c_value) {
+            break;
+          }
+ }
+ $page_str = '';
+ if($get_news_id != -1){
+ if ($c_key > 0) {
+   $page_str .= '<a id="option_prev" onclick=\'show_latest_news("",'.$_GET['page'].','.$cid_array[$c_key-1].','.$_GET['site_id'].')\' href="javascript:void(0);" id="option_next">'.TEXT_CAMPAIGN_PREV.'</a>&nbsp;&nbsp;';
+ }
+ if ($c_key < (count($cid_array) - 1)) {
+   $page_str .= '<a id="option_next" onclick=\'show_latest_news("",'.$_GET['page'].','.$cid_array[$c_key+1].','.$_GET['site_id'].')\' href="javascript:void(0);" id="option_next">'.TEXT_CAMPAIGN_NEXT.'</a>&nbsp;&nbsp;';
+ }
+ }
+ $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+ $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+ $heading[] = array('align' => 'left', 'text' => isset($latest_news['headline'])?$latest_news['headline']:HEADING_TITLE);
+ $heading[] = array('align' => 'right', 'text' => $page_str);
+ $form_str = tep_draw_form('new_latest_news', FILENAME_LATEST_NEWS, (isset($_GET['latest_news_id']) && $_GET['latest_news_id'] != '-1' ? ('latest_news_id=' . $_GET['latest_news_id'] . '&action=update_latest_news') : 'action=insert_latest_news').(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):''), 'post', 'enctype="multipart/form-data"'); 
+
+ $latest_news_contents[]['text'] = array(
+      array('text' => '<input type="hidden" name="author" value="'.$_SESSION['user_name'].'"><input type="hidden" name="update_editor" value="'.$_SESSION['user_name'].'">')
+ );
+ if($site_id == 0){
+      $site_id_name = 'all';
+ }else{
+      $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$site_id));
+      $site_id_name = $site_name['romaji'];
+ }
+ if($get_news_id != -1){
+      $site_romaji = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$latest_news['site_id']));
+      if($latest_news['site_id'] == 0){
+       $site_romaji['romaji'] = 'all';
+      }
+ }
+ $latest_news_contents[]['text'] = array(
+      array('text' => ENTRY_SITE),
+      array('text' => (isset($_GET['latest_news_id']) && $_GET['latest_news_id'] && $latest_news?$site_romaji['romaji']:$site_id_name.'<input type="hidden" name="site_id" value="'.$site_id.'">'))
+ );
+ $latest_news_contents[]['text'] = array(
+     array('text' => TEXT_LATEST_NEWS_HEADLINE),
+     array('text' => tep_draw_input_field('headline', isset($latest_news['headline'])?$latest_news['headline']:'', 'id="headline" style="margin-left:0"'.$disable, false).'&nbsp;&nbsp;<font color="red" id="title_error"></font>')
+     );
+ $latest_news_contents[]['text'] = array(
+     array('text' => TEXT_LATEST_NEWS_CONTENT),
+     array('text' => tep_draw_textarea_field('content', 'soft', '70', '15',isset($latest_news['content'])?stripslashes($latest_news['content']):'','id="content" style="resize: vertical;"'.$disable))
+     );
+ $latest_news_contents[]['text'] = array(
+     array('text' => TEXT_LATEST_NEWS_IMAGE),
+     array('text' => tep_draw_file_field('news_image','',$disable) . '<br>' .  tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' .  (isset($latest_news['news_image'])?$latest_news['news_image']:'') .  tep_draw_hidden_field('news_image',isset($latest_news['news_image'])?$latest_news['news_image']:''))
+     );
+ $latest_news_contents[]['text'] = array(
+     array('text' => TEXT_LATEST_NEWS_IMAGE_DESCRIPTION),
+     array('text' => tep_draw_textarea_field('news_image_description', 'soft', '70', '7',isset($latest_news['news_image_description'])?stripslashes($latest_news['news_image_description']):'','id="news_image_description" style="resize: vertical;"'.$disable))
+     );
+ $latest_news_contents[]['text'] = array(
+     array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.((tep_not_null($latest_news['author']))?$latest_news['author']:TEXT_UNSET_DATA)), 
+     array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.((tep_not_null($latest_news['date_added']))?$latest_news['date_added']:TEXT_UNSET_DATA))
+     );
+ $latest_news_contents[]['text'] = array(
+     array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.((tep_not_null($latest_news['update_editor']))?$latest_news['update_editor']:TEXT_UNSET_DATA)),
+     array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.((tep_not_null($latest_news['latest_update_date']))?date('Y-m-d H:i:s',$latest_news['latest_update_date']):TEXT_UNSET_DATA))
+     );
+if($ocertify->npermission == 15){
+if(isset($disable) && $disable){
+ isset($_GET['latest_news_id']) ? $cancel_button = tep_html_element_button(IMAGE_DELETE,$disable) : $cancel_button = '';
+}else{
+ isset($_GET['latest_news_id']) ? $cancel_button = '&nbsp;&nbsp;<a class="new_product_reset" href="' . tep_href_link(FILENAME_LATEST_NEWS, 'action=delete_latest_news_confirm&latest_news_id='.  $_GET['latest_news_id'].(isset($_GET['site_id']) ?  '&site_id='.$_GET['site_id']:'').(isset($_GET['page']) ?  '&page='.$_GET['page']:'')) . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>' : $cancel_button = '';
+}
+}
+ $button[] = tep_html_element_button(IMAGE_SAVE,'onclick="check_news_info()"'.$disable). $cancel_button;
+if(!empty($button)){
+       $buttons = array('align' => 'center', 'button' => $button);
+ }
+ $notice_box->get_form($form_str);
+ $notice_box->get_heading($heading);
+ $notice_box->get_contents($latest_news_contents, $buttons);
+ $notice_box->get_eof(tep_eof_hidden());
+ echo $notice_box->show_notice();
+}
