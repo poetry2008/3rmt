@@ -3,14 +3,14 @@
   $Id$
 */
 ?>
-<!-- latest_news_index //-->
-<div class="latest_news_home">
-<h2 class="pageHeading_05">
-<span class="game_t game_t02">
-<?php echo STORE_NAME;?>からのお知らせ</span></h2>
-<div class="comment_05">
+<!-- latest_news //-->
+<div class="latest_news_box">
+<h3 class="pageHeading">
+<?php echo STORE_NAME.TEXT_MODULE_NEWS_TITLE;?>
+</h3>
     <div id="news">
         <ul class="news_ul">
+
 <?php
 //ccdd
     if(preg_match('/^[0-9][0-9][0-9][0-9]\/[0-9][0-9]\/[0-9][0-9]$/',trim(SITE_OPEN_TIME))){
@@ -46,16 +46,17 @@
                 } else {
                     $latest_news_new = '';
                 }
-echo '        <li class="news_list"><a class="news_list_link" href="' .  tep_href_link(FILENAME_LATEST_NEWS, 'news_id=' . $latest_news['news_id']) . '">' .  replace_store_name($latest_news['headline']) . $latest_news_new .'</a><span>'.tep_date_short($latest_news['date_added']).'</span></li>'."\n";          
+echo '        <li class="news_list"><img src="images/design/li_list.gif" alt="img">' . tep_date_short($latest_news['date_added']) . '&nbsp;&nbsp;<a href="' .  tep_href_link(FILENAME_NEWS, 'news_id=' . $latest_news['news_id']) . '">' .  replace_store_name($latest_news['headline']) . $latest_news_new .'</a>
+</li>'."\n";          
 $row++;
 }
 }
     ?>
         </ul>
+        <div class="pageHeading_right">
+        <a href='<?php echo tep_href_link('news.php');?>'><?php 
+        echo TEXT_MODULE_NEWS_MORE;?></a>
     </div>
-    <div align="right" style="padding: 0 10px 0px 0px;">
-        <a class="more_news" href='<?php echo tep_href_link('latest_news.php');?>'>more</a>
-        <?php //<img src="includes/languages/japanese/images/buttons/button_more.gif" width="56" height="25" alt="more" title="more" >?>
     </div>
-</div><!-- latest_news_eof //-->
-</div><!-- latest_news_home_eof //-->
+</div>
+<!-- latest_news_eof //-->

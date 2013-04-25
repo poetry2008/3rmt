@@ -1,13 +1,11 @@
 <?php
 /*
   $Id$
-
-  新闻列表和新闻内容页面
 */
 
   require('includes/application_top.php');
-  
-  require(DIR_WS_ACTIONS.'latest_news.php');
+
+  require(DIR_WS_ACTIONS.'news.php');
 ?>
 <?php page_head();?>
 <script type="text/javascript"><!--
@@ -31,42 +29,34 @@ function popupWindow(url) {
       </td>
       <!-- body_text //-->
       <td valign="top" id="contents">
-        <h1 class="pageHeading"><?php 
-        if (isset($_GET['news_id']) && $_GET['news_id']) { 
-          echo strip_tags(replace_store_name($latest_news['headline'])); 
-        } else { 
-          echo HEADING_TITLE; 
-        } ?></h1>
-        <table border="0" width="100%" cellspacing="0" cellpadding="0">
+        <div class="pageHeading"><h1><?php if ($_GET['news_id']) { echo replace_store_name($latest_news['headline']); } else { echo HEADING_TITLE; } ?></h1></div>
+                <div class="comment">
+        <table border="0" width="100%" class="info_middle" cellspacing="0" cellpadding="0">
           <tr>
             <td>
 <?php
-  if (isset($_GET['news_id']) && intval($_GET['news_id'])) {  
-?>
-          <table width="100%">
-<?
+  if ($_GET['news_id']) {  
+          echo '<table width="100%">';
     if($latest_news['news_image']) {
+          echo '<tr>';
+          echo '<td  width="60" align="left">';
 ?>
-          <tr>
-          <td  width="60" align="left">
-          <script type="text/javascript">
-            <!--
-              document.write('<?php echo '<a href="javascript:popupWindow(\\\'' . tep_href_link(FILENAME_POPUP_IMAGE_NEWS, 'nID=' . $latest_news['news_id']) . '\\\')">' . tep_image(DIR_WS_IMAGES . $latest_news['news_image'], addslashes(replace_store_name($latest_news['headline'])), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '</a>'; ?>');
-            //-->
-          </script>
-          <noscript><?php echo '<a href="' . tep_href_link(DIR_WS_IMAGES . $latest_news['news_image']) . '">' . tep_image(DIR_WS_IMAGES . $latest_news['news_image'], $latest_news['headline'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '</a>'; ?></noscript>
-          </td>
-          <td style="font-size:11px;"><?php echo replace_store_name($latest_news['news_image_description']); ?></td>
-  </tr>
+                      <script type="text/javascript">
+                        <!--
+                          document.write('<?php echo '<a href="javascript:popupWindow(\\\'' . tep_href_link(FILENAME_POPUP_IMAGE_NEWS, 'nID=' . $latest_news['news_id']) . '\\\')">' . tep_image(DIR_WS_IMAGES . $latest_news['news_image'], addslashes(replace_store_name($latest_news['headline'])), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '</a>'; ?>');
+                        //-->
+                      </script>
+                      <noscript><?php echo '<a href="' . tep_href_link(DIR_WS_IMAGES . $latest_news['news_image']) . '">' . tep_image(DIR_WS_IMAGES . $latest_news['news_image'], replace_store_name($latest_news['headline']), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '</a>'; ?></noscript>
+                      </td>
+                      <td style="font-size:11px;"><?php echo replace_store_name($latest_news['news_image_description']); ?></td>
+                  </tr>
 <?php
     }
 ?>
   <tr>
-    <td colspan="2">
-      <p class="main" style="font-size:12px;"><?php echo nl2br(replace_store_name($latest_news['content'])); ?></p>
-    </td>
+    <td colspan="2"><p class="main" style="font-size:12px;"><?php echo str_replace('<br />', '<br>', nl2br(replace_store_name($latest_news['content']))); ?></p></td>
   </tr>
-</table>
+  </table>
 <?php
   } else {
     if (($latest_news_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3'))) {
@@ -87,18 +77,21 @@ function popupWindow(url) {
     echo '<ul>' . "\n";
     while ($latest_news = tep_db_fetch_array($latest_news_query)) {
       if($latest_news['news_image'] != '') { 
-        $latest_news_image = tep_image(DIR_WS_IMAGES . 'infobox/photo.gif', strip_tags($latest_news['headline']), '15', '15');
+        $latest_news_image = tep_image(DIR_WS_IMAGES . 'infobox/photo.gif', strip_tags(replace_store_name($latest_news['headline'])), '50', '15');
       } else {
         $latest_news_image = '';
       }
       
       if(time()-strtotime($latest_news['date_added'])<(defined('DS_LATEST_NEWS_NEW_LIMIT')?DS_LATEST_NEWS_NEW_LIMIT:7)*86400){
-        $latest_news_new = tep_image(DIR_WS_IMAGES . 'design/latest_news_new.gif', strip_tags($latest_news['headline']));
+        $latest_news_new = tep_image(DIR_WS_IMAGES . 'design/latest_news_new.gif', strip_tags(replace_store_name($latest_news['headline'])));
       } else {
         $latest_news_new = '';
       }
     
-    echo '<li class="news_list02"><div class="div01">'.tep_date_short($latest_news['date_added']) . '</div><a class="link01" href="' .tep_href_link(FILENAME_LATEST_NEWS ,'news_id=' . $latest_news['news_id']).'">' . replace_store_name($latest_news['headline']) . '' . $latest_news_image . $latest_news_new .'</a></li>'."\n";
+    echo '<li class="news_list">'.tep_date_short($latest_news['date_added']) .
+      '&nbsp;&nbsp;&nbsp;&nbsp;<a href="' .tep_href_link(FILENAME_NEWS
+      ,'news_id=' . $latest_news['news_id']).'">' .
+      replace_store_name($latest_news['headline']) . '&nbsp;&nbsp;' . $latest_news_image . $latest_news_new .'</a></li>'."\n";
     
     }
     echo '</ul>' . "\n";
@@ -119,15 +112,13 @@ function popupWindow(url) {
 <?php
     }
   }
-  if (isset($_GET['news_id']) && $_GET['news_id']) { 
+  if ($_GET['news_id']) { 
 ?>
                 <p align="right" class="smallText">
                   [ <?php echo tep_date_long($latest_news['date_added']) ;?> ]
                 </p>
                 <div align="right">
-                  <?php echo '<a href="' . tep_href_link(FILENAME_LATEST_NEWS) .
-                  '">' . tep_image_button('button_back02.gif',
-  IMAGE_BUTTON_BACK_LIST) . '</a>'; ?>
+                  <?php echo '<a href="' . tep_href_link(FILENAME_NEWS) . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?>
                 </div>
 <?php
   }
@@ -135,6 +126,8 @@ function popupWindow(url) {
             </td>
           </tr>
         </table>
+                </div>
+                <p class="pageBottom"></p>
       </td>
       <!-- body_text_eof //-->
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>">
