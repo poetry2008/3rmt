@@ -5,7 +5,7 @@
 
   require('includes/application_top.php');
   
-  require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_LATEST_NEWS);
+  require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_NEWS);
   
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link('game_news.php'));
   
@@ -52,7 +52,6 @@ function popupWindow(url) {
         $latest_news_new = '';
       }
     
-    //echo '<li class="news_list">'.tep_date_short($latest_news['date_added']) .  '&nbsp;&nbsp;&nbsp;&nbsp;<a href="' .$latest_news['url'].'" rel="nofollow" target="_blank">' .  mb_strimwidth(iconv("UTF-8", "EUC-JP",$latest_news['headline']),0,95,'...') . '' . $latest_news_image .'</a></li>'."\n";
     echo '<li class="news_list game_news"><a href="' .$latest_news['url'].'" rel="nofollow" target="_blank">' .  mb_strimwidth($latest_news['headline'],0,130,'...') . '' . $latest_news_image .'</a></li>'."\n";
     
     }
