@@ -42,7 +42,7 @@ define('TEXT_USER_UPDATE','更新者:');
 define('TEXT_DATE_ADDED','投稿日:');
 define('TEXT_DATE_UPDATE','更新日:');
 define('TEXT_NO_NAME','匿名');
-define('REVIEWS_NOTICE_TOTALNUM_ERROR', 'レビューの内容は50文字以上を入力してください');
+define('REVIEWS_NOTICE_TOTALNUM_ERROR', 'レビューの内容は'.REVIEW_TEXT_MIN_LENGTH.'文字以上を入力してください');
 define('TEXT_CAMPAIGN_PREV', '<前へ');
 define('TEXT_CAMPAIGN_NEXT', '次へ>');
 define('TEXT_CATEGORY_SELECT','カテゴリ選択:');

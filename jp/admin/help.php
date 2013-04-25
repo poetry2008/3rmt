@@ -4,6 +4,22 @@
 */
 
 require('includes/application_top.php');
+if (!empty($_GET)) {
+  $get_count = count($_GET);
+  if ($get_count == 1) {
+    if (isset($_GET[session_name()])) {
+      tep_redirect(tep_href_link(FILENAME_DEFAULT));
+    }
+  }
+} else {
+  tep_redirect(tep_href_link(FILENAME_DEFAULT));
+}
+if ($_GET['action'] == 'save_content') {
+  //更新内容 
+  $help_romaji = urldecode($_POST['h_romaji']); 
+  tep_db_query("update `help_info` set `content` = '".addslashes($_POST['help_content'])."', `title` = '".addslashes($_POST['help_title'])."' where romaji = '".$help_romaji."'"); 
+  tep_redirect(tep_href_link('help.php', 'info_romaji='.urlencode($help_romaji))); 
+}
 
 if (isset($_GET['info_romaji']) && $_GET['info_romaji']) {
   $romaji = $_GET['info_romaji'];
@@ -44,7 +60,7 @@ if (isset($_GET['keyword']) && $_GET['keyword']!="") {
 <title>
 <?php 
 if (isset($_GET['info_romaji']) && $_GET['info_romaji']) {
-  echo $info_array['title']=="" ? HELP_INFO_NO_INFO : $info_array['title'];
+  echo $info_array['title']=="" ? HELP_INFO_NO_INFO : stripslashes($info_array['title']);
 } elseif (isset($_GET['keyword']) && $_GET['keyword']!="") {
   echo $keyword.HELP_INFO_SEARCH;
 } else {
@@ -56,7 +72,7 @@ if (isset($_GET['info_romaji']) && $_GET['info_romaji']) {
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <style>
 body {
-font-family: "宋体", Osaka, Verdana, Arial, sans-serif;
+font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif;
 font-size: 12px;
 color: #000000;
 padding:0;
@@ -80,17 +96,38 @@ font-size:14px;
 font-weight:bold;
 background-color:#cccccc;
 padding:8px 15px;
-margin:5px 8px 0 8px;
+margin:5px 8px 0 0;
 }
 .box_info{ 
-margin:0 8px 5px 8px;
-border-top:4px solid #cccccc;
+margin:0 8px 5px 0;
 border-bottom:1px solid #cccccc;
 border-left:1px solid #cccccc;
 border-right:1px solid #cccccc;
 background-color:#EEEEEE;
-padding:5px 12px;
+padding:5px 18px;
 }
+.box_content{ 
+margin:0 8px 5px 0;
+border-bottom:1px solid #cccccc;
+border-left:1px solid #cccccc;
+border-right:1px solid #cccccc;
+background-color:#EEEEEE;
+padding:5px;
+}
+.content{
+	width:100%;
+	min-width:750px;
+	overflow:hidden;
+	width: expression(document.body.clientWidth < 750? "750px": "100%" );
+}
+.td_height{
+	height:770px;
+	height:800px\0;
+}
+@media all and (-webkit-min-device-pixel-ratio:0){
+.td_height{
+	height:870px;
+}}
 @media all and (-webkit-min-device-pixel-ratio:0){
 .footer_copyright{
 	min-width:750px;
@@ -114,8 +151,38 @@ padding:5px 12px;
 .help_pic{
        margin-top:-5px;
 }
+.pageHeading {
+	font-size: 18px;                                
+	color: #727272;                                 
+	font-weight: bold;                             
+}
 </style>
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
+<script language="javascript" src="lib/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+<script type="text/javascript">
+tinyMCE.init({
+        mode : "textareas",
+        theme : "advanced",
+        height: "800", 
+        plugins : "imageupload,pagebreak,style,layer,table,advhr,advlink,emotions,iespell,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,inlinepopups",
+         
+        theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,formatselect,fontsizeselect,forecolor,backcolor,imageupload,|,cut,copy,paste,|,search,replace,|,bullist,numlist,|,undo,redo,|,link,unlink,anchor,|,code",
+        theme_advanced_toolbar_location : "top",
+        theme_advanced_toolbar_align : "left",
+        theme_advanced_statusbar_location : "bottom",
+        theme_advanced_resizing : false,
+        
+        skin : "o2k7",
+        skin_variant : "silver",
+});
+
+<?php //跳转URL?>
+function redirect_new_url(new_object)
+{
+  var url_str = $(new_object).parent().attr('href');
+  window.location.href = url_str;
+}
+</script>
 </head>
 <body>
 <?php if (!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']) {?>
@@ -124,8 +191,55 @@ padding:5px 12px;
 </script>
 <?php }?>
 <?php 
+if ($_GET['action'] == 'modify_content') {
+//编辑内容
+echo tep_draw_form('m_form', 'help.php', 'action=save_content');
+?>
+<table border="0" width="100%" cellpadding="0" cellspacing="0">
+<tr>
+<td width="8">&nbsp;</td> 
+<td valign="top"> 
+<div class="content_table">
+<table width="100%" border="0" cellpadding="2" cellspacing="0">
+  <tr>
+    <td>
+    <?php 
+      echo tep_draw_input_field('help_title', stripslashes($info_array['title']), 'size=50');
+    ?>
+    </td> 
+  </tr>
+</table>
+</div>
+<div class="box_content">
+<table width="100%" border="0" cellpadding="2" cellspacing="0">
+        <tr>
+          <td id="emd">
+            <textarea id="elm1" class="" cols="207" rows="20" name="help_content" style="width:100%;height:100%;"><?php echo stripslashes($info_array['content']);?></textarea>
+          </td>
+        </tr>
+        <tr>
+          <td align="right" id="button_width">
+            <input type="hidden" name="h_romaji" value="<?php echo urlencode($info_array['romaji']);?>">   
+            <input type="submit" value="<?php echo IMAGE_SAVE;?>">
+            <a href="<?php echo tep_href_link('help.php', 'info_romaji='.urlencode($info_array['romaji']));?>"><?php echo tep_html_element_button(IMAGE_BACK);?></a> 
+          </td>
+        </tr>
+      </table>
+</div>
+</td>
+</tr>
+</table>
+</form>
+<?php
+} else {
 if (isset($_GET['info_romaji']) && $_GET['info_romaji']) {
   if (empty($info_array)) {
+?>
+<table border="0" width="100%" cellpadding="0" cellspacing="0">
+<tr>
+<td width="8" class="td_height">&nbsp;</td> 
+<td valign="top"> 
+<?php
     echo '<div class="content_table">';
     echo '<table width="100%" cellpadding="2" cellspacing="0" border="0">
     <tr>
@@ -138,20 +252,31 @@ if (isset($_GET['info_romaji']) && $_GET['info_romaji']) {
     </td>
     </tr>
     </table>';
-    echo '</div><br>';
-    echo '<div class="box_info">'; 
-    echo '<font color="red"><b>';
-    echo HELP_INFO_NO_INFO;
-    echo '</b></font>';
     echo '</div>';
+    echo '<div class="box_info">'; 
+    echo '<font color="red">';
+    echo HELP_INFO_NO_INFO;
+    echo '</font>';
+    echo '</div>';
+?>
+</td>
+</tr>
+</table>
+<?php
   } else {
 ?>
+<table border="0" width="100%" cellpadding="0" cellspacing="0">
+<tr>
+<td width="8" class="td_height">&nbsp;</td> 
+<td valign="top"> 
 <div class="content">
 <?php
 echo '<div class="content_table">';
 echo '<table width="100%" cellpadding="2" cellspacing="0" border="0">
 <tr>
-<td  align="left"><img alt="img" src="images/menu_icon/icon_help_info.gif" class="help_pic">&nbsp;'.$info_array['title'].'</td>
+<td  align="left"><img alt="img" src="images/menu_icon/icon_help_info.gif" class="help_pic">&nbsp;'.stripslashes($info_array['title']);
+echo '&nbsp;&nbsp;<a href="'.tep_href_link('help.php', 'action=modify_content&info_romaji='.urlencode($_GET['info_romaji'])).'">'.tep_html_element_button(IMAGE_EDIT).'</a>';
+echo '</td>
 <td align="right">
 <form action="help.php" method="get" >
 <input type="text" name="keyword" >
@@ -161,20 +286,24 @@ echo '<table width="100%" cellpadding="2" cellspacing="0" border="0">
 </tr>
 </table>';
 echo '</div>';
-echo '</h2>';
 echo '<div class="box_info">';
-echo $info_array['content'].'<br>';
+echo stripslashes($info_array['content']).'<br>';
 }
 ?>
 </div>
 </div>
+</td>
+</tr>
+</table>
 <?php 
+}
 }
 if(isset($_GET['keyword']) && $_GET['keyword']){
 ?>
-<table  width="100%" >
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
   <tr>
-    <td>
+    <td width="3" class="td_height">&nbsp;</td> 
+    <td valign="top"> 
     <?php
     echo '<div class="content_table">';
     echo '<table width="100%" cellpadding="2" cellspacing="0" border="0">
@@ -188,20 +317,20 @@ if(isset($_GET['keyword']) && $_GET['keyword']){
     </td>
     </tr>
     </table>';
-    echo '</div><br>';
+    echo '</div>';
     $num_info = tep_db_num_rows($info_query);
     if ($num_info == 0) {
     echo '<div class="box_info">'; 
-    echo '<font color="red"><b>';
+    echo '<font color="red">';
     echo HELP_INFO_NO_SEARCH_INFO;
-    echo '</b></font>';
+    echo '</font>';
     echo '</div>';
     } else {
       while($info_array = tep_db_fetch_array($info_query)){
         echo '<div class="content">';
-        echo '<a href="'.tep_href_link("help.php","info_romaji=".urlencode($info_array['romaji'])).'"><h2><img alt="img" src="images/menu_icon/icon_help_info.gif" class="help_pic">&nbsp;'.$info_array['title'].'</h2></a></div>'; 
+        echo '<a href="'.tep_href_link("help.php","info_romaji=".urlencode($info_array['romaji'])).'"><h2><img alt="img" src="images/menu_icon/icon_help_info.gif" class="help_pic">&nbsp;'.stripslashes($info_array['title']).'</h2></a></div>'; 
         echo '<div class="box_info">';
-        echo '<a href="'.tep_href_link("help.php","info_romaji=".urlencode($info_array['romaji'])).'">'.mb_substr(strip_tags($info_array['content']),0,300,'utf-8').'......</a></div>';
+        echo '<a href="'.tep_href_link("help.php","info_romaji=".urlencode($info_array['romaji'])).'">'.mb_substr(strip_tags(stripslashes($info_array['content'])),0,300,'utf-8').'......</a></div>';
       }
     }
     ?>
@@ -212,9 +341,10 @@ if(isset($_GET['keyword']) && $_GET['keyword']){
 } else {
 if (isset($_GET['keyword'])) {
 ?>
-<table  width="100%" >
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
   <tr>
-    <td>
+    <td width="3" class="td_height">&nbsp;</td> 
+    <td valign="top"> 
     <?php
     echo '<div class="content_table">';
     echo '<table width="100%" cellpadding="2" cellspacing="0" border="0">
@@ -228,11 +358,11 @@ if (isset($_GET['keyword'])) {
     </td>
     </tr>
     </table>';
-    echo '</div><br>';
+    echo '</div>';
     echo '<div class="box_info">'; 
-    echo '<font color="red"><b>';
+    echo '<font color="red">';
     echo HELP_INFO_NO_SEARCH_INFO;
-    echo '</b></font>';
+    echo '</font>';
     echo '</div>';
     ?>
     </td>

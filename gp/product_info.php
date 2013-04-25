@@ -48,7 +48,7 @@ jq(document).ready(function () {
    var actiontime =new Date().getTime();  
    jq(".option_product_radio_list").each(function(){
 
-     var radio_option_value = document.getElementById("h_<?php echo $_SESSION['formname']; ?>").value;
+     var radio_option_value = jq(this).next("span").children("input[type='hidden']").val();
      radio_option_value = radio_option_value.replace(/<br>/i,"<br>");
      radio_option_value = radio_option_value.replace(/<\/br>/i,"</br>");
      var tmp_t_obj = jq(this); 
@@ -232,7 +232,6 @@ function showimage($1) {
         <div align="right"><a href="<?php echo tep_href_link(FILENAME_DEFAULT); ?>"><?php echo tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></a></div>
         <?php
   } else {
-    // ccdd
     $product_info['site_id'] == SITE_ID && tep_db_query("
         UPDATE " . TABLE_PRODUCTS_DESCRIPTION . " 
         SET products_viewed = products_viewed+1 
@@ -367,7 +366,6 @@ function showimage($1) {
                           <?php } ?> 
                         <?php 
                           //show products tags 
-// ccdd
 if (false) {
 $tag_query = tep_db_query("
     SELECT t.tags_id, 
@@ -481,7 +479,6 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
         }
         echo '</span>'; 
       }else{    
-    // ccdd
     
     $p_cflag = tep_get_cflag_by_product_id($product_info['products_id']); 
     $hm_option->render($product_info['belong_to_option'], false, 0, '', '', $p_cflag);
@@ -526,7 +523,6 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
             </table>
             <?php
                     //sub图像
-        // ccdd
         $sub_colors_query = tep_db_query("
             SELECT color_image, 
                    color_id, 
@@ -543,7 +539,6 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                 <?php
                     while($sub_colors = tep_db_fetch_array($sub_colors_query)) {
                       //获取颜色名
-          // ccdd
           $colors_name_query = tep_db_query("
               SELECT color_name 
               FROM ".TABLE_COLOR." 
@@ -554,9 +549,6 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                       $mcnt++;
                       if($mcnt == 1) {
                       ?>
-                <script language="javascript" type="text/javascript"><!--
-    document.write('<?php //echo '<td class="smallText" align="center"><a href="javascript:popupWindow(\\\'' . tep_href_link(FILENAME_POPUP_IMAGE, 'pID=' . $product_info['products_id']) . '\\\')">' . tep_image2(DIR_WS_IMAGES . $product_info['products_image'], addslashes($product_info['products_name']), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="2" vspace="2"  class="image_border"') . '</a><br>-</td>'; ?>');
-    --></script>
                 <noscript>
                 <?php echo '<td class="smallText" align="center" width="20%"><a href="' . tep_href_link(DIR_WS_IMAGES . $product_info['products_image']) . '" rel="lightbox[products]">' . tep_image3(DIR_WS_IMAGES . $product_info['products_image'], $product_info['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="2" vspace="2" class="image_border"') . '</a><br>-</td>'; ?>
                 </noscript>
@@ -588,21 +580,19 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
             <div class="comment_long">
             <div class="comment_long_text"> 
             <?php 
-            
-            //echo stripslashes($product_info['products_description']);
             echo $description;
             ?>
             </div> 
             </div>
          <?php }?>
         <?php
-//    $reviews = tep_db_query("select count(*) as count from " . TABLE_REVIEWS . " where products_id = '" . $_GET['products_id'] . "'");
-//    $reviews_values = tep_db_fetch_array($reviews);
-//    if ($reviews_values['count'] > 0) {
-    //include(DIR_WS_BOXES.'reviews.php') ;
+    $reviews = tep_db_query("select count(*) as count from " . TABLE_REVIEWS . " where products_id = '" . $_GET['products_id'] . "'");
+    $reviews_values = tep_db_fetch_array($reviews);
+    if ($reviews_values['count'] > 0) {
+      include(DIR_WS_BOXES.'reviews.php') ;
 ?>
 <?php
-//    }
+    }
 
     if (tep_not_null($product_info['products_url'])) {
 ?>

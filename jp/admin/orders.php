@@ -2418,13 +2418,36 @@ $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
 $belong = preg_replace('/\?XSID=[^&]+/','',$belong);
 preg_match_all('/action=[^&]+/',$belong,$belong_temp_array);
 if($belong_temp_array[0][0] != ''){
-  preg_match_all('/oID=[^&]+/',$belong,$belong_array);
-  if($belong_array[0][0] != ''){
+  if($belong_temp_array[0][0] == 'action=show_manual_info'){
+    preg_match_all('/pID=[^&]+/',$belong,$belong_array);
+    if($belong_array[0][0] != ''){
 
-    $belong = $href_url.'?'.$belong_array[0][0];
+      $belong = $href_url.'?action=show_manual_info|||'.$belong_array[0][0];
+    }else{
+
+      $belong = $href_url;
+    }
+  }else if($belong_temp_array[0][0] == 'action=search_manual_info'){
+    $belong = $href_url.'?action=search_manual_info';
+  }else if($belong_temp_array[0][0] == 'action=show_search_manual'){
+    preg_match_all('/cPath=[^&]+/',$belong,$belong_array);
+    if($belong_array[0][0] != ''){
+      $belong = $href_url.'?action=show_search_manual|||'.$belong_array[0][0];
+    }else{
+      preg_match_all('/pID=[^&]+/',$belong,$belong_array); 
+      if($belong_array[0][0] != ''){
+        $belong = $href_url.'?action=show_manual_info|||'.$belong_array[0][0]; 
+      }
+    }
   }else{
+    preg_match_all('/oID=[^&]+/',$belong,$belong_array);
+    if($belong_array[0][0] != ''){
 
-    $belong = $href_url;
+      $belong = $href_url.'?'.$belong_array[0][0];
+    }else{
+
+      $belong = $href_url;
+    }
   }
 }else{
 
@@ -2468,7 +2491,134 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     }
 ?>
 <script>
+<?php //显示手册全部内容?>
+function manual_show(action){
+
+  switch(action){
+
+  case 'top':
+    $("#manual_top_show").css({"height":"","overflow":"hidden"}); 
+    $("#manual_top_all").html('<a href="javascript:void(0);" onclick="manual_hide(\'top\');"><u><?php echo ORDER_MANUAL_ALL_HIDE;?></u></a>');
+    break;
+  case 'top_categories':
+    $("#manual_top_categories_show").css({"height":"","overflow":"hidden"}); 
+    $("#manual_top_categories_all").html('<a href="javascript:void(0);" onclick="manual_hide(\'top_categories\');"><u><?php echo ORDER_MANUAL_ALL_HIDE;?></u></a>');
+    break;
+  case 'categories':
+    $("#manual_categories_show").css({"height":"","overflow":"hidden"}); 
+    $("#manual_categories_all").html('<a href="javascript:void(0);" onclick="manual_hide(\'categories\');"><u><?php echo ORDER_MANUAL_ALL_HIDE;?></u></a>');
+    break;
+  case 'categories_children':
+    $("#manual_categories_children_show").css({"height":"","overflow":"hidden"}); 
+    $("#manual_categories_children_all").html('<a href="javascript:void(0);" onclick="manual_hide(\'categories_children\');"><u><?php echo ORDER_MANUAL_ALL_HIDE;?></u></a>');
+    break;
+  case 'products':
+    $("#manual_products_show").css({"height":"","overflow":"hidden"}); 
+    $("#manual_products_all").html('<a href="javascript:void(0);" onclick="manual_hide(\'products\');"><u><?php echo ORDER_MANUAL_ALL_HIDE;?></u></a>');
+    break;
+  }   
+}
+<?php //显示手册部分内容?>
+function manual_hide(action){
+
+  switch(action){
+
+  case 'top':
+    $("#manual_top_show").css({"height":"200px","overflow":"hidden"});
+    $("#manual_top_all").html('<a href="javascript:void(0);" onclick="manual_show(\'top\');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a>');
+    break;
+  case 'top_categories':
+    $("#manual_top_categories_show").css({"height":"200px","overflow":"hidden"});
+    $("#manual_top_categories_all").html('<a href="javascript:void(0);" onclick="manual_show(\'top_categories\');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a>');
+    break;
+  case 'categories':
+    $("#manual_categories_show").css({"height":"200px","overflow":"hidden"});
+    $("#manual_categories_all").html('<a href="javascript:void(0);" onclick="manual_show(\'categories\');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a>');
+    break;
+  case 'categories_children':
+    $("#manual_categories_children_show").css({"height":"200px","overflow":"hidden"});
+    $("#manual_categories_children_all").html('<a href="javascript:void(0);" onclick="manual_show(\'categories_children\');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a>');
+    break;
+  case 'products':
+    $("#manual_products_show").css({"height":"200px","overflow":"hidden"});
+    $("#manual_products_all").html('<a href="javascript:void(0);" onclick="manual_show(\'products\');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a>');
+    break;
+  }  
+}
 $(document).ready(function(){ 
+<?php
+  //当请求为手册显示时执行
+  if($_GET['action'] == 'show_manual_info' || $_GET['action'] == 'show_search_manual'){
+?>
+    <?php //手册内容隐藏，显示?>
+    var show_height = 200;
+    var manual_top = $("#manual_top").height();
+    manual_top = parseInt(manual_top);
+    if(manual_top > show_height){
+
+      $("#manual_top_show").css({"height":"200px","overflow":"hidden"});
+      $("#manual_top_show").html($("#manual_top").html());
+      $("#manual_top_all").show();
+      $("#manual_top").html('');
+    }else{
+      $("#manual_top_show").html($("#manual_top").html()); 
+      $("#manual_top").html('');
+    }
+
+    var manual_top_categories = $("#manual_top_categories").height();
+    manual_top_categories = parseInt(manual_top_categories);
+    if(manual_top_categories > show_height){
+
+      $("#manual_top_categories_show").css({"height":"200px","overflow":"hidden"});
+      $("#manual_top_categories_show").html($("#manual_top_categories").html());
+      $("#manual_top_categories_all").show();
+      $("#manual_top_categories").html('');
+    }else{
+      $("#manual_top_categories_show").html($("#manual_top_categories").html()); 
+      $("#manual_top_categories").html('');
+    }
+
+    var manual_categories = $("#manual_categories").height();
+    manual_categories = parseInt(manual_categories);
+    if(manual_categories > show_height){
+
+      $("#manual_categories_show").css({"height":"200px","overflow":"hidden"});
+      $("#manual_categories_show").html($("#manual_categories").html());
+      $("#manual_categories_all").show();
+      $("#manual_categories").html('');
+    }else{
+      $("#manual_categories_show").html($("#manual_categories").html()); 
+      $("#manual_categories").html('');
+    }
+
+    var manual_categories_children = $("#manual_categories_children").height();
+    manual_categories_children = parseInt(manual_categories_children);
+    if(manual_categories_children > show_height){
+
+      $("#manual_categories_children_show").css({"height":"200px","overflow":"hidden"});
+      $("#manual_categories_children_show").html($("#manual_categories_children").html());
+      $("#manual_categories_children_all").show();
+      $("#manual_categories_children").html('');
+    }else{
+      $("#manual_categories_children_show").html($("#manual_categories_children").html()); 
+      $("#manual_categories_children").html('');
+    }
+
+    var manual_products = $("#manual_products").height();
+    manual_products = parseInt(manual_products);
+    if(manual_products > show_height){
+
+      $("#manual_products_show").css({"height":"200px","overflow":"hidden"});
+      $("#manual_products_show").html($("#manual_products").html());
+      $("#manual_products_all").show();
+      $("#manual_products").html('');
+    }else{
+      $("#manual_products_show").html($("#manual_products").html()); 
+      $("#manual_products").html('');
+    }
+<?php
+  }
+?>
   if($(".dataTableContent").find('input|[type=checkbox][checked]').length!=0){
     if(document.sele_act.elements["chk[]"]){
       document.getElementsByName("all_chk")[0].checked = false;
@@ -3442,6 +3592,19 @@ $categories_pid_array=tep_db_fetch_array($categories_pid_query);
 $cp_manual_query=tep_db_query("select categories_id,categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$categories_pid_array['parent_id']."' and site_id='".$site_id."'");
 $cp_manual_array=tep_db_fetch_array($cp_manual_query);
 
+//判断是否存在上级分类
+$categories_parent_query = tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$categories_pid_array['parent_id']."'");
+$categories_parent_num = tep_db_num_rows($categories_parent_query);
+
+if($categories_parent_num > 0){
+ 
+  $categories_parent_array = tep_db_fetch_array($categories_parent_query);
+  $parent_manual_query = tep_db_query("select categories_id,categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$categories_parent_array['parent_id']."' and site_id='".$site_id."'");
+  $parent_manual_array = tep_db_fetch_array($parent_manual_query);
+  tep_db_free_result($parent_manual_query);
+}
+tep_db_free_result($categories_parent_query);
+
 $c_manual_query=tep_db_query("select categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$categories_info_array['categories_id']."' and site_id='".$site_id."'");
 $c_manual_array=tep_db_fetch_array($c_manual_query);
 
@@ -3457,11 +3620,11 @@ $params="oID=".$oID."&page=".$page;
 
             <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
-            <td class="pageHeading"><?php echo $cp_manual_array['categories_name'].'/'.$c_manual_array['categories_name'].'/'.$pro_manual_array['products_name'].SHOW_MANUAL_TITLE; ?></td>
+            <td class="pageHeading"><?php echo ($parent_manual_array['categories_name'] != '' ? $parent_manual_array['categories_name'].'/' : '').($cp_manual_array['categories_name'] != '' ? $cp_manual_array['categories_name'].'/' : '').($c_manual_array['categories_name'] != '' ? $c_manual_array['categories_name'].'/' : '').$pro_manual_array['products_name'].SHOW_MANUAL_TITLE; ?></td>
             <td align="right" class="smallText" valign="top">
             <table width="275px"  border="0" cellspacing="1" cellpadding="0">
             <tr>
-            <td class="smallText" valign='top'>
+            <td class="smallText" valign='top' align="right">
 	    
 
 	    <form name="manual" action="orders.php" method="get">
@@ -3486,9 +3649,15 @@ $params="oID=".$oID."&page=".$page;
 <?php echo ORDER_TOP_MANUAL_TEXT.SHOW_MANUAL_TITLE;?>
 <a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=edit_top_categories_manual')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
 </h2>
+<div id="manual_top_show">
+</div>
+<br>
+<div align="left" style="display:none;" id="manual_top_all"><a href="javascript:void(0);" onclick="manual_show('top');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div id="manual_top" style="display:none;">
 <?php 
 $tmp_top_manual = get_configuration_by_site_id('TOP_MANUAL_CONTENT');
 echo (!empty($tmp_top_manual)?stripslashes($tmp_top_manual):'<font color="red">'.SHOW_MANUAL_NONE.'</font>');?>
+</div>
 <hr>
 <?php 
 $check_categories_query = tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$cp_manual_array['categories_id']."'");
@@ -3499,9 +3668,15 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 ?>
 <h2>
 <?php echo $get_categories_array['categories_name'].SHOW_MANUAL_TITLE?> 
-<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=p_categories_manual')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
+<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=p_categories_manual&parent=1')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
 </h2>
+<div id="manual_top_categories_show">
+</div>
+<br>
+<div align="left" style="display:none;" id="manual_top_categories_all"><a href="javascript:void(0);" onclick="manual_show('top_categories');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div id="manual_top_categories" style="display:none;">
 <?php echo $get_categories_array['c_manual']!='' ? stripslashes($get_categories_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
+</div>
 <hr>
 
 <?php
@@ -3511,19 +3686,37 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 <?php echo $cp_manual_array['categories_name'].SHOW_MANUAL_TITLE?> 
 <a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=p_categories_manual')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
 </h2>
+<div id="manual_categories_show">
+</div>
+<br>
+<div align="left" style="display:none;" id="manual_categories_all"><a href="javascript:void(0);" onclick="manual_show('categories');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div id="manual_categories" style="display:none;">
 <?php echo $cp_manual_array['c_manual']!='' ? stripslashes($cp_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
+</div>
 <hr>
 <h2>
 <?php echo $c_manual_array['categories_name'].SHOW_MANUAL_TITLE?>
 <a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=show_categories_manual')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
 </h2>
+<div id="manual_categories_children_show">
+</div>
+<br>
+<div align="left" style="display:none;" id="manual_categories_children_all"><a href="javascript:void(0);" onclick="manual_show('categories_children');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div id="manual_categories_children" style="display:none;">
 <?php echo $c_manual_array['c_manual']!='' ? stripslashes($c_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
+</div>
 <hr>
 <h2>
 <?php echo $pro_manual_array['products_name'].SHOW_MANUAL_TITLE?>
 <a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=show_products_manual')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
 </h2>
+<div id="manual_products_show">
+</div>
+<br>
+<div align="left" style="display:none;" id="manual_products_all"><a href="javascript:void(0);" onclick="manual_show('products');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div id="manual_products" style="display:none;">
 <?php echo $pro_manual_array['p_manual']!='' ? stripslashes($pro_manual_array['p_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>'?>
+</div>
 <hr>
 </td>
 </tr>
@@ -3574,7 +3767,7 @@ if (isset($_GET['keyword'])) {
             <td align="right" class="smallText" valign="top">
             <table width="275px"  border="0" cellspacing="1" cellpadding="0">
             <tr>
-            <td class="smallText" valign='top'>
+            <td class="smallText" valign='top' align="right">
 <form name="manual" action="orders.php" method="get">
 <input name="keyword" style="width:200px;" type="text" id="keyword" onclick="CtoH(this.id);" size="40" value="<?php echo$p_keyword; ?>">
 <input type="submit"  onclick="return check_manual_search_form();" value="<?php echo SHOW_MANUAL_SEARCH;?>">
@@ -3605,7 +3798,7 @@ if (isset($_GET['keyword'])) {
 <tr class="dataTableHeadingRow">
 <td class="dataTableHeadingContent"><?php echo SEARCH_CAT_PRO_TITLE;?> </td>
 <td class="dataTableHeadingContent"><?php echo SEARCH_MANUAL_CONTENT;?> </td>
-<td class="dataTableHeadingContent" align="right"><?php echo SEARCH_MANUAL_LOOK;?> </td>
+<td class="dataTableHeadingContent" align="right" nowrap><?php echo SEARCH_MANUAL_LOOK;?> </td>
 </tr>
 
 <?php
@@ -3633,11 +3826,7 @@ if(((!isset($_GET['p_pid']) || !$_GET['p_pid'])&& (!isset($p_pid) || !$p_pid)) |
 $p_pid=$products_array['products_id'];
 }
 
-if(isset($p_pid)  && ($products_array['products_id']==$p_pid)){
-echo '<tr class="dataTableRowSelected">'; 
-}else{
 echo '<tr class='.$now_class.'>';
-}
 ?>
 
 
@@ -3646,7 +3835,7 @@ echo '<tr class='.$now_class.'>';
 </td>
 	<td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('s_pID')).'p_pid='.$products_array['products_id']);?>'">
 <?php $manual_content=$products_info_array['products_manual']=='' ? "<font color='red'>".SHOW_MANUAL_NONE."</font>" : $products_info_array['products_manual'];
- echo $products_info_array['products_manual']=='' ? "<font color='red'>".SHOW_MANUAL_NONE."</font>" :substr(strip_tags($manual_content,0,108));
+ echo $products_info_array['products_manual']=='' ? "<font color='red'>".SHOW_MANUAL_NONE."</font>" :mb_substr(preg_replace('/&.+;/','',strip_tags($manual_content)),0,77,'utf-8');
 ?>
 </td>
 
@@ -3704,7 +3893,7 @@ if (isset($_GET['keyword'])) {
             <td align="right" class="smallText" valign="top">
             <table width="275px"  border="0" cellspacing="1" cellpadding="0">
             <tr>
-            <td class="smallText">
+            <td class="smallText"  align="right">
 <form name="manual" action="orders.php" method="get">
 <input name="keyword" style="width:200px;" type="text" id="keyword" onclick="CtoH(this.id);" size="40" value="<?php echo $_GET['keyword'];?>">
 <input type="submit"  onclick="return check_manual_search_form();" value="<?php echo SHOW_MANUAL_SEARCH;?>">
@@ -3737,7 +3926,7 @@ if (isset($_GET['keyword'])) {
 <tr class="dataTableHeadingRow">
 <td class="dataTableHeadingContent"><?php echo SEARCH_CAT_PRO_TITLE;?> </td>
 <td class="dataTableHeadingContent"><?php echo SEARCH_MANUAL_CONTENT;?> </td>
-<td class="dataTableHeadingContent" align="right"><?php echo SEARCH_MANUAL_LOOK;?> </td>
+<td class="dataTableHeadingContent" align="right" nowrap><?php echo SEARCH_MANUAL_LOOK;?> </td>
 </tr>
 
 <?php
@@ -3761,11 +3950,7 @@ $now_class=$odd	;
 if(((!isset($_GET['s_cid2']) || !$_GET['s_cid2']) &&(!isset($s_cid2) && !$s_cid2))|| ($categories_array['categories_id']==$_GET['s_cid2'])){
 $s_cid2=$categories_array['categories_id'];
 }
-if(isset($s_cid2)  && ($categories_array['categories_id']==$s_cid2)){
-echo '<tr class="dataTableRowSelected">'; 
-}else{
 echo '<tr class='.$now_class.'>';
-}
 ?>
 <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("s_cid2")).'s_cid2='.$categories_array['categories_id']);?>'">
 	<?php
@@ -3787,7 +3972,7 @@ if(empty($check_categories_array)){
 </td>
 	<td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_ORDERS,tep_get_all_get_params("s_cid2").'s_cid2='.$categories_array['categories_id']);?>'"><?php 
 $manual_content= $categories_manual_array['c_manual']=='' ? "<font color='red'>".SHOW_MANUAL_NONE."</font>" : $categories_manual_array['c_manual'];
-echo $categories_manual_array['c_manual']=='' ? "<font color='red'>".SHOW_MANUAL_NONE."</font>" : substr(strip_tags($manual_content),0,108);
+echo $categories_manual_array['c_manual']=='' ? "<font color='red'>".SHOW_MANUAL_NONE."</font>" : mb_substr(preg_replace('/&.+;/','',strip_tags($manual_content)),0,77,'utf-8');
 ?></td>
         <td class="dataTableContent" align="right"><a href="<?php echo tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('action')).'cID='.$categories_array['categories_id'].'&action=show_search_manual');?>"><?php echo tep_image(DIR_WS_IMAGES.'icon_info.gif', ICON_INFO);?></a>&nbsp;</td>
 </tr>
@@ -3841,7 +4026,7 @@ if (isset($_GET['keyword'])) {
             <td align="right" class="smallText" valign="top">
             <table width="275px"  border="0" cellspacing="1" cellpadding="0">
             <tr>
-            <td class="smallText">
+            <td class="smallText"  align="right">
 <form name="manual" action="orders.php" method="get">
 <input name="keyword" style="width:200px;" type="text" id="keyword" size="40" onclick="CtoH(this.id);" value="<?php echo$_GET['keyword'];?>">
 <input type="submit"  onclick="return check_manual_search_form();" value="<?php echo SHOW_MANUAL_SEARCH;?>">
@@ -3874,7 +4059,7 @@ if (isset($_GET['keyword'])) {
 <tr class="dataTableHeadingRow">
 <td class="dataTableHeadingContent"><?php echo SEARCH_CAT_PRO_TITLE;?> </td>
 <td class="dataTableHeadingContent"><?php echo SEARCH_MANUAL_CONTENT;?> </td>
-<td class="dataTableHeadingContent" align="right"><?php echo SEARCH_MANUAL_LOOK;?> </td>
+<td class="dataTableHeadingContent" align="right" nowrap><?php echo SEARCH_MANUAL_LOOK;?> </td>
 </tr>
 
 <?php
@@ -3899,11 +4084,7 @@ if(((!isset($_GET['s_cpath']) || !$_GET['s_cpath']) &&(!isset($s_cpath) && !$s_c
 $s_cpath=$categories_s_array['categories_id'];
 
 }
-if(isset($s_cpath)  && ($categories_s_array['categories_id']==$s_cpath)){
-echo '<tr class="dataTableRowSelected">'; 
-}else{
 echo '<tr class='.$now_class.'>';
-}
 ?>
 	<td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_ORDERS,tep_get_all_get_params().'&s_cpath='.$categories_s_array['categories_id']);?>'">
 	<?php
@@ -3925,7 +4106,7 @@ if(empty($check_categories_array)){
 </td>
 	<td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_ORDERS,tep_get_all_get_params().'&s_cpath='.$categories_s_array['categories_id']);?>'"><?php 
 $manual_content= $categories_manual_array['c_manual']=='' ? "<font color='red'>".SHOW_MANUAL_NONE."</font>" : $categories_manual_array['c_manual'];
-echo $categories_manual_array['c_manual']=='' ? "<font color='red'>".SHOW_MANUAL_NONE."</font>" : substr(strip_tags($manual_content),0,108);
+echo $categories_manual_array['c_manual']=='' ? "<font color='red'>".SHOW_MANUAL_NONE."</font>" : mb_substr(preg_replace('/&.+;/','',strip_tags($manual_content)),0,77,'utf-8');
 ?></td>
         <td class="dataTableContent" align="right"><a href="<?php echo tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('action')).'&cID='.$categories_s_array['categories_id'].'&action=show_search_manual');?>"><?php echo tep_image(DIR_WS_IMAGES.'icon_info.gif', ICON_INFO);?></a>&nbsp;</td>
 </tr>
@@ -3980,7 +4161,7 @@ if (isset($_GET['keyword'])) {
             <td align="right" class="smallText" valign="top">
             <table width="275px"  border="0" cellspacing="1" cellpadding="0">
             <tr>
-            <td class="smallText" valign='top'>
+            <td class="smallText" valign='top' align="right">
 <form name="manual" action="orders.php" method="get">
 <input name="keyword" style="width:200px;" type="text" id="keyword" onclick="CtoH(this.id);" size="40" value="<?php echo $_GET['keyword'];?>">
 <input type="submit"  onclick="return check_manual_search_form();" value="<?php echo SHOW_MANUAL_SEARCH;?>">
@@ -4004,7 +4185,7 @@ if (isset($_GET['keyword'])) {
 <tr class="dataTableHeadingRow">
 <td class="dataTableHeadingContent"><?php echo SEARCH_CAT_PRO_TITLE;?> </td>
 <td class="dataTableHeadingContent"><?php echo SEARCH_MANUAL_CONTENT;?> </td>
-<td class="dataTableHeadingContent" align="right"><?php echo SEARCH_MANUAL_LOOK;?> </td>
+<td class="dataTableHeadingContent" align="right" nowrap><?php echo SEARCH_MANUAL_LOOK;?> </td>
 </tr>
 <?php 
 $odd="dataTableSecondRow";
@@ -4021,11 +4202,7 @@ $now_class=$odd	;
 if(((!isset($_GET['s_cid']) || !$_GET['s_cid']) && (!isset($s_cid) || !$s_cid)) || ($val['c_id']==$_GET['s_cid'])){
 $s_cid=$val['c_id'];
 }
-if(isset($s_cid)  && ($val['c_id']==$s_cid)){
-echo '<tr class="dataTableRowSelected">'; 
-}else{
 echo '<tr class='.$now_class.'>';
-}
 ?>
 	<td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('s_cid')).'s_cid='.$val['c_id']);?>'">
 <?php 
@@ -4053,7 +4230,7 @@ if(empty($check_parent_array)){
 	<td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('s_cid')).'s_cid='.$val['c_id']);?>'"> <?php 
 	if(isset($val['c_manual']) && $val['c_manual']){
 $manual_content= $val['c_manual'];
-echo   strip_tags(substr($manual_content,0,77));
+echo   mb_substr(preg_replace('/&.+;/','',strip_tags($manual_content)),0,77,'utf-8');
 
 	}else{
 echo "<font color='red'>".SHOW_MANUAL_NONE."</font>";	
@@ -4083,11 +4260,7 @@ if(((!isset($_GET['s_pid']) || !$_GET['s_pid'] ) && (!isset($s_pid) || !$s_pid))
 $s_pid=$products_info_array['products_id'];
 
 }
-if(isset($s_pid)  && ($products_info_array['products_id']==$s_pid)){
-echo '<tr class="dataTableRowSelected">'; 
-}else{
 echo '<tr class='.$now_class.'>';
-}
 
 
 ?>
@@ -4095,7 +4268,7 @@ echo '<tr class='.$now_class.'>';
 	<td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('s_pid')).'s_pid='.$products_info_array['products_id']);?>'">
 <?php 
 $manual_content= $products_info_array['p_manual']=='' ? "<font color='red'>".SHOW_MANUAL_NONE."</font>" : $products_info_array['p_manual'];
-echo  $products_info_array['p_manual']=='' ? $manual_content : substr(strip_tags($manual_content),0,108);
+echo  $products_info_array['p_manual']=='' ? $manual_content : mb_substr(preg_replace('/&.+;/','',strip_tags($manual_content)),0,77,'utf-8');
 
 ?>
 </td>
@@ -4122,7 +4295,8 @@ echo '<b><font color="red">'.MANUAL_SEARCH_NORES.'</font></b>';
 
 }
 ?>
-
+</table>
+</td>
 <?php
 }else if($_GET['action']=='show_search_manual'){
 //显示搜索手册
@@ -4168,7 +4342,7 @@ $title_cp = $get_categories_title['categories_name'].'/';
             <td align="right" class="smallText" valign="top">
             <table width="275px"  border="0" cellspacing="1" cellpadding="0">
             <tr>
-            <td class="smallText" >
+            <td class="smallText" align="right">
 <form name="manual" action="orders.php" method="get">
 <input name="keyword" style="width:200px;" type="text" id="keyword" onclick="CtoH(this.id);" size="40" value="<?php echo $keyword ?>">
 <input type="submit"  onclick="return check_manual_search_form();" value="<?php echo SHOW_MANUAL_SEARCH;?>">
@@ -4189,6 +4363,20 @@ $title_cp = $get_categories_title['categories_name'].'/';
 <table border="0" width="100%" cellspacing="0" cellpadding="10" >
 <tr>
 <td>
+<h2>
+<?php echo ORDER_TOP_MANUAL_TEXT.SHOW_MANUAL_TITLE;?>
+<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=edit_top_categories_manual')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
+</h2>
+<div id="manual_top_show">
+</div>
+<br>
+<div align="left" style="display:none;" id="manual_top_all"><a href="javascript:void(0);" onclick="manual_show('top');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div id="manual_top" style="display:none;">
+<?php 
+$tmp_top_manual = get_configuration_by_site_id('TOP_MANUAL_CONTENT');
+echo (!empty($tmp_top_manual)?stripslashes($tmp_top_manual):'<font color="red">'.SHOW_MANUAL_NONE.'</font>');?>
+</div>
+<hr>
 <?php 
 if($check_categories_array['parent_id']!=0){
 $get_categories_info = tep_db_query("select categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$check_categories_array['parent_id']."' and site_id='".$site_id."'");
@@ -4198,7 +4386,13 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 <?php echo $get_categories_array['categories_name'].SHOW_MANUAL_TITLE?> 
 <a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=p_categories_manual')."&cID=".$check_categories_array['parent_id']?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
 </h2>
+<div id="manual_top_categories_show">
+</div>
+<br>
+<div align="left" style="display:none;" id="manual_top_categories_all"><a href="javascript:void(0);" onclick="manual_show('top_categories');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div id="manual_top_categories" style="display:none;">
 <?php echo $get_categories_array['c_manual']!='' ? stripslashes($get_categories_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
+</div>
 <hr>
 
 <?php
@@ -4209,20 +4403,38 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 <?php echo $cp_manual_array['categories_name'].SHOW_MANUAL_TITLE?> 
 <a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=p_categories_manual')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
 </h2>
+<div id="manual_categories_show">
+</div>
+<br>
+<div align="left" style="display:none;" id="manual_categories_all"><a href="javascript:void(0);" onclick="manual_show('categories');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div id="manual_categories" style="display:none;">
 <?php echo $cp_manual_array['c_manual']!='' ? stripslashes($cp_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
+</div>
 <hr>
 <h2>
 <?php echo $c_manual_array['categories_name'].SHOW_MANUAL_TITLE?>
 <a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=show_categories_manual')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
 </h2>
+<div id="manual_categories_children_show">
+</div>
+<br>
+<div align="left" style="display:none;" id="manual_categories_children_all"><a href="javascript:void(0);" onclick="manual_show('categories_children');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div id="manual_categories_children" style="display:none;">
 <?php echo $c_manual_array['c_manual']!='' ? stripslashes($c_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
+</div>
 <hr>
 <h2>
 <?php echo $pro_manual_array['products_name'].SHOW_MANUAL_TITLE?> <a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=show_products_manual')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
 
 
 </h2>
+<div id="manual_products_show">
+</div>
+<br>
+<div align="left" style="display:none;" id="manual_products_all"><a href="javascript:void(0);" onclick="manual_show('products');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div id="manual_products" style="display:none;">
 <?php echo $pro_manual_array['p_manual']!='' ? stripslashes($pro_manual_array['p_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>'?>
+</div>
 <hr>
 </td>
 </tr>
@@ -4235,6 +4447,8 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 
 </td>
 </tr>
+</table>
+</td>
 
 <?php
 	}else if(!(isset($_GET['pID']) && $_GET['pID']!='') && (isset($_GET['cID']) && $_GET['cID']!='')){
@@ -4268,7 +4482,7 @@ $title_cp = $get_categories_title['categories_name'].'/';
             <table width="275px"  border="0" cellspacing="1" cellpadding="0">
             <tr>
             <td class="smallText" valign='top'>
-<form name="manual" action="orders.php" method="get">
+<form name="manual" action="orders.php" method="get" align="right">
 <input name="keyword" style="width:200px;" type="text" id="keyword" size="40" onclick="CtoH(this.id);" value="<?php echo $p_keyword?>">
 <input type="submit"  onclick="return check_manual_search_form();" value="<?php echo SHOW_MANUAL_SEARCH;?>">
 <input type="hidden" name="action" value="search_manual_info">
@@ -4287,6 +4501,20 @@ $title_cp = $get_categories_title['categories_name'].'/';
 <table border="0" width="100%" cellspacing="0" cellpadding="10" >
 <tr>
 <td>
+<h2>
+<?php echo ORDER_TOP_MANUAL_TEXT.SHOW_MANUAL_TITLE;?>
+<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=edit_top_categories_manual')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
+</h2>
+<div id="manual_top_show">
+</div>
+<br>
+<div align="left" style="display:none;" id="manual_top_all"><a href="javascript:void(0);" onclick="manual_show('top');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div id="manual_top" style="display:none;">
+<?php 
+$tmp_top_manual = get_configuration_by_site_id('TOP_MANUAL_CONTENT');
+echo (!empty($tmp_top_manual)?stripslashes($tmp_top_manual):'<font color="red">'.SHOW_MANUAL_NONE.'</font>');?>
+</div>
+<hr>
 <?php 
 $check_categories_query = tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$cp_manual_array['categories_id']."'");
 $check_categories_array = tep_db_fetch_array($check_categories_query);
@@ -4298,7 +4526,13 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 <?php echo $get_categories_array['categories_name'].SHOW_MANUAL_TITLE?> 
 <a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=p_categories_manual')."&cID1=".$check_categories_array['parent_id']?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
 </h2>
+<div id="manual_top_categories_show">
+</div>
+<br>
+<div align="left" style="display:none;" id="manual_top_categories_all"><a href="javascript:void(0);" onclick="manual_show('top_categories');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div id="manual_top_categories" style="display:none;">
 <?php echo $get_categories_array['c_manual']!='' ? stripslashes($get_categories_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
+</div>
 <hr>
 
 <?php
@@ -4308,13 +4542,25 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 <?php echo $cp_manual_array['categories_name'].SHOW_MANUAL_TITLE?>
 <a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=p_categories_manual')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
  </h2>
+<div id="manual_categories_show">
+</div>
+<br>
+<div align="left" style="display:none;" id="manual_categories_all"><a href="javascript:void(0);" onclick="manual_show('categories');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div id="manual_categories" style="display:none;">
 <?php echo $cp_manual_array['c_manual']!='' ? stripslashes($cp_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
+</div>
 <hr>
 <h2>
 <?php echo $c_manual_array['categories_name'].SHOW_MANUAL_TITLE?>
 <a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=show_categories_manual')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
 </h2>
+<div id="manual_categories_children_show">
+</div>
+<br>
+<div align="left" style="display:none;" id="manual_categories_children_all"><a href="javascript:void(0);" onclick="manual_show('categories_children');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div id="manual_categories_children" style="display:none;">
 <?php echo $c_manual_array['c_manual']!='' ? stripslashes($c_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
+</div>
 <hr>
 </td>
 </tr>
@@ -4360,7 +4606,7 @@ $c_title          = $cp_manual_array['categories_name'].'/'.$c_manual_array['cat
             <td align="right" class="smallText" valign="top">
             <table width="275px"  border="0" cellspacing="1" cellpadding="0">
             <tr>
-            <td class="smallText" valign='top'>
+            <td class="smallText" valign='top' align="right">
 <form name="manual" action="orders.php" method="get">
 <input name="keyword" style="width:200px;" type="text" id="keyword" size="40" onclick="CtoH(this.id);" value="<?php echo $keyword?>">
 <input type="submit"  onclick="return check_manual_search_form();" value="<?php echo SHOW_MANUAL_SEARCH;?>">
@@ -4380,6 +4626,20 @@ $c_title          = $cp_manual_array['categories_name'].'/'.$c_manual_array['cat
 <table border="0" width="100%" cellspacing="0" cellpadding="10" >
 <tr>
 <td>
+<h2>
+<?php echo ORDER_TOP_MANUAL_TEXT.SHOW_MANUAL_TITLE;?>
+<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=edit_top_categories_manual')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
+</h2>
+<div id="manual_top_show">
+</div>
+<br>
+<div align="left" style="display:none;" id="manual_top_all"><a href="javascript:void(0);" onclick="manual_show('top');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div id="manual_top" style="display:none;">
+<?php 
+$tmp_top_manual = get_configuration_by_site_id('TOP_MANUAL_CONTENT');
+echo (!empty($tmp_top_manual)?stripslashes($tmp_top_manual):'<font color="red">'.SHOW_MANUAL_NONE.'</font>');?>
+</div>
+<hr>
 <?php 
 if($c_parent_array['parent_id'] == 0){
 ?>
@@ -4388,8 +4648,14 @@ if($c_parent_array['parent_id'] == 0){
 <a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=p_categories_manual')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
 
  </h2>
+<div id="manual_products_show">
+</div>
+<br>
+<div align="left" style="display:none;" id="manual_products_all"><a href="javascript:void(0);" onclick="manual_show('products');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div id="manual_products" style="display:none;">
 <?php echo $c_manual_content = $c_manual_array['c_manual']!='' ? stripslashes($c_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';
 ?>
+</div>
 <hr>
 <?php
 }else{
@@ -4398,13 +4664,25 @@ if($c_parent_array['parent_id'] == 0){
 <?php echo $cp_manual_array['categories_name'].SHOW_MANUAL_TITLE?>
 <a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=p_categories_manual&p_cpath='.$_GET['cPath'])?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
  </h2>
+<div id="manual_products_show">
+</div>
+<br>
+<div align="left" style="display:none;" id="manual_products_all"><a href="javascript:void(0);" onclick="manual_show('products');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div id="manual_products" style="display:none;">
 <?php echo $cp_manual_array['c_manual']!='' ? stripslashes($cp_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
+</div>
 <hr>
 <h2>
 <?php echo $c_manual_array['categories_name'].SHOW_MANUAL_TITLE?>
 <a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=show_categories_manual')?>"><?php echo tep_html_element_button(MANUAL_SEARCH_EDIT);?></a>
 </h2>
+<div id="manual_categories_show">
+</div>
+<br>
+<div align="left" style="display:none;" id="manual_categories_all"><a href="javascript:void(0);" onclick="manual_show('categories');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div id="manual_categories" style="display:none;">
 <?php echo $c_manual_array['c_manual']!='' ? stripslashes($c_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
+</div>
 <hr>
 
 <?php
@@ -5296,6 +5574,8 @@ if($c_parent_array['parent_id'] == 0){
               <!-- body_text_eof -->
               </tr>
               </table>
+              </td>
+           
               <!-- body_eof -->
 
               <!-- footer -->

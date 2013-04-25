@@ -25,7 +25,7 @@ case 'edit_top_manual':
   $title_char = TOP_MANUAL_TEXT.MANUAL_TITLE; 
   $form_info = '<form action="'.tep_href_link(FILENAME_PRODUCTS_MANUAL,tep_get_all_get_params(array('action', 'info', 'x', 'y'))."action=save_top_manual").'" method="post">';
   $manual_content = get_configuration_by_site_id('TOP_MANUAL_CONTENT');
-  $return_button = '<a href="'.tep_href_link(FILENAME_CATEGORIES, tep_get_all_get_params(array('action', 'info', 'x', 'y'))).'">'.tep_html_element_button(MANUAL_RETURN).'</a>';
+  $return_button = '<a href="'.tep_href_link(FILENAME_CATEGORIES, tep_get_all_get_params(array('action', 'info', 'x', 'y','parent'))).'">'.tep_html_element_button(MANUAL_RETURN).'</a>';
   break;
 case 'save_top_manual':
   tep_db_query("update `".TABLE_CONFIGURATION."` set `configuration_value` = '".addslashes($_POST['manual'])."' where `configuration_key` = 'TOP_MANUAL_CONTENT'");
@@ -40,7 +40,7 @@ case 'show_categories_manual_link':
   $title_char = $manual_category_res['categories_name'].MANUAL_TITLE;
   $form_info = '<form action="'.tep_href_link(FILENAME_PRODUCTS_MANUAL,tep_get_all_get_params(array('action', 'info', 'x', 'y'))."action=save_categories_manual_link").'" method="post">';
   $manual_content = $manual_category_res['c_manual'];
-  $return_button = '<a href="'.tep_href_link(FILENAME_CATEGORIES, tep_get_all_get_params(array('action', 'info', 'x', 'y'))).'">'.tep_html_element_button(MANUAL_RETURN).'</a>';
+  $return_button = '<a href="'.tep_href_link(FILENAME_CATEGORIES, tep_get_all_get_params(array('action', 'info', 'x', 'y','parent'))).'">'.tep_html_element_button(MANUAL_RETURN).'</a>';
   break;
 case 'save_categories_manual_link':
   $tmp_path_info = explode('_', $_GET['cPath']);
@@ -56,7 +56,7 @@ case 'edit_top_categories_manual':
   $title_char = TOP_MANUAL_TEXT.MANUAL_TITLE; 
   $form_info = '<form action="'.tep_href_link(FILENAME_PRODUCTS_MANUAL,tep_get_all_get_params(array('action', 'info', 'x', 'y'))."action=save_top_categories_manual").'" method="post">';
   $manual_content = get_configuration_by_site_id('TOP_MANUAL_CONTENT');
-  $return_button='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action"))."action=show_manual_info").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
+  $return_button='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action",'parent'))."action=show_manual_info").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
   break;
 case 'save_top_categories_manual':
   tep_db_query("update `".TABLE_CONFIGURATION."` set `configuration_value` = '".addslashes($_POST['manual'])."' where `configuration_key` = 'TOP_MANUAL_CONTENT'");
@@ -84,18 +84,18 @@ $pro_manual_array=tep_db_fetch_array($pro_manual_query);
 $title_char=$cp_manual_array['categories_name'].'/'.$c_manual_array['categories_name'].'/'.$pro_manual_array['products_name'].MANUAL_TITLE;
 $manual_content=$pro_manual_array['p_manual'];
 $form_info='<form action="'.tep_href_link(FILENAME_PRODUCTS_MANUAL,tep_get_all_get_params(array("action"))."action=save_products_manual").'" method="post">';
-$return_button='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action"))."action=show_manual_info").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
+$return_button='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action",'parent'))."action=show_manual_info").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
 
 break;
 }
 //来自categories
-if((isset($_GET['cPath']) && $_GET['cPath']!='') && (!isset($_GET['keyword']))){
+if(isset($_GET['cPath']) && !isset($_GET['keyword'])){
 if(isset($_GET['pID']) && $_GET['pID']){
-if(strpos($_GET['cPath'],"_")!=false){
 $title_char = "";
 $cPath      = $_GET['cPath'];
 $page       = $_GET['page'];
 $pid        = $_GET['pID'];
+$search = $_GET['search'];
 $site_id = 0;
 
 $categories_id=explode('_',$_GET['cPath']);
@@ -105,15 +105,20 @@ $categories_p_info_query=tep_db_query("select categories_name from ".TABLE_CATEG
 $categories_p_info=tep_db_fetch_array($categories_p_info_query);
 $categories_s_info_query=tep_db_query("select categories_name from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$s_categories_id."' and site_id='".$site_id."'");
 $categories_s_info=tep_db_fetch_array($categories_s_info_query);
+if($categories_id[2] != ''){
+
+  $categories_parent_info_query=tep_db_query("select categories_name from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$categories_id[2]."' and site_id='".$site_id."'");
+  $categories_parent_info=tep_db_fetch_array($categories_parent_info_query);
+  tep_db_free_result($categories_parent_info_query);
 }
 $products_info_query=tep_db_query("select products_name,p_manual from ".TABLE_PRODUCTS_DESCRIPTION." where products_id='".$pid."' and site_id='0'");
 $products_info_arr=tep_db_fetch_array($products_info_query);
-$title_char=$categories_p_info['categories_name'].'/'.$categories_s_info['categories_name'].'/'.$products_info_arr['products_name'].MANUAL_TITLE;
+$title_char=($categories_p_info['categories_name'] !='' ? $categories_p_info['categories_name'].'/' : '').($categories_s_info['categories_name'] != '' ? $categories_s_info['categories_name'].'/' : '').($categories_parent_info['categories_name'] != '' ? $categories_parent_info['categories_name'].'/' : '').($products_info_arr['products_name'] != '' ? $products_info_arr['products_name'] : '').MANUAL_TITLE;
 $manual_content=$products_info_arr['p_manual'];
-$param_str='cPath='.$cPath.'&pID='.$pid.'&site_id='.$site_id.'&page='.$page.'';
+$param_str='cPath='.$cPath.'&pID='.$pid.'&site_id='.$site_id.'&page='.$page.($search != '' ? '&search='.$search : '');
 $return_button='<a onclick="location=this.href" href="categories.php?'.$param_str.'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
 
-$form_info='<form action="products_manual.php?cPath='.$cPath.'&action=save_products_manual&pID='.$pid.'&site_id='.$site_id.'&page='.$page.'" method="post">';
+$form_info='<form action="products_manual.php?cPath='.$cPath.'&action=save_products_manual&pID='.$pid.'&site_id='.$site_id.'&page='.$page.($search != '' ? '&search='.$search : '').'" method="post">';
 }
 break;
 }
@@ -144,7 +149,7 @@ $title_cid2 = $categories_2_array['categories_name'].'/';
 $title_char=$categories_p_array['categories_name'].'/'.$title_cid2.$categories_array['categories_name'].'/'.$products_array['products_name'].MANUAL_TITLE;
 $manual_content=$products_array['p_manual'];
 $form_info='<form action="'.tep_href_link(FILENAME_PRODUCTS_MANUAL,tep_get_all_get_params(array("action"))."action=save_products_manual").'" method="post">';
-$return_button='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action"))."action=show_search_manual").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
+$return_button='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action",'parent'))."action=show_search_manual").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
 break;
 }
 
@@ -159,12 +164,13 @@ if(isset($_GET['cPath']) && $_GET['cPath']==''){
 $cPath      = $_GET['cPath'];
 $page       = $_GET['page'];
 $cid        = $_GET['cID'];
+$search = $_GET['search'];
 $categories_s_info_query=tep_db_query("select categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$_GET['cID']."' and site_id='".$site_id."'");
 $categories_s_info=tep_db_fetch_array($categories_s_info_query);
 $title_char=$categories_s_info['categories_name'].MANUAL_TITLE;
 $manual_content=$categories_s_info['c_manual'];
-$form_info='<form action="products_manual.php?cPath='.$cPath.'&action=save_categories_manual&cID='.$cid.'&site_id='.$site_id.'&page='.$page.'" method="post">';
-$param_str='cPath='.$cPath.'&cID='.$cid.'&site_id='.$site_id.'&page='.$page.'';
+$form_info='<form action="products_manual.php?cPath='.$cPath.'&action=save_categories_manual&cID='.$cid.'&site_id='.$site_id.'&page='.$page.($search != '' ? '&search='.$search : '').'" method="post">';
+$param_str='cPath='.$cPath.'&cID='.$cid.'&site_id='.$site_id.'&page='.$page.($search != '' ? '&search='.$search : '');
 $return_button='<a onclick="location=this.href" href="categories.php?'.$param_str.'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
 break;
 } 
@@ -181,7 +187,7 @@ $categories_info_query=tep_db_query("select categories_name,c_manual from ".TABL
 $categories_info=tep_db_fetch_array($categories_info_query);
 $title_char=$title_add.$categories_info['categories_name'].MANUAL_TITLE;
 $manual_content=$categories_info['c_manual'];
-$return_button        ='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action"))."action=show_search_manual").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
+$return_button        ='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action",'parent'))."action=show_search_manual").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
 $form_info            ='<form action="'.tep_href_link(FILENAME_PRODUCTS_MANUAL,tep_get_all_get_params(array("action"))."action=save_categories_manual").'" method="post">';
 break;
 }
@@ -206,13 +212,13 @@ $title_char=$categories_p_info['categories_name'].'/'.$title_cid2.$categories_s_
 $manual_content=$categories_s_info['c_manual'];
 //search
 if(isset($_GET['keyword']) && $_GET['keyword']){
-$return_button        ='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action"))."action=show_search_manual").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
+$return_button        ='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action",'parent'))."action=show_search_manual").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
 $form_info            ='<form action="'.tep_href_link(FILENAME_PRODUCTS_MANUAL,tep_get_all_get_params(array("action"))."action=save_categories_manual").'" method="post">';
 }
 
 //categories
 else{
-$return_button        ='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_CATEGORIES,tep_get_all_get_params(array("action"))).'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
+$return_button        ='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_CATEGORIES,tep_get_all_get_params(array("action",'parent'))).'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
 $form_info            ='<form action="'.tep_href_link(FILENAME_PRODUCTS_MANUAL,tep_get_all_get_params(array("action"))."action=save_categories_manual").'" method="post">';
 
 }
@@ -236,7 +242,7 @@ $categories_array=tep_db_fetch_array($categories_query);
 $title_char=$categories_p_array['categories_name'].'/'.$categories_array['categories_name'].MANUAL_TITLE;
 $manual_content=$categories_array['c_manual'];
 $form_info='<form action="'.tep_href_link(FILENAME_PRODUCTS_MANUAL,tep_get_all_get_params(array("action"))."action=save_categories_manual").'" method="post">';
-$return_button='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action"))."action=show_manual_info").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
+$return_button='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action",'parent'))."action=show_manual_info").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
 break;
 }
 //products search
@@ -256,7 +262,7 @@ $title_cid2 = $categories_2_array['categories_name'].'/';
 $title_char=$categories_p_array['categories_name'].'/'.$title_cid2.$categories_array['categories_name'].MANUAL_TITLE;
 $manual_content=$categories_array['c_manual'];
 $form_info='<form action="'.tep_href_link(FILENAME_PRODUCTS_MANUAL,tep_get_all_get_params(array("action"))."action=save_categories_manual").'" method="post">';
-$return_button='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action"))."action=show_search_manual").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
+$return_button='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action",'parent'))."action=show_search_manual").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
 break;
 
 }
@@ -273,7 +279,7 @@ $categories_array=tep_db_fetch_array($categories_query);
 $title_char=$categories_p_array['categories_name'].'/'.$categories_array['categories_name'].MANUAL_TITLE;
 $manual_content=$categories_array['c_manual'];
 $form_info='<form action="'.tep_href_link(FILENAME_PRODUCTS_MANUAL,tep_get_all_get_params(array("action"))."action=save_categories_manual").'" method="post">';
-$return_button='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action"))."action=show_search_manual").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
+$return_button='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action",'parent'))."action=show_search_manual").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
 break;
 }
 
@@ -289,12 +295,23 @@ $categories_id=$categories_array['categories_id'];
 $categories_pid_query=tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$categories_id."'");
 $categories_pid_array=tep_db_fetch_array($categories_pid_query);
 $categories_pid=$categories_pid_array['parent_id'];
+//判断是否还有上级分类
+if(isset($_GET['parent']) && $_GET['parent'] == 1){ 
+  $parent_categories_pid_query = tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$categories_pid."'");
+  $parent_categories_pid_array = tep_db_fetch_array($parent_categories_pid_query);
+  $parent_categories_pid_num = tep_db_num_rows($parent_categories_pid_query);
+  tep_db_free_result($parent_categories_pid_query);
+  if($parent_categories_pid_num > 0){
+
+    $categories_pid = $parent_categories_pid_array['parent_id'];
+  }
+}
 $categories_p_query=tep_db_query("select categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$categories_pid."' and site_id='".$site_id."'");
 $categories_p_array=tep_db_fetch_array($categories_p_query);
 $title_char=$categories_p_array['categories_name'].MANUAL_TITLE;
 $manual_content=$categories_p_array['c_manual'];
 $form_info='<form action="'.tep_href_link(FILENAME_PRODUCTS_MANUAL,tep_get_all_get_params(array("action"))."action=save_p_categories_manual").'" method="post">';
-$return_button='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action"))."action=show_manual_info").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
+$return_button='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action",'parent'))."action=show_manual_info").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
 break;
 }
 //products search
@@ -305,7 +322,7 @@ $categories_array = tep_db_fetch_array($categories_query);
 $title_char = $categories_array['categories_name'].MANUAL_TITLE;
 $manual_content=$categories_array['c_manual'];
 $form_info='<form action="'.tep_href_link(FILENAME_PRODUCTS_MANUAL,tep_get_all_get_params(array("action"))."action=save_p_categories_manual").'" method="post">';
-$return_button='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action","cID"))."action=show_search_manual").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
+$return_button='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action","cID",'parent'))."action=show_search_manual").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
 break;
 	}
 $pid     = $_GET['pID'];
@@ -327,7 +344,7 @@ $categories_p_array=tep_db_fetch_array($categories_p_query);
 $title_char=$title_add.$categories_p_array['categories_name'].MANUAL_TITLE;
 $manual_content=$categories_p_array['c_manual'];
 $form_info='<form action="'.tep_href_link(FILENAME_PRODUCTS_MANUAL,tep_get_all_get_params(array("action"))."action=save_p_categories_manual").'" method="post">';
-$return_button='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action"))."action=show_search_manual").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
+$return_button='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action",'parent'))."action=show_search_manual").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
 break;
 }
 //categories search
@@ -338,7 +355,7 @@ $categories_array = tep_db_fetch_array($categories_query);
 $title_char = $categories_array['categories_name'].MANUAL_TITLE;
 $manual_content=$categories_array['c_manual'];
 $form_info='<form action="'.tep_href_link(FILENAME_PRODUCTS_MANUAL,tep_get_all_get_params(array("action"))."action=save_p_categories_manual").'" method="post">';
-$return_button='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action","cID1"))."action=show_search_manual").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
+$return_button='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action","cID1",'parent'))."action=show_search_manual").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
 break;
 	}
 if(isset($_GET['cid2']) && $_GET['cid2']!=""){
@@ -355,7 +372,7 @@ $categories_p_array   = tep_db_fetch_array($categories_p_query);
 $title_char=$categories_p_array['categories_name'].'/'.$title_cid2.MANUAL_TITLE;
 $manual_content       = $categories_p_array['c_manual'];
 $form_info            ='<form action="'.tep_href_link(FILENAME_PRODUCTS_MANUAL,tep_get_all_get_params(array("action"))."action=save_p_categories_manual").'" method="post">';
-$return_button        ='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action"))."action=show_search_manual").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
+$return_button        ='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action",'parent'))."action=show_search_manual").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
 break;
 }
 // p_categories search
@@ -373,7 +390,7 @@ $categories_p_array   = tep_db_fetch_array($categories_p_query);
 $title_char=$categories_p_array['categories_name'].MANUAL_TITLE;
 $manual_content       = $categories_p_array['c_manual'];
 $form_info            ='<form action="'.tep_href_link(FILENAME_PRODUCTS_MANUAL,tep_get_all_get_params(array("action"))."action=save_p_categories_manual").'" method="post">';
-$return_button        ='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action"))."action=show_search_manual").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
+$return_button        ='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action",'parent'))."action=show_search_manual").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
 break;
 
 }
@@ -388,7 +405,7 @@ $categories_p_array   = tep_db_fetch_array($categories_p_query);
 $title_char=$categories_p_array['categories_name'].MANUAL_TITLE;
 $manual_content       = $categories_p_array['c_manual'];
 $form_info            ='<form action="'.tep_href_link(FILENAME_PRODUCTS_MANUAL,tep_get_all_get_params(array("action"))."action=save_p_categories_manual").'" method="post">';
-$return_button        ='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action"))."action=show_search_manual").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
+$return_button        ='<a onclick="location=this.href" href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action",'parent'))."action=show_search_manual").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
 break;
 
 }
@@ -413,8 +430,8 @@ $site_id = (!empty($_GET['site_id']))?$_GET['site_id']:0;
 $products_manual_sql="update ".TABLE_PRODUCTS_DESCRIPTION." set p_manual='".addslashes($_POST['manual'])."' where products_id='".(int)$pid."' and site_id='0'";
 
 tep_db_query($products_manual_sql);
-if(isset($_GET['cPath']) && $_GET['cPath'] && !isset($_GET['keyword'])){
-$param_str='cPath='.$cPath.'&pID='.$pid.'&site_id='.$site_id.'&page='.$page.'';
+if(isset($_GET['cPath']) && !isset($_GET['keyword'])){
+$param_str='cPath='.$cPath.'&pID='.$pid.'&site_id='.$site_id.'&page='.$page.($search != '' ? '&search='.$search : '');
 tep_redirect(tep_href_link(FILENAME_CATEGORIES, $param_str)); 
 
 }else{
@@ -457,7 +474,7 @@ break;
 
 //categories
 else{
-$param_str='cPath='.$cPath.'&cID='.$cid.'&site_id='.$site_id.'&page='.$page.'';
+$param_str='cPath='.$cPath.'&cID='.$cid.'&site_id='.$site_id.'&page='.$page.($search != '' ? '&search='.$search : '');
 tep_redirect(tep_href_link(FILENAME_CATEGORIES, $param_str)); 
 
 break;
@@ -504,9 +521,20 @@ $categories_pid_query=tep_db_query("select parent_id from ".TABLE_CATEGORIES." w
 $categories_pid_array=tep_db_fetch_array($categories_pid_query);
 $categories_pid=$categories_pid_array['parent_id'];
 
+//判断是否还有上级分类
+if(isset($_GET['parent']) && $_GET['parent'] == 1){ 
+  $parent_categories_pid_query = tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$categories_pid."'");
+  $parent_categories_pid_array = tep_db_fetch_array($parent_categories_pid_query);
+  $parent_categories_pid_num = tep_db_num_rows($parent_categories_pid_query);
+  tep_db_free_result($parent_categories_pid_query);
+  if($parent_categories_pid_num > 0){
+
+    $categories_pid = $parent_categories_pid_array['parent_id'];
+  }
+}
 $categories_manual_sql="update ".TABLE_CATEGORIES_DESCRIPTION." set c_manual='".addslashes($_POST['manual'])."' where categories_id='".(int)$categories_pid."' and site_id='".$site_id."'";
 tep_db_query($categories_manual_sql);
-$param_str=tep_get_all_get_params(array("action"))."action=show_manual_info";
+$param_str=tep_get_all_get_params(array("action","parent"))."action=show_manual_info";
 tep_redirect(tep_href_link(FILENAME_ORDERS, $param_str)); 
 break;
 }
@@ -631,8 +659,13 @@ echo $title_str;
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script type="text/javascript" src="lib/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 <script type="text/javascript">
+function manual_open(){
+
+  $("#manual_info_id").hide();
+}
 tinyMCE.init({
-        mode : "textareas",
+        mode : "exact",
+        elements : "elm1",
         theme : "advanced",
         height: "800", 
         plugins : "imageupload,pagebreak,style,layer,table,advhr,advlink,emotions,iespell,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,inlinepopups",
@@ -652,10 +685,64 @@ $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
 $belong = preg_replace('/\?XSID=[^&]+/','',$belong);
 preg_match_all('/action=[^&]+/',$belong,$belong_array);
+$categories_url = $_GET['cPath'];
+$categories_cid = $_GET['cID'];;
+$categories_url = $categories_cid != '' ? $categories_cid : $categories_url;
 if($belong_array[0][0] != ''){
+    $pid     = $_GET['pID'];
+    $pro_to_cate_query=tep_db_query("select categories_id from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id='".$pid."'");
+    $categories_array=tep_db_fetch_array($pro_to_cate_query);
+    $categories_id=$categories_array['categories_id'];
+    $categories_pid_query=tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$categories_id."'");
+    $categories_pid_array=tep_db_fetch_array($categories_pid_query);
+    tep_db_free_result($categories_pid_query);
+    $categories_pid=$categories_pid_array['parent_id'];
+    //判断是否还有上级分类
+    if(isset($_GET['parent']) && $_GET['parent'] == 1){ 
+      $parent_categories_pid_query = tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$categories_pid."'");
+      $parent_categories_pid_array = tep_db_fetch_array($parent_categories_pid_query);
+      $parent_categories_pid_num = tep_db_num_rows($parent_categories_pid_query);
+      tep_db_free_result($parent_categories_pid_query);
+      if($parent_categories_pid_num > 0){
 
-  $belong = preg_replace('/&site_id=[^&]*/','',$belong); 
-  $belong = preg_replace('/&page=[^&]*/','',$belong);
+        $categories_pid = $parent_categories_pid_array['parent_id'];
+        $categories_parent_id = $parent_categories_pid_array['parent_id'];
+      }
+    }
+    $categories_url_array = explode('_',$categories_url);
+    $categories_pid = $categories_url != '' ? end($categories_url_array) : $categories_pid;
+  if($belong_array[0][0] == 'action=edit_top_categories_manual' || $belong_array[0][0] == 'action=edit_top_manual'){
+
+    $belong = $href_url.'?action=edit_top_categories_manual';
+  }else if($belong_array[0][0] == 'action=p_categories_manual' || $belong_array[0][0] == 'action=show_categories_manual_link' || $belong_array[0][0] == 'action=show_categories_manual'){    
+
+    if($belong_array[0][0] == 'action=p_categories_manual'){ 
+      if(isset($_GET['parent']) && $_GET['parent'] == 1){
+        $belong = $href_url.'?action=show_categories_manual&cPath='.$categories_parent_id;  
+      }else{
+        $belong = $href_url.'?action=show_categories_manual&cPath='.$categories_pid;
+      }
+    }else{
+      $categories_pid_query = tep_db_query("select * from ".TABLE_CATEGORIES." where parent_id='".$categories_id."'");
+      $categories_parent_num = tep_db_num_rows($categories_pid_query);
+      tep_db_free_result($categories_pid_query);
+      if($categories_parent_num > 0){
+        if($categories_cid != ''){
+          $belong = $href_url.'?action=show_categories_manual&cPath='.$categories_pid; 
+        }else{
+          if($belong_array[0][0] == 'action=show_categories_manual_link'){
+            $belong = $href_url.'?action=show_categories_manual&cPath='.$categories_pid; 
+          }else{
+            $belong = $href_url.'?action=show_categories_manual&cPath='.$categories_id; 
+          }
+        }
+      }else{
+        $belong = $href_url.'?action=show_categories_manual&cPath='.$categories_id; 
+      }
+    }
+  }else if($belong_array[0][0] == 'action=show_products_manual'){
+    $belong = $href_url.'?action=show_products_manual&pID='.$pid; 
+  }
 }else{
 
   $belong = $href_url;
@@ -663,7 +750,15 @@ if($belong_array[0][0] != ''){
 $belong = str_replace('&','|||',$belong);
 require("includes/note_js.php");
 ?>
-
+<script type="text/javascript">
+$(document).ready(function(){
+  var box_warp_height = $(".box_warp").height();
+  var box_warp_height = parseInt(box_warp_height);
+  if(box_warp_height < 826){
+    $(".box_warp").height('');
+  }
+});
+</script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onload="SetFocus();">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
@@ -682,7 +777,7 @@ require("includes/note_js.php");
 <!-- left_navigation --> <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> <!-- left_navigation_eof -->
     </td></tr></table>
 <!-- body_text -->
-<td width="100%" valign = "top" id='categories_right_td'><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+<td width="100%" valign = "top" id='categories_right_td'><div id="manual_info_id" style="position:absolute;width:100%;height:100%;margin-left:0;z-index:1;opacity:0;display:none;" onclick="manual_open();"></div><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
 <tr>
 
 <td class="pageHeading"><?php echo $title_char;  ?></td>
