@@ -687,7 +687,7 @@ $belong = preg_replace('/\?XSID=[^&]+/','',$belong);
 preg_match_all('/action=[^&]+/',$belong,$belong_array);
 $categories_url = $_GET['cPath'];
 $categories_cid = $_GET['cID'];;
-$categories_url = $categories_cid != '' ? $categories_cid : $categories_url;
+$categories_url = $_GET['action'] != 'show_categories_manual_link' && $categories_cid != '' ? $categories_cid : $categories_url;
 if($belong_array[0][0] != ''){
     $pid     = $_GET['pID'];
     $pro_to_cate_query=tep_db_query("select categories_id from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id='".$pid."'");
