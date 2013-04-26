@@ -496,7 +496,7 @@ define('HEADER_TEXT_ORDERMENU','订单▼');
 define('HEADER_TEXT_INVENTORY','库存标准');
 define('HEADER_TEXT_CATEGORIES_ADMIN','价格调整');
 //footer start 
-define('TEXT_FOOTER_ONE_TIME','使用被选中的权限可以访问该网站');
+define('TEXT_FOOTER_ONE_TIME','使用已选中权限的一次性密码访问');
 define('TEXT_FOOTER_CHECK_SAVE','保存');
 //footer end
 define('RIGHT_ORDER_INFO_ORDER_FROM', '订单网站：');
