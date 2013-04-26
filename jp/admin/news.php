@@ -231,6 +231,7 @@ function delete_select_news(news_str){
               document.getElementsByName('news_action')[0].value = 0;
            }
          } else {
+            document.getElementsByName('news_action')[0].value = 0;
             alert('<?php echo TEXT_NEWS_MUST_SELECT;?>'); 
          }
 }
