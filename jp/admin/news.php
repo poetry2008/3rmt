@@ -497,14 +497,15 @@ require("includes/note_js.php");
                     ?>
                     <td valign="top" class="smallText">
                     <?php 
+                    if($ocertify->npermission == 15){
                     if(in_array($site_id,$site_array)){
                        echo '<select name="news_action" onchange="news_change_action(this.value, \'news_id[]\');">';
                     }else{
                        echo '<select name="news_action" disabled="disabled">';
                      }
                     echo '<option value="0">'.TEXT_REVIEWS_SELECT_ACTION.'</option>';   
-                    if($ocertify->npermission == 15){
                     echo '<option value="1">'.TEXT_REVIEWS_DELETE_ACTION.'</option>';
+                    echo '</select>';
                     }
                     ?> 
                     </td>
