@@ -302,6 +302,12 @@ $('#show_latest_news').css('display', 'block');
 function hidden_info_box(){
    $('#show_latest_news').css('display','none');
 }
+<?php //选择动作?>
+function news_change_action(r_value, r_str) {
+ if (r_value == '1') {
+     delete_select_news(r_str);
+   }
+}
 </script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
@@ -472,14 +478,8 @@ require("includes/note_js.php");
 
             </table>
 			<table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin-top:5px;">
-                  <tr>
-                    <td class="smallText" valign="top"><?php echo $latest_news_split->display_count($latest_news_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_LATEST_NEWS); ?></td>
-                    <td class="smallText" align="right"><div class="td_box"><?php echo $latest_news_split->display_links($latest_news_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'latest_news_id'))); ?></div></td>
-                  </tr>
-                  <tr>
-                    <td valign="top" class="smallText">&nbsp;</td>
-                    <td align="right" class="smallText">
-                    <div class="td_button"><?php
+<tr>                 
+                    <?php 
                     if($_GET['site_id'] == null){
                       $site_id = 0;
                     }else{
@@ -492,22 +492,36 @@ require("includes/note_js.php");
                     if(isset($site_permission)) $site_arr=$site_permission;//权限判断
                     else $site_arr="";
                     $site_array = explode(',',$site_arr);
+                    ?>
+                    <td valign="top" class="smallText">
+                    <?php 
+                    if(in_array($site_id,$site_array)){
+                       echo '<select name="news_action" onchange="news_change_action(this.value, \'news_id[]\');">';
+                    }else{
+                       echo '<select name="news_action" disabled="disabled">';
+                     }
+                    echo '<option value="0">'.TEXT_REVIEWS_SELECT_ACTION.'</option>';   
+                    if($ocertify->npermission == 15){
+                    echo '<option value="1">'.TEXT_REVIEWS_DELETE_ACTION.'</option>';
+                    }
+                    ?> 
+                    </td>
+                    <td align="right" class="smallText">
+                    <div class="td_button"><?php
                     if(in_array($site_id,$site_array)){
                       echo '&nbsp;<a href="javascript:void(0)" onclick="show_latest_news(this,'.$_GET['page'].',-1,'.$site_id.')">' .tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; 
                     }else{
                       echo tep_html_element_button(IMAGE_NEW_PROJECT,'disabled="disabled"'); 
                     }
-                    if($ocertify->npermission == 15){
-                       if(in_array($site_id,$site_array)){
-                          echo '<a href="javascript:void(0);" onclick="delete_select_news(\'news_id[]\');">'.tep_html_element_button(IMAGE_DELETE, 'onclick=""').'</a>';
-                       }else{
-                          echo tep_html_element_button(IMAGE_DELETE, 'disabled="disabled" ');
-                       }
-                    }
                     ?>
                     </div></td>
                   </tr>
-                </table>
+
+                  <tr>
+                    <td class="smallText" valign="top"><?php echo $latest_news_split->display_count($latest_news_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_LATEST_NEWS); ?></td>
+                    <td class="smallText" align="right"><div class="td_box"><?php echo $latest_news_split->display_links($latest_news_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'latest_news_id'))); ?></div></td>
+                  </tr>
+                                  </table>
 			</td>
 <?php
     $heading = array();
