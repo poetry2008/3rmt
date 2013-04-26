@@ -123,7 +123,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   //add files
   define('FILENAME_BANK_CL', 'calendar.php');
   define('FILENAME_CONTENTS', 'contents.php');
-  define('FILENAME_LATEST_NEWS', 'latest_news.php'); 
+  define('FILENAME_NEWS', 'news.php'); 
   define('FILENAME_PRODUCTS_UP', 'products_up.php'); 
   define('FILENAME_PRODUCTS_DL', 'products_dl.php'); 
   define('FILENAME_STATS_SALES_REPORT2', 'stats_sales_report2.php');
