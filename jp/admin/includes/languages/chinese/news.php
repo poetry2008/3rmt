@@ -33,4 +33,5 @@ define('TEXT_NEWS_MUST_SELECT', '请至少选择一项');
 define('TEXT_ERROR_NULL','请输入。');
 define('TEXT_REVIEWS_SELECT_ACTION','请选择');
 define('TEXT_REVIEWS_DELETE_ACTION', '删除勾选项目');
+define('SHOP_NAME','店铺名:');
 ?>
