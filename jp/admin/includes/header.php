@@ -376,11 +376,6 @@ if ($current_page_tp == FILENAME_CONFIGURATION) {
 if ($current_page_tp == FILENAME_MODULES) {
   $current_page_tp .= '?set='.$_GET['set'];
 }
-/*
-foreach($languages as $key => $val){
-echo "<a href=".tep_href_link($cur_page,tep_get_all_get_params(array('language'))."language=".$val['code'])."><font size=3px><b>".strtoupper($val['code']=='ja'?'jp':$val['code'])."</b></font></a>&nbsp;";
-}
-*/
 echo "<a href=".tep_href_link($cur_page,tep_get_all_get_params(array('language')).
     "language=".'ja')."><font size=3px><b>JP</b></font></a>&nbsp;";
 echo "<a href=".tep_href_link($cur_page,tep_get_all_get_params(array('language')).
@@ -500,7 +495,7 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
       </td>
       <td><a href="' . tep_href_link(FILENAME_CUSTOMERS, '', 'NONSSL') . '" 
       class="headerLink">'.HEADER_TEXT_CUSTOMERS.'</a>&nbsp;|</td>
-      <td>&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS, '', 'NONSSL') .
+      <td>&nbsp;<a href="' . tep_href_link(FILENAME_NEWS, '', 'NONSSL') .
       '" class="headerLink">'.HEADER_TEXT_LATEST_NEWS.'</a>&nbsp;|</td>
       
       <td align="left">
