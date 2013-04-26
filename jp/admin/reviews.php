@@ -232,8 +232,11 @@
        if (sel_num == 1) {
            if (confirm('<?php echo TEXT_DEL_REVIEW;?>')) {
               document.forms.del_review.submit(); 
+           } else {
+              document.getElementsByName('reviews_action')[0].value = 0; 
            }
         } else {
+            document.getElementsByName('reviews_action')[0].value = 0; 
             alert('<?php echo TEXT_REVIEW_MUST_SELECT;?>'); 
            }
     }
@@ -474,6 +477,12 @@ function set_default_value(){
     }
   });
 }
+<?php //选择动作?>
+function review_change_action(r_value, r_str) {
+  if (r_value == '1') {
+    delete_select_review(r_str);
+  }
+}
 </script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
@@ -703,7 +712,27 @@ require("includes/note_js.php");
     echo $notice_box->show_notice();
 ?>
             </table>
-			<table border="0" width="100%" cellspacing="0" cellpadding="0" class="table_list_box">
+		<table border="0" width="100%" cellspacing="0" cellpadding="0" class="table_list_box">
+                  <tr>
+                    <td colspan="2">
+                      <?php 
+                      if (!empty($str_disabled)) {
+                      ?>
+                      <select name="reviews_action" disabled="disabled">
+                      <?php
+                      } else {
+                      ?>
+                      <select name="reviews_action" onchange="review_change_action(this.value, 'review_id[]');">
+                      <?php
+                      }
+                      ?>
+                        <option value="0"><?php echo TEXT_REVIEWS_SELECT_ACTION;?></option> 
+                        <?php if($ocertify->npermission == 15){?>
+                        <option value="1"><?php echo TEXT_REVIEWS_DELETE_ACTION;?></option> 
+                        <?php }?> 
+                      </select>
+                    </td>
+                  </tr>
                   <tr>
                     <td class="smallText" valign="top"><?php echo $reviews_split->display_count($reviews_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_REVIEWS); ?></td>
                     <td class="smallText" align="right">
@@ -712,9 +741,7 @@ require("includes/note_js.php");
                   <tr>
                     <td class="smallText" align="right" colspan="2">
                      <div class="td_button">   
-                      <?php if($ocertify->npermission == 15){?>
-                      <a href="javascript:void(0);" onclick="delete_select_review('review_id[]');"><?php echo tep_html_element_button(IMAGE_DELETE, 'onclick="" '.$str_disabled);?></a>
-                      <?php } if($_GET['site_id'] != null){ ?>
+                      <?php if($_GET['site_id'] != null){ ?>
                       <button type="button" <?php echo $str_disabled;?>  onclick="show_text_reviews(this,<?php echo $_GET['page']; ?>,'0',<?php echo $_GET['site_id'];?>)"><?php echo IMAGE_NEW_PROJECT;?></button>
                        <?php  }?>
                       </div>

@@ -52,4 +52,6 @@ define('TEXT_REVIEW_MUST_SELECT', '少なくとも1つの選択肢を選んで�
 define('TEXT_CLEAR_SELECTION','選択して下さい。');
 define('TEXT_ERROR_NULL','入力して下さい。');
 define('TEXT_CATEGORY_NAME','商品名称');
+define('TEXT_REVIEWS_SELECT_ACTION','選択したものを');
+define('TEXT_REVIEWS_DELETE_ACTION', '削除する');
 ?>
