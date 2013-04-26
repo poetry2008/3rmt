@@ -5,7 +5,7 @@
 
   require('includes/application_top.php');
   
-  require(DIR_WS_ACTIONS.'latest_news.php');
+  require(DIR_WS_ACTIONS.'news.php');
 ?>
 <?php page_head();?>
 <script type="text/javascript" src="js/emailProtector.js"></script>

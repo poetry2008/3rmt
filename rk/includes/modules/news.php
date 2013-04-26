@@ -4,7 +4,16 @@
 */
 ?>
 <!-- latest_news //-->
-<p class="pageHeading"><?php echo STORE_NAME;?>からのお知らせ</p>
+<div class="latest_news_box">
+<div class="pageHeading">
+<div class="pageHeading_left">
+<?php echo STORE_NAME.TEXT_MODULE_NEWS_TITLE;?>
+</div>
+    <div class="pageHeading_right">
+        <a href='<?php echo tep_href_link('news.php');?>'><?php echo 
+        TEXT_MODULE_NEWS_MORE;?></a>
+    </div>
+</div>
 <div class="comment">
     <div id="news">
         <ul class="news_ul">
@@ -44,17 +53,14 @@
                 } else {
                     $latest_news_new = '';
                 }
-echo '        <li class="news_list"> ' . tep_date_short($latest_news['date_added']) . '&nbsp;&nbsp;<a href="' .  tep_href_link(FILENAME_LATEST_NEWS, 'news_id=' . $latest_news['news_id']) . '">' . replace_store_name($latest_news['headline']) . $latest_news_new .'</a></li>'."\n";          
+echo '        <li class="news_list"> ' . tep_date_short($latest_news['date_added']) . '&nbsp;&nbsp;<a href="' .  tep_href_link(FILENAME_NEWS, 'news_id=' . $latest_news['news_id']) . '">' .  replace_store_name($latest_news['headline']) . $latest_news_new .'</a></li>'."\n";          
 $row++;
 }
 }
     ?>
         </ul>
     </div>
-    <div align="right" style="padding: 5px 10px 0px 0px;">
-        <a href='<?php echo tep_href_link('latest_news.php');?>'>もっと見る</a>
-        <?php //<img src="includes/languages/japanese/images/buttons/button_more.gif" width="56" height="25" alt="more" title="more" >?>
-    </div>
 </div>
-<p class="pageBottom"></p>
+<div class="pageBottom"></div>
+</div>
 <!-- latest_news_eof //-->

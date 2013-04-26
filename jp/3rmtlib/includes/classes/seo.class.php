@@ -340,7 +340,7 @@ class SEO_URL{
                FILENAME_POPUP_IMAGE,
                FILENAME_PAGE,
                FILENAME_REVIEWS,
-               FILENAME_LATEST_NEWS,
+               FILENAME_NEWS,
                FILENAME_PRODUCT_REVIEWS,
                FILENAME_PRODUCT_REVIEWS_INFO);
     if ( defined('FILENAME_ARTICLES') ) $seo_pages[] = FILENAME_ARTICLES;
@@ -447,8 +447,8 @@ class SEO_URL{
     if ($this->not_null($parameters)) { 
       $link .= $this->parse_parameters($page, $parameters, $separator); 
     } else {
-      if ($page == FILENAME_LATEST_NEWS) {
-        $link .= 'latest_news/';
+      if ($page == FILENAME_NEWS) {
+        $link .= 'news/';
       }else if ($page == FILENAME_REVIEWS) {
         $link .= 'reviews/';
       } else {
@@ -534,8 +534,8 @@ class SEO_URL{
         $separator = '&';
       }
     } else {
-      if ($page == FILENAME_LATEST_NEWS) {
-        $link .= 'latest_news/';
+      if ($page == FILENAME_NEWS) {
+        $link .= 'news/';
       } else if ($page == FILENAME_REVIEWS) {
         $link .= 'reviews/';
       } else if ($page == FILENAME_TAGS) {
@@ -710,7 +710,7 @@ class SEO_URL{
         break;
       } else if ($p2[0] == 'news_id') {
         $p3 = @explode('=', $p[0]);
-        $url = $this->make_url($page, 'latest_news/', 'latest_news', $p3[1], '.html', $separator);
+        $url = $this->make_url($page, 'news/', 'news', $p3[1], '.html', $separator);
         break;
       } else if ($p2[0] == 'action' && $p2[1] == 'select'){
         $url = $this->make_url($page, '', $p2[0], $p2[1], '.html', $separator);
@@ -735,8 +735,8 @@ class SEO_URL{
           break;
         case 'page':
           switch(true){
-            case ( $page == FILENAME_LATEST_NEWS ):
-              $url = $this->make_url($page, 'latest_news/page', '', $p2[1], '.html', $separator);
+            case ( $page == FILENAME_NEWS ):
+              $url = $this->make_url($page, 'news/page', '', $p2[1], '.html', $separator);
               break;
             case ( $page == FILENAME_REVIEWS ):
               $url = $this->make_url($page, 'reviews/page', '', $p2[1], '.html', $separator);

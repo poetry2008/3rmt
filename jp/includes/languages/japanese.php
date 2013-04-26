@@ -487,4 +487,6 @@ define('CL_TEXT_DATE_FRIDAY', '金');
 define('CL_TEXT_DATE_STATURDAY', '土');
 define('CL_TEXT_DATE_SUNDAY', '日');
 define('JS_REVIEW_BAN_CHARACTER','※ 投稿禁止ワードが含まれているため投稿できません。'.'\n');
+define('TEXT_MODULE_NEWS_TITLE','からのお知らせ');
+define('TEXT_MODULE_NEWS_MORE','もっと見る');
 ?>

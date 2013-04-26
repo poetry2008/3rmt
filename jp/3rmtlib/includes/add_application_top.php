@@ -131,8 +131,7 @@ if ($pdo_con) {
   define('FILENAME_INFO_SHOPPING_CART', 'info_shopping_cart.php');
   define('FILENAME_LOGIN', 'login.php');
   define('FILENAME_LOGOFF', 'logoff.php');
-  define('FILENAME_LATEST_NEWS', 'latest_news.php');
-  define('FILENAME_A_LATEST_NEWS', 'latest_news.php');
+  define('FILENAME_NEWS', 'news.php');
   define('FILENAME_MAGAZINE', 'mail_magazine.php');
   define('FILENAME_MANUFACTURERS', 'manufacturers.php');
   define('FILENAME_NEW_PRODUCTS', 'new_products.php'); // This is the middle of default.php (found in modules)
@@ -443,7 +442,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   check_uri('/\/\//');
   if (defined('URL_SUB_SITE_ENABLED') && URL_SUB_SITE_ENABLED) {
     if (
-         basename($_SERVER['SCRIPT_NAME']) != FILENAME_LATEST_NEWS
+         basename($_SERVER['SCRIPT_NAME']) != FILENAME_NEWS
       && basename($_SERVER['SCRIPT_NAME']) != FILENAME_REVIEWS
       && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS
       && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS_INFO
@@ -458,7 +457,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   } elseif ((defined('URL_ROMAJI_ENABLED') && URL_ROMAJI_ENABLED)) {
     if (SITE_ID == 6 || SITE_ID == 9) {
       if (
-           basename($_SERVER['SCRIPT_NAME']) != FILENAME_LATEST_NEWS
+           basename($_SERVER['SCRIPT_NAME']) != FILENAME_NEWS
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_REVIEWS
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS_INFO
@@ -473,7 +472,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
       }
     } else {
       if (
-           basename($_SERVER['SCRIPT_NAME']) != FILENAME_LATEST_NEWS
+           basename($_SERVER['SCRIPT_NAME']) != FILENAME_NEWS
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_REVIEWS
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS_INFO

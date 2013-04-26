@@ -5,7 +5,7 @@
 
   require('includes/application_top.php');
 
-  require(DIR_WS_ACTIONS.'latest_news.php');
+  require(DIR_WS_ACTIONS.'news.php');
 ?>
 <?php page_head();?>
 <script type="text/javascript"><!--
@@ -22,7 +22,7 @@ function popupWindow(url) {
   <!-- body //-->
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border">
     <tr>
-      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border">
+      <td valign="top" class="left_colum_border">
         <!-- left_navigation //-->
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
         <!-- left_navigation_eof //-->
@@ -31,7 +31,7 @@ function popupWindow(url) {
       <td valign="top" id="contents">
         <h1 class="pageHeading"><?php if ($_GET['news_id']) { echo replace_store_name($latest_news['headline']); } else { echo HEADING_TITLE; } ?></h1>
                 <div class="comment">
-        <table border="0" width="100%" cellspacing="0" cellpadding="0">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" class="product_info_box">
           <tr>
             <td>
 <?php
@@ -54,7 +54,7 @@ function popupWindow(url) {
     }
 ?>
   <tr>
-    <td colspan="2"><p class="main" style="font-size:12px;"><?php echo nl2br(replace_store_name($latest_news['content'])); ?></p></td>
+    <td colspan="2"><div class="main" style="font-size:12px;"><?php echo str_replace('<br />', '<br>', nl2br(replace_store_name($latest_news['content']))); ?></div></td>
   </tr>
   </table>
 <?php
@@ -89,9 +89,9 @@ function popupWindow(url) {
       }
     
     echo '<li class="news_list">'.tep_date_short($latest_news['date_added']) .
-      '&nbsp;&nbsp;&nbsp;&nbsp;<a href="' .tep_href_link(FILENAME_LATEST_NEWS
+      '&nbsp;&nbsp;&nbsp;&nbsp;<a href="' .tep_href_link(FILENAME_NEWS
       ,'news_id=' . $latest_news['news_id']).'">' .
-      replace_store_name($latest_news['headline']) . '&nbsp;&nbsp;' . $latest_news_image . $latest_news_new .'</a></li>'."\n";
+      replace_store_name($latest_news['headline']). '&nbsp;&nbsp;' . $latest_news_image . $latest_news_new .'</a></li>'."\n";
     
     }
     echo '</ul>' . "\n";
@@ -118,7 +118,7 @@ function popupWindow(url) {
                   [ <?php echo tep_date_long($latest_news['date_added']) ;?> ]
                 </p>
                 <div align="right">
-                  <?php echo '<a href="' . tep_href_link(FILENAME_LATEST_NEWS) . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?>
+                  <?php echo '<a href="' . tep_href_link(FILENAME_NEWS) . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?>
                 </div>
 <?php
   }

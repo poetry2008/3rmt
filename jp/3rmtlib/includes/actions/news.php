@@ -2,13 +2,13 @@
 /*
   $Id$
 */
-  check_uri('/^\/latest_news\.php/');
+  check_uri('/^\/news\.php/');
   check_uri('/page0/');
   check_uri('/page1\.html/');
 
-  require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_LATEST_NEWS);
+  require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_NEWS);
   
-  $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_LATEST_NEWS));
+  $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_NEWS));
 
 if(preg_match('/^[0-9][0-9][0-9][0-9]\/[0-9][0-9]\/[0-9][0-9]$/',trim(SITE_OPEN_TIME))){
   $start_open_time = str_replace('/','-',trim(SITE_OPEN_TIME));
@@ -36,7 +36,7 @@ forward404Unless($latest_news);
         WHERE news_id = ' . (int)$_GET['news_id'] . ' 
           and (site_id=' . SITE_ID . ' or site_id=0)');
     $latest_news = tep_db_fetch_array($latest_news_query);
-    $breadcrumb->add(replace_store_name(strip_tags($latest_news['headline'])), tep_href_link(FILENAME_LATEST_NEWS, 'news_id='.$latest_news['news_id']));
+    $breadcrumb->add(replace_store_name(strip_tags($latest_news['headline'])), tep_href_link(FILENAME_NEWS, 'news_id='.$latest_news['news_id']));
     forward404Unless($latest_news);
   } else {
           $latest_news_query_raw = "
