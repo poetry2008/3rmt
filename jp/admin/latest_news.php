@@ -227,6 +227,8 @@ function delete_select_news(news_str){
         if (sel_num == 1) {
            if (confirm('<?php echo TEXT_DEL_NEWS;?>')) {
               document.forms.del_news.submit(); 
+           }else{
+              document.getElementsByName('news_action')[0].value = 0;
            }
          } else {
             alert('<?php echo TEXT_NEWS_MUST_SELECT;?>'); 
