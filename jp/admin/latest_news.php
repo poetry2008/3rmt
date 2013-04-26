@@ -438,18 +438,18 @@ require("includes/note_js.php");
           'text'   => '&nbsp;' . date("Y-m-d",strtotime($latest_news['date_added']))
           );
   if ($latest_news['status'] == '1') {
-        $latest_news_status = tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'page='.$_GET['page'].'&action=setflag&flag=0&latest_news_id=' . $latest_news['news_id']. (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT) . '</a>';
+        $latest_news_status = tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'page='.$_GET['page'].'&action=setflag&flag=0&latest_news_id=' . $latest_news['news_id']. (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT) . '</a>';
       } else {
-        $latest_news_status = '<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'page='.$_GET['page'].'&action=setflag&flag=1&latest_news_id=' . $latest_news['news_id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED);
+        $latest_news_status = '<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'page='.$_GET['page'].'&action=setflag&flag=1&latest_news_id=' . $latest_news['news_id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT) . '</a>&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED);
       }
       $news_info[] = array(
           'params' => 'class="dataTableContent" align="center"',
           'text'   => $latest_news_status
           );
   if ($latest_news['isfirst']) {
-     $latest_news_isfirst = tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'action=setfirst&isfirst=0&latest_news_id=' . $latest_news['news_id']. (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '"> ' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT) . '</a>';
+     $latest_news_isfirst = tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'action=setfirst&isfirst=0&latest_news_id=' . $latest_news['news_id']. (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '"> ' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT) . '</a>';
   } else {
-     $latest_news_isfirst =  '<a href="' . tep_href_link(FILENAME_LATEST_NEWS,'action=setfirst&isfirst=1&latest_news_id=' . $latest_news['news_id']. (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED);
+     $latest_news_isfirst =  '<a href="' . tep_href_link(FILENAME_LATEST_NEWS,'action=setfirst&isfirst=1&latest_news_id=' . $latest_news['news_id']. (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT) . '</a>&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED);
  }
 
       $news_info[] = array(
