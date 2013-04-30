@@ -136,6 +136,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('FILENAME_CUSTOMERS_EXIT','customers_exit.php');
   define('FILENAME_HELP_INFO','help_info.php');
   define('FILENAME_PERSONAL_SETTING','personal_setting.php');
+  define('FILENAME_ALERT_LOG','alert_log.php');
 
 // define the database table names used in the project
   define('TABLE_CUSTOMERS_BASKET_OPTIONS', 'customers_basket_options');
@@ -146,6 +147,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
 
 // define the database table names used in the project
   define('TABLE_ALARM', 'alarm');
+  define('TABLE_MICRO_LOGS', 'micro_logs');
   define('TABLE_NOTICE', 'notice');
   define('TABLE_NOTICE_TO_MICRO_USER', 'notice_to_micro_user');
   define('TABLE_CAMPAIGN', 'campaign');

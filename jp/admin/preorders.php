@@ -955,6 +955,24 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
           </div>
         </td>
       </tr>
+      <?php 
+        $computers = tep_get_computers();
+        $o2c       = tep_get_computers_by_preorders_id($order->info['orders_id']);
+        if ($computers) {
+      ?>
+      <tr>
+      <td class="main"><b>PC</b></td>
+      </tr>
+      <tr><td>
+      <?php foreach ($computers as $computer) { ?>
+          <div onclick="preorders_computers(this, <?php echo $computer['computers_id'];?>, '<?php echo $order->info['orders_id'];?>')" class="<?php echo in_array($computer['computers_id'], $o2c) ? 'orders_computer_checked' : 'orders_computer_unchecked' ;?>"><?php echo $computer['computers_name'];?></div>
+      <?php 
+        } 
+      ?>
+      </td></tr>
+      <?php
+        }
+      ?>
       <tr>
         <td>
         <?php // 左右结构 ?>
@@ -1718,21 +1736,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     </td>
     <td width="50%" align="left" valign="top">
 <table width="100%">
-  <tr><td width="30%">
-    <?php $computers = tep_get_computers();
-          $o2c       = tep_get_computers_by_preorders_id($order->info['orders_id']);
-          if ($computers) {?>
-      <table>
-        <tr>
-          <td class="main"><b>PC</b></td>
-        </tr>
-        <?php foreach ($computers as $computer) { ?>
-        <tr>
-          <td onclick="preorders_computers(this, <?php echo $computer['computers_id'];?>, '<?php echo $order->info['orders_id'];?>')" class="<?php echo in_array($computer['computers_id'], $o2c) ? 'orders_computer_checked' : 'orders_computer_unchecked' ;?>" style="font-size:18px;padding:5px 10px;"><?php echo $computer['computers_name'];?></td>
-        </tr>
-        <?php } ?>
-      </table>
-    <?php } ?>
+  <tr><td width="30%">&nbsp; 
   </td>
   </tr>
 </table>
