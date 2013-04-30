@@ -3374,7 +3374,7 @@ function tep_get_banner($bid){
     返回值: 结果集(array) 
  ------------------------------------ */
 function tep_get_latest_news_by_id($latest_news_id){
-  return tep_db_fetch_array(tep_db_query("select * from " . TABLE_LATEST_NEWS . " where news_id = '".$latest_news_id."'"));
+  return tep_db_fetch_array(tep_db_query("select * from " . TABLE_NEWS . " where news_id = '".$latest_news_id."'"));
 }
 
 /* -------------------------------------

@@ -19,14 +19,14 @@ define('ENTRY_PRODUCT', '商品名:');
 define('ENTRY_FROM', '投稿者:');
 define('ENTRY_DATE', '日付:');
 define('ENTRY_REVIEW', 'レビュー内容:');
-define('ENTRY_REVIEW_TEXT', '<font color="#ff0000">注:</font>&nbsp;HTML は使用できません!&nbsp;');
+define('ENTRY_REVIEW_TEXT', '<font color="#ff0000">注:</font>&nbsp;HTML は使用できません。&nbsp;');
 define('ENTRY_RATING', '採点:');
 
-define('TEXT_INFO_DELETE_REVIEW_INTRO', '本当にこのレビューを削除しますか?');
+define('TEXT_INFO_DELETE_REVIEW_INTRO', '本当にこのレビューを削除しますか？');
 
 define('TEXT_INFO_DATE_ADDED', '投稿日:');
 define('TEXT_INFO_LAST_MODIFIED', '更新日:');
-define('TEXT_INFO_IMAGE_NONEXISTENT', '画像が存在しません');
+define('TEXT_INFO_IMAGE_NONEXISTENT', '画像が存在しません。');
 define('TEXT_INFO_REVIEW_AUTHOR', '投稿者:');
 define('TEXT_INFO_REVIEW_RATING', '採点:');
 define('TEXT_INFO_REVIEW_READ', '読まれた回数:');
@@ -49,8 +49,8 @@ define('TEXT_CATEGORY_SELECT','カテゴリ選択:');
 define('TEXT_SELECT_PRODUCT','商品を選択');
 define('TEXT_DEL_REVIEW', '本当に削除しますか？');
 define('TEXT_REVIEW_MUST_SELECT', '少なくとも1つの選択肢を選んでください。');
-define('TEXT_CLEAR_SELECTION','選択して下さい。');
-define('TEXT_ERROR_NULL','入力して下さい。');
+define('TEXT_CLEAR_SELECTION','選択してください。');
+define('TEXT_ERROR_NULL','入力してください。');
 define('TEXT_CATEGORY_NAME','商品名称');
 define('TEXT_REVIEWS_SELECT_ACTION','選択したものを');
 define('TEXT_REVIEWS_DELETE_ACTION', '削除する');

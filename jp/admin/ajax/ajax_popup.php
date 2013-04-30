@@ -3468,14 +3468,14 @@ if(!in_array($site_id,$site_array)){
                  latest_update_date,
                  update_editor,
                  author
-          from " . TABLE_LATEST_NEWS . " 
+          from " . TABLE_NEWS . " 
           where news_id = '" . (int)$_GET['latest_news_id'] . "'");
       $latest_news = tep_db_fetch_array($latest_news_query);
     $nInfo = new objectInfo($latest_news);
     } else {
       $latest_news = array();
     }
-     $latest_news_query_raw = ' select n.news_id, n.headline, n.date_added, n.author, n.update_editor, n.latest_update_date, n.content, n.status, n.news_image, n.news_image_description, n.isfirst, n.site_id from ' . TABLE_LATEST_NEWS . ' n where 1 ' . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and (n.site_id = '" .  intval($_GET['site_id']) . "') " : '') . ' order by date_added desc ';
+     $latest_news_query_raw = ' select n.news_id, n.headline, n.date_added, n.author, n.update_editor, n.latest_update_date, n.content, n.status, n.news_image, n.news_image_description, n.isfirst, n.site_id from ' . TABLE_NEWS . ' n where 1 ' . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and (n.site_id = '" .  intval($_GET['site_id']) . "') " : '') . ' order by date_added desc ';
      $latest_news_id_query = tep_db_query($latest_news_query_raw);
      while ($latest_news_id = tep_db_fetch_array($latest_news_id_query)) {
          $cid_array[] = $latest_news_id['news_id'];

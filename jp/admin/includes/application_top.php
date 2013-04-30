@@ -244,7 +244,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('TABLE_BANK_CALENDAR', 'bank_calendar'); //add calendar
   //Add DB - ds-style
   define('TABLE_INFORMATION_PAGE', 'information_page');//information box
-  define('TABLE_LATEST_NEWS', 'latest_news'); //latest_news
+  define('TABLE_NEWS', 'news'); //latest_news
 define('TABLE_PERMISSIONS','permissions');
 
 
