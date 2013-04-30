@@ -167,6 +167,11 @@ function show_head_notice(no_type)
               document.getElementById('leave_time_'+data_info[2]).parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.background = '#FFFFFF'; 
             }
           }
+          if(data_info[5] == '1'){
+            $("#alarm_id_"+data_info[4]).html('ON');
+          }else{
+            $("#alarm_id_"+data_info[4]).html('OFF'); 
+          }
         } else {
           $('#show_head_notice').html(data); 
           orgin_bg = document.getElementById('leave_time_'+data_info[2]).parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.background; 
