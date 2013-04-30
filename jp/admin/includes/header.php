@@ -22,7 +22,7 @@ function check_exists_function(funcName){
   }
 }
 <?php //表格处理的通知时间 ?>
-function calc_notice_time(leave_time, nid, start_calc)
+function calc_notice_time(leave_time, nid, start_calc, alarm_flag, alarm_date)
 {
   
   var now_timestamp = Date.parse(new Date());
@@ -68,7 +68,11 @@ function calc_notice_time(leave_time, nid, start_calc)
   }
   
   if (document.getElementById('leave_time_'+nid)) {
-    document.getElementById('leave_time_'+nid).innerHTML = n_show_day+'<?php echo DAY_TEXT;?>'+n_show_hour+'<?php echo HOUR_TEXT;?>'+n_show_minute+'<?php echo MINUTE_TEXT;?>'; 
+    if(alarm_flag == '1'){
+      document.getElementById('leave_time_'+nid).innerHTML = alarm_date; 
+    }else{ 
+      document.getElementById('leave_time_'+nid).innerHTML = n_show_day+'<?php echo DAY_TEXT;?>'+n_show_hour+'<?php echo HOUR_TEXT;?>'+n_show_minute+'<?php echo MINUTE_TEXT;?>';
+    }
     if ((n_hour == 0) && (n_minute == 0) && (n_day == 0)) {
       document.getElementById('leave_time_'+nid).parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.background = '#FFB3B5'; 
       var n_node=document.getElementById('head_notice');  
@@ -80,7 +84,7 @@ function calc_notice_time(leave_time, nid, start_calc)
         }
       }
     }
-    setTimeout(function(){calc_notice_time(leave_time, nid, 1)}, 5000); 
+    setTimeout(function(){calc_notice_time(leave_time, nid, 1, alarm_flag, alarm_date)}, 5000); 
   } 
 }
 <?php //显示所有订单通知 ?>

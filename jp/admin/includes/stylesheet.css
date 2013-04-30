@@ -567,8 +567,10 @@ order
 	border: 1px solid #000;
 	border-top: 2px solid #000;
 	border-left: 2px solid #000;
-	font-weight:bold;
 	text-align:center;
+	float:left;
+	margin:0 3px 5px 0;
+	padding:3px 18px;
 }
 .orders_computer_unchecked {
 	color: #000;
@@ -578,8 +580,10 @@ order
 	border: 1px solid #000;
 	border-bottom: 2px solid #000;
 	border-right: 2px solid #000;
-	font-weight:bold;
 	text-align:center;
+	float:left;
+	margin:0 3px 5px 0;
+	padding:3px 18px;
 }
 #headerorder{
 	margin-top:3px;

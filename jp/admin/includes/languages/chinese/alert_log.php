@@ -1,0 +1,29 @@
+<?php
+define('HEADING_TITLE', '提醒日志');
+
+
+define('TEXT_ERRINFO_DB_NO_LOGINFO', '无法获得访问信息');
+
+
+define('TEXT_INFO_DELETE_DAY', '删除访问信息');
+define('TEXT_INFO_DELETE_FORMER_DAY', '天以前的数据');
+
+define('TEXT_PAGE', '( %s / %s Page [ %s / %s Rows ] )');
+
+
+define('BUTTON_DELETE_ONCE_PWD_LOG', '删除');
+define('BUTTON_PREVIOUS_PAGE', '上一页');
+define('BUTTON_NEXT_PAGE', '下一页');
+define('BUTTON_JUMP_PAGE', '跳转到');
+
+
+define('TABLE_HEADING_USERNAME','操作者');
+define('TABLE_HEADING_BUTTON_NAME','按钮内容');
+define('TABLE_HEADING_ORDERS_ID','订单号');
+define('TABLE_HEADING_CREATED_AT','操作时间');
+
+
+define('JAVA_SCRIPT_INFO_DELETE', '删除提醒日志。\n可以吗？');
+
+define('PAGE_TITLE_MENU_USER', '');
+?>
