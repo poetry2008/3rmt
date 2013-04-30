@@ -2058,7 +2058,7 @@ header("Expires:".date("D, d M Y H:i:s",0)." GMT");
             break;
         }
         break;
-      case FILENAME_LATEST_NEWS:
+      case FILENAME_NEWS:
         global $breadcrumb, $latest_news;
         $title = (!isset($_GET['news_id']) or !(int)$_GET['news_id']) ? $breadcrumb->trail_title(' &raquo; ') : $latest_news['headline'];
         break;
@@ -2142,7 +2142,7 @@ header("Expires:".date("D, d M Y H:i:s",0)." GMT");
     $script_name = tep_get_filename(str_replace('/', '', $_SERVER['SCRIPT_NAME']));
     
 
-    if ($script_name == 'latest_news' && $_GET['news_id']) {
+    if ($script_name == 'news' && $_GET['news_id']) {
       $script_name = 'a_'.$script_name;
     }
     if ($script_name == 'non-member_auth') {
@@ -2261,8 +2261,7 @@ header("Expires:".date("D, d M Y H:i:s",0)." GMT");
         $search  = array_merge($search, array('#CATEGORIES_NAME#','#PRODUCTS_NAME#'));
         $replace = array_merge($replace, array($po_game_c, $product_info['products_name']));
         break;
-      case FILENAME_LATEST_NEWS:
-      case FILENAME_A_LATEST_NEWS:
+      case FILENAME_NEWS:
         if ((int)$_GET['news_id']) {
           if (defined('MODULE_METASEO_A_LATEST_NEWS_TITLE') && strlen(tep_get_value_by_const_name('MODULE_METASEO_A_LATEST_NEWS_TITLE'))) {
             $title       = tep_get_value_by_const_name('MODULE_METASEO_A_LATEST_NEWS_TITLE');

@@ -4,8 +4,8 @@
 */
 
   require('includes/application_top.php');
-
-  require(DIR_WS_ACTIONS.'latest_news.php');
+  
+  require(DIR_WS_ACTIONS.'news.php');
 ?>
 <?php page_head();?>
 <script type="text/javascript"><!--
@@ -43,10 +43,10 @@ function popupWindow(url) {
 ?>
                       <script type="text/javascript">
                         <!--
-                          document.write('<?php echo '<a href="javascript:popupWindow(\\\'' . tep_href_link(FILENAME_POPUP_IMAGE_NEWS, 'nID=' . $latest_news['news_id']) . '\\\')">' . tep_image(DIR_WS_IMAGES . $latest_news['news_image'], addslashes(replace_store_name($latest_news['headline'])), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '</a>'; ?>');
+                          document.write('<?php echo '<a href="javascript:popupWindow(\\\'' . tep_href_link(FILENAME_POPUP_IMAGE_NEWS, 'nID=' . $latest_news['news_id']) . '\\\')">' . tep_image_new(DIR_WS_IMAGES . $latest_news['news_image'], addslashes(replace_store_name($latest_news['headline'])), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '</a>'; ?>');
                         //-->
                       </script>
-                      <noscript><?php echo '<a href="' . tep_href_link(DIR_WS_IMAGES . $latest_news['news_image']) . '">' . tep_image(DIR_WS_IMAGES . $latest_news['news_image'], replace_store_name($latest_news['headline']), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '</a>'; ?></noscript>
+                      <noscript><?php echo '<a href="' . tep_href_link(DIR_WS_IMAGES . $latest_news['news_image']) . '">' . tep_image_new(DIR_WS_IMAGES . $latest_news['news_image'], replace_store_name($latest_news['headline']), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '</a>'; ?></noscript>
                       </td>
                       <td style="font-size:11px;"><?php echo replace_store_name($latest_news['news_image_description']); ?></td>
                   </tr>
@@ -89,7 +89,7 @@ function popupWindow(url) {
       }
     
     echo '<li class="news_list">'.tep_date_short($latest_news['date_added']) .
-      '&nbsp;&nbsp;&nbsp;&nbsp;<a href="' .tep_href_link(FILENAME_LATEST_NEWS
+      '&nbsp;&nbsp;&nbsp;&nbsp;<a href="' .tep_href_link(FILENAME_NEWS
       ,'news_id=' . $latest_news['news_id']).'">' .
       replace_store_name($latest_news['headline']) . '&nbsp;&nbsp;' . $latest_news_image . $latest_news_new .'</a></li>'."\n";
     
@@ -118,7 +118,9 @@ function popupWindow(url) {
                   [ <?php echo tep_date_long($latest_news['date_added']) ;?> ]
                 </p>
                 <div align="right">
-                  <?php echo '<a href="' . tep_href_link(FILENAME_LATEST_NEWS) . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?>
+                  <?php echo '<a href="' . tep_href_link(FILENAME_NEWS) .
+                  '">' . tep_image_button('button_back02.gif',
+  IMAGE_BUTTON_BACK_LIST) . '</a>'; ?>
                 </div>
 <?php
   }
@@ -141,7 +143,6 @@ function popupWindow(url) {
   <!-- footer //-->
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
   <!-- footer_eof //-->
-</div>
 </div>
 </body>
 </html>

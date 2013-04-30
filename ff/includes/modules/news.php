@@ -4,10 +4,12 @@
 */
 ?>
 <!-- latest_news //-->
-<p class="pageHeading"><?php echo STORE_NAME;?>からのお知らせ</p>
-<div class="comment">
-<div id="news">
-    <ul class="news_ul">
+<div class="latest_news_box">
+<h3 class="pageHeading">
+<?php echo STORE_NAME.TEXT_MODULE_NEWS_TITLE;?>
+</h3>
+    <div id="news">
+        <ul class="news_ul">
 
 <?php
 //ccdd
@@ -18,7 +20,7 @@
     }
     $latest_news_query = tep_db_query("
       SELECT * 
-      from " . TABLE_LATEST_NEWS . " 
+      from " . TABLE_NEWS . " 
       WHERE status = 1 
       AND (site_id = '".SITE_ID."' or site_id='0')
       AND date_added >= '".$start_open_time."'
@@ -28,14 +30,14 @@
     } else {
       $info_box_contents = array();
       $info_box_contents[] = array('align' => 'left',
-                                                'text'  => TABLE_HEADING_LATEST_NEWS);
+                                 'text'  => TABLE_HEADING_LATEST_NEWS);
       // new contentBoxHeading($info_box_contents);
 
     $info_box_contents = array();
     $row = 0;
     while ($latest_news = tep_db_fetch_array($latest_news_query)) {
       if($latest_news['news_image'] != '') { 
-      $latest_news_image = '&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'infobox/photo.gif', strip_tags(replace_store_name($latest_news['headline'])), '15', '15');
+      $latest_news_image = '&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES .  'infobox/photo.gif', strip_tags(replace_store_name($latest_news['headline'])), '28', '14');
     } else {
       $latest_news_image = '';
     }
@@ -44,18 +46,17 @@
                 } else {
                     $latest_news_new = '';
                 }
-                echo '        <li class="news_list">
-                ' . tep_date_short($latest_news['date_added']) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'news_id=' .  $latest_news['news_id']) . '">' .  replace_store_name($latest_news['headline']) . $latest_news_new .'</a>
-            </li>'."\n";          
-                $row++;
-            }
-        }
+echo '        <li class="news_list"><img src="images/design/li_list.gif" alt="img">' . tep_date_short($latest_news['date_added']) . '&nbsp;&nbsp;<a href="' .  tep_href_link(FILENAME_NEWS, 'news_id=' . $latest_news['news_id']) . '">' .  replace_store_name($latest_news['headline']) . $latest_news_new .'</a>
+</li>'."\n";          
+$row++;
+}
+}
     ?>
         </ul>
+        <div class="pageHeading_right">
+        <a href='<?php echo tep_href_link('news.php');?>'><?php 
+        echo TEXT_MODULE_NEWS_MORE;?></a>
     </div>
-    <div align="right" style="padding: 5px 10px 0px 0px;">
-        <a href='<?php echo tep_href_link('latest_news.php');?>'>もっと見る</a>
-        <?php //<img src="includes/languages/japanese/images/buttons/button_more.gif" width="56" height="25" alt="more" >?>
     </div>
 </div>
 <!-- latest_news_eof //-->

@@ -1,5 +1,5 @@
 <?php
-  class a_latest_news {
+  class news_info {
     var $site_id, $code, $title, $description;
 
 // class constructor
@@ -8,16 +8,16 @@
  参数：$site_id (string) site_id值
  返回值：无
  ------------------------*/
-    function a_latest_news($site_id = 0) {
+    function news_info($site_id = 0) {
       global $order;
 
       $this->site_id = $site_id;
-      $this->code = 'a_latest_news';
+      $this->code = 'news_info';
       $this->title = MODULE_METASEO_A_LATEST_NEWS_TEXT_TITLE;
       $this->description = MODULE_METASEO_A_LATEST_NEWS_TEXT_DESCRIPTION;
       $this->explain = MODULE_METASEO_A_LATEST_NEWS_TEXT_EXPLAIN;
       $this->sort_order = MODULE_METASEO_A_LATEST_NEWS_SORT_ORDER;
-      $this->link = 'latest_news/1.html';
+      $this->link = 'news/1.html';
     }
 
 // class methods

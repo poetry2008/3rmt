@@ -13,7 +13,7 @@ function outNewsEffect(object) {
 }
 </script>
 <div class="yui3-g main-columns">
-<h3><span><?php echo STORE_NAME.TEXT_TITLE_ONE;?></span></h3>
+<h3><span><?php echo STORE_NAME.TEXT_MODULE_NEWS_TITLE;?></span></h3>
 
 <div class="yui3-u-1-3">
   <ul>
@@ -25,7 +25,7 @@ function outNewsEffect(object) {
     }
     $latest_news_query = tep_db_query("
       SELECT * 
-      from " . TABLE_LATEST_NEWS . " 
+      from " . TABLE_NEWS . " 
       WHERE status = 1 
       AND (site_id = '".SITE_ID."' or site_id='0')
       AND date_added >= '".$start_open_time."'
@@ -56,11 +56,11 @@ function outNewsEffect(object) {
 $info_box_contents[$row] = array('align' => 'left',
 'params' => 'class="smallText" valign="top"',
 'text' =>
-tep_date_short($latest_news['date_added']) . '&nbsp;&nbsp;&nbsp;&nbsp;<a href="' .  FILENAME_LATEST_NEWS . '?news_id=' . $latest_news['news_id'] . '">' .  replace_store_name($latest_news['headline']) . '&nbsp;&nbsp;' . $latest_news_image . '</a><br>');
+tep_date_short($latest_news['date_added']) . '&nbsp;&nbsp;&nbsp;&nbsp;<a href="' .  FILENAME_NEWS . '?news_id=' . $latest_news['news_id'] . '">' .  replace_store_name($latest_news['headline']) . '&nbsp;&nbsp;' . $latest_news_image . '</a><br>');
 
    echo'  <li onmouseover="rowNewsEffect(this)" onmouseout="outNewsEffect(this)"> 
             <div class="news_date">'.tep_date_short($latest_news['date_added']).'</div>
-            <div class="latest_news_link"><a  href="' .  tep_href_link(FILENAME_LATEST_NEWS, 'news_id=' .  $latest_news['news_id']) . '">' .  replace_store_name($latest_news['headline']) . '' . $latest_news_image . $latest_news_new . '</a></div></li>
+            <div class="latest_news_link"><a  href="' .  tep_href_link(FILENAME_NEWS, 'news_id=' .  $latest_news['news_id']) . '">' .  replace_store_name($latest_news['headline']) . '' . $latest_news_image . $latest_news_new . '</a></div></li>
 ';
 
 if($n % 2 ==0){
@@ -75,7 +75,7 @@ $row++;
 //new contentBox($info_box_contents);
 ?> 
   </ul>  </div> <div id="hm-more">
-  <img src="images/more_img.gif" alt="img"><a href="<?php echo tep_href_link(FILENAME_LATEST_NEWS);?>"><?php echo TEXT_TITLE_NEWS;?></a>
+  <img src="images/more_img.gif" alt="img"><a href="<?php echo tep_href_link(FILENAME_NEWS);?>"><?php echo TEXT_MODULE_NEWS_MORE;?></a>
 </div>
  
 </div>

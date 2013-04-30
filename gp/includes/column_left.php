@@ -42,7 +42,7 @@ if($_SERVER['PHP_SELF'] == '/faq.php'||$_SERVER['PHP_SELF'] == '/faq_info.php'
     ||strpos($_SERVER['PHP_SELF'], 'account_edit.php')
     ||strpos($_SERVER['PHP_SELF'], 'email_trouble.php')
     ||strpos($_SERVER['PHP_SELF'], 'browser_ie6x.php')
-    ||strpos($_SERVER['PHP_SELF'], 'latest_news.php')
+    ||strpos($_SERVER['PHP_SELF'], 'news.php')
     ||strpos($_SERVER['PHP_SELF'], 'password_forgotten.php')
     ||strpos($_SERVER['PHP_SELF'], 'checkout_option.php')
     ||strpos($_SERVER['PHP_SELF'], 'checkout_shipping.php')

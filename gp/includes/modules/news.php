@@ -6,7 +6,7 @@
 <!-- latest_news //-->
 <div class="latest_news_box">
 <h1 class="pageHeading">
-<?php echo STORE_NAME;?>からのお知らせ
+<?php echo STORE_NAME.TEXT_MODULE_NEWS_TITLE;?>
 
 </h1>
 <div class="comment">
@@ -22,7 +22,7 @@
     }
     $latest_news_query = tep_db_query("
       SELECT * 
-      from " . TABLE_LATEST_NEWS . " 
+      from " . TABLE_NEWS . " 
       WHERE status = 1 
       AND (site_id = '".SITE_ID."' or site_id='0')
       AND date_added >= '".$start_open_time."'
@@ -50,7 +50,7 @@
                 }
 echo '        <li class="news_list">
 ' . tep_date_short($latest_news['date_added']) . '&nbsp;&nbsp;<a href="' .
-tep_href_link(FILENAME_LATEST_NEWS, 'news_id=' . $latest_news['news_id']) . '">' .
+tep_href_link(FILENAME_NEWS, 'news_id=' . $latest_news['news_id']) . '">' .
 replace_store_name($latest_news['headline']) . $latest_news_new .'</a>
 </li>'."\n";          
 $row++;
@@ -59,8 +59,8 @@ $row++;
     ?>
         </ul>
             <span>
-        <a href='<?php echo tep_href_link('latest_news.php');?>'>>>MORE</a>
-        <?php //<img src="includes/languages/japanese/images/buttons/button_more.gif" width="56" height="25" alt="more" title="more" >?>
+        <a href='<?php echo tep_href_link('news.php');?>'><?php
+        echo TEXT_MODULE_NEWS_MORE;?></a>
     </span>
     </div>
 </div>

@@ -15,8 +15,7 @@ function outNewsEffect(object) {
 <div class="background_news01">
 <table class="news_title_01">
   <tr>
-    <td><div style="border-bottom:none; font-size:14px; color:#fff; padding-left:10px; margin-top:2px;
-    font-weight:bold;"><?php echo STORE_NAME;?>からのお知らせ</div></td> 
+    <td><div style="border-bottom:none; font-size:14px; color:#fff; padding-left:10px; margin-top:2px; font-weight:bold;"><?php echo STORE_NAME.TEXT_MODULE_NEWS_TITLE;?></div></td> 
     <td align="left" width="70"></td>
   </tr>
 </table>
@@ -30,7 +29,7 @@ function outNewsEffect(object) {
     }
     $latest_news_query = tep_db_query("
       SELECT * 
-      from " . TABLE_LATEST_NEWS . " 
+      from " . TABLE_NEWS . " 
       WHERE status = 1 
       AND (site_id = '".SITE_ID."' or site_id='0')
       AND date_added >= '".$start_open_time."'
@@ -59,11 +58,11 @@ function outNewsEffect(object) {
 
 $info_box_contents[$row] = array('align' => 'left',
 'params' => 'class="smallText" valign="top"',
-'text' => tep_date_short($latest_news['date_added']) . '&nbsp;&nbsp;&nbsp;&nbsp;<a href="' .  FILENAME_LATEST_NEWS . '?news_id=' . $latest_news['news_id'] . '">' .  replace_store_name($latest_news['headline']) . '&nbsp;&nbsp;' . $latest_news_image . '</a><br>');
+'text' => tep_date_short($latest_news['date_added']) . '&nbsp;&nbsp;&nbsp;&nbsp;<a href="' .  FILENAME_NEWS . '?news_id=' . $latest_news['news_id'] . '">' .  replace_store_name($latest_news['headline']) . '&nbsp;&nbsp;' . $latest_news_image . '</a><br>');
 echo'   
           <li class="news_list" onmouseover="rowNewsEffect(this)" onmouseout="outNewsEffect(this)"> 
             <span class="news_date01">'.tep_date_short($latest_news['date_added']).'</span> 
-            <a class="latest_news_link" href="' .  tep_href_link(FILENAME_LATEST_NEWS, 'news_id=' .  $latest_news['news_id']) . '">' .  replace_store_name($latest_news['headline']) . $latest_news_image . $latest_news_new . '</a> 
+            <a class="latest_news_link" href="' .  tep_href_link(FILENAME_NEWS, 'news_id=' .  $latest_news['news_id']) . '">' .  replace_store_name($latest_news['headline']) . $latest_news_image . $latest_news_new . '</a> 
           </li>
 ';      
 }
@@ -73,7 +72,7 @@ $row++;
 ?> 
   </ul> 
 <div class="link_more_news01">
-<a class="news_more01" href="<?php echo tep_href_link(FILENAME_LATEST_NEWS);?>">過去のRMTニュースを見る</a>
+<a class="news_more01" href="<?php echo tep_href_link(FILENAME_NEWS);?>"><?php echo TEXT_MODULE_NEWS_MORE;?></a>
 </div>
 </div> 
 </div>

@@ -8,7 +8,7 @@
   echo DEFAULT_PAGE_TOP_CONTENTS;
   
   echo '<div class="news_reviews05">';
-  include(DIR_WS_MODULES . FILENAME_LATEST_NEWS);
+  include(DIR_WS_MODULES . FILENAME_NEWS);
   include(DIR_WS_BOXES . 'index_reviews.php'); 
   echo '</div>';
   echo '<div class="info_index05">';

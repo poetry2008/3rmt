@@ -22,7 +22,7 @@ define('TEXT_LATEST_NEWS_CONTENT', '記事の内容');
 define('TEXT_LATEST_NEWS_IMAGE', '関連画像');
 define('TEXT_LATEST_NEWS_IMAGE_DESCRIPTION', '画像に対しての簡単な説明');
 define('TABLE_HEADING_LATEST_NEWS_ISFIRST', 'トップにします');
-define('TABLE_HEADING_DATE_ADDED','作成日');
+define('TABLE_HEADING_DATE_ADDED','作成日:');
 define('TEXT_USER_ADDED','作成者: ');
 define('TEXT_USER_UPDATE','更新者: ');
 define('TEXT_DATE_ADDED','作成日: ');
@@ -32,4 +32,7 @@ define('TEXT_CAMPAIGN_NEXT', '次へ>');
 define('TEXT_NEWS_MUST_SELECT','少なくとも1つの選択肢を選んでください。');
 define('TEXT_DEL_NEWS','本当に削除しますか？');
 define('TEXT_ERROR_NULL','入力して下さい。');
+define('TEXT_REVIEWS_SELECT_ACTION','選択したものを');
+define('TEXT_REVIEWS_DELETE_ACTION', '削除する');
+define('SHOP_NAME','ショップ名:');
 ?>

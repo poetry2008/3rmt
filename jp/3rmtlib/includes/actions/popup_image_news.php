@@ -10,7 +10,7 @@ if(!is_numeric($_GET['nID'])){
 
   $latest_news_query = tep_db_query('
       SELECT * 
-      from ' . TABLE_LATEST_NEWS . ' 
+      from ' . TABLE_NEWS . ' 
       WHERE news_id = ' . $_GET['nID'] . ' 
       and (site_id = '.SITE_ID . ' or site_id=0)'
   );

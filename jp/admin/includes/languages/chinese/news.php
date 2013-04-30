@@ -21,7 +21,7 @@ define('TEXT_LATEST_NEWS_CONTENT', '记事内容');
 define('TEXT_LATEST_NEWS_IMAGE', '关联图像');
 define('TEXT_LATEST_NEWS_IMAGE_DESCRIPTION', '图像简单说明');
 define('TABLE_HEADING_LATEST_NEWS_ISFIRST', '置顶');
-define('TABLE_HEADING_DATE_ADDED','创建日');
+define('TABLE_HEADING_DATE_ADDED','创建日:');
 define('TEXT_USER_ADDED','创建者: ');
 define('TEXT_USER_UPDATE','更新者: ');
 define('TEXT_DATE_ADDED','创建日: ');
@@ -31,4 +31,7 @@ define('TEXT_CAMPAIGN_NEXT','下一项＞');
 define('TEXT_DEL_NEWS','确定要删除吗？');
 define('TEXT_NEWS_MUST_SELECT', '请至少选择一项');
 define('TEXT_ERROR_NULL','请输入。');
+define('TEXT_REVIEWS_SELECT_ACTION','请选择');
+define('TEXT_REVIEWS_DELETE_ACTION', '删除勾选项目');
+define('SHOP_NAME','店铺名:');
 ?>

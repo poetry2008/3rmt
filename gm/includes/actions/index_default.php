@@ -7,8 +7,7 @@
 </div>   
 <!-- body_text_eof //--> 
 <!--column_right -->
- <?php  include(DIR_WS_MODULES . FILENAME_LATEST_NEWS); ?><?php 
+ <?php  include(DIR_WS_MODULES . FILENAME_NEWS); ?><?php 
   $index_default = true;
- // require(DIR_WS_INCLUDES . 'column_right.php'); 
 ?> 
 

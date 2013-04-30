@@ -78,7 +78,7 @@ function update_quantity(pid){
         success: function(data) {
           data_tmp_array = data.split('|||'); 
           $('#quantity_'+pid).html(data_tmp_array[0]);
-          $('#h_edit_p_'+pid).parent().next().next().next().next().html(data_tmp_array[1]); 
+          $('#h_edit_p_'+pid).parent().next().next().next().next().find('a').html(data_tmp_array[1]); 
           setTimeout(function(){$('body').css('cursor', '');$('#wait').hide();$('#show_popup_info').css('display', 'none');}, 500);
         }
     });
@@ -99,7 +99,7 @@ function update_virtual_quantity(pid){
         success: function(data) {
           data_tmp_array = data.split('|||'); 
           $('#virtual_quantity_'+pid).html(data_tmp_array[0]);
-          $('#h_edit_p_'+pid).parent().next().next().next().next().html(data_tmp_array[1]); 
+          $('#h_edit_p_'+pid).parent().next().next().next().next().find('a').html(data_tmp_array[1]); 
           setTimeout(function(){$('body').css('cursor', '');$('#wait').hide();$('#show_popup_info').css('display', 'none');}, 500);
         }
     });
@@ -107,25 +107,6 @@ function update_virtual_quantity(pid){
 }
 <?php //失去焦点时触发事件 ?>
 function event_onblur(i){
-  /*
-  var this_price=document.getElementsByName("this_price[]");
-
-  $('#price_input_'+i).css('border-color','');
-  var old_price = this_price[i-1].value;
-  var new_price = $('#price_input_'+i).val();
-  if (calc.percent != '' && calc.percent != 0 && calc.percent != null) {
-      if (new_price > old_price) {
-        if( ((new_price - old_price) / old_price) * 100 >= calc.percent ) {
-            $('#price_input_'+i).css('border-color','red');
-            if( confirm(calc.percent+"<?php echo JS_TEXT_C_ADMIN_RESET_DIFFERENCE;?>") ) {
-                setTimeout(function(){$('#price_input_'+i).focus()}, 100);
-            }
-        }
-      }
-  }*/
-  /*if (old_price != new_price) {
-    $('#price_input_'+i).css('color','red');
-  }*/
 }
 <?php //变化时触发事件?>
 function event_onchange(i){
@@ -220,9 +201,6 @@ function set_money(num,warning, single_type){
     }
     return;
   }
-  //if(typeof(tar_ipt) == 'undefined')return;
-  //var price_n = n + 1;
-  //var price_obj=document.getElementById("price_input_"+ price_n);<?php //サイトインプット?>
   var this_price=document.getElementsByName("pprice[]");
  
   if (single_type == '1') {
@@ -261,7 +239,6 @@ function ajaxLoad(path, single_type){
       }
     });
 }
-//var spprice=document.getElementsByName("pprice[]");
 <?php //履历  ?>
 function history(url,cpath,cid,action){
   var url=url+"?cpath="+cpath+"&cid="+cid+"&action="+action;
@@ -276,7 +253,6 @@ function oro_history(url,cid,action){
 function dougyousya_history(url,cpath,cid,action,did,fullpath){
   var url=url+"?cPath="+cpath+"&cid="+cid+"&did="+did+"&action="+action+"&fullpath="+fullpath;
   location.href=url;
-  //window.open(url,'ccc',"width=1000,height=800,scrollbars=yes");
 }
 <?php //通过onload事件计算 ?>
 function onload_keisan(warning, single_type){
@@ -304,14 +280,11 @@ function check_error(){
           
           var old_price = parseInt(this_price[i].value);
           var new_price = parseInt($('#price_input_'+(i+1)).val());
-          //alert(old_price + '|' + new_price);
           if (calc.percent != '' && calc.percent != 0 && calc.percent != null) {
           if (new_price > old_price) {
             if( ((new_price - old_price) / old_price) * 100 >= calc.percent ) {
                 error_msg = calc.percent+"<?php echo JS_TEXT_C_ADMIN_RESET_DIFFERENCE;?>\n";
-                //error_msg = price_error;
                 $('#price_input_'+(i+1)).css('border-color','red');
-                //$('#price_error_'+(i+1)).html('<img src="images/icons/error_1.gif" title="'+calc.percent+'<?php echo JS_TEXT_C_ADMIN_RESET_DIFFERENCE;?>">');
                 if (focus_id == '') {
                     focus_id = '#price_input_'+(i+1);
                 }
@@ -319,36 +292,13 @@ function check_error(){
           } else {
             if( ((old_price - new_price) / new_price) * 100 >= calc.percent ) {
                 error_msg = calc.percent+"<?php echo JS_TEXT_C_ADMIN_RESET_DIFFERENCE;?>\n";
-                //error_msg = price_error;
                 $('#price_input_'+(i+1)).css('border-color','red');
-                //$('#price_error_'+(i+1)).html('<img src="images/icons/error_1.gif" title="'+calc.percent+'<?php echo JS_TEXT_C_ADMIN_RESET_DIFFERENCE;?>">');
                 if (focus_id == '') {
                     focus_id = '#price_input_'+(i+1);
                 }
             }
           }
           }
-          /*
-          if (bflag[i].value == 1) {
-            if (parseFloat($('#offset_input_' + (i+1)).val()) > 0) {
-              error_msg = price_error;
-              $('#offset_input_'+(i+1)).css('border-color','red');
-              $('#offset_error_'+(i+1)).append('<img src="images/icons/error_2.gif" title="<?php echo JS_TEXT_C_ADMIN_SPECIAL_PRICE;?>">');
-              if (focus_id == '') {
-                  focus_id = '#price_input_'+(i+1);
-              }
-            }
-          } else {
-            //alert(parseFloat($('#offset_input_' + (i+1)).val()));
-            if (parseFloat($('#offset_input_' + (i+1)).val()) < 0) {
-              error_msg = price_error;
-              $('#offset_input_'+(i+1)).css('border-color','red');
-              $('#offset_error_'+(i+1)).append('<img src="images/icons/error_3.gif" title="<?php echo JS_TEXT_C_ADMIN_SPECIAL_PRICE_MORE;?>">');
-              if (focus_id == '') {
-                  focus_id = '#price_input_'+(i+1);
-              }
-            }
-          }*/
       }
       if (focus_id != '') {
         $(focus_id).focus();
@@ -376,7 +326,7 @@ function set_new_price(pid, cnt) {
         $(c_ele).html(msg_array[0]); 
         $(c_ele).next().next().next().find('input[name="pprice[]"]').eq(0).val(msg_array[1]); 
         $(c_ele).next().find('input[name="price[]"]').eq(0).val(msg_array[1]);  
-        $(c_ele).next().next().next().next().html(msg_array[3]);  
+        $(c_ele).next().next().next().next().find('a').html(msg_array[3]);  
         set_money(cnt, false, '1'); 
         setTimeout(function(){$('body').css('cursor', '');$('#wait').hide();$('#show_popup_info').css('display', 'none');}, 500);
       }

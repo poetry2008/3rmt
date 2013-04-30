@@ -232,8 +232,11 @@
        if (sel_num == 1) {
            if (confirm('<?php echo TEXT_DEL_REVIEW;?>')) {
               document.forms.del_review.submit(); 
+           } else {
+              document.getElementsByName('reviews_action')[0].value = 0; 
            }
         } else {
+            document.getElementsByName('reviews_action')[0].value = 0; 
             alert('<?php echo TEXT_REVIEW_MUST_SELECT;?>'); 
            }
     }
@@ -474,6 +477,12 @@ function set_default_value(){
     }
   });
 }
+<?php //选择动作?>
+function review_change_action(r_value, r_str) {
+  if (r_value == '1') {
+    delete_select_review(r_str);
+  }
+}
 </script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
@@ -546,9 +555,9 @@ require("includes/note_js.php");
                     $review_title_row[] = array('params' => 'class="dataTableHeadingContent"', 'text' => '<input type="checkbox" name="all_check" onclick="all_select_review(\'review_id[]\');">' );
                     $review_title_row[] = array('params' => 'class="dataTableHeadingContent"', 'text' => TABLE_HEADING_SITE);
                     $review_title_row[] = array('params' => 'class="dataTableHeadingContent"', 'text' => TABLE_HEADING_PRODUCTS);
+                    $review_title_row[] = array('params' => 'class="dataTableHeadingContent" align="center"', 'text' => TABLE_HEADING_RATING);
+                    $review_title_row[] = array('params' => 'class="dataTableHeadingContent" align="center"', 'text' => TABLE_HEADING_DATE_ADDED);
                     $review_title_row[] = array('params' => 'class="dataTableHeadingContent" align="center"', 'text' => TABLE_HEADING_STATUS);
-                    $review_title_row[] = array('params' => 'class="dataTableHeadingContent" align="right"', 'text' => TABLE_HEADING_RATING);
-                    $review_title_row[] = array('params' => 'class="dataTableHeadingContent" align="right"', 'text' => TABLE_HEADING_DATE_ADDED);
                     $review_title_row[] = array('params' => 'class="dataTableHeadingContent" align="right"', 'text' => TABLE_HEADING_ACTION);
                     $review_table_row[] = array('params' => 'class="dataTableHeadingRow"', 'text' => $review_title_row);
     if(isset($_GET['product_name']) && $_GET['product_name']){
@@ -677,15 +686,15 @@ require("includes/note_js.php");
       }
       $review_info[] = array(
           'params' => 'class="dataTableContent" align="center"',
-          'text'   => ''.$review_image 
+          'text'   => $reviews['reviews_rating'] 
       );
        $review_info[] = array(
-          'params' => 'class="dataTableContent" align="right"',
-          'text'   => tep_image(HTTP_CATALOG_SERVER . DIR_WS_CATALOG_IMAGES .  'stars_' . $reviews['reviews_rating'] . '.gif') 
-      );
-       $review_info[] = array(
-          'params' => 'class="dataTableContent" align="right"',
+          'params' => 'class="dataTableContent" align="center"',
           'text'   =>  tep_date_short($reviews['date_added']) . ' ' .date('H:i:s', strtotime($reviews['date_added'])) 
+      );
+      $review_info[] = array(
+          'params' => 'class="dataTableContent" align="center"',
+          'text'   => ''.$review_image 
       );
       if(empty($_GET['site_id'])){ $_GET['site_id'] = 0; } 
       $review_info[] = array(
@@ -703,7 +712,27 @@ require("includes/note_js.php");
     echo $notice_box->show_notice();
 ?>
             </table>
-			<table border="0" width="100%" cellspacing="0" cellpadding="0" class="table_list_box">
+		<table border="0" width="100%" cellspacing="0" cellpadding="0" class="table_list_box">
+                  <tr>
+                    <td colspan="2">
+                      <?php 
+                      if($ocertify->npermission == 15){
+                      if (!empty($str_disabled)) {
+                      ?>
+                      <select name="reviews_action" disabled="disabled">
+                      <?php
+                      } else {
+                      ?>
+                      <select name="reviews_action" onchange="review_change_action(this.value, 'review_id[]');">
+                      <?php
+                      }
+                      ?>
+                        <option value="0"><?php echo TEXT_REVIEWS_SELECT_ACTION;?></option> 
+                        <option value="1"><?php echo TEXT_REVIEWS_DELETE_ACTION;?></option> 
+                      </select>
+                    <?php }?> 
+                    </td>
+                  </tr>
                   <tr>
                     <td class="smallText" valign="top"><?php echo $reviews_split->display_count($reviews_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_REVIEWS); ?></td>
                     <td class="smallText" align="right">
@@ -712,9 +741,7 @@ require("includes/note_js.php");
                   <tr>
                     <td class="smallText" align="right" colspan="2">
                      <div class="td_button">   
-                      <?php if($ocertify->npermission == 15){?>
-                      <a href="javascript:void(0);" onclick="delete_select_review('review_id[]');"><?php echo tep_html_element_button(IMAGE_DELETE, 'onclick="" '.$str_disabled);?></a>
-                      <?php } if($_GET['site_id'] != null){ ?>
+                      <?php if($_GET['site_id'] != null){ ?>
                       <button type="button" <?php echo $str_disabled;?>  onclick="show_text_reviews(this,<?php echo $_GET['page']; ?>,'0',<?php echo $_GET['site_id'];?>)"><?php echo IMAGE_NEW_PROJECT;?></button>
                        <?php  }?>
                       </div>

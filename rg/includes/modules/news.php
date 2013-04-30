@@ -3,26 +3,36 @@
   $Id$
 */
 ?>
-<!-- latest_news //-->
-<p class="pageHeading"><?php echo STORE_NAME;?>からのお知らせ</p>
+
+<div class="latest_news_box">
+<div class="pageHeading">
+<div class="pageHeading_left">
+<img src="images/menu_ico04.gif" alt="" align="top"><span><?php echo
+STORE_NAME.TEXT_MODULE_NEWS_TITLE;?></span>
+</div>
+    <div class="pageHeading_right">
+        <a href='<?php echo tep_href_link('news.php');?>'><?php 
+        echo TEXT_MODULE_NEWS_MORE;?></a>
+    </div>
+</div>
 <div class="comment">
     <div id="news">
         <ul class="news_ul">
 
 <?php
 //ccdd
-    if(preg_match('/^[0-9][0-9][0-9][0-9]\/[0-9][0-9]\/[0-9][0-9]$/',trim(SITE_OPEN_TIME))){
+if(preg_match('/^[0-9][0-9][0-9][0-9]\/[0-9][0-9]\/[0-9][0-9]$/',trim(SITE_OPEN_TIME))){
       $start_open_time = str_replace('/','-',trim(SITE_OPEN_TIME));
     }else{
       $start_open_time = '';
     }
     $latest_news_query = tep_db_query("
       SELECT * 
-      from " . TABLE_LATEST_NEWS . " 
+      from " . TABLE_NEWS . " 
       WHERE status = 1 
       AND (site_id = '".SITE_ID."' or site_id='0')
       AND date_added >= '".$start_open_time."'
-      ORDER BY isfirst DESC, date_added DESC LIMIT 5");
+      ORDER BY isfirst DESC, date_added DESC LIMIT 5");    
     if (!tep_db_num_rows($latest_news_query)) { // there is no news
       echo '<!-- ' . TEXT_NO_LATEST_NEWS . ' -->';
     } else {
@@ -44,17 +54,14 @@
                 } else {
                     $latest_news_new = '';
                 }
-echo '        <li class="news_list"> ' . tep_date_short($latest_news['date_added']) . '&nbsp;&nbsp;<a href="' .  tep_href_link(FILENAME_LATEST_NEWS, 'news_id=' . $latest_news['news_id']) . '">' . replace_store_name($latest_news['headline']) . $latest_news_new .'</a></li>'."\n";          
+echo '        <li class="news_list">' . tep_date_short($latest_news['date_added']) . '&nbsp;&nbsp;<a href="' .  tep_href_link(FILENAME_NEWS, 'news_id=' . $latest_news['news_id']) . '">' .
+replace_store_name($latest_news['headline']) . $latest_news_new .'</a></li>'."\n";          
 $row++;
 }
 }
     ?>
         </ul>
     </div>
-    <div align="right" style="padding: 5px 10px 0px 0px;">
-        <a href='<?php echo tep_href_link('latest_news.php');?>'>もっと見る</a>
-        <?php //<img src="includes/languages/japanese/images/buttons/button_more.gif" width="56" height="25" alt="more" title="more" >?>
-    </div>
 </div>
-<p class="pageBottom"></p>
-<!-- latest_news_eof //-->
+</div>
+

@@ -479,4 +479,6 @@ define('TEXT_MANUFACTURERS_TITLE', 'メーカー一覧');
 define('NOTICE_LESS_PRODUCT_OPTION_TEXT', "%sの商品情報に更新がありました。\r\nショッピングカートに商品が残っている場合は、削除する必要があります。\r\nお手数ですが、再度最初からお手続きをお願いいたします。");
 define('MSG_TEXT_NULL', '無し');
 define('JS_REVIEW_BAN_CHARACTER','※ 投稿禁止ワードが含まれているため投稿できません。'.'\n');
+define('TEXT_MODULE_NEWS_TITLE','からのお知らせ');
+define('TEXT_MODULE_NEWS_MORE','もっと見る');
 ?>
