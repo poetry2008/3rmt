@@ -63,7 +63,7 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
     echo '<table cellspacing="0" cellpadding="0" border="0"  width="100%">'; 
     while ($notice_list = tep_db_fetch_array($notice_list_raw)) {
       echo '<tr id="alarm_delete_'.$notice_list['from_notice'].'">'; 
-      echo '<td width="100">'; 
+      echo '<td width="200">'; 
       if ($notice_list['type'] == '0') {
         $alarm_flag_query = tep_db_query("select alarm_flag,alarm_show from ".TABLE_ALARM." where alarm_id='".$notice_list['from_notice']."'");
         $alarm_flag_array = tep_db_fetch_array($alarm_flag_query);
@@ -75,7 +75,7 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
         if($alarm_flag_array['alarm_flag'] == '0'){
           echo '&nbsp;'.NOTICE_ALARM_TITLE; 
         }else{
-          echo '&nbsp;'.$notice_list['title']; 
+          echo '&nbsp;'.HEADER_TEXT_ALERT_TITLE; 
         }
       } else {
         echo '&nbsp;'.NOTICE_EXTEND_TITLE; 

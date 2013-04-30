@@ -9250,22 +9250,9 @@ function tep_get_notice_info($return_type = 0)
 
   $order_notice_array = array();
   $micro_notice_array = array();
-  
-  $order_notice_raw = tep_db_query("select id, type, title, set_time, from_notice, user,created_at from ".TABLE_NOTICE." where type = '0' and set_time>'".date('Y-m-d H:i:s')."' order by created_at desc,set_time asc limit 2");
 
-  $order_notice_alert = tep_db_fetch_array($order_notice_raw);
-  tep_db_free_result($order_notice_raw);
-
-  $alert_flag_query = tep_db_query("select alarm_flag from ".TABLE_ALARM." where alarm_id='".$order_notice_alert['from_notice']."'");
-  $alert_flag_array = tep_db_fetch_array($alert_flag_query);
-  tep_db_free_result($alert_flag_query);
-
-  if($alert_flag_array['alarm_flag'] == '1'){
-    $order_notice_raw = tep_db_query("select id, type, title, set_time, from_notice, user,created_at from ".TABLE_NOTICE." where type = '0' and set_time>'".date('Y-m-d H:i:s')."' order by created_at desc,set_time asc limit 2");
-  }else{
-    $order_notice_raw = tep_db_query("select id, type, title, set_time, from_notice, user,created_at from ".TABLE_NOTICE." where user = '".$ocertify->auth_user."' and type = '0' and set_time>'".date('Y-m-d H:i:s')."' order by created_at desc,set_time asc limit 2");
-  }
-  
+  $order_notice_raw = tep_db_query("select id, type, title, set_time, from_notice, user,created_at from (".$notice_order_sql." union ".$notice_micro_sql." union ".$alarm_order_sql.") taf where type = '0' and set_time>'".date('Y-m-d H:i:s')."' order by created_at desc,set_time asc limit 2");
+ 
   $notice_num = 0;
   $notice_tmp_num = tep_db_num_rows($order_notice_raw); 
   if ($notice_tmp_num) {
@@ -9367,16 +9354,16 @@ function tep_get_notice_info($return_type = 0)
     $html_str .= '<tr>'; 
 
     if($order_notice_array['type'] == '0'){
-    $alarm_flag_query = tep_db_query("select alarm_flag,alarm_show from ".TABLE_ALARM." where alarm_id='".$order_notice_array['from_notice']."'"); 
+    $alarm_flag_query = tep_db_query("select alarm_id,alarm_flag,alarm_show from ".TABLE_ALARM." where alarm_id='".$order_notice_array['from_notice']."'"); 
     $alarm_flag_array = tep_db_fetch_array($alarm_flag_query);
     tep_db_free_result($alarm_flag_query);
     }
-    $html_str .= '<td width="100">'; 
+    $html_str .= '<td width="200">'; 
     if (($notice_num + $micro_num) > 1) {
       $more_single = 1; 
-      $html_str .= '&nbsp;<a href="javascript:void(0);" onclick="expend_all_notice(\''.$order_notice_array['id'].'\');" style="text-decoration:underline; color:#0000ff;"><font color="#0000ff">'.($alarm_flag_array['alarm_flag'] == '0' ? NOTICE_ALARM_TITLE : $order_notice_array['title']).'▼</font></a>'.str_replace('${ALERT_NUM}',$notice_list_num-1,HEADER_TEXT_ALERT_NUM);
+      $html_str .= '&nbsp;<a href="javascript:void(0);" onclick="expend_all_notice(\''.$order_notice_array['id'].'\');" style="text-decoration:underline; color:#0000ff;"><font color="#0000ff">'.($alarm_flag_array['alarm_flag'] == '0' ? NOTICE_ALARM_TITLE : HEADER_TEXT_ALERT_TITLE).'▼</font></a>'.str_replace('${ALERT_NUM}',$notice_list_num-1,HEADER_TEXT_ALERT_NUM);
     } else {
-      $html_str .= '&nbsp;'.($alarm_flag_array['alarm_flag'] == '0' ? NOTICE_ALARM_TITLE : $order_notice_array['title']);
+      $html_str .= '&nbsp;'.($alarm_flag_array['alarm_flag'] == '0' ? NOTICE_ALARM_TITLE : HEADER_TEXT_ALERT_TITLE);
     }
     $html_str .= '</td>'; 
     $html_str .= '<td class="notice_info">'; 
@@ -9413,7 +9400,7 @@ function tep_get_notice_info($return_type = 0)
     $html_str .= '</table>'; 
     $html_str .= '<input type="hidden" value="'.$more_single.'" name="more_single" id="more_single">'; 
     if ($return_type == 1) {
-      return $more_single.'|||'.$leave_time.'|||'.$order_notice_array['id'].'|||'.$html_str;
+      return $more_single.'|||'.$leave_time.'|||'.$order_notice_array['id'].'|||'.$html_str.'|||'.$alarm_flag_array['alarm_id'].'|||'.$alarm_flag_array['alarm_show'];
     } 
     return $html_str;
   } else if ($show_type == 2) {

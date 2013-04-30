@@ -770,5 +770,6 @@ define('IMAGE_ICON_BACKEND','后台');
 define('FOREGROUND_TO_BACKGROUND','FE/BE');
 define('PRIVILEGE_SET_TEXT', '设置权限');
 define('HEADER_TEXT_ALERT_LOG','提醒日志');
-define('HEADER_TEXT_ALERT_COMMENT','（按钮名）ボタン名「${ALERT_TITLE}」');
+define('HEADER_TEXT_ALERT_TITLE','订单联系按钮');
+define('HEADER_TEXT_ALERT_COMMENT','「${ALERT_TITLE}」');
 define('HEADER_TEXT_ALERT_NUM','（还剩${ALERT_NUM}条）');
