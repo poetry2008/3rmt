@@ -2687,28 +2687,22 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         <tr>
         <td width="100%">
         <div id="orders_flag">
-        <table width="100%" border="0" cellspacing="0" cellpadding="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
         <td width="50%" align="left">
-        <table width="100%" border="0" cellspacing="2" cellpadding="2">
-        <tr>
-          <td width="100" align="center" class='<?php echo $order->info['orders_care_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'care', '<?php echo $order->info['orders_id'];?>')"><?php echo TEXT_STATUS_HANDLING_WARNING;?></td>
-          <td width="100" align="center" class='<?php echo $order->info['orders_wait_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'wait', '<?php echo $order->info['orders_id'];?>')"><?php echo TEXT_STATUS_WAIT_TRADE;?></td>
-          <td width="100" align="center" class='<?php echo $order->info['orders_inputed_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'inputed', '<?php echo $order->info['orders_id'];?>')"><?php echo TEXT_STATUS_READY_ENTER;?></td>
-        <td>&nbsp;</td>
-        <tr>
-        </table>
+        <div class="td_title_text">
+          <div class='<?php echo $order->info['orders_care_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'care', '<?php echo $order->info['orders_id'];?>')"><?php echo TEXT_STATUS_HANDLING_WARNING;?></div>
+          <div class='<?php echo $order->info['orders_wait_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'wait', '<?php echo $order->info['orders_id'];?>')"><?php echo TEXT_STATUS_WAIT_TRADE;?></div>
+          <div class='<?php echo $order->info['orders_inputed_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'inputed', '<?php echo $order->info['orders_id'];?>')"><?php echo TEXT_STATUS_READY_ENTER;?></div>
+        </div>
         </td>
         <td width="50%" align="right">
-        <table width="100%" border="0" cellspacing="2" cellpadding="2">
-        <tr>
-        <td>&nbsp;</td>
-        <td width="75" align="center" id="work_a" class='<?php echo $order->info['orders_work'] == 'a' ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_work(this, 'a', '<?php echo $order->info['orders_id'];?>')">A</td>
-        <td width="75" align="center" id="work_b" class='<?php echo $order->info['orders_work'] == 'b' ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_work(this, 'b', '<?php echo $order->info['orders_id'];?>')">B</td>
-        <td width="75" align="center" id="work_c" class='<?php echo $order->info['orders_work'] == 'c' ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_work(this, 'c', '<?php echo $order->info['orders_id'];?>')">C</td>
-        <td width="75" align="center" id="work_d" class='<?php echo $order->info['orders_work'] == 'd' ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_work(this, 'd', '<?php echo $order->info['orders_id'];?>')">D</td>
-        <tr>
-        </table>
+        <div class="td_title_alphabet">
+        <div id="work_a" class='<?php echo $order->info['orders_work'] == 'a' ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_work(this, 'a', '<?php echo $order->info['orders_id'];?>')">A</div>
+        <div id="work_b" class='<?php echo $order->info['orders_work'] == 'b' ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_work(this, 'b', '<?php echo $order->info['orders_id'];?>')">B</div>
+        <div id="work_c" class='<?php echo $order->info['orders_work'] == 'c' ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_work(this, 'c', '<?php echo $order->info['orders_id'];?>')">C</div>
+        <div id="work_d" class='<?php echo $order->info['orders_work'] == 'd' ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_work(this, 'd', '<?php echo $order->info['orders_id'];?>')">D</div>
+        </div>
         </td>
         </tr>
         </table>
@@ -2721,7 +2715,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
           if ($computers) {
         ?>
           <tr>
-          <td class="main"><b>PC</b></td>
+          <td class="main"><b><?php echo HEADER_TEXT_ALERT_TITLE;?></b></td>
           </tr>
           <tr><td>
           <?php foreach ($computers as $computer) {?>

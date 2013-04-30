@@ -68,8 +68,6 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
         $alarm_flag_query = tep_db_query("select alarm_flag,alarm_show from ".TABLE_ALARM." where alarm_id='".$notice_list['from_notice']."'");
         $alarm_flag_array = tep_db_fetch_array($alarm_flag_query);
         tep_db_free_result($alarm_flag_query);
-
-        if($alarm_flag_array['alarm_show'] == '0' && $notice_list['user'] != $ocertify->auth_user){continue;}
       }
       if ($notice_list['type'] == '0') { 
         if($alarm_flag_array['alarm_flag'] == '0'){

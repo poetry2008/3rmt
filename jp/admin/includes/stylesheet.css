@@ -559,7 +559,7 @@ order
 	margin-bottom: 10px;
 	background: #f0f1f1;
 }
-.orders_computer_checked {
+.orders_computer_checked, .orders_flag_checked {
 	color: #fff;
 	background: #ff0000;
 	font-size:12px;
@@ -572,7 +572,7 @@ order
 	margin:0 3px 5px 0;
 	padding:3px 18px;
 }
-.orders_computer_unchecked {
+.orders_computer_unchecked, .orders_flag_unchecked{
 	color: #000;
 	background: #fff;
 	font-size:12px;
@@ -584,6 +584,14 @@ order
 	float:left;
 	margin:0 3px 5px 0;
 	padding:3px 18px;
+}
+.td_title_text{
+	float:left;
+	margin-top:5px;
+}
+.td_title_alphabet{
+	float:right;
+	margin-top:5px;
 }
 #headerorder{
 	margin-top:3px;
