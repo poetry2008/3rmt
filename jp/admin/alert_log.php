@@ -102,6 +102,7 @@ if ($rec_c % 2) {
 
       $alert_user = $micro_info_array['author'];
       $alert_button_name = NOTICE_EXTEND_TITLE;
+      $alert_button_comment = $arec['title'];
       $alert_orders_id = ''; 
     }
 
