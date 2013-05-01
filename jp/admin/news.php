@@ -16,7 +16,7 @@
       case 'setflag':
         if ( ($_GET['flag'] == '0') || ($_GET['flag'] == '1') ) {
           if ($_GET['latest_news_id']) {
-            tep_db_query("update " . TABLE_NEWS . " set status = '" .  $_GET['flag'] . "',update_editor = '".$_SESSION['user_name']."', latest_update_date = '".tep_db_prepare_input(time())."' where news_id = '" . $_GET['latest_news_id'] . "'");
+            tep_db_query("update " . TABLE_LATEST_NEWS . " set status = '" .  $_GET['flag'] . "',update_editor = '".$_SESSION['user_name']."', latest_update_date = '".tep_db_prepare_input(time())."' where news_id = '" . $_GET['latest_news_id'] . "'");
           }
         }
 
@@ -26,12 +26,12 @@
         $latest_news = tep_get_latest_news_by_id($_GET['latest_news_id']);
         if ($_GET['isfirst'] == '0') {
           if ($_GET['latest_news_id']) {
-            tep_db_query("update " . TABLE_NEWS . " set isfirst = '" .  $_GET['isfirst'] . "',update_editor = '".$_SESSION['user_name']."',latest_update_date = '".tep_db_prepare_input(time())."' where news_id = '" . $_GET['latest_news_id'] . "'");
+            tep_db_query("update " . TABLE_LATEST_NEWS . " set isfirst = '" .  $_GET['isfirst'] . "',update_editor = '".$_SESSION['user_name']."',latest_update_date = '".tep_db_prepare_input(time())."' where news_id = '" . $_GET['latest_news_id'] . "'");
           }
         }
         if ($_GET['isfirst'] == '1') {
             if ($_GET['latest_news_id']) {
-              tep_db_query("update " . TABLE_NEWS . " set isfirst = '" .  $_GET['isfirst'] . "',update_editor = '".$_SESSION['user_name']."',latest_update_date = '".tep_db_prepare_input(time())."' where news_id = '" . $_GET['latest_news_id'] . "'");
+              tep_db_query("update " . TABLE_LATEST_NEWS . " set isfirst = '" .  $_GET['isfirst'] . "',update_editor = '".$_SESSION['user_name']."',latest_update_date = '".tep_db_prepare_input(time())."' where news_id = '" . $_GET['latest_news_id'] . "'");
             }
         }
 tep_redirect(tep_href_link(FILENAME_NEWS, (isset($_GET['site_id'])?('site_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):'')));
@@ -40,12 +40,12 @@ tep_redirect(tep_href_link(FILENAME_NEWS, (isset($_GET['site_id'])?('site_id='.$
       case 'delete_latest_news_confirm':
         if(!empty($_POST['news_id'])){
             foreach ($_POST['news_id'] as $ge_key => $ge_value) {
-            tep_db_query("delete from " . TABLE_NEWS . " where news_id = '" .$ge_value. "'");
+            tep_db_query("delete from " . TABLE_LATEST_NEWS . " where news_id = '" .$ge_value. "'");
             }
         }
         if ($_GET['latest_news_id']) {
           $latest_news_id = tep_db_prepare_input($_GET['latest_news_id']);
-         tep_db_query("delete from " . TABLE_NEWS . " where news_id = '" . tep_db_input($latest_news_id) . "'");
+         tep_db_query("delete from " . TABLE_LATEST_NEWS . " where news_id = '" . tep_db_input($latest_news_id) . "'");
         }
         tep_redirect(tep_href_link(FILENAME_NEWS, (isset($_GET['site_id'])?('site_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):'')));
         break;
@@ -62,7 +62,7 @@ tep_redirect(tep_href_link(FILENAME_NEWS, (isset($_GET['site_id'])?('site_id='.$
                                   'date_added' => 'now()', //uses the inbuilt mysql function 'now'
                                   'site_id'    => tep_db_prepare_input($_POST['site_id']),
                                   'status'     => '1' );
-          tep_db_perform(TABLE_NEWS, $sql_data_array);
+          tep_db_perform(TABLE_LATEST_NEWS, $sql_data_array);
           $news_id = tep_db_insert_id(); //not actually used ATM -- just there in case
         }
     
@@ -79,7 +79,7 @@ tep_redirect(tep_href_link(FILENAME_NEWS, (isset($_GET['site_id'])?('site_id='.$
     $path = 'news/';
     
     if (is_uploaded_file($news_image['tmp_name'])) {
-          tep_db_query("update " . TABLE_NEWS . " set news_image = '" . $path . $news_image_name . "' where news_id = '" . $news_id . "'");
+          tep_db_query("update " . TABLE_LATEST_NEWS . " set news_image = '" . $path . $news_image_name . "' where news_id = '" . $news_id . "'");
           tep_copy_uploaded_file($news_image, $image_directory);
         }
         
@@ -96,7 +96,7 @@ tep_redirect(tep_href_link(FILENAME_NEWS, (isset($_GET['site_id'])?('site_id='.$
 				  'latest_update_date' => tep_db_prepare_input(time()),
                                   'content'  => tep_db_prepare_input($_POST['content']) );
                                   
-          tep_db_perform(TABLE_NEWS, $sql_data_array, 'update', "news_id = '" . tep_db_prepare_input($_GET['latest_news_id']) . "'");
+          tep_db_perform(TABLE_LATEST_NEWS, $sql_data_array, 'update', "news_id = '" . tep_db_prepare_input($_GET['latest_news_id']) . "'");
         }
         $news_image = tep_get_uploaded_file('news_image');
         if (!empty($news_image['name'])) {
@@ -112,7 +112,7 @@ tep_redirect(tep_href_link(FILENAME_NEWS, (isset($_GET['site_id'])?('site_id='.$
     
     if (is_uploaded_file($news_image['tmp_name'])) {
       tep_db_query("
-          update " . TABLE_NEWS . " 
+          update " . TABLE_LATEST_NEWS . " 
           set news_image = '" . $path . $news_image_name . "',update_editor =
           '".$_SESSION['']."' 
           where news_id = '" . $_GET['latest_news_id'] . "'");
@@ -146,7 +146,9 @@ $(document).ready(function() {
      if (event.which == 13) {
            <?php //回车?>
         if ($('#show_latest_news').css('display') != 'none') {
+            if (o_submit_single){
                $("#show_latest_news").find('input:button').first().trigger("click");
+             }
             }
         }
 
@@ -402,7 +404,7 @@ require("includes/note_js.php");
                n.news_image_description, 
                n.isfirst,
                n.site_id
-        from ' . TABLE_NEWS . ' n
+        from ' . TABLE_LATEST_NEWS . ' n
         where 1 
         ' . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and (n.site_id = '" . intval($_GET['site_id']) . "') " : '') . '
         order by date_added desc
