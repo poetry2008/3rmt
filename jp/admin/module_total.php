@@ -284,7 +284,7 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
 <!-- body -->
 <input type="hidden" id="show_info_id" value="show_popup_info" name="show_info_id">
 <div id="show_popup_info" style="background-color:#FFFF00;position:absolute;width:70%;min-width:550px;margin-left:0;display:none;"></div> 
-<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top">
       <table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
