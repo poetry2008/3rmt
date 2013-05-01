@@ -119,12 +119,12 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('FILENAME_ZONES', 'zones.php');
   define('FILENAME_FAQ', 'faq.php');
   define('FILENAME_REFERER', 'referer.php');
-  define('FILENAME_COMPUTERS', 'computers.php');
+  define('FILENAME_BUTTONS', 'buttons.php');
   
   //add files
   define('FILENAME_BANK_CL', 'calendar.php');
   define('FILENAME_CONTENTS', 'contents.php');
-  define('FILENAME_LATEST_NEWS', 'latest_news.php'); 
+  define('FILENAME_NEWS', 'news.php'); 
   define('FILENAME_PRODUCTS_UP', 'products_up.php'); 
   define('FILENAME_PRODUCTS_DL', 'products_dl.php'); 
   define('FILENAME_STATS_SALES_REPORT2', 'stats_sales_report2.php');
@@ -137,6 +137,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('FILENAME_CUSTOMERS_EXIT','customers_exit.php');
   define('FILENAME_HELP_INFO','help_info.php');
   define('FILENAME_PERSONAL_SETTING','personal_setting.php');
+  define('FILENAME_ALERT_LOG','alert_log.php');
 
 // define the database table names used in the project
   define('TABLE_CUSTOMERS_BASKET_OPTIONS', 'customers_basket_options');
@@ -147,6 +148,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
 
 // define the database table names used in the project
   define('TABLE_ALARM', 'alarm');
+  define('TABLE_MICRO_LOGS', 'micro_logs');
   define('TABLE_NOTICE', 'notice');
   define('TABLE_NOTICE_TO_MICRO_USER', 'notice_to_micro_user');
   define('TABLE_CAMPAIGN', 'campaign');
@@ -245,7 +247,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('TABLE_BANK_CALENDAR', 'bank_calendar'); //add calendar
   //Add DB - ds-style
   define('TABLE_INFORMATION_PAGE', 'information_page');//information box
-  define('TABLE_LATEST_NEWS', 'latest_news'); //latest_news
+  define('TABLE_NEWS', 'news'); //latest_news
 define('TABLE_PERMISSIONS','permissions');
 
 

@@ -496,7 +496,7 @@ define('HEADER_TEXT_ORDERMENU','订单▼');
 define('HEADER_TEXT_INVENTORY','库存标准');
 define('HEADER_TEXT_CATEGORIES_ADMIN','价格调整');
 //footer start 
-define('TEXT_FOOTER_ONE_TIME','使用被选中的权限可以访问该网站');
+define('TEXT_FOOTER_ONE_TIME','使用已选中权限的一次性密码访问');
 define('TEXT_FOOTER_CHECK_SAVE','保存');
 //footer end
 define('RIGHT_ORDER_INFO_ORDER_FROM', '订单网站：');
@@ -769,3 +769,8 @@ define('IMAGE_ICON_FRONTENT','前台');
 define('IMAGE_ICON_BACKEND','后台');
 define('FOREGROUND_TO_BACKGROUND','FE/BE');
 define('PRIVILEGE_SET_TEXT', '设置权限');
+define('HEADER_TEXT_ALERT_LOG','提醒日志');
+define('HEADER_TEXT_ALERT_TITLE','订单联系按钮');
+define('HEADER_TEXT_ALERT_TITLE_PREORDERS','预约联系按钮');
+define('HEADER_TEXT_ALERT_COMMENT','「${ALERT_TITLE}」');
+define('HEADER_TEXT_ALERT_NUM','（还剩${ALERT_NUM}条）');

@@ -72,20 +72,20 @@
      }else{
      echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_WHOS_ONLINE).'\';"><span class="menuBoxContent_image">' .  tep_image(DIR_WS_MENU_ICON . 'icon_online_user.gif').'</span><span>' . BOX_TOOLS_WHOS_ONLINE . '</span></div>';
      }
-     if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_COMPUTERS){
-     echo ' <div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_COMPUTERS).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_button.gif').'</span><span>'.FILENAME_COMPUTERS_TEXT.'</span></div>';
+     if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_BUTTONS){
+     echo ' <div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_BUTTONS).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_button.gif').'</span><span>'.FILENAME_COMPUTERS_TEXT.'</span></div>';
      }else{
-     echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_COMPUTERS).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_button.gif').'</span><span>'.FILENAME_COMPUTERS_TEXT.'</span></div>';
+     echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_BUTTONS).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_button.gif').'</span><span>'.FILENAME_COMPUTERS_TEXT.'</span></div>';
      }
      if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_MARKS){
      echo ' <div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_MARKS).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_mark.gif').'</span><span>' .  BOX_TOOLS_MARKS_MANAGER .  '</span></div>';
      }else{
      echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_MARKS).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_mark.gif').'</span><span>' .  BOX_TOOLS_MARKS_MANAGER .  '</span></div>';
      }
-     if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_LATEST_NEWS){
-     echo ' <div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_LATEST_NEWS).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_new_info.gif').'</span><span>' . BOX_TOOLS_LATEST_NEWS .  '</span></div>';
+     if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_NEWS){
+     echo ' <div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_NEWS).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_new_info.gif').'</span><span>' . BOX_TOOLS_LATEST_NEWS .  '</span></div>';
      }else{
-     echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_LATEST_NEWS).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_new_info.gif').'</span><span>' . BOX_TOOLS_LATEST_NEWS .  '</span></div>';
+     echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_NEWS).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_new_info.gif').'</span><span>' . BOX_TOOLS_LATEST_NEWS .  '</span></div>';
      }
      if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_CONTENTS){
      echo ' <div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_CONTENTS).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_contents.gif').'</span><span>' .  BOX_TOOLS_CONTENTS .  '</span></div>';

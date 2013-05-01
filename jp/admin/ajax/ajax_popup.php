@@ -3441,7 +3441,7 @@ $notice_box->get_contents($contents, $buttons);
 $notice_box->get_eof(tep_eof_hidden());
 echo $notice_box->show_notice();
 }else if ($_GET['action'] == 'edit_latest_news'){
- include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_LATEST_NEWS);
+ include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_NEWS);
  include(DIR_FS_ADMIN.'classes/notice_box.php');
 $sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$_SESSION['loginuid']."' limit 0,1");
 while($userslist= tep_db_fetch_array($sites_id)){
@@ -3468,14 +3468,14 @@ if(!in_array($site_id,$site_array)){
                  latest_update_date,
                  update_editor,
                  author
-          from " . TABLE_LATEST_NEWS . " 
+          from " . TABLE_NEWS . " 
           where news_id = '" . (int)$_GET['latest_news_id'] . "'");
       $latest_news = tep_db_fetch_array($latest_news_query);
     $nInfo = new objectInfo($latest_news);
     } else {
       $latest_news = array();
     }
-     $latest_news_query_raw = ' select n.news_id, n.headline, n.date_added, n.author, n.update_editor, n.latest_update_date, n.content, n.status, n.news_image, n.news_image_description, n.isfirst, n.site_id from ' . TABLE_LATEST_NEWS . ' n where 1 ' . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and (n.site_id = '" .  intval($_GET['site_id']) . "') " : '') . ' order by date_added desc ';
+     $latest_news_query_raw = ' select n.news_id, n.headline, n.date_added, n.author, n.update_editor, n.latest_update_date, n.content, n.status, n.news_image, n.news_image_description, n.isfirst, n.site_id from ' . TABLE_NEWS . ' n where 1 ' . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and (n.site_id = '" .  intval($_GET['site_id']) . "') " : '') . ' order by date_added desc ';
      $latest_news_id_query = tep_db_query($latest_news_query_raw);
      while ($latest_news_id = tep_db_fetch_array($latest_news_id_query)) {
          $cid_array[] = $latest_news_id['news_id'];
@@ -3499,7 +3499,7 @@ if(!in_array($site_id,$site_array)){
  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
  $heading[] = array('align' => 'left', 'text' => isset($latest_news['headline'])?$latest_news['headline']:HEADING_TITLE);
  $heading[] = array('align' => 'right', 'text' => $page_str);
- $form_str = tep_draw_form('new_latest_news', FILENAME_LATEST_NEWS, (isset($_GET['latest_news_id']) && $_GET['latest_news_id'] != '-1' ? ('latest_news_id=' . $_GET['latest_news_id'] . '&action=update_latest_news') : 'action=insert_latest_news').(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):''), 'post', 'enctype="multipart/form-data"'); 
+ $form_str = tep_draw_form('new_latest_news', FILENAME_NEWS, (isset($_GET['latest_news_id']) && $_GET['latest_news_id'] != '-1' ? ('latest_news_id=' . $_GET['latest_news_id'] . '&action=update_latest_news') : 'action=insert_latest_news').(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):''), 'post', 'enctype="multipart/form-data"'); 
 
  $latest_news_contents[]['text'] = array(
       array('text' => '<input type="hidden" name="author" value="'.$_SESSION['user_name'].'"><input type="hidden" name="update_editor" value="'.$_SESSION['user_name'].'">')
@@ -3526,7 +3526,11 @@ if(!in_array($site_id,$site_array)){
      );
  $latest_news_contents[]['text'] = array(
      array('text' => TEXT_LATEST_NEWS_CONTENT),
-     array('text' => tep_draw_textarea_field('content', 'soft', '70', '15',isset($latest_news['content'])?stripslashes($latest_news['content']):'','id="content" style="resize: vertical;"'.$disable))
+     array('text' => tep_draw_textarea_field('content', 'soft', '70', '15',isset($latest_news['content'])?stripslashes($latest_news['content']):'','id="content" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize: vertical;"'.$disable))
+     );
+$latest_news_contents[]['text'] = array(
+     array('text' => ''),
+     array('text' => SHOP_NAME.'&nbsp;&nbsp;#STORE_NAME#')
      );
  $latest_news_contents[]['text'] = array(
      array('text' => TEXT_LATEST_NEWS_IMAGE),
@@ -3534,7 +3538,7 @@ if(!in_array($site_id,$site_array)){
      );
  $latest_news_contents[]['text'] = array(
      array('text' => TEXT_LATEST_NEWS_IMAGE_DESCRIPTION),
-     array('text' => tep_draw_textarea_field('news_image_description', 'soft', '70', '7',isset($latest_news['news_image_description'])?stripslashes($latest_news['news_image_description']):'','id="news_image_description" style="resize: vertical;"'.$disable))
+     array('text' => tep_draw_textarea_field('news_image_description', 'soft', '70', '7',isset($latest_news['news_image_description'])?stripslashes($latest_news['news_image_description']):'','onfocus="o_submit_single = false;" onblur="o_submit_single = true;" id="news_image_description" style="resize: vertical;"'.$disable))
      );
  $latest_news_contents[]['text'] = array(
      array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.((tep_not_null($latest_news['author']))?$latest_news['author']:TEXT_UNSET_DATA)), 
@@ -3548,7 +3552,7 @@ if($ocertify->npermission == 15){
 if(isset($disable) && $disable){
  isset($_GET['latest_news_id']) ? $cancel_button = tep_html_element_button(IMAGE_DELETE,$disable) : $cancel_button = '';
 }else{
- isset($_GET['latest_news_id']) ? $cancel_button = '&nbsp;&nbsp;<a class="new_product_reset" href="' . tep_href_link(FILENAME_LATEST_NEWS, 'action=delete_latest_news_confirm&latest_news_id='.  $_GET['latest_news_id'].(isset($_GET['site_id']) ?  '&site_id='.$_GET['site_id']:'').(isset($_GET['page']) ?  '&page='.$_GET['page']:'')) . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>' : $cancel_button = '';
+ isset($_GET['latest_news_id']) ? $cancel_button = '&nbsp;&nbsp;<a class="new_product_reset" href="' . tep_href_link(FILENAME_NEWS, 'action=delete_latest_news_confirm&latest_news_id='.  $_GET['latest_news_id'].(isset($_GET['site_id']) ?  '&site_id='.$_GET['site_id']:'').(isset($_GET['page']) ?  '&page='.$_GET['page']:'')) . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>' : $cancel_button = '';
 }
 }
  $button[] = tep_html_element_button(IMAGE_SAVE,'onclick="check_news_info()"'.$disable). $cancel_button;
@@ -3560,6 +3564,305 @@ if(!empty($button)){
  $notice_box->get_contents($latest_news_contents, $buttons);
  $notice_box->get_eof(tep_eof_hidden());
  echo $notice_box->show_notice();
+}else if ($_GET['action'] == 'edit_pw_manager'){
+include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_PW_MANAGER);
+include(DIR_FS_ADMIN.'classes/notice_box.php');
+$notice_box = new notice_box('popup_order_title', 'popup_order_info');
+$pw_id = $_GET['pw_id'];
+if($pw_id != -1){
+      //add order 
+      $order_str = ''; 
+      if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
+        $next_str = '';
+        $order_str = '`nextdate` asc, `title` asc'; 
+      } else {
+        if($HTTP_GET_VARS['sort'] == 'nextdate'){
+          $next_str = 'nextdate as ';
+          $order_str = 'nextdate '.$HTTP_GET_VARS['type']; 
+        }else if($HTTP_GET_VARS['sort'] == 'operator'){
+        $order_str = '`self` '.$HTTP_GET_VARS['type'].', `privilege` '.$HTTP_GET_VARS['type']; 
+        }else{
+        $order_str = '`'.$HTTP_GET_VARS['sort'].'` '.$HTTP_GET_VARS['type']; 
+        }
+      }
+      
+      if ($HTTP_GET_VARS['type'] == 'asc') {
+        $type_str = 'desc'; 
+      } else {
+        $type_str = 'asc'; 
+      }
+   //add order end
+
+
+   // sort sql 
+
+    if(isset($site_id)&&$site_id){
+     if(isset($_GET['search_type'])&&$_GET['search_type']&& isset($_GET['keywords'])&&$_GET['keywords']){
+      if($_GET['search_type'] == 'operator'){
+        $user_list = tep_get_user_list_by_username(trim($_GET['keywords']));
+        if(isset($user_list)&&count($user_list)>=1){
+          $user_list_str = "where (self in ('".implode("','",$user_list)."') ";
+        }else{
+          $user_list_str = "where (false ";
+        }
+        if(trim(strtolower($_GET['keywords'])) == 'staff'){
+          $sort_where_permission = " or  privilege = '7')";
+        }else if (trim(strtolower($_GET['keywords'])) == 'chief'){
+          $sort_where_permission = " or  privilege = '10')";
+        }else{
+          $sort_where_permission = " or  false)";
+        }
+      $pw_manager_query_raw = "select id,title,priority,site_id,url,
+                             loginurl,username,password,comment,memo
+                             ,".$next_str."
+                             nextdate
+                             ,privilege,self,operator,user_added,created_at,
+                             updated_at,onoff,update_user
+                              from 
+                             ".TABLE_IDPW." " 
+                             .$user_list_str." "
+                             .$sort_where_permission." 
+                             and onoff = '1' 
+                             and site_id = '".$site_id."' 
+                             " .$sort_where . "
+                             order by ".$order_str;
+      }else{
+      $pw_manager_query_raw = "select id,title,priority,site_id,url,
+                             loginurl,username,password,comment,memo
+                             ,".$next_str."
+                             nextdate
+                             ,privilege,self,operator,user_added,created_at,
+                             updated_at,onoff,update_user
+                              from 
+                             ".TABLE_IDPW." 
+                             where ".$_GET['search_type']." like '%".
+                             $_GET['keywords']."%'
+                             and onoff = '1' 
+                             and site_id = '".$site_id."' 
+                             " .$sort_where . "
+                             order by ".$order_str;
+      }
+    }else{
+    $pw_manager_query_raw = "select id,title,priority,site_id,url,
+                             loginurl,username,password,comment,memo
+                             ,".$next_str."                             nextdate
+                             ,privilege,self,operator,user_added,created_at,
+                             updated_at,onoff,update_user
+                              from 
+                             ".TABLE_IDPW." where site_id='".$site_id."'
+                             and onoff = '1' 
+                             " .$sort_where . "
+                             order by ".$order_str;
+    }
+    }else if(isset($_GET['search_type'])&&$_GET['search_type']&& isset($_GET['keywords'])&&$_GET['keywords']){
+      if($_GET['search_type'] == 'operator'){
+        $user_list = tep_get_user_list_by_username(trim($_GET['keywords']));
+        if(isset($user_list)&&count($user_list)>=1){
+          $user_list_str = "where (self in ('".implode("','",$user_list)."') ";
+        }else{
+          $user_list_str = "where (false ";
+        }
+        if(trim(strtolower($_GET['keywords'])) == 'staff'){
+          $sort_where_permission = " or  privilege = '7')";
+        }else if (trim(strtolower($_GET['keywords'])) == 'chief'){
+          $sort_where_permission = " or  privilege = '10')";
+        }else{
+          $sort_where_permission = " or  false)";
+        }
+      $pw_manager_query_raw = "select id,title,priority,site_id,url,
+                             loginurl,username,password,comment,memo
+                             ,".$next_str."
+                             nextdate
+                             ,privilege,self,operator,user_added,created_at,
+                             updated_at,onoff,update_user
+                              from 
+                             ".TABLE_IDPW." " 
+                             .$user_list_str." "
+                             .$sort_where_permission." 
+                             and onoff = '1' 
+                             " .$sort_where . "
+                             order by ".$order_str;
+      }else{
+      $pw_manager_query_raw = "select id,title,priority,site_id,url,
+                             loginurl,username,password,comment,memo
+                             ,".$next_str."
+                             nextdate
+                             ,privilege,self,operator,user_added,created_at,
+                             updated_at,onoff,update_user
+                             from
+                             ".TABLE_IDPW." 
+                             where ".$_GET['search_type']." like '%".
+                             $_GET['keywords']."%'
+                             and onoff = '1' 
+                             " .$sort_where . "
+                             order by ".$order_str;
+      }
+    }else{
+    $pw_manager_query_raw = "select id,title,priority,site_id,url,
+                             loginurl,username,password,comment,memo
+                             ,".$next_str."
+                             nextdate,
+                             privilege,self,operator,user_added,created_at,
+                             updated_at,onoff,update_user
+                              from 
+                             ".TABLE_IDPW." 
+                             where onoff = '1' 
+                             " .$sort_where . "
+                             order by ".$order_str;
+    }
+        $pw_manager_query = tep_db_query($pw_manager_query_raw);
+           $i=0;
+           while($pw_manager_row = tep_db_fetch_array($pw_manager_query)){
+           $i++;
+               if (( (!@$_GET['pw_id']) || (@$_GET['pw_id'] == $pw_manager_row['id'])) && (!@$pwInfo) && (substr(@$_GET['action'], 0, 3) != 'new')) {
+                      $pwInfo = new objectInfo($pw_manager_row);
+               }
+          }
+      $heading = array();
+      $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+      $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">'); 
+      $heading[] = array('align' => 'left', 'text' => $pwInfo->title.'&nbsp;&nbsp;');
+      $heading[] = array('align' => 'right', 'text' => $page_str);
+      
+
+      $contents[]['text'] = array(
+           array('text' => TEXT_INFO_TITLE),
+           array('text' => tep_draw_input_field('title',$pwInfo->title,'id="title"'))
+          );
+      $contents[]['text'] = array(
+           array('text' => TEXT_INFO_PRIORITY),
+           array('text' => tep_draw_radio_field('priority',1,$pwInfo->priority == '1'?true:false).TEXT_PRIORITY_1.tep_draw_radio_field('priority',2,$pwInfo->priority == '2'?true:false).TEXT_PRIORITY_2.tep_draw_radio_field('priority',3,$pwInfo->priority == '3'?true:false).TEXT_PRIORITY_3)
+          );
+      $contents[]['text'] = array(
+           array('text' => TEXT_INFO_SITE_ID),
+           array('text' => tep_site_pull_down("name='site_id'",$pwInfo->site_id))
+          );
+      $contents[]['text'] = array(
+           array('text' => TEXT_INFO_URL),
+           array('text' => tep_draw_input_field('url',$pwInfo->url,'id="url"').tep_draw_hidden_field('old_url',$pwInfo->url))
+          );
+      $contents[]['text'] = array(
+           array('text' => TEXT_INFO_LOGINURL),
+           array('text' => tep_draw_input_field('loginurl',$pwInfo->loginurl,'id="loginurl"').tep_draw_hidden_field('old_loginurl',$pwInfo->loginurl))
+          );
+      $contents[]['text'] = array(
+           array('text' => TEXT_INFO_USERNAME),
+           array('text' => tep_draw_input_field('username',$pwInfo->username,'id="username"').tep_draw_hidden_field('old_username',$pwInfo->username))
+          );
+      $pwd_pattern = tep_get_pwd_pattern();
+      $pwd_len = tep_get_pwd_len();
+      $pwd_pattern_arr = explode(',',$pwd_pattern);
+      $contents[]['text'] = array(
+           array('text' => TEXT_INFO_PASSWORD),
+           array('text' => tep_draw_checkbox_field('pattern[]','english', in_array('english',$pwd_pattern_arr)?true:false).TEXT_LOWER_ENGLISH.  tep_draw_checkbox_field('pattern[]','ENGLISH', in_array('ENGLISH',$pwd_pattern_arr)?true:false).TEXT_POWER_ENGLISH.  tep_draw_checkbox_field('pattern[]','NUMBER', in_array('NUMBER',$pwd_pattern_arr)?true:false).TEXT_NUMBER .  TEXT_PWD_LEN."&nbsp;".tep_draw_input_field('pwd_len',$pwd_len,'id="pwd_len" maxlength="2" size="2"')."&nbsp;".  "<button type='button' onclick=\"mk_pwd()\">" .  TEXT_BUTTON_MK_PWD."</button>".  tep_draw_input_field('password',$pwInfo->password,'id="password"') .tep_draw_hidden_field('old_password',$pwInfo->password))
+          );
+      $contents[]['text'] = array(
+           array('text' => TEXT_INFO_COMMENT),
+           array('text' => tep_draw_textarea_field('comment', 'soft', '30', '5', $pwInfo->comment, 'class="pw_textarea"').tep_draw_hidden_field('old_comment',$pwInfo->comment))
+          );
+       $contents[]['text'] = array(
+           array('text' => TEXT_INFO_MEMO),
+           array('text' => tep_draw_textarea_field('memo', 'soft', '30', '5', $pwInfo->memo, 'class="pw_textarea"'))
+          );
+        $contents[]['text'] = array(
+           array('text' => TEXT_INFO_NEXTDATE),
+           array('text' => '<div class="nextdate_info">' .  '<div class="yui3-skin-sam yui3-g">'.  tep_draw_input_field('nextdate',$pwInfo->nextdate, 'id="input_nextdate"').  '<a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"></a> <input type="hidden" name="toggle_open" value="0" id="toggle_open"> <div class="yui3-u" id="new_yui3"><div id="mycalendar"></div></div>' ."</div>")
+          );
+        $contents[]['text'] = array(
+           array('text' => TEXT_INFO_PRIVILEGE),
+           array('text' => tep_draw_radio_field('privilege','15',$pwInfo->privilege==15?true:false,'','id="self" class="privilege"').TEXT_SELF.  tep_draw_radio_field('privilege','7',$pwInfo->privilege==7?true:false,'','class="privilege" id="privilege_s"').TEXT_PERMISSION_STAFF.  tep_draw_radio_field('privilege','10',$pwInfo->privilege==10?true:false,'','class="privilege" id="privilege_c"').TEXT_PERMISSION_CHIEF.'&nbsp;&nbsp;'.TEXT_OPERATOR_INFO)
+          );
+       if($pwInfo->self!=''){
+        $pw_select_display = 'block';
+      }else{
+        $pw_select_display = 'none';
+      }
+      if($pwInfo->self==''||$pwInfo->self==null){
+        $selected_user = $ocertify->auth_user;
+      }else{
+        $selected_user = $pwInfo->self;
+      }
+       $contents[]['text'] = array(
+           array('text' =>  '<div id="user_select" class="user_select" style="display:'.$pw_select_display.'" >'.  tep_get_user_select($selected_user) ."</div>")
+          );
+      $button[] = "<button type='submit' >".IMAGE_SAVE."</button>" . '&nbsp;' .  "<button type='button' onclick=\"location.href='".  tep_href_link(FILENAME_PW_MANAGER, 'page=' . $_GET['page'] .  '&site_id='.$_GET['site_id'].'&pw_id=' .  $pwInfo->id .  '&action=deleteconfirm')  ."'\">" . TEXT_BUTTON_DELETE ."</button><button type='button' onclick=\"location.href='".  tep_href_link(FILENAME_PW_MANAGER_LOG, 'pw_id='.$pwInfo->id.'&site_id='.$site_id) ."'\">" .  TEXT_BUTTON_HISTORY."</button>" ;
+      if(!empty($button)){
+        $buttons = array('align' => 'center', 'button' => $button);
+      }
+      $form_str = tep_draw_form('pw_manager', FILENAME_PW_MANAGER, 'page=' . $_GET['page'] . '&site_id='.$site_id.'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&action=update&pw_id='.$pwInfo->id, 'post', 'enctype="multipart/form-data" onsubmit="return valdata(this)"');
+      $notice_box->get_form($form_str);
+      $notice_box->get_heading($heading);
+      $notice_box->get_contents($contents, $buttons);
+      $notice_box->get_eof(tep_eof_hidden());
+      echo $notice_box->show_notice();
+         
+}else{      
+      $heading = array();
+      $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+      $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+      $heading[] = array('align' => 'left', 'text' => HEADING_TITLE.'&nbsp;&nbsp;');
+      $heading[] = array('align' => 'right', 'text' => $page_str);
+      $contents[]['text'] = array(
+          array('text' => TEXT_INFO_TITLE),
+          array('text' => tep_draw_input_field('title','','id="title"'))
+      );
+      $contents[]['text'] = array(
+          array('text' => TEXT_INFO_PRIORITY),
+          array('text' => tep_draw_radio_field('priority',1,true).TEXT_PRIORITY_1.tep_draw_radio_field('priority',2,false).TEXT_PRIORITY_2.tep_draw_radio_field('priority',3,false).TEXT_PRIORITY_3)
+      );
+      $contents[]['text'] = array(
+          array('text' => TEXT_INFO_SITE_ID),
+          array('text' => tep_site_pull_down("name='site_id'").'<input type="hidden" name="user_added" value="'.$user_info['name'].'">')
+      );
+      $contents[]['text'] = array(
+          array('text' => TEXT_INFO_URL),
+          array('text' => tep_draw_input_field('url','','id="url"'))
+      );
+      $contents[]['text'] = array(
+          array('text' => TEXT_INFO_LOGINURL),
+          array('text' => tep_draw_input_field('loginurl','','id="loginurl"'))
+      );
+      $contents[]['text'] = array(
+          array('text' => TEXT_INFO_USERNAME),
+          array('text' => tep_draw_input_field('username','','id="username"'))
+      );
+      $pwd_pattern = tep_get_pwd_pattern();
+      $pwd_len = tep_get_pwd_len();
+      $pwd_pattern_arr = explode(',',$pwd_pattern);
+      $contents[]['text'] = array(
+          array('text' => TEXT_INFO_PASSWORD),
+          array('text' => tep_draw_checkbox_field('pattern[]','english', in_array('english',$pwd_pattern_arr)?true:false).TEXT_LOWER_ENGLISH.  tep_draw_checkbox_field('pattern[]','ENGLISH', in_array('ENGLISH',$pwd_pattern_arr)?true:false).TEXT_POWER_ENGLISH.  tep_draw_checkbox_field('pattern[]','NUMBER', in_array('NUMBER',$pwd_pattern_arr)?true:false).TEXT_NUMBER.TEXT_PWD_LEN."&nbsp;".tep_draw_input_field('pwd_len',$pwd_len,'id="pwd_len" maxlength="2" size="2"')."&nbsp;".  "<button type='button' onclick=\"mk_pwd()\">" .  TEXT_BUTTON_MK_PWD."</button>".  tep_draw_input_field('password',tep_get_new_random($pwd_pattern,$pwd_len),'id="password"'))
+      );
+      $contents[]['text'] = array(
+          array('text' => TEXT_INFO_COMMENT),
+          array('text' => tep_draw_textarea_field('comment', 'soft', '30', '5', '','class="pw_textarea"'))
+      );
+      $contents[]['text'] = array(
+          array('text' => TEXT_INFO_MEMO),
+          array('text' => tep_draw_textarea_field('memo', 'soft', '30', '5', '', 'class="pw_textarea"'))
+      );
+      $contents[]['text'] = array(
+          array('text' => TEXT_INFO_NEXTDATE),
+          array('text' => '<div class="nextdate_info">' .  '<div class="yui3-skin-sam yui3-g">'.  tep_draw_input_field('nextdate','','id="input_nextdate"').  '<a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"></a> <input type="hidden" name="toggle_open" value="0" id="toggle_open"> <div class="yui3-u" id="new_yui3"><div id="mycalendar"></div></div>' ."</div>")
+      );
+      $contents[]['text'] = array(
+          array('text' => TEXT_INFO_PRIVILEGE),
+          array('text' => tep_draw_radio_field('privilege','15',false,'','id="self" class="privilege"').TEXT_SELF.  tep_draw_radio_field('privilege','7',true,'','class="privilege" id="privilege_s"').TEXT_PERMISSION_STAFF.  tep_draw_radio_field('privilege','10',false,'','class="privilege" id="privilege_c"').TEXT_PERMISSION_CHIEF."&nbsp;&nbsp;".TEXT_OPERATOR_INFO)
+      );
+      $selected_user = $ocertify->auth_user;
+      $contents[]['text'] = array( array('text' => '<div id="user_select" class="user_select" style="display:none">'.  tep_get_user_select($selected_user) ."</div>")
+      );
+      $button[] = "<button type='submit' >".IMAGE_SAVE."</button>" . '&nbsp;' .  "<button type='button' onclick=\"location.href='".  tep_href_link(FILENAME_PW_MANAGER, 'page=' . $_GET['page']) ."'\">" . TEXT_BUTTON_CLEAR."</button>"; 
+      if(!empty($button)){
+       $buttons = array('align' => 'center', 'button' => $button);  
+      }
+      $form_str = tep_draw_form('pw_manager', FILENAME_PW_MANAGER, '&site_id='.$_GET['site_id'].'&page=' . $_GET['page'] . '&type='.$_GET['type'].'&sort='.$_GET['sort'].'&action=insert', 'post', 'enctype="multipart/form-data" onsubmit="return valdata()"');
+      $notice_box->get_form($form_str);
+      $notice_box->get_heading($heading);
+      $notice_box->get_contents($contents, $buttons);
+      $notice_box->get_eof(tep_eof_hidden());
+      echo $notice_box->show_notice();
+ }
 }else if ($_GET['action'] == 'edit_module_total'){
 /* -----------------------------------------------------
     功能: 更新合计模块设置

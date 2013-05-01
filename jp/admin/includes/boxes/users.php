@@ -51,6 +51,11 @@ define('FILENAME_ONCE_PWD_LOG', 'pwd_log.php');
         }else{
         echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_PERSONAL_SETTING).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_personal_setting.gif').  '</span><span>'.HEADER_TEXT_PERSONAL_SETTING.'</span></div>'; 
         }
+        if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_ALERT_LOG){
+        echo '<div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_ALERT_LOG).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_alarm_log.gif').  '</span><span>'.HEADER_TEXT_ALERT_LOG.'</span></div>'; 
+        }else{
+        echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_ALERT_LOG).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_alarm_log.gif').  '</span><span>'.HEADER_TEXT_ALERT_LOG.'</span></div>'; 
+        }
         if ($ocertify->npermission == 15) {
           if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_USERS_LOGINLOG){
           echo '<div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_USERS_LOGINLOG, '', 'NONSSL').'\';">'.  $loginlog.'</div>';

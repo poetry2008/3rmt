@@ -716,6 +716,7 @@ require("includes/note_js.php");
                   <tr>
                     <td colspan="2">
                       <?php 
+                      if($ocertify->npermission == 15){
                       if (!empty($str_disabled)) {
                       ?>
                       <select name="reviews_action" disabled="disabled">
@@ -727,10 +728,9 @@ require("includes/note_js.php");
                       }
                       ?>
                         <option value="0"><?php echo TEXT_REVIEWS_SELECT_ACTION;?></option> 
-                        <?php if($ocertify->npermission == 15){?>
                         <option value="1"><?php echo TEXT_REVIEWS_DELETE_ACTION;?></option> 
-                        <?php }?> 
                       </select>
+                    <?php }?> 
                     </td>
                   </tr>
                   <tr>

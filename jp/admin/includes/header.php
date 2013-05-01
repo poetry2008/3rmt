@@ -22,7 +22,7 @@ function check_exists_function(funcName){
   }
 }
 <?php //表格处理的通知时间 ?>
-function calc_notice_time(leave_time, nid, start_calc)
+function calc_notice_time(leave_time, nid, start_calc, alarm_flag, alarm_date)
 {
   
   var now_timestamp = Date.parse(new Date());
@@ -68,7 +68,11 @@ function calc_notice_time(leave_time, nid, start_calc)
   }
   
   if (document.getElementById('leave_time_'+nid)) {
-    document.getElementById('leave_time_'+nid).innerHTML = n_show_day+'<?php echo DAY_TEXT;?>'+n_show_hour+'<?php echo HOUR_TEXT;?>'+n_show_minute+'<?php echo MINUTE_TEXT;?>'; 
+    if(alarm_flag == '1'){
+      document.getElementById('leave_time_'+nid).innerHTML = alarm_date; 
+    }else{ 
+      document.getElementById('leave_time_'+nid).innerHTML = n_show_day+'<?php echo DAY_TEXT;?>'+n_show_hour+'<?php echo HOUR_TEXT;?>'+n_show_minute+'<?php echo MINUTE_TEXT;?>';
+    }
     if ((n_hour == 0) && (n_minute == 0) && (n_day == 0)) {
       document.getElementById('leave_time_'+nid).parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.background = '#FFB3B5'; 
       var n_node=document.getElementById('head_notice');  
@@ -80,7 +84,7 @@ function calc_notice_time(leave_time, nid, start_calc)
         }
       }
     }
-    setTimeout(function(){calc_notice_time(leave_time, nid, 1)}, 5000); 
+    setTimeout(function(){calc_notice_time(leave_time, nid, 1, alarm_flag, alarm_date)}, 5000); 
   } 
 }
 <?php //显示所有订单通知 ?>
@@ -113,9 +117,11 @@ function delete_alarm_notice(nid, e_type)
       dataType: 'text',
       async: false,
       success: function(data) {
+        var pid = data;
         $('#show_all_notice').css('display', 'none');
         $('#show_all_notice').html(''); 
         show_head_notice(0);
+        $("#orders_alert_"+pid).attr("class","orders_computer_unchecked");
       } 
       });
 }
@@ -162,6 +168,11 @@ function show_head_notice(no_type)
             if (orgin_bg.indexOf('rgb(255, 179, 181)') > 0) {
               document.getElementById('leave_time_'+data_info[2]).parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.background = '#FFFFFF'; 
             }
+          }
+          if(data_info[5] == '1'){
+            $("#alarm_id_"+data_info[4]).html('ON');
+          }else{
+            $("#alarm_id_"+data_info[4]).html('OFF'); 
           }
         } else {
           $('#show_head_notice').html(data); 
@@ -347,10 +358,10 @@ $(function(){
 <?php
 }
 ?>
-</script><noscript>
+</script>
+<noscript>
 <div class="messageStackError"><?php echo TEXT_JAVASCRIPT_ERROR;?></div> 
 </noscript>
-
 <div class="compatible_head">
 <table border="0" width="100%" cellspacing="0" cellpadding="0" class="preorder_head">
 <tr>
@@ -376,11 +387,6 @@ if ($current_page_tp == FILENAME_CONFIGURATION) {
 if ($current_page_tp == FILENAME_MODULES) {
   $current_page_tp .= '?set='.$_GET['set'];
 }
-/*
-foreach($languages as $key => $val){
-echo "<a href=".tep_href_link($cur_page,tep_get_all_get_params(array('language'))."language=".$val['code'])."><font size=3px><b>".strtoupper($val['code']=='ja'?'jp':$val['code'])."</b></font></a>&nbsp;";
-}
-*/
 echo "<a href=".tep_href_link($cur_page,tep_get_all_get_params(array('language')).
     "language=".'ja')."><font size=3px><b>JP</b></font></a>&nbsp;";
 echo "<a href=".tep_href_link($cur_page,tep_get_all_get_params(array('language')).
@@ -388,6 +394,7 @@ echo "<a href=".tep_href_link($cur_page,tep_get_all_get_params(array('language')
 echo '<a href="' . tep_href_link('help.php', 'info_romaji='.urlencode(str_replace('/admin/','',$current_page_tp)), 'NONSSL') . '" class="headerLink"  target="_blank"><img src="images/menu_icon/icon_help_info.gif" alt="img"></a>';
 ?>
 </div>
+
 <?php echo tep_draw_form('changepwd', FILENAME_CHANGEPWD,'','post','
     id=\'changepwd_form\'');
 echo tep_draw_hidden_field("execute_password",TEXT_ECECUTE_PASSWORD_USER);
@@ -500,7 +507,7 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
       </td>
       <td><a href="' . tep_href_link(FILENAME_CUSTOMERS, '', 'NONSSL') . '" 
       class="headerLink">'.HEADER_TEXT_CUSTOMERS.'</a>&nbsp;|</td>
-      <td>&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS, '', 'NONSSL') .
+      <td>&nbsp;<a href="' . tep_href_link(FILENAME_NEWS, '', 'NONSSL') .
       '" class="headerLink">'.HEADER_TEXT_LATEST_NEWS.'</a>&nbsp;|</td>
       
       <td align="left">
