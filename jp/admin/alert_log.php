@@ -75,6 +75,7 @@ if ($rec_c % 2) {
         tep_href_link(FILENAME_ALERT_LOG,"log_id=".$arec['id'])
         .'\'" >';
     }
+    $alert_button_comment = '';
     //根据不同的提醒类型，获取不同的内容
     if($arec['type'] == '0'){
 
@@ -84,7 +85,12 @@ if ($rec_c % 2) {
 
       $alert_user = $alarm_info_array['adminuser'];
       if($alarm_info_array['alarm_flag'] == '1'){
-        $alert_button_name = $alarm_info_array['title'];
+        if($alarm_info_array['orders_flag'] == '1'){
+          $alert_button_name = HEADER_TEXT_ALERT_TITLE;
+        }else{
+          $alert_button_name = HEADER_TEXT_ALERT_TITLE_PREORDERS; 
+        }
+        $alert_button_comment = $alarm_info_array['title'];
       }else{
         $alert_button_name = NOTICE_ALARM_TITLE; 
       }
@@ -101,6 +107,7 @@ if ($rec_c % 2) {
 
     echo '<td class="main" >' . $alert_user . "</td>\n";
     echo '<td class="main" >' . $alert_button_name . "</td>\n";
+    echo '<td class="main" >' . $alert_button_comment . "</td>\n";
     echo '<td class="main" >' . $alert_orders_id . "</td>\n";
     echo '<td class="main" >' . $arec['created_at'] . "</td>\n";
 
@@ -118,7 +125,8 @@ function show_page_ctl($nrow) {
   $c_page = 0;
 
   // 获取记录总件数
-  $ssql = "select count(*) as rc from " . TABLE_NOTICE;
+  $alarm_day = get_configuration_by_site_id('ALARM_EXPIRED_DATE_SETTING',0);
+  $ssql = "select count(*) as rc from " . TABLE_NOTICE ." where time_format(timediff(now(),created_at),'%H')<".$alarm_day*24;
   @$oresult = tep_db_query($ssql);
   if (!$oresult) {                      // 错误的时候
     if ($oresult) @tep_db_free_result($oresult);      // 开放结果项目
@@ -142,7 +150,6 @@ function show_page_ctl($nrow) {
     $asp[$i-1]['id'] = $lm_;
     $asp[$i-1]['text'] = $i;
   }
-  echo '&nbsp;&nbsp;';
   $GLOBALS['sp'] = $GLOBALS['lm'];              // 设置下拉列表的选择值
   echo tep_draw_pull_down_menu("sp", $asp, $GLOBALS['lm']); // 显示下拉列表
   echo tep_draw_input_field("jp", BUTTON_JUMP_PAGE, '', FALSE, "submit", FALSE);    // 跳转页面
@@ -161,7 +168,8 @@ function show_page_ctl($nrow) {
  --------------------------------------*/
 function makeSelectOnceAlertLog() {
 
-  $s_select = "select * from " . TABLE_NOTICE;
+  $alarm_day = get_configuration_by_site_id('ALARM_EXPIRED_DATE_SETTING',0);
+  $s_select = "select * from " . TABLE_NOTICE ." where time_format(timediff(now(),created_at),'%H')<".$alarm_day*24;
   $s_select .= " order by created_at desc";    // 按照提醒日期时间的倒序获取数据
   if (!isset($GLOBALS['lm'])) $GLOBALS['lm'] = 0;
   $s_select .= " " . sprintf(TABLE_LIMIT_OFFSET,$GLOBALS['lm']);
@@ -205,6 +213,7 @@ function UserOnceAlertLog_list() {
     echo '<table width="100%" ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
     echo "<tr class='dataTableHeadingRow'>\n";
     echo '<td class="dataTableHeadingContent">' . TABLE_HEADING_USERNAME . '</td>' . "\n";      
+    echo '<td class="dataTableHeadingContent">' . TABLE_HEADING_TYPE . '</td>' . "\n";
     echo '<td class="dataTableHeadingContent">' .
       TABLE_HEADING_BUTTON_NAME . '</td>' . "\n";       
     echo '<td class="dataTableHeadingContent">' . TABLE_HEADING_ORDERS_ID . '</td>' . "\n"; 
@@ -216,21 +225,7 @@ function UserOnceAlertLog_list() {
 
     echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));    // <form>标签的输出
     show_page_ctl($nrow);       // 页面控制按钮的显示
-
-    // 表标签的开始
-    echo '<table border="0" cellspacing="1" cellpadding="1">' . "\n";
-    echo "<tr>\n";
-
-    // 日志的删除
-    echo '<td class="main">' . TEXT_INFO_DELETE_DAY . "</td>\n";
-    echo '<td class="main">&nbsp;&nbsp;&nbsp;&nbsp;';
-    echo tep_draw_input_field("aval[span]", $ocertify->login_log_span, 'size="1" maxlength="3"', FALSE, 'text', FALSE);
-    echo TEXT_INFO_DELETE_FORMER_DAY . "</td>\n";
-
-    echo '<td class="main">';
-    // 按钮显示
-    echo tep_draw_input_field("execute_delete", BUTTON_DELETE_ONCE_PWD_LOG, "onClick=\"return formConfirm('delete')\"", FALSE, "submit", FALSE);  // 删除日志
-    echo "</td></tr></table>\n";
+ 
     echo "</form>\n";           // form的footer
   }
   if ($oresult) @tep_db_free_result($oresult);          // 开放结果项目

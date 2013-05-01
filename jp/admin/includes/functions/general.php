@@ -9235,11 +9235,11 @@ function tep_get_notice_info($return_type = 0)
   global $ocertify;
 
   //计算剩余的记录
-  $notice_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and a.alarm_flag='0' and n.set_time>'".date('Y-m-d H:i:s')."' and n.user = '".$ocertify->auth_user."'"; 
+  $notice_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and a.alarm_flag='0' and n.user = '".$ocertify->auth_user."'"; 
   
-  $notice_micro_sql = "select * from ".TABLE_NOTICE." where type = '1' and id not in (select notice_id from ".TABLE_NOTICE_TO_MICRO_USER." n where n.user = '".$ocertify->auth_user."') and set_time>'".date('Y-m-d H:i:s')."'";
+  $notice_micro_sql = "select * from ".TABLE_NOTICE." where type = '1' and id not in (select notice_id from ".TABLE_NOTICE_TO_MICRO_USER." n where n.user = '".$ocertify->auth_user."')";
 
-  $alarm_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and a.alarm_flag='1' and n.set_time>'".date('Y-m-d H:i:s')."'";
+  $alarm_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and a.alarm_flag='1'";
   
   $notice_total_sql = "select * from (".$notice_order_sql." union ".$notice_micro_sql." union ".$alarm_order_sql.") taf"; 
   $notice_list_raw = tep_db_query($notice_total_sql);  
@@ -9251,7 +9251,7 @@ function tep_get_notice_info($return_type = 0)
   $order_notice_array = array();
   $micro_notice_array = array();
 
-  $order_notice_raw = tep_db_query("select id, type, title, set_time, from_notice, user,created_at from (".$notice_order_sql." union ".$notice_micro_sql." union ".$alarm_order_sql.") taf where type = '0' and set_time>'".date('Y-m-d H:i:s')."' order by created_at desc,set_time asc limit 2");
+  $order_notice_raw = tep_db_query("select id, type, title, set_time, from_notice, user,created_at from (".$notice_order_sql." union ".$notice_micro_sql." union ".$alarm_order_sql.") taf where type = '0' order by created_at desc,set_time asc limit 2");
  
   $notice_num = 0;
   $notice_tmp_num = tep_db_num_rows($order_notice_raw); 
@@ -9270,7 +9270,7 @@ function tep_get_notice_info($return_type = 0)
     $order_notice_array['created_at'] = $order_notice['created_at'];
   }
 
-  $micro_notice_raw = tep_db_query("select id, title, set_time, from_notice, created_at from ".TABLE_NOTICE." where type = '1' and set_time>'".date('Y-m-d H:i:s')."' and id not in (select notice_id from ".TABLE_NOTICE_TO_MICRO_USER." n where n.user = '".$ocertify->auth_user."') order by set_time asc, created_at desc limit 2");
+  $micro_notice_raw = tep_db_query("select id, title, set_time, from_notice, created_at from ".TABLE_NOTICE." where type = '1' and id not in (select notice_id from ".TABLE_NOTICE_TO_MICRO_USER." n where n.user = '".$ocertify->auth_user."') order by set_time asc, created_at desc limit 2");
      
   $micro_num = 0;
   $micro_tmp_num = tep_db_num_rows($micro_notice_raw); 
@@ -9354,16 +9354,22 @@ function tep_get_notice_info($return_type = 0)
     $html_str .= '<tr>'; 
 
     if($order_notice_array['type'] == '0'){
-    $alarm_flag_query = tep_db_query("select alarm_id,alarm_flag,alarm_show from ".TABLE_ALARM." where alarm_id='".$order_notice_array['from_notice']."'"); 
+    $alarm_flag_query = tep_db_query("select alarm_id,alarm_flag,alarm_show,orders_flag from ".TABLE_ALARM." where alarm_id='".$order_notice_array['from_notice']."'"); 
     $alarm_flag_array = tep_db_fetch_array($alarm_flag_query);
     tep_db_free_result($alarm_flag_query);
     }
     $html_str .= '<td width="200">'; 
+    if($alarm_flag_array['orders_flag'] == '1'){
+
+      $title_str = HEADER_TEXT_ALERT_TITLE;
+    }else{
+      $title_str = HEADER_TEXT_ALERT_TITLE_PREORDERS; 
+    }
     if (($notice_num + $micro_num) > 1) {
       $more_single = 1; 
-      $html_str .= '&nbsp;<a href="javascript:void(0);" onclick="expend_all_notice(\''.$order_notice_array['id'].'\');" style="text-decoration:underline; color:#0000ff;"><font color="#0000ff">'.($alarm_flag_array['alarm_flag'] == '0' ? NOTICE_ALARM_TITLE : HEADER_TEXT_ALERT_TITLE).'▼</font></a>'.str_replace('${ALERT_NUM}',$notice_list_num-1,HEADER_TEXT_ALERT_NUM);
-    } else {
-      $html_str .= '&nbsp;'.($alarm_flag_array['alarm_flag'] == '0' ? NOTICE_ALARM_TITLE : HEADER_TEXT_ALERT_TITLE);
+      $html_str .= '&nbsp;<a href="javascript:void(0);" onclick="expend_all_notice(\''.$order_notice_array['id'].'\');" style="text-decoration:underline; color:#0000ff;"><font color="#0000ff">'.($alarm_flag_array['alarm_flag'] == '0' ? NOTICE_ALARM_TITLE : $title_str).'▼</font></a>'.str_replace('${ALERT_NUM}',$notice_list_num-1,HEADER_TEXT_ALERT_NUM);
+    } else { 
+      $html_str .= '&nbsp;'.($alarm_flag_array['alarm_flag'] == '0' ? NOTICE_ALARM_TITLE : $title_str);
     }
     $html_str .= '</td>'; 
     $html_str .= '<td class="notice_info">'; 
@@ -9377,7 +9383,13 @@ function tep_get_notice_info($return_type = 0)
     }
     $html_str .= '</div>'; 
     $html_str .= '<div style="float:left;">';
-    $html_str .= '<a href="'.tep_href_link(FILENAME_ORDERS, 'oID='.$alarm['orders_id'].'&action=edit').'">'.($alarm_flag_array['alarm_flag'] == '0' ? $order_notice_array['title'] : $alarm['orders_id']).'</a>'; 
+    if($alarm_flag_array['orders_flag'] == '1'){
+
+      $filename_str = FILENAME_ORDERS;
+    }else{
+      $filename_str = FILENAME_PREORDERS; 
+    }
+    $html_str .= '<a href="'.tep_href_link($filename_str, 'oID='.$alarm['orders_id'].'&action=edit').'">'.($alarm_flag_array['alarm_flag'] == '0' ? $order_notice_array['title'] : $alarm['orders_id']).'</a>'; 
     $html_str .='</div>';
     if($alarm_flag_array['alarm_flag'] == '1'){
       $html_str .= '<div style="float:left;">';
@@ -9422,7 +9434,7 @@ function tep_get_notice_info($return_type = 0)
     $html_str = '<table cellspacing="0" cellpadding="0" border="0"  width="100%">';
     $html_str .= '<tr>'; 
     
-    $html_str .= '<td width="100">'; 
+    $html_str .= '<td width="200">'; 
     if (($notice_num + $micro_num) > 1) {
       $html_str .= '&nbsp;<a href="javascript:void(0);" onclick="expend_all_notice(\''.$micro_notice_array['id'].'\');" style="text-decoration:underline; color:#0000ff;"><font color="#0000ff">'.NOTICE_EXTEND_TITLE.'▼</font></a>'.str_replace('${ALERT_NUM}',$notice_list_num-1,HEADER_TEXT_ALERT_NUM);
       $more_single = 1; 

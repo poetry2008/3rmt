@@ -46,12 +46,12 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
     功能: 显示该用户的所有的notice
     参数: 无 
  -----------------------------------------------------*/
-  $notice_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and a.alarm_flag='0' and n.set_time>'".date('Y-m-d H:i:s')."' and n.user = '".$ocertify->auth_user."'"; 
+  $notice_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and a.alarm_flag='0' and n.user = '".$ocertify->auth_user."'"; 
   
-  $notice_micro_sql = "select * from ".TABLE_NOTICE." where type = '1' and id not in (select notice_id from ".TABLE_NOTICE_TO_MICRO_USER." n where n.user = '".$ocertify->auth_user."') and set_time>'".date('Y-m-d H:i:s')."'";
+  $notice_micro_sql = "select * from ".TABLE_NOTICE." where type = '1' and id not in (select notice_id from ".TABLE_NOTICE_TO_MICRO_USER." n where n.user = '".$ocertify->auth_user."')";
 
   //警告提示
-  $alarm_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and a.alarm_flag='1' and n.set_time>'".date('Y-m-d H:i:s')."'";
+  $alarm_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and a.alarm_flag='1'";
   
   $notice_total_sql = "select * from (".$notice_order_sql." union ".$notice_micro_sql." union ".$alarm_order_sql.") taf where id != '".$_POST['aid']."' order by set_time asc, type asc, created_at desc"; 
   
@@ -65,15 +65,21 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
       echo '<tr id="alarm_delete_'.$notice_list['from_notice'].'">'; 
       echo '<td width="200">'; 
       if ($notice_list['type'] == '0') {
-        $alarm_flag_query = tep_db_query("select alarm_flag,alarm_show from ".TABLE_ALARM." where alarm_id='".$notice_list['from_notice']."'");
+        $alarm_flag_query = tep_db_query("select alarm_flag,alarm_show,orders_flag from ".TABLE_ALARM." where alarm_id='".$notice_list['from_notice']."'");
         $alarm_flag_array = tep_db_fetch_array($alarm_flag_query);
         tep_db_free_result($alarm_flag_query);
       }
       if ($notice_list['type'] == '0') { 
+        if($alarm_flag_array['orders_flag'] == '1'){
+
+          $title_str = HEADER_TEXT_ALERT_TITLE;
+        }else{
+          $title_str = HEADER_TEXT_ALERT_TITLE_PREORDERS; 
+        }
         if($alarm_flag_array['alarm_flag'] == '0'){
           echo '&nbsp;'.NOTICE_ALARM_TITLE; 
         }else{
-          echo '&nbsp;'.HEADER_TEXT_ALERT_TITLE; 
+          echo '&nbsp;'.$title_str; 
         }
       } else {
         echo '&nbsp;'.NOTICE_EXTEND_TITLE; 
@@ -108,7 +114,13 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
         if($alarm_flag_array['alarm_flag'] == '0'){
           echo '<a href="'.tep_href_link(FILENAME_ORDERS, 'oID='.$alarm['orders_id'].'&action=edit').'">'.$notice_list['title'].'</a>'; 
         }else{
-          echo '<a href="'.tep_href_link(FILENAME_ORDERS, 'oID='.$alarm['orders_id'].'&action=edit').'">'.$alarm['orders_id'].'</a>'; 
+          if($alarm_flag_array['orders_flag'] == '1'){
+
+            $filename_str = FILENAME_ORDERS;
+          }else{
+            $filename_str = FILENAME_PREORDERS; 
+          }
+          echo '<a href="'.tep_href_link($filename_str, 'oID='.$alarm['orders_id'].'&action=edit').'">'.$alarm['orders_id'].'</a>'; 
         }
       } else {
         echo '<a href="'.tep_href_link('micro_log.php').'">'.$notice_list['title'].'</a>'; 
@@ -145,9 +157,26 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
  -----------------------------------------------------*/
   $notice_raw = tep_db_query("select * from ".TABLE_NOTICE." where id = '".$_POST['nid']."' and type = '0'");
   $notice = tep_db_fetch_array($notice_raw);
+
+  $alert_orders_query = tep_db_query("select orders_id,orders_flag from ".TABLE_ALARM." where alarm_id = '".$notice['from_notice']."'");
+  $alert_orders_array = tep_db_fetch_array($alert_orders_query);
+  tep_db_free_result($alert_orders_query);
   if ($notice) {
     tep_db_query("delete from ".TABLE_ALARM." where alarm_id = '".$notice['from_notice']."'"); 
     tep_db_query("delete from ".TABLE_NOTICE." where id = '".$_POST['nid']."'"); 
+
+    //删除警告提示
+    $alarm_name_query = tep_db_query("select computers_id from ". TABLE_COMPUTERS ." where computers_name='".$notice['title']."'");
+    $alarm_name_array = tep_db_fetch_array($alarm_name_query);
+    tep_db_free_result($alarm_name_query);
+
+    if($alert_orders_array['orders_flag'] == '1'){
+      tep_db_query("delete from ".TABLE_ORDERS_TO_COMPUTERS." where orders_id='".$alert_orders_array['orders_id']."' and computers_id='".(int)$alarm_name_array['computers_id']."'");
+    }else{
+      tep_db_query("delete from ".TABLE_PREORDERS_TO_COMPUTERS." where orders_id='".$alert_orders_array['orders_id']."' and computers_id='".(int)$alarm_name_array['computers_id']."'"); 
+    }
+
+    echo $alarm_name_array['computers_id'];
   }
 } else if (isset($_GET['action'])&&$_GET['action']=='delete_micro') {
 /* -----------------------------------------------------

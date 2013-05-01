@@ -18,8 +18,9 @@ define('BUTTON_NEXT_PAGE', '次ページ');
 define('BUTTON_JUMP_PAGE', 'ページへジャンプ');
 
 // 项目名称
-define('TABLE_HEADING_USERNAME','操作ユーザー');
-define('TABLE_HEADING_BUTTON_NAME','ボタン内容');
+define('TABLE_HEADING_USERNAME','ユーザ');
+define('TABLE_HEADING_TYPE','タイプ');
+define('TABLE_HEADING_BUTTON_NAME','内容');
 define('TABLE_HEADING_ORDERS_ID','注文書番号');
 define('TABLE_HEADING_CREATED_AT','操作日時');
 
