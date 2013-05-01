@@ -47,7 +47,6 @@ tep_redirect(tep_href_link(FILENAME_NEWS, (isset($_GET['site_id'])?('site_id='.$
           $latest_news_id = tep_db_prepare_input($_GET['latest_news_id']);
          tep_db_query("delete from " . TABLE_LATEST_NEWS . " where news_id = '" . tep_db_input($latest_news_id) . "'");
         }
-        print_r($_GET);
         tep_redirect(tep_href_link(FILENAME_NEWS, (isset($_GET['site_id'])?('site_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):'')));
         break;
       case 'insert_latest_news':
@@ -147,7 +146,9 @@ $(document).ready(function() {
      if (event.which == 13) {
            <?php //回车?>
         if ($('#show_latest_news').css('display') != 'none') {
+            if (o_submit_single){
                $("#show_latest_news").find('input:button').first().trigger("click");
+             }
             }
         }
 
