@@ -238,3 +238,4 @@ define('TEXT_CALENDAR_SETTING_MONTH',tep_image(DIR_WS_IMAGES . 'icon_frontend.gi
 define('TEXT_CALENDAR_SETTING_MONTH_START','包含本月');
 define('TEXT_CALENDAR_SETTING_MONTH_END','个月');
 define('TEXT_COMMENTS_BAN_CHARACTER',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;评论禁止字符');
+define('TEXT_ALARM_DATE_SETTING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;日志的保存天数');

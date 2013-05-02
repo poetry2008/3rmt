@@ -775,3 +775,8 @@ define('IMAGE_ICON_FRONTENT','フロントエンド');
 define('IMAGE_ICON_BACKEND','バックエンド');
 define('FOREGROUND_TO_BACKGROUND','FE／BE');
 define('PRIVILEGE_SET_TEXT', '権限設定');
+define('HEADER_TEXT_ALERT_LOG','アラートログ');
+define('HEADER_TEXT_ALERT_TITLE','注文連絡ボタン');
+define('HEADER_TEXT_ALERT_TITLE_PREORDERS','予約連絡ボタン');
+define('HEADER_TEXT_ALERT_COMMENT','「${ALERT_TITLE}」');
+define('HEADER_TEXT_ALERT_NUM','（他${ALERT_NUM}件）');

@@ -927,34 +927,46 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       <tr>
         <td width="100%">
           <div id="orders_flag">
-            <table width="100%" border="0" cellspacing="0" cellpadding="2">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td width="50%" align="left">
-                  <table width="100%" border="0" cellspacing="2" cellpadding="2">
-                    <tr>
-                      <td width="100" align="center" class='<?php echo $order->info['orders_care_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="preorders_flag(this, 'care', '<?php echo $order->info['orders_id'];?>')"><?php echo TEXT_ORDER_CARE;?></td>
-                      <td width="100" align="center" class='<?php echo $order->info['orders_wait_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="preorders_flag(this, 'wait', '<?php echo $order->info['orders_id'];?>')"><?php echo TEXT_ORDER_WAIT;?></td>
-                      <td width="100" align="center" class='<?php echo $order->info['orders_inputed_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="preorders_flag(this, 'inputed', '<?php echo $order->info['orders_id'];?>')"><?php echo TEXT_ORDER_INPUTED_FLAG;?></td>
-                      <td>&nbsp;</td>
-                    <tr>
-                  </table>
+                  <div class="td_title_text">
+                      <div class='<?php echo $order->info['orders_care_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="preorders_flag(this, 'care', '<?php echo $order->info['orders_id'];?>')"><?php echo TEXT_ORDER_CARE;?></div>
+                      <div class='<?php echo $order->info['orders_wait_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="preorders_flag(this, 'wait', '<?php echo $order->info['orders_id'];?>')"><?php echo TEXT_ORDER_WAIT;?></div>
+                      <div class='<?php echo $order->info['orders_inputed_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="preorders_flag(this, 'inputed', '<?php echo $order->info['orders_id'];?>')"><?php echo TEXT_ORDER_INPUTED_FLAG;?></div>
+                  </div>
                 </td>
                 <td width="50%" align="right">
-                  <table width="100%" border="0" cellspacing="2" cellpadding="2">
-                    <tr>
-                      <td>&nbsp;</td>
-                      <td width="75" align="center" id="work_a" class='<?php echo $order->info['orders_work'] == 'a' ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="preorders_work(this, 'a', '<?php echo $order->info['orders_id'];?>')">A</td>
-                      <td width="75" align="center" id="work_b" class='<?php echo $order->info['orders_work'] == 'b' ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="preorders_work(this, 'b', '<?php echo $order->info['orders_id'];?>')">B</td>
-                      <td width="75" align="center" id="work_c" class='<?php echo $order->info['orders_work'] == 'c' ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="preorders_work(this, 'c', '<?php echo $order->info['orders_id'];?>')">C</td>
-                      <td width="75" align="center" id="work_d" class='<?php echo $order->info['orders_work'] == 'd' ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="preorders_work(this, 'd', '<?php echo $order->info['orders_id'];?>')">D</td>
-                    <tr>
-                  </table>
+                  <div class="td_title_alphabet">
+                      <div id="work_a" class='<?php echo $order->info['orders_work'] == 'a' ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="preorders_work(this, 'a', '<?php echo $order->info['orders_id'];?>')">A</div>
+                      <div id="work_b" class='<?php echo $order->info['orders_work'] == 'b' ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="preorders_work(this, 'b', '<?php echo $order->info['orders_id'];?>')">B</div>
+                      <div id="work_c" class='<?php echo $order->info['orders_work'] == 'c' ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="preorders_work(this, 'c', '<?php echo $order->info['orders_id'];?>')">C</div>
+                      <div id="work_d" class='<?php echo $order->info['orders_work'] == 'd' ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="preorders_work(this, 'd', '<?php echo $order->info['orders_id'];?>')">D</div>
+                  </div>
                 </td>
               </tr>
             </table>
           </div>
         </td>
       </tr>
+      <?php 
+        $computers = tep_get_computers();
+        $o2c       = tep_get_computers_by_preorders_id($order->info['orders_id']);
+        if ($computers) {
+      ?>
+      <tr>
+      <td class="main"><?php echo HEADER_TEXT_ALERT_TITLE_PREORDERS;?></td>
+      </tr>
+      <tr><td>
+      <?php foreach ($computers as $computer) { ?>
+          <div id="orders_alert_<?php echo $computer['computers_id'];?>" onclick="preorders_computers(this, <?php echo $computer['computers_id'];?>, '<?php echo $order->info['orders_id'];?>')" class="<?php echo in_array($computer['computers_id'], $o2c) ? 'orders_computer_checked' : 'orders_computer_unchecked' ;?>"><?php echo $computer['computers_name'];?></div>
+      <?php 
+        } 
+      ?>
+      </td></tr>
+      <?php
+        }
+      ?>
       <tr>
         <td>
         <?php // 左右结构 ?>
@@ -1718,21 +1730,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     </td>
     <td width="50%" align="left" valign="top">
 <table width="100%">
-  <tr><td width="30%">
-    <?php $computers = tep_get_computers();
-          $o2c       = tep_get_computers_by_preorders_id($order->info['orders_id']);
-          if ($computers) {?>
-      <table>
-        <tr>
-          <td class="main"><b>PC</b></td>
-        </tr>
-        <?php foreach ($computers as $computer) { ?>
-        <tr>
-          <td onclick="preorders_computers(this, <?php echo $computer['computers_id'];?>, '<?php echo $order->info['orders_id'];?>')" class="<?php echo in_array($computer['computers_id'], $o2c) ? 'orders_computer_checked' : 'orders_computer_unchecked' ;?>" style="font-size:18px;padding:5px 10px;"><?php echo $computer['computers_name'];?></td>
-        </tr>
-        <?php } ?>
-      </table>
-    <?php } ?>
+  <tr><td width="30%">&nbsp; 
   </td>
   </tr>
 </table>

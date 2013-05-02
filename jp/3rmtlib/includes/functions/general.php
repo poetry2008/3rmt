@@ -2263,38 +2263,38 @@ header("Expires:".date("D, d M Y H:i:s",0)." GMT");
         break;
       case FILENAME_NEWS:
         if ((int)$_GET['news_id']) {
-          if (defined('MODULE_METASEO_A_LATEST_NEWS_TITLE') && strlen(tep_get_value_by_const_name('MODULE_METASEO_A_LATEST_NEWS_TITLE'))) {
-            $title       = tep_get_value_by_const_name('MODULE_METASEO_A_LATEST_NEWS_TITLE');
+          if (defined('MODULE_METASEO_NEWS_INFO_TITLE') && strlen(tep_get_value_by_const_name('MODULE_METASEO_NEWS_INFO_TITLE'))) {
+            $title       = tep_get_value_by_const_name('MODULE_METASEO_NEWS_INFO_TITLE');
           }
-          if (defined('MODULE_METASEO_A_LATEST_NEWS_KEYWORDS') && strlen(tep_get_value_by_const_name('MODULE_METASEO_A_LATEST_NEWS_KEYWORDS'))) {
-            $keywords    = tep_get_value_by_const_name('MODULE_METASEO_A_LATEST_NEWS_KEYWORDS');
+          if (defined('MODULE_METASEO_NEWS_INFO_KEYWORDS') && strlen(tep_get_value_by_const_name('MODULE_METASEO_NEWS_INFO_KEYWORDS'))) {
+            $keywords    = tep_get_value_by_const_name('MODULE_METASEO_NEWS_INFO_KEYWORDS');
           }
-          if (defined('MODULE_METASEO_A_LATEST_NEWS_DESCRIPTION') && strlen(tep_get_value_by_const_name('MODULE_METASEO_A_LATEST_NEWS_DESCRIPTION'))) {
-            $description = tep_get_value_by_const_name('MODULE_METASEO_A_LATEST_NEWS_DESCRIPTION');
+          if (defined('MODULE_METASEO_NEWS_INFO_DESCRIPTION') && strlen(tep_get_value_by_const_name('MODULE_METASEO_NEWS_INFO_DESCRIPTION'))) {
+            $description = tep_get_value_by_const_name('MODULE_METASEO_NEWS_INFO_DESCRIPTION');
           }
-          if (defined('MODULE_METASEO_A_LATEST_NEWS_ROBOTS') && strlen(tep_get_value_by_const_name('MODULE_METASEO_A_LATEST_NEWS_ROBOTS'))) {
-            $robots      = tep_get_value_by_const_name('MODULE_METASEO_A_LATEST_NEWS_ROBOTS');
+          if (defined('MODULE_METASEO_NEWS_INFO_ROBOTS') && strlen(tep_get_value_by_const_name('MODULE_METASEO_NEWS_INFO_ROBOTS'))) {
+            $robots      = tep_get_value_by_const_name('MODULE_METASEO_NEWS_INFO_ROBOTS');
           }
-          if (defined('MODULE_METASEO_A_LATEST_NEWS_COPYRIGHT') && strlen(tep_get_value_by_const_name('MODULE_METASEO_A_LATEST_NEWS_COPYRIGHT'))) {
-            $copyright   = tep_get_value_by_const_name('MODULE_METASEO_A_LATEST_NEWS_COPYRIGHT');
+          if (defined('MODULE_METASEO_NEWS_INFO_COPYRIGHT') && strlen(tep_get_value_by_const_name('MODULE_METASEO_NEWS_INFO_COPYRIGHT'))) {
+            $copyright   = tep_get_value_by_const_name('MODULE_METASEO_NEWS_INFO_COPYRIGHT');
           }
           $search  = array_merge($search, array('#TITLE#'));
           $replace = array_merge($replace, array($latest_news['headline']));
         } else {
-          if (defined('MODULE_METASEO_LATEST_NEWS_TITLE') && strlen(tep_get_value_by_const_name('MODULE_METASEO_LATEST_NEWS_TITLE'))) {
-            $title       = tep_get_value_by_const_name('MODULE_METASEO_LATEST_NEWS_TITLE');
+          if (defined('MODULE_METASEO_NEWS_TITLE') && strlen(tep_get_value_by_const_name('MODULE_METASEO_NEWS_TITLE'))) {
+            $title       = tep_get_value_by_const_name('MODULE_METASEO_NEWS_TITLE');
           }
-          if (defined('MODULE_METASEO_LATEST_NEWS_KEYWORDS') && strlen(tep_get_value_by_const_name('MODULE_METASEO_LATEST_NEWS_KEYWORDS'))) {
-            $keywords    = tep_get_value_by_const_name('MODULE_METASEO_LATEST_NEWS_KEYWORDS');
+          if (defined('MODULE_METASEO_NEWS_KEYWORDS') && strlen(tep_get_value_by_const_name('MODULE_METASEO_NEWS_KEYWORDS'))) {
+            $keywords    = tep_get_value_by_const_name('MODULE_METASEO_NEWS_KEYWORDS');
           }
-          if (defined('MODULE_METASEO_LATEST_NEWS_DESCRIPTION') && strlen(tep_get_value_by_const_name('MODULE_METASEO_LATEST_NEWS_DESCRIPTION'))) {
-            $description = tep_get_value_by_const_name('MODULE_METASEO_LATEST_NEWS_DESCRIPTION');
+          if (defined('MODULE_METASEO_NEWS_DESCRIPTION') && strlen(tep_get_value_by_const_name('MODULE_METASEO_NEWS_DESCRIPTION'))) {
+            $description = tep_get_value_by_const_name('MODULE_METASEO_NEWS_DESCRIPTION');
           }
-          if (defined('MODULE_METASEO_LATEST_NEWS_ROBOTS') && strlen(tep_get_value_by_const_name('MODULE_METASEO_LATEST_NEWS_ROBOTS'))) {
-            $robots      = tep_get_value_by_const_name('MODULE_METASEO_LATEST_NEWS_ROBOTS');
+          if (defined('MODULE_METASEO_NEWS_ROBOTS') && strlen(tep_get_value_by_const_name('MODULE_METASEO_NEWS_ROBOTS'))) {
+            $robots      = tep_get_value_by_const_name('MODULE_METASEO_NEWS_ROBOTS');
           }
-          if (defined('MODULE_METASEO_LATEST_NEWS_COPYRIGHT') && strlen(tep_get_value_by_const_name('MODULE_METASEO_LATEST_NEWS_COPYRIGHT'))) {
-            $copyright   = tep_get_value_by_const_name('MODULE_METASEO_LATEST_NEWS_COPYRIGHT');
+          if (defined('MODULE_METASEO_NEWS_COPYRIGHT') && strlen(tep_get_value_by_const_name('MODULE_METASEO_NEWS_COPYRIGHT'))) {
+            $copyright   = tep_get_value_by_const_name('MODULE_METASEO_NEWS_COPYRIGHT');
           }
           $page    = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1 ;
           if ($page != 1) {

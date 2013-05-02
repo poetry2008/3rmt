@@ -252,7 +252,7 @@ if ($pdo_con) {
   define('TABLE_MAIL_MAGAZINE', 'mail_magazine');
   define('TABLE_ORDERS_MAIL', 'orders_mail');
   define('TABLE_INFORMATION_PAGE', 'information_page');//Information box
-  define('TABLE_LATEST_NEWS', 'latest_news'); //latest_news
+  define('TABLE_NEWS', 'news'); //latest_news
   define('TABLE_COLOR', 'color');//Color setting
   define('TABLE_COLOR_TO_PRODUCTS', 'color_to_products');//products_id <-> color_id
 

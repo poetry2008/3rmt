@@ -433,14 +433,22 @@ function orders_computers(ele, cid, oid) {
     $.ajax({
 url: 'ajax_orders.php?action=delete&orders_id='+oid+'&computers_id='+cid,
 success: function(data) {
+var nid = data;
 ele.className='orders_computer_unchecked';
+if(nid != ''){
+  $("#alarm_id_"+nid).html('OFF');
+} 
 }
 });
 } else {
   $.ajax({
 url: 'ajax_orders.php?action=insert&orders_id='+oid+'&computers_id='+cid,
 success: function(data) {
+var nid = data;
 ele.className='orders_computer_checked';
+if(nid != ''){
+  $("#alarm_id_"+nid).html('ON');
+}
 }
 });
 }

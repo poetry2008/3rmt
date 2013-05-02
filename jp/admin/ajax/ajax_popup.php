@@ -51,6 +51,7 @@ if ($_GET['action'] == 'show_category_info') {
   }
   
   $cid_array = array();
+ 
   $categories_tmp_raw = tep_db_query($categories_query_raw);
   while ($category_info = tep_db_fetch_array($categories_tmp_raw)) {
     $cid_array[] = $category_info['categories_id']; 
@@ -3467,14 +3468,14 @@ if(!in_array($site_id,$site_array)){
                  latest_update_date,
                  update_editor,
                  author
-          from " . TABLE_LATEST_NEWS . " 
+          from " . TABLE_NEWS . " 
           where news_id = '" . (int)$_GET['latest_news_id'] . "'");
       $latest_news = tep_db_fetch_array($latest_news_query);
     $nInfo = new objectInfo($latest_news);
     } else {
       $latest_news = array();
     }
-     $latest_news_query_raw = ' select n.news_id, n.headline, n.date_added, n.author, n.update_editor, n.latest_update_date, n.content, n.status, n.news_image, n.news_image_description, n.isfirst, n.site_id from ' . TABLE_LATEST_NEWS . ' n where 1 ' . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and (n.site_id = '" .  intval($_GET['site_id']) . "') " : '') . ' order by date_added desc ';
+     $latest_news_query_raw = ' select n.news_id, n.headline, n.date_added, n.author, n.update_editor, n.latest_update_date, n.content, n.status, n.news_image, n.news_image_description, n.isfirst, n.site_id from ' . TABLE_NEWS . ' n where 1 ' . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and (n.site_id = '" .  intval($_GET['site_id']) . "') " : '') . ' order by date_added desc ';
      $latest_news_id_query = tep_db_query($latest_news_query_raw);
      while ($latest_news_id = tep_db_fetch_array($latest_news_id_query)) {
          $cid_array[] = $latest_news_id['news_id'];
@@ -3936,6 +3937,7 @@ if($site_id == 0){
       $notice_box->get_eof(tep_eof_hidden());
       echo $notice_box->show_notice();
  }
+<<<<<<< HEAD
 }else if ($_GET['action'] == 'edit_pw_manager_log'){
 include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_PW_MANAGER);
 include(DIR_FS_ADMIN.'classes/notice_box.php');
@@ -4097,4 +4099,265 @@ if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
       $notice_box->get_eof(tep_eof_hidden());
       echo $notice_box->show_notice();
  
+=======
+}else if ($_GET['action'] == 'edit_module_total'){
+/* -----------------------------------------------------
+    功能: 更新合计模块设置
+    参数: $_POST['site_id'] 网站id 
+    参数: $_POST['current_module'] 当前模块名 
+    参数: $_POST['list_info'] 列表名 
+ -----------------------------------------------------*/
+  $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_MODULE_TOTAL);
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+  
+  $sites_permission_info = tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$_SESSION['loginuid']."' limit 0,1");
+  while($userslist= tep_db_fetch_array($sites_permission_info)){
+    $site_arr = $userslist['site_permission']; 
+  }
+  $disabled_single = false; 
+  if (!editPermission($site_arr, $site_id, true)) {
+    $disabled_single = true; 
+  }
+  
+  $param_str = '';
+  $param_form_str = ''; 
+  foreach ($_POST as $p_key => $p_value) {
+    if (($p_key != 'current_module') && ($p_key != 'action')) {
+      $param_str .= $p_key.'='.$p_value.'&'; 
+    }
+    
+    if (($p_key != 'current_module') && ($p_key != 'action') && ($p_key != 'module') && ($p_key != 'site_id') && ($p_key != 'list_info')) {
+      $param_form_str .= $p_key.'='.$p_value.'&'; 
+    }
+  }
+  $param_str = substr($param_str, 0, -1); 
+  $param_form_str = substr($param_form_str, 0, -1); 
+  
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+  
+  $page_str = '';
+  
+  $module_total_directory = DIR_FS_CATALOG_MODULES .'order_total/';
+  
+  include(DIR_WS_LANGUAGES . $language . '/modules/order_total/' .  $_POST['current_module'].'.php');
+  include($module_total_directory . $_POST['current_module'].'.php');
+    
+  if (tep_class_exists($_POST['current_module'])) {
+    $total_module = new $_POST['current_module'];
+    $module_info = array(
+          'code' => $total_module->code,
+          'title' => $total_module->title,
+          'description' => $total_module->description,
+          'status' => $total_module->check()
+          );
+    $module_keys = $total_module->keys();
+    $keys_extra = array();
+    $get_site_id = tep_module_installed($_POST['current_module'], $site_id) ? $site_id : 0;
+    for ($j = 0, $k = sizeof($module_keys); $j < $k; $j++) {
+      $key_value_query = tep_db_query("select configuration_title, configuration_value, configuration_description, use_function, set_function from " . TABLE_CONFIGURATION . " where configuration_key = '" . $module_keys[$j] . "' and site_id = '".$get_site_id."'");
+      $key_value = tep_db_fetch_array($key_value_query);
+
+      $keys_extra[$module_keys[$j]]['title'] = $key_value['configuration_title'];
+      $keys_extra[$module_keys[$j]]['value'] = $key_value['configuration_value'];
+      $keys_extra[$module_keys[$j]]['description'] = $key_value['configuration_description'];
+      $keys_extra[$module_keys[$j]]['use_function'] = $key_value['use_function'];
+      $keys_extra[$module_keys[$j]]['set_function'] = $key_value['set_function'];
+    }
+
+    $module_info['keys'] = $keys_extra;
+    $total_info_obj = new objectInfo($module_info);
+  }   
+ 
+  $list_info_array = explode('|||', $_POST['list_info']);
+  foreach ($list_info_array as $l_key => $l_value) {
+    if ($l_value == $_POST['current_module'].'.php') {
+      break; 
+    }
+  }
+  
+  if ($l_key > 0) {
+    $page_str .= '<a onclick="show_module_total_info(\''.substr($list_info_array[$l_key - 1], 0, -4).'\', \''.urlencode($param_str).'\')" href="javascript:void(0);" id="total_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+  }
+ 
+  if ($l_key < (count($list_info_array) - 1)) {
+    $page_str .= '<a onclick="show_module_total_info(\''.substr($list_info_array[$l_key + 1], 0, -4).'\', \''.urlencode($param_str).'\')" href="javascript:void(0);" id="total_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
+  }
+  
+  $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+  
+  $heading = array();
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => $total_info_obj->title);
+  $heading[] = array('align' => 'right', 'text' => $page_str);
+  
+  $buttons = array();
+  
+  if ($site_id == '0') {
+    if (isset($total_info_obj->status) && $total_info_obj->status == '1') {
+      if ($disabled_single) {
+        $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'disabled="disabled"').'</a>'; 
+        $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'disabled="disabled"').'</a>';
+      } else {
+        $button[] = '<a href="javascript:void(0);" onclick="document.forms.total_form.submit();">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save"').'</a>'; 
+        $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="hidden_info_box();"').'</a>';
+      }
+      $hidden_info_str = '';
+      reset($total_info_obj->keys);
+      
+      while (list($t_key, $t_value) = each($total_info_obj->keys)) {
+        $total_value_query = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = '".$t_key."' and site_id = '0'"); 
+        $total_value = tep_db_fetch_array($total_value_query);
+        
+        if (!preg_match('/.*SORT_ORDER$/', $t_key)) {
+          $hidden_info_str .= tep_draw_hidden_field('configuration['.$t_key.']', $total_value['configuration_value']); 
+        } else {
+          if ($total_value['set_function']) {
+            $tmp_html_str = ''; 
+            eval('$tmp_html_str = '.$total_value['set_function']."'".$total_value['configuration_value']."', '".$t_key."', '".($disabled_single?'disabled="disabled"':'')."');"); 
+            $module_total_row[]['text'] = array(
+                  array('align' => 'left', 'params' => 'width="25%"', 'text' => $total_value['configuration_title']), 
+                  array('align' => 'left', 'params' => 'class="td_input"', 'text' => str_replace('<br>', '', $tmp_html_str)) 
+                );
+          } else {
+            $module_total_row[]['text'] = array(
+                  array('align' => 'left', 'params' => 'width="25%"', 'text' => $total_value['configuration_title']), 
+                  array('align' => 'left', 'params' => 'class="td_input"', 'text' => tep_draw_input_field('configuration['.$t_key.']', $total_value['configuration_value'], ($disabled_single?'disabled="disabled"':''))) 
+                );
+          }
+          if (!empty($total_value['configuration_description'])) {
+            $module_total_row[]['text'] = array(
+                  array('align' => 'left', 'text' => '&nbsp;'), 
+                  array('align' => 'left', 'text' => $total_value['configuration_description']) 
+                );
+          }
+        }
+      }
+      
+      $total_date_query = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MODULE_ORDER_TOTAL_".str_replace('OT_', '', strtoupper($_POST['current_module']))."_STATUS' and site_id = '0'");
+      $total_date = tep_db_fetch_array($total_date_query); 
+      $module_total_row[]['text'] = array(
+            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.(tep_not_null($total_date['user_added'])?$total_date['user_added']:TEXT_UNSET_DATA)), 
+            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.(tep_not_null($total_date['date_added'])?$total_date['date_added']:TEXT_UNSET_DATA))
+       );
+      
+      $module_total_row[]['text'] = array(
+            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.(tep_not_null($total_date['user_update'])?$total_date['user_update']:TEXT_UNSET_DATA)),
+            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.(tep_not_null($total_date['last_modified'])?$total_date['last_modified']:TEXT_UNSET_DATA).$hidden_info_str)
+       );
+    } else {
+      if ($disabled_single) {
+        $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'disabled="disabled"').'</a>';
+      } else {
+        $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="hidden_info_box();"').'</a>';
+      }
+      if (!empty($total_info_obj->description)) {
+        $module_total_row[]['text'] = array(
+              array('align' => 'left', 'params' => 'width="50%" colspan="2"', 'text' => $total_info_obj->description)
+         );
+      }
+      
+      $module_total_row[]['text'] = array(
+            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.TEXT_UNSET_DATA), 
+            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.TEXT_UNSET_DATA)
+       );
+      
+      $module_total_row[]['text'] = array(
+            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.TEXT_UNSET_DATA),
+            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.TEXT_UNSET_DATA)
+       );
+    }
+  } else {
+    if (isset($total_info_obj->status) && $total_info_obj->status == '1') {
+      $buttons = array();
+      if ($disabled_single) {
+        $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'disabled="disabled"').'</a>'; 
+        $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'disabled="disabled"').'</a>';
+      } else {
+        $button[] = '<a href="javascript:void(0);" onclick="document.forms.total_form.submit();">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save"').'</a>'; 
+        $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="hidden_info_box();"').'</a>';
+      }
+      $buttons = array('align' => 'center', 'button' => $button); 
+
+      $hidden_info_str = ''; 
+      reset($total_info_obj->keys);
+      while (list($t_key, $t_value) = each($total_info_obj->keys)) {
+        $total_value_query = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = '".$t_key."' and site_id = '".$site_id."'"); 
+        $total_value = tep_db_fetch_array($total_value_query);
+        if (!$total_value) {
+          $total_default_value_query = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = '".$t_key."' and site_id = '0'"); 
+          $total_value = tep_db_fetch_array($total_default_value_query);
+        }
+        if ($site_id == 0 && !preg_match('/.*SORT_ORDER$/', $t_key)) {
+          $hidden_info_str .= tep_draw_hidden_field('configuration['.$t_key.']', $total_value['configuration_value']); 
+        } else {
+          if ($total_value['set_function']) {
+            $tmp_html_str = '';
+            eval('$tmp_html_str = '.$total_value['set_function']."'".$total_value['configuration_value']."', '".$t_key."', '".($disabled_single?'disabled="disabled"':'')."');"); 
+            $module_total_row[]['text'] = array(
+                  array('align' => 'left', 'params' => 'width="25%"', 'text' => $total_value['configuration_title']), 
+                  array('align' => 'left', 'params' => 'class="td_input"', 'text' => str_replace('<br>', '', $tmp_html_str)) 
+                );
+          } else {
+            $module_total_row[]['text'] = array(
+                  array('align' => 'left', 'params' => 'width="25%"', 'text' => $total_value['configuration_title']), 
+                  array('align' => 'left', 'params' => 'class="td_input"', 'text' => tep_draw_input_field('configuration['.$t_key.']', $total_value['configuration_value'], ($disabled_single?'disabled="disabled"':''))) 
+                );
+          }
+          if (!empty($total_value['configuration_description'])) {
+            $module_total_row[]['text'] = array(
+                  array('align' => 'left', 'text' => '&nbsp;'), 
+                  array('align' => 'left', 'text' => $total_value['configuration_description']) 
+                );
+          }
+        }
+      }
+      
+      $total_date_query = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MODULE_ORDER_TOTAL_".str_replace('OT_', '', strtoupper($_POST['current_module']))."_STATUS' and site_id = '".$site_id."'");
+      $total_date = tep_db_fetch_array($total_date_query); 
+      $module_total_row[]['text'] = array(
+            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.(tep_not_null($total_date['user_added'])?$total_date['user_added']:TEXT_UNSET_DATA)), 
+            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.(tep_not_null($total_date['date_added'])?$total_date['date_added']:TEXT_UNSET_DATA))
+       );
+      
+      $module_total_row[]['text'] = array(
+            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.(tep_not_null($total_date['user_update'])?$total_date['user_update']:TEXT_UNSET_DATA)),
+            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.(tep_not_null($total_date['last_modified'])?$total_date['last_modified']:TEXT_UNSET_DATA).$hidden_info_str)
+       );
+    } else {
+      if ($disabled_single) {
+        $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'disabled="disabled"').'</a>';
+      } else {
+        $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="hidden_info_box();"').'</a>';
+      }
+      if (!empty($total_info_obj->description)) {
+        $module_total_row[]['text'] = array(
+              array('align' => 'left', 'params' => 'width="50%" colspan="2"', 'text' => $total_info_obj->description)
+         );
+      }
+      
+      $module_total_row[]['text'] = array(
+            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.TEXT_UNSET_DATA), 
+            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.TEXT_UNSET_DATA)
+       );
+      
+      $module_total_row[]['text'] = array(
+            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.TEXT_UNSET_DATA),
+            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.TEXT_UNSET_DATA)
+       );
+    }
+  }
+  
+  if (!empty($button)) {
+    $buttons = array('align' => 'center', 'button' => $button); 
+  }
+  
+  $form_str = tep_draw_form('total_form', FILENAME_MODULE_TOTAL, (isset($_POST['module'])?'current_module='.$_POST['module'].'&':'').'action=save_total&module='.$_POST['current_module'].'&'.$param_form_str); 
+  
+  $notice_box->get_heading($heading);
+  $notice_box->get_form($form_str);
+  $notice_box->get_contents($module_total_row, $buttons);
+  $notice_box->get_eof(tep_eof_hidden().tep_draw_hidden_field('site_id', $site_id));
+  echo $notice_box->show_notice().'||||||'.tep_get_note_top_layer(FILENAME_MODULE_TOTAL);
+>>>>>>> 0bf767b9dc5543461bbd10362742520ef52f0c51
 }

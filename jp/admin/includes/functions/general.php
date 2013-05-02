@@ -1437,9 +1437,10 @@ function tep_cfg_pull_down_zone_list($zone_id,$empty_params = '',$params = '') {
     功能: 生成税率的下拉列表  
     参数: $tax_class_id(int) 税率id 
     参数: $key(string) 下拉列表的名字
+    参数: $params(string) 参数设置
     返回值: 税率的下拉列表(string)
  ------------------------------------ */
-function tep_cfg_pull_down_tax_classes($tax_class_id, $key = '') {
+function tep_cfg_pull_down_tax_classes($tax_class_id, $key = '', $params = '') {
   $name = (($key) ? 'configuration[' . $key . ']' : 'configuration_value');
 
   $tax_class_array = array(array('id' => '0', 'text' => TEXT_NONE));
@@ -1449,7 +1450,7 @@ function tep_cfg_pull_down_tax_classes($tax_class_id, $key = '') {
         'text' => $tax_class['tax_class_title']);
   }
 
-  return tep_draw_pull_down_menu($name, $tax_class_array, $tax_class_id);
+  return tep_draw_pull_down_menu($name, $tax_class_array, $tax_class_id, $params);
 }
 
 /* -------------------------------------
@@ -2213,9 +2214,10 @@ function tep_cfg_pull_down_zone_classes($zone_class_id, $key = '') {
     功能: 获取订单状态的下拉列表 
     参数: $order_status_id(int) 订单状态id 
     参数: $key(string) 列表名 
+    参数: $params(string) 参数设置
     返回值: 订单状态的下拉列表(string) 
  ------------------------------------ */
-function tep_cfg_pull_down_order_statuses($order_status_id, $key = '') {
+function tep_cfg_pull_down_order_statuses($order_status_id, $key = '', $params = '') {
   global $languages_id;
 
   $name = (($key) ? 'configuration[' . $key . ']' : 'configuration_value');
@@ -2227,7 +2229,7 @@ function tep_cfg_pull_down_order_statuses($order_status_id, $key = '') {
         'text' => $statuses['orders_status_name']);
   }
 
-  return tep_draw_pull_down_menu($name, $statuses_array, $order_status_id);
+  return tep_draw_pull_down_menu($name, $statuses_array, $order_status_id, $params);
 }
 
 /* -------------------------------------
@@ -3374,7 +3376,7 @@ function tep_get_banner($bid){
     返回值: 结果集(array) 
  ------------------------------------ */
 function tep_get_latest_news_by_id($latest_news_id){
-  return tep_db_fetch_array(tep_db_query("select * from " . TABLE_LATEST_NEWS . " where news_id = '".$latest_news_id."'"));
+  return tep_db_fetch_array(tep_db_query("select * from " . TABLE_NEWS . " where news_id = '".$latest_news_id."'"));
 }
 
 /* -------------------------------------
@@ -9233,26 +9235,44 @@ function tep_check_product_type($orders_products_id)
 function tep_get_notice_info($return_type = 0)
 {
   global $ocertify;
+
+  //计算剩余的记录
+  $notice_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and a.alarm_flag='0' and n.user = '".$ocertify->auth_user."'"; 
   
+  $notice_micro_sql = "select * from ".TABLE_NOTICE." where type = '1' and id not in (select notice_id from ".TABLE_NOTICE_TO_MICRO_USER." n where n.user = '".$ocertify->auth_user."')";
+
+  $alarm_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and a.alarm_flag='1'";
+  
+  $notice_total_sql = "select * from (".$notice_order_sql." union ".$notice_micro_sql." union ".$alarm_order_sql.") taf"; 
+  $notice_list_raw = tep_db_query($notice_total_sql);  
+
+  $notice_list_num = tep_db_num_rows($notice_list_raw);
+
+  tep_db_free_result($notice_list_raw);
+
   $order_notice_array = array();
   $micro_notice_array = array();
-  
-  $order_notice_raw = tep_db_query("select id, title, set_time, from_notice from ".TABLE_NOTICE." where user = '".$ocertify->auth_user."' and type = '0' order by set_time asc, created_at desc limit 2");
-  
+
+  $order_notice_raw = tep_db_query("select id, type, title, set_time, from_notice, user,created_at from (".$notice_order_sql." union ".$notice_micro_sql." union ".$alarm_order_sql.") taf where type = '0' order by created_at desc,set_time asc limit 2");
+ 
   $notice_num = 0;
   $notice_tmp_num = tep_db_num_rows($order_notice_raw); 
   if ($notice_tmp_num) {
     $notice_num = $notice_tmp_num; 
   }
   $order_notice = tep_db_fetch_array($order_notice_raw); 
+
   if ($order_notice) {
     $order_notice_array['id'] = $order_notice['id']; 
     $order_notice_array['title'] = $order_notice['title']; 
     $order_notice_array['set_time'] = $order_notice['set_time']; 
     $order_notice_array['from_notice'] = $order_notice['from_notice']; 
+    $order_notice_array['type'] = $order_notice['type'];
+    $order_notice_array['user'] = $order_notice['user'];
+    $order_notice_array['created_at'] = $order_notice['created_at'];
   }
 
-  $micro_notice_raw = tep_db_query("select id, title, set_time, from_notice from ".TABLE_NOTICE." where type = '1' and id not in (select notice_id from ".TABLE_NOTICE_TO_MICRO_USER." n where n.user = '".$ocertify->auth_user."') order by set_time asc, created_at desc limit 2");
+  $micro_notice_raw = tep_db_query("select id, title, set_time, from_notice, created_at from ".TABLE_NOTICE." where type = '1' and id not in (select notice_id from ".TABLE_NOTICE_TO_MICRO_USER." n where n.user = '".$ocertify->auth_user."') order by set_time asc, created_at desc limit 2");
      
   $micro_num = 0;
   $micro_tmp_num = tep_db_num_rows($micro_notice_raw); 
@@ -9265,6 +9285,7 @@ function tep_get_notice_info($return_type = 0)
     $micro_notice_array['title'] = $micro_notice['title']; 
     $micro_notice_array['set_time'] = $micro_notice['set_time']; 
     $micro_notice_array['from_notice'] = $micro_notice['from_notice']; 
+    $micro_notice_array['created_at'] = $micro_notice['created_at'];
   }
   
   $show_type = 0; 
@@ -9308,6 +9329,14 @@ function tep_get_notice_info($return_type = 0)
       }
     }
   }
+
+  $alert_flag_query = tep_db_query("select alarm_flag from ".TABLE_ALARM." where alarm_id='".$order_notice_array['from_notice']."'");
+  $alert_flag_array = tep_db_fetch_array($alert_flag_query);
+  tep_db_free_result($alert_flag_query);
+  if($alert_flag_array['alarm_flag'] == '1' && $order_notice_array['created_at'] > $micro_notice_array['created_at']){
+
+    $show_type = 1;
+  }
   $more_single = 0; 
   if ($show_type == 1) {
     $order_notice_time = strtotime($order_notice_array['set_time']); 
@@ -9323,34 +9352,69 @@ function tep_get_notice_info($return_type = 0)
     } else {
       $leave_date = '00'.DAY_TEXT.'00'.HOUR_TEXT.'00'.MINUTE_TEXT; 
     }
-    $html_str = '<table cellspacing="0" cellpadding="0" border="0"  width="100%">';
+    $html_str = '<table cellspacing="0" cellpadding="0" border="0"  width="100%" id="alarm_delete_'.$order_notice_array['from_notice'].'">';
     $html_str .= '<tr>'; 
-    
-    $html_str .= '<td width="80">'; 
+
+    if($order_notice_array['type'] == '0'){
+    $alarm_flag_query = tep_db_query("select alarm_id,alarm_flag,alarm_show,orders_flag from ".TABLE_ALARM." where alarm_id='".$order_notice_array['from_notice']."'"); 
+    $alarm_flag_array = tep_db_fetch_array($alarm_flag_query);
+    tep_db_free_result($alarm_flag_query);
+    }
+    $html_str .= '<td width="200">'; 
+    if($alarm_flag_array['orders_flag'] == '1'){
+
+      $title_str = HEADER_TEXT_ALERT_TITLE;
+    }else{
+      $title_str = HEADER_TEXT_ALERT_TITLE_PREORDERS; 
+    }
     if (($notice_num + $micro_num) > 1) {
       $more_single = 1; 
-      $html_str .= '&nbsp;<a href="javascript:void(0);" onclick="expend_all_notice(\''.$order_notice_array['id'].'\');" style="text-decoration:underline; color:#0000ff;"><font color="#0000ff">'.NOTICE_ALARM_TITLE.'▼</font></a>';
-    } else {
-      $html_str .= '&nbsp;'.NOTICE_ALARM_TITLE;
+      $html_str .= '&nbsp;<a href="javascript:void(0);" onclick="expend_all_notice(\''.$order_notice_array['id'].'\');" style="text-decoration:underline; color:#0000ff;"><font color="#0000ff">'.($alarm_flag_array['alarm_flag'] == '0' ? NOTICE_ALARM_TITLE : $title_str).'▼</font></a>'.str_replace('${ALERT_NUM}',$notice_list_num-1,HEADER_TEXT_ALERT_NUM);
+    } else { 
+      $html_str .= '&nbsp;'.($alarm_flag_array['alarm_flag'] == '0' ? NOTICE_ALARM_TITLE : $title_str);
     }
     $html_str .= '</td>'; 
     $html_str .= '<td class="notice_info">'; 
     $alarm_raw = tep_db_query("select orders_id from ".TABLE_ALARM." where alarm_id = '".$order_notice_array['from_notice']."'"); 
     $alarm = tep_db_fetch_array($alarm_raw); 
     $html_str .= '<div style="float:left; width:125px;">'; 
-    $html_str .= NOTICE_DIFF_TIME_TEXT.'&nbsp;<span id="leave_time_'.$order_notice_array['id'].'">'.$leave_date.'</span>'; 
+    if($order_notice_array['type'] == '0' && $alarm_flag_array['alarm_flag'] == '1'){
+      $html_str .= '<span id="leave_time_'.$order_notice_array['id'].'">'.date('H'.TEXT_TORIHIKI_HOUR_STR.'i'.TEXT_TORIHIKI_MIN_STR,strtotime($order_notice_array['created_at'])).'</span>';
+    }else{
+      $html_str .= NOTICE_DIFF_TIME_TEXT.'&nbsp;<span id="leave_time_'.$order_notice_array['id'].'">'.$leave_date.'</span>'; 
+    }
     $html_str .= '</div>'; 
-    $html_str .= '<a href="'.tep_href_link(FILENAME_ORDERS, 'oID='.$alarm['orders_id'].'&action=edit').'">'.$order_notice_array['title'].'</a>'; 
+    $html_str .= '<div style="float:left;">';
+    if($alarm_flag_array['orders_flag'] == '1'){
+
+      $filename_str = FILENAME_ORDERS;
+    }else{
+      $filename_str = FILENAME_PREORDERS; 
+    }
+    $html_str .= '<a href="'.tep_href_link($filename_str, 'oID='.$alarm['orders_id'].'&action=edit').'">'.($alarm_flag_array['alarm_flag'] == '0' ? $order_notice_array['title'] : $alarm['orders_id']).'</a>'; 
+    $html_str .='</div>';
+    if($alarm_flag_array['alarm_flag'] == '1'){
+      $html_str .= '<div style="float:left;">';
+      $html_str .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$order_notice_array['user'].'&nbsp;'.TEXT_TIME_LINK;
+      $html_str .='</div>';
+      $html_str .='<div style="float:left;">';
+      if($alarm_flag_array['alarm_show'] == '1'){
+         $html_str .='&nbsp;'.str_replace('${ALERT_TITLE}',$order_notice_array['title'],HEADER_TEXT_ALERT_COMMENT).'/&nbsp;<span id="alarm_id_'.$order_notice_array['from_notice'].'">ON</span>';
+      }else{
+         $html_str .='&nbsp;'.str_replace('${ALERT_TITLE}',$order_notice_array['title'],HEADER_TEXT_ALERT_COMMENT).'/&nbsp;<span id="alarm_id_'.$order_notice_array['from_notice'].'">OFF</span>'; 
+      }
+      $html_str .='</div>';
+    }
     $html_str .= '</td>'; 
     $html_str .= '<td align="right">'; 
     $html_str .= '<a href="javascript:void(0);" onclick="delete_alarm_notice(\''.$order_notice_array['id'].'\', \'0\');"><img src="images/icons/del_img.gif" alt="close"></a>'; 
-    $html_str .= '<script type="text/javascript">$(function(){calc_notice_time(\''.strtotime($order_notice_array['set_time']).'\', '.$order_notice_array['id'].', 0);});</script>'; 
+    $html_str .= '<script type="text/javascript">$(function(){calc_notice_time(\''.strtotime($order_notice_array['set_time']).'\', '.$order_notice_array['id'].', 0, '.$alarm_flag_array['alarm_flag'].', \''.date('H'.TEXT_TORIHIKI_HOUR_STR.'i'.TEXT_TORIHIKI_MIN_STR,strtotime($order_notice_array['created_at'])).'\');});</script>'; 
     $html_str .= '</td>'; 
     $html_str .= '</tr>'; 
     $html_str .= '</table>'; 
     $html_str .= '<input type="hidden" value="'.$more_single.'" name="more_single" id="more_single">'; 
     if ($return_type == 1) {
-      return $more_single.'|||'.$leave_time.'|||'.$order_notice_array['id'].'|||'.$html_str;
+      return $more_single.'|||'.$leave_time.'|||'.$order_notice_array['id'].'|||'.$html_str.'|||'.$alarm_flag_array['alarm_id'].'|||'.$alarm_flag_array['alarm_show'];
     } 
     return $html_str;
   } else if ($show_type == 2) {
@@ -9372,9 +9436,9 @@ function tep_get_notice_info($return_type = 0)
     $html_str = '<table cellspacing="0" cellpadding="0" border="0"  width="100%">';
     $html_str .= '<tr>'; 
     
-    $html_str .= '<td width="80">'; 
+    $html_str .= '<td width="200">'; 
     if (($notice_num + $micro_num) > 1) {
-      $html_str .= '&nbsp;<a href="javascript:void(0);" onclick="expend_all_notice(\''.$micro_notice_array['id'].'\');" style="text-decoration:underline; color:#0000ff;"><font color="#0000ff">'.NOTICE_EXTEND_TITLE.'▼</font></a>';
+      $html_str .= '&nbsp;<a href="javascript:void(0);" onclick="expend_all_notice(\''.$micro_notice_array['id'].'\');" style="text-decoration:underline; color:#0000ff;"><font color="#0000ff">'.NOTICE_EXTEND_TITLE.'▼</font></a>'.str_replace('${ALERT_NUM}',$notice_list_num-1,HEADER_TEXT_ALERT_NUM);
       $more_single = 1; 
     } else {
       $html_str .= '&nbsp;'.NOTICE_EXTEND_TITLE;
