@@ -8,6 +8,7 @@ if (isset($messageStack) && $messageStack->size > 0) {
 }
 ?>
 <script type="text/javascript">
+var alert_update_id = '';
 $(function() {
    setTimeout(function() {show_head_notice(1)}, 35000);
 });
@@ -24,7 +25,10 @@ function check_exists_function(funcName){
 <?php //表格处理的通知时间 ?>
 function calc_notice_time(leave_time, nid, start_calc, alarm_flag, alarm_date)
 {
-  
+
+  if(alert_update_id == ''){
+    alert_update_id = nid; 
+  }
   var now_timestamp = Date.parse(new Date());
   
   now_timestamp_str = now_timestamp.toString().substr(0, 10);
@@ -174,6 +178,7 @@ function show_head_notice(no_type)
           }else{
             $("#alarm_id_"+data_info[4]).html('OFF'); 
           }
+          $("#alarm_user_"+data_info[4]).html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+data_info[6]+'&nbsp;<?php echo TEXT_TIME_LINK;?>');
         } else {
           $('#show_head_notice').html(data); 
           orgin_bg = document.getElementById('leave_time_'+data_info[2]).parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.background; 
@@ -182,7 +187,13 @@ function show_head_notice(no_type)
           }
         }
         
-        if (no_type == 1) {
+        if (no_type == 1) { 
+          if(alert_update_id != data_info[2]){
+            $('#alert_buttons').css('background-color','darkred');
+            $('#alert_time').css('background-color','darkred');
+            $('#alert_close').css('background-color','darkred');
+            alert_update_id = data_info[2];
+          }
           setTimeout(function() {show_head_notice(1)}, 35000);
         }
       } 

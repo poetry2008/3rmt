@@ -53,7 +53,7 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
   //警告提示
   $alarm_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and a.alarm_flag='1'";
   
-  $notice_total_sql = "select * from (".$notice_order_sql." union ".$notice_micro_sql." union ".$alarm_order_sql.") taf where id != '".$_POST['aid']."' order by set_time asc, type asc, created_at desc"; 
+  $notice_total_sql = "select * from (".$notice_order_sql." union ".$notice_micro_sql." union ".$alarm_order_sql.") taf where id != '".$_POST['aid']."' order by created_at desc,set_time asc, type asc"; 
   
   $notice_list_raw = tep_db_query($notice_total_sql);
   
@@ -99,13 +99,8 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
       } else {
         $leave_date = '00'.DAY_TEXT.'00'.HOUR_TEXT.'00'.MINUTE_TEXT; 
       }
-      echo '<div style="float:left; width:125px;">'; 
-      if($notice_list['type'] == '0' && $alarm_flag_array['alarm_flag'] == '1'){
-        echo '<span>'.date('H'.TEXT_TORIHIKI_HOUR_STR.'i'.TEXT_TORIHIKI_MIN_STR,strtotime($notice_list['created_at'])).'</span>';
-      }else{
-        echo NOTICE_DIFF_TIME_TEXT.'&nbsp;'; 
-        echo '<span>'.$leave_date.'</span>'; 
-      }
+      echo '<div style="float:left; width:150px;">'; 
+      echo '<span>'.date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT.' H'.TEXT_TORIHIKI_HOUR_STR.'i'.TEXT_TORIHIKI_MIN_STR,strtotime($notice_list['created_at'])).'</span>';
       echo '</div>'; 
       echo '<div style="float:left;">';
       if ($notice_list['type'] == '0') {
@@ -124,10 +119,14 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
         }
       } else {
         echo '<a href="'.tep_href_link('micro_log.php').'">'.$notice_list['title'].'</a>'; 
+        echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+        echo NOTICE_DIFF_TIME_TEXT.'&nbsp;'; 
+        echo '<span>'.$leave_date.'</span>';
       }
       echo '</div>';
+      if ($notice_list['type'] == '0') {
       if($alarm_flag_array['alarm_flag'] == '1'){
-        echo '<div style="float:left;">';
+        echo '<div style="float:left;" id="alarm_user_'.$notice_list['from_notice'].'">';
         echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$notice_list['user'].'&nbsp;'.TEXT_TIME_LINK;
         echo '</div>';
         echo '<div style="float:left;">';
@@ -137,6 +136,12 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
           echo '&nbsp;'.str_replace('${ALERT_TITLE}',$notice_list['title'],HEADER_TEXT_ALERT_COMMENT).'/&nbsp;<span id="alarm_id_'.$notice_list['from_notice'].'">OFF</span>'; 
         }
         echo '</div>';
+      }else{
+        echo '<div style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+        echo NOTICE_DIFF_TIME_TEXT.'&nbsp;'; 
+        echo '<span>'.$leave_date.'</span>';
+        echo '</div>';
+      }
       }
       echo '</td>'; 
       echo '<td align="right">'; 

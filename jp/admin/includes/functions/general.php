@@ -9360,7 +9360,7 @@ function tep_get_notice_info($return_type = 0)
     $alarm_flag_array = tep_db_fetch_array($alarm_flag_query);
     tep_db_free_result($alarm_flag_query);
     }
-    $html_str .= '<td width="200">'; 
+    $html_str .= '<td width="200" id="alert_buttons">'; 
     if($alarm_flag_array['orders_flag'] == '1'){
 
       $title_str = HEADER_TEXT_ALERT_TITLE;
@@ -9374,15 +9374,11 @@ function tep_get_notice_info($return_type = 0)
       $html_str .= '&nbsp;'.($alarm_flag_array['alarm_flag'] == '0' ? NOTICE_ALARM_TITLE : $title_str);
     }
     $html_str .= '</td>'; 
-    $html_str .= '<td class="notice_info">'; 
+    $html_str .= '<td class="notice_info"  id="alert_time">'; 
     $alarm_raw = tep_db_query("select orders_id from ".TABLE_ALARM." where alarm_id = '".$order_notice_array['from_notice']."'"); 
     $alarm = tep_db_fetch_array($alarm_raw); 
-    $html_str .= '<div style="float:left; width:125px;">'; 
-    if($order_notice_array['type'] == '0' && $alarm_flag_array['alarm_flag'] == '1'){
-      $html_str .= '<span id="leave_time_'.$order_notice_array['id'].'">'.date('H'.TEXT_TORIHIKI_HOUR_STR.'i'.TEXT_TORIHIKI_MIN_STR,strtotime($order_notice_array['created_at'])).'</span>';
-    }else{
-      $html_str .= NOTICE_DIFF_TIME_TEXT.'&nbsp;<span id="leave_time_'.$order_notice_array['id'].'">'.$leave_date.'</span>'; 
-    }
+    $html_str .= '<div style="float:left; width:150px;">'; 
+    $html_str .= '<span'.($order_notice_array['type'] == '0' && $alarm_flag_array['alarm_flag'] == '1' ? ' id="leave_time_'.$order_notice_array['id'].'"' : '').'>'.date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT.' H'.TEXT_TORIHIKI_HOUR_STR.'i'.TEXT_TORIHIKI_MIN_STR,strtotime($order_notice_array['created_at'])).'</span>';
     $html_str .= '</div>'; 
     $html_str .= '<div style="float:left;">';
     if($alarm_flag_array['orders_flag'] == '1'){
@@ -9394,7 +9390,7 @@ function tep_get_notice_info($return_type = 0)
     $html_str .= '<a href="'.tep_href_link($filename_str, 'oID='.$alarm['orders_id'].'&action=edit').'">'.($alarm_flag_array['alarm_flag'] == '0' ? $order_notice_array['title'] : $alarm['orders_id']).'</a>'; 
     $html_str .='</div>';
     if($alarm_flag_array['alarm_flag'] == '1'){
-      $html_str .= '<div style="float:left;">';
+      $html_str .= '<div style="float:left;" id="alarm_user_'.$order_notice_array['from_notice'].'">';
       $html_str .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$order_notice_array['user'].'&nbsp;'.TEXT_TIME_LINK;
       $html_str .='</div>';
       $html_str .='<div style="float:left;">';
@@ -9404,17 +9400,21 @@ function tep_get_notice_info($return_type = 0)
          $html_str .='&nbsp;'.str_replace('${ALERT_TITLE}',$order_notice_array['title'],HEADER_TEXT_ALERT_COMMENT).'/&nbsp;<span id="alarm_id_'.$order_notice_array['from_notice'].'">OFF</span>'; 
       }
       $html_str .='</div>';
+    }else{
+      $html_str .= '<div style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+      $html_str .= NOTICE_DIFF_TIME_TEXT.'&nbsp;<span id="leave_time_'.$order_notice_array['id'].'">'.$leave_date.'</span>'; 
+      $html_str .= '</div>';
     }
     $html_str .= '</td>'; 
-    $html_str .= '<td align="right">'; 
+    $html_str .= '<td align="right"  id="alert_close">'; 
     $html_str .= '<a href="javascript:void(0);" onclick="delete_alarm_notice(\''.$order_notice_array['id'].'\', \'0\');"><img src="images/icons/del_img.gif" alt="close"></a>'; 
-    $html_str .= '<script type="text/javascript">$(function(){calc_notice_time(\''.strtotime($order_notice_array['set_time']).'\', '.$order_notice_array['id'].', 0, '.$alarm_flag_array['alarm_flag'].', \''.date('H'.TEXT_TORIHIKI_HOUR_STR.'i'.TEXT_TORIHIKI_MIN_STR,strtotime($order_notice_array['created_at'])).'\');});</script>'; 
+    $html_str .= '<script type="text/javascript">$(function(){calc_notice_time(\''.strtotime($order_notice_array['set_time']).'\', '.$order_notice_array['id'].', 0, '.$alarm_flag_array['alarm_flag'].', \''.date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT.' H'.TEXT_TORIHIKI_HOUR_STR.'i'.TEXT_TORIHIKI_MIN_STR,strtotime($order_notice_array['created_at'])).'\');});</script>'; 
     $html_str .= '</td>'; 
     $html_str .= '</tr>'; 
     $html_str .= '</table>'; 
     $html_str .= '<input type="hidden" value="'.$more_single.'" name="more_single" id="more_single">'; 
     if ($return_type == 1) {
-      return $more_single.'|||'.$leave_time.'|||'.$order_notice_array['id'].'|||'.$html_str.'|||'.$alarm_flag_array['alarm_id'].'|||'.$alarm_flag_array['alarm_show'];
+      return $more_single.'|||'.$leave_time.'|||'.$order_notice_array['id'].'|||'.$html_str.'|||'.$alarm_flag_array['alarm_id'].'|||'.$alarm_flag_array['alarm_show'].'|||'.$order_notice_array['user'];
     } 
     return $html_str;
   } else if ($show_type == 2) {
@@ -9445,10 +9445,11 @@ function tep_get_notice_info($return_type = 0)
     }
     $html_str .= '</td>'; 
     $html_str .= '<td class="notice_info">'; 
-    $html_str .= '<div style="float:left; width:125px;">'; 
-    $html_str .= NOTICE_DIFF_TIME_TEXT.'&nbsp;<span id="leave_time_'.$micro_notice_array['id'].'">'.$leave_date.'</span>'; 
+    $html_str .= '<div style="float:left; width:150px;">'; 
+    $html_str .= date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT.' H'.TEXT_TORIHIKI_HOUR_STR.'i'.TEXT_TORIHIKI_MIN_STR,strtotime($micro_notice_array['created_at'])); 
     $html_str .= '</div>'; 
-    $html_str .= '<a href="'.tep_href_link('micro_log.php').'">'.$micro_notice_array['title'].'</a>'; 
+    $html_str .= '<a href="'.tep_href_link('micro_log.php').'">'.$micro_notice_array['title'].'</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'; 
+    $html_str .= NOTICE_DIFF_TIME_TEXT.'&nbsp;<span id="leave_time_'.$micro_notice_array['id'].'">'.$leave_date.'</span>';
     $html_str .= '</td>'; 
     $html_str .= '<td align="right">'; 
     $html_str .= '<a href="javascript:void(0);" onclick="delete_micro_notice(\''.$micro_notice_array['id'].'\', \'0\');"><img src="images/icons/del_img.gif" alt="close"></a>'; 

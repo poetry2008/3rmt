@@ -90,9 +90,10 @@ if ($rec_c % 2) {
         }else{
           $alert_button_name = HEADER_TEXT_ALERT_TITLE_PREORDERS; 
         }
-        $alert_button_comment = $alarm_info_array['title'];
+        $alert_button_comment = '「'.$alarm_info_array['title'].'」/&nbsp;'.($alarm_info_array['alarm_show'] == '1' ? 'ON' : 'OFF');
       }else{
         $alert_button_name = NOTICE_ALARM_TITLE; 
+        $alert_button_comment = $arec['set_time'];
       }
       $alert_orders_id = $alarm_info_array['orders_id'];
     }else{
@@ -122,43 +123,11 @@ if ($rec_c % 2) {
   参数: $nrow(int) 记录件数（列表行数）
   返回值: 记录件数(int)
  --------------------------------------*/
-function show_page_ctl($nrow) {
-  $c_page = 0;
+function show_page_ctl() {
+  global $alert_split,$alert_query_numrows;
 
-  // 获取记录总件数
-  $alarm_day = get_configuration_by_site_id('ALARM_EXPIRED_DATE_SETTING',0);
-  $ssql = "select count(*) as rc from " . TABLE_NOTICE ." where time_format(timediff(now(),created_at),'%H')<".$alarm_day*24;
-  @$oresult = tep_db_query($ssql);
-  if (!$oresult) {                      // 错误的时候
-    if ($oresult) @tep_db_free_result($oresult);      // 开放结果项目
-    return FALSE;
-  }
-
-  $arec = tep_db_fetch_array($oresult);           // 获取记录
-  echo tep_draw_hidden_field("lm", $GLOBALS['lm']);     // 把现在的页面放在隐藏项目里
-
-  // 显示按钮
-  if ($GLOBALS['lm'] >= ONCE_ALERT_LOG_MAX_LINE) {
-    echo tep_draw_input_field("pp", BUTTON_PREVIOUS_PAGE, '', FALSE, "submit", FALSE);  // 前一页
-  }
-  if ($GLOBALS['lm'] + ONCE_ALERT_LOG_MAX_LINE < $arec['rc']) {
-    echo tep_draw_input_field("np", BUTTON_NEXT_PAGE, '', FALSE, "submit", FALSE);    // 后一页
-  }
-
-  $page_count = ceil($arec['rc'] / ONCE_ALERT_LOG_MAX_LINE);
-  for ($i=1; $i<=$page_count; $i++) {
-    $lm_ = ($i-1) * ONCE_ALERT_LOG_MAX_LINE;
-    $asp[$i-1]['id'] = $lm_;
-    $asp[$i-1]['text'] = $i;
-  }
-  $GLOBALS['sp'] = $GLOBALS['lm'];              // 设置下拉列表的选择值
-  echo tep_draw_pull_down_menu("sp", $asp, $GLOBALS['lm']); // 显示下拉列表
-  echo tep_draw_input_field("jp", BUTTON_JUMP_PAGE, '', FALSE, "submit", FALSE);    // 跳转页面
-
-  if ($GLOBALS['lm']) $c_page = ceil((int)$GLOBALS['lm'] / ONCE_ALERT_LOG_MAX_LINE);
-  $c_page++;
-  echo '<font class="main">&nbsp;&nbsp;' . sprintf(TEXT_PAGE, $c_page,$page_count,$nrow,$arec['rc']) . '</font>' . "\n";
-  echo "<br>\n";
+  echo $alert_split->display_count($alert_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_ALERT);
+  echo '<div class="td_box">'.$alert_split->display_links($alert_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'cID'))).'</div>';
 
 }
 
@@ -172,8 +141,6 @@ function makeSelectOnceAlertLog() {
   $alarm_day = get_configuration_by_site_id('ALARM_EXPIRED_DATE_SETTING',0);
   $s_select = "select * from " . TABLE_NOTICE ." where time_format(timediff(now(),created_at),'%H')<".$alarm_day*24;
   $s_select .= " order by created_at desc";    // 按照提醒日期时间的倒序获取数据
-  if (!isset($GLOBALS['lm'])) $GLOBALS['lm'] = 0;
-  $s_select .= " " . sprintf(TABLE_LIMIT_OFFSET,$GLOBALS['lm']);
 
   return $s_select;
 
@@ -189,7 +156,7 @@ function makeSelectOnceAlertLog() {
  --------------------------------------*/
 function UserOnceAlertLog_list() {
 
-  global $ocertify;           // 用户认证项目
+  global $ocertify,$alert_split,$alert_query_numrows;           // 用户认证项目
 
   PageBody('t', PAGE_TITLE_MENU_ONCE_PWD_LOG);  // 用户管理画面的标题显示（用户管理菜单）
 
@@ -200,6 +167,7 @@ function UserOnceAlertLog_list() {
 
   // 获取提醒日志信息
   $ssql = makeSelectOnceAlertLog();
+  $alert_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $ssql, $alert_query_numrows);
   @$oresult = tep_db_query($ssql);
   if (!$oresult) {                      // 错误的时候
     echo TEXT_ERRINFO_DB_NO_ONCE_PWD_LOG;            // 显示信息
@@ -224,10 +192,8 @@ function UserOnceAlertLog_list() {
     show_alert_log_list($oresult);   
     echo "</table>\n";
 
-    echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));    // <form>标签的输出
-    show_page_ctl($nrow);       // 页面控制按钮的显示
+    show_page_ctl();       // 页面控制按钮的显示
  
-    echo "</form>\n";           // form的footer
   }
   if ($oresult) @tep_db_free_result($oresult);          // 开放结果项目
 

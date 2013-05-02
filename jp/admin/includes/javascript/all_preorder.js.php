@@ -798,10 +798,14 @@ function preorders_computers(ele, cid, oid) {
     $.ajax({
 url: 'ajax_preorders.php?action=delete&orders_id='+oid+'&computers_id='+cid,
 success: function(data) {
-var nid = data;
+var data_array = new Array();
+data_array = data.split('|||');
+var nid = data_array[0];
+var user = data_array[1];
 ele.className='orders_computer_unchecked';
 if(nid != ''){
   $("#alarm_id_"+nid).html('OFF');
+  $("#alarm_user_"+nid).html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+user+'&nbsp;<?php echo TEXT_TIME_LINK;?>');
 }
 }
 });
@@ -809,10 +813,14 @@ if(nid != ''){
   $.ajax({
 url: 'ajax_preorders.php?action=insert&orders_id='+oid+'&computers_id='+cid,
 success: function(data) {
-var nid = data;
+var data_array = new Array();
+data_array = data.split('|||');
+var nid = data_array[0];
+var user = data_array[1];
 ele.className='orders_computer_checked';
 if(nid != ''){
   $("#alarm_id_"+nid).html('ON');
+  $("#alarm_user_"+nid).html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+user+'&nbsp;<?php echo TEXT_TIME_LINK;?>');
 }
 }
 });
