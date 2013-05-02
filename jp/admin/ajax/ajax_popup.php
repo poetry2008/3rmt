@@ -3787,7 +3787,7 @@ if($pw_id != -1){
       $pwd_pattern_arr = explode(',',$pwd_pattern);
        $contents[]['text'] = array(
            array('text' => TEXT_PWD_LEN),
-           array('text' => tep_draw_input_field('pwd_len',$pwd_len,'style="font-size:12px"id="pwd_len" maxlength="2" size="2"'.$disable)."&nbsp;".  "<button type='button'".$disable." onclick=\"mk_pwd()\">" .  TEXT_BUTTON_MK_PWD."</button>".  tep_draw_input_field('password',$pwInfo->password,'id="password"style="font-size:12px"'.$disable) .tep_draw_hidden_field('old_password',$pwInfo->password,$disable))
+           array('text' => tep_draw_input_field('pwd_len',$pwd_len,'style="font-size:12px"id="pwd_len" maxlength="2" size="2"'.$disable)."&nbsp;".  tep_html_element_button(TEXT_BUTTON_MK_PWD,'onclick="mk_pwd()"'.$disable) .  tep_draw_input_field('password',$pwInfo->password,'id="password"style="font-size:12px"'.$disable) .tep_draw_hidden_field('old_password',$pwInfo->password,$disable))
           );
       $contents[]['text'] = array(
            array('text' => TEXT_INFO_PASSWORD),
@@ -3828,7 +3828,7 @@ if($pw_id != -1){
       }else{
         $selected_user = $pwInfo->self;
       }
-       $contents[]['text'] = array( array('text' => '&nbsp;'), array('text' =>  '<div id="user_select" class="user_select" style="display:'.$pw_select_display.'" >'.tep_get_user_select($selected_user).'</div>'));
+       $contents[]['text'] = array( array('text' => '&nbsp;'), array('text' => '<div id="user_select" class="user_select" style="display:'.$pw_select_display.'" > '.tep_get_user_select($selected_user).'</div>'));
        $contents[]['text'] = array(
            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.((tep_not_null($pwInfo->user_added))?$pwInfo->user_added:TEXT_UNSET_DATA)), 
            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.((tep_not_null($pwInfo->created_at))?$pwInfo->created_at:TEXT_UNSET_DATA))
@@ -3897,7 +3897,7 @@ if($site_id == 0){
       $pwd_pattern_arr = explode(',',$pwd_pattern);
       $contents[]['text'] = array(
           array('text' => TEXT_PWD_LEN),
-          array('text' => tep_draw_input_field('pwd_len',$pwd_len,'id="pwd_len" maxlength="2" size="2"style="font-size:12px"'.$disable)."&nbsp;".  "<button type='button'".$disable." onclick=\"mk_pwd()\">" .  TEXT_BUTTON_MK_PWD."</button>".  tep_draw_input_field('password',tep_get_new_random($pwd_pattern,$pwd_len),'id="password"'.$disable))
+          array('text' => tep_draw_input_field('pwd_len',$pwd_len,'id="pwd_len" maxlength="2" size="2"style="font-size:12px"'.$disable)."&nbsp;".  tep_html_element_button(TEXT_BUTTON_MK_PWD,'onclick="mk_pwd()"'.$disable). tep_draw_input_field('password',tep_get_new_random($pwd_pattern,$pwd_len),'id="password"'.$disable))
       );
       $contents[]['text'] = array(
           array('text' => TEXT_INFO_PASSWORD),
@@ -3936,7 +3936,7 @@ if($site_id == 0){
       $selected_user = $ocertify->auth_user;
       $contents[]['text'] = array( 
           array('text' => ''),
-          array('text' => '<div id="user_select" class="user_select" style="display:none">'.  tep_get_user_select($selected_user) ."</div>")
+          array('text' => '<div id="user_select" class="user_select" style="display:none">'.tep_get_user_select($selected_user).'</div>')
       );
      $contents[]['text'] = array(
            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.TEXT_UNSET_DATA), 

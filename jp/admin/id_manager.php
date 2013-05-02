@@ -674,7 +674,7 @@ if(isset($_GET['action']) &&
             'memo' => tep_db_prepare_input($_POST['memo']),
             'nextdate' => tep_db_prepare_input($_POST['nextdate']),
             'update_user' => $user_info['name'],
-            'updated_at' => 'now()',
+            'updated_at' => date('Y-m-d H:i:s',time()),
             'site_id' => tep_db_prepare_input($_POST['site_id']),
             'onoff' => '1',
             );
@@ -724,7 +724,7 @@ if(isset($_GET['action']) &&
             'self' => $user_self,
             'privilege' => tep_db_prepare_input($_POST['privilege']),
             'user_added' => $_POST['user_added'],
-            'created_at' => 'now()',
+            'created_at' => date('Y-m-d H:i:s',time()),
 	    'operator' => $pw_operator,
             );
           $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
