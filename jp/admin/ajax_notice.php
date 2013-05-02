@@ -127,7 +127,7 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
       if ($notice_list['type'] == '0') {
       if($alarm_flag_array['alarm_flag'] == '1'){
         echo '<div style="float:left;" id="alarm_user_'.$notice_list['from_notice'].'">';
-        echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$notice_list['user'].'&nbsp;'.TEXT_TIME_LINK;
+        echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$notice_list['user'].'&nbsp;'.HEADER_TEXT_ALERT_LINK;
         echo '</div>';
         echo '<div style="float:left;">';
         if($alarm_flag_array['alarm_show'] == '1'){

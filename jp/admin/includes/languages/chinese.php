@@ -775,3 +775,4 @@ define('HEADER_TEXT_ALERT_TITLE_PREORDERS','预约联系按钮');
 define('HEADER_TEXT_ALERT_COMMENT','「${ALERT_TITLE}」');
 define('HEADER_TEXT_ALERT_NUM','（还剩${ALERT_NUM}条）');
 define('TEXT_DISPLAY_NUMBER_OF_ALERT', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 项)');
+define('HEADER_TEXT_ALERT_LINK','操作');

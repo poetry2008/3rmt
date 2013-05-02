@@ -9391,7 +9391,7 @@ function tep_get_notice_info($return_type = 0)
     $html_str .='</div>';
     if($alarm_flag_array['alarm_flag'] == '1'){
       $html_str .= '<div style="float:left;" id="alarm_user_'.$order_notice_array['from_notice'].'">';
-      $html_str .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$order_notice_array['user'].'&nbsp;'.TEXT_TIME_LINK;
+      $html_str .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$order_notice_array['user'].'&nbsp;'.HEADER_TEXT_ALERT_LINK;
       $html_str .='</div>';
       $html_str .='<div style="float:left;">';
       if($alarm_flag_array['alarm_show'] == '1'){

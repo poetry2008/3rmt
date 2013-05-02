@@ -84,6 +84,10 @@ if ($rec_c % 2) {
       tep_db_free_result($alarm_info_query);
 
       $alert_user = $alarm_info_array['adminuser'];
+      if($alarm_info_array['alarm_flag'] == '0'){
+        $user_info = tep_get_user_info($alert_user);
+        $alert_user = $user_info['name'];
+      }
       if($alarm_info_array['alarm_flag'] == '1'){
         if($alarm_info_array['orders_flag'] == '1'){
           $alert_button_name = HEADER_TEXT_ALERT_TITLE;
@@ -102,6 +106,8 @@ if ($rec_c % 2) {
       tep_db_free_result($micro_info_query);
 
       $alert_user = $micro_info_array['author'];
+      $user_info = tep_get_user_info($alert_user);
+      $alert_user = $user_info['name'];
       $alert_button_name = NOTICE_EXTEND_TITLE;
       $alert_button_comment = $arec['title'];
       $alert_orders_id = ''; 
@@ -109,8 +115,8 @@ if ($rec_c % 2) {
 
     echo '<td class="main" >' . $alert_user . "</td>\n";
     echo '<td class="main" >' . $alert_button_name . "</td>\n";
-    echo '<td class="main" >' . $alert_button_comment . "</td>\n";
     echo '<td class="main" >' . $alert_orders_id . "</td>\n";
+    echo '<td class="main" >' . $alert_button_comment . "</td>\n"; 
     echo '<td class="main" >' . $arec['created_at'] . "</td>\n";
 
     echo "</tr>\n";
@@ -183,9 +189,9 @@ function UserOnceAlertLog_list() {
     echo "<tr class='dataTableHeadingRow'>\n";
     echo '<td class="dataTableHeadingContent">' . TABLE_HEADING_USERNAME . '</td>' . "\n";      
     echo '<td class="dataTableHeadingContent">' . TABLE_HEADING_TYPE . '</td>' . "\n";
+    echo '<td class="dataTableHeadingContent">' . TABLE_HEADING_ORDERS_ID . '</td>' . "\n";
     echo '<td class="dataTableHeadingContent">' .
-      TABLE_HEADING_BUTTON_NAME . '</td>' . "\n";       
-    echo '<td class="dataTableHeadingContent">' . TABLE_HEADING_ORDERS_ID . '</td>' . "\n"; 
+      TABLE_HEADING_BUTTON_NAME . '</td>' . "\n";        
     echo '<td class="dataTableHeadingContent">' .
       TABLE_HEADING_CREATED_AT . '</td>' . "\n";       
     echo "</tr>\n";
