@@ -796,6 +796,9 @@ list type
 /* ---------------------------
 right
 --------------------------- */
+.td_input input{
+	margin-left:0;
+}
 .right_column_boxes {
 	 padding-top: 0px;   
 }

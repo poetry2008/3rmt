@@ -46,6 +46,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('LOCAL_EXE_UNZIP', '/usr/local/bin/unzip');
 
 // define the filenames used in the project
+  define('FILENAME_MODULE_TOTAL', 'module_total.php');
   define('FILENAME_OPTION', 'option.php');
   define('FILENAME_MARKS', 'marks.php');
   define('FILENAME_RESET_PWD','reset_pwd.php');

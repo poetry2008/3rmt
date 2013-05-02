@@ -138,11 +138,11 @@ if ($_POST['orders_id'] &&
   $alarm_name_array = tep_db_fetch_array($alarm_name_query);
   tep_db_free_result($alarm_name_query);
 
-  $alarm_id_query = tep_db_query("select alarm_id from ". TABLE_ALARM ." where orders_id='".$_GET['orders_id']."' and title='".$alarm_name_array['computers_name']."' and alarm_flag='1'");
+  $alarm_id_query = tep_db_query("select alarm_id from ". TABLE_ALARM ." where orders_id='".$_GET['orders_id']."' and title='".$alarm_name_array['computers_name']."' and alarm_flag='1' and orders_flag='1'");
   $alarm_id_array = tep_db_fetch_array($alarm_id_query);
   tep_db_free_result($alarm_id_query);
 
-  tep_db_query("update ".TABLE_ALARM." set alarm_show='0' where orders_id='".$_GET['orders_id']."' and title='".$alarm_name_array['computers_name']."' and alarm_flag='1'");
+  tep_db_query("update ".TABLE_ALARM." set alarm_show='0' where orders_id='".$_GET['orders_id']."' and title='".$alarm_name_array['computers_name']."' and alarm_flag='1' and orders_flag='1'");
 
   tep_db_query("update ".TABLE_NOTICE." set created_at=now() where from_notice='".$alarm_id_array['alarm_id']."'");
 
@@ -160,7 +160,7 @@ if ($_POST['orders_id'] &&
   $alarm_name_array = tep_db_fetch_array($alarm_name_query);
   tep_db_free_result($alarm_name_query);
 
-  $alarm_id_query = tep_db_query("select alarm_id from ". TABLE_ALARM ." where orders_id='".$_GET['orders_id']."' and title='".$alarm_name_array['computers_name']."' and alarm_flag='1'");
+  $alarm_id_query = tep_db_query("select alarm_id from ". TABLE_ALARM ." where orders_id='".$_GET['orders_id']."' and title='".$alarm_name_array['computers_name']."' and alarm_flag='1' and orders_flag='1'");
   $alarm_id_num = tep_db_num_rows($alarm_id_query);
   tep_db_free_result($alarm_id_query);
   if($alarm_id_num == 0){
@@ -195,11 +195,11 @@ if ($_POST['orders_id'] &&
   $alarm_name_array = tep_db_fetch_array($alarm_name_query);
   tep_db_free_result($alarm_name_query);
 
-  $alarm_id_query = tep_db_query("select alarm_id from ". TABLE_ALARM ." where orders_id='".$_GET['orders_id']."' and title='".$alarm_name_array['computers_name']."' and alarm_flag='1'");
+  $alarm_id_query = tep_db_query("select alarm_id from ". TABLE_ALARM ." where orders_id='".$_GET['orders_id']."' and title='".$alarm_name_array['computers_name']."' and alarm_flag='1' and orders_flag='1'");
   $alarm_id_array = tep_db_fetch_array($alarm_id_query);
   tep_db_free_result($alarm_id_query);
 
-  tep_db_query("update ".TABLE_ALARM." set alarm_show='1' where orders_id='".$_GET['orders_id']."' and title='".$alarm_name_array['computers_name']."' and alarm_flag='1'");
+  tep_db_query("update ".TABLE_ALARM." set alarm_show='1' where orders_id='".$_GET['orders_id']."' and title='".$alarm_name_array['computers_name']."' and alarm_flag='1' and orders_flag='1'");
 
   tep_db_query("update ".TABLE_NOTICE." set created_at=now() where from_notice='".$alarm_id_array['alarm_id']."'");
 

@@ -17,8 +17,9 @@ define('BUTTON_NEXT_PAGE', '下一页');
 define('BUTTON_JUMP_PAGE', '跳转到');
 
 
-define('TABLE_HEADING_USERNAME','操作者');
-define('TABLE_HEADING_BUTTON_NAME','按钮内容');
+define('TABLE_HEADING_USERNAME','用户');
+define('TABLE_HEADING_TYPE','类型');
+define('TABLE_HEADING_BUTTON_NAME','内容');
 define('TABLE_HEADING_ORDERS_ID','订单号');
 define('TABLE_HEADING_CREATED_AT','操作时间');
 
