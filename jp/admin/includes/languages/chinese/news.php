@@ -21,7 +21,7 @@ define('TEXT_LATEST_NEWS_CONTENT', '记事内容');
 define('TEXT_LATEST_NEWS_IMAGE', '关联图像');
 define('TEXT_LATEST_NEWS_IMAGE_DESCRIPTION', '图像简单说明');
 define('TABLE_HEADING_LATEST_NEWS_ISFIRST', '置顶');
-define('TABLE_HEADING_DATE_ADDED','创建日:');
+define('TABLE_HEADING_DATE_ADDED','创建日');
 define('TEXT_USER_ADDED','创建者: ');
 define('TEXT_USER_UPDATE','更新者: ');
 define('TEXT_DATE_ADDED','创建日: ');
