@@ -3937,7 +3937,6 @@ if($site_id == 0){
       $notice_box->get_eof(tep_eof_hidden());
       echo $notice_box->show_notice();
  }
-<<<<<<< HEAD
 }else if ($_GET['action'] == 'edit_pw_manager_log'){
 include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_PW_MANAGER);
 include(DIR_FS_ADMIN.'classes/notice_box.php');
@@ -4099,7 +4098,6 @@ if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
       $notice_box->get_eof(tep_eof_hidden());
       echo $notice_box->show_notice();
  
-=======
 }else if ($_GET['action'] == 'edit_module_total'){
 /* -----------------------------------------------------
     功能: 更新合计模块设置
@@ -4359,5 +4357,4 @@ if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
   $notice_box->get_contents($module_total_row, $buttons);
   $notice_box->get_eof(tep_eof_hidden().tep_draw_hidden_field('site_id', $site_id));
   echo $notice_box->show_notice().'||||||'.tep_get_note_top_layer(FILENAME_MODULE_TOTAL);
->>>>>>> 0bf767b9dc5543461bbd10362742520ef52f0c51
 }
