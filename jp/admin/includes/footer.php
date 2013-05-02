@@ -130,7 +130,7 @@ if($_SESSION['last_page']!= $page_name){
 
 
 // 显示SQL执行记录
-if (STORE_DB_TRANSACTIONS == 'true' && false) {?>
+if (STORE_DB_TRANSACTIONS == 'true') {?>
 <?php
 //for sql_log
 $logNumber = 0;
@@ -151,6 +151,7 @@ $testArray = array();
     </pre>
     </div>
     <?php }?>
+<?php if(isset($mode_flag)){ ?>
 <div style="position:absolute;right:0;z-index:20000;" id="note_hide_content">
 <?php
 if($mode_flag){
@@ -172,3 +173,4 @@ while ($note_hide_list = tep_db_fetch_array($note_hide_query)) {
 echo '</ul>'; 
 ?>
 </div>
+<?php } ?>

@@ -46,6 +46,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('LOCAL_EXE_UNZIP', '/usr/local/bin/unzip');
 
 // define the filenames used in the project
+  define('FILENAME_MODULE_TOTAL', 'module_total.php');
   define('FILENAME_OPTION', 'option.php');
   define('FILENAME_MARKS', 'marks.php');
   define('FILENAME_RESET_PWD','reset_pwd.php');
@@ -65,7 +66,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('FILENAME_OA_ITEM', 'oa_item.php'); 
   define('FILENAME_PWD_LOG', 'pwd_log.php');
   define('FILENAME_PRODUCTS_PRICE','products_price.php');
-  define('FILENAME_PW_MANAGER', 'pw_manager.php');
+  define('FILENAME_PW_MANAGER', 'id_manager.php');
   define('FILENAME_REDIREC_URL','redirec_url.php');
   define('FILENAME_PWD_AJAX', 'pwd_ajax.php');
   define('FILENAME_PW_MANAGER_LOG', 'pw_manager_log.php');
