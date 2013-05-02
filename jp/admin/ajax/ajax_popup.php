@@ -3709,6 +3709,7 @@ if($pw_id != -1){
                              order by ".$order_str;
       }
     }else{
+    if($_GET['site_id'] == ''){ $_GET['site_id'] = 0; }
     $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
                              ,".$next_str."
@@ -3717,7 +3718,7 @@ if($pw_id != -1){
                              updated_at,onoff,update_user
                               from 
                              ".TABLE_IDPW." 
-                             where onoff = '1' 
+                             where site_id='".$_GET['site_id']."' and onoff = '1' 
                              " .$sort_where . "
                              order by ".$order_str;
     }
@@ -3752,7 +3753,7 @@ if($pw_id != -1){
 
       $contents[]['text'] = array(
            array('text' => TEXT_INFO_TITLE),
-           array('text' => tep_draw_input_field('title',$pwInfo->title,'id="title"'.$disable))
+           array('text' => tep_draw_input_field('title',$pwInfo->title,'id="title" style="font-size:12px"'.$disable))
           );
       $contents[]['text'] = array(
            array('text' => TEXT_INFO_PRIORITY),
@@ -3770,22 +3771,23 @@ if($pw_id != -1){
           );
       $contents[]['text'] = array(
            array('text' => TEXT_INFO_URL),
-           array('text' => tep_draw_input_field('url',$pwInfo->url,'id="url"'.$disable).tep_draw_hidden_field('old_url',$pwInfo->url,$disable))
+           array('text' => tep_draw_input_field('url',$pwInfo->url,'id="url" style="font-size:12px"'.$disable).tep_draw_hidden_field('old_url',$pwInfo->url,$disable))
           );
       $contents[]['text'] = array(
            array('text' => TEXT_INFO_LOGINURL),
-           array('text' => tep_draw_input_field('loginurl',$pwInfo->loginurl,'id="loginurl"'.$disable).tep_draw_hidden_field('old_loginurl',$pwInfo->loginurl,$disable))
+           array('text' =>
+             tep_draw_input_field('loginurl',$pwInfo->loginurl,'id="loginurl" style="font-size:12px"'.$disable).tep_draw_hidden_field('old_loginurl',$pwInfo->loginurl,$disable))
           );
       $contents[]['text'] = array(
            array('text' => TEXT_INFO_USERNAME),
-           array('text' => tep_draw_input_field('username',$pwInfo->username,'id="username"'.$disable).tep_draw_hidden_field('old_username',$pwInfo->username,$disable))
+           array('text' => tep_draw_input_field('username',$pwInfo->username,'id="username"style="font-size:12px"'.$disable).tep_draw_hidden_field('old_username',$pwInfo->username,$disable))
           );
       $pwd_pattern = tep_get_pwd_pattern();
       $pwd_len = tep_get_pwd_len();
       $pwd_pattern_arr = explode(',',$pwd_pattern);
        $contents[]['text'] = array(
            array('text' => TEXT_PWD_LEN),
-           array('text' => tep_draw_input_field('pwd_len',$pwd_len,'id="pwd_len" maxlength="2" size="2"'.$disable)."&nbsp;".  "<button type='button'".$disable." onclick=\"mk_pwd()\">" .  TEXT_BUTTON_MK_PWD."</button>".  tep_draw_input_field('password',$pwInfo->password,'id="password"'.$disable) .tep_draw_hidden_field('old_password',$pwInfo->password,$disable))
+           array('text' => tep_draw_input_field('pwd_len',$pwd_len,'style="font-size:12px"id="pwd_len" maxlength="2" size="2"'.$disable)."&nbsp;".  "<button type='button'".$disable." onclick=\"mk_pwd()\">" .  TEXT_BUTTON_MK_PWD."</button>".  tep_draw_input_field('password',$pwInfo->password,'id="password"style="font-size:12px"'.$disable) .tep_draw_hidden_field('old_password',$pwInfo->password,$disable))
           );
       $contents[]['text'] = array(
            array('text' => TEXT_INFO_PASSWORD),
@@ -3793,20 +3795,29 @@ if($pw_id != -1){
                );
       $contents[]['text'] = array(
            array('text' => TEXT_INFO_COMMENT),
-           array('text' => tep_draw_textarea_field('comment', 'soft', '30', '5', $pwInfo->comment, 'style="resize: vertical;"onblur="o_submit_single = true;" onfocus="o_submit_single = false;" class="pw_textarea"'.$disable).tep_draw_hidden_field('old_comment',$pwInfo->comment,$disable))
+           array('text' => tep_draw_textarea_field('comment', 'soft', '30', '5', $pwInfo->comment, 'style="resize: vertical;font-size:12px"onblur="o_submit_single = true;" onfocus="o_submit_single = false;" class="pw_textarea"'.$disable).tep_draw_hidden_field('old_comment',$pwInfo->comment,$disable))
           );
        $contents[]['text'] = array(
            array('text' => TEXT_INFO_MEMO),
-           array('text' => tep_draw_textarea_field('memo', 'soft', '30', '5', $pwInfo->memo, 'style="resize: vertical;"class="pw_textarea" onblur="o_submit_single = true;" onfocus="o_submit_single = false;"'.$disable))
+           array('text' => tep_draw_textarea_field('memo', 'soft', '30', '5', $pwInfo->memo, 'style="resize: vertical;font-size:12px"class="pw_textarea" onblur="o_submit_single = true;" onfocus="o_submit_single = false;"'.$disable))
           );
+      if($disable){
+        $open_new_calendar = '<a class="dpicker"></a>';
+      }else{
+        $open_new_calendar = '<a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"></a>';
+      }
         $contents[]['text'] = array(
            array('text' => TEXT_INFO_NEXTDATE),
-           array('text' => '<div class="nextdate_info">' .  '<div class="yui3-skin-sam yui3-g">'.  tep_draw_input_field('nextdate',$pwInfo->nextdate, 'id="input_nextdate"'.$disable).  '<a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"></a> <input type="hidden" name="toggle_open" value="0" id="toggle_open"> <div class="yui3-u" id="new_yui3"><div id="mycalendar"></div></div>' ."</div>")
+           array('text' => '<div class="nextdate_info">' .  '<div class="yui3-skin-sam yui3-g">'.  tep_draw_input_field('nextdate',$pwInfo->nextdate, 'id="input_nextdate"'.$disable).  $open_new_calendar.'<input type="hidden" name="toggle_open" value="0" id="toggle_open"> <div class="yui3-u" id="new_yui3"><div id="mycalendar"></div></div>' ."</div>")
           );
         $contents[]['text'] = array(
            array('text' => TEXT_INFO_PRIVILEGE),
-           array('params' => 'calss="td_input"','text' => tep_draw_radio_field('privilege','15',$pwInfo->privilege==15?true:false,'','onclick="self_radio()" id="self" class="privilege"'.$disable).TEXT_SELF.  tep_draw_radio_field('privilege','7',$pwInfo->privilege==7?true:false,'','class="privilege" id="privilege_s" onclick="privilege_s_radio()"'.$disable).TEXT_PERMISSION_STAFF.  tep_draw_radio_field('privilege','10',$pwInfo->privilege==10?true:false,'','class="privilege" id="privilege_c" onclick="privilege_c_radio()"'.$disable).TEXT_PERMISSION_CHIEF.'&nbsp;&nbsp;'.TEXT_OPERATOR_INFO)
+           array('params' => 'calss="td_input"','text' => tep_draw_radio_field('privilege','15',$pwInfo->privilege==15?true:false,'','onclick="self_radio()" id="self" class="privilege"'.$disable).TEXT_SELF.  tep_draw_radio_field('privilege','7',$pwInfo->privilege==7?true:false,'','class="privilege" id="privilege_s" onclick="privilege_s_radio()"'.$disable).TEXT_PERMISSION_STAFF.  tep_draw_radio_field('privilege','10',$pwInfo->privilege==10?true:false,'','class="privilege" id="privilege_c" onclick="privilege_c_radio()"'.$disable).TEXT_PERMISSION_CHIEF)
           );
+        $contents[]['text'] = array(
+            array('text' => ''),
+            array('text' => TEXT_OPERATOR_INFO)
+            );
       if($pwInfo->self!=''){
         $pw_select_display = 'block';
       }else{
@@ -3853,7 +3864,7 @@ if($pw_id != -1){
       $heading[] = array('align' => 'right', 'text' => $page_str);
       $contents[]['text'] = array(
           array('text' => TEXT_INFO_TITLE),
-          array('text' => tep_draw_input_field('title','','id="title"'.$disable))
+          array('text' => tep_draw_input_field('title','','id="title"style="font-size:12px"'.$disable))
       );
       $contents[]['text'] = array(
           array('text' => TEXT_INFO_PRIORITY),
@@ -3871,22 +3882,22 @@ if($site_id == 0){
       );
       $contents[]['text'] = array(
           array('text' => TEXT_INFO_URL),
-          array('text' => tep_draw_input_field('url','','id="url"'.$disable))
+          array('text' => tep_draw_input_field('url','','id="url"style="font-size:12px"'.$disable))
       );
       $contents[]['text'] = array(
           array('text' => TEXT_INFO_LOGINURL),
-          array('text' => tep_draw_input_field('loginurl','','id="loginurl"'.$disable))
+          array('text' => tep_draw_input_field('loginurl','','id="loginurl"style="font-size:12px"'.$disable))
       );
       $contents[]['text'] = array(
           array('text' => TEXT_INFO_USERNAME),
-          array('text' => tep_draw_input_field('username','','id="username"'.$disable))
+          array('text' => tep_draw_input_field('username','','id="username"style="font-size:12px"'.$disable))
       );
       $pwd_pattern = tep_get_pwd_pattern();
       $pwd_len = tep_get_pwd_len();
       $pwd_pattern_arr = explode(',',$pwd_pattern);
       $contents[]['text'] = array(
           array('text' => TEXT_PWD_LEN),
-          array('text' => tep_draw_input_field('pwd_len',$pwd_len,'id="pwd_len" maxlength="2" size="2"'.$disable)."&nbsp;".  "<button type='button'".$disable." onclick=\"mk_pwd()\">" .  TEXT_BUTTON_MK_PWD."</button>".  tep_draw_input_field('password',tep_get_new_random($pwd_pattern,$pwd_len),'id="password"'.$disable))
+          array('text' => tep_draw_input_field('pwd_len',$pwd_len,'id="pwd_len" maxlength="2" size="2"style="font-size:12px"'.$disable)."&nbsp;".  "<button type='button'".$disable." onclick=\"mk_pwd()\">" .  TEXT_BUTTON_MK_PWD."</button>".  tep_draw_input_field('password',tep_get_new_random($pwd_pattern,$pwd_len),'id="password"'.$disable))
       );
       $contents[]['text'] = array(
           array('text' => TEXT_INFO_PASSWORD),
@@ -3899,19 +3910,28 @@ if($site_id == 0){
       );
       $contents[]['text'] = array(
           array('text' => TEXT_INFO_COMMENT),
-          array('text' => tep_draw_textarea_field('comment', 'soft', '30', '5', '','style="resize: vertical;"onblur="o_submit_single = true;" onfocus="o_submit_single = false;" class="pw_textarea"'.$disable))
+          array('text' => tep_draw_textarea_field('comment', 'soft', '30', '5', '','style="resize: vertical;font-size:12px"onblur="o_submit_single = true;" onfocus="o_submit_single = false;" class="pw_textarea"'.$disable))
       );
       $contents[]['text'] = array(
           array('text' => TEXT_INFO_MEMO),
-          array('text' => tep_draw_textarea_field('memo', 'soft', '30', '5', '', 'style="resize: vertical;"onblur="o_submit_single = true;" onfocus="o_submit_single = false;" class="pw_textarea"'.$disable))
+          array('text' => tep_draw_textarea_field('memo', 'soft', '30', '5', '', 'style="resize: vertical;font-size:12px"onblur="o_submit_single = true;" onfocus="o_submit_single = false;" class="pw_textarea"'.$disable))
       );
+      if($disable){
+        $open_new_calendar = '<a class="dpicker"></a>';
+      }else{
+        $open_new_calendar = '<a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"></a>';
+      }
       $contents[]['text'] = array(
           array('text' => TEXT_INFO_NEXTDATE),
-          array('text' => '<div class="nextdate_info">' .  '<div class="yui3-skin-sam yui3-g">'.  tep_draw_input_field('nextdate','','id="input_nextdate"'.$disable).  '<a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"></a> <input type="hidden" name="toggle_open" value="0" id="toggle_open"> <div class="yui3-u" id="new_yui3"><div id="mycalendar"></div></div>' ."</div>")
+          array('text' => '<div class="nextdate_info"><div class="yui3-skin-sam yui3-g">'.  tep_draw_input_field('nextdate','','id="input_nextdate"'.$disable).$open_new_calendar.'<input type="hidden" name="toggle_open" value="0" id="toggle_open"> <div class="yui3-u" id="new_yui3"><div id="mycalendar"></div></div>' ."</div>")
       );
       $contents[]['text'] = array(
           array('text' => TEXT_INFO_PRIVILEGE),
-          array('params' => 'calss="td_input"','text' => tep_draw_radio_field('privilege','15',false,'','id="self" class="privilege" onclick="self_radio()"'.$disable).TEXT_SELF.  tep_draw_radio_field('privilege','7',true,'','class="privilege" id="privilege_s" onclick="privilege_s_radio()"'.$disable).TEXT_PERMISSION_STAFF.  tep_draw_radio_field('privilege','10',false,'','class="privilege" id="privilege_c" onclick="privilege_c_radio()"').TEXT_PERMISSION_CHIEF."&nbsp;&nbsp;".TEXT_OPERATOR_INFO)
+          array('params' => 'calss="td_input"','text' => tep_draw_radio_field('privilege','15',false,'','id="self" class="privilege" onclick="self_radio()"'.$disable).TEXT_SELF.  tep_draw_radio_field('privilege','7',true,'','class="privilege" id="privilege_s" onclick="privilege_s_radio()"'.$disable).TEXT_PERMISSION_STAFF.  tep_draw_radio_field('privilege','10',false,'','class="privilege" id="privilege_c" onclick="privilege_c_radio()"').TEXT_PERMISSION_CHIEF)
+      );
+      $contents[]['text'] = array(
+          array('text' => ''),
+          array('text' => TEXT_OPERATOR_INFO)
       );
       $selected_user = $ocertify->auth_user;
       $contents[]['text'] = array( 
@@ -3926,7 +3946,7 @@ if($site_id == 0){
            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.TEXT_UNSET_DATA),
            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.TEXT_UNSET_DATA)
       );
-      $button[] = "<input ".$disable." style='font-size:12px' type='submit' value='".IMAGE_SAVE."'>" .  '&nbsp;' .  "<input style='font-size:12px' type='button' ".$disable."  onclick=\"location.href='".  tep_href_link(FILENAME_PW_MANAGER, 'page=' . $_GET['page']) ."'\" value='".TEXT_BUTTON_CLEAR."'>"; 
+      $button[] = "<input ".$disable." style='font-size:12px' type='submit' value='".IMAGE_SAVE."'>" .  '&nbsp;' .  "<input style='font-size:12px' type='button' ".$disable."  onclick='hidden_info_box()' value='".TEXT_BUTTON_CLEAR."'>"; 
       if(!empty($button)){
        $buttons = array('align' => 'center', 'button' => $button);  
       }
@@ -3940,7 +3960,6 @@ if($site_id == 0){
 }else if ($_GET['action'] == 'edit_pw_manager_log'){
 include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_PW_MANAGER);
 include(DIR_FS_ADMIN.'classes/notice_box.php');
-
 $notice_box = new notice_box('popup_order_title', 'popup_order_info');
 $pw_id = $_GET['pw_id'];
 $site_id = $_GET['site_id'];
@@ -4003,7 +4022,7 @@ if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
                              loginurl,username,password,comment,memo
                              ,".$next_str."nextdate,privilege,operator,created_at,
                              updated_at,onoff,update_user from
-                             ".TABLE_IDPW_LOG." order by ".$order_str;
+                             ".TABLE_IDPW_LOG." where idpw_id='".$_GET['pw_id']."' order by ".$order_str;
     }
    $pw_manager_query = tep_db_query($pw_manager_query_raw);
    while($pw_manager_row = tep_db_fetch_array($pw_manager_query)){
@@ -4071,18 +4090,15 @@ if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
          array('text' => TEXT_INFO_MEMO),
          array('text' => $pwInfo->memo)
         );
-      $contents[]['text'] = array(
-         array('text' => TEXT_INFO_CREATED),
-         array('text' => $pwInfo->created_at)
+       $contents[]['text'] = array(
+           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.((tep_not_null($pwInfo->operator))?$pwInfo->operator:TEXT_UNSET_DATA)), 
+           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.((tep_not_null($pwInfo->created_at))?$pwInfo->created_at:TEXT_UNSET_DATA))
+         );
+       $contents[]['text'] = array(
+           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.((tep_not_null($pwInfo->update_user))?$pwInfo->update_user:TEXT_UNSET_DATA)),
+           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.((tep_not_null($pwInfo->updated_at))?$pwInfo->updated_at:TEXT_UNSET_DATA))
         );
-      $contents[]['text'] = array(
-         array('text' => TEXT_INFO_UPDATED),
-         array('text' => $pwInfo->updated_at)
-        );
-      $contents[]['text'] = array(
-         array('text' => TEXT_INFO_OPRATER),
-         array('text' => $pwInfo->update_user)
-        );
+ 
       if($ocertify->npermission == 15){
         if(isset($disable) && $disable){
          $button[] = "<button type='button'".$disable." >" .  TEXT_BUTTON_DELETE."</button>";

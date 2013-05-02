@@ -6,10 +6,10 @@ if (isset($_GET['log']) && $_GET['log'] == 'pw_manager_log') {
    $Id$
 */
   define('MAX_DISPLAY_PW_MANAGER_LOG_RESULTS',20);
-  if($_SESSION['user_permission']!=15){
+/*  if($_SESSION['user_permission']!=15){
   header($_SERVER["SERVER_PROTOCOL"] . " 403 Forbidden");
   exit;
-  }
+  }*/
 
   if(isset($_GET['pw_id'])&&$_GET['pw_id']){
     $pwid = tep_db_prepare_input($_GET['pw_id']);
@@ -68,9 +68,11 @@ if (isset($_GET['log']) && $_GET['log'] == 'pw_manager_log') {
 function show_pw_manager_log(ele,pw_id,page,site_id,pw_l_id){
  sort = document.getElementById('pw_manager_sort').value;
  type = document.getElementById('pw_manager_type').value;
+ search_type = document.getElementById('pw_manager_search_type').value;
+ keywords = document.getElementById('pw_manager_keywords').value;
  $.ajax({
  url: 'ajax.php?&action=edit_pw_manager_log',
- data: {pw_id:pw_id,page:page,site_id:site_id,sort:sort,type:type,pw_l_id:pw_l_id} ,
+ data: {pw_id:pw_id,page:page,site_id:site_id,sort:sort,type:type,pw_l_id:pw_l_id,keywords:keywords,search_type:search_type} ,
  dataType: 'text',
  async : false,
  success: function(data){
@@ -292,7 +294,6 @@ require("includes/note_js.php");
                 <option value="operator"><?php echo PW_MANAGER_SELECT_SEVEN;?></option>
                 <option value="comment"><?php echo PW_MANAGER_SELECT_EIGHT;?></option>
                 <option value="memo"><?php echo PW_MANAGER_SELECT_NINE;?></option>
-                <option value="site_id"><?php echo PW_MANAGER_SELECT_TEN;?></option>
               </select>
               </form>
             </td>
@@ -344,7 +345,7 @@ require("includes/note_js.php");
       <tr>
        <td>
        <?php 
-       echo'<input type="hidden" id="pw_manager_sort" value="'.$_GET['sort'].'"><input type="hidden" id="pw_manager_type" value="'.$_GET['type'].'">';
+       echo'<input type="hidden" id="pw_manager_sort" value="'.$_GET['sort'].'"><input type="hidden" id="pw_manager_type" value="'.$_GET['type'].'"><input type="hidden" id="pw_manager_keywords" value="'.$_GET['keywords'].'"><input type="hidden" id="pw_manager_search_type" value="'.$_GET['search_type'].'">';
        $manager_table_params = array('width'=>'100%','cellpadding'=>'2','border'=>'0', 'cellspacing'=>'0');
        $notice_box = new notice_box('','',$manager_table_params);
        $manager_table_row = array();
@@ -423,6 +424,7 @@ require("includes/note_js.php");
         MAX_DISPLAY_PW_MANAGER_LOG_RESULTS, $pw_manager_query_raw, $pw_manager_query_numrows);
        
     $pw_manager_query = tep_db_query($pw_manager_query_raw);
+    $pw_manager_numrows = tep_db_num_rows($pw_manager_query);
     while($pw_manager_row = tep_db_fetch_array($pw_manager_query)){
       if (( (!@$_GET['pw_l_id']) || (@$_GET['pw_l_id'] == $pw_manager_row['id'])) && (!@$pwInfo) && (substr(@$_GET['action'], 0, 3) != 'new')) {
       $pwInfo = new objectInfo($pw_manager_row);
@@ -503,7 +505,7 @@ require("includes/note_js.php");
       }
       $manager_info[] = array(
           'params' => 'class="dataTableContent" align="right"',
-          'text'   => '<a href="javascript:void(0)" onclick="show_pw_manager_log(this,'.$pw_id.','.$_GET['page'].','.$site_id.','.$pw_manager_row['id'].')">' .  tep_get_signal_pic_info($pw_manager_row['updated_at']) . '</a>'
+          'text'   => '<a href="javascript:void(0)" onclick="show_pw_manager_log(this,'.$pw_id.','.$_GET['page'].','.$site_id.','.$pw_manager_row['id'].')">' . tep_get_signal_pic_info($pw_manager_row['updated_at']) . '</a>'
           );
 $manager_table_row[] = array('params' => $manager_params ,'text' => $manager_info);
     }
@@ -534,6 +536,7 @@ $manager_table_row[] = array('params' => $manager_params ,'text' => $manager_inf
      }else{
       $site_id = 0;
      }
+      if($pw_manager_numrows > 0){
       if($ocertify->npermission == 15){
          if(in_array($site_id,$site_array)){
              echo '<select name="pw_manager_action" onchange="pw_manager_change_action(this.value, \'pw_manager_log_id[]\');">';
@@ -544,16 +547,19 @@ $manager_table_row[] = array('params' => $manager_params ,'text' => $manager_inf
              echo '<option value="1">'.TEXT_PW_MANAGER_DELETE_ACTION.'</option>';
              echo '</select>';
        }
+      }
        ?>
        </td>
        <td colspan="9" align="right">
          <?php
+         if($pw_manager_numrows > 0){
          if($ocertify->npermission == 15){
             if(in_array($site_id,$site_array)){
               echo "<button type='button' onclick=\"delete_all()\">" .  TEXT_BUTTON_DELETE_ALL."</button>&nbsp;&nbsp;"; 
             }else{
               echo "<button type='button'disabled='disabled'>" .  TEXT_BUTTON_DELETE_ALL."</button>&nbsp;&nbsp;"; 
             }
+         }
          }
               echo "<button type='button' onclick=\"location.href='".  tep_href_link(FILENAME_PW_MANAGER,'pw_id='.$pwid.'&site_id='.$site_id) ."'\">".TEXT_BUTTON_BACK."</button>"; 
          ?>
@@ -849,7 +855,7 @@ if(isset($_GET['action']) &&
         }else{
           $sort_where_permission = " or  false)";
         }
-      $pw_manager_query_raw = "select id,title,priority,site_id,url,
+     $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
                              ,".$next_str."
                              nextdate
@@ -878,6 +884,7 @@ if(isset($_GET['action']) &&
                              order by ".$order_str;
       }
     }else{
+    if($_GET['site_id'] == ''){ $_GET['site_id'] = 0; }
     $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
                              ,".$next_str."
@@ -886,7 +893,7 @@ if(isset($_GET['action']) &&
                              updated_at,onoff,update_user
                               from 
                              ".TABLE_IDPW." 
-                             where onoff = '1' 
+                             where site_id ='".$_GET['site_id']."' and onoff = '1' 
                              " .$sort_where . "
                              order by ".$order_str;
     }
@@ -1003,9 +1010,11 @@ function all_select_pw_manager(pw_manager_str){
 function show_pw_manager(ele,pw_id,page,site_id){
  sort = document.getElementById('pw_manager_sort').value;
  type = document.getElementById('pw_manager_type').value;
+ search_type = document.getElementById('pw_manager_search_type').value;
+ keywords = document.getElementById('pw_manager_keywords').value;
  $.ajax({
  url: 'ajax.php?&action=edit_pw_manager',
- data: {pw_id:pw_id,page:page,site_id:site_id,sort:sort,type:type} ,
+ data: {pw_id:pw_id,page:page,site_id:site_id,sort:sort,type:type,keywords:keywords,search_type:search_type} ,
  dataType: 'text',
  async : false,
  success: function(data){
@@ -1032,8 +1041,7 @@ box_warp_height = offset-head_top;
   if (((head_top+ele.offsetTop+$('#show_pw_manager').height()) > $('.box_warp').height())&&($('#show_pw_manager').height()<ele.offsetTop+parseInt(head_top)-$("#orders_list_table").position().top-1)) {
     offset = ele.offsetTop+$("#orders_list_table").position().top-1-$('#show_pw_manager').height()+head_top;
   } else {
-    offset = ele.offsetTop+$("#orders_list_table").position().top+$(ele).height()+head_top;
-    offset = offset + parseInt($('#orders_list_table').attr('cellpadding'))+parseInt($('.compatible table').attr('cellpadding'));
+    offset = ele.offsetTop+$('#orders_list_table').position().top+ele.offsetHeight+head_top;
   }
 }
 $('#show_pw_manager').css('top',offset);
@@ -1060,8 +1068,7 @@ if($('.show_left_menu').width()){
   leftset = parseInt($('.content').attr('cellspacing'))+parseInt($('.content').attr('cellpadding'))*2+parseInt($('.columnLeft').attr('cellspacing'))*2+parseInt($('.columnLeft').attr('cellpadding'))*2+parseInt($('.compatible table').attr('cellpadding'));
 } 
 if(pw_id == -1){
-  orders_list_table = $('#orders_list_table').offset();
-  $('#show_pw_manager').css('top',orders_list_table.top);
+  $('#show_pw_manager').css('top',$('#orders_list_table').offset().top);
 }
 $('#show_pw_manager').css('z-index','1');
 $('#show_pw_manager').css('left',leftset);
@@ -1203,6 +1210,10 @@ function mk_pwd(){
 }
 function delete_select_pw_manager(pw_manager_str){
          sel_num = 0;
+         if (pw_manager_str == null){
+                  document.getElementsByName('pw_manager_action')[0].value = 0;
+                 alert('<?php echo TEXT_PW_MANAGER_MUST_SELECT;?>'); 
+         }
          if (document.del_pw_manager.elements[pw_manager_str].length == null) {
                 if (document.del_pw_manager.elements[pw_manager_str].checked == true){
                      sel_num = 1;
@@ -1523,7 +1534,6 @@ require("includes/note_js.php");
                 <option value="operator"><?php echo PW_MANAGER_SELECT_SEVEN;?></option>
                 <option value="comment"><?php echo PW_MANAGER_SELECT_EIGHT;?></option>
                 <option value="memo"><?php echo PW_MANAGER_SELECT_NINE;?></option>
-                <option value="site_id"><?php echo PW_MANAGER_SELECT_TEN;?></option>
               </select>
               </form>
             </td>
@@ -1545,7 +1555,7 @@ require("includes/note_js.php");
          <tr>
           <td valign="top">
        <?php 
-       echo'<input type="hidden" id="pw_manager_sort" value="'.$_GET['sort'].'"><input type="hidden" id="pw_manager_type" value="'.$_GET['type'].'">';
+       echo'<input type="hidden" id="pw_manager_sort" value="'.$_GET['sort'].'"><input type="hidden" id="pw_manager_type" value="'.$_GET['type'].'"><input type="hidden" id="pw_manager_keywords" value="'.$_GET['keywords'].'"><input type="hidden" id="pw_manager_search_type" value="'.$_GET['search_type'].'">';
        $pw_manager_table_params = array('width'=>'100%','cellpadding'=>'2','border'=>'0', 'cellspacing'=>'0');
        $notice_box = new notice_box('','',$pw_manager_table_params);
        $pw_manager_table_row = array(); 
@@ -1595,6 +1605,7 @@ require("includes/note_js.php");
        
     $pw_manager_query = tep_db_query($pw_manager_query_raw);
     $i=0;
+    $pw_manager_numrows = tep_db_num_rows($pw_manager_query);
     while($pw_manager_row = tep_db_fetch_array($pw_manager_query)){
       $i++;
       if (( (!@$_GET['pw_id']) || (@$_GET['pw_id'] == $pw_manager_row['id'])) && (!@$pwInfo) && (substr(@$_GET['action'], 0, 3) != 'new')) {
@@ -1645,11 +1656,11 @@ require("includes/note_js.php");
           'text'   => '<a target="_blank" href="'.make_blank_url($pw_manager_row['url'],FILENAME_REDIREC_URL).'">'.mb_substr($pw_manager_row['title'],0,12,'utf-8').'</a>'
       );
       $pw_manager_info[] = array(
-          'params' => 'class="dataTableContent_line" id="user_'.$i.'"onclick="copyCode("'.$pw_manager_row['id'].'","username")"',
+          'params' => 'class="dataTableContent_line" id="user_'.$i.'"onclick="copyCode(\''.$pw_manager_row['id'].'\',\'username\')"',
           'text'   => mb_substr($pw_manager_row['username'],0,8,'utf-8')
       );
       $pw_manager_info[] = array(
-          'params' => 'class="dataTableContent_line" id="pwd_'.$i.'"onclick="copyCode("'.$pw_manager_row['id'].'","password")"',
+          'params' => 'class="dataTableContent_line" id="pwd_'.$i.'"onclick="copyCode(\''.$pw_manager_row['id'].'\',\'password\')"',
           'text'   => mb_substr($pw_manager_row['password'],0,8,'utf-8')
       );
         if($pw_manager_row['privilege'] =='7'){
@@ -1673,9 +1684,9 @@ require("includes/note_js.php");
           'text'   => $pw_manager_row['nextdate'] 
       );
 
-      if($_GET['site_id'] == ''){
+      if($_GET['site_id'] == null){
           $_GET['site_id'] = 0;
-        }
+       }
       $pw_manager_info[] = array(
           'params' => 'class="dataTableContent" align="right"',
           'text'   => '<a href="javascript:void(0)" onclick="show_pw_manager(this,'.$pw_manager_row['id'].','.$_GET['page'].','.$_GET['site_id'].')">' .tep_get_signal_pic_info($pw_manager_row['updated_at']). '</a>'
@@ -1705,9 +1716,13 @@ require("includes/note_js.php");
     <tr>
       <td>
       <?php
+      if($_GET['site_id'] == ''){
+      $site_id = 0;
+      }else{
       $site_id = $_GET['site_id'];
+      }
+      if($pw_manager_numrows > 0){
       if($ocertify->npermission == 15){
-        print_r();
          if(in_array($site_id,$site_array)){
              echo '<select name="pw_manager_action" onchange="pw_manager_change_action(this.value, \'pw_manager_id[]\');">';
          }else{
@@ -1717,6 +1732,7 @@ require("includes/note_js.php");
              echo '<option value="1">'.TEXT_PW_MANAGER_DELETE_ACTION.'</option>';
              echo '</select>';
        }
+      }
        ?>
       </td>
       <td></td>
@@ -1729,9 +1745,11 @@ require("includes/note_js.php");
       <td colspan="2" align="right" class="smallText">
       <div class="td_button"> 
       <?php 
+      if($_GET['site_id'] == ''){
+        $_GET['site_id'] = 0;
+      }
       if(in_array($site_id,$site_array)){
-      echo '<button type=\'button\' onclick="show_pw_manager(this,-1,'.$_GET['page'].','.$_GET['site_id'].')" >'; echo IMAGE_NEW_PROJECT;
-      echo "</button>";
+       echo '<button type=\'button\' onclick="show_pw_manager(this,-1,'.$_GET['page'].','.$_GET['site_id'].')" >'; echo IMAGE_NEW_PROJECT; echo "</button>";
       }else{
        echo '<button type=\'button\' disabled="disabled">'.IMAGE_NEW_PROJECT.'</button>';
       }
