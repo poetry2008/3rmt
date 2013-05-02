@@ -91,7 +91,7 @@ class notice_box {
         if(isset($row['text'])&&$row['text']){
           $table_str .= $this->get_td_list($row['text']);
         }
-        $table_str .= '</tr>';
+        $table_str .= '</tr>'."\n";
       }
     }
     $table_str .= '</table>';
@@ -110,7 +110,7 @@ class notice_box {
         }
         $table_str .= '>';
         $table_str .= $arr[$i]['text'];
-        $table_str .= '</td>';
+        $table_str .= '</td>'."\n";
       }
     }else{
         $table_str .= '<td';
@@ -122,7 +122,7 @@ class notice_box {
         }
         $table_str .= '>';
         $table_str .= $arr['text'];
-        $table_str .= '</td>';
+        $table_str .= '</td>'."\n";
     }
     return $table_str;
   }
