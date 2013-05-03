@@ -4102,9 +4102,10 @@ if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
  
       if($ocertify->npermission == 15){
         if(isset($disable) && $disable){
-         $button[] = "<button type='button'".$disable." >" .  TEXT_BUTTON_DELETE."</button>";
+         $button[] = tep_html_element_button(TEXT_BUTTON_DELETE,$disable);
         }else{
-         $button[] = "<button style='font-size:12px' type='button' onclick=\"location.href='".  tep_href_link(FILENAME_PW_MANAGER, 'action=deleteconfirm&log=id_manager_log&pw_l_id='.$pwInfo->id.'&'.tep_get_all_get_params(array('pw_l_id','action','search_type','keywords'))) ."'\">" .  TEXT_BUTTON_DELETE."</button>";
+          $button[] = '<a href="javascript:void(0)">
+            '.tep_html_element_button(TEXT_BUTTON_DELETE,'onclick="location.href=\''.tep_href_link(FILENAME_PW_MANAGER,'action=deleteconfirm&log=id_manager_log&pw_l_id='.$pwInfo->id.'&'.tep_get_all_get_params(array('pw_l_id','action','search_type','keywords'))).'\'"').'</a>';
         }
       }
       if(!empty($button)){
