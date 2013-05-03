@@ -953,10 +953,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
         $computers = tep_get_computers();
         $o2c       = tep_get_computers_by_preorders_id($order->info['orders_id']);
         if ($computers) {
-      ?>
-      <tr>
-      <td class="main"><?php echo HEADER_TEXT_ALERT_TITLE_PREORDERS;?></td>
-      </tr>
+      ?> 
       <tr><td>
       <?php foreach ($computers as $computer) { ?>
           <div id="orders_alert_<?php echo $computer['computers_id'];?>" onclick="preorders_computers(this, <?php echo $computer['computers_id'];?>, '<?php echo $order->info['orders_id'];?>')" class="<?php echo in_array($computer['computers_id'], $o2c) ? 'orders_computer_checked' : 'orders_computer_unchecked' ;?>"><?php echo $computer['computers_name'];?></div>

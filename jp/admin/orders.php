@@ -2713,10 +2713,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
           $computers = tep_get_computers();
           $o2c       = tep_get_computers_by_orders_id($order->info['orders_id']);
           if ($computers) {
-        ?>
-          <tr>
-          <td class="main"><?php echo HEADER_TEXT_ALERT_TITLE;?></td>
-          </tr>
+        ?> 
           <tr><td>
           <?php foreach ($computers as $computer) {?>
           <div id="orders_alert_<?php echo $computer['computers_id'];?>" onclick="orders_computers(this, <?php echo $computer['computers_id'];?>, '<?php echo $order->info['orders_id'];?>');" class="<?php echo in_array($computer['computers_id'], $o2c) ? 'orders_computer_checked' : 'orders_computer_unchecked' ;?>"><?php echo $computer['computers_name'];?></div>
