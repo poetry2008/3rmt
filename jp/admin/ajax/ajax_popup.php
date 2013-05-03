@@ -4104,7 +4104,7 @@ if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
         if(isset($disable) && $disable){
          $button[] = "<button type='button'".$disable." >" .  TEXT_BUTTON_DELETE."</button>";
         }else{
-         $button[] = "<button type='button' onclick=\"location.href='".  tep_href_link(FILENAME_PW_MANAGER, 'action=deleteconfirm&log=id_manager_log&pw_l_id='.$pwInfo->id.'&'.tep_get_all_get_params(array('pw_l_id','action','search_type','keywords'))) ."'\">" .  TEXT_BUTTON_DELETE."</button>";
+         $button[] = "<button style='font-size:12px' type='button' onclick=\"location.href='".  tep_href_link(FILENAME_PW_MANAGER, 'action=deleteconfirm&log=id_manager_log&pw_l_id='.$pwInfo->id.'&'.tep_get_all_get_params(array('pw_l_id','action','search_type','keywords'))) ."'\">" .  TEXT_BUTTON_DELETE."</button>";
         }
       }
       if(!empty($button)){
