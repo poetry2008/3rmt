@@ -357,12 +357,14 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                     $class = substr($file, 0, strrpos($file, '.'));
                     if (tep_class_exists($class)) {
                       $module = new $class;
-                      $sort_order_query = tep_db_query("select * from " .  TABLE_CONFIGURATION . " where configuration_key = 'MODULE_ORDER_TOTAL_".str_replace('OT_', '', strtoupper($class))."_SORT_ORDER' and site_id = '".$site_id."'"); 
-                      $sort_order_info = tep_db_fetch_array($sort_order_query);
-                      if ($sort_order_info) {
-                        $directory_array_sorted[$sort_order_info['configuration_value']][] = $file;
-                      } else {
-                        $directory_array_sorted[$module->sort_order][] = $file;
+                      if ($module->check() > 0) {
+                        $sort_order_query = tep_db_query("select * from " .  TABLE_CONFIGURATION . " where configuration_key = 'MODULE_ORDER_TOTAL_".str_replace('OT_', '', strtoupper($class))."_SORT_ORDER' and site_id = '".$site_id."'"); 
+                        $sort_order_info = tep_db_fetch_array($sort_order_query);
+                        if ($sort_order_info) {
+                          $directory_array_sorted[$sort_order_info['configuration_value']][] = $file;
+                        } else {
+                          $directory_array_sorted[$module->sort_order][] = $file;
+                        }
                       }
                       $directory_array_tmp_sorted[$module->sort_order][] = $file;
                     }
@@ -428,7 +430,9 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                           $module_info['keys'] = $keys_extra;
                           $mInfo = new objectInfo($module_info);
                         }
-                        
+                        if (!($module->check())) {
+                          continue; 
+                        }
                         $even = 'dataTableSecondRow';
                         $odd = 'dataTableRow';
                        
