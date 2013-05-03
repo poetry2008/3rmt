@@ -446,11 +446,7 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                         
                         
                         $module_total_info_row = array();
-                        $module_total_table_title_info = '';
-                        if (isset($module->link) && $module->link) {
-                          $module_total_table_title_info .= '<a href="'.$link_site['url'].'/'.$module->link.'" target="_blank">'.tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW).'</a>';  
-                        }
-                        $module_total_table_title_info .= $module->title;
+                        $module_total_table_title_info = $module->title;
                         $module_total_info_row[] = array(
                             'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_MODULE_TOTAL, tep_get_all_get_params(array('action', 'module')).'module='.$module->code).'\';"',
                             'text' => $module_total_table_title_info
