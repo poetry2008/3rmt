@@ -544,7 +544,7 @@ $manager_table_row[] = array('params' => $manager_params ,'text' => $manager_inf
        </td>
        <td colspan="9" align="right">
          <?php
-              echo "<button type='button' onclick=\"location.href='".  tep_href_link(FILENAME_PW_MANAGER,'pw_id='.$pwid.'&site_id='.$site_id) ."'\">".TEXT_BUTTON_BACK."</button>"; 
+              echo "<button type='button' style='font-size:12px' onclick=\"location.href='".  tep_href_link(FILENAME_PW_MANAGER,'pw_id='.$pwid.'&site_id='.$site_id) ."'\">".TEXT_BUTTON_BACK."</button>"; 
          ?>
        </td>
     </tr>
