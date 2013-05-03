@@ -121,11 +121,9 @@ function delete_alarm_notice(nid, e_type)
       dataType: 'text',
       async: false,
       success: function(data) {
-        var pid = data;
         $('#show_all_notice').css('display', 'none');
         $('#show_all_notice').html(''); 
         show_head_notice(0);
-        $("#orders_alert_"+pid).attr("class","orders_computer_unchecked");
       } 
       });
 }

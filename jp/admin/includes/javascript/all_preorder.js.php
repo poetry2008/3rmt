@@ -805,7 +805,7 @@ var user = data_array[1];
 ele.className='orders_computer_unchecked';
 if(nid != ''){
   $("#alarm_id_"+nid).html('OFF');
-  $("#alarm_user_"+nid).html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+user+'&nbsp;<?php echo TEXT_TIME_LINK;?>');
+  $("#alarm_user_"+nid).html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+user+'&nbsp;<?php echo HEADER_TEXT_ALERT_LINK;?>');
 }
 }
 });
@@ -820,7 +820,7 @@ var user = data_array[1];
 ele.className='orders_computer_checked';
 if(nid != ''){
   $("#alarm_id_"+nid).html('ON');
-  $("#alarm_user_"+nid).html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+user+'&nbsp;<?php echo TEXT_TIME_LINK;?>');
+  $("#alarm_user_"+nid).html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+user+'&nbsp;<?php echo HEADER_TEXT_ALERT_LINK;?>');
 }
 }
 });

@@ -157,7 +157,7 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
   }
 } else if (isset($_GET['action'])&&$_GET['action']=='delete_alarm') {
 /* -----------------------------------------------------
-    功能: 删除指定的notce以及其关联的警报
+    功能: 删除指定的notice
     参数: $_POST['nid'] notcie的id值 
  -----------------------------------------------------*/
   $notice_raw = tep_db_query("select * from ".TABLE_NOTICE." where id = '".$_POST['nid']."' and type = '0'");
@@ -169,17 +169,6 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
   if ($notice) {
     tep_db_query("delete from ".TABLE_ALARM." where alarm_id = '".$notice['from_notice']."'"); 
     tep_db_query("delete from ".TABLE_NOTICE." where id = '".$_POST['nid']."'"); 
-
-    //删除警告提示
-    $alarm_name_query = tep_db_query("select computers_id from ". TABLE_COMPUTERS ." where computers_name='".$notice['title']."'");
-    $alarm_name_array = tep_db_fetch_array($alarm_name_query);
-    tep_db_free_result($alarm_name_query);
-
-    if($alert_orders_array['orders_flag'] == '1'){
-      tep_db_query("delete from ".TABLE_ORDERS_TO_COMPUTERS." where orders_id='".$alert_orders_array['orders_id']."' and computers_id='".(int)$alarm_name_array['computers_id']."'");
-    }else{
-      tep_db_query("delete from ".TABLE_PREORDERS_TO_COMPUTERS." where orders_id='".$alert_orders_array['orders_id']."' and computers_id='".(int)$alarm_name_array['computers_id']."'"); 
-    }
 
     echo $alarm_name_array['computers_id'];
   }
