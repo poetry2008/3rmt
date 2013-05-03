@@ -1,9 +1,12 @@
 <?php
 require('includes/application_top.php');
 require(DIR_FS_ADMIN . 'classes/notice_box.php');
-if (isset($_GET['log']) && $_GET['log'] == 'pw_manager_log') {
+if (isset($_GET['log']) && $_GET['log'] == 'id_manager_log') {
   define('MAX_DISPLAY_PW_MANAGER_LOG_RESULTS',20);
-
+  if($_SESSION['user_permission']!=15){
+  header($_SERVER["SERVER_PROTOCOL"] . " 403 Forbidden");
+  exit;
+  }
   if(isset($_GET['pw_id'])&&$_GET['pw_id']){
     $pwid = tep_db_prepare_input($_GET['pw_id']);
   }

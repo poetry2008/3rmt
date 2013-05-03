@@ -3840,12 +3840,13 @@ if($pw_id != -1){
     if($ocertify->npermission == 15){
      if(isset($disable) && $disable){
        $button_del = "<input style='font-size:12px' type='button' ".$disable." value='".TEXT_BUTTON_DELETE."'>";
+       $button_history = "<input style='font-size:12px' type='button' ".$disable." value='".TEXT_BUTTON_HISTORY."'>";
      }else{
+       $button_history = "<input style='font-size:12px' type='button' onclick=\"location.href='".  tep_href_link(FILENAME_PW_MANAGER, 'log=id_manager_log&pw_id='.$pwInfo->id.'&site_id='.$site_id) ."'\" value='".TEXT_BUTTON_HISTORY."'>";
        $button_del = "<input type='button' style='font-size:12px' onclick=\"location.href='".  tep_href_link(FILENAME_PW_MANAGER, 'page=' . $_GET['page'] .  '&site_id='.$_GET['site_id'].'&pw_id=' .  $pwInfo->id .  '&action=deleteconfirm')  ."'\" value='".TEXT_BUTTON_DELETE."'>";
      }
-    }
-
-      $button[] = "<input ".$disable." style='font-size:12px'type='submit' value='".IMAGE_SAVE."'>" .  '&nbsp;'.$button_del."&nbsp;<input style='font-size:12px' type='button' ".$disable." onclick=\"location.href='".  tep_href_link(FILENAME_PW_MANAGER, 'log=pw_manager_log&pw_id='.$pwInfo->id.'&site_id='.$site_id) ."'\" value='".TEXT_BUTTON_HISTORY."'>";
+    }   
+      $button[] = "<input ".$disable." style='font-size:12px'type='submit' value='".IMAGE_SAVE."'>" .  '&nbsp;'.$button_del."&nbsp;".$button_history;
       if(!empty($button)){
         $buttons = array('align' => 'center', 'button' => $button);
       }
@@ -4103,7 +4104,7 @@ if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
         if(isset($disable) && $disable){
          $button[] = "<button type='button'".$disable." >" .  TEXT_BUTTON_DELETE."</button>";
         }else{
-         $button[] = "<button type='button' onclick=\"location.href='".  tep_href_link(FILENAME_PW_MANAGER, 'action=deleteconfirm&log=pw_manager_log&pw_l_id='.$pwInfo->id.'&'.tep_get_all_get_params(array('pw_l_id','action','search_type','keywords'))) ."'\">" .  TEXT_BUTTON_DELETE."</button>";
+         $button[] = "<button type='button' onclick=\"location.href='".  tep_href_link(FILENAME_PW_MANAGER, 'action=deleteconfirm&log=id_manager_log&pw_l_id='.$pwInfo->id.'&'.tep_get_all_get_params(array('pw_l_id','action','search_type','keywords'))) ."'\">" .  TEXT_BUTTON_DELETE."</button>";
         }
       }
       if(!empty($button)){
