@@ -202,13 +202,6 @@ function search_type_changed(elem){
    if ($('#keywords').val() && elem.selectedIndex != 0) 
         document.forms.orders1.submit();
 }
-<?php //删除全部数据?>
-function delete_all(){
-  if(confirm('<?php echo TEXT_HISTORY_DELETE;?>')){
-    location.href='<?php echo
-      tep_href_link(FILENAME_PW_MANAGER,'action=deleteconfirm&select=all&log=pw_manager_log&pw_id='.$pwid);?>';
-  }
-}
 <?php //选择删除全部数据?>
 function all_select_pw_manager_log(pw_manager_str){
         var check_flag = document.del_pw_manager_log.all_check.checked;
@@ -549,15 +542,6 @@ $manager_table_row[] = array('params' => $manager_params ,'text' => $manager_inf
        </td>
        <td colspan="9" align="right">
          <?php
-         if($pw_manager_numrows > 0){
-         if($ocertify->npermission == 15){
-            if(in_array($site_id,$site_array)){
-              echo "<button type='button' onclick=\"delete_all()\">" .  TEXT_BUTTON_DELETE_ALL."</button>&nbsp;&nbsp;"; 
-            }else{
-              echo "<button type='button'disabled='disabled'>" .  TEXT_BUTTON_DELETE_ALL."</button>&nbsp;&nbsp;"; 
-            }
-         }
-         }
               echo "<button type='button' onclick=\"location.href='".  tep_href_link(FILENAME_PW_MANAGER,'pw_id='.$pwid.'&site_id='.$site_id) ."'\">".TEXT_BUTTON_BACK."</button>"; 
          ?>
        </td>
