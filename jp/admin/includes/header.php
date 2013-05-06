@@ -28,7 +28,7 @@ function calc_notice_time(leave_time, nid, start_calc, alarm_flag, alarm_date)
 
   if(alert_update_id == ''){
     alert_update_id = nid; 
-  } 
+  }
   var now_timestamp = Date.parse(new Date());
   
   now_timestamp_str = now_timestamp.toString().substr(0, 10);
