@@ -137,7 +137,7 @@ if ($_POST['orders_id'] &&
   $user_info = tep_get_user_info($ocertify->auth_user);
   if($alarm_id_array['alarm_id'] != ''){
     tep_db_query("update ".TABLE_ALARM." set alarm_show='0' where orders_id='".$_GET['orders_id']."' and title='".$alarm_name_array['computers_name']."' and alarm_flag='1' and orders_flag='0'"); 
-    tep_db_query("update ".TABLE_NOTICE." set created_at=now(),user='".$user_info['name']."' where from_notice='".$alarm_id_array['alarm_id']."'");
+    tep_db_query("update ".TABLE_NOTICE." set created_at=now(),user='".$user_info['name']."',is_show='1' where from_notice='".$alarm_id_array['alarm_id']."'");
   }else{
     //获取警告过期的天数
     $alarm_day = get_configuration_by_site_id('ALARM_EXPIRED_DATE_SETTING',0);
