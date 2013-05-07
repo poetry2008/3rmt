@@ -9237,23 +9237,30 @@ function tep_get_notice_info($return_type = 0)
   global $ocertify;
 
   //计算剩余的记录
-  $notice_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and a.alarm_flag='0' and n.user = '".$ocertify->auth_user."'"; 
+  $notice_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and n.is_show='1' and a.alarm_flag='0' and n.user = '".$ocertify->auth_user."'"; 
   
-  $notice_micro_sql = "select * from ".TABLE_NOTICE." where type = '1' and id not in (select notice_id from ".TABLE_NOTICE_TO_MICRO_USER." n where n.user = '".$ocertify->auth_user."')";
+  $notice_micro_sql = "select * from ".TABLE_NOTICE." where type = '1' and is_show='1' and id not in (select notice_id from ".TABLE_NOTICE_TO_MICRO_USER." n where n.user = '".$ocertify->auth_user."')";
 
-  $alarm_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and a.alarm_flag='1'";
+  $alarm_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and n.is_show='1' and a.alarm_flag='1'";
   
   $notice_total_sql = "select * from (".$notice_order_sql." union ".$notice_micro_sql." union ".$alarm_order_sql.") taf"; 
   $notice_list_raw = tep_db_query($notice_total_sql);  
 
   $notice_list_num = tep_db_num_rows($notice_list_raw);
 
+  //获取下拉列表数据的ID
+  $notice_id_array = array();
+  while($notice_list_array = tep_db_fetch_array($notice_list_raw)){
+
+    $notice_id_array[] = $notice_list_array['id'];
+  }
+
   tep_db_free_result($notice_list_raw);
 
   $order_notice_array = array();
   $micro_notice_array = array();
 
-  $order_notice_raw = tep_db_query("select id, type, title, set_time, from_notice, user,created_at from (".$notice_order_sql." union ".$notice_micro_sql." union ".$alarm_order_sql.") taf where type = '0' order by created_at desc,set_time asc limit 2");
+  $order_notice_raw = tep_db_query("select id, type, title, set_time, from_notice, user,created_at from (".$notice_order_sql." union ".$notice_micro_sql." union ".$alarm_order_sql.") taf where type = '0' and is_show='1' order by created_at desc,set_time asc limit 2");
  
   $notice_num = 0;
   $notice_tmp_num = tep_db_num_rows($order_notice_raw); 
@@ -9270,6 +9277,7 @@ function tep_get_notice_info($return_type = 0)
     $order_notice_array['type'] = $order_notice['type'];
     $order_notice_array['user'] = $order_notice['user'];
     $order_notice_array['created_at'] = $order_notice['created_at'];
+    unset($notice_id_array[array_search($order_notice['id'],$notice_id_array)]);
   }
 
   $micro_notice_raw = tep_db_query("select id, title, set_time, from_notice, created_at from ".TABLE_NOTICE." where type = '1' and id not in (select notice_id from ".TABLE_NOTICE_TO_MICRO_USER." n where n.user = '".$ocertify->auth_user."') order by set_time asc, created_at desc limit 2");
@@ -9286,7 +9294,10 @@ function tep_get_notice_info($return_type = 0)
     $micro_notice_array['set_time'] = $micro_notice['set_time']; 
     $micro_notice_array['from_notice'] = $micro_notice['from_notice']; 
     $micro_notice_array['created_at'] = $micro_notice['created_at'];
+    unset($notice_id_array[array_search($micro_notice['id'],$notice_id_array)]);
   }
+
+  $notice_id_str = implode(',',$notice_id_array);
   
   $show_type = 0; 
   $rise_bg = 0;
@@ -9413,6 +9424,7 @@ function tep_get_notice_info($return_type = 0)
     $html_str .= '</tr>'; 
     $html_str .= '</table>'; 
     $html_str .= '<input type="hidden" value="'.$more_single.'" name="more_single" id="more_single">'; 
+    $html_str .= '<input type="hidden" value="'.$notice_id_str.'" id="notice_id_str">';
     if ($return_type == 1) {
       return $more_single.'|||'.$leave_time.'|||'.$order_notice_array['id'].'|||'.$html_str.'|||'.$alarm_flag_array['alarm_id'].'|||'.$alarm_flag_array['alarm_show'].'|||'.$order_notice_array['user'];
     } 
