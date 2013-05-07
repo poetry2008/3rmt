@@ -121,12 +121,16 @@ function delete_alarm_notice(nid, e_type)
       dataType: 'text',
       async: false,
       success: function(data) {
-        var notice_id_str = $("#notice_id_str").val();
+        if($("#notice_id_str").val()){
+          var notice_id_str = $("#notice_id_str").val();
+        }
         $('#show_all_notice').css('display', 'none');
         $('#show_all_notice').html(''); 
         show_head_notice(0);
-        $("#notice_id_str").remove();
-        $('#show_all_notice').append('<input type="hidden" value="'+notice_id_str+'" id="notice_id_str">');
+        if($("#notice_id_str").val()){
+          $("#notice_id_str").remove();
+          $('#show_all_notice').append('<input type="hidden" value="'+notice_id_str+'" id="notice_id_str">');
+        }
       } 
       });
 }
@@ -158,18 +162,20 @@ function show_head_notice(no_type)
         if (data != '') {
           data_info = data.split('|||');
 
-          var notice_id_str = $("#notice_id_str").val();
-          var notice_id_array = new Array();
-          var notice_new_flag = true;
-          notice_id_array = notice_id_str.split(",");
-          for(x in notice_id_array){
+          if($("#notice_id_str").val()){
+            var notice_id_str = $("#notice_id_str").val();
+            var notice_id_array = new Array();
+            var notice_new_flag = true;
+            notice_id_array = notice_id_str.split(",");
+            for(x in notice_id_array){
 
-            if(notice_id_array[x] == data_info[2]){
+              if(notice_id_array[x] == data_info[2]){
 
-              notice_new_flag = false;
-              break;
-            }
-          } 
+                notice_new_flag = false;
+                break;
+              }
+            } 
+          }
 
           if (document.getElementById('leave_time_'+data_info[2])) {
             if (data_info[0] != document.getElementById('more_single').value) {
@@ -209,8 +215,10 @@ function show_head_notice(no_type)
             $('#alert_close').css('background-color','darkred');
             alert_update_id = data_info[2];
           }else{
-            $("#notice_id_str").remove();
-            $('#show_all_notice').append('<input type="hidden" value="'+notice_id_str+'" id="notice_id_str">'); 
+            if($("#notice_id_str").val()){
+              $("#notice_id_str").remove();
+              $('#show_all_notice').append('<input type="hidden" value="'+notice_id_str+'" id="notice_id_str">'); 
+            }
           }
           setTimeout(function() {show_head_notice(1)}, 35000);
         }
