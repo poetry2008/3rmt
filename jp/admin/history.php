@@ -374,7 +374,7 @@ case 'd_submit':
   header("Location:history.php?action=dougyousya_categories&cPath=".$cPath."&cid=".$cID."&did=".$did."&fullpath=".$_POST['fullpath']);
   break;
 case 'dougyousya':
-  //要先把游戏找出来再进行操作
+  //要先把找出来再进行操作
 
   $did = $_GET['dougyousya_id'];
   $sql = 'select sdc.categories_id,cd.categories_name  from categories_description

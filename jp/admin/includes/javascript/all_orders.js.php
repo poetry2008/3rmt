@@ -136,7 +136,6 @@ function mail_text(st,tt,ot){
     chk[0] = 0;
   }
 
-  <?php // 如果有了游戏人物名则不允许多选?>
 
   if((chk.length > 1)  && window.status_text[CI][0].indexOf('${ORDER_A}') != -1){
     alert('<?php echo JS_TEXT_ALL_ORDERS_NOT_CHOOSE;?>');
@@ -642,7 +641,6 @@ function new_mail_text_orders(ele,st,tt,ot){
     chk[0] = 0;
   }
 
-  <?php // 如果有了游戏人物名则不允许多选?>
 
   if((chk.length > 1)  && window.status_text[CI][0].indexOf('${ORDER_A}') != -1){
     alert('<?php echo JS_TEXT_ALL_ORDERS_NOT_CHOOSE;?>');
@@ -717,7 +715,6 @@ function new_mail_text(ele,st,tt,ot){
     chk[0] = 0;
   }
 
-  <?php // 如果有了游戏人物名则不允许多选?>
 
   if((chk.length > 1)  && window.status_text[CI][0].indexOf('${ORDER_A}') != -1){
     alert('<?php echo JS_TEXT_ALL_ORDERS_NOT_CHOOSE;?>');

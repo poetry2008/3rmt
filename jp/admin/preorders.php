@@ -885,7 +885,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     $payment_code = payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE);
 ?>
 <script>
-  // 游戏人物名，订单详细页用来替换邮件内容
   var orders_status_id = <?php echo $order->info['orders_status'];?>;
   window.orderStr = '<?php echo  str_replace(array("\r\n","\r","\n"), array('\n', '\n', '\n'), orders_a($order->info['orders_id'], array(array('orders_id' => $order->info['orders_id']))));?>';
 </script>
@@ -3252,7 +3251,6 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
 <?php }?>
   </table>
 <script language="javascript">
-  // 游戏人物名字符串，订单列表页用来替换邮件内容
   window.orderStr = new Array();
   // 订单所属网站
   window.orderSite = new Array();

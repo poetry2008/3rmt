@@ -2644,7 +2644,6 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
   $order = new order($oID);
   ?>
     <script>
-    // 游戏人物名，订单详细页用来替换邮件内容
     var orders_status_id = <?php echo $order->info['orders_status'];?>;
   window.orderStr = '<?php echo  str_replace(array("\r\n","\r","\n"), array('\n', '\n', '\n'), orders_a($order->info['orders_id'], array(array('orders_id' => $order->info['orders_id']))));?>';
   </script>
@@ -5415,7 +5414,6 @@ if($c_parent_array['parent_id'] == 0){
             <?php }?>
             </table>
             <script language="javascript">
-            // 游戏人物名字符串，订单列表页用来替换邮件内容
             window.orderStr = new Array();
           // 订单所属网站
           window.orderSite = new Array();
