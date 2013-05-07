@@ -74,7 +74,7 @@ class HM_Item_Myname extends HM_Item_Basic
     }else {
       $classrequire = '';
     }
-    if ($m){
+    if (!$m){
       echo "<input id='hidden".$this->formname."' type='hidden' name='".$this->formname."'>";
     }
     echo $this->beforeInput."<span id='".$this->formname."'type='text' class='".$classrequire." outform'size='".$this->size."' name='".$this->formname."' >".$this->getDefaultValue()."</span >";
