@@ -317,7 +317,7 @@ while($address_array = tep_db_fetch_array($address_query)){
   echo '<tr id = "show_value_'.$address_array['id'].'" class="'.$nowColor.'" '. $onmouseover .'>' . "\n";
   echo '<td onclick="document.location.href=\'?page='. $_GET['page'] .'&id='. $address_array['id'] .'\'">'.$address_array['title'].'</td>';
   echo '<td onclick="document.location.href=\'?page='. $_GET['page'] .'&id='. $address_array['id'] .'\'">'.$address_array['name'].'</td>';
-  echo '<td onclick="document.location.href=\'?page='. $_GET['page'] .'&id='. $address_array['id'] .'\'">'.$address_array['comment'].'</td>';
+  echo '<td onclick="document.location.href=\'?page='. $_GET['page'] .'&id='.  $address_array['id'] .'\'">'.mb_substr(strip_tags(stripslashes($address_array['comment'])),0,30,'utf-8').'...</td>';
   echo '<td onclick="document.location.href=\'?page='. $_GET['page'] .'&id='. $address_array['id'] .'\'">'.$address_type_str.'</td>';
   echo '<td onclick="document.location.href=\'?page='. $_GET['page'] .'&id='. $address_array['id'] .'\'">'.$address_array['num_limit'].'</td>';
   echo '<td onclick="document.location.href=\'?page='. $_GET['page'] .'&id='. $address_array['id'] .'\'">'.$address_array['required'].'</td>';

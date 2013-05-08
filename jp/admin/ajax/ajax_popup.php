@@ -2826,7 +2826,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
    );
     $configuration_contents[]['text'] = array(
       array('text' => str_replace('&nbsp;','',$cInfo_configuration_title)),
-      array('text' => $value_field.'<br><font size="1">'.$cInfo->configuration_description.'</font>')
+      array('text' => $value_field.'<br>'.$cInfo->configuration_description)
    );
   $configuration_contents[]['text'] = array(
         array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.((tep_not_null($cInfo->user_added))?$cInfo->user_added:TEXT_UNSET_DATA)), 
@@ -2933,7 +2933,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   $configuration_user_update = tep_db_fetch_array(tep_db_query('select * from configuration where configuration_key="'.$cInfo->configuration_key.'" and site_id = "'.$site_id.'"'));
   $contents[]['text'] = array(
     array('text' => $fetch_result_configuration_title),
-    array('text' => $value_field.'<br><font size="1">'.$cInfo->configuration_description.'</font>')
+    array('text' => $value_field.'<br>'.$cInfo->configuration_description)
     );
   $contents[]['text'] = array(
         array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.((tep_not_null($configuration_user_update['user_added']))?$configuration_user_update['user_added']:TEXT_UNSET_DATA)), 
