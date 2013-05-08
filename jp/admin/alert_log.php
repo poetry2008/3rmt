@@ -312,7 +312,7 @@ function select_logs_change(value,logs_list_id)
 
   if(sel_num == 1){
     if (confirm("'.TEXT_LOGS_EDIT_CONFIRM.'")) {
-      document.edit_logs.action = "'.FILENAME_ALERT_LOG.'";
+      document.edit_logs.action = "'.FILENAME_ALERT_LOG.($_GET['page'] != '' ? '?page='.$_GET['page'] : '').'";
       document.edit_logs.submit(); 
     }else{
 
