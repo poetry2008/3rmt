@@ -113,6 +113,7 @@ if ($rec_c % 2) {
       $alert_orders_id = ''; 
     }
 
+    echo '<td class="main" ><input type="checkbox" value="'.$arec['id'].'" name="logs_list_id[]"></td>'."\n";
     echo '<td class="main" >' . $alert_user . "</td>\n";
     echo '<td class="main" >' . $alert_button_name . "</td>\n";
     echo '<td class="main" >' . $alert_orders_id . "</td>\n";
@@ -185,8 +186,10 @@ function UserOnceAlertLog_list() {
   if ($nrow > 0) {                      // 取不到记录的时候
 
     // 表标签的开始
+    echo '<form action="'.FILENAME_ALERT_LOG.'" method="post" name="edit_logs">';
     echo '<table width="100%" ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
     echo "<tr class='dataTableHeadingRow'>\n";
+    echo '<td class="dataTableHeadingContent"><input type="hidden" name="execute_delete" value="1"><input type="checkbox" onclick="all_select_logs(\'logs_list_id[]\');" name="all_check"></td>' . "\n";
     echo '<td class="dataTableHeadingContent">' . TABLE_HEADING_USERNAME . '</td>' . "\n";      
     echo '<td class="dataTableHeadingContent">' . TABLE_HEADING_TYPE . '</td>' . "\n";
     echo '<td class="dataTableHeadingContent">' . TABLE_HEADING_ORDERS_ID . '</td>' . "\n";
@@ -197,6 +200,15 @@ function UserOnceAlertLog_list() {
     echo "</tr>\n";
     show_alert_log_list($oresult);   
     echo "</table>\n";
+    echo '</form>';
+    if($ocertify->npermission == 15){
+      echo '<div class="td_box">';
+      echo '<select name="edit_logs_list" onchange="select_logs_change(this.value,\'logs_list_id[]\');">';
+      echo '<option value="0">'.TEXT_LOGS_EDIT_SELECT.'</option>';
+      echo '<option value="1">'.TEXT_LOGS_EDIT_DELETE.'</option>';
+      echo '</select>';
+      echo '</div>';
+    }
 
     show_page_ctl();       // 页面控制按钮的显示
  
@@ -210,30 +222,31 @@ function UserOnceAlertLog_list() {
   处理执行函数
  ============================================= */
 /*--------------------------------------
-  功能: 经过一定时间删除就的认证日志
+  功能: 删除指定的数据 
   参数: 无
   返回值: 删除执行(boolean)
  --------------------------------------*/
 function OncePwdLogDelete_execute() {
 
-  if ( 0 < $GLOBALS['aval']['span']) {
-    $sspan_date = date ("Y-m-d H:i:s", mktime (date(H), date(i), date(s),date(m), date(d) - (int)$GLOBALS['aval']['span'], date(Y)));
+  $logs_list_array = $_POST['logs_list_id'];
+  $logs_list_str = implode(',',$logs_list_array);
 
-    $alert_query = tep_db_query("select from_notice from ".TABLE_NOTICE." where type='0' and created_at < '$sspan_date'");
-    while($alert_array = tep_db_fetch_array($alert_query)){
-      tep_db_query("delete from ".TABLE_ALARM." where alarm_id='".$alert_array['from_notice']."'");
-    }
-    tep_db_free_result($alert_query);
-
-    $alert_query = tep_db_query("select id,from_notice from ".TABLE_NOTICE." where type='1' and created_at < '$sspan_date'");
-    while($alert_array = tep_db_fetch_array($alert_query)){
-      tep_db_query("delete from micro_logs where log_id='".$alert_array['from_notice']."'");
-      tep_db_query("delete from ".TABLE_NOTICE_TO_MICRO_USER." where notice_id = '".$alert_array['id']."'");
-      tep_db_query("delete from micro_to_user where micro_id = '".$alert_array['from_notice']."'");
-    }
-    tep_db_free_result($alert_query);
-    $result = tep_db_query("delete from ".TABLE_NOTICE." where created_at < '$sspan_date'");
+  $alert_query = tep_db_query("select from_notice from ".TABLE_NOTICE." where type='0' and id in (".$logs_list_str.")");
+  while($alert_array = tep_db_fetch_array($alert_query)){
+    tep_db_query("delete from ".TABLE_ALARM." where alarm_id='".$alert_array['from_notice']."'");
   }
+  tep_db_free_result($alert_query);
+
+  $alert_query = tep_db_query("select id,from_notice from ".TABLE_NOTICE." where type='1' and id in (".$logs_list_str.")");
+  while($alert_array = tep_db_fetch_array($alert_query)){
+    tep_db_query("delete from micro_logs where log_id='".$alert_array['from_notice']."'");
+    tep_db_query("delete from ".TABLE_NOTICE_TO_MICRO_USER." where notice_id = '".$alert_array['id']."'");
+    tep_db_query("delete from micro_to_user where micro_id = '".$alert_array['from_notice']."'");
+  }
+  tep_db_free_result($alert_query);
+
+  $result = tep_db_query("delete from ".TABLE_NOTICE." where id in (".$logs_list_str.")");
+    
   if ($oresult) @tep_db_free_result($oresult);    // 开放结果项目
 
   return TRUE;
@@ -258,6 +271,58 @@ function formConfirm(type) {
   else return false;
 }
 //-->
+
+function all_select_logs(logs_list_id)
+{
+  var check_flag = document.edit_logs.all_check.checked;
+  if (document.edit_logs.elements[logs_list_id]) {
+    if (document.edit_logs.elements[logs_list_id].length == null) {
+      if (check_flag == true) {
+        document.edit_logs.elements[logs_list_id].checked = true;
+      } else {
+        document.edit_logs.elements[logs_list_id].checked = false;
+      }
+    } else {
+      for (i = 0; i < document.edit_logs.elements[logs_list_id].length; i++) {
+        if (check_flag == true) {
+          document.edit_logs.elements[logs_list_id][i].checked = true;
+        } else {
+          document.edit_logs.elements[logs_list_id][i].checked = false;
+        }
+      }
+    }
+  }
+}
+
+function select_logs_change(value,logs_list_id)
+{
+  sel_num = 0;
+  if (document.edit_logs.elements[logs_list_id].length == null) {
+    if (document.edit_logs.elements[logs_list_id].checked == true) {
+      sel_num = 1;
+    }
+  } else {
+    for (i = 0; i < document.edit_logs.elements[logs_list_id].length; i++) {
+      if (document.edit_logs.elements[logs_list_id][i].checked == true) {
+        sel_num = 1;
+        break;
+      }
+    }
+  } 
+
+  if(sel_num == 1){
+    if (confirm("'.TEXT_LOGS_EDIT_CONFIRM.'")) {
+      document.edit_logs.action = "'.FILENAME_ALERT_LOG.'";
+      document.edit_logs.submit(); 
+    }else{
+
+      document.getElementsByName("edit_logs_list")[0].value = 0;
+    } 
+  }else{
+    document.getElementsByName("edit_logs_list")[0].value = 0;
+    alert("'.TEXT_LOGS_EDIT_MUST_SELECT.'"); 
+  }
+}
 </script>
 ';
 

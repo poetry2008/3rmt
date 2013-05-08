@@ -119,7 +119,7 @@ if ($_POST['orders_id'] &&
   tep_db_perform('preorders', array('orders_inputed_flag' => $_GET['orders_inputed_flag']), 'update', "orders_id='".$_GET['orders_id']."'");
 } else if ($_GET['action'] == 'delete' && $_GET['orders_id'] && $_GET['computers_id']) {
 /*-----------------------------------------
- 功能: 删除订单和计算机的关联，及删除警告提示 
+ 功能: 删除订单和按钮的关联，及关闭警告提示 
  参数: $_GET['orders_id']  订单ID
  参数: $_GET['computers_id'] 计算机ID值
  ----------------------------------------*/
@@ -135,14 +135,11 @@ if ($_POST['orders_id'] &&
   tep_db_free_result($alarm_id_query);
  
   $user_info = tep_get_user_info($ocertify->auth_user);
-  if($alarm_id_array['alarm_id'] != ''){
-    tep_db_query("update ".TABLE_ALARM." set alarm_show='0' where orders_id='".$_GET['orders_id']."' and title='".$alarm_name_array['computers_name']."' and alarm_flag='1' and orders_flag='0'"); 
-    tep_db_query("update ".TABLE_NOTICE." set created_at=now(),user='".$user_info['name']."',is_show='1' where from_notice='".$alarm_id_array['alarm_id']."'");
-  }else{
-    //获取警告过期的天数
-    $alarm_day = get_configuration_by_site_id('ALARM_EXPIRED_DATE_SETTING',0);
-    $alarm_date = date('Y-m-d H:i:00',strtotime("+".$alarm_day." days")); 
-    $sql_data_array = array(
+  
+  //获取警告过期的天数
+  $alarm_day = get_configuration_by_site_id('ALARM_EXPIRED_DATE_SETTING',0);
+  $alarm_date = date('Y-m-d H:i:00',strtotime("+".$alarm_day." days")); 
+  $sql_data_array = array(
         'title' => $alarm_name_array['computers_name'],
         'orders_id' => $_GET['orders_id'], 
         'alarm_date' => $alarm_date,
@@ -152,11 +149,11 @@ if ($_POST['orders_id'] &&
         'alarm_show'=> '0',
         'orders_flag'=>'0'
         );  
-    tep_db_perform(TABLE_ALARM, $sql_data_array);         
+  tep_db_perform(TABLE_ALARM, $sql_data_array);         
         
-    $alarm_id = tep_db_insert_id();
+  $alarm_id = tep_db_insert_id();
            
-    $sql_data_array = array(
+  $sql_data_array = array(
         'type' => 0,
         'title' => $alarm_name_array['computers_name'],
         'set_time' => $alarm_date,
@@ -164,13 +161,10 @@ if ($_POST['orders_id'] &&
         'user' => $user_info['name'],
         'created_at' => 'now()'
         ); 
-    tep_db_perform(TABLE_NOTICE, $sql_data_array); 
-  }
-
-  echo $alarm_id_array['alarm_id'].'|||'.$user_info['name'];
+  tep_db_perform(TABLE_NOTICE, $sql_data_array); 
 } else if ($_GET['action'] == 'insert' && $_GET['orders_id'] && $_GET['computers_id']) {
 /*----------------------------------------
- 功能: 添加订单和计算机关联，及订单警告提示 
+ 功能: 添加订单和按钮关联，及订单警告提示 
  参数: $_GET['orders_id']  订单ID
  参数: $_GET['computers_id'] 计算机ID值
  ---------------------------------------*/
@@ -185,7 +179,7 @@ if ($_POST['orders_id'] &&
   $alarm_id_num = tep_db_num_rows($alarm_id_query);
   tep_db_free_result($alarm_id_query);
   $user_info = tep_get_user_info($ocertify->auth_user);
-  if($alarm_id_num == 0){
+
   //获取警告过期的天数
   $alarm_day = get_configuration_by_site_id('ALARM_EXPIRED_DATE_SETTING',0);
   $alarm_date = date('Y-m-d H:i:00',strtotime("+".$alarm_day." days")); 
@@ -211,23 +205,7 @@ if ($_POST['orders_id'] &&
       'user' => $user_info['name'],
       'created_at' => 'now()'
       ); 
-  tep_db_perform(TABLE_NOTICE, $sql_data_array); 
-  }else{
-  //更新警告提示
-  $alarm_name_query = tep_db_query("select computers_name from ". TABLE_COMPUTERS ." where computers_id='".(int)$_GET['computers_id']."'");
-  $alarm_name_array = tep_db_fetch_array($alarm_name_query);
-  tep_db_free_result($alarm_name_query);
-
-  $alarm_id_query = tep_db_query("select alarm_id from ". TABLE_ALARM ." where orders_id='".$_GET['orders_id']."' and title='".$alarm_name_array['computers_name']."' and alarm_flag='1' and orders_flag='0'");
-  $alarm_id_array = tep_db_fetch_array($alarm_id_query);
-  tep_db_free_result($alarm_id_query);
-
-  tep_db_query("update ".TABLE_ALARM." set alarm_show='1' where orders_id='".$_GET['orders_id']."' and title='".$alarm_name_array['computers_name']."' and alarm_flag='1' and orders_flag='0'");
-
-  tep_db_query("update ".TABLE_NOTICE." set created_at=now(),user='".$user_info['name']."' where from_notice='".$alarm_id_array['alarm_id']."'");
-
-  echo $alarm_id_array['alarm_id'].'|||'.$user_info['name']; 
-  }
+  tep_db_perform(TABLE_NOTICE, $sql_data_array);  
 } else if ($_GET['action'] == 'last_customer_action') {
 /*---------------------------------------
  功能: 最后顾客操作
