@@ -76,6 +76,7 @@ if ($rec_c % 2) {
         .'\'" >';
     }
     $alert_button_comment = '';
+    $alert_button_title = '';
     //根据不同的提醒类型，获取不同的内容
     if($arec['type'] == '0'){
 
@@ -94,9 +95,17 @@ if ($rec_c % 2) {
         }else{
           $alert_button_name = HEADER_TEXT_ALERT_TITLE_PREORDERS; 
         }
-        $alert_button_comment = '「'.$alarm_info_array['title'].'」/&nbsp;'.($alarm_info_array['alarm_show'] == '1' ? 'ON' : 'OFF');
+        $alert_button_comment = '「'.(mb_strlen($alarm_info_array['title'],'utf-8') > 30 ? mb_substr($alarm_info_array['title'],0,30,'utf-8').'...' : $alarm_info_array['title']).'」/&nbsp;'.($alarm_info_array['alarm_show'] == '1' ? 'ON' : 'OFF');
       }else{
         $alert_button_name = NOTICE_ALARM_TITLE; 
+        $alert_button_array = explode($alarm_info_array['orders_id'],$alarm_info_array['title']);
+        if($alert_button_array[0] == ''){
+
+          array_shift($alert_button_array);
+          $alert_button_title = implode($alarm_info_array['orders_id'],$alert_button_array);
+        }else{
+          $alert_button_title = $alarm_info_array['title']; 
+        }
         $alert_button_comment = $arec['set_time'];
       }
       $alert_orders_id = $alarm_info_array['orders_id'];
@@ -109,15 +118,14 @@ if ($rec_c % 2) {
       $user_info = tep_get_user_info($alert_user);
       $alert_user = $user_info['name'];
       $alert_button_name = NOTICE_EXTEND_TITLE;
-      $alert_button_comment = $arec['title'];
+      $alert_button_comment = mb_strlen($arec['title'],'utf-8') > 30 ? mb_substr($arec['title'],0,30,'utf-8').'...' : $arec['title'];
       $alert_orders_id = ''; 
     }
 
     echo '<td class="main" ><input type="checkbox" value="'.$arec['id'].'" name="logs_list_id[]"></td>'."\n";
     echo '<td class="main" >' . $alert_user . "</td>\n";
     echo '<td class="main" >' . $alert_button_name . "</td>\n";
-    echo '<td class="main" >' . $alert_orders_id . "</td>\n";
-    echo '<td class="main" >' . $alert_button_comment . "</td>\n"; 
+    echo '<td class="main" >' . ($alert_orders_id != '' ? $alert_orders_id . '&nbsp;&nbsp;' : '') . ($alert_button_title != '' ? (mb_strlen($alert_button_title,'utf-8') > 30 ? mb_substr($alert_button_title,0,30,'utf-8').'...' : $alert_button_title).'&nbsp;&nbsp;' : '').$alert_button_comment . "</td>\n"; 
     echo '<td class="main" >' . $arec['created_at'] . "</td>\n";
 
     echo "</tr>\n";
@@ -192,7 +200,6 @@ function UserOnceAlertLog_list() {
     echo '<td class="dataTableHeadingContent"><input type="hidden" name="execute_delete" value="1"><input type="checkbox" onclick="all_select_logs(\'logs_list_id[]\');" name="all_check"></td>' . "\n";
     echo '<td class="dataTableHeadingContent">' . TABLE_HEADING_USERNAME . '</td>' . "\n";      
     echo '<td class="dataTableHeadingContent">' . TABLE_HEADING_TYPE . '</td>' . "\n";
-    echo '<td class="dataTableHeadingContent">' . TABLE_HEADING_ORDERS_ID . '</td>' . "\n";
     echo '<td class="dataTableHeadingContent">' .
       TABLE_HEADING_BUTTON_NAME . '</td>' . "\n";        
     echo '<td class="dataTableHeadingContent">' .

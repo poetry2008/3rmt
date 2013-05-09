@@ -21,7 +21,6 @@ define('BUTTON_JUMP_PAGE', 'ページへジャンプ');
 define('TABLE_HEADING_USERNAME','ユーザ');
 define('TABLE_HEADING_TYPE','タイプ');
 define('TABLE_HEADING_BUTTON_NAME','内容');
-define('TABLE_HEADING_ORDERS_ID','注文書番号');
 define('TABLE_HEADING_CREATED_AT','操作日時');
 
 // JavaScript的确认信息

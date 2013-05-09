@@ -86,7 +86,7 @@
         if (!empty($_POST['alarm']) && preg_match('/^(\d){4}-(\d){2}-(\d){2}$/', $_POST['alarm']) && ($_POST['alarm'] != '0000-00-00')) {
           $sql_data_array = array(
               'type' => 1,
-              'title' => mb_substr($_POST['content'], 0, 30, 'utf-8'),
+              'title' => $_POST['content'],
               'set_time' => $_POST['alarm'].' 00:00:00',
               'from_notice' => $arr['log_id'],
               'created_at' => date('Y-m-d H:i:s', time()),
