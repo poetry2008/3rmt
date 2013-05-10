@@ -3233,7 +3233,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
              $ProductOptions = str_replace("value='$add_product_products_id'","value='$add_product_products_id' selected", $ProductOptions);
     $review_select_end = "</select>";
     if(!isset($df_pid)||$df_pid==0){
-      $error_add_id = '<span id="p_error" style="color:#ff0000;">'.TEXT_CLEAR_SELECTION.'</span>'; 
+      $error_add_id = '<br><span id="p_error" style="color:#ff0000;">'.TEXT_CLEAR_SELECTION.'</span>'; 
     }
     $contents[]['text'] = array(
         array('text' => ENTRY_PRODUCT),
