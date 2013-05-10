@@ -629,7 +629,7 @@ $(document).ready(function(){
     <?php 
       echo tep_draw_form('account_edit_options', tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL'), 'post', 'onSubmit=""') . tep_draw_hidden_field('action', 'options');
     ?>
-    <table border="0" width="100%" summary="table" cellspacing="0" cellpadding="2">
+    <table border="0" width="100%" summary="table" cellspacing="0" cellpadding="2" class="table_select">
           <tr>
             <td class="main" width="15%"><?php echo ENTRY_NEWSLETTER; ?></td>
             <td class="main">

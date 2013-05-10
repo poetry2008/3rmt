@@ -642,7 +642,7 @@ $(document).ready(function(){
     <table border="0" width="100%" summary="table" cellspacing="0" cellpadding="2" class="formArea">
       <tr>
         <td class="main"> 
-        <table border="0" cellspacing="0" cellpadding="2" summary="table">
+        <table border="0" cellspacing="0" cellpadding="2" summary="table" class="table_select">
           <tr>
             <td class="main" width="93"><?php echo ENTRY_NEWSLETTER; ?></td>
             <td class="main">
