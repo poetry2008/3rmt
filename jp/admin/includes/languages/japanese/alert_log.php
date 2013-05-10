@@ -21,11 +21,14 @@ define('BUTTON_JUMP_PAGE', 'ページへジャンプ');
 define('TABLE_HEADING_USERNAME','ユーザ');
 define('TABLE_HEADING_TYPE','タイプ');
 define('TABLE_HEADING_BUTTON_NAME','内容');
-define('TABLE_HEADING_ORDERS_ID','注文書番号');
 define('TABLE_HEADING_CREATED_AT','操作日時');
 
 // JavaScript的确认信息
 define('JAVA_SCRIPT_INFO_DELETE', 'アラートログを削除します。\nよろしいですか？');
 
 define('PAGE_TITLE_MENU_USER', '');
+define('TEXT_LOGS_EDIT_SELECT','選択したものを');
+define('TEXT_LOGS_EDIT_DELETE','削除する');
+define('TEXT_LOGS_EDIT_MUST_SELECT','少なくとも1つの選択肢を選んでください。');
+define('TEXT_LOGS_EDIT_CONFIRM','本当に削除しますか？');
 ?>

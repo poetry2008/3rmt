@@ -2644,7 +2644,6 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
   $order = new order($oID);
   ?>
     <script>
-    // 游戏人物名，订单详细页用来替换邮件内容
     var orders_status_id = <?php echo $order->info['orders_status'];?>;
   window.orderStr = '<?php echo  str_replace(array("\r\n","\r","\n"), array('\n', '\n', '\n'), orders_a($order->info['orders_id'], array(array('orders_id' => $order->info['orders_id']))));?>';
   </script>
@@ -2713,10 +2712,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
           $computers = tep_get_computers();
           $o2c       = tep_get_computers_by_orders_id($order->info['orders_id']);
           if ($computers) {
-        ?>
-          <tr>
-          <td class="main"><?php echo HEADER_TEXT_ALERT_TITLE;?></td>
-          </tr>
+        ?> 
           <tr><td>
           <?php foreach ($computers as $computer) {?>
           <div id="orders_alert_<?php echo $computer['computers_id'];?>" onclick="orders_computers(this, <?php echo $computer['computers_id'];?>, '<?php echo $order->info['orders_id'];?>');" class="<?php echo in_array($computer['computers_id'], $o2c) ? 'orders_computer_checked' : 'orders_computer_unchecked' ;?>"><?php echo $computer['computers_name'];?></div>
@@ -5418,7 +5414,6 @@ if($c_parent_array['parent_id'] == 0){
             <?php }?>
             </table>
             <script language="javascript">
-            // 游戏人物名字符串，订单列表页用来替换邮件内容
             window.orderStr = new Array();
           // 订单所属网站
           window.orderSite = new Array();

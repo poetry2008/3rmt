@@ -2826,7 +2826,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
    );
     $configuration_contents[]['text'] = array(
       array('text' => str_replace('&nbsp;','',$cInfo_configuration_title)),
-      array('text' => $value_field.'<br><font size="1">'.$cInfo->configuration_description.'</font>')
+      array('text' => $value_field.'<br>'.$cInfo->configuration_description)
    );
   $configuration_contents[]['text'] = array(
         array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.((tep_not_null($cInfo->user_added))?$cInfo->user_added:TEXT_UNSET_DATA)), 
@@ -2933,7 +2933,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   $configuration_user_update = tep_db_fetch_array(tep_db_query('select * from configuration where configuration_key="'.$cInfo->configuration_key.'" and site_id = "'.$site_id.'"'));
   $contents[]['text'] = array(
     array('text' => $fetch_result_configuration_title),
-    array('text' => $value_field.'<br><font size="1">'.$cInfo->configuration_description.'</font>')
+    array('text' => $value_field.'<br>'.$cInfo->configuration_description)
     );
   $contents[]['text'] = array(
         array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.((tep_not_null($configuration_user_update['user_added']))?$configuration_user_update['user_added']:TEXT_UNSET_DATA)), 
@@ -3183,7 +3183,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   }
   $contents[]['text'] = array(
         array('text' => TEXT_CATEGORY_SELECT),
-        array('text' => tep_draw_pull_down_menu('review_products_id', tep_get_category_tree(),$review_products_id_info,'id="review_products_id" onchange="change_review_products_id(this,'.$_GET['page'].','.$rID.','.$_GET['site_id'].')"'.$str_disabled) .'<input type="hidden" id="r_cid" value="'.$df_cid.'">') 
+        array('text' => tep_draw_pull_down_menu('review_products_id', tep_get_category_tree(),$review_products_id_info,'id="review_products_id" class="td_select" onchange="change_review_products_id(this,'.$_GET['page'].','.$rID.','.$_GET['site_id'].')"'.$str_disabled) .'<input type="hidden" id="r_cid" value="'.$df_cid.'">') 
     );
    $result = tep_db_query(" SELECT products_name, p.products_id, cd.categories_name, ptc.categories_id FROM " . TABLE_PRODUCTS . " p LEFT JOIN " .  TABLE_PRODUCTS_DESCRIPTION . " pd ON pd.products_id=p.products_id LEFT JOIN " . TABLE_PRODUCTS_TO_CATEGORIES . " ptc ON ptc.products_id=p.products_id LEFT JOIN " . TABLE_CATEGORIES_DESCRIPTION . " cd ON cd.categories_id=ptc.categories_id where pd.language_id = '" . (int)$languages_id . "' and cd.site_id = '0' and pd.site_id = '0' ORDER BY categories_name");
     while($row = tep_db_fetch_array($result)){
@@ -3218,7 +3218,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
           $add_product_categories_id = $_GET['review_products_id_info'];
       }
       $select_value = "<option value='0'>".TEXT_SELECT_PRODUCT;      
-      $review_select = "<select id='add_product_products_id' name=\"add_product_products_id\" onchange='change_hidden_select(this)' ".$str_disabled.">";
+      $review_select = "<select class='td_select' id='add_product_products_id' name=\"add_product_products_id\" onchange='change_hidden_select(this)' ".$str_disabled.">";
       $ProductOptions = $select_value;
              asort($ProductList[$add_product_categories_id]);
              foreach($ProductList[$add_product_categories_id] as $ProductID => $ProductName){
@@ -3872,12 +3872,13 @@ if($pw_id != -1){
     if($ocertify->npermission == 15){
      if(isset($disable) && $disable){
        $button_del = "<input style='font-size:12px' type='button' ".$disable." value='".TEXT_BUTTON_DELETE."'>";
+       $button_history = "<input style='font-size:12px' type='button' ".$disable." value='".TEXT_BUTTON_HISTORY."'>";
      }else{
+       $button_history = "<input style='font-size:12px' type='button' onclick=\"location.href='".  tep_href_link(FILENAME_PW_MANAGER, 'log=id_manager_log&pw_id='.$pwInfo->id.'&site_id='.$site_id) ."'\" value='".TEXT_BUTTON_HISTORY."'>";
        $button_del = "<input type='button' style='font-size:12px' onclick=\"location.href='".  tep_href_link(FILENAME_PW_MANAGER, 'page=' . $_GET['page'] .  '&site_id='.$_GET['site_id'].'&pw_id=' .  $pwInfo->id .  '&action=deleteconfirm')  ."'\" value='".TEXT_BUTTON_DELETE."'>";
      }
-    }
-
-      $button[] = "<input ".$disable." style='font-size:12px'type='submit' value='".IMAGE_SAVE."'>" .  '&nbsp;'.$button_del."&nbsp;<input style='font-size:12px' type='button' ".$disable." onclick=\"location.href='".  tep_href_link(FILENAME_PW_MANAGER, 'log=pw_manager_log&pw_id='.$pwInfo->id.'&site_id='.$site_id) ."'\" value='".TEXT_BUTTON_HISTORY."'>";
+    }   
+      $button[] = "<input ".$disable." style='font-size:12px'type='submit' value='".IMAGE_SAVE."'>" .  '&nbsp;'.$button_del."&nbsp;".$button_history;
       if(!empty($button)){
         $buttons = array('align' => 'center', 'button' => $button);
       }
@@ -4133,9 +4134,10 @@ if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
  
       if($ocertify->npermission == 15){
         if(isset($disable) && $disable){
-         $button[] = "<button type='button'".$disable." >" .  TEXT_BUTTON_DELETE."</button>";
+         $button[] = tep_html_element_button(TEXT_BUTTON_DELETE,$disable);
         }else{
-         $button[] = "<button type='button' onclick=\"location.href='".  tep_href_link(FILENAME_PW_MANAGER, 'action=deleteconfirm&log=pw_manager_log&pw_l_id='.$pwInfo->id.'&'.tep_get_all_get_params(array('pw_l_id','action','search_type','keywords'))) ."'\">" .  TEXT_BUTTON_DELETE."</button>";
+          $button[] = '<a href="javascript:void(0)">
+            '.tep_html_element_button(TEXT_BUTTON_DELETE,'onclick="location.href=\''.tep_href_link(FILENAME_PW_MANAGER,'action=deleteconfirm&log=id_manager_log&pw_l_id='.$pwInfo->id.'&'.tep_get_all_get_params(array('pw_l_id','action','search_type','keywords'))).'\'"').'</a>';
         }
       }
       if(!empty($button)){

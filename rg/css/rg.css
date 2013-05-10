@@ -2159,3 +2159,6 @@ border:2px solid #FF8080;
 	float:left;
 	*margin:0 5px 0 -3px;
 }
+.table_select select{
+	margin-left:0;
+}

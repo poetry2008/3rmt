@@ -2787,3 +2787,6 @@ searching
 	height:15px;
         line-height:15px;
 }
+.table_select select{
+	margin-left:0;
+}

@@ -142,7 +142,6 @@ function mail_text(st,tt,ot){
     chk[0] = 0;
   }
 
-  // 如果有了游戏人物名则不允许多选
 
   if((chk.length > 1)  && window.status_text[CI][0].indexOf('${ORDER_A}') != -1){
     alert('<?php echo JS_TEXT_ALL_PREORDER_NOT_CHOOSE;?>');
@@ -696,7 +695,6 @@ function new_mail_text(ele,st,tt,ot){
     chk[0] = 0;
   }
 
-  // 如果有了游戏人物名则不允许多选
 
   if((chk.length > 1)  && window.status_text[CI][0].indexOf('${ORDER_A}') != -1){
     alert('<?php echo JS_TEXT_ALL_PREORDER_NOT_CHOOSE;?>');
@@ -798,30 +796,14 @@ function preorders_computers(ele, cid, oid) {
     $.ajax({
 url: 'ajax_preorders.php?action=delete&orders_id='+oid+'&computers_id='+cid,
 success: function(data) {
-var data_array = new Array();
-data_array = data.split('|||');
-var nid = data_array[0];
-var user = data_array[1];
 ele.className='orders_computer_unchecked';
-if(nid != ''){
-  $("#alarm_id_"+nid).html('OFF');
-  $("#alarm_user_"+nid).html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+user+'&nbsp;<?php echo TEXT_TIME_LINK;?>');
-}
 }
 });
 } else {
   $.ajax({
 url: 'ajax_preorders.php?action=insert&orders_id='+oid+'&computers_id='+cid,
 success: function(data) {
-var data_array = new Array();
-data_array = data.split('|||');
-var nid = data_array[0];
-var user = data_array[1];
 ele.className='orders_computer_checked';
-if(nid != ''){
-  $("#alarm_id_"+nid).html('ON');
-  $("#alarm_user_"+nid).html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+user+'&nbsp;<?php echo TEXT_TIME_LINK;?>');
-}
 }
 });
 }

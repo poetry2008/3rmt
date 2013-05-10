@@ -1,16 +1,11 @@
 <?php
 require('includes/application_top.php');
 require(DIR_FS_ADMIN . 'classes/notice_box.php');
-if (isset($_GET['log']) && $_GET['log'] == 'pw_manager_log') {
-/*
-   $Id$
-*/
+if (isset($_GET['log']) && $_GET['log'] == 'id_manager_log') {
   define('MAX_DISPLAY_PW_MANAGER_LOG_RESULTS',20);
-/*  if($_SESSION['user_permission']!=15){
-  header($_SERVER["SERVER_PROTOCOL"] . " 403 Forbidden");
-  exit;
-  }*/
-
+  if($_SESSION['user_permission']!=15){
+    forward404();
+  }
   if(isset($_GET['pw_id'])&&$_GET['pw_id']){
     $pwid = tep_db_prepare_input($_GET['pw_id']);
   }
@@ -65,6 +60,7 @@ if (isset($_GET['log']) && $_GET['log'] == 'pw_manager_log') {
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script language="javascript" >
+<?php //AJAX弹出页面?>
 function show_pw_manager_log(ele,pw_id,page,site_id,pw_l_id){
  sort = document.getElementById('pw_manager_sort').value;
  type = document.getElementById('pw_manager_type').value;
@@ -131,6 +127,7 @@ o_submit_single = true;
   }
   }); 
 }
+<?php //是否确认删除数据?>
 function delete_select_pw_manager(pw_manager_str){
          sel_num = 0;
          if (document.del_pw_manager_log.elements[pw_manager_str].length == null) {
@@ -198,7 +195,7 @@ $(document).ready(function() {
     }
   });    
 });
-
+<?php //关闭弹出页面?>
 function hidden_info_box(){
    $('#show_pw_manager_log').css('display','none');
 }
@@ -207,12 +204,7 @@ function search_type_changed(elem){
    if ($('#keywords').val() && elem.selectedIndex != 0) 
         document.forms.orders1.submit();
 }
-function delete_all(){
-  if(confirm('<?php echo TEXT_HISTORY_DELETE;?>')){
-    location.href='<?php echo
-      tep_href_link(FILENAME_PW_MANAGER,'action=deleteconfirm&select=all&log=pw_manager_log&pw_id='.$pwid);?>';
-  }
-}
+<?php //选择删除全部数据?>
 function all_select_pw_manager_log(pw_manager_str){
         var check_flag = document.del_pw_manager_log.all_check.checked;
            if (document.del_pw_manager_log.elements[pw_manager_str]) {
@@ -552,16 +544,7 @@ $manager_table_row[] = array('params' => $manager_params ,'text' => $manager_inf
        </td>
        <td colspan="9" align="right">
          <?php
-         if($pw_manager_numrows > 0){
-         if($ocertify->npermission == 15){
-            if(in_array($site_id,$site_array)){
-              echo "<button type='button' onclick=\"delete_all()\">" .  TEXT_BUTTON_DELETE_ALL."</button>&nbsp;&nbsp;"; 
-            }else{
-              echo "<button type='button'disabled='disabled'>" .  TEXT_BUTTON_DELETE_ALL."</button>&nbsp;&nbsp;"; 
-            }
-         }
-         }
-              echo "<button type='button' onclick=\"location.href='".  tep_href_link(FILENAME_PW_MANAGER,'pw_id='.$pwid.'&site_id='.$site_id) ."'\">".TEXT_BUTTON_BACK."</button>"; 
+              echo "<button type='button' style='font-size:12px' onclick=\"location.href='".  tep_href_link(FILENAME_PW_MANAGER,'pw_id='.$pwid.'&site_id='.$site_id) ."'\">".TEXT_BUTTON_BACK."</button>"; 
          ?>
        </td>
     </tr>
@@ -986,7 +969,7 @@ $(document).ready(function() {
     }
   });    
 });
-
+<?php //选择删除全部数据?>
 function all_select_pw_manager(pw_manager_str){
         var check_flag = document.del_pw_manager.all_check.checked;
            if (document.del_pw_manager.elements[pw_manager_str]) {
@@ -1007,6 +990,7 @@ function all_select_pw_manager(pw_manager_str){
               }
         }
 }
+<?php //AJAX弹出页面 ?>
 function show_pw_manager(ele,pw_id,page,site_id){
  sort = document.getElementById('pw_manager_sort').value;
  type = document.getElementById('pw_manager_type').value;
@@ -1077,6 +1061,7 @@ o_submit_single = true;
   }
   }); 
 }
+<?php //关闭弹出页面?>
 function hidden_info_box(){
    $('#show_pw_manager').css('display','none');
 }
@@ -1105,18 +1090,20 @@ function open_new_calendar(){
     });
   }
 }
-
+<?php //管理者选择权限?>
 function self_radio(){
      if($('#self').attr("checked")){ 
       $("#user_select").css('display', 'block');
       }
  
 }
+<?php //管理者选择权限?>
 function privilege_s_radio(){
      if($('#privilege_s').attr("checked")){ 
       $("#user_select").css('display', 'none');
       }
 }
+<?php //管理者选择权限?>
 function privilege_c_radio(){
      if($('#privilege_c').attr("checked")){ 
      $("#user_select").css('display', 'none');
@@ -1208,6 +1195,7 @@ function mk_pwd(){
       $('#password').val(data);
   });
 }
+<?php //是否确认删除数据?>
 function delete_select_pw_manager(pw_manager_str){
          sel_num = 0;
          if (pw_manager_str == null){

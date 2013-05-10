@@ -613,7 +613,7 @@ $(document).ready(function(){
     <table border="0" width="100%" summary="table" cellspacing="0" cellpadding="2" class="formArea">
       <tr>
         <td class="main">
-        <table border="0" cellspacing="0" cellpadding="2" summary="table" width="100%">
+        <table border="0" cellspacing="0" cellpadding="2" summary="table" width="100%" class="table_select">
         <tr id="address_histroy_id"<?php echo $sylte_none;?>><td class="main" width="93"><?php echo TITLE_ADDRESS_OPTION;?></td><td><input type="hidden" id="address_flag_id" name="address_flag_id" value="">
         <select id="address_show_list" name="address_show_list" onchange="address_option_list(this.value);">
         </select>
@@ -642,7 +642,7 @@ $(document).ready(function(){
     <table border="0" width="100%" summary="table" cellspacing="0" cellpadding="2" class="formArea">
       <tr>
         <td class="main"> 
-        <table border="0" cellspacing="0" cellpadding="2" summary="table" class="box_des">
+        <table border="0" cellspacing="0" cellpadding="2" summary="table" class="table_select">
           <tr>
             <td width="93"><?php echo ENTRY_NEWSLETTER; ?></td>
             <td ><?php

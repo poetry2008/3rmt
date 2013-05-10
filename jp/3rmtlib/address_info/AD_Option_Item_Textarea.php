@@ -13,10 +13,7 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
   function render($option_error_array,$is_space = false)
   {
     if (strlen($this->front_title)) {
-      echo '<td class="main" width="120" valign="top">';
-      if (NEW_STYLE_WEB !== true) {
-        echo '&nbsp;'; 
-      }
+      echo '<td class="main" width="93" valign="top">';
       echo $this->front_title.':'; 
       echo '</td>'; 
     }
@@ -30,12 +27,8 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
       } else {
         $style_size = $type_limit == 'num' ? 'size="25" ' : 'style="width:75%;" ';
       }
-      if(!$is_space){
-        echo '<td class="main" style="padding-left:10px;">';
-      }else{
         
-        echo '<td class="main">&nbsp;';
-      }
+      echo '<td class="main">';
       echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
       echo '<input type="hidden" name="type_'.$this->formname.'" value="'.$type_limit.'">';
       echo '<input type="hidden" id="l_'.$this->formname.'" value="'.$this->required.'">';
@@ -54,7 +47,7 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
      echo '</td>';  
     }else{
       if(!$is_space){
-        echo '<td class="main" valign="top" style="padding-left:10px;">'; 
+        echo '<td class="main" valign="top">'; 
       }else{
         
         echo '<td class="main" valign="top">'; 
@@ -62,7 +55,7 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
     echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
     echo '<input type="hidden" name="type_'.$this->formname.'" value="'.$type_limit.'">';
     echo '<input type="hidden" id="l_'.$this->formname.'" value="'.$this->required.'">';
-    echo '<textarea style="width:80%" name="op_'.$this->formname.'" id="op_'.$this->formname.'" rows="'.  $options['rows'] .'" onfocus="this.style.color=\'#001\';if(this.value==\''.  $this->comment.'\')this.value=\'\'" onblur="if(this.value==\'\'){this.value=\''. $this->comment .'\';this.style.color=\'#999\'}" style="'. $style_color .';margin-left:4px;">'.(isset($_POST['op_'.$this->formname])?$_POST['op_'.$this->formname]:'').'</textarea>'; 
+    echo '<textarea style="width:80%" name="op_'.$this->formname.'" id="op_'.$this->formname.'" rows="'.  $options['rows'] .'" onfocus="this.style.color=\'#001\';if(this.value==\''.  $this->comment.'\')this.value=\'\'" onblur="if(this.value==\'\'){this.value=\''. $this->comment .'\';this.style.color=\'#999\'}" style="'. $style_color .';">'.(isset($_POST['op_'.$this->formname])?$_POST['op_'.$this->formname]:'').'</textarea>'; 
      echo '<font id="r_'.$this->formname.'" color="red">';
      if ($this->required == 'true' && !isset($option_error_array[$this->formname]) && !isset($_POST['op_'.$this->formname])) {
 

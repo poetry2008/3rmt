@@ -74,9 +74,8 @@ class HM_Item_Myname extends HM_Item_Basic
     }else {
       $classrequire = '';
     }
-    if ($m){
-      echo "<input id='hidden".$this->formname."' type='hidden' name='".$this->formname."'>";
-    }
+    
+    echo "<input id='hidden".$this->formname."' type='hidden' name='".$this->formname."' value='".$this->getDefaultValue()."'>";
     echo $this->beforeInput."<span id='".$this->formname."'type='text' class='".$classrequire." outform'size='".$this->size."' name='".$this->formname."' >".$this->getDefaultValue()."</span >";
     echo "<button type='button' id = '".$this->formname.'submit'."' >$this->submitName</button>".$this->afterInput;
     echo "</td>";
@@ -101,13 +100,7 @@ class HM_Item_Myname extends HM_Item_Basic
                      beforeSend: function(){$('body').css('cursor','wait');$("#wait").show()},
                      success: function(data){
                                $("#<?php echo $this->formname;?>").text(data);		     
-                               <?php 
-                               if($m){
-                                 ?>
-                                 $("#hidden<?php echo $this->formname;?>").attr("value",data);		     
-                                 <?php 
-                               }
-                               ?>
+                               $("#hidden<?php echo $this->formname;?>").attr("value",data);		      
                                $("#wait").hide();
                                $('body').css('cursor','');
                                  checkLockOrder();

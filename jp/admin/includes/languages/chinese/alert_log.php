@@ -20,11 +20,14 @@ define('BUTTON_JUMP_PAGE', '跳转到');
 define('TABLE_HEADING_USERNAME','用户');
 define('TABLE_HEADING_TYPE','类型');
 define('TABLE_HEADING_BUTTON_NAME','内容');
-define('TABLE_HEADING_ORDERS_ID','订单号');
 define('TABLE_HEADING_CREATED_AT','操作时间');
 
 
 define('JAVA_SCRIPT_INFO_DELETE', '删除提醒日志。\n可以吗？');
 
 define('PAGE_TITLE_MENU_USER', '');
+define('TEXT_LOGS_EDIT_SELECT','请选择');
+define('TEXT_LOGS_EDIT_DELETE','删除');
+define('TEXT_LOGS_EDIT_MUST_SELECT','至少选择一项。');
+define('TEXT_LOGS_EDIT_CONFIRM','确定要删除吗？');
 ?>

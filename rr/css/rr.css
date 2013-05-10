@@ -2338,3 +2338,6 @@ border:1px solid #CAC6BE;
 	margin-right:3px;
 	*margin:0 5px 0 -3px;
 }
+.table_select select{
+	margin-left:0;
+}

@@ -1964,6 +1964,15 @@ menusidebar
 /* ---------------------------
 google hack
 --------------------------- */
+.td_select{
+	width:220px;
+}
+@media all and (-webkit-min-device-pixel-ratio:0){
+.td_select{
+	width:220px;
+	margin-left:2px;
+}
+}
 @media all and (-webkit-min-device-pixel-ratio:0){
 .option_spacing{
       margin-top:-4px;
