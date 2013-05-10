@@ -612,7 +612,7 @@ $(document).ready(function(){
   <?php if($style_display == 'block'){ ?> 
   <tr>
     <td class="main">
-    <table border="0" width="100%" summary="table" cellspacing="0" cellpadding="2" class="preorder_shipping">
+    <table border="0" width="100%" summary="table" cellspacing="0" cellpadding="2" class="table_select">
       <tr>
         <td class="main">
        <table border="0" cellspacing="0" cellpadding="2" summary="table" class="formArea" width="100%">

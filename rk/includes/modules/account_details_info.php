@@ -613,9 +613,9 @@ $(document).ready(function(){
     <table border="0" width="100%" summary="table" cellspacing="0" cellpadding="2" class="formArea">
       <tr>
         <td class="main">
-       <table border="0" cellspacing="0" cellpadding="2" summary="table" width="100%">
-        <tr id="address_histroy_id"<?php echo $sylte_none;?>><td class="main" width="93">&nbsp;<?php echo
-        TITLE_ADDRESS_OPTION;?></td><td class="main">&nbsp;<select id="address_show_list" name="address_show_list" onchange="address_option_list(this.value);"></select>
+       <table border="0" cellspacing="0" cellpadding="2" summary="table" width="100%" class="table_select">
+        <tr id="address_histroy_id"<?php echo $sylte_none;?>><td class="main" width="93"><?php echo
+        TITLE_ADDRESS_OPTION;?></td><td class="main"><select id="address_show_list" name="address_show_list" onchange="address_option_list(this.value);"></select>
        </td></tr>
         <?php       
           $hm_option->render('','',true); 

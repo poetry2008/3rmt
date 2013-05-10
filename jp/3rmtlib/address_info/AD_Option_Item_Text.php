@@ -19,22 +19,12 @@ class AD_Option_Item_Text extends AD_Option_Item_Basic
   {
      if (strlen($this->front_title)) {
        echo '<td class="main" width="93" valign="top">';
-       if (NEW_STYLE_WEB !== true) {
-         echo '&nbsp;';
-       } 
        echo $this->front_title.':';
        echo '</td>';
      }
-     if(!$is_space){
-       echo '<td class="main">';
-     }else{
-       echo '<td class="main">';
-     }
-     if(!$is_space){
-       echo $this->comment; 
-     } else {
-       echo '<div style="margin-left:4px;">'.$this->comment.'</div>'; 
-     }
+    
+     echo '<td class="main">';
+     echo $this->comment; 
      echo '<span id="error_'.$this->formname.'" class="option_error">';
      if (isset($option_error_array[$this->formname])) {
        echo $option_error_array[$this->formname]; 

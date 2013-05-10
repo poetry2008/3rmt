@@ -1535,3 +1535,6 @@ top:70px;
 .content_distance td{
 	line-height:24px;
 }
+.table_select select{
+	margin-left:0;
+}
