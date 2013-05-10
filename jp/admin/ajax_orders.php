@@ -2396,4 +2396,43 @@ echo json_encode($json_array);
  参数: $_POST['note_id'] note的id值 
  ----------------------------------------*/
   tep_db_query("update `notes` set `is_show` = '1' where `id` = '".$_POST['note_id']."'");
+} else if ($_GET['action'] == 'select_all_site') {
+  $exists_page_raw = tep_db_query("select * from show_site where page like '%".DIR_WS_ADMIN.$_POST['current_file']."%' and user = '".$_SESSION['loginuid']."'");
+  $exists_page_info = tep_db_fetch_array($exists_page_raw); 
+  $site_list_raw = tep_db_query("select * from sites"); 
+  $site_list_array = array(); 
+  $site_list_array[] = 0; 
+  while ($site_list_info = tep_db_fetch_array($site_list_raw)) {
+    $site_list_array[] = $site_list_info['id']; 
+  }
+  if ($exists_page_info) {
+    $site_info_array = explode('-', $exists_page_info['site']); 
+    if (empty($site_info_array)) {
+      $site_info_array = $site_list_array; 
+    } else {
+      if ($_POST['flag'] == 0) {
+        unset($site_info_array[array_search($_POST['site_id'], $site_info_array)]);
+        if (empty($site_info_array)) {
+          $site_info_array = $site_list_array; 
+        }
+      } else {
+        $site_info_array[] = $_POST['site_id']; 
+        array_unique($site_info_array); 
+      }
+    }
+    sort($site_info_array);
+    tep_db_query("update `show_site` set `site` = '".implode('-', $site_info_array)."' where `user` = '".$_SESSION['loginuid']."' and `page` like '%".DIR_WS_ADMIN.$_POST['current_file']."%'");
+  } else {
+    $site_info_array = $site_list_array; 
+    if ($_POST['flag'] == 0) {
+      unset($site_info_array[array_search($_POST['site_id'], $site_info_array)]);
+    } 
+    sort($site_info_array);
+    tep_db_query("insert into `show_site` values (null, '".$_SESSION['loginuid']."', '".DIR_WS_ADMIN.$_POST['current_file']."', '".implode('-', $site_info_array)."')");  
+  }
+  if(!empty($site_info_array)){
+    echo tep_href_link($_POST['current_file'], $_POST['param_url'].'site_id='.implode('-', $site_info_array));
+  }else{
+    echo tep_href_link($_POST['current_file'], $_POST['param_url']); 
+  }
 }

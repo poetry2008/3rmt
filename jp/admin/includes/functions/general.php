@@ -10075,3 +10075,94 @@ function tep_cfg_pull_down_month_list($month,$empty_params ='',$params = '') {
     return TEXT_CALENDAR_SETTING_MONTH_START.tep_draw_pull_down_menu('configuration_value', $month_array, $month).TEXT_CALENDAR_SETTING_MONTH_END;
   }
 }
+/*-----------------------------------
+    功能: 网站显示
+    参数: $filename (string) 页面
+    参数: $ca_single(boolean) 是否过滤指定的url参数 
+    参数: $show_all (boolean) 是否显示ALL
+    返回值: 网站的列表(string) 
+-----------------------------------*/
+function tep_show_site_filter($filename,$ca_single=false,$show_all=true){
+  global $_GET, $_POST, $ocertify;
+  $site_list_array = array();
+  $site_array = array();
+  $site_list_query = tep_db_query("select id,romaji from ". TABLE_SITES);
+  $site_list_array[0] = 'all';
+  $site_array[] = '0';
+  while($site_list_rows = tep_db_fetch_array($site_list_query)){
+    $site_list_array[$site_list_rows['id']] = $site_list_rows['romaji'];
+    $site_array[] = $site_list_rows['id'];
+  }
+  tep_db_free_result($site_list_query);
+  $user_info = tep_get_user_info($ocertify->auth_user);
+  //获得用户ID 和 当前页面 取得设置的显示网站列表
+  $userid = $user_info['userid'];
+  $page = $_SERVER['PHP_SELF'];
+  $show_site_sql = "select * from ".TABLE_SHOW_SITE." WHERE user='".$userid."' and page='".$page."' limit 1";
+  $show_id = '';
+  $show_site_query = tep_db_query($show_site_sql);
+  if($show_site_rows = tep_db_fetch_array($show_site_query)){
+    $site_array = explode('-',$show_site_rows['site']);
+    $site_id = $show_site_rows['show_id'];
+  }
+  // 循环输出所有网站列表 ALL 需要特殊处理
+  ?>
+    <div id="tep_site_filter">
+    <input type="hidden" id="show_site_id" value="<?php echo $show_id;?>">
+  <?php
+              foreach ($site_list_array as $sid => $sromaji) {
+               $site = array();
+               $site['id'] = $sid;
+               $site['romaji'] = $sromaji;
+               if(!isset($_GET['site_id'])){
+                if(in_array($site['id'],$site_array)){
+           ?>  
+                <span id="site_<?php echo $site['id'];?>" class="site_filter_selected"><a href="javascript:void(0);" onclick="change_show_site(<?php echo $site['id'];?>,0,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('page', 'site_id')));?>', '<?php echo $filename;?>');"><?php echo $site['romaji'];?></a></span>
+          <?php
+               }else{
+          ?>
+              <span id="site_<?php echo $site['id'];?>"><a href="javascript:void(0);" onclick="change_show_site(<?php echo $site['id'];?>,1,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('page', 'site_id')));?>', '<?php echo $filename;?>');"><?php echo $site['romaji'];?></a></span>  
+          <?php
+               }
+               }else{
+                 $site_id_array = explode('-',$_GET['site_id']); 
+                 if(in_array($site['id'],$site_id_array)){
+          ?>
+              <span id="site_<?php echo $site['id'];?>" class="site_filter_selected"><a href="javascript:void(0);" onclick="change_show_site(<?php echo $site['id'];?>,0,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('page', 'site_id')));?>', '<?php echo $filename;?>');"><?php echo $site['romaji'];?></a></span>
+          <?php
+               }else{
+          ?>
+              <span id="site_<?php echo $site['id'];?>"><a href="javascript:void(0);" onclick="change_show_site(<?php echo $site['id'];?>,1,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('page', 'site_id')));?>', '<?php echo $filename;?>');"><?php echo $site['romaji'];?></a></span>
+<?php
+               }
+               }
+              }
+  ?></div><?php
+}
+
+/*-----------------------------------
+    功能: 获得指定页面的设置的网站id
+    参数: $current_page (string) 指定页面
+    返回值: 网站id列表(string) 
+-----------------------------------*/
+function tep_get_setting_site_info($current_page)
+{
+  $site_list_array = array(); 
+  $site_list_query = tep_db_query("select * from sites");
+  $site_list_array[] = 0; 
+  while ($site_list_info = tep_db_fetch_array($site_list_query)) {
+    $site_list_array[] = $site_list_info['id']; 
+  }
+  sort($site_list_array); 
+  $exists_site_query = tep_db_query("select * from show_site where user = '".$_SESSION['loginuid']."' and page like '%".$current_page."%'");
+  $exists_site = tep_db_fetch_array($exists_site_query);
+  if ($exists_site) {
+    $return_site = explode('-', $exists_site['site']);
+    if (!empty($return_site)) {
+      return implode(',', $return_site); 
+    } else {
+      return implode(',', $site_list_array); 
+    }
+  } 
+  return implode(',', $site_list_array); 
+}
