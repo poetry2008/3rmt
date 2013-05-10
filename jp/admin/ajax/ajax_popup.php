@@ -3183,7 +3183,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   }
   $contents[]['text'] = array(
         array('text' => TEXT_CATEGORY_SELECT),
-        array('text' => tep_draw_pull_down_menu('review_products_id', tep_get_category_tree(),$review_products_id_info,'id="review_products_id" onchange="change_review_products_id(this,'.$_GET['page'].','.$rID.','.$_GET['site_id'].')"'.$str_disabled) .'<input type="hidden" id="r_cid" value="'.$df_cid.'">') 
+        array('text' => tep_draw_pull_down_menu('review_products_id', tep_get_category_tree(),$review_products_id_info,'id="review_products_id" class="td_select" onchange="change_review_products_id(this,'.$_GET['page'].','.$rID.','.$_GET['site_id'].')"'.$str_disabled) .'<input type="hidden" id="r_cid" value="'.$df_cid.'">') 
     );
    $result = tep_db_query(" SELECT products_name, p.products_id, cd.categories_name, ptc.categories_id FROM " . TABLE_PRODUCTS . " p LEFT JOIN " .  TABLE_PRODUCTS_DESCRIPTION . " pd ON pd.products_id=p.products_id LEFT JOIN " . TABLE_PRODUCTS_TO_CATEGORIES . " ptc ON ptc.products_id=p.products_id LEFT JOIN " . TABLE_CATEGORIES_DESCRIPTION . " cd ON cd.categories_id=ptc.categories_id where pd.language_id = '" . (int)$languages_id . "' and cd.site_id = '0' and pd.site_id = '0' ORDER BY categories_name");
     while($row = tep_db_fetch_array($result)){
@@ -3218,7 +3218,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
           $add_product_categories_id = $_GET['review_products_id_info'];
       }
       $select_value = "<option value='0'>".TEXT_SELECT_PRODUCT;      
-      $review_select = "<select id='add_product_products_id' name=\"add_product_products_id\" onchange='change_hidden_select(this)' ".$str_disabled.">";
+      $review_select = "<select class='td_select' id='add_product_products_id' name=\"add_product_products_id\" onchange='change_hidden_select(this)' ".$str_disabled.">";
       $ProductOptions = $select_value;
              asort($ProductList[$add_product_categories_id]);
              foreach($ProductList[$add_product_categories_id] as $ProductID => $ProductName){
