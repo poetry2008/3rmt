@@ -10159,6 +10159,10 @@ function tep_show_site_filter($filename,$ca_single=false,$show_all=true){
 -----------------------------------*/
 function tep_get_setting_site_info($current_page)
 {
+  global $ocertify;
+  $user_info = tep_get_user_info($ocertify->auth_user);
+  //获得用户ID 和 当前页面 取得设置的显示网站列表
+  $userid = $user_info['userid'];
   $site_list_array = array(); 
   $site_list_query = tep_db_query("select * from sites");
   $site_list_array[] = 0; 
@@ -10166,7 +10170,7 @@ function tep_get_setting_site_info($current_page)
     $site_list_array[] = $site_list_info['id']; 
   }
   sort($site_list_array); 
-  $exists_site_query = tep_db_query("select * from show_site where user = '".$_SESSION['loginuid']."' and page like '%".$current_page."%'");
+  $exists_site_query = tep_db_query("select * from show_site where user = '".$userid."' and page like '%".$current_page."%'");
   $exists_site = tep_db_fetch_array($exists_site_query);
   if ($exists_site) {
     $return_site = explode('-', $exists_site['site']);
