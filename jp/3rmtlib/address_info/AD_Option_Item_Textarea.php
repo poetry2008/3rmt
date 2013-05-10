@@ -46,12 +46,7 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
      echo '</font></span>'; 
      echo '</td>';  
     }else{
-      if(!$is_space){
-        echo '<td class="main" valign="top">'; 
-      }else{
-        
-        echo '<td class="main" valign="top">'; 
-      }
+    echo '<td class="main" valign="top">'; 
     echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
     echo '<input type="hidden" name="type_'.$this->formname.'" value="'.$type_limit.'">';
     echo '<input type="hidden" id="l_'.$this->formname.'" value="'.$this->required.'">';
