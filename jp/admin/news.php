@@ -5,13 +5,14 @@
   require('includes/application_top.php');
   require(DIR_FS_ADMIN . 'classes/notice_box.php');
   $sites_id_sql = tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$_SESSION['loginuid']."' limit 0,1");
+
   while($userslist= tep_db_fetch_array($sites_id_sql)){
     $site_arr = $userslist['site_permission']; 
   }
   if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
     $sql_site_where = 'site_id in ('.str_replace('-', ',', $_GET['site_id']).')'; 
   } else {
-    $sql_site_where = 'site_id in ('.tep_get_setting_site_info($_SERVER['PHP_SELF']).')'; 
+    $sql_site_where = 'site_id in ('.tep_get_setting_site_info(FILENAME_NEWS).')'; 
   }
   if(isset($_GET['site_id'])&&$_GET['site_id']==''){
     $_GET['site_id'] = str_replace(',','-',tep_get_setting_site_info($_SERVER['PHP_SELF']));

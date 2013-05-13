@@ -697,6 +697,9 @@ a.headerLink{
 	background: #ddd;
 	color: #000;
 }
+#tep_site_filter a:hover{
+	text-decoration:underline;
+}
 #tep_site_filter .site_filter_selected {
 	color: #fff;
 	font-weight: bold;
@@ -704,6 +707,10 @@ a.headerLink{
 }
 #tep_site_filter .site_filter_selected a {
 	color: #fff;
+}
+#tep_site_filter .site_filter_selected a:hover {
+	color: #fff;
+	text-decoration: none;	
 }
 .readonly {
 	background: #ccc;

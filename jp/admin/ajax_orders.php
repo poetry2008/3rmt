@@ -2401,7 +2401,7 @@ echo json_encode($json_array);
  ----------------------------------------*/
   tep_db_query("update `notes` set `is_show` = '1' where `id` = '".$_POST['note_id']."'");
 } else if ($_GET['action'] == 'select_all_site') {
-  $exists_page_raw = tep_db_query("select * from show_site where page like '%".DIR_WS_ADMIN.$_POST['current_file']."%' and user = '".$_SESSION['loginuid']."'");
+  $exists_page_raw = tep_db_query("select * from show_site where page = '".$_POST['current_file']."' and user = '".$_SESSION['loginuid']."'");
   $exists_page_info = tep_db_fetch_array($exists_page_raw); 
   $site_list_raw = tep_db_query("select * from sites"); 
   $site_list_array = array(); 
@@ -2425,14 +2425,14 @@ echo json_encode($json_array);
       }
     }
     sort($site_info_array);
-    tep_db_query("update `show_site` set `site` = '".implode('-', $site_info_array)."' where `user` = '".$_SESSION['loginuid']."' and `page` like '%".DIR_WS_ADMIN.$_POST['current_file']."%'");
+    tep_db_query("update `show_site` set `site` = '".implode('-', $site_info_array)."' where `user` = '".$_SESSION['loginuid']."' and `page` ='".$_POST['current_file']."'");
   } else {
     $site_info_array = $site_list_array; 
     if ($_POST['flag'] == 0) {
       unset($site_info_array[array_search($_POST['site_id'], $site_info_array)]);
     } 
     sort($site_info_array);
-    tep_db_query("insert into `show_site` values (null, '".$_SESSION['loginuid']."', '".DIR_WS_ADMIN.$_POST['current_file']."', '".implode('-', $site_info_array)."')");  
+    tep_db_query("insert into `show_site` values (null, '".$_SESSION['loginuid']."', '".$_POST['current_file']."', '".implode('-', $site_info_array)."')");  
   }
   if(!empty($site_info_array)){
     echo tep_href_link($_POST['current_file'], $_POST['param_url'].'site_id='.implode('-', $site_info_array));
