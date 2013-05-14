@@ -46,12 +46,12 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
     功能: 显示该用户的所有的notice
     参数: 无 
  -----------------------------------------------------*/
-  $notice_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and n.is_show='1' and a.alarm_flag='0' and n.user = '".$ocertify->auth_user."'"; 
+  $notice_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and n.is_show='1' and a.alarm_flag='0' and n.user = '".$ocertify->auth_user."'"; 
   
   $notice_micro_sql = "select * from ".TABLE_NOTICE." where type = '1' and is_show='1' and id not in (select notice_id from ".TABLE_NOTICE_TO_MICRO_USER." n where n.user = '".$ocertify->auth_user."')";
 
   //警告提示
-  $alarm_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,is_show from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and n.is_show='1' and a.alarm_flag='1'";
+  $alarm_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,is_show,deleted from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and n.is_show='1' and a.alarm_flag='1'";
   
   $notice_total_sql = "select * from (".$notice_order_sql." union ".$notice_micro_sql." union ".$alarm_order_sql.") taf where id != '".$_POST['aid']."' order by created_at desc,set_time asc, type asc"; 
   
@@ -62,6 +62,15 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
   if (tep_db_num_rows($notice_list_raw) > 0) {
     echo '<table cellspacing="0" cellpadding="0" border="0"  width="100%">'; 
     while ($notice_list = tep_db_fetch_array($notice_list_raw)) {
+      if($notice_list['deleted'] != ''){
+
+        $notice_users_array = array();
+        $notice_users_array = explode(',',$notice_list['deleted']);
+
+        if(in_array($ocertify->auth_user,$notice_users_array)){
+          continue; 
+        }
+      }
       echo '<tr id="alarm_delete_'.$notice_list['from_notice'].'">'; 
       echo '<td width="200">'; 
       if ($notice_list['type'] == '0') {
@@ -160,11 +169,20 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
     功能: 删除指定的notice
     参数: $_POST['nid'] notcie的id值 
  -----------------------------------------------------*/
-  $notice_raw = tep_db_query("select * from ".TABLE_NOTICE." where id = '".$_POST['nid']."' and type = '0'");
+  $notice_raw = tep_db_query("select deleted from ".TABLE_NOTICE." where id = '".$_POST['nid']."' and type = '0'");
   $notice = tep_db_fetch_array($notice_raw);
- 
+
+  $notice_users_str = ''; 
   if ($notice) {
-    tep_db_query("update ".TABLE_NOTICE." set is_show='0' where id = '".$_POST['nid']."'");
+
+    if($notice['deleted'] == ''){
+
+      $notice_users_str = $ocertify->auth_user; 
+    }else{
+
+      $notice_users_str = $notice['deleted'].','.$ocertify->auth_user;
+    }
+    tep_db_query("update ".TABLE_NOTICE." set deleted='".$notice_users_str."' where id = '".$_POST['nid']."'");
   }
 } else if (isset($_GET['action'])&&$_GET['action']=='delete_micro') {
 /* -----------------------------------------------------
