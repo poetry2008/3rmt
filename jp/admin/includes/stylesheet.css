@@ -315,17 +315,20 @@ date
 	background-color: #E0E0E0;                     
 }
 .dataTableRowOver {
-	background-color: #FFCC99;                      
+	background-color: #FFCC99;
+	cursor:pointer;                    
 }
 
 .dataTableRowSelected {
-	background-color: #FFD700;!important;                      
+	background-color: #FFD700!important;  
+	cursor:pointer;                
 }
 .dataTableContent {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; 
 	font-size: 12px;
 	color: #000000;
 	word-break:break-all;
+	cursor:pointer;
 }
 .dataTableContent1 {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; 
@@ -723,6 +726,7 @@ a.headerLink{
 .cleate_main {
 	padding:5px;
 	background:#F0F1F1;
+	cursor:pointer;
 }
 .change_one_list {
 	font-size:12px;
@@ -1935,7 +1939,8 @@ sidebar
 	background-color:#FFD700;
 	width:150px;
 	line-height:18px;
-	margin-left:-2px;              
+	margin-left:-2px;
+	cursor:pointer;             
 }
 .sidebar span,.sidebarover span,.sidebarselected span{ 
 	margin-right:5px;
