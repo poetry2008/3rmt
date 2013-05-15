@@ -48,17 +48,19 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
  -----------------------------------------------------*/
   $notice_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and n.is_show='1' and a.alarm_flag='0' and n.user = '".$ocertify->auth_user."'"; 
 
-  $notice_micro_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted,bm.`to` to_users,bm.`from` from_users,bm.icon icon from ".TABLE_NOTICE." n,".TABLE_BUSINESS_MEMO." bm where n.from_notice=bm.id and n.type = '1' and n.is_show='1' and bm.is_show='1' and bm.deleted='0'"; 
+  $notice_micro_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted,bm.`to` to_users,bm.`from` from_users,bm.icon icon,bm.id bm_id from ".TABLE_NOTICE." n,".TABLE_BUSINESS_MEMO." bm where n.from_notice=bm.id and n.type = '1' and n.is_show='1' and bm.is_show='1' and bm.deleted='0'"; 
 
   $notice_micro_query = tep_db_query($notice_micro_sql);
   $notice_id_array = array();
   $memo_id_array = array();
+  $memo_cid_array = array();
   while($notice_micro_array = tep_db_fetch_array($notice_micro_query)){
 
     if($notice_micro_array['to_users'] == ''){
 
       $notice_id_array[] = $notice_micro_array['id'];
       $memo_id_array[$notice_micro_array['id']] = $notice_micro_array['icon'];
+      $memo_cid_array[$notice_micro_array['id']] = $notice_micro_array['bm_id'];
     }else{
 
       $users_id_array = array();
@@ -69,6 +71,7 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
 
         $notice_id_array[] = $notice_micro_array['id'];
         $memo_id_array[$notice_micro_array['id']] = $notice_micro_array['icon'];
+        $memo_cid_array[$notice_micro_array['id']] = $notice_micro_array['bm_id'];
       }
     }
   }
@@ -132,7 +135,7 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
         echo '&nbsp;'.NOTICE_EXTEND_TITLE; 
       }
       if(in_array($notice_list['id'],$notice_id_array)){
-        echo  '<div style="float:right; width:55px;">';
+        echo  '<div style="float:right; width:55px;margin-top: 3px;">';
         echo tep_image(DIR_WS_IMAGES.'icon_list/'.$icon_list_array[$memo_id_array[$notice_list['id']]]['name'],$icon_list_array[$memo_id_array[$notice_list['id']]]['alt']);
         echo  '</div>';
       }
@@ -170,10 +173,10 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
           echo '<a href="'.tep_href_link($filename_str, 'oID='.$alarm['orders_id'].'&action=edit').'">'.$alarm['orders_id'].'</a>'; 
         }
       } else {
-        echo '<a href="'.tep_href_link(FILENAME_BUSINESS_MEMO).'">'.(mb_strlen($notice_list['title'],'utf-8') > 30 ? mb_substr($notice_list['title'],0,30,'utf-8').'...' : $notice_list['title']).'</a>'; 
+        echo '<a href="'.tep_href_link(FILENAME_BUSINESS_MEMO,'cID='.$memo_cid_array[$notice_list['id']]).'">'.(mb_strlen($notice_list['title'],'utf-8') > 30 ? mb_substr($notice_list['title'],0,30,'utf-8').'...' : $notice_list['title']).'</a>'; 
         echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-        echo NOTICE_DIFF_TIME_TEXT.'&nbsp;'; 
-        echo '<span>'.$leave_date.'</span>';
+        echo '&nbsp;'; 
+        echo '<span style="display:none;">'.$leave_date.'</span>';
       }
       echo '</div>';
       if ($notice_list['type'] == '0') {

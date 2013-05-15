@@ -9378,7 +9378,7 @@ function tep_get_notice_info($return_type = 0)
     $notice_num = $notice_tmp_num; 
   }
 
-  $micro_notice_raw = tep_db_query("select n.id, n.title, n.set_time, n.from_notice, n.created_at,n.deleted users_deleted,bm.`to` to_users,bm.`from` from_users,bm.icon icon from ".TABLE_NOTICE." n,".TABLE_BUSINESS_MEMO." bm where n.from_notice=bm.id and n.is_show='1' and bm.is_show='1' and bm.deleted='0' and n.type = '1' order by created_at desc,set_time asc");
+  $micro_notice_raw = tep_db_query("select n.id, n.title, n.set_time, n.from_notice, n.created_at,n.deleted users_deleted,bm.`to` to_users,bm.`from` from_users,bm.icon icon,bm.id bm_id from ".TABLE_NOTICE." n,".TABLE_BUSINESS_MEMO." bm where n.from_notice=bm.id and n.is_show='1' and bm.is_show='1' and bm.deleted='0' and n.type = '1' order by created_at desc,set_time asc");
 
   $micro_tmp_num = 0; 
   while($micro_notice = tep_db_fetch_array($micro_notice_raw)){
@@ -9390,6 +9390,7 @@ function tep_get_notice_info($return_type = 0)
         $micro_notice_array['from_notice'] = $micro_notice['from_notice']; 
         $micro_notice_array['created_at'] = $micro_notice['created_at'];
         $micro_notice_array['icon'] = $micro_notice['icon'];
+        $micro_notice_array['bm_id'] = $micro_notice['bm_id'];
         unset($notice_id_array[array_search($micro_notice['id'],$notice_id_array)]);
         break;
       }else{
@@ -9404,6 +9405,7 @@ function tep_get_notice_info($return_type = 0)
           $micro_notice_array['from_notice'] = $micro_notice['from_notice']; 
           $micro_notice_array['created_at'] = $micro_notice['created_at'];
           $micro_notice_array['icon'] = $micro_notice['icon'];
+          $micro_notice_array['bm_id'] = $micro_notice['bm_id'];
           unset($notice_id_array[array_search($micro_notice['id'],$notice_id_array)]);
           break;
         }
@@ -9423,6 +9425,7 @@ function tep_get_notice_info($return_type = 0)
           $micro_notice_array['from_notice'] = $micro_notice['from_notice']; 
           $micro_notice_array['created_at'] = $micro_notice['created_at'];
           $micro_notice_array['icon'] = $micro_notice['icon'];
+          $micro_notice_array['bm_id'] = $micro_notice['bm_id'];
           unset($notice_id_array[array_search($micro_notice['id'],$notice_id_array)]);
           break;
         }else{
@@ -9437,6 +9440,7 @@ function tep_get_notice_info($return_type = 0)
             $micro_notice_array['from_notice'] = $micro_notice['from_notice']; 
             $micro_notice_array['created_at'] = $micro_notice['created_at'];
             $micro_notice_array['icon'] = $micro_notice['icon'];
+            $micro_notice_array['bm_id'] = $micro_notice['bm_id'];
             unset($notice_id_array[array_search($micro_notice['id'],$notice_id_array)]);
             break;
           }
@@ -9656,7 +9660,7 @@ function tep_get_notice_info($return_type = 0)
     $icon_query = tep_db_query("select pic_name,pic_alt from ". TABLE_CUSTOMERS_PIC_LIST ." where id='".$micro_notice_array['icon']."'");
     $icon_array = tep_db_fetch_array($icon_query);
     tep_db_free_result($icon_query);
-    $html_str .= '<div style="float:right; width:55px;">';
+    $html_str .= '<div style="float:right; width:55px;margin-top: 3px;">';
     $html_str .= tep_image(DIR_WS_IMAGES.'icon_list/'.$icon_array['pic_name'],$icon_array['pic_alt']);
     $html_str .= '</div>';
     $html_str .= '</td>'; 
@@ -9665,8 +9669,8 @@ function tep_get_notice_info($return_type = 0)
     $html_str .= '<div style="float:left; width:150px;">'; 
     $html_str .= date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT.' H'.TEXT_TORIHIKI_HOUR_STR.'i'.TEXT_TORIHIKI_MIN_STR,strtotime($micro_notice_array['created_at'])); 
     $html_str .= '</div>'; 
-    $html_str .= '<a href="'.tep_href_link(FILENAME_BUSINESS_MEMO).'">'.(mb_strlen($micro_notice_array['title']) > 30 ? mb_substr($micro_notice_array['title'],0,30,'utf-8').'...' : $micro_notice_array['title']).'</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'; 
-    $html_str .= NOTICE_DIFF_TIME_TEXT.'&nbsp;<span id="leave_time_'.$micro_notice_array['id'].'">'.$leave_date.'</span>';
+    $html_str .= '<a href="'.tep_href_link(FILENAME_BUSINESS_MEMO,'cID='.$micro_notice_array['bm_id']).'">'.(mb_strlen($micro_notice_array['title']) > 30 ? mb_substr($micro_notice_array['title'],0,30,'utf-8').'...' : $micro_notice_array['title']).'</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'; 
+    $html_str .= '&nbsp;<span id="leave_time_'.$micro_notice_array['id'].'" style="display:none;">'.$leave_date.'</span>';
     $html_str .= '</td>'; 
     $html_str .= '<td align="right">'; 
     $html_str .= '<a href="javascript:void(0);" onclick="delete_micro_notice(\''.$micro_notice_array['id'].'\', \'0\');"><img src="images/icons/del_img.gif" alt="close"></a>'; 

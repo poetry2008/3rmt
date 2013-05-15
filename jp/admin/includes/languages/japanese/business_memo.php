@@ -2,7 +2,7 @@
 define('HEADING_TITLE','引継メモ');
 define('SAVE_BUTTON','メモ保存');
 define('DELETE_CONFIRMATION','このメモを削除しますか？');
-define('TEXT_DISPLAY_NUMBER_OF_BUSINESS_MEMO', '<b>%d</b> &sim; <b>%d</b>番目を表示(<b>%d</b>のボタンのうち)');
+define('TEXT_DISPLAY_NUMBER_OF_BUSINESS_MEMO', '<b>%d</b> &sim; <b>%d</b>番目を表示(<b>%d</b>の引継メモのうち)');
 define('TEXT_MEMO_ICON','マーク');
 define('TEXT_MEMO_READ_FLAG','既読');
 define('TEXT_MEMO_FROM','From');
