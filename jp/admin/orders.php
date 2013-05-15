@@ -5218,6 +5218,12 @@ if($c_parent_array['parent_id'] == 0){
           $oid_is_inpage = false;
         }
         $orders_query = tep_db_query($orders_query_raw);
+        $orders_num = tep_db_num_rows($orders_query);
+
+        if($orders_num == 0){
+
+          echo '<tr><td colspan="12"><font color="red"><b>'.TEXT_DATA_IS_EMPTY.'</b></font></td></tr>';
+        }
         $allorders    = $allorders_ids = array();
         $orders_i = 0;
         //获取订单状态标记的过期警告数组

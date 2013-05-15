@@ -219,6 +219,8 @@ function UserOnceAlertLog_list() {
 
     show_page_ctl();       // 页面控制按钮的显示
  
+  }else{
+    echo '<font color="red"><b>'.TEXT_DATA_IS_EMPTY.'</b></font>';
   }
   if ($oresult) @tep_db_free_result($oresult);          // 开放结果项目
 
@@ -246,9 +248,7 @@ function OncePwdLogDelete_execute() {
 
   $alert_query = tep_db_query("select id,from_notice from ".TABLE_NOTICE." where type='1' and id in (".$logs_list_str.")");
   while($alert_array = tep_db_fetch_array($alert_query)){
-    tep_db_query("delete from micro_logs where log_id='".$alert_array['from_notice']."'");
-    tep_db_query("delete from ".TABLE_NOTICE_TO_MICRO_USER." where notice_id = '".$alert_array['id']."'");
-    tep_db_query("delete from micro_to_user where micro_id = '".$alert_array['from_notice']."'");
+    tep_db_query("delete from ".TABLE_BUSINESS_MEMO." where id='".$alert_array['from_notice']."'");
   }
   tep_db_free_result($alert_query);
 
