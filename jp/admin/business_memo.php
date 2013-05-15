@@ -349,6 +349,15 @@ require("includes/note_js.php");
           <tr>
             <td valign="top">
 <?php
+  $site_query = tep_db_query("select id from ".TABLE_SITES);
+  $site_list_array = array();
+  while($site_array = tep_db_fetch_array($site_query)){
+
+    $site_list_array[] = $site_array['id'];
+  }
+  tep_db_free_result($site_query);
+  array_unshift($site_list_array,0);
+  echo tep_show_site_filter(FILENAME_BUSINESS_MEMO,false,$site_list_array);
   $memo_table_params = array('width' => '100%', 'cellpadding' => '2', 'cellspacing' => '0', 'parameters' => 'id="memo_list_box"'); 
   $notice_box = new notice_box('', '', $memo_table_params); 
   $memo_table_row = array();

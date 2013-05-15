@@ -192,7 +192,16 @@ function UserOnceAlertLog_list() {
 
   $nrow = tep_db_num_rows($oresult);              // 获取记录件数
   if ($nrow > 0) {                      // 取不到记录的时候
+    
+    $site_query = tep_db_query("select id from ".TABLE_SITES);
+    $site_list_array = array();
+    while($site_array = tep_db_fetch_array($site_query)){
 
+      $site_list_array[] = $site_array['id'];
+    }
+    tep_db_free_result($site_query);
+    array_unshift($site_list_array,0);
+    echo tep_show_site_filter(FILENAME_BUSINESS_MEMO,false,$site_list_array);
     // 表标签的开始
     echo '<form action="'.FILENAME_ALERT_LOG.'" method="post" name="edit_logs">';
     echo '<table width="100%" ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
