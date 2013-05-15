@@ -9595,7 +9595,7 @@ function tep_get_notice_info($return_type = 0)
     }else{
       $filename_str = FILENAME_PREORDERS; 
     }
-    $html_str .= '<a href="'.tep_href_link($filename_str, 'oID='.$alarm['orders_id'].'&action=edit').'">'.($alarm_flag_array['alarm_flag'] == '0' ? $order_notice_array['title'] : $alarm['orders_id']).'</a>'; 
+    $html_str .= '<a href="'.tep_href_link($filename_str, 'oID='.$alarm['orders_id'].'&action=edit').'">'.($alarm_flag_array['alarm_flag'] == '0' ? (mb_strlen($order_notice_array['title'],'utf-8') > 30 ? mb_substr($order_notice_array['title'],0,30,'utf-8').'...' : $order_notice_array['title']) : $alarm['orders_id']).'</a>'; 
     $html_str .='</div>';
     if($alarm_flag_array['alarm_flag'] == '1'){
       $html_str .= '<div style="float:left;" id="alarm_user_'.$order_notice_array['from_notice'].'">';
@@ -9603,9 +9603,9 @@ function tep_get_notice_info($return_type = 0)
       $html_str .='</div>';
       $html_str .='<div style="float:left;">';
       if($alarm_flag_array['alarm_show'] == '1'){
-         $html_str .='&nbsp;'.str_replace('${ALERT_TITLE}',$order_notice_array['title'],HEADER_TEXT_ALERT_COMMENT).'/&nbsp;<span id="alarm_id_'.$order_notice_array['from_notice'].'">ON</span>';
+         $html_str .='&nbsp;'.str_replace('${ALERT_TITLE}',(mb_strlen($order_notice_array['title'],'utf-8') > 30 ? mb_substr($order_notice_array['title'],0,30,'utf-8').'...' : $order_notice_array['title']),HEADER_TEXT_ALERT_COMMENT).'/&nbsp;<span id="alarm_id_'.$order_notice_array['from_notice'].'">ON</span>';
       }else{
-         $html_str .='&nbsp;'.str_replace('${ALERT_TITLE}',$order_notice_array['title'],HEADER_TEXT_ALERT_COMMENT).'/&nbsp;<span id="alarm_id_'.$order_notice_array['from_notice'].'">OFF</span>'; 
+         $html_str .='&nbsp;'.str_replace('${ALERT_TITLE}',(mb_strlen($order_notice_array['title'],'utf-8') > 30 ? mb_substr($order_notice_array['title'],0,30,'utf-8').'...' : $order_notice_array['title']),HEADER_TEXT_ALERT_COMMENT).'/&nbsp;<span id="alarm_id_'.$order_notice_array['from_notice'].'">OFF</span>'; 
       }
       $html_str .='</div>';
     }else{
@@ -9656,7 +9656,7 @@ function tep_get_notice_info($return_type = 0)
     $icon_query = tep_db_query("select pic_name,pic_alt from ". TABLE_CUSTOMERS_PIC_LIST ." where id='".$micro_notice_array['icon']."'");
     $icon_array = tep_db_fetch_array($icon_query);
     tep_db_free_result($icon_query);
-    $html_str .= '<div style="float:right; width:30px;">';
+    $html_str .= '<div style="float:right; width:55px;">';
     $html_str .= tep_image(DIR_WS_IMAGES.'icon_list/'.$icon_array['pic_name'],$icon_array['pic_alt']);
     $html_str .= '</div>';
     $html_str .= '</td>'; 
@@ -9665,7 +9665,7 @@ function tep_get_notice_info($return_type = 0)
     $html_str .= '<div style="float:left; width:150px;">'; 
     $html_str .= date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT.' H'.TEXT_TORIHIKI_HOUR_STR.'i'.TEXT_TORIHIKI_MIN_STR,strtotime($micro_notice_array['created_at'])); 
     $html_str .= '</div>'; 
-    $html_str .= '<a href="'.tep_href_link(FILENAME_BUSINESS_MEMO).'">'.$micro_notice_array['title'].'</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'; 
+    $html_str .= '<a href="'.tep_href_link(FILENAME_BUSINESS_MEMO).'">'.(mb_strlen($micro_notice_array['title']) > 30 ? mb_substr($micro_notice_array['title'],0,30,'utf-8').'...' : $micro_notice_array['title']).'</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'; 
     $html_str .= NOTICE_DIFF_TIME_TEXT.'&nbsp;<span id="leave_time_'.$micro_notice_array['id'].'">'.$leave_date.'</span>';
     $html_str .= '</td>'; 
     $html_str .= '<td align="right">'; 

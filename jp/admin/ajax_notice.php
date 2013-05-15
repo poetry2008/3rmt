@@ -132,7 +132,7 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
         echo '&nbsp;'.NOTICE_EXTEND_TITLE; 
       }
       if(in_array($notice_list['id'],$notice_id_array)){
-        echo  '<div style="float:right; width:30px;">';
+        echo  '<div style="float:right; width:55px;">';
         echo tep_image(DIR_WS_IMAGES.'icon_list/'.$icon_list_array[$memo_id_array[$notice_list['id']]]['name'],$icon_list_array[$memo_id_array[$notice_list['id']]]['alt']);
         echo  '</div>';
       }
@@ -159,7 +159,7 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
         $alarm_raw = tep_db_query("select orders_id from ".TABLE_ALARM." where alarm_id = '".$notice_list['from_notice']."'"); 
         $alarm = tep_db_fetch_array($alarm_raw); 
         if($alarm_flag_array['alarm_flag'] == '0'){
-          echo '<a href="'.tep_href_link(FILENAME_ORDERS, 'oID='.$alarm['orders_id'].'&action=edit').'">'.$notice_list['title'].'</a>'; 
+          echo '<a href="'.tep_href_link(FILENAME_ORDERS, 'oID='.$alarm['orders_id'].'&action=edit').'">'.(mb_strlen($notice_list['title'],'utf-8') > 30 ? mb_substr($notice_list['title'],0,30,'utf-8').'...' : $notice_list['title']).'</a>'; 
         }else{
           if($alarm_flag_array['orders_flag'] == '1'){
 
@@ -170,7 +170,7 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
           echo '<a href="'.tep_href_link($filename_str, 'oID='.$alarm['orders_id'].'&action=edit').'">'.$alarm['orders_id'].'</a>'; 
         }
       } else {
-        echo '<a href="'.tep_href_link(FILENAME_BUSINESS_MEMO).'">'.$notice_list['title'].'</a>'; 
+        echo '<a href="'.tep_href_link(FILENAME_BUSINESS_MEMO).'">'.(mb_strlen($notice_list['title'],'utf-8') > 30 ? mb_substr($notice_list['title'],0,30,'utf-8').'...' : $notice_list['title']).'</a>'; 
         echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
         echo NOTICE_DIFF_TIME_TEXT.'&nbsp;'; 
         echo '<span>'.$leave_date.'</span>';
@@ -183,9 +183,9 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
         echo '</div>';
         echo '<div style="float:left;">';
         if($alarm_flag_array['alarm_show'] == '1'){
-          echo '&nbsp;'.str_replace('${ALERT_TITLE}',$notice_list['title'],HEADER_TEXT_ALERT_COMMENT).'/&nbsp;<span id="alarm_id_'.$notice_list['from_notice'].'">ON</span>';
+          echo '&nbsp;'.str_replace('${ALERT_TITLE}',(mb_strlen($notice_list['title'],'utf-8') > 30 ? mb_substr($notice_list['title'],0,30,'utf-8').'...' : $notice_list['title']),HEADER_TEXT_ALERT_COMMENT).'/&nbsp;<span id="alarm_id_'.$notice_list['from_notice'].'">ON</span>';
         }else{
-          echo '&nbsp;'.str_replace('${ALERT_TITLE}',$notice_list['title'],HEADER_TEXT_ALERT_COMMENT).'/&nbsp;<span id="alarm_id_'.$notice_list['from_notice'].'">OFF</span>'; 
+          echo '&nbsp;'.str_replace('${ALERT_TITLE}',(mb_strlen($notice_list['title'],'utf-8') > 30 ? mb_substr($notice_list['title'],0,30,'utf-8').'...' : $notice_list['title']),HEADER_TEXT_ALERT_COMMENT).'/&nbsp;<span id="alarm_id_'.$notice_list['from_notice'].'">OFF</span>'; 
         }
         echo '</div>';
       }else{

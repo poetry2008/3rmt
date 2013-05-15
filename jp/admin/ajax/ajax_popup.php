@@ -4454,23 +4454,15 @@ if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
 
   //作成者，作成时间，更新者，更新时间 
   $category_info_row[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => TEXT_USER_ADDED),
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => ((tep_not_null($memo_array['user_added'])?$memo_array['user_added']:TEXT_UNSET_DATA)))
+       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => TEXT_USER_ADDED.((tep_not_null($memo_array['user_added'])?$memo_array['user_added']:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => TEXT_DATE_ADDED.((tep_not_null(tep_datetime_short($memo_array['date_added'])))?tep_datetime_short($memo_array['date_added']):TEXT_UNSET_DATA))
       );
-  $category_info_row[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => TEXT_DATE_ADDED),
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => ((tep_not_null(tep_datetime_short($memo_array['date_added'])))?tep_datetime_short($memo_array['date_added']):TEXT_UNSET_DATA))
-      );
-  
-  $category_info_row[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => TEXT_USER_UPDATE),
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => ((tep_not_null($memo_array['user_update'])?$memo_array['user_update']:TEXT_UNSET_DATA)))
-      );
-  $category_info_row[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => TEXT_DATE_UPDATE),
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => ((tep_not_null(tep_datetime_short($memo_array['date_update'])))?tep_datetime_short($memo_array['date_update']):TEXT_UNSET_DATA))
-      ); 
    
+  $category_info_row[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => TEXT_USER_UPDATE.((tep_not_null($memo_array['user_update'])?$memo_array['user_update']:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => TEXT_DATE_UPDATE.((tep_not_null(tep_datetime_short($memo_array['date_update'])))?tep_datetime_short($memo_array['date_update']):TEXT_UNSET_DATA))
+      );
+    
   //底部内容
   $buttons = array();
 
