@@ -1,0 +1,20 @@
+<?php
+define('HEADING_TITLE','引継メモ');
+define('SAVE_BUTTON','メモ保存');
+define('DELETE_CONFIRMATION','このメモを削除しますか？');
+define('TEXT_DISPLAY_NUMBER_OF_BUSINESS_MEMO', '<b>%d</b> &sim; <b>%d</b>番目を表示(<b>%d</b>のボタンのうち)');
+define('TEXT_MEMO_ICON','マーク');
+define('TEXT_MEMO_READ_FLAG','既読');
+define('TEXT_MEMO_FROM','From');
+define('TEXT_MEMO_TO','To');
+define('TEXT_MEMO_CONTENTS','内容');
+define('TEXT_MEMO_CREATE_TIME','作成時間');
+define('TEXT_MEMO_CREATE_USER','からのメモ');
+define('TEXT_MEMO_ALERT','アラート');
+define('TEXT_MEMO_SHOW','表示');
+define('TEXT_MEMO_HIDE','非表示');
+define('TEXT_MEMO_BUTTON_CLOSE','終了');
+define('TEXT_MEMO_CLOSE_CONFIRM','本当に引続メモを終了しますか？');
+define('TEXT_MEMO_USER_ID','指定したIDのみ');
+define('TEXT_MEMO_USER_SELECT','宛先を選択');
+?>

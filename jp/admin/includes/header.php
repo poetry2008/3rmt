@@ -560,7 +560,7 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
 
       <tr>
       <td class="menu01"><a class="t_link01"
-       href="' . tep_href_link('micro_log.php', '', 'NONSSL') . '"
+       href="' . tep_href_link('business_memo.php', '', 'NONSSL') . '"
       >'.HEADER_TEXT_MICRO_LOG.'</a></td>
       </tr><tr>
       <td class="menu01"><a class="t_link01"

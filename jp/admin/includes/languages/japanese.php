@@ -782,3 +782,4 @@ define('HEADER_TEXT_ALERT_COMMENT','「${ALERT_TITLE}」');
 define('HEADER_TEXT_ALERT_NUM','（他${ALERT_NUM}件）');
 define('TEXT_DISPLAY_NUMBER_OF_ALERT', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> のログのうち)');
 define('HEADER_TEXT_ALERT_LINK','が');
+define('TEXT_DATA_IS_EMPTY','データがありません。');
