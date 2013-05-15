@@ -2434,6 +2434,10 @@ echo json_encode($json_array);
     sort($site_info_array);
     tep_db_query("insert into `show_site` values (null, '".$_SESSION['loginuid']."', '".$_POST['current_file']."', '".implode('-', $site_info_array)."')");  
   }
+  if(isset($_POST['unshow_list'])&&$_POST['unshow_list']!=''){
+    $unshow_list_array = explode('-',$_POST['unshow_list']);
+    $site_info_array = array_diff($site_info_array,$unshow_list_array);
+  }
   if(!empty($site_info_array)){
     echo tep_href_link($_POST['current_file'], $_POST['param_url'].'site_id='.implode('-', $site_info_array));
   }else{

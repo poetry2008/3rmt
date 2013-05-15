@@ -14,7 +14,7 @@
     $sql_site_where = 'site_id in ('.tep_get_setting_site_info(FILENAME_NEWS).')'; 
   }
   if(isset($_GET['site_id'])&&$_GET['site_id']==''){
-    $_GET['site_id'] = str_replace(',','-',tep_get_setting_site_info($_SERVER['PHP_SELF']));
+    $_GET['site_id'] = str_replace(',','-',tep_get_setting_site_info(FILENAME_NEWS));
   }
   
   if (isset($_GET['action']) && $_GET['action']) {
