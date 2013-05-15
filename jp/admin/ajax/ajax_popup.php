@@ -2989,12 +2989,16 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   }
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_REVIEWS);
   include(DIR_FS_ADMIN.'classes/notice_box.php');
-  $sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$_SESSION['loginuid']."' limit 0,1");
+  $sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$ocertify->auth_user."' limit 0,1");
   while($userslist= tep_db_fetch_array($sites_id)){
     $site_arr = $userslist['site_permission']; 
   }
   $site_array = explode(',',$site_arr);
-  $show_site_arr = explode('-',$_GET['site_id']);
+  if(isset($_GET['site_id'])&&$_GET['site_id']){
+    $show_site_arr = explode('-',$_GET['site_id']);
+  }else{
+    $show_site_arr = explode('-',str_replace(',','-',tep_get_setting_site_info(FILENAME_REVIEWS)));
+  }
   $notice_box = new notice_box('popup_order_title', 'popup_order_info');
     $rID = tep_db_prepare_input($_GET['rID']);
     $reviews_query = tep_db_query("
@@ -3182,16 +3186,18 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$_GET['action_sid']));
     $site_id_name = $site_name['romaji'];
   }else{
-   $site_id_name = "<select name='insert_site_id'>";
+   $site_id_name = "<select id='add_site_id' name='insert_site_id'>";
    $new_site_arr = array_intersect($show_site_arr,$site_array);
    foreach($new_site_arr as $value){
      if($value==0){
-       $site_id_name .= "<option value='0'>ALL</option>";
      }else{
-       $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where
-             id=".$value));
-       $site_id_name .= "<option value='".$site_name['id']
-         ."'>".$site_name['name']."</option>";
+       $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$value));
+       $site_id_name .= "<option value='".$site_name['id']."' ";
+       if(isset($_GET['add_site_id'])&&$_GET['add_site_id']
+           &&$_GET['add_site_id'] == $site_name['id']){
+         $site_id_name .= " selected ";
+       }
+       $site_id_name .= ">".$site_name['name']."</option>";
      }
    }
    $site_id_name .= "</select>";
@@ -3264,7 +3270,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     }
     $contents[]['text'] = array(
         array('text' => ENTRY_PRODUCT),
-        array('text' => $review_select.$ProductOptions.$review_select_end.$error_add_id),
+        array('text' => $review_select.$ProductOptions.$review_select_end.'<br>'.$error_add_id),
         array('text' => '<input type="hidden" id="hidden_select" name="hidden_select" value="'.$df_pid.'"><input type="hidden" name="hidden_products_name" value="'.$rInfo->products_id.'">'.'<input type="hidden" id="r_pid" value="'.$df_pid.'">')
     );
 
@@ -3470,7 +3476,7 @@ echo $notice_box->show_notice();
 }else if ($_GET['action'] == 'edit_latest_news'){
  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_NEWS);
  include(DIR_FS_ADMIN.'classes/notice_box.php');
-$sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$_SESSION['loginuid']."' limit 0,1");
+$sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$ocertify->auth_user."' limit 0,1");
 while($userslist= tep_db_fetch_array($sites_id)){
      $site_permission = $userslist['site_permission']; 
 }
