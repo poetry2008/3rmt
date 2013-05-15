@@ -274,6 +274,7 @@ define('TABLE_PERMISSIONS','permissions');
   define('TABLE_CUSTOMERS_PIC_LIST', 'customers_pic_list'); 
   define('TABLE_CALENDAR_STATUS','calendar_status');
   define('TABLE_CALENDAR_DATE','calendar_date');
+  define('TABLE_SHOW_SITE','show_site');
   define('TABLE_BUSINESS_MEMO','business_memo');
 // customization for the design layout
   define('BOX_WIDTH', 160); // how wide the boxes should be in pixels (default: 125)
@@ -393,7 +394,7 @@ while($userslist= tep_db_fetch_array($sites_id)){
         $_SESSION['language'] = $personal_language_str;
         $_SESSION['text_language'] = $personal_language_str;
       }
-    }   
+    }
   }
 
 // include the language translations
