@@ -10296,10 +10296,10 @@ function tep_cfg_pull_down_month_list($month,$empty_params ='',$params = '') {
     功能: 网站显示
     参数: $filename (string) 页面
     参数: $ca_single(boolean) 是否过滤指定的url参数 
-    参数: $show_all (boolean) 是否显示ALL
+    参数: $show_all (array) 是否特殊显示ALL 和其他网站
     返回值: 网站的列表(string) 
 -----------------------------------*/
-function tep_show_site_filter($filename,$ca_single=false,$show_all=true){
+function tep_show_site_filter($filename,$ca_single=false,$show_all=array()){
   global $_GET, $_POST, $ocertify;
   $site_list_array = array();
   $site_array = array();
@@ -10322,6 +10322,7 @@ function tep_show_site_filter($filename,$ca_single=false,$show_all=true){
     $site_array = explode('-',$show_site_rows['site']);
     $site_id = $show_site_rows['show_id'];
   }
+  $unshow_list = array();
   // 循环输出所有网站列表 ALL 需要特殊处理
   ?>
     <div id="tep_site_filter">
@@ -10331,6 +10332,16 @@ function tep_show_site_filter($filename,$ca_single=false,$show_all=true){
                $site = array();
                $site['id'] = $sid;
                $site['romaji'] = $sromaji;
+               if(!empty($show_all)){
+                 if(in_array($site['id'],$site_array)&&
+                     in_array($site['id'],$show_all)){
+                   $unshow_list[] = $site['id'];
+                 ?>
+              <span id="site_<?php echo $site['id'];?>" class="site_filter_unselected"><?php echo $site['romaji'];?></a></span>  
+                 <?php
+                 continue;
+                 }
+               }
                if(!isset($_GET['site_id'])){
                 if(in_array($site['id'],$site_array)){
            ?>  
@@ -10355,6 +10366,14 @@ function tep_show_site_filter($filename,$ca_single=false,$show_all=true){
                }
               }
   ?></div><?php
+  if(!empty($show_all)&&!empty($unshow_list)){
+    ?>
+    <input type="hidden" id="unshow_site_list" value="<?php
+    echo implode('-',$unshow_list);?>">
+    <?php
+  }else{
+    echo '<input type="hidden" id="unshow_site_list" value="">';
+  }
 }
 
 /*-----------------------------------

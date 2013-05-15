@@ -2993,6 +2993,8 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   while($userslist= tep_db_fetch_array($sites_id)){
     $site_arr = $userslist['site_permission']; 
   }
+  $site_array = explode(',',$site_arr);
+  $show_site_arr = explode('-',$_GET['site_id']);
   $notice_box = new notice_box('popup_order_title', 'popup_order_info');
     $rID = tep_db_prepare_input($_GET['rID']);
     $reviews_query = tep_db_query("
@@ -3021,7 +3023,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
        $site_permission = editPermission($site_arr, $reviews['site_id'],true);
     }else{
        $action_type = 'insert'; 
-       $site_permission = editPermission($site_arr, $_GET['site_id'],true);
+       $site_permission = editPermission($site_arr, $_GET['action_sid'],true);
     }
     if(!$site_permission){
       $str_disabled = ' disabled="disabled" ';
@@ -3041,6 +3043,15 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
           and site_id = '0'
           and language_id = '" . $languages_id . "'");
     $products_name = tep_db_fetch_array($products_name_query);
+    if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
+      $sql_site_where = ' site_id in ('.str_replace('-', ',', $_GET['site_id']).')';
+    } else {
+      $sql_site_where = ' site_id in ('.tep_get_setting_site_info(FILENAME_REVIEWS).')';
+    }
+    if(isset($_GET['site_id'])&&$_GET['site_id']==''){
+      $_GET['site_id'] = str_replace(',','-',tep_get_setting_site_info(FILENAME_REVIEWS));
+    }
+
      
     if(isset($_GET['product_name']) && $_GET['product_name']){
        $p_list_arr = array();
@@ -3049,7 +3060,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
          $p_list_arr_site_sql = "select products_id,products_name from ".
            TABLE_PRODUCTS_DESCRIPTION." where 
            products_name like '%".trim($_GET['product_name'])."%' 
-           and site_id = '".$_GET['site_id']."'";
+           and ".$sql_site_where;
          $p_list_arr_site_query = tep_db_query($p_list_arr_site_sql);
          while($p_list_arr_site_res = tep_db_fetch_array($p_list_arr_site_query)){
            $p_list_arr[] = $p_list_arr_site_res['products_id'];
@@ -3063,7 +3074,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
            and products_name like '%".trim($_GET['product_name'])."%'
            and products_id not in 
            (select products_id FROM ".TABLE_PRODUCTS_DESCRIPTION." 
-            where site_id ='".$_GET['site_id']."')";
+            where ".$sql_site_where.")";
        }else{
          $p_list_arr_sql = "select products_id from ".
            TABLE_PRODUCTS_DESCRIPTION." where 
@@ -3094,12 +3105,13 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
              s.name as site_name
      from " . TABLE_REVIEWS . " r, ".TABLE_SITES." s
      where r.site_id = s.id
-        " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and s.id = '" .  intval($_GET['site_id']) . "' " : '') . "".$where_str."
+        and " .$sql_site_where. "".$where_str."
      order by date_added DESC";
 
     $reviews_raw_query = tep_db_query($reviews_query_raw);
     while ($reviews_id = tep_db_fetch_array($reviews_raw_query)) {
          $rid_array[] = $reviews_id['reviews_id']; 
+         $rsid_array[] = $reviews_id['site_id'];
     }
    
     $rInfo_array = tep_array_merge($reviews, $products, $products_name);
@@ -3150,10 +3162,10 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   //标题
   if(isset($rID)&&$rID){
      if ($r_key > 0) { 
-       $page_str .= '<a id="option_prev" onclick=\'show_text_reviews("",'.$_GET['page'].','.$rid_array[$r_key-1].','.$_GET['site_id'].')\' href="javascript:void(0);" id="option_next">'.TEXT_CAMPAIGN_PREV.'</a>&nbsp;&nbsp;';
+       $page_str .= '<a id="option_prev" onclick=\'show_text_reviews("","'.$_GET['page'].'","'.$rid_array[$r_key-1].'","'.$_GET['site_id'].'","'.$rsid_array[$r_key-1].'")\' href="javascript:void(0);" id="option_next">'.TEXT_CAMPAIGN_PREV.'</a>&nbsp;&nbsp;';
      }
      if ($r_key < (count($rid_array) - 1)) {
-       $page_str .= '<a id="option_next" onclick=\'show_text_reviews("",'.$_GET['page'].','.$rid_array[$r_key+1].','.$_GET['site_id'].')\' href="javascript:void(0);" id="option_next">'.TEXT_CAMPAIGN_NEXT.'</a>&nbsp;&nbsp;';
+       $page_str .= '<a id="option_next" onclick=\'show_text_reviews("","'.$_GET['page'].'","'.$rid_array[$r_key+1].'","'.$_GET['site_id'].'","'.$rsid_array[$r_key+1].'")\' href="javascript:void(0);" id="option_next">'.TEXT_CAMPAIGN_NEXT.'</a>&nbsp;&nbsp;';
      }
   }
   if(isset($rID)&&$rID){
@@ -3166,13 +3178,28 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   $heading[] = array('align' => 'left', 'text' => $products_name.'&nbsp;&nbsp;');
   $heading[] = array('align' => 'right', 'text' => $page_str);
 //信息列表
-  if(isset($_GET['site_id'])&&$_GET['site_id']){
-    $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$_GET['site_id']));
-    $reviews['romaji'] = $site_name['romaji'];
+  if(isset($_GET['action_sid'])&&$_GET['action_sid']){
+    $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$_GET['action_sid']));
+    $site_id_name = $site_name['romaji'];
+  }else{
+   $site_id_name = "<select name='insert_site_id'>";
+   $new_site_arr = array_intersect($show_site_arr,$site_array);
+   foreach($new_site_arr as $value){
+     if($value==0){
+       $site_id_name .= "<option value='0'>ALL</option>";
+     }else{
+       $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where
+             id=".$value));
+       $site_id_name .= "<option value='".$site_name['id']
+         ."'>".$site_name['name']."</option>";
+     }
+   }
+   $site_id_name .= "</select>";
+
   }
   $contents[]['text'] = array( 
       array('text' => ENTRY_SITE.':<input type="hidden" name="action_type" value="'.$action_type.'">'),
-      array('text' => $reviews['romaji'].'<input id="site_id" name="site_id" type="hidden" value="'.$_GET['site_id'].'"><input id="site_hidden" name="site_hidden" type="hidden" value="'.$_GET['site_id'].'">')
+      array('text' => $site_id_name.'<input id="site_id" name="site_id" type="hidden" value="'.$_GET['site_id'].'"><input id="site_hidden" name="site_hidden" type="hidden" value="'.$_GET['site_id'].'">')
   );
   if(isset($_GET['review_products_id_info']) && $_GET['review_products_id_info']){
     $review_products_id_info = $_GET['review_products_id_info']; 
