@@ -5,7 +5,7 @@
 
   require('includes/application_top.php');
   require(DIR_FS_ADMIN . 'classes/notice_box.php');
-  $sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$_SESSION['loginuid']."' limit 0,1");
+  $sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$ocertify->auth_user."' limit 0,1");
   while($userslist= tep_db_fetch_array($sites_id)){
     $site_arr = $userslist['site_permission']; 
   }
@@ -263,16 +263,20 @@
       var review_products_id_info = document.getElementById('review_products_id').value;
       var site_id_name = document.getElementById('site_id').value;
       site_id = site_id_name;
-      refresh(rID,page,review_products_id_info,site_id);
+      var show_site_id = 0;
+      if(document.getElementById('add_site_id')){
+        show_site_id = document.getElementById('add_site_id').value;
+      }
+      refresh(rID,page,review_products_id_info,site_id,show_site_id);
      }
-    function refresh(rID,page,review_products_id_info,site_id){
+    function refresh(rID,page,review_products_id_info,site_id,show_site_id){
          var product_name = document.getElementById('keyword').value;
          var con_cname = $('#customers_name').val();
          var con_text = $('#reviews_text').val();
          set_default_value();
          $.ajax({
                url: "ajax.php?&action=edit_reviews&validate=true",
-               data: {rID:rID,page:page,review_products_id_info:review_products_id_info,site_id:site_id,product_name:product_name},
+               data: {rID:rID,page:page,review_products_id_info:review_products_id_info,site_id:site_id,product_name:product_name,add_site_id:show_site_id},
                async:false,
                success: function(data){
                   $("#show_text_reviews").html(data);
@@ -283,6 +287,10 @@
      
     }
     function check_review_submit(rID,page){
+          var show_site_id = 0;
+          if(document.getElementById('add_site_id')){
+            show_site_id = document.getElementById('add_site_id').value;
+          }
           var site_id = document.getElementById('site_id').value;
           var add_id = document.getElementById('add_product_products_id').value;
           var customers_name = document.getElementById('customers_name').value;
@@ -292,7 +300,7 @@
           set_default_value();
           $.ajax({
                url: "ajax.php?&action=edit_reviews&validate=true",
-               data: {rID:rID,page:page,site_id:site_id,add_id:add_id,customers_name:customers_name,product_name:product_name},
+               data: {rID:rID,page:page,site_id:site_id,add_id:add_id,customers_name:customers_name,product_name:product_name,add_site_id:show_site_id},
                async:false,
                success: function(data){
                   $("#show_text_reviews").html(data);
