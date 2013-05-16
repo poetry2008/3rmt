@@ -1700,6 +1700,11 @@ shopping
 /* ---------------------------
 notice
 --------------------------- */
+#show_head_notice,#show_all_notice{
+	min-width:750px;
+	width:100%;
+	width: expression(document.body.clientWidth < 750? "750px": "100%" );
+}
 #show_head_notice td, #show_all_notice td{
 	line-height:21px;
 	background:#FFB3B5;
