@@ -2403,11 +2403,15 @@ echo json_encode($json_array);
 } else if ($_GET['action'] == 'select_all_site') {
   $exists_page_raw = tep_db_query("select * from show_site where page = '".$_POST['current_file']."' and user = '".$_SESSION['loginuid']."'");
   $exists_page_info = tep_db_fetch_array($exists_page_raw); 
+  if(isset($_POST['last_site_list'])&&$_POST['last_site_list']!=''){
+  $site_list_array = explode('-',$_POST['last_site_list']);
+  }else{
   $site_list_raw = tep_db_query("select * from sites"); 
   $site_list_array = array(); 
   $site_list_array[] = 0; 
   while ($site_list_info = tep_db_fetch_array($site_list_raw)) {
     $site_list_array[] = $site_list_info['id']; 
+  }
   }
   if ($exists_page_info) {
     $site_info_array = explode('-', $exists_page_info['site']); 
@@ -2428,7 +2432,7 @@ echo json_encode($json_array);
     tep_db_query("update `show_site` set `site` = '".implode('-', $site_info_array)."' where `user` = '".$_SESSION['loginuid']."' and `page` ='".$_POST['current_file']."'");
   } else {
     $site_info_array = $site_list_array; 
-    if ($_POST['flag'] == 0) {
+    if ($_POST['flag'] == 0&&count($site_info_array)>1) {
       unset($site_info_array[array_search($_POST['site_id'], $site_info_array)]);
     } 
     sort($site_info_array);

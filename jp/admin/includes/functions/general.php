@@ -10314,6 +10314,11 @@ function tep_show_site_filter($filename,$ca_single=false,$show_all=array()){
     $site_list_array[$site_list_rows['id']] = $site_list_rows['romaji'];
     $site_array[] = $site_list_rows['id'];
   }
+  if(!empty($show_all)){
+    $show_site_list = array_diff($site_array,$show_all);
+  }else{
+    $show_site_list = $site_array;
+  }
   tep_db_free_result($site_list_query);
   $user_info = tep_get_user_info($ocertify->auth_user);
   //获得用户ID 和 当前页面 取得设置的显示网站列表
@@ -10330,15 +10335,14 @@ function tep_show_site_filter($filename,$ca_single=false,$show_all=array()){
   // 循环输出所有网站列表 ALL 需要特殊处理
   ?>
     <div id="tep_site_filter">
-    <input type="hidden" id="show_site_id" value="<?php echo $show_id;?>">
+    <input type="hidden" id="show_site_id" value="<?php echo implode('-',$show_site_list);?>">
   <?php
               foreach ($site_list_array as $sid => $sromaji) {
                $site = array();
                $site['id'] = $sid;
                $site['romaji'] = $sromaji;
                if(!empty($show_all)){
-                 if(in_array($site['id'],$site_array)&&
-                     in_array($site['id'],$show_all)){
+                 if(in_array($site['id'],$show_all)){
                    $unshow_list[] = $site['id'];
                  ?>
               <span id="site_<?php echo $site['id'];?>" class="site_filter_unselected"><?php echo $site['romaji'];?></a></span>  
