@@ -4486,19 +4486,19 @@ if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
   }else{
     $page_str .= '<font color="#000000">'.IMAGE_NEXT.'></font>&nbsp;&nbsp;';
   }
-  
+
+  $users_info = tep_get_user_info($memo_array['from']); 
   $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => $memo_array['from'].TEXT_MEMO_CREATE_USER);
+  $heading[] = array('align' => 'left', 'text' => $users_info['name'].TEXT_MEMO_CREATE_USER);
   $heading[] = array('align' => 'right', 'text' => $page_str);
 
   //主体内容
   $category_info_row = array();
    
-  //编辑memo项目  
-  $users_info = tep_get_user_info($memo_array['from']);
+  //编辑memo项目   
   $category_info_row[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => 'From<input type="hidden" name="memo_id" value="'.$memo_array['id'].'"><input type="hidden" name="param_str" value="'.$param_str.'">'), 
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => 'From<input type="hidden" name="memo_id" value="'.$memo_array['id'].'"><input type="hidden" name="param_str" value="'.$param_str.'">'), 
        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $users_info['name'])
      );
 
@@ -4510,12 +4510,12 @@ if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
     $to_users_temp_array[] = $to_users_info['name'];
   }
   $category_info_row[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => 'To'), 
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => 'To'), 
        array('align' => 'left', 'params' => 'colspan="2" style="table-layout:fixed;word-break:break-all;"', 'text' => $memo_array['to'] != '' ? implode('；',$to_users_temp_array) : 'ALL')
      );
 
    $category_info_row[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => TEXT_MEMO_ALERT), 
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_MEMO_ALERT), 
        array('align' => 'left', 'params' => 'width="55" nowrap="nowrap"', 'text' => '<input type="radio" style="padding-left:0;margin-left:0;" name="is_show" value="1"'.($memo_array['is_show'] == '1' ? ' checked="checked"' : '').'>'.TEXT_MEMO_SHOW),
        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="radio" style="padding-left:0;margin-left:0;" name="is_show" value="0"'.($memo_array['is_show'] == '0' ? ' checked="checked"' : '').'>'.TEXT_MEMO_HIDE)
      );
@@ -4528,23 +4528,23 @@ if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
    }
    $users_icon .= '</ul><input type="hidden" id="s_radio" name="s_radio" value="'.$pic_default.'">';
    $category_info_row[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => TEXT_MEMO_ICON), 
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_MEMO_ICON), 
        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $users_icon),
      );
 
    $category_info_row[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => TEXT_MEMO_CONTENTS), 
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize:vertical;" rows="10" cols="60" name="contents">'.$memo_array['contents'].'</textarea>')
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_MEMO_CONTENTS), 
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize:vertical;" class="textarea_width" rows="10" name="contents">'.$memo_array['contents'].'</textarea>')
      );
 
   //作成者，作成时间，更新者，更新时间 
   $category_info_row[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => TEXT_USER_ADDED.((tep_not_null($memo_array['user_added'])?$memo_array['user_added']:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_USER_ADDED.((tep_not_null($memo_array['user_added'])?$memo_array['user_added']:TEXT_UNSET_DATA))),
        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => TEXT_DATE_ADDED.((tep_not_null(tep_datetime_short($memo_array['date_added'])))?tep_datetime_short($memo_array['date_added']):TEXT_UNSET_DATA))
       );
    
   $category_info_row[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => TEXT_USER_UPDATE.((tep_not_null($memo_array['user_update'])?$memo_array['user_update']:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_USER_UPDATE.((tep_not_null($memo_array['user_update'])?$memo_array['user_update']:TEXT_UNSET_DATA))),
        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => TEXT_DATE_UPDATE.((tep_not_null(tep_datetime_short($memo_array['date_update'])))?tep_datetime_short($memo_array['date_update']):TEXT_UNSET_DATA))
       );
     
@@ -4592,12 +4592,12 @@ if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
   //编辑memo项目  
   $users_info = tep_get_user_info($ocertify->auth_user);
   $category_info_row[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => TEXT_MEMO_FROM.'<input type="hidden" name="param_str" value="'.$param_str.'"><input type="hidden" name="from" value="'.$ocertify->auth_user.'">'), 
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_MEMO_FROM.'<input type="hidden" name="param_str" value="'.$param_str.'"><input type="hidden" name="from" value="'.$ocertify->auth_user.'">'), 
        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $users_info['name'])
      );
 
   $category_info_row[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => TEXT_MEMO_TO),  
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_MEMO_TO),  
        array('align' => 'left', 'params' => 'width="120" nowrap="nowrap"', 'text' => '<input type="radio" style="padding-left:0;margin-left:0;" name="users_id_select" value="0" onclick="setting_users(0);" checked="checked">ALL'),
        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="radio" style="padding-left:0;margin-left:0;" name="users_id_select" value="1" onclick="setting_users(1);">'.TEXT_MEMO_USER_ID)
      );
@@ -4613,43 +4613,43 @@ if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
   $users_id_select .= '</select>';
 
   $category_info_row[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => '&nbsp;'), 
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => '&nbsp;'), 
        array('align' => 'left', 'params' => 'id="users_list" nowrap="nowrap"', 'text' => $users_id_select),
        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '&nbsp;')
      ); 
 
   $category_info_row[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => '&nbsp;'), 
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => '&nbsp;'), 
        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $users_id_select),
        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '&nbsp;')
      );
 
   $category_info_row[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => '&nbsp;'), 
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => '&nbsp;'), 
        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $users_id_select),
        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '&nbsp;') 
      ); 
 
   $category_info_row[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => '&nbsp;'), 
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => '&nbsp;'), 
        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $users_id_select),
        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '&nbsp;')
      );
   
   $category_info_row[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => '&nbsp;'), 
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => '&nbsp;'), 
        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $users_id_select),
        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '&nbsp;')
      );
 
   $category_info_row[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => '&nbsp;'), 
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => '&nbsp;'), 
        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<a href="javascript:void(0);">'.tep_html_element_button(BUTTON_ADD_TEXT, 'id="add_users" onclick="add_users_select(this);"').'</a>'),
        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '&nbsp;')  
      ); 
 
   $category_info_row[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => TEXT_MEMO_ALERT), 
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_MEMO_ALERT), 
        array('align' => 'left', 'params' => 'width="55" nowrap="nowrap"', 'text' => '<input type="radio" style="padding-left:0;margin-left:0;" name="is_show" value="1" checked="checked">'.TEXT_MEMO_SHOW),
        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="radio" style="padding-left:0;margin-left:0;" name="is_show" value="0">'.TEXT_MEMO_HIDE)
      ); 
@@ -4664,13 +4664,13 @@ if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
    }
    $users_icon .= '</ul><input type="hidden" id="s_radio" name="s_radio" value="'.$pic_default.'">';
    $category_info_row[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => TEXT_MEMO_ICON), 
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_MEMO_ICON), 
        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $users_icon),
      );
 
    $category_info_row[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => TEXT_MEMO_CONTENTS), 
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize:vertical;" rows="10" cols="60" name="contents"></textarea>')
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_MEMO_CONTENTS), 
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize:vertical;" class="textarea_width" rows="10" name="contents"></textarea>')
      );
  
   //底部内容

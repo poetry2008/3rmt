@@ -1499,6 +1499,13 @@ popup_order
 .del_order_notice td{
 	vertical-align:middle;
 }
+.textarea_width{
+	width: 100%;
+}
+@media all and (-webkit-min-device-pixel-ratio:0){
+.textarea_width {
+	width: 60%;
+}}
 /* ---------------------------
 option
 --------------------------- */
@@ -1787,7 +1794,7 @@ Public list
 	list-style:none;
 	margin:0;
 	padding:0;
-	width:70%;
+	width:60%;
 }}
 .table_img_list li{
 	float:left;

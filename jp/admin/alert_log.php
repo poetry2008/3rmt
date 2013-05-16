@@ -114,7 +114,7 @@ if ($rec_c % 2) {
       $micro_info_array = tep_db_fetch_array($micro_info_query);
       tep_db_free_result($micro_info_query);
 
-      $alert_user = $micro_info_array['author'];
+      $alert_user = $micro_info_array['from'];
       $user_info = tep_get_user_info($alert_user);
       $alert_user = $user_info['name'];
       $alert_button_name = NOTICE_EXTEND_TITLE;

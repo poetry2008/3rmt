@@ -546,7 +546,7 @@ require("includes/note_js.php");
 
     $memo_item_info[] = array(
                           'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BUSINESS_MEMO, 'page=' . $_GET['page'] . '&cID=' . $memo['id']) . '\'"', 
-                          'text' => mb_strlen($memo['contents']) > 30 ? mb_substr($memo['contents'],0,30,'utf-8').'...' : $memo['contents']
+                          'text' => nl2br($memo['contents'])
                         );
 
     $memo_item_info[] = array(
