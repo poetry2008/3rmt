@@ -84,6 +84,9 @@
         if(!$site_id['site_id']){
           $site_id['site_id'] = $_GET['action_sid'];
         }
+        if($_POST['action_type']=='insert'){
+          $site_id['site_id'] = $_POST['insert_site_id'];
+        }
         forward401Unless(editPermission($site_arr, $site_id['site_id'],true));
         $reviews_rating = tep_db_prepare_input($_POST['reviews_rating']);
         $last_modified  = tep_db_prepare_input($_POST['last_modified']);
