@@ -9661,7 +9661,7 @@ function tep_get_notice_info($return_type = 0)
     $icon_array = tep_db_fetch_array($icon_query);
     tep_db_free_result($icon_query);
     $html_str .= '<div style="float:right; width:55px;margin-top: 3px;">';
-    $html_str .= tep_image(DIR_WS_IMAGES.'icon_list/'.$icon_array['pic_name'],$icon_array['pic_alt']);
+    $html_str .= $micro_notice_array['icon'] != 0 ? tep_image(DIR_WS_IMAGES.'icon_list/'.$icon_array['pic_name'],$icon_array['pic_alt']) : '';
     $html_str .= '</div>';
     $html_str .= '</td>'; 
  

@@ -13,8 +13,11 @@ define('TEXT_MEMO_CREATE_USER','からのメモ');
 define('TEXT_MEMO_ALERT','アラート');
 define('TEXT_MEMO_SHOW','表示');
 define('TEXT_MEMO_HIDE','非表示');
-define('TEXT_MEMO_BUTTON_CLOSE','終了');
 define('TEXT_MEMO_CLOSE_CONFIRM','本当に引続メモを終了しますか？');
 define('TEXT_MEMO_USER_ID','指定したIDのみ');
 define('TEXT_MEMO_USER_SELECT','宛先を選択');
+define('TEXT_MEMO_EDIT_SELECT','選択したものを');
+define('TEXT_MEMO_EDIT_DELETE','削除する');
+define('TEXT_MEMO_EDIT_MUST_SELECT','少なくとも1つの選択肢を選んでください。');
+define('TEXT_MEMO_EDIT_CONFIRM','本当に削除しますか？');
 ?>

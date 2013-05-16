@@ -13,6 +13,7 @@ if (isset($_GET['action']) and $_GET['action']) {
    case 'insert' 新建memo     
    case 'save' 更新memo     
    case 'deleteconfirm' 删除memo      
+   case 'delete' 删除选中的memo
 ------------------------------------------------------*/
       case 'insert':
         $from = tep_db_prepare_input($_POST['from']);
@@ -57,11 +58,12 @@ if (isset($_GET['action']) and $_GET['action']) {
         break;
       case 'save':
         $is_show = tep_db_prepare_input($_POST['is_show']);
+        $pic_icon = tep_db_prepare_input($_POST['pic_icon']);
         $contents = tep_db_prepare_input($_POST['contents']); 
         $memo_id = tep_db_prepare_input($_POST['memo_id']);
         $param_str = tep_db_prepare_input($_POST['param_str']);
 
-        tep_db_query("update " . TABLE_BUSINESS_MEMO . " set is_show='".$is_show."',contents='".$contents."',user_update='".$_SESSION['user_name']."',date_update=now() where id = '" . tep_db_input($memo_id) . "'");
+        tep_db_query("update " . TABLE_BUSINESS_MEMO . " set is_show='".$is_show."',icon='".$pic_icon."',contents='".$contents."',user_update='".$_SESSION['user_name']."',date_update=now() where id = '" . tep_db_input($memo_id) . "'");
 
         tep_db_query("update " . TABLE_NOTICE . " set title='".$contents."' where from_notice = '" . tep_db_input($memo_id) . "' and type='1'");
         tep_redirect(tep_href_link(FILENAME_BUSINESS_MEMO, $param_str));
@@ -72,6 +74,16 @@ if (isset($_GET['action']) and $_GET['action']) {
         tep_db_query("update " . TABLE_NOTICE . " set is_show='0' where from_notice = '" . tep_db_input($memo_id) . "' and type='1'");
         tep_db_query("update " . TABLE_BUSINESS_MEMO . " set deleted='1' where id = '" . tep_db_input($memo_id) . "'");
         tep_redirect(tep_href_link(FILENAME_BUSINESS_MEMO, $param_str));
+        break;
+      case 'delete':
+        $memo_id_list = tep_db_prepare_input($_POST['memo_list_id']);
+        $param_str = $_GET['page'];
+
+        foreach($memo_id_list as $memo_id){
+          tep_db_query("update " . TABLE_NOTICE . " set is_show='0' where from_notice = '" . tep_db_input($memo_id) . "' and type='1'");
+          tep_db_query("update " . TABLE_BUSINESS_MEMO . " set deleted='1' where id = '" . tep_db_input($memo_id) . "'"); 
+        }
+        tep_redirect(tep_href_link(FILENAME_BUSINESS_MEMO, 'page='.$param_str));
         break;
     }
   }
@@ -88,7 +100,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 <?php require('includes/javascript/show_site.js.php');?>
 <script language="javascript">
 <?php //快捷键监听?>
-$(document).ready(function() {
+$(document).ready(function() { 
   $(document).keyup(function(event) {
     if (event.which == 27) {
       if ($("#show_popup_info").css("display") != "none") {
@@ -132,6 +144,60 @@ function resize_option_page()
     $(".box_warp").height($(".compatible").height()); 
   }
   box_warp_height = $(".box_warp").height(); 
+}
+
+<?php //删除动作?>
+function select_memo_change(value,memo_list_id)
+{
+  sel_num = 0;
+  if (document.edit_memo_form.elements[memo_list_id].length == null) {
+    if (document.edit_memo_form.elements[memo_list_id].checked == true) {
+      sel_num = 1;
+    }
+  } else {
+    for (i = 0; i < document.edit_memo_form.elements[memo_list_id].length; i++) {
+      if (document.edit_memo_form.elements[memo_list_id][i].checked == true) {
+        sel_num = 1;
+        break;
+      }
+    }
+  } 
+
+  if(sel_num == 1){
+    if (confirm('<?php echo TEXT_MEMO_EDIT_CONFIRM;?>')) {
+      document.edit_memo_form.action = "<?php echo FILENAME_BUSINESS_MEMO.'?action=delete'.($_GET['page'] != '' ? '&page='.$_GET['page'] : '');?>";
+      document.edit_memo_form.submit(); 
+    }else{
+
+      document.getElementsByName("edit_memo_list")[0].value = 0;
+    } 
+  }else{
+    document.getElementsByName("edit_memo_list")[0].value = 0;
+    alert("<?php echo TEXT_MEMO_EDIT_MUST_SELECT;?>"); 
+  }
+}
+
+<?php //全选动作?>
+function all_select_memo(memo_list_id)
+{
+  var check_flag = document.edit_memo_form.all_check.checked;
+  if (document.edit_memo_form.elements[memo_list_id]) {
+    if (document.edit_memo_form.elements[memo_list_id].length == null) {
+      if (check_flag == true) {
+        document.edit_memo_form.elements[memo_list_id].checked = true;
+      } else {
+        document.edit_memo_form.elements[memo_list_id].checked = false;
+      }
+    } else {
+      for (i = 0; i < document.edit_memo_form.elements[memo_list_id].length; i++) {
+        if (check_flag == true) {
+          document.edit_memo_form.elements[memo_list_id][i].checked = true;
+        } else {
+          document.edit_memo_form.elements[memo_list_id][i].checked = false;
+        }
+      }
+    }
+  }
 }
 
 <?php //选中，取消单选按钮?>
@@ -323,6 +389,7 @@ function create_memo(ele)
     success: function (data) {
       $('#show_popup_info').html(data);  
       $('#show_popup_info').show(); 
+      setting_users(0);
     }
   }); 
 }
@@ -377,12 +444,14 @@ require("includes/note_js.php");
           <tr>
             <td valign="top">
 <?php 
+  echo tep_draw_form('edit_memo_form',FILENAME_BUSINESS_MEMO, '', 'post');
   $memo_table_params = array('width' => '100%', 'cellpadding' => '2', 'cellspacing' => '0', 'parameters' => ''); 
   $notice_box = new notice_box('', '', $memo_table_params); 
   $memo_table_row = array();
   $memo_title_row = array();
                   
-  //memo列表 
+  //memo列表  
+  $memo_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => '<input type="hidden" name="execute_delete" value="1"><input type="checkbox" onclick="all_select_memo(\'memo_list_id[]\');" name="all_check">');
   $memo_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => TEXT_MEMO_ICON);
   $memo_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => TEXT_MEMO_READ_FLAG);
   $memo_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => TEXT_MEMO_FROM);
@@ -428,7 +497,11 @@ require("includes/note_js.php");
       $memo_item_params = '<tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
     }
 
-    $memo_item_info = array(); 
+    $memo_item_info = array();  
+    $memo_item_info[] = array(
+                          'params' => 'class="dataTableContent"', 
+                          'text' => '<input type="checkbox" value="'.$memo['id'].'" name="memo_list_id[]">'   
+                          );
     $memo_item_info[] = array(
                           'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BUSINESS_MEMO, 'page=' . $_GET['page'] . '&cID=' . $memo['id']) . '\'"', 
                           'text' => $memo['icon'] != 0 ? tep_image(DIR_WS_IMAGES.'icon_list/'.$icon_list_array[$memo['icon']]['name'],$icon_list_array[$memo['icon']]['alt']) : ''  
@@ -453,14 +526,22 @@ require("includes/note_js.php");
                           'text' => $memo_read 
                         );
 
+    $users_info = tep_get_user_info($memo['from']);
     $memo_item_info[] = array(
                           'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BUSINESS_MEMO, 'page=' . $_GET['page'] . '&cID=' . $memo['id']) . '\'"', 
-                          'text' => $memo['from'] 
+                          'text' => $users_info['name'] 
                         );
 
+    $to_users_array = explode(',',$memo['to']);
+    $to_users_temp_array = array();
+    foreach($to_users_array as $to_value){
+
+      $to_users_info = tep_get_user_info($to_value);
+      $to_users_temp_array[] = $to_users_info['name'];
+    }
     $memo_item_info[] = array(
                           'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BUSINESS_MEMO, 'page=' . $_GET['page'] . '&cID=' . $memo['id']) . '\'"', 
-                          'text' => $memo['to'] != '' ? mb_strlen($memo['to'],'utf-8') > 30 ? mb_substr(str_replace(',','；',$memo['to']),0,30,'utf-8').'...' : str_replace(',','；',$memo['to']) : 'ALL' 
+                          'text' => $memo['to'] != '' ? mb_strlen($memo['to'],'utf-8') > 30 ? mb_substr(implode('；',$to_users_temp_array),0,30,'utf-8').'...' : implode('；',$to_users_temp_array) : 'ALL' 
                         );
 
     $memo_item_info[] = array(
@@ -489,7 +570,21 @@ require("includes/note_js.php");
   $notice_box->get_eof(tep_eof_hidden()); 
   echo $notice_box->show_notice();
 ?>
-		  <table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin-top:5px;">
+                  <table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin-top:5px;">
+                  <tr>
+                  <td class="smallText" valign="top">
+                  <?php
+                  if($ocertify->npermission == 15 && tep_db_num_rows($memo_query) > 0){
+                    echo '<div class="td_box">';
+                    echo '<select name="edit_memo_list" onchange="select_memo_change(this.value,\'memo_list_id[]\');">';
+                    echo '<option value="0">'.TEXT_MEMO_EDIT_SELECT.'</option>';
+                    echo '<option value="1">'.TEXT_MEMO_EDIT_DELETE.'</option>';
+                    echo '</select>';
+                    echo '</div>';
+                  }
+                  ?>
+                  </td>
+                  </tr>
                   <tr>
                     <td class="smallText" valign="top"><?php echo $memo_split->display_count($memo_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_BUSINESS_MEMO); ?></td>
                     <td class="smallText" align="right"><div class="td_box"><?php echo $memo_split->display_links($memo_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page']); ?></div></td>
@@ -500,7 +595,7 @@ require("includes/note_js.php");
           </table>
 	  </td>
           </tr>
-        </table></td>
+        </table></form></td>
       </tr>
     </table>
     </div> 

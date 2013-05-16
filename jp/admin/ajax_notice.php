@@ -135,7 +135,7 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
       }
       if(in_array($notice_list['id'],$notice_id_array)){
         echo  '<div style="float:right; width:55px;margin-top: 3px;">';
-        echo tep_image(DIR_WS_IMAGES.'icon_list/'.$icon_list_array[$memo_id_array[$notice_list['id']]]['name'],$icon_list_array[$memo_id_array[$notice_list['id']]]['alt']);
+        echo $icon_list_array[$memo_id_array[$notice_list['id']]]['name'] != '' ? tep_image(DIR_WS_IMAGES.'icon_list/'.$icon_list_array[$memo_id_array[$notice_list['id']]]['name'],$icon_list_array[$memo_id_array[$notice_list['id']]]['alt']) : '';
         echo  '</div>';
       }
       echo '</td>'; 

@@ -13,8 +13,11 @@ define('TEXT_MEMO_CREATE_USER','创建的备忘录');
 define('TEXT_MEMO_ALERT','提醒');
 define('TEXT_MEMO_SHOW','是');
 define('TEXT_MEMO_HIDE','否');
-define('TEXT_MEMO_BUTTON_CLOSE','终止');
 define('TEXT_MEMO_CLOSE_CONFIRM','确定终止此备忘录吗？');
 define('TEXT_MEMO_USER_ID','仅限于指定的ID');
 define('TEXT_MEMO_USER_SELECT','接收用户选择');
+define('TEXT_MEMO_EDIT_SELECT','请选择');
+define('TEXT_MEMO_EDIT_DELETE','删除');
+define('TEXT_MEMO_EDIT_MUST_SELECT','至少选择一项。');
+define('TEXT_MEMO_EDIT_CONFIRM','确定要删除吗？');
 ?>

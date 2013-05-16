@@ -4496,14 +4496,22 @@ if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
   $category_info_row = array();
    
   //编辑memo项目  
+  $users_info = tep_get_user_info($memo_array['from']);
   $category_info_row[]['text'] = array(
        array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => 'From<input type="hidden" name="memo_id" value="'.$memo_array['id'].'"><input type="hidden" name="param_str" value="'.$param_str.'">'), 
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $memo_array['from'])
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $users_info['name'])
      );
 
+  $to_users_array = explode(',',$memo_array['to']);
+  $to_users_temp_array = array();
+  foreach($to_users_array as $to_value){
+
+    $to_users_info = tep_get_user_info($to_value);
+    $to_users_temp_array[] = $to_users_info['name'];
+  }
   $category_info_row[]['text'] = array(
        array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => 'To'), 
-       array('align' => 'left', 'params' => 'colspan="2" style="table-layout:fixed;word-break:break-all;"', 'text' => $memo_array['to'] != '' ? str_replace(',','；',$memo_array['to']) : 'ALL')
+       array('align' => 'left', 'params' => 'colspan="2" style="table-layout:fixed;word-break:break-all;"', 'text' => $memo_array['to'] != '' ? implode('；',$to_users_temp_array) : 'ALL')
      );
 
    $category_info_row[]['text'] = array(
@@ -4512,9 +4520,21 @@ if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="radio" style="padding-left:0;margin-left:0;" name="is_show" value="0"'.($memo_array['is_show'] == '0' ? ' checked="checked"' : '').'>'.TEXT_MEMO_HIDE)
      );
 
+   $pic_list_raw = tep_db_query("select * from ".TABLE_CUSTOMERS_PIC_LIST." order by sort_order asc"); 
+   $users_icon = '<ul class="table_img_list">'; 
+   while ($pic_list_res = tep_db_fetch_array($pic_list_raw)) {
+     if($pic_list_res['id'] == $memo_array['icon']){$pic_default = $pic_list_res['id'];}
+     $users_icon .= '<li><input type="radio" onclick="check_radio_status(this);" name="pic_icon" value="'.$pic_list_res['id'].'" style="padding-left:0;margin-left:0;"'.($pic_list_res['id'] == $memo_array['icon'] ? ' checked="checked"' : '').'><img src="images/icon_list/'.$pic_list_res['pic_name'].'" alt="'.$pic_list_res['pic_alt'].'" title="'.$pic_list_res['pic_alt'].'"></li>'; 
+   }
+   $users_icon .= '</ul><input type="hidden" id="s_radio" name="s_radio" value="'.$pic_default.'">';
+   $category_info_row[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => TEXT_MEMO_ICON), 
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $users_icon),
+     );
+
    $category_info_row[]['text'] = array(
        array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => TEXT_MEMO_CONTENTS), 
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<textarea style="resize:vertical;" class="option_text" rows="5" cols="30" name="contents">'.$memo_array['contents'].'</textarea>')
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize:vertical;" rows="10" cols="60" name="contents">'.$memo_array['contents'].'</textarea>')
      );
 
   //作成者，作成时间，更新者，更新时间 
@@ -4533,7 +4553,7 @@ if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
 
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_NEW_PROJECT, 'onclick="create_memo(this);"').'</a>';
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="edit_memo_check();"').'</a>'; 
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_MEMO_BUTTON_CLOSE, 'onclick="if(confirm(\''.TEXT_MEMO_CLOSE_CONFIRM.'\')){close_memo();}"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if(confirm(\''.TEXT_MEMO_CLOSE_CONFIRM.'\')){close_memo();}"').'</a>'; 
 
   if (!empty($button)) {
     $buttons = array('align' => 'center', 'button' => $button); 
@@ -4570,23 +4590,24 @@ if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
   $category_info_row = array();
    
   //编辑memo项目  
+  $users_info = tep_get_user_info($ocertify->auth_user);
   $category_info_row[]['text'] = array(
        array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => TEXT_MEMO_FROM.'<input type="hidden" name="param_str" value="'.$param_str.'"><input type="hidden" name="from" value="'.$ocertify->auth_user.'">'), 
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $ocertify->auth_user)
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $users_info['name'])
      );
 
   $category_info_row[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => TEXT_MEMO_TO), 
-       array('align' => 'left', 'params' => 'width="120" nowrap="nowrap"', 'text' => '<input type="radio" style="padding-left:0;margin-left:0;" name="users_id_select" value="1" checked="checked" onclick="setting_users(1);">'.TEXT_MEMO_USER_ID),
-       array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="radio" style="padding-left:0;margin-left:0;" name="users_id_select" value="0" onclick="setting_users(0);">ALL')
+       array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => TEXT_MEMO_TO),  
+       array('align' => 'left', 'params' => 'width="120" nowrap="nowrap"', 'text' => '<input type="radio" style="padding-left:0;margin-left:0;" name="users_id_select" value="0" onclick="setting_users(0);" checked="checked">ALL'),
+       array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="radio" style="padding-left:0;margin-left:0;" name="users_id_select" value="1" onclick="setting_users(1);">'.TEXT_MEMO_USER_ID)
      );
 
   $users_id_select = '<select name="users_id[]">';
   $users_id_select .= '<option value="">'.TEXT_MEMO_USER_SELECT.'</option>';
-  $users_id_query = tep_db_query("select userid from ". TABLE_USERS ." order by userid asc");
+  $users_id_query = tep_db_query("select userid,name from ". TABLE_USERS ." order by userid asc");
   while($users_id_array = tep_db_fetch_array($users_id_query)){
 
-    $users_id_select .= '<option value="'.$users_id_array['userid'].'">'.$users_id_array['userid'].'</option>';
+    $users_id_select .= '<option value="'.$users_id_array['userid'].'">'.$users_id_array['name'].'</option>';
   }
   tep_db_free_result($users_id_query);
   $users_id_select .= '</select>';
@@ -4649,7 +4670,7 @@ if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
 
    $category_info_row[]['text'] = array(
        array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => TEXT_MEMO_CONTENTS), 
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<textarea style="resize:vertical;" class="option_text" rows="5" cols="30" name="contents"></textarea>')
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize:vertical;" rows="10" cols="60" name="contents"></textarea>')
      );
  
   //底部内容

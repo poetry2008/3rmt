@@ -191,8 +191,7 @@ function UserOnceAlertLog_list() {
   }
 
   $nrow = tep_db_num_rows($oresult);              // 获取记录件数
-  if ($nrow > 0) {                      // 取不到记录的时候
-    
+     
     $site_query = tep_db_query("select id from ".TABLE_SITES);
     $site_list_array = array();
     while($site_array = tep_db_fetch_array($site_query)){
@@ -213,10 +212,14 @@ function UserOnceAlertLog_list() {
     echo '<td class="dataTableHeadingContent">' .
       TABLE_HEADING_CREATED_AT . '</td>' . "\n";       
     echo "</tr>\n";
-    show_alert_log_list($oresult);   
+    if ($nrow > 0) {                      // 取不到记录的时候
+      show_alert_log_list($oresult);   
+    }else{
+      echo '<tr><td><font color="red"><b>'.TEXT_DATA_IS_EMPTY.'</b></font></td></tr>';
+    }
     echo "</table>\n";
     echo '</form>';
-    if($ocertify->npermission == 15){
+    if($ocertify->npermission == 15 && $nrow > 0){
       echo '<div class="td_box">';
       echo '<select name="edit_logs_list" onchange="select_logs_change(this.value,\'logs_list_id[]\');">';
       echo '<option value="0">'.TEXT_LOGS_EDIT_SELECT.'</option>';
@@ -226,10 +229,7 @@ function UserOnceAlertLog_list() {
     }
 
     show_page_ctl();       // 页面控制按钮的显示
- 
-  }else{
-    echo '<font color="red"><b>'.TEXT_DATA_IS_EMPTY.'</b></font>';
-  }
+  
   if ($oresult) @tep_db_free_result($oresult);          // 开放结果项目
 
   return TRUE;
