@@ -10342,8 +10342,7 @@ function tep_show_site_filter($filename,$ca_single=false,$show_all=array()){
                $site['id'] = $sid;
                $site['romaji'] = $sromaji;
                if(!empty($show_all)){
-                 if(in_array($site['id'],$site_array)&&
-                     in_array($site['id'],$show_all)){
+                 if(in_array($site['id'],$show_all)){
                    $unshow_list[] = $site['id'];
                  ?>
               <span id="site_<?php echo $site['id'];?>" class="site_filter_unselected"><?php echo $site['romaji'];?></a></span>  
