@@ -3480,15 +3480,18 @@ $sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHE
 while($userslist= tep_db_fetch_array($sites_id)){
      $site_permission = $userslist['site_permission']; 
 }
+$site_id = $_GET['action_sid'];
+if($_GET['site_id'] == -1){
+  $_GET['site_id'] = '';
+}
 if(isset($site_permission)) $site_arr=$site_permission;//权限判断
 else $site_arr="";
 $site_array = explode(',',$site_arr);
-if(!in_array($site_id,$site_array)){
+if(!in_array($site_id,$site_array)&&$site_id!=-1){
    $disable = 'disabled="disabled"';
 }
  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
  $get_news_id = $_GET['latest_news_id'];
- $site_id = $_GET['site_id'];
    if ( isset($_GET['latest_news_id']) ) { 
     $latest_news_query = tep_db_query("
           select news_id, 
@@ -3508,10 +3511,23 @@ if(!in_array($site_id,$site_array)){
     } else {
       $latest_news = array();
     }
-     $latest_news_query_raw = ' select n.news_id, n.headline, n.date_added, n.author, n.update_editor, n.latest_update_date, n.content, n.status, n.news_image, n.news_image_description, n.isfirst, n.site_id from ' . TABLE_NEWS . ' n where 1 ' . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and (n.site_id = '" .  intval($_GET['site_id']) . "') " : '') . ' order by date_added desc ';
+
+    if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
+      $sql_site_where = 'site_id in ('.str_replace('-', ',', $_GET['site_id']).')';
+      $show_site_arr = explode('-',$_GET['site_id']);
+    } else {
+      $show_site_str = tep_get_setting_site_info($_POST['self_page']);
+      $sql_site_where = 'site_id in ('.$show_site_str.')';
+      $show_site_arr = explode(',',$show_site_str);
+    }
+     $latest_news_query_raw = ' select n.news_id, n.headline, n.date_added,
+     n.author, n.update_editor, n.latest_update_date, n.content, n.status,
+     n.news_image, n.news_image_description, n.isfirst, n.site_id from ' .
+     TABLE_NEWS . ' n where '.$sql_site_where.' order by isfirst desc,date_added desc ';
      $latest_news_id_query = tep_db_query($latest_news_query_raw);
      while ($latest_news_id = tep_db_fetch_array($latest_news_id_query)) {
          $cid_array[] = $latest_news_id['news_id'];
+         $sid_array[] = $latest_news_id['site_id'];
      }
 
  foreach ($cid_array as $c_key => $c_value) {
@@ -3522,10 +3538,10 @@ if(!in_array($site_id,$site_array)){
  $page_str = '';
  if($get_news_id != -1){
  if ($c_key > 0) {
-   $page_str .= '<a id="option_prev" onclick=\'show_latest_news("",'.$_GET['page'].','.$cid_array[$c_key-1].','.$_GET['site_id'].')\' href="javascript:void(0);" id="option_next">'.TEXT_CAMPAIGN_PREV.'</a>&nbsp;&nbsp;';
+   $page_str .= '<a id="option_prev" onclick=\'show_latest_news("",'.$_GET['page'].',"'.$cid_array[$c_key-1].'","'.$_GET['site_id'].'",'.$sid_array[$c_key-1].')\' href="javascript:void(0);" id="option_next">'.TEXT_CAMPAIGN_PREV.'</a>&nbsp;&nbsp;'; 
  }
  if ($c_key < (count($cid_array) - 1)) {
-   $page_str .= '<a id="option_next" onclick=\'show_latest_news("",'.$_GET['page'].','.$cid_array[$c_key+1].','.$_GET['site_id'].')\' href="javascript:void(0);" id="option_next">'.TEXT_CAMPAIGN_NEXT.'</a>&nbsp;&nbsp;';
+   $page_str .= '<a id="option_next" onclick=\'show_latest_news("",'.$_GET['page'].',"'.$cid_array[$c_key+1].'","'.$_GET['site_id'].'",'.$sid_array[$c_key+1].')\' href="javascript:void(0);" id="option_next">'.TEXT_CAMPAIGN_NEXT.'</a>&nbsp;&nbsp;';
  }
  }
  $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
@@ -3537,11 +3553,27 @@ if(!in_array($site_id,$site_array)){
  $latest_news_contents[]['text'] = array(
       array('text' => '<input type="hidden" name="author" value="'.$_SESSION['user_name'].'"><input type="hidden" name="update_editor" value="'.$_SESSION['user_name'].'">')
  );
+ if($_GET['latest_news_id'] != '-1'){
  if($site_id == 0){
       $site_id_name = 'all';
  }else{
       $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$site_id));
       $site_id_name = $site_name['romaji'];
+ }
+ }else{
+   $site_id_name = "<select name='insert_site_id'>";
+   $new_site_arr = array_intersect($show_site_arr,$site_array);
+   foreach($new_site_arr as $value){
+     if($value==0){
+       $site_id_name .= "<option value='0'>ALL</option>";
+     }else{
+       $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where
+             id=".$value));
+       $site_id_name .= "<option value='".$site_name['id']
+         ."'>".$site_name['name']."</option>";
+     }
+   }
+   $site_id_name .= "</select>";
  }
  if($get_news_id != -1){
       $site_romaji = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$latest_news['site_id']));
@@ -3555,7 +3587,7 @@ if(!in_array($site_id,$site_array)){
  );
  $latest_news_contents[]['text'] = array(
      array('text' => TEXT_LATEST_NEWS_HEADLINE),
-     array('text' => tep_draw_input_field('headline', isset($latest_news['headline'])?$latest_news['headline']:'', 'id="headline" style="margin-left:0"'.$disable, false).'&nbsp;&nbsp;<font color="red" id="title_error"></font>')
+     array('text' => tep_draw_input_field('headline', isset($latest_news['headline'])?$latest_news['headline']:'', 'class="option_text" id="headline" style="margin-left:0"'.$disable, false).'&nbsp;&nbsp;<font color="red" id="title_error"></font>')
      );
  $latest_news_contents[]['text'] = array(
      array('text' => TEXT_LATEST_NEWS_CONTENT),
