@@ -85,6 +85,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<?php require('includes/javascript/show_site.js.php');?>
 <script language="javascript">
 <?php //快捷键监听?>
 $(document).ready(function() {
@@ -131,6 +132,22 @@ function resize_option_page()
     $(".box_warp").height($(".compatible").height()); 
   }
   box_warp_height = $(".box_warp").height(); 
+}
+
+<?php //选中，取消单选按钮?>
+function check_radio_status(r_ele)
+{
+  var s_radio_value = $("#s_radio").val(); 
+  var n_radio_value = $(r_ele).val(); 
+  
+  if (s_radio_value == n_radio_value) {
+    $(".table_img_list input[type='radio']").each(function(){
+      $(this).attr("checked", false); 
+    });
+    $("#s_radio").val(''); 
+  } else {
+    $("#s_radio").val(n_radio_value); 
+  } 
 }
 
 <?php //追加个别或所有用户?>
@@ -344,10 +361,7 @@ require("includes/note_js.php");
         </table></td>
       </tr>
       <tr>
-        <td><div id="show_popup_info" style="background-color:#FFFF00;position:absolute;width:70%;min-width:550px;margin-left:0;display:none;"></div>
-          <table border="0" width="100%" cellspacing="0" cellpadding="0">
-          <tr>
-            <td valign="top">
+        <td>
 <?php
   $site_query = tep_db_query("select id from ".TABLE_SITES);
   $site_list_array = array();
@@ -356,9 +370,14 @@ require("includes/note_js.php");
     $site_list_array[] = $site_array['id'];
   }
   tep_db_free_result($site_query);
-  array_unshift($site_list_array,0);
   echo tep_show_site_filter(FILENAME_BUSINESS_MEMO,false,$site_list_array);
-  $memo_table_params = array('width' => '100%', 'cellpadding' => '2', 'cellspacing' => '0', 'parameters' => 'id="memo_list_box"'); 
+?>
+<div id="show_popup_info" style="background-color:#FFFF00;position:absolute;width:70%;min-width:550px;margin-left:0;display:none;"></div>
+          <table border="0" width="100%" cellspacing="0" cellpadding="0" id="memo_list_box">
+          <tr>
+            <td valign="top">
+<?php 
+  $memo_table_params = array('width' => '100%', 'cellpadding' => '2', 'cellspacing' => '0', 'parameters' => ''); 
   $notice_box = new notice_box('', '', $memo_table_params); 
   $memo_table_row = array();
   $memo_title_row = array();
@@ -457,7 +476,7 @@ require("includes/note_js.php");
     $memo_item_info[] = array(
                           'align' => 'right', 
                           'params' => 'class="dataTableContent"', 
-                          'text' => '<a href="javascript:void(0);" onclick="show_memo_info(this, \''.$memo['id'].'\', \'page='.$_GET['page'].'\')">'.tep_image(DIR_WS_IMAGES.'icon_info.gif', IMAGE_ICON_INFO).'</a>' 
+                          'text' => '<a href="javascript:void(0);" onclick="show_memo_info(this, \''.$memo['id'].'\', \'page='.$_GET['page'].'\')">'.tep_get_signal_pic_info(date('Y-m-d H:i:s',strtotime(($memo['date_update'] != '' && $memo['date_update'] != '0000-00-00 00:00:00' ? $memo['date_update'] : $memo['date_added'])))).'</a>' 
                           ); 
                       
     $memo_table_row[] = array('params' => $memo_item_params, 'text' => $memo_item_info);

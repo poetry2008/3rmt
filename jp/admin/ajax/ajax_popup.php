@@ -4637,10 +4637,11 @@ if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
    $users_icon = '<ul class="table_img_list">'; 
    $i = 0;
    while ($pic_list_res = tep_db_fetch_array($pic_list_raw)) {
-     $users_icon .= '<li><input type="radio" name="pic_icon" value="'.$pic_list_res['id'].'" style="padding-left:0;margin-left:0;"'.($i == 0 ? ' checked="checked"' : '').'><img src="images/icon_list/'.$pic_list_res['pic_name'].'" alt="'.$pic_list_res['pic_alt'].'" title="'.$pic_list_res['pic_alt'].'"></li>'; 
+     if($i == 0){$pic_default = $pic_list_res['id'];}
+     $users_icon .= '<li><input type="radio" onclick="check_radio_status(this);" name="pic_icon" value="'.$pic_list_res['id'].'" style="padding-left:0;margin-left:0;"'.($i == 0 ? ' checked="checked"' : '').'><img src="images/icon_list/'.$pic_list_res['pic_name'].'" alt="'.$pic_list_res['pic_alt'].'" title="'.$pic_list_res['pic_alt'].'"></li>'; 
      $i++;
    }
-   $users_icon .= '</ul>';
+   $users_icon .= '</ul><input type="hidden" id="s_radio" name="s_radio" value="'.$pic_default.'">';
    $category_info_row[]['text'] = array(
        array('align' => 'left', 'params' => 'width="25%" nowrap="nowrap"', 'text' => TEXT_MEMO_ICON), 
        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $users_icon),
