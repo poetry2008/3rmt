@@ -110,7 +110,7 @@ if ($rec_c % 2) {
       }
       $alert_orders_id = $alarm_info_array['orders_id'];
     }else{
-      $micro_info_query = tep_db_query("select * from ".TABLE_MICRO_LOGS." where log_id='".$arec['from_notice']."'");
+      $micro_info_query = tep_db_query("select * from ".TABLE_BUSINESS_MEMO." where id='".$arec['from_notice']."'");
       $micro_info_array = tep_db_fetch_array($micro_info_query);
       tep_db_free_result($micro_info_query);
 

@@ -149,9 +149,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
 
 // define the database table names used in the project
   define('TABLE_ALARM', 'alarm');
-  define('TABLE_MICRO_LOGS', 'micro_logs');
   define('TABLE_NOTICE', 'notice');
-  define('TABLE_NOTICE_TO_MICRO_USER', 'notice_to_micro_user');
   define('TABLE_CAMPAIGN', 'campaign');
   define('TABLE_CUSTOMER_TO_CAMPAIGN', 'customer_to_campaign');
   define('TABLE_PREORDERS', 'preorders');

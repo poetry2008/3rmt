@@ -32,7 +32,6 @@ if(!in_array('onetime',$request_one_time_arr)&&$_SESSION['user_permission']!=15)
     }
   }
   if($_SESSION['user_permission']==10&&in_array('staff',$request_one_time_arr)){
-  $micro_notice_raw = tep_db_query("select id, title, set_time, from_notice from ".TABLE_NOTICE." where type = '1' and id not in (select notice_id from ".TABLE_NOTICE_TO_MICRO_USER." n where n.user != '".$ocertify->auth_user."') order by set_time asc, created_at desc limit 2");
     if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
       forward401();
     }
