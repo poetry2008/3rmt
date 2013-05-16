@@ -431,7 +431,7 @@ require("includes/note_js.php");
     $memo_item_info = array(); 
     $memo_item_info[] = array(
                           'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BUSINESS_MEMO, 'page=' . $_GET['page'] . '&cID=' . $memo['id']) . '\'"', 
-                          'text' => tep_image(DIR_WS_IMAGES.'icon_list/'.$icon_list_array[$memo['icon']]['name'],$icon_list_array[$memo['icon']]['alt']) 
+                          'text' => $memo['icon'] != 0 ? tep_image(DIR_WS_IMAGES.'icon_list/'.$icon_list_array[$memo['icon']]['name'],$icon_list_array[$memo['icon']]['alt']) : ''  
                           ); 
 
     $read_flag_str_array = array();
