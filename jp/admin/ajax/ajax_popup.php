@@ -4465,8 +4465,6 @@ if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
   }
   tep_db_free_result($memo_id_query);
 
-  $memo_id_num = array_search($memo_id,$memo_id_num_array);
-
   //头部内容
   $heading = array();
 
@@ -4475,13 +4473,29 @@ if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
   //显示上一个，下一个按钮
   $page_str = '';
 
-  $memo_id_prev = $memo_id_num_array[$memo_id_num - 1];
-  $memo_id_next = $memo_id_num_array[$memo_id_num + 1];
+  $page_str_array = explode('=',$param_str);
+  $page_string = $page_str_array[1];
+  $page_string = isset($page_string) && $page_string != '' ? $page_string : 1;
+  $page_num_start = ($page_string-1) * MAX_DISPLAY_SEARCH_RESULTS;
+  if(count($memo_id_num_array) < MAX_DISPLAY_SEARCH_RESULTS){
+    $page_num_end = count($memo_id_num_array)-1; 
+  }else{
+    $page_num_end = $page_string * MAX_DISPLAY_SEARCH_RESULTS - 1; 
+  }
+  $memo_id_page_array = array();
+  for($i = $page_num_start;$i <= $page_num_end;$i++){
+
+    $memo_id_page_array[] = $memo_id_num_array[$i];
+  }
+  $memo_id_num = array_search($memo_id,$memo_id_page_array);
+
+  $memo_id_prev = $memo_id_page_array[$memo_id_num - 1];
+  $memo_id_next = $memo_id_page_array[$memo_id_num + 1];
   if ($memo_id_num > 0) {
     $page_str .= '<a id="memo_prev" onclick="show_link_memo_info(\''.$memo_id_prev.'\',\''.$param_str.'\')" href="javascript:void(0);" ><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
   }
  
-  if ($memo_id_num < (count($memo_id_num_array) - 1)) {
+  if ($memo_id_num < (count($memo_id_page_array) - 1)) {
     $page_str .= '<a id="memo_next" onclick="show_link_memo_info(\''.$memo_id_next.'\',\''.$param_str.'\')" href="javascript:void(0);">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
   }else{
     $page_str .= '<font color="#000000">'.IMAGE_NEXT.'></font>&nbsp;&nbsp;';
