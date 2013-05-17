@@ -162,10 +162,10 @@ function show_head_notice(no_type)
         if (data != '') {
           data_info = data.split('|||');
 
+          var notice_new_flag = true;
           if($("#notice_id_str").val()){
             var notice_id_str = $("#notice_id_str").val();
-            var notice_id_array = new Array();
-            var notice_new_flag = true;
+            var notice_id_array = new Array(); 
             notice_id_array = notice_id_str.split(",");
             for(x in notice_id_array){
 
@@ -198,7 +198,7 @@ function show_head_notice(no_type)
           }else{
             $("#alarm_id_"+data_info[4]).html('OFF'); 
           }
-          $("#alarm_user_"+data_info[4]).html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+data_info[6]+'&nbsp;<?php echo HEADER_TEXT_ALERT_LINK;?>');
+          $("#alarm_user_"+data_info[4]).html(data_info[6]+'&nbsp;<?php echo HEADER_TEXT_ALERT_LINK;?>');
         } else {
           $('#show_head_notice').html(data); 
           orgin_bg = document.getElementById('leave_time_'+data_info[2]).parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.background; 
@@ -207,7 +207,7 @@ function show_head_notice(no_type)
           }
         }
         
-        if (no_type == 1) {  
+        if (no_type == 1) {   
           if(alert_update_id != data_info[2] && notice_new_flag == true){
             $("#show_all_notice").hide();
             $('#alert_buttons').css('background-color','darkred');

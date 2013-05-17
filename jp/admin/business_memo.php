@@ -101,6 +101,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 <script language="javascript">
 <?php //快捷键监听?>
 $(document).ready(function() { 
+var box_warp_height = $(".box_warp").height();
   $(document).keyup(function(event) {
     if (event.which == 27) {
       if ($("#show_popup_info").css("display") != "none") {
@@ -133,7 +134,6 @@ $(document).ready(function() {
     }
   });    
 });
-var box_warp_height = 0;
 var origin_offset_symbol = 0;
 window.onresize = resize_option_page;
 var o_submit_single = true;
@@ -326,7 +326,7 @@ function show_memo_info(ele, memo_id, i_param_str)
     }
   });
 
-  if (box_warp_height < (offset+$("#show_popup_info").height())) {
+  if (box_warp_height < (offset+$("#show_popup_info").height())) { 
     $(".box_warp").height(offset+$("#show_popup_info").height()); 
   } else {
     $(".box_warp").height(box_warp_height); 
@@ -555,7 +555,7 @@ require("includes/note_js.php");
                         );
 
     $memo_item_info[] = array(
-                          'align' => 'right', 
+                          'align' => 'left', 
                           'params' => 'class="dataTableContent"', 
                           'text' => '<a href="javascript:void(0);" onclick="show_memo_info(this, \''.$memo['id'].'\', \'page='.$_GET['page'].'\')">'.tep_get_signal_pic_info(date('Y-m-d H:i:s',strtotime(($memo['date_update'] != '' && $memo['date_update'] != '0000-00-00 00:00:00' ? $memo['date_update'] : $memo['date_added'])))).'</a>' 
                           ); 

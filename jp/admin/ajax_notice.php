@@ -112,7 +112,10 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
         }
       }
       echo '<tr id="alarm_delete_'.$notice_list['from_notice'].'">'; 
-      echo '<td width="200">'; 
+      $check_notice_query = tep_db_query("select a.alarm_flag from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.id='".$_POST['aid']."'");
+      $check_notice_array = tep_db_fetch_array($check_notice_query);
+      tep_db_free_result($check_notice_query);
+      echo '<td width="'.($check_notice_array['alarm_flag'] == '1' ? "174" : "142" ).'">'; 
       if ($notice_list['type'] == '0') {
         $alarm_flag_query = tep_db_query("select alarm_flag,alarm_show,orders_flag from ".TABLE_ALARM." where alarm_id='".$notice_list['from_notice']."'");
         $alarm_flag_array = tep_db_fetch_array($alarm_flag_query);
@@ -132,12 +135,7 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
         }
       } else {
         echo '&nbsp;'.NOTICE_EXTEND_TITLE; 
-      }
-      if(in_array($notice_list['id'],$notice_id_array)){
-        echo  '<div style="float:right; width:55px;margin-top: 3px;">';
-        echo $icon_list_array[$memo_id_array[$notice_list['id']]]['name'] != '' ? tep_image(DIR_WS_IMAGES.'icon_list/'.$icon_list_array[$memo_id_array[$notice_list['id']]]['name'],$icon_list_array[$memo_id_array[$notice_list['id']]]['alt']) : '';
-        echo  '</div>';
-      }
+      } 
       echo '</td>'; 
       echo '<td class="notice_info">'; 
       $set_time = strtotime($notice_list['set_time']);
@@ -153,10 +151,20 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
       } else {
         $leave_date = '00'.DAY_TEXT.'00'.HOUR_TEXT.'00'.MINUTE_TEXT; 
       }
-      echo '<div style="float:left; width:150px;">'; 
+      echo '<div style="float:left; width:136px;">'; 
       echo '<span>'.date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT.' H'.TEXT_TORIHIKI_HOUR_STR.'i'.TEXT_TORIHIKI_MIN_STR,strtotime($notice_list['created_at'])).'</span>';
       echo '</div>'; 
-      echo '<div style="float:left;">';
+
+      if(in_array($notice_list['id'],$notice_id_array)){
+        echo  '<div style="float:left; width:16px;'.($icon_list_array[$memo_id_array[$notice_list['id']]]['name'] != '' ? "margin:3px 8px 0 8px;" : "margin-top: 3px;padding: 0px 8px;").'">';
+        echo $icon_list_array[$memo_id_array[$notice_list['id']]]['name'] != '' ? tep_image(DIR_WS_IMAGES.'icon_list/'.$icon_list_array[$memo_id_array[$notice_list['id']]]['name'],$icon_list_array[$memo_id_array[$notice_list['id']]]['alt']) : '';
+        echo  '</div>';
+      }else{
+        echo  '<div style="float:left; width:16px;margin-top: 3px;padding: 0px 8px;">'; 
+        echo '</div>';
+      }
+
+      echo '<div style="float:left;margin-right: 35px;">';
       if ($notice_list['type'] == '0') {
         $alarm_raw = tep_db_query("select orders_id from ".TABLE_ALARM." where alarm_id = '".$notice_list['from_notice']."'"); 
         $alarm = tep_db_fetch_array($alarm_raw); 
@@ -181,7 +189,7 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
       if ($notice_list['type'] == '0') {
       if($alarm_flag_array['alarm_flag'] == '1'){
         echo '<div style="float:left;" id="alarm_user_'.$notice_list['from_notice'].'">';
-        echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$notice_list['user'].'&nbsp;'.HEADER_TEXT_ALERT_LINK;
+        echo $notice_list['user'].'&nbsp;'.HEADER_TEXT_ALERT_LINK;
         echo '</div>';
         echo '<div style="float:left;">';
         if($alarm_flag_array['alarm_show'] == '1'){
@@ -191,7 +199,7 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
         }
         echo '</div>';
       }else{
-        echo '<div style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+        echo '<div style="float:left;">';
         echo NOTICE_DIFF_TIME_TEXT.'&nbsp;'; 
         echo '<span>'.$leave_date.'</span>';
         echo '</div>';

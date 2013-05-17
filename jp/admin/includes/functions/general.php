@@ -9572,7 +9572,7 @@ function tep_get_notice_info($return_type = 0)
     $alarm_flag_array = tep_db_fetch_array($alarm_flag_query);
     tep_db_free_result($alarm_flag_query);
     }
-    $html_str .= '<td width="200" id="alert_buttons">'; 
+    $html_str .= '<td width="'.($alarm_flag_array['alarm_flag'] == '1' ? "174" : "142").'" id="alert_buttons">'; 
     if($alarm_flag_array['orders_flag'] == '1'){
 
       $title_str = HEADER_TEXT_ALERT_TITLE;
@@ -9589,10 +9589,13 @@ function tep_get_notice_info($return_type = 0)
     $html_str .= '<td class="notice_info"  id="alert_time">'; 
     $alarm_raw = tep_db_query("select orders_id from ".TABLE_ALARM." where alarm_id = '".$order_notice_array['from_notice']."'"); 
     $alarm = tep_db_fetch_array($alarm_raw); 
-    $html_str .= '<div style="float:left; width:150px;">'; 
+    $html_str .= '<div style="float:left; width:136px;">'; 
     $html_str .= '<span'.($order_notice_array['type'] == '0' && $alarm_flag_array['alarm_flag'] == '1' ? ' id="leave_time_'.$order_notice_array['id'].'"' : '').'>'.date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT.' H'.TEXT_TORIHIKI_HOUR_STR.'i'.TEXT_TORIHIKI_MIN_STR,strtotime($order_notice_array['created_at'])).'</span>';
     $html_str .= '</div>'; 
-    $html_str .= '<div style="float:left;">';
+
+    $html_str .= '<div style="float:left; width:16px;margin:3px 8px 0 8px;">';
+    $html_str .= '</div>';
+    $html_str .= '<div style="float:left;margin-right: 35px;">';
     if($alarm_flag_array['orders_flag'] == '1'){
 
       $filename_str = FILENAME_ORDERS;
@@ -9603,7 +9606,7 @@ function tep_get_notice_info($return_type = 0)
     $html_str .='</div>';
     if($alarm_flag_array['alarm_flag'] == '1'){
       $html_str .= '<div style="float:left;" id="alarm_user_'.$order_notice_array['from_notice'].'">';
-      $html_str .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$order_notice_array['user'].'&nbsp;'.HEADER_TEXT_ALERT_LINK;
+      $html_str .= $order_notice_array['user'].'&nbsp;'.HEADER_TEXT_ALERT_LINK;
       $html_str .='</div>';
       $html_str .='<div style="float:left;">';
       if($alarm_flag_array['alarm_show'] == '1'){
@@ -9613,7 +9616,7 @@ function tep_get_notice_info($return_type = 0)
       }
       $html_str .='</div>';
     }else{
-      $html_str .= '<div style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+      $html_str .= '<div style="float:left;">';
       $html_str .= NOTICE_DIFF_TIME_TEXT.'&nbsp;<span id="leave_time_'.$order_notice_array['id'].'">'.$leave_date.'</span>'; 
       $html_str .= '</div>';
     }
@@ -9649,30 +9652,32 @@ function tep_get_notice_info($return_type = 0)
     $html_str = '<table cellspacing="0" cellpadding="0" border="0"  width="100%">';
     $html_str .= '<tr>'; 
     
-    $html_str .= '<td width="200">'; 
+    $html_str .= '<td width="142" id="alert_buttons">'; 
     if (($notice_num + $micro_num) > 1) {
       $html_str .= '&nbsp;<a href="javascript:void(0);" onclick="expend_all_notice(\''.$micro_notice_array['id'].'\');" style="text-decoration:underline; color:#0000ff;"><font color="#0000ff">'.NOTICE_EXTEND_TITLE.'▼</font></a>'.str_replace('${ALERT_NUM}',$notice_list_num-1,HEADER_TEXT_ALERT_NUM);
       $more_single = 1; 
     } else {
       $html_str .= '&nbsp;'.NOTICE_EXTEND_TITLE;
-    }
+    } 
+    $html_str .= '</td>'; 
+ 
+    $html_str .= '<td class="notice_info" id="alert_time">';  
+    $html_str .= '<div style="float:left; width:136px;">'; 
+    $html_str .= date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT.' H'.TEXT_TORIHIKI_HOUR_STR.'i'.TEXT_TORIHIKI_MIN_STR,strtotime($micro_notice_array['created_at'])); 
+    $html_str .= '</div>'; 
+
     //获取图标信息
     $icon_query = tep_db_query("select pic_name,pic_alt from ". TABLE_CUSTOMERS_PIC_LIST ." where id='".$micro_notice_array['icon']."'");
     $icon_array = tep_db_fetch_array($icon_query);
     tep_db_free_result($icon_query);
-    $html_str .= '<div style="float:right; width:55px;margin-top: 3px;">';
+    $html_str .= '<div style="float:left; width:16px;margin:3px 8px 0 8px;">';
     $html_str .= $micro_notice_array['icon'] != 0 ? tep_image(DIR_WS_IMAGES.'icon_list/'.$icon_array['pic_name'],$icon_array['pic_alt']) : '';
     $html_str .= '</div>';
-    $html_str .= '</td>'; 
- 
-    $html_str .= '<td class="notice_info">';  
-    $html_str .= '<div style="float:left; width:150px;">'; 
-    $html_str .= date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT.' H'.TEXT_TORIHIKI_HOUR_STR.'i'.TEXT_TORIHIKI_MIN_STR,strtotime($micro_notice_array['created_at'])); 
-    $html_str .= '</div>'; 
+
     $html_str .= '<a href="'.tep_href_link(FILENAME_BUSINESS_MEMO,'cID='.$micro_notice_array['bm_id']).'">'.(mb_strlen($micro_notice_array['title']) > 30 ? mb_substr($micro_notice_array['title'],0,30,'utf-8').'...' : $micro_notice_array['title']).'</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'; 
     $html_str .= '&nbsp;<span id="leave_time_'.$micro_notice_array['id'].'" style="display:none;">'.$leave_date.'</span>';
     $html_str .= '</td>'; 
-    $html_str .= '<td align="right">'; 
+    $html_str .= '<td align="right" id="alert_close">'; 
     $html_str .= '<a href="javascript:void(0);" onclick="delete_micro_notice(\''.$micro_notice_array['id'].'\', \'0\');"><img src="images/icons/del_img.gif" alt="close"></a>'; 
     $html_str .= '<script type="text/javascript">$(function () {calc_notice_time(\''.strtotime($micro_notice_array['set_time']).'\', '.$micro_notice_array['id'].', 0);});</script>'; 
     $html_str .= '</td>'; 
