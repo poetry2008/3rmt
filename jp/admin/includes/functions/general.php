@@ -9670,11 +9670,11 @@ function tep_get_notice_info($return_type = 0)
     $icon_query = tep_db_query("select pic_name,pic_alt from ". TABLE_CUSTOMERS_PIC_LIST ." where id='".$micro_notice_array['icon']."'");
     $icon_array = tep_db_fetch_array($icon_query);
     tep_db_free_result($icon_query);
-    $html_str .= '<div style="float:left; width:16px;margin:3px 8px 0 8px;">';
+    $html_str .= '<div id="icon_images_id" style="float:left; width:16px;margin:3px 8px 0 8px;">';
     $html_str .= $micro_notice_array['icon'] != 0 ? tep_image(DIR_WS_IMAGES.'icon_list/'.$icon_array['pic_name'],$icon_array['pic_alt']) : '';
     $html_str .= '</div>';
 
-    $html_str .= '<a href="'.tep_href_link(FILENAME_BUSINESS_MEMO,'cID='.$micro_notice_array['bm_id']).'">'.(mb_strlen($micro_notice_array['title']) > 30 ? mb_substr($micro_notice_array['title'],0,30,'utf-8').'...' : $micro_notice_array['title']).'</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'; 
+    $html_str .= '<a href="'.tep_href_link(FILENAME_BUSINESS_MEMO,'cID='.$micro_notice_array['bm_id']).'"><span id="memo_contents">'.(mb_strlen($micro_notice_array['title']) > 30 ? mb_substr($micro_notice_array['title'],0,30,'utf-8').'...' : $micro_notice_array['title']).'</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'; 
     $html_str .= '&nbsp;<span id="leave_time_'.$micro_notice_array['id'].'" style="display:none;">'.$leave_date.'</span>';
     $html_str .= '</td>'; 
     $html_str .= '<td align="right" id="alert_close">'; 
@@ -9686,7 +9686,7 @@ function tep_get_notice_info($return_type = 0)
     $html_str .= '<input type="hidden" value="'.$more_single.'" name="more_single" id="more_single">'; 
     
     if ($return_type == 1) {
-      return $more_single.'|||'.$leave_time.'|||'.$micro_notice_array['id'].'|||'.$html_str; 
+      return $more_single.'|||'.$leave_time.'|||'.$micro_notice_array['id'].'|||'.$html_str.'|||'.($micro_notice_array['icon'] != 0 ? tep_image(DIR_WS_IMAGES.'icon_list/'.$icon_array['pic_name'],$icon_array['pic_alt']) : '').'|||'.(mb_strlen($micro_notice_array['title']) > 30 ? mb_substr($micro_notice_array['title'],0,30,'utf-8').'...' : $micro_notice_array['title']); 
     }
     return $html_str;
   }
