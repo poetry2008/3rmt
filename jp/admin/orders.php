@@ -2712,7 +2712,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
           $computers = tep_get_computers();
           $o2c       = tep_get_computers_by_orders_id($order->info['orders_id']);
           if ($computers) {
-        ?> 
+        ?>
           <tr><td>
           <?php foreach ($computers as $computer) {?>
           <div id="orders_alert_<?php echo $computer['computers_id'];?>" onclick="orders_computers(this, <?php echo $computer['computers_id'];?>, '<?php echo $order->info['orders_id'];?>');" class="<?php echo in_array($computer['computers_id'], $o2c) ? 'orders_computer_checked' : 'orders_computer_unchecked' ;?>"><?php echo $computer['computers_name'];?></div>
@@ -3434,7 +3434,9 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
               if(count($orders_explode_all_array) > 1){
 
                 if(strlen(trim($orders_explode_array[1])) == 0){ 
-                  unset($orders_explode_all_array[0]);
+                  if(count($orders_explode_array) > 1){
+                    unset($orders_explode_all_array[0]);
+                  }
                   $orders_history_comment = implode("\n",$orders_explode_all_array); 
                 }else{ 
                   $orders_temp_str = end($orders_explode_all_array);
