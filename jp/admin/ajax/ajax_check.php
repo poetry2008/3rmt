@@ -15,6 +15,11 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
   $check_num = tep_db_num_rows($check_query);
   tep_db_free_result($check_query);
   echo $check_num;
+}else if(isset($_GET['action']) && $_GET['action'] == 'check_email'){
+  $check_query = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_email_address ='".$_POST['post_email']."' and site_id ='".$_POST['post_site']."'");
+  $check_num = tep_db_num_rows($check_query);
+  tep_db_free_result($check_query);
+  echo $check_num;
 } else if ($_GET['action'] == 'read_flag') {
 /*------------------------------------------
  功能: 读取标志 
