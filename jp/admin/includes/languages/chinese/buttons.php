@@ -23,4 +23,7 @@ define('TEXT_USER_UPDATE','更新者:');
 define('TEXT_DATE_ADDED','创建日:');
 define('TEXT_DATE_UPDATE','更新日:');
 define('TEXT_BUTTONS_MUST_INPUT','必须项目');
-define('TEXT_BUTTONS_IMAGE', '图片');
+define('TEXT_BUTTONS_EDIT_SELECT','请选择');
+define('TEXT_BUTTONS_EDIT_DELETE','删除');
+define('TEXT_BUTTONS_EDIT_MUST_SELECT','至少选择一项。');
+define('TEXT_BUTTONS_EDIT_CONFIRM','确定要删除吗？');
