@@ -426,20 +426,20 @@ ele.className='orders_flag_checked';
 }
 });
 }
-<?php // 点击PC号码 ?>
-function orders_computers(ele, cid, oid) {
-  if (ele.className == 'orders_computer_checked') {
+<?php // 点击按钮动作 ?>
+function orders_buttons(ele, cid, oid) {
+  if (ele.className == 'orders_buttons_checked') {
     $.ajax({
-url: 'ajax_orders.php?action=delete&orders_id='+oid+'&computers_id='+cid,
+url: 'ajax_orders.php?action=delete&orders_id='+oid+'&buttons_id='+cid,
 success: function(data) {
-ele.className='orders_computer_unchecked'; 
+ele.className='orders_buttons_unchecked'; 
 }
 });
 } else {
   $.ajax({
-url: 'ajax_orders.php?action=insert&orders_id='+oid+'&computers_id='+cid,
+url: 'ajax_orders.php?action=insert&orders_id='+oid+'&buttons_id='+cid,
 success: function(data) {
-ele.className='orders_computer_checked';
+ele.className='orders_buttons_checked';
 }
 });
 }
@@ -842,20 +842,20 @@ ele.className='orders_flag_checked';
 }
 });
 }
-<?php //预约的订单电脑检查 ?>
-function preorders_computers(ele, cid, oid) {
-  if (ele.className == 'orders_computer_checked') {
+<?php //预约的订单按钮检查 ?>
+function preorders_buttons(ele, cid, oid) {
+  if (ele.className == 'orders_buttons_checked') {
     $.ajax({
-url: 'ajax_preorders.php?action=delete&orders_id='+oid+'&computers_id='+cid,
+url: 'ajax_preorders.php?action=delete&orders_id='+oid+'&buttons_id='+cid,
 success: function(data) {
-ele.className='orders_computer_unchecked';
+ele.className='orders_buttons_unchecked';
 }
 });
 } else {
   $.ajax({
-url: 'ajax_preorders.php?action=insert&orders_id='+oid+'&computers_id='+cid,
+url: 'ajax_preorders.php?action=insert&orders_id='+oid+'&buttons_id='+cid,
 success: function(data) {
-ele.className='orders_computer_checked';
+ele.className='orders_buttons_checked';
 }
 });
 }

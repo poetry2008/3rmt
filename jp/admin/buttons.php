@@ -5,6 +5,7 @@
    * PC管理
    */
   require('includes/application_top.php');
+  require(DIR_FS_ADMIN . '/classes/notice_box.php');
 
 if (isset($_GET['action']) and $_GET['action']) {
     switch ($_GET['action']) {
@@ -14,37 +15,39 @@ if (isset($_GET['action']) and $_GET['action']) {
    case 'deleteconfirm' 删除按钮      
 ------------------------------------------------------*/
       case 'insert':
-        $computers_name = tep_db_prepare_input($_POST['computers_name']);
+        $buttons_name = tep_db_prepare_input($_POST['buttons_name']);
         $sort_order = tep_db_prepare_input($_POST['sort_order']);
 
-        $t_query = tep_db_query("select * from ". TABLE_COMPUTERS . " where computers_name = '" . $computers_name . "'");
+        $t_query = tep_db_query("select * from ". TABLE_BUTTONS . " where buttons_name = '" . $buttons_name . "'");
         $t_res = tep_db_fetch_array($t_query);
         if ($t_res) {
-          $messageStack->add_session(TEXT_COMPUTERS_NAME_EXISTS, 'error');
+          $messageStack->add_session(TEXT_BUTTONS_NAME_EXISTS, 'error');
           tep_redirect(tep_href_link(FILENAME_BUTTONS, 'cPath=&action=new'));
         }
-        tep_db_query("insert into " . TABLE_COMPUTERS . " (computers_name, sort_order,user_added,date_added,user_update,date_update) values ('" . tep_db_input($computers_name) . "','" . tep_db_input($sort_order) . "','".$_POST['user_added']."',now(),'".$_POST['user_update']."',now())");
+        tep_db_query("insert into " . TABLE_BUTTONS . " (buttons_name, sort_order,user_added,date_added,user_update,date_update) values ('" . tep_db_input($buttons_name) . "','" . tep_db_input($sort_order) . "','".$_SESSION['user_name']."',now(),'','')");
         tep_redirect(tep_href_link(FILENAME_BUTTONS));
         break;
       case 'save':
-        $computers_id = tep_db_prepare_input($_GET['cID']);
-        $computers_name = tep_db_prepare_input($_POST['computers_name']);
+        $buttons_id = tep_db_prepare_input($_POST['buttons_id']);
+        $buttons_name = tep_db_prepare_input($_POST['buttons_name']);
         $sort_order = tep_db_prepare_input($_POST['sort_order']);
+        $param_str = $_POST['param_str'];
         
-        $t_query = tep_db_query("select * from ". TABLE_COMPUTERS . " where computers_name = '" . $computers_name . "'");
+        $t_query = tep_db_query("select * from ". TABLE_BUTTONS . " where buttons_name = '" . $buttons_name . "'");
         $t_res = tep_db_fetch_array($t_query);
-        if ($t_res && $t_res['computers_id'] != $computers_id) {
-          $messageStack->add_session(TEXT_COMPUTERS_NAME_EXISTS, 'error');
-          tep_redirect(tep_href_link(FILENAME_BUTTONS, 'cPath=&action=new'));
+        if ($t_res && $t_res['buttons_id'] != $buttons_id) {
+          $messageStack->add_session(TEXT_BUTTONS_NAME_EXISTS, 'error');
+          tep_redirect(tep_href_link(FILENAME_BUTTONS, 'page='.$param_str));
         }
-        tep_db_query("update " . TABLE_COMPUTERS . " set computers_name = '" . tep_db_input($computers_name) . "',sort_order = '" . tep_db_input($sort_order) . "' ,user_update='".$_POST["user_update"]."',date_update=now() where computers_id = '" . tep_db_input($computers_id) . "'");
-        tep_redirect(tep_href_link(FILENAME_BUTTONS, 'page=' . $_GET['page'] . '&cID=' . $computers_id));
+        tep_db_query("update " . TABLE_BUTTONS . " set buttons_name = '" . tep_db_input($buttons_name) . "',sort_order = '" . tep_db_input($sort_order) . "' ,user_update='".$_SESSION['user_name']."',date_update=now() where buttons_id = '" . tep_db_input($buttons_id) . "'");
+        tep_redirect(tep_href_link(FILENAME_BUTTONS, 'page='.$param_str));
         break;
       case 'deleteconfirm':
-        $computers_id = tep_db_prepare_input($_GET['cID']);
-        tep_db_query("delete from " . TABLE_COMPUTERS . " where computers_id = '" . tep_db_input($computers_id) . "'");
-        tep_db_query("delete from " . TABLE_ORDERS_TO_COMPUTERS . " where computers_id = '" . tep_db_input($computers_id) . "'");
-        tep_redirect(tep_href_link(FILENAME_BUTTONS, 'page=' . $_GET['page']));
+        $buttons_id = tep_db_prepare_input($_POST['buttons_id']);
+        $param_str = $_POST['param_str'];
+        tep_db_query("delete from " . TABLE_BUTTONS . " where buttons_id = '" . tep_db_input($buttons_id) . "'");
+        tep_db_query("delete from " . TABLE_ORDERS_TO_BUTTONS . " where buttons_id = '" . tep_db_input($buttons_id) . "'");
+        tep_redirect(tep_href_link(FILENAME_BUTTONS, 'page='.$param_str));
         break;
     }
   }
@@ -58,6 +61,165 @@ if (isset($_GET['action']) and $_GET['action']) {
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<script language="javascript">
+<?php //快捷键监听?>
+$(document).ready(function() {
+  $(document).keyup(function(event) {
+    if (event.which == 27) {
+      if ($("#show_popup_info").css("display") != "none") {
+        hidden_info_box();     
+        o_submit_single = true;
+      }
+    }
+    if (event.which == 13) {
+      if ($("#show_popup_info").css("display") != "none") {
+        if (o_submit_single) {
+          $("#button_save").trigger("click");  
+        }
+      }
+    }
+    
+    if (event.ctrlKey && event.which == 37) {
+      if ($("#show_popup_info").css("display") != "none") {
+        if ($("#buttons_prev")) {
+          $("#buttons_prev").trigger("click");
+        }
+      }
+    }
+    
+    if (event.ctrlKey && event.which == 39) {
+      if ($("#show_popup_info").css("display") != "none") {
+        if ($("#buttons_next")) {
+          $("#buttons_next").trigger("click");
+        }
+      }
+    }
+  });    
+});
+var box_warp_height = 0;
+var origin_offset_symbol = 0;
+window.onresize = resize_option_page;
+var o_submit_single = true;
+<?php //窗口缩放事件?>
+function resize_option_page()
+{
+  if ($(".box_warp").height() < $(".compatible").height()) {
+    $(".box_warp").height($(".compatible").height()); 
+  }
+  box_warp_height = $(".box_warp").height(); 
+}
+<?php //编辑buttons信息?>
+function show_buttons_info(ele, buttons_id, i_param_str)
+{
+  ele = ele.parentNode;
+  i_param_str = decodeURIComponent(i_param_str);
+  origin_offset_symbol = 1;
+  $.ajax({
+    url: 'ajax.php?action=edit_buttons',      
+    data: 'buttons_id='+buttons_id+'&param_str='+i_param_str,
+    type: 'POST',
+    dataType: 'text',
+    async:false,
+    success: function (data) {
+      data_info_array = data.split('||||||'); 
+      $('#show_popup_info').html(data_info_array[0]); 
+      if (document.documentElement.clientHeight < document.body.scrollHeight) {
+        if (ele.offsetTop+$('#buttons_list_box').position().top+ele.offsetHeight+$('#show_popup_info').height() > document.body.scrollHeight) {
+          offset = ele.offsetTop+$('#buttons_list_box').position().top-$('#show_popup_info').height()-$('#offsetHeight').height();
+          $('#show_popup_info').css('top', offset).show(); 
+        } else {
+          offset = ele.offsetTop+$('#buttons_list_box').position().top+ele.offsetHeight;
+          $('#show_popup_info').css('top', offset).show(); 
+        }
+      } else {
+        if ((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop) {
+          offset = ele.offsetTop+$('#buttons_list_box').position().top-$('#show_popup_info').height()-$('#offsetHeight').height()-ele.offsetHeight;
+          $('#show_popup_info').css('top', offset).show(); 
+        } else {
+          offset = ele.offsetTop+$('#buttons_list_box').position().top+ele.offsetHeight;
+          $('#show_popup_info').css('top', offset).show(); 
+        }
+      }
+      $('#show_popup_info').show(); 
+      $('#show_popup_info').css('z-index', data_info_array[1]); 
+      o_submit_single = true;
+    }
+  });
+
+  if (box_warp_height < (offset+$("#show_popup_info").height())) {
+    $(".box_warp").height(offset+$("#show_popup_info").height()); 
+  } else {
+    $(".box_warp").height(box_warp_height); 
+  }
+}
+
+<?php //编辑buttons的上一个，下一个信息?>
+function show_link_buttons_info(buttons_id, param_str)
+{
+  param_str = decodeURIComponent(param_str);
+  $.ajax({
+    url: 'ajax.php?action=edit_buttons',      
+    data: 'buttons_id='+buttons_id+'&param_str='+param_str,
+    type: 'POST',
+    dataType: 'text',
+    async:false,
+    success: function (data) {
+      $('#show_popup_info').html(data);  
+      $('#show_popup_info').show(); 
+    }
+  });  
+}
+
+<?php //隐藏弹出页面?>
+function hidden_info_box(){
+  $('#show_popup_info').css('display','none');
+}
+
+<?php //buttons内容保存时的验证?>
+function edit_buttons_check(action){
+
+  var buttons_name = document.getElementsByName("buttons_name")[0];
+  var buttons_name_value = buttons_name.value;
+  buttons_name_value = buttons_name_value.replace(/\s/g,"");
+
+  if(buttons_name_value == ''){
+
+    $("#buttons_name_error").html('&nbsp;<font color="#FF0000"><?php echo TEXT_BUTTONS_MUST_INPUT;?></font>');
+  }else{
+    if(action == 'save'){
+      document.edit_buttons.action = '<?php echo FILENAME_BUTTONS;?>?action='+action;
+      document.edit_buttons.submit();
+    }else{
+      document.create_buttons.action = '<?php echo FILENAME_BUTTONS;?>?action='+action; 
+      document.create_buttons.submit();
+    } 
+  }
+}
+
+<?php //删除buttons?>
+function delete_buttons(){
+
+  document.edit_buttons.action = '<?php echo FILENAME_BUTTONS;?>?action=deleteconfirm';
+  document.edit_buttons.submit();
+}
+
+<?php //新建buttons?>
+function create_buttons_info(ele)
+{
+  ele = ele.parentNode;
+  $.ajax({
+    url: 'ajax.php?action=create_buttons',      
+    data: '',
+    type: 'POST',
+    dataType: 'text',
+    async:false,
+    success: function (data) {
+      $('#show_popup_info').html(data);  
+      $('#show_popup_info').show(); 
+    }
+  }); 
+}
+</script>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 require("includes/note_js.php");
@@ -92,22 +254,30 @@ require("includes/note_js.php");
         </table></td>
       </tr>
       <tr>
-        <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
+        <td><div id="show_popup_info" style="background-color:#FFFF00;position:absolute;width:70%;min-width:550px;margin-left:0;display:none;"></div>
+          <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
-              <tr class="dataTableHeadingRow">
-                <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_COMPUTERS_NAME; ?></td>
-                <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_COMPUTER_ORDER?></td>
-                <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
-              </tr>
+            <td valign="top">
 <?php
-  //echo MAX_DISPLAY_SEARCH_RESULTS;
-  $computers_query_raw = "select * from " . TABLE_COMPUTERS . " order by sort_order asc";
-  $computers_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $computers_query_raw, $computers_query_numrows);
-  $computers_query = tep_db_query($computers_query_raw);
-  while ($computers = tep_db_fetch_array($computers_query)) {
-      if (( (!@$_GET['cID']) || (@$_GET['cID'] == $computers['computers_id'])) && (!@$cInfo) && (substr(@$_GET['action'], 0, 3) != 'new')) {
-      $cInfo = new objectInfo($computers);
+  $buttons_table_params = array('width' => '100%', 'cellpadding' => '2', 'cellspacing' => '0', 'parameters' => 'id="buttons_list_box"'); 
+  $notice_box = new notice_box('', '', $buttons_table_params); 
+  $buttons_table_row = array();
+  $buttons_title_row = array();
+                  
+  //buttons列表 
+  $buttons_title_row[] = array('params' => 'class="dataTableHeadingContent"', 'text' => TABLE_HEADING_BUTTONS_NAME);
+  $buttons_title_row[] = array('params' => 'class="dataTableHeadingContent"', 'text' => TABLE_HEADING_BUTTONS_ORDER);
+  $buttons_title_row[] = array('align' => 'right','params' => 'class="dataTableHeadingContent"', 'text' => TABLE_HEADING_ACTION);
+                    
+  $buttons_table_row[] = array('params' => 'class="dataTableHeadingRow"', 'text' => $buttons_title_row);   
+
+
+  $buttons_query_raw = "select * from " . TABLE_BUTTONS . " order by sort_order asc";
+  $buttons_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $buttons_query_raw, $buttons_query_numrows);
+  $buttons_query = tep_db_query($buttons_query_raw);
+  while ($buttons = tep_db_fetch_array($buttons_query)) {
+      if (( (!@$_GET['cID']) || (@$_GET['cID'] == $buttons['buttons_id'])) && (!@$cInfo) && (substr(@$_GET['action'], 0, 3) != 'new')) {
+      $cInfo = new objectInfo($buttons);
     }
     $even = 'dataTableSecondRow';
     $odd  = 'dataTableRow';
@@ -117,122 +287,49 @@ require("includes/note_js.php");
       $nowColor = $odd; 
     }
 
-    if (isset($cInfo) && (is_object($cInfo)) && ($computers['computers_id'] == $cInfo->computers_id) ) {
-      echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_BUTTONS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->computers_id . '&action=edit') . '\'">' . "\n";
+    if (isset($cInfo) && (is_object($cInfo)) && ($buttons['buttons_id'] == $cInfo->buttons_id) ) {
+      $buttons_item_params = 'class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'"';
     } else {
-      echo '              <tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_BUTTONS, 'page=' . $_GET['page'] . '&cID=' . $computers['computers_id']) . '\'">' . "\n";
+      $buttons_item_params = '<tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
     }
-?>
-                <td class="dataTableContent"><?php echo $computers['computers_name']; ?></td>
-                <td class="dataTableContent"><?php echo $computers['sort_order']; ?></td>
-                <td class="dataTableContent" align="right"><?php if ( isset($cInfo) && (is_object($cInfo)) && ($computers['computers_id'] == $cInfo->computers_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_BUTTONS, 'page=' . $_GET['page'] . '&cID=' . $computers['computers_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
-              </tr>
-<?php
+
+    $buttons_item_info = array(); 
+    $buttons_item_info[] = array(
+                          'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BUTTONS, 'page=' . $_GET['page'] . '&cID=' . $buttons['buttons_id']) . '\'"', 
+                          'text' => $buttons['buttons_name'] 
+                          ); 
+                      
+    $buttons_item_info[] = array(
+                          'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BUTTONS, 'page=' . $_GET['page'] . '&cID=' . $buttons['buttons_id']) . '\'"', 
+                          'text' => $buttons['sort_order'] 
+                        );
+
+    $buttons_item_info[] = array(
+                          'align' => 'right', 
+                          'params' => 'class="dataTableContent"', 
+                          'text' => '<a href="javascript:void(0);" onclick="show_buttons_info(this, \''.$buttons['buttons_id'].'\', \''.$_GET['page'].'\')">'.tep_get_signal_pic_info(date('Y-m-d H:i:s',strtotime(($buttons['date_update'] != '' && $buttons['date_update'] != '0000-00-00 00:00:00' ? $buttons['date_update'] : $buttons['date_added'])))).'</a>' 
+                          ); 
+                      
+    $buttons_table_row[] = array('params' => $buttons_item_params, 'text' => $buttons_item_info);
+
   }
+
+  $form_str = tep_draw_form('buttons_list', FILENAME_BUTTONS, tep_get_all_get_params(array('action')).'action=del_select_buttons');  
+  $notice_box->get_form($form_str); 
+  $notice_box->get_contents($buttons_table_row);
+  $notice_box->get_eof(tep_eof_hidden()); 
+  echo $notice_box->show_notice();
 ?>
-            </table>
-			<table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin-top:5px;">
+		  <table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin-top:5px;">
                   <tr>
-                    <td class="smallText" valign="top"><?php echo $computers_split->display_count($computers_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_COMPUTERS); ?></td>
-                    <td class="smallText" align="right"><div class="td_box"><?php echo $computers_split->display_links($computers_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page']); ?></div></td>
+                    <td class="smallText" valign="top"><?php echo $buttons_split->display_count($buttons_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_BUTTONS); ?></td>
+                    <td class="smallText" align="right"><div class="td_box"><?php echo $buttons_split->display_links($buttons_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page']); ?></div></td>
                   </tr>
-<?php
-        if (!isset($_GET['action'])) {
-?>
                   <tr>
-                    <td colspan="2" align="right"><div class="td_button"><?php echo '<a href="' .
-                    tep_href_link(FILENAME_BUTTONS, 'page=' . $_GET['page'] .
-                        '&action=new') . '">' .
-                    tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?></div></td>
+                    <td colspan="2" align="right"><div class="td_button"><?php echo '<a href="javascript:void(0);" onclick="create_buttons_info(this);">' .tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?></div></td>
                   </tr>
-<?php
-  }
-?>
-                </table>
-			</td>
-<?php
-  $heading = array();
-  $contents = array();
-switch (isset($_GET['action'])? $_GET['action']:'') {
-/* -----------------------------------------------------
-   case 'new' 右侧新建按钮页面     
-   case 'edit' 右侧更新按钮页面     
-   case 'delete' 右侧删除按钮页面 
-   default 右侧默认页面
-------------------------------------------------------*/
-    case 'new':
-      $heading[] = array('text' => TEXT_INFO_HEADING_NEW_COMPUTER);
-
-      $contents = array('form' => tep_draw_form('computers', FILENAME_BUTTONS, 'page=' . $_GET['page'] . '&action=insert', 'post', 'enctype="multipart/form-data"'));
-      $contents[] = array('text' => TEXT_INFO_INSERT_INTRO);
-      $contents[] = array('text' => '<input type="hidden" name="user_added"   value="'.$_SESSION['user_name'].'">');
-      $contents[] = array('text' => '<input type="hidden" name="user_update"   value="'.$_SESSION['user_name'].'">');
-
-      $contents[] = array('text' => '<br>' . TEXT_INFO_COMPUTERS_NAME . '<br>' . tep_draw_input_field('computers_name'));
-      $contents[] = array('text' => '<br>'.TABLE_HEADING_COMPUTER_ORDER.'<br>' . tep_draw_input_field('sort_order'));
-      $contents[] = array('align' => 'center', 'text' => '<br>' .
-          tep_html_element_submit(IMAGE_SAVE) . '&nbsp;<a href="' .  tep_href_link(FILENAME_BUTTONS, 'page=' . $_GET['page']) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>');
-      break;
-    case 'edit':
-      $heading[] = array('text' => TEXT_INFO_HEADING_EDIT_COMPUTER);
-
-      $contents = array('form' => tep_draw_form('computers', FILENAME_BUTTONS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->computers_id . '&action=save', 'post', 'enctype="multipart/form-data"'));
-      $contents[] = array('text' => TEXT_INFO_EDIT_INTRO);
-      $contents[] = array('text' => '<input type="hidden" name="user_update" value="'.$user_info['name'].'">');
-
-      $contents[] = array('text' => '<br>' . TEXT_INFO_COMPUTERS_NAME . '<br>' . tep_draw_input_field('computers_name', $cInfo->computers_name));
-      $contents[] = array('text' => '<br>'.TABLE_HEADING_COMPUTER_ORDER.'<br>' . tep_draw_input_field('sort_order', $cInfo->sort_order));
-      $contents[] = array('align' => 'center', 'text' => '<br>' .
-          tep_html_element_submit(IMAGE_SAVE) . '&nbsp;<a href="' .  tep_href_link(FILENAME_BUTTONS, 'page=' . $_GET['page'] . '&cID=' .  $cInfo->computers_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
-      break;
-    case 'delete':
-      $heading[] = array('text' => TEXT_INFO_HEADING_DELETE_COMPUTER);
-
-      $contents = array('form' => tep_draw_form('computers', FILENAME_BUTTONS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->computers_id . '&action=deleteconfirm'));
-      $contents[] = array('text' => TEXT_INFO_DELETE_INTRO);
-      $contents[] = array('text' => '<br>' . $cInfo->computers_name);
-      $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_DELETE) . '&nbsp;<a href="' .  tep_href_link(FILENAME_BUTTONS, 'page=' . $_GET['page'] . '&cID=' .  $cInfo->computers_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
-      break;
-    default:
-      if (is_object($cInfo)) {
-        $heading[] = array('text' => $cInfo->computers_name);
-
-        $contents[] = array('align' => 'center', 'text' => '<a href="' . tep_href_link(FILENAME_BUTTONS, 'page=' . $_GET['page'] .  '&cID=' . $cInfo->computers_id . '&action=edit') . '">' . tep_html_element_button(IMAGE_EDIT) . '</a>' 
-          . ($ocertify->npermission == 15 ? (' <a href="' .  tep_href_link(FILENAME_BUTTONS, 'page=' . $_GET['page'] . '&cID=' .  $cInfo->computers_id . '&action=delete') . '">' . tep_html_element_button(IMAGE_DELETE) . '</a>'):'')
-        );
-        $contents[] = array('text' => '<br>' . TEXT_INFO_COMPUTERS_NAME . '<br>' . $cInfo->computers_name . '<br>');
-if(tep_not_null($cInfo->user_added)){
-$contents[] = array('text' =>  TEXT_USER_ADDED. ' ' .$cInfo->user_added);
-}else{
-$contents[] = array('text' =>  TEXT_USER_ADDED. ' ' .TEXT_UNSET_DATA);
-}if(tep_not_null(tep_datetime_short($cInfo->date_added))){
-$contents[] = array('text' =>  TEXT_DATE_ADDED. ' ' .tep_datetime_short($cInfo->date_added));
-}else{
-$contents[] = array('text' =>  TEXT_DATE_ADDED. ' ' .TEXT_UNSET_DATA);
-}if(tep_not_null($cInfo->user_update)){
-$contents[] = array('text' =>  TEXT_USER_UPDATE. ' ' .$cInfo->user_update);
-}else{
-$contents[] = array('text' =>  TEXT_USER_UPDATE. ' ' .TEXT_UNSET_DATA);
-}if(tep_not_null(tep_datetime_short($cInfo->date_update))){
-$contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .tep_datetime_short($cInfo->date_update));
-}else{
-$contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .TEXT_UNSET_DATA);
-}
-
-
-      }
-      break;
-  }
-
-  if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {
-    echo '            <td width="25%" valign="top">' . "\n";
-
-    $box = new box;
-    echo $box->infoBox($heading, $contents);
-
-    echo '            </td>' . "\n";
-  }
-?>
+          </table>
+	  </td>
           </tr>
         </table></td>
       </tr>

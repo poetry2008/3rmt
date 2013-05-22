@@ -19,12 +19,12 @@ function tep_get_preorders_status_name($orders_status_id, $language_id = '') {
  参数: $orders_id(string) 订单ID值
  返回值: 计算机名(string)                  
  ----------------------------------------------------*/
-function tep_get_computers_names_by_preorders_id($orders_id)
+function tep_get_buttons_names_by_preorders_id($orders_id)
 {
   $names = array();
-  $o2c_query = tep_db_query("select * from ".TABLE_PREORDERS_TO_COMPUTERS." o2c, ".TABLE_COMPUTERS." c where c.computers_id=o2c.computers_id and o2c.orders_id = '".$orders_id."' order by sort_order asc");
+  $o2c_query = tep_db_query("select * from ".TABLE_PREORDERS_TO_BUTTONS." o2b, ".TABLE_BUTTONS." b where b.buttons_id=o2b.buttons_id and o2b.orders_id = '".$orders_id."' order by sort_order asc");
   while($o = tep_db_fetch_array($o2c_query)) {
-    $names[] = $o['computers_name'];
+    $names[] = $o['buttons_name'];
   }
   return $names;
 }
@@ -33,12 +33,12 @@ function tep_get_computers_names_by_preorders_id($orders_id)
  参数: $oid(string) 订单编号值
  返回值: 电脑id(array)                      
  ---------------------------------------------------*/
-function tep_get_computers_by_preorders_id($oid)
+function tep_get_buttons_by_preorders_id($oid)
 {
   $c = array();
-  $o2c_query = tep_db_query("select * from ".TABLE_PREORDERS_TO_COMPUTERS." where orders_id = '".$oid."'");
+  $o2c_query = tep_db_query("select * from ".TABLE_PREORDERS_TO_BUTTONS." where orders_id = '".$oid."'");
   while ($o2c = tep_db_fetch_array($o2c_query)) {
-    $c[] = $o2c['computers_id'];
+    $c[] = $o2c['buttons_id'];
   }
   return $c;
 }
@@ -165,7 +165,7 @@ function tep_show_preorders_products_info($orders_id) {
       $str .= '<tr><td class="main"><b>'.$input_op_array['title'].'：</b></td><td class="main">'.$input_op_array['values'].'</td></tr>';
     }
     //$str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_GAME_NAME.'</b></td><td class="main"  style="color:#407416; line-height:20px;"><font size="4"><b>'.$p['products_character'].'</b></font></td></tr>';
-    $names = tep_get_computers_names_by_preorders_id($orders['orders_id']);
+    $names = tep_get_buttons_names_by_preorders_id($orders['orders_id']);
     if ($names) {
       $str .= '<tr><td class="main"><b>PC：</b></td><td class="main">'.implode('&nbsp;,&nbsp;', $names).'</td></tr>';
     }
@@ -541,7 +541,7 @@ function tep_preorder_remove_order($order_id, $restock = false) {
   tep_db_query("delete from " . TABLE_PREORDERS_PRODUCTS_ATTRIBUTES . " where orders_id = '" . tep_db_input($order_id) . "'");
   tep_db_query("delete from " . TABLE_PREORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($order_id) . "'");
   tep_db_query("delete from " . TABLE_PREORDERS_TOTAL . " where orders_id = '" . tep_db_input($order_id) . "'");
-  tep_db_query("delete from " . TABLE_PREORDERS_TO_COMPUTERS . " where orders_id = '" . tep_db_input($order_id) . "'");
+  tep_db_query("delete from " . TABLE_PREORDERS_TO_BUTTONS . " where orders_id = '" . tep_db_input($order_id) . "'");
   tep_db_query("delete from preorders_products_download where orders_id = '" . tep_db_input($order_id) . "'");
   tep_db_query("delete from ".TABLE_PREORDERS_OA_FORMVALUE." where orders_id = '".tep_db_input($order_id)."'");
 }
@@ -866,7 +866,7 @@ function tep_get_pre_orders_products_string($orders, $single = false, $popup = f
       //$str .= '<tr><td class="main">'.$pa['products_options'].'：</td><td class="main">'.$pa['products_options_values'].'</td></tr>';
     //}
     //$str .= '<tr><td class="main">'.TEXT_PREORDER_PRODUCTS_CHARACTER_NAME.'</td><td style="font-size:20px;color:#407416;">'.$p['products_character'].'</td></tr>';
-    $names = tep_get_computers_names_by_preorders_id($orders['orders_id']);
+    $names = tep_get_buttons_names_by_preorders_id($orders['orders_id']);
     if ($names) {
       $str .= '<tr><td class="main">PC：</td><td class="main">'.implode('&nbsp;,&nbsp;', $names).'</td></tr>';
     }

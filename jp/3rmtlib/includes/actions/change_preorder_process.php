@@ -734,7 +734,7 @@ tep_db_query("delete from ".TABLE_PREORDERS_QUESTIONS." where orders_id = '".$_S
 tep_db_query("delete from ".TABLE_PREORDERS_QUESTIONS_PRODUCTS." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
 tep_db_query("delete from ".TABLE_PREORDERS_STATUS_HISTORY." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
 tep_db_query("delete from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
-tep_db_query("delete from ".TABLE_PREORDERS_TO_COMPUTERS." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
+tep_db_query("delete from ".TABLE_PREORDERS_TO_BUTTONS." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
 tep_db_query("delete from ".TABLE_PREORDERS_OA_FORMVALUE." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
 
 last_customer_action();
