@@ -767,6 +767,17 @@ require("includes/note_js.php");
                   }
                 }
                 ?>
+                <?php
+                if (!$product_history_numrows) {
+                ?>
+                <tr>
+                  <td colspan="7">
+                  <?php echo TEXT_DATA_EMPTY;?> 
+                  </td> 
+                </tr>
+                <?php
+                }
+                ?>
                 <tr>
                  <td colspan="7">
                   <table border="0" width="100%" cellspacing="0" cellpadding="2">

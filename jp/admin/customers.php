@@ -15,7 +15,7 @@
      $show_list_array = explode(',',$show_list_str);
    }
   if(isset($_GET['site_id'])&&$_GET['site_id']==''){
-     $_GET['site_id'] = str_replace(',','-',tep_get_setting_site_info($_SERVER['PHP_SELF']));
+     $_GET['site_id'] = str_replace(',','-',tep_get_setting_site_info(FILENAME_CUSTOMERS));
    }
    $sites_id_sql = tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$ocertify->auth_user."' limit 0,1");
    while($userslist= tep_db_fetch_array($sites_id_sql)){
@@ -175,7 +175,7 @@
         }
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', "customers_id = '" . tep_db_input($customers_id) . "' and address_book_id = '" . tep_db_input($default_address_id) . "'");
 
-    tep_redirect(tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $customers_id));
+    tep_redirect(tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action'))));
         break;
       case 'deleteconfirm':
         if(!empty($_POST['customers_id'])){
@@ -673,6 +673,7 @@ require("includes/note_js.php");
     $customers_query_raw = "
       select c.customers_id, 
              c.site_id,
+             c.is_active,
              c.customers_lastname, 
              c.customers_firstname, 
              c.customers_email_address, 
@@ -729,14 +730,14 @@ require("includes/note_js.php");
     } else {
       $nowColor = $odd; 
     }
-      if ( (isset($cInfo) && is_object($cInfo)) && ($customers['customers_id'] == $cInfo->customers_id) ) {
+      if ($_GET['current_cuid'] == $customers['customers_id']) {
         $customers_params = 'class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'"';
       } else {
         $customers_params = 'class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
     }
       $customers_info = array();
       if(in_array($customers['site_id'],$site_array)){
-         $customers_checkbox = '<input type="checkbox" name="customers_id[]" value="'.$customers['customers_id'].'">';
+         $customers_checkbox = '<input type="checkbox" '.(($customers['is_active'] != '1')?'disabled="disabled"':'').' name="customers_id[]" value="'.$customers['customers_id'].'">';
       }else{
          $customers_checkbox = '<input disabled="disabled" type="checkbox" name="customers_id[]" value="'.$customers['customers_id'].'">';
       }
@@ -745,24 +746,24 @@ require("includes/note_js.php");
           'text'   => $customers_checkbox 
           );
       $customers_info[] = array(
-           'params' => 'class="dataTableContent"',
-           'text'   => tep_get_site_romaji_by_id($customers['site_id'])
+           'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid')).'current_cuid='.$customers['customers_id']).'\';"',
+           'text'   => (($customers['is_active'] != '1')?'<font color="#999999">':'').tep_get_site_romaji_by_id($customers['site_id']).(($customers['is_active'] != '1')?'</font>':'')
           );
       $customers_info[] = array(
-           'params' => 'class="dataTableContent"',
-           'text'   => $type 
+           'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid')).'current_cuid='.$customers['customers_id']).'\';"',
+           'text'   => (($customers['is_active'] != '1')?'<font color="#999999">':'').$type.(($customers['is_active'] != '1')?'</font>':'') 
           );
        $customers_info[] = array(
-           'params' => 'class="dataTableContent"',
-           'text'   => htmlspecialchars($customers['customers_lastname']) 
+           'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid')).'current_cuid='.$customers['customers_id']).'\';"',
+           'text'   => (($customers['is_active'] != '1')?'<font color="#999999">':'').htmlspecialchars($customers['customers_lastname']).(($customers['is_active'] != '1')?'</font>':'') 
           );
         $customers_info[] = array(
-           'params' => 'class="dataTableContent"',
-           'text'   => htmlspecialchars($customers['customers_firstname']) 
+           'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid')).'current_cuid='.$customers['customers_id']).'\';"',
+           'text'   => (($customers['is_active'] != '1')?'<font color="#999999">':'').htmlspecialchars($customers['customers_firstname']).(($customers['is_active'] != '1')?'</font>':'') 
           );
        $customers_info[] = array(
-           'params' => 'class="dataTableContent" align="right"',
-           'text'   => tep_date_short($customers['date_account_created']) 
+           'params' => 'class="dataTableContent" align="right" onclick="document.location.href=\''.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid')).'current_cuid='.$customers['customers_id']).'\';"',
+           'text'   => (($customers['is_active'] != '1')?'<font color="#999999">':'').tep_date_short($customers['date_account_created']).(($customers['is_active'] != '1')?'</font>':'') 
           );
        $customers_info[] = array(
            'params' => 'class="dataTableContent" align="right"',
@@ -771,7 +772,7 @@ require("includes/note_js.php");
           );
        $customers_table_row[] = array('params' => $customers_params, 'text' => $customers_info);
     }
-    $news_form = tep_draw_form('del_customers',FILENAME_CUSTOMERS,'action=deleteconfirm&site_id='.$_GET['site_id'].'&page='.$_GET['page']);
+    $news_form = tep_draw_form('del_customers',FILENAME_CUSTOMERS,'action=deleteconfirm&site_id='.$_GET['site_id'].'&page='.$_GET['page'].(isset($_GET['search'])?'&search='.$_GET['search']:''));
     $notice_box->get_form($news_form);
     $notice_box->get_contents($customers_table_row);
     $notice_box->get_eof(tep_eof_hidden());
@@ -798,17 +799,9 @@ require("includes/note_js.php");
                   </tr>
                   <tr>
                     <td class="smallText" valign="top"><?php echo $customers_split->display_count($customers_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?></td>
-                    <td class="smallText" align="right"><div class="td_box"><?php echo $customers_split->display_links($customers_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'cID'))); ?></div></td>
+                    <td class="smallText" align="right"><div class="td_box"><?php echo $customers_split->display_links($customers_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'cID', 'current_cuid'))); ?></div></td>
                   </tr>
-<?php
- if (isset($_GET['search']) and tep_not_null($_GET['search'])) {
-?>
                   <tr>
-                    <td align="right" colspan="2"><?php echo '<a class = "new_product_reset"  href="' . tep_href_link(FILENAME_CUSTOMERS) . '">' . tep_image_button('button_reset.gif', IMAGE_RESET) . '</a>'; ?></td>
-                  </tr>
-<?php
-    }
-?>                <tr>
                      <td align="right" colspan="2">
                        <?php  
                        //通过site_id判断是否允许新建
