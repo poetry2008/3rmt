@@ -4496,6 +4496,7 @@ if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'
     $cid_array = array();
     while ($customers_cid = tep_db_fetch_array($customers_query_cid)) {
         $cid_array[] = $customers_cid['customers_id'];
+        $site_id_array[] = $customers_cid['site_id'];
       if ( ((!isset($_GET['cID']) || !$_GET['cID']) || (@$_GET['cID'] == $customers_cid['customers_id'])) && (!isset($cInfo) || !$cInfo)) {
         $country_query = tep_db_query(" select countries_name from " . TABLE_COUNTRIES . " where countries_id = '" . $customers_cid['entry_country_id'] . "'
         ");
@@ -4536,6 +4537,7 @@ if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'
 	       c.is_active,
 	       c.is_send_mail,
 	       c.is_calc_quantity,
+               c.site_id,
                s.romaji,
                s.name as site_name
         from " . TABLE_CUSTOMERS . " c 
@@ -4550,7 +4552,6 @@ if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'
     }
     $customers = tep_db_fetch_array($customers_query);
     $cInfo = new objectInfo($customers);
-
     $newsletter_array = array(array('id' => '1', 'text' => ENTRY_NEWSLETTER_YES),
                               array('id' => '0', 'text' => ENTRY_NEWSLETTER_NO));
 
@@ -4635,12 +4636,9 @@ if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'
       break; 
     }
   }
-
  if($_GET['cID'] != '-1'){
- if($action_sid == 0){
-      $site_id_name = 'all';
- }else{
-      $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$action_sid));
+ if($action_sid != 0 || !isset($action_sid)){
+      $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$cInfo->site_id));
       $site_id_name = $site_name['romaji'].'<input id=\'customers_site_id\' type="hidden" value="'.$site_name['id'].'">';
  }
  }else{
@@ -4658,12 +4656,14 @@ if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'
   $page_str = '';
 if($_GET['cID'] != -1){
   if ($c_key > 0) {
-    $page_str .= '<a onclick="show_customers(\'\','.$cid_array[$c_key-1].','.$_GET['page'].','.$action_sid.')" href="javascript:void(0)" id="option_prev">'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+    $page_str .= '<a
+      onclick="show_customers(\'\','.$cid_array[$c_key-1].','.$_GET['page'].')" href="javascript:void(0)" id="option_prev">'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
   } else {
     $page_str .= '<font color="#000000">'.IMAGE_PREV.'</font>'; 
   }
   if ($c_key < (count($cid_array) - 1)) {
-   $page_str .= '<a onclick="show_customers(\'\','.$cid_array[$c_key+1].','.$_GET['page'].','.$action_sid.')" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'</a>&nbsp;&nbsp;'; 
+   $page_str .= '<a
+     onclick="show_customers(\'\','.$cid_array[$c_key+1].','.$_GET['page'].')" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'</a>&nbsp;&nbsp;'; 
   } else {
     $page_str .= '<font color="#000000">'.IMAGE_NEXT.'</font>'; 
   }
