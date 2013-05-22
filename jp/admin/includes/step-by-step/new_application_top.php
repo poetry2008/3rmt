@@ -18,7 +18,8 @@ require('includes/languages/'.$language.'/step-by-step/'.$language.'.php');
 require(DIR_WS_CLASSES . 'payment.php');
 
 /*------------------------------------
- 功能：验证邮件 参数: $email(string) 用户邮件
+ 功能：验证邮件
+ 参数: $email(string) 用户邮件
  返回值：验证邮箱成功或者失败(boolean)
  -----------------------------------*/
 function tep_validate_email($email) {
@@ -159,6 +160,24 @@ function tep_get_zone_list($name, $country_code = '', $selected = '', $parameter
   return tep_draw_pull_down_menu($name, $zones_array, $selected, $parameters);
 }
 
+/*---------------------------------
+ 功能: 加密密码
+ 参数：$plain(string) 简单的密码值
+ 返回值：返回MD5加密完之后的密码(string)
+ --------------------------------*/
+function tep_encrypt_password($plain) {
+  $password = '';
+
+  for ($i=0; $i<10; $i++) {
+    $password .= tep_rand();
+  }
+
+  $salt = substr(md5($password), 0, 2);
+
+  $password = md5($salt . $plain) . ':' . $salt;
+
+  return $password;
+}
 
 function sbs_get_zone_name($country_id, $zone_id) {
   $zone_query = tep_db_query("select zone_name from " . TABLE_ZONES . " where zone_country_id = '" . $country_id . "' and zone_id = '" . $zone_id . "'");

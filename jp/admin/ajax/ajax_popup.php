@@ -4662,16 +4662,14 @@ if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'
   $page_str = '';
 if($_GET['cID'] != -1){
   if ($c_key > 0) {
-    $page_str .= '<a
-      onclick="show_customers(\'\','.$cid_array[$c_key-1].','.$_GET['page'].')" href="javascript:void(0)" id="option_prev">'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+    $page_str .= '<a onclick="show_customers(\'\','.$cid_array[$c_key-1].','.$_GET['page'].')" href="javascript:void(0)" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
   } else {
-    $page_str .= '<font color="#000000">'.IMAGE_PREV.'</font>'; 
+    $page_str .= '<font color="#000000"><'.IMAGE_PREV.'</font>'; 
   }
   if ($c_key < (count($cid_array) - 1)) {
-   $page_str .= '<a
-     onclick="show_customers(\'\','.$cid_array[$c_key+1].','.$_GET['page'].')" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'</a>&nbsp;&nbsp;'; 
+   $page_str .= '<a onclick="show_customers(\'\','.$cid_array[$c_key+1].','.$_GET['page'].')" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
   } else {
-    $page_str .= '<font color="#000000">'.IMAGE_NEXT.'</font>'; 
+    $page_str .= '<font color="#000000">'.IMAGE_NEXT.'></font>'; 
   }
 }
     $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';

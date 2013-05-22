@@ -5,6 +5,7 @@
 
   require('includes/application_top.php');
   require(DIR_FS_ADMIN . 'classes/notice_box.php');
+  require('includes/step-by-step/new_application_top.php');
   if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
      $sql_site_where = 'site_id in ('.str_replace('-', ',', $_GET['site_id']).')';
      $show_list_array = explode('-',$_GET['site_id']);

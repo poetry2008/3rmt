@@ -31,26 +31,6 @@ define('DATE_TIME_FORMAT_TORIHIKI', '%Y/%m/%d %H:%M');
 // Return date in raw format
 // $date should be in format mm/dd/yyyy
 // raw date is in format YYYYMMDD, or DDMMYYYY
-/*---------------------------------
- 功能: 加密密码
- 参数：$plain(string) 简单的密码值
- 返回值：返回MD5加密完之后的密码(string)
- --------------------------------*/
-function tep_encrypt_password($plain) {
-  $password = '';
-
-  for ($i=0; $i<10; $i++) {
-    $password .= tep_rand();
-  }
-
-  $salt = substr(md5($password), 0, 2);
-
-  $password = md5($salt . $plain) . ':' . $salt;
-
-  return $password;
-}
-
-
 function tep_date_raw($date, $reverse = false) {
   if ($reverse) {
     return substr($date, 8, 2) . substr($date, 5, 2) . substr($date, 0, 4);
@@ -221,7 +201,7 @@ define('PASSWORD_HIDDEN', '********');
 // images
 define('IMAGE_ANI_SEND_EMAIL', 'E-Mail送信');
 define('IMAGE_BACK', '戻る');
-define('IMAGE_NEXT', '次へ>');
+define('IMAGE_NEXT', '次へ');
 define('IMAGE_BACKUP', 'バックアップ');
 define('IMAGE_CANCEL', '取り消し');
 define('IMAGE_CONFIRM', '確認');
@@ -756,7 +736,7 @@ define('TEXT_DATE_ADDED','作成日:');
 define('TEXT_DATE_UPDATE','更新日:');
 define('TEXT_EOF_ERROR_MSG','データ送信が失敗しました。再度送信してください。');
 define('TEXT_UNSET_DATA','データなし');
-define('IMAGE_PREV', '<前へ');
+define('IMAGE_PREV', '前へ');
 define('TEXT_POPUP_WINDOW_SHOW','旧');
 define('TEXT_POPUP_WINDOW_EDIT','新');
 define('SIGNAL_GREEN', '緑');
