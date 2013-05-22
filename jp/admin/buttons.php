@@ -13,6 +13,7 @@ if (isset($_GET['action']) and $_GET['action']) {
    case 'insert' 新建按钮     
    case 'save' 更新按钮     
    case 'deleteconfirm' 删除按钮      
+   case 'delete' 批量删除按钮
 ------------------------------------------------------*/
       case 'insert':
         $buttons_name = tep_db_prepare_input($_POST['buttons_name']);
@@ -49,6 +50,16 @@ if (isset($_GET['action']) and $_GET['action']) {
         tep_db_query("delete from " . TABLE_ORDERS_TO_BUTTONS . " where buttons_id = '" . tep_db_input($buttons_id) . "'");
         tep_redirect(tep_href_link(FILENAME_BUTTONS, 'page='.$param_str));
         break;
+      case 'delete':
+        $buttons_id_list = tep_db_prepare_input($_POST['buttons_list_id']);
+        $param_str = $_GET['page'];
+
+        foreach($buttons_id_list as $buttons_id){
+          tep_db_query("delete from " . TABLE_BUTTONS . " where buttons_id = '" . tep_db_input($buttons_id) . "'");
+          tep_db_query("delete from " . TABLE_ORDERS_TO_BUTTONS . " where buttons_id = '" . tep_db_input($buttons_id) . "'");   
+        }
+        tep_redirect(tep_href_link(FILENAME_BUTTONS, ($param_str != '' ? 'page='.$param_str : '')));
+        break;
     }
   }
 ?>
@@ -61,6 +72,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<?php require('includes/javascript/show_site.js.php');?>
 <script language="javascript">
 <?php //快捷键监听?>
 $(document).ready(function() {
@@ -108,6 +120,61 @@ function resize_option_page()
   }
   box_warp_height = $(".box_warp").height(); 
 }
+
+<?php //删除动作?>
+function select_buttons_change(value,buttons_list_id)
+{
+  sel_num = 0;
+  if (document.edit_buttons_form.elements[buttons_list_id].length == null) {
+    if (document.edit_buttons_form.elements[buttons_list_id].checked == true) {
+      sel_num = 1;
+    }
+  } else {
+    for (i = 0; i < document.edit_buttons_form.elements[buttons_list_id].length; i++) {
+      if (document.edit_buttons_form.elements[buttons_list_id][i].checked == true) {
+        sel_num = 1;
+        break;
+      }
+    }
+  } 
+
+  if(sel_num == 1){
+    if (confirm('<?php echo TEXT_BUTTONS_EDIT_CONFIRM;?>')) {
+      document.edit_buttons_form.action = "<?php echo FILENAME_BUTTONS.'?action=delete'.($_GET['page'] != '' ? '&page='.$_GET['page'] : '');?>";
+      document.edit_buttons_form.submit(); 
+    }else{
+
+      document.getElementsByName("edit_buttons_list")[0].value = 0;
+    } 
+  }else{
+    document.getElementsByName("edit_buttons_list")[0].value = 0;
+    alert("<?php echo TEXT_BUTTONS_EDIT_MUST_SELECT;?>"); 
+  }
+}
+
+<?php //全选动作?>
+function all_select_buttons(buttons_list_id)
+{
+  var check_flag = document.edit_buttons_form.all_check.checked;
+  if (document.edit_buttons_form.elements[buttons_list_id]) {
+    if (document.edit_buttons_form.elements[buttons_list_id].length == null) {
+      if (check_flag == true) {
+        document.edit_buttons_form.elements[buttons_list_id].checked = true;
+      } else {
+        document.edit_buttons_form.elements[buttons_list_id].checked = false;
+      }
+    } else {
+      for (i = 0; i < document.edit_buttons_form.elements[buttons_list_id].length; i++) {
+        if (check_flag == true) {
+          document.edit_buttons_form.elements[buttons_list_id][i].checked = true;
+        } else {
+          document.edit_buttons_form.elements[buttons_list_id][i].checked = false;
+        }
+      }
+    }
+  }
+}
+
 <?php //编辑buttons信息?>
 function show_buttons_info(ele, buttons_id, i_param_str)
 {
@@ -254,7 +321,18 @@ require("includes/note_js.php");
         </table></td>
       </tr>
       <tr>
-        <td><div id="show_popup_info" style="background-color:#FFFF00;position:absolute;width:70%;min-width:550px;margin-left:0;display:none;"></div>
+        <td>
+<?php
+  $site_query = tep_db_query("select id from ".TABLE_SITES);
+  $site_list_array = array();
+  while($site_array = tep_db_fetch_array($site_query)){
+
+    $site_list_array[] = $site_array['id'];
+  }
+  tep_db_free_result($site_query);
+  echo tep_show_site_filter(FILENAME_BUTTONS,false,$site_list_array);
+?>
+<div id="show_popup_info" style="background-color:#FFFF00;position:absolute;width:70%;min-width:550px;margin-left:0;display:none;"></div>
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td valign="top">
@@ -265,6 +343,7 @@ require("includes/note_js.php");
   $buttons_title_row = array();
                   
   //buttons列表 
+  $buttons_title_row[] = array('params' => 'class="dataTableHeadingContent"', 'text' => '<input type="checkbox" name="all_check" onclick="all_select_buttons(\'buttons_list_id[]\');">');
   $buttons_title_row[] = array('params' => 'class="dataTableHeadingContent"', 'text' => TABLE_HEADING_BUTTONS_NAME);
   $buttons_title_row[] = array('params' => 'class="dataTableHeadingContent"', 'text' => TABLE_HEADING_BUTTONS_ORDER);
   $buttons_title_row[] = array('align' => 'right','params' => 'class="dataTableHeadingContent"', 'text' => TABLE_HEADING_ACTION);
@@ -295,6 +374,10 @@ require("includes/note_js.php");
 
     $buttons_item_info = array(); 
     $buttons_item_info[] = array(
+                          'params' => 'class="dataTableContent"', 
+                          'text' => '<input type="checkbox" name="buttons_list_id[]" value="'.$buttons['buttons_id'].'">' 
+                          );
+    $buttons_item_info[] = array(
                           'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BUTTONS, 'page=' . $_GET['page'] . '&cID=' . $buttons['buttons_id']) . '\'"', 
                           'text' => $buttons['buttons_name'] 
                           ); 
@@ -314,13 +397,27 @@ require("includes/note_js.php");
 
   }
 
-  $form_str = tep_draw_form('buttons_list', FILENAME_BUTTONS, tep_get_all_get_params(array('action')).'action=del_select_buttons');  
+  $form_str = tep_draw_form('edit_buttons_form', FILENAME_BUTTONS, tep_get_all_get_params(array('action')).'action=del_select_buttons');  
   $notice_box->get_form($form_str); 
   $notice_box->get_contents($buttons_table_row);
   $notice_box->get_eof(tep_eof_hidden()); 
   echo $notice_box->show_notice();
 ?>
-		  <table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin-top:5px;">
+                  <table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin-top:5px;">
+                  <tr>
+                  <td class="smallText" valign="top">
+                  <?php
+                  if($ocertify->npermission == 15 && tep_db_num_rows($buttons_query) > 0){
+                    echo '<div class="td_box">';
+                    echo '<select name="edit_buttons_list" onchange="select_buttons_change(this.value,\'buttons_list_id[]\');">';
+                    echo '<option value="0">'.TEXT_BUTTONS_EDIT_SELECT.'</option>';
+                    echo '<option value="1">'.TEXT_BUTTONS_EDIT_DELETE.'</option>';
+                    echo '</select>';
+                    echo '</div>';
+                  }
+                  ?>
+                  </td>
+                  </tr>
                   <tr>
                     <td class="smallText" valign="top"><?php echo $buttons_split->display_count($buttons_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_BUTTONS); ?></td>
                     <td class="smallText" align="right"><div class="td_box"><?php echo $buttons_split->display_links($buttons_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page']); ?></div></td>

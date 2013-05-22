@@ -23,4 +23,7 @@ define('TEXT_USER_UPDATE','更新者:');
 define('TEXT_DATE_ADDED','登録日:');
 define('TEXT_DATE_UPDATE','更新日:');
 define('TEXT_BUTTONS_MUST_INPUT','必須項目');
-define('TEXT_BUTTONS_IMAGE', '画像');
+define('TEXT_BUTTONS_EDIT_SELECT','選択したものを');
+define('TEXT_BUTTONS_EDIT_DELETE','削除する');
+define('TEXT_BUTTONS_EDIT_MUST_SELECT','少なくとも1つの選択肢を選んでください。');
+define('TEXT_BUTTONS_EDIT_CONFIRM','本当に削除しますか？');
