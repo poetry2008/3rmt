@@ -734,6 +734,13 @@ tep_db_query("delete from ".TABLE_PREORDERS_QUESTIONS." where orders_id = '".$_S
 tep_db_query("delete from ".TABLE_PREORDERS_QUESTIONS_PRODUCTS." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
 tep_db_query("delete from ".TABLE_PREORDERS_STATUS_HISTORY." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
 tep_db_query("delete from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
+//把预约订单的按钮信息，关联到新生成的订单
+$preorders_buttons_query = tep_db_query("select * from ".TABLE_PREORDERS_TO_BUTTONS." where orders_id = '".$_SESSION['preorder_info_id']."'");
+while($preorders_buttons_array = tep_db_fetch_array($preorders_buttons_query)){
+
+  tep_db_query("insert into ".TABLE_ORDERS_TO_BUTTONS." values('".$orders_id."','".$preorders_buttons_array['buttons_id']."')");
+}
+tep_db_free_result($preorders_buttons_query);
 tep_db_query("delete from ".TABLE_PREORDERS_TO_BUTTONS." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
 tep_db_query("delete from ".TABLE_PREORDERS_OA_FORMVALUE." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
 

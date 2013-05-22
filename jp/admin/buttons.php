@@ -6,6 +6,16 @@
    */
   require('includes/application_top.php');
   require(DIR_FS_ADMIN . '/classes/notice_box.php');
+  //获取当前用户的网站管理权限
+  $sites_id_sql = tep_db_query("select site_permission from ".TABLE_PERMISSIONS." where userid= '".$ocertify->auth_user."'");
+  $userslist= tep_db_fetch_array($sites_id_sql);
+  tep_db_free_result($sites_id_sql);
+  $site_permission_array = explode(',',$userslist['site_permission']); 
+  $site_permission_flag = false;
+  if(in_array('0',$site_permission_array)){
+
+    $site_permission_flag = true;
+  }
 
 if (isset($_GET['action']) and $_GET['action']) {
     switch ($_GET['action']) {
@@ -54,9 +64,11 @@ if (isset($_GET['action']) and $_GET['action']) {
         $buttons_id_list = tep_db_prepare_input($_POST['buttons_list_id']);
         $param_str = $_GET['page'];
 
-        foreach($buttons_id_list as $buttons_id){
-          tep_db_query("delete from " . TABLE_BUTTONS . " where buttons_id = '" . tep_db_input($buttons_id) . "'");
-          tep_db_query("delete from " . TABLE_ORDERS_TO_BUTTONS . " where buttons_id = '" . tep_db_input($buttons_id) . "'");   
+        if($site_permission_flag == true){
+          foreach($buttons_id_list as $buttons_id){
+            tep_db_query("delete from " . TABLE_BUTTONS . " where buttons_id = '" . tep_db_input($buttons_id) . "'");
+            tep_db_query("delete from " . TABLE_ORDERS_TO_BUTTONS . " where buttons_id = '" . tep_db_input($buttons_id) . "'");   
+          }
         }
         tep_redirect(tep_href_link(FILENAME_BUTTONS, ($param_str != '' ? 'page='.$param_str : '')));
         break;
@@ -76,6 +88,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 <script language="javascript">
 <?php //快捷键监听?>
 $(document).ready(function() {
+var box_warp_height = $(".box_warp").height();
   $(document).keyup(function(event) {
     if (event.which == 27) {
       if ($("#show_popup_info").css("display") != "none") {
@@ -108,7 +121,6 @@ $(document).ready(function() {
     }
   });    
 });
-var box_warp_height = 0;
 var origin_offset_symbol = 0;
 window.onresize = resize_option_page;
 var o_submit_single = true;
@@ -176,14 +188,14 @@ function all_select_buttons(buttons_list_id)
 }
 
 <?php //编辑buttons信息?>
-function show_buttons_info(ele, buttons_id, i_param_str)
+function show_buttons_info(ele, buttons_id, i_param_str, show)
 {
   ele = ele.parentNode;
   i_param_str = decodeURIComponent(i_param_str);
   origin_offset_symbol = 1;
   $.ajax({
     url: 'ajax.php?action=edit_buttons',      
-    data: 'buttons_id='+buttons_id+'&param_str='+i_param_str,
+    data: 'buttons_id='+buttons_id+'&param_str='+i_param_str+'&show='+show,
     type: 'POST',
     dataType: 'text',
     async:false,
@@ -221,12 +233,12 @@ function show_buttons_info(ele, buttons_id, i_param_str)
 }
 
 <?php //编辑buttons的上一个，下一个信息?>
-function show_link_buttons_info(buttons_id, param_str)
+function show_link_buttons_info(buttons_id, param_str, show)
 {
   param_str = decodeURIComponent(param_str);
   $.ajax({
     url: 'ajax.php?action=edit_buttons',      
-    data: 'buttons_id='+buttons_id+'&param_str='+param_str,
+    data: 'buttons_id='+buttons_id+'&param_str='+param_str+'&show='+show,
     type: 'POST',
     dataType: 'text',
     async:false,
@@ -375,7 +387,7 @@ require("includes/note_js.php");
     $buttons_item_info = array(); 
     $buttons_item_info[] = array(
                           'params' => 'class="dataTableContent"', 
-                          'text' => '<input type="checkbox" name="buttons_list_id[]" value="'.$buttons['buttons_id'].'">' 
+                          'text' => '<input type="checkbox" name="buttons_list_id[]" value="'.$buttons['buttons_id'].'"'.($site_permission_flag == false ? 'disabled="disabled"' : '').'>' 
                           );
     $buttons_item_info[] = array(
                           'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BUTTONS, 'page=' . $_GET['page'] . '&cID=' . $buttons['buttons_id']) . '\'"', 
@@ -390,7 +402,7 @@ require("includes/note_js.php");
     $buttons_item_info[] = array(
                           'align' => 'right', 
                           'params' => 'class="dataTableContent"', 
-                          'text' => '<a href="javascript:void(0);" onclick="show_buttons_info(this, \''.$buttons['buttons_id'].'\', \''.$_GET['page'].'\')">'.tep_get_signal_pic_info(date('Y-m-d H:i:s',strtotime(($buttons['date_update'] != '' && $buttons['date_update'] != '0000-00-00 00:00:00' ? $buttons['date_update'] : $buttons['date_added'])))).'</a>' 
+                          'text' => '<a href="javascript:void(0);" onclick="show_buttons_info(this, \''.$buttons['buttons_id'].'\', \''.$_GET['page'].'\',\''.($site_permission_flag == true ? '1' : '0').'\')">'.tep_get_signal_pic_info(date('Y-m-d H:i:s',strtotime(($buttons['date_update'] != '' && $buttons['date_update'] != '0000-00-00 00:00:00' ? $buttons['date_update'] : $buttons['date_added'])))).'</a>' 
                           ); 
                       
     $buttons_table_row[] = array('params' => $buttons_item_params, 'text' => $buttons_item_info);
@@ -423,7 +435,7 @@ require("includes/note_js.php");
                     <td class="smallText" align="right"><div class="td_box"><?php echo $buttons_split->display_links($buttons_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page']); ?></div></td>
                   </tr>
                   <tr>
-                    <td colspan="2" align="right"><div class="td_button"><?php echo '<a href="javascript:void(0);" onclick="create_buttons_info(this);">' .tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?></div></td>
+                    <td colspan="2" align="right"><div class="td_button"><?php echo '<a href="javascript:void(0);" onclick="create_buttons_info(this);">' .tep_html_element_button(IMAGE_NEW_PROJECT,($site_permission_flag == false ? ' disabled="disabled"' : '')) . '</a>'; ?></div></td>
                   </tr>
           </table>
 	  </td>
