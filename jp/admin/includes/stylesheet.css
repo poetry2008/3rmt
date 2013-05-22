@@ -1776,16 +1776,24 @@ Public list
 }
 @media all and (-webkit-min-device-pixel-ratio:0){
 .table_img_list{
-list-style:none;
-margin:0;
-padding:0;
-width:60%;
+	list-style:none;
+	margin:0;
+	padding:0;
+	width:48%;
 }}
 .table_img_list li{
 	float:left;
 	width:10%;
-        white-space:nowrap;
+	min-width:60px;
+    white-space:nowrap;
 }
+@media all and (-webkit-min-device-pixel-ratio:0){
+.table_img_list li{
+	float:left;
+	width:10%;
+	min-width:35px;
+    white-space:nowrap;
+}}
 .table_img_list  img{
 	margin-bottom:7px;
 }

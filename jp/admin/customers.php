@@ -73,6 +73,7 @@
                                 'entry_country_id' => $entry_country_id,
                                 'entry_telephone' => $entry_telephone);
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
+        $customers_info_sql = "insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created,customers_info_date_account_last_modified,user_update,user_added) values ('" . tep_db_input($customer_id) . "', '0', now(),now(),'".$_SESSION['user_name']."','".$_SESSION['user_name']."')";
         tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created,customers_info_date_account_last_modified,user_update,user_added) values ('" . tep_db_input($customer_id) . "', '0', now(),now(),'".$_SESSION['user_name']."','".$_SESSION['user_name']."')");
         tep_redirect(tep_href_link(FILENAME_CUSTOMERS,'site_id='.$_POST['site_id']));
         break;
@@ -134,7 +135,7 @@
         ");
         if (tep_db_num_rows($check_email)) {
           $messageStack->add_session(ERROR_EMAIL_EXISTS, 'error');
-          tep_redirect(tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action')) . 'action=edit&cID=' . $customers_id));
+          tep_redirect(tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $customers_id));
         }
         //Add Point System
         if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
@@ -236,6 +237,11 @@
 function check_password(){
  post_email = $("#customers_email_address").val();
  post_site =  $("#customers_site_id").val();
+ once_again_password = $("#once_again_password").val();
+ check_is_active = $("#check_is_active").val();
+ password = $("#password").val();
+ customers_email_address_value = $("#customers_email_address_value").val();
+ if(customers_email_address_value != post_email){
  $.ajax({
  url: 'ajax.php?action=check_email',
  data: {post_email:post_email,post_site:post_site} ,
@@ -250,9 +256,12 @@ function check_password(){
    }
   }
  });
+ }else{
+     email_error = 'false';
+ }
   if(email_error == 'true'){
     $("#error_email").html("<?php echo TEXT_ERROR_EMAIL;?>");
-  }else if(password != once_again_password || password == ''){
+  }else if(check_is_active == 1 && (password != once_again_password || password == '')){
        $("#error_info").html("<?php echo TEXT_ERROR_INFO;?>"); 
   }else{
        document.forms.customers.submit();  
@@ -323,11 +332,7 @@ $(document).ready(function() {
         if ($('#show_customers').css('display') != 'none') {
             if (o_submit_single){
                 cid = $("#cid").val();
-                if(cid == -1){
                 check_password();
-                }else{  
-                 $("#show_customers").find('input:submit').first().trigger("click");
-               }
              }
             }
         }
@@ -411,8 +416,7 @@ if($('.show_left_menu').width()){
   leftset = parseInt($('.content').attr('cellspacing'))+parseInt($('.content').attr('cellpadding'))*2+parseInt($('.columnLeft').attr('cellspacing'))*2+parseInt($('.columnLeft').attr('cellpadding'))*2+parseInt($('.compatible table').attr('cellpadding'));
 } 
 if(cID == -1){
-  show_customers_list = $('#show_customers_list').offset();
-  $('#show_customers').css('top',show_customers_list.top);
+  $('#show_customers').css('top',$('#show_customers_list').offset().top);
 }
 $('#show_customers').css('z-index','1');
 $('#show_customers').css('left',leftset);
@@ -643,7 +647,7 @@ require("includes/note_js.php");
         </table></td>
       </tr>
       <tr><td>
-        <?php tep_show_site_filter(FILENAME_CUSTOMERS);?>
+        <?php tep_show_site_filter(FILENAME_CUSTOMERS,false,array(0));?>
         <table border="0" width="100%" cellspacing="0" cellpadding="0" id="show_customers_list">
           <tr>
             <td valign="top">
@@ -683,7 +687,7 @@ require("includes/note_js.php");
       from " . TABLE_CUSTOMERS . " c left join " . TABLE_ADDRESS_BOOK . " a on
       c.customers_id = a.customers_id and c.customers_default_address_id =
       a.address_book_id, ".TABLE_CUSTOMERS_INFO." ci where c.customers_id = ci.customers_info_id and " .$sql_site_where. " " . $search . " 
-      order by c.customers_id
+      order by c.customers_id DESC
     ";
     $customers_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $customers_query_raw, $customers_query_numrows);
     $customers_query = tep_db_query($customers_query_raw);

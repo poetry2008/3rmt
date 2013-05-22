@@ -573,7 +573,7 @@ require("includes/note_js.php");
                      <tr><td></td><td align="right">
                       <div class="td_button"><?php
                       //通过site_id判断是否允许新建
-                      if($show_list_array[0],$site_arr){
+                      if(in_array($show_list_array[0],$site_arr)){
                       echo '&nbsp;<a href="javascript:void(0)" onclick="show_latest_news(this,'.$_GET['page'].',-1,\''.(isset($_GET['site_id'])&&$_GET['site_id']!=''?($_GET['site_id']):'-1').'\','.(isset($latest_news['site_id'])?$latest_news['site_id']:'-1').')">' .tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>';
                       }else{
                       echo '&nbsp;' .tep_html_element_button(IMAGE_NEW_PROJECT,'disabled="disabled"');
