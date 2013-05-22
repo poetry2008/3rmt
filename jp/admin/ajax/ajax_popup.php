@@ -4440,6 +4440,387 @@ if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
   $notice_box->get_contents($module_total_row, $buttons);
   $notice_box->get_eof(tep_eof_hidden().tep_draw_hidden_field('site_id', $site_id));
   echo $notice_box->show_notice().'||||||'.tep_get_note_top_layer(FILENAME_MODULE_TOTAL);
+}else if ($_GET['action'] == 'edit_customers'){
+include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_CUSTOMERS);
+include(DIR_FS_ADMIN.'classes/notice_box.php');
+$notice_box = new notice_box('popup_order_title', 'popup_order_info');
+$search = '';
+$sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$ocertify->auth_user."' limit 0,1");
+$action_sid = $_GET['action_sid'];
+while($userslist= tep_db_fetch_array($sites_id)){
+     $site_permission = $userslist['site_permission']; 
+}
+if(isset($site_permission)) $site_arr=$site_permission;//权限判断
+else $site_arr="";
+$site_array = explode(',',$site_arr);
+if(!in_array($action_sid,$site_array) && $action_sid != -1){
+   $disabled = 'disabled="disabled"'; 
+}
+if($_GET['site_id'] == -1){
+  $_GET['site_id'] = '';
+}
+if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'])) ) {
+    $keywords = tep_db_input(tep_db_prepare_input($_GET['search']));
+    $search = "and (c.customers_lastname like '%" . $keywords . "%' or c.customers_firstname like '%" . $keywords . "%' or c.customers_email_address like '%" . $keywords . "%' or c.customers_firstname_f like '%" . $keywords . "%'  or c.customers_lastname_f like '%" . $keywords . "%')";
+}  
+    if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
+      $sql_site_where = 'site_id in ('.str_replace('-', ',', $_GET['site_id']).')';
+      $show_site_arr = explode('-',$_GET['site_id']);
+    } else {
+      $show_site_str = tep_get_setting_site_info(FILENAME_CUSTOMERS);
+      $sql_site_where = 'site_id in ('.$show_site_str.')';
+      $show_site_arr = explode(',',$show_site_str);
+    }
+    $customers_query_raw = "
+      select c.customers_id, 
+             c.site_id,
+             c.customers_lastname, 
+             c.customers_firstname, 
+             c.customers_email_address, 
+             a.entry_country_id, 
+             c.customers_guest_chk,
+	     c.is_quited,
+	     ci.user_update,
+             ci.customers_info_date_account_created as date_account_created, 
+             ci.customers_info_date_account_last_modified as date_account_last_modified, 
+             ci.customers_info_date_of_last_logon as date_last_logon, 
+             ci.customers_info_number_of_logons as number_of_logons 
+      from " . TABLE_CUSTOMERS . " c left join " . TABLE_ADDRESS_BOOK . " a on
+      c.customers_id = a.customers_id and c.customers_default_address_id =
+      a.address_book_id, ".TABLE_CUSTOMERS_INFO." ci where c.customers_id = ci.customers_info_id and " .$sql_site_where. " " . $search . " 
+      order by c.customers_id DESC
+    ";
+   $customers_query_cid = tep_db_query($customers_query_raw);
+    $cid_array = array();
+    while ($customers_cid = tep_db_fetch_array($customers_query_cid)) {
+        $cid_array[] = $customers_cid['customers_id'];
+      if ( ((!isset($_GET['cID']) || !$_GET['cID']) || (@$_GET['cID'] == $customers_cid['customers_id'])) && (!isset($cInfo) || !$cInfo)) {
+        $country_query = tep_db_query(" select countries_name from " . TABLE_COUNTRIES . " where countries_id = '" . $customers_cid['entry_country_id'] . "'
+        ");
+        $country = tep_db_fetch_array($country_query);
+
+        $reviews_query = tep_db_query(" select count(*) as number_of_reviews from " . TABLE_REVIEWS . " where customers_id = '" . $customers_cid['customers_id'] . "'");
+        $reviews = tep_db_fetch_array($reviews_query);
+        $customer_info = tep_array_merge($country, $customers_cid, $reviews);
+        $cInfo_array = tep_array_merge($customers, $customer_info);
+        $nInfo = new objectInfo($cInfo_array);
+      }
+    }
+    $customers_query = tep_db_query("
+        select c.customers_id, 
+               c.customers_gender, 
+               c.customers_firstname, 
+               c.customers_lastname, 
+               c.customers_firstname_f, 
+               c.customers_lastname_f, 
+               c.customers_dob, 
+               c.customers_email_address, 
+               a.entry_company, 
+               a.entry_street_address, 
+               a.entry_suburb, 
+               a.entry_postcode, 
+               a.entry_city, 
+               a.entry_state, 
+               a.entry_zone_id, 
+               a.entry_country_id, 
+               c.customers_telephone, 
+               c.customers_fax, 
+               c.customers_newsletter, 
+               c.customers_default_address_id,
+               c.is_seal,
+	       c.is_quited,
+	       c.quited_date,
+	       c.pic_icon,
+	       c.is_send_mail,
+	       c.is_calc_quantity,
+               s.romaji,
+               s.name as site_name
+        from " . TABLE_CUSTOMERS . " c 
+          left join " . TABLE_ADDRESS_BOOK . " a on c.customers_default_address_id = a.address_book_id ,".TABLE_SITES." s
+        where a.customers_id = c.customers_id 
+          and s.id = c.site_id
+          and c.customers_id = '" . (int)$_GET['cID'] . "' 
+    ");
+    if($_GET['cID'] != -1){
+    $customers_info = tep_db_query("select * from ".TABLE_CUSTOMERS_INFO." where customers_info_id=".$_GET['cID']);  
+    $customers_info_row = tep_db_fetch_array($customers_info);
+    }
+    $customers = tep_db_fetch_array($customers_query);
+    $cInfo = new objectInfo($customers);
+
+    $newsletter_array = array(array('id' => '1', 'text' => ENTRY_NEWSLETTER_YES),
+                              array('id' => '0', 'text' => ENTRY_NEWSLETTER_NO));
+
+    include_once(DIR_WS_CLASSES . 'address_form.php');
+    $address_form = new addressForm;
+    // gender
+    $a_value = tep_draw_radio_field('customers_gender', 'm', false, $cInfo->customers_gender) . '&nbsp;&nbsp;' . MALE . '&nbsp;&nbsp;'
+     . tep_draw_radio_field('customers_gender', 'f', false, $cInfo->customers_gender) . '&nbsp;&nbsp;' . FEMALE;
+    $address_form->setFormLine('gender',ENTRY_GENDER,$a_value);
+
+    // firstname
+    $a_value = tep_draw_input_field('customers_firstname', $cInfo->customers_firstname, 'maxlength="32"', false);
+    $address_form->setFormLine('firstname',ENTRY_FIRST_NAME,$a_value);
+
+    // lastname
+    $a_value = tep_draw_input_field('customers_lastname', $cInfo->customers_lastname, 'maxlength="32"', false);
+    $address_form->setFormLine('lastname',ENTRY_LAST_NAME,$a_value);
+  
+  // firstname_f
+    $a_value = tep_draw_input_field('customers_firstname_f', $cInfo->customers_firstname_f, 'maxlength="32"', false);
+    $address_form->setFormLine('firstname_f',ENTRY_FIRST_NAME_F,$a_value);
+
+    // lastname_f
+    $a_value = tep_draw_input_field('customers_lastname_f', $cInfo->customers_lastname_f, 'maxlength="32"', false);
+    $address_form->setFormLine('lastname_f',ENTRY_LAST_NAME_F,$a_value);
+
+    // dob
+    $a_value = tep_draw_input_field('customers_dob', tep_date_short($cInfo->customers_dob), 'maxlength="10"', false);
+    $address_form->setFormLine('dob',ENTRY_DATE_OF_BIRTH,$a_value);
+
+    // email_address
+    $a_value = tep_draw_input_field('customers_email_address', $cInfo->customers_email_address, 'maxlength="96"', false);
+    $address_form->setFormLine('email_address',ENTRY_EMAIL_ADDRESS,$a_value);
+    //quited_date
+    if($cInfo->is_quited==1){
+    $a_value = date("Y/m/d H:i",strtotime($cInfo->quited_date));
+
+    $address_form->setFormLine('quited_date',ENTRY_QUITED_DATE,$a_value);
+    }
+    // company
+    $a_value = tep_draw_input_field('entry_company', $cInfo->entry_company, 'maxlength="32"');
+    $address_form->setFormLine('company',ENTRY_COMPANY,$a_value);
+
+    // street_address
+    $a_value = tep_draw_input_field('entry_street_address', $cInfo->entry_street_address, 'maxlength="64"', true);
+    $address_form->setFormLine('street_address',ENTRY_STREET_ADDRESS,$a_value);
+
+    // suburb
+    $a_value = tep_draw_input_field('entry_suburb', $cInfo->entry_suburb, 'maxlength="32"');
+    $address_form->setFormLine('suburb',ENTRY_SUBURB,$a_value);
+
+    // postcode
+    $a_value = tep_draw_input_field('entry_postcode', $cInfo->entry_postcode, 'maxlength="8"', true);
+    $address_form->setFormLine('postcode',ENTRY_POST_CODE,$a_value);
+
+    // city
+    $a_value = tep_draw_input_field('entry_city', $cInfo->entry_city, 'maxlength="32"', true);
+    $address_form->setFormLine('city',ENTRY_CITY,$a_value);
+    $address_form->setCountry($cInfo->entry_country_id);
+    $a_value = tep_draw_pull_down_menu('entry_country_id', tep_get_countries(), $cInfo->entry_country_id, 'onChange="update_zone(this.form);"');
+    $address_form->setFormLine('country',ENTRY_COUNTRY,$a_value);
+    $a_hidden = tep_draw_hidden_field('entry_country_id',$cInfo->entry_country_id);
+    $address_form->setFormHidden('country',$a_hidden); // in case without country
+    $a_hidden = tep_draw_hidden_field('user_update',$user_info['name']);
+    $address_form->setFormHidden('user_update',$a_hidden);
+    // state
+    $a_value = tep_draw_pull_down_menu('entry_zone_id', tep_prepare_country_zones_pull_down($cInfo->entry_country_id), $cInfo->entry_zone_id, 'onChange="resetStateText(this.form);"');
+    $address_form->setFormLine('zone_id',ENTRY_STATE,$a_value);
+    $a_value = tep_draw_input_field('entry_state', $cInfo->entry_state, 'maxlength="32" onChange="resetZoneSelected(this.form);"');
+    $address_form->setFormLine('state','&nbsp;',$a_value);
+    if($_GET['cID'] == -1){
+      $action = 'insert';
+      $page = 'page='.$_GET['page'];
+    }else{
+      $action = 'update';
+      $page = tep_get_all_get_params(array('action'));
+    }
+    $form_str = tep_draw_form('customers', FILENAME_CUSTOMERS, $page. '&action='.$action, 'post', 'onSubmit="return check_form();"') .  tep_draw_hidden_field('default_address_id', $cInfo->customers_default_address_id) .  tep_draw_hidden_field('entry_country_id', $cInfo->entry_country_id)."\n"; 
+    $page_str = '';
+  foreach ($cid_array as $c_key => $c_value) {
+    if ($_GET['cID'] == $c_value) {
+      break; 
+    }
+  }
+
+ if($_GET['cID'] != '-1'){
+ if($action_sid == 0){
+      $site_id_name = 'all';
+ }else{
+      $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$action_sid));
+      $site_id_name = $site_name['romaji'].'<input id=\'customers_site_id\' type="hidden" value="'.$site_name['id'].'">';
+ }
+ }else{
+   if($customers_site_arr[0] == ''){ }
+   $customers_site_arr = array_intersect($show_site_arr,$site_array);
+   $site_id_name = "<select id='customers_site_id' name='site_id' $disabled>";
+   foreach($customers_site_arr as $value){
+     if($value!=0){
+       $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$value));
+       $site_id_name .= "<option value='".$site_name['id'] ."'>".$site_name['name']."</option>";
+     }
+   }
+   $site_id_name .= "</select>";
+ }
+  $page_str = '';
+if($_GET['cID'] != -1){
+  if ($c_key > 0) {
+    $page_str .= '<a onclick="show_customers(\'\','.$cid_array[$c_key-1].','.$_GET['page'].','.$action_sid.')" href="javascript:void(0)" id="option_prev">'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+ }
+ 
+  if ($c_key < (count($cid_array) - 1)) {
+   $page_str .= '<a onclick="show_customers(\'\','.$cid_array[$c_key+1].','.$_GET['page'].','.$action_sid.')" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'</a>&nbsp;&nbsp;'; 
+  } 
+}
+    $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+    $heading = array();
+    $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+    $heading[] = array('align' => 'left', 'text' => ($_GET['cID'] != -1?$cInfo->customers_firstname.$cInfo->customers_lastname:HEADING_TITLE).'&nbsp;&nbsp;');
+    $heading[] = array('align' => 'right', 'text' => $page_str);
+    if($_GET['cID'] == -1){
+    $contents[]['text'] = array(
+         array('params' => 'colspan="3"','text' => '<input type="hidden" id="check_is_active" value="1">')
+       );
+    }else{
+     $contents[]['text'] = array(
+         array('params' => 'colspan="3"','text' => '<input type="hidden" id="check_is_active" value="0">')
+       );
+    }
+    $contents[]['text'] = array(
+         array('params' => 'nowrap="nowrap" width="30%"','text' => ENTRY_SITE),
+         array('params' => 'colspan="2"','text' => $site_id_name)
+       );
+    $contents[]['text'] = array(
+         array('params' => 'nowrap="nowrap"','text' => str_replace(':','',ENTRY_FIRST_NAME)),
+         array('params' => 'colspan="2"','text' => tep_draw_input_field('customers_firstname', $cInfo->customers_firstname, 'maxlength="32" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.$disabled, false))
+       );
+    $contents[]['text'] = array(
+         array('params' => 'nowrap="nowrap"','text' => str_replace(':','',ENTRY_LAST_NAME)),
+         array('params' => 'colspan="2"','text' => tep_draw_input_field('customers_lastname', $cInfo->customers_lastname, 'maxlength="32" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.$disabled, false))
+       );
+     $contents[]['text'] = array(
+         array('params' => 'nowrap="nowrap"','text' => str_replace(':','',ENTRY_FIRST_NAME_F)),
+         array('params' => 'colspan="2"','text' => tep_draw_input_field('customers_firstname_f', $cInfo->customers_firstname_f, 'maxlength="32" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.$disabled, false))
+       );
+     $contents[]['text'] = array(
+         array('params' => 'nowrap="nowrap"','text' => str_replace(':','',ENTRY_LAST_NAME_F)),
+         array('params' => 'colspan="2"','text' => tep_draw_input_field('customers_lastname_f', $cInfo->customers_lastname_f, 'maxlength="32" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.$disabled, false))
+       );
+      $contents[]['text'] = array(
+         array('params' => 'nowrap="nowrap"','text' => str_replace(':','',ENTRY_EMAIL_ADDRESS)),
+         array('params' => 'colspan="2"','text' => tep_draw_input_field('customers_email_address', $cInfo->customers_email_address, 'id="customers_email_address" maxlength="96" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.$disabled, false).'&nbsp;&nbsp;<span id="error_email"></span><input type="hidden" id="customers_email_address_value" value="'.$cInfo->customers_email_address.'"')
+       );
+      if($_GET['cID'] == -1){
+      $contents[]['text'] = array(
+         array('params' => 'nowrap="nowrap"','text' => TEXT_PASSWORD),
+         array('params' => 'colspan="2"','text' => tep_draw_password_field('password','','','id="password" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.$disabled))
+       );
+      $contents[]['text'] = array(
+         array('params' => 'nowrap="nowrap"','text' => TEXT_ONCE_AGAIN_PASSWORD),
+         array('params' => 'colspan="2"','text' => tep_draw_password_field('once_again_password','','','id="once_again_password" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.$disabled).'&nbsp;&nbsp;<span id="error_info"></span>')
+       );
+ 
+      }
+       $contents[]['text'] = array(
+         array('params' => 'nowrap="nowrap"','text' => str_replace(':','',ENTRY_NEWSLETTER)),
+         array('params' => 'colspan="2"','text' => '<span>'.tep_draw_pull_down_menu('customers_newsletter', $newsletter_array, $cInfo->customers_newsletter,$disabled).'</span>')
+       );
+      if ($cInfo->is_quited == 1) {
+       $contents[]['text'] = array(
+         array('params' => 'nowrap="nowrap"','text' => ENTRY_QUITED_DATE),
+         array('params' => 'colspan="2"','text' => '<span class="table_space_left">'.date("Y/m/d H:i", strtotime($cInfo->quited_date)).'</span>')
+       );
+      }
+    if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
+    $cpoint_query = tep_db_query("select point ,reset_flag,reset_success from " . TABLE_CUSTOMERS . " where customers_id = '".$_GET['cID']."'");
+    $cpoint = tep_db_fetch_array($cpoint_query);
+       $contents[]['text'] = array(
+         array('params' => 'nowrap="nowrap"','text' => CUSTOMER_RESET),
+         array('params' => 'colspan="2" class="td_input"','text' => tep_draw_checkbox_field('reset_flag', 'on', $cpoint['reset_flag']==1 and $cpoint['reset_success']!=1,'',$disabled ))
+       );
+        $contents[]['text'] = array(
+         array('params' => 'nowrap="nowrap"','text' => CUSTOMER_IS_SEAL),
+         array('params' => 'colspan="2" class="td_input"','text' => tep_draw_checkbox_field('is_seal', '1', $cInfo->is_seal,'',$disabled ))
+       );
+       if($cInfo->is_send_mail){
+          $checked = 'checked'; 
+       }
+        $contents[]['text'] = array(
+         array('params' => 'nowrap="nowrap"','text' => CUSTOMER_NO_SEND_MAIL_TEXT),
+         array('params' => 'colspan="2" class="td_input"','text' => '<input type="checkbox" name="is_send_mail" '.$disabled.$checked.' value="1">')
+       );
+       if($cInfo->is_calc_quantity){
+          $calc_checked = 'checked'; 
+       }
+        $contents[]['text'] = array(
+         array('params' => 'nowrap="nowrap"','text' => CUSTOMER_CALC_QUANTITY_TEXT),
+         array('params' => 'colspan="2" class="td_input"','text' => '<input type="checkbox" name="is_calc_quantity" '.$disabled.$calc_checked.' value="1">')
+       );
+        $contents[]['text'] = array(
+         array('text' => ENTRY_POINT),
+         array('params' => 'colspan="2"','text' => tep_draw_input_field('point', $cpoint['point'], 'maxlength="32" size="4" style="text-align:right"'.$disabled).'P')
+       );
+       $pic_list_raw = tep_db_query("select * from ".TABLE_CUSTOMERS_PIC_LIST." order by sort_order asc"); 
+        $table_img_list = '<ul class="table_img_list">'; 
+        while ($pic_list_res = tep_db_fetch_array($pic_list_raw)) {
+         $table_img_list .= '<li><input type="radio" name="pic_icon" '.$disabled.' style="padding-left:0;margin-left:0;" value="'.$pic_list_res['pic_name'].'"'.(($cInfo->pic_icon == $pic_list_res['pic_name'])?' checked':'').' onclick="check_radio_status(this);"><img src="images/icon_list/'.$pic_list_res['pic_name'].'" alt="'.$pic_list_res['pic_alt'].'" title="'.$pic_list_res['pic_alt'].'"></li>'; 
+         }
+        $table_img_list .='</ul>'; 
+        $contents[]['text'] = array(
+         array('text' => CUSTOMER_PIC_TEXT),
+         array('params' => 'nowrap="nowrap" colspan="2"','text' => $table_img_list.'<input type="hidden" id="s_radio" nacIDme="s_radio" value="'.$cInfo->pic_icon.'">')
+       );
+       if(isset($_POST['customers_fax'])){
+          $customers_fax = $_POST['customers_fax']; 
+        }else{
+          $customers_fax = $cInfo->customers_fax;
+        }
+        $contents[]['text'] = array(
+         array('params' => 'nowrap="nowrap"','text' => str_replace(':','',CUSTOMER_COMMUNITY_SEARCH_TEXT)),
+         array('params' => 'colspan="2"','text' => '<textarea '.$disabled.' name="customers_fax" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize: vertical;width:44%;height:42px;*height:40px;">'.$customers_fax.'</textarea>')
+       );
+      }
+        $contents[]['text'] = array(
+         array('params' => 'nowrap="nowrap"','text' => TEXT_INFO_DATE_LAST_LOGON),
+         array('params' => 'colspan="2"','text' => tep_date_short($nInfo->date_last_logon))
+       );
+        $contents[]['text'] = array(
+         array('params' => 'nowrap="nowrap"','text' => TEXT_INFO_NUMBER_OF_LOGONS),
+         array('params' => 'colspan="2"','text' => $nInfo->number_of_logons)
+       );
+        $contents[]['text'] = array(
+         array('params' => 'nowrap="nowrap"','text' => TEXT_CUSTOMERS_ORDER_COUNT),
+         array('params' => 'colspan="2"','text' => tep_get_orders_by_customers_id($nInfo->customers_id,$nInfo->site_id))
+       );
+        $contents[]['text'] = array(
+         array('params' => 'nowrap="nowrap"','text' => TEXT_INFO_NUMBER_OF_REVIEWS),
+         array('params' => 'colspan="2"','text' => $nInfo->number_of_reviews)
+       );
+       $contents[]['text'] = array(
+           array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_ADDED.((tep_not_null($customers_info_row['user_added']))?$customers_info_row['user_added']:TEXT_UNSET_DATA)), 
+           array('align' => 'left', 'params' => 'colspan="2"', 'text' => TEXT_DATE_ADDED.((tep_not_null($customers_info_row['customers_info_date_account_created']))?$customers_info_row['customers_info_date_account_created']:TEXT_UNSET_DATA))
+         );
+       $contents[]['text'] = array(
+           array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_UPDATE.((tep_not_null($customers_info_row['user_update']))?$customers_info_row['user_update']:TEXT_UNSET_DATA)),
+           array('align' => 'left', 'params' => 'colspan="2"', 'text' => TEXT_DATE_UPDATE.((tep_not_null($customers_info_row['customers_info_date_account_last_modified']))?$customers_info_row['customers_info_date_account_last_modified']:TEXT_UNSET_DATA))
+        );
+      if($disabled){
+        $submit = '<input type="hidden" id="cid" value="'.$_GET['cID'].'">'.tep_html_element_button(IMAGE_SAVE,$disabled); 
+       }else{
+        $submit = '<input type="hidden" id="cid" value="'.$_GET['cID'].'">'.tep_html_element_button(IMAGE_SAVE,'onclick="check_password()"'); 
+       }
+   if($_GET['cID'] != -1){
+    if($disabled){
+     $customers_del = tep_html_element_button(IMAGE_DELETE,$disabled);
+     $customers_orders = tep_html_element_button(IMAGE_ORDERS,$disabled);
+     $customers_products = tep_html_element_button(BUTTON_CUSTOMERS_PRODUCTS_TEXT,$disabled);
+     $customers_email = tep_html_element_button(IMAGE_EMAIL,$disabled);
+    }else{
+     $customers_del =  ' <a class = "new_product_reset" href="' .  tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' .  $cInfo->customers_id .  '&action=deleteconfirm') .  '">'.tep_html_element_button(IMAGE_DELETE).'</a>';
+     $customers_orders = ' <a href="' .  tep_href_link(FILENAME_ORDERS, 'cID=' .  $cInfo->customers_id) . '">' .  tep_html_element_button(IMAGE_ORDERS) .  '</a>';
+     $customers_products = '&nbsp;<a href="'.tep_href_link('customers_products.php', str_replace('page', 'cpage', tep_get_all_get_params(array('cID', 'action')).'cID='.$cInfo->customers_id)).'">'.tep_html_element_button(BUTTON_CUSTOMERS_PRODUCTS_TEXT).'</a>';
+     $customers_email = '&nbsp;<a href="' . tep_href_link(FILENAME_MAIL, 'selected_box=tools&customer=' .  $cInfo->customers_email_address.'&'.tep_get_all_get_params(array('page')).'&customer_page='.$_GET['page']) .  '">' .tep_html_element_button(IMAGE_EMAIL).'</a>';
+    }
+   }
+     $button[] = '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">'.$submit.($ocertify->npermission == 15 ? ($customers_del):'') .$customers_orders.$customers_products .$customers_email;
+    if(!empty($button)){
+       $buttons = array('align' => 'center', 'button' => $button);
+    }
+    $notice_box->get_form($form_str);
+    $notice_box->get_heading($heading);
+    $notice_box->get_contents($contents, $buttons);
+    $notice_box->get_eof(tep_eof_hidden());
+    echo $notice_box->show_notice(); 
 }else if ($_GET['action'] == 'edit_memo') {
 /* -----------------------------------------------------
     功能: 显示编辑memo弹出框

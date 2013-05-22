@@ -3434,7 +3434,9 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
               if(count($orders_explode_all_array) > 1){
 
                 if(strlen(trim($orders_explode_array[1])) == 0){ 
-                  unset($orders_explode_all_array[0]);
+                  if(count($orders_explode_array) > 1){
+                    unset($orders_explode_all_array[0]);
+                  }
                   $orders_history_comment = implode("\n",$orders_explode_all_array); 
                 }else{ 
                   $orders_temp_str = end($orders_explode_all_array);

@@ -53,7 +53,7 @@ ini_set('include_path',ini_get('include_path').':'.$libpath);
   define('DB_SERVER', 'localhost'); // eg, localhost - should not be empty for productive servers
   define('DB_SERVER_USERNAME', 'root');
   define('DB_SERVER_PASSWORD', '123456');
-  define('DB_DATABASE', '3rmt');
+  define('DB_DATABASE', 'hm1002_osc_3rmt');
   
   define('USE_PCONNECT', 'false'); // use persisstent connections?
   define('STORE_SESSIONS', ''); // leave empty '' for default handler or set to 'mysql'
