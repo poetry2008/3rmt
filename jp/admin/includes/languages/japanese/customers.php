@@ -53,3 +53,6 @@ define('TEXT_ONCE_AGAIN_PASSWORD','パスワード再入力');
 define('TEXT_ERROR_INFO','<font color=\'red\'>パスワードと再入力が違います</font>');
 define('TEXT_DATA_EMPTY','<font color=\'red\'><b>データがありません。</b></font>');
 define('TEXT_ERROR_EMAIL','<font color=\'red\'>メールアドレスはすでに存在しています!</font>');
+define('TEXT_EMAIL_ADDRESS','<font color=\'red\'>入力されたメールアドレスは不正です!</font>');
+define('TEXT_NAME_ERROR','<font color=\'red\'>日本語で入力して下さい。</font>');
+define('TEXT_ERROR_NULL','<font color=\'red\'>入力して下さい。</font>');

@@ -5,7 +5,6 @@
 
   require('includes/application_top.php');
   require(DIR_FS_ADMIN . 'classes/notice_box.php');
-  require('includes/step-by-step/new_application_top.php');
   if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
      $sql_site_where = 'site_id in ('.str_replace('-', ',', $_GET['site_id']).')';
      $show_list_array = explode('-',$_GET['site_id']);
@@ -233,7 +232,7 @@
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php require('includes/javascript/show_site.js.php');?>
-<script>
+<script type="text/javascript">
 function check_password(){
  post_email = $("#customers_email_address").val();
  post_site =  $("#customers_site_id").val();
@@ -249,21 +248,105 @@ function check_password(){
  dataType: 'text',
  async : false,
  success: function(data){
-   if(data == 1){
+   data_info = data.split(",");
+   if(data_info[1] == 1){
      email_error = 'true';
    }else{
      email_error = 'false';
    }
-  }
+   if(data_info[0] == 1){
+     check_email = 'true';
+   }else{
+     check_email = 'false';
+   }
+   }
  });
  }else{
-     email_error = 'false';
+ var email_error = 'false';
+ var check_email = 'false';
  }
-  if(email_error == 'true'){
-    $("#error_email").html("<?php echo TEXT_ERROR_EMAIL;?>");
-  }else if(check_is_active == 1 && (password != once_again_password || password == '')){
-       $("#error_info").html("<?php echo TEXT_ERROR_INFO;?>"); 
+ customers_firstname_f = $("#customers_firstname_f").val();
+ customers_lastname_f = $("#customers_lastname_f").val();
+ customers_firstname = $("#customers_firstname").val();
+ customers_lastname = $("#customers_lastname").val();
+ $.ajax({
+ url: 'ajax.php?action=check_name',
+ data: {customers_firstname_f:customers_firstname_f,customers_lastname_f:customers_lastname_f} ,
+ type: 'POST',
+ dataType: 'text',
+ async : false,
+ success: function(data){
+  data_info = data.split(",");
+  if(data_info[0] == 1){
+    check_customers_firstname_f = 'true';
   }else{
+    check_customers_firstname_f = 'false'; 
+  }
+  if(data_info[1] == 1){
+   check_customers_lastname_f = 'true'; 
+  }else{
+   check_customers_lastname_f = 'false'; 
+  }
+  }
+ });
+ var check_error = '';
+ if(password == '' && once_again_password == ''){
+   $("#error_info_o").html("<?php echo TEXT_ERROR_NULL;?>"); 
+   $("#error_info_f").html("<?php echo TEXT_ERROR_NULL;?>"); 
+   check_error = 'true';
+ }else{
+   $("#error_info_o").html(""); 
+   $("#error_info_f").html(""); 
+ }
+ if(customers_firstname == ''){
+    $("#customers_firstname_error").html("<?php echo TEXT_ERROR_NULL;?>");   
+    check_error = 'true';
+ }else{
+    $("#customers_firstname_error").html("");   
+ }
+ if(customers_lastname == ''){
+    $("#customers_lastname_error").html("<?php echo TEXT_ERROR_NULL;?>");
+    check_error = 'true';
+ }else{
+    $("#customers_lastname_error").html("");
+ }
+ if(check_customers_firstname_f == 'true'){
+    $("#customers_firstname_f_error").html("<?php echo TEXT_NAME_ERROR;?>"); 
+    check_error = 'true';
+ }else{
+    $("#customers_firstname_f_error").html(""); 
+ }
+ if(check_customers_lastname_f == 'true'){
+    $("#customers_lastname_f_error").html("<?php echo TEXT_NAME_ERROR;?>"); 
+    check_error = 'true';
+ }else{
+    $("#customers_lastname_f_error").html(""); 
+ }
+ if(check_email == 'true' && post_email != ''){
+    $("#check_email").html("<?php echo TEXT_EMAIL_ADDRESS;?>");
+    check_error = 'true';
+ }else{
+    $("#check_email").html("");
+ }
+ if(email_error == 'true' && post_email != ''){
+    $("#error_email").html("<?php echo TEXT_ERROR_EMAIL;?>");
+    check_error = 'true';
+  }else{
+    $("#error_email").html("");
+  }
+ if(post_email == ''){
+   $("#error_email").html("<?php echo TEXT_ERROR_NULL;?>");    
+   check_error = 'true';
+ }else{
+   $("#error_email").html("");    
+ }
+ if(check_is_active == 1 && password != once_again_password){
+    $("#error_info_o").html("<?php echo TEXT_ERROR_INFO;?>"); 
+    check_error = 'true';
+  }else{
+    $("#error_info").html(""); 
+  }
+  if(check_error != 'true'){
        document.forms.customers.submit();  
   }
 }
@@ -636,7 +719,7 @@ require("includes/note_js.php");
 ?>
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
-          <tr><?php echo tep_draw_form('search', FILENAME_CUSTOMERS, tep_get_all_get_params(), 'get'); ?>
+          <tr><?php echo tep_draw_form('search', FILENAME_CUSTOMERS,isset($_GET['search'])?$_GET['search']:'', 'get'); ?>
             <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
             <td class="smallText" align="right"><?php echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search'); ?>
@@ -668,6 +751,7 @@ require("includes/note_js.php");
     $search = '';
     if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'])) ) {
       $keywords = tep_db_input(tep_db_prepare_input($_GET['search']));
+      $keywords = str_replace(" ","",$keywords);
       $search = "and (c.customers_lastname like '%" . $keywords . "%' or c.customers_firstname like '%" . $keywords . "%' or c.customers_email_address like '%" . $keywords . "%' or c.customers_firstname_f like '%" . $keywords . "%'  or c.customers_lastname_f like '%" . $keywords . "%')";
     }
     $customers_query_raw = "

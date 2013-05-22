@@ -520,7 +520,7 @@ unset($_SESSION['referer']);
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
     # Guest & 第一次 //==================================================
       //ccdd
-      tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created) values ('" . tep_db_input($customer_id) . "', '0', now())");
+      tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created,customers_info_date_account_last_modified,user_update,user_added) values ('" . tep_db_input($customer_id) . "', '0', now(),now(),'".$firstname.$lastname."','".$firstname.$lastname."')");
       }
   } else {
     # Member
@@ -650,7 +650,7 @@ unset($_SESSION['referer']);
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
     # Member & 第一次 //==================================================
       //ccdd
-      tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created) values ('" . tep_db_input($customer_id) . "', '0', now())");
+      tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created,customers_info_date_account_last_modified,user_update,user_added) values ('" . tep_db_input($customer_id) . "', '0', now(),now(),'".$firstname.$lastname."','".$firstname.$lastname."')");
     }
   }
 
