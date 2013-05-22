@@ -31,6 +31,24 @@ define('DATE_TIME_FORMAT_TORIHIKI', '%Y/%m/%d %H:%M');
 // Return date in raw format
 // $date should be in format mm/dd/yyyy
 // raw date is in format YYYYMMDD, or DDMMYYYY
+/*---------------------------------
+ 功能: 加密密码
+ 参数：$plain(string) 简单的密码值
+ 返回值：返回MD5加密完之后的密码(string)
+ --------------------------------*/
+function tep_encrypt_password($plain) {
+  $password = '';
+
+  for ($i=0; $i<10; $i++) {
+    $password .= tep_rand();
+  }
+
+  $salt = substr(md5($password), 0, 2);
+
+  $password = md5($salt . $plain) . ':' . $salt;
+
+  return $password;
+}
 function tep_date_raw($date, $reverse = false) {
   if ($reverse) {
     return substr($date, 8, 2) . substr($date, 5, 2) . substr($date, 0, 4);

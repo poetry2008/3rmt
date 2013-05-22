@@ -53,3 +53,6 @@ define('TEXT_ONCE_AGAIN_PASSWORD','再次输入密码');
 define('TEXT_ERROR_INFO','<font color=\'red\'>再次输入密码错误</font>');
 define('TEXT_DATA_EMPTY','<font color=\'red\'><b>数据为空。</b></font>');
 define('TEXT_ERROR_EMAIL','<font color=\'red\'>该邮箱地址已经存在！</font>');
+define('TEXT_EMAIL_ADDRESS','<font color=\'red\'>输入的邮箱地址不正确！</font>');
+define('TEXT_NAME_ERROR','<font color=\'red\'>请输入日语。</font>');
+define('TEXT_ERROR_NULL','<font color=\'red\'>请输入。</font>');

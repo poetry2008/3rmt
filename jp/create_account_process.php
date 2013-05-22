@@ -478,7 +478,8 @@ unset($_SESSION['referer']);
                                 'send_mail_time' => time(),
                                 'referer' => $referer,
                                 'site_id' => SITE_ID,
-                                'point' => '0');
+                                'point' => '0',
+                                '');
 
         if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;
         if (ACCOUNT_DOB == 'true') $sql_data_array['customers_dob'] = tep_date_raw($dob);
@@ -514,7 +515,7 @@ unset($_SESSION['referer']);
         }
 
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
-        tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created) values ('" . tep_db_input($customer_id) . "', '0', now())");
+        tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created,customers_info_date_account_last_modified,user_update,user_added) values ('" . tep_db_input($customer_id) . "', '0', now(),now(),'".$firstname.$lastname."','".$firstname.$lastname."')");
       }
   } else {
       $active_single = 1; 
@@ -635,7 +636,7 @@ unset($_SESSION['referer']);
         // ccdd
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
       //ccdd
-      tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created) values ('" . tep_db_input($customer_id) . "', '0', now())");
+      tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created,customers_info_date_account_last_modified,user_update,user_added) values ('" . tep_db_input($customer_id) . "', '0', now(),now(),'".$firstname.$lastname."','".$firstname.$lastname."')");
     }
   }
 
