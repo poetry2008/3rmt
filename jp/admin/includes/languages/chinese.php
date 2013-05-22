@@ -487,7 +487,7 @@ define('FILENAME_KEYWORDS_TEXT','关键字排名');
 //tools language 
 define('FILENAME_BANK_CL_TEXT','日历设置');
 define('FILENAME_PW_MANAGER_TEXT','ID管理');
-define('FILENAME_COMPUTERS_TEXT','按钮设置');
+define('FILENAME_BUTTONS_TEXT','按钮设置');
 define('FILENAME_MAG_UP_TEXT','电子杂志订阅者统一上传');
 define('FILENAME_MAG_DL_TEXT','电子杂志订阅者数据下载');
 define('BUTTON_MAG_UP','上传');
