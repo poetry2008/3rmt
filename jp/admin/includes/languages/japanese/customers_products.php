@@ -27,4 +27,5 @@ define('TEXT_CUSTOMERS_PRODUCTS_SUB_TOTAL','小計');
 define('TEXT_CUSTOMERS_PRODUCTS_MAIL_STR','御中');
 define('TEXT_CUSTOMERS_PRODUCTS_TAX','税込');
 define('TEXT_PRINT', 'プリント');
+define('TEXT_DATA_EMPTY','<font color=\'red\'><b>データがありません。</b></font>');
 ?>

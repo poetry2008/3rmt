@@ -4490,7 +4490,9 @@ if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'
       a.address_book_id, ".TABLE_CUSTOMERS_INFO." ci where c.customers_id = ci.customers_info_id and " .$sql_site_where. " " . $search . " 
       order by c.customers_id DESC
     ";
-   $customers_query_cid = tep_db_query($customers_query_raw);
+    $customers_split = new splitPageResults($_POST['page'], MAX_DISPLAY_SEARCH_RESULTS, $customers_query_raw, $customers_query_numrows); 
+  
+    $customers_query_cid = tep_db_query($customers_query_raw);
     $cid_array = array();
     while ($customers_cid = tep_db_fetch_array($customers_query_cid)) {
         $cid_array[] = $customers_cid['customers_id'];
@@ -4531,6 +4533,7 @@ if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'
 	       c.is_quited,
 	       c.quited_date,
 	       c.pic_icon,
+	       c.is_active,
 	       c.is_send_mail,
 	       c.is_calc_quantity,
                s.romaji,
@@ -4656,11 +4659,14 @@ if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'
 if($_GET['cID'] != -1){
   if ($c_key > 0) {
     $page_str .= '<a onclick="show_customers(\'\','.$cid_array[$c_key-1].','.$_GET['page'].','.$action_sid.')" href="javascript:void(0)" id="option_prev">'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
- }
- 
+  } else {
+    $page_str .= '<font color="#000000">'.IMAGE_PREV.'</font>'; 
+  }
   if ($c_key < (count($cid_array) - 1)) {
    $page_str .= '<a onclick="show_customers(\'\','.$cid_array[$c_key+1].','.$_GET['page'].','.$action_sid.')" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'</a>&nbsp;&nbsp;'; 
-  } 
+  } else {
+    $page_str .= '<font color="#000000">'.IMAGE_NEXT.'</font>'; 
+  }
 }
     $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
     $heading = array();
@@ -4682,32 +4688,32 @@ if($_GET['cID'] != -1){
        );
     $contents[]['text'] = array(
          array('params' => 'nowrap="nowrap"','text' => str_replace(':','',ENTRY_FIRST_NAME)),
-         array('params' => 'colspan="2"','text' => tep_draw_input_field('customers_firstname', $cInfo->customers_firstname, 'maxlength="32" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.$disabled, false))
+         array('params' => 'colspan="2"','text' => tep_draw_input_field('customers_firstname', $cInfo->customers_firstname, 'maxlength="32" style="width:44%" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.$disabled, false))
        );
     $contents[]['text'] = array(
          array('params' => 'nowrap="nowrap"','text' => str_replace(':','',ENTRY_LAST_NAME)),
-         array('params' => 'colspan="2"','text' => tep_draw_input_field('customers_lastname', $cInfo->customers_lastname, 'maxlength="32" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.$disabled, false))
+         array('params' => 'colspan="2"','text' => tep_draw_input_field('customers_lastname', $cInfo->customers_lastname, 'maxlength="32" style="width:44%" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.$disabled, false))
        );
      $contents[]['text'] = array(
          array('params' => 'nowrap="nowrap"','text' => str_replace(':','',ENTRY_FIRST_NAME_F)),
-         array('params' => 'colspan="2"','text' => tep_draw_input_field('customers_firstname_f', $cInfo->customers_firstname_f, 'maxlength="32" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.$disabled, false))
+         array('params' => 'colspan="2"','text' => tep_draw_input_field('customers_firstname_f', $cInfo->customers_firstname_f, 'maxlength="32" style="width:44%" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.$disabled, false))
        );
      $contents[]['text'] = array(
          array('params' => 'nowrap="nowrap"','text' => str_replace(':','',ENTRY_LAST_NAME_F)),
-         array('params' => 'colspan="2"','text' => tep_draw_input_field('customers_lastname_f', $cInfo->customers_lastname_f, 'maxlength="32" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.$disabled, false))
+         array('params' => 'colspan="2"','text' => tep_draw_input_field('customers_lastname_f', $cInfo->customers_lastname_f, 'maxlength="32" style="width:44%" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.$disabled, false))
        );
       $contents[]['text'] = array(
          array('params' => 'nowrap="nowrap"','text' => str_replace(':','',ENTRY_EMAIL_ADDRESS)),
-         array('params' => 'colspan="2"','text' => tep_draw_input_field('customers_email_address', $cInfo->customers_email_address, 'id="customers_email_address" maxlength="96" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.$disabled, false).'&nbsp;&nbsp;<span id="error_email"></span><input type="hidden" id="customers_email_address_value" value="'.$cInfo->customers_email_address.'"')
+         array('params' => 'colspan="2"','text' => tep_draw_input_field('customers_email_address', $cInfo->customers_email_address, 'id="customers_email_address" style="width:44%" maxlength="96" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.$disabled, false).'&nbsp;&nbsp;<span id="error_email"></span><input type="hidden" id="customers_email_address_value" value="'.$cInfo->customers_email_address.'"')
        );
       if($_GET['cID'] == -1){
       $contents[]['text'] = array(
          array('params' => 'nowrap="nowrap"','text' => TEXT_PASSWORD),
-         array('params' => 'colspan="2"','text' => tep_draw_password_field('password','','','id="password" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.$disabled))
+         array('params' => 'colspan="2"','text' => tep_draw_password_field('password','','','id="password" style="width:44%" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.$disabled))
        );
       $contents[]['text'] = array(
          array('params' => 'nowrap="nowrap"','text' => TEXT_ONCE_AGAIN_PASSWORD),
-         array('params' => 'colspan="2"','text' => tep_draw_password_field('once_again_password','','','id="once_again_password" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.$disabled).'&nbsp;&nbsp;<span id="error_info"></span>')
+         array('params' => 'colspan="2"','text' => tep_draw_password_field('once_again_password','','','id="once_again_password" style="width:44%" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.$disabled).'&nbsp;&nbsp;<span id="error_info"></span>')
        );
  
       }
@@ -4797,19 +4803,27 @@ if($_GET['cID'] != -1){
       if($disabled){
         $submit = '<input type="hidden" id="cid" value="'.$_GET['cID'].'">'.tep_html_element_button(IMAGE_SAVE,$disabled); 
        }else{
-        $submit = '<input type="hidden" id="cid" value="'.$_GET['cID'].'">'.tep_html_element_button(IMAGE_SAVE,'onclick="check_password()"'); 
+         if (!isset($cInfo->is_active)) {
+           $submit = '<input type="hidden" id="cid" value="'.$_GET['cID'].'">'.tep_html_element_button(IMAGE_SAVE,'onclick="check_password()"'); 
+         } else if ($cInfo->is_active != '0') {
+           $submit = '<input type="hidden" id="cid" value="'.$_GET['cID'].'">'.tep_html_element_button(IMAGE_SAVE,'onclick="check_password()"'); 
+         }
        }
    if($_GET['cID'] != -1){
     if($disabled){
      $customers_del = tep_html_element_button(IMAGE_DELETE,$disabled);
-     $customers_orders = tep_html_element_button(IMAGE_ORDERS,$disabled);
-     $customers_products = tep_html_element_button(BUTTON_CUSTOMERS_PRODUCTS_TEXT,$disabled);
-     $customers_email = tep_html_element_button(IMAGE_EMAIL,$disabled);
+     if ($cInfo->is_active == '1') {
+       $customers_orders = tep_html_element_button(IMAGE_ORDERS,$disabled);
+       $customers_products = tep_html_element_button(BUTTON_CUSTOMERS_PRODUCTS_TEXT,$disabled);
+       $customers_email = tep_html_element_button(IMAGE_EMAIL,$disabled);
+     } 
     }else{
      $customers_del =  ' <a class = "new_product_reset" href="' .  tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' .  $cInfo->customers_id .  '&action=deleteconfirm') .  '">'.tep_html_element_button(IMAGE_DELETE).'</a>';
-     $customers_orders = ' <a href="' .  tep_href_link(FILENAME_ORDERS, 'cID=' .  $cInfo->customers_id) . '">' .  tep_html_element_button(IMAGE_ORDERS) .  '</a>';
-     $customers_products = '&nbsp;<a href="'.tep_href_link('customers_products.php', str_replace('page', 'cpage', tep_get_all_get_params(array('cID', 'action')).'cID='.$cInfo->customers_id)).'">'.tep_html_element_button(BUTTON_CUSTOMERS_PRODUCTS_TEXT).'</a>';
-     $customers_email = '&nbsp;<a href="' . tep_href_link(FILENAME_MAIL, 'selected_box=tools&customer=' .  $cInfo->customers_email_address.'&'.tep_get_all_get_params(array('page')).'&customer_page='.$_GET['page']) .  '">' .tep_html_element_button(IMAGE_EMAIL).'</a>';
+     if ($cInfo->is_active == '1') {
+       $customers_orders = ' <a href="' .  tep_href_link(FILENAME_ORDERS, 'cID=' .  $cInfo->customers_id) . '">' .  tep_html_element_button(IMAGE_ORDERS) .  '</a>';
+       $customers_products = '&nbsp;<a href="'.tep_href_link('customers_products.php', str_replace('page', 'cpage', tep_get_all_get_params(array('cID', 'action')).'cID='.$cInfo->customers_id)).'">'.tep_html_element_button(BUTTON_CUSTOMERS_PRODUCTS_TEXT).'</a>';
+       $customers_email = '&nbsp;<a href="' . tep_href_link(FILENAME_MAIL, 'selected_box=tools&customer=' .  $cInfo->customers_email_address.'&'.tep_get_all_get_params(array('page')).'&customer_page='.$_GET['page']) .  '">' .tep_html_element_button(IMAGE_EMAIL).'</a>';
+     }
     }
    }
      $button[] = '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">'.$submit.($ocertify->npermission == 15 ? ($customers_del):'') .$customers_orders.$customers_products .$customers_email;

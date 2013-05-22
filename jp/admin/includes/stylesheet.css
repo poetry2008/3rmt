@@ -708,6 +708,9 @@ a.headerLink{
 	font-weight: bold;
 	background: #e42e2e;
 }
+#tep_site_filter .site_filter_unselected {
+	color: #9F9F9F;
+}
 #tep_site_filter .site_filter_selected a {
 	color: #fff;
 }
