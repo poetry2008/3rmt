@@ -4806,7 +4806,9 @@ if($_GET['cID'] != -1){
            array('align' => 'left', 'params' => 'colspan="2"', 'text' => TEXT_DATE_UPDATE.((tep_not_null($customers_info_row['customers_info_date_account_last_modified']))?$customers_info_row['customers_info_date_account_last_modified']:TEXT_UNSET_DATA))
         );
       if($disabled){
-        $submit = '<input type="hidden" id="cid" value="'.$_GET['cID'].'">'.tep_html_element_button(IMAGE_SAVE,$disabled); 
+        if ($cInfo->is_active != '0') {
+          $submit = '<input type="hidden" id="cid" value="'.$_GET['cID'].'">'.tep_html_element_button(IMAGE_SAVE,$disabled); 
+        }
        }else{
          if (!isset($cInfo->is_active)) {
            $submit = '<input type="hidden" id="cid" value="'.$_GET['cID'].'">'.tep_html_element_button(IMAGE_SAVE,'onclick="check_password()"'); 
