@@ -949,13 +949,13 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
         </td>
       </tr>
       <?php 
-        $computers = tep_get_computers();
-        $o2c       = tep_get_computers_by_preorders_id($order->info['orders_id']);
-        if ($computers) {
+        $buttons = tep_get_buttons();
+        $o2c       = tep_get_buttons_by_preorders_id($order->info['orders_id']);
+        if ($buttons) {
       ?> 
       <tr><td>
-      <?php foreach ($computers as $computer) { ?>
-          <div id="orders_alert_<?php echo $computer['computers_id'];?>" onclick="preorders_computers(this, <?php echo $computer['computers_id'];?>, '<?php echo $order->info['orders_id'];?>')" class="<?php echo in_array($computer['computers_id'], $o2c) ? 'orders_computer_checked' : 'orders_computer_unchecked' ;?>"><?php echo $computer['computers_name'];?></div>
+      <?php foreach ($buttons as $button) { ?>
+          <div id="orders_alert_<?php echo $button['buttons_id'];?>" onclick="preorders_buttons(this, <?php echo $button['buttons_id'];?>, '<?php echo $order->info['orders_id'];?>')" class="<?php echo in_array($button['buttons_id'], $o2c) ? 'orders_buttons_checked' : 'orders_buttons_unchecked' ;?>"><?php echo $button['buttons_name'];?></div>
       <?php 
         } 
       ?>
