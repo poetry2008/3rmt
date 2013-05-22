@@ -189,6 +189,7 @@ if ($pdo_con) {
   define('TABLE_PREORDERS_TEMP', 'preorders_temp');
   define('TABLE_PREORDERS_TOTAL', 'preorders_total');
   define('TABLE_PREORDERS_TO_BUTTONS', 'preorders_to_buttons');
+  define('TABLE_ORDERS_TO_BUTTONS', 'orders_to_buttons'); 
   define('TABLE_FAQ_CATEGORIES', 'faq_categories');
   define('TABLE_FAQ_QUESTION',  'faq_question');
   define('TABLE_FAQ_CATEGORIES_DESCRIPTION', 'faq_categories_description');

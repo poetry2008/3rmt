@@ -5116,6 +5116,7 @@ if($_GET['cID'] != -1){
   //读取buttons的相应数据
   $buttons_id = $_POST['buttons_id'];
   $param_str = $_POST['param_str'];
+  $show = $_POST['show'];
   $buttons_query = tep_db_query("select * from ". TABLE_BUTTONS ." where buttons_id='".$buttons_id."'"); 
   $buttons_array = tep_db_fetch_array($buttons_query);
   tep_db_free_result($buttons_query);
@@ -5154,32 +5155,33 @@ if($_GET['cID'] != -1){
   $buttons_id_prev = $buttons_id_page_array[$buttons_id_num - 1];
   $buttons_id_next = $buttons_id_page_array[$buttons_id_num + 1];
   if ($buttons_id_num > 0) {
-    $page_str .= '<a id="buttons_prev" onclick="show_link_buttons_info(\''.$buttons_id_prev.'\',\''.$param_str.'\')" href="javascript:void(0);" ><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+    $page_str .= '<a id="buttons_prev" onclick="show_link_buttons_info(\''.$buttons_id_prev.'\',\''.$param_str.'\',\''.$show.'\')" href="javascript:void(0);" >'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
   }
  
   if ($buttons_id_num < (count($buttons_id_page_array) - 1)) {
-    $page_str .= '<a id="buttons_next" onclick="show_link_buttons_info(\''.$buttons_id_next.'\',\''.$param_str.'\')" href="javascript:void(0);">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
+    $page_str .= '<a id="buttons_next" onclick="show_link_buttons_info(\''.$buttons_id_next.'\',\''.$param_str.'\',\''.$show.'\')" href="javascript:void(0);">'.IMAGE_NEXT.'</a>&nbsp;&nbsp;'; 
   }else{
     $page_str .= '<font color="#000000">'.IMAGE_NEXT.'></font>&nbsp;&nbsp;';
   }
 
   $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => $buttons_array['buttons_name']);
+  $heading[] = array('align' => 'left', 'text' => mb_strlen($buttons_array['buttons_name']) > 30 ? mb_substr($buttons_array['buttons_name'],0,30,'utf-8').'...' : $buttons_array['buttons_name']);
   $heading[] = array('align' => 'right', 'text' => $page_str);
 
   //主体内容
   $category_info_row = array();
    
   //编辑buttons项目   
+  $disabled = $show == '0' ? ' disabled="disabled"' : '';
   $category_info_row[]['text'] = array(
        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TABLE_HEADING_BUTTONS_NAME.'<input type="hidden" name="buttons_id" value="'.$buttons_array['buttons_id'].'"><input type="hidden" name="param_str" value="'.$param_str.'">'), 
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<input type="text" value="'.$buttons_array['buttons_name'].'" name="buttons_name" class="option_input"><span id="buttons_name_error">'.TEXT_FIELD_REQUIRED.'</span>')
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<input type="text" value="'.$buttons_array['buttons_name'].'" name="buttons_name" class="option_input"'.$disabled.'><span id="buttons_name_error">'.TEXT_FIELD_REQUIRED.'</span>')
      );
  
   $category_info_row[]['text'] = array(
        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TABLE_HEADING_BUTTONS_ORDER), 
-       array('align' => 'left', 'params' => 'colspan="2"', 'text' => '<input type="text" style="text-align:right;width:20%;" size="31" value="'.$buttons_array['sort_order'].'" name="sort_order">')
+       array('align' => 'left', 'params' => 'colspan="2"', 'text' => '<input type="text" style="text-align:right;width:20%;" size="31" value="'.$buttons_array['sort_order'].'" name="sort_order"'.$disabled.'>')
      );
 
   //作成者，作成时间，更新者，更新时间 
@@ -5196,9 +5198,11 @@ if($_GET['cID'] != -1){
   //底部内容
   $buttons = array();
 
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_NEW_PROJECT, 'onclick="create_buttons_info(this);"').'</a>';
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="edit_buttons_check(\'save\');"').'</a>'; 
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if(confirm(\''.TEXT_INFO_DELETE_INTRO.'\')){delete_buttons();}"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_NEW_PROJECT, $disabled.'onclick="create_buttons_info(this);"').'</a>';
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, $disabled.'id="button_save" onclick="edit_buttons_check(\'save\');"').'</a>'; 
+  if($ocertify->npermission == 15){
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, $disabled.'onclick="if(confirm(\''.TEXT_INFO_DELETE_INTRO.'\')){delete_buttons();}"').'</a>'; 
+  }
 
   if (!empty($button)) {
     $buttons = array('align' => 'center', 'button' => $button); 
