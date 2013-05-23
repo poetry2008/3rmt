@@ -2752,7 +2752,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         </tr>
         <tr>
         <td class="main" valign="top"><?php echo ENTRY_CUSTOMER; ?></td>
-        <td class="main" style="text-decoration: underline; "><a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, 'search='.str_replace(" ","",$order->customer['name']));?>"><?php echo $order->customer['name']; ?></a></td>
+        <td class="main" style="text-decoration: underline; "><a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, 'search='.$order->customer['id']);?>"><?php echo $order->customer['name']; ?></a></td>
         </tr>
         <tr>
         <td class="main"><?php echo ENTRY_EMAIL_ADDRESS; ?></td>
@@ -5313,7 +5313,7 @@ if($c_parent_array['parent_id'] == 0){
                 <?php } else { ?>
                   <font color="#000">
                     <?php } ?>
-                    <a style="text-decoration:underline;" href="<?php echo tep_href_link('customers.php', 'page=1&cID=' .  tep_output_string_protected($orders['customers_id']) .  '&action=edit');?>"><?php echo tep_output_string_protected($orders['customers_name']);?></a>
+                    <a style="text-decoration:underline;" href="<?php echo tep_href_link('customers.php', 'search=' .  tep_output_string_protected($orders['customers_id']));?>"><?php echo tep_output_string_protected($orders['customers_name']);?></a>
                     <input type="hidden" id="cid_<?php echo $orders['orders_id'];?>" name="cid[]" value="<?php echo $orders['customers_id'];?>" />
                     </font>
                     <?php 
