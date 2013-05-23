@@ -50,10 +50,16 @@
         $customers_password      = tep_encrypt_password(tep_db_prepare_input($_POST['password']));
         $origin_password         = tep_encrypt_password(tep_db_prepare_input($_POST['password']));
         $customers_guest_chk     = tep_db_prepare_input($_POST['guest_radio']);
+        if ($_POST['reset_flag'] == 'on') {
+	$reset_flag = 1;
+        $reset_success = 0;
+        }else {
+	$reset_flag = 0;
+        }
         $customers_sql = "insert into ".TABLE_CUSTOMERS."
-          (customers_id,customers_firstname,customers_lastname,customers_firstname_f,customers_lastname_f,customers_email_address,customers_telephone,customers_fax,customers_newsletter,customers_gender,customers_dob,is_seal,pic_icon,is_send_mail,send_mail_time,reset_flag,reset_success,site_id,customers_password,origin_password,customers_guest_chk,is_active)
+          (customers_id,customers_firstname,customers_lastname,customers_firstname_f,customers_lastname_f,customers_email_address,customers_telephone,customers_fax,customers_newsletter,customers_gender,customers_dob,is_seal,pic_icon,is_send_mail,send_mail_time,reset_flag,reset_success,site_id,customers_password,origin_password,customers_guest_chk,is_active,is_calc_quantity)
           values
-          (null,'".$customers_firstname."','".$customers_lastname."','".$customers_firstname_f."','".$customers_lastname_f."','".$customers_email_address."','".$customers_telephone."','".$customers_fax."','".$customers_newsletter."','".$customers_gender."','".$customers_dob."','".$customers_is_seal."','".$customers_pic_icon."','".$customers_is_send_mail."','".time()."','1','1','".$_POST['site_id']."','".$customers_password."','".$origin_password."','".$customers_guest_chk."','1')";
+          (null,'".$customers_firstname."','".$customers_lastname."','".$customers_firstname_f."','".$customers_lastname_f."','".$customers_email_address."','".$customers_telephone."','".$customers_fax."','".$customers_newsletter."','".$customers_gender."','".$customers_dob."','".$customers_is_seal."','".$customers_pic_icon."','".$customers_is_send_mail."','".time()."','".$reset_flag."','".$reset_success."','".$_POST['site_id']."','".$customers_password."','".$origin_password."','".$customers_guest_chk."','1','".$customers_is_calc_quantity."')";
         tep_db_query($customers_sql);
         $customer_id = tep_db_insert_id();
         $ac_email_srandom = md5(time().$customer_id.$customers_email_address);
@@ -859,7 +865,9 @@ require("includes/note_js.php");
        $customers_info[] = array(
            'params' => 'class="dataTableContent" align="right"',
            'text'   => '<a href="javascript:void(0)"
-           onclick="show_customers(this,'.$customers['customers_id'].','.$_GET['page'].','.(isset($customers['site_id'])?$customers['site_id']:'-1').')">' . tep_get_signal_pic_info($customers['date_account_last_modified']) . '</a>'
+            onclick="show_customers(this,'.$customers['customers_id'].','.$_GET['page'].','.(isset($customers['site_id'])?$customers['site_id']:'-1').')">'
+            .
+            tep_get_signal_pic_info(isset($customers['date_account_last_modified']) && $customers['date_account_last_modified'] != null?$customers['date_account_last_modified']:$customers['date_account_created']) . '</a>'
           );
        $customers_table_row[] = array('params' => $customers_params, 'text' => $customers_info);
     }
