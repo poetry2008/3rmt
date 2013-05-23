@@ -266,30 +266,9 @@ function check_password(){
  var email_error = 'false';
  var check_email = 'false';
  }
- customers_firstname_f = $("#customers_firstname_f").val();
- customers_lastname_f = $("#customers_lastname_f").val();
  customers_firstname = $("#customers_firstname").val();
  customers_lastname = $("#customers_lastname").val();
- $.ajax({
- url: 'ajax.php?action=check_name',
- data: {customers_firstname_f:customers_firstname_f,customers_lastname_f:customers_lastname_f} ,
- type: 'POST',
- dataType: 'text',
- async : false,
- success: function(data){
-  data_info = data.split(",");
-  if(data_info[0] == 1){
-    check_customers_firstname_f = 'true';
-  }else{
-    check_customers_firstname_f = 'false'; 
-  }
-  if(data_info[1] == 1){
-   check_customers_lastname_f = 'true'; 
-  }else{
-   check_customers_lastname_f = 'false'; 
-  }
-  }
- });
+ 
  var check_error = '';
  if(password == '' && once_again_password == ''){
    $("#error_info_o").html("<?php echo TEXT_ERROR_NULL;?>"); 
@@ -311,35 +290,23 @@ function check_password(){
  }else{
     $("#customers_lastname_error").html("");
  }
- if(check_customers_firstname_f == 'true'){
-    $("#customers_firstname_f_error").html("<?php echo TEXT_NAME_ERROR;?>"); 
-    check_error = 'true';
- }else{
-    $("#customers_firstname_f_error").html(""); 
- }
- if(check_customers_lastname_f == 'true'){
-    $("#customers_lastname_f_error").html("<?php echo TEXT_NAME_ERROR;?>"); 
-    check_error = 'true';
- }else{
-    $("#customers_lastname_f_error").html(""); 
- }
- if(check_email == 'true' && post_email != ''){
-    $("#check_email").html("<?php echo TEXT_EMAIL_ADDRESS;?>");
-    check_error = 'true';
- }else{
-    $("#check_email").html("");
- }
  if(email_error == 'true' && post_email != ''){
     $("#error_email").html("<?php echo TEXT_ERROR_EMAIL;?>");
     check_error = 'true';
   }else{
     $("#error_email").html("");
   }
+ if(check_email == 'true' && post_email != ''){
+    $("#check_email").html("<?php echo TEXT_EMAIL_ADDRESS;?>");
+    check_error = 'true';
+ }else{
+    $("#check_email").html("");
+ }
  if(post_email == ''){
-   $("#error_email").html("<?php echo TEXT_ERROR_NULL;?>");    
+   $("#error_email_info").html("<?php echo TEXT_ERROR_NULL;?>");    
    check_error = 'true';
  }else{
-   $("#error_email").html("");    
+   $("#error_email_info").html("");    
  }
  if(check_is_active == 1 && password != once_again_password){
     $("#error_info_o").html("<?php echo TEXT_ERROR_INFO;?>"); 
