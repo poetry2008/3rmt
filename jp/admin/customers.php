@@ -6,6 +6,8 @@
   require('includes/application_top.php');
   require(DIR_FS_ADMIN . 'classes/notice_box.php');
   require('includes/step-by-step/new_application_top.php');
+  //删除超时的未认证顾客
+  tep_customers_not_certified_timeout();
   if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
      $sql_site_where = 'site_id in ('.str_replace('-', ',', $_GET['site_id']).')';
      $show_list_array = explode('-',$_GET['site_id']);
@@ -29,6 +31,7 @@
  case 'deleteconfirm' 确认删除客户信息 
  ---------------------------*/
       case 'insert':
+        tep_isset_eof(); 
         $customers_firstname     = tep_db_prepare_input($_POST['customers_firstname']);
         $customers_lastname      = tep_db_prepare_input($_POST['customers_lastname']);
         $customers_firstname_f   = tep_db_prepare_input($_POST['customers_firstname_f']);
@@ -79,6 +82,7 @@
         tep_redirect(tep_href_link(FILENAME_CUSTOMERS,'site_id='.$_POST['site_id']));
         break;
       case 'update':
+        tep_isset_eof(); 
         $an_cols = array('customers_email_address','customers_telephone','customers_fax','customers_dob','entry_postcode');
         foreach ($an_cols as $col) {
           $_POST[$col] = tep_an_zen_to_han($_POST[$col]);
@@ -179,7 +183,10 @@
     tep_redirect(tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action'))));
         break;
       case 'deleteconfirm':
-        if(!empty($_POST['customers_id'])){
+       if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+         tep_isset_eof(); 
+       }
+       if(!empty($_POST['customers_id'])){
           foreach($_POST['customers_id'] as $ge_key => $ge_value){
        if ($_POST['delete_reviews'] == 'on') {
           $reviews_query = tep_db_query("select reviews_id from " . TABLE_REVIEWS .  " where customers_id = '" . $ge_value . "'");
@@ -232,6 +239,7 @@
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
+<script language="javascript" src="includes/javascript/all_page.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php require('includes/javascript/show_site.js.php');?>
 <script type="text/javascript">
@@ -349,11 +357,13 @@ function all_select_customers(customers_str){
                  }
                 } else {
             for (i = 0; i < document.del_customers.elements[customers_str].length; i++){
-                       if (check_flag == true) {
-                           document.del_customers.elements[customers_str][i].checked = true;
-                           } else {
-                           document.del_customers.elements[customers_str][i].checked = false;
-                           }
+                       if (!document.del_customers.elements[customers_str][i].disabled) { 
+                         if (check_flag == true) {
+                             document.del_customers.elements[customers_str][i].checked = true;
+                         } else {
+                             document.del_customers.elements[customers_str][i].checked = false;
+                         }
+                       }
                        }
                    }
              }
@@ -680,7 +690,17 @@ if($belong_temp_array[0][0] != ''){
 require("includes/note_js.php");
 ?>
 </head>
+<?php //if (isset($_GET['eof']) && $_GET['eof'] == 'error') { ?>
+<?php if (isset($_GET['eof']) && $_GET['eof'] == 'error') { ?>
+<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onload="show_error_message()">
+<div id="popup_info">
+<div class="popup_img"><img onclick="close_error_message()" src="images/close_error_message.gif" alt="close"></div>
+<span><?php echo TEXT_EOF_ERROR_MSG;?></span>
+</div>
+<div id="popup_box"></div>
+<? } else {?>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onLoad="SetFocus();">
+<?php }?>
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
   <script language='javascript'>
     one_time_pwd('<?php echo $page_name;?>');
