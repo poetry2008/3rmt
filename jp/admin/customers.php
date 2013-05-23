@@ -872,7 +872,7 @@ require("includes/note_js.php");
 
 ?>
               <tr>
-                <td colspan="6"><table border="0" width="100%" cellspacing="0" cellpadding="0" class="table_list_box">
+                <td colspan="6"><table border="0" width="100%" cellspacing="3" cellpadding="0" class="table_list_box">
                   <tr>
                     <td>
                      <?php 
