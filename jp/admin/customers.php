@@ -46,10 +46,11 @@
         $customers_is_calc_quantity          = tep_db_prepare_input($_POST['is_calc_quantity']);
         $customers_password      = tep_encrypt_password(tep_db_prepare_input($_POST['password']));
         $origin_password         = tep_encrypt_password(tep_db_prepare_input($_POST['password']));
+        $customers_guest_chk     = tep_encrypt_password(tep_db_prepare_input($_POST['tomers_guest_chk']));
         $customers_sql = "insert into ".TABLE_CUSTOMERS."
-          (customers_id,customers_firstname,customers_lastname,customers_firstname_f,customers_lastname_f,customers_email_address,customers_telephone,customers_fax,customers_newsletter,customers_gender,customers_dob,is_seal,pic_icon,is_send_mail,send_mail_time,reset_flag,reset_success,site_id,customers_password,origin_password)
+          (customers_id,customers_firstname,customers_lastname,customers_firstname_f,customers_lastname_f,customers_email_address,customers_telephone,customers_fax,customers_newsletter,customers_gender,customers_dob,is_seal,pic_icon,is_send_mail,send_mail_time,reset_flag,reset_success,site_id,customers_password,origin_password,customers_guest_chk)
           values
-          (null,'".$customers_firstname."','".$customers_lastname."','".$customers_firstname_f."','".$customers_lastname_f."','".$customers_email_address."','".$customers_telephone."','".$customers_fax."','".$customers_newsletter."','".$customers_gender."','".$customers_dob."','".$customers_is_seal."','".$customers_pic_icon."','".$customers_is_send_mail."','".time()."','1','1','".$_POST['site_id']."','".$customers_password."','".$origin_password."')";
+          (null,'".$customers_firstname."','".$customers_lastname."','".$customers_firstname_f."','".$customers_lastname_f."','".$customers_email_address."','".$customers_telephone."','".$customers_fax."','".$customers_newsletter."','".$customers_gender."','".$customers_dob."','".$customers_is_seal."','".$customers_pic_icon."','".$customers_is_send_mail."','".time()."','1','1','".$_POST['site_id']."','".$customers_password."','".$origin_password."','".$customers_guest_chk."')";
         tep_db_query($customers_sql);
         $customer_id = tep_db_insert_id();
         $ac_email_srandom = md5(time().$customer_id.$customers_email_address);
@@ -234,6 +235,23 @@
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php require('includes/javascript/show_site.js.php');?>
 <script type="text/javascript">
+function check_guest(guest_value){
+  if(guest_value == 1){
+    $("#password_hide").hide(); 
+    $("#reset_flag_hide").hide();
+    $("#point_hide").hide();
+  }else{
+    $("#password_hide").show(); 
+    $("#reset_flag_hide").show();
+    $("#point_hide").show();
+  }
+  check_is_active =  $("#check_is_active").val();
+  if(check_is_active == 1 && guest_value == 1){
+    document.getElementById("check_is_active").value = 0;
+  }else{
+    document.getElementById("check_is_active").value = 1;
+  }
+}
 function check_password(){
  post_email = $("#customers_email_address").val();
  post_site =  $("#customers_site_id").val();
@@ -270,6 +288,7 @@ function check_password(){
  customers_lastname = $("#customers_lastname").val();
  
  var check_error = '';
+if(check_is_active == 1){ 
  if(password == '' && once_again_password == ''){
    $("#error_info_o").html("<?php echo TEXT_ERROR_NULL;?>"); 
    $("#error_info_f").html("<?php echo TEXT_ERROR_NULL;?>"); 
@@ -278,6 +297,7 @@ function check_password(){
    $("#error_info_o").html(""); 
    $("#error_info_f").html(""); 
  }
+}
  if(customers_firstname == ''){
     $("#customers_firstname_error").html("<?php echo TEXT_ERROR_NULL;?>");   
     check_error = 'true';

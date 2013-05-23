@@ -56,3 +56,6 @@ define('TEXT_ERROR_EMAIL','<font color=\'red\'>该邮箱地址已经存在！</f
 define('TEXT_EMAIL_ADDRESS','<font color=\'red\'>输入的邮箱地址不正确！</font>');
 define('TEXT_NAME_ERROR','<font color=\'red\'>请输入日语。</font>');
 define('TEXT_ERROR_NULL','<font color=\'red\'>请输入。</font>');
+define('TEXT_GUEST_CHK','会员类型');
+define('TEXT_MEMBER','会员');
+define('TEXT_NO_MEMBER','非会员');
