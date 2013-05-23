@@ -479,11 +479,10 @@ unset($_SESSION['referer']);
                                 'referer' => $referer,
                                 'site_id' => SITE_ID,
                                 'point' => '0',
-                                '');
+                                );
 
         if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;
         if (ACCOUNT_DOB == 'true') $sql_data_array['customers_dob'] = tep_date_raw($dob);
-
         // ccdd
         tep_db_perform(TABLE_CUSTOMERS, $sql_data_array);
 
