@@ -51,9 +51,9 @@
         $origin_password         = tep_encrypt_password(tep_db_prepare_input($_POST['password']));
         $customers_guest_chk     = tep_db_prepare_input($_POST['guest_radio']);
         $customers_sql = "insert into ".TABLE_CUSTOMERS."
-          (customers_id,customers_firstname,customers_lastname,customers_firstname_f,customers_lastname_f,customers_email_address,customers_telephone,customers_fax,customers_newsletter,customers_gender,customers_dob,is_seal,pic_icon,is_send_mail,send_mail_time,reset_flag,reset_success,site_id,customers_password,origin_password,customers_guest_chk)
+          (customers_id,customers_firstname,customers_lastname,customers_firstname_f,customers_lastname_f,customers_email_address,customers_telephone,customers_fax,customers_newsletter,customers_gender,customers_dob,is_seal,pic_icon,is_send_mail,send_mail_time,reset_flag,reset_success,site_id,customers_password,origin_password,customers_guest_chk,is_active)
           values
-          (null,'".$customers_firstname."','".$customers_lastname."','".$customers_firstname_f."','".$customers_lastname_f."','".$customers_email_address."','".$customers_telephone."','".$customers_fax."','".$customers_newsletter."','".$customers_gender."','".$customers_dob."','".$customers_is_seal."','".$customers_pic_icon."','".$customers_is_send_mail."','".time()."','1','1','".$_POST['site_id']."','".$customers_password."','".$origin_password."','".$customers_guest_chk."')";
+          (null,'".$customers_firstname."','".$customers_lastname."','".$customers_firstname_f."','".$customers_lastname_f."','".$customers_email_address."','".$customers_telephone."','".$customers_fax."','".$customers_newsletter."','".$customers_gender."','".$customers_dob."','".$customers_is_seal."','".$customers_pic_icon."','".$customers_is_send_mail."','".time()."','1','1','".$_POST['site_id']."','".$customers_password."','".$origin_password."','".$customers_guest_chk."','1')";
         tep_db_query($customers_sql);
         $customer_id = tep_db_insert_id();
         $ac_email_srandom = md5(time().$customer_id.$customers_email_address);
@@ -897,7 +897,7 @@ require("includes/note_js.php");
                      <td align="right" colspan="2">
                        <?php  
                        //通过site_id判断是否允许新建
-                       if(in_array($show_list_array[0],$site_array)){
+                       if(array_intersect($show_list_array,$site_array)){
                        echo '&nbsp;<a href="javascript:void(0)" onclick="show_customers(this,-1,'.$_GET['page'].','.(isset($customers['site_id'])?$customers['site_id']:'-1').')">' .tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>';
                        }else{
                        echo '&nbsp;' .tep_html_element_button(IMAGE_NEW_PROJECT,'disabled="disabled"');
