@@ -4832,7 +4832,7 @@ if($_GET['cID'] != -1){
        );
     }
        $pic_list_raw = tep_db_query("select * from ".TABLE_CUSTOMERS_PIC_LIST." order by sort_order asc"); 
-        $table_img_list = '<ul class="table_img_list">'; 
+        $table_img_list = '<ul class="table_img_list" style="width:100%">'; 
         while ($pic_list_res = tep_db_fetch_array($pic_list_raw)) {
          $table_img_list .= '<li><input type="radio" name="pic_icon" '.($disabled?$disabled:$is_active_single).' style="padding-left:0;margin-left:0;" value="'.$pic_list_res['pic_name'].'"'.(($cInfo->pic_icon == $pic_list_res['pic_name'])?' checked':'').' onclick="check_radio_status(this);"><img src="images/icon_list/'.$pic_list_res['pic_name'].'" alt="'.$pic_list_res['pic_alt'].'" title="'.$pic_list_res['pic_alt'].'"></li>'; 
          }
