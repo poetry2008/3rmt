@@ -49,7 +49,7 @@
         $customers_is_calc_quantity          = tep_db_prepare_input($_POST['is_calc_quantity']);
         $customers_password      = tep_encrypt_password(tep_db_prepare_input($_POST['password']));
         $origin_password         = tep_encrypt_password(tep_db_prepare_input($_POST['password']));
-        $customers_guest_chk     = tep_encrypt_password(tep_db_prepare_input($_POST['tomers_guest_chk']));
+        $customers_guest_chk     = tep_db_prepare_input($_POST['guest_radio']);
         $customers_sql = "insert into ".TABLE_CUSTOMERS."
           (customers_id,customers_firstname,customers_lastname,customers_firstname_f,customers_lastname_f,customers_email_address,customers_telephone,customers_fax,customers_newsletter,customers_gender,customers_dob,is_seal,pic_icon,is_send_mail,send_mail_time,reset_flag,reset_success,site_id,customers_password,origin_password,customers_guest_chk)
           values
