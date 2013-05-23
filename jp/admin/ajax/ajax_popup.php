@@ -4658,16 +4658,21 @@ if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'
      }
    }
    $site_id_name .= "</select>";
+   $site_id_name .= '&nbsp;<font color="#ff0000;">*'.TEXT_REQUIRED.'</font>'; 
  }
   $page_str = '';
 if($_GET['cID'] != -1){
   if ($c_key > 0) {
-    $page_str .= '<a onclick="show_customers(\'\','.$cid_array[$c_key-1].','.$_GET['page'].')" href="javascript:void(0)" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+    $prev_customer_query = tep_db_query("select customers_id, site_id from ".TABLE_CUSTOMERS." where customers_id = '".$cid_array[$c_key-1]."'"); 
+    $prev_customer_res = tep_db_fetch_array($prev_customer_query); 
+    $page_str .= '<a onclick="show_customers(\'\','.$cid_array[$c_key-1].','.$_GET['page'].', '.$prev_customer_res['site_id'].')" href="javascript:void(0)" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
   } else {
     $page_str .= '<font color="#000000"><'.IMAGE_PREV.'</font>'; 
   }
   if ($c_key < (count($cid_array) - 1)) {
-   $page_str .= '<a onclick="show_customers(\'\','.$cid_array[$c_key+1].','.$_GET['page'].')" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
+    $next_customer_query = tep_db_query("select customers_id, site_id from ".TABLE_CUSTOMERS." where customers_id = '".$cid_array[$c_key+1]."'"); 
+    $next_customer_res = tep_db_fetch_array($next_customer_query); 
+    $page_str .= '<a onclick="show_customers(\'\','.$cid_array[$c_key+1].','.$_GET['page'].', '.$next_customer_res['site_id'].')" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
   } else {
     $page_str .= '<font color="#000000">'.IMAGE_NEXT.'></font>'; 
   }
