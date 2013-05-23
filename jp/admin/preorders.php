@@ -3059,7 +3059,7 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
   ?>
           <a style="text-decoration:underline;" href="javascript:void(0);">
   <?php } else { ?>
-          <a style="text-decoration:underline;" href="<?php echo tep_href_link('customers.php', 'page=1&cID=' .  tep_output_string_protected($orders['customers_id']) .  '&action=edit');?>">
+          <a style="text-decoration:underline;" href="<?php echo tep_href_link('customers.php', 'search=' .  tep_output_string_protected($orders['customers_id']));?>">
   <?php }?>
           <?php 
   if ($orders['is_active'] == '0') {
