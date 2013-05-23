@@ -10429,7 +10429,7 @@ function tep_get_setting_site_info($current_page)
 function tep_customers_not_certified_timeout()
 {
   $customers_id_array = array();
-  $customers_query = tep_db_query("select customers_id from ".TABLE_CUSTOMERS." where customers_guest_chk = '0' and is_active = '0' and datediff(now(),from_unixtime(send_mail_time,'%Y-%m-%d %H:%i:%s'))>3");
+  $customers_query = tep_db_query("select customers_id from ".TABLE_CUSTOMERS." where is_active = '0' and datediff(now(),from_unixtime(send_mail_time,'%Y-%m-%d %H:%i:%s'))>3");
   while($customers_array = tep_db_fetch_array($customers_query)){
  
     $customers_id_array[] = $customers_array['customers_id'];  
