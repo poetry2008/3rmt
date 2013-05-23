@@ -4461,7 +4461,7 @@ if($_GET['site_id'] == -1){
 }
 if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'])) ) {
     $keywords = tep_db_input(tep_db_prepare_input($_GET['search']));
-    $search = "and (c.customers_lastname like '%" . $keywords . "%' or c.customers_firstname like '%" . $keywords . "%' or c.customers_email_address like '%" . $keywords . "%' or c.customers_firstname_f like '%" . $keywords . "%'  or c.customers_lastname_f like '%" . $keywords . "%')";
+    $search = "and (c.customers_lastname like '%" . $keywords . "%' or c.customers_firstname like '%" . $keywords . "%' or c.customers_email_address like '%" . $keywords . "%' or c.customers_firstname_f like '%" . $keywords .  "%'  or c.customers_lastname_f like '%" . $keywords . "%' or c.customers_id = '".trim($keywords)."')";
 }  
     if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
       $sql_site_where = 'site_id in ('.str_replace('-', ',', $_GET['site_id']).')';

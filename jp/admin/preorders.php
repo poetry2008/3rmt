@@ -1000,7 +1000,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                 </tr>
                 <tr>
                   <td class="main" valign="top"><?php echo ENTRY_CUSTOMER; ?></td>
-                  <td class="main" style="text-decoration: underline; "><a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, 'search='.str_replace(" ","",$order->customer['name']));?>"><?php echo $order->customer['name']; ?></a></td>
+                  <td class="main" style="text-decoration: underline; "><a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, 'search='.$order->customer['id']));?>"><?php echo $order->customer['name']; ?></a></td>
                 </tr>
                 <tr>
                   <td class="main"><?php echo ENTRY_EMAIL_ADDRESS; ?></td>

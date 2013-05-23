@@ -759,7 +759,7 @@ require("includes/note_js.php");
     if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'])) ) {
       $keywords = tep_db_input(tep_db_prepare_input($_GET['search']));
       $keywords = str_replace(" ","",$keywords);
-      $search = "and (c.customers_lastname like '%" . $keywords . "%' or c.customers_firstname like '%" . $keywords . "%' or c.customers_email_address like '%" . $keywords . "%' or c.customers_firstname_f like '%" . $keywords . "%'  or c.customers_lastname_f like '%" . $keywords . "%')";
+      $search = "and (c.customers_lastname like '%" . $keywords . "%' or c.customers_firstname like '%" . $keywords . "%' or c.customers_email_address like '%" . $keywords . "%' or c.customers_firstname_f like '%" . $keywords . "%'  or c.customers_lastname_f like '%" . $keywords . "%' or c.customers_id = '".trim($_GET['search'])."')";
     }
     $customers_query_raw = "
       select c.customers_id, 
