@@ -690,7 +690,6 @@ if($belong_temp_array[0][0] != ''){
 require("includes/note_js.php");
 ?>
 </head>
-<?php //if (isset($_GET['eof']) && $_GET['eof'] == 'error') { ?>
 <?php if (isset($_GET['eof']) && $_GET['eof'] == 'error') { ?>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onload="show_error_message()">
 <div id="popup_info">
