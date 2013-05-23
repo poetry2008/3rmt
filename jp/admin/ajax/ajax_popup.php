@@ -4910,7 +4910,7 @@ if($_GET['cID'] != -1){
      }
     }
    }
-     $button[] = '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">'.$submit.($ocertify->npermission == 15 ? ($customers_del):'') .$customers_orders.$customers_products .$customers_email;
+     $button[] = '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">'.$customers_orders.$customers_products.$customers_email.($ocertify->npermission == 15 ? ($customers_del):'').$submit;
     if(!empty($button)){
        $buttons = array('align' => 'center', 'button' => $button);
     }

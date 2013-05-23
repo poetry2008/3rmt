@@ -234,7 +234,7 @@ define('IMAGE_NEW_TAX_RATE', '新税率');
 define('IMAGE_NEW_TAX_ZONE', '新税地域');
 define('IMAGE_NEW_ZONE', '新地域');
 define('IMAGE_NEW_TAG', '新标签'); 
-define('IMAGE_ORDERS', '订单');
+define('IMAGE_ORDERS', '订单历史记录');
 define('IMAGE_ORDERS_INVOICE', '交货单');
 define('IMAGE_ORDERS_PACKINGSLIP', '配送单');
 define('IMAGE_PREVIEW', '预览');
