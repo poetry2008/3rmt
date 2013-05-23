@@ -1580,3 +1580,67 @@ function tep_preorders_status_finished($osid){
     $os = tep_db_fetch_array($query);
     return isset($os['finished']) && $os['finished'];
 }
+
+/*-----------------------------------
+    功能: 删除超时的未转正式的预约订单 
+    参数: 无 
+    返回值: 无 
+-----------------------------------*/
+function tep_preorders_to_orders_timeout()
+{
+  $preorder_customers_id_array = array();
+  $preorder_query = tep_db_query("select customers_id from ".TABLE_PREORDERS." where is_active = '0'");
+  while($preorder_array = tep_db_fetch_array($preorder_query)){
+
+    $preorder_customers_id_array[] = $preorder_array['customers_id'];
+  }
+  tep_db_free_result($preorder_query);
+  $preorder_id_str = implode(',',$preorder_id_array);
+  $preorder_customers_id_str = implode(',',$preorder_customers_id_array);
+
+  if(!empty($preorder_customers_id_array)){
+    $customers_id_array = array();
+    $customers_query = tep_db_query("select customers_id from ".TABLE_CUSTOMERS." where is_active = '0' and customers_id in (".$preorder_customers_id_str.") and datediff(now(),from_unixtime(send_mail_time,'%Y-%m-%d %H:%i:%s'))>3");
+    while($customers_array = tep_db_fetch_array($customers_query)){
+ 
+      $customers_id_array[] = $customers_array['customers_id'];  
+    }
+    tep_db_free_result($customers_query);
+    $customers_id_str = implode(',',$customers_id_array);
+  }
+
+  if(!empty($customers_id_array)){
+    $preorder_id_array = array();
+    $preorder_query = tep_db_query("select orders_id from ".TABLE_PREORDERS." where customers_id in (".$customers_id_str.") and is_active = '0'");
+    while($preorder_array = tep_db_fetch_array($preorder_query)){
+
+      $preorder_id_array[] = $preorder_array['orders_id'];
+    }
+    tep_db_free_result($preorder_query);
+    $preorder_id_str = implode("','",$preorder_id_array);
+  }
+
+  if(!empty($preorder_id_array)){
+    //删除关联数据
+    tep_db_query("delete from ".TABLE_PREORDERS." where orders_id in ('".$preorder_id_str."')"); 
+    tep_db_query("delete from ".TABLE_PREORDERS_PRODUCTS." where orders_id in ('".$preorder_id_str."')"); 
+    tep_db_query("delete from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id in ('".$preorder_id_str."')"); 
+    tep_db_query("delete from ".TABLE_PREORDERS_PRODUCTS_DOWNLOAD." where orders_id in ('".$preorder_id_str."')"); 
+    tep_db_query("delete from ".TABLE_PREORDERS_PRODUCTS_TO_ACTOR." where orders_id in ('".$preorder_id_str."')"); 
+    tep_db_query("delete from ".TABLE_PREORDERS_QUESTIONS." where orders_id in ('".$preorder_id_str."')"); 
+    tep_db_query("delete from ".TABLE_PREORDERS_QUESTIONS_PRODUCTS." where orders_id in ('".$preorder_id_str."')"); 
+    tep_db_query("delete from ".TABLE_PREORDERS_STATUS_HISTORY." where orders_id in ('".$preorder_id_str."')"); 
+    tep_db_query("delete from ".TABLE_PREORDERS_TOTAL." where orders_id in ('".$preorder_id_str."')"); 
+    tep_db_query("delete from ".TABLE_PREORDERS_TO_BUTTONS." where orders_id in ('".$preorder_id_str."')"); 
+    tep_db_query("delete from ".TABLE_PREORDERS_OA_FORMVALUE." where orders_id in ('".$preorder_id_str."')");
+  }
+
+  if(!empty($customers_id_array)){ 
+    //删除关联数据
+    tep_db_query("delete from ".TABLE_CUSTOMERS." where customers_id in (".$customers_id_str.")");
+    tep_db_query("delete from ".TABLE_CUSTOMERS_INFO." where customers_info_id in (".$customers_id_str.")");
+    tep_db_query("delete from ".TABLE_ADDRESS_BOOK." where customers_id in (".$customers_id_str.")");
+    tep_db_query("delete from ".TABLE_CUSTOMERS_BASKET." where customers_id in (".$customers_id_str.")");
+    tep_db_query("delete from ".TABLE_CUSTOMERS_BASKET_OPTIONS." where customers_id in (".$customers_id_str.")"); 
+  }      
+}

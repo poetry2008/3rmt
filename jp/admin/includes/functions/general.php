@@ -10420,3 +10420,29 @@ function tep_get_setting_site_info($current_page)
   } 
   return implode(',', $site_list_array); 
 }
+
+/*-----------------------------------
+    功能: 删除超时的未认证顾客 
+    参数: 无 
+    返回值: 无 
+-----------------------------------*/
+function tep_customers_not_certified_timeout()
+{
+  $customers_id_array = array();
+  $customers_query = tep_db_query("select customers_id from ".TABLE_CUSTOMERS." where customers_guest_chk = '0' and is_active = '0' and datediff(now(),from_unixtime(send_mail_time,'%Y-%m-%d %H:%i:%s'))>3");
+  while($customers_array = tep_db_fetch_array($customers_query)){
+ 
+    $customers_id_array[] = $customers_array['customers_id'];  
+  }
+  tep_db_free_result($customers_query);
+  $customers_id_str = implode(',',$customers_id_array);
+
+  if(!empty($customers_id_array)){ 
+    //删除关联数据
+    tep_db_query("delete from ".TABLE_CUSTOMERS." where customers_id in (".$customers_id_str.")");
+    tep_db_query("delete from ".TABLE_CUSTOMERS_INFO." where customers_info_id in (".$customers_id_str.")");
+    tep_db_query("delete from ".TABLE_ADDRESS_BOOK." where customers_id in (".$customers_id_str.")");
+    tep_db_query("delete from ".TABLE_CUSTOMERS_BASKET." where customers_id in (".$customers_id_str.")");
+    tep_db_query("delete from ".TABLE_CUSTOMERS_BASKET_OPTIONS." where customers_id in (".$customers_id_str.")"); 
+  }
+}

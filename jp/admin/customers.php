@@ -6,6 +6,8 @@
   require('includes/application_top.php');
   require(DIR_FS_ADMIN . 'classes/notice_box.php');
   require('includes/step-by-step/new_application_top.php');
+  //删除超时的未认证顾客
+  tep_customers_not_certified_timeout();
   if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
      $sql_site_where = 'site_id in ('.str_replace('-', ',', $_GET['site_id']).')';
      $show_list_array = explode('-',$_GET['site_id']);

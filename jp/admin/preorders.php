@@ -9,6 +9,8 @@
   require(DIR_WS_CLASSES . 'currencies.php');
   require(DIR_WS_CLASSES . 'payment.php');
   include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .  '/default.php');
+  //删除超时的未转正式的预约订单
+  tep_preorders_to_orders_timeout();
   if (isset($_GET['keywords'])) {
     $_GET['keywords'] = tep_db_prepare_input($_GET['keywords']);
   }
