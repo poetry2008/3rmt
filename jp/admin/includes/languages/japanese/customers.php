@@ -56,3 +56,6 @@ define('TEXT_ERROR_EMAIL','<font color=\'red\'>メールアドレスはすでに
 define('TEXT_EMAIL_ADDRESS','<font color=\'red\'>入力されたメールアドレスは不正です!</font>');
 define('TEXT_NAME_ERROR','<font color=\'red\'>日本語で入力して下さい。</font>');
 define('TEXT_ERROR_NULL','<font color=\'red\'>入力して下さい。</font>');
+define('TEXT_GUEST_CHK','会員種別');
+define('TEXT_MEMBER','会員');
+define('TEXT_NO_MEMBER','ゲスト');
