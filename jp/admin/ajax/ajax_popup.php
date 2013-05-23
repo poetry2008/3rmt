@@ -5156,11 +5156,11 @@ if($_GET['cID'] != -1){
   $buttons_id_prev = $buttons_id_page_array[$buttons_id_num - 1];
   $buttons_id_next = $buttons_id_page_array[$buttons_id_num + 1];
   if ($buttons_id_num > 0) {
-    $page_str .= '<a id="buttons_prev" onclick="show_link_buttons_info(\''.$buttons_id_prev.'\',\''.$param_str.'\',\''.$show.'\')" href="javascript:void(0);" >'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+    $page_str .= '<a id="buttons_prev" onclick="show_link_buttons_info(\''.$buttons_id_prev.'\',\''.$param_str.'\',\''.$show.'\')" href="javascript:void(0);" ><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
   }
  
   if ($buttons_id_num < (count($buttons_id_page_array) - 1)) {
-    $page_str .= '<a id="buttons_next" onclick="show_link_buttons_info(\''.$buttons_id_next.'\',\''.$param_str.'\',\''.$show.'\')" href="javascript:void(0);">'.IMAGE_NEXT.'</a>&nbsp;&nbsp;'; 
+    $page_str .= '<a id="buttons_next" onclick="show_link_buttons_info(\''.$buttons_id_next.'\',\''.$param_str.'\',\''.$show.'\')" href="javascript:void(0);">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
   }else{
     $page_str .= '<font color="#000000">'.IMAGE_NEXT.'></font>&nbsp;&nbsp;';
   }
