@@ -4937,7 +4937,7 @@ if($c_parent_array['parent_id'] == 0){
             }else{
               echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
                     'order_sort')).
-                'order_sort=site_romaji&order_type=asc')."'>";
+                'order_sort=site_romaji&order_type=desc')."'>";
               echo TABLE_HEADING_SITE;
             }
           }
@@ -4989,7 +4989,7 @@ if($c_parent_array['parent_id'] == 0){
             }else{
               echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
                     'order_sort')).
-                'order_sort=customers_name&order_type=asc')."'>";
+                'order_sort=customers_name&order_type=desc')."'>";
               echo TABLE_HEADING_CUSTOMERS; 
             }
           }
@@ -5041,7 +5041,7 @@ if($c_parent_array['parent_id'] == 0){
             }else{
               echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
                     'order_sort')).
-                'order_sort=ot_total&order_type=asc')."'>";
+                'order_sort=ot_total&order_type=desc')."'>";
               echo TABLE_HEADING_ORDER_TOTAL;
             }
           }
@@ -5093,7 +5093,7 @@ if($c_parent_array['parent_id'] == 0){
             }else{
               echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
                     'order_sort')).
-                'order_sort=torihiki_date&order_type=asc')."'>";
+                'order_sort=torihiki_date&order_type=desc')."'>";
               echo TEXT_ORDER_ORDER_DATE;
             }
           }
@@ -5148,7 +5148,7 @@ if($c_parent_array['parent_id'] == 0){
             }else{
               echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
                     'order_sort')).
-                'order_sort=date_purchased&order_type=asc')."'>";
+                'order_sort=date_purchased&order_type=desc')."'>";
               echo TABLE_HEADING_DATE_PURCHASED; 
             }
           }
@@ -5201,7 +5201,7 @@ if($c_parent_array['parent_id'] == 0){
             }else{
               echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
                     'order_sort')).
-                'order_sort=orders_status_name&order_type=asc')."'>";
+                'order_sort=orders_status_name&order_type=desc')."'>";
               echo TABLE_HEADING_STATUS; 
             }
           }
