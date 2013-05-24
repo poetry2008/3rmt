@@ -217,7 +217,7 @@ require("includes/note_js.php");
       }
     }
     tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
-    tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created) values ('" . tep_db_input($customer_id) . "', '0', now())");
+    tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created,customers_info_date_account_last_modified,user_update,user_added) values ('" . tep_db_input($customer_id) . "', '0', now(),now(),'".$_SESSION['user_name']."','".$_SESSION['user_name']."')");
     tep_redirect(tep_href_link(FILENAME_CREATE_ACCOUNT_SUCCESS, 'customer_id=' . $customer_id, 'SSL'));
   }
 
