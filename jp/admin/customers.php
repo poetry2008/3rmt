@@ -771,14 +771,10 @@ require("includes/note_js.php");
       $key_search = '';
       $i = 0;
       foreach($keywords as $key => $key_value){
-        if($i == count($keywords)-1){
-        $key_search .= 'c.customers_lastname like \'%'.$key_value.'%\' or c.customers_firstname like \'%'.$key_value.'%\' or c.customers_firstname_f like \'%'.$key_value.'%\'or c.customers_lastname_f like \'%'.$key_value.'%\' ';
-        }else{
         $key_search .= 'c.customers_lastname like \'%'.$key_value.'%\' or c.customers_firstname like \'%'.$key_value.'%\' or c.customers_firstname_f like \'%'.$key_value.'%\'or c.customers_lastname_f like \'%'.$key_value.'%\'or ';
-        }
         $i ++;
       }
-      $search = "and (".$key_search.")";
+      $search = "and (".$key_search." c.customers_email_address like '%" . trim($_GET['search']) . "%' or c.customers_id = '".trim($_GET['search'])."')";
     }
     $customers_query_raw = "
       select c.customers_id, 
