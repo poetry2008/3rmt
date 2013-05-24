@@ -174,7 +174,7 @@ $payment_bank_info = array();
         if ($products_details["qty"] != $order['products_quantity'] && $products_details["qty"] != 0) {
           $quantity_difference = ($products_details["qty"] - $order['products_quantity']);
           $p = tep_db_fetch_array(tep_db_query("select * from products where products_id='".$order['products_id']."'"));
-          $pr_quantity = $p['products_real_quantity'];
+          $pr_quantity = tep_get_quantity($p['products_id']);
           $pv_quantity = $p['products_virtual_quantity'];
           // 增加库存
           if($quantity_difference < 0){
