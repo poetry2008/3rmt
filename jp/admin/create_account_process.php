@@ -16,7 +16,6 @@
   foreach ($an_cols as $col) {
     $_POST[$col] = isset($_POST[$col]) ? tep_an_zen_to_han($_POST[$col]) : '';
   }
-
   $gender         = isset($_POST['gender']) ? tep_db_prepare_input($_POST['gender']):'';
   $firstname      = tep_db_prepare_input($_POST['firstname']);
   $lastname       = tep_db_prepare_input($_POST['lastname']);
@@ -186,11 +185,11 @@ require("includes/note_js.php");
                             'point' => 0,
                             'customers_default_address_id' => 1,
                             'site_id' => $site_id,
+                            'is_active' => '1',
                             'customers_guest_chk' => 1);
 
     if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;
     if (ACCOUNT_DOB == 'true') $sql_data_array['customers_dob'] = tep_date_raw($dob);
-
     tep_db_perform(TABLE_CUSTOMERS, $sql_data_array);
 
     $customer_id = tep_db_insert_id();
@@ -217,9 +216,7 @@ require("includes/note_js.php");
         $sql_data_array['entry_state'] = $state;
       }
     }
-
     tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
-
     tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created) values ('" . tep_db_input($customer_id) . "', '0', now())");
     tep_redirect(tep_href_link(FILENAME_CREATE_ACCOUNT_SUCCESS, 'customer_id=' . $customer_id, 'SSL'));
   }
