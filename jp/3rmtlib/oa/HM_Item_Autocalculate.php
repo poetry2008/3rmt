@@ -38,7 +38,9 @@ class HM_Item_Autocalculate extends HM_Item_Basic
     $loadArray = explode('_',$this->defaultValue);
     //对照 orders 的 关联商品 查找数据
     $orders_products_query = tep_db_query("select op.orders_products_id, 
-        p.products_id,op.products_quantity,op.products_name,p.relate_products_id,p.products_bflag
+        p.products_id,op.products_quantity,op.products_name,
+        p.relate_products_id,p.products_bflag,
+        op.products_rate
         from ".TABLE_ORDERS_PRODUCTS." op, ".TABLE_PRODUCTS." p where
         op.products_id=p.products_id and
         op.orders_id='".$this->order_id."'and p.products_bflag=1 order by op.products_name
@@ -111,9 +113,10 @@ class HM_Item_Autocalculate extends HM_Item_Basic
         echo "id = 'spid_".$op['products_id']."'/>";
         echo $op['products_name'];
         //有关联商品的 输出
+        echo "<br>";
         echo " <font id
           ='quantity_".$i."_".$opp['products_id']."_".$opp['orders_products_id']."'
-          >".$opp['products_quantity']."</font> - ";
+          >".$opp['products_quantity']."</font>*".$opp['products_rate']." - ";
         echo "<input type='text'
           value='".($check=="checked"?intval($opp['products_quantity']-$_value):0)."' 
            id ='".$opp['products_id']."_".$opp['orders_products_id']."_input_".$this->formname."' 
@@ -124,10 +127,13 @@ class HM_Item_Autocalculate extends HM_Item_Basic
             &&$___checked==$opp['orders_products_id']){
           echo " readonly='true' ";
         }
-        echo " >";
+        echo " >*".$opp['products_rate'];
         echo " = <font
           id='span_relate_product_".$opp['products_id']."_".$opp['orders_products_id']."'>".
-          ($check=="checked"?$_value:intval($opp['products_quantity']))."</font>";
+          ($check=="checked"?$_value*$opp['products_rate']:intval($opp['products_quantity']*$opp['products_rate']))."</font>";
+        echo "<input id='span_relate_product_".$opp['products_id']."_".$opp['orders_products_id']."_radices' type='hidden' value='".$opp['products_rate']."'>";
+      echo "<br>";
+      echo "<br>";
       }
       $i++;
       echo "</div>";
@@ -149,18 +155,23 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       var sub_flag = new Array();
       <?php //改变指定span元素的内容?> 
       function <?php echo $this->formname."Chage_span(p_value,e_input,span_id)";?>{
+      var radices = 1;
+      if($('#'+span_id+'_radices')){
+        radices =  $('#'+span_id+'_radices').val();
+      }
+      alert(radices);
       var v_input = e_input.value;
       var re = /^-?[0-9]+$/;
       if(!re.test(v_input) && v_input != ''){
         e_input.value = 0;
-        $("#"+span_id).text(p_value);
+        $("#"+span_id).text(p_value*radices);
       }else{
         if(v_input > p_value){
           e_input.value = 0;
-          $("#"+span_id).text(p_value);
+          $("#"+span_id).text(p_value*radices);
         }else{
           if(v_input!=''){
-            $("#"+span_id).text(p_value-v_input);
+            $("#"+span_id).text((p_value-v_input)*radices);
           }else{
             $("#"+span_id).text(0);
           }
@@ -237,12 +248,17 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       <?php //增加库存?>
       var tmp_pid = $(ele).val(); 
       tmp_pid = tmp_pid.replace('|','_');
+      if($('#span_relate_product_'+tmp_pid+'_radices')){
+        var radices = $('#span_relate_product_'+tmp_pid+'_radices').val();
+      }else{
+        var radices = 1;
+      }
       if ($(ele).attr('checked')) {
         $("#"+tmp_pid+"<?php echo "_input_".$this->formname;?>").attr('readonly',true);
         if(!sum_flag[t]){
         $.ajax({
           url:
-          'ajax_orders.php?action=set_quantity&products_id='+pid+'&count='+($("#quantity_"+t+"_"+tmp_pid).html()-$("#"+tmp_pid+"<?php echo "_input_".$this->formname;?>").val()),
+          'ajax_orders.php?action=set_quantity&products_id='+pid+'&count='+(($("#quantity_"+t+"_"+tmp_pid).html()-$("#"+tmp_pid+"<?php echo "_input_".$this->formname;?>").val())*radices),
               async : false,
               success: function(data) {
               sum_flag[t] = true;
@@ -256,7 +272,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
         <?php //减库存?>
         $.ajax({
           url:
-          'ajax_orders.php?action=set_quantity&products_id='+pid+'&count=-'+($("#quantity_"+t+"_"+tmp_pid).html()-$("#"+tmp_pid+"<?php echo "_input_".$this->formname;?>").val()),
+          'ajax_orders.php?action=set_quantity&products_id='+pid+'&count=-'+(($("#quantity_"+t+"_"+tmp_pid).html()-$("#"+tmp_pid+"<?php echo "_input_".$this->formname;?>").val())*radices),
               async : false,
               success: function(data) {
               sum_flag[t] = false;

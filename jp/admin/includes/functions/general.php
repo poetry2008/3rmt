@@ -1785,7 +1785,8 @@ function tep_remove_order($order_id, $restock = false) {
   if ($restock == 'on') {
     $order_query = tep_db_query("select products_id, products_quantity from " . TABLE_ORDERS_PRODUCTS . " where orders_id = '" . tep_db_input($order_id) . "'");
     while ($order = tep_db_fetch_array($order_query)) {
-      tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = products_real_quantity + " . $order['products_quantity'] . ", products_ordered = products_ordered - " . $order['products_quantity'] . " where products_id = '" . $order['products_id'] . "'");
+      $radices = tep_get_radices($order['products_id']);
+      tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = products_real_quantity + " . (int)($order['products_quantity']*$radices) .  ", products_ordered = products_ordered - " .  (int)($order['products_quantity']*$radices) . " where products_id = '" . $order['products_id'] . "'");
     }
   }
 
@@ -6597,7 +6598,7 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
 
 -1600 * 12 = -19 200
      */
-    $product = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
+    $product_quantity = tep_get_quantity($pid);
     $order_history_query = tep_db_query("
         select * 
         from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id 
@@ -6609,9 +6610,9 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
     $sum = 0;
     $cnt = 0;
     while($h = tep_db_fetch_array($order_history_query)){
-      if ($cnt + $h['products_quantity'] > $product['products_real_quantity']) {
-        $sum += ($product['products_real_quantity'] - $cnt) * abs($h['final_price']);
-        $cnt = $product['products_real_quantity'];
+      if ($cnt + $h['products_quantity'] > $product_quantity) {
+        $sum += ($product_quantity - $cnt) * abs($h['final_price']);
+        $cnt = $product_quantity;
         break;
       } else {
         $sum += $h['products_quantity'] * abs($h['final_price']);
@@ -8484,6 +8485,7 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
    $all_tmp_price = 0;
    $all_tmp_row = 0;
    while($tmp_row = tep_db_fetch_array($tmp_query)){
+     $tmp_price['products_real_quantity'] = tep_get_quantity($tmp_row['products_id']);
      $tmp_price =
        @tep_get_asset_avg_by_pid($tmp_row['products_id'],$site_id,$start,$end,
            $sort);
@@ -8522,6 +8524,7 @@ function tep_get_all_asset_product_by_pid($pid,$bflag,$site_id=0,
   $query = tep_db_query($sql);
   $row = tep_db_fetch_array($query);
   $tmp_price = @tep_get_asset_avg_by_pid($pid,$site_id,$start,$end,$sort);
+  $row['products_real_quantity'] = tep_get_quantity($pid);
   $result = array();
   $result['error'] = false;
   if($row['products_real_quantity'] > tep_get_relate_products_sum($pid,$site_id,
@@ -8574,6 +8577,7 @@ function tep_get_asset_avg_by_pid($pid,$site_id=0,$start='',$end='',$sort=''){
     $sum = 0;
     $cnt = 0;
     while($h = tep_db_fetch_array($order_history_query)){
+      $product['products_real_quantity'] = tep_get_quantity($pid);
       if ($cnt + $h['products_quantity'] > $product['products_real_quantity']) {
         $sum += ($product['products_real_quantity'] - $cnt) * abs($h['final_price']);
         $cnt = $product['products_real_quantity'];
@@ -10414,4 +10418,49 @@ function tep_get_setting_site_info($current_page)
     }
   } 
   return implode(',', $site_list_array); 
+}
+/*----------------------------------
+  功能: 通过产品ID获得产品的库存
+  参数: $pid (int)类型  产品ID
+  参数: $real_quantity (int)类型  产品数量 没有基数的时候直接返回
+  参数: $v_quantity (boolean)类型 虚拟库存 默认false不参加基数 true参加计算
+  返回：根据基数和 产品（游戏币） 计算出商品个数 取整（小数省略）
+----------------------------------*/
+function tep_get_quantity($pid,$real_quantity,$v_quantity=false){
+  if($v_quantity){
+    $sql = "SELECT products_attention_1_3,
+      (`products_real_quantity`/`products_attention_1_3`) 
+      + `products_virtual_quantity`  as quantity FROM 
+      " .TABLE_PRODUCTS." WHERE products_id = '".$pid."' limit 1";
+  }else{
+    $sql = "SELECT products_attention_1_3,
+      (`products_real_quantity`/`products_attention_1_3`) as quantity
+      FROM 
+      " .TABLE_PRODUCTS." WHERE products_id = '".$pid."' limit 1";
+  }
+  $query = tep_db_query($sql);
+  if($row = tep_db_fetch_array($query)){
+    if($row['products_attention_1_3']!=''&&$row['products_attention_1_3']!=0){
+      return (int)($row['quantity']);
+    }else{
+      return $real_quantity;
+    }
+  }else{
+    return $real_quantity;
+  }
+}
+/*----------------------------------
+  功能: 通过产品ID获得产品汇率(基数)
+  参数: $pid (int)类型  产品ID
+  返回：基数
+----------------------------------*/
+function tep_get_radices($pid){
+    $sql = "SELECT products_attention_1_3 as radices FROM 
+      " .TABLE_PRODUCTS." WHERE products_id = '".$pid."' limit 1";
+    $query = tep_db_query($sql);
+    if($row = tep_db_fetch_array($query)){
+      return (int)$row['radices'];
+    }else{
+      return 0;
+    }
 }

@@ -296,7 +296,7 @@ if ($_GET['action'] == 'show_category_info') {
    
   $notice_box->get_contents($update_info_array, $buttons);
   echo $notice_box->show_notice();
-} else if ($_GET['action'] == 'update_real_quantity') {
+} else if ($_GET['action'] == 'update_quantity') {
 /* -----------------------------------------------------
     功能: 更新商品数量的弹出框
     参数: $_POST['pid'] 商品id 
@@ -332,6 +332,54 @@ if ($_GET['action'] == 'show_category_info') {
   $update_info_array[]['text'] = array(
         array('align' => 'left', 'text' => TEXT_POPUP_WINDOW_SHOW.':'), 
         array('align' => 'left', 'text' => $_POST['origin_num']), 
+      );
+  
+  $update_info_array[]['text'] = array(
+        array('align' => 'left', 'text' => TEXT_POPUP_WINDOW_EDIT.':'), 
+        array('align' => 'left', 'text' => tep_draw_input_field('real_pro_num', $_POST['origin_num'], 'id="real_pro_num"')), 
+      );
+  
+  $notice_box->get_heading($heading);
+   
+  $notice_box->get_contents($update_info_array, $buttons);
+  echo $notice_box->show_notice();
+} else if ($_GET['action'] == 'update_real_quantity') {
+/* -----------------------------------------------------
+    功能: 更新商品数量的弹出框
+    参数: $_POST['pid'] 商品id 
+    参数: $_POST['origin_num'] 数量 
+ -----------------------------------------------------*/
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_CATEGORIES);
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+  
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+  
+  $product_info_raw = tep_db_query("select products_name from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$_POST['pid']."'");
+  $product_info = tep_db_fetch_array($product_info_raw);
+  
+  $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+  
+  $heading = array();
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => TABLE_HEADING_CATEGORIES_PRODUCT_REAL_QUANTITY);
+  $heading[] = array('align' => 'right', 'text' => $page_str);
+
+  $buttons = array();
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CONFIRM, 'onclick="update_quantity(\''.$_POST['pid'].'\')"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="hidden_info_box();"').'</a>'; 
+    
+  $buttons = array('align' => 'center', 'button' => $button); 
+ 
+  $update_info_array = array();
+  
+  $update_info_array[]['text'] = array(
+        array('align' => 'left', 'params' => 'colspan="2"', 'text' => $product_info['products_name']), 
+      );
+  
+  $update_info_array[]['text'] = array(
+        array('align' => 'left', 'text' => TEXT_POPUP_WINDOW_SHOW.':'), 
+        array('align' => 'left', 'text' => $_POST['origin_num'].
+          '<input type="hidden" id="is_radices" value="1">'), 
       );
   
   $update_info_array[]['text'] = array(
