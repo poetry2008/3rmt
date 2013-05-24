@@ -355,7 +355,7 @@ require("includes/note_js.php");
   $buttons_title_row = array();
                   
   //buttons列表 
-  $buttons_title_row[] = array('params' => 'class="dataTableHeadingContent"', 'text' => '<input type="checkbox" name="all_check" onclick="all_select_buttons(\'buttons_list_id[]\');">');
+  $buttons_title_row[] = array('params' => 'class="dataTableHeadingContent"', 'text' => '<input type="checkbox" name="all_check"'.($site_permission_flag == true ? ' onclick="all_select_buttons(\'buttons_list_id[]\');"' : '').'>');
   $buttons_title_row[] = array('params' => 'class="dataTableHeadingContent"', 'text' => TABLE_HEADING_BUTTONS_NAME);
   $buttons_title_row[] = array('params' => 'class="dataTableHeadingContent"', 'text' => TABLE_HEADING_BUTTONS_ORDER);
   $buttons_title_row[] = array('align' => 'right','params' => 'class="dataTableHeadingContent"', 'text' => TABLE_HEADING_ACTION);

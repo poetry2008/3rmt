@@ -2046,7 +2046,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
         }else{
           echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_PREORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
                 'order_sort')).
-                'order_sort=site_romaji&order_type=asc')."'>";
+                'order_sort=site_romaji&order_type=desc')."'>";
           echo TABLE_HEADING_SITE;
         }
       }
@@ -2100,7 +2100,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
         }else{
           echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_PREORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
                 'order_sort')).
-                'order_sort=customers_name&order_type=asc')."'>";
+                'order_sort=customers_name&order_type=desc')."'>";
           echo TABLE_HEADING_CUSTOMERS; 
         }
       }
@@ -2154,7 +2154,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
         }else{
           echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_PREORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
                 'order_sort')).
-                'order_sort=ot_total&order_type=asc')."'>";
+                'order_sort=ot_total&order_type=desc')."'>";
           echo TABLE_HEADING_ORDER_TOTAL; 
         }
       }
@@ -2211,7 +2211,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
         }else{
           echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_PREORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
                 'order_sort')).
-                'order_sort=date_purchased&order_type=asc')."'>";
+                'order_sort=date_purchased&order_type=desc')."'>";
           echo TABLE_HEADING_DATE_PURCHASED; 
         }
       }
@@ -2266,7 +2266,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
         }else{
           echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_PREORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
                 'order_sort')).
-                'order_sort=orders_status_name&order_type=asc')."'>";
+                'order_sort=orders_status_name&order_type=desc')."'>";
           echo TABLE_HEADING_STATUS; 
         }
       }
