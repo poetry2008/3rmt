@@ -562,7 +562,7 @@ order
 	margin-bottom: 10px;
 	background: #f0f1f1;
 }
-.orders_computer_checked, .orders_flag_checked {
+.orders_buttons_checked, .orders_flag_checked {
 	color: #fff;
 	background: #ff0000;
 	font-size:12px;
@@ -575,7 +575,7 @@ order
 	margin:0 3px 5px 0;
 	padding:3px 18px;
 }
-.orders_computer_unchecked, .orders_flag_unchecked{
+.orders_buttons_unchecked, .orders_flag_unchecked{
 	color: #000;
 	background: #fff;
 	font-size:12px;
@@ -1499,13 +1499,6 @@ popup_order
 .del_order_notice td{
 	vertical-align:middle;
 }
-.textarea_width{
-	width: 100%;
-}
-@media all and (-webkit-min-device-pixel-ratio:0){
-.textarea_width {
-	width: 60%;
-}}
 /* ---------------------------
 option
 --------------------------- */
@@ -1707,11 +1700,6 @@ shopping
 /* ---------------------------
 notice
 --------------------------- */
-#show_head_notice,#show_all_notice{
-	min-width:750px;
-	width:100%;
-	width: expression(document.body.clientWidth < 750? "750px": "100%" );
-}
 #show_head_notice td, #show_all_notice td{
 	line-height:21px;
 	background:#FFB3B5;
@@ -1794,13 +1782,21 @@ Public list
 	list-style:none;
 	margin:0;
 	padding:0;
-	width:60%;
+	width:48%;
 }}
 .table_img_list li{
 	float:left;
 	width:10%;
-    white-space: nowrap;
+	min-width:60px;
+    white-space:nowrap;
 }
+@media all and (-webkit-min-device-pixel-ratio:0){
+.table_img_list li{
+	float:left;
+	width:10%;
+	min-width:35px;
+    white-space:nowrap;
+}}
 .table_img_list  img{
 	margin-bottom:7px;
 }

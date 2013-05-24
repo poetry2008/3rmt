@@ -234,7 +234,7 @@ define('IMAGE_NEW_TAX_RATE', '新しい税率');
 define('IMAGE_NEW_TAX_ZONE', '新しい税地域');
 define('IMAGE_NEW_ZONE', '新しい地域');
 define('IMAGE_NEW_TAG', '新标签'); 
-define('IMAGE_ORDERS', '注文');
+define('IMAGE_ORDERS', '注文履歴');
 define('IMAGE_ORDERS_INVOICE', '納品書');
 define('IMAGE_ORDERS_PACKINGSLIP', '配送票');
 define('IMAGE_PREVIEW', 'プレビュー');
@@ -461,7 +461,7 @@ define('FILENAME_KEYWORDS_TEXT','キーワードランキング');
 //tools language 
 define('FILENAME_BANK_CL_TEXT','カレンダー設定');
 define('FILENAME_PW_MANAGER_TEXT','ID管理');
-define('FILENAME_COMPUTERS_TEXT','ボタン管理');
+define('FILENAME_BUTTONS_TEXT','ボタン管理');
 define('FILENAME_MAG_UP_TEXT','メールマガジン一括登録');
 define('FILENAME_MAG_DL_TEXT','メールマガジンデータDL');
 

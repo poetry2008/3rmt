@@ -16,4 +16,5 @@ define('PRODUCT_MONEY_UNIT', '日元');
 define('PRODUCT_NUM_TEXT', '个');
 define('APPLICATION_CREATE_TEXT', '新建账单');
 define('TEXT_PRINT', '打印');
+define('TEXT_DATA_EMPTY','<font color=\'red\'><b>数据为空。</b></font>');
 ?>

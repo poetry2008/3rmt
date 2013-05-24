@@ -132,7 +132,7 @@ function tep_show_orders_products_info($orders_id) {
       while($pa = tep_db_fetch_array($products_attributes_query)){
         $str .= '<tr><td class="main"><b>'.$pa['products_options'].'：</b></td><td class="main">'.$pa['products_options_values'].'</td></tr>';
       }
-      $names = tep_get_computers_names_by_orders_id($orders['orders_id']);
+      $names = tep_get_buttons_names_by_orders_id($orders['orders_id']);
       if ($names) {
         $str .= '<tr><td class="main"><b>PC：</b></td><td class="main">'.implode('&nbsp;,&nbsp;', $names).'</td></tr>';
       }
@@ -2709,13 +2709,13 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         </td>
         </tr> 
         <?php 
-          $computers = tep_get_computers();
-          $o2c       = tep_get_computers_by_orders_id($order->info['orders_id']);
-          if ($computers) {
+          $buttons = tep_get_buttons();
+          $o2c       = tep_get_buttons_by_orders_id($order->info['orders_id']);
+          if ($buttons) {
         ?> 
           <tr><td>
-          <?php foreach ($computers as $computer) {?>
-          <div id="orders_alert_<?php echo $computer['computers_id'];?>" onclick="orders_computers(this, <?php echo $computer['computers_id'];?>, '<?php echo $order->info['orders_id'];?>');" class="<?php echo in_array($computer['computers_id'], $o2c) ? 'orders_computer_checked' : 'orders_computer_unchecked' ;?>"><?php echo $computer['computers_name'];?></div>
+          <?php foreach ($buttons as $button) {?>
+          <div id="orders_alert_<?php echo $button['buttons_id'];?>" onclick="orders_buttons(this, <?php echo $button['buttons_id'];?>, '<?php echo $order->info['orders_id'];?>');" class="<?php echo in_array($button['buttons_id'], $o2c) ? 'orders_buttons_checked' : 'orders_buttons_unchecked' ;?>"><?php echo $button['buttons_name'];?></div>
         <?php 
           } 
         ?>
@@ -2752,7 +2752,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         </tr>
         <tr>
         <td class="main" valign="top"><?php echo ENTRY_CUSTOMER; ?></td>
-        <td class="main" style="text-decoration: underline; "><a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, 'action=edit&cID='.$order->customer['id']);?>"><?php echo $order->customer['name']; ?></a></td>
+        <td class="main" style="text-decoration: underline; "><a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, 'search='.$order->customer['id']);?>"><?php echo $order->customer['name']; ?></a></td>
         </tr>
         <tr>
         <td class="main"><?php echo ENTRY_EMAIL_ADDRESS; ?></td>
@@ -3434,7 +3434,9 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
               if(count($orders_explode_all_array) > 1){
 
                 if(strlen(trim($orders_explode_array[1])) == 0){ 
-                  unset($orders_explode_all_array[0]);
+                  if(count($orders_explode_array) > 1){
+                    unset($orders_explode_all_array[0]);
+                  }
                   $orders_history_comment = implode("\n",$orders_explode_all_array); 
                 }else{ 
                   $orders_temp_str = end($orders_explode_all_array);
@@ -5311,7 +5313,7 @@ if($c_parent_array['parent_id'] == 0){
                 <?php } else { ?>
                   <font color="#000">
                     <?php } ?>
-                    <a style="text-decoration:underline;" href="<?php echo tep_href_link('customers.php', 'page=1&cID=' .  tep_output_string_protected($orders['customers_id']) .  '&action=edit');?>"><?php echo tep_output_string_protected($orders['customers_name']);?></a>
+                    <a style="text-decoration:underline;" href="<?php echo tep_href_link('customers.php', 'search=' .  tep_output_string_protected($orders['customers_id']));?>"><?php echo tep_output_string_protected($orders['customers_name']);?></a>
                     <input type="hidden" id="cid_<?php echo $orders['orders_id'];?>" name="cid[]" value="<?php echo $orders['customers_id'];?>" />
                     </font>
                     <?php 

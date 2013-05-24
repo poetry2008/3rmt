@@ -458,7 +458,7 @@ require("includes/note_js.php");
   $memo_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => TEXT_MEMO_TO); 
   $memo_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => TEXT_MEMO_CONTENTS);
   $memo_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => TEXT_MEMO_CREATE_TIME);
-  $memo_title_row[] = array('align' => 'right','params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => TABLE_HEADING_ACTION);
+  $memo_title_row[] = array('align' => 'left','params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => TABLE_HEADING_ACTION);
                     
   $memo_table_row[] = array('params' => 'class="dataTableHeadingRow"', 'text' => $memo_title_row);   
 

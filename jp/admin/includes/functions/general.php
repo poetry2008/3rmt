@@ -1795,7 +1795,7 @@ function tep_remove_order($order_id, $restock = false) {
   tep_db_query("delete from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " where orders_id = '" . tep_db_input($order_id) . "'");
   tep_db_query("delete from " . TABLE_ORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($order_id) . "'");
   tep_db_query("delete from " . TABLE_ORDERS_TOTAL . " where orders_id = '" . tep_db_input($order_id) . "'");
-  tep_db_query("delete from " . TABLE_ORDERS_TO_COMPUTERS . " where orders_id = '" . tep_db_input($order_id) . "'");
+  tep_db_query("delete from " . TABLE_ORDERS_TO_BUTTONS . " where orders_id = '" . tep_db_input($order_id) . "'");
   tep_db_query("delete from orders_products_download where orders_id = '" . tep_db_input($order_id) . "'");
   tep_db_query("delete from ".TABLE_OA_FORMVALUE." where orders_id = '".tep_db_input($order_id)."'");
   tep_db_query("delete from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".tep_db_input($order_id)."'");
@@ -4407,7 +4407,7 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
         }
       }
     }
-    $names = tep_get_computers_names_by_orders_id($orders['orders_id']);
+    $names = tep_get_buttons_names_by_orders_id($orders['orders_id']);
     if ($names) {
       $str .= '<tr><td class="main">PC：</td><td class="main">'.implode('&nbsp;,&nbsp;', $names).'</td></tr>';
     }
@@ -4887,46 +4887,46 @@ if(tep_not_null($orders['user_added']) || tep_not_null($orders['customers_name']
 }
 
 /* -------------------------------------
-    功能: 获取该订单的电脑名 
+    功能: 获取该订单的按钮名 
     参数: $orders_id(int) 订单id 
-    返回值: 电脑名(string) 
+    返回值: 按钮名(string) 
  ------------------------------------ */
-function tep_get_computers_names_by_orders_id($orders_id)
+function tep_get_buttons_names_by_orders_id($orders_id)
 {
   $names = array();
-  $o2c_query = tep_db_query("select * from ".TABLE_ORDERS_TO_COMPUTERS." o2c, ".TABLE_COMPUTERS." c where c.computers_id=o2c.computers_id and o2c.orders_id = '".$orders_id."' order by sort_order asc");
+  $o2c_query = tep_db_query("select * from ".TABLE_ORDERS_TO_BUTTONS." o2b, ".TABLE_BUTTONS." b where b.buttons_id=o2b.buttons_id and o2b.orders_id = '".$orders_id."' order by sort_order asc");
   while($o = tep_db_fetch_array($o2c_query)) {
-    $names[] = $o['computers_name'];
+    $names[] = $o['buttons_name'];
   }
   return $names;
 }
 
 /* -------------------------------------
-    功能: 获取所有电脑信息 
+    功能: 获取所有按钮信息 
     参数: 无 
-    返回值: 电脑信息(array) 
+    返回值: 按钮信息(array) 
  ------------------------------------ */
-function tep_get_computers()
+function tep_get_buttons()
 {
-  $computers = array();
-  $computers_query = tep_db_query("select * from ".TABLE_COMPUTERS." order by sort_order asc");
-  while ($c = tep_db_fetch_array($computers_query)) {
-    $computers[] = $c;
+  $buttons = array();
+  $buttons_query = tep_db_query("select * from ".TABLE_BUTTONS." order by sort_order asc");
+  while ($c = tep_db_fetch_array($buttons_query)) {
+    $buttons[] = $c;
   }
-  return $computers;
+  return $buttons;
 }
 
 /* -------------------------------------
-    功能: 获取该订单的电脑id 
+    功能: 获取该订单的按钮id 
     参数: $oid(int) 订单id 
-    返回值: 该订单的电脑id(array) 
+    返回值: 该订单的按钮id(array) 
  ------------------------------------ */
-function tep_get_computers_by_orders_id($oid)
+function tep_get_buttons_by_orders_id($oid)
 {
   $c = array();
-  $o2c_query = tep_db_query("select * from ".TABLE_ORDERS_TO_COMPUTERS." where orders_id = '".$oid."'");
+  $o2c_query = tep_db_query("select * from ".TABLE_ORDERS_TO_BUTTONS." where orders_id = '".$oid."'");
   while ($o2c = tep_db_fetch_array($o2c_query)) {
-    $c[] = $o2c['computers_id'];
+    $c[] = $o2c['buttons_id'];
   }
   return $c;
 }
@@ -9382,7 +9382,7 @@ function tep_get_notice_info($return_type = 0)
     $notice_num = $notice_tmp_num; 
   }
 
-  $micro_notice_raw = tep_db_query("select n.id, n.title, n.set_time, n.from_notice, n.created_at,n.deleted users_deleted,bm.`to` to_users,bm.`from` from_users,bm.icon icon,bm.id bm_id from ".TABLE_NOTICE." n,".TABLE_BUSINESS_MEMO." bm where n.from_notice=bm.id and n.is_show='1' and bm.is_show='1' and bm.deleted='0' and n.type = '1' order by created_at desc,set_time asc");
+  $micro_notice_raw = tep_db_query("select n.id, n.title, n.set_time, n.from_notice, n.created_at,n.deleted users_deleted,bm.`to` to_users,bm.`from` from_users,bm.icon icon,bm.id bm_id,bm.date_update date_update from ".TABLE_NOTICE." n,".TABLE_BUSINESS_MEMO." bm where n.from_notice=bm.id and n.is_show='1' and bm.is_show='1' and bm.deleted='0' and n.type = '1' order by created_at desc,set_time asc");
 
   $micro_tmp_num = 0; 
   while($micro_notice = tep_db_fetch_array($micro_notice_raw)){
@@ -9395,6 +9395,7 @@ function tep_get_notice_info($return_type = 0)
         $micro_notice_array['created_at'] = $micro_notice['created_at'];
         $micro_notice_array['icon'] = $micro_notice['icon'];
         $micro_notice_array['bm_id'] = $micro_notice['bm_id'];
+        $micro_notice_array['date_update'] = $micro_notice['date_update'];
         unset($notice_id_array[array_search($micro_notice['id'],$notice_id_array)]);
         break;
       }else{
@@ -9410,6 +9411,7 @@ function tep_get_notice_info($return_type = 0)
           $micro_notice_array['created_at'] = $micro_notice['created_at'];
           $micro_notice_array['icon'] = $micro_notice['icon'];
           $micro_notice_array['bm_id'] = $micro_notice['bm_id'];
+          $micro_notice_array['date_update'] = $micro_notice['date_update'];
           unset($notice_id_array[array_search($micro_notice['id'],$notice_id_array)]);
           break;
         }
@@ -9430,6 +9432,7 @@ function tep_get_notice_info($return_type = 0)
           $micro_notice_array['created_at'] = $micro_notice['created_at'];
           $micro_notice_array['icon'] = $micro_notice['icon'];
           $micro_notice_array['bm_id'] = $micro_notice['bm_id'];
+          $micro_notice_array['date_update'] = $micro_notice['date_update'];
           unset($notice_id_array[array_search($micro_notice['id'],$notice_id_array)]);
           break;
         }else{
@@ -9445,6 +9448,7 @@ function tep_get_notice_info($return_type = 0)
             $micro_notice_array['created_at'] = $micro_notice['created_at'];
             $micro_notice_array['icon'] = $micro_notice['icon'];
             $micro_notice_array['bm_id'] = $micro_notice['bm_id'];
+            $micro_notice_array['date_update'] = $micro_notice['date_update'];
             unset($notice_id_array[array_search($micro_notice['id'],$notice_id_array)]);
             break;
           }
@@ -9674,11 +9678,11 @@ function tep_get_notice_info($return_type = 0)
     $icon_query = tep_db_query("select pic_name,pic_alt from ". TABLE_CUSTOMERS_PIC_LIST ." where id='".$micro_notice_array['icon']."'");
     $icon_array = tep_db_fetch_array($icon_query);
     tep_db_free_result($icon_query);
-    $html_str .= '<div style="float:left; width:16px;margin:3px 8px 0 8px;">';
+    $html_str .= '<div id="icon_images_id" style="float:left; width:16px;margin:3px 8px 0 8px;">';
     $html_str .= $micro_notice_array['icon'] != 0 ? tep_image(DIR_WS_IMAGES.'icon_list/'.$icon_array['pic_name'],$icon_array['pic_alt']) : '';
     $html_str .= '</div>';
 
-    $html_str .= '<a href="'.tep_href_link(FILENAME_BUSINESS_MEMO,'cID='.$micro_notice_array['bm_id']).'">'.(mb_strlen($micro_notice_array['title']) > 30 ? mb_substr($micro_notice_array['title'],0,30,'utf-8').'...' : $micro_notice_array['title']).'</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'; 
+    $html_str .= '<a href="'.tep_href_link(FILENAME_BUSINESS_MEMO,'cID='.$micro_notice_array['bm_id']).'"><span id="memo_contents">'.(mb_strlen($micro_notice_array['title']) > 30 ? mb_substr($micro_notice_array['title'],0,30,'utf-8').'...' : $micro_notice_array['title']).'</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'; 
     $html_str .= '&nbsp;<span id="leave_time_'.$micro_notice_array['id'].'" style="display:none;">'.$leave_date.'</span>';
     $html_str .= '</td>'; 
     $html_str .= '<td align="right" id="alert_close">'; 
@@ -9688,9 +9692,10 @@ function tep_get_notice_info($return_type = 0)
     $html_str .= '</tr>'; 
     $html_str .= '</table>'; 
     $html_str .= '<input type="hidden" value="'.$more_single.'" name="more_single" id="more_single">'; 
+    $html_str .= '<input type="hidden" value="'.$micro_notice_array['date_update'].'" name="update_time" id="update_time_id">';
     
     if ($return_type == 1) {
-      return $more_single.'|||'.$leave_time.'|||'.$micro_notice_array['id'].'|||'.$html_str; 
+      return $more_single.'|||'.$leave_time.'|||'.$micro_notice_array['id'].'|||'.$html_str.'|||'.($micro_notice_array['icon'] != 0 ? tep_image(DIR_WS_IMAGES.'icon_list/'.$icon_array['pic_name'],$icon_array['pic_alt']) : '').'|||'.(mb_strlen($micro_notice_array['title']) > 30 ? mb_substr($micro_notice_array['title'],0,30,'utf-8').'...' : $micro_notice_array['title']).'|||'.$micro_notice_array['date_update']; 
     }
     return $html_str;
   }
@@ -10463,4 +10468,30 @@ function tep_get_radices($pid){
     }else{
       return 0;
     }
+}
+
+/*-----------------------------------
+    功能: 删除超时的未认证顾客 
+    参数: 无 
+    返回值: 无 
+-----------------------------------*/
+function tep_customers_not_certified_timeout()
+{
+  $customers_id_array = array();
+  $customers_query = tep_db_query("select customers_id from ".TABLE_CUSTOMERS." where is_active = '0' and datediff(now(),from_unixtime(send_mail_time,'%Y-%m-%d %H:%i:%s'))>3");
+  while($customers_array = tep_db_fetch_array($customers_query)){
+ 
+    $customers_id_array[] = $customers_array['customers_id'];  
+  }
+  tep_db_free_result($customers_query);
+  $customers_id_str = implode(',',$customers_id_array);
+
+  if(!empty($customers_id_array)){ 
+    //删除关联数据
+    tep_db_query("delete from ".TABLE_CUSTOMERS." where customers_id in (".$customers_id_str.")");
+    tep_db_query("delete from ".TABLE_CUSTOMERS_INFO." where customers_info_id in (".$customers_id_str.")");
+    tep_db_query("delete from ".TABLE_ADDRESS_BOOK." where customers_id in (".$customers_id_str.")");
+    tep_db_query("delete from ".TABLE_CUSTOMERS_BASKET." where customers_id in (".$customers_id_str.")");
+    tep_db_query("delete from ".TABLE_CUSTOMERS_BASKET_OPTIONS." where customers_id in (".$customers_id_str.")"); 
+  }
 }

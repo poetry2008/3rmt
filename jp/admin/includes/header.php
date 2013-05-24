@@ -177,6 +177,7 @@ function show_head_notice(no_type)
             } 
           }
 
+          var update_time_id = $("#update_time_id").val();
           if (document.getElementById('leave_time_'+data_info[2])) {
             if (data_info[0] != document.getElementById('more_single').value) {
               $('#show_head_notice').html(data_info[3]); 
@@ -199,6 +200,8 @@ function show_head_notice(no_type)
             $("#alarm_id_"+data_info[4]).html('OFF'); 
           }
           $("#alarm_user_"+data_info[4]).html(data_info[6]+'&nbsp;<?php echo HEADER_TEXT_ALERT_LINK;?>');
+          $("#icon_images_id").html(data_info[4]);
+          $("#memo_contents").html(data_info[5]);
         } else {
           $('#show_head_notice').html(data); 
           orgin_bg = document.getElementById('leave_time_'+data_info[2]).parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.background; 
@@ -208,7 +211,7 @@ function show_head_notice(no_type)
         }
         
         if (no_type == 1) {   
-          if(alert_update_id != data_info[2] && notice_new_flag == true){
+          if((alert_update_id != data_info[2] && notice_new_flag == true) || (data_info[6] > update_time_id)){
             $("#show_all_notice").hide();
             $('#alert_buttons').css('background-color','darkred');
             $('#alert_time').css('background-color','darkred');

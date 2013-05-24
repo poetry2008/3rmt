@@ -9,6 +9,8 @@
   require(DIR_WS_CLASSES . 'currencies.php');
   require(DIR_WS_CLASSES . 'payment.php');
   include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .  '/default.php');
+  //删除超时的未转正式的预约订单
+  tep_preorders_to_orders_timeout();
   if (isset($_GET['keywords'])) {
     $_GET['keywords'] = tep_db_prepare_input($_GET['keywords']);
   }
@@ -949,13 +951,13 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
         </td>
       </tr>
       <?php 
-        $computers = tep_get_computers();
-        $o2c       = tep_get_computers_by_preorders_id($order->info['orders_id']);
-        if ($computers) {
+        $buttons = tep_get_buttons();
+        $o2c       = tep_get_buttons_by_preorders_id($order->info['orders_id']);
+        if ($buttons) {
       ?> 
       <tr><td>
-      <?php foreach ($computers as $computer) { ?>
-          <div id="orders_alert_<?php echo $computer['computers_id'];?>" onclick="preorders_computers(this, <?php echo $computer['computers_id'];?>, '<?php echo $order->info['orders_id'];?>')" class="<?php echo in_array($computer['computers_id'], $o2c) ? 'orders_computer_checked' : 'orders_computer_unchecked' ;?>"><?php echo $computer['computers_name'];?></div>
+      <?php foreach ($buttons as $button) { ?>
+          <div id="orders_alert_<?php echo $button['buttons_id'];?>" onclick="preorders_buttons(this, <?php echo $button['buttons_id'];?>, '<?php echo $order->info['orders_id'];?>')" class="<?php echo in_array($button['buttons_id'], $o2c) ? 'orders_buttons_checked' : 'orders_buttons_unchecked' ;?>"><?php echo $button['buttons_name'];?></div>
       <?php 
         } 
       ?>
@@ -998,7 +1000,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                 </tr>
                 <tr>
                   <td class="main" valign="top"><?php echo ENTRY_CUSTOMER; ?></td>
-                  <td class="main" style="text-decoration: underline; "><a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, 'action=edit&cID='.$order->customer['id']);?>"><?php echo $order->customer['name']; ?></a></td>
+                  <td class="main" style="text-decoration: underline; "><a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, 'search='.$order->customer['id']);?>"><?php echo $order->customer['name']; ?></a></td>
                 </tr>
                 <tr>
                   <td class="main"><?php echo ENTRY_EMAIL_ADDRESS; ?></td>
@@ -1607,7 +1609,9 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
           if(count($orders_explode_all_array) > 1){
 
             if(strlen(trim($orders_explode_array[1])) == 0){ 
-              unset($orders_explode_all_array[0]);
+              if(count($orders_explode_array) > 1){
+                unset($orders_explode_all_array[0]);
+              }
               $orders_history_comment = implode("\n",$orders_explode_all_array); 
             }else{ 
               $orders_temp_str = end($orders_explode_all_array);
@@ -3055,7 +3059,7 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
   ?>
           <a style="text-decoration:underline;" href="javascript:void(0);">
   <?php } else { ?>
-          <a style="text-decoration:underline;" href="<?php echo tep_href_link('customers.php', 'page=1&cID=' .  tep_output_string_protected($orders['customers_id']) .  '&action=edit');?>">
+          <a style="text-decoration:underline;" href="<?php echo tep_href_link('customers.php', 'search=' .  tep_output_string_protected($orders['customers_id']));?>">
   <?php }?>
           <?php 
   if ($orders['is_active'] == '0') {
