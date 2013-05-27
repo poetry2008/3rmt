@@ -3046,8 +3046,11 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   while($userslist= tep_db_fetch_array($sites_id)){
     $site_arr = $userslist['site_permission']; 
   }
+  $sites_sql = tep_db_query("SELECT * FROM `sites`");
+  while($sites_row = tep_db_fetch_array($sites_sql)){
+     $show_site_arr[] = $sites_row['id']; 
+  }
   $site_array = explode(',',$site_arr);
-  $show_site_arr = explode(',','1,2,3,4,5,6,7,8,9,10');
   $notice_box = new notice_box('popup_order_title', 'popup_order_info');
     $rID = tep_db_prepare_input($_GET['rID']);
     $reviews_query = tep_db_query("
@@ -3566,8 +3569,12 @@ if(!in_array($site_id,$site_array)&&$site_id!=-1){
       $show_site_str = tep_get_setting_site_info($_POST['self_page']);
       $sql_site_where = 'site_id in ('.$show_site_str.')';
     }
-     $show_site_str = '0,1,2,3,4,5,6,7,8,9,10';
-     $show_site_arr = explode(',',$show_site_str);
+    $sites_sql = tep_db_query("SELECT * FROM `sites`");
+    $show_site_arr = array();
+    $show_site_arr[0] = '0'; 
+    while($sites_row = tep_db_fetch_array($sites_sql)){
+      $show_site_arr[] = $sites_row['id']; 
+    }
      $latest_news_query_raw = ' select n.news_id, n.headline, n.date_added,
      n.author, n.update_editor, n.latest_update_date, n.content, n.status,
      n.news_image, n.news_image_description, n.isfirst, n.site_id from ' .
@@ -4523,8 +4530,10 @@ if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'
       $show_site_str = tep_get_setting_site_info(FILENAME_CUSTOMERS);
       $sql_site_where = 'site_id in ('.$show_site_str.')';
     }
-    $show_site_str = '1,2,3,4,5,6,7,8,9,10';
-    $show_site_arr = explode(',',$show_site_str);
+    $sites_sql = tep_db_query("SELECT * FROM `sites`");
+    while($sites_row = tep_db_fetch_array($sites_sql)){
+      $show_site_arr[] = $sites_row['id']; 
+    }
     $customers_query_raw = "
       select c.customers_id, 
              c.site_id,
