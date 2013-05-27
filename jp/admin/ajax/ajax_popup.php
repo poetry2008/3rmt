@@ -4764,7 +4764,7 @@ if($_GET['cID'] != -1){
     if($_GET['cID'] == -1){
     $customers_guest_row[]['text'] = array(
          array('params' => 'nowrap="nowrap" width="30%"','text' => '<input type="hidden" id="hidden_cid" value="'.$_GET['cID'].'"><input type="hidden" id="hidden_page" value="'.$_GET['page'].'">'.TEXT_GUEST_CHK),
-         array('text' => '<input '.$guest_member.'type="radio" class="td_input" name="guest_radio" value="0" '.($disabled?$disabled:$is_active_single).' onclick="check_guest(this.value)">'.TEXT_MEMBER.'<input type="radio" '.($disabled?$disabled:$is_active_single).' '.$guest_no_member.' name="guest_radio" class="td_input" value="1" onclick="check_guest(this.value)">'.TEXT_NO_MEMBER)
+         array('text' => '<input type="radio" '.($disabled?$disabled:$is_active_single).' '.$guest_no_member.' name="guest_radio" class="td_input" value="1" onclick="check_guest(this.value)">'.TEXT_NO_MEMBER.'<input '.$guest_member.'type="radio" class="td_input" name="guest_radio" value="0" '.($disabled?$disabled:$is_active_single).' onclick="check_guest(this.value)">'.TEXT_MEMBER)
        );
     }else{
       if(isset($cInfo->customers_guest_chk) && $cInfo->customers_guest_chk == 0){
