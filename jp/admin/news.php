@@ -596,10 +596,11 @@ require("includes/note_js.php");
           'params' => 'class="dataTableContent" align="center"',
           'text'   => $latest_news_isfirst
           );
+      $news_date_info = (!empty($latest_news['latest_update_date']))?date('Y-m-d H:i:s',$latest_news['latest_update_date']):$latest_news['date_added'];
       $news_info[] = array(
           'params' => 'class="dataTableContent" align="right"',
           'text'   => '<a href="javascript:void(0)"
-          onclick="show_latest_news(this,'.$_GET['page'].','.$latest_news['news_id'].',\''.(isset($_GET['site_id'])&&$_GET['site_id']!=''?($_GET['site_id']):'-1').'\','.(isset($latest_news['site_id'])?$latest_news['site_id']:'-1').')">' .  tep_get_signal_pic_info(date('Y-m-d H:i:s',$latest_news['latest_update_date'])). '</a>'
+          onclick="show_latest_news(this,'.$_GET['page'].','.$latest_news['news_id'].',\''.(isset($_GET['site_id'])&&$_GET['site_id']!=''?($_GET['site_id']):'-1').'\','.(isset($latest_news['site_id'])?$latest_news['site_id']:'-1').')">' .  tep_get_signal_pic_info($news_date_info). '</a>'
           );
   $news_table_row[] = array('params' => $news_params, 'text' => $news_info);
   } 

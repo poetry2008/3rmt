@@ -4,6 +4,17 @@
  */
 require('includes/application_top.php');
 require(DIR_FS_ADMIN . '/classes/notice_box.php');
+$is_u_disabled = false;
+if ($ocertify->npermission != 31) {
+  if (!empty($_SESSION['site_permission'])) {
+    $tmp_u_array = explode(',', $_SESSION['site_permission']);
+    if (in_array('0', $tmp_u_array)) {
+      $is_u_disabled = true;
+    }
+  } else {
+    $is_u_disabled = true;
+  }
+}
 if (isset($_GET['action'])) {
   switch ($_GET['action']) {
   /*-----------------------------------
@@ -366,10 +377,12 @@ function select_all_user()
       }
     } else {
       for (var i = 0; i < document.user_list_form.elements['user_list_id[]'].length; i++) {
-        if (check_flag == true) {
-          document.user_list_form.elements['user_list_id[]'][i].checked = true;
-        } else {
-          document.user_list_form.elements['user_list_id[]'][i].checked = false;
+        if (!document.user_list_form.elements['user_list_id[]'][i].disabled) {
+          if (check_flag == true) {
+            document.user_list_form.elements['user_list_id[]'][i].checked = true;
+          } else {
+            document.user_list_form.elements['user_list_id[]'][i].checked = false;
+          }
         }
       }
     }
@@ -728,19 +741,17 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
         </tr>
         <tr>
           <td>
-            <div id="tep_site_filter">
-            <span class="site_filter_selected"><a href="javascript:void(0);">all</a></span> 
             <?php
               $site_list_array = array(); 
-              $site_list_array[0] = 'all';   
+              $show_site_list_array = array(); 
               $site_list_info_query = tep_db_query("select * from ".TABLE_SITES);    
                
               while ($site_list_info = tep_db_fetch_array($site_list_info_query)) {
                 $site_list_array[$site_list_info['id']] = $site_list_info['romaji']; 
-                 echo '<span class="site_filter_unselected"><a href="javascript:void(0);">'.$site_list_info['romaji'].'</a></span>&nbsp;'; 
+                $show_site_list_array[] = $site_list_info['id']; 
               }
+              echo tep_show_site_filter(FILENAME_USERS, false, $show_site_list_array); 
             ?>
-            </div>
             <div id="show_popup_info" style="background-color:#FFFF00;position:absolute;width:70%;min-width:550px;margin-left:0;display:none;"></div> 
             <div id="toggle_width" style="min-width:726px;"></div>
             <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -786,7 +797,7 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                     
                     $user_list_row[] = array(
                         'params' => 'class="dataTableContent"', 
-                        'text' => '<input type="checkbox" name="user_list_id[]" value="'.$user_list_info['userid'].'">' 
+                        'text' => '<input type="checkbox" name="user_list_id[]" value="'.$user_list_info['userid'].'"'.(($is_u_disabled)?' disabled="disabled"':'').'>' 
                         ); 
                     $user_list_row[] = array(
                         'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id')).'user_info_id='.$user_list_info['userid']).'\'"', 
