@@ -196,6 +196,13 @@
 <script language="javascript" src="includes/javascript/jquery.form.js"></script>
 <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
 <script type="text/javascript">
+$(document).ready(function() {
+  $(document).keyup(function(event) {
+    if (event.which == 13) {
+      search_email_check();
+    } 
+  });
+});
 <?php //检测相应网站下的电子邮箱是否存在?>
 function search_email_check(){
 
@@ -549,7 +556,7 @@ require("includes/note_js.php");
   $url_action = isset($_GET['oID']) ? '<input type="hidden" name="oID" value="'.$_GET['oID'].'">' : '';
   echo '<form name="email_check" action="' . $PHP_SELF . '" method="GET">' . "\n";
   echo '<p class=main>'.CREATE_ORDER_SEARCH_TEXT.'<br>';
-  echo CREATE_ORDER_EMAIL_TEXT.'&nbsp;<input type="text" id="keyword" name="Customer_mail" size="40" value="'.$_GET['Customer_mail'].'">'.tep_site_pull_down_menu('', false).'&nbsp;&nbsp;<input type="button" value="  '.CREATE_ORDER_SEARCH_BUTTON_TEXT.'  " onclick="search_email_check();">'.$url_action.'</p>' . "\n";
+  echo CREATE_ORDER_EMAIL_TEXT.'&nbsp;<input type="text" id="keyword" name="Customer_mail" size="40" value="'.$_GET['Customer_mail'].'"><input type="text" name="email_submit" style="display:none;">'.tep_site_pull_down_menu('', false).'&nbsp;&nbsp;<input type="button" value="  '.CREATE_ORDER_SEARCH_BUTTON_TEXT.'  " onclick="search_email_check();">'.$url_action.'</p>' . "\n";
   echo '</form>' . "\n";
 ?>
   <br>
