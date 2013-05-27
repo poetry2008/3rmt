@@ -4741,15 +4741,6 @@ if($_GET['cID'] != -1){
     $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
     $heading[] = array('align' => 'left', 'text' => ($_GET['cID'] != -1?$cInfo->customers_firstname.$cInfo->customers_lastname:HEADING_TITLE).'&nbsp;&nbsp;');
     $heading[] = array('align' => 'right', 'text' => $page_str);
-    if($_GET['cID'] == -1){
-    $contents[]['text'] = array(
-         array('params' => 'colspan="3"','text' => '<input type="hidden" id="check_is_active" value="1">')
-       );
-    }else{
-     $contents[]['text'] = array(
-         array('params' => 'colspan="3"','text' => '<input type="hidden" id="check_is_active" value="0">')
-       );
-    }
     if($_GET['cID'] != -1){
     if(isset($cInfo->customers_guest_chk) && $cInfo->customers_guest_chk == 0){
          $guest_member = 'checked=""';
@@ -4761,6 +4752,16 @@ if($_GET['cID'] != -1){
     }
      $customers_guest_row = array();
      $customers_gues_params = array('width' => '100%', 'border' => '0', 'cellspacing' => '0', 'cellpadding' => '0');
+    if($_GET['cID'] == -1){
+    $customers_guest_row[]['text'] = array(
+         array('params' => 'colspan="3"','text' => '<input type="hidden" id="check_is_active" value="1">')
+       );
+    }else{
+     $customers_guest_row[]['text'] = array(
+         array('params' => 'colspan="3"','text' => '<input type="hidden" id="check_is_active" value="0">')
+       );
+    }
+
     if($_GET['cID'] == -1){
     $customers_guest_row[]['text'] = array(
          array('params' => 'nowrap="nowrap" width="30%"','text' => '<input type="hidden" id="hidden_cid" value="'.$_GET['cID'].'"><input type="hidden" id="hidden_page" value="'.$_GET['page'].'">'.TEXT_GUEST_CHK),
