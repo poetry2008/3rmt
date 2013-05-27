@@ -51,4 +51,7 @@ define('CREATE_PREORDER_PREDATE', '有效期限');
 define('CREATE_PREORDER_PAYMENT_LIST_DEFAULT', '请选择支付方式');
 define('TABLE_HEADING_PRODUCTS_PRICE', '单价');
 define('ORDERS_PRODUCTS','订购商品');
+define('TEXT_CREATE_CUSTOMERS_CONFIRM','该邮箱地址不存在。需要创建顾客吗？');
+define('TEXT_MUST_ENTER','请输入。');
+define('TEXT_EMAIL_ADDRESS_ERROR','输入的邮箱地址不正确！');
 ?>

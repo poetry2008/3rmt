@@ -134,7 +134,7 @@ function resize_option_page()
 }
 
 <?php //删除动作?>
-function select_buttons_change(value,buttons_list_id)
+function select_buttons_change(value,buttons_list_id,c_permission)
 {
   sel_num = 0;
   if (document.edit_buttons_form.elements[buttons_list_id].length == null) {
@@ -152,8 +152,28 @@ function select_buttons_change(value,buttons_list_id)
 
   if(sel_num == 1){
     if (confirm('<?php echo TEXT_BUTTONS_EDIT_CONFIRM;?>')) {
-      document.edit_buttons_form.action = "<?php echo FILENAME_BUTTONS.'?action=delete'.($_GET['page'] != '' ? '&page='.$_GET['page'] : '');?>";
-      document.edit_buttons_form.submit(); 
+      if (c_permission == 31) {
+        document.edit_buttons_form.action = "<?php echo FILENAME_BUTTONS.'?action=delete'.($_GET['page'] != '' ? '&page='.$_GET['page'] : '');?>";
+        document.edit_buttons_form.submit(); 
+      } else {
+        $.ajax({
+          url: 'ajax_orders.php?action=getallpwd',   
+          type: 'POST',
+          dataType: 'text',
+          async: false,
+          success: function(msg) {
+            pwd_list_array = msg.split(','); 
+            var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+            if (in_array(input_pwd_str, pwd_list_array)) {
+              document.edit_buttons_form.action = "<?php echo FILENAME_BUTTONS.'?action=delete'.($_GET['page'] != '' ? '&page='.$_GET['page'] : '');?>";
+              document.edit_buttons_form.submit(); 
+            } else {
+              document.getElementsByName("edit_buttons_list")[0].value = 0;
+              alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+            }
+          }
+        });
+      }
     }else{
 
       document.getElementsByName("edit_buttons_list")[0].value = 0;
@@ -255,7 +275,7 @@ function hidden_info_box(){
 }
 
 <?php //buttons内容保存时的验证?>
-function edit_buttons_check(action){
+function edit_buttons_check(action, c_permission){
 
   var buttons_name = document.getElementsByName("buttons_name")[0];
   var buttons_name_value = buttons_name.value;
@@ -266,20 +286,76 @@ function edit_buttons_check(action){
     $("#buttons_name_error").html('&nbsp;<font color="#FF0000"><?php echo TEXT_BUTTONS_MUST_INPUT;?></font>');
   }else{
     if(action == 'save'){
-      document.edit_buttons.action = '<?php echo FILENAME_BUTTONS;?>?action='+action;
-      document.edit_buttons.submit();
+      if (c_permission == 31) {
+        document.edit_buttons.action = '<?php echo FILENAME_BUTTONS;?>?action='+action;
+        document.edit_buttons.submit();
+      } else {
+        $.ajax({
+          url: 'ajax_orders.php?action=getallpwd',   
+          type: 'POST',
+          dataType: 'text',
+          async: false,
+          success: function(msg) {
+            pwd_list_array = msg.split(','); 
+            var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+            if (in_array(input_pwd_str, pwd_list_array)) {
+              document.edit_buttons.action = '<?php echo FILENAME_BUTTONS;?>?action='+action;
+              document.edit_buttons.submit();
+            } else {
+              alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+            }
+          }
+        });
+      }
     }else{
-      document.create_buttons.action = '<?php echo FILENAME_BUTTONS;?>?action='+action; 
-      document.create_buttons.submit();
+      if (c_permission == 31) {
+        document.create_buttons.action = '<?php echo FILENAME_BUTTONS;?>?action='+action; 
+        document.create_buttons.submit();
+      } else {
+        $.ajax({
+          url: 'ajax_orders.php?action=getallpwd',   
+          type: 'POST',
+          dataType: 'text',
+          async: false,
+          success: function(msg) {
+            pwd_list_array = msg.split(','); 
+            var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+            if (in_array(input_pwd_str, pwd_list_array)) {
+              document.create_buttons.action = '<?php echo FILENAME_BUTTONS;?>?action='+action; 
+              document.create_buttons.submit();
+            } else {
+              alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+            }
+          }
+        });
+      }
     } 
   }
 }
 
 <?php //删除buttons?>
-function delete_buttons(){
-
-  document.edit_buttons.action = '<?php echo FILENAME_BUTTONS;?>?action=deleteconfirm';
-  document.edit_buttons.submit();
+function delete_buttons(c_permission){
+  if (c_permission == 31) {
+    document.edit_buttons.action = '<?php echo FILENAME_BUTTONS;?>?action=deleteconfirm';
+    document.edit_buttons.submit();
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          document.edit_buttons.action = '<?php echo FILENAME_BUTTONS;?>?action=deleteconfirm';
+          document.edit_buttons.submit();
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+  }
 }
 
 <?php //新建buttons?>
@@ -419,9 +495,9 @@ require("includes/note_js.php");
                   <tr>
                   <td class="smallText" valign="top">
                   <?php
-                  if($ocertify->npermission == 15 && tep_db_num_rows($buttons_query) > 0){
+                  if($ocertify->npermission >= 15 && tep_db_num_rows($buttons_query) > 0){
                     echo '<div class="td_box">';
-                    echo '<select name="edit_buttons_list" onchange="select_buttons_change(this.value,\'buttons_list_id[]\');">';
+                    echo '<select name="edit_buttons_list" onchange="select_buttons_change(this.value,\'buttons_list_id[]\',\''.$ocertify->npermission.'\');">';
                     echo '<option value="0">'.TEXT_BUTTONS_EDIT_SELECT.'</option>';
                     echo '<option value="1">'.TEXT_BUTTONS_EDIT_DELETE.'</option>';
                     echo '</select>';

@@ -429,7 +429,7 @@ if (r_value == '1') {
    delete_select_customers(r_str);
    }
 }
-$(document).ready(function() {
+$(document).ready(function() { 
   <?php //监听按键?> 
   $(document).keyup(function(event) {
     if (event.which == 27) {
@@ -750,6 +750,20 @@ require("includes/note_js.php");
 <!-- left_navigation_eof -->
     </table></td>
 <!-- body_text -->
+<script type="text/javascript">
+$(document).ready(function() {
+<?php
+   if(isset($_GET['email_address']) && isset($_GET['sid'])){
+
+  ?>
+    $("#create_customers").click();  
+    $("#customers_site_id").val("<?php echo $_GET['sid'];?>");
+    $("#customers_email_address").val('<?php echo $_GET['email_address'];?>');
+  <?php
+   }
+?>
+});
+</script>
     <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2" >
 <?php
   if ($_GET['action'] != 'edit') {
@@ -935,9 +949,9 @@ require("includes/note_js.php");
                        <?php  
                        //通过site_id判断是否允许新建
                        if(array_intersect($show_list_array,$site_array)){
-                       echo '&nbsp;<a href="javascript:void(0)" onclick="show_customers(this,-1,'.$_GET['page'].','.(isset($customers['site_id'])?$customers['site_id']:'-1').')">' .tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>';
+                       echo '&nbsp;<a href="javascript:void(0)" onclick="show_customers(this,-1,'.$_GET['page'].','.(isset($customers['site_id'])?$customers['site_id']:'-1').')">' .tep_html_element_button(IMAGE_NEW_PROJECT,'id="create_customers"') . '</a>';
                        }else{
-                       echo '&nbsp;' .tep_html_element_button(IMAGE_NEW_PROJECT,'disabled="disabled"');
+                       echo '&nbsp;' .tep_html_element_button(IMAGE_NEW_PROJECT,'id="create_customers" disabled="disabled"');
                        }
                        ?>
                      </td>

@@ -5118,8 +5118,10 @@ if($_GET['cID'] != -1){
   $buttons = array();
 
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_NEW_PROJECT, 'onclick="create_memo(this);"').'</a>';
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="edit_memo_check();"').'</a>'; 
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if(confirm(\''.TEXT_MEMO_CLOSE_CONFIRM.'\')){close_memo();}"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="edit_memo_check(\''.$ocertify->npermission.'\');"').'</a>'; 
+  if ($ocertify->npermission >= 15) {
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if(confirm(\''.TEXT_MEMO_CLOSE_CONFIRM.'\')){close_memo(\''.$ocertify->npermission.'\');}"').'</a>'; 
+  }
 
   if (!empty($button)) {
     $buttons = array('align' => 'center', 'button' => $button); 
@@ -5241,7 +5243,7 @@ if($_GET['cID'] != -1){
   //底部内容
   $buttons = array();
   
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="create_memo_check();"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="create_memo_check(\''.$ocertify->npermission.'\');"').'</a>'; 
    
   if (!empty($button)) {
     $buttons = array('align' => 'center', 'button' => $button); 
@@ -5351,9 +5353,9 @@ if($_GET['cID'] != -1){
   $buttons = array();
 
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_NEW_PROJECT, $disabled.'onclick="create_buttons_info(this);"').'</a>';
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, $disabled.'id="button_save" onclick="edit_buttons_check(\'save\');"').'</a>'; 
-  if($ocertify->npermission == 15){
-    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, $disabled.'onclick="if(confirm(\''.TEXT_INFO_DELETE_INTRO.'\')){delete_buttons();}"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, $disabled.'id="button_save" onclick="edit_buttons_check(\'save\', \''.$ocertify->npermission.'\');"').'</a>'; 
+  if($ocertify->npermission >= 15){
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, $disabled.'onclick="if(confirm(\''.TEXT_INFO_DELETE_INTRO.'\')){delete_buttons(\''.$ocertify->npermission.'\');}"').'</a>'; 
   }
 
   if (!empty($button)) {
@@ -5404,7 +5406,7 @@ if($_GET['cID'] != -1){
   //底部内容
   $buttons = array();
 
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="edit_buttons_check(\'insert\');"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="edit_buttons_check(\'insert\', \''.$ocertify->npermission.'\');"').'</a>'; 
 
   if (!empty($button)) {
     $buttons = array('align' => 'center', 'button' => $button); 

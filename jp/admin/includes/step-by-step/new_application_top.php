@@ -1,8 +1,5 @@
 <?php
 //定义文件名常量 
-define('FILENAME_CREATE_ACCOUNT', 'create_account.php');
-define('FILENAME_CREATE_ACCOUNT_PROCESS', 'create_account_process.php');
-define('FILENAME_CREATE_ACCOUNT_SUCCESS', 'create_account_success.php');
 define('FILENAME_CREATE_ORDER_PROCESS', 'create_order_process.php');
 define('FILENAME_EDIT_CREATE_ORDER', 'edit_create_order.php');
 define('FILENAME_CREATE_ORDER', 'create_order.php');
