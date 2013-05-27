@@ -10409,6 +10409,7 @@ function tep_show_site_filter($filename,$ca_single=false,$show_all=array()){
 -----------------------------------*/
 function tep_get_setting_site_info($current_page)
 {
+  global $ocertify;
   $site_list_array = array(); 
   $site_list_query = tep_db_query("select * from sites");
   $site_list_array[] = 0; 
@@ -10416,7 +10417,7 @@ function tep_get_setting_site_info($current_page)
     $site_list_array[] = $site_list_info['id']; 
   }
   sort($site_list_array); 
-  $exists_site_query = tep_db_query("select * from show_site where user = '".$_SESSION['loginuid']."' and page = '".$current_page."'");
+  $exists_site_query = tep_db_query("select * from show_site where user = '".$ocertify->auth_user."' and page = '".$current_page."'");
   $exists_site = tep_db_fetch_array($exists_site_query);
   if ($exists_site) {
     $return_site = explode('-', $exists_site['site']);
