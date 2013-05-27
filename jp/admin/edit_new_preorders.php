@@ -95,6 +95,8 @@
   $payment_method_romaji = payment::changeRomaji($payment_method,PAYMENT_RETURN_TYPE_CODE);
   $payment_modules = payment::getInstance($_SESSION['create_preorder']['orders']['site_id']);
   $validateModule = $payment_modules->admin_confirmation_check($payment_method);
+  $comments_text = tep_db_input($_POST['comments_text']);
+  $comment_arr = $payment_modules->dealComment($payment_method,$comments_text);
 
   if ($validateModule['validated']===false){
 
@@ -455,7 +457,7 @@
       }
       
       // orders_status_history
-      $comment_str = $cpayment->admin_deal_comment($_POST['payment_method']);
+      $comment_str = is_array($comment_arr) ? $comment_arr['comment'] : $comments_text;
 
       if (DEFAULT_PREORDERS_STATUS_ID == $_POST['status']) {
         $sql_data_array = array(
@@ -760,6 +762,10 @@ $(document).ready(function(){
   });
   $("select[name='payment_method']").change(function(){
     hidden_payment();
+  });
+  $("textarea[name='comments_text']").blur(function(){
+    var comments_text = document.getElementsByName("comments_text")[0].value;
+    orders_session('comments_text',comments_text);
   });
 });
 <?php //添加输入框?>
@@ -1990,6 +1996,10 @@ if (($action == 'edit') && ($order_exists == true)) {
         <tr>
           <td class="main"><?php echo EDIT_ORDERS_RECORD_TEXT; ?></td>
           <td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', isset($_SESSION['orders_update_products'][$_GET['oID']]['notify_comments']) && $_SESSION['orders_update_products'][$_GET['oID']]['notify_comments'] == 1 ? true: false); ?>&nbsp;&nbsp;<font color="#FF0000;"><?php echo EDIT_ORDERS_RECORD_READ; ?></font></td>
+        </tr>
+        <tr>
+          <td class="main" valign="top"><?php echo TABLE_HEADING_COMMENTS;?>:</td>
+          <td class="main"><?php echo tep_draw_textarea_field('comments_text', 'hard', '74', '5', $_SESSION['orders_update_products'][$_GET['oID']]['comments_text'],'style=" font-family:monospace; font-size:12px; width:100%;"'); ?></td>
         </tr>
         <?php } ?>
       </table>

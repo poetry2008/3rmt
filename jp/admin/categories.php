@@ -922,7 +922,6 @@ if (isset($_GET['action']) && $_GET['action']) {
       $products_attention_5 = tep_db_prepare_input($_POST['products_attention_5']);
 
       $sql_data_array = array(
-          'products_real_quantity' => tep_db_prepare_input($_POST['products_real_quantity']),
           'products_model' => tep_db_prepare_input($_POST['products_model']),
           'products_attention_1_1' => $products_attention_1_1,
           'products_attention_1_2' => $products_attention_1_2,
@@ -976,6 +975,13 @@ if (isset($_GET['action']) && $_GET['action']) {
 
 
       if ($_GET['action'] == 'insert_product') {
+        if(isset($products_attention_1_3)
+            &&$products_attention_1_3!=0
+            &&$products_attention_1_3!=''){
+          $sql_data_array['products_real_quantity'] = tep_db_prepare_input($_POST['products_real_quantity'])*$products_attention_1_3;
+        }else{
+          $sql_data_array['products_real_quantity'] = tep_db_prepare_input($_POST['products_real_quantity']);
+        }
         if ($site_id == 0) {
           $option_group_raw = tep_db_query('select id from '.TABLE_OPTION_GROUP.' where name = \''.$_POST['option_keyword'].'\''); 
           $option_group_res = tep_db_fetch_array($option_group_raw);
@@ -989,6 +995,7 @@ if (isset($_GET['action']) && $_GET['action']) {
         $products_id = tep_db_insert_id();
         tep_db_query("insert into " . TABLE_PRODUCTS_TO_CATEGORIES . " (products_id, categories_id) values ('" . $products_id . "', '" . $current_category_id . "')");
       } elseif ($_GET['action'] == 'update_product') {
+        $sql_data_array['products_real_quantity'] = tep_db_prepare_input($_POST['products_real_quantity']);
         if ($site_id == 0) {
           $option_group_raw = tep_db_query('select id from '.TABLE_OPTION_GROUP.' where name = \''.$_POST['option_keyword'].'\''); 
           $option_group_res = tep_db_fetch_array($option_group_raw);
@@ -2217,13 +2224,17 @@ $('#show_popup_info').css('display','block');
 }
 <?php //弹出更新商品价格/进货/库存页?>
 function show_update_info(ele, pid, update_type, cnt_num) {
-  if (update_type == '1') {
+  if (update_type == '0') {
+    origin_quantity = $('#quantity_real_'+pid).html(); 
+    url_str = 'ajax.php?action=update_real_quantity'; 
+    data_str = 'pid='+pid+"&origin_num="+origin_quantity;
+  } else if (update_type == '1') {
     origin_quantity = $('#virtual_quantity_'+pid).html(); 
     url_str = 'ajax.php?action=update_virtual_quantity';
     data_str = 'pid='+pid+"&origin_num="+origin_quantity;
   } else if (update_type == '2') {
     origin_quantity = $('#quantity_'+pid).html(); 
-    url_str = 'ajax.php?action=update_real_quantity'; 
+    url_str = 'ajax.php?action=update_quantity'; 
     data_str = 'pid='+pid+"&origin_num="+origin_quantity;
   } else {
     origin_price = $('#h_edit_p_'+pid).html(); 
@@ -2242,7 +2253,9 @@ if(ele!=''){
 info_box_set(ele, '<?php echo $belong;?>');
 }
 $('#show_popup_info').css('display','block');
-if (update_type == '1') {
+if(update_type = '0'){
+$('#real_pro_num').select().focus();
+}else if (update_type == '1') {
 $('#virtual_pro_num').select().focus();
 } else if (update_type == '2') {
 $('#real_pro_num').select().focus();
@@ -2526,6 +2539,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 $site_id = isset($_GET['site_id']) ?$_GET['site_id']:0;
                 $product_query = tep_db_query("
                     select pd.products_name, 
+                    p.products_attention_1_3,
                     pd.products_description, 
                     pd.products_url, 
                     pd.romaji, 
@@ -3499,6 +3513,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   $site_id = isset($_GET['site_id']) ? $_GET['site_id'] : '0';
                   $product_query = tep_db_query("
                       select p.products_id, 
+                      p.products_attention_1_3,
                       pd.language_id, 
                       pd.products_name, 
                       pd.products_description, 
@@ -3573,7 +3588,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 echo '</tr>';
                 //show menu end
               } else {
-                echo tep_draw_form($form_action, FILENAME_CATEGORIES, 'cPath=' .  $cPath .  '&pID=' . $_GET['pID'] .  '&page='.$_GET['page'].'&action=' .  $form_action.($_GET['search']?'&search='.$_GET['search']:''), 'post', 'enctype="multipart/form-data" onSubmit="return mess();"');
+                echo tep_draw_form($form_action, FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&pID=' . $_GET['pID'] . '&page='.$_GET['page'].'&action=' . $form_action.($_GET['search']?'&search='.$_GET['search']:''), 'post', 'enctype="multipart/form-data" onSubmit="return mess();"');
               }
               echo '<input type="hidden" name="site_id" value="'.strval($site_id).'">';
               echo isset($color_image_hedden) ? $color_image_hidden : '';
@@ -4853,6 +4868,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   select p.products_id, 
                          pd.products_name, 
                          p.products_real_quantity + p.products_virtual_quantity as products_quantity,
+                         p.products_attention_1_3,
                          p.products_real_quantity, 
                          p.products_virtual_quantity, 
                          p.products_image,
@@ -4886,6 +4902,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       select p.products_id, 
                       pd.products_name, 
                       p.products_real_quantity + p.products_virtual_quantity as products_quantity, 
+                      p.products_attention_1_3,
                       p.products_real_quantity, 
                       p.products_virtual_quantity, 
                       p.products_image,
@@ -5153,8 +5170,24 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 if (empty($site_id)) {
                   $products_storage_params .= 'class="dataTableContent" align="right" onmouseover=\'this.style.cursor="pointer"\' id=\'virtual_quantity_'.$products['products_id'].'\' onclick="show_update_info(this, '. $products['products_id'].', \'1\', \'1\')"';
                   $products_storage_text .= $imaginary;
-                  $products_inventory_params .= 'class="dataTableContent" align="right" onmouseover=\'this.style.cursor="pointer"\' style="font-weight:bold;" id=\'quantity_'.$products['products_id'].'\' onclick="show_update_info(this, '.$products['products_id'].', \'2\', \'1\')"';
+                  $products_inventory_params .= 'class="dataTableContent" align="right" onmouseover=\'this.style.cursor="pointer"\' style="font-weight:bold;" ';
+                  if(isset($products['products_attention_1_3'])
+                  &&$products['products_attention_1_3']!=0
+                  &&$products['products_attention_1_3']!=1
+                  &&$products['products_attention_1_3']!=''
+                  &&$products['products_real_quantity']!=0){
+                  $products_inventory_text .= '<u id=\'quantity_real_'.$products['products_id'].'\' onclick="show_update_info(this, '.$products['products_id'].', \'0\', \'1\')">';
+                  $products_inventory_text .= tep_get_quantity($products['products_id']);
+                  $products_inventory_text .= '</u>&nbsp;(';
+
+                  $products_inventory_text .= '<u id=\'quantity_'.$products['products_id'].'\' onclick="show_update_info(this, '.$products['products_id'].', \'2\', \'1\')">';
                   $products_inventory_text .= $products['products_real_quantity'];
+                  $products_inventory_text .= '</u>)';
+                  }else{
+                  $products_inventory_text .= '<u id=\'quantity_'.$products['products_id'].'\' onclick="show_update_info(this, '.$products['products_id'].', \'2\', \'1\')">';
+                  $products_inventory_text .= $products['products_real_quantity'];
+                  $products_inventory_text .= '</u>';
+                  }
                 } else {
                   $products_storage_params .= 'class="dataTableContent" align="right" onclick="document.location.href=\''.tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'')).'\';"';
                   $products_storage_text .= $imaginary;
@@ -5401,7 +5434,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 $products_table_content_row[] = array('params'=>$products_status_params, 'text'=>$products_status_text);
                 $products_operation_params .= 'class="dataTableContent" align="right"';
                 $products_operation_text .= '<a href="javascript:void(0)" onclick="show_product_info(\''.$products['products_id'].'\',this)">';
-                
                 if (empty($_GET['site_id'])) {
                   $product_date_info = (tep_not_null($products['products_last_modified']) && ($products['products_last_modified'] != '0000-00-00 00:00:00'))?$products['products_last_modified']:$products['products_date_added'];
                   $products_operation_text .= tep_get_signal_pic_info($product_date_info); 

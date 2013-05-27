@@ -134,6 +134,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('FILENAME_HELP_INFO','help_info.php');
   define('FILENAME_PERSONAL_SETTING','personal_setting.php');
   define('FILENAME_ALERT_LOG','alert_log.php');
+  define('FILENAME_BUSINESS_MEMO','business_memo.php');
 
 // define the database table names used in the project
   define('TABLE_CUSTOMERS_BASKET_OPTIONS', 'customers_basket_options');
@@ -144,9 +145,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
 
 // define the database table names used in the project
   define('TABLE_ALARM', 'alarm');
-  define('TABLE_MICRO_LOGS', 'micro_logs');
   define('TABLE_NOTICE', 'notice');
-  define('TABLE_NOTICE_TO_MICRO_USER', 'notice_to_micro_user');
   define('TABLE_CAMPAIGN', 'campaign');
   define('TABLE_CUSTOMER_TO_CAMPAIGN', 'customer_to_campaign');
   define('TABLE_PREORDERS', 'preorders');
@@ -163,7 +162,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('TABLE_PREORDERS_STATUS_HISTORY', 'preorders_status_history');
   define('TABLE_PREORDERS_TEMP', 'preorders_temp');
   define('TABLE_PREORDERS_TOTAL', 'preorders_total');
-  define('TABLE_PREORDERS_TO_COMPUTERS', 'preorders_to_computers');
+  define('TABLE_PREORDERS_TO_BUTTONS', 'preorders_to_buttons');
   define('TABLE_PWD_CHECK', 'pwd_check');
   define('TABLE_FAQ_CATEGORIES', 'faq_categories');
   define('TABLE_FAQ_QUESTION',  'faq_question');
@@ -252,8 +251,8 @@ define('TABLE_PERMISSIONS','permissions');
   define('TABLE_MAIL_MAGAZINE', 'mail_magazine');
   define('TABLE_ORDERS_MAIL', 'orders_mail');
   define('TABLE_CALENDER', 'calendar');
-  define('TABLE_COMPUTERS',  'computers');
-  define('TABLE_ORDERS_TO_COMPUTERS',  'orders_to_computers');
+  define('TABLE_BUTTONS',  'buttons');
+  define('TABLE_ORDERS_TO_BUTTONS',  'orders_to_buttons');
   define('TABLE_BILL_TEMPLATES',  'bill_templates');
   define('TABLE_ADDRESS','address');
   define('TABLE_ADDRESS_ORDERS','address_orders');
@@ -270,6 +269,7 @@ define('TABLE_PERMISSIONS','permissions');
   define('TABLE_CALENDAR_STATUS','calendar_status');
   define('TABLE_CALENDAR_DATE','calendar_date');
   define('TABLE_SHOW_SITE','show_site');
+  define('TABLE_BUSINESS_MEMO','business_memo');
 // customization for the design layout
   define('BOX_WIDTH', 160); // how wide the boxes should be in pixels (default: 125)
 
@@ -399,7 +399,7 @@ define('TABLE_PERMISSIONS','permissions');
         $_SESSION['language'] = $personal_language_str;
         $_SESSION['text_language'] = $personal_language_str;
       }
-    }   
+    }
   }
 
 // include the language translations

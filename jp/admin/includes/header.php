@@ -162,10 +162,10 @@ function show_head_notice(no_type)
         if (data != '') {
           data_info = data.split('|||');
 
+          var notice_new_flag = true;
           if($("#notice_id_str").val()){
             var notice_id_str = $("#notice_id_str").val();
-            var notice_id_array = new Array();
-            var notice_new_flag = true;
+            var notice_id_array = new Array(); 
             notice_id_array = notice_id_str.split(",");
             for(x in notice_id_array){
 
@@ -177,6 +177,7 @@ function show_head_notice(no_type)
             } 
           }
 
+          var update_time_id = $("#update_time_id").val();
           if (document.getElementById('leave_time_'+data_info[2])) {
             if (data_info[0] != document.getElementById('more_single').value) {
               $('#show_head_notice').html(data_info[3]); 
@@ -198,7 +199,9 @@ function show_head_notice(no_type)
           }else{
             $("#alarm_id_"+data_info[4]).html('OFF'); 
           }
-          $("#alarm_user_"+data_info[4]).html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+data_info[6]+'&nbsp;<?php echo HEADER_TEXT_ALERT_LINK;?>');
+          $("#alarm_user_"+data_info[4]).html(data_info[6]+'&nbsp;<?php echo HEADER_TEXT_ALERT_LINK;?>');
+          $("#icon_images_id").html(data_info[4]);
+          $("#memo_contents").html(data_info[5]);
         } else {
           $('#show_head_notice').html(data); 
           orgin_bg = document.getElementById('leave_time_'+data_info[2]).parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.background; 
@@ -207,8 +210,8 @@ function show_head_notice(no_type)
           }
         }
         
-        if (no_type == 1) {  
-          if(alert_update_id != data_info[2] && notice_new_flag == true){
+        if (no_type == 1) {   
+          if((alert_update_id != data_info[2] && notice_new_flag == true) || (data_info[6] > update_time_id)){
             $("#show_all_notice").hide();
             $('#alert_buttons').css('background-color','darkred');
             $('#alert_time').css('background-color','darkred');
@@ -558,7 +561,7 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
 
       <tr>
       <td class="menu01"><a class="t_link01"
-       href="' . tep_href_link('micro_log.php', '', 'NONSSL') . '"
+       href="' . tep_href_link('business_memo.php', '', 'NONSSL') . '"
       >'.HEADER_TEXT_MICRO_LOG.'</a></td>
       </tr><tr>
       <td class="menu01"><a class="t_link01"

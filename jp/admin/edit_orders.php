@@ -642,10 +642,11 @@ if($address_error == false){
           $pr_quantity = $p['products_real_quantity'];
           $pv_quantity = $p['products_virtual_quantity'];
           // 增加库存
+          $radices = tep_get_radices($order['products_id']);
           if($quantity_difference < 0){
             if ($_POST['update_products_real_quantity'][$orders_products_id]) {
               // 增加实数
-              $pr_quantity = $pr_quantity - $quantity_difference;
+              $pr_quantity = $pr_quantity - $quantity_difference*$radices;
             } else {
               // 增加架空
               $pv_quantity = $pv_quantity - $quantity_difference;
@@ -653,11 +654,11 @@ if($address_error == false){
             // 减少库存
           } else {
             // 实数卖空
-            if ($pr_quantity - $quantity_difference < 0) {
+            if ($pr_quantity - $quantity_difference*$radices < 0) {
               $pr_quantity = 0;
               $pv_quantity += ($pr_quantity - $quantity_difference);
             } else {
-              $pr_quantity -= $quantity_difference;
+              $pr_quantity -= $quantity_difference*$radices;
             }
           }
           if($customer_guest['is_calc_quantity'] != '1') {
@@ -3934,7 +3935,9 @@ if (($action == 'edit') && ($order_exists == true)) {
       if(count($orders_explode_all_array) > 1){
 
        if(strlen(trim($orders_explode_array[1])) == 0){ 
-         unset($orders_explode_all_array[0]);
+         if(count($orders_explode_array) > 1){
+           unset($orders_explode_all_array[0]);
+         }
          $orders_history_comment = implode("\n",$orders_explode_all_array); 
        }else{ 
          $orders_temp_str = end($orders_explode_all_array);

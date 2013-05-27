@@ -8,10 +8,14 @@
   while($userslist= tep_db_fetch_array($sites_id_sql)){
     $site_arr = $userslist['site_permission']; 
   }
+  $show_list_array = array();
   if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
     $sql_site_where = 'site_id in ('.str_replace('-', ',', $_GET['site_id']).')'; 
+    $show_list_array = explode('-',$_GET['site_id']);
   } else {
-    $sql_site_where = 'site_id in ('.tep_get_setting_site_info($_SERVER['PHP_SELF']).')'; 
+    $show_list_str = tep_get_setting_site_info(FILENAME_NEWS);
+    $sql_site_where = 'site_id in ('.$show_list_str.')'; 
+    $show_list_array = explode(',',$show_list_str);
   }
   if(isset($_GET['site_id'])&&$_GET['site_id']==''){
     $_GET['site_id'] = str_replace(',','-',tep_get_setting_site_info($_SERVER['PHP_SELF']));
@@ -327,7 +331,7 @@ function delete_select_news(news_str, c_permission){
          }
 }
 function show_latest_news(ele,page,latest_news_id,site_id,action_sid){
- var self_page = "<?php echo $_SERVER['PHP_SELF'];?>"
+ self_page = "<?php echo $_SERVER['PHP_SELF'];?>"
  $.ajax({
  url: 'ajax.php?&action=edit_latest_news',
  data: {page:page,latest_news_id:latest_news_id,site_id:site_id,action_sid:action_sid,self_page:self_page} ,
@@ -620,10 +624,10 @@ require("includes/note_js.php");
                     <td valign="top" class="smallText">
                     <?php 
                     if($ocertify->npermission >= 15){
-                      echo '<select name="news_action" onchange="news_change_action(this.value, \'news_id[]\');">';
-                      echo '<option value="0">'.TEXT_REVIEWS_SELECT_ACTION.'</option>';   
-                      echo '<option value="1">'.TEXT_REVIEWS_DELETE_ACTION.'</option>';
-                      echo '</select>';
+                    echo '<select name="news_action" onchange="news_change_action(this.value, \'news_id[]\');">';
+                    echo '<option value="0">'.TEXT_REVIEWS_SELECT_ACTION.'</option>';   
+                    echo '<option value="1">'.TEXT_REVIEWS_DELETE_ACTION.'</option>';
+                    echo '</select>';
                     }
                     ?> 
                     </td>
@@ -637,7 +641,13 @@ require("includes/note_js.php");
                   </tr>
                      <tr><td></td><td align="right">
                       <div class="td_button"><?php
-                      echo '&nbsp;<a href="javascript:void(0)" onclick="show_latest_news(this,'.$_GET['page'].',-1,\''.(isset($_GET['site_id'])&&$_GET['site_id']!=''?($_GET['site_id']):'-1').'\','.(isset($latest_news['site_id'])?$latest_news['site_id']:'-1').')">' .tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?>
+                      //通过site_id判断是否允许新建
+                      if(array_intersect($show_list_array,$site_array)){
+                      echo '&nbsp;<a href="javascript:void(0)" onclick="show_latest_news(this,'.$_GET['page'].',-1,\''.(isset($_GET['site_id'])&&$_GET['site_id']!=''?($_GET['site_id']):'-1').'\','.(isset($latest_news['site_id'])?$latest_news['site_id']:'-1').')">' .tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>';
+                      }else{
+                      echo '&nbsp;' .tep_html_element_button(IMAGE_NEW_PROJECT,'disabled="disabled"');
+                      } 
+                      ?>
                     </div>
                      </td></tr>
                                   </table>

@@ -132,7 +132,7 @@ function tep_show_orders_products_info($orders_id) {
       while($pa = tep_db_fetch_array($products_attributes_query)){
         $str .= '<tr><td class="main"><b>'.$pa['products_options'].'：</b></td><td class="main">'.$pa['products_options_values'].'</td></tr>';
       }
-      $names = tep_get_computers_names_by_orders_id($orders['orders_id']);
+      $names = tep_get_buttons_names_by_orders_id($orders['orders_id']);
       if ($names) {
         $str .= '<tr><td class="main"><b>PC：</b></td><td class="main">'.implode('&nbsp;,&nbsp;', $names).'</td></tr>';
       }
@@ -2748,13 +2748,13 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         </td>
         </tr> 
         <?php 
-          $computers = tep_get_computers();
-          $o2c       = tep_get_computers_by_orders_id($order->info['orders_id']);
-          if ($computers) {
+          $buttons = tep_get_buttons();
+          $o2c       = tep_get_buttons_by_orders_id($order->info['orders_id']);
+          if ($buttons) {
         ?> 
           <tr><td>
-          <?php foreach ($computers as $computer) {?>
-          <div id="orders_alert_<?php echo $computer['computers_id'];?>" onclick="orders_computers(this, <?php echo $computer['computers_id'];?>, '<?php echo $order->info['orders_id'];?>');" class="<?php echo in_array($computer['computers_id'], $o2c) ? 'orders_computer_checked' : 'orders_computer_unchecked' ;?>"><?php echo $computer['computers_name'];?></div>
+          <?php foreach ($buttons as $button) {?>
+          <div id="orders_alert_<?php echo $button['buttons_id'];?>" onclick="orders_buttons(this, <?php echo $button['buttons_id'];?>, '<?php echo $order->info['orders_id'];?>');" class="<?php echo in_array($button['buttons_id'], $o2c) ? 'orders_buttons_checked' : 'orders_buttons_unchecked' ;?>"><?php echo $button['buttons_name'];?></div>
         <?php 
           } 
         ?>
@@ -2791,7 +2791,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         </tr>
         <tr>
         <td class="main" valign="top"><?php echo ENTRY_CUSTOMER; ?></td>
-        <td class="main" style="text-decoration: underline; "><a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, 'action=edit&cID='.$order->customer['id']);?>"><?php echo $order->customer['name']; ?></a></td>
+        <td class="main" style="text-decoration: underline; "><a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, 'search='.$order->customer['id']);?>"><?php echo $order->customer['name']; ?></a></td>
         </tr>
         <tr>
         <td class="main"><?php echo ENTRY_EMAIL_ADDRESS; ?></td>
@@ -3475,7 +3475,9 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
               if(count($orders_explode_all_array) > 1){
 
                 if(strlen(trim($orders_explode_array[1])) == 0){ 
-                  unset($orders_explode_all_array[0]);
+                  if(count($orders_explode_array) > 1){
+                    unset($orders_explode_all_array[0]);
+                  }
                   $orders_history_comment = implode("\n",$orders_explode_all_array); 
                 }else{ 
                   $orders_temp_str = end($orders_explode_all_array);
@@ -4979,7 +4981,7 @@ if($c_parent_array['parent_id'] == 0){
             }else{
               echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
                     'order_sort')).
-                'order_sort=site_romaji&order_type=asc')."'>";
+                'order_sort=site_romaji&order_type=desc')."'>";
               echo TABLE_HEADING_SITE;
             }
           }
@@ -5031,7 +5033,7 @@ if($c_parent_array['parent_id'] == 0){
             }else{
               echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
                     'order_sort')).
-                'order_sort=customers_name&order_type=asc')."'>";
+                'order_sort=customers_name&order_type=desc')."'>";
               echo TABLE_HEADING_CUSTOMERS; 
             }
           }
@@ -5083,7 +5085,7 @@ if($c_parent_array['parent_id'] == 0){
             }else{
               echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
                     'order_sort')).
-                'order_sort=ot_total&order_type=asc')."'>";
+                'order_sort=ot_total&order_type=desc')."'>";
               echo TABLE_HEADING_ORDER_TOTAL;
             }
           }
@@ -5135,7 +5137,7 @@ if($c_parent_array['parent_id'] == 0){
             }else{
               echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
                     'order_sort')).
-                'order_sort=torihiki_date&order_type=asc')."'>";
+                'order_sort=torihiki_date&order_type=desc')."'>";
               echo TEXT_ORDER_ORDER_DATE;
             }
           }
@@ -5190,7 +5192,7 @@ if($c_parent_array['parent_id'] == 0){
             }else{
               echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
                     'order_sort')).
-                'order_sort=date_purchased&order_type=asc')."'>";
+                'order_sort=date_purchased&order_type=desc')."'>";
               echo TABLE_HEADING_DATE_PURCHASED; 
             }
           }
@@ -5243,7 +5245,7 @@ if($c_parent_array['parent_id'] == 0){
             }else{
               echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
                     'order_sort')).
-                'order_sort=orders_status_name&order_type=asc')."'>";
+                'order_sort=orders_status_name&order_type=desc')."'>";
               echo TABLE_HEADING_STATUS; 
             }
           }
@@ -5262,6 +5264,12 @@ if($c_parent_array['parent_id'] == 0){
           $oid_is_inpage = false;
         }
         $orders_query = tep_db_query($orders_query_raw);
+        $orders_num = tep_db_num_rows($orders_query);
+
+        if($orders_num == 0){
+
+          echo '<tr><td colspan="12"><font color="red"><b>'.TEXT_DATA_IS_EMPTY.'</b></font></td></tr>';
+        }
         $allorders    = $allorders_ids = array();
         $orders_i = 0;
         //获取订单状态标记的过期警告数组
@@ -5349,7 +5357,7 @@ if($c_parent_array['parent_id'] == 0){
                 <?php } else { ?>
                   <font color="#000">
                     <?php } ?>
-                    <a style="text-decoration:underline;" href="<?php echo tep_href_link('customers.php', 'page=1&cID=' .  tep_output_string_protected($orders['customers_id']) .  '&action=edit');?>"><?php echo tep_output_string_protected($orders['customers_name']);?></a>
+                    <a style="text-decoration:underline;" href="<?php echo tep_href_link('customers.php', 'search=' .  tep_output_string_protected($orders['customers_id']));?>"><?php echo tep_output_string_protected($orders['customers_name']);?></a>
                     <input type="hidden" id="cid_<?php echo $orders['orders_id'];?>" name="cid[]" value="<?php echo $orders['customers_id'];?>" />
                     </font>
                     <?php 

@@ -1785,7 +1785,8 @@ function tep_remove_order($order_id, $restock = false) {
   if ($restock == 'on') {
     $order_query = tep_db_query("select products_id, products_quantity from " . TABLE_ORDERS_PRODUCTS . " where orders_id = '" . tep_db_input($order_id) . "'");
     while ($order = tep_db_fetch_array($order_query)) {
-      tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = products_real_quantity + " . $order['products_quantity'] . ", products_ordered = products_ordered - " . $order['products_quantity'] . " where products_id = '" . $order['products_id'] . "'");
+      $radices = tep_get_radices($order['products_id']);
+      tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = products_real_quantity + " . (int)($order['products_quantity']*$radices) .  ", products_ordered = products_ordered - " .  (int)($order['products_quantity']*$radices) . " where products_id = '" . $order['products_id'] . "'");
     }
   }
 
@@ -1794,7 +1795,7 @@ function tep_remove_order($order_id, $restock = false) {
   tep_db_query("delete from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " where orders_id = '" . tep_db_input($order_id) . "'");
   tep_db_query("delete from " . TABLE_ORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($order_id) . "'");
   tep_db_query("delete from " . TABLE_ORDERS_TOTAL . " where orders_id = '" . tep_db_input($order_id) . "'");
-  tep_db_query("delete from " . TABLE_ORDERS_TO_COMPUTERS . " where orders_id = '" . tep_db_input($order_id) . "'");
+  tep_db_query("delete from " . TABLE_ORDERS_TO_BUTTONS . " where orders_id = '" . tep_db_input($order_id) . "'");
   tep_db_query("delete from orders_products_download where orders_id = '" . tep_db_input($order_id) . "'");
   tep_db_query("delete from ".TABLE_OA_FORMVALUE." where orders_id = '".tep_db_input($order_id)."'");
   tep_db_query("delete from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".tep_db_input($order_id)."'");
@@ -4406,7 +4407,7 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
         }
       }
     }
-    $names = tep_get_computers_names_by_orders_id($orders['orders_id']);
+    $names = tep_get_buttons_names_by_orders_id($orders['orders_id']);
     if ($names) {
       $str .= '<tr><td class="main">PC：</td><td class="main">'.implode('&nbsp;,&nbsp;', $names).'</td></tr>';
     }
@@ -4886,46 +4887,46 @@ if(tep_not_null($orders['user_added']) || tep_not_null($orders['customers_name']
 }
 
 /* -------------------------------------
-    功能: 获取该订单的电脑名 
+    功能: 获取该订单的按钮名 
     参数: $orders_id(int) 订单id 
-    返回值: 电脑名(string) 
+    返回值: 按钮名(string) 
  ------------------------------------ */
-function tep_get_computers_names_by_orders_id($orders_id)
+function tep_get_buttons_names_by_orders_id($orders_id)
 {
   $names = array();
-  $o2c_query = tep_db_query("select * from ".TABLE_ORDERS_TO_COMPUTERS." o2c, ".TABLE_COMPUTERS." c where c.computers_id=o2c.computers_id and o2c.orders_id = '".$orders_id."' order by sort_order asc");
+  $o2c_query = tep_db_query("select * from ".TABLE_ORDERS_TO_BUTTONS." o2b, ".TABLE_BUTTONS." b where b.buttons_id=o2b.buttons_id and o2b.orders_id = '".$orders_id."' order by sort_order asc");
   while($o = tep_db_fetch_array($o2c_query)) {
-    $names[] = $o['computers_name'];
+    $names[] = $o['buttons_name'];
   }
   return $names;
 }
 
 /* -------------------------------------
-    功能: 获取所有电脑信息 
+    功能: 获取所有按钮信息 
     参数: 无 
-    返回值: 电脑信息(array) 
+    返回值: 按钮信息(array) 
  ------------------------------------ */
-function tep_get_computers()
+function tep_get_buttons()
 {
-  $computers = array();
-  $computers_query = tep_db_query("select * from ".TABLE_COMPUTERS." order by sort_order asc");
-  while ($c = tep_db_fetch_array($computers_query)) {
-    $computers[] = $c;
+  $buttons = array();
+  $buttons_query = tep_db_query("select * from ".TABLE_BUTTONS." order by sort_order asc");
+  while ($c = tep_db_fetch_array($buttons_query)) {
+    $buttons[] = $c;
   }
-  return $computers;
+  return $buttons;
 }
 
 /* -------------------------------------
-    功能: 获取该订单的电脑id 
+    功能: 获取该订单的按钮id 
     参数: $oid(int) 订单id 
-    返回值: 该订单的电脑id(array) 
+    返回值: 该订单的按钮id(array) 
  ------------------------------------ */
-function tep_get_computers_by_orders_id($oid)
+function tep_get_buttons_by_orders_id($oid)
 {
   $c = array();
-  $o2c_query = tep_db_query("select * from ".TABLE_ORDERS_TO_COMPUTERS." where orders_id = '".$oid."'");
+  $o2c_query = tep_db_query("select * from ".TABLE_ORDERS_TO_BUTTONS." where orders_id = '".$oid."'");
   while ($o2c = tep_db_fetch_array($o2c_query)) {
-    $c[] = $o2c['computers_id'];
+    $c[] = $o2c['buttons_id'];
   }
   return $c;
 }
@@ -6601,7 +6602,7 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
 
 -1600 * 12 = -19 200
      */
-    $product = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
+    $product_quantity = tep_get_quantity($pid);
     $order_history_query = tep_db_query("
         select * 
         from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id 
@@ -6613,9 +6614,9 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
     $sum = 0;
     $cnt = 0;
     while($h = tep_db_fetch_array($order_history_query)){
-      if ($cnt + $h['products_quantity'] > $product['products_real_quantity']) {
-        $sum += ($product['products_real_quantity'] - $cnt) * abs($h['final_price']);
-        $cnt = $product['products_real_quantity'];
+      if ($cnt + $h['products_quantity'] > $product_quantity) {
+        $sum += ($product_quantity - $cnt) * abs($h['final_price']);
+        $cnt = $product_quantity;
         break;
       } else {
         $sum += $h['products_quantity'] * abs($h['final_price']);
@@ -8488,6 +8489,7 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
    $all_tmp_price = 0;
    $all_tmp_row = 0;
    while($tmp_row = tep_db_fetch_array($tmp_query)){
+     $tmp_price['products_real_quantity'] = tep_get_quantity($tmp_row['products_id']);
      $tmp_price =
        @tep_get_asset_avg_by_pid($tmp_row['products_id'],$site_id,$start,$end,
            $sort);
@@ -8526,6 +8528,7 @@ function tep_get_all_asset_product_by_pid($pid,$bflag,$site_id=0,
   $query = tep_db_query($sql);
   $row = tep_db_fetch_array($query);
   $tmp_price = @tep_get_asset_avg_by_pid($pid,$site_id,$start,$end,$sort);
+  $row['products_real_quantity'] = tep_get_quantity($pid);
   $result = array();
   $result['error'] = false;
   if($row['products_real_quantity'] > tep_get_relate_products_sum($pid,$site_id,
@@ -8578,6 +8581,7 @@ function tep_get_asset_avg_by_pid($pid,$site_id=0,$start='',$end='',$sort=''){
     $sum = 0;
     $cnt = 0;
     while($h = tep_db_fetch_array($order_history_query)){
+      $product['products_real_quantity'] = tep_get_quantity($pid);
       if ($cnt + $h['products_quantity'] > $product['products_real_quantity']) {
         $sum += ($product['products_real_quantity'] - $cnt) * abs($h['final_price']);
         $cnt = $product['products_real_quantity'];
@@ -9241,64 +9245,269 @@ function tep_get_notice_info($return_type = 0)
   global $ocertify;
 
   //计算剩余的记录
-  $notice_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and n.is_show='1' and a.alarm_flag='0' and n.user = '".$ocertify->auth_user."'"; 
+  $notice_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and n.is_show='1' and a.alarm_flag='0' and n.user = '".$ocertify->auth_user."'"; 
   
-  $notice_micro_sql = "select * from ".TABLE_NOTICE." where type = '1' and is_show='1' and id not in (select notice_id from ".TABLE_NOTICE_TO_MICRO_USER." n where n.user = '".$ocertify->auth_user."')";
+  $notice_micro_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted,bm.`to` to_users,bm.`from` from_users from ".TABLE_NOTICE." n,".TABLE_BUSINESS_MEMO." bm where n.from_notice=bm.id and n.type = '1' and n.is_show='1' and bm.is_show='1' and bm.deleted='0'";
 
-  $alarm_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and n.is_show='1' and a.alarm_flag='1'";
+  $notice_micro_query = tep_db_query($notice_micro_sql);
+  $num = 0;
+  while($notice_micro_array = tep_db_fetch_array($notice_micro_query)){
+
+    if($notice_micro_array['to_users'] == ''){
+
+      if($notice_micro_array['deleted'] == ''){
+
+        $num++;
+      }else{
+
+        $notice_users_array = array();
+        $notice_users_array = explode(',',$notice_micro_array['deleted']);
+        if(!in_array($ocertify->auth_user,$notice_users_array)){
+
+          $num++;
+        }
+      }
+    }else{
+
+      $users_id_array = array();
+      $users_id_array = explode(',',$notice_micro_array['to_users']);
+      array_push($users_id_array,$notice_micro_array['from_users']);
+
+      if(in_array($ocertify->auth_user,$users_id_array)){
+
+        if($notice_micro_array['deleted'] == ''){
+
+          $num++;
+        }else{
+
+          $notice_users_array = array();
+          $notice_users_array = explode(',',$notice_micro_array['deleted']);
+          if(!in_array($ocertify->auth_user,$notice_users_array)){
+
+            $num++;
+          }
+        }
+      }
+    }
+  } 
+
+  $alarm_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and n.is_show='1' and a.alarm_flag='1'";
   
-  $notice_total_sql = "select * from (".$notice_order_sql." union ".$notice_micro_sql." union ".$alarm_order_sql.") taf"; 
+  $notice_total_sql = "select * from (".$notice_order_sql." union ".$alarm_order_sql.") taf"; 
   $notice_list_raw = tep_db_query($notice_total_sql);  
-
-  $notice_list_num = tep_db_num_rows($notice_list_raw);
 
   //获取下拉列表数据的ID
   $notice_id_array = array();
+  $num_i = 0;
   while($notice_list_array = tep_db_fetch_array($notice_list_raw)){
 
-    $notice_id_array[] = $notice_list_array['id'];
-  }
+    if($notice_list_array['deleted'] == ''){
 
+      $num_i++;
+      $notice_id_array[] = $notice_list_array['id'];
+    }else{
+
+      $notice_users_array = array();
+      $notice_users_array = explode(',',$notice_list_array['deleted']);
+      if(!in_array($ocertify->auth_user,$notice_users_array)){
+
+        $num_i++;
+        $notice_id_array[] = $notice_list_array['id'];
+      }
+    }
+  }
+  
+
+
+  $notice_list_num = $num_i+$num;
   tep_db_free_result($notice_list_raw);
 
   $order_notice_array = array();
   $micro_notice_array = array();
 
-  $order_notice_raw = tep_db_query("select id, type, title, set_time, from_notice, user,created_at from (".$notice_order_sql." union ".$notice_micro_sql." union ".$alarm_order_sql.") taf where type = '0' and is_show='1' order by created_at desc,set_time asc limit 2");
- 
+  $order_notice_raw = tep_db_query("select id, type, title, set_time, from_notice, user,created_at,deleted from (".$notice_order_sql." union ".$alarm_order_sql.") taf where type = '0' and is_show='1' order by created_at desc,set_time asc");
+
+  $notice_tmp_num = 0; 
+  while($order_notice = tep_db_fetch_array($order_notice_raw)){
+
+    if($order_notice['deleted'] == ''){
+
+      $order_notice_array['id'] = $order_notice['id']; 
+      $order_notice_array['title'] = $order_notice['title']; 
+      $order_notice_array['set_time'] = $order_notice['set_time']; 
+      $order_notice_array['from_notice'] = $order_notice['from_notice']; 
+      $order_notice_array['type'] = $order_notice['type'];
+      $order_notice_array['user'] = $order_notice['user'];
+      $order_notice_array['created_at'] = $order_notice['created_at'];
+      unset($notice_id_array[array_search($order_notice['id'],$notice_id_array)]);
+      break;
+    }else{
+
+      $notice_users_array = array();
+      $notice_users_array = explode(',',$order_notice['deleted']);
+      if(!in_array($ocertify->auth_user,$notice_users_array)){
+        $order_notice_array['id'] = $order_notice['id']; 
+        $order_notice_array['title'] = $order_notice['title']; 
+        $order_notice_array['set_time'] = $order_notice['set_time']; 
+        $order_notice_array['from_notice'] = $order_notice['from_notice']; 
+        $order_notice_array['type'] = $order_notice['type'];
+        $order_notice_array['user'] = $order_notice['user'];
+        $order_notice_array['created_at'] = $order_notice['created_at'];
+        unset($notice_id_array[array_search($order_notice['id'],$notice_id_array)]);
+        break;
+      }
+    }
+  }
+
+  $order_notice_query = tep_db_query("select id, type, title, set_time, from_notice, user,created_at,deleted from (".$notice_order_sql." union ".$alarm_order_sql.") taf where type = '0' and is_show='1' order by created_at desc,set_time asc");
+
+  $notice_tmp_num = 0; 
+  while($order_notice = tep_db_fetch_array($order_notice_query)){
+
+    if($order_notice['deleted'] == ''){
+
+      $notice_tmp_num++; 
+      if($notice_tmp_num == 2){break;}
+    }else{
+
+      $notice_users_array = array();
+      $notice_users_array = explode(',',$order_notice['deleted']);
+      if(!in_array($ocertify->auth_user,$notice_users_array)){
+
+        $notice_tmp_num++; 
+        if($notice_tmp_num == 2){break;}   
+      }
+    }
+  }
+  tep_db_free_result($order_notice_query);
+
   $notice_num = 0;
-  $notice_tmp_num = tep_db_num_rows($order_notice_raw); 
   if ($notice_tmp_num) {
     $notice_num = $notice_tmp_num; 
   }
-  $order_notice = tep_db_fetch_array($order_notice_raw); 
 
-  if ($order_notice) {
-    $order_notice_array['id'] = $order_notice['id']; 
-    $order_notice_array['title'] = $order_notice['title']; 
-    $order_notice_array['set_time'] = $order_notice['set_time']; 
-    $order_notice_array['from_notice'] = $order_notice['from_notice']; 
-    $order_notice_array['type'] = $order_notice['type'];
-    $order_notice_array['user'] = $order_notice['user'];
-    $order_notice_array['created_at'] = $order_notice['created_at'];
-    unset($notice_id_array[array_search($order_notice['id'],$notice_id_array)]);
+  $micro_notice_raw = tep_db_query("select n.id, n.title, n.set_time, n.from_notice, n.created_at,n.deleted users_deleted,bm.`to` to_users,bm.`from` from_users,bm.icon icon,bm.id bm_id,bm.date_update date_update from ".TABLE_NOTICE." n,".TABLE_BUSINESS_MEMO." bm where n.from_notice=bm.id and n.is_show='1' and bm.is_show='1' and bm.deleted='0' and n.type = '1' order by created_at desc,set_time asc");
+
+  $micro_tmp_num = 0; 
+  while($micro_notice = tep_db_fetch_array($micro_notice_raw)){
+    if($micro_notice['to_users'] == ''){
+      if($micro_notice['users_deleted'] == ''){
+        $micro_notice_array['id'] = $micro_notice['id']; 
+        $micro_notice_array['title'] = $micro_notice['title']; 
+        $micro_notice_array['set_time'] = $micro_notice['set_time']; 
+        $micro_notice_array['from_notice'] = $micro_notice['from_notice']; 
+        $micro_notice_array['created_at'] = $micro_notice['created_at'];
+        $micro_notice_array['icon'] = $micro_notice['icon'];
+        $micro_notice_array['bm_id'] = $micro_notice['bm_id'];
+        $micro_notice_array['date_update'] = $micro_notice['date_update'];
+        unset($notice_id_array[array_search($micro_notice['id'],$notice_id_array)]);
+        break;
+      }else{
+
+        $notice_users_array = array();
+        $notice_users_array = explode(',',$micro_notice['users_deleted']);
+        if(!in_array($ocertify->auth_user,$notice_users_array)){
+
+          $micro_notice_array['id'] = $micro_notice['id']; 
+          $micro_notice_array['title'] = $micro_notice['title']; 
+          $micro_notice_array['set_time'] = $micro_notice['set_time']; 
+          $micro_notice_array['from_notice'] = $micro_notice['from_notice']; 
+          $micro_notice_array['created_at'] = $micro_notice['created_at'];
+          $micro_notice_array['icon'] = $micro_notice['icon'];
+          $micro_notice_array['bm_id'] = $micro_notice['bm_id'];
+          $micro_notice_array['date_update'] = $micro_notice['date_update'];
+          unset($notice_id_array[array_search($micro_notice['id'],$notice_id_array)]);
+          break;
+        }
+      }
+    }else{
+
+      $users_id_array = array();
+      $users_id_array = explode(',',$micro_notice['to_users']);
+      array_push($users_id_array,$micro_notice['from_users']);
+
+      if(in_array($ocertify->auth_user,$users_id_array)){
+
+        if($micro_notice['users_deleted'] == ''){
+          $micro_notice_array['id'] = $micro_notice['id']; 
+          $micro_notice_array['title'] = $micro_notice['title']; 
+          $micro_notice_array['set_time'] = $micro_notice['set_time']; 
+          $micro_notice_array['from_notice'] = $micro_notice['from_notice']; 
+          $micro_notice_array['created_at'] = $micro_notice['created_at'];
+          $micro_notice_array['icon'] = $micro_notice['icon'];
+          $micro_notice_array['bm_id'] = $micro_notice['bm_id'];
+          $micro_notice_array['date_update'] = $micro_notice['date_update'];
+          unset($notice_id_array[array_search($micro_notice['id'],$notice_id_array)]);
+          break;
+        }else{
+
+          $notice_users_array = array();
+          $notice_users_array = explode(',',$micro_notice['users_deleted']);
+          if(!in_array($ocertify->auth_user,$notice_users_array)){
+
+            $micro_notice_array['id'] = $micro_notice['id']; 
+            $micro_notice_array['title'] = $micro_notice['title']; 
+            $micro_notice_array['set_time'] = $micro_notice['set_time']; 
+            $micro_notice_array['from_notice'] = $micro_notice['from_notice']; 
+            $micro_notice_array['created_at'] = $micro_notice['created_at'];
+            $micro_notice_array['icon'] = $micro_notice['icon'];
+            $micro_notice_array['bm_id'] = $micro_notice['bm_id'];
+            $micro_notice_array['date_update'] = $micro_notice['date_update'];
+            unset($notice_id_array[array_search($micro_notice['id'],$notice_id_array)]);
+            break;
+          }
+        }  
+      }
+    } 
   }
 
-  $micro_notice_raw = tep_db_query("select id, title, set_time, from_notice, created_at from ".TABLE_NOTICE." where type = '1' and id not in (select notice_id from ".TABLE_NOTICE_TO_MICRO_USER." n where n.user = '".$ocertify->auth_user."') order by set_time asc, created_at desc limit 2");
-     
+  $micro_notice_query = tep_db_query("select n.id, n.title, n.set_time, n.from_notice, n.created_at,n.deleted users_deleted,bm.`to` to_users,bm.`from` from_users,bm.icon icon from ".TABLE_NOTICE." n,".TABLE_BUSINESS_MEMO." bm where n.from_notice=bm.id and n.is_show='1' and bm.is_show='1' and bm.deleted='0' and n.type = '1' order by created_at desc,set_time asc");
+
+  while($micro_notice = tep_db_fetch_array($micro_notice_query)){
+    if($micro_notice['to_users'] == ''){
+      if($micro_notice['users_deleted'] == ''){ 
+        $micro_tmp_num++;
+        if($micro_tmp_num == 2){break;}
+      }else{
+
+        $notice_users_array = array();
+        $notice_users_array = explode(',',$micro_notice['users_deleted']);
+        if(!in_array($ocertify->auth_user,$notice_users_array)){
+          
+          $micro_tmp_num++;
+          if($micro_tmp_num == 2){break;}
+        }
+      }
+    }else{
+
+      $users_id_array = array();
+      $users_id_array = explode(',',$micro_notice['to_users']);
+      array_push($users_id_array,$micro_notice['from_users']);
+
+      if(in_array($ocertify->auth_user,$users_id_array)){
+
+        if($micro_notice['users_deleted'] == ''){
+          
+          $micro_tmp_num++;
+          if($micro_tmp_num == 2){break;}
+        }else{
+
+          $notice_users_array = array();
+          $notice_users_array = explode(',',$micro_notice['users_deleted']);
+          if(!in_array($ocertify->auth_user,$notice_users_array)){
+ 
+            $micro_tmp_num++;
+            if($micro_tmp_num == 2){break;}
+          }
+        }  
+      }
+    } 
+  }
+  tep_db_free_result($micro_notice_query);
+
   $micro_num = 0;
-  $micro_tmp_num = tep_db_num_rows($micro_notice_raw); 
   if ($micro_tmp_num) {
     $micro_num = $micro_tmp_num; 
-  }
-  $micro_notice = tep_db_fetch_array($micro_notice_raw); 
-  if ($micro_notice) {
-    $micro_notice_array['id'] = $micro_notice['id']; 
-    $micro_notice_array['title'] = $micro_notice['title']; 
-    $micro_notice_array['set_time'] = $micro_notice['set_time']; 
-    $micro_notice_array['from_notice'] = $micro_notice['from_notice']; 
-    $micro_notice_array['created_at'] = $micro_notice['created_at'];
-    unset($notice_id_array[array_search($micro_notice['id'],$notice_id_array)]);
   }
 
   $notice_id_str = implode(',',$notice_id_array);
@@ -9375,7 +9584,7 @@ function tep_get_notice_info($return_type = 0)
     $alarm_flag_array = tep_db_fetch_array($alarm_flag_query);
     tep_db_free_result($alarm_flag_query);
     }
-    $html_str .= '<td width="200" id="alert_buttons">'; 
+    $html_str .= '<td width="'.($alarm_flag_array['alarm_flag'] == '1' ? "174" : "142").'" id="alert_buttons">'; 
     if($alarm_flag_array['orders_flag'] == '1'){
 
       $title_str = HEADER_TEXT_ALERT_TITLE;
@@ -9392,31 +9601,34 @@ function tep_get_notice_info($return_type = 0)
     $html_str .= '<td class="notice_info"  id="alert_time">'; 
     $alarm_raw = tep_db_query("select orders_id from ".TABLE_ALARM." where alarm_id = '".$order_notice_array['from_notice']."'"); 
     $alarm = tep_db_fetch_array($alarm_raw); 
-    $html_str .= '<div style="float:left; width:150px;">'; 
+    $html_str .= '<div style="float:left; width:136px;">'; 
     $html_str .= '<span'.($order_notice_array['type'] == '0' && $alarm_flag_array['alarm_flag'] == '1' ? ' id="leave_time_'.$order_notice_array['id'].'"' : '').'>'.date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT.' H'.TEXT_TORIHIKI_HOUR_STR.'i'.TEXT_TORIHIKI_MIN_STR,strtotime($order_notice_array['created_at'])).'</span>';
     $html_str .= '</div>'; 
-    $html_str .= '<div style="float:left;">';
+
+    $html_str .= '<div style="float:left; width:16px;margin:3px 8px 0 8px;">';
+    $html_str .= '</div>';
+    $html_str .= '<div style="float:left;margin-right: 35px;">';
     if($alarm_flag_array['orders_flag'] == '1'){
 
       $filename_str = FILENAME_ORDERS;
     }else{
       $filename_str = FILENAME_PREORDERS; 
     }
-    $html_str .= '<a href="'.tep_href_link($filename_str, 'oID='.$alarm['orders_id'].'&action=edit').'">'.($alarm_flag_array['alarm_flag'] == '0' ? $order_notice_array['title'] : $alarm['orders_id']).'</a>'; 
+    $html_str .= '<a href="'.tep_href_link($filename_str, 'oID='.$alarm['orders_id'].'&action=edit').'">'.($alarm_flag_array['alarm_flag'] == '0' ? (mb_strlen($order_notice_array['title'],'utf-8') > 30 ? mb_substr($order_notice_array['title'],0,30,'utf-8').'...' : $order_notice_array['title']) : $alarm['orders_id']).'</a>'; 
     $html_str .='</div>';
     if($alarm_flag_array['alarm_flag'] == '1'){
       $html_str .= '<div style="float:left;" id="alarm_user_'.$order_notice_array['from_notice'].'">';
-      $html_str .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$order_notice_array['user'].'&nbsp;'.HEADER_TEXT_ALERT_LINK;
+      $html_str .= $order_notice_array['user'].'&nbsp;'.HEADER_TEXT_ALERT_LINK;
       $html_str .='</div>';
       $html_str .='<div style="float:left;">';
       if($alarm_flag_array['alarm_show'] == '1'){
-         $html_str .='&nbsp;'.str_replace('${ALERT_TITLE}',$order_notice_array['title'],HEADER_TEXT_ALERT_COMMENT).'/&nbsp;<span id="alarm_id_'.$order_notice_array['from_notice'].'">ON</span>';
+         $html_str .='&nbsp;'.str_replace('${ALERT_TITLE}',(mb_strlen($order_notice_array['title'],'utf-8') > 30 ? mb_substr($order_notice_array['title'],0,30,'utf-8').'...' : $order_notice_array['title']),HEADER_TEXT_ALERT_COMMENT).'/&nbsp;<span id="alarm_id_'.$order_notice_array['from_notice'].'">ON</span>';
       }else{
-         $html_str .='&nbsp;'.str_replace('${ALERT_TITLE}',$order_notice_array['title'],HEADER_TEXT_ALERT_COMMENT).'/&nbsp;<span id="alarm_id_'.$order_notice_array['from_notice'].'">OFF</span>'; 
+         $html_str .='&nbsp;'.str_replace('${ALERT_TITLE}',(mb_strlen($order_notice_array['title'],'utf-8') > 30 ? mb_substr($order_notice_array['title'],0,30,'utf-8').'...' : $order_notice_array['title']),HEADER_TEXT_ALERT_COMMENT).'/&nbsp;<span id="alarm_id_'.$order_notice_array['from_notice'].'">OFF</span>'; 
       }
       $html_str .='</div>';
     }else{
-      $html_str .= '<div style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+      $html_str .= '<div style="float:left;">';
       $html_str .= NOTICE_DIFF_TIME_TEXT.'&nbsp;<span id="leave_time_'.$order_notice_array['id'].'">'.$leave_date.'</span>'; 
       $html_str .= '</div>';
     }
@@ -9452,31 +9664,42 @@ function tep_get_notice_info($return_type = 0)
     $html_str = '<table cellspacing="0" cellpadding="0" border="0"  width="100%">';
     $html_str .= '<tr>'; 
     
-    $html_str .= '<td width="200">'; 
+    $html_str .= '<td width="142" id="alert_buttons">'; 
     if (($notice_num + $micro_num) > 1) {
       $html_str .= '&nbsp;<a href="javascript:void(0);" onclick="expend_all_notice(\''.$micro_notice_array['id'].'\');" style="text-decoration:underline; color:#0000ff;"><font color="#0000ff">'.NOTICE_EXTEND_TITLE.'▼</font></a>'.str_replace('${ALERT_NUM}',$notice_list_num-1,HEADER_TEXT_ALERT_NUM);
       $more_single = 1; 
     } else {
       $html_str .= '&nbsp;'.NOTICE_EXTEND_TITLE;
-    }
+    } 
     $html_str .= '</td>'; 
-    $html_str .= '<td class="notice_info">'; 
-    $html_str .= '<div style="float:left; width:150px;">'; 
+ 
+    $html_str .= '<td class="notice_info" id="alert_time">';  
+    $html_str .= '<div style="float:left; width:136px;">'; 
     $html_str .= date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT.' H'.TEXT_TORIHIKI_HOUR_STR.'i'.TEXT_TORIHIKI_MIN_STR,strtotime($micro_notice_array['created_at'])); 
     $html_str .= '</div>'; 
-    $html_str .= '<a href="'.tep_href_link('micro_log.php').'">'.$micro_notice_array['title'].'</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'; 
-    $html_str .= NOTICE_DIFF_TIME_TEXT.'&nbsp;<span id="leave_time_'.$micro_notice_array['id'].'">'.$leave_date.'</span>';
+
+    //获取图标信息
+    $icon_query = tep_db_query("select pic_name,pic_alt from ". TABLE_CUSTOMERS_PIC_LIST ." where id='".$micro_notice_array['icon']."'");
+    $icon_array = tep_db_fetch_array($icon_query);
+    tep_db_free_result($icon_query);
+    $html_str .= '<div id="icon_images_id" style="float:left; width:16px;margin:3px 8px 0 8px;">';
+    $html_str .= $micro_notice_array['icon'] != 0 ? tep_image(DIR_WS_IMAGES.'icon_list/'.$icon_array['pic_name'],$icon_array['pic_alt']) : '';
+    $html_str .= '</div>';
+
+    $html_str .= '<a href="'.tep_href_link(FILENAME_BUSINESS_MEMO,'cID='.$micro_notice_array['bm_id']).'"><span id="memo_contents">'.(mb_strlen($micro_notice_array['title']) > 30 ? mb_substr($micro_notice_array['title'],0,30,'utf-8').'...' : $micro_notice_array['title']).'</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'; 
+    $html_str .= '&nbsp;<span id="leave_time_'.$micro_notice_array['id'].'" style="display:none;">'.$leave_date.'</span>';
     $html_str .= '</td>'; 
-    $html_str .= '<td align="right">'; 
+    $html_str .= '<td align="right" id="alert_close">'; 
     $html_str .= '<a href="javascript:void(0);" onclick="delete_micro_notice(\''.$micro_notice_array['id'].'\', \'0\');"><img src="images/icons/del_img.gif" alt="close"></a>'; 
     $html_str .= '<script type="text/javascript">$(function () {calc_notice_time(\''.strtotime($micro_notice_array['set_time']).'\', '.$micro_notice_array['id'].', 0);});</script>'; 
     $html_str .= '</td>'; 
     $html_str .= '</tr>'; 
     $html_str .= '</table>'; 
     $html_str .= '<input type="hidden" value="'.$more_single.'" name="more_single" id="more_single">'; 
+    $html_str .= '<input type="hidden" value="'.$micro_notice_array['date_update'].'" name="update_time" id="update_time_id">';
     
     if ($return_type == 1) {
-      return $more_single.'|||'.$leave_time.'|||'.$micro_notice_array['id'].'|||'.$html_str; 
+      return $more_single.'|||'.$leave_time.'|||'.$micro_notice_array['id'].'|||'.$html_str.'|||'.($micro_notice_array['icon'] != 0 ? tep_image(DIR_WS_IMAGES.'icon_list/'.$icon_array['pic_name'],$icon_array['pic_alt']) : '').'|||'.(mb_strlen($micro_notice_array['title']) > 30 ? mb_substr($micro_notice_array['title'],0,30,'utf-8').'...' : $micro_notice_array['title']).'|||'.$micro_notice_array['date_update']; 
     }
     return $html_str;
   }
@@ -10095,10 +10318,10 @@ function tep_cfg_pull_down_month_list($month,$empty_params ='',$params = '') {
     功能: 网站显示
     参数: $filename (string) 页面
     参数: $ca_single(boolean) 是否过滤指定的url参数 
-    参数: $show_all (boolean) 是否显示ALL
+    参数: $show_all (array) 是否特殊显示ALL 和其他网站
     返回值: 网站的列表(string) 
 -----------------------------------*/
-function tep_show_site_filter($filename,$ca_single=false,$show_all=true){
+function tep_show_site_filter($filename,$ca_single=false,$show_all=array()){
   global $_GET, $_POST, $ocertify;
   $site_list_array = array();
   $site_array = array();
@@ -10109,11 +10332,16 @@ function tep_show_site_filter($filename,$ca_single=false,$show_all=true){
     $site_list_array[$site_list_rows['id']] = $site_list_rows['romaji'];
     $site_array[] = $site_list_rows['id'];
   }
+  if(!empty($show_all)){
+    $show_site_list = array_diff($site_array,$show_all);
+  }else{
+    $show_site_list = $site_array;
+  }
   tep_db_free_result($site_list_query);
   $user_info = tep_get_user_info($ocertify->auth_user);
   //获得用户ID 和 当前页面 取得设置的显示网站列表
   $userid = $user_info['userid'];
-  $page = $_SERVER['PHP_SELF'];
+  $page = $filename;
   $show_site_sql = "select * from ".TABLE_SHOW_SITE." WHERE user='".$userid."' and page='".$page."' limit 1";
   $show_id = '';
   $show_site_query = tep_db_query($show_site_sql);
@@ -10121,15 +10349,25 @@ function tep_show_site_filter($filename,$ca_single=false,$show_all=true){
     $site_array = explode('-',$show_site_rows['site']);
     $site_id = $show_site_rows['show_id'];
   }
+  $unshow_list = array();
   // 循环输出所有网站列表 ALL 需要特殊处理
   ?>
     <div id="tep_site_filter">
-    <input type="hidden" id="show_site_id" value="<?php echo $show_id;?>">
+    <input type="hidden" id="show_site_id" value="<?php echo implode('-',$show_site_list);?>">
   <?php
               foreach ($site_list_array as $sid => $sromaji) {
                $site = array();
                $site['id'] = $sid;
                $site['romaji'] = $sromaji;
+               if(!empty($show_all)){
+                 if(in_array($site['id'],$show_all)){
+                   $unshow_list[] = $site['id'];
+                 ?>
+              <span id="site_<?php echo $site['id'];?>" class="site_filter_unselected"><?php echo $site['romaji'];?></a></span>  
+                 <?php
+                 continue;
+                 }
+               }
                if(!isset($_GET['site_id'])){
                 if(in_array($site['id'],$site_array)){
            ?>  
@@ -10154,6 +10392,14 @@ function tep_show_site_filter($filename,$ca_single=false,$show_all=true){
                }
               }
   ?></div><?php
+  if(!empty($show_all)&&!empty($unshow_list)){
+    ?>
+    <input type="hidden" id="unshow_site_list" value="<?php
+    echo implode('-',$unshow_list);?>">
+    <?php
+  }else{
+    echo '<input type="hidden" id="unshow_site_list" value="">';
+  }
 }
 
 /*-----------------------------------
@@ -10163,10 +10409,6 @@ function tep_show_site_filter($filename,$ca_single=false,$show_all=true){
 -----------------------------------*/
 function tep_get_setting_site_info($current_page)
 {
-  global $ocertify;
-  $user_info = tep_get_user_info($ocertify->auth_user);
-  //获得用户ID 和 当前页面 取得设置的显示网站列表
-  $userid = $user_info['userid'];
   $site_list_array = array(); 
   $site_list_query = tep_db_query("select * from sites");
   $site_list_array[] = 0; 
@@ -10174,7 +10416,7 @@ function tep_get_setting_site_info($current_page)
     $site_list_array[] = $site_list_info['id']; 
   }
   sort($site_list_array); 
-  $exists_site_query = tep_db_query("select * from show_site where user = '".$userid."' and page like '%".$current_page."%'");
+  $exists_site_query = tep_db_query("select * from show_site where user = '".$_SESSION['loginuid']."' and page = '".$current_page."'");
   $exists_site = tep_db_fetch_array($exists_site_query);
   if ($exists_site) {
     $return_site = explode('-', $exists_site['site']);
@@ -10185,6 +10427,77 @@ function tep_get_setting_site_info($current_page)
     }
   } 
   return implode(',', $site_list_array); 
+}
+/*----------------------------------
+  功能: 通过产品ID获得产品的库存
+  参数: $pid (int)类型  产品ID
+  参数: $real_quantity (int)类型  产品数量 没有基数的时候直接返回
+  参数: $v_quantity (boolean)类型 虚拟库存 默认false不参加基数 true参加计算
+  返回：根据基数和 产品（游戏币） 计算出商品个数 取整（小数省略）
+----------------------------------*/
+function tep_get_quantity($pid,$real_quantity,$v_quantity=false){
+  if($v_quantity){
+    $sql = "SELECT products_attention_1_3,
+      (`products_real_quantity`/`products_attention_1_3`) 
+      + `products_virtual_quantity`  as quantity FROM 
+      " .TABLE_PRODUCTS." WHERE products_id = '".$pid."' limit 1";
+  }else{
+    $sql = "SELECT products_attention_1_3,
+      (`products_real_quantity`/`products_attention_1_3`) as quantity
+      FROM 
+      " .TABLE_PRODUCTS." WHERE products_id = '".$pid."' limit 1";
+  }
+  $query = tep_db_query($sql);
+  if($row = tep_db_fetch_array($query)){
+    if($row['products_attention_1_3']!=''&&$row['products_attention_1_3']!=0){
+      return (int)($row['quantity']);
+    }else{
+      return $real_quantity;
+    }
+  }else{
+    return $real_quantity;
+  }
+}
+/*----------------------------------
+  功能: 通过产品ID获得产品汇率(基数)
+  参数: $pid (int)类型  产品ID
+  返回：基数
+----------------------------------*/
+function tep_get_radices($pid){
+    $sql = "SELECT products_attention_1_3 as radices FROM 
+      " .TABLE_PRODUCTS." WHERE products_id = '".$pid."' limit 1";
+    $query = tep_db_query($sql);
+    if($row = tep_db_fetch_array($query)){
+      return (int)$row['radices'];
+    }else{
+      return 0;
+    }
+}
+
+/*-----------------------------------
+    功能: 删除超时的未认证顾客 
+    参数: 无 
+    返回值: 无 
+-----------------------------------*/
+function tep_customers_not_certified_timeout()
+{
+  $customers_id_array = array();
+  $customers_query = tep_db_query("select customers_id from ".TABLE_CUSTOMERS." where is_active = '0' and send_mail_time!='' and datediff(now(),from_unixtime(send_mail_time,'%Y-%m-%d %H:%i:%s'))>3");
+  while($customers_array = tep_db_fetch_array($customers_query)){
+ 
+    $customers_id_array[] = $customers_array['customers_id'];  
+  }
+  tep_db_free_result($customers_query);
+  $customers_id_str = implode(',',$customers_id_array);
+
+  if(!empty($customers_id_array)){ 
+    //删除关联数据
+    tep_db_query("delete from ".TABLE_CUSTOMERS." where customers_id in (".$customers_id_str.")");
+    tep_db_query("delete from ".TABLE_CUSTOMERS_INFO." where customers_info_id in (".$customers_id_str.")");
+    tep_db_query("delete from ".TABLE_ADDRESS_BOOK." where customers_id in (".$customers_id_str.")");
+    tep_db_query("delete from ".TABLE_CUSTOMERS_BASKET." where customers_id in (".$customers_id_str.")");
+    tep_db_query("delete from ".TABLE_CUSTOMERS_BASKET_OPTIONS." where customers_id in (".$customers_id_str.")"); 
+  }
 }
 
 /*------------------------------------

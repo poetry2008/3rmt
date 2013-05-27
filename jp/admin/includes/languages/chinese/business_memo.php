@@ -1,0 +1,23 @@
+<?php
+define('HEADING_TITLE','备忘录');
+define('SAVE_BUTTON','保存');
+define('DELETE_CONFIRMATION','确定删除这个便签吗？');
+define('TEXT_DISPLAY_NUMBER_OF_BUSINESS_MEMO', '当前显示<b>%d</b> &sim; <b>%d</b>（共<b>%d</b>项） ');
+define('TEXT_MEMO_ICON','图片');
+define('TEXT_MEMO_READ_FLAG','已读');
+define('TEXT_MEMO_FROM','From');
+define('TEXT_MEMO_TO','To');
+define('TEXT_MEMO_CONTENTS','内容');
+define('TEXT_MEMO_CREATE_TIME','创建时间');
+define('TEXT_MEMO_CREATE_USER','创建的备忘录');
+define('TEXT_MEMO_ALERT','提醒');
+define('TEXT_MEMO_SHOW','是');
+define('TEXT_MEMO_HIDE','否');
+define('TEXT_MEMO_CLOSE_CONFIRM','确定终止此备忘录吗？');
+define('TEXT_MEMO_USER_ID','仅限于指定的ID');
+define('TEXT_MEMO_USER_SELECT','接收用户选择');
+define('TEXT_MEMO_EDIT_SELECT','请选择');
+define('TEXT_MEMO_EDIT_DELETE','删除');
+define('TEXT_MEMO_EDIT_MUST_SELECT','至少选择一项。');
+define('TEXT_MEMO_EDIT_CONFIRM','确定要删除吗？');
+?>

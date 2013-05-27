@@ -89,13 +89,23 @@ function update_quantity(pid){
     return false;
   }
   if (nquantity !== '' && nquantity !== null) {
-    var send_url="set_quantity.php?pid="+pid+"&quantity="+nquantity;
+    var is_radices = 0;
+    if($('#is_radices')){
+      is_radices = $('#is_radices').val();
+    }
+    if(is_radices == 1 ){
+      var send_url="set_quantity.php?pid="+pid+"&quantity="+nquantity+"&is_radices=1";
+    }else{
+      var send_url="set_quantity.php?pid="+pid+"&quantity="+nquantity;
+    }
     $.ajax({
       beforeSend: function(){$('body').css('cursor', 'wait');$('#wait').show();}, 
       url: send_url,
         success: function(data) {
           data_tmp_array = data.split('|||'); 
-          $('#quantity_'+pid).html(data_tmp_array[0]);
+          var res_tmp_arr = data_tmp_array[0].split('<<<')
+          $('#quantity_real_'+pid).html(res_tmp_arr[0]);
+          $('#quantity_'+pid).html(res_tmp_arr[1]);
           $('#h_edit_p_'+pid).parent().next().next().next().next().find('a').html(data_tmp_array[1]); 
           setTimeout(function(){$('body').css('cursor', '');$('#wait').hide();$('#show_popup_info').css('display', 'none');}, 500);
         }

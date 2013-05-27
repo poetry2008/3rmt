@@ -110,11 +110,11 @@ if ($rec_c % 2) {
       }
       $alert_orders_id = $alarm_info_array['orders_id'];
     }else{
-      $micro_info_query = tep_db_query("select * from ".TABLE_MICRO_LOGS." where log_id='".$arec['from_notice']."'");
+      $micro_info_query = tep_db_query("select * from ".TABLE_BUSINESS_MEMO." where id='".$arec['from_notice']."'");
       $micro_info_array = tep_db_fetch_array($micro_info_query);
       tep_db_free_result($micro_info_query);
 
-      $alert_user = $micro_info_array['author'];
+      $alert_user = $micro_info_array['from'];
       $user_info = tep_get_user_info($alert_user);
       $alert_user = $user_info['name'];
       $alert_button_name = NOTICE_EXTEND_TITLE;
@@ -191,8 +191,15 @@ function UserOnceAlertLog_list() {
   }
 
   $nrow = tep_db_num_rows($oresult);              // 获取记录件数
-  if ($nrow > 0) {                      // 取不到记录的时候
+     
+    $site_query = tep_db_query("select id from ".TABLE_SITES);
+    $site_list_array = array();
+    while($site_array = tep_db_fetch_array($site_query)){
 
+      $site_list_array[] = $site_array['id'];
+    }
+    tep_db_free_result($site_query);
+    echo tep_show_site_filter(FILENAME_ALERT_LOG,false,$site_list_array);
     // 表标签的开始
     echo '<form action="'.FILENAME_ALERT_LOG.'" method="post" name="edit_logs">';
     echo '<table width="100%" ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
@@ -205,10 +212,14 @@ function UserOnceAlertLog_list() {
     echo '<td class="dataTableHeadingContent">' .
       TABLE_HEADING_CREATED_AT . '</td>' . "\n";       
     echo "</tr>\n";
-    show_alert_log_list($oresult);   
+    if ($nrow > 0) {                      // 取不到记录的时候
+      show_alert_log_list($oresult);   
+    }else{
+      echo '<tr><td><font color="red"><b>'.TEXT_DATA_IS_EMPTY.'</b></font></td></tr>';
+    }
     echo "</table>\n";
     echo '</form>';
-    if($ocertify->npermission >= 15){
+    if($ocertify->npermission >= 15 && $nrow > 0){
       echo '<div class="td_box">';
       echo '<select name="edit_logs_list" onchange="select_logs_change(this.value,\'logs_list_id[]\',\''.$ocertify->npermission.'\');">';
       echo '<option value="0">'.TEXT_LOGS_EDIT_SELECT.'</option>';
@@ -218,8 +229,7 @@ function UserOnceAlertLog_list() {
     }
 
     show_page_ctl();       // 页面控制按钮的显示
- 
-  }
+  
   if ($oresult) @tep_db_free_result($oresult);          // 开放结果项目
 
   return TRUE;
@@ -246,9 +256,7 @@ function OncePwdLogDelete_execute() {
 
   $alert_query = tep_db_query("select id,from_notice from ".TABLE_NOTICE." where type='1' and id in (".$logs_list_str.")");
   while($alert_array = tep_db_fetch_array($alert_query)){
-    tep_db_query("delete from micro_logs where log_id='".$alert_array['from_notice']."'");
-    tep_db_query("delete from ".TABLE_NOTICE_TO_MICRO_USER." where notice_id = '".$alert_array['id']."'");
-    tep_db_query("delete from micro_to_user where micro_id = '".$alert_array['from_notice']."'");
+    tep_db_query("delete from ".TABLE_BUSINESS_MEMO." where id='".$alert_array['from_notice']."'");
   }
   tep_db_free_result($alert_query);
 
@@ -267,8 +275,9 @@ function OncePwdLogDelete_execute() {
  --------------------------------------*/
 function putJavaScript_ConfirmMsg() {
 
+require('includes/javascript/show_site.js.php');
 echo '
-<script language="JavaScript1.1">
+<script language="javascript">
 <!--
 function formConfirm(type) {
   if (type == "delete") {
