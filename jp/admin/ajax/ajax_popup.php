@@ -3047,11 +3047,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     $site_arr = $userslist['site_permission']; 
   }
   $site_array = explode(',',$site_arr);
-  if(isset($_GET['site_id'])&&$_GET['site_id']){
-    $show_site_arr = explode('-',$_GET['site_id']);
-  }else{
-    $show_site_arr = explode('-',str_replace(',','-',tep_get_setting_site_info(FILENAME_REVIEWS)));
-  }
+  $show_site_arr = explode(',','1,2,3,4,5,6,7,8,9,10');
   $notice_box = new notice_box('popup_order_title', 'popup_order_info');
     $rID = tep_db_prepare_input($_GET['rID']);
     $reviews_query = tep_db_query("
@@ -3241,9 +3237,9 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   }else{
    $site_id_name = "<select id='add_site_id' name='insert_site_id'>";
    $new_site_arr = array_intersect($show_site_arr,$site_array);
+
    foreach($new_site_arr as $value){
-     if($value==0){
-     }else{
+     if($value!=0){
        $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$value));
        $site_id_name .= "<option value='".$site_name['id']."' ";
        if(isset($_GET['add_site_id'])&&$_GET['add_site_id']
@@ -3566,12 +3562,12 @@ if(!in_array($site_id,$site_array)&&$site_id!=-1){
 
     if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
       $sql_site_where = 'site_id in ('.str_replace('-', ',', $_GET['site_id']).')';
-      $show_site_arr = explode('-',$_GET['site_id']);
     } else {
       $show_site_str = tep_get_setting_site_info($_POST['self_page']);
       $sql_site_where = 'site_id in ('.$show_site_str.')';
-      $show_site_arr = explode(',',$show_site_str);
     }
+     $show_site_str = '0,1,2,3,4,5,6,7,8,9,10';
+     $show_site_arr = explode(',',$show_site_str);
      $latest_news_query_raw = ' select n.news_id, n.headline, n.date_added,
      n.author, n.update_editor, n.latest_update_date, n.content, n.status,
      n.news_image, n.news_image_description, n.isfirst, n.site_id from ' .
@@ -4523,12 +4519,12 @@ if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'
 }  
     if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
       $sql_site_where = 'site_id in ('.str_replace('-', ',', $_GET['site_id']).')';
-      $show_site_arr = explode('-',$_GET['site_id']);
     } else {
       $show_site_str = tep_get_setting_site_info(FILENAME_CUSTOMERS);
       $sql_site_where = 'site_id in ('.$show_site_str.')';
-      $show_site_arr = explode(',',$show_site_str);
     }
+    $show_site_str = '1,2,3,4,5,6,7,8,9,10';
+    $show_site_arr = explode(',',$show_site_str);
     $customers_query_raw = "
       select c.customers_id, 
              c.site_id,
@@ -4707,7 +4703,6 @@ if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'
       $site_id_name = $site_name['romaji'].'<input id=\'customers_site_id\' name="site_id" type="hidden" value="'.$site_name['id'].'">';
  }
  }else{
-   if($customers_site_arr[0] == ''){ }
    $customers_site_arr = array_intersect($show_site_arr,$site_array);
    $site_id_name = "<select id='customers_site_id' name='site_id' $disabled>";
    foreach($customers_site_arr as $value){
