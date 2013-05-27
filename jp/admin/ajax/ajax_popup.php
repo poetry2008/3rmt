@@ -4789,14 +4789,6 @@ if($_GET['cID'] != -1){
          array('params' => 'nowrap="nowrap"','text' => str_replace(':','',ENTRY_LAST_NAME)),
          array('text' => tep_draw_input_field('customers_lastname', $cInfo->customers_lastname, 'id="customers_lastname" style="width:60%" maxlength="32" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.($disabled?$disabled:$is_active_single), false).'<br><span id="customers_lastname_error"></span>')
        );
-     $customers_guest_row[]['text'] = array(
-         array('params' => 'nowrap="nowrap"','text' => str_replace(':','',ENTRY_FIRST_NAME_F)),
-         array('text' => tep_draw_input_field('customers_firstname_f', $cInfo->customers_firstname_f, 'id="customers_firstname_f" style="width:60%" maxlength="32" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.($disabled?$disabled:$is_active_single), false))
-       );
-     $customers_guest_row[]['text'] = array(
-         array('params' => 'nowrap="nowrap"','text' => str_replace(':','',ENTRY_LAST_NAME_F)),
-         array('text' => tep_draw_input_field('customers_lastname_f', $cInfo->customers_lastname_f, 'id="customers_lastname_f" style="width:60%" maxlength="32" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.($disabled?$disabled:$is_active_single), false))
-       );
       $customers_guest_row[]['text'] = array(
          array('params' => 'nowrap="nowrap"','text' => str_replace(':','',ENTRY_EMAIL_ADDRESS)),
          array('text' => tep_draw_input_field('customers_email_address', $cInfo->customers_email_address, 'id="customers_email_address" style="width:60%" maxlength="96" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.($disabled?$disabled:$is_active_single), false).'<br><span id="error_email"></span><span id="check_email"></span> <span id="error_email_info"></span><input type="hidden" id="customers_email_address_value" value="'.$cInfo->customers_email_address.'"')

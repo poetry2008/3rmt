@@ -614,10 +614,6 @@ function check_form() {
 
   var customers_firstname = document.customers.customers_firstname.value;
   var customers_lastname = document.customers.customers_lastname.value;
-  
-  var customers_firstname_f = document.customers.customers_firstname_f.value;
-  var customers_lastname_f = document.customers.customers_lastname_f.value;
-  
 <?php if (ACCOUNT_COMPANY == 'true') echo 'var entry_company = document.customers.entry_company.value;' . "\n"; ?>
 <?php if (ACCOUNT_DOB == 'true') echo 'var customers_dob = document.customers.customers_dob.value;' . "\n"; ?>
   var customers_email_address = document.customers.customers_email_address.value;  
