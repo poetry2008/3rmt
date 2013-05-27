@@ -131,6 +131,29 @@ function show_popup_info(ele, pic_id)
     }
   });
 }
+<?php //提交动作?>
+function toggle_marks_form(c_permission)
+{
+   if (c_permission == 31) {
+     document.forms.pic.submit(); 
+   } else {
+     $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          document.forms.pic.submit(); 
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+   }
+}
 </script>
 <?php
 if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
@@ -228,7 +251,8 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                         $pic_info_table_single_row[] = array('align' => 'left', 'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_MARKS, 'm_id='.$pic_list_res['id']).'\';"', 'text' => tep_image(DIR_WS_IMAGES.'icon_list/'.$pic_list_res['pic_name']));
                         $pic_info_table_single_row[] = array('align' => 'left', 'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_MARKS, 'm_id='.$pic_list_res['id']).'\';"', 'text' => $pic_list_res['pic_alt']);
                         $pic_info_table_single_row[] = array('align' => 'left', 'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_MARKS, 'm_id='.$pic_list_res['id']).'\';"', 'text' => $pic_list_res['sort_order']);
-                        $pic_info_table_single_row[] = array('align' => 'right', 'params' => 'class="dataTableContent"', 'text' => '<a href="javascript:void(0);" onclick="show_popup_info(this, \''.$pic_list_res['id'].'\');">'.tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO).'</a>');
+                        $pic_date_info = (tep_not_null($pic_list_res['date_update']) && ($pic_list_res['date_update'] != '0000-00-00 00:00:00'))?$pic_list_res['date_update']:$pic_list_res['date_added'];
+                        $pic_info_table_single_row[] = array('align' => 'right', 'params' => 'class="dataTableContent"', 'text' => '<a href="javascript:void(0);" onclick="show_popup_info(this, \''.$pic_list_res['id'].'\');">'.tep_get_signal_pic_info($pic_date_info).'</a>');
                         
                         if ($selected_m_single) {
                           $pic_info_table_list_row[] = array('params' => 'class="'.$nowColor.'" onmouseover="this.style.cursor=\'hand\'"', 'text' => $pic_info_table_single_row); 

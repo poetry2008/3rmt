@@ -26,8 +26,27 @@ charset=<?php echo CHARSET; ?>">
       location.href=link;
     }
     <?php //删除数据提示?> 
-    function delete_one_data(){
-      return confirm('<?php echo TEXT_OK_TO_DELETE; ?>');
+    function delete_one_data(d_url_str, c_permission){
+      if (confirm('<?php echo TEXT_OK_TO_DELETE; ?>')) {
+        if (c_permission == 31) {
+          window.location.href = d_url_str; 
+        } else {
+          $.ajax({
+            url: 'ajax_orders.php?action=getallpwd',   
+            type: 'POST',
+            dataType: 'text',
+            async: false,
+            success: function(msg) {
+              var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+              if (msg.indexOf(input_pwd_str) > -1) {
+                window.location.href = d_url_str; 
+              } else {
+                alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+              }
+            }
+          });
+        }
+      } 
     }
 $(function() {
     $("#saveorder1").bind('click',function(){
@@ -39,7 +58,30 @@ $(function() {
       $("input[name='TARGET_INPUT[]']").each(function(i){
       $("#targetstring").val($("#targetstring").val() +','+this.value);
         });
-      return true;
+      <?php
+      if ($ocertify->npermission == 31) {
+      ?>
+      document.forms.h_form.submit(); 
+      <?php
+      } else {
+      ?>
+      $.ajax({
+        url: 'ajax_orders.php?action=getallpwd',   
+        type: 'POST',
+        dataType: 'text',
+        async: false,
+        success: function(msg) {
+          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+          if (msg.indexOf(input_pwd_str) > -1) {
+            document.forms.h_form.submit(); 
+          } else {
+            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          }
+        }
+      });
+      <?php
+      }
+      ?>
       });
     $(".udlr").udlr();
     var key_sum=0;
@@ -75,7 +117,30 @@ $(function() {
       $("input[name='TARGET_INPUT[]']").each(function(i){
       $("#targetstring").val($("#targetstring").val() +','+this.value);
         });
-      return true;
+      <?php
+      if ($ocertify->npermission == 31) {
+      ?>
+      document.forms.h_form.submit(); 
+      <?php
+      } else {
+      ?>
+      $.ajax({
+        url: 'ajax_orders.php?action=getallpwd',   
+        type: 'POST',
+        dataType: 'text',
+        async: false,
+        success: function(msg) {
+          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+          if (msg.indexOf(input_pwd_str) > -1) {
+            document.forms.h_form.submit(); 
+          } else {
+            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          }
+        }
+      });
+      <?php
+      }
+      ?>
       });
     $(".udlr").udlr();
     var key_sum=0;
@@ -225,8 +290,11 @@ case 'oroshi':
         echo $line . '<br>';
       }
       echo "</td>";
-      echo "<td class='dataTableContent'><a onClick='return delete_one_data()'
-        href='history.php?action=oroshi&o_id=".$oid."&list_id=".$value['list_id']."'>".IMAGE_DELETE."</a></td>";
+      if ($ocertify->npermission >= 15) {
+        echo "<td class='dataTableContent'><a onClick=\"delete_one_data('".tep_href_link('history.php', 'action=oroshi&o_id='.$oid.'&list_id='.$value['list_id'])."', '".$ocertify->npermission."');\" href=\"javascript:void(0);\">".IMAGE_DELETE."</a></td>";
+      } else {
+        echo "<td class='dataTableContent'>&nbsp;</td>";
+      }
       echo "</tr>";
     }
     echo "</table>";
@@ -474,7 +542,7 @@ case 'dougyousya_categories':
     $cnt2++;
   }
   $pro_name_cnt=$cnt*$cnt2;
-  echo   ' <form method="post"
+  echo   ' <form name="h_form" method="post"
   action="history.php?action=d_submit&cPath='.$cPath.'&cid='.$cID.'&did='.$did.'" >';
   echo '<input type="hidden" name="fullpath" value="'.$_GET['fullpath'].'" />';
 
@@ -496,7 +564,8 @@ case 'dougyousya_categories':
   <table border="0">
    <tr>
     <td colspan='<?php echo $count['cnt']+3; ?>'>
-      <input type="submit" name="b2" id = 'saveorder2' value="<?php echo TEXT_SIGN_IN;?>">
+      <input type="button" id = 'saveorder2' value="<?php echo TEXT_SIGN_IN;?>">
+      <input type="hidden" name="b2" value="<?php echo TEXT_SIGN_IN;?>">
       <input type='hidden' id='orderstring1' name='orderstring' />
       <input type='hidden' id='targetstring1' name='targetstring' />
       <input type="button" onclick="get_last_date()" value="LAST DATA">
@@ -563,7 +632,8 @@ case 'dougyousya_categories':
 	 <table border="0">
 	   <tr>
     <td colspan='<?php echo $count['cnt']+3;?>'>
-      <input type="submit" name="b1" id = 'saveorder1' value="<?php echo TEXT_SIGN_IN;?>">
+      <input type="button" id = 'saveorder1' value="<?php echo TEXT_SIGN_IN;?>">
+      <input type="hidden" name="b1" value="<?php echo TEXT_SIGN_IN;?>">
       <input type='hidden' id='orderstring' name='orderstring' />
       <input type='hidden' id='targetstring' name='targetstring' />
       <input type="button" onclick="get_last_date()" value="LAST DATA">

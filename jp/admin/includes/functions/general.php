@@ -4869,8 +4869,8 @@ if(tep_not_null($orders['user_added']) || tep_not_null($orders['customers_name']
   $str .= '<div id="order_del">'; 
   $str .= '<a href="'.tep_href_link(FILENAME_ALARM, urldecode($param_str.'&oID='.$orders['orders_id'])).'">'.tep_html_element_button(TEXT_ORDER_ALARM_LINK).'</a>'; 
   $str .= '<a href="'.tep_href_link(FILENAME_ORDERS, urldecode($param_str).'&oID='.$orders['orders_id'].'&action=edit').'">'.tep_html_element_button(IMAGE_DETAILS).'</a>'; 
-  if ($ocertify->npermission == 15) {
-    $str .= '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_order_info(\''.$orders['orders_id'].'\', \''.urlencode($param_str).'\')"').'</a>'; 
+  if ($ocertify->npermission >= 15) {
+    $str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_order_info(\''.$orders['orders_id'].'\', \''.urlencode($param_str).'\')"').'</a>'; 
   }
   $str .= '</div>'; 
   $str .= '</td></tr>';
@@ -5956,17 +5956,20 @@ function tep_display_google_results($from_url='', $c_type=false){
     返回值: 是否有权限(boolean) 
  ------------------------------------ */
   function  editPermission($site_permission,$site_id,$all_change=false){
-
+    global $ocertify; 
     $edit_p=FALSE;
     $site_arr=array();
     $site_arr=explode(",",$site_permission);//返回权限数组
     if($site_id == ''){
       $site_id = 0;
     }
+    if ($ocertify->npermission == 31) {
+      return true; 
+    }
     if(in_array($site_id,$site_arr)){
       //判断iste_id是否存在于权限数组中
       $edit_p=true;//true 说明有管理权限 可以在点击新闻时进行修改 
-    }else if($_SESSION['user_permission'] == 15){
+    }else if($ocertify->npermission == 15){
       //判断 管理员 可以修改全部(all)
       if($all_change){
         $edit_p=false;
@@ -6091,7 +6094,7 @@ function tep_display_google_results($from_url='', $c_type=false){
     返回值: letter信息的下拉列表(string) 
  ------------------------------------ */
   function tep_show_pw_start($userid='',$is_letter=false){
-    $res_str = "<select name='letter'>";
+    $res_str = "<select name='letter' id='letter'>";
     if($userid!=''){
       if($is_letter){
         $selected = $is_letter;
@@ -6482,14 +6485,15 @@ function tep_display_google_results($from_url='', $c_type=false){
     返回值: 是否编辑(boolean) 
  ------------------------------------ */
   function tep_can_edit_pw_manager($pwid,$self,$permission){
-    if($_SESSION['user_permission']=='7'){
+    global $ocertify; 
+    if($ocertify->npermission=='7'){
       $sql = "select * from ".TABLE_IDPW." where 
         (
          (privilege<='".$permission."' and id = '".$pwid."' and self='') or 
          (id = '".$pwid."' and self='".$self."') 
         ) and onoff ='1' 
         order by id desc limit 1";
-    }else if($_SESSION['user_permission']=='10'){
+    }else if($ocertify->npermission=='10'){
       $sql = "select * from ".TABLE_IDPW." where 
         (
          (privilege<='".$permission."' and id = '".$pwid."' and self='') or 
@@ -6554,7 +6558,7 @@ function tep_display_google_results($from_url='', $c_type=false){
     返回值: 用户的下拉列表(string) 
  ------------------------------------ */
   function tep_get_user_select($selected='',$select_name=''){
-    $sql = "select * from ".TABLE_PERMISSIONS."";
+    $sql = "select * from ".TABLE_PERMISSIONS." where permission != '31'";
     $query = tep_db_query($sql);
     $select_str = '';
     if($select_name==''){
@@ -10181,4 +10185,102 @@ function tep_get_setting_site_info($current_page)
     }
   } 
   return implode(',', $site_list_array); 
+}
+
+/*------------------------------------
+ 功能：验证邮件
+ 参数: $email(string) 用户邮件
+ 返回值：验证邮箱成功或者失败(boolean)
+ -----------------------------------*/
+function tep_validate_new_email($email) {
+  $isValid = true;
+  $atIndex = strrpos($email, "@");
+  if (is_bool($atIndex) && !$atIndex) {
+    $isValid = false;
+  } else {
+    $domain = substr($email, $atIndex+1);
+    $local = substr($email, 0, $atIndex);
+    $localLen = strlen($local);
+    $domainLen = strlen($domain);
+    if ($localLen < 1 || $localLen > 64) {
+      // front @ length 
+      $isValid = false;
+    } else if ($domainLen < 1 || $domainLen > 255) {
+      // back @  length 
+      $isValid = false;
+    } else if ($local[0] == '.') {
+      // dot at start or end
+      $isValid = false;
+    } else if (!preg_match('/^[\]\\:[A-Za-z0-9\\-\\.]+$/', $domain)) {
+      // character not valid in domain part
+      $isValid = false;
+    } else if (preg_match('/\\.\\./', $domain)||preg_match('/^\./',$domain)) {
+      // domain part has two consecutive dots
+      $isValid = false;
+    } else if(!preg_match('/^(\\\\."|[\(\)\<\>\[\]\:\;\,A-Za-z0-9!#%&`_=\\/$\'*+?^{}|~.-])+$/', str_replace("\\\\","",$local))) {
+      // character not valid in local part unless 
+      // local part is quoted
+      if (!preg_match('/^"(\\\\"|[^"])+"$/', str_replace("\\\\","",$local))) {
+        $isValid = false;
+      }
+    }
+    if ($isValid && ENTRY_EMAIL_ADDRESS_CHECK == 'true') {
+      if (!checkdnsrr($domain, "MX") && !checkdnsrr($domain, "A")) {
+        $isValid = false;
+      }
+    }
+  }
+  return $isValid;
+}
+
+/*------------------------------------
+ 功能：检查页面是否可以访问
+ 参数: $current_page(string) 页面
+ 返回值：是否可以访问(boolean)
+ -----------------------------------*/
+function check_whether_is_limited($current_page)
+{
+  global $ocertify;
+  if ($ocertify->npermission != 31) {
+    $check_value_array = array(); 
+    $c_pwd_check_query = tep_db_query("select * from ".TABLE_PWD_CHECK." where page_name = '".DIR_WS_ADMIN.$current_page."'"); 
+    while ($c_pwd_check_res = tep_db_fetch_array($c_pwd_check_query)) {
+      $check_value_array[] = $c_pwd_check_res['check_value']; 
+    }
+    if (empty($check_value_array)) {
+      return true; 
+    } else {
+      if (!in_array('onetime', $check_value_array)) {
+        if (!in_array('admin', $check_value_array) && ($ocertify->npermission == 15)) {
+          return true; 
+        }
+        if (!in_array('chief', $check_value_array) && ($ocertify->npermission == 10)) {
+          return true; 
+        }
+        if (!in_array('staff', $check_value_array) && ($ocertify->npermission == 7)) {
+          return true; 
+        }
+      }
+    }
+  }
+  return false;
+}
+
+/*------------------------------------
+ 功能：判断用户是否允许输入密码
+ 参数: 无 
+ 返回值：是否允许输入密码(boolean)
+ -----------------------------------*/
+function check_input_user_password($check_user_permission, $check_userid)
+{
+  global $ocertify;
+  if ($ocertify->npermission != 31) {
+    if ($check_userid != $ocertify->auth_user) {
+      if ($ocertify->npermission <= $check_user_permission) {
+        return false; 
+      }
+    }
+  }
+  
+  return true;
 }

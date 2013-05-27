@@ -11,7 +11,6 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('PAGE_PARSE_START_TIME', microtime());
 
 // Set the level of error reporting
-  //error_reporting(E_ALL & ~E_NOTICE);
   error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_WARNING);
   ini_set("display_errors", "Off");
 
@@ -23,10 +22,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
 
 // Disable use_trans_sid as tep_href_link() does this manually
   if (function_exists('ini_set')) {
-    //edit by bobhero start  add @ at ini_set
     @ini_set('session.use_trans_sid', 0);
-    //ini_set('session.use_trans_sid', 0);
-    //edit by bobhero end 
   }
 
 
@@ -345,11 +341,22 @@ define('TABLE_PERMISSIONS','permissions');
     $adminaccs = ADMIN_FREE_PASS;
     tep_session_register('adminaccs');
   }
-$sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$_POST['loginuid']."' limit 0,1");
-while($userslist= tep_db_fetch_array($sites_id)){
-  $_SESSION['site_permission']=$userslist['site_permission'];
-  $_SESSION['user_permission']=$userslist['permission'];
-}
+  $sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$_POST['loginuid']."' limit 0,1");
+  while($userslist= tep_db_fetch_array($sites_id)){
+    if ($userslist['permission'] == 31) {
+      $default_site_list_raw = tep_db_query("select * from `sites` order by id asc"); 
+      $default_site_list_array = array(); 
+      $default_site_list_array[] = 0; 
+      while ($default_site_list_res = tep_db_fetch_array($default_site_list_raw)) {
+        $default_site_list_array[] = $default_site_list_res['id']; 
+      }
+      sort($default_site_list_array); 
+      $_SESSION['site_permission']=implode(',', $default_site_list_array);
+    } else {
+      $_SESSION['site_permission']=$userslist['site_permission'];
+    }
+    $_SESSION['user_permission']=$userslist['permission'];
+  }
 
 // define our general functions used application-wide
   require(DIR_WS_FUNCTIONS . 'general.php');
@@ -503,31 +510,32 @@ if(isset($_GET['his_url'])&&$_GET['his_url']){
     $one_time_flag = true; 
   }
   
-  if(count($one_time_arr)==1&&$one_time_arr[0]=='admin'&&$_SESSION['user_permission']!=15){
-    if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest"){
-      one_time_pwd_forward401($page_name);
-    }
-  }
-  if (!$one_time_flag && $_SESSION['user_permission']!=15) {
-    if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
-      one_time_pwd_forward401($page_name);
-    }
-  }
-  if(!in_array('onetime',$one_time_arr)&&$_SESSION['user_permission']!=15){
-    if(!(in_array('chief',$one_time_arr)&&in_array('staff',$one_time_arr))){
-    if($_SESSION['user_permission']==7&&in_array('chief',$one_time_arr)){
+  if ($ocertify->npermission != 31) {
+    if (!$one_time_flag) {
       if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
         one_time_pwd_forward401($page_name);
       }
-    }
-    if($_SESSION['user_permission']==10&&in_array('staff',$one_time_arr)){
-      if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
-        one_time_pwd_forward401($page_name);
+    } else {
+      if (!in_array('onetime', $one_time_arr)) {
+        if (!in_array('admin', $one_time_arr) && $ocertify->npermission == 15) {
+          if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
+            one_time_pwd_forward401($page_name);
+          }
+        } else if (!in_array('chief', $one_time_arr) && $ocertify->npermission == 10) {
+          if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
+            one_time_pwd_forward401($page_name);
+          }
+        } else if (!in_array('staff', $one_time_arr) && $ocertify->npermission == 7) {
+          if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
+            one_time_pwd_forward401($page_name);
+          }
+        }
       }
     }
-    }
   }
-  $_SESSION['onetime_pwd'] = true;
+ 
+  
+$_SESSION['onetime_pwd'] = true;
   if(in_array('admin',$one_time_arr)&&in_array('chief',$one_time_arr)&&
       in_array('staff',$one_time_arr)){
     $_SESSION['onetime_pwd'] = false;
@@ -536,7 +544,25 @@ if(isset($_GET['his_url'])&&$_GET['his_url']){
     $languages_id = tep_get_default_language_id();
   }
 
-
+  if (!isset($_POST['loginuid'])) {
+    $us_permission_raw = tep_db_query("SELECT site_permission, permission FROM ".TABLE_PERMISSIONS." WHERE userid = '".$ocertify->auth_user."'");
+    $us_permission_res = tep_db_fetch_array($us_permission_raw); 
+  
+    if ($us_permission_res['permission'] == 31) {
+      $us_default_site_list_raw = tep_db_query("select * from ".TABLE_SITES." order by id asc"); 
+      $us_default_site_list_array = array(); 
+      $us_default_site_list_array[] = 0; 
+      while ($us_default_site_list_res = tep_db_fetch_array($us_default_site_list_raw)) {
+        $us_default_site_list_array[] = $us_default_site_list_res['id']; 
+      }
+      sort($us_default_site_list_array); 
+      $_SESSION['site_permission'] = implode(',', $us_default_site_list_array);
+    } else {
+      $_SESSION['site_permission'] = $us_permission_res['site_permission'];
+    }
+    $c_user_info = tep_get_user_info($ocertify->auth_user);
+    $_SESSION['user_name'] = $c_user_info['name'];
+  }
 
   header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
   header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT");

@@ -443,9 +443,7 @@ echo "</form>";
 echo "<a class='head_link' href =
 '".tep_href_link(basename($GLOBALS['PHP_SELF']),'action=re_login&num='.time(),'NONSSL')."'>";
 $user_info = tep_get_user_info($ocertify->auth_user);
-$_SESSION['loginuid'] = $user_info['userid'];
-$_SESSION['user_name'] = $user_info['name'];
-if (isset($ocertify) && $ocertify->npermission == 15) {
+if (isset($ocertify) && $ocertify->npermission >= 15) {
   echo '<font color="blue">'.$user_info['name'].'</font>';
 } elseif (isset($ocertify) && $ocertify->npermission == 10) {
   echo '<font color="red">'.$user_info['name'].'</font>';
@@ -567,15 +565,10 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
       href="'.tep_href_link(FILENAME_PW_MANAGER, '',
     'NONSSL').'">'.HEADER_TEXT_PW_MANAGER.'</a></td>
       </tr>
-      <tr>
-      <td class="menu01"><a class="t_link01"
-      onclick="javascript:goto_changepwd(\'changepwd_form\')"
-      href="javascript:void(0);">'.HEADER_TEXT_USERS.'</a>';
+      ';
 ?>
 <?php 
-  echo '</td>
-      </tr>
-      <tr>
+  echo '<tr>
       <td class="menu01"><a class="t_link01"
       href="'.tep_href_link(FILENAME_PERSONAL_SETTING, '',
         'NONSSL').'">'.HEADER_TEXT_PERSONAL_SETTING.'</a>';

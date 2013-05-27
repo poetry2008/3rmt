@@ -14,29 +14,34 @@ while($request_one_time_row = tep_db_fetch_array($request_one_time_query)){
   $request_one_time_flag = true; 
 }
 
-if(count($request_one_time_arr)==1&&$request_one_time_arr[0]=='admin'&&$_SESSION['user_permission']!=15){
-  if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest"){
-    forward401();
-  }
-}
-if (!$request_one_time_flag && $_SESSION['user_permission']!=15) {
+if ($ocertify->npermission == 31) {
   if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
     forward401();
   }
-}
-if(!in_array('onetime',$request_one_time_arr)&&$_SESSION['user_permission']!=15){
-  if(!(in_array('chief',$request_one_time_arr)&&in_array('staff',$request_one_time_arr))){
-  if($_SESSION['user_permission']==7&&in_array('chief',$request_one_time_arr)){
+} else {
+  if (count($request_one_time_arr) == 1 && $request_one_time_arr[0] == 'admin' && $ocertify->npermission != 15) {
     if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
       forward401();
     }
   }
-  if($_SESSION['user_permission']==10&&in_array('staff',$request_one_time_arr)){
-  $micro_notice_raw = tep_db_query("select id, title, set_time, from_notice from ".TABLE_NOTICE." where type = '1' and id not in (select notice_id from ".TABLE_NOTICE_TO_MICRO_USER." n where n.user != '".$ocertify->auth_user."') order by set_time asc, created_at desc limit 2");
+  if (!$request_one_time_flag && $ocertify->npermission != 15) {
     if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
       forward401();
     }
   }
+  if (!in_array('onetime', $request_one_time_arr) && $ocertify->npermission != 15) {
+    if(!(in_array('chief', $request_one_time_arr) && in_array('staff', $request_one_time_arr))) {
+      if ($ocertify->npermission == 7 && in_array('chief', $request_one_time_arr)) {
+        if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
+          forward401();
+        }
+      }
+      if ($ocertify->npermission == 10 && in_array('staff', $request_one_time_arr)) {
+        if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
+          forward401();
+        }
+      }
+    }
   }
 }
 //end one time pwd

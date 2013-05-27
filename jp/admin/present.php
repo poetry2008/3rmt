@@ -175,39 +175,107 @@ require("includes/note_js.php");
 <?php }?>
 <script language="javascript">
 <?php //新建时的表单验证?>
-function msg(){
+function msg(c_permission){
+  p_error = false; 
   if(document.apply.title.value == ""){
-	  alert("<?php echo PRESENT_PLEASE_INPUT_TEXT; ?>");
+    alert("<?php echo PRESENT_PLEASE_INPUT_TEXT; ?>");
     document.apply.title.focus();
-    return false;
+    p_error = true; 
   }
   if(document.apply.text.value == ""){
-	  alert("<?php echo PRESENT_PLEASE_ENTER_TITLE; ?>");
+    alert("<?php echo PRESENT_PLEASE_ENTER_TITLE; ?>");
     document.apply.text.focus();
-    return false;
+    p_error = true; 
   }
   if((document.apply.start_y.value + document.apply.start_m.value + document.apply.start_d.value) > (document.apply.limit_y.value + document.apply.limit_m.value +document.apply.limit_d.value)){
-	  alert("<?php echo PRESENT_PLEASE_START_DATE_END_DATE; ?>");
+    alert("<?php echo PRESENT_PLEASE_START_DATE_END_DATE; ?>");
     document.apply.start_y.focus();
-    return false;
+    p_error = true; 
+  }
+  if (p_error == false) {
+    if (c_permission == 31) {
+      document.forms.apply.submit(); 
+    } else {
+      $.ajax({
+        url: 'ajax_orders.php?action=getallpwd',   
+        type: 'POST',
+        dataType: 'text',
+        async: false,
+        success: function(msg) {
+          pwd_list_array = msg.split(','); 
+          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+          if (in_array(input_pwd_str, pwd_list_array)) {
+            document.forms.apply.submit(); 
+          } else {
+            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          }
+        }
+      });
+    }
   }
 }
 <?php //更新时的表单验证?>
-function msg2(){
+function msg2(c_permission){
+  p_error = false; 
   if(document.view.title.value == ""){
-	  alert("<?php echo PRESENT_PLEASE_INPUT_TEXT; ?>");
+    alert("<?php echo PRESENT_PLEASE_INPUT_TEXT; ?>");
     document.view.title.focus();
-    return false;
+    p_error = true; 
   }
   if(document.view.text.value == ""){
-	  alert("<?php echo PRESENT_PLEASE_ENTER_TITLE; ?>");
+    alert("<?php echo PRESENT_PLEASE_ENTER_TITLE; ?>");
     document.view.text.focus();
-    return false;
+    p_error = true; 
   }
   if((document.view.start_y.value + document.view.start_m.value + document.view.start_d.value) > (document.view.limit_y.value + document.view.limit_m.value +document.view.limit_d.value)){
-	  alert("<?php echo PRESENT_PLEASE_START_DATE_END_DATE; ?>");
+    alert("<?php echo PRESENT_PLEASE_START_DATE_END_DATE; ?>");
     document.view.start_y.focus();
-    return false;
+    p_error = true; 
+  }
+
+  if (p_error == false) {
+    if (c_permission == 31) {
+      document.forms.apply.submit(); 
+    } else {
+      $.ajax({
+        url: 'ajax_orders.php?action=getallpwd',   
+        type: 'POST',
+        dataType: 'text',
+        async: false,
+        success: function(msg) {
+          pwd_list_array = msg.split(','); 
+          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+          if (in_array(input_pwd_str, pwd_list_array)) {
+            document.forms.apply.submit(); 
+          } else {
+            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          }
+        }
+      });
+    }
+  }
+}
+<?php //提交动作?>
+function check_present_form(c_permission)
+{
+  if (c_permission == 31) {
+    document.forms.present.submit(); 
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          document.forms.present.submit(); 
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
   }
 }
 </script>
@@ -241,7 +309,7 @@ switch(isset($_GET['action'])?$_GET['action']:''){
 ------------------------------------------------------*/
 case 'input' :
 ?>
-            <form onSubmit="return msg()" name="apply" action="present.php?action=insert" method="post" enctype="multipart/form-data">
+            <form name="apply" action="present.php?action=insert" method="post" enctype="multipart/form-data">
               <table width="100%" align="center" border="0" cellspacing="0" cellpadding="8">
                 <tr>
                   <td valign="middle" class="pageHeading" height="10"><?php echo PRESENT_CREATE_TITLE;?></td>
@@ -388,7 +456,7 @@ case 'input' :
             <a class="new_product_reset" href=
             <?php echo tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action'))); ?>
 	    ><?php echo tep_html_element_button(PRESENT_BACK); ?></a>
-            <?php echo tep_html_element_submit(PRESENT_SAVE); ?>
+            <a href="javascript:void(0);"><?php echo tep_html_element_button(PRESENT_SAVE, 'onclick="msg(\''.$ocertify->npermission.'\');"'); ?></a>
                       </td>
                       </tr>
                     </table>
@@ -425,8 +493,7 @@ $sele_lim = substr($sql1['limit_date'],5,2);
 $sele_lid = substr($sql1['limit_date'],8,2);
 
 ?>
-            <form onSubmit="return msg2()" name="view" method="post"
-            action="present.php?action=update&cID=<?php echo $sele1_id;?>" enctype="multipart/form-data">
+            <form name="apply" name="view" method="post" action="present.php?action=update&cID=<?php echo $sele1_id;?>" enctype="multipart/form-data">
               <table width="100%" align="center" border="0" cellspacing="0" cellpadding="8">
                 <tr>
                   <td valign="middle" class="pageHeading" height="10"><?php echo PRESENT_UPDATE_TITLE;?></td>
@@ -588,7 +655,7 @@ $sele_lid = substr($sql1['limit_date'],8,2);
             <a href=
             <?php echo tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action'))); ?>
             ><?php echo tep_html_element_button(IMAGE_BACK); ?></a>
-            <?php echo tep_html_element_submit(IMAGE_SAVE); ?>
+            <a href="javascript:void(0);"><?php echo tep_html_element_button(IMAGE_SAVE, 'onclick="msg(\''.$ocertify->npermission.'\')"'); ?></a>
                       </td>
                       </tr>
                     </table>
@@ -892,13 +959,13 @@ default:
         
             $present = array('form' => tep_draw_form('present', FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=delete'));
             $present[] = array('text' => TEXT_DELETE_INTRO . '<br><br>' . $c_title);
-            $present[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_DELETE) . ' <a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
+            $present[] = array('align' => 'center', 'text' => '<br><a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_DELETE, 'onclick="check_present_form(\''.$ocertify->npermission.'\')"') . '</a> <a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
             break;
           default:
             if (isset($cID) && $cID && tep_not_null($cID)) {
             $heading[] = array('text' => $c_title);
         
-            $present[] = array('align' => 'center', 'text' => '<br><br><a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=view') . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a> <a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=deleform') . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a> <a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action','page')) . 'cID=' . $cID . '&action=list') . '">' .  tep_html_element_button(PRESENT_LIST) . '</a>' );
+            $present[] = array('align' => 'center', 'text' => '<br><br><a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=view') . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a>'.  (($ocertify->npermission >= 15)?'<a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=deleform') . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>':'').' <a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action','page')) . 'cID=' . $cID . '&action=list') . '">' .  tep_html_element_button(PRESENT_LIST) . '</a>' );
 $present_query = tep_db_query("select * from present_goods where goods_id='".$cID."'");
 $present_array = tep_db_fetch_array($present_query);
 if(tep_not_null($present_array['user_added'])){

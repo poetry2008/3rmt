@@ -28,16 +28,44 @@
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script>
 <?php //隐藏结算 ?>
-  function hide(id, ele){
-    $.ajax({
-      dataType: 'text',
-      url: 'telecom_unknow.php?action=hide&id='+id,
-      success: function(text) {
-        if (text == 'success') {
-          $(ele).parent().parent().remove();
+  function hide(id, ele, c_permission){
+    if (c_permission == 31) {
+      $.ajax({
+        dataType: 'text',
+        url: 'telecom_unknow.php?action=hide&id='+id,
+        async: false,
+        success: function(text) {
+          if (text == 'success') {
+            $(ele).parent().parent().remove();
+          }
         }
-      }
-    });
+      });
+    } else {
+      $.ajax({
+        url: 'ajax_orders.php?action=getallpwd',   
+        type: 'POST',
+        dataType: 'text',
+        async: false,
+        success: function(msg) {
+          pwd_list_array = msg.split(','); 
+          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+          if (in_array(input_pwd_str, pwd_list_array)) {
+            $.ajax({
+              dataType: 'text',
+              url: 'telecom_unknow.php?action=hide&id='+id,
+              async: false,
+              success: function(text) {
+                if (text == 'success') {
+                  $(ele).parent().parent().remove();
+                }
+              }
+            });    
+          } else {
+            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          }
+        }
+      });
+    }
   }
 // 全选
 <?php //检查所有结算?>
@@ -78,6 +106,29 @@ function check_one(ele){
     $('#tr_'+ele.value+' td').css('background',$('#red_'+ele.value).val()==1 ? 'red' :($('#rel_'+ele.value).val() == 'yes'?'#fff':'#ccc'));
   }
 }
+<?php //执行动作?>
+function toggle_telecom_action(c_permission)
+{
+  if (c_permission == 31) {
+    document.forms.t_form.submit();   
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          document.forms.t_form.submit();   
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+  }
+}
 </script>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
@@ -99,7 +150,6 @@ require("includes/note_js.php");
 <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
 <?php
-  if ($ocertify->npermission >= 10) {
     echo '<td width="' . BOX_WIDTH . '" valign="top">';
     echo '<table border="0" width="' . BOX_WIDTH . '" cellspacing="1" cellpadding="1" class="columnLeft">';
     echo '<!-- left_navigation -->';
@@ -107,9 +157,6 @@ require("includes/note_js.php");
     echo '<!-- left_navigation_eof -->';
     echo '</table>';
     echo '</td>';
-  } else {
-    echo '<td>&nbsp;</td>';
-  }
 ?>
 <!-- body_text -->
     <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
@@ -147,7 +194,7 @@ require("includes/note_js.php");
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
       <td valign="top">
-    <form name="t_form" action="?action=hide_more" method="post" onsubmit="return confirm('<?php echo TELECOM_UNKNOW_SELECT_NOTICE;?>')">
+    <form name="t_form" action="?action=hide_more" method="post">
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
     <tr class="dataTableHeadingRow">
       <td class="dataTableHeadingContent" align="left" width="20"><input type="checkbox" onclick="all_check(this)"></td>
@@ -331,7 +378,12 @@ require("includes/note_js.php");
       <td align="left"   style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo tep_high_light_by_keywords($orders['telno'],TELNO_KEYWORDS);?>&nbsp;</td>
       <td align="left"   style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['email']; ?>&nbsp;</td>
       <td align="right"  style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><?php echo $orders['money']; ?>&nbsp;</td>
-      <td align="right"  style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"><input type="hidden" id="rel_<?php echo $orders['id'];?>" value="<?php echo $orders['rel'];?>"><input type="hidden" id="red_<?php echo $orders['id'];?>" value="<?php echo tep_match_by_keywords($orders['telno'],TELNO_KEYWORDS)?1:0;?>"><?php if (!($orders['type'] == 'success')) {?><a href="javascript:void(0);" onclick="return confirm('<?php echo TEXT_NOT_SHOW;?>') && hide(<?php echo $orders['id'];?>, this)"><img src="images/icons/cross.gif" ></a><?php } else { echo '&nbsp;'; } ?></td>
+      <td align="right"  style="border-bottom:1px solid #000000;"
+      class="dataTableContent" align="right"><input type="hidden" id="rel_<?php echo
+      $orders['id'];?>" value="<?php echo $orders['rel'];?>"><input type="hidden"
+      id="red_<?php echo $orders['id'];?>" value="<?php echo
+      tep_match_by_keywords($orders['telno'],TELNO_KEYWORDS)?1:0;?>"><?php if
+      (!($orders['type'] == 'success')) {?><a href="javascript:void(0);" onclick="if (confirm('<?php echo TEXT_NOT_SHOW;?>')) hide(<?php echo $orders['id'];?>, this, '<?php echo $ocertify->npermission;?>')"><img src="images/icons/cross.gif" ></a><?php } else { echo '&nbsp;'; } ?></td>
     </tr>
 <?php }?>
   </table>
@@ -341,7 +393,7 @@ require("includes/note_js.php");
   </form>
         <table border="0" width="100%" cellspacing="0" cellpadding="0" class="table_list_box">
           <tr>
-            <td class="smallText" ><input type="button" onclick="if(confirm('<?php echo TELECOM_UNKNOW_SELECT_NOTICE;?>')) { document.forms.t_form.submit(); }" value="<?php echo TELECOM_UNKNOW_TABLE_DISPLAY;?>"><?php echo $orders_split->display_count($orders_query_numrows, MAX_DISPLAY_ORDERS_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_ORDERS); ?></td>
+            <td class="smallText" ><input type="button" onclick="toggle_telecom_action('<?php echo $ocertify->npermission;?>')" value="<?php echo TELECOM_UNKNOW_TABLE_DISPLAY;?>"><?php echo $orders_split->display_count($orders_query_numrows, MAX_DISPLAY_ORDERS_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_ORDERS); ?></td>
             <td class="smallText" align="right">
 			<div class="td_box"><?php echo $orders_split->display_links($orders_query_numrows, MAX_DISPLAY_ORDERS_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'oID', 'action'))); ?></div></td>
           </tr>

@@ -53,7 +53,32 @@
 <title><?php echo HEADING_TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-  <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<script type="text/javascript">
+<?php //提交动作?>
+function check_lan_form(c_permission)
+{
+  if (c_permission == 31) {
+    document.forms.language.submit(); 
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          document.forms.language.submit(); 
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+  }
+}
+</script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
@@ -133,7 +158,7 @@ require("includes/note_js.php");
                 <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
               <tr>
-                <td align="right"><?php if ($file_writeable) { echo tep_html_element_submit(IMAGE_SAVE) . '&nbsp;<a href="' . tep_href_link(FILENAME_DEFINE_LANGUAGE, 'lngdir=' .  $_GET['lngdir']) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>'; } else { echo '<a href="' .  tep_href_link(FILENAME_DEFINE_LANGUAGE, 'lngdir=' .  $_GET['lngdir']) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; } ?></td>
+                <td align="right"><?php if ($file_writeable) { echo '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_lan_form(\''.$ocertify->npermission.'\');"') . '&nbsp;<a href="' . tep_href_link(FILENAME_DEFINE_LANGUAGE, 'lngdir=' .  $_GET['lngdir']) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>'; } else { echo '<a href="' .  tep_href_link(FILENAME_DEFINE_LANGUAGE, 'lngdir=' .  $_GET['lngdir']) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; } ?></td>
               </tr>
             </table></td>
           </form></tr>

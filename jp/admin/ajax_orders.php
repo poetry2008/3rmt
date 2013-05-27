@@ -14,36 +14,48 @@ while($request_one_time_row = tep_db_fetch_array($request_one_time_query)){
   $request_one_time_flag = true; 
 }
 
-if(count($request_one_time_arr)==1&&$request_one_time_arr[0]=='admin'&&$_SESSION['user_permission']!=15){
-  if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest"){
-    if (!isset($_POST['split_param'])) {
-      forward401();
-    }
-  }
-}
-if (!$request_one_time_flag && $_SESSION['user_permission']!=15) {
+if ($ocertify->npermission == 31) {
   if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
     if (!isset($_POST['split_param'])) {
-      forward401();
+      if (!(($_POST['orders_id'] && ($_POST['orders_comment']||$_POST['orders_comment_flag']=='true')) || ($_GET['orders_id'] && $_POST['orders_credit']))) {
+        forward401();
+      } 
     }
   }
-}
-if(!in_array('onetime',$request_one_time_arr)&&$_SESSION['user_permission']!=15){
-  if(!(in_array('chief',$request_one_time_arr)&&in_array('staff',$request_one_time_arr))){
-  if($_SESSION['user_permission']==7&&in_array('chief',$request_one_time_arr)){
+} else {
+  if (count($request_one_time_arr) == 1 && $request_one_time_arr[0] == 'admin' && $ocertify->npermission != 15){
     if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
       if (!isset($_POST['split_param'])) {
         forward401();
       }
     }
   }
-  if($_SESSION['user_permission']==10&&in_array('staff',$request_one_time_arr)){
+  
+  if (!$request_one_time_flag && $ocertify->npermission != 15) {
     if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
       if (!isset($_POST['split_param'])) {
         forward401();
       }
     }
   }
+
+  if (!in_array('onetime', $request_one_time_arr) && $ocertify->npermission != 15) {
+    if (!(in_array('chief', $request_one_time_arr) && in_array('staff', $request_one_time_arr))) {
+      if ($ocertify->npermission == 7 && in_array('chief', $request_one_time_arr)){
+        if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
+          if (!isset($_POST['split_param'])) {
+            forward401();
+          }
+        }
+      }
+      if ($ocertify->npermission == 10 && in_array('staff', $request_one_time_arr)) {
+        if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
+          if (!isset($_POST['split_param'])) {
+            forward401();
+          }
+        }
+      }
+    }
   }
 }
 //end one time pwd
@@ -709,33 +721,29 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
  参数: $_POST['check_str'] 校验值 
  参数: $_POST['page_name'] 页面的名称
  --------------------------------------------*/
-  if(isset($_POST['check_str'])&&$_POST['check_str']){
-    $check_arr = explode(',',$_POST['check_str']);
-    if(in_array('admin',$check_arr)){
-      tep_db_query("delete from  ".TABLE_PWD_CHECK." where
-					page_name='".$_POST['page_name']."'");
-      foreach($check_arr as $value){
-        $sql = "insert into ".TABLE_PWD_CHECK."
-					(`id`,`check_value`,`page_name`)VALUES
-					(null,'".$value."','".$_POST['page_name']."')";
-        tep_db_query($sql);
-      }
-      echo "true";
-    }else if(count($check_arr)==1&&$check_arr[0]=='onetime'){
-      tep_db_query("delete from  ".TABLE_PWD_CHECK." where
-					page_name='".$_POST['page_name']."'");
-      foreach($check_arr as $value){
-        $sql = "insert into ".TABLE_PWD_CHECK."
-					(`id`,`check_value`,`page_name`)VALUES
-					(null,'".$value."','".$_POST['page_name']."')";
-        tep_db_query($sql);
-      }
-      echo "true";
-    }else{
-      echo "noadmin";
+  if (isset($_POST['check_str']) && $_POST['check_str']) {
+    $check_arr = explode(',', $_POST['check_str']);
+    tep_db_query("delete from  ".TABLE_PWD_CHECK." where page_name = '".$_POST['page_name']."'");
+    foreach($check_arr as $value){
+      $sql = "insert into ".TABLE_PWD_CHECK." (`id`,`check_value`,`page_name`) VALUES (null,'".$value."','".$_POST['page_name']."')";
+      tep_db_query($sql);
     }
-  }else{
-    echo "noall";
+    $show_str = "true|||1"; 
+    echo $show_str; 
+    exit;
+  }
+  $exists_page_raw = tep_db_query("select * from ".TABLE_PWD_CHECK." where page_name = '".$_POST['page_name']."'"); 
+  if (tep_db_num_rows($exists_page_raw) > 0) {
+    tep_db_query("delete from  ".TABLE_PWD_CHECK." where page_name = '".$_POST['page_name']."'");
+    $show_str = "true";
+    if ($ocertify->npermission != 31) {
+      $show_str .= "|||0"; 
+    } else {
+      $show_str .= "|||1"; 
+    }
+    echo $show_str; 
+  } else {
+    echo 'success|||1';
   }
 }else if(isset($_GET['action'])&&$_GET['action']=='getpwdcheckbox'){
 /*-------------------------------------------
@@ -754,7 +762,10 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   while($one_time_row = tep_db_fetch_array($one_time_query)){
     $one_time_arr[] = $one_time_row['check_value'];
   }
-  if($ocertify->npermission == 15
+  if ($ocertify->npermission == 31) {
+    echo 'false';
+    exit;
+  } else if($ocertify->npermission == 15
      &&in_array('admin',$one_time_arr)&&in_array('onetime',$one_time_arr)){
     echo 'false';
     exit;
@@ -1296,7 +1307,9 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= '<td colspan="2" align="center">';
   $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_NEW_PROJECT, 'onclick="show_new_campaign(\''.$_POST['st_id'].'\')"').'</a>&nbsp;'; 
   $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_campaign_info('.$campaign_res['id'].', 1, '.$campaign_res['site_id'].');"').'</a>&nbsp;'; 
-  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if(confirm(\''.TEXT_DEL_CAMPAIGN.'\')) window.location.href = \''.tep_href_link(FILENAME_CAMPAIGN, 'action=deleteconfirm&campaign_id='.$campaign_res['id']).'&site_id='.$_POST['st_id'].'\';"').'</a>'; 
+  if ($ocertify->npermission >= 15) {
+    $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if(confirm(\''.TEXT_DEL_CAMPAIGN.'\')) toggle_campaign_action(\''.$ocertify->npermission.'\', \''.tep_href_link(FILENAME_CAMPAIGN, 'action=deleteconfirm&campaign_id='.$campaign_res['id']).'&site_id='.$_POST['st_id'].'\');"').'</a>'; 
+  }
   $html_str .= tep_draw_hidden_field('campaign_id', $campaign_res['id']); 
   $html_str .= '</td>';
   $html_str .= '</tr>';
@@ -1623,7 +1636,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= '</td>';
   $html_str .= '</tr>'; 
   $html_str .= '<tr>'; 
-  $html_str .= '<td colspan="3" align="center">'.tep_html_element_submit(IMAGE_DELETE); 
+  $html_str .= '<td colspan="3" align="center"><a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="confirm_del_order_info();"').'</a>'; 
   $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="cancel_del_order_info(\''.$_POST['oID'].'\', \''.urlencode($param_str).'\')"').'</a>';
   $html_str .= '</td>'; 
   $html_str .= '</tr>'; 
@@ -2401,7 +2414,7 @@ echo json_encode($json_array);
  ----------------------------------------*/
   tep_db_query("update `notes` set `is_show` = '1' where `id` = '".$_POST['note_id']."'");
 } else if ($_GET['action'] == 'select_all_site') {
-  $exists_page_raw = tep_db_query("select * from show_site where page like '%".DIR_WS_ADMIN.$_POST['current_file']."%' and user = '".$_SESSION['loginuid']."'");
+  $exists_page_raw = tep_db_query("select * from show_site where page like '%".DIR_WS_ADMIN.$_POST['current_file']."%' and user = '".$ocertify->auth_user."'");
   $exists_page_info = tep_db_fetch_array($exists_page_raw); 
   $site_list_raw = tep_db_query("select * from sites"); 
   $site_list_array = array(); 
@@ -2425,18 +2438,90 @@ echo json_encode($json_array);
       }
     }
     sort($site_info_array);
-    tep_db_query("update `show_site` set `site` = '".implode('-', $site_info_array)."' where `user` = '".$_SESSION['loginuid']."' and `page` like '%".DIR_WS_ADMIN.$_POST['current_file']."%'");
+    tep_db_query("update `show_site` set `site` = '".implode('-', $site_info_array)."' where `user` = '".$ocertify->auth_user."' and `page` like '%".DIR_WS_ADMIN.$_POST['current_file']."%'");
   } else {
     $site_info_array = $site_list_array; 
     if ($_POST['flag'] == 0) {
       unset($site_info_array[array_search($_POST['site_id'], $site_info_array)]);
     } 
     sort($site_info_array);
-    tep_db_query("insert into `show_site` values (null, '".$_SESSION['loginuid']."', '".DIR_WS_ADMIN.$_POST['current_file']."', '".implode('-', $site_info_array)."')");  
+    tep_db_query("insert into `show_site` values (null, '".$ocertify->auth_user."', '".DIR_WS_ADMIN.$_POST['current_file']."', '".implode('-', $site_info_array)."')");  
   }
   if(!empty($site_info_array)){
     echo tep_href_link($_POST['current_file'], $_POST['param_url'].'site_id='.implode('-', $site_info_array));
   }else{
     echo tep_href_link($_POST['current_file'], $_POST['param_url']); 
   }
+} else if ($_GET['action'] == 'generate_onetime_pwd') {
+/*-----------------------------------------
+ 功能: 生成一次性密码口
+ 参数: $letter_info 字符的值 
+ 参数: $rule_info 规则的值 
+ ----------------------------------------*/
+  $user_rand_pwd = make_rand_pwd($_POST['rule_info']);
+  if ($user_rand_pwd !== false) {
+    echo $_POST['letter_info'].$user_rand_pwd;
+  } else {
+    echo '';
+  }
+} else if ($_GET['action'] == 'check_user_info') {
+/*-----------------------------------------
+ 功能: 检查用户信息是否正确
+ 参数: $user_info_id 用户id 
+ 参数: $stype 类型 
+ 参数: $userid_info_str 用户填写的id 
+ ----------------------------------------*/
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_USERS);
+  $user_error_info['user_error_id'] = ''; 
+  $user_error_info['user_error_name'] = ''; 
+  $user_error_info['user_error_pwd'] = ''; 
+  $user_error_info['user_error_email'] = ''; 
+  
+  if (empty($_POST['userid_info_str'])) {
+    $user_error_info['user_error_id'] = TEXT_USER_INFO_IS_NULL; 
+  } else {
+    $userid_len = strlen($_POST['userid_info_str']); 
+    if ($userid_len < 2) {
+      $user_error_info['user_error_id'] = sprintf(TEXT_USER_INFO_IS_SHORT, 2); 
+    } else {
+      if (ereg('[[:print:]]', $_POST['userid_info_str']) == false) {
+        $user_error_info['user_error_id'] = TEXT_USER_INFO_FORMAT_WRONG; 
+      }
+    }
+    if (empty($user_error_info['user_error_id'])) {
+      if ($_POST['stype'] == '0') {
+        $exists_user_query = tep_db_query("select * from ".TABLE_USERS." where userid = '".$_POST['userid_info_str']."'"); 
+        if (tep_db_num_rows($exists_user_query) > 0) {
+          $user_error_info['user_error_id'] = TEXT_USER_ID_EXISTS; 
+        }
+      } 
+    }
+  }
+ 
+  if (!empty($_POST['user_info_email'])) {
+    if (!tep_validate_new_email($_POST['user_info_email'])) {
+      $user_error_info['user_error_email'] = TEXT_USER_EMAIL_FORMAT_WRONG; 
+    }
+  }
+  
+  if (empty($_POST['user_info_name'])) {
+    $user_error_info['user_error_name'] = TEXT_USER_INFO_IS_NULL; 
+  }
+   
+  if (isset($_POST['user_info_pwd'])) {
+    if (empty($_POST['user_info_pwd'])) {
+      $user_error_info['user_error_pwd'] = TEXT_USER_INFO_IS_NULL; 
+    } else {
+      $user_pwd_len = strlen($_POST['user_info_pwd']); 
+      if ($user_pwd_len < 2) {
+        $user_error_info['user_error_pwd'] = sprintf(TEXT_USER_INFO_IS_SHORT, 2); 
+      } else {
+        if (ereg('[[:print:]]', $_POST['user_info_pwd']) == false) {
+          $user_error_info['user_error_pwd'] = TEXT_USER_INFO_FORMAT_WRONG; 
+        }
+      }
+    }
+  }
+  
+  echo implode('|||',$user_error_info);
 }

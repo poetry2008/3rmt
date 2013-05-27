@@ -2204,6 +2204,35 @@ else { ?>
         <script language="javascript" src="includes/javascript/all_page.js"></script> 
         <script language="javascript">
 window.onresize = resizepage;
+<?php //删除订单?>
+function confirm_del_order_info()
+{
+<?php
+if ($ocertify->npermission == 31) {
+?>
+  document.forms.orders.submit();
+<?php
+} else {
+?>
+  $.ajax({
+     url: 'ajax_orders.php?action=getallpwd',
+     type: 'POST',
+     dataType: 'text',
+     async : false,
+     success: function(data) {
+       var pwd_arr = data.split(","); 
+       var pwd =  window.prompt("<?php echo TEXT_INPUT_ONE_TIME_PASSWORD;?>\r\n","");
+       if(in_array(pwd, pwd_arr)) {
+         document.forms.orders.submit();
+       } else {
+         window.alert("<?php echo TEXT_INPUT_PASSWORD_ERROR;?>"); 
+       }
+     }
+   });
+<?php
+}
+?>
+}
 <?php //浏览器窗口缩放时执行的函数?>
 function resizepage(){
   if($(".note_head").val()== ""&&$("#orders_list_table").width()< 714){
@@ -2282,9 +2311,9 @@ function confrim_mail_title(){
                   }
                }); 
         }
-        // 用作跳转
+        <?php // 用作跳转?>
         var base_url = '<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('questions_type')));?>';
-        // 非完成状态的订单不显示最终确认
+        <?php // 非完成状态的订单不显示最终确认?>
         var show_q_8_1_able  = <?php echo tep_orders_finished($_GET['oID']) && !check_torihiki_date_error($_GET['oID']) ?'true':'false';?>;
         var cfg_last_customer_action = '<?php echo LAST_CUSTOMER_ACTION;?>';
 
@@ -2342,6 +2371,24 @@ dataType: 'text',
 async : false,
 success: function(data) {
 var pwd_arr = data.split(",");
+<?php
+if ($ocertify->npermission == 31) {
+?>
+if (window.confirm('<?php echo NOTICE_DEL_CONFIRM_PAYEMENT_TIME;?>')) {
+$.ajax({
+type:"POST", 
+url:"<?php echo tep_href_link('handle_payment_time.php')?>",
+data:"oID="+oid+"&stid="+status_id, 
+success:function(msg) {
+alert('<?php echo NOTICE_DEL_CONFIRM_PAYMENT_TIME_SUCCESS;?>'); 
+window.location.href = window.location.href; 
+window.location.reload; 
+}
+}); 
+}
+<?php
+} else {
+?>
 var pwd =  window.prompt("<?php echo TEXT_INPUT_ONE_TIME_PASSWORD;?>\r\n","");
 if(in_array(pwd, pwd_arr)){
 if (window.confirm('<?php echo NOTICE_DEL_CONFIRM_PAYEMENT_TIME;?>')) {
@@ -2359,6 +2406,9 @@ window.location.reload;
 } else {
   window.alert("<?php echo TEXT_INPUT_PASSWORD_ERROR;?>"); 
 }
+<?php
+}
+?>
 }
 });
 }
@@ -2464,7 +2514,7 @@ require("includes/note_js.php");
 </div>
 <div id="popup_box" style="display:none;"></div>
 <?php
-if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']&&false){?>
+if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
   <script language='javascript'>
     one_time_pwd('<?php echo $page_name;?>');
   </script>
@@ -2478,7 +2528,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
     <tr>
     <?php
-    if ($ocertify->npermission >= 10) {
       echo '<td width="' . BOX_WIDTH . '" valign="top">';
       echo '<table border="0" width="' . BOX_WIDTH . '" cellspacing="1" cellpadding="1" class="columnLeft">';
       echo '<!-- left_navigation -->';
@@ -2486,10 +2535,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       echo '<!-- left_navigation_eof -->';
       echo '</table>';
       echo '</td>';
-    } else {
-      echo '<td>&nbsp;</td>';
-    }
-?>
+    ?>
 <script>
 <?php //显示手册全部内容?>
 function manual_show(action){
@@ -2659,17 +2705,10 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
     <td class="pageHeading" align="right">
     <?php if ($ocertify->npermission) { ?>
       <?php 
-        if(isset($order->info['flag_qaf'])&&$order->info['flag_qaf']){
-          echo tep_html_element_button(IMAGE_EDIT,
-              'onclick="once_pwd_redircet_new_url(\''.
-            tep_href_link(FILENAME_ORDERS_EDIT,
-                tep_get_all_get_params(array('action','status','questions_type'))
-                .'&action=edit')
-            .'\')"');
+        if(isset($order->info['flag_qaf'])&&$order->info['flag_qaf']&&($ocertify->npermission != 31)){
+          echo tep_html_element_button(IMAGE_EDIT, 'onclick="once_pwd_redircet_new_url(\''.  tep_href_link(FILENAME_ORDERS_EDIT, tep_get_all_get_params(array('action','status','questions_type')) .'&action=edit') .'\')"');
         }else{
-          echo '<a href="' . tep_href_link(FILENAME_ORDERS_EDIT,
-               tep_get_all_get_params(array('action','status','questions_type'))
-                 . '&action=edit') . '">';
+          echo '<a href="' . tep_href_link(FILENAME_ORDERS_EDIT, tep_get_all_get_params(array('action','status','questions_type')) . '&action=edit') . '">';
           echo tep_html_element_button(IMAGE_EDIT);
           echo '</a>'; 
         }
@@ -3407,7 +3446,9 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
             <td class="smallText" align="center" nowrap="true"><?php echo TABLE_HEADING_STATUS; ?></td>
             <td class="smallText" align="center"><?php echo TABLE_HEADING_COMMENTS; ?></td>
             <td class="smallText" align="center"><?php echo TEXT_OPERATE_USER; ?></td>
+            <?php if ($ocertify->npermission >= 15) { ?>
             <td class="smallText" align="center"></td>
+            <?php }?> 
             </tr>
             <?php
             $cpayment = payment::getInstance($orders['site_id']);
@@ -3458,11 +3499,14 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
            }
               echo '<td class="smallText">'.$orders_history['user_added'].'</td>'; 
               $orders_status_history_str = $orders_history['comments'];
-              echo '<td>';
-              $order_confirm_payment_raw = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".tep_db_input($oID)."'"); 
-              $order_confirm_payment_res = tep_db_fetch_array($order_confirm_payment_raw); 
-              echo '<input type="button" class="element_button" onclick="del_confirm_payment_time(\''.$oID.'\', \''.$orders_history['orders_status_history_id'].'\');" value="'.DEL_CONFIRM_PAYMENT_TIME.'">'; 
-              echo '</td></tr>' . "\n";
+              if ($ocertify->npermission >= 15) {
+                echo '<td>';
+                $order_confirm_payment_raw = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".tep_db_input($oID)."'"); 
+                $order_confirm_payment_res = tep_db_fetch_array($order_confirm_payment_raw); 
+                echo '<input type="button" class="element_button" onclick="del_confirm_payment_time(\''.$oID.'\', \''.$orders_history['orders_status_history_id'].'\');" value="'.DEL_CONFIRM_PAYMENT_TIME.'">'; 
+                echo '</td>';
+              }
+              echo '</tr>' . "\n";
             }
           } else {
             echo
@@ -4799,7 +4843,7 @@ if($c_parent_array['parent_id'] == 0){
           <?php // 订单信息预览，配合javascript，永远浮动在屏幕右下角 ?>
           <div id="orders_info_box" style="display:none; position:absolute; background:#FFFF00; width:70%;z-index:2; /*bottom:0;margin-top:40px;right:0;width:200px;*/">&nbsp;</div>
           <?php
-          if ($ocertify->npermission == 15) {
+          if ($ocertify->npermission >= 15) {
             if(!tep_session_is_registered('reload')) $reload = 'yes';
             if (false) { 
               if($reload == 'yes') {
@@ -5415,9 +5459,9 @@ if($c_parent_array['parent_id'] == 0){
             </table>
             <script language="javascript">
             window.orderStr = new Array();
-          // 订单所属网站
+          <?php // 订单所属网站?>
           window.orderSite = new Array();
-          // 0 空 1 卖 2 买 3 混
+          <?php // 0 空 1 卖 2 买 3 混?>
           var orderType = new Array();
           var questionShow = new Array();
           <?php foreach($allorders as $key=>$orders){?>

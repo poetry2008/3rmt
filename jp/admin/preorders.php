@@ -644,6 +644,35 @@ $(document).ready(function(){
     }
   }
 });
+<?php //删除预约订单?>
+function confirm_del_preorder_info()
+{
+<?php
+if ($ocertify->npermission == 31) {
+?>
+  document.forms.preorders.submit();
+<?php
+} else {
+?>
+  $.ajax({
+     url: 'ajax_orders.php?action=getallpwd',
+     type: 'POST',
+     dataType: 'text',
+     async : false,
+     success: function(data) {
+       var pwd_arr = data.split(","); 
+       var pwd =  window.prompt("<?php echo NOTICE_ORDER_INPUT_PASSWORD;?>\r\n","");
+       if(in_array(pwd, pwd_arr)) {
+         document.forms.preorders.submit();
+       } else {
+         window.alert("<?php echo NOTICE_ORDER_INPUT_WRONG_PASSWORD;?>"); 
+       }
+     }
+   });
+<?php
+}
+?>
+}
   <?php //选中/非选中网站?>
   function change_site(site_id,flag,site_list,param_url){  
           var ele = document.getElementById("site_"+site_id);
@@ -702,10 +731,10 @@ $(document).ready(function(){
                   }
                }); 
   }
-  // 用作跳转
+  <?php // 用作跳转?>
   var base_url = '<?php echo tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('questions_type')));?>';
   
-  // 非完成状态的订单不显示最终确认
+  <?php // 非完成状态的订单不显示最终确认?>
   var show_q_8_1_able  = <?php echo tep_orders_finished($_GET['oID']) && !check_torihiki_date_error($_GET['oID']) ?'true':'false';?>;
   
   var cfg_last_customer_action = '<?php echo PREORDER_LAST_CUSTOMER_ACTION;?>';
@@ -744,6 +773,25 @@ function del_confirm_payment_time(oid, status_id)
     async : false,
     success: function(data) {
       var pwd_arr = data.split(",");
+      <?php
+      if ($ocertify->npermission == 31) {
+      ?>
+      if (window.confirm('<?php echo NOTICE_DEL_CONFIRM_PAYEMENT_TIME;?>')) {
+        $.ajax({
+          type:"POST", 
+          url:"<?php echo tep_href_link('pre_handle_payment_time.php')?>",
+          data:"oID="+oid+"&stid="+status_id, 
+          async : false,
+          success:function(msg) {
+            alert('<?php echo NOTICE_DEL_CONFIRM_PAYMENT_TIME_SUCCESS;?>'); 
+            window.location.href = window.location.href; 
+            window.location.reload; 
+          }
+        }); 
+      }
+      <?php
+      } else {
+      ?>
       var pwd =  window.prompt("<?php echo NOTICE_ORDER_INPUT_PASSWORD;?>","");
       if(in_array(pwd, pwd_arr)){
         if (window.confirm('<?php echo NOTICE_DEL_CONFIRM_PAYEMENT_TIME;?>')) {
@@ -761,6 +809,9 @@ function del_confirm_payment_time(oid, status_id)
       } else {
         window.alert("<?php echo NOTICE_ORDER_INPUT_WRONG_PASSWORD;?>"); 
       }
+      <?php
+      }
+      ?>
     }
   });
 }
@@ -863,7 +914,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
 <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content"> 
   <tr>
 <?php
-  if ($ocertify->npermission >= 10) {
     echo '<td width="' . BOX_WIDTH . '" valign="top">';
     echo '<table border="0" width="' . BOX_WIDTH . '" cellspacing="1" cellpadding="1" class="columnLeft">';
     echo '<!-- left_navigation -->';
@@ -871,9 +921,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     echo '<!-- left_navigation_eof -->';
     echo '</table>';
     echo '</td>';
-  } else {
-    echo '<td>&nbsp;</td>';
-  }
 ?>
 <!-- body_text -->
 <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
@@ -900,19 +947,11 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               <td class="pageHeading" align="right">
                 <?php if ($ocertify->npermission) { ?>
                 <?php 
-                   if(isset($order->info['flag_qaf'])&&$order->info['flag_qaf']){
-                     echo tep_html_element_button(IMAGE_EDIT,
-                         'onclick="once_pwd_redircet_new_url(\''.
-                       tep_href_link(FILENAME_FINAL_PREORDERS,
-                           tep_get_all_get_params(array('action','status','questions_type'))
-                           .'&action=edit')
-                       .'\')"');
+                   if(isset($order->info['flag_qaf'])&&$order->info['flag_qaf']&&($ocertify->npermission != 31)){
+                     echo tep_html_element_button(IMAGE_EDIT, 'onclick="once_pwd_redircet_new_url(\''.  tep_href_link(FILENAME_FINAL_PREORDERS, tep_get_all_get_params(array('action','status','questions_type')) .'&action=edit') .'\')"');
                    }else{
-                  echo '<a href="' . tep_href_link(FILENAME_FINAL_PREORDERS,
-                  tep_get_all_get_params(array('action','status','questions_type'))
-                    . '&action=edit') . '">';
-                     echo tep_html_element_button(IMAGE_EDIT);
-                    echo '</a>'; 
+                     echo '<a href="' . tep_href_link(FILENAME_FINAL_PREORDERS, tep_get_all_get_params(array('action','status','questions_type')) . '&action=edit') . '">'; echo tep_html_element_button(IMAGE_EDIT);
+                     echo '</a>'; 
                    }
                 ?>
                 <?php } ?>
@@ -1581,7 +1620,9 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
         <td class="smallText" align="center" nowrap="true"><?php echo TABLE_HEADING_STATUS; ?></td>
         <td class="smallText" align="center"><?php echo TABLE_HEADING_COMMENTS; ?></td>
         <td class="smallText" align="center"><?php echo TEXT_OPERATE_USER; ?></td>
+        <?php if ($ocertify->npermission >= 15) { ?>
         <td class="smallText" align="center"></td>
+        <?php }?> 
       </tr>
   <?php
       $orders_history_query = tep_db_query("select orders_status_history_id, orders_status_id, date_added, customer_notified, comments, user_added from " . TABLE_PREORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($oID) . "' order by date_added");
@@ -1629,11 +1670,14 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
             echo '      <td class="smallText"><p style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;width:170px;">&nbsp;</p></td>' . "\n";  
           }
           echo '<td class="smallText">'.$orders_history['user_added'].'</td>'; 
-          echo '<td>';
-          $order_confirm_payment_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".tep_db_input($oID)."'"); 
-          $order_confirm_payment_res = tep_db_fetch_array($order_confirm_payment_raw); 
-          echo '<input type="button" class="element_button" onclick="del_confirm_payment_time(\''.$oID.'\', \''.$orders_history['orders_status_history_id'].'\');" value="'.DEL_CONFIRM_PAYMENT_TIME.'">'; 
-          echo '</td></tr>' . "\n";
+          if ($ocertify->npermission >= 15) {
+            echo '<td>';
+            $order_confirm_payment_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".tep_db_input($oID)."'"); 
+            $order_confirm_payment_res = tep_db_fetch_array($order_confirm_payment_raw); 
+            echo '<input type="button" class="element_button" onclick="del_confirm_payment_time(\''.$oID.'\', \''.$orders_history['orders_status_history_id'].'\');" value="'.DEL_CONFIRM_PAYMENT_TIME.'">'; 
+            echo '</td>';
+          } 
+          echo '</tr>' . "\n";
           $orders_status_history_str = $orders_history['comments'];
           }
       } else {
@@ -1900,7 +1944,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     <?php // 订单信息预览，配合javascript，永远浮动在屏幕右下角 ?>
     <div id="orders_info_box" style=" display:none; position:absolute; background:#FFFF00; width:70%;z-index:2; /*bottom:0;margin-top:40px;right:0;width:200px;*/">&nbsp;</div>
 <?php
-  if ($ocertify->npermission == 15) {
+  if ($ocertify->npermission >= 15) {
     if(!tep_session_is_registered('reload')) $reload = 'yes';
     if (false) { 
     if($reload == 'yes') {
@@ -3252,9 +3296,9 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
   </table>
 <script language="javascript">
   window.orderStr = new Array();
-  // 订单所属网站
+  <?php // 订单所属网站?>
   window.orderSite = new Array();
-  // 0 空 1 卖 2 买 3 混
+  <?php // 0 空 1 卖 2 买 3 混?>
   var orderType = new Array();
   var questionShow = new Array();
 <?php foreach($allorders as $key=>$orders){?>

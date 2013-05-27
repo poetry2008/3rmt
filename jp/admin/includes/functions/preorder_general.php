@@ -164,7 +164,6 @@ function tep_show_preorders_products_info($orders_id) {
       $input_op_array = @unserialize(stripslashes($pa['option_info'])); 
       $str .= '<tr><td class="main"><b>'.$input_op_array['title'].'：</b></td><td class="main">'.$input_op_array['values'].'</td></tr>';
     }
-    //$str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_GAME_NAME.'</b></td><td class="main"  style="color:#407416; line-height:20px;"><font size="4"><b>'.$p['products_character'].'</b></font></td></tr>';
     $names = tep_get_computers_names_by_preorders_id($orders['orders_id']);
     if ($names) {
       $str .= '<tr><td class="main"><b>PC：</b></td><td class="main">'.implode('&nbsp;,&nbsp;', $names).'</td></tr>';
@@ -743,7 +742,6 @@ function   tep_pre_order_status_change($oID,$status){
   require_once("pre_oa/HM_Item_Date.php");
   require_once("pre_oa/HM_Item_Myname.php");
   $order_id = $oID;
-  //$formtype = tep_check_pre_order_type($order_id);
   $formtype = 4;
   $payment_romaji = tep_get_pre_payment_code_by_order_id($order_id); 
   $oa_form_sql = "select * from ".TABLE_OA_FORM." where formtype = '".$formtype."' and payment_romaji = '".$payment_romaji."'";
@@ -862,10 +860,6 @@ function tep_get_pre_orders_products_string($orders, $single = false, $popup = f
       $str .= '<tr><td class="main">'.TEXT_PREORDER_PRODUCTS_NAME.'<font color="red">「'.TEXT_PREORDER_PRODUCTS_NOENTRANCE.'」</font></td><td class="main">'.$p['products_name'].'&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" onclick="javascript:window.open(\'orders.php?'.urldecode($param_str).'&oID='.$orders['orders_id'].'&pID='.$p['products_id'].'&action=show_manual_info\');">'.tep_html_element_button(BUTTON_MANUAL).'</a></td></tr>';
     }
     $str .= '<tr><td class="main">'.TEXT_PREORDER_PRODUCTS_NUM.'</td><td class="main">'.$p['products_quantity'].TEXT_PREORDER_PRODUCTS_UNIT.tep_get_full_count2($p['products_quantity'], $p['products_id'], $p['products_rate']).'</td></tr>';
-    //while($pa = tep_db_fetch_array($products_attributes_query)){
-      //$str .= '<tr><td class="main">'.$pa['products_options'].'：</td><td class="main">'.$pa['products_options_values'].'</td></tr>';
-    //}
-    //$str .= '<tr><td class="main">'.TEXT_PREORDER_PRODUCTS_CHARACTER_NAME.'</td><td style="font-size:20px;color:#407416;">'.$p['products_character'].'</td></tr>';
     $names = tep_get_computers_names_by_preorders_id($orders['orders_id']);
     if ($names) {
       $str .= '<tr><td class="main">PC：</td><td class="main">'.implode('&nbsp;,&nbsp;', $names).'</td></tr>';
@@ -1281,8 +1275,8 @@ if(isset($orders['user_added']) && $orders['user_added'] != ""){
   if ($orders['is_active'] == 1) {
     $str .= '<a href="'.tep_href_link(FILENAME_PREORDERS, urldecode($param_str).'&oID='.$orders['orders_id'].'&action=edit').'">'.tep_html_element_button(IMAGE_DETAILS).'</a>'; 
   }
-  if ($ocertify->npermission == 15) {
-    $str .= '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_preorder_info(\''.$orders['orders_id'].'\', \''.urlencode($param_str).'\')"').'</a>'; 
+  if ($ocertify->npermission >= 15) {
+    $str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_preorder_info(\''.$orders['orders_id'].'\', \''.urlencode($param_str).'\')"').'</a>'; 
   }
   $str .= '</div>';
   $str .= '</td></tr>'; 
@@ -1335,7 +1329,6 @@ function tep_get_preorder_canbe_finish($orders_id){
   if($status == 6 or $status == 8){
     return true;
   }
-  //$formtype = tep_check_pre_order_type($orders_id);
   $formtype = 4;
   $payment_romaji = tep_get_pre_payment_code_by_order_id($orders_id); 
   $oa_form_sql = "select * from ".TABLE_OA_FORM."   where formtype = '".$formtype."' and payment_romaji = '".$payment_romaji."'";

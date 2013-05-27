@@ -31,13 +31,9 @@ require_once('includes/address/AD_Option.php');
 require_once('includes/address/AD_Option_Group.php');
 $ad_option = new AD_Option();
 // Optional Tax Rates, e.g. shipping tax of 17.5% is "17.5"
-// $AddCustomTax = "20.0"; // class "ot_custom", used for all unknown total modules
 $AddCustomTax = "19.6";  // new
-// $AddShippingTax = "20.0"; // class "ot_shippping"
 $AddShippingTax = "19.6";  // new
-// $AddLevelDiscountTax = "7.6"; // class "ot_lev_discount"
 $AddLevelDiscountTax = "19.6";  // new
-// $AddCustomerDiscountTax = "7.6"; // class "ot_customer_discount"
 $AddCustomerDiscountTax = "19.6";  // new
 
 // END OF CONFIGURATION ################################
@@ -512,7 +508,6 @@ if($orders_exit_flag == true){
 
       $oID = tep_db_prepare_input($_GET['oID']);
       $order = new order($oID);
-      //$status = '1'; // 初始值
       $goods_check = $order_query;
             
       // 1.1 UPDATE ORDER INFO #####
@@ -889,7 +884,6 @@ if($address_error == false){
           $RunningTotal += $ot_value;
         }
 
-        //  print $ot_value."<br>";
         } elseif (($ot_total_id > 0) && ($ot_class != "ot_shipping") && ($ot_class != "ot_point")) { 
           // Delete Total Piece
           $Query = "delete from " . TABLE_ORDERS_TOTAL . " where orders_total_id = '$ot_total_id'";
@@ -1089,7 +1083,6 @@ if($address_error == false){
           {
           $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
           $newarr = array(SENDMAIL_TEXT_DATE_MONDAY, SENDMAIL_TEXT_DATE_TUESDAY, SENDMAIL_TEXT_DATE_WEDNESDAY, SENDMAIL_TEXT_DATE_THURSDAY, SENDMAIL_TEXT_DATE_FRIDAY, SENDMAIL_TEXT_DATE_STATURDAY, SENDMAIL_TEXT_DATE_SUNDAY);
-            //bobhero start{{{
             $mailoption['ORDER_ID']         = $oID;                         
             $mailoption['ORDER_DATE']       = tep_date_long(time())  ;       
             $mailoption['USER_NAME']        =  $order->customer['name'] ;
@@ -1895,11 +1888,11 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
       if(data != ''){
         if(confirm(data)){
 
-          submitChk();
+          submitChk('<?php echo $ocertify->npermission;?>'); 
         }
       }else{
 
-        submitChk();
+        submitChk('<?php echo $ocertify->npermission;?>'); 
       } 
     }
   };
@@ -2238,7 +2231,7 @@ function address_option_list(value){
 
 }
 
-<?php 生成所配送的国家列表?>
+<?php //生成所配送的国家列表?>
 function check(select_value){
   
   $("#td_"+country_fee_id_one).hide();
@@ -4820,7 +4813,6 @@ if($orders_exit_flag == true){
           $LastCategory = $db_categories_name;
         }
 
-        // ksort($ProductList);
 
         $LastOptionTag = "";
         $ProductSelectOptions = "<option value='0'>Don't Add New Product" . $LastOptionTag . "\n";

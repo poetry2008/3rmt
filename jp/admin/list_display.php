@@ -306,7 +306,30 @@ color: #000000;
 
 	    }
     }
-  </script>
+<?php //执行动作?>
+function toggle_list_display_form(c_permission)
+{
+  if (c_permission == 31) {
+    document.forms.listform.submit(); 
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          document.forms.listform.submit(); 
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+  }
+}
+</script>
 </head>
 <body  onload="">
 <?php
@@ -457,7 +480,7 @@ $rows = $count[0]>count($products)?$count[0]:count($products);
 <?php }}?>
   </table>
     <input type="hidden" name="fullpath" value="<?php echo $_GET['fullpath']?>">
-    <p><input type="submit" value="<?php echo TEXT_LIST_KETTEI;?>">
+    <p><a href="javascript:void(0);"><?php echo tep_html_element_button(TEXT_LIST_KETTEI, 'onclick="toggle_list_display_form(\''.$ocertify->npermission.'\');"');?></a>
     <input type="button" value="<?php echo TEXT_LIST_RISETTO;?>" onclick="clear_page()"></p>
     </div>
   </form>

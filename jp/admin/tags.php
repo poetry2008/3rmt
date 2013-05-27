@@ -305,8 +305,33 @@ function delete_select_products_to_tags(tags_list_id)
 
   if(sel_num == 1){
     if (confirm('<?php echo TEXT_PRODUCTS_DELETE_TAGS_CONFIRM;?>')) {
+      <?php
+      if ($ocertify->npermission == 31) {
+      ?>
       document.edit_tags.action = '<?php echo FILENAME_CATEGORIES;?>?action=products_tags_delete';
       document.edit_tags.submit(); 
+      <?php
+      } else {
+      ?>
+      $.ajax({
+        url: 'ajax_orders.php?action=getallpwd',   
+        type: 'POST',
+        dataType: 'text',
+        async: false,
+        success: function(msg) {
+          pwd_list_array = msg.split(','); 
+          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+          if (in_array(input_pwd_str, pwd_list_array)) {
+            document.edit_tags.action = '<?php echo FILENAME_CATEGORIES;?>?action=products_tags_delete';
+            document.edit_tags.submit(); 
+          } else {
+            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          }
+        }
+      });
+      <?php
+      }
+      ?> 
     }else{
 
       document.getElementsByName("select_edit_tags")[0].value = 0;
@@ -320,7 +345,7 @@ function delete_select_products_to_tags(tags_list_id)
 }
 
 <?php //提交时，对数据完成型的判断?>
-function create_tags_submit(){
+function create_tags_submit(r_type){
 
   var error = false;
   var tags_name = document.getElementsByName("tags_name")[0];
@@ -363,15 +388,42 @@ function create_tags_submit(){
     }
   }
 
-  if(error == true){
-
-    return false;
+  if (error == false) {
+    if (r_type == 1) {
+      return true; 
+    }
+    <?php
+    if ($ocertify->npermission == 31) {
+    ?>
+      document.forms.tags_form.submit(); 
+    <?php
+    } else {
+    ?>
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          document.forms.tags_form.submit(); 
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+    <?php
+    }
+    ?>
+  } else {
+    return false; 
   }
-  return true;
 }
 <?php //提交类型处理?>
 function edit_tags_submit(action){
-
+  var otag_single = false;
   if(action == 'deleteconfirm'){
     if(confirm('<?php echo TEXT_INFO_DELETE_INTRO;?>')){
       var tags_images_id = $("#tags_images_id").val();
@@ -387,17 +439,41 @@ function edit_tags_submit(action){
             if(confirm('<?php echo TEXT_CHECK_FILE_EXISTS_DELETE;?>')){
 
               document.tags_form.action = '<?php echo FILENAME_TAGS;?>?action='+action;
+              <?php
+              if ($ocertify->npermission == 31) {
+              ?>
               document.tags_form.submit();
+              <?php
+              } else {
+              ?>
+              $.ajax({
+                url: 'ajax_orders.php?action=getallpwd',   
+                type: 'POST',
+                dataType: 'text',
+                async: false,
+                success: function(msg) {
+                  pwd_list_array = msg.split(','); 
+                  var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+                  if (in_array(input_pwd_str, pwd_list_array)) {
+                    document.tags_form.submit();
+                  } else {
+                    alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                  }
+                }
+              });
+              <?php
+              }
+              ?>
             } 
           }else{
+            otag_single = true;
             document.tags_form.action = '<?php echo FILENAME_TAGS;?>?action='+action;
-            document.tags_form.submit(); 
           }
         }
       }); 
     }
   }else{
-    if(create_tags_submit()){
+    if(create_tags_submit(1)){
       var tags_images = document.getElementsByName("tags_images")[0];
       var delete_image = '';
       if(document.getElementsByName("delete_image")[0]){
@@ -421,35 +497,106 @@ function edit_tags_submit(action){
 
            if(delete_image == false){
             if(confirm('<?php echo TEXT_CHECK_FILE_EXISTS;?>')){
-
               document.tags_form.action = '<?php echo FILENAME_TAGS;?>?action='+action;
+              <?php
+              if ($ocertify->npermission == 31) {
+              ?>
               document.tags_form.submit();
+              <?php
+              } else {
+              ?>
+              $.ajax({
+                url: 'ajax_orders.php?action=getallpwd',   
+                type: 'POST',
+                dataType: 'text',
+                async: false,
+                success: function(msg) {
+                  pwd_list_array = msg.split(','); 
+                  var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+                  if (in_array(input_pwd_str, pwd_list_array)) {
+                    document.tags_form.submit();
+                  } else {
+                    alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                  }
+                }
+              });
+              <?php
+              }
+              ?>
             }
            }else{
             if(parseInt(data) > 1){
             if(confirm('<?php echo TEXT_CHECK_FILE_EXISTS_DELETE;?>')){
-
               document.tags_form.action = '<?php echo FILENAME_TAGS;?>?action='+action;
+              <?php
+              if ($ocertify->npermission == 31) {
+              ?>
               document.tags_form.submit();
+              <?php
+              } else {
+              ?>
+              $.ajax({
+                url: 'ajax_orders.php?action=getallpwd',   
+                type: 'POST',
+                dataType: 'text',
+                async: false,
+                success: function(msg) {
+                  pwd_list_array = msg.split(','); 
+                  var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+                  if (in_array(input_pwd_str, pwd_list_array)) {
+                    document.tags_form.submit();
+                  } else {
+                    alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                  }
+                }
+              });
+              <?php
+              }
+              ?>
             }  
             }else{
-
+              otag_single = true;
               document.tags_form.action = '<?php echo FILENAME_TAGS;?>?action='+action;
-              document.tags_form.submit();
             }
            }
           }else{
+            otag_single = true;
             document.tags_form.action = '<?php echo FILENAME_TAGS;?>?action='+action;
-            document.tags_form.submit(); 
           }
         }
       }); 
       }else{
-
+        otag_single = true;
         document.tags_form.action = '<?php echo FILENAME_TAGS;?>?action='+action;
-        document.tags_form.submit();
       }
     }
+  }
+  if (otag_single == true) {
+    <?php
+    if ($ocertify->npermission == 31) {
+    ?>
+    document.tags_form.submit();
+    <?php
+    } else {
+    ?>
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          document.tags_form.submit();
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+    <?php
+    }
+    ?>
   }
 }
 <?php //多选框全选动作?>
@@ -476,7 +623,7 @@ function all_select_tags(tags_list_id)
 }
 
 <?php //删除标签及关联时，判断多选框是否被选中及删除时的确认提示?>
-function delete_select_tags(tags_list_id)
+function delete_select_tags(tags_list_id, c_permission)
 {
   sel_num = 0;
   if (document.edit_tags.elements[tags_list_id].length == null) {
@@ -520,12 +667,52 @@ function delete_select_tags(tags_list_id)
       if(tags_images_flag == true){
 
         if(confirm('<?php echo TEXT_CHECK_FILE_EXISTS_DELETE;?>')){
-           document.edit_tags.action = '<?php echo FILENAME_TAGS;?>?action=delete_tags';
-           document.edit_tags.submit(); 
+           if (c_permission == 31) {
+             document.edit_tags.action = '<?php echo FILENAME_TAGS;?>?action=delete_tags';
+             document.edit_tags.submit(); 
+           } else {
+             $.ajax({
+               url: 'ajax_orders.php?action=getallpwd',   
+               type: 'POST',
+               dataType: 'text',
+               async: false,
+               success: function(msg) {
+                 pwd_list_array = msg.split(','); 
+                 var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+                 if (in_array(input_pwd_str, pwd_list_array)) {
+                   document.edit_tags.action = '<?php echo FILENAME_TAGS;?>?action=delete_tags';
+                   document.edit_tags.submit(); 
+                 } else {
+                   document.getElementsByName("select_edit_tags")[0].value = 0; 
+                   alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                 }
+               }
+             });
+           }
         }
       }else{
-        document.edit_tags.action = '<?php echo FILENAME_TAGS;?>?action=delete_tags';
-        document.edit_tags.submit(); 
+        if (c_permission == 31) {
+          document.edit_tags.action = '<?php echo FILENAME_TAGS;?>?action=delete_tags';
+          document.edit_tags.submit(); 
+        } else {
+          $.ajax({
+            url: 'ajax_orders.php?action=getallpwd',   
+            type: 'POST',
+            dataType: 'text',
+            async: false,
+            success: function(msg) {
+              pwd_list_array = msg.split(','); 
+              var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+              if (in_array(input_pwd_str, pwd_list_array)) {
+                document.edit_tags.action = '<?php echo FILENAME_TAGS;?>?action=delete_tags';
+                document.edit_tags.submit(); 
+              } else {
+                document.getElementsByName("select_edit_tags")[0].value = 0; 
+                alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+              }
+            }
+          });
+        }
       } 
     }else{
       document.getElementsByName("select_edit_tags")[0].value = 0; 
@@ -537,7 +724,7 @@ function delete_select_tags(tags_list_id)
 }
 
 <?php //删除标签的关联时，判断多选框是否被选中及删除时的确认提示?>
-function delete_select_products_tags(tags_list_id)
+function delete_select_products_tags(tags_list_id, c_permission)
 {
   sel_num = 0;
   if (document.edit_tags.elements[tags_list_id].length == null) {
@@ -555,8 +742,28 @@ function delete_select_products_tags(tags_list_id)
   
   if (sel_num == 1) {
     if (confirm('<?php echo TEXT_TAGS_DELETE_PRODUCTS_CONFIRM;?>')) {
-      document.edit_tags.action = '<?php echo FILENAME_TAGS;?>?action=delete_products_tags';
-      document.edit_tags.submit(); 
+      if (c_permission == 31) {
+        document.edit_tags.action = '<?php echo FILENAME_TAGS;?>?action=delete_products_tags';
+        document.edit_tags.submit(); 
+      } else {
+        $.ajax({
+          url: 'ajax_orders.php?action=getallpwd',   
+          type: 'POST',
+          dataType: 'text',
+          async: false,
+          success: function(msg) {
+            pwd_list_array = msg.split(','); 
+            var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+            if (in_array(input_pwd_str, pwd_list_array)) {
+              document.edit_tags.action = '<?php echo FILENAME_TAGS;?>?action=delete_products_tags';
+              document.edit_tags.submit(); 
+            } else {
+              document.getElementsByName("select_edit_tags")[0].value = 0;
+              alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+            }
+          }
+        });
+      }
     }else{
 
       document.getElementsByName("select_edit_tags")[0].value = 0;
@@ -599,10 +806,10 @@ function select_type_changed(value)
   switch(value){
 
   case '1':
-    delete_select_tags('tags_list_id[]'); 
+    delete_select_tags('tags_list_id[]', '<?php echo $ocertify->npermission;?>'); 
     break;
   case '2':
-    delete_select_products_tags('tags_list_id[]'); 
+    delete_select_products_tags('tags_list_id[]', '<?php echo $ocertify->npermission;?>'); 
     break;
   case '3':
     setting_products_tags('tags_list_id[]'); 
@@ -696,8 +903,31 @@ function products_tags_submit(){
     }
   }); 
   if(submit_flag == true){
-
+    <?php
+    if ($ocertify->npermission == 31) {
+    ?>
     document.products_to_tags.submit();
+    <?php
+    } else {
+    ?>
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          document.products_to_tags.submit();
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+    <?php
+    }
+    ?>
   }else{
 
     alert('<?php echo TEXT_PRODUCTS_TAGS_CHECK;?>');
@@ -1431,8 +1661,9 @@ require("includes/note_js.php");
                     <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $tags['tags_id'].$sort_str);?>'"><?php echo $tags['tags_name']; ?></td>
                 <?php
                   }
+                $tags_date_info = (tep_not_null($tags['date_update']) && ($tags['date_update'] != '0000-00-00 00:00:00'))?$tags['date_update']:$tags['date_added'];
                 ?> 
-                <td class="dataTableContent" align="right"><?php echo '<a href="javascript:void(0);" onclick="show_tags_info(this, \''.$tags['tags_id'].'\', \''.$_SERVER["QUERY_STRING"].'\');">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>';?>&nbsp;</td>
+                <td class="dataTableContent" align="right"><?php echo '<a href="javascript:void(0);" onclick="show_tags_info(this, \''.$tags['tags_id'].'\', \''.$_SERVER["QUERY_STRING"].'\');">' .  tep_get_signal_pic_info($tags_date_info) . '</a>';?>&nbsp;</td>
               </tr>
 <?php
   }
@@ -1452,7 +1683,13 @@ require("includes/note_js.php");
                   <option value="0"><?php echo TEXT_TAGS_SELECT;?></option> 
                   <option value="3"><?php echo TEXT_TAGS_ASSOCIATE_SETTING;?></option> 
                   <option value="2"><?php echo TEXT_TAGS_ASSOCIATE_DELETE;?></option>
+                  <?php
+                  if ($ocertify->npermission >= 15) { 
+                  ?>
                   <option value="1"><?php echo TEXT_TAGS_DELETE;?></option> 
+                  <?php 
+                  }
+                  ?> 
                   </select>
                   </td>
                   <td align="right" class="smallText"><?php echo '<a href="javascript:void(0);" onclick="create_tags_info(this);">' . tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?></td>

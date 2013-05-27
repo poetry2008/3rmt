@@ -39,34 +39,41 @@ define('FILENAME_ONCE_PWD_LOG', 'pwd_log.php');
               <tr>
                 <td class="menuBoxContent">
     <?php  
-        if ($ocertify->npermission == 15) $loginlog = '<span>'.tep_image(DIR_WS_MENU_ICON . 'icon_access_log.gif').'</span><span>' . BOX_USER_LOG . '</span>';
-	else $loginlog = '';
-        if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_USERS){
-        echo '<div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_USERS, '', 'NONSSL').'\';"><span>'.tep_image(DIR_WS_MENU_ICON .  'icon_user_manage.gif').'</span><span>' . BOX_USER_ADMIN . '</span></div>';
-        }else{
-        echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_USERS, '', 'NONSSL').'\';"><span>'.tep_image(DIR_WS_MENU_ICON .  'icon_user_manage.gif').'</span><span>' . BOX_USER_ADMIN . '</span></div>';
-        }
-        if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_PERSONAL_SETTING){
-        echo '<div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_PERSONAL_SETTING).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_personal_setting.gif').  '</span><span>'.HEADER_TEXT_PERSONAL_SETTING.'</span></div>'; 
-        }else{
-        echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_PERSONAL_SETTING).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_personal_setting.gif').  '</span><span>'.HEADER_TEXT_PERSONAL_SETTING.'</span></div>'; 
-        }
-        if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_ALERT_LOG){
-        echo '<div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_ALERT_LOG).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_alarm_log.gif').  '</span><span>'.HEADER_TEXT_ALERT_LOG.'</span></div>'; 
-        }else{
-        echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_ALERT_LOG).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_alarm_log.gif').  '</span><span>'.HEADER_TEXT_ALERT_LOG.'</span></div>'; 
-        }
-        if ($ocertify->npermission == 15) {
-          if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_USERS_LOGINLOG){
-          echo '<div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_USERS_LOGINLOG, '', 'NONSSL').'\';">'.  $loginlog.'</div>';
+        $loginlog = '<span>'.tep_image(DIR_WS_MENU_ICON . 'icon_access_log.gif').'</span><span>' . BOX_USER_LOG . '</span>';
+        if (!check_whether_is_limited(FILENAME_USERS)) {
+          if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_USERS){
+            echo '<div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_USERS, '', 'NONSSL').'\';"><span>'.tep_image(DIR_WS_MENU_ICON .  'icon_user_manage.gif').'</span><span>' . BOX_USER_ADMIN . '</span></div>';
           }else{
-          echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_USERS_LOGINLOG, '', 'NONSSL').'\';">'.  $loginlog.'</div>';
+            echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_USERS, '', 'NONSSL').'\';"><span>'.tep_image(DIR_WS_MENU_ICON .  'icon_user_manage.gif').'</span><span>' . BOX_USER_ADMIN . '</span></div>';
           }
-        } 
-        if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_ONCE_PWD_LOG){
-        echo '<div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_ONCE_PWD_LOG).'\';">'."<span>".  tep_image(DIR_WS_MENU_ICON . 'icon_log.gif').  '</span><span>'.BOX_ONCE_PWD_LOG.'</span></div>';
-        }else{
-        echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_ONCE_PWD_LOG).'\';">'."<span>".  tep_image(DIR_WS_MENU_ICON . 'icon_log.gif').  '</span><span>'.BOX_ONCE_PWD_LOG.'</span> </div>';
+        }
+        if (!check_whether_is_limited(FILENAME_PERSONAL_SETTING)) {
+          if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_PERSONAL_SETTING){
+            echo '<div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_PERSONAL_SETTING).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_personal_setting.gif').  '</span><span>'.HEADER_TEXT_PERSONAL_SETTING.'</span></div>'; 
+          }else{
+            echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_PERSONAL_SETTING).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_personal_setting.gif').  '</span><span>'.HEADER_TEXT_PERSONAL_SETTING.'</span></div>'; 
+          }
+        }
+        if (!check_whether_is_limited(FILENAME_ALERT_LOG)) {
+          if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_ALERT_LOG){
+            echo '<div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_ALERT_LOG).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_alarm_log.gif').  '</span><span>'.HEADER_TEXT_ALERT_LOG.'</span></div>'; 
+          }else{
+            echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_ALERT_LOG).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_alarm_log.gif').  '</span><span>'.HEADER_TEXT_ALERT_LOG.'</span></div>'; 
+          }
+        }
+        if (!check_whether_is_limited(FILENAME_USERS_LOGINLOG)) {
+          if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_USERS_LOGINLOG){
+            echo '<div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_USERS_LOGINLOG, '', 'NONSSL').'\';">'.  $loginlog.'</div>';
+          }else{
+            echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_USERS_LOGINLOG, '', 'NONSSL').'\';">'.  $loginlog.'</div>';
+          }
+        }
+        if (!check_whether_is_limited(FILENAME_ONCE_PWD_LOG)) {
+          if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_ONCE_PWD_LOG){
+            echo '<div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_ONCE_PWD_LOG).'\';">'."<span>".  tep_image(DIR_WS_MENU_ICON . 'icon_log.gif').  '</span><span>'.BOX_ONCE_PWD_LOG.'</span></div>';
+          }else{
+            echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_ONCE_PWD_LOG).'\';">'."<span>".  tep_image(DIR_WS_MENU_ICON . 'icon_log.gif').  '</span><span>'.BOX_ONCE_PWD_LOG.'</span> </div>';
+          }
         }
         echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(basename($PHP_SELF), 'execute_logout_user=1&num='.time(), 'NONSSL').'\'">'."<span>".  tep_image(DIR_WS_MENU_ICON . 'icon_logout.gif').  '</span><span>' . BOX_USER_LOGOUT .  '</span></div>';
     ?>

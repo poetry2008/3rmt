@@ -238,6 +238,31 @@ else{
   <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
   <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<script type="text/javascript">
+<?php //提交动作?>
+function toggle_module_form(c_permission)
+{
+  if (c_permission == 31) {
+    document.forms.modules.submit(); 
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          document.forms.modules.submit(); 
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+  }
+}
+</script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
@@ -464,7 +489,7 @@ case 'edit':
   $contents = array('form' => tep_draw_form('modules', FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $_GET['module'] . '&action=save'));
   $contents[] = array('text' => $keys);
   $contents[] = array('text' => '<input type="hidden" name="site_id" value="'.$site_id.'">');
-  $contents[] = array('align' => 'center', 'text' => '<br>' .tep_html_element_submit(IMAGE_SAVE) . ' <a href="' .  tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' .  $_GET['module']) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
+  $contents[] = array('align' => 'center', 'text' => '<br><a href="javascript:void(0);">' .tep_html_element_button(IMAGE_SAVE, 'onclick="toggle_module_form(\''.$ocertify->npermission.'\')"') . '</a> <a href="' .  tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' .  $_GET['module']) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
 
   break;
 default:

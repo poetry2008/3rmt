@@ -31,7 +31,7 @@ function redirect_new_url(new_object)
 }
 </script>
 <?php
-if($_SESSION['user_permission'] == 15 ){
+if($ocertify->npermission >= 15){
   ?>
   <table class="bottom_content" border="0" cellpadding="0" cellspacing="0">
   <tr> 
@@ -47,7 +47,7 @@ if($_SESSION['user_permission'] == 15 ){
   ?>
   <td width="80%"><input type='checkbox' name='pwd_check' value='staff' class="bottom_input"></td><td><span>Staff&nbsp;</span></td>
   <td><input type='checkbox' name='pwd_check' value='chief' class="bottom_input"></td><td><span>Chief&nbsp;</span></td>
-  <td><input type='checkbox' name='pwd_check' value='admin' checked="checked" class="bottom_input"></td><td><span>Admin&nbsp;</span></td>
+  <td><input type='checkbox' name='pwd_check' value='admin' class="bottom_input"></td><td><span>Admin&nbsp;</span></td>
   <td><input type='checkbox' name='pwd_check' value='onetime' class="bottom_input"></td><td nowrap><div class="bottom_text"><?php echo 
     TEXT_FOOTER_ONE_TIME;?>&nbsp;</div></td>
   <td><input type='button' onclick="save_once_pwd_checkbox()" value="<?php echo
@@ -87,7 +87,7 @@ if($_SESSION['user_permission'] == 15 ){
   ?>
   </tr> 
   </table>
-  <script language='javascript' >
+  <script language='javascript'>
   <?php //保存密码复选框 ?>
     function save_once_pwd_checkbox(){
       var check_str = '';
@@ -104,14 +104,12 @@ if($_SESSION['user_permission'] == 15 ){
         dataType: 'text',
         async : false,
         success: function(data) {
-          if(data == "noall"){
-            alert("<?php echo TEXT_ONE_TIME_CONFIRM;?>");
-          }else if(data == "noadmin"){
-            alert("<?php echo TEXT_ONE_TIME_ADMIN_CONFIRM;?>");
-          }else if(data == "true"){
+          data_pwd_array = data.split('|||'); 
+          if(data_pwd_array[0] == "true"){
             alert("<?php echo TEXT_ONE_TIME_CONFIG_SAVE;?>");
-          }else{
-            alert("<?php echo TEXT_ONE_TIME_ERROR;?>");
+          }
+          if (data_pwd_array[1] == '0') {
+            window.location.href = window.location.href; 
           }
         }
       });

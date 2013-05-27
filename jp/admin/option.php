@@ -535,18 +535,19 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                           ); 
                       
                       if ($item['status'] == '1') {
-                        $item_status_str = tep_image(DIR_WS_IMAGES .  'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;&nbsp;<a href="' .  tep_href_link(FILENAME_OPTION, tep_get_all_get_params(array('item_id', 'action', 'flag')).'action=setflag&flag=0&item_id='.$item['id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT) . '</a>';
+                        $item_status_str = tep_image(DIR_WS_IMAGES .  'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) .  '&nbsp;&nbsp;<a href="javascript:void(0);" onclick="toggle_option_action(\'' .  tep_href_link(FILENAME_OPTION, tep_get_all_get_params(array('item_id', 'action', 'flag')).'action=setflag&flag=0&item_id='.$item['id']) . '\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT) . '</a>';
                       } else {
-                        $item_status_str = '<a href="' .  tep_href_link(FILENAME_OPTION, tep_get_all_get_params(array('item_id', 'action', 'flag')).'action=setflag&flag=1&item_id='.$item['id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED);
+                        $item_status_str = '<a href="javascript:void(0);" onclick="toggle_option_action(\'' .  tep_href_link(FILENAME_OPTION, tep_get_all_get_params(array('item_id', 'action', 'flag')).'action=setflag&flag=1&item_id='.$item['id']) . '\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED);
                       }
                       $option_item_info[] = array(
-                          'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_OPTION, tep_get_all_get_params(array('item_id', 'action')).'item_id='.$item['id']).'\'"', 
+                          'params' => 'class="dataTableContent"', 
                           'text' => $item_status_str 
                           ); 
+                      $item_date_info = (tep_not_null($item['date_update']) && ($item['date_update'] != '0000-00-00 00:00:00'))?$item['date_update']:$item['created_at'];
                       $option_item_info[] = array(
                           'align' => 'right', 
                           'params' => 'class="dataTableContent"', 
-                          'text' => '<a href="javascript:void(0);" onclick="show_item_info(this, \''.$item['id'].'\', \''.urlencode(tep_get_all_get_params(array('item_id', 'action'))).'\')">'.tep_image(DIR_WS_IMAGES.'icon_info.gif', IMAGE_ICON_INFO).'</a>' 
+                          'text' => '<a href="javascript:void(0);" onclick="show_item_info(this, \''.$item['id'].'\', \''.urlencode(tep_get_all_get_params(array('item_id', 'action'))).'\')">'.tep_get_signal_pic_info($item_date_info).'</a>' 
                           ); 
                       
                       $option_table_row[] = array('params' => $option_item_params, 'text' => $option_item_info);
@@ -673,10 +674,11 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                           'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_OPTION, 'page='.$_GET['page'].'&group_id='.$group['id'].(isset($_GET['keyword'])?'&keyword='.$_GET['keyword']:'').(isset($_GET['search'])?'&search='.$_GET['search']:'').(isset($_GET['sort_name'])?'&sort_name='.$_GET['sort_name']:'').(isset($_GET['sort_type'])?'&sort_type='.$_GET['sort_type']:'')).'\'"', 
                           'text' => (($group_is_use)?'Y':'N') 
                           ); 
+                      $group_date_info = (tep_not_null($group['date_update']) && ($group['date_update'] != '0000-00-00 00:00:00'))?$group['date_update']:$group['created_at'];
                       $option_group_info[] = array(
                           'align' => 'right', 
                           'params' => 'class="dataTableContent"', 
-                          'text' => '<a href="javascript:void(0);" onclick="show_group_info(this, \''.$group['id'].'\', \''.urlencode(tep_get_all_get_params(array('group_id', 'action'))).'\')">'.tep_image(DIR_WS_IMAGES.'icon_info.gif', IMAGE_ICON_INFO).'</a>' 
+                          'text' => '<a href="javascript:void(0);" onclick="show_group_info(this, \''.$group['id'].'\', \''.urlencode(tep_get_all_get_params(array('group_id', 'action'))).'\')">'.tep_get_signal_pic_info($group_date_info).'</a>' 
                           ); 
                       $option_table_row[] = array('params' => $option_group_params, 'text' => $option_group_info);
                     }
@@ -722,14 +724,18 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                       if (isset($_GET['g_id'])) {
                         echo '&nbsp;<a href="'.tep_href_link(FILENAME_OPTION, str_replace('gpage=', 'page=', tep_get_all_get_params(array('page', 'info', 'x', 'y', 'item_id', 'action','g_id')))).'">'.tep_html_element_button(IMAGE_BACK).'</a>'; 
                         if ($item_query_numrows) {
-                          echo '&nbsp;<a href="javascript:void(0);" onclick="delete_select_option(\'option_item_id[]\');">'.tep_html_element_button(IMAGE_DELETE, 'onclick=""').'</a>'; 
+                          if ($ocertify->npermission >= 15) {
+                            echo '&nbsp;<a href="javascript:void(0);" onclick="delete_select_option(\'option_item_id[]\');">'.tep_html_element_button(IMAGE_DELETE, 'onclick=""').'</a>'; 
+                          }
                         }
                         
                         echo '&nbsp;<a href="javascript:void(0);" onclick="create_option_item(\''.$_GET['g_id'].'\', \''.urlencode(tep_get_all_get_params(array('page', 'info', 'x', 'y', 'item_id', 'action', 'g_id'))).'\')">'.tep_html_element_button(IMAGE_NEW_PROJECT, 'onclick=""').'</a>';
                       
                       } else {
                         if ($group_query_numrows) {
-                          echo '<a href="javascript:void(0);" onclick="delete_select_option(\'option_group_id[]\');">'.tep_html_element_button(IMAGE_DELETE, 'onclick=""').'</a>'; 
+                          if ($ocertify->npermission >= 15) {
+                            echo '<a href="javascript:void(0);" onclick="delete_select_option(\'option_group_id[]\');">'.tep_html_element_button(IMAGE_DELETE, 'onclick=""').'</a>'; 
+                          }
                         }
                         echo '&nbsp;<a href="javascript:void(0);" onclick="create_option_group();">' .tep_html_element_button(IMAGE_NEW_PROJECT, 'onclick=""') . '</a>'; 
                       }

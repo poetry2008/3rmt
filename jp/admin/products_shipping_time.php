@@ -220,12 +220,12 @@ while($products_array = tep_db_fetch_array($products_query)){
   if($products_array['status'] == 0){
 ?>
   <img border="0" src="images/icon_status_green.gif" alt="" title="<?php echo TEXT_ENABLE;?>">
-  <a title="<?php echo TEXT_DISABLE;?>" onclick="if(confirm('<?php echo TEXT_WANT_DISABLE;?>')){check_on_products('del',<?php echo $products_array['id'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_red_light.gif"></a>
+  <a title="<?php echo TEXT_DISABLE;?>" onclick="if(confirm('<?php echo TEXT_WANT_DISABLE;?>')){check_on_products('del',<?php echo $products_array['id'];?>,'<?php echo $ocertify->npermission;?>');}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_red_light.gif"></a>
 
 <?php
 }else{
 ?>
-  <a title="<?php echo TEXT_ENABLE;?>" onclick="if(confirm('<?php echo TEXT_WANT_ENABLE;?>')){check_on_products('res',<?php echo $products_array['id'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_green_light.gif"></a>
+  <a title="<?php echo TEXT_ENABLE;?>" onclick="if(confirm('<?php echo TEXT_WANT_ENABLE;?>')){check_on_products('res',<?php echo $products_array['id'];?>,'<?php echo $ocertify->npermission;?>');}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_green_light.gif"></a>
   <img border="0" alt="" src="images/icon_status_red.gif" title="<?php echo TEXT_DISABLE;?>">
 
 <?php
@@ -233,7 +233,9 @@ while($products_array = tep_db_fetch_array($products_query)){
 ?>
 </td>
 <?php
-  echo '<td><a href="javascript:void(0);" onclick="show_text_products('. $products_array['id'] .',this);">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a></td>';
+  
+  $s_date_info = (tep_not_null($products_array['date_update']) && ($products_array['date_update'] != '0000-00-00 00:00:00'))?$products_array['date_update']:$products_array['date_added'];
+  echo '<td><a href="javascript:void(0);" onclick="show_text_products('.  $products_array['id'] .',this);">' .  tep_get_signal_pic_info($s_date_info) . '</a></td>';
   echo '</tr>';
   $i++;
 }

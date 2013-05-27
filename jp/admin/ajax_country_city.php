@@ -259,12 +259,14 @@ if($id != 0){
 <?php
 }
 ?>
-&nbsp;<input type="button" name="save" value="<?php echo TABLE_BUTTON_SAVE;?>" onclick="if(check_form()){check_city('save');}else{return check_form();}">&nbsp;
+&nbsp;<input type="button" name="save" value="<?php echo TABLE_BUTTON_SAVE;?>" onclick="if(check_form()){check_city('save', '<?php echo $ocertify->npermission;?>');}else{return check_form();}">&nbsp;
 <?php
 if($id != 0){
+  if ($ocertify->npermission >= 15) {
 ?>
-  <input type="button" name="del" value="<?php echo TABLE_BUTTON_DEL;?>" onclick="if(confirm('<?php echo TEXT_WANT_DELETE;?>')){check_city('del');}else{return false;}">
+  <input type="button" name="del" value="<?php echo TABLE_BUTTON_DEL;?>" onclick="if(confirm('<?php echo TEXT_WANT_DELETE;?>')){check_city('del', '<?php echo $ocertify->npermission;?>');}else{return false;}">
 <?php
+  }
 }else{
 ?>
 <input type="button" name="unset" value="<?php echo TABLE_BUTTON_UNSET;?>" onclick="hide_text();">

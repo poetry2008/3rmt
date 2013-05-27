@@ -128,13 +128,15 @@ if(tep_not_null($country_fee_array['user_added'])){ ?>
 <tr><td width="30%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_UPDATE;?></td><td><?php echo TEXT_UNSET_DATA;?></td></tr>
 <?php } } ?>
 </td></tr>
-<tr><td  align="center" colspan="2"><input type="button" name="new" value="<?php echo TABLE_BUTTON_SUBMIT;?>" onclick="show_text_fee(0,'');">&nbsp;<input type="button" name="save" value="<?php echo TABLE_BUTTON_SAVE;?>" onclick="if(check_form()){check_fee('save');}else{return check_form();}">&nbsp;
+<tr><td  align="center" colspan="2"><input type="button" name="new" value="<?php echo TABLE_BUTTON_SUBMIT;?>" onclick="show_text_fee(0,'');">&nbsp;<input type="button" name="save" value="<?php echo TABLE_BUTTON_SAVE;?>" onclick="if(check_form()){check_fee('save', '<?php echo $ocertify->npermission;?>');}else{return check_form();}">&nbsp;
 
 <?php
 if($id != 0){
+  if ($ocertify->npermission >= 15) {
 ?>
-  <input type="button" name="del" value="<?php echo TABLE_BUTTON_DEL;?>" onclick="if(confirm('<?php echo TEXT_WANT_DELETE;?>')){check_fee('del');}else{return false;}">
+  <input type="button" name="del" value="<?php echo TABLE_BUTTON_DEL;?>" onclick="if(confirm('<?php echo TEXT_WANT_DELETE;?>')){check_fee('del', '<?php echo $ocertify->npermission;?>');}else{return false;}">
 <?php
+  }
 }
 ?>
 &nbsp;</td></tr>
