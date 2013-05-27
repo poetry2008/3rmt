@@ -6092,10 +6092,11 @@ function tep_display_google_results($from_url='', $c_type=false){
     功能: 获取letter信息的下拉列表
     参数: $userid(int) 用户id 
     参数: $is_letter(boolean) 是否默认选择 
+    参数: $param_str(string) 参数 
     返回值: letter信息的下拉列表(string) 
  ------------------------------------ */
-  function tep_show_pw_start($userid='',$is_letter=false){
-    $res_str = "<select name='letter' id='letter'>";
+  function tep_show_pw_start($userid='',$is_letter=false,$param_str=''){
+    $res_str = "<select name='letter' id='letter'".$param_str.">";
     if($userid!=''){
       if($is_letter){
         $selected = $is_letter;

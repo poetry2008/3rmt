@@ -728,19 +728,17 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
         </tr>
         <tr>
           <td>
-            <div id="tep_site_filter">
-            <span class="site_filter_selected"><a href="javascript:void(0);">all</a></span> 
             <?php
               $site_list_array = array(); 
-              $site_list_array[0] = 'all';   
+              $show_site_list_array = array(); 
               $site_list_info_query = tep_db_query("select * from ".TABLE_SITES);    
                
               while ($site_list_info = tep_db_fetch_array($site_list_info_query)) {
                 $site_list_array[$site_list_info['id']] = $site_list_info['romaji']; 
-                 echo '<span class="site_filter_unselected"><a href="javascript:void(0);">'.$site_list_info['romaji'].'</a></span>&nbsp;'; 
+                $show_site_list_array[] = $site_list_info['id']; 
               }
+              echo tep_show_site_filter(FILENAME_USERS, false, $show_site_list_array); 
             ?>
-            </div>
             <div id="show_popup_info" style="background-color:#FFFF00;position:absolute;width:70%;min-width:550px;margin-left:0;display:none;"></div> 
             <div id="toggle_width" style="min-width:726px;"></div>
             <table width="100%" border="0" cellspacing="0" cellpadding="0">
