@@ -8,7 +8,7 @@ $is_u_disabled = false;
 if ($ocertify->npermission != 31) {
   if (!empty($_SESSION['site_permission'])) {
     $tmp_u_array = explode(',', $_SESSION['site_permission']);
-    if (in_array('0', $tmp_u_array)) {
+    if (!in_array('0', $tmp_u_array)) {
       $is_u_disabled = true;
     }
   } else {
@@ -916,7 +916,11 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                       <td class="smallText" valign="top">&nbsp;</td>
                       <td align="right" class="smallText">
                       <?php
-                        echo '<a href="javascript:void(0);" onclick="create_user_info();">'.tep_html_element_button(NEW_USER_BUTTON_TEXT).'</a>'; 
+                        if ($is_u_disabled) {
+                          echo '<a href="javascript:void(0);">'.tep_html_element_button(NEW_USER_BUTTON_TEXT, 'disabled="disabled"').'</a>'; 
+                        } else {
+                          echo '<a href="javascript:void(0);" onclick="create_user_info();">'.tep_html_element_button(NEW_USER_BUTTON_TEXT).'</a>'; 
+                        }
                       ?>
                       </td>
                     </tr>
