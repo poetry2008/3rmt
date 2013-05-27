@@ -196,8 +196,15 @@
           $sql_data_array['entry_zone_id'] = $entry_zone_id;
         }
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', "customers_id = '" . tep_db_input($customers_id) . "' and address_book_id = '" . tep_db_input($default_address_id) . "'");
-
-    tep_redirect(tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action'))));
+       if(isset($_POST['check_order']) && $_POST['check_order'] != ''){
+            if($_POST['check_order'] == 0){
+              tep_redirect(tep_href_link('create_order.php','Customer_mail='.$customers_email_address.'&site_id='.$_POST['site_id']));
+            }else if($_POST['check_order'] == 1){
+              tep_redirect(tep_href_link('create_preorder.php','Customer_mail='.$customers_email_address.'&site_id='.$_POST['site_id']));
+            }
+        }else{
+              tep_redirect(tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action'))));
+        }
         break;
       case 'deleteconfirm':
        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -260,13 +267,6 @@
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php require('includes/javascript/show_site.js.php');?>
 <script type="text/javascript">
-function check_order(value){
-    if(value == 1){
-     document.getElementById('check_order').value = 1;
-    }else{
-     document.getElementById('check_order').value = 0;
-    }
-}
 function check_guest(guest_value){
   if(guest_value == 1){
     $("#password_hide").hide(); 
@@ -284,7 +284,7 @@ function check_guest(guest_value){
     document.getElementById("check_is_active").value = 1;
   }
 }
-function check_password(){
+function check_password(value){
  post_email = $("#customers_email_address").val();
  post_site =  $("#customers_site_id").val();
  once_again_password = $("#once_again_password").val();
@@ -366,9 +366,15 @@ if(check_is_active == 1){
   }else{
     $("#error_info").html(""); 
   }
+  if(value == 1){
+   document.getElementById('check_order').value = 1;
+  }else if(value == 0){
+   document.getElementById('check_order').value = 0;
+  }
   if(check_error != 'true'){
        document.forms.customers.submit();  
   }
+
 }
 function all_select_customers(customers_str){
       var check_flag = document.del_customers.all_check.checked;

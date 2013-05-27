@@ -4704,7 +4704,7 @@ if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'
  if($_GET['cID'] != '-1'){
  if($action_sid != 0 || !isset($action_sid)){
       $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$cInfo->site_id));
-      $site_id_name = $site_name['romaji'].'<input id=\'customers_site_id\' type="hidden" value="'.$site_name['id'].'">';
+      $site_id_name = $site_name['romaji'].'<input id=\'customers_site_id\' name="site_id" type="hidden" value="'.$site_name['id'].'">';
  }
  }else{
    if($customers_site_arr[0] == ''){ }
@@ -4969,19 +4969,19 @@ if($_GET['cID'] != -1){
     }
    }
      if(isset($cInfo->customers_email_address) && $cInfo->customers_email_address != ''){
-     if($is_active_single){
-     $orders_products = tep_html_element_button(TEXT_ORDER_MADE,$is_active_single);
-     $preorders_products = tep_html_element_button(TEXT_PREORDER_MADE,$is_active_single);
-     }else if($disabled){
-     $orders_products = tep_html_element_button(TEXT_ORDER_MADE,$disabled);
-     $preorders_products = tep_html_element_button(TEXT_PREORDER_MADE,$disabled);
+        if($is_active_single){
+           $orders_products = tep_html_element_button(TEXT_ORDER_MADE,$is_active_single);
+           $preorders_products = tep_html_element_button(TEXT_PREORDER_MADE,$is_active_single);
+        }else if($disabled){
+           $orders_products = tep_html_element_button(TEXT_ORDER_MADE,$disabled);
+           $preorders_products = tep_html_element_button(TEXT_PREORDER_MADE,$disabled);
+        }else{
+           $orders_products = '<input type="hidden" name="check_order" value="" id="check_order"><a href="javascript:void(0)" onclick="check_password(0)">'.tep_html_element_button(TEXT_ORDER_MADE).'</a>';
+           $preorders_products = ' <a href="javascript:void(0)" onclick="check_password(1)">'.tep_html_element_button(TEXT_PREORDER_MADE).'</a>';
+        }
      }else{
-     $orders_products = ' <a href="' . tep_href_link('create_order.php','Customer_mail='.$cInfo->customers_email_address.'&site_id='.$cInfo->site_id) .  '">'.tep_html_element_button(TEXT_ORDER_MADE).'</a>';
-     $preorders_products = ' <a href="' .  tep_href_link('create_preorder.php','Customer_mail='.$cInfo->customers_email_address.'&site_id='.$cInfo->site_id) .  '">'.tep_html_element_button(TEXT_PREORDER_MADE).'</a>';
-     }
-     }else{
-     $orders_products = '<input type="hidden" name="check_order" value="" id="check_order"><a href="javascript:void(0)" onclick="check_order(0);check_password()">'.tep_html_element_button(TEXT_ORDER_MADE,($disabled?$disabled:$is_active_single)).'</a>';
-     $preorders_products = '<a href="javascript:void(0)" onclick="check_order(1);check_password()">'.tep_html_element_button(TEXT_PREORDER_MADE,($disabled?$disabled:$is_active_single)).'</a>';
+     $orders_products = '<input type="hidden" name="check_order" value="" id="check_order"><a href="javascript:void(0)" onclick="check_password(0)">'.tep_html_element_button(TEXT_ORDER_MADE,($disabled?$disabled:$is_active_single)).'</a>';
+     $preorders_products = '<a href="javascript:void(0)" onclick="check_password(1)">'.tep_html_element_button(TEXT_PREORDER_MADE,($disabled?$disabled:$is_active_single)).'</a>';
      }
      $button[] = '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">'.$orders_products.$preorders_products.$customers_orders.$customers_products.$customers_email.($ocertify->npermission == 15 ? ($customers_del):'').$submit;
     if(!empty($button)){
