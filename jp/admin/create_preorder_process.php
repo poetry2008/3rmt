@@ -18,10 +18,7 @@
     $_POST['email_address'] = $account['customers_email_address'];
     
     $address_query = tep_db_query("select * from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . (int)$account['customers_id'] . "'");
-    $address = tep_db_fetch_array($address_query);
-    if (tep_db_num_rows($account_query) == 0) {
-      tep_redirect(tep_href_link(FILENAME_CREATE_ACCOUNT, 'email_address=' . $_GET['Customer_mail'], 'SSL'));
-    }  
+    $address = tep_db_fetch_array($address_query);  
   }
   require(DIR_WS_LANGUAGES . $language . '/step-by-step/create_preorder_process.php');
 
@@ -176,6 +173,43 @@
 <script language="javascript" src="includes/javascript/jquery.form.js"></script>
 <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
 <script type="text/javascript">
+<?php //检测相应网站下的电子邮箱是否存在?>
+function search_email_check(){
+
+  var email = $("#keyword").val(); 
+  email = email.replace(/\s/g,"");
+  if(email == ''){
+
+    alert('<?php echo TEXT_MUST_ENTER;?>');
+    $("#keyword").focus();
+  }else{
+    var site_id = document.getElementsByName("site_id")[0];
+    site_id = site_id.value;
+    $.ajax({
+        url: 'ajax.php?action=check_email_exists',      
+        data: 'email='+email+'&site_id='+site_id,
+        type: 'POST',
+        dataType: 'text',
+        async:false,
+        success: function (data) {
+
+          if(data == '1'){ 
+            alert("<?php echo TEXT_EMAIL_ADDRESS_ERROR;?>");
+          }else if(data == '0'){
+
+            if(confirm('<?php echo TEXT_CREATE_CUSTOMERS_CONFIRM;?>')){
+
+              location.href="<?php echo FILENAME_CUSTOMERS;?>?email_address="+email+"&sid="+site_id;
+            }
+          }else{
+            document.email_check.action = 'create_preorder.php';
+            document.email_check.submit();
+          }  
+        }
+    });
+  }
+}
+
 <?php //下一步提交?>
 function submit_next(){
 
@@ -469,9 +503,9 @@ require("includes/note_js.php");
     <p class="pageHeading"><?php echo CREATE_ORDER_TITLE_TEXT;?></p>
 <?php
   $url_action = isset($_GET['oID']) ? '<input type="hidden" name="oID" value="'.$_GET['oID'].'">' : '';
-  echo '<form action="' . $PHP_SELF . '" method="GET">' . "\n";
+  echo '<form name="email_check" action="' . $PHP_SELF . '" method="GET">' . "\n";
   echo '<p class=main>'.CREATE_ORDER_SEARCH_TEXT.'<br>';
-  echo CREATE_ORDER_EMAIL_TEXT.'&nbsp;<input type="text" id="keyword" name="Customer_mail" size="40" value="'.$_GET['Customer_mail'].'">'.tep_site_pull_down_menu('', false).'&nbsp;&nbsp;<input type="submit" value="  '.CREATE_ORDER_SEARCH_BUTTON_TEXT.'  ">'.$url_action.'</p>' . "\n";
+  echo CREATE_ORDER_EMAIL_TEXT.'&nbsp;<input type="text" id="keyword" name="Customer_mail" size="40" value="'.$_GET['Customer_mail'].'">'.tep_site_pull_down_menu('', false).'&nbsp;&nbsp;<input type="button" value="  '.CREATE_ORDER_SEARCH_BUTTON_TEXT.'  " onclick="search_email_check();">'.$url_action.'</p>' . "\n";
   echo '</form>' . "\n";
 ?>
 <?php 

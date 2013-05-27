@@ -87,4 +87,7 @@ define('ERROR_ORDER_DOES_NOT_EXIST','错误: 订单不存在。');
 define('PRODUCT_ERROR','没有商品。创建订单时、首先请添加商品。');
 define('ADDPRODUCT_TEXT_STEP1_TITLE', '分类选择:');
 define('ADDPRODUCT_TEXT_STEP2_TITLE', '商品选择:');
+define('TEXT_CREATE_CUSTOMERS_CONFIRM','该邮箱地址不存在。需要创建顾客吗？');
+define('TEXT_MUST_ENTER','请输入。');
+define('TEXT_EMAIL_ADDRESS_ERROR','输入的邮箱地址不正确！');
 ?>
