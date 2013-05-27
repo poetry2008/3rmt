@@ -219,9 +219,9 @@ function UserOnceAlertLog_list() {
     }
     echo "</table>\n";
     echo '</form>';
-    if($ocertify->npermission == 15 && $nrow > 0){
+    if($ocertify->npermission >= 15 && $nrow > 0){
       echo '<div class="td_box">';
-      echo '<select name="edit_logs_list" onchange="select_logs_change(this.value,\'logs_list_id[]\');">';
+      echo '<select name="edit_logs_list" onchange="select_logs_change(this.value,\'logs_list_id[]\',\''.$ocertify->npermission.'\');">';
       echo '<option value="0">'.TEXT_LOGS_EDIT_SELECT.'</option>';
       echo '<option value="1">'.TEXT_LOGS_EDIT_DELETE.'</option>';
       echo '</select>';
@@ -310,7 +310,7 @@ function all_select_logs(logs_list_id)
   }
 }
 
-function select_logs_change(value,logs_list_id)
+function select_logs_change(value,logs_list_id,c_permission)
 {
   sel_num = 0;
   if (document.edit_logs.elements[logs_list_id].length == null) {
@@ -328,8 +328,28 @@ function select_logs_change(value,logs_list_id)
 
   if(sel_num == 1){
     if (confirm("'.TEXT_LOGS_EDIT_CONFIRM.'")) {
-      document.edit_logs.action = "'.FILENAME_ALERT_LOG.($_GET['page'] != '' ? '?page='.$_GET['page'] : '').'";
-      document.edit_logs.submit(); 
+      if (c_permission == 31) {
+        document.edit_logs.action = "'.FILENAME_ALERT_LOG.($_GET['page'] != '' ? '?page='.$_GET['page'] : '').'";
+        document.edit_logs.submit(); 
+      } else {
+      $.ajax({
+        url: "ajax_orders.php?action=getallpwd",   
+        type: "POST",
+        dataType: "text",
+        async: false,
+        success: function(msg) {
+          pwd_list_array = msg.split(","); 
+          var input_pwd_str = window.prompt("'.JS_TEXT_INPUT_ONETIME_PWD.'", ""); 
+          if (in_array(input_pwd_str, pwd_list_array)) {
+            document.edit_logs.action = "'.FILENAME_ALERT_LOG.($_GET['page'] != '' ? '?page='.$_GET['page'] : '').'";
+            document.edit_logs.submit(); 
+          } else {
+            document.getElementsByName("edit_logs_list")[0].value = 0;
+            alert("'.JS_TEXT_ONETIME_PWD_ERROR.'"); 
+          }
+        }
+      });
+      }
     }else{
 
       document.getElementsByName("edit_logs_list")[0].value = 0;

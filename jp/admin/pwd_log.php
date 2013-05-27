@@ -192,7 +192,7 @@ function UserOncePwdLog_list() {
     show_once_pwd_log_list($oresult);   
     echo "</table>\n";
 
-    echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));    // <form>标签的输出
+    echo tep_draw_form('users_form', basename($GLOBALS['PHP_SELF']));    // <form>标签的输出
     show_page_ctl($nrow);       // 页面控制按钮的显示
 
     // 表标签的开始
@@ -207,7 +207,8 @@ function UserOncePwdLog_list() {
 
     echo '<td class="main">';
     // 按钮显示
-    echo tep_draw_input_field("execute_delete", BUTTON_DELETE_ONCE_PWD_LOG, "onClick=\"return formConfirm('delete')\"", FALSE, "submit", FALSE);  // 删除日志
+    echo tep_draw_input_field("execute_delete_button", BUTTON_DELETE_ONCE_PWD_LOG, "onClick=\"return formConfirm('delete', '".$ocertify->npermission."')\"", FALSE, "button", FALSE);  
+    echo tep_draw_hidden_field("execute_delete", BUTTON_DELETE_ONCE_PWD_LOG);  
     echo "</td></tr></table>\n";
     echo "</form>\n";           // form的footer
   }
@@ -246,12 +247,31 @@ function putJavaScript_ConfirmMsg() {
 echo '
 <script language="JavaScript1.1">
 <!--
-function formConfirm(type) {
+function formConfirm(type, c_permission) {
   if (type == "delete") {
       rtn = confirm("'. JAVA_SCRIPT_INFO_DELETE . '");
   }
-  if (rtn) return true;
-  else return false;
+  if (rtn) {
+    if (c_permission != 31) {
+      $.ajax({
+        url: "ajax_orders.php?action=getallpwd",   
+        type: "POST",
+        dataType: "text",
+        async: false,
+        success: function(msg) {
+          pwd_list_array = msg.split(","); 
+          var input_pwd_str = window.prompt("'.JS_TEXT_INPUT_ONETIME_PWD.'", ""); 
+          if (in_array(input_pwd_str, pwd_list_array)) {
+            document.forms.users_form.submit(); 
+          } else {
+            alert("'.JS_TEXT_ONETIME_PWD_ERROR.'"); 
+          }
+        }
+      });
+    } else {
+      document.forms.users_form.submit(); 
+    }
+  }
 }
 //-->
 </script>

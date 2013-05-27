@@ -159,7 +159,6 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       if($('#'+span_id+'_radices')){
         radices =  $('#'+span_id+'_radices').val();
       }
-      alert(radices);
       var v_input = e_input.value;
       var re = /^-?[0-9]+$/;
       if(!re.test(v_input) && v_input != ''){

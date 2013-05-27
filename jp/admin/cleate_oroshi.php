@@ -143,7 +143,12 @@ function notval(){
   valmethod = false;
 }
 <?php //关闭设置 ?>    
-function w_close(){
+function w_close(c_permission, co_type){
+  if (co_type == 1) {
+    valmethod = false;
+    document.getElementById("h_sort").innerHTML = '<input type="hidden" name="sort" value="<?php echo CLEATE_DOUGYOUSYA_UPDATE_SORT;?>">';
+  }
+  var o_error = false; 
   if(valmethod){
   if((!document.getElementById("orrshi_id")||document.getElementsByName('set_oroshi[]')[0])&&html.length==1){
     var j;
@@ -152,15 +157,15 @@ function w_close(){
     var o_name = document.getElementsByName('set_oroshi[]');
       o_cid = document.getElementsByName('ocid[0][]');
       if(o_name[0].value == null||o_name[0].value == ''){
-      alert('<?php echo TRADE_NAME; ?>');
-        return false;
+        o_error = true; 
+        alert('<?php echo TRADE_NAME; ?>');
       }else {
         var ex_name =  document.getElementsByName('exist_name[]');
         var z;
         for(z=0;z<ex_name.length;z++){
           if(ex_name[z].value==o_name[0].value){
+             o_error = true; 
              alert(o_name[0].value+'<?php echo ALREADY_EXISTS; ?>');
-            return false;
           }
         }
         test=0;
@@ -170,8 +175,8 @@ function w_close(){
           }
         }
         if (test == j) {
+          o_error = true; 
           alert('<?php echo PLEASE_GAME_TITLE; ?>');
-          return false;
         }
       }
   }else if(document.getElementById("orrshi_id")){
@@ -182,8 +187,8 @@ function w_close(){
     var ocid = document.getElementsByName('ocid[]');
     var test = 0;
     if (o_name == ''||o_name == null){
+      o_error = true; 
       alert('<?php echo TRADE_NAME; ?>');
-      return false;
     }else{
         var ex_name =  document.getElementsByName('exist_name[]');
         var z;
@@ -192,8 +197,8 @@ function w_close(){
             continue;
           }
           if(ex_name[z].value==o_name){
+            o_error = true; 
             alert(o_name+'<?php echo TRADE_NAME; ?>');
-            return false;
           }
         }
     for(x=0;x<ocid.length;x++){
@@ -202,8 +207,8 @@ function w_close(){
       }
     }
     if (test == x){
+       o_error = true; 
        alert('<?php echo PLEASE_GAME_TITLE; ?>');
-       return false;
     }
     }
   }
@@ -218,8 +223,8 @@ function w_close(){
             if(o_name[le].value != null&&o_name[le].value != ''){
                for(z=0;z<ex_name.length;z++){
                 if(ex_name[z].value==o_name[le].value){
+                  o_error = true; 
                   alert(o_name[le].value+'<?php echo ALREADY_EXISTS; ?>');
-                  return false;
                 }
                }
             }
@@ -231,23 +236,62 @@ function w_close(){
               continue;
             }
             if (nary[ii-1]==nary[ii]){
+              o_error = true; 
               alert("<?php echo CONTENT_NOT_SAME; ?>");
-              return false;
             }
           }
         }
   if(!document.getElementsByName('set_oroshi[]')[0]&&!document.getElementById("orrshi_id")){
+    o_error = true; 
     alert('<?php echo CREATE_INPUT_BOX; ?>');
-    return false;
   }
   }
-  return true;
+  
+  if (o_error == false) {
+    if (c_permission == 31) {
+      document.forms.o_form.submit(); 
+    } else {
+      $.ajax({
+        url: 'ajax_orders.php?action=getallpwd',   
+        type: 'POST',
+        dataType: 'text',
+        async: false,
+        success: function(msg) {
+          pwd_list_array = msg.split(','); 
+          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+          if (in_array(input_pwd_str, pwd_list_array)) {
+            document.forms.o_form.submit(); 
+          } else {
+            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          }
+        }
+      });
+    }
+  }
 }
 <?php //删除批发商名称 ?> 
-function del_oroshi(id){
+function del_oroshi(id, c_permission){
   var flg=confirm('<?php echo DELETE;?>');
   if(flg){
-    location.href="cleate_oroshi.php?action=delete&id="+id;
+    if (c_permission == 31) {
+      window.location.href="cleate_oroshi.php?action=delete&id="+id;
+    } else {
+      $.ajax({
+        url: 'ajax_orders.php?action=getallpwd',   
+        type: 'POST',
+        dataType: 'text',
+        async: false,
+        success: function(msg) {
+          pwd_list_array = msg.split(','); 
+          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+          if (in_array(input_pwd_str, pwd_list_array)) {
+            window.location.href="cleate_oroshi.php?action=delete&id="+id;
+          } else {
+            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          }
+        }
+      });
+    }
   }
 }
 <?php //编辑批发商名称 ?>
@@ -298,7 +342,7 @@ require("includes/note_js.php");
               </tr>
               <tr>
                  <td>
-  <form method="post" action="cleate_oroshi.php?action=set_oroshi" onSubmit="return w_close()">
+  <form method="post" action="cleate_oroshi.php?action=set_oroshi" name="o_form">
                     <table width="100%" cellspacing="0" cellpadding="0">
                        <tr>
                           <td valign="top" class="cleate_add">
@@ -335,7 +379,18 @@ if(empty($HTTP_GET_VARS['id'])){
    <?php echo WHOLESALERS.$col['oroshi_name'];?><input type="hidden" name="exist_name[]" value='<?php echo $col['oroshi_name'];?>'>
   </td>
   <td id="tr_<?php echo $i;?>_2" width='50'><a href='cleate_oroshi.php?action=edit_oroshi&id=<?php echo $col['oroshi_id'];?>'><?php echo CLEATE_DOUGYOUSYA_EDIT;?></a></td>
-  <td id="tr_<?php echo $i;?>_3" width='50'><a href='javascript:void(0);' onclick='del_oroshi(<?php echo $col['oroshi_id'];?>)'><?php echo CLEATE_DOUGYOUSYA_DEL;?></a></td>
+   
+  <?php
+  if ($ocertify->npermission >= 15) {
+  ?>
+  <td id="tr_<?php echo $i;?>_3" width='50'><a href='javascript:void(0);' onclick="del_oroshi(<?php echo $col['oroshi_id'];?>, '<?php echo $ocertify->npermission;?>')"><?php echo CLEATE_DOUGYOUSYA_DEL;?></a></td>
+  <?php
+  } else {
+  ?>
+  <td id="tr_<?php echo $i;?>_3" width='50'>&nbsp;</td>
+  <?php
+  }
+  ?> 
   <td id="tr_<?php echo $i;?>_4" width='50'><a href='cleate_list.php?action=oroshi&o_id=<?php echo $col['oroshi_id'];?>'><?php echo OROSHI_DATA_MANAGE?></a></td>
   <td id="tr_<?php echo $i;?>_5" width='50'><a href='history.php?action=oroshi&o_id=<?php echo $col['oroshi_id'];?>'><?php echo CLEATE_DOUGYOUSYA_HISTORY;?></a>
   <td width='50' align="right"><a href='cleate_oroshi.php?action=select_oroshi&id=<?php echo
@@ -348,7 +403,9 @@ if(empty($HTTP_GET_VARS['id'])){
       <div id="change_one">
         <input type='text' name='up_oroshi[<?php echo $col['oroshi_id'];?>]' id='name_<?php echo $col['oroshi_id'];?>' value='<?php echo $col['oroshi_name'];?>' />
         <input type="hidden" id="src_name_<?php echo $col['oroshi_id'];?>" value='<?php echo $col['oroshi_name'];?>'><br>
-        <?php echo makeCheckbox($categories_subtree,$ckstr);?> <input type="submit" value="<?php echo IMAGE_UPDATE;?>"><input type = "button" value = "<?php echo IMAGE_CANCEL;?>" onclick="resset_cb()"><br />
+        <?php echo makeCheckbox($categories_subtree,$ckstr);?> 
+        <a href="javascript:void(0);"><?php echo tep_html_element_button(IMAGE_UPDATE, 'onclick="w_close(\''.$ocertify->npermission.'\', \'0\');"');?></a>
+        <input type = "button" value = "<?php echo IMAGE_CANCEL;?>" onclick="resset_cb()"><br />
       </div>
     </td>
   </tr>
@@ -403,8 +460,9 @@ if(empty($HTTP_GET_VARS['id'])){
    echo makeCheckbox($categories_subtree);
 ?>
 </div>
-<input type="submit" value="<?php echo CLEATE_LIST_LOGIN_BUTTON;?>" name="add">
-<input type="submit" onClick="notval()" value="<?php echo CLEATE_DOUGYOUSYA_UPDATE_SORT?>" name="sort">
+<a href="javascript:void(0);"><?php echo tep_html_element_button(CLEATE_LIST_LOGIN_BUTTON, 'onclick="w_close(\''.$ocertify->npermission.'\', \'0\');"');?></a>
+<a href="javascript:void(0);"><?php echo tep_html_element_button(CLEATE_DOUGYOUSYA_UPDATE_SORT, 'onclick="w_close(\''.$ocertify->npermission.'\', \'1\');"');?></a>
+<div id="h_sort"></div>
 </form>
                           </td>
                        </tr>

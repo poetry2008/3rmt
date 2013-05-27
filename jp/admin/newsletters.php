@@ -124,6 +124,60 @@ function check_send_mail()
 {
    alert('<?php echo NOTICE_SEND_ZERO_MAIL_TEXT;?>');
 }
+<?php //提交动作?>
+function check_letter_form(c_permission, l_type)
+{
+  if (c_permission == 31) {
+    if (l_type == 0) {
+      document.forms.newsletter.submit(); 
+    } else {
+      document.forms.newsletters.submit(); 
+    }
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          if (l_type == 0) {
+            document.forms.newsletter.submit(); 
+          } else {
+            document.forms.newsletters.submit(); 
+          }
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+  }
+}
+<?php //执行动作?>
+function toggle_letter_action(l_url_str, c_permission)
+{
+  if (c_permission == 31) {
+    window.location.href = l_url_str; 
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          window.location.href = l_url_str; 
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+  }
+}
 </script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
@@ -274,9 +328,7 @@ require("includes/note_js.php");
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="2">
           <tr>
-            <td class="main" align="right"><?php echo (($form_action == 'insert') ?
-                tep_html_element_submit(IMAGE_SAVE) :
-                tep_html_element_submit(IMAGE_SAVE)).  '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_NEWSLETTERS, 'page=' .  (isset($_GET['page'])?$_GET['page']:'') . '&nID=' .  (isset($_GET['nID'])?$_GET['nID']:'') .  (isset($_GET['lsite_id'])?('&site_id='.$_GET['lsite_id']):'')) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?></td>
+            <td class="main" align="right"><a href="javascript:void(0);"><?php echo tep_html_element_button(IMAGE_SAVE, 'onclick="check_letter_form(\''.$ocertify->npermission.'\', \'0\');"').  '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_NEWSLETTERS, 'page=' .  (isset($_GET['page'])?$_GET['page']:'') . '&nID=' .  (isset($_GET['nID'])?$_GET['nID']:'') .  (isset($_GET['lsite_id'])?('&site_id='.$_GET['lsite_id']):'')) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?></td>
           </tr>
         </table></td>
       </form></tr>
@@ -490,7 +542,7 @@ require("includes/note_js.php");
       $contents = array('form' => tep_draw_form('newsletters', FILENAME_NEWSLETTERS, 'page=' . $_GET['page'] . '&nID=' . $nInfo->newsletters_id . '&action=deleteconfirm'.(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')));
       $contents[] = array('text' => TEXT_INFO_DELETE_INTRO);
       $contents[] = array('text' => '<br>' . $nInfo->title);
-      $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_DELETE) . ' <a href="' .  tep_href_link(FILENAME_NEWSLETTERS, 'page=' . $_GET['page'] . '&nID=' .  $_GET['nID'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br><a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_DELETE, 'onclick="check_letter_form(\''.$ocertify->npermission.'\', \'1\')"') .  '</a> <a href="' .  tep_href_link(FILENAME_NEWSLETTERS, 'page=' . $_GET['page'] . '&nID=' .  $_GET['nID'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     default:
   if (isset($nInfo) && is_object($nInfo)) {
@@ -499,18 +551,20 @@ require("includes/note_js.php");
 
         if ($nInfo->locked > 0) {
           $contents[] = array('align' => 'center', 'text' => 
-            '<a href="' . tep_href_link(FILENAME_NEWSLETTERS, 'page=' .  $_GET['page'] . '&nID=' . $nInfo->newsletters_id . '&action=new' .  (isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a>' . ($ocertify->npermission == 15 ? (' <a href="' .  tep_href_link(FILENAME_NEWSLETTERS, 'page=' . $_GET['page'] . '&nID=' . $nInfo->newsletters_id . '&action=delete' .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_html_element_button(IMAGE_DELETE) . '</a>'):'')
+            '<a href="' . tep_href_link(FILENAME_NEWSLETTERS, 'page=' .  $_GET['page'] . '&nID=' . $nInfo->newsletters_id . '&action=new' .  (isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a>' . ($ocertify->npermission >= 15 ? (' <a href="' .  tep_href_link(FILENAME_NEWSLETTERS, 'page=' . $_GET['page'] . '&nID=' . $nInfo->newsletters_id . '&action=delete' .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_html_element_button(IMAGE_DELETE) . '</a>'):'')
           . ' <a href="' . tep_href_link(FILENAME_NEWSLETTERS, 'page=' .  $_GET['page'] . '&nID=' . $nInfo->newsletters_id . '&action=preview' .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_PREVIEW) . '</a>' 
           . ' <a href="' . tep_href_link(FILENAME_NEWSLETTERS, 'page=' .
             $_GET['page'] . '&nID=' . $nInfo->newsletters_id . '&action=send' .
             (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').
             (isset($site_id)?('&send_site_id='.$site_id):'')) . '">' .  tep_html_element_button(IMAGE_SEND) . '</a>' 
-          . ' <a href="' . tep_href_link(FILENAME_NEWSLETTERS, 'page=' .  $_GET['page'] . '&nID=' . $nInfo->newsletters_id . '&action=unlock' .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_UNLOCK) . '</a>'
+          . ' <a href="javascript:void(0);" onclick="toggle_letter_action(\'' .
+            tep_href_link(FILENAME_NEWSLETTERS, 'page=' .  $_GET['page'] . '&nID=' .
+                $nInfo->newsletters_id . '&action=unlock' .
+                (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '\',
+            \''.$ocertify->npermission.'\');">' .  tep_html_element_button(IMAGE_UNLOCK) . '</a>'
           );
         } else {
-          $contents[] = array('align' => 'center', 'text' => 
-            '<a href="' . tep_href_link(FILENAME_NEWSLETTERS, 'page=' .  $_GET['page'] . '&nID=' . $nInfo->newsletters_id . '&action=preview' .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_PREVIEW) . '</a>' 
-          . ' <a href="' . tep_href_link(FILENAME_NEWSLETTERS, 'page=' .  $_GET['page'] . '&nID=' . $nInfo->newsletters_id . '&action=lock' .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_LOCK) . '</a>'
+          $contents[] = array('align' => 'center', 'text' => '<a href="' .  tep_href_link(FILENAME_NEWSLETTERS, 'page=' .  $_GET['page'] . '&nID=' . $nInfo->newsletters_id . '&action=preview' .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_PREVIEW) . '</a>' . ' <a href="javascript:void(0);" onclick="toggle_letter_action(\'' .  tep_href_link(FILENAME_NEWSLETTERS, 'page=' .  $_GET['page'] . '&nID=' .  $nInfo->newsletters_id . '&action=lock' .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '\', \''.$ocertify->npermission.'\');">' .  tep_html_element_button(IMAGE_LOCK) . '</a>'
           );
         }
 if(tep_not_null($nInfo->user_added)){

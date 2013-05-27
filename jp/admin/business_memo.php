@@ -147,7 +147,7 @@ function resize_option_page()
 }
 
 <?php //删除动作?>
-function select_memo_change(value,memo_list_id)
+function select_memo_change(value,memo_list_id,c_permission)
 {
   sel_num = 0;
   if (document.edit_memo_form.elements[memo_list_id].length == null) {
@@ -165,8 +165,28 @@ function select_memo_change(value,memo_list_id)
 
   if(sel_num == 1){
     if (confirm('<?php echo TEXT_MEMO_EDIT_CONFIRM;?>')) {
-      document.edit_memo_form.action = "<?php echo FILENAME_BUSINESS_MEMO.'?action=delete'.($_GET['page'] != '' ? '&page='.$_GET['page'] : '');?>";
-      document.edit_memo_form.submit(); 
+      if (c_permission == 31) {
+        document.edit_memo_form.action = "<?php echo FILENAME_BUSINESS_MEMO.'?action=delete'.($_GET['page'] != '' ? '&page='.$_GET['page'] : '');?>";
+        document.edit_memo_form.submit(); 
+      } else {
+        $.ajax({
+          url: 'ajax_orders.php?action=getallpwd',   
+          type: 'POST',
+          dataType: 'text',
+          async: false,
+          success: function(msg) {
+            pwd_list_array = msg.split(','); 
+            var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+            if (in_array(input_pwd_str, pwd_list_array)) {
+              document.edit_memo_form.action = "<?php echo FILENAME_BUSINESS_MEMO.'?action=delete'.($_GET['page'] != '' ? '&page='.$_GET['page'] : '');?>";
+              document.edit_memo_form.submit(); 
+            } else {
+              document.getElementsByName("edit_memo_list")[0].value = 0;
+              alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+            }
+          }
+        });
+      }
     }else{
 
       document.getElementsByName("edit_memo_list")[0].value = 0;
@@ -356,24 +376,79 @@ function hidden_info_box(){
 }
 
 <?php //memo内容添加?>
-function create_memo_check(){
-  
-  document.create_memo_form.action = '<?php echo FILENAME_BUSINESS_MEMO;?>?action=insert';
-  document.create_memo_form.submit();
+function create_memo_check(c_permission){
+  if (c_permission == 31) {
+    document.create_memo_form.action = '<?php echo FILENAME_BUSINESS_MEMO;?>?action=insert';
+    document.create_memo_form.submit();
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          document.create_memo_form.action = '<?php echo FILENAME_BUSINESS_MEMO;?>?action=insert';
+          document.create_memo_form.submit();
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+  }
 }
 
 <?php //memo内容编辑?>
-function edit_memo_check(){
-  
-  document.edit_memo.action = '<?php echo FILENAME_BUSINESS_MEMO;?>?action=save';
-  document.edit_memo.submit();
+function edit_memo_check(c_permission){
+  if (c_permission == 31) {
+    document.edit_memo.action = '<?php echo FILENAME_BUSINESS_MEMO;?>?action=save';
+    document.edit_memo.submit();
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          document.edit_memo.action = '<?php echo FILENAME_BUSINESS_MEMO;?>?action=save';
+          document.edit_memo.submit();
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+  }
 }
 
 <?php //删除memo?>
-function close_memo(){
+function close_memo(c_permission){
+  if (c_permission == 31) {
+    document.edit_memo.action = '<?php echo FILENAME_BUSINESS_MEMO;?>?action=deleteconfirm';
+    document.edit_memo.submit();
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          document.edit_memo.action = '<?php echo FILENAME_BUSINESS_MEMO;?>?action=deleteconfirm';
+          document.edit_memo.submit();
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+  }
 
-  document.edit_memo.action = '<?php echo FILENAME_BUSINESS_MEMO;?>?action=deleteconfirm';
-  document.edit_memo.submit();
 }
 
 <?php //新建memo?>
@@ -574,9 +649,9 @@ require("includes/note_js.php");
                   <tr>
                   <td class="smallText" valign="top">
                   <?php
-                  if($ocertify->npermission == 15 && tep_db_num_rows($memo_query) > 0){
+                  if($ocertify->npermission >= 15 && tep_db_num_rows($memo_query) > 0){
                     echo '<div class="td_box">';
-                    echo '<select name="edit_memo_list" onchange="select_memo_change(this.value,\'memo_list_id[]\');">';
+                    echo '<select name="edit_memo_list" onchange="select_memo_change(this.value,\'memo_list_id[]\',\''.$ocertify->npermission.'\');">';
                     echo '<option value="0">'.TEXT_MEMO_EDIT_SELECT.'</option>';
                     echo '<option value="1">'.TEXT_MEMO_EDIT_DELETE.'</option>';
                     echo '</select>';

@@ -242,13 +242,12 @@ while($area_fee_array = tep_db_fetch_array($area_fee_query)){
   echo '<td>';
   if($area_fee_array['status'] == 0){
 ?>
-  <img border="0" src="images/icon_status_green.gif" alt="" title="<?php echo TEXT_ENABLE;?>">
-  <a title="<?php echo TEXT_DISABLE;?>" onclick="if(confirm('<?php echo TEXT_WANT_DISABLE;?>')){check_on_area('del',<?php echo $area_fee_array['id'];?>,<?php echo $_GET['fid'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_red_light.gif"></a>
+  <img border="0" src="images/icon_status_green.gif" alt="" title="<?php echo TEXT_ENABLE;?>"> <a title="<?php echo TEXT_DISABLE;?>" onclick="if(confirm('<?php echo TEXT_WANT_DISABLE;?>')){check_on_area('del',<?php echo $area_fee_array['id'];?>,<?php echo $_GET['fid'];?>,'<?php echo $ocertify->npermission;?>');}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_red_light.gif"></a>
 
 <?php
 }else{
 ?>
-  <a title="<?php echo TEXT_ENABLE;?>" onclick="if(confirm('<?php echo TEXT_WANT_ENABLE;?>')){check_on_area('res',<?php echo $area_fee_array['id'];?>,<?php echo $_GET['fid'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_green_light.gif"></a>
+  <a title="<?php echo TEXT_ENABLE;?>" onclick="if(confirm('<?php echo TEXT_WANT_ENABLE;?>')){check_on_area('res',<?php echo $area_fee_array['id'];?>,<?php echo $_GET['fid'];?>,'<?php echo $ocertify->npermission;?>');}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_green_light.gif"></a>
   <img border="0" alt="" src="images/icon_status_red.gif" title="<?php echo TEXT_DISABLE;?>">
 
 <?php
@@ -256,7 +255,8 @@ while($area_fee_array = tep_db_fetch_array($area_fee_query)){
 ?>
 </td>
 <?php
-  echo '<td align="right"><a href="javascript:void(0);" onclick="show_text_area('. $area_fee_array['id'] .',this,'. $_GET['fid'] .');">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a></td>';
+  $area_fee_date_info = (tep_not_null($area_fee_array['date_update']) && ($area_fee_array['date_update'] != '0000-00-00 00:00:00'))?$area_fee_array['date_update']:$area_fee_array['date_added'];
+  echo '<td align="right"><a href="javascript:void(0);" onclick="show_text_area('.  $area_fee_array['id'] .',this,'. $_GET['fid'] .');">' .  tep_get_signal_pic_info($area_fee_date_info) . '</a></td>';
   echo '</tr>';
   $i++;
 }

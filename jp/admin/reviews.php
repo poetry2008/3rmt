@@ -159,7 +159,7 @@
         tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] .  '&site_id='.$_POST['site_id'].(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'')));
         break;
       case 'deleteconfirm':
-        if($ocertify->npermission == 15){
+        if($ocertify->npermission >= 15){
         if (!empty($_POST['review_id'])) {
                    foreach ($_POST['review_id'] as $ge_key => $ge_value) {
                    tep_db_query(" delete from " . TABLE_REVIEWS . " where reviews_id = '" . $ge_value . "'");
@@ -232,7 +232,7 @@
              }
            }
          }
-   function delete_select_review(review_str){
+   function delete_select_review(review_str, c_permission){
       sel_num = 0;
       if (document.del_review.elements[review_str].length == null) {
           if (document.del_review.elements[review_str].checked == true) {
@@ -248,7 +248,26 @@
        }
        if (sel_num == 1) {
            if (confirm('<?php echo TEXT_DEL_REVIEW;?>')) {
-              document.forms.del_review.submit(); 
+             if (c_permission == 31) {
+               document.forms.del_review.submit(); 
+             } else {
+               $.ajax({
+                 url: 'ajax_orders.php?action=getallpwd',   
+                 type: 'POST',
+                 dataType: 'text',
+                 async: false,
+                 success: function(msg) {
+                   pwd_list_array = msg.split(','); 
+                   var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+                   if (in_array(input_pwd_str, pwd_list_array)) {
+                     document.forms.del_review.submit(); 
+                   } else {
+                     alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                     document.getElementsByName('reviews_action')[0].value = 0; 
+                   }
+                 }
+               });
+             }
            } else {
               document.getElementsByName('reviews_action')[0].value = 0; 
            }
@@ -312,14 +331,37 @@
          $('#customers_name').val(con_cname);
          $('#reviews_text').val(con_text);
 
-       if(document.getElementById('add_product_products_id').value != 0){
-        if (document.getElementById('reviews_text').value.length < <?php echo REVIEW_TEXT_MIN_LENGTH;?>) {
-                     alert("<?php echo REVIEWS_NOTICE_TOTALNUM_ERROR;?>");
-         }else{
-                     document.forms.review.submit();
+         if (document.getElementById('add_product_products_id').value != 0) {
+           if (document.getElementById('reviews_text').value.length < <?php echo REVIEW_TEXT_MIN_LENGTH;?>) {
+             alert("<?php echo REVIEWS_NOTICE_TOTALNUM_ERROR;?>");
+           } else {
+             <?php
+             if ($ocertify->npermission == 31) {
+             ?>
+               document.forms.review.submit();
+             <?php
+             } else {
+             ?>
+              $.ajax({
+                url: 'ajax_orders.php?action=getallpwd',   
+                type: 'POST',
+                dataType: 'text',
+                async: false,
+                success: function(msg) {
+                  pwd_list_array = msg.split(','); 
+                  var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+                  if (in_array(input_pwd_str, pwd_list_array)) {
+                    document.forms.review.submit();
+                  } else {
+                    alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                  }
+                }
+              });
+             <?php
+             }
+             ?>
+           }
          }
-      }
-
     }
     function check_review(){
         if (document.getElementById('reviews_text').value.length < <?php echo REVIEW_TEXT_MIN_LENGTH;?>) {
@@ -505,8 +547,37 @@ function set_default_value(){
 <?php //选择动作?>
 function review_change_action(r_value, r_str) {
   if (r_value == '1') {
-    delete_select_review(r_str);
+    delete_select_review(r_str, '<?php echo $ocertify->npermission;?>');
   }
+}
+<?php //动作链接?>
+function toggle_reviews_action(reviews_url_str) 
+{
+  <?php
+    if ($ocertify->npermission == 31) {
+  ?>
+  window.location.href = reviews_url_str;  
+  <?php
+    } else {
+  ?>
+  $.ajax({
+    url: 'ajax_orders.php?action=getallpwd',   
+    type: 'POST',
+    dataType: 'text',
+    async: false,
+    success: function(msg) {
+      pwd_list_array = msg.split(','); 
+      var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+      if (in_array(input_pwd_str, pwd_list_array)) {
+        window.location.href = reviews_url_str;  
+      } else {
+        alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+      }
+    }
+  });
+  <?php
+    }
+  ?>
 }
 </script>
 <?php 
@@ -719,9 +790,9 @@ require("includes/note_js.php");
       );
       $action_sid_str = '&action_sid='.$reviews['site_id'];
       if ($reviews['reviews_status'] == '1') {
-        $review_image = tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;&nbsp;<a href="' .  tep_href_link(FILENAME_REVIEWS, 'action=setflag&flag=0'.(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').'&page=' . (isset($_GET['page'])?$_GET['page']:'') . '&pID=' .  $reviews['reviews_id'].(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'').$action_sid_str) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT) . '</a>';
+        $review_image = tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;&nbsp;<a href="javascript:void(0);" onclick="toggle_reviews_action(\'' . tep_href_link(FILENAME_REVIEWS, 'action=setflag&flag=0'.(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').'&page=' . (isset($_GET['page'])?$_GET['page']:'') . '&pID=' .  $reviews['reviews_id'].(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'')) . '\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT) . '</a>';
       } else {
-        $review_image = '<a href="' . tep_href_link(FILENAME_REVIEWS, 'action=setflag&flag=1'.(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').'&page=' . (isset($_GET['page'])?$_GET['page']:'') . '&pID=' .  $reviews['reviews_id'].(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'').$action_sid_str) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED);
+        $review_image = '<a href="javascript:void(0);" onclick="toggle_reviews_action(\'' . tep_href_link(FILENAME_REVIEWS, 'action=setflag&flag=1'.(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').'&page=' . (isset($_GET['page'])?$_GET['page']:'') . '&pID=' .  $reviews['reviews_id'].(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'')) . '\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED);
       }
       $review_info[] = array(
           'params' => 'class="dataTableContent" align="center"',
@@ -736,11 +807,12 @@ require("includes/note_js.php");
           'text'   => ''.$review_image 
       );
       if(empty($_GET['site_id'])){ $_GET['site_id'] = ''; } 
+      $review_date_info = (tep_not_null($reviews['last_modified']) && ($reviews['last_modified'] != '0000-00-00 00:00:00'))?$reviews['last_modified']:$reviews['date_added'];
       $review_info[] = array(
           'params' => 'class="dataTableContent" align="right"',
           'text'   => '<a href="javascript:void(0);"
           onclick="show_text_reviews(this,\''.$_GET['page'].'\',\''.$reviews['reviews_id'].'\',\''.$_GET['site_id'].'\',\''.$reviews['site_id'].'\')">'.
-          tep_get_signal_pic_info($reviews['last_modified']).'</a>'
+          tep_get_signal_pic_info($review_date_info).'</a>'
       );
     $review_table_row[] = array('params' => $review_params, 'text' => $review_info);
     }
@@ -755,7 +827,7 @@ require("includes/note_js.php");
                   <tr>
                     <td colspan="2">
                       <?php 
-                      if($ocertify->npermission == 15){
+                      if($ocertify->npermission >= 15){
                       ?>
                       <select name="reviews_action" onchange="review_change_action(this.value, 'review_id[]');">
                         <option value="0"><?php echo TEXT_REVIEWS_SELECT_ACTION;?></option> 

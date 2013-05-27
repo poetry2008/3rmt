@@ -88,7 +88,15 @@
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
         $customers_info_sql = "insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created,customers_info_date_account_last_modified,user_update,user_added) values ('" . tep_db_input($customer_id) . "', '0', now(),now(),'".$_SESSION['user_name']."','".$_SESSION['user_name']."')";
         tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created,customers_info_date_account_last_modified,user_update,user_added) values ('" . tep_db_input($customer_id) . "', '0', now(),now(),'".$_SESSION['user_name']."','".$_SESSION['user_name']."')");
+        if(isset($_POST['check_order']) && $_POST['check_order'] != ''){
+            if($_POST['check_order'] == 0){
+              tep_redirect(tep_href_link('create_order.php','Customer_mail='.$customers_email_address.'&site_id='.$_POST['site_id']));
+            }else if($_POST['check_order'] == 1){
+              tep_redirect(tep_href_link('create_preorder.php','Customer_mail='.$customers_email_address.'&site_id='.$_POST['site_id']));
+            }
+        }else{
         tep_redirect(tep_href_link(FILENAME_CUSTOMERS,'site_id='.$_POST['site_id']));
+        }
         break;
       case 'update':
         tep_isset_eof(); 
@@ -252,6 +260,13 @@
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php require('includes/javascript/show_site.js.php');?>
 <script type="text/javascript">
+function check_order(value){
+    if(value == 1){
+     document.getElementById('check_order').value = 1;
+    }else{
+     document.getElementById('check_order').value = 0;
+    }
+}
 function check_guest(guest_value){
   if(guest_value == 1){
     $("#password_hide").hide(); 

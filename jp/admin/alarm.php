@@ -178,7 +178,7 @@ function add_more_alarm()
   });
 }
 <?php //检查警报信息是否填写正确?>
-function check_alarm()
+function check_alarm(c_permission)
 {
    param_str = ''; 
    
@@ -200,7 +200,25 @@ function check_alarm()
        async:false,
        success: function(msg) {
          if (msg == 'success') {
-           document.forms.alarm.submit(); 
+           if (c_permission == 31) {
+             document.forms.alarm.submit(); 
+           } else {
+             $.ajax({
+               url: 'ajax_orders.php?action=getallpwd',   
+               type: 'POST',
+               dataType: 'text',
+               async: false,
+               success: function(msg) {
+                 pwd_list_array = msg.split(','); 
+                 var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+                 if (in_array(input_pwd_str, pwd_list_array)) {
+                   document.forms.alarm.submit(); 
+                 } else {
+                   alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                 }
+               }
+             });
+           }
          } else {
            alert(msg); 
          }
@@ -411,7 +429,7 @@ function delete_add_line(obj)
         </div>
         </div>
         <div class="element_add"><a href="javascript:void(0);"><?php echo tep_html_element_button(ADD_OTHER_ALARM, 'onclick="add_more_alarm();"');?></a></div>
-        <div class="check_button"><a href="javascript:void(0);"><?php echo tep_html_element_button(IMAGE_SAVE, 'onclick="check_alarm();"');?></a> 
+        <div class="check_button"><a href="javascript:void(0);"><?php echo tep_html_element_button(IMAGE_SAVE, 'onclick="check_alarm(\''.$ocertify->npermission.'\');"');?></a> 
         <a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action')));?>"><?php echo tep_html_element_button(IMAGE_BACK);?></a></div> 
         </form> 
         </td> 

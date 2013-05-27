@@ -107,7 +107,32 @@
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-  <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<script type="text/javascript">
+<?php //提交动作?>
+function toggle_manufacturers_form(c_permission)
+{
+  if (c_permission == 31) {
+    document.forms.manufacturers.submit(); 
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          document.forms.manufacturers.submit(); 
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+  }
+}
+</script>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 require("includes/note_js.php");
@@ -231,7 +256,7 @@ require("includes/note_js.php");
       }
 
       $contents[] = array('text' => '<br>' . TEXT_MANUFACTURERS_URL . $manufacturer_inputs_string);
-      $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_SAVE) . ' <a href="' .  tep_href_link(FILENAME_MANUFACTURERS, 'page=' . $_GET['page'] . '&mID=' .  $_GET['mID']) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br><a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_SAVE, 'onclick="toggle_manufacturers_form(\''.$ocertify->npermission.'\')"') .  '</a> <a href="' .  tep_href_link(FILENAME_MANUFACTURERS, 'page=' . $_GET['page'] . '&mID=' .  $_GET['mID']) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     case 'edit':
       $heading[] = array('text' => TEXT_HEADING_EDIT_MANUFACTURER);
@@ -250,7 +275,7 @@ require("includes/note_js.php");
       }
 
       $contents[] = array('text' => '<br>' . TEXT_MANUFACTURERS_URL . $manufacturer_inputs_string);
-      $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_SAVE) . ' <a href="' .  tep_href_link(FILENAME_MANUFACTURERS, 'page=' . $_GET['page'] . '&mID=' .  $mInfo->manufacturers_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br><a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_SAVE, 'onclick="toggle_manufacturers_form(\''.$ocertify->npermission.'\')"') .  '</a> <a href="' .  tep_href_link(FILENAME_MANUFACTURERS, 'page=' . $_GET['page'] . '&mID=' .  $mInfo->manufacturers_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     case 'delete':
       $heading[] = array('text' => TEXT_HEADING_DELETE_MANUFACTURER);
@@ -265,7 +290,7 @@ require("includes/note_js.php");
         $contents[] = array('text' => '<br>' . sprintf(TEXT_DELETE_WARNING_PRODUCTS, $mInfo->products_count));
       }
 
-      $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_DELETE) . ' <a href="' .  tep_href_link(FILENAME_MANUFACTURERS, 'page=' . $_GET['page'] . '&mID=' .  $mInfo->manufacturers_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br><a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_DELETE, 'onclick="toggle_manufacturers_form(\''.$ocertify->npermission.'\')"') .  '</a> <a href="' .  tep_href_link(FILENAME_MANUFACTURERS, 'page=' . $_GET['page'] . '&mID=' .  $mInfo->manufacturers_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     default:
       if (isset($mInfo) && is_object($mInfo)) {
@@ -273,7 +298,7 @@ require("includes/note_js.php");
 
         $contents[] = array('align' => 'center', 'text' => 
           '<a href="' . tep_href_link(FILENAME_MANUFACTURERS, 'page=' .  $_GET['page'] . '&mID=' . $mInfo->manufacturers_id . '&action=edit') .  '">' . tep_html_element_button(IMAGE_EDIT) . '</a>' 
-        . ($ocertify->npermission == 15 ? (' <a href="' .  tep_href_link(FILENAME_MANUFACTURERS, 'page=' . $_GET['page'] . '&mID=' . $mInfo->manufacturers_id . '&action=delete') . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'):'')
+        . ($ocertify->npermission >= 15 ? (' <a href="' .  tep_href_link(FILENAME_MANUFACTURERS, 'page=' . $_GET['page'] . '&mID=' . $mInfo->manufacturers_id . '&action=delete') . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'):'')
         );
 if(tep_not_null($mInfo->user_added)){
 $contents[] = array('text' =>  TEXT_USER_ADDED. ' ' .$mInfo->user_added);

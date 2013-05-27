@@ -103,6 +103,32 @@ function select_all_group()
      }
    }
 }
+
+<?php //执行动作?>
+function toggle_oa_group_action(c_permission)
+{
+  if (c_permission == 31) {
+    return true; 
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          return true; 
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          return false;
+        }
+      }
+    });
+  }
+  return false;
+}
 </script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
@@ -190,20 +216,16 @@ $belong = str_replace($pcode_array[1][0],urlencode($pcode_array[1][0]),$belong);
                 <?php
                 if ($_GET['action'] == 'edit') {
                 ?>
-                <input id ='canSubmit' class='cannotSubmit' type="submit"
-                onclick="return checkexist()" value="<?php echo
-                TEXT_CHANGE_GROUP_NAME;?>"> 
+                <input id ='canSubmit' class='cannotSubmit' type="button" onclick="checkexist('<?php echo $ocertify->npermission;?>')" value="<?php echo TEXT_CHANGE_GROUP_NAME;?>"> 
                 <?php
                 } else {
                 ?>
-                <input id ='canSubmit' class='cannotSubmit' type="submit"
-                onclick="return checkexist()" value="<?php echo TEXT_NEW_GROUP_SAVE;?>"> 
-                <?php
+                <input id ='canSubmit' class='cannotSubmit' type="button" onclick="checkexist('<?php echo $ocertify->npermission;?>')" value="<?php echo TEXT_NEW_GROUP_SAVE;?>"> <?php
                 }
                 ?>
 <script type='text/javascript'>
           <?php //检查名字是否存在?>
-          function checkexist()
+          function checkexist(c_permission)
           {
             if ($('input|[name=gname]').val().length==0){
               return false;
@@ -225,16 +247,33 @@ $belong = str_replace($pcode_array[1][0],urlencode($pcode_array[1][0]),$belong);
                    type: 'POST',    
                    async: false,
                    success: function(data){
-                  if (data == 0){
-                   $("#canSubmit").attr("class",'canSubmit');
-                  }else{
-                   $("#gerror").html('<font color="#fc0000"><?php echo
-                     TEXT_GROUP_NAME_IS_SET;?></fotn>'); 
-                   $("#canSubmit").attr("class",'cannotSubmit');
+                    if (data == 0) {
+                      $("#canSubmit").attr("class",'canSubmit');
+                      if (c_permission == 31) {
+                        document.forms.oagroup.submit();  
+                      } else {
+                        $.ajax({
+                          url: 'ajax_orders.php?action=getallpwd',   
+                          type: 'POST',
+                          dataType: 'text',
+                          async: false,
+                          success: function(msg) {
+                            pwd_list_array = msg.split(','); 
+                            var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+                            if (in_array(input_pwd_str, pwd_list_array)) {
+                              document.forms.oagroup.submit();  
+                            } else {
+                              alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                            }
+                          }
+                        });
+                      }
+                    } else {
+                      $("#gerror").html('<font color="#fc0000"><?php echo TEXT_GROUP_NAME_IS_SET;?></fotn>'); 
+                      $("#canSubmit").attr("class",'cannotSubmit');
+                    }
                   }
-                }});
-            return $("#canSubmit").attr("class") =='canSubmit';
-            
+            });
           }
 </script>
               </td>
@@ -331,8 +370,13 @@ function ajaxUpdate(id,order){
               </td>
               <td>
               <a href="<?php echo tep_href_link(FILENAME_OA_ITEM, 'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&eid='.$has_item_res['id'].'&action=edit');?>"><?php echo EDIT_ITEM_LINK_TEXT;?></a> 
-              <a onclick="return confirm('<?php echo
-              $has_item_res['title'].TEXT_DELETE_CONFRIM;?>')" href="<?php echo tep_href_link(FILENAME_OA_ITEM, 'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&eid='.$has_item_res['id'].'&action=del');?>"><?php echo DEL_ITEM_LINK_TEXT;?></a> 
+              <?php
+                if ($ocertify->npermission >= 15) {
+              ?>
+                <a onclick="if (confirm('<?php echo $has_item_res['title'].TEXT_DELETE_CONFRIM;?>')) toggle_oa_group_action('<?php echo $ocertify->npermission;?>');" href="<?php echo tep_href_link(FILENAME_OA_ITEM, 'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&eid='.$has_item_res['id'].'&action=del');?>"><?php echo DEL_ITEM_LINK_TEXT;?></a> 
+              <?php
+                }
+              ?>
               </td>
               <td><?php
             echo '<input type="button" class="up" value=\'↑\' onclick="editorder(this)">';
@@ -425,8 +469,10 @@ function ajaxUpdate(id,order){
                 echo '<td>'.$group_list_res['name'].'</td>'; 
                 echo '<td>';
                 echo '<a href="'.tep_href_link(FILENAME_OA_GROUP, 'action=edit&gid='.$group_list_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.EDIT_GROUP_TEXT.'</a>'; 
-                echo '&nbsp;&nbsp;'; 
-                echo '<a onclick="return confirm(\''.$group_list_res['name'].TEXT_DELETE_CONFRIM.'\')"'.'href="'.tep_href_link(FILENAME_OA_GROUP, 'action=del&gid='.$group_list_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.DEL_GROUP_TEXT.'</a>'; 
+                if ($ocertify->npermission >= 15) {
+                  echo '&nbsp;&nbsp;'; 
+                  echo '<a onclick="return confirm(\''.$group_list_res['name'].TEXT_DELETE_CONFRIM.'\')"'.'href="'.tep_href_link(FILENAME_OA_GROUP, 'action=del&gid='.$group_list_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.DEL_GROUP_TEXT.'</a>'; 
+                }
                 echo '</td>'; 
                 echo '<td>';
                 echo '<input type="button" class="up" value=\'↑\' onclick="editorder(this)">';

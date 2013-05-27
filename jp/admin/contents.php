@@ -167,6 +167,62 @@
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<script type="text/javascript">
+<?php //提交动作?>
+function check_content_form(c_permission, c_type) 
+{
+  if (c_permission == 31) {
+    if (c_type == 0) {
+      document.forms.content_form.submit(); 
+    } else {
+      document.forms.contents.submit(); 
+    }
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          if (c_type == 0) {
+            document.forms.content_form.submit(); 
+          } else {
+            document.forms.contents.submit(); 
+          }
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+  }
+}
+<?php //执行动作?>
+function toggle_content_action(c_url_str, c_permission)
+{
+  if (c_permission == 31) {
+    window.location.href = c_url_str; 
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          window.location.href = c_url_str; 
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+  }
+}
+</script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
@@ -239,7 +295,7 @@ require("includes/note_js.php");
             </table></td> 
         </tr> 
         <tr> 
-          <td> <?php echo tep_draw_form('update', FILENAME_CONTENTS, 'act=update'
+          <td> <?php echo tep_draw_form('content_form', FILENAME_CONTENTS, 'act=update'
               .((isset($_GET['site_id'])&&$_GET['site_id'])?'&site_id='.$_GET['site_id']:'')); ?> 
             <table border="0" cellspacing="0" cellpadding="5"> 
               <tr> 
@@ -280,7 +336,7 @@ require("includes/note_js.php");
                 <td><?php echo tep_draw_textarea_field('text_information', 'soft', '70', '20', stripslashes($detail['text_information'])); ?></td> 
               </tr> 
               <tr> 
-                <td colspan="2" align="right" class="button_cancel"><?php echo tep_html_element_submit(IMAGE_SAVE) . '&nbsp;&nbsp;<a href="' .  tep_href_link(FILENAME_CONTENTS, 'cID=' . $cID . '&page=' .  $_GET['page']) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?></td> 
+                <td colspan="2" align="right" class="button_cancel"><a href="javascript:void(0);"><?php echo tep_html_element_button(IMAGE_SAVE, 'onclick="check_content_form(\''.$ocertify->npermission.'\', \'0\');"') . '</a>&nbsp;&nbsp;<a href="' .  tep_href_link(FILENAME_CONTENTS, 'cID=' . $cID . '&page=' .  $_GET['page']) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?></td> 
               </tr> 
             </table> 
             <?php echo tep_draw_hidden_field('cID', $cID); ?> 
@@ -300,7 +356,7 @@ require("includes/note_js.php");
             </table></td> 
         </tr> 
         <tr> 
-          <td> <?php echo tep_draw_form('update', FILENAME_CONTENTS, 'act=insert'); ?> 
+          <td> <?php echo tep_draw_form('content_form', FILENAME_CONTENTS, 'act=insert'); ?> 
             <table border="0" cellspacing="0" cellpadding="5"> 
               <tr> 
 <input type="hidden" name="user_added" value="<?php echo $user_info['name']?>">
@@ -341,7 +397,7 @@ require("includes/note_js.php");
                 <td><?php echo tep_draw_textarea_field('text_information', 'soft', '70', '20', ''); ?></td> 
               </tr> 
               <tr> 
-                <td colspan="2" align="right" class="button_save"><?php echo tep_html_element_submit(IMAGE_SAVE) . '&nbsp;&nbsp;<a href="' .  tep_href_link(FILENAME_CONTENTS, 'cID=' . (isset($cID)?$cID:'') .  '&page=' . (isset($_GET['page'])?$_GET['page']:'')) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?></td> 
+                <td colspan="2" align="right" class="button_save"><a href="javascript:void(0);"><?php echo tep_html_element_button(IMAGE_SAVE, 'onclick="check_content_form(\''.$ocertify->npermission.'\', \'0\');"') . '</a>&nbsp;&nbsp;<a href="' .  tep_href_link(FILENAME_CONTENTS, 'cID=' . (isset($cID)?$cID:'') .  '&page=' . (isset($_GET['page'])?$_GET['page']:'')) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?></td> 
               </tr> 
             </table> 
             </form> </td> 
@@ -401,26 +457,27 @@ require("includes/note_js.php");
     } else {
       $nowColor = $odd; 
     }
-    if ( ((isset($cID) && $contents['pID'] == $cID) || ((!isset($_GET['cID']) || !$_GET['cID']) && $count == 1)) ) {
-        echo '          <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $contents['pID'] . '&action=edit') . '\'">' . "\n";
+      $param_str = 'onclick="document.location.href=\'' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $contents['pID'] . '&action=edit') . '\'"';  
+      if ( ((isset($cID) && $contents['pID'] == $cID) || ((!isset($_GET['cID']) || !$_GET['cID']) && $count == 1)) ) {
+        echo '          <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'">' . "\n";
         if(!isset($_GET['cID']) || !$_GET['cID']) {
           $cID = $contents['pID'];
         }
       } else {
-        echo '          <tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID')) . 'cID=' . $contents['pID']) . '\'">' . "\n";
+        echo '          <tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'">' . "\n";
       }
 ?> 
-                    <td class="dataTableContent"><?php echo $contents['sromaji']; ?></td> 
-                    <td class="dataTableContent"><?php echo htmlspecialchars($contents['heading_title']); ?></td> 
+                    <td class="dataTableContent" <?php echo $param_str;?>><?php echo $contents['sromaji']; ?></td> 
+                    <td class="dataTableContent" <?php echo $param_str;?>><?php echo htmlspecialchars($contents['heading_title']); ?></td> 
                       <td class="dataTableContent" align="center">
             <?php
               if ($contents['status'] == '1') {
-              echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_CONTENTS, 'act=setflag&flag=0&cID=' . $contents['pID']) . '&page='.$_GET['page'].'">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT) . '</a>';
+                echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;&nbsp;<a href="javascript:void(0);" onclick="toggle_content_action(\'' .  tep_href_link(FILENAME_CONTENTS, 'act=setflag&flag=0&cID=' .  $contents['pID']) . '&page='.$_GET['page'].'\', \''.$ocertify->npermission.'\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT) . '</a>';
               } else {
-              echo '<a href="' . tep_href_link(FILENAME_CONTENTS, 'act=setflag&flag=1&cID=' . $contents['pID']) . '&page='.$_GET['page'].'">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED);
+                echo '<a href="javascript:void(0);" onclick="toggle_content_action(\'' . tep_href_link(FILENAME_CONTENTS, 'act=setflag&flag=1&cID=' .  $contents['pID']) . '&page='.$_GET['page'].'\', \''.$ocertify->npermission.'\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED);
               }
             ?></td>
-            <td class="dataTableContent" align="right"><?php echo htmlspecialchars($contents['sort_id']); ?></td> 
+            <td class="dataTableContent" align="right" <?php echo $param_str;?>><?php echo htmlspecialchars($contents['sort_id']); ?></td> 
                       <td class="dataTableContent" align="right">
                       <?php 
                       if ( ($contents['pID'] == $cID) ) { 
@@ -474,13 +531,13 @@ require("includes/note_js.php");
 
       $contents = array('form' => tep_draw_form('contents', FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&act=deleteconfirm'));
       $contents[] = array('text' => TEXT_DELETE_INTRO . '<br><br>' . $c_title);
-      $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_DELETE) . ' <a href="' .  tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br><a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_DELETE, 'onclick="check_content_form(\''.$ocertify->npermission.'\', \'1\');"') . '</a> <a href="' .  tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     default:
       if ($cID && tep_not_null($cID)) {
     $heading[] = array('text' => $c_title);
 
-        $contents[] = array('align' => 'center', 'text' => '<br>'.TEXT_CONTENT_MSG.'<br>'.tep_draw_textarea_field('link','soft',30,5,'<a href="'.tep_catalog_href_link('page.php','pID='.(isset($_GET['cID'])?$_GET['cID']:'')).'">'.$c_title.'</a>').'<br><a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID .  '&action=edit') . '">' . tep_html_element_button(IMAGE_EDIT) . '</a>' .  ($ocertify->npermission == 15 ? ( ' <a href="' .  tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID .  '&action=confirm') . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'):''));
+        $contents[] = array('align' => 'center', 'text' => '<br>'.TEXT_CONTENT_MSG.'<br>'.tep_draw_textarea_field('link','soft',30,5,'<a href="'.tep_catalog_href_link('page.php','pID='.(isset($_GET['cID'])?$_GET['cID']:'')).'">'.$c_title.'</a>').'<br><a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID .  '&action=edit') . '">' . tep_html_element_button(IMAGE_EDIT) . '</a>' .  ($ocertify->npermission >= 15 ? ( ' <a href="' .  tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID .  '&action=confirm') . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'):''));
       }
        if(empty($_GET['cID'])){
         $info_cID = tep_db_fetch_array(tep_db_query("select * from information_page  where pID = '".$cID."'"));

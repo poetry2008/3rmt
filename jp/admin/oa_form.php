@@ -73,7 +73,34 @@
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-  <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<script type="text/javascript">
+<?php //执行动作?>
+function toggle_oa_form_action(c_permission)
+{
+  if (c_permission == 31) {
+    return true; 
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          return true; 
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          return false;
+        }
+      }
+    });
+  }
+  return false;
+}
+</script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
@@ -227,7 +254,9 @@ function ajaxUpdate(id,order){
             echo '<td>'.$form_group_res['name'].'</td>'; 
             echo '<td>'; 
             echo '<a href="'.tep_href_link(FILENAME_OA_GROUP, 'action=edit&gid='.$form_group_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.GROUP_EDIT.'</a>'; 
-            echo '&nbsp;<a onclick="return confirm(\''.$form_group_res['name'].TEXT_DELETE_CONFRIM.'\')" href="'.tep_href_link(FILENAME_OA_FORM, 'action=del_link_group&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&gid='.$form_group_res['id']).'&fid='.$form_id.'">'.DEL_LINK_GROUP.'</a>';
+            if ($ocertify->npermisson >= 15) {
+              echo '&nbsp;<a onclick="if (confirm(\''.$form_group_res['name'].TEXT_DELETE_CONFRIM.'\')) toggle_oa_form_action(\''.$ocertify->npermission.'\')" href="'.tep_href_link(FILENAME_OA_FORM, 'action=del_link_group&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&gid='.$form_group_res['id']).'&fid='.$form_id.'">'.DEL_LINK_GROUP.'</a>';
+            }
             echo '<td>';
             echo '<input type="button" class="up" value="↑" onclick="editorder(this)">';
             echo '<input type="button" class="down" value="↓" onclick="editorder(this)">';

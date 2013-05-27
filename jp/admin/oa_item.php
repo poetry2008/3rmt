@@ -259,6 +259,29 @@ function deltr(index)
   $table = $("#tab tr");
   $("tr[id=\'"+index+"\']").remove();
 }
+<?php //提交动作?>
+function toggle_oa_item_form(c_permission)
+{
+  if (c_permission == 31) {
+    document.forms.i_form.submit(); 
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          document.forms.i_form.submit(); 
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+  }
+}
 </script>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
@@ -298,9 +321,9 @@ $belong = str_replace($pcode_array[1][0],urlencode($pcode_array[1][0]),$belong);
       <td>
         <?php 
         if ($_GET['action'] == 'edit') {
-          echo tep_draw_form('form', FILENAME_OA_ITEM, 'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&action=update&eid='.$_GET['eid'].'&belong='.$belong);
+          echo tep_draw_form('i_form', FILENAME_OA_ITEM, 'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&action=update&eid='.$_GET['eid'].'&belong='.$belong);
         } else {
-          echo tep_draw_form('form', FILENAME_OA_ITEM, 'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&action=insert');
+          echo tep_draw_form('i_form', FILENAME_OA_ITEM, 'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&action=insert');
         }
         ?> 
         <table border="0" width="100%" cellpadding="2" cellspacing="1" class="parts_item_bg">
@@ -377,7 +400,7 @@ $belong = str_replace($pcode_array[1][0],urlencode($pcode_array[1][0]),$belong);
             </td>
           </tr>
         </table>
-        <input type="submit" value="<?php echo IMAGE_SAVE;?>">
+        <a href="javascript:void(0);"><?php echo tep_html_element_button(IMAGE_SAVE, 'onclick="toggle_oa_item_form(\''.$ocertify->npermission.'\')"');?></a> 
 <?php
   if($_GET['return']=='oa_link'){
 ?>

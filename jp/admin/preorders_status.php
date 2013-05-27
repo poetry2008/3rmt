@@ -153,6 +153,37 @@
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<script type="text/javascript">
+<?php //提交表单?>
+function check_status_form() 
+{
+  <?php
+  if ($ocertify->npermission == 31) {
+  ?>
+  document.forms.preorders_status.submit(); 
+  <?php
+  } else {
+  ?>
+  $.ajax({
+    url: 'ajax_orders.php?action=getallpwd',   
+    type: 'POST',
+    dataType: 'text',
+    async: false,
+    success: function(msg) {
+      pwd_list_array = msg.split(','); 
+      var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+      if (in_array(input_pwd_str, pwd_list_array)) {
+        document.forms.preorders_status.submit(); 
+      } else {
+        alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+      }
+    }
+  });
+  <?php
+  }
+  ?>
+}
+</script>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 require("includes/note_js.php");
@@ -270,7 +301,7 @@ require("includes/note_js.php");
       $site_id   = isset($_GET['site_id']) ? (int)$_GET['site_id']:0;
       $heading[] = array('text' => TEXT_INFO_HEADING_NEW_ORDERS_STATUS);
 
-      $contents = array('form' => tep_draw_form('status', FILENAME_PREORDERS_STATUS, 'page=' . $_GET['page'] . '&action=insert', 'post', 'enctype="multipart/form-data"'));
+      $contents = array('form' => tep_draw_form('preorders_status', FILENAME_PREORDERS_STATUS, 'page=' . $_GET['page'] . '&action=insert', 'post', 'enctype="multipart/form-data"'));
       $contents[] = array('text' => TEXT_INFO_INSERT_INTRO);
       $contents[] = array('text' => '<input type="hidden" name="site_id" value="'.$site_id.'">');
       $contents[] = array('text' => '<input type="hidden" name="user_added" value="'.$user_info['name'].'">');
@@ -299,13 +330,12 @@ require("includes/note_js.php");
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('calc_price', '1') . ' ' . TEXT_ORDERS_STATUS_AVG_PRICE);
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('is_nyuuka', '1') . ' ' . TEXT_PREORDER_NYUUKA);
 
-      $contents[] = array('align' => 'center', 'text' => '<br>' .
-          tep_html_element_submit(IMAGE_SAVE) . ' <a class="new_product_reset" href="' . tep_href_link(FILENAME_PREORDERS_STATUS, 'page=' . $_GET['page']) .  '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br><a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_SAVE, 'onclick="check_status_form();"') . '</a> <a class="new_product_reset" href="' . tep_href_link(FILENAME_PREORDERS_STATUS, 'page=' . $_GET['page']) .  '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     case 'edit':
       $heading[] = array('text' => TEXT_INFO_HEADING_EDIT_ORDERS_STATUS);
 
-      $contents = array('form' => tep_draw_form('status', FILENAME_PREORDERS_STATUS, 'page=' . $_GET['page'] . '&oID=' . $oInfo->orders_status_id  . '&action=save', 'post', 'enctype="multipart/form-data"'));
+      $contents = array('form' => tep_draw_form('preorders_status', FILENAME_PREORDERS_STATUS, 'page=' . $_GET['page'] . '&oID=' . $oInfo->orders_status_id  . '&action=save', 'post', 'enctype="multipart/form-data"'));
       $contents[] = array('text' => TEXT_INFO_EDIT_INTRO);
       $contents[] = array('text' => '<input type="hidden" name="user_update" value="'.$user_info['name'].'">');
 
@@ -349,23 +379,22 @@ require("includes/note_js.php");
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('calc_price', '1', $oInfo->calc_price) . ' ' . TEXT_ORDERS_STATUS_AVG_PRICE);
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('is_nyuuka', '1', $oInfo->is_nyuuka) . ' ' . TEXT_PREORDER_NYUUKA);
       
-      $contents[] = array('align' => 'center', 'text' => '<br>' .
-          tep_html_element_submit(IMAGE_SAVE) . ' <a class="new_product_reset" href="' . tep_href_link(FILENAME_PREORDERS_STATUS, 'page=' . $_GET['page'] .  '&oID=' . $oInfo->orders_status_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br><a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_SAVE, 'onclick="check_status_form();"') . '</a> <a class="new_product_reset" href="' . tep_href_link(FILENAME_PREORDERS_STATUS, 'page=' . $_GET['page'] .  '&oID=' . $oInfo->orders_status_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     case 'delete':
       $heading[] = array('text' => TEXT_INFO_HEADING_DELETE_ORDERS_STATUS);
 
-      $contents = array('form' => tep_draw_form('status', FILENAME_PREORDERS_STATUS, 'page=' . $_GET['page'] . '&oID=' . $oInfo->orders_status_id  . '&action=deleteconfirm'));
+      $contents = array('form' => tep_draw_form('preorders_status', FILENAME_PREORDERS_STATUS, 'page=' . $_GET['page'] . '&oID=' . $oInfo->orders_status_id  . '&action=deleteconfirm'));
       $contents[] = array('text' => TEXT_INFO_DELETE_INTRO);
       $contents[] = array('text' => '<br>' . $oInfo->orders_status_name);
-      if ($remove_status) $contents[] = array('align' => 'center', 'text' => '<br>' . tep_html_element_submit(IMAGE_DELETE) . ' <a class="new_product_reset" href="' . tep_href_link(FILENAME_PREORDERS_STATUS, 'page=' . $_GET['page'] .  '&oID=' . $oInfo->orders_status_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
+      if ($remove_status) $contents[] = array('align' => 'center', 'text' => '<br><a href="javascript:void(0);">' . tep_html_element_button(IMAGE_DELETE, 'onclick="check_status_form();"') .  '</a> <a class="new_product_reset" href="' . tep_href_link(FILENAME_PREORDERS_STATUS, 'page=' . $_GET['page'] .  '&oID=' . $oInfo->orders_status_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     default:
   if (isset($oInfo) and is_object($oInfo)) {
         $heading[] = array('text' => $oInfo->orders_status_name);
 
         $contents[] = array('align' => 'ledt', 'text' => 
-          '<a href="' . tep_href_link(FILENAME_PREORDERS_STATUS, 'page=' .  $_GET['page'] . '&oID=' . $oInfo->orders_status_id . '&action=edit') .  '">' . tep_html_element_button(IMAGE_EDIT) . '</a>' . ($ocertify->npermission == 15 ? (' <a href="' .  tep_href_link(FILENAME_PREORDERS_STATUS, 'page=' . $_GET['page'] . '&oID=' . $oInfo->orders_status_id . '&action=delete') . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'):'')
+          '<a href="' . tep_href_link(FILENAME_PREORDERS_STATUS, 'page=' .  $_GET['page'] . '&oID=' . $oInfo->orders_status_id . '&action=edit') .  '">' . tep_html_element_button(IMAGE_EDIT) . '</a>' .  ($ocertify->npermission >= 15 ? (' <a href="' .  tep_href_link(FILENAME_PREORDERS_STATUS, 'page=' . $_GET['page'] . '&oID=' . $oInfo->orders_status_id . '&action=delete') . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'):'')
         );
         $orders_status_inputs_string = '';
         $languages = tep_get_languages();
@@ -424,6 +453,3 @@ $contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .TEXT_UNSET_DATA);
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>
-<?php
-
-?>

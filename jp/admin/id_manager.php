@@ -3,7 +3,7 @@ require('includes/application_top.php');
 require(DIR_FS_ADMIN . 'classes/notice_box.php');
 if (isset($_GET['log']) && $_GET['log'] == 'id_manager_log') {
   define('MAX_DISPLAY_PW_MANAGER_LOG_RESULTS',20);
-  if($_SESSION['user_permission']!=15){
+  if($ocertify->npermission < 15){
     forward404();
   }
   if(isset($_GET['pw_id'])&&$_GET['pw_id']){
@@ -60,6 +60,29 @@ if (isset($_GET['log']) && $_GET['log'] == 'id_manager_log') {
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script language="javascript" >
+<?php //执行动作?>
+function toggle_idpw_log_action(idpwd_url_str, c_permission)
+{
+  if (c_permission == 31) {
+    window.location.href = idpwd_url_str; 
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          window.location.href = idpwd_url_str; 
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+  }
+}
 <?php //AJAX弹出页面?>
 function show_pw_manager_log(ele,pw_id,page,site_id,pw_l_id){
  sort = document.getElementById('pw_manager_sort').value;
@@ -128,7 +151,7 @@ o_submit_single = true;
   }); 
 }
 <?php //是否确认删除数据?>
-function delete_select_pw_manager(pw_manager_str){
+function delete_select_pw_manager(pw_manager_str, c_permission){
          sel_num = 0;
          if (document.del_pw_manager_log.elements[pw_manager_str].length == null) {
                 if (document.del_pw_manager_log.elements[pw_manager_str].checked == true){
@@ -144,7 +167,26 @@ function delete_select_pw_manager(pw_manager_str){
          }
          if (sel_num == 1) {
           if (confirm('<?php echo TEXT_DEL_PW_MANAGER;?>')) {
+            if (c_permission == 31) {
               document.forms.del_pw_manager_log.submit(); 
+            } else {
+              $.ajax({
+                url: 'ajax_orders.php?action=getallpwd',   
+                type: 'POST',
+                dataType: 'text',
+                async: false,
+                success: function(msg) {
+                  pwd_list_array = msg.split(','); 
+                  var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+                  if (in_array(input_pwd_str, pwd_list_array)) {
+                    document.forms.del_pw_manager_log.submit(); 
+                  } else {
+                    document.getElementsByName('pw_manager_action')[0].value = 0;
+                    alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                  }
+                }
+              });
+            }
           }else{
              document.getElementsByName('pw_manager_action')[0].value = 0;
           }
@@ -156,7 +198,7 @@ function delete_select_pw_manager(pw_manager_str){
 <?php //选择动作?>
 function pw_manager_change_action(r_value, r_str) {
   if (r_value == '1') {
-    delete_select_pw_manager(r_str);
+    delete_select_pw_manager(r_str, '<?php echo $ocertify->npermission;?>');
   }
 }
 $(document).ready(function() {
@@ -249,7 +291,6 @@ require("includes/note_js.php");
 <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
 <?php
-  if ($ocertify->npermission >= 10) {
     echo '<td width="' . BOX_WIDTH . '" valign="top">';
     echo '<table border="0" width="' . BOX_WIDTH . '" cellspacing="1" cellpadding="1" class="columnLeft">';
     echo '<!-- left_navigation -->';
@@ -257,9 +298,6 @@ require("includes/note_js.php");
     echo '<!-- left_navigation_eof -->';
     echo '</table>';
     echo '</td>';
-  } else {
-    echo '<td>&nbsp;</td>';
-  }
 ?>
 <!-- body_text -->
 <td width="100%" valign="top" id="categories_right_td"><div class="box_warp"><div class="compatible"><?php echo $notes;?><table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -495,9 +533,10 @@ require("includes/note_js.php");
       if($site_id == ''){
        $site_id = 0;
       }
+      $pw_manager_date_info = (tep_not_null($pw_manager_row['updated_at']) && ($pw_manager_row['updated_at'] != '0000-00-00 00:00:00'))?$pw_manager_row['updated_at']:$pw_manager_row['created_at'];
       $manager_info[] = array(
           'params' => 'class="dataTableContent" align="right"',
-          'text'   => '<a href="javascript:void(0)" onclick="show_pw_manager_log(this,'.$pw_id.','.$_GET['page'].','.$site_id.','.$pw_manager_row['id'].')">' . tep_get_signal_pic_info($pw_manager_row['updated_at']) . '</a>'
+          'text'   => '<a href="javascript:void(0)" onclick="show_pw_manager_log(this,'.$pw_id.','.$_GET['page'].','.$site_id.','.$pw_manager_row['id'].')">' . tep_get_signal_pic_info($pw_manager_date_info) . '</a>'
           );
 $manager_table_row[] = array('params' => $manager_params ,'text' => $manager_info);
     }
@@ -515,7 +554,7 @@ $manager_table_row[] = array('params' => $manager_params ,'text' => $manager_inf
     <tr>
        <td>
         <?php
-   $sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$_SESSION['loginuid']."' limit 0,1");
+   $sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$ocertify->auth_user."' limit 0,1");
    while($userslist= tep_db_fetch_array($sites_id)){
     $site_permission = $userslist['site_permission'];
    }
@@ -529,7 +568,7 @@ $manager_table_row[] = array('params' => $manager_params ,'text' => $manager_inf
       $site_id = 0;
      }
       if($pw_manager_numrows > 0){
-      if($ocertify->npermission == 15){
+      if($ocertify->npermission >= 15){
          if(in_array($site_id,$site_array)){
              echo '<select name="pw_manager_action" onchange="pw_manager_change_action(this.value, \'pw_manager_log_id[]\');">';
          }else{
@@ -590,7 +629,7 @@ $manager_table_row[] = array('params' => $manager_params ,'text' => $manager_inf
 require(DIR_WS_INCLUDES . 'application_bottom.php');
 }else{
   $sort_where = '';
-  if($ocertify->npermission != 15){
+  if($ocertify->npermission < 15){
     $sort_where = " and ((privilege <= '".$ocertify->npermission."' and self='') or
      self='".$ocertify->auth_user."' )";
   }else{
@@ -614,7 +653,7 @@ if(isset($pwid)&&$pwid&&!tep_can_edit_pw_manager($pwid,$ocertify->auth_user,$oce
 if(isset($_GET['action']) &&
     ($_GET['action']=='delete'
      ||$_GET['action']=='deleteconfirm')&&
-    $ocertify->npermission!=15){
+    $ocertify->npermission<15){
   header($_SERVER["SERVER_PROTOCOL"] . " 403 Forbidden");
   exit;
 }
@@ -1167,16 +1206,36 @@ function checkurl(url){
   }
 }
 <?php //验证表单?>
-function valdata(){
-  if (document.getElementById('url').value!=''&&
-      !checkurl(document.getElementById('url').value)) {
-    alert('<?php echo TEXT_URL_EXAMPLE;?>'); 
-    return false; 
+function valdata(c_permission){
+  id_pw_error = false; 
+  if (document.getElementById('url').value!=''&& !checkurl(document.getElementById('url').value)) {
+    id_pw_error = true; 
   }
-  if (document.getElementById('loginurl').value!=''&&
-      !checkurl(document.getElementById('loginurl').value)) {
+  if (document.getElementById('loginurl').value!=''&& !checkurl(document.getElementById('loginurl').value)) {
+    id_pw_error = true; 
+  }
+  if (id_pw_error == false) {
+    if (c_permission == 31) {
+      document.forms.pw_manager.submit(); 
+    } else {
+      $.ajax({
+        url: 'ajax_orders.php?action=getallpwd',   
+        type: 'POST',
+        dataType: 'text',
+        async: false,
+        success: function(msg) {
+          pwd_list_array = msg.split(','); 
+          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+          if (in_array(input_pwd_str, pwd_list_array)) {
+            document.forms.pw_manager.submit(); 
+          } else {
+            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          }
+        }
+      });
+    }
+  } else {
     alert('<?php echo TEXT_URL_EXAMPLE;?>'); 
-    return false; 
   }
 }
 <?php //创建密码?>
@@ -1196,7 +1255,7 @@ function mk_pwd(){
   });
 }
 <?php //是否确认删除数据?>
-function delete_select_pw_manager(pw_manager_str){
+function delete_select_pw_manager(pw_manager_str, c_permission){
          sel_num = 0;
          if (pw_manager_str == null){
                   document.getElementsByName('pw_manager_action')[0].value = 0;
@@ -1216,7 +1275,26 @@ function delete_select_pw_manager(pw_manager_str){
          }
          if (sel_num == 1) {
           if (confirm('<?php echo TEXT_DEL_PW_MANAGER;?>')) {
+            if (c_permission == 31) {
               document.forms.del_pw_manager.submit(); 
+            } else {
+              $.ajax({
+                url: 'ajax_orders.php?action=getallpwd',   
+                type: 'POST',
+                dataType: 'text',
+                async: false,
+                success: function(msg) {
+                  pwd_list_array = msg.split(','); 
+                  var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+                  if (in_array(input_pwd_str, pwd_list_array)) {
+                    document.forms.del_pw_manager.submit(); 
+                  } else {
+                    document.getElementsByName('pw_manager_action')[0].value = 0;
+                    alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                  }
+                }
+              });
+            }
           }else{
              document.getElementsByName('pw_manager_action')[0].value = 0;
           }
@@ -1228,7 +1306,30 @@ function delete_select_pw_manager(pw_manager_str){
 <?php //选择动作?>
 function pw_manager_change_action(r_value, r_str) {
   if (r_value == '1') {
-    delete_select_pw_manager(r_str);
+    delete_select_pw_manager(r_str, '<?php echo $ocertify->npermission;?>');
+  }
+}
+<?php //执行动作?>
+function toggle_idpw_action(idpwd_url_str, c_permission)
+{
+  if (c_permission == 31) {
+    window.location.href = idpwd_url_str; 
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          window.location.href = idpwd_url_str; 
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
   }
 }
 </script>
@@ -1474,7 +1575,6 @@ require("includes/note_js.php");
 <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
 <?php
-  if ($ocertify->npermission >= 10) {
     echo '<td width="' . BOX_WIDTH . '" valign="top">';
     echo '<table border="0" width="' . BOX_WIDTH . '" cellspacing="1" cellpadding="1" class="columnLeft">';
     echo '<!-- left_navigation -->';
@@ -1482,9 +1582,6 @@ require("includes/note_js.php");
     echo '<!-- left_navigation_eof -->';
     echo '</table>';
     echo '</td>';
-  } else {
-    echo '<td>&nbsp;</td>';
-  }
 ?>
 <!-- body_text -->
     <td width="100%" valign="top" id="categories_right_td"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -1675,9 +1772,10 @@ require("includes/note_js.php");
       if($_GET['site_id'] == null){
           $_GET['site_id'] = 0;
        }
+      $pw_manager_date_info = (tep_not_null($pw_manager_row['updated_at']) && ($pw_manager_row['updated_at'] != '0000-00-00 00:00:00'))?$pw_manager_row['updated_at']:$pw_manager_row['created_at'];
       $pw_manager_info[] = array(
           'params' => 'class="dataTableContent" align="right"',
-          'text'   => '<a href="javascript:void(0)" onclick="show_pw_manager(this,'.$pw_manager_row['id'].','.$_GET['page'].','.$_GET['site_id'].')">' .tep_get_signal_pic_info($pw_manager_row['updated_at']). '</a>'
+          'text'   => '<a href="javascript:void(0)" onclick="show_pw_manager(this,'.$pw_manager_row['id'].','.$_GET['page'].','.$_GET['site_id'].')">' .tep_get_signal_pic_info($pw_manager_date_info). '</a>'
       );
     $pw_manager_table_row[] = array('params' => $pw_manager_params,'text' => $pw_manager_info);
     }
@@ -1691,7 +1789,7 @@ require("includes/note_js.php");
    </tr>
   </table>
   <?php
-   $sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$_SESSION['loginuid']."' limit 0,1");
+   $sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$ocertify->auth_user."' limit 0,1");
    while($userslist= tep_db_fetch_array($sites_id)){
     $site_permission = $userslist['site_permission'];
    }
@@ -1710,7 +1808,7 @@ require("includes/note_js.php");
       $site_id = $_GET['site_id'];
       }
       if($pw_manager_numrows > 0){
-      if($ocertify->npermission == 15){
+      if($ocertify->npermission >= 15){
          if(in_array($site_id,$site_array)){
              echo '<select name="pw_manager_action" onchange="pw_manager_change_action(this.value, \'pw_manager_id[]\');">';
          }else{

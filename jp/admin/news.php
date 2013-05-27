@@ -4,7 +4,7 @@
 */
   require('includes/application_top.php');
   require(DIR_FS_ADMIN . 'classes/notice_box.php');
-  $sites_id_sql = tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$_SESSION['loginuid']."' limit 0,1");
+  $sites_id_sql = tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$ocertify->auth_user."' limit 0,1");
   while($userslist= tep_db_fetch_array($sites_id_sql)){
     $site_arr = $userslist['site_permission']; 
   }
@@ -232,7 +232,31 @@ $(document).ready(function() {
          async:false,
          success: function (data){
           if (headline != '') {
+            <?php
+            if ($ocertify->npermission == 31) {
+            ?>
             document.forms.new_latest_news.submit(); 
+            <?php
+            } else {
+            ?>
+            $.ajax({
+              url: 'ajax_orders.php?action=getallpwd',   
+              type: 'POST',
+              dataType: 'text',
+              async: false,
+              success: function(msg) {
+                pwd_list_array = msg.split(','); 
+                var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+                if (in_array(input_pwd_str, pwd_list_array)) {
+                  document.forms.new_latest_news.submit(); 
+                } else {
+                  alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                }
+              }
+            });
+            <?php
+            }
+            ?>
           }else{
             $("#title_error").html('<?php echo TEXT_ERROR_NULL;?>'); 
           }
@@ -262,7 +286,7 @@ function all_select_news(news_str){
           }
 }
 
-function delete_select_news(news_str){
+function delete_select_news(news_str, c_permission){
          sel_num = 0;
          if (document.del_news.elements[news_str].length == null) {
               if (document.del_news.elements[news_str].checked == true){
@@ -278,7 +302,26 @@ function delete_select_news(news_str){
          }
         if (sel_num == 1) {
            if (confirm('<?php echo TEXT_DEL_NEWS;?>')) {
-              document.forms.del_news.submit(); 
+             if (c_permission == 31) {
+               document.forms.del_news.submit(); 
+             } else {
+               $.ajax({
+                 url: 'ajax_orders.php?action=getallpwd',   
+                 type: 'POST',
+                 dataType: 'text',
+                 async: false,
+                 success: function(msg) {
+                   pwd_list_array = msg.split(','); 
+                   var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+                   if (in_array(input_pwd_str, pwd_list_array)) {
+                     document.forms.del_news.submit(); 
+                   } else {
+                     alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                     document.getElementsByName('news_action')[0].value = 0;
+                   }
+                 }
+               });
+             }
            }else{
               document.getElementsByName('news_action')[0].value = 0;
            }
@@ -361,11 +404,38 @@ function hidden_info_box(){
 <?php //选择动作?>
 function news_change_action(r_value, r_str) {
  if (r_value == '1') {
-     delete_select_news(r_str);
+     delete_select_news(r_str, '<?php echo $ocertify->npermission;?>');
    }
 }
-
-
+<?php //动作链接?>
+function toggle_news_action(news_url_str) 
+{
+  <?php
+    if ($ocertify->npermission == 31) {
+  ?>
+  window.location.href = news_url_str;  
+  <?php
+    } else {
+  ?>
+  $.ajax({
+    url: 'ajax_orders.php?action=getallpwd',   
+    type: 'POST',
+    dataType: 'text',
+    async: false,
+    success: function(msg) {
+      pwd_list_array = msg.split(','); 
+      var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+      if (in_array(input_pwd_str, pwd_list_array)) {
+        window.location.href = news_url_str;  
+      } else {
+        alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+      }
+    }
+  });
+  <?php
+    }
+  ?>
+}
 </script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
@@ -426,7 +496,6 @@ require("includes/note_js.php");
       <tr>
         <td>
         <?php tep_show_site_filter(FILENAME_NEWS);?>
-        <?php //tep_site_filter(FILENAME_NEWS);?>
         <table border="0" width="100%" cellspacing="0" cellpadding="0" id="show_text_list">
           <tr>
             <td valign="top">
@@ -508,19 +577,19 @@ require("includes/note_js.php");
           'params' => 'class="dataTableContent"',
           'text'   => '&nbsp;' . date("Y-m-d",strtotime($latest_news['date_added']))
           );
-  if ($latest_news['status'] == '1') {
-        $latest_news_status = tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;<a href="' . tep_href_link(FILENAME_NEWS, 'page='.$_GET['page'].'&action=setflag&flag=0&latest_news_id=' . $latest_news['news_id']. (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').(isset($latest_news['site_id'])?'&action_sid='.$latest_news['site_id']:'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT) . '</a>';
+      if ($latest_news['status'] == '1') {
+        $latest_news_status = tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;<a href="javascript:void(0);" onclick="toggle_news_action(\'' . tep_href_link(FILENAME_NEWS, 'page='.$_GET['page'].'&action=setflag&flag=0&latest_news_id=' .  $latest_news['news_id'].  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').(isset($latest_news['site_id'])?'&action_sid='.$latest_news['site_id']:'')) . '\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT) . '</a>';
       } else {
-        $latest_news_status = '<a href="' . tep_href_link(FILENAME_NEWS, 'page='.$_GET['page'].'&action=setflag&flag=1&latest_news_id=' . $latest_news['news_id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').(isset($latest_news['site_id'])?'&action_sid='.$latest_news['site_id']:'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT) . '</a>&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED);
+        $latest_news_status = '<a href="javascript:void(0);" onclick="toggle_news_action(\'' . tep_href_link(FILENAME_NEWS, 'page='.$_GET['page'].'&action=setflag&flag=1&latest_news_id=' .  $latest_news['news_id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').(isset($latest_news['site_id'])?'&action_sid='.$latest_news['site_id']:'')) . '\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT) . '</a>&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED);
       }
       $news_info[] = array(
           'params' => 'class="dataTableContent" align="center"',
           'text'   => $latest_news_status
           );
   if ($latest_news['isfirst']) {
-     $latest_news_isfirst = tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '<a href="' . tep_href_link(FILENAME_NEWS, 'action=setfirst&isfirst=0&latest_news_id=' . $latest_news['news_id'].  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').(isset($latest_news['site_id'])?'&action_sid='.$latest_news['site_id']:'')) . '"> ' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT) . '</a>';
+     $latest_news_isfirst = tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '<a href="javascript:void(0);" onclick="toggle_news_action(\'' . tep_href_link(FILENAME_NEWS, 'action=setfirst&isfirst=0&latest_news_id=' . $latest_news['news_id'].  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').(isset($latest_news['site_id'])?'&action_sid='.$latest_news['site_id']:'')) . '\');"> ' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT) . '</a>';
   } else {
-     $latest_news_isfirst =  '<a href="' . tep_href_link(FILENAME_NEWS,'action=setfirst&isfirst=1&latest_news_id=' . $latest_news['news_id']. (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').(isset($latest_news['site_id'])?'&action_sid='.$latest_news['site_id']:'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT) . '</a>&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED);
+     $latest_news_isfirst =  '<a href="javascript:void(0);" onclick="toggle_news_action(\'' .  tep_href_link(FILENAME_NEWS,'action=setfirst&isfirst=1&latest_news_id=' .  $latest_news['news_id'].  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').(isset($latest_news['site_id'])?'&action_sid='.$latest_news['site_id']:'')) . '\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT) . '</a>&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED);
  }
 
       $news_info[] = array(
@@ -554,7 +623,7 @@ require("includes/note_js.php");
                     ?>
                     <td valign="top" class="smallText">
                     <?php 
-                    if($ocertify->npermission == 15){
+                    if($ocertify->npermission >= 15){
                     echo '<select name="news_action" onchange="news_change_action(this.value, \'news_id[]\');">';
                     echo '<option value="0">'.TEXT_REVIEWS_SELECT_ACTION.'</option>';   
                     echo '<option value="1">'.TEXT_REVIEWS_DELETE_ACTION.'</option>';

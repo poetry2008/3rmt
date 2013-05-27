@@ -62,13 +62,9 @@
 // START CONFIGURATION ################################
 
 // Optional Tax Rates, e.g. shipping tax of 17.5% is "17.5"
-// $AddCustomTax = "20.0"; // class "ot_custom", used for all unknown total modules
   $AddCustomTax = "19.6";  // new
-// $AddShippingTax = "20.0"; // class "ot_shippping"
   $AddShippingTax = "19.6";  // new
-// $AddLevelDiscountTax = "7.6"; // class "ot_lev_discount"
   $AddLevelDiscountTax = "19.6";  // new
-// $AddCustomerDiscountTax = "7.6"; // class "ot_customer_discount"
   $AddCustomerDiscountTax = "19.6";  // new
   
 // END OF CONFIGURATION ################################
@@ -348,7 +344,6 @@
       $products_delete = true;
     }
   }
-  //exit;
   // 1.4. UPDATE SHIPPING, DISCOUNT & CUSTOM TAXES #####
 
   foreach($update_totals as $total_index => $total_details) {
@@ -999,12 +994,12 @@ function submit_order_check(products_id,op_id){
 
         if(confirm(data)){
 
-          check_mail_product_status('<?php echo $_GET['oID'];?>');
+          check_mail_product_status('<?php echo $_GET['oID'];?>', '<?php echo $ocertify->npermission;?>');
           
         }
       }else{
   
-         check_mail_product_status('<?php echo $_GET['oID'];?>');
+         check_mail_product_status('<?php echo $_GET['oID'];?>', '<?php echo $ocertify->npermission;?>');
          
       }
     }
@@ -1134,7 +1129,7 @@ $(document).ready(function() {
   });
 });
 <?php //检查是否填写确保期限?>
-function check_mail_product_status(pid)
+function check_mail_product_status(pid, c_permission)
 {
    var direct_single = false; 
    var select_status = document.getElementById('status').value;  
@@ -1187,23 +1182,28 @@ $(".once_pwd").each(function(index) {
     }
   }
   });
-  if(!flag_tmp){
-  var pwd =  window.prompt("<?php echo FORDERS_NOTICE_INPUT_ONCE_PWD;?>\r\n","");
-  if(in_array(pwd,pwd_arr)){
-  $("input[name=update_viladate]").val(pwd);
-    _flag = true; 
-  }else{
-  alert("<?php echo FORDERS_NOTICE_ONCE_PWD_WRONG;?>");
-  $("input[name=update_viladate]").val('_false');
-  $("input[name=x]").val('43');
-  $("input[name=y]").val('12');
-  return false;
-  }
-  }else{
+  if (c_permission == 31) {
     $("input[name=update_viladate]").val('');
-    $("input[name=x]").val('43');
-    $("input[name=y]").val('12');
     _flag = true;
+  } else {
+    if(!flag_tmp){
+      var pwd =  window.prompt("<?php echo FORDERS_NOTICE_INPUT_ONCE_PWD;?>\r\n","");
+      if(in_array(pwd,pwd_arr)){
+        $("input[name=update_viladate]").val(pwd);
+        _flag = true; 
+      }else{
+        alert("<?php echo FORDERS_NOTICE_ONCE_PWD_WRONG;?>");
+        $("input[name=update_viladate]").val('_false');
+        $("input[name=x]").val('43');
+        $("input[name=y]").val('12');
+        return false;
+      }
+    }else{
+      $("input[name=update_viladate]").val('');
+      $("input[name=x]").val('43');
+      $("input[name=y]").val('12');
+      _flag = true;
+    }
   }
 }
 });

@@ -49,6 +49,39 @@ charset=<?php echo CHARSET; ?>">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css" />
+<script type="text/javascript">
+<?php //提交动作?>
+function toggle_bairitu_form(c_permission, cu_type)
+{
+  if (c_permission == 31) {
+    if (cu_type == 0) {
+      document.forms.cal_form.submit(); 
+    } else if (cu_type == 1) {
+      document.forms.cal_u_form.submit(); 
+    }
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          if (cu_type == 0) {
+            document.forms.cal_form.submit(); 
+          } else if (cu_type == 1) {
+            document.forms.cal_u_form.submit(); 
+          }
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+  }
+}
+</script>
 <title><?php echo SET_BAIRITU_TITLE;?></title>
 </head>
 <?php 
@@ -63,7 +96,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
           one_time_pwd('<?php echo $page_name;?>');
     </script>
 <?php }?>
-<form method="post" action="set_bairitu.php?action=set_bai"  onsubmit="alert('<?php echo SET_BAIRITU_UPDATE_NOTICE;?>')">
+<form name="cal_u_form" method="post" action="set_bairitu.php?action=set_bai"  onsubmit="alert('<?php echo SET_BAIRITU_UPDATE_NOTICE;?>')">
 <p><?php echo SET_BAIRITU_CURSET;?><input type="text" value="<?php echo isset($col['bairitu'])?$col['bairitu']:1.1?>" name="bai" ></p>
 <p><?php echo SET_BAIRITU_SINGLE_PRICE;?></p>
 <p><?php echo SET_BAIRITU_PERCENT;?><input type="text" value="<?php echo $col['percent']?>" name="percent" size="10">%</p>
@@ -82,7 +115,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
 <input type="text" value="<?php echo $col['keisan']?>" name="kei" ></p>
 <input type="hidden" value="<?php echo $cID ?>" name="cID_list">
 <input type="hidden" value="<?php echo $cpath ?>" name="cpath">
-<span><input type="submit" value="<?php echo SET_BAIRITU_CAL_SET;?>"></span>
+<span><a href="javascript:void(0);"><?php echo tep_html_element_button(SET_BAIRITU_CAL_SET, 'onclick="toggle_bairitu_form(\''.$ocertify->npermission.'\', \'1\');"');?></a></span>
 </form>
 <?php if (!empty($_POST['cpath'])) {?>
 <?php
@@ -96,11 +129,11 @@ if ($best_limit_res) {
   $current_limit_time = $best_limit_res['limit_time'];
 }
 ?>
-<form method="post" action="set_bairitu.php?action=set_time">
+<form method="post" action="set_bairitu.php?action=set_time" name="cal_form">
 <p><?php echo SET_BAIRITU_BESTSELLER;?></p>
 <p><input type="text" value="<?php echo $current_limit_time;?>" name="btime"><?php echo SET_BAIRITU_BESTSELLER_READ;?></p>
 <input type="hidden" value="<?php echo $cpath ?>" name="cepath">
-<p><input type="submit" value="<?php echo IMAGE_CONFIRM;?>"></p>
+<p><a href="javascript:void(0);"><?php echo tep_html_element_button(IMAGE_CONFIRM, 'onclick="toggle_bairitu_form(\''.$ocertify->npermission.'\', \'0\');"');?></a></p>
 </form>
 <?php }?>
 </div>

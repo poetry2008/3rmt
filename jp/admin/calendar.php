@@ -159,25 +159,7 @@ $(document).ready(function() {
     if (event.which == 13) {
       <?php //回车?> 
       if ($('#show_date_edit').css('display') != 'none') {
-        tmp_click_str = $("#show_date_edit").find('input:button').first().attr('onclick'); 
-        tmp_submit_str = $("#show_date_edit").find('form').first().attr('onsubmit');
-        tmp_click_symbol = '0'; 
-        tmp_submit_symbol = '0';
-        if (tmp_click_str.indexOf('save_submit') >= 0) {
-          tmp_click_symbol = '1'; 
-        } 
-        if(tmp_submit_str){
-          if(tmp_submit_str.indexOf('status_add_submit') >= 0){
-
-            tmp_submit_symbol = '1';
-          }
-        }
-        if (tmp_click_symbol == '1') {
-          $("#show_date_edit").find('input:button').first().trigger("click"); 
-        }
-        if (tmp_submit_symbol == '1') {
-          $("#show_date_edit").find('input:submit').first().trigger("click"); 
-        }
+        $("#show_date_edit").find('input:button').first().trigger("click"); 
       } 
     } 
   });    

@@ -14,28 +14,34 @@ while($request_one_time_row = tep_db_fetch_array($request_one_time_query)){
   $request_one_time_flag = true; 
 }
 
-if(count($request_one_time_arr)==1&&$request_one_time_arr[0]=='admin'&&$_SESSION['user_permission']!=15){
-  if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest"){
-    forward401();
-  }
-}
-if (!$request_one_time_flag && $_SESSION['user_permission']!=15) {
+if ($ocertify->npermission == 31) {
   if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
     forward401();
   }
-}
-if(!in_array('onetime',$request_one_time_arr)&&$_SESSION['user_permission']!=15){
-  if(!(in_array('chief',$request_one_time_arr)&&in_array('staff',$request_one_time_arr))){
-  if($_SESSION['user_permission']==7&&in_array('chief',$request_one_time_arr)){
+} else {
+  if (count($request_one_time_arr) == 1 && $request_one_time_arr[0] == 'admin' && $ocertify->npermission != 15) {
     if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
       forward401();
     }
   }
-  if($_SESSION['user_permission']==10&&in_array('staff',$request_one_time_arr)){
+  if (!$request_one_time_flag && $ocertify->npermission != 15) {
     if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
       forward401();
     }
   }
+  if (!in_array('onetime', $request_one_time_arr) && $ocertify->npermission != 15) {
+    if (!(in_array('chief', $request_one_time_arr) && in_array('staff', $request_one_time_arr))) {
+      if($ocertify->npermission == 7 && in_array('chief', $request_one_time_arr)) {
+        if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
+          forward401();
+        }
+      }
+      if ($ocertify->npermission && in_array('staff', $request_one_time_arr)) {
+        if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
+          forward401();
+        }
+      }
+    }
   }
 }
 //end one time pwd

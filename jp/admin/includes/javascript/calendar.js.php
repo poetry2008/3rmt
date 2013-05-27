@@ -3,7 +3,6 @@ var ele_value_obj = '';
 <?php //银行状态添加弹出层?>
 function status_add(ele){
 
-  //var ele_width = document.body.scrollWidth;
   var ele_width = $(".box_warp").width(); 
   var box_warp = '';
   var box_warp_top = 0;
@@ -12,7 +11,6 @@ function status_add(ele){
     box_warp = $(".box_warp").offset();
     box_warp_top = box_warp.top;
     box_warp_left = box_warp.left;
-    //ele_width = ele_width-box_warp.left;
   }
   var ele_obj = '';
   ele_obj = $(ele).offset();
@@ -38,7 +36,6 @@ function status_add(ele){
 <?php //银行状态编辑弹出层?>
 function status_edit(id,ele){
 
-  //var ele_width = document.body.scrollWidth;
   var ele_width = $(".box_warp").width(); 
   var box_warp = '';
   var box_warp_top = 0;
@@ -47,7 +44,6 @@ function status_edit(id,ele){
     box_warp = $(".box_warp").offset();
     box_warp_top = box_warp.top;
     box_warp_left = box_warp.left;
-    //ele_width = ele_width-box_warp.left;
   }
   var ele_obj = '';
   ele_obj = $(ele).offset();
@@ -72,7 +68,6 @@ function status_edit(id,ele){
 <?php //具体日期状态编辑弹出层?>
 function status_setting(date,ele){
 
-  //var ele_width = document.body.scrollWidth;
   var ele_width = $(".box_warp").width(); 
   var box_warp = '';
   var box_warp_top = 0;
@@ -81,7 +76,6 @@ function status_setting(date,ele){
     box_warp = $(".box_warp").offset();
     box_warp_top = box_warp.top;
     box_warp_left = box_warp.left;
-    //ele_width = ele_width-box_warp.left;
   }
   var ele_obj = '';
   ele_obj = $(ele).offset();   
@@ -169,7 +163,7 @@ function change_is_handle(num){
 }
 
 <?php //添加,编辑银行状态，提交时，判断数据是否完整?>
-function status_add_submit(){
+function status_add_submit(c_permission, ca_type){
 
   var error = false;
   var title = document.getElementsByName("title")[0];  
@@ -229,25 +223,67 @@ function status_add_submit(){
     $("#name_error").html('<?php echo TEXT_FIELD_REQUIRED;?>');
   }
   
-  if(error == true){
-
-    return false;
+  if(error == false){
+    if (c_permission == 31) {
+      if (ca_type == 0) {
+        document.forms.status_add_form.submit();    
+      } else {
+        document.forms.status_edit_form.submit();    
+      }
+    } else {
+      $.ajax({
+        url: 'ajax_orders.php?action=getallpwd',   
+        type: 'POST',
+        dataType: 'text',
+        async: false,
+        success: function(msg) {
+          pwd_list_array = msg.split(','); 
+          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+          if (in_array(input_pwd_str, pwd_list_array)) {
+            if (ca_type == 0) {
+              document.forms.status_add_form.submit();    
+            } else {
+              document.forms.status_edit_form.submit();    
+            }
+          } else {
+            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          }
+        }
+      });
+    }
   }
-return true;
 }
 
 <?php //删除银行状态时的提示信息?>
-function status_delete(){
-
-  document.status_edit_form.action = '<?php echo FILENAME_BANK_CL;?>?action=status_delete';
-  document.status_edit_form.submit();
+function status_delete(c_permission){
+ 
+  if (c_permission == 31) {
+    document.status_edit_form.action = '<?php echo FILENAME_BANK_CL;?>?action=status_delete';
+    document.status_edit_form.submit();
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          document.status_edit_form.action = '<?php echo FILENAME_BANK_CL;?>?action=status_delete';
+          document.status_edit_form.submit();
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+  }
 }
 
 <?php //浏览器窗口缩放时，对弹出层位置的控制?>
 window.onresize = resizepage;
 
 function resizepage(){
-  //var ele_width = document.body.scrollWidth;
   var ele_width = $(".box_warp").width(); 
   var box_warp = '';
   var box_warp_top = 0;
@@ -256,7 +292,6 @@ function resizepage(){
     box_warp = $(".box_warp").offset();
     box_warp_top = box_warp.top;
     box_warp_left = box_warp.left;
-    //ele_width = ele_width-box_warp.left;
   }
   var ele_obj = '';
   ele_obj = $("#show_date_edit").offset();
@@ -276,14 +311,26 @@ function resizepage(){
 }
 
 <?php //具体日期状态设置，提交时的处理?>
-function save_submit(){
-
-  //var status_type = document.getElementsByName("type")[0];
-  //if(status_type.value == ''){
-    //$("#status_type").html('<font color="#FF0000"><?php echo TEXT_CALENDAR_MUST_SETTING;?></font>');   
-  //}else{
+function save_submit(c_permission){
+  if (c_permission == 31) {
     document.calendar_date.submit();
-  //}
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          document.calendar_date.submit();
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+  }
 }
 
 <?php //数据重置?>

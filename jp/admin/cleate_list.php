@@ -77,6 +77,28 @@ function goto(){
   var link = document.getElementById('back_link').href;
   location.href=link;
 }
+<?php //提交动作?>
+function toggle_cleat_list_form(c_permission)
+{
+  if (c_permission == 31) {
+    document.forms.ce_form.submit(); 
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (msg.indexOf(input_pwd_str) > -1) {
+          document.forms.ce_form.submit(); 
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+  }
+}
 </script>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
@@ -168,7 +190,7 @@ if ($action =='prelist'){
 }
 echo $html;
 ?>
-          <form method="post" action="<?php echo $form_action;?>">
+          <form method="post" action="<?php echo $form_action;?>" name="ce_form">
                      <tr bgcolor='#F0F1F1'>
             <?php
   echo $html2;
@@ -181,8 +203,7 @@ echo $html;
                         <td></td>
                      </tr>
         <tr>
-          <td colspan="<?php echo count($c)+2;?>"><input type="submit" value="<?php
-          echo TEXT_CLEATE_LIST;?>"></td>
+          <td colspan="<?php echo count($c)+2;?>"><a href="javascript:void(0);"><?php echo tep_html_element_button(TEXT_CLEATE_LIST, 'onclick="toggle_cleat_list_form(\''.$ocertify->npermission.'\')"');?></a></td>
         </tr>
           </form>
           <?php
