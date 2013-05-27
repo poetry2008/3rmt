@@ -4509,7 +4509,14 @@ if($_GET['site_id'] == -1){
 }
 if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'])) ) {
     $keywords = tep_db_input(tep_db_prepare_input($_GET['search']));
-    $search = "and (c.customers_lastname like '%" . $keywords . "%' or c.customers_firstname like '%" . $keywords . "%' or c.customers_email_address like '%" . $keywords . "%' or c.customers_firstname_f like '%" . $keywords .  "%'  or c.customers_lastname_f like '%" . $keywords . "%' or c.customers_id = '".trim($keywords)."')";
+    $keywords = explode(" ",$keywords);
+    $key_search = '';
+    $i = 0;
+    foreach($keywords as $key => $key_value){
+     $key_search .= 'c.customers_lastname like \'%'.$key_value.'%\' or c.customers_firstname like \'%'.$key_value.'%\' or c.customers_firstname_f like \'%'.$key_value.'%\'or c.customers_lastname_f like \'%'.$key_value.'%\'or ';
+     $i ++;
+  }
+    $search = "and (".$key_search." c.customers_email_address like '%" .  trim($_GET['search']) . "%' or c.customers_id = '".trim($_GET['search'])."')";
 }  
     if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
       $sql_site_where = 'site_id in ('.str_replace('-', ',', $_GET['site_id']).')';
