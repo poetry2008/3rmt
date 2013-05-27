@@ -923,7 +923,6 @@ if (isset($_GET['action']) && $_GET['action']) {
       $products_attention_5 = tep_db_prepare_input($_POST['products_attention_5']);
 
       $sql_data_array = array(
-          'products_real_quantity' => tep_db_prepare_input($_POST['products_real_quantity']),
           'products_model' => tep_db_prepare_input($_POST['products_model']),
           'products_attention_1_1' => $products_attention_1_1,
           'products_attention_1_2' => $products_attention_1_2,
@@ -977,6 +976,13 @@ if (isset($_GET['action']) && $_GET['action']) {
 
 
       if ($_GET['action'] == 'insert_product') {
+        if(isset($products_attention_1_3)
+            &&$products_attention_1_3!=0
+            &&$products_attention_1_3!=''){
+          $sql_data_array['products_real_quantity'] = tep_db_prepare_input($_POST['products_real_quantity'])*$products_attention_1_3;
+        }else{
+          $sql_data_array['products_real_quantity'] = tep_db_prepare_input($_POST['products_real_quantity']);
+        }
         if ($site_id == 0) {
           $option_group_raw = tep_db_query('select id from '.TABLE_OPTION_GROUP.' where name = \''.$_POST['option_keyword'].'\''); 
           $option_group_res = tep_db_fetch_array($option_group_raw);
@@ -990,6 +996,7 @@ if (isset($_GET['action']) && $_GET['action']) {
         $products_id = tep_db_insert_id();
         tep_db_query("insert into " . TABLE_PRODUCTS_TO_CATEGORIES . " (products_id, categories_id) values ('" . $products_id . "', '" . $current_category_id . "')");
       } elseif ($_GET['action'] == 'update_product') {
+        $sql_data_array['products_real_quantity'] = tep_db_prepare_input($_POST['products_real_quantity']);
         if ($site_id == 0) {
           $option_group_raw = tep_db_query('select id from '.TABLE_OPTION_GROUP.' where name = \''.$_POST['option_keyword'].'\''); 
           $option_group_res = tep_db_fetch_array($option_group_raw);
@@ -5062,8 +5069,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   $products_inventory_text .= $products['products_real_quantity'];
                   $products_inventory_text .= '</u>)';
                   }else{
-                  $products_inventory_text .= '<u id=\'quantity_real_'.$products['products_id'].'\' onclick="show_update_info(this, '.$products['products_id'].', \'0\', \'1\')">';
-                  $products_inventory_text .= tep_get_quantity($products['products_id']);
+                  $products_inventory_text .= '<u id=\'quantity_'.$products['products_id'].'\' onclick="show_update_info(this, '.$products['products_id'].', \'2\', \'1\')">';
+                  $products_inventory_text .= $products['products_real_quantity'];
                   $products_inventory_text .= '</u>';
                   }
                 } else {
