@@ -41,4 +41,7 @@ define('CREATE_PREORDER_PREDATE', '有効期限');
 define('CREATE_PREORDER_PAYMENT_LIST_DEFAULT', '支払方法を選択してください');
 define('TABLE_HEADING_PRODUCTS_PRICE', '単価');
 define('ORDERS_PRODUCTS','注文商品');
+define('TEXT_CREATE_CUSTOMERS_CONFIRM','データがありません。顧客データを新規作成しますか？');
+define('TEXT_MUST_ENTER','入力して下さい。');
+define('TEXT_EMAIL_ADDRESS_ERROR','入力されたメールアドレスは不正です!');
 ?>

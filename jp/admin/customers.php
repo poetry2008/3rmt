@@ -196,8 +196,15 @@
           $sql_data_array['entry_zone_id'] = $entry_zone_id;
         }
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', "customers_id = '" . tep_db_input($customers_id) . "' and address_book_id = '" . tep_db_input($default_address_id) . "'");
-
-    tep_redirect(tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action'))));
+       if(isset($_POST['check_order']) && $_POST['check_order'] != ''){
+            if($_POST['check_order'] == 0){
+              tep_redirect(tep_href_link('create_order.php','Customer_mail='.$customers_email_address.'&site_id='.$_POST['site_id']));
+            }else if($_POST['check_order'] == 1){
+              tep_redirect(tep_href_link('create_preorder.php','Customer_mail='.$customers_email_address.'&site_id='.$_POST['site_id']));
+            }
+        }else{
+              tep_redirect(tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action'))));
+        }
         break;
       case 'deleteconfirm':
        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -260,13 +267,6 @@
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php require('includes/javascript/show_site.js.php');?>
 <script type="text/javascript">
-function check_order(value){
-    if(value == 1){
-     document.getElementById('check_order').value = 1;
-    }else{
-     document.getElementById('check_order').value = 0;
-    }
-}
 function check_guest(guest_value){
   if(guest_value == 1){
     $("#password_hide").hide(); 
@@ -284,7 +284,7 @@ function check_guest(guest_value){
     document.getElementById("check_is_active").value = 1;
   }
 }
-function check_password(){
+function check_password(value){
  post_email = $("#customers_email_address").val();
  post_site =  $("#customers_site_id").val();
  once_again_password = $("#once_again_password").val();
@@ -366,9 +366,15 @@ if(check_is_active == 1){
   }else{
     $("#error_info").html(""); 
   }
+  if(value == 1){
+   document.getElementById('check_order').value = 1;
+  }else if(value == 0){
+   document.getElementById('check_order').value = 0;
+  }
   if(check_error != 'true'){
        document.forms.customers.submit();  
   }
+
 }
 function all_select_customers(customers_str){
       var check_flag = document.del_customers.all_check.checked;
@@ -423,7 +429,7 @@ if (r_value == '1') {
    delete_select_customers(r_str);
    }
 }
-$(document).ready(function() {
+$(document).ready(function() { 
   <?php //监听按键?> 
   $(document).keyup(function(event) {
     if (event.which == 27) {
@@ -744,6 +750,20 @@ require("includes/note_js.php");
 <!-- left_navigation_eof -->
     </table></td>
 <!-- body_text -->
+<script type="text/javascript">
+$(document).ready(function() {
+<?php
+   if(isset($_GET['email_address']) && isset($_GET['sid'])){
+
+  ?>
+    $("#create_customers").click();  
+    $("#customers_site_id").val("<?php echo $_GET['sid'];?>");
+    $("#customers_email_address").val('<?php echo $_GET['email_address'];?>');
+  <?php
+   }
+?>
+});
+</script>
     <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2" >
 <?php
   if ($_GET['action'] != 'edit') {
@@ -929,9 +949,9 @@ require("includes/note_js.php");
                        <?php  
                        //通过site_id判断是否允许新建
                        if(array_intersect($show_list_array,$site_array)){
-                       echo '&nbsp;<a href="javascript:void(0)" onclick="show_customers(this,-1,'.$_GET['page'].','.(isset($customers['site_id'])?$customers['site_id']:'-1').')">' .tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>';
+                       echo '&nbsp;<a href="javascript:void(0)" onclick="show_customers(this,-1,'.$_GET['page'].','.(isset($customers['site_id'])?$customers['site_id']:'-1').')">' .tep_html_element_button(IMAGE_NEW_PROJECT,'id="create_customers"') . '</a>';
                        }else{
-                       echo '&nbsp;' .tep_html_element_button(IMAGE_NEW_PROJECT,'disabled="disabled"');
+                       echo '&nbsp;' .tep_html_element_button(IMAGE_NEW_PROJECT,'id="create_customers" disabled="disabled"');
                        }
                        ?>
                      </td>

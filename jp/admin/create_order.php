@@ -272,11 +272,8 @@ if(isset($_GET['site_id']) and isset($_GET['Customer_mail'] )){
   $site_id = $_GET['site_id'];
   $customerId = tep_get_customer_id_by_email($email,$site_id);
   
-
-  if(!$customerId){
-    //如果不存在则跳转到新建用户的页面
-    tep_redirect(tep_href_link(FILENAME_CREATE_ACCOUNT, 'site_id='.$site_id.'email_address=' . $email, 'SSL'));
-  }else{
+ 
+  if($customerId){
 
     if($_SESSION['email_address'] != $_GET['Customer_mail']){
 

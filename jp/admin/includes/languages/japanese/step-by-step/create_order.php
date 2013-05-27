@@ -77,4 +77,7 @@ define('ERROR_ORDER_DOES_NOT_EXIST','エラー: 注文が存在しません。')
 define('PRODUCT_ERROR','商品がありません。注文作成するには、まず商品を追加してください。');
 define('ADDPRODUCT_TEXT_STEP1_TITLE', 'カテゴリ選択:');
 define('ADDPRODUCT_TEXT_STEP2_TITLE', '商品選択:');
+define('TEXT_CREATE_CUSTOMERS_CONFIRM','データがありません。顧客データを新規作成しますか？');
+define('TEXT_MUST_ENTER','入力して下さい。');
+define('TEXT_EMAIL_ADDRESS_ERROR','入力されたメールアドレスは不正です!');
 ?>
