@@ -59,3 +59,5 @@ define('TEXT_ERROR_NULL','<font color=\'red\'>入力して下さい。</font>');
 define('TEXT_GUEST_CHK','会員種別');
 define('TEXT_MEMBER','会員');
 define('TEXT_NO_MEMBER','ゲスト');
+define('TEXT_ORDER_MADE','注文作成');
+define('TEXT_PREORDER_MADE','予約作成');
