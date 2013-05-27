@@ -284,7 +284,7 @@ function check_guest(guest_value){
     document.getElementById("check_is_active").value = 1;
   }
 }
-function check_password(value){
+function check_password(value, c_permission){
  post_email = $("#customers_email_address").val();
  post_site =  $("#customers_site_id").val();
  once_again_password = $("#once_again_password").val();
@@ -372,7 +372,25 @@ if(check_is_active == 1){
    document.getElementById('check_order').value = 0;
   }
   if(check_error != 'true'){
-       document.forms.customers.submit();  
+    if (c_permission == 31) {
+      document.forms.customers.submit();  
+    } else {
+      $.ajax({
+        url: 'ajax_orders.php?action=getallpwd',   
+        type: 'POST',
+        dataType: 'text',
+        async: false,
+        success: function(msg) {
+          pwd_list_array = msg.split(','); 
+          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+          if (in_array(input_pwd_str, pwd_list_array)) {
+            document.forms.customers.submit();  
+          } else {
+            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          }
+        }
+      });
+    }
   }
 
 }
@@ -398,7 +416,7 @@ function all_select_customers(customers_str){
                    }
              }
 }
-function delete_select_customers(customers_str){
+function delete_select_customers(customers_str, c_permission){
      sel_num = 0;
      if (document.del_customers.elements[customers_str].length == null) {
          if (document.del_customers.elements[customers_str].checked == true){
@@ -414,7 +432,25 @@ function delete_select_customers(customers_str){
          }
        if (sel_num == 1) {
          if (confirm('<?php echo TEXT_DEL_NEWS;?>')) {
-               document.forms.del_customers.submit(); 
+           if (c_permission == 31) {
+             document.forms.del_customers.submit(); 
+           } else {
+             $.ajax({
+              url: 'ajax_orders.php?action=getallpwd',   
+              type: 'POST',
+              dataType: 'text',
+              async: false,
+              success: function(msg) {
+                pwd_list_array = msg.split(','); 
+                var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+                if (in_array(input_pwd_str, pwd_list_array)) {
+                  document.forms.del_customers.submit(); 
+                } else {
+                  alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                }
+              }
+            });
+           }
           }else{
              document.getElementsByName('customers_action')[0].value = 0;
           }
@@ -426,7 +462,7 @@ function delete_select_customers(customers_str){
 <?php //选择动作?>
 function customers_change_action(r_value, r_str) {
 if (r_value == '1') {
-   delete_select_customers(r_str);
+   delete_select_customers(r_str, '<?php echo $ocertify->npermission;?>');
    }
 }
 $(document).ready(function() { 
@@ -924,7 +960,7 @@ $(document).ready(function() {
                     <td>
                      <?php 
                       if($customers_numrows > 0){
-                      if($ocertify->npermission == 15){
+                      if($ocertify->npermission >= 15){
                            echo '<select name="customers_action" onchange="customers_change_action(this.value, \'customers_id[]\');">';
                            echo '<option value="0">'.TEXT_REVIEWS_SELECT_ACTION.'</option>';
                            echo '<option value="1">'.TEXT_REVIEWS_DELETE_ACTION.'</option>';

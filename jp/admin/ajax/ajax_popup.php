@@ -4938,9 +4938,9 @@ if($_GET['cID'] != -1){
         }
        }else{
          if (!isset($cInfo->is_active)) {
-           $submit = '<input type="hidden" id="cid" value="'.$_GET['cID'].'">'.tep_html_element_button(IMAGE_SAVE,'onclick="check_password()"'); 
+           $submit = '<input type="hidden" id="cid" value="'.$_GET['cID'].'">'.tep_html_element_button(IMAGE_SAVE,'onclick="check_password(\'\', \''.$ocertify->npermission.'\')"'); 
          } else if ($cInfo->is_active != '0') {
-           $submit = '<input type="hidden" id="cid" value="'.$_GET['cID'].'">'.tep_html_element_button(IMAGE_SAVE,'onclick="check_password()"'); 
+           $submit = '<input type="hidden" id="cid" value="'.$_GET['cID'].'">'.tep_html_element_button(IMAGE_SAVE,'onclick="check_password(\'\', \''.$ocertify->npermission.'\')"'); 
          }
        }
    if($_GET['cID'] != -1){
@@ -4968,12 +4968,11 @@ if($_GET['cID'] != -1){
            $orders_products = tep_html_element_button(TEXT_ORDER_MADE,$disabled);
            $preorders_products = tep_html_element_button(TEXT_PREORDER_MADE,$disabled);
         }else{
-           $orders_products = '<input type="hidden" name="check_order" value="" id="check_order"><a href="javascript:void(0)" onclick="check_password(0)">'.tep_html_element_button(TEXT_ORDER_MADE).'</a>';
-           $preorders_products = ' <a href="javascript:void(0)" onclick="check_password(1)">'.tep_html_element_button(TEXT_PREORDER_MADE).'</a>';
+           $orders_products = '<input type="hidden" name="check_order" value="" id="check_order"><a href="javascript:void(0)" onclick="check_password(0, \''.$ocertify->npermission.'\')">'.tep_html_element_button(TEXT_ORDER_MADE).'</a>'; $preorders_products = ' <a href="javascript:void(0)" onclick="check_password(1, \''.$ocertify->npermission.'\')">'.tep_html_element_button(TEXT_PREORDER_MADE).'</a>';
         }
      }else{
-     $orders_products = '<input type="hidden" name="check_order" value="" id="check_order"><a href="javascript:void(0)" onclick="check_password(0)">'.tep_html_element_button(TEXT_ORDER_MADE,($disabled?$disabled:$is_active_single)).'</a>';
-     $preorders_products = '<a href="javascript:void(0)" onclick="check_password(1)">'.tep_html_element_button(TEXT_PREORDER_MADE,($disabled?$disabled:$is_active_single)).'</a>';
+     $orders_products = '<input type="hidden" name="check_order" value="" id="check_order"><a href="javascript:void(0)" onclick="check_password(0, \''.$ocertify->npermission.'\')">'.tep_html_element_button(TEXT_ORDER_MADE,($disabled?$disabled:$is_active_single)).'</a>';
+     $preorders_products = '<a href="javascript:void(0)" onclick="check_password(1, \''.$ocertify->npermission.'\')">'.tep_html_element_button(TEXT_PREORDER_MADE,($disabled?$disabled:$is_active_single)).'</a>';
      }
      $button[] = '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">'.$orders_products.$preorders_products.$customers_orders.$customers_products.$customers_email.($ocertify->npermission == 15 ? ($customers_del):'').$submit;
     if(!empty($button)){
