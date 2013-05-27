@@ -272,7 +272,7 @@ if(isset($_GET['site_id']) and isset($_GET['Customer_mail'] )){
   $site_id = $_GET['site_id'];
   $customerId = tep_get_customer_id_by_email($email,$site_id);
   
- 
+
   if($customerId){
 
     if($_SESSION['email_address'] != $_GET['Customer_mail']){
