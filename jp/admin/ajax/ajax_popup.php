@@ -4757,7 +4757,7 @@ if($_GET['cID'] != -1){
          $guest_no_member = 'checked=""';
     }
     }else{
-         $guest_member = 'checked=""';
+         $guest_no_member = 'checked=""';
     }
      $customers_guest_row = array();
      $customers_gues_params = array('width' => '100%', 'border' => '0', 'cellspacing' => '0', 'cellpadding' => '0');
