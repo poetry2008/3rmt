@@ -4943,9 +4943,9 @@ if($_GET['cID'] != -1){
         }
        }else{
          if (!isset($cInfo->is_active)) {
-           $submit = '<input type="hidden" id="cid" value="'.$_GET['cID'].'">'.tep_html_element_button(IMAGE_SAVE,'onclick="check_password(\'\', \''.$ocertify->npermission.'\')"'); 
+           $submit = '<input type="hidden" id="cid" value="'.$_GET['cID'].'">'.tep_html_element_button(IMAGE_SAVE,'onclick="check_password(\'3\', \''.$ocertify->npermission.'\')"'); 
          } else if ($cInfo->is_active != '0') {
-           $submit = '<input type="hidden" id="cid" value="'.$_GET['cID'].'">'.tep_html_element_button(IMAGE_SAVE,'onclick="check_password(\'\', \''.$ocertify->npermission.'\')"'); 
+           $submit = '<input type="hidden" id="cid" value="'.$_GET['cID'].'">'.tep_html_element_button(IMAGE_SAVE,'onclick="check_password(\'3\', \''.$ocertify->npermission.'\')"'); 
          }
        }
    if($_GET['cID'] != -1){
