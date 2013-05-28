@@ -250,7 +250,13 @@ require("includes/note_js.php");
     <table border="0" cellpadding="2" cellspacing="0" width="100%">
     <tr>
       <td>
+        <?php
+        if ($ocertify->npermission >= 15) { 
+        ?>
         <input type="button" value="<?php echo RESET_BUTTON_TEXT;?>" onclick="reset_customers_pwd('<?php echo $ocertify->npermission;?>');">
+        <?php
+        }
+        ?>   
       </td>
     </tr>
     </table> 

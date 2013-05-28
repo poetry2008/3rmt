@@ -589,7 +589,29 @@ function check_radio_status(r_ele)
     $("#s_radio").val(n_radio_value); 
   } 
 }
-
+<?php //执行动作?>
+function toggle_customers_action(c_url_str, c_permission)
+{
+  if (c_permission == 31) {
+    window.location.href = c_url_str; 
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          window.location.href = c_url_str; 
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+  }
+}
 </script>
 <?php
   // 编辑页面

@@ -170,7 +170,7 @@ if (isset($_GET['action'])) {
            }
          }
        }
-       tep_redirect(tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_e_id', 'flag')))); 
+       tep_redirect(tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_e_id', 'flag', 'site_id')))); 
        break;
      case 'delete_select_user':
      case 'delete_user_confirm':
@@ -271,11 +271,11 @@ if (isset($_GET['action'])) {
            } 
          }
        }
-       tep_redirect(tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_e_id', 'user_info_id')))); 
+       tep_redirect(tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_e_id', 'user_info_id', 'site_id')))); 
        break;
      case 'setflag':
        tep_db_query("update `".TABLE_USERS."` set `status` = '".$_GET['flag']."' where userid = '".$_GET['user_e_id']."'"); 
-       tep_redirect(tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_e_id', 'flag')))); 
+       tep_redirect(tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_e_id', 'flag', 'site_id')))); 
        break;
   }
 }
@@ -290,6 +290,7 @@ if (isset($_GET['action'])) {
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/all_page.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<?php require('includes/javascript/show_site.js.php');?>
 <script type="text/javascript">
 var box_warp_height = 0;
 var origin_offset_symbol = 0;
@@ -800,12 +801,12 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                         'text' => '<input type="checkbox" name="user_list_id[]" value="'.$user_list_info['userid'].'"'.(($is_u_disabled)?' disabled="disabled"':'').'>' 
                         ); 
                     $user_list_row[] = array(
-                        'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id')).'user_info_id='.$user_list_info['userid']).'\'"', 
+                        'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id')).'user_info_id='.$user_list_info['userid']).'\'"', 
                         'text' => $user_list_info['name'] 
                         ); 
                     
                     $user_list_row[] = array(
-                        'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id')).'user_info_id='.$user_list_info['userid']).'\'"', 
+                        'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id')).'user_info_id='.$user_list_info['userid']).'\'"', 
                         'text' => $user_list_info['userid'] 
                         ); 
                     
@@ -824,7 +825,7 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                         break;
                     }
                     $user_list_row[] = array(
-                        'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id')).'user_info_id='.$user_list_info['userid']).'\'"', 
+                        'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id')).'user_info_id='.$user_list_info['userid']).'\'"', 
                         'text' => $user_permission_str 
                         ); 
                     
@@ -847,16 +848,16 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                       $user_site_permission_str = implode(',', $show_user_site);
                     }
                     $user_list_row[] = array(
-                        'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id')).'user_info_id='.$user_list_info['userid']).'\'"', 
+                        'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id')).'user_info_id='.$user_list_info['userid']).'\'"', 
                         'text' => $user_site_permission_str 
                         ); 
                     
                     $user_status_str = ''; 
                     
                     if ($user_list_info['status'] == '1') {
-                      $user_status_str = tep_image(DIR_WS_IMAGES.'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN).'&nbsp;&nbsp<a href="javascript:void(0);" onclick="set_user_flag(\''.$user_list_info['userid'].'\', \'0\', \''.urlencode(tep_get_all_get_params(array('action', 'flag'))).'\')">'.tep_image(DIR_WS_IMAGES.'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT).'</a>'; 
+                      $user_status_str = tep_image(DIR_WS_IMAGES.'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN).'&nbsp;&nbsp<a href="javascript:void(0);" onclick="set_user_flag(\''.$user_list_info['userid'].'\', \'0\', \''.urlencode(tep_get_all_get_params(array('action', 'flag', 'site_id'))).'\')">'.tep_image(DIR_WS_IMAGES.'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT).'</a>'; 
                     } else {
-                      $user_status_str = '<a href="javascript:void(0);" onclick="set_user_flag(\''.$user_list_info['userid'].'\', \'1\', \''.urlencode(tep_get_all_get_params(array('action', 'flag'))).'\')">'.tep_image(DIR_WS_IMAGES.'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT).'</a>&nbsp;&nbsp;'.tep_image(DIR_WS_IMAGES.'icon_status_red.gif', IMAGE_ICON_STATUS_RED); 
+                      $user_status_str = '<a href="javascript:void(0);" onclick="set_user_flag(\''.$user_list_info['userid'].'\', \'1\', \''.urlencode(tep_get_all_get_params(array('action', 'flag', 'site_id'))).'\')">'.tep_image(DIR_WS_IMAGES.'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT).'</a>&nbsp;&nbsp;'.tep_image(DIR_WS_IMAGES.'icon_status_red.gif', IMAGE_ICON_STATUS_RED); 
                     }
                     $user_list_row[] = array(
                         'align' => 'center', 
@@ -868,12 +869,12 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                     $user_list_row[] = array(
                         'align' => 'right', 
                         'params' => 'class="dataTableContent"', 
-                        'text' => '<a href="javascript:void(0);" onclick="show_user_info(this, \''.$user_list_info['userid'].'\', \''.urlencode(tep_get_all_get_params(array('action'))).'\');">'.tep_get_signal_pic_info($user_date_info).'</a>' 
+                        'text' => '<a href="javascript:void(0);" onclick="show_user_info(this, \''.$user_list_info['userid'].'\', \''.urlencode(tep_get_all_get_params(array('action', 'site_id'))).'\');">'.tep_get_signal_pic_info($user_date_info).'</a>' 
                         ); 
                     $user_table_info_row[] = array('params' => $user_list_params, 'text' => $user_list_row);
                   }
                  
-                  $form_str = tep_draw_form('user_list_form', FILENAME_USERS, tep_get_all_get_params(array('user_info_id', 'action')).'action=delete_select_user');
+                  $form_str = tep_draw_form('user_list_form', FILENAME_USERS, tep_get_all_get_params(array('user_info_id', 'action', 'site_id')).'action=delete_select_user');
                   $notice_box->get_form($form_str); 
                   $notice_box->get_contents($user_table_info_row);
                   $notice_box->get_eof(tep_eof_hidden()); 
@@ -907,7 +908,7 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                       <td class="smallText" align="right">
                       <div class="td_box">
                       <?php 
-                        echo $user_list_split->display_links($user_list_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'user_info_id'))); 
+                        echo $user_list_split->display_links($user_list_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'user_info_id', 'site_id'))); 
                       ?>
                       </div>
                       </td>

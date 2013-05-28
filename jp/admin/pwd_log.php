@@ -207,7 +207,9 @@ function UserOncePwdLog_list() {
 
     echo '<td class="main">';
     // 按钮显示
-    echo tep_draw_input_field("execute_delete_button", BUTTON_DELETE_ONCE_PWD_LOG, "onClick=\"return formConfirm('delete', '".$ocertify->npermission."')\"", FALSE, "button", FALSE);  
+    if ($ocertify->npermission >= 15) {
+      echo tep_draw_input_field("execute_delete_button", BUTTON_DELETE_ONCE_PWD_LOG, "onClick=\"return formConfirm('delete', '".$ocertify->npermission."')\"", FALSE, "button", FALSE);  
+    } 
     echo tep_draw_hidden_field("execute_delete", BUTTON_DELETE_ONCE_PWD_LOG);  
     echo "</td></tr></table>\n";
     echo "</form>\n";           // form的footer

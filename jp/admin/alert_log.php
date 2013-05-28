@@ -35,9 +35,22 @@
   返回值: 无
  --------------------------------------*/
 function show_alert_log_list($oresult) {
-
+  global $ocertify;
   // 列表显示数据
   $rec_c = 1;
+  $is_disabled_single = false; 
+  if ($ocertify->npermission != 31) {
+    $c_site_query = tep_db_query("select * from ".TABLE_PERMISSIONS." where userid = '".$ocertify->auth_user."'");    
+    $c_site_res = tep_db_query($c_site_query); 
+    $tmp_c_site_array = explode(',', $c_site_res['site_permission']); 
+    if (!empty($tmp_c_site_array)) {
+      if (!in_array('0', $tmp_c_site_array)) {
+        $is_disabled_single = true; 
+      }
+    } else {
+      $is_disabled_single = true; 
+    }
+  }
   while ($arec = tep_db_fetch_array($oresult)) {      // 获取记录
     $naddress = (int)$arec['address'];    // IP地址复原
     $saddress = '';
@@ -122,7 +135,7 @@ if ($rec_c % 2) {
       $alert_orders_id = ''; 
     }
 
-    echo '<td class="main" ><input type="checkbox" value="'.$arec['id'].'" name="logs_list_id[]"></td>'."\n";
+    echo '<td class="main" ><input type="checkbox" value="'.$arec['id'].'" name="logs_list_id[]"'.(($is_disabled_single)?' disabled="disabled"':'').'></td>'."\n";
     echo '<td class="main" >' . $alert_user . "</td>\n";
     echo '<td class="main" >' . $alert_button_name . "</td>\n";
     echo '<td class="main" >' . ($alert_orders_id != '' ? $alert_orders_id . '&nbsp;&nbsp;' : '') . ($alert_button_title != '' ? (mb_strlen($alert_button_title,'utf-8') > 30 ? mb_substr($alert_button_title,0,30,'utf-8').'...' : $alert_button_title).'&nbsp;&nbsp;' : '').$alert_button_comment . "</td>\n"; 
@@ -300,10 +313,12 @@ function all_select_logs(logs_list_id)
       }
     } else {
       for (i = 0; i < document.edit_logs.elements[logs_list_id].length; i++) {
-        if (check_flag == true) {
-          document.edit_logs.elements[logs_list_id][i].checked = true;
-        } else {
-          document.edit_logs.elements[logs_list_id][i].checked = false;
+        if (!document.edit_logs.elements[logs_list_id][i].disabled) {
+          if (check_flag == true) {
+            document.edit_logs.elements[logs_list_id][i].checked = true;
+          } else {
+            document.edit_logs.elements[logs_list_id][i].checked = false;
+          }
         }
       }
     }

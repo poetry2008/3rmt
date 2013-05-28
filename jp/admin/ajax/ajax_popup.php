@@ -4947,15 +4947,19 @@ if($_GET['cID'] != -1){
     if($disabled){
      $customers_del = tep_html_element_button(IMAGE_DELETE,$disabled);
      if ($cInfo->is_active == '1') {
-       $customers_orders = tep_html_element_button(IMAGE_ORDERS,$disabled);
-       $customers_products = tep_html_element_button(BUTTON_CUSTOMERS_PRODUCTS_TEXT,$disabled);
+       if ($ocertify->npermission >= 15) {
+         $customers_orders = tep_html_element_button(IMAGE_ORDERS,$disabled);
+         $customers_products = tep_html_element_button(BUTTON_CUSTOMERS_PRODUCTS_TEXT,$disabled);
+       } 
        $customers_email = tep_html_element_button(IMAGE_EMAIL,$disabled);
      } 
     }else{
-     $customers_del =  ' <a class = "new_product_reset" href="' .  tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' .  $cInfo->customers_id .  '&action=deleteconfirm') .  '">'.tep_html_element_button(IMAGE_DELETE).'</a>';
+     $customers_del =  ' <a class = "new_product_reset" href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="toggle_customers_action(\''.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' .  $cInfo->customers_id .  '&action=deleteconfirm').'\', \''.$ocertify->npermission.'\');"').'</a>';
      if ($cInfo->is_active == '1') {
-       $customers_orders = ' <a href="' .  tep_href_link(FILENAME_ORDERS, 'cID=' .  $cInfo->customers_id) . '">' .  tep_html_element_button(IMAGE_ORDERS) .  '</a>';
-       $customers_products = '&nbsp;<a href="'.tep_href_link('customers_products.php', str_replace('page', 'cpage', tep_get_all_get_params(array('cID', 'action')).'cID='.$cInfo->customers_id)).'">'.tep_html_element_button(BUTTON_CUSTOMERS_PRODUCTS_TEXT).'</a>';
+       if ($ocertify->npermission >= 15) {
+         $customers_orders = ' <a href="' .  tep_href_link(FILENAME_ORDERS, 'cID=' .  $cInfo->customers_id) . '">' .  tep_html_element_button(IMAGE_ORDERS) .  '</a>';
+         $customers_products = '&nbsp;<a href="'.tep_href_link('customers_products.php', str_replace('page', 'cpage', tep_get_all_get_params(array('cID', 'action')).'cID='.$cInfo->customers_id)).'">'.tep_html_element_button(BUTTON_CUSTOMERS_PRODUCTS_TEXT).'</a>';
+       }
        $customers_email = '&nbsp;<a href="' . tep_href_link(FILENAME_MAIL, 'selected_box=tools&customer=' .  $cInfo->customers_email_address.'&'.tep_get_all_get_params(array('page')).'&customer_page='.$_GET['page']) .  '">' .tep_html_element_button(IMAGE_EMAIL).'</a>';
      }
     }
@@ -4974,7 +4978,7 @@ if($_GET['cID'] != -1){
      $orders_products = '<input type="hidden" name="check_order" value="" id="check_order"><a href="javascript:void(0)" onclick="check_password(0, \''.$ocertify->npermission.'\')">'.tep_html_element_button(TEXT_ORDER_MADE,($disabled?$disabled:$is_active_single)).'</a>';
      $preorders_products = '<a href="javascript:void(0)" onclick="check_password(1, \''.$ocertify->npermission.'\')">'.tep_html_element_button(TEXT_PREORDER_MADE,($disabled?$disabled:$is_active_single)).'</a>';
      }
-     $button[] = '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">'.$orders_products.$preorders_products.$customers_orders.$customers_products.$customers_email.($ocertify->npermission == 15 ? ($customers_del):'').$submit;
+     $button[] = '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">'.$orders_products.$preorders_products.$customers_orders.$customers_products.$customers_email.($ocertify->npermission >= 15 ? ($customers_del):'').$submit;
     if(!empty($button)){
        $buttons = array('align' => 'center', 'button' => $button);
     }
