@@ -196,15 +196,7 @@
           $sql_data_array['entry_zone_id'] = $entry_zone_id;
         }
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', "customers_id = '" . tep_db_input($customers_id) . "' and address_book_id = '" . tep_db_input($default_address_id) . "'");
-       if(isset($_POST['check_order']) && $_POST['check_order'] != ''){
-            if($_POST['check_order'] == 0){
-              tep_redirect(tep_href_link('create_order.php','Customer_mail='.$customers_email_address.'&site_id='.$_POST['site_id']));
-            }else if($_POST['check_order'] == 1){
-              tep_redirect(tep_href_link('create_preorder.php','Customer_mail='.$customers_email_address.'&site_id='.$_POST['site_id']));
-            }
-        }else{
-              tep_redirect(tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action'))));
-        }
+        tep_redirect(tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action'))));
         break;
       case 'deleteconfirm':
        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -1003,7 +995,7 @@ $(document).ready(function() {
                        <?php  
                        //通过site_id判断是否允许新建
                        if(array_intersect($show_list_array,$site_array)){
-                       echo '&nbsp;<a href="javascript:void(0)" onclick="show_customers(this,-1,'.$_GET['page'].','.(isset($customers['site_id'])?$customers['site_id']:'-1').')">' .tep_html_element_button(IMAGE_NEW_PROJECT,'id="create_customers"') . '</a>';
+                       echo '&nbsp;<a href="javascript:void(0)" onclick="show_customers(this,-1,'.$_GET['page'].','.(isset($customers['site_id'])?$customers['site_id']:'-1').');check_guest(1)">' .tep_html_element_button(IMAGE_NEW_PROJECT,'id="create_customers"') . '</a>';
                        }else{
                        echo '&nbsp;' .tep_html_element_button(IMAGE_NEW_PROJECT,'id="create_customers" disabled="disabled"');
                        }

@@ -3046,12 +3046,11 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   while($userslist= tep_db_fetch_array($sites_id)){
     $site_arr = $userslist['site_permission']; 
   }
-  $site_array = explode(',',$site_arr);
-  if(isset($_GET['site_id'])&&$_GET['site_id']){
-    $show_site_arr = explode('-',$_GET['site_id']);
-  }else{
-    $show_site_arr = explode('-',str_replace(',','-',tep_get_setting_site_info(FILENAME_REVIEWS)));
+  $sites_sql = tep_db_query("SELECT * FROM `sites`");
+  while($sites_row = tep_db_fetch_array($sites_sql)){
+     $show_site_arr[] = $sites_row['id']; 
   }
+  $site_array = explode(',',$site_arr);
   $notice_box = new notice_box('popup_order_title', 'popup_order_info');
     $rID = tep_db_prepare_input($_GET['rID']);
     $reviews_query = tep_db_query("
@@ -3241,9 +3240,9 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   }else{
    $site_id_name = "<select id='add_site_id' name='insert_site_id'>";
    $new_site_arr = array_intersect($show_site_arr,$site_array);
+
    foreach($new_site_arr as $value){
-     if($value==0){
-     }else{
+     if($value!=0){
        $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$value));
        $site_id_name .= "<option value='".$site_name['id']."' ";
        if(isset($_GET['add_site_id'])&&$_GET['add_site_id']
@@ -3566,11 +3565,15 @@ if(!in_array($site_id,$site_array)&&$site_id!=-1){
 
     if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
       $sql_site_where = 'site_id in ('.str_replace('-', ',', $_GET['site_id']).')';
-      $show_site_arr = explode('-',$_GET['site_id']);
     } else {
       $show_site_str = tep_get_setting_site_info($_POST['self_page']);
       $sql_site_where = 'site_id in ('.$show_site_str.')';
-      $show_site_arr = explode(',',$show_site_str);
+    }
+    $sites_sql = tep_db_query("SELECT * FROM `sites`");
+    $show_site_arr = array();
+    $show_site_arr[0] = '0'; 
+    while($sites_row = tep_db_fetch_array($sites_sql)){
+      $show_site_arr[] = $sites_row['id']; 
     }
      $latest_news_query_raw = ' select n.news_id, n.headline, n.date_added,
      n.author, n.update_editor, n.latest_update_date, n.content, n.status,
@@ -4523,11 +4526,13 @@ if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'
 }  
     if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
       $sql_site_where = 'site_id in ('.str_replace('-', ',', $_GET['site_id']).')';
-      $show_site_arr = explode('-',$_GET['site_id']);
     } else {
       $show_site_str = tep_get_setting_site_info(FILENAME_CUSTOMERS);
       $sql_site_where = 'site_id in ('.$show_site_str.')';
-      $show_site_arr = explode(',',$show_site_str);
+    }
+    $sites_sql = tep_db_query("SELECT * FROM `sites`");
+    while($sites_row = tep_db_fetch_array($sites_sql)){
+      $show_site_arr[] = $sites_row['id']; 
     }
     $customers_query_raw = "
       select c.customers_id, 
@@ -4707,7 +4712,6 @@ if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'
       $site_id_name = $site_name['romaji'].'<input id=\'customers_site_id\' name="site_id" type="hidden" value="'.$site_name['id'].'">';
  }
  }else{
-   if($customers_site_arr[0] == ''){ }
    $customers_site_arr = array_intersect($show_site_arr,$site_array);
    $site_id_name = "<select id='customers_site_id' name='site_id' $disabled>";
    foreach($customers_site_arr as $value){
@@ -4741,15 +4745,6 @@ if($_GET['cID'] != -1){
     $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
     $heading[] = array('align' => 'left', 'text' => ($_GET['cID'] != -1?$cInfo->customers_firstname.$cInfo->customers_lastname:HEADING_TITLE).'&nbsp;&nbsp;');
     $heading[] = array('align' => 'right', 'text' => $page_str);
-    if($_GET['cID'] == -1){
-    $contents[]['text'] = array(
-         array('params' => 'colspan="3"','text' => '<input type="hidden" id="check_is_active" value="1">')
-       );
-    }else{
-     $contents[]['text'] = array(
-         array('params' => 'colspan="3"','text' => '<input type="hidden" id="check_is_active" value="0">')
-       );
-    }
     if($_GET['cID'] != -1){
     if(isset($cInfo->customers_guest_chk) && $cInfo->customers_guest_chk == 0){
          $guest_member = 'checked=""';
@@ -4761,6 +4756,16 @@ if($_GET['cID'] != -1){
     }
      $customers_guest_row = array();
      $customers_gues_params = array('width' => '100%', 'border' => '0', 'cellspacing' => '0', 'cellpadding' => '0');
+    if($_GET['cID'] == -1){
+    $customers_guest_row[]['text'] = array(
+         array('params' => 'colspan="3"','text' => '<input type="hidden" id="check_is_active" value="1">')
+       );
+    }else{
+     $customers_guest_row[]['text'] = array(
+         array('params' => 'colspan="3"','text' => '<input type="hidden" id="check_is_active" value="0">')
+       );
+    }
+
     if($_GET['cID'] == -1){
     $customers_guest_row[]['text'] = array(
          array('params' => 'nowrap="nowrap" width="30%"','text' => '<input type="hidden" id="hidden_cid" value="'.$_GET['cID'].'"><input type="hidden" id="hidden_page" value="'.$_GET['page'].'">'.TEXT_GUEST_CHK),
@@ -4938,9 +4943,9 @@ if($_GET['cID'] != -1){
         }
        }else{
          if (!isset($cInfo->is_active)) {
-           $submit = '<input type="hidden" id="cid" value="'.$_GET['cID'].'">'.tep_html_element_button(IMAGE_SAVE,'onclick="check_password(\'\', \''.$ocertify->npermission.'\')"'); 
+           $submit = '<input type="hidden" id="cid" value="'.$_GET['cID'].'">'.tep_html_element_button(IMAGE_SAVE,'onclick="check_password(\'3\', \''.$ocertify->npermission.'\')"'); 
          } else if ($cInfo->is_active != '0') {
-           $submit = '<input type="hidden" id="cid" value="'.$_GET['cID'].'">'.tep_html_element_button(IMAGE_SAVE,'onclick="check_password(\'\', \''.$ocertify->npermission.'\')"'); 
+           $submit = '<input type="hidden" id="cid" value="'.$_GET['cID'].'">'.tep_html_element_button(IMAGE_SAVE,'onclick="check_password(\'3\', \''.$ocertify->npermission.'\')"'); 
          }
        }
    if($_GET['cID'] != -1){
@@ -4972,11 +4977,12 @@ if($_GET['cID'] != -1){
            $orders_products = tep_html_element_button(TEXT_ORDER_MADE,$disabled);
            $preorders_products = tep_html_element_button(TEXT_PREORDER_MADE,$disabled);
         }else{
-           $orders_products = '<input type="hidden" name="check_order" value="" id="check_order"><a href="javascript:void(0)" onclick="check_password(0, \''.$ocertify->npermission.'\')">'.tep_html_element_button(TEXT_ORDER_MADE).'</a>'; $preorders_products = ' <a href="javascript:void(0)" onclick="check_password(1, \''.$ocertify->npermission.'\')">'.tep_html_element_button(TEXT_PREORDER_MADE).'</a>';
+           $orders_products = '<input type="hidden" name="check_order" value="" id="check_order"><a href="'. tep_href_link('create_order.php','Customer_mail='.$cInfo->customers_email_address.'&site_id='.$cInfo->site_id).'">'.tep_html_element_button(TEXT_ORDER_MADE).'</a>';
+           $preorders_products = ' <a href="'.tep_href_link('create_preorder.php','Customer_mail='.$cInfo->customers_email_address.'&site_id='.$cInfo->site_id).'">'.tep_html_element_button(TEXT_PREORDER_MADE).'</a>';
         }
      }else{
-     $orders_products = '<input type="hidden" name="check_order" value="" id="check_order"><a href="javascript:void(0)" onclick="check_password(0, \''.$ocertify->npermission.'\')">'.tep_html_element_button(TEXT_ORDER_MADE,($disabled?$disabled:$is_active_single)).'</a>';
-     $preorders_products = '<a href="javascript:void(0)" onclick="check_password(1, \''.$ocertify->npermission.'\')">'.tep_html_element_button(TEXT_PREORDER_MADE,($disabled?$disabled:$is_active_single)).'</a>';
+     $orders_products = '<input type="hidden" name="check_order" value="" id="check_order"><a href="javascript:void(0)" onclick="check_password(0, \''.$ocertify->npermission.'\')">'.tep_html_element_button(TEXT_KEEP_ORDER,($disabled?$disabled:$is_active_single)).'</a>';
+     $preorders_products = '<a href="javascript:void(0)" onclick="check_password(1, \''.$ocertify->npermission.'\')">'.tep_html_element_button(TEXT_KEEP_PREORDER,($disabled?$disabled:$is_active_single)).'</a>';
      }
      $button[] = '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">'.$orders_products.$preorders_products.$customers_orders.$customers_products.$customers_email.($ocertify->npermission >= 15 ? ($customers_del):'').$submit;
     if(!empty($button)){
