@@ -140,6 +140,14 @@ if (isset($_GET['action'])) {
            }
            if (isset($_POST['u_permission'])) {
              tep_db_query("update `".TABLE_PERMISSIONS."` set `permission` = '".$permission_num."', `site_permission` = '".$permission_list_str."' where `userid` = '".$_POST['userid']."'"); 
+           } else {
+             $tmp_s_list_array = array();
+             $tmp_s_list_array[] = 0;
+             $tmp_s_list_raw = tep_db_query("select * from ".TABLE_SITES." order by id asc"); 
+             while ($tmp_s_list_res = tep_db_fetch_array($tmp_s_list_raw)) {
+               $tmp_s_list_array[] = $tmp_s_list_res['id'];
+             }
+             tep_db_query("update `".TABLE_PERMISSIONS."` set `site_permission` = '".implode(',', $tmp_s_list_array)."' where `userid` = '".$_POST['userid']."'"); 
            }
            
            tep_db_query("delete from `user_ip` where `userid` = '".$_POST['userid']."'");
