@@ -5101,7 +5101,7 @@ if($_GET['cID'] != -1){
 
    $category_info_row[]['text'] = array(
        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_MEMO_CONTENTS), 
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize:vertical;" class="textarea_width" rows="10" name="contents">'.$memo_array['contents'].'</textarea>')
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize:vertical; width:55%;" class="textarea_width" rows="10" name="contents">'.$memo_array['contents'].'</textarea>')
      );
 
   //作成者，作成时间，更新者，更新时间 
@@ -5238,7 +5238,7 @@ if($_GET['cID'] != -1){
 
    $category_info_row[]['text'] = array(
        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_MEMO_CONTENTS), 
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize:vertical;" class="textarea_width" rows="10" name="contents"></textarea>')
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize:vertical; width:55%;" class="textarea_width" rows="10" name="contents"></textarea>')
      );
  
   //底部内容
