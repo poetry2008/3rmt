@@ -254,7 +254,7 @@ function ajaxUpdate(id,order){
             echo '<td>'.$form_group_res['name'].'</td>'; 
             echo '<td>'; 
             echo '<a href="'.tep_href_link(FILENAME_OA_GROUP, 'action=edit&gid='.$form_group_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.GROUP_EDIT.'</a>'; 
-            if ($ocertify->npermisson >= 15) {
+            if ($ocertify->npermission >= 15) {
               echo '&nbsp;<a onclick="if (confirm(\''.$form_group_res['name'].TEXT_DELETE_CONFRIM.'\')) toggle_oa_form_action(\''.$ocertify->npermission.'\')" href="'.tep_href_link(FILENAME_OA_FORM, 'action=del_link_group&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&gid='.$form_group_res['id']).'&fid='.$form_id.'">'.DEL_LINK_GROUP.'</a>';
             }
             echo '<td>';
