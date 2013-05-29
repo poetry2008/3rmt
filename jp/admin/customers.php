@@ -471,7 +471,7 @@ $(document).ready(function() {
         if ($('#show_customers').css('display') != 'none') {
             if (o_submit_single){
                 cid = $("#cid").val();
-                check_password();
+                check_password('3', '<?php echo $ocertify->npermission;?>');
              }
             }
         }
