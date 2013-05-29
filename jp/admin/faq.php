@@ -348,9 +348,9 @@ function display(){
                        }
          }
 <?php //提交动作?>
-function check_faq_form(c_permisson, f_type)
+function check_faq_form(c_permission, f_type)
 {
-   if (c_permisson == 31) {
+   if (c_permission == 31) {
      if (f_type == 0) {
        document.forms.del_faq_categories.submit(); 
      } else if (f_type == 1) {
