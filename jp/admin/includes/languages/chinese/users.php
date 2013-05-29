@@ -29,3 +29,5 @@ define('TEXT_DEL_USER', '确定要删除这个用户吗？');
 define('TEXT_USER_MUST_SELECT', '至少请选择一项。');
 define('TEXT_USER_INFO_IS_SHORT', '请输入%d个文字以上。');
 define('TEXT_USER_INFO_FORMAT_WRONG', '输入错误。');
+define('TEXT_SORT_ASC','▲');
+define('TEXT_SORT_DESC','▼');

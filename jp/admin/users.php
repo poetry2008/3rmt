@@ -15,6 +15,7 @@ if ($ocertify->npermission != 31) {
     $is_u_disabled = true;
   }
 }
+
 if (isset($_GET['action'])) {
   switch ($_GET['action']) {
   /*-----------------------------------
@@ -767,24 +768,97 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
               <tr>
                 <td valign="top">
                 <?php
+                  $user_table_name_str = ''; 
+                  $user_table_id_str = ''; 
+                  $user_table_permission_str = ''; 
+                  $user_table_site_permission_str = ''; 
+                  $user_table_status_str = ''; 
+                  $user_order_sort_name = ' u.name';
+                  $user_order_sort = 'asc';
+                  if (isset($_GET['user_sort'])) {
+                    if ($_GET['user_sort_type'] == 'asc') {
+                      $type_str = '<font color="#facb9c">'.TEXT_SORT_ASC.'</font>'.'<font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>'; 
+                      $tmp_type_str = 'desc'; 
+                    } else {
+                      $type_str = '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font>'.'<font color="#facb9c">'.TEXT_SORT_DESC.'</font>'; 
+                      $tmp_type_str = 'asc'; 
+                    }
+                    switch ($_GET['user_sort']) {
+                       case 'user_name':
+                         $user_table_name_str = '<a href="'.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id', 'user_sort', 'user_sort_type')).'user_sort=user_name&user_sort_type='.$tmp_type_str).'">'.TABLE_USER_INFO_NAME.$type_str.'</a>'; 
+                         $user_table_id_str = '<a href="'.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id', 'user_sort', 'user_sort_type')).'user_sort=user_id&user_sort_type=desc').'">ID</a>'; 
+                         $user_table_permission_str = '<a href="'.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id', 'user_sort', 'user_sort_type')).'user_sort=user_permission&user_sort_type=desc').'">'.TABLE_USER_INFO_PERMISSION.'</a>'; 
+                         $user_table_site_permission_str = '<a href="'.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id', 'user_sort', 'user_sort_type')).'user_sort=user_site_permission&user_sort_type=desc').'">'.TABLE_USER_INFO_SITE_PERMISSION.'</a>'; 
+                         $user_table_status_str = '<a href="'.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id', 'user_sort', 'user_sort_type')).'user_sort=user_status&user_sort_type=desc').'">'.TABLE_USER_INFO_STATUS.'</a>'; 
+                         $user_order_sort_name = ' u.name';
+                         break;
+                       case 'user_id':
+                         $user_table_name_str = '<a href="'.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id', 'user_sort', 'user_sort_type')).'user_sort=user_name&user_sort_type=desc').'">'.TABLE_USER_INFO_NAME.'</a>'; 
+                         $user_table_id_str = '<a href="'.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id', 'user_sort', 'user_sort_type')).'user_sort=user_id&user_sort_type='.$tmp_type_str).'">ID'.$type_str.'</a>'; 
+                         $user_table_permission_str = '<a href="'.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id', 'user_sort', 'user_sort_type')).'user_sort=user_permission&user_sort_type=desc').'">'.TABLE_USER_INFO_PERMISSION.'</a>'; 
+                         $user_table_site_permission_str = '<a href="'.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id', 'user_sort', 'user_sort_type')).'user_sort=user_site_permission&user_sort_type=desc').'">'.TABLE_USER_INFO_SITE_PERMISSION.'</a>'; 
+                         $user_table_status_str = '<a href="'.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id', 'user_sort', 'user_sort_type')).'user_sort=user_status&user_sort_type=desc').'">'.TABLE_USER_INFO_STATUS.'</a>'; 
+                         $user_order_sort_name = ' u.userid';
+                         break;
+                       case 'user_permission':
+                         $user_table_name_str = '<a href="'.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id', 'user_sort', 'user_sort_type')).'user_sort=user_name&user_sort_type=desc').'">'.TABLE_USER_INFO_NAME.'</a>'; 
+                         $user_table_id_str = '<a href="'.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id', 'user_sort', 'user_sort_type')).'user_sort=user_id&user_sort_type=desc').'">ID</a>'; 
+                         $user_table_permission_str = '<a href="'.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id', 'user_sort', 'user_sort_type')).'user_sort=user_permission&user_sort_type='.$tmp_type_str).'">'.TABLE_USER_INFO_PERMISSION.$type_str.'</a>'; 
+                         $user_table_site_permission_str = '<a href="'.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id', 'user_sort', 'user_sort_type')).'user_sort=user_site_permission&user_sort_type=desc').'">'.TABLE_USER_INFO_SITE_PERMISSION.'</a>'; 
+                         $user_table_status_str = '<a href="'.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id', 'user_sort', 'user_sort_type')).'user_sort=user_status&user_sort_type=desc').'">'.TABLE_USER_INFO_STATUS.'</a>'; 
+                         $user_order_sort_name = ' p.permission';
+                         break;
+                       case 'user_site_permission':
+                         $user_table_name_str = '<a href="'.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id', 'user_sort', 'user_sort_type')).'user_sort=user_name&user_sort_type=desc').'">'.TABLE_USER_INFO_NAME.'</a>'; 
+                         $user_table_id_str = '<a href="'.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id', 'user_sort', 'user_sort_type')).'user_sort=user_id&user_sort_type=desc').'">ID</a>'; 
+                         $user_table_permission_str = '<a href="'.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id', 'user_sort', 'user_sort_type')).'user_sort=user_permission&user_sort_type=desc').'">'.TABLE_USER_INFO_PERMISSION.'</a>'; 
+                         $user_table_site_permission_str = '<a href="'.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id', 'user_sort', 'user_sort_type')).'user_sort=user_site_permission&user_sort_type='.$tmp_type_str).'">'.TABLE_USER_INFO_SITE_PERMISSION.$type_str.'</a>'; 
+                         $user_table_status_str = '<a href="'.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id', 'user_sort', 'user_sort_type')).'user_sort=user_status&user_sort_type=desc').'">'.TABLE_USER_INFO_STATUS.'</a>'; 
+                          $user_order_sort_name = ' p.site_permission';
+                         break;
+                       case 'user_status':
+                         $user_table_name_str = '<a href="'.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id', 'user_sort', 'user_sort_type')).'user_sort=user_name&user_sort_type=desc').'">'.TABLE_USER_INFO_NAME.'</a>'; 
+                         $user_table_id_str = '<a href="'.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id', 'user_sort', 'user_sort_type')).'user_sort=user_id&user_sort_type=desc').'">ID</a>'; 
+                         $user_table_permission_str = '<a href="'.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id', 'user_sort', 'user_sort_type')).'user_sort=user_permission&user_sort_type=desc').'">'.TABLE_USER_INFO_PERMISSION.'</a>'; 
+                         $user_table_site_permission_str = '<a href="'.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id', 'user_sort', 'user_sort_type')).'user_sort=user_site_permission&user_sort_type=desc').'">'.TABLE_USER_INFO_SITE_PERMISSION.'</a>'; 
+                         $user_table_status_str = '<a href="'.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id', 'user_sort', 'user_sort_type')).'user_sort=user_status&user_sort_type='.$tmp_type_str).'">'.TABLE_USER_INFO_STATUS.$type_str.'</a>'; 
+                         $user_order_sort_name = ' u.status';
+                         break;
+                    }
+                  }
+                  if (isset($_GET['user_sort_type'])) {
+                    if ($_GET['user_sort_type'] == 'asc') {
+                      $user_order_sort = 'asc';
+                    } else {
+                      $user_order_sort = 'desc';
+                    }
+                  }
+                  $user_order_sql = $user_order_sort_name.' '.$user_order_sort;
+
                   $user_info_params = array('width' => '100%', 'cellpadding' => '2', 'cellspacing' => '0', 'parameters' => 'id="user_list_box"'); 
                   $notice_box = new notice_box('', '', $user_info_params);  
                   
                   $user_table_title_row = array();
                   $user_table_info_row = array();
-
+                  
+                  if (!isset($_GET['user_sort_type'])) {
+                    $user_table_name_str = '<a href="'.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id', 'user_sort', 'user_sort_type')).'user_sort=user_name&user_sort_type=desc').'">'.TABLE_USER_INFO_NAME.'</a>'; 
+                    $user_table_id_str = '<a href="'.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id', 'user_sort', 'user_sort_type')).'user_sort=user_id&user_sort_type=desc').'">ID</a>'; 
+                    $user_table_permission_str = '<a href="'.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id', 'user_sort', 'user_sort_type')).'user_sort=user_permission&user_sort_type=desc').'">'.TABLE_USER_INFO_PERMISSION.'</a>'; 
+                    $user_table_site_permission_str = '<a href="'.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id', 'user_sort', 'user_sort_type')).'user_sort=user_site_permission&user_sort_type=desc').'">'.TABLE_USER_INFO_SITE_PERMISSION.'</a>'; 
+                    $user_table_status_str = '<a href="'.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id', 'user_sort', 'user_sort_type')).'user_sort=user_status&user_sort_type=desc').'">'.TABLE_USER_INFO_STATUS.'</a>'; 
+                  }
                   $user_table_title_row[] = array('params' => 'class="dataTableHeadingContent"', 'text' => '<input type="checkbox" name="all_user_select" onclick="select_all_user();">');
-                
-                  $user_table_title_row[] = array('params' => 'class="dataTableHeadingContent"', 'text' => TABLE_USER_INFO_NAME);
-                  $user_table_title_row[] = array('params' => 'class="dataTableHeadingContent"', 'text' => 'ID');
-                  $user_table_title_row[] = array('params' => 'class="dataTableHeadingContent"', 'text' => TABLE_USER_INFO_PERMISSION);
-                  $user_table_title_row[] = array('params' => 'class="dataTableHeadingContent"', 'text' => TABLE_USER_INFO_SITE_PERMISSION);
-                  $user_table_title_row[] = array('align' => 'center','params' => 'class="dataTableHeadingContent"', 'text' => TABLE_USER_INFO_STATUS);
+                  $user_table_title_row[] = array('params' => 'class="dataTableHeadingContent_order"', 'text' => $user_table_name_str);
+                  $user_table_title_row[] = array('params' => 'class="dataTableHeadingContent_order"', 'text' => $user_table_id_str);
+                  $user_table_title_row[] = array('params' => 'class="dataTableHeadingContent_order"', 'text' => $user_table_permission_str);
+                  $user_table_title_row[] = array('params' => 'class="dataTableHeadingContent_order"', 'text' => $user_table_site_permission_str);
+                  $user_table_title_row[] = array('align' => 'center','params' => 'class="dataTableHeadingContent_order"', 'text' => $user_table_status_str);
                   $user_table_title_row[] = array('align' => 'right','params' => 'class="dataTableHeadingContent" width="30"', 'text' => TABLE_USER_INFO_ACTION);
                
                   $user_table_info_row[] = array('params' => 'class="dataTableHeadingRow"', 'text' => $user_table_title_row);
 
-                  $user_list_query_raw = 'select u.* from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and p.permission <= '" . $ocertify->npermission . "' order by u.userid"; 
+                  $user_list_query_raw = 'select u.* from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and p.permission <= '" . $ocertify->npermission . "' order by ".$user_order_sql; 
                   $user_list_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $user_list_query_raw, $user_list_query_numrows);
                   $user_list_query = tep_db_query($user_list_query_raw); 
                   
@@ -830,6 +904,9 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                         break;
                       case '7':
                         $user_permission_str = 'Starff';    
+                        break;
+                      case '31':
+                        $user_permission_str = 'Super';    
                         break;
                     }
                     $user_list_row[] = array(

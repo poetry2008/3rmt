@@ -5587,8 +5587,37 @@ if($_GET['cID'] != -1){
   $user_info_query = tep_db_query("select * from ".TABLE_USERS." where userid = '".$_POST['user_e_id']."'");
   $user_info_res = tep_db_fetch_array($user_info_query);
   
-  
-  $user_query_raw = 'select u.* from '.TABLE_USERS.' u, '.TABLE_PERMISSIONS.' p where u.userid = p.userid and p.permission <= \''.$ocertify->npermission.'\' order by u.userid';
+  $user_order_sort_name = ' u.name';
+  $user_order_sort = 'asc';
+  if (isset($_POST['user_sort'])) {
+    switch ($_POST['user_sort']) {
+       case 'user_name':
+         $user_order_sort_name = ' u.name';
+         break;
+       case 'user_id':
+         $user_order_sort_name = ' u.userid';
+         break;
+       case 'user_permission':
+         $user_order_sort_name = ' p.permission';
+         break;
+       case 'user_site_permission':
+          $user_order_sort_name = ' p.site_permission';
+         break;
+       case 'user_status':
+         $user_order_sort_name = ' u.status';
+         break;
+    }
+  }
+  if (isset($_POST['user_sort_type'])) {
+    if ($_POST['user_sort_type'] == 'asc') {
+      $user_order_sort = 'asc';
+    } else {
+      $user_order_sort = 'desc';
+    }
+  }
+  $user_order_sql = $user_order_sort_name.' '.$user_order_sort;
+
+  $user_query_raw = 'select u.* from '.TABLE_USERS.' u, '.TABLE_PERMISSIONS.' p where u.userid = p.userid and p.permission <= \''.$ocertify->npermission.'\' order by '.$user_order_sql;
   $user_split = new splitPageResults($_POST['page'], MAX_DISPLAY_PRODUCTS_ADMIN, $user_query_raw, $user_query_numrows);
   $user_list_query = tep_db_query($user_query_raw);
   while($user_row = tep_db_fetch_array($user_list_query)){
