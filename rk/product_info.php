@@ -226,6 +226,7 @@ function showimage($1) {
 <?php
   $product_info = tep_get_product_by_id((int)$_GET['products_id'], SITE_ID,
       $languages_id,true,'product_info');
+  $product_info['products_quantity'] = tep_get_quantity($product_info['products_id'],true);
   if (!$product_info) { // product not found in database
 ?>
         <P><?php echo TEXT_PRODUCT_NOT_FOUND; ?></P>

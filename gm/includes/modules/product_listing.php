@@ -147,7 +147,7 @@ if ($listing_numrows > 0) {
          </tr>
           <tr>
           <td colspan="2">
-             <?php echo PRE_SURPLUS.'&nbsp;<b>' . tep_show_quantity($listing['products_quantity']) . '</b>&nbsp;'.PRE_NUM_QTY; ?>
+            <?php echo PRE_SURPLUS.'&nbsp;<b>'.tep_show_quantity(tep_get_quantity($listing['products_id'],true)).'</b>&nbsp;'.PRE_NUM_QTY; ?>
           </td>
         </tr>
         <tr>

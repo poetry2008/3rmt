@@ -1087,6 +1087,38 @@ function clearLibNum(obj)
   }
 }
 
+function rsync_num(obj){
+  var change_id = obj.id;
+  if(obj.id == 'product_qt'){
+    num1 = obj.value;
+    num2 = $('#product_qtr').val();
+    radices = $('#product_radices').val();
+    other_num = num2%radices;
+    new_num2 = num1*radices+other_num;
+    $('#product_qtr').val(new_num2);
+  }
+  if(obj.id == 'product_qtr'){
+    num2 = obj.value;
+    radices = $('#product_radices').val();
+    new_num1 = Math.floor(num2/radices);
+    $('#product_qt').val(new_num1);
+  }
+  if(obj.id == 'relate_qt'){
+    num1 = obj.value;
+    num2 = $('#relate_qtr').val();
+    radices = $('#relate_radices').val();
+    other_num = num2%radices;
+    new_num2 = num1*radices+other_num;
+    $('#relate_qtr').val(new_num2);
+  }
+  if(obj.id == 'relate_qtr'){
+    num2 = obj.value;
+    radices = $('#relate_radices').val();
+    new_num1 = Math.floor(num2/radices);
+    $('#relate_qt').val(new_num1);
+  }
+}
+
 function clearNewLibNum(obj) 
 {
   var re = /^-?[0-9]+$/;
@@ -1747,4 +1779,15 @@ function check_signal_time_select()
   } else {
     alert('<?php echo NOTICE_SET_WRONG_TIME;?>'); 
   }
+}
+
+function validate_max_quantity(obj,pid){
+  var max_quantity = $('#max_quantity_'+pid).val();
+  var quantity = obj.value;
+  if(parseInt(quantity) > parseInt(max_quantity)){
+    obj.value = $('#last_quantity_'+pid).val();
+  }else{
+    $('#last_quantity_'+pid).val(quantity);
+  }
+
 }

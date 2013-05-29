@@ -4339,7 +4339,10 @@ if($orders_exit_flag == true){
             if ($less_op_single) {
               echo "<input class='update_products_qty' style='background: none repeat scroll 0 0 #CCCCCC' readonly id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" .  $products_qty_num . "'>";
             } else {
-              echo "<input class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" .  $products_qty_num . "' onkeyup=\"clearLibNum(this);recalc_order_price('".$oID."', '".$orders_products_id."', '2', '".$op_info_str."','".$orders_products_list."');price_total('".TEXT_MONEY_SYMBOL."');\">";
+              echo "<input class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" .  $products_qty_num . "' onkeyup=\"clearLibNum(this);validate_max_quantity(this,'".$orders_products_id_array['products_id']."');recalc_order_price('".$oID."', '".$orders_products_id."', '2', '".$op_info_str."','".$orders_products_list."');price_total('".TEXT_MONEY_SYMBOL."');\">";
+          echo '<input type="hidden" value="'.  tep_get_quantity($orders_products_id_array['products_id']).  '" id="max_quantity_'.$orders_products_id_array['products_id'].'">';
+          echo '<input type="hidden" value="'.$products_qty_num.'" id="last_quantity_'.$orders_products_id_array['products_id'].'">';
+
             }
             echo "&nbsp;<input type='button' value='".IMAGE_DELETE."' onclick=\"delete_products( '".$orders_products_id."', '".TEXT_MONEY_SYMBOL."','1');recalc_order_price('".$oID."', '".$orders_products_id."', '2', '".$op_info_str."','".$orders_products_list."');\">&nbsp;x</td>\n" . 
               '      <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input id='update_products_name_$orders_products_id' name='update_products[$orders_products_id][name]' size='64' type='hidden' value='" . $order->products[$i]['name'] . "'>\n" . 
