@@ -10481,7 +10481,7 @@ function tep_get_radices($pid){
     if($row = tep_db_fetch_array($query)){
       return (int)$row['radices'];
     }else{
-      return 0;
+      return 1;
     }
 }
 

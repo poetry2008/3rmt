@@ -5063,25 +5063,27 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   &&$products['products_real_quantity']!=0){
                   $products_inventory_text .= '<table width="100%">';
                   $products_inventory_text .= '<tr>';
-                  $products_inventory_text .= '<td width="50%" align="right">';
-                  $products_inventory_text .= '<u id=\'quantity_real_'.$products['products_id'].'\' onclick="show_update_info(this, '.$products['products_id'].', \'0\', \'1\')">';
-                  $products_inventory_text .= tep_get_quantity($products['products_id']);
-                  $products_inventory_text .= '</u></td><td width="50%" align="right">(';
+                  $products_inventory_text .= '<td width="70%" align="right">(';
 
                   $products_inventory_text .= '<u id=\'quantity_'.$products['products_id'].'\' onclick="show_update_info(this, '.$products['products_id'].', \'2\', \'1\')">';
                   $products_inventory_text .= $products['products_real_quantity'];
                   $products_inventory_text .= '</u>)';
+                  $products_inventory_text .= '</td><td width="30%" align="right">';
+                  $products_inventory_text .= '<u id=\'quantity_real_'.$products['products_id'].'\' onclick="show_update_info(this, '.$products['products_id'].', \'0\', \'1\')">';
+                  $products_inventory_text .= tep_get_quantity($products['products_id']);
+                  $products_inventory_text .= '</u>';
+
                   $products_inventory_text .= '</td>';
                   $products_inventory_text .= '</tr>';
                   $products_inventory_text .= '</table>';
                   }else{
                   $products_inventory_text .= '<table width="100%">';
                   $products_inventory_text .= '<tr>';
-                  $products_inventory_text .= '<td width="100%" align="right">';
+                  $products_inventory_text .= '<td align="right">';
+                  $products_inventory_text .= '</td><td align="right">';
                   $products_inventory_text .= '<u id=\'quantity_'.$products['products_id'].'\' onclick="show_update_info(this, '.$products['products_id'].', \'2\', \'1\')">';
                   $products_inventory_text .= $products['products_real_quantity'];
                   $products_inventory_text .= '</u>';
-                  $products_inventory_text .= '</td><td align="right">';
                   $products_inventory_text .= '</td>';
                   $products_inventory_text .= '</tr>';
                   $products_inventory_text .= '</table>';

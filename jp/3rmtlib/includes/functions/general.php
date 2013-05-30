@@ -6656,3 +6656,18 @@ function tep_get_quantity($pid,$v_quantity=false){
     }
   }
 }
+/*----------------------------------
+  功能: 通过产品ID获得产品汇率(基数)
+  参数: $pid (int)类型  产品ID
+  返回：基数
+----------------------------------*/
+function tep_get_radices($pid){
+    $sql = "SELECT products_attention_1_3 as radices FROM 
+      " .TABLE_PRODUCTS." WHERE products_id = '".$pid."' limit 1";
+    $query = tep_db_query($sql);
+    if($row = tep_db_fetch_array($query)){
+      return (int)$row['radices'];
+    }else{
+      return 1;
+    }
+}

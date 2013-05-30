@@ -416,14 +416,15 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
   if (STOCK_LIMITED == 'true') {
     if ($customers_referer_array['is_calc_quantity'] != '1') {
       $stock_query = tep_db_query("select products_real_quantity,products_virtual_quantity from " . TABLE_PRODUCTS .  " where products_id = '" . (int)$order->products[$i]['id'] . "'");
+      $radices = tep_get_radices((int)$order->products[$i]['id']);
       if (tep_db_num_rows($stock_query) > 0) {
         $stock_values = tep_db_fetch_array($stock_query);
         if ($order->products[$i]['qty'] > $stock_values['products_real_quantity']) {
           tep_db_perform(
                          'products',
                          array(
-                               'products_virtual_quantity' => $stock_values['products_virtual_quantity'] - ($order->products[$i]['qty'] - $stock_values['products_real_quantity']),
-                               'products_real_quantity'    => 0
+                               'products_virtual_quantity' => $stock_values['products_virtual_quantity'] - ($order->products[$i]['qty'] - (int)($stock_values['products_real_quantity']/$radices)),
+                               'products_real_quantity'    => ($stock_values['products_real_quantity']%$radices) 
                                ),
                          'update',
                          "products_id = '" . (int)$order->products[$i]['id'] . "'"
@@ -432,7 +433,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
           tep_db_perform(
                          'products',
                          array(
-                               'products_real_quantity' => $stock_values['products_real_quantity'] - $order->products[$i]['qty'],
+                               'products_real_quantity' => $stock_values['products_real_quantity'] - $order->products[$i]['qty']*$radices,
                                ),
                          'update',
                          "products_id = '" . (int)$order->products[$i]['id'] . "'"

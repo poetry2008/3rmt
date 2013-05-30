@@ -168,7 +168,7 @@ require("includes/note_js.php");
           ?>
           <a
           href="categories.php?cPath=<?php echo $link_cpath;?>&pID=<?php
-          echo $link_product_id;?>&action=new_product_preview&read=only">
+          echo $link_product_id;?>">
           <?php echo $products['products_name'];?></a>&nbsp;&nbsp;
           <?php
             //关联商品

@@ -116,7 +116,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
         echo "<br>";
         echo " <font id
           ='quantity_".$i."_".$opp['products_id']."_".$opp['orders_products_id']."'
-          >".$opp['products_quantity']."</font>*".$opp['products_rate']." - ";
+          >".$opp['products_quantity']."</font> - ";
         echo "<input type='text'
           value='".($check=="checked"?intval($opp['products_quantity']-$_value):0)."' 
            id ='".$opp['products_id']."_".$opp['orders_products_id']."_input_".$this->formname."' 
@@ -127,7 +127,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
             &&$___checked==$opp['orders_products_id']){
           echo " readonly='true' ";
         }
-        echo " >*".$opp['products_rate'];
+        echo " >";
         echo " = <font
           id='span_relate_product_".$opp['products_id']."_".$opp['orders_products_id']."'>".
           ($check=="checked"?$_value*$opp['products_rate']:intval($opp['products_quantity']*$opp['products_rate']))."</font>";
