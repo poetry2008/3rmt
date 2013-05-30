@@ -132,7 +132,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
         echo " >";
         echo " = <font
           id='span_relate_product_".$opp['products_id']."_".$opp['orders_products_id']."'>".
-          ($check=="checked"?$_value*$opp['products_rate']:intval($opp['products_quantity']*$opp['products_rate']))."</font>";
+          ($check=="checked"?$_value:intval($opp['products_quantity']))."</font>";
         echo "<input id='span_relate_product_".$opp['products_id']."_".$opp['orders_products_id']."_radices' type='hidden' value='".$opp['products_rate']."'>";
       echo "<br>";
       echo "<br>";
@@ -156,22 +156,18 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       var sum_flag = new Array();
       var sub_flag = new Array();
       function <?php echo $this->formname."Chage_span(p_value,e_input,span_id)";?>{
-      var radices = 1;
-      if($('#'+span_id+'_radices')){
-        radices =  $('#'+span_id+'_radices').val();
-      }
       var v_input = e_input.value;
       var re = /^-?[0-9]+$/;
       if(!re.test(v_input) && v_input != ''){
         e_input.value = 0;
-        $("#"+span_id).text(p_value*radices);
+        $("#"+span_id).text(p_value);
       }else{
         if(v_input > p_value){
           e_input.value = 0;
-          $("#"+span_id).text(p_value*radices);
+          $("#"+span_id).text(p_value);
         }else{
           if(v_input!=''){
-            $("#"+span_id).text((p_value-v_input)*radices);
+            $("#"+span_id).text((p_value-v_input));
           }else{
             $("#"+span_id).text(0);
           }

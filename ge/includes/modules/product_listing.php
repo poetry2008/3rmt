@@ -6,7 +6,7 @@
   require(DIR_WS_MODULES . 'sort_products.php');
   require(DIR_WS_LANGUAGES . $language . '/product_listing.php');
 ?>
-<!--select searach -->
+<!--select search -->
 <table width="100%" border="0" cellpadding="1" cellspacing="0">
     <tr>
       <?php
@@ -151,7 +151,7 @@ if ($listing_numrows > 0) {
             ?>
           </td>
           <td width="120" align="right">
-            <p><?php echo PRE_SURPLUS.'&nbsp;<b>'.tep_show_quantity(tep_get_quantity($listing['products_id'],true)).'</b>&nbsp;'.PRE_NUM_QTY; ?></p>
+            <p class="main"><?php echo PRE_SURPLUS.'&nbsp;<b>'.tep_show_quantity(tep_get_quantity($listing['products_id'],true)).'</b>&nbsp;'.PRE_NUM_QTY; ?></p>
           </td>
         </tr>
         <tr>
