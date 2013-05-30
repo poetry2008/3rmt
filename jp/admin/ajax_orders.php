@@ -2347,13 +2347,13 @@ echo json_encode($json_array);
   $user_info = tep_get_user_info($ocertify->auth_user);
   tep_db_query("update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now(), products_user_update='".$user_info['name']."' where products_id = '".$_POST['products_id']."'"); 
   $products_new_price = tep_get_products_price($_POST['products_id']);
-  $html_str = '<span id="edit_p_'.$_POST['products_id'].'">';
+  $html_str = '<u id="edit_p_'.$_POST['products_id'].'">';
   if ($products_new_price['sprice']) {
     $html_str .= '<span class="specialPrice">'.$currencies->format($products_new_price['sprice']).'</span>'; 
   } else {
     $html_str .= $currencies->format($products_new_price['price']); 
   }
-  $html_str .= '</span>';
+  $html_str .= '</u>';
   $html_str .= '<span style="display:none;" id="h_edit_p_'.$_POST['products_id'].'">'.abs($_POST['new_price']).'</span>';
   $html_str .= '|||'; 
   $html_str .= abs($_POST['new_price']); 
