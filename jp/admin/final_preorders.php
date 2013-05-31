@@ -635,7 +635,10 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       $num_product_res = tep_db_fetch_array($num_product_raw); 
       if ($num_product_res) {
         $num_product = $num_product_res['products_quantity']; 
-        $num_product_end = ' '.tep_get_full_count2($num_product,$num_product_res['products_id']);
+        if(isset($num_product_res['products_rate']) &&$num_product_res['products_rate']!=0 &&$num_product_res['products_rate']!=1){ $num_product_end = ' ('.number_format($num_product_res['products_rate']*$num_product).')'; 
+        }else{
+          $num_product_end = '';
+        }
       }
       
       $totals_email_str = '';

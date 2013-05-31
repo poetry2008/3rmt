@@ -511,11 +511,14 @@
         $pre_otm = number_format($preorder_total_res['value'], 0, '.', '').SENDMAIL_EDIT_ORDERS_PRICE_UNIT; 
       }
       $num_product = 0;
-      $num_product_raw = tep_db_query("select products_name, products_id, products_quantity from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$order->info['orders_id']."'");
+      $num_product_raw = tep_db_query("select products_name, products_id, products_quantity,products_rate from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$order->info['orders_id']."'");
       $num_product_res = tep_db_fetch_array($num_product_raw);
       if ($num_product_res) {
         $num_product = $num_product_res['products_quantity']; 
-        $num_product_end = ' '.tep_get_full_count2($num_product,$num_product_res['products_id']);
+        if(isset($num_product_res['products_rate']) &&$num_product_res['products_rate']!=0 &&$num_product_res['products_rate']!=1){ $num_product_end = ' ('.number_format($num_product_res['products_rate']*$num_product).')'; 
+        }else{
+          $num_product_end = '';
+        }
       }
       
       $email = str_replace(array(
