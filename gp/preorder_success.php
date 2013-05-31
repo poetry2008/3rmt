@@ -131,7 +131,7 @@
             <td>
             <?php echo $preorder_product['products_quantity'].PREORDER_SUCCESS_UNIT_TEXT;?> 
             <?php 
-            if(isset($preorder_product['products_rate']) &&$preorder_product['products_rate']!=0 &&$preorder_product['products_rate']!=1){
+            if(isset($preorder_product['products_rate']) &&$preorder_product['products_rate']!=0 &&$preorder_product['products_rate']!=1 &&$preorder_product['products_rate']!=''){
               echo ' ('.number_format($preorder_product['products_rate']*$preorder_product['products_quantity']).')';
             }
             ?>
