@@ -604,13 +604,15 @@ if(tep_not_null($address_array['user_added'])){
   <td><?php echo TEXT_UNSET_DATA;?></td>
 </tr>
 <?php } } ?>
-<tr><td colspan="2" align="center"><input type="button" name="new" value="<?php echo TABLE_BUTTON_SUBMIT;?>" onclick="show_text(0,'','text');">&nbsp;<input type="button" name="save" value="<?php echo TABLE_BUTTON_SAVE;?>" onclick="if(check_form()){check('save');}else{return check_form();}">&nbsp;
+<tr><td colspan="2" align="center"><input type="button" name="new" value="<?php echo TABLE_BUTTON_SUBMIT;?>" onclick="show_text(0,'','text');">&nbsp;<input type="button" name="save" value="<?php echo TABLE_BUTTON_SAVE;?>" onclick="if(check_form()){check_address('save', '<?php echo $ocertify->npermission;?>');}else{return check_form();}">&nbsp;
 
 <?php
 if($id != 0 && $fixed_option == '0'){
+  if ($ocertify->npermission >= 15) {
 ?>
-  <input type="button" name="del" value="<?php echo TABLE_BUTTON_DEL;?>" onclick="if(confirm('<?php echo TEXT_WANT_DELETE;?>')){check('del');}else{return false;}">
+  <input type="button" name="del" value="<?php echo TABLE_BUTTON_DEL;?>" onclick="if(confirm('<?php echo TEXT_WANT_DELETE;?>')){check_address('del', '<?php echo $ocertify->npermission;?>');}else{return false;}">
 <?php
+  }
 }
 ?>
 &nbsp;</td></tr>

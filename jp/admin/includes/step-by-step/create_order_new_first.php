@@ -13,6 +13,50 @@
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/jquery.form.js"></script>
 <script type="text/javascript">
+$(document).ready(function() {
+  $(document).keyup(function(event) {
+    if (event.which == 13) {
+      search_email_check();
+    } 
+  });
+});
+<?php //检测相应网站下的电子邮箱是否存在?>
+function search_email_check(){
+
+  var email = $("#keyword").val(); 
+  email = email.replace(/\s/g,"");
+  if(email == ''){
+
+    alert('<?php echo TEXT_MUST_ENTER;?>');
+    $("#keyword").focus();
+  }else{
+    var site_id = document.getElementsByName("site_id")[0];
+    site_id = site_id.value;
+    $.ajax({
+        url: 'ajax.php?action=check_email_exists',      
+        data: 'email='+email+'&site_id='+site_id,
+        type: 'POST',
+        dataType: 'text',
+        async:false,
+        success: function (data) {
+
+          if(data == '1'){
+            alert("<?php echo TEXT_EMAIL_ADDRESS_ERROR;?>");
+          }else if(data == '0'){
+
+            if(confirm('<?php echo TEXT_CREATE_CUSTOMERS_CONFIRM;?>')){
+
+              location.href="<?php echo FILENAME_CUSTOMERS;?>?email_address="+email+"&sid="+site_id;
+            }
+          }else{
+            document.email_check.action = '<?php echo FILENAME_CREATE_ORDER;?>';
+            document.email_check.submit();
+          }  
+        }
+    });
+  }
+}
+
 <?php //检查提交  ?>
 function check_submit(){
   var options = {
@@ -102,11 +146,11 @@ if($order_exists == true){
   <p class="pageHeading"><?php echo CREATE_ORDER_TITLE_TEXT;?></p>
 <?php
                                                                 //显示用户查询表单
-  echo '<form action="' . "create_order.php" . '" method="GET">' . "\n";
+  echo '<form name="email_check" action="' . "create_order.php" . '" method="GET">' . "\n";
   if(isset($_GET['oID']) && $_GET['oID'] != ''){
     echo '<input type="hidden" name="oID" value="'.$_GET['oID'].'">';
   }
-  echo '<p class=main>'.CREATE_ORDER_SEARCH_TEXT.'<br>'.CREATE_ORDER_EMAIL_TEXT.'&nbsp;<input type="text" value="'.$lastemail.'" id="keyword" name="Customer_mail" size="40">'.tep_site_pull_down_menu('', false).'&nbsp;&nbsp;<input type="submit" value="'.CREATE_ORDER_SEARCH_BUTTON_TEXT.'"></p>' . "\n";
+  echo '<p class=main>'.CREATE_ORDER_SEARCH_TEXT.'<br>'.CREATE_ORDER_EMAIL_TEXT.'&nbsp;<input type="text" value="'.$lastemail.'" id="keyword" name="Customer_mail" size="40"><input type="text" style="display:none;" name="email_submit">'.tep_site_pull_down_menu('', false).'&nbsp;&nbsp;<input type="button" value="'.CREATE_ORDER_SEARCH_BUTTON_TEXT.'" onclick="search_email_check();"></p>' . "\n";
   echo '</form>' . "\n";
 ?>
   <br>

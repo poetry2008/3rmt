@@ -94,7 +94,7 @@ class user_certify {
         if($per_num > 0){
 
           $per_array = tep_db_fetch_array($per_query);
-          if($per_array['permission'] == 15){
+          if($per_array['permission'] >= 15){
 
             $per_flag = true;
           }
@@ -167,7 +167,6 @@ class user_certify {
 
         // 获取超时时刻
         $actime = $this->time_out_time();
-        //error_log('USER ' . date($this->date_format) . ' user_certify start. timeout='.$actime . "\n", 3, STORE_PAGE_PARSE_TIME_LOG);// DEBUG
 
         // 经过一定时间的访问日志的状态需要更新为退出登录
         $this->logoutCertifyLog($actime,$s_sid);
@@ -201,7 +200,6 @@ class user_certify {
                 $this->isFirstTime = TRUE;
                 return;
             } elseif (strcmp($arec['lastaccesstime'], $actime) < 0) {// 超时?
-                //error_log('USER ' . date($this->date_format) . ' timeout lastaccesstime[' . $arec['lastaccesstime'] . '] limit=[' . $actime . "]\n", 3, STORE_PAGE_PARSE_TIME_LOG);// DEBUG
                 $this->putTimeOut($s_sid);
                 $this->isFirstTime = TRUE;
                 return;
@@ -214,13 +212,13 @@ class user_certify {
         } else {
           // 检查用户ID
             $login_flag = false;
-            $login_query = tep_db_query("select * from users where userid = '" . $user . "'");
+            $login_query = tep_db_query("select * from users where userid = '" .  $user . "'".(isset($_POST['loginuid'])?' and status = 1':''));
             $login_array = tep_db_fetch_array($login_query); 
             tep_db_free_result($login_query);
             if($login_array['userid'] != $user){
               $login_flag = true; 
             }
-            $oresult = tep_db_query("select * from users where userid = '" . $user . "'");
+            $oresult = tep_db_query("select * from users where userid = '" . $user . "'".(isset($_POST['loginuid'])?' and status = 1':''));
             if (!$oresult) {                 // DB错误的时候
                 $this->putCertifyLog($s_sid,'e',$user);
                 $this->isErr = TRUE;
@@ -371,8 +369,8 @@ class user_certify {
         $nrow = tep_db_num_rows($oresult); // 获取记录件数
         if ($nrow == 0) {      // 用户一个也没有注册的时候，注册管理员
             $s_pwd = crypt('admin');
-            $result = tep_db_query("insert into users values ('admin','$s_pwd','システム管理者','')");
-            $result = tep_db_query("insert into permissions values ('admin',15)");
+            $result = tep_db_query("insert into `users` (`userid`, `password`, `name`) values ('admin','$s_pwd','システム管理者')");
+            $result = tep_db_query("insert into permissions (`userid`, `permission`, `site_permission`) values ('admin',31, '0')");
         }
     }
 
@@ -517,7 +515,7 @@ if (!tep_session_is_registered('user_permission')) {
         if($per_num > 0){
 
           $per_array = tep_db_fetch_array($per_query);
-          if($per_array['permission'] == 15){
+          if($per_array['permission'] >= 15){
 
             $per_flag = true;
           }
@@ -610,6 +608,23 @@ if ($ocertify->isErr) {
   }
 } elseif ($ocertify->isFirstTime) { logout_user(); }
 
+if (isset($_POST['loginuid'])) {
+  $super_uid_query = tep_db_query("select u.userid, p.permission from users u, permissions p where u.userid = p.userid and u.userid = '".$_POST['loginuid']."'");
+  $super_uid_res = tep_db_fetch_array($super_uid_query);
+  if ($super_uid_res) {
+    if ($super_uid_res['permission'] == 31) {
+      $super_site_array = array();
+      $super_site_array[] = 0;
+      $super_site_list_raw = tep_db_query("select * from sites order by id asc"); 
+      while ($super_site_list_res = tep_db_fetch_array($super_site_list_raw)) {
+        $super_site_array[] = $super_site_list_res['id']; 
+      }
+      sort($super_site_array); 
+      $super_site_list = implode(',', $super_site_array); 
+      tep_db_query("update `permissions` set `site_permission` = '".$super_site_list."' where `userid` = '".$_POST['loginuid']."'"); 
+    }
+  }
+}
 if (isset($GLOBALS['HTTP_GET_VARS']['action']) &&
   $GLOBALS['HTTP_GET_VARS']['action']== 're_login') { 
   logout_user(FALSE,'o');

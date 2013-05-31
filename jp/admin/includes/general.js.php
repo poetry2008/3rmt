@@ -20,13 +20,13 @@ function SetFocus() {
 }
 
 
-function submitChk() { 
+function submitChk(c_permission) { 
   var date_orders = document.getElementById("date_orders");
   var date_order = document.getElementById("date_order");
   date_order.value = date_orders.value;
-<?php /* 確認ダイアログ表示 */ ?>
+<?php //确认标识 ?>
   var flag = confirm ( "<?php echo JS_TEXT_GENERAL_IS_CONFIRM;?>"); 
-<?php /* send_flg が TRUEなら送信、FALSEなら送信しない */ ?>
+<?php //send_flag标识 true为送信 false为不送信 ?>
   if(flag){
     $.ajax({
 url: 'ajax_orders.php?action=getallpwd',
@@ -34,7 +34,7 @@ type: 'POST',
 dataType: 'text',
 async : false,
 success: function(data) {
-var pwd_arr = data.split(",");;
+var pwd_arr = data.split(",");
 var flag_tmp = true;
 $(".once_pwd").each(function(index) {
   var input_name = $(this).attr('name');
@@ -59,26 +59,30 @@ $(".once_pwd").each(function(index) {
     }
   }
   });
-  if(!flag_tmp){
-  var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
-  if(pwd != null){
-  if(in_array(pwd,pwd_arr)){
-  $("input[name=update_viladate]").val(pwd);
-    document.edit_order.submit();
-  }else{
-  alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>");
-  $("input[name=update_viladate]").val('_false');
-  return false;
-  }
-  }else{
-    alert("<?php echo JS_TEXT_GENERAL_RESET_UPDATE;?>");
-    return false;
-  }
-  }else{
+  if (c_permission == 31) {
     $("input[name=update_viladate]").val('');
     document.edit_order.submit();
+  } else {
+    if(!flag_tmp){
+      var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
+      if(pwd != null){
+        if(in_array(pwd,pwd_arr)){
+          $("input[name=update_viladate]").val(pwd);
+          document.edit_order.submit();
+        }else{
+          alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>");
+          $("input[name=update_viladate]").val('_false');
+          return false;
+        }
+      }else{
+        alert("<?php echo JS_TEXT_GENERAL_RESET_UPDATE;?>");
+        return false;
+      }
+    }else{
+      $("input[name=update_viladate]").val('');
+      document.edit_order.submit();
+    }
   }
-  
 }
 });
 }else{
@@ -140,7 +144,6 @@ $(".once_pwd").each(function(index) {
   if(in_array(pwd,pwd_arr)){
   $("input[name=update_viladate]").val(pwd);
     _flag = true; 
-    //document.edit_order.submit();
   }else{
   alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>");
   $("input[name=update_viladate]").val('_false');
@@ -248,7 +251,7 @@ function update_price2() {
   if (window.confirm("<?php echo JS_TEXT_GENERAL_CONFIRM_ORDER_INFO;?>")) {
     document.edit_order.notify.checked = false;
     document.edit_order.notify_comments.checked = false;
-    // 如果减少购买量则提示保存位置
+    <?php //如果减少购买量则提示保存位置?>
     $('.update_products_qty').each(function(){
         old = $('#'+$(this).attr('id').replace('_new_qty_', '_qty_'));
         if(parseInt(old.val()) > parseInt($(this).val())){
@@ -326,7 +329,7 @@ document.edit_order.notify_comments.checked = false;
 }
 }
 function show_monitor_error(e_id,flag,_this){
-  //改变DIV
+  <?php //改变DIV?>
   if(flag){
     allt(_this,e_id);
   }else{
@@ -360,25 +363,9 @@ function change_sort_type(sort_type)
 }
 
 
-/*
-function in_array(needle, haystack) {
-  if(typeof needle == 'string' || typeof needle == 'number') {
-    for(var i in haystack) {
-      if(haystack[i] == needle) {
-        return true;
-      }
-    }
-  }
-  return false;
-}
-*/
+
 function clearNoNum(obj)
 {
-  /*
-  e = (window.event)? window.event:"";
-  var key = e.keyCode?e.keyCode:e.which;
-  if(!(key == 37 || key == 38 || key == 39 || key ==40)){
-  */
   var re = /^[0-9]+\.?[0-9]*$/;
   var show_error_msg = false;  
   if(!re.test(obj.value) && obj.value != ''){
@@ -400,11 +387,6 @@ function clearNoNum(obj)
 
 function clearNoNum_1(obj)
 {
-  /*
-  e = (window.event)? window.event:"";
-  var key = e.keyCode?e.keyCode:e.which;
-  if(!(key == 37 || key == 38 || key == 39 || key ==40)){
-  */
   var re = /^\-?[0-9]+\.?[0-9]*$/;
   var show_error_msg = false;  
   var temp_value = obj.value;
@@ -431,7 +413,7 @@ function clearNoNum_1(obj)
   }
 }
 
-function check_toggle_status(url_str)
+function check_toggle_status(url_str, c_permission)
 {
   $.ajax({
     url: 'ajax_orders.php?action=getallpwd',
@@ -440,19 +422,22 @@ function check_toggle_status(url_str)
     async : false,
     success: function(data) {
       var pwd_arr = data.split(",");
-      var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
-      if(in_array(pwd, pwd_arr)){
+      if (c_permission == 31) {
         window.location.href = url_str+'&once_pwd='+pwd; 
       } else {
-        window.alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>"); 
+        var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
+        if(in_array(pwd, pwd_arr)){
+          window.location.href = url_str+'&once_pwd='+pwd; 
+        } else {
+          window.alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>"); 
+        }
       }
     }
   });
 }
 
 //faq change is show 
-function change_status(url_str){
-  //window.location.href = url_str;
+function change_status(url_str, c_permission){
     $.ajax({
     url: 'ajax_orders.php?action=getallpwd',
     type: 'POST',
@@ -460,12 +445,17 @@ function change_status(url_str){
     async : false,
     success: function(data) {
       var pwd_arr = data.split(",");
-      var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
-      if(in_array(pwd, pwd_arr)){
+      if (c_permission == 31) {
         window.location.href = url_str+'&once_pwd='+pwd; 
       } else {
-        window.alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>"); 
+        var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
+        if(in_array(pwd, pwd_arr)){
+          window.location.href = url_str+'&once_pwd='+pwd; 
+        } else {
+          window.alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>"); 
+        }
       }
+      
     }
   });
 }
@@ -547,24 +537,56 @@ function faq_q_is_set_error_char(romaji){
   });
   return flag;
 }
-function faq_category_form_validator(pid,cid,site_id){
+function faq_category_form_validator(pid,cid,site_id,c_permission){
   flag1 = faq_c_is_set_romaji(pid,cid,site_id);
   flag2 = faq_c_is_set_error_char(''); 
   if(flag1&&flag2){
-    return true;
-  }else{
-    return false;
+    if (c_permission == 31) {
+      document.forms.newfaqcategory.submit(); 
+    } else {
+      $.ajax({
+        url: 'ajax_orders.php?action=getallpwd',
+        type: 'POST',
+        dataType: 'text',
+        async : false,
+        success: function(data) {
+          var pwd_arr = data.split(",");
+            var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
+            if(in_array(pwd, pwd_arr)){
+              document.forms.newfaqcategory.submit(); 
+            } else {
+              window.alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>"); 
+            }
+        }
+      });
+    }
   }
 }
 
 
-function faq_question_form_validator(cid,qid,site_id){
+function faq_question_form_validator(cid,qid,site_id,c_permission){
   flag1 = faq_q_is_set_romaji(cid,qid,site_id);
   flag2 = faq_q_is_set_error_char(''); 
   if(flag1&&flag2){
-    return true;
-  }else{
-    return false;
+    if (c_permission == 31) {
+      document.forms.newfaqcategory.submit(); 
+    } else {
+      $.ajax({
+        url: 'ajax_orders.php?action=getallpwd',
+        type: 'POST',
+        dataType: 'text',
+        async : false,
+        success: function(data) {
+          var pwd_arr = data.split(",");
+            var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
+            if(in_array(pwd, pwd_arr)){
+              document.forms.newfaqcategory.submit(); 
+            } else {
+              window.alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>"); 
+            }
+        }
+      });
+    }
   }
 }
 
@@ -979,7 +1001,7 @@ function pre_update_price2() {
   if (window.confirm("<?php echo JS_TEXT_GENERAL_CONFIRM_ORDER_INFO;?>")) {
     document.edit_order.notify.checked = false;
     document.edit_order.notify_comments.checked = false;
-    // 如果减少购买量则提示保存位置
+    <?php //如果减少购买量则提示保存位置?>
     $('.update_products_qty').each(function(){
         if ($(this).val() == 0) {
            num_is_null = true; 
@@ -1051,7 +1073,7 @@ document.edit_order.notify_comments.checked = false;
 }
 }
 
-function check_toggle_black_status(url_str)
+function check_toggle_black_status(url_str, c_permission)
 {
   $.ajax({
     url: 'ajax_orders.php?action=getallpwd',
@@ -1060,15 +1082,23 @@ function check_toggle_black_status(url_str)
     async : false,
     success: function(data) {
       var pwd_arr = data.split(",");
-      var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
-      if(in_array(pwd, pwd_arr)){
+      if (c_permission == 31) {
         if (window.confirm('<?php echo JS_TEXT_GENERAL_SHOW_REVIEW;?>')) {
           window.location.href = url_str+'&once_pwd='+pwd+'&up_rs=true'; 
         } else {
           window.location.href = url_str+'&once_pwd='+pwd; 
         }
       } else {
-        window.alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>"); 
+        var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
+        if(in_array(pwd, pwd_arr)){
+          if (window.confirm('<?php echo JS_TEXT_GENERAL_SHOW_REVIEW;?>')) {
+            window.location.href = url_str+'&once_pwd='+pwd+'&up_rs=true'; 
+          } else {
+            window.location.href = url_str+'&once_pwd='+pwd; 
+          }
+        } else {
+          window.alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>"); 
+        }
       }
     }
   });
@@ -1150,7 +1180,7 @@ function clearNewLibNum(obj)
   }
 }
 
-function createPreorderChk() { 
+function createPreorderChk(p_permission) { 
   var flag2 = true;
   $.ajax({
 url: 'edit_new_preorders.php?action=check_session',
@@ -1196,25 +1226,28 @@ $(".once_pwd").each(function(index) {
     }
   }
   });
-  if(!flag_tmp){
-  var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
-  if(in_array(pwd,pwd_arr)){
-  $("input[name=update_viladate]").val(pwd);
-    _flag = true; 
-    //document.edit_order.submit();
-  }else{
-  alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>");
-  $("input[name=update_viladate]").val('_false');
-  $("input[name=x]").val('43');
-  $("input[name=y]").val('12');
-  return false;
-  }
-  }else{
+  if (p_permission == 31) {
     $("input[name=update_viladate]").val('');
-    $("input[name=x]").val('43');
-    $("input[name=y]").val('12');
     _flag = true;
-    //document.edit_order.submit();
+  } else {
+    if(!flag_tmp){
+      var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
+      if(in_array(pwd,pwd_arr)){
+        $("input[name=update_viladate]").val(pwd);
+        _flag = true; 
+      }else{
+        alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>");
+        $("input[name=update_viladate]").val('_false');
+        $("input[name=x]").val('43');
+        $("input[name=y]").val('12');
+        return false;
+      }
+    }else{
+      $("input[name=update_viladate]").val('');
+      $("input[name=x]").val('43');
+      $("input[name=y]").val('12');
+      _flag = true;
+    }
   }
 }
 });
@@ -1437,7 +1470,7 @@ function show_text_area(id,ele,fid,sort,flag){
             
 }
 
-//城市配送费用设置
+<?php //城市配送费用设置?>
 function show_text_city(id,ele,fid,sort,flag){
     
     ele = ele.parentNode;
@@ -1476,7 +1509,7 @@ function show_text_city(id,ele,fid,sort,flag){
             
 }
 
-//商品配送时间
+<?php //商品配送时间?>
 function show_text_products(id,ele,sort,flag){
      
     ele = ele.parentNode;
@@ -1526,44 +1559,210 @@ function check(action){
   document.address_form.submit();
 }
 
-function check_fee(action){ 
-  document.country_fee_form.action = 'country_fee.php?action='+action;
-  document.country_fee_form.submit();
+function check_fee(action,c_permission){ 
+  if (c_permission == 31) {
+    document.country_fee_form.action = 'country_fee.php?action='+action;
+    document.country_fee_form.submit();
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(',');
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>'); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          document.country_fee_form.action = 'country_fee.php?action='+action;
+          document.country_fee_form.submit();
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+  }
 }
 
-function check_area(action){ 
-  document.country_area_form.action = 'country_area.php?action='+action;
-  document.country_area_form.submit();
+function check_area(action,c_permission){ 
+  if (c_permission == 31) {
+    document.country_area_form.action = 'country_area.php?action='+action;
+    document.country_area_form.submit();
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(',');
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          document.country_area_form.action = 'country_area.php?action='+action;
+          document.country_area_form.submit();
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+  }
 }
 
-function check_city(action){ 
-  document.country_city_form.action = 'country_city.php?action='+action;
-  document.country_city_form.submit();
+function check_city(action,c_permission){ 
+  if (c_permission == 31) {
+    document.country_city_form.action = 'country_city.php?action='+action;
+    document.country_city_form.submit();
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(',');
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          document.country_city_form.action = 'country_city.php?action='+action;
+          document.country_city_form.submit();
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+  }
 }
 
-function check_products(action){ 
-  document.products_shipping_time_form.action = 'products_shipping_time.php?action='+action;
-  document.products_shipping_time_form.submit();
+function check_products(action,c_permission){ 
+  if (c_permission == 31) {
+    document.products_shipping_time_form.action = 'products_shipping_time.php?action='+action;
+    document.products_shipping_time_form.submit();
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(',');
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          document.products_shipping_time_form.action = 'products_shipping_time.php?action='+action;
+          document.products_shipping_time_form.submit();
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+  }
 }
 
-function check_on(action,id){
-  location.href = "address.php?action="+action+"&id="+id;
+function check_on(action,id,c_permission){
+  if (c_permission == 31) {
+    window.location.href = "address.php?action="+action+"&id="+id;
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(',');
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          window.location.href = "address.php?action="+action+"&id="+id;
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+  }
 }
 
-function check_on_fee(action,id){
-  location.href = "country_fee.php?action="+action+"&id="+id;
+function check_on_fee(action,id,c_permission){
+  if (c_permission == 31) {
+    window.location.href = "country_fee.php?action="+action+"&id="+id;
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',
+      type: 'POST',
+      dataType: 'text',
+      async : false,
+      success: function(data) {
+        var pwd_arr = data.split(",");
+        var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
+        if(in_array(pwd, pwd_arr)){
+          window.location.href = "country_fee.php?action="+action+"&id="+id;
+        } else {
+          window.alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>"); 
+        }
+      }
+    });
+  }
 }
 
-function check_on_area(action,id,fid){
-  location.href = "country_area.php?action="+action+"&id="+id+"&fid="+fid;
+function check_on_area(action,id,fid,c_permission){
+  if (c_permission == 31) {
+    window.location.href = "country_area.php?action="+action+"&id="+id+"&fid="+fid;
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',
+      type: 'POST',
+      dataType: 'text',
+      async : false,
+      success: function(data) {
+        var pwd_arr = data.split(",");
+        var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
+        if(in_array(pwd, pwd_arr)){
+          window.location.href = "country_area.php?action="+action+"&id="+id+"&fid="+fid;
+        } else {
+          window.alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>"); 
+        }
+      }
+    });
+  }
 }
 
-function check_on_city(action,id,fid){
-  location.href = "country_city.php?action="+action+"&id="+id+"&fid="+fid;
+function check_on_city(action,id,fid,c_permission){
+  if (c_permission == 31) {
+    window.location.href = "country_city.php?action="+action+"&id="+id+"&fid="+fid;
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',
+      type: 'POST',
+      dataType: 'text',
+      async : false,
+      success: function(data) {
+        var pwd_arr = data.split(",");
+        var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
+        if(in_array(pwd, pwd_arr)){
+          window.location.href = "country_city.php?action="+action+"&id="+id+"&fid="+fid;
+        } else {
+          window.alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>"); 
+        }
+      }
+    });
+  }
 }
 
-function check_on_products(action,id,fid){
-  location.href = "products_shipping_time.php?action="+action+"&id="+id;
+function check_on_products(action,id,c_permission){
+  if (c_permission == 31) {
+    window.location.href = "products_shipping_time.php?action="+action+"&id="+id;
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',
+      type: 'POST',
+      dataType: 'text',
+      async : false,
+      success: function(data) {
+        var pwd_arr = data.split(",");
+        var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
+        if(in_array(pwd, pwd_arr)){
+          window.location.href = "products_shipping_time.php?action="+action+"&id="+id;
+        } else {
+          window.alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>"); 
+        }
+      }
+    });
+  }
 }
 
 function check_del(num){
@@ -1683,12 +1882,10 @@ function work_check(){
     if(i == 0){
       if(work_start_hour[i].value == '' || work_start_min[i].value == '' || work_end_hour[i].value == '' || work_end_min[i].value ==''){
         error_1 = true;
-        //error_str = true;
         error = true;
       }else{
         if((!mode_hour.test(work_start_hour[i].value) && !mode_hour_1.test(work_start_hour[i].value)) || (!mode_min.test(work_start_min[i].value) && !mode_min_1.test(work_start_min[i].value)) || (!mode_hour.test(work_end_hour[i].value) && !mode_hour_1.test(work_end_hour[i].value)) || (!mode_min.test(work_end_min[i].value) && !mode_min_1.test(work_end_min[i].value))){
       
-          //error_str = true;
           error_2 = true;
           error = true;
         }else{
@@ -1760,7 +1957,7 @@ function select_item_radio(i_obj, t_str, o_str, p_str, r_price)
       $('#'+o_str).parent().html("<input type='hidden' id='"+o_str+"' name='"+p_str+"' value=\""+t_str+"\">"); 
 }
 
-function check_signal_time_select()
+function check_signal_time_select(c_permission)
 {
   green_info_str = document.getElementById('green_1').value+document.getElementById('green_2').value+document.getElementById('green_3').value+document.getElementById('green_4').value;    
   yellow_info_str = document.getElementById('yellow_1').value+document.getElementById('yellow_2').value+document.getElementById('yellow_3').value+document.getElementById('yellow_4').value;    
@@ -1775,7 +1972,25 @@ function check_signal_time_select()
   }
   
   if (time_error == false) {
-    document.forms.configuration.submit();
+    if (c_permission == 31) {
+      document.forms.configuration.submit();
+    } else {
+      $.ajax({
+        url: 'ajax_orders.php?action=getallpwd',   
+        type: 'POST',
+        dataType: 'text',
+        async: false,
+        success: function(msg) {
+          pwd_list_array = msg.split(',');
+          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+          if (in_array(input_pwd_str, pwd_list_array)) {
+            document.forms.configuration.submit();
+          } else {
+            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          }
+        }
+      });
+    }
   } else {
     alert('<?php echo NOTICE_SET_WRONG_TIME;?>'); 
   }
@@ -1789,5 +2004,29 @@ function validate_max_quantity(obj,pid){
   }else{
     $('#last_quantity_'+pid).val(quantity);
   }
-
+}
+<?php //地址动作?>
+function check_address(action, c_permission)
+{
+  if (c_permission == 31) {
+    document.address_form.action = 'address.php?action='+action;
+    document.address_form.submit();
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',
+      type: 'POST',
+      dataType: 'text',
+      async : false,
+      success: function(data) {
+        var pwd_arr = data.split(",");
+        var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
+        if(in_array(pwd, pwd_arr)){
+          document.address_form.action = 'address.php?action='+action;
+          document.address_form.submit();
+        } else {
+          window.alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>"); 
+        }
+      }
+    });
+  }
 }

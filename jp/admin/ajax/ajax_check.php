@@ -57,5 +57,25 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
      $check_email_error = '0';
   }
   echo  $check_email_error.','.$check_num;
+}else if(isset($_GET['action']) && $_GET['action'] == 'check_email_exists'){
+  /* -----------------------------------------------------
+    功能: 检测指定网站下的电子邮箱是否存在 
+    参数: $_POST['email'] 电子邮箱 
+    参数: $_POST['site_id'] 网站ID 
+  -----------------------------------------------------*/
+  require('includes/step-by-step/new_application_top.php');
+  $email = $_POST['email'];
+  $site_id = $_POST['site_id'];
+  $customers_id = tep_get_customer_id_by_email($email,$site_id);   
+
+  if(!tep_validate_email($email)){
+   
+    echo '1';
+  }else if(!$customers_id){
+
+    echo '0';
+  }else{
+    echo $customers_id; 
+  }
 }
 ?>

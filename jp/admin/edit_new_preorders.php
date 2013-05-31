@@ -21,13 +21,9 @@
   $cpayment = payment::getInstance((int)$_SESSION['create_preorder']['orders']['site_id']);
 // START CONFIGURATION ################################
 // Optional Tax Rates, e.g. shipping tax of 17.5% is "17.5"
-// $AddCustomTax = "20.0"; // class "ot_custom", used for all unknown total modules
   $AddCustomTax = "19.6";  // new
-// $AddShippingTax = "20.0"; // class "ot_shippping"
   $AddShippingTax = "19.6";  // new
-// $AddLevelDiscountTax = "7.6"; // class "ot_lev_discount"
   $AddLevelDiscountTax = "19.6";  // new
-// $AddCustomerDiscountTax = "7.6"; // class "ot_customer_discount"
   $AddCustomerDiscountTax = "19.6";  // new
   
 // END OF CONFIGURATION ################################
@@ -810,12 +806,12 @@ function submit_order_check(products_id,op_id){
 
         if(confirm(data)){
 
-          createPreorderChk();
+          createPreorderChk('<?php echo $ocertify->npermission;?>');
           document.edit_order.submit();
         }
       }else{
 
-        createPreorderChk();
+        createPreorderChk('<?php echo $ocertify->npermission;?>');
         document.edit_order.submit();
       }
     }

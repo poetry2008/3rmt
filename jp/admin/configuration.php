@@ -256,7 +256,53 @@ $('#show_text_configuration').css('display', 'block');
 function hidden_info_box(){
 $('#show_text_configuration').css('display','none');
 }
-    </script>
+<?php //是否输入一次性密码?>
+function update_configuration_info(c_permission)
+{
+  if (c_permission == 31) {
+    document.forms.configuration.submit();
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(',');
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          document.forms.configuration.submit();
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+  }
+}
+<?php //无效设置?>
+function set_invalid_configuration(c_permission, gid_info, cid_info)
+{
+  if (c_permission == 31) {
+    window.location.href = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_CONFIGURATION;?>'+'?action=tdel&gID='+gid_info+'&cID='+cid_info; 
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(',');
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          window.location.href = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_CONFIGURATION;?>'+'?action=tdel&gID='+gid_info+'&cID='+cid_info; 
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+  }
+}
+</script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
@@ -333,7 +379,8 @@ select
     configuration_title, 
     configuration_key, 
     configuration_value, 
-    use_function 
+    use_function,
+    last_modified
 from " . TABLE_CONFIGURATION . " 
 where 
     configuration_group_id = '" . $_GET['gID'] . "' 
@@ -416,10 +463,10 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
         'text'   => $configuration_title_image[0] 
         );
  
+   $configuration_date_info = (tep_not_null($configuration_key_row['last_modified']) && ($configuration_key_row['last_modified'] != '0000-00-00 00:00:00'))?$configuration_key_row['last_modified']:$configuration_key_row['date_added'];
    $configuration_info[] = array(
         'params' => 'class="dataTableContent" align="right"',
-        'text'   => '<a href="javascript:void(0)"
-        onclick="show_text_configuration(this,'.$_GET['gID'].','.$configuration['configuration_id'].','.$_GET['site_id'].');">'.tep_image(DIR_WS_IMAGES .  'icon_info.gif', IMAGE_ICON_INFO).'</a>'
+        'text'   => '<a href="javascript:void(0)" onclick="show_text_configuration(this,'.$_GET['gID'].','.$configuration['configuration_id'].','.$_GET['site_id'].');">'.tep_get_signal_pic_info($configuration_date_info).'</a>'
         );
     $configuration_table_row[] = array('params' => $configuration_params, 'text' => $configuration_info);
 }

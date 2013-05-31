@@ -208,12 +208,12 @@ if($id != 0){
 <?php
 }
 ?>
-&nbsp;<input type="button" name="save" value="<?php echo TABLE_BUTTON_SAVE;?>" onclick="if(check_form_products() && work_check()){check_products('save');}else{return check_form_products();}">&nbsp;
+&nbsp;<input type="button" name="save" value="<?php echo TABLE_BUTTON_SAVE;?>" onclick="if(check_form_products() && work_check()){check_products('save', '<?php echo $ocertify->npermission; ?>');}else{return check_form_products();}">&nbsp;
 
 <?php
 if($id != 0){
 ?>
-  <input type="button" name="del" value="<?php echo TABLE_BUTTON_DEL;?>" onclick="if(confirm('<?php echo TEXT_WANT_DELETE;?>')){check_products('del');}else{return false;}">
+  <input type="button" name="del" value="<?php echo TABLE_BUTTON_DEL;?>" onclick="if(confirm('<?php echo TEXT_WANT_DELETE;?>')){check_products('del', '<?php echo $ocertify->npermission; ?>');}else{return false;}">
 <?php
 }else{
 ?>

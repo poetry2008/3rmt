@@ -189,6 +189,37 @@ if($_GET['action'] == 'update'){
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<script type="text/javascript">
+<?php //是否输入一次性密码?>
+function check_setting_submit() 
+{
+  <?php
+  if ($ocertify->npermission > 15) {
+  ?>
+  document.forms.personal_setting.submit(); 
+  <?php
+  } else {
+  ?>
+  $.ajax({
+    url: 'ajax_orders.php?action=getallpwd',   
+    type: 'POST',
+    dataType: 'text',
+    async: false,
+    success: function(msg) {
+      pwd_list_array = msg.split(','); 
+      var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+      if (in_array(input_pwd_str, pwd_list_array)) {
+        document.forms.personal_setting.submit(); 
+      } else {
+        alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+      }
+    }
+  });
+  <?php
+  }
+  ?>
+}
+</script>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 require("includes/note_js.php");
@@ -531,7 +562,7 @@ require("includes/note_js.php");
                ?>
                </td>
               </tr>
-              <tr><td align="right"><input type="submit" value="<?php echo TEXT_SAVE;?>"></td></tr>
+              <tr><td align="right"><a href="javascript:void(0);"><?php echo tep_html_element_button(TEXT_SAVE, 'onclick="check_setting_submit();"');?></a></td></tr>
               <?php 
                //读取当前用户的创建者、创建时间以及个人设定的更新者、更新时间
                $configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where  configuration_key='PERSONAL_SETTING_ORDERS_SITE'"));  

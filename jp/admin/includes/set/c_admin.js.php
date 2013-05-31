@@ -10,7 +10,7 @@ function confirmg(question,url) {
   }
 }
 <?php //全部更新 ?>
-function all_update(){
+function all_update(c_permission){
   check_error();
   if (error_msg != '') {
     alert(error_msg);
@@ -19,7 +19,25 @@ function all_update(){
   var flg=confirm("<?php echo JS_TEXT_C_ADMIN_IS_UPDATE;?>");
   if(flg){
     document.myForm1.flg_up.value=1;
-    window.document.myForm1.submit();
+    if (c_permission == 31) {
+      window.document.myForm1.submit();
+    } else {
+      $.ajax({
+        url: 'ajax_orders.php?action=getallpwd',   
+        type: 'POST',
+        dataType: 'text',
+        async: false,
+        success: function(msg) {
+          pwd_list_array = msg.split(','); 
+          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+          if (in_array(input_pwd_str, pwd_list_array)) {
+            window.document.myForm1.submit();
+          } else {
+            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          }
+        }
+      });
+    }
   }else{
     document.myForm1.flg_up.value=0;
     alert("<?php echo JS_TEXT_C_ADMIN_UPDATE_CLEAR;?>");

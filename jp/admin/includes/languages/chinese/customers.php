@@ -59,3 +59,7 @@ define('TEXT_ERROR_NULL','<font color=\'red\'>请输入。</font>');
 define('TEXT_GUEST_CHK','会员类型');
 define('TEXT_MEMBER','会员');
 define('TEXT_NO_MEMBER','非会员');
+define('TEXT_ORDER_MADE','创建订单');
+define('TEXT_PREORDER_MADE','创建预约订单');
+define('TEXT_KEEP_ORDER','保存并创建订单');
+define('TEXT_KEEP_PREORDER','保存并创建预约订单');

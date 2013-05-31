@@ -326,12 +326,12 @@ while($address_array = tep_db_fetch_array($address_query)){
   if($address_array['status'] == 0){
 ?>
   <img border="0" src="images/icon_status_green.gif" alt="<?php echo TEXT_ENABLE;?>" title="<?php echo TEXT_ENABLE;?>">
-  <a title="<?php echo TEXT_DISABLE;?>" onclick="if(confirm('<?php echo TEXT_WANT_DISABLE;?>')){check_on('del',<?php echo $address_array['id'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_red_light.gif"></a>
+  <a title="<?php echo TEXT_DISABLE;?>" onclick="if(confirm('<?php echo TEXT_WANT_DISABLE;?>')){check_on('del',<?php echo $address_array['id'];?>, '<?php echo $ocertify->npermission;?>');}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_red_light.gif"></a>
 
 <?php
 }else{
 ?>
-<a title="<?php echo TEXT_ENABLE;?>" onclick="if(confirm('<?php echo TEXT_WANT_ENABLE;?>')){check_on('res',<?php echo $address_array['id'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_green_light.gif"></a>
+<a title="<?php echo TEXT_ENABLE;?>" onclick="if(confirm('<?php echo TEXT_WANT_ENABLE;?>')){check_on('res',<?php echo $address_array['id'];?>, '<?php echo $ocertify->npermission;?>');}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_green_light.gif"></a>
 <img border="0" alt="<?php echo TEXT_DISABLE;?>" src="images/icon_status_red.gif" title="<?php echo TEXT_DISABLE;?>">
 
 <?php
@@ -339,7 +339,9 @@ while($address_array = tep_db_fetch_array($address_query)){
 ?>
 <?php
   echo '</td>';
-  echo '<td><a href="javascript:void(0);" onclick="show_text('. $address_array['id'] .',this,\''. $address_array['type'] .'\',0);">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a></td>';
+  
+  $address_date_info = (tep_not_null($address_array['date_update']) && ($address_array['date_update'] != '0000-00-00 00:00:00'))?$address_array['date_update']:$address_array['date_added'];
+  echo '<td><a href="javascript:void(0);" onclick="show_text('. $address_array['id'] .',this,\''. $address_array['type'] .'\',0);">' .  tep_get_signal_pic_info($address_date_info) . '</a></td>';
   echo '</tr>';
   $i++;
 }

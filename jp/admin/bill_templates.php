@@ -117,6 +117,31 @@ if (isset($_GET['action']) and $_GET['action']) {
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<script type="text/javascript">
+<?php //提交动作?>
+function check_template_form(c_permission)
+{
+  if (c_permission == 31) {
+    document.forms.bill_templates.submit(); 
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          document.forms.bill_templates.submit(); 
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+  }
+}
+</script>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 require("includes/note_js.php");
@@ -243,7 +268,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_RESPONSIBLE . '<br>' . tep_draw_input_field('responsible'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_SORT_ORDER . '<br>' . tep_draw_input_field('sort_order', 1000));
 
-      $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_INSERT) . '&nbsp;<a href="' .  tep_href_link(FILENAME_BILL_TEMPLATES, 'page=' . $_GET['page']) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br><a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_INSERT, 'onclick="check_template_form(\''.$ocertify->npermission.'\')"') .  '</a>&nbsp;<a href="' .  tep_href_link(FILENAME_BILL_TEMPLATES, 'page=' . $_GET['page']) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     case 'edit':
       $heading[] = array('text' => TEXT_INFO_HEADING_EDIT_BILL_TEMPLATE);
@@ -268,8 +293,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_RESPONSIBLE . '<br>' . tep_draw_input_field('responsible', $cInfo->responsible));
       $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_SORT_ORDER . '<br>' . tep_draw_input_field('sort_order', $cInfo->sort_order));
       
-      $contents[] = array('align' => 'center', 'text' => '<br>' .
-          tep_html_element_submit(IMAGE_SAVE) . '&nbsp;<a href="' .  tep_href_link(FILENAME_BILL_TEMPLATES, 'page=' . $_GET['page'] . '&cID=' .  $cInfo->id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br><a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_SAVE, 'onclick="check_template_form(\''.$ocertify->npermission.'\')"') . '</a>&nbsp;<a href="' .  tep_href_link(FILENAME_BILL_TEMPLATES, 'page=' . $_GET['page'] . '&cID=' .  $cInfo->id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     case 'delete':
       $heading[] = array('text' => '' . TEXT_INFO_HEADING_DELETE_BILL_TEMPLATE . '');
@@ -277,13 +301,13 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents = array('form' => tep_draw_form('bill_templates', FILENAME_BILL_TEMPLATES, 'page=' . $_GET['page'] . '&cID=' . $cInfo->id . '&action=deleteconfirm'));
       $contents[] = array('text' => TEXT_INFO_DELETE_INTRO);
       $contents[] = array('text' => '<br>' . $cInfo->name);
-      $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_DELETE) . '&nbsp;<a href="' .  tep_href_link(FILENAME_BILL_TEMPLATES, 'page=' . $_GET['page'] . '&cID=' .  $cInfo->id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br><a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_DELETE, 'onclick="check_template_form(\''.$ocertify->npermission.'\')"') . '</a>&nbsp;<a href="' .  tep_href_link(FILENAME_BILL_TEMPLATES, 'page=' . $_GET['page'] . '&cID=' .  $cInfo->id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     default:
       if (is_object($cInfo)) {
         $heading[] = array('text' => $cInfo->name);
 
-        $contents[] = array('align' => 'center', 'text' => '<a href="' . tep_href_link(FILENAME_BILL_TEMPLATES, 'page=' .  $_GET['page'] . '&cID=' . $cInfo->id . '&action=edit') . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a>' . ($ocertify->npermission == 15 ? (' <a href="' .  tep_href_link(FILENAME_BILL_TEMPLATES, 'page=' . $_GET['page'] .  '&cID=' . $cInfo->id . '&action=delete') . '">' . tep_html_element_button(IMAGE_DELETE) . '</a>'):'')
+        $contents[] = array('align' => 'center', 'text' => '<a href="' .  tep_href_link(FILENAME_BILL_TEMPLATES, 'page=' .  $_GET['page'] .  '&cID=' . $cInfo->id . '&action=edit') . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a>' . ($ocertify->npermission >= 15 ? (' <a href="' .  tep_href_link(FILENAME_BILL_TEMPLATES, 'page=' . $_GET['page'] .  '&cID=' . $cInfo->id . '&action=delete') . '">' . tep_html_element_button(IMAGE_DELETE) . '</a>'):'')
         );
         $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_NAME . '<br>' . $cInfo->name . '<br>');
         if(tep_not_null($cInfo->user_added)){

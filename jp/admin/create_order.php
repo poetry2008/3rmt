@@ -273,10 +273,7 @@ if(isset($_GET['site_id']) and isset($_GET['Customer_mail'] )){
   $customerId = tep_get_customer_id_by_email($email,$site_id);
   
 
-  if(!$customerId){
-    //如果不存在则跳转到新建用户的页面
-    tep_redirect(tep_href_link(FILENAME_CREATE_ACCOUNT, 'site_id='.$site_id.'email_address=' . $email, 'SSL'));
-  }else{
+  if($customerId){
 
     if($_SESSION['email_address'] != $_GET['Customer_mail']){
 
@@ -291,11 +288,13 @@ if(!isset($customerId)){
     $customerId = $_POST['customers_id'];
   }
 }
-if(isset($customerId)){
+if(isset($customerId) && $customerId != ''){
 $lastemail      = $email;
 $account        = tep_get_customer_by_id($customerId);
 $address        = tep_get_address_by_cid($customer);
-  }
+}else{
+$lastemail      = $_GET['Customer_mail'];
+}
 $customer_id    = isset($account['customers_id'])           ? $account['customers_id']:'';
 $firstname      = isset($account['customers_firstname'])    ? $account['customers_firstname']:'';
 $lastname       = isset($account['customers_lastname'])     ? $account['customers_lastname']:'';

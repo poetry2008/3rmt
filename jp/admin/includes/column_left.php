@@ -8,8 +8,6 @@ if (typeof window.jQuery == "undefined") {
     document.write('<script language="javascript" src="includes/javascript/jquery.js"><\/script>');
 }
 </script>
-<?php
-if ($ocertify->npermission >= 10) {?>
 <script>
 $(document).ready(function(){
   <?php
@@ -59,9 +57,6 @@ function toggle_leftColumn()
      }
   }
   var menu_div_width = $('#categories_right_td').width();
-  if(menu_div_width>=480){
-    //$('#categories_tree').animate({width:(menu_div_width-5)+"px"});
-  }
   <?php
   if ($_SERVER['PHP_SELF'] == '/admin/orders.php' || $_SERVER['PHP_SELF'] == '/admin/preorders.php') {
     if (!isset($_GET['action'])) {
@@ -103,7 +98,6 @@ if("undefined" != typeof ele_value_obj){
     box_warp = $(".box_warp").offset();
     box_warp_top = box_warp.top;
     box_warp_left = box_warp.left;
-    //ele_width = ele_width-box_warp.left;
   }
   var ele_obj = '';
   ele_obj = $("#show_date_edit").offset();
@@ -175,21 +169,17 @@ function toggle_lan(sobj)
   }); 
 }
 </script>
-<?php }?>
 <?php
 $l_select_box_arr = array();
 if (isset($_SESSION['l_select_box'])) {
   $l_select_box_arr = explode(',', $_SESSION['l_select_box']);
 }
-if ($ocertify->npermission >= 10) {
-  require(DIR_WS_BOXES . 'configuration.php');
-  require(DIR_WS_BOXES . 'catalog.php');
-  require(DIR_WS_BOXES . 'modules.php');
-  require(DIR_WS_BOXES . 'customers.php');
-  // require(DIR_WS_BOXES . 'taxes.php');
-  require(DIR_WS_BOXES . 'localization.php');
-  require(DIR_WS_BOXES . 'reports.php');
-  require(DIR_WS_BOXES . 'tools.php');
-  require(DIR_WS_BOXES . 'users.php');
-}
+require(DIR_WS_BOXES . 'configuration.php');
+require(DIR_WS_BOXES . 'catalog.php');
+require(DIR_WS_BOXES . 'modules.php');
+require(DIR_WS_BOXES . 'customers.php');
+require(DIR_WS_BOXES . 'localization.php');
+require(DIR_WS_BOXES . 'reports.php');
+require(DIR_WS_BOXES . 'tools.php');
+require(DIR_WS_BOXES . 'users.php');
 ?>

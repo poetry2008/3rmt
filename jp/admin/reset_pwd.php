@@ -128,15 +128,56 @@ function check_search_form()
   });
 }
 <?php //重置日历  ?>
-function reset_customers_pwd() {
+function reset_customers_pwd(c_permission) {
   $.ajax({
     url: 'reset_pwd.php?action=reset_all',
     type: 'POST',
     async:false,
     success: function(msg) {
-      window.location.href = window.location.href; 
+      if (c_permission == 31) {
+        window.location.href = window.location.href; 
+      } else {
+        $.ajax({
+          url: 'ajax_orders.php?action=getallpwd',   
+          type: 'POST',
+          dataType: 'text',
+          async: false,
+          success: function(msg) {
+            pwd_list_array = msg.split(','); 
+            var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+            if (in_array(input_pwd_str, pwd_list_array)) {
+              window.location.href = window.location.href; 
+            } else {
+              alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+            }
+          }
+        });
+      }
     }
   });
+}
+<?php //提交表单?>
+function check_reset_pwd_form(c_permission)
+{
+  if (c_permission == 31) {
+    document.forms.rp_form.submit(); 
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          document.forms.rp_form.submit(); 
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+  }
 }
 </script>
 <style type="text/css">
@@ -209,11 +250,17 @@ require("includes/note_js.php");
     <table border="0" cellpadding="2" cellspacing="0" width="100%">
     <tr>
       <td>
-        <input type="button" value="<?php echo RESET_BUTTON_TEXT;?>" onclick="reset_customers_pwd();">
+        <?php
+        if ($ocertify->npermission >= 15) { 
+        ?>
+        <input type="button" value="<?php echo RESET_BUTTON_TEXT;?>" onclick="reset_customers_pwd('<?php echo $ocertify->npermission;?>');">
+        <?php
+        }
+        ?>   
       </td>
     </tr>
     </table> 
-    <form action='reset_pwd.php?type=saveMsg' method='post'>
+    <form action='reset_pwd.php?type=saveMsg' method='post' name="rp_form">
     <table border="0" cellpadding="2" cellspacing="0">
     <tr>
     <td colspan="2" class="pageHeading" height="40"><?php 
@@ -231,7 +278,7 @@ require("includes/note_js.php");
     <tr>
     <td>&nbsp;</td>
     <td align="right">
-    <input type='submit' value="<?php echo TEXT_RESET_PWD_SAVE;?>">
+    <a href="javascript:void(0);"><?php echo tep_html_element_button(TEXT_RESET_PWD_SAVE, 'onclick="check_reset_pwd_form(\''.$ocertify->npermission.'\');"');?></a>
     </td>
     </tr>
        </table>

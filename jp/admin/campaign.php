@@ -298,7 +298,31 @@ function check_campaign_info(cid, check_type, site_id)
       $('#point_value_error').html(error_arr[5]); 
       $('#limit_value_error').html(error_arr[6]); 
       if (data == '||||||||||||||||||') {
+        <?php
+        if ($ocertify->npermission == 31) {
+        ?>
         document.forms.campaign.submit(); 
+        <?php
+        } else {
+        ?>
+        $.ajax({
+          url: 'ajax_orders.php?action=getallpwd',   
+          type: 'POST',
+          dataType: 'text',
+          async: false,
+          success: function(msg) {
+            pwd_list_array = msg.split(','); 
+            var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+            if (in_array(input_pwd_str, pwd_list_array)) {
+              document.forms.campaign.submit(); 
+            } else {
+              alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+            }
+          }
+        });
+        <?php 
+        }
+        ?>
       }
     }
   });
@@ -314,6 +338,29 @@ function toggle_type_info(ele)
     document.getElementById('type_symbol').innerHTML = '-'; 
     document.getElementById('limit_value_text').innerHTML = '<?php
       echo TEXT_CAMPAIGN_LIMIT_VALUE_READ_DOWN;?>'; 
+  }
+}
+<?php //执行动作?>
+function toggle_campaign_action(c_permission, action_url_str)
+{
+  if (c_permission == 31) {
+    window.location.href = action_url_str; 
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          window.location.href = action_url_str; 
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
   }
 }
 </script>
@@ -396,7 +443,8 @@ require("includes/note_js.php");
                c.used,
                c.created_at,
                c.status,
-               c.site_id
+               c.site_id,
+               c.date_update
         from ' . TABLE_CAMPAIGN . ' c
         where 1 
         ' . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and (c.site_id = '" . intval($_GET['site_id']) . "') " : '') . '
@@ -441,12 +489,12 @@ echo $campaign['start_date'].'～'.$campaign['end_date'];
                 echo $campaign['point_value'];
                 ?>
                 </td>
-                <td class="dataTableContent" align="center" onclick="document.location.href='<?php echo tep_href_link(FILENAME_CAMPAIGN, 'page='.$_GET['page'].'&campaign_id=' .  $campaign['id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):''));?>'">
+                <td class="dataTableContent" align="center">
                 <?php
                 if ($campaign['status'] == '1') {
-                  echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;&nbsp;<a href="' .  tep_href_link(FILENAME_CAMPAIGN, 'action=setflag&flag=0&campaign_id=' . $campaign['id']. (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT) . '</a>';
+                  echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;&nbsp;<a href="javascript:void(0);" onclick="toggle_campaign_action(\''.$ocertify->npermission.'\', \'' .  tep_href_link(FILENAME_CAMPAIGN, 'action=setflag&flag=0&campaign_id=' . $campaign['id'].  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT) . '</a>';
                 } else {
-                  echo '<a href="' . tep_href_link(FILENAME_CAMPAIGN, 'action=setflag&flag=1&campaign_id=' . $campaign['id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED);
+                  echo '<a href="javascript:void(0);" onclick="toggle_campaign_action(\''.$ocertify->npermission.'\', \'' . tep_href_link(FILENAME_CAMPAIGN, 'action=setflag&flag=1&campaign_id=' .  $campaign['id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED);
                 }
                 ?>
                 </td>
@@ -463,7 +511,8 @@ echo $campaign['start_date'].'～'.$campaign['end_date'];
                 </td>
                 <td class="dataTableContent" align="right">
 <?php
-      echo '<a href="javascript:void(0);" onclick="show_campaign_info(this, \''.$campaign['id'].'\', \''.(!empty($_GET['site_id'])?$_GET['site_id']:0).'\');">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
+      $campaigin_date_info = (tep_not_null($campaign['date_update']) && ($campaign['date_update'] != '0000-00-00 00:00:00'))?$campaign['date_update']:$campaign['created_at'];
+      echo '<a href="javascript:void(0);" onclick="show_campaign_info(this, \''.$campaign['id'].'\', \''.(!empty($_GET['site_id'])?$_GET['site_id']:0).'\');">' .  tep_get_signal_pic_info($campaigin_date_info) . '</a>'; 
     ?>&nbsp;
     </td>
               </tr>

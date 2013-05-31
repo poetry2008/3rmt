@@ -1,110 +1,33 @@
 <?php
-// 页面标题
-define('HEADING_TITLE', 'ユーザ管理');
-
-// 错误信息显示标题
-define('TABLE_HEADING_ERRINFO', '!!!!! エラーメッセージ !!!!!');
-
-// 输入错误信息
-define('TEXT_ERRINFO_INPUT_NOINPUT', '未入力です');
-define('TEXT_ERRINFO_INPUT_ERR', '正しく入力されていません');
-define('TEXT_ERRINFO_INPUT_LENGTH', '%d 文字以上入力してください');
-define('TEXT_ERRINFO_USER_DELETE', 'ユーザ情報の削除:ユーザ本人の情報は削除できません');
-define('TEXT_ERRINFO_USER_GRANT', '権限を与える:ユーザを選択してください');
-define('TEXT_ERRINFO_USER_REVOKE', '権限を取消す:ユーザを選択してください');
-define('TEXT_ERRINFO_USER_REVOKE_ONESELF', '権限を取消す:ユーザ本人の権限を取消すことはできません');
-define('TEXT_ERRINFO_CONFIRM_PASSWORD', '確認のため再入力:確認のため再入力したパスワードが違います');
-
-// 访问表错误信息
-define('TEXT_ERRINFO_DB_NO_USERINFO', 'ユーザ情報が取得できませんでした');
-define('TEXT_ERRINFO_DB_NO_USER', '対象となるユーザが存在しません');
-define('TEXT_ERRINFO_DB_USERCHACK', 'ユーザの存在チェックでエラーが発生しました');
-define('TEXT_ERRINFO_DB_EXISTING_USER', '既に登録されているユーザです');
-define('TEXT_ERRINFO_DB_INSERT_USER', 'ユーザ情報の登録ができませんでした');
-define('TEXT_ERRINFO_DB_INSERT_PERMISSION', 'ユーザ権限情報の登録ができませんでした');
-define('TEXT_ERRINFO_DB_UPDATE_USER', 'ユーザ情報の更新ができませんでした');
-define('TEXT_ERRINFO_DB_DELETE_USER', 'ユーザ情報の削除ができませんでした');
-define('TEXT_ERRINFO_DB_CHANGE_PASSWORD', 'パスワードの変更ができませんでした');
-define('TEXT_ERRINFO_DB_CHANGE_USER', 'ユーザ権限の変更ができませんでした');
-define('TEXT_ERRINFO_DB_CHANGE_PERMISSION','ユーザ権限の変更ができませんでした');
-
-// 完成信息
-define('TEXT_SUCCESSINFO_INSERT_USER', 'ユーザを追加しました');
-define('TEXT_SUCCESSINFO_UPDATE_USER', 'ユーザ情報を更新しました');
-define('TEXT_SUCCESSINFO_DELETE_USER', 'ユーザ情報を削除しました');
-define('TEXT_SUCCESSINFO_CHANGE_PASSWORD', 'パスワードを変更しました');
-define('TEXT_SUCCESSINFO_PERMISSION_GIVE', 'ユーザ権限を与えました');
-define('TEXT_SUCCESSINFO_PERMISSION_CLEAR', 'ユーザ権限を取消しました');
-
-define('TEXT_SUCCESSINFO_CHANGE_PERMISSION','権限を変更しました');
-// 页面标题
-define('PAGE_TITLE_MENU_USER', 'ユーザ管理メニュー');
-define('PAGE_TITLE_INSERT_USER', 'ユーザの追加');
-define('PAGE_TITLE_USERINFO', 'ユーザ情報');
-define('PAGE_TITLE_PASSWORD', 'パスワード変更');
-define('PAGE_TITLE_PERMISSION', '管理者権限');
-define('PAGE_TITLE_CHANGE_PERMISSION','サイト権限管理');
-// 按钮
-define('BUTTON_BACK_MENU', 'ユーザ管理メニューに戻る');
-define('BUTTON_INSERT_USER', 'ユーザの追加');
-define('BUTTON_INFO_USER', 'ユーザ情報');
-define('BUTTON_CHANGE_PASSWORD', 'パスワード変更');
-define('BUTTON_PERMISSION', '管理者権限');
-define('BUTTON_INSERT', '追加');
-define('BUTTON_CLEAR', 'クリア');
-define('BUTTON_UPDATE', '更新');
-define('BUTTON_DELETE', '削除');
-define('BUTTON_RESET', '元の値に戻す');
-define('BUTTON_CHANGE', '変更');
-define('BUTTON_GRANT', '権限を与える >>');
-define('BUTTON_REVOKE', '<< 権限を取消す');
-define('BUTTON_BACK_PERMISSION', '管理者権限に戻る');
-define('BUTTON_CHANGE_PERMISSION','サイト権限');
-// 项目名称
-define('TABLE_HEADING_COLUMN', 'カラム');
-define('TABLE_HEADING_DATA', 'データ');
-define('TABLE_HEADING_USER', 'ユーザ');
-define('TABLE_HEADING_USER_LIST', 'ユーザ一覧');
-define('TABLE_HEADING_USER_ID', 'ユーザID');
-define('TABLE_HEADING_PASSWORD', 'パスワード');
-define('TABLE_HEADING_NAME', '氏名');
-define('TABLE_HEADING_EMAIL', 'E-Mail');
-define('TABLE_HEADING_NEW_PASSWORD', '新しいパスワード');
-define('TABLE_HEADING_CONFIRM_PASSWORD', '確認のため再入力');
-!defined('TABLE_HEADING_USER')&& define('TABLE_HEADING_USER', '一般ユーザ');
-define('TABLE_HEADING_ADMIN', 'サイト管理者');
-
-// JavaScript的确认信息
-define('JAVA_SCRIPT_INFO_CHANGE', 'ユーザ管理情報を変更します。\nよろしいですか？');
-define('JAVA_SCRIPT_INFO_DELETE', 'ユーザ管理情報を削除します。\nよろしいですか？');
-define('JAVA_SCRIPT_INFO_PASSWORD', 'パスワードを変更します。\nよろしいですか？');
-define('JAVA_SCRIPT_INFO_GRANT', '管理者権限を与えます。\nよろしいですか？');
-define('JAVA_SCRIPT_INFO_REVOKE', '管理者権限を取り消します。\nよろしいですか？');
-define('TABLE_HEADING_IP_LIMIT', 'IP制限されない設置');
-define('JAVA_SCRIPT_INFO_C_PERMISSION','ユーザ管理の権限を変更する。\nよろしいですか？');
-define('TEXT_RAND_PWD_INFO','<p>書式： 2011/2/22 01:00での例  桁数:計算式</p>
-    <p>3:Y+n+d　＝2011+2+22となり結果は2035です。ここから桁数制限が3となりますので、パスワードは035となります。</p>
-    <p>5:ddd　　＝222222となり結果は222222です。ここから桁数制限が5となりますので、パスワードは22222となります。</p>
-    <p>3:Y/n　　＝2011/2=1005.5となり結果は1005です。ここから桁数制限が3となりますので、パスワードは100となります。</p>
-    <p>4:(y+y)*2　＝(11+11)*2となり結果は44です。ここから桁数制限が4となりますので、0を付け加えパスワードは0044となります。</p>
-    <p>使える計算式：</p>
-    <p>+　-　*　/　()</p>');
-define('TEXT_LOGIN_COUNT','ログイン回数');
-define('TEXT_RAND_PWD','パスワード');
-define('TEXT_RAND_RULES','計算式');
-define('TEXT_ERROR_RULE','計算式の格式が正しくない');
-
-define('TABLE_HEADING_USER_STAFF', 'Staff');
-define('TABLE_HEADING_USER_CHIEF', 'Chief');
-define('TABLE_HEADING_USER_ADMIN', 'Admin');
-define('JAVA_SCRIPT_INFO_STAFF2CHIEF', 'Chief権限を与えます。\nよろしいですか？');
-define('JAVA_SCRIPT_INFO_CHIEF2STAFF', 'Chief権限を取り消します。\nよろしいですか？');
-define('JAVA_SCRIPT_INFO_CHIEF2ADMIN', 'Admin権限を与えます。\nよろしいですか？');
-define('JAVA_SCRIPT_INFO_ADMIN2CHIEF', 'Admin権限を取り消します。\nよろしいですか？');
-define('TEXT_ERRINFO_USER_STAFF', '権限を与える:Staffを選択してください');
-define('TEXT_ERRINFO_USER_CHIEF', '権限を取消す:Chiefを選択してください');
-define('TEXT_ERRINFO_USER_ADMIN', '権限を取消す:Adminを選択してください');
-define('USER_EMAIL_ERROR','入力されたメールアドレスは不正です!');
-define('USER','ユーザー');
-define('SITE_PREM','サイト権限');
-?>
+define('HEADING_TITLE', 'ユーザー管理');
+define('TABLE_USER_INFO_NAME', '氏名');
+define('TABLE_USER_INFO_PERMISSION', '権限');
+define('TABLE_USER_INFO_SITE_PERMISSION', 'サイト');
+define('TABLE_USER_INFO_STATUS', 'ステータス');
+define('TABLE_USER_INFO_ACTION', '操作');
+define('TEXT_DISPLAY_NUMBER_OF_USER_LIST', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> のユーザーのうち)');
+define('NEW_USER_BUTTON_TEXT', 'ユーザー作成');
+define('USER_LIST_SELECT_ACTION', '選択したものを');
+define('USER_LIST_DELETE_ACTION', '削除する');
+define('NEW_USER_HEADING_TITLE', 'ユーザー新規作成');
+define('USER_INFO_ID_TEXT', 'ユーザーID');
+define('USER_INFO_EMAIl_TEXT', 'Email');
+define('TABLE_USER_INFO_SITE_PERMISSION_READ', '設定者と同じ権限内で設定可能。');
+define('TABLE_USER_INFO_PASSWORD', 'パスワード');
+define('USER_INFO_CALC_TEXT', '計算式');
+define('USER_INFO_ONETIME_PWD', 'ワンタイムPW');
+define('USER_ONETIME_PWD_PREVIEW', 'プレビュー');
+define('USER_INFO_LOGIN_NUM', 'ログイン回数');
+define('USER_INFO_LAST_LOGIN_DATE', '最終ログイン日時');
+define('USER_INFO_ONETIME_PWD_READ', '書式： 2011/2/22 01:00での例 桁数:計算式<br>3:Y+n+d　＝2011+2+22となり結果は2035です。ここから桁数制限が3となりますので、パスワードは035となります。<br>5:ddd　　＝222222となり結果は222222です。ここから桁数制限が5となりますので、パスワードは22222となります。<br>3:Y/n　　＝2011/2=1005.5となり結果は1005です。ここから桁数制限が3となりますので、パスワードは100となります。<br>4:(y+y)*2　＝(11+11)*2となり結果は44です。ここから桁数制限が4となりますので、0を付け加えパスワードは0044となります。<br>使える計算式：<br>+　-　*　/　()');
+define('USER_INFO_NO_ONETIME_PWD_READ', 'ワンタイムパスワード作成可能数の上限に達しました。<br>このユーザに追加したい場合は、既存のワンタイムパスワードのいずれかを削除してください。');
+define('USER_INFO_IP_LIMIT_TEXT', 'IP制限されない設置');
+define('TEXT_USER_INFO_IS_NULL', '入力して下さい。');
+define('TEXT_USER_ID_EXISTS', '該当名称は既に存在しています。');
+define('TEXT_USER_EMAIL_FORMAT_WRONG', 'メールのフォーマットが間違ったのです。');
+define('TEXT_DEL_USER', '本当に該当ユーザーを削除しますか？');
+define('TEXT_USER_MUST_SELECT', '少なくとも1つの選択肢を選んでください。');
+define('TEXT_USER_INFO_IS_SHORT', '%d 文字以上入力してください。');
+define('TEXT_USER_INFO_FORMAT_WRONG', '正しく入力されていません。');
+define('TEXT_SORT_ASC','▲');
+define('TEXT_SORT_DESC','▼');

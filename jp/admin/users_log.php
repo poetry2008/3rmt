@@ -184,12 +184,12 @@ function UserLoginIp_list(){
         $per_array = tep_db_fetch_array($per_query);
         tep_db_query($per_query);
         if($v >= 5){ 
-          if($per_array['userid'] == $k && $per_array['permission'] == 15){
+          if($per_array['userid'] == $k && $per_array['permission'] > 15){
 
             $user_admin_name_array[] = $k;
           }
         }else{
-          if($per_array['userid'] == $k && $per_array['permission'] == 15){
+          if($per_array['userid'] == $k && $per_array['permission'] > 15){
             $user_admin_name_temp_array[] = $k; 
           } 
         }
@@ -226,7 +226,7 @@ function UserLoginIp_list(){
       }
         echo '<td>'.$saddress.'</td>';
         echo '<td>'.max($user_time_array).'</td>'; 
-        echo '<td>Staff,Chief</td>';
+        echo '<td>Staff,Chief,Admin</td>';
         echo '<td>'.implode(',',$user_name_list_array).'</td>';
         echo '<td>';
         if(empty($user_admin_name_array)){
@@ -245,7 +245,7 @@ function UserLoginIp_list(){
         }
         echo '<td>'.$saddress.'</td>';
         echo '<td>'.$user_time_temp_array[$admin_value].'</td>'; 
-        echo '<td>Admin</td>';
+        echo '<td>SuperAdmin</td>';
         echo '<td>'.$admin_value.'</td>';
         echo '<td><a href="javascript:void(0);" onclick="if(confirm(\''.TEXT_DELETE_CONFIRM.'\')){ip_unlock(\''.$user_login_array['address'].'\','.($j+$k).',\''.$admin_value.'\');}"><u>'.TEXT_IP_UNLOCK.'</u></a></td>';
         echo '</tr>';   
@@ -301,7 +301,7 @@ function UserLoginLog_list() {
     show_loginlog_list($oresult);   // 列表显示访问日志信息
     echo "</table>\n";
 
-    echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));    // <form>标签的输出
+    echo tep_draw_form('users_form', basename($GLOBALS['PHP_SELF']));    // <form>标签的输出
     show_page_ctl($nrow);       // 页面控制按钮的显示
 
     // 表标签的开始
@@ -316,7 +316,10 @@ function UserLoginLog_list() {
 
     echo '<td class="main">';
     // 按钮显示
-    echo tep_draw_input_field("execute_delete", BUTTON_DELETE_LOGINLOG, "onClick=\"return formConfirm('delete')\"", FALSE, "submit", FALSE);  // ログの削除
+    if ($ocertify->npermission >= 15) {
+      echo tep_draw_input_field("execute_delete_button", BUTTON_DELETE_LOGINLOG, "onClick=\"return formConfirm('delete', '".$ocertify->npermission."')\"", FALSE, "button", FALSE); 
+    }
+    echo tep_draw_hidden_field("execute_delete", BUTTON_DELETE_LOGINLOG); 
     echo "</td></tr></table>\n";
     echo "</form>\n";           // form的footer
   }
@@ -370,12 +373,31 @@ function ip_unlock(ip,num,user){
           }
   });
 }
-function formConfirm(type) {
+function formConfirm(type, c_permission) {
   if (type == "delete") {
       rtn = confirm("'. JAVA_SCRIPT_INFO_DELETE . '");
   }
-  if (rtn) return true;
-  else return false;
+  if (rtn) {
+    if (c_permission != 31) {
+      $.ajax({
+        url: "ajax_orders.php?action=getallpwd",   
+        type: "POST",
+        dataType: "text",
+        async: false,
+        success: function(msg) {
+          pwd_list_array = msg.split(","); 
+          var input_pwd_str = window.prompt("'.JS_TEXT_INPUT_ONETIME_PWD.'", ""); 
+          if (in_array(input_pwd_str, pwd_list_array)) {
+            document.forms.users_form.submit(); 
+          } else {
+            alert("'.JS_TEXT_ONETIME_PWD_ERROR.'"); 
+          }
+        }
+      });
+    } else {
+      document.forms.users_form.submit(); 
+    }
+  } 
 }
 //-->
 </script>

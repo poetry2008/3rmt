@@ -295,6 +295,72 @@ function open_update_calendar()
 function popupImageWindow(url) {
   window.open(url,'popupImageWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=100,height=100,screenX=150,screenY=150,top=150,left=150')
 }
+<?php //提交表单?>
+function check_banner_form(b_type) 
+{
+  <?php
+  if ($ocertify->npermission == 31) {
+  ?>
+  if(b_type == 1) {
+    document.forms.banners.submit(); 
+  } else {
+    document.forms.new_banner.submit(); 
+  }
+  <?php
+  } else {
+  ?>
+  $.ajax({
+    url: 'ajax_orders.php?action=getallpwd',   
+    type: 'POST',
+    dataType: 'text',
+    async: false,
+    success: function(msg) {
+      pwd_list_array = msg.split(','); 
+      var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+      if (in_array(input_pwd_str, pwd_list_array)) {
+        if(b_type == 1) {
+          document.forms.banners.submit(); 
+        } else {
+          document.forms.new_banner.submit(); 
+        }
+      } else {
+        alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+      }
+    }
+  });
+  <?php
+  }
+  ?>
+}
+<?php //跳转动作?>
+function toggle_banner_action(banner_url_str)
+{
+  <?php
+  if ($ocertify->npermission == 31) {
+  ?>
+  window.location.href = banner_url_str; 
+  <?php
+  } else {
+  ?>
+  $.ajax({
+    url: 'ajax_orders.php?action=getallpwd',   
+    type: 'POST',
+    dataType: 'text',
+    async: false,
+    success: function(msg) {
+      pwd_list_array = msg.split(','); 
+      var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+      if (in_array(input_pwd_str, pwd_list_array)) {
+        window.location.href = banner_url_str; 
+      } else {
+        alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+      }
+    }
+  });
+  <?php
+  }
+  ?>
+}
 //--></script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
@@ -524,9 +590,7 @@ $banner_query = tep_db_query("
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="2">
           <tr>
-            <td height="65" class="main" align="right" valign="top" nowrap><?php echo
-            (($form_action == 'insert') ? tep_html_element_submit(IMAGE_INSERT) :
-             tep_html_element_submit(IMAGE_SAVE)). '&nbsp;&nbsp;<a class="new_product_reset" href="' .  tep_href_link(FILENAME_BANNER_MANAGER, 'page=' .(isset($_GET['page'])?$_GET['page']:'') . '&bID=' .  (isset($_GET['bID'])?$_GET['bID']:'') .  (isset($_GET['lsite_id'])?('&site_id='.$_GET['lsite_id']):'')) .  '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?></td>
+            <td height="65" class="main" align="right" valign="top" nowrap><a href="javascript:void(0);"><?php echo (($form_action == 'insert') ?  tep_html_element_button(IMAGE_INSERT, 'onclick="check_banner_form(0);"') : tep_html_element_button(IMAGE_SAVE, 'onclick="check_banner_form(0);"')). '&nbsp;&nbsp;<a class="new_product_reset" href="' .  tep_href_link(FILENAME_BANNER_MANAGER, 'page=' .(isset($_GET['page'])?$_GET['page']:'') . '&bID=' .  (isset($_GET['bID'])?$_GET['bID']:'') .  (isset($_GET['lsite_id'])?('&site_id='.$_GET['lsite_id']):'')) .  '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?></td>
           </tr>
         </table></td>
       </form></tr>
@@ -592,24 +656,25 @@ $banner_query = tep_db_query("
       }
       
       if ( (isset($bInfo) && is_object($bInfo)) && ($banners['banners_id'] == $bInfo->banners_id) ) {
-        echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_BANNER_STATISTICS, 'page=' . $_GET['page'] . '&bID=' . $bInfo->banners_id . (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '\'">' . "\n";
+        echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\';">' . "\n";
       } else {
-        echo '              <tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] . '&bID=' . $banners['banners_id'] . (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '\'">' . "\n";
+        echo '              <tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\';" onmouseout="this.className=\''.$nowColor.'\'">' . "\n";
       }
+      $banner_param_str = 'onclick="document.location.href=\'' . tep_href_link(FILENAME_BANNER_STATISTICS, 'page=' . $_GET['page'] . '&bID=' . $bInfo->banners_id . (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '\'"';
 ?>
-                <td class="dataTableContent"><?php echo $banners['romaji'];?></td>
-                <td class="dataTableContent"><?php echo '<a href="javascript:popupImageWindow(\'' . FILENAME_POPUP_IMAGE . '?banner=' . $banners['banners_id'] . '\')">' . tep_image(DIR_WS_IMAGES . 'icon_popup.gif', 'View Banner') . '</a>&nbsp;' . $banners['banners_title']; ?></td>
-                <td class="dataTableContent" align="right"><?php echo $banners['banners_group']; ?></td>
-                <td class="dataTableContent" align="right"><?php echo $banners_shown . ' / ' . $banners_clicked; ?></td>
+                <td class="dataTableContent" <?php echo $banner_param_str;?>><?php echo $banners['romaji'];?></td>
+                <td class="dataTableContent" <?php echo $banner_param_str;?>><?php echo '<a href="javascript:popupImageWindow(\'' . FILENAME_POPUP_IMAGE . '?banner=' . $banners['banners_id'] . '\')">' . tep_image(DIR_WS_IMAGES . 'icon_popup.gif', 'View Banner') . '</a>&nbsp;' . $banners['banners_title']; ?></td>
+                <td class="dataTableContent" align="right" <?php echo $banner_param_str;?>><?php echo $banners['banners_group']; ?></td>
+                <td class="dataTableContent" align="right" <?php echo $banner_param_str;?>><?php echo $banners_shown . ' / ' . $banners_clicked; ?></td>
                 <td class="dataTableContent" align="right">
 <?php
       if ($banners['status'] == '1') {
-        echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', 'Active') . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] . '&bID=' . $banners['banners_id'] . '&action=setflag&flag=0' . (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', 'Set Inactive') . '</a>';
+        echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', 'Active') .  '&nbsp;&nbsp;<a href="javascript:void(0);" onclick="toggle_banner_action(\'' . tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] . '&bID=' . $banners['banners_id'] .  '&action=setflag&flag=0' .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', 'Set Inactive') . '</a>';
       } else {
-        echo '<a href="' . tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] . '&bID=' . $banners['banners_id'] . '&action=setflag&flag=1' . (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', 'Set Active') . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', 'Inactive');
+        echo '<a href="javascript:void(0);" onclick="toggle_banner_action(\'' .  tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] . '&bID=' .  $banners['banners_id'] . '&action=setflag&flag=1' .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', 'Set Active') . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', 'Inactive');
       }
 ?></td>
-                <td class="dataTableContent" align="right"><?php echo '<a href="' . tep_href_link(FILENAME_BANNER_STATISTICS, 'page=' . $_GET['page'] . '&bID=' . $banners['banners_id'] . (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image(DIR_WS_ICONS . 'statistics.gif', ICON_STATISTICS) . '</a>&nbsp;'; if ( (isset($bInfo) && is_object($bInfo)) && ($banners['banners_id'] == $bInfo->banners_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] . '&bID=' . $banners['banners_id'] . (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
+                <td class="dataTableContent" align="right" <?php echo $banner_param_str;?>><?php echo '<a href="' . tep_href_link(FILENAME_BANNER_STATISTICS, 'page=' . $_GET['page'] . '&bID=' . $banners['banners_id'] . (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image(DIR_WS_ICONS . 'statistics.gif', ICON_STATISTICS) . '</a>&nbsp;'; if ( (isset($bInfo) && is_object($bInfo)) && ($banners['banners_id'] == $bInfo->banners_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] . '&bID=' . $banners['banners_id'] . (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
               </tr>
 <?php
     }
@@ -643,13 +708,14 @@ $banner_query = tep_db_query("
       $contents[] = array('text' => TEXT_INFO_DELETE_INTRO);
       $contents[] = array('text' => '<br>' . $bInfo->banners_title);
       if ($bInfo->banners_image) $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('delete_image', 'on', true) . ' ' . TEXT_INFO_DELETE_IMAGE);
-      $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_DELETE) . '&nbsp;<a href="' . tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] .  '&bID=' . $_GET['bID'] .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br><a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_DELETE, 'onclick="check_banner_form(1);"') .
+          '</a>&nbsp;<a href="' . tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] .  '&bID=' . $_GET['bID'] .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     default:
       if (is_object($bInfo)) {
         $heading[] = array('text' => $bInfo->banners_title);
 
-        $contents[] = array('align' => 'center', 'text' => '<a href="' . tep_href_link(FILENAME_BANNER_MANAGER, 'page=' .  $_GET['page'] . '&bID=' . $bInfo->banners_id . '&action=new' .  (isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a>' . ($ocertify->npermission == 15 ? (' <a href="' .  tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] . '&bID=' . $bInfo->banners_id . '&action=delete' .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'):'')
+        $contents[] = array('align' => 'center', 'text' => '<a href="' .  tep_href_link(FILENAME_BANNER_MANAGER, 'page=' .  $_GET['page'] .  '&bID=' . $bInfo->banners_id . '&action=new' .  (isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a>' . ($ocertify->npermission >= 15 ? (' <a href="' .  tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] . '&bID=' . $bInfo->banners_id . '&action=delete' .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'):'')
         );
         if(tep_not_null($bInfo->user_added)){
 $contents[] = array('text' =>  TEXT_USER_ADDED. ' ' .$bInfo->user_added);

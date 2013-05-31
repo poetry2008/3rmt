@@ -127,13 +127,9 @@ if(isset($_GET['clear_products']) && isset($_SESSION['clear_products_flag'])){
 // START CONFIGURATION ################################
 
 // Optional Tax Rates, e.g. shipping tax of 17.5% is "17.5"
-// $AddCustomTax = "20.0"; // class "ot_custom", used for all unknown total modules
 $AddCustomTax = "19.6";  // new
-// $AddShippingTax = "20.0"; // class "ot_shippping"
 $AddShippingTax = "19.6";  // new
-// $AddLevelDiscountTax = "7.6"; // class "ot_lev_discount"
 $AddLevelDiscountTax = "19.6";  // new
-// $AddCustomerDiscountTax = "7.6"; // class "ot_customer_discount"
 $AddCustomerDiscountTax = "19.6";  // new
 
 // END OF CONFIGURATION ################################
@@ -1663,11 +1659,11 @@ function submit_check_con(){
       if(data != ''){
         if(confirm(data)){
 
-          submitChk(); 
+          submitChk('<?php echo $ocertify->npermission;?>'); 
         }
       }else{
 
-        submitChk();
+        submitChk('<?php echo $ocertify->npermission;?>'); 
       } 
     }
   };

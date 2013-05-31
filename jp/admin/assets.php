@@ -101,16 +101,12 @@ require("includes/note_js.php");
     <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
     <tr>
     <?php
-    if ($ocertify->npermission >= 10) {
       echo '<td width="' . BOX_WIDTH . '" valign="top">';
       echo '<table border="0" width="' . BOX_WIDTH . '" cellspacing="1" cellpadding="1" class="columnLeft">';
       require(DIR_WS_INCLUDES . 'column_left.php');
       echo '</table>';
       echo '</td>';
-    } else {
-      echo '<td>&nbsp;</td>';
-    }
-?>
+    ?>
 <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible">
 <?php
 if(isset($_GET['pid'])&&$_GET['pid']!=''){

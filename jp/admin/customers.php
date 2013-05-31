@@ -88,7 +88,15 @@
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
         $customers_info_sql = "insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created,customers_info_date_account_last_modified,user_update,user_added) values ('" . tep_db_input($customer_id) . "', '0', now(),now(),'".$_SESSION['user_name']."','".$_SESSION['user_name']."')";
         tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created,customers_info_date_account_last_modified,user_update,user_added) values ('" . tep_db_input($customer_id) . "', '0', now(),now(),'".$_SESSION['user_name']."','".$_SESSION['user_name']."')");
+        if(isset($_POST['check_order']) && $_POST['check_order'] != ''){
+            if($_POST['check_order'] == 0){
+              tep_redirect(tep_href_link('create_order.php','Customer_mail='.$customers_email_address.'&site_id='.$_POST['site_id']));
+            }else if($_POST['check_order'] == 1){
+              tep_redirect(tep_href_link('create_preorder.php','Customer_mail='.$customers_email_address.'&site_id='.$_POST['site_id']));
+            }
+        }else{
         tep_redirect(tep_href_link(FILENAME_CUSTOMERS,'site_id='.$_POST['site_id']));
+        }
         break;
       case 'update':
         tep_isset_eof(); 
@@ -188,8 +196,7 @@
           $sql_data_array['entry_zone_id'] = $entry_zone_id;
         }
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', "customers_id = '" . tep_db_input($customers_id) . "' and address_book_id = '" . tep_db_input($default_address_id) . "'");
-
-    tep_redirect(tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action'))));
+        tep_redirect(tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action'))));
         break;
       case 'deleteconfirm':
        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -269,7 +276,7 @@ function check_guest(guest_value){
     document.getElementById("check_is_active").value = 1;
   }
 }
-function check_password(){
+function check_password(value, c_permission){
  post_email = $("#customers_email_address").val();
  post_site =  $("#customers_site_id").val();
  once_again_password = $("#once_again_password").val();
@@ -351,9 +358,33 @@ if(check_is_active == 1){
   }else{
     $("#error_info").html(""); 
   }
-  if(check_error != 'true'){
-       document.forms.customers.submit();  
+  if(value == 1){
+   document.getElementById('check_order').value = 1;
+  }else if(value == 0){
+   document.getElementById('check_order').value = 0;
   }
+  if(check_error != 'true'){
+    if (c_permission == 31) {
+      document.forms.customers.submit();  
+    } else {
+      $.ajax({
+        url: 'ajax_orders.php?action=getallpwd',   
+        type: 'POST',
+        dataType: 'text',
+        async: false,
+        success: function(msg) {
+          pwd_list_array = msg.split(','); 
+          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+          if (in_array(input_pwd_str, pwd_list_array)) {
+            document.forms.customers.submit();  
+          } else {
+            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          }
+        }
+      });
+    }
+  }
+
 }
 function all_select_customers(customers_str){
       var check_flag = document.del_customers.all_check.checked;
@@ -377,7 +408,7 @@ function all_select_customers(customers_str){
                    }
              }
 }
-function delete_select_customers(customers_str){
+function delete_select_customers(customers_str, c_permission){
      sel_num = 0;
      if (document.del_customers.elements[customers_str].length == null) {
          if (document.del_customers.elements[customers_str].checked == true){
@@ -393,7 +424,25 @@ function delete_select_customers(customers_str){
          }
        if (sel_num == 1) {
          if (confirm('<?php echo TEXT_DEL_NEWS;?>')) {
-               document.forms.del_customers.submit(); 
+           if (c_permission == 31) {
+             document.forms.del_customers.submit(); 
+           } else {
+             $.ajax({
+              url: 'ajax_orders.php?action=getallpwd',   
+              type: 'POST',
+              dataType: 'text',
+              async: false,
+              success: function(msg) {
+                pwd_list_array = msg.split(','); 
+                var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+                if (in_array(input_pwd_str, pwd_list_array)) {
+                  document.forms.del_customers.submit(); 
+                } else {
+                  alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                }
+              }
+            });
+           }
           }else{
              document.getElementsByName('customers_action')[0].value = 0;
           }
@@ -405,10 +454,10 @@ function delete_select_customers(customers_str){
 <?php //选择动作?>
 function customers_change_action(r_value, r_str) {
 if (r_value == '1') {
-   delete_select_customers(r_str);
+   delete_select_customers(r_str, '<?php echo $ocertify->npermission;?>');
    }
 }
-$(document).ready(function() {
+$(document).ready(function() { 
   <?php //监听按键?> 
   $(document).keyup(function(event) {
     if (event.which == 27) {
@@ -422,7 +471,7 @@ $(document).ready(function() {
         if ($('#show_customers').css('display') != 'none') {
             if (o_submit_single){
                 cid = $("#cid").val();
-                check_password();
+                check_password('3', '<?php echo $ocertify->npermission;?>');
              }
             }
         }
@@ -532,7 +581,29 @@ function check_radio_status(r_ele)
     $("#s_radio").val(n_radio_value); 
   } 
 }
-
+<?php //执行动作?>
+function toggle_customers_action(c_url_str, c_permission)
+{
+  if (c_permission == 31) {
+    window.location.href = c_url_str; 
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          window.location.href = c_url_str; 
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
+      }
+    });
+  }
+}
 </script>
 <?php
   // 编辑页面
@@ -593,10 +664,6 @@ function check_form() {
 
   var customers_firstname = document.customers.customers_firstname.value;
   var customers_lastname = document.customers.customers_lastname.value;
-  
-  var customers_firstname_f = document.customers.customers_firstname_f.value;
-  var customers_lastname_f = document.customers.customers_lastname_f.value;
-  
 <?php if (ACCOUNT_COMPANY == 'true') echo 'var entry_company = document.customers.entry_company.value;' . "\n"; ?>
 <?php if (ACCOUNT_DOB == 'true') echo 'var customers_dob = document.customers.customers_dob.value;' . "\n"; ?>
   var customers_email_address = document.customers.customers_email_address.value;  
@@ -729,6 +796,20 @@ require("includes/note_js.php");
 <!-- left_navigation_eof -->
     </table></td>
 <!-- body_text -->
+<script type="text/javascript">
+$(document).ready(function() {
+<?php
+   if(isset($_GET['email_address']) && isset($_GET['sid'])){
+
+  ?>
+    $("#create_customers").click();  
+    $("#customers_site_id").val("<?php echo $_GET['sid'];?>");
+    $("#customers_email_address").val('<?php echo $_GET['email_address'];?>');
+  <?php
+   }
+?>
+});
+</script>
     <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2" >
 <?php
   if ($_GET['action'] != 'edit') {
@@ -893,7 +974,7 @@ require("includes/note_js.php");
                     <td>
                      <?php 
                       if($customers_numrows > 0){
-                      if($ocertify->npermission == 15){
+                      if($ocertify->npermission >= 15){
                            echo '<select name="customers_action" onchange="customers_change_action(this.value, \'customers_id[]\');">';
                            echo '<option value="0">'.TEXT_REVIEWS_SELECT_ACTION.'</option>';
                            echo '<option value="1">'.TEXT_REVIEWS_DELETE_ACTION.'</option>';
@@ -914,9 +995,9 @@ require("includes/note_js.php");
                        <?php  
                        //通过site_id判断是否允许新建
                        if(array_intersect($show_list_array,$site_array)){
-                       echo '&nbsp;<a href="javascript:void(0)" onclick="show_customers(this,-1,'.$_GET['page'].','.(isset($customers['site_id'])?$customers['site_id']:'-1').')">' .tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>';
+                       echo '&nbsp;<a href="javascript:void(0)" onclick="show_customers(this,-1,'.$_GET['page'].','.(isset($customers['site_id'])?$customers['site_id']:'-1').');check_guest(1)">' .tep_html_element_button(IMAGE_NEW_PROJECT,'id="create_customers"') . '</a>';
                        }else{
-                       echo '&nbsp;' .tep_html_element_button(IMAGE_NEW_PROJECT,'disabled="disabled"');
+                       echo '&nbsp;' .tep_html_element_button(IMAGE_NEW_PROJECT,'id="create_customers" disabled="disabled"');
                        }
                        ?>
                      </td>

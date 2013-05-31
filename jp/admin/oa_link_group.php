@@ -80,6 +80,31 @@ function select_all_group()
      }
    }
 }
+<?php //执行动作?>
+function toggle_oa_group_form(c_permission)
+{
+  if (c_permission == 31) {
+    return true; 
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(msg) {
+        pwd_list_array = msg.split(','); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          return true; 
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          return false;
+        }
+      }
+    });
+  }
+  return false;
+}
 </script>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
@@ -192,8 +217,7 @@ function ajaxUpdate(id,order){
               </td>
               <td>
               <a href="<?php echo tep_href_link(FILENAME_OA_ITEM, 'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&eid='.$has_item_res['id'].'&return=oa_link&action=edit');?>"><?php echo EDIT_ITEM_LINK_TEXT;?></a> 
-              <a onclick="return confirm('<?php echo
-              $has_item_res['title'].TEXT_DELETE_CONFRIM;?>')" href="<?php echo tep_href_link(FILENAME_OA_ITEM, 'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&eid='.$has_item_res['id'].'&action=del');?>"><?php echo DEL_ITEM_LINK_TEXT;?></a> 
+              <a onclick="if(confirm('<?php echo $has_item_res['title'].TEXT_DELETE_CONFRIM;?>')) return toggle_oa_group_form('<?php echo $ocertify->npermission?>');" href="<?php echo tep_href_link(FILENAME_OA_ITEM, 'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&eid='.$has_item_res['id'].'&action=del');?>"><?php echo DEL_ITEM_LINK_TEXT;?></a> 
               </td>
               <td><?php
             echo '<input type="button" class="up" value=\''.TEXT_UP.'\' onclick="editorder(this)">';
@@ -322,8 +346,10 @@ if ($g_num % 2 == 0) {
                 echo '<td>'.$group_list_res['name'].'</td>'; 
                 echo '<td>';
                 echo '<a href="'.tep_href_link(FILENAME_OA_GROUP, 'action=edit&return=oa_link&gid='.$group_list_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.EDIT_GROUP_TEXT.'</a>'; 
-                echo '&nbsp;&nbsp;'; 
-                echo '<a onclick="return confirm(\''.$group_list_res['name'].TEXT_DELETE_CONFRIM.'\')"'.'href="'.tep_href_link(FILENAME_OA_GROUP, 'action=del&gid='.$group_list_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.DEL_GROUP_TEXT.'</a>'; 
+                if ($ocertify->npermission >= 15) {
+                  echo '&nbsp;&nbsp;'; 
+                  echo '<a onclick="if (confirm(\''.$group_list_res['name'].TEXT_DELETE_CONFRIM.'\')) toggle_oa_group_form(\''.$ocertify->npermission.'\')"'.'href="'.tep_href_link(FILENAME_OA_GROUP, 'action=del&gid='.$group_list_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.DEL_GROUP_TEXT.'</a>'; 
+                } 
                 echo '</td>'; 
                 echo '<td>';
                 echo '<input type="button" class="up" value=\''.TEXT_UP.'\' onclick="editorder(this)">';
@@ -335,7 +361,7 @@ if ($g_num % 2 == 0) {
             </table>
 <script type='text/javascript'>
                 <?php //检查是否选择?>
-                function checkclicked(){
+                function checkclicked(c_permission){
 
                 var couldSubmit = false;
                 $('.checkbox_ag').each(function(ele){
@@ -346,14 +372,34 @@ if ($g_num % 2 == 0) {
                 if(!couldSubmit){
                   alert('<?php echo TEXT_SELECT;?>');
                 }
-                return couldSubmit;
-              }
+                if (couldSubmit == true) {
+                  if (c_permission == 31) {
+                    document.forms.selt_group.submit();  
+                  } else {
+                    $.ajax({
+                      url: 'ajax_orders.php?action=getallpwd',   
+                      type: 'POST',
+                      dataType: 'text',
+                      async: false,
+                      success: function(msg) {
+                        pwd_list_array = msg.split(','); 
+                        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+                        if (in_array(input_pwd_str, pwd_list_array)) {
+                          document.forms.selt_group.submit();  
+                        } else {
+                          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                        }
+                      }
+                    });
+                  }
+                }
+                 
+                }
 </script>
             <?php
               if (tep_db_num_rows($group_list_raw)) {
             ?>
-                <input type="submit" onclick='return checkclicked()' value="<?php
-                echo TEXT_TEMPLATE_ADD;?>"> 
+                <input type="button" onclick="checkclicked('<?php echo $ocertify->npermission;?>')" value="<?php echo TEXT_TEMPLATE_ADD;?>"> 
 <input type="button" onclick="window.location.href='<?php echo tep_href_link(FILENAME_OA_GROUP, 'pcode='.$_GET['pcode'].'&return=special&type='.$_GET['type']);?>'" value="<?php echo ADD_GROUP;?>"/> 
             <?php
               }
