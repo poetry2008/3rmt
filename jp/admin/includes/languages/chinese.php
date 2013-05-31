@@ -777,4 +777,6 @@ define('HEADER_TEXT_ALERT_NUM','（还剩${ALERT_NUM}条）');
 define('TEXT_DISPLAY_NUMBER_OF_ALERT', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 项)');
 define('HEADER_TEXT_ALERT_LINK','操作');
 define('TEXT_DATA_IS_EMPTY','数据为空。');
-define('MODULE_ORDER_TOTAL_TAX_TITLE', '消费税');	
+define('TEXT_FLAG_CHECKED','已读');
+define('TEXT_FLAG_UNCHECK','未读');
+define('MODULE_ORDER_TOTAL_TAX_TITLE', '消费税');
