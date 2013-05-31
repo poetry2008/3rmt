@@ -2658,11 +2658,15 @@ function tep_get_bflag_by_product_id($product_id) {
  ------------------------------------ */
 function tep_get_full_count2($cnt, $pid, $prate = ''){
   if ($prate) {
-    $p = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
+    $radices = tep_get_radices($pid);
+    if($radices!=1&&$radices!=0){
     return 
       '('
-      . number_format($prate * $cnt) 
-      . ')';
+    . number_format($radices * $cnt) 
+    . ')';
+    }else{
+      return '';
+    }
   }
 }
 
@@ -6598,6 +6602,7 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
 
 -1600 * 12 = -19 200
      */
+    $product = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
     $product_quantity = tep_get_quantity($pid);
     $order_history_query = tep_db_query("
         select * 
