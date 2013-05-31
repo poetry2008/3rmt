@@ -635,6 +635,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       $num_product_res = tep_db_fetch_array($num_product_raw); 
       if ($num_product_res) {
         $num_product = $num_product_res['products_quantity']; 
+        $num_product_end = ' '.tep_get_full_count2($num_product,$num_product_res['products_id']);
       }
       
       $totals_email_str = '';
@@ -687,7 +688,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $select_products_res['site_id']),
         date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
         $ensure_date_arr[0],
-        $num_product.PREORDER_PRODUCT_UNIT_TEXT,
+        $num_product.PREORDER_PRODUCT_UNIT_TEXT.$num_product_end,
         $num_product_res['products_name'],
         $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']).($totals_email_i != 0 ? "\n".$totals_email_str : ''),
         $currencies->format($newtotal)
@@ -745,7 +746,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
             get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $select_t_products_res['site_id']),
             date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
             $ensure_date_arr[0],
-            $num_product.PREORDER_PRODUCT_UNIT_TEXT,
+            $num_product.PREORDER_PRODUCT_UNIT_TEXT.$num_product_end,
             $num_product_res['products_name'],
             $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']),
             $newtotal 
