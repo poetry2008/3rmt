@@ -128,6 +128,11 @@
             </td>
             <td>
             <?php echo $preorder_product['products_quantity'].PREORDER_SUCCESS_UNIT_TEXT;?> 
+            <?php 
+            if(isset($preorder_product['products_rate']) &&$preorder_product['products_rate']!=0 &&$preorder_product['products_rate']!=1){
+              echo ' ('.number_format($preorder_product['products_rate']*$preorder_product['products_quantity']).')';
+            }
+            ?>
             </td>
             </tr>
             <tr>
