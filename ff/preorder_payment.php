@@ -338,7 +338,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
             $payment_name_class = new $_POST['pre_payment'];
             $payment_name_str = $payment_name_class->title;
               
-            $pre_replace_info_arr = array($_POST['products_name'], $_POST['quantity'].NUM_UNIT_TEXT.' '.tep_get_full_count2($_POST['quantity']), $payment_name_str, $from_name, STORE_NAME, HTTP_SERVER, $preorder_id, $_POST['yourmessage'], $mail_option_str);
+            $pre_replace_info_arr = array($_POST['products_name'], $_POST['quantity'].NUM_UNIT_TEXT.' '.tep_get_full_count2($_POST['quantity'],$_POST['products_id']), $payment_name_str, $from_name, STORE_NAME, HTTP_SERVER, $preorder_id, $_POST['yourmessage'], $mail_option_str);
             
             $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
             
