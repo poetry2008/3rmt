@@ -510,4 +510,5 @@ define('NOTICE_LESS_PRODUCT_OPTION_TEXT', "%sの商品情報に更新があり�
 define('MSG_TEXT_NULL', '無し');
 define('JS_REVIEW_BAN_CHARACTER','※ 投稿禁止ワードが含まれているため投稿できません。'.'\n');
 define('MODULE_ORDER_TOTAL_TAX_TITLE', '消費税');
+define('NUM_UNIT_TEXT', '個');
 ?>
