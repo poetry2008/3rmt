@@ -1649,12 +1649,15 @@ function forward404Unless($condition)
     返回值: 商品数量的乘积(string) 
 ------------------------------------ */
   function tep_get_full_count2($cnt, $pid){
-    $p = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
-    
+    $radices = tep_get_radices($pid);
+    if($radices!=1&&$radices!=0){
     return 
       '('
-    . number_format($p['products_attention_1_3'] * $cnt) 
+    . number_format($radices * $cnt) 
     . ')';
+    }else{
+      return '';
+    }
   }
 /* -------------------------------------
     功能: 获得商品数量的乘积
