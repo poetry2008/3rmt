@@ -165,8 +165,6 @@ if ( (STOCK_CHECK == 'true') && (STOCK_ALLOW_CHECKOUT != 'true') ) {
   }
 }
 
-require(DIR_WS_CLASSES . 'order.php');
-$order = new order;
 include(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_PROCESS);
 $payment_modules = payment::getInstance(SITE_ID);
   $validateModule = $payment_modules->pre_confirmation_check($payment);
@@ -214,6 +212,8 @@ if (is_array($comments_info)) {
 } else {
   $comments = $comments_info;
 }
+require(DIR_WS_CLASSES . 'order.php');
+$order = new order;
 
 // load the before_process function from the payment modules
 $payment_modules->before_process($payment);
@@ -449,7 +449,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
       $radices = tep_get_radices((int)$order->products[$i]['id']);
       if (tep_db_num_rows($stock_query) > 0) {
         $stock_values = tep_db_fetch_array($stock_query);
-        if ($order->products[$i]['qty'] > $stock_values['products_real_quantity']) {
+        if ($order->products[$i]['qty']*$radices > $stock_values['products_real_quantity']) {
           tep_db_perform(
                          'products',
                          array(
