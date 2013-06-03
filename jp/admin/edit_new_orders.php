@@ -688,14 +688,15 @@ if($address_error == false){
         if (!$is_history) {
           $tmp_quantity = $products_details["qty"]; 
           $p = tep_db_fetch_array(tep_db_query("select * from products where products_id='".$order['products_id']."'"));
+          $radices = tep_get_radices($order['products_id']);
           $pr_quantity = $p['products_real_quantity'];
           $pv_quantity = $p['products_virtual_quantity'];
             
-          if ($pr_quantity - $tmp_quantity < 0) {
+          if ($pr_quantity - $tmp_quantity*$radices < 0) {
             $pr_quantity = 0;
             $pv_quantity += ($pr_quantity - $tmp_quantity);
           } else {
-            $pr_quantity -= $tmp_quantity;
+            $pr_quantity -= $tmp_quantity*$radices;
           } 
             if($customer_guest['is_calc_quantity'] != '1') {
               tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = ".$pr_quantity.", products_virtual_quantity = ".$pv_quantity.", products_ordered = products_ordered + " . $tmp_quantity . " where products_id = '" . (int)$order['products_id'] . "'");
@@ -4338,10 +4339,7 @@ if($orders_exit_flag == true){
             if ($less_op_single) {
               echo "<input class='update_products_qty' style='background: none repeat scroll 0 0 #CCCCCC' readonly id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" .  $products_qty_num . "'>";
             } else {
-              echo "<input class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" .  $products_qty_num . "' onkeyup=\"clearLibNum(this);validate_max_quantity(this,'".$orders_products_id_array['products_id']."');recalc_order_price('".$oID."', '".$orders_products_id."', '2', '".$op_info_str."','".$orders_products_list."');price_total('".TEXT_MONEY_SYMBOL."');\">";
-          echo '<input type="hidden" value="'.  tep_get_quantity($orders_products_id_array['products_id']).  '" id="max_quantity_'.$orders_products_id_array['products_id'].'">';
-          echo '<input type="hidden" value="'.$products_qty_num.'" id="last_quantity_'.$orders_products_id_array['products_id'].'">';
-
+              echo "<input class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" .  $products_qty_num . "' onkeyup=\"clearLibNum(this);recalc_order_price('".$oID."', '".$orders_products_id."', '2', '".$op_info_str."','".$orders_products_list."');price_total('".TEXT_MONEY_SYMBOL."');\">";
             }
             echo "&nbsp;<input type='button' value='".IMAGE_DELETE."' onclick=\"delete_products( '".$orders_products_id."', '".TEXT_MONEY_SYMBOL."','1');recalc_order_price('".$oID."', '".$orders_products_id."', '2', '".$op_info_str."','".$orders_products_list."');\">&nbsp;x</td>\n" . 
               '      <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input id='update_products_name_$orders_products_id' name='update_products[$orders_products_id][name]' size='64' type='hidden' value='" . $order->products[$i]['name'] . "'>\n" . 

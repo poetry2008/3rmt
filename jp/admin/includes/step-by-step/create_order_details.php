@@ -790,9 +790,8 @@ if($index > 0){
           tep_db_free_result($products_query);  
           echo "<tr><form action='$PHP_SELF?oID=$oID&action=$action$param_str' method='POST'>\n";
           echo "<td class='dataTableContent'>&nbsp;" . ADDPRODUCT_TEXT_STEP . " 4: </td>";
-          echo '<td class="dataTableContent">&nbsp;' .  ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input name="add_product_quantity" size="2" value="1" onkeyup="clearLibNum(this);validate_max_quantity(this,\''.$add_product_products_id.'\')">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'&nbsp;&nbsp;&nbsp;&nbsp;';
-          echo '<input type="hidden" value="'.  tep_get_quantity($add_product_products_id).  '" id="max_quantity_'.$add_product_products_id.'">';
-          echo '<input type="hidden" value="1" id="last_quantity_'.$add_product_products_id.'">';
+          echo '<td class="dataTableContent">&nbsp;' .
+            ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input name="add_product_quantity" size="2" value="1" onkeyup="clearLibNum(this);">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'&nbsp;&nbsp;&nbsp;&nbsp;';
           echo '<input type="hidden" style="text-align:right;" class="once_pwd" onkeyup="clearNoNum_1(this);" value="'. (int)$products_array['products_price'] .'" size="9" name="add_product_price">&nbsp;</td>';
           echo "<td class='dataTableContent' align='right' colspan='2'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
 

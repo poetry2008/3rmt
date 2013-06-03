@@ -1995,17 +1995,6 @@ function check_signal_time_select(c_permission)
     alert('<?php echo NOTICE_SET_WRONG_TIME;?>'); 
   }
 }
-
-function validate_max_quantity(obj,pid){
-  var max_quantity = $('#max_quantity_'+pid).val();
-  var quantity = obj.value;
-  if(parseInt(quantity) > parseInt(max_quantity)){
-    obj.value = $('#last_quantity_'+pid).val();
-  }else{
-    $('#last_quantity_'+pid).val(quantity);
-  }
-}
-<?php //地址动作?>
 function check_address(action, c_permission)
 {
   if (c_permission == 31) {
