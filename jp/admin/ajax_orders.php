@@ -17,7 +17,7 @@ while($request_one_time_row = tep_db_fetch_array($request_one_time_query)){
 if ($ocertify->npermission == 31) {
   if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
     if (!isset($_POST['split_param'])) {
-      if (!(($_POST['orders_id'] && ($_POST['orders_comment']||$_POST['orders_comment_flag']=='true')) || ($_GET['orders_id'] && $_POST['orders_credit']))) {
+      if (!((isset($_POST['orders_id']) && (isset($_POST['orders_comment'])||$_POST['orders_comment_flag']=='true')) || (isset($_GET['orders_id']) && isset($_POST['orders_credit'])))) {
         forward401();
       } 
     }
@@ -71,8 +71,7 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
 header("Cache-Control: post-check=0, pre-check=0", false);
 # HTTP/1.0
 header("Pragma: no-cache");
-if ($_POST['orders_id'] &&
-    ($_POST['orders_comment']||$_POST['orders_comment_flag']=='true')) {
+if (isset($_POST['orders_id']) && (isset($_POST['orders_comment'])||$_POST['orders_comment_flag']=='true')) {
 /*------------------------------------------------
  功能: 更新订单评论
  参数: $_POST['orders_comment'] 获取orders_comment值
@@ -99,7 +98,7 @@ if ($_POST['orders_id'] &&
     $q  = $rp['products_real_quantity'] + (int)$_GET['count'];
     tep_db_query("update ".TABLE_PRODUCTS." set products_real_quantity='".$q."' where products_id='".$p['relate_products_id']."'");
   }
-} else if ($_GET['orders_id'] && isset($_POST['orders_credit'])) {
+} else if (isset($_GET['orders_id']) && isset($_POST['orders_credit'])) {
 /*--------------------------------------------
  功能: 订单信用
  参数: $_GET['orders_id'] 订单ID
