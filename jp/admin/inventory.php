@@ -130,6 +130,7 @@ require("includes/note_js.php");
          $products_query_rows = "select
            pd.products_name,
            p.products_real_quantity + p.products_virtual_quantity as products_quantity,
+           p.products_virtual_quantity,
            p.products_price,
            p.products_bflag,
            p2i.products_id,
@@ -168,7 +169,7 @@ require("includes/note_js.php");
           ?>
           <a
           href="categories.php?cPath=<?php echo $link_cpath;?>&pID=<?php
-          echo $link_product_id;?>&action=new_product_preview&read=only">
+          echo $link_product_id;?>">
           <?php echo $products['products_name'];?></a>&nbsp;&nbsp;
           <?php
             //关联商品
@@ -199,6 +200,11 @@ require("includes/note_js.php");
     $menu_datas[$i_cnt][1]=tep_get_kakuukosuu_by_products_id($col_kaku['products_id']);
     $menu_datas[$i_cnt][2]=$col_kaku['kakaku'];
     $i_cnt++;
+  }
+  $imaginary=0;
+  if(isset($products['products_virtual_quantity'])
+    &&$products['products_virtual_quantity']!=0){
+    $imaginary = $products['products_virtual_quantity'];
   }
   for($i=0;$i<$i_cnt;$i++){
     if($products['products_id']==$menu_datas[$i][0]){

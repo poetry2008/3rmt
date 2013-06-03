@@ -1117,6 +1117,38 @@ function clearLibNum(obj)
   }
 }
 
+function rsync_num(obj){
+  var change_id = obj.id;
+  if(obj.id == 'product_qt'){
+    num1 = obj.value;
+    num2 = $('#product_qtr').val();
+    radices = $('#product_radices').val();
+    other_num = num2%radices;
+    new_num2 = num1*radices+other_num;
+    $('#product_qtr').val(new_num2);
+  }
+  if(obj.id == 'product_qtr'){
+    num2 = obj.value;
+    radices = $('#product_radices').val();
+    new_num1 = Math.floor(num2/radices);
+    $('#product_qt').val(new_num1);
+  }
+  if(obj.id == 'relate_qt'){
+    num1 = obj.value;
+    num2 = $('#relate_qtr').val();
+    radices = $('#relate_radices').val();
+    other_num = num2%radices;
+    new_num2 = num1*radices+other_num;
+    $('#relate_qtr').val(new_num2);
+  }
+  if(obj.id == 'relate_qtr'){
+    num2 = obj.value;
+    radices = $('#relate_radices').val();
+    new_num1 = Math.floor(num2/radices);
+    $('#relate_qt').val(new_num1);
+  }
+}
+
 function clearNewLibNum(obj) 
 {
   var re = /^-?[0-9]+$/;
@@ -1539,7 +1571,7 @@ function check_fee(action,c_permission){
       async: false,
       success: function(msg) {
         pwd_list_array = msg.split(',');
-        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>'); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
         if (in_array(input_pwd_str, pwd_list_array)) {
           document.country_fee_form.action = 'country_fee.php?action='+action;
           document.country_fee_form.submit();
@@ -1963,8 +1995,6 @@ function check_signal_time_select(c_permission)
     alert('<?php echo NOTICE_SET_WRONG_TIME;?>'); 
   }
 }
-
-<?php //地址动作?>
 function check_address(action, c_permission)
 {
   if (c_permission == 31) {

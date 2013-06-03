@@ -133,8 +133,7 @@
 $error = false;
 $products_num_query = mysql_query("select products_real_quantity,products_virtual_quantity from products where products_id='".$_POST['products_id']."'");
 $products_num_array = mysql_fetch_array($products_num_query);
-// $products_num = $products_num_array['products_real_quantity'];
-$products_num = $products_num_array['products_real_quantity'] + $products_num_array['products_virtual_quantity'];
+$products_num = tep_get_quantity($_POST['products_id']) + $products_num_array['products_virtual_quantity'];
 
     if (isset($_POST['action']) && ($_POST['action'] == 'process') && empty($_POST['quantity'])) {
       $quantity_error = true;

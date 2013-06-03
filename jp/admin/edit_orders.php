@@ -1060,7 +1060,13 @@ if($address_error == false){
               }
             }
 
-            $products_ordered_mail .= SENDMAIL_QTY_NUM.str_repeat('　', intval($max_c_len - mb_strlen(SENDMAIL_QTY_NUM, 'utf-8'))).'：' . $order->products[$i]['qty'] . SENDMAIL_EDIT_ORDERS_NUM_UNIT . tep_get_full_count2($order->products[$i]['qty'], $order->products[$i]['id']) . "\n";
+            $pcount_email = '';
+            if(isset($order->products[$i]['rate'])
+              &&$order->products[$i]['rate']!=1
+              &&$order->products[$i]['rate']!=0){
+              $pcount_email = ' ('.number_format($order->products[$i]['qty']*$order->products[$i]['rate']).')';
+            }
+            $products_ordered_mail .= SENDMAIL_QTY_NUM.str_repeat('　', intval($max_c_len - mb_strlen(SENDMAIL_QTY_NUM, 'utf-8'))).'：' .  $order->products[$i]['qty'] . SENDMAIL_EDIT_ORDERS_NUM_UNIT .  $pcount_email . "\n";
             $products_ordered_mail .= SENDMAIL_TABLE_HEADING_PRODUCTS_PRICE.str_repeat('　', intval($max_c_len - mb_strlen(SENDMAIL_TABLE_HEADING_PRODUCTS_PRICE, 'utf-8'))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
             $products_ordered_mail .= str_replace(':', '', SENDMAIL_ENTRY_SUB_TOTAL).str_repeat('　', intval($max_c_len - mb_strlen(str_replace(':', '', SENDMAIL_ENTRY_SUB_TOTAL), 'utf-8'))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
             $products_ordered_mail .= '------------------------------------------' . "\n";

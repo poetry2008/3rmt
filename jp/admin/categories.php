@@ -11,6 +11,7 @@ $cPath_yobi = cpathPart($_GET['cPath'], 1);
 $currencies = new currencies();
 $action = (isset($_GET['action']) ? $_GET['action'] : '');
 if ( eregi("(insert|update|setflag)", $action) ) include_once('includes/reset_seo_cache.php');
+
 if (isset($_GET['action']) && $_GET['action']) {
   switch ($_GET['action']) {
 /* -----------------------------------------------------
@@ -5105,6 +5106,11 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 }
                 $products_table_content_row[] = array('params'=>'class="dataTableContent"', 'text'=>'<input type="checkbox" name="products_id_list[]" value="'.$products['products_id'].'">');
                 $products_table_content_row[] = array('params'=>$products_name_params, 'text'=>$products_name_text);
+                $imaginary=0;
+                if(isset($products['products_virtual_quantity'])
+                    &&$products['products_virtual_quantity']!=0){
+                  $imaginary = $products['products_virtual_quantity'];
+                }
                 for($i=0;$i<$i_cnt;$i++){
                   if($products['products_id']==$menu_datas[$i][0]){
                     $imaginary=$menu_datas[$i][1];
@@ -5168,21 +5174,19 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 } 
                 $products_table_content_row[] = array('params'=>$products_order_params, 'text'=>$products_order_text);
                 if (empty($site_id)) {
-                  $products_storage_params .= 'class="dataTableContent" align="right" onmouseover=\'this.style.cursor="pointer"\' id=\'virtual_quantity_'.$products['products_id'].'\' onclick="show_update_info(this, '. $products['products_id'].', \'1\', \'1\')"';
+                  $products_storage_params .= 'class="dataTableContent" align="right" onmouseover=\'this.style.cursor="pointer"\'';
+                  $products_storage_text .= '<u id=\'virtual_quantity_'.$products['products_id'].'\' onclick="show_update_info(this, '. $products['products_id'].', \'1\', \'1\')">';
                   $products_storage_text .= $imaginary;
+                  $products_storage_text .= '</u>';
                   $products_inventory_params .= 'class="dataTableContent" align="right" onmouseover=\'this.style.cursor="pointer"\' style="font-weight:bold;" ';
                   if(isset($products['products_attention_1_3'])
                   &&$products['products_attention_1_3']!=0
                   &&$products['products_attention_1_3']!=1
-                  &&$products['products_attention_1_3']!=''
-                  &&$products['products_real_quantity']!=0){
+                  &&$products['products_attention_1_3']!=''){
                   $products_inventory_text .= '<u id=\'quantity_real_'.$products['products_id'].'\' onclick="show_update_info(this, '.$products['products_id'].', \'0\', \'1\')">';
                   $products_inventory_text .= tep_get_quantity($products['products_id']);
-                  $products_inventory_text .= '</u>&nbsp;(';
+                  $products_inventory_text .= '</u>';
 
-                  $products_inventory_text .= '<u id=\'quantity_'.$products['products_id'].'\' onclick="show_update_info(this, '.$products['products_id'].', \'2\', \'1\')">';
-                  $products_inventory_text .= $products['products_real_quantity'];
-                  $products_inventory_text .= '</u>)';
                   }else{
                   $products_inventory_text .= '<u id=\'quantity_'.$products['products_id'].'\' onclick="show_update_info(this, '.$products['products_id'].', \'2\', \'1\')">';
                   $products_inventory_text .= $products['products_real_quantity'];
@@ -5192,7 +5196,32 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   $products_storage_params .= 'class="dataTableContent" align="right" onclick="document.location.href=\''.tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'')).'\';"';
                   $products_storage_text .= $imaginary;
                   $products_inventory_params .= 'class="dataTableContent" align="right" style="font-weight:bold;" onclick="document.location.href=\''.tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'')).'\';"';
+                  if(isset($products['products_attention_1_3'])
+                  &&$products['products_attention_1_3']!=0
+                  &&$products['products_attention_1_3']!=1
+                  &&$products['products_attention_1_3']!=''
+                  &&$products['products_real_quantity']!=0){
+                  $products_inventory_text .= '<table width="100%">';
+                  $products_inventory_text .= '<tr>';
+                  $products_inventory_text .= '<td width="50%" align="right">';
+                  $products_inventory_text .= tep_get_quantity($products['products_id']);
+                  $products_inventory_text .= '</td><td width="50%" align="right">(';
                   $products_inventory_text .= $products['products_real_quantity'];
+                  $products_inventory_text .= ')';
+                  $products_inventory_text .= '</td>';
+                  $products_inventory_text .= '</tr>';
+                  $products_inventory_text .= '</table>';
+                  }else{
+                  $products_inventory_text .= '<table width="100%">';
+                  $products_inventory_text .= '<tr>';
+                  $products_inventory_text .= '<td align="right">';
+                  $products_inventory_text .= '</td><td align="right">';
+                  $products_inventory_text .= $products['products_real_quantity'];
+                  $products_inventory_text .= '</td>';
+                  $products_inventory_text .= '</tr>';
+                  $products_inventory_text .= '</table>';
+                  }
+
                 }
                 $products_table_content_row[] = array('params'=>$products_storage_params, 'text'=>$products_storage_text);
                 $products_table_content_row[] = array('params'=>$products_inventory_params, 'text'=>$products_inventory_text);
@@ -5275,13 +5304,21 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   $products_price_params .= 'class="dataTableContent" align="right" onclick="document.location.href=\''.tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'')).'\';"';
                 }
                 $product_price = tep_get_products_price($products['products_id'], $products);
-                $products_price_text .= '<span id="edit_p_'.$products['products_id'].'">'; 
+                if (empty($site_id)) {
+                  $products_price_text .= '<u id="edit_p_'.$products['products_id'].'">'; 
+                }else{
+                  $products_price_text .= '<span id="edit_p_'.$products['products_id'].'">'; 
+                }
                 if ($product_price['sprice']) {
                   $products_price_text .= '<span class="specialPrice">' .  $currencies->format($product_price['sprice']) . '</span>';
                 } else {
                   $products_price_text .= $currencies->format($product_price['price']);
                 }
-                $products_price_text .= '</span>'; 
+                if (empty($site_id)) {
+                  $products_price_text .= '</u>'; 
+                }else{
+                  $products_price_text .= '</span>'; 
+                }
                 $products_price_text .= '<span style="display:none;" id="h_edit_p_'.$products['products_id'].'">'.$tmp_p_price.'</span>'; 
                 $products_table_content_row[] = array('params'=>$products_price_params, 'text'=>$products_price_text);
                 $products_set_price_params .= 'class="dataTableContent" align="center"';

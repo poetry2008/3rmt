@@ -594,11 +594,23 @@ if ($_GET['action'] == 'show_category_info') {
           array('text' => @display_price(tep_get_avg_by_pid($pInfo->products_id)).CATEGORY_MONEY_UNIT_TEXT) 
         );
   }
-  
+  //判断汇率 是否是空 0 或者1 如果不是 显示两个商品数量
+  $radices = tep_get_radices($pInfo->products_id);
+  if($radices!=''&&$radices!=1&&$radices!=0){
+  $product_info_array[]['text'] = array(
+        array('params' => 'nowrap="nowrap"', 'text' => TABLE_HEADING_CATEGORIES_PRODUCT_REAL_QUANTITY.':'),
+        array('text' => ((!empty($_GET['site_id']))?tep_get_quantity($pInfo->products_id):tep_draw_input_field('products_quantity', tep_get_quantity($pInfo->products_id),'size="8" id="product_qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')) . '&nbsp;' .CATEGORY_GE_UNIT_TEXT.  '&nbsp;&nbsp;&larr;&nbsp;' .  (int)($pInfo->products_real_quantity/$radices) .CATEGORY_GE_UNIT_TEXT)
+      );
+  $product_info_array[]['text'] = array(
+        array('params' => 'nowrap="nowrap"', 'text' => '<input id="product_radices" type="hidden" value="'.$radices.'">'),
+        array('text' => ((!empty($_GET['site_id']))?$pInfo->products_real_quantity:tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="product_qtr" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')) . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&larr;&nbsp;' . $pInfo->products_real_quantity )
+      );
+  }else{
   $product_info_array[]['text'] = array(
         array('params' => 'nowrap="nowrap"', 'text' => TABLE_HEADING_CATEGORIES_PRODUCT_REAL_QUANTITY.':'),
         array('text' => ((!empty($_GET['site_id']))?$pInfo->products_real_quantity:tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;' .CATEGORY_GE_UNIT_TEXT.  '&nbsp;&nbsp;&larr;&nbsp;' . $pInfo->products_real_quantity .CATEGORY_GE_UNIT_TEXT)
       );
+  }
   
   $product_info_array[]['text'] = array(
         array('params' => 'nowrap="nowrap"', 'text' => TABLE_HEADING_CATEGORIES_PRODUCT_VIRTUAL_STORE.':'),
@@ -658,12 +670,25 @@ if ($_GET['action'] == 'show_category_info') {
             array('text' => @display_price(tep_get_avg_by_pid($relate_pInfo->products_id)).CATEGORY_MONEY_UNIT_TEXT) 
           );
     }
-    
+
+
+  $relate_radices = tep_get_radices($relate_pInfo->products_id);
+  if($relate_radices!=''&&$relate_radices!=1&&$relate_radices!=0){
+    $relate_product_info_array[]['text'] = array(
+          array('params' => 'nowrap="nowrap"', 'text' => TABLE_HEADING_CATEGORIES_PRODUCT_REAL_QUANTITY.':'),
+          array('text' => ((!empty($_GET['site_id']))?tep_get_quantity($relate_pInfo->products_id):tep_draw_input_field('relate_products_quantity', tep_get_quantity($relate_pInfo->products_id),'size="8" id="relate_qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')) . '&nbsp;' .CATEGORY_GE_UNIT_TEXT.  '&nbsp;&nbsp;&larr;&nbsp;' .  (int)($relate_pInfo->products_real_quantity/$relate_radices) . CATEGORY_GE_UNIT_TEXT)
+        );
+    $relate_product_info_array[]['text'] = array(
+          array('params' => 'nowrap="nowrap"', 'text' => '<input id="relate_radices" type="hidden" value="'.$relate_radices.'">'),
+          array('text' => ((!empty($_GET['site_id']))?$relate_pInfo->products_real_quantity:tep_draw_input_field('relate_products_real_quantity', $relate_pInfo->products_real_quantity,'size="8" id="relate_qtr" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')) . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&larr;&nbsp;' . $relate_pInfo->products_real_quantity)
+        );
+  }else{
     $relate_product_info_array[]['text'] = array(
           array('params' => 'nowrap="nowrap"', 'text' => TABLE_HEADING_CATEGORIES_PRODUCT_REAL_QUANTITY.':'),
           array('text' => ((!empty($_GET['site_id']))?$relate_pInfo->products_real_quantity:tep_draw_input_field('relate_products_real_quantity', $relate_pInfo->products_real_quantity,'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;' .CATEGORY_GE_UNIT_TEXT.  '&nbsp;&nbsp;&larr;&nbsp;' . $relate_pInfo->products_real_quantity . CATEGORY_GE_UNIT_TEXT)
         );
-  
+  }
+
     $relate_product_info_array[]['text'] = array(
           array('params' => 'nowrap="nowrap"', 'text' => TABLE_HEADING_CATEGORIES_PRODUCT_VIRTUAL_STORE.':'),
           array('text' => ((!empty($_GET['site_id']))?$relate_pInfo->products_virtual_quantity:tep_draw_input_field('relate_products_virtual_quantity', $relate_pInfo->products_virtual_quantity,' size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;'.CATEGORY_GE_UNIT_TEXT. '&nbsp;&nbsp;&larr;&nbsp;' . $relate_pInfo->products_virtual_quantity . CATEGORY_GE_UNIT_TEXT)
@@ -3046,12 +3071,11 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   while($userslist= tep_db_fetch_array($sites_id)){
     $site_arr = $userslist['site_permission']; 
   }
-  $site_array = explode(',',$site_arr);
-  if(isset($_GET['site_id'])&&$_GET['site_id']){
-    $show_site_arr = explode('-',$_GET['site_id']);
-  }else{
-    $show_site_arr = explode('-',str_replace(',','-',tep_get_setting_site_info(FILENAME_REVIEWS)));
+  $sites_sql = tep_db_query("SELECT * FROM `sites`");
+  while($sites_row = tep_db_fetch_array($sites_sql)){
+     $show_site_arr[] = $sites_row['id']; 
   }
+  $site_array = explode(',',$site_arr);
   $notice_box = new notice_box('popup_order_title', 'popup_order_info');
     $rID = tep_db_prepare_input($_GET['rID']);
     $reviews_query = tep_db_query("
@@ -3241,9 +3265,9 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   }else{
    $site_id_name = "<select id='add_site_id' name='insert_site_id'>";
    $new_site_arr = array_intersect($show_site_arr,$site_array);
+
    foreach($new_site_arr as $value){
-     if($value==0){
-     }else{
+     if($value!=0){
        $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$value));
        $site_id_name .= "<option value='".$site_name['id']."' ";
        if(isset($_GET['add_site_id'])&&$_GET['add_site_id']
@@ -3566,11 +3590,15 @@ if(!in_array($site_id,$site_array)&&$site_id!=-1){
 
     if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
       $sql_site_where = 'site_id in ('.str_replace('-', ',', $_GET['site_id']).')';
-      $show_site_arr = explode('-',$_GET['site_id']);
     } else {
       $show_site_str = tep_get_setting_site_info($_POST['self_page']);
       $sql_site_where = 'site_id in ('.$show_site_str.')';
-      $show_site_arr = explode(',',$show_site_str);
+    }
+    $sites_sql = tep_db_query("SELECT * FROM `sites`");
+    $show_site_arr = array();
+    $show_site_arr[0] = '0'; 
+    while($sites_row = tep_db_fetch_array($sites_sql)){
+      $show_site_arr[] = $sites_row['id']; 
     }
      $latest_news_query_raw = ' select n.news_id, n.headline, n.date_added,
      n.author, n.update_editor, n.latest_update_date, n.content, n.status,
@@ -4523,11 +4551,13 @@ if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'
 }  
     if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
       $sql_site_where = 'site_id in ('.str_replace('-', ',', $_GET['site_id']).')';
-      $show_site_arr = explode('-',$_GET['site_id']);
     } else {
       $show_site_str = tep_get_setting_site_info(FILENAME_CUSTOMERS);
       $sql_site_where = 'site_id in ('.$show_site_str.')';
-      $show_site_arr = explode(',',$show_site_str);
+    }
+    $sites_sql = tep_db_query("SELECT * FROM `sites`");
+    while($sites_row = tep_db_fetch_array($sites_sql)){
+      $show_site_arr[] = $sites_row['id']; 
     }
     $customers_query_raw = "
       select c.customers_id, 
@@ -4707,7 +4737,6 @@ if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'
       $site_id_name = $site_name['romaji'].'<input id=\'customers_site_id\' name="site_id" type="hidden" value="'.$site_name['id'].'">';
  }
  }else{
-   if($customers_site_arr[0] == ''){ }
    $customers_site_arr = array_intersect($show_site_arr,$site_array);
    $site_id_name = "<select id='customers_site_id' name='site_id' $disabled>";
    foreach($customers_site_arr as $value){
@@ -4939,24 +4968,28 @@ if($_GET['cID'] != -1){
         }
        }else{
          if (!isset($cInfo->is_active)) {
-           $submit = '<input type="hidden" id="cid" value="'.$_GET['cID'].'">'.tep_html_element_button(IMAGE_SAVE,'onclick="check_password(\'\', \''.$ocertify->npermission.'\')"'); 
+           $submit = '<input type="hidden" id="cid" value="'.$_GET['cID'].'">'.tep_html_element_button(IMAGE_SAVE,'onclick="check_password(\'3\', \''.$ocertify->npermission.'\')"'); 
          } else if ($cInfo->is_active != '0') {
-           $submit = '<input type="hidden" id="cid" value="'.$_GET['cID'].'">'.tep_html_element_button(IMAGE_SAVE,'onclick="check_password(\'\', \''.$ocertify->npermission.'\')"'); 
+           $submit = '<input type="hidden" id="cid" value="'.$_GET['cID'].'">'.tep_html_element_button(IMAGE_SAVE,'onclick="check_password(\'3\', \''.$ocertify->npermission.'\')"'); 
          }
        }
    if($_GET['cID'] != -1){
     if($disabled){
      $customers_del = tep_html_element_button(IMAGE_DELETE,$disabled);
      if ($cInfo->is_active == '1') {
-       $customers_orders = tep_html_element_button(IMAGE_ORDERS,$disabled);
-       $customers_products = tep_html_element_button(BUTTON_CUSTOMERS_PRODUCTS_TEXT,$disabled);
+       if ($ocertify->npermission >= 15) {
+         $customers_orders = tep_html_element_button(IMAGE_ORDERS,$disabled);
+         $customers_products = tep_html_element_button(BUTTON_CUSTOMERS_PRODUCTS_TEXT,$disabled);
+       } 
        $customers_email = tep_html_element_button(IMAGE_EMAIL,$disabled);
      } 
     }else{
-     $customers_del =  ' <a class = "new_product_reset" href="' .  tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' .  $cInfo->customers_id .  '&action=deleteconfirm') .  '">'.tep_html_element_button(IMAGE_DELETE).'</a>';
+     $customers_del =  ' <a class = "new_product_reset" href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="toggle_customers_action(\''.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' .  $cInfo->customers_id .  '&action=deleteconfirm').'\', \''.$ocertify->npermission.'\');"').'</a>';
      if ($cInfo->is_active == '1') {
-       $customers_orders = ' <a href="' .  tep_href_link(FILENAME_ORDERS, 'cID=' .  $cInfo->customers_id) . '">' .  tep_html_element_button(IMAGE_ORDERS) .  '</a>';
-       $customers_products = '&nbsp;<a href="'.tep_href_link('customers_products.php', str_replace('page', 'cpage', tep_get_all_get_params(array('cID', 'action')).'cID='.$cInfo->customers_id)).'">'.tep_html_element_button(BUTTON_CUSTOMERS_PRODUCTS_TEXT).'</a>';
+       if ($ocertify->npermission >= 15) {
+         $customers_orders = ' <a href="' .  tep_href_link(FILENAME_ORDERS, 'cID=' .  $cInfo->customers_id) . '">' .  tep_html_element_button(IMAGE_ORDERS) .  '</a>';
+         $customers_products = '&nbsp;<a href="'.tep_href_link('customers_products.php', str_replace('page', 'cpage', tep_get_all_get_params(array('cID', 'action')).'cID='.$cInfo->customers_id)).'">'.tep_html_element_button(BUTTON_CUSTOMERS_PRODUCTS_TEXT).'</a>';
+       }
        $customers_email = '&nbsp;<a href="' . tep_href_link(FILENAME_MAIL, 'selected_box=tools&customer=' .  $cInfo->customers_email_address.'&'.tep_get_all_get_params(array('page')).'&customer_page='.$_GET['page']) .  '">' .tep_html_element_button(IMAGE_EMAIL).'</a>';
      }
     }
@@ -4969,13 +5002,14 @@ if($_GET['cID'] != -1){
            $orders_products = tep_html_element_button(TEXT_ORDER_MADE,$disabled);
            $preorders_products = tep_html_element_button(TEXT_PREORDER_MADE,$disabled);
         }else{
-           $orders_products = '<input type="hidden" name="check_order" value="" id="check_order"><a href="javascript:void(0)" onclick="check_password(0, \''.$ocertify->npermission.'\')">'.tep_html_element_button(TEXT_ORDER_MADE).'</a>'; $preorders_products = ' <a href="javascript:void(0)" onclick="check_password(1, \''.$ocertify->npermission.'\')">'.tep_html_element_button(TEXT_PREORDER_MADE).'</a>';
+           $orders_products = '<input type="hidden" name="check_order" value="" id="check_order"><a href="'. tep_href_link('create_order.php','Customer_mail='.$cInfo->customers_email_address.'&site_id='.$cInfo->site_id).'">'.tep_html_element_button(TEXT_ORDER_MADE).'</a>';
+           $preorders_products = ' <a href="'.tep_href_link('create_preorder.php','Customer_mail='.$cInfo->customers_email_address.'&site_id='.$cInfo->site_id).'">'.tep_html_element_button(TEXT_PREORDER_MADE).'</a>';
         }
      }else{
-     $orders_products = '<input type="hidden" name="check_order" value="" id="check_order"><a href="javascript:void(0)" onclick="check_password(0, \''.$ocertify->npermission.'\')">'.tep_html_element_button(TEXT_ORDER_MADE,($disabled?$disabled:$is_active_single)).'</a>';
-     $preorders_products = '<a href="javascript:void(0)" onclick="check_password(1, \''.$ocertify->npermission.'\')">'.tep_html_element_button(TEXT_PREORDER_MADE,($disabled?$disabled:$is_active_single)).'</a>';
+     $orders_products = '<input type="hidden" name="check_order" value="" id="check_order"><a href="javascript:void(0)" onclick="check_password(0, \''.$ocertify->npermission.'\')">'.tep_html_element_button(TEXT_KEEP_ORDER,($disabled?$disabled:$is_active_single)).'</a>';
+     $preorders_products = '<a href="javascript:void(0)" onclick="check_password(1, \''.$ocertify->npermission.'\')">'.tep_html_element_button(TEXT_KEEP_PREORDER,($disabled?$disabled:$is_active_single)).'</a>';
      }
-     $button[] = '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">'.$orders_products.$preorders_products.$customers_orders.$customers_products.$customers_email.($ocertify->npermission == 15 ? ($customers_del):'').$submit;
+     $button[] = '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">'.$orders_products.$preorders_products.$customers_orders.$customers_products.$customers_email.($ocertify->npermission >= 15 ? ($customers_del):'').$submit;
     if(!empty($button)){
        $buttons = array('align' => 'center', 'button' => $button);
     }
@@ -5092,7 +5126,7 @@ if($_GET['cID'] != -1){
 
    $category_info_row[]['text'] = array(
        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_MEMO_CONTENTS), 
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize:vertical;" class="textarea_width" rows="10" name="contents">'.$memo_array['contents'].'</textarea>')
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize:vertical; width:55%;" class="textarea_width" rows="10" name="contents">'.$memo_array['contents'].'</textarea>')
      );
 
   //作成者，作成时间，更新者，更新时间 
@@ -5229,7 +5263,7 @@ if($_GET['cID'] != -1){
 
    $category_info_row[]['text'] = array(
        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_MEMO_CONTENTS), 
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize:vertical;" class="textarea_width" rows="10" name="contents"></textarea>')
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize:vertical; width:55%;" class="textarea_width" rows="10" name="contents"></textarea>')
      );
  
   //底部内容
@@ -5578,8 +5612,37 @@ if($_GET['cID'] != -1){
   $user_info_query = tep_db_query("select * from ".TABLE_USERS." where userid = '".$_POST['user_e_id']."'");
   $user_info_res = tep_db_fetch_array($user_info_query);
   
-  
-  $user_query_raw = 'select u.* from '.TABLE_USERS.' u, '.TABLE_PERMISSIONS.' p where u.userid = p.userid and p.permission <= \''.$ocertify->npermission.'\' order by u.userid';
+  $user_order_sort_name = ' u.name';
+  $user_order_sort = 'asc';
+  if (isset($_POST['user_sort'])) {
+    switch ($_POST['user_sort']) {
+       case 'user_name':
+         $user_order_sort_name = ' u.name';
+         break;
+       case 'user_id':
+         $user_order_sort_name = ' u.userid';
+         break;
+       case 'user_permission':
+         $user_order_sort_name = ' p.permission';
+         break;
+       case 'user_site_permission':
+          $user_order_sort_name = ' p.site_permission';
+         break;
+       case 'user_status':
+         $user_order_sort_name = ' u.status';
+         break;
+    }
+  }
+  if (isset($_POST['user_sort_type'])) {
+    if ($_POST['user_sort_type'] == 'asc') {
+      $user_order_sort = 'asc';
+    } else {
+      $user_order_sort = 'desc';
+    }
+  }
+  $user_order_sql = $user_order_sort_name.' '.$user_order_sort;
+
+  $user_query_raw = 'select u.* from '.TABLE_USERS.' u, '.TABLE_PERMISSIONS.' p where u.userid = p.userid and p.permission <= \''.$ocertify->npermission.'\' order by '.$user_order_sql;
   $user_split = new splitPageResults($_POST['page'], MAX_DISPLAY_PRODUCTS_ADMIN, $user_query_raw, $user_query_numrows);
   $user_list_query = tep_db_query($user_query_raw);
   while($user_row = tep_db_fetch_array($user_list_query)){

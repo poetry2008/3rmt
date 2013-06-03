@@ -545,10 +545,14 @@
         $pre_otm = number_format($preorder_total_res['value'], 0, '.', '').SENDMAIL_EDIT_ORDERS_PRICE_UNIT; 
       }
       $num_product = 0;
-      $num_product_raw = tep_db_query("select products_name, products_id, products_quantity from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$order->info['orders_id']."'");
+      $num_product_raw = tep_db_query("select products_name, products_id, products_quantity,products_rate from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$order->info['orders_id']."'");
       $num_product_res = tep_db_fetch_array($num_product_raw);
       if ($num_product_res) {
         $num_product = $num_product_res['products_quantity']; 
+        if(isset($num_product_res['products_rate']) &&$num_product_res['products_rate']!=0 &&$num_product_res['products_rate']!=1){ $num_product_end = ' ('.number_format($num_product_res['products_rate']*$num_product).')'; 
+        }else{
+          $num_product_end = '';
+        }
       }
       
       $email = str_replace(array(
@@ -579,7 +583,7 @@
               get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $order->info['site_id']),
               date('Y'.SENDMAIL_TEXT_DATE_YEAR.'n'.SENDMAIL_TEXT_DATE_MONTH.'j'.SENDMAIL_TEXT_DATE_DAY,strtotime(tep_get_pay_day())),
               $_POST['update_ensure_deadline'],
-              $num_product.SENDMAIL_EDIT_ORDERS_NUM_UNIT,
+              $num_product.SENDMAIL_EDIT_ORDERS_NUM_UNIT.$num_product_end,
               $num_product_res['products_name'] 
             ),$email);
 
@@ -625,7 +629,7 @@
               get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $order->info['site_id']),
               date('Y'.SENDMAIL_TEXT_DATE_YEAR.'n'.SENDMAIL_TEXT_DATE_MONTH.'j'.SENDMAIL_TEXT_DATE_DAY,strtotime(tep_get_pay_day())),
               $_POST['update_ensure_deadline'],
-              $num_product.SENDMAIL_EDIT_ORDERS_NUM_UNIT,
+              $num_product.SENDMAIL_EDIT_ORDERS_NUM_UNIT.$num_product_end,
               $num_product_res['products_name'] 
             ),$email_title);
         

@@ -2658,11 +2658,15 @@ function tep_get_bflag_by_product_id($product_id) {
  ------------------------------------ */
 function tep_get_full_count2($cnt, $pid, $prate = ''){
   if ($prate) {
-    $p = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
+    $radices = tep_get_radices($pid);
+    if($radices!=1&&$radices!=0){
     return 
       '('
-      . number_format($prate * $cnt) 
-      . ')';
+    . number_format($radices * $cnt) 
+    . ')';
+    }else{
+      return '';
+    }
   }
 }
 
@@ -6603,6 +6607,7 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
 
 -1600 * 12 = -19 200
      */
+    $product = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
     $product_quantity = tep_get_quantity($pid);
     $order_history_query = tep_db_query("
         select * 
@@ -10433,11 +10438,10 @@ function tep_get_setting_site_info($current_page)
 /*----------------------------------
   功能: 通过产品ID获得产品的库存
   参数: $pid (int)类型  产品ID
-  参数: $real_quantity (int)类型  产品数量 没有基数的时候直接返回
   参数: $v_quantity (boolean)类型 虚拟库存 默认false不参加基数 true参加计算
   返回：根据基数和 产品（游戏币） 计算出商品个数 取整（小数省略）
 ----------------------------------*/
-function tep_get_quantity($pid,$real_quantity,$v_quantity=false){
+function tep_get_quantity($pid,$v_quantity=false){
   if($v_quantity){
     $sql = "SELECT products_attention_1_3,
       (`products_real_quantity`/`products_attention_1_3`) 
@@ -10454,10 +10458,26 @@ function tep_get_quantity($pid,$real_quantity,$v_quantity=false){
     if($row['products_attention_1_3']!=''&&$row['products_attention_1_3']!=0){
       return (int)($row['quantity']);
     }else{
-      return $real_quantity;
+      $sql = "SELECT products_attention_1_3,
+      `products_real_quantity` as quantity FROM 
+      " .TABLE_PRODUCTS." WHERE products_id = '".$pid."' limit 1";
+      $query = tep_db_query($sql);
+      if($row = tep_db_fetch_array($query)){
+        return (int)($row['quantity']);
+      }else{
+        return 0;
+      }
     }
   }else{
-    return $real_quantity;
+    $sql = "SELECT products_attention_1_3,
+      `products_real_quantity` as quantity FROM 
+      " .TABLE_PRODUCTS." WHERE products_id = '".$pid."' limit 1";
+    $query = tep_db_query($sql);
+    if($row = tep_db_fetch_array($query)){
+      return (int)($row['quantity']);
+    }else{
+      return 0;
+    }
   }
 }
 /*----------------------------------
@@ -10472,7 +10492,7 @@ function tep_get_radices($pid){
     if($row = tep_db_fetch_array($query)){
       return (int)$row['radices'];
     }else{
-      return 0;
+      return 1;
     }
 }
 

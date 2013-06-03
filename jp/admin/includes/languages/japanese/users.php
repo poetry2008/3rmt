@@ -29,3 +29,5 @@ define('TEXT_DEL_USER', '本当に該当ユーザーを削除しますか？');
 define('TEXT_USER_MUST_SELECT', '少なくとも1つの選択肢を選んでください。');
 define('TEXT_USER_INFO_IS_SHORT', '%d 文字以上入力してください。');
 define('TEXT_USER_INFO_FORMAT_WRONG', '正しく入力されていません。');
+define('TEXT_SORT_ASC','▲');
+define('TEXT_SORT_DESC','▼');

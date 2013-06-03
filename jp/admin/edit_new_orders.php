@@ -688,14 +688,15 @@ if($address_error == false){
         if (!$is_history) {
           $tmp_quantity = $products_details["qty"]; 
           $p = tep_db_fetch_array(tep_db_query("select * from products where products_id='".$order['products_id']."'"));
+          $radices = tep_get_radices($order['products_id']);
           $pr_quantity = $p['products_real_quantity'];
           $pv_quantity = $p['products_virtual_quantity'];
             
-          if ($pr_quantity - $tmp_quantity < 0) {
+          if ($pr_quantity - $tmp_quantity*$radices < 0) {
             $pr_quantity = 0;
             $pv_quantity += ($pr_quantity - $tmp_quantity);
           } else {
-            $pr_quantity -= $tmp_quantity;
+            $pr_quantity -= $tmp_quantity*$radices;
           } 
             if($customer_guest['is_calc_quantity'] != '1') {
               tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = ".$pr_quantity.", products_virtual_quantity = ".$pv_quantity.", products_ordered = products_ordered + " . $tmp_quantity . " where products_id = '" . (int)$order['products_id'] . "'");
@@ -1048,7 +1049,13 @@ if($address_error == false){
             $product_info = tep_db_fetch_array($_product_info_query);
             $data1 = explode("//", $product_info['products_attention_1']);
 
-            $products_ordered_mail .= SENDMAIL_QTY_NUM.str_repeat('　', intval($max_c_len - mb_strlen(SENDMAIL_QTY_NUM, 'utf-8'))).'：' . $order->products[$i]['qty'] . SENDMAIL_EDIT_ORDERS_NUM_UNIT . tep_get_full_count2($order->products[$i]['qty'], $order->products[$i]['id']) . "\n";
+            $pcount_email = '';
+            if(isset($order->products[$i]['rate'])
+              &&$order->products[$i]['rate']!=1
+              &&$order->products[$i]['rate']!=0){
+              $pcount_email = ' ('.number_format($order->products[$i]['qty']*$order->products[$i]['rate']).')';
+            }
+            $products_ordered_mail .= SENDMAIL_QTY_NUM.str_repeat('　', intval($max_c_len - mb_strlen(SENDMAIL_QTY_NUM, 'utf-8'))).'：' .  $order->products[$i]['qty'] . SENDMAIL_EDIT_ORDERS_NUM_UNIT .  $pcount_email . "\n";
             $products_ordered_mail .= SENDMAIL_TABLE_HEADING_PRODUCTS_PRICE.str_repeat('　', intval($max_c_len - mb_strlen(SENDMAIL_TABLE_HEADING_PRODUCTS_PRICE, 'utf-8'))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
             $products_ordered_mail .= SENDMAIL_ENTRY_SUB_TOTAL.str_repeat('　', intval($max_c_len - mb_strlen(SENDMAIL_ENTRY_SUB_TOTAL, 'utf-8'))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
             $products_ordered_mail .= "------------------------------------------\n";

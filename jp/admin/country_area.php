@@ -262,7 +262,6 @@ while($area_fee_array = tep_db_fetch_array($area_fee_query)){
 }
 
 tep_db_free_result($area_fee_query);
-tep_db_close();
 ?>
 </table>
 <table cellpadding="0" cellspacing="0" border="0" width="100%">

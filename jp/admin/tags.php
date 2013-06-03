@@ -66,14 +66,12 @@ if (isset($_GET['action']) and $_GET['action']) {
         }
 
         if(isset($_POST['delete_image']) && $_POST['delete_image']){
-          //unlink(DIR_FS_CATALOG_IMAGES . $t_res['tags_images']);
           unlink(tep_get_upload_dir(). $t_res['tags_images']);
           tep_db_query("update " . TABLE_TAGS . " set tags_images = '' where tags_id = '" . tep_db_input($tags_id) . "'");
         }
 
         $tags_image = tep_get_uploaded_file('tags_images');
 
-        //$image_directory = tep_get_local_path(DIR_FS_CATALOG_IMAGES) . DIRECTORY_SEPARATOR . 'tags' . DIRECTORY_SEPARATOR;
         $image_directory = tep_get_local_path(tep_get_upload_dir().'tags/');
         if (is_uploaded_file($tags_image['tmp_name'])) {
           tep_copy_uploaded_file($tags_image, $image_directory);

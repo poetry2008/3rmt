@@ -382,7 +382,6 @@ $belong = str_replace($pcode_array[1][0],urlencode($pcode_array[1][0]),$belong);
             <td>
             <div id="show_option">
             </div>
-            <!--<a href="javascript:void(0);" onclick="add_option();"><?php echo ADD_OPTION_LINK;?></a>--> 
             <table id="tab">
             <?php
             if (isset($item_info_res['option'])) {
