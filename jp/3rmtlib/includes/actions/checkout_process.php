@@ -165,8 +165,40 @@ if ( (STOCK_CHECK == 'true') && (STOCK_ALLOW_CHECKOUT != 'true') ) {
   }
 }
 
+require(DIR_WS_CLASSES . 'order.php');
+$order = new order;
 include(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_PROCESS);
 $payment_modules = payment::getInstance(SITE_ID);
+  $validateModule = $payment_modules->pre_confirmation_check($payment);
+  if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
+      $point_query = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "'");
+      $current_point = tep_db_fetch_array($point_query);
+  }
+  if ($validateModule['validated']===false or $validateModule == false){
+    $order->info['total'] = $order->info['total'] + $h_shipping_fee; 
+    $selection = $payment_modules->selection();
+    if($validateModule !=false){
+    $selection[strtoupper($payment)] = $validateModule;
+    }
+    require_once DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_PAYMENT;
+page_head();?>
+<script type="text/javascript" src="./js/jquery-1.3.2.min.js">
+  </script>
+  <script type="text/javascript" src="./js/payment.js">
+  </script>
+  <?php
+  if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') 
+    {
+      //输出payment 的javascript验证
+      echo $payment_modules->javascript_validation($current_point['point']); 
+    }
+?>
+</head><?php
+    
+    require_once "checkout_payment_template.php";    
+    exit();
+  }
+
 $insert_id = date("Ymd") . '-' . date("His") . tep_get_order_end_num();
 # Check
 $NewOidQuery = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS." where orders_id = '".$insert_id."' and site_id = '".SITE_ID."'");
@@ -182,8 +214,6 @@ if (is_array($comments_info)) {
 } else {
   $comments = $comments_info;
 }
-require(DIR_WS_CLASSES . 'order.php');
-$order = new order;
 
 // load the before_process function from the payment modules
 $payment_modules->before_process($payment);
