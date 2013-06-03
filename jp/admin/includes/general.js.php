@@ -1571,7 +1571,7 @@ function check_fee(action,c_permission){
       async: false,
       success: function(msg) {
         pwd_list_array = msg.split(',');
-        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>'); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
         if (in_array(input_pwd_str, pwd_list_array)) {
           document.country_fee_form.action = 'country_fee.php?action='+action;
           document.country_fee_form.submit();

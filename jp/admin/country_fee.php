@@ -233,7 +233,6 @@ while($country_fee_array = tep_db_fetch_array($country_fee_query)){
 }
 
 tep_db_free_result($country_fee_query);
-tep_db_close();
 ?>
 </table>
 <table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin-top:5px;">

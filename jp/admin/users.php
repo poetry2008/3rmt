@@ -349,7 +349,7 @@ function user_change_action(current_value, change_info)
             <?php
             } else {
             ?>
-            var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>'); 
+            var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
             if (in_array(input_pwd_str, pwd_list_array)) {
               document.forms.user_list_form.submit(); 
             } else {
@@ -490,7 +490,7 @@ function check_user_info(user_id, stype)
           async: false,
           success: function(msg) {
             pwd_list_array = msg.split(','); 
-            var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>'); 
+            var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
             if (in_array(input_pwd_str, pwd_list_array)) {
               document.forms.new_user_form.submit(); 
             } else {
@@ -611,7 +611,7 @@ function delete_fix_user(user_id, param_str)
       } else {
       ?>
       if (confirm('<?php echo TEXT_DEL_USER;?>')) {
-        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>'); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
         if (in_array(input_pwd_str, pwd_list_array)) {
           window.location.href = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_USERS;?>'+'?action=delete_user_confirm&user_e_id='+user_id+'&'+param_str;  
         } else {
@@ -642,7 +642,7 @@ function set_user_flag(current_uid, flag_num, o_param)
     async: false,
     success: function(msg) {
       pwd_list_array = msg.split(',');
-      var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>'); 
+      var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
       if (in_array(input_pwd_str, pwd_list_array)) {
         window.location.href = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_USERS.'?action=setflag';?>'+'&flag='+flag_num+'&user_e_id='+current_uid+'&'+o_param; 
       } else {

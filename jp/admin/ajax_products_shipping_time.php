@@ -212,9 +212,11 @@ if($id != 0){
 
 <?php
 if($id != 0){
+  if ($ocertify->npermission >= 15) {
 ?>
   <input type="button" name="del" value="<?php echo TABLE_BUTTON_DEL;?>" onclick="if(confirm('<?php echo TEXT_WANT_DELETE;?>')){check_products('del', '<?php echo $ocertify->npermission; ?>');}else{return false;}">
 <?php
+  }
 }else{
 ?>
 <input type="button" name="new" value="<?php echo TABLE_BUTTON_UNSET;?>" onclick="hide_text();">
