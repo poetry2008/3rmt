@@ -10599,3 +10599,163 @@ function check_input_user_password($check_user_permission, $check_userid)
   
   return true;
 }
+
+/*------------------------------------
+ 功能：根据相应参数计算商品的配送费用
+ 参数：  
+ 返回值：配送费用(int)
+ -----------------------------------*/
+function tep_products_shipping_fee($oID,$total){
+
+  //计算配送费用
+  $shipping_weight_total = 0;
+
+  //新添加商品重量计算
+
+  if($_SESSION['new_products_list'][$_GET['oID']]['orders_products']){
+    foreach($_SESSION['new_products_list'][$_GET['oID']]['orders_products'] as $new_products_key=>$new_products_value){
+
+      $shipping_fee_query = tep_db_query("select products_weight from ". TABLE_PRODUCTS ." where products_id=". $new_products_value['products_id']);
+      $shipping_fee_array = tep_db_fetch_array($shipping_fee_query);
+      $shipping_weight_total += (isset($_SESSION['orders_update_products'][$oID]['o_'.$new_products_key]['qty']) ? $_SESSION['orders_update_products'][$oID]['o_'.$new_products_key]['qty'] :$new_products_value['products_quantity']) * $shipping_fee_array['products_weight'];
+      tep_db_free_result($shipping_fee_query);
+    }
+  }
+  $shipping_query = tep_db_query("select orders_products_id,products_id,products_quantity from ". TABLE_ORDERS_PRODUCTS ." where orders_id='".$oID."'");
+  while($shipping_array = tep_db_fetch_array($shipping_query)){
+
+    $shipping_fee_query = tep_db_query("select products_weight from ". TABLE_PRODUCTS ." where products_id=". $shipping_array['products_id']);
+    $shipping_fee_array = tep_db_fetch_array($shipping_fee_query);
+    $shipping_weight_total += (isset($_SESSION['orders_update_products'][$oID][$shipping_array['orders_products_id']]['qty']) ? $_SESSION['orders_update_products'][$oID][$shipping_array['orders_products_id']]['qty'] :$shipping_array['products_quantity']) * $shipping_fee_array['products_weight'];
+    tep_db_free_result($shipping_fee_query);
+  }
+  tep_db_free_result($shipping_query);
+
+  $weight = $shipping_weight_total;
+
+  $shipping_orders_array = array();
+  $shipping_address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'");
+  while($shipping_address_orders_array = tep_db_fetch_array($shipping_address_orders_query)){
+
+    $shipping_orders_array[$shipping_address_orders_array['name']] = $shipping_address_orders_array['value'];
+  }
+  tep_db_free_result($shipping_address_orders_query);
+
+  $country_fee_array = array();
+  $country_fee_id_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where fixed_option!='0' and status='0'");
+  while($country_fee_id_array = tep_db_fetch_array($country_fee_id_query)){
+
+    $country_fee_array[$country_fee_id_array['fixed_option']] = $country_fee_id_array['name_flag'];
+  }
+  tep_db_free_result($country_fee_id_query);
+
+  foreach($shipping_orders_array  as $op_key=>$op_value){
+    if($op_key == $country_fee_array[3]){
+      $city_query = tep_db_query("select * from ". TABLE_COUNTRY_CITY ." where name='". $op_value ."' and status='0'");
+      $city_num = tep_db_num_rows($city_query);
+    }
+ 
+  
+    if($op_key == $country_fee_array[2]){
+      $address_query = tep_db_query("select * from ". TABLE_COUNTRY_AREA ." where name='". $op_value ."' and status='0'");
+      $address_num = tep_db_num_rows($address_query);
+    }
+
+   
+    if($op_key == $country_fee_array[1]){
+      $country_query = tep_db_query("select * from ". TABLE_COUNTRY_FEE ." where name='". $op_value ."' and status='0'");
+      $address_country_num = tep_db_num_rows($country_query);
+    }
+
+    if($city_num > 0 && $op_key == $country_fee_array[3]){
+      $city_array = tep_db_fetch_array($city_query);
+      tep_db_free_result($city_query);
+      $city_free_value = $city_array['free_value'];
+      $city_weight_fee_array = unserialize($city_array['weight_fee']);
+
+      //根据重量来获取相应的配送费用
+      foreach($city_weight_fee_array as $key=>$value){
+    
+        if(strpos($key,'-') > 0){
+
+          $temp_array = explode('-',$key);
+          $city_weight_fee = $weight >= $temp_array[0] && $weight <= $temp_array[1] ? $value : 0; 
+        }else{
+  
+          $city_weight_fee = $weight <= $key ? $value : 0;
+        }
+
+        if($city_weight_fee > 0){
+
+          break;
+        }
+     }
+  }elseif($address_num > 0 && $op_key == $country_fee_array[2]){
+    $address_array = tep_db_fetch_array($address_query);
+    tep_db_free_result($address_query);
+    $address_free_value = $address_array['free_value'];
+    $address_weight_fee_array = unserialize($address_array['weight_fee']);
+
+    //根据重量来获取相应的配送费用
+    foreach($address_weight_fee_array as $key=>$value){
+    
+      if(strpos($key,'-') > 0){
+
+        $temp_array = explode('-',$key);
+        $address_weight_fee = $weight >= $temp_array[0] && $weight <= $temp_array[1] ? $value : 0; 
+      }else{
+  
+        $address_weight_fee = $weight <= $key ? $value : 0;
+      }
+
+      if($address_weight_fee > 0){
+
+        break;
+      }
+    }
+  }else{
+    if($address_country_num > 0 && $op_key == $country_fee_array[1]){
+      $country_array = tep_db_fetch_array($country_query);
+      tep_db_free_result($country_query);
+      $country_free_value = $country_array['free_value'];
+      $country_weight_fee_array = unserialize($country_array['weight_fee']);
+
+      //根据重量来获取相应的配送费用
+      foreach($country_weight_fee_array as $key=>$value){
+    
+        if(strpos($key,'-') > 0){
+
+          $temp_array = explode('-',$key);
+          $country_weight_fee = $weight >= $temp_array[0] && $weight <= $temp_array[1] ? $value : 0; 
+        }else{
+  
+          $country_weight_fee = $weight <= $key ? $value : 0;
+        }
+
+       if($country_weight_fee > 0){
+
+         break;
+       }
+    }
+  }
+ }
+
+ }
+
+ $shipping_money_total = $total;
+ if($city_weight_fee != ''){
+   $weight_fee = $city_weight_fee;
+ }else{
+   $weight_fee = $address_weight_fee != '' ? $address_weight_fee : $country_weight_fee;
+ }
+ if($city_free_value != ''){
+
+   $free_value = $city_free_value;
+ }else{
+   $free_value = $address_free_value != '' ? $address_free_value : $country_free_value;
+ }
+
+ $shipping_fee = $shipping_money_total > $free_value ? 0 : $weight_fee;
+
+ return $shipping_fee;
+}

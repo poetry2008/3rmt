@@ -2103,6 +2103,7 @@ echo json_encode($json_array);
  参数: $_POST['orders_id'] 订单编号
  参数: $_POST['point_value_temp'] 点值
  参数: $_POST['handle_fee'] 手续费
+ 参数: $_POST['fee_total'] 自定义费用总额 
  参数: $_POST['session_site_id'] SITE_ID
  ------------------------------------------*/
   require(DIR_WS_CLASSES . 'payment.php');
@@ -2137,13 +2138,19 @@ echo json_encode($json_array);
   $_SESSION['orders_update_products'][$total_orders_id]['ot_subtotal'] = $_POST['ot_subtotal'];
   $_SESSION['orders_update_products'][$total_orders_id]['ot_total'] = $_POST['ot_total'];
   $_SESSION['orders_update_products'][$total_orders_id]['payment_method'] = $_POST['payment_value'];
+  //配送费用
+  $shipping_fee = tep_products_shipping_fee($total_orders_id,$_POST['ot_subtotal']+$_POST['fee_total']-$point_value);
   $cpayment = payment::getInstance($_POST['session_site_id']);
-  $handle_fee = $cpayment->handle_calc_fee($_POST['payment_value'], $_POST['ot_total']);
+  $handle_fee = $cpayment->handle_calc_fee($_POST['payment_value'], $_POST['ot_subtotal']+$_POST['fee_total']-$point_value+$shipping_fee);
   $handle_fee = $handle_fee == '' ? 0 : $handle_fee;
   $_SESSION['orders_update_products'][$total_orders_id]['code_fee'] = $handle_fee;
   $_SESSION['orders_update_products'][$total_orders_id]['ot_total'] -= $handle_fee_value;
   $_SESSION['orders_update_products'][$total_orders_id]['ot_total'] += $handle_fee;
-  echo $handle_fee.'|||'.$campaign_fee.'|||'.$campaign_flag;
+  $_SESSION['orders_update_products'][$total_orders_id]['ot_total'] -= $_POST['shipping_fee_id'];
+  $_SESSION['orders_update_products'][$total_orders_id]['ot_total'] += $shipping_fee;
+  $_SESSION['orders_update_products'][$total_orders_id]['fee_total'] = $_POST['fee_total'];
+  $_SESSION['orders_update_products'][$total_orders_id]['shipping_fee'] = $shipping_fee;
+  echo $handle_fee.'|||'.$campaign_fee.'|||'.$campaign_flag.'|||'.$shipping_fee;
 }else if($_GET['action'] == 'orders_session'){
 
   $session_type = $_POST['orders_session_type'];

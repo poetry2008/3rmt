@@ -3344,16 +3344,67 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
             <td align="right" colspan="9">
             <table border="0" cellspacing="0" cellpadding="2">
             <?php
-            for ($i = 0, $n = sizeof($order->totals); $i < $n; $i++) {
+            $total_point_key = 0;
+            $total_total_key = 0;
+            $total_point_value = 0;
+            $total_total_value = 0;
+            foreach($order->totals as $total_key=>$total_value){
+
+              if($total_value['class'] == 'ot_point'){
+
+                $total_point_value = $total_value;
+                $total_point_key = $total_key;
+                unset($order->totals[$total_key]);
+              }    
+              if($total_value['class'] == 'ot_total'){
+
+                $total_total_value = $total_value;
+                $total_total_key = $total_key;
+                unset($order->totals[$total_key]);
+              }
+            }
+            $order->totals[$total_point_key] = $total_point_value;
+            $order->totals[$total_total_key] = $total_total_value;
+            $total_point_flag = false;
+            foreach ($order->totals as $i=>$total_value) {
               if ($order->totals[$i]['class'] == 'ot_point') {
+                $total_point_flag = true;
                 $campaign_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$_GET['oID']."' and site_id = '".$order->info['site_id']."'"); 
                 $campaign_res = tep_db_fetch_array($campaign_query);
                 if ($campaign_res) {
                   if ((int)$campaign_res['campaign_fee'] == 0) {
+                    if($total_point_flag == true && $total_fee_flag == false){
+                      $total_fee_flag = true;
+                     //配送费用,手续费用
+                     echo 
+                        '    <tr>' . "\n" .
+                        '      <td align="right" class="smallText">' . TEXT_SHIPPING_FEE . '</td>' . "\n" .
+                        '      <td align="right" class="smallText">' . $currencies->format($order->info['shipping_fee']) . '</td>' . "\n" .
+                        '    </tr>' . "\n";
+                     echo 
+                       '    <tr>' . "\n" .
+                       '      <td align="right" class="smallText">' . TEXT_CODE_HANDLE_FEE . '</td>' . "\n" .
+                       '      <td align="right" class="smallText">' . $currencies->format($order->info['code_fee']) . '</td>' . "\n" .
+                       '    </tr>' . "\n"; 
+                    }
                     continue; 
                   }
                 } else {
                   if ($order->totals[$i]['value'] == 0) {
+                    if($total_point_flag == true && $total_fee_flag == false){
+                      $total_fee_flag = true;
+                      //配送费用,手续费用
+                      echo 
+                          '    <tr>' . "\n" .
+                          '      <td align="right" class="smallText">' . TEXT_SHIPPING_FEE . '</td>' . "\n" .
+                          '      <td align="right" class="smallText">' . $currencies->format($order->info['shipping_fee']) . '</td>' . "\n" .
+                          '    </tr>' . "\n";
+                      echo 
+                          '    <tr>' . "\n" .
+                          '      <td align="right" class="smallText">' . TEXT_CODE_HANDLE_FEE . '</td>' . "\n" .
+                          '      <td align="right" class="smallText">' . $currencies->format($order->info['code_fee']) . '</td>' . "\n" .
+                          '    </tr>' . "\n"; 
+                    }
                     continue; 
                   }
                 }
@@ -3378,7 +3429,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
                     echo str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($order->totals[$i]['value']));
                     echo "</font>".TEXT_MONEY_SYMBOL;
                   }
-                }
+                } 
               } else {
                 if($order->totals[$i]['value']>=0){
                   echo $currencies->format($order->totals[$i]['value']);
@@ -3395,23 +3446,20 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
               }
               echo '</td>' . "\n" .
                 '    </tr>' . "\n";
-              if ($i == 0) {
+              if($total_point_flag == true && $total_fee_flag == false){
+                $total_fee_flag = true;
+                //配送费用,手续费用
                 echo 
-                  '    <tr>' . "\n" .
-                  '      <td align="right" class="smallText">' . TEXT_CODE_HANDLE_FEE . '</td>' . "\n" .
-                  '      <td align="right" class="smallText">' . $currencies->format($order->info['code_fee']) . '</td>' . "\n" .
-                  '    </tr>' . "\n";
-              }
-
-              //配送费用
-             if ($i == 0) {
-              echo 
                '    <tr>' . "\n" .
                '      <td align="right" class="smallText">' . TEXT_SHIPPING_FEE . '</td>' . "\n" .
                '      <td align="right" class="smallText">' . $currencies->format($order->info['shipping_fee']) . '</td>' . "\n" .
                '    </tr>' . "\n";
-             }
-
+                echo 
+                  '    <tr>' . "\n" .
+                  '      <td align="right" class="smallText">' . TEXT_CODE_HANDLE_FEE . '</td>' . "\n" .
+                  '      <td align="right" class="smallText">' . $currencies->format($order->info['code_fee']) . '</td>' . "\n" .
+                  '    </tr>' . "\n"; 
+              }
             }
           ?>
             <tr>

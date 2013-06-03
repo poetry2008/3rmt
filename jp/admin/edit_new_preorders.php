@@ -15,7 +15,8 @@
   }
   require(DIR_WS_CLASSES . 'currencies.php');
   $currencies = new currencies(2);
-  
+  //unset($_SESSION['orders_update_products']);
+  //print_r($_SESSION['orders_update_products']);  
   include(DIR_WS_CLASSES . 'preorder.php');
   unset($cpayment); 
   $cpayment = payment::getInstance((int)$_SESSION['create_preorder']['orders']['site_id']);
@@ -351,10 +352,18 @@
 
   //total
   $total_value = 0;
+  $sign_value_array = $_POST['sign_value'];
   foreach ($_SESSION['create_preorder']['orders_total'] as $code => $ott) {
+    if($ott['class'] == 'ot_custom'){
+
+      if($sign_value_array[$code] == '0'){
+
+        $ott['value'] = 0-$ott['value'];
+      } 
+    }
     if ($code !== 'ot_total' && $code !== 'ot_point') {
       $total_value += $ott['value'];
-    }
+    } 
   }
 
   $total_value_more_zero = true;
@@ -390,6 +399,28 @@
     $newtotal = $newtotal*-1;
   }
 
+  $update_totals_temp = 0;
+  $update_totals_temp_num = 0;
+  $temp_i = 0;
+  foreach($update_totals as $key=>$value){
+
+    if(trim($value['title']) == '' && $value['class'] == 'ot_custom'){
+
+      if($sign_value_array[$temp_i] == '0'){
+
+        $update_totals_temp_num += $value['value'];
+      }else{
+        $update_totals_temp += $value['value'];
+      }
+      $temp_i++;
+    } 
+  }
+  
+  
+  $newtotal = isset($_SESSION['preorder_products'][$_GET['oID']]['ot_total']) ? $_SESSION['preorder_products'][$_GET['oID']]['ot_total'] : $newtotal;
+
+  $newtotal -= $update_totals_temp;
+  $newtotal += $update_totals_temp_num;
   $_SESSION['create_preorder']['orders_total']['ot_total']['value'] = intval(floor($newtotal));
   $_SESSION['create_preorder']['orders_total']['ot_total']['text']  = "<b>" . $currencies->ot_total_format(intval(floor($newtotal)), true, $order['currency']) . "</b>";
   
@@ -447,8 +478,15 @@
       }
       
       
-      preorders_updated($_SESSION['create_preorder']['orders']['orders_id']);
+      preorders_updated($_SESSION['create_preorder']['orders']['orders_id']); 
       foreach($_SESSION['create_preorder']['orders_total'] as $c => $ot){
+        if($ot['class'] == 'ot_custom'){
+
+          if($sign_value_array[$c] == '0'){
+
+            $ot['value'] = 0-$ot['value'];
+          } 
+        }
         $ot['text'] = '';
         if(isset($new_orders2_id)&&$new_orders2_id){
         $ot['orders_id'] = $new_orders2_id;
@@ -768,24 +806,31 @@ $(document).ready(function(){
     orders_session('comments_text',comments_text);
   });
 });
+
+<?php //加减符号?>
+function sign(num){
+
+  var sign = '<select id="sign_'+num+'" name="sign_value[]" onchange="price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');recalc_preorder_price(\'<?php echo $_GET['oID'];?>\', \'<?php echo $products_id_str;?>\', \'0\', \'<?php echo $op_info_str;?>\');orders_session(\'sign_'+num+'\',this.value);">';
+  sign += '<option value="1">+</option>';
+  sign += '<option value="0">-</option>';
+  sign += '</select>';
+  return sign;
+}
 <?php //添加输入框?>
 function add_option(){
     var add_num = $("#button_add_id").val();
     add_num = parseInt(add_num);
+    orders_session('customers_add_num',add_num);
     $("#button_add_id").val(add_num+1);
-    var add_option_total_str = $("#add_option_total").html();
-    $("#add_option_total").remove();
-    $("#button_add").remove();
     add_num++;
     var add_str = '';
 
-    add_str += '<tr><td class="smallText" align="left"><?php echo EDIT_ORDERS_TOTALDETAIL_READ_ONE;?></td>'
-            +'<td class="smallText" align="right"><INPUT type="button" id="button_add" value="<?php echo TEXT_BUTTON_ADD;?>" onClick="add_option();orders_session(\'customers_add_num\','+(add_num+1)+');">&nbsp;<input style="text-align:right;" value="" size="7" name="update_totals['+add_num+'][title]" onblur="orders_session(\'customers_total_'+add_num+'\',this.value);">'
-            +'</td><td class="smallText" align="right"><input style="text-align:right;" id="update_totals_'+add_num+'" value="" size="6" onkeyup="clearNewLibNum(this);price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');recalc_preorder_price(\'<?php echo $_GET['oID'];?>\', \'<?php echo $products_id_str;?>\', \'0\', \'<?php echo $op_info_str;?>\');" name="update_totals['+add_num+'][value]"><?php echo TEXT_MONEY_SYMBOL;?><input type="hidden" name="update_totals['+add_num+'][class]" value="ot_custom"><input type="hidden" name="update_totals['+add_num+'][total_id]" value="0"></td>'
-            +'<td><b><img height="17" width="1" border="0" alt="" src="images/pixel_trans.gif"></b></td></tr>'
-            +'<tr id="add_option_total">'+add_option_total_str+'</tr>';
+    add_str += '<tr><td class="smallText" align="left">&nbsp;</td>'
+            +'<td class="smallText" align="right"><input style="text-align:right;" value="" size="7" name="update_totals['+add_num+'][title]" onblur="orders_session(\'customers_total_'+add_num+'\',this.value);">:'
+            +'</td><td class="smallText" align="right">'+sign(add_num)+'<input style="text-align:right;" id="update_totals_'+add_num+'" value="" size="6" onkeyup="clearNewLibNum(this);price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');recalc_preorder_price(\'<?php echo $_GET['oID'];?>\', \'<?php echo $products_id_str;?>\', \'0\', \'<?php echo $op_info_str;?>\');" name="update_totals['+add_num+'][value]"><?php echo TEXT_MONEY_SYMBOL;?><input type="hidden" name="update_totals['+add_num+'][class]" value="ot_custom"><input type="hidden" name="update_totals['+add_num+'][total_id]" value="0"></td>'
+            +'<td><b><img height="17" width="1" border="0" alt="" src="images/pixel_trans.gif"></b></td></tr>';
 
-    $("#add_option").append(add_str);
+    $("#handle_fee_id").parent().parent().before(add_str);
 }
 <?php //检查表单?>
 function submit_order_check(products_id,op_id){
@@ -868,6 +913,10 @@ function recalc_preorder_price(oid, opd, o_str, op_str)
           update_total_temp = document.getElementById('update_totals_'+i).value; 
           update_total_temp_value = update_total_temp;
           if(update_total_temp == '' || update_total_temp == '-'){update_total_temp = 0;}
+          if($("#sign_"+i).val() == '0'){
+
+            update_total_temp = 0-update_total_temp;  
+          }
           update_total_temp = parseInt(update_total_temp);
           update_total_num += update_total_temp;
           total_str += i+'|||';
@@ -960,6 +1009,10 @@ function price_total()
           update_total_temp = document.getElementById('update_totals_'+i).value; 
           if(update_total_temp == '' || update_total_temp == '-'){update_total_temp = 0;}
           update_total_temp = parseInt(update_total_temp);
+          if($("#sign_"+i).val() == '0'){
+
+            update_total_temp = 0-update_total_temp;  
+          }
           update_total_num += update_total_temp;
         }
       }
@@ -1784,7 +1837,7 @@ if (($action == 'edit') && ($order_exists == true)) {
 
 <table width="100%" border="0" cellspacing="0" cellpadding="2" class="dataTableRow" id="add_option">
   <tr class="dataTableHeadingRow">
-    <td class="dataTableHeadingContent" align="left" width="65%"><?php echo TABLE_HEADING_FEE_MUST;?></td>
+    <td class="dataTableHeadingContent" align="left" width="60%"><?php echo TABLE_HEADING_FEE_MUST;?></td>
     <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_MODULE; ?></td>
     <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_AMOUNT; ?></td>
     <td class="dataTableHeadingContent"width="1"><?php echo tep_draw_separator('pixel_trans.gif', '1', '1'); ?></td>
@@ -1843,14 +1896,28 @@ if (($action == 'edit') && ($order_exists == true)) {
   if(isset($_SESSION['orders_update_products'][$_GET['oID']]['customers_add_num'])){
     $customers_add_num = $_SESSION['orders_update_products'][$_GET['oID']]['customers_add_num'];
     $totals_total = array_pop($TotalsArray);
-    for($total_i = 5;$total_i <= $customers_add_num;$total_i++){
+    for($total_i = 5;$total_i <= $customers_add_num+1;$total_i++){
       $TotalsArray[$total_i] = array("Name" => "          ", "Price" => "", "Class" => "ot_custom", "TotalID" => "0"); 
     } 
     $TotalsArray[] = $totals_total;
   }
   foreach ($TotalsArray as $TotalIndex => $TotalDetails) {
+
+    if($TotalIndex == 3 && $TotalDetails['Class'] == 'ot_custom' && $TotalDetails['Price'] == ''){
+
+      unset($TotalsArray[$TotalIndex]);
+    }
+  }
+  foreach ($TotalsArray as $TotalIndex => $TotalDetails) {
     $TotalStyle = "smallText";
     if ($TotalDetails["Class"] == "ot_total") {
+      echo '  <tr>' . "\n" .
+           '    <td align="left" class="' . $TotalStyle . '">&nbsp;</td>' . 
+           '    <td align="right" class="' . $TotalStyle . '">'.TEXT_CODE_HANDLE_FEE.'</td>' .
+           '    <td align="right" class="' . $TotalStyle . '"><div id="handle_fee_id">' . $currencies->format($order["code_fee"]) . '</div><input type="hidden" name="payment_code_fee" value="'.$order["code_fee"].'">' . 
+                '</td>' . 
+           '    <td align="right" class="' . $TotalStyle . '"><b>' .  tep_draw_separator('pixel_trans.gif', '1', '17') . '</b></td>' . 
+           '  </tr>' . "\n";
       echo '  <tr id="add_option_total">' . "\n" .
            '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_OTTOTAL_READ.'</td>' . 
            '    <td align="right" class="' . $TotalStyle . '">' . $TotalDetails["Name"] . '</td>' . 
@@ -1887,14 +1954,8 @@ if (($action == 'edit') && ($order_exists == true)) {
                 "<input name='update_totals[$TotalIndex][class]' type='hidden' value='" . $TotalDetails["Class"] . "'>\n" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . '</td>' . 
            '    <td align="right" class="' . $TotalStyle . '"><b>' .  tep_draw_separator('pixel_trans.gif', '1', '17') . '</b></td>' . 
-           '  </tr>' . "\n".
-           '  <tr>' . "\n" .
-           '    <td align="left" class="' . $TotalStyle . '">&nbsp;</td>' . 
-           '    <td align="right" class="' . $TotalStyle . '">'.TEXT_CODE_HANDLE_FEE.'</td>' .
-           '    <td align="right" class="' . $TotalStyle . '"><div id="handle_fee_id">' . $currencies->format($order["code_fee"]) . '</div><input type="hidden" name="payment_code_fee" value="'.$order["code_fee"].'">' . 
-                '</td>' . 
-           '    <td align="right" class="' . $TotalStyle . '"><b>' .  tep_draw_separator('pixel_trans.gif', '1', '17') . '</b></td>' . 
            '  </tr>' . "\n";
+           
     } elseif ($TotalDetails["Class"] == "ot_tax") {
       echo '  <tr>' . "\n" . 
            '    <td align="left" class="' . $TotalStyle . '">&nbsp;</td>' . 
@@ -1930,15 +1991,19 @@ if (($action == 'edit') && ($order_exists == true)) {
              '  </tr>' . "\n";
       }
     } else {
-      $button_add = $TotalIndex == (isset($_SESSION['orders_update_products'][$_GET['oID']]['customers_add_num']) ? count($TotalsArray)-1: count($TotalsArray)-2) ? '<INPUT type="button" id="button_add" value="'.TEXT_BUTTON_ADD.'" onClick="add_option();orders_session(\'customers_add_num\','.count($TotalsArray).');"><input type="hidden" id="button_add_id" value="'.(count($TotalsArray)-1).'">&nbsp;' : '';
+      $sign_str = '<select id="sign_'.$TotalIndex.'" name="sign_value[]" onchange="price_total(\''.TEXT_MONEY_SYMBOL.'\');recalc_preorder_price(\"".$oID."\", \"".$pid."\", \"0\", \"".$op_info_str."\");orders_session(\'sign_'.$TotalIndex.'\',this.value);">';
+      $sign_str .= '<option value="1"'.(isset($_SESSION['orders_update_products'][$_GET['oID']]['sign_'.$TotalIndex]) && $_SESSION['orders_update_products'][$_GET['oID']]['sign_'.$TotalIndex] == '1' ? ' selected="selected"': '').'>+</option>';
+      $sign_str .= '<option value="0"'.(isset($_SESSION['orders_update_products'][$_GET['oID']]['sign_'.$TotalIndex]) && $_SESSION['orders_update_products'][$_GET['oID']]['sign_'.$TotalIndex] == '0' ? ' selected="selected"': $TotalDetails["Price"] < 0 ? ' selected="selected"': '').'>-</option>';
+      $sign_str .= '</select>';
+      $button_add = $TotalIndex == 1 ? '<INPUT type="button" id="button_add" value="'.TEXT_BUTTON_ADD.'" onClick="add_option();"><input type="hidden" id="button_add_id" value="'.(count($TotalsArray)).'">&nbsp;' : '';
       $TotalDetails["Name"] = isset($_POST['update_totals'][$TotalIndex]['title']) ? $_POST['update_totals'][$TotalIndex]['title'] : $TotalDetails["Name"];
       $TotalDetails["Price"] = isset($_SESSION['preorder_products'][$_GET['oID']]['customer'][$TotalIndex]) ? $_SESSION['preorder_products'][$_GET['oID']]['customer'][$TotalIndex] : $TotalDetails["Price"];
       $TotalDetails["Price"] = isset($_POST['update_totals'][$TotalIndex]['value']) ? $_POST['update_totals'][$TotalIndex]['value'] : $TotalDetails["Price"];
       $TotalDetails["Name"] = isset($_SESSION['orders_update_products'][$_GET['oID']]['customers_total_'.$TotalIndex]) ? $_SESSION['orders_update_products'][$_GET['oID']]['customers_total_'.$TotalIndex] : $TotalDetails["Name"];
       echo '  <tr>' . "\n" .
-           '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_TOTALDETAIL_READ_ONE.'</td>' . 
-           '    <td style="min-width:180px;" align="right" class="' . $TotalStyle .  '">' . $button_add ."<input style='text-align:right;' name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "' onblur='orders_session(\"customers_total_".$TotalIndex."\",this.value);'>" . '</td>' . "\n" .
-           '    <td align="right" class="' . $TotalStyle . '" style="min-width: 60px;">' . "<input style='text-align:right;' name='update_totals[$TotalIndex][value]' id='update_totals_$TotalIndex' onkeyup='clearNewLibNum(this);price_total();recalc_preorder_price(\"".$oID."\", \"".$pid."\", \"0\", \"".$op_info_str."\");' size='6' value='" . $TotalDetails["Price"] . "'>" .TEXT_MONEY_SYMBOL . 
+           '    <td align="left" class="' . $TotalStyle .  '">'.($TotalIndex == 1 ? EDIT_ORDERS_TOTALDETAIL_READ_ONE : '').'</td>' . 
+           '    <td style="min-width:180px;" align="right" class="' . $TotalStyle .  '">' . $button_add ."<input style='text-align:right;' name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "' onblur='orders_session(\"customers_total_".$TotalIndex."\",this.value);'>:" . '</td>' . "\n" .
+           '    <td align="right" class="' . $TotalStyle . '" style="min-width: 60px;">' . $sign_str ."<input style='text-align:right;' name='update_totals[$TotalIndex][value]' id='update_totals_$TotalIndex' onkeyup='clearNoNum(this);price_total();recalc_preorder_price(\"".$oID."\", \"".$pid."\", \"0\", \"".$op_info_str."\");' size='6' value='" . $TotalDetails["Price"] . "'>" .TEXT_MONEY_SYMBOL . 
                 "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . 
            '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 

@@ -1561,10 +1561,11 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
           <table border="0" cellspacing="0" cellpadding="2">
   <?php
       for ($i = 0, $n = sizeof($order->totals); $i < $n; $i++) {
+        if($i == 2){continue;}
         echo 
        '    <tr>' . "\n" .
-       '      <td align="right" class="smallText">' . $order->totals[$i]['title'] . '</td>' . "\n" .
-       '      <td align="right" class="smallText">';
+       '      <td align="right" class="smallText">' . (mb_substr($order->totals[$i]['title'],-1,1,'utf-8') != ':' ? $order->totals[$i]['title'].':' : $order->totals[$i]['title']) . '</td>' . "\n" .
+       '      <td align="right" class="smallText">'; 
         // add font color for '-' value
         if($order->totals[$i]['value']>=0){
           echo $currencies->format($order->totals[$i]['value']);
@@ -1581,7 +1582,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
         }
         echo '</td>' . "\n" .
        '    </tr>' . "\n";
-       if ($i == 0) {
+       if ($i == count($order->totals)-2) {
           echo 
          '    <tr>' . "\n" .
          '      <td align="right" class="smallText">' . TEXT_CODE_HANDLE_FEE . '</td>' . "\n" .
