@@ -5801,7 +5801,7 @@ if($_GET['cID'] != -1){
           array('align' => 'left', 'params' => 'class="td_input"', 'text' => $user_site_permission_str.'<br>'.TABLE_USER_INFO_SITE_PERMISSION_READ) 
         );
   } 
-  if ($_POST['user_e_id'] == $ocertify->auth_user) {
+  if (check_input_user_password($user_permission_res['permission'], $_POST['user_e_id'])) {
     $new_user_row[]['text'] = array(
           array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_USER_INFO_PASSWORD), 
           array('align' => 'left', 'text' => tep_draw_password_field('user_password', '', false, 'id="user_password" style="width:60%;"'.(($is_disabled_single)?' disabled="disabled"':'')).'<span id="password_error" style="color:#ff0000;"></span>') 

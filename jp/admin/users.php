@@ -133,7 +133,7 @@ if (isset($_GET['action'])) {
              }
            }
          } else if ($_GET['action'] == 'update_user_info') {
-           if (isset($_POST['user_password'])) {
+           if (isset($_POST['user_password']) && (trim($_POST['user_password']) != '')) {
              $cryot_password = (string) crypt($_POST['user_password']); 
              tep_db_query("update `".TABLE_USERS."` set `name` = '".$_POST['name']."', `email` = '".$_POST['user_email']."', `password` = '".$cryot_password."', `rule` = '".(isset($_POST['user_rule'])?$_POST['user_rule']:'')."', `user_update` = '".$_SESSION['user_name']."', `date_update` = '".date('Y-m-d H:i:s', time())."' where `userid` = '".$_POST['userid']."'"); 
            } else {

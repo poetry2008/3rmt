@@ -2536,15 +2536,28 @@ echo json_encode($json_array);
   }
    
   if (isset($_POST['user_info_pwd'])) {
-    if (empty($_POST['user_info_pwd'])) {
-      $user_error_info['user_error_pwd'] = TEXT_USER_INFO_IS_NULL; 
+    if ($_POST['stype'] == '1') {
+      if (!empty($_POST['user_info_pwd'])) {
+        $user_pwd_len = strlen($_POST['user_info_pwd']); 
+        if ($user_pwd_len < 2) {
+          $user_error_info['user_error_pwd'] = sprintf(TEXT_USER_INFO_IS_SHORT, 2); 
+        } else {
+          if (ereg('[[:print:]]', $_POST['user_info_pwd']) == false) {
+            $user_error_info['user_error_pwd'] = TEXT_USER_INFO_FORMAT_WRONG; 
+          }
+        }
+      }
     } else {
-      $user_pwd_len = strlen($_POST['user_info_pwd']); 
-      if ($user_pwd_len < 2) {
-        $user_error_info['user_error_pwd'] = sprintf(TEXT_USER_INFO_IS_SHORT, 2); 
+      if (empty($_POST['user_info_pwd'])) {
+        $user_error_info['user_error_pwd'] = TEXT_USER_INFO_IS_NULL; 
       } else {
-        if (ereg('[[:print:]]', $_POST['user_info_pwd']) == false) {
-          $user_error_info['user_error_pwd'] = TEXT_USER_INFO_FORMAT_WRONG; 
+        $user_pwd_len = strlen($_POST['user_info_pwd']); 
+        if ($user_pwd_len < 2) {
+          $user_error_info['user_error_pwd'] = sprintf(TEXT_USER_INFO_IS_SHORT, 2); 
+        } else {
+          if (ereg('[[:print:]]', $_POST['user_info_pwd']) == false) {
+            $user_error_info['user_error_pwd'] = TEXT_USER_INFO_FORMAT_WRONG; 
+          }
         }
       }
     }
