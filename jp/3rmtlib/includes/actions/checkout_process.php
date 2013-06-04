@@ -930,6 +930,7 @@ unset($_SESSION['free_value']);
 unset($_SESSION['shipping_page_str']);
 unset($_SESSION['new_payment_error']);
 unset($_SESSION['comments']);
+unset($_SESSION['payment_validated']);
 
 tep_session_unregister('h_code_fee');
 tep_session_unregister('h_point');
