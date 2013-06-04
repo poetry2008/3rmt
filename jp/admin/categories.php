@@ -2254,7 +2254,7 @@ if(ele!=''){
 info_box_set(ele, '<?php echo $belong;?>');
 }
 $('#show_popup_info').css('display','block');
-if(update_type = '0'){
+if(update_type == '0'){
 $('#real_pro_num').select().focus();
 }else if (update_type == '1') {
 $('#virtual_pro_num').select().focus();

@@ -31,3 +31,4 @@ define('TEXT_USER_INFO_IS_SHORT', '请输入%d个文字以上。');
 define('TEXT_USER_INFO_FORMAT_WRONG', '输入错误。');
 define('TEXT_SORT_ASC','▲');
 define('TEXT_SORT_DESC','▼');
+define('TEXT_USER_RULE_WRONG', '算式的格式不正确。');

@@ -777,13 +777,25 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
     echo 'false';
     exit;
   }
-  if(!(in_array('admin',$one_time_arr)&&in_array('chief',$one_time_arr)&&
-       in_array('staff',$one_time_arr))&&in_array('onetime',$one_time_arr)){
-    $sql = "select u.userid,u.rule,l.letter from ".
-      TABLE_USERS." u , ".TABLE_LETTERS." l,".TABLE_PERMISSIONS." p 
-			where u.userid = l.userid 
-			and (l.letter != '' or l.letter != null)
-			and u.userid=p.userid ";
+  if(!(in_array('admin',$one_time_arr)&&in_array('chief',$one_time_arr)&& in_array('staff',$one_time_arr))&&in_array('onetime',$one_time_arr)){
+    $p_list_array = array(); 
+    foreach ($one_time_arr as $o_key => $o_value) {
+      if ($o_value != 'onetime') {
+        switch($o_value) {
+          case 'admin':
+            $p_list_array[] = 15; 
+            break;
+          case 'chief':
+            $p_list_array[] = 10; 
+            break;
+          case 'staff':
+            $p_list_array[] = 7; 
+            break;
+        }
+      }
+    }
+    $sql = "select u.userid,u.rule,l.letter from ".  TABLE_USERS." u , ".TABLE_LETTERS." l,".TABLE_PERMISSIONS." p where u.userid = l.userid and (l.letter != '' or l.letter != null) and u.userid=p.userid ".(!empty($p_list_array)?" and p.permission in (".implode(',', $p_list_array).")":"and p.permission in (0)");
+    
     $result = tep_db_query($sql);
     $arr =array();
     while($row = tep_db_fetch_array($result)){
@@ -2490,6 +2502,7 @@ echo json_encode($json_array);
   $user_error_info['user_error_name'] = ''; 
   $user_error_info['user_error_pwd'] = ''; 
   $user_error_info['user_error_email'] = ''; 
+  $user_error_info['user_error_rule'] = ''; 
   
   if (empty($_POST['userid_info_str'])) {
     $user_error_info['user_error_id'] = TEXT_USER_INFO_IS_NULL; 
@@ -2536,6 +2549,11 @@ echo json_encode($json_array);
       }
     }
   }
-  
+ 
+  if (trim($_POST['user_rule']) != '') {
+    if (!make_rand_pwd($_POST['user_rule'])) {
+      $user_error_info['user_error_rule'] = TEXT_USER_RULE_WRONG; 
+    }
+  }
   echo implode('|||',$user_error_info);
 }

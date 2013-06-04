@@ -31,3 +31,4 @@ define('TEXT_USER_INFO_IS_SHORT', '%d 文字以上入力してください。');
 define('TEXT_USER_INFO_FORMAT_WRONG', '正しく入力されていません。');
 define('TEXT_SORT_ASC','▲');
 define('TEXT_SORT_DESC','▼');
+define('TEXT_USER_RULE_WRONG', '計算式の形式が違います。');

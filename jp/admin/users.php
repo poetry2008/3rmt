@@ -283,7 +283,8 @@ if (isset($_GET['action'])) {
        tep_redirect(tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_e_id', 'user_info_id', 'site_id')))); 
        break;
      case 'setflag':
-       tep_db_query("update `".TABLE_USERS."` set `status` = '".$_GET['flag']."' where userid = '".$_GET['user_e_id']."'"); 
+       tep_db_query("update `".TABLE_USERS."` set `status` = '".$_GET['flag']."', `rule` = '' where userid = '".$_GET['user_e_id']."'"); 
+       tep_db_query("update `".TABLE_LETTERS."` set `userid` = null where `userid` = '".$_GET['user_e_id']."'");   
        tep_redirect(tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_e_id', 'flag', 'site_id')))); 
        break;
   }
@@ -454,14 +455,19 @@ function user_preview_onetime_pwd()
 <?php //检查用户信息是否正确?>
 function check_user_info(user_id, stype)
 {
-  userid_info_str = $('#userid').val(); 
-  user_info_name = $('#name').val(); 
-  user_info_email = $('#user_email').val(); 
+  var userid_info_str = $('#userid').val(); 
+  var user_info_name = $('#name').val(); 
+  var user_info_email = $('#user_email').val(); 
+  var url_info_str = ''; 
   if ($('#user_password')) {
-    user_info_pwd = $('#user_password').val(); 
+    var user_info_pwd = $('#user_password').val(); 
     url_info_str = 'user_info_id='+user_id+'&stype='+stype+'&userid_info_str='+userid_info_str+'&user_info_name='+user_info_name+'&user_info_pwd='+user_info_pwd+'&user_info_email='+user_info_email; 
   } else {
     url_info_str = 'user_info_id='+user_id+'&stype='+stype+'&userid_info_str='+userid_info_str+'&user_info_name='+user_info_name+'&user_info_email='+user_info_email; 
+  }
+  if ($('#user_rule')) {
+    var user_rule_str = $('#user_rule').val(); 
+    url_info_str += '&user_rule='+user_rule_str; 
   }
   $.ajax({
     url: 'ajax_orders.php?action=check_user_info',     
@@ -475,7 +481,8 @@ function check_user_info(user_id, stype)
       $('#name_error').html(user_error_arr[1]); 
       $('#password_error').html(user_error_arr[2]); 
       $('#email_error').html(user_error_arr[3]); 
-      if (data == '|||||||||') {
+      $('#rule_error').html(user_error_arr[4]); 
+      if (data == '||||||||||||') {
         <?php
         if ($ocertify->npermission > 15) {
         ?>
@@ -903,10 +910,10 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                         $user_permission_str = 'Chief';    
                         break;
                       case '7':
-                        $user_permission_str = 'Starff';    
+                        $user_permission_str = 'Staff';    
                         break;
                       case '31':
-                        $user_permission_str = 'Super';    
+                        $user_permission_str = 'Root';    
                         break;
                     }
                     $user_list_row[] = array(
@@ -940,9 +947,17 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                     $user_status_str = ''; 
                     
                     if ($user_list_info['status'] == '1') {
-                      $user_status_str = tep_image(DIR_WS_IMAGES.'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN).'&nbsp;&nbsp<a href="javascript:void(0);" onclick="set_user_flag(\''.$user_list_info['userid'].'\', \'0\', \''.urlencode(tep_get_all_get_params(array('action', 'flag', 'site_id'))).'\')">'.tep_image(DIR_WS_IMAGES.'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT).'</a>'; 
+                      if ($is_u_disabled) {
+                        $user_status_str = tep_image(DIR_WS_IMAGES.'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN).'&nbsp;&nbsp'.tep_image(DIR_WS_IMAGES.'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT); 
+                      } else {
+                        $user_status_str = tep_image(DIR_WS_IMAGES.'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN).'&nbsp;&nbsp<a href="javascript:void(0);" onclick="set_user_flag(\''.$user_list_info['userid'].'\', \'0\', \''.urlencode(tep_get_all_get_params(array('action', 'flag', 'site_id'))).'\')">'.tep_image(DIR_WS_IMAGES.'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT).'</a>'; 
+                      }
                     } else {
-                      $user_status_str = '<a href="javascript:void(0);" onclick="set_user_flag(\''.$user_list_info['userid'].'\', \'1\', \''.urlencode(tep_get_all_get_params(array('action', 'flag', 'site_id'))).'\')">'.tep_image(DIR_WS_IMAGES.'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT).'</a>&nbsp;&nbsp;'.tep_image(DIR_WS_IMAGES.'icon_status_red.gif', IMAGE_ICON_STATUS_RED); 
+                      if ($is_u_disabled) {
+                        $user_status_str = tep_image(DIR_WS_IMAGES.'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT).'&nbsp;&nbsp;'.tep_image(DIR_WS_IMAGES.'icon_status_red.gif', IMAGE_ICON_STATUS_RED); 
+                      } else {
+                        $user_status_str = '<a href="javascript:void(0);" onclick="set_user_flag(\''.$user_list_info['userid'].'\', \'1\', \''.urlencode(tep_get_all_get_params(array('action', 'flag', 'site_id'))).'\')">'.tep_image(DIR_WS_IMAGES.'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT).'</a>&nbsp;&nbsp;'.tep_image(DIR_WS_IMAGES.'icon_status_red.gif', IMAGE_ICON_STATUS_RED); 
+                      }
                     }
                     $user_list_row[] = array(
                         'align' => 'center', 
