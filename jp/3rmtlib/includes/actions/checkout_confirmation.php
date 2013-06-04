@@ -64,7 +64,9 @@ if (is_array($payment_modules->modules) ){
       $point_query = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "'");
       $current_point = tep_db_fetch_array($point_query);
   }
+  $_SESSION['payment_validated'] = true;
   if ($validateModule['validated']===false or $validateModule == false){
+    $_SESSION['payment_validated'] = false;
     $order->info['total'] = $order->info['total'] + $h_shipping_fee; 
     $selection = $payment_modules->selection();
     if($validateModule !=false){

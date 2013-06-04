@@ -167,36 +167,6 @@ if ( (STOCK_CHECK == 'true') && (STOCK_ALLOW_CHECKOUT != 'true') ) {
 
 include(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_PROCESS);
 $payment_modules = payment::getInstance(SITE_ID);
-  $validateModule = $payment_modules->pre_confirmation_check($payment);
-  if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
-      $point_query = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "'");
-      $current_point = tep_db_fetch_array($point_query);
-  }
-  if ($validateModule['validated']===false or $validateModule == false){
-    $order->info['total'] = $order->info['total'] + $h_shipping_fee; 
-    $selection = $payment_modules->selection();
-    if($validateModule !=false){
-    $selection[strtoupper($payment)] = $validateModule;
-    }
-    require_once DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_PAYMENT;
-page_head();?>
-<script type="text/javascript" src="./js/jquery-1.3.2.min.js">
-  </script>
-  <script type="text/javascript" src="./js/payment.js">
-  </script>
-  <?php
-  if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') 
-    {
-      //输出payment 的javascript验证
-      echo $payment_modules->javascript_validation($current_point['point']); 
-    }
-?>
-</head><?php
-    
-    require_once "checkout_payment_template.php";    
-    exit();
-  }
-
 $insert_id = date("Ymd") . '-' . date("His") . tep_get_order_end_num();
 # Check
 $NewOidQuery = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS." where orders_id = '".$insert_id."' and site_id = '".SITE_ID."'");
@@ -205,7 +175,11 @@ if($NewOid['cnt'] > 0) {
   # OrderNo
     $insert_id = date("Ymd") . '-' . date("His") . tep_get_order_end_num();
 }
-
+  if (isset($_SESSION['payment_validated']) &&$_SESSION['payment_validated']==false){
+    unset($_SESSION['comments']);
+    $_SESSION['payment_error'] = $_SESSION['new_payment_error'];
+    tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, '' , 'SSL'));
+  }
 $comments_info = $payment_modules->dealComment($payment,$comments);
 if (is_array($comments_info)) {
   $comments = $comments_info['comment'];
@@ -954,6 +928,8 @@ unset($_SESSION['options_type_array']);
 unset($_SESSION['weight_fee']);
 unset($_SESSION['free_value']);
 unset($_SESSION['shipping_page_str']);
+unset($_SESSION['new_payment_error']);
+unset($_SESSION['comments']);
 
 tep_session_unregister('h_code_fee');
 tep_session_unregister('h_point');

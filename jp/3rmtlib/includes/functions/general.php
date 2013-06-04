@@ -5316,6 +5316,7 @@ if (isset($_SESSION['campaign_fee'])) {
          }else{
            echo $_SESSION['payment_error'];
          }
+         $_SESSION['new_payment_error'] = $_SESSION['payment_error'];
          unset($_SESSION['payment_error']);
      ?>
      </div><br>
