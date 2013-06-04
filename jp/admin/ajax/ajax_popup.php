@@ -5471,18 +5471,18 @@ if($_GET['cID'] != -1){
   
   $new_user_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="25%"', 'text' => USER_INFO_ID_TEXT), 
-        array('align' => 'left', 'text' => tep_draw_input_field('userid', '', 'id="userid" class="campaign_input"').'<span id="userid_error" style="color:#ff0000;"></span>') 
+        array('align' => 'left', 'text' => tep_draw_input_field('userid', '', 'id="userid" style="width:60%;"').'<span id="userid_error" style="color:#ff0000;"></span>') 
       );
   
   $new_user_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_USER_INFO_NAME), 
-        array('align' => 'left', 'text' => tep_draw_input_field('name', '', 'id="name" class="campaign_input"').'<span id="name_error" style="color:#ff0000;"></span>') 
+        array('align' => 'left', 'text' => tep_draw_input_field('name', '', 'id="name" style="width:60%;"').'<span id="name_error" style="color:#ff0000;"></span>') 
       );
   
   
   $new_user_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="25%"', 'text' => USER_INFO_EMAIl_TEXT), 
-        array('align' => 'left', 'text' => tep_draw_input_field('user_email', '', 'class="campaign_input" id="user_email"').'<span id="email_error" style="color:#ff0000;"></span>') 
+        array('align' => 'left', 'text' => tep_draw_input_field('user_email', '', 'style="width:60%;" id="user_email"').'<span id="email_error" style="color:#ff0000;"></span>') 
       );
   $user_permission_array = array();
 
@@ -5523,11 +5523,11 @@ if($_GET['cID'] != -1){
   
   $new_user_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_USER_INFO_PASSWORD), 
-        array('align' => 'left', 'text' => tep_draw_password_field('user_password', '', false, 'id="user_password" class="campaign_input"').'<span id="password_error" style="color:#ff0000;"></span>') 
+        array('align' => 'left', 'text' => tep_draw_password_field('user_password', '', false, 'id="user_password" style="width:60%;"').'<span id="password_error" style="color:#ff0000;"></span>') 
       );
   $user_letter_query = tep_db_query("select * from ".TABLE_LETTERS." where userid = '' or userid is null");  
   if (tep_db_num_rows($user_letter_query) > 0) {
-    $user_calc_str = tep_show_pw_start().'&nbsp;'.tep_draw_input_field('user_rule', '', 'class="campaign_input" id="user_rule"');
+    $user_calc_str = tep_show_pw_start().'&nbsp;'.tep_draw_input_field('user_rule', '', 'style="width:60%;" id="user_rule"').'<br><span id="rule_error" style="color:#ff0000;"></span>';
     $new_user_row[]['text'] = array(
           array('align' => 'left', 'params' => 'width="25%"', 'text' => USER_INFO_CALC_TEXT), 
           array('align' => 'left', 'text' => $user_calc_str) 
@@ -5535,7 +5535,7 @@ if($_GET['cID'] != -1){
     
     $new_user_row[]['text'] = array(
           array('align' => 'left', 'params' => 'width="25%"', 'text' => USER_INFO_ONETIME_PWD), 
-          array('align' => 'left', 'text' => tep_draw_input_field('user_onetime', '', 'id="user_onetime" class="readonly" style="width:40%" readonly').'&nbsp;<a href="javascript:void(0);" onclick="user_preview_onetime_pwd();">'.tep_html_element_button(USER_ONETIME_PWD_PREVIEW).'</a>') 
+          array('align' => 'left', 'text' => tep_draw_input_field('user_onetime', '', 'id="user_onetime" class="readonly" style="width:60%" readonly').'&nbsp;<a href="javascript:void(0);" onclick="user_preview_onetime_pwd();">'.tep_html_element_button(USER_ONETIME_PWD_PREVIEW).'</a>') 
         );
     
     $new_user_row[]['text'] = array(
@@ -5550,7 +5550,7 @@ if($_GET['cID'] != -1){
   }
   $new_user_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="25%"', 'text' => USER_INFO_IP_LIMIT_TEXT), 
-        array('align' => 'left', 'text' => tep_draw_textarea_field('ip_limit', 'hard', '30', '10', '', 'class="campaign_input" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize: vertical;"')) 
+        array('align' => 'left', 'text' => tep_draw_textarea_field('ip_limit', 'hard', '30', '10', '', 'style="width:60%;" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize: vertical;"')) 
       );
   
   $new_user_row[]['text'] = array(
@@ -5564,13 +5564,13 @@ if($_GET['cID'] != -1){
       );
   
   $new_user_row[]['text'] = array(
-            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.TEXT_UNSET_DATA), 
-            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.TEXT_UNSET_DATA)
+            array('align' => 'left', 'text' => TEXT_USER_ADDED.TEXT_UNSET_DATA), 
+            array('align' => 'left', 'text' => TEXT_DATE_ADDED.TEXT_UNSET_DATA)
       );
       
   $new_user_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.TEXT_UNSET_DATA),
-        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.TEXT_UNSET_DATA)
+        array('align' => 'left', 'text' => TEXT_USER_UPDATE.TEXT_UNSET_DATA),
+        array('align' => 'left', 'text' => TEXT_DATE_UPDATE.TEXT_UNSET_DATA)
       );
   
   $form_str = tep_draw_form('new_user_form', FILENAME_USERS, 'action=insert_user_info'); 
@@ -5594,9 +5594,9 @@ if($_GET['cID'] != -1){
   $user_array = array(); 
   $param_str = '';
   $is_disabled_single = false;
+  $c_user_permission_raw = tep_db_query("select * from ".TABLE_PERMISSIONS." where userid = '".$ocertify->auth_user."'");
+  $c_user_permission_res = tep_db_fetch_array($c_user_permission_raw); 
   if ($ocertify->npermission != 31) {
-    $c_user_permission_raw = tep_db_query("select * from ".TABLE_PERMISSIONS." where userid = '".$ocertify->auth_user."'");
-    $c_user_permission_res = tep_db_fetch_array($c_user_permission_raw); 
     $tmp_s_array = explode(',', $c_user_permission_res['site_permission']); 
     if (!in_array('0', $tmp_s_array)) {
       $is_disabled_single = true;
@@ -5655,11 +5655,15 @@ if($_GET['cID'] != -1){
   }
 
   if($u_key > 0){ 
-    $page_str .= '<a onclick="show_link_user_info(\''.$user_array[$u_key - 1].'\', \''.urlencode($param_str).'\');" href="javascript:void(0);" id="user_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp';
+    $page_str .= '<a onclick="show_link_user_info(\''.$user_array[$u_key - 1].'\', \''.urlencode($param_str).'\');" href="javascript:void(0);" id="user_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;';
+  } else {
+    $page_str .= '<font color="#000000">'.IMAGE_PREV.'</font>&nbsp;&nbsp;'; 
   }
   
   if($u_key < count($user_array)-1){
-    $page_str .= '<a onclick="show_link_user_info(\''.$user_array[$u_key + 1].'\', \''.urlencode($param_str).'\');" href="javascript:void(0);" id="user_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp';
+    $page_str .= '<a onclick="show_link_user_info(\''.$user_array[$u_key + 1].'\', \''.urlencode($param_str).'\');" href="javascript:void(0);" id="user_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;';
+  } else {
+    $page_str .= '<font color="#000000">'.IMAGE_NEXT.'</font>&nbsp;&nbsp;'; 
   }
   
   $page_str .= '<a onclick="close_user_info();" href="javascript:void(0);">X</a>';
@@ -5696,13 +5700,13 @@ if($_GET['cID'] != -1){
   
   $new_user_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_USER_INFO_NAME), 
-        array('align' => 'left', 'text' => tep_draw_input_field('name', $user_info_res['name'], 'id="name" class="campaign_input"'.(($is_disabled_single)?' disabled="disabled"':'')).'<span id="name_error" style="color:#ff0000;"></span>') 
+        array('align' => 'left', 'text' => tep_draw_input_field('name', $user_info_res['name'], 'id="name" style="width:60%;"'.(($is_disabled_single)?' disabled="disabled"':'')).'<span id="name_error" style="color:#ff0000;"></span>') 
       );
   
   
   $new_user_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="25%"', 'text' => USER_INFO_EMAIl_TEXT), 
-        array('align' => 'left', 'text' => tep_draw_input_field('user_email', $user_info_res['email'], 'class="campaign_input" id="user_email"'.(($is_disabled_single)?' disabled="disabled"':'')).'<span id="email_error" style="color:#ff0000;"></span>') 
+        array('align' => 'left', 'text' => tep_draw_input_field('user_email', $user_info_res['email'], 'style="width:60%;" id="user_email"'.(($is_disabled_single)?' disabled="disabled"':'')).'<span id="email_error" style="color:#ff0000;"></span>') 
       );
   $user_permission_array = array();
   $user_permission_str = '';
@@ -5721,20 +5725,75 @@ if($_GET['cID'] != -1){
           array('align' => 'left', 'params' => 'class="td_input"', 'text' => $user_permission_str) 
         );
   } 
-
   $user_site_array = explode(',', $user_permission_res['site_permission']);
+  $tmp_c_site_list = explode(',', $c_user_permission_res['site_permission']); 
+  $tmp_diff_array = array_diff($user_site_array, $tmp_c_site_list);  
+  $tmp_merge_site_array = array_merge($tmp_c_site_list, $user_site_array); 
+  $merge_site_array = array_unique($tmp_merge_site_array); 
+  $tmp_merge_array = array(); 
+  if (!empty($merge_site_array)) {
+    foreach ($merge_site_array as $m_key => $m_value) {
+      if (trim($m_value) != '') {
+        $tmp_merge_array[] = $m_value; 
+      }
+    }
+  }
+  $merge_site_array = $tmp_merge_array; 
   if ($ocertify->npermission == 31) {
     $user_site_permission_str = '<input type="checkbox" name="user_permission_info[]" value="0"'.((in_array('0', $user_site_array)?' checked':'')).'>all&nbsp;';  
   } else {
-    $user_site_permission_str = '<input type="checkbox" name="user_permission_info[]" value="0"'.((in_array('0', $user_site_array)?(($is_disabled_single)?' disabled="disabled"':' checked'):'disabled')).'>all&nbsp;';  
+    $tmp_check_str = ''; 
+    if ($is_disabled_single) {
+      $tmp_check_str .= 'disabled="disabled"'; 
+      $tmp_check_str .= (in_array('0', $user_site_array)?' checked':''); 
+    } else {
+      if (in_array('0', $merge_site_array)) {
+        if (in_array('0', $tmp_c_site_list)) {
+          if (in_array('0', $user_site_array)) {
+            $tmp_check_str .= 'checked'; 
+          } 
+        } else {
+          $tmp_check_str .= 'disabled="disabled"'; 
+          if (in_array('0', $user_site_array)) {
+            $tmp_check_str .= ' checked'; 
+          } 
+        }
+      } else {
+        $tmp_check_str .= 'disabled="disabled"'; 
+      }
+    }
+    $user_site_permission_str = '<input type="checkbox" name="user_permission_info[]" value="0" '.$tmp_check_str.'>all&nbsp;';  
   }
   $site_list_query = tep_db_query("select * from ".TABLE_SITES." order by id asc"); 
   while ($site_list_info = tep_db_fetch_array($site_list_query)) {
     if ($ocertify->npermission == 31) {
       $user_site_permission_str .= '<input type="checkbox" name="user_permission_info[]" value="'.$site_list_info['id'].'"'.((in_array($site_list_info['id'], $user_site_array)?' checked':'')).'>'.$site_list_info['romaji'].'&nbsp;';  
     } else {
-      $user_site_permission_str .= '<input type="checkbox" name="user_permission_info[]" value="'.$site_list_info['id'].'"'.((in_array($site_list_info['id'], $user_site_array)?(($is_disabled_single)?' disabled="disabled" checked':' checked'):'disabled')).'>'.$site_list_info['romaji'].'&nbsp;';  
+      $tmp_check_str = ''; 
+      if ($is_disabled_single) {
+        $tmp_check_str .= 'disabled="disabled"'; 
+        $tmp_check_str .= (in_array($site_list_info['id'], $user_site_array)?' checked':''); 
+      } else {
+        if (in_array($site_list_info['id'], $merge_site_array)) {
+          if (in_array($site_list_info['id'], $tmp_c_site_list)) {
+            if (in_array($site_list_info['id'], $user_site_array)) {
+              $tmp_check_str .= 'checked'; 
+            } 
+          } else {
+            $tmp_check_str .= 'disabled="disabled"'; 
+            if (in_array($site_list_info['id'], $user_site_array)) {
+              $tmp_check_str .= ' checked'; 
+            } 
+          }
+        } else {
+          $tmp_check_str .= 'disabled="disabled"'; 
+        }
+      }
+      $user_site_permission_str .= '<input type="checkbox" name="user_permission_info[]" value="'.$site_list_info['id'].'" '.$tmp_check_str.'>'.$site_list_info['romaji'].'&nbsp;';  
     }
+  }
+  if ($ocertify->npermission != '31') {
+    $user_site_permission_str .= '<input type="hidden" name="other_site" value="'.implode(',', $tmp_diff_array).'">'; 
   }
   if ($user_permission_res['permission'] != '31') {
     $new_user_row[]['text'] = array(
@@ -5745,14 +5804,14 @@ if($_GET['cID'] != -1){
   if (check_input_user_password($user_permission_res['permission'], $_POST['user_e_id'])) {
     $new_user_row[]['text'] = array(
           array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_USER_INFO_PASSWORD), 
-          array('align' => 'left', 'text' => tep_draw_password_field('user_password', '', false, 'id="user_password" class="campaign_input"'.(($is_disabled_single)?' disabled="disabled"':'')).'<span id="password_error" style="color:#ff0000;"></span>') 
+          array('align' => 'left', 'text' => tep_draw_password_field('user_password', '', false, 'id="user_password" style="width:60%;"'.(($is_disabled_single)?' disabled="disabled"':'')).'<span id="password_error" style="color:#ff0000;"></span>') 
         );
   }
   $letter_info_query = tep_db_query("select * from ".TABLE_LETTERS." where userid = '' or userid is null or userid = '".$_POST['user_e_id']."'");  
   $user_letter_query = tep_db_query("select * from ".TABLE_LETTERS. " where userid = '".$_POST['user_e_id']."'"); 
   $user_letter_res = tep_db_fetch_array($user_letter_query); 
   if (tep_db_num_rows($letter_info_query) > 0) {
-    $user_calc_str = tep_show_pw_start($user_info_res['userid'], $user_letter_res['letter'], (($is_disabled_single)?' disabled="disabled"':'')).'&nbsp;'.tep_draw_input_field('user_rule', $user_info_res['rule'], 'class="campaign_input" id="user_rule"'.(($is_disabled_single)?' disabled="disabled"':''));
+    $user_calc_str = tep_show_pw_start($user_info_res['userid'], $user_letter_res['letter'], (($is_disabled_single)?' disabled="disabled"':'')).'&nbsp;'.tep_draw_input_field('user_rule', $user_info_res['rule'], 'style="width:60%;" id="user_rule"'.(($is_disabled_single)?' disabled="disabled"':'')).'<br><span id="rule_error" style="color:#ff0000;"></span>';
     $new_user_row[]['text'] = array(
           array('align' => 'left', 'params' => 'width="25%"', 'text' => USER_INFO_CALC_TEXT), 
           array('align' => 'left', 'text' => $user_calc_str) 
@@ -5761,12 +5820,12 @@ if($_GET['cID'] != -1){
     if ($is_disabled_single) {
       $new_user_row[]['text'] = array(
             array('align' => 'left', 'params' => 'width="25%"', 'text' => USER_INFO_ONETIME_PWD), 
-            array('align' => 'left', 'text' => tep_draw_input_field('user_onetime', $user_letter_res['letter'].make_rand_pwd($user_info_res['rule']), 'id="user_onetime" class="readonly" style="width:40%" readonly').'&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(USER_ONETIME_PWD_PREVIEW, 'disabled="disabled"').'</a>') 
+            array('align' => 'left', 'text' => tep_draw_input_field('user_onetime', $user_letter_res['letter'].make_rand_pwd($user_info_res['rule']), 'id="user_onetime" class="readonly" style="width:60%" readonly').'&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(USER_ONETIME_PWD_PREVIEW, 'disabled="disabled"').'</a>') 
           );
     } else {
       $new_user_row[]['text'] = array(
             array('align' => 'left', 'params' => 'width="25%"', 'text' => USER_INFO_ONETIME_PWD), 
-            array('align' => 'left', 'text' => tep_draw_input_field('user_onetime', $user_letter_res['letter'].make_rand_pwd($user_info_res['rule']), 'id="user_onetime" class="readonly" style="width:40%" readonly').'&nbsp;<a href="javascript:void(0);" onclick="user_preview_onetime_pwd();">'.tep_html_element_button(USER_ONETIME_PWD_PREVIEW).'</a>') 
+            array('align' => 'left', 'text' => tep_draw_input_field('user_onetime', $user_letter_res['letter'].make_rand_pwd($user_info_res['rule']), 'id="user_onetime" class="readonly" style="width:60%" readonly').'&nbsp;<a href="javascript:void(0);" onclick="user_preview_onetime_pwd();">'.tep_html_element_button(USER_ONETIME_PWD_PREVIEW).'</a>') 
           );
     }
     
@@ -5787,7 +5846,7 @@ if($_GET['cID'] != -1){
   }
   $new_user_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="25%"', 'text' => USER_INFO_IP_LIMIT_TEXT), 
-        array('align' => 'left', 'text' => tep_draw_textarea_field('ip_limit', 'hard', '30', '10', $ip_limit_str, 'class="campaign_input" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize: vertical;"'.(($is_disabled_single)?' disabled="disabled"':''))) 
+        array('align' => 'left', 'text' => tep_draw_textarea_field('ip_limit', 'hard', '30', '10', $ip_limit_str, 'style="width:60%;" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize: vertical;"'.(($is_disabled_single)?' disabled="disabled"':''))) 
       );
   $login_count_query = tep_db_query("select count(sessionid) as len from login where date(`logintime`) = date(now()) and account = '".$user_info_res['userid']."'"); 
   $login_count_res = tep_db_fetch_array($login_count_query);
@@ -5812,13 +5871,13 @@ if($_GET['cID'] != -1){
       );
   
   $new_user_row[]['text'] = array(
-            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.(tep_not_null($user_info_res['user_added'])?$user_info_res['user_added']:TEXT_UNSET_DATA)), 
-            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.((tep_not_null($user_info_res['date_added']) || ($user_info_res['date_added'] != '0000-00-00 00:00:00'))?$user_info_res['date_added']:TEXT_UNSET_DATA))
+            array('align' => 'left', 'text' => TEXT_USER_ADDED.(tep_not_null($user_info_res['user_added'])?$user_info_res['user_added']:TEXT_UNSET_DATA)), 
+            array('align' => 'left', 'text' => TEXT_DATE_ADDED.((tep_not_null($user_info_res['date_added']) || ($user_info_res['date_added'] != '0000-00-00 00:00:00'))?$user_info_res['date_added']:TEXT_UNSET_DATA))
       );
       
   $new_user_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.(tep_not_null($user_info_res['user_update'])?$user_info_res['user_update']:TEXT_UNSET_DATA)),
-        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.((tep_not_null($user_info_res['date_update']) || ($user_info_res['date_update'] != '0000-00-00 00:00:00'))?$user_info_res['date_update']:TEXT_UNSET_DATA))
+        array('align' => 'left', 'text' => TEXT_USER_UPDATE.(tep_not_null($user_info_res['user_update'])?$user_info_res['user_update']:TEXT_UNSET_DATA)),
+        array('align' => 'left', 'text' => TEXT_DATE_UPDATE.((tep_not_null($user_info_res['date_update']) || ($user_info_res['date_update'] != '0000-00-00 00:00:00'))?$user_info_res['date_update']:TEXT_UNSET_DATA))
       );
   
   $form_str = tep_draw_form('new_user_form', FILENAME_USERS, 'user_e_id='.$_POST['user_e_id'].'&action=update_user_info&'.$param_str); 

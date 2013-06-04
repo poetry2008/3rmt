@@ -9,7 +9,7 @@
   require('includes/step-by-step/new_application_top.php');
   include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .  '/default.php');
   require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_EDIT_ORDERS);
-  //unset($_SESSION['orders_update_products']); 
+ 
   $active_order_raw = tep_db_query("select is_active from ".TABLE_PREORDERS." where orders_id = '".$_GET['oID']."'");
   $active_order_res = tep_db_fetch_array($active_order_raw);
   if (!$active_order_res['is_active']) {
