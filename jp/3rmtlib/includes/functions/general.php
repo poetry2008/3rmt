@@ -2146,7 +2146,7 @@ header("Expires:".date("D, d M Y H:i:s",0)." GMT");
     
 
     if ($script_name == 'news' && $_GET['news_id']) {
-      $script_name = 'a_'.$script_name;
+      $script_name = $script_name.'_info';
     }
     if ($script_name == 'non-member_auth') {
       $script_name = str_replace('-','_',$script_name);
