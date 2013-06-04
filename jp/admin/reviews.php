@@ -465,7 +465,7 @@ if($('.show_left_menu').width()){
   leftset = parseInt($('.content').attr('cellspacing'))+parseInt($('.content').attr('cellpadding'))*2+parseInt($('.columnLeft').attr('cellspacing'))*2+parseInt($('.columnLeft').attr('cellpadding'))*2+parseInt($('.compatible table').attr('cellpadding'));
 } 
 if(rID == 0){
-  show_text_list = $('#show_text_list').offset();
+  var show_text_list = $('#show_text_list').offset();
 $('#show_text_reviews').css('top',show_text_list.top);
 }
 $('#show_text_reviews').css('z-index','1');
