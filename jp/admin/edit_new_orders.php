@@ -14,7 +14,7 @@ require(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAM
 if(!isset($_SESSION['sites_id_flag']) || !isset($_SESSION['customer_id']) || !isset($_SESSION['email_address']) || !isset($_SESSION['firstname']) || !isset($_SESSION['lastname'])){
   tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER, null, 'SSL')));
 }
-//unset($_SESSION['orders_update_products']);
+
 require(DIR_WS_CLASSES . 'currencies.php');
 $currencies = new currencies(2);
 $oID = tep_db_input($_GET['oID']);

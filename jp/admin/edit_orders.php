@@ -13,8 +13,6 @@ require('includes/address/AD_Option_Group.php');
 require('option/HM_Option.php');
 require('option/HM_Option_Group.php');
 include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .  '/default.php');
-//print_r($_SESSION['orders_update_products']);
-//unset($_SESSION['orders_update_products']);
 $ad_option = new AD_Option();
 require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_EDIT_ORDERS);
 
