@@ -15,8 +15,7 @@
   }
   require(DIR_WS_CLASSES . 'currencies.php');
   $currencies = new currencies(2);
-  //unset($_SESSION['orders_update_products']);
-  //print_r($_SESSION['orders_update_products']);  
+  
   include(DIR_WS_CLASSES . 'preorder.php');
   unset($cpayment); 
   $cpayment = payment::getInstance((int)$_SESSION['create_preorder']['orders']['site_id']);
