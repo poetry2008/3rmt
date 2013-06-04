@@ -140,6 +140,17 @@ if (isset($_GET['action'])) {
              tep_db_query("update `".TABLE_USERS."` set `name` = '".$_POST['name']."', `email` = '".$_POST['user_email']."', `rule` = '".(isset($_POST['user_rule'])?$_POST['user_rule']:'')."', `user_update` = '".$_SESSION['user_name']."', `date_update` = '".date('Y-m-d H:i:s', time())."' where `userid` = '".$_POST['userid']."'"); 
            }
            if (isset($_POST['u_permission'])) {
+             if (trim($_POST['other_site']) != '') {
+               $tmp_mege_array = array(); 
+               $tmp_other_site = explode(',', $_POST['other_site']);  
+               $tmp_origin_site = explode(',', $permission_list_str); 
+               if ($permission_list_str != '') {
+                 $tmp_merge_array = array_merge($tmp_origin_site, $tmp_other_site); 
+               } else {
+                 $tmp_merge_array = $tmp_other_site; 
+               }
+               $permission_list_str = implode(',', $tmp_merge_array); 
+             } 
              tep_db_query("update `".TABLE_PERMISSIONS."` set `permission` = '".$permission_num."', `site_permission` = '".$permission_list_str."' where `userid` = '".$_POST['userid']."'"); 
            } else {
              $tmp_s_list_array = array();

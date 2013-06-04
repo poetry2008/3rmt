@@ -5594,9 +5594,9 @@ if($_GET['cID'] != -1){
   $user_array = array(); 
   $param_str = '';
   $is_disabled_single = false;
+  $c_user_permission_raw = tep_db_query("select * from ".TABLE_PERMISSIONS." where userid = '".$ocertify->auth_user."'");
+  $c_user_permission_res = tep_db_fetch_array($c_user_permission_raw); 
   if ($ocertify->npermission != 31) {
-    $c_user_permission_raw = tep_db_query("select * from ".TABLE_PERMISSIONS." where userid = '".$ocertify->auth_user."'");
-    $c_user_permission_res = tep_db_fetch_array($c_user_permission_raw); 
     $tmp_s_array = explode(',', $c_user_permission_res['site_permission']); 
     if (!in_array('0', $tmp_s_array)) {
       $is_disabled_single = true;
@@ -5725,20 +5725,75 @@ if($_GET['cID'] != -1){
           array('align' => 'left', 'params' => 'class="td_input"', 'text' => $user_permission_str) 
         );
   } 
-
   $user_site_array = explode(',', $user_permission_res['site_permission']);
+  $tmp_c_site_list = explode(',', $c_user_permission_res['site_permission']); 
+  $tmp_diff_array = array_diff($user_site_array, $tmp_c_site_list);  
+  $tmp_merge_site_array = array_merge($tmp_c_site_list, $user_site_array); 
+  $merge_site_array = array_unique($tmp_merge_site_array); 
+  $tmp_merge_array = array(); 
+  if (!empty($merge_site_array)) {
+    foreach ($merge_site_array as $m_key => $m_value) {
+      if (trim($m_value) != '') {
+        $tmp_merge_array[] = $m_value; 
+      }
+    }
+  }
+  $merge_site_array = $tmp_merge_array; 
   if ($ocertify->npermission == 31) {
     $user_site_permission_str = '<input type="checkbox" name="user_permission_info[]" value="0"'.((in_array('0', $user_site_array)?' checked':'')).'>all&nbsp;';  
   } else {
-    $user_site_permission_str = '<input type="checkbox" name="user_permission_info[]" value="0"'.((in_array('0', $user_site_array)?(($is_disabled_single)?' disabled="disabled"':' checked'):'disabled')).'>all&nbsp;';  
+    $tmp_check_str = ''; 
+    if ($is_disabled_single) {
+      $tmp_check_str .= 'disabled="disabled"'; 
+      $tmp_check_str .= (in_array('0', $user_site_array)?' checked':''); 
+    } else {
+      if (in_array('0', $merge_site_array)) {
+        if (in_array('0', $tmp_c_site_list)) {
+          if (in_array('0', $user_site_array)) {
+            $tmp_check_str .= 'checked'; 
+          } 
+        } else {
+          $tmp_check_str .= 'disabled="disabled"'; 
+          if (in_array('0', $user_site_array)) {
+            $tmp_check_str .= ' checked'; 
+          } 
+        }
+      } else {
+        $tmp_check_str .= 'disabled="disabled"'; 
+      }
+    }
+    $user_site_permission_str = '<input type="checkbox" name="user_permission_info[]" value="0" '.$tmp_check_str.'>all&nbsp;';  
   }
   $site_list_query = tep_db_query("select * from ".TABLE_SITES." order by id asc"); 
   while ($site_list_info = tep_db_fetch_array($site_list_query)) {
     if ($ocertify->npermission == 31) {
       $user_site_permission_str .= '<input type="checkbox" name="user_permission_info[]" value="'.$site_list_info['id'].'"'.((in_array($site_list_info['id'], $user_site_array)?' checked':'')).'>'.$site_list_info['romaji'].'&nbsp;';  
     } else {
-      $user_site_permission_str .= '<input type="checkbox" name="user_permission_info[]" value="'.$site_list_info['id'].'"'.((in_array($site_list_info['id'], $user_site_array)?(($is_disabled_single)?' disabled="disabled" checked':' checked'):'disabled')).'>'.$site_list_info['romaji'].'&nbsp;';  
+      $tmp_check_str = ''; 
+      if ($is_disabled_single) {
+        $tmp_check_str .= 'disabled="disabled"'; 
+        $tmp_check_str .= (in_array($site_list_info['id'], $user_site_array)?' checked':''); 
+      } else {
+        if (in_array($site_list_info['id'], $merge_site_array)) {
+          if (in_array($site_list_info['id'], $tmp_c_site_list)) {
+            if (in_array($site_list_info['id'], $user_site_array)) {
+              $tmp_check_str .= 'checked'; 
+            } 
+          } else {
+            $tmp_check_str .= 'disabled="disabled"'; 
+            if (in_array($site_list_info['id'], $user_site_array)) {
+              $tmp_check_str .= ' checked'; 
+            } 
+          }
+        } else {
+          $tmp_check_str .= 'disabled="disabled"'; 
+        }
+      }
+      $user_site_permission_str .= '<input type="checkbox" name="user_permission_info[]" value="'.$site_list_info['id'].'" '.$tmp_check_str.'>'.$site_list_info['romaji'].'&nbsp;';  
     }
+  }
+  if ($ocertify->npermission != '31') {
+    $user_site_permission_str .= '<input type="hidden" name="other_site" value="'.implode(',', $tmp_diff_array).'">'; 
   }
   if ($user_permission_res['permission'] != '31') {
     $new_user_row[]['text'] = array(
