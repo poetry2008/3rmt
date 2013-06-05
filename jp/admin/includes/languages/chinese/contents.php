@@ -42,4 +42,5 @@ define('TEXT_CONTENTS_DELETE_ACTION', '删除勾选项目');
 define('TEXT_CONTENTS_MUST_SELECT', '请至少选择一项');
 define('TEXT_DEL_CONTENTS', '确定要删除吗？');
 define('TEXT_ERROR_NULL','<font color=\'red\'>请输入。</font>');
+define('TEXT_LINK','链接');
 ?>
