@@ -119,7 +119,7 @@ if ($tmp_sort_str == '4') {
             ?>
           </td>
           <td class="main" align="right">
-            <p><?php echo PRE_SURPLUS.'&nbsp;<b>' .  tep_show_quantity($listing['products_quantity']) .  '</b>&nbsp;'.PRE_NUM_QTY; ?></p>
+            <p><?php echo PRE_SURPLUS.'&nbsp;<b>'.tep_show_quantity(tep_get_quantity($listing['products_id'],true)).'</b>&nbsp;'.PRE_NUM_QTY; ?></p>
           </td>
         </tr>
         <tr>

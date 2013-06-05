@@ -81,6 +81,11 @@
         $pre_name = $preorder_products_res['products_name']; 
         $pre_num = $preorder_products_res['products_quantity']; 
       }
+      $per_num_end = '';
+      if(isset($preorder_products_res['products_rate']) &&$preorder_products_res['products_rate']!=0 &&$preorder_products_res['products_rate']!=1 &&$preorder_products_res['products_rate']!=''){
+        $per_num_end = NUM_UNIT_TEXT.' ('.number_format($preorder_products_res['products_rate']*$pre_num).') ';
+        $pre_num = $pre_num.$per_num_end;
+      }
      
       $pre_replace_info_arr = array($pre_name, $pre_num, $preorder_res['payment_method'], $preorder_res['customers_name'], STORE_NAME, HTTP_SERVER, $preorder_res['orders_id'], $preorder_res['comment_msg'], $mail_option_str);
      

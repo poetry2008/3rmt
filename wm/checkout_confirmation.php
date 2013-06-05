@@ -401,7 +401,7 @@ if($city_free_value != ''){
 
 $_SESSION['weight_fee'] = $weight_fee;
 $_SESSION['free_value'] = $free_value;
-$shipping_fee = $cart->total > $free_value ? 0 : $weight_fee;
+$shipping_fee = $cart->total-$_SESSION['h_point'] > $free_value ? 0 : $weight_fee;
 ?>
    </table>
 </td>

@@ -190,7 +190,7 @@ if($city_free_value != ''){
   $free_value = $address_free_value != '' ? $address_free_value : $country_free_value;
 }
 
-$shipping_fee = $cart->total > $free_value ? 0 : $weight_fee;
+$shipping_fee = $cart->total-$_SESSION['h_point'] > $free_value ? 0 : $weight_fee;
 
 if (!tep_session_is_registered('billto')) {
   tep_session_register('billto');
@@ -227,6 +227,11 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
 require_once DIR_WS_CLASSES . 'payment.php';
 
 
+$h_shipping_fee = $shipping_fee;
+
+if (!tep_session_is_registered('h_shipping_fee')) {
+  tep_session_register('h_shipping_fee');
+}
 
 //准备变量
 
@@ -237,11 +242,6 @@ $selection = $payment_modules->selection();
 
 $order->info['total'] = $order->info['total'] + $shipping_fee;
 
-$h_shipping_fee = $shipping_fee;
-
-if (!tep_session_is_registered('h_shipping_fee')) {
-  tep_session_register('h_shipping_fee');
-}
 //统一的头输出 
 
 page_head();?>

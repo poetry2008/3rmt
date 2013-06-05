@@ -1045,13 +1045,16 @@ function price_total(str)
       var total_title_temp = '';
       var total_title = '';
       var temp_flag = false;
+      var sign = '';
       for(var i = 1;i <= sum_num;i++){
      
         if(document.getElementById('update_total_'+i)){
           update_total_temp = document.getElementById('update_total_'+i).value; 
+          sign = document.getElementById('sign_'+i).value; 
           if(update_total_temp == ''){update_total_temp = 0;temp_flag = true;}
           if(update_total_temp == '-'){update_total_temp = 0;}
           update_total_temp = parseInt(update_total_temp);
+          update_total_temp = sign == '0' ? 0-update_total_temp : update_total_temp;
           update_total_num += update_total_temp;
           if(temp_flag == true){update_total_temp = '';temp_flag == false}
           total_value += update_total_temp+'|||';
@@ -1077,7 +1080,7 @@ function price_total(str)
   var payment_value = document.getElementsByName('payment_method')[0].value; 
   $.ajax({
     type: "POST",
-    data: 'total_title='+total_title+'&total_value='+total_value+'&point_value='+point_id+'&total_key='+total_key+'&ot_total='+ot_total_temp+'&ot_subtotal='+ot_subtotal_id_temp+'&payment_value='+payment_value+'&orders_id='+session_orders_id+'&session_site_id='+session_site_id+'&handle_fee='+handle_fee_id,
+    data: 'total_title='+total_title+'&total_value='+total_value+'&point_value='+point_id+'&total_key='+total_key+'&ot_total='+ot_total_temp+'&ot_subtotal='+ot_subtotal_id_temp+'&payment_value='+payment_value+'&orders_id='+session_orders_id+'&session_site_id='+session_site_id+'&handle_fee='+handle_fee_id+'&fee_total='+update_total_num+'&shipping_fee_id='+shipping_fee_id,
     async:false,
     url: 'ajax_orders.php?action=price_total',
     success: function(msg) {
@@ -1086,12 +1089,18 @@ function price_total(str)
      var handle_fee = parseInt(msg_array[0]);
      var campaign_fee =  Math.abs(parseInt(msg_array[1]));
      var campaign_flag = msg_array[2];
+     var shipping_fee = parseInt(msg_array[3]);
      if(campaign_flag == 1){
        document.getElementById('point_id').value = campaign_fee;
      }
      document.getElementById('handle_fee_id').innerHTML = handle_fee+str;
      document.getElementsByName('payment_code_fee')[0].value = handle_fee; 
+     document.getElementById('shipping_fee_id').innerHTML = shipping_fee+str;
+     if(document.getElementsByName('shipping_fee_num')[0]){
+       document.getElementsByName('shipping_fee_num')[0].value = shipping_fee;
+     }
      ot_total = ot_total-handle_fee_id+handle_fee-campaign_fee;
+     ot_total = ot_total-shipping_fee_id+shipping_fee;
      if(ot_total < 0){ 
         ot_total = Math.abs(ot_total);
         document.getElementById('ot_total_id').innerHTML = '<font color="#FF0000">'+fmoney(ot_total)+'</font>'+str;

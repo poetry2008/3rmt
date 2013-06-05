@@ -147,7 +147,29 @@ if($city_free_value != ''){
   $free_value = $address_free_value != '' ? $address_free_value : $country_free_value;
 }
 
-$shipping_fee = $money_total > $free_value ? 0 : $weight_fee;
+$preorder_subtotal_value = 0;
+$preorder_customer_value = 0;
+$preorder_total_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_POST['pid']."' order by sort_order asc"); 
+while ($preorder_total_res = tep_db_fetch_array($preorder_total_raw)) {
+
+  if($preorder_total_res['class'] != 'ot_total'){
+
+    if($preorder_total_res['class'] == 'ot_point'){
+      $preorder_subtotal_value -= $preorder_total_res['value'];
+    }else{
+      $preorder_subtotal_value += $preorder_total_res['value'];  
+    }
+  }
+  if($preorder_total_res['class'] == 'ot_custom'){
+
+    $preorder_customer_value += $preorder_total_res['value'];
+  }
+
+}
+tep_db_free_result($preorder_total_raw);
+
+$preorder_subtotal_value -= $_POST['preorder_point'];
+$shipping_fee = $preorder_subtotal_value > $free_value ? 0 : $weight_fee;
 
 ?>
 <?php page_head();?>
@@ -564,6 +586,54 @@ foreach($all_show_option_id as $t_item_id){
                   $preorder_total_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_POST['pid']."' order by sort_order asc"); 
                   while ($preorder_total_res = tep_db_fetch_array($preorder_total_raw)) { 
                     if ($preorder_total_res['class'] == 'ot_total') {
+                     //点数
+                     ?>
+                    <tr>
+                    <td class="main" align="right"><?php echo $preorder_point_title;?></td>                  
+                    <td class="main" align="right"><?php echo $preorder_point_value;?></td>
+                    </tr>
+                    <?php
+                    $shipping_fee_str = $shipping_fee == 0 ? TEXT_SHIPPING_FEE_FREE : $currencies->format_total($shipping_fee);
+                    if ($shipping_fee != 0) {
+                    ?>
+                      <tr>
+                        <td class="main" align="right">
+                          <?php echo TEXT_SHIPPING_FEE;?></td> 
+                        <td class="main" align="right"><?php echo $shipping_fee_str;?></td> 
+                      </tr>
+                   <?php
+                    }
+                      //配送费用，手续费用 
+                      $preorder_shipping_fee = (int)$shipping_fee;
+                      if (!tep_session_is_registered('preorder_shipping_fee')) {
+                        tep_session_register('preorder_shipping_fee'); 
+                      }  
+                      if (!empty($preorder_total_info_array['fee'])) {
+                  ?>
+                      <tr>
+                        <td class="main" align="right"><?php echo CHANGE_PREORDER_HANDLE_FEE_TEXT;?></td> 
+                        <td class="main" align="right"><?php echo $currencies->format_total($preorder_total_info_array['fee']);?></td> 
+                      </tr>
+                  <?php
+                      } else {
+                        //获取相应的手续费
+                        $payment_handle = payment::getInstance($preorder_res['site_id']);
+                        if (isset($preorder_total_info_array['subtotal'])) {
+                          $handle_fee = $payment_handle->handle_calc_fee(payment::changeRomaji($preorder_res['payment_method'],PAYMENT_RETURN_TYPE_CODE),$preorder_total_info_array['subtotal']-$_POST['preorder_point']+$preorder_customer_value+$shipping_fee);
+                        } else {
+                          $handle_fee = $payment_handle->handle_calc_fee(payment::changeRomaji($preorder_res['payment_method'],PAYMENT_RETURN_TYPE_CODE),$preorder_total_res['value']-$_POST['preorder_point']+$preorder_customer_value+$shipping_fee);
+                        }
+                        $handle_fee = $handle_fee == '' ? 0 : $handle_fee;
+                        $_SESSION['preorders_code_fee'] = $handle_fee;
+                        if ($handle_fee) {
+                  ?>
+                      <tr>
+                        <td class="main" align="right"><?php echo CHANGE_PREORDER_HANDLE_FEE_TEXT;?></td> 
+                        <td class="main" align="right"><?php echo $currencies->format_total($handle_fee);?></td> 
+                      </tr>
+                      <?php
+                          }
+                        } 
                       if (isset($_SESSION['preorder_campaign_fee'])) {
                         if (isset($preorder_total_info_array['total'])) {
                           $total_param = number_format($preorder_total_info_array['total'], 0, '.', '')+$_SESSION['preorder_campaign_fee']; 
@@ -596,18 +666,23 @@ foreach($all_show_option_id as $t_item_id){
                         }
                       }
                     }
-                  ?>
+                    if($preorder_total_res['class'] == 'ot_point'){
+                      $preorder_point_title = $preorder_total_res['title'];
+                    }else{
+                   ?>
+                  
                   <tr>
                     <td class="main" align="right"><?php echo $preorder_total_res['title'];?></td>                  
                     <td class="main" align="right">
-                    <?php 
+                 <?php 
+                    }
                     if ($preorder_total_res['class'] == 'ot_point') {
                       if (isset($_SESSION['preorder_campaign_fee'])) {
-                        echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total(abs($_SESSION['preorder_campaign_fee']))).'</font>'.JPMONEY_UNIT_TEXT;
+                        $preorder_point_value =  '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total(abs($_SESSION['preorder_campaign_fee']))).'</font>'.JPMONEY_UNIT_TEXT;
                       } else {
-                        echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total((int)$preorder_point)).'</font>'.JPMONEY_UNIT_TEXT;
+                        $preorder_point_value = '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total((int)$preorder_point)).'</font>'.JPMONEY_UNIT_TEXT;
                       }
-                    } else if ($preorder_total_res['class'] == 'ot_total') {
+                    } else if ($preorder_total_res['class'] == 'ot_total') { 
                       if (isset($_SESSION['preorder_campaign_fee'])) {
                         if (isset($preorder_total_info_array['total'])) {
                           echo $currencies->format_total($preorder_total_info_array['total']+(int)$_SESSION['preorder_campaign_fee']+(int)$shipping_fee+(int)$handle_fee);
@@ -630,54 +705,13 @@ foreach($all_show_option_id as $t_item_id){
                     } else {
                       echo $currencies->format_total($preorder_total_res['value']);
                     }
+                    if($preorder_total_res['class'] != 'ot_point'){
                     ?>
                     </td>                  
-                  </tr>
-                  <?php
-                    if($preorder_total_res['class'] == 'ot_subtotal') {
-                      $shipping_fee_str = $shipping_fee == 0 ? TEXT_SHIPPING_FEE_FREE : $currencies->format_total($shipping_fee);
-                      $preorder_shipping_fee = (int)$shipping_fee;
-                      if (!tep_session_is_registered('preorder_shipping_fee')) {
-                        tep_session_register('preorder_shipping_fee'); 
-                      }  
-                      if (!empty($preorder_total_info_array['fee'])) {
-                  ?>
-                      <tr>
-                        <td class="main" align="right"><?php echo CHANGE_PREORDER_HANDLE_FEE_TEXT;?></td> 
-                        <td class="main" align="right"><?php echo $currencies->format_total($preorder_total_info_array['fee']);?></td> 
-                      </tr>
-                  <?php
-                      } else {
-                        //获取相应的手续费
-                        $payment_handle = payment::getInstance($preorder_res['site_id']);
-                        if (isset($preorder_total_info_array['subtotal'])) {
-                          $handle_fee = $payment_handle->handle_calc_fee(payment::changeRomaji($preorder_res['payment_method'],PAYMENT_RETURN_TYPE_CODE),$preorder_total_info_array['subtotal']);
-                        } else {
-                          $handle_fee = $payment_handle->handle_calc_fee(payment::changeRomaji($preorder_res['payment_method'],PAYMENT_RETURN_TYPE_CODE),$preorder_total_res['value']);
-                        }
-                        $handle_fee = $handle_fee == '' ? 0 : $handle_fee;
-                        $_SESSION['preorders_code_fee'] = $handle_fee;
-                        if ($handle_fee) {
-                  ?>
-                      <tr>
-                        <td class="main" align="right"><?php echo CHANGE_PREORDER_HANDLE_FEE_TEXT;?></td> 
-                        <td class="main" align="right"><?php echo $currencies->format_total($handle_fee);?></td> 
-                      </tr>
-                      <?php
-                          }
-                        }
-                        if ($shipping_fee != 0) {
-                      ?>
-                      <tr>
-                        <td class="main" align="right">
-                          <?php echo TEXT_SHIPPING_FEE;?></td> 
-                        <td class="main" align="right"><?php echo $shipping_fee_str;?></td> 
-                      </tr>
-                      <?php
-                        }
-                      }
-                  ?>
-                <?php }?> 
+                  </tr> 
+                <?php 
+                    } 
+                    }?> 
                   <?php
 if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
 if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {

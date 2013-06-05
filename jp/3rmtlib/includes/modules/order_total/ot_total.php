@@ -64,13 +64,11 @@
       $total += $_SESSION['campaign_fee']; 
     }
     
-    if(isset($_SESSION['free_value']) && isset($_SESSION['weight_fee'])){
 
-      if($total <= $_SESSION['free_value']){
 
-        $total += $_SESSION['weight_fee'];  
+      if(isset($_SESSION['h_shipping_fee'])){
+        $total += $_SESSION['h_shipping_fee'];  
       }
-    } 
       $this->output[] = array('title' => $this->title . ':',
                               'text' => '',
                               'value' => $total);

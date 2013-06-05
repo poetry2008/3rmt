@@ -17,7 +17,7 @@ while($request_one_time_row = tep_db_fetch_array($request_one_time_query)){
 if ($ocertify->npermission == 31) {
   if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
     if (!isset($_POST['split_param'])) {
-      if (!(($_POST['orders_id'] && ($_POST['orders_comment']||$_POST['orders_comment_flag']=='true')) || ($_GET['orders_id'] && $_POST['orders_credit']))) {
+      if (!((isset($_POST['orders_id']) && (isset($_POST['orders_comment'])||$_POST['orders_comment_flag']=='true')) || (isset($_GET['orders_id']) && isset($_POST['orders_credit'])))) {
         forward401();
       } 
     }
@@ -71,8 +71,7 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
 header("Cache-Control: post-check=0, pre-check=0", false);
 # HTTP/1.0
 header("Pragma: no-cache");
-if ($_POST['orders_id'] &&
-    ($_POST['orders_comment']||$_POST['orders_comment_flag']=='true')) {
+if (isset($_POST['orders_id']) && (isset($_POST['orders_comment'])||$_POST['orders_comment_flag']=='true')) {
 /*------------------------------------------------
  功能: 更新订单评论
  参数: $_POST['orders_comment'] 获取orders_comment值
@@ -99,7 +98,7 @@ if ($_POST['orders_id'] &&
     $q  = $rp['products_real_quantity'] + (int)$_GET['count'];
     tep_db_query("update ".TABLE_PRODUCTS." set products_real_quantity='".$q."' where products_id='".$p['relate_products_id']."'");
   }
-} else if ($_GET['orders_id'] && isset($_POST['orders_credit'])) {
+} else if (isset($_GET['orders_id']) && isset($_POST['orders_credit'])) {
 /*--------------------------------------------
  功能: 订单信用
  参数: $_GET['orders_id'] 订单ID
@@ -778,13 +777,25 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
     echo 'false';
     exit;
   }
-  if(!(in_array('admin',$one_time_arr)&&in_array('chief',$one_time_arr)&&
-       in_array('staff',$one_time_arr))&&in_array('onetime',$one_time_arr)){
-    $sql = "select u.userid,u.rule,l.letter from ".
-      TABLE_USERS." u , ".TABLE_LETTERS." l,".TABLE_PERMISSIONS." p 
-			where u.userid = l.userid 
-			and (l.letter != '' or l.letter != null)
-			and u.userid=p.userid ";
+  if(!(in_array('admin',$one_time_arr)&&in_array('chief',$one_time_arr)&& in_array('staff',$one_time_arr))&&in_array('onetime',$one_time_arr)){
+    $p_list_array = array(); 
+    foreach ($one_time_arr as $o_key => $o_value) {
+      if ($o_value != 'onetime') {
+        switch($o_value) {
+          case 'admin':
+            $p_list_array[] = 15; 
+            break;
+          case 'chief':
+            $p_list_array[] = 10; 
+            break;
+          case 'staff':
+            $p_list_array[] = 7; 
+            break;
+        }
+      }
+    }
+    $sql = "select u.userid,u.rule,l.letter from ".  TABLE_USERS." u , ".TABLE_LETTERS." l,".TABLE_PERMISSIONS." p where u.userid = l.userid and (l.letter != '' or l.letter != null) and u.userid=p.userid ".(!empty($p_list_array)?" and p.permission in (".implode(',', $p_list_array).")":"and p.permission in (0)");
+    
     $result = tep_db_query($sql);
     $arr =array();
     while($row = tep_db_fetch_array($result)){
@@ -2103,6 +2114,7 @@ echo json_encode($json_array);
  参数: $_POST['orders_id'] 订单编号
  参数: $_POST['point_value_temp'] 点值
  参数: $_POST['handle_fee'] 手续费
+ 参数: $_POST['fee_total'] 自定义费用总额 
  参数: $_POST['session_site_id'] SITE_ID
  ------------------------------------------*/
   require(DIR_WS_CLASSES . 'payment.php');
@@ -2137,13 +2149,19 @@ echo json_encode($json_array);
   $_SESSION['orders_update_products'][$total_orders_id]['ot_subtotal'] = $_POST['ot_subtotal'];
   $_SESSION['orders_update_products'][$total_orders_id]['ot_total'] = $_POST['ot_total'];
   $_SESSION['orders_update_products'][$total_orders_id]['payment_method'] = $_POST['payment_value'];
+  //配送费用
+  $shipping_fee = tep_products_shipping_fee($total_orders_id,$_POST['ot_subtotal']+$_POST['fee_total']-$point_value);
   $cpayment = payment::getInstance($_POST['session_site_id']);
-  $handle_fee = $cpayment->handle_calc_fee($_POST['payment_value'], $_POST['ot_total']);
+  $handle_fee = $cpayment->handle_calc_fee($_POST['payment_value'], $_POST['ot_subtotal']+$_POST['fee_total']-$point_value+$shipping_fee);
   $handle_fee = $handle_fee == '' ? 0 : $handle_fee;
   $_SESSION['orders_update_products'][$total_orders_id]['code_fee'] = $handle_fee;
   $_SESSION['orders_update_products'][$total_orders_id]['ot_total'] -= $handle_fee_value;
   $_SESSION['orders_update_products'][$total_orders_id]['ot_total'] += $handle_fee;
-  echo $handle_fee.'|||'.$campaign_fee.'|||'.$campaign_flag;
+  $_SESSION['orders_update_products'][$total_orders_id]['ot_total'] -= $_POST['shipping_fee_id'];
+  $_SESSION['orders_update_products'][$total_orders_id]['ot_total'] += $shipping_fee;
+  $_SESSION['orders_update_products'][$total_orders_id]['fee_total'] = $_POST['fee_total'];
+  $_SESSION['orders_update_products'][$total_orders_id]['shipping_fee'] = $shipping_fee;
+  echo $handle_fee.'|||'.$campaign_fee.'|||'.$campaign_flag.'|||'.$shipping_fee;
 }else if($_GET['action'] == 'orders_session'){
 
   $session_type = $_POST['orders_session_type'];
@@ -2360,13 +2378,13 @@ echo json_encode($json_array);
   $user_info = tep_get_user_info($ocertify->auth_user);
   tep_db_query("update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now(), products_user_update='".$user_info['name']."' where products_id = '".$_POST['products_id']."'"); 
   $products_new_price = tep_get_products_price($_POST['products_id']);
-  $html_str = '<span id="edit_p_'.$_POST['products_id'].'">';
+  $html_str = '<u id="edit_p_'.$_POST['products_id'].'">';
   if ($products_new_price['sprice']) {
     $html_str .= '<span class="specialPrice">'.$currencies->format($products_new_price['sprice']).'</span>'; 
   } else {
     $html_str .= $currencies->format($products_new_price['price']); 
   }
-  $html_str .= '</span>';
+  $html_str .= '</u>';
   $html_str .= '<span style="display:none;" id="h_edit_p_'.$_POST['products_id'].'">'.abs($_POST['new_price']).'</span>';
   $html_str .= '|||'; 
   $html_str .= abs($_POST['new_price']); 
@@ -2484,6 +2502,7 @@ echo json_encode($json_array);
   $user_error_info['user_error_name'] = ''; 
   $user_error_info['user_error_pwd'] = ''; 
   $user_error_info['user_error_email'] = ''; 
+  $user_error_info['user_error_rule'] = ''; 
   
   if (empty($_POST['userid_info_str'])) {
     $user_error_info['user_error_id'] = TEXT_USER_INFO_IS_NULL; 
@@ -2517,19 +2536,37 @@ echo json_encode($json_array);
   }
    
   if (isset($_POST['user_info_pwd'])) {
-    if (empty($_POST['user_info_pwd'])) {
-      $user_error_info['user_error_pwd'] = TEXT_USER_INFO_IS_NULL; 
+    if ($_POST['stype'] == '1') {
+      if (!empty($_POST['user_info_pwd'])) {
+        $user_pwd_len = strlen($_POST['user_info_pwd']); 
+        if ($user_pwd_len < 2) {
+          $user_error_info['user_error_pwd'] = sprintf(TEXT_USER_INFO_IS_SHORT, 2); 
+        } else {
+          if (ereg('[[:print:]]', $_POST['user_info_pwd']) == false) {
+            $user_error_info['user_error_pwd'] = TEXT_USER_INFO_FORMAT_WRONG; 
+          }
+        }
+      }
     } else {
-      $user_pwd_len = strlen($_POST['user_info_pwd']); 
-      if ($user_pwd_len < 2) {
-        $user_error_info['user_error_pwd'] = sprintf(TEXT_USER_INFO_IS_SHORT, 2); 
+      if (empty($_POST['user_info_pwd'])) {
+        $user_error_info['user_error_pwd'] = TEXT_USER_INFO_IS_NULL; 
       } else {
-        if (ereg('[[:print:]]', $_POST['user_info_pwd']) == false) {
-          $user_error_info['user_error_pwd'] = TEXT_USER_INFO_FORMAT_WRONG; 
+        $user_pwd_len = strlen($_POST['user_info_pwd']); 
+        if ($user_pwd_len < 2) {
+          $user_error_info['user_error_pwd'] = sprintf(TEXT_USER_INFO_IS_SHORT, 2); 
+        } else {
+          if (ereg('[[:print:]]', $_POST['user_info_pwd']) == false) {
+            $user_error_info['user_error_pwd'] = TEXT_USER_INFO_FORMAT_WRONG; 
+          }
         }
       }
     }
   }
-  
+ 
+  if (trim($_POST['user_rule']) != '') {
+    if (!make_rand_pwd($_POST['user_rule'])) {
+      $user_error_info['user_error_rule'] = TEXT_USER_RULE_WRONG; 
+    }
+  }
   echo implode('|||',$user_error_info);
 }

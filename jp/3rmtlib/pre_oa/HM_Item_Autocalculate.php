@@ -41,7 +41,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
     $loadArray = explode('_',$this->defaultValue);
     //对照 orders 的 关联商品 查找数据
     $orders_products_query = tep_db_query("select op.orders_products_id, 
-        p.products_id,op.products_quantity,op.products_name,p.relate_products_id,p.products_bflag
+        p.products_id,op.products_quantity,op.products_name,p.relate_products_id,p.products_bflag,products_rate
         from ".TABLE_PREORDERS_PRODUCTS." op, ".TABLE_PRODUCTS." p where
         op.products_id=p.products_id and
         op.orders_id='".$this->order_id."' order by op.products_name
@@ -115,6 +115,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
         echo "id = 'spid_".$op['products_id']."'/>";
         echo $op['products_name'];
         //有关联商品的 输出
+        echo "<br>";
         echo " <font id
           ='quantity_".$i."_".$opp['products_id']."_".$opp['orders_products_id']."'
           >".$opp['products_quantity']."</font> - ";
@@ -132,6 +133,9 @@ class HM_Item_Autocalculate extends HM_Item_Basic
         echo " = <font
           id='span_relate_product_".$opp['products_id']."_".$opp['orders_products_id']."'>".
           ($check=="checked"?$_value:intval($opp['products_quantity']))."</font>";
+        echo "<input id='span_relate_product_".$opp['products_id']."_".$opp['orders_products_id']."_radices' type='hidden' value='".$opp['products_rate']."'>";
+      echo "<br>";
+      echo "<br>";
       }
       $i++;
       echo "</div>";
@@ -163,7 +167,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
           $("#"+span_id).text(p_value);
         }else{
           if(v_input!=''){
-            $("#"+span_id).text(p_value-v_input);
+            $("#"+span_id).text((p_value-v_input));
           }else{
             $("#"+span_id).text(0);
           }
@@ -217,12 +221,17 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       <?php //增加库存?>
       var tmp_pid = $(ele).val(); 
       tmp_pid = tmp_pid.replace('|','_');
+      if($('#span_relate_product_'+tmp_pid+'_radices')){
+        var radices = $('#span_relate_product_'+tmp_pid+'_radices').val();
+      }else{
+        var radices = 1;
+      }
       if ($(ele).attr('checked')) {
         $("#"+tmp_pid+"<?php echo "_input_".$this->formname;?>").attr('readonly',true);
         if(!sum_flag[t]){
         $.ajax({
           url:
-          'ajax_preorders.php?action=set_quantity&products_id='+pid+'&count='+($("#quantity_"+t+"_"+tmp_pid).html()-$("#"+tmp_pid+"<?php echo "_input_".$this->formname;?>").val()),
+          'ajax_preorders.php?action=set_quantity&products_id='+pid+'&count='+(($("#quantity_"+t+"_"+tmp_pid).html()-$("#"+tmp_pid+"<?php echo "_input_".$this->formname;?>").val())*radices),
               async : false,
               success: function(data) {
               sum_flag[t] = true;
@@ -236,7 +245,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
         <?php //减库存?>
         $.ajax({
           url:
-          'ajax_preorders.php?action=set_quantity&products_id='+pid+'&count=-'+($("#quantity_"+t+"_"+tmp_pid).html()-$("#"+tmp_pid+"<?php echo "_input_".$this->formname;?>").val()),
+          'ajax_preorders.php?action=set_quantity&products_id='+pid+'&count=-'+(($("#quantity_"+t+"_"+tmp_pid).html()-$("#"+tmp_pid+"<?php echo "_input_".$this->formname;?>").val())*radices),
               async : false,
               success: function(data) {
               sum_flag[t] = false;

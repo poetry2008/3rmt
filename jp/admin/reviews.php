@@ -465,7 +465,7 @@ if($('.show_left_menu').width()){
   leftset = parseInt($('.content').attr('cellspacing'))+parseInt($('.content').attr('cellpadding'))*2+parseInt($('.columnLeft').attr('cellspacing'))*2+parseInt($('.columnLeft').attr('cellpadding'))*2+parseInt($('.compatible table').attr('cellpadding'));
 } 
 if(rID == 0){
-  show_text_list = $('#show_text_list').offset();
+  var show_text_list = $('#show_text_list').offset();
 $('#show_text_reviews').css('top',show_text_list.top);
 }
 $('#show_text_reviews').css('z-index','1');
@@ -790,9 +790,17 @@ require("includes/note_js.php");
       );
       $action_sid_str = '&action_sid='.$reviews['site_id'];
       if ($reviews['reviews_status'] == '1') {
-        $review_image = tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;&nbsp;<a href="javascript:void(0);" onclick="toggle_reviews_action(\'' . tep_href_link(FILENAME_REVIEWS, 'action=setflag&flag=0'.(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').'&page=' . (isset($_GET['page'])?$_GET['page']:'') . '&pID=' .  $reviews['reviews_id'].(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'')) . '\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT) . '</a>';
+        if(in_array($reviews['site_id'],$site_array)){
+          $review_image = tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;&nbsp;<a href="javascript:void(0);" onclick="toggle_reviews_action(\'' . tep_href_link(FILENAME_REVIEWS, 'action=setflag&flag=0'.(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').'&page=' . (isset($_GET['page'])?$_GET['page']:'') . '&pID=' .  $reviews['reviews_id'].(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'')) . '\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT) . '</a>';
+        } else {
+          $review_image = tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT);
+        }
       } else {
-        $review_image = '<a href="javascript:void(0);" onclick="toggle_reviews_action(\'' . tep_href_link(FILENAME_REVIEWS, 'action=setflag&flag=1'.(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').'&page=' . (isset($_GET['page'])?$_GET['page']:'') . '&pID=' .  $reviews['reviews_id'].(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'')) . '\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED);
+        if(in_array($reviews['site_id'],$site_array)){
+          $review_image = '<a href="javascript:void(0);" onclick="toggle_reviews_action(\'' . tep_href_link(FILENAME_REVIEWS, 'action=setflag&flag=1'.(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').'&page=' . (isset($_GET['page'])?$_GET['page']:'') . '&pID=' .  $reviews['reviews_id'].(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'')) . '\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED);
+        } else {
+          $review_image = tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT) . '&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED);
+        }
       }
       $review_info[] = array(
           'params' => 'class="dataTableContent" align="center"',

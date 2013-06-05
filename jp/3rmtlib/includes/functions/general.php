@@ -245,7 +245,7 @@ function forward404Unless($condition)
     返回值: 检测商品库存不足的信息(string) 
 ------------------------------------ */
   function tep_check_stock($products_id, $products_quantity, $link_single = false) {
-    $stock_left = tep_get_products_stock($products_id) - $products_quantity;
+    $stock_left = tep_get_quantity($products_id,true) - $products_quantity;
     $out_of_stock = '';
     $product = tep_get_product_by_id($products_id, SITE_ID, 4);
 
@@ -1649,12 +1649,15 @@ function forward404Unless($condition)
     返回值: 商品数量的乘积(string) 
 ------------------------------------ */
   function tep_get_full_count2($cnt, $pid){
-    $p = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
-    
+    $radices = tep_get_radices($pid);
+    if($radices!=1&&$radices!=0){
     return 
       '('
-    . number_format($p['products_attention_1_3'] * $cnt) 
+    . number_format($radices * $cnt) 
     . ')';
+    }else{
+      return '';
+    }
   }
 /* -------------------------------------
     功能: 获得商品数量的乘积
@@ -2143,7 +2146,7 @@ header("Expires:".date("D, d M Y H:i:s",0)." GMT");
     
 
     if ($script_name == 'news' && $_GET['news_id']) {
-      $script_name = 'a_'.$script_name;
+      $script_name = $script_name.'_info';
     }
     if ($script_name == 'non-member_auth') {
       $script_name = str_replace('-','_',$script_name);
@@ -5313,6 +5316,7 @@ if (isset($_SESSION['campaign_fee'])) {
          }else{
            echo $_SESSION['payment_error'];
          }
+         $_SESSION['new_payment_error'] = $_SESSION['payment_error'];
          unset($_SESSION['payment_error']);
      ?>
      </div><br>
@@ -6614,11 +6618,10 @@ function tep_get_repeat_date($type,$cl_date){
 /*----------------------------------
   功能: 通过产品ID获得产品的库存
   参数: $pid (int)类型  产品ID
-  参数: $real_quantity (int)类型  产品数量 没有基数的时候直接返回
   参数: $v_quantity (boolean)类型 虚拟库存 默认false不参加基数 true参加计算
   返回：根据基数和 产品（游戏币） 计算出商品个数 取整（小数省略）
 ----------------------------------*/
-function tep_get_quantity($pid,$real_quantity,$v_quantity=false){
+function tep_get_quantity($pid,$v_quantity=false){
   if($v_quantity){
     $sql = "SELECT products_attention_1_3,
       (`products_real_quantity`/`products_attention_1_3`) 
@@ -6635,9 +6638,40 @@ function tep_get_quantity($pid,$real_quantity,$v_quantity=false){
     if($row['products_attention_1_3']!=''&&$row['products_attention_1_3']!=0){
       return (int)($row['quantity']);
     }else{
-      return $real_quantity;
+      $sql = "SELECT products_attention_1_3,
+      `products_real_quantity` as quantity FROM 
+      " .TABLE_PRODUCTS." WHERE products_id = '".$pid."' limit 1";
+      $query = tep_db_query($sql);
+      if($row = tep_db_fetch_array($query)){
+        return (int)($row['quantity']);
+      }else{
+        return 0;
+      }
     }
   }else{
-    return $real_quantity;
+    $sql = "SELECT products_attention_1_3,
+      `products_real_quantity` as quantity FROM 
+      " .TABLE_PRODUCTS." WHERE products_id = '".$pid."' limit 1";
+    $query = tep_db_query($sql);
+    if($row = tep_db_fetch_array($query)){
+      return (int)($row['quantity']);
+    }else{
+      return 0;
+    }
   }
+}
+/*----------------------------------
+  功能: 通过产品ID获得产品汇率(基数)
+  参数: $pid (int)类型  产品ID
+  返回：基数
+----------------------------------*/
+function tep_get_radices($pid){
+    $sql = "SELECT products_attention_1_3 as radices FROM 
+      " .TABLE_PRODUCTS." WHERE products_id = '".$pid."' limit 1";
+    $query = tep_db_query($sql);
+    if($row = tep_db_fetch_array($query)){
+      return (int)$row['radices'];
+    }else{
+      return 1;
+    }
 }

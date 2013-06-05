@@ -48,7 +48,7 @@ jq(document).ready(function () {
    var actiontime =new Date().getTime();  
    jq(".option_product_radio_list").each(function(){
 
-     var radio_option_value = document.getElementById("h_<?php echo $_SESSION['formname']; ?>").value;
+     var radio_option_value = jq(this).next("span").children("input[type='hidden']").val();
      radio_option_value = radio_option_value.replace(/<br>/i,"<br>");
      radio_option_value = radio_option_value.replace(/<\/br>/i,"</br>");
      var tmp_t_obj = jq(this); 
@@ -225,6 +225,7 @@ function showimage($1) {
 <?php
   $product_info = tep_get_product_by_id((int)$_GET['products_id'], SITE_ID,
       $languages_id,true,'product_info');
+  $product_info['products_quantity'] = tep_get_quantity($product_info['products_id'],true);
   if (!$product_info) { // product not found in database
 ?>
         <P><?php echo TEXT_PRODUCT_NOT_FOUND; ?></P>

@@ -39,7 +39,9 @@ class convenience_store extends basePayment  implements paymentInterface  {
     } else {
     global $order;
     $total_cost = $order->info['total'];
-    $f_result = $this->calc_fee($total_cost);
+    $point_value = $_SESSION['h_point'] == '' ? 0 : (int)$_SESSION['h_point'];
+    $shipping_fee = $_SESSION['h_shipping_fee'] == '' ? 0 : (int)$_SESSION['h_shipping_fee'];
+    $f_result = $this->calc_fee($total_cost-$point_value+$shipping_fee);
     $added_hidden = tep_draw_hidden_field('code_fee', $f_result); 
     $input_text_id = ' class="input_text" ';
     if(NEW_STYLE_WEB===true){

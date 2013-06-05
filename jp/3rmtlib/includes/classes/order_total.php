@@ -16,7 +16,19 @@
       global $language;
 
       if (defined('MODULE_ORDER_TOTAL_INSTALLED') && tep_not_null(MODULE_ORDER_TOTAL_INSTALLED)) {
-        $this->modules = explode(';', MODULE_ORDER_TOTAL_INSTALLED);
+
+        //读取相应网站的相应数据 
+        $orders_total_array = explode(';',MODULE_ORDER_TOTAL_INSTALLED); 
+        $orders_total_sort = array();
+        foreach($orders_total_array as $total_value){
+
+          $orders_total_split = explode('.',$total_value);
+          $orders_total_explode = explode('_',$orders_total_split[0]);
+          $orders_total_sort[$total_value] = get_configuration_by_site_id('MODULE_ORDER_TOTAL_'.strtoupper($orders_total_explode[1]).'_SORT_ORDER',SITE_ID);
+        }
+        asort($orders_total_sort);
+        $site_order_total = !empty($orders_total_sort) ? implode(';',array_keys($orders_total_sort)) : MODULE_ORDER_TOTAL_INSTALLED; 
+        $this->modules = explode(';', $site_order_total);
 
         reset($this->modules);
         while (list(, $value) = each($this->modules)) {
@@ -166,7 +178,19 @@
               }
             }
             $_SESSION['mailfee'] = $currencies->format($total_handle_fee);   
-            if ($class == 'ot_subtotal') {
+            if ($class == 'ot_point') {
+              //配送费用
+              if (isset($_SESSION['free_value'])) {
+                if (!empty($_SESSION['weight_fee'])) {
+                  $shipping_fee = $sub_total-$_SESSION['h_point'] > $_SESSION['free_value'] ? TEXT_SHIPPING_FREE : $currencies->format($_SESSION['weight_fee']);
+                  $output_string .= '              <tr>' . "\n" .
+                                  '                <td align="right" class="main" '.$colspan.'>'
+                                  . TEXT_SHIPPING_FEE . '</td>' . "\n" .
+                                  '                <td align="right" class="main">'
+                                  . $shipping_fee . '</td>' . "\n" .
+                                  '              </tr>';
+                }
+              } 
               if (!empty($total_handle_fee)) {
                 $output_string .= '              <tr>' . "\n" .
                                   '                <td align="right" class="main" '.$colspan.'>'
@@ -175,21 +199,6 @@
                                   . $currencies->format($total_handle_fee) . '</td>' . "\n" .
                                   '              </tr>';
               }
-              //配送费用
-            if (isset($_SESSION['free_value'])) {
-              if (!empty($_SESSION['weight_fee'])) {
-                $shipping_fee = $sub_total > $_SESSION['free_value'] ? TEXT_SHIPPING_FREE : $currencies->format($_SESSION['weight_fee']);
-                $output_string .= '              <tr>' . "\n" .
-                                  '                <td align="right" class="main" '.$colspan.'>'
-                                  . TEXT_SHIPPING_FEE . '</td>' . "\n" .
-                                  '                <td align="right" class="main">'
-                                  . $shipping_fee . '</td>' . "\n" .
-                                  '              </tr>';
-              }
-            }
-             
-          //配送结束
-
             }
           }
         }

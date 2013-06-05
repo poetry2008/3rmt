@@ -473,4 +473,5 @@ define('MSG_TEXT_NULL', '無し');
 define('JS_REVIEW_BAN_CHARACTER','※ 投稿禁止ワードが含まれているため投稿できません。'.'\n');
 define('TEXT_MODULE_NEWS_TITLE','からのお知らせ');
 define('TEXT_MODULE_NEWS_MORE','>>MORE');
+define('MODULE_ORDER_TOTAL_TAX_TITLE', '消費税');
 ?>

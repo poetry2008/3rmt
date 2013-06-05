@@ -10,6 +10,7 @@ if (tep_whether_show_products((int)$_GET['products_id'])) {
 }
 require(DIR_WS_ACTIONS . 'product_info.php');
 $product_info = tep_get_product_by_id((int)$_GET['products_id'], SITE_ID, $languages_id,true,'product_info');
+$product_info['products_quantity'] = tep_get_quantity($product_info['products_id'],true);
 $p_image_list = array();
 if($product_info['products_image']){
   $p_image_list[] = $product_info['products_image'];
@@ -75,7 +76,7 @@ $(document).ready(function () {
    var actiontime =new Date().getTime();  
    $(".option_product_radio_list").each(function(){
 
-     var radio_option_value = document.getElementById("h_<?php echo $_SESSION['formname']; ?>").value;
+     var radio_option_value = $(this).next("span").children("input[type='hidden']").val();
      radio_option_value = radio_option_value.replace(/<br>/i,"<br>");
      radio_option_value = radio_option_value.replace(/<\/br>/i,"</br>");
      var tmp_t_obj = $(this); 

@@ -346,7 +346,7 @@ if ($g_num % 2 == 0) {
                 echo '<td>'.$group_list_res['name'].'</td>'; 
                 echo '<td>';
                 echo '<a href="'.tep_href_link(FILENAME_OA_GROUP, 'action=edit&return=oa_link&gid='.$group_list_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.EDIT_GROUP_TEXT.'</a>'; 
-                if ($ocertify->npermisson >= 15) {
+                if ($ocertify->npermission >= 15) {
                   echo '&nbsp;&nbsp;'; 
                   echo '<a onclick="if (confirm(\''.$group_list_res['name'].TEXT_DELETE_CONFRIM.'\')) toggle_oa_group_form(\''.$ocertify->npermission.'\')"'.'href="'.tep_href_link(FILENAME_OA_GROUP, 'action=del&gid='.$group_list_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.DEL_GROUP_TEXT.'</a>'; 
                 } 

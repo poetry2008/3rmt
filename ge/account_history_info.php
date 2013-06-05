@@ -260,23 +260,60 @@
                         </tr> 
                       </table></td> 
                     <td width="70%" valign="top"><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2"> 
-                        <?php
-  for ($i=0, $n=sizeof($order->totals); $i<$n; $i++) {
+<?php
+  $total_point_key = 0;
+  $total_total_key = 0;
+  $total_point_value = 0;
+  $total_total_value = 0;
+  foreach($order->totals as $total_key=>$total_value){
+
+    if($total_value['class'] == 'ot_point'){
+
+      $total_point_value = $total_value;
+      $total_point_key = $total_key;
+      unset($order->totals[$total_key]);
+    }    
+    if($total_value['class'] == 'ot_total'){
+
+      $total_total_value = $total_value;
+      $total_total_key = $total_key;
+      unset($order->totals[$total_key]);
+    }
+  }
+  $order->totals[$total_point_key] = $total_point_value;
+  $order->totals[$total_total_key] = $total_total_value;
+  foreach ($order->totals as $i=>$total_value) {
    if ($order->totals[$i]['class'] == 'ot_point') {
       $campaign_info_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$_GET['order_id']."' and site_id = '".SITE_ID."'"); 
       $campaign_info = tep_db_fetch_array($campaign_info_query);
       if ($campaign_info) {
         if ($campaign_info['campaign_fee'] == 0) {
+          echo '              <tr>' . "\n" .
+           '                <td class="main" align="right" width="100%">' . TEXT_SHIPPING_FEE . '</td>' . "\n" .
+           '                <td class="main" align="right" nowrap>' .$currencies->format($order->info['shipping_fee'])  . '</td>' . "\n" .
+           '              </tr>' . "\n";
+          echo '              <tr>' . "\n" .
+           '                <td class="main" align="right" width="100%">' . TEXT_FEE_HANDLE . '</td>' . "\n" .
+           '                <td class="main" align="right" nowrap>' .$currencies->format($order->info['code_fee'])  . '</td>' . "\n" .
+           '              </tr>' . "\n";
           continue; 
         }
       } else {
         if ($order->totals[$i]['value'] == 0) {
+          echo '              <tr>' . "\n" .
+           '                <td class="main" align="right" width="100%">' . TEXT_SHIPPING_FEE . '</td>' . "\n" .
+           '                <td class="main" align="right" nowrap>' .$currencies->format($order->info['shipping_fee'])  . '</td>' . "\n" .
+           '              </tr>' . "\n";
+          echo '              <tr>' . "\n" .
+           '                <td class="main" align="right" width="100%">' . TEXT_FEE_HANDLE . '</td>' . "\n" .
+           '                <td class="main" align="right" nowrap>' .$currencies->format($order->info['code_fee'])  . '</td>' . "\n" .
+           '              </tr>' . "\n";
           continue; 
         }
       }
     }
     echo '              <tr>' . "\n" .
-         '                <td class="main" align="right" width="100%">' . $order->totals[$i]['title'] . '</td>' . "\n" .
+         '                <td class="main" align="right" width="100%">' . ($order->totals[$i]['class'] == 'ot_custom' ? $order->totals[$i]['title'].':' : $order->totals[$i]['title']) . '</td>' . "\n" .
          '                <td class="main" align="right" nowrap>';
     if ($order->totals[$i]['class'] == 'ot_point') {
       $campaign_info_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$_GET['order_id']."' and site_id = '".SITE_ID."'"); 
@@ -286,27 +323,21 @@
       } else {
         echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total($order->totals[$i]['value'])).'</font>'.JPMONEY_UNIT_TEXT; 
       }
-    } else {
-      echo $currencies->format_total($order->totals[$i]['value']); 
-    }
-    echo '</td>' . "\n" .
+      echo '</td>' . "\n" .
       '              </tr>' . "\n";
-
-    if ($i == 0) {
-      echo '              <tr>' . "\n" .
-           '                <td class="main" align="right" width="100%">' . TEXT_FEE_HANDLE . '</td>' . "\n" .
-           '                <td class="main" align="right" nowrap>' .$currencies->format($order->info['code_fee'])  . '</td>' . "\n" .
-           '              </tr>' . "\n";
-    
-    }
-
-    if ($i == 0) {
       echo '              <tr>' . "\n" .
            '                <td class="main" align="right" width="100%">' . TEXT_SHIPPING_FEE . '</td>' . "\n" .
            '                <td class="main" align="right" nowrap>' .$currencies->format($order->info['shipping_fee'])  . '</td>' . "\n" .
            '              </tr>' . "\n";
-    
-    }
+      echo '              <tr>' . "\n" .
+           '                <td class="main" align="right" width="100%">' . TEXT_FEE_HANDLE . '</td>' . "\n" .
+           '                <td class="main" align="right" nowrap>' .$currencies->format($order->info['code_fee'])  . '</td>' . "\n" .
+           '              </tr>' . "\n"; 
+    } else {
+      echo $currencies->format_total($order->totals[$i]['value']); 
+      echo '</td>' . "\n" .
+      '              </tr>' . "\n";
+    } 
   }
 ?> 
                       </table></td> 
