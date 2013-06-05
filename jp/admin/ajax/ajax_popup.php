@@ -5774,4 +5774,225 @@ if($_GET['cID'] != -1){
   $notice_box->get_eof(tep_eof_hidden());
   
   echo $notice_box->show_notice().'||||||'.tep_get_note_top_layer(FILENAME_USERS);
+}else if($_GET['action'] == 'edit_contents'){
+include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_CONTENTS);
+include(DIR_FS_ADMIN.'classes/notice_box.php');
+$notice_box = new notice_box('popup_order_title', 'popup_order_info');
+$sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$ocertify->auth_user."' limit 0,1");
+$action_sid = $_GET['action_sid'];
+while($userslist= tep_db_fetch_array($sites_id)){
+     $site_permission = $userslist['site_permission']; 
+}
+if(isset($site_permission)) $site_arr=$site_permission;//权限判断
+else $site_arr="";
+$site_array = explode(',',$site_arr);
+if(!in_array($action_sid,$site_array) && $action_sid != -1){
+   $disabled = 'disabled="disabled"'; 
+}
+
+  //更新内容 
+$cID = $_GET['cID'];
+if($_GET['site_id'] == -1){
+  $_GET['site_id'] = '';
+}
+if($cID && tep_not_null($cID)) {
+ $cquery = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where pID = '".$cID."'");
+ $cresult = tep_db_fetch_array($cquery);
+ $c_title = $cresult['heading_title'];
+} else {
+ $c_title = '&nbsp;';
+}
+    if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
+      $sql_site_where = 'site_id in ('.str_replace('-', ',', $_GET['site_id']).')';
+    } else {
+      $show_site_str = tep_get_setting_site_info(FILENAME_CUSTOMERS);
+      $sql_site_where = 'site_id in ('.$show_site_str.')';
+    }
+    $sites_sql = tep_db_query("SELECT * FROM `sites`");
+    while($sites_row = tep_db_fetch_array($sites_sql)){
+      $show_site_arr[] = $sites_row['id']; 
+    }
+if($cID != -1){
+$contents_query_raw = " select i.pID, i.navbar_title, i.heading_title, i.text_information, i.status, i.sort_id, i.romaji, i.site_id, i.date_added, i.date_update, s.romaji as sromaji from ".TABLE_INFORMATION_PAGE." i , ".TABLE_SITES." s where s.id = i.site_id and ".$sql_site_where." order by i.sort_id, i.heading_title";
+$contents_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $contents_query_raw, $contents_query_numrows);
+$contents_query = tep_db_query($contents_query_raw);
+$cid_array = array();
+while ($contents = tep_db_fetch_array($contents_query)) {
+  $cid_array[] = $contents['pID'];
+}
+
+  $detail_query = tep_db_query(" select * from ".TABLE_INFORMATION_PAGE." where pID = '".$cID."'");
+  $detail = tep_db_fetch_array($detail_query);
+    switch ($detail['status']) {
+      case '0': $in_status = false; $out_status = true; break;
+      case '1':
+      default: $in_status = true; $out_status = false;
+    }
+    $page_str  = '';
+ foreach ($cid_array as $c_key => $c_value) {
+    if ($_GET['cID'] == $c_value) {
+      break; 
+    }
+  }
+  $page_str = '';
+  if ($c_key > 0) {
+    $contents_site_id = tep_db_query(" select * from ".TABLE_INFORMATION_PAGE." where pID = '".$cid_array[$c_key-1]."'");
+    $contents_site_id_row = tep_db_fetch_array($contents_site_id); 
+    $page_str .= '<a onclick=\'show_contents("",'.$cid_array[$c_key-1].','.$_GET['page'].','.$contents_site_id_row['site_id'].')\'
+      href="javascript:void(0);" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+  }
+ 
+  if ($c_key < (count($cid_array) - 1)) {
+    $contents_site_id = tep_db_query(" select * from ".TABLE_INFORMATION_PAGE." where pID = '".$cid_array[$c_key+1]."'");
+    $contents_site_id_row = tep_db_fetch_array($contents_site_id); 
+    $page_str .= '<a onclick=\'show_contents("",'.$cid_array[$c_key+1].','.$_GET['page'].','.$contents_site_id_row['site_id'].')\' href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
+  }else{
+    $page_str .= '<font color="#000000">'.IMAGE_NEXT.'></font>'; 
+  }
+
+    $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+    $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+    $heading[] = array('align' => 'left', 'text' => $detail['heading_title']);
+    $heading[] = array('align' => 'right', 'text' => $page_str); 
+    $form_str = tep_draw_form('content_form', FILENAME_CONTENTS, 'cID='.$cID.'&act=update' .((isset($_GET['site_id'])&&$_GET['site_id'])?'&site_id='.$_GET['site_id']:''));
+    $contents[]['text'] = array(
+         array('text' => '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">'),  
+         array('text' => '<input type="hidden" name="action_sid" value="'.$_GET['action_sid'].'">')    
+    );
+    $contents[]['text'] = array(
+         array('text' => ENTRY_SITE),
+         array('text' => tep_get_site_name_by_id($detail['site_id']))
+    );
+    $contents[]['text'] = array(
+         array('params' => 'style="width"30%"','text' => TEXT_DETAIL_STATUS),
+         array('params' => 'class="td_input" ','text' => tep_draw_radio_field('status', '1', $in_status,'',$disabled) . '&nbsp;' . TEXT_PRODUCT_AVAILABLE . '&nbsp;' . tep_draw_radio_field('status', '0', $out_status,'',$disabled) . '&nbsp;' . TEXT_PRODUCT_NOT_AVAILABLE)
+    );
+    $contents[]['text'] = array(
+         array('text' => TEXT_DETAIL_SORT),
+         array('text' => tep_draw_input_field('sort_id', $detail['sort_id'],$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="width:60%"'))
+    );
+    if (isset($error_message)) { $error_message = $error_message; }
+    $contents[]['text'] = array(
+         array('text' => TEXT_DETAIL_ROMAJI),
+         array('text' => tep_draw_input_field('romaji', $detail['romaji'],$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="width:60%"').$error_message)
+    );
+    $contents[]['text'] = array(
+         array('text' => TEXT_DETAIL_NAVBAR_TITLE),
+         array('text' => tep_draw_input_field('navbar_title', $detail['navbar_title'],$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"style="width:60%"'))
+    );
+    $contents[]['text'] = array(
+         array('text' => TEXT_DETAIL_HEADING_TITLE),
+         array('text' => tep_draw_input_field('heading_title', $detail['heading_title'],$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"style="width:60%"'))
+    );
+     $contents[]['text'] = array(
+         array('text' => TEXT_DETAIL_CONTENTS),
+         array('text' => tep_draw_textarea_field('text_information', 'soft', '70', '20', stripslashes($detail['text_information']),' style="resize: vertical;"'.$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'))
+    );
+    $contents[]['text'] = array(
+         array('params' => 'width="30%"','text' => $detail['heading_title']),
+         array('text' => TEXT_CONTENT_MSG.'<br>< a href="'.tep_catalog_href_link('page.php','pID='.(isset($_GET['cID'])?$_GET['cID']:'')).'">'.$c_title.'< /a>')
+    );
+    $info_query = tep_db_query("select * from information_page where PID='".$cID."'");
+    $info_array = tep_db_fetch_array($info_query);
+    $contents[]['text'] = array(
+            array('align' => 'left','text' => TEXT_USER_ADDED.(tep_not_null($info_array['user_added'])?$info_array['user_added']:TEXT_UNSET_DATA)), 
+            array('align' => 'left','text' => TEXT_DATE_ADDED.((tep_not_null($info_array['date_added']))?$info_array['date_added']:TEXT_UNSET_DATA))
+      );
+      
+    $contents[]['text'] = array(
+            array('align' => 'left','text' => TEXT_USER_UPDATE.(tep_not_null($info_array['user_update'])?$info_array['user_update']:TEXT_UNSET_DATA)),
+            array('align' => 'left','text' => TEXT_DATE_UPDATE.((tep_not_null($info_array['date_update']))?$info_array['date_update']:TEXT_UNSET_DATA))
+      );
+    if($disabled){
+        $submit = tep_html_element_button(IMAGE_SAVE,$disabled);
+    }else{
+        $submit = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_contents('.$ocertify->npermission.');"').'</a>';
+    }
+    if($ocertify->npermission >= 15){
+     if($disabled){
+        $delete = tep_html_element_button(IMAGE_DELETE,$disabled).tep_draw_hidden_field('cID', $cID).tep_draw_hidden_field('page', htmlspecialchars($_GET['page']));
+      }else{
+      $delete = '<a href="javascript:void(0)" onclick="check_del(\''.$ocertify->npermission.'\',\''.$cID.'\',\''.$_GET['page'].'\',\''.$_GET['site_id'].'\')">'.tep_html_element_button(IMAGE_DELETE).'</a>'.tep_draw_hidden_field('cID', $cID).tep_draw_hidden_field('page', htmlspecialchars($_GET['page']));
+      }
+    }
+    $button[] = $submit.'&nbsp;&nbsp;'.$delete;
+     if(!empty($button)){
+           $buttons = array('align' => 'center', 'button' => $button);
+     }
+    $notice_box->get_form($form_str);
+    $notice_box->get_heading($heading);
+    $notice_box->get_contents($contents, $buttons);
+    $notice_box->get_eof(tep_eof_hidden());
+    echo $notice_box->show_notice();
+}else{
+    $page_str  = '';
+    $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+    $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+    $heading[] = array('align' => 'left', 'text' => HEADING_TITLE);
+    $heading[] = array('align' => 'right', 'text' => $page_str);
+    $form_str = tep_draw_form('content_form', FILENAME_CONTENTS, 'act=insert&site_id='.$_GET['site_id'].'&page='.$_GET['page']);
+    $contents[]['text'] = array(
+         array('text' => '<input type="hidden" name="user_added" value="'.$_SESSION['user_name'].'"><input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">'),
+         array('text' => '')
+    );
+   $customers_site_arr = array_intersect($show_site_arr,$site_array);
+   $site_id_name = "<select id='customers_site_id' name='site_id' $disabled>";
+   foreach($customers_site_arr as $value){
+     if($value!=0){
+       $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$value));
+       $site_id_name .= "<option value='".$site_name['id'] ."'>".$site_name['name']."</option>";
+     }
+   }
+   $site_id_name .= "</select>";
+   $site_id_name .= '&nbsp;<font color="#ff0000;">*'.TEXT_REQUIRED.'</font>'; 
+
+    $contents[]['text'] = array(
+         array('text' => ENTRY_SITE),
+         array('params' => 'class="td_input"','text' => $site_id_name)
+    );
+    $contents[]['text'] = array(
+         array('text' => TEXT_DETAIL_STATUS),
+         array('params' => 'class="td_input"','text' => tep_draw_radio_field('status', '1', true,'',$disabled) .  '&nbsp;' .  TEXT_PRODUCT_AVAILABLE . '&nbsp;' .  tep_draw_radio_field('status', '0', false,'',$disabled) . '&nbsp;' . TEXT_PRODUCT_NOT_AVAILABLE)
+    );
+    $contents[]['text'] = array(
+         array('params' => 'style="width:30%"','text' => TEXT_DETAIL_SORT),
+         array('text' => tep_draw_input_field('sort_id', '',$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"style="width:60%"'))
+    );
+    if (isset($error_message)) { $error_message = $error_message; }
+    $contents[]['text'] = array(
+         array('text' => TEXT_DETAIL_ROMAJI),
+         array('text' => tep_draw_input_field('romaji', '',$disabled.'id="romaji"onfocus="o_submit_single = false;" onblur="o_submit_single = true;"style="width:60%"').$error_message.'&nbsp;&nbsp;<span id="error_romaji"></span><span id="error_romaji_info"></span>')
+    );
+    $contents[]['text'] = array(
+         array('text' => TEXT_DETAIL_NAVBAR_TITLE),
+         array('text' => tep_draw_input_field('navbar_title', '',$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"style="width:60%"'))
+    );
+    $contents[]['text'] = array(
+         array('text' => TEXT_DETAIL_HEADING_TITLE),
+         array('text' => tep_draw_input_field('heading_title', '',$disabled.'id="heading_title"onfocus="o_submit_single = false;" onblur="o_submit_single = true;"style="width:60%"').'&nbsp;&nbsp;<span id="heading_title_error"></span>')
+    );
+    $contents[]['text'] = array(
+         array('text' => TEXT_DETAIL_CONTENTS),
+         array('text' => tep_draw_textarea_field('text_information', 'soft', '70', '20', '',$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"style="resize: vertical;"'))
+    );
+    $contents[]['text'] = array(
+            array('align' => 'left','text' => TEXT_USER_ADDED.(tep_not_null($info_array['user_added'])?$info_array['user_added']:TEXT_UNSET_DATA)), 
+            array('align' => 'left','text' => TEXT_DATE_ADDED.((tep_not_null($info_array['date_added']))?$info_array['date_added']:TEXT_UNSET_DATA))
+      );
+      
+    $contents[]['text'] = array(
+            array('align' => 'left','text' => TEXT_USER_UPDATE.(tep_not_null($info_array['user_update'])?$info_array['user_update']:TEXT_UNSET_DATA)),
+            array('align' => 'left','text' => TEXT_DATE_UPDATE.((tep_not_null($info_array['date_update']))?$info_array['date_update']:TEXT_UNSET_DATA))
+      );
+
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_contents('.$ocertify->npermission.');"').'</a>';
+    if(!empty($button)){
+         $buttons = array('align' => 'center', 'button' => $button);
+    }
+    $notice_box->get_form($form_str);
+    $notice_box->get_heading($heading);
+    $notice_box->get_contents($contents, $buttons);
+    $notice_box->get_eof(tep_eof_hidden());
+    echo $notice_box->show_notice();
+ }
 }

@@ -77,5 +77,9 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
   }else{
     echo $customers_id; 
   }
+}else if(isset($_GET['action']) && $_GET['action'] == 'check_romaji'){
+  $check_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where romaji='".$_POST['post_romaji']."'");
+  $check_num = tep_db_num_rows($check_query);
+  echo $check_num;
 }
 ?>

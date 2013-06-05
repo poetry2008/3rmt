@@ -24,9 +24,9 @@ define('TEXT_DETAIL_CONTENTS', 'コンテンツ内容（HTML可能）<br>改行�
 
 
 define('TEXT_DETAIL_ROMAJI', 'ローマ字');
-define('ROMAJI_NOT_NULL', 'ローマ字をご入力ください');
+define('ROMAJI_NOT_NULL', '<font color=\'red\'>ローマ字をご入力ください。</font>');
 
-define('ROMAJI_EXISTS', 'ローマ字はもう存在しています。');
+define('ROMAJI_EXISTS', '<font color=\'red\'>ローマ字はもう存在しています。</font>');
 define('ROMAJI_WRONG_FORMAT', '英数文字及び「_」で記入してください');
 define('TEXT_USER_ADDED','作成者:');
 define('TEXT_USER_UPDATE','更新者:');
@@ -34,4 +34,9 @@ define('TEXT_DATE_ADDED','作成日:');
 define('TEXT_DATE_UPDATE','更新日:');
 
 define('TEXT_CONTENT_MSG', 'このページのリンクを表示させるには以下のソースコードを表示したい箇所にコピーしてください。');
+define('TEXT_CONTENTS_SELECT_ACTION','選択したものを');
+define('TEXT_CONTENTS_DELETE_ACTION', '削除する');
+define('TEXT_CONTENTS_MUST_SELECT', '少なくとも1つの選択肢を選んでください。'); 
+define('TEXT_DEL_CONTENTS', '本当に削除しますか？');
+define('TEXT_ERROR_NULL','<font color=\'red\'>入力して下さい。</font>');
 ?>
