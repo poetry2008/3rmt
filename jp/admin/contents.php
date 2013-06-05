@@ -650,14 +650,22 @@ require("includes/note_js.php");
          'text'   => $contents['sromaji']
      );
      $contents_info[] = array(
-         'params' => 'class="dataTableContent"',
+         'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_CONTENTS,'cID='.$contents['pID']).'\';"',
          'text'   => htmlspecialchars($contents['heading_title']) 
      );
      if ($contents['status'] == '1') {
-      $image = tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;&nbsp;<a href="javascript:void(0)" onclick="check_image('.$ocertify->npermission.','.$contents['pID'].','.$_GET['page'].',0)">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT) . '</a>';
-      } else {
-      $image = '<a href="javascript:void(0)" onclick="check_image('.$ocertify->npermission.','.$contents['pID'].','.$_GET['page'].',1)">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED);
+       if(in_array($contents['site_id'],$site_array)){
+        $image = tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;&nbsp;<a href="javascript:void(0)" onclick="check_image('.$ocertify->npermission.','.$contents['pID'].','.$_GET['page'].',0)">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT) . '</a>';
+       }else{
+        $image = tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES .  'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT,'','','disabled="disabled"');
+       }
+     }else {
+      if(in_array($contents['site_id'],$site_array)){
+       $image = '<a href="javascript:void(0)" onclick="check_image('.$ocertify->npermission.','.$contents['pID'].','.$_GET['page'].',1)">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED);
+      }else{
+       $image = tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT,'','','disabled="disabled"') . '&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED);
       }
+     }
      $contents_info[] = array(
          'params' => 'class="dataTableContent" align="center"',
          'text'   => $image
