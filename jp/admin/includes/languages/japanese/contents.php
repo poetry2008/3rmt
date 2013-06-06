@@ -39,4 +39,7 @@ define('TEXT_CONTENTS_DELETE_ACTION', '削除する');
 define('TEXT_CONTENTS_MUST_SELECT', '少なくとも1つの選択肢を選んでください。'); 
 define('TEXT_DEL_CONTENTS', '本当に削除しますか？');
 define('TEXT_ERROR_NULL','<font color=\'red\'>入力して下さい。</font>');
+define('TEXT_LINK','リンク');
+define('TEXT_SORT_ASC','▲');
+define('TEXT_SORT_DESC','▼');
 ?>

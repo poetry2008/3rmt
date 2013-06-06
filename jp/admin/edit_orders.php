@@ -3926,8 +3926,8 @@ if (($action == 'edit') && ($order_exists == true)) {
         echo '  <tr>' . "\n" .
           '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_TOTAL_DETAIL_READ.'</td>' . 
           '    <td align="right" class="' . $TotalStyle . '">' . trim($TotalDetails["Name"]) . '</td>' . "\n" .
-          '    <td align="right" class="' . $TotalStyle . '">' . $TotalDetails["Price"] . 
-          "<input type='hidden' name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . 
+          '    <td align="right" class="' . $TotalStyle . '">' . $TotalDetails["Price"] .(mb_substr($TotalDetails["Price"],-1,1,'utf-8') == TEXT_MONEY_SYMBOL ? '' : TEXT_MONEY_SYMBOL). 
+          "<input type='hidden' id='point_id' value=''><input type='hidden' name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . 
           "<input type='hidden' name='update_totals[$TotalIndex][value]' size='6' value='" . $TotalDetails["Price"] . "'>" . 
           "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
           "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . 
