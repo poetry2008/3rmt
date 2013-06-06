@@ -646,16 +646,51 @@ require("includes/note_js.php");
                 <td valign="top">
           <?php 
            echo '<input type="hidden" id="sort" value="'.$_GET['sort'].'"><input type="hidden" id="type" value="'.$_GET['type'].'">';
+           if($_GET['sort'] == 'site_romaji'){
+             if($contents_type == 'asc'){
+                $site_romaji = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+             }else{
+                $site_romaji = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+             }
+           }
+           if($_GET['sort'] == 'title'){
+             if($contents_type == 'asc'){
+                $heading_contents_title = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+             }else{
+                $heading_contents_title = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+             }
+           }
+           if($_GET['sort'] == 'status'){
+             if($contents_type == 'asc'){
+                $contents_status = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+             }else{
+                $contents_status = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+             }
+           }
+           if($_GET['sort'] == 'sort_id'){
+             if($contents_type == 'asc'){
+                $contents_sort_id = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+             }else{
+                $contents_sort_id = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+             }
+           }
+           if($_GET['sort'] == 'date_update'){
+             if($contents_type == 'asc'){
+                $contents_date_update = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+             }else{
+                $contents_date_update = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+             }
+           }
            $contents_table_params = array('width' => '100%','cellpadding'=>'2','border'=>'0', 'cellspacing'=>'0');
            $notice_box = new notice_box('','',$contents_table_params);
            $contents_table_row = array(); 
            $contents_title_row = array();
            $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_pw"','text' => '<input type="checkbox" name="all_check" onclick="all_select_contents(\'contents_id[]\');">');
-           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_pw" ','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=site_romaji&type='.$contents_type).'">'.TABLE_HEADING_SITE.'</a>');
-           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_pw"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=title&type='.$contents_type).'">'.TABLE_HEADING_CONTENTS_TITLE.'</a>');
-           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_pw" align="center"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=status&type='.$contents_type).'">'.TABLE_HEADING_CONTENTS_STATUS.'</a>');
-           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_pw" align="right"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=sort_id&type='.$contents_type).'">'.TABLE_HEADING_CONTENTS_SORT.'</a>');
-           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_pw" align="right"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=date_update&type='.$contents_type).'">'.TABLE_HEADING_ACTION.'</a>');
+           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_pw" ','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=site_romaji&type='.$contents_type).'">'.TABLE_HEADING_SITE.$site_romaji.'</a>');
+           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_pw"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=title&type='.$contents_type).'">'.TABLE_HEADING_CONTENTS_TITLE.$heading_contents_title.'</a>');
+           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_pw" align="center"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=status&type='.$contents_type).'">'.TABLE_HEADING_CONTENTS_STATUS.$contents_status.'</a>');
+           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_pw" align="right"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=sort_id&type='.$contents_type).'">'.TABLE_HEADING_CONTENTS_SORT.$contents_sort_id.'</a>');
+           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_pw" align="right"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=date_update&type='.$contents_type).'">'.TABLE_HEADING_ACTION.$contents_date_update.'</a>');
            $contents_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $contents_title_row);
     $search = '';
     $count = 0;
@@ -770,7 +805,7 @@ require("includes/note_js.php");
                     
           <tr>
             <td align="right" colspan="2"><div class="td_button">
-            <?php if(array_intersect($show_list_array,$site_array)){  ?>
+            <?php if($site_array[1] != ''){  ?>
             <a href="javascript:void(0)" onclick="show_contents(this,-1,<?php echo $_GET['page'];?>,-1)"><?php echo tep_html_element_button(IMAGE_NEW_PROJECT); ?></a></div></td>
             <?php }else{
              echo '&nbsp;' .tep_html_element_button(IMAGE_NEW_PROJECT,'id="create_customers" disabled="disabled"');
