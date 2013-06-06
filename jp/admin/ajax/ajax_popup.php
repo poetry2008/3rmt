@@ -5902,7 +5902,20 @@ $site_array = explode(',',$site_arr);
 if(!in_array($action_sid,$site_array) && $action_sid != -1){
    $disabled = 'disabled="disabled"'; 
 }
-
+  if(!isset($_GET['sort']) || $_GET['sort'] == ''){
+       $contents_str = 'i.sort_id, i.heading_title ';
+       $_GET['type'] = '';
+  }else if($_GET['sort'] == 'site_romaji'){
+       $contents_str = 's.romaji '; 
+  }else if($_GET['sort'] == 'title'){
+       $contents_str = 'i.heading_title '; 
+  }else if($_GET['sort'] == 'status'){
+       $contents_str = 'i.status '; 
+  }else if($_GET['sort'] == 'sort_id'){
+       $contents_str = 'i.sort_id '; 
+  }else if($_GET['sort'] == 'date_update'){
+       $contents_str = 'i.date_update '; 
+  }
   //更新内容 
 $cID = $_GET['cID'];
 if($_GET['site_id'] == -1){
@@ -5918,7 +5931,7 @@ if($cID && tep_not_null($cID)) {
     if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
       $sql_site_where = 'site_id in ('.str_replace('-', ',', $_GET['site_id']).')';
     } else {
-      $show_site_str = tep_get_setting_site_info(FILENAME_CUSTOMERS);
+      $show_site_str = tep_get_setting_site_info(FILENAME_CONTENTS);
       $sql_site_where = 'site_id in ('.$show_site_str.')';
     }
     $sites_sql = tep_db_query("SELECT * FROM `sites`");
@@ -5926,7 +5939,7 @@ if($cID && tep_not_null($cID)) {
       $show_site_arr[] = $sites_row['id']; 
     }
 if($cID != -1){
-$contents_query_raw = " select i.pID, i.navbar_title, i.heading_title, i.text_information, i.status, i.sort_id, i.romaji, i.site_id, i.date_added, i.date_update, s.romaji as sromaji from ".TABLE_INFORMATION_PAGE." i , ".TABLE_SITES." s where s.id = i.site_id and ".$sql_site_where." order by i.sort_id, i.heading_title";
+$contents_query_raw = " select i.pID, i.navbar_title, i.heading_title, i.text_information, i.status, i.sort_id, i.romaji, i.site_id, i.date_added, i.date_update, s.romaji as sromaji from ".TABLE_INFORMATION_PAGE." i , ".TABLE_SITES." s where s.id = i.site_id and ".$sql_site_where." order by ".$contents_str.$_GET['type'];
 $contents_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $contents_query_raw, $contents_query_numrows);
 $contents_query = tep_db_query($contents_query_raw);
 $cid_array = array();
@@ -5972,13 +5985,10 @@ while ($contents = tep_db_fetch_array($contents_query)) {
          array('text' => '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">'),  
          array('text' => '<input type="hidden" name="action_sid" value="'.$_GET['action_sid'].'">')    
     );
+    $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$detail['site_id']));
     $contents[]['text'] = array(
          array('text' => ENTRY_SITE),
-         array('text' => tep_get_site_name_by_id($detail['site_id']))
-    );
-    $contents[]['text'] = array(
-         array('params' => 'style="width"30%"','text' => TEXT_DETAIL_STATUS),
-         array('params' => 'class="td_input" ','text' => tep_draw_radio_field('status', '1', $in_status,'',$disabled) . '&nbsp;' . TEXT_PRODUCT_AVAILABLE . '&nbsp;' . tep_draw_radio_field('status', '0', $out_status,'',$disabled) . '&nbsp;' . TEXT_PRODUCT_NOT_AVAILABLE)
+         array('text' => $site_name['romaji'])
     );
     $contents[]['text'] = array(
          array('text' => TEXT_DETAIL_SORT),
@@ -6002,7 +6012,7 @@ while ($contents = tep_db_fetch_array($contents_query)) {
          array('text' => tep_draw_textarea_field('text_information', 'soft', '70', '20', stripslashes($detail['text_information']),' style="resize: vertical;"'.$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'))
     );
     $contents[]['text'] = array(
-         array('params' => 'width="30%"','text' => $detail['heading_title']),
+         array('params' => 'width="30%"','text' => TEXT_LINK),
          array('text' => TEXT_CONTENT_MSG.'<br>< a href="'.tep_catalog_href_link('page.php','pID='.(isset($_GET['cID'])?$_GET['cID']:'')).'">'.$c_title.'< /a>')
     );
     $info_query = tep_db_query("select * from information_page where PID='".$cID."'");
@@ -6064,8 +6074,8 @@ while ($contents = tep_db_fetch_array($contents_query)) {
          array('params' => 'class="td_input"','text' => $site_id_name)
     );
     $contents[]['text'] = array(
-         array('text' => TEXT_DETAIL_STATUS),
-         array('params' => 'class="td_input"','text' => tep_draw_radio_field('status', '1', true,'',$disabled) .  '&nbsp;' .  TEXT_PRODUCT_AVAILABLE . '&nbsp;' .  tep_draw_radio_field('status', '0', false,'',$disabled) . '&nbsp;' . TEXT_PRODUCT_NOT_AVAILABLE)
+         array('text' => ''),
+         array('text' => '<input type="hidden" name="status" value="1">')
     );
     $contents[]['text'] = array(
          array('params' => 'style="width:30%"','text' => TEXT_DETAIL_SORT),
