@@ -5983,7 +5983,7 @@ while ($contents = tep_db_fetch_array($contents_query)) {
     $form_str = tep_draw_form('content_form', FILENAME_CONTENTS, 'cID='.$cID.'&act=update' .((isset($_GET['site_id'])&&$_GET['site_id'])?'&site_id='.$_GET['site_id']:''));
     $contents[]['text'] = array(
          array('text' => '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">'),  
-         array('text' => '<input type="hidden" name="action_sid" value="'.$_GET['action_sid'].'">')    
+         array('text' => '<input type="hidden" name="action_sid" value="'.$_GET['action_sid'].'"><input type="hidden" name="status" value="'.$detail['status'].'">')    
     );
     $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$detail['site_id']));
     $contents[]['text'] = array(
@@ -5997,7 +5997,7 @@ while ($contents = tep_db_fetch_array($contents_query)) {
     if (isset($error_message)) { $error_message = $error_message; }
     $contents[]['text'] = array(
          array('text' => TEXT_DETAIL_ROMAJI),
-         array('text' => tep_draw_input_field('romaji', $detail['romaji'],$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="width:60%"').$error_message)
+         array('text' => tep_draw_input_field('romaji', $detail['romaji'],$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="width:60%" id="romaji"').$error_message.'&nbsp;&nbsp;<span id="error_romaji"></span><span id="error_romaji_info"></span>')
     );
     $contents[]['text'] = array(
          array('text' => TEXT_DETAIL_NAVBAR_TITLE),
@@ -6005,7 +6005,7 @@ while ($contents = tep_db_fetch_array($contents_query)) {
     );
     $contents[]['text'] = array(
          array('text' => TEXT_DETAIL_HEADING_TITLE),
-         array('text' => tep_draw_input_field('heading_title', $detail['heading_title'],$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"style="width:60%"'))
+         array('text' => tep_draw_input_field('heading_title', $detail['heading_title'],$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"style="width:60%" id="heading_title"').'&nbsp;&nbsp;<span id="heading_title_error"></span>')
     );
      $contents[]['text'] = array(
          array('text' => TEXT_DETAIL_CONTENTS),
