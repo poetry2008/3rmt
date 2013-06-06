@@ -2151,6 +2151,7 @@ echo json_encode($json_array);
   $_SESSION['orders_update_products'][$total_orders_id]['payment_method'] = $_POST['payment_value'];
   //配送费用
   $shipping_fee = tep_products_shipping_fee($total_orders_id,$_POST['ot_subtotal']+$_POST['fee_total']-$point_value);
+  $shipping_fee = $shipping_fee == '' ? 0 : $shipping_fee;
   $cpayment = payment::getInstance($_POST['session_site_id']);
   $handle_fee = $cpayment->handle_calc_fee($_POST['payment_value'], $_POST['ot_subtotal']+$_POST['fee_total']-$point_value+$shipping_fee);
   $handle_fee = $handle_fee == '' ? 0 : $handle_fee;
