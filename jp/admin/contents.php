@@ -30,44 +30,44 @@
   if(!isset($_GET['sort']) || $_GET['sort'] == ''){
      $contents_str = 'i.sort_id, i.heading_title'; 
   }else if($_GET['sort'] == 'site_romaji'){
-     if($_GET['type'] == 'asc'){
+     if($_GET['type'] == 'desc'){
        $contents_str = 's.romaji desc'; 
-       $contents_type = 'desc';
+       $contents_type = 'asc';
      }else{
        $contents_str = 's.romaji asc'; 
-       $contents_type = 'asc';
+       $contents_type = 'desc';
      }
   }else if($_GET['sort'] == 'title'){
-     if($_GET['type'] == 'asc'){
+     if($_GET['type'] == 'desc'){
        $contents_str = 'i.heading_title desc'; 
-       $contents_type = 'desc';
+       $contents_type = 'asc';
      }else{
        $contents_str = 'i.heading_title asc'; 
-       $contents_type = 'asc';
+       $contents_type = 'desc';
      }
   }else if($_GET['sort'] == 'status'){
-     if($_GET['type'] == 'asc'){
+     if($_GET['type'] == 'desc'){
        $contents_str = 'i.status desc'; 
-       $contents_type = 'desc';
+       $contents_type = 'asc';
      }else{
        $contents_str = 'i.status asc'; 
-       $contents_type = 'asc';
+       $contents_type = 'desc';
      }
   }else if($_GET['sort'] == 'sort_id'){
-     if($_GET['type'] == 'asc'){
+     if($_GET['type'] == 'desc'){
        $contents_str = 'i.sort_id desc'; 
-       $contents_type = 'desc';
+       $contents_type = 'asc';
      }else{
        $contents_str = 'i.sort_id asc'; 
-       $contents_type = 'asc';
+       $contents_type = 'desc';
      }
   }else if($_GET['sort'] == 'date_update'){
-     if($_GET['type'] == 'asc'){
+     if($_GET['type'] == 'desc'){
        $contents_str = 'i.date_update desc'; 
-       $contents_type = 'desc';
+       $contents_type = 'asc';
      }else{
        $contents_str = 'i.date_update asc'; 
-       $contents_type = 'asc';
+       $contents_type = 'desc';
      }
   }
   if (isset($_GET['act']) && $_GET['act']) {
@@ -552,8 +552,7 @@ function check_contents(c_permission){
    }
 }
 <?php //执行动作?>
-function toggle_content_action(c_url_str, c_permission)
-{
+function toggle_content_action(c_url_str, c_permission){
   if (c_permission == 31) {
     window.location.href = c_url_str; 
   } else {
@@ -647,35 +646,35 @@ require("includes/note_js.php");
           <?php 
            echo '<input type="hidden" id="sort" value="'.$_GET['sort'].'"><input type="hidden" id="type" value="'.$_GET['type'].'">';
            if($_GET['sort'] == 'site_romaji'){
-             if($contents_type == 'asc'){
+             if($_GET['type'] == 'desc'){
                 $site_romaji = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
              }else{
                 $site_romaji = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
              }
            }
            if($_GET['sort'] == 'title'){
-             if($contents_type == 'asc'){
+             if($_GET['type'] == 'desc'){
                 $heading_contents_title = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
              }else{
                 $heading_contents_title = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
              }
            }
            if($_GET['sort'] == 'status'){
-             if($contents_type == 'asc'){
+             if($_GET['type'] == 'desc'){
                 $contents_status = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
              }else{
                 $contents_status = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
              }
            }
            if($_GET['sort'] == 'sort_id'){
-             if($contents_type == 'asc'){
+             if($_GET['type'] == 'desc'){
                 $contents_sort_id = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
              }else{
                 $contents_sort_id = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
              }
            }
            if($_GET['sort'] == 'date_update'){
-             if($contents_type == 'asc'){
+             if($_GET['type'] == 'desc'){
                 $contents_date_update = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
              }else{
                 $contents_date_update = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
