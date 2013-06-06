@@ -686,11 +686,31 @@ require("includes/note_js.php");
            $contents_table_row = array(); 
            $contents_title_row = array();
            $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_pw"','text' => '<input type="checkbox" name="all_check" onclick="all_select_contents(\'contents_id[]\');">');
-           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_pw" ','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=site_romaji&type='.$contents_type).'">'.TABLE_HEADING_SITE.$site_romaji.'</a>');
-           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_pw"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=title&type='.$contents_type).'">'.TABLE_HEADING_CONTENTS_TITLE.$heading_contents_title.'</a>');
-           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_pw" align="center"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=status&type='.$contents_type).'">'.TABLE_HEADING_CONTENTS_STATUS.$contents_status.'</a>');
-           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_pw" align="right"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=sort_id&type='.$contents_type).'">'.TABLE_HEADING_CONTENTS_SORT.$contents_sort_id.'</a>');
-           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_pw" align="right"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=date_update&type='.$contents_type).'">'.TABLE_HEADING_ACTION.$contents_date_update.'</a>');
+           if(isset($_GET['sort']) && $_GET['sort'] == 'site_romaji'){
+           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order" ','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=site_romaji&type='.$contents_type).'">'.TABLE_HEADING_SITE.$site_romaji.'</a>');
+           }else{
+           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order" ','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=site_romaji&type=desc').'">'.TABLE_HEADING_SITE.$site_romaji.'</a>');
+           }
+           if(isset($_GET['sort']) && $_GET['sort'] == 'title'){
+           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=title&type='.$contents_type).'">'.TABLE_HEADING_CONTENTS_TITLE.$heading_contents_title.'</a>');
+           }else{
+           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=title&type=desc').'">'.TABLE_HEADING_CONTENTS_TITLE.$heading_contents_title.'</a>');
+           }
+           if(isset($_GET['sort']) && $_GET['sort'] == 'status'){
+           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="center"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=status&type='.$contents_type).'">'.TABLE_HEADING_CONTENTS_STATUS.$contents_status.'</a>');
+           }else{
+           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="center"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=status&type=desc').'">'.TABLE_HEADING_CONTENTS_STATUS.$contents_status.'</a>');
+           }
+           if(isset($_GET['sort']) && $_GET['sort'] == 'sort_id'){
+           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=sort_id&type='.$contents_type).'">'.TABLE_HEADING_CONTENTS_SORT.$contents_sort_id.'</a>');
+           }else{
+           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=sort_id&type=desc').'">'.TABLE_HEADING_CONTENTS_SORT.$contents_sort_id.'</a>');
+           }
+           if(isset($_GET['sort']) && $_GET['sort'] == 'date_update'){
+           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=date_update&type='.$contents_type).'">'.TABLE_HEADING_ACTION.$contents_date_update.'</a>');
+           }else{
+           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=date_update&type=desc').'">'.TABLE_HEADING_ACTION.$contents_date_update.'</a>');
+           }
            $contents_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $contents_title_row);
     $search = '';
     $count = 0;
