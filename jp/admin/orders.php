@@ -2221,7 +2221,7 @@ if ($ocertify->npermission == 31) {
      data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
      async : false,
      success: function(data) {
-       var tmp_msg_arr = msg.split('|||'); 
+       var tmp_msg_arr = data.split('|||'); 
        var pwd_list_array = tmp_msg_arr[1].split(',');
        if (tmp_msg_arr[0] == '0') {
          document.forms.orders.submit();

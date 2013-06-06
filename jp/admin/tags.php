@@ -204,9 +204,9 @@ $(document).ready(function() {
       <?php //回车?> 
       if ($('#show_popup_info').css('display') != 'none') {  
         if($("#show_popup_info").find('input:submit').first().val()){
-          $("#show_popup_info").find('input:submit').first().trigger("click");
+          $("#button_save").trigger("click"); 
         }else{
-          $("#show_popup_info").find('input:button').first().trigger("click"); 
+          $("#button_save").trigger("click"); 
         }
       } 
     }
@@ -325,7 +325,6 @@ function delete_select_products_to_tags(tags_list_id)
             document.edit_tags.submit(); 
           } else {
             $("#button_save").attr('id', 'tmp_button_save');
-            alert("sssssss");
             var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
             if (in_array(input_pwd_str, pwd_list_array)) {
               $.ajax({
@@ -1079,7 +1078,6 @@ function products_tags_submit(){
           document.products_to_tags.submit();
         } else {
           $("#button_save").attr('id', 'tmp_button_save');
-            alert("iiiiiiiiii");
           var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
           if (in_array(input_pwd_str, pwd_list_array)) {
             $.ajax({

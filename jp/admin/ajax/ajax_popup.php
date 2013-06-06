@@ -2551,7 +2551,7 @@ width:20%;"'))
     $buttons = array('align' => 'center', 'button' => $button); 
   }
 
-  $form_str = tep_draw_form('tags_form', FILENAME_TAGS, '', 'post', 'enctype="multipart/form-data"');
+  $form_str = tep_draw_form('tags_form', FILENAME_TAGS, '', 'post', 'enctype="multipart/form-data" onsubmit="return false;"');
 
   //生成表单 
   $notice_box->get_form($form_str);
@@ -2603,7 +2603,7 @@ width:20%;"'))
     $buttons = array('align' => 'center', 'button' => $button); 
   }
 
-  $form_str = tep_draw_form('tags_form', FILENAME_TAGS, 'action=insert', 'post', 'enctype="multipart/form-data"');
+  $form_str = tep_draw_form('tags_form', FILENAME_TAGS, 'action=insert', 'post', 'enctype="multipart/form-data" onsubmit="return false;"');
 
   //生成表单 
   $notice_box->get_form($form_str);
@@ -6029,7 +6029,7 @@ while ($contents = tep_db_fetch_array($contents_query)) {
     if($disabled){
         $submit = tep_html_element_button(IMAGE_SAVE,$disabled);
     }else{
-        $submit = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_contents('.$ocertify->npermission.');"').'</a>';
+        $submit = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="check_contents('.$ocertify->npermission.');"').'</a>';
     }
     if($ocertify->npermission >= 15){
      if($disabled){
@@ -6108,7 +6108,7 @@ while ($contents = tep_db_fetch_array($contents_query)) {
             array('align' => 'left','text' => TEXT_DATE_UPDATE.((tep_not_null($info_array['date_update']))?$info_array['date_update']:TEXT_UNSET_DATA))
       );
 
-    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_contents('.$ocertify->npermission.');"').'</a>';
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="check_contents('.$ocertify->npermission.');"').'</a>';
     if(!empty($button)){
          $buttons = array('align' => 'center', 'button' => $button);
     }

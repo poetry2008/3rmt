@@ -1208,7 +1208,7 @@ $(".once_pwd").each(function(index) {
   } else {
     if(!flag_tmp){
       if (tmp_msg_arr[0] == '0') {
-        $("input[name=update_viladate]").val(pwd);
+        $("input[name=update_viladate]").val('');
         _flag = true; 
       } else {
         var pwd =  window.prompt("<?php echo FORDERS_NOTICE_INPUT_ONCE_PWD;?>\r\n","");
@@ -1234,10 +1234,31 @@ $(".once_pwd").each(function(index) {
         
       }
     }else{
-      $("input[name=update_viladate]").val('');
-      $("input[name=x]").val('43');
-      $("input[name=y]").val('12');
-      _flag = true;
+      if (tmp_msg_arr[0] == '0') {
+        $("input[name=update_viladate]").val('');
+        _flag = true;
+      } else {
+        var pwd =  window.prompt("<?php echo FORDERS_NOTICE_INPUT_ONCE_PWD;?>\r\n","");
+        if (in_array(pwd,pwd_arr)) {
+          $.ajax({
+            url: 'ajax_orders.php?action=record_pwd_log',   
+            type: 'POST',
+            dataType: 'text',
+            data: 'current_pwd='+pwd+'&url_redirect_str='+encodeURIComponent(document.forms.edit_order.action),
+            async: false,
+            success: function(msg_info) {
+              $("input[name=update_viladate]").val(pwd);
+              _flag = true; 
+            }
+          });
+        } else {
+          alert("<?php echo FORDERS_NOTICE_ONCE_PWD_WRONG;?>");
+          $("input[name=update_viladate]").val('_false');
+          $("input[name=x]").val('43');
+          $("input[name=y]").val('12');
+          return false;
+        }
+      }
     }
   }
 }
@@ -1797,7 +1818,7 @@ require("includes/note_js.php");
 </style>
 <!-- header_eof -->
 <!-- body -->
-<?php echo tep_draw_form('edit_order', FILENAME_FINAL_PREORDERS, tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post','onSubmit="return presubmitChk();"'); ?>
+<?php echo tep_draw_form('edit_order', FILENAME_FINAL_PREORDERS, tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post','onSubmit="return presubmitChk(\''.$ocertify->npermission.'\');"'); ?>
 <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top">

@@ -41,7 +41,7 @@ function show_alert_log_list($oresult) {
   $is_disabled_single = false; 
   if ($ocertify->npermission != 31) {
     $c_site_query = tep_db_query("select * from ".TABLE_PERMISSIONS." where userid = '".$ocertify->auth_user."'");    
-    $c_site_res = tep_db_query($c_site_query); 
+    $c_site_res = tep_db_fetch_array($c_site_query); 
     $tmp_c_site_array = explode(',', $c_site_res['site_permission']); 
     if (!empty($tmp_c_site_array)) {
       if (!in_array('0', $tmp_c_site_array)) {
@@ -51,6 +51,7 @@ function show_alert_log_list($oresult) {
       $is_disabled_single = true; 
     }
   }
+      $is_disabled_single = true; 
   while ($arec = tep_db_fetch_array($oresult)) {      // 获取记录
     $naddress = (int)$arec['address'];    // IP地址复原
     $saddress = '';
@@ -306,10 +307,12 @@ function all_select_logs(logs_list_id)
   var check_flag = document.edit_logs.all_check.checked;
   if (document.edit_logs.elements[logs_list_id]) {
     if (document.edit_logs.elements[logs_list_id].length == null) {
-      if (check_flag == true) {
-        document.edit_logs.elements[logs_list_id].checked = true;
-      } else {
-        document.edit_logs.elements[logs_list_id].checked = false;
+      if (!document.edit_logs.elements[logs_list_id][i].disabled) {
+        if (check_flag == true) {
+          document.edit_logs.elements[logs_list_id].checked = true;
+        } else {
+          document.edit_logs.elements[logs_list_id].checked = false;
+        }
       }
     } else {
       for (i = 0; i < document.edit_logs.elements[logs_list_id].length; i++) {
@@ -366,8 +369,7 @@ function select_logs_change(value,logs_list_id,c_permission)
                 url: "ajax_orders.php?action=record_pwd_log",   
                 type: "POST",
                 dataType: "text",
-                data:
-                "current_pwd="+input_pwd_str+"&url_redirect_str="+encodeURIComponent("'.tep_href_link(FILENAME_ALERT_LOG, ($_GET['page'] != '' ? 'page='.$_GET['page'] : '')).'"),
+                data: "current_pwd="+input_pwd_str+"&url_redirect_str="+encodeURIComponent("'.tep_href_link(FILENAME_ALERT_LOG, ($_GET['page'] != '' ? 'page='.$_GET['page'] : '')).'"),
                 async: false,
                 success: function(msg_info) {
                   document.edit_logs.action = "'.tep_href_link(FILENAME_ALERT_LOG, ($_GET['page'] != '' ? 'page='.$_GET['page'] : '')).'";

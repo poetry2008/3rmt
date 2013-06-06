@@ -663,7 +663,7 @@ if ($ocertify->npermission == 31) {
      data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
      async : false,
      success: function(data) {
-       var tmp_msg_arr = msg.split('|||'); 
+       var tmp_msg_arr = data.split('|||'); 
        var pwd_list_array = tmp_msg_arr[1].split(',');
        if (tmp_msg_arr[0] == '0') {
          document.forms.preorders.submit();
@@ -811,11 +811,6 @@ function del_confirm_payment_time(oid, status_id)
       <?php
       } else {
       ?>
-      if(in_array(pwd, pwd_arr)){
-        
-      } else {
-        window.alert("<?php echo NOTICE_ORDER_INPUT_WRONG_PASSWORD;?>"); 
-      }
        if (tmp_msg_arr[0] == '0') {
          if (window.confirm('<?php echo NOTICE_DEL_CONFIRM_PAYEMENT_TIME;?>')) {
           $.ajax({

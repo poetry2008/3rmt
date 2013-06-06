@@ -95,8 +95,29 @@ $(".once_pwd").each(function(index) {
         }
       }
     }else{
-      $("input[name=update_viladate]").val('');
-      document.edit_order.submit();
+      if (tmp_msg_arr[0] == '0') {
+        $("input[name=update_viladate]").val('');
+        document.edit_order.submit();
+      } else {
+        var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
+        if(in_array(pwd,pwd_arr)){
+            $.ajax({
+               url: 'ajax_orders.php?action=record_pwd_log',   
+               type: 'POST',
+               dataType: 'text',
+               data: 'current_pwd='+pwd+'&url_redirect_str='+encodeURIComponent(document.edit_order.action),
+               async: false,
+               success: function(msg_info) {
+                 $("input[name=update_viladate]").val(pwd);
+                 document.edit_order.submit();
+               }
+            });
+       }else{
+          alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>");
+          $("input[name=update_viladate]").val('_false');
+          return false;
+       }
+      }
     }
   }
 }
@@ -439,12 +460,12 @@ function check_toggle_status(url_str, c_permission)
     async : false,
     success: function(data) {
       if (c_permission == 31) {
-        window.location.href = url_str+'&once_pwd='+pwd; 
+        window.location.href = url_str; 
       } else {
         var tmp_msg_arr = data.split('|||'); 
         var pwd_list_array = tmp_msg_arr[1].split(',');
         if (tmp_msg_arr[0] == '0') {
-          window.location.href = url_str+'&once_pwd='+pwd; 
+          window.location.href = url_str; 
         } else {
           var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
           if (in_array(input_pwd_str, pwd_list_array)) {
@@ -455,7 +476,7 @@ function check_toggle_status(url_str, c_permission)
              data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(url_str),
              async: false,
              success: function(msg_info) {
-               window.location.href = url_str+'&once_pwd='+pwd; 
+               window.location.href = url_str+'&once_pwd='+input_pwd_str; 
              }
            }); 
           } else {
@@ -477,12 +498,12 @@ function change_status(url_str, c_permission){
     async : false,
     success: function(data) {
       if (c_permission == 31) {
-        window.location.href = url_str+'&once_pwd='+pwd; 
+        window.location.href = url_str; 
       } else {
         var tmp_msg_arr = data.split('|||'); 
         var pwd_list_array = tmp_msg_arr[1].split(',');
         if (tmp_msg_arr[0] == '0') {
-          window.location.href = url_str+'&once_pwd='+pwd; 
+          window.location.href = url_str; 
         } else {
           var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
           if (in_array(input_pwd_str, pwd_list_array)) {
@@ -493,7 +514,7 @@ function change_status(url_str, c_permission){
              data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(url_str),
              async: false,
              success: function(msg_info) {
-               window.location.href = url_str+'&once_pwd='+pwd; 
+               window.location.href = url_str+'&once_pwd='+input_pwd_str; 
              }
            }); 
           } else {
@@ -933,7 +954,7 @@ function doubleClickme()
     $(this).addClass("dataTableRowSelected");
 }
 
-function presubmitChk() { 
+function presubmitChk(c_permission) { 
   var flag = confirm ( "<?php echo JS_TEXT_GENERAL_CONFIRM_ORDER_PRICE;?>"); 
   if(flag){
     $.ajax({
@@ -969,6 +990,10 @@ $(".once_pwd").each(function(index) {
     }
   }
   });
+  if (c_permission == 31) {
+    $("input[name=update_viladate]").val('');
+    document.edit_order.submit();
+  }
   if(!flag_tmp){
   var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
   if(in_array(pwd,pwd_arr)){
@@ -1163,16 +1188,16 @@ function check_toggle_black_status(url_str, c_permission)
       var pwd_arr = tmp_msg_arr[1].split(",");
       if (c_permission == 31) {
         if (window.confirm('<?php echo JS_TEXT_GENERAL_SHOW_REVIEW;?>')) {
-          window.location.href = url_str+'&once_pwd='+pwd+'&up_rs=true'; 
+          window.location.href = url_str+'&up_rs=true'; 
         } else {
-          window.location.href = url_str+'&once_pwd='+pwd; 
+          window.location.href = url_str; 
         }
       } else {
         if (tmp_msg_arr[0] == '0') {
           if (window.confirm('<?php echo JS_TEXT_GENERAL_SHOW_REVIEW;?>')) {
-            window.location.href = url_str+'&once_pwd='+pwd+'&up_rs=true'; 
+            window.location.href = url_str+'&up_rs=true'; 
           } else {
-            window.location.href = url_str+'&once_pwd='+pwd; 
+            window.location.href = url_str; 
           }
         } else {
           var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
@@ -1185,9 +1210,9 @@ function check_toggle_black_status(url_str, c_permission)
              async: false,
              success: function(msg_info) {
               if (window.confirm('<?php echo JS_TEXT_GENERAL_SHOW_REVIEW;?>')) {
-                window.location.href = url_str+'&once_pwd='+pwd+'&up_rs=true'; 
+                window.location.href = url_str+'&once_pwd='+input_pwd_str+'&up_rs=true'; 
               } else {
-                window.location.href = url_str+'&once_pwd='+pwd; 
+                window.location.href = url_str+'&once_pwd='+input_pwd_str; 
               }
              }
            }); 
@@ -1330,7 +1355,7 @@ $(".once_pwd").each(function(index) {
   } else {
     if(!flag_tmp){
       if (tmp_msg_arr[0] == '0') {
-        $("input[name=update_viladate]").val(pwd);
+        $("input[name=update_viladate]").val('');
         _flag = true; 
       } else {
         var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
@@ -1339,7 +1364,7 @@ $(".once_pwd").each(function(index) {
              url: 'ajax_orders.php?action=record_pwd_log',   
              type: 'POST',
              dataType: 'text',
-             data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.forms.edit_order.action),
+             data: 'current_pwd='+pwd+'&url_redirect_str='+encodeURIComponent(document.forms.edit_order.action),
              async: false,
              success: function(msg_info) {
                $("input[name=update_viladate]").val(pwd);
@@ -1355,10 +1380,31 @@ $(".once_pwd").each(function(index) {
         }
       }
     }else{
-      $("input[name=update_viladate]").val('');
-      $("input[name=x]").val('43');
-      $("input[name=y]").val('12');
-      _flag = true;
+      if (tmp_msg_arr[0] == '0') {
+        $("input[name=update_viladate]").val('');
+        _flag = true;
+      } else {
+        var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
+        if(in_array(pwd,pwd_arr)){
+          $.ajax({
+             url: 'ajax_orders.php?action=record_pwd_log',   
+             type: 'POST',
+             dataType: 'text',
+             data: 'current_pwd='+pwd+'&url_redirect_str='+encodeURIComponent(document.forms.edit_order.action),
+             async: false,
+             success: function(msg_info) {
+               $("input[name=update_viladate]").val(pwd);
+               _flag = true;
+             }
+           });
+        }else{
+          alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>");
+          $("input[name=update_viladate]").val('_false');
+          $("input[name=x]").val('43');
+          $("input[name=y]").val('12');
+          return false;
+        }
+      }
     }
   }
 }

@@ -617,10 +617,10 @@ success: function(data) {
 var tmp_msg_arr = data.split('|||'); 
 var pwd_list_array = tmp_msg_arr[1].split(',');
 if (c_permission == 31) {
-  window.location.href = url_str+'&once_pwd='+pwd; 
+  window.location.href = url_str; 
 } else {
    if (tmp_msg_arr[0] == '0') {
-     window.location.href = url_str+'&once_pwd='+pwd; 
+     window.location.href = url_str; 
    } else {
      var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
      if (in_array(input_pwd_str, pwd_list_array)) {
@@ -631,7 +631,7 @@ if (c_permission == 31) {
          data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(url_str),
          async: false,
          success: function(msg_info) {
-           window.location.href = url_str+'&once_pwd='+pwd; 
+           window.location.href = url_str+'&once_pwd='+input_pwd_str; 
          }
        }); 
      } else {

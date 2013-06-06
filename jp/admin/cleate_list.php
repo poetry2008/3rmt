@@ -6,7 +6,6 @@ $currencies = new currencies();
 $cPath=cpathPart($_GET['cpath']);
 $oid = $_GET['o_id'];
 $action = $HTTP_GET_VARS['action'];
-
 switch ($HTTP_GET_VARS['action']){
 /* -----------------------------------------------------
    case 'data_cleate' 新建批发商的数据   
@@ -63,6 +62,41 @@ echo CLEATE_LIST_TITLE;
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery.js"></script>
+<script type="text/javascript">
+function one_time_pwd(page_name){
+  $.ajax({
+url: 'ajax_orders.php?action=getpwdcheckbox',
+type: 'POST',
+data: 'page_name='+page_name,
+dataType: 'text',
+async : false,
+success: function(data) {
+if(data !='false'){
+var pwd_arr = data.split(",");
+if(data.indexOf('[SQL-ERROR]')==-1){
+pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
+if (data.indexOf(pwd+',') > -1 || data.indexOf(pwd) > -1 || data.indexOf(','+pwd) > -1) {
+$.ajax({
+url: 'ajax_orders.php?action=save_pwd_log',
+type: 'POST',
+data: 'one_time_pwd='+pwd+'&page_name='+page_name,
+dataType: 'text',
+async : false,
+success: function(_data) {
+}
+});
+}else{
+  alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>");
+  location=location;
+}
+}else{
+  location.href='/admin/sql_error.php';
+}
+}
+}
+});
+}
+</script>
 <?php 
   if($oid){
     ?>
@@ -96,7 +130,7 @@ function toggle_cleat_list_form(c_permission)
           document.forms.ce_form.submit(); 
         } else {
           var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-          if (in_array(input_pwd_str, pwd_list_array)) {
+          if (tmp_msg_arr[1].indexOf(input_pwd_str+',') > -1 || tmp_msg_arr[1].indexOf(input_pwd_str) > -1 || tmp_msg_arr[1].indexOf(','+input_pwd_str) > -1) {
             $.ajax({
               url: 'ajax_orders.php?action=record_pwd_log',   
               type: 'POST',
@@ -124,6 +158,12 @@ require("includes/note_js.php");
 ?>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" >
+<?php 
+if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
+<script language='javascript'>
+  one_time_pwd('<?php echo $page_name;?>');
+</script>
+<?php }?>
 <div id="spiffycalendar" class="text"></div>
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
