@@ -42,4 +42,5 @@ define('TEXT_ERROR_NULL','<font color=\'red\'>入力して下さい。</font>');
 define('TEXT_LINK','リンク');
 define('TEXT_SORT_ASC','▲');
 define('TEXT_SORT_DESC','▼');
+define('TEXT_DATA_EMPTY','<font color=\'red\'><b>データがありません。</b></font>');
 ?>

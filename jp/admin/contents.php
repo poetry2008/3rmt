@@ -837,7 +837,7 @@ require("includes/note_js.php");
                     
           <tr>
             <td align="right" colspan="2"><div class="td_button">
-            <?php if($site_array[1] != ''){  ?>
+            <?php if(($site_array[0] != '' && $site_array[0] != 0) || $site_array[1] != ''){  ?>
             <a href="javascript:void(0)" onclick="show_contents(this,-1,<?php echo $_GET['page'];?>,-1)"><?php echo tep_html_element_button(IMAGE_NEW_PROJECT); ?></a></div></td>
             <?php }else{
              echo '&nbsp;' .tep_html_element_button(IMAGE_NEW_PROJECT,'id="create_customers" disabled="disabled"');
