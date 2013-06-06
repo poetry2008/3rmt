@@ -7,7 +7,6 @@ window.last_status  = 0;
 var auto_submit_able = true;
 <?php // 最后检查时间?>
 var prev_customer_action = '';
-
 <?php //全选检查 ?>
 function all_check(){
   field_on();
@@ -607,20 +606,39 @@ function allt(id,div_id){
   div_e.style.display=''; 
 } 
 <?php //定义密码新的URL ?>
-function once_pwd_redircet_new_url(url_str){
-  //window.location.href = url_str;
+function once_pwd_redircet_new_url(url_str, c_permission){
   $.ajax({
 url: 'ajax_orders.php?action=getallpwd',
 type: 'POST',
 dataType: 'text',
+data: 'current_page_name='+document.getElementById("hidden_page_info").value, 
 async : false,
 success: function(data) {
-var pwd_arr = data.split(",");
-var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
-if(in_array(pwd, pwd_arr)){
-window.location.href = url_str+'&once_pwd='+pwd; 
+var tmp_msg_arr = data.split('|||'); 
+var pwd_list_array = tmp_msg_arr[1].split(',');
+if (c_permission == 31) {
+  window.location.href = url_str+'&once_pwd='+pwd; 
 } else {
-window.alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>"); 
+   if (tmp_msg_arr[0] == '0') {
+     window.location.href = url_str+'&once_pwd='+pwd; 
+   } else {
+     var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+     if (in_array(input_pwd_str, pwd_list_array)) {
+       $.ajax({
+         url: 'ajax_orders.php?action=record_pwd_log',   
+         type: 'POST',
+         dataType: 'text',
+         data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(url_str),
+         async: false,
+         success: function(msg_info) {
+           window.location.href = url_str+'&once_pwd='+pwd; 
+         }
+       }); 
+     } else {
+       alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+     }
+   }
+}
 }
 }
 });

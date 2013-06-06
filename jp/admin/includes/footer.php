@@ -10,6 +10,7 @@ echo tep_draw_hidden_field("execute_password",TEXT_ECECUTE_PASSWORD_USER);
 echo tep_draw_hidden_field("userslist",$ocertify->auth_user);
 echo "</form>";
 ?>
+<input type="hidden" value="<?php echo $_SERVER['PHP_SELF'];?>" name="hidden_page_info" id="hidden_page_info">
 <script language="JavaScript" type="text/javascript">
 function note_popup_list(){
    var note_obj = document.getElementById("note_hide_content");

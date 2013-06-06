@@ -2218,14 +2218,29 @@ if ($ocertify->npermission == 31) {
      url: 'ajax_orders.php?action=getallpwd',
      type: 'POST',
      dataType: 'text',
+     data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
      async : false,
      success: function(data) {
-       var pwd_arr = data.split(","); 
-       var pwd =  window.prompt("<?php echo TEXT_INPUT_ONE_TIME_PASSWORD;?>\r\n","");
-       if(in_array(pwd, pwd_arr)) {
+       var tmp_msg_arr = msg.split('|||'); 
+       var pwd_list_array = tmp_msg_arr[1].split(',');
+       if (tmp_msg_arr[0] == '0') {
          document.forms.orders.submit();
        } else {
-         window.alert("<?php echo TEXT_INPUT_PASSWORD_ERROR;?>"); 
+         var input_pwd_str = window.prompt('<?php echo TEXT_INPUT_ONE_TIME_PASSWORD;?>', ''); 
+         if (in_array(input_pwd_str, pwd_list_array)) {
+           $.ajax({
+             url: 'ajax_orders.php?action=record_pwd_log',   
+             type: 'POST',
+             dataType: 'text',
+             data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.forms.orders.action),
+             async: false,
+             success: function(msg_info) {
+               document.forms.orders.submit();
+             }
+           }); 
+         } else {
+           alert("<?php echo TEXT_INPUT_PASSWORD_ERROR;?>"); 
+         }
        }
      }
    });
@@ -2368,9 +2383,11 @@ function del_confirm_payment_time(oid, status_id)
 url: 'ajax_orders.php?action=getallpwd',
 type: 'POST',
 dataType: 'text',
+data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
 async : false,
 success: function(data) {
-var pwd_arr = data.split(",");
+var tmp_msg_arr = data.split('|||'); 
+var pwd_list_array = tmp_msg_arr[1].split(',');
 <?php
 if ($ocertify->npermission == 31) {
 ?>
@@ -2389,13 +2406,12 @@ window.location.reload;
 <?php
 } else {
 ?>
-var pwd =  window.prompt("<?php echo TEXT_INPUT_ONE_TIME_PASSWORD;?>\r\n","");
-if(in_array(pwd, pwd_arr)){
+if (tmp_msg_arr[0] == '0') {
 if (window.confirm('<?php echo NOTICE_DEL_CONFIRM_PAYEMENT_TIME;?>')) {
 $.ajax({
 type:"POST", 
 url:"<?php echo tep_href_link('handle_payment_time.php')?>",
-data:"oID="+oid+"&stid="+status_id+"&once_pwd="+pwd, 
+data:"oID="+oid+"&stid="+status_id, 
 success:function(msg) {
 alert('<?php echo NOTICE_DEL_CONFIRM_PAYMENT_TIME_SUCCESS;?>'); 
 window.location.href = window.location.href; 
@@ -2404,7 +2420,32 @@ window.location.reload;
 }); 
 }
 } else {
-  window.alert("<?php echo TEXT_INPUT_PASSWORD_ERROR;?>"); 
+ var input_pwd_str = window.prompt('<?php echo TEXT_INPUT_ONE_TIME_PASSWORD;?>', ''); 
+ if (in_array(input_pwd_str, pwd_list_array)) {
+   $.ajax({
+     url: 'ajax_orders.php?action=record_pwd_log',   
+     type: 'POST',
+     dataType: 'text',
+     data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(window.location.href),
+     async: false,
+     success: function(msg_info) {
+      if (window.confirm('<?php echo NOTICE_DEL_CONFIRM_PAYEMENT_TIME;?>')) {
+      $.ajax({
+      type:"POST", 
+      url:"<?php echo tep_href_link('handle_payment_time.php')?>",
+      data:"oID="+oid+"&stid="+status_id+"&once_pwd="+input_pwd_str, 
+      success:function(msg) {
+      alert('<?php echo NOTICE_DEL_CONFIRM_PAYMENT_TIME_SUCCESS;?>'); 
+      window.location.href = window.location.href; 
+      window.location.reload; 
+      }
+      }); 
+      }
+     }
+   }); 
+ } else {
+   alert("<?php echo TEXT_INPUT_PASSWORD_ERROR;?>"); 
+ }
 }
 <?php
 }
@@ -2706,7 +2747,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
     <?php if ($ocertify->npermission) { ?>
       <?php 
         if(isset($order->info['flag_qaf'])&&$order->info['flag_qaf']&&($ocertify->npermission != 31)){
-          echo tep_html_element_button(IMAGE_EDIT, 'onclick="once_pwd_redircet_new_url(\''.  tep_href_link(FILENAME_ORDERS_EDIT, tep_get_all_get_params(array('action','status','questions_type')) .'&action=edit') .'\')"');
+          echo tep_html_element_button(IMAGE_EDIT, 'onclick="once_pwd_redircet_new_url(\''.  tep_href_link(FILENAME_ORDERS_EDIT, tep_get_all_get_params(array('action','status','questions_type')) .'&action=edit') .'\', \''.$ocertify->npermission.'\')"');
         }else{
           echo '<a href="' . tep_href_link(FILENAME_ORDERS_EDIT, tep_get_all_get_params(array('action','status','questions_type')) . '&action=edit') . '">';
           echo tep_html_element_button(IMAGE_EDIT);

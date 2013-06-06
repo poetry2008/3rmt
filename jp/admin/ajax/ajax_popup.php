@@ -2003,7 +2003,7 @@ width:20%;"'))
   //底部内容
   $buttons = array();
   
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="if(document.getElementById(\'repeat_flag\').value == 1){if(confirm(\''.TEXT_CALENDAR_REPEAT_COMMENT.'\')){save_submit(\''.$ocertify->npermission.'\');}}else{save_submit(\''.$ocertify->npermission.'\');}"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="if(document.getElementById(\'repeat_flag\').value == 1){if(confirm(\''.TEXT_CALENDAR_REPEAT_COMMENT.'\')){save_submit(\''.$ocertify->npermission.'\');}}else{save_submit(\''.$ocertify->npermission.'\');}"').'</a>'; 
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="hidden_info_box();"').'</a>'; 
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_RESET, 'onclick="date_reset();"').'</a></form>'; 
 
@@ -2214,7 +2214,7 @@ width:20%;"'))
   //底部内容
   $buttons = array();
   
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="status_add_submit(\''.$ocertify->npermission.'\', 1);"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="status_add_submit(\''.$ocertify->npermission.'\', 1);" id="button_save"').'</a>'; 
   if ($ocertify->npermission >= 15) {
     $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if(confirm(\''.TEXT_CALENDAR_DELETE_COMMENTS.'\')){status_delete(\''.$ocertify->npermission.'\');}"').'</a></form>'; 
   }
@@ -2377,7 +2377,7 @@ width:20%;"'))
   //底部内容
   $buttons = array();
   
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="status_add_submit(\''.$ocertify->npermission.'\', 0);"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="status_add_submit(\''.$ocertify->npermission.'\', 0);" id="button_save"').'</a>'; 
 
   if (!empty($button)) {
     $buttons = array('align' => 'center', 'button' => $button); 
@@ -2543,7 +2543,7 @@ width:20%;"'))
   //底部内容
   $buttons = array();
   
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="edit_tags_submit(\'save\');"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="edit_tags_submit(\'save\');"').'</a>'; 
   if ($ocertify->npermission >= 15) {
     $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="edit_tags_submit(\'deleteconfirm\');"').'</a>';
   }
@@ -2596,7 +2596,7 @@ width:20%;"'))
   //底部内容
   $buttons = array();
   
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="create_tags_submit(0);"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="create_tags_submit(0);"').'</a>'; 
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="close_tags_info();"').'</a>'; 
 
   if (!empty($button)) {
@@ -3522,12 +3522,12 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
 
 
   if($ocertify->npermission >= 15){
-   $reviews_button[] = tep_html_element_button(IMAGE_SAVE,$str_disabled.'onclick="check_review_submit('.$_GET['rID'].','.$_GET['page'].')"').  '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,$str_disabled.' onclick="toggle_reviews_action(\''.tep_href_link(FILENAME_REVIEWS, 'page=' .  $_GET['page'] .  '&rID=' .  $rInfo->reviews_id) .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').  (isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'').'&action=deleteconfirm'.'\');"').'</a>';
+   $reviews_button[] = tep_html_element_button(IMAGE_SAVE,$str_disabled.'onclick="check_review_submit('.$_GET['rID'].','.$_GET['page'].')" id="button_save"').  '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,$str_disabled.' onclick="toggle_reviews_action(\''.tep_href_link(FILENAME_REVIEWS, 'page=' .  $_GET['page'] .  '&rID=' .  $rInfo->reviews_id) .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').  (isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'').'&action=deleteconfirm'.'\');"').'</a>';
     if(!empty($reviews_button)){
         $buttons = array('align' => 'center', 'button' => $reviews_button);
      }
   }else{
-   $reviews_button[] = tep_html_element_button(IMAGE_SAVE,$str_disabled.'onclick="check_review_submit('.$_GET['rID'].','.$_GET['page'].')"'.$str_disabled);
+   $reviews_button[] = tep_html_element_button(IMAGE_SAVE,$str_disabled.'onclick="check_review_submit('.$_GET['rID'].','.$_GET['page'].')" id="button_save"'.$str_disabled);
     if(!empty($reviews_button)){
         $buttons = array('align' => 'center', 'button' => $reviews_button);
      }
@@ -3700,7 +3700,7 @@ if(isset($disable) && $disable){
  isset($_GET['latest_news_id']) ? $cancel_button = '&nbsp;&nbsp;<a class="new_product_reset" href="javascript:void(0);">' .  tep_html_element_button(IMAGE_DELETE, 'onclick="toggle_news_action(\''.tep_href_link(FILENAME_NEWS, 'action=delete_latest_news_confirm&latest_news_id='.  $_GET['latest_news_id'].(isset($_GET['site_id']) ?  '&site_id='.$_GET['site_id']:'').(isset($_GET['page']) ?  '&page='.$_GET['page']:'')).'\');"') . '</a>' : $cancel_button = '';
 }
 }
- $button[] = tep_html_element_button(IMAGE_SAVE,'onclick="check_news_info()"'.$disable). $cancel_button;
+ $button[] = tep_html_element_button(IMAGE_SAVE,'id="button_save" onclick="check_news_info()"'.$disable). $cancel_button;
 if(!empty($button)){
        $buttons = array('align' => 'center', 'button' => $button);
  }
@@ -3991,7 +3991,7 @@ if($pw_id != -1){
        $button_del = "<input type='button' style='font-size:12px' onclick=\"toggle_idpw_action('".  tep_href_link(FILENAME_PW_MANAGER, 'page=' . $_GET['page'] .  '&site_id='.$_GET['site_id'].'&pw_id=' .  $pwInfo->id .  '&action=deleteconfirm')  ."', '".$ocertify->npermission."');\" value='".TEXT_BUTTON_DELETE."'>";
      }
     }   
-      $button[] = "<input ".$disable." style='font-size:12px'type='submit' value='".IMAGE_SAVE."' onclick=\"valdata('".$ocertify->npermission."')\">" .  '&nbsp;'.$button_del."&nbsp;".$button_history;
+      $button[] = "<input ".$disable." style='font-size:12px'type='button' value='".IMAGE_SAVE."' onclick=\"valdata('".$ocertify->npermission."')\" id='button_save'>" .  '&nbsp;'.$button_del."&nbsp;".$button_history;
       if(!empty($button)){
         $buttons = array('align' => 'center', 'button' => $button);
       }
@@ -4092,7 +4092,7 @@ if($site_id == 0){
            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.TEXT_UNSET_DATA),
            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.TEXT_UNSET_DATA)
       );
-      $button[] = "<input ".$disable." style='font-size:12px' type='button' value='".IMAGE_SAVE."' onclick=\"valdata('".$ocertify->npermission."')\">" .  '&nbsp;' .  "<input style='font-size:12px' type='button' ".$disable."  onclick='hidden_info_box()' value='".TEXT_BUTTON_CLEAR."'>"; 
+      $button[] = "<input ".$disable." style='font-size:12px' type='button' value='".IMAGE_SAVE."' onclick=\"valdata('".$ocertify->npermission."')\" id='button_save'>" .  '&nbsp;' .  "<input style='font-size:12px' type='button' ".$disable."  onclick='hidden_info_box()' value='".TEXT_BUTTON_CLEAR."'>"; 
       if(!empty($button)){
        $buttons = array('align' => 'center', 'button' => $button);  
       }
@@ -4968,9 +4968,9 @@ if($_GET['cID'] != -1){
         }
        }else{
          if (!isset($cInfo->is_active)) {
-           $submit = '<input type="hidden" id="cid" value="'.$_GET['cID'].'">'.tep_html_element_button(IMAGE_SAVE,'onclick="check_password(\'3\', \''.$ocertify->npermission.'\')"'); 
+           $submit = '<input type="hidden" id="cid" value="'.$_GET['cID'].'">'.tep_html_element_button(IMAGE_SAVE,'id="button_save" onclick="check_password(\'3\', \''.$ocertify->npermission.'\')"'); 
          } else if ($cInfo->is_active != '0') {
-           $submit = '<input type="hidden" id="cid" value="'.$_GET['cID'].'">'.tep_html_element_button(IMAGE_SAVE,'onclick="check_password(\'3\', \''.$ocertify->npermission.'\')"'); 
+           $submit = '<input type="hidden" id="cid" value="'.$_GET['cID'].'">'.tep_html_element_button(IMAGE_SAVE,'id="button_save" onclick="check_password(\'3\', \''.$ocertify->npermission.'\')"'); 
          }
        }
    if($_GET['cID'] != -1){
@@ -5492,9 +5492,9 @@ if($_GET['cID'] != -1){
   if ($ocertify->npermission == '7') {
     $user_permission_str = tep_draw_radio_field('u_permission', 'staff', true).'Staff';
   } else if ($ocertify->npermission == '10') {
-    $user_permission_str = tep_draw_radio_field('u_permission', 'chief', true).'Chief&nbsp;'.tep_draw_radio_field('u_permission', 'staff', false).'Staff';
+    $user_permission_str = tep_draw_radio_field('u_permission', 'staff', false).'Staff&nbsp;'.tep_draw_radio_field('u_permission', 'chief', true).'Chief';
   } else {
-    $user_permission_str = tep_draw_radio_field('u_permission', 'admin', true).'Admin&nbsp;'.tep_draw_radio_field('u_permission', 'chief', false).'Chief&nbsp;'.tep_draw_radio_field('u_permission', 'staff', false).'Staff';
+    $user_permission_str = tep_draw_radio_field('u_permission', 'staff', false).'Staff&nbsp;'.tep_draw_radio_field('u_permission', 'chief', false).'Chief&nbsp;'.tep_draw_radio_field('u_permission', 'admin', true).'Admin';
   }
   $new_user_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_USER_INFO_PERMISSION), 
@@ -5714,9 +5714,9 @@ if($_GET['cID'] != -1){
   if ($ocertify->npermission == '7') {
     $user_permission_str = tep_draw_radio_field('u_permission', 'staff', true, '', (($is_disabled_single)?' disabled="disabled"':'')).'Staff';
   } else if ($ocertify->npermission == '10') {
-    $user_permission_str = tep_draw_radio_field('u_permission', 'chief', (($user_permission_res['permission'] == '10')?true:false), '', (($is_disabled_single)?' disabled="disabled"':'')).'Chief&nbsp;'.tep_draw_radio_field('u_permission', 'staff', (($user_permission_res['permission'] == '7')?true:false), '', (($is_disabled_single)?' disabled="disabled"':'')).'Staff';
+    $user_permission_str = tep_draw_radio_field('u_permission', 'staff', (($user_permission_res['permission'] == '7')?true:false), '', (($is_disabled_single)?' disabled="disabled"':'')).'Staff&nbsp;'.tep_draw_radio_field('u_permission', 'chief', (($user_permission_res['permission'] == '10')?true:false), '', (($is_disabled_single)?' disabled="disabled"':'')).'Chief';
   } else {
-    $user_permission_str = tep_draw_radio_field('u_permission', 'admin', (($user_permission_res['permission'] == '15')?true:false), '', (($is_disabled_single)?' disabled="disabled"':'')).'Admin&nbsp;'.tep_draw_radio_field('u_permission', 'chief', (($user_permission_res['permission'] == '10')?true:false), '', (($is_disabled_single)?' disabled="disabled"':'')).'Chief&nbsp;'.tep_draw_radio_field('u_permission', 'staff', (($user_permission_res['permission'] == '7')?true:false), '', (($is_disabled_single)?' disabled="disabled"':'')).'Staff';
+    $user_permission_str = tep_draw_radio_field('u_permission', 'staff', (($user_permission_res['permission'] == '7')?true:false), '', (($is_disabled_single)?' disabled="disabled"':'')).'Staff&nbsp;'.tep_draw_radio_field('u_permission', 'chief', (($user_permission_res['permission'] == '10')?true:false), '', (($is_disabled_single)?' disabled="disabled"':'')).'Chief&nbsp;'.tep_draw_radio_field('u_permission', 'admin', (($user_permission_res['permission'] == '15')?true:false), '', (($is_disabled_single)?' disabled="disabled"':'')).'Admin';
   }
   
   if ($user_permission_res['permission'] != '31') {

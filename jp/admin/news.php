@@ -195,11 +195,9 @@ $(document).ready(function() {
      if (event.which == 13) {
            <?php //回车?>
         if ($('#show_latest_news').css('display') != 'none') {
-            if (o_submit_single){
-               $("#show_latest_news").find('input:button').first().trigger("click");
-             }
-            }
+          $("#button_save").trigger("click");  
         }
+     }
 
      if (event.ctrlKey && event.which == 37) {
       <?php //Ctrl+方向左?> 
@@ -243,14 +241,31 @@ $(document).ready(function() {
               url: 'ajax_orders.php?action=getallpwd',   
               type: 'POST',
               dataType: 'text',
+              data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
               async: false,
               success: function(msg) {
-                pwd_list_array = msg.split(','); 
-                var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-                if (in_array(input_pwd_str, pwd_list_array)) {
+                var tmp_msg_arr = msg.split('|||'); 
+                var pwd_list_array = tmp_msg_arr[1].split(',');
+                if (tmp_msg_arr[0] == '0') {
                   document.forms.new_latest_news.submit(); 
                 } else {
-                  alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                  $('#button_save').attr('id', 'tmp_button_save'); 
+                  var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+                  if (in_array(input_pwd_str, pwd_list_array)) {
+                    $.ajax({
+                      url: 'ajax_orders.php?action=record_pwd_log',   
+                      type: 'POST',
+                      dataType: 'text',
+                      data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.forms.new_latest_news.action),
+                      async: false,
+                      success: function(msg_info) {
+                        document.forms.new_latest_news.submit(); 
+                      }
+                    }); 
+                  } else {
+                    alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                    setTimeOut($('#tmp_button_save').attr('id', 'button_save'), 1); 
+                  }
                 }
               }
             });
@@ -309,15 +324,30 @@ function delete_select_news(news_str, c_permission){
                  url: 'ajax_orders.php?action=getallpwd',   
                  type: 'POST',
                  dataType: 'text',
+                 data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
                  async: false,
                  success: function(msg) {
-                   pwd_list_array = msg.split(','); 
-                   var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-                   if (in_array(input_pwd_str, pwd_list_array)) {
+                   var tmp_msg_arr = msg.split('|||'); 
+                   var pwd_list_array = tmp_msg_arr[1].split(',');
+                   if (tmp_msg_arr[0] == '0') {
                      document.forms.del_news.submit(); 
                    } else {
-                     alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
-                     document.getElementsByName('news_action')[0].value = 0;
+                     var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+                     if (in_array(input_pwd_str, pwd_list_array)) {
+                       $.ajax({
+                         url: 'ajax_orders.php?action=record_pwd_log',   
+                         type: 'POST',
+                         dataType: 'text',
+                         data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.forms.del_news.action),
+                         async: false,
+                         success: function(msg_info) {
+                           document.forms.del_news.submit(); 
+                         }
+                       }); 
+                     } else {
+                       document.getElementsByName('news_action')[0].value = 0;
+                       alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                     }
                    }
                  }
                });
@@ -421,14 +451,35 @@ function toggle_news_action(news_url_str)
     url: 'ajax_orders.php?action=getallpwd',   
     type: 'POST',
     dataType: 'text',
+    data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
     async: false,
     success: function(msg) {
-      pwd_list_array = msg.split(','); 
-      var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-      if (in_array(input_pwd_str, pwd_list_array)) {
+      var tmp_msg_arr = msg.split('|||'); 
+      var pwd_list_array = tmp_msg_arr[1].split(',');
+      if (tmp_msg_arr[0] == '0') {
         window.location.href = news_url_str;  
       } else {
-        alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        if ($('#button_save')) {
+          $('#button_save').attr('id', 'tmp_button_save'); 
+        }
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          $.ajax({
+            url: 'ajax_orders.php?action=record_pwd_log',   
+            type: 'POST',
+            dataType: 'text',
+            data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(news_url_str),
+            async: false,
+            success: function(msg_info) {
+              window.location.href = news_url_str;  
+            }
+          }); 
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          if ($('#tmp_button_save')) {
+            setTimeOut($('#tmp_button_save').attr('id', 'button_save'), 1); 
+          }
+        }
       }
     }
   });

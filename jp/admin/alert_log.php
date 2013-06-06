@@ -344,23 +344,40 @@ function select_logs_change(value,logs_list_id,c_permission)
   if(sel_num == 1){
     if (confirm("'.TEXT_LOGS_EDIT_CONFIRM.'")) {
       if (c_permission == 31) {
-        document.edit_logs.action = "'.FILENAME_ALERT_LOG.($_GET['page'] != '' ? '?page='.$_GET['page'] : '').'";
+        document.edit_logs.action = "'.tep_href_link(FILENAME_ALERT_LOG, ($_GET['page'] != '' ? 'page='.$_GET['page'] : '')).'";
         document.edit_logs.submit(); 
       } else {
       $.ajax({
         url: "ajax_orders.php?action=getallpwd",   
         type: "POST",
         dataType: "text",
+        data: "current_page_name='.$_SERVER['PHP_SELF'].'", 
         async: false,
         success: function(msg) {
-          pwd_list_array = msg.split(","); 
-          var input_pwd_str = window.prompt("'.JS_TEXT_INPUT_ONETIME_PWD.'", ""); 
-          if (in_array(input_pwd_str, pwd_list_array)) {
-            document.edit_logs.action = "'.FILENAME_ALERT_LOG.($_GET['page'] != '' ? '?page='.$_GET['page'] : '').'";
+          var tmp_msg_arr = msg.split("|||"); 
+          var pwd_list_array = tmp_msg_arr[1].split(",");
+          if (tmp_msg_arr[0] == "0") {
+            document.edit_logs.action = "'.tep_href_link(FILENAME_ALERT_LOG, ($_GET['page'] != '' ? 'page='.$_GET['page'] : '')).'";
             document.edit_logs.submit(); 
           } else {
-            document.getElementsByName("edit_logs_list")[0].value = 0;
-            alert("'.JS_TEXT_ONETIME_PWD_ERROR.'"); 
+            var input_pwd_str = window.prompt("'.JS_TEXT_INPUT_ONETIME_PWD.'", ""); 
+            if (in_array(input_pwd_str, pwd_list_array)) {
+              $.ajax({
+                url: "ajax_orders.php?action=record_pwd_log",   
+                type: "POST",
+                dataType: "text",
+                data:
+                "current_pwd="+input_pwd_str+"&url_redirect_str="+encodeURIComponent("'.tep_href_link(FILENAME_ALERT_LOG, ($_GET['page'] != '' ? 'page='.$_GET['page'] : '')).'"),
+                async: false,
+                success: function(msg_info) {
+                  document.edit_logs.action = "'.tep_href_link(FILENAME_ALERT_LOG, ($_GET['page'] != '' ? 'page='.$_GET['page'] : '')).'";
+                  document.edit_logs.submit(); 
+                }
+              }); 
+            } else {
+              document.getElementsByName("edit_logs_list")[0].value = 0;
+              alert("'.JS_TEXT_ONETIME_PWD_ERROR.'"); 
+            }
           }
         }
       });

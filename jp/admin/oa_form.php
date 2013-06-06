@@ -76,29 +76,42 @@
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script type="text/javascript">
 <?php //执行动作?>
-function toggle_oa_form_action(c_permission)
+function toggle_oa_form_action(c_permission, f_url_str)
 {
   if (c_permission == 31) {
-    return true; 
+    window.location.href = f_url_str; 
   } else {
     $.ajax({
       url: 'ajax_orders.php?action=getallpwd',   
       type: 'POST',
       dataType: 'text',
+      data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
       async: false,
       success: function(msg) {
-        pwd_list_array = msg.split(','); 
-        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-        if (in_array(input_pwd_str, pwd_list_array)) {
-          return true; 
+        var tmp_msg_arr = msg.split('|||'); 
+        var pwd_list_array = tmp_msg_arr[1].split(',');
+        if (tmp_msg_arr[0] == '0') {
+          window.location.href = f_url_str; 
         } else {
-          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
-          return false;
+          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+          if (in_array(input_pwd_str, pwd_list_array)) {
+            $.ajax({
+              url: 'ajax_orders.php?action=record_pwd_log',   
+              type: 'POST',
+              dataType: 'text',
+              data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(f_url_str),
+              async: false,
+              success: function(msg_info) {
+                window.location.href = f_url_str; 
+              }
+            }); 
+          } else {
+            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          }
         }
       }
     });
   }
-  return false;
 }
 </script>
 <?php 
@@ -255,7 +268,7 @@ function ajaxUpdate(id,order){
             echo '<td>'; 
             echo '<a href="'.tep_href_link(FILENAME_OA_GROUP, 'action=edit&gid='.$form_group_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.GROUP_EDIT.'</a>'; 
             if ($ocertify->npermission >= 15) {
-              echo '&nbsp;<a onclick="if (confirm(\''.$form_group_res['name'].TEXT_DELETE_CONFRIM.'\')) toggle_oa_form_action(\''.$ocertify->npermission.'\')" href="'.tep_href_link(FILENAME_OA_FORM, 'action=del_link_group&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&gid='.$form_group_res['id']).'&fid='.$form_id.'">'.DEL_LINK_GROUP.'</a>';
+              echo '&nbsp;<a onclick="if (confirm(\''.$form_group_res['name'].TEXT_DELETE_CONFRIM.'\')) toggle_oa_form_action(\''.$ocertify->npermission.'\', \''.tep_href_link(FILENAME_OA_FORM, 'action=del_link_group&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&gid='.$form_group_res['id']).'&fid='.$form_id.'\')" href="javascript:void(0);">'.DEL_LINK_GROUP.'</a>';
             }
             echo '<td>';
             echo '<input type="button" class="up" value="↑" onclick="editorder(this)">';

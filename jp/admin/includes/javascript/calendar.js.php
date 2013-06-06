@@ -235,19 +235,46 @@ function status_add_submit(c_permission, ca_type){
         url: 'ajax_orders.php?action=getallpwd',   
         type: 'POST',
         dataType: 'text',
+        data: 'current_page_name='+document.getElementById("hidden_page_info").value, 
         async: false,
         success: function(msg) {
-          pwd_list_array = msg.split(','); 
-          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-          if (in_array(input_pwd_str, pwd_list_array)) {
+           var tmp_msg_arr = msg.split('|||'); 
+           var pwd_list_array = tmp_msg_arr[1].split(',');
+           if (tmp_msg_arr[0] == '0') {
             if (ca_type == 0) {
               document.forms.status_add_form.submit();    
             } else {
               document.forms.status_edit_form.submit();    
             }
-          } else {
-            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
-          }
+           } else {
+             $('#button_save').attr('id', 'tmp_button_save'); 
+             var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+             var form_action_str = ''; 
+             if (ca_type == 0) {
+              form_action_str = document.forms.status_add_form.action;    
+             } else {
+              form_action_str = document.forms.status_edit_form.action;    
+             }
+             if (in_array(input_pwd_str, pwd_list_array)) {
+               $.ajax({
+                 url: 'ajax_orders.php?action=record_pwd_log',   
+                 type: 'POST',
+                 dataType: 'text',
+                 data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(form_action_str),
+                 async: false,
+                 success: function(msg_info) {
+                  if (ca_type == 0) {
+                    form_action_str = document.forms.status_add_form.submit();    
+                  } else {
+                    form_action_str = document.forms.status_edit_form.submit();    
+                  }
+                 }
+               }); 
+             } else {
+               alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+               setTimeOut($('#tmp_button_save').attr('id', 'button_save'), 1); 
+             }
+           }
         }
       });
     }
@@ -258,23 +285,41 @@ function status_add_submit(c_permission, ca_type){
 function status_delete(c_permission){
  
   if (c_permission == 31) {
-    document.status_edit_form.action = '<?php echo FILENAME_BANK_CL;?>?action=status_delete';
+    document.status_edit_form.action = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_BANK_CL;?>?action=status_delete';
     document.status_edit_form.submit();
   } else {
     $.ajax({
       url: 'ajax_orders.php?action=getallpwd',   
       type: 'POST',
       dataType: 'text',
+      data: 'current_page_name='+document.getElementById("hidden_page_info").value, 
       async: false,
       success: function(msg) {
-        pwd_list_array = msg.split(','); 
-        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-        if (in_array(input_pwd_str, pwd_list_array)) {
-          document.status_edit_form.action = '<?php echo FILENAME_BANK_CL;?>?action=status_delete';
+         var tmp_msg_arr = msg.split('|||'); 
+         var pwd_list_array = tmp_msg_arr[1].split(',');
+         if (tmp_msg_arr[0] == '0') {
+          document.status_edit_form.action = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_BANK_CL;?>?action=status_delete';
           document.status_edit_form.submit();
-        } else {
-          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
-        }
+         } else {
+           $('#button_save').attr('id', 'tmp_button_save'); 
+           var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+           if (in_array(input_pwd_str, pwd_list_array)) {
+             $.ajax({
+               url: 'ajax_orders.php?action=record_pwd_log',   
+               type: 'POST',
+               dataType: 'text',
+               data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent('<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_BANK_CL;?>?action=status_delete'),
+               async: false,
+               success: function(msg_info) {
+                document.status_edit_form.action = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_BANK_CL;?>?action=status_delete';
+                document.status_edit_form.submit();
+               }
+             }); 
+           } else {
+             alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+             setTimeOut($('#tmp_button_save').attr('id', 'button_save'), 1); 
+           }
+         }
       }
     });
   }
@@ -319,15 +364,32 @@ function save_submit(c_permission){
       url: 'ajax_orders.php?action=getallpwd',   
       type: 'POST',
       dataType: 'text',
+      data: 'current_page_name='+document.getElementById("hidden_page_info").value, 
       async: false,
       success: function(msg) {
-        pwd_list_array = msg.split(','); 
-        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-        if (in_array(input_pwd_str, pwd_list_array)) {
-          document.calendar_date.submit();
-        } else {
-          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
-        }
+         var tmp_msg_arr = msg.split('|||'); 
+         var pwd_list_array = tmp_msg_arr[1].split(',');
+         if (tmp_msg_arr[0] == '0') {
+           document.calendar_date.submit();
+         } else {
+           $('#button_save').attr('id', 'tmp_button_save'); 
+           var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+           if (in_array(input_pwd_str, pwd_list_array)) {
+             $.ajax({
+               url: 'ajax_orders.php?action=record_pwd_log',   
+               type: 'POST',
+               dataType: 'text',
+               data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.calendar_date.action),
+               async: false,
+               success: function(msg_info) {
+                 document.calendar_date.submit();
+               }
+             }); 
+           } else {
+             alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+             setTimeOut($('#tmp_button_save').attr('id', 'button_save'), 1); 
+           }
+         }
       }
     });
   }

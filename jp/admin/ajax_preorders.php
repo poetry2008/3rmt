@@ -406,19 +406,68 @@ if (isset($_POST['orders_id']) && isset($_POST['orders_comment'])) {
 }  else if(isset($_GET['action'])&&$_GET['action'] == 'getallpwd'){
 /*--------------------------------------------
  功能: 获得所有密码 
- 参数: 无
+ 参数: $_POST['current_page_name'] 当前页面
  -------------------------------------------*/
-  $sql = "select u.userid,u.rule,l.letter from ".
-    TABLE_USERS." u , ".TABLE_LETTERS." l 
-		where u.userid = l.userid and (l.letter != '' or l.letter != null)";
-  $result = tep_db_query($sql);
-  $arr =array();
-  while($row = tep_db_fetch_array($result)){
-    $pwd = $row['letter'].make_rand_pwd($row['rule']);
-    $arr[] = $pwd;
+  $msg_array = array();
+  $msg_array['is_popup'] = 1; 
+  $msg_array['pwd_list'] = ''; 
+  $one_time_sql = "select * from ".TABLE_PWD_CHECK." where page_name='".$_POST['current_page_name']."'";
+  $one_time_query = tep_db_query($one_time_sql);
+  $one_time_arr = array();
+  while($one_time_row = tep_db_fetch_array($one_time_query)){
+    $one_time_arr[] = $one_time_row['check_value'];
   }
-  $str = implode(',',$arr); 
-  echo $str;
+  if ($ocertify->npermission == 31) {
+    $msg_array['is_popup'] = 0;
+    $sql = "select u.userid,u.rule,l.letter from ".  TABLE_USERS." u , ".TABLE_LETTERS." l where u.userid = l.userid and (l.letter != '' or l.letter != null)";
+    $result = tep_db_query($sql);
+    $arr =array();
+    while($row = tep_db_fetch_array($result)){
+      $pwd = $row['letter'].make_rand_pwd($row['rule']);
+      $arr[] = $pwd;
+    }
+    $msg_array['pwd_list'] = implode(',', $arr); 
+  } else {
+    if ($ocertify->npermission == 15 && (in_array('admin', $one_time_arr))) {
+      $msg_array['is_popup'] = 0;
+    }
+    if ($ocertify->npermission == 10 && (in_array('chief', $one_time_arr))) {
+      $msg_array['is_popup'] = 0;
+    }
+    if ($ocertify->npermission == 7 && (in_array('staff', $one_time_arr))) {
+      $msg_array['is_popup'] = 0;
+    }
+    
+    if (!empty($one_time_arr)) {
+      $p_list_array = array(); 
+      foreach ($one_time_arr as $o_key => $o_value) {
+        if ($o_value != 'onetime') {
+          switch($o_value) {
+            case 'admin':
+              $p_list_array[] = 15; 
+              break;
+            case 'chief':
+              $p_list_array[] = 10; 
+              break;
+            case 'staff':
+              $p_list_array[] = 7; 
+              break;
+          }
+        }
+      }
+      $sql = "select u.userid,u.rule,l.letter from ".  TABLE_USERS." u , ".TABLE_LETTERS." l,".TABLE_PERMISSIONS." p where u.userid = l.userid and (l.letter != '' or l.letter != null) and u.userid=p.userid ".(!empty($p_list_array)?" and p.permission in (".implode(',', $p_list_array).")":"and p.permission in (0)");
+      
+      $result = tep_db_query($sql);
+      $arr =array();
+      while($row = tep_db_fetch_array($result)){
+        $pwd = $row['letter'].make_rand_pwd($row['rule']);
+        $arr[] = $pwd;
+      }
+      $msg_array['pwd_list'] = implode(',',$arr); 
+    }
+  }
+  echo implode('|||', $msg_array);
+
 }else if(isset($_GET['action'])&&$_GET['action'] == 'getpercent'){
 /*-------------------------------------------
  功能: 得到百分比   

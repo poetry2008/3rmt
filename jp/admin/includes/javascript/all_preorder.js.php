@@ -1,11 +1,11 @@
-// 被orders.php调用
+<?php // 被orders.php调用?>
 var f_flag = 'off';
 var old_color = '';
 window.status_text  = new Array();
 window.status_title = new Array();
 window.last_status  = 0;
 var auto_submit_able = true;
-// 最后检查时间
+<?php // 最后检查时间?>
 var prev_customer_action = '';
 var check_pre_o_single = '0';
 <?php //全选检查 ?>
@@ -57,7 +57,7 @@ function chg_tr_color(aaa){
   var c_flag = aaa.checked;
   var tr_id = 'tr_' + aaa.value;
 
-  // 如果选中
+  <?php // 如果选中?>
   if(c_flag == true){
 
     if (document.getElementById(tr_id).className != 'dataTableRowSelected') {
@@ -67,7 +67,7 @@ function chg_tr_color(aaa){
     if (document.getElementById(tr_id).className != 'dataTableRowSelected') {
       document.getElementById(tr_id).style.backgroundColor = "#F08080";
     }
-    // 如果未选中
+    <?php // 如果未选中?>
   }else{
     if (document.getElementById(tr_id).className != 'dataTableRowSelected') {
       document.getElementById(tr_id).style.backgroundColor = old_color;
@@ -106,7 +106,6 @@ function fax_over_color(ele){
 
 <?php //订单搜索 ?>
 function search_type_changed(elem){
-  //if ($('#keywords').val() && elem.selectedIndex != 0) 
   document.forms.orders1.submit();
 }
 <?php //得到复选框值 ?>
@@ -121,23 +120,24 @@ function getCheckboxValue(ccName)
   }
   return values;
 }
-
+<?php
 //st => form中select的name
 //tt => form中textarea的name  邮件内容
 //ot => form中input的name 邮件标题
+?>
 <?php //邮件正文 ?>
 function mail_text(st,tt,ot){
 
-  // 选中的索引
+  <?php // 选中的索引?>
   var idx = document.sele_act.elements[st].selectedIndex;
-  // 选中值
+  <?php // 选中值?>
   var CI  = document.sele_act.elements[st].options[idx].value;
-  // 选中的checkbox值
+  <?php // 选中的checkbox值?>
   if (st == 'status') {
-    // 列表页
+    <?php // 列表页?>
     chk = getCheckboxValue('chk[]');
   } else {
-    // 详细页
+    <?php // 详细页?>
     chk = new Array();
     chk[0] = 0;
   }
@@ -153,11 +153,11 @@ function mail_text(st,tt,ot){
     document.sele_act.elements[st].options[window.last_status].selected = true;
     return false;
   }
-  // 记录上一个状态
+  <?php // 记录上一个状态?>
   window.last_status = idx;
-  // 更换表单内容
+  <?php // 更换表单内容?>
   if (st == 'status') {
-    // 列表页
+    <?php // 列表页?>
     if (typeof(window.status_title[CI]) != 'undefined' && typeof(window.status_title[CI][window.orderSite[chk[0]]]) != 'undefined') {
       document.sele_act.elements[ot].value = window.status_title[CI][window.orderSite[chk[0]]];
       document.sele_act.elements[tt].value = window.status_text[CI][window.orderSite[chk[0]]].replace('${ORDER_A}', window.orderStr[chk[0]]);
@@ -166,7 +166,7 @@ function mail_text(st,tt,ot){
       document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${ORDER_A}', window.orderStr[chk[0]]);
     }
   } else {
-    // 详细页
+    <?php // 详细页?>
     if (typeof(window.status_title[CI]) != 'undefined') {
       document.sele_act.elements[ot].value = window.status_title[CI][0];
       document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${ORDER_A}', window.orderStr);
@@ -175,7 +175,7 @@ function mail_text(st,tt,ot){
       document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${ORDER_A}', window.orderStr);
     }
   }
-  // 替换${PAY_DATE}
+  <?php // 替换${PAY_DATE}?>
   if(document.sele_act.elements[tt].value.indexOf('${PAY_DATE}') != -1){
     $.ajax({
 dataType: 'text',
@@ -186,7 +186,7 @@ document.sele_act.elements[tt].value = document.sele_act.elements[tt].value.repl
 });
 }
 
-// 邮件和提醒的checkbox
+<?php // 邮件和提醒的checkbox?>
 if (nomail[CI] == '1') {
   $('#notify_comments').attr('checked','');
   $('#notify').attr('checked','');
@@ -211,7 +211,6 @@ $(text).insertAfter('#orders_list_table tr:eq(0)');
 
 <?php // 验证order comment ajax提交 ?>
 function showRequest(formData, jqForm, options) { 
-  //var queryString = $.param(formData); 
   return true; 
 } 
 
@@ -287,23 +286,23 @@ var change_option_enable = true;
 <?php //更改选项 ?>
 function change_option(ele){
   if (change_option_enable) {
-    // 自动保存
+    <?php // 自动保存?>
     auto_save_questions();
-    // 是否显示按钮
+    <?php // 是否显示按钮?>
     show_submit_button();
   }
 }
 <?php //更改属性选项 ?>
 function propertychange_option(ele){
   change_option_enable = false;
-  // 自动保存
+  <?php // 自动保存?>
   auto_save_questions();
-  // 是否显示按钮
+  <?php // 是否显示按钮?>
   show_submit_button();
 }
 
 $(function(){
-    // 每分钟检查状态是否有修改
+    <?php // 每分钟检查状态是否有修改?>
     setTimeout(function(){checkChange()}, 60000);
     });
 <?php // 每分钟自动检查最新订单和修改 ?>
@@ -318,15 +317,15 @@ if (
   ){
 checkNewPreOrders(prev_customer_action != '' ? prev_customer_action : cfg_last_customer_action);
 if (check_pre_o_single == '1') {
-// 如果有新订单和修改
-// 改变背景颜色
+<?php // 如果有新订单和修改?>
+<?php // 改变背景颜色?>
 $('body').css('background-color', '#83dc94');// rgb(255, 204, 153)
 $('.preorder_head').css('background-color', '#83dc94');
-// 在列表插入新订单
+<?php // 在列表插入新订单?>
 newOrders(prev_customer_action != '' ? prev_customer_action : cfg_last_customer_action);
-// 修改最后检查时间
+<?php // 修改最后检查时间?>
 prev_customer_action = last_customer_action;
-// 播放提示音
+<?php // 播放提示音?>
 playSound();
 check_pre_o_single = '0';
 }
@@ -396,14 +395,13 @@ ele.className='orders_buttons_checked';
 
 <?php // 清除选项 ?>
 function clean_option(n,oid){
-  // 自动保存
-  // auto_save_questions();
+  <?php // 自动保存?>
   $.ajax({ url: "ajax_preorders.php?orders_id="+oid+"&action=clean_option&questions_no="+n, success: function(){}});
-  // 是否显示按钮
+  <?php // 是否显示按钮?>
   show_submit_button();
 }
 
-// 是否显示批量问答框
+<?php // 是否显示批量问答框?>
 var order_payment_type = '';
 var order_buy_type = '';
 var form_id = '';
@@ -469,7 +467,7 @@ function show_questions(ele){
 	$.ajax({ url: "ajax_preorders.php?payment="+order_payment_type+"&buytype="+order_buy_type+"&action=get_oa_groups", success: function(msg){
 	    var oa_groupsobj =  eval("("+msg+")");
 	    var oa_groups = oa_groupsobj.split('_');;
-	    $("#oa_dynamic_groups").find('option').remove();//删除以前数据 
+	    $("#oa_dynamic_groups").find('option').remove();<?php //删除以前数据?> 
 	    $("#oa_dynamic_groups")[0].options.add(new Option('----', '-1', true));
 	    for (var groupstring in oa_groups){
 		if(oa_groups[groupstring]==''){
@@ -479,7 +477,6 @@ function show_questions(ele){
 		group_name = group[0];
 		group_id = group[1];
 		form_id = group[2];
-//		$("#oa_dynamic_groups")[0].options.add(new Option(group_name,group_id,true,false));
 		$("#oa_dynamic_groups")[0].options.add(new Option(''+group_name+'',group_id,true,false));
 	    }
 	    if(order_can_end=='1'){
@@ -490,7 +487,6 @@ function show_questions(ele){
 	$("#oa_dynamic_groups").change(function(){
 
 	    if($(this).selected().val()=='-1'){
-//		$('#oa_dynamic_groups').html('');
 		$('#oa_dynamic_group_item').html('');
 		$("#oa_dynamic_submit").unbind('click');
 		$("#oa_dynamic_submit").hide();
@@ -563,7 +559,7 @@ $("#oa_dynamic_submit").click(function(){
 
 <?php // 点击关联商品前的checkbox ?>
 function click_relate(pid,ele){
-  // 增加库存
+  <?php // 增加库存?>
   if ($(ele).parent().parent().find('#checkbox_'+pid).attr('checked')) {
     $(ele).parent().parent().find('#offset_'+pid).attr('readonly', true);
     $.ajax({
@@ -572,7 +568,7 @@ success: function(data) {
 }
 });
 } else {
-  // 减库存
+  <?php // 减库存?>
   $(ele).parent().parent().find('#offset_'+pid).attr('readonly', false);
   $.ajax({
 url: 'ajax_preorders.php?action=set_quantity&products_id='+pid+'&count=-'+($(ele).parent().parent().find('#quantity_'+pid).html()-$(ele).parent().parent().find('#offset_'+pid).val()),
@@ -633,7 +629,7 @@ function copyToClipboard(txt) {
 }  
 <?php //显示监视器的错误 ?>
 function show_monitor_error(e_id,flag,_this){
-  //改变DIV
+  <?php //改变DIV?>
   if(flag){
     allt(_this,e_id);
   }else{
@@ -646,7 +642,7 @@ function obj_obj(obj){
 }
 <?php //添加属性 ?>
 function allt(id,div_id){ 
-  //div 赋值
+  <?php //div 赋值?>
   e=obj_obj(id) 
     var et=e.offsetTop; 
   var el=e.offsetLeft; 
@@ -661,36 +657,54 @@ function allt(id,div_id){
   div_e.style.display=''; 
 } 
 <?php //定义密码新的URL ?>
-function once_pwd_redircet_new_url(url_str){
-  //window.location.href = url_str;
+function once_pwd_redircet_new_url(url_str, c_permission){
   $.ajax({
 url: 'ajax_preorders.php?action=getallpwd',
 type: 'POST',
 dataType: 'text',
+data: 'current_page_name='+document.getElementById("hidden_page_info").value, 
 async : false,
 success: function(data) {
-var pwd_arr = data.split(",");
-var pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
-if(in_array(pwd, pwd_arr)){
-window.location.href = url_str+'&once_pwd='+pwd; 
+var tmp_msg_arr = data.split('|||'); 
+var pwd_list_array = tmp_msg_arr[1].split(',');
+if (c_permission == 31) {
+  window.location.href = url_str+'&once_pwd='+pwd; 
 } else {
-window.alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>"); 
+   if (tmp_msg_arr[0] == '0') {
+     window.location.href = url_str+'&once_pwd='+pwd; 
+   } else {
+     var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+     if (in_array(input_pwd_str, pwd_list_array)) {
+       $.ajax({
+         url: 'ajax_orders.php?action=record_pwd_log',   
+         type: 'POST',
+         dataType: 'text',
+         data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(url_str),
+         async: false,
+         success: function(msg_info) {
+           window.location.href = url_str+'&once_pwd='+pwd; 
+         }
+       }); 
+     } else {
+       alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+     }
+   }
 }
 }
 });
 }
 <?php //新的邮件文本 ?>
 function new_mail_text(ele,st,tt,ot){
-  // 选中的索引
+  <?php // 选中的索引?>
   var idx = document.sele_act.elements[st].selectedIndex;
-  // 选中值
+  <?php // 选中值?>
   var CI  = document.sele_act.elements[st].options[idx].value;
-  // 选中的checkbox值
+  <?php // 选中的checkbox值?>
   if (st == 'status') {
-    // 列表页
+    <?php // 列表页?>
     chk = getCheckboxValue('chk[]');
   } else {
-    // 详细页
+    <?php // 详细页?>
     chk = new Array();
     chk[0] = 0;
   }
@@ -706,11 +720,11 @@ function new_mail_text(ele,st,tt,ot){
     document.sele_act.elements[st].options[window.last_status].selected = true;
     return false;
   }
-  // 记录上一个状态
+  <?php // 记录上一个状态?>
   window.last_status = idx;
-  // 更换表单内容
+  <?php // 更换表单内容?>
   if (st == 'status') {
-    // 列表页
+    <?php // 列表页?>
     if (typeof(window.status_title[CI]) != 'undefined' && typeof(window.status_title[CI][window.orderSite[chk[0]]]) != 'undefined') {
       document.sele_act.elements[ot].value = window.status_title[CI][window.orderSite[chk[0]]];
       document.sele_act.elements[tt].value = window.status_text[CI][window.orderSite[chk[0]]].replace('${ORDER_A}', window.orderStr[chk[0]]);
@@ -719,7 +733,7 @@ function new_mail_text(ele,st,tt,ot){
       document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${ORDER_A}', window.orderStr[chk[0]]);
     }
   } else {
-    // 详细页
+    <?php // 详细页?>
     if (typeof(window.status_title[CI]) != 'undefined') {
       document.sele_act.elements[ot].value = window.status_title[CI][0];
       document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${ORDER_A}', window.orderStr);
@@ -728,7 +742,7 @@ function new_mail_text(ele,st,tt,ot){
       document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${ORDER_A}', window.orderStr);
     }
   }
-  // 替换${PAY_DATE}
+  <?php // 替换${PAY_DATE}?>
   if(document.sele_act.elements[tt].value.indexOf('${PAY_DATE}') != -1){
     $.ajax({
 dataType: 'text',
@@ -739,7 +753,7 @@ document.sele_act.elements[tt].value = document.sele_act.elements[tt].value.repl
 });
 }
 
-// 邮件和提醒的checkbox
+<?php // 邮件和提醒的checkbox?>
 if (nomail[CI] == '1') {
   $('#notify_comments').attr('checked','');
   $('#notify').attr('checked','');
@@ -845,25 +859,6 @@ offset = ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;
 	}
 $('#orders_info_box').css('top',offset).show();
 }
-/*
-offset = ele.offsetTop + $('#orders_info_box').height() > $('#orders_list_table').height()
-? ele.offsetTop+$("#orders_list_table").position().top - $('#orders_info_box').height() 
-:ele.offsetTop+$("#orders_list_table").position().top;
-$('#orders_info_box').css('top',offset).show();
-*/
-/*if(document.documentElement.clientHeight < document.body.scrollHeight){
-offset = ele.offsetTop + ele.offsetHeight + $('#orders_info_box').height() > $('#orders_list_table').height()? ele.offsetTop+$("#orders_list_table").position().top-1-$('#orders_info_box').height()-$('#offsetHeight').height():ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;
-$('#orders_info_box').css('top',offset).show();
-}else{
-if(ele.offsetTop+$("#orders_list_table").position().top+ele.offsetTop + ele.offsetHeight + $('#orders_info_box').height() > document.documentElement.clientHeight){
-offset = ele.offsetTop+$("#orders_list_table").position().top-$('#orders_info_box').height()-$('#offsetHeight').height()-1;
-$('#orders_info_box').css('top',offset).show();
-}else{
-offset = ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;
-$('#orders_info_box').css('top',offset).show();
-}
-}
-*/
 var orders_info_box_top = $("#orders_info_box").css("top");
 orders_info_box_top = orders_info_box_top.replace("px","");
 orders_info_box_top = parseInt(orders_info_box_top);

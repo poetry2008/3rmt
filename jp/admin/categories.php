@@ -1665,23 +1665,39 @@ function delete_select_products(categories_list_id,products_list_id,c_permission
   if (sel_num+sel_num_products >= 1) {
     if (confirm('<?php echo TEXT_TAGS_DELETE_CONFIRM;?>')) {
       if (c_permission == 31) {
-        document.myForm1.action = '<?php echo FILENAME_CATEGORIES;?>?action=delete_select_categories_products&<?php echo $_SERVER['QUERY_STRING'];?>';
+        document.myForm1.action = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_CATEGORIES;?>?action=delete_select_categories_products&<?php echo $_SERVER['QUERY_STRING'];?>';
         document.myForm1.submit(); 
       } else {
         $.ajax({
           url: 'ajax_orders.php?action=getallpwd',   
           type: 'POST',
           dataType: 'text',
+          data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
           async: false,
           success: function(msg) {
-            pwd_list_array = msg.split(','); 
-            var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-            if (in_array(input_pwd_str, pwd_list_array)) {
-              document.myForm1.action = '<?php echo FILENAME_CATEGORIES;?>?action=delete_select_categories_products&<?php echo $_SERVER['QUERY_STRING'];?>';
+            var tmp_msg_arr = msg.split('|||'); 
+            var pwd_list_array = tmp_msg_arr[1].split(',');
+            if (tmp_msg_arr[0] == '0') {
+              document.myForm1.action = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_CATEGORIES;?>?action=delete_select_categories_products&<?php echo $_SERVER['QUERY_STRING'];?>';
               document.myForm1.submit(); 
             } else {
-              document.getElementsByName("products_to_tags")[0].value = 0;
-              alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+              var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+              if (in_array(input_pwd_str, pwd_list_array)) {
+                $.ajax({
+                  url: 'ajax_orders.php?action=record_pwd_log',   
+                  type: 'POST',
+                  dataType: 'text',
+                  data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent('<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_CATEGORIES;?>?action=delete_select_categories_products&<?php echo $_SERVER['QUERY_STRING'];?>'),
+                  async: false,
+                  success: function(msg_info) {
+                    document.myForm1.action = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_CATEGORIES;?>?action=delete_select_categories_products&<?php echo $_SERVER['QUERY_STRING'];?>';
+                    document.myForm1.submit(); 
+                  }
+                }); 
+              } else {
+                document.getElementsByName("products_to_tags")[0].value = 0;
+                alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+              }
             }
           }
         });
@@ -1860,18 +1876,43 @@ function cmess(pid, cid, site_id, c_permission, ca_type) {
           url: 'ajax_orders.php?action=getallpwd',   
           type: 'POST',
           dataType: 'text',
+          data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
           async: false,
           success: function(msg) {
-            pwd_list_array = msg.split(','); 
-            var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-            if (in_array(input_pwd_str, pwd_list_array)) {
+            var tmp_msg_arr = msg.split('|||'); 
+            var pwd_list_array = tmp_msg_arr[1].split(',');
+            if (tmp_msg_arr[0] == '0') {
               if (ca_type == 0) {
                 document.forms.newcategory.submit(); 
               } else if (ca_type == 1) {
                 document.forms.editcategory.submit(); 
               }
             } else {
-              alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+              var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+              var form_action_str = ''; 
+              if (ca_type == 0) {
+                form_action_str = document.forms.newcategory.action; 
+              } else if (ca_type == 1) {
+                form_action_str = document.forms.editcategory.action; 
+              }
+              if (in_array(input_pwd_str, pwd_list_array)) {
+                $.ajax({
+                  url: 'ajax_orders.php?action=record_pwd_log',   
+                  type: 'POST',
+                  dataType: 'text',
+                  data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(form_action_str),
+                  async: false,
+                  success: function(msg_info) {
+                    if (ca_type == 0) {
+                      document.forms.newcategory.submit(); 
+                    } else if (ca_type == 1) {
+                      document.forms.editcategory.submit(); 
+                    }
+                  }
+                }); 
+              } else {
+                alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+              }
             }
           }
         });
@@ -2417,11 +2458,12 @@ function toggle_category_form(c_permission, cf_type)
       url: 'ajax_orders.php?action=getallpwd',   
       type: 'POST',
       dataType: 'text',
+      data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
       async: false,
       success: function(msg) {
-        pwd_list_array = msg.split(','); 
-        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-        if (in_array(input_pwd_str, pwd_list_array)) {
+        var tmp_msg_arr = msg.split('|||'); 
+        var pwd_list_array = tmp_msg_arr[1].split(',');
+        if (tmp_msg_arr[0] == '0') {
           if (cf_type == 0) {
             document.forms.delete_category.submit(); 
           } else if (cf_type == 1) {
@@ -2442,7 +2484,59 @@ function toggle_category_form(c_permission, cf_type)
             document.forms.simple_update.submit(); 
           }
         } else {
-          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+          var form_action_str = ''; 
+          if (cf_type == 0) {
+            form_action_str = document.forms.delete_category.action; 
+          } else if (cf_type == 1) {
+            form_action_str = document.forms.insert_product.action; 
+          } else if (cf_type == 2) {
+            form_action_str = document.forms.update_product.action; 
+          } else if (cf_type == 3) {
+            form_action_str = document.forms.simple_update_product.action; 
+          } else if (cf_type == 4) {
+            form_action_str = document.forms.delete_product.action; 
+          } else if (cf_type == 5) {
+            form_action_str = document.forms.move_category.action; 
+          } else if (cf_type == 6) {
+            form_action_str = document.forms.move_products.action; 
+          } else if (cf_type == 7) {
+            form_action_str = document.forms.copy_to.action; 
+          } else if (cf_type == 8) {
+            form_action_str = document.forms.simple_update.action; 
+          }
+          if (in_array(input_pwd_str, pwd_list_array)) {
+            $.ajax({
+              url: 'ajax_orders.php?action=record_pwd_log',   
+              type: 'POST',
+              dataType: 'text',
+              data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(form_action_str),
+              async: false,
+              success: function(msg_info) {
+                if (cf_type == 0) {
+                  document.forms.delete_category.submit(); 
+                } else if (cf_type == 1) {
+                  document.forms.insert_product.submit(); 
+                } else if (cf_type == 2) {
+                  document.forms.update_product.submit(); 
+                } else if (cf_type == 3) {
+                  document.forms.simple_update_product.submit(); 
+                } else if (cf_type == 4) {
+                  document.forms.delete_product.submit(); 
+                } else if (cf_type == 5) {
+                  document.forms.move_category.submit(); 
+                } else if (cf_type == 6) {
+                  document.forms.move_products.submit(); 
+                } else if (cf_type == 7) {
+                  document.forms.copy_to.submit(); 
+                } else if (cf_type == 8) {
+                  document.forms.simple_update.submit(); 
+                }
+              }
+            }); 
+          } else {
+            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          }
         }
       }
     });

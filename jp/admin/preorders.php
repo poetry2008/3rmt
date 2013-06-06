@@ -660,14 +660,29 @@ if ($ocertify->npermission == 31) {
      url: 'ajax_orders.php?action=getallpwd',
      type: 'POST',
      dataType: 'text',
+     data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
      async : false,
      success: function(data) {
-       var pwd_arr = data.split(","); 
-       var pwd =  window.prompt("<?php echo NOTICE_ORDER_INPUT_PASSWORD;?>\r\n","");
-       if(in_array(pwd, pwd_arr)) {
+       var tmp_msg_arr = msg.split('|||'); 
+       var pwd_list_array = tmp_msg_arr[1].split(',');
+       if (tmp_msg_arr[0] == '0') {
          document.forms.preorders.submit();
        } else {
-         window.alert("<?php echo NOTICE_ORDER_INPUT_WRONG_PASSWORD;?>"); 
+         var input_pwd_str = window.prompt('<?php echo NOTICE_ORDER_INPUT_PASSWORD;?>', ''); 
+         if (in_array(input_pwd_str, pwd_list_array)) {
+           $.ajax({
+             url: 'ajax_orders.php?action=record_pwd_log',   
+             type: 'POST',
+             dataType: 'text',
+             data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.forms.preorders.action),
+             async: false,
+             success: function(msg_info) {
+               document.forms.preorders.submit();
+             }
+           }); 
+         } else {
+           alert("<?php echo NOTICE_ORDER_INPUT_WRONG_PASSWORD;?>"); 
+         }
        }
      }
    });
@@ -772,9 +787,11 @@ function del_confirm_payment_time(oid, status_id)
     url: 'ajax_preorders.php?action=getallpwd',
     type: 'POST',
     dataType: 'text',
+    data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
     async : false,
     success: function(data) {
-      var pwd_arr = data.split(",");
+      var tmp_msg_arr = data.split('|||'); 
+      var pwd_list_array = tmp_msg_arr[1].split(',');
       <?php
       if ($ocertify->npermission == 31) {
       ?>
@@ -794,23 +811,53 @@ function del_confirm_payment_time(oid, status_id)
       <?php
       } else {
       ?>
-      var pwd =  window.prompt("<?php echo NOTICE_ORDER_INPUT_PASSWORD;?>","");
       if(in_array(pwd, pwd_arr)){
-        if (window.confirm('<?php echo NOTICE_DEL_CONFIRM_PAYEMENT_TIME;?>')) {
+        
+      } else {
+        window.alert("<?php echo NOTICE_ORDER_INPUT_WRONG_PASSWORD;?>"); 
+      }
+       if (tmp_msg_arr[0] == '0') {
+         if (window.confirm('<?php echo NOTICE_DEL_CONFIRM_PAYEMENT_TIME;?>')) {
           $.ajax({
             type:"POST", 
             url:"<?php echo tep_href_link('pre_handle_payment_time.php')?>",
-            data:"oID="+oid+"&stid="+status_id+"&once_pwd="+pwd, 
+            data:"oID="+oid+"&stid="+status_id, 
+            async : false,
             success:function(msg) {
               alert('<?php echo NOTICE_DEL_CONFIRM_PAYMENT_TIME_SUCCESS;?>'); 
               window.location.href = window.location.href; 
               window.location.reload; 
             }
           }); 
-        }
-      } else {
-        window.alert("<?php echo NOTICE_ORDER_INPUT_WRONG_PASSWORD;?>"); 
-      }
+         }
+       } else {
+         var input_pwd_str = window.prompt('<?php echo NOTICE_ORDER_INPUT_PASSWORD;?>', ''); 
+         if (in_array(input_pwd_str, pwd_list_array)) {
+           $.ajax({
+             url: 'ajax_orders.php?action=record_pwd_log',   
+             type: 'POST',
+             dataType: 'text',
+             data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(window.location.href),
+             async: false,
+             success: function(msg_info) {
+             if (window.confirm('<?php echo NOTICE_DEL_CONFIRM_PAYEMENT_TIME;?>')) {
+              $.ajax({
+                type:"POST", 
+                url:"<?php echo tep_href_link('pre_handle_payment_time.php')?>",
+                data:"oID="+oid+"&stid="+status_id+"&once_pwd="+input_pwd_str, 
+                success:function(msg) {
+                  alert('<?php echo NOTICE_DEL_CONFIRM_PAYMENT_TIME_SUCCESS;?>'); 
+                  window.location.href = window.location.href; 
+                  window.location.reload; 
+                }
+              }); 
+             }
+             }
+           }); 
+         } else {
+           alert("<?php echo NOTICE_ORDER_INPUT_WRONG_PASSWORD;?>"); 
+         }
+       }
       <?php
       }
       ?>
@@ -950,7 +997,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                 <?php if ($ocertify->npermission) { ?>
                 <?php 
                    if(isset($order->info['flag_qaf'])&&$order->info['flag_qaf']&&($ocertify->npermission != 31)){
-                     echo tep_html_element_button(IMAGE_EDIT, 'onclick="once_pwd_redircet_new_url(\''.  tep_href_link(FILENAME_FINAL_PREORDERS, tep_get_all_get_params(array('action','status','questions_type')) .'&action=edit') .'\')"');
+                     echo tep_html_element_button(IMAGE_EDIT, 'onclick="once_pwd_redircet_new_url(\''.  tep_href_link(FILENAME_FINAL_PREORDERS, tep_get_all_get_params(array('action','status','questions_type')) .'&action=edit') .'\', \''.$ocertify->npermission.'\')"');
                    }else{
                      echo '<a href="' . tep_href_link(FILENAME_FINAL_PREORDERS, tep_get_all_get_params(array('action','status','questions_type')) . '&action=edit') . '">'; echo tep_html_element_button(IMAGE_EDIT);
                      echo '</a>'; 

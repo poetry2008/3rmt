@@ -153,29 +153,44 @@ function select_buttons_change(value,buttons_list_id,c_permission)
   if(sel_num == 1){
     if (confirm('<?php echo TEXT_BUTTONS_EDIT_CONFIRM;?>')) {
       if (c_permission == 31) {
-        document.edit_buttons_form.action = "<?php echo FILENAME_BUTTONS.'?action=delete'.($_GET['page'] != '' ? '&page='.$_GET['page'] : '');?>";
+        document.edit_buttons_form.action = '<?php echo tep_href_link(FILENAME_BUTTONS, 'action=delete'.($_GET['page'] != '' ?  '&page='.$_GET['page'] : ''));?>';
         document.edit_buttons_form.submit(); 
       } else {
         $.ajax({
           url: 'ajax_orders.php?action=getallpwd',   
           type: 'POST',
           dataType: 'text',
+          data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
           async: false,
           success: function(msg) {
-            pwd_list_array = msg.split(','); 
-            var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-            if (in_array(input_pwd_str, pwd_list_array)) {
-              document.edit_buttons_form.action = "<?php echo FILENAME_BUTTONS.'?action=delete'.($_GET['page'] != '' ? '&page='.$_GET['page'] : '');?>";
+            var tmp_msg_arr = msg.split('|||'); 
+            var pwd_list_array = tmp_msg_arr[1].split(',');
+            if (tmp_msg_arr[0] == '0') {
+              document.edit_buttons_form.action = '<?php echo tep_href_link(FILENAME_BUTTONS, 'action=delete'.($_GET['page'] != '' ?  '&page='.$_GET['page'] : ''));?>';
               document.edit_buttons_form.submit(); 
             } else {
-              document.getElementsByName("edit_buttons_list")[0].value = 0;
-              alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+              var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+              if (in_array(input_pwd_str, pwd_list_array)) {
+                $.ajax({
+                  url: 'ajax_orders.php?action=record_pwd_log',   
+                  type: 'POST',
+                  dataType: 'text',
+                  data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent('<?php echo tep_href_link(FILENAME_BUTTONS, 'action=delete'.($_GET['page'] != '' ?  '&page='.$_GET['page'] : ''));?>'),
+                  async: false,
+                  success: function(msg_info) {
+                    document.edit_buttons_form.action = '<?php echo tep_href_link(FILENAME_BUTTONS, 'action=delete'.($_GET['page'] != '' ?  '&page='.$_GET['page'] : ''));?>';
+                    document.edit_buttons_form.submit(); 
+                  }
+                }); 
+              } else {
+                document.getElementsByName("edit_buttons_list")[0].value = 0;
+                alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+              }
             }
           }
         });
       }
     }else{
-
       document.getElementsByName("edit_buttons_list")[0].value = 0;
     } 
   }else{
@@ -287,44 +302,80 @@ function edit_buttons_check(action, c_permission){
   }else{
     if(action == 'save'){
       if (c_permission == 31) {
-        document.edit_buttons.action = '<?php echo FILENAME_BUTTONS;?>?action='+action;
+        document.edit_buttons.action = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_BUTTONS;?>?action='+action;
         document.edit_buttons.submit();
       } else {
         $.ajax({
           url: 'ajax_orders.php?action=getallpwd',   
           type: 'POST',
           dataType: 'text',
+          data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
           async: false,
           success: function(msg) {
-            pwd_list_array = msg.split(','); 
-            var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-            if (in_array(input_pwd_str, pwd_list_array)) {
-              document.edit_buttons.action = '<?php echo FILENAME_BUTTONS;?>?action='+action;
+            var tmp_msg_arr = msg.split('|||'); 
+            var pwd_list_array = tmp_msg_arr[1].split(',');
+            if (tmp_msg_arr[0] == '0') {
+              document.edit_buttons.action = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_BUTTONS;?>?action='+action;
               document.edit_buttons.submit();
             } else {
-              alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+              $('#button_save').attr('id', 'tmp_button_save'); 
+              var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+              if (in_array(input_pwd_str, pwd_list_array)) {
+                $.ajax({
+                  url: 'ajax_orders.php?action=record_pwd_log',   
+                  type: 'POST',
+                  dataType: 'text',
+                  data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent('<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_BUTTONS;?>?action='+action),
+                  async: false,
+                  success: function(msg_info) {
+                    document.edit_buttons.action = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_BUTTONS;?>?action='+action;
+                    document.edit_buttons.submit();
+                  }
+                }); 
+              } else {
+                alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                setTimeOut($('#tmp_button_save').attr('id', 'button_save'), 1); 
+              }
             }
           }
         });
       }
     }else{
       if (c_permission == 31) {
-        document.create_buttons.action = '<?php echo FILENAME_BUTTONS;?>?action='+action; 
+        document.create_buttons.action = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_BUTTONS;?>?action='+action; 
         document.create_buttons.submit();
       } else {
         $.ajax({
           url: 'ajax_orders.php?action=getallpwd',   
           type: 'POST',
           dataType: 'text',
+          data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
           async: false,
           success: function(msg) {
-            pwd_list_array = msg.split(','); 
-            var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-            if (in_array(input_pwd_str, pwd_list_array)) {
-              document.create_buttons.action = '<?php echo FILENAME_BUTTONS;?>?action='+action; 
+            var tmp_msg_arr = msg.split('|||'); 
+            var pwd_list_array = tmp_msg_arr[1].split(',');
+            if (tmp_msg_arr[0] == '0') {
+              document.create_buttons.action = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_BUTTONS;?>?action='+action; 
               document.create_buttons.submit();
             } else {
-              alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+              $('#button_save').attr('id', 'tmp_button_save'); 
+              var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+              if (in_array(input_pwd_str, pwd_list_array)) {
+                $.ajax({
+                  url: 'ajax_orders.php?action=record_pwd_log',   
+                  type: 'POST',
+                  dataType: 'text',
+                  data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent('<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_BUTTONS;?>?action='+action),
+                  async: false,
+                  success: function(msg_info) {
+                    document.create_buttons.action = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_BUTTONS;?>?action='+action; 
+                    document.create_buttons.submit();
+                  }
+                }); 
+              } else {
+                alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                setTimeOut($('#tmp_button_save').attr('id', 'button_save'), 1); 
+              }
             }
           }
         });
@@ -336,22 +387,40 @@ function edit_buttons_check(action, c_permission){
 <?php //删除buttons?>
 function delete_buttons(c_permission){
   if (c_permission == 31) {
-    document.edit_buttons.action = '<?php echo FILENAME_BUTTONS;?>?action=deleteconfirm';
+    document.edit_buttons.action = '<?php echo tep_href_link(FILENAME_BUTTONS, 'action=deleteconfirm');?>';
     document.edit_buttons.submit();
   } else {
     $.ajax({
       url: 'ajax_orders.php?action=getallpwd',   
       type: 'POST',
       dataType: 'text',
+      data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
       async: false,
       success: function(msg) {
-        pwd_list_array = msg.split(','); 
-        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-        if (in_array(input_pwd_str, pwd_list_array)) {
-          document.edit_buttons.action = '<?php echo FILENAME_BUTTONS;?>?action=deleteconfirm';
+        var tmp_msg_arr = msg.split('|||'); 
+        var pwd_list_array = tmp_msg_arr[1].split(',');
+        if (tmp_msg_arr[0] == '0') {
+          document.edit_buttons.action = '<?php echo tep_href_link(FILENAME_BUTTONS, 'action=deleteconfirm');?>';
           document.edit_buttons.submit();
         } else {
-          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          $('#button_save').attr('id', 'tmp_button_save'); 
+          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+          if (in_array(input_pwd_str, pwd_list_array)) {
+            $.ajax({
+              url: 'ajax_orders.php?action=record_pwd_log',   
+              type: 'POST',
+              dataType: 'text',
+              data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent('<?php echo tep_href_link(FILENAME_BUTTONS, 'action=deleteconfirm');?>'),
+              async: false,
+              success: function(msg_info) {
+                document.edit_buttons.action = '<?php echo tep_href_link(FILENAME_BUTTONS, 'action=deleteconfirm');?>';
+                document.edit_buttons.submit();
+              }
+            }); 
+          } else {
+            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+            setTimeOut($('#tmp_button_save').attr('id', 'button_save'), 1); 
+          }
         }
       }
     });

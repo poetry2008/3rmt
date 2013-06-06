@@ -46,7 +46,7 @@ if (isset($_GET['action'])) {
          $user_error = true; 
        }
       
-       if (isset($_POST['user_password'])) {
+       if (isset($_POST['user_password']) && trim($_POST['user_password']) != '') {
          if (empty($_POST['user_password'])) {
            $user_error = true; 
          } else {
@@ -294,7 +294,7 @@ if (isset($_GET['action'])) {
        tep_redirect(tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_e_id', 'user_info_id', 'site_id')))); 
        break;
      case 'setflag':
-       tep_db_query("update `".TABLE_USERS."` set `status` = '".$_GET['flag']."', `rule` = '' where userid = '".$_GET['user_e_id']."'"); 
+       tep_db_query("update `".TABLE_USERS."` set `status` = '".$_GET['flag']."', `rule` = '', `user_update` = '".$_SESSION['user_name']."', `date_update` = '".date('Y-m-d H:i:s', time())."' where userid = '".$_GET['user_e_id']."'"); 
        tep_db_query("update `".TABLE_LETTERS."` set `userid` = null where `userid` = '".$_GET['user_e_id']."'");   
        tep_redirect(tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_e_id', 'flag', 'site_id')))); 
        break;
@@ -335,9 +335,11 @@ function user_change_action(current_value, change_info)
     url: 'ajax_orders.php?action=getallpwd',   
     type: 'POST',
     dataType: 'text',
+    data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
     async: false,
     success: function(msg) {
-      pwd_list_array = msg.split(','); 
+      var tmp_msg_arr = msg.split('|||'); 
+      var pwd_list_array = tmp_msg_arr[1].split(',');
       if (current_value == '1') {
         sel_num = 0;
         if (document.user_list_form.elements[change_info].length == null) {
@@ -361,12 +363,25 @@ function user_change_action(current_value, change_info)
             <?php
             } else {
             ?>
-            var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-            if (in_array(input_pwd_str, pwd_list_array)) {
+            if (tmp_msg_arr[0] == '0') {
               document.forms.user_list_form.submit(); 
             } else {
-              alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
-              document.getElementsByName('user_list_action')[0].value = 0; 
+              var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+              if (in_array(input_pwd_str, pwd_list_array)) {
+                $.ajax({
+                  url: 'ajax_orders.php?action=record_pwd_log',   
+                  type: 'POST',
+                  dataType: 'text',
+                  data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.forms.user_list_form.action),
+                  async: false,
+                  success: function(msg_info) {
+                    document.forms.user_list_form.submit(); 
+                  }
+                }); 
+              } else {
+                alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                document.getElementsByName('user_list_action')[0].value = 0; 
+              }
             }
             <?php
             }
@@ -505,14 +520,31 @@ function check_user_info(user_id, stype)
           url: 'ajax_orders.php?action=getallpwd',   
           type: 'POST',
           dataType: 'text',
+          data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
           async: false,
           success: function(msg) {
-            pwd_list_array = msg.split(','); 
-            var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-            if (in_array(input_pwd_str, pwd_list_array)) {
+            var tmp_msg_arr = msg.split('|||'); 
+            var pwd_list_array = tmp_msg_arr[1].split(',');
+            if (tmp_msg_arr[0] == '0') {
               document.forms.new_user_form.submit(); 
             } else {
-              alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+              $("#button_save").attr('id', 'tmp_button_save'); 
+              var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+              if (in_array(input_pwd_str, pwd_list_array)) {
+                $.ajax({
+                  url: 'ajax_orders.php?action=record_pwd_log',   
+                  type: 'POST',
+                  dataType: 'text',
+                  data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.forms.new_user_form.action),
+                  async: false,
+                  success: function(msg_info) {
+                    document.forms.new_user_form.submit(); 
+                  }
+                }); 
+              } else {
+                alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                setTimeOut($("#tmp_button_save").attr('id', 'button_save'), 1); 
+              }
             }
           }
         });
@@ -616,9 +648,11 @@ function delete_fix_user(user_id, param_str)
     url: 'ajax_orders.php?action=getallpwd',   
     type: 'POST',
     dataType: 'text',
+    data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
     async: false,
     success: function(msg) {
-      pwd_list_array = msg.split(','); 
+      var tmp_msg_arr = msg.split('|||'); 
+      var pwd_list_array = tmp_msg_arr[1].split(',');
       <?php
       if ($ocertify->npermission > 15) {
       ?>
@@ -629,11 +663,26 @@ function delete_fix_user(user_id, param_str)
       } else {
       ?>
       if (confirm('<?php echo TEXT_DEL_USER;?>')) {
-        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-        if (in_array(input_pwd_str, pwd_list_array)) {
+        if (tmp_msg_arr[0] == '0') {
           window.location.href = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_USERS;?>'+'?action=delete_user_confirm&user_e_id='+user_id+'&'+param_str;  
         } else {
-          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          $("#button_save").attr('id', 'tmp_button_save'); 
+          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+          if (in_array(input_pwd_str, pwd_list_array)) {
+            $.ajax({
+              url: 'ajax_orders.php?action=record_pwd_log',   
+              type: 'POST',
+              dataType: 'text',
+              data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent('<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_USERS;?>'+'?action=delete_user_confirm&user_e_id='+user_id+'&'+param_str),
+              async: false,
+              success: function(msg_info) {
+                window.location.href = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_USERS;?>'+'?action=delete_user_confirm&user_e_id='+user_id+'&'+param_str;  
+              }
+            }); 
+          } else {
+            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+            setTimeOut($("#tmp_button_save").attr('id', 'button_save'), 1); 
+          }
         }
       } 
       <?php
@@ -657,14 +706,29 @@ function set_user_flag(current_uid, flag_num, o_param)
     url: 'ajax_orders.php?action=getallpwd',   
     type: 'POST',
     dataType: 'text',
+    data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
     async: false,
     success: function(msg) {
-      pwd_list_array = msg.split(',');
-      var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-      if (in_array(input_pwd_str, pwd_list_array)) {
+      var tmp_msg_arr = msg.split('|||'); 
+      var pwd_list_array = tmp_msg_arr[1].split(',');
+      if (tmp_msg_arr[0] == '0') {
         window.location.href = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_USERS.'?action=setflag';?>'+'&flag='+flag_num+'&user_e_id='+current_uid+'&'+o_param; 
       } else {
-        alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          $.ajax({
+            url: 'ajax_orders.php?action=record_pwd_log',   
+            type: 'POST',
+            dataType: 'text',
+            data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent('<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_USERS.'?action=setflag';?>'+'&flag='+flag_num+'&user_e_id='+current_uid+'&'+o_param),
+            async: false,
+            success: function(msg_info) {
+              window.location.href = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_USERS.'?action=setflag';?>'+'&flag='+flag_num+'&user_e_id='+current_uid+'&'+o_param; 
+            }
+          }); 
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+        }
       }
     }
   });
@@ -876,7 +940,7 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                
                   $user_table_info_row[] = array('params' => 'class="dataTableHeadingRow"', 'text' => $user_table_title_row);
 
-                  $user_list_query_raw = 'select u.* from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and p.permission <= '" . $ocertify->npermission . "' order by ".$user_order_sql; 
+                  $user_list_query_raw = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and p.permission <= '" . $ocertify->npermission . "' order by ".$user_order_sql; 
                   $user_list_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $user_list_query_raw, $user_list_query_numrows);
                   $user_list_query = tep_db_query($user_list_query_raw); 
                   
@@ -898,7 +962,7 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                     
                     $user_list_row[] = array(
                         'params' => 'class="dataTableContent"', 
-                        'text' => '<input type="checkbox" name="user_list_id[]" value="'.$user_list_info['userid'].'"'.(($is_u_disabled)?' disabled="disabled"':'').'>' 
+                        'text' => '<input type="checkbox" name="user_list_id[]" value="'.$user_list_info['userid'].'"'.(($is_u_disabled)?' disabled="disabled"':($user_list_info['permission'] == '31')?'disabled="disabled"':'').'>' 
                         ); 
                     $user_list_row[] = array(
                         'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_info_id', 'site_id')).'user_info_id='.$user_list_info['userid']).'\'"', 

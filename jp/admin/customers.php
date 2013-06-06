@@ -371,14 +371,31 @@ if(check_is_active == 1){
         url: 'ajax_orders.php?action=getallpwd',   
         type: 'POST',
         dataType: 'text',
+        data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
         async: false,
         success: function(msg) {
-          pwd_list_array = msg.split(','); 
-          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-          if (in_array(input_pwd_str, pwd_list_array)) {
+          var tmp_msg_arr = msg.split('|||'); 
+          var pwd_list_array = tmp_msg_arr[1].split(',');
+          if (tmp_msg_arr[0] == '0') {
             document.forms.customers.submit();  
           } else {
-            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+            $('#button_save').attr('id', 'tmp_button_save'); 
+            var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+            if (in_array(input_pwd_str, pwd_list_array)) {
+              $.ajax({
+                url: 'ajax_orders.php?action=record_pwd_log',   
+                type: 'POST',
+                dataType: 'text',
+                data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.forms.customers.action),
+                async: false,
+                success: function(msg_info) {
+                  document.forms.customers.submit();  
+                }
+              }); 
+            } else {
+              alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+              setTimeOut($('#tmp_button_save').attr('id', 'button_save'), 1); 
+            }
           }
         }
       });
@@ -431,14 +448,30 @@ function delete_select_customers(customers_str, c_permission){
               url: 'ajax_orders.php?action=getallpwd',   
               type: 'POST',
               dataType: 'text',
+              data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
               async: false,
               success: function(msg) {
-                pwd_list_array = msg.split(','); 
-                var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-                if (in_array(input_pwd_str, pwd_list_array)) {
+                var tmp_msg_arr = msg.split('|||'); 
+                var pwd_list_array = tmp_msg_arr[1].split(',');
+                if (tmp_msg_arr[0] == '0') {
                   document.forms.del_customers.submit(); 
                 } else {
-                  alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                  var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+                  if (in_array(input_pwd_str, pwd_list_array)) {
+                    $.ajax({
+                      url: 'ajax_orders.php?action=record_pwd_log',   
+                      type: 'POST',
+                      dataType: 'text',
+                      data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.forms.del_customers.action),
+                      async: false,
+                      success: function(msg_info) {
+                        document.forms.del_customers.submit(); 
+                      }
+                    }); 
+                  } else {
+                    document.getElementsByName('customers_action')[0].value = 0;
+                    alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                  }
                 }
               }
             });
@@ -471,7 +504,7 @@ $(document).ready(function() {
         if ($('#show_customers').css('display') != 'none') {
             if (o_submit_single){
                 cid = $("#cid").val();
-                check_password('3', '<?php echo $ocertify->npermission;?>');
+                $("#button_save").trigger("click");
              }
             }
         }
@@ -591,14 +624,31 @@ function toggle_customers_action(c_url_str, c_permission)
       url: 'ajax_orders.php?action=getallpwd',   
       type: 'POST',
       dataType: 'text',
+      data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
       async: false,
       success: function(msg) {
-        pwd_list_array = msg.split(','); 
-        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-        if (in_array(input_pwd_str, pwd_list_array)) {
+        var tmp_msg_arr = msg.split('|||'); 
+        var pwd_list_array = tmp_msg_arr[1].split(',');
+        if (tmp_msg_arr[0] == '0') {
           window.location.href = c_url_str; 
         } else {
-          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          $('#button_save').attr('id', 'tmp_button_save'); 
+          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+          if (in_array(input_pwd_str, pwd_list_array)) {
+            $.ajax({
+              url: 'ajax_orders.php?action=record_pwd_log',   
+              type: 'POST',
+              dataType: 'text',
+              data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(c_url_str),
+              async: false,
+              success: function(msg_info) {
+                window.location.href = c_url_str; 
+              }
+            }); 
+          } else {
+            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+            setTimeOut($('#tmp_button_save').attr('id', 'button_save'), 1); 
+          }
         }
       }
     });

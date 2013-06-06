@@ -1173,9 +1173,11 @@ function check_mail_product_status(pid, c_permission)
 url: 'ajax_orders.php?action=getallpwd',
 type: 'POST',
 dataType: 'text',
+data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
 async : false,
 success: function(data) {
-var pwd_arr = data.split(",");;
+var tmp_msg_arr = data.split('|||'); 
+var pwd_arr = tmp_msg_arr[1].split(',');
 var flag_tmp = true;
 $(".once_pwd").each(function(index) {
   var input_name = $(this).attr('name');
@@ -1205,16 +1207,31 @@ $(".once_pwd").each(function(index) {
     _flag = true;
   } else {
     if(!flag_tmp){
-      var pwd =  window.prompt("<?php echo FORDERS_NOTICE_INPUT_ONCE_PWD;?>\r\n","");
-      if(in_array(pwd,pwd_arr)){
+      if (tmp_msg_arr[0] == '0') {
         $("input[name=update_viladate]").val(pwd);
         _flag = true; 
-      }else{
-        alert("<?php echo FORDERS_NOTICE_ONCE_PWD_WRONG;?>");
-        $("input[name=update_viladate]").val('_false');
-        $("input[name=x]").val('43');
-        $("input[name=y]").val('12');
-        return false;
+      } else {
+        var pwd =  window.prompt("<?php echo FORDERS_NOTICE_INPUT_ONCE_PWD;?>\r\n","");
+        if (in_array(pwd,pwd_arr)) {
+          $.ajax({
+            url: 'ajax_orders.php?action=record_pwd_log',   
+            type: 'POST',
+            dataType: 'text',
+            data: 'current_pwd='+pwd+'&url_redirect_str='+encodeURIComponent(document.forms.edit_order.action),
+            async: false,
+            success: function(msg_info) {
+              $("input[name=update_viladate]").val(pwd);
+              _flag = true; 
+            }
+          });
+        } else {
+          alert("<?php echo FORDERS_NOTICE_ONCE_PWD_WRONG;?>");
+          $("input[name=update_viladate]").val('_false');
+          $("input[name=x]").val('43');
+          $("input[name=y]").val('12');
+          return false;
+        }
+        
       }
     }else{
       $("input[name=update_viladate]").val('');

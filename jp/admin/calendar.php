@@ -159,7 +159,7 @@ $(document).ready(function() {
     if (event.which == 13) {
       <?php //回车?> 
       if ($('#show_date_edit').css('display') != 'none') {
-        $("#show_date_edit").find('input:button').first().trigger("click"); 
+        $("#button_save").trigger("click");  
       } 
     } 
   });    

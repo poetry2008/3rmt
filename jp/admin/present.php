@@ -200,14 +200,29 @@ function msg(c_permission){
         url: 'ajax_orders.php?action=getallpwd',   
         type: 'POST',
         dataType: 'text',
+        data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
         async: false,
         success: function(msg) {
-          pwd_list_array = msg.split(','); 
-          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-          if (in_array(input_pwd_str, pwd_list_array)) {
+          var tmp_msg_arr = msg.split('|||'); 
+          var pwd_list_array = tmp_msg_arr[1].split(',');
+          if (tmp_msg_arr[0] == '0') {
             document.forms.apply.submit(); 
           } else {
-            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+            var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+            if (in_array(input_pwd_str, pwd_list_array)) {
+              $.ajax({
+                url: 'ajax_orders.php?action=record_pwd_log',   
+                type: 'POST',
+                dataType: 'text',
+                data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.forms.apply.action),
+                async: false,
+                success: function(msg_info) {
+                  document.forms.apply.submit(); 
+                }
+              }); 
+            } else {
+              alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+            }
           }
         }
       });
@@ -241,14 +256,29 @@ function msg2(c_permission){
         url: 'ajax_orders.php?action=getallpwd',   
         type: 'POST',
         dataType: 'text',
+        data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
         async: false,
         success: function(msg) {
-          pwd_list_array = msg.split(','); 
-          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-          if (in_array(input_pwd_str, pwd_list_array)) {
+          var tmp_msg_arr = msg.split('|||'); 
+          var pwd_list_array = tmp_msg_arr[1].split(',');
+          if (tmp_msg_arr[0] == '0') {
             document.forms.apply.submit(); 
           } else {
-            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+            var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+            if (in_array(input_pwd_str, pwd_list_array)) {
+              $.ajax({
+                url: 'ajax_orders.php?action=record_pwd_log',   
+                type: 'POST',
+                dataType: 'text',
+                data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.forms.apply.action),
+                async: false,
+                success: function(msg_info) {
+                  document.forms.apply.submit(); 
+                }
+              }); 
+            } else {
+              alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+            }
           }
         }
       });
@@ -265,14 +295,29 @@ function check_present_form(c_permission)
       url: 'ajax_orders.php?action=getallpwd',   
       type: 'POST',
       dataType: 'text',
+      data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
       async: false,
       success: function(msg) {
-        pwd_list_array = msg.split(','); 
-        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-        if (in_array(input_pwd_str, pwd_list_array)) {
+        var tmp_msg_arr = msg.split('|||'); 
+        var pwd_list_array = tmp_msg_arr[1].split(',');
+        if (tmp_msg_arr[0] == '0') {
           document.forms.present.submit(); 
         } else {
-          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+          if (in_array(input_pwd_str, pwd_list_array)) {
+            $.ajax({
+              url: 'ajax_orders.php?action=record_pwd_log',   
+              type: 'POST',
+              dataType: 'text',
+              data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.forms.present.action),
+              async: false,
+              success: function(msg_info) {
+                document.forms.present.submit(); 
+              }
+            }); 
+          } else {
+            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          }
         }
       }
     });

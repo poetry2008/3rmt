@@ -6944,9 +6944,10 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
     参数: $userid(int) 用户id 
     参数: $save_session(boolean) 是否保存session 
     参数: $page_name(string) 页面 
+    参数: $redirect_url_str(string) url 
     返回值: 创建数据(boolean) 
  ------------------------------------ */
-  function tep_insert_pwd_log($pwd,$userid,$save_session=false,$page_name=''){
+  function tep_insert_pwd_log($pwd,$userid,$save_session=false,$page_name='',$redirect_url_str=''){
     if($save_session){
       $_SESSION[$page_name] = $pwd;
     }
@@ -6959,7 +6960,7 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
       $letter_info = tep_get_user_info($row_letter['userid']);
       $sql = "insert into ".TABLE_ONCE_PWD_LOG." VALUES 
         (NULL , '".$user_info['name']."',
-         '".$letter_info['name']."', '".$_SERVER['HTTP_REFERER']."',
+         '".$letter_info['name']."', '".(!empty($redirect_url_str)?$redirect_url_str:$_SERVER['HTTP_REFERER'])."',
          CURRENT_TIMESTAMP
         )";
       return tep_db_query($sql);

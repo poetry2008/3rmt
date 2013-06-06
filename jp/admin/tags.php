@@ -306,7 +306,7 @@ function delete_select_products_to_tags(tags_list_id)
       <?php
       if ($ocertify->npermission == 31) {
       ?>
-      document.edit_tags.action = '<?php echo FILENAME_CATEGORIES;?>?action=products_tags_delete';
+      document.edit_tags.action = '<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=products_tags_delete');?>';
       document.edit_tags.submit(); 
       <?php
       } else {
@@ -315,15 +315,34 @@ function delete_select_products_to_tags(tags_list_id)
         url: 'ajax_orders.php?action=getallpwd',   
         type: 'POST',
         dataType: 'text',
+        data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
         async: false,
         success: function(msg) {
-          pwd_list_array = msg.split(','); 
-          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-          if (in_array(input_pwd_str, pwd_list_array)) {
-            document.edit_tags.action = '<?php echo FILENAME_CATEGORIES;?>?action=products_tags_delete';
+          var tmp_msg_arr = msg.split('|||'); 
+          var pwd_list_array = tmp_msg_arr[1].split(',');
+          if (tmp_msg_arr[0] == '0') {
+            document.edit_tags.action = '<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=products_tags_delete');?>';
             document.edit_tags.submit(); 
           } else {
-            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+            $("#button_save").attr('id', 'tmp_button_save');
+            alert("sssssss");
+            var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+            if (in_array(input_pwd_str, pwd_list_array)) {
+              $.ajax({
+                url: 'ajax_orders.php?action=record_pwd_log',   
+                type: 'POST',
+                dataType: 'text',
+                data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent('<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=products_tags_delete');?>'),
+                async: false,
+                success: function(msg_info) {
+                  document.edit_tags.action = '<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=products_tags_delete');?>';
+                  document.edit_tags.submit(); 
+                }
+              }); 
+            } else {
+              alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+              setTimeOut($("#tmp_button_save").attr('id', 'button_save'), 1);
+            }
           }
         }
       });
@@ -393,7 +412,7 @@ function create_tags_submit(r_type){
     <?php
     if ($ocertify->npermission == 31) {
     ?>
-      document.forms.tags_form.submit(); 
+      document.tags_form.submit(); 
     <?php
     } else {
     ?>
@@ -401,14 +420,31 @@ function create_tags_submit(r_type){
       url: 'ajax_orders.php?action=getallpwd',   
       type: 'POST',
       dataType: 'text',
+      data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
       async: false,
       success: function(msg) {
-        pwd_list_array = msg.split(','); 
-        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-        if (in_array(input_pwd_str, pwd_list_array)) {
-          document.forms.tags_form.submit(); 
+        var tmp_msg_arr = msg.split('|||'); 
+        var pwd_list_array = tmp_msg_arr[1].split(',');
+        if (tmp_msg_arr[0] == '0') {
+          document.tags_form.submit(); 
         } else {
-          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          $("#button_save").attr('id', 'tmp_button_save');
+          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+          if (in_array(input_pwd_str, pwd_list_array)) {
+            $.ajax({
+              url: 'ajax_orders.php?action=record_pwd_log',   
+              type: 'POST',
+              dataType: 'text',
+              data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.tags_form.action),
+              async: false,
+              success: function(msg_info) {
+                document.tags_form.submit(); 
+              }
+            }); 
+          } else {
+            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+            setTimeOut($("#tmp_button_save").attr('id', 'button_save'), 1);
+          }
         }
       }
     });
@@ -436,7 +472,7 @@ function edit_tags_submit(action){
           if(parseInt(data) > 1){
             if(confirm('<?php echo TEXT_CHECK_FILE_EXISTS_DELETE;?>')){
 
-              document.tags_form.action = '<?php echo FILENAME_TAGS;?>?action='+action;
+              document.tags_form.action = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_TAGS;?>?action='+action;
               <?php
               if ($ocertify->npermission == 31) {
               ?>
@@ -448,14 +484,31 @@ function edit_tags_submit(action){
                 url: 'ajax_orders.php?action=getallpwd',   
                 type: 'POST',
                 dataType: 'text',
+                data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
                 async: false,
                 success: function(msg) {
-                  pwd_list_array = msg.split(','); 
-                  var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-                  if (in_array(input_pwd_str, pwd_list_array)) {
+                  var tmp_msg_arr = msg.split('|||'); 
+                  var pwd_list_array = tmp_msg_arr[1].split(',');
+                  if (tmp_msg_arr[0] == '0') {
                     document.tags_form.submit();
                   } else {
-                    alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                    $("#button_save").attr('id', 'tmp_button_save');
+                    var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+                    if (in_array(input_pwd_str, pwd_list_array)) {
+                      $.ajax({
+                        url: 'ajax_orders.php?action=record_pwd_log',   
+                        type: 'POST',
+                        dataType: 'text',
+                        data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.tags_form.action),
+                        async: false,
+                        success: function(msg_info) {
+                          document.tags_form.submit();
+                        }
+                      }); 
+                    } else {
+                      alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                      setTimeOut($("#tmp_button_save").attr('id', 'button_save'), 1);
+                    }
                   }
                 }
               });
@@ -465,7 +518,7 @@ function edit_tags_submit(action){
             } 
           }else{
             otag_single = true;
-            document.tags_form.action = '<?php echo FILENAME_TAGS;?>?action='+action;
+            document.tags_form.action = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_TAGS;?>?action='+action;
           }
         }
       }); 
@@ -495,7 +548,7 @@ function edit_tags_submit(action){
 
            if(delete_image == false){
             if(confirm('<?php echo TEXT_CHECK_FILE_EXISTS;?>')){
-              document.tags_form.action = '<?php echo FILENAME_TAGS;?>?action='+action;
+              document.tags_form.action = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_TAGS;?>?action='+action;
               <?php
               if ($ocertify->npermission == 31) {
               ?>
@@ -507,14 +560,31 @@ function edit_tags_submit(action){
                 url: 'ajax_orders.php?action=getallpwd',   
                 type: 'POST',
                 dataType: 'text',
+                data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
                 async: false,
                 success: function(msg) {
-                  pwd_list_array = msg.split(','); 
-                  var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-                  if (in_array(input_pwd_str, pwd_list_array)) {
+                  var tmp_msg_arr = msg.split('|||'); 
+                  var pwd_list_array = tmp_msg_arr[1].split(',');
+                  if (tmp_msg_arr[0] == '0') {
                     document.tags_form.submit();
                   } else {
-                    alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                    $("#button_save").attr('id', 'tmp_button_save');
+                    var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+                    if (in_array(input_pwd_str, pwd_list_array)) {
+                      $.ajax({
+                        url: 'ajax_orders.php?action=record_pwd_log',   
+                        type: 'POST',
+                        dataType: 'text',
+                        data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.tags_form.action),
+                        async: false,
+                        success: function(msg_info) {
+                          document.tags_form.submit();
+                        }
+                      }); 
+                    } else {
+                      alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                      setTimeOut($("#tmp_button_save").attr('id', 'button_save'), 1);
+                    }
                   }
                 }
               });
@@ -525,7 +595,7 @@ function edit_tags_submit(action){
            }else{
             if(parseInt(data) > 1){
             if(confirm('<?php echo TEXT_CHECK_FILE_EXISTS_DELETE;?>')){
-              document.tags_form.action = '<?php echo FILENAME_TAGS;?>?action='+action;
+              document.tags_form.action = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_TAGS;?>?action='+action;
               <?php
               if ($ocertify->npermission == 31) {
               ?>
@@ -537,14 +607,31 @@ function edit_tags_submit(action){
                 url: 'ajax_orders.php?action=getallpwd',   
                 type: 'POST',
                 dataType: 'text',
+                data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
                 async: false,
                 success: function(msg) {
-                  pwd_list_array = msg.split(','); 
-                  var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-                  if (in_array(input_pwd_str, pwd_list_array)) {
+                  var tmp_msg_arr = msg.split('|||'); 
+                  var pwd_list_array = tmp_msg_arr[1].split(',');
+                  if (tmp_msg_arr[0] == '0') {
                     document.tags_form.submit();
                   } else {
-                    alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                    $("#button_save").attr('id', 'tmp_button_save');
+                    var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+                    if (in_array(input_pwd_str, pwd_list_array)) {
+                      $.ajax({
+                        url: 'ajax_orders.php?action=record_pwd_log',   
+                        type: 'POST',
+                        dataType: 'text',
+                        data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.tags_form.action),
+                        async: false,
+                        success: function(msg_info) {
+                          document.tags_form.submit();
+                        }
+                      }); 
+                    } else {
+                      alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                      setTimeOut($("#tmp_button_save").attr('id', 'button_save'), 1);
+                    }
                   }
                 }
               });
@@ -554,18 +641,18 @@ function edit_tags_submit(action){
             }  
             }else{
               otag_single = true;
-              document.tags_form.action = '<?php echo FILENAME_TAGS;?>?action='+action;
+              document.tags_form.action = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_TAGS;?>?action='+action;
             }
            }
           }else{
             otag_single = true;
-            document.tags_form.action = '<?php echo FILENAME_TAGS;?>?action='+action;
+            document.tags_form.action = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_TAGS;?>?action='+action;
           }
         }
       }); 
       }else{
         otag_single = true;
-        document.tags_form.action = '<?php echo FILENAME_TAGS;?>?action='+action;
+        document.tags_form.action = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_TAGS;?>?action='+action;
       }
     }
   }
@@ -581,14 +668,31 @@ function edit_tags_submit(action){
       url: 'ajax_orders.php?action=getallpwd',   
       type: 'POST',
       dataType: 'text',
+      data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
       async: false,
       success: function(msg) {
-        pwd_list_array = msg.split(','); 
-        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-        if (in_array(input_pwd_str, pwd_list_array)) {
+        var tmp_msg_arr = msg.split('|||'); 
+        var pwd_list_array = tmp_msg_arr[1].split(',');
+        if (tmp_msg_arr[0] == '0') {
           document.tags_form.submit();
         } else {
-          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          $("#button_save").attr('id', 'tmp_button_save');
+          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+          if (in_array(input_pwd_str, pwd_list_array)) {
+            $.ajax({
+              url: 'ajax_orders.php?action=record_pwd_log',   
+              type: 'POST',
+              dataType: 'text',
+              data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.tags_form.action),
+              async: false,
+              success: function(msg_info) {
+                document.tags_form.submit();
+              }
+            }); 
+          } else {
+            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+            setTimeOut($("#tmp_button_save").attr('id', 'button_save'), 1);
+          }
         }
       }
     });
@@ -666,47 +770,83 @@ function delete_select_tags(tags_list_id, c_permission)
 
         if(confirm('<?php echo TEXT_CHECK_FILE_EXISTS_DELETE;?>')){
            if (c_permission == 31) {
-             document.edit_tags.action = '<?php echo FILENAME_TAGS;?>?action=delete_tags';
+             document.edit_tags.action = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_TAGS;?>?action=delete_tags';
              document.edit_tags.submit(); 
            } else {
              $.ajax({
                url: 'ajax_orders.php?action=getallpwd',   
                type: 'POST',
                dataType: 'text',
+               data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
                async: false,
                success: function(msg) {
-                 pwd_list_array = msg.split(','); 
-                 var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-                 if (in_array(input_pwd_str, pwd_list_array)) {
-                   document.edit_tags.action = '<?php echo FILENAME_TAGS;?>?action=delete_tags';
-                   document.edit_tags.submit(); 
-                 } else {
-                   document.getElementsByName("select_edit_tags")[0].value = 0; 
-                   alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
-                 }
+                var tmp_msg_arr = msg.split('|||'); 
+                var pwd_list_array = tmp_msg_arr[1].split(',');
+                if (tmp_msg_arr[0] == '0') {
+                  document.edit_tags.action = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_TAGS;?>?action=delete_tags';
+                  document.edit_tags.submit(); 
+                } else {
+                  $("#button_save").attr('id', 'tmp_button_save');
+                  var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+                  if (in_array(input_pwd_str, pwd_list_array)) {
+                    $.ajax({
+                      url: 'ajax_orders.php?action=record_pwd_log',   
+                      type: 'POST',
+                      dataType: 'text',
+                      data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent('<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_TAGS;?>?action=delete_tags'),
+                      async: false,
+                      success: function(msg_info) {
+                        document.edit_tags.action = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_TAGS;?>?action=delete_tags';
+                        document.edit_tags.submit(); 
+                      }
+                    }); 
+                  } else {
+                    document.getElementsByName("select_edit_tags")[0].value = 0; 
+                    alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                    setTimeOut($("#tmp_button_save").attr('id', 'button_save'), 1);
+                  }
+                }
                }
              });
            }
         }
       }else{
         if (c_permission == 31) {
-          document.edit_tags.action = '<?php echo FILENAME_TAGS;?>?action=delete_tags';
+          document.edit_tags.action = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_TAGS;?>?action=delete_tags';
           document.edit_tags.submit(); 
         } else {
           $.ajax({
             url: 'ajax_orders.php?action=getallpwd',   
             type: 'POST',
             dataType: 'text',
+            data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
             async: false,
             success: function(msg) {
-              pwd_list_array = msg.split(','); 
-              var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-              if (in_array(input_pwd_str, pwd_list_array)) {
-                document.edit_tags.action = '<?php echo FILENAME_TAGS;?>?action=delete_tags';
+              var tmp_msg_arr = msg.split('|||'); 
+              var pwd_list_array = tmp_msg_arr[1].split(',');
+              if (tmp_msg_arr[0] == '0') {
+                document.edit_tags.action = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_TAGS;?>?action=delete_tags';
                 document.edit_tags.submit(); 
               } else {
-                document.getElementsByName("select_edit_tags")[0].value = 0; 
-                alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                $("#button_save").attr('id', 'tmp_button_save');
+                var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+                if (in_array(input_pwd_str, pwd_list_array)) {
+                  $.ajax({
+                    url: 'ajax_orders.php?action=record_pwd_log',   
+                    type: 'POST',
+                    dataType: 'text',
+                    data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent('<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_TAGS;?>?action=delete_tags'),
+                    async: false,
+                    success: function(msg_info) {
+                      document.edit_tags.action = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_TAGS;?>?action=delete_tags';
+                      document.edit_tags.submit(); 
+                    }
+                  }); 
+                } else {
+                  document.getElementsByName("select_edit_tags")[0].value = 0; 
+                  alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                  setTimeOut($("#tmp_button_save").attr('id', 'button_save'), 1);
+                }
               }
             }
           });
@@ -741,23 +881,41 @@ function delete_select_products_tags(tags_list_id, c_permission)
   if (sel_num == 1) {
     if (confirm('<?php echo TEXT_TAGS_DELETE_PRODUCTS_CONFIRM;?>')) {
       if (c_permission == 31) {
-        document.edit_tags.action = '<?php echo FILENAME_TAGS;?>?action=delete_products_tags';
+        document.edit_tags.action = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_TAGS;?>?action=delete_products_tags';
         document.edit_tags.submit(); 
       } else {
         $.ajax({
           url: 'ajax_orders.php?action=getallpwd',   
           type: 'POST',
           dataType: 'text',
+          data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
           async: false,
           success: function(msg) {
-            pwd_list_array = msg.split(','); 
-            var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-            if (in_array(input_pwd_str, pwd_list_array)) {
-              document.edit_tags.action = '<?php echo FILENAME_TAGS;?>?action=delete_products_tags';
+            var tmp_msg_arr = msg.split('|||'); 
+            var pwd_list_array = tmp_msg_arr[1].split(',');
+            if (tmp_msg_arr[0] == '0') {
+              document.edit_tags.action = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_TAGS;?>?action=delete_products_tags';
               document.edit_tags.submit(); 
             } else {
-              document.getElementsByName("select_edit_tags")[0].value = 0;
-              alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+              $("#button_save").attr('id', 'tmp_button_save');
+              var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+              if (in_array(input_pwd_str, pwd_list_array)) {
+                $.ajax({
+                  url: 'ajax_orders.php?action=record_pwd_log',   
+                  type: 'POST',
+                  dataType: 'text',
+                  data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent('<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_TAGS;?>?action=delete_products_tags'),
+                  async: false,
+                  success: function(msg_info) {
+                    document.edit_tags.action = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_TAGS;?>?action=delete_products_tags';
+                    document.edit_tags.submit(); 
+                  }
+                }); 
+              } else {
+                document.getElementsByName("select_edit_tags")[0].value = 0;
+                alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                setTimeOut($("#tmp_button_save").attr('id', 'button_save'), 1);
+              }
             }
           }
         });
@@ -790,7 +948,7 @@ function setting_products_tags(tags_list_id)
   }
   
   if (sel_num == 1) {
-    document.edit_tags.action = '<?php echo FILENAME_TAGS;?>?action=setting_products_tags';
+    document.edit_tags.action = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_TAGS;?>?action=setting_products_tags';
     document.edit_tags.submit(); 
   } else {
     document.getElementsByName("select_edit_tags")[0].value = 0;
@@ -912,14 +1070,32 @@ function products_tags_submit(){
       url: 'ajax_orders.php?action=getallpwd',   
       type: 'POST',
       dataType: 'text',
+      data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
       async: false,
       success: function(msg) {
-        pwd_list_array = msg.split(','); 
-        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-        if (in_array(input_pwd_str, pwd_list_array)) {
+        var tmp_msg_arr = msg.split('|||'); 
+        var pwd_list_array = tmp_msg_arr[1].split(',');
+        if (tmp_msg_arr[0] == '0') {
           document.products_to_tags.submit();
         } else {
-          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          $("#button_save").attr('id', 'tmp_button_save');
+            alert("iiiiiiiiii");
+          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+          if (in_array(input_pwd_str, pwd_list_array)) {
+            $.ajax({
+              url: 'ajax_orders.php?action=record_pwd_log',   
+              type: 'POST',
+              dataType: 'text',
+              data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.products_to_tags.action),
+              async: false,
+              success: function(msg_info) {
+                document.products_to_tags.submit();
+              }
+            }); 
+          } else {
+            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+            setTimeOut($("#tmp_button_save").attr('id', 'button_save'), 1);
+          }
         }
       }
     });
