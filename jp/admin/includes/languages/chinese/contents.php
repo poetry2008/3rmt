@@ -45,4 +45,5 @@ define('TEXT_ERROR_NULL','<font color=\'red\'>请输入。</font>');
 define('TEXT_LINK','链接');
 define('TEXT_SORT_ASC','▲');
 define('TEXT_SORT_DESC','▼');
+define('TEXT_DATA_EMPTY','<font color=\'red\'><b>数据为空。</b></font>');
 ?>
