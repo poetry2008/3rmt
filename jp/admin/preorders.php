@@ -1608,7 +1608,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
           <table border="0" cellspacing="0" cellpadding="2">
   <?php
       for ($i = 0, $n = sizeof($order->totals); $i < $n; $i++) {
-        if($i == 2){continue;}
         echo 
        '    <tr>' . "\n" .
        '      <td align="right" class="smallText">' . (mb_substr($order->totals[$i]['title'],-1,1,'utf-8') != ':' ? $order->totals[$i]['title'].':' : $order->totals[$i]['title']) . '</td>' . "\n" .

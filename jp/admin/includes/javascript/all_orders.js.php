@@ -926,6 +926,11 @@ function recalc_order_price(oid, opd, o_str, op_str,opd_str)
     } 
   }
   pro_num = document.getElementById('update_products_new_qty_'+opd).value;
+  pro_num = pro_num.replace(/\s/g,"");
+  if(pro_num == ''){
+
+    pro_num = 0;
+  }
   p_price = document.getElementsByName('update_products['+opd+'][p_price]')[0].value;
   p_final_price = document.getElementsByName('update_products['+opd+'][final_price]')[0].value;
   

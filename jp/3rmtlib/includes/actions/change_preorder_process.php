@@ -324,6 +324,8 @@ if($address_error == false){
                           'site_id' => SITE_ID
       );
   tep_db_perform(TABLE_ORDERS_PRODUCTS, $sql_data_array);
+  //增加销售记录
+  tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " .$preorder_product_res['products_quantity']. " where products_id = '" . (int)$preorder_product_res['products_id'] . "'");
   $order_products_id = tep_db_insert_id();
 
   

@@ -16,19 +16,7 @@
       global $language;
 
       if (defined('MODULE_ORDER_TOTAL_INSTALLED') && tep_not_null(MODULE_ORDER_TOTAL_INSTALLED)) {
-
-        //读取相应网站的相应数据 
-        $orders_total_array = explode(';',MODULE_ORDER_TOTAL_INSTALLED); 
-        $orders_total_sort = array();
-        foreach($orders_total_array as $total_value){
-
-          $orders_total_split = explode('.',$total_value);
-          $orders_total_explode = explode('_',$orders_total_split[0]);
-          $orders_total_sort[$total_value] = get_configuration_by_site_id('MODULE_ORDER_TOTAL_'.strtoupper($orders_total_explode[1]).'_SORT_ORDER',SITE_ID);
-        }
-        asort($orders_total_sort);
-        $site_order_total = !empty($orders_total_sort) ? implode(';',array_keys($orders_total_sort)) : MODULE_ORDER_TOTAL_INSTALLED; 
-        $this->modules = explode(';', $site_order_total);
+        $this->modules = explode(';', MODULE_ORDER_TOTAL_INSTALLED);
 
         reset($this->modules);
         while (list(, $value) = each($this->modules)) {

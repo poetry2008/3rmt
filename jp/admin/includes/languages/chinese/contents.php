@@ -26,9 +26,9 @@ define('TEXT_CONTENTS_COPY_LOCATION','要显示这个页面的链接请把下面
 
 
 define('TEXT_DETAIL_ROMAJI', '罗马字');
-define('ROMAJI_NOT_NULL', '请输入罗马字');
+define('ROMAJI_NOT_NULL', '<font color=\'red\'>请输入罗马字。</font>');
 
-define('ROMAJI_EXISTS', '罗马字已经存在。');
+define('ROMAJI_EXISTS', '<font color=\'red\'>罗马字已经存在。</font>');
 define('ROMAJI_WRONG_FORMAT', '请用英数文字及「_」填写');
 define('TEXT_USER_ADDED','创建者:');
 define('TEXT_USER_UPDATE','更新者:');
@@ -37,5 +37,12 @@ define('TEXT_DATE_UPDATE','更新日:');
 
 
 define('TEXT_CONTENT_MSG', '为了显示此页面的链接，请将以下代码复制粘贴到想显示的地方。');
-
+define('TEXT_CONTENTS_SELECT_ACTION','请选择');
+define('TEXT_CONTENTS_DELETE_ACTION', '删除勾选项目');
+define('TEXT_CONTENTS_MUST_SELECT', '请至少选择一项');
+define('TEXT_DEL_CONTENTS', '确定要删除吗？');
+define('TEXT_ERROR_NULL','<font color=\'red\'>请输入。</font>');
+define('TEXT_LINK','链接');
+define('TEXT_SORT_ASC','▲');
+define('TEXT_SORT_DESC','▼');
 ?>
