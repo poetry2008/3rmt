@@ -9,6 +9,9 @@ $http_referer = $_SERVER['HTTP_REFERER'];
 $http_referer_arr = explode('?',$_SERVER['HTTP_REFERER']);
 $http_referer_arr = explode('admin',$http_referer_arr[0]);
 $request_page_name = '/admin'.$http_referer_arr[1];
+if (empty($http_referer)) {
+  $request_page_name = '/admin/'.FILENAME_FINAL_PREORDERS;
+}
 $request_one_time_sql = "select * from ".TABLE_PWD_CHECK." where page_name='".$request_page_name."'";
 $request_one_time_query = tep_db_query($request_one_time_sql);
 $request_one_time_arr = array();
