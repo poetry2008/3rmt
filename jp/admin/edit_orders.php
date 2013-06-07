@@ -191,6 +191,7 @@ if (tep_not_null($action)) {
     // 1. UPDATE ORDER ###############################################################################################
   case 'update_order':
 
+      $orders_status_flag = tep_orders_finished($oID) == '1' ? true : false;
       $update_user_info = tep_get_user_info($ocertify->auth_user);
       $year = $_POST['fetch_year']; 
       $month = $_POST['fetch_month'];
@@ -748,7 +749,7 @@ if($address_error == false){
             tep_db_query($Query);
             $Query = "delete from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " where orders_products_id = '$orders_products_id';";
             tep_db_query($Query);
-            if(tep_orders_finishqa($oID) == '1'){
+            if($orders_status_flag && tep_orders_finishqa($oID) == '1'){
               tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered - " .  (int)($order['products_quantity']) ." where products_id = '" . $order['products_id'] . "'");
             }
           }

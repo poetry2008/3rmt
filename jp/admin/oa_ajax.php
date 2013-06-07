@@ -116,7 +116,7 @@ if(isset($_GET['action'])){
           }
         }
         //增加商品销售量
-        if(!in_array($id,$orders_id_array)){
+        if(!in_array($id,$orders_id_array) && tep_orders_finished($id) == '1'){
           $orders_products_query = tep_db_query("select products_id,products_quantity from ". TABLE_ORDERS_PRODUCTS ." where orders_id='".$id."'");
           while($orders_products_array = tep_db_fetch_array($orders_products_query)){
             tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . sprintf('%d', $orders_products_array['products_quantity']) . " where products_id = '" . (int)$orders_products_array['products_id'] . "'");
@@ -146,11 +146,13 @@ if(isset($_GET['action'])){
       }
       $result = tep_db_query("update `".TABLE_ORDERS."` set `end_user` = '".$value."', `flag_qaf` = ".'1'." where orders_id = '".$id."'");  
       //增加商品销售量
-      $orders_products_query = tep_db_query("select products_id,products_quantity from ". TABLE_ORDERS_PRODUCTS ." where orders_id='".$id."'");
-      while($orders_products_array = tep_db_fetch_array($orders_products_query)){
-        tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . sprintf('%d', $orders_products_array['products_quantity']) . " where products_id = '" . (int)$orders_products_array['products_id'] . "'");
+      if(tep_orders_finished($id) == '1'){
+        $orders_products_query = tep_db_query("select products_id,products_quantity from ". TABLE_ORDERS_PRODUCTS ." where orders_id='".$id."'");
+        while($orders_products_array = tep_db_fetch_array($orders_products_query)){
+          tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . sprintf('%d', $orders_products_array['products_quantity']) . " where products_id = '" . (int)$orders_products_array['products_id'] . "'");
+        }
+        tep_db_free_result($orders_products_query);
       }
-      tep_db_free_result($orders_products_query);
     } 
     break;
   case 'complete':

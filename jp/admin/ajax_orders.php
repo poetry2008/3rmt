@@ -2139,7 +2139,7 @@ echo json_encode($json_array);
     $delete_products_query =tep_db_query("delete from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='".$_POST['orders_products_id']."'");
     $delete_products_attributes_query = tep_db_query("delete from ". TABLE_ORDERS_PRODUCTS_ATTRIBUTES ." where orders_products_id='".$_POST['orders_products_id']."'");
     if($_POST['delete_flag'] != '1') {
-      tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = products_real_quantity + ".$orders_products_array['products_quantity'].(tep_orders_finishqa($session_orders_id) == '1' ? ", products_ordered = products_ordered - " . $orders_products_array['products_quantity'] : ''). " where products_id = '" . (int)$orders_products_array['products_id'] . "'");
+      tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = products_real_quantity + ".$orders_products_array['products_quantity'].(tep_orders_finished($session_orders_id) == '1' && tep_orders_finishqa($session_orders_id) == '1' ? ", products_ordered = products_ordered - " . $orders_products_array['products_quantity'] : ''). " where products_id = '" . (int)$orders_products_array['products_id'] . "'");
     } 
   }else{
     $_SESSION['orders_update_products'][$_GET['oID']]['ot_subtotal'] -= $_SESSION['new_products_list'][$session_orders_id]['orders_products'][$products_id_list_array[1]]['final_price'];
