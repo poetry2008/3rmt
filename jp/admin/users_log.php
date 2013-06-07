@@ -245,7 +245,7 @@ function UserLoginIp_list(){
         }
         echo '<td>'.$saddress.'</td>';
         echo '<td>'.$user_time_temp_array[$admin_value].'</td>'; 
-        echo '<td>SuperAdmin</td>';
+        echo '<td>Root</td>';
         echo '<td>'.$admin_value.'</td>';
         echo '<td><a href="javascript:void(0);" onclick="if(confirm(\''.TEXT_DELETE_CONFIRM.'\')){ip_unlock(\''.$user_login_array['address'].'\','.($j+$k).',\''.$admin_value.'\');}"><u>'.TEXT_IP_UNLOCK.'</u></a></td>';
         echo '</tr>';   
