@@ -1786,7 +1786,7 @@ function tep_remove_order($order_id, $restock = false) {
     $order_query = tep_db_query("select products_id, products_quantity from " . TABLE_ORDERS_PRODUCTS . " where orders_id = '" . tep_db_input($order_id) . "'");
     while ($order = tep_db_fetch_array($order_query)) {
       $radices = tep_get_radices($order['products_id']);
-      tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = products_real_quantity + " . (int)($order['products_quantity']*$radices) .  ", products_ordered = products_ordered - " .  (int)($order['products_quantity']*$radices) . " where products_id = '" . $order['products_id'] . "'");
+      tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = products_real_quantity + " . (int)($order['products_quantity']*$radices) .  (tep_orders_finishqa($order_id) == '1' ? ", products_ordered = products_ordered - " .  (int)($order['products_quantity']) : ''). " where products_id = '" . $order['products_id'] . "'");
     }
   }
 

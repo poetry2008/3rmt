@@ -88,6 +88,7 @@ if(isset($_GET['action'])){
     $user_info = tep_get_user_info($ocertify->auth_user);
     $value =$user_info['name'];
     if($m){
+      $orders_id_array = array();
       foreach ($oids as $id){
         if(trim($id)!=''){
           $orders_raw = tep_db_query("select customers_id, payment_method, site_id, orders_status from ".TABLE_ORDERS." where orders_id = '".$id."'"); 
@@ -114,6 +115,15 @@ if(isset($_GET['action'])){
             $messageStack->add_session(sprintf(MESSAGE_FINISH_ORDER_TEXT,$id) , 'success');
           }
         }
+        //增加商品销售量
+        if(!in_array($id,$orders_id_array)){
+          $orders_products_query = tep_db_query("select products_id,products_quantity from ". TABLE_ORDERS_PRODUCTS ." where orders_id='".$id."'");
+          while($orders_products_array = tep_db_fetch_array($orders_products_query)){
+            tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . sprintf('%d', $orders_products_array['products_quantity']) . " where products_id = '" . (int)$orders_products_array['products_id'] . "'");
+          }
+          tep_db_free_result($orders_products_query);
+        }
+        $orders_id_array[] = $id;
       }
     }else {
       $orders_raw = tep_db_query("select customers_id, payment_method, site_id, orders_status from ".TABLE_ORDERS." where orders_id = '".$id."'"); 
@@ -135,8 +145,13 @@ if(isset($_GET['action'])){
         } 
       }
       $result = tep_db_query("update `".TABLE_ORDERS."` set `end_user` = '".$value."', `flag_qaf` = ".'1'." where orders_id = '".$id."'");  
-    }
-
+      //增加商品销售量
+      $orders_products_query = tep_db_query("select products_id,products_quantity from ". TABLE_ORDERS_PRODUCTS ." where orders_id='".$id."'");
+      while($orders_products_array = tep_db_fetch_array($orders_products_query)){
+        tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . sprintf('%d', $orders_products_array['products_quantity']) . " where products_id = '" . (int)$orders_products_array['products_id'] . "'");
+      }
+      tep_db_free_result($orders_products_query);
+    } 
     break;
   case 'complete':
     $orders_id = $_GET['oID'];
@@ -182,16 +197,18 @@ if(isset($_GET['action'])){
     $oa_item_str = implode(',',$oa_item_id_array);
     $complete_temp_flag = false;
     $oa_item_value_array = array();
-    $oa_form_query = tep_db_query("select item_id,value from ". TABLE_OA_FORMVALUE ." where orders_id='".$orders_id."' and item_id in (".$oa_item_str.")");
-    while($oa_form_array = tep_db_fetch_array($oa_form_query)){
+    if($oa_item_str != ''){
+      $oa_form_query = tep_db_query("select item_id,value from ". TABLE_OA_FORMVALUE ." where orders_id='".$orders_id."' and item_id in (".$oa_item_str.")");
+      while($oa_form_array = tep_db_fetch_array($oa_form_query)){
 
-      if(trim($oa_form_array['value']) == ''){
+        if(trim($oa_form_array['value']) == ''){
 
-        $complete_temp_flag = true;
-        $oa_item_value_array[] = $oa_form_array['item_id'];
+          $complete_temp_flag = true;
+          $oa_item_value_array[] = $oa_form_array['item_id'];
+        }
       }
+      tep_db_free_result($oa_form_query);
     }
-    tep_db_free_result($oa_form_query);
     $oa_diff_array = array_diff($oa_item_id_array,$oa_item_form_id_array);
     $oa_diff_array = array_merge($oa_diff_array,$oa_item_value_array);
     $oa_diff_name_array = array();
