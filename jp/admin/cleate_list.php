@@ -75,6 +75,15 @@ if(data !='false'){
 var pwd_arr = data.split(",");
 if(data.indexOf('[SQL-ERROR]')==-1){
 pwd =  window.prompt("<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>","");
+var tmp_pos_single = false;
+if (data.indexOf(pwd+',') > -1 || data.indexOf(','+pwd) > -1) {
+  tmp_pos_single = true;
+}
+if (tmp_pos_single == false) {
+  if (data.indexOf(pwd) > -1) {
+    tmp_pos_single = true;
+  }
+}
 if (data.indexOf(pwd+',') > -1 || data.indexOf(pwd) > -1 || data.indexOf(','+pwd) > -1) {
 $.ajax({
 url: 'ajax_orders.php?action=save_pwd_log',
@@ -130,7 +139,16 @@ function toggle_cleat_list_form(c_permission)
           document.forms.ce_form.submit(); 
         } else {
           var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-          if (tmp_msg_arr[1].indexOf(input_pwd_str+',') > -1 || tmp_msg_arr[1].indexOf(input_pwd_str) > -1 || tmp_msg_arr[1].indexOf(','+input_pwd_str) > -1) {
+          var tmp_pos_single = false;
+          if (tmp_msg_arr[1].indexOf(input_pwd_str+',') > -1 || tmp_msg_arr[1].indexOf(','+input_pwd_str) > -1) {
+            tmp_pos_single = true;
+          }
+          if (tmp_pos_single == false) {
+            if (tmp_msg_arr[1].indexOf(input_pwd_str) > -1) {
+              tmp_pos_single = true;
+            }
+          }
+          if (tmp_pos_single == true) {
             $.ajax({
               url: 'ajax_orders.php?action=record_pwd_log',   
               type: 'POST',
