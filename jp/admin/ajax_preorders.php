@@ -440,6 +440,7 @@ if (isset($_POST['orders_id']) && isset($_POST['orders_comment'])) {
     
     if (!empty($one_time_arr)) {
       $p_list_array = array(); 
+      $p_list_array[] = 31; 
       foreach ($one_time_arr as $o_key => $o_value) {
         if ($o_value != 'onetime') {
           switch($o_value) {
