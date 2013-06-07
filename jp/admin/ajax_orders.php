@@ -471,6 +471,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
     
     if (!empty($one_time_arr)) {
       $p_list_array = array(); 
+      $p_list_array[] = 31; 
       foreach ($one_time_arr as $o_key => $o_value) {
         if ($o_value != 'onetime') {
           switch($o_value) {
@@ -827,6 +828,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   }
   if(!(in_array('admin',$one_time_arr)&&in_array('chief',$one_time_arr)&& in_array('staff',$one_time_arr))&&in_array('onetime',$one_time_arr)){
     $p_list_array = array(); 
+    $p_list_array[] = 31; 
     foreach ($one_time_arr as $o_key => $o_value) {
       if ($o_value != 'onetime') {
         switch($o_value) {

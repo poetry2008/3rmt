@@ -51,7 +51,6 @@ function show_alert_log_list($oresult) {
       $is_disabled_single = true; 
     }
   }
-      $is_disabled_single = true; 
   while ($arec = tep_db_fetch_array($oresult)) {      // 获取记录
     $naddress = (int)$arec['address'];    // IP地址复原
     $saddress = '';
@@ -307,7 +306,7 @@ function all_select_logs(logs_list_id)
   var check_flag = document.edit_logs.all_check.checked;
   if (document.edit_logs.elements[logs_list_id]) {
     if (document.edit_logs.elements[logs_list_id].length == null) {
-      if (!document.edit_logs.elements[logs_list_id][i].disabled) {
+      if (!document.edit_logs.elements[logs_list_id].disabled) {
         if (check_flag == true) {
           document.edit_logs.elements[logs_list_id].checked = true;
         } else {
