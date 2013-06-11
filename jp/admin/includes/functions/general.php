@@ -10516,7 +10516,7 @@ function check_whether_is_limited($current_page)
   global $ocertify;
   if ($ocertify->npermission != 31) {
     $check_value_array = array(); 
-    $c_pwd_check_query = tep_db_query("select * from ".TABLE_PWD_CHECK." where page_name = '".DIR_WS_ADMIN.$current_page."'"); 
+    $c_pwd_check_query = tep_db_query("select * from ".TABLE_PWD_CHECK." where page_name = '/admin/".$current_page."'"); 
     while ($c_pwd_check_res = tep_db_fetch_array($c_pwd_check_query)) {
       $check_value_array[] = $c_pwd_check_res['check_value']; 
     }
