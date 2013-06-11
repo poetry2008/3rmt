@@ -6974,27 +6974,16 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
     功能: 判断商品在指定时间内是否卖出 
     参数: $products_id(int) 商品id 
     参数: $limit_time_info(string) 限制时间 
+    参数: $limit_orders_num(int) 订单数 
     返回值: 是否卖出(boolean) 
  ------------------------------------ */
-  function tep_check_best_sellers_isbuy($products_id, $limit_time_info = '')
+  function tep_check_best_sellers_isbuy($products_id, $limit_time_info = '', $limit_orders_num)
   {
     $now_time = time(); 
     $limit_time = 0; 
     
     if ($limit_time_info !== '') {
-      if ($limit_time_info) {
-        $limit_time = $limit_time_info['limit_time']; 
-      }
-    } else {
-      $pro_to_ca_raw = tep_db_query("select * from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id = '".$products_id."'");
-      $pro_to_ca_res = tep_db_fetch_array($pro_to_ca_raw);
-      if ($pro_to_ca_res) {
-        $limit_time_raw = tep_db_query("select * from ".TABLE_BESTSELLERS_TIME_TO_CATEGORY." where categories_id = '".$pro_to_ca_res['categories_id']."'"); 
-        $limit_time_res = tep_db_fetch_array($limit_time_raw); 
-        if ($limit_time_res) {
-          $limit_time = $limit_time_res['limit_time']; 
-        }
-      }
+      $limit_time = $limit_time_info; 
     }
     
 
@@ -7016,11 +7005,9 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
       while($order_product_row = tep_db_fetch_array($order_product_query)){
         $order_product_arr[] = $order_product_row['orders_id'];
       }
-      if(empty($order_arr)||empty($order_product_arr)){
-        return true;
-      }
+      
       $intersect_order = array_intersect($order_product_arr,$order_arr);
-      if(!empty($intersect_order)){
+      if(!empty($intersect_order) && count($intersect_order) >= $limit_orders_num){
         return true;
       }
 
@@ -7082,31 +7069,12 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
     
     if ($limit_time_info !== '') {
       if ($limit_time_info) {
-        if(is_array($limit_time_info)){
-          $limit_time = $limit_time_info['limit_time']; 
-        }else{
-          $limit_time = $limit_time_info; 
-        }
-      } else {
-        return ''; 
-      }
-    } else {
-      $pro_to_ca_raw = tep_db_query("select * from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id = '".$products_id."'");
-      $pro_to_ca_res = tep_db_fetch_array($pro_to_ca_raw);
-      if ($pro_to_ca_res) {
-        $limit_time_raw = tep_db_query("select * from ".TABLE_BESTSELLERS_TIME_TO_CATEGORY." where categories_id = '".$pro_to_ca_res['categories_id']."'"); 
-        $limit_time_res = tep_db_fetch_array($limit_time_raw); 
-        if ($limit_time_res) {
-          $limit_time = $limit_time_res['limit_time']; 
-        } else {
-          return ''; 
-        }
+        $limit_time = $limit_time_info; 
       } else {
         return ''; 
       }
     }
      
-
     if ($limit_time == 0) {
       return ''; 
     }
@@ -7145,37 +7113,6 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
       $diff_time_str = ($now_time_tmp - $oday_time)/(60*60*24); 
     }
     return $diff_time_str;
-  }
-
-/* -------------------------------------
-    功能: 检查该商品是否卖出 
-    参数: $products_id(int) 商品id 
-    参数: $limit_time_info(string) 限制信息 
-    返回值: 是否卖出(boolean) 
- ------------------------------------ */
-  function tep_check_show_isbuy($products_id, $limit_time_info = '') 
-  {
-    if ($limit_time_info !== '') {
-      if ($limit_time_info) {
-        if ($limit_time_info['limit_time']) {
-          return true; 
-        }
-      }
-    } else {
-      $pro_to_ca_raw = tep_db_query("select * from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id = '".$products_id."'");
-      $pro_to_ca_res = tep_db_fetch_array($pro_to_ca_raw);
-      if ($pro_to_ca_res) {
-        $limit_time_raw = tep_db_query("select * from ".TABLE_BESTSELLERS_TIME_TO_CATEGORY." where categories_id = '".$pro_to_ca_res['categories_id']."'"); 
-        $limit_time_res = tep_db_fetch_array($limit_time_raw); 
-        if ($limit_time_res) {
-          if ($limit_time_res['limit_time']) {
-            return true; 
-          }
-        }
-      }
-    }
-    
-    return false;
   }
 
 /* -------------------------------------

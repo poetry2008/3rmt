@@ -5108,6 +5108,13 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 $query_num = $site_time_array[$site_id];
                 $orders_query_num = $orders_site_time_array[$site_id];
               }
+              //读取受欢迎商品的订单数限制
+              $limit_orders_array = array();
+              $limit_num_query = tep_db_query("select categories_id,limit_time from ".TABLE_BESTSELLERS_TIME_TO_CATEGORY); 
+              while($limit_num_info = tep_db_fetch_array($limit_num_query)){  
+                $limit_orders_array[$limit_num_info['categories_id']] = $limit_num_info['limit_time']; 
+              }
+              tep_db_free_result($limit_num_query);
               while ($products = tep_db_fetch_array($products_query)) {
                 $products_count++;
                 $rows++;
@@ -5320,20 +5327,41 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 $products_table_content_row[] = array('params'=>$products_storage_params, 'text'=>$products_storage_text);
                 $products_table_content_row[] = array('params'=>$products_inventory_params, 'text'=>$products_inventory_text);
                 $products_mae_image_params .= 'class="dataTableContent"';
-                $limit_time_query = tep_db_query("select * from ".TABLE_BESTSELLERS_TIME_TO_CATEGORY." where categories_id = '".$current_category_id."'"); 
-                $limit_time_info = tep_db_fetch_array($limit_time_query); 
-                if (tep_check_show_isbuy($products['products_id'], $limit_time_info)) { 
-                  if (tep_check_best_sellers_isbuy($products['products_id'], $limit_time_info)) {
+                //读取分类下受欢迎商品的订单数限制
+                $limit_orders_num = ''; 
+                $limit_orders_num_flag = false;
+                $limit_orders_num = $limit_orders_array[$current_category_id];
+                if($limit_orders_num != ''){
+
+                  if($limit_orders_num > 0){ 
+                    $limit_orders_num_flag = true;
+                  }
+                }else{
+                  
+                  $limit_categories_query = tep_db_query("select categories_id from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id='".$products['products_id']."'"); 
+                  $limit_categories_array = tep_db_fetch_array($limit_categories_query);
+                  tep_db_free_result($limit_categories_query);
+                  $limit_orders_num = $limit_orders_array[$limit_categories_array['categories_id']]; 
+                  if($limit_orders_num != ''){
+
+                    if($limit_orders_num > 0){ 
+                      $limit_orders_num_flag = true;
+                    }
+                  }
+                }
+                $limit_time_info = 30; //限制天数
+                if ($limit_orders_num_flag == true) { 
+                  if (tep_check_best_sellers_isbuy($products['products_id'], $limit_time_info, $limit_orders_num)) {
                     $diff_oday = tep_calc_limit_time_by_order_id($products['products_id'], false, $limit_time_info,true); 
                     if ($diff_oday !== '') {
-                      $products_mae_image_text .= '<img onmouseover="set_image_alt_and_title(this,\''.$products['products_id'].'\',\''.$limit_time_info['limit_time'].'\',false)" src="images/icons/mae1.gif" alt="alt" title="title">'; 
+                      $products_mae_image_text .= '<img onmouseover="set_image_alt_and_title(this,\''.$products['products_id'].'\',\''.$limit_time_info.'\',false)" src="images/icons/mae1.gif" alt="alt" title="title">'; 
                     } else { 
                       $products_mae_image_text .= '<img alt="'.PIC_MAE_ALT_TEXT_NODATA.'" title="'.PIC_MAE_ALT_TEXT_NODATA.'" src="images/icons/mae3.gif" alt="">'; 
                     }
                   } else {
                     $diff_oday = tep_calc_limit_time_by_order_id($products['products_id'], true, $limit_time_info,true); 
                     if ($diff_oday !== '') {
-                      $products_mae_image_text .= '<img onmouseover="set_image_alt_and_title(this,\''.$products['products_id'].'\',\''.$limit_time_info['limit_time'].'\',true)" src="images/icons/mae2.gif" alt="alt" title="title">'; 
+                      $products_mae_image_text .= '<img onmouseover="set_image_alt_and_title(this,\''.$products['products_id'].'\',\''.$limit_time_info.'\',true)" src="images/icons/mae2.gif" alt="alt" title="title">'; 
                     } else {
                       $products_mae_image_text .= '<img alt="'.PIC_MAE_ALT_TEXT_NODATA.'" title="'.PIC_MAE_ALT_TEXT_NODATA.'" src="images/icons/mae3.gif" alt="">'; 
                     }
