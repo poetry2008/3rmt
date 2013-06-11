@@ -5811,7 +5811,7 @@ if($_GET['cID'] != -1){
   $user_letter_query = tep_db_query("select * from ".TABLE_LETTERS. " where userid = '".$_POST['user_e_id']."'"); 
   $user_letter_res = tep_db_fetch_array($user_letter_query); 
   if (tep_db_num_rows($letter_info_query) > 0) {
-    $user_calc_str = tep_show_pw_start($user_info_res['userid'], $user_letter_res['letter'], (($is_disabled_single)?' disabled="disabled"':'')).'&nbsp;'.tep_draw_input_field('user_rule', $user_info_res['rule'], 'style="width:60%;" id="user_rule"'.(($is_disabled_single)?' disabled="disabled"':'')).'<br><span id="rule_error" style="color:#ff0000;"></span>';
+    $user_calc_str = tep_show_pw_start($user_info_res['userid'], $user_letter_res['letter'], (($is_disabled_single)?' disabled="disabled"':(($user_info_res['status'] == '1')?'':' disabled="disabled"'))).'&nbsp;'.tep_draw_input_field('user_rule', $user_info_res['rule'], 'style="width:60%;" id="user_rule"'.(($is_disabled_single)?' disabled="disabled"':(($user_info_res['status'] == '1')?'':' disabled="disabled"'))).'<br><span id="rule_error" style="color:#ff0000;"></span>';
     $new_user_row[]['text'] = array(
           array('align' => 'left', 'params' => 'width="25%"', 'text' => USER_INFO_CALC_TEXT), 
           array('align' => 'left', 'text' => $user_calc_str) 
@@ -5823,10 +5823,17 @@ if($_GET['cID'] != -1){
             array('align' => 'left', 'text' => tep_draw_input_field('user_onetime', $user_letter_res['letter'].make_rand_pwd($user_info_res['rule']), 'id="user_onetime" class="readonly" style="width:60%" readonly').'&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(USER_ONETIME_PWD_PREVIEW, 'disabled="disabled"').'</a>') 
           );
     } else {
-      $new_user_row[]['text'] = array(
-            array('align' => 'left', 'params' => 'width="25%"', 'text' => USER_INFO_ONETIME_PWD), 
-            array('align' => 'left', 'text' => tep_draw_input_field('user_onetime', $user_letter_res['letter'].make_rand_pwd($user_info_res['rule']), 'id="user_onetime" class="readonly" style="width:60%" readonly').'&nbsp;<a href="javascript:void(0);" onclick="user_preview_onetime_pwd();">'.tep_html_element_button(USER_ONETIME_PWD_PREVIEW).'</a>') 
-          );
+      if ($user_info_res['status'] == '1') {
+        $new_user_row[]['text'] = array(
+              array('align' => 'left', 'params' => 'width="25%"', 'text' => USER_INFO_ONETIME_PWD), 
+              array('align' => 'left', 'text' => tep_draw_input_field('user_onetime', $user_letter_res['letter'].make_rand_pwd($user_info_res['rule']), 'id="user_onetime" class="readonly" style="width:60%" readonly').'&nbsp;<a href="javascript:void(0);" onclick="user_preview_onetime_pwd();">'.tep_html_element_button(USER_ONETIME_PWD_PREVIEW).'</a>') 
+            );
+      } else {
+        $new_user_row[]['text'] = array(
+              array('align' => 'left', 'params' => 'width="25%"', 'text' => USER_INFO_ONETIME_PWD), 
+              array('align' => 'left', 'text' => tep_draw_input_field('user_onetime', $user_letter_res['letter'].make_rand_pwd($user_info_res['rule']), 'id="user_onetime" class="readonly" style="width:60%" readonly').'&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(USER_ONETIME_PWD_PREVIEW, 'disabled="disabled"').'</a>') 
+            );
+      }
     }
     
     $new_user_row[]['text'] = array(
