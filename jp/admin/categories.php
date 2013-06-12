@@ -1,5 +1,4 @@
 <?php
-define('STORE_DB_TRANSACTIONS',true);
 /*
    $Id$
 
