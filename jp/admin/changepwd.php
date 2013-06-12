@@ -221,10 +221,10 @@ function makeDeleteUser($nmode=0) {
    返回值: 用户密码一览的html(string) 
  -----------------------------------------------------*/
 function UserPassword_preview() {
-
+  global $ocertify;
   PageBody('t', PAGE_TITLE_PASSWORD);   // 用户后台的标题显示（修改密码）
 
-  echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));              // <form>标签的输出
+  echo tep_draw_form('change_users_pwd', basename($GLOBALS['PHP_SELF']));              // <form>标签的输出
 
   $ssql = makeSelectUserInfo($GLOBALS['userslist']);      // 获取用户信息
   @$oresult = tep_db_query($ssql);
@@ -350,9 +350,10 @@ function UserPassword_preview() {
   echo tep_draw_hidden_field("execute_password");         // 把处理模式放在隐藏项目里
   echo tep_draw_hidden_field("userid", $GLOBALS['userslist']);    //把用户id放在隐藏项目里
   echo tep_draw_hidden_field("userslist", $GLOBALS['userslist']);    // 把用户id放在隐藏项目里
+  echo tep_draw_hidden_field("execute_update", BUTTON_CHANGE); 
 
   // 显示按钮
-  echo tep_draw_input_field("execute_update", BUTTON_CHANGE, "onClick=\"return formConfirm('password')\" class=\"element_button\"", FALSE, "submit", FALSE); // 变更
+  echo tep_draw_input_field("execute_update_button", BUTTON_CHANGE, "onClick=\"formConfirm('password', '".$ocertify->npermission."')\" class=\"element_button\"", FALSE, "button", FALSE); // 变更
   echo tep_draw_input_field("clear", BUTTON_CLEAR, 'class="element_button"', FALSE, "reset", FALSE);  // 清除
   echo "\n";
 
@@ -439,7 +440,6 @@ function UserInfor_execute() {
    返回值: 更新密码成功的html(string) 
  -----------------------------------------------------*/
 function UserPassword_execute() {
-
   PageBody('t', PAGE_TITLE_PASSWORD);   // 用户管理画面的标题显示（修改密码）
   // 新密码的输入检查
   $ret_err = checkNotnull($GLOBALS['aval']['password']);
@@ -500,7 +500,7 @@ function putJavaScript_ConfirmMsg() {
 echo '
 <script language="JavaScript1.1">
 <!--
-function formConfirm(type) {
+function formConfirm(type, c_permission) {
   switch (type) {
     case "update":
       rtn = confirm("'. JAVA_SCRIPT_INFO_CHANGE . '");
@@ -535,8 +535,42 @@ function formConfirm(type) {
       rtn = confirm("'. JAVA_SCRIPT_INFO_REVOKE . '");
       break;
   }
-  if (rtn) return true;
-  else return false;
+  if (rtn) {
+    if (c_permission == 31) {
+      document.forms.change_users_pwd.submit(); 
+    } else {
+      $.ajax({
+         url: "ajax_orders.php?action=getallpwd",   
+         type: "POST",
+         dataType: "text",
+         data: "current_page_name='.$_SERVER['PHP_SELF'].'", 
+         async: false,
+         success: function(msg) {
+           var tmp_msg_arr = msg.split("|||"); 
+           var pwd_list_array = tmp_msg_arr[1].split(",");
+           if (tmp_msg_arr[0] == "0") {
+             document.forms.change_users_pwd.submit(); 
+           } else {
+             var input_pwd_str = window.prompt("'.JS_TEXT_INPUT_ONETIME_PWD.'", ""); 
+             if (in_array(input_pwd_str, pwd_list_array)) {
+               $.ajax({
+                 url: "ajax_orders.php?action=record_pwd_log",   
+                 type: "POST",
+                 dataType: "text",
+                 data: "current_pwd="+input_pwd_str+"&url_redirect_str="+encodeURIComponent(document.forms.change_users_pwd.action),
+                 async: false,
+                 success: function(msg_info) {
+                   document.forms.change_users_pwd.submit(); 
+                 }
+               }); 
+             } else {
+               alert("'.JS_TEXT_ONETIME_PWD_ERROR.'"); 
+             }
+           }
+         }
+       }); 
+    }
+  } 
 }
 //-->
 </script>
@@ -592,9 +626,7 @@ function PageBodyTable($mode='t') {
     echo '<!-- body //-->' . "\n";
     echo '<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">' . "\n";
     echo '  <tr>' . "\n";
-    if($GLOBALS['ocertify']->npermission >= 10){
     echo '    <td width="' . BOX_WIDTH . '" valign="top"><table border="0" width="' . BOX_WIDTH . '" cellspacing="1" cellpadding="1" class="columnLeft">' . "\n";
-    }
     break;
   case 'u':
     echo '  </tr>' . "\n";
@@ -644,6 +676,7 @@ function PageBody($mode='t', $stitle = "") {
    返回值: 无 
  -----------------------------------------------------*/
 function PageFooter() {
+  global $ocertify; 
   echo "<!-- footer //-->\n";
   require(DIR_WS_INCLUDES . 'footer.php');
   echo "\n<!-- footer_eof //-->\n";
@@ -670,16 +703,14 @@ if (isset($_POST['execute_change'])) { $execute_change = $_POST['execute_change'
   PageBodyTable('t');     // 页面的布局表：开始（启动包括导航的表）
 
   // 显示左侧导航
-  if($ocertify->npermission >= 10){
   echo "<!-- left_navigation //-->\n";     
   include_once(DIR_WS_INCLUDES . 'column_left.php');
   echo "\n<!-- left_navigation_eof //-->\n";
   echo "    </table></td>\n";
-  }
   $change_pwd_flag = false;
   if((isset($userslist)&&$userslist)||
       (isset($userid)&&$userid)){
-    if($ocertify->npermission == 15){
+    if($ocertify->npermission >= 15){
       $change_pwd_flag = true;
     }else if($ocertify->auth_user == $userslist){
       $change_pwd_flag = true;

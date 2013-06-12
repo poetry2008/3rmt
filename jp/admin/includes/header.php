@@ -568,10 +568,15 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
       href="'.tep_href_link(FILENAME_PW_MANAGER, '',
     'NONSSL').'">'.HEADER_TEXT_PW_MANAGER.'</a></td>
       </tr>
-      ';
+      <tr>
+      <td class="menu01"><a class="t_link01"
+      onclick="javascript:goto_changepwd(\'changepwd_form\')"
+      href="javascript:void(0);">'.HEADER_TEXT_USERS.'</a>';
 ?>
 <?php 
-  echo '<tr>
+  echo '</td>
+     </tr>    
+     <tr>
       <td class="menu01"><a class="t_link01"
       href="'.tep_href_link(FILENAME_PERSONAL_SETTING, '',
         'NONSSL').'">'.HEADER_TEXT_PERSONAL_SETTING.'</a>';
