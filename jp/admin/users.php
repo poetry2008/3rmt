@@ -944,7 +944,7 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                   $user_table_title_row[] = array('params' => 'class="dataTableHeadingContent_order"', 'text' => $user_table_permission_str);
                   $user_table_title_row[] = array('params' => 'class="dataTableHeadingContent_order"', 'text' => $user_table_site_permission_str);
                   $user_table_title_row[] = array('align' => 'center','params' => 'class="dataTableHeadingContent_order"', 'text' => $user_table_status_str);
-                  $user_table_title_row[] = array('align' => 'right','params' => 'class="dataTableHeadingContent" width="30"', 'text' => TABLE_USER_INFO_ACTION);
+                  $user_table_title_row[] = array('align' => 'right','params' => 'class="dataTableHeadingContent_order" width="30"', 'text' => '<a href="javascript:void(0);">'.TABLE_USER_INFO_ACTION.'</a>');
                
                   $user_table_info_row[] = array('params' => 'class="dataTableHeadingRow"', 'text' => $user_table_title_row);
 
