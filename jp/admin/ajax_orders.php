@@ -2625,4 +2625,8 @@ echo json_encode($json_array);
  参数: $_POST['url_redirect_str'] url 
  ----------------------------------------*/
   tep_insert_pwd_log($_POST['current_pwd'],$ocertify->auth_user,false,'',$_POST['url_redirect_str']);
+}else if($_GET['action'] == 'categories_tree'){
+  require(DIR_WS_CLASSES . 'category_tree.php');
+  $osC_CategoryTree = new osC_CategoryTree;
+  echo $osC_CategoryTree->buildTree();
 }
