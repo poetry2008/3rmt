@@ -156,7 +156,7 @@ if ($best_limit_res) {
 ?>
 <form method="post" action="set_bairitu.php?action=set_time" name="cal_form">
 <p><?php echo SET_BAIRITU_BESTSELLER;?></p>
-<p><input type="text" value="<?php echo $current_limit_time;?>" name="btime"><?php echo SET_BAIRITU_BESTSELLER_READ;?></p>
+<p><?php echo SET_BAIRITU_BESTSELLER_READ_PREFIX;?><input type="text" value="<?php echo $current_limit_time;?>" name="btime"><?php echo SET_BAIRITU_BESTSELLER_READ;?></p>
 <input type="hidden" value="<?php echo $cpath ?>" name="cepath">
 <p><a href="javascript:void(0);"><?php echo tep_html_element_button(IMAGE_CONFIRM, 'onclick="toggle_bairitu_form(\''.$ocertify->npermission.'\', \'0\');"');?></a></p>
 </form>

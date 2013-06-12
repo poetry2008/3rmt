@@ -1786,7 +1786,7 @@ function tep_remove_order($order_id, $restock = false) {
     $order_query = tep_db_query("select products_id, products_quantity from " . TABLE_ORDERS_PRODUCTS . " where orders_id = '" . tep_db_input($order_id) . "'");
     while ($order = tep_db_fetch_array($order_query)) {
       $radices = tep_get_radices($order['products_id']);
-      tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = products_real_quantity + " . (int)($order['products_quantity']*$radices) .  ", products_ordered = products_ordered - " .  (int)($order['products_quantity']*$radices) . " where products_id = '" . $order['products_id'] . "'");
+      tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = products_real_quantity + " . (int)($order['products_quantity']*$radices) .  (tep_orders_finished($order_id) == '1' && tep_orders_finishqa($order_id) == '1' ? ", products_ordered = products_ordered - " .  (int)($order['products_quantity']) : ''). " where products_id = '" . $order['products_id'] . "'");
     }
   }
 
@@ -6974,27 +6974,16 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
     功能: 判断商品在指定时间内是否卖出 
     参数: $products_id(int) 商品id 
     参数: $limit_time_info(string) 限制时间 
+    参数: $limit_orders_num(int) 订单数 
     返回值: 是否卖出(boolean) 
  ------------------------------------ */
-  function tep_check_best_sellers_isbuy($products_id, $limit_time_info = '')
+  function tep_check_best_sellers_isbuy($products_id, $limit_time_info = '', $limit_orders_num)
   {
     $now_time = time(); 
     $limit_time = 0; 
     
     if ($limit_time_info !== '') {
-      if ($limit_time_info) {
-        $limit_time = $limit_time_info['limit_time']; 
-      }
-    } else {
-      $pro_to_ca_raw = tep_db_query("select * from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id = '".$products_id."'");
-      $pro_to_ca_res = tep_db_fetch_array($pro_to_ca_raw);
-      if ($pro_to_ca_res) {
-        $limit_time_raw = tep_db_query("select * from ".TABLE_BESTSELLERS_TIME_TO_CATEGORY." where categories_id = '".$pro_to_ca_res['categories_id']."'"); 
-        $limit_time_res = tep_db_fetch_array($limit_time_raw); 
-        if ($limit_time_res) {
-          $limit_time = $limit_time_res['limit_time']; 
-        }
-      }
+      $limit_time = $limit_time_info; 
     }
     
 
@@ -7016,11 +7005,9 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
       while($order_product_row = tep_db_fetch_array($order_product_query)){
         $order_product_arr[] = $order_product_row['orders_id'];
       }
-      if(empty($order_arr)||empty($order_product_arr)){
-        return true;
-      }
+      
       $intersect_order = array_intersect($order_product_arr,$order_arr);
-      if(!empty($intersect_order)){
+      if(!empty($intersect_order) && count($intersect_order) >= $limit_orders_num){
         return true;
       }
 
@@ -7082,31 +7069,12 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
     
     if ($limit_time_info !== '') {
       if ($limit_time_info) {
-        if(is_array($limit_time_info)){
-          $limit_time = $limit_time_info['limit_time']; 
-        }else{
-          $limit_time = $limit_time_info; 
-        }
-      } else {
-        return ''; 
-      }
-    } else {
-      $pro_to_ca_raw = tep_db_query("select * from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id = '".$products_id."'");
-      $pro_to_ca_res = tep_db_fetch_array($pro_to_ca_raw);
-      if ($pro_to_ca_res) {
-        $limit_time_raw = tep_db_query("select * from ".TABLE_BESTSELLERS_TIME_TO_CATEGORY." where categories_id = '".$pro_to_ca_res['categories_id']."'"); 
-        $limit_time_res = tep_db_fetch_array($limit_time_raw); 
-        if ($limit_time_res) {
-          $limit_time = $limit_time_res['limit_time']; 
-        } else {
-          return ''; 
-        }
+        $limit_time = $limit_time_info; 
       } else {
         return ''; 
       }
     }
      
-
     if ($limit_time == 0) {
       return ''; 
     }
@@ -7145,37 +7113,6 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
       $diff_time_str = ($now_time_tmp - $oday_time)/(60*60*24); 
     }
     return $diff_time_str;
-  }
-
-/* -------------------------------------
-    功能: 检查该商品是否卖出 
-    参数: $products_id(int) 商品id 
-    参数: $limit_time_info(string) 限制信息 
-    返回值: 是否卖出(boolean) 
- ------------------------------------ */
-  function tep_check_show_isbuy($products_id, $limit_time_info = '') 
-  {
-    if ($limit_time_info !== '') {
-      if ($limit_time_info) {
-        if ($limit_time_info['limit_time']) {
-          return true; 
-        }
-      }
-    } else {
-      $pro_to_ca_raw = tep_db_query("select * from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id = '".$products_id."'");
-      $pro_to_ca_res = tep_db_fetch_array($pro_to_ca_raw);
-      if ($pro_to_ca_res) {
-        $limit_time_raw = tep_db_query("select * from ".TABLE_BESTSELLERS_TIME_TO_CATEGORY." where categories_id = '".$pro_to_ca_res['categories_id']."'"); 
-        $limit_time_res = tep_db_fetch_array($limit_time_raw); 
-        if ($limit_time_res) {
-          if ($limit_time_res['limit_time']) {
-            return true; 
-          }
-        }
-      }
-    }
-    
-    return false;
   }
 
 /* -------------------------------------
@@ -10579,7 +10516,7 @@ function check_whether_is_limited($current_page)
   global $ocertify;
   if ($ocertify->npermission != 31) {
     $check_value_array = array(); 
-    $c_pwd_check_query = tep_db_query("select * from ".TABLE_PWD_CHECK." where page_name = '".DIR_WS_ADMIN.$current_page."'"); 
+    $c_pwd_check_query = tep_db_query("select * from ".TABLE_PWD_CHECK." where page_name = '/admin/".$current_page."'"); 
     while ($c_pwd_check_res = tep_db_fetch_array($c_pwd_check_query)) {
       $check_value_array[] = $c_pwd_check_res['check_value']; 
     }

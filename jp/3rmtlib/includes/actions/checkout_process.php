@@ -446,8 +446,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
       }
     }
   }
-
-    tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . sprintf('%d', $order->products[$i]['qty']) . " where products_id = '" . (int)$order->products[$i]['id'] . "'");
+ 
   $chara = '';
   $sql_data_array = array('orders_id' => $insert_id, 
                           'products_id' => (int)$order->products[$i]['id'], 

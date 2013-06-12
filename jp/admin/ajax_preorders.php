@@ -440,6 +440,7 @@ if (isset($_POST['orders_id']) && isset($_POST['orders_comment'])) {
     
     if (!empty($one_time_arr)) {
       $p_list_array = array(); 
+      $p_list_array[] = 31; 
       foreach ($one_time_arr as $o_key => $o_value) {
         if ($o_value != 'onetime') {
           switch($o_value) {
@@ -455,7 +456,7 @@ if (isset($_POST['orders_id']) && isset($_POST['orders_comment'])) {
           }
         }
       }
-      $sql = "select u.userid,u.rule,l.letter from ".  TABLE_USERS." u , ".TABLE_LETTERS." l,".TABLE_PERMISSIONS." p where u.userid = l.userid and (l.letter != '' or l.letter != null) and u.userid=p.userid ".(!empty($p_list_array)?" and p.permission in (".implode(',', $p_list_array).")":"and p.permission in (0)");
+      $sql = "select u.userid,u.rule,l.letter from ".  TABLE_USERS." u , ".TABLE_LETTERS." l,".TABLE_PERMISSIONS." p where u.userid = l.userid and (l.letter != '' or l.letter != null) and u.userid=p.userid and u.status = '1' ".(!empty($p_list_array)?" and p.permission in (".implode(',', $p_list_array).")":"and p.permission in (0)");
       
       $result = tep_db_query($sql);
       $arr =array();

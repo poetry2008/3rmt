@@ -51,7 +51,7 @@ require("includes/note_js.php");
           <tr>
             <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2" style="margin-bottom:5px;">
               <tr class="dataTableHeadingRow">
-                <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_NUMBER; ?></td>
+                <td class="dataTableHeadingContent" width="10%"><?php echo TABLE_HEADING_NUMBER; ?></td>
                 <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_PRODUCTS; ?></td>
                 <td class="dataTableHeadingContent" align="center"><?php echo TABLE_HEADING_PURCHASED; ?>&nbsp;</td>
               </tr>
@@ -89,10 +89,47 @@ require("includes/note_js.php");
     } else {
       $nowColor = $odd; 
     }
+    //生成跳转到商品管理页面的URL
+    $products_categories_id = tep_get_products_parent_id($products['products_id']);
+    $categories_url_id = get_link_parent_category($products_categories_id);
+    $categories_url_array = explode('_',$categories_url_id);
+
+    $current_category_id = end($categories_url_array);
+    $products_id_query = tep_db_query("select products_id from (
+                             select p.products_id,pd.site_id,p.sort_order,pd.products_name from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c 
+                             where p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' 
+                             and p.products_id = p2c.products_id 
+                             and p2c.categories_id = '" . $current_category_id . "'
+                             order by site_id DESC
+                           ) c where site_id = 0 
+                           group by products_id 
+                           order by sort_order, products_name, products_id");
+   $products_id_array = array();
+   $products_num = 0;
+   $products_page_flag = 1;
+   while($products_query_array  = tep_db_fetch_array($products_id_query)){
+
+     if($products_num - (MAX_DISPLAY_PRODUCTS_ADMIN*$products_page_flag-1) == 1){
+  
+       $products_page_flag++; 
+     }
+     $products_id_array[$products_page_flag][] = $products_query_array['products_id'];
+     $products_num++;
+   }
+   tep_db_free_result($products_id_query);
+
+   foreach($products_id_array as $products_key=>$products_value){
+
+     if(in_array($products['products_id'],$products_value)){
+
+       $page = $products_key;
+       break;
+     }
+   }
 ?>
-              <tr class="<?php echo $nowColor;?>" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='<?php echo $nowColor;?>'" onclick="document.location.href='<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=new_product_preview&read=only&pID=' . $products['products_id'] . '&origin=' . FILENAME_STATS_PRODUCTS_PURCHASED . '?page=' . $_GET['page'], 'NONSSL'); ?>'">
+              <tr class="<?php echo $nowColor;?>" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='<?php echo $nowColor;?>'" onclick="document.location.href='<?php echo tep_href_link(FILENAME_CATEGORIES, 'cPath='.$categories_url_id.'&page='.$page.'&pID='.$products['products_id'].'&site_id=0', 'NONSSL'); ?>'">
                 <td class="dataTableContent"><?php echo $rows; ?>.</td>
-                <td class="dataTableContent"><?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'action=new_product_preview&read=only&pID=' . $products['products_id'] . '&origin=' . FILENAME_STATS_PRODUCTS_PURCHASED . '?page=' . $_GET['page'], 'NONSSL') . '">' . $products['products_name'] . '</a>'; ?></td>
+                <td class="dataTableContent"><?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath='.$categories_url_id.'&page='.$page.'&pID='.$products['products_id'].'&site_id=0', 'NONSSL') . '">' . $products['products_name'] . '</a>'; ?></td>
                 <td class="dataTableContent" align="center"><?php echo $products['products_ordered']; ?>&nbsp;</td>
               </tr>
 <?php

@@ -471,6 +471,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
     
     if (!empty($one_time_arr)) {
       $p_list_array = array(); 
+      $p_list_array[] = 31; 
       foreach ($one_time_arr as $o_key => $o_value) {
         if ($o_value != 'onetime') {
           switch($o_value) {
@@ -486,7 +487,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
           }
         }
       }
-      $sql = "select u.userid,u.rule,l.letter from ".  TABLE_USERS." u , ".TABLE_LETTERS." l,".TABLE_PERMISSIONS." p where u.userid = l.userid and (l.letter != '' or l.letter != null) and u.userid=p.userid ".(!empty($p_list_array)?" and p.permission in (".implode(',', $p_list_array).")":"and p.permission in (0)");
+      $sql = "select u.userid,u.rule,l.letter from ".  TABLE_USERS." u , ".TABLE_LETTERS." l,".TABLE_PERMISSIONS." p where u.userid = l.userid and (l.letter != '' or l.letter != null) and u.userid=p.userid and u.status = '1' ".(!empty($p_list_array)?" and p.permission in (".implode(',', $p_list_array).")":"and p.permission in (0)");
       
       $result = tep_db_query($sql);
       $arr =array();
@@ -827,6 +828,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   }
   if(!(in_array('admin',$one_time_arr)&&in_array('chief',$one_time_arr)&& in_array('staff',$one_time_arr))&&in_array('onetime',$one_time_arr)){
     $p_list_array = array(); 
+    $p_list_array[] = 31; 
     foreach ($one_time_arr as $o_key => $o_value) {
       if ($o_value != 'onetime') {
         switch($o_value) {
@@ -842,7 +844,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
         }
       }
     }
-    $sql = "select u.userid,u.rule,l.letter from ".  TABLE_USERS." u , ".TABLE_LETTERS." l,".TABLE_PERMISSIONS." p where u.userid = l.userid and (l.letter != '' or l.letter != null) and u.userid=p.userid ".(!empty($p_list_array)?" and p.permission in (".implode(',', $p_list_array).")":"and p.permission in (0)");
+    $sql = "select u.userid,u.rule,l.letter from ".  TABLE_USERS." u , ".TABLE_LETTERS." l,".TABLE_PERMISSIONS." p where u.userid = l.userid and (l.letter != '' or l.letter != null) and u.userid=p.userid and u.status = '1' ".(!empty($p_list_array)?" and p.permission in (".implode(',', $p_list_array).")":"and p.permission in (0)");
     
     $result = tep_db_query($sql);
     $arr =array();
@@ -1688,7 +1690,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= TEXT_INFO_DELETE_INTRO.'&nbsp;&nbsp;';
   $html_str .= '</td>';
   $html_str .= '<td>';
-  $html_str .= tep_draw_checkbox_field('restock', '', true);
+  $html_str .= tep_draw_checkbox_field('restock', 'on', true);
   $html_str .= '</td>';
   $html_str .= '<td>';
   $html_str .= TEXT_INFO_RESTOCK_PRODUCT_QUANTITY; 
@@ -2137,7 +2139,7 @@ echo json_encode($json_array);
     $delete_products_query =tep_db_query("delete from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='".$_POST['orders_products_id']."'");
     $delete_products_attributes_query = tep_db_query("delete from ". TABLE_ORDERS_PRODUCTS_ATTRIBUTES ." where orders_products_id='".$_POST['orders_products_id']."'");
     if($_POST['delete_flag'] != '1') {
-      tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = products_real_quantity + ".$orders_products_array['products_quantity'].", products_ordered = products_ordered - " . $orders_products_array['products_quantity'] . " where products_id = '" . (int)$orders_products_array['products_id'] . "'");
+      tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = products_real_quantity + ".$orders_products_array['products_quantity'].(tep_orders_finished($session_orders_id) == '1' && tep_orders_finishqa($session_orders_id) == '1' ? ", products_ordered = products_ordered - " . $orders_products_array['products_quantity'] : ''). " where products_id = '" . (int)$orders_products_array['products_id'] . "'");
     } 
   }else{
     $_SESSION['orders_update_products'][$_GET['oID']]['ot_subtotal'] -= $_SESSION['new_products_list'][$session_orders_id]['orders_products'][$products_id_list_array[1]]['final_price'];
