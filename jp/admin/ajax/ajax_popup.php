@@ -5631,6 +5631,9 @@ if($_GET['cID'] != -1){
        case 'user_status':
          $user_order_sort_name = ' u.status';
          break;
+       case 'user_update':
+         $user_order_sort_name = ' u.date_update';
+         break;
     }
   }
   if (isset($_POST['user_sort_type'])) {
