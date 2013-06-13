@@ -322,7 +322,7 @@ function PageHeader() {
   echo '<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">' . "\n";
   if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){
   echo "<script language='javascript'>
-    one_time_pwd('".$page_name."', '".(!empty($_SERVER['HTTP_REFERER']))?urlencode($_SERVER['HTTP_REFERER']):urlencode(tep_href_link(FILENAME_DEFAULT))."');
+    one_time_pwd('".$page_name."', '".(!empty($_SERVER['HTTP_REFERER'])?urlencode($_SERVER['HTTP_REFERER']):urlencode(tep_href_link(FILENAME_DEFAULT)))."');
       </script>";
   }
   echo '<!-- header //-->' . "\n";
