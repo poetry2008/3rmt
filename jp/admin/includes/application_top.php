@@ -513,21 +513,21 @@ if(isset($_GET['his_url'])&&$_GET['his_url']){
   if ($ocertify->npermission != 31) {
     if (!$one_time_flag) {
       if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
-        one_time_pwd_forward401($page_name);
+        one_time_pwd_forward401($page_name, (!empty($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:tep_href_link(FILENAME_DEFAULT)), $one_time_arr);
       }
     } else {
       if (!in_array('onetime', $one_time_arr)) {
         if (!in_array('admin', $one_time_arr) && $ocertify->npermission == 15) {
           if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
-            one_time_pwd_forward401($page_name);
+            one_time_pwd_forward401($page_name, (!empty($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:tep_href_link(FILENAME_DEFAULT)), $one_time_arr);
           }
         } else if (!in_array('chief', $one_time_arr) && $ocertify->npermission == 10) {
           if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
-            one_time_pwd_forward401($page_name);
+            one_time_pwd_forward401($page_name, (!empty($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:tep_href_link(FILENAME_DEFAULT)), $one_time_arr);
           }
         } else if (!in_array('staff', $one_time_arr) && $ocertify->npermission == 7) {
           if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
-            one_time_pwd_forward401($page_name);
+            one_time_pwd_forward401($page_name, (!empty($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:tep_href_link(FILENAME_DEFAULT)), $one_time_arr);
           }
         }
       }

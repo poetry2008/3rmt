@@ -9,6 +9,7 @@ require(DIR_WS_CLASSES . 'currencies.php');
 require(DIR_FS_ADMIN . '/classes/notice_box.php');
 $cPath_yobi = cpathPart($_GET['cPath'], 1);  
 $currencies = new currencies();
+$order_status_info = tep_get_orders_status_array();
 $action = (isset($_GET['action']) ? $_GET['action'] : '');
 if ( eregi("(insert|update|setflag)", $action) ) include_once('includes/reset_seo_cache.php');
 
@@ -2597,7 +2598,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
         <?php
         if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
           <script language='javascript'>
-            one_time_pwd('<?php echo $page_name;?>');
+            one_time_pwd('<?php echo $page_name;?>', '<?php echo (!empty($_SERVER['HTTP_REFERER']))?urlencode($_SERVER['HTTP_REFERER']):urlencode(tep_href_link(FILENAME_DEFAULT));?>');
           </script>
             <?php }?>
             <div id="spiffycalendar" class="text"></div>
@@ -4088,7 +4089,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       c.categories_id = '".$cID."' 
                       and c.categories_id = cd.categories_id 
                       and cd.language_id='" . $languages_id ."' 
-                      order by site_id DESC
+                      ".  ((isset($_GET['site_id'])&&$_GET['site_id'])?"order by site_id DESC":"")."
                       ) c 
                       where site_id = ".((isset($_GET['site_id']) && $_GET['site_id'])?$_GET['site_id']:0)."
                       or site_id = 0
@@ -4490,7 +4491,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <?php echo BOX_CATALOG_CATEGORIES_PRODUCTS; ?>
                 <?php
                 if ($cPath) {
-                  $show_ca_query = tep_db_query("select * from (select c.categories_id,cd.site_id, cd.categories_name from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id =cd.categories_id and c.categories_id ='".$current_category_id."' and cd.language_id = '4' order by site_id DESC) c where site_id = '0' or site_id ='".$site_id."'group by categories_id limit 1");
+                  $show_ca_query = tep_db_query("select * from (select c.categories_id,cd.site_id, cd.categories_name from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id =cd.categories_id and c.categories_id ='".$current_category_id."' and cd.language_id = '4' ".  ((isset($_GET['site_id'])&&$_GET['site_id'])?"order by site_id DESC":"").") c where site_id = '0' or site_id ='".$site_id."'group by categories_id limit 1");
                   $show_ca_res = tep_db_fetch_array($show_ca_query);
                   echo '&nbsp;'.$show_ca_res['categories_name'];
                 }
@@ -4637,7 +4638,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       c.parent_id = '".$current_category_id."' 
                       and c.categories_id = cd.categories_id 
                       and cd.language_id='" . $languages_id ."' 
-                      order by site_id DESC
+                      ".  ((isset($_GET['site_id'])&&$_GET['site_id'])?"order by site_id DESC":"")."
                       ) c 
                       where site_id = ".((isset($_GET['site_id']) && $_GET['site_id'])?$_GET['site_id']:0)."
                       or site_id = 0
@@ -5020,7 +5021,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                         and pd.language_id = '" . $languages_id . "' 
                         and p.products_id = p2c.products_id 
                         and p2c.categories_id = '" . $current_category_id . "'
-                        order by site_id DESC
+                       ".  ((isset($_GET['site_id'])&&$_GET['site_id'])?"order by site_id DESC":"")."
                         ) c where  site_id = ".((isset($_GET['site_id']) && $_GET['site_id'])?$_GET['site_id']:0)." or site_id = 0 
                         group by products_id 
                         order by sort_order, products_name, products_id";
@@ -5049,6 +5050,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               $orders_site_time_array = array();
               $site_time_str = '';
               $orders_query_str = '';
+              $default_preorder_p_date = get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0);
+              $default_order_p_date = get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
               while($site_id_array = tep_db_fetch_array($site_id_query)){
 
                     $site_temp_id = $site_id_array['id'];
@@ -5059,13 +5062,13 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                         $query_temp_num = get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',$site_temp_id);
                       }else{
 
-                        if(get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
-                          $query_temp_num = get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
+                        if($default_preorder_p_date != ''){
+                          $query_temp_num = $default_preorder_p_date; 
                         }
                       }
                     }else{
-                      if(get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
-                        $query_temp_num = get_configuration_by_site_id('PREORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
+                      if($default_preorder_p_date!= ''){
+                        $query_temp_num = $default_preorder_p_date; 
                       }
                     } 
                     $site_time_array[$site_temp_id] = $query_temp_num;  
@@ -5078,13 +5081,13 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                         $orders_query_temp_num = get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',$site_temp_id);
                       }else{
 
-                        if(get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
-                          $orders_query_temp_num = get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
+                        if($default_order_p_date!= ''){
+                          $orders_query_temp_num = $default_order_p_date; 
                         }
                       }
                     }else{
-                      if(get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0) != ''){
-                        $orders_query_temp_num = get_configuration_by_site_id('ORDERS_PRODUCTS_EFFECTIVE_DATE',0); 
+                      if($default_order_p_date!= ''){
+                        $orders_query_temp_num = $default_order_p_date; 
                       }
                     } 
                     $orders_site_time_array[$site_temp_id] = $orders_query_temp_num; 
@@ -5224,7 +5227,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 }
                 //同行专用
                 $query_str = ''; 
-                
+              if($products['products_status']==1){
                 if(!empty($site_id) && $site_id != 0){
                   if($query_num != ''){
 
@@ -5263,16 +5266,23 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   }
                   
                 }
+              }else{
+                $products_preorder_text .=  '--'; 
+              }
                 $target_cnt=$products_count-1;
                 $products_preorder_params .= 'class="dataTableContent" align="center"'; 
                 $products_table_content_row[] = array('params'=>$products_preorder_params, 'text'=>$products_preorder_text);
                 $products_order_params .= 'eclass="dataTableContent" align="center"';
-                $tmp_order_product_num = tep_get_order_cnt_by_pid($products['products_id'], $site_id,$orders_query_str,$orders_query_num); 
+              if($products['products_status']==1){
+                $tmp_order_product_num = tep_get_order_cnt_by_pid($products['products_id'], $site_id,$orders_query_str,$orders_query_num,$order_status_info); 
                 if($tmp_order_product_num){
                   $products_order_text .= '<a href="orders.php?keywords='.urlencode($products['products_id']).'&search_type=sproducts_id'.(!empty($site_id)?'&site_id='.$site_id:'').'" style="text-decoration:underline;">';
                   $products_order_text .= $tmp_order_product_num;
                   $products_order_text .= '</a>';  
                 } 
+              }else{
+                $products_order_text = '--';
+              }
                 $products_table_content_row[] = array('params'=>$products_order_params, 'text'=>$products_order_text);
                 if (empty($site_id)) {
                   $products_storage_params .= 'class="dataTableContent" align="right" onmouseover=\'this.style.cursor="pointer"\'';
@@ -5302,25 +5312,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   &&$products['products_attention_1_3']!=1
                   &&$products['products_attention_1_3']!=''
                   &&$products['products_real_quantity']!=0){
-                  $products_inventory_text .= '<table width="100%">';
-                  $products_inventory_text .= '<tr>';
-                  $products_inventory_text .= '<td width="50%" align="right">';
                   $products_inventory_text .= tep_get_quantity($products['products_id']);
-                  $products_inventory_text .= '</td><td width="50%" align="right">(';
-                  $products_inventory_text .= $products['products_real_quantity'];
-                  $products_inventory_text .= ')';
-                  $products_inventory_text .= '</td>';
-                  $products_inventory_text .= '</tr>';
-                  $products_inventory_text .= '</table>';
                   }else{
-                  $products_inventory_text .= '<table width="100%">';
-                  $products_inventory_text .= '<tr>';
-                  $products_inventory_text .= '<td align="right">';
-                  $products_inventory_text .= '</td><td align="right">';
                   $products_inventory_text .= $products['products_real_quantity'];
-                  $products_inventory_text .= '</td>';
-                  $products_inventory_text .= '</tr>';
-                  $products_inventory_text .= '</table>';
                   }
 
                 }
@@ -5328,6 +5322,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 $products_table_content_row[] = array('params'=>$products_inventory_params, 'text'=>$products_inventory_text);
                 $products_mae_image_params .= 'class="dataTableContent"';
                 //读取分类下受欢迎商品的订单数限制
+              if ($products['products_status'] == '1') {
                 $limit_orders_num = ''; 
                 $limit_orders_num_flag = false;
                 $limit_orders_num = $limit_orders_array[$current_category_id];
@@ -5367,6 +5362,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     }
                   }
                 }
+              }else{
+                $products_mae_image_text = '--';
+              }
                 $products_table_content_row[] = array('params'=>$products_mae_image_params, 'text'=>$products_mae_image_text);
                 $products_stock_params .= 'class="dataTableContent" align="right" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'')) . '\'"';
                 $products_stock_text .= '<span style="display:none" class = "TRADER_INPUT"  name="TRADER_INPUT[]" id="TRADER_'.$products['products_id'].'">'.($kakaku_treder?round($kakaku_treder,2):0).'</span>';

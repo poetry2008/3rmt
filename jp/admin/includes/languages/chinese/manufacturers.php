@@ -36,5 +36,12 @@ define('TEXT_USER_ADDED','追加者:');
 define('TEXT_USER_UPDATE','更新者:');
 //define('TEXT_DATE_ADDED','作成日:');
 define('TEXT_DATE_UPDATE','更新日:');
-
+define('TEXT_MANUFACTURERS_SELECT_ACTION','请选择');
+define('TEXT_MANUFACTURERS_DELETE_ACTION', '删除勾选项目');
+define('TEXT_MANUFACTURERS_MUST_SELECT', '请至少选择一项');
+define('TEXT_DEL_MANUFACTURERS', '确定要删除吗？');
+define('TEXT_DATA_EMPTY','<font color=\'red\'><b>数据为空。</b></font>');
+define('TEXT_PLEASE_MANUFACTURERS_NAME','&nbsp;&nbsp;<font color=\'red\'>请输入制造商名称。</font>');
+define('TEXT_SORT_ASC','▲');
+define('TEXT_SORT_DESC','▼');
 ?>
