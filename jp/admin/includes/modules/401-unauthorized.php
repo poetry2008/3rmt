@@ -7,7 +7,7 @@
 function redirect_back_url(back_url) {
   window.location.href = back_url;
 }
-window.onload = setTimeout(function () {redirect_back_url('<?php echo $back_url?>')}, 3000);
+//window.onload = setTimeout(function () {redirect_back_url('<?php echo $back_url?>')}, 3000);
 </script>
 </HEAD>
 <BODY BGCOLOR="#FFFFFF" >
@@ -53,7 +53,7 @@ window.onload = setTimeout(function () {redirect_back_url('<?php echo $back_url?
 	下記URLよりアクセスしてください。<BR>
 	<A HREF="http://www.iimy.co.jp/">http://www.iimy.co.jp/</A>
     <br>
-    <a href="<?php echo $back_url;?>">前のページへ戻る</a>
+    <font size="2"><a href="<?php echo $back_url;?>">前のページへ戻る</a></font>
   </DIV>
 </BLOCKQUOTE>
 </HTML>
