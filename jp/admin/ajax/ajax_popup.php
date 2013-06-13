@@ -3686,12 +3686,12 @@ $latest_news_contents[]['text'] = array(
      array('text' => tep_draw_textarea_field('news_image_description', 'soft', '70', '7',isset($latest_news['news_image_description'])?stripslashes($latest_news['news_image_description']):'','onfocus="o_submit_single = false;" onblur="o_submit_single = true;" id="news_image_description" style="resize: vertical;"'.$disable))
      );
  $latest_news_contents[]['text'] = array(
-     array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.((tep_not_null($latest_news['author']))?$latest_news['author']:TEXT_UNSET_DATA)), 
-     array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.((tep_not_null($latest_news['date_added']))?$latest_news['date_added']:TEXT_UNSET_DATA))
+     array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_ADDED.((tep_not_null($latest_news['author']))?$latest_news['author']:TEXT_UNSET_DATA)), 
+     array('align' => 'left', 'text' => TEXT_DATE_ADDED.((tep_not_null($latest_news['date_added']))?$latest_news['date_added']:TEXT_UNSET_DATA))
      );
  $latest_news_contents[]['text'] = array(
-     array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.((tep_not_null($latest_news['update_editor']))?$latest_news['update_editor']:TEXT_UNSET_DATA)),
-     array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.((tep_not_null($latest_news['latest_update_date']))?date('Y-m-d H:i:s',$latest_news['latest_update_date']):TEXT_UNSET_DATA))
+     array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_UPDATE.((tep_not_null($latest_news['update_editor']))?$latest_news['update_editor']:TEXT_UNSET_DATA)),
+     array('align' => 'left', 'text' => TEXT_DATE_UPDATE.((tep_not_null($latest_news['latest_update_date']))?date('Y-m-d H:i:s',$latest_news['latest_update_date']):TEXT_UNSET_DATA))
      );
 if($ocertify->npermission >= 15){
 if(isset($disable) && $disable){
@@ -5997,7 +5997,7 @@ while ($contents = tep_db_fetch_array($contents_query)) {
     if (isset($error_message)) { $error_message = $error_message; }
     $contents[]['text'] = array(
          array('text' => TEXT_DETAIL_ROMAJI),
-         array('text' => tep_draw_input_field('romaji', $detail['romaji'],$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="width:60%" id="romaji"').$error_message.'&nbsp;&nbsp;<span id="error_romaji"></span><span id="error_romaji_info"></span>')
+         array('params' => 'nowrap','text' => tep_draw_input_field('romaji', $detail['romaji'],$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="width:60%" id="romaji"').$error_message.'&nbsp;&nbsp;<span id="error_romaji"></span><span id="error_romaji_info"></span>')
     );
     $contents[]['text'] = array(
          array('text' => TEXT_DETAIL_NAVBAR_TITLE),
@@ -6005,11 +6005,11 @@ while ($contents = tep_db_fetch_array($contents_query)) {
     );
     $contents[]['text'] = array(
          array('text' => TEXT_DETAIL_HEADING_TITLE),
-         array('text' => tep_draw_input_field('heading_title', $detail['heading_title'],$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"style="width:60%" id="heading_title"').'&nbsp;&nbsp;<span id="heading_title_error"></span>')
+         array('params' => 'nowrap','text' => tep_draw_input_field('heading_title', $detail['heading_title'],$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"style="width:60%" id="heading_title"').'&nbsp;&nbsp;<span id="heading_title_error"></span>')
     );
      $contents[]['text'] = array(
          array('text' => TEXT_DETAIL_CONTENTS),
-         array('text' => tep_draw_textarea_field('text_information', 'soft', '70', '20', stripslashes($detail['text_information']),' style="resize: vertical;"'.$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'))
+         array('params' => 'nowrap','text' => tep_draw_textarea_field('text_information', 'soft', '70', '20', stripslashes($detail['text_information']),' style="resize: vertical;"'.$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'))
     );
     $contents[]['text'] = array(
          array('params' => 'width="30%"','text' => TEXT_LINK),
@@ -6084,7 +6084,7 @@ while ($contents = tep_db_fetch_array($contents_query)) {
     if (isset($error_message)) { $error_message = $error_message; }
     $contents[]['text'] = array(
          array('text' => TEXT_DETAIL_ROMAJI),
-         array('text' => tep_draw_input_field('romaji', '',$disabled.'id="romaji"onfocus="o_submit_single = false;" onblur="o_submit_single = true;"style="width:60%"').$error_message.'&nbsp;&nbsp;<span id="error_romaji"></span><span id="error_romaji_info"></span>')
+         array('params' => 'nowrap','text' => tep_draw_input_field('romaji', '',$disabled.'id="romaji"onfocus="o_submit_single = false;" onblur="o_submit_single = true;"style="width:60%"').$error_message.'&nbsp;&nbsp;<span id="error_romaji"></span><span id="error_romaji_info"></span>')
     );
     $contents[]['text'] = array(
          array('text' => TEXT_DETAIL_NAVBAR_TITLE),
@@ -6092,7 +6092,7 @@ while ($contents = tep_db_fetch_array($contents_query)) {
     );
     $contents[]['text'] = array(
          array('text' => TEXT_DETAIL_HEADING_TITLE),
-         array('text' => tep_draw_input_field('heading_title', '',$disabled.'id="heading_title"onfocus="o_submit_single = false;" onblur="o_submit_single = true;"style="width:60%"').'&nbsp;&nbsp;<span id="heading_title_error"></span>')
+         array('params' => 'nowrap','text' => tep_draw_input_field('heading_title', '',$disabled.'id="heading_title"onfocus="o_submit_single = false;" onblur="o_submit_single = true;"style="width:60%"').'&nbsp;&nbsp;<span id="heading_title_error"></span>')
     );
     $contents[]['text'] = array(
          array('text' => TEXT_DETAIL_CONTENTS),
@@ -6109,6 +6109,178 @@ while ($contents = tep_db_fetch_array($contents_query)) {
       );
 
     $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="check_contents('.$ocertify->npermission.');"').'</a>';
+    if(!empty($button)){
+         $buttons = array('align' => 'center', 'button' => $button);
+    }
+    $notice_box->get_form($form_str);
+    $notice_box->get_heading($heading);
+    $notice_box->get_contents($contents, $buttons);
+    $notice_box->get_eof(tep_eof_hidden());
+    echo $notice_box->show_notice();
+ }
+}else if($_GET['action'] == 'edit_manufacturers'){
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_MANUFACTURERS);
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+$is_u_disabled = false;
+if ($ocertify->npermission != 31) {
+  if (!empty($_SESSION['site_permission'])) {
+    $tmp_u_array = explode(',', $_SESSION['site_permission']);
+    if (!in_array('0', $tmp_u_array)) {
+      $is_u_disabled = true;
+    }
+  } else {
+    $is_u_disabled = true;
+  }
+}
+if($_GET['mID'] != -1){
+if(!isset($_GET['sort']) || $_GET['sort'] == ''){
+   $manufacturers_str = 'manufacturers_name';
+}else if($_GET['sort'] == 'm_name'){
+   if($_GET['type'] == 'desc'){
+      $manufacturers_str = 'manufacturers_name desc';
+   }else{
+      $manufacturers_str = 'manufacturers_name asc';
+   }
+}else if($_GET['sort'] == 'last_modified'){
+   if($_GET['type'] == 'desc'){
+      $manufacturers_str = 'last_modified desc';
+   }else{
+      $manufacturers_str = 'last_modified asc';
+   }
+}
+  $manufacturers_query_raw = "select manufacturers_id, manufacturers_name, manufacturers_image, date_added, last_modified,user_added,user_update from " .  TABLE_MANUFACTURERS . " order by ".$manufacturers_str;
+  $manufacturers_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $manufacturers_query_raw, $manufacturers_query_numrows);
+  $manufacturers_query = tep_db_query($manufacturers_query_raw);
+  $cid_array = array();
+  while ($manufacturers = tep_db_fetch_array($manufacturers_query)) {
+    $cid_array[] = $manufacturers['manufacturers_id'];
+    if (((!isset($_GET['mID']) || !$_GET['mID']) || (@$_GET['mID'] == $manufacturers['manufacturers_id'])) && (!isset($mInfo) || !$mInfo) && (!isset($_GET['action']) || substr($_GET['action'], 0, 3) != 'new')) {
+      $manufacturer_products_query = tep_db_query("select count(*) as products_count from " . TABLE_PRODUCTS . " where manufacturers_id = '" . $manufacturers['manufacturers_id'] . "'");
+      $manufacturer_products = tep_db_fetch_array($manufacturer_products_query);
+
+      $mInfo_array = tep_array_merge($manufacturers, $manufacturer_products);
+      $mInfo = new objectInfo($mInfo_array);
+    }
+  }
+ foreach ($cid_array as $c_key => $c_value) {
+    if ($_GET['mID'] == $c_value) {
+      break; 
+    }
+  }
+  $page_str = '';
+  if ($c_key > 0) {
+    $page_str .= '<a onclick=\'show_manufacturers("",'.$cid_array[$c_key-1].','.$_GET['page'].')\' href="javascript:void(0);" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+  }
+ 
+  if ($c_key < (count($cid_array) - 1)) {
+    $page_str .= '<a onclick=\'show_manufacturers("",'.$cid_array[$c_key+1].','.$_GET['page'].')\' href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
+  }else{
+    $page_str .= '<font color="#000000">'.IMAGE_NEXT.'></font>'; 
+  }
+    $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+    $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+    $heading[] = array('align' => 'left', 'text' => $mInfo->manufacturers_name);
+    $heading[] = array('align' => 'right', 'text' => $page_str);
+    $form_str = tep_draw_form('manufacturers', FILENAME_MANUFACTURERS, 'page=' .  $_GET['page'] . '&mID=' . $mInfo->manufacturers_id . '&action=save', 'post', 'enctype="multipart/form-data"');
+    $contents = array();
+    $contents[]['text'] = array(
+           array('text' => ''),
+           array('text' => '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">')
+    );
+    $contents[]['text'] = array(
+           array('text' => TEXT_MANUFACTURERS_NAME),
+           array('text' => tep_draw_input_field('manufacturers_name',$mInfo->manufacturers_name,'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"id="manufacturers_name"'.(isset($is_u_disabled) && $is_u_disabled?'disabled="disabled"':'')).'&nbsp;&nbsp;<span id="manufacturers_name_error"></span>')
+    );
+    $contents[]['text'] = array(
+           array('text' => TEXT_MANUFACTURERS_IMAGE),
+           array('text' => tep_draw_file_field('manufacturers_image','','onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.(isset($is_u_disabled) && $is_u_disabled?'disabled="disabled"':'')))
+    );
+    $manufacturer_inputs_string = '';
+    $languages = tep_get_languages();
+    for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
+       $manufacturer_inputs_string .= tep_draw_input_field('manufacturers_url[' .  $languages[$i]['id'] . ']', tep_get_manufacturer_url($mInfo->manufacturers_id, $languages[$i]['id']),'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.(isset($is_u_disabled) && $is_u_disabled?'disabled="disabled"':''));
+    }
+    $contents[]['text'] = array(
+          array('params' => 'style="width:30%"','text' => TEXT_MANUFACTURERS_URL),
+          array('text' => $manufacturer_inputs_string)
+    );
+    $contents[]['text'] = array(
+          array('text' => TEXT_PRODUCTS),
+          array('text' => $mInfo->products_count)
+    );
+    $contents[]['text'] = array(
+            array('align' => 'left','text' => TEXT_USER_ADDED.(tep_not_null($mInfo->user_added)?$mInfo->user_added:TEXT_UNSET_DATA)), 
+            array('align' => 'left','text' => TEXT_DATE_ADDED.((tep_not_null($mInfo->date_added))?$mInfo->date_added:TEXT_UNSET_DATA))
+    );
+    $contents[]['text'] = array(
+            array('align' => 'left','text' => TEXT_USER_UPDATE.(tep_not_null($mInfo->user_update)?$mInfo->user_update:TEXT_UNSET_DATA)),
+            array('align' => 'left','text' => TEXT_DATE_UPDATE.((tep_not_null($mInfo->last_modified))?$mInfo->last_modified:TEXT_UNSET_DATA))
+    );
+    if ($mInfo->products_count > 0) {
+      $delete_products = 'on';
+    }
+    if($is_u_disabled){
+    $m_save = tep_html_element_button(IMAGE_SAVE, 'id="button_save" disabled="disabled"');
+    }else{
+    $m_save = '<a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="toggle_manufacturers_form(\''.$ocertify->npermission.'\')"') .  '</a> ';
+    }
+    if($ocertify->npermission >= 15){
+    if($is_u_disabled){
+    $m_save = tep_html_element_button(IMAGE_SAVE, 'id="button_save" disabled="disabled"');
+    $m_del = tep_html_element_button(IMAGE_DELETE,'disabled="disabled"');
+    }else{
+    $m_save = '<a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="toggle_manufacturers_form(\''.$ocertify->npermission.'\')"') .  '</a> ';
+    $m_del = '<a href="javascript:void(0);" onclick="check_del('.$mInfo->manufacturers_id.','.$_GET['page'].','.$ocertify->npermission.')">' .  tep_html_element_button(IMAGE_DELETE) . '</a>';
+    }
+    }
+    $button[] = $m_save.$m_del;
+    if(!empty($button)){
+         $buttons = array('align' => 'center', 'button' => $button);
+    }
+    $notice_box->get_form($form_str);
+    $notice_box->get_heading($heading);
+    $notice_box->get_contents($contents, $buttons);
+    $notice_box->get_eof(tep_eof_hidden());
+    echo $notice_box->show_notice();
+ }else{
+    $page_str  = '';
+    $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+    $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+    $heading[] = array('align' => 'left', 'text' => HEADING_TITLE);
+    $heading[] = array('align' => 'right', 'text' => $page_str);
+    $form_str = tep_draw_form('manufacturers', FILENAME_MANUFACTURERS, 'action=insert', 'post', 'enctype="multipart/form-data"');
+    $contents = array();
+    $contents[]['text'] = array(
+           array('text' => '<input type="hidden" name="user_added" value="'.$_SESSION['user_name'].'">'),    
+           array('text' => '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">')
+    ); 
+    $contents[]['text'] = array(
+           array('params' => 'style="width:30%"','text' => TEXT_MANUFACTURERS_NAME),    
+           array('text' => tep_draw_input_field('manufacturers_name','',(isset($is_u_disabled) && $is_u_disabled?'disabled="disabled"':'').'id="manufacturers_name"').'&nbsp;&nbsp;<span id="manufacturers_name_error"></span>')
+    ); 
+    $contents[]['text'] = array(
+           array('text' => TEXT_MANUFACTURERS_IMAGE),    
+           array('text' => tep_draw_file_field('manufacturers_image','',(isset($is_u_disabled) && $is_u_disabled?'disabled="disabled"':'')))
+    ); 
+    $manufacturer_inputs_string = '';
+    $languages = tep_get_languages();
+    for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
+      $manufacturer_inputs_string .=  tep_draw_input_field('manufacturers_url[' .  $languages[$i]['id'] . ']','',(isset($is_u_disabled) && $is_u_disabled?'disabled="disabled"':''));
+    }
+    $contents[]['text'] = array(
+           array('text' => TEXT_MANUFACTURERS_URL),    
+           array('text' => $manufacturer_inputs_string)
+    ); 
+    $contents[]['text'] = array(
+            array('align' => 'left','text' => TEXT_USER_ADDED.(tep_not_null($mInfo->user_added)?$mInfo->user_added:TEXT_UNSET_DATA)), 
+            array('align' => 'left','text' => TEXT_DATE_ADDED.((tep_not_null($mInfo->date_added))?$mInfo->date_added:TEXT_UNSET_DATA))
+    );
+    $contents[]['text'] = array(
+            array('align' => 'left','text' => TEXT_USER_UPDATE.(tep_not_null($mInfo->user_update)?$mInfo->user_update:TEXT_UNSET_DATA)),
+            array('align' => 'left','text' => TEXT_DATE_UPDATE.((tep_not_null($mInfo->last_modified))?$mInfo->last_modified:TEXT_UNSET_DATA))
+    );
+    $button[] = '<a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="toggle_manufacturers_form(\''.$ocertify->npermission.'\')"') .  '</a>';
     if(!empty($button)){
          $buttons = array('align' => 'center', 'button' => $button);
     }
