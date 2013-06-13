@@ -781,6 +781,6 @@ define('TEXT_FLAG_CHECKED','已读');
 define('TEXT_FLAG_UNCHECK','未读');
 define('MODULE_ORDER_TOTAL_TAX_TITLE', '消费税');
 define('NOTICE_NO_ACCESS_TEXT', '无权访问');
-define('NOTICE_NO_ACCESS_READ_TEXT', '您无权访问，请和管理员联系');
+define('NOTICE_NO_ACCESS_READ_TEXT', '您无权访问，请和管理员联系。');
 define('NOTICE_NO_ACCESS_LINK_TEXT', '请点击下面的URL进行访问。');
 define('NOTICE_NO_ACCESS_BACK_TEXT', '返回上一页');

@@ -785,6 +785,6 @@ define('HEADER_TEXT_ALERT_LINK','が');
 define('TEXT_DATA_IS_EMPTY','データがありません。');
 define('MODULE_ORDER_TOTAL_TAX_TITLE', '消費税');
 define('NOTICE_NO_ACCESS_TEXT', 'アクセスできません');
-define('NOTICE_NO_ACCESS_READ_TEXT', '権限がありませんので、管理員と連絡してください');
+define('NOTICE_NO_ACCESS_READ_TEXT', '権限がありませんので、管理員と連絡してください。');
 define('NOTICE_NO_ACCESS_LINK_TEXT', '下記URLよりアクセスしてください。');
 define('NOTICE_NO_ACCESS_BACK_TEXT', '前のページへ戻る');
