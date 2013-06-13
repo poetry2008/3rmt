@@ -470,7 +470,7 @@ $(document).ready(function(){
 <body style="text-align:center;">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
   <script language='javascript'>
-    one_time_pwd('<?php echo $page_name;?>');
+    one_time_pwd('<?php echo $page_name;?>', '<?php echo (!empty($_SERVER['HTTP_REFERER']))?urlencode($_SERVER['HTTP_REFERER']):urlencode(tep_href_link(FILENAME_DEFAULT));?>');
   </script>
 <?php }?>
   <div style="margin:0 auto; width:100%;">

@@ -30,9 +30,11 @@ function forward404()
 /* -------------------------------------
     功能: 不可以直接访问的页面 提示401
     参数: $page_name(string) URL  
+    参数: $back_url(string) 返回URL  
+    参数: $one_time_array(string) 信息 
     返回值: 无
  ------------------------------------ */
-function one_time_pwd_forward401($page_name)
+function one_time_pwd_forward401($page_name, $back_url = '', $one_time_array = array())
 { 
   $file_name = substr($page_name,7,strlen($page_name));
   $inpagelist = true;
@@ -64,10 +66,22 @@ function one_time_pwd_forward401($page_name)
       break;
     }
   }
+  
+  if (!empty($back_url)) {
+    if($_SESSION['last_page']!= $page_name){
+      unset($_SESSION[$_SESSION['last_page']]);
+      $_SESSION['last_page'] = $page_name;
+    }
+  }
+  
   if($inpagelist){
-  header($_SERVER["SERVER_PROTOCOL"] . " 401Not Found");
-  require( DIR_WS_MODULES. '401.html');
-  exit;
+    header($_SERVER["SERVER_PROTOCOL"] . " 401Not Found");
+    if (!empty($back_url)) {
+      require( DIR_WS_MODULES. '401-unauthorized.php');
+    } else {
+      require( DIR_WS_MODULES. '401.html');
+    }
+    exit;
   }
 }
 

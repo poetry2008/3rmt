@@ -529,7 +529,7 @@ require("includes/note_js.php");
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
   <script language='javascript'>
-    one_time_pwd('<?php echo $page_name;?>');
+    one_time_pwd('<?php echo $page_name;?>', '<?php echo (!empty($_SERVER['HTTP_REFERER']))?urlencode($_SERVER['HTTP_REFERER']):urlencode(tep_href_link(FILENAME_DEFAULT));?>');
   </script>
 <?php }?>
 <!-- header //-->
@@ -974,7 +974,7 @@ if(!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['c
       $products_num = isset($_POST['add_product_quantity']) ? $_POST['add_product_quantity'] : 1;
       $products_price = isset($_POST['add_product_price']) ? $_POST['add_product_price'] : 0;
       echo '<td class="dataTableContent">&nbsp;' .
-        ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input id="add_product_quantity" name="add_product_quantity" size="2" value="'.$products_num.'" onkeyup="clearLibNum(this);">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'<input type="hidden" name="add_product_price" id="add_product_price" size="4" value="0">'; 
+        ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input id="add_product_quantity" name="add_product_quantity" size="9" value="'.$products_num.'" onkeyup="clearLibNum(this);" style="text-align:right;">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'<input type="hidden" name="add_product_price" id="add_product_price" size="4" value="0">'; 
       echo '</td>';
       echo '<td class="dataTableContent" align="right"><input type="button" value="' . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . '" onclick="submit_check();">';
        
