@@ -36,5 +36,12 @@ define('TEXT_USER_ADDED','登録者:');
 define('TEXT_USER_UPDATE','更新者:');
 //define('TEXT_DATE_ADDED','作成日:');
 define('TEXT_DATE_UPDATE','更新日:');
-
+define('TEXT_MANUFACTURERS_SELECT_ACTION','選択したものを');
+define('TEXT_MANUFACTURERS_DELETE_ACTION', '削除する');
+define('TEXT_MANUFACTURERS_MUST_SELECT', '少なくとも1つの選択肢を選んでください。');
+define('TEXT_DEL_MANUFACTURERS', '本当に削除しますか？');
+define('TEXT_DATA_EMPTY','<font color=\'red\'><b>データがありません。</b></font>');
+define('TEXT_PLEASE_MANUFACTURERS_NAME','&nbsp;&nbsp;<font color=\'red\'>メーカー名を入力して下さい。</font>');
+define('TEXT_SORT_ASC','▲');
+define('TEXT_SORT_DESC','▼');
 ?>
