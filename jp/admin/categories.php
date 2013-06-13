@@ -5267,7 +5267,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   
                 }
               }else{
-                $products_preorder_text .=  '--'; 
+                $products_preorder_text .=  '-'; 
               }
                 $target_cnt=$products_count-1;
                 $products_preorder_params .= 'class="dataTableContent" align="center"'; 
@@ -5281,7 +5281,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   $products_order_text .= '</a>';  
                 } 
               }else{
-                $products_order_text = '--';
+                $products_order_text = '-';
               }
                 $products_table_content_row[] = array('params'=>$products_order_params, 'text'=>$products_order_text);
                 if (empty($site_id)) {
@@ -5363,7 +5363,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   }
                 }
               }else{
-                $products_mae_image_text = '--';
+                $products_mae_image_text = '-';
               }
                 $products_table_content_row[] = array('params'=>$products_mae_image_params, 'text'=>$products_mae_image_text);
                 $products_stock_params .= 'class="dataTableContent" align="right" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'')) . '\'"';
