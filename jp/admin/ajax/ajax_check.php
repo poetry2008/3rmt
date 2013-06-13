@@ -81,5 +81,36 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
   $check_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where romaji='".$_POST['post_romaji']."'");
   $check_num = tep_db_num_rows($check_query);
   echo $check_num;
+}else if(isset($_GET['action']) && $_GET['action'] == 'products_list'){
+  /* -----------------------------------------------------
+    功能: 生成相应分类下的商品列表 
+    参数: $_POST['id'] 分类ID 
+  -----------------------------------------------------*/
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_STATS_SALES_REPORT2);
+  $add_product_categories_id = $_POST['id'];
+  $products_pid = $_POST['products_id'];
+  $products_array = array();
+  //获取指定分类下的商品列表
+  $result = tep_db_query("
+              SELECT products_name, 
+              ptc.products_id 
+              FROM " . TABLE_PRODUCTS_TO_CATEGORIES . " ptc LEFT JOIN " . TABLE_PRODUCTS_DESCRIPTION . " pd ON ptc.products_id=pd.products_id 
+              WHERE pd.language_id = '" . (int)$languages_id . "' 
+              and ptc.categories_id = '".$add_product_categories_id."'
+              and pd.site_id = '0'");
+  while($row = tep_db_fetch_array($result)){
+
+    $products_array[$row['products_id']] = $row['products_name'];
+  }
+  tep_db_free_result($result);
+  
+  echo '<select name="products_id" id="products_id_list" onclick="save_products_id(this.value);">';
+  $products_list_str = "<option value='0'>" .  ADDPRODUCT_TEXT_SELECT_PRODUCT . "</option>\n";
+  asort($products_array);
+  foreach($products_array as $products_id => $products_name){
+    $products_list_str .= "<option value='".$products_id."'".($products_id == $products_pid ? ' selected' : '').">".$products_name."</option>\n";
+  }
+  echo $products_list_str;
+  echo "</select>";
 }
 ?>

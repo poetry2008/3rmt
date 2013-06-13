@@ -6,6 +6,62 @@
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<script language="javascript">
+<?php //显示相应分类下的商品列表?>
+function change_products(id,products_id){
+  
+  $.ajax({
+         type: "POST",
+         data: 'id='+id+'&products_id='+products_id,
+         async:false,
+         url: 'ajax.php?action=products_list',
+         success: function(data) {
+
+           $("#products_list").html(data); 
+           $("#c_id").val(id);
+         }
+  });
+}
+
+<?php //使商品列表可用或不可用?>
+function products_list_show(num){
+
+  if(num == 0){
+
+    $("#categories_id").attr('disabled',true); 
+    $("#products_id_list").attr('disabled',true);
+  }else{
+
+    $("#categories_id").attr('disabled',false); 
+    $("#products_id_list").attr('disabled',false);
+  }
+}
+
+<?php //保存商品ID?>
+function save_products_id(value){
+
+  $("#p_id").val(value);
+}
+
+$(document).ready(function() {
+<?php
+if(isset($_GET['add_product_categories_id']) && $_GET['add_product_categories_id'] != '' && isset($_GET['products_id']) && $_GET['products_id'] != ''){
+?>
+  change_products(<?php echo $_GET['add_product_categories_id'];?>,<?php echo $_GET['products_id'];?>);
+<?php
+}else if(isset($_GET['cid']) && $_GET['cid'] != '' && isset($_GET['pid']) && $_GET['pid'] != ''){
+?>
+  change_products(<?php echo $_GET['cid'];?>,<?php echo $_GET['pid'];?>);
+<?php
+}
+if(isset($_GET['is_select']) && $_GET['is_select'] == '0'){
+?>
+  products_list_show(0);  
+<?php
+}
+?>
+});
+</script>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 require("includes/note_js.php");
@@ -57,10 +113,31 @@ require("includes/note_js.php");
               <?php echo SR_REPORT_TYPE_WEEKLY; ?><br>
               <input nowrap type="radio" name="report" value="4" <?php if ($srView == 4) echo "checked"; ?>>
               <?php echo SR_REPORT_TYPE_DAILY; ?><br>
+              <input nowrap type="radio" name="report" value="5" <?php if ($srView == 5) echo "checked"; ?>>
+              <?php echo SR_REPORT_TYPE_ORDERS; ?><br>
               </td>
               <td align="left" class="menuBoxHeading">
- <?php echo SR_SITE;?> <br>
+                <?php echo SR_SITE;?> <br>
                 <?php echo tep_site_pull_down_menu_with_all($_GET['site_id'], false, TEXT_ALL);?><br>
+                <?php 
+                  echo SR_SORT_VAL1;
+                  $checked = '';
+                  if(isset($_GET['is_select'])){
+
+                    if($_GET['is_select'] == '1'){
+
+                      $checked = ' checked="checked"';
+                    }
+                  }else{
+                    $checked = ' checked="checked"'; 
+                  }
+                ?>
+                <?php echo '<input type="radio" name="is_select" value="1"'.$checked.' onclick="products_list_show(1);">'.SR_PRODUCTS_SELECT;?>
+                <?php echo '<input type="radio" name="is_select" value="0"'.(isset($_GET['is_select']) && $_GET['is_select'] == '0' ? ' checked="checked"' : '').' onclick="products_list_show(0);">'.SR_PRODUCTS_NOT_SELECT;?><br>
+                <?php echo tep_draw_pull_down_menu('add_product_categories_id', tep_get_category_tree(), (isset($_GET['add_product_categories_id']) ? $_GET['add_product_categories_id'] : $_GET['cid']), 'id="categories_id" onChange="change_products(this.value);"');
+                echo '<input type="hidden" name="cid" id="c_id" value="'.(isset($_GET['add_product_categories_id']) ? $_GET['add_product_categories_id'] : $_GET['cid']).'"><input type="hidden" name="pid" id="p_id" value="'.(isset($_GET['products_id']) ? $_GET['products_id'] : $_GET['pid']).'">';
+                ?><br>
+                <span id="products_list"></span>
               </td>
               <td class="menuBoxHeading"><?php echo SR_REPORT_START_DATE; ?><br>
               <table>
@@ -273,7 +350,8 @@ date("Y") - $i; ?></option>
                 <td class="dataTableHeadingContent" align="center"><?php echo  SR_TABLE_HEADING_ITEMS; ?></td>
                 <td class="dataTableHeadingContent" align="right"><?php echo  SR_TABLE_HEADING_REVENUE;?></td>
               </tr>
-              <?php
+<?php
+if($_GET['report'] != 5){
 $sum = 0;
 $orders_sum = 0;
 $products_point_sum = 0; 
@@ -366,6 +444,37 @@ if (isset($srDetail)){
     }
   }
 }
+}else{
+  $info = $sr->next();
+  $t = 0;
+  $orders_sum = 0;
+  $products_point_sum = 0;
+  $orders_i = 0;
+  $row_num = 0;
+  foreach($info as $info_value){
+
+    $even = 'dataTableSecondRow';
+    $odd  = 'dataTableRow';
+    if (isset($nowColor) && $nowColor == $odd) {
+      $nowColor = $even; 
+    } else {
+      $nowColor = $odd; 
+    }  
+?> 
+    <tr class="<?php echo $nowColor;?>" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='<?php echo $nowColor;?>'">
+      <td class="dataTableContent" align="left"><?php echo tep_date_long(date("Y-m-d\ H:i:s", strtotime($info_value['date_purchased']))); ?></td>
+      <td class="dataTableContent" align="left"><?php echo $info_value['orders_id'].'&nbsp;&nbsp;'.$info_value['pname']; ?></td>
+      <td class="dataTableContent" align="right"><?php echo $info_value['pquant']; ?></td>
+      <td class="dataTableContent" align="right"><?php echo $info_value['psum']; ?></td> 
+   </tr>
+<?php
+    $orders_i++;
+    $products_point_sum += $info_value['pquant'];
+    $t += $info_value['psum'];
+  }
+  $orders_sum = $orders_i;
+  $row_num = $orders_i;
+}
 ?>
 <tr>
 <td class="dataTableContent" align="right"></td>
@@ -402,7 +511,8 @@ if ($srCompare > SR_COMPARE_NO) {
               <tr>
                 <td colspan="7" class="dataTableContent"><?php echo SR_TEXT_COMPARE; ?></td>
               </tr>
-              <?php
+<?php
+if($_GET['report'] != 5){
   $sum = 0;
   while ($sr2->hasNext()) {
     $info = $sr2->next();
@@ -483,6 +593,28 @@ if ($srCompare > SR_COMPARE_NO) {
       }
     }
   }
+}else{
+
+  $info = $sr2->next(); 
+  foreach($info as $info_value){
+
+    $even = 'dataTableSecondRow';
+    $odd  = 'dataTableRow';
+    if (isset($nowColor) && $nowColor == $odd) {
+      $nowColor = $even; 
+    } else {
+      $nowColor = $odd; 
+    }  
+?> 
+    <tr class="<?php echo $nowColor;?>" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='<?php echo $nowColor;?>'">
+      <td class="dataTableContent" align="left"><?php echo tep_date_long(date("Y-m-d\ H:i:s", strtotime($info_value['date_purchased']))); ?></td>
+      <td class="dataTableContent" align="left"><?php echo $info_value['orders_id'].'&nbsp;&nbsp;'.$info_value['pname']; ?></td>
+      <td class="dataTableContent" align="right"><?php echo $info_value['pquant']; ?></td>
+      <td class="dataTableContent" align="right"><?php echo $info_value['psum']; ?></td> 
+   </tr>
+<?php 
+  }
+}
 }
 ?>
             </table>
