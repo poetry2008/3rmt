@@ -6314,9 +6314,10 @@ function tep_display_google_results($from_url='', $c_type=false){
     功能: 获取该商品关联的订单的取引終了的状态的商品个数的总和
     参数: $pid(int) 商品id 
     参数: $site_id(int) 网站id 
+    参数: $order_status_info(array) 订单状态信息
     返回值: 注文数(int) 
  ------------------------------------ */
-  function tep_get_order_cnt_by_pid($pid, $site_id = '',$orders_query_str,$orders_query_num){
+  function tep_get_order_cnt_by_pid($pid, $site_id = '',$orders_query_str,$orders_query_num,$order_status_info=array()){
     $query_str = ''; 
     
     if(!empty($site_id) && $site_id != 0){ 
@@ -6339,8 +6340,12 @@ function tep_display_google_results($from_url='', $c_type=false){
           where products_id='".$pid."'".$query_str.(!empty($site_id)?" and orders.site_id = '".$site_id."'":"").""));
     $cnt = 0;
     while($row = tep_db_fetch_array($query)){
-      if($row['finished']=='0'&&$row['flag_qaf']=='0' && !check_order_transaction_button($row['orders_status'])){
-        $cnt += $row['pq'];
+      if($row['finished']=='0'&&$row['flag_qaf']=='0'){
+        if(!empty($order_status_info)&&!$order_status_info[$row['orders_status']]){
+          $cnt += $row['pq'];
+        } else if(!check_order_transaction_button($row['orders_status'])){
+          $cnt += $row['pq'];
+        }
       }
     }
     return $cnt;
@@ -10730,4 +10735,12 @@ function tep_products_shipping_fee($oID,$total){
  $shipping_fee = $shipping_money_total > $free_value ? 0 : $weight_fee;
 
  return $shipping_fee;
+}
+function tep_get_orders_status_array(){
+  $order_status_info = array();
+  $order_status_raw = tep_db_query("select orders_status_id,is_cancle from ".TABLE_ORDERS_STATUS);
+  while($order_status = tep_db_fetch_array($order_status_raw)){
+    $order_status_info[$order_status['orders_status_id']] = $order_status['is_cancle'];
+  }
+  return $order_status_info;
 }
