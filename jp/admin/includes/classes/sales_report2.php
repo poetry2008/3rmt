@@ -4,7 +4,7 @@
 */
 
   class sales_report {
-    var $mode, $globalStartDate, $startDate, $endDate, $actDate, $showDate, $showDateEnd, $sortString, $status, $outlet, $method;
+    var $mode, $globalStartDate, $startDate, $endDate, $actDate, $showDate, $showDateEnd, $sortString, $status, $outlet, $method, $products_id, $orders_flag;
 /*----------------------------------------------------
  功能: 销售报告
  参数: $mode(string) 模式
@@ -15,10 +15,12 @@
  参数: $filter(string) 过滤器
  返回值: 无
  ---------------------------------------------------*/
-    function sales_report($mode, $startDate = 0, $endDate = 0, $sort = 0, $statusFilter = 0, $filter = 0, $srMethod = 0) {
+    function sales_report($mode, $startDate = 0, $endDate = 0, $sort = 0, $statusFilter = 0, $filter = 0, $srMethod = 0, $products_id) {
       // startDate and endDate have to be a unix timestamp. Use mktime !
       // if set then both have to be valid startDate and endDate
       $this->method = $srMethod == 1 ? 'date_purchased' : 'torihiki_date';
+      $this->products_id = $products_id;
+      $this->orders_flag = false;
       
       $this->mode = $mode;
       $this->tax_include = DISPLAY_PRICE_WITH_TAX;
@@ -77,12 +79,12 @@
 
       // queries for item details count
       $buyOrSellWhere = isset($_GET['bflag']) && $_GET['bflag'] ? (" AND op.products_id=p.products_id AND p.products_bflag=" . $bflag) : '';
-      $this->queryItemCnt = "SELECT op.products_id as pid, op.orders_products_id,
+      $this->queryItemCnt = "SELECT o.orders_id as orders_id, o.date_purchased as date_purchased, op.products_id as pid, op.orders_products_id,
         op.products_name as pname, sum(op.products_quantity) as pquant, ".
         /*
         if(p.products_bflag = '0' , sum(op.final_price * op.products_quantity), 0-sum(op.final_price * op.products_quantity))
         */
-        " sum(op.final_price * op.products_quantity) as psum, op.products_tax as ptax FROM " . TABLE_ORDERS . " o, " . TABLE_ORDERS_PRODUCTS . " op, " . TABLE_PRODUCTS . " p" ." WHERE o.orders_id = op.orders_id AND op.products_id = p.products_id " . $siteStr . $buyOrSellWhere ;
+        " sum(op.final_price * op.products_quantity) as psum, op.products_tax as ptax FROM " . TABLE_ORDERS . " o, " . TABLE_ORDERS_PRODUCTS . " op, " . TABLE_PRODUCTS . " p" ." WHERE".($this->products_id != 0 ? ' p.products_id='.$this->products_id.' and' : '')." o.orders_id = op.orders_id AND op.products_id = p.products_id " . $siteStr . $buyOrSellWhere ;
 
 
 
@@ -109,7 +111,7 @@
           $this->sortString = " order by psum desc, pname asc";
           break;
       }
-
+      
     }
 /*---------------------------------------------
  功能：下一个日期
@@ -148,6 +150,12 @@
           $sd = $this->actDate;
           $ed = mktime(0, 0, 0, date("m", $sd), date("d", $sd) + 1, date("Y", $sd));
           break;
+        // orders
+        case '5':
+          $sd = $this->actDate;
+          $ed = $this->endDate;
+          $this->orders_flag = true;
+          break;
       }
       if ($ed > $this->endDate) {
         $ed = $this->endDate;
@@ -162,7 +170,7 @@
       $rqOrders = tep_db_query($this->queryOrderCnt . " AND o.".$this->method." >= '" . tep_db_input(date("Y-m-d\TH:i:s", $sd)) . "' AND o.".$this->method." < '" . tep_db_input(date("Y-m-d\TH:i:s", $ed)) . "'" . $filterString);
       $order = tep_db_fetch_array($rqOrders);
 
-      $rqItems = tep_db_query($this->queryItemCnt . " AND o.".$this->method." >= '" . tep_db_input(date("Y-m-d\TH:i:s", $sd)) . "' AND o.".$this->method." < '" . tep_db_input(date("Y-m-d\TH:i:s", $ed)) . "'" . $filterString . " group by pid " . $this->sortString);
+      $rqItems = tep_db_query($this->queryItemCnt . " AND o.".$this->method." >= '" . tep_db_input(date("Y-m-d\TH:i:s", $sd)) . "' AND o.".$this->method." < '" . tep_db_input(date("Y-m-d\TH:i:s", $ed)) . "'" . $filterString . " group by ".($this->orders_flag == false ? 'pid' : 'orders_id,pid')." " . $this->sortString);
 
       // set the return values
       $this->actDate = $ed;
@@ -175,6 +183,7 @@
       $sumTot = 0;
       $sumBuyTot = 0;
       $sumSellTot = 0;
+      if($this->orders_flag == false){
       while ($resp[$cnt] = tep_db_fetch_array($rqItems)) {
         // to avoid rounding differences round for every quantum
         // multiply with the number of items afterwords.
@@ -202,7 +211,24 @@
         $resp[$cnt]['totitem'] = $itemTot;
         $cnt++;
       }
-      return $resp;
+      }
+
+      if($this->orders_flag == true){
+        $orders_list_array = array();
+        $orders_i = 0;
+        while($orders_array = tep_db_fetch_array($rqItems)){
+
+          $orders_list_array[$orders_i]['date_purchased'] = $orders_array['date_purchased'];
+          $orders_list_array[$orders_i]['orders_id'] = $orders_array['orders_id'];
+          $orders_list_array[$orders_i]['pname'] = $orders_array['pname'];
+          $orders_list_array[$orders_i]['pquant'] = $orders_array['pquant'];
+          $orders_list_array[$orders_i]['psum'] = $orders_array['psum'];
+          $orders_i++;
+        }  
+        return $orders_list_array;
+      }else{
+        return $resp;
+      }
       
     }
 }
