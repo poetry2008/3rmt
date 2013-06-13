@@ -2028,16 +2028,7 @@ function display(){
   var categories_tree = document.getElementById('categories_tree'); 
   if(categories_tree.style.display == 'none' || categories_tree.style.display == ''){
     categories_tree.style.top = offset.top + 'px';
-    $.ajax({
-       type:'POST',
-       dataType: 'text',
-       url: 'ajax_orders.php?action=categories_tree',
-       async:false,
-       success: function(msg) {
-         $("#categories_tree").html(msg);
-         categories_tree.style.display = 'block';
-       }
-    });  
+    categories_tree.style.display = 'block';
   }else{
     categories_tree.style.display = 'none';
   }
@@ -2620,11 +2611,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
             </div>
             <div id="categories_tree">
             <?php
-            /*
             require(DIR_WS_CLASSES . 'category_tree.php');
             $osC_CategoryTree = new osC_CategoryTree; 
             echo $osC_CategoryTree->buildTree();
-            */
             ?>
             </div>
             <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
@@ -3679,11 +3668,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   <a href="javascript:void(0)" onclick="display()"><?php echo CATEGORY_TREE_SELECT_TEXT;?></a>
                   <div id="categories_tree">
                   <?php
-                  /*
                   require_once(DIR_WS_CLASSES . 'category_tree.php');
                 $osC_CategoryTree = new osC_CategoryTree; 
                 echo $osC_CategoryTree->buildTree();
-                */
                 ?>
                   </div>
                   </div>
