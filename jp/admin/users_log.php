@@ -245,7 +245,7 @@ function UserLoginIp_list(){
         }
         echo '<td>'.$saddress.'</td>';
         echo '<td>'.$user_time_temp_array[$admin_value].'</td>'; 
-        echo '<td>SuperAdmin</td>';
+        echo '<td>Root</td>';
         echo '<td>'.$admin_value.'</td>';
         echo '<td><a href="javascript:void(0);" onclick="if(confirm(\''.TEXT_DELETE_CONFIRM.'\')){ip_unlock(\''.$user_login_array['address'].'\','.($j+$k).',\''.$admin_value.'\');}"><u>'.TEXT_IP_UNLOCK.'</u></a></td>';
         echo '</tr>';   
@@ -442,7 +442,7 @@ function PageHeader() {
   echo '<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">' . "\n";
   if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){
   echo "<script language='javascript'>
-    one_time_pwd('".$page_name."');
+    one_time_pwd('".$page_name."', '".(!empty($_SERVER['HTTP_REFERER'])?urlencode($_SERVER['HTTP_REFERER']):urlencode(tep_href_link(FILENAME_DEFAULT)))."');
       </script>";
   }
   echo '<!-- header //-->' . "\n";

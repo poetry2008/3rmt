@@ -700,8 +700,7 @@ if($address_error == false){
           } 
             if($customer_guest['is_calc_quantity'] != '1') {
               tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = ".$pr_quantity.", products_virtual_quantity = ".$pv_quantity." where products_id = '" . (int)$order['products_id'] . "'");
-            }
-            tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . $tmp_quantity . " where products_id = '" . (int)$order['products_id'] . "'");
+            } 
             tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
             tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
         } else {
@@ -732,8 +731,7 @@ if($address_error == false){
             // 如果是业者，不更新
               if($customer_guest['is_calc_quantity'] != '1') {
                 tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = ".$pr_quantity.", products_virtual_quantity = ".$pv_quantity." where products_id = '" . (int)$order['products_id'] . "'");
-              } 
-              tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . $quantity_difference . " where products_id = '" . (int)$order['products_id'] . "'");
+              }  
               tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
               tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
           }
@@ -1636,9 +1634,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
                   ),
                 'update',
                 "products_id = '" . $add_product_products_id . "'");
-          }
-          // 增加销售量
-          tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . (int)$add_product_quantity . " where products_id = '" . $add_product_products_id . "'");
+          } 
           // 处理负数问题
           tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . $add_product_products_id . "'");
           tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . $add_product_products_id . "'");
@@ -3092,7 +3088,7 @@ require("includes/note_js.php");
     <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
     <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
       <script language='javascript'>
-        one_time_pwd('<?php echo $page_name;?>');
+        one_time_pwd('<?php echo $page_name;?>', '<?php echo (!empty($_SERVER['HTTP_REFERER']))?urlencode($_SERVER['HTTP_REFERER']):urlencode(tep_href_link(FILENAME_DEFAULT));?>');
       </script>
         <?php }?>
         <!-- header -->

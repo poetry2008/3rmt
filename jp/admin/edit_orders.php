@@ -191,6 +191,7 @@ if (tep_not_null($action)) {
     // 1. UPDATE ORDER ###############################################################################################
   case 'update_order':
 
+      $orders_status_flag = tep_orders_finished($oID) == '1' ? true : false;
       $update_user_info = tep_get_user_info($ocertify->auth_user);
       $year = $_POST['fetch_year']; 
       $month = $_POST['fetch_month'];
@@ -683,8 +684,7 @@ if($address_error == false){
           }
           if($customer_guest['is_calc_quantity'] != '1') {
             tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = ".$pr_quantity.", products_virtual_quantity = ".$pv_quantity." where products_id = '" . (int)$order['products_id'] . "'");
-          }
-          tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . $quantity_difference . " where products_id = '" . (int)$order['products_id'] . "'");
+          } 
           tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
           tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
         }
@@ -749,6 +749,9 @@ if($address_error == false){
             tep_db_query($Query);
             $Query = "delete from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " where orders_products_id = '$orders_products_id';";
             tep_db_query($Query);
+            if($orders_status_flag && tep_orders_finishqa($oID) == '1'){
+              tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered - " .  (int)($order['products_quantity']) ." where products_id = '" . $order['products_id'] . "'");
+            }
           }
         }
       }
@@ -2893,7 +2896,7 @@ require("includes/note_js.php");
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
   <script language='javascript'>
-    one_time_pwd('<?php echo $page_name;?>');
+    one_time_pwd('<?php echo $page_name;?>', '<?php echo (!empty($_SERVER['HTTP_REFERER']))?urlencode($_SERVER['HTTP_REFERER']):urlencode(tep_href_link(FILENAME_DEFAULT));?>');
   </script>
     <?php }?>
     <!-- header //-->

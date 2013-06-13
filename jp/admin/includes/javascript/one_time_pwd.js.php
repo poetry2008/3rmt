@@ -1,4 +1,4 @@
-function one_time_pwd(page_name){
+function one_time_pwd(page_name, redirect_back_url){
   $.ajax({
 url: 'ajax_orders.php?action=getpwdcheckbox',
 type: 'POST',
@@ -21,8 +21,11 @@ success: function(_data) {
 }
 });
 }else{
-  alert("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>");
-  location=location;
+  if (window.confirm("<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>")) {
+    one_time_pwd(page_name, redirect_back_url); 
+  } else {
+    window.location.href = decodeURIComponent(redirect_back_url);
+  }
 }
 }else{
   location.href='/admin/sql_error.php';

@@ -209,8 +209,9 @@ function UserOncePwdLog_list() {
     // 按钮显示
     if ($ocertify->npermission >= 15) {
       echo tep_draw_input_field("execute_delete_button", BUTTON_DELETE_ONCE_PWD_LOG, "onClick=\"return formConfirm('delete', '".$ocertify->npermission."')\"", FALSE, "button", FALSE);  
+      echo '<div id="hidden_execute">'; 
+      echo '</div>'; 
     } 
-    echo tep_draw_hidden_field("execute_delete", BUTTON_DELETE_ONCE_PWD_LOG);  
     echo "</td></tr></table>\n";
     echo "</form>\n";           // form的footer
   }
@@ -265,6 +266,7 @@ function formConfirm(type, c_permission) {
           var tmp_msg_arr = msg.split("|||"); 
           var pwd_list_array = tmp_msg_arr[1].split(",");
           if (tmp_msg_arr[0] == "0") {
+            $("#hidden_execute").html(\''.tep_draw_hidden_field('execute_delete', BUTTON_DELETE_ONCE_PWD_LOG).'\'); 
             document.forms.users_form.submit(); 
           } else {
             var input_pwd_str = window.prompt("'.JS_TEXT_INPUT_ONETIME_PWD.'", ""); 
@@ -276,6 +278,7 @@ function formConfirm(type, c_permission) {
                 data: "current_pwd="+input_pwd_str+"&url_redirect_str="+encodeURIComponent(document.forms.users_form.action),
                 async: false,
                 success: function(msg_info) {
+                  $("#hidden_execute").html(\''.tep_draw_hidden_field('execute_delete', BUTTON_DELETE_ONCE_PWD_LOG).'\'); 
                   document.forms.users_form.submit(); 
                 }
               }); 
@@ -286,6 +289,7 @@ function formConfirm(type, c_permission) {
         }
       });
     } else {
+      $("#hidden_execute").html(\''.tep_draw_hidden_field('execute_delete', BUTTON_DELETE_ONCE_PWD_LOG).'\'); 
       document.forms.users_form.submit(); 
     }
   }
@@ -318,7 +322,7 @@ function PageHeader() {
   echo '<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">' . "\n";
   if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){
   echo "<script language='javascript'>
-    one_time_pwd('".$page_name."');
+    one_time_pwd('".$page_name."', '".(!empty($_SERVER['HTTP_REFERER'])?urlencode($_SERVER['HTTP_REFERER']):urlencode(tep_href_link(FILENAME_DEFAULT)))."');
       </script>";
   }
   echo '<!-- header //-->' . "\n";

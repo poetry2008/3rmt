@@ -51,7 +51,6 @@ function show_alert_log_list($oresult) {
       $is_disabled_single = true; 
     }
   }
-      $is_disabled_single = true; 
   while ($arec = tep_db_fetch_array($oresult)) {      // 获取记录
     $naddress = (int)$arec['address'];    // IP地址复原
     $saddress = '';
@@ -307,7 +306,7 @@ function all_select_logs(logs_list_id)
   var check_flag = document.edit_logs.all_check.checked;
   if (document.edit_logs.elements[logs_list_id]) {
     if (document.edit_logs.elements[logs_list_id].length == null) {
-      if (!document.edit_logs.elements[logs_list_id][i].disabled) {
+      if (!document.edit_logs.elements[logs_list_id].disabled) {
         if (check_flag == true) {
           document.edit_logs.elements[logs_list_id].checked = true;
         } else {
@@ -420,7 +419,7 @@ function PageHeader() {
   echo '<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">' . "\n";
   if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){
   echo "<script language='javascript'>
-    one_time_pwd('".$page_name."');
+    one_time_pwd('".$page_name."', '".(!empty($_SERVER['HTTP_REFERER'])?urlencode($_SERVER['HTTP_REFERER']):urlencode(tep_href_link(FILENAME_DEFAULT)))."');
       </script>";
   }
   echo '<!-- header //-->' . "\n";

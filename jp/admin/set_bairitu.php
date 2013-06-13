@@ -118,7 +118,7 @@ function toggle_bairitu_form(c_permission, cu_type)
 <?php
 if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
     <script language='javascript'>
-          one_time_pwd('<?php echo $page_name;?>');
+      one_time_pwd('<?php echo $page_name;?>', '<?php echo (!empty($_SERVER['HTTP_REFERER']))?urlencode($_SERVER['HTTP_REFERER']):urlencode(tep_href_link(FILENAME_DEFAULT));?>');
     </script>
 <?php }?>
 <form name="cal_u_form" method="post" action="set_bairitu.php?action=set_bai"  onsubmit="alert('<?php echo SET_BAIRITU_UPDATE_NOTICE;?>')">
@@ -156,7 +156,7 @@ if ($best_limit_res) {
 ?>
 <form method="post" action="set_bairitu.php?action=set_time" name="cal_form">
 <p><?php echo SET_BAIRITU_BESTSELLER;?></p>
-<p><input type="text" value="<?php echo $current_limit_time;?>" name="btime"><?php echo SET_BAIRITU_BESTSELLER_READ;?></p>
+<p><?php echo SET_BAIRITU_BESTSELLER_READ_PREFIX;?><input type="text" value="<?php echo $current_limit_time;?>" name="btime"><?php echo SET_BAIRITU_BESTSELLER_READ;?></p>
 <input type="hidden" value="<?php echo $cpath ?>" name="cepath">
 <p><a href="javascript:void(0);"><?php echo tep_html_element_button(IMAGE_CONFIRM, 'onclick="toggle_bairitu_form(\''.$ocertify->npermission.'\', \'0\');"');?></a></p>
 </form>

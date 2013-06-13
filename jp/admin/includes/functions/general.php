@@ -30,9 +30,11 @@ function forward404()
 /* -------------------------------------
     功能: 不可以直接访问的页面 提示401
     参数: $page_name(string) URL  
+    参数: $back_url(string) 返回URL  
+    参数: $one_time_array(string) 信息 
     返回值: 无
  ------------------------------------ */
-function one_time_pwd_forward401($page_name)
+function one_time_pwd_forward401($page_name, $back_url = '', $one_time_array = array())
 { 
   $file_name = substr($page_name,7,strlen($page_name));
   $inpagelist = true;
@@ -64,10 +66,22 @@ function one_time_pwd_forward401($page_name)
       break;
     }
   }
+  
+  if (!empty($back_url)) {
+    if($_SESSION['last_page']!= $page_name){
+      unset($_SESSION[$_SESSION['last_page']]);
+      $_SESSION['last_page'] = $page_name;
+    }
+  }
+  
   if($inpagelist){
-  header($_SERVER["SERVER_PROTOCOL"] . " 401Not Found");
-  require( DIR_WS_MODULES. '401.html');
-  exit;
+    header($_SERVER["SERVER_PROTOCOL"] . " 401Not Found");
+    if (!empty($back_url)) {
+      require( DIR_WS_MODULES. '401-unauthorized.php');
+    } else {
+      require( DIR_WS_MODULES. '401.html');
+    }
+    exit;
   }
 }
 
@@ -1786,7 +1800,7 @@ function tep_remove_order($order_id, $restock = false) {
     $order_query = tep_db_query("select products_id, products_quantity from " . TABLE_ORDERS_PRODUCTS . " where orders_id = '" . tep_db_input($order_id) . "'");
     while ($order = tep_db_fetch_array($order_query)) {
       $radices = tep_get_radices($order['products_id']);
-      tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = products_real_quantity + " . (int)($order['products_quantity']*$radices) .  ", products_ordered = products_ordered - " .  (int)($order['products_quantity']*$radices) . " where products_id = '" . $order['products_id'] . "'");
+      tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = products_real_quantity + " . (int)($order['products_quantity']*$radices) .  (tep_orders_finished($order_id) == '1' && tep_orders_finishqa($order_id) == '1' ? ", products_ordered = products_ordered - " .  (int)($order['products_quantity']) : ''). " where products_id = '" . $order['products_id'] . "'");
     }
   }
 
@@ -6300,9 +6314,10 @@ function tep_display_google_results($from_url='', $c_type=false){
     功能: 获取该商品关联的订单的取引終了的状态的商品个数的总和
     参数: $pid(int) 商品id 
     参数: $site_id(int) 网站id 
+    参数: $order_status_info(array) 订单状态信息
     返回值: 注文数(int) 
  ------------------------------------ */
-  function tep_get_order_cnt_by_pid($pid, $site_id = '',$orders_query_str,$orders_query_num){
+  function tep_get_order_cnt_by_pid($pid, $site_id = '',$orders_query_str,$orders_query_num,$order_status_info=array()){
     $query_str = ''; 
     
     if(!empty($site_id) && $site_id != 0){ 
@@ -6325,8 +6340,12 @@ function tep_display_google_results($from_url='', $c_type=false){
           where products_id='".$pid."'".$query_str.(!empty($site_id)?" and orders.site_id = '".$site_id."'":"").""));
     $cnt = 0;
     while($row = tep_db_fetch_array($query)){
-      if($row['finished']=='0'&&$row['flag_qaf']=='0' && !check_order_transaction_button($row['orders_status'])){
-        $cnt += $row['pq'];
+      if($row['finished']=='0'&&$row['flag_qaf']=='0'){
+        if(!empty($order_status_info)&&!$order_status_info[$row['orders_status']]){
+          $cnt += $row['pq'];
+        } else if(!check_order_transaction_button($row['orders_status'])){
+          $cnt += $row['pq'];
+        }
       }
     }
     return $cnt;
@@ -6974,27 +6993,16 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
     功能: 判断商品在指定时间内是否卖出 
     参数: $products_id(int) 商品id 
     参数: $limit_time_info(string) 限制时间 
+    参数: $limit_orders_num(int) 订单数 
     返回值: 是否卖出(boolean) 
  ------------------------------------ */
-  function tep_check_best_sellers_isbuy($products_id, $limit_time_info = '')
+  function tep_check_best_sellers_isbuy($products_id, $limit_time_info = '', $limit_orders_num)
   {
     $now_time = time(); 
     $limit_time = 0; 
     
     if ($limit_time_info !== '') {
-      if ($limit_time_info) {
-        $limit_time = $limit_time_info['limit_time']; 
-      }
-    } else {
-      $pro_to_ca_raw = tep_db_query("select * from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id = '".$products_id."'");
-      $pro_to_ca_res = tep_db_fetch_array($pro_to_ca_raw);
-      if ($pro_to_ca_res) {
-        $limit_time_raw = tep_db_query("select * from ".TABLE_BESTSELLERS_TIME_TO_CATEGORY." where categories_id = '".$pro_to_ca_res['categories_id']."'"); 
-        $limit_time_res = tep_db_fetch_array($limit_time_raw); 
-        if ($limit_time_res) {
-          $limit_time = $limit_time_res['limit_time']; 
-        }
-      }
+      $limit_time = $limit_time_info; 
     }
     
 
@@ -7016,11 +7024,9 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
       while($order_product_row = tep_db_fetch_array($order_product_query)){
         $order_product_arr[] = $order_product_row['orders_id'];
       }
-      if(empty($order_arr)||empty($order_product_arr)){
-        return true;
-      }
+      
       $intersect_order = array_intersect($order_product_arr,$order_arr);
-      if(!empty($intersect_order)){
+      if(!empty($intersect_order) && count($intersect_order) >= $limit_orders_num){
         return true;
       }
 
@@ -7082,31 +7088,12 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
     
     if ($limit_time_info !== '') {
       if ($limit_time_info) {
-        if(is_array($limit_time_info)){
-          $limit_time = $limit_time_info['limit_time']; 
-        }else{
-          $limit_time = $limit_time_info; 
-        }
-      } else {
-        return ''; 
-      }
-    } else {
-      $pro_to_ca_raw = tep_db_query("select * from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id = '".$products_id."'");
-      $pro_to_ca_res = tep_db_fetch_array($pro_to_ca_raw);
-      if ($pro_to_ca_res) {
-        $limit_time_raw = tep_db_query("select * from ".TABLE_BESTSELLERS_TIME_TO_CATEGORY." where categories_id = '".$pro_to_ca_res['categories_id']."'"); 
-        $limit_time_res = tep_db_fetch_array($limit_time_raw); 
-        if ($limit_time_res) {
-          $limit_time = $limit_time_res['limit_time']; 
-        } else {
-          return ''; 
-        }
+        $limit_time = $limit_time_info; 
       } else {
         return ''; 
       }
     }
      
-
     if ($limit_time == 0) {
       return ''; 
     }
@@ -7145,37 +7132,6 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
       $diff_time_str = ($now_time_tmp - $oday_time)/(60*60*24); 
     }
     return $diff_time_str;
-  }
-
-/* -------------------------------------
-    功能: 检查该商品是否卖出 
-    参数: $products_id(int) 商品id 
-    参数: $limit_time_info(string) 限制信息 
-    返回值: 是否卖出(boolean) 
- ------------------------------------ */
-  function tep_check_show_isbuy($products_id, $limit_time_info = '') 
-  {
-    if ($limit_time_info !== '') {
-      if ($limit_time_info) {
-        if ($limit_time_info['limit_time']) {
-          return true; 
-        }
-      }
-    } else {
-      $pro_to_ca_raw = tep_db_query("select * from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id = '".$products_id."'");
-      $pro_to_ca_res = tep_db_fetch_array($pro_to_ca_raw);
-      if ($pro_to_ca_res) {
-        $limit_time_raw = tep_db_query("select * from ".TABLE_BESTSELLERS_TIME_TO_CATEGORY." where categories_id = '".$pro_to_ca_res['categories_id']."'"); 
-        $limit_time_res = tep_db_fetch_array($limit_time_raw); 
-        if ($limit_time_res) {
-          if ($limit_time_res['limit_time']) {
-            return true; 
-          }
-        }
-      }
-    }
-    
-    return false;
   }
 
 /* -------------------------------------
@@ -10579,7 +10535,7 @@ function check_whether_is_limited($current_page)
   global $ocertify;
   if ($ocertify->npermission != 31) {
     $check_value_array = array(); 
-    $c_pwd_check_query = tep_db_query("select * from ".TABLE_PWD_CHECK." where page_name = '".DIR_WS_ADMIN.$current_page."'"); 
+    $c_pwd_check_query = tep_db_query("select * from ".TABLE_PWD_CHECK." where page_name = '/admin/".$current_page."'"); 
     while ($c_pwd_check_res = tep_db_fetch_array($c_pwd_check_query)) {
       $check_value_array[] = $c_pwd_check_res['check_value']; 
     }
@@ -10779,4 +10735,12 @@ function tep_products_shipping_fee($oID,$total){
  $shipping_fee = $shipping_money_total > $free_value ? 0 : $weight_fee;
 
  return $shipping_fee;
+}
+function tep_get_orders_status_array(){
+  $order_status_info = array();
+  $order_status_raw = tep_db_query("select orders_status_id,is_cancle from ".TABLE_ORDERS_STATUS);
+  while($order_status = tep_db_fetch_array($order_status_raw)){
+    $order_status_info[$order_status['orders_status_id']] = $order_status['is_cancle'];
+  }
+  return $order_status_info;
 }
