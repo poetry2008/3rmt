@@ -6159,7 +6159,7 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
       $manufacturers_str = 'last_modified asc';
    }
 }
-  $manufacturers_query_raw = "select manufacturers_id, manufacturers_name, manufacturers_image, date_added, last_modified,user_added,user_update from " .  TABLE_MANUFACTURERS . " order by ".$manufacturers_str;
+  $manufacturers_query_raw = "select manufacturers_id, manufacturers_name,manufacturers_alt, manufacturers_image, date_added, last_modified,user_added,user_update from " .  TABLE_MANUFACTURERS . " order by ".$manufacturers_str;
   $manufacturers_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $manufacturers_query_raw, $manufacturers_query_numrows);
   $manufacturers_query = tep_db_query($manufacturers_query_raw);
   $cid_array = array();
@@ -6202,10 +6202,6 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
            array('text' => TEXT_MANUFACTURERS_NAME),
            array('text' => tep_draw_input_field('manufacturers_name',$mInfo->manufacturers_name,'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"id="manufacturers_name"'.(isset($is_u_disabled) && $is_u_disabled?'disabled="disabled"':'')).'&nbsp;&nbsp;<span id="manufacturers_name_error"></span>')
     );
-    $contents[]['text'] = array(
-           array('text' => TEXT_MANUFACTURERS_IMAGE),
-           array('text' => tep_draw_file_field('manufacturers_image','','onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.(isset($is_u_disabled) && $is_u_disabled?'disabled="disabled"':'')))
-    );
     $manufacturer_inputs_string = '';
     $languages = tep_get_languages();
     for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
@@ -6214,6 +6210,16 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
     $contents[]['text'] = array(
           array('params' => 'style="width:30%"','text' => TEXT_MANUFACTURERS_URL),
           array('text' => $manufacturer_inputs_string)
+    );
+
+    $contents[]['text'] = array(
+           array('text' => TEXT_MANUFACTURERS_IMAGE),
+           array('text' => tep_draw_file_field('manufacturers_image','','onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.(isset($is_u_disabled) && $is_u_disabled?'disabled="disabled"':'')) .'<br>'.tep_info_image('manufacturers/' . $mInfo->manufacturers_image, $mInfo->manufacturers_name,'50','50')
+             )
+    );
+    $contents[]['text'] = array(
+          array('text' => TEXT_ALT),
+          array('text' => tep_draw_input_field('manufacturers_alt',$mInfo->manufacturers_alt,'onfocus="o_submit_single = false;"onblur="o_submit_single = true;"'.(isset($is_u_disabled) && $is_u_disabled?'disabled="disabled"':'')))
     );
     $contents[]['text'] = array(
           array('text' => TEXT_PRODUCTS),
@@ -6282,6 +6288,10 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
            array('text' => TEXT_MANUFACTURERS_URL),    
            array('text' => $manufacturer_inputs_string)
     ); 
+    $contents[]['text'] = array(
+          array('text' => TEXT_ALT),
+          array('text' => tep_draw_input_field('manufacturers_alt','','onfocus="o_submit_single = false;"onblur="o_submit_single = true;"'.(isset($is_u_disabled) && $is_u_disabled?'disabled="disabled"':'')))
+    );
     $contents[]['text'] = array(
             array('align' => 'left','text' => TEXT_USER_ADDED.(tep_not_null($mInfo->user_added)?$mInfo->user_added:TEXT_UNSET_DATA)), 
             array('align' => 'left','text' => TEXT_DATE_ADDED.((tep_not_null($mInfo->date_added))?$mInfo->date_added:TEXT_UNSET_DATA))

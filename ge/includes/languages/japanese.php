@@ -409,6 +409,7 @@ define('PAGE_NEW_TITLE', 'インフォメーション');
 define('TEXT_NO_PRODUCTS', '現在商品は登録されていません...');
 define('SEND_MAIL_HEADING_TITLE', 'メール受信テスト');
 
+define('TEXT_TAGS', 'タグ一覧');
 define('TEXT_NO_LATEST_NEWS', 'お知らせはありません');
 define('NOTICE_MUST_BUY_TEXT', 'ショッピングカートに商品が有りません、商品を入れてから押してください。');
 define('ENTRY_GUEST_EMAIL_NOT_ACTIVE', '&nbsp;<font color="#FF0000">認証手続きはまだ完了していません。</font>');

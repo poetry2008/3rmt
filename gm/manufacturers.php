@@ -28,7 +28,8 @@
             <table border="0" width="100%" cellspacing="0" cellpadding="0">
 <?php 
   //$manufacturer_query_raw = "select m.manufacturers_id, m.manufacturers_name, m.manufacturers_image, mi.manufacturers_url from " . TABLE_MANUFACTURERS . " m, " . TABLE_MANUFACTURERS_INFO . " mi  where  m.manufacturers_id = mi.manufacturers_id and languages_id = '" . $languages_id . "' order by manufacturers_name" ;
-  $manufacturer_query_raw = "select * from (select pd.products_id, pd.products_status, pd.site_id, m.manufacturers_id, m.manufacturers_name, m.manufacturers_image, mi.manufacturers_url from " . TABLE_MANUFACTURERS . " m, " . TABLE_MANUFACTURERS_INFO . " mi, ".TABLE_PRODUCTS." p, ".TABLE_PRODUCTS_DESCRIPTION." pd where p.products_id not in".tep_not_in_disabled_products()." and p.manufacturers_id  = m.manufacturers_id and p.products_id = pd.products_id and m.manufacturers_id = mi.manufacturers_id and languages_id = '" . $languages_id . "' order by pd.site_id DESC) p where site_id = '".SITE_ID."' or site_id = '0' group by manufacturers_id having p.products_status != '0' and p.products_status != '3' order by manufacturers_name" ;
+  $manufacturer_query_raw = "select * from (select pd.products_id,
+  pd.products_status, pd.site_id, m.manufacturers_id, m.manufacturers_name, m.manufacturers_alt,m.manufacturers_image, mi.manufacturers_url from " . TABLE_MANUFACTURERS . " m, " . TABLE_MANUFACTURERS_INFO . " mi, ".TABLE_PRODUCTS." p, ".TABLE_PRODUCTS_DESCRIPTION." pd where p.products_id not in".tep_not_in_disabled_products()." and p.manufacturers_id  = m.manufacturers_id and p.products_id = pd.products_id and m.manufacturers_id = mi.manufacturers_id and languages_id = '" . $languages_id . "' order by pd.site_id DESC) p where site_id = '".SITE_ID."' or site_id = '0' group by manufacturers_id having p.products_status != '0' and p.products_status != '3' order by manufacturers_name" ;
   $manufacturer_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $manufacturer_query_raw, $manufacturer_numrows);
   //ccdd
   $manufacturer_query = tep_db_query($manufacturer_query_raw);
@@ -64,7 +65,8 @@
 echo '
 <table class="box_des" width="100%" border="0" cellspacing="0" cellpadding="0">'."\n".
   '<tr>'."\n".
-  '<td width="120" class="smallText" valign="top">'.tep_image(DIR_WS_IMAGES . $manufacturer['manufacturers_image'],$manufacturer['manufacturers_name']).'</b><br><b style="text-align:center">'.$manufacturer['manufacturers_name'].'</b></td>'."\n".
+   '<td width="120" class="smallText" valign="top" align="center"> <a href="'.substr(strip_tags($manufacturer['manufacturers_url']),0,100) .'"><strong>'.$manufacturer['manufacturers_name'].'</strong></a><br> '.tep_image_new(DIR_WS_IMAGES.'manufacturers/'.$manufacturer['manufacturers_image'],$manufacturer['manufacturers_alt'],'50','80').'
+   </td>' . "\n".
     '<td>'."\n"
   ;
      echo '<table class="box_des" width="100%" border="0" cellspacing="2" cellpadding="0">'."\n".'<tr>'."\n";

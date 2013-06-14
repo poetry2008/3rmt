@@ -52,19 +52,18 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
       $sql_data_array = array('manufacturers_name' => $manufacturers_name);
 
       if ($_GET['action'] == 'insert') {
-        $insert_sql_data = array('date_added' => 'now()','last_modified' => 'now()','user_added' => $_POST['user_added'],'user_update' => $_POST['user_update']);
+        $insert_sql_data = array('date_added' => 'now()','last_modified' => 'now()','user_added' => $_POST['user_added'],'user_update' => $_POST['user_update'],'manufacturers_alt' => $_POST['manufacturers_alt']);
         $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
         tep_db_perform(TABLE_MANUFACTURERS, $sql_data_array);
         $manufacturers_id = tep_db_insert_id();
       } elseif ($_GET['action'] == 'save') {
-        $update_sql_data = array('last_modified' => 'now()','user_update' => $_POST['user_update']);
+        $update_sql_data = array('last_modified' => 'now()','user_update' => $_POST['user_update'],'manufacturers_alt' => $_POST['manufacturers_alt']);
         $sql_data_array = tep_array_merge($sql_data_array, $update_sql_data);
         tep_db_perform(TABLE_MANUFACTURERS, $sql_data_array, 'update', "manufacturers_id = '" . tep_db_input($manufacturers_id) . "'");
       }
 
       $manufacturers_image = tep_get_uploaded_file('manufacturers_image');
       $image_directory = tep_get_local_path(tep_get_upload_dir().'manufacturers/');
-
       if (is_uploaded_file($manufacturers_image['tmp_name'])) {
         if (!is_writeable($image_directory)) {
           if (is_dir($image_directory)) {
@@ -495,14 +494,15 @@ require("includes/note_js.php");
            $manufacturers_title_row = array();
            $manufacturers_title_row[] = array('params' => 'class="dataTableHeadingContent"','text' => '<input type="checkbox" name="all_check" '.(isset($is_u_disabled) && $is_u_disabled?'disabled="disabled"':'').'onclick="all_select_manufacturers(\'manufacturers_id[]\');">');
            if(isset($_GET['sort']) && $_GET['sort'] == 'm_name'){
-           $manufacturers_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_MANUFACTURERS,'sort=m_name&type='.$manufacturers_type).'">'.TABLE_HEADING_MANUFACTURERS.$m_name.'</a>');
+           $manufacturers_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_MANUFACTURERS,'page='.$_GET['page'].'&sort=m_name&type='.$manufacturers_type).'">'.TABLE_HEADING_MANUFACTURERS.$m_name.'</a>');
            }else{
-           $manufacturers_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_MANUFACTURERS,'sort=m_name&type=desc').'">'.TABLE_HEADING_MANUFACTURERS.$m_name.'</a>');
+           $manufacturers_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_MANUFACTURERS,'page='.$_GET['page'].'&sort=m_name&type=desc').'">'.TABLE_HEADING_MANUFACTURERS.$m_name.'</a>');
            }
            if(isset($_GET['sort']) && $_GET['sort'] == 'last_modified'){
-           $manufacturers_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"','text' => '<a href="'.tep_href_link(FILENAME_MANUFACTURERS,'sort=last_modified&type='.$manufacturers_type).'">'.TABLE_HEADING_ACTION.$last_modified.'</a>');
+           $manufacturers_title_row[] = array('params' =>
+               'class="dataTableHeadingContent_order" align="right"','text' => '<a href="'.tep_href_link(FILENAME_MANUFACTURERS,'page='.$_GET['page'].'&sort=last_modified&type='.$manufacturers_type).'">'.TABLE_HEADING_ACTION.$last_modified.'</a>');
            }else{
-           $manufacturers_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"','text' => '<a href="'.tep_href_link(FILENAME_MANUFACTURERS,'sort=last_modified&type=desc').'">'.TABLE_HEADING_ACTION.$last_modified.'</a>');
+           $manufacturers_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"','text' => '<a href="'.tep_href_link(FILENAME_MANUFACTURERS,'page='.$_GET['page'].'&sort=last_modified&type=desc').'">'.TABLE_HEADING_ACTION.$last_modified.'</a>');
            }
            $manufacturers_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $manufacturers_title_row);
   $manufacturers_query_raw = "select manufacturers_id, manufacturers_name, manufacturers_image, date_added, last_modified,user_added,user_update from " .  TABLE_MANUFACTURERS . " order by ".$manufacturers_str;

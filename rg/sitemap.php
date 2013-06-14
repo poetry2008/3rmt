@@ -59,6 +59,17 @@
                   <li><?php echo '<a href="' . tep_href_link(FILENAME_SEND_MAIL) . '">' . PAGE_SEND_MAIL . '</a>'; ?></li>
                   <li><?php echo '<a href="' . tep_href_link(FILENAME_EMAIL_TROUBLE) . '">' . PAGE_EMAIL_TROUBLE . '</a>'; ?></li>
                   <li><?php echo '<a href="' . tep_href_link(FILENAME_BROWSER_IE6X) . '">' . PAGE_BROWSER_IE6X. '</a>'; ?></li>
+                        <li><?php echo '<a href="'.tep_href_link('manufacturers.php').'">'.MENU_MU.'</a>'; ?></li>
+                        <li><?php echo '<a href="'.tep_href_link(FILENAME_SPECIALS).'">'.BOX_HEADING_SPECIALS.'</a>'; ?></li>
+                        <?php
+                        $present_query = tep_db_query("select count(*) as cnt from " . TABLE_PRESENT_GOODS . " where site_id = '".SITE_ID."' ");
+                        $present_result = tep_db_fetch_array($present_query);
+                        if($present_result['cnt'] > 0) {
+                          echo '<li><a href="'.tep_href_link(FILENAME_PRESENT).'">'.BOX_HEADING_PRESENT.'</a></li>';
+                          }
+                        ?>
+                        <li><?php echo '<a href="/tags/">'.TEXT_TAGS.'</a>'; ?></li>
+ 
                   <li><?php echo BOX_HEADING_INFORMATION; ?></li>
                    <li class="subcategory_tree">
         <ul>

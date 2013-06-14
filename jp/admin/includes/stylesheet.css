@@ -2045,8 +2045,12 @@ google hack
 }
 @media all and (-webkit-min-device-pixel-ratio:0){
 .td_box{
-	margin-right:-7px;
+	margin-right:-2px;
 	overflow:hidden;
+}
+.td_box input{
+	margin:0;
+	padding:0;
 }
 .right_space{
 	margin-right:-3px;

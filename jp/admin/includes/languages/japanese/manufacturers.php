@@ -44,4 +44,5 @@ define('TEXT_DATA_EMPTY','<font color=\'red\'><b>データがありません。<
 define('TEXT_PLEASE_MANUFACTURERS_NAME','&nbsp;&nbsp;<font color=\'red\'>メーカー名を入力して下さい。</font>');
 define('TEXT_SORT_ASC','▲');
 define('TEXT_SORT_DESC','▼');
+define('TEXT_ALT','ALT文字');
 ?>
