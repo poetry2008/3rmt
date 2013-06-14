@@ -126,11 +126,14 @@ require("includes/note_js.php");
        break;
      }
    }
+   $firstQuery = tep_db_query("select UNIX_TIMESTAMP(min(date_purchased)) as first FROM " . TABLE_ORDERS . " o left join ".TABLE_ORDERS_PRODUCTS." op on o.orders_id=op.orders_id where op.products_id='".$products['products_id']."'");
+   $first = tep_db_fetch_array($firstQuery);
+   tep_db_free_result($firstQuery);
 ?>
               <tr class="<?php echo $nowColor;?>" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='<?php echo $nowColor;?>'" onclick="document.location.href='<?php echo tep_href_link(FILENAME_CATEGORIES, 'cPath='.$categories_url_id.'&page='.$page.'&pID='.$products['products_id'].'&site_id=0', 'NONSSL'); ?>'">
                 <td class="dataTableContent"><?php echo $rows; ?>.</td>
                 <td class="dataTableContent"><?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath='.$categories_url_id.'&page='.$page.'&pID='.$products['products_id'].'&site_id=0', 'NONSSL') . '">' . $products['products_name'] . '</a>'; ?></td>
-                <td class="dataTableContent" align="center"><?php echo $products['products_ordered']; ?>&nbsp;</td>
+                <td class="dataTableContent" align="center"><?php echo '<a href="' . tep_href_link(FILENAME_STATS_SALES_REPORT2, 'report=5&site_id=&is_select=1&add_product_categories_id='.$current_category_id.'&cid='.$current_category_id.'&pid='.$products['products_id'].'&products_id='.$products['products_id'].'&startY='.date('Y',$first['first']).'&startM='.date('m',$first['first']).'&startD='.date('d',$first['first']).'&method=1&detail=2&endY='.date('Y').'&endM='.date('m').'&endD='.date('d').'&export=0&bflag='.(tep_get_bflag_by_product_id($products['products_id']) == 0 ? 1 : 2).'&status=success&sort=4&compare=0&max=', 'NONSSL') . '">' . $products['products_ordered']. '</a>'; ?>&nbsp;</td>
               </tr>
 <?php
   }

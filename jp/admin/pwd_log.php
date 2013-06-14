@@ -391,6 +391,7 @@ function PageBody($mode='t', $stitle = "") {
   返回值: 无
  --------------------------------------*/
 function PageFooter() {
+  global $ocertify; 
   echo "<!-- footer //-->\n";
   require(DIR_WS_INCLUDES . 'footer.php');
   echo "\n<!-- footer_eof //-->\n";

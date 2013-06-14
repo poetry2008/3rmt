@@ -38,13 +38,13 @@ class buying extends basePayment  implements paymentInterface  {
                  array(
                        "code"=>'bank_name',
                        "title"=>TS_TEXT_BANK_NAME,
-                       "field"=>tep_draw_input_field('bank_name', $theData['bank_name']),
+                       "field"=>tep_draw_input_field('bank_name', $theData['bank_name'], 'size="45"'),
                        "rule"=>basePayment::RULE_NOT_NULL,
                        ),
                  array(
                        "code"=>'bank_shiten',
                        "title"=>TS_TEXT_BANK_SHITEN,
-                       "field"=>tep_draw_input_field('bank_shiten', $theData['bank_shiten']),
+                       "field"=>tep_draw_input_field('bank_shiten', $theData['bank_shiten'], 'size="45"'),
                        "rule"=>basePayment::RULE_NOT_NULL,
                        ),
                  array(
@@ -58,13 +58,13 @@ class buying extends basePayment  implements paymentInterface  {
                  array(
                        "code"=>'bank_kouza_num',
                        "title"=>TS_TEXT_BANK_KOUZA_NUM,
-                       "field"=>tep_draw_input_field('bank_kouza_num', $theData['bank_kouza_num']),
+                       "field"=>tep_draw_input_field('bank_kouza_num', $theData['bank_kouza_num'], 'size="45"'),
                        "rule"=>array(basePayment::RULE_NOT_NULL,basePayment::RULE_IS_NUMBER)
                        ),
                  array(
                        "code"=>'bank_kouza_name',
                        "title"=>TS_TEXT_BANK_KOUZA_NAME,
-                       "field"=>tep_draw_input_field('bank_kouza_name', $theData['bank_kouza_name']).((!$back)?'<br>'.TS_TEXT_BANK_KOUZA_NAME_READ:''),
+                       "field"=>tep_draw_input_field('bank_kouza_name', $theData['bank_kouza_name'], 'size="45"').((!$back)?'<br>'.TS_TEXT_BANK_KOUZA_NAME_READ:''),
                        "rule"=>basePayment::RULE_NOT_NULL,
                        ),
                  );

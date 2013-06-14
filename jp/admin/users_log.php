@@ -515,6 +515,7 @@ function PageBody($mode='t', $stitle = "", $notes_flag='') {
   返回值: 无
  --------------------------------------*/
 function PageFooter() {
+  global $ocertify; 
   echo "</table>";
   echo "<!-- footer //-->\n";
   require(DIR_WS_INCLUDES . 'footer.php');

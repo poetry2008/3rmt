@@ -10,6 +10,8 @@ require(DIR_FS_ADMIN . '/classes/notice_box.php');
 $cPath_yobi = cpathPart($_GET['cPath'], 1);  
 $currencies = new currencies();
 $order_status_info = tep_get_orders_status_array();
+$limit_time_info = 30; //限制天数
+$befor_orders = tep_get_beforday_orders($limit_time_info);
 $action = (isset($_GET['action']) ? $_GET['action'] : '');
 if ( eregi("(insert|update|setflag)", $action) ) include_once('includes/reset_seo_cache.php');
 
@@ -5227,7 +5229,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 }
                 //同行专用
                 $query_str = ''; 
-                
+              if($products['products_status']==1){
                 if(!empty($site_id) && $site_id != 0){
                   if($query_num != ''){
 
@@ -5266,16 +5268,23 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   }
                   
                 }
+              }else{
+                $products_preorder_text .=  '-'; 
+              }
                 $target_cnt=$products_count-1;
                 $products_preorder_params .= 'class="dataTableContent" align="center"'; 
                 $products_table_content_row[] = array('params'=>$products_preorder_params, 'text'=>$products_preorder_text);
                 $products_order_params .= 'eclass="dataTableContent" align="center"';
+              if($products['products_status']==1){
                 $tmp_order_product_num = tep_get_order_cnt_by_pid($products['products_id'], $site_id,$orders_query_str,$orders_query_num,$order_status_info); 
                 if($tmp_order_product_num){
                   $products_order_text .= '<a href="orders.php?keywords='.urlencode($products['products_id']).'&search_type=sproducts_id'.(!empty($site_id)?'&site_id='.$site_id:'').'" style="text-decoration:underline;">';
                   $products_order_text .= $tmp_order_product_num;
                   $products_order_text .= '</a>';  
                 } 
+              }else{
+                $products_order_text = '-';
+              }
                 $products_table_content_row[] = array('params'=>$products_order_params, 'text'=>$products_order_text);
                 if (empty($site_id)) {
                   $products_storage_params .= 'class="dataTableContent" align="right" onmouseover=\'this.style.cursor="pointer"\'';
@@ -5305,25 +5314,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   &&$products['products_attention_1_3']!=1
                   &&$products['products_attention_1_3']!=''
                   &&$products['products_real_quantity']!=0){
-                  $products_inventory_text .= '<table width="100%">';
-                  $products_inventory_text .= '<tr>';
-                  $products_inventory_text .= '<td width="50%" align="right">';
                   $products_inventory_text .= tep_get_quantity($products['products_id']);
-                  $products_inventory_text .= '</td><td width="50%" align="right">(';
-                  $products_inventory_text .= $products['products_real_quantity'];
-                  $products_inventory_text .= ')';
-                  $products_inventory_text .= '</td>';
-                  $products_inventory_text .= '</tr>';
-                  $products_inventory_text .= '</table>';
                   }else{
-                  $products_inventory_text .= '<table width="100%">';
-                  $products_inventory_text .= '<tr>';
-                  $products_inventory_text .= '<td align="right">';
-                  $products_inventory_text .= '</td><td align="right">';
                   $products_inventory_text .= $products['products_real_quantity'];
-                  $products_inventory_text .= '</td>';
-                  $products_inventory_text .= '</tr>';
-                  $products_inventory_text .= '</table>';
                   }
 
                 }
@@ -5331,6 +5324,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 $products_table_content_row[] = array('params'=>$products_inventory_params, 'text'=>$products_inventory_text);
                 $products_mae_image_params .= 'class="dataTableContent"';
                 //读取分类下受欢迎商品的订单数限制
+              if ($products['products_status'] == '1') {
                 $limit_orders_num = ''; 
                 $limit_orders_num_flag = false;
                 $limit_orders_num = $limit_orders_array[$current_category_id];
@@ -5352,9 +5346,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     }
                   }
                 }
-                $limit_time_info = 30; //限制天数
                 if ($limit_orders_num_flag == true) { 
-                  if (tep_check_best_sellers_isbuy($products['products_id'], $limit_time_info, $limit_orders_num)) {
+                  if (tep_check_best_sellers_isbuy($products['products_id'], $befor_orders, $limit_orders_num)) {
                     $diff_oday = tep_calc_limit_time_by_order_id($products['products_id'], false, $limit_time_info,true); 
                     if ($diff_oday !== '') {
                       $products_mae_image_text .= '<img onmouseover="set_image_alt_and_title(this,\''.$products['products_id'].'\',\''.$limit_time_info.'\',false)" src="images/icons/mae1.gif" alt="alt" title="title">'; 
@@ -5370,6 +5363,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     }
                   }
                 }
+              }else{
+                $products_mae_image_text = '-';
+              }
                 $products_table_content_row[] = array('params'=>$products_mae_image_params, 'text'=>$products_mae_image_text);
                 $products_stock_params .= 'class="dataTableContent" align="right" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'')) . '\'"';
                 $products_stock_text .= '<span style="display:none" class = "TRADER_INPUT"  name="TRADER_INPUT[]" id="TRADER_'.$products['products_id'].'">'.($kakaku_treder?round($kakaku_treder,2):0).'</span>';

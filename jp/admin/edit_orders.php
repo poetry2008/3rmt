@@ -4528,7 +4528,7 @@ if($index_num > 0){
   {
     print "<tr><form action='$PHP_SELF?oID=$oID&action=$action' method='POST'>\n";
     print "<td class='dataTableContent'>&nbsp;" . ADDPRODUCT_TEXT_STEP . " 4: </td>";
-    print "<td class='dataTableContent'>&nbsp;" .  ADDPRODUCT_TEXT_CONFIRM_QUANTITY . "<input name='add_product_quantity' size='2' value='1' onkeyup='clearLibNum(this);'>&nbsp;".EDIT_ORDERS_NUM_UNIT."&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+    print "<td class='dataTableContent'><table><tr><td width='150'>" .  ADDPRODUCT_TEXT_CONFIRM_QUANTITY . ":</td><td><input name='add_product_quantity' size='9' value='1' onkeyup='clearLibNum(this);' style='text-align:right;'>&nbsp;".EDIT_ORDERS_NUM_UNIT."&nbsp;&nbsp;&nbsp;&nbsp;</td></tr></table></td>";
     print "<td class='dataTableContent' align='right'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
 
     foreach ($_POST as $op_key => $op_value)
