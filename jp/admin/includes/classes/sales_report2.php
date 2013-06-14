@@ -4,7 +4,7 @@
 */
 
   class sales_report {
-    var $mode, $globalStartDate, $startDate, $endDate, $actDate, $showDate, $showDateEnd, $sortString, $status, $outlet, $method, $products_id, $orders_flag;
+    var $mode, $globalStartDate, $startDate, $endDate, $actDate, $showDate, $showDateEnd, $sortString, $status, $outlet, $method, $products_id, $orders_flag, $order_sort, $order_type;
 /*----------------------------------------------------
  功能: 销售报告
  参数: $mode(string) 模式
@@ -15,12 +15,14 @@
  参数: $filter(string) 过滤器
  返回值: 无
  ---------------------------------------------------*/
-    function sales_report($mode, $startDate = 0, $endDate = 0, $sort = 0, $statusFilter = 0, $filter = 0, $srMethod = 0, $products_id) {
+    function sales_report($mode, $startDate = 0, $endDate = 0, $sort = 0, $statusFilter = 0, $filter = 0, $srMethod = 0, $products_id, $order_sort, $order_type) {
       // startDate and endDate have to be a unix timestamp. Use mktime !
       // if set then both have to be valid startDate and endDate
       $this->method = $srMethod == 1 ? 'date_purchased' : 'torihiki_date';
       $this->products_id = $products_id;
       $this->orders_flag = false;
+      $this->order_sort = $order_sort;
+      $this->order_type = $order_type;
       
       $this->mode = $mode;
       $this->tax_include = DISPLAY_PRICE_WITH_TAX;
@@ -74,7 +76,7 @@
 
       // query for order count
       $buyOrSellWhere = isset($_GET['bflag']) && $_GET['bflag'] ? (" AND o.payment_method " . $likeStr) : '';
-      $this->queryOrderCnt = "SELECT count(o.orders_id) as order_cnt FROM " . TABLE_ORDERS . " o WHERE 1=1".$siteStr.$buyOrSellWhere;
+      $this->queryOrderCnt = "SELECT count(o.orders_id) as order_cnt FROM " . TABLE_ORDERS . " o left join ".TABLE_ORDERS_PRODUCTS." op on o.orders_id=op.orders_id WHERE".($this->products_id != 0 ? ' op.products_id='.$this->products_id.' and' : '')." 1=1".$siteStr.$buyOrSellWhere;
 
 
       // queries for item details count
@@ -84,7 +86,7 @@
         /*
         if(p.products_bflag = '0' , sum(op.final_price * op.products_quantity), 0-sum(op.final_price * op.products_quantity))
         */
-        " sum(op.final_price * op.products_quantity) as psum, op.products_tax as ptax FROM " . TABLE_ORDERS . " o, " . TABLE_ORDERS_PRODUCTS . " op, " . TABLE_PRODUCTS . " p" ." WHERE".($this->products_id != 0 ? ' p.products_id='.$this->products_id.' and' : '')." o.orders_id = op.orders_id AND op.products_id = p.products_id " . $siteStr . $buyOrSellWhere ;
+        " sum(op.final_price * op.products_quantity) as psum, op.products_tax as ptax FROM " . TABLE_ORDERS . " o, " . TABLE_ORDERS_PRODUCTS . " op, " . TABLE_PRODUCTS . " p WHERE".($this->products_id != 0 ? ' p.products_id='.$this->products_id.' and' : '')." o.orders_id = op.orders_id AND op.products_id = p.products_id " . $siteStr . $buyOrSellWhere ;
 
 
 
@@ -111,7 +113,7 @@
           $this->sortString = " order by psum desc, pname asc";
           break;
       }
-      
+ 
     }
 /*---------------------------------------------
  功能：下一个日期
@@ -133,7 +135,7 @@
         // yearly
         case '1':
           $sd = $this->actDate;
-          $ed = mktime(0, 0, 0, date("m", $sd), date("d", $sd), date("Y", $sd) + 1);
+          $ed = mktime(0, 0, 0, date("m", $sd), date("d", $sd), date("Y", $sd) + 1);  
           break;
         // monthly
         case '2':
@@ -155,6 +157,38 @@
           $sd = $this->actDate;
           $ed = $this->endDate;
           $this->orders_flag = true;
+          if($this->order_sort == 'date'){
+
+            $this->order_sort = 'o.date_purchased';
+            if($this->order_sort != '' && $this->order_type != ''){
+
+              $this->sortString = " order by ".$this->order_sort." ".$this->order_type;
+            }
+          }
+          if($this->order_sort == 'orders'){
+
+            $this->order_sort = 'o.orders_id';
+            if($this->order_sort != '' && $this->order_type != ''){
+
+              $this->sortString = " order by ".$this->order_sort." ".$this->order_type;
+            }
+          }
+          if($this->order_sort == 'num'){
+
+            $this->order_sort = 'pquant';
+            if($this->order_sort != '' && $this->order_type != ''){
+
+              $this->sortString = " order by ".$this->order_sort." ".$this->order_type;
+            }
+          }
+          if($this->order_sort == 'price'){
+
+            $this->order_sort = 'psum';
+            if($this->order_sort != '' && $this->order_type != ''){
+
+              $this->sortString = " order by ".$this->order_sort." ".$this->order_type;
+            }
+          }
           break;
       }
       if ($ed > $this->endDate) {
@@ -162,8 +196,8 @@
       }
 
       $filterString = "";
-      if (strpos($this->statusFilter, ',')) {
-        $filterString .= " AND o.orders_status in (" . $this->statusFilter . ") ";
+      if ($this->statusFilter == 'success') {
+        $filterString .= " AND o.finished = '1' AND o.flag_qaf = '1' ";
       } else if ($this->statusFilter > 0) {
         $filterString .= " AND o.orders_status = " . $this->statusFilter . " ";
       }
@@ -171,7 +205,7 @@
       $order = tep_db_fetch_array($rqOrders);
 
       $rqItems = tep_db_query($this->queryItemCnt . " AND o.".$this->method." >= '" . tep_db_input(date("Y-m-d\TH:i:s", $sd)) . "' AND o.".$this->method." < '" . tep_db_input(date("Y-m-d\TH:i:s", $ed)) . "'" . $filterString . " group by ".($this->orders_flag == false ? 'pid' : 'orders_id,pid')." " . $this->sortString);
-
+ 
       // set the return values
       $this->actDate = $ed;
       $this->showDate = $sd;

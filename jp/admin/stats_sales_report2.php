@@ -52,7 +52,7 @@
   // default max
   $srDefaultMax = "";
   // default status
-  $srDefaultStatus = '2,5';
+  $srDefaultStatus = 'success';
   // default compare
   $srDefaultCompare = 0;
   // 0 => torihiki_date, 1 => date_purchased
@@ -142,7 +142,7 @@
   }
     
   // sort
-  if ( isset($_GET['sort']) && ($_GET['sort']) && (tep_not_null($_GET['sort'])) ) {
+  if ( isset($_GET['sort']) && (tep_not_null($_GET['sort'])) ) {
     $srSort = $_GET['sort'];
   } else {
     $srSort = $srDefaultSort;
@@ -226,10 +226,17 @@
     
     $products_id = 0; 
   }
+  $order_sort = '';
+  $order_type = '';
+  if(isset($_GET['order_sort']) && $_GET['order_sort'] != '' && isset($_GET['order_type']) && $_GET['order_type'] != ''){
+
+    $order_sort = $_GET['order_sort'];
+    $order_type = $_GET['order_type'];
+  }
   
   require(DIR_WS_CLASSES . 'sales_report2.php');
   
-  $sr = new sales_report($srView, $startDate, $endDate, $srSort, $srStatus, isset($srFilter)?$srFilter:'', $srMethod, $products_id);
+  $sr = new sales_report($srView, $startDate, $endDate, $srSort, $srStatus, isset($srFilter)?$srFilter:'', $srMethod, $products_id, $order_sort, $order_type);
   if ($srCompare > SR_COMPARE_NO) {
     //比较 
     if ($srCompare == SR_COMPARE_DAY) {
@@ -246,7 +253,7 @@
       $compEndDate = mktime(0, 0, 0, date("m", $endDate), date("d", $endDate), date("Y", $endDate) - 1);
     }
     if ($compStartDate != $startDate) {
-      $sr2 = new sales_report($srView, $compStartDate, $compEndDate, $srSort, $srStatus, isset($srFilter) ? $srFilter : '', $srMethod, $products_id);
+      $sr2 = new sales_report($srView, $compStartDate, $compEndDate, $srSort, $srStatus, isset($srFilter) ? $srFilter : '', $srMethod, $products_id, $order_sort, $order_type);
       $compStartDate = $sr2->startDate;
       $compEndDate = $sr2->endDate;
     }

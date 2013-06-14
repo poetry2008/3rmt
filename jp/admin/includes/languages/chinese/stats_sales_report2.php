@@ -73,6 +73,8 @@ define('SR_PRODUCTS_SELECT','指定');
 define('SR_PRODUCTS_NOT_SELECT','不指定');
 define('ADDPRODUCT_TEXT_SELECT_PRODUCT', '请选择商品');
 define('SR_REPORT_TYPE_ORDERS','按订单');
+define('TEXT_SORT_ASC','▲');
+define('TEXT_SORT_DESC','▼');
 
 
 

@@ -73,3 +73,5 @@ define('SR_PRODUCTS_SELECT','指定する');
 define('SR_PRODUCTS_NOT_SELECT','指定しません');
 define('ADDPRODUCT_TEXT_SELECT_PRODUCT', '商品を選択');
 define('SR_REPORT_TYPE_ORDERS','注文別');
+define('TEXT_SORT_ASC','▲');
+define('TEXT_SORT_DESC','▼');

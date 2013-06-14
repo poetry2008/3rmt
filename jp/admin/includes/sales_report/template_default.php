@@ -104,21 +104,18 @@ require("includes/note_js.php");
         <td colspan="2"><form action="" method="get">
           <table border="0" width="100%" cellspacing="0" cellpadding="2">
             <tr>
-              <td align="left" rowspan="3" class="menuBoxHeading" nowrap><input
-              nowrap type="radio" name="report" value="1" <?php if ($srView == 1) echo "checked"; ?>>
-              <?php echo SR_REPORT_TYPE_YEARLY; ?><br>
-              <input nowrap type="radio" name="report" value="2" <?php if ($srView == 2) echo "checked"; ?>>
-              <?php echo SR_REPORT_TYPE_MONTHLY; ?><br>
-              <input nowrap type="radio" name="report" value="3" <?php if ($srView == 3) echo "checked"; ?>>
-              <?php echo SR_REPORT_TYPE_WEEKLY; ?><br>
-              <input nowrap type="radio" name="report" value="4" <?php if ($srView == 4) echo "checked"; ?>>
-              <?php echo SR_REPORT_TYPE_DAILY; ?><br>
-              <input nowrap type="radio" name="report" value="5" <?php if ($srView == 5) echo "checked"; ?>>
-              <?php echo SR_REPORT_TYPE_ORDERS; ?><br>
+              <td align="left" rowspan="3" class="menuBoxHeading" nowrap>
+              <select name="report">
+              <option value="1"<?php if ($srView == 1) echo " selected"; ?>><?php echo SR_REPORT_TYPE_YEARLY; ?></option>
+              <option value="2"<?php if ($srView == 2) echo " selected"; ?>><?php echo SR_REPORT_TYPE_MONTHLY; ?></option>
+              <option value="3"<?php if ($srView == 3) echo " selected"; ?>><?php echo SR_REPORT_TYPE_WEEKLY; ?></option>
+              <option value="4"<?php if ($srView == 4) echo " selected"; ?>><?php echo SR_REPORT_TYPE_DAILY; ?></option>
+              <option value="5"<?php if ($srView == 5) echo " selected"; ?>><?php echo SR_REPORT_TYPE_ORDERS; ?></option>
+              </select> 
               </td>
               <td align="left" class="menuBoxHeading">
                 <?php echo SR_SITE;?> <br>
-                <?php echo tep_site_pull_down_menu_with_all($_GET['site_id'], false, TEXT_ALL);?><br>
+                <?php echo tep_site_pull_down_menu_with_all($_GET['site_id'], false, TEXT_ALL, 'style="margin-left:0;"');?><br>
                 <?php 
                   echo SR_SORT_VAL1;
                   $checked = '';
@@ -134,15 +131,15 @@ require("includes/note_js.php");
                 ?>
                 <?php echo '<input type="radio" name="is_select" value="1"'.$checked.' onclick="products_list_show(1);">'.SR_PRODUCTS_SELECT;?>
                 <?php echo '<input type="radio" name="is_select" value="0"'.(isset($_GET['is_select']) && $_GET['is_select'] == '0' ? ' checked="checked"' : '').' onclick="products_list_show(0);">'.SR_PRODUCTS_NOT_SELECT;?><br>
-                <?php echo tep_draw_pull_down_menu('add_product_categories_id', tep_get_category_tree(), (isset($_GET['add_product_categories_id']) ? $_GET['add_product_categories_id'] : $_GET['cid']), 'id="categories_id" onChange="change_products(this.value);"');
+                <?php echo tep_draw_pull_down_menu('add_product_categories_id', tep_get_category_tree(), (isset($_GET['add_product_categories_id']) ? $_GET['add_product_categories_id'] : $_GET['cid']), 'style="margin-left:0;" id="categories_id" onChange="change_products(this.value);"');
                 echo '<input type="hidden" name="cid" id="c_id" value="'.(isset($_GET['add_product_categories_id']) ? $_GET['add_product_categories_id'] : $_GET['cid']).'"><input type="hidden" name="pid" id="p_id" value="'.(isset($_GET['products_id']) ? $_GET['products_id'] : $_GET['pid']).'">';
                 ?><br>
                 <span id="products_list"></span>
               </td>
               <td class="menuBoxHeading"><?php echo SR_REPORT_START_DATE; ?><br>
-              <table>
+              <table border="0" cellspacing="0" cellpadding="0">
                 <tr>
-                  <td><select name="startY" size="1">
+                  <td><select name="startY" size="1" style="margin:0 5px 0 0;">
                     <?php
       if ($startDate) {
         $y = date("Y") - date("Y", $startDate);
@@ -156,7 +153,7 @@ require("includes/note_js.php");
     }
 ?>
                   </select></td>
-                  <td><select name="startM" size="1">
+                  <td><select name="startM" size="1" style="margin:0 5px 0 0;">
                     <?php
       if ($startDate) {
         $m = date("n", $startDate);
@@ -170,7 +167,7 @@ require("includes/note_js.php");
       }
 ?>
                   </select></td>
-                  <td><select name="startD" size="1">
+                  <td><select name="startD" size="1" style="margin:0 5px 0 0;">
                     <?php
       if ($startDate) {
         $j = date("j", $startDate);
@@ -188,7 +185,7 @@ require("includes/note_js.php");
               </table>
               </td>
               <td align="left" class="menuBoxHeading"><?php echo SR_TITLE_FUNCTION;?><br>
-              <select name="method" size="1">
+              <select name="method" size="1" style="margin-left:0;">
                 <option value="0"<?php if ($srMethod == 0) echo " selected"; ?>><?php echo SR_TITLE_DEAL_DAY;?></option>
                 <option value="1"<?php if ($srMethod == 1) echo " selected"; ?>><?php echo SR_TITLE_ORDER_DAY;?></option>
               </select>
@@ -197,16 +194,16 @@ require("includes/note_js.php");
 
           <tr>
               <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_DETAIL; ?><br>
-              <select name="detail" size="1">
+              <select name="detail" size="1" style="margin-left:0;">
                 <!--<option value="0"<?php if ($srDetail == 0) echo " selected"; ?>><?php echo  SR_DET_HEAD_ONLY; ?></option>-->
                 <option value="1"<?php if ($srDetail == 1) echo " selected"; ?>><?php echo  SR_DET_DETAIL; ?></option>
                 <option value="2"<?php if ($srDetail == 2) echo " selected"; ?>><?php echo  SR_DET_DETAIL_ONLY; ?></option>
               </select>
               </td>
               <td class="menuBoxHeading"><?php echo SR_REPORT_END_DATE; ?><br>
-              <table>
+              <table border="0" cellspacing="0" cellpadding="0">
                 <tr>
-                  <td><select name="endY" size="1">
+                  <td><select name="endY" size="1" style="margin:0 5px 0 0;">
                     <?php
     if ($endDate) {
       $y = date("Y") - date("Y", $endDate - 60* 60 * 24);
@@ -221,7 +218,7 @@ date("Y") - $i; ?></option>
     }
 ?>
                   </select></td>
-                  <td><select name="endM" size="1">
+                  <td><select name="endM" size="1" style="margin:0 5px 0 0;">
                     <?php
     if ($endDate) {
       $m = date("n", $endDate - 60* 60 * 24);
@@ -235,7 +232,7 @@ date("Y") - $i; ?></option>
     }
 ?>
                   </select></td>
-                  <td><select name="endD" size="1">
+                  <td><select name="endD" size="1" style="margin:0 5px 0 0;">
                     <?php
     if ($endDate) {
       $j = date("j", $endDate - 60* 60 * 24);
@@ -253,7 +250,7 @@ date("Y") - $i; ?></option>
               </table>
               </td>
              <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_EXP; ?><br>
-              <select name="export" size="1">
+              <select name="export" size="1" style="margin-left:0;">
                 <option value="0" selected><?php echo  SR_EXP_NORMAL; ?></option>
                 <option value="1"><?php echo  SR_EXP_CSV; ?></option>
               </select>
@@ -264,7 +261,7 @@ date("Y") - $i; ?></option>
               <td><table cellpadding="0" cellspacing="0"><tr>
               <td class="menuBoxHeading">
  <?php echo SR_TITLE_CATEGORY;?><br>
-  <select name="bflag">
+  <select name="bflag" style="margin-left:0;">
     <option value="0"<?php if(!$_GET['bflag']){?> selected<?php }?>><?php echo SR_SELECT_ALL;?></option>
     <option value="1"<?php if($_GET['bflag'] == '1'){?> selected<?php }?>><?php echo SR_OPTION_SALE;?></option>
     <option value="2"<?php if($_GET['bflag'] == '2'){?> selected<?php }?>><?php echo SR_OPTION_BUY;?></option>
@@ -272,8 +269,8 @@ date("Y") - $i; ?></option>
               </td>
 			   <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_STATUS_FILTER; ?><br>
               <select name="status" size="1">
-                <option value="2,5"><?php echo SR_TITLE_ORDER_FINISH;?></option>
-                <option value="0"<?php if ($srStatus == 0) echo " selected";?>><?php echo SR_REPORT_ALL; ?></option>
+                <option value="success"<?php if ($srStatus == 'success') echo " selected";?>><?php echo SR_TITLE_ORDER_FINISH;?></option>
+                <option value="0"<?php if ($srStatus == '0') echo " selected";?>><?php echo SR_REPORT_ALL; ?></option>
                 <?php
                         foreach ($sr->status as $value) {
 ?>
@@ -289,7 +286,7 @@ date("Y") - $i; ?></option>
               
               <td><table><tr>
               <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_SORT; ?><br>
-              <select name="sort" size="1">
+              <select name="sort" size="1" style="margin-left:0;">
                 <option value="0"<?php if ($srSort == 0) echo " selected"; ?>><?php echo  SR_SORT_VAL0; ?></option>
                 <option value="1"<?php if ($srSort == 1) echo " selected"; ?>><?php echo  SR_SORT_VAL1; ?></option>
                 <option value="2"<?php if ($srSort == 2) echo " selected"; ?>><?php echo  SR_SORT_VAL2; ?></option>
@@ -301,7 +298,7 @@ date("Y") - $i; ?></option>
               <br>
               </td>
               <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_COMP_FILTER; ?><br>
-              <select name="compare" size="1">
+              <select name="compare" size="1" style="margin-left:0;">
                 <option value="0" <?php if ($srCompare == SR_COMPARE_NO) echo "selected"; ?>><?php echo SR_REPORT_COMP_NO; ?></option>
                 <option value="1" <?php if ($srCompare == SR_COMPARE_DAY) echo "selected"; ?>><?php echo SR_REPORT_COMP_DAY; ?></option>
                 <option value="2" <?php if ($srCompare == SR_COMPARE_MONTH) echo "selected"; ?>><?php echo SR_REPORT_COMP_MONTH; ?></option>
@@ -313,7 +310,7 @@ date("Y") - $i; ?></option>
               </td>             
               
               <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_MAX; ?><br>
-              <select name="max" size="1">
+              <select name="max" size="1" style="margin-left:0;">
                 <option value="0"><?php echo SR_REPORT_ALL; ?></option>
                 <option value="" <?php if ($srMax === '') echo " selected"; ?>>0</option>
                 <option<?php if ($srMax == 1) echo " selected"; ?>>1</option>
@@ -345,10 +342,10 @@ date("Y") - $i; ?></option>
           <tr>
             <td valign="top"><?php tep_site_filter(FILENAME_STATS_SALES_REPORT2);?><table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr class="dataTableHeadingRow">
-                <td class="dataTableHeadingContent" align="left"><?php echo  SR_TABLE_HEADING_DATE; ?></td>
-                <td class="dataTableHeadingContent" align="left"><?php echo  SR_TABLE_HEADING_ORDERS;?></td>
-                <td class="dataTableHeadingContent" align="center"><?php echo  SR_TABLE_HEADING_ITEMS; ?></td>
-                <td class="dataTableHeadingContent" align="right"><?php echo  SR_TABLE_HEADING_REVENUE;?></td>
+                <td class="dataTableHeadingContent_order" align="left"><?php echo  '<a href="'.tep_href_link(FILENAME_STATS_SALES_REPORT2,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=date&order_type='.($_GET['order_sort'] == 'date' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.SR_TABLE_HEADING_DATE.($_GET['order_sort'] == 'date' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'date' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>'; ?></td>
+                <td class="dataTableHeadingContent_order" align="left"><?php echo  '<a href="'.tep_href_link(FILENAME_STATS_SALES_REPORT2,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=orders&order_type='.($_GET['order_sort'] == 'orders' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.SR_TABLE_HEADING_ORDERS.($_GET['order_sort'] == 'orders' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'orders' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>'; ?></td>
+                <td class="dataTableHeadingContent_order" align="center"><?php echo  '<a href="'.tep_href_link(FILENAME_STATS_SALES_REPORT2,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=num&order_type='.($_GET['order_sort'] == 'num' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.SR_TABLE_HEADING_ITEMS.($_GET['order_sort'] == 'num' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'num' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>'; ?></td>
+                <td class="dataTableHeadingContent_order" align="right"><?php echo  '<a href="'.tep_href_link(FILENAME_STATS_SALES_REPORT2,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=price&order_type='.($_GET['order_sort'] == 'price' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.SR_TABLE_HEADING_REVENUE.($_GET['order_sort'] == 'price' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'price' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>'; ?></td>
               </tr>
 <?php
 if($_GET['report'] != 5){
@@ -356,9 +353,20 @@ $sum = 0;
 $orders_sum = 0;
 $products_point_sum = 0; 
 $row_num =0;
+$show_list_array = array();
+$show_orders_array = array();
+$show_products_array = array();
+$show_price_array = array();
+$show_i = 0;
 while ($sr->hasNext()) {
   $info = $sr->next();
   $last = sizeof($info) - 1;
+  $orders_num = $info[0]['order'];
+  $products_num = isset($info[$last - 1]['totitem'])?$info[$last - 1]['totitem']:'';
+  $price_num = isset($info[$last - 1]['totsum'])?$info[$last - 1]['totsum']:'';
+  $show_orders_array[$show_i] = $orders_num;
+  $show_products_array[$show_i] = $products_num;
+  $show_price_array[$show_i] = $price_num;
   
   $even = 'dataTableSecondRow';
   $odd  = 'dataTableRow';
@@ -367,48 +375,86 @@ while ($sr->hasNext()) {
   } else {
     $nowColor = $odd; 
   }
+  if(!isset($_GET['order_sort'])){
 ?>
               <tr class="<?php echo $nowColor;?>" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='<?php echo $nowColor;?>'">
-                <?php
+<?php
+  }
+    $show_list_array[$show_i] = '<tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'">'; 
     switch ($srView) {
-      case '3':
+    case '3':
+  if(!isset($_GET['order_sort'])){
 ?>
                 <td class="dataTableContent" align="left"><?php echo tep_date_long(date("Y-m-d\ H:i:s", $sr->showDate)) . " - " . tep_date_short(date("Y-m-d\ H:i:s", $sr->showDateEnd)); ?></td>
-                <?php
+<?php
+  }
+  $show_list_array[$show_i] .= '<td class="dataTableContent" align="left">'.tep_date_long(date("Y-m-d\ H:i:s", $sr->showDate)) . " - " . tep_date_short(date("Y-m-d\ H:i:s", $sr->showDateEnd)).'</td>'; 
         break;
-      case '4':
+    case '4':
+  if(!isset($_GET['order_sort'])){
 ?>
                 <td class="dataTableContent" align="left"><?php echo tep_date_long(date("Y-m-d\ H:i:s", $sr->showDate)); ?></td>
-                <?php
+<?php
+  }
+  $show_list_array[$show_i] .= '<td class="dataTableContent" align="left">'.tep_date_long(date("Y-m-d\ H:i:s", $sr->showDate)).'</td>'; 
         break;
-      default;
+    default;
+  if(!isset($_GET['order_sort'])){
 ?>
                 <td class="dataTableContent" align="left"><?php echo tep_date_short(date("Y-m-d\ H:i:s", $sr->showDate)) . " - " . tep_date_short(date("Y-m-d\ H:i:s", $sr->showDateEnd)); ?></td>
-                <?php
+<?php
+  }
+  $show_list_array[$show_i] .= '<td class="dataTableContent" align="left">'.tep_date_short(date("Y-m-d\ H:i:s", $sr->showDate)) . " - " . tep_date_short(date("Y-m-d\ H:i:s", $sr->showDateEnd)).'</td>'; 
     }
+  if(!isset($_GET['order_sort'])){
 ?>
                 <td class="dataTableContent" align="right"><?php echo $info[0]['order']; ?></td>
-                <?php $orders_sum += $info[0]['order'];?>
+<?php 
+  }
+    $show_list_array[$show_i] .= '<td class="dataTableContent" align="right">'.$info[0]['order'].'</td>'; 
+    $orders_sum += $info[0]['order'];
+  if(!isset($_GET['order_sort'])){
+?>
                 <td class="dataTableContent" align="right"><?php echo isset($info[$last - 1]['totitem'])?$info[$last - 1]['totitem']:''; ?></td>
-                <?php 
+<?php 
+  }
+    $show_list_array[$show_i] .= '<td class="dataTableContent" align="right">'.(isset($info[$last - 1]['totitem'])?$info[$last - 1]['totitem']:'').'</td>'; 
                 if(isset($info[$last - 1]['totitem'])){
                   $products_point_sum += $info[$last - 1]['totitem'];
-                }?> 
-                <td class="dataTableContent" align="right"><?php 
-  if ($info[$last - 1]['totsum'] < 0) {
+                }
+  if(!isset($_GET['order_sort'])){
+?> 
+  <td class="dataTableContent" align="right"><?php 
+  }
+    $show_list_array[$show_i] .= '<td class="dataTableContent" align="right">'; 
+    if ($info[$last - 1]['totsum'] < 0) {
+  if(!isset($_GET['order_sort'])){
     echo '<font color="red">'.
       str_replace(TEXT_MONEY_SYMBOL,'',
           $currencies->format(isset($info[$last - 1]['totsum'])?$info[$last - 1]['totsum']:'')).
-      '</font>'.TEXT_MONEY_SYMBOL;
-  } else {
+          '</font>'.TEXT_MONEY_SYMBOL;
+  }
+    $show_list_array[$show_i] .= '<font color="red">'.
+      str_replace(TEXT_MONEY_SYMBOL,'',
+          $currencies->format(isset($info[$last - 1]['totsum'])?$info[$last - 1]['totsum']:'')).
+          '</font>'.TEXT_MONEY_SYMBOL; 
+    } else {
+   if(!isset($_GET['order_sort'])){
     echo str_replace(TEXT_MONEY_SYMBOL,'',
       $currencies->format(isset($info[$last - 1]['totsum'])?$info[$last - 1]['totsum']:''))
-    .TEXT_MONEY_SYMBOL;
+      .TEXT_MONEY_SYMBOL;
+   }
+    $show_list_array[$show_i] .= str_replace(TEXT_MONEY_SYMBOL,'',
+      $currencies->format(isset($info[$last - 1]['totsum'])?$info[$last - 1]['totsum']:''))
+      .TEXT_MONEY_SYMBOL; 
   }
-  $t += $info[$last - 1]['totsum'];
+    $t += $info[$last - 1]['totsum'];
+  if(!isset($_GET['order_sort'])){
   ?></td>
               </tr>
-              <?php
+<?php
+  }
+    $show_list_array[$show_i] .= '</td></tr>'; 
 if (isset($srDetail)){
   $row_num++;
     for ($i = 0; $i < $last; $i++) {
@@ -443,6 +489,73 @@ if (isset($srDetail)){
       }
     }
   }
+$show_i++;
+}
+if($_GET['order_sort'] == 'date'){
+
+  if($_GET['order_type'] == 'desc'){
+    krsort($show_list_array);
+    foreach($show_list_array as $show_list_value){
+
+      echo $show_list_value;
+    }
+  }else{
+    foreach($show_list_array as $show_list_value){
+
+      echo $show_list_value;
+    } 
+  }
+}else if($_GET['order_sort'] == 'orders'){
+
+  if($_GET['order_type'] == 'desc'){
+    arsort($show_orders_array);
+    $show_key_orders = array_keys($show_orders_array);
+    foreach($show_key_orders as $show_list_value){
+
+      echo $show_list_array[$show_list_value];
+    }
+  }else{
+    asort($show_orders_array);
+    $show_key_orders = array_keys($show_orders_array);
+    foreach($show_key_orders as $show_list_value){
+
+      echo $show_list_array[$show_list_value];
+    } 
+  }
+}else if($_GET['order_sort'] == 'num'){
+
+  if($_GET['order_type'] == 'desc'){
+    arsort($show_products_array);
+    $show_key_orders = array_keys($show_products_array);
+    foreach($show_key_orders as $show_list_value){
+
+      echo $show_list_array[$show_list_value];
+    }
+  }else{
+    asort($show_products_array);
+    $show_key_orders = array_keys($show_products_array);
+    foreach($show_key_orders as $show_list_value){
+
+      echo $show_list_array[$show_list_value];
+    } 
+  }
+}else if($_GET['order_sort'] == 'price'){
+
+  if($_GET['order_type'] == 'desc'){
+    arsort($show_price_array);
+    $show_key_orders = array_keys($show_price_array);
+    foreach($show_key_orders as $show_list_value){
+
+      echo $show_list_array[$show_list_value];
+    }
+  }else{
+    asort($show_price_array);
+    $show_key_orders = array_keys($show_price_array);
+    foreach($show_key_orders as $show_list_value){
+
+      echo $show_list_array[$show_list_value];
+    } 
+  }
 }
 }else{
   $info = $sr->next();
@@ -465,7 +578,7 @@ if (isset($srDetail)){
       <td class="dataTableContent" align="left"><?php echo tep_date_long(date("Y-m-d\ H:i:s", strtotime($info_value['date_purchased']))); ?></td>
       <td class="dataTableContent" align="left"><?php echo $info_value['orders_id'].'&nbsp;&nbsp;'.$info_value['pname']; ?></td>
       <td class="dataTableContent" align="right"><?php echo $info_value['pquant']; ?></td>
-      <td class="dataTableContent" align="right"><?php echo $info_value['psum']; ?></td> 
+      <td class="dataTableContent" align="right"><?php echo str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($info_value['psum'])).TEXT_MONEY_SYMBOL; ?></td> 
    </tr>
 <?php
     $orders_i++;
@@ -610,7 +723,7 @@ if($_GET['report'] != 5){
       <td class="dataTableContent" align="left"><?php echo tep_date_long(date("Y-m-d\ H:i:s", strtotime($info_value['date_purchased']))); ?></td>
       <td class="dataTableContent" align="left"><?php echo $info_value['orders_id'].'&nbsp;&nbsp;'.$info_value['pname']; ?></td>
       <td class="dataTableContent" align="right"><?php echo $info_value['pquant']; ?></td>
-      <td class="dataTableContent" align="right"><?php echo $info_value['psum']; ?></td> 
+      <td class="dataTableContent" align="right"><?php echo str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($info_value['psum'])).TEXT_MONEY_SYMBOL; ?></td> 
    </tr>
 <?php 
   }
