@@ -67,13 +67,6 @@ function one_time_pwd_forward401($page_name, $back_url = '', $one_time_array = a
     }
   }
   
-  if (!empty($back_url)) {
-    if($_SESSION['last_page']!= $page_name){
-      unset($_SESSION[$_SESSION['last_page']]);
-      $_SESSION['last_page'] = $page_name;
-    }
-  }
-  
   if($inpagelist){
     header($_SERVER["SERVER_PROTOCOL"] . " 401Not Found");
     if (!empty($back_url)) {
