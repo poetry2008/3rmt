@@ -328,6 +328,8 @@ date
 	font-size: 12px;
 	color: #000000;
 	word-break:break-all;
+}
+.dataTableContent a{
 	cursor:pointer;
 }
 .dataTableContent1 {

@@ -31,7 +31,7 @@ class convenience_store extends basePayment  implements paymentInterface  {
                  array(
                        "code"=>'con_email',
                        "title"=>TS_MODULE_PAYMENT_CONVENIENCE_EMAIL_TEXT,
-                       "field"=>tep_draw_input_field('con_email', (isset($theData['con_email'])?$theData['con_email']:((isset($_GET['Customer_mail'])?$_GET['Customer_mail']:'')))),
+                       "field"=>tep_draw_input_field('con_email', (isset($theData['con_email'])?$theData['con_email']:((isset($_GET['Customer_mail'])?$_GET['Customer_mail']:''))), 'size="45"'),
                        "rule"=>array(basePayment::RULE_NOT_NULL,basePayment::RULE_EMAIL),
                        )
      

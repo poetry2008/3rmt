@@ -67,13 +67,6 @@ function one_time_pwd_forward401($page_name, $back_url = '', $one_time_array = a
     }
   }
   
-  if (!empty($back_url)) {
-    if($_SESSION['last_page']!= $page_name){
-      unset($_SESSION[$_SESSION['last_page']]);
-      $_SESSION['last_page'] = $page_name;
-    }
-  }
-  
   if($inpagelist){
     header($_SERVER["SERVER_PROTOCOL"] . " 401Not Found");
     if (!empty($back_url)) {
@@ -2671,13 +2664,12 @@ function tep_get_bflag_by_product_id($product_id) {
     返回值: 商品数量的乘积(string) 
  ------------------------------------ */
 function tep_get_full_count2($cnt, $pid, $prate = ''){
-  if ($prate) {
+  if ($prate&&$prate!=''&&$prate!=0) {
+    return '(' . number_format($prate * $cnt) . ')';
+  }else{
     $radices = tep_get_radices($pid);
     if($radices!=1&&$radices!=0){
-    return 
-      '('
-    . number_format($radices * $cnt) 
-    . ')';
+    return '(' . number_format($radices * $cnt) . ')';
     }else{
       return '';
     }
@@ -6996,29 +6988,8 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
     参数: $limit_orders_num(int) 订单数 
     返回值: 是否卖出(boolean) 
  ------------------------------------ */
-  function tep_check_best_sellers_isbuy($products_id, $limit_time_info = '', $limit_orders_num)
+  function tep_check_best_sellers_isbuy($products_id, $order_arr , $limit_orders_num)
   {
-    $now_time = time(); 
-    $limit_time = 0; 
-    
-    if ($limit_time_info !== '') {
-      $limit_time = $limit_time_info; 
-    }
-    
-
-    if ($limit_time == 0) {
-      return false; 
-    } else {
-      if ($limit_time == 1) {
-        $before_time = strtotime("-".$limit_time." day", $now_time); 
-      } else {
-        $before_time = strtotime("-".$limit_time." days", $now_time); 
-      }
-      $order_arr = array();
-      $order_query = tep_db_query("select orders_id from ".TABLE_ORDERS." where date_purchased >= '".date('Y-m-d H:i:s', $before_time)."'");
-      while($order_row = tep_db_fetch_array($order_query)){
-        $order_arr[] = $order_row['orders_id'];
-      }
       $order_product_arr = array();
       $order_product_query = tep_db_query("select orders_id from ".TABLE_ORDERS_PRODUCTS." where products_id = '".$products_id."'");
       while($order_product_row = tep_db_fetch_array($order_product_query)){
@@ -7029,9 +7000,6 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
       if(!empty($intersect_order) && count($intersect_order) >= $limit_orders_num){
         return true;
       }
-
-    }
-
     return false;
   }
 
@@ -10736,6 +10704,10 @@ function tep_products_shipping_fee($oID,$total){
 
  return $shipping_fee;
 }
+/*-----------------------------
+  功能: 获得订单状态和是否计算订单数量的数组
+  返回: 返回在产品页面计算订单个数用的订单状态的数组
+  ----------------------------*/
 function tep_get_orders_status_array(){
   $order_status_info = array();
   $order_status_raw = tep_db_query("select orders_status_id,is_cancle from ".TABLE_ORDERS_STATUS);
@@ -10743,4 +10715,32 @@ function tep_get_orders_status_array(){
     $order_status_info[$order_status['orders_status_id']] = $order_status['is_cancle'];
   }
   return $order_status_info;
+}
+/*------------------------------
+  功能: 获得规矩时间内的订单号
+  参数: $limit_time_info(int) 时间
+  返回: 所有符合条件的订单的数组
+  -----------------------------*/
+function tep_get_beforday_orders($limit_time_info){
+    $now_time = time(); 
+    $limit_time = 0; 
+    
+    if ($limit_time_info !== '') {
+      $limit_time = $limit_time_info; 
+    }
+    if ($limit_time == 0) {
+      return array(); 
+    } else {
+      if ($limit_time == 1) {
+        $before_time = strtotime("-".$limit_time." day", $now_time); 
+      } else {
+        $before_time = strtotime("-".$limit_time." days", $now_time); 
+      }
+      $order_arr = array();
+      $order_query = tep_db_query("select orders_id from ".TABLE_ORDERS." where date_purchased >= '".date('Y-m-d H:i:s', $before_time)."'");
+      while($order_row = tep_db_fetch_array($order_query)){
+        $order_arr[] = $order_row['orders_id'];
+      }
+    }
+    return $order_arr;
 }

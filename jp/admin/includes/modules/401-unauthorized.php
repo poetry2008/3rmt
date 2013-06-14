@@ -2,12 +2,12 @@
 <HEAD>
 <!-- locale-sensitive -->
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
-<TITLE>アクセスできません</TITLE>
+<TITLE><?php echo NOTICE_NO_ACCESS_TEXT;?></TITLE>
 <script type="text/javascript">
-function redirect_back_url(back_url) {
-  window.location.href = back_url;
+function redirect_back_url() {
+  window.history.go(-1); 
 }
-//window.onload = setTimeout(function () {redirect_back_url('<?php echo $back_url?>')}, 3000);
+window.onload = setTimeout(function () {redirect_back_url()}, 3000);
 </script>
 </HEAD>
 <BODY BGCOLOR="#FFFFFF" >
@@ -25,7 +25,7 @@ function redirect_back_url(back_url) {
 					<TD COLSPAN="2">
 <!-- locale-sensitive -->
 						<DIV ALIGN="left">
-							<FONT COLOR="#FFFFFF" SIZE="3"><B>アクセスできません</B> </FONT>
+							<FONT COLOR="#FFFFFF" SIZE="3"><B><?php echo NOTICE_NO_ACCESS_TEXT;?></B> </FONT>
 						</DIV>
 					</TD>
 				</TR>
@@ -39,7 +39,7 @@ function redirect_back_url(back_url) {
 									<TD>
 										<FONT SIZE="2">
 <!-- locale-sensitive -->
-								権限がありませんので、管理員と連絡してください<BR>
+								<?php echo NOTICE_NO_ACCESS_READ_TEXT;?><BR>
 											</FONT> 
 									</TD>
 								</TR>
@@ -50,10 +50,14 @@ function redirect_back_url(back_url) {
 			</TD>
 		</TR>
 	</TABLE>
-	下記URLよりアクセスしてください。<BR>
-	<A HREF="http://www.iimy.co.jp/">http://www.iimy.co.jp/</A>
+	<?php echo NOTICE_NO_ACCESS_LINK_TEXT;?><BR>
+<?php
+$sites_info_raw = tep_db_query("select * from sites where id = '1'");
+$sites_info_res = tep_db_fetch_array($sites_info_raw);
+?>
+        <A HREF="<?php echo $sites_info_res['url'];?>"><?php echo $sites_info_res['url'];?></A>
     <br>
-    <font size="2"><a href="<?php echo $back_url;?>">前のページへ戻る</a></font>
+    <font size="2"><a href="javascript:void(0);" onclick="window.history.go(-1);"><?php echo NOTICE_NO_ACCESS_BACK_TEXT;?></a></font>
   </DIV>
 </BLOCKQUOTE>
 </HTML>
