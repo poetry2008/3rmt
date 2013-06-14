@@ -791,7 +791,7 @@ if($index > 0){
           echo "<tr><form action='$PHP_SELF?oID=$oID&action=$action$param_str' method='POST'>\n";
           echo "<td class='dataTableContent'>&nbsp;" . ADDPRODUCT_TEXT_STEP . " 4: </td>";
           echo '<td class="dataTableContent"><table><tr><td width="150">' .
-            ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '</td><td><input name="add_product_quantity" size="9" value="1" onkeyup="clearLibNum(this);" style="text-align:right;">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'&nbsp;&nbsp;&nbsp;&nbsp;';
+            ADDPRODUCT_TEXT_CONFIRM_QUANTITY . ':</td><td><input name="add_product_quantity" size="9" value="1" onkeyup="clearLibNum(this);" style="text-align:right;">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'&nbsp;&nbsp;&nbsp;&nbsp;';
           echo '<input type="hidden" style="text-align:right;" class="once_pwd" onkeyup="clearNoNum_1(this);" value="'.  (int)$products_array['products_price'] .'" size="9" name="add_product_price"></td></tr></table></td>';
           echo "<td class='dataTableContent' align='right' colspan='2'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
 
