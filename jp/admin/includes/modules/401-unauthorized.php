@@ -4,10 +4,10 @@
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
 <TITLE><?php echo NOTICE_NO_ACCESS_TEXT;?></TITLE>
 <script type="text/javascript">
-function redirect_back_url(back_url) {
-  window.location.href = back_url;
+function redirect_back_url() {
+  window.history.go(-1); 
 }
-window.onload = setTimeout(function () {redirect_back_url('<?php echo $back_url?>')}, 3000);
+window.onload = setTimeout(function () {redirect_back_url()}, 3000);
 </script>
 </HEAD>
 <BODY BGCOLOR="#FFFFFF" >
@@ -57,7 +57,7 @@ $sites_info_res = tep_db_fetch_array($sites_info_raw);
 ?>
         <A HREF="<?php echo $sites_info_res['url'];?>"><?php echo $sites_info_res['url'];?></A>
     <br>
-    <font size="2"><a href="<?php echo $back_url;?>"><?php echo NOTICE_NO_ACCESS_BACK_TEXT;?></a></font>
+    <font size="2"><a href="javascript:void(0);" onclick="window.history.go(-1);"><?php echo NOTICE_NO_ACCESS_BACK_TEXT;?></a></font>
   </DIV>
 </BLOCKQUOTE>
 </HTML>
