@@ -578,7 +578,7 @@ if($_GET['order_sort'] == 'date'){
       <td class="dataTableContent" align="left"><?php echo tep_date_long(date("Y-m-d\ H:i:s", strtotime($info_value['date_purchased']))); ?></td>
       <td class="dataTableContent" align="left"><?php echo $info_value['orders_id'].'&nbsp;&nbsp;'.$info_value['pname']; ?></td>
       <td class="dataTableContent" align="right"><?php echo $info_value['pquant']; ?></td>
-      <td class="dataTableContent" align="right"><?php echo str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($info_value['psum'])).TEXT_MONEY_SYMBOL; ?></td> 
+      <td class="dataTableContent" align="right"><?php echo $info_value['psum'] < 0 ? '<font color="red">'.str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($info_value['psum'])).'</font>'.TEXT_MONEY_SYMBOL : str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($info_value['psum'])).TEXT_MONEY_SYMBOL; ?></td> 
    </tr>
 <?php
     $orders_i++;
@@ -605,7 +605,7 @@ echo TEXT_MONEY_SYMBOL;
 <td class="dataTableContent" align="right"></td>
 <td class="dataTableContent" align="right"><?php 
 echo AVG_ORDERS_SUM;
-echo str_replace(TEXT_MONEY_SYMBOL,'',$avg_currencies->format($orders_sum/$row_num));
+echo str_replace(TEXT_MONEY_SYMBOL,'',$avg_currencies->format($orders_sum/$row_num)) == 1 && $_GET['report'] == 5 ? '-' : str_replace(TEXT_MONEY_SYMBOL,'',$avg_currencies->format($orders_sum/$row_num));
 echo SR_ONE_ORDERS;?></td>
 <td class="dataTableContent" align="right"><?php 
 echo AVG_PRODUCTS_POINT_SUM;
@@ -723,7 +723,7 @@ if($_GET['report'] != 5){
       <td class="dataTableContent" align="left"><?php echo tep_date_long(date("Y-m-d\ H:i:s", strtotime($info_value['date_purchased']))); ?></td>
       <td class="dataTableContent" align="left"><?php echo $info_value['orders_id'].'&nbsp;&nbsp;'.$info_value['pname']; ?></td>
       <td class="dataTableContent" align="right"><?php echo $info_value['pquant']; ?></td>
-      <td class="dataTableContent" align="right"><?php echo str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($info_value['psum'])).TEXT_MONEY_SYMBOL; ?></td> 
+      <td class="dataTableContent" align="right"><?php echo $info_value['psum'] < 0 ? '<font color="red">'.str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($info_value['psum'])).'</font>'.TEXT_MONEY_SYMBOL : str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($info_value['psum'])); ?></td> 
    </tr>
 <?php 
   }
