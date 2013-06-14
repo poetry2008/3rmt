@@ -70,11 +70,7 @@
 echo '
 <table class="box_des" width="100%" border="0" cellspacing="0" cellpadding="0">'."\n".
   '<tr>'."\n".
-   '<td width="120" class="smallText" valign="top" align="center"> <a
-   href="'.substr(strip_tags($manufacturer['manufacturers_url']),0,100)
-   .'"><h3><strong>'.$manufacturer['manufacturers_name'].'</strong></h3></a><br>
-   '.tep_image_new(DIR_WS_IMAGES.'manufacturers/'.$manufacturer['manufacturers_image'],$manufacturer['manufacturers_alt'],'50','80').'
-   </td>' . "\n".
+   '<td width="120" class="smallText" valign="top" align="center"> <a href="'.substr(strip_tags($manufacturer['manufacturers_url']),0,100) .'"><h3><strong>'.$manufacturer['manufacturers_name'].'</strong></h3></a><br> '.tep_image_new(DIR_WS_IMAGES.'manufacturers/'.$manufacturer['manufacturers_image'],$manufacturer['manufacturers_alt'],'50','80').' </td>' . "\n".
     '<td>'."\n"
   ;
      echo '<table class="box_des" width="100%" border="0" cellspacing="2" cellpadding="0">'."\n".'<tr>'."\n";

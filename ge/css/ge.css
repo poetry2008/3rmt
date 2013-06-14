@@ -566,8 +566,6 @@ form {
 	line-height:1.5
 }
 .main h3 {
-    height:12px;
-*+height:26px;
     overflow:hidden;
 	padding:0 0 5px 12px;
 	margin:5px 0;
