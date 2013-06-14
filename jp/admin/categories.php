@@ -10,6 +10,8 @@ require(DIR_FS_ADMIN . '/classes/notice_box.php');
 $cPath_yobi = cpathPart($_GET['cPath'], 1);  
 $currencies = new currencies();
 $order_status_info = tep_get_orders_status_array();
+$limit_time_info = 30; //限制天数
+$befor_orders = tep_get_beforday_orders($limit_time_info);
 $action = (isset($_GET['action']) ? $_GET['action'] : '');
 if ( eregi("(insert|update|setflag)", $action) ) include_once('includes/reset_seo_cache.php');
 
@@ -5344,9 +5346,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     }
                   }
                 }
-                $limit_time_info = 30; //限制天数
                 if ($limit_orders_num_flag == true) { 
-                  if (tep_check_best_sellers_isbuy($products['products_id'], $limit_time_info, $limit_orders_num)) {
+                  if (tep_check_best_sellers_isbuy($products['products_id'], $befor_orders, $limit_orders_num)) {
                     $diff_oday = tep_calc_limit_time_by_order_id($products['products_id'], false, $limit_time_info,true); 
                     if ($diff_oday !== '') {
                       $products_mae_image_text .= '<img onmouseover="set_image_alt_and_title(this,\''.$products['products_id'].'\',\''.$limit_time_info.'\',false)" src="images/icons/mae1.gif" alt="alt" title="title">'; 
