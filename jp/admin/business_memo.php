@@ -63,7 +63,7 @@ if (isset($_GET['action']) and $_GET['action']) {
         $memo_id = tep_db_prepare_input($_POST['memo_id']);
         $param_str = tep_db_prepare_input($_POST['param_str']);
 
-        tep_db_query("update " . TABLE_BUSINESS_MEMO . " set is_show='".$is_show."',icon='".$pic_icon."',contents='".$contents."',user_update='".$_SESSION['user_name']."',date_update=now() where id = '" . tep_db_input($memo_id) . "'");
+        tep_db_query("update " . TABLE_BUSINESS_MEMO . " set read_flag = '', is_show='".$is_show."',icon='".$pic_icon."',contents='".$contents."',user_update='".$_SESSION['user_name']."',date_update=now() where id = '" . tep_db_input($memo_id) . "'");
 
         tep_db_query("update " . TABLE_NOTICE . " set title='".$contents."' where from_notice = '" . tep_db_input($memo_id) . "' and type='1'");
         tep_redirect(tep_href_link(FILENAME_BUSINESS_MEMO, $param_str));

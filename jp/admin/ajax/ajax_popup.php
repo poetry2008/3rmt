@@ -572,7 +572,7 @@ if ($_GET['action'] == 'show_category_info') {
     $button[] = '<a href="' . tep_href_link(FILENAME_REVIEWS, 'cPath=' . $cPath . '&products_id=' . $pInfo->products_id .  '&action=new') . '">'.tep_html_element_button(IMAGE_REVIEWS).'</a>';
   }
   if (empty($_GET['site_id'])) {
-    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="toggle_category_form(\''.$ocertify->npermission.'\', \'3\')"').'</a>'; 
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save_product" onclick="toggle_category_form(\''.$ocertify->npermission.'\', \'3\')"').'</a>'; 
   }
   
   $buttons = array('align' => 'center', 'type' => 'div', 'id' => 'order_del', 'params' => 'class="main"' , 'button' => $button);
