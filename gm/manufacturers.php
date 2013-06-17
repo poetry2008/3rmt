@@ -72,13 +72,13 @@ echo '<table class="box_des" width="100%" border="0" cellspacing="0" cellpadding
         $m_alt = 'img';
       }
     }
-    echo '    <td width="120" class="smallText" valign="top" align="center">';
+    echo '    <td width="120" class="smallText" valign="top" align="left">';
     if(isset($manufacturer['manufacturers_url'])&&$manufacturer['manufacturers_url']!=''){
     echo '<a target="_blank" href="'.substr(strip_tags($manufacturer['manufacturers_url']),0,100) .'">';
     }else{
       echo '<font color="#2864B4">';
     }
-    echo '<h3 style="text-align:left"><strong>'.$manufacturer['manufacturers_name'].'</strong></h3>';
+    echo '<h3><strong>'.$manufacturer['manufacturers_name'].'</strong></h3>';
     if(isset($manufacturer['manufacturers_url'])&&$manufacturer['manufacturers_url']!=''){
     echo '</a>';
     }else{

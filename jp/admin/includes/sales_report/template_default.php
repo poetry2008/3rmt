@@ -162,7 +162,7 @@ require("includes/note_js.php");
               </select>
               </td>
               <td align="left" class="menuBoxHeading"><?php echo SR_OPTION_TYPE;?><br>
-              <select name="report">
+              <select name="report" style="margin-left:0;">
               <option value="1"<?php if ($srView == 1) echo " selected"; ?>><?php echo SR_REPORT_TYPE_YEARLY; ?></option>
               <option value="2"<?php if ($srView == 2) echo " selected"; ?>><?php echo SR_REPORT_TYPE_MONTHLY; ?></option>
               <option value="3"<?php if ($srView == 3) echo " selected"; ?>><?php echo SR_REPORT_TYPE_WEEKLY; ?></option>
