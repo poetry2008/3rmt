@@ -104,7 +104,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
   }
   tep_db_free_result($result);
   
-  echo '<select name="products_id" id="products_id_list" onclick="save_products_id(this.value);">';
+  echo '<select name="products_id" id="products_id_list" onclick="save_products_id(this.value);" style="margin-left:0;">';
   $products_list_str = "<option value='0'>" .  ADDPRODUCT_TEXT_SELECT_PRODUCT . "</option>\n";
   asort($products_array);
   foreach($products_array as $products_id => $products_name){
