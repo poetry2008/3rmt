@@ -78,7 +78,7 @@ while ($manufacturer = tep_db_fetch_array($manufacturer_query)){
     if(isset($manufacturer['manufacturers_url'])&&$manufacturer['manufacturers_url']!=''){
     echo '<a target="_blank" href="'.substr(strip_tags($manufacturer['manufacturers_url']),0,100) .'">';
     }else{
-      echo '<font color="#2864B4">';
+      echo '<font color="#A85E5E">';
     }
     echo '<h3 style="text-align:left"><strong>'.$manufacturer['manufacturers_name'].'</strong></h3>';
     if(isset($manufacturer['manufacturers_url'])&&$manufacturer['manufacturers_url']!=''){
