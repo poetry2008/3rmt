@@ -90,8 +90,8 @@ while ($manufacturer = tep_db_fetch_array($manufacturer_query)){
     }else{
       echo '</font>';
     }
-    $configuration_width = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MANUFACTURERS_WIDTH' and site_id='0'"));
-    $configuration_height = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MANUFACTURERS_height' and site_id = '0'"));
+    $configuration_width = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MANUFACTURERS_WIDTH' and site_id =".SITE_ID));
+    $configuration_height = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MANUFACTURERS_height' and site_id =".SITE_ID));
     echo '<br> '.  tep_image_new(DIR_WS_IMAGES.'manufacturers/'.$manufacturer['manufacturers_image'],$m_alt,$configuration_width['configuration_value'],$configuration_height['configuration_value']).' </td>' . "\n";
     
     echo '    <td>' . "\n";
