@@ -2412,6 +2412,9 @@ $(document).ready(function() {
           if(ele_tags_obj != ''){
              $("#show_popup_info").find('input:button').first().trigger("click"); 
           } 
+          if ($("#button_save_product")) {
+            $("#button_save_product").trigger("click");
+          }
         }
       } 
     }
