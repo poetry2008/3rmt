@@ -51,6 +51,16 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
 
       $sql_data_array = array('manufacturers_name' => $manufacturers_name);
 
+
+      $manufacturers_image = tep_get_uploaded_file('manufacturers_image');
+      $image_directory = tep_get_local_path(tep_get_upload_dir().'manufacturers/');
+      $manufacturers_image['size'] = $manufacturers_image['size'] / 1024 / 1024;
+      if($manufacturers_image['size'] >= ini_get('upload_max_filesize')){
+        $error_image = TEXT_IMAGE_MAX;
+        $messageStack->add_session(TEXT_IMAGE_MAX, 'error');
+        tep_redirect(tep_href_link(FILENAME_MANUFACTURERS, 'page=' . $_GET['page']));
+        exit;
+      }else{
       if ($_GET['action'] == 'insert') {
         $insert_sql_data = array('date_added' => 'now()','last_modified' => 'now()','user_added' => $_POST['user_added'],'user_update' => $_POST['user_update'],'manufacturers_alt' => $_POST['manufacturers_alt']);
         $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
@@ -60,14 +70,6 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
         $update_sql_data = array('last_modified' => 'now()','user_update' => $_POST['user_update'],'manufacturers_alt' => $_POST['manufacturers_alt']);
         $sql_data_array = tep_array_merge($sql_data_array, $update_sql_data);
         tep_db_perform(TABLE_MANUFACTURERS, $sql_data_array, 'update', "manufacturers_id = '" . tep_db_input($manufacturers_id) . "'");
-      }
-
-      $manufacturers_image = tep_get_uploaded_file('manufacturers_image');
-      $image_directory = tep_get_local_path(tep_get_upload_dir().'manufacturers/');
-      $manufacturers_image['size'] = $manufacturers_image['size'] / 1024 / 1024;
-      if($manufacturers_image['size'] >= ini_get('upload_max_filesize')){
-        $error_image = TEXT_IMAGE_MAX;
-        break;
       }
       if (is_uploaded_file($manufacturers_image['tmp_name'])) {
         if (!is_writeable($image_directory)) {
@@ -102,8 +104,9 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
       if (USE_CACHE == 'true') {
         tep_reset_cache_block('manufacturers');
       }
-
       tep_redirect(tep_href_link(FILENAME_MANUFACTURERS, 'page=' . $_GET['page'] . '&mID=' . $manufacturers_id));
+      }
+
       break;
     case 'deleteconfirm':
         if(!empty($_POST['manufacturers_id'])){
@@ -200,6 +203,7 @@ function delete_select_manufacturers(manufacturers_str, c_permission){
                 if (tmp_msg_arr[0] == '0') {
                   document.forms.del_manufacturers.submit(); 
                 } else {
+                  $("#button_save").attr('id', 'tmp_button_save');
                   var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
                   if (in_array(input_pwd_str, pwd_list_array)) {
                     $.ajax({
@@ -215,6 +219,7 @@ function delete_select_manufacturers(manufacturers_str, c_permission){
                   } else {
                     document.getElementsByName('manufacturers_action')[0].value = 0;
                     alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                    setTimeOut($("#tmp_button_save").attr('id', 'button_save'), 1); 
                   }
                 }
               }
@@ -225,7 +230,7 @@ function delete_select_manufacturers(manufacturers_str, c_permission){
           }
          } else {
             document.getElementsByName('manufacturers_action')[0].value = 0;
-             alert('<?php echo TEXT_MANUFACTURERS_MUST_SELECT;?>'); 
+            alert('<?php echo TEXT_MANUFACTURERS_MUST_SELECT;?>'); 
           }
 }
 <?php //选择动作?>
@@ -404,6 +409,7 @@ function toggle_manufacturers_form(c_permission){
         if (tmp_msg_arr[0] == '0') {
           document.forms.manufacturers.submit(); 
         } else {
+          $("#button_save").attr('id', 'tmp_button_save');
           var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
           if (in_array(input_pwd_str, pwd_list_array)) {
             $.ajax({
@@ -418,6 +424,7 @@ function toggle_manufacturers_form(c_permission){
             }); 
           } else {
             alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+            setTimeOut($("#tmp_button_save").attr('id', 'button_save'), 1); 
           }
         }
       }
