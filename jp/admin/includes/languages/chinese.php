@@ -784,3 +784,4 @@ define('NOTICE_NO_ACCESS_TEXT', '无权访问');
 define('NOTICE_NO_ACCESS_READ_TEXT', '您无权访问，请和管理员联系。');
 define('NOTICE_NO_ACCESS_LINK_TEXT', '请点击下面的URL进行访问。');
 define('NOTICE_NO_ACCESS_BACK_TEXT', '返回上一页');
+define('TEXT_IMAGE_MAX','上传图片超过了规定最大值，请重新上传。');

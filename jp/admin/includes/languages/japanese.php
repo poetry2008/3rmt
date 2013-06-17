@@ -788,3 +788,4 @@ define('NOTICE_NO_ACCESS_TEXT', 'アクセスできません');
 define('NOTICE_NO_ACCESS_READ_TEXT', '権限がありませんので、管理員と連絡してください。');
 define('NOTICE_NO_ACCESS_LINK_TEXT', '下記URLよりアクセスしてください。');
 define('NOTICE_NO_ACCESS_BACK_TEXT', '前のページへ戻る');
+define('TEXT_IMAGE_MAX','アップロードされた画像が制限最大値を超えて、改めてアップロードして下さい');

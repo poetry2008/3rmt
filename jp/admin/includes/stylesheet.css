@@ -394,7 +394,7 @@ Public
 }
 .oa_bg02{ 
 	background-color:#F0F1F1;
-}                  
+}                
 /* ---------------------------
 info box
 --------------------------- */
@@ -1501,6 +1501,13 @@ popup_order
 .del_order_notice td{
 	vertical-align:middle;
 }
+.td_img img{
+	padding-left:1px;
+} 
+@media all and (-webkit-min-device-pixel-ratio:0){
+.td_img img{
+	padding-left:3px;
+}}
 .textarea_width{
 	width: 100%;
 }

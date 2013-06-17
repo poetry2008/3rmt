@@ -91,7 +91,9 @@ echo '
     }else{
       echo '</font>';
     }
-    echo '<br> '.  tep_image_new(DIR_WS_IMAGES.'manufacturers/'.$manufacturer['manufacturers_image'],$manufacturer['manufacturers_alt'],'50','80').' </td>' . "\n";
+    $configuration_width = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MANUFACTURERS_WIDTH' and site_id='0'"));
+    $configuration_height = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MANUFACTURERS_height' and site_id = '0'"));
+    echo '<br> '.  tep_image_new(DIR_WS_IMAGES.'manufacturers/'.$manufacturer['manufacturers_image'],$manufacturer['manufacturers_alt'],$configuration_width['configuration_value'],$configuration_height['configuration_value']).' </td>' . "\n";
     echo '<td>'."\n"
   ;
      echo '<table class="box_des" width="100%" border="0" cellspacing="2" cellpadding="0">'."\n".'<tr>'."\n";

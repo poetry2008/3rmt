@@ -6214,7 +6214,7 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
 
     $contents[]['text'] = array(
            array('text' => TEXT_MANUFACTURERS_IMAGE),
-           array('text' => tep_draw_file_field('manufacturers_image','','onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.(isset($is_u_disabled) && $is_u_disabled?'disabled="disabled"':'')) .'<br>'.tep_info_image('manufacturers/' . $mInfo->manufacturers_image, $mInfo->manufacturers_name,'50','50')
+           array('params' => 'class="td_img"','text' => tep_draw_file_field('manufacturers_image','','onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.(isset($is_u_disabled) && $is_u_disabled?'disabled="disabled"':'')) .'<br>'.tep_info_image('manufacturers/' .  $mInfo->manufacturers_image, $mInfo->manufacturers_name,'50','50')
              )
     );
     $contents[]['text'] = array(

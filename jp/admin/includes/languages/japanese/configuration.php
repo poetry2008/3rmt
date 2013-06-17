@@ -241,3 +241,5 @@ define('TEXT_CALENDAR_SETTING_MONTH_START','当月含めて');
 define('TEXT_CALENDAR_SETTING_MONTH_END','か月分');
 define('TEXT_COMMENTS_BAN_CHARACTER',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;投稿禁止ワード');
 define('TEXT_ALARM_DATE_SETTING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;ログの保存日数');
+define('TEXT_MANUAFACTURERS_WIDTH',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;メーカー一覧画像の横幅');
+define('TEXT_MANUAFACTURERS_HEIGHT',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;メーカー一覧画像の縦幅');
