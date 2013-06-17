@@ -154,6 +154,7 @@ if(isset($_SESSION['error_image'])&&$_SESSION['error_image']){
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<?php require('includes/javascript/show_site.js.php');?>
 <script type="text/javascript">
 function all_select_manufacturers(manufacturers_str){
       var check_flag = document.del_manufacturers.all_check.checked;
@@ -490,7 +491,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                 $site_list_array[$site_list_info['id']] = $site_list_info['romaji']; 
                 $show_site_list_array[] = $site_list_info['id']; 
               }
-              echo tep_show_site_filter(FILENAME_USERS, false, $show_site_list_array); 
+              echo tep_show_site_filter(FILENAME_MANUFACTURERS, false, $show_site_list_array); 
          ?>
          <table border="0" width="100%" cellspacing="0" cellpadding="0" id="show_manufacturers_list">
           <tr>
