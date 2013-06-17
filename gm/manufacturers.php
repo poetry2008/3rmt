@@ -61,11 +61,31 @@
   $products_query = tep_db_query("select * from (select p.products_id, p.products_image, p.products_bflag, p.products_tax_class_id, p.products_price, p.products_price_offset, p.products_small_sum ,pd.site_id, pd.products_status, p.products_date_added  from " . TABLE_PRODUCTS . " p, ".TABLE_PRODUCTS_DESCRIPTION." pd where  p.products_id not in".tep_not_in_disabled_products()." and p.products_id = pd.products_id and manufacturers_id = '".$manufacturer['manufacturers_id']."' order by pd.site_id DESC) c where site_id = '".SITE_ID."' or site_id = '0' group by products_id having c.products_status != '0' and c.products_status != '3' order by products_date_added desc limit 5 ");
     if(tep_db_num_rows($products_query)) {
 
-echo '
-<table class="box_des" width="100%" border="0" cellspacing="0" cellpadding="0">'."\n".
-  '<tr>'."\n".
-   '<td width="120" class="smallText" valign="top" align="center"> <a href="'.substr(strip_tags($manufacturer['manufacturers_url']),0,100) .'"><strong>'.$manufacturer['manufacturers_name'].'</strong></a><br> '.tep_image_new(DIR_WS_IMAGES.'manufacturers/'.$manufacturer['manufacturers_image'],$manufacturer['manufacturers_alt'],'50','80').' </td>' . "\n".
-    '<td>'."\n"
+echo '<table class="box_des" width="100%" border="0" cellspacing="0" cellpadding="0">'."\n".
+  '<tr>'."\n".  '<td width="120" class="smallText" valign="top" align="center">';
+    if(isset($manufacturer['manufacturers_alt'])&&$manufacturer['manufacturers_alt']!=''){
+      $m_alt = $manufacturer['manufacturers_alt'];
+    }else{
+      if(isset($manufacturer['manufacturers_name'])&&$manufacturer['manufacturers_name']!=''){
+        $m_alt = $manufacturer['manufacturers_name'];
+      }else{
+        $m_alt = 'img';
+      }
+    }
+    echo '    <td width="120" class="smallText" valign="top" align="center">';
+    if(isset($manufacturer['manufacturers_url'])&&$manufacturer['manufacturers_url']!=''){
+    echo '<a target="_blank" href="'.substr(strip_tags($manufacturer['manufacturers_url']),0,100) .'">';
+    }else{
+      echo '<font color="#2864B4">';
+    }
+    echo '<h3><strong>'.$manufacturer['manufacturers_name'].'</strong></h3>';
+    if(isset($manufacturer['manufacturers_url'])&&$manufacturer['manufacturers_url']!=''){
+    echo '</a>';
+    }else{
+      echo '</font>';
+    }
+    echo '<br> '.  tep_image_new(DIR_WS_IMAGES.'manufacturers/'.$manufacturer['manufacturers_image'],$manufacturer['manufacturers_alt'],'50','80').' </td>' . "\n";
+    echo '<td>'."\n"
   ;
      echo '<table class="box_des" width="100%" border="0" cellspacing="2" cellpadding="0">'."\n".'<tr>'."\n";
      while($products = tep_db_fetch_array($products_query)) {
