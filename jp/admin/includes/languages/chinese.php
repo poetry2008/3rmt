@@ -101,7 +101,7 @@ define('BOX_HEADING_REPORTS', '统计排名');
 define('BOX_REPORTS_PRODUCTS_VIEWED', '按浏览次数排序');
 define('BOX_REPORTS_PRODUCTS_PURCHASED', '按销售量排序');
 define('BOX_REPORTS_ORDERS_TOTAL', '按销售额排序');
-define('BOX_REPORTS_SALES_REPORT2', '销售额管理');
+define('BOX_REPORTS_SALES_REPORT', '销售额管理');
 define('BOX_REPORTS_NEW_CUSTOMERS', '新顾客');
 define('BOX_REPORTS_ASSETS', '资产管理');
 

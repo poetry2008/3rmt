@@ -6,6 +6,7 @@
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<?php require('includes/javascript/show_site.js.php');?>
 <script language="javascript">
 <?php //显示相应分类下的商品列表?>
 function change_products(id,products_id){
@@ -103,39 +104,10 @@ require("includes/note_js.php");
       <tr>
         <td colspan="2"><form action="" method="get">
           <table border="0" width="100%" cellspacing="0" cellpadding="2">
-            <tr>
-              <td align="left" rowspan="3" class="menuBoxHeading" nowrap>
-              <select name="report">
-              <option value="1"<?php if ($srView == 1) echo " selected"; ?>><?php echo SR_REPORT_TYPE_YEARLY; ?></option>
-              <option value="2"<?php if ($srView == 2) echo " selected"; ?>><?php echo SR_REPORT_TYPE_MONTHLY; ?></option>
-              <option value="3"<?php if ($srView == 3) echo " selected"; ?>><?php echo SR_REPORT_TYPE_WEEKLY; ?></option>
-              <option value="4"<?php if ($srView == 4) echo " selected"; ?>><?php echo SR_REPORT_TYPE_DAILY; ?></option>
-              <option value="5"<?php if ($srView == 5) echo " selected"; ?>><?php echo SR_REPORT_TYPE_ORDERS; ?></option>
-              </select> 
-              </td>
+            <tr> 
               <td align="left" class="menuBoxHeading">
                 <?php echo SR_SITE;?> <br>
                 <?php echo tep_site_pull_down_menu_with_all($_GET['site_id'], false, TEXT_ALL, 'style="margin-left:0;"');?><br>
-                <?php 
-                  echo SR_SORT_VAL1;
-                  $checked = '';
-                  if(isset($_GET['is_select'])){
-
-                    if($_GET['is_select'] == '1'){
-
-                      $checked = ' checked="checked"';
-                    }
-                  }else{
-                    $checked = ' checked="checked"'; 
-                  }
-                ?>
-                <?php echo '<input type="radio" name="is_select" value="1"'.$checked.' onclick="products_list_show(1);">'.SR_PRODUCTS_SELECT;?>
-                <?php echo '<input type="radio" name="is_select" value="0"'.(isset($_GET['is_select']) && $_GET['is_select'] == '0' ? ' checked="checked"' : '').' onclick="products_list_show(0);">'.SR_PRODUCTS_NOT_SELECT;?><br>
-                <?php echo tep_draw_pull_down_menu('add_product_categories_id', tep_get_category_tree(), (isset($_GET['add_product_categories_id']) ? $_GET['add_product_categories_id'] : $_GET['cid']), 'style="margin-left:0;" id="categories_id" onChange="change_products(this.value);"');
-                echo '<input type="hidden" name="cid" id="c_id" value="'.(isset($_GET['add_product_categories_id']) ? $_GET['add_product_categories_id'] : $_GET['cid']).'"><input type="hidden" name="pid" id="p_id" value="'.(isset($_GET['products_id']) ? $_GET['products_id'] : $_GET['pid']).'">';
-                ?><br>
-                <span id="products_list"></span>
-              </td>
               <td class="menuBoxHeading"><?php echo SR_REPORT_START_DATE; ?><br>
               <table border="0" cellspacing="0" cellpadding="0">
                 <tr>
@@ -184,6 +156,15 @@ require("includes/note_js.php");
                 </tr>
               </table>
               </td>
+              <td align="left" class="menuBoxHeading"><?php echo SR_OPTION_TYPE;?><br>
+              <select name="report">
+              <option value="1"<?php if ($srView == 1) echo " selected"; ?>><?php echo SR_REPORT_TYPE_YEARLY; ?></option>
+              <option value="2"<?php if ($srView == 2) echo " selected"; ?>><?php echo SR_REPORT_TYPE_MONTHLY; ?></option>
+              <option value="3"<?php if ($srView == 3) echo " selected"; ?>><?php echo SR_REPORT_TYPE_WEEKLY; ?></option>
+              <option value="4"<?php if ($srView == 4) echo " selected"; ?>><?php echo SR_REPORT_TYPE_DAILY; ?></option>
+              <option value="5"<?php if ($srView == 5) echo " selected"; ?>><?php echo SR_REPORT_TYPE_ORDERS; ?></option>
+              </select> 
+              </td>
               <td align="left" class="menuBoxHeading"><?php echo SR_TITLE_FUNCTION;?><br>
               <select name="method" size="1" style="margin-left:0;">
                 <option value="0"<?php if ($srMethod == 0) echo " selected"; ?>><?php echo SR_TITLE_DEAL_DAY;?></option>
@@ -193,12 +174,32 @@ require("includes/note_js.php");
           </tr>
 
           <tr>
-              <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_DETAIL; ?><br>
-              <select name="detail" size="1" style="margin-left:0;">
+              <td align="left" class="menuBoxHeading">
+              <table cellpadding="0" cellspacing="0"><tr>
+              <td class="menuBoxHeading">
+              <?php echo SR_REPORT_DETAIL; ?><br>
+              <select name="detail" size="1" style="margin:0 5px 0 0;">
                 <!--<option value="0"<?php if ($srDetail == 0) echo " selected"; ?>><?php echo  SR_DET_HEAD_ONLY; ?></option>-->
                 <option value="1"<?php if ($srDetail == 1) echo " selected"; ?>><?php echo  SR_DET_DETAIL; ?></option>
                 <option value="2"<?php if ($srDetail == 2) echo " selected"; ?>><?php echo  SR_DET_DETAIL_ONLY; ?></option>
               </select>
+              </td>
+              <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_STATUS_FILTER; ?><br>
+              <select name="status" size="1" style="margin:0 5px 0 0;">
+                <option value="success"<?php if ($srStatus == 'success') echo " selected";?>><?php echo SR_TITLE_ORDER_FINISH;?></option>
+                <option value="0"<?php if ($srStatus == '0') echo " selected";?>><?php echo SR_REPORT_ALL; ?></option>
+                <?php
+                        foreach ($sr->status as $value) {
+?>
+                <option value="<?php echo $value["orders_status_id"]?>"<?php if ($srStatus == $value["orders_status_id"]) echo " selected"; ?>><?php echo $value["orders_status_name"] ; ?></option>
+                <?php
+                         }
+?>
+              </select>
+              <br>
+              </td>
+              </tr>
+              </table>
               </td>
               <td class="menuBoxHeading"><?php echo SR_REPORT_END_DATE; ?><br>
               <table border="0" cellspacing="0" cellpadding="0">
@@ -249,42 +250,43 @@ date("Y") - $i; ?></option>
                 </tr>
               </table>
               </td>
+              <td class="menuBoxHeading">
+              <?php echo SR_TITLE_CATEGORY;?><br>
+              <select name="bflag" style="margin-left:0;">
+                <option value="0"<?php if(!$_GET['bflag']){?> selected<?php }?>><?php echo SR_SELECT_ALL;?></option>
+                <option value="1"<?php if($_GET['bflag'] == '1'){?> selected<?php }?>><?php echo SR_OPTION_SALE;?></option>
+                <option value="2"<?php if($_GET['bflag'] == '2'){?> selected<?php }?>><?php echo SR_OPTION_BUY;?></option>
+              </select>&nbsp;
+              </td>
              <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_EXP; ?><br>
               <select name="export" size="1" style="margin-left:0;">
                 <option value="0" selected><?php echo  SR_EXP_NORMAL; ?></option>
                 <option value="1"><?php echo  SR_EXP_CSV; ?></option>
               </select>
-              </td>
-              
+              </td> 
             </tr>
             <tr>
-              <td><table cellpadding="0" cellspacing="0"><tr>
-              <td class="menuBoxHeading">
- <?php echo SR_TITLE_CATEGORY;?><br>
-  <select name="bflag" style="margin-left:0;">
-    <option value="0"<?php if(!$_GET['bflag']){?> selected<?php }?>><?php echo SR_SELECT_ALL;?></option>
-    <option value="1"<?php if($_GET['bflag'] == '1'){?> selected<?php }?>><?php echo SR_OPTION_SALE;?></option>
-    <option value="2"<?php if($_GET['bflag'] == '2'){?> selected<?php }?>><?php echo SR_OPTION_BUY;?></option>
-  </select>&nbsp;
-              </td>
-			   <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_STATUS_FILTER; ?><br>
-              <select name="status" size="1">
-                <option value="success"<?php if ($srStatus == 'success') echo " selected";?>><?php echo SR_TITLE_ORDER_FINISH;?></option>
-                <option value="0"<?php if ($srStatus == '0') echo " selected";?>><?php echo SR_REPORT_ALL; ?></option>
-                <?php
-                        foreach ($sr->status as $value) {
-?>
-                <option value="<?php echo $value["orders_status_id"]?>"<?php if ($srStatus == $value["orders_status_id"]) echo " selected"; ?>><?php echo $value["orders_status_name"] ; ?></option>
-                <?php
-                         }
-?>
-              </select>
-              <br>
-              </td>
-              </tr></table>
-              </td> 
-              
-              <td><table><tr>
+              <td>
+              <?php 
+                  echo SR_SORT_VAL1;
+                  $checked = '';
+                  if(isset($_GET['is_select'])){
+
+                    if($_GET['is_select'] == '1'){
+
+                      $checked = ' checked="checked"';
+                    }
+                  }else{
+                    $checked = ' checked="checked"'; 
+                  }
+                ?>
+                <?php echo '<input type="radio" name="is_select" value="1"'.$checked.' onclick="products_list_show(1);">'.SR_PRODUCTS_SELECT;?>
+                <?php echo '<input type="radio" name="is_select" value="0"'.(isset($_GET['is_select']) && $_GET['is_select'] == '0' ? ' checked="checked"' : '').' onclick="products_list_show(0);">'.SR_PRODUCTS_NOT_SELECT;?><br>
+                <?php echo tep_draw_pull_down_menu('add_product_categories_id', tep_get_category_tree(), (isset($_GET['add_product_categories_id']) ? $_GET['add_product_categories_id'] : $_GET['cid']), 'style="margin-left:0;" id="categories_id" onChange="change_products(this.value);"');
+                echo '<input type="hidden" name="cid" id="c_id" value="'.(isset($_GET['add_product_categories_id']) ? $_GET['add_product_categories_id'] : $_GET['cid']).'"><input type="hidden" name="pid" id="p_id" value="'.(isset($_GET['products_id']) ? $_GET['products_id'] : $_GET['pid']).'">';
+                ?><br>
+              <span id="products_list"></span> 
+              </td>  
               <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_SORT; ?><br>
               <select name="sort" size="1" style="margin-left:0;">
                 <option value="0"<?php if ($srSort == 0) echo " selected"; ?>><?php echo  SR_SORT_VAL0; ?></option>
@@ -295,8 +297,8 @@ date("Y") - $i; ?></option>
                 <option value="5"<?php if ($srSort == 5) echo " selected"; ?>><?php echo  SR_SORT_VAL5; ?></option>
                 <option value="6"<?php if ($srSort == 6) echo " selected"; ?>><?php echo  SR_SORT_VAL6; ?></option>
               </select>
-              <br>
-              </td>
+              <br> 
+              </td>             
               <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_COMP_FILTER; ?><br>
               <select name="compare" size="1" style="margin-left:0;">
                 <option value="0" <?php if ($srCompare == SR_COMPARE_NO) echo "selected"; ?>><?php echo SR_REPORT_COMP_NO; ?></option>
@@ -305,10 +307,7 @@ date("Y") - $i; ?></option>
                 <option value="3" <?php if ($srCompare == SR_COMPARE_YEAR) echo "selected"; ?>><?php echo SR_REPORT_COMP_YEAR; ?></option>
               </select>
               <br>
-              </td>
-              </tr></table>
-              </td>             
-              
+              </td> 
               <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_MAX; ?><br>
               <select name="max" size="1" style="margin-left:0;">
                 <option value="0"><?php echo SR_REPORT_ALL; ?></option>
@@ -340,12 +339,12 @@ date("Y") - $i; ?></option>
   
   <table border="0" width="100%" cellspacing="0" cellpadding="2">
           <tr>
-            <td valign="top"><?php tep_site_filter(FILENAME_STATS_SALES_REPORT2);?><table border="0" width="100%" cellspacing="0" cellpadding="2">
+            <td valign="top"><?php tep_show_site_filter(FILENAME_STATS_SALES_REPORT,false,array(0));?><table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr class="dataTableHeadingRow">
-                <td class="dataTableHeadingContent_order" align="left"><?php echo  '<a href="'.tep_href_link(FILENAME_STATS_SALES_REPORT2,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=date&order_type='.($_GET['order_sort'] == 'date' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.SR_TABLE_HEADING_DATE.($_GET['order_sort'] == 'date' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'date' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>'; ?></td>
-                <td class="dataTableHeadingContent_order" align="left"><?php echo  '<a href="'.tep_href_link(FILENAME_STATS_SALES_REPORT2,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=orders&order_type='.($_GET['order_sort'] == 'orders' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.SR_TABLE_HEADING_ORDERS.($_GET['order_sort'] == 'orders' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'orders' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>'; ?></td>
-                <td class="dataTableHeadingContent_order" align="center"><?php echo  '<a href="'.tep_href_link(FILENAME_STATS_SALES_REPORT2,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=num&order_type='.($_GET['order_sort'] == 'num' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.SR_TABLE_HEADING_ITEMS.($_GET['order_sort'] == 'num' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'num' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>'; ?></td>
-                <td class="dataTableHeadingContent_order" align="right"><?php echo  '<a href="'.tep_href_link(FILENAME_STATS_SALES_REPORT2,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=price&order_type='.($_GET['order_sort'] == 'price' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.SR_TABLE_HEADING_REVENUE.($_GET['order_sort'] == 'price' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'price' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>'; ?></td>
+                <td class="dataTableHeadingContent_order" align="left"><?php echo  '<a href="'.tep_href_link(FILENAME_STATS_SALES_REPORT,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=date&order_type='.($_GET['order_sort'] == 'date' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.SR_TABLE_HEADING_DATE.($_GET['order_sort'] == 'date' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'date' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>'; ?></td>
+                <td class="dataTableHeadingContent_order" align="left"><?php echo  '<a href="'.tep_href_link(FILENAME_STATS_SALES_REPORT,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=orders&order_type='.($_GET['order_sort'] == 'orders' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.SR_TABLE_HEADING_ORDERS.($_GET['order_sort'] == 'orders' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'orders' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>'; ?></td>
+                <td class="dataTableHeadingContent_order" align="center"><?php echo  '<a href="'.tep_href_link(FILENAME_STATS_SALES_REPORT,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=num&order_type='.($_GET['order_sort'] == 'num' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.SR_TABLE_HEADING_ITEMS.($_GET['order_sort'] == 'num' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'num' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>'; ?></td>
+                <td class="dataTableHeadingContent_order" align="right"><?php echo  '<a href="'.tep_href_link(FILENAME_STATS_SALES_REPORT,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=price&order_type='.($_GET['order_sort'] == 'price' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.SR_TABLE_HEADING_REVENUE.($_GET['order_sort'] == 'price' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'price' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>'; ?></td>
               </tr>
 <?php
 if($_GET['report'] != 5){
@@ -376,11 +375,17 @@ while ($sr->hasNext()) {
     $nowColor = $odd; 
   }
   if(!isset($_GET['order_sort'])){
+    if($_GET['ID'] != '' && $_GET['ID'] == $show_i){
 ?>
-              <tr class="<?php echo $nowColor;?>" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='<?php echo $nowColor;?>'">
+              <tr class="dataTableRowSelected" onmouseover="this.style.cursor='hand'" onclick="document.location.href='<?php echo tep_href_link(FILENAME_STATS_SALES_REPORT, tep_get_all_get_params(array('x', 'y', 'ID')).'ID=' . $show_i);?>'">
+<?
+    }else{
+?>
+              <tr class="<?php echo $nowColor;?>" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='<?php echo $nowColor;?>'" onclick="document.location.href='<?php echo tep_href_link(FILENAME_STATS_SALES_REPORT, tep_get_all_get_params(array('x', 'y', 'ID')).'ID=' . $show_i);?>'">
 <?php
+    }
   }
-    $show_list_array[$show_i] = '<tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'">'; 
+    $show_list_array[$show_i] = '<tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'" onclick="document.location.href=\''.tep_href_link(FILENAME_STATS_SALES_REPORT, tep_get_all_get_params(array('x', 'y', 'ID')).'ID=' . $show_i).'\'">'; 
     switch ($srView) {
     case '3':
   if(!isset($_GET['order_sort'])){
@@ -491,6 +496,12 @@ if (isset($srDetail)){
   }
 $show_i++;
 }
+if(isset($_GET['ID']) && $_GET['ID'] != ''){
+$show_list_array[$_GET['ID']] = str_replace('dataTableRow','dataTableRowSelected',$show_list_array[$_GET['ID']]);
+$show_list_array[$_GET['ID']] = str_replace('dataTableSecondRow','dataTableRowSelected',$show_list_array[$_GET['ID']]);
+$show_list_array[$_GET['ID']] = str_replace('onmouseout="this.className=\'dataTableRowSelected\'"','',$show_list_array[$_GET['ID']]);
+$show_list_array[$_GET['ID']] = str_replace('this.className=\'dataTableRowSelectedOver\';','',$show_list_array[$_GET['ID']]);
+}
 if($_GET['order_sort'] == 'date'){
 
   if($_GET['order_type'] == 'desc'){
@@ -573,8 +584,16 @@ if($_GET['order_sort'] == 'date'){
     } else {
       $nowColor = $odd; 
     }  
+    if($_GET['ID'] != '' && $_GET['ID'] == $orders_i){
 ?> 
-    <tr class="<?php echo $nowColor;?>" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='<?php echo $nowColor;?>'">
+<tr class="dataTableRowSelected" onmouseover="this.style.cursor='hand'" onclick="document.location.href='<?php echo tep_href_link(FILENAME_STATS_SALES_REPORT, tep_get_all_get_params(array('x', 'y', 'ID')).'ID=' . $orders_i);?>'">
+<?php
+    }else{
+?>
+<tr class="<?php echo $nowColor;?>" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='<?php echo $nowColor;?>'" onclick="document.location.href='<?php echo tep_href_link(FILENAME_STATS_SALES_REPORT, tep_get_all_get_params(array('x', 'y', 'ID')).'ID=' . $orders_i);?>'">
+<?php
+    }
+?>
       <td class="dataTableContent" align="left"><?php echo tep_date_long(date("Y-m-d\ H:i:s", strtotime($info_value['date_purchased']))); ?></td>
       <td class="dataTableContent" align="left"><?php echo $info_value['orders_id'].'&nbsp;&nbsp;'.$info_value['pname']; ?></td>
       <td class="dataTableContent" align="right"><?php echo $info_value['pquant']; ?></td>

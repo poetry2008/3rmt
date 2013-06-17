@@ -34,11 +34,11 @@
         echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link('cal_info.php', '', 'NONSSL').'\';"><span>'.tep_image(DIR_WS_MENU_ICON .  'icon_statistics.gif').'</span><span>' .  BOX_CAL_SITES_INFO_TEXT . '</span></div>';
       }
     }
-    if (!check_whether_is_limited(FILENAME_STATS_SALES_REPORT2)) {
-      if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_STATS_SALES_REPORT2){
-        echo ' <div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_STATS_SALES_REPORT2, '', 'NONSSL').'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_sales.gif').'</span><span>' . BOX_REPORTS_SALES_REPORT2 . '</span></div>';
+    if (!check_whether_is_limited(FILENAME_STATS_SALES_REPORT)) {
+      if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_STATS_SALES_REPORT){
+        echo ' <div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_STATS_SALES_REPORT, '', 'NONSSL').'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_sales.gif').'</span><span>' . BOX_REPORTS_SALES_REPORT . '</span></div>';
       }else{
-        echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_STATS_SALES_REPORT2, '', 'NONSSL').'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_sales.gif').'</span><span>' . BOX_REPORTS_SALES_REPORT2 . '</span></div>';
+        echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_STATS_SALES_REPORT, '', 'NONSSL').'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_sales.gif').'</span><span>' . BOX_REPORTS_SALES_REPORT . '</span></div>';
       }
     }
     if (!check_whether_is_limited(FILENAME_ASSETS)) {

@@ -101,7 +101,7 @@ define('BOX_HEADING_REPORTS', 'レポート');
 define('BOX_REPORTS_PRODUCTS_VIEWED', '商品別の閲覧回数');
 define('BOX_REPORTS_PRODUCTS_PURCHASED', '商品別の販売数');
 define('BOX_REPORTS_ORDERS_TOTAL', '顧客別の売上順位');
-define('BOX_REPORTS_SALES_REPORT2', '売上管理');
+define('BOX_REPORTS_SALES_REPORT', '売上管理');
 define('BOX_REPORTS_NEW_CUSTOMERS', '新規顧客');
 define('BOX_REPORTS_ASSETS', '資産管理');
 
