@@ -356,6 +356,7 @@ function hidden_info_box(){
   $('#show_manufacturers').css('display','none');
 }
 function check_del(mID,page,c_permission){
+  if(confirm('<?php echo TEXT_DEL_MANUFACTURERS;?>')){
   if (c_permission == 31) {
      window.location.href="<?php echo tep_href_link(FILENAME_MANUFACTURERS);?>?page="+page+"&mID="+mID+"&action=deleteconfirm";
   } else {
@@ -392,6 +393,7 @@ function check_del(mID,page,c_permission){
       }
     });
   }
+  } 
 }
 <?php //提交动作?>
 function toggle_manufacturers_form(c_permission){
