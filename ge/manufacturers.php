@@ -69,9 +69,30 @@
 
 echo '
 <table class="box_des" width="100%" border="0" cellspacing="0" cellpadding="0">'."\n".
-  '<tr>'."\n".
-   '<td width="120" class="smallText" valign="top" align="center"> <a href="'.substr(strip_tags($manufacturer['manufacturers_url']),0,100) .'"><h3><strong>'.$manufacturer['manufacturers_name'].'</strong></h3></a><br> '.tep_image_new(DIR_WS_IMAGES.'manufacturers/'.$manufacturer['manufacturers_image'],$manufacturer['manufacturers_alt'],'50','80').' </td>' . "\n".
-    '<td>'."\n"
+  '<tr>'."\n";
+    if(isset($manufacturer['manufacturers_alt'])&&$manufacturer['manufacturers_alt']!=''){
+      $m_alt = $manufacturer['manufacturers_alt'];
+    }else{
+      if(isset($manufacturer['manufacturers_name'])&&$manufacturer['manufacturers_name']!=''){
+        $m_alt = $manufacturer['manufacturers_name'];
+      }else{
+        $m_alt = 'img';
+      }
+    }
+    echo '    <td width="120" class="smallText" valign="top" align="center">';
+    if(isset($manufacturer['manufacturers_url'])&&$manufacturer['manufacturers_url']!=''){
+    echo '<a target="_blank" href="'.substr(strip_tags($manufacturer['manufacturers_url']),0,100) .'">';
+    }else{
+      echo '<font color="#2864B4">';
+    }
+    echo '<h3><strong>'.$manufacturer['manufacturers_name'].'</strong></h3>';
+    if(isset($manufacturer['manufacturers_url'])&&$manufacturer['manufacturers_url']!=''){
+    echo '</a>';
+    }else{
+      echo '</font>';
+    }
+    echo '<br> '.  tep_image_new(DIR_WS_IMAGES.'manufacturers/'.$manufacturer['manufacturers_image'],$manufacturer['manufacturers_alt'],'50','80').' </td>' . "\n";
+    echo '<td>'."\n"
   ;
      echo '<table class="box_des" width="100%" border="0" cellspacing="2" cellpadding="0">'."\n".'<tr>'."\n";
      while($products = tep_db_fetch_array($products_query)) {
