@@ -55,9 +55,8 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
       $manufacturers_image = tep_get_uploaded_file('manufacturers_image');
       $image_directory = tep_get_local_path(tep_get_upload_dir().'manufacturers/');
       $manufacturers_image['size'] = $manufacturers_image['size'] / 1024 / 1024;
-      if($manufacturers_image['size'] >= ini_get('upload_max_filesize')){
-        $error_image = TEXT_IMAGE_MAX;
-        $messageStack->add_session(TEXT_IMAGE_MAX, 'error');
+      if($manufacturers_image['size'] >= ini_get('upload_max_filesize')||$manufacturers_image['size']==0){
+        $_SESSION['error_image'] = TEXT_IMAGE_MAX;
         tep_redirect(tep_href_link(FILENAME_MANUFACTURERS, 'page=' . $_GET['page']));
         exit;
       }else{
@@ -139,6 +138,10 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
       tep_redirect(tep_href_link(FILENAME_MANUFACTURERS, 'page=' . $_GET['page']));
       break;
   }
+if(isset($_SESSION['error_image'])&&$_SESSION['error_image']){
+  $messageStack->add_session($_SESSION['error_image'], 'error');
+  unset($_SESSION['error_image']);
+}
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
