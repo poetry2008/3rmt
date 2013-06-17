@@ -65,7 +65,7 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
       $manufacturers_image = tep_get_uploaded_file('manufacturers_image');
       $image_directory = tep_get_local_path(tep_get_upload_dir().'manufacturers/');
       $manufacturers_image['size'] = $manufacturers_image['size'] / 1024 / 1024;
-      if($manufacturers_image['size'] >= ini_get('upload_max_filesize')){
+      if($manufacturers_image['size'] >= ini_get('upload_max_filesize') || $manufacturers_image['size'] == '0'){
         $error_image = TEXT_IMAGE_MAX;
         break;
       }
