@@ -86,7 +86,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
     功能: 生成相应分类下的商品列表 
     参数: $_POST['id'] 分类ID 
   -----------------------------------------------------*/
-  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_STATS_SALES_REPORT2);
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_STATS_SALES_REPORT);
   $add_product_categories_id = $_POST['id'];
   $products_pid = $_POST['products_id'];
   $products_array = array();

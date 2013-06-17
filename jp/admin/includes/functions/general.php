@@ -10299,7 +10299,7 @@ function tep_show_site_filter($filename,$ca_single=false,$show_all=array()){
                  continue;
                  }
                }
-               if(!isset($_GET['site_id'])){
+               if(!isset($_GET['site_id']) || trim($_GET['site_id']) == ''){
                 if(in_array($site['id'],$site_array)){
            ?>  
                 <span id="site_<?php echo $site['id'];?>" class="site_filter_selected"><a href="javascript:void(0);" onclick="change_show_site(<?php echo $site['id'];?>,0,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('page', 'site_id')));?>', '<?php echo $filename;?>');"><?php echo $site['romaji'];?></a></span>
