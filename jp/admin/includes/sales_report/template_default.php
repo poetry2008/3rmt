@@ -104,10 +104,7 @@ require("includes/note_js.php");
       <tr>
         <td colspan="2"><form action="" method="get">
           <table border="0" width="100%" cellspacing="0" cellpadding="2">
-            <tr> 
-              <td align="left" class="menuBoxHeading">
-                <?php echo SR_SITE;?> <br>
-                <?php echo tep_site_pull_down_menu_with_all($_GET['site_id'], false, TEXT_ALL, 'style="margin-left:0;"');?><br>
+            <tr>  
               <td class="menuBoxHeading"><?php echo SR_REPORT_START_DATE; ?><br>
               <table border="0" cellspacing="0" cellpadding="0">
                 <tr>
@@ -156,6 +153,14 @@ require("includes/note_js.php");
                 </tr>
               </table>
               </td>
+              <td class="menuBoxHeading">
+              <?php echo SR_REPORT_DETAIL; ?><br>
+              <select name="detail" size="1" style="margin:0 5px 0 0;">
+                <!--<option value="0"<?php if ($srDetail == 0) echo " selected"; ?>><?php echo  SR_DET_HEAD_ONLY; ?></option>-->
+                <option value="1"<?php if ($srDetail == 1) echo " selected"; ?>><?php echo  SR_DET_DETAIL; ?></option>
+                <option value="2"<?php if ($srDetail == 2) echo " selected"; ?>><?php echo  SR_DET_DETAIL_ONLY; ?></option>
+              </select>
+              </td>
               <td align="left" class="menuBoxHeading"><?php echo SR_OPTION_TYPE;?><br>
               <select name="report">
               <option value="1"<?php if ($srView == 1) echo " selected"; ?>><?php echo SR_REPORT_TYPE_YEARLY; ?></option>
@@ -173,34 +178,7 @@ require("includes/note_js.php");
               </td>
           </tr>
 
-          <tr>
-              <td align="left" class="menuBoxHeading">
-              <table cellpadding="0" cellspacing="0"><tr>
-              <td class="menuBoxHeading">
-              <?php echo SR_REPORT_DETAIL; ?><br>
-              <select name="detail" size="1" style="margin:0 5px 0 0;">
-                <!--<option value="0"<?php if ($srDetail == 0) echo " selected"; ?>><?php echo  SR_DET_HEAD_ONLY; ?></option>-->
-                <option value="1"<?php if ($srDetail == 1) echo " selected"; ?>><?php echo  SR_DET_DETAIL; ?></option>
-                <option value="2"<?php if ($srDetail == 2) echo " selected"; ?>><?php echo  SR_DET_DETAIL_ONLY; ?></option>
-              </select>
-              </td>
-              <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_STATUS_FILTER; ?><br>
-              <select name="status" size="1" style="margin:0 5px 0 0;">
-                <option value="success"<?php if ($srStatus == 'success') echo " selected";?>><?php echo SR_TITLE_ORDER_FINISH;?></option>
-                <option value="0"<?php if ($srStatus == '0') echo " selected";?>><?php echo SR_REPORT_ALL; ?></option>
-                <?php
-                        foreach ($sr->status as $value) {
-?>
-                <option value="<?php echo $value["orders_status_id"]?>"<?php if ($srStatus == $value["orders_status_id"]) echo " selected"; ?>><?php echo $value["orders_status_name"] ; ?></option>
-                <?php
-                         }
-?>
-              </select>
-              <br>
-              </td>
-              </tr>
-              </table>
-              </td>
+          <tr> 
               <td class="menuBoxHeading"><?php echo SR_REPORT_END_DATE; ?><br>
               <table border="0" cellspacing="0" cellpadding="0">
                 <tr>
@@ -249,6 +227,20 @@ date("Y") - $i; ?></option>
                   </select></td>
                 </tr>
               </table>
+              </td>
+              <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_STATUS_FILTER; ?><br>
+              <select name="status" size="1" style="margin:0 5px 0 0;">
+                <option value="success"<?php if ($srStatus == 'success') echo " selected";?>><?php echo SR_TITLE_ORDER_FINISH;?></option>
+                <option value="0"<?php if ($srStatus == '0') echo " selected";?>><?php echo SR_REPORT_ALL; ?></option>
+                <?php
+                        foreach ($sr->status as $value) {
+?>
+                <option value="<?php echo $value["orders_status_id"]?>"<?php if ($srStatus == $value["orders_status_id"]) echo " selected"; ?>><?php echo $value["orders_status_name"] ; ?></option>
+                <?php
+                         }
+?>
+              </select>
+              <br>
               </td>
               <td class="menuBoxHeading">
               <?php echo SR_TITLE_CATEGORY;?><br>
@@ -521,16 +513,32 @@ if($_GET['order_sort'] == 'date'){
   if($_GET['order_type'] == 'desc'){
     arsort($show_orders_array);
     $show_key_orders = array_keys($show_orders_array);
+    $k = 0;
     foreach($show_key_orders as $show_list_value){
 
+      if($k % 2 == 0){
+
+        $show_list_array[$show_list_value] = preg_replace('/class=".+?"/','class="dataTableRow"',$show_list_array[$show_list_value]);
+      }else{
+        $show_list_array[$show_list_value] = preg_replace('/class=".+?"/','class="dataTableSecondRow"',$show_list_array[$show_list_value]); 
+      }
       echo $show_list_array[$show_list_value];
+      $k++;
     }
   }else{
     asort($show_orders_array);
     $show_key_orders = array_keys($show_orders_array);
+    $k = 0;
     foreach($show_key_orders as $show_list_value){
+     
+      if($k % 2 == 0){
 
+        $show_list_array[$show_list_value] = preg_replace('/class=".+?"/','class="dataTableRow"',$show_list_array[$show_list_value]);
+      }else{
+        $show_list_array[$show_list_value] = preg_replace('/class=".+?"/','class="dataTableSecondRow"',$show_list_array[$show_list_value]); 
+      }
       echo $show_list_array[$show_list_value];
+      $k++;
     } 
   }
 }else if($_GET['order_sort'] == 'num'){
@@ -538,16 +546,32 @@ if($_GET['order_sort'] == 'date'){
   if($_GET['order_type'] == 'desc'){
     arsort($show_products_array);
     $show_key_orders = array_keys($show_products_array);
+    $k = 0;
     foreach($show_key_orders as $show_list_value){
 
+      if($k % 2 == 0){
+
+        $show_list_array[$show_list_value] = preg_replace('/class=".+?"/','class="dataTableRow"',$show_list_array[$show_list_value]);
+      }else{
+        $show_list_array[$show_list_value] = preg_replace('/class=".+?"/','class="dataTableSecondRow"',$show_list_array[$show_list_value]); 
+      }  
       echo $show_list_array[$show_list_value];
+      $k++;
     }
   }else{
     asort($show_products_array);
     $show_key_orders = array_keys($show_products_array);
+    $k = 0;;
     foreach($show_key_orders as $show_list_value){
 
+      if($k % 2 == 0){
+
+        $show_list_array[$show_list_value] = preg_replace('/class=".+?"/','class="dataTableRow"',$show_list_array[$show_list_value]);
+      }else{
+        $show_list_array[$show_list_value] = preg_replace('/class=".+?"/','class="dataTableSecondRow"',$show_list_array[$show_list_value]); 
+      } 
       echo $show_list_array[$show_list_value];
+      $k++;
     } 
   }
 }else if($_GET['order_sort'] == 'price'){
@@ -555,16 +579,32 @@ if($_GET['order_sort'] == 'date'){
   if($_GET['order_type'] == 'desc'){
     arsort($show_price_array);
     $show_key_orders = array_keys($show_price_array);
+    $k = 0;
     foreach($show_key_orders as $show_list_value){
 
+      if($k % 2 == 0){
+
+        $show_list_array[$show_list_value] = preg_replace('/class=".+?"/','class="dataTableRow"',$show_list_array[$show_list_value]);
+      }else{
+        $show_list_array[$show_list_value] = preg_replace('/class=".+?"/','class="dataTableSecondRow"',$show_list_array[$show_list_value]); 
+      }  
       echo $show_list_array[$show_list_value];
+      $k++;
     }
   }else{
     asort($show_price_array);
     $show_key_orders = array_keys($show_price_array);
+    $k = 0;
     foreach($show_key_orders as $show_list_value){
 
+      if($k % 2 == 0){
+
+        $show_list_array[$show_list_value] = preg_replace('/class=".+?"/','class="dataTableRow"',$show_list_array[$show_list_value]);
+      }else{
+        $show_list_array[$show_list_value] = preg_replace('/class=".+?"/','class="dataTableSecondRow"',$show_list_array[$show_list_value]); 
+      }  
       echo $show_list_array[$show_list_value];
+      $k++;
     } 
   }
 }
