@@ -258,7 +258,7 @@ date("Y") - $i; ?></option>
               </td> 
             </tr>
             <tr>
-              <td>
+              <td valign="top">
               <?php 
                   echo SR_SORT_VAL1;
                   $checked = '';
@@ -279,7 +279,7 @@ date("Y") - $i; ?></option>
                 ?><br>
               <span id="products_list"></span> 
               </td>  
-              <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_SORT; ?><br>
+              <td align="left" class="menuBoxHeading" valign="top"><?php echo SR_REPORT_SORT; ?><br>
               <select name="sort" size="1" style="margin-left:0;">
                 <option value="0"<?php if ($srSort == 0) echo " selected"; ?>><?php echo  SR_SORT_VAL0; ?></option>
                 <option value="1"<?php if ($srSort == 1) echo " selected"; ?>><?php echo  SR_SORT_VAL1; ?></option>
@@ -291,7 +291,7 @@ date("Y") - $i; ?></option>
               </select>
               <br>
               </td>
-              <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_COMP_FILTER; ?><br>
+              <td align="left" class="menuBoxHeading" valign="top"><?php echo SR_REPORT_COMP_FILTER; ?><br>
               <select name="compare" size="1" style="margin-left:0;">
                 <option value="0" <?php if ($srCompare == SR_COMPARE_NO) echo "selected"; ?>><?php echo SR_REPORT_COMP_NO; ?></option>
                 <option value="1" <?php if ($srCompare == SR_COMPARE_DAY) echo "selected"; ?>><?php echo SR_REPORT_COMP_DAY; ?></option>
@@ -300,7 +300,7 @@ date("Y") - $i; ?></option>
               </select>
               <br>
               </td>
-              <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_MAX; ?><br>
+              <td align="left" class="menuBoxHeading" valign="top"><?php echo SR_REPORT_MAX; ?><br>
               <select name="max" size="1" style="margin-left:0;">
                 <option value="0"><?php echo SR_REPORT_ALL; ?></option>
                 <option<?php if ($srMax == 25) echo " selected"; ?>>25</option>
