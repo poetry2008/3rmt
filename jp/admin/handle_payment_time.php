@@ -74,6 +74,57 @@ if ($orders_status_res) {
       tep_db_query("update `".TABLE_ORDERS."` set `orders_status` = '".DEFAULT_ORDERS_STATUS_ID."', `orders_status_name` = '".$status_info_res['orders_status_name']."' where orders_id = '".$order_id."'"); 
     }
   }
+  //销售处理
+  $orders_oa_flag = false;
+  $orders_status_flag = false;
+  $end_orders_status_flag = false;
+  $orders_status_id_flag = false;
+  $status_list_array = array();
+  $orders_status_finish_query = tep_db_query("select orders_status_id,finished from ". TABLE_ORDERS_STATUS);
+  while($orders_status_finish_array = tep_db_fetch_array($orders_status_finish_query)){
+
+        $status_list_array[$orders_status_finish_array['orders_status_id']] = $orders_status_finish_array['finished'];
+  }
+  tep_db_free_result($orders_status_finish_query);
+  $orders_oa_flag = tep_orders_finishqa(tep_db_input($order_id)) == 1 ? true : $orders_oa_flag; 
+  $orders_status_flag = $status_list_array[$orders_status_res['orders_status_id']] == 1 ? true : $orders_status_flag;
+
+  //获取前一个订单状态
+  $orders_status_id_query = tep_db_query("select orders_status_history_id,orders_status_id from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".tep_db_input($order_id)."' order by date_added desc limit 0,2");
+  $orders_i = 0;
+  while($orders_status_id_array = tep_db_fetch_array($orders_status_id_query)){
+
+    if($orders_i == 0){
+
+      $orders_status_id = $orders_status_id_array['orders_status_history_id'];
+    }
+    if($orders_i == 1){
+
+      $orders_status_end_id = $orders_status_id_array['orders_status_id'];
+    }
+    $orders_i++;
+  }
+  tep_db_free_result($orders_status_id_query);
+  $orders_status_id_flag = $status_id == $orders_status_id ? true : $orders_status_id_flag;
+  $end_orders_status_flag = $status_list_array[$orders_status_end_id] == 1 ? true : $end_orders_status_flag;
+
+  if($orders_oa_flag == true && $orders_status_flag == false && $end_orders_status_flag == true && $orders_status_id_flag == true){
+
+        $orders_products_query = tep_db_query("select products_id,products_quantity from ". TABLE_ORDERS_PRODUCTS ." where orders_id='".tep_db_input($order_id)."'");
+        while($orders_products_array = tep_db_fetch_array($orders_products_query)){
+          tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . sprintf('%d', $orders_products_array['products_quantity']) . " where products_id = '" . (int)$orders_products_array['products_id'] . "'");
+        }
+        tep_db_free_result($orders_products_query);
+  }
+
+  if($orders_oa_flag == true && $orders_status_flag == true && $end_orders_status_flag == false && $orders_status_id_flag == true){
+
+        $orders_products_query = tep_db_query("select products_id,products_quantity from ". TABLE_ORDERS_PRODUCTS ." where orders_id='".tep_db_input($order_id)."'");
+        while($orders_products_array = tep_db_fetch_array($orders_products_query)){
+          tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered - " . sprintf('%d', $orders_products_array['products_quantity']) . " where products_id = '" . (int)$orders_products_array['products_id'] . "'");
+        }
+        tep_db_free_result($orders_products_query);    
+  } 
 
   tep_db_query("delete from `".TABLE_ORDERS_STATUS_HISTORY."` where `orders_status_history_id` = '".$status_id."'"); 
 
