@@ -1537,3 +1537,16 @@ top:70px;
 .table_select select{
 	margin-left:0;
 }
+.td_link{
+	margin-bottom:5px;
+	font-size:18px;
+}
+.td_link a{
+	clear:both;
+	font-size:18px;
+	display:block;
+	margin-bottom:5px;
+}
+.td_link img{
+	clear:both;
+}
