@@ -45,4 +45,5 @@ define('TEXT_PLEASE_MANUFACTURERS_NAME','&nbsp;&nbsp;<font color=\'red\'>请输�
 define('TEXT_SORT_ASC','▲');
 define('TEXT_SORT_DESC','▼');
 define('TEXT_ALT','ALT文字');
+define('TEXT_URL_EXAMPLE','请正确输入URL形式。例：http://example.com');
 ?>

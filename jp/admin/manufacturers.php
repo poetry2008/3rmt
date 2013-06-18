@@ -56,21 +56,19 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
       $image_directory = tep_get_local_path(tep_get_upload_dir().'manufacturers/');
       $manufacturers_image['size'] = $manufacturers_image['size'] / 1024 / 1024;
       $pic_type_array = array('image/jpeg', 'image/gif', 'image/png', 'image/jpg'); 
-      if ($manufacturers_image['name'] != '') {
+      if($manufacturers_image['size'] >= ini_get('upload_max_filesize')
+       ||($manufacturers_image['size']==0&&$manufacturers_image['name']!='')
+       ||empty($_POST)){
+        $_SESSION['error_image'] = TEXT_IMAGE_MAX;
+        tep_redirect(tep_href_link(FILENAME_MANUFACTURERS, tep_get_all_get_params(array('page', 'action'))));
+        exit;
+      }else if ($manufacturers_image['name'] != '') {
         if (!in_array($manufacturers_image['type'], $pic_type_array)) {
           $_SESSION['error_image'] = TEXT_IMAGE_TYPE_WRONG;
           tep_redirect(tep_href_link(FILENAME_MANUFACTURERS, tep_get_all_get_params(array('page', 'action'))));
           exit;
         }
-      }
-      
-      if($manufacturers_image['size'] >= ini_get('upload_max_filesize')
-          ||($manufacturers_image['size']==0&&$manufacturers_image['name']!='')
-          ||empty($_POST)){
-        $_SESSION['error_image'] = TEXT_IMAGE_MAX;
-        tep_redirect(tep_href_link(FILENAME_MANUFACTURERS, tep_get_all_get_params(array('page', 'action'))));
-        exit;
-      }else{
+      } else{
       if ($_GET['action'] == 'insert') {
         $insert_sql_data = array('date_added' => 'now()','last_modified' => 'now()','user_added' => $_POST['user_added'],'user_update' => $_POST['user_update'],'manufacturers_alt' => $_POST['manufacturers_alt']);
         $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
@@ -165,6 +163,16 @@ if(isset($_SESSION['error_image'])&&$_SESSION['error_image']){
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php require('includes/javascript/show_site.js.php');?>
 <script type="text/javascript">
+<?php //检查url?>
+function checkurl(url){
+  var str = url;
+  var objExp = new RegExp(/http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w-.\/?%&=]*)?/);
+  if(objExp.test(str)){
+    return true;
+  }else{
+    return false;
+  }
+}
 function all_select_manufacturers(manufacturers_str){
       var check_flag = document.del_manufacturers.all_check.checked;
           if (document.del_manufacturers.elements[manufacturers_str]) {
@@ -408,6 +416,22 @@ function check_del(mID,page,c_permission){
 <?php //提交动作?>
 function toggle_manufacturers_form(c_permission){
   var manufacturers_name = $("#manufacturers_name").val();
+  var url_flag = true;
+  <?php
+    $languages_list = tep_get_languages();
+    for ($i = 0, $n = sizeof($languages_list); $i < $n; $i++) {
+      ?>
+        if(url_flag){
+        url_tmp = '';
+        url_tmp = document.getElementById('manufac_url_<?php echo $languages_list[$i]['id'];?>').value;
+        if(url_tmp!=''){
+          url_flag = checkurl(url_tmp);
+        }
+        }
+      <?php
+    }
+  ?>
+  if(url_flag){
   if(manufacturers_name == ''){
      $("#manufacturers_name_error").html("<?php echo TEXT_PLEASE_MANUFACTURERS_NAME; ?>");   
   }else{
@@ -447,6 +471,9 @@ function toggle_manufacturers_form(c_permission){
       }
     });
   }
+  }
+  }else{
+    alert('<?php echo TEXT_URL_EXAMPLE;?>');
   }
 }
 </script>

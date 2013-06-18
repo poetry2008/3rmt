@@ -76,7 +76,7 @@ echo '<table class="box_des" width="100%" border="0" cellspacing="0" cellpadding
     if(isset($manufacturer['manufacturers_url'])&&$manufacturer['manufacturers_url']!=''){
     echo '<a target="_blank" href="'.substr(strip_tags($manufacturer['manufacturers_url']),0,100) .'">';
     }
-    echo '<h3><strong>'.$manufacturer['manufacturers_name'].'</strong></h3>';
+    echo $manufacturer['manufacturers_name'];
     if(isset($manufacturer['manufacturers_url'])&&$manufacturer['manufacturers_url']!=''){
     echo '</a>';
     }
