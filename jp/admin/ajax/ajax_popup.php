@@ -6205,7 +6205,7 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
     $manufacturer_inputs_string = '';
     $languages = tep_get_languages();
     for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
-       $manufacturer_inputs_string .= tep_draw_input_field('manufacturers_url[' .  $languages[$i]['id'] . ']', tep_get_manufacturer_url($mInfo->manufacturers_id, $languages[$i]['id']),'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.(isset($is_u_disabled) && $is_u_disabled?'disabled="disabled"':''));
+       $manufacturer_inputs_string .= tep_draw_input_field('manufacturers_url[' .  $languages[$i]['id'] . ']', tep_get_manufacturer_url($mInfo->manufacturers_id, $languages[$i]['id']),' id="manufac_url_'.$languages[$i]['id'].'" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.(isset($is_u_disabled) && $is_u_disabled?'disabled="disabled"':''));
     }
     $contents[]['text'] = array(
           array('params' => 'style="width:30%"','text' => TEXT_MANUFACTURERS_URL),
@@ -6219,7 +6219,8 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
     );
     $contents[]['text'] = array(
           array('text' => TEXT_ALT),
-          array('text' => tep_draw_input_field('manufacturers_alt',$mInfo->manufacturers_alt,'onfocus="o_submit_single = false;"onblur="o_submit_single = true;"'.(isset($is_u_disabled) && $is_u_disabled?'disabled="disabled"':'')))
+          array('text' =>
+            tep_draw_input_field('manufacturers_alt',$mInfo->manufacturers_alt,'onfocus="o_submit_single = false;"onblur="o_submit_single = true;"'.(isset($is_u_disabled) && $is_u_disabled?'disabled="disabled"':'')))
     );
     $contents[]['text'] = array(
           array('text' => TEXT_PRODUCTS),
