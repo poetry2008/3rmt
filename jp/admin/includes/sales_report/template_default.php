@@ -453,33 +453,62 @@ if (isset($srDetail)){
   $row_num++;
     for ($i = 0; $i < $last; $i++) {
       if ($srMax === '0' or $i < $srMax) {
+        if(!isset($_GET['order_sort'])){
 ?>
               <tr class="dataTableRow" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='dataTableRow'">
                 <td class="dataTableContent">&nbsp;</td>
                 <td class="dataTableContent" align="left"><a href="<?php echo tep_catalog_href_link("product_info.php?products_id=" . $info[$i]['pid']) ?>" target="_blank"><?php echo $info[$i]['pname']; ?></a>
                 </td>
                 <td class="dataTableContent" align="right"><?php echo $info[$i]['pquant']; ?></td>
-                <?php
-          if ($srDetail == 2) {?>
-                <td class="dataTableContent" align="right"><?php 
-                  if ($info[$i]['psum'] < 0) {
+<?php
+        }
+        $show_list_array[$show_i] .= '<tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'">
+                <td class="dataTableContent">&nbsp;</td>
+                <td class="dataTableContent" align="left"><a href="'. tep_catalog_href_link("product_info.php?products_id=" . $info[$i]['pid']) .'" target="_blank">'.$info[$i]['pname'].'</a>
+                </td>
+                <td class="dataTableContent" align="right">'.$info[$i]['pquant'].'</td>';
+        if ($srDetail == 2) {
+        if(!isset($_GET['order_sort'])){
+?>
+  <td class="dataTableContent" align="right"><?php 
+        }
+        $show_list_array[$show_i] .= '<td class="dataTableContent" align="right">';
+        if ($info[$i]['psum'] < 0) {
+          if(!isset($_GET['order_sort'])){
                     echo '<font color="red">'.
                       str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($info[$i]['psum'])).
                       '</font>'.TEXT_MONEY_SYMBOL; 
-                  } else {
+          }
+                    $show_list_array[$show_i] .= '<font color="red">'.
+                      str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($info[$i]['psum'])).
+                      '</font>'.TEXT_MONEY_SYMBOL;
+        } else {
+          if(!isset($_GET['order_sort'])){
                     echo str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($info[$i]['psum'])) 
                       .TEXT_MONEY_SYMBOL;
-                  }
-                ?></td>
-                <?php
-          } else { ?>
-                <td class="dataTableContent">&nbsp;</td>
-                <?php
           }
+                    $show_list_array[$show_i] .= str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($info[$i]['psum'])) 
+                      .TEXT_MONEY_SYMBOL;
+                  }
+         if(!isset($_GET['order_sort'])){       ?></td>
+<?php
+         }
+         $show_list_array[$show_i] .= '</td>';
+        } else { 
+        if(!isset($_GET['order_sort'])){
+?>
+                <td class="dataTableContent">&nbsp;</td>
+<?php
+        }
+        $show_list_array[$show_i] .= '<td class="dataTableContent">&nbsp;</td>';
+        }
+        if(!isset($_GET['order_sort'])){
 ?>
                 
               </tr>
-              <?php
+<?php
+        }
+        $show_list_array[$show_i] .= '</tr>';
       }
     }
   }
