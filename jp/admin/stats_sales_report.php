@@ -50,7 +50,7 @@
   // default sort
   $srDefaultSort = 4;
   // default max
-  $srDefaultMax = "";
+  $srDefaultMax = "0";
   // default status
   $srDefaultStatus = 'success';
   // default compare

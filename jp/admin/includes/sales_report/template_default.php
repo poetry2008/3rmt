@@ -104,7 +104,7 @@ require("includes/note_js.php");
       <tr>
         <td colspan="2"><form action="" method="get">
           <table border="0" width="100%" cellspacing="0" cellpadding="2">
-            <tr>  
+            <tr>
               <td class="menuBoxHeading"><?php echo SR_REPORT_START_DATE; ?><br>
               <table border="0" cellspacing="0" cellpadding="0">
                 <tr>
@@ -178,7 +178,7 @@ require("includes/note_js.php");
               </td>
           </tr>
 
-          <tr> 
+          <tr>
               <td class="menuBoxHeading"><?php echo SR_REPORT_END_DATE; ?><br>
               <table border="0" cellspacing="0" cellpadding="0">
                 <tr>
@@ -289,8 +289,8 @@ date("Y") - $i; ?></option>
                 <option value="5"<?php if ($srSort == 5) echo " selected"; ?>><?php echo  SR_SORT_VAL5; ?></option>
                 <option value="6"<?php if ($srSort == 6) echo " selected"; ?>><?php echo  SR_SORT_VAL6; ?></option>
               </select>
-              <br> 
-              </td>             
+              <br>
+              </td>
               <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_COMP_FILTER; ?><br>
               <select name="compare" size="1" style="margin-left:0;">
                 <option value="0" <?php if ($srCompare == SR_COMPARE_NO) echo "selected"; ?>><?php echo SR_REPORT_COMP_NO; ?></option>
@@ -299,17 +299,14 @@ date("Y") - $i; ?></option>
                 <option value="3" <?php if ($srCompare == SR_COMPARE_YEAR) echo "selected"; ?>><?php echo SR_REPORT_COMP_YEAR; ?></option>
               </select>
               <br>
-              </td> 
+              </td>
               <td align="left" class="menuBoxHeading"><?php echo SR_REPORT_MAX; ?><br>
               <select name="max" size="1" style="margin-left:0;">
                 <option value="0"><?php echo SR_REPORT_ALL; ?></option>
-                <option value="" <?php if ($srMax === '') echo " selected"; ?>>0</option>
-                <option<?php if ($srMax == 1) echo " selected"; ?>>1</option>
-                <option<?php if ($srMax == 3) echo " selected"; ?>>3</option>
-                <option<?php if ($srMax == 5) echo " selected"; ?>>5</option>
-                <option<?php if ($srMax == 10) echo " selected"; ?>>10</option>
                 <option<?php if ($srMax == 25) echo " selected"; ?>>25</option>
                 <option<?php if ($srMax == 50) echo " selected"; ?>>50</option>
+                <option<?php if ($srMax == 100) echo " selected"; ?>>100</option>
+                <option<?php if ($srMax == 200) echo " selected"; ?>>200</option>
               </select>
               </td>
               
