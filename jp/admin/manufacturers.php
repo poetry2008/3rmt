@@ -55,11 +55,20 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
       $manufacturers_image = tep_get_uploaded_file('manufacturers_image');
       $image_directory = tep_get_local_path(tep_get_upload_dir().'manufacturers/');
       $manufacturers_image['size'] = $manufacturers_image['size'] / 1024 / 1024;
+      $pic_type_array = array('image/jpeg', 'image/gif', 'image/png', 'image/jpg'); 
+      if ($manufacturers_image['name'] != '') {
+        if (!in_array($manufacturers_image['type'], $pic_type_array)) {
+          $_SESSION['error_image'] = TEXT_IMAGE_TYPE_WRONG;
+          tep_redirect(tep_href_link(FILENAME_MANUFACTURERS, tep_get_all_get_params(array('page', 'action'))));
+          exit;
+        }
+      }
+      
       if($manufacturers_image['size'] >= ini_get('upload_max_filesize')
           ||($manufacturers_image['size']==0&&$manufacturers_image['name']!='')
           ||empty($_POST)){
         $_SESSION['error_image'] = TEXT_IMAGE_MAX;
-        tep_redirect(tep_href_link(FILENAME_MANUFACTURERS, 'page=' . $_GET['page']));
+        tep_redirect(tep_href_link(FILENAME_MANUFACTURERS, tep_get_all_get_params(array('page', 'action'))));
         exit;
       }else{
       if ($_GET['action'] == 'insert') {
@@ -601,7 +610,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                     <td class="smallText" valign="top"><?php echo $manufacturers_split->display_count($manufacturers_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_MANUFACTURERS); ?></td>
                     <td class="smallText" align="right">
 					<div class="td_box">
-					<?php echo $manufacturers_split->display_links($manufacturers_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page']); ?></div></td>
+					<?php echo $manufacturers_split->display_links($manufacturers_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'action'))); ?></div></td>
                   </tr>
 				  <?php
   if (!isset($_GET['action']) || $_GET['action'] != 'new') {
