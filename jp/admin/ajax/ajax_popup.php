@@ -788,7 +788,11 @@ if ($_GET['action'] == 'show_category_info') {
             &&$order_history['products_rate']!=''){
           $rel_sum_quantity += $order_history['products_quantity']*$order_history['products_rate'];
         }else{
-          $rel_sum_quantity += $order_history['products_quantity'];
+          if($radices!=''&&$radices!=1&&$radices!=0){
+            $rel_sum_quantity += $order_history['products_quantity']*$radices;
+          }else{
+            $rel_sum_quantity += $order_history['products_quantity'];
+          }
         }
       }
     }
@@ -877,7 +881,11 @@ if ($_GET['action'] == 'show_category_info') {
             &&$relate_order_history['products_rate']!=''){
             $rel_sum_quantity += $relate_order_history['products_quantity']*$relate_order_history['products_rate'];
           }else{
-            $rel_sum_quantity += $relate_order_history['products_quantity'];
+            if($relate_radices!=''&&$relate_radices!=1&&$relate_radices!=0){
+              $rel_sum_quantity += $relate_order_history['products_quantity']*$relate_radices;
+            }else{
+              $rel_sum_quantity += $relate_order_history['products_quantity'];
+            }
           }
         }
       } 
