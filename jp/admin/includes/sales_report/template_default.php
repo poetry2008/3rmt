@@ -260,7 +260,7 @@ date("Y") - $i; ?></option>
             <tr>
               <td valign="top">
               <?php 
-                  echo SR_SORT_VAL1;
+                  echo '<div class="box_radio"><span>'.SR_SORT_VAL1.'</span>';
                   $checked = '';
                   if(isset($_GET['is_select'])){
 
@@ -272,9 +272,9 @@ date("Y") - $i; ?></option>
                     $checked = ' checked="checked"'; 
                   }
                 ?>
-                <?php echo '<input type="radio" name="is_select" value="1"'.$checked.' onclick="products_list_show(1);">'.SR_PRODUCTS_SELECT;?>
-                <?php echo '<input type="radio" name="is_select" value="0"'.(isset($_GET['is_select']) && $_GET['is_select'] == '0' ? ' checked="checked"' : '').' onclick="products_list_show(0);">'.SR_PRODUCTS_NOT_SELECT;?><br>
-                <?php echo tep_draw_pull_down_menu('add_product_categories_id', tep_get_category_tree(), (isset($_GET['add_product_categories_id']) ? $_GET['add_product_categories_id'] : $_GET['cid']), 'style="margin-left:0;" id="categories_id" onChange="change_products(this.value);"');
+                <?php echo '<input type="radio" name="is_select" value="1"'.$checked.' onclick="products_list_show(1);"><span>'.SR_PRODUCTS_SELECT.'</span>';?>
+                <?php echo '<input type="radio" name="is_select" value="0"'.(isset($_GET['is_select']) && $_GET['is_select'] == '0' ? ' checked="checked"' : '').' onclick="products_list_show(0);"><span>'.SR_PRODUCTS_NOT_SELECT;?></span></div>
+                <?php echo tep_draw_pull_down_menu('add_product_categories_id', tep_get_category_tree(), (isset($_GET['add_product_categories_id']) ? $_GET['add_product_categories_id'] : $_GET['cid']), 'style="margin:0 0 2px 0;" id="categories_id" onChange="change_products(this.value);"');
                 echo '<input type="hidden" name="cid" id="c_id" value="'.(isset($_GET['add_product_categories_id']) ? $_GET['add_product_categories_id'] : $_GET['cid']).'"><input type="hidden" name="pid" id="p_id" value="'.(isset($_GET['products_id']) ? $_GET['products_id'] : $_GET['pid']).'">';
                 ?><br>
               <span id="products_list"></span> 

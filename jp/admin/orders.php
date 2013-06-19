@@ -1226,7 +1226,7 @@ switch ($_GET['action']) {
       $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".tep_db_input($oID)."' order by date_added desc limit 0,1");
       $orders_status_history_array = tep_db_fetch_array($orders_status_history_query);
       tep_db_free_result($orders_status_history_query);
-      tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments, user_added) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '".$orders_status_history_array['comments']."', '".tep_db_input($update_user_info['name'])."')"); 
+      tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments, user_added) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '".$orders_status_history_array['comments']."', '".tep_db_input($update_user_info['name'])."')");
       // 同步问答
       $order_updated = true;
     }
@@ -2892,7 +2892,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
           $buttons = tep_get_buttons();
           $o2c       = tep_get_buttons_by_orders_id($order->info['orders_id']);
           if ($buttons) {
-        ?> 
+        ?>
           <tr><td>
           <?php foreach ($buttons as $button) {?>
           <div id="orders_alert_<?php echo $button['buttons_id'];?>" onclick="orders_buttons(this, <?php echo $button['buttons_id'];?>, '<?php echo $order->info['orders_id'];?>');" class="<?php echo in_array($button['buttons_id'], $o2c) ? 'orders_buttons_checked' : 'orders_buttons_unchecked' ;?>"><?php echo $button['buttons_name'];?></div>
@@ -3570,7 +3570,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
                     echo str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($order->totals[$i]['value']));
                     echo "</font>".TEXT_MONEY_SYMBOL;
                   }
-                } 
+                }
               } else {
                 if($order->totals[$i]['value']>=0){
                   echo $currencies->format($order->totals[$i]['value']);
@@ -3599,7 +3599,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
                   '    <tr>' . "\n" .
                   '      <td align="right" class="smallText">' . TEXT_CODE_HANDLE_FEE . '</td>' . "\n" .
                   '      <td align="right" class="smallText">' . $currencies->format($order->info['code_fee']) . '</td>' . "\n" .
-                  '    </tr>' . "\n"; 
+                  '    </tr>' . "\n";
               }
             }
           ?>
