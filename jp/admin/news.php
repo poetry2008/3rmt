@@ -776,7 +776,7 @@ require("includes/note_js.php");
           );
   $news_table_row[] = array('params' => $news_params, 'text' => $news_info);
   } 
-  $news_form = tep_draw_form('del_news',FILENAME_NEWS,'action=delete_latest_news_confirm&site_id='.$_GET['site_id'].'&page='.$_GET['page']);
+  $news_form = tep_draw_form('del_news',FILENAME_NEWS,'action=delete_latest_news_confirm'.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').'&page='.$_GET['page']);
   $notice_box->get_form($news_form);
   $notice_box->get_contents($news_table_row);
   $notice_box->get_eof(tep_eof_hidden());
