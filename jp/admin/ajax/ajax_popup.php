@@ -3641,19 +3641,34 @@ if(!in_array($site_id,$site_array)&&$site_id!=-1){
       $site_id_name = $site_name['romaji'];
  }
  }else{
-   $site_id_name = "<select name='insert_site_id'>";
-   $new_site_arr = array_intersect($show_site_arr,$site_array);
-   foreach($new_site_arr as $value){
-     if($value==0){
-       $site_id_name .= "<option value='0'>ALL</option>";
-     }else{
-       $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where
-             id=".$value));
-       $site_id_name .= "<option value='".$site_name['id']
-         ."'>".$site_name['name']."</option>";
+   $site_list_raw = tep_db_query("select * from sites order by id asc"); 
+   $site_id_name = '<table border="0" width="100%" cellpadding="0" cellspacing="0">'; 
+   $s_num = 0;
+   $s_flag = false;
+   $site_id_name .= '<tr>'; 
+   while ($site_list_res = tep_db_fetch_array($site_list_raw)) {
+     $site_id_name .= '<td><input type="checkbox" name="site_id_info[]" value="'.$site_list_res['id'].'">'.$site_list_res['name'].'</td>'; 
+     $s_num++;
+     if ($s_num % 2 == 0) {
+       if ($s_flag == false) {
+         $site_id_name .= '<td><a href="javascript:void(0);">'.tep_html_element_button(SELECT_ALL_TEXT, 'onclick="select_all_news_site()"').'</a></td>'; 
+         $s_flag = true; 
+       } else {
+         $site_id_name .= '<td></td>'; 
+       }
+       $site_id_name .= '</tr><tr>'; 
      }
    }
-   $site_id_name .= "</select>";
+   for ($tmp_num = $s_num % 2; $tmp_num >= 0; $tmp_num--) {
+     $site_id_name .= '<td></td>'; 
+   }
+   if ($s_num % 2 == 0) {
+     $site_id_name .= '<td></td>'; 
+   }
+   $site_id_name .= '<td></td>'; 
+   $site_id_name .= '</tr>';  
+   $site_id_name .= '</table>'; 
+   $site_id_name .= '<span id="site_error" style="color:#ff0000;"></span><input type="hidden" name="is_select" id="is_select" value="0">'; 
  }
  if($get_news_id != -1){
       $site_romaji = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$latest_news['site_id']));
@@ -3663,7 +3678,7 @@ if(!in_array($site_id,$site_array)&&$site_id!=-1){
  }
  $latest_news_contents[]['text'] = array(
       array('text' => ENTRY_SITE),
-      array('text' => (isset($_GET['latest_news_id']) && $_GET['latest_news_id'] && $latest_news?$site_romaji['romaji']:$site_id_name.'<input type="hidden" name="site_id" value="'.$site_id.'">'))
+      array('params' => 'class="td_input"', 'text' => (isset($_GET['latest_news_id']) && $_GET['latest_news_id'] && $latest_news?$site_romaji['romaji']:$site_id_name.'<input type="hidden" name="site_id" value="'.$site_id.'">'))
  );
  $latest_news_contents[]['text'] = array(
      array('text' => TEXT_LATEST_NEWS_HEADLINE),

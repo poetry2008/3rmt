@@ -35,4 +35,6 @@ define('TEXT_ERROR_NULL','入力して下さい。');
 define('TEXT_REVIEWS_SELECT_ACTION','選択したものを');
 define('TEXT_REVIEWS_DELETE_ACTION', '削除する');
 define('SHOP_NAME','ショップ名:');
+define('SELECT_ALL_TEXT', '全選択');
+define('TEXT_ERROR_SITE', '少なくとも1つのサイトを選択してください。');
 ?>
