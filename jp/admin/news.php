@@ -98,39 +98,103 @@ tep_redirect(tep_href_link(FILENAME_NEWS, (isset($_GET['site_id'])?('site_id='.$
         tep_redirect(tep_href_link(FILENAME_NEWS, (isset($_GET['site_id'])?('site_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):'')));
         break;
       case 'insert_latest_news':
-        if ($_POST['headline']) {
-		
-          $sql_data_array = array('headline'   => tep_db_prepare_input($_POST['headline']),
-                                  'content'    => tep_db_prepare_input($_POST['content']),
-				  'author'     => tep_db_prepare_input($_POST['author']),
-				  'update_editor'=> tep_db_prepare_input($_POST['author']),
-				  'latest_update_date' => tep_db_prepare_input(mktime()-3600),
-                                  'news_image' => tep_db_prepare_input($_POST['news_image']),
-                                  'news_image_description' => tep_db_prepare_input($_POST['news_image_description']),
-                                  'date_added' => 'now()', //uses the inbuilt mysql function 'now'
-                                  'site_id'    => tep_db_prepare_input($_POST['insert_site_id']),
-                                  'status'     => '1' );
-          tep_db_perform(TABLE_NEWS, $sql_data_array);
-          $news_id = tep_db_insert_id(); //not actually used ATM -- just there in case
+        $site_list_array = array();        
+        $site_list_raw = tep_db_query("select * from ".TABLE_SITES." order by id asc"); 
+        while ($site_list_res = tep_db_fetch_array($site_list_raw)) {
+          $site_list_array[] = $site_list_res['id']; 
         }
-    
-        $news_image = tep_get_uploaded_file('news_image');
-        if (!empty($news_image['name'])) {
-          $pic_rpos = strrpos($news_image['name'], ".");
-          $pic_ext = substr($news_image['name'], $pic_rpos+1);
-          $news_image_name = 'news'.time().".".$pic_ext;
-          $news_image['name'] = $news_image_name; 
+        if (trim($_POST['headline']) == '' || empty($_POST['site_id_info'])) {
+           tep_redirect(tep_href_link(FILENAME_NEWS, isset($_GET['site_id'])?('site_id='.$_GET['site_id']):''));
+        }
+        $site_diff_array = array_diff($site_list_array, $_POST['site_id_info']); 
+        if (empty($site_diff_array)) {
+          if ($_POST['headline'] && !empty($_POST['site_id_info'])) {
+                  
+            $sql_data_array = array('headline'   => tep_db_prepare_input($_POST['headline']),
+                                    'content'    => tep_db_prepare_input($_POST['content']),
+                                    'author'     => tep_db_prepare_input($_POST['author']),
+                                    'update_editor'=> tep_db_prepare_input($_POST['author']),
+                                    'latest_update_date' => tep_db_prepare_input(mktime()-3600),
+                                    'news_image' => tep_db_prepare_input($_POST['news_image']),
+                                    'news_image_description' => tep_db_prepare_input($_POST['news_image_description']),
+                                    'date_added' => 'now()', //uses the inbuilt mysql function 'now'
+                                    'site_id'    => '0',
+                                    'status'     => '1' );
+            tep_db_perform(TABLE_NEWS, $sql_data_array);
+            $news_id = tep_db_insert_id(); //not actually used ATM -- just there in case
+          }
+      
+          $news_image = tep_get_uploaded_file('news_image');
+          if (!empty($news_image['name'])) {
+            $pic_rpos = strrpos($news_image['name'], ".");
+            $pic_ext = substr($news_image['name'], $pic_rpos+1);
+            $news_image_name = 'news'.time().".".$pic_ext;
+            $news_image['name'] = $news_image_name; 
+          } else {
+            $news_image_name = ''; 
+          }
+          $image_directory = tep_get_local_path(tep_get_upload_dir($sql_data_array['site_id']) . 'news/');
+          $path = 'news/';
+      
+          if (is_uploaded_file($news_image['tmp_name'])) {
+            tep_db_query("update " . TABLE_NEWS . " set news_image = '" . $path . $news_image_name . "' where news_id = '" . $news_id . "'");
+            tep_copy_uploaded_file($news_image, $image_directory);
+          }
         } else {
-          $news_image_name = ''; 
+          $tmp_n_num = 0;  
+          $tmp_n_array = array(); 
+          $tmp_n_single = false;
+          $tmp_first_directory = '';
+          foreach ($_POST['site_id_info'] as $s_key => $s_value) {
+            if ($_POST['headline'] && !empty($_POST['site_id_info'])) {
+              $sql_data_array = array('headline'   => tep_db_prepare_input($_POST['headline']),
+                                      'content'    => tep_db_prepare_input($_POST['content']),
+                                      'author'     => tep_db_prepare_input($_POST['author']),
+                                      'update_editor'=> tep_db_prepare_input($_POST['author']),
+                                      'latest_update_date' => tep_db_prepare_input(mktime()-3600),
+                                      'news_image' => tep_db_prepare_input($_POST['news_image']),
+                                      'news_image_description' => tep_db_prepare_input($_POST['news_image_description']),
+                                      'date_added' => 'now()', //uses the inbuilt mysql function 'now'
+                                      'site_id'    => $s_value,
+                                      'status'     => '1' );
+              tep_db_perform(TABLE_NEWS, $sql_data_array);
+              $news_id = tep_db_insert_id(); //not actually used ATM -- just there in case
+            }
+            if ($tmp_n_num == 0) { 
+              $news_image = tep_get_uploaded_file('news_image');
+              if (!empty($news_image['name'])) {
+                $pic_rpos = strrpos($news_image['name'], ".");
+                $pic_ext = substr($news_image['name'], $pic_rpos+1);
+                $news_image_name = 'news'.time().".".$pic_ext;
+                $news_image['name'] = $news_image_name; 
+              } else {
+                $news_image_name = ''; 
+              }
+              $image_directory = tep_get_local_path(tep_get_upload_dir($sql_data_array['site_id']) . 'news/');
+              $tmp_first_directory = $image_directory;
+              $path = 'news/';
+              if (is_uploaded_file($news_image['tmp_name'])) {
+                $tmp_n_single = true; 
+                tep_db_query("update " . TABLE_NEWS . " set news_image = '" . $path . $news_image_name . "' where news_id = '" . $news_id . "'");
+                tep_copy_uploaded_file($news_image, $image_directory);
+              }
+            } else {
+              $tmp_n_array[] = array('id' => $news_id, 'site_id' => $s_value);
+            }
+            $tmp_n_num++;  
+          }
+          if (!empty($tmp_n_array)) {
+            if ($tmp_n_single == true) {
+              $news_image = tep_get_uploaded_file('news_image');
+              foreach ($tmp_n_array as $t_key => $t_value) {
+                $image_directory = tep_get_local_path(tep_get_upload_dir($t_value['site_id']) . 'news/');
+                $path = 'news/';
+                tep_db_query("update " . TABLE_NEWS . " set news_image = '" . $path . $news_image_name . "' where news_id = '" . $t_value['id'] . "'");
+                @copy($tmp_first_directory.'/'.$news_image_name, $image_directory.'/'.$news_image_name); 
+              }
+            }
+          }
         }
-        $image_directory = tep_get_local_path(tep_get_upload_dir($sql_data_array['site_id']) . 'news/');
-    $path = 'news/';
-    
-    if (is_uploaded_file($news_image['tmp_name'])) {
-          tep_db_query("update " . TABLE_NEWS . " set news_image = '" . $path . $news_image_name . "' where news_id = '" . $news_id . "'");
-          tep_copy_uploaded_file($news_image, $image_directory);
-        }
-        
         tep_redirect(tep_href_link(FILENAME_NEWS, isset($_GET['site_id'])?('site_id='.$_GET['site_id']):''));
         break;
 
@@ -222,6 +286,19 @@ $(document).ready(function() {
        var headline = document.getElementById('headline').value; 
        var content  = document.getElementById('content').value;
        var news_image_description = document.getElementById('news_image_description').value;
+       var s_single = false; 
+       
+       if (document.new_latest_news.elements['site_id_info[]']) {
+         for (var u = 0; u < document.new_latest_news.elements['site_id_info[]'].length; u++) {
+           if (document.new_latest_news.elements['site_id_info[]'][u].checked == true) {
+             s_single = true; 
+             break; 
+           }
+         }
+       } else {
+         s_single = true; 
+       }
+       
        $.ajax({
          url: 'ajax.php?action=edit_latest_news',
          type: 'POST',
@@ -229,7 +306,7 @@ $(document).ready(function() {
          data:'headline='+headline+'&content='+content+'&news_image_description='+news_image_description, 
          async:false,
          success: function (data){
-          if (headline != '') {
+          if (headline != '' && s_single == true) {
             <?php
             if ($ocertify->npermission == 31) {
             ?>
@@ -273,7 +350,18 @@ $(document).ready(function() {
             }
             ?>
           }else{
-            $("#title_error").html('<?php echo TEXT_ERROR_NULL;?>'); 
+            if (headline != '') {
+              $("#title_error").html(''); 
+            } else {
+              $("#title_error").html('<?php echo TEXT_ERROR_NULL;?>'); 
+            }
+            if (s_single == false) {
+              $("#site_error").html('<?php echo TEXT_ERROR_SITE;?>'); 
+            } else {
+              if ($("#site_error")) {
+                $("#site_error").html(''); 
+              }
+            }
           }
          }
         });
@@ -361,7 +449,7 @@ function delete_select_news(news_str, c_permission){
          }
 }
 function show_latest_news(ele,page,latest_news_id,site_id,action_sid){
- self_page = "<?php echo $_SERVER['PHP_SELF'];?>"
+ var self_page = "<?php echo $_SERVER['PHP_SELF'];?>"
  $.ajax({
  url: 'ajax.php?&action=edit_latest_news',
  data: {page:page,latest_news_id:latest_news_id,site_id:site_id,action_sid:action_sid,self_page:self_page} ,
@@ -419,8 +507,7 @@ if($('.show_left_menu').width()){
   leftset = parseInt($('.content').attr('cellspacing'))+parseInt($('.content').attr('cellpadding'))*2+parseInt($('.columnLeft').attr('cellspacing'))*2+parseInt($('.columnLeft').attr('cellpadding'))*2+parseInt($('.compatible table').attr('cellpadding'));
 } 
 if(latest_news_id == -1){
-  show_text_list = $('#show_text_list').offset();
-  $('#show_latest_news').css('top',show_text_list.top);
+  $('#show_latest_news').css('top', $('#show_text_list').offset().top);
 }
 $('#show_latest_news').css('z-index','1');
 $('#show_latest_news').css('left',leftset);
@@ -486,6 +573,24 @@ function toggle_news_action(news_url_str)
   <?php
     }
   ?>
+}
+<?php //全选?>
+function select_all_news_site()
+{
+  var is_select_value = document.getElementById('is_select').value; 
+  if (document.new_latest_news.elements['site_id_info[]']) {
+    if (is_select_value == '0') {
+      for (var i = 0; i < document.new_latest_news.elements['site_id_info[]'].length; i++) {
+        document.new_latest_news.elements['site_id_info[]'][i].checked = true;
+      }
+      document.getElementById('is_select').value = '1'; 
+    } else {
+      for (var i = 0; i < document.new_latest_news.elements['site_id_info[]'].length; i++) {
+        document.new_latest_news.elements['site_id_info[]'][i].checked = false;
+      }
+      document.getElementById('is_select').value = '0'; 
+    }
+  }
 }
 </script>
 <?php 

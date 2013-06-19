@@ -34,4 +34,6 @@ define('TEXT_ERROR_NULL','请输入。');
 define('TEXT_REVIEWS_SELECT_ACTION','请选择');
 define('TEXT_REVIEWS_DELETE_ACTION', '删除勾选项目');
 define('SHOP_NAME','店铺名:');
+define('SELECT_ALL_TEXT', '全选');
+define('TEXT_ERROR_SITE', '请选择一个网站。');
 ?>

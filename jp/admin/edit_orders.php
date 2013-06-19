@@ -684,7 +684,7 @@ if($address_error == false){
           }
           if($customer_guest['is_calc_quantity'] != '1') {
             tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = ".$pr_quantity.", products_virtual_quantity = ".$pv_quantity." where products_id = '" . (int)$order['products_id'] . "'");
-          } 
+          }
           tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
           tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
         }
@@ -848,7 +848,7 @@ if($address_error == false){
                     sort_order = "' . $sort_order . '"
                       WHERE orders_total_id = "' . $ot_total_id . '"';
             tep_db_query($Query);
-          } else {  
+          } else { 
             $Query = 'INSERT INTO ' . TABLE_ORDERS_TOTAL . ' SET
               orders_id = "' . $oID . '",
                         title = "' . $ot_title . '",
@@ -3843,8 +3843,6 @@ if (($action == 'edit') && ($order_exists == true)) {
       $TotalsArray[] = array("Name" => "          ", "Price" => "", "Class" => "ot_custom", "TotalID" => "0");
     } 
   }
-
-  //print_r($TotalsArray);
   $shipping_fee_subtotal = 0; //小计
   $shipping_fee_tax = 0; //税
   $shipping_fee_point = 0; //折点
@@ -3973,7 +3971,7 @@ if (($action == 'edit') && ($order_exists == true)) {
           "<input type='hidden' name='before_point' value='" . $TotalDetails["Price"] . "'>" . 
           '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
           '   </td>' . "\n" .
-          '  </tr>' . "\n"; 
+          '  </tr>' . "\n";
       } else { //ゲスト
         echo '  <tr>' . "\n" .
           '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_TOTAL_DETAIL_READ.'</td>' . 
