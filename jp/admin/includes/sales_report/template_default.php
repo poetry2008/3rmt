@@ -317,13 +317,13 @@ date("Y") - $i; ?></option>
               <br>
               </td>
               <td align="left" class="menuBoxHeading" valign="top"><?php echo SR_REPORT_MAX; ?><br>
-              <select name="max" size="1" style="margin-left:0;">
-                <option value="all"<?php if ($srMax == 'all') echo " selected"; ?>><?php echo SR_REPORT_ALL; ?></option>
+              <select name="max" size="1" style="margin-left:0;"> 
                 <option value=""<?php if ($srMax == '') echo " selected"; ?>>0</option>
                 <option value="25"<?php if ($srMax == 25) echo " selected"; ?>>25</option>
                 <option value="50"<?php if ($srMax == 50) echo " selected"; ?>>50</option>
                 <option value="100"<?php if ($srMax == 100) echo " selected"; ?>>100</option>
                 <option value="200"<?php if ($srMax == 200) echo " selected"; ?>>200</option>
+                <option value="all"<?php if ($srMax == 'all') echo " selected"; ?>><?php echo SR_REPORT_ALL; ?></option>
               </select>
               </td>
               
@@ -355,7 +355,7 @@ date("Y") - $i; ?></option>
 <?php
                 }else{
 ?>
-                <td class="dataTableHeadingContent" align="left"><?php echo  SR_SORT_VAL1;?></td>
+                <td class="dataTableHeadingContent_order" align="left"><?php echo  '<a href="'.tep_href_link(FILENAME_STATS_SALES_REPORT,tep_get_all_get_params(array('x', 'y', 'sort')).'sort='.($_GET['sort'] == 2 ? 1 : 2)).'">'.SR_SORT_VAL1.(isset($_GET['sort']) && $_GET['sort'] == '2' ? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : (isset($_GET['sort']) && $_GET['sort'] == 1 ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>'; ?></td>
 <?php
                 }
                 if(isset($_GET['report']) && $_GET['report'] == 5){
