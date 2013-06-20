@@ -622,9 +622,9 @@ if($_GET['order_sort'] == 'date'){
 
       if($k % 2 == 0){
 
-        $show_list_array[$show_list_value] = preg_replace('/^<tr id="i_(.*?)" class="dataTableSecondRow"$/','<tr id="i_$1" class="dataTableRow"',$show_list_array[$show_list_value]);
+        $show_list_array[$show_list_value] = preg_replace('/<tr id="i_(.*?)" class="dataTableSecondRow"(.*?)onmouseout="this.className=\'dataTableSecondRow\'"/','<tr id="i_$1" class="dataTableRow"$2onmouseout="this.className=\'dataTableRow\'"',$show_list_array[$show_list_value]);
       }else{
-        $show_list_array[$show_list_value] = preg_replace('/^<tr id="i_(.*?)" class="dataTableRow"$/','<tr id="i_$1" class="dataTableSecondRow"',$show_list_array[$show_list_value]); 
+        $show_list_array[$show_list_value] = preg_replace('/<tr id="i_(.*?)" class="dataTableRow"(.*?)onmouseout="this.className=\'dataTableRow\'"/','<tr id="i_$1" class="dataTableSecondRow"$2onmouseout="this.className=\'dataTableSecondRow\'"',$show_list_array[$show_list_value]); 
       }
       echo $show_list_array[$show_list_value];
       $k++;
@@ -637,9 +637,9 @@ if($_GET['order_sort'] == 'date'){
 
       if($k % 2 == 0){
 
-        $show_list_array[$show_list_value] = preg_replace('/^<tr id="i_(.*?)" class="dataTableSecondRow"$/','<tr id="i_$1" class="dataTableRow"',$show_list_array[$show_list_value]);
+        $show_list_array[$show_list_value] = preg_replace('/<tr id="i_(.*?)" class="dataTableSecondRow"(.*?)onmouseout="this.className=\'dataTableSecondRow\'"/','<tr id="i_$1" class="dataTableRow"$2onmouseout="this.className=\'dataTableRow\'"',$show_list_array[$show_list_value]);
       }else{
-        $show_list_array[$show_list_value] = preg_replace('/^<tr id="i_(.*?)" class="dataTableRow"$/','<tr id="i_$1" class="dataTableSecondRow"',$show_list_array[$show_list_value]); 
+        $show_list_array[$show_list_value] = preg_replace('/<tr id="i_(.*?)" class="dataTableRow"(.*?)onmouseout="this.className=\'dataTableRow\'"/','<tr id="i_$1" class="dataTableSecondRow"$2onmouseout="this.className=\'dataTableSecondRow\'"',$show_list_array[$show_list_value]); 
       }
       echo $show_list_array[$show_list_value];
       $k++;
@@ -655,9 +655,9 @@ if($_GET['order_sort'] == 'date'){
 
       if($k % 2 == 0){
 
-        $show_list_array[$show_list_value] = preg_replace('/^<tr id="i_(.*?)" class="dataTableSecondRow"$/','<tr id="i_$1" class="dataTableRow"',$show_list_array[$show_list_value]);
+        $show_list_array[$show_list_value] = preg_replace('/<tr id="i_(.*?)" class="dataTableSecondRow"(.*?)onmouseout="this.className=\'dataTableSecondRow\'"/','<tr id="i_$1" class="dataTableRow"$2onmouseout="this.className=\'dataTableRow\'"',$show_list_array[$show_list_value]);
       }else{
-        $show_list_array[$show_list_value] = preg_replace('/^<tr id="i_(.*?)" class="dataTableRow"$/','<tr id="i_$1" class="dataTableSecondRow"',$show_list_array[$show_list_value]); 
+        $show_list_array[$show_list_value] = preg_replace('/<tr id="i_(.*?)" class="dataTableRow"(.*?)onmouseout="this.className=\'dataTableRow\'"/','<tr id="i_$1" class="dataTableSecondRow"$2onmouseout="this.className=\'dataTableSecondRow\'"',$show_list_array[$show_list_value]); 
       }  
       echo $show_list_array[$show_list_value];
       $k++;
@@ -670,9 +670,9 @@ if($_GET['order_sort'] == 'date'){
 
       if($k % 2 == 0){
 
-        $show_list_array[$show_list_value] = preg_replace('/^<tr id="i_(.*?)" class="dataTableSecondRow"$/','<tr id="i_$1" class="dataTableRow"',$show_list_array[$show_list_value]);
+        $show_list_array[$show_list_value] = preg_replace('/<tr id="i_(.*?)" class="dataTableSecondRow"(.*?)onmouseout="this.className=\'dataTableSecondRow\'"/','<tr id="i_$1" class="dataTableRow"$2onmouseout="this.className=\'dataTableRow\'"',$show_list_array[$show_list_value]);
       }else{
-        $show_list_array[$show_list_value] = preg_replace('/^<tr id="i_(.*?)" class="dataTableRow"$/','<tr id="i_$1" class="dataTableSecondRow"',$show_list_array[$show_list_value]); 
+        $show_list_array[$show_list_value] = preg_replace('/<tr id="i_(.*?)" class="dataTableRow"(.*?)onmouseout="this.className=\'dataTableRow\'"/','<tr id="i_$1" class="dataTableSecondRow"$2onmouseout="this.className=\'dataTableSecondRow\'"',$show_list_array[$show_list_value]); 
       } 
       echo $show_list_array[$show_list_value];
       $k++;
@@ -688,9 +688,9 @@ if($_GET['order_sort'] == 'date'){
 
       if($k % 2 == 0){
 
-        $show_list_array[$show_list_value] = preg_replace('/^<tr id="i_(.*?)" class="dataTableSecondRow"$/','<tr id="i_$1" class="dataTableRow"',$show_list_array[$show_list_value]);
+        $show_list_array[$show_list_value] = preg_replace('/<tr id="i_(.*?)" class="dataTableSecondRow"(.*?)onmouseout="this.className=\'dataTableSecondRow\'"/','<tr id="i_$1" class="dataTableRow"$2onmouseout="this.className=\'dataTableRow\'"',$show_list_array[$show_list_value]);
       }else{
-        $show_list_array[$show_list_value] = preg_replace('/^<tr id="i_(.*?)" class="dataTableRow"$/','<tr id="i_$1" class="dataTableSecondRow"',$show_list_array[$show_list_value]); 
+        $show_list_array[$show_list_value] = preg_replace('/<tr id="i_(.*?)" class="dataTableRow"(.*?)onmouseout="this.className=\'dataTableRow\'"/','<tr id="i_$1" class="dataTableSecondRow"$2onmouseout="this.className=\'dataTableSecondRow\'"',$show_list_array[$show_list_value]); 
       }  
       echo $show_list_array[$show_list_value];
       $k++;
@@ -703,9 +703,9 @@ if($_GET['order_sort'] == 'date'){
 
       if($k % 2 == 0){
 
-        $show_list_array[$show_list_value] = preg_replace('/^<tr id="i_(.*?)" class="dataTableSecondRow"$/','<tr id="i_$1" class="dataTableRow"',$show_list_array[$show_list_value]);
+        $show_list_array[$show_list_value] = preg_replace('/<tr id="i_(.*?)" class="dataTableSecondRow"(.*?)onmouseout="this.className=\'dataTableSecondRow\'"/','<tr id="i_$1" class="dataTableRow"$2onmouseout="this.className=\'dataTableRow\'"',$show_list_array[$show_list_value]);
       }else{
-        $show_list_array[$show_list_value] = preg_replace('/^<tr id="i_(.*?)" class="dataTableRow"$/','<tr id="i_$1" class="dataTableSecondRow"',$show_list_array[$show_list_value]); 
+        $show_list_array[$show_list_value] = preg_replace('/<tr id="i_(.*?)" class="dataTableRow"(.*?)onmouseout="this.className=\'dataTableRow\'"/','<tr id="i_$1" class="dataTableSecondRow"$2onmouseout="this.className=\'dataTableSecondRow\'"',$show_list_array[$show_list_value]); 
       }  
       echo $show_list_array[$show_list_value];
       $k++;
