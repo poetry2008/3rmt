@@ -6631,35 +6631,35 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
         ");
     $sum = 0;
     $cnt = 0;
-    $rel_cnt = 0;
+    if(isset($p_radices)&&$p_radices!=''&&$p_radices!=0){
+      $product_quantity = $product_quantity*$p_radices;
+    }
     while($h = tep_db_fetch_array($order_history_query)){
-      if ($cnt + $h['products_quantity'] > $product_quantity) {
-        $sum += ($product_quantity - $cnt) * abs($h['final_price']);
-        $cnt = $product_quantity;
+      if(isset($h['products_rate'])&&$h['products_rate']!=''&&$h['products_rate']!=0){
+        $h_pq = $h['products_quantity']*$h['products_rate'];
+        $h_fp = $h['final_price']/$h['products_rate'];
+      }else{
         if(isset($p_radices)&&$p_radices!=''&&$p_radices!=0){
-          $rel_cnt = $product_quantity*$p_radices;
+          $h_pq = $h['products_quantity']*$p_radices;
+          $h_fp = $h['final_price']/$p_radices;
         }else{
-          $rel_cnt = $product_quantity;
+          $h_pq = $h['products_quantity'];
+          $h_fp = $h['final_price'];
         }
+      }
+      if ($cnt + $h_pq > $product_quantity) {
+        $sum += ($product_quantity - $cnt) * abs($h_fp);
+        $cnt = $product_quantity;
         break;
       } else {
-        $sum += $h['products_quantity'] * abs($h['final_price']);
-        $cnt += $h['products_quantity'];
-        if(isset($h['products_rate'])&&$h['products_rate']!=''&&$h['products_rate']!=0){
-          $rel_cnt += $h['products_quantity']*$h['products_rate'];
-        }else{
-          if(isset($p_radices)&&$p_radices!=''&&$p_radices!=0){
-            $rel_cnt += $h['products_quantity']*$p_radices;
-          }else{
-            $rel_cnt += $h['products_quantity'];
-          }
-        }
+        $sum += $h_pq * abs($h_fp);
+        $cnt += $h_pq;
       }
     }
     if(isset($p_radices)&&$p_radices!=''&&$p_radices!=0){
-      return $sum/$rel_cnt*$p_radices;
+      return $sum/$cnt*$p_radices;
     }else{
-      return $sum/$rel_cnt;
+      return $sum/$cnt;
     }
   }
 

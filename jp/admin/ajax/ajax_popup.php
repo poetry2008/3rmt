@@ -773,28 +773,29 @@ if ($_GET['action'] == 'show_category_info') {
     $rel_sum_quantity = 0;
     $sum_i = 0;
     while($order_history = tep_db_fetch_array($order_history_query)){
-      $product_history_array[]['text'] = array(
-            array('params' => 'class="main" width="120"', 'text' => $order_history['torihiki_date']), 
-            array('align' => 'right', 'params' => 'class="main" width="100"', 'text' =>$order_history['products_quantity'].CATEGORY_GE_UNIT_TEXT), 
-            array('align' => 'right', 'params' => 'class="main"', 'text' => display_price($order_history['final_price']).CATEGORY_MONEY_UNIT_TEXT), 
-            array('params' => 'class="main" width="100"', 'text' => $order_history['orders_status_name']) 
-          );   
       $sum_i++;
+      if(isset($order_history['products_rate']) &&$order_history['products_rate']!=0 &&$order_history['products_rate']!=''){
+        if($radices!=''&&$radices!=1&&$radices!=0){
+          $oh_fp = $order_history['final_price']/$order_history['products_rate']*$radices;
+          $oh_pq = $order_history['products_quantity']*$order_history['products_rate']/$radices;
+        }else{
+          $oh_fp = $order_history['final_price'];
+          $oh_pq = $order_history['products_quantity'];
+        }
+      }else{
+        $oh_fp = $order_history['final_price'];
+        $oh_pq = $order_history['products_quantity'];
+      }
       if ($order_history['calc_price'] == '1') {
         $sum_price += abs($order_history['final_price']) * $order_history['products_quantity'];
-        $sum_quantity += $order_history['products_quantity'];
-        if(isset($order_history['products_rate'])
-            &&$order_history['products_rate']!=0
-            &&$order_history['products_rate']!=''){
-          $rel_sum_quantity += $order_history['products_quantity']*$order_history['products_rate'];
-        }else{
-          if($radices!=''&&$radices!=1&&$radices!=0){
-            $rel_sum_quantity += $order_history['products_quantity']*$radices;
-          }else{
-            $rel_sum_quantity += $order_history['products_quantity'];
-          }
-        }
+        $sum_quantity += $oh_pq; 
       }
+      $product_history_array[]['text'] = array(
+            array('params' => 'class="main" width="120"', 'text' => $order_history['torihiki_date']), 
+            array('align' => 'right', 'params' => 'class="main" width="100"', 'text' =>$oh_pq.CATEGORY_GE_UNIT_TEXT), 
+            array('align' => 'right', 'params' => 'class="main"', 'text' => display_price($oh_fp).CATEGORY_MONEY_UNIT_TEXT), 
+            array('params' => 'class="main" width="100"', 'text' => $order_history['orders_status_name']) 
+          );   
     }
     
     $product_history_table_params = array('width' => '100%', 'cellpadding' => '0', 'cellspacing' => '0', 'border' => '0');
@@ -813,15 +814,9 @@ if ($_GET['action'] == 'show_category_info') {
           array('align' => 'left', 'text' => mb_substr(CATEGORY_AVERAGENUM_TEXT, 1, mb_strlen(CATEGORY_AVERAGENUM_TEXT, 'utf-8')-1, 'utf-8')) 
         );
     
-    if($radices!=''&&$radices!=1&&$radices!=0){
-      $product_history_row_average_num[]['text'] = array(
-          array('align' => 'right', 'text' => display_price($sum_price/$rel_sum_quantity*$radices).CATEGORY_MONEY_UNIT_TEXT) 
+    $product_history_row_average_num[]['text'] = array(
+        array('align' => 'right', 'text' => display_price($sum_price/$sum_quantity).CATEGORY_MONEY_UNIT_TEXT) 
         );
-    }else{
-      $product_history_row_average_num[]['text'] = array(
-          array('align' => 'right', 'text' => display_price($sum_price/$sum_quantity).CATEGORY_MONEY_UNIT_TEXT) 
-        );
-    }
     $product_history_row_average_num_str = $notice_box->get_table($product_history_row_average_num, '', $product_history_table_params); 
  
     $product_history_array[]['text'] = array(
@@ -863,31 +858,31 @@ if ($_GET['action'] == 'show_category_info') {
     if (tep_db_num_rows($relate_order_history_query)) {
       $sum_price = 0;
       $sum_quantity = 0;
-      $rel_sum_quantity = 0;
       $sum_i = 0;
       while($relate_order_history = tep_db_fetch_array($relate_order_history_query)){
-        $relate_product_history_array[]['text'] = array(
-              array('params' => 'class="main" width="120"', 'text' => $relate_order_history['torihiki_date']), 
-              array('align' => 'right', 'params' => 'class="main" width="100"', 'text' =>$relate_order_history['products_quantity'].CATEGORY_GE_UNIT_TEXT), 
-              array('align' => 'right', 'params' => 'class="main"', 'text' => display_price($relate_order_history['final_price']).CATEGORY_MONEY_UNIT_TEXT), 
-              array('params' => 'class="main" width="100"', 'text' => $relate_order_history['orders_status_name']) 
-            );   
         $sum_i++;
+        if(isset($relate_order_history['products_rate']) &&$relate_order_history['products_rate']!=0 &&$relate_order_history['products_rate']!=''){
+          if($relate_radices!=''&&$relate_radices!=1&&$relate_radices!=0){
+            $relate_oh_fp = $relate_order_history['final_price']/$relate_order_history['products_rate']*$relate_radices;
+            $relate_oh_pq = $relate_order_history['products_quantity']*$relate_order_history['products_rate']/$relate_radices;
+          }else{
+            $relate_oh_fp = $relate_order_history['final_price'];
+            $relate_oh_pq = $relate_order_history['products_quantity'];
+          }
+        }else{
+          $relate_oh_fp = $relate_order_history['final_price'];
+          $relate_oh_pq = $relate_order_history['products_quantity'];
+        }
         if ($relate_order_history['calc_price'] == '1') {
           $sum_price += abs($relate_order_history['final_price']) * $relate_order_history['products_quantity'];
-          $sum_quantity += $relate_order_history['products_quantity'];
-          if(isset($relate_order_history['products_rate'])
-            &&$relate_order_history['products_rate']!=0
-            &&$relate_order_history['products_rate']!=''){
-            $rel_sum_quantity += $relate_order_history['products_quantity']*$relate_order_history['products_rate'];
-          }else{
-            if($relate_radices!=''&&$relate_radices!=1&&$relate_radices!=0){
-              $rel_sum_quantity += $relate_order_history['products_quantity']*$relate_radices;
-            }else{
-              $rel_sum_quantity += $relate_order_history['products_quantity'];
-            }
-          }
+          $sum_quantity += $relate_oh_pq; 
         }
+        $relate_product_history_array[]['text'] = array(
+              array('params' => 'class="main" width="120"', 'text' => $relate_order_history['torihiki_date']), 
+              array('align' => 'right', 'params' => 'class="main" width="100"', 'text' =>$relate_oh_pq .CATEGORY_GE_UNIT_TEXT), 
+              array('align' => 'right', 'params' => 'class="main"', 'text' => display_price($relate_oh_fp).CATEGORY_MONEY_UNIT_TEXT), 
+              array('params' => 'class="main" width="100"', 'text' => $relate_order_history['orders_status_name']) 
+            );   
       } 
       
       $relate_product_history_table_params = array('width' => '100%', 'cellpadding' => '0', 'cellspacing' => '0', 'border' => '0');
@@ -906,15 +901,9 @@ if ($_GET['action'] == 'show_category_info') {
             array('align' => 'left', 'text' => mb_substr(CATEGORY_AVERAGENUM_TEXT, 1, mb_strlen(CATEGORY_AVERAGENUM_TEXT, 'utf-8')-1, 'utf-8')) 
           );
       
-  if($relate_radices!=''&&$relate_radices!=1&&$relate_radices!=0){
-      $relate_product_history_row_average_num[]['text'] = array( 
-          array('align' => 'right', 'text' => display_price($sum_price/$rel_sum_quantity*$relate_radices).CATEGORY_MONEY_UNIT_TEXT) 
-          );
-  }else{
       $relate_product_history_row_average_num[]['text'] = array(
             array('align' => 'right', 'text' => display_price($sum_price/$sum_quantity).CATEGORY_MONEY_UNIT_TEXT) 
           );
-  }
       $relate_product_history_row_average_num_str = $notice_box->get_table($relate_product_history_row_average_num, '', $relate_product_history_table_params); 
    
       $relate_product_history_array[]['text'] = array(
