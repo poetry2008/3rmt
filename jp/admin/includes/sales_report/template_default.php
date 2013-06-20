@@ -790,6 +790,7 @@ if($_GET['order_sort'] == 'date'){
 ?>
 <tr>
 <td class="dataTableContent" align="right"></td>
+<td class="dataTableContent" align="right"></td>
 <td class="dataTableContent" align="right"><?php echo
 SR_ORDERS_SUM.$orders_sum.SR_ONE_ORDERS;?></td>
 <td class="dataTableContent" align="right"><?php echo
@@ -801,6 +802,7 @@ SR_PRODUCTS_POINT_SUM.$products_point_sum.SR_POINT;?></td>
 echo TEXT_MONEY_SYMBOL;
 ?></td></tr>
 <tr>
+<td class="dataTableContent" align="right"></td>
 <td class="dataTableContent" align="right"></td>
 <td class="dataTableContent" align="right"><?php 
 echo AVG_ORDERS_SUM;
