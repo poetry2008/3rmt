@@ -3668,32 +3668,70 @@ if(!in_array($site_id,$site_array)&&$site_id!=-1){
  }else{
    $site_list_raw = tep_db_query("select * from sites order by id asc"); 
    $site_id_name = '<table border="0" width="100%" cellpadding="0" cellspacing="0">'; 
+   if ((trim($site_arr)) != '' && ($site_arr != '0')) {
+     $site_id_name .= '<tr class="td_input"><td><input type="radio" name="select_site_type" id="select_site_type" onclick="change_site_type(0);" value="0" checked>'.NEWS_FIX_SITE_TEXT.'&nbsp;&nbsp;<input type="radio" name="select_site_type" id="select_site_type" onclick="change_site_type(1);" value="1"'.((!in_array('0', $site_array))?' disabled':'').'>ALL<input type="hidden" value="0" id="site_type_hidden" type="site_type_hidden"></td></tr>'; 
+   } else {
+     $site_id_name .= '<tr class="td_input"><td><input type="radio" name="select_site_type" id="select_site_type" onclick="change_site_type(0);" value="0" disabled>'.NEWS_FIX_SITE_TEXT.'&nbsp;&nbsp;<input type="radio" name="select_site_type" id="select_site_type" onclick="change_site_type(1);" value="1" checked>ALL<input type="hidden" value="1" id="site_type_hidden" type="site_type_hidden"></td></tr>'; 
+   }
+   $site_id_name .= '</table>'; 
+   $site_id_name .= '<div id="select_site">'; 
+   $site_id_name .= '<table border="0" width="100%" cellpadding="0" cellspacing="0">'; 
    $s_num = 0;
    $s_flag = false;
-   $site_id_name .= '<tr>'; 
-   while ($site_list_res = tep_db_fetch_array($site_list_raw)) {
-     $site_id_name .= '<td><input type="checkbox" name="site_id_info[]" value="'.$site_list_res['id'].'">'.$site_list_res['name'].'</td>'; 
-     $s_num++;
+   $tmp_site_array = array(); 
+   if ($site_arr != '') {
+     foreach ($site_array as $t_key => $t_value) {
+       if ($t_value != '0') {
+         $tmp_site_array[] = $t_value; 
+       }
+     }
+   }
+   if (($site_arr != '') && ($site_arr != '0')) {
+     $site_id_name .= '<tr>'; 
+     while ($site_list_res = tep_db_fetch_array($site_list_raw)) {
+       if (!in_array($site_list_res['id'], $site_array)) {
+         continue; 
+       }
+       $site_id_name .= '<td><input type="checkbox" name="site_id_info[]" value="'.$site_list_res['id'].'">'.$site_list_res['name'].'</td>'; 
+       if (!empty($tmp_site_array)) {
+         if (count($tmp_site_array) == 1) {
+           $site_id_name .= '<td><a href="javascript:void(0);">'.tep_html_element_button(SELECT_ALL_TEXT, 'onclick="select_all_news_site()" id="all_site_button"').'</a></td>'; 
+         }
+       }
+       $s_num++;
+       if ($s_num % 2 == 0) {
+         if ($s_flag == false) {
+           $site_id_name .= '<td><a href="javascript:void(0);">'.tep_html_element_button(SELECT_ALL_TEXT, 'onclick="select_all_news_site()" id="all_site_button"').'</a></td>'; 
+           $s_flag = true; 
+         } else {
+           $site_id_name .= '<td></td>'; 
+         }
+         $site_id_name .= '</tr><tr>'; 
+       }
+     }
+     
+     if ($s_num > 1) {
+       for ($tmp_num = $s_num % 2; $tmp_num >= 0; $tmp_num--) {
+         $site_id_name .= '<td></td>'; 
+       }
+     } else {
+       for ($tmp_num = $s_num % 2; $tmp_num > 0; $tmp_num--) {
+         $site_id_name .= '<td></td>'; 
+       }
+     }
+     
      if ($s_num % 2 == 0) {
-       if ($s_flag == false) {
-         $site_id_name .= '<td><a href="javascript:void(0);">'.tep_html_element_button(SELECT_ALL_TEXT, 'onclick="select_all_news_site()"').'</a></td>'; 
-         $s_flag = true; 
+       if ($s_num >= 2) {
+         $site_id_name .= '<td></td><td></td>'; 
        } else {
          $site_id_name .= '<td></td>'; 
        }
-       $site_id_name .= '</tr><tr>'; 
-     }
+     } 
+     $site_id_name .= '</tr>';  
    }
-   for ($tmp_num = $s_num % 2; $tmp_num >= 0; $tmp_num--) {
-     $site_id_name .= '<td></td>'; 
-   }
-   if ($s_num % 2 == 0) {
-     $site_id_name .= '<td></td>'; 
-   }
-   $site_id_name .= '<td></td>'; 
-   $site_id_name .= '</tr>';  
    $site_id_name .= '</table>'; 
    $site_id_name .= '<span id="site_error" style="color:#ff0000;"></span><input type="hidden" name="is_select" id="is_select" value="0">'; 
+   $site_id_name .= '</div>'; 
  }
  if($get_news_id != -1){
       $site_romaji = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$latest_news['site_id']));

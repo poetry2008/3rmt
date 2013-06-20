@@ -187,6 +187,14 @@
               $this->sortString = " order by ".$this->order_sort." ".$this->order_type;
             }
           }
+          if($this->order_sort == 'pname'){
+
+            $this->order_sort = 'op.products_name';
+            if($this->order_sort != '' && $this->order_type != ''){
+
+              $this->sortString = " order by ".$this->order_sort." ".$this->order_type;
+            }
+          } 
           break;
       }
       if ($ed > $this->endDate) {
@@ -252,6 +260,7 @@
 
           $orders_list_array[$orders_i]['date_purchased'] = $orders_array['date_purchased'];
           $orders_list_array[$orders_i]['orders_id'] = $orders_array['orders_id'];
+          $orders_list_array[$orders_i]['pid'] = $orders_array['pid'];
           $orders_list_array[$orders_i]['pname'] = $orders_array['pname'];
           $orders_list_array[$orders_i]['pquant'] = $orders_array['pquant'];
           $orders_list_array[$orders_i]['psum'] = $orders_array['psum'];

@@ -60,6 +60,22 @@ if(isset($_GET['is_select']) && $_GET['is_select'] == '0'){
   products_list_show(0);  
 <?php
 }
+if(isset($_GET['order_sort']) && $_GET['order_sort'] != ''){
+  if(isset($_GET['ID']) && $_GET['ID'] != ''){
+?>
+  $("#i_<?php echo $_GET['ID'];?>").attr('class','dataTableRowSelected');
+  $("#i_<?php echo $_GET['ID'];?>").attr('onmouseover',"this.style.cursor='hand';"); 
+  $("#i_<?php echo $_GET['ID'];?>").attr('onmouseout',''); 
+<?php
+  }
+  if(isset($_GET['PID']) && $_GET['PID'] != ''){
+?>
+  $("#p_<?php echo $_GET['PID'];?>").attr('class','dataTableRowSelected');
+  $("#p_<?php echo $_GET['PID'];?>").attr('onmouseover',"this.style.cursor='hand';"); 
+  $("#p_<?php echo $_GET['PID'];?>").attr('onmouseout','');
+<?php
+  }
+}
 ?>
 });
 </script>
@@ -301,12 +317,13 @@ date("Y") - $i; ?></option>
               <br>
               </td>
               <td align="left" class="menuBoxHeading" valign="top"><?php echo SR_REPORT_MAX; ?><br>
-              <select name="max" size="1" style="margin-left:0;">
-                <option value="0"><?php echo SR_REPORT_ALL; ?></option>
-                <option<?php if ($srMax == 25) echo " selected"; ?>>25</option>
-                <option<?php if ($srMax == 50) echo " selected"; ?>>50</option>
-                <option<?php if ($srMax == 100) echo " selected"; ?>>100</option>
-                <option<?php if ($srMax == 200) echo " selected"; ?>>200</option>
+              <select name="max" size="1" style="margin-left:0;"> 
+                <option value=""<?php if ($srMax == '') echo " selected"; ?>>0</option>
+                <option value="25"<?php if ($srMax == 25) echo " selected"; ?>>25</option>
+                <option value="50"<?php if ($srMax == 50) echo " selected"; ?>>50</option>
+                <option value="100"<?php if ($srMax == 100) echo " selected"; ?>>100</option>
+                <option value="200"<?php if ($srMax == 200) echo " selected"; ?>>200</option>
+                <option value="all"<?php if ($srMax == 'all') echo " selected"; ?>><?php echo SR_REPORT_ALL; ?></option>
               </select>
               </td>
               
@@ -331,8 +348,27 @@ date("Y") - $i; ?></option>
             <td valign="top"><?php tep_show_site_filter(FILENAME_STATS_SALES_REPORT,false,array(0));?><table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr class="dataTableHeadingRow">
                 <td class="dataTableHeadingContent_order" align="left"><?php echo  '<a href="'.tep_href_link(FILENAME_STATS_SALES_REPORT,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=date&order_type='.($_GET['order_sort'] == 'date' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.SR_TABLE_HEADING_DATE.($_GET['order_sort'] == 'date' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'date' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>'; ?></td>
+<?php
+                if(isset($_GET['report']) && $_GET['report'] == 5){
+?>
+<td class="dataTableHeadingContent_order" align="left"><?php echo  '<a href="'.tep_href_link(FILENAME_STATS_SALES_REPORT,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=orders&order_type='.($_GET['order_sort'] == 'orders' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.SR_TABLE_HEADING_ORDERS_TITLE.($_GET['order_sort'] == 'orders' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'orders' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>'; ?></td>
+<?php
+                }else{
+?>
+                <td class="dataTableHeadingContent_order" align="left"><?php echo  '<a href="'.tep_href_link(FILENAME_STATS_SALES_REPORT,tep_get_all_get_params(array('x', 'y', 'sort')).'sort='.($_GET['sort'] == 2 ? 1 : 2)).'">'.SR_SORT_VAL1.(isset($_GET['sort']) && $_GET['sort'] == '2' ? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : (isset($_GET['sort']) && $_GET['sort'] == 1 ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>'; ?></td>
+<?php
+                }
+                if(isset($_GET['report']) && $_GET['report'] == 5){
+?>
+                <td class="dataTableHeadingContent_order" align="left"><?php echo  '<a href="'.tep_href_link(FILENAME_STATS_SALES_REPORT,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=pname&order_type='.($_GET['order_sort'] == 'pname' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.SR_SORT_VAL1.($_GET['order_sort'] == 'pname' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'pname' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>'; ?></td>
+<?php
+                }else{
+?>
                 <td class="dataTableHeadingContent_order" align="left"><?php echo  '<a href="'.tep_href_link(FILENAME_STATS_SALES_REPORT,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=orders&order_type='.($_GET['order_sort'] == 'orders' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.SR_TABLE_HEADING_ORDERS.($_GET['order_sort'] == 'orders' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'orders' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>'; ?></td>
-                <td class="dataTableHeadingContent_order" align="center"><?php echo  '<a href="'.tep_href_link(FILENAME_STATS_SALES_REPORT,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=num&order_type='.($_GET['order_sort'] == 'num' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.SR_TABLE_HEADING_ITEMS.($_GET['order_sort'] == 'num' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'num' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>'; ?></td>
+<?php
+                }
+?>
+                <td class="dataTableHeadingContent_order" align="left"><?php echo  '<a href="'.tep_href_link(FILENAME_STATS_SALES_REPORT,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=num&order_type='.($_GET['order_sort'] == 'num' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.SR_TABLE_HEADING_ITEMS.($_GET['order_sort'] == 'num' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'num' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>'; ?></td>
                 <td class="dataTableHeadingContent_order" align="right"><?php echo  '<a href="'.tep_href_link(FILENAME_STATS_SALES_REPORT,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=price&order_type='.($_GET['order_sort'] == 'price' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.SR_TABLE_HEADING_REVENUE.($_GET['order_sort'] == 'price' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'price' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>'; ?></td>
               </tr>
 <?php
@@ -366,15 +402,15 @@ while ($sr->hasNext()) {
   if(!isset($_GET['order_sort'])){
     if($_GET['ID'] != '' && $_GET['ID'] == $show_i){
 ?>
-              <tr class="dataTableRowSelected" onmouseover="this.style.cursor='hand'" onclick="document.location.href='<?php echo tep_href_link(FILENAME_STATS_SALES_REPORT, tep_get_all_get_params(array('x', 'y', 'ID')).'ID=' . $show_i);?>'">
+              <tr id="i_<?php echo $show_i;?>" class="dataTableRowSelected" onmouseover="this.style.cursor='hand'" onclick="document.location.href='<?php echo tep_href_link(FILENAME_STATS_SALES_REPORT, tep_get_all_get_params(array('x', 'y', 'ID', 'PID')).'ID=' . $show_i);?>'">
 <?
     }else{
 ?>
-              <tr class="<?php echo $nowColor;?>" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='<?php echo $nowColor;?>'" onclick="document.location.href='<?php echo tep_href_link(FILENAME_STATS_SALES_REPORT, tep_get_all_get_params(array('x', 'y', 'ID')).'ID=' . $show_i);?>'">
+              <tr id="i_<?php echo $show_i;?>" class="<?php echo $nowColor;?>" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='<?php echo $nowColor;?>'" onclick="document.location.href='<?php echo tep_href_link(FILENAME_STATS_SALES_REPORT, tep_get_all_get_params(array('x', 'y', 'ID', 'PID')).'ID=' . $show_i);?>'">
 <?php
     }
   }
-    $show_list_array[$show_i] = '<tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'" onclick="document.location.href=\''.tep_href_link(FILENAME_STATS_SALES_REPORT, tep_get_all_get_params(array('x', 'y', 'ID')).'ID=' . $show_i).'\'">'; 
+    $show_list_array[$show_i] = '<tr id="i_'.$show_i.'" class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'" onclick="document.location.href=\''.tep_href_link(FILENAME_STATS_SALES_REPORT, tep_get_all_get_params(array('x', 'y', 'ID', 'PID')).'ID=' . $show_i).'\'">'; 
     switch ($srView) {
     case '3':
   if(!isset($_GET['order_sort'])){
@@ -402,17 +438,17 @@ while ($sr->hasNext()) {
     }
   if(!isset($_GET['order_sort'])){
 ?>
-                <td class="dataTableContent" align="right"><?php echo $info[0]['order']; ?></td>
+                <td class="dataTableContent" align="right">&nbsp;</td><td class="dataTableContent" align="left"><?php echo $info[0]['order']; ?></td>
 <?php 
   }
-    $show_list_array[$show_i] .= '<td class="dataTableContent" align="right">'.$info[0]['order'].'</td>'; 
+    $show_list_array[$show_i] .= '<td class="dataTableContent" align="right">&nbsp;</td><td class="dataTableContent" align="left">'.$info[0]['order'].'</td>'; 
     $orders_sum += $info[0]['order'];
   if(!isset($_GET['order_sort'])){
 ?>
-                <td class="dataTableContent" align="right"><?php echo isset($info[$last - 1]['totitem'])?$info[$last - 1]['totitem']:''; ?></td>
+                <td class="dataTableContent" align="left"><?php echo isset($info[$last - 1]['totitem'])?$info[$last - 1]['totitem']:''; ?></td>
 <?php 
   }
-    $show_list_array[$show_i] .= '<td class="dataTableContent" align="right">'.(isset($info[$last - 1]['totitem'])?$info[$last - 1]['totitem']:'').'</td>'; 
+    $show_list_array[$show_i] .= '<td class="dataTableContent" align="left">'.(isset($info[$last - 1]['totitem'])?$info[$last - 1]['totitem']:'').'</td>'; 
                 if(isset($info[$last - 1]['totitem'])){
                   $products_point_sum += $info[$last - 1]['totitem'];
                 }
@@ -452,21 +488,66 @@ while ($sr->hasNext()) {
 if (isset($srDetail)){
   $row_num++;
     for ($i = 0; $i < $last; $i++) {
-      if ($srMax === '0' or $i < $srMax) {
+      if ($srMax === 'all' or $i < $srMax) {
+    //生成跳转到商品管理页面的URL
+    $products_categories_id = tep_get_products_parent_id($info[$i]['pid']);
+    $categories_url_id = get_link_parent_category($products_categories_id);
+    $categories_url_array = explode('_',$categories_url_id);
+
+    $current_category_id = end($categories_url_array);
+    $products_id_query = tep_db_query("select products_id from (
+                             select p.products_id,pd.site_id,p.sort_order,pd.products_name from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c 
+                             where p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' 
+                             and p.products_id = p2c.products_id 
+                             and p2c.categories_id = '" . $current_category_id . "'
+                             order by site_id DESC
+                           ) c where site_id = 0 
+                           group by products_id 
+                           order by sort_order, products_name, products_id");
+   $products_id_array = array();
+   $products_num = 0;
+   $products_page_flag = 1;
+   while($products_query_array  = tep_db_fetch_array($products_id_query)){
+
+     if($products_num - (MAX_DISPLAY_PRODUCTS_ADMIN*$products_page_flag-1) == 1){
+  
+       $products_page_flag++; 
+     }
+     $products_id_array[$products_page_flag][] = $products_query_array['products_id'];
+     $products_num++;
+   }
+   tep_db_free_result($products_id_query);
+
+   foreach($products_id_array as $products_key=>$products_value){
+
+     if(in_array($info[$i]['pid'],$products_value)){
+
+       $page = $products_key;
+       break;
+     }
+   }
         if(!isset($_GET['order_sort'])){
+          if($_GET['PID'] != '' && $_GET['PID'] == $show_i.'_'.$i){
 ?>
-              <tr class="dataTableRow" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='dataTableRow'">
+              <tr id="p_<?php echo $show_i.'_'.$i;?>" class="dataTableRowSelected" onmouseover="this.style.cursor='hand'" onclick="document.location.href='<?php echo tep_href_link(FILENAME_STATS_SALES_REPORT, tep_get_all_get_params(array('x', 'y', 'ID', 'PID')).'PID=' . $show_i.'_'.$i);?>'">  
+<?php
+          }else{
+?>
+              <tr id="p_<?php echo $show_i.'_'.$i;?>" class="dataTableRow" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='dataTableRow'" onclick="document.location.href='<?php echo tep_href_link(FILENAME_STATS_SALES_REPORT, tep_get_all_get_params(array('x', 'y', 'ID', 'PID')).'PID=' . $show_i.'_'.$i);?>'">
+<?php
+          } 
+?>
                 <td class="dataTableContent">&nbsp;</td>
-                <td class="dataTableContent" align="left"><a href="<?php echo tep_catalog_href_link("product_info.php?products_id=" . $info[$i]['pid']) ?>" target="_blank"><?php echo $info[$i]['pname']; ?></a>
-                </td>
-                <td class="dataTableContent" align="right"><?php echo $info[$i]['pquant']; ?></td>
+                <td class="dataTableContent" align="left"><a href="<?php echo tep_href_link(FILENAME_CATEGORIES, 'cPath='.$categories_url_id.'&page='.$page.'&pID='.$info[$i]['pid'].'&site_id=0', 'NONSSL'); ?>"><?php echo $info[$i]['pname']; ?></a>
+                </td><td class="dataTableContent">&nbsp;</td>
+                <td class="dataTableContent" align="left"><?php echo $info[$i]['pquant']; ?></td>
 <?php
         }
-        $show_list_array[$show_i] .= '<tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'">
+        $show_list_array[$show_i] .= '<tr id="p_'.$show_i.'_'.$i.'" class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\''.tep_href_link(FILENAME_STATS_SALES_REPORT, tep_get_all_get_params(array('x', 'y', 'ID', 'PID')).'PID=' . $show_i.'_'.$i).'\'">
                 <td class="dataTableContent">&nbsp;</td>
-                <td class="dataTableContent" align="left"><a href="'. tep_catalog_href_link("product_info.php?products_id=" . $info[$i]['pid']) .'" target="_blank">'.$info[$i]['pname'].'</a>
-                </td>
-                <td class="dataTableContent" align="right">'.$info[$i]['pquant'].'</td>';
+                <td class="dataTableContent" align="left"><a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$categories_url_id.'&page='.$page.'&pID='.$info[$i]['pid'].'&site_id=0', 'NONSSL').'">'.$info[$i]['pname'].'</a>
+                </td><td class="dataTableContent">&nbsp;</td>
+                <td class="dataTableContent" align="left">'.$info[$i]['pquant'].'</td>';
         if ($srDetail == 2) {
         if(!isset($_GET['order_sort'])){
 ?>
@@ -514,12 +595,7 @@ if (isset($srDetail)){
   }
 $show_i++;
 }
-if(isset($_GET['ID']) && $_GET['ID'] != ''){
-$show_list_array[$_GET['ID']] = str_replace('dataTableRow','dataTableRowSelected',$show_list_array[$_GET['ID']]);
-$show_list_array[$_GET['ID']] = str_replace('dataTableSecondRow','dataTableRowSelected',$show_list_array[$_GET['ID']]);
-$show_list_array[$_GET['ID']] = str_replace('onmouseout="this.className=\'dataTableRowSelected\'"','',$show_list_array[$_GET['ID']]);
-$show_list_array[$_GET['ID']] = str_replace('this.className=\'dataTableRowSelectedOver\';','',$show_list_array[$_GET['ID']]);
-}
+
 if($_GET['order_sort'] == 'date'){
 
   if($_GET['order_type'] == 'desc'){
@@ -544,9 +620,9 @@ if($_GET['order_sort'] == 'date'){
 
       if($k % 2 == 0){
 
-        $show_list_array[$show_list_value] = preg_replace('/class=".+?"/','class="dataTableRow"',$show_list_array[$show_list_value]);
+        $show_list_array[$show_list_value] = preg_replace('/<tr id="i_(.*?)" class="dataTableSecondRow"/','<tr id="i_$1" class="dataTableRow"',$show_list_array[$show_list_value]);
       }else{
-        $show_list_array[$show_list_value] = preg_replace('/class=".+?"/','class="dataTableSecondRow"',$show_list_array[$show_list_value]); 
+        $show_list_array[$show_list_value] = preg_replace('/<tr id="i_(.*?)" class="dataTableRow"/','<tr id="i_$1" class="dataTableSecondRow"',$show_list_array[$show_list_value]); 
       }
       echo $show_list_array[$show_list_value];
       $k++;
@@ -556,12 +632,12 @@ if($_GET['order_sort'] == 'date'){
     $show_key_orders = array_keys($show_orders_array);
     $k = 0;
     foreach($show_key_orders as $show_list_value){
-     
+
       if($k % 2 == 0){
 
-        $show_list_array[$show_list_value] = preg_replace('/class=".+?"/','class="dataTableRow"',$show_list_array[$show_list_value]);
+        $show_list_array[$show_list_value] = preg_replace('/<tr id="i_(.*?)" class="dataTableSecondRow"/','<tr id="i_$1" class="dataTableRow"',$show_list_array[$show_list_value]);
       }else{
-        $show_list_array[$show_list_value] = preg_replace('/class=".+?"/','class="dataTableSecondRow"',$show_list_array[$show_list_value]); 
+        $show_list_array[$show_list_value] = preg_replace('/<tr id="i_(.*?)" class="dataTableRow"/','<tr id="i_$1" class="dataTableSecondRow"',$show_list_array[$show_list_value]); 
       }
       echo $show_list_array[$show_list_value];
       $k++;
@@ -577,9 +653,9 @@ if($_GET['order_sort'] == 'date'){
 
       if($k % 2 == 0){
 
-        $show_list_array[$show_list_value] = preg_replace('/class=".+?"/','class="dataTableRow"',$show_list_array[$show_list_value]);
+        $show_list_array[$show_list_value] = preg_replace('/<tr id="i_(.*?)" class="dataTableSecondRow"/','<tr id="i_$1" class="dataTableRow"',$show_list_array[$show_list_value]);
       }else{
-        $show_list_array[$show_list_value] = preg_replace('/class=".+?"/','class="dataTableSecondRow"',$show_list_array[$show_list_value]); 
+        $show_list_array[$show_list_value] = preg_replace('/<tr id="i_(.*?)" class="dataTableRow"/','<tr id="i_$1" class="dataTableSecondRow"',$show_list_array[$show_list_value]); 
       }  
       echo $show_list_array[$show_list_value];
       $k++;
@@ -592,9 +668,9 @@ if($_GET['order_sort'] == 'date'){
 
       if($k % 2 == 0){
 
-        $show_list_array[$show_list_value] = preg_replace('/class=".+?"/','class="dataTableRow"',$show_list_array[$show_list_value]);
+        $show_list_array[$show_list_value] = preg_replace('/<tr id="i_(.*?)" class="dataTableSecondRow"/','<tr id="i_$1" class="dataTableRow"',$show_list_array[$show_list_value]);
       }else{
-        $show_list_array[$show_list_value] = preg_replace('/class=".+?"/','class="dataTableSecondRow"',$show_list_array[$show_list_value]); 
+        $show_list_array[$show_list_value] = preg_replace('/<tr id="i_(.*?)" class="dataTableRow"/','<tr id="i_$1" class="dataTableSecondRow"',$show_list_array[$show_list_value]); 
       } 
       echo $show_list_array[$show_list_value];
       $k++;
@@ -610,9 +686,9 @@ if($_GET['order_sort'] == 'date'){
 
       if($k % 2 == 0){
 
-        $show_list_array[$show_list_value] = preg_replace('/class=".+?"/','class="dataTableRow"',$show_list_array[$show_list_value]);
+        $show_list_array[$show_list_value] = preg_replace('/<tr id="i_(.*?)" class="dataTableSecondRow"/','<tr id="i_$1" class="dataTableRow"',$show_list_array[$show_list_value]);
       }else{
-        $show_list_array[$show_list_value] = preg_replace('/class=".+?"/','class="dataTableSecondRow"',$show_list_array[$show_list_value]); 
+        $show_list_array[$show_list_value] = preg_replace('/<tr id="i_(.*?)" class="dataTableRow"/','<tr id="i_$1" class="dataTableSecondRow"',$show_list_array[$show_list_value]); 
       }  
       echo $show_list_array[$show_list_value];
       $k++;
@@ -625,9 +701,9 @@ if($_GET['order_sort'] == 'date'){
 
       if($k % 2 == 0){
 
-        $show_list_array[$show_list_value] = preg_replace('/class=".+?"/','class="dataTableRow"',$show_list_array[$show_list_value]);
+        $show_list_array[$show_list_value] = preg_replace('/<tr id="i_(.*?)" class="dataTableSecondRow"/','<tr id="i_$1" class="dataTableRow"',$show_list_array[$show_list_value]);
       }else{
-        $show_list_array[$show_list_value] = preg_replace('/class=".+?"/','class="dataTableSecondRow"',$show_list_array[$show_list_value]); 
+        $show_list_array[$show_list_value] = preg_replace('/<tr id="i_(.*?)" class="dataTableRow"/','<tr id="i_$1" class="dataTableSecondRow"',$show_list_array[$show_list_value]); 
       }  
       echo $show_list_array[$show_list_value];
       $k++;
@@ -659,10 +735,48 @@ if($_GET['order_sort'] == 'date'){
 <tr class="<?php echo $nowColor;?>" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='<?php echo $nowColor;?>'" onclick="document.location.href='<?php echo tep_href_link(FILENAME_STATS_SALES_REPORT, tep_get_all_get_params(array('x', 'y', 'ID')).'ID=' . $orders_i);?>'">
 <?php
     }
+    //生成跳转到商品管理页面的URL
+    $products_categories_id = tep_get_products_parent_id($info_value['pid']);
+    $categories_url_id = get_link_parent_category($products_categories_id);
+    $categories_url_array = explode('_',$categories_url_id);
+
+    $current_category_id = end($categories_url_array);
+    $products_id_query = tep_db_query("select products_id from (
+                             select p.products_id,pd.site_id,p.sort_order,pd.products_name from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c 
+                             where p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' 
+                             and p.products_id = p2c.products_id 
+                             and p2c.categories_id = '" . $current_category_id . "'
+                             order by site_id DESC
+                           ) c where site_id = 0 
+                           group by products_id 
+                           order by sort_order, products_name, products_id");
+   $products_id_array = array();
+   $products_num = 0;
+   $products_page_flag = 1;
+   while($products_query_array  = tep_db_fetch_array($products_id_query)){
+
+     if($products_num - (MAX_DISPLAY_PRODUCTS_ADMIN*$products_page_flag-1) == 1){
+  
+       $products_page_flag++; 
+     }
+     $products_id_array[$products_page_flag][] = $products_query_array['products_id'];
+     $products_num++;
+   }
+   tep_db_free_result($products_id_query);
+
+   foreach($products_id_array as $products_key=>$products_value){
+
+     if(in_array($info_value['pid'],$products_value)){
+
+       $page = $products_key;
+       break;
+     }
+   }
 ?>
       <td class="dataTableContent" align="left"><?php echo tep_date_long(date("Y-m-d\ H:i:s", strtotime($info_value['date_purchased']))); ?></td>
-      <td class="dataTableContent" align="left"><?php echo $info_value['orders_id'].'&nbsp;&nbsp;'.$info_value['pname']; ?></td>
-      <td class="dataTableContent" align="right"><?php echo $info_value['pquant']; ?></td>
+      <td class="dataTableContent" align="left"><?php echo '<a href="'.tep_href_link(FILENAME_ORDERS, 'keywords='.$info_value['orders_id'].'&search_type=orders_id', 'NONSSL').'">'.$info_value['orders_id']; ?></a></td>
+      <td class="dataTableContent" align="left"><?php echo '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$categories_url_id.'&page='.$page.'&pID='.$info_value['pid'].'&site_id=0', 'NONSSL').'">'.$info_value['pname'];?></a></td>
+      <td class="dataTableContent" align="left"><?php echo $info_value['pquant']; ?></td>
       <td class="dataTableContent" align="right"><?php echo $info_value['psum'] < 0 ? '<font color="red">'.str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($info_value['psum'])).'</font>'.TEXT_MONEY_SYMBOL : str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($info_value['psum'])).TEXT_MONEY_SYMBOL; ?></td> 
    </tr>
 <?php
@@ -676,6 +790,7 @@ if($_GET['order_sort'] == 'date'){
 ?>
 <tr>
 <td class="dataTableContent" align="right"></td>
+<td class="dataTableContent" align="right"></td>
 <td class="dataTableContent" align="right"><?php echo
 SR_ORDERS_SUM.$orders_sum.SR_ONE_ORDERS;?></td>
 <td class="dataTableContent" align="right"><?php echo
@@ -687,6 +802,7 @@ SR_PRODUCTS_POINT_SUM.$products_point_sum.SR_POINT;?></td>
 echo TEXT_MONEY_SYMBOL;
 ?></td></tr>
 <tr>
+<td class="dataTableContent" align="right"></td>
 <td class="dataTableContent" align="right"></td>
 <td class="dataTableContent" align="right"><?php 
 echo AVG_ORDERS_SUM;
@@ -758,11 +874,48 @@ if($_GET['report'] != 5){
               <?php
     if ($srDetail) {
       for ($i = 0; $i < $last; $i++) {
-        if ($srMax === 0 or $i < $srMax) {
+        if ($srMax === 'all' or $i < $srMax) {
+    //生成跳转到商品管理页面的URL
+    $products_categories_id = tep_get_products_parent_id($info[$i]['pid']);
+    $categories_url_id = get_link_parent_category($products_categories_id);
+    $categories_url_array = explode('_',$categories_url_id);
+
+    $current_category_id = end($categories_url_array);
+    $products_id_query = tep_db_query("select products_id from (
+                             select p.products_id,pd.site_id,p.sort_order,pd.products_name from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c 
+                             where p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' 
+                             and p.products_id = p2c.products_id 
+                             and p2c.categories_id = '" . $current_category_id . "'
+                             order by site_id DESC
+                           ) c where site_id = 0 
+                           group by products_id 
+                           order by sort_order, products_name, products_id");
+   $products_id_array = array();
+   $products_num = 0;
+   $products_page_flag = 1;
+   while($products_query_array  = tep_db_fetch_array($products_id_query)){
+
+     if($products_num - (MAX_DISPLAY_PRODUCTS_ADMIN*$products_page_flag-1) == 1){
+  
+       $products_page_flag++; 
+     }
+     $products_id_array[$products_page_flag][] = $products_query_array['products_id'];
+     $products_num++;
+   }
+   tep_db_free_result($products_id_query);
+
+   foreach($products_id_array as $products_key=>$products_value){
+
+     if(in_array($info[$i]['pid'],$products_value)){
+
+       $page = $products_key;
+       break;
+     }
+   }
   ?>
               <tr class="dataTableRow" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='dataTableRow'">
                 <td class="dataTableContent">&nbsp;</td>
-                <td class="dataTableContent" align="left"><a href="<?php echo tep_catalog_href_link("product_info.php?products_id=" . $info[$i]['pid']) ?>" target="_blank"><?php echo $info[$i]['pname']; ?></a>
+                <td class="dataTableContent" align="left"><a href="<?php echo tep_href_link(FILENAME_CATEGORIES, 'cPath='.$categories_url_id.'&page='.$page.'&pID='.$info[$i]['pid'].'&site_id=0', 'NONSSL'); ?>"><?php echo $info[$i]['pname']; ?></a>
                 </td>
                 <td class="dataTableContent" align="right"><?php echo $info[$i]['pquant']; ?></td>
                 <?php
@@ -803,10 +956,47 @@ if($_GET['report'] != 5){
     } else {
       $nowColor = $odd; 
     }  
+    //生成跳转到商品管理页面的URL
+    $products_categories_id = tep_get_products_parent_id($info_value['pid']);
+    $categories_url_id = get_link_parent_category($products_categories_id);
+    $categories_url_array = explode('_',$categories_url_id);
+
+    $current_category_id = end($categories_url_array);
+    $products_id_query = tep_db_query("select products_id from (
+                             select p.products_id,pd.site_id,p.sort_order,pd.products_name from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c 
+                             where p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' 
+                             and p.products_id = p2c.products_id 
+                             and p2c.categories_id = '" . $current_category_id . "'
+                             order by site_id DESC
+                           ) c where site_id = 0 
+                           group by products_id 
+                           order by sort_order, products_name, products_id");
+   $products_id_array = array();
+   $products_num = 0;
+   $products_page_flag = 1;
+   while($products_query_array  = tep_db_fetch_array($products_id_query)){
+
+     if($products_num - (MAX_DISPLAY_PRODUCTS_ADMIN*$products_page_flag-1) == 1){
+  
+       $products_page_flag++; 
+     }
+     $products_id_array[$products_page_flag][] = $products_query_array['products_id'];
+     $products_num++;
+   }
+   tep_db_free_result($products_id_query);
+
+   foreach($products_id_array as $products_key=>$products_value){
+
+     if(in_array($info_value['pid'],$products_value)){
+
+       $page = $products_key;
+       break;
+     }
+   }
 ?> 
     <tr class="<?php echo $nowColor;?>" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='<?php echo $nowColor;?>'">
       <td class="dataTableContent" align="left"><?php echo tep_date_long(date("Y-m-d\ H:i:s", strtotime($info_value['date_purchased']))); ?></td>
-      <td class="dataTableContent" align="left"><?php echo $info_value['orders_id'].'&nbsp;&nbsp;'.$info_value['pname']; ?></td>
+      <td class="dataTableContent" align="left"><?php echo '<a href="'.tep_href_link(FILENAME_ORDERS, 'keywords='.$info_value['orders_id'].'&search_type=orders_id', 'NONSSL').'">'.$info_value['orders_id'].'</a>&nbsp;&nbsp;<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$categories_url_id.'&page='.$page.'&pID='.$info_value['pid'].'&site_id=0', 'NONSSL').'">'.$info_value['pname']; ?></a></td>
       <td class="dataTableContent" align="right"><?php echo $info_value['pquant']; ?></td>
       <td class="dataTableContent" align="right"><?php echo $info_value['psum'] < 0 ? '<font color="red">'.str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($info_value['psum'])).'</font>'.TEXT_MONEY_SYMBOL : str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($info_value['psum'])); ?></td> 
    </tr>
