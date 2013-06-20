@@ -6620,6 +6620,7 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
      */
     $product = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
     $product_quantity = tep_get_quantity($pid);
+    $p_radices = tep_get_radices($pid);
     $order_history_query = tep_db_query("
         select * 
         from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id 
@@ -6630,17 +6631,36 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
         ");
     $sum = 0;
     $cnt = 0;
+    $rel_cnt = 0;
     while($h = tep_db_fetch_array($order_history_query)){
       if ($cnt + $h['products_quantity'] > $product_quantity) {
         $sum += ($product_quantity - $cnt) * abs($h['final_price']);
         $cnt = $product_quantity;
+        if(isset($p_radices)&&$p_radices!=''&&$p_radices!=0){
+          $rel_cnt = $product_quantity*$p_radices;
+        }else{
+          $rel_cnt = $product_quantity;
+        }
         break;
       } else {
         $sum += $h['products_quantity'] * abs($h['final_price']);
         $cnt += $h['products_quantity'];
+        if(isset($h['products_rate'])&&$h['products_rate']!=''&&$h['products_rate']!=0){
+          $rel_cnt += $h['products_quantity']*$h['products_rate'];
+        }else{
+          if(isset($p_radices)&&$p_radices!=''&&$p_radices!=0){
+            $rel_cnt += $h['products_quantity']*$p_radices;
+          }else{
+            $rel_cnt += $h['products_quantity'];
+          }
+        }
       }
     }
-    return $sum/$cnt;
+    if(isset($p_radices)&&$p_radices!=''&&$p_radices!=0){
+      return $sum/$rel_cnt*$p_radices;
+    }else{
+      return $sum/$rel_cnt;
+    }
   }
 
 /* -------------------------------------
