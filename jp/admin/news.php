@@ -292,10 +292,16 @@ $(document).ready(function() {
          var site_type = document.getElementById('site_type_hidden').value; 
          if (site_type == 0) {
            if (document.new_latest_news.elements['site_id_info[]']) {
-             for (var u = 0; u < document.new_latest_news.elements['site_id_info[]'].length; u++) {
-               if (document.new_latest_news.elements['site_id_info[]'][u].checked == true) {
+             if (document.new_latest_news.elements['site_id_info[]'].length == null) {
+               if (document.new_latest_news.elements['site_id_info[]'].checked == true) {
                  s_single = true; 
-                 break; 
+               }
+             } else {
+               for (var u = 0; u < document.new_latest_news.elements['site_id_info[]'].length; u++) {
+                 if (document.new_latest_news.elements['site_id_info[]'][u].checked == true) {
+                   s_single = true; 
+                   break; 
+                 }
                }
              }
            } else {
