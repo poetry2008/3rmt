@@ -247,6 +247,7 @@ tep_redirect(tep_href_link(FILENAME_NEWS, (isset($_GET['site_id'])?('site_id='.$
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php require('includes/javascript/show_site.js.php');?>
 <script>
+var o_submit_single = true;
 $(document).ready(function() {
   <?php //监听按键?> 
   $(document).keyup(function(event) {
@@ -259,7 +260,9 @@ $(document).ready(function() {
      if (event.which == 13) {
            <?php //回车?>
         if ($('#show_latest_news').css('display') != 'none') {
-          $("#button_save").trigger("click");  
+          if (o_submit_single) {
+            $("#button_save").trigger("click");  
+          }
         }
      }
 
@@ -527,11 +530,13 @@ if(latest_news_id == -1){
 $('#show_latest_news').css('z-index','1');
 $('#show_latest_news').css('left',leftset);
 $('#show_latest_news').css('display', 'block');
+o_submit_single = true;
   }
   }); 
 }
 function hidden_info_box(){
    $('#show_latest_news').css('display','none');
+   o_submit_single = true;
 }
 <?php //选择动作?>
 function news_change_action(r_value, r_str) {
