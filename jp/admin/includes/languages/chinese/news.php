@@ -37,4 +37,6 @@ define('SHOP_NAME','店铺名:');
 define('SELECT_ALL_TEXT', '全选');
 define('TEXT_ERROR_SITE', '请选择一个网站。');
 define('NEWS_FIX_SITE_TEXT', '指定网站');
+define('TEXT_SORT_ASC','▲');
+define('TEXT_SORT_DESC','▼');
 ?>
