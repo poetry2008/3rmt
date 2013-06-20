@@ -3715,45 +3715,35 @@ if(!in_array($site_id,$site_array)&&$site_id!=-1){
    if (($site_arr == '0') || ($site_arr == '')) {
      $is_disabled_single = true; 
    }
-   $site_list_html = ''; 
-   $site_list_html .= '<tr>'; 
    $site_num_total = tep_db_num_rows($site_list_raw); 
    while ($site_list_res = tep_db_fetch_array($site_list_raw)) {
-     $site_list_html .= '<td><input type="checkbox" name="site_id_info[]" value="'.$site_list_res['id'].'"'.(($is_disabled_single)?' disabled="disabled"':((!in_array($site_list_res['id'], $site_array)?'disabled="disabled"':''))).'>'.$site_list_res['name'].'</td>'; 
-     $s_num++;
-     if ($site_num_total == 1) {
-       $site_list_html .= '<td><a href="javascript:void(0);">'.tep_html_element_button(SELECT_ALL_TEXT, 'onclick="select_all_news_site()" id="all_site_button"'.(($is_disabled_single)?' disabled="disabled"':'')).'</a></td>'; 
-     }
      if ($s_num % 2 == 0) {
+       $site_id_name .= '<tr>'; 
+     }
+     $site_id_name .= '<td><input type="checkbox" name="site_id_info[]" value="'.$site_list_res['id'].'"'.(($is_disabled_single)?' disabled="disabled"':((!in_array($site_list_res['id'], $site_array)?'disabled="disabled"':''))).'>'.$site_list_res['name'].'</td>'; 
+     
+       
+     if (($s_num + 1) % 2 == 0) {
        if ($s_flag == false) {
-         $site_list_html .= '<td><a href="javascript:void(0);">'.tep_html_element_button(SELECT_ALL_TEXT, 'onclick="select_all_news_site()" id="all_site_button"'.(($is_disabled_single)?' disabled="disabled"':'')).'</a></td>'; 
+         $site_id_name .= '<td><a href="javascript:void(0);">'.tep_html_element_button(SELECT_ALL_TEXT, 'onclick="select_all_news_site()" id="all_site_button"'.(($is_disabled_single)?' disabled="disabled"':'')).'</a></td>'; 
          $s_flag = true; 
        } else {
-         $site_list_html .= '<td></td>'; 
+         $site_id_name .= '<td></td>'; 
        }
-       $site_list_html .= '</tr><tr>'; 
+       $site_id_name .= '</tr>'; 
+     }
+     $s_num++;
+     if ($s_num == $site_num_total) {
+       if ($s_num % 2 != 0) {
+         if ($s_num == 1) {
+           $site_id_name .= '<td></td>'; 
+           $site_id_name .= '<td><a href="javascript:void(0);">'.tep_html_element_button(SELECT_ALL_TEXT, 'onclick="select_all_news_site()" id="all_site_button"'.(($is_disabled_single)?' disabled="disabled"':'')).'</a></td>'; 
+         } else {
+           $site_id_name .= '<td></td><td></td>'; 
+         }
+       }
      }
    }
-   
-   if ($s_num > 1) {
-     for ($tmp_num = $s_num % 2; $tmp_num >= 0; $tmp_num--) {
-       $site_list_html .= '<td></td>'; 
-     }
-   } else {
-     for ($tmp_num = $s_num % 2; $tmp_num > 0; $tmp_num--) {
-       $site_list_html .= '<td></td>'; 
-     }
-   }
-   
-   if ($s_num % 2 == 0) {
-     if ($s_num >= 2) {
-       $site_list_html .= '<td></td><td></td>'; 
-     } else {
-       $site_list_html .= '<td></td>'; 
-     }
-   } 
-   $site_list_html .= '</tr>';  
-   $site_id_name .= str_replace('<tr><td></td><td></td><td></td></tr>', '', $site_list_html); 
    $site_id_name .= '</table>'; 
    $site_id_name .= '<span id="site_error" style="color:#ff0000;"></span><input type="hidden" name="is_select" id="is_select" value="0">'; 
    $site_id_name .= '</div>'; 
