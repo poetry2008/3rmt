@@ -20,4 +20,6 @@ define('TEXT_MEMO_EDIT_SELECT','请选择');
 define('TEXT_MEMO_EDIT_DELETE','删除');
 define('TEXT_MEMO_EDIT_MUST_SELECT','至少选择一项。');
 define('TEXT_MEMO_EDIT_CONFIRM','确定要删除吗？');
+define('TEXT_SORT_ASC','▲');
+define('TEXT_SORT_DESC','▼');
 ?>
