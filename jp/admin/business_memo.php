@@ -598,10 +598,10 @@ require("includes/note_js.php");
   $memo_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => '<input type="hidden" name="execute_delete" value="1"><input type="checkbox" onclick="all_select_memo(\'memo_list_id[]\');" name="all_check">');
   $memo_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => TEXT_MEMO_ICON);
   $memo_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => TEXT_MEMO_READ_FLAG);
-  $memo_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => TEXT_MEMO_FROM);
-  $memo_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => TEXT_MEMO_TO); 
-  $memo_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => TEXT_MEMO_CONTENTS);
-  $memo_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => TEXT_MEMO_CREATE_TIME);
+  $memo_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BUSINESS_MEMO,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=from&order_type='.($_GET['order_sort'] == 'from' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_MEMO_FROM.($_GET['order_sort'] == 'from' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'from' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
+  $memo_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BUSINESS_MEMO,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=to&order_type='.($_GET['order_sort'] == 'to' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_MEMO_TO.($_GET['order_sort'] == 'to' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'to' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>'); 
+  $memo_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BUSINESS_MEMO,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=content&order_type='.($_GET['order_sort'] == 'content' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_MEMO_CONTENTS.($_GET['order_sort'] == 'content' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'content' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
+  $memo_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BUSINESS_MEMO,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=date&order_type='.($_GET['order_sort'] == 'date' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_MEMO_CREATE_TIME.($_GET['order_sort'] == 'date' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'date' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
   $memo_title_row[] = array('align' => 'left','params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => TABLE_HEADING_ACTION);
                     
   $memo_table_row[] = array('params' => 'class="dataTableHeadingRow"', 'text' => $memo_title_row);   
@@ -615,7 +615,31 @@ require("includes/note_js.php");
   }
   tep_db_free_result($icon_query);
 
-  $memo_query_raw = "select * from " . TABLE_BUSINESS_MEMO . " where deleted='0' order by date_added desc";
+  if(isset($_GET['order_sort']) && $_GET['order_sort'] != '' && isset($_GET['order_type']) && $_GET['order_type'] != ''){
+    switch($_GET['order_sort']){
+
+    case 'date':
+      $order_sort = 'date_added';
+      $order_type = $_GET['order_type'];
+      break;
+    case 'content':
+      $order_sort = 'contents';
+      $order_type = $_GET['order_type'];
+      break;
+    case 'to':
+      $order_sort = '`to`';
+      $order_type = $_GET['order_type'];
+      break;
+    case 'from':
+      $order_sort = '`from`';
+      $order_type = $_GET['order_type'];
+      break;
+    }
+  }else{
+    $order_sort = 'date_added';
+    $order_type = 'desc'; 
+  }
+  $memo_query_raw = "select * from " . TABLE_BUSINESS_MEMO . " where deleted='0' order by ".$order_sort." ".$order_type;
   $memo_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $memo_query_raw, $memo_query_numrows);
   $memo_query = tep_db_query($memo_query_raw);
   if(tep_db_num_rows($memo_query) == 0){
