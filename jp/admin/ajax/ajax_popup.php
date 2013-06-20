@@ -770,6 +770,7 @@ if ($_GET['action'] == 'show_category_info') {
   if (tep_db_num_rows($order_history_query)) {
     $sum_price = 0;
     $sum_quantity = 0;
+    $rel_sum_quantity = 0;
     $sum_i = 0;
     while($order_history = tep_db_fetch_array($order_history_query)){
       $product_history_array[]['text'] = array(
@@ -782,6 +783,17 @@ if ($_GET['action'] == 'show_category_info') {
       if ($order_history['calc_price'] == '1') {
         $sum_price += abs($order_history['final_price']) * $order_history['products_quantity'];
         $sum_quantity += $order_history['products_quantity'];
+        if(isset($order_history['products_rate'])
+            &&$order_history['products_rate']!=0
+            &&$order_history['products_rate']!=''){
+          $rel_sum_quantity += $order_history['products_quantity']*$order_history['products_rate'];
+        }else{
+          if($radices!=''&&$radices!=1&&$radices!=0){
+            $rel_sum_quantity += $order_history['products_quantity']*$radices;
+          }else{
+            $rel_sum_quantity += $order_history['products_quantity'];
+          }
+        }
       }
     }
     
@@ -801,9 +813,15 @@ if ($_GET['action'] == 'show_category_info') {
           array('align' => 'left', 'text' => mb_substr(CATEGORY_AVERAGENUM_TEXT, 1, mb_strlen(CATEGORY_AVERAGENUM_TEXT, 'utf-8')-1, 'utf-8')) 
         );
     
-    $product_history_row_average_num[]['text'] = array(
+    if($radices!=''&&$radices!=1&&$radices!=0){
+      $product_history_row_average_num[]['text'] = array(
+          array('align' => 'right', 'text' => display_price($sum_price/$rel_sum_quantity*$radices).CATEGORY_MONEY_UNIT_TEXT) 
+        );
+    }else{
+      $product_history_row_average_num[]['text'] = array(
           array('align' => 'right', 'text' => display_price($sum_price/$sum_quantity).CATEGORY_MONEY_UNIT_TEXT) 
         );
+    }
     $product_history_row_average_num_str = $notice_box->get_table($product_history_row_average_num, '', $product_history_table_params); 
  
     $product_history_array[]['text'] = array(
@@ -845,6 +863,7 @@ if ($_GET['action'] == 'show_category_info') {
     if (tep_db_num_rows($relate_order_history_query)) {
       $sum_price = 0;
       $sum_quantity = 0;
+      $rel_sum_quantity = 0;
       $sum_i = 0;
       while($relate_order_history = tep_db_fetch_array($relate_order_history_query)){
         $relate_product_history_array[]['text'] = array(
@@ -857,6 +876,17 @@ if ($_GET['action'] == 'show_category_info') {
         if ($relate_order_history['calc_price'] == '1') {
           $sum_price += abs($relate_order_history['final_price']) * $relate_order_history['products_quantity'];
           $sum_quantity += $relate_order_history['products_quantity'];
+          if(isset($relate_order_history['products_rate'])
+            &&$relate_order_history['products_rate']!=0
+            &&$relate_order_history['products_rate']!=''){
+            $rel_sum_quantity += $relate_order_history['products_quantity']*$relate_order_history['products_rate'];
+          }else{
+            if($relate_radices!=''&&$relate_radices!=1&&$relate_radices!=0){
+              $rel_sum_quantity += $relate_order_history['products_quantity']*$relate_radices;
+            }else{
+              $rel_sum_quantity += $relate_order_history['products_quantity'];
+            }
+          }
         }
       } 
       
@@ -876,9 +906,15 @@ if ($_GET['action'] == 'show_category_info') {
             array('align' => 'left', 'text' => mb_substr(CATEGORY_AVERAGENUM_TEXT, 1, mb_strlen(CATEGORY_AVERAGENUM_TEXT, 'utf-8')-1, 'utf-8')) 
           );
       
+  if($relate_radices!=''&&$relate_radices!=1&&$relate_radices!=0){
+      $relate_product_history_row_average_num[]['text'] = array( 
+          array('align' => 'right', 'text' => display_price($sum_price/$rel_sum_quantity*$relate_radices).CATEGORY_MONEY_UNIT_TEXT) 
+          );
+  }else{
       $relate_product_history_row_average_num[]['text'] = array(
             array('align' => 'right', 'text' => display_price($sum_price/$sum_quantity).CATEGORY_MONEY_UNIT_TEXT) 
           );
+  }
       $relate_product_history_row_average_num_str = $notice_box->get_table($relate_product_history_row_average_num, '', $relate_product_history_table_params); 
    
       $relate_product_history_array[]['text'] = array(
@@ -3628,7 +3664,7 @@ if(!in_array($site_id,$site_array)&&$site_id!=-1){
  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
  $heading[] = array('align' => 'left', 'text' => isset($latest_news['headline'])?$latest_news['headline']:HEADING_TITLE);
  $heading[] = array('align' => 'right', 'text' => $page_str);
- $form_str = tep_draw_form('new_latest_news', FILENAME_NEWS, (isset($_GET['latest_news_id']) && $_GET['latest_news_id'] != '-1' ? ('latest_news_id=' . $_GET['latest_news_id'] . '&action=update_latest_news') : 'action=insert_latest_news').(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):''), 'post', 'enctype="multipart/form-data"'); 
+ $form_str = tep_draw_form('new_latest_news', FILENAME_NEWS, (isset($_GET['latest_news_id']) && $_GET['latest_news_id'] != '-1' ?  ('latest_news_id=' . $_GET['latest_news_id'] . '&action=update_latest_news') : 'action=insert_latest_news').(!empty($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):''), 'post', 'enctype="multipart/form-data"'); 
 
  $latest_news_contents[]['text'] = array(
       array('text' => '<input type="hidden" name="author" value="'.$_SESSION['user_name'].'"><input type="hidden" name="update_editor" value="'.$_SESSION['user_name'].'">')
@@ -3643,32 +3679,70 @@ if(!in_array($site_id,$site_array)&&$site_id!=-1){
  }else{
    $site_list_raw = tep_db_query("select * from sites order by id asc"); 
    $site_id_name = '<table border="0" width="100%" cellpadding="0" cellspacing="0">'; 
+   if ((trim($site_arr)) != '' && ($site_arr != '0')) {
+     $site_id_name .= '<tr class="td_input"><td><input type="radio" name="select_site_type" id="select_site_type" onclick="change_site_type(0);" value="0" checked>'.NEWS_FIX_SITE_TEXT.'&nbsp;&nbsp;<input type="radio" name="select_site_type" id="select_site_type" onclick="change_site_type(1);" value="1"'.((!in_array('0', $site_array))?' disabled':'').'>ALL<input type="hidden" value="0" id="site_type_hidden" type="site_type_hidden"></td></tr>'; 
+   } else {
+     $site_id_name .= '<tr class="td_input"><td><input type="radio" name="select_site_type" id="select_site_type" onclick="change_site_type(0);" value="0" disabled>'.NEWS_FIX_SITE_TEXT.'&nbsp;&nbsp;<input type="radio" name="select_site_type" id="select_site_type" onclick="change_site_type(1);" value="1" checked>ALL<input type="hidden" value="1" id="site_type_hidden" type="site_type_hidden"></td></tr>'; 
+   }
+   $site_id_name .= '</table>'; 
+   $site_id_name .= '<div id="select_site">'; 
+   $site_id_name .= '<table border="0" width="100%" cellpadding="0" cellspacing="0">'; 
    $s_num = 0;
    $s_flag = false;
-   $site_id_name .= '<tr>'; 
-   while ($site_list_res = tep_db_fetch_array($site_list_raw)) {
-     $site_id_name .= '<td><input type="checkbox" name="site_id_info[]" value="'.$site_list_res['id'].'">'.$site_list_res['name'].'</td>'; 
-     $s_num++;
+   $tmp_site_array = array(); 
+   if ($site_arr != '') {
+     foreach ($site_array as $t_key => $t_value) {
+       if ($t_value != '0') {
+         $tmp_site_array[] = $t_value; 
+       }
+     }
+   }
+   if (($site_arr != '') && ($site_arr != '0')) {
+     $site_id_name .= '<tr>'; 
+     while ($site_list_res = tep_db_fetch_array($site_list_raw)) {
+       if (!in_array($site_list_res['id'], $site_array)) {
+         continue; 
+       }
+       $site_id_name .= '<td><input type="checkbox" name="site_id_info[]" value="'.$site_list_res['id'].'">'.$site_list_res['name'].'</td>'; 
+       if (!empty($tmp_site_array)) {
+         if (count($tmp_site_array) == 1) {
+           $site_id_name .= '<td><a href="javascript:void(0);">'.tep_html_element_button(SELECT_ALL_TEXT, 'onclick="select_all_news_site()" id="all_site_button"').'</a></td>'; 
+         }
+       }
+       $s_num++;
+       if ($s_num % 2 == 0) {
+         if ($s_flag == false) {
+           $site_id_name .= '<td><a href="javascript:void(0);">'.tep_html_element_button(SELECT_ALL_TEXT, 'onclick="select_all_news_site()" id="all_site_button"').'</a></td>'; 
+           $s_flag = true; 
+         } else {
+           $site_id_name .= '<td></td>'; 
+         }
+         $site_id_name .= '</tr><tr>'; 
+       }
+     }
+     
+     if ($s_num > 1) {
+       for ($tmp_num = $s_num % 2; $tmp_num >= 0; $tmp_num--) {
+         $site_id_name .= '<td></td>'; 
+       }
+     } else {
+       for ($tmp_num = $s_num % 2; $tmp_num > 0; $tmp_num--) {
+         $site_id_name .= '<td></td>'; 
+       }
+     }
+     
      if ($s_num % 2 == 0) {
-       if ($s_flag == false) {
-         $site_id_name .= '<td><a href="javascript:void(0);">'.tep_html_element_button(SELECT_ALL_TEXT, 'onclick="select_all_news_site()"').'</a></td>'; 
-         $s_flag = true; 
+       if ($s_num >= 2) {
+         $site_id_name .= '<td></td><td></td>'; 
        } else {
          $site_id_name .= '<td></td>'; 
        }
-       $site_id_name .= '</tr><tr>'; 
-     }
+     } 
+     $site_id_name .= '</tr>';  
    }
-   for ($tmp_num = $s_num % 2; $tmp_num >= 0; $tmp_num--) {
-     $site_id_name .= '<td></td>'; 
-   }
-   if ($s_num % 2 == 0) {
-     $site_id_name .= '<td></td>'; 
-   }
-   $site_id_name .= '<td></td>'; 
-   $site_id_name .= '</tr>';  
    $site_id_name .= '</table>'; 
    $site_id_name .= '<span id="site_error" style="color:#ff0000;"></span><input type="hidden" name="is_select" id="is_select" value="0">'; 
+   $site_id_name .= '</div>'; 
  }
  if($get_news_id != -1){
       $site_romaji = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$latest_news['site_id']));
@@ -3712,10 +3786,14 @@ if($ocertify->npermission >= 15){
 if(isset($disable) && $disable){
  isset($_GET['latest_news_id']) ? $cancel_button = tep_html_element_button(IMAGE_DELETE,$disable) : $cancel_button = '';
 }else{
- isset($_GET['latest_news_id']) ? $cancel_button = '&nbsp;&nbsp;<a class="new_product_reset" href="javascript:void(0);">' .  tep_html_element_button(IMAGE_DELETE, 'onclick="toggle_news_action(\''.tep_href_link(FILENAME_NEWS, 'action=delete_latest_news_confirm&latest_news_id='.  $_GET['latest_news_id'].(isset($_GET['site_id']) ?  '&site_id='.$_GET['site_id']:'').(isset($_GET['page']) ?  '&page='.$_GET['page']:'')).'\');"') . '</a>' : $cancel_button = '';
+ isset($_GET['latest_news_id']) ? $cancel_button = '&nbsp;&nbsp;<a class="new_product_reset" href="javascript:void(0);">' .  tep_html_element_button(IMAGE_DELETE, 'onclick="toggle_news_action(\''.tep_href_link(FILENAME_NEWS, 'action=delete_latest_news_confirm&latest_news_id='.  $_GET['latest_news_id'].(!empty($_GET['site_id']) ?  '&site_id='.$_GET['site_id']:'').(isset($_GET['page']) ?  '&page='.$_GET['page']:'')).'\');"') . '</a>' : $cancel_button = '';
 }
 }
- $button[] = tep_html_element_button(IMAGE_SAVE,'id="button_save" onclick="check_news_info()"'.$disable). $cancel_button;
+if($_GET['latest_news_id'] != '-1'){
+  $button[] = tep_html_element_button(IMAGE_SAVE,'id="button_save" onclick="check_news_info()"'.$disable). $cancel_button;
+} else {
+  $button[] = tep_html_element_button(IMAGE_SAVE,'id="button_save" onclick="check_news_info()"'.$disable);
+}
 if(!empty($button)){
        $buttons = array('align' => 'center', 'button' => $button);
  }

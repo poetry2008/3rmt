@@ -98,17 +98,17 @@ tep_redirect(tep_href_link(FILENAME_NEWS, (isset($_GET['site_id'])?('site_id='.$
         tep_redirect(tep_href_link(FILENAME_NEWS, (isset($_GET['site_id'])?('site_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):'')));
         break;
       case 'insert_latest_news':
-        $site_list_array = array();        
-        $site_list_raw = tep_db_query("select * from ".TABLE_SITES." order by id asc"); 
-        while ($site_list_res = tep_db_fetch_array($site_list_raw)) {
-          $site_list_array[] = $site_list_res['id']; 
+        if ($_POST['select_site_type'] == '1') {
+          if (trim($_POST['headline']) == '') {
+             tep_redirect(tep_href_link(FILENAME_NEWS, isset($_GET['site_id'])?('site_id='.$_GET['site_id']):''));
+          }
+        } else {
+          if (trim($_POST['headline']) == '' || empty($_POST['site_id_info'])) {
+             tep_redirect(tep_href_link(FILENAME_NEWS, isset($_GET['site_id'])?('site_id='.$_GET['site_id']):''));
+          }
         }
-        if (trim($_POST['headline']) == '' || empty($_POST['site_id_info'])) {
-           tep_redirect(tep_href_link(FILENAME_NEWS, isset($_GET['site_id'])?('site_id='.$_GET['site_id']):''));
-        }
-        $site_diff_array = array_diff($site_list_array, $_POST['site_id_info']); 
-        if (empty($site_diff_array)) {
-          if ($_POST['headline'] && !empty($_POST['site_id_info'])) {
+        if ($_POST['select_site_type'] == '1') {
+          if ($_POST['headline']) {
                   
             $sql_data_array = array('headline'   => tep_db_prepare_input($_POST['headline']),
                                     'content'    => tep_db_prepare_input($_POST['content']),
@@ -288,12 +288,27 @@ $(document).ready(function() {
        var news_image_description = document.getElementById('news_image_description').value;
        var s_single = false; 
        
-       if (document.new_latest_news.elements['site_id_info[]']) {
-         for (var u = 0; u < document.new_latest_news.elements['site_id_info[]'].length; u++) {
-           if (document.new_latest_news.elements['site_id_info[]'][u].checked == true) {
+       if (document.getElementById('site_type_hidden')) {
+         var site_type = document.getElementById('site_type_hidden').value; 
+         if (site_type == 0) {
+           if (document.new_latest_news.elements['site_id_info[]']) {
+             if (document.new_latest_news.elements['site_id_info[]'].length == null) {
+               if (document.new_latest_news.elements['site_id_info[]'].checked == true) {
+                 s_single = true; 
+               }
+             } else {
+               for (var u = 0; u < document.new_latest_news.elements['site_id_info[]'].length; u++) {
+                 if (document.new_latest_news.elements['site_id_info[]'][u].checked == true) {
+                   s_single = true; 
+                   break; 
+                 }
+               }
+             }
+           } else {
              s_single = true; 
-             break; 
            }
+         } else {
+           s_single = true; 
          }
        } else {
          s_single = true; 
@@ -579,17 +594,38 @@ function select_all_news_site()
 {
   var is_select_value = document.getElementById('is_select').value; 
   if (document.new_latest_news.elements['site_id_info[]']) {
-    if (is_select_value == '0') {
-      for (var i = 0; i < document.new_latest_news.elements['site_id_info[]'].length; i++) {
-        document.new_latest_news.elements['site_id_info[]'][i].checked = true;
+    if (document.new_latest_news.elements['site_id_info[]'].length == null) {
+      if (is_select_value == '0') {
+        document.new_latest_news.elements['site_id_info[]'].checked = true;
+        document.getElementById('is_select').value = '1'; 
+      } else {
+        document.new_latest_news.elements['site_id_info[]'].checked = false;
+        document.getElementById('is_select').value = '0'; 
       }
-      document.getElementById('is_select').value = '1'; 
     } else {
-      for (var i = 0; i < document.new_latest_news.elements['site_id_info[]'].length; i++) {
-        document.new_latest_news.elements['site_id_info[]'][i].checked = false;
+      if (is_select_value == '0') {
+        for (var i = 0; i < document.new_latest_news.elements['site_id_info[]'].length; i++) {
+          document.new_latest_news.elements['site_id_info[]'][i].checked = true;
+        }
+        document.getElementById('is_select').value = '1'; 
+      } else {
+        for (var i = 0; i < document.new_latest_news.elements['site_id_info[]'].length; i++) {
+          document.new_latest_news.elements['site_id_info[]'][i].checked = false;
+        }
+        document.getElementById('is_select').value = '0'; 
       }
-      document.getElementById('is_select').value = '0'; 
     }
+  }
+}
+<?php //选择网站?>
+function change_site_type(site_type)
+{
+  if (site_type == 0) {
+    $('#site_type_hidden').val('0'); 
+    $('#select_site').show(); 
+  } else {
+    $('#site_type_hidden').val('1'); 
+    $('#select_site').hide(); 
   }
 }
 </script>
@@ -776,7 +812,7 @@ require("includes/note_js.php");
           );
   $news_table_row[] = array('params' => $news_params, 'text' => $news_info);
   } 
-  $news_form = tep_draw_form('del_news',FILENAME_NEWS,'action=delete_latest_news_confirm&site_id='.$_GET['site_id'].'&page='.$_GET['page']);
+  $news_form = tep_draw_form('del_news',FILENAME_NEWS,'action=delete_latest_news_confirm'.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').'&page='.$_GET['page']);
   $notice_box->get_form($news_form);
   $notice_box->get_contents($news_table_row);
   $notice_box->get_eof(tep_eof_hidden());
@@ -815,7 +851,7 @@ require("includes/note_js.php");
                      <tr><td></td><td align="right">
                       <div class="td_button"><?php
                       //通过site_id判断是否允许新建
-                      if(array_intersect($show_list_array,$site_array)){
+                      if (trim($site_array[0]) != '') {
                       echo '&nbsp;<a href="javascript:void(0)" onclick="show_latest_news(this,'.$_GET['page'].',-1,\''.(isset($_GET['site_id'])&&$_GET['site_id']!=''?($_GET['site_id']):'-1').'\','.(isset($latest_news['site_id'])?$latest_news['site_id']:'-1').')">' .tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>';
                       }else{
                       echo '&nbsp;' .tep_html_element_button(IMAGE_NEW_PROJECT,'disabled="disabled"');
