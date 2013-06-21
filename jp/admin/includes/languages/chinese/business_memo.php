@@ -22,4 +22,5 @@ define('TEXT_MEMO_EDIT_MUST_SELECT','至少选择一项。');
 define('TEXT_MEMO_EDIT_CONFIRM','确定要删除吗？');
 define('TEXT_SORT_ASC','▲');
 define('TEXT_SORT_DESC','▼');
+define('TEXT_MEMO_EDIT_END','终止');
 ?>

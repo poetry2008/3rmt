@@ -14,6 +14,7 @@ if (isset($_GET['action']) and $_GET['action']) {
    case 'save' 更新memo     
    case 'deleteconfirm' 删除memo      
    case 'delete' 删除选中的memo
+   case 'end' 终止memo
 ------------------------------------------------------*/
       case 'insert':
         $from = tep_db_prepare_input($_POST['from']);
@@ -84,6 +85,14 @@ if (isset($_GET['action']) and $_GET['action']) {
           tep_db_query("update " . TABLE_BUSINESS_MEMO . " set deleted='1' where id = '" . tep_db_input($memo_id) . "'"); 
         }
         tep_redirect(tep_href_link(FILENAME_BUSINESS_MEMO, 'page='.$param_str));
+        break;
+      case 'end':
+        $memo_id = $_GET['end_id'];
+        $param_str = tep_db_prepare_input($_POST['param_str']);
+
+        tep_db_query("update " . TABLE_NOTICE . " set is_show='0' where from_notice = '" . tep_db_input($memo_id) . "' and type='1'");
+        tep_db_query("update " . TABLE_BUSINESS_MEMO . " set finished='1',user_update='".$_SESSION['user_name']."',date_update=now() where id = '" . tep_db_input($memo_id) . "'");
+        tep_redirect(tep_href_link(FILENAME_BUSINESS_MEMO, $param_str));
         break;
     }
   }
@@ -227,7 +236,9 @@ function all_select_memo(memo_list_id)
     } else {
       for (i = 0; i < document.edit_memo_form.elements[memo_list_id].length; i++) {
         if (check_flag == true) {
-          document.edit_memo_form.elements[memo_list_id][i].checked = true;
+          if(!(document.edit_memo_form.elements[memo_list_id][i].disabled)){
+            document.edit_memo_form.elements[memo_list_id][i].checked = true;
+          }
         } else {
           document.edit_memo_form.elements[memo_list_id][i].checked = false;
         }
@@ -434,6 +445,13 @@ function create_memo_check(c_permission){
   }
 }
 
+<?php //终止memo?>
+function end_memo(id){
+
+  document.edit_memo.action = '<?php echo tep_href_link(FILENAME_BUSINESS_MEMO, 'action=end&end_id=');?>'+id;
+  document.edit_memo.submit();
+}
+
 <?php //memo内容编辑?>
 function edit_memo_check(c_permission){
   if (c_permission == 31) {
@@ -596,13 +614,13 @@ require("includes/note_js.php");
                   
   //memo列表  
   $memo_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => '<input type="hidden" name="execute_delete" value="1"><input type="checkbox" onclick="all_select_memo(\'memo_list_id[]\');" name="all_check">');
-  $memo_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => TEXT_MEMO_ICON);
-  $memo_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BUSINESS_MEMO,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=read&order_type='.($_GET['order_sort'] == 'read' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_MEMO_READ_FLAG.($_GET['order_sort'] == 'read' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'read' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
+  $memo_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BUSINESS_MEMO,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=icon&order_type='.($_GET['order_sort'] == 'icon' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_MEMO_ICON.($_GET['order_sort'] == 'icon' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'icon' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
+  $memo_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BUSINESS_MEMO,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=read&order_type='.($_GET['order_sort'] == 'read' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_MEMO_READ_FLAG.($_GET['order_sort'] == 'read' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'read' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
   $memo_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BUSINESS_MEMO,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=from&order_type='.($_GET['order_sort'] == 'from' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_MEMO_FROM.($_GET['order_sort'] == 'from' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'from' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
   $memo_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BUSINESS_MEMO,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=to&order_type='.($_GET['order_sort'] == 'to' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_MEMO_TO.($_GET['order_sort'] == 'to' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'to' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>'); 
   $memo_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BUSINESS_MEMO,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=content&order_type='.($_GET['order_sort'] == 'content' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_MEMO_CONTENTS.($_GET['order_sort'] == 'content' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'content' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
   $memo_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BUSINESS_MEMO,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=date&order_type='.($_GET['order_sort'] == 'date' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_MEMO_CREATE_TIME.($_GET['order_sort'] == 'date' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'date' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
-  $memo_title_row[] = array('align' => 'left','params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => TABLE_HEADING_ACTION);
+  $memo_title_row[] = array('align' => 'left','params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BUSINESS_MEMO,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=action&order_type='.($_GET['order_sort'] == 'action' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TABLE_HEADING_ACTION.($_GET['order_sort'] == 'action' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'action' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
                     
   $memo_table_row[] = array('params' => 'class="dataTableHeadingRow"', 'text' => $memo_title_row);   
 
@@ -634,12 +652,24 @@ require("includes/note_js.php");
       $order_sort = '`from`';
       $order_type = $_GET['order_type'];
       break;
+    case 'read':
+      $order_sort = 'read_flag';
+      $order_type = $_GET['order_type'];
+      break;
+    case 'icon':
+      $order_sort = 'icon';
+      $order_type = $_GET['order_type'];
+      break;
+    case 'action':
+      $order_sort = 'date_update';
+      $order_type = $_GET['order_type'];
+      break;
     }
   }else{
     $order_sort = 'date_added';
     $order_type = 'desc'; 
   }
-  $memo_query_raw = "select * from " . TABLE_BUSINESS_MEMO . " where deleted='0' order by ".$order_sort." ".$order_type;
+  $memo_query_raw = "select * from " . TABLE_BUSINESS_MEMO . " where deleted='0' order by finished asc,".$order_sort." ".$order_type;
   $memo_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $memo_query_raw, $memo_query_numrows);
   $memo_query = tep_db_query($memo_query_raw);
   if(tep_db_num_rows($memo_query) == 0){
@@ -668,7 +698,7 @@ require("includes/note_js.php");
     $memo_item_info = array();  
     $memo_item_info[] = array(
                           'params' => 'class="dataTableContent"', 
-                          'text' => '<input type="checkbox" value="'.$memo['id'].'" name="memo_list_id[]">'   
+                          'text' => '<input type="checkbox" value="'.$memo['id'].'" name="memo_list_id[]"'.($memo['finished'] == 1 ? ' disabled="disabled"' : '').'>'   
                           );
     $memo_item_info[] = array(
                           'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BUSINESS_MEMO, 'page=' . $_GET['page'] . '&cID=' . $memo['id']) . '\'"', 
@@ -678,15 +708,30 @@ require("includes/note_js.php");
     $read_flag_str_array = array();
     $read_flag_str_array = explode(',',$memo['read_flag']);
     if($memo['read_flag'] == ''){
-      $memo_read = '<a onclick="change_read(\''.$memo['id'].'\',\''.$ocertify->auth_user.'\');" href="javascript:void(0);"><img id="memo_'.$memo['id'].'" border="0" title=" '.TEXT_FLAG_UNCHECK.' " alt="'.TEXT_FLAG_UNCHECK.'" src="images/icons/gray_right.gif"></a>'; 
+      if($memo['finished'] == 0){
+        $memo_read = '<a onclick="change_read(\''.$memo['id'].'\',\''.$ocertify->auth_user.'\');" href="javascript:void(0);"><img id="memo_'.$memo['id'].'" border="0" title=" '.TEXT_FLAG_UNCHECK.' " alt="'.TEXT_FLAG_UNCHECK.'" src="images/icons/gray_right.gif"></a>'; 
+      }else{
+
+        $memo_read = '<img id="memo_'.$memo['id'].'" border="0" title=" '.TEXT_FLAG_UNCHECK.' " alt="'.TEXT_FLAG_UNCHECK.'" src="images/icons/gray_right.gif">';
+      }
     }else{
 
       if(in_array($ocertify->auth_user,$read_flag_str_array)){
 
-        $memo_read = '<a onclick="change_read(\''.$memo['id'].'\',\''.$ocertify->auth_user.'\');" href="javascript:void(0);"><img id="memo_'.$memo['id'].'" border="0" title=" '.TEXT_FLAG_CHECKED.' " alt="'.TEXT_FLAG_CHECKED.'" src="images/icons/green_right.gif"></a>';
+        if($memo['finished'] == 0){
+          $memo_read = '<a onclick="change_read(\''.$memo['id'].'\',\''.$ocertify->auth_user.'\');" href="javascript:void(0);"><img id="memo_'.$memo['id'].'" border="0" title=" '.TEXT_FLAG_CHECKED.' " alt="'.TEXT_FLAG_CHECKED.'" src="images/icons/green_right.gif"></a>';
+        }else{
+
+          $memo_read = '<img id="memo_'.$memo['id'].'" border="0" title=" '.TEXT_FLAG_CHECKED.' " alt="'.TEXT_FLAG_CHECKED.'" src="images/icons/green_right.gif">';
+        }
       }else{
 
-        $memo_read = '<a onclick="change_read(\''.$memo['id'].'\',\''.$ocertify->auth_user.'\');" href="javascript:void(0);"><img id="memo_'.$memo['id'].'" border="0" title=" '.TEXT_FLAG_UNCHECK.' " alt="'.TEXT_FLAG_UNCHECK.'" src="images/icons/gray_right.gif"></a>';
+        if($memo['finished'] == 0){
+          $memo_read = '<a onclick="change_read(\''.$memo['id'].'\',\''.$ocertify->auth_user.'\');" href="javascript:void(0);"><img id="memo_'.$memo['id'].'" border="0" title=" '.TEXT_FLAG_UNCHECK.' " alt="'.TEXT_FLAG_UNCHECK.'" src="images/icons/gray_right.gif"></a>';
+        }else{
+
+          $memo_read = '<img id="memo_'.$memo['id'].'" border="0" title=" '.TEXT_FLAG_UNCHECK.' " alt="'.TEXT_FLAG_UNCHECK.'" src="images/icons/gray_right.gif">';
+        }
       }
     }    
     $memo_item_info[] = array(
@@ -697,7 +742,7 @@ require("includes/note_js.php");
     $users_info = tep_get_user_info($memo['from']);
     $memo_item_info[] = array(
                           'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BUSINESS_MEMO, 'page=' . $_GET['page'] . '&cID=' . $memo['id']) . '\'"', 
-                          'text' => $users_info['name'] 
+                          'text' => ($memo['finished'] == 1 ? '<font color="#999999">' : '').$users_info['name'].($memo['finished'] == 1 ? '</font>' : '') 
                         );
 
     $to_users_array = explode(',',$memo['to']);
@@ -709,17 +754,17 @@ require("includes/note_js.php");
     }
     $memo_item_info[] = array(
                           'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BUSINESS_MEMO, 'page=' . $_GET['page'] . '&cID=' . $memo['id']) . '\'"', 
-                          'text' => $memo['to'] != '' ? mb_strlen($memo['to'],'utf-8') > 30 ? mb_substr(implode('；',$to_users_temp_array),0,30,'utf-8').'...' : implode('；',$to_users_temp_array) : 'ALL' 
+                          'text' => ($memo['finished'] == 1 ? '<font color="#999999">' : '').($memo['to'] != '' ? mb_strlen($memo['to'],'utf-8') > 30 ? mb_substr(implode('；',$to_users_temp_array),0,30,'utf-8').'...' : implode('；',$to_users_temp_array) : 'ALL').($memo['finished'] == 1 ? '</font>' : '') 
                         );
 
     $memo_item_info[] = array(
                           'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BUSINESS_MEMO, 'page=' . $_GET['page'] . '&cID=' . $memo['id']) . '\'"', 
-                          'text' => nl2br($memo['contents'])
+                          'text' => ($memo['finished'] == 1 ? '<font color="#999999">' : '').(mb_strlen($memo['contents']) > 30 && $memo['finished'] == 1 ? mb_substr($memo['contents'],0,30,'utf-8').'...' : nl2br($memo['contents'])).($memo['finished'] == 1 ? '</font>' : '')
                         );
 
     $memo_item_info[] = array(
                           'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BUSINESS_MEMO, 'page=' . $_GET['page'] . '&cID=' . $memo['id']) . '\'"', 
-                          'text' => $memo['date_added'] 
+                          'text' => ($memo['finished'] == 1 ? '<font color="#999999">' : '').$memo['date_added'].($memo['finished'] == 1 ? '</font>' : '') 
                         );
 
     $memo_item_info[] = array(

@@ -5205,15 +5205,15 @@ if($_GET['cID'] != -1){
 
    $category_info_row[]['text'] = array(
        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_MEMO_ALERT), 
-       array('align' => 'left', 'params' => 'width="55" nowrap="nowrap"', 'text' => '<input type="radio" style="padding-left:0;margin-left:0;" name="is_show" value="1"'.($memo_array['is_show'] == '1' ? ' checked="checked"' : '').'>'.TEXT_MEMO_SHOW),
-       array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="radio" style="padding-left:0;margin-left:0;" name="is_show" value="0"'.($memo_array['is_show'] == '0' ? ' checked="checked"' : '').'>'.TEXT_MEMO_HIDE)
+       array('align' => 'left', 'params' => 'width="55" nowrap="nowrap"', 'text' => '<input type="radio" style="padding-left:0;margin-left:0;" name="is_show" value="1"'.($memo_array['is_show'] == '1' ? ' checked="checked"' : '').($memo_array['finished'] == 1 ? 'disabled="disabled"' : '').'>'.TEXT_MEMO_SHOW),
+       array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="radio" style="padding-left:0;margin-left:0;" name="is_show" value="0"'.($memo_array['is_show'] == '0' ? ' checked="checked"' : '').($memo_array['finished'] == 1 ? 'disabled="disabled"' : '').'>'.TEXT_MEMO_HIDE)
      );
 
    $pic_list_raw = tep_db_query("select * from ".TABLE_CUSTOMERS_PIC_LIST." order by sort_order asc"); 
    $users_icon = '<ul class="table_img_list">'; 
    while ($pic_list_res = tep_db_fetch_array($pic_list_raw)) {
      if($pic_list_res['id'] == $memo_array['icon']){$pic_default = $pic_list_res['id'];}
-     $users_icon .= '<li><input type="radio" onclick="check_radio_status(this);" name="pic_icon" value="'.$pic_list_res['id'].'" style="padding-left:0;margin-left:0;"'.($pic_list_res['id'] == $memo_array['icon'] ? ' checked="checked"' : '').'><img src="images/icon_list/'.$pic_list_res['pic_name'].'" alt="'.$pic_list_res['pic_alt'].'" title="'.$pic_list_res['pic_alt'].'"></li>'; 
+     $users_icon .= '<li><input type="radio" onclick="check_radio_status(this);" name="pic_icon" value="'.$pic_list_res['id'].'" style="padding-left:0;margin-left:0;"'.($pic_list_res['id'] == $memo_array['icon'] ? ' checked="checked"' : '').($memo_array['finished'] == 1 ? 'disabled="disabled"' : '').'><img src="images/icon_list/'.$pic_list_res['pic_name'].'" alt="'.$pic_list_res['pic_alt'].'" title="'.$pic_list_res['pic_alt'].'"></li>'; 
    }
    $users_icon .= '</ul><input type="hidden" id="s_radio" name="s_radio" value="'.$pic_default.'">';
    $category_info_row[]['text'] = array(
@@ -5223,7 +5223,7 @@ if($_GET['cID'] != -1){
 
    $category_info_row[]['text'] = array(
        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_MEMO_CONTENTS), 
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize:vertical; width:55%;" class="textarea_width" rows="10" name="contents">'.$memo_array['contents'].'</textarea>')
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize:vertical; width:55%;" class="textarea_width" rows="10" name="contents"'.($memo_array['finished'] == 1 ? 'disabled="disabled"' : '').'>'.$memo_array['contents'].'</textarea>')
      );
 
   //作成者，作成时间，更新者，更新时间 
@@ -5240,8 +5240,9 @@ if($_GET['cID'] != -1){
   //底部内容
   $buttons = array();
 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_MEMO_EDIT_END, 'onclick="end_memo('.$memo_array['id'].');"'.($memo_array['finished'] == 1 ? 'disabled="disabled"' : '')).'</a>';
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_NEW_PROJECT, 'onclick="create_memo(this);"').'</a>';
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="edit_memo_check(\''.$ocertify->npermission.'\');"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="edit_memo_check(\''.$ocertify->npermission.'\');"'.($memo_array['finished'] == 1 ? 'disabled="disabled"' : '')).'</a>'; 
   if ($ocertify->npermission >= 15) {
     $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if(confirm(\''.TEXT_MEMO_CLOSE_CONFIRM.'\')){close_memo(\''.$ocertify->npermission.'\');}"').'</a>'; 
   }
