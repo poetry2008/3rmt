@@ -807,9 +807,9 @@ require("includes/note_js.php");
                $news_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $news_table_site_id_str);
                $news_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $news_table_title_str);
                $news_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $news_table_add_date_str);
-               $news_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="center"','text' => $news_table_status_str);
-               $news_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="center"','text' => $news_table_isfirst_str);
-               $news_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right" nowrap','text' => $news_table_operate_str);
+               $news_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $news_table_status_str);
+               $news_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $news_table_isfirst_str);
+               $news_title_row[] = array('params' => 'class="dataTableHeadingContent_order" width="20" nowrap','text' => $news_table_operate_str);
                $news_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $news_title_row);
     $rows = 0;
 
@@ -865,15 +865,15 @@ require("includes/note_js.php");
           );
       $news_info[] = array(
           'params' => 'class="dataTableContent"',
-          'text'   => '&nbsp;'.tep_get_site_romaji_by_id($latest_news['site_id']) 
+          'text'   => tep_get_site_romaji_by_id($latest_news['site_id']) 
           );
       $news_info[] = array(
           'params' => 'class="dataTableContent"',
-          'text'   => '&nbsp;' . $latest_news['headline']
+          'text'   => $latest_news['headline']
           );
       $news_info[] = array(
           'params' => 'class="dataTableContent"',
-          'text'   => '&nbsp;' . date("Y-m-d",strtotime($latest_news['date_added']))
+          'text'   => date("Y-m-d",strtotime($latest_news['date_added']))
           );
       if ($latest_news['status'] == '1') {
         if(in_array($latest_news['site_id'],$site_array)){
@@ -889,7 +889,7 @@ require("includes/note_js.php");
         }
       }
       $news_info[] = array(
-          'params' => 'class="dataTableContent" align="center"',
+          'params' => 'class="dataTableContent"',
           'text'   => $latest_news_status
           );
   if ($latest_news['isfirst']) {
@@ -907,12 +907,12 @@ require("includes/note_js.php");
  }
 
       $news_info[] = array(
-          'params' => 'class="dataTableContent" align="center"',
+          'params' => 'class="dataTableContent"',
           'text'   => $latest_news_isfirst
           );
       $news_date_info = (!empty($latest_news['latest_update_date']))?date('Y-m-d H:i:s',$latest_news['latest_update_date']):$latest_news['date_added'];
       $news_info[] = array(
-          'params' => 'class="dataTableContent" align="right"',
+          'params' => 'class="dataTableContent"',
           'text'   => '<a href="javascript:void(0)" onclick="show_latest_news(this,'.$_GET['page'].','.$latest_news['news_id'].',\''.(isset($_GET['site_id'])&&$_GET['site_id']!=''?($_GET['site_id']):'-1').'\','.(isset($latest_news['site_id'])?$latest_news['site_id']:'-1').', \''.(isset($_GET['news_sort'])?$_GET['news_sort']:'').'\', \''.(isset($_GET['news_sort_type'])?$_GET['news_sort_type']:'').'\')">' .  tep_get_signal_pic_info($news_date_info). '</a>'
           );
   $news_table_row[] = array('params' => $news_params, 'text' => $news_info);
