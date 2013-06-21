@@ -343,7 +343,7 @@ function show_memo_info(ele, memo_id, i_param_str)
   origin_offset_symbol = 1;
   $.ajax({
     url: 'ajax.php?action=edit_memo',      
-    data: 'memo_id='+memo_id+'&param_str='+i_param_str,
+      data: 'memo_id='+memo_id+'&param_str='+i_param_str+'<?php echo isset($_GET['order_sort']) ? '&order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type'] : '';?>',
     type: 'POST',
     dataType: 'text',
     async:false,

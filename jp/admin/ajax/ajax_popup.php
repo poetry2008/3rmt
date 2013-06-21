@@ -5132,8 +5132,45 @@ if($_GET['cID'] != -1){
   $memo_array = tep_db_fetch_array($memo_query);
   tep_db_free_result($memo_query);
 
+  if(isset($_POST['order_sort']) && $_POST['order_sort'] != '' && isset($_POST['order_type']) && $_POST['order_type'] != ''){
+    switch($_POST['order_sort']){
+
+    case 'date':
+      $order_sort = 'date_added';
+      $order_type = $_POST['order_type'];
+      break;
+    case 'content':
+      $order_sort = 'contents';
+      $order_type = $_POST['order_type'];
+      break;
+    case 'to':
+      $order_sort = '`to`';
+      $order_type = $_POST['order_type'];
+      break;
+    case 'from':
+      $order_sort = '`from`';
+      $order_type = $_POST['order_type'];
+      break;
+    case 'read':
+      $order_sort = 'read_flag';
+      $order_type = $_POST['order_type'];
+      break;
+    case 'icon':
+      $order_sort = 'icon';
+      $order_type = $_POST['order_type'];
+      break;
+    case 'action':
+      $order_sort = 'date_update';
+      $order_type = $_POST['order_type'];
+      break;
+    }
+  }else{
+    $order_sort = 'date_added';
+    $order_type = 'desc'; 
+  }
+
   $memo_id_num_array = array();
-  $memo_id_query = tep_db_query("select * from ". TABLE_BUSINESS_MEMO ." where deleted='0' order by date_added desc"); 
+  $memo_id_query = tep_db_query("select * from ". TABLE_BUSINESS_MEMO ." where deleted='0' order by finished asc,".$order_sort." ".$order_type); 
   while($memo_id_array = tep_db_fetch_array($memo_id_query)){
 
     $memo_id_num_array[] = $memo_id_array['id'];
