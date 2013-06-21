@@ -3613,8 +3613,8 @@ if(!in_array($site_id,$site_array)&&$site_id!=-1){
       $latest_news = array();
     }
 
-    $news_order_sort_name = ' site_id';
-    $news_order_sort = 'asc';
+    $news_order_sort_name = ' date_added';
+    $news_order_sort = 'desc';
     if ($_GET['sort_name'] != '') {
       switch ($_GET['sort_name']) {
          case 'site':

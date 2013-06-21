@@ -712,8 +712,8 @@ require("includes/note_js.php");
           <tr>
             <td valign="top">
              <?php
-               $news_order_sort_name = ' site_id'; 
-               $news_order_sort = 'asc';  
+               $news_order_sort_name = ' date_added'; 
+               $news_order_sort = 'desc';  
                
                if (isset($_GET['news_sort'])) {
                   if ($_GET['news_sort_type'] == 'asc') {
@@ -792,7 +792,7 @@ require("includes/note_js.php");
                if (!isset($_GET['news_sort'])) {
                  $news_table_site_id_str = '<a href="'.tep_href_link(FILENAME_NEWS, tep_get_all_get_params(array('action', 'news_sort', 'news_sort_type', 'site_id')).'news_sort=site&news_sort_type=desc').'">'.TABLE_HEADING_SITE.'</a>'; 
                  $news_table_title_str = '<a href="'.tep_href_link(FILENAME_NEWS, tep_get_all_get_params(array('action', 'news_sort', 'news_sort_type', 'site_id')).'news_sort=title&news_sort_type=desc').'">'.TABLE_HEADING_LATEST_NEWS_HEADLINE.'</a>'; 
-                 $news_table_add_date_str = '<a href="'.tep_href_link(FILENAME_NEWS, tep_get_all_get_params(array('action', 'news_sort', 'news_sort_type', 'site_id')).'news_sort=add_date&news_sort_type=desc').'">'.TABLE_HEADING_DATE_ADDED.'</a>'; 
+                 $news_table_add_date_str = '<a href="'.tep_href_link(FILENAME_NEWS, tep_get_all_get_params(array('action', 'news_sort', 'news_sort_type', 'site_id')).'news_sort=add_date&news_sort_type=asc').'">'.TABLE_HEADING_DATE_ADDED.'</a>'; 
                  $news_table_status_str = '<a href="'.tep_href_link(FILENAME_NEWS, tep_get_all_get_params(array('action', 'news_sort', 'news_sort_type', 'site_id')).'news_sort=status&news_sort_type=desc').'">'.TABLE_HEADING_LATEST_NEWS_STATUS.'</a>'; 
                  $news_table_isfirst_str = '<a href="'.tep_href_link(FILENAME_NEWS, tep_get_all_get_params(array('action', 'news_sort', 'news_sort_type', 'site_id')).'news_sort=isfirst&news_sort_type=desc').'">'.TABLE_HEADING_LATEST_NEWS_ISFIRST.'</a>'; 
                  $news_table_operate_str = '<a href="'.tep_href_link(FILENAME_NEWS, tep_get_all_get_params(array('action', 'news_sort', 'news_sort_type', 'site_id')).'news_sort=news_update&news_sort_type=desc').'">'.TABLE_HEADING_LATEST_NEWS_ACTION.'</a>'; 
