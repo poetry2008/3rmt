@@ -6,6 +6,16 @@
    */
   require('includes/application_top.php');
   require(DIR_FS_ADMIN . '/classes/notice_box.php');
+  //获取当前用户的网站管理权限
+  $sites_id_sql = tep_db_query("select site_permission from ".TABLE_PERMISSIONS." where userid= '".$ocertify->auth_user."'");
+  $userslist= tep_db_fetch_array($sites_id_sql);
+  tep_db_free_result($sites_id_sql);
+  $site_permission_array = explode(',',$userslist['site_permission']); 
+  $site_permission_flag = false;
+  if(in_array('0',$site_permission_array)){
+
+    $site_permission_flag = true;
+  }
 
 if (isset($_GET['action']) and $_GET['action']) {
     switch ($_GET['action']) {
@@ -651,7 +661,7 @@ require("includes/note_js.php");
   $memo_title_row = array();
                   
   //memo列表  
-  $memo_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => '<input type="hidden" name="execute_delete" value="1"><input type="checkbox" onclick="all_select_memo(\'memo_list_id[]\');" name="all_check">');
+  $memo_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => '<input type="hidden" name="execute_delete" value="1"><input type="checkbox" onclick="all_select_memo(\'memo_list_id[]\');" name="all_check"'.($site_permission_flag == false ? ' disabled="disabled"' : '').'>');
   $memo_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BUSINESS_MEMO,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=icon&order_type='.($_GET['order_sort'] == 'icon' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_MEMO_ICON.($_GET['order_sort'] == 'icon' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'icon' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
   $memo_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BUSINESS_MEMO,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=read&order_type='.($_GET['order_sort'] == 'read' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_MEMO_READ_FLAG.($_GET['order_sort'] == 'read' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'read' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
   $memo_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BUSINESS_MEMO,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=from&order_type='.($_GET['order_sort'] == 'from' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_MEMO_FROM.($_GET['order_sort'] == 'from' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'from' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
@@ -736,7 +746,7 @@ require("includes/note_js.php");
     $memo_item_info = array();  
     $memo_item_info[] = array(
                           'params' => 'class="dataTableContent"', 
-                          'text' => '<input type="checkbox" value="'.$memo['id'].'" name="memo_list_id[]">'   
+                          'text' => '<input type="checkbox" value="'.$memo['id'].'" name="memo_list_id[]"'.($site_permission_flag == false ? 'disabled="disabled"' : '').'>'   
                           );
     $memo_item_info[] = array(
                           'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BUSINESS_MEMO, 'page=' . $_GET['page'] . '&cID=' . $memo['id']) . '\'"', 
@@ -746,7 +756,7 @@ require("includes/note_js.php");
     $read_flag_str_array = array();
     $read_flag_str_array = explode(',',$memo['read_flag']);
     if($memo['read_flag'] == ''){
-      if($memo['finished'] == 0){
+      if($memo['finished'] == 0 && $site_permission_flag == true){
         $memo_read = '<a onclick="change_read(\''.$memo['id'].'\',\''.$ocertify->auth_user.'\');" href="javascript:void(0);"><img id="memo_'.$memo['id'].'" border="0" title=" '.TEXT_FLAG_UNCHECK.' " alt="'.TEXT_FLAG_UNCHECK.'" src="images/icons/gray_right.gif"></a>'; 
       }else{
 
@@ -756,7 +766,7 @@ require("includes/note_js.php");
 
       if(in_array($ocertify->auth_user,$read_flag_str_array)){
 
-        if($memo['finished'] == 0){
+        if($memo['finished'] == 0 && $site_permission_flag == true){
           $memo_read = '<a onclick="change_read(\''.$memo['id'].'\',\''.$ocertify->auth_user.'\');" href="javascript:void(0);"><img id="memo_'.$memo['id'].'" border="0" title=" '.TEXT_FLAG_CHECKED.' " alt="'.TEXT_FLAG_CHECKED.'" src="images/icons/green_right.gif"></a>';
         }else{
 
@@ -764,7 +774,7 @@ require("includes/note_js.php");
         }
       }else{
 
-        if($memo['finished'] == 0){
+        if($memo['finished'] == 0 && $site_permission_flag == true){
           $memo_read = '<a onclick="change_read(\''.$memo['id'].'\',\''.$ocertify->auth_user.'\');" href="javascript:void(0);"><img id="memo_'.$memo['id'].'" border="0" title=" '.TEXT_FLAG_UNCHECK.' " alt="'.TEXT_FLAG_UNCHECK.'" src="images/icons/gray_right.gif"></a>';
         }else{
 
@@ -827,7 +837,7 @@ require("includes/note_js.php");
                   <?php
                   if($ocertify->npermission >= 15 && tep_db_num_rows($memo_query) > 0){
                     echo '<div class="td_box">';
-                    echo '<select name="edit_memo_list" onchange="select_memo_change(this.value,\'memo_list_id[]\',\''.$ocertify->npermission.'\');">';
+                    echo '<select name="edit_memo_list" onchange="select_memo_change(this.value,\'memo_list_id[]\',\''.$ocertify->npermission.'\');"'.($site_permission_flag == false ? ' disabled="disabled"' : '').'>';
                     echo '<option value="0">'.TEXT_MEMO_EDIT_SELECT.'</option>';
                     echo '<option value="1">'.TEXT_MEMO_EDIT_DELETE.'</option>';
                     echo '</select>';
@@ -841,7 +851,7 @@ require("includes/note_js.php");
                     <td class="smallText" align="right"><div class="td_box"><?php echo $memo_split->display_links($memo_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page']); ?></div></td>
                   </tr>
                   <tr>
-                    <td colspan="2" align="right"><div class="td_button"><?php echo '<a href="javascript:void(0);" onclick="create_memo(this);">' .tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?></div></td>
+                    <td colspan="2" align="right"><div class="td_button"><?php echo '<a href="javascript:void(0);" onclick="create_memo(this);">' .tep_html_element_button(IMAGE_NEW_PROJECT,$site_permission_flag == false ? 'disabled="disabled"' : '') . '</a>'; ?></div></td>
                   </tr>
           </table>
 	  </td>
