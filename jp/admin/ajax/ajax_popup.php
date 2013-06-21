@@ -5277,7 +5277,7 @@ if($_GET['cID'] != -1){
   //底部内容
   $buttons = array();
 
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_MEMO_EDIT_END, 'onclick="end_memo('.$memo_array['id'].');"'.($memo_array['finished'] == 1 ? 'disabled="disabled"' : '')).'</a>';
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_MEMO_EDIT_END, 'onclick="end_memo('.$memo_array['id'].',\''.$ocertify->npermission.'\');"'.($memo_array['finished'] == 1 ? 'disabled="disabled"' : '')).'</a>';
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_NEW_PROJECT, 'onclick="create_memo(this);"').'</a>';
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="edit_memo_check(\''.$ocertify->npermission.'\');"'.($memo_array['finished'] == 1 ? 'disabled="disabled"' : '')).'</a>'; 
   if ($ocertify->npermission >= 15) {

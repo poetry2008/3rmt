@@ -446,10 +446,48 @@ function create_memo_check(c_permission){
 }
 
 <?php //终止memo?>
-function end_memo(id){
+function end_memo(id,c_permission){
 
-  document.edit_memo.action = '<?php echo tep_href_link(FILENAME_BUSINESS_MEMO, 'action=end&end_id=');?>'+id;
-  document.edit_memo.submit();
+  if (c_permission == 31) {
+    document.edit_memo.action = '<?php echo tep_href_link(FILENAME_BUSINESS_MEMO, 'action=end&end_id=');?>'+id;
+    document.edit_memo.submit();
+  }else{
+
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
+      async: false,
+      success: function(msg) {
+        var tmp_msg_arr = msg.split('|||'); 
+        var pwd_list_array = tmp_msg_arr[1].split(',');
+        if (tmp_msg_arr[0] == '0') {
+          document.edit_memo.action = '<?php echo tep_href_link(FILENAME_BUSINESS_MEMO, 'action=end&end_id=');?>'+id;
+          document.edit_memo.submit(); 
+        } else {
+          $('#button_save').attr('id', 'tmp_button_save'); 
+          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+          if (in_array(input_pwd_str, pwd_list_array)) {
+            $.ajax({
+              url: 'ajax_orders.php?action=record_pwd_log',   
+              type: 'POST',
+              dataType: 'text',
+              data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent('<?php echo tep_href_link(FILENAME_BUSINESS_MEMO, 'action=save');?>'),
+              async: false,
+              success: function(msg_info) {
+                document.edit_memo.action = '<?php echo tep_href_link(FILENAME_BUSINESS_MEMO, 'action=end&end_id=');?>'+id;
+                document.edit_memo.submit();
+              }
+            }); 
+          } else {
+            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+            setTimeOut($('#tmp_button_save').attr('id', 'button_save'), 1); 
+          }
+        }
+      }
+    });
+  }
 }
 
 <?php //memo内容编辑?>
@@ -698,7 +736,7 @@ require("includes/note_js.php");
     $memo_item_info = array();  
     $memo_item_info[] = array(
                           'params' => 'class="dataTableContent"', 
-                          'text' => '<input type="checkbox" value="'.$memo['id'].'" name="memo_list_id[]"'.($memo['finished'] == 1 ? ' disabled="disabled"' : '').'>'   
+                          'text' => '<input type="checkbox" value="'.$memo['id'].'" name="memo_list_id[]">'   
                           );
     $memo_item_info[] = array(
                           'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BUSINESS_MEMO, 'page=' . $_GET['page'] . '&cID=' . $memo['id']) . '\'"', 
