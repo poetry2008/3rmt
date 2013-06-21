@@ -52,7 +52,7 @@ require("includes/note_js.php");
             <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2" style="margin-bottom:5px;">
               <tr class="dataTableHeadingRow">
                 <td class="dataTableHeadingContent" width="10%"><?php echo TABLE_HEADING_NUMBER; ?></td>
-                <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_PRODUCTS; ?></td>
+                <td class="dataTableHeadingContent" align="left"><?php echo TABLE_HEADING_PRODUCTS; ?></td>
                 <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_PURCHASED; ?></td>
               </tr>
 <?php
@@ -132,7 +132,7 @@ require("includes/note_js.php");
 ?>
               <tr class="<?php echo $nowColor;?>" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='<?php echo $nowColor;?>'" onclick="document.location.href='<?php echo tep_href_link(FILENAME_CATEGORIES, 'cPath='.$categories_url_id.'&page='.$page.'&pID='.$products['products_id'].'&site_id=0', 'NONSSL'); ?>'">
                 <td class="dataTableContent"><?php echo $rows; ?>.</td>
-                <td class="dataTableContent" align="right"><?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath='.$categories_url_id.'&page='.$page.'&pID='.$products['products_id'].'&site_id=0', 'NONSSL') . '">' . $products['products_name'] . '</a>'; ?></td>
+                <td class="dataTableContent" align="left"><?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath='.$categories_url_id.'&page='.$page.'&pID='.$products['products_id'].'&site_id=0', 'NONSSL') . '">' . $products['products_name'] . '</a>'; ?></td>
                 <td class="dataTableContent" align="right"><?php echo '<a href="' . tep_href_link(FILENAME_STATS_SALES_REPORT, 'report=5&site_id=&is_select=1&add_product_categories_id='.$current_category_id.'&cid='.$current_category_id.'&pid='.$products['products_id'].'&products_id='.$products['products_id'].'&startY='.date('Y',$first['first']).'&startM='.date('m',$first['first']).'&startD='.date('d',$first['first']).'&method=1&detail=2&endY='.date('Y').'&endM='.date('m').'&endD='.date('d').'&export=0&bflag='.(tep_get_bflag_by_product_id($products['products_id']) == 0 ? 1 : 2).'&status=success&sort=4&compare=0&max=', 'NONSSL') . '">' . $products['products_ordered']. '</a>'; ?></td>
               </tr>
 <?php
