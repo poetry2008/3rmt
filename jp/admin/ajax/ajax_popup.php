@@ -3613,10 +3613,42 @@ if(!in_array($site_id,$site_array)&&$site_id!=-1){
       $latest_news = array();
     }
 
+    $news_order_sort_name = ' site_id';
+    $news_order_sort = 'asc';
+    if ($_GET['sort_name'] != '') {
+      switch ($_GET['sort_name']) {
+         case 'site':
+           $news_order_sort_name = ' site_id';
+           break;
+         case 'title':
+           $news_order_sort_name = ' headline';
+           break;
+         case 'add_date':
+           $news_order_sort_name = ' date_added';
+           break;
+         case 'status':
+           $news_order_sort_name = ' status';
+           break;
+         case 'isfirst':
+           $news_order_sort_name = ' isfirst';
+           break;
+         case 'news_update':
+           $news_order_sort_name = ' latest_update_date';
+           break;
+      }
+    }
+    if ($_GET['sort_type'] != '') {
+      if ($_GET['sort_type'] == 'asc') {
+        $news_order_sort = 'asc';
+      } else {
+        $news_order_sort = 'desc';
+      }
+    }
+    $news_order_sql = $news_order_sort_name.' '.$news_order_sort;
     if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
       $sql_site_where = 'site_id in ('.str_replace('-', ',', $_GET['site_id']).')';
     } else {
-      $show_site_str = tep_get_setting_site_info($_POST['self_page']);
+      $show_site_str = tep_get_setting_site_info(FILENAME_NEWS);
       $sql_site_where = 'site_id in ('.$show_site_str.')';
     }
     $sites_sql = tep_db_query("SELECT * FROM `sites`");
@@ -3628,13 +3660,14 @@ if(!in_array($site_id,$site_array)&&$site_id!=-1){
      $latest_news_query_raw = ' select n.news_id, n.headline, n.date_added,
      n.author, n.update_editor, n.latest_update_date, n.content, n.status,
      n.news_image, n.news_image_description, n.isfirst, n.site_id from ' .
-     TABLE_NEWS . ' n where '.$sql_site_where.' order by isfirst desc,date_added desc ';
+     TABLE_NEWS . ' n where '.$sql_site_where.' order by '.$news_order_sql;
+     $news_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $latest_news_query_raw, $latest_news_query_numrows);
+     
      $latest_news_id_query = tep_db_query($latest_news_query_raw);
      while ($latest_news_id = tep_db_fetch_array($latest_news_id_query)) {
          $cid_array[] = $latest_news_id['news_id'];
          $sid_array[] = $latest_news_id['site_id'];
      }
-
  foreach ($cid_array as $c_key => $c_value) {
            if ($_GET['latest_news_id'] == $c_value) {
             break;
@@ -3643,17 +3676,17 @@ if(!in_array($site_id,$site_array)&&$site_id!=-1){
  $page_str = '';
  if($get_news_id != -1){
  if ($c_key > 0) {
-   $page_str .= '<a id="option_prev" onclick=\'show_latest_news("",'.$_GET['page'].',"'.$cid_array[$c_key-1].'","'.$_GET['site_id'].'",'.$sid_array[$c_key-1].')\' href="javascript:void(0);" id="option_next">'.TEXT_CAMPAIGN_PREV.'</a>&nbsp;&nbsp;'; 
+   $page_str .= '<a id="option_prev" onclick=\'show_latest_news("",'.$_GET['page'].',"'.$cid_array[$c_key-1].'","'.$_GET['site_id'].'",'.$sid_array[$c_key-1].', "'.(($_GET['sort_name'] != '')?$_GET['sort_name']:'').'", "'.(($_GET['sort_type'] != '')?$_GET['sort_type']:'').'")\' href="javascript:void(0);" id="option_next">'.TEXT_CAMPAIGN_PREV.'</a>&nbsp;&nbsp;'; 
  }
  if ($c_key < (count($cid_array) - 1)) {
-   $page_str .= '<a id="option_next" onclick=\'show_latest_news("",'.$_GET['page'].',"'.$cid_array[$c_key+1].'","'.$_GET['site_id'].'",'.$sid_array[$c_key+1].')\' href="javascript:void(0);" id="option_next">'.TEXT_CAMPAIGN_NEXT.'</a>&nbsp;&nbsp;';
+   $page_str .= '<a id="option_next" onclick=\'show_latest_news("",'.$_GET['page'].',"'.$cid_array[$c_key+1].'","'.$_GET['site_id'].'",'.$sid_array[$c_key+1].', "'.(($_GET['sort_name'] != '')?$_GET['sort_name']:'').'", "'.(($_GET['sort_type'] != '')?$_GET['sort_type']:'').'")\' href="javascript:void(0);" id="option_next">'.TEXT_CAMPAIGN_NEXT.'</a>&nbsp;&nbsp;';
  }
  }
  $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
  $heading[] = array('align' => 'left', 'text' => isset($latest_news['headline'])?$latest_news['headline']:HEADING_TITLE);
  $heading[] = array('align' => 'right', 'text' => $page_str);
- $form_str = tep_draw_form('new_latest_news', FILENAME_NEWS, (isset($_GET['latest_news_id']) && $_GET['latest_news_id'] != '-1' ?  ('latest_news_id=' . $_GET['latest_news_id'] . '&action=update_latest_news') : 'action=insert_latest_news').(!empty($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):''), 'post', 'enctype="multipart/form-data" onSubmit="return false;"'); 
+ $form_str = tep_draw_form('new_latest_news', FILENAME_NEWS, (isset($_GET['latest_news_id']) && $_GET['latest_news_id'] != '-1' ?  ('latest_news_id=' . $_GET['latest_news_id'] . '&action=update_latest_news') : 'action=insert_latest_news').(!empty($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):'').(($_GET['sort_name'] != '')?'&news_sort='.$_GET['sort_name']:'').(($_GET['sort_type'] != '')?'&news_sort_type='.$_GET['sort_type']:''), 'post', 'enctype="multipart/form-data" onSubmit="return false;"'); 
 
  $latest_news_contents[]['text'] = array(
       array('text' => '<input type="hidden" name="author" value="'.$_SESSION['user_name'].'"><input type="hidden" name="update_editor" value="'.$_SESSION['user_name'].'">')
@@ -3669,65 +3702,47 @@ if(!in_array($site_id,$site_array)&&$site_id!=-1){
    $site_list_raw = tep_db_query("select * from sites order by id asc"); 
    $site_id_name = '<table border="0" width="100%" cellpadding="0" cellspacing="0">'; 
    if ((trim($site_arr)) != '' && ($site_arr != '0')) {
-     $site_id_name .= '<tr class="td_input"><td><input type="radio" name="select_site_type" id="select_site_type" onclick="change_site_type(0);" value="0" checked>'.NEWS_FIX_SITE_TEXT.'&nbsp;&nbsp;<input type="radio" name="select_site_type" id="select_site_type" onclick="change_site_type(1);" value="1"'.((!in_array('0', $site_array))?' disabled':'').'>ALL<input type="hidden" value="0" id="site_type_hidden" type="site_type_hidden"></td></tr>'; 
+     $site_id_name .= '<tr class="td_input"><td><input type="radio" name="select_site_type" id="select_site_type" onclick="change_site_type(0, \''.$site_arr.'\');" value="0" checked>'.NEWS_FIX_SITE_TEXT.'&nbsp;&nbsp;<input type="radio" name="select_site_type" id="select_site_type" onclick="change_site_type(1, \''.$site_arr.'\');" value="1"'.((!in_array('0', $site_array))?' disabled':'').'>ALL<input type="hidden" value="0" id="site_type_hidden" type="site_type_hidden"></td></tr>'; 
    } else {
-     $site_id_name .= '<tr class="td_input"><td><input type="radio" name="select_site_type" id="select_site_type" onclick="change_site_type(0);" value="0" disabled>'.NEWS_FIX_SITE_TEXT.'&nbsp;&nbsp;<input type="radio" name="select_site_type" id="select_site_type" onclick="change_site_type(1);" value="1" checked>ALL<input type="hidden" value="1" id="site_type_hidden" type="site_type_hidden"></td></tr>'; 
+     $site_id_name .= '<tr class="td_input"><td><input type="radio" name="select_site_type" id="select_site_type" value="0" disabled>'.NEWS_FIX_SITE_TEXT.'&nbsp;&nbsp;<input type="radio" name="select_site_type" id="select_site_type" value="1" checked>ALL<input type="hidden" value="1" id="site_type_hidden" type="site_type_hidden"></td></tr>'; 
    }
    $site_id_name .= '</table>'; 
    $site_id_name .= '<div id="select_site">'; 
    $site_id_name .= '<table border="0" width="100%" cellpadding="0" cellspacing="0">'; 
    $s_num = 0;
    $s_flag = false;
-   $tmp_site_array = array(); 
-   if ($site_arr != '') {
-     foreach ($site_array as $t_key => $t_value) {
-       if ($t_value != '0') {
-         $tmp_site_array[] = $t_value; 
-       }
-     }
+   $is_disabled_single = false; 
+   if (($site_arr == '0') || ($site_arr == '')) {
+     $is_disabled_single = true; 
    }
-   if (($site_arr != '') && ($site_arr != '0')) {
-     $site_id_name .= '<tr>'; 
-     while ($site_list_res = tep_db_fetch_array($site_list_raw)) {
-       if (!in_array($site_list_res['id'], $site_array)) {
-         continue; 
-       }
-       $site_id_name .= '<td><input type="checkbox" name="site_id_info[]" value="'.$site_list_res['id'].'">'.$site_list_res['name'].'</td>'; 
-       if (!empty($tmp_site_array)) {
-         if (count($tmp_site_array) == 1) {
-           $site_id_name .= '<td><a href="javascript:void(0);">'.tep_html_element_button(SELECT_ALL_TEXT, 'onclick="select_all_news_site()" id="all_site_button"').'</a></td>'; 
-         }
-       }
-       $s_num++;
-       if ($s_num % 2 == 0) {
-         if ($s_flag == false) {
-           $site_id_name .= '<td><a href="javascript:void(0);">'.tep_html_element_button(SELECT_ALL_TEXT, 'onclick="select_all_news_site()" id="all_site_button"').'</a></td>'; 
-           $s_flag = true; 
-         } else {
-           $site_id_name .= '<td></td>'; 
-         }
-         $site_id_name .= '</tr><tr>'; 
-       }
-     }
-     
-     if ($s_num > 1) {
-       for ($tmp_num = $s_num % 2; $tmp_num >= 0; $tmp_num--) {
-         $site_id_name .= '<td></td>'; 
-       }
-     } else {
-       for ($tmp_num = $s_num % 2; $tmp_num > 0; $tmp_num--) {
-         $site_id_name .= '<td></td>'; 
-       }
-     }
-     
+   $site_num_total = tep_db_num_rows($site_list_raw); 
+   while ($site_list_res = tep_db_fetch_array($site_list_raw)) {
      if ($s_num % 2 == 0) {
-       if ($s_num >= 2) {
-         $site_id_name .= '<td></td><td></td>'; 
+       $site_id_name .= '<tr>'; 
+     }
+     $site_id_name .= '<td><input type="checkbox" name="site_id_info[]" value="'.$site_list_res['id'].'"'.(($is_disabled_single)?' disabled="disabled"':((!in_array($site_list_res['id'], $site_array)?'disabled="disabled"':''))).'>'.$site_list_res['name'].'</td>'; 
+     
+       
+     if (($s_num + 1) % 2 == 0) {
+       if ($s_flag == false) {
+         $site_id_name .= '<td><a href="javascript:void(0);">'.tep_html_element_button(SELECT_ALL_TEXT, 'onclick="select_all_news_site()" id="all_site_button"'.(($is_disabled_single)?' disabled="disabled"':'')).'</a></td>'; 
+         $s_flag = true; 
        } else {
          $site_id_name .= '<td></td>'; 
        }
-     } 
-     $site_id_name .= '</tr>';  
+       $site_id_name .= '</tr>'; 
+     }
+     $s_num++;
+     if ($s_num == $site_num_total) {
+       if ($s_num % 2 != 0) {
+         if ($s_num == 1) {
+           $site_id_name .= '<td></td>'; 
+           $site_id_name .= '<td><a href="javascript:void(0);">'.tep_html_element_button(SELECT_ALL_TEXT, 'onclick="select_all_news_site()" id="all_site_button"'.(($is_disabled_single)?' disabled="disabled"':'')).'</a></td>'; 
+         } else {
+           $site_id_name .= '<td></td><td></td>'; 
+         }
+       }
+     }
    }
    $site_id_name .= '</table>'; 
    $site_id_name .= '<span id="site_error" style="color:#ff0000;"></span><input type="hidden" name="is_select" id="is_select" value="0">'; 
@@ -3775,7 +3790,7 @@ if($ocertify->npermission >= 15){
 if(isset($disable) && $disable){
  isset($_GET['latest_news_id']) ? $cancel_button = tep_html_element_button(IMAGE_DELETE,$disable) : $cancel_button = '';
 }else{
- isset($_GET['latest_news_id']) ? $cancel_button = '&nbsp;&nbsp;<a class="new_product_reset" href="javascript:void(0);">' .  tep_html_element_button(IMAGE_DELETE, 'onclick="toggle_news_action(\''.tep_href_link(FILENAME_NEWS, 'action=delete_latest_news_confirm&latest_news_id='.  $_GET['latest_news_id'].(!empty($_GET['site_id']) ?  '&site_id='.$_GET['site_id']:'').(isset($_GET['page']) ?  '&page='.$_GET['page']:'')).'\');"') . '</a>' : $cancel_button = '';
+ isset($_GET['latest_news_id']) ? $cancel_button = '&nbsp;&nbsp;<a class="new_product_reset" href="javascript:void(0);">' .  tep_html_element_button(IMAGE_DELETE, 'onclick="toggle_news_action(\''.tep_href_link(FILENAME_NEWS, 'action=delete_latest_news_confirm&latest_news_id='.  $_GET['latest_news_id'].(!empty($_GET['site_id']) ?  '&site_id='.$_GET['site_id']:'').(isset($_GET['page']) ?  '&page='.$_GET['page']:'').(($_GET['sort_name'] != '')?'&news_sort='.$_GET['sort_name']:'').(($_GET['sort_type'] != '')?'&news_sort_type='.$_GET['sort_type']:'')).'\');"') . '</a>' : $cancel_button = '';
 }
 }
 if($_GET['latest_news_id'] != '-1'){
