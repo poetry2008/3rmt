@@ -5292,7 +5292,7 @@ if($_GET['cID'] != -1){
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_NEW_PROJECT, 'onclick="create_memo(this);"'.($site_permission_flag == false ? ' disabled="disabled"' : '')).'</a>';
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="edit_memo_check(\''.$ocertify->npermission.'\');"'.($memo_array['finished'] == 1 || $site_permission_flag == false  ? 'disabled="disabled"' : '')).'</a>'; 
   if ($ocertify->npermission >= 15) {
-    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if(confirm(\''.TEXT_MEMO_CLOSE_CONFIRM.'\')){close_memo(\''.$ocertify->npermission.'\');}"'.($site_permission_flag == false ? ' disabled="disabled"' : '')).'</a>'; 
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if(confirm(\''.TEXT_MEMO_EDIT_CONFIRM.'\')){close_memo(\''.$ocertify->npermission.'\');}"'.($site_permission_flag == false ? ' disabled="disabled"' : '')).'</a>'; 
   }
 
   if (!empty($button)) {

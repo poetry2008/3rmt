@@ -459,10 +459,13 @@ function create_memo_check(c_permission){
 function end_memo(id,c_permission){
 
   if (c_permission == 31) {
-    document.edit_memo.action = '<?php echo tep_href_link(FILENAME_BUSINESS_MEMO, 'action=end&end_id=');?>'+id;
-    document.edit_memo.submit();
+    if(confirm('<?php echo TEXT_MEMO_CLOSE_CONFIRM;?>')){
+      document.edit_memo.action = '<?php echo tep_href_link(FILENAME_BUSINESS_MEMO, 'action=end&end_id=');?>'+id;
+      document.edit_memo.submit();
+    }
   }else{
 
+    if(confirm('<?php echo TEXT_MEMO_CLOSE_CONFIRM;?>')){
     $.ajax({
       url: 'ajax_orders.php?action=getallpwd',   
       type: 'POST',
@@ -497,6 +500,7 @@ function end_memo(id,c_permission){
         }
       }
     });
+    }
   }
 }
 
