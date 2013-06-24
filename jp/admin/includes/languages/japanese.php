@@ -790,3 +790,4 @@ define('NOTICE_NO_ACCESS_LINK_TEXT', '下記URLよりアクセスしてくださ
 define('NOTICE_NO_ACCESS_BACK_TEXT', '前のページへ戻る');
 define('TEXT_IMAGE_MAX','アップロードされた画像が制限最大値を超えて、改めてアップロードして下さい。');
 define('TEXT_IMAGE_TYPE_WRONG','画像のファーマットが間違ったのです。');
+define('WARNING_LOSING_INFO_TEXT', 'データが不完全な為、エラーが発生しました。再度操作をしてください。');
