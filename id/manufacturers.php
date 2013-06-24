@@ -77,18 +77,12 @@ while ($manufacturer = tep_db_fetch_array($manufacturer_query)){
     echo '    <td width="120" class="smallText" valign="top" align="left">';
     if(isset($manufacturer['manufacturers_url'])&&$manufacturer['manufacturers_url']!=''){
     echo '<a target="_blank" href="'.substr(strip_tags($manufacturer['manufacturers_url']),0,100) .'">';
-    }else{
-      echo '<font color="#A85E5E">';
     }
     echo '<h3><strong>'.$manufacturer['manufacturers_name'].'</strong></h3>';
     if(isset($manufacturer['manufacturers_url'])&&$manufacturer['manufacturers_url']!=''){
     echo '</a>';
-    }else{
-      echo '</font>';
     }
-    $configuration_width = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MANUFACTURERS_WIDTH' and site_id =".SITE_ID));
-    $configuration_height = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MANUFACTURERS_height' and site_id =".SITE_ID));
-    echo '<br> '.  tep_image_new(DIR_WS_IMAGES.'manufacturers/'.$manufacturer['manufacturers_image'],$m_alt,$configuration_width['configuration_value'],$configuration_height['configuration_value']).' </td>' . "\n";
+    echo '<br> '.  tep_image_new(DIR_WS_IMAGES.'manufacturers/'.$manufacturer['manufacturers_image'],$m_alt,MANUFACTURERS_WIDTH,MANUFACTURERS_HEIGHT).' </td>' . "\n";
     
 
     echo '    <td>' . "\n";

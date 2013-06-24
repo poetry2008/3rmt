@@ -24,7 +24,7 @@ define('SR_EXP_CSV', 'CSV');
 define('SR_TABLE_HEADING_DATE', '日付');
 define('SR_TABLE_HEADING_ORDERS', '注文件数');
 define('SR_TABLE_HEADING_ITEMS', '商品点数');
-define('SR_TABLE_HEADING_REVENUE', '販売金額');
+define('SR_TABLE_HEADING_REVENUE', '金額');
 define('SR_TABLE_HEADING_SHIPPING', '配送料金');
 
 define('SR_DET_HEAD_ONLY', '概要');
@@ -36,8 +36,8 @@ define('SR_SORT_VAL1', '商品名');
 define('SR_SORT_VAL2', '商品名(降順)');
 define('SR_SORT_VAL3', '商品点数');
 define('SR_SORT_VAL4', '商品点数(降順)');
-define('SR_SORT_VAL5', '販売金額');
-define('SR_SORT_VAL6', '販売金額(降順)');
+define('SR_SORT_VAL5', '金額');
+define('SR_SORT_VAL6', '金額(降順)');
 
 define('SR_REPORT_STATUS_FILTER', 'ステータス');
 
@@ -76,3 +76,4 @@ define('SR_REPORT_TYPE_ORDERS','注文別');
 define('TEXT_SORT_ASC','▲');
 define('TEXT_SORT_DESC','▼');
 define('SR_OPTION_TYPE','条件');
+define('SR_TABLE_HEADING_ORDERS_TITLE', '注文番号');

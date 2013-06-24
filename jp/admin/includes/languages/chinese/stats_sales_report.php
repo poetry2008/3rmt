@@ -76,6 +76,7 @@ define('SR_REPORT_TYPE_ORDERS','按订单');
 define('TEXT_SORT_ASC','▲');
 define('TEXT_SORT_DESC','▼');
 define('SR_OPTION_TYPE','条件');
+define('SR_TABLE_HEADING_ORDERS_TITLE', '订单编号');
 
 
 

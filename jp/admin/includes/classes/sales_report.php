@@ -68,15 +68,13 @@
       $siteStr = isset($_GET['site_id']) && strlen($_GET['site_id'])?" AND o.site_id in (".str_replace('-',',',$_GET['site_id']).") ":'';
       if($_GET['bflag'] == '2') {
         $bflag = '1';
-        $likeStr = ' like \'%買%\' ';
       } else if ($_GET['bflag'] == '1') {
         $bflag = '0';
-        $likeStr = ' not like \'%買%\' ';
       }
 
       // query for order count
-      $buyOrSellWhere = isset($_GET['bflag']) && $_GET['bflag'] ? (" AND o.payment_method " . $likeStr) : '';
-      $this->queryOrderCnt = "SELECT count(o.orders_id) as order_cnt FROM " . TABLE_ORDERS . " o left join ".TABLE_ORDERS_PRODUCTS." op on o.orders_id=op.orders_id WHERE".($this->products_id != 0 ? ' op.products_id='.$this->products_id.' and' : '')." 1=1".$siteStr.$buyOrSellWhere;
+      $buyOrSellWhere = isset($_GET['bflag']) && $_GET['bflag'] ? (" AND p.products_bflag=" . $bflag) : '';
+      $this->queryOrderCnt = "SELECT count(o.orders_id) as order_cnt FROM " . TABLE_ORDERS . " o left join ".TABLE_ORDERS_PRODUCTS." op on o.orders_id=op.orders_id left join ". TABLE_PRODUCTS ." p on op.products_id=p.products_id left join ". TABLE_ORDERS_STATUS ." os on o.orders_status=os.orders_status_id WHERE".($this->products_id != 0 ? ' op.products_id='.$this->products_id.' and' : '')." 1=1".$siteStr.$buyOrSellWhere;
 
 
       // queries for item details count
@@ -86,7 +84,7 @@
         /*
         if(p.products_bflag = '0' , sum(op.final_price * op.products_quantity), 0-sum(op.final_price * op.products_quantity))
         */
-        " sum(op.final_price * op.products_quantity) as psum, op.products_tax as ptax FROM " . TABLE_ORDERS . " o, " . TABLE_ORDERS_PRODUCTS . " op, " . TABLE_PRODUCTS . " p WHERE".($this->products_id != 0 ? ' p.products_id='.$this->products_id.' and' : '')." o.orders_id = op.orders_id AND op.products_id = p.products_id " . $siteStr . $buyOrSellWhere ;
+        " sum(op.final_price * op.products_quantity) as psum, op.products_tax as ptax FROM " . TABLE_ORDERS . " o, " . TABLE_ORDERS_PRODUCTS . " op, " . TABLE_PRODUCTS . " p, ". TABLE_ORDERS_STATUS ." os WHERE".($this->products_id != 0 ? ' p.products_id='.$this->products_id.' and' : '')." o.orders_id = op.orders_id AND op.products_id = p.products_id and o.orders_status=os.orders_status_id " . $siteStr . $buyOrSellWhere ;
 
 
 
@@ -113,7 +111,7 @@
           $this->sortString = " order by psum desc, pname asc";
           break;
       }
- 
+
     }
 /*---------------------------------------------
  功能：下一个日期
@@ -135,7 +133,7 @@
         // yearly
         case '1':
           $sd = $this->actDate;
-          $ed = mktime(0, 0, 0, date("m", $sd), date("d", $sd), date("Y", $sd) + 1);  
+          $ed = mktime(0, 0, 0, date("m", $sd), date("d", $sd), date("Y", $sd) + 1);
           break;
         // monthly
         case '2':
@@ -189,6 +187,14 @@
               $this->sortString = " order by ".$this->order_sort." ".$this->order_type;
             }
           }
+          if($this->order_sort == 'pname'){
+
+            $this->order_sort = 'op.products_name';
+            if($this->order_sort != '' && $this->order_type != ''){
+
+              $this->sortString = " order by ".$this->order_sort." ".$this->order_type;
+            }
+          } 
           break;
       }
       if ($ed > $this->endDate) {
@@ -197,7 +203,7 @@
 
       $filterString = "";
       if ($this->statusFilter == 'success') {
-        $filterString .= " AND o.finished = '1' AND o.flag_qaf = '1' ";
+        $filterString .= " AND os.finished = '1' AND o.flag_qaf = '1' ";
       } else if ($this->statusFilter > 0) {
         $filterString .= " AND o.orders_status = " . $this->statusFilter . " ";
       }
@@ -205,7 +211,7 @@
       $order = tep_db_fetch_array($rqOrders);
 
       $rqItems = tep_db_query($this->queryItemCnt . " AND o.".$this->method." >= '" . tep_db_input(date("Y-m-d\TH:i:s", $sd)) . "' AND o.".$this->method." < '" . tep_db_input(date("Y-m-d\TH:i:s", $ed)) . "'" . $filterString . " group by ".($this->orders_flag == false ? 'pid' : 'orders_id,pid')." " . $this->sortString);
- 
+
       // set the return values
       $this->actDate = $ed;
       $this->showDate = $sd;
@@ -254,6 +260,7 @@
 
           $orders_list_array[$orders_i]['date_purchased'] = $orders_array['date_purchased'];
           $orders_list_array[$orders_i]['orders_id'] = $orders_array['orders_id'];
+          $orders_list_array[$orders_i]['pid'] = $orders_array['pid'];
           $orders_list_array[$orders_i]['pname'] = $orders_array['pname'];
           $orders_list_array[$orders_i]['pquant'] = $orders_array['pquant'];
           $orders_list_array[$orders_i]['psum'] = $orders_array['psum'];

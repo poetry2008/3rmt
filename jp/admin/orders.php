@@ -489,10 +489,16 @@ switch ($_GET['action']) {
 ------------------------------------------------------*/
   case 'sele_act':
     if($_POST['chk'] == ""){
+      $_SESSION['error_orders_status'] = WARNING_ORDER_NOT_UPDATED; 
       $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
       tep_redirect(tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action'))));
     }
     $update_user_info = tep_get_user_info($ocertify->auth_user);
+    if (empty($_POST['status']) || empty($update_user_info['name'])) {
+      $_SESSION['error_orders_status'] = WARNING_ORDER_NOT_UPDATED; 
+      $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
+      tep_redirect(tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action'))));
+    }
     foreach($_POST['chk'] as $value){
       $oID      = $value;
       $status   = tep_db_prepare_input($_POST['status']);
@@ -787,6 +793,56 @@ switch ($_GET['action']) {
         } else {
           $customer_notified = '0';
         }
+      //增加销售处理
+      $orders_status_flag = false;
+      $orders_status_history_flag = false;
+      $orders_oa_flag = false;
+      $end_orders_status_flag = false;
+      $status_list_array = array();
+      $orders_status_finish_query = tep_db_query("select orders_status_id,finished from ". TABLE_ORDERS_STATUS);
+      while($orders_status_finish_array = tep_db_fetch_array($orders_status_finish_query)){
+
+        $status_list_array[$orders_status_finish_array['orders_status_id']] = $orders_status_finish_array['finished'];
+      }
+      tep_db_free_result($orders_status_finish_query);
+      $orders_status_flag = $status_list_array[tep_db_input($status)] == 1 ? true : $orders_status_flag;
+      $orders_status_history_list_query = tep_db_query("select orders_status_id from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".tep_db_input($oID)."'");
+      while($orders_status_history_list_array = tep_db_fetch_array($orders_status_history_list_query)){
+
+        if($status_list_array[$orders_status_history_list_array['orders_status_id']] == 1){
+
+          $orders_status_history_flag = true;
+          break;
+        }
+      }
+      tep_db_free_result($orders_status_history_list_query);
+
+      $orders_oa_flag = tep_orders_finishqa(tep_db_input($oID)) == 1 ? true : $orders_oa_flag;
+
+      //获取最后一次订单状态
+      $orders_status_id_query = tep_db_query("select orders_status_id from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".tep_db_input($oID)."' order by date_added desc limit 0,1");
+      $orders_status_id_array = tep_db_fetch_array($orders_status_id_query);
+      tep_db_free_result($orders_status_id_query);
+      $end_orders_status_flag = $status_list_array[$orders_status_id_array['orders_status_id']] == 1 ? true : $end_orders_status_flag;
+
+      if($orders_oa_flag == true && $orders_status_flag == true && ($orders_status_history_flag == false || $end_orders_status_flag == false)){
+
+        $orders_products_query = tep_db_query("select products_id,products_quantity from ". TABLE_ORDERS_PRODUCTS ." where orders_id='".tep_db_input($oID)."'");
+        while($orders_products_array = tep_db_fetch_array($orders_products_query)){
+          tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . sprintf('%d', $orders_products_array['products_quantity']) . " where products_id = '" . (int)$orders_products_array['products_id'] . "'");
+        }
+        tep_db_free_result($orders_products_query);
+      }
+
+      if($orders_oa_flag == true && $orders_status_history_flag == true && $orders_status_flag == false && $end_orders_status_flag == true){
+
+        $orders_products_query = tep_db_query("select products_id,products_quantity from ". TABLE_ORDERS_PRODUCTS ." where orders_id='".tep_db_input($oID)."'");
+        while($orders_products_array = tep_db_fetch_array($orders_products_query)){
+          tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered - " . sprintf('%d', $orders_products_array['products_quantity']) . " where products_id = '" . (int)$orders_products_array['products_id'] . "'");
+        }
+        tep_db_free_result($orders_products_query);    
+      }
+
         //获取订单最后一次备注信息
         $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".tep_db_input($oID)."' order by date_added desc limit 0,1");
         $orders_status_history_array = tep_db_fetch_array($orders_status_history_query);
@@ -810,6 +866,11 @@ switch ($_GET['action']) {
     break;
   case 'update_order':
     $update_user_info = tep_get_user_info($ocertify->auth_user);
+    if (empty($_POST['s_status']) || empty($update_user_info['name'])) {
+      $_SESSION['error_orders_status'] = WARNING_ORDER_NOT_UPDATED; 
+      $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
+      tep_redirect(tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action')) . 'action=edit'));
+    }
     $oID      = tep_db_prepare_input($_GET['oID']);
     $status   = tep_db_prepare_input($_POST['s_status']);
     $title    = tep_db_prepare_input($_POST['title']);
@@ -1122,6 +1183,56 @@ switch ($_GET['action']) {
       } else {
         $customer_notified = '0';
       }
+      //增加销售处理
+      $orders_status_flag = false;
+      $orders_status_history_flag = false;
+      $orders_oa_flag = false;
+      $end_orders_status_flag = false;
+      $status_list_array = array();
+      $orders_status_finish_query = tep_db_query("select orders_status_id,finished from ". TABLE_ORDERS_STATUS);
+      while($orders_status_finish_array = tep_db_fetch_array($orders_status_finish_query)){
+
+        $status_list_array[$orders_status_finish_array['orders_status_id']] = $orders_status_finish_array['finished'];
+      }
+      tep_db_free_result($orders_status_finish_query);
+      $orders_status_flag = $status_list_array[tep_db_input($status)] == 1 ? true : $orders_status_flag;
+      $orders_status_history_list_query = tep_db_query("select orders_status_id from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".tep_db_input($oID)."'");
+      while($orders_status_history_list_array = tep_db_fetch_array($orders_status_history_list_query)){
+
+        if($status_list_array[$orders_status_history_list_array['orders_status_id']] == 1){
+
+          $orders_status_history_flag = true;
+          break;
+        }
+      }
+      tep_db_free_result($orders_status_history_list_query);
+
+      $orders_oa_flag = tep_orders_finishqa(tep_db_input($oID)) == 1 ? true : $orders_oa_flag;
+
+      //获取最后一次订单状态
+      $orders_status_id_query = tep_db_query("select orders_status_id from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".tep_db_input($oID)."' order by date_added desc limit 0,1");
+      $orders_status_id_array = tep_db_fetch_array($orders_status_id_query);
+      tep_db_free_result($orders_status_id_query);
+      $end_orders_status_flag = $status_list_array[$orders_status_id_array['orders_status_id']] == 1 ? true : $end_orders_status_flag;
+
+      if($orders_oa_flag == true && $orders_status_flag == true && ($orders_status_history_flag == false || $end_orders_status_flag == false)){
+
+        $orders_products_query = tep_db_query("select products_id,products_quantity from ". TABLE_ORDERS_PRODUCTS ." where orders_id='".tep_db_input($oID)."'");
+        while($orders_products_array = tep_db_fetch_array($orders_products_query)){
+          tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . sprintf('%d', $orders_products_array['products_quantity']) . " where products_id = '" . (int)$orders_products_array['products_id'] . "'");
+        }
+        tep_db_free_result($orders_products_query);
+      }
+
+      if($orders_oa_flag == true && $orders_status_history_flag == true && $orders_status_flag == false && $end_orders_status_flag == true){
+
+        $orders_products_query = tep_db_query("select products_id,products_quantity from ". TABLE_ORDERS_PRODUCTS ." where orders_id='".tep_db_input($oID)."'");
+        while($orders_products_array = tep_db_fetch_array($orders_products_query)){
+          tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered - " . sprintf('%d', $orders_products_array['products_quantity']) . " where products_id = '" . (int)$orders_products_array['products_id'] . "'");
+        }
+        tep_db_free_result($orders_products_query);    
+      }
+
       //获取订单最后一次备注信息
       $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".tep_db_input($oID)."' order by date_added desc limit 0,1");
       $orders_status_history_array = tep_db_fetch_array($orders_status_history_query);
@@ -2156,6 +2267,11 @@ function check_torihiki_date_error($oid){
   }
   return false;
 }
+
+if(isset($_SESSION['error_orders_status'])&&$_SESSION['error_orders_status']){
+  $messageStack->add($_SESSION['error_orders_status'], 'error');
+  unset($_SESSION['error_orders_status']);
+}
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
@@ -2792,7 +2908,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
           $buttons = tep_get_buttons();
           $o2c       = tep_get_buttons_by_orders_id($order->info['orders_id']);
           if ($buttons) {
-        ?> 
+        ?>
           <tr><td>
           <?php foreach ($buttons as $button) {?>
           <div id="orders_alert_<?php echo $button['buttons_id'];?>" onclick="orders_buttons(this, <?php echo $button['buttons_id'];?>, '<?php echo $order->info['orders_id'];?>');" class="<?php echo in_array($button['buttons_id'], $o2c) ? 'orders_buttons_checked' : 'orders_buttons_unchecked' ;?>"><?php echo $button['buttons_name'];?></div>
@@ -3470,7 +3586,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
                     echo str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($order->totals[$i]['value']));
                     echo "</font>".TEXT_MONEY_SYMBOL;
                   }
-                } 
+                }
               } else {
                 if($order->totals[$i]['value']>=0){
                   echo $currencies->format($order->totals[$i]['value']);
@@ -3499,7 +3615,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
                   '    <tr>' . "\n" .
                   '      <td align="right" class="smallText">' . TEXT_CODE_HANDLE_FEE . '</td>' . "\n" .
                   '      <td align="right" class="smallText">' . $currencies->format($order->info['code_fee']) . '</td>' . "\n" .
-                  '    </tr>' . "\n"; 
+                  '    </tr>' . "\n";
               }
             }
           ?>

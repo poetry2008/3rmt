@@ -62,7 +62,7 @@
     if(tep_db_num_rows($products_query)) {
 
 echo '<table class="box_des" width="100%" border="0" cellspacing="0" cellpadding="0">'."\n".
-  '<tr>'."\n".  '<td width="120" class="smallText" valign="top" align="center">';
+  '<tr>'."\n";
     if(isset($manufacturer['manufacturers_alt'])&&$manufacturer['manufacturers_alt']!=''){
       $m_alt = $manufacturer['manufacturers_alt'];
     }else{
@@ -73,20 +73,15 @@ echo '<table class="box_des" width="100%" border="0" cellspacing="0" cellpadding
       }
     }
     echo '    <td width="120" class="smallText" valign="top" align="left">';
+	echo '<div class="td_link">';
     if(isset($manufacturer['manufacturers_url'])&&$manufacturer['manufacturers_url']!=''){
     echo '<a target="_blank" href="'.substr(strip_tags($manufacturer['manufacturers_url']),0,100) .'">';
-    }else{
-      echo '<font color="#2864B4">';
     }
-    echo '<h3><strong>'.$manufacturer['manufacturers_name'].'</strong></h3>';
+    echo $manufacturer['manufacturers_name'];
     if(isset($manufacturer['manufacturers_url'])&&$manufacturer['manufacturers_url']!=''){
     echo '</a>';
-    }else{
-      echo '</font>';
     }
-    $configuration_width = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MANUFACTURERS_WIDTH' and site_id =".SITE_ID));
-    $configuration_height = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MANUFACTURERS_height' and site_id =".SITE_ID));
-    echo '<br> '.  tep_image_new(DIR_WS_IMAGES.'manufacturers/'.$manufacturer['manufacturers_image'],$m_alt,$configuration_width['configuration_value'],$configuration_height['configuration_value']).' </td>' . "\n";
+    echo tep_image_new(DIR_WS_IMAGES.'manufacturers/'.$manufacturer['manufacturers_image'],$m_alt,MANUFACTURERS_WIDTH,MANUFACTURERS_HEIGHT).'</div></td>' . "\n";
     echo '<td>'."\n"
   ;
      echo '<table class="box_des" width="100%" border="0" cellspacing="2" cellpadding="0">'."\n".'<tr>'."\n";
