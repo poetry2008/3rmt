@@ -4,7 +4,7 @@
 */
 
   class sales_report {
-    var $mode, $globalStartDate, $startDate, $endDate, $actDate, $showDate, $showDateEnd, $sortString, $status, $outlet, $method, $products_id, $orders_flag, $order_sort, $order_type;
+    var $mode, $globalStartDate, $startDate, $endDate, $actDate, $showDate, $showDateEnd, $sortString, $status, $outlet, $method, $products_id, $categories_id, $orders_flag, $order_sort, $order_type;
 /*----------------------------------------------------
  功能: 销售报告
  参数: $mode(string) 模式
@@ -15,11 +15,12 @@
  参数: $filter(string) 过滤器
  返回值: 无
  ---------------------------------------------------*/
-    function sales_report($mode, $startDate = 0, $endDate = 0, $sort = 0, $statusFilter = 0, $filter = 0, $srMethod = 0, $products_id, $order_sort, $order_type) {
+    function sales_report($mode, $startDate = 0, $endDate = 0, $sort = 0, $statusFilter = 0, $filter = 0, $srMethod = 0, $products_id, $categories_id, $order_sort, $order_type) {
       // startDate and endDate have to be a unix timestamp. Use mktime !
       // if set then both have to be valid startDate and endDate
       $this->method = $srMethod == 1 ? 'date_purchased' : 'torihiki_date';
       $this->products_id = $products_id;
+      $this->categories_id = $categories_id;
       $this->orders_flag = false;
       $this->order_sort = $order_sort;
       $this->order_type = $order_type;
@@ -72,9 +73,56 @@
         $bflag = '0';
       }
 
+      //获取分类下的所有商品
+      $products_id_str = '';
+      if($this->products_id == 0 && $this->categories_id != 0){
+
+        $categories_id_array = array(); 
+        $categories_query = tep_db_query("select categories_id from ". TABLE_CATEGORIES ." where parent_id='".$this->categories_id."'");
+        $categories_num_rows = tep_db_num_rows($categories_query);
+        if($categories_num_rows == 0){
+
+          $categories_id_array[] = $this->categories_id;
+          tep_db_free_result($categories_query); 
+        }else{
+          $categories_id_array[] = $this->categories_id;
+          while($categories_array = tep_db_fetch_array($categories_query)){
+
+            $categories_child_query = tep_db_query("select categories_id from ". TABLE_CATEGORIES ." where parent_id='".$categories_array['categories_id']."'");
+            $categories_child_num_rows = tep_db_num_rows($categories_child_query);
+            if($categories_child_num_rows == 0){
+
+              $categories_id_array[] = $categories_array['categories_id'];
+              tep_db_free_result($categories_child_query);
+            }else{
+              $categories_id_array[] = $categories_array['categories_id'];
+              while($categories_child_array = tep_db_fetch_array($categories_child_query)){
+
+                $categories_id_array[] = $categories_child_array['categories_id']; 
+              }
+              tep_db_free_result($categories_child_query);
+            }
+          }
+          tep_db_free_result($categories_query);
+        }
+        $products_id_array = array();
+        foreach($categories_id_array as $categories_value){
+          $products_query = tep_db_query("select products_id from ". TABLE_PRODUCTS_TO_CATEGORIES ." where categories_id='".$categories_value."'");
+          while($products_array = tep_db_fetch_array($products_query)){
+
+            $products_id_array[] = $products_array['products_id'];
+          }
+          tep_db_free_result($products_query);
+        }
+        if(!empty($products_id_array)){
+          $products_id_str = ' op.products_id in ('.implode(',',$products_id_array).') and';
+        }else{
+          $products_id_str = ' op.products_id=0 and'; 
+        }
+      }
       // query for order count
       $buyOrSellWhere = isset($_GET['bflag']) && $_GET['bflag'] ? (" AND p.products_bflag=" . $bflag) : '';
-      $this->queryOrderCnt = "SELECT count(o.orders_id) as order_cnt FROM " . TABLE_ORDERS . " o left join ".TABLE_ORDERS_PRODUCTS." op on o.orders_id=op.orders_id left join ". TABLE_PRODUCTS ." p on op.products_id=p.products_id left join ". TABLE_ORDERS_STATUS ." os on o.orders_status=os.orders_status_id WHERE".($this->products_id != 0 ? ' op.products_id='.$this->products_id.' and' : '')." 1=1".$siteStr.$buyOrSellWhere;
+      $this->queryOrderCnt = "SELECT count(o.orders_id) as order_cnt FROM " . TABLE_ORDERS . " o left join ".TABLE_ORDERS_PRODUCTS." op on o.orders_id=op.orders_id left join ". TABLE_PRODUCTS ." p on op.products_id=p.products_id left join ". TABLE_ORDERS_STATUS ." os on o.orders_status=os.orders_status_id WHERE".($this->products_id != 0 ? ' op.products_id='.$this->products_id.' and' : $products_id_str)." 1=1".$siteStr.$buyOrSellWhere;
 
 
       // queries for item details count
@@ -84,7 +132,7 @@
         /*
         if(p.products_bflag = '0' , sum(op.final_price * op.products_quantity), 0-sum(op.final_price * op.products_quantity))
         */
-        " sum(op.final_price * op.products_quantity) as psum, op.products_tax as ptax FROM " . TABLE_ORDERS . " o, " . TABLE_ORDERS_PRODUCTS . " op, " . TABLE_PRODUCTS . " p, ". TABLE_ORDERS_STATUS ." os WHERE".($this->products_id != 0 ? ' p.products_id='.$this->products_id.' and' : '')." o.orders_id = op.orders_id AND op.products_id = p.products_id and o.orders_status=os.orders_status_id " . $siteStr . $buyOrSellWhere ;
+        " sum(op.final_price * op.products_quantity) as psum, op.products_tax as ptax FROM " . TABLE_ORDERS . " o, " . TABLE_ORDERS_PRODUCTS . " op, " . TABLE_PRODUCTS . " p, ". TABLE_ORDERS_STATUS ." os WHERE".($this->products_id != 0 ? ' p.products_id='.$this->products_id.' and' : $products_id_str)." o.orders_id = op.orders_id AND op.products_id = p.products_id and o.orders_status=os.orders_status_id " . $siteStr . $buyOrSellWhere ;
 
 
 

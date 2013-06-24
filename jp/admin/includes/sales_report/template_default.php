@@ -24,20 +24,6 @@ function change_products(id,products_id){
   });
 }
 
-<?php //使商品列表可用或不可用?>
-function products_list_show(num){
-
-  if(num == 0){
-
-    $("#categories_id").attr('disabled',true); 
-    $("#products_id_list").attr('disabled',true);
-  }else{
-
-    $("#categories_id").attr('disabled',false); 
-    $("#products_id_list").attr('disabled',false);
-  }
-}
-
 <?php //保存商品ID?>
 function save_products_id(value){
 
@@ -53,11 +39,6 @@ if(isset($_GET['add_product_categories_id']) && $_GET['add_product_categories_id
 }else if(isset($_GET['cid']) && $_GET['cid'] != '' && isset($_GET['pid']) && $_GET['pid'] != ''){
 ?>
   change_products(<?php echo $_GET['cid'];?>,<?php echo $_GET['pid'];?>);
-<?php
-}
-if(isset($_GET['is_select']) && $_GET['is_select'] == '0'){
-?>
-  products_list_show(0);  
 <?php
 }
 if(isset($_GET['order_sort']) && $_GET['order_sort'] != ''){
@@ -276,20 +257,8 @@ date("Y") - $i; ?></option>
             <tr>
               <td valign="top">
               <?php 
-                  echo '<div class="box_radio"><span>'.SR_SORT_VAL1.'</span>';
-                  $checked = '';
-                  if(isset($_GET['is_select'])){
-
-                    if($_GET['is_select'] == '1'){
-
-                      $checked = ' checked="checked"';
-                    }
-                  }else{
-                    $checked = ' checked="checked"'; 
-                  }
-                ?>
-                <?php echo '<input type="radio" name="is_select" value="1"'.$checked.' onclick="products_list_show(1);"><span>'.SR_PRODUCTS_SELECT.'</span>';?>
-                <?php echo '<input type="radio" name="is_select" value="0"'.(isset($_GET['is_select']) && $_GET['is_select'] == '0' ? ' checked="checked"' : '').' onclick="products_list_show(0);"><span>'.SR_PRODUCTS_NOT_SELECT;?></span></div>
+                echo '<div class="box_radio"><span>'.SR_SORT_VAL1.'</span></div>'; 
+              ?>
                 <?php echo tep_draw_pull_down_menu('add_product_categories_id', tep_get_category_tree(), (isset($_GET['add_product_categories_id']) ? $_GET['add_product_categories_id'] : $_GET['cid']), 'style="margin:0 0 2px 0;" id="categories_id" onChange="change_products(this.value);"');
                 echo '<input type="hidden" name="cid" id="c_id" value="'.(isset($_GET['add_product_categories_id']) ? $_GET['add_product_categories_id'] : $_GET['cid']).'"><input type="hidden" name="pid" id="p_id" value="'.(isset($_GET['products_id']) ? $_GET['products_id'] : $_GET['pid']).'">';
                 ?><br>
