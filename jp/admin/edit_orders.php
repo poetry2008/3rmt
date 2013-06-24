@@ -193,6 +193,11 @@ if (tep_not_null($action)) {
 
       $orders_status_flag = tep_orders_finished($oID) == '1' ? true : false;
       $update_user_info = tep_get_user_info($ocertify->auth_user);
+      if (empty($_POST['s_status']) || empty($update_user_info['name'])) {
+        $_SESSION['error_edit_orders_status'] = WARNING_ORDER_NOT_UPDATED; 
+        $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
+        tep_redirect(tep_href_link("edit_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
+      }
       $year = $_POST['fetch_year']; 
       $month = $_POST['fetch_month'];
       $day = $_POST['fetch_day'];
@@ -1664,6 +1669,10 @@ $shipping_fee = $orders_total_num+$new_products_total-$order->info['code_fee']-$
 $shipping_fee = $order->info['shipping_fee'] != $shipping_fee ? $shipping_fee : $order->info['shipping_fee'];
 
 
+if(isset($_SESSION['error_edit_orders_status'])&&$_SESSION['error_edit_orders_status']){
+  $messageStack->add($_SESSION['error_edit_orders_status'], 'error');
+  unset($_SESSION['error_edit_orders_status']);
+}
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>

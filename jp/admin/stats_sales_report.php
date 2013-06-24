@@ -225,6 +225,10 @@
   } else {
     
     $products_id = 0; 
+    if(isset($_GET['add_product_categories_id']) && $_GET['add_product_categories_id'] && tep_not_null($_GET['add_product_categories_id'])){
+
+      $categories_id = $_GET['add_product_categories_id'];
+    }
   }
   $order_sort = '';
   $order_type = '';
@@ -236,7 +240,7 @@
   
   require(DIR_WS_CLASSES . 'sales_report.php');
   
-  $sr = new sales_report($srView, $startDate, $endDate, $srSort, $srStatus, isset($srFilter)?$srFilter:'', $srMethod, $products_id, $order_sort, $order_type);
+  $sr = new sales_report($srView, $startDate, $endDate, $srSort, $srStatus, isset($srFilter)?$srFilter:'', $srMethod, $products_id, $categories_id, $order_sort, $order_type);
   if ($srCompare > SR_COMPARE_NO) {
     //比较 
     if ($srCompare == SR_COMPARE_DAY) {
@@ -253,7 +257,7 @@
       $compEndDate = mktime(0, 0, 0, date("m", $endDate), date("d", $endDate), date("Y", $endDate) - 1);
     }
     if ($compStartDate != $startDate) {
-      $sr2 = new sales_report($srView, $compStartDate, $compEndDate, $srSort, $srStatus, isset($srFilter) ? $srFilter : '', $srMethod, $products_id, $order_sort, $order_type);
+      $sr2 = new sales_report($srView, $compStartDate, $compEndDate, $srSort, $srStatus, isset($srFilter) ? $srFilter : '', $srMethod, $products_id, $categories_id, $order_sort, $order_type);
       $compStartDate = $sr2->startDate;
       $compEndDate = $sr2->endDate;
     }
