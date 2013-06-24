@@ -443,8 +443,7 @@ echo "</form>";
 ?>
 <?php echo HEADER_TEXT_SITE_NAME;?>&nbsp;<b>
 <?php
-echo "<a class='head_link' href =
-'".tep_href_link(basename($GLOBALS['PHP_SELF']),'action=re_login&num='.time(),'NONSSL')."'>";
+echo "<a class='head_link' href = '".tep_href_link(basename($_SERVER['PHP_SELF']),'action=re_login&num='.time(),'NONSSL')."'>";
 $user_info = tep_get_user_info($ocertify->auth_user);
 if (isset($ocertify) && $ocertify->npermission >= 15) {
   echo '<font color="blue">'.$user_info['name'].'</font>';
