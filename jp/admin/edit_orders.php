@@ -194,8 +194,8 @@ if (tep_not_null($action)) {
       $orders_status_flag = tep_orders_finished($oID) == '1' ? true : false;
       $update_user_info = tep_get_user_info($ocertify->auth_user);
       if (empty($_POST['s_status']) || empty($update_user_info['name'])) {
-        $_SESSION['error_edit_orders_status'] = WARNING_ORDER_NOT_UPDATED; 
-        $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
+        $_SESSION['error_edit_orders_status'] = WARNING_LOSING_INFO_TEXT; 
+        $messageStack->add_session(WARNING_LOSING_INFO_TEXT, 'warning');
         tep_redirect(tep_href_link("edit_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
       }
       $year = $_POST['fetch_year']; 
