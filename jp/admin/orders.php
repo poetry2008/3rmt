@@ -489,11 +489,13 @@ switch ($_GET['action']) {
 ------------------------------------------------------*/
   case 'sele_act':
     if($_POST['chk'] == ""){
+      $_SESSION['error_orders_status'] = WARNING_ORDER_NOT_UPDATED; 
       $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
       tep_redirect(tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action'))));
     }
     $update_user_info = tep_get_user_info($ocertify->auth_user);
     if (empty($_POST['status']) || empty($update_user_info['name'])) {
+      $_SESSION['error_orders_status'] = WARNING_ORDER_NOT_UPDATED; 
       $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
       tep_redirect(tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action'))));
     }
@@ -865,6 +867,7 @@ switch ($_GET['action']) {
   case 'update_order':
     $update_user_info = tep_get_user_info($ocertify->auth_user);
     if (empty($_POST['s_status']) || empty($update_user_info['name'])) {
+      $_SESSION['error_orders_status'] = WARNING_ORDER_NOT_UPDATED; 
       $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
       tep_redirect(tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action')) . 'action=edit'));
     }
@@ -2263,6 +2266,11 @@ function check_torihiki_date_error($oid){
     return true;
   }
   return false;
+}
+
+if(isset($_SESSION['error_orders_status'])&&$_SESSION['error_orders_status']){
+  $messageStack->add($_SESSION['error_orders_status'], 'error');
+  unset($_SESSION['error_orders_status']);
 }
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
