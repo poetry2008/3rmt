@@ -26,4 +26,10 @@ define('TABLE_HEADING_CREATED_AT','操作时间');
 define('JAVA_SCRIPT_INFO_DELETE', '删除访问日志。\n可以吗？');
 
 define('PAGE_TITLE_MENU_USER', '');
+define('TEXT_LOGS_EDIT_SELECT','请选择');
+define('TEXT_LOGS_EDIT_DELETE','删除');
+define('TEXT_LOGS_EDIT_CONFIRM','确定要删除吗？');
+define('TEXT_LOGS_EDIT_MUST_SELECT','至少选择一项。');
+define('TEXT_SORT_ASC','▲');
+define('TEXT_SORT_DESC','▼');
 ?>

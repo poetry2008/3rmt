@@ -39,11 +39,17 @@
 ------------------------------------------------------*/
   case 'sele_act':
     if($_POST['chk'] == ""){
+      $_SESSION['error_preorders_status'] = WARNING_ORDER_NOT_UPDATED; 
       $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
       tep_redirect(tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('action'))));
     }
     $update_user_info = tep_get_user_info($ocertify->auth_user);
 
+      if (empty($_POST['status']) || empty($update_user_info['name'])) {
+        $_SESSION['error_preorders_status'] = WARNING_ORDER_NOT_UPDATED; 
+        $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
+        tep_redirect(tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('action'))));
+      }
       foreach($_POST['chk'] as $value){
       $oID      = $value;
       $status   = tep_db_prepare_input($_POST['status']);
@@ -273,6 +279,11 @@
     break;
   case 'update_order':
       $update_user_info = tep_get_user_info($ocertify->auth_user);
+      if (empty($_POST['s_status']) || empty($update_user_info['name'])) {
+        $_SESSION['error_preorders_status'] = WARNING_ORDER_NOT_UPDATED; 
+        $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
+        tep_redirect(tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('action')) . 'action=edit'));
+      }
       $oID      = tep_db_prepare_input($_GET['oID']);
       $status   = tep_db_prepare_input($_POST['s_status']);
       $title    = tep_db_prepare_input($_POST['title']);
@@ -612,6 +623,11 @@
       tep_redirect(FILENAME_PREORDERS); 
     }
   }
+
+if(isset($_SESSION['error_preorders_status'])&&$_SESSION['error_preorders_status']){
+  $messageStack->add($_SESSION['error_preorders_status'], 'error');
+  unset($_SESSION['error_preorders_status']);
+}
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>

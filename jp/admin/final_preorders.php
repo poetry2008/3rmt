@@ -124,6 +124,11 @@
   // 1. UPDATE ORDER ###############################################################################################
   case 'update_order':
     $update_user_info = tep_get_user_info($ocertify->auth_user);
+    if (empty($_POST['status']) || empty($update_user_info['name'])) {
+      $_SESSION['error_edit_preorders_status'] = WARNING_ORDER_NOT_UPDATED; 
+      $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
+      tep_redirect(tep_href_link(FILENAME_FINAL_PREORDERS, tep_get_all_get_params(array('action')) . 'action=edit'));
+    }
     $oID = tep_db_prepare_input($_GET['oID']);
     $comments_text = tep_db_prepare_input($_POST['comments_text']);
     $order = new preorder($oID);
@@ -950,6 +955,11 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       $messageStack->add(sprintf(ERROR_ORDER_DOES_NOT_EXIST, $oID), 'error');
     }
   }
+
+if(isset($_SESSION['error_edit_preorders_status'])&&$_SESSION['error_edit_preorders_status']){
+  $messageStack->add($_SESSION['error_edit_preorders_status'], 'error');
+  unset($_SESSION['error_edit_preorders_status']);
+}
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
