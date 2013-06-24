@@ -385,7 +385,7 @@ require("includes/note_js.php");
         );
     $alert_info[] = array(
         'params' => 'class="main" align="right"',
-        'text'   => tep_image('images/icons/signal_blink_gray.gif') 
+        'text'   => tep_image('images/icons/signal_gray.gif') 
         );
     $alert_table_row[] = array('params' => $alert_params, 'text' => $alert_info);
     $rec_c++;
