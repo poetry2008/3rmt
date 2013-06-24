@@ -30,7 +30,7 @@
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
-<script language="javascript" src="includes/javascript/show_site.js.php"></script>
+<?php require('includes/javascript/show_site.js.php');?>
 <script language="JavaScript1.1">
 function formConfirm(type, c_permission) {
   if (type == "delete") {
