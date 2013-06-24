@@ -44,6 +44,10 @@
     }
     $update_user_info = tep_get_user_info($ocertify->auth_user);
 
+      if (empty($_POST['status']) || empty($update_user_info['name'])) {
+        $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
+        tep_redirect(tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('action'))));
+      }
       foreach($_POST['chk'] as $value){
       $oID      = $value;
       $status   = tep_db_prepare_input($_POST['status']);
@@ -273,6 +277,10 @@
     break;
   case 'update_order':
       $update_user_info = tep_get_user_info($ocertify->auth_user);
+      if (empty($_POST['s_status']) || empty($update_user_info['name'])) {
+        $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
+        tep_redirect(tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('action')) . 'action=edit'));
+      }
       $oID      = tep_db_prepare_input($_GET['oID']);
       $status   = tep_db_prepare_input($_POST['s_status']);
       $title    = tep_db_prepare_input($_POST['title']);
