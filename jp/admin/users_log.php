@@ -162,12 +162,14 @@ function UserLoginIp_list(){
       $user_name_array = array();
       $user_time_array = array();
       $user_time_temp_array = array();
+      $user_id_array = array();
       $user_login_list_query = tep_db_query("select * from ". TABLE_LOGIN ." where loginstatus!='a' and time_format(timediff(now(),logintime),'%H')<24 and address='". $user_login_array['address'] ."' and status='0' order by logintime asc");
       while($user_login_list_array = tep_db_fetch_array($user_login_list_query)){
 
         $user_name_array[] = $user_login_list_array['account'];
         $user_time_temp_array[$user_login_list_array['account']] = $user_login_list_array['logintime']; 
         $user_time_array[] = $user_login_list_array['logintime'];
+        $user_id_array[] = $user_login_list_array['sessionid'];
       }
       foreach($user_name_array as $key=>$value){
 
@@ -255,6 +257,10 @@ function UserLoginIp_list(){
       $j++;
     }
     tep_db_free_result($user_login_query);
+    // 自动删除过期数据
+    $user_id_str = implode("','",$user_id_array);
+    $alarm_day = get_configuration_by_site_id('USERS_EXPIRED_DATE_SETTING',0); 
+    tep_db_query("delete from login where sessionid not in('".$user_id_str."') and time_format(timediff(now(),logintime),'%H')>".$alarm_day*24);
     echo "</table>\n</td></tr><tr>";
 }
 /* ==============================================

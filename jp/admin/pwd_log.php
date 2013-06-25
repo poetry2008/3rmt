@@ -274,18 +274,10 @@ require("includes/note_js.php");
         }
   }
   // 现在的页面（获取记录开始位置）
-  $alarm_day = get_configuration_by_site_id('ALARM_EXPIRED_DATE_SETTING',0);
-  $del_select = "select * from " . TABLE_ONCE_PWD_LOG ." where time_format(timediff(now(),created_at),'%H')>".$alarm_day*24;
-  $del_select .= " order by created_at desc";
-  $del_select_query = tep_db_query($del_select);
-  $del_nrow = tep_db_num_rows($del_select_query);
-  if($del_nrow > 0){
-    while($alert_log_array = tep_db_fetch_array($del_select_query)){
-         $logs_id[] = $alert_log_array['id'];
-    }
-    $log_list_str = implode(",",$logs_id);
-    tep_db_query("delete from ".TABLE_ONCE_PWD_LOG." where id in (".$log_list_str.")");
-  }
+  // 删除过期的数据
+  $alarm_day = get_configuration_by_site_id('PWD_EXPIRED_DATE_SETTING',0); 
+  tep_db_query("delete from ". TABLE_ONCE_PWD_LOG ." where time_format(timediff(now(),created_at),'%H')>".$alarm_day*24);
+  
   $s_select = "select * from " . TABLE_ONCE_PWD_LOG;
   $s_select .= " order by ".$alert_log_str;    // 按照访问日期时间的倒序获取数据
   $ssql = $s_select;

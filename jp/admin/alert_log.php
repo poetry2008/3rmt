@@ -247,30 +247,42 @@ require("includes/note_js.php");
   $alarm_day = get_configuration_by_site_id('ALARM_EXPIRED_DATE_SETTING',0);
   $s_select = "select * from " . TABLE_NOTICE ." where time_format(timediff(now(),created_at),'%H')<".$alarm_day*24;
   $s_select .= " order by ".$alert_log_str;    // 按照提醒日期时间的倒序获取数据
-  $del_select = "select * from " . TABLE_NOTICE ." where time_format(timediff(now(),created_at),'%H')>".$alarm_day*24; 
-  $del_select .= " order by created_at desc"; 
-  $del_select_query = tep_db_query($del_select);
-  $del_nrow = tep_db_num_rows($del_select_query);
-  if($del_nrow > 0){
-  while($alert_log_array = tep_db_fetch_array($del_select_query)){
-        $logs_id[] = $alert_log_array['id'];    
-  }
-  $log_list_str = implode(",",$logs_id);
-  $alert_query = tep_db_query("select from_notice from ".TABLE_NOTICE." where type='0' and id in (".$log_list_str.")");
-  while($alert_array = tep_db_fetch_array($alert_query)){
-    tep_db_query("delete from ".TABLE_ALARM." where alarm_id='".$alert_array['from_notice']."'");
-  }
-  $alert_query = tep_db_query("select id,from_notice from ".TABLE_NOTICE." where type='1' and id in (".$log_list_str.")");
-  while($alert_array = tep_db_fetch_array($alert_query)){
-    $memo_sql = "select id from ".TABLE_BUSINESS_MEMO." where deleted='1' and
-      finished='1' and id='".$alert_array['from_notice']."' limit 1";
-    $memo_query = tep_db_query($memo_sql);
-    if($memo_row = tep_db_fetch_array($memo_query)){
-      tep_db_query("delete from ".TABLE_BUSINESS_MEMO." where id='".$memo_row['id']."'");
+
+  // 自动删除过期数据 
+  // alarm 数据删除
+  $delete_alarm_query = tep_db_query("select n.id id,n.from_notice from_notice from " . TABLE_NOTICE ." n left join ". TABLE_ALARM ." a on n.from_notice=a.alarm_id where n.type='0' and a.alarm_flag='0' and time_format(timediff(now(),n.set_time),'%H')>".$alarm_day*24);
+  if(tep_db_num_rows($delete_alarm_query) > 0){
+
+    while($delete_alarm_array = tep_db_fetch_array($delete_alarm_query)){
+
+      tep_db_query("delete from ". TABLE_ALARM ." where alarm_id='".$delete_alarm_array['from_notice']."'");
+      tep_db_query("delete from ". TABLE_NOTICE ." where id='".$delete_alarm_array['id']."'");
     }
   }
-    tep_db_query("delete from ".TABLE_NOTICE." where id in (".$log_list_str.")");
+  tep_db_free_result($delete_alarm_query);
+  // 备忘录 数据删除
+  $delete_memo_query = tep_db_query("select id from ". TABLE_BUSINESS_MEMO ." where (deleted='1' or finished='1') and time_format(timediff(now(),date_update),'%H')>".$alarm_day*24);
+  if(tep_db_num_rows($delete_memo_query) > 0){
+
+    while($delete_memo_array = tep_db_fetch_array($delete_memo_query)){
+
+      tep_db_query("delete from ". TABLE_NOTICE ." where type='1' and from_notice='".$delete_memo_array['id']."'"); 
+      tep_db_query("delete from ". TABLE_BUSINESS_MEMO ." where id='".$delete_memo_array['id']."'"); 
+    } 
   }
+  tep_db_free_result($delete_memo_query);
+  // BUTTON 数据删除
+  $delete_buttons_query = tep_db_query("select n.id id,n.from_notice from_notice from " . TABLE_NOTICE ." n left join ". TABLE_ALARM ." a on n.from_notice=a.alarm_id where n.type='0' and a.alarm_flag='1' and time_format(timediff(now(),n.created_at),'%H')>".$alarm_day*24);
+  if(tep_db_num_rows($delete_buttons_query) > 0){
+
+    while($delete_buttons_array = tep_db_fetch_array($delete_buttons_query)){
+
+      tep_db_query("delete from ". TABLE_ALARM ." where alarm_id='".$delete_buttons_array['from_notice']."'");
+      tep_db_query("delete from ". TABLE_NOTICE ." where id='".$delete_buttons_array['id']."'");
+    }
+  }
+  tep_db_free_result($delete_buttons_query);
+  
   $ssql = $s_select;
   $alert_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $ssql, $alert_query_numrows);
   $oresult = tep_db_query($ssql);
