@@ -56,6 +56,7 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
       $image_directory = tep_get_local_path(tep_get_upload_dir().'manufacturers/');
       $manufacturers_image['size'] = $manufacturers_image['size'] / 1024 / 1024;
       $pic_type_array = array('image/jpeg', 'image/gif', 'image/png', 'image/jpg'); 
+      $save_info = false;
       if($manufacturers_image['size'] >= ini_get('upload_max_filesize')
        ||($manufacturers_image['size']==0&&$manufacturers_image['name']!='')
        ||empty($_POST)){
@@ -67,8 +68,13 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
           $_SESSION['error_image'] = TEXT_IMAGE_TYPE_WRONG;
           tep_redirect(tep_href_link(FILENAME_MANUFACTURERS, tep_get_all_get_params(array('page', 'action'))));
           exit;
-        }
-      } else{
+	}else{
+          $save_info = true;
+	}
+      } else {
+        $save_info = true;
+      }
+      if($save_info){
       if ($_GET['action'] == 'insert') {
         $insert_sql_data = array('date_added' => 'now()','last_modified' => 'now()','user_added' => $_POST['user_added'],'user_update' => $_POST['user_update'],'manufacturers_alt' => $_POST['manufacturers_alt']);
         $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
@@ -492,21 +498,21 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     one_time_pwd('<?php echo $page_name;?>', '<?php echo (!empty($_SERVER['HTTP_REFERER']))?urlencode($_SERVER['HTTP_REFERER']):urlencode(tep_href_link(FILENAME_DEFAULT));?>');
   </script>
 <?php }?>
-<!-- header //-->
+<!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
+<!-- header_eof -->
 
-<!-- body //-->
+<!-- body -->
 <input id="show_info_id" type="hidden" name="show_info_id" value="show_manufacturers">
 <div id="show_manufacturers" style="min-width: 550px; position: absolute; background: none repeat scroll 0% 0% rgb(255, 255, 0); width: 70%; display:none;"></div>
 <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-<!-- left_navigation //-->
+<!-- left_navigation -->
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- left_navigation_eof //-->
+<!-- left_navigation_eof -->
     </table></td>
-<!-- body_text //-->
+<!-- body_text -->
     <td width="100%" valign="top" id="categories_right_td"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td width="100%"><table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -667,14 +673,14 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     </div>
     </div>
     </td>
-<!-- body_text_eof //-->
+<!-- body_text_eof -->
   </tr>
 </table>
-<!-- body_eof //-->
+<!-- body_eof -->
 
-<!-- footer //-->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 </body>
 </html>

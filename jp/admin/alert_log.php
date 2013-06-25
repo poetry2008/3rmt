@@ -262,7 +262,12 @@ require("includes/note_js.php");
   }
   $alert_query = tep_db_query("select id,from_notice from ".TABLE_NOTICE." where type='1' and id in (".$log_list_str.")");
   while($alert_array = tep_db_fetch_array($alert_query)){
-    tep_db_query("delete from ".TABLE_BUSINESS_MEMO." where id='".$alert_array['from_notice']."'");
+    $memo_sql = "select id from ".TABLE_BUSINESS_MEMO." where deleted='1' and
+      finished='1' and id='".$alert_array['from_notice']."' limit 1";
+    $memo_query = tep_db_query($memo_sql);
+    if($memo_row = tep_db_fetch_array($memo_query)){
+      tep_db_query("delete from ".TABLE_BUSINESS_MEMO." where id='".$memo_row['id']."'");
+    }
   }
     tep_db_query("delete from ".TABLE_NOTICE." where id in (".$log_list_str.")");
   }
