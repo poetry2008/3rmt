@@ -83,7 +83,7 @@ if (isset($_GET['action']) and $_GET['action']) {
         $memo_id = tep_db_prepare_input($_POST['memo_id']);
         $param_str = $_POST['param_str'];
         tep_db_query("update " . TABLE_NOTICE . " set is_show='0' where from_notice = '" . tep_db_input($memo_id) . "' and type='1'");
-        tep_db_query("update " . TABLE_BUSINESS_MEMO . " set deleted='1' where id = '" . tep_db_input($memo_id) . "'");
+        tep_db_query("update " . TABLE_BUSINESS_MEMO . " set deleted='1',user_update='".$_SESSION['user_name']."',date_update=now() where id = '" . tep_db_input($memo_id) . "'");
         tep_redirect(tep_href_link(FILENAME_BUSINESS_MEMO, $param_str));
         break;
       case 'delete':
@@ -92,7 +92,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 
         foreach($memo_id_list as $memo_id){
           tep_db_query("update " . TABLE_NOTICE . " set is_show='0' where from_notice = '" . tep_db_input($memo_id) . "' and type='1'");
-          tep_db_query("update " . TABLE_BUSINESS_MEMO . " set deleted='1' where id = '" . tep_db_input($memo_id) . "'"); 
+          tep_db_query("update " . TABLE_BUSINESS_MEMO . " set deleted='1',user_update='".$_SESSION['user_name']."',date_update=now() where id = '" . tep_db_input($memo_id) . "'"); 
         }
         tep_redirect(tep_href_link(FILENAME_BUSINESS_MEMO, 'page='.$param_str));
         break;
