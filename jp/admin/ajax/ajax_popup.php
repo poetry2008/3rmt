@@ -5180,8 +5180,9 @@ if($_GET['cID'] != -1){
     $order_type = 'desc'; 
   }
 
+  $memo_query_str = $ocertify->npermission == 31 ? '' : "(`from`='".$ocertify->auth_user."' or `to`='".$ocertify->auth_user."' or `to`='' or `to` like '".$ocertify->auth_user.",%' or `to` like '%,".$ocertify->auth_user.",%' or `to` like '%,".$ocertify->auth_user."') and ";
   $memo_id_num_array = array();
-  $memo_id_query = tep_db_query("select * from ". TABLE_BUSINESS_MEMO ." where deleted='0' order by finished asc,".$order_sort." ".$order_type); 
+  $memo_id_query = tep_db_query("select * from ". TABLE_BUSINESS_MEMO ." where ".$memo_query_str."deleted='0' order by finished asc,".$order_sort." ".$order_type); 
   while($memo_id_array = tep_db_fetch_array($memo_id_query)){
 
     $memo_id_num_array[] = $memo_id_array['id'];

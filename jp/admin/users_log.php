@@ -4,6 +4,9 @@
 */
   require('includes/application_top.php');
   require(DIR_FS_ADMIN . 'classes/notice_box.php');
+  // 自动删除过期数据
+  $alarm_day = get_configuration_by_site_id('USERS_EXPIRED_DATE_SETTING',0); 
+  tep_db_query("delete from login where  is_locked='0' and time_format(timediff(now(),logintime),'%H')>".$alarm_day*24);
   define('TABLE_LOGIN', 'login');
   if (isset($_POST['sp'])) { $sp = $_POST['sp']; }
   if (isset($_POST['execute_delete'])) { $execute_delete = $_POST['execute_delete']; }

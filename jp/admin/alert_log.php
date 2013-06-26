@@ -244,8 +244,11 @@ require("includes/note_js.php");
      }
   }
   // 获取提醒日志信息
+  $memo_query_str = $ocertify->npermission == 31 ? '' : "(bm.`from`='".$ocertify->auth_user."' or bm.`to`='".$ocertify->auth_user."' or bm.`to`='' or bm.`to` like '".$ocertify->auth_user.",%' or bm.`to` like '%,".$ocertify->auth_user.",%' or bm.`to` like '%,".$ocertify->auth_user."') and ";
   $alarm_day = get_configuration_by_site_id('ALARM_EXPIRED_DATE_SETTING',0);
-  $s_select = "select * from " . TABLE_NOTICE ." where time_format(timediff(now(),created_at),'%H')<".$alarm_day*24;
+  $s_select_temp = "select n.id id,n.type type,n.title title,n.set_time set_time,n.from_notice from_notice,n.user user,n.created_at created_at,n.is_show is_show,n.deleted deleted from " . TABLE_NOTICE ." n left join ". TABLE_BUSINESS_MEMO ." bm on n.from_notice=bm.id where ".$memo_query_str."n.type='1' and time_format(timediff(now(),n.created_at),'%H')<".$alarm_day*24;
+  $s_select = "select n.id id,n.type type,n.title title,n.set_time set_time,n.from_notice from_notice,n.user user,n.created_at created_at,n.is_show is_show,n.deleted deleted from " . TABLE_NOTICE ." n left join ". TABLE_ALARM ." a on n.from_notice=a.alarm_id where n.type='0' and time_format(timediff(now(),n.created_at),'%H')<".$alarm_day*24;
+  $s_select = "select * from ((".$s_select.") union (".$s_select_temp.")) n_t";
   $s_select .= " order by ".$alert_log_str;    // 按照提醒日期时间的倒序获取数据
 
   // 自动删除过期数据 
