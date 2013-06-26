@@ -9893,7 +9893,7 @@ function tep_get_signal_pic_info($last_modified_info) {
   $last_modified_str = date('n/j H:i:s', strtotime(tep_datetime_short($last_modified_info))); 
   $origin_last_modified_time = strtotime($last_modified_info);
 
-  $html_str = tep_image(DIR_WS_ICONS.'signal_blink.gif', tep_datetime_short($last_modified_info));
+  $html_str = tep_image(DIR_WS_ICONS.'info_blink.gif', tep_datetime_short($last_modified_info));
   $now_time = time();
   
   $set_time_array = unserialize(get_configuration_by_site_id('DS_ADMIN_SIGNAL_TIME', '0'));
@@ -9903,11 +9903,11 @@ function tep_get_signal_pic_info($last_modified_info) {
   $set_time_part_3 = (int)($set_time_array['red'][0].$set_time_array['red'][1].$set_time_array['red'][2].$set_time_array['red'][3]); 
   
   if ($origin_last_modified_time >= ($now_time - $set_time_part_1*60*60)) {
-    $html_str = tep_image(DIR_WS_ICONS.'signal_blue.gif', tep_datetime_short($last_modified_info));
+    $html_str = tep_image(DIR_WS_ICONS.'info_green.gif', tep_datetime_short($last_modified_info));
   } else if ($origin_last_modified_time >= ($now_time - $set_time_part_2*60*60)) {
-    $html_str = tep_image(DIR_WS_ICONS.'signal_yellow.gif', tep_datetime_short($last_modified_info));
+    $html_str = tep_image(DIR_WS_ICONS.'info_yellow.gif', tep_datetime_short($last_modified_info));
   } else if ($origin_last_modified_time >= ($now_time - $set_time_part_3*60*60)) {
-    $html_str = tep_image(DIR_WS_ICONS.'signal_red.gif', tep_datetime_short($last_modified_info));
+    $html_str = tep_image(DIR_WS_ICONS.'info_red.gif', tep_datetime_short($last_modified_info));
   }
   
   return $html_str;
