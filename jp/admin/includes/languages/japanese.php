@@ -704,7 +704,7 @@ define('TEXT_FLAG_UNCHECK','未確認');
 
 define('BOX_HEADING_USER', 'ユーザ');
 define('BOX_USER_ADMIN', 'ユーザ管理');
-define('BOX_USER_LOG', 'アクセスログ');
+define('BOX_USER_LOG', 'ユーザログ');
 define('BOX_USER_LOGOUT', 'ログアウト');
 define('JUMP_PAGE_TEXT', 'ページへ');
 define('JUMP_PAGE_BUTTON_TEXT', '移動');
