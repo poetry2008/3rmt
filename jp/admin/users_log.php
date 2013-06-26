@@ -391,7 +391,7 @@ require("includes/note_js.php");
     }
     $alert_info = array();
     $alert_info[] = array(
-        'params' => 'class="main" onClick="document.location.href=\'' . tep_href_link('users_log.php',"sid=".$arec['sessionid'].'&page='.$_GET['page']) .'\'"',
+        'params' => 'class="main"',
         'text'   => '<input type="checkbox" value="'.$arec['sessionid'].'" name="logs_list_id[]"'.(($is_disabled_single)?' disabled="disabled"':'').'>'
         );
     $alert_info[] = array(
