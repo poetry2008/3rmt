@@ -385,7 +385,7 @@ define('TABLE_HEADING_ACTION', '操作');
 define('TABLE_HEADING_STATUS', 'ステータス');
 define('TABLE_HEADING_CATEGORIES_PRODUCTS', 'カテゴリー / 商品');
 define('OROSHI_DATA_MANAGE','データ');
-define('BOX_ONCE_PWD_LOG','ログ');
+define('BOX_ONCE_PWD_LOG','操作ログ');
 define('BANK_CL_TITLE_TEXT', 'カレンダー設定');
 define('BANK_CL_COMMON_WORK_TIME', '通常営業');
 define('BANK_CL_REST_TIME', '銀行休業');
