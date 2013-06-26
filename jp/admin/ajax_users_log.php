@@ -5,9 +5,9 @@ if($_GET['action'] == 'ip_unlock'){
   $ip = $_POST['ip'];
   $user = $_POST['user'];
   if(trim($user) != ''){
-    $user_login_query = tep_db_query("update login set status='1',is_locked = '0' where account='".$user."' and address='".$ip."' and time_format(timediff(now(),logintime),'%H')<24");
+    $user_login_query = tep_db_query("update login set status='1',is_locked = '0' where account='".$user."' and address='".$ip."'");
   }else{
-    $user_login_query = tep_db_query("update login set status='1',is_locked = '0' where address='".$ip."' and time_format(timediff(now(),logintime),'%H')<24"); 
+    $user_login_query = tep_db_query("update login set status='1',is_locked = '0' where address='".$ip."'"); 
   }
   if($user_login_query){
     echo 'success';  
@@ -16,7 +16,7 @@ if($_GET['action'] == 'ip_unlock'){
   $ip = $_POST['ip'];
   $user = $_POST['user'];
   if(trim($user) != ''){
-    $user_login_query = tep_db_query("update login set status='0',is_locked = '1' where account='".$user."' and address='".$ip."' and time_format(timediff(now(),logintime),'%H')<24");
+    $user_login_query = tep_db_query("update login set status='0',is_locked = '1' where account='".$user."' and address='".$ip."'");
   }
   if($user_login_query){
     echo 'success';  
