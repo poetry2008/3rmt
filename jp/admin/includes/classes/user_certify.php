@@ -154,12 +154,19 @@ class user_certify {
 
               $password = $newc->enCrypt($_POST['loginpwd'],$this->key); 
               tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address) values('$s_sid',now(),now(),'{$_POST['loginuid']}','{$password}','p','','$user_ip4')");
-            } 
-            $this->isErr = TRUE;
-            $this->ipSealErr = TRUE;
+              //锁定用户
+              tep_db_query("update login set is_locked='1' where account='".$_POST['loginuid']."' and address='".$user_ip4."'");
+            }  
           }
            
         }
+        $users_num_query = tep_db_query("select is_locked from login where is_locked='1' and account='".$_POST['loginuid']."' and address='".$user_ip4."' and time_format(timediff(now(),logintime),'%H')<24");
+        if(tep_db_num_rows($users_num_query) > 0){
+
+          $this->isErr = TRUE;
+          $this->ipSealErr = TRUE;
+        }
+        tep_db_free_result($users_num_query);
       } 
     }
     if($this->isErr == FALSE && $this->ipSealErr == FALSE){
@@ -574,12 +581,19 @@ if (!tep_session_is_registered('user_permission')) {
               $s_sid = session_id();
               $password = $newc->enCrypt($_POST['loginpwd'],$key);
               tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address) values('$s_sid',now(),now(),'{$_POST['loginuid']}','{$password}','p','','$user_ip4')");
-            }   
-            tep_redirect('users_login.php?erf=1&his_url='.$_SERVER['REQUEST_URI']);
+              //锁定用户
+              tep_db_query("update login set is_locked='1' where account='".$_POST['loginuid']."' and address='".$user_ip4."'");
+            }    
           }
            
         }
-    
+        $users_num_query = tep_db_query("select is_locked from login where is_locked='1' and account='".$_POST['loginuid']."' and address='".$user_ip4."' and time_format(timediff(now(),logintime),'%H')<24");
+        if(tep_db_num_rows($users_num_query) >= 0){
+
+          tep_redirect('users_login.php?erf=1&his_url='.$_SERVER['REQUEST_URI']);
+        }
+        tep_db_free_result($users_num_query); 
+
         $s_sid = session_id();
         $newc=new funCrypt;
         $key = 'gf1a2';

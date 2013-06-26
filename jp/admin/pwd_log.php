@@ -297,7 +297,7 @@ require("includes/note_js.php");
     while($site_array = tep_db_fetch_array($site_query)){
           $site_list_array[] = $site_array['id'];
     }
-    echo tep_show_site_filter(FILENAME_ALERT_LOG,false,$site_list_array);
+    echo tep_show_site_filter(FILENAME_PWD_LOG,false,$site_list_array);
     $alert_table_params = array('width' => '100%','cellpadding'=>'2','border'=>'0', 'cellspacing'=>'0');
     $notice_box = new notice_box('','',$alert_table_params);
     $alert_table_row = array();

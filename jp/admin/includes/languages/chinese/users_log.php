@@ -37,5 +37,13 @@ define('TABLE_HEADING_PERMISSIONS','管理者权限');
 define('TABLE_HEADING_OPERATE','操作');
 define('TEXT_IP_UNLOCK','解除锁定');
 define('TEXT_DELETE_CONFIRM','确定解除此IP地址的锁定吗？');
+define('TEXT_CONFIRM','确定锁定此IP地址吗？');
 define('TEXT_IP_UNLOCK_NOTES','<font color="#FF0000">※</font>&nbsp;同一IP下管理者权限的Admin,Staff,Chief用户被锁定时，请优先解除Admin的锁定。');
+define('TEXT_LOGS_EDIT_SELECT','请选择');
+define('TEXT_LOGS_EDIT_DELETE','删除');
+define('TEXT_LOGS_EDIT_MUST_SELECT','至少选择一项。');
+define('TEXT_LOGS_EDIT_CONFIRM','确定要删除吗？');
+define('TEXT_SORT_ASC','▲');
+define('TEXT_SORT_DESC','▼');
+define('TEXT_LOCK','锁定');
 ?>
