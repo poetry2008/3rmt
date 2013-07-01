@@ -3137,7 +3137,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                 <tr>
                 <td class="main" valign="top" width="30%" nowrap="nowrap">Referer:</td>
                 <td class="main"><p
-                style="word-break:break-all;width:250px;word-wrap:break-word;overflow:hidden;display:block;"><?php echo urldecode($order->info['orders_ref']);?></p></td>
+                style="word-break:break-all;width:250px;word-wrap:break-word;overflow:hidden;display:block;"><?php echo mb_convert_encoding(urldecode($order->info['orders_ref']),"utf-8");?></p></td>
                 </tr>
                 <?php if ($order->info['orders_ref_keywords']) { ?>
                   <tr>
