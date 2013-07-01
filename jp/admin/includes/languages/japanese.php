@@ -385,7 +385,7 @@ define('TABLE_HEADING_ACTION', '操作');
 define('TABLE_HEADING_STATUS', 'ステータス');
 define('TABLE_HEADING_CATEGORIES_PRODUCTS', 'カテゴリー / 商品');
 define('OROSHI_DATA_MANAGE','データ');
-define('BOX_ONCE_PWD_LOG','ログ');
+define('BOX_ONCE_PWD_LOG','操作ログ');
 define('BANK_CL_TITLE_TEXT', 'カレンダー設定');
 define('BANK_CL_COMMON_WORK_TIME', '通常営業');
 define('BANK_CL_REST_TIME', '銀行休業');
@@ -704,7 +704,7 @@ define('TEXT_FLAG_UNCHECK','未確認');
 
 define('BOX_HEADING_USER', 'ユーザ');
 define('BOX_USER_ADMIN', 'ユーザ管理');
-define('BOX_USER_LOG', 'アクセスログ');
+define('BOX_USER_LOG', 'ユーザログ');
 define('BOX_USER_LOGOUT', 'ログアウト');
 define('JUMP_PAGE_TEXT', 'ページへ');
 define('JUMP_PAGE_BUTTON_TEXT', '移動');

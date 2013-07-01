@@ -721,7 +721,8 @@ require("includes/note_js.php");
     $order_sort = 'date_added';
     $order_type = 'desc'; 
   }
-  $memo_query_raw = "select * from " . TABLE_BUSINESS_MEMO . " where deleted='0' order by finished asc,".$order_sort." ".$order_type;
+  $memo_query_str = $ocertify->npermission == 31 ? '' : "(`from`='".$ocertify->auth_user."' or `to`='".$ocertify->auth_user."' or `to`='' or `to` like '".$ocertify->auth_user.",%' or `to` like '%,".$ocertify->auth_user.",%' or `to` like '%,".$ocertify->auth_user."') and ";
+  $memo_query_raw = "select * from " . TABLE_BUSINESS_MEMO . " where ".$memo_query_str."deleted='0' order by finished asc,".$order_sort." ".$order_type;
   $memo_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $memo_query_raw, $memo_query_numrows);
   $memo_query = tep_db_query($memo_query_raw);
   if(tep_db_num_rows($memo_query) == 0){

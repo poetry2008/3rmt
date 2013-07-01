@@ -1,6 +1,6 @@
 <?php
 // 页面标题
-define('HEADING_TITLE', 'アクセスログ');
+define('HEADING_TITLE', 'ユーザログ');
 
 // 访问表错误信息
 define('TEXT_ERRINFO_DB_NO_LOGINFO', 'アクセス情報が取得できませんでした');

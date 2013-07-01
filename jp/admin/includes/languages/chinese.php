@@ -386,7 +386,7 @@ define('TABLE_HEADING_ACTION', '操作');
 define('TABLE_HEADING_STATUS', '状态');
 define('TABLE_HEADING_CATEGORIES_PRODUCTS', '分类 / 商品');
 define('OROSHI_DATA_MANAGE','数据');
-define('BOX_ONCE_PWD_LOG','日志');
+define('BOX_ONCE_PWD_LOG','操作日志');
 define('BANK_CL_TITLE_TEXT', '日历设置');
 define('BANK_CL_COMMON_WORK_TIME', '正常营业');
 define('BANK_CL_REST_TIME', '银行休业');
@@ -689,7 +689,7 @@ define('HEADER_TEXT_PERSONAL_SETTING','个人设定');
 define('BOX_HEADING_USER', '用户');
 define('BOX_USER_ADMIN', '用户管理');
 define('TEXT_ONE_TIME_CONFIG_SAVE','已保存');
-define('BOX_USER_LOG', '访问日志');
+define('BOX_USER_LOG', '用户日志');
 define('BOX_USER_LOGOUT', '退出');
 
 define('TEXT_SITE_COPYRIGHT' ,'Copyright © %s Haomai');

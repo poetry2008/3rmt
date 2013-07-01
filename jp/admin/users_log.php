@@ -4,6 +4,9 @@
 */
   require('includes/application_top.php');
   require(DIR_FS_ADMIN . 'classes/notice_box.php');
+  // 自动删除过期数据
+  $alarm_day = get_configuration_by_site_id('USERS_EXPIRED_DATE_SETTING',0); 
+  tep_db_query("delete from login where  is_locked='0' and time_format(timediff(now(),logintime),'%H')>".$alarm_day*24);
   define('TABLE_LOGIN', 'login');
   if (isset($_POST['sp'])) { $sp = $_POST['sp']; }
   if (isset($_POST['execute_delete'])) { $execute_delete = $_POST['execute_delete']; }
@@ -86,7 +89,6 @@ function select_logs_change(value,logs_list_id,c_permission){
       });
       }
     }else{
-
       document.getElementsByName("users_form_list")[0].value = 0;
     } 
   }else{
@@ -425,24 +427,24 @@ require("includes/note_js.php");
     if($arec['is_locked'] == '0'){
     if($is_disabled_single){
     $alert_info[] = array(
-        'params' => 'class="main" onClick="document.location.href=\'' .  tep_href_link('users_log.php',"sid=".$arec['sessionid'].'&page='.$_GET['page']) .'\'"',
+        'params' => 'class="main"',
         'text'   => tep_image('images/icons/unlock.gif','','','','disabled="disabled"')
         );
     }else{
     $alert_info[] = array(
-        'params' => 'class="main" onClick="document.location.href=\'' .  tep_href_link('users_log.php',"sid=".$arec['sessionid'].'&page='.$_GET['page']) .'\'"',
+        'params' => 'class="main"',
         'text'   => '<a href="javascript:void(0)" onclick="if(confirm(\''.TEXT_CONFIRM.'\')){ip_lock(\''.$arec['address'].'\',\''.$arec['account'].'\');}">'.tep_image('images/icons/unlock.gif').'</a>'
         );
     }
     }else{
     if($is_disabled_single){
      $alert_info[] = array(
-        'params' => 'class="main" onClick="document.location.href=\'' .  tep_href_link('users_log.php',"sid=".$arec['sessionid'].'&page='.$_GET['page']) .'\'"',
+        'params' => 'class="main"',
         'text'   => tep_image('images/icons/lock.gif','','','','disabled="disabled"')
         );
     }else{
      $alert_info[] = array(
-        'params' => 'class="main" onClick="document.location.href=\'' .  tep_href_link('users_log.php',"sid=".$arec['sessionid'].'&page='.$_GET['page']) .'\'"',
+        'params' => 'class="main"',
         'text'   => '<a href="javascript:void(0)" onclick="if(confirm(\''.TEXT_DELETE_CONFIRM.'\')){ip_unlock(\''.$arec['address'].'\',\''.$arec['account'].'\');}">'.tep_image('images/icons/lock.gif').'</a>' 
         );
     }

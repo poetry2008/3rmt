@@ -1,5 +1,5 @@
 <?php
-define('HEADING_TITLE', '日志');
+define('HEADING_TITLE', '操作日志');
 
 
 define('TEXT_ERRINFO_DB_NO_LOGINFO', '无法获得访问信息');
