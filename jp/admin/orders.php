@@ -383,7 +383,7 @@ function tep_show_orders_products_info($orders_id) {
     $str .= '<tr>'; 
     $str .= '<td class="main"><b>Referer Info：</b></td>';
     $str .= '<td class="main">';
-    $str .= urldecode($orders['orders_ref']); 
+    $str .= mb_convert_encoding(urldecode($orders['orders_ref']),'utf-8'); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
     if ($orders['orders_ref_keywords']) {
