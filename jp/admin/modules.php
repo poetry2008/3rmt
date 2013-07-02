@@ -382,11 +382,6 @@ foreach ($directory_array_sorted as $i => $files) {
 
         $keys_extra = array();
         $get_site_id = tep_module_installed($class, $site_id) ? $site_id : 0;
-        if(isset($_GET['action'])&&$_GET['action']=='edit'
-            &&$site_id!=0&&!$get_site_id){
-          $module = new $class($site_id);
-          $module->install();
-        }
         for ($j = 0, $k = sizeof($module_keys); $j < $k; $j++) {
           $key_value_query = tep_db_query("select configuration_title, configuration_value, configuration_description, use_function, set_function from " . TABLE_CONFIGURATION . " where configuration_key = '" . $module_keys[$j] . "' and site_id = '".$get_site_id."'");
           $key_value = tep_db_fetch_array($key_value_query);
@@ -625,7 +620,6 @@ default:
     $contents[] = array('text' => isset($mInfo->description)?$mInfo->description:'');
   }
   break;
-
 }
 
 if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {
