@@ -700,7 +700,7 @@ if($address_error == false){
           } 
             if($customer_guest['is_calc_quantity'] != '1') {
               tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = ".$pr_quantity.", products_virtual_quantity = ".$pv_quantity." where products_id = '" . (int)$order['products_id'] . "'");
-            } 
+            }
             tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
             tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
         } else {
@@ -731,7 +731,7 @@ if($address_error == false){
             // 如果是业者，不更新
               if($customer_guest['is_calc_quantity'] != '1') {
                 tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = ".$pr_quantity.", products_virtual_quantity = ".$pv_quantity." where products_id = '" . (int)$order['products_id'] . "'");
-              }  
+              } 
               tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
               tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
           }
@@ -1634,7 +1634,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
                   ),
                 'update',
                 "products_id = '" . $add_product_products_id . "'");
-          } 
+          }
           // 处理负数问题
           tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . $add_product_products_id . "'");
           tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . $add_product_products_id . "'");
@@ -1796,6 +1796,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
     var payment_method = document.getElementsByName("payment_method")[0].value;
     var con_email = document.getElementsByName("con_email")[0];
     var b_name = document.getElementsByName("bank_name")[0];
+    if(b_name){
     if(!b_name.disabled){
       var b_name_value = b_name.value;
       if(b_name_value.replace(/[ ]/g,"") == ''){
@@ -1803,7 +1804,9 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
         error_str += '<?php echo TS_TEXT_BANK_ERROR_NAME;?>'+"\n\n";
       }
     }
+    }
     var b_pay_name = document.getElementsByName("bank_shiten")[0]; 
+    if(b_pay_name){
     if(!b_pay_name.disabled){
       var b_pay_name_value = b_pay_name.value;
       if(b_pay_name_value.replace(/[ ]/g,"") == ''){
@@ -1811,7 +1814,9 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
         error_str += '<?php echo TS_TEXT_BANK_ERROR_SHITEN;?>'+"\n\n";
       }
     }
+    }
     var b_num = document.getElementsByName("bank_kouza_num")[0];
+    if(b_num){
     if(!b_num.disabled){
       var b_num_value = b_num.value;
       if(b_num_value.replace(/[ ]/g,"") == ''){
@@ -1826,7 +1831,9 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
         }
       }
     }
+    }
     var b_account = document.getElementsByName("bank_kouza_name")[0];
+    if(b_account){
     if(!b_account.disabled){
       var b_account_value = b_account.value;
       if(b_account_value.replace(/[ ]/g,"") == ''){
@@ -1834,7 +1841,9 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
         error_str += '<?php echo TS_TEXT_BANK_ERROR_KOUZA_NAME;?>'+"\n\n";
       }
     } 
+    }
     var rak_tel = document.getElementsByName("rak_tel")[0];
+    if(rak_tel){
     if(!rak_tel.disabled){
       var reg = /^[0-9]+$/;
       var strlen;
@@ -1844,6 +1853,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
         payment_error = true;
         error_str += '<?php echo TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE;?>'+"\n\n";
       }
+    }
     }
 
     var date_time_error = false;
@@ -3407,13 +3417,15 @@ a.dpicker {
 
             $pay_method = $pay_method;
           } 
-          echo payment::makePaymentListPullDownMenu(payment::changeRomaji($pay_method,'code'));
+
+          $payment_code = payment::changeRomaji($pay_method,'code');
+          echo payment::makePaymentListPullDownMenu($payment_code,$_SESSION['sites_id_flag']);
           
           
           echo "\n".'<script language="javascript">'."\n"; 
           echo '$(document).ready(function(){'."\n";
 
-          $cpayment->admin_show_payment_list(payment::changeRomaji($pay_method,'code'),$pay_info_array);
+          $cpayment->admin_show_payment_list($payment_code,$pay_info_array,$_SESSION['sites_id_flag']);
           
           echo '});'."\n";
           echo '</script>'."\n";
@@ -4096,6 +4108,9 @@ if($orders_exit_flag == true){
   $min_str_end .= '</select>';
   //获取手料费
   $payment_modules = payment::getInstance($order->info['site_id']); 
+  if($code_payment_method==''||$code_payment_method!=$payment_code){
+    $code_payment_method = $payment_code;
+  }
   $code_payment_method = isset($code_payment_method) && $code_payment_method != '' ? $code_payment_method : 'buying';
   $handle_fee_code = $payment_modules->handle_calc_fee( payment::changeRomaji($code_payment_method,PAYMENT_RETURN_TYPE_CODE), $shipping_money_total);
   $fetch_date_array = explode('-', $date_orders); 

@@ -609,8 +609,10 @@ class payment {
  参数：$payment_method(string) 支付方式
  返回值：返回下拉菜单(string)
  ----------------------------*/
-  public static   function makePaymentListPullDownMenu($payment_method = "") {
+  public static   function makePaymentListPullDownMenu(&$payment_method =
+      "",$site_id='') {
     //修改 变量名称
+    $payment_method_abled = array();
     if(empty(self::$payment_array)){
       $payment_text = self::getPaymentList(); 
     }else{
@@ -619,8 +621,33 @@ class payment {
     $payment_array = $payment_text;
     //$payment_list[] = array('id' => '', 'text' => '支払方法を選択してください');
     for($i=0; $i<sizeof($payment_array[0]); $i++) {
+      $continue_flag = false;
+      if($site_id!=''){
+        $payment_status = get_configuration_by_site_id_or_default('MODULE_PAYMENT_'.strtoupper($payment_array[0][$i]).'_STATUS',$site_id);
+        if($payment_status == 'False'){
+          $payment_status = false;
+        }else{
+          $customer_info = get_configuration_by_site_id_or_default('MODULE_PAYMENT_'.strtoupper($payment_array[0][$i]).'_LIMIT_SHOW',$site_id);
+          $customer_arr = @unserialize($customer_info);
+          if(in_array('1',$customer_arr)){
+            $payment_status = true;
+          }else{
+            $payment_status = false;
+          }
+        }
+        if(!$payment_status){
+          $continue_flag = true;
+        }
+      }
+      if($continue_flag){
+        continue;
+      }
+      $payment_method_abled[] = $payment_array[0][$i];
       $payment_list[] = array('id' => $payment_array[0][$i],
                               'text' => $payment_array[1][$i]);
+    }
+    if(!in_array($payment_method,$payment_method_abled)){
+      $payment_method = $payment_method_abled[0];
     }
     return tep_draw_pull_down_menu('payment_method', $payment_list, $payment_method);
   }
@@ -872,10 +899,28 @@ class payment {
  参数：$pay_info_array(string) 支付信息的数组 
  返回值：支付方法的目录(string)
  --------------------*/
-  function admin_show_payment_list($payment,$pay_info_array){
+  function admin_show_payment_list($payment,$pay_info_array,$site_id=''){
 
     $module = $this->getModule($payment);
-    if ($module) {
+    $show_flag = true;
+    if ($site_id!=''){
+      $payment_status = get_configuration_by_site_id_or_default('MODULE_PAYMENT_'.strtoupper($payment).'_STATUS',$site_id);
+      if($payment_status == 'False'){
+        $payment_status = false;
+      }else{
+        $customer_info = get_configuration_by_site_id_or_default('MODULE_PAYMENT_'.strtoupper($payment).'_LIMIT_SHOW',$site_id);
+        $customer_arr = @unserialize($customer_info);
+        if(in_array('1',$customer_arr)){
+          $payment_status = true;
+        }else{
+          $payment_status = false;
+        }
+      }
+      if(!$payment_status){
+        $show_flag = false;
+      }
+    }
+    if ($module&&$show_flag) {
       if (method_exists($module, 'admin_show_payment_list')) {
          $module->admin_show_payment_list($pay_info_array); 
       }

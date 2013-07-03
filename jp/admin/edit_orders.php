@@ -2957,7 +2957,7 @@ require("includes/note_js.php");
     one_time_pwd('<?php echo $page_name;?>', '<?php echo (!empty($_SERVER['HTTP_REFERER']))?urlencode($_SERVER['HTTP_REFERER']):urlencode(tep_href_link(FILENAME_DEFAULT));?>');
   </script>
     <?php }?>
-    <!-- header //-->
+    <!-- header -->
     <?php
     require(DIR_WS_INCLUDES . 'header.php');
     ?>
@@ -2992,8 +2992,8 @@ a.dpicker {
 	
 }
 </style>
-<!-- header_eof //-->
-<!-- body //-->
+<!-- header_eof -->
+<!-- body -->
 <?php 
 if($action != "add_product"){
   echo tep_draw_form('edit_order', "edit_orders.php", tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post', 'id="edit_order_id"'); 
@@ -3003,12 +3003,12 @@ if($action != "add_product"){
 <tr>
 <td width="<?php echo BOX_WIDTH; ?>" valign="top">
 <table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-<!-- left_navigation //-->
+<!-- left_navigation -->
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- left_navigation_eof //-->
+<!-- left_navigation_eof -->
 </table>
 </td>
-<!-- body_text //-->
+<!-- body_text -->
 <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
  <div class="compatible">
  <table border="0" width="100%" cellspacing="0" cellpadding="2">
@@ -3174,12 +3174,12 @@ if (($action == 'edit') && ($order_exists == true)) {
           $pay_info_array[1] = $pay_info_array[1] == '' && $pay_method == $pay_type_array[1] ? $pay_comment : $pay_info_array[1];
           $pay_info_array[2] = $pay_info_array[2] == '' && $pay_method == $pay_type_array[2] ?  $pay_comment : $pay_info_array[2];  
     ?>
-    <?php echo payment::makePaymentListPullDownMenu(payment::changeRomaji($pay_method, PAYMENT_RETURN_TYPE_CODE));?> 
+    <?php echo payment::makePaymentListPullDownMenu(payment::changeRomaji($pay_method, PAYMENT_RETURN_TYPE_CODE),$order->info['site_id']);?> 
     <?php  
           echo "\n".'<script language="javascript">'."\n"; 
           echo '$(document).ready(function(){'."\n";
 
-          $cpayment->admin_show_payment_list($pay_method,$pay_info_array); 
+          $cpayment->admin_show_payment_list($pay_method,$pay_info_array,$order->info['site_id']); 
           echo '});'."\n";
           echo '</script>'."\n";
       
@@ -4618,7 +4618,7 @@ if($index_num > 0){
 </div>
 </div>
 </td>
-<!-- body_text_eof //-->
+<!-- body_text_eof -->
 </tr>
 </table>
 <?php
@@ -4628,11 +4628,11 @@ if($action != "add_product"){
 <?php
 }
 ?>
-<!-- body_eof //-->
+<!-- body_eof -->
 
-<!-- footer //-->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 </body>
 </html>

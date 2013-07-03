@@ -1560,11 +1560,11 @@ if (($action == 'edit') && ($order_exists == true)) {
           $pay_method = isset($_POST['payment_method']) ? $_POST['payment_method'] : $pay_method;
           $payment_code = payment::changeRomaji($pay_method, PAYMENT_RETURN_TYPE_CODE); 
           $_SESSION['create_preorder']['orders']['payment_method'] = $payment_code;
-          echo payment::makePaymentListPullDownMenu($payment_code); 
+          echo payment::makePaymentListPullDownMenu($payment_code,$_SESSION['create_preorder']['orders']['site_id']); 
           echo "\n".'<script language="javascript">'."\n"; 
           echo '$(document).ready(function(){'."\n";
 
-          $cpayment->admin_show_payment_list($payment_code,$pay_info_array);
+          $cpayment->admin_show_payment_list($payment_code,$pay_info_array,$_SESSION['create_preorder']['orders']['site_id']);
           
           echo '});'."\n";
           echo '</script>'."\n";
