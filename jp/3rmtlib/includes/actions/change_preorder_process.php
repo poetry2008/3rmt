@@ -31,6 +31,9 @@ if ($preorder) {
       tep_redirect(tep_href_link('change_preorder_confirm.php')); 
       exit;
     }
+  }else{
+    $navigation->set_snapshot(array('mode' => 'SSL', 'page' => FILENAME_CHECKOUT_PAYMENT));
+    tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
   }
     $orders_id = date('Ymd').'-'.date('His').tep_get_order_end_num(); 
   $payment_modules = payment::getInstance($preorder['site_id']);   

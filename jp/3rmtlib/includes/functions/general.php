@@ -6675,3 +6675,18 @@ function tep_get_radices($pid){
       return 1;
     }
 }
+/*----------------------------------
+  功能: 通过CID判断客户是否存在
+  参数: $cid (int)类型  客户ID
+  返回：如果存在返回 详细信息 如果不存在 返回FALSE
+----------------------------------*/
+function tep_is_customer_by_id($cid){
+  $customer_sql = "SELECT * FROM `".TABLE_CUSTOMERS."` 
+    WHERE `customers_id` = '".$cid."' limit 1";
+  $customer_query = tep_db_query($customer_sql);
+  if($customer_row = tep_db_fetch_array($customer_query)){
+    return $customer_row;
+  }else{
+    return false;
+  }
+}

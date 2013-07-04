@@ -197,6 +197,24 @@ if((isset($_POST['preorder_flag']) && $_POST['preorder_flag'] != $_SESSION['subm
        }
       }
     }
+ if(isset($_GET['action']) && $_GET['action'] == 'process'){
+   $customer_error = false;
+   if (!tep_session_is_registered('customer_id')) {
+     $customer_error = true;
+   } else {
+      if(tep_session_is_registered('customer_id')){
+        $flag_customer_info = tep_is_customer_by_id($customer_id);
+        if(!$flag_customer_info ||
+          $flag_customer_info['customers_email_address'] != $_SESSION['customer_emailaddress']){
+          $customer_error = true;
+         }
+      }
+    }
+ }
+ if($customer_error){
+  $navigation->set_snapshot(array('mode' => 'SSL', 'page' => FILENAME_CHECKOUT_PAYMENT));
+  tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
+ }
      
     if (tep_session_is_registered('customer_id')) {
       $from_name = tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']);
