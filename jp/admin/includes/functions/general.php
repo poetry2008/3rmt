@@ -10764,3 +10764,74 @@ function tep_get_beforday_orders($limit_time_info){
     }
     return $order_arr;
 }
+/*------------------------------
+  功能: 获得用户支付方法组ID
+  参数: orders_id(int) 订单ID
+  参数: customer_id(int) 客户ID
+  返回: 返回支付方法组ID
+  -----------------------------*/
+function tep_get_payment_customer_chk($orders_id='',$cid='',$flag = true){
+  $error = false;
+  if($orders_id!=''){
+    if($flag){
+      $sql = "select `customers_guest_chk` from ".TABLE_ORDERS." 
+        o left join ".TABLE_CUSTOMERS." c 
+        on o.customers_id = c.customers_id
+        where orders_id ='".$orders_id."'";
+    }else{
+      $sql = "select `customers_guest_chk` from ".TABLE_PREORDERS." 
+        o left join ".TABLE_CUSTOMERS." c 
+        on o.customers_id = c.customers_id
+        where orders_id ='".$orders_id."'";
+    }
+  }else if ($cid!=''){
+    $sql = "select `customers_guest_chk` from ".TABLE_CUSTOMERS." 
+      where customers_id='".$cid."'";
+  }else{
+    $error = true;
+  }
+  if($error){
+    return 0;
+  }else{
+    $query = tep_db_query($sql);
+    if($row = tep_db_fetch_array($query)){
+      if($row['customers_guest_chk'] == '0'){
+        return '1';
+      }else if($row['customers_guest_chk'] == '1'){
+        return '2';
+      }else{
+        return 0;
+      }
+    }else{
+      return 0;
+    }
+  }
+}
+/*------------------------------
+  功能: 获得用户支付方法是否开启
+  参数: payment(string) 支付方法
+  参数: site_id(string) 网站ID
+  参数: orders_id(int) 订单ID
+  参数: cid(ind) 用户ID
+  返回: 返回支付方法组ID
+  -----------------------------*/
+
+function tep_get_payment_flag($payment,$cid='',$site_id=0,$orders_id='',$flag=true){
+  $payment_status = get_configuration_by_site_id_or_default('MODULE_PAYMENT_'.strtoupper($payment).'_STATUS',$site_id);
+  if($payment_status == 'True'){
+    $customer_info = get_configuration_by_site_id_or_default('MODULE_PAYMENT_'.strtoupper($payment).'_LIMIT_SHOW',$site_id);
+    $customer_arr = @unserialize($customer_info);
+    if($cid!=''){
+      $c_chk = tep_get_payment_customer_chk('',$cid);
+    }else{
+      $c_chk = tep_get_payment_customer_chk($orders_id,'',$flag);
+    }
+    if(in_array($c_chk,$customer_arr)){
+      return true;
+    }else{
+      return false;
+    }
+  }else{
+    return false;
+  }
+}

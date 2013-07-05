@@ -96,13 +96,23 @@ if (tep_not_null($action)) {
     // 1. UPDATE ORDER ###############################################################################################
   case 'update_order':
     //订单状态更新
+    if(!isset($_POST['payment_method']) ||$_POST['payment_method']=='' ||!$_POST['payment_method']){
+      $_SESSION['payment_empty_error'] = TEXT_SELECT_PAYMENT_ERROR;
+      tep_redirect(tep_href_link("edit_new_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
+    }else{
+      $payment_method = tep_db_prepare_input($_POST['payment_method']); 
+      $payment_continue = tep_get_payment_flag( $payment_method,$_SESSION['customer_id'],$_SESSION['sites_id_flag']);
+      if(!$payment_continue){
+        $_SESSION['payment_empty_error'] = TEXT_SELECT_PAYMENT_ERROR;
+        tep_redirect(tep_href_link("edit_new_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
+      }
+    }
     $update_user_info = tep_get_user_info($ocertify->auth_user);
     $oID      = tep_db_prepare_input($_GET['oID']);
     $status   = tep_db_prepare_input($_POST['s_status']);
     $title    = tep_db_prepare_input($_POST['title']);
     $comments = tep_db_input($_POST['comments']);
     $comments_text = tep_db_input($_POST['comments_text']);
-    $payment_method = tep_db_prepare_input($_POST['payment_method']); 
     $comment_arr = $payment_modules->dealComment($payment_method,$comments_text);    
      
     $error = false;
@@ -1793,7 +1803,9 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
 
     var payment_error = false;
     var error_str = '';
+    if(document.getElementsByName("payment_method")[0]){
     var payment_method = document.getElementsByName("payment_method")[0].value;
+    }
     var con_email = document.getElementsByName("con_email")[0];
     var b_name = document.getElementsByName("bank_name")[0];
     if(b_name){
@@ -3418,14 +3430,34 @@ a.dpicker {
             $pay_method = $pay_method;
           } 
 
+          $c_chk = tep_get_payment_customer_chk('',$_SESSION['customer_id']);
           $payment_code = payment::changeRomaji($pay_method,'code');
-          echo payment::makePaymentListPullDownMenu($payment_code,$_SESSION['sites_id_flag']);
+          $payment_select_str =  payment::makePaymentListPullDownMenu($payment_code,$_SESSION['sites_id_flag'],$c_chk);
+          $paymentlist = true;
+          if($payment_select_str!=''){
+            echo $payment_select_str;
+            if(isset($_SESSION['payment_empty_error'])
+                &&$_SESSION['payment_empty_error']!=''){
+              echo $_SESSION['payment_empty_error'];
+              unset($_SESSION['payment_empty_error']);
+            }
+          }else{
+            if(isset($_SESSION['payment_empty_error'])
+                &&$_SESSION['payment_empty_error']!=''){
+              echo $_SESSION['payment_empty_error'];
+              unset($_SESSION['payment_empty_error']);
+            }else{
+              echo TEXT_NO_PAYMENT_ENABLED;
+            }
+            $paymentlist = false;
+          }
           
           
+          if($paymentlist){
           echo "\n".'<script language="javascript">'."\n"; 
           echo '$(document).ready(function(){'."\n";
 
-          $cpayment->admin_show_payment_list($payment_code,$pay_info_array,$_SESSION['sites_id_flag']);
+          $cpayment->admin_show_payment_list($payment_code,$pay_info_array,$_SESSION['sites_id_flag'],$c_chk);
           
           echo '});'."\n";
           echo '</script>'."\n";
@@ -3434,7 +3466,9 @@ a.dpicker {
           if(!isset($selections)){
             $selections = $cpayment->admin_selection();
           } 
+          }
           echo '<tr><td class="main"></td><td class="main"><table>';
+          if($paymentlist){
           foreach ($selections as $se){
             $pay_k = 0;
             foreach($se['fields'] as $field ){
@@ -3462,6 +3496,7 @@ a.dpicker {
               $pay_k++;
            } 
          }
+          }
           echo '</table></td></tr>';
          $pay_array = explode("\n",trim($pay_info_array[0]));
          $bank_name = explode(':',$pay_array[0]);
