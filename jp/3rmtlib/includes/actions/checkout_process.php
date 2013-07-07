@@ -25,7 +25,6 @@ if (!tep_session_is_registered('customer_id')) {
     }
   }
 }
-$customer_error = true;
 if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['hour']) || !isset($_SESSION['min'])||$customer_error){
 //判断购物车信息或者配送时间信息丢失就弹出错误页面
 /* -------------------------------------
@@ -455,7 +454,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
       }
     }
   }
- 
+
   $chara = '';
   $sql_data_array = array('orders_id' => $insert_id, 
                           'products_id' => (int)$order->products[$i]['id'], 

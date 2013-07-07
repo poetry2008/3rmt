@@ -936,6 +936,7 @@ function recalc_preorder_price(oid, opd, o_str, op_str)
           total_price_str += update_total_temp_value+'|||';
         }
   }
+  if(document.getElementsByName('payment_method')[0])
   var payment_method = document.getElementsByName('payment_method')[0].value;
   $.ajax({
     type: "POST",
@@ -994,6 +995,7 @@ function recalc_preorder_price(oid, opd, o_str, op_str)
       } 
     }
   });
+}
 }
 <?php //显示订单价格信息?>
 function price_total()
@@ -1571,7 +1573,7 @@ if (($action == 'edit') && ($order_exists == true)) {
           $payment_code = payment::changeRomaji($pay_method, PAYMENT_RETURN_TYPE_CODE); 
           $_SESSION['create_preorder']['orders']['payment_method'] = $payment_code;
           $c_chk = tep_get_payment_customer_chk('',$_SESSION['create_preorder']['orders']['customers_id']);
-          $payment_select_str =  payment::makePaymentListPullDownMenu($payment_code,$_SESSION['create_preorder']['orders']['site_id'],$c_chk); 
+          $payment_select_str = payment::makePaymentListPullDownMenu($payment_code,$_SESSION['create_preorder']['orders']['site_id'],$c_chk,'preorder'); 
           $paymentlist = true;
           if($payment_select_str!=''){
             echo $payment_select_str;
@@ -1594,7 +1596,7 @@ if (($action == 'edit') && ($order_exists == true)) {
           echo "\n".'<script language="javascript">'."\n"; 
           echo '$(document).ready(function(){'."\n";
 
-          $cpayment->admin_show_payment_list($payment_code,$pay_info_array,$_SESSION['create_preorder']['orders']['site_id'],$c_chk);
+          $cpayment->admin_show_payment_list($payment_code,$pay_info_array,$_SESSION['create_preorder']['orders']['site_id'],$c_chk,'preorder');
           
           echo '});'."\n";
           echo '</script>'."\n";

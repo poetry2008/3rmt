@@ -8,4 +8,6 @@ define('TEXT_BROWER_REJECTED','被浏览器拒绝！\n在浏览器地址栏输�
 define('TEXT_COPY_TO_CLIPBOARD','已经复制到剪贴板！');
 define('TEXT_PLEASE_PASSWORD','请输入一次性口令\r\n');
 define('TEXT_PASSWORD_NOT','密码不一致');
+define('TEXT_SELECT_PAYMENT_ERROR','<font color="red">支付方法被关闭</font>');
+define('TEXT_NO_PAYMENT_ENABLED','<font color="red">无支付方法</font>');
 ?>

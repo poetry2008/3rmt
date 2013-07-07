@@ -1927,8 +1927,8 @@ require("includes/note_js.php");
                   $c_chk = tep_get_payment_customer_chk($order->info['orders_id'],'',false);
                   $payment_code = payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
                   $payment_code = isset($_SESSION['preorder_products'][$_GET['oID']]['payment_method']) ? $_SESSION['preorder_products'][$_GET['oID']]['payment_method'] : $payment_code;
-                  $payment_code = isset($_POST['payment_method']) ? $_POST['payment_method'] : $payment_code;
-                  echo payment::makePaymentListPullDownMenu($payment_code,$order->info['site_id'],$c_chk); 
+                  $payment_code = isset($_POST['payment_method']) ? $_POST['payment_method'] : $payment_code; echo
+                    payment::makePaymentListPullDownMenu($payment_code,$order->info['site_id'],$c_chk,'preorder'); 
                   $orders_status_history_query = tep_db_query("select comments from ". TABLE_PREORDERS_STATUS_HISTORY ." where orders_id='".$oID."' order by date_added desc limit 0,1"); 
                   if(isset($_SESSION['pre_payment_empty_error_edit'])
                      &&$_SESSION['pre_payment_empty_error_edit']!=''){
@@ -2000,7 +2000,7 @@ require("includes/note_js.php");
                   echo "\n".'<script language="javascript">'."\n"; 
                   echo '$(document).ready(function(){'."\n";
 
-                  $cpayment->admin_show_payment_list($payment_code,$pay_info_array,$order->info['site_id'],$c_chk); 
+                  $cpayment->admin_show_payment_list($payment_code,$pay_info_array,$order->info['site_id'],$c_chk,'preorder'); 
                   echo '});'."\n";
                   echo '</script>'."\n";
       

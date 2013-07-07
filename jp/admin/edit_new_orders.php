@@ -3457,7 +3457,9 @@ a.dpicker {
           echo "\n".'<script language="javascript">'."\n"; 
           echo '$(document).ready(function(){'."\n";
 
+          if($payment_code!=''){
           $cpayment->admin_show_payment_list($payment_code,$pay_info_array,$_SESSION['sites_id_flag'],$c_chk);
+          }
           
           echo '});'."\n";
           echo '</script>'."\n";
@@ -4147,7 +4149,9 @@ if($orders_exit_flag == true){
     $code_payment_method = $payment_code;
   }
   $code_payment_method = isset($code_payment_method) && $code_payment_method != '' ? $code_payment_method : 'buying';
+  if($paymentlist){
   $handle_fee_code = $payment_modules->handle_calc_fee( payment::changeRomaji($code_payment_method,PAYMENT_RETURN_TYPE_CODE), $shipping_money_total);
+  }
   $fetch_date_array = explode('-', $date_orders); 
             ?>
             <tr> 

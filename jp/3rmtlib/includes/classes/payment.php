@@ -615,8 +615,7 @@ class payment {
  参数：$payment_method(string) 支付方式
  返回值：返回下拉菜单(string)
  ----------------------------*/
-  public static   function makePaymentListPullDownMenu(&$payment_method =
-      "",$site_id='',$c_chk='') {
+  public static   function makePaymentListPullDownMenu(&$payment_method = "",$site_id='',$c_chk='',$type='order') {
     //修改 变量名称
     $payment_method_abled = array();
     if(empty(self::$payment_array)){
@@ -629,7 +628,11 @@ class payment {
     for($i=0; $i<sizeof($payment_array[0]); $i++) {
       $continue_flag = false;
       if($site_id!=''){
-        $payment_status = get_configuration_by_site_id_or_default('MODULE_PAYMENT_'.strtoupper($payment_array[0][$i]).'_STATUS',$site_id);
+        if($type=='order'){
+          $payment_status = get_configuration_by_site_id_or_default('MODULE_PAYMENT_'.strtoupper($payment_array[0][$i]).'_STATUS',$site_id);
+        }else{
+          $payment_status = get_configuration_by_site_id_or_default('MODULE_PAYMENT_'.strtoupper($payment_array[0][$i]).'_PREORDER_SHOW',$site_id);
+        }
         if($payment_status == 'False'){
           $payment_status = false;
         }else{
@@ -917,12 +920,16 @@ class payment {
  参数：$pay_info_array(string) 支付信息的数组 
  返回值：支付方法的目录(string)
  --------------------*/
-  function admin_show_payment_list($payment,$pay_info_array,$site_id='',$c_chk=''){
+  function admin_show_payment_list($payment,$pay_info_array,$site_id='',$c_chk='',$type='order'){
 
     $module = $this->getModule($payment);
     $show_flag = true;
     if ($site_id!=''){
-      $payment_status = get_configuration_by_site_id_or_default('MODULE_PAYMENT_'.strtoupper($payment).'_STATUS',$site_id);
+      if($type=='order'){
+        $payment_status = get_configuration_by_site_id_or_default('MODULE_PAYMENT_'.strtoupper($payment).'_STATUS',$site_id);
+      }else{
+        $payment_status = get_configuration_by_site_id_or_default('MODULE_PAYMENT_'.strtoupper($payment_array[0][$i]).'_PREORDER_SHOW',$site_id);
+      }
       if($payment_status == 'False'){
         $payment_status = false;
       }else{

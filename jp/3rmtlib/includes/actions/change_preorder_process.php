@@ -8,8 +8,6 @@ if (!isset($_SESSION['preorder_info_id'])) {
   forward404();
 }
 
-
-
 require(DIR_WS_FUNCTIONS . 'visites.php');
 require(DIR_WS_CLASSES . 'payment.php');
 
@@ -33,7 +31,6 @@ if(isset($preorder['customers_id'])&&$$preorder['customers_id']!=''){
     $customer_error = true;
   }
 }
-    $customer_error = true;
 if($customer_error){
   $site_romaji = tep_get_site_romaji_by_id(SITE_ID);
   $oconfig_raw = tep_db_query("select value from ".TABLE_OTHER_CONFIG." where keyword = 'css_random_string' and site_id = '".SITE_ID."'");
@@ -110,9 +107,6 @@ echo TEXT_ORDERS_EMPTY_COMMENT;
       tep_redirect(tep_href_link('change_preorder_confirm.php')); 
       exit;
     }
-  }else{
-    $navigation->set_snapshot(array('mode' => 'SSL', 'page' => FILENAME_CHECKOUT_PAYMENT));
-    tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
   }
     $orders_id = date('Ymd').'-'.date('His').tep_get_order_end_num(); 
   $payment_modules = payment::getInstance($preorder['site_id']);   
@@ -405,7 +399,7 @@ if($address_error == false){
                           'torihiki_date' => $torihikihouhou_date_str, 
                           'site_id' => SITE_ID
       );
-  tep_db_perform(TABLE_ORDERS_PRODUCTS, $sql_data_array); 
+  tep_db_perform(TABLE_ORDERS_PRODUCTS, $sql_data_array);
   $order_products_id = tep_db_insert_id();
 
   
