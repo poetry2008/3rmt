@@ -195,7 +195,7 @@ if (tep_not_null($action)) {
       $oID = tep_db_prepare_input($_GET['oID']);
       $order = new order($oID);
       $payment_method = tep_db_prepare_input($_POST['payment_method']); 
-      if($payment_method!=$order->info['payment_method']){
+      if($payment_method!= $use_payment){
         $payment_continue = tep_get_payment_flag( $payment_method,'',$order->info['site_id'],$order->info['orders_id']);
         if(!$payment_continue){
             $_SESSION['payment_empty_error_edit'] = TEXT_SELECT_PAYMENT_ERROR;

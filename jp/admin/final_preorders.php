@@ -136,7 +136,7 @@
     $order = new preorder($oID);
 
     $payment_method = tep_db_prepare_input($_POST['payment_method']); 
-    if($payment_method!=$order->info['payment_method']){
+    if($payment_method!=$use_payment){
       $payment_continue = tep_get_payment_flag($payment_method,'',$order->info['site_id'],$order->info['orders_id'],false);
       if(!$payment_continue){
         $_SESSION['pre_payment_empty_error_edit'] = TEXT_SELECT_PAYMENT_ERROR;
