@@ -117,7 +117,7 @@
   $customer_guest = tep_db_fetch_array($customer_guest_query);
 
   if (tep_not_null($action)) {
-    $payment_modules = payment::getInstance($order->info['site_id']);
+    $payment_modules = payment::getInstance($order->info['site_id'],$use_payment);
     switch ($action) {
 /* -----------------------------------------------------
    case 'update_order' 更新预约订单信息    

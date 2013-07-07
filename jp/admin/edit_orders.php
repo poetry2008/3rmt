@@ -105,7 +105,7 @@ if(isset($_GET['clear_products']) && isset($_SESSION['clear_products_flag'])){
           $_SESSION['orders_update_products'][$_GET['oID']]['ot_total'] -= abs($campaign_fee);
           $_SESSION['orders_update_products'][$_GET['oID']]['point'] = $campaign_fee;
         }
-        $payment_handle = payment::getInstance($orders_update_time_array['site_id']);
+        $payment_handle = payment::getInstance($orders_update_time_array['site_id'],$use_payment);
         $payment_value = isset($_SESSION['orders_update_products'][$_GET['oID']]['payment_method']) ? $_SESSION['orders_update_products'][$_GET['oID']]['payment_method'] : payment::changeRomaji($orders_update_time_array['payment_method'],PAYMENT_RETURN_TYPE_CODE); 
         $handle_fee = $payment_handle->handle_calc_fee($payment_value, $_SESSION['orders_update_products'][$_GET['oID']]['ot_subtotal']);
         $handle_fee = $handle_fee == '' ? 0 : $handle_fee;
