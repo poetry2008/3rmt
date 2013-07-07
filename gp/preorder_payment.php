@@ -490,17 +490,19 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
 ?>
     <?php
       $selection = $payment_modules->selection(1); 
-      if (sizeof($selection) > 1) { 
         if ($payment_error == true) {
-            echo '<div class="box_waring">'; 
+          if (sizeof($selection) > 1) { 
             if (isset($payment_error_str)) {
+              echo '<div class="box_waring">'; 
               echo $payment_error_str; 
-            } else {
-              echo TEXT_REQUIRED;
+              echo '</div><br>'; 
             }
-            echo '</div><br>'; 
+          } else {
+              echo '<div class="box_waring">'; 
+              echo TEXT_REQUIRED;
+              echo '</div><br>'; 
+          }
         }
-      }
     ?>
      
     <div class="formAreaTitle"><?php echo FORM_FIELD_PREORDER_PAYMENT; ?></div>
