@@ -10816,8 +10816,12 @@ function tep_get_payment_customer_chk($orders_id='',$cid='',$flag = true){
   返回: 返回支付方法组ID
   -----------------------------*/
 
-function tep_get_payment_flag($payment,$cid='',$site_id=0,$orders_id='',$flag=true){
-  $payment_status = get_configuration_by_site_id_or_default('MODULE_PAYMENT_'.strtoupper($payment).'_STATUS',$site_id);
+function tep_get_payment_flag($payment,$cid='',$site_id=0,$orders_id='',$flag=true,$type='order'){
+  if($type=='order'){
+    $payment_status = get_configuration_by_site_id_or_default('MODULE_PAYMENT_'.strtoupper($payment).'_STATUS',$site_id);
+  }else{
+    $payment_status = get_configuration_by_site_id_or_default('MODULE_PAYMENT_'.strtoupper($payment).'_PREORDER_SHOW',$site_id);
+  }
   if($payment_status == 'True'){
     $customer_info = get_configuration_by_site_id_or_default('MODULE_PAYMENT_'.strtoupper($payment).'_LIMIT_SHOW',$site_id);
     $customer_arr = @unserialize($customer_info);
