@@ -5280,7 +5280,7 @@ if (isset($_SESSION['campaign_fee'])) {
 <div class="checkout_payment_info">
   <?php
    //如果大于1个支付方法需要用户选择 ，如果小于则不需要选择了
-    if (sizeof($selection) > 1) {
+    if (sizeof($selection) > 0) {
       if (!$is_show) {
         echo "<div>";
       }
