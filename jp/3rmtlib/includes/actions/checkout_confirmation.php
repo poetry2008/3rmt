@@ -54,7 +54,8 @@ $_SESSION['mailcomments'] = $_POST['comments'];
 
 if (!$payment_modules->moduleIsEnabled($payment)){
 //判断支付方法是否存在， 支付方法是否被允许 
-    tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'error_message=' . urlencode(ERROR_NO_PAYMENT_MODULE_SELECTED), 'SSL'));
+    $_SESSION['payment_error'] = ERROR_NO_PAYMENT_MODULE_SELECTED;
+    tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL'));
 }
 
 

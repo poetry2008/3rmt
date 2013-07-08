@@ -5280,7 +5280,7 @@ if (isset($_SESSION['campaign_fee'])) {
 <div class="checkout_payment_info">
   <?php
    //如果大于1个支付方法需要用户选择 ，如果小于则不需要选择了
-    if (sizeof($selection) > 1) {
+    if (sizeof($selection) > 0) {
       if (!$is_show) {
         echo "<div>";
       }
@@ -5293,7 +5293,7 @@ if (isset($_SESSION['campaign_fee'])) {
       echo "<div>";
       echo '<div class="float_left">';
       echo TEXT_ENTER_PAYMENT_INFORMATION;
-      echo '</div><div></div>';
+      echo '</div><div>&nbsp;</div>';
       echo "</div>";
     }
   ?>
@@ -5301,8 +5301,10 @@ if (isset($_SESSION['campaign_fee'])) {
 <?php  
      if(isset($_SESSION['payment_error'])){
 	 ?>
+     <br>
      <div class="box_waring">
      <?php
+     echo TEXT_PAYMENT_ERROR_TOP;
      if(is_array($_SESSION['payment_error'])){
            foreach($_SESSION['payment_error'] as $key=>$value){
                if (is_array($value)) {
@@ -5788,6 +5790,7 @@ if (isset($_SESSION['campaign_fee'])) {
     <div class="box_waring">
     <?php }?>
      <?php
+     echo TEXT_PAYMENT_ERROR_TOP;
      if(is_array($_SESSION['payment_error'])){
            foreach($_SESSION['payment_error'] as $key=>$value){
                if (is_array($value)) {
@@ -6674,4 +6677,19 @@ function tep_get_radices($pid){
     }else{
       return 1;
     }
+}
+/*----------------------------------
+  功能: 通过CID判断客户是否存在
+  参数: $cid (int)类型  客户ID
+  返回：如果存在返回 详细信息 如果不存在 返回FALSE
+----------------------------------*/
+function tep_is_customer_by_id($cid){
+  $customer_sql = "SELECT * FROM `".TABLE_CUSTOMERS."` 
+    WHERE `customers_id` = '".$cid."' limit 1";
+  $customer_query = tep_db_query($customer_sql);
+  if($customer_row = tep_db_fetch_array($customer_query)){
+    return $customer_row;
+  }else{
+    return false;
+  }
 }

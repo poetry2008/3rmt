@@ -90,8 +90,18 @@
         break;
   // 1. UPDATE ORDER ###############################################################################################
   case 'update_order':
+   if(!isset($_POST['payment_method']) ||$_POST['payment_method']=='' ||!$_POST['payment_method']){
+      $_SESSION['pre_payment_empty_error'] = TEXT_SELECT_PAYMENT_ERROR;
+      tep_redirect(tep_href_link("edit_new_preorders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
+    }else{
+      $payment_method = tep_db_prepare_input($_POST['payment_method']); 
+      $payment_continue = tep_get_payment_flag( $payment_method,$_SESSION['create_preorder']['orders']['customer_id'],$_SESSION['create_preorder']['orders']['site_id']);
+      if(!$payment_continue){
+        $_SESSION['pre_payment_empty_error'] = TEXT_SELECT_PAYMENT_ERROR;
+        tep_redirect(tep_href_link("edit_new_preorders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
+      }
+    }
   $update_user_info = tep_get_user_info($ocertify->auth_user);
-  $payment_method = $_POST['payment_method'];
   $payment_method_romaji = payment::changeRomaji($payment_method,PAYMENT_RETURN_TYPE_CODE);
   $payment_modules = payment::getInstance($_SESSION['create_preorder']['orders']['site_id']);
   $validateModule = $payment_modules->admin_confirmation_check($payment_method);
@@ -926,6 +936,7 @@ function recalc_preorder_price(oid, opd, o_str, op_str)
           total_price_str += update_total_temp_value+'|||';
         }
   }
+  if(document.getElementsByName('payment_method')[0])
   var payment_method = document.getElementsByName('payment_method')[0].value;
   $.ajax({
     type: "POST",
@@ -984,6 +995,7 @@ function recalc_preorder_price(oid, opd, o_str, op_str)
       } 
     }
   });
+}
 }
 <?php //显示订单价格信息?>
 function price_total()
@@ -1560,11 +1572,31 @@ if (($action == 'edit') && ($order_exists == true)) {
           $pay_method = isset($_POST['payment_method']) ? $_POST['payment_method'] : $pay_method;
           $payment_code = payment::changeRomaji($pay_method, PAYMENT_RETURN_TYPE_CODE); 
           $_SESSION['create_preorder']['orders']['payment_method'] = $payment_code;
-          echo payment::makePaymentListPullDownMenu($payment_code); 
+          $c_chk = tep_get_payment_customer_chk('',$_SESSION['create_preorder']['orders']['customers_id']);
+          $payment_select_str = payment::makePaymentListPullDownMenu($payment_code,$_SESSION['create_preorder']['orders']['site_id'],$c_chk,'preorder'); 
+          $paymentlist = true;
+          if($payment_select_str!=''){
+            echo $payment_select_str;
+            if(isset($_SESSION['pre_payment_empty_error'])
+                &&$_SESSION['pre_payment_empty_error']!=''){
+              echo $_SESSION['pre_payment_empty_error'];
+              unset($_SESSION['pre_payment_empty_error']);
+            }
+          }else{
+            if(isset($_SESSION['pre_payment_empty_error'])
+                &&$_SESSION['pre_payment_empty_error']!=''){
+              echo $_SESSION['pre_payment_empty_error'];
+              unset($_SESSION['pre_payment_empty_error']);
+            }else{
+              echo TEXT_NO_PAYMENT_ENABLED;
+            }
+            $paymentlist = false;
+          }
+          if($paymentlist){
           echo "\n".'<script language="javascript">'."\n"; 
           echo '$(document).ready(function(){'."\n";
 
-          $cpayment->admin_show_payment_list($payment_code,$pay_info_array);
+          $cpayment->admin_show_payment_list($payment_code,$pay_info_array,$_SESSION['create_preorder']['orders']['site_id'],$c_chk,'preorder');
           
           echo '});'."\n";
           echo '</script>'."\n";
@@ -1573,7 +1605,9 @@ if (($action == 'edit') && ($order_exists == true)) {
           if(!isset($selections)){
             $selections = $cpayment->admin_selection();
           } 
+          }
           echo '<tr><td class="main"></td><td class="main"><table>';
+          if($paymentlist){
           foreach ($selections as $se){
             $pay_k = 0;
             foreach($se['fields'] as $field ){
@@ -1601,6 +1635,7 @@ if (($action == 'edit') && ($order_exists == true)) {
               $pay_k++;
            } 
          }
+          }
           echo '</table></td></tr>';  
         ?>
                 </td>

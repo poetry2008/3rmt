@@ -173,4 +173,6 @@ define('TABLE_HEADING_PRODUCTS_PRICE', '单价');
 define('TEXT_REQUIRE','*必须');
 define('ADDRESS_ERROR_OPTION_ITEM_TEXT_NULL','必须项目');
 define('ADDRESS_ERROR_OPTION_ITEM_TEXT_TYPE_WRONG','请正确输入');
+define('TEXT_SELECT_PAYMENT_ERROR','<font color="red">支付方法被关闭</font>');
+define('TEXT_NO_PAYMENT_ENABLED','<font color="red">无支付方法</font>');
 ?>

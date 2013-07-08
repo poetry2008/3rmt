@@ -11,13 +11,21 @@ if(isset($real_point)){
 // user new point value it from checkout_confirmation.php 
   $point = $real_point;
 }
+$customer_error = false;
 if (!tep_session_is_registered('customer_id')) {
 // if the customer is not logged on, redirect them to the login page
   $navigation->set_snapshot(array('mode' => 'SSL', 'page' => FILENAME_CHECKOUT_PAYMENT));
   tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
+} else {
+  if(tep_session_is_registered('customer_id')){
+    $flag_customer_info = tep_is_customer_by_id($customer_id);
+    if(!$flag_customer_info ||
+        $flag_customer_info['customers_email_address'] != $_SESSION['customer_emailaddress']){
+      $customer_error = true;
+    }
+  }
 }
-
-if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['hour']) || !isset($_SESSION['min'])){
+if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['hour']) || !isset($_SESSION['min'])||$customer_error){
 //判断购物车信息或者配送时间信息丢失就弹出错误页面
 /* -------------------------------------
     功能: 高亮显示指定字符 
@@ -446,7 +454,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
       }
     }
   }
- 
+
   $chara = '';
   $sql_data_array = array('orders_id' => $insert_id, 
                           'products_id' => (int)$order->products[$i]['id'], 
