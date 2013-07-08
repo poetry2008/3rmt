@@ -604,6 +604,22 @@ function faq_q_is_set_error_char(romaji){
   return flag;
 }
 function faq_category_form_validator(pid,cid,site_id,c_permission){
+ var title = $("#title").val();
+ var cromaji = $("#cromaji").val();
+ var error = 'false';
+ if(title == ''){
+    $("#title_error").html("<?php echo TEXT_ERROR_NULL;?>");
+    error = 'ture'; 
+ }else{
+    $("#title_error").html("");
+ }
+ if(cromaji == ''){
+    $("#cromaji_error").html("<?php echo TEXT_ERROR_NULL;?>");
+    error = 'ture'; 
+ }else{
+    $("#cromaji_error").html("");
+ }
+  if(error != 'ture'){
   flag1 = faq_c_is_set_romaji(pid,cid,site_id);
   flag2 = faq_c_is_set_error_char(''); 
   if(flag1&&flag2){
@@ -615,6 +631,66 @@ function faq_category_form_validator(pid,cid,site_id,c_permission){
         type: 'POST',
         data: 'current_page_name='+document.getElementById("hidden_page_info").value, 
         dataType: 'text',
+        async : false,
+        success: function(data) {
+            var tmp_msg_arr = data.split('|||'); 
+            var pwd_list_array = tmp_msg_arr[1].split(',');
+            if (tmp_msg_arr[0] == '0') {
+              document.forms.newfaqcategory.submit(); 
+            } else {
+              $("#button_save").attr('id', 'tmp_button_save');
+              var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+              if (in_array(input_pwd_str, pwd_list_array)) {
+               $.ajax({
+                 url: 'ajax_orders.php?action=record_pwd_log',   
+                 type: 'POST',
+                 dataType: 'text',
+                 data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.forms.newfaqcategory.action),
+                 async: false,
+                 success: function(msg_info) {
+                   document.forms.newfaqcategory.submit(); 
+                 }
+               }); 
+              } else {
+                alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+              }
+            }
+        }
+      });
+    }
+  }
+ }
+}
+
+
+function faq_question_form_validator(cid,qid,site_id,c_permission){
+  var error = 'false';
+  var title = $("#title").val();
+  var qromaji = $("#qromaji").val();
+  if(title == ''){
+     $("#title_error").html("<?php echo TEXT_ERROR_NULL;?>");
+     error = 'ture';
+  }else{
+     $("#title_error").html("");
+  }
+  if(qromaji == ''){
+     $("#qromaji_error").html("<?php echo TEXT_ERROR_NULL;?>");
+     error = 'ture';
+  }else{
+     $("#qromaji_error").html("");
+  }
+  if(error != 'ture'){
+  flag1 = faq_q_is_set_romaji(cid,qid,site_id);
+  flag2 = faq_q_is_set_error_char(''); 
+  if(flag1&&flag2){
+   if (c_permission == 31) {
+      document.forms.newfaqcategory.submit(); 
+    } else {
+      $.ajax({
+        url: 'ajax_orders.php?action=getallpwd',
+        type: 'POST',
+        dataType: 'text',
+        data: 'current_page_name='+document.getElementById("hidden_page_info").value, 
         async : false,
         success: function(data) {
             var tmp_msg_arr = data.split('|||'); 
@@ -641,47 +717,6 @@ function faq_category_form_validator(pid,cid,site_id,c_permission){
         }
       });
     }
-  }
-}
-
-
-function faq_question_form_validator(cid,qid,site_id,c_permission){
-  flag1 = faq_q_is_set_romaji(cid,qid,site_id);
-  flag2 = faq_q_is_set_error_char(''); 
-  if(flag1&&flag2){
-    if (c_permission == 31) {
-      document.forms.newfaqcategory.submit(); 
-    } else {
-      $.ajax({
-        url: 'ajax_orders.php?action=getallpwd',
-        type: 'POST',
-        dataType: 'text',
-        data: 'current_page_name='+document.getElementById("hidden_page_info").value, 
-        async : false,
-        success: function(data) {
-            var tmp_msg_arr = data.split('|||'); 
-            var pwd_list_array = tmp_msg_arr[1].split(',');
-            if (tmp_msg_arr[0] == '0') {
-              document.forms.newfaqcategory.submit(); 
-            } else {
-              var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-              if (in_array(input_pwd_str, pwd_list_array)) {
-               $.ajax({
-                 url: 'ajax_orders.php?action=record_pwd_log',   
-                 type: 'POST',
-                 dataType: 'text',
-                 data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.forms.newfaqcategory.action),
-                 async: false,
-                 success: function(msg_info) {
-                   document.forms.newfaqcategory.submit(); 
-                 }
-               }); 
-              } else {
-                alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
-              }
-            }
-        }
-      });
     }
   }
 }
