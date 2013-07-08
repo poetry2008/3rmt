@@ -6488,354 +6488,196 @@ if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
    $show_site_str = tep_get_setting_site_info(FILENAME_FAQ);
    $sql_site_where = 'site_id in ('.$show_site_str.')';
 }
-if($_GET['cID'] != '' && $_GET['qID'] == '' && $_GET['cID'] != -1 ){
-                  $faq_category_count = 0;
-                  $rows = 0;
-                  if(isset($_GET['search']) && $_GET['search']) {
-                    $faq_category_query_raw = "
-                      select 
-                      fcd.id as fcd_id,
-                      fcd.is_show,
-                      fcd.faq_category_id,
-                      fc.parent_id,
-                      fc.created_at,
-                      fc.updated_at,
-                      fc.sort_order,
-                      fcd.site_id,
-                      fcd.romaji,
-                      fcd.title,
-                      fcd.keywords,
-                      fcd.description 
-                      from ".TABLE_FAQ_CATEGORIES." fc, 
-                      ".TABLE_FAQ_CATEGORIES_DESCRIPTION. " fcd 
-                      where fc.id = fcd.faq_category_id 
-                      and fcd.title like '%".$_GET['search']."%' 
-                      order by fc.sort_order,fcd.title 
-                       ";
-                  }else if(isset($_GET['site_id'])&&$_GET['site_id']){
-                    $faq_category_query_raw = "
-                      select * from 
-                      (
-                        select 
-                        fcd.id as fcd_id,
-                        fcd.is_show,
-                        fcd.faq_category_id,
-                        fc.parent_id,
-                        fc.user_added,
-			fc.user_update,
-                        fc.created_at,
-                        fc.updated_at,
-                        fc.sort_order,
-                        fcd.site_id,
-                        fcd.romaji,
-                        fcd.title,
-                        fcd.keywords,
-                        fcd.description 
-                        from ".TABLE_FAQ_CATEGORIES." fc, 
-                        ".TABLE_FAQ_CATEGORIES_DESCRIPTION. " fcd 
-                        where fc.parent_id = '".$current_category_id."'
-                        and fc.id = fcd.faq_category_id 
-                        order by site_id DESC
-                      ) c 
-                      where ".$sql_site_where."
-                      or site_id = 0 
-                      group by c.faq_category_id 
-                      order by sort_order,title
-                      ";
-                  }else{
-                    $faq_category_query_raw = "
-                      select * from 
-                      (
-                        select 
-                        fcd.id as fcd_id,
-                        fcd.is_show,
-                        fcd.faq_category_id,
-                        fc.parent_id,
-                        fc.created_at,
-                        fc.updated_at,
-			fc.user_added,
-			fc.user_update,
-                        fc.sort_order,
-                        fcd.site_id,
-                        fcd.romaji,
-                        fcd.title,
-                        fcd.keywords,
-                        fcd.description 
-                        from ".TABLE_FAQ_CATEGORIES." fc, 
-                        ".TABLE_FAQ_CATEGORIES_DESCRIPTION. " fcd 
-                        where fc.parent_id = '".$current_category_id."'
-                        and fc.id = fcd.faq_category_id 
-                        order by site_id DESC
-                      ) c 
-                      group by c.faq_category_id 
-                      order by site_id,sort_order,title
-                      ";
-                  }
-                  $c_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
-                  $faq_category_query = tep_db_query($faq_category_query_raw);
-                  $cid_array = array();
-                  while($faq_category = tep_db_fetch_array($faq_category_query)){
-                    $cid_array[] = $faq_category['faq_category_id'];
-                    $faq_count++;
-                    $rows++;
-
-                    $faq_info_arr =
-                      array('id','parent_id','sort_order','name','site_id');
-                    if(isset($_GET['search']) && $_GET['search']){
-                        $cPath= $faq_category['parent_id'];
+if($_GET['qID'] != -1 && $_GET['cID'] != -1){
+                if(!isset($_GET['type']) || $_GET['type'] == ''){
+                       $_GET['type'] = 'asc';
+                 }
+                if($faq_type == ''){
+                      $faq_type = 'asc';
+                }
+                if(!isset($_GET['sort']) || $_GET['sort'] == ''){
+                    $faq_str = 'info_type'; 
+                    $faq_qid_str = 'c.sort_order,c.ask,c.faq_question_id';
+                }else if($_GET['sort'] == 'site_romaji'){
+                  if($_GET['type'] == 'desc'){
+                    $faq_str = 'site_id desc';
+                    $faq_type = 'asc';
+                    }else{
+                    $faq_str = 'site_id asc';
+                    $faq_type = 'desc';
                     }
-                    if((isset($_GET['cID']) && ($_GET['cID'] == $faq_category['faq_category_id'])) && (!isset($_GET['action']) || substr($_GET['action'], 0, 4) != 'new_')){
-                    $faq_category_childs = array('childs_count' => tep_childs_in_faq_category_count($faq_category['faq_category_id']));
-                    $faq_category_question = array('question_count' => tep_question_in_faq_category_count($faq_category['faq_category_id']));
-                    $faq_array = tep_array_merge($faq_category,$faq_category_childs, $faq_category_question);
-                     $faq_info = new objectInfo($faq_array);
+                }else if($_GET['sort'] == 'title'){
+                  if($_GET['type'] == 'desc'){
+                    $faq_str = 'title desc';
+                    $faq_type = 'asc';
+                    }else{
+                    $faq_str = 'title asc';
+                    $faq_type = 'desc';
                     }
-                  }
-    $page_str  = '';
-    foreach ($cid_array as $c_key => $c_value) {
-      if ($_GET['cID'] == $c_value) {
-        break; 
-      }
-    }
-    if($_GET['page'] == ''){$_GET['page'] = '1';}
-    if ($c_key > 0) {
-      $faq_site_id = tep_db_query("select * from ".TABLE_FAQ_CATEGORIES_DESCRIPTION." where faq_category_id  = '".$cid_array[$c_key-1]."'");
-      $faq_site_id_row = tep_db_fetch_array($faq_site_id); 
-      $page_str .= '<a onclick=\'show_faq("",'.$cid_array[$c_key-1].',"",'.$_GET['page'].','.$faq_site_id_row['site_id'].')\' href="javascript:void(0);" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
-    }
-    if ($c_key < (count($cid_array) - 1)) {
-      $faq_site_id = tep_db_query(" select * from ".TABLE_FAQ_CATEGORIES_DESCRIPTION." where faq_category_id  = '".$cid_array[$c_key+1]."'");
-      $faq_site_id_row = tep_db_fetch_array($faq_site_id); 
-      $page_str .= '<a onclick=\'show_faq("",'.$cid_array[$c_key+1].',"",'.$_GET['page'].','.$faq_site_id_row['site_id'].')\' href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
-    }else{
-      $page_str .= '<font color="#000000">'.IMAGE_NEXT.'></font>'; 
-    }
-    $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
-    $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-    $heading[] = array('align' => 'left', 'text' => $faq_info->title);
-    $heading[] = array('align' => 'right', 'text' => $page_str);
-    $form_str = tep_draw_form('newfaqcategory',FILENAME_FAQ,'action=update_faq_category&site_id='.$_GET['site_id'].'&cPath='.$_GET['cPath'].'&site_id='.$_GET['site_id'], 'post');
-    $dc_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
-    $contents = array();
-    $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$faq_info->site_id));
-    $contents[]['text'] = array(
-        array('text' => ENTRY_SITE),
-        array('text' => $site_name['romaji'])
-        ); 
-    $contents[]['text'] = array(
-        array('text' => '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">URL'),
-        array('text' => tep_draw_input_field('romaji',$faq_info->romaji,'size="40" id="cromaji"onfocus="o_submit_single = false;"onblur="o_submit_single = true;"'.$disabled).'</span><input type="button" '.$disabled.'onclick = "faq_c_is_set_romaji(\''.$current_category_id.'\',\''.$faq_info->faq_category_id.'\',\''.$faq_info->site_id.'\')"value="'.TEXT_ROMAJI_IS_SET.'">'.'<input type="button"'.$disabled.' onclick = "faq_c_is_set_error_char()"value="'.IS_SET_ERROR_CHAR.'"><br><span id="cromaji_error">')
-        );
-    $contents[]['text'] = array(
-        array('params' => 'width="30%"','text' => TEXT_NEW_FAQ_CATEGORY_TITLE),
-        array('text' => tep_draw_input_field('title',$faq_info->title,'id="title"onfocus="o_submit_single = false;"onblur="o_submit_single = true;"size="40"'.$disabled).'<br><span id="title_error"></span>')
-        ); 
-    $contents[]['text'] = array(
-        array('text' => TEXT_NEW_FAQ_CATEGORY_KEYWORDS),
-        array('text' => tep_draw_textarea_field('keywords','soft',30,7,$faq_info->keywords,$disabled.'onfocus="o_submit_single = false;"onblur="o_submit_single = true;" style="resize: vertical;"'))
-        ); 
-    $contents[]['text'] = array(
-        array('text' => TEXT_NEW_FAQ_CATEGORY_DESCRIPTION),
-        array('text' => tep_draw_textarea_field('description','soft',30,7,$faq_info->description,$disabled.'onfocus="o_submit_single = false;"onblur="o_submit_single = true;" style="resize: vertical;"'))
-        ); 
-    $contents[]['text'] = array(
-        array('text' => TEXT_NEW_FAQ_CATEGORY_SORT_ORDER),
-        array('text' =>
-          tep_draw_input_field('sort_order',$faq_info->sort_order,'size="5" style="text-align:right"'.$disabled))
-        ); 
-    $contents[]['text'] = array(
-        array('text' => $faq_category_inputs_string),
-        array('text' => tep_draw_hidden_field('faq_category_id',$faq_info->faq_category_id).tep_draw_hidden_field('site_id',$faq_info->site_id))
-        ); 
-    $contents[]['text'] = array(
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_USER_ADDED).(tep_not_null($faq_info->user_added)?$faq_info->user_added:TEXT_UNSET_DATA)), 
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_DATE_ADDED).((tep_not_null($faq_info->created_at))?$faq_info->created_at:TEXT_UNSET_DATA))
-    );
-    $contents[]['text'] = array(
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_USER_UPDATE).(tep_not_null($faq_info->user_update)?$faq_info->user_update:TEXT_UNSET_DATA)),
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_DATE_UPDATE).((tep_not_null($faq_info->updated_at))?$faq_info->updated_at:TEXT_UNSET_DATA))
-    );
-    if($disabled){
-          $faq_save = tep_html_element_button(TEXT_SAVE,$disabled);
-    }else{
-          $faq_save = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_SAVE, 'id="button_save" onclick="faq_category_form_validator(\''.$current_category_id.'\',\''.$faq_info->faq_category_id.'\',\''.$faq_info->site_id.'\', \''.$ocertify->npermission.'\')"').  '</a>';
-    }
-    if($ocertify->npermission >= 15){
-       if($disabled){
-          $faq_del =tep_html_element_button(IMAGE_DELETE,$disabled);
-       }else{
-          $faq_del = '<a href="'.tep_href_link(FILENAME_FAQ,'cPath=' . $cPath . '&cID=' .  $faq_info->faq_category_id . '&action=delete_faq_confirm').'">'.tep_html_element_button(IMAGE_DELETE).'</a>'; 
-       }
-    } 
-    $button[] = $faq_save.$faq_del;
-    if(!empty($button)){
-         $buttons = array('align' => 'center', 'button' => $button);
-    }
-
-    $notice_box->get_form($form_str);
-    $notice_box->get_heading($heading);
-    $notice_box->get_contents($contents, $buttons);
-    $notice_box->get_eof(tep_eof_hidden());
-    echo $notice_box->show_notice();
-
-}else if($_GET['qID'] != '' && $_GET['cID'] == '' && $_GET['qID'] != -1){
-                  if(isset($_GET['search']) && $_GET['search']) {
-                    $faq_query_raw = "select 
-                      fqd.is_show,
-                      fq2c.faq_category_id,
-                      fqd.faq_question_id,
-                      fqd.romaji,
-                      fqd.ask,
-                      fqd.keywords,
-                      fqd.answer,
-                      fq.sort_order,
-                      fq.created_at,
-                      fq.updated_at,
-                      fqd.site_id 
-                      from ".TABLE_FAQ_QUESTION." fq, 
-                           ".TABLE_FAQ_QUESTION_DESCRIPTION." fqd ,
-                           ".TABLE_FAQ_QUESTION_TO_CATEGORIES." fq2c 
-                      where fq.id = fqd.faq_question_id 
-                      and fq.id = fq2c.faq_question_id 
-                      and fqd.ask like '%".$_GET['search']."%' 
-                      order by fq.sort_order,fqd.ask,fq.id  
-                      ";
-                  }else if(isset($_GET['site_id'])&&$_GET['site_id']){
-                    $faq_query_raw = "select * from (
-                      select 
-                      fqd.is_show,
-                      fq2c.faq_category_id,
-                      fqd.faq_question_id,
-                      fqd.romaji,
-                      fqd.ask,
-                      fqd.keywords,
-                      fqd.answer,
-                      fq.sort_order,
-                      fq.created_at,
-                      fq.updated_at,
-		      fq.user_added,
-		      fq.user_update,
-                      fqd.site_id 
-                      from ".TABLE_FAQ_QUESTION." fq, 
-                           ".TABLE_FAQ_QUESTION_DESCRIPTION." fqd ,
-                           ".TABLE_FAQ_QUESTION_TO_CATEGORIES." fq2c 
-                      where fq.id = fqd.faq_question_id 
-                      and fq.id = fq2c.faq_question_id 
-                      and fq2c.faq_category_id = '". $current_category_id . "' 
-                      order by fqd.site_id DESC
-                      ) c  
-                      where ".$sql_site_where." 
-                      or site_id = 0 
-                      group by c.faq_question_id 
-                      order by c.sort_order,c.ask,c.faq_question_id 
-                      ";
-                  }else{
-                    $faq_query_raw = "select * from (
-                      select 
-                      fqd.is_show,
-                      fq2c.faq_category_id,
-                      fqd.faq_question_id,
-                      fqd.romaji,
-                      fqd.ask,
-                      fqd.keywords,
-                      fqd.answer,
-                      fq.sort_order,
-                      fq.created_at,
-                      fq.updated_at,
-		      fq.user_added,
-		      fq.user_update,
-                      fqd.site_id 
-                      from ".TABLE_FAQ_QUESTION." fq, 
-                           ".TABLE_FAQ_QUESTION_DESCRIPTION." fqd ,
-                           ".TABLE_FAQ_QUESTION_TO_CATEGORIES." fq2c 
-                      where fq.id = fqd.faq_question_id 
-                      and fq.id = fq2c.faq_question_id 
-                      and fq2c.faq_category_id = '". $current_category_id . "' 
-                      order by fqd.site_id DESC
-                      ) c  
-                      group by c.faq_question_id 
-                      order by c.sort_order,c.ask,c.faq_question_id 
-                      ";
-                  }
+                }else if($_GET['sort'] == 'is_show'){
+                  if($_GET['type'] == 'desc'){
+                    $faq_str = 'is_show desc';
+                    $faq_type = 'asc';
+                    }else{
+                    $faq_str = 'is_show asc';
+                    $faq_type = 'desc';
+                    }
+                }
+     $faq_query_raw = "select * from faq_sort where parent_id = '".$current_category_id."' and title like '%".$_GET['search']."%' and ".$sql_site_where." order by ".$faq_str;
                   $faq_split = new splitPageResults($_GET['page'],MAX_DISPLAY_FAQ_ADMIN,
                   $faq_query_raw,$faq_query_number);
                   $_faq_query = tep_db_query($faq_query_raw);
                   $qid_array = array();
                   while($_faq_info = tep_db_fetch_array($_faq_query)){
-                    $qid_array[] = $_faq_info['faq_question_id'];
-                    if((isset($_GET['qID']) && $_GET['qID'] == $_faq_info['faq_question_id']) && (!isset($_GET['action']) || substr($_GET['action'], 0, 4) != 'new_')){
+                    $id_array[] = $_faq_info['id'];
+                    if((isset($_GET['qID']) && $_GET['qID'] == $_faq_info['info_id'] && $_GET['info_type'] == 'q') && (!isset($_GET['action']) || substr($_GET['action'], 0, 4) != 'new_')){
+                      $qInfo = new objectInfo($_faq_info);
+                    }
+                    if((isset($_GET['cID']) && $_GET['cID'] == $_faq_info['info_id'] && $_GET['info_type'] == 'c') && (!isset($_GET['action']) || substr($_GET['action'], 0, 4) != 'new_')){
                       $qInfo = new objectInfo($_faq_info);
                     }
                   }
+    if($qInfo->info_type == 'q'){
+    $faq_q = tep_db_fetch_array(tep_db_query("select * from ".TABLE_FAQ_QUESTION." where id = '".$qInfo->info_id."'"));
+    $faq_q_raw = tep_db_fetch_array(tep_db_query("select * from ".TABLE_FAQ_QUESTION_DESCRIPTION." where faq_question_id = '".$qInfo->info_id."' and site_id = '".$qInfo->site_id."'"));
+    }else if($qInfo->info_type == 'c'){
+    $faq_c = tep_db_fetch_array(tep_db_query("select * from ".TABLE_FAQ_CATEGORIES." where id = '".$qInfo->info_id."'"));
+    $faq_c_raw = tep_db_fetch_array(tep_db_query("select * from ".TABLE_FAQ_CATEGORIES_DESCRIPTION." where faq_category_id = '".$qInfo->info_id."' and site_id = '".$qInfo->site_id."'"));
+    }
     $page_str  = '';
-    foreach ($qid_array as $q_key => $q_value) {
-      if ($_GET['qID'] == $q_value) {
-        break; 
+
+    foreach ($id_array as $q_key => $q_value) {
+      if ($_GET['faq_id'] == $q_value) {
+        break;
       }
     }
     if($_GET['page'] == ''){$_GET['page'] = '1';}
     if ($q_key > 0) {
-      $qid_site_id = tep_db_query("select * from ".TABLE_FAQ_QUESTION_DESCRIPTION." where faq_question_id = '".$qid_array[$q_key-1]."'");
+      $qid_site_id = tep_db_query("select * from `faq_sort` where id = '".$id_array[$q_key-1]."'");
       $qid_site_id_row = tep_db_fetch_array($qid_site_id); 
-      $page_str .= '<a onclick=\'show_faq("","",'.$qid_array[$q_key-1].','.$_GET['page'].','.$qid_site_id_row['site_id'].')\' href="javascript:void(0);" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+      $page_str .= '<a onclick=\'show_faq("","",'.$id_array[$q_key-1].','.$_GET['page'].','.$qid_site_id_row['site_id'].','.$qid_site_id_row['id'].','.$qid_site_id_row['info_type'].')\' href="javascript:void(0);" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
     }
-    if ($q_key < (count($qid_array) - 1)) {
-      $qid_site_id = tep_db_query(" select * from ".TABLE_FAQ_QUESTION_DESCRIPTION." where faq_question_id  = '".$qid_array[$q_key+1]."'");
+    if ($q_key < (count($id_array) - 1)) {
+      $qid_site_id = tep_db_query(" select * from `faq_sort` where id  = '".$id_array[$q_key+1]."'");
       $qid_site_id_row = tep_db_fetch_array($qid_site_id); 
-      $page_str .= '<a onclick=\'show_faq("","",'.$qid_array[$q_key+1].','.$_GET['page'].','.$qid_site_id_row['site_id'].')\' href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
+      $page_str .= '<a onclick=\'show_faq("","",'.$id_array[$q_key+1].','.$_GET['page'].','.$qid_site_id_row['site_id'].','.$qid_site_id_row['id'].','.$qid_site_id_row['info_type'].')\' href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
     }else{
       $page_str .= '<font color="#000000">'.IMAGE_NEXT.'></font>'; 
     }
- 
     $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
     $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
     $heading[] = array('align' => 'left', 'text' => TEXT_INFO_HEADING_EDIT_FAQ_QUESTION);
     $heading[] = array('align' => 'right', 'text' => $page_str);
+    if($qInfo->info_type == 'q'){
     $form_str = tep_draw_form('newfaqcategory',FILENAME_FAQ,'action=update_faq_question&cPath='.$_GET['cPath'].  '&site_id='.$_GET['site_id'].'&qID='.$_GET['qID'],'post');
+    }else if($qInfo->info_type == 'c'){
+    $form_str = tep_draw_form('newfaqcategory',FILENAME_FAQ,'action=update_faq_category&cPath='.$_GET['cPath'].  '&site_id='.$_GET['site_id'].'&cID='.$_GET['cID'],'post');
+    }
     $dc_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
     $contents = array();
-    $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$qInfo->site_id));
+    if($qInfo->info_type == 'q'){
+    $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$faq_q_raw['site_id']));
+    }else if($qInfo->info_type == 'c'){
+    $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$faq_c_raw['site_id']));
+    }
     $contents[]['text'] = array(
         array('text' => ENTRY_SITE),
         array('text' => $site_name['romaji'])
         ); 
+    if($qInfo->info_type == 'q'){
+     $contents[]['text'] = array(
+        array('text' => '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">URL'),
+        array('text' => tep_draw_input_field('romaji',$faq_q_raw['romaji'],'id="qromaji"size="40" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" '.$disabled).  '</span><input type="button" '.$disabled.'onclick = "faq_q_is_set_romaji(\''.$current_category_id.'\',\''.$faq_q_raw['faq_question_id'].'\',\''.$faq_q_raw['site_id'].'\')" value="'.TEXT_ROMAJI_IS_SET.'">'.  '<input type="button" '.$disabled.' onclick = "faq_q_is_set_error_char()" value="'.IS_SET_ERROR_CHAR.'"><br><span id="qromaji_error">')
+        );
+        
+    }else if($qInfo->info_type == 'c'){
     $contents[]['text'] = array(
         array('text' => '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">URL'),
-        array('text' => tep_draw_input_field('romaji',$qInfo->romaji,'id="qromaji"size="40" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" '.$disabled).  '</span><input type="button" '.$disabled.'onclick = "faq_q_is_set_romaji(\''.$current_category_id.'\',\''.$qInfo->faq_question_id.'\',\''.$qInfo->site_id.'\')" value="'.TEXT_ROMAJI_IS_SET.'">'.  '<input type="button" '.$disabled.' onclick = "faq_q_is_set_error_char()" value="'.IS_SET_ERROR_CHAR.'"><br><span id="qromaji_error">')
+        array('text' => tep_draw_input_field('romaji',$faq_c_raw['romaji'],'id="cromaji"size="40" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" '.$disabled).  '</span><input type="button" '.$disabled.'onclick = "faq_q_is_set_romaji(\''.$current_category_id.'\',\''.$faq_c_raw['faq_question_id'].'\',\''.$faq_c_raw['site_id'].'\')" value="'.TEXT_ROMAJI_IS_SET.'">'.  '<input type="button" '.$disabled.' onclick = "faq_q_is_set_error_char()" value="'.IS_SET_ERROR_CHAR.'"><br><span id="cromaji_error">')
         );
+    }
+    if($qInfo->info_type == 'q'){
     $contents[]['text'] = array(
         array('params' => 'width="30%"','text' => TEXT_NEW_FAQ_QUESTION_KEYWORDS),
-        array('text' => tep_draw_textarea_field('keywords','soft',30,7,$qInfo->keywords,$disabled.'onfocus="o_submit_single = false;"onblur="o_submit_single = true;"style="resize: vertical;"'))
+        array('text' => tep_draw_textarea_field('keywords','soft',30,7,$faq_q_raw['keywords'],$disabled.'onfocus="o_submit_single = false;"onblur="o_submit_single = true;"style="resize: vertical;"'))
         );
+    }else if($qInfo->info_type == 'c'){
+    $contents[]['text'] = array(
+        array('params' => 'width="30%"','text' => TEXT_NEW_FAQ_CATEGORY_TITLE),
+        array('text' => tep_draw_input_field('title',$faq_c_raw['title'],'id="title"onfocus="o_submit_single = false;"onblur="o_submit_single = true;"size="40"'.$disabled).'<br><span id="title_error"></span>')
+        );
+    }
+    if($qInfo->info_type == 'q'){
     $contents[]['text'] = array(
         array('text' => TEXT_NEW_FAQ_QUESTION_ASK),
-        array('text' => tep_draw_input_field('ask',$qInfo->ask,'id="title"'.$disabled.'onfocus="o_submit_single = false;"onblur="o_submit_single = true;"size="40"').'<br><span id="title_error"></span>')
+        array('text' => tep_draw_input_field('ask',$faq_q_raw['ask'],'id="title"'.$disabled.'onfocus="o_submit_single = false;"onblur="o_submit_single = true;"size="40"').'<br><span id="title_error"></span>')
         );
+    }else if($qInfo->info_type == 'c'){
+    $contents[]['text'] = array(
+        array('text' => TEXT_NEW_FAQ_CATEGORY_KEYWORDS),
+        array('text' => tep_draw_textarea_field('keywords','soft',30,7,$faq_c_raw['keywords'],$disabled.'onfocus="o_submit_single = false;"onblur="o_submit_single = true;" style="resize: vertical;"'))
+       );
+    }
+    if($qInfo->info_type == 'q'){
     $contents[]['text'] = array(
         array('text' => TEXT_NEW_FAQ_QUESTION_ANSWER),
-        array('text' => tep_draw_textarea_field('answer','soft',30,7,$qInfo->answer,$disabled.'onfocus="o_submit_single = false;"onblur="o_submit_single = true;" style="resize: vertical;"').'<br>'.TEXT_NEW_FAQ_QUESTION_ANSWER_HELP)
+        array('text' => tep_draw_textarea_field('answer','soft',30,7,$faq_q_raw['answer'],$disabled.'onfocus="o_submit_single = false;"onblur="o_submit_single = true;" style="resize: vertical;"').'<br>'.TEXT_NEW_FAQ_QUESTION_ANSWER_HELP)
         );
+    }else if($qInfo->info_type == 'c'){
+    $contents[]['text'] = array(
+        array('text' => TEXT_NEW_FAQ_CATEGORY_DESCRIPTION),
+        array('text' => tep_draw_textarea_field('description','soft',30,7,$faq_c_raw['description'],$disabled.'onfocus="o_submit_single = false;"onblur="o_submit_single = true;" style="resize: vertical;"'))
+        );
+    }
+    if($qInfo->info_type == 'q'){
+     $contents[]['text'] = array(
+        array('text' => TEXT_NEW_FAQ_QUESTION_SORT_ORDER),
+        array('text' => tep_draw_input_field('sort_order',$faq_q['sort_order'],'size="5"style="text-align:right"'.$disabled.'onfocus="o_submit_single = false;"onblur="o_submit_single = true;"'))
+        );
+    }else if($qInfo->info_type == 'c'){
     $contents[]['text'] = array(
         array('text' => TEXT_NEW_FAQ_QUESTION_SORT_ORDER),
-        array('text' =>
-          tep_draw_input_field('sort_order',$qInfo->sort_order,'size="5"style="text-align:right"'.$disabled.'onfocus="o_submit_single = false;"onblur="o_submit_single = true;"'))
+        array('text' => tep_draw_input_field('sort_order',$faq_c['sort_order'],'size="5"style="text-align:right"'.$disabled.'onfocus="o_submit_single = false;"onblur="o_submit_single = true;"'))
         );
+    }
+    if($qInfo->info_type == 'q'){
     $contents[]['text'] = array(
         array('text' => $faq_question_inputs_string),
-        array('text' => tep_draw_hidden_field('faq_question_id',$qInfo->faq_question_id).  tep_draw_hidden_field('site_id',$qInfo->site_id))
+        array('text' => tep_draw_hidden_field('faq_question_id',$faq_q_raw['faq_question_id']).  tep_draw_hidden_field('site_id',$qInfo->site_id))
         );
+    }else if($qInfo->info_type == 'c'){
     $contents[]['text'] = array(
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_USER_ADDED).(tep_not_null($qInfo->user_added)?$qInfo->user_added:TEXT_UNSET_DATA)), 
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_DATE_ADDED).((tep_not_null($qInfo->created_at))?$qInfo->created_at:TEXT_UNSET_DATA))
-    );
+        array('text' => $faq_question_inputs_string),
+        array('text' => tep_draw_hidden_field('faq_category_id',$faq_c_raw['faq_category_id']).  tep_draw_hidden_field('site_id',$qInfo->site_id))
+        );
+    }
+    if($qInfo->info_type == 'q'){
     $contents[]['text'] = array(
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_USER_UPDATE).(tep_not_null($qInfo->user_update)?$qInfo->user_update:TEXT_UNSET_DATA)),
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_DATE_UPDATE).((tep_not_null($qInfo->updated_at))?$qInfo->updated_at:TEXT_UNSET_DATA))
+            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_USER_ADDED).(tep_not_null($faq_q_raw['user_added'])?$faq_q_raw['user_added']:TEXT_UNSET_DATA)), 
+            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_DATE_ADDED).((tep_not_null($faq_q_raw['created_at']))?$faq_q_raw['created_at']:TEXT_UNSET_DATA))
     );
+    }else if($qInfo->info_type == 'c'){
+    $contents[]['text'] = array(
+            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_USER_ADDED).(tep_not_null($faq_c_raw['user_added'])?$faq_c_raw['user_added']:TEXT_UNSET_DATA)), 
+            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_DATE_ADDED).((tep_not_null($faq_c_raw['created_at']))?$faq_c_raw['created_at']:TEXT_UNSET_DATA))
+    );
+    }
+    if($qInfo->info_type == 'q'){
+    $contents[]['text'] = array(
+            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_USER_UPDATE).(tep_not_null($faq_q_raw['user_update'])?$faq_q_raw['user_update']:TEXT_UNSET_DATA)),
+            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_DATE_UPDATE).((tep_not_null($faq_q_raw['updated_at']))?$faq_q_raw['updated_at']:TEXT_UNSET_DATA))
+    );
+    }else if($qInfo->info_type == 'c'){
+    $contents[]['text'] = array(
+            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_USER_UPDATE).(tep_not_null($faq_c_raw['user_update'])?$faq_c_raw['user_update']:TEXT_UNSET_DATA)),
+            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_DATE_UPDATE).((tep_not_null($faq_c_raw['updated_at']))?$faq_c_raw['updated_at']:TEXT_UNSET_DATA))
+    );
+    }
+    if($qInfo->info_type == 'q'){
     if($disabled){
         $faq_qid_save = tep_html_element_button(TEXT_SAVE,$disabled);
     }else{
-        $faq_qid_save = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_SAVE, 'onclick="faq_question_form_validator(\''.$current_category_id.'\',\''.$qInfo->faq_question_id.'\',\''.$qInfo->site_id.'\',\''.$ocertify->npermission.'\');"').'</a>';
+        $faq_qid_save = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_SAVE, 'onclick="faq_question_form_validator(\''.$current_category_id.'\',\''.$faq_q_raw['faq_question_id'].'\',\''.$faq_q_raw['site_id'].'\',\''.$ocertify->npermission.'\');"').'</a>';
     }
     if($ocertify->npermission >= 15){
       if($disabled){
@@ -6845,6 +6687,21 @@ if($_GET['cID'] != '' && $_GET['qID'] == '' && $_GET['cID'] != -1 ){
       }
     }
    $button[] = $faq_qid_save.$faq_qid_del;
+    }else if($qInfo->info_type == 'c'){
+     if($disabled){
+         $faq_save = tep_html_element_button(TEXT_SAVE,$disabled);
+     }else{
+         $faq_save = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_SAVE, 'id="button_save" onclick="faq_category_form_validator(\''.$current_category_id.'\',\''.$faq_c_raw['faq_category_id'].'\',\''.$faq_q_raw['site_id'].'\', \''.$ocertify->npermission.'\')"').  '</a>';
+     }
+     if($ocertify->npermission >= 15){
+         if($disabled){
+            $faq_del =tep_html_element_button(IMAGE_DELETE,$disabled);
+         }else{
+            $faq_del = '<a href="javascript:void(0);" onclick="delete_fix_faq_category(\''.urlencode('cPath=' . $cPath .  '&cID=' .  $faq_c_raw['faq_category_id']).'\');">'.tep_html_element_button(IMAGE_DELETE).'</a>';
+         }
+     } 
+    $button[] = $faq_save.$faq_del;
+    }
    if(!empty($button)){
          $buttons = array('align' => 'center', 'button' => $button);
     }
