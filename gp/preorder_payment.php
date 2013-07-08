@@ -497,14 +497,17 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
           if (sizeof($selection) > 1) { 
             if (isset($payment_error_str)) {
               echo '<div class="box_waring">'; 
+              echo TEXT_PAYMENT_ERROR_TOP;
               echo $payment_error_str; 
               echo '</div>'; 
             }
           } else {
               echo '<div class="box_waring">'; 
+              echo TEXT_PAYMENT_ERROR_TOP;
               echo TEXT_NO_PAYMENT;
               echo '</div>'; 
           }
+          echo "<br>";
         }
     if (sizeof($selection) > 1) { 
       ?>
