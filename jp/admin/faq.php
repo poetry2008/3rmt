@@ -585,9 +585,11 @@ function show_faq(ele,cID,qID,page,action_sid){
  site_id = '<?php echo (isset($_GET['site_id'])&&$_GET['site_id']!=''?($_GET['site_id']):'-1');?>';
  var cPath  = $("#cPath").val();
  var search = $('#search').val();
+ var sort = $("#sort").val(); 
+ var type = $("#type").val();
  $.ajax({
  url: 'ajax.php?&action=edit_faq',
- data: {cID:cID,qID:qID,page:page,site_id:site_id,search:search,action_sid:action_sid,cPath:cPath} ,
+ data: {cID:cID,qID:qID,page:page,site_id:site_id,search:search,action_sid:action_sid,cPath:cPath,sort:sort,type:type} ,
  dataType: 'text',
  async : false,
  success: function(data){
@@ -819,6 +821,8 @@ require("includes/note_js.php");
 <?php 
                 echo '<input type="hidden" id="search" value="'.$_GET['search'].'">';
                 echo '<input type="hidden" id="cPath" value="'.$_GET['cPath'].'">';
+                echo '<input type="hidden" id="sort" value="'.$_GET['sort'].'">';
+                echo '<input type="hidden" id="type" value="'.$_GET['type'].'">';
                  if(!isset($_GET['type']) || $_GET['type'] == ''){
                        $_GET['type'] = 'asc';
                  }
