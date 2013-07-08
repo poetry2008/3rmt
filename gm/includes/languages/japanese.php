@@ -336,7 +336,7 @@ define('TEXT_NO_NEW_PRODUCTS', '現在商品は登録されていません...');
 define('TEXT_UNKNOWN_TAX_RATE', '税率不明');
 
 define('TEXT_REQUIRED', '必須');
-define('TEXT_NO_PAYMENT', '有効な支払方法がありません。'.STORE_NAME.'までお問い合わせください。');
+define('TEXT_NO_PAYMENT', 'エラー：有効な支払方法がありません。'.STORE_NAME.'までお問い合わせください。');
 define('TEXT_WEIGHT_ERROR','※要問合※&nbsp;総重量が規定の範囲を超えました。');
 define('TEXT_WEIGHT_ERROR_ONE','個以内に個数を変更してください。');
 
@@ -512,4 +512,5 @@ define('MSG_TEXT_NULL', '無し');
 define('JS_REVIEW_BAN_CHARACTER','※ 投稿禁止ワードが含まれているため投稿できません。'.'\n');
 define('MODULE_ORDER_TOTAL_TAX_TITLE', '消費税');
 define('NUM_UNIT_TEXT', '個');
+define('TEXT_PAYMENT_ERROR_TOP','エラー：');
 ?>
