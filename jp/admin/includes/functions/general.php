@@ -7591,6 +7591,9 @@ function   tep_order_status_change($oID,$status){
     tep_db_query("UPDATE `".TABLE_FAQ_CATEGORIES_DESCRIPTION."` SET `is_show` =
         '".intval($status)."' WHERE `faq_category_id` =".$faq_category_id.
         " and `site_id` = '".$site_id."' LIMIT 1 ;");
+    tep_db_query("UPDATE `".'faq_sort'."` SET `is_show` =
+        '".intval($status)."' WHERE `info_id` =".$faq_category_id.
+        " and `site_id` = '".$site_id."' LIMIT 1 ;");
     return true;
   }
 
@@ -7658,9 +7661,13 @@ function   tep_order_status_change($oID,$status){
  ------------------------------------ */
   function tep_set_faq_question_status_by_site_id($question_id, $status, $site_id) {
     if ($status == '1') {
+      tep_db_query("update " . 'faq_sort' . " set is_show = '1' where
+          info_id = '" . $question_id . "' and site_id = '".$site_id."'");
       return tep_db_query("update " . TABLE_FAQ_QUESTION_DESCRIPTION . " set is_show = '1' where
           faq_question_id = '" . $question_id . "' and site_id = '".$site_id."'");
     } elseif ($status == '0') {
+      tep_db_query("update " . 'faq_sort'. " set is_show = '0' where 
+          info_id = '" . $question_id . "' and site_id = '".$site_id."'");
       return tep_db_query("update " . TABLE_FAQ_QUESTION_DESCRIPTION . " set is_show = '0' where 
           faq_question_id = '" . $question_id . "' and site_id = '".$site_id."'");
     } else {
