@@ -488,6 +488,9 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
         echo '<span class="errorText"><b>'.TEXT_INPUT_ERROR_INFO.'</span></b><br><br>';
       }
 ?>
+     
+    <h3><b><?php echo FORM_FIELD_PREORDER_PAYMENT; ?></b></h3>
+    <div class="checkout_payment_info">  
     <?php
       $selection = $payment_modules->selection(1); 
         if ($payment_error == true) {
@@ -495,19 +498,14 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
             if (isset($payment_error_str)) {
               echo '<div class="box_waring">'; 
               echo $payment_error_str; 
-              echo '</div><br>'; 
+              echo '</div>'; 
             }
           } else {
               echo '<div class="box_waring">'; 
-              echo TEXT_REQUIRED;
-              echo '</div><br>'; 
+              echo TEXT_NO_PAYMENT;
+              echo '</div>'; 
           }
         }
-    ?>
-     
-    <h3><b><?php echo FORM_FIELD_PREORDER_PAYMENT; ?></b></h3>
-    <div class="checkout_payment_info">  
-    <?php
     if (sizeof($selection) > 1) { 
       ?>
       <?php

@@ -5293,7 +5293,7 @@ if (isset($_SESSION['campaign_fee'])) {
       echo "<div>";
       echo '<div class="float_left">';
       echo TEXT_ENTER_PAYMENT_INFORMATION;
-      echo '</div><div></div>';
+      echo '</div><div>&nbsp;</div>';
       echo "</div>";
     }
   ?>
@@ -5301,6 +5301,7 @@ if (isset($_SESSION['campaign_fee'])) {
 <?php  
      if(isset($_SESSION['payment_error'])){
 	 ?>
+     <br>
      <div class="box_waring">
      <?php
      if(is_array($_SESSION['payment_error'])){
