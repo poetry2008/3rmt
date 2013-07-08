@@ -5304,6 +5304,7 @@ if (isset($_SESSION['campaign_fee'])) {
      <br>
      <div class="box_waring">
      <?php
+     echo TEXT_PAYMENT_ERROR_TOP;
      if(is_array($_SESSION['payment_error'])){
            foreach($_SESSION['payment_error'] as $key=>$value){
                if (is_array($value)) {
@@ -5789,6 +5790,7 @@ if (isset($_SESSION['campaign_fee'])) {
     <div class="box_waring">
     <?php }?>
      <?php
+     echo TEXT_PAYMENT_ERROR_TOP;
      if(is_array($_SESSION['payment_error'])){
            foreach($_SESSION['payment_error'] as $key=>$value){
                if (is_array($value)) {

@@ -121,7 +121,7 @@ class guidance extends basePayment  implements paymentInterface  {
  ------------------------*/
   function get_error() {
     return array('title' => $this->title.'エラー!',
-        'error' => 'エラー：案内をよく読み、手順に沿ってお手続きください。'); 
+        'error' => TS_MODULE_PAYMENT_GUIDANCE_ERROR); 
   }
 /*------------------------
  功能：获取预约错误信息 
@@ -129,7 +129,7 @@ class guidance extends basePayment  implements paymentInterface  {
  返回值：预约错误信息(string) 
  -----------------------*/  
   function get_preorder_error($error_type) {
-    return 'エラー：案内をよく読み、手順に沿ってお手続きください。'; 
+    return TS_MODULE_PAYMENT_GUIDANCE_ERROR; 
   }
 /*---------------------------
  功能：检查SQL
