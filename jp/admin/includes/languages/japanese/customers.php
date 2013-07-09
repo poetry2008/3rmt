@@ -64,3 +64,7 @@ define('TEXT_PREORDER_MADE','予約作成');
 define('TEXT_KEEP_ORDER','保存して注文する');
 define('TEXT_KEEP_PREORDER','保存して予約する');
 define('BUTTON_EXIT_HISTORY_TEXT', '退会履歴');
+define('CUSTOMERS_YES_TEXT', 'あり');
+define('CUSTOMERS_NO_TEXT', 'なし');
+define('TEXT_SORT_ASC','▲');
+define('TEXT_SORT_DESC','▼');

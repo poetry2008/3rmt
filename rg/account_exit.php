@@ -70,7 +70,7 @@
          'created_at' => $now_time, 
         ); 
     tep_db_perform(TABLE_CUSTOMERS_EXIT_HISTORY, $sql_data_array); 
-    tep_db_query("update ".TABLE_CUSTOMERS." set is_quited = '1', quited_date = '".$now_time."', point = '0', customers_guest_chk = '1', customers_password = '', origin_password = '', customers_newsletter = '0', reset_flag = '0', is_seal = '0', is_send_mail = '0', is_calc_quantity = '0', pic_icon = '', customers_fax = '' where customers_id = '".$customer_id."'");
+    tep_db_query("update ".TABLE_CUSTOMERS." set is_quited = '1', quited_date = '".$now_time."', point = '0', customers_guest_chk = '1', customers_password = '', origin_password = '', customers_newsletter = '0', reset_flag = '0', is_seal = '0', is_send_mail = '0', is_calc_quantity = '0', pic_icon = '', customers_fax = '', is_exit_history = '1' where customers_id = '".$customer_id."'");
 
     tep_db_query("delete from ".TABLE_CUSTOMERS_BASKET." where customers_id = '".$customer_id."'");
     tep_db_query("delete from ".TABLE_CUSTOMERS_BASKET_OPTIONS." where customers_id = '".$customer_id."'");
