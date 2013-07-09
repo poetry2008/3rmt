@@ -7031,13 +7031,13 @@ if($_GET['cID'] == -1){
     $dc_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
     $faq_site_arr = array_intersect($show_site_arr,$site_array);
     if(isset($_GET['cPath']) && $_GET['cPath'] != ''){
-      $site_id_name = "<select id='faq_site_id' name='site_id' $disabled>";
+      $site_id_name = "<select id='faq_site_id' name='site_id' ".$disabled." onchange='faq_c_is_set_romaji(\"".$current_category_id."\",\"\",\"".$site_id."\")'>";
       $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$_GET['action_sid']));
       $site_id_name .= "<option value='".$site_name['id'] ."'>".$site_name['name']."</option>";
       $site_id_name .= "</select>";
       $site_id_name .= '&nbsp;<font color="#ff0000;">*'.TEXT_REQUIRED.'</font>'; 
     }else{
-    $site_id_name = "<select id='faq_site_id' name='site_id' $disabled>";
+    $site_id_name = "<select id='faq_site_id' name='site_id' ".$disabled." onchange='faq_c_is_set_romaji(\"".$current_category_id."\",\"\",\"".$site_id."\")'>";
     foreach($faq_site_arr as $value){
       if($value!=0){
         $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$value));
@@ -7054,7 +7054,7 @@ if($_GET['cID'] == -1){
         ); 
     $contents[]['text'] = array(
         array('text' => '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'"><input type="hidden" name="user_added" value="'.$_SESSION['user_name'].'">URL'),
-        array('text' => tep_draw_input_field('romaji','','id="cromaji"onfocus="o_submit_single = false;"onblur="o_submit_single = true;" size="40"').  '</span><input type="button" onclick = "faq_c_is_set_romaji(\''.$current_category_id.'\',\'\',\''.$site_id.'\')" value="'.TEXT_ROMAJI_IS_SET.'">'.  '<input type="button" onclick = "faq_c_is_set_error_char(\'\')" value="'.IS_SET_ERROR_CHAR.'"><br><span id="cromaji_error">')
+        array('text' => tep_draw_input_field('romaji','','id="cromaji" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" size="40"').  '</span><input type="button" onclick = "faq_c_is_set_romaji(\''.$current_category_id.'\',\'\',\''.$site_id.'\')" value="'.TEXT_ROMAJI_IS_SET.'">'.  '<input type="button" onclick = "faq_c_is_set_error_char(\'\')" value="'.IS_SET_ERROR_CHAR.'"><br><span id="cromaji_error">')
         );
     $contents[]['text'] = array(
         array('params' => 'width="30%"','text' => TEXT_NEW_FAQ_CATEGORY_TITLE),
@@ -7100,13 +7100,13 @@ if($_GET['qID'] == -1){
     $form_str = tep_draw_form('newfaqcategory',FILENAME_FAQ,'action=insert_faq_question'.$url_str,'post');
     $dc_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
     if(isset($_GET['cPath']) && $_GET['cPath'] != ''){
-      $site_id_name = "<select id='faq_site_id' name='site_id' $disabled>";
+      $site_id_name = "<select id='faq_site_id' name='site_id' ". $disabled ." onchange='faq_q_is_set_romaji(\"".$current_category_id."\",\"\",\"".$site_id."\")'>";
       $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$_GET['action_sid']));
       $site_id_name .= "<option value='".$site_name['id'] ."'>".$site_name['name']."</option>";
       $site_id_name .= "</select>";
       $site_id_name .= '&nbsp;<font color="#ff0000;">*'.TEXT_REQUIRED.'</font>'; 
     }else{
-    $site_id_name = "<select id='faq_site_id' name='site_id' $disabled>";
+    $site_id_name = "<select id='faq_site_id' name='site_id' ".$disabled ."  onchange='faq_q_is_set_romaji(\"".$current_category_id."\",\"\",\"".$site_id."\")'>";
     $faq_site_arr = array_intersect($show_site_arr,$site_array);
     foreach($faq_site_arr as $value){
       if($value!=0){
