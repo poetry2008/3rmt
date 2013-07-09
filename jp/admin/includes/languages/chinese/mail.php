@@ -28,4 +28,7 @@ define('TEXT_MAIL_SEARCH_INFO','输入关键字，搜索发送邮件的顾客');
 define('TEXT_MAIL_RESULT_INFO','请从右边的CheckBox选择发送邮件的顾客');
 define('TEXT_LESS_THAN_ONE_SEARCH','没有关键字的搜索形式无法搜索\n请输入至少一个关键字');
 define('TEXT_NO_SELECTED_CHECKBOX','请选择发送邮件地址');
+define('SEARCH_EXIT_CUSTOMERS_TEXT', '退会人员也作为搜索对象');
+define('SEARCH_INCLUDE_EXIT_CUSTOMERS', '包括退会人员');
+define('SEARCH_EXCLUDE_EXIT_CUSTOMERS', '不包括退会人员');
 ?>

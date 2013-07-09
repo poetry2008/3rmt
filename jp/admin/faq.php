@@ -92,8 +92,7 @@
           }
           reset($questions);
           while (list($key, $value) = each($questions)) {
-            $category_ids = '';
-            for ($i = 0, $n = sizeof($value['categories']); $i < $n; $i++) {
+            $category_ids = ''; for ($i = 0, $n = sizeof($value['categories']); $i < $n; $i++) {
               $category_ids .= '\'' . $value['categories'][$i] . '\', ';
             }
             $category_ids = substr($category_ids, 0, -2);
@@ -274,6 +273,7 @@
                 'info_id' => $faq_question_id,
                 'is_show' => '1',
                 'info_type'=> 'q',
+                'updated_at'=>'now()',
                 'search_text' => $search_text
                 );
             print_r($faq_sort_array);
@@ -381,6 +381,7 @@
                 'info_id' => $faq_category_id,
                 'is_show' => '1',
                 'info_type'=> 'c',
+                'updated_at'=> 'now()',
                 'search_text' => $search_text
                 );
             tep_db_perform('faq_sort',$faq_sort_array);
@@ -871,9 +872,11 @@ require("includes/note_js.php");
 
 <div id="categories_tree">
                 <?php
+/*
                   require(DIR_WS_CLASSES . 'faq_tree.php');
                   $osC_FaqTree = new osC_FaqTree;
                   echo $osC_FaqTree->buildTree();
+ */
                 ?>
                 </div>
 <!-- body //-->

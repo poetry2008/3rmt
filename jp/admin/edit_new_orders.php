@@ -74,7 +74,7 @@ if($orders_exit_flag == true){
 // 获取客户信息
 $customer_id_flag = $orders_exit_flag == true ? $order->customer['id'] : $_SESSION['customer_id'];
 $customer_point_query = tep_db_query("
-    select point 
+    select point,is_quited 
     from " . TABLE_CUSTOMERS . " 
     where customers_id = '" . $customer_id_flag . "'");
 $customer_point = tep_db_fetch_array($customer_point_query);
@@ -1454,7 +1454,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
       $cpayment = payment::getInstance();
       $payment_array = payment::getPaymentList();
       foreach($payment_array[0] as $pay_key=>$pay_value){ 
-        $payment_info = $cpayment->admin_get_payment_info_comment($pay_value,$update_customer_email_address,$site_id_flag);
+        $payment_info = $cpayment->admin_get_payment_info_comment($pay_value,$update_customer_email_address,$site_id_flag,1,(($customer_point['is_quited'] == '1')?2:0));
         if(is_array($payment_info)){
 
           switch($payment_info[0]){
@@ -1498,6 +1498,14 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
       $email_printing_order_title,
       $email_printing_order,tep_db_input(stripslashes($update_customer_name))
       ,tep_db_input($update_customer_email_address) , ''); 
+       
+       $exists_customer_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".$_SESSION['customer_id']."'"); 
+       $exists_customer = tep_db_fetch_array($exists_customer_raw); 
+       if ($exists_customer) {
+         if ($exists_customer['is_quited'] == '1') {
+           tep_db_query("update ".TABLE_ORDERS." set is_gray = '2' where orders_id = '".$oID."'"); 
+         }
+       }
        //session unset
        unset($_SESSION['oID']);
        unset($_SESSION['customer_id']);
@@ -2085,9 +2093,12 @@ function address_option_show(action){
 
   while($address_orders_group_array = tep_db_fetch_array($address_orders_group_query)){
   
-  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."' order by id asc");
+  if ($address_orders_group_array['orders_id'] != $oID) {
+    $address_orders_query = tep_db_query("select ah.* from ". TABLE_ADDRESS_HISTORY ." ah, ".TABLE_ORDERS." o where ah.orders_id='".  $address_orders_group_array['orders_id'] ."' and ah.orders_id = o.orders_id and o.orders_id != '".$oID."' and o.is_gray != '1' order by ah.id asc");
+  } else {
+    $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."' order by id asc");
+  }
 
-   
   $json_str_list = '';
   unset($json_old_array);
   while($address_orders_array = tep_db_fetch_array($address_orders_query)){
@@ -2196,7 +2207,11 @@ function address_option_list(value){
   
   while($address_orders_group_array = tep_db_fetch_array($address_orders_group_query)){
   
-  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."' order by id");
+  if ($address_orders_group_array['orders_id'] != $oID) {
+    $address_orders_query = tep_db_query("select ah.* from ". TABLE_ADDRESS_HISTORY ." ah, ".TABLE_ORDERS." o where ah.orders_id='".  $address_orders_group_array['orders_id'] ."' and ah.orders_id = o.orders_id and o.orders_id != '".$oID."' and o.is_gray != '1' order by ah.id");
+  } else {
+    $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."' order by id");
+  }
   
   while($address_orders_array = tep_db_fetch_array($address_orders_query)){
     
@@ -2750,7 +2765,7 @@ $(function() {
       $cpayment = payment::getInstance();
       $payment_array = payment::getPaymentList();
       foreach($payment_array[0] as $pay_key=>$pay_value){ 
-        $payment_info = $cpayment->admin_get_payment_info_comment($pay_value,$_SESSION['email_address'],$site_id_flag);
+        $payment_info = $cpayment->admin_get_payment_info_comment($pay_value,$_SESSION['email_address'],$site_id_flag,1,(($customer_point['is_quited'] == '1')?2:0));
         if(is_array($payment_info)){
 
           switch($payment_info[0]){
@@ -3240,7 +3255,7 @@ a.dpicker {
       $payment_negative_array = array();
       $payment_positive_array = array();
       foreach($payment_array[0] as $pay_key=>$pay_value){ 
-        $payment_info = $cpayment->admin_get_payment_info_comment($pay_value,$email_address_flag,$site_id_flag);
+        $payment_info = $cpayment->admin_get_payment_info_comment($pay_value,$email_address_flag,$site_id_flag,1,(($customer_point['is_quited'] == '1')?2:0));
         if(is_array($payment_info)){
 
           switch($payment_info[0]){

@@ -8,7 +8,6 @@
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PASSWORD_FORGOTTEN);
 
   if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
-//ccdd
     $_POST['email_address'] =  str_replace("\xe2\x80\x8b", '',$_POST['email_address']);
     $val_email_address = tep_db_prepare_input($_POST['email_address']);
     $check_customer_query = tep_db_query("
@@ -16,14 +15,18 @@
                customers_lastname, 
                customers_password, 
                customers_id, 
-               customers_guest_chk 
+               customers_guest_chk,
+               is_quited
         from " . TABLE_CUSTOMERS . " 
         where customers_email_address = '" .  $_POST['email_address'] . "' 
           and site_id =".SITE_ID
     );
     if (tep_db_num_rows($check_customer_query)) {
       $check_customer = tep_db_fetch_array($check_customer_query);
-    if($check_customer['customers_guest_chk'] == '0') {
+      if ($check_customer['is_quited'] == '1') {
+        tep_redirect(tep_href_link(FILENAME_PASSWORD_FORGOTTEN, 'error=2', 'SSL'));
+      } 
+      if($check_customer['customers_guest_chk'] == '0') {
         $random_str = md5(time().$check_customer['customers_id'].$_POST['email_address']); 
 
         $send_url = HTTP_SERVER.'/password_token.php?pud='.$random_str;
@@ -70,7 +73,6 @@
 <!-- header_eof //--> 
 <!-- body //--> 
 <div id="main">
-<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- body_text //-->
 <div id="layout" class="yui3-u">
 <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
@@ -82,7 +84,7 @@
             <tr> 
               <td><?php echo tep_draw_form('password_forgotten', tep_href_link(FILENAME_PASSWORD_FORGOTTEN, 'action=process', 'SSL')); ?>
           <tr>
-            <td width="20%"><?php echo ENTRY_FORGOTTEN_EMAIL_ADDRESS;  ?></td>
+            <td width="20%"><?php echo ENTRY_FORGOTTEN_EMAIL_ADDRESS; ?></td>
             <td><?php echo tep_draw_input_field('email_address', '',
                 'id="input_width" maxlength="96"'); ?></td>
           </tr>
@@ -105,7 +107,7 @@
     echo '          </tr>' . "\n";
   }else if(isset($error)&&$error){
     echo '<tr>';
-    echo '<td colspan="2" class="smallText">'.PASSWORD_USER_EMAIL_ERROR.'</td>';
+    echo '<td colspan="2" class="smallText">'.(($error == '2')?PASSWORD_USER_IS_EXIT_ERROR:PASSWORD_USER_EMAIL_ERROR).'</td>';
     echo '</tr>';
   }
 ?>
@@ -116,7 +118,6 @@
 		</div>
         <?php include('includes/float-box.php');?>
       <!-- body_text_eof //--> 
-<?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
   <!-- body_eof //-->  
   <!-- footer //--> 
     <!-- footer_eof //-->

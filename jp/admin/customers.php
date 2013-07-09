@@ -490,7 +490,7 @@ if (r_value == '1') {
    delete_select_customers(r_str, '<?php echo $ocertify->npermission;?>');
    }
 }
-$(document).ready(function() { 
+$(document).ready(function() {
   <?php //监听按键?> 
   $(document).keyup(function(event) {
     if (event.which == 27) {
@@ -916,7 +916,6 @@ $(document).ready(function() {
              c.customers_email_address, 
              a.entry_country_id, 
              c.customers_guest_chk,
-	     c.is_quited,
 	     ci.user_update,
              ci.customers_info_date_account_created as date_account_created, 
              ci.customers_info_date_account_last_modified as date_account_last_modified, 
@@ -954,7 +953,7 @@ $(document).ready(function() {
         $cInfo = new objectInfo($cInfo_array);
       }
 
-    if($customers['customers_guest_chk'] == 1 || $customers['is_quited'] == 1) {
+    if($customers['customers_guest_chk'] == 1) {
       $type = TABLE_HEADING_MEMBER_TYPE_GUEST;
     } else {
       $type = TABLE_HEADING_MEMBER_TYPE_MEMBER;

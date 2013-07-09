@@ -1577,6 +1577,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
              o.confirm_payment_time, 
              o.torihiki_date_end, 
              o.site_id,
+             o.is_gray,
              o.read_flag
                from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                where ".$sort_where." o.customers_email_address = '" . tep_db_input($cEmail) . "' 
@@ -1611,6 +1612,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
              o.confirm_payment_time, 
              o.torihiki_date_end, 
              o.site_id,
+             o.is_gray,
              o.read_flag
                from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                where ".$sort_where." o.customers_id = '" . tep_db_input($cID) . "' 
@@ -1646,6 +1648,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
              o.confirm_payment_time, 
              o.torihiki_date_end, 
              o.site_id,
+             o.is_gray,
              o.read_flag
                from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                where ".$sort_where."
@@ -1771,6 +1774,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                o.confirm_payment_time, 
                o.torihiki_date_end, 
                o.site_id,
+               o.is_gray,
                o.read_flag
                  from " . TABLE_ORDERS . " o " . $from_payment . " ,
                ".TABLE_ORDERS_PRODUCTS." op ".$sort_table." where ".$sort_where .
@@ -1809,6 +1813,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                   o.confirm_payment_time, 
                   o.torihiki_date_end, 
                   o.site_id,
+                  o.is_gray,
                   o.read_flag
                     from " . TABLE_ORDERS . " o " . $from_payment . $sort_table." where 
                     ".$sort_where .
@@ -1845,6 +1850,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                      o.confirm_payment_time, 
                      o.torihiki_date_end, 
                      o.site_id,
+                     o.is_gray,
                      o.read_flag
                        from " . TABLE_ORDERS . " o " . $from_payment .$sort_table ."
                        where " . $sort_where.
@@ -1880,6 +1886,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                 o.confirm_payment_time, 
                                 o.torihiki_date_end, 
                                 o.site_id,
+                                o.is_gray,
                                 o.read_flag
                                   from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                                   where   
@@ -1961,6 +1968,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
 	     o.confirm_payment_time, 
              o.torihiki_date_end, 
              o.site_id,
+             o.is_gray,
              o.read_flag
 	       from " . TABLE_ORDERS . " o " . $from_payment .$sort_table ."
 	       where " . $sort_where.
@@ -2002,6 +2010,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                   o.confirm_payment_time, 
                                   o.torihiki_date_end, 
                                   o.site_id,
+                                  o.is_gray,
                                   o.read_flag
                                     from " . TABLE_ORDERS . " o " . $from_payment . " ,
                                   ".TABLE_ORDERS_PRODUCTS." op ".$sort_table." where ".$sort_where .
@@ -2040,6 +2049,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                      o.confirm_payment_time, 
                                      o.torihiki_date_end, 
                                      o.site_id,
+                                     o.is_gray,
                                      o.read_flag
                                        from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                                        where ".$sort_where." o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and ') . " o.payment_method like '".$payment_m[1]."'";
@@ -2093,6 +2103,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                   o.confirm_payment_time, 
                                   o.torihiki_date_end, 
                                   o.site_id,
+                                  o.is_gray,
                                   o.read_flag
                                     from " . TABLE_ORDERS . " o, " .TABLE_ORDERS_PRODUCTS." op ". $f_payment . $sort_table."
                                     where ".$sort_where." o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and ') . " ".$w_type. " and o.orders_id = op.orders_id and (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like '%".$_GET['keywords']."%' or o.customers_email_address like '%".$_GET['keywords']."%' or op.products_name like '%".$_GET['keywords']."%') ";
@@ -2125,6 +2136,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                   o.confirm_payment_time, 
                                   o.torihiki_date_end, 
                                   o.site_id,
+                                  o.is_gray,
                                   o.read_flag
                                     from " . TABLE_ORDERS . " o " . $f_payment . $sort_table."
                                     where ".$sort_where." o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and ') . " ".$w_type;
@@ -2159,6 +2171,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                 o.confirm_payment_time, 
                                 o.torihiki_date_end, 
                                 o.site_id,
+                                o.is_gray,
                                 o.read_flag
                                   from " . TABLE_ORDERS . " o " . $from_payment . ", " . TABLE_ORDERS_PRODUCTS . " op 
                                   ".$sort_table."
@@ -2225,6 +2238,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                 o.confirm_payment_time, 
                                 o.torihiki_date_end, 
                                 o.site_id,
+                                o.is_gray,
                                 o.read_flag
                                   from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                                   where 
@@ -2950,7 +2964,23 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         </tr>
         <tr>
         <td class="main" valign="top"><?php echo ENTRY_CUSTOMER; ?></td>
-        <td class="main" style="text-decoration: underline; "><a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, 'search='.$order->customer['id']);?>"><?php echo $order->customer['name']; ?></a></td>
+        <td class="main" style="text-decoration: underline; ">
+        <?php
+        if ($order->info['is_gray'] == '1') {
+        ?>
+        <div class="highlight_color"> 
+        <?php
+        } 
+        ?>
+        <a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, 'search='.$order->customer['id']);?>"><?php echo $order->customer['name']; ?></a>
+        <?php
+        if ($order->info['is_gray'] == '1') {
+        ?>
+        </div> 
+        <?php
+        } 
+        ?>
+        </td>
         </tr>
         <tr>
         <td class="main"><?php echo ENTRY_EMAIL_ADDRESS; ?></td>
@@ -5533,14 +5563,18 @@ if($c_parent_array['parent_id'] == 0){
           } else {
             $nowColor = $odd; 
           }
+          $is_gray_style = ''; 
+          if ($orders['is_gray'] == '1') {
+            $is_gray_style = 'style="background-color:#AAAAAA;"'; 
+          }
           if ( (isset($oInfo) && is_object($oInfo)) && ($orders['orders_id'] == $oInfo->orders_id) ) {
             if($orders_i == 1 && !isset($_GET['oID'])){ 
-              echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'">' . "\n";
+              echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" '.$is_gray_style.'>' . "\n";
             }else{
               echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'">' . "\n"; 
             }
           } else {
-            echo '    <tr id="tr_' . $orders['orders_id'] . '" class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'">' . "\n";
+            echo '    <tr id="tr_' . $orders['orders_id'] . '" class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\';" '. $is_gray_style.'>' . "\n";
           }
           ?>
             <?php 

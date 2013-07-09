@@ -5035,28 +5035,28 @@ if($_GET['cID'] != -1){
        );
       }
         $customers_fax_row[]['text'] = array(
-         array('params' => 'nowrap="nowrap"','text' => TEXT_INFO_DATE_LAST_LOGON),
+         array('params' => 'nowrap="nowrap"','text' => substr(TEXT_INFO_DATE_LAST_LOGON, 0, -1)),
          array('text' => tep_date_short($nInfo->date_last_logon))
        );
         $customers_fax_row[]['text'] = array(
-         array('params' => 'nowrap="nowrap"','text' => TEXT_INFO_NUMBER_OF_LOGONS),
+         array('params' => 'nowrap="nowrap"','text' => substr(TEXT_INFO_NUMBER_OF_LOGONS, 0, -1)),
          array('text' => $nInfo->number_of_logons)
        );
         $customers_fax_row[]['text'] = array(
-         array('params' => 'nowrap="nowrap"','text' => TEXT_CUSTOMERS_ORDER_COUNT),
+         array('params' => 'nowrap="nowrap"','text' => substr(TEXT_CUSTOMERS_ORDER_COUNT, 0, -1)),
          array('text' => tep_get_orders_by_customers_id($nInfo->customers_id,$nInfo->site_id))
        );
         $customers_fax_row[]['text'] = array(
-         array('params' => 'nowrap="nowrap"','text' => TEXT_INFO_NUMBER_OF_REVIEWS),
+         array('params' => 'nowrap="nowrap"','text' => substr(TEXT_INFO_NUMBER_OF_REVIEWS, 0, -1)),
          array('text' => $nInfo->number_of_reviews)
        );
        $customers_fax_row[]['text'] = array(
-           array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_ADDED.((tep_not_null($customers_info_row['user_added']))?$customers_info_row['user_added']:TEXT_UNSET_DATA)), 
-           array('align' => 'left','text' => TEXT_DATE_ADDED.((tep_not_null($customers_info_row['customers_info_date_account_created']))?$customers_info_row['customers_info_date_account_created']:TEXT_UNSET_DATA))
+           array('align' => 'left', 'params' => 'width="30%"', 'text' => substr(TEXT_USER_ADDED, 0, -1).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($customers_info_row['user_added']))?$customers_info_row['user_added']:TEXT_UNSET_DATA)), 
+           array('align' => 'left','text' => substr(TEXT_DATE_ADDED, 0, -1).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($customers_info_row['customers_info_date_account_created']))?$customers_info_row['customers_info_date_account_created']:TEXT_UNSET_DATA))
          );
        $customers_fax_row[]['text'] = array(
-           array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_UPDATE.((tep_not_null($customers_info_row['user_update']))?$customers_info_row['user_update']:TEXT_UNSET_DATA)),
-           array('align' => 'left','text' => TEXT_DATE_UPDATE.((tep_not_null($customers_info_row['customers_info_date_account_last_modified']))?$customers_info_row['customers_info_date_account_last_modified']:TEXT_UNSET_DATA))
+           array('align' => 'left', 'params' => 'width="30%"', 'text' => substr(TEXT_USER_UPDATE, 0, -1).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($customers_info_row['user_update']))?$customers_info_row['user_update']:TEXT_UNSET_DATA)),
+           array('align' => 'left','text' => substr(TEXT_DATE_UPDATE, 0, -1).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($customers_info_row['customers_info_date_account_last_modified']))?$customers_info_row['customers_info_date_account_last_modified']:TEXT_UNSET_DATA))
         );
      $customers_fax_str = $notice_box->get_table($customers_fax_row, '', $customers_fax_params);  
        $contents[]['text'] = array(
@@ -5080,6 +5080,7 @@ if($_GET['cID'] != -1){
      if ($cInfo->is_active == '1') {
        if ($ocertify->npermission >= 15) {
          $customers_orders = tep_html_element_button(IMAGE_ORDERS,$disabled);
+         $customers_orders .= tep_html_element_button(BUTTON_EXIT_HISTORY_TEXT,$disabled);
          $customers_products = tep_html_element_button(BUTTON_CUSTOMERS_PRODUCTS_TEXT,$disabled);
        } 
        $customers_email = tep_html_element_button(IMAGE_EMAIL,$disabled);
@@ -5089,6 +5090,11 @@ if($_GET['cID'] != -1){
      if ($cInfo->is_active == '1') {
        if ($ocertify->npermission >= 15) {
          $customers_orders = ' <a href="' .  tep_href_link(FILENAME_ORDERS, 'cID=' .  $cInfo->customers_id) . '">' .  tep_html_element_button(IMAGE_ORDERS) .  '</a>';
+         $exit_history_query = tep_db_query("select * from ".TABLE_CUSTOMERS_EXIT_HISTORY." where customers_id = '".$cInfo->customers_id."'"); 
+         $exit_history_num = tep_db_num_rows($exit_history_query);
+         if ($exit_history_num > 0) {
+           $customers_orders .= '&nbsp;<a href="' .  tep_href_link(FILENAME_CUSTOMERS_EXIT_HISTORY, 'customers_id=' .  $cInfo->customers_id) . '">' .  tep_html_element_button(BUTTON_EXIT_HISTORY_TEXT) .  '</a>';
+         }
          $customers_products = '&nbsp;<a href="'.tep_href_link('customers_products.php', str_replace('page', 'cpage', tep_get_all_get_params(array('cID', 'action')).'cID='.$cInfo->customers_id)).'">'.tep_html_element_button(BUTTON_CUSTOMERS_PRODUCTS_TEXT).'</a>';
        }
        $customers_email = '&nbsp;<a href="' . tep_href_link(FILENAME_MAIL, 'selected_box=tools&customer=' .  $cInfo->customers_email_address.'&'.tep_get_all_get_params(array('page')).'&customer_page='.$_GET['page']) .  '">' .tep_html_element_button(IMAGE_EMAIL).'</a>';
@@ -6785,7 +6791,6 @@ if($_GET['qID'] != -1 && $_GET['cID'] != -1){
     $faq_c_raw = tep_db_fetch_array(tep_db_query("select * from ".TABLE_FAQ_CATEGORIES_DESCRIPTION." where faq_category_id = '".$qInfo->info_id."' and site_id = '".$qInfo->site_id."'"));
     }
     $page_str  = '';
-
     foreach ($id_array as $q_key => $q_value) {
       if ($_GET['faq_id'] == $q_value) {
         break;

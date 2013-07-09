@@ -206,7 +206,7 @@ require(DIR_WS_CLASSES . 'order_total.php');
 $order_total_modules = new order_total;
 
 $order_totals = $order_total_modules->process();
-$customers_referer_query = tep_db_query("select referer, is_send_mail, is_calc_quantity from ".TABLE_CUSTOMERS." where customers_id='".$customer_id."'");
+$customers_referer_query = tep_db_query("select referer, is_send_mail, is_calc_quantity, is_quited, quited_date from ".TABLE_CUSTOMERS." where customers_id='".$customer_id."'");
 $customers_referer_array = tep_db_fetch_array($customers_referer_query);
 $referer = $customers_referer_array['referer'];
 # Select
@@ -380,6 +380,9 @@ if ($bflag_single == 'View') {
   $buy_handle_fee = $payment_modules->handle_calc_fee($payment,$order->info['total']); 
   $sql_data_array['code_fee'] = $orign_hand_fee + $buy_handle_fee; 
   $new_handle_fee = $sql_data_array['code_fee'];
+}
+if ($customers_referer_array['is_quited'] == '1') {
+  $sql_data_array['is_gray'] = '2';
 }
 tep_db_perform(TABLE_ORDERS, $sql_data_array);
 tep_order_status_change($insert_id,$sql_data_array['orders_status']);
