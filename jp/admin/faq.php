@@ -1282,7 +1282,7 @@ require("includes/note_js.php");
                   echo '<a href="'.tep_href_link(FILENAME_FAQ,'cPath='.$parent_id.'&site_id='.$_GET['site_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&page='.$_GET['page']).'">'.tep_html_element_button(IMAGE_BACK).'</a>&nbsp;';
                   }
 
-                   if((($site_array[0] != '' && $site_array[0] != 0) || $site_array[1] != '') &&!(isset($_GET['search'])&&$_GET['search']!='') ){     
+                   if(($site_array[0] != '' && $site_array[0] != 0) || $site_array[1] != '')  {     
                    if(isset($_GET['cPath']) && $_GET['cPath'] != ''){
                     $faq_site_id =  tep_db_fetch_array(tep_db_query("select * from ".TABLE_FAQ_CATEGORIES_DESCRIPTION." where faq_category_id = '".$current_category_id."'"));
                     echo '<a href="javascript:void(0)" onclick="show_faq(this,-1,\'\','.$_GET['page'].','.$faq_site_id['site_id'].')">'.tep_html_element_button(IMAGE_NEW_FAQ_CATEGORY).'</a>';
