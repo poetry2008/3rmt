@@ -1239,9 +1239,7 @@ require("includes/note_js.php");
       <div class='faq_page_text'>
       <?php echo $faq_split->display_count($faq_query_number, MAX_DISPLAY_FAQ_ADMIN, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_FAQ); ?>
       </div>
-      <div class='faq_page_link'>
       <?php echo $faq_split->display_links($faq_query_number, MAX_DISPLAY_FAQ_ADMIN, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'pID'))); ?>
-      </div>
     </td>
   </tr>  
   <tr>
@@ -1281,7 +1279,7 @@ require("includes/note_js.php");
                           $parent_id .= '_'.$cPath[$i];
                          }
                        }
-                      echo '<a href="'.tep_href_link(FILENAME_FAQ,'cPath='.$parent_id.'&site_id='.$_GET['site_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&page='.$_GET['page']).'">'.tep_html_element_button(IMAGE_BACK).'</a>&nbsp;';
+                  echo '<a href="'.tep_href_link(FILENAME_FAQ,'cPath='.$parent_id.'&site_id='.$_GET['site_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&page='.$_GET['page']).'">'.tep_html_element_button(IMAGE_BACK).'</a>&nbsp;';
                   }
 
                    if((($site_array[0] != '' && $site_array[0] != 0) || $site_array[1] != '') &&!(isset($_GET['search'])&&$_GET['search']!='') ){     

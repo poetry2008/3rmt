@@ -1887,6 +1887,7 @@ float right
 --------------------------- */
 .float_right{
 	float:right;
+        margin-right: -7px;
 }
 /* ---------------------------
 content
