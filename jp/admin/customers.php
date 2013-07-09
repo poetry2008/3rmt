@@ -997,7 +997,7 @@ $(document).ready(function() {
               $customers_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $customers_table_lastname_str);
               $customers_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $customers_table_firstname_str);
               $customers_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $customers_table_create_str);
-              $customers_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $customers_table_update_str);
+              $customers_title_row[] = array('params' => 'class="dataTableHeadingContent_order" width="53"','text' => $customers_table_update_str);
               $customers_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $customers_title_row);              
     $search = '';
     if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'])) ) {
