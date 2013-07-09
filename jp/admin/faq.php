@@ -950,10 +950,7 @@ require("includes/note_js.php");
                 if($faq_type == ''){
                       $faq_type = 'asc';
                 }
-                if(!isset($_GET['sort']) || $_GET['sort'] == ''){
-                    $faq_str = 'info_type'; 
-                    $faq_qid_str = 'c.sort_order,c.ask,c.faq_question_id';
-                }else if($_GET['sort'] == 'site_romaji'){
+                if($_GET['sort'] == 'site_romaji'){
                   if($_GET['type'] == 'desc'){
                     $faq_str = 'site_id desc';
                     $faq_type = 'asc';
@@ -963,10 +960,10 @@ require("includes/note_js.php");
                     }
                 }else if($_GET['sort'] == 'title'){
                   if($_GET['type'] == 'desc'){
-                    $faq_str = 'title desc';
+                    $faq_str = 'info_type desc,title desc';
                     $faq_type = 'asc';
                     }else{
-                    $faq_str = 'title asc';
+                    $faq_str = 'info_type asc,title asc';
                     $faq_type = 'desc';
                     }
                 }else if($_GET['sort'] == 'is_show'){
@@ -1020,7 +1017,7 @@ require("includes/note_js.php");
                 $faq_title_row = array();
                 $faq_title_row[] = array('params' => 'class="dataTableHeadingContent"','text' => '<input type="checkbox" name="all_check" onclick="all_select_faq(\'cID[]\',\'qID[]\');">');
                 if(isset($_GET['sort']) && $_GET['sort'] == 'site_romaji'){
-                $faq_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_FAQ,'sort=site_romaji&search='.$_GET['search'].'&cPath='.$_GET['cPath'].'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&cID='.$_GET['cID'].'&ype='.$faq_type).'">'.TABLE_FAQ_SITE.$faq_site_romaji.'</a>');
+                $faq_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_FAQ,'sort=site_romaji&search='.$_GET['search'].'&cPath='.$_GET['cPath'].'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&cID='.$_GET['cID'].'&type='.$faq_type).'">'.TABLE_FAQ_SITE.$faq_site_romaji.'</a>');
                 }else{
                 $faq_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_FAQ,'sort=site_romaji&search='.$_GET['search'].'&cPath='.$_GET['cPath'].'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&cID='.$_GET['cID'].'&type=desc').'">'.TABLE_FAQ_SITE.$faq_site_romaji.'</a>');
                 }
@@ -1049,11 +1046,22 @@ require("includes/note_js.php");
                   $sql_search_where = '';
                   if(isset($_GET['search'])&&$_GET['search']!=''){
                     $sql_search_where = " and search_text like '%".$_GET['search']."%' ";
-                    $faq_category_query_raw = "select * from faq_sort where 1 ".  $sql_search_where." and ".$sql_site_where."  and parent_id = '".$current_category_id."' order by info_type asc,".$faq_str; 
+                    $faq_category_query_raw = "select * from faq_sort where 1 ".
+                      $sql_search_where." and ".$sql_site_where."  and parent_id =
+                      '".$current_category_id."' order by "; 
+                    if($faq_str){
+                      $faq_category_query_raw .= $faq_str; 
+                    }else{
+                      $faq_category_query_raw .= 'info_type,sort_order asc'; 
+                    }
                   }else{
                     $faq_category_query_raw = "select * from faq_sort where parent_id
-                      = '".$current_category_id."' and ".$sql_site_where." order by
-                      info_type asc,".$faq_str; 
+                      = '".$current_category_id."' and ".$sql_site_where." order by "; 
+                    if($faq_str){
+                      $faq_category_query_raw .= $faq_str; 
+                    }else{
+                      $faq_category_query_raw .= 'info_type,sort_order asc'; 
+                    }
                   }
                   $c_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
                   $faq_split = new splitPageResults($_GET['page'],MAX_DISPLAY_FAQ_ADMIN, $faq_category_query_raw,$faq_query_number);
