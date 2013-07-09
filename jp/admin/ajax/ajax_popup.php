@@ -6908,24 +6908,24 @@ if($_GET['qID'] != -1 && $_GET['cID'] != -1){
     }
     if($qInfo->info_type == 'q'){
     $contents[]['text'] = array(
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_USER_ADDED).(tep_not_null($faq_q_raw['user_added'])?$faq_q_raw['user_added']:TEXT_UNSET_DATA)), 
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_DATE_ADDED).((tep_not_null($faq_q_raw['created_at']))?$faq_q_raw['created_at']:TEXT_UNSET_DATA))
+            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_USER_ADDED).(tep_not_null($faq_q['user_added'])?$faq_q['user_added']:TEXT_UNSET_DATA)), 
+            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_DATE_ADDED).((tep_not_null($faq_q['created_at']))?$faq_q['created_at']:TEXT_UNSET_DATA))
     );
     }else if($qInfo->info_type == 'c'){
     $contents[]['text'] = array(
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_USER_ADDED).(tep_not_null($faq_c_raw['user_added'])?$faq_c_raw['user_added']:TEXT_UNSET_DATA)), 
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_DATE_ADDED).((tep_not_null($faq_c_raw['created_at']))?$faq_c_raw['created_at']:TEXT_UNSET_DATA))
+            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_USER_ADDED).(tep_not_null($faq_c['user_added'])?$faq_c['user_added']:TEXT_UNSET_DATA)), 
+            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_DATE_ADDED).((tep_not_null($faq_c['created_at']))?$faq_c['created_at']:TEXT_UNSET_DATA))
     );
     }
     if($qInfo->info_type == 'q'){
     $contents[]['text'] = array(
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_USER_UPDATE).(tep_not_null($faq_q_raw['user_update'])?$faq_q_raw['user_update']:TEXT_UNSET_DATA)),
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_DATE_UPDATE).((tep_not_null($faq_q_raw['updated_at']))?$faq_q_raw['updated_at']:TEXT_UNSET_DATA))
+            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_USER_UPDATE).(tep_not_null($faq_q['user_update'])?$faq_q['user_update']:TEXT_UNSET_DATA)),
+            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_DATE_UPDATE).((tep_not_null($faq_q['updated_at']))?$faq_q['updated_at']:TEXT_UNSET_DATA))
     );
     }else if($qInfo->info_type == 'c'){
     $contents[]['text'] = array(
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_USER_UPDATE).(tep_not_null($faq_c_raw['user_update'])?$faq_c_raw['user_update']:TEXT_UNSET_DATA)),
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_DATE_UPDATE).((tep_not_null($faq_c_raw['updated_at']))?$faq_c_raw['updated_at']:TEXT_UNSET_DATA))
+            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_USER_UPDATE).(tep_not_null($faq_c['user_update'])?$faq_c['user_update']:TEXT_UNSET_DATA)),
+            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_DATE_UPDATE).((tep_not_null($faq_c['updated_at']))?$faq_c['updated_at']:TEXT_UNSET_DATA))
     );
     }
     if($qInfo->info_type == 'q'){
