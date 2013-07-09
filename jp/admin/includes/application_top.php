@@ -151,7 +151,6 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('TABLE_CUSTOMER_TO_CAMPAIGN', 'customer_to_campaign');
   define('TABLE_PREORDERS', 'preorders');
   define('TABLE_PREORDERS_OA_FORMVALUE', 'preorders_oa_formvalue'); 
-  define('TABLE_PREORDERS_MAIL', 'preorders_mail');
   define('TABLE_PREORDERS_OPERATOR', 'preorders_operator');
   define('TABLE_PREORDERS_PRODUCTS', 'preorders_products');
   define('TABLE_PREORDERS_PRODUCTS_ATTRIBUTES', 'preorders_products_attributes');
@@ -250,7 +249,6 @@ define('TABLE_PERMISSIONS','permissions');
   define('TABLE_PRESENT_GOODS', 'present_goods');
   define('TABLE_PRESENT_APPLICANT', 'present_applicant');
   define('TABLE_MAIL_MAGAZINE', 'mail_magazine');
-  define('TABLE_ORDERS_MAIL', 'orders_mail');
   define('TABLE_CALENDER', 'calendar');
   define('TABLE_BUTTONS',  'buttons');
   define('TABLE_ORDERS_TO_BUTTONS',  'orders_to_buttons');
