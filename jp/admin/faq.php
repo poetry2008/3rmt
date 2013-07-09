@@ -256,28 +256,8 @@
             $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
             tep_db_perform(TABLE_FAQ_QUESTION_DESCRIPTION, $sql_data_array);
             $faq_q_sql_id = tep_db_insert_id();
-            $faq_q_id = tep_db_fetch_array(tep_db_query("select * from ".TABLE_FAQ_QUESTION_DESCRIPTION." where id =".$faq_q_sql_id));
-            $faq_q_to_c = tep_db_fetch_array(tep_db_query("select * from ".TABLE_FAQ_QUESTION_TO_CATEGORIES." where faq_question_id =".$faq_q_id['faq_question_id']));
-            $c_sql = "SELECT * FROM `faq_categories` c, `faq_categories_description` cd WHERE c.id =".$faq_q_to_c['faq_category_id'];
-            $faq_search = tep_db_fetch_array(tep_db_query($c_sql));
-            if($faq_search['romaji'] == '' && $faq_search['title'] == '' && $faq_search['keywords'] == '' && $faq_search['description']){
-               $search_text = '';
-            }else{
-               $search_text = $faq_search['romaji'].'>>>'.$faq_search['title'].'>>>'.$faq_search['keywords'].'>>>'.$faq_search['description'];
-            }
-            $faq_sort_array = array(
-                'site_id' => $_POST['site_id'],
-                'title'   => $_POST['ask'],
-                'sort_order'=>$_POST['sort_order'],
-                'parent_id'=>$current_category_id,
-                'info_id' => $faq_question_id,
-                'is_show' => '1',
-                'info_type'=> 'q',
-                'updated_at'=>'now()',
-                'search_text' => $search_text
-                );
-            tep_db_perform('faq_sort',$faq_sort_array);
-         }else{
+            tep_update_faq_sort($faq_q_sql_id,$site_id,'q','insert');
+          }else{
             if(!tep_check_romaji($sql_data_array['romaji'])){
               $messageStack->add_session(TEXT_ROMAJI_ERROR, 'error');
               tep_redirect(tep_href_link(FILENAME_FAQ));
@@ -297,6 +277,7 @@
            tep_db_perform(TABLE_FAQ_QUESTION_DESCRIPTION, $sql_data_array,
                'update','faq_question_id =\''.$faq_question_id.'\' and site_id =
                \''.$site_id.'\'');
+            tep_update_faq_sort($faq_question_id,$site_id,'q');
 
          }
             set_time_limit(0);
@@ -364,27 +345,8 @@
             $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
             tep_db_perform(TABLE_FAQ_CATEGORIES_DESCRIPTION, $sql_data_array);
             $faq_c_sql_id = tep_db_insert_id();
-            $faq_category_c_id = tep_db_fetch_array(tep_db_query("select * from ".TABLE_FAQ_CATEGORIES_DESCRIPTION." where id =".$faq_c_sql_id));
-            $c_sql = "SELECT * FROM `faq_categories` c, `faq_categories_description` cd WHERE c.id =".$faq_category_c_id['faq_category_id'];
-            $faq_search = tep_db_fetch_array(tep_db_query($c_sql));
-            if($faq_search['romaji'] == '' && $faq_search['title'] == '' && $faq_search['keywords'] == '' && $faq_search['description'] == ''){
-               $search_text = '';
-            }else{
-               $search_text = $faq_search['romaji'].'>>>'.$faq_search['title'].'>>>'.$faq_search['keywords'].'>>>'.$faq_search['description'];
-            }
-            $faq_sort_array = array(
-                'site_id' => $_POST['site_id'],
-                'title'   => $_POST['title'],
-                'sort_order'=>$_POST['sort_order'],
-                'parent_id'=>$current_category_id,
-                'info_id' => $faq_category_id,
-                'is_show' => '1',
-                'info_type'=> 'c',
-                'updated_at'=> 'now()',
-                'search_text' => $search_text
-                );
-            tep_db_perform('faq_sort',$faq_sort_array);
-            }else{
+            tep_update_faq_sort($faq_c_sql_id,$site_id,'c','insert');
+          }else{
             if(!tep_check_romaji($sql_data_array['romaji'])){
               $messageStack->add_session(TEXT_ROMAJI_ERROR, 'error');
               tep_redirect(tep_href_link(FILENAME_FAQ));
@@ -401,10 +363,7 @@
               tep_redirect(tep_href_link(FILENAME_FAQ));
             }
            tep_db_perform(TABLE_FAQ_CATEGORIES_DESCRIPTION, $sql_data_array, 'update','faq_category_id =\''.$faq_category_id.'\' and site_id = \''.$site_id.'\'');
-           $faq_sort_array = array(
-               'title' => $_POST['title'],
-           'sort_order'=> $_POST['sort_order']
-               );
+            tep_update_faq_sort($faq_category_id,$site_id,'c');
          }
          if(isset($_GET['rdirect'])){
            tep_redirect(tep_href_link(FILENAME_FAQ, 'cPath=' . $cPath .  '&cID=' .  $faq_category_id.'&site_id='.$_GET['site_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&page='.$_GET['page']));
@@ -871,11 +830,9 @@ require("includes/note_js.php");
 
 <div id="categories_tree">
                 <?php
-/*
                   require(DIR_WS_CLASSES . 'faq_tree.php');
                   $osC_FaqTree = new osC_FaqTree;
                   echo $osC_FaqTree->buildTree();
- */
                 ?>
                 </div>
 <!-- body //-->

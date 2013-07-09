@@ -6943,12 +6943,14 @@ if($_GET['qID'] != -1 && $_GET['cID'] != -1){
     if($qInfo->info_type == 'q'){
     $contents[]['text'] = array(
         array('text' => $faq_question_inputs_string),
-        array('text' => tep_draw_hidden_field('faq_question_id',$faq_q_raw['faq_question_id']).  tep_draw_hidden_field('site_id',$qInfo->site_id))
+        array('text' => '<input type="hidden" name="faq_question_id" id="faq_q_id" value="'.$faq_q_raw['faq_question_id'].'">'.
+          tep_draw_hidden_field('site_id',$qInfo->site_id))
         );
     }else if($qInfo->info_type == 'c'){
     $contents[]['text'] = array(
         array('text' => $faq_question_inputs_string),
-        array('text' => tep_draw_hidden_field('faq_category_id',$faq_c_raw['faq_category_id']).  tep_draw_hidden_field('site_id',$qInfo->site_id))
+        array('text' => '<input type="hidden" name="faq_category_id" id="faq_c_id" value="'.$faq_c_raw['faq_category_id'].'">'.
+          tep_draw_hidden_field('site_id',$qInfo->site_id))
         );
     }
     if($qInfo->info_type == 'q'){

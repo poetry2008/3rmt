@@ -4,7 +4,7 @@
 */
 
 
- class osC_FaqTree {
+ class faq_CategoryTree {
    var $root_category_id = 0,
        $max_level = 0,
        $data = array(),
@@ -22,49 +22,38 @@
        $i = 0,
        $end = false
    ;
-/*---------------------------------------
- 功能: FAQ常见问题 
+/*--------------------------------------
+ 功能: 分类树
  参数: $load_from_database(boolean) 加载数据库
- 参数: $green(boolean) 是否全部显示
+ 参数: $green (boolean) 是否全部显示
  返回值: 无 
- --------------------------------------*/
-   function osC_FaqTree($load_from_database = true,$green = false) {
+ -------------------------------------*/
+   function faq_CategoryTree($load_from_database = true) {
      global $languages_id;
      $site_id = isset($_GET['site_id'])&&$_GET['site_id'] ? $_GET['site_id'] : 0;
-//ccdd
-   if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
-      $sql_site_where = ' and site_id in ('.str_replace('-', ',', $_GET['site_id']).')';
-  } else {
-      $show_list_str = tep_get_setting_site_info(FILENAME_FAQ);
-      $sql_site_where = ' and site_id in ('.$show_list_str.')';
-  }
-
-    if ($green) {
-      $this->categories_count = tep_db_num_rows(tep_db_query("select * from
-            faq_sort where info_type='c' is_show='1' ".$sql_site_where));
-    } else {
-      $this->categories_count = tep_db_num_rows(tep_db_query("select * from
-            faq_sort where info_type='c' ".$sql_site_where));
-    }
-    if ($green) { 
-         $categories_query = tep_db_query("
-           select *
-           from faq_sort where info_type='c' 
-            and is_show='1' ".$sql_site_where."          
-            order by parent_id, sort_order, title");
-    } else {
-         $categories_query = tep_db_query("
-           select *
-           from faq_sort where info_type='c' 
-            ".$sql_site_where."          
-            order by parent_id, sort_order, title");
-    }
+     $this->categories_count = tep_db_num_rows(tep_db_query("select * from ".TABLE_FAQ_CATEGORIES));
+     if ($site_id == 0) {
+       $show_list_str = tep_get_setting_site_info(FILENAME_FAQ); 
+     } else {
+       $show_list_str = str_replace('-', ',', $site_id); 
+     }
+     $categories_query = tep_db_query("
+             select c.id, 
+                    cd.title, 
+                    c.parent_id,
+                    cd.site_id,
+                    c.sort_order
+             from " . TABLE_FAQ_CATEGORIES . " c, " . TABLE_FAQ_CATEGORIES_DESCRIPTION . " cd 
+             where c.id = cd.faq_category_id 
+            and cd.site_id in (".$show_list_str.")
+            group by c.id 
+            order by cd.title desc");     
          $this->data = array();
          while ($categories = tep_db_fetch_array($categories_query)) {
             // Ultimate SEO URLs compatibility - Chemo
                   # initialize array container for parent_id 
             $p = array();
-            tep_get_parent_categories($p, $categories['parent_id'],$categories['site_id']);
+            tep_get_parent_categories($p, $categories['parent_id']);
             # For some reason it seems to return in reverse order so reverse the array 
             $p = array_reverse($p);
 
@@ -73,23 +62,22 @@
             $categories['parent_id']);
                   # initialize array container for category_id 
             $c = array();
-            tep_get_parent_categories($c, $categories['info_id'],$categories['site_id']);
+            tep_get_parent_categories($c, $categories['id']);
             # For some reason it seems to return in reverse order so reverse the array 
             $c = array_reverse($c);
             # Implode the array to get the full category path
-            $id = (implode('_', $c) ? implode('_', $c) . '_' .
-                $categories['info_id'] :
-            $categories['info_id']);
+            $id = (implode('_', $c) ? implode('_', $c) . '_' . $categories['id'] :
+            $categories['id']);
 
             $this->data[$cID][$id] = array('name' => $categories['title'], 'count' => 0);
          } // eof While loop
-    } //eof Function
+   } //eof Function
 /*--------------------------------------------------
  功能: 建立分支 
  参数: $parent_id(string) 父id
  参数: $level(string)     级别
  参数: $filename(string)  文件名
- 返回值: HTML文本 (string)
+ 返回值: HTML文本(string)
  -------------------------------------------------*/
    function buildBranch($parent_id, $level = 0,$filename='') {
      if($level == 0){
@@ -156,13 +144,13 @@
        $result .= $this->parent_group_end_string;
      }
      return $result;
-   } 
+   }
 /*-----------------------------------------------
  功能: 构建树
  参数: $filename(string) 文件名
- 返回值: 构建树 (string)  
+ 返回值: 构建树(string)  
  ----------------------------------------------*/
-    function buildTree($filename='') {
+   function buildTree($filename='') {
      return $this->buildBranch($this->root_category_id,0,$filename);
    }
  }
@@ -173,15 +161,13 @@
  参数: $categories_id(string) 类别ID
  返回值: 无
  ---------------------------------------------*/
-  function tep_get_parent_categories(&$categories, $categories_id,$site_id) {
-    //ccdd
-    $parent_categories_query = tep_db_query("select parent_id,site_id from faq_sort where info_id='".$categories_id."' and site_id='".$site_id."' and info_type='c'");
+  function tep_get_parent_categories(&$categories, $categories_id) {
+    $parent_categories_query = tep_db_query("select parent_id from " .  TABLE_FAQ_CATEGORIES . " where id = '" . (int)$categories_id . "'");
     while ($parent_categories = tep_db_fetch_array($parent_categories_query)) {
       if ($parent_categories['parent_id'] == 0) return true;
       $categories[sizeof($categories)] = $parent_categories['parent_id'];
       if ($parent_categories['parent_id'] != $categories_id) {
-        tep_get_parent_categories($categories,
-            $parent_categories['parent_id'],$parent_categories['site_id']);
+        tep_get_parent_categories($categories, $parent_categories['parent_id']);
       }
     }
   }

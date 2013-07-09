@@ -533,10 +533,14 @@ function faq_c_is_set_romaji(pid,cid,site_id){
   if(new_site_id && site_id != new_site_id){
     site_id = new_site_id;
   }
+  row_id = '';
+  if($('#faq_c_id').val()){
+    row_id =  $('#faq_c_id').val();
+  }
   $.ajax({
     url: 'ajax_orders.php?action=faq_c_is_set_romaji',
     type: 'POST',
-    data: 'romaji='+cromaji+'&cid='+cid+'&pid='+pid+'&site_id='+site_id,
+    data: 'romaji='+cromaji+'&cid='+cid+'&pid='+pid+'&site_id='+site_id+'&row_id='+row_id,
     dataType: 'text',
     async : false,
     success: function(data) {
@@ -576,10 +580,14 @@ function faq_q_is_set_romaji(cid,qid,site_id){
   if(new_site_id && site_id != new_site_id){
     site_id = new_site_id;
   }
+  row_id = '';
+  if($('#faq_q_id').val()){
+    row_id =  $('#faq_q_id').val();
+  }
   $.ajax({
     url: 'ajax_orders.php?action=faq_q_is_set_romaji',
     type: 'POST',
-    data: 'romaji='+qromaji+'&cid='+cid+'&qid='+qid+'&site_id='+site_id,
+    data: 'romaji='+qromaji+'&cid='+cid+'&qid='+qid+'&site_id='+site_id+'&row_id='+row_id,
     dataType: 'text',
     async : false,
     success: function(data) {
