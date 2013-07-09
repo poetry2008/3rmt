@@ -919,8 +919,7 @@ require("includes/note_js.php");
             <div class="faq_gotomenu">
             <?php //goto menu start?>              
               <div id="gotomenu">
-                <a href="javascript:void(0)" onclick="display()"><?php echo CATEGORY_TREE_SELECT_TEXT;?></a>
-                
+                <a href="javascript:void(0)" onclick="display()"><?php //echo CATEGORY_TREE_SELECT_TEXT;?></a>
               </div>
             </div>
 <?php
@@ -1067,6 +1066,8 @@ require("includes/note_js.php");
                   $faq_category_query = tep_db_query($faq_category_query_raw);
                   $faq_category_num = tep_db_num_rows($faq_category_query);
                   $select_row_id = '';
+                  $faq_count = '';
+                  $faq_q_count = '';
                   while($faq_category = tep_db_fetch_array($faq_category_query)){
                     if(!isset($_GET['s_id'])||$_GET['s_id']==''){
                       if($select_row_id == ''){
@@ -1169,7 +1170,7 @@ require("includes/note_js.php");
                     $faq_table_row[] = array('params' => $faq_params, 'text' => $faq_info);
                     }
   if($faq_category['info_type'] == 'q'){
-  $faq_count++;
+  $faq_q_count++;
   $rows++;
 
   if(isset($_GET['search'])&&$_GET['search']){
@@ -1301,6 +1302,15 @@ require("includes/note_js.php");
     $cPath_back = isset($cPath_back) && $cPath_back ? 'cPath=' . $cPath_back : '';
                   // new faq category and new faq button
 		 echo '<div class="td_box">';
+                 echo '<div style="float:left">';
+                 if($faq_count == ''){
+                   $faq_count = '0'; 
+                 }
+                 if($faq_q_count == ''){
+                   $faq_q_count = '0';
+                 }
+                 echo TEXT_CATEGORIES_FAQ . ':&nbsp;' . $faq_count . '&nbsp;&nbsp;' .  TEXT_PRODUCTS . '&nbsp;' . $faq_q_count; 
+                 echo '</div>';
                   if(isset($_GET['cPath']) && $_GET['cPath'] != ''){
                       $cPath =explode('_',$_GET['cPath']);      
                       array_pop($cPath);
