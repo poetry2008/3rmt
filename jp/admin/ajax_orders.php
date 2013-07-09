@@ -558,7 +558,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $romaji = str_replace('pppppppp',"=",$romaji);
   $romaji = str_replace('qqqqqqqq',"\'",$romaji);
   $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
-  $sql =  "select * from ".TABLE_FAQ_CATEGORIES." fc,
+  $sql =  "select fcd.faq_category_id as row_id from ".TABLE_FAQ_CATEGORIES." fc,
 		".TABLE_FAQ_CATEGORIES_DESCRIPTION." 
 			fcd where fc.id=fcd.faq_category_id and
 			fc.parent_id='".$_POST['pid']."'      and
@@ -568,8 +568,13 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
     $sql .= " and fc.id != '".$_POST['cid']."'";
   }
   $sql .= " order by fcd.site_id DESC";
-  if(tep_db_num_rows(tep_db_query($sql))){
-    echo 'true';
+  $query = tep_db_query($sql);
+  if($row = tep_db_fetch_array($query)){
+    if(isset($_POST['row_id'])&&$_POST['row_id']==$row['row_id']){
+      echo 'false';
+    }else{
+      echo 'true';
+    }
   }else{
     echo 'false';
   }
@@ -605,7 +610,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $romaji = str_replace('pppppppp',"=",$romaji);
   $romaji = str_replace('qqqqqqqq',"\'",$romaji);
   $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
-  $sql = "select * from  
+  $sql = "select fqd.faq_question_id as row_id from  
 		".TABLE_FAQ_QUESTION_DESCRIPTION." fqd,
 		".TABLE_FAQ_QUESTION_TO_CATEGORIES." fq2c 
 			where fqd.faq_question_id=fq2c.faq_question_id and
@@ -616,8 +621,13 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
     $sql .= " and fqd.faq_question_id != '".$_POST['qid']."'"; 
   }
   $sql .= " order by fqd.site_id DESC";
-  if(tep_db_num_rows(tep_db_query($sql))){
-    echo 'true';
+  $query = tep_db_query($sql);
+  if($row = tep_db_fetch_array($sql)){
+    if(isset($_POST['row_id'])&&$_POST['row_id']==$row['row_id']){
+      echo 'false';
+    }else{
+      echo 'true';
+    }
   }else{
     echo 'false';
   }
