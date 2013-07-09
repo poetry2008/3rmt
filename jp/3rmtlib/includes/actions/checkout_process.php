@@ -41,8 +41,10 @@ if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['h
       return str_replace($k, $rk, $str);
   }
 
-  $orders_mail_title = ORDERS_EMPTY_EMAIL_TITLE.'　'.date('Y-m-d H:i:s');
-  $orders_mail_text = ORDERS_EMPTY_EMAIL_TEXT;
+  //错误通知邮件
+  $error_mail_array = tep_get_mail_templates('ORDERS_EMPTY_EMAIL_TEXT',SITE_ID);
+  $orders_mail_title = $error_mail_array['title'].'　'.date('Y-m-d H:i:s');
+  $orders_mail_text = $error_mail_array['contents'];
   $orders_mail_text = str_replace('${ERROR_NUMBER}','001',$orders_mail_text);
   $orders_mail_text = str_replace('${ERROR_TIME}',date('Y-m-d H:i:s'),$orders_mail_text); 
 
@@ -776,71 +778,80 @@ if(isset($_SESSION['options']) && !empty($_SESSION['options'])){
   $email_address_str .= $email_address;
   $email_order = str_replace($email_address,$email_address_str,$email_order);
 }
+//订单邮件
+$orders_mail_templates = tep_get_mail_templates('MODULE_PAYMENT_'.strtoupper($payment).'_MAILSTRING',SITE_ID);
 if ($customers_referer_array['is_send_mail'] != '1') {
   //判断是否给该顾客发送邮件 
-  tep_mail(tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], EMAIL_TEXT_SUBJECT, $email_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
+  tep_mail(tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], $orders_mail_templates['title'], $email_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
 }
   
 if (SENTMAIL_ADDRESS != '') {
   //给管理者发送邮件 
-  tep_mail('', SENTMAIL_ADDRESS, EMAIL_TEXT_SUBJECT2, $email_order, tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], '');
+  tep_mail('', SENTMAIL_ADDRESS, $orders_mail_templates['title'], $email_order, tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], '');
 }
   
 last_customer_action();
 
-# 打印邮件正文 ----------------------------
-$email_printing_order = '';
-$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-$email_printing_order .= 'サイト名　　　　：' . STORE_NAME . "\n";
-$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-$email_printing_order .= 'お届け日時　　　　：' . str_string($date) . $start_hour . '時' . $start_min . '分から'. $end_hour .'時'. $end_min .'分　（24時間表記）' . "\n";
-$email_printing_order .= 'オプション　　　：' . $torihikihouhou . "\n";
-$email_printing_order .= '------------------------------------------------------------------------' . "\n";
-$email_printing_order .= '日時変更　　　　：' . date('Y') . ' 年  月  日  時  分' . "\n";
-$email_printing_order .= '日時変更　　　　：' . date('Y') . ' 年  月  日  時  分' . "\n";
-$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-$email_printing_order .= '注文者名　　　　：' . tep_get_fullname($order->customer['firstname'],$order->customer['lastname']) . '様' . "\n";
-$email_printing_order .= '注文番号　　　　：' . $insert_id . "\n";
-$email_printing_order .= '注文日　　　　　：' . tep_date_long(time()) . "\n";
-$email_printing_order .= 'メールアドレス　：' . $order->customer['email_address'] . "\n";
-$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-if (!empty($_SESSION['h_shipping_fee'])) {
-  $email_printing_order .= '配送料　　　　　　　：'.$_SESSION['h_shipping_fee'].'円'."\n"; 
-}
+//打印邮件
+$orders_print_mail_templates = tep_get_mail_templates('MODULE_PAYMENT_'.strtoupper($payment).'_PRINT_MAILSTRING',SITE_ID);
+$payment_mode = array(
+                        '${USER_NAME}',
+                        '${SITE_NAME}',
+                        '${YEAR}',
+                        '${ORDER_ID}',
+                        '${ORDER_DATE}',
+                        '${USER_MAILACCOUNT}',
+                        '${BUYING_INFO}',
+                        '${POINT}',
+                        '${SHIPPING_FEE}',
+                        '${MAILFEE}',
+                        '${ORDER_TOTAL}',
+                        '${ORDER_PRODUCTS}',
+                        '${ORDER_TTIME}',
+                        '${ORDER_COMMENT}',
+                        '${ADD_INFO}',
+                        '${CUSTOMER_INFO}',
+                        '${CREDIT_RESEARCH}',
+                        '${ORDER_HISTORY}',
+                        '${TOTAL}'
+                      );
 if (isset($_SESSION['campaign_fee'])) {
   if (abs($_SESSION['campaign_fee']) > 0) {
-    $email_printing_order .= '割引　　　　　　：' . abs((int)$_SESSION['campaign_fee']) . '円' . "\n";
+    $print_point = abs((int)$_SESSION['campaign_fee']);
   }
 } else if ($point > 0) {
-  $email_printing_order .= '割引　　：' . (int)$point . '円' . "\n";
+  $print_point = (int)$point;
+}else{
+  $print_point = 0;
 }
-if (!empty($total_mail_fee)) {
-  $email_printing_order .= '手数料　　　　　：'.$total_mail_fee.'円'."\n"; 
-}
-$email_printing_order .= 'お支払金額　　　：' .  $currencies->format(abs($ot['value'])) . "\n";
-$email_printing_order .= 'お支払方法　　　：' . $payment_class->title . "\n";
-  
-if(tep_not_null($bbbank)) {
-  $email_printing_order .= 'お支払先金融機関' . "\n";
-  $email_printing_order .= $bbbank . "\n";
-}
-  
-$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-$email_printing_order .= $products_ordered;
 
-$email_printing_order .= '備考　　　　　　：' . "\n";
-if ($order->info['comments']) {
-  $email_printing_order .= $order->info['comments'] . "\n";
-}
-$email_printing_order .= $email_customer_info;
-$email_printing_order .= '信用調査' . "\n";
-$email_printing_order .= $email_credit_research;
-$email_printing_order .= '注文履歴　　　　　　　：';
-$email_printing_order .= $email_orders_history;
+//customer info
+$customer_printing_order .= SENDMAIL_TEXT_IP_ADDRESS . $_SERVER["REMOTE_ADDR"] . "\n";
+$customer_printing_order .= SENDMAIL_TEXT_HOST . @gethostbyaddr($_SERVER["REMOTE_ADDR"]) . "\n";
+$customer_printing_order .= SENDMAIL_TEXT_USER_AGENT . $_SERVER["HTTP_USER_AGENT"] . "\n";
+$payment_replace = array(
+                        tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), 
+                        STORE_NAME, 
+                        date('Y'),
+                        $insert_id,  
+                        tep_date_long(time()),
+                        $order->customer['email_address'],
+                        $bbbank,
+                        $print_point,
+                        $_SESSION['h_shipping_fee'],
+                        $total_mail_fee,
+                        str_replace(JPMONEY_UNIT_TEXT,"",$currencies->format(abs($ot['value']))),
+                        $products_ordered,
+                        tep_date_long($date) . $start_hour . SENDMAIL_TEXT_HOUR . $start_min . SENDMAIL_TEXT_MIN.SENDMAIL_TEXT_TIME_LINK. $end_hour .SENDMAIL_TEXT_HOUR. $end_min .SENDMAIL_TEXT_MIN.SENDMAIL_TEXT_TWENTY_FOUR_HOUR,
+                        $order->info['comments'],
+                        '',
+                        $customer_printing_order,
+                        $email_credit_research,
+                        $email_orders_history,
+                        abs($ot['value'])
+                      );
+$email_printing_order = str_replace($payment_mode,$payment_replace,$orders_print_mail_templates['contents']);
 
-if (method_exists($payment_class,'getMailString')){
-  $email_printing_order .=$payment_class->getMailString($ot['value']);
-}
 # ------------------------------------------
 if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
   //发送打印邮件 

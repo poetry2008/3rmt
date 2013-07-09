@@ -353,7 +353,7 @@ function show_memo_info(ele, memo_id, i_param_str)
   origin_offset_symbol = 1;
   $.ajax({
     url: 'ajax.php?action=edit_memo',      
-      data: 'memo_id='+memo_id+'&param_str='+i_param_str+'<?php echo isset($_GET['order_sort']) ? '&order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type'] : '';?>',
+    data: 'memo_id='+memo_id+'&param_str='+i_param_str+'<?php echo isset($_GET['order_sort']) ? '&order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type'] : '';?>',
     type: 'POST',
     dataType: 'text',
     async:false,
@@ -396,7 +396,7 @@ function show_link_memo_info(memo_id, param_str)
   param_str = decodeURIComponent(param_str);
   $.ajax({
     url: 'ajax.php?action=edit_memo',      
-    data: 'memo_id='+memo_id+'&param_str='+param_str,
+    data: 'memo_id='+memo_id+'&param_str='+param_str+'<?php echo isset($_GET['order_sort']) ? '&order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type'] : '';?>',
     type: 'POST',
     dataType: 'text',
     async:false,
@@ -853,7 +853,7 @@ require("includes/note_js.php");
                   </tr>
                   <tr>
                     <td class="smallText" valign="top"><?php echo $memo_split->display_count($memo_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_BUSINESS_MEMO); ?></td>
-                    <td class="smallText" align="right"><div class="td_box"><?php echo $memo_split->display_links($memo_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page']); ?></div></td>
+                    <td class="smallText" align="right"><div class="td_box"><?php echo $memo_split->display_links($memo_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'],tep_get_all_get_params(array('x', 'y', 'page'))); ?></div></td>
                   </tr>
                   <tr>
                     <td colspan="2" align="right"><div class="td_button"><?php echo '<a href="javascript:void(0);" onclick="create_memo(this);">' .tep_html_element_button(IMAGE_NEW_PROJECT,$site_permission_flag == false ? 'disabled="disabled"' : '') . '</a>'; ?></div></td>

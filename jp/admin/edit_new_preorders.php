@@ -654,8 +654,10 @@
           tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), $email_title, $email, $order->customer['name'], $order->customer['email_address'], $order->info['site_id']);
         }
         
-        $preorder_email_subject = str_replace('${SITE_NAME}', get_configuration_by_site_id('STORE_NAME', $order->info['site_id']), get_configuration_by_site_id_or_default('PREORDER_MAIL_SUBJECT', $order->info['site_id'])); 
-        $preorder_email_text = get_configuration_by_site_id_or_default('PREORDER_MAIL_CONTENT', $order->info['site_id']); 
+        //预约完成邮件认证
+        $preorders_mail_array = tep_get_mail_templates('PREORDER_MAIL_CONTENT',$order->info['site_id']);
+        $preorder_email_subject = str_replace('${SITE_NAME}', get_configuration_by_site_id('STORE_NAME', $order->info['site_id']), $preorders_mail_array['title']); 
+        $preorder_email_text = $preorders_mail_array['contents']; 
         $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}');
         
         $max_op_len = 0;
@@ -2109,13 +2111,13 @@ if (($action == 'edit') && ($order_exists == true)) {
     <td class="main" width="5%">&nbsp;</td>
     <td class="main">
     <?php
-    $ma_se = "select * from ".TABLE_PREORDERS_MAIL." where orders_status_id = '".$sel_status_id."'"; 
+    $ma_se = "select * from ".TABLE_MAIL_TEMPLATES." where flag = 'PREORDERS_STATUS_MAIL_TEMPLATES_".$sel_status_id."'"; 
     $mail_sele = tep_db_query($ma_se);
     $mail_sql = tep_db_fetch_array($mail_sele);
-    $mail_sql['orders_status_title'] = isset($_SESSION['orders_update_products'][$_GET['oID']]['etitle']) ? $_SESSION['orders_update_products'][$_GET['oID']]['etitle'] : $mail_sql['orders_status_title'];  
+    $mail_sql['title'] = isset($_SESSION['orders_update_products'][$_GET['oID']]['etitle']) ? $_SESSION['orders_update_products'][$_GET['oID']]['etitle'] : $mail_sql['title'];  
     ?>
     <?php   
-    echo TEXT_EMAIL_TITLE.tep_draw_input_field('etitle', $mail_sql['orders_status_title'],'style="width:230px;"'); 
+    echo TEXT_EMAIL_TITLE.tep_draw_input_field('etitle', $mail_sql['title'],'style="width:230px;"'); 
     ?> 
     <br>
     <br>
@@ -2126,7 +2128,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       $order_a_str .= $ovalue['character']."\n"; 
     }
     ?>
-    <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}', $order_a_str, isset($_POST['comments']) ? $_POST['comments'] : isset($_SESSION['orders_update_products'][$_GET['oID']]['comments']) ? $_SESSION['orders_update_products'][$_GET['oID']]['comments'] : $mail_sql['orders_status_mail']);?></textarea>
+    <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}', $order_a_str, isset($_POST['comments']) ? $_POST['comments'] : isset($_SESSION['orders_update_products'][$_GET['oID']]['comments']) ? $_SESSION['orders_update_products'][$_GET['oID']]['comments'] : $mail_sql['contents']);?></textarea>
     </td>
   </tr>
 </table>

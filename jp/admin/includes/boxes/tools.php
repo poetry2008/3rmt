@@ -77,6 +77,14 @@
          echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_NEWSLETTERS).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_magazine.gif').'</span><span>' . BOX_TOOLS_NEWSLETTER_MANAGER .  '</span></div>';
        }
      }
+     //邮件模板管理
+     if (!check_whether_is_limited(FILENAME_MAIL_TEMPLATES)) {
+       if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_MAIL_TEMPLATES){
+         echo ' <div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_MAIL_TEMPLATES).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_mail_templates.gif').'</span><span>' . BOX_TOOLS_MAIL_TEMPLATES .  '</span></div>';
+       }else{
+         echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_MAIL_TEMPLATES).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_mail_templates.gif').'</span><span>' . BOX_TOOLS_MAIL_TEMPLATES .  '</span></div>';
+       }
+     }
      if (!check_whether_is_limited(FILENAME_POINT_EMAIL)) {
        if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_POINT_EMAIL){
          echo ' <div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_POINT_EMAIL).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_points.gif').'</span><span>' . BOX_TOOLS_POINT_EMAIL_MANAGER .  '</span></div>';

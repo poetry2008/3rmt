@@ -51,12 +51,14 @@
             STORE_NAME,
             HTTP_SERVER
             ); 
-        $email_text .= str_replace($old_str_array, $new_str_array, GUEST_LOGIN_EMAIL_CONTENT);  
-        $gu_email_text = str_replace('${SITE_NAME}', STORE_NAME, GUEST_LOGIN_EMAIL_TITLE);
+        //游客邮件认证
+        $guest_mail_array = tep_get_mail_templates('GUEST_LOGIN_EMAIL_CONTENT',SITE_ID);
+        $email_text .= str_replace($old_str_array, $new_str_array, $guest_mail_array['contents']);  
+        $gu_email_text = str_replace('${SITE_NAME}', STORE_NAME, $guest_mail_array['title']);
         
         if ($customers_res['is_send_mail'] != '1') {
           tep_mail($mail_name, $_POST['cemail'], $gu_email_text, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
-        }  
+        } 
         
         tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$gu_email_srandom."' where `customers_id` = '".$customers_res['customers_id']."' and site_id = '".SITE_ID."'"); 
         

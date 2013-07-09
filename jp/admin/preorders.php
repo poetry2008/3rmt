@@ -547,14 +547,12 @@
     $__orders_status_ids[] = $__orders_status['orders_status_id'];
   }
   $select_query = tep_db_query("
-      select om.orders_status_mail,
-                      om.orders_status_title,
-                      os.orders_status_id,
-                      os.nomail,
-                      om.site_id
-      from ".TABLE_PREORDERS_STATUS." os left join ".TABLE_PREORDERS_MAIL." om on os.orders_status_id = om.orders_status_id
-      where os.language_id = " . $languages_id . " 
-        and os.orders_status_id IN (".join(',', $__orders_status_ids).")");
+                      select 
+                      orders_status_id,
+                      nomail
+      from ".TABLE_PREORDERS_STATUS."
+      where language_id = " . $languages_id . " 
+        and orders_status_id IN (".join(',', $__orders_status_ids).")");
 
   while($select_result = tep_db_fetch_array($select_query)){
     if($suu == 0){
@@ -563,16 +561,20 @@
     }
     
     $osid = $select_result['orders_status_id'];
-    
+
+    //获取对应的邮件模板
+    $mail_templates_query = tep_db_query("select site_id,title,contents from ". TABLE_MAIL_TEMPLATES ." where flag='PREORDERS_STATUS_MAIL_TEMPLATES_".$osid."' and site_id='0'"); 
+    $mail_templates_array = tep_db_fetch_array($mail_templates_query);
+    tep_db_free_result($mail_templates_query);
     if($text_suu == 0){
-      $select_text = $select_result['orders_status_mail'];
-      $select_title = $select_result['orders_status_title'];
+      $select_text = $mail_templates_array['contents'];
+      $select_title = $mail_templates_array['title'];
       $text_suu = 1;
       $select_nomail = $select_result['nomail'];
     }
     
-    $mt[$osid][$select_result['site_id']?$select_result['site_id']:0] = $select_result['orders_status_mail'];
-    $mo[$osid][$select_result['site_id']?$select_result['site_id']:0] = $select_result['orders_status_title'];
+    $mt[$osid][$mail_templates_array['site_id']?$mail_templates_array['site_id']:0] = $mail_templates_array['contents'];
+    $mo[$osid][$mail_templates_array['site_id']?$mail_templates_array['site_id']:0] = $mail_templates_array['title'];
     $nomail[$osid] = $select_result['nomail'];
   }
 
@@ -1769,14 +1771,14 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       </tr>
       <?php
         
-        $ma_se = "select * from ".TABLE_PREORDERS_MAIL." where ";
+        $ma_se = "select * from ".TABLE_MAIL_TEMPLATES." where ";
         if(!isset($_GET['status']) || $_GET['status'] == ""){
-          $ma_se .= " orders_status_id = '".$order->info['orders_status']."' ";
+          $ma_se .= " flag = 'PREORDERS_STATUS_MAIL_TEMPLATES_".$order->info['orders_status']."' ";
           
           // 用来判断是否选中 送信&通知，如果nomail==1则不选中
           $ma_s = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PREORDERS_STATUS." where orders_status_id = '".$order->info['orders_status']."'"));
         }else{
-          $ma_se .= " orders_status_id = '".$_GET['status']."' ";
+          $ma_se .= " flag = 'PREORDERS_STATUS_MAIL_TEMPLATES_".$_GET['status']."' ";
           
           // 用来判断是否选中 送信&通知，如果nomail==1则不选中
           $ma_s = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PREORDERS_STATUS." where orders_status_id = '".$_GET['status']."'"));
@@ -1787,7 +1789,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
         $sta       = isset($_GET['status'])?$_GET['status']:'';
       ?>
       <tr>
-        <td class="main"><?php echo ENTRY_EMAIL_TITLE; ?><?php echo tep_draw_input_field('title', $mail_sql['orders_status_title'],'style=" width:315px;" id="mail_title"'); ?></td>
+        <td class="main"><?php echo ENTRY_EMAIL_TITLE; ?><?php echo tep_draw_input_field('title', $mail_sql['title'],'style=" width:315px;" id="mail_title"'); ?></td>
       </tr>
       <tr>
         <td class="main">
@@ -1801,7 +1803,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       </tr>
       <tr>
         <td class="main">
-          <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}',preorders_a($order->info['orders_id']),$mail_sql['orders_status_mail']); ?></textarea>
+          <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}',preorders_a($order->info['orders_id']),$mail_sql['contents']); ?></textarea>
         </td>
       </tr>
       <tr>

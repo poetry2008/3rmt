@@ -114,6 +114,7 @@ define('BOX_TOOLS_DEFINE_LANGUAGE', '言語ファイル管理');
 define('BOX_TOOLS_FILE_MANAGER', 'ファイル管理');
 define('BOX_TOOLS_MAIL', 'E-Mail 送信');
 define('BOX_TOOLS_NEWSLETTER_MANAGER', 'メールマガジン管理');
+define('BOX_TOOLS_MAIL_TEMPLATES', 'メールテンプレート設定');
 define('BOX_TOOLS_SERVER_INFO', 'サーバー情報');
 define('BOX_TOOLS_WHOS_ONLINE', 'オンラインユーザ');
 define('BOX_TOOLS_PRESENT','プレゼント機能');

@@ -44,19 +44,21 @@
     $__orders_status_ids[] = $__orders_status['orders_status_id'];
   }
   $select_query = tep_db_query("
-      select om.orders_status_mail,
-                      om.orders_status_title,
-                      os.orders_status_id,
-                      os.nomail,
-                      om.site_id
-      from ".TABLE_PREORDERS_STATUS." os left join ".TABLE_PREORDERS_MAIL." om on os.orders_status_id = om.orders_status_id
-      where os.language_id = " . $languages_id . " 
-        and os.orders_status_id IN (".join(',', $__orders_status_ids).")");
+                      select 
+                      orders_status_id,
+                      nomail
+      from ".TABLE_PREORDERS_STATUS."
+      where language_id = " . $languages_id . " 
+        and orders_status_id IN (".join(',', $__orders_status_ids).")");
 
   while($select_result = tep_db_fetch_array($select_query)){
     $osid = $select_result['orders_status_id'];
-    $mt[$osid][$select_result['site_id']?$select_result['site_id']:0] = $select_result['orders_status_mail'];
-    $mo[$osid][$select_result['site_id']?$select_result['site_id']:0] = $select_result['orders_status_title'];
+    //获取对应的邮件模板
+    $mail_templates_query = tep_db_query("select site_id,title,contents from ". TABLE_MAIL_TEMPLATES ." where flag='PREORDERS_STATUS_MAIL_TEMPLATES_".$osid."' and site_id='0'");
+    $mail_templates_array = tep_db_fetch_array($mail_templates_query);
+    tep_db_free_result($mail_templates_query);
+    $mt[$osid][$mail_templates_array['site_id']?$mail_templates_array['site_id']:0] = $mail_templates_array['contents'];
+    $mo[$osid][$mail_templates_array['site_id']?$mail_templates_array['site_id']:0] = $mail_templates_array['title'];
   }
 
 // START CONFIGURATION ################################
@@ -631,10 +633,10 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       $email .= '━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
       
       $email = ''; 
-      $select_status_query = tep_db_query("select orders_status_mail from ".TABLE_PREORDERS_MAIL." where orders_status_id = '".$_POST['status']."'"); 
+      $select_status_query = tep_db_query("select contents from ".TABLE_MAIL_TEMPLATES." where flag = 'PREORDERS_STATUS_MAIL_TEMPLATES_".$_POST['status']."'"); 
       $select_status_res = tep_db_fetch_array($select_status_query);
       if ($select_status_res) {
-        $email = $select_status_res['orders_status_mail']; 
+        $email = $select_status_res['contents']; 
       }
       
       $select_products_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$oID."'");
@@ -727,7 +729,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
           tep_db_query("update ".TABLE_PREORDERS." set check_preorder_str = '".$change_preorder_url_param."' where orders_id = '".$oID."'"); 
         }
         $preorder_email_title = $_POST['etitle']; 
-        $select_status_raw = tep_db_query("select * from ".TABLE_PREORDERS_MAIL." where orders_status_id = '".$status."'"); 
+        $select_status_raw = tep_db_query("select * from ".TABLE_MAIL_TEMPLATES." where flag = 'PREORDERS_STATUS_MAIL_TEMPLATES_".$status."'"); 
         $select_status_res = tep_db_fetch_array($select_status_raw);
         if ($select_status_res) {
           $select_t_products_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$oID."'");
@@ -2811,14 +2813,14 @@ if (tep_db_num_rows($orders_history_query)) {
     <td class="main" width="15%">&nbsp;</td>
     <td class="main">
     <?php
-      $ma_se = "select * from ".TABLE_PREORDERS_MAIL." where orders_status_id = '".$sel_nyuuka_id."'"; 
+      $ma_se = "select * from ".TABLE_MAIL_TEMPLATES." where flag = 'PREORDERS_STATUS_MAIL_TEMPLATES_".$sel_nyuuka_id."'"; 
       $mail_sele = tep_db_query($ma_se); 
       $mail_sql = tep_db_fetch_array($mail_sele); 
     ?>
-    <?php echo ENTRY_EMAIL_TITLE.tep_draw_input_field('etitle', isset($_SESSION['orders_update_products'][$_GET['oID']]['etitle']) ? $_SESSION['orders_update_products'][$_GET['oID']]['etitle'] : $mail_sql['orders_status_title'],' style="width:230px;" id="mail_title"');?> 
+    <?php echo ENTRY_EMAIL_TITLE.tep_draw_input_field('etitle', isset($_SESSION['orders_update_products'][$_GET['oID']]['etitle']) ? $_SESSION['orders_update_products'][$_GET['oID']]['etitle'] : $mail_sql['title'],' style="width:230px;" id="mail_title"');?> 
     <br> 
     <br> 
-    <textarea style="font-family:monospace; font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo isset($_SESSION['orders_update_products'][$_GET['oID']]['comments']) ? $_SESSION['orders_update_products'][$_GET['oID']]['comments'] : str_replace('${ORDER_A}', preorders_a($order->info['orders_id']), $mail_sql['orders_status_mail']);?></textarea> 
+    <textarea style="font-family:monospace; font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo isset($_SESSION['orders_update_products'][$_GET['oID']]['comments']) ? $_SESSION['orders_update_products'][$_GET['oID']]['comments'] : str_replace('${ORDER_A}', preorders_a($order->info['orders_id']), $mail_sql['contents']);?></textarea> 
   </td>
   </tr>
 </table>

@@ -357,9 +357,6 @@ class convenience_store extends basePayment  implements paymentInterface  {
                    'MODULE_PAYMENT_CONVENIENCE_STORE_ORDER_STATUS_ID' ,
                    'MODULE_PAYMENT_CONVENIENCE_STORE_PREORDER_STATUS_ID' ,
                    'MODULE_PAYMENT_CONVENIENCE_STORE_MONEY_LIMIT',
-                   'MODULE_PAYMENT_CONVENIENCE_STORE_MAILSTRING',
-                   'MODULE_PAYMENT_CONVENIENCE_STORE_PRINT_MAILSTRING_TITLE',
-                   'MODULE_PAYMENT_CONVENIENCE_STORE_PRINT_MAILSTRING',
                     );
     }
 

@@ -33,13 +33,16 @@
         } else {
           tep_db_query("insert into `customers_password_info` values('".$check_customer['customers_id']."', '".$_POST['email_address']."', '".$_SERVER["REMOTE_ADDR"]."', '".$random_str."', '".date('Y-m-d H:i:s',time())."', '0')");
         }
-        $email_body = SEND_PASSWORLD_EMAIL_CONTENT;
+
+        //密码重置邮件
+        $password_mail_array = tep_get_mail_templates('SEND_PASSWORLD_EMAIL_CONTENT',SITE_ID); 
+        $email_body = $password_mail_array['contents'];
         $email_body = str_replace('${URL}', $send_url, $email_body);
         $email_body = str_replace('${SITE_NAME}', STORE_NAME, $email_body);
         $email_body = str_replace('${SITE_URL}', HTTP_SERVER, $email_body);
         $email_body = str_replace('${IP}', $_SERVER["REMOTE_ADDR"], $email_body);
         $email_body = str_replace('${NAME}', tep_get_fullname($check_customer['customers_firstname'], $check_customer['customers_lastname']), $email_body);
-        tep_mail(tep_get_fullname($check_customer['customers_firstname'],$check_customer['customers_lastname']), $_POST['email_address'], str_replace('${SITE_NAME}', STORE_NAME, SEND_PASSWORLD_EMAIL_TITLE), $email_body, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+        tep_mail(tep_get_fullname($check_customer['customers_firstname'],$check_customer['customers_lastname']), $_POST['email_address'], str_replace('${SITE_NAME}', STORE_NAME, $password_mail_array['title']), $email_body, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
       tep_redirect(tep_href_link('send_success.php',
             'send_mail='.rawurlencode($val_email_address)));
     } else {

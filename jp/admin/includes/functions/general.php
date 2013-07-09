@@ -10772,6 +10772,20 @@ function tep_get_beforday_orders($limit_time_info){
     return $order_arr;
 }
 /*------------------------------
+  功能: 获取相应的邮件模板 
+  参数: $mail_flag(string) 邮件模板标识
+  参数: $site_id(int) 所属网站
+  返回: 邮件模板的标题、内容 
+  -----------------------------*/
+function tep_get_mail_templates($mail_flag,$site_id){
+
+  $mail_query = tep_db_query("select title,contents from ". TABLE_MAIL_TEMPLATES ." where flag='".$mail_flag."' and site_id='".$site_id."'");
+  $mail_array = tep_db_fetch_array($mail_query);
+  tep_db_free_result($mail_query);
+
+  return array('title'=>$mail_array['title'],'contents'=>$mail_array['contents']);
+}
+/*------------------------------
   功能: 获得用户支付方法组ID
   参数: orders_id(int) 订单ID
   参数: customer_id(int) 客户ID
