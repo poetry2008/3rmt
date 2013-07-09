@@ -6781,40 +6781,40 @@ if($_GET['qID'] != -1 && $_GET['cID'] != -1){
                 if($faq_type == ''){
                       $faq_type = 'asc';
                 }
-                if(!isset($_GET['sort']) || $_GET['sort'] == ''){
-                    $faq_str = 'info_type'; 
-                    $faq_qid_str = 'c.sort_order,c.ask,c.faq_question_id';
-                }else if($_GET['sort'] == 'site_romaji'){
+                if($_GET['sort'] == 'site_romaji'){
                   if($_GET['type'] == 'desc'){
                     $faq_str = 'site_id desc';
-                    $faq_type = 'asc';
                     }else{
                     $faq_str = 'site_id asc';
-                    $faq_type = 'desc';
                     }
                 }else if($_GET['sort'] == 'title'){
                   if($_GET['type'] == 'desc'){
                     $faq_str = 'title desc';
-                    $faq_type = 'asc';
                     }else{
                     $faq_str = 'title asc';
-                    $faq_type = 'desc';
                     }
                 }else if($_GET['sort'] == 'is_show'){
                   if($_GET['type'] == 'desc'){
                     $faq_str = 'is_show desc';
-                    $faq_type = 'asc';
                     }else{
                     $faq_str = 'is_show asc';
-                    $faq_type = 'desc';
+                    }
+                }else if($_GET['sort'] == 'updated_at'){
+                  if($_GET['type'] == 'desc'){
+                    $faq_str = 'updated_at desc';
+                    }else{
+                    $faq_str = 'updated_at asc';
                     }
                 }
                 if(isset($_GET['search'])&&$_GET['search']!=''){
                     $sql_search_where = " and search_text like '%".$_GET['search']."%' ";
-                    $faq_category_query_raw = "select * from faq_sort where 1 ".  $sql_search_where." and ".$sql_site_where." and parent_id = '".$current_category_id."' order by info_type asc,".$faq_str;
+                    $faq_category_query_raw = "select * from faq_sort where 1 ".  $sql_search_where." and ".$sql_site_where." and parent_id = '".$current_category_id."'";
                  }else{
-                    $faq_category_query_raw = "select * from faq_sort where parent_id = '".$current_category_id."' and ".$sql_site_where." order by info_type asc,".$faq_str;
+                    $faq_category_query_raw = "select * from faq_sort where parent_id = '".$current_category_id."' and ".$sql_site_where;
                  }
+		 if(isset($faq_str)&&$faq_str!=''){
+		    $faq_category_query_raw .= ' order by '.$faq_str;
+		 }
                  // $faq_query_raw = "select * from faq_sort where parent_id = '".$current_category_id."' and title like '%".$_GET['search']."%' and ".$sql_site_where." order by ".$faq_str;
                   $faq_split = new splitPageResults($_GET['page'],MAX_DISPLAY_FAQ_ADMIN,$faq_category_query_raw,$faq_query_number);
                   $_faq_query = tep_db_query($faq_category_query_raw);
@@ -6893,7 +6893,7 @@ if($_GET['qID'] != -1 && $_GET['cID'] != -1){
     }else if($qInfo->info_type == 'c'){
     $contents[]['text'] = array(
         array('text' => '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">URL'),
-        array('text' => tep_draw_input_field('romaji',$faq_c_raw['romaji'],'id="cromaji"size="40" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" '.$disabled).  '</span><input type="button" '.$disabled.'onclick = "faq_q_is_set_romaji(\''.$current_category_id.'\',\''.$faq_c_raw['faq_question_id'].'\',\''.$faq_c_raw['site_id'].'\')" value="'.TEXT_ROMAJI_IS_SET.'">'.  '<input type="button" '.$disabled.' onclick = "faq_q_is_set_error_char()" value="'.IS_SET_ERROR_CHAR.'"><br><span id="cromaji_error">')
+        array('text' => tep_draw_input_field('romaji',$faq_c_raw['romaji'],'id="cromaji"size="40" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" '.$disabled).  '</span><input type="button" '.$disabled.'onclick = "faq_c_is_set_romaji(\''.$current_category_id.'\',\''.$faq_c_raw['faq_question_id'].'\',\''.$faq_c_raw['site_id'].'\')" value="'.TEXT_ROMAJI_IS_SET.'">'.  '<input type="button" '.$disabled.' onclick = "faq_c_is_set_error_char()" value="'.IS_SET_ERROR_CHAR.'"><br><span id="cromaji_error">')
         );
     }
     if($qInfo->info_type == 'q'){
