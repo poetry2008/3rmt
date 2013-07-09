@@ -137,7 +137,7 @@
 
     $payment_method = tep_db_prepare_input($_POST['payment_method']); 
     if($payment_method!=$use_payment){
-      $payment_continue = tep_get_payment_flag($payment_method,'',$order->info['site_id'],$order->info['orders_id'],false);
+      $payment_continue = tep_get_payment_flag($payment_method,'',$order->info['site_id'],$order->info['orders_id'],false,'preorder');
       if(!$payment_continue){
         $_SESSION['pre_payment_empty_error_edit'] = TEXT_SELECT_PAYMENT_ERROR;
         tep_redirect(tep_href_link("edit_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
@@ -1925,10 +1925,12 @@ require("includes/note_js.php");
                 <td class="main">
                   <?php 
                   $c_chk = tep_get_payment_customer_chk($order->info['orders_id'],'',false);
-                  $payment_code = payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
-                  $payment_code = isset($_SESSION['preorder_products'][$_GET['oID']]['payment_method']) ? $_SESSION['preorder_products'][$_GET['oID']]['payment_method'] : $payment_code;
-                  $payment_code = isset($_POST['payment_method']) ? $_POST['payment_method'] : $payment_code; echo
-                    payment::makePaymentListPullDownMenu($payment_code,$order->info['site_id'],$c_chk,'preorder'); 
+                  $payment_code_use = payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
+                  $payment_code = isset($_SESSION['preorder_products'][$_GET['oID']]['payment_method']) ? $_SESSION['preorder_products'][$_GET['oID']]['payment_method'] : $payment_code_use;
+                  $payment_code = isset($_POST['payment_method']) ?  $_POST['payment_method'] : $payment_code_use; 
+                  if(tep_get_payment_flag($payment_code,'',$order->info['site_id'],$order->info['orders_id'],false,'preorder')){
+                 }
+                  echo payment::makePaymentListPullDownMenu($payment_code,$order->info['site_id'],$c_chk,'preorder'); 
                   $orders_status_history_query = tep_db_query("select comments from ". TABLE_PREORDERS_STATUS_HISTORY ." where orders_id='".$oID."' order by date_added desc limit 0,1"); 
                   if(isset($_SESSION['pre_payment_empty_error_edit'])
                      &&$_SESSION['pre_payment_empty_error_edit']!=''){

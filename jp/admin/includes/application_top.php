@@ -12,7 +12,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
 
 // Set the level of error reporting
   error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_WARNING);
-  ini_set("display_errors", "Off");
+  ini_set("display_errors", "On");
 
 // Check if register_globals is enabled.
 // Since this is a temporary measure this message is hardcoded. The requirement will be removed before 2.2 is finalized.
@@ -169,6 +169,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('TABLE_FAQ_CATEGORIES_DESCRIPTION', 'faq_categories_description');
   define('TABLE_FAQ_QUESTION_DESCRIPTION',  'faq_question_description');
   define('TABLE_FAQ_QUESTION_TO_CATEGORIES','faq_question_to_categories');
+  define('TABLE_FAQ_SORT','faq_sort');
   define('TABLE_OA_GROUP', 'oa_group'); 
   define('TABLE_OA_FORM', 'oa_form'); 
   define('TABLE_OA_FORM_GROUP', 'oa_form_group'); 

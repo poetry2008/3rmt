@@ -97,7 +97,7 @@ if (tep_not_null($action)) {
   case 'update_order':
     //订单状态更新
     if(!isset($_POST['payment_method']) ||$_POST['payment_method']=='' ||!$_POST['payment_method']){
-      $_SESSION['payment_empty_error'] = TEXT_SELECT_PAYMENT_ERROR;
+      $_SESSION['payment_empty_error'] = TEXT_NO_PAYMENT_ENABLED;
       tep_redirect(tep_href_link("edit_new_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
     }else{
       $payment_method = tep_db_prepare_input($_POST['payment_method']); 

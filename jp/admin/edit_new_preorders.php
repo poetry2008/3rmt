@@ -91,11 +91,11 @@
   // 1. UPDATE ORDER ###############################################################################################
   case 'update_order':
    if(!isset($_POST['payment_method']) ||$_POST['payment_method']=='' ||!$_POST['payment_method']){
-      $_SESSION['pre_payment_empty_error'] = TEXT_SELECT_PAYMENT_ERROR;
+      $_SESSION['pre_payment_empty_error'] = TEXT_NO_PAYMENT_ENABLED;
       tep_redirect(tep_href_link("edit_new_preorders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
     }else{
       $payment_method = tep_db_prepare_input($_POST['payment_method']); 
-      $payment_continue = tep_get_payment_flag( $payment_method,$_SESSION['create_preorder']['orders']['customer_id'],$_SESSION['create_preorder']['orders']['site_id']);
+      $payment_continue = tep_get_payment_flag( $payment_method,$_SESSION['create_preorder']['orders']['customers_id'],$_SESSION['create_preorder']['orders']['site_id'],'',true,'preorder');
       if(!$payment_continue){
         $_SESSION['pre_payment_empty_error'] = TEXT_SELECT_PAYMENT_ERROR;
         tep_redirect(tep_href_link("edit_new_preorders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
@@ -774,6 +774,7 @@ function orders_session(type,value){
 ?>
   <?php //隐藏支付方法的附加信息?> 
   function hidden_payment(){
+  if(document.edit_order.elements["payment_method"]){
   var idx = document.edit_order.elements["payment_method"].selectedIndex;
   var CI = document.edit_order.elements["payment_method"].options[idx].value;
   $(".rowHide").hide();
@@ -782,6 +783,7 @@ function orders_session(type,value){
   $(".rowHide_"+CI).find("input").removeAttr("disabled"); 
   price_total();
   recalc_preorder_price("<?php echo $_GET['oID'];?>", "<?php echo $products_id_str;?>", "0", "<?php echo $op_info_str;?>");
+  }
   }
 $(document).ready(function(){
   hidden_payment();
@@ -936,7 +938,7 @@ function recalc_preorder_price(oid, opd, o_str, op_str)
           total_price_str += update_total_temp_value+'|||';
         }
   }
-  if(document.getElementsByName('payment_method')[0])
+  if(document.getElementsByName('payment_method')[0]){
   var payment_method = document.getElementsByName('payment_method')[0].value;
   $.ajax({
     type: "POST",
