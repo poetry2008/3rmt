@@ -830,9 +830,11 @@ require("includes/note_js.php");
 
 <div id="categories_tree">
                 <?php
+                /*
                   require(DIR_WS_CLASSES . 'faq_tree.php');
                   $osC_FaqTree = new osC_FaqTree;
                   echo $osC_FaqTree->buildTree();
+                  */
                 ?>
                 </div>
 <!-- body //-->
