@@ -211,7 +211,8 @@ echo TEXT_ORDERS_EMPTY_COMMENT;
                            'flag_qaf' => $preorder['flag_qaf'], 
                            'end_user' => $preorder['end_user'], 
                            'confirm_payment_time' => $preorder['confirm_payment_time'],
-                           'orders_type' => 1, 
+                           'orders_type' => 1,
+                           'is_gray' => $preorder['is_gray']
                           );
   
   if (isset($_SESSION['referer_adurl']) && $_SESSION['referer_adurl']) {
@@ -277,14 +278,16 @@ echo TEXT_ORDERS_EMPTY_COMMENT;
   }
   tep_db_free_result($address_sh_his_query);
 if($address_error == false){
-  foreach($_SESSION['preorder_information'] as $address_history_key=>$address_history_value){
-    if(substr($address_history_key,0,3) == 'ad_'){
-      $address_history_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where name_flag='". substr($address_history_key,3) ."'");
-      $address_history_array = tep_db_fetch_array($address_history_query);
-      tep_db_free_result($address_history_query);
-      $address_history_id = $address_history_array['id'];
-      $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." value(NULL,'$orders_id',{$preorder_cus_id},$address_history_id,'{$address_history_array['name_flag']}','$address_history_value')");
-      tep_db_free_result($address_history_add_query);
+  if ($preorder['is_gray'] != '1') { 
+    foreach($_SESSION['preorder_information'] as $address_history_key=>$address_history_value){
+      if(substr($address_history_key,0,3) == 'ad_'){
+        $address_history_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where name_flag='". substr($address_history_key,3) ."'");
+        $address_history_array = tep_db_fetch_array($address_history_query);
+        tep_db_free_result($address_history_query);
+        $address_history_id = $address_history_array['id'];
+        $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." value(NULL,'$orders_id',{$preorder_cus_id},$address_history_id,'{$address_history_array['name_flag']}','$address_history_value')");
+        tep_db_free_result($address_history_add_query);
+      }
     }
   }
 }

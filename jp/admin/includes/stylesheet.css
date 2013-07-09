@@ -2089,11 +2089,20 @@ google hack
 .td_box{
 	margin-right:-2px;
 	overflow:hidden;
-}
+}}
 .td_box input{
 	margin:0;
 	padding:0;
 }
 .right_space{
 	margin-right:-3px;
+}
+.highlight_color{
+	background-color:#888888;
+	width: auto;
+	display:inline-block;
+}
+.highlight_color a{
+	font-weight: bold;
+	color:#F0F1F1;
 }

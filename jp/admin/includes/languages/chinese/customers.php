@@ -63,3 +63,4 @@ define('TEXT_ORDER_MADE','创建订单');
 define('TEXT_PREORDER_MADE','创建预约订单');
 define('TEXT_KEEP_ORDER','保存并创建订单');
 define('TEXT_KEEP_PREORDER','保存并创建预约订单');
+define('BUTTON_EXIT_HISTORY_TEXT', '退会历史记录');

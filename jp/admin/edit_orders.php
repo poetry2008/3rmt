@@ -491,14 +491,19 @@ if (tep_not_null($action)) {
         }
       }
       
+      $is_gray_query = tep_db_query("select is_gray from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
+      $is_gray = tep_db_fetch_array($is_gray_query);
+
       foreach ($update_totals as $total_index => $total_details) {    
         extract($total_details,EXTR_PREFIX_ALL,"ot");
         if ($ot_class == "ot_point" && (int)$ot_value > 0) {
           $current_point = $customer_point['point'] + $before_point;
-          if ((int)$ot_value > $current_point) {
-            $messageStack->add(TEXT_NO_ENOUGH_POINT.'<b>' . $current_point . '</b>'.TEXT_LS, 'error');
-            $action = 'edit';
-            break 2;
+          if ($is_gray['is_gray'] != '1') {
+            if ((int)$ot_value > $current_point) {
+              $messageStack->add(TEXT_NO_ENOUGH_POINT.'<b>' . $current_point . '</b>'.TEXT_LS, 'error');
+              $action = 'edit';
+              break 2;
+            }
           }
         }
       }
@@ -2290,9 +2295,11 @@ function address_option_show(action){
   $json_old_array = array();
 
   while($address_orders_group_array = tep_db_fetch_array($address_orders_group_query)){
-  
-  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."' order by id asc");
-
+  if ($address_orders_group_array['orders_id'] != $order->info['orders_id']) {
+    $address_orders_query = tep_db_query("select ah.* from ". TABLE_ADDRESS_HISTORY ." ah, ".TABLE_ORDERS." o where ah.orders_id='".  $address_orders_group_array['orders_id'] ."' and ah.orders_id = o.orders_id and o.orders_id != '".$order->info['orders_id']."' and o.is_gray != '1' order by ah.id asc");
+  } else {
+    $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."' order by id asc");
+  }
    
   $json_str_list = '';
   unset($json_old_array);
@@ -2403,8 +2410,11 @@ function address_option_list(value){
   $json_str_array = array();
   
   while($address_orders_group_array = tep_db_fetch_array($address_orders_group_query)){
-  
-  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."' order by id");
+  if ($address_orders_group_array['orders_id'] != $order->info['orders_id']) {
+    $address_orders_query = tep_db_query("select ah.* from ". TABLE_ADDRESS_HISTORY ." ah, ".TABLE_ORDERS." o where ah.orders_id='".  $address_orders_group_array['orders_id'] ."' and ah.orders_id = o.orders_id and o.orders_id != '".$order->info['orders_id']."' and o.is_gray != '1' order by ah.id");
+  } else {
+    $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."' order by id");
+  }
   
   while($address_orders_array = tep_db_fetch_array($address_orders_query)){
     
@@ -2633,7 +2643,7 @@ $(document).ready(function(){
       $orders_total_sum -= $order->info['code_fee'];
       $orders_total_sum = isset($_SESSION['orders_update_products'][$_GET['oID']]['ot_subtotal']) ? $_SESSION['orders_update_products'][$_GET['oID']]['ot_subtotal']+$_SESSION['orders_update_products'][$_GET['oID']]['fee_total']-$_SESSION['orders_update_products'][$_GET['oID']]['point']+$shipping_fee : $orders_total_sum;
       foreach($payment_array[0] as $pay_key=>$pay_value){ 
-        $payment_info = $cpayment->admin_get_payment_info_comment($pay_value,$order->customer['email_address'],$order->info['site_id']);
+        $payment_info = $cpayment->admin_get_payment_info_comment($pay_value,$order->customer['email_address'],$order->info['site_id'],1,$order->info['is_gray']);
         if(is_array($payment_info)){
 
           switch($payment_info[0]){
@@ -3130,7 +3140,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       $pay_orders_id_array = array();
       $pay_type_array = array();
       foreach($payment_array[0] as $pay_key=>$pay_value){ 
-        $payment_info = $cpayment->admin_get_payment_info_comment($pay_value,$order->customer['email_address'],$order->info['site_id']);
+        $payment_info = $cpayment->admin_get_payment_info_comment($pay_value,$order->customer['email_address'],$order->info['site_id'],1,$order->info['is_gray']);
         if(is_array($payment_info)){
 
           switch($payment_info[0]){
