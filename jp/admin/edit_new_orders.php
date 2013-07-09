@@ -97,7 +97,7 @@ if (tep_not_null($action)) {
   case 'update_order':
     //订单状态更新
     if(!isset($_POST['payment_method']) ||$_POST['payment_method']=='' ||!$_POST['payment_method']){
-      $_SESSION['payment_empty_error'] = TEXT_SELECT_PAYMENT_ERROR;
+      $_SESSION['payment_empty_error'] = TEXT_NO_PAYMENT_ENABLED;
       tep_redirect(tep_href_link("edit_new_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
     }else{
       $payment_method = tep_db_prepare_input($_POST['payment_method']); 
@@ -1350,30 +1350,10 @@ if($address_error == false){
         } else {
           $messageStack->add_session(TEXT_ERROR_NO_SUCCESS, 'error');
         }
-        
-  $payment_name_key = 'MODULE_PAYMENT_'.strtoupper($_POST['payment_method']).'_PRINT_MAILSTRING';
-  $payment_name_key_title = 'MODULE_PAYMENT_'.strtoupper($_POST['payment_method']).'_PRINT_MAILSTRING_TITLE';
-
-  $payment_name_query = tep_db_query("select configuration_value from ". TABLE_CONFIGURATION ." where configuration_key='".$payment_name_key."' and site_id='".$site_id_flag."'");
-  $payment_name_num_rows = tep_db_num_rows($payment_name_query);
-  if($payment_name_num_rows == 0){
-
-    $payment_name_query = tep_db_query("select configuration_value from ". TABLE_CONFIGURATION ." where configuration_key='".$payment_name_key."' and site_id='0'"); 
-  }
-  $payment_name_num_rows_flag = tep_db_num_rows($payment_name_query);
-  $payment_name_array = tep_db_fetch_array($payment_name_query);
-  tep_db_free_result($payment_name_query);
-  $payment_name_string = $payment_name_array['configuration_value'];
-
-  $payment_name_query_title = tep_db_query("select configuration_value from ". TABLE_CONFIGURATION ." where configuration_key='".$payment_name_key_title."' and site_id='".$site_id_flag."'");
-  $payment_name_num_rows_title = tep_db_num_rows($payment_name_query_title);
-  if($payment_name_num_rows_title == 0){
-
-    $payment_name_query_title = tep_db_query("select configuration_value from ". TABLE_CONFIGURATION ." where configuration_key='".$payment_name_key_title."' and site_id='0'"); 
-  }
-  $payment_name_array_title = tep_db_fetch_array($payment_name_query_title);
-  tep_db_free_result($payment_name_query_title);
-  $payment_name_string_title = $payment_name_array_title['configuration_value'];
+  //打印邮件
+  $orders_print_mail_templates = tep_get_mail_templates('MODULE_PAYMENT_'.strtoupper($_POST['payment_method']).'_PRINT_MAILSTRING',$site_id_flag);  
+  $payment_name_string = $orders_print_mail_templates['contents']; 
+  $payment_name_string_title = $orders_print_mail_templates['title'];
 
   $payment_mode = array(
                         '${USER_NAME}',
@@ -1511,15 +1491,13 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
   $payment_name_string = str_replace($payment_mode,$payment_replace,$payment_name_string);  
   $email_printing_order = $payment_name_string; 
   $email_printing_order_title = str_replace('${SITE_NAME}',$orders_site_name_array['name'],$payment_name_string_title);
-  $email_printing_order = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL, $email_printing_order);
+  $email_printing_order = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL, $email_printing_order); 
   # ------------------------------------------
-  if($payment_name_num_rows_flag > 0){
   tep_mail('',
       get_configuration_by_site_id('PRINT_EMAIL_ADDRESS',$site_id_flag),
       $email_printing_order_title,
       $email_printing_order,tep_db_input(stripslashes($update_customer_name))
       ,tep_db_input($update_customer_email_address) , ''); 
-  }
        //session unset
        unset($_SESSION['oID']);
        unset($_SESSION['customer_id']);
@@ -2418,14 +2396,12 @@ while($__orders_status = tep_db_fetch_array($__orders_status_query)){
   $__orders_status_ids[] = $__orders_status['orders_status_id'];
 }
 $select_query = tep_db_query("
-    select om.orders_status_mail,
-    om.orders_status_title,
-    os.orders_status_id,
-    os.nomail,
-    om.site_id
-    from ".TABLE_ORDERS_STATUS." os left join ".TABLE_ORDERS_MAIL." om on os.orders_status_id = om.orders_status_id
-    where os.language_id = " . $languages_id . " 
-    and os.orders_status_id IN (".join(',', $__orders_status_ids).")");
+    select 
+    orders_status_id,
+    nomail
+    from ".TABLE_ORDERS_STATUS."
+    where language_id = " . $languages_id . " 
+    and orders_status_id IN (".join(',', $__orders_status_ids).")");
 
 while($select_result = tep_db_fetch_array($select_query)){
   if($suu == 0){
@@ -2434,16 +2410,20 @@ while($select_result = tep_db_fetch_array($select_query)){
   }
 
   $osid = $select_result['orders_status_id'];
+  //获取对应的邮件模板
+  $mail_templates_query = tep_db_query("select site_id,title,contents from ". TABLE_MAIL_TEMPLATES ." where flag='ORDERS_STATUS_MAIL_TEMPLATES_".$osid."' and site_id='0'");
+  $mail_templates_array = tep_db_fetch_array($mail_templates_query);
+  tep_db_free_result($mail_templates_query);
 
   if($text_suu == 0){
-    $select_text = $select_result['orders_status_mail'];
-    $select_title = $select_result['orders_status_title'];
+    $select_text = $mail_templates_array['contents'];
+    $select_title = $mail_templates_array['title'];
     $text_suu = 1;
     $select_nomail = $select_result['nomail'];
   }
 
-  $mt[$osid][$select_result['site_id']?$select_result['site_id']:0] = $select_result['orders_status_mail'];
-  $mo[$osid][$select_result['site_id']?$select_result['site_id']:0] = $select_result['orders_status_title'];
+  $mt[$osid][$mail_templates_array['site_id']?$mail_templates_array['site_id']:0] = $mail_templates_array['contents'];
+  $mo[$osid][$mail_templates_array['site_id']?$mail_templates_array['site_id']:0] = $mail_templates_array['title'];
   $nomail[$osid] = $select_result['nomail'];
 }
 
@@ -4784,18 +4764,18 @@ if($orders_exit_flag == true){
             </tr>
             <?php
 
-          $ma_se = "select * from ".TABLE_ORDERS_MAIL." where ";
+          $ma_se = "select * from ".TABLE_MAIL_TEMPLATES." where ";
           $orders_status_num_query =  tep_db_query("select min(orders_status_id) as orders_status_id_min from ". TABLE_ORDERS_STATUS);
           $orders_status_num_array = tep_db_fetch_array($orders_status_num_query);
           tep_db_free_result($orders_status_num_query);
           $orders_status_num = $orders_exit_flag == true ? $order->info['orders_status'] : $orders_status_num_array['orders_status_id_min'];
           if(!isset($_GET['status']) || $_GET['status'] == ""){
-            $ma_se .= " orders_status_id = '".$orders_status_num."' ";
+            $ma_se .= " flag = 'ORDERS_STATUS_MAIL_TEMPLATES_".$orders_status_num."' ";
 
             // 用来判断是否选中 送信&通知，如果nomail==1则不选中
             $ma_s = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$orders_status_num."'"));
           }else{
-            $ma_se .= " orders_status_id = '".$_GET['status']."' ";
+            $ma_se .= " flag = 'ORDERS_STATUS_MAIL_TEMPLATES_".$_GET['status']."' ";
 
             // 用来判断是否选中 送信&通知，如果nomail==1则不选中
             $ma_s = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$_GET['status']."'"));
@@ -4804,13 +4784,13 @@ if($orders_exit_flag == true){
           $mail_sele = tep_db_query($ma_se);
           $mail_sql  = tep_db_fetch_array($mail_sele);
           $sta       = isset($_GET['status'])?$_GET['status']:'';
-          $mail_sql['orders_status_title'] = isset($_SESSION['orders_update_products'][$_GET['oID']]['title']) ? $_SESSION['orders_update_products'][$_GET['oID']]['title'] : $mail_sql['orders_status_title'];
+          $mail_sql['title'] = isset($_SESSION['orders_update_products'][$_GET['oID']]['title']) ? $_SESSION['orders_update_products'][$_GET['oID']]['title'] : $mail_sql['title'];
           $notify_comments_checked = isset($_SESSION['orders_update_products'][$_GET['oID']]['notify_comments']) ? $_SESSION['orders_update_products'][$_GET['oID']]['notify_comments'] == 1 ? true : false : false;
           ?>
 
             <tr>
             <td class="main"><?php echo ENTRY_EMAIL_TITLE; ?></td>
-            <td class="main"><?php echo tep_draw_input_field('title', $mail_sql['orders_status_title'],'style="width:100%;"'); ?></td>
+            <td class="main"><?php echo tep_draw_input_field('title', $mail_sql['title'],'style="width:100%;"'); ?></td>
             </tr>
             <tr>
             <td class="main"><?php echo EDIT_ORDERS_SEND_MAIL_TEXT;?></td>
@@ -4832,13 +4812,13 @@ if($orders_exit_flag == true){
                 <td class="main">
                 <?php echo EDIT_ORDERS_RECORD_ARTICLE;?><br>
                 <?php
-                $mail_sql['orders_status_mail'] = isset($_SESSION['orders_update_products'][$_GET['oID']]['comments']) ? $_SESSION['orders_update_products'][$_GET['oID']]['comments'] : $mail_sql['orders_status_mail'];
+                $mail_sql['contents'] = isset($_SESSION['orders_update_products'][$_GET['oID']]['comments']) ? $_SESSION['orders_update_products'][$_GET['oID']]['comments'] : $mail_sql['contents'];
                 if($CommentsWithStatus) {
 
 
-                  echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace(' ${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:400px;"');
+                  echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace(' ${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['contents']),'style=" font-family:monospace; font-size:12px; width:400px;"');
                 } else {
-                  echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('     ${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:400px;"');
+                  echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('     ${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['contents']),'style=" font-family:monospace; font-size:12px; width:400px;"');
                 } 
           ?>
             </td>

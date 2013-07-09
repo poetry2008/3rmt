@@ -12,7 +12,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
 
 // Set the level of error reporting
   error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_WARNING);
-  ini_set("display_errors", "Off");
+  ini_set("display_errors", "On");
 
 // Check if register_globals is enabled.
 // Since this is a temporary measure this message is hardcoded. The requirement will be removed before 2.2 is finalized.
@@ -135,6 +135,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('FILENAME_PERSONAL_SETTING','personal_setting.php');
   define('FILENAME_ALERT_LOG','alert_log.php');
   define('FILENAME_BUSINESS_MEMO','business_memo.php');
+  define('FILENAME_MAIL_TEMPLATES','mail_templates.php');
 
 // define the database table names used in the project
   define('TABLE_CUSTOMERS_BASKET_OPTIONS', 'customers_basket_options');
@@ -150,7 +151,6 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('TABLE_CUSTOMER_TO_CAMPAIGN', 'customer_to_campaign');
   define('TABLE_PREORDERS', 'preorders');
   define('TABLE_PREORDERS_OA_FORMVALUE', 'preorders_oa_formvalue'); 
-  define('TABLE_PREORDERS_MAIL', 'preorders_mail');
   define('TABLE_PREORDERS_OPERATOR', 'preorders_operator');
   define('TABLE_PREORDERS_PRODUCTS', 'preorders_products');
   define('TABLE_PREORDERS_PRODUCTS_ATTRIBUTES', 'preorders_products_attributes');
@@ -169,6 +169,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('TABLE_FAQ_CATEGORIES_DESCRIPTION', 'faq_categories_description');
   define('TABLE_FAQ_QUESTION_DESCRIPTION',  'faq_question_description');
   define('TABLE_FAQ_QUESTION_TO_CATEGORIES','faq_question_to_categories');
+  define('TABLE_FAQ_SORT','faq_sort');
   define('TABLE_OA_GROUP', 'oa_group'); 
   define('TABLE_OA_FORM', 'oa_form'); 
   define('TABLE_OA_FORM_GROUP', 'oa_form_group'); 
@@ -249,7 +250,6 @@ define('TABLE_PERMISSIONS','permissions');
   define('TABLE_PRESENT_GOODS', 'present_goods');
   define('TABLE_PRESENT_APPLICANT', 'present_applicant');
   define('TABLE_MAIL_MAGAZINE', 'mail_magazine');
-  define('TABLE_ORDERS_MAIL', 'orders_mail');
   define('TABLE_CALENDER', 'calendar');
   define('TABLE_BUTTONS',  'buttons');
   define('TABLE_ORDERS_TO_BUTTONS',  'orders_to_buttons');
@@ -270,6 +270,7 @@ define('TABLE_PERMISSIONS','permissions');
   define('TABLE_CALENDAR_DATE','calendar_date');
   define('TABLE_SHOW_SITE','show_site');
   define('TABLE_BUSINESS_MEMO','business_memo');
+  define('TABLE_MAIL_TEMPLATES','mail_templates');
 // customization for the design layout
   define('BOX_WIDTH', 160); // how wide the boxes should be in pixels (default: 125)
 

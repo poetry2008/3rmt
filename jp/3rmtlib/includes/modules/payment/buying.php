@@ -345,9 +345,6 @@ class buying extends basePayment  implements paymentInterface  {
 		 'MODULE_PAYMENT_BUYING_SORT_ORDER', 
 		 'MODULE_PAYMENT_BUYING_COST', 
 		 'MODULE_PAYMENT_BUYING_MONEY_LIMIT',
-                 'MODULE_PAYMENT_BUYING_MAILSTRING',
-                 'MODULE_PAYMENT_BUYING_PRINT_MAILSTRING_TITLE',
-		 'MODULE_PAYMENT_BUYING_PRINT_MAILSTRING'
 		 );
   }
 /*----------------------------

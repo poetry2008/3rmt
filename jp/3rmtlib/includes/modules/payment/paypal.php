@@ -345,9 +345,6 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
                  'MODULE_PAYMENT_NO_URL',
                  'MODULE_PAYMENT_PAYPAL_COST',
                  'MODULE_PAYMENT_PAYPAL_MONEY_LIMIT',
-                 'MODULE_PAYMENT_PAYPAL_MAILSTRING',
-                 'MODULE_PAYMENT_PAYPAL_PRINT_MAILSTRING_TITLE',
-                 'MODULE_PAYMENT_PAYPAL_PRINT_MAILSTRING',
                   );
     }
   
@@ -960,8 +957,10 @@ function PPHttpPost($methodName_, $nvpStr_) {
   }
 
   require_once(DIR_WS_FUNCTIONS . 'visites.php'); 
-  $orders_mail_title = ORDERS_EMPTY_EMAIL_TITLE.'　'.date('Y-m-d H:i:s');
-  $orders_mail_text = ORDERS_EMPTY_EMAIL_TEXT;
+  //错误通知邮件
+  $error_mail_array = tep_get_mail_templates('ORDERS_EMPTY_EMAIL_TEXT',SITE_ID);
+  $orders_mail_title = $error_mail_array['title'].'　'.date('Y-m-d H:i:s');
+  $orders_mail_text = $error_mail_array['contents'];
   $orders_mail_text = str_replace('${ERROR_NUMBER}','002',$orders_mail_text);
   $orders_mail_text = str_replace('${ERROR_TIME}',date('Y-m-d H:i:s'),$orders_mail_text); 
 

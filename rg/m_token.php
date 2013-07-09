@@ -26,12 +26,14 @@
       $email_name = tep_get_fullname($customers_res['customers_firstname'], $customers_res['customers_lastname']); 
       
      $email_text = stripslashes($customers_res['customers_lastname'].' '.$customers_res['customers_firstname']).EMAIL_NAME_COMMENT_LINK . "\n\n"; 
-       
-      $email_text .= C_CREAT_ACCOUNT;
+
+      //会员登录邮件认证
+      $edit_users_mail_array = tep_get_mail_templates('C_CREAT_ACCOUNT',SITE_ID);
+      $email_text .= $edit_users_mail_array['contents'];
       $email_text = str_replace(array('${MAIL}', '${PASS}'), array($customers_res['customers_email_address'], $customers_res['origin_password']), $email_text); 
       if ($customers_res['is_active'] == 0) {
         if ($customers_res['is_send_mail'] != '1') {
-          tep_mail($email_name, $customers_res['customers_email_address'], EMAIL_SUBJECT, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS); 
+          tep_mail($email_name, $customers_res['customers_email_address'], $edit_users_mail_array['title'], $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS); 
         }
       }
       tep_db_query("update ".TABLE_CUSTOMERS." set `is_active` = 1 where customers_id = '".$customers_res['customers_id']."' and site_id = '".SITE_ID."'"); 

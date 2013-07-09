@@ -91,11 +91,11 @@
   // 1. UPDATE ORDER ###############################################################################################
   case 'update_order':
    if(!isset($_POST['payment_method']) ||$_POST['payment_method']=='' ||!$_POST['payment_method']){
-      $_SESSION['pre_payment_empty_error'] = TEXT_SELECT_PAYMENT_ERROR;
+      $_SESSION['pre_payment_empty_error'] = TEXT_NO_PAYMENT_ENABLED;
       tep_redirect(tep_href_link("edit_new_preorders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
     }else{
       $payment_method = tep_db_prepare_input($_POST['payment_method']); 
-      $payment_continue = tep_get_payment_flag( $payment_method,$_SESSION['create_preorder']['orders']['customer_id'],$_SESSION['create_preorder']['orders']['site_id']);
+      $payment_continue = tep_get_payment_flag( $payment_method,$_SESSION['create_preorder']['orders']['customers_id'],$_SESSION['create_preorder']['orders']['site_id'],'',true,'preorder');
       if(!$payment_continue){
         $_SESSION['pre_payment_empty_error'] = TEXT_SELECT_PAYMENT_ERROR;
         tep_redirect(tep_href_link("edit_new_preorders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
@@ -654,8 +654,10 @@
           tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), $email_title, $email, $order->customer['name'], $order->customer['email_address'], $order->info['site_id']);
         }
         
-        $preorder_email_subject = str_replace('${SITE_NAME}', get_configuration_by_site_id('STORE_NAME', $order->info['site_id']), get_configuration_by_site_id_or_default('PREORDER_MAIL_SUBJECT', $order->info['site_id'])); 
-        $preorder_email_text = get_configuration_by_site_id_or_default('PREORDER_MAIL_CONTENT', $order->info['site_id']); 
+        //预约完成邮件认证
+        $preorders_mail_array = tep_get_mail_templates('PREORDER_MAIL_CONTENT',$order->info['site_id']);
+        $preorder_email_subject = str_replace('${SITE_NAME}', get_configuration_by_site_id('STORE_NAME', $order->info['site_id']), $preorders_mail_array['title']); 
+        $preorder_email_text = $preorders_mail_array['contents']; 
         $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}');
         
         $max_op_len = 0;
@@ -774,6 +776,7 @@ function orders_session(type,value){
 ?>
   <?php //隐藏支付方法的附加信息?> 
   function hidden_payment(){
+  if(document.edit_order.elements["payment_method"]){
   var idx = document.edit_order.elements["payment_method"].selectedIndex;
   var CI = document.edit_order.elements["payment_method"].options[idx].value;
   $(".rowHide").hide();
@@ -782,6 +785,7 @@ function orders_session(type,value){
   $(".rowHide_"+CI).find("input").removeAttr("disabled"); 
   price_total();
   recalc_preorder_price("<?php echo $_GET['oID'];?>", "<?php echo $products_id_str;?>", "0", "<?php echo $op_info_str;?>");
+  }
   }
 $(document).ready(function(){
   hidden_payment();
@@ -936,7 +940,7 @@ function recalc_preorder_price(oid, opd, o_str, op_str)
           total_price_str += update_total_temp_value+'|||';
         }
   }
-  if(document.getElementsByName('payment_method')[0])
+  if(document.getElementsByName('payment_method')[0]){
   var payment_method = document.getElementsByName('payment_method')[0].value;
   $.ajax({
     type: "POST",
@@ -2107,13 +2111,13 @@ if (($action == 'edit') && ($order_exists == true)) {
     <td class="main" width="5%">&nbsp;</td>
     <td class="main">
     <?php
-    $ma_se = "select * from ".TABLE_PREORDERS_MAIL." where orders_status_id = '".$sel_status_id."'"; 
+    $ma_se = "select * from ".TABLE_MAIL_TEMPLATES." where flag = 'PREORDERS_STATUS_MAIL_TEMPLATES_".$sel_status_id."'"; 
     $mail_sele = tep_db_query($ma_se);
     $mail_sql = tep_db_fetch_array($mail_sele);
-    $mail_sql['orders_status_title'] = isset($_SESSION['orders_update_products'][$_GET['oID']]['etitle']) ? $_SESSION['orders_update_products'][$_GET['oID']]['etitle'] : $mail_sql['orders_status_title'];  
+    $mail_sql['title'] = isset($_SESSION['orders_update_products'][$_GET['oID']]['etitle']) ? $_SESSION['orders_update_products'][$_GET['oID']]['etitle'] : $mail_sql['title'];  
     ?>
     <?php   
-    echo TEXT_EMAIL_TITLE.tep_draw_input_field('etitle', $mail_sql['orders_status_title'],'style="width:230px;"'); 
+    echo TEXT_EMAIL_TITLE.tep_draw_input_field('etitle', $mail_sql['title'],'style="width:230px;"'); 
     ?> 
     <br>
     <br>
@@ -2124,7 +2128,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       $order_a_str .= $ovalue['character']."\n"; 
     }
     ?>
-    <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}', $order_a_str, isset($_POST['comments']) ? $_POST['comments'] : isset($_SESSION['orders_update_products'][$_GET['oID']]['comments']) ? $_SESSION['orders_update_products'][$_GET['oID']]['comments'] : $mail_sql['orders_status_mail']);?></textarea>
+    <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}', $order_a_str, isset($_POST['comments']) ? $_POST['comments'] : isset($_SESSION['orders_update_products'][$_GET['oID']]['comments']) ? $_SESSION['orders_update_products'][$_GET['oID']]['comments'] : $mail_sql['contents']);?></textarea>
     </td>
   </tr>
 </table>

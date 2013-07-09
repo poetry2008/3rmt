@@ -143,13 +143,13 @@ document.onclick=function(e){
         // ccdd
         $mail    = tep_db_fetch_array(tep_db_query("
               select * 
-              from ".TABLE_ORDERS_MAIL." 
-              where orders_status_id=17 
+              from ".TABLE_MAIL_TEMPLATES." 
+              where flag='ORDERS_STATUS_MAIL_TEMPLATES_17' 
                 and (site_id='0' or site_id = '" . SITE_ID . "')
               order by site_id DESC
         "));
-        $mail_title   = $mail['orders_status_title'];
-        $mail_content = $mail['orders_status_mail'];
+        $mail_title   = $mail['title'];
+        $mail_content = $mail['contents'];
 
   // load selected payment module
   require(DIR_WS_CLASSES . 'payment.php');

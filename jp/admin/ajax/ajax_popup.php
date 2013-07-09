@@ -2485,6 +2485,10 @@ width:20%;"'))
   $page_str = isset($page_str) && $page_str != '' ? $page_str : 1;
   $page_num_start = ($page_str-1) * MAX_DISPLAY_SEARCH_RESULTS;
   $page_num_end = $page_str * MAX_DISPLAY_SEARCH_RESULTS - 1;
+  if($page_num_end > count($tags_id_array)-1){
+
+    $page_num_end = count($tags_id_array)-1;
+  }
   $tags_id_page_array = array();
   for($i = $page_num_start;$i <= $page_num_end;$i++){
 
@@ -5205,6 +5209,10 @@ if($_GET['cID'] != -1){
     $page_num_end = count($memo_id_num_array)-1; 
   }else{
     $page_num_end = $page_string * MAX_DISPLAY_SEARCH_RESULTS - 1; 
+    if($page_num_end > count($memo_id_num_array)-1){
+
+      $page_num_end = count($memo_id_num_array)-1;
+    }
   }
   $memo_id_page_array = array();
   for($i = $page_num_start;$i <= $page_num_end;$i++){
@@ -6458,6 +6466,233 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
     $notice_box->get_eof(tep_eof_hidden());
     echo $notice_box->show_notice();
  }
+}else if ($_GET['action'] == 'edit_mail') {
+/* -----------------------------------------------------
+    功能: 显示编辑mail templates弹出框
+    参数: $_POST['mail_id'] mail templates ID 
+ -----------------------------------------------------*/
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_MAIL_TEMPLATES);
+  include(DIR_FS_ADMIN.'classes/notice_box.php'); 
+
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+
+  //获取当前用户的网站管理权限
+  $sites_id_sql = tep_db_query("select site_permission from ".TABLE_PERMISSIONS." where userid= '".$ocertify->auth_user."'");
+  $userslist= tep_db_fetch_array($sites_id_sql);
+  tep_db_free_result($sites_id_sql);
+  $site_permission_array = explode(',',$userslist['site_permission']); 
+  $site_permission_flag = false;
+  if(in_array('0',$site_permission_array)){
+
+    $site_permission_flag = true;
+  }
+
+  //读取mail templates的相应数据
+  $mail_id = $_POST['mail_id'];
+  $site_id = $_POST['site_id'];
+  $keyword = $_POST['search'];
+  $param_str = $_POST['param_str'];
+  $url = $_POST['url'];
+  $url = str_replace('|||','&',$url);
+  $mail_query = tep_db_query("select * from ". TABLE_MAIL_TEMPLATES ." where id='".$mail_id."'"); 
+  $mail_array = tep_db_fetch_array($mail_query);
+  tep_db_free_result($mail_query);
+
+  $site_romaji_str = '';
+  $field_str = '*';
+  if(isset($_POST['order_sort']) && $_POST['order_sort'] != '' && isset($_POST['order_type']) && $_POST['order_type'] != ''){
+    switch($_POST['order_sort']){
+
+    case 'site_id':
+      $order_sort = 's.romaji';
+      $order_type = $_POST['order_type'];
+      $site_romaji_str = ' mt left join (select id,romaji from '. TABLE_SITES .' union select 0,\'all\') s on mt.site_id=s.id ';
+      $field_str = 'mt.id id,mt.flag flag,mt.site_id site_id,mt.templates_title templates_title,mt.use_description use_description,mt.title title,mt.contents contents,mt.contents_description contents_description,mt.use_scope use_scope,mt.user_added user_added,mt.date_added date_added,mt.user_update user_update,mt.date_update date_update';
+      break;
+    case 'name':
+      $order_sort = 'templates_title';
+      $order_type = $_POST['order_type'];
+      break;
+    case 'title':
+      $order_sort = 'title';
+      $order_type = $_POST['order_type'];
+      break;
+    case 'contents':
+      $order_sort = 'contents';
+      $order_type = $_POST['order_type'];
+      break;
+    case 'scope':
+      $order_sort = 'use_scope';
+      $order_type = $_POST['order_type'];
+      break; 
+    case 'action':
+      $order_sort = 'date_update';
+      $order_type = $_POST['order_type'];
+      break;
+    default:
+      $order_sort = 'id';
+      $order_type = 'asc';
+    }
+  }else{
+    $order_sort = 'id';
+    $order_type = 'asc'; 
+  }
+
+  $site_id_str = '';
+  if($site_id != ''){
+
+    $site_id_array = explode('-',$site_id);
+    $site_id_str = implode(',',$site_id_array);
+    $site_id_str = ' where site_id in ('.$site_id_str.')';
+  } 
+
+  if($keyword != ''){
+
+    if($site_id != ''){
+
+      $keyword_str = " and (templates_title like '%".$keyword."%' or title like '%".$keyword."%' or contents like '%".$keyword."%')";
+    }else{
+
+      $keyword_str = " where templates_title like '%".$keyword."%' or title like '%".$keyword."%' or contents like '%".$keyword."%'";
+    }
+  }
+  $mail_id_num_array = array();
+  $mail_id_query = tep_db_query("select ".$field_str." from ". TABLE_MAIL_TEMPLATES . $site_romaji_str . $site_id_str . $keyword_str ." order by ".$order_sort." ".$order_type); 
+  while($mail_id_array = tep_db_fetch_array($mail_id_query)){
+
+    $mail_id_num_array[] = $mail_id_array['id'];
+  }
+  tep_db_free_result($mail_id_query);
+
+  //头部内容
+  $heading = array();
+
+  $page_str = '';
+
+  //显示上一个，下一个按钮
+  $page_str = '';
+
+  $page_str_array = explode('=',$param_str);
+  $page_string = $page_str_array[1];
+  $page_string = isset($page_string) && $page_string != '' ? $page_string : 1;
+  $page_num_start = ($page_string-1) * MAX_DISPLAY_SEARCH_RESULTS;
+  if(count($mail_id_num_array) < MAX_DISPLAY_SEARCH_RESULTS){
+    $page_num_end = count($mail_id_num_array)-1; 
+  }else{
+    $page_num_end = $page_string * MAX_DISPLAY_SEARCH_RESULTS - 1; 
+    if($page_num_end > count($mail_id_num_array)){
+      $page_num_end = count($mail_id_num_array)-1; 
+    }
+  }
+  $mail_id_page_array = array();
+  for($i = $page_num_start;$i <= $page_num_end;$i++){
+
+    $mail_id_page_array[] = $mail_id_num_array[$i];
+  }
+  $mail_id_num = array_search($mail_id,$mail_id_page_array);
+
+  $mail_id_prev = $mail_id_page_array[$mail_id_num - 1];
+  $mail_id_next = $mail_id_page_array[$mail_id_num + 1];
+  if ($mail_id_num > 0) {
+    $page_str .= '<a id="mail_prev" onclick="show_link_mail_info(\''.$mail_id_prev.'\',\''.$param_str.'\')" href="javascript:void(0);" ><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+  }
+ 
+  if ($mail_id_num < (count($mail_id_page_array) - 1)) {
+    $page_str .= '<a id="mail_next" onclick="show_link_mail_info(\''.$mail_id_next.'\',\''.$param_str.'\')" href="javascript:void(0);">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
+  }else{
+    $page_str .= '<font color="#000000">'.IMAGE_NEXT.'></font>&nbsp;&nbsp;';
+  }
+
+  $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => $mail_array['templates_title']);
+  $heading[] = array('align' => 'right', 'text' => $page_str);
+
+  //主体内容
+  $category_info_row = array();
+   
+  //编辑mail templates项目   
+  $category_info_row[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_MAIL_NAME.'<input type="hidden" name="mail_id" value="'.$mail_array['id'].'"><input type="hidden" name="param_str" value="'.$param_str.'"><input type="hidden" name="url" value="'.$url.'">'), 
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<input type="text" class="option_input" name="templates_title" value="'.$mail_array['templates_title'].'"><span id="mail_name_error">'.TEXT_FIELD_REQUIRED.'</span>')
+     );
+
+  $category_info_row[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => '&nbsp;'), 
+       array('align' => 'left', 'params' => 'colspan="2"', 'text' => nl2br($mail_array['use_description']))
+     );
+
+  $category_info_row[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_MAIL_TITLE), 
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<input type="text" class="option_input" name="title" value="'.$mail_array['title'].'"><span id="mail_title_error">'.TEXT_FIELD_REQUIRED.'</span>')
+     );
+
+   //格式化邮件模板说明
+   $mail_templates_array = preg_split('/<br>|<\/br>/',$mail_array['contents_description']);
+   $mail_templates_start_array = '';
+   $mail_templates_end_array = '';
+   $mail_templates_start_str = '';
+   $mail_templates_end_str = '';
+   $i = 0;
+   foreach($mail_templates_array as $mail_value){
+
+     if($i % 2 == 0){
+   
+       $mail_templates_end_array[] = $mail_value;
+     }else{
+       $mail_templates_start_array[] = $mail_value;
+     }
+     $i++;
+   }
+   $mail_templates_start_array = array_filter($mail_templates_start_array);
+   $mail_templates_end_array = array_filter($mail_templates_end_array);
+   if(count($mail_templates_end_array) > count($mail_templates_start_array)){
+
+     $mail_templates_start_array[] = array_pop($mail_templates_end_array); 
+
+   }
+
+   $mail_templates_start_str = implode('<br>',$mail_templates_start_array);
+   $mail_templates_end_str = implode('<br>',$mail_templates_end_array);
+   $category_info_row[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_MAIL_CONTENTS), 
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<textarea name="contents" rows="15" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize:vertical; width:100%;">'.$mail_array['contents'].'</textarea>'),
+      array('align' => 'left', 'params' => 'valign="top" nowrap="nowrap"', 'text' => '<span id="mail_contents_error">'.TEXT_FIELD_REQUIRED.'</span>')
+     );
+  $category_info_row[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => ''), 
+       array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $mail_templates_start_str),
+       array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $mail_templates_end_str)
+     );
+
+  //作成者，作成时间，更新者，更新时间 
+  $category_info_row[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_USER_ADDED).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($mail_array['user_added'])?$mail_array['user_added']:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_DATE_ADDED).'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($mail_array['date_added'])))?tep_datetime_short($mail_array['date_added']):TEXT_UNSET_DATA))
+      );
+   
+  $category_info_row[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_USER_UPDATE).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($mail_array['user_update'])?$mail_array['user_update']:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_DATE_UPDATE).'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($mail_array['date_update'])))?tep_datetime_short($mail_array['date_update']):TEXT_UNSET_DATA))
+      );
+    
+  //底部内容
+  $buttons = array();
+
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="edit_mail_check(\''.$ocertify->npermission.'\');"'.($site_permission_flag == false  ? 'disabled="disabled"' : '')).'</a>'; 
+ 
+  if (!empty($button)) {
+    $buttons = array('align' => 'center', 'button' => $button); 
+  }
+
+  $form_str = tep_draw_form('edit_mail', FILENAME_MAIL_TEMPLATES, '', 'post', 'id="edit_mail_id"');
+
+  //生成表单 
+  $notice_box->get_form($form_str);
+  $notice_box->get_heading($heading);   
+  $notice_box->get_contents($category_info_row, $buttons);
+  $notice_box->get_eof(tep_eof_hidden());
+  echo $notice_box->show_notice();
 }else if($_GET['action'] == 'edit_faq'){
 include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_FAQ);
 include(DIR_FS_ADMIN.'classes/notice_box.php');

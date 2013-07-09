@@ -512,5 +512,12 @@ define('MSG_TEXT_NULL', '無し');
 define('JS_REVIEW_BAN_CHARACTER','※ 投稿禁止ワードが含まれているため投稿できません。'.'\n');
 define('MODULE_ORDER_TOTAL_TAX_TITLE', '消費税');
 define('NUM_UNIT_TEXT', '個');
+define('SENDMAIL_TEXT_IP_ADDRESS','IPアドレス　　　　　　：');
+define('SENDMAIL_TEXT_HOST','ホスト名　　　　　　　：');
+define('SENDMAIL_TEXT_USER_AGENT','ユーザーエージェント　：');
+define('SENDMAIL_TEXT_HOUR','時');
+define('SENDMAIL_TEXT_MIN','分');
+define('SENDMAIL_TEXT_TWENTY_FOUR_HOUR','　（24時間表記）');
+define('SENDMAIL_TEXT_TIME_LINK', 'から');
 define('TEXT_PAYMENT_ERROR_TOP','エラー：');
 ?>
