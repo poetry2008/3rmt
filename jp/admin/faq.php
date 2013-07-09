@@ -1158,7 +1158,17 @@ require("includes/note_js.php");
                       }else{
                         $faq_info[] = array(
                             'params' => 'align="left"',
-                            'text'   => '<a class="faq_status_link" href="javascript:viod(0);" onclick ="change_status(\''.  tep_href_link(FILENAME_FAQ,'action=toggle&cID='.  $faq_category['info_id'].'&show_site='.$_GET['site_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'status=1&cPath='.  $HTTP_GET_VARS['cPath'].'&site_id='.$faq_category['site_id'].$c_page) .'\', \''.$ocertify->npermission.'\')">'.'&nbsp;'.  tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', '') .'</a> <a class="faq_status_link" href="javascript:viod(0);" onclick ="change_status(\''.  tep_href_link(FILENAME_FAQ,'action=toggle&cID='.  $faq_category['info_id'].'&show_site='.$_GET['site_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'status=0&cPath='.  $HTTP_GET_VARS['cPath'].'&site_id='.$faq_category['site_id'].$c_page) .'\', \''.$ocertify->npermission.'\')">'.'&nbsp;'.  tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', '') .'</a>'
+                            'text'   => '<a class="faq_status_link"
+                            href="javascript:viod(0);" onclick ="change_status(\''.
+                          tep_href_link(FILENAME_FAQ,'action=toggle&cID='.
+                              $faq_category['info_id'].'&show_site='.$_GET['site_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&status=1&cPath='.
+                              $HTTP_GET_VARS['cPath'].'&site_id='.$faq_category['site_id'].$c_page)
+                          .'\', \''.$ocertify->npermission.'\')">'.'&nbsp;'.
+                            tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif',
+                              '') .'</a> <a class="faq_status_link"
+                            href="javascript:viod(0);" onclick ="change_status(\''.
+                          tep_href_link(FILENAME_FAQ,'action=toggle&cID='.
+                              $faq_category['info_id'].'&show_site='.$_GET['site_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&status=0&cPath='.  $HTTP_GET_VARS['cPath'].'&site_id='.$faq_category['site_id'].$c_page) .'\', \''.$ocertify->npermission.'\')">'.'&nbsp;'.  tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', '') .'</a>'
                             );
                       }
                     }
