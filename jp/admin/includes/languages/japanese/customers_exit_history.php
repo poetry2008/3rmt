@@ -1,0 +1,24 @@
+<?php
+define('HEADING_TITLE', '退会情報確認');
+define('EXIT_HISTORY_RECORD', '記録');
+define('EXIT_HISTORY_SITE_ID', 'サイト');
+define('EXIT_HISTORY_FIRSTNAME', '名');
+define('EXIT_HISTORY_LASTNAME', '姓');
+define('EXIT_HISTORY_EMAIL', 'E-Mail アドレス');
+define('EXIT_HISTORY_MAGZINE', 'メールマガジン');
+define('ORDER_MAGZINE', '購読する');
+define('NO_ORDER_MAGZINE', '購読しません');
+define('EXIT_HISTORY_BAN_ORDER', '注文禁止');
+define('EXIT_HISTORY_YES_TEXT', 'はい');
+define('EXIT_HISTORY_NO_TEXT', 'なし');
+define('EXIT_HISTORY_NO_SEND_MAIL', 'メールを送信しない');
+define('EXIT_HISTORY_CALC_QUANTITY', '在庫数量の増減を自動計算しない');
+define('EXIT_HISTORY_POINT', '現在のポイント');
+define('EXIT_HISTORY_PIC_ICON_ALT', 'マークALT文字');
+define('EXIT_HISTORY_QUITEDATE', '退会日時');
+define('EXIT_HISTORY_SEARCH', '信用調査');
+define('EXIT_HISTORY_LAST_LOGIN_DATE', '最終ログイン日');
+define('EXIT_HISTORY_LOGIN_NUM', 'ログイン回数');
+define('EXIT_HISTORY_ORDER_NUM', '注文回数');
+define('EXIT_HISTORY_REVIEW_NUM', 'レビュー投稿数');
+define('EXIT_HISTORY_RESET_FLAG', 'パスワード変更依頼');

@@ -30,4 +30,7 @@ define('TEXT_MAIL_SEARCH_INFO','キーワードを入力しメールを送信す
 define('TEXT_MAIL_RESULT_INFO','右のCheckBoxからメールを送信する顧客を選択してください');
 define('TEXT_LESS_THAN_ONE_SEARCH','検索フォームにキーワードがないため検索できません\n最低1つはキーワードを入力してください');
 define('TEXT_NO_SELECTED_CHECKBOX','メール送信先を選択してください');
+define('SEARCH_EXIT_CUSTOMERS_TEXT', '退会した人も検索対象とする');
+define('SEARCH_INCLUDE_EXIT_CUSTOMERS', '退会した人を含む');
+define('SEARCH_EXCLUDE_EXIT_CUSTOMERS', '退会した人を除く');
 ?>

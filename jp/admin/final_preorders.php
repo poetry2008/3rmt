@@ -1926,7 +1926,7 @@ require("includes/note_js.php");
       $pay_orders_id_array = array();
       $pay_type_array = array();
       foreach($payment_array[0] as $pay_key=>$pay_value){ 
-        $payment_info = $cpayment->admin_get_payment_info_comment($pay_value,$order->customer['email_address'],$order->info['site_id']);
+        $payment_info = $cpayment->admin_get_payment_info_comment($pay_value,$order->customer['email_address'],$order->info['site_id'],1,$order->info['is_gray']);
         if(is_array($payment_info)){
 
           switch($payment_info[0]){

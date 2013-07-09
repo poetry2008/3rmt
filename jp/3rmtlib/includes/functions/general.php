@@ -4826,7 +4826,9 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
               co.countries_iso_code_2, 
               co.countries_iso_code_3, 
               co.address_format_id, 
-              ab.entry_state 
+              ab.entry_state,
+              c.is_quited,
+              c.quited_date
       from " . TABLE_CUSTOMERS . " c, " .  TABLE_ADDRESS_BOOK . " ab left join " . TABLE_ZONES . " z on (ab.entry_zone_id = z.zone_id) left join " . TABLE_COUNTRIES . " co on (ab.entry_country_id = co.countries_id) 
       where c.customers_id = '" .  $customers_id . "' 
       and ab.customers_id = '" . $customers_id . "' 
@@ -4899,13 +4901,15 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
                            'billing_country' => $billing_address['countries_name'],
                            'billing_telephone' => $billing_address['entry_telephone'], 
                            'billing_address_format_id' => $billing_address['address_format_id'],  
-                           'comment_msg' => $pInfo['yourmessage'], 
+                           'comment_msg' => $pInfo['yourmessage'],
                            );
-   
+   if ($customers_res['is_quited'] == '1') {
+     $sql_data_array['is_gray'] = '2';
+   }
    $payment_modules->deal_preorder_info($pInfo, $sql_data_array); 
    $sh_comments = ''; 
    $sh_comments = $payment_modules->deal_preorder_additional($pInfo, $sql_data_array); 
-   
+    
    tep_db_perform(TABLE_PREORDERS, $sql_data_array);
 
    require(DIR_WS_CLASSES.'order_total.php');

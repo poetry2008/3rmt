@@ -100,7 +100,8 @@
 'paypal_paymentstatus' => $order['paypal_paymentstatus'],
 'paypal_business' => $order['paypal_business'],
 'paypal_countrycode' => $order['paypal_countrycode'],
-'flag_qaf' => $order['flag_qaf']);
+'flag_qaf' => $order['flag_qaf'],
+'is_gray' => $order['is_gray']);
 
       $this->customer = array('name'           => $order['customers_name'],
                               'id'             => $order['customers_id'],
@@ -115,7 +116,6 @@
                               'format_id'      => $order['customers_address_format_id'],
                               'telephone'      => $order['customers_telephone'],
                               'email_address'  => $order['customers_email_address'],
-                              //'fax'            => $order['customers_fax'],
                               'date'           => $order['date_purchased'],
 'paypal_paymenttype' => $order['paypal_paymenttype'],
 'paypal_payerstatus' => $order['paypal_payerstatus'],
@@ -166,7 +166,6 @@
                                         'price'       => $orders_products['products_price'],
                                         'final_price' => $orders_products['final_price'],
                                         'rate'        => $orders_products['products_rate'],
-                                        //'character'   => $orders_products['products_character'],
                                         );
 
         $subindex = 0;

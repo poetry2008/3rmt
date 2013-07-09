@@ -6,7 +6,7 @@ $GLOBALS['HTTP_GET_VARS']  = $_GET;
 $GLOBALS['HTTP_POST_VARS'] = $_POST;
 
   setlocale (LC_ALL, 'ja_JP.UTF-8');
-if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/Tokyo');
+if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/Shanghai');
 // Start the clock for the page parse time log
   define('PAGE_PARSE_START_TIME', microtime());
 
@@ -43,6 +43,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
 
 // define the filenames used in the project
   define('FILENAME_MODULE_TOTAL', 'module_total.php');
+  define('FILENAME_CUSTOMERS_EXIT_HISTORY', 'customers_exit_history.php');
   define('FILENAME_OPTION', 'option.php');
   define('FILENAME_MARKS', 'marks.php');
   define('FILENAME_RESET_PWD','reset_pwd.php');
@@ -128,9 +129,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('FILENAME_OPTIONS_DL', 'options_dl.php');
   define('FILENAME_NEW_CUSTOMERS', 'new_customers.php');
   define('FILENAME_BILL_TEMPLATES', 'bill_templates.php');
-  
   define('FILENAME_ADDRESS', 'address.php');
-  define('FILENAME_CUSTOMERS_EXIT','customers_exit.php');
   define('FILENAME_HELP_INFO','help_info.php');
   define('FILENAME_PERSONAL_SETTING','personal_setting.php');
   define('FILENAME_ALERT_LOG','alert_log.php');
@@ -138,12 +137,12 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
 
 // define the database table names used in the project
   define('TABLE_CUSTOMERS_BASKET_OPTIONS', 'customers_basket_options');
-  define('TABLE_CUSTOMERS_EXIT', 'customers_exit');
   define('TABLE_OPTION_GROUP', 'option_group');
   define('TABLE_OPTION_ITEM', 'option_item');
   define('FILENAME_PRODUCTS_MANUAL','products_manual.php');
 
 // define the database table names used in the project
+  define('TABLE_CUSTOMERS_EXIT_HISTORY', 'customers_exit_history');
   define('TABLE_ALARM', 'alarm');
   define('TABLE_NOTICE', 'notice');
   define('TABLE_CAMPAIGN', 'campaign');

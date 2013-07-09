@@ -28,7 +28,6 @@
 <!-- header_eof //--> 
 <!-- body //--> 
 <div id="main">
-<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- body_text //-->
 <div id="layout" class="yui3-u">
 <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
@@ -38,11 +37,12 @@
          <table  border="0" width="100%" cellspacing="0" cellpadding="0" id="hm-account-history"> 
             <tr> 
               <td><?php
+  $customer_info_raw = tep_db_query("select * from ".TABLE_CUSTOMERS_INFO." where customers_info_id = '".$customer_id."'"); 
+  $customer_info = tep_db_fetch_array($customer_info_raw); 
   $history_query_raw = "
     select o.orders_id, 
           o.date_purchased, 
           o.delivery_name, 
-          o.customers_name,
           ot.text as order_total, 
           ot.value as order_total_value, 
           o.orders_status_name 
@@ -50,23 +50,20 @@
       left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id) 
     where o.customers_id = '" . $customer_id . "' 
       and ot.class = 'ot_total' 
-      and o.site_id = ".SITE_ID." 
+      and o.site_id = ".SITE_ID." and o.date_purchased >= '".$customer_info['customers_info_date_account_created']."' and is_gray != '1'  
     order by orders_id DESC";
   $history_count_query_raw = "
         select count(o.orders_id) as count
         from " . TABLE_ORDERS . " o 
         where o.customers_id = '" . $customer_id . "' 
-          and o.site_id = ".SITE_ID."
-  ";
+          and o.site_id = ".SITE_ID." and o.date_purchased >= '".$customer_info['customers_info_date_account_created']."' and is_gray != '1' ";
   $history_split = new splitPageResults($_GET['page'], MAX_DISPLAY_ORDER_HISTORY, $history_query_raw, $history_numrows, $history_count_query_raw);
-// ccdd
   $history_query = tep_db_query($history_query_raw);
 
   $info_box_contents = array();
 
   if (tep_db_num_rows($history_query)) {
     while ($history = tep_db_fetch_array($history_query)) {
-//ccdd
       $products_query = tep_db_query
 ("select count(*) as count from " . TABLE_ORDERS_PRODUCTS . " where orders_id = '" . $history['orders_id'] . "'");
       $products = tep_db_fetch_array($products_query);
@@ -86,8 +83,8 @@
                '  <tr>' . "\n" .
                '    <td width="50%" valign="top"><b>' . TEXT_ORDER_DATE . '</b> ' .
                tep_date_long($history['date_purchased']) . '<br><b>' .
-               TEXT_ORDER_SHIPPED_TO . '</b> ' .tep_get_orders_address($history['orders_id'])
-               . '</td>' . "\n" .
+               TEXT_ORDER_SHIPPED_TO . '</b> ' .
+               tep_get_orders_address($history['orders_id']) . '</td>' . "\n" .
                '    <td width="30%" valign="top"><b>' .
                TEXT_ORDER_PRODUCTS . '</b> ' . $products['count'] . '<br><b>' .
                TEXT_ORDER_COST . '</b> ' .  $currencies->format_total($history['order_total_value']) . '</td>' . "\n" .

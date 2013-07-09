@@ -128,7 +128,6 @@
       $noactive_single = true;  
     }
   }
-//ccdd
   if (!$noactive_single && !$error) { 
     $check_email = tep_db_query("select * from " .  TABLE_CUSTOMERS . " where customers_email_address = '" .  tep_db_input($email_address) . "' and customers_guest_chk = '0' and site_id = '".SITE_ID."'");
     if (tep_db_num_rows($check_email)) {
@@ -148,10 +147,8 @@
                                   'customers_password' => tep_encrypt_password($NewPass),
                                   'customers_default_address_id' => 1,
                                   'customers_guest_chk' => '0',
-				  'is_quited' => '0',
-                                  'quited_date' => '0000-00-00 00:00:00',
                                   'send_mail_time' => time(),
-                                  'origin_password' =>  tep_encrypt_password($NewPass), 
+                                  'origin_password' => $NewPass, 
                                   'point' => '0');
 
           if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;
@@ -162,8 +159,8 @@
           $customer_id = $check_email_res['customers_id'];
       
           $sql_data_array = array('customers_id' => $customer_id,
-		                  'address_book_id' => 1, 
-		                  'entry_firstname' => $firstname,
+                                  'address_book_id' => 1,
+                                  'entry_firstname' => $firstname,
                                   'entry_lastname' => $lastname,
                                   'entry_firstname_f' => $firstname_f,
                                   'entry_lastname_f' => $lastname_f,
@@ -187,39 +184,14 @@
           }
 
           tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', 'customers_id = ' . $check_email_res['customers_id']);
-          tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_of_last_logon = now(), customers_info_number_of_logons = customers_info_number_of_logons+1,customers_info_date_account_created=now() where customers_info_id = '" . $customer_id . "'");
+          tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_of_last_logon = now(), customers_info_number_of_logons = customers_info_number_of_logons+1 where customers_info_id = '" . $customer_id . "'");
         
         $me_cud = $check_email_res['customers_id']; 
         tep_session_register('me_cud');
-//email_info==========
-      $mail_name = tep_get_fullname($firstname, $lastname);
-      tep_session_unregister('customer_id'); 
-      $ac_email_srandom = md5(time().$customer_id.$email_address); 
-       
-      $email_text = stripslashes($lastname.' '.$firstname).EMAIL_NAME_COMMENT_LINK . "\n\n"; 
-      
-      $old_str_array = array('${URL}', '${NAME}', '${SITE_NAME}', '${SITE_URL}'); 
-      $new_str_array = array(
-          HTTP_SERVER.'/m_token.php?aid='.$ac_email_srandom, 
-          $mail_name,
-          STORE_NAME,
-          HTTP_SERVER
-          ); 
-      $email_text .= str_replace($old_str_array, $new_str_array, ACTIVE_ACCOUNT_EMAIL_CONTENT);  
-      $ac_email_text = str_replace('${SITE_NAME}', STORE_NAME, ACTIVE_ACCOUNT_EMAIL_TITLE); 
-
-      tep_mail($mail_name, $email_address, $ac_email_text, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
-
-      tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$ac_email_srandom."' where `customers_id` = '".$customer_id."'"); 
-//===================
         tep_redirect(tep_href_link('member_auth.php', '', 'SSL')); 
       }
-      if($check_email_res['is_quited']==1){
-        $entry_email_address_exists = false;
-      }else{
-        $error = true;
-        $entry_email_address_exists = true;
-      }
+      $error = true;
+      $entry_email_address_exists = true;
     } else {
       $entry_email_address_exists = false;
     }
@@ -325,9 +297,6 @@
 <?php require('includes/form_check.js.php'); ?>
 <script type="text/javascript">
 function pass_hidd(CI){
-/*  var idx = document.account_edit.elements["guestchk"].selectedIndex;
-  var CI = document.account_edit.elements["guestchk"].options[idx].value;
- */
   if(CI == '0'){
     document.getElementById('trpass1').style.display = "";
     document.getElementById('trpass2').style.display = "";
@@ -341,14 +310,14 @@ function pass_hidd(CI){
 <body>
 <div class="body_shadow" align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-  <!-- header_eof //--> 
-  <!-- body //--> 
+  <!-- header_eof --> 
+  <!-- body --> 
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
     <tr> 
-      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
+      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
-        <!-- left_navigation_eof //--> </td> 
-      <!-- body_text //--> 
+        <!-- left_navigation_eof --> </td> 
+      <!-- body_text --> 
       <td valign="top" id="contents"><?php echo tep_draw_form('account_edit', tep_href_link(FILENAME_CREATE_ACCOUNT_PROCESS, '', 'SSL'), 'post', 'onSubmit="return check_form();"') . tep_draw_hidden_field('action', 'process'); ?> 
         <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1> 
         
@@ -370,16 +339,16 @@ function pass_hidd(CI){
           </table> 
           </div></form> 
         </td> 
-      <!-- body_text_eof //--> 
-      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 
+      <!-- body_text_eof --> 
+      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-        <!-- right_navigation_eof //--> </td> 
+        <!-- right_navigation_eof --> </td> 
     </tr>
   </table> 
-  <!-- body_eof //--> 
-  <!-- footer //--> 
+  <!-- body_eof --> 
+  <!-- footer --> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
+  <!-- footer_eof --> 
 </div> 
   <script>
   document.onreadystatechange=function(){
@@ -399,7 +368,6 @@ function pass_hidd(CI){
     if($guestchk == '1') {
       $active_single = 2; 
 
-      //ccdd
       $check_cid = tep_db_query("select customers_id, is_active from " . TABLE_CUSTOMERS . " where customers_email_address = '" . tep_db_input($email_address) . "' and site_id = '".SITE_ID."'");
       if(tep_db_num_rows($check_cid)) {
       $check = tep_db_fetch_array($check_cid);
@@ -413,7 +381,6 @@ function pass_hidd(CI){
                                 'customers_lastname_f' => $lastname_f,
                                 'customers_email_address' => $email_address,
                                 'customers_telephone' => $telephone,
-                                //'customers_fax' => $fax,
                                 'customers_newsletter' => '0',
                                 'customers_password' => tep_encrypt_password($NewPass),
                                 'customers_default_address_id' => 1,
@@ -424,7 +391,6 @@ function pass_hidd(CI){
         if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;
         if (ACCOUNT_DOB == 'true') $sql_data_array['customers_dob'] = tep_date_raw($dob);
 
-        // ccdd
         tep_db_perform(TABLE_CUSTOMERS, $sql_data_array, 'update', 'customers_id = ' . $check['customers_id'] .' and site_id = '.SITE_ID);
 
         $customer_id = $check['customers_id'];
@@ -454,13 +420,11 @@ function pass_hidd(CI){
           }
         }
 
-        // ccdd
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', 'customers_id = ' . $check['customers_id']);
-        if($_SESSION['referer']!=""){
-	     tep_db_query("update ".TABLE_CUSTOMERS." set referer='".tep_db_prepare_input($_SESSION['referer'])."' where customers_id='".$customer_id."'");
-unset($_SESSION['referer']);
-	       }
-      //ccdd
+	if($_SESSION['referer']!=""){
+		  tep_db_query("update ".TABLE_CUSTOMERS." set referer='".tep_db_prepare_input($_SESSION['referer'])."'   where customers_id='".$customer_id."'");
+        unset($_SESSION['referer']);
+		                 }
       tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_of_last_logon = now(), customers_info_number_of_logons = customers_info_number_of_logons+1 where customers_info_id = '" . $customer_id . "'");
     } else {
       $NewPass = tep_create_random_value(ENTRY_PASSWORD_MIN_LENGTH);
@@ -470,7 +434,6 @@ unset($_SESSION['referer']);
                                 'customers_lastname_f' => $lastname_f,
                                 'customers_email_address' => $email_address,
                                 'customers_telephone' => $telephone,
-                                //'customers_fax' => $fax,
                                 'customers_newsletter' => '0',
                                 'customers_password' => tep_encrypt_password($NewPass),
                                 'customers_default_address_id' => 1,
@@ -478,12 +441,11 @@ unset($_SESSION['referer']);
                                 'send_mail_time' => time(),
                                 'referer' => $referer,
                                 'site_id' => SITE_ID,
-                                'point' => '0',
-                                );
+                                'point' => '0');
 
         if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;
         if (ACCOUNT_DOB == 'true') $sql_data_array['customers_dob'] = tep_date_raw($dob);
-        // ccdd
+
         tep_db_perform(TABLE_CUSTOMERS, $sql_data_array);
 
         $customer_id = tep_db_insert_id();
@@ -514,7 +476,7 @@ unset($_SESSION['referer']);
         }
 
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
-        tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created,customers_info_date_account_last_modified,user_update,user_added) values ('" . tep_db_input($customer_id) . "', '0', now(),now(),'".$firstname.$lastname."','".$firstname.$lastname."')");
+        tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created,customers_info_date_account_last_modified,user_update,user_added) values ('" . tep_db_input($customer_id) . "', '0', now(),now(),'".tep_get_fullname($firstname, $lastname)."','".tep_get_fullname($firstname, $lastname)."')");
       }
   } else {
       $active_single = 1; 
@@ -522,24 +484,22 @@ unset($_SESSION['referer']);
     if(tep_db_num_rows($check_cid)) {
     $check = tep_db_fetch_array($check_cid);
     $NewPass = $password;
-      
     $sql_data_array = array('customers_firstname' => $firstname,
                                 'customers_lastname' => $lastname,
                                 'customers_firstname_f' => $firstname_f,
                                 'customers_lastname_f' => $lastname_f,
                                 'customers_email_address' => $email_address,
                                 'customers_telephone' => $telephone,
-                                //'customers_fax' => $fax,
                                 'customers_newsletter' => $newsletter,
                                 'customers_password' => tep_encrypt_password($NewPass),
                                 'customers_default_address_id' => 1,
                                 'customers_guest_chk' => '0',
                                 'is_active' => '1',
-                                'send_mail_time' => time(),
                                 'is_quited' => '0',
-				'quited_date' => '0000-00-00 00:00:00',
-                                'origin_password' => tep_encrypt_password($NewPass),
-                                'point' => '0');         
+                                'quited_date' => 'null',
+                                'send_mail_time' => time(),
+                                'origin_password' => $NewPass,
+                                'point' => '0');
         if ($check['customers_guest_chk'] == '1' && $check['is_active'] == '0') {
           $sql_data_array['is_active'] = 0; 
         }
@@ -549,7 +509,6 @@ unset($_SESSION['referer']);
         if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;
         if (ACCOUNT_DOB == 'true') $sql_data_array['customers_dob'] = tep_date_raw($dob);
 
-        // ccdd
         tep_db_perform(TABLE_CUSTOMERS, $sql_data_array, 'update', 'customers_id = ' . $check['customers_id'].' and site_id = '.SITE_ID);
 
         $customer_id = $check['customers_id'];
@@ -589,15 +548,14 @@ unset($_SESSION['referer']);
                                 'customers_lastname_f' => $lastname_f,
                                 'customers_email_address' => $email_address,
                                 'customers_telephone' => $telephone,
-                                //'customers_fax' => $fax,
                                 'customers_newsletter' => $newsletter,
                                 'customers_password' => tep_encrypt_password($NewPass),
                                 'customers_default_address_id' => 1,
                                 'customers_guest_chk' => '0',
                                 'send_mail_time' => time(),
                                 'site_id' => SITE_ID,
-                                'origin_password' => tep_encrypt_password($NewPass),
-				'referer' => $referer,
+                                'origin_password' => $NewPass,
+                                'referer' => $referer,
                                 'point' => '0');
 
         if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;
@@ -632,10 +590,8 @@ unset($_SESSION['referer']);
           }
         }
 
-        // ccdd
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
-      //ccdd
-      tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created,customers_info_date_account_last_modified,user_update,user_added) values ('" . tep_db_input($customer_id) . "', '0', now(),now(),'".$firstname.$lastname."','".$firstname.$lastname."')");
+      tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created,customers_info_date_account_last_modified,user_update,user_added) values ('" . tep_db_input($customer_id) . "', '0', now(),now(),'".tep_get_fullname($firstname, $lastname)."','".tep_get_fullname($firstname, $lastname)."')");
     }
   }
 
@@ -751,20 +707,20 @@ unset($_SESSION['referer']);
     }
 
     if($guestchk == '1') {
-      # For Guest
-      tep_redirect(tep_href_link(FILENAME_CHECKOUT_ATTRIBUTES, '', 'SSL'));
-    } else {
-      # For Member
-      $email_text .= C_CREAT_ACCOUNT ;
-      $email_text = str_replace(array('${MAIL}', '${PASS}'), array($email_address, $password), $email_text);
-      
-      $customer_info_raw = tep_db_query("select is_send_mail from ".TABLE_CUSTOMERS." where customers_email_address = '".tep_db_input($email_address)."' and site_id = '".SITE_ID."'"); 
-      $customer_info = tep_db_fetch_array($customer_info_raw);
-      if ($customer_info['is_send_mail'] != '1') {
-        tep_mail($name, $email_address, EMAIL_SUBJECT, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
-      }
-      tep_redirect(tep_href_link(FILENAME_CREATE_ACCOUNT_SUCCESS, '', 'SSL'));
+    # For Guest
+    tep_redirect(tep_href_link(FILENAME_CHECKOUT_ATTRIBUTES, '', 'SSL'));
+  } else {
+    # For Member
+    $email_text .= C_CREAT_ACCOUNT ;
+    $email_text = str_replace(array('${MAIL}', '${PASS}'), array($email_address, $password), $email_text);
+    
+    $customer_info_raw = tep_db_query("select is_send_mail from ".TABLE_CUSTOMERS." where customers_email_address = '".tep_db_input($email_address)."' and site_id = '".SITE_ID."'"); 
+    $customer_info = tep_db_fetch_array($customer_info_raw);
+    if ($customer_info['is_send_mail'] != '1') {
+      tep_mail($name, $email_address, EMAIL_SUBJECT, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
     }
+    tep_redirect(tep_href_link(FILENAME_CREATE_ACCOUNT_SUCCESS, '', 'SSL'));
+  }
   }
 
   require(DIR_WS_INCLUDES . 'application_bottom.php');

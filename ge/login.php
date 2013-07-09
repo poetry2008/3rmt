@@ -68,7 +68,6 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
       $seal_ip_flag = strtotime($seal_ip_time.'+24 hour') >= time(); 
     } 
   if($edit_old_user_num_rows >= 5){
-    //end 
     if($flag_true == true){
       if($user_num_rows >= 5){
          
@@ -109,7 +108,6 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
   } 
 
   if($edit_user_num_rows >= 5 && $old_user_resetpwd_time == false){
-    //end 
 
     if($flag_true == true){
       if($user_num_rows >= 5){
@@ -232,7 +230,6 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
             tep_session_register('guestchk');
 
             $date_now = date('Ymd');
-    //ccdd
             tep_db_query("
                 UPDATE " . TABLE_CUSTOMERS_INFO . " 
                 SET customers_info_date_of_last_logon = now(), 
@@ -247,7 +244,6 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
     } else {
 
 // Check if email exists
-//ccdd
     $check_customer_query = tep_db_query("
         SELECT customers_id, 
                customers_firstname, 
@@ -260,7 +256,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
                reset_success
         FROM " . TABLE_CUSTOMERS .  " 
         WHERE customers_email_address = '" . tep_db_input($email_address) . "' 
-          AND site_id = ".SITE_ID." AND is_active = 1");
+          AND site_id = ".SITE_ID." AND is_active = 1 AND is_quited = 0");
     
     if (!tep_db_num_rows($check_customer_query)) {
       $_GET['login'] = 'fail';
@@ -291,7 +287,6 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
         if (SESSION_RECREATE == 'True') {
           tep_session_recreate();
         }
-//ccdd
         $check_country_query = tep_db_query("
             SELECT entry_country_id, 
                    entry_zone_id 
@@ -319,7 +314,6 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
         tep_session_register('guestchk');
 
         $date_now = date('Ymd');
-//ccdd
         tep_db_query("
             UPDATE " . TABLE_CUSTOMERS_INFO . " 
             SET customers_info_date_of_last_logon = now(), 
@@ -329,7 +323,6 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
          
     //POINT_LIMIT CHECK 返点的有效期限判断
     if(MODULE_ORDER_TOTAL_POINT_LIMIT != '0') {
-//ccdd
       $plimit_count_query = tep_db_query("
           SELECT count(*) as cnt 
           FROM ".TABLE_ORDERS." 
@@ -339,7 +332,6 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
       $plimit_count = tep_db_fetch_array($plimit_count_query);
       
       if($plimit_count['cnt'] > 0) {
-//ccdd
       $plimit_query = tep_db_query("
           SELECT date_purchased 
           FROM ".TABLE_ORDERS." 
@@ -356,7 +348,6 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
       $now = time();
       $point_limit = mktime(0, 0, 0, $p_mon, $p_day+MODULE_ORDER_TOTAL_POINT_LIMIT, $p_year);
         if($now > $point_limit) {
-//ccdd
           tep_db_query("update ".TABLE_CUSTOMERS." set point = '0' where customers_id = '".$customer_id."' and site_id = '".SITE_ID."'");
         }
       }

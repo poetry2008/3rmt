@@ -693,7 +693,7 @@ require("includes/note_js.php");
                 </tr>
                 <?php 
                 while ($product_history = tep_db_fetch_array($product_history_query)) {
-                  $product_list_query = tep_db_query("select op.products_name, op.final_price, op.products_quantity from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where o.orders_id = op.orders_id and o.orders_id = '".$product_history['orders_id']."'");
+                  $product_list_query = tep_db_query("select o.is_gray, op.products_name, op.final_price, op.products_quantity from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where o.orders_id = op.orders_id and o.orders_id = '".$product_history['orders_id']."'");
                   $i = 1; 
                   $product_list_total = tep_db_num_rows($product_list_query); 
                   while ($product_list_res = tep_db_fetch_array($product_list_query)) {
@@ -704,8 +704,12 @@ require("includes/note_js.php");
                     } else {
                       $nowColor = $odd; 
                     }
+                    $is_gray_style = '';
+                    if ($product_list_res['is_gray'] == '1') {
+                      $is_gray_style = ' style="background-color:#AAAAAA;"'; 
+                    }
                   ?>
-                  <tr class="<?php echo $nowColor;?>">
+                  <tr class="<?php echo $nowColor;?>"<?php echo $is_gray_style;?>>
                     <?php
                     if ($product_list_total == $i) {
                       $style_str = 'border-bottom: 1px solid #000;padding-top:5px;'; 

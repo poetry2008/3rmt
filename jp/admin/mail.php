@@ -53,6 +53,9 @@
         $mail_sql .= ' and c.customers_id not in ('.$_SESSION['mail_sub_customer'].') ';
       }
     }
+    if (empty($_POST['is_exit'])) {
+      $mail_sql .= ' and c.is_quited = \'0\''; 
+    } 
     $mail_query = tep_db_query($mail_sql);
     while ($mail = tep_db_fetch_array($mail_query)) {
       $mimemessage = new email(array('X-Mailer: iimy Mailer'));
@@ -64,7 +67,6 @@
       unset($mimemessage);
       $mail_sum++;
     }
-
       unset($_SESSION['mail_post_value']);
       unset($_SESSION['mail_list']);
       unset($_SESSION['mail_sub_customer']);
@@ -148,9 +150,12 @@
     } else {
       $mail_where_sql = ' where '.substr($mail_or_sql, 4); 
     }
-    
-    $mail_sql .= $mail_select_sql.$mail_from_sql.$mail_where_sql;
-    
+   
+    if (!empty($_POST['is_exit'])) {
+      $mail_sql .= $mail_select_sql.$mail_from_sql.$mail_where_sql;
+    } else {
+      $mail_sql .= $mail_select_sql.$mail_from_sql.$mail_where_sql.' and c.is_quited = \'0\'';
+    }
     
     if(!isset($_SESSION['mail_list'])||$_SESSION['mail_list']){
       $_SESSION['mail_list'] = $mail_sql; 
@@ -360,6 +365,20 @@ require("includes/note_js.php");
                 <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
               <tr>
+                <td class="main" colspan="2">
+                <?php
+                if (!empty($_POST['is_exit'])) {
+                  echo SEARCH_INCLUDE_EXIT_CUSTOMERS; 
+                } else {
+                  echo SEARCH_EXCLUDE_EXIT_CUSTOMERS; 
+                }
+                ?>
+                </td>
+              </tr>
+              <tr>
+                <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+              </tr>
+              <tr>
                 <td class="main"><?php echo TEXT_FROM; ?></td>
                 <td><?php echo tep_draw_input_field('from',
                     $_POST['from']?$_POST['from']:EMAIL_FROM,'id="mail_info_from"'); ?></td>
@@ -529,7 +548,15 @@ require("includes/note_js.php");
               <tr>
                 <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
-                            <tr>
+              <tr>
+                <td class="main" colspan="2">
+                  <input type="checkbox" name="is_exit" value="1"><?php echo SEARCH_EXIT_CUSTOMERS_TEXT; ?>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+              </tr>
+              <tr>
                 <td colspan="2" align="right"><?php echo
                 tep_html_element_submit(BUTTON_SEARCH_TEXT); ?></td>
               </tr>

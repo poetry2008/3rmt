@@ -39,6 +39,8 @@
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr> 
               <td><?php
+  $customer_info_raw = tep_db_query("select * from ".TABLE_CUSTOMERS_INFO." where customers_info_id = '".$customer_id."'"); 
+  $customer_info = tep_db_fetch_array($customer_info_raw); 
   $history_query_raw = "
         select o.orders_id, 
                 o.date_purchased, 
@@ -50,25 +52,20 @@
           left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id) 
         where o.customers_id = '" . $customer_id . "' 
           and ot.class = 'ot_total' 
-	  and o.site_id = ".SITE_ID." 
-	  and o.customer_is_quited = '0' 
-	  order by orders_id DESC
+          and o.site_id = ".SITE_ID." and o.date_purchased >= '".$customer_info['customers_info_date_account_created']."' and is_gray != '1' order by orders_id DESC
   ";
   $history_count_query_raw = "
         select count(o.orders_id) as count
         from " . TABLE_ORDERS . " o 
         where o.customers_id = '" . $customer_id . "' 
-          and o.site_id = ".SITE_ID."
-  ";
+          and o.site_id = ".SITE_ID." and o.date_purchased >= '".$customer_info['customers_info_date_account_created']."' and is_gray != '1' ";
   $history_split = new splitPageResults($_GET['page'], MAX_DISPLAY_ORDER_HISTORY, $history_query_raw, $history_numrows, $history_count_query_raw);
-//ccdd
   $history_query = tep_db_query($history_query_raw);
 
   $info_box_contents = array();
 
   if (tep_db_num_rows($history_query)) {
     while ($history = tep_db_fetch_array($history_query)) {
-//ccdd
       $products_query = tep_db_query
 ("select count(*) as count from " . TABLE_ORDERS_PRODUCTS . " where orders_id = '" . $history['orders_id'] . "'");
       $products = tep_db_fetch_array($products_query);
@@ -126,9 +123,7 @@
                     <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
                   </tr> 
                   <tr> 
-                    <td class="smallText"><?php echo '<a href="' .
-                    tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' .
-                    tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
+                    <td class="smallText"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
                   </tr> 
                 </table></td> 
             </tr> 

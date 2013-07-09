@@ -679,20 +679,37 @@ EOT;
  参数：$customers_email(string) 顾客的邮件
  参数：$site_id(string) SITE_ID值
  参数：$orders_type(string) 订单类型
+ 参数：$gray_single(int) 信息
  返回值：支付方法的订单ID(string) 
  ---------------------------*/
-  function admin_get_payment_info_comment($customers_email,$site_id,$orders_type){
+  function admin_get_payment_info_comment($customers_email,$site_id,$orders_type,$gray_single){
 
     $orders_type_str = $orders_type == 1 ? TABLE_ORDERS : TABLE_PREORDERS;
-    $orders_status_history_temp_query = tep_db_query("select payment_method,orders_id from ". $orders_type_str ." where customers_email_address='". $customers_email ."' and site_id='".$site_id."' and payment_method='".TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_TITLE."' limit 0,1");
+    $exists_single = false; 
+    $customers_info_raw = tep_db_query("select c.*, ci.customers_info_date_account_created from ".TABLE_CUSTOMERS." c, ".TABLE_CUSTOMERS_INFO." ci where c.customers_id = ci.customers_info_id and c.site_id = '".$site_id."' and c.customers_email_address = '".$customers_email."'"); 
+    $customers_info = tep_db_fetch_array($customers_info_raw);
+    if ($gray_single == 0 || $gray_single == 2) {
+      if ($customers_info) {
+        $exists_single = true; 
+      } 
+    } 
+    if ($exists_single) {
+      $orders_status_history_temp_query = tep_db_query("select payment_method,orders_id from ". $orders_type_str ." where customers_email_address='". $customers_email ."' and site_id='".$site_id."' and payment_method='".TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_TITLE."' and is_gray != '1' and date_purchased >= '".$customers_info['customers_info_date_account_created']."' limit 0,1");
+    } else {
+      $orders_status_history_temp_query = tep_db_query("select payment_method,orders_id from ". $orders_type_str ." where customers_email_address='". $customers_email ."' and site_id='".$site_id."' and payment_method='".TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_TITLE."' and is_gray != '1' limit 0,1");
+    }
     $orders_num_rows = tep_db_num_rows($orders_status_history_temp_query);
     tep_db_free_result($orders_status_history_temp_query);
-  if($orders_num_rows > 0){
-    $orders_status_history_query = tep_db_query("select payment_method,orders_id from ". $orders_type_str ." where customers_email_address='". $customers_email ."' and site_id='".$site_id."' and payment_method='".TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_TITLE."' order by orders_id desc limit 0,1");
-    $ordres_status_history_array = tep_db_fetch_array($orders_status_history_query);
-    $orders_status_history_num_rows = tep_db_num_rows($orders_status_history_query);
-    tep_db_free_result($orders_status_history_query);
-  }
+    if($orders_num_rows > 0){
+      if ($exists_single) {
+        $orders_status_history_query = tep_db_query("select payment_method,orders_id from ". $orders_type_str ." where customers_email_address='". $customers_email ."' and site_id='".$site_id."' and payment_method='".TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_TITLE."' and is_gray != '1' and date_purchased >= '".$customers_info['customers_info_date_account_created']."' order by orders_id desc limit 0,1");
+      } else {
+        $orders_status_history_query = tep_db_query("select payment_method,orders_id from ". $orders_type_str ." where customers_email_address='". $customers_email ."' and site_id='".$site_id."' and payment_method='".TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_TITLE."' and is_gray != '1' order by orders_id desc limit 0,1");
+      }
+      $ordres_status_history_array = tep_db_fetch_array($orders_status_history_query);
+      $orders_status_history_num_rows = tep_db_num_rows($orders_status_history_query);
+      tep_db_free_result($orders_status_history_query);
+    }
     $orders_id = $orders_status_history_num_rows == 1 ? $ordres_status_history_array['orders_id'] : '';
     return array(2,$orders_id);
   }

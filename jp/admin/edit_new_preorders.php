@@ -362,7 +362,7 @@
     }
     if ($code !== 'ot_total' && $code !== 'ot_point') {
       $total_value += $ott['value'];
-    } 
+    }
   }
 
   $total_value_more_zero = true;
@@ -459,6 +459,13 @@
       preorder_last_customer_action();
       preorders_updated($_SESSION['create_preorder']['orders']['orders_id']);
 
+      $exists_customer_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".$_SESSION['create_preorder']['orders']['customers_id']."'"); 
+      $exists_customer = tep_db_fetch_array($exists_customer_raw); 
+      if ($exists_customer) {
+        if ($exists_customer['is_quited'] == '1') {
+          tep_db_query("update ".TABLE_PREORDERS." set is_gray = '2' where orders_id = '".$new_orders2_id."'"); 
+        }
+      }
       foreach($_SESSION['create_preorder']['orders_products'] as $pid => $orders_product) {
         $orders_product['site_id'] = $_SESSION['create_preorder']['orders']['site_id'];
         if(isset($new_orders2_id)&&$new_orders2_id){
@@ -1399,8 +1406,10 @@ if (($action == 'edit') && ($order_exists == true)) {
       $pay_type_array = array();
       $payment_negative_array = array();
       $payment_positive_array = array();
+      $customers_info_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".$_SESSION['create_preorder']['orders']['customers_id']."'"); 
+      $customers_info = tep_db_fetch_array($customers_info_raw); 
       foreach($payment_array[0] as $pay_key=>$pay_value){ 
-        $payment_info = $cpayment->admin_get_payment_info_comment($pay_value,$_SESSION['create_preorder']['orders']['customers_email_address'],$_SESSION['create_preorder']['orders']['site_id'],0);
+        $payment_info = $cpayment->admin_get_payment_info_comment($pay_value,$_SESSION['create_preorder']['orders']['customers_email_address'],$_SESSION['create_preorder']['orders']['site_id'],0,(($customers_info['is_quited'] == '1')?2:0));
         if(is_array($payment_info)){
 
           switch($payment_info[0]){

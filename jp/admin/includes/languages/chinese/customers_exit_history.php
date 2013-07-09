@@ -1,0 +1,24 @@
+<?php
+define('HEADING_TITLE', '退会信息');
+define('EXIT_HISTORY_RECORD', '记录');
+define('EXIT_HISTORY_SITE_ID', '网站');
+define('EXIT_HISTORY_FIRSTNAME', '名');
+define('EXIT_HISTORY_LASTNAME', '姓');
+define('EXIT_HISTORY_EMAIL', 'E-Mail 地址');
+define('EXIT_HISTORY_MAGZINE', '电子杂志');
+define('ORDER_MAGZINE', '订阅');
+define('NO_ORDER_MAGZINE', '不订阅');
+define('EXIT_HISTORY_BAN_ORDER', '禁止下订单');
+define('EXIT_HISTORY_YES_TEXT', '是');
+define('EXIT_HISTORY_NO_TEXT', '不是');
+define('EXIT_HISTORY_NO_SEND_MAIL', '不发送邮件');
+define('EXIT_HISTORY_CALC_QUANTITY', '不自动计算库存数量的增减');
+define('EXIT_HISTORY_POINT', '现在的点数');
+define('EXIT_HISTORY_PIC_ICON_ALT', '标记的ALT文字');
+define('EXIT_HISTORY_QUITEDATE', '退会时间');
+define('EXIT_HISTORY_SEARCH', '信用调查');
+define('EXIT_HISTORY_LAST_LOGIN_DATE', '最终登录日期');
+define('EXIT_HISTORY_LOGIN_NUM', '登录次数');
+define('EXIT_HISTORY_ORDER_NUM', '订单数');
+define('EXIT_HISTORY_REVIEW_NUM', '评论投稿数');
+define('EXIT_HISTORY_RESET_FLAG', '强制修改密码');

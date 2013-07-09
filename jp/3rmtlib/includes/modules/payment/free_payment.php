@@ -351,9 +351,11 @@ EOT;
  功能：获取后台支付方法信息评论 
  参数：$customers_email(string) 顾客的邮件
  参数：$site_id(string) SITE_ID值
+ 参数：$orders_type(string) 订单类型
+ 参数：$gray_single(int) 信息
  返回值：支付方法的订单ID(string) 
  ---------------------------*/
-  function admin_get_payment_info_comment($customers_email,$site_id){
+  function admin_get_payment_info_comment($customers_email,$site_id,$orders_type,$gray_single){
  
     return array(5);
   }
