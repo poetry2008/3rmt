@@ -62,8 +62,8 @@ require("includes/note_js.php");
                 <td valign="top">
                 <?php
                   $exit_history_query = tep_db_query("select * from ".TABLE_CUSTOMERS_EXIT_HISTORY." where customers_id = '".$_GET['customers_id']."' order by created_at desc"); 
-                  $i = 1; 
-                  if (!tep_db_num_rows($exit_history_query)) {
+                  $i = tep_db_num_rows($exit_history_query); 
+                  if (!$i) {
                     echo '<font color="#FF0000">'.TEXT_DATA_IS_EMPTY.'</font>'; 
                   }
                   while ($exit_history = tep_db_fetch_array($exit_history_query)) {
@@ -226,7 +226,7 @@ require("includes/note_js.php");
                   </fieldset> 
                   <br> 
                 <?php
-                  $i++;                  
+                  $i--;                  
                   }
                 ?>
                 </td>
