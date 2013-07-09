@@ -6789,9 +6789,9 @@ if($_GET['qID'] != -1 && $_GET['cID'] != -1){
                     }
                 }else if($_GET['sort'] == 'title'){
                   if($_GET['type'] == 'desc'){
-                    $faq_str = 'title desc';
+                    $faq_str = 'info_type desc,title desc';
                     }else{
-                    $faq_str = 'title asc';
+                    $faq_str = 'info_type asc,title asc';
                     }
                 }else if($_GET['sort'] == 'is_show'){
                   if($_GET['type'] == 'desc'){

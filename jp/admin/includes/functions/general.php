@@ -10895,7 +10895,7 @@ function tep_update_faq_sort($fid,$site_id,$type,$action='update'){
     }
   }
   if($action=='update'){
-    $sql_fs = "UPDATE ".TABLE_FAQ_SORT."SET 
+    $sql_fs = "UPDATE ".TABLE_FAQ_SORT." SET 
       `title`='".$title."',
       `sort_order`='".$sort_order."',
       `is_show`='".$is_show."',
@@ -10917,4 +10917,5 @@ function tep_update_faq_sort($fid,$site_id,$type,$action='update'){
       '".$parent_id."', '".$info_id."',
       '".$type."','".$updated_at."','".$search_text."')";
   }
+  tep_db_query($sql_fs);
 }
