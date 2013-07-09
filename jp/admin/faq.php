@@ -1037,9 +1037,24 @@ require("includes/note_js.php");
                   $faq_split = new splitPageResults($_GET['page'],MAX_DISPLAY_FAQ_ADMIN, $faq_category_query_raw,$faq_query_number);
                   $faq_category_query = tep_db_query($faq_category_query_raw);
                   $faq_category_num = tep_db_num_rows($faq_category_query);
+                  $select_row_id = '';
                   while($faq_category = tep_db_fetch_array($faq_category_query)){
                     if(!isset($_GET['s_id'])||$_GET['s_id']==''){
-                      $_GET['s_id'] = $faq_category['id'];
+                      if($select_row_id == ''){
+                        $select_row_id = $faq_category['id'];
+                      }
+                    }else if(isset($_GET['s_id'])&&$_GET['s_id']){
+                      $select_sql = "select id from (".$faq_category_query_raw.") t
+                        where t.id = '".$_GET['s_id']."'";
+                      $select_query = tep_db_query($select_sql);
+                      $select_num = tep_db_num_rows($select_query);
+                      if(!$select_num){
+                        if($select_row_id == ''){
+                          $select_row_id = $faq_category['id'];
+                        }
+                      }else{
+                        $select_row_id = $_GET['s_id'];
+                      }
                     }
                     if($faq_category['info_type'] == 'c'){
                     $faq_count++;
@@ -1058,7 +1073,7 @@ require("includes/note_js.php");
                     }else{
                       $nowColor = $odd;
                     }
-                    if($faq_category['id'] == $_GET['s_id']){
+                    if($faq_category['id'] == $select_row_id){
                       $faq_params = 'class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'"';
                     }else{
                       $faq_params = 'class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
@@ -1143,7 +1158,7 @@ require("includes/note_js.php");
                     }else{
                       $nowColor = $odd;
                     }
-                    if($faq_category['id'] == $_GET['s_id']){
+                    if($faq_category['id'] == $select_row_id){
                       $faq_qid_params = 'class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" ';
                       $onclick_qid = 'onclick="document.location.herf=\''.tep_href_link(FILENAME_FAQ, 'cPath='.$cPath.($_GET['page'] ? ('&page=' . $_GET['page']): '' ) .  '&s_id='.$faq_category['id']) . '\'"';
                     }else{

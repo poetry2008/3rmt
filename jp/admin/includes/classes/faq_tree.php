@@ -32,49 +32,31 @@
      global $languages_id;
      $site_id = isset($_GET['site_id'])&&$_GET['site_id'] ? $_GET['site_id'] : 0;
 //ccdd
+   if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
+      $sql_site_where = ' and site_id in ('.str_replace('-', ',', $_GET['site_id']).')';
+  } else {
+      $show_list_str = tep_get_setting_site_info(FILENAME_FAQ);
+      $sql_site_where = ' and site_id in ('.$show_list_str.')';
+  }
+
     if ($green) {
       $this->categories_count = tep_db_num_rows(tep_db_query("select * from
-            faq_categories_description where site_id='0' and is_show='1'"));
+            faq_sort where info_type='c' is_show='1' ".$sql_site_where));
     } else {
       $this->categories_count = tep_db_num_rows(tep_db_query("select * from
-            faq_categories"));
+            faq_sort where info_type='c' ".$sql_site_where));
     }
     if ($green) { 
          $categories_query = tep_db_query("
            select *
-           from (
-             select fcd.faq_category_id, 
-                    fcd.is_show, 
-                    fcd.title, 
-                    fc.parent_id,
-                    fcd.site_id,
-                    fc.sort_order
-             from " . TABLE_FAQ_CATEGORIES . " fc, " .
-             TABLE_FAQ_CATEGORIES_DESCRIPTION . " fcd 
-             where fc.id = fcd.faq_category_id 
-               and fcd.is_show = '1'
-             order by fcd.site_id DESC
-            ) c
-            ".((isset($site_id)&&$site_id)?" where site_id='".$site_id."'":"").
-            "group by faq_category_id  
+           from faq_sort where info_type='c' 
+            and is_show='1' ".$sql_site_where."          
             order by parent_id, sort_order, title");
     } else {
          $categories_query = tep_db_query("
            select *
-           from (
-             select fcd.faq_category_id, 
-                    fcd.is_show, 
-                    fcd.title, 
-                    fc.parent_id,
-                    fcd.site_id,
-                    fc.sort_order
-             from " . TABLE_FAQ_CATEGORIES . " fc, " .
-             TABLE_FAQ_CATEGORIES_DESCRIPTION . " fcd 
-             where fc.id = fcd.faq_category_id 
-             order by fcd.site_id DESC
-            ) c 
-            ".((isset($site_id)&&$site_id)?" where site_id='".$site_id."'":"").
-            "group by faq_category_id
+           from faq_sort where info_type='c' 
+            ".$sql_site_where."          
             order by parent_id, sort_order, title");
     }
          $this->data = array();
@@ -82,7 +64,7 @@
             // Ultimate SEO URLs compatibility - Chemo
                   # initialize array container for parent_id 
             $p = array();
-            tep_get_parent_categories($p, $categories['parent_id']);
+            tep_get_parent_categories($p, $categories['parent_id'],$categories['site_id']);
             # For some reason it seems to return in reverse order so reverse the array 
             $p = array_reverse($p);
 
@@ -91,13 +73,13 @@
             $categories['parent_id']);
                   # initialize array container for category_id 
             $c = array();
-            tep_get_parent_categories($c, $categories['faq_category_id']);
+            tep_get_parent_categories($c, $categories['info_id'],$categories['site_id']);
             # For some reason it seems to return in reverse order so reverse the array 
             $c = array_reverse($c);
             # Implode the array to get the full category path
             $id = (implode('_', $c) ? implode('_', $c) . '_' .
-                $categories['faq_category_id'] :
-            $categories['faq_category_id']);
+                $categories['info_id'] :
+            $categories['info_id']);
 
             $this->data[$cID][$id] = array('name' => $categories['title'], 'count' => 0);
          } // eof While loop
@@ -174,13 +156,13 @@
        $result .= $this->parent_group_end_string;
      }
      return $result;
-   }
+   } 
 /*-----------------------------------------------
  功能: 构建树
  参数: $filename(string) 文件名
  返回值: 构建树 (string)  
  ----------------------------------------------*/
-   function buildTree($filename='') {
+    function buildTree($filename='') {
      return $this->buildBranch($this->root_category_id,0,$filename);
    }
  }
@@ -191,14 +173,15 @@
  参数: $categories_id(string) 类别ID
  返回值: 无
  ---------------------------------------------*/
-  function tep_get_parent_categories(&$categories, $categories_id) {
+  function tep_get_parent_categories(&$categories, $categories_id,$site_id) {
     //ccdd
-    $parent_categories_query = tep_db_query("select parent_id from " . TABLE_FAQ_CATEGORIES . " where id = '" . (int)$categories_id . "'");
+    $parent_categories_query = tep_db_query("select parent_id,site_id from faq_sort where info_id='".$categories_id."' and site_id='".$site_id."' and info_type='c'");
     while ($parent_categories = tep_db_fetch_array($parent_categories_query)) {
       if ($parent_categories['parent_id'] == 0) return true;
       $categories[sizeof($categories)] = $parent_categories['parent_id'];
       if ($parent_categories['parent_id'] != $categories_id) {
-        tep_get_parent_categories($categories, $parent_categories['parent_id']);
+        tep_get_parent_categories($categories,
+            $parent_categories['parent_id'],$parent_categories['site_id']);
       }
     }
   }
