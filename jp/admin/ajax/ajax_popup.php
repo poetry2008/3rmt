@@ -6843,7 +6843,7 @@ if($_GET['qID'] != -1 && $_GET['cID'] != -1){
     }else if($qInfo->info_type == 'c'){
     $contents[]['text'] = array(
         array('text' => '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">URL'),
-        array('text' => tep_draw_input_field('romaji',$faq_c_raw['romaji'],'id="cromaji"size="40" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" '.$disabled).  '</span><input type="button" '.$disabled.'onclick = "faq_q_is_set_romaji(\''.$current_category_id.'\',\''.$faq_c_raw['faq_question_id'].'\',\''.$faq_c_raw['site_id'].'\')" value="'.TEXT_ROMAJI_IS_SET.'">'.  '<input type="button" '.$disabled.' onclick = "faq_q_is_set_error_char()" value="'.IS_SET_ERROR_CHAR.'"><br><span id="cromaji_error">')
+        array('text' => tep_draw_input_field('romaji',$faq_c_raw['romaji'],'id="cromaji"size="40" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" '.$disabled).  '</span><input type="button" '.$disabled.'onclick = "faq_c_is_set_romaji(\''.$current_category_id.'\',\''.$faq_c_raw['faq_question_id'].'\',\''.$faq_c_raw['site_id'].'\')" value="'.TEXT_ROMAJI_IS_SET.'">'.  '<input type="button" '.$disabled.' onclick = "faq_c_is_set_error_char()" value="'.IS_SET_ERROR_CHAR.'"><br><span id="cromaji_error">')
         );
     }
     if($qInfo->info_type == 'q'){
