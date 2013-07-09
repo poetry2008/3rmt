@@ -254,7 +254,7 @@
       if (!isset($GLOBALS['cc_expires'])) $GLOBALS['cc_expires']=NULL;
       if (!isset($GLOBALS['comments'])) $GLOBALS['comments']=NULL;
       //获取相应支付方式的默认注文订单状态
-      $orders_status_id = get_configuration_by_site_id('MODULE_PAYMENT_'.strtoupper($payment).'_ORDER_STATUS_ID',SITE_ID);
+      $orders_status_id = get_configuration_by_site_id_or_default('MODULE_PAYMENT_'.strtoupper($payment).'_ORDER_STATUS_ID',SITE_ID);
       $orders_status_id = $orders_status_id != 0 ? $orders_status_id : DEFAULT_ORDERS_STATUS_ID;
       $this->info = array('order_status' => $orders_status_id,
                           'currency' => $currency,

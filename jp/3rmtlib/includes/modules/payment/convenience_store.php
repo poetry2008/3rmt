@@ -325,7 +325,7 @@ class convenience_store extends basePayment  implements paymentInterface  {
       
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('予約注文', 'MODULE_PAYMENT_CONVENIENCE_STORE_PREORDER_SHOW', 'True', '予約注文でコンビニ決済を表示します', '6', '1', 'tep_cfg_select_option(array(\'True\', \'False\'), ',now(), ".$this->site_id.");");
       
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('ポイント', 'MODULE_PAYMENT_CONVENIENCE_STORE_IS_GET_POINT', '1', 'ポイント', '6', '1', 'tep_cfg_payment_new_checkbox(',now(), ".$this->site_id.");");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('ポイント', 'MODULE_PAYMENT_CONVENIENCE_STORE_IS_GET_POINT', 'True', 'ポイント', '6', '1', 'tep_cfg_select_option(array(\'True\', \'False\'), ',now(), ".$this->site_id.");");
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('ポイント還元率', 'MODULE_PAYMENT_CONVENIENCE_STORE_POINT_RATE', '0.01', 'ポイント還元率', '6', '0' , now(), ".$this->site_id.")");
     }
 /*------------------------------
@@ -357,9 +357,6 @@ class convenience_store extends basePayment  implements paymentInterface  {
                    'MODULE_PAYMENT_CONVENIENCE_STORE_ORDER_STATUS_ID' ,
                    'MODULE_PAYMENT_CONVENIENCE_STORE_PREORDER_STATUS_ID' ,
                    'MODULE_PAYMENT_CONVENIENCE_STORE_MONEY_LIMIT',
-                   'MODULE_PAYMENT_CONVENIENCE_STORE_MAILSTRING',
-                   'MODULE_PAYMENT_CONVENIENCE_STORE_PRINT_MAILSTRING_TITLE',
-                   'MODULE_PAYMENT_CONVENIENCE_STORE_PRINT_MAILSTRING',
                     );
     }
 

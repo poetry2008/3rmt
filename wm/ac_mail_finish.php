@@ -42,10 +42,11 @@
               STORE_NAME,
               HTTP_SERVER
               ); 
+          //会员编辑邮件认证
+          $edit_users_mail_array = tep_get_mail_templates('ACTIVE_EDIT_ACCOUNT_EMAIL_CONTENT',SITE_ID); 
+          $email_text = str_replace($old_str_array, $new_str_array, $edit_users_mail_array['contents']);  
           
-          $email_text = str_replace($old_str_array, $new_str_array, ACTIVE_EDIT_ACCOUNT_EMAIL_CONTENT);  
-          
-          $ed_email_text = str_replace('${SITE_NAME}', STORE_NAME, ACTIVE_EDIT_ACCOUNT_EMAIL_TITLE); 
+          $ed_email_text = str_replace('${SITE_NAME}', STORE_NAME, $edit_users_mail_array['title']); 
           tep_mail($mail_name, $_POST['cemail'], $ed_email_text, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
           
           tep_db_query("update `".TABLE_CUSTOMERS."` set `new_email_address` = '".$_POST['cemail']."' where `customers_id` = '".$customers_res['customers_id']."' and site_id = '".SITE_ID."'"); 

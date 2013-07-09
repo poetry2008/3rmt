@@ -122,12 +122,14 @@ class user_certify {
           if($user_time >= $user_now){
              
             if($user_num_rows == 5){
-              
-              $mail_title = IP_SEAL_EMAIL_TITLE;
+
+              //登录锁定邮件
+              $login_mail_array = tep_get_mail_templates('IP_SEAL_EMAIL_TEXT',0); 
+              $mail_title = $login_mail_array['title'];
               $mail_array = array('${TIME}','${IP}');
               $now_time = date('Y年m月d日H時i分',strtotime($user_max_time));
               $mail_replace = array($now_time,$_SERVER['REMOTE_ADDR']);
-              $mail_str = IP_SEAL_EMAIL_TEXT;
+              $mail_str = $login_mail_array['contents'];
               $mail_str = str_replace("\r\n","\n",$mail_str); 
               $mail_text = str_replace($mail_array,$mail_replace,$mail_str);
               $show_cols_num = 16; //定义显示最长密码16位
@@ -550,11 +552,13 @@ if (!tep_session_is_registered('user_permission')) {
        
           if($user_time >= $user_now){
             if($user_num_rows == 5){
-              $mail_title = IP_SEAL_EMAIL_TITLE;
+              //登录锁定邮件
+              $login_mail_array = tep_get_mail_templates('IP_SEAL_EMAIL_TEXT',0);
+              $mail_title = $login_mail_array['title'];
               $mail_array = array('${TIME}','${IP}');
               $now_time = date('Y年m月d日H時i分',strtotime($user_max_time));
               $mail_replace = array($now_time,$_SERVER['REMOTE_ADDR']);
-              $mail_str = IP_SEAL_EMAIL_TEXT;
+              $mail_str = $login_mail_array['contents'];
               $mail_str = str_replace("\r\n","\n",$mail_str); 
               $mail_text = str_replace($mail_array,$mail_replace,$mail_str);
               $show_cols_num = 16; //定义显示最长密码16位

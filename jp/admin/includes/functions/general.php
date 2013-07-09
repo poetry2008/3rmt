@@ -7522,10 +7522,9 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
  ------------------------------------ */
   function tep_remove_faq_category($category_id) {
     tep_db_query("delete from " . TABLE_FAQ_CATEGORIES . " where id = '" . tep_db_input($category_id) . "'");
-    tep_db_query("delete from " . TABLE_FAQ_CATEGORIES_DESCRIPTION . " where
-        faq_category_id = '" . tep_db_input($category_id) . "'");
-    tep_db_query("delete from " . TABLE_FAQ_QUESTION_TO_CATEGORIES . " where
-        faq_category_id = '" . tep_db_input($category_id) . "'");
+    tep_db_query("delete from " . TABLE_FAQ_CATEGORIES_DESCRIPTION . " where faq_category_id = '" . tep_db_input($category_id) . "'");
+    tep_db_query("delete from " . TABLE_FAQ_QUESTION_TO_CATEGORIES . " where faq_category_id = '" . tep_db_input($category_id) . "'");
+    tep_db_query("delete from `faq_sort` where info_id = '" .  tep_db_input($category_id) . "' and info_type = 'c'");
   }
 
 /* -------------------------------------
@@ -7535,10 +7534,9 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
  ------------------------------------ */
   function tep_remove_faq_question($product_id) {
     tep_db_query("delete from " . TABLE_FAQ_QUESTION . " where id = '" . tep_db_input($product_id) . "'");
-    tep_db_query("delete from " . TABLE_FAQ_QUESTION_TO_CATEGORIES . " where
-        faq_question_id = '" . tep_db_input($product_id) . "'");
-    tep_db_query("delete from " . TABLE_FAQ_QUESTION_DESCRIPTION . " where 
-        faq_question_id = '" . tep_db_input($product_id) . "'");
+    tep_db_query("delete from " . TABLE_FAQ_QUESTION_TO_CATEGORIES . " where faq_question_id = '" . tep_db_input($product_id) . "'");
+    tep_db_query("delete from " . TABLE_FAQ_QUESTION_DESCRIPTION . " where faq_question_id = '" . tep_db_input($product_id) . "'");
+    tep_db_query("delete from `faq_sort` where info_id = '" .  tep_db_input($product_id) . "' and info_type = 'q'");
   }
 
 /* -------------------------------------
@@ -7590,6 +7588,9 @@ function   tep_order_status_change($oID,$status){
   {
     tep_db_query("UPDATE `".TABLE_FAQ_CATEGORIES_DESCRIPTION."` SET `is_show` =
         '".intval($status)."' WHERE `faq_category_id` =".$faq_category_id.
+        " and `site_id` = '".$site_id."' LIMIT 1 ;");
+    tep_db_query("UPDATE `".'faq_sort'."` SET `is_show` =
+        '".intval($status)."' WHERE `info_id` =".$faq_category_id.
         " and `site_id` = '".$site_id."' LIMIT 1 ;");
     return true;
   }
@@ -7658,9 +7659,13 @@ function   tep_order_status_change($oID,$status){
  ------------------------------------ */
   function tep_set_faq_question_status_by_site_id($question_id, $status, $site_id) {
     if ($status == '1') {
+      tep_db_query("update " . 'faq_sort' . " set is_show = '1' where
+          info_id = '" . $question_id . "' and site_id = '".$site_id."'");
       return tep_db_query("update " . TABLE_FAQ_QUESTION_DESCRIPTION . " set is_show = '1' where
           faq_question_id = '" . $question_id . "' and site_id = '".$site_id."'");
     } elseif ($status == '0') {
+      tep_db_query("update " . 'faq_sort'. " set is_show = '0' where 
+          info_id = '" . $question_id . "' and site_id = '".$site_id."'");
       return tep_db_query("update " . TABLE_FAQ_QUESTION_DESCRIPTION . " set is_show = '0' where 
           faq_question_id = '" . $question_id . "' and site_id = '".$site_id."'");
     } else {
@@ -10763,4 +10768,122 @@ function tep_get_beforday_orders($limit_time_info){
       }
     }
     return $order_arr;
+}
+/*------------------------------
+  功能: 获取相应的邮件模板 
+  参数: $mail_flag(string) 邮件模板标识
+  参数: $site_id(int) 所属网站
+  返回: 邮件模板的标题、内容 
+  -----------------------------*/
+function tep_get_mail_templates($mail_flag,$site_id){
+
+  $mail_query = tep_db_query("select title,contents from ". TABLE_MAIL_TEMPLATES ." where flag='".$mail_flag."' and site_id='".$site_id."'");
+  $mail_array = tep_db_fetch_array($mail_query);
+  tep_db_free_result($mail_query);
+
+  return array('title'=>$mail_array['title'],'contents'=>$mail_array['contents']);
+}
+/*------------------------------
+  功能: 获得用户支付方法组ID
+  参数: orders_id(int) 订单ID
+  参数: customer_id(int) 客户ID
+  返回: 返回支付方法组ID
+  -----------------------------*/
+function tep_get_payment_customer_chk($orders_id='',$cid='',$flag = true){
+  $error = false;
+  if($orders_id!=''){
+    if($flag){
+      $sql = "select `customers_guest_chk` from ".TABLE_ORDERS." 
+        o left join ".TABLE_CUSTOMERS." c 
+        on o.customers_id = c.customers_id
+        where orders_id ='".$orders_id."'";
+    }else{
+      $sql = "select `customers_guest_chk` from ".TABLE_PREORDERS." 
+        o left join ".TABLE_CUSTOMERS." c 
+        on o.customers_id = c.customers_id
+        where orders_id ='".$orders_id."'";
+    }
+  }else if ($cid!=''){
+    $sql = "select `customers_guest_chk` from ".TABLE_CUSTOMERS." 
+      where customers_id='".$cid."'";
+  }else{
+    $error = true;
+  }
+  if($error){
+    return 0;
+  }else{
+    $query = tep_db_query($sql);
+    if($row = tep_db_fetch_array($query)){
+      if($row['customers_guest_chk'] == '0'){
+        return '1';
+      }else if($row['customers_guest_chk'] == '1'){
+        return '2';
+      }else{
+        return 0;
+      }
+    }else{
+      return 0;
+    }
+  }
+}
+/*------------------------------
+  功能: 获得用户支付方法是否开启
+  参数: payment(string) 支付方法
+  参数: site_id(string) 网站ID
+  参数: orders_id(int) 订单ID
+  参数: cid(ind) 用户ID
+  返回: 返回支付方法组ID
+  -----------------------------*/
+
+function tep_get_payment_flag($payment,$cid='',$site_id=0,$orders_id='',$flag=true,$type='order'){
+  if($type=='order'){
+    $payment_status = get_configuration_by_site_id_or_default('MODULE_PAYMENT_'.strtoupper($payment).'_STATUS',$site_id);
+  }else{
+    $payment_status = get_configuration_by_site_id_or_default('MODULE_PAYMENT_'.strtoupper($payment).'_PREORDER_SHOW',$site_id);
+  }
+  if($payment_status == 'True'){
+    $customer_info = get_configuration_by_site_id_or_default('MODULE_PAYMENT_'.strtoupper($payment).'_LIMIT_SHOW',$site_id);
+    $customer_arr = @unserialize($customer_info);
+    if($cid!=''){
+      $c_chk = tep_get_payment_customer_chk('',$cid);
+    }else{
+      $c_chk = tep_get_payment_customer_chk($orders_id,'',$flag);
+    }
+    if(in_array($c_chk,$customer_arr)){
+      return true;
+    }else{
+      return false;
+    }
+  }else{
+    return false;
+  }
+}
+function tep_update_faq_sort($fid,$type,$action='update'){
+  if($type=='c'){
+  }
+  if($type=='q'){
+  }
+  if($action=='update'){
+    $sql_fs = "UPDATE ".TABLE_FAQ_SORT."SET 
+      `title`='".$title."',
+      `sort_order`='".$sort_order."',
+      `is_show`='".$is_show."',
+      `parent_id`='".$parent_id."',
+      `info_id`='".$info_id."',
+      `info_type`='".$type."',
+      `updated_at`='".$updated_at."',
+      `search_text`='".$search_text."' 
+        WHERE `info_id`='".$info_id."' 
+        and `site_id`='".$site_id."'
+        and `info_type`='".$type."'";
+  }else if($action=='insert'){
+    $sql_fs = "INSERT INTO ".TABLE_FAQ_SORT." 
+      (`id` , `site_id` , `title` , `sort_order` ,
+       `is_show` , `parent_id` , `info_id` , `info_type`,
+       `updated_at`,`search_text`)  VALUES
+      ( NULL , '".$site_id."', '".$title."',
+      '".$sort_order."', '".$is_show."',
+      '".$parent_id."', '".$info_id."',
+      '".$type."','".$updated_at."','".$search_text."')";
+  }
 }

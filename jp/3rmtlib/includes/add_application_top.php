@@ -177,7 +177,6 @@ if ($pdo_con) {
   define('TABLE_CUSTOMER_TO_CAMPAIGN', 'customer_to_campaign'); 
   define('TABLE_PREORDERS_OA_FORMVALUE', 'preorders_oa_formvalue'); 
   define('TABLE_PREORDERS', 'preorders');
-  define('TABLE_PREORDERS_MAIL', 'preorders_mail');
   define('TABLE_PREORDERS_OPERATOR', 'preorders_operator');
   define('TABLE_PREORDERS_PRODUCTS', 'preorders_products');
   define('TABLE_PREORDERS_PRODUCTS_ATTRIBUTES', 'preorders_products_attributes');
@@ -199,6 +198,7 @@ if ($pdo_con) {
   define('TABLE_ADDRESS_BOOK', 'address_book');
   define('TABLE_TAGS', 'tags');
   define('TABLE_PRODUCTS_TO_TAGS', 'products_to_tags');
+  define('TABLE_MAIL_TEMPLATES', 'mail_templates');
   define('TABLE_ADDRESS_FORMAT', 'address_format');
   define('TABLE_BANNERS', 'banners');
   define('TABLE_BANNERS_HISTORY', 'banners_history');
@@ -252,7 +252,6 @@ if ($pdo_con) {
   define('TABLE_PRESENT_GOODS', 'present_goods');
   define('TABLE_PRESENT_APPLICANT', 'present_applicant');
   define('TABLE_MAIL_MAGAZINE', 'mail_magazine');
-  define('TABLE_ORDERS_MAIL', 'orders_mail');
   define('TABLE_INFORMATION_PAGE', 'information_page');//Information box
   define('TABLE_NEWS', 'news'); //latest_news
   define('TABLE_COLOR', 'color');//Color setting

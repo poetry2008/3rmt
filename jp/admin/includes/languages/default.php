@@ -82,3 +82,23 @@ define('TEXT_FEMALE','女性');
 define('TEXT_SUBSCRIPTION','購読');
 define('TEXT_UNSUBSCRIPTION','未購読');
 define('TEXT_CSV_EXPORT','CSVエクスポート');
+
+//mail templates
+define('TEXT_ORDERS_STATUS_MAIL_TITLE','(注文ステータス)');
+define('TEXT_ORDERS_STATUS_MAIL_USE_DESCRIPTION',' /admin/orders.php　と　/admin/edit_orders.php　と　/admin/edit_new_orders.phpページにより注文スタータスの時に送信されたメール');
+define('TEXT_ORDERS_STATUS_MAIL_DESCRIPTION','名前：${NAME}<br>メールアドレス：${MAIL}<br>注文日：${ORDER_D}<br>注文番号：${ORDER_N}<br>支払い方法：${PAY}<br>注文金額：${ORDER_M}<br>お届け日時：${SHIPPING_TIME}<br>注文ステータス：${ORDER_S}<br>メールに記載する注意書き：${ORDER_A}<br>サイト名：${SITE_NAME}<br>サイトのURL：${SITE_URL}<br>お問い合わせ用メールアドレス：${SUPPORT_EMAIL}<br>銀行営業日：${PAY_DATE}');
+define('TEXT_PREORDERS_STATUS_MAIL_TITLE','(予約ステータス)');
+define('TEXT_PREORDERS_STATUS_MAIL_USE_DESCRIPTION',' /admin/preorders.php　と　/admin/final_preorders.php　と　/admin/edit_new_preorders.phpページにより予約スタータスの時に送信されたメール');
+define('TEXT_PREORDERS_STATUS_MAIL_DESCRIPTION','名前：${NAME}<br>メールアドレス：${MAIL}<br>注文日：${PREORDER_D}<br>注文番号：${PREORDER_N}<br>支払い方法：${PAY}<br>注文金額：${ORDER_M}<br>注文ステータス：${ORDER_S}<br>メールに記載する注意書き：${ORDER_A}<br>サイト名：${SITE_NAME}<br>サイトのURL：${SITE_URL}<br>お問い合わせ用メールアドレス：${SUPPORT_EMAIL}<br>確保期限：${ENSURE_TIME}<br>希望個数:${PRODUCTS_QUANTITY}<br>商品名:${PRODUCTS_NAME}<br>商品単価:${PRODUCTS_PRICE}<br>小計:${SUB_TOTAL}');
+define('TEXT_POINT_NOTIFY_TITLE','(ポイントお知らせ)');
+define('TEXT_POINT_NOTIFY_USE_DESCRIPTION',' /admin/cron___point_alert_send_email_to_customer.phpページによりポイントお知らせの時に送信されたメール');
+define('TEXT_POINT_NOTIFY_DESCRIPTION','
+  名前：${NAME}<br>
+  メールアドレス：${MAIL}<br>
+  サイト名：${SITE_NAME}<br>
+  サイトのURL：${SITE_URL}<br>
+  お問い合わせ用メールアドレス：${SUPPORT_EMAIL}<br>
+  ポイント：${POINT}<br>
+  ポイント最終日：${POINT_OUT_DATE}<br>
+  期限：${POINT_DATE}<br> 
+  ');

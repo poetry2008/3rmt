@@ -5284,7 +5284,7 @@ if (isset($_SESSION['campaign_fee'])) {
 <div class="checkout_payment_info">
   <?php
    //如果大于1个支付方法需要用户选择 ，如果小于则不需要选择了
-    if (sizeof($selection) > 1) {
+    if (sizeof($selection) > 0) {
       if (!$is_show) {
         echo "<div>";
       }
@@ -5297,7 +5297,7 @@ if (isset($_SESSION['campaign_fee'])) {
       echo "<div>";
       echo '<div class="float_left">';
       echo TEXT_ENTER_PAYMENT_INFORMATION;
-      echo '</div><div></div>';
+      echo '</div><div>&nbsp;</div>';
       echo "</div>";
     }
   ?>
@@ -5305,8 +5305,10 @@ if (isset($_SESSION['campaign_fee'])) {
 <?php  
      if(isset($_SESSION['payment_error'])){
 	 ?>
+     <br>
      <div class="box_waring">
      <?php
+     echo TEXT_PAYMENT_ERROR_TOP;
      if(is_array($_SESSION['payment_error'])){
            foreach($_SESSION['payment_error'] as $key=>$value){
                if (is_array($value)) {
@@ -5792,6 +5794,7 @@ if (isset($_SESSION['campaign_fee'])) {
     <div class="box_waring">
     <?php }?>
      <?php
+     echo TEXT_PAYMENT_ERROR_TOP;
      if(is_array($_SESSION['payment_error'])){
            foreach($_SESSION['payment_error'] as $key=>$value){
                if (is_array($value)) {
@@ -6678,4 +6681,33 @@ function tep_get_radices($pid){
     }else{
       return 1;
     }
+}
+/*------------------------------
+  功能: 获取相应的邮件模板 
+  参数: $mail_flag(string) 邮件模板标识
+  参数: $site_id(int) 所属网站
+  返回: 邮件模板的标题、内容 
+  -----------------------------*/
+function tep_get_mail_templates($mail_flag,$site_id){
+
+  $mail_query = tep_db_query("select title,contents from ". TABLE_MAIL_TEMPLATES ." where flag='".$mail_flag."' and site_id='".$site_id."'");
+  $mail_array = tep_db_fetch_array($mail_query);
+  tep_db_free_result($mail_query);
+
+  return array('title'=>$mail_array['title'],'contents'=>$mail_array['contents']);
+}
+/*----------------------------------
+  功能: 通过CID判断客户是否存在
+  参数: $cid (int)类型  客户ID
+  返回：如果存在返回 详细信息 如果不存在 返回FALSE
+----------------------------------*/
+function tep_is_customer_by_id($cid){
+  $customer_sql = "SELECT * FROM `".TABLE_CUSTOMERS."` 
+    WHERE `customers_id` = '".$cid."' limit 1";
+  $customer_query = tep_db_query($customer_sql);
+  if($customer_row = tep_db_fetch_array($customer_query)){
+    return $customer_row;
+  }else{
+    return false;
+  }
 }

@@ -180,9 +180,10 @@ case 'per':
         STORE_NAME,
         HTTP_SERVER
         ); 
-    
-    $email_text = str_replace($old_str_array, $new_str_array, ACTIVE_EDIT_ACCOUNT_EMAIL_CONTENT);  
-    $ed_email_text = str_replace('${SITE_NAME}', STORE_NAME, ACTIVE_EDIT_ACCOUNT_EMAIL_TITLE); 
+    //会员编辑邮件认证
+    $edit_users_mail_array = tep_get_mail_templates('ACTIVE_EDIT_ACCOUNT_EMAIL_CONTENT',SITE_ID); 
+    $email_text = str_replace($old_str_array, $new_str_array, $edit_users_mail_array['contents']);  
+    $ed_email_text = str_replace('${SITE_NAME}', STORE_NAME, $edit_users_mail_array['title']); 
     tep_mail($mail_name, $email_address, $ed_email_text, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
     
     $acu_cud = $customer_id;
@@ -438,9 +439,10 @@ if($_POST['num_rows'] > 0){
         STORE_NAME,
         HTTP_SERVER
         ); 
-    
-    $email_text = str_replace($old_str_array, $new_str_array, ACTIVE_EDIT_ACCOUNT_EMAIL_CONTENT);  
-    $ed_email_text = str_replace('${SITE_NAME}', STORE_NAME, ACTIVE_EDIT_ACCOUNT_EMAIL_TITLE); 
+    //会员编辑邮件认证
+    $edit_users_mail_array = tep_get_mail_templates('ACTIVE_EDIT_ACCOUNT_EMAIL_CONTENT',SITE_ID); 
+    $email_text = str_replace($old_str_array, $new_str_array, $edit_users_mail_array['contents']);  
+    $ed_email_text = str_replace('${SITE_NAME}', STORE_NAME, $edit_users_mail_array['title']); 
     tep_mail($mail_name, $email_address, $ed_email_text, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
     
     $acu_cud = $customer_id;

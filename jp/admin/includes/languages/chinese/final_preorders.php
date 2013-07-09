@@ -170,4 +170,5 @@ define('ENTRY_EMAIL_TITLE', '邮件标题：');
 define('BUTTON_WRITE_PREORDER', '预约订单复制');
 define('TABLE_HEADING_PRODUCTS_PRICE', '单价');
 define('EDIT_ORDERS_NOTICE_EMAIL_MATCH_TEXT','输入的邮箱地址有误!');
+define('TEXT_SELECT_PAYMENT_ERROR','<font color="red">支付方法被关闭</font>');
 ?>

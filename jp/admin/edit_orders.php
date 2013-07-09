@@ -105,7 +105,7 @@ if(isset($_GET['clear_products']) && isset($_SESSION['clear_products_flag'])){
           $_SESSION['orders_update_products'][$_GET['oID']]['ot_total'] -= abs($campaign_fee);
           $_SESSION['orders_update_products'][$_GET['oID']]['point'] = $campaign_fee;
         }
-        $payment_handle = payment::getInstance($orders_update_time_array['site_id']);
+        $payment_handle = payment::getInstance($orders_update_time_array['site_id'],$use_payment);
         $payment_value = isset($_SESSION['orders_update_products'][$_GET['oID']]['payment_method']) ? $_SESSION['orders_update_products'][$_GET['oID']]['payment_method'] : payment::changeRomaji($orders_update_time_array['payment_method'],PAYMENT_RETURN_TYPE_CODE); 
         $handle_fee = $payment_handle->handle_calc_fee($payment_value, $_SESSION['orders_update_products'][$_GET['oID']]['ot_subtotal']);
         $handle_fee = $handle_fee == '' ? 0 : $handle_fee;
@@ -167,7 +167,9 @@ $order_query = tep_db_query("
 
 // 获取最新订单信息
 $order = new order($oID);
-$cpayment = payment::getInstance($order->info['site_id']);
+$use_payment = payment::changeRomaji($order->info['payment_method'],
+          PAYMENT_RETURN_TYPE_CODE);
+$cpayment = payment::getInstance($order->info['site_id'],$use_payment);
 // 获取返点
 $customer_point_query = tep_db_query("
     select point 
@@ -190,6 +192,16 @@ if (tep_not_null($action)) {
 ------------------------------------------------------*/
     // 1. UPDATE ORDER ###############################################################################################
   case 'update_order':
+      $oID = tep_db_prepare_input($_GET['oID']);
+      $order = new order($oID);
+      $payment_method = tep_db_prepare_input($_POST['payment_method']); 
+      if($payment_method!= $use_payment){
+        $payment_continue = tep_get_payment_flag( $payment_method,'',$order->info['site_id'],$order->info['orders_id']);
+        if(!$payment_continue){
+            $_SESSION['payment_empty_error_edit'] = TEXT_SELECT_PAYMENT_ERROR;
+            tep_redirect(tep_href_link("edit_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
+          }
+        }
 
       $orders_status_flag = tep_orders_finished($oID) == '1' ? true : false;
       $update_user_info = tep_get_user_info($ocertify->auth_user);
@@ -383,9 +395,6 @@ if (tep_not_null($action)) {
   }
   $shipping_fee = $shipping_money_total+$fee_total-$point_fee > $free_value ? 0 : $weight_fee;
 
-      $oID = tep_db_prepare_input($_GET['oID']);
-      $order = new order($oID);
-      $payment_method = tep_db_prepare_input($_POST['payment_method']);
       $status = tep_db_prepare_input($_POST['s_status']);
       $comments_text = tep_db_prepare_input($_POST['comments_text']);
       $start_hour = tep_db_prepare_input($_POST['start_hour']);
@@ -2475,14 +2484,12 @@ while($__orders_status = tep_db_fetch_array($__orders_status_query)){
   $__orders_status_ids[] = $__orders_status['orders_status_id'];
 }
 $select_query = tep_db_query("
-    select om.orders_status_mail,
-    om.orders_status_title,
-    os.orders_status_id,
-    os.nomail,
-    om.site_id
-    from ".TABLE_ORDERS_STATUS." os left join ".TABLE_ORDERS_MAIL." om on os.orders_status_id = om.orders_status_id
-    where os.language_id = " . $languages_id . " 
-    and os.orders_status_id IN (".join(',', $__orders_status_ids).")");
+    select 
+    orders_status_id,
+    nomail
+    from ".TABLE_ORDERS_STATUS."
+    where language_id = " . $languages_id . " 
+    and orders_status_id IN (".join(',', $__orders_status_ids).")");
 
 while($select_result = tep_db_fetch_array($select_query)){
   if($suu == 0){
@@ -2492,15 +2499,19 @@ while($select_result = tep_db_fetch_array($select_query)){
 
   $osid = $select_result['orders_status_id'];
 
+  //获取对应的邮件模板
+  $mail_templates_query = tep_db_query("select site_id,title,contents from ". TABLE_MAIL_TEMPLATES ." where flag='ORDERS_STATUS_MAIL_TEMPLATES_".$osid."' and site_id='0'");
+  $mail_templates_array = tep_db_fetch_array($mail_templates_query);
+  tep_db_free_result($mail_templates_query);
   if($text_suu == 0){
-    $select_text = $select_result['orders_status_mail'];
-    $select_title = $select_result['orders_status_title'];
+    $select_text = $mail_templates_array['contents'];
+    $select_title = $mail_templates_array['title'];
     $text_suu = 1;
     $select_nomail = $select_result['nomail'];
   }
 
-  $mt[$osid][$select_result['site_id']?$select_result['site_id']:0] = $select_result['orders_status_mail'];
-  $mo[$osid][$select_result['site_id']?$select_result['site_id']:0] = $select_result['orders_status_title'];
+  $mt[$osid][$mail_templates_array['site_id']?$mail_templates_array['site_id']:0] = $mail_templates_array['contents'];
+  $mo[$osid][$mail_templates_array['site_id']?$mail_templates_array['site_id']:0] = $mail_templates_array['title'];
   $nomail[$osid] = $select_result['nomail'];
 }
 
@@ -2627,7 +2638,7 @@ $(document).ready(function(){
           $orders_total_sum = (int)$total_value['value'];
         }
       }
-      $cpayment = payment::getInstance($order->info['site_id']);
+      $cpayment = payment::getInstance($order->info['site_id'],$use_payment);
       $payment_array = payment::getPaymentList();
       $orders_total_sum -= $order->info['code_fee'];
       $orders_total_sum = isset($_SESSION['orders_update_products'][$_GET['oID']]['ot_subtotal']) ? $_SESSION['orders_update_products'][$_GET['oID']]['ot_subtotal']+$_SESSION['orders_update_products'][$_GET['oID']]['fee_total']-$_SESSION['orders_update_products'][$_GET['oID']]['point']+$shipping_fee : $orders_total_sum;
@@ -2649,8 +2660,7 @@ $(document).ready(function(){
   function hidden_payment(num){
    if(document.edit_order){
      var idx = document.edit_order.elements["payment_method"].selectedIndex;
-     var CI = 
-     document.edit_order.elements["payment_method"].options[idx].value;
+     var CI = document.edit_order.elements["payment_method"].options[idx].value;
      $(".rowHide").hide();
      $(".rowHide").find("input").attr("disabled","true");
      $(".rowHide_"+CI).show();
@@ -2967,7 +2977,7 @@ require("includes/note_js.php");
     one_time_pwd('<?php echo $page_name;?>', '<?php echo (!empty($_SERVER['HTTP_REFERER']))?urlencode($_SERVER['HTTP_REFERER']):urlencode(tep_href_link(FILENAME_DEFAULT));?>');
   </script>
     <?php }?>
-    <!-- header //-->
+    <!-- header -->
     <?php
     require(DIR_WS_INCLUDES . 'header.php');
     ?>
@@ -3002,8 +3012,8 @@ a.dpicker {
 	
 }
 </style>
-<!-- header_eof //-->
-<!-- body //-->
+<!-- header_eof -->
+<!-- body -->
 <?php 
 if($action != "add_product"){
   echo tep_draw_form('edit_order', "edit_orders.php", tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post', 'id="edit_order_id"'); 
@@ -3013,12 +3023,12 @@ if($action != "add_product"){
 <tr>
 <td width="<?php echo BOX_WIDTH; ?>" valign="top">
 <table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-<!-- left_navigation //-->
+<!-- left_navigation -->
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- left_navigation_eof //-->
+<!-- left_navigation_eof -->
 </table>
 </td>
-<!-- body_text //-->
+<!-- body_text -->
 <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
  <div class="compatible">
  <table border="0" width="100%" cellspacing="0" cellpadding="2">
@@ -3183,13 +3193,19 @@ if (($action == 'edit') && ($order_exists == true)) {
           $pay_info_array[0] = $pay_info_array[0] == '' && $pay_method == $pay_type_array[0] ? $pay_comment : $pay_info_array[0];
           $pay_info_array[1] = $pay_info_array[1] == '' && $pay_method == $pay_type_array[1] ? $pay_comment : $pay_info_array[1];
           $pay_info_array[2] = $pay_info_array[2] == '' && $pay_method == $pay_type_array[2] ?  $pay_comment : $pay_info_array[2];  
+    $c_chk = tep_get_payment_customer_chk($order->info['orders_id']);
     ?>
-    <?php echo payment::makePaymentListPullDownMenu(payment::changeRomaji($pay_method, PAYMENT_RETURN_TYPE_CODE));?> 
-    <?php  
+    <?php echo payment::makePaymentListPullDownMenu(payment::changeRomaji($pay_method, PAYMENT_RETURN_TYPE_CODE),$order->info['site_id'],$c_chk);?> 
+    <?php 
+          if(isset($_SESSION['payment_empty_error_edit'])
+              &&$_SESSION['payment_empty_error_edit']!=''){
+            echo $_SESSION['payment_empty_error_edit'];
+            unset($_SESSION['payment_empty_error_edit']);
+          }
           echo "\n".'<script language="javascript">'."\n"; 
           echo '$(document).ready(function(){'."\n";
 
-          $cpayment->admin_show_payment_list($pay_method,$pay_info_array); 
+          $cpayment->admin_show_payment_list($pay_method,$pay_info_array,$order->info['site_id'],$c_chk); 
           echo '});'."\n";
           echo '</script>'."\n";
       
@@ -4172,14 +4188,14 @@ if (($action == 'edit') && ($order_exists == true)) {
     </tr>
     <?php
 
-            $ma_se = "select * from ".TABLE_ORDERS_MAIL." where ";
+            $ma_se = "select * from ".TABLE_MAIL_TEMPLATES." where ";
           if(!isset($_GET['status']) || $_GET['status'] == ""){
-            $ma_se .= " orders_status_id = '".$select_select."' ";
+            $ma_se .= " flag = 'ORDERS_STATUS_MAIL_TEMPLATES_".$select_select."' ";
 
             // 用来判断是否选中 送信&通知，如果nomail==1则不选中
             $ma_s = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$order->info['orders_status']."'"));
           }else{
-            $ma_se .= " orders_status_id = '".$_GET['status']."' ";
+            $ma_se .= " flag = 'ORDERS_STATUS_MAIL_TEMPLATES_".$_GET['status']."' ";
 
             // 用来判断是否选中 送信&通知，如果nomail==1则不选中
             $ma_s = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$_GET['status']."'"));
@@ -4188,13 +4204,13 @@ if (($action == 'edit') && ($order_exists == true)) {
           $mail_sele = tep_db_query($ma_se);
           $mail_sql  = tep_db_fetch_array($mail_sele);
           $sta       = isset($_GET['status'])?$_GET['status']:'';
-          $mail_sql['orders_status_title'] = isset($_SESSION['orders_update_products'][$_GET['oID']]['title']) ? $_SESSION['orders_update_products'][$_GET['oID']]['title'] : $mail_sql['orders_status_title'];
+          $mail_sql['title'] = isset($_SESSION['orders_update_products'][$_GET['oID']]['title']) ? $_SESSION['orders_update_products'][$_GET['oID']]['title'] : $mail_sql['title'];
           $notify_comments_checked = isset($_SESSION['orders_update_products'][$_GET['oID']]['notify_comments']) ? $_SESSION['orders_update_products'][$_GET['oID']]['notify_comments'] == 1 ? true : false : false;
           ?>
 
             <tr>
             <td class="main"><?php echo ENTRY_EMAIL_TITLE; ?></td>
-            <td class="main"><?php echo tep_draw_input_field('title', $mail_sql['orders_status_title'],'style="width:100%;" id="mail_title"'); ?></td>
+            <td class="main"><?php echo tep_draw_input_field('title', $mail_sql['title'],'style="width:100%;" id="mail_title"'); ?></td>
             </tr>
     <tr>
     <td class="main"><?php echo EDIT_ORDERS_SEND_MAIL_TEXT;?></td>
@@ -4216,13 +4232,13 @@ if (($action == 'edit') && ($order_exists == true)) {
         <td class="main">
         <?php echo EDIT_ORDERS_RECORD_ARTICLE;?><br>
         <?php
-        $mail_sql['orders_status_mail'] = isset($_SESSION['orders_update_products'][$_GET['oID']]['comments']) ? $_SESSION['orders_update_products'][$_GET['oID']]['comments'] : $mail_sql['orders_status_mail'];
+        $mail_sql['contents'] = isset($_SESSION['orders_update_products'][$_GET['oID']]['comments']) ? $_SESSION['orders_update_products'][$_GET['oID']]['comments'] : $mail_sql['contents'];
         if($CommentsWithStatus) {
 
 
-          echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:400px;"');
+          echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['contents']),'style=" font-family:monospace; font-size:12px; width:400px;"');
         } else {
-          echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:400px;"');
+          echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['contents']),'style=" font-family:monospace; font-size:12px; width:400px;"');
         }
   ?>
     </td>
@@ -4628,7 +4644,7 @@ if($index_num > 0){
 </div>
 </div>
 </td>
-<!-- body_text_eof //-->
+<!-- body_text_eof -->
 </tr>
 </table>
 <?php
@@ -4638,11 +4654,11 @@ if($action != "add_product"){
 <?php
 }
 ?>
-<!-- body_eof //-->
+<!-- body_eof -->
 
-<!-- footer //-->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 </body>
 </html>

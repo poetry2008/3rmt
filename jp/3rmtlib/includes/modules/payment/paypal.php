@@ -313,7 +313,7 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
       
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('予約注文', 'MODULE_PAYMENT_PAYPAL_PREORDER_SHOW', 'True', '予約注文でペイパル決済を表示します', '6', '3', 'tep_cfg_select_option(array(\'True\', \'False\'), ', now(), ".$this->site_id.")");
       
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('ポイント', 'MODULE_PAYMENT_PAYPAL_IS_GET_POINT', '1', 'ポイント', '6', '3', 'tep_cfg_payment_new_checkbox(', now(), ".$this->site_id.")");
+      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('ポイント', 'MODULE_PAYMENT_PAYPAL_IS_GET_POINT', 'True', 'ポイント', '6', '3', 'tep_cfg_select_option(array(\'True\', \'False\'), ', now(), ".$this->site_id.")");
       
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('ポイント還元率', 'MODULE_PAYMENT_PAYPAL_POINT_RATE', '0.01', 'ポイント還元率', '6', '0', now(), ".$this->site_id.")");
   }
@@ -345,9 +345,6 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
                  'MODULE_PAYMENT_NO_URL',
                  'MODULE_PAYMENT_PAYPAL_COST',
                  'MODULE_PAYMENT_PAYPAL_MONEY_LIMIT',
-                 'MODULE_PAYMENT_PAYPAL_MAILSTRING',
-                 'MODULE_PAYMENT_PAYPAL_PRINT_MAILSTRING_TITLE',
-                 'MODULE_PAYMENT_PAYPAL_PRINT_MAILSTRING',
                   );
     }
   
@@ -960,8 +957,10 @@ function PPHttpPost($methodName_, $nvpStr_) {
   }
 
   require_once(DIR_WS_FUNCTIONS . 'visites.php'); 
-  $orders_mail_title = ORDERS_EMPTY_EMAIL_TITLE.'　'.date('Y-m-d H:i:s');
-  $orders_mail_text = ORDERS_EMPTY_EMAIL_TEXT;
+  //错误通知邮件
+  $error_mail_array = tep_get_mail_templates('ORDERS_EMPTY_EMAIL_TEXT',SITE_ID);
+  $orders_mail_title = $error_mail_array['title'].'　'.date('Y-m-d H:i:s');
+  $orders_mail_text = $error_mail_array['contents'];
   $orders_mail_text = str_replace('${ERROR_NUMBER}','002',$orders_mail_text);
   $orders_mail_text = str_replace('${ERROR_TIME}',date('Y-m-d H:i:s'),$orders_mail_text); 
 

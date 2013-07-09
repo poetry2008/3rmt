@@ -173,4 +173,6 @@ define('TABLE_HEADING_PRODUCTS_PRICE', '単価');
 define('TEXT_REQUIRE','*必須');
 define('ADDRESS_ERROR_OPTION_ITEM_TEXT_NULL','必須項目');
 define('ADDRESS_ERROR_OPTION_ITEM_TEXT_TYPE_WRONG','正しく入力してください');
+define('TEXT_SELECT_PAYMENT_ERROR','<font color="red">選択された支払方法は、現在無効になっています。選びなおしてください。</font>');
+define('TEXT_NO_PAYMENT_ENABLED','<font color="red">有効な支払方法がありません。</font>');
 ?>

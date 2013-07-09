@@ -3,6 +3,7 @@
   $Id$
 */
   require('includes/application_top.php');
+  include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .  '/default.php');
   if (isset($_GET['action'])) {
     switch($_GET['action']){
 /* -----------------------------------------------------
@@ -13,24 +14,20 @@
       case 'insert':
       case 'save':
         $point_mail_date = tep_db_prepare_input($_POST['mail_date']);
-        $point_mail_title = tep_db_prepare_input($_POST['mail_title']);
-        $point_mail_description = tep_db_prepare_input($_POST['description']);
         if($_GET['action'] == 'insert'){
            $sql_point_mail_array = array('mail_date' => $point_mail_date,
-                                         'mail_title' => $point_mail_title,
-                                         'description' => $point_mail_description,
 					 'user_added' => $_POST['user_added'],
 					 'user_update' =>$_POST['user_update'],
                                          'created_at' => 'now()',
                                          'updated_at' => 'now()');
            tep_db_perform(TABLE_POINT_MAIL,$sql_point_mail_array);
-	   $last_insert_id = mysql_insert_id();
+           $last_insert_id = mysql_insert_id();
+           //同步对应的邮件模板
+           tep_db_query("insert into ". TABLE_MAIL_TEMPLATES ." values(NULL,'POINT_NOTIFY_MAIL_TEMPLATES_".$last_insert_id."','0','".TEXT_INFO_POINT_MAIL_DATE.$point_mail_date.TEXT_POINT_NOTIFY_TITLE."','".TEXT_POINT_NOTIFY_USE_DESCRIPTION."','','','".TEXT_POINT_NOTIFY_DESCRIPTION."','1','".$_POST['user_added']."',now(),'','')");
            tep_redirect(tep_href_link(FILENAME_POINT_EMAIL,'page='.$_GET['page'].'&id='.$last_insert_id));
 
         }else if($_GET['action'] == 'save'){
            $sql_point_mail_array = array('mail_date' => $point_mail_date,
-                                         'mail_title' => $point_mail_title,
-                                         'description' => $point_mail_description,
 					 'user_update' =>$_POST['user_update'],
                                          'updated_at' => 'now()');
            tep_db_perform(TABLE_POINT_MAIL,$sql_point_mail_array,'update',
@@ -42,6 +39,8 @@
         case 'deleteconfirm';
           $id = tep_db_prepare_input($_GET['id']);
           tep_db_query("delete from ".TABLE_POINT_MAIL. " where id ='".$id."'");
+          //删除对应的邮件模板
+          tep_db_query("delete from ". TABLE_MAIL_TEMPLATES ." where flag='POINT_NOTIFY_MAIL_TEMPLATES_".$id."'");
           tep_redirect(tep_href_link(FILENAME_POINT_EMAIL, 'page=' .
                 $_GET['page']));
           break;
@@ -136,11 +135,7 @@ require("includes/note_js.php");
             <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr class="dataTableHeadingRow">
                 <td class="dataTableHeadingContent"><?php echo
-                TABLE_HEADING_MAIL_DATE; ?></td>
-                <td class="dataTableHeadingContent"><?php echo
-                TABLE_HEADING_MAIL_TITLE; ?></td>
-                <td class="dataTableHeadingContent"><?php echo
-                TABLE_HEADING_DESCRIPTION; ?></td>
+                TABLE_HEADING_MAIL_DATE; ?></td> 
                 <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
               </tr>
 <?php
@@ -176,10 +171,7 @@ while($point_mail = tep_db_fetch_array($point_mail_query)){
         "\n";
   }
   ?>
-    <td class="dataTableContent" ><?php echo $point_mail['mail_date'];?></td>
-    <td class="dataTableContent" ><?php echo $point_mail['mail_title'];?></td>
-    <td class="dataTableContent" ><?php echo
-    mb_substr($point_mail['description'],0,30,'utf-8');?></td>
+    <td class="dataTableContent" ><?php echo $point_mail['mail_date'];?></td> 
     <td class="dataTableContent" align="right">
     <?php
     if ( isset($point_info) && (is_object($point_info)) && ($point_mail['id']
@@ -251,13 +243,6 @@ $contents[] = array('text' => '<input type="hidden" name="user_update" value="'.
     //point mail date
     $point_mail_inputs_string .= TEXT_INFO_POINT_MAIL_DATE .
       '<br>' . tep_draw_input_field('mail_date');
-    //point mail title
-    $point_mail_inputs_string .= '<br><br>' . TEXT_INFO_POINT_MAIL_TITLE .
-      '<br>' . tep_draw_input_field('mail_title');
-    
-    //point mail description
-    $point_mail_inputs_string .= '<br><br>' . TEXT_INFO_POINT_DESCRIPTION .
-      '<br>' . tep_draw_textarea_field('description', 'soft', '25', '5').'<br>'.$explanation ;
 
       $contents[] = array('text' => '<br>' . $point_mail_inputs_string);
       
@@ -275,16 +260,7 @@ $contents[] = array('text' => '<input type="hidden" name="user_update" value="'.
 
       //mail date
       $point_mail_inputs_string .= TEXT_INFO_POINT_MAIL_DATE .
-        '<br>' . tep_draw_input_field('mail_date', $point_info->mail_date);
-      //mail title 
-      $point_mail_inputs_string .= '<br><br>' . TEXT_INFO_POINT_MAIL_TITLE .
-        '<br>' . tep_draw_input_field('mail_title', $point_info->mail_title);
-
-      //mail description
-      $point_mail_inputs_string .= '<br><br>' . TEXT_INFO_POINT_DESCRIPTION .
-        '<br>' . tep_draw_textarea_field('description', 'soft', '25', '5',
-            $point_info->description) .
-        '<br>' . $explanation;
+        '<br>' . tep_draw_input_field('mail_date', $point_info->mail_date); 
       $contents[] = array('text' => '<br>'.$point_mail_inputs_string);
       $contents[] = array('align' => 'center' , 'text' => '<br><a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_SAVE, 'onclick="check_point_email_form(\''.$ocertify->npermission.'\');"').  '</a><a href="'.tep_href_link(FILENAME_POINT_EMAIL,'page=' .  $_GET['page'].'id='.$point_mail->id).'">'.tep_html_element_button(IMAGE_CANCEL).'</a>');
       break;
@@ -302,14 +278,7 @@ $contents[] = array('text' => '<input type="hidden" name="user_update" value="'.
     default:
   if (isset($point_info) and is_object($point_info)) {
         $heading[] = array('text' => TABLE_HEADING_MAIL_DATE.":"
-            . $point_info->mail_date);
-        $point_mail_inputs_string = '';
-        $point_mail_inputs_string .= '<br><br>'.TEXT_INFO_POINT_MAIL_TITLE.
-          "<br><br>".$point_info->mail_title;
-        $point_mail_inputs_string .= '<br><br>' . TEXT_INFO_POINT_DESCRIPTION .
-        '<br><br>' .preg_replace("/\r\n|\n/",'<br>',$point_info->description) .
-        '<br><br>' . $explanation;
-        $contents[] = array('text' => $point_mail_inputs_string);
+            . $point_info->mail_date); 
         $contents[] = array('align' => 'center' ,
             'text' =>
             '<a href="'.tep_href_link(FILENAME_POINT_EMAIL, 'page=' . $_GET['page'] .'&id='.$point_info->id.'&action=edit').'">'.tep_html_element_button(IMAGE_EDIT).'</a>'.
