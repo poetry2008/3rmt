@@ -170,4 +170,5 @@ define('ENTRY_EMAIL_TITLE', 'メールタイトル：');
 define('BUTTON_WRITE_PREORDER', '予約注文書コピー');
 define('TABLE_HEADING_PRODUCTS_PRICE', '単価');
 define('EDIT_ORDERS_NOTICE_EMAIL_MATCH_TEXT','入力されたメールアドレスは不正です!');
+define('TEXT_SELECT_PAYMENT_ERROR','<font color="red">選択された支払方法は、現在無効になっています。選びなおしてください。</font>');
 ?>

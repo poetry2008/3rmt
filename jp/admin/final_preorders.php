@@ -102,7 +102,9 @@
   
   // 获取最新订单信息
   $order = new preorder($oID);
-  $cpayment = payment::getInstance($order->info['site_id']); 
+  $use_payment = payment::changeRomaji($order->info['payment_method'],
+          PAYMENT_RETURN_TYPE_CODE);
+  $cpayment = payment::getInstance($order->info['site_id'],$use_payment); 
   // 获取返点
   $customer_point_query = tep_db_query("
       select point 
@@ -117,7 +119,7 @@
   $customer_guest = tep_db_fetch_array($customer_guest_query);
 
   if (tep_not_null($action)) {
-    $payment_modules = payment::getInstance($order->info['site_id']);
+    $payment_modules = payment::getInstance($order->info['site_id'],$use_payment);
     switch ($action) {
 /* -----------------------------------------------------
    case 'update_order' 更新预约订单信息    
@@ -134,6 +136,16 @@
     $oID = tep_db_prepare_input($_GET['oID']);
     $comments_text = tep_db_prepare_input($_POST['comments_text']);
     $order = new preorder($oID);
+
+    $payment_method = tep_db_prepare_input($_POST['payment_method']); 
+    if($payment_method!=$use_payment){
+      $payment_continue = tep_get_payment_flag($payment_method,'',$order->info['site_id'],$order->info['orders_id'],false);
+      if(!$payment_continue){
+        $_SESSION['pre_payment_empty_error_edit'] = TEXT_SELECT_PAYMENT_ERROR;
+        tep_redirect(tep_href_link("edit_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
+      }
+    }
+
     $status = tep_db_prepare_input($_POST['status']);
     $goods_check = $order_query;
         //viladate
@@ -1032,7 +1044,7 @@ function submit_order_check(products_id,op_id){
 
 //todo:修改通性用
 <?php
-    $cpayment = payment::getInstance(); 
+    $cpayment = payment::getInstance(0,$use_payment); 
     $attr_query_str = "select * from " . TABLE_PREORDERS_PRODUCTS_ATTRIBUTES . " where orders_id = '" . tep_db_input($_GET['oID']) . "'";
     $attr_query = tep_db_query($attr_query_str);
 
@@ -1914,11 +1926,17 @@ require("includes/note_js.php");
                 <td class="main" valign="top"><?php echo EDIT_ORDERS_PAYMENT_METHOD;?></td>
                 <td class="main">
                   <?php 
+                  $c_chk = tep_get_payment_customer_chk($order->info['orders_id'],'',false);
                   $payment_code = payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
                   $payment_code = isset($_SESSION['preorder_products'][$_GET['oID']]['payment_method']) ? $_SESSION['preorder_products'][$_GET['oID']]['payment_method'] : $payment_code;
-                  $payment_code = isset($_POST['payment_method']) ? $_POST['payment_method'] : $payment_code;
-                  echo payment::makePaymentListPullDownMenu($payment_code); 
+                  $payment_code = isset($_POST['payment_method']) ? $_POST['payment_method'] : $payment_code; echo
+                    payment::makePaymentListPullDownMenu($payment_code,$order->info['site_id'],$c_chk,'preorder'); 
                   $orders_status_history_query = tep_db_query("select comments from ". TABLE_PREORDERS_STATUS_HISTORY ." where orders_id='".$oID."' order by date_added desc limit 0,1"); 
+                  if(isset($_SESSION['pre_payment_empty_error_edit'])
+                     &&$_SESSION['pre_payment_empty_error_edit']!=''){
+                    echo $_SESSION['pre_payment_empty_error_edit'];
+                    unset($_SESSION['pre_payment_empty_error_edit']);
+                   }
                   $orders_status_history_array = tep_db_fetch_array($orders_status_history_query);
                   $pay_comment = $orders_status_history_array['comments']; 
                   tep_db_free_result($orders_status_history_query);
@@ -1984,7 +2002,7 @@ require("includes/note_js.php");
                   echo "\n".'<script language="javascript">'."\n"; 
                   echo '$(document).ready(function(){'."\n";
 
-                  $cpayment->admin_show_payment_list($payment_code,$pay_info_array); 
+                  $cpayment->admin_show_payment_list($payment_code,$pay_info_array,$order->info['site_id'],$c_chk,'preorder'); 
                   echo '});'."\n";
                   echo '</script>'."\n";
       

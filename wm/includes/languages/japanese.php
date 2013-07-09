@@ -188,7 +188,7 @@ define('JS_ERROR_NO_PAYMENT_MODULE_SELECTED', '※ ご注文商品のお支払�
 define('JS_ERROR_SUBMITTED', 'このフォームは既に送信されています。Okボタンを押し処理が完了するまでもうしばらくお待ちください。');
 define('JS_ERROR_POINT','獲得ポイントより多くのポイントを指定しているか、マイナスの値を指定しています。');
 
-define('ERROR_NO_PAYMENT_MODULE_SELECTED', '※ ご注文商品のお支払方法を選択してください。');
+define('ERROR_NO_PAYMENT_MODULE_SELECTED', '有効な支払方法がありません。'.STORE_NAME.'までお問い合わせください。');
 
 define('CATEGORY_COMPANY', '会社情報');
 define('CATEGORY_PERSONAL', '個人情報');
@@ -335,6 +335,7 @@ define('TEXT_NO_NEW_PRODUCTS', '現在商品は登録されていません...');
 define('TEXT_UNKNOWN_TAX_RATE', '税率不明');
 
 define('TEXT_REQUIRED', '必須');
+define('TEXT_NO_PAYMENT', 'エラー：有効な支払方法がありません。'.STORE_NAME.'までお問い合わせください。');
 define('TEXT_WEIGHT_ERROR','※要問合※&nbsp;総重量が規定の範囲を超えました。');
 define('TEXT_WEIGHT_ERROR_ONE','個以内に個数を変更してください。');
 
@@ -489,4 +490,5 @@ define('SENDMAIL_TEXT_HOUR','時');
 define('SENDMAIL_TEXT_MIN','分');
 define('SENDMAIL_TEXT_TWENTY_FOUR_HOUR','　（24時間表記）');
 define('SENDMAIL_TEXT_TIME_LINK', 'から');
+define('TEXT_PAYMENT_ERROR_TOP','エラー：');
 ?>

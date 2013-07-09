@@ -12,5 +12,5 @@
 简单的订单秘诀是如何使订单金额接近负1日元（买入1日元）。
 从负1日元到负200日元时，支付方法显示为「点数的合计」。点数的合计需要先会员注册。<br>
 <font color="red">※ 即使选择这个支付方法也不能进行下一步。</font>');
-define('TS_MODULE_PAYMENT_GUIDANCE_ERROR','错误：请仔细阅读介绍，按顺序履行手续');
+define('TS_MODULE_PAYMENT_GUIDANCE_ERROR','请仔细阅读介绍，按顺序履行手续');
 

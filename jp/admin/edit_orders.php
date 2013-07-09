@@ -105,7 +105,7 @@ if(isset($_GET['clear_products']) && isset($_SESSION['clear_products_flag'])){
           $_SESSION['orders_update_products'][$_GET['oID']]['ot_total'] -= abs($campaign_fee);
           $_SESSION['orders_update_products'][$_GET['oID']]['point'] = $campaign_fee;
         }
-        $payment_handle = payment::getInstance($orders_update_time_array['site_id']);
+        $payment_handle = payment::getInstance($orders_update_time_array['site_id'],$use_payment);
         $payment_value = isset($_SESSION['orders_update_products'][$_GET['oID']]['payment_method']) ? $_SESSION['orders_update_products'][$_GET['oID']]['payment_method'] : payment::changeRomaji($orders_update_time_array['payment_method'],PAYMENT_RETURN_TYPE_CODE); 
         $handle_fee = $payment_handle->handle_calc_fee($payment_value, $_SESSION['orders_update_products'][$_GET['oID']]['ot_subtotal']);
         $handle_fee = $handle_fee == '' ? 0 : $handle_fee;
@@ -167,7 +167,9 @@ $order_query = tep_db_query("
 
 // 获取最新订单信息
 $order = new order($oID);
-$cpayment = payment::getInstance($order->info['site_id']);
+$use_payment = payment::changeRomaji($order->info['payment_method'],
+          PAYMENT_RETURN_TYPE_CODE);
+$cpayment = payment::getInstance($order->info['site_id'],$use_payment);
 // 获取返点
 $customer_point_query = tep_db_query("
     select point 
@@ -190,6 +192,16 @@ if (tep_not_null($action)) {
 ------------------------------------------------------*/
     // 1. UPDATE ORDER ###############################################################################################
   case 'update_order':
+      $oID = tep_db_prepare_input($_GET['oID']);
+      $order = new order($oID);
+      $payment_method = tep_db_prepare_input($_POST['payment_method']); 
+      if($payment_method!= $use_payment){
+        $payment_continue = tep_get_payment_flag( $payment_method,'',$order->info['site_id'],$order->info['orders_id']);
+        if(!$payment_continue){
+            $_SESSION['payment_empty_error_edit'] = TEXT_SELECT_PAYMENT_ERROR;
+            tep_redirect(tep_href_link("edit_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
+          }
+        }
 
       $orders_status_flag = tep_orders_finished($oID) == '1' ? true : false;
       $update_user_info = tep_get_user_info($ocertify->auth_user);
@@ -383,9 +395,6 @@ if (tep_not_null($action)) {
   }
   $shipping_fee = $shipping_money_total+$fee_total-$point_fee > $free_value ? 0 : $weight_fee;
 
-      $oID = tep_db_prepare_input($_GET['oID']);
-      $order = new order($oID);
-      $payment_method = tep_db_prepare_input($_POST['payment_method']);
       $status = tep_db_prepare_input($_POST['s_status']);
       $comments_text = tep_db_prepare_input($_POST['comments_text']);
       $start_hour = tep_db_prepare_input($_POST['start_hour']);
@@ -2619,7 +2628,7 @@ $(document).ready(function(){
           $orders_total_sum = (int)$total_value['value'];
         }
       }
-      $cpayment = payment::getInstance($order->info['site_id']);
+      $cpayment = payment::getInstance($order->info['site_id'],$use_payment);
       $payment_array = payment::getPaymentList();
       $orders_total_sum -= $order->info['code_fee'];
       $orders_total_sum = isset($_SESSION['orders_update_products'][$_GET['oID']]['ot_subtotal']) ? $_SESSION['orders_update_products'][$_GET['oID']]['ot_subtotal']+$_SESSION['orders_update_products'][$_GET['oID']]['fee_total']-$_SESSION['orders_update_products'][$_GET['oID']]['point']+$shipping_fee : $orders_total_sum;
@@ -2641,8 +2650,7 @@ $(document).ready(function(){
   function hidden_payment(num){
    if(document.edit_order){
      var idx = document.edit_order.elements["payment_method"].selectedIndex;
-     var CI = 
-     document.edit_order.elements["payment_method"].options[idx].value;
+     var CI = document.edit_order.elements["payment_method"].options[idx].value;
      $(".rowHide").hide();
      $(".rowHide").find("input").attr("disabled","true");
      $(".rowHide_"+CI).show();
@@ -2959,7 +2967,7 @@ require("includes/note_js.php");
     one_time_pwd('<?php echo $page_name;?>', '<?php echo (!empty($_SERVER['HTTP_REFERER']))?urlencode($_SERVER['HTTP_REFERER']):urlencode(tep_href_link(FILENAME_DEFAULT));?>');
   </script>
     <?php }?>
-    <!-- header //-->
+    <!-- header -->
     <?php
     require(DIR_WS_INCLUDES . 'header.php');
     ?>
@@ -2994,8 +3002,8 @@ a.dpicker {
 	
 }
 </style>
-<!-- header_eof //-->
-<!-- body //-->
+<!-- header_eof -->
+<!-- body -->
 <?php 
 if($action != "add_product"){
   echo tep_draw_form('edit_order', "edit_orders.php", tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post', 'id="edit_order_id"'); 
@@ -3005,12 +3013,12 @@ if($action != "add_product"){
 <tr>
 <td width="<?php echo BOX_WIDTH; ?>" valign="top">
 <table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-<!-- left_navigation //-->
+<!-- left_navigation -->
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- left_navigation_eof //-->
+<!-- left_navigation_eof -->
 </table>
 </td>
-<!-- body_text //-->
+<!-- body_text -->
 <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
  <div class="compatible">
  <table border="0" width="100%" cellspacing="0" cellpadding="2">
@@ -3175,13 +3183,19 @@ if (($action == 'edit') && ($order_exists == true)) {
           $pay_info_array[0] = $pay_info_array[0] == '' && $pay_method == $pay_type_array[0] ? $pay_comment : $pay_info_array[0];
           $pay_info_array[1] = $pay_info_array[1] == '' && $pay_method == $pay_type_array[1] ? $pay_comment : $pay_info_array[1];
           $pay_info_array[2] = $pay_info_array[2] == '' && $pay_method == $pay_type_array[2] ?  $pay_comment : $pay_info_array[2];  
+    $c_chk = tep_get_payment_customer_chk($order->info['orders_id']);
     ?>
-    <?php echo payment::makePaymentListPullDownMenu(payment::changeRomaji($pay_method, PAYMENT_RETURN_TYPE_CODE));?> 
-    <?php  
+    <?php echo payment::makePaymentListPullDownMenu(payment::changeRomaji($pay_method, PAYMENT_RETURN_TYPE_CODE),$order->info['site_id'],$c_chk);?> 
+    <?php 
+          if(isset($_SESSION['payment_empty_error_edit'])
+              &&$_SESSION['payment_empty_error_edit']!=''){
+            echo $_SESSION['payment_empty_error_edit'];
+            unset($_SESSION['payment_empty_error_edit']);
+          }
           echo "\n".'<script language="javascript">'."\n"; 
           echo '$(document).ready(function(){'."\n";
 
-          $cpayment->admin_show_payment_list($pay_method,$pay_info_array); 
+          $cpayment->admin_show_payment_list($pay_method,$pay_info_array,$order->info['site_id'],$c_chk); 
           echo '});'."\n";
           echo '</script>'."\n";
       
@@ -4620,7 +4634,7 @@ if($index_num > 0){
 </div>
 </div>
 </td>
-<!-- body_text_eof //-->
+<!-- body_text_eof -->
 </tr>
 </table>
 <?php
@@ -4630,11 +4644,11 @@ if($action != "add_product"){
 <?php
 }
 ?>
-<!-- body_eof //-->
+<!-- body_eof -->
 
-<!-- footer //-->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 </body>
 </html>

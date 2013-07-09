@@ -8,10 +8,86 @@
   if (!isset($_POST['products_id'])) {
     forward404(); 
   }
+  if(isset($_GET['action']) && $_GET['action'] == 'process'){
+    $customer_error = false;
+    if(tep_session_is_registered('customer_id')){
+      $flag_customer_info = tep_is_customer_by_id($customer_id);
+      if(!$flag_customer_info ||
+        $flag_customer_info['customers_email_address'] != $_SESSION['customer_emailaddress']){
+        $customer_error = true;
+      }
+    }
+  }
+  if($customer_error){
+  $site_romaji = tep_get_site_romaji_by_id(SITE_ID);
+  $oconfig_raw = tep_db_query("select value from ".TABLE_OTHER_CONFIG." where keyword = 'css_random_string' and site_id = '".SITE_ID."'");
+  $oconfig_res = tep_db_fetch_array($oconfig_raw);
+  tep_db_free_result($oconfig_raw);
+  if($oconfig_res){
+     $css_random_str = substr($oconfig_res['value'], 0, 4);
+  }else{
+     $css_random_str = date('YmdHi', time());
+  }
+?>
+<html <?php echo HTML_PARAMS; ?>>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
+<link rel="stylesheet" type="text/css" href="<?php echo 'css/'.$site_romaji.'.css?v='.$css_random_str;?>">
+<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="js/notice.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+var docheight = $(document).height();
+var screenwidth, screenheight, mytop, getPosLeft, getPosTop
+screenwidth = $(window).width();
+screenheight = $(window).height();
+mytop = $(document).scrollTop();
+getPosLeft = screenwidth / 2 - 276;
+getPosTop = 50;
+
+$("#popup_notice").css('display', 'block');
+$("#popup_notice").css({ "left": getPosLeft, "top": getPosTop })
+
+$(window).resize(function() {
+           screenwidth = $(window).width();
+           screenheight = $(window).height();
+           mytop = $(document).scrollTop();
+           getPosLeft = screenwidth / 2 - 276;
+           getPosTop = 50;
+           $("#popup_notice").css({ "left": getPosLeft, "top": getPosTop + mytop });
+
+});
+
+
+$("body").append("<div id='greybackground'></div>");
+$("#greybackground").css({ "opacity": "0.5", "height": docheight });
+});
+</script>
+</head>
+<body>
+<div id="popup_notice" style="display:none;">
+<div class="popup_notice_text">
+<?php echo TEXT_ORDERS_ERROR;?>
+</div>
+<div class="popup_notice_middle">
+<?php 
+echo TEXT_ORDERS_EMPTY_COMMENT;
+?>
+</div>
+<div align="center" class="popup_notice_button">
+<a href="javascript:void(0);" onClick="update_notice('index.php')"><img alt="<?php echo LOCATION_HREF_INDEX;?>" src="images/design/href_home.gif"></a>&nbsp;&nbsp;
+<a href="javascript:void(0);" onClick="update_notice('contact_us.php')"><img alt="<?php echo CONTACT_US;?>" src="images/design/contact_us.gif"></a>
+</div>
+</div>
+</body>
+</html>
+
+<?php
+  exit;
+  }
   require(DIR_WS_CLASSES. 'payment.php'); 
   $payment_modules = payment::getInstance(SITE_ID);
   if (tep_session_is_registered('customer_id')) {
-//ccdd
     $account = tep_db_query("
         select customers_firstname, 
                customers_lastname, 
@@ -418,24 +494,27 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
         echo '<span class="errorText"><b>'.TEXT_INPUT_ERROR_INFO.'</span></b><br><br>';
       }
 ?>
-    <?php
-      $selection = $payment_modules->selection(1); 
-      if (sizeof($selection) > 1) { 
-        if ($payment_error == true) {
-            echo '<div class="box_waring">'; 
-            if (isset($payment_error_str)) {
-              echo $payment_error_str; 
-            } else {
-              echo TEXT_REQUIRED;
-            }
-            echo '</div><br>'; 
-        }
-      }
-    ?>
      
     <div class="formAreaTitle"><?php echo FORM_FIELD_PREORDER_PAYMENT; ?></div>
     <div class="checkout_payment_info">  
     <?php
+      $selection = $payment_modules->selection(1); 
+        if ($payment_error == true) {
+          if (sizeof($selection) > 1) { 
+            if (isset($payment_error_str)) {
+              echo '<div class="box_waring">'; 
+              echo TEXT_PAYMENT_ERROR_TOP;
+              echo $payment_error_str; 
+              echo '</div>'; 
+            }
+          } else {
+              echo '<div class="box_waring">'; 
+              echo TEXT_PAYMENT_ERROR_TOP;
+              echo TEXT_NO_PAYMENT;
+              echo '</div>'; 
+          }
+          echo "<br>";
+        }
     if (sizeof($selection) > 1) { 
       ?>
       <?php

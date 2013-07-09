@@ -240,4 +240,5 @@ define('TEXT_PRODUCTS_NUM','商品の数量が足りません。注文を作成�
 define('TEXT_DATE_TIME_ERROR','過去の日時が選択されています。保存しますか？');
 define('ORDERS_PRODUCT_ERROR','商品がありません。商品を追加してください。');
 define('EDIT_ORDERS_TOTAL_DETAIL_READ', 'このお客様はゲストです。ポイント割引の入力はできません。');
+define('TEXT_SELECT_PAYMENT_ERROR','<font color="red">選択された支払方法は、現在無効になっています。選びなおしてください。</font>');
 ?>

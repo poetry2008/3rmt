@@ -253,4 +253,5 @@ define('TEXT_DATE_TIME_ERROR','选择时间已过期，确认无误吗？');
 define('TEXT_PRODUCTS_NUM','商品数量不足。确定创建订单吗？');
 define('ORDERS_PRODUCT_ERROR','没有商品，请添加商品。');
 define('EDIT_ORDERS_TOTAL_DETAIL_READ', '这位客户是游客。不能填写点数折扣。');
+define('TEXT_SELECT_PAYMENT_ERROR','<font color="red">支付方法被关闭</font>');
 ?>

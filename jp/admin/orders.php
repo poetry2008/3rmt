@@ -383,7 +383,7 @@ function tep_show_orders_products_info($orders_id) {
     $str .= '<tr>'; 
     $str .= '<td class="main"><b>Referer Info：</b></td>';
     $str .= '<td class="main">';
-    $str .= urldecode($orders['orders_ref']); 
+    $str .= mb_convert_encoding(urldecode($orders['orders_ref']),'utf-8'); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
     if ($orders['orders_ref_keywords']) {
@@ -3139,7 +3139,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                 <tr>
                 <td class="main" valign="top" width="30%" nowrap="nowrap">Referer:</td>
                 <td class="main"><p
-                style="word-break:break-all;width:250px;word-wrap:break-word;overflow:hidden;display:block;"><?php echo urldecode($order->info['orders_ref']);?></p></td>
+                style="word-break:break-all;width:250px;word-wrap:break-word;overflow:hidden;display:block;"><?php echo mb_convert_encoding(urldecode($order->info['orders_ref']),"utf-8");?></p></td>
                 </tr>
                 <?php if ($order->info['orders_ref_keywords']) { ?>
                   <tr>
