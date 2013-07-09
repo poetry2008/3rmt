@@ -996,8 +996,8 @@ $(document).ready(function() {
               $customers_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $customers_table_exit_str);
               $customers_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $customers_table_lastname_str);
               $customers_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $customers_table_firstname_str);
-              $customers_title_row[] = array('align' => 'right','params' => 'class="dataTableHeadingContent_order"','text' => $customers_table_create_str);
-              $customers_title_row[] = array('align' =>'right' , 'params' => 'class="dataTableHeadingContent_order"','text' => $customers_table_update_str);
+              $customers_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $customers_table_create_str);
+              $customers_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $customers_table_update_str);
               $customers_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $customers_title_row);              
     $search = '';
     if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'])) ) {
@@ -1112,11 +1112,11 @@ $(document).ready(function() {
            'text'   => (($customers['is_active'] != '1')?'<font color="#999999">':'').htmlspecialchars($customers['customers_firstname']).(($customers['is_active'] != '1')?'</font>':'') 
           );
        $customers_info[] = array(
-           'params' => 'class="dataTableContent" align="right" onclick="document.location.href=\''.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid')).'current_cuid='.$customers['customers_id']).'\';"',
+           'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid')).'current_cuid='.$customers['customers_id']).'\';"',
            'text'   => (($customers['is_active'] != '1')?'<font color="#999999">':'').tep_date_short($customers['date_account_created']).(($customers['is_active'] != '1')?'</font>':'') 
           );
        $customers_info[] = array(
-           'params' => 'class="dataTableContent" align="right"',
+           'params' => 'class="dataTableContent"',
            'text'   => '<a href="javascript:void(0)" onclick="show_customers(this,'.$customers['customers_id'].','.$_GET['page'].','.(isset($customers['site_id'])?$customers['site_id']:'-1').', \''.(isset($_GET['customers_sort'])?$_GET['customers_sort']:'0').'\', \''.(isset($_GET['customers_sort_type'])?$_GET['customers_sort_type']:'0').'\')">'
             .
             tep_get_signal_pic_info(isset($customers['date_account_last_modified']) && $customers['date_account_last_modified'] != null?$customers['date_account_last_modified']:$customers['date_account_created']) . '</a>'
