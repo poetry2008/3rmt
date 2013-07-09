@@ -4660,6 +4660,41 @@ if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'
     while($sites_row = tep_db_fetch_array($sites_sql)){
       $show_site_arr[] = $sites_row['id']; 
     }
+    $customers_order_sort_name = ' c.customers_id'; 
+    $customers_order_sort = 'desc'; 
+    if (!empty($_GET['customers_sort'])) {
+      switch ($_GET['customers_sort']) {
+        case 'site_id':
+          $customers_order_sort_name = ' s.romaji'; 
+          break;
+        case 'm_type':
+          $customers_order_sort_name = ' c.customers_guest_chk'; 
+          break;
+        case 'has_exit':
+          $customers_order_sort_name = ' c.is_exit_history'; 
+          break;
+        case 'lastname':
+          $customers_order_sort_name = ' c.customers_lastname'; 
+          break;
+        case 'firstname':
+          $customers_order_sort_name = ' c.customers_firstname'; 
+          break;
+        case 'create_at':
+          $customers_order_sort_name = ' date_account_created'; 
+          break;
+        case 'update_at':
+          $customers_order_sort_name = ' date_account_last_modified'; 
+          break;
+      }
+    }
+    if (!empty($_GET['customers_sort_type'])) {
+      if ($_GET['customers_sort_type'] == 'asc') {
+        $customers_order_sort = 'asc'; 
+      } else {
+        $customers_order_sort = 'desc'; 
+      }
+    }
+    $customers_order_sql = $customers_order_sort_name.' '.$customers_order_sort; 
     $customers_query_raw = "
       select c.customers_id, 
              c.site_id,
@@ -4673,12 +4708,13 @@ if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'
              ci.customers_info_date_account_created as date_account_created, 
              ci.customers_info_date_account_last_modified as date_account_last_modified, 
              ci.customers_info_date_of_last_logon as date_last_logon, 
-             ci.customers_info_number_of_logons as number_of_logons 
+             ci.customers_info_number_of_logons as number_of_logons,
+             c.is_exit_history,
+             s.romaji
       from " . TABLE_CUSTOMERS . " c left join " . TABLE_ADDRESS_BOOK . " a on
       c.customers_id = a.customers_id and c.customers_default_address_id =
-      a.address_book_id, ".TABLE_CUSTOMERS_INFO." ci where c.customers_id = ci.customers_info_id and " .$sql_site_where. " " . $search . " 
-      order by c.customers_id DESC
-    ";
+      a.address_book_id, ".TABLE_CUSTOMERS_INFO." ci, ".TABLE_SITES." s where c.customers_id = ci.customers_info_id and c.site_id = s.id and " .$sql_site_where. " " . $search . " 
+      order by ".$customers_order_sql;
     $customers_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $customers_query_raw, $customers_query_numrows); 
   
     $customers_query_cid = tep_db_query($customers_query_raw);
@@ -4817,7 +4853,11 @@ if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'
       $page = 'page='.$_GET['page'];
     }else{
       $action = 'update';
-      $page = tep_get_all_get_params(array('action'));
+      if (empty($_GET['customers_sort']) || empty($_GET['customers_sort_type'])) {
+        $page = tep_get_all_get_params(array('action', 'customers_sort', 'customers_sort_type'));
+      } else {
+        $page = tep_get_all_get_params(array('action'));
+      }
     }
     $form_str = tep_draw_form('customers', FILENAME_CUSTOMERS, $page. '&action='.$action, 'post', 'onSubmit="return check_form();"') .  tep_draw_hidden_field('default_address_id', $cInfo->customers_default_address_id) .  tep_draw_hidden_field('entry_country_id', $cInfo->entry_country_id)."\n"; 
     $page_str = '';
@@ -4854,14 +4894,14 @@ if($_GET['cID'] != -1){
   if ($c_key > 0) {
     $prev_customer_query = tep_db_query("select customers_id, site_id from ".TABLE_CUSTOMERS." where customers_id = '".$cid_array[$c_key-1]."'"); 
     $prev_customer_res = tep_db_fetch_array($prev_customer_query); 
-    $page_str .= '<a onclick="show_customers(\'\','.$cid_array[$c_key-1].','.$_GET['page'].', '.$prev_customer_res['site_id'].')" href="javascript:void(0)" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+    $page_str .= '<a onclick="show_customers(\'\','.$cid_array[$c_key-1].','.$_GET['page'].', '.$prev_customer_res['site_id'].', \''.(isset($_GET['customers_sort'])?$_GET['customers_sort']:'0').'\', \''.(isset($_GET['customers_sort_type'])?$_GET['customers_sort_type']:'0').'\')" href="javascript:void(0)" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
   } else {
     $page_str .= '<font color="#000000"><'.IMAGE_PREV.'</font>'; 
   }
   if ($c_key < (count($cid_array) - 1)) {
     $next_customer_query = tep_db_query("select customers_id, site_id from ".TABLE_CUSTOMERS." where customers_id = '".$cid_array[$c_key+1]."'"); 
     $next_customer_res = tep_db_fetch_array($next_customer_query); 
-    $page_str .= '<a onclick="show_customers(\'\','.$cid_array[$c_key+1].','.$_GET['page'].', '.$next_customer_res['site_id'].')" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
+    $page_str .= '<a onclick="show_customers(\'\','.$cid_array[$c_key+1].','.$_GET['page'].', '.$next_customer_res['site_id'].', \''.(isset($_GET['customers_sort'])?$_GET['customers_sort']:'0').'\', \''.(isset($_GET['customers_sort_type'])?$_GET['customers_sort_type']:'0').'\')" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
   } else {
     $page_str .= '<font color="#000000">'.IMAGE_NEXT.'></font>'; 
   }
@@ -5086,7 +5126,12 @@ if($_GET['cID'] != -1){
        $customers_email = tep_html_element_button(IMAGE_EMAIL,$disabled);
      } 
     }else{
-     $customers_del =  ' <a class = "new_product_reset" href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="toggle_customers_action(\''.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' .  $cInfo->customers_id .  '&action=deleteconfirm').'\', \''.$ocertify->npermission.'\');"').'</a>';
+     if (empty($_GET['customers_sort']) || empty($_GET['customers_sort_type'])) {
+        $tmp_ex_array = array('cID', 'action', 'customers_sort', 'customers_sort_type');
+      } else {
+        $tmp_ex_array = array('cID', 'action');
+      }
+     $customers_del =  ' <a class = "new_product_reset" href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="toggle_customers_action(\''.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params($tmp_ex_array) . 'cID=' .  $cInfo->customers_id .  '&action=deleteconfirm').'\', \''.$ocertify->npermission.'\');"').'</a>';
      if ($cInfo->is_active == '1') {
        if ($ocertify->npermission >= 15) {
          $customers_orders = ' <a href="' .  tep_href_link(FILENAME_ORDERS, 'cID=' .  $cInfo->customers_id) . '">' .  tep_html_element_button(IMAGE_ORDERS) .  '</a>';
@@ -6736,40 +6781,40 @@ if($_GET['qID'] != -1 && $_GET['cID'] != -1){
                 if($faq_type == ''){
                       $faq_type = 'asc';
                 }
-                if(!isset($_GET['sort']) || $_GET['sort'] == ''){
-                    $faq_str = 'info_type'; 
-                    $faq_qid_str = 'c.sort_order,c.ask,c.faq_question_id';
-                }else if($_GET['sort'] == 'site_romaji'){
+                if($_GET['sort'] == 'site_romaji'){
                   if($_GET['type'] == 'desc'){
                     $faq_str = 'site_id desc';
-                    $faq_type = 'asc';
                     }else{
                     $faq_str = 'site_id asc';
-                    $faq_type = 'desc';
                     }
                 }else if($_GET['sort'] == 'title'){
                   if($_GET['type'] == 'desc'){
-                    $faq_str = 'title desc';
-                    $faq_type = 'asc';
+                    $faq_str = 'info_type desc,title desc';
                     }else{
-                    $faq_str = 'title asc';
-                    $faq_type = 'desc';
+                    $faq_str = 'info_type asc,title asc';
                     }
                 }else if($_GET['sort'] == 'is_show'){
                   if($_GET['type'] == 'desc'){
                     $faq_str = 'is_show desc';
-                    $faq_type = 'asc';
                     }else{
                     $faq_str = 'is_show asc';
-                    $faq_type = 'desc';
+                    }
+                }else if($_GET['sort'] == 'updated_at'){
+                  if($_GET['type'] == 'desc'){
+                    $faq_str = 'updated_at desc';
+                    }else{
+                    $faq_str = 'updated_at asc';
                     }
                 }
                 if(isset($_GET['search'])&&$_GET['search']!=''){
                     $sql_search_where = " and search_text like '%".$_GET['search']."%' ";
-                    $faq_category_query_raw = "select * from faq_sort where 1 ".  $sql_search_where." and ".$sql_site_where." and parent_id = '".$current_category_id."' order by info_type asc,".$faq_str;
+                    $faq_category_query_raw = "select * from faq_sort where 1 ".  $sql_search_where." and ".$sql_site_where." and parent_id = '".$current_category_id."'";
                  }else{
-                    $faq_category_query_raw = "select * from faq_sort where parent_id = '".$current_category_id."' and ".$sql_site_where." order by info_type asc,".$faq_str;
+                    $faq_category_query_raw = "select * from faq_sort where parent_id = '".$current_category_id."' and ".$sql_site_where;
                  }
+		 if(isset($faq_str)&&$faq_str!=''){
+		    $faq_category_query_raw .= ' order by '.$faq_str;
+		 }
                  // $faq_query_raw = "select * from faq_sort where parent_id = '".$current_category_id."' and title like '%".$_GET['search']."%' and ".$sql_site_where." order by ".$faq_str;
                   $faq_split = new splitPageResults($_GET['page'],MAX_DISPLAY_FAQ_ADMIN,$faq_category_query_raw,$faq_query_number);
                   $_faq_query = tep_db_query($faq_category_query_raw);
@@ -6986,13 +7031,13 @@ if($_GET['cID'] == -1){
     $dc_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
     $faq_site_arr = array_intersect($show_site_arr,$site_array);
     if(isset($_GET['cPath']) && $_GET['cPath'] != ''){
-      $site_id_name = "<select id='faq_site_id' name='site_id' $disabled>";
+      $site_id_name = "<select id='faq_site_id' name='site_id' ".$disabled." onchange='faq_c_is_set_romaji(\"".$current_category_id."\",\"\",\"".$site_id."\")'>";
       $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$_GET['action_sid']));
       $site_id_name .= "<option value='".$site_name['id'] ."'>".$site_name['name']."</option>";
       $site_id_name .= "</select>";
       $site_id_name .= '&nbsp;<font color="#ff0000;">*'.TEXT_REQUIRED.'</font>'; 
     }else{
-    $site_id_name = "<select id='faq_site_id' name='site_id' $disabled>";
+    $site_id_name = "<select id='faq_site_id' name='site_id' ".$disabled." onchange='faq_c_is_set_romaji(\"".$current_category_id."\",\"\",\"".$site_id."\")'>";
     foreach($faq_site_arr as $value){
       if($value!=0){
         $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$value));
@@ -7009,7 +7054,7 @@ if($_GET['cID'] == -1){
         ); 
     $contents[]['text'] = array(
         array('text' => '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'"><input type="hidden" name="user_added" value="'.$_SESSION['user_name'].'">URL'),
-        array('text' => tep_draw_input_field('romaji','','id="cromaji"onfocus="o_submit_single = false;"onblur="o_submit_single = true;" size="40"').  '</span><input type="button" onclick = "faq_c_is_set_romaji(\''.$current_category_id.'\',\'\',\''.$site_id.'\')" value="'.TEXT_ROMAJI_IS_SET.'">'.  '<input type="button" onclick = "faq_c_is_set_error_char(\'\')" value="'.IS_SET_ERROR_CHAR.'"><br><span id="cromaji_error">')
+        array('text' => tep_draw_input_field('romaji','','id="cromaji" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" size="40"').  '</span><input type="button" onclick = "faq_c_is_set_romaji(\''.$current_category_id.'\',\'\',\''.$site_id.'\')" value="'.TEXT_ROMAJI_IS_SET.'">'.  '<input type="button" onclick = "faq_c_is_set_error_char(\'\')" value="'.IS_SET_ERROR_CHAR.'"><br><span id="cromaji_error">')
         );
     $contents[]['text'] = array(
         array('params' => 'width="30%"','text' => TEXT_NEW_FAQ_CATEGORY_TITLE),
@@ -7055,13 +7100,13 @@ if($_GET['qID'] == -1){
     $form_str = tep_draw_form('newfaqcategory',FILENAME_FAQ,'action=insert_faq_question'.$url_str,'post');
     $dc_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
     if(isset($_GET['cPath']) && $_GET['cPath'] != ''){
-      $site_id_name = "<select id='faq_site_id' name='site_id' $disabled>";
+      $site_id_name = "<select id='faq_site_id' name='site_id' ". $disabled ." onchange='faq_q_is_set_romaji(\"".$current_category_id."\",\"\",\"".$site_id."\")'>";
       $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$_GET['action_sid']));
       $site_id_name .= "<option value='".$site_name['id'] ."'>".$site_name['name']."</option>";
       $site_id_name .= "</select>";
       $site_id_name .= '&nbsp;<font color="#ff0000;">*'.TEXT_REQUIRED.'</font>'; 
     }else{
-    $site_id_name = "<select id='faq_site_id' name='site_id' $disabled>";
+    $site_id_name = "<select id='faq_site_id' name='site_id' ".$disabled ."  onchange='faq_q_is_set_romaji(\"".$current_category_id."\",\"\",\"".$site_id."\")'>";
     $faq_site_arr = array_intersect($show_site_arr,$site_array);
     foreach($faq_site_arr as $value){
       if($value!=0){

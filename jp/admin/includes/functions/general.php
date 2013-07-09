@@ -10858,13 +10858,44 @@ function tep_get_payment_flag($payment,$cid='',$site_id=0,$orders_id='',$flag=tr
     return false;
   }
 }
-function tep_update_faq_sort($fid,$type,$action='update'){
+function tep_update_faq_sort($fid,$site_id,$type,$action='update'){
   if($type=='c'){
+    $c_sql = "SELECT * FROM `faq_categories` c, `faq_categories_description` cd
+      WHERE c.id = cd.faq_category_id c.id='".$fid."' and site_id = '".$site_id."' limit 1";
+    $c_query = tep_db_query($c_sql);
+    if($c_row = tep_db_fetch_array($c_query)){
+      $search_text = $c_row['romaji'].'>>>'.$c_row['title'].'>>>'.$c_row['keywords'].'>>>'.$c_row['description'];
+      $title = $c_row['title'];
+      $sort_order = $c_row['sort_order'];
+      $is_show = $c_row['is_show'];
+      $parent_id = $c_row['parent_id'];
+      $info_id = $c_row['faq_category_id'];
+      $updated_at = $c_row['updated_at'];
+    }
   }
   if($type=='q'){
+    $q_sql = "SELECT qd.site_id,qd.faq_question_id,qd.romaji,qd.ask,
+      q.sort_order,qd.is_show,q2c.faq_category_id,q.updated_at,
+      qd.keywords,qd.answer
+      FROM
+      `faq_question_description` qd, `faq_question` q,
+      `faq_question_to_categories` q2c
+      WHERE q.id = qd.`faq_question_id`
+      and qd.`faq_question_id` = q2c.`faq_question_id` 
+      and q.id = '".$fid."' and site_id = '".$site_id."' limit 1";
+    $q_query = tep_db_query($q_sql);
+    if($q_row = tep_db_fetch_array($q_query)){
+      $search_text = $q_row['romaji'].'>>>'.$q_row['ask'].'>>>'.$q_row['keyworeds'].'>>>'.$q_row['answer'];
+      $title = $q_row['ask'];
+      $sort_order = $q_row['sort_order'];
+      $is_show = $q_row['is_show'];
+      $parent_id = $q_row['parent_id'];
+      $info_id = $q_row['faq_question_id'];
+      $updated_at = $c_row['updated_at'];
+    }
   }
   if($action=='update'){
-    $sql_fs = "UPDATE ".TABLE_FAQ_SORT."SET 
+    $sql_fs = "UPDATE ".TABLE_FAQ_SORT." SET 
       `title`='".$title."',
       `sort_order`='".$sort_order."',
       `is_show`='".$is_show."',
@@ -10886,4 +10917,5 @@ function tep_update_faq_sort($fid,$type,$action='update'){
       '".$parent_id."', '".$info_id."',
       '".$type."','".$updated_at."','".$search_text."')";
   }
+  tep_db_query($sql_fs);
 }
