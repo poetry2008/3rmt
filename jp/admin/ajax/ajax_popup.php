@@ -6785,7 +6785,6 @@ if($_GET['qID'] != -1 && $_GET['cID'] != -1){
     $faq_c_raw = tep_db_fetch_array(tep_db_query("select * from ".TABLE_FAQ_CATEGORIES_DESCRIPTION." where faq_category_id = '".$qInfo->info_id."' and site_id = '".$qInfo->site_id."'"));
     }
     $page_str  = '';
-
     foreach ($id_array as $q_key => $q_value) {
       if ($_GET['faq_id'] == $q_value) {
         break;
