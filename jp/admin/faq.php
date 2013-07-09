@@ -7,11 +7,11 @@
   if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
       $sql_site_where = 'site_id in ('.str_replace('-', ',', $_GET['site_id']).')';
       $show_list_array = explode('-',$_GET['site_id']);
-   } else {
+  } else {
       $show_list_str = tep_get_setting_site_info(FILENAME_FAQ);
       $sql_site_where = 'site_id in ('.$show_list_str.')';
       $show_list_array = explode(',',$show_list_str);
-   }
+  }
     $sites_id_sql = tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$ocertify->auth_user."' limit 0,1");
        while($userslist= tep_db_fetch_array($sites_id_sql)){
            $site_arr = $userslist['site_permission'];
@@ -1016,10 +1016,22 @@ require("includes/note_js.php");
                 }
                 $faq_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $faq_title_row);
                   // faq category list
-                  if($_GET['page'] == ''){ $_GET['page'] = '1'; }
+                  if($_GET['page'] == '') { 
+                    $_GET['page'] = '1'; 
+                  }
                   $faq_category_count = 0;
                   $rows = 0;
-                  $faq_category_query_raw = "select * from faq_sort where parent_id = '".$current_category_id."' and title like '%".$_GET['search']."%'  and ".$sql_site_where." order by ".$faq_str; 
+                  $sql_search_where = '';
+                  if(isset($_GET['search'])&&$_GET['search']!=''){
+                    $sql_search_where = " and search_text like '%".$_GET['search']."%' ";
+                    $faq_category_query_raw = "select * from faq_sort where 1 ".
+                      $sql_search_where." and ".$sql_site_where." order by
+                      info_type asc,".$faq_str; 
+                  }else{
+                    $faq_category_query_raw = "select * from faq_sort where parent_id
+                      = '".$current_category_id."' and ".$sql_site_where." order by
+                      info_type asc,".$faq_str; 
+                  }
 
                   $c_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
                   $faq_split = new splitPageResults($_GET['page'],MAX_DISPLAY_FAQ_ADMIN, $faq_category_query_raw,$faq_query_number);
@@ -1249,7 +1261,8 @@ require("includes/note_js.php");
     $cPath_back = isset($cPath_back) && $cPath_back ? 'cPath=' . $cPath_back : '';
                   // new faq category and new faq button
 		 echo '<div class="td_box">';
-                   if(($site_array[0] != '' && $site_array[0] != 0) || $site_array[1] != ''){     
+                   if((($site_array[0] != '' && $site_array[0] != 0) || $site_array[1] != '')
+                      &&!(isset($_GET['search'])&&$_GET['search']!='') ){     
                    if(isset($_GET['cPath']) && $_GET['cPath'] != ''){
                     $faq_site_id =  tep_db_fetch_array(tep_db_query("select * from ".TABLE_FAQ_CATEGORIES_DESCRIPTION." where faq_category_id = '".$current_category_id."'"));
                     echo '<a href="javascript:void(0)" onclick="show_faq(this,-1,\'\','.$_GET['page'].','.$faq_site_id['site_id'].')">'.tep_html_element_button(IMAGE_NEW_FAQ_CATEGORY).'</a>';
