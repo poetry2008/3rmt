@@ -256,10 +256,8 @@
             $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
             tep_db_perform(TABLE_FAQ_QUESTION_DESCRIPTION, $sql_data_array);
             $faq_q_sql_id = tep_db_insert_id();
-            var_dump($faq_q_sql_id);
-            var_dump($site_id);
             tep_update_faq_sort($faq_q_sql_id,$site_id,'q','insert');
-         }else{
+          }else{
             if(!tep_check_romaji($sql_data_array['romaji'])){
               $messageStack->add_session(TEXT_ROMAJI_ERROR, 'error');
               tep_redirect(tep_href_link(FILENAME_FAQ));
@@ -990,9 +988,9 @@ require("includes/note_js.php");
                 $faq_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="left"','text' => '<a href="'.tep_href_link(FILENAME_FAQ,'sort=is_show&search='.$_GET['search'].'&cPath='.$_GET['cPath'].'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&cID='.$_GET['cID'].'&type=desc').'">'.TABLE_FAQ_CATEGORY_IS_SHOW.$faq_is_show.'</a>');
                 }
                 if(isset($_GET['sort']) && $_GET['sort'] == 'updated_at'){
-                $faq_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="left"','text' => '<a href="'.tep_href_link(FILENAME_FAQ,'sort=updated_at&search='.$_GET['search'].'&cPath='.$_GET['cPath'].'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&cID='.$_GET['cID'].'&type='.$faq_type).'">'.TABLE_HEADING_ACTION.$faq_updated_at.'</a>');
+                $faq_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="left" width="53px"','text' => '<a href="'.tep_href_link(FILENAME_FAQ,'sort=updated_at&search='.$_GET['search'].'&cPath='.$_GET['cPath'].'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&cID='.$_GET['cID'].'&type='.$faq_type).'">'.TABLE_HEADING_ACTION.$faq_updated_at.'</a>');
                 }else{
-                $faq_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="left"','text' => '<a href="'.tep_href_link(FILENAME_FAQ,'sort=updated_at&search='.$_GET['search'].'&cPath='.$_GET['cPath'].'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&cID='.$_GET['cID'].'&type=desc').'">'.TABLE_HEADING_ACTION.$faq_updated_at.'</a>');
+                $faq_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="left" width="53px"','text' => '<a href="'.tep_href_link(FILENAME_FAQ,'sort=updated_at&search='.$_GET['search'].'&cPath='.$_GET['cPath'].'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&cID='.$_GET['cID'].'&type=desc').'">'.TABLE_HEADING_ACTION.$faq_updated_at.'</a>');
                 }
                 $faq_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $faq_title_row);
                   // faq category list
@@ -1099,34 +1097,24 @@ require("includes/note_js.php");
                       if(!in_array($faq_category['site_id'],$site_array)){
                         $faq_info[] = array(
                             'params' => 'align="left"',
-                            'text'   =>  '&nbsp;'.tep_image(DIR_WS_IMAGES .  'icon_status_green.gif', '').'&nbsp;&nbsp;'. tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', '')
+                            'text'   =>  tep_image(DIR_WS_IMAGES .  'icon_status_green.gif', '').'&nbsp;&nbsp;'. tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', '')
                             );
                       }else{
                         $faq_info[] = array(
                             'params' => 'align="left"',
-                            'text'   => '<a class="faq_status_link" href="javascript:viod(0);" onclick ="change_status(\''.  tep_href_link(FILENAME_FAQ,'action=toggle&cID='.  $faq_category['info_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&status=1&cPath='.  $HTTP_GET_VARS['cPath'].'&show_site='.$_GET['site_id'].'&site_id='.$faq_category['site_id'].$c_page) .'\', \''.$ocertify->npermission.'\')">'.'&nbsp;'.  tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', '') .'</a> <a class="faq_status_link" href="javascript:viod(0);" onclick ="change_status(\''.  tep_href_link(FILENAME_FAQ,'action=toggle&cID='.  $faq_category['info_id'].'&show_site='.$_GET['site_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&status=0&cPath='.  $HTTP_GET_VARS['cPath'].'&site_id='.$faq_category['site_id'].$c_page) .'\', \''.$ocertify->npermission.'\')">'.'&nbsp;'.  tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', '') .'</a>'
+                            'text'   => '<a class="faq_status_link" href="javascript:viod(0);" onclick ="change_status(\''.  tep_href_link(FILENAME_FAQ,'action=toggle&cID='.  $faq_category['info_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&status=1&cPath='.  $HTTP_GET_VARS['cPath'].'&show_site='.$_GET['site_id'].'&site_id='.$faq_category['site_id'].$c_page) .'\', \''.$ocertify->npermission.'\')">'.tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', '') .'</a> <a class="faq_status_link" href="javascript:viod(0);" onclick ="change_status(\''.  tep_href_link(FILENAME_FAQ,'action=toggle&cID='.  $faq_category['info_id'].'&show_site='.$_GET['site_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&status=0&cPath='.  $HTTP_GET_VARS['cPath'].'&site_id='.$faq_category['site_id'].$c_page) .'\', \''.$ocertify->npermission.'\')">'.'&nbsp;'.  tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', '') .'</a>'
                             );
                       }
                     }else{
                       if(!in_array($faq_category['site_id'],$site_array)){
                         $faq_info[] = array(
                             'params' => 'align="left"',
-                            'text'   => '&nbsp;'.  tep_image(DIR_WS_IMAGES .  'icon_status_green_light.gif', '') .'&nbsp;&nbsp;'.  tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', '') 
+                            'text'   => tep_image(DIR_WS_IMAGES .  'icon_status_green_light.gif', '') .'&nbsp;&nbsp;'.  tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', '') 
                             );
                       }else{
                         $faq_info[] = array(
                             'params' => 'align="left"',
-                            'text'   => '<a class="faq_status_link"
-                            href="javascript:viod(0);" onclick ="change_status(\''.
-                          tep_href_link(FILENAME_FAQ,'action=toggle&cID='.
-                              $faq_category['info_id'].'&show_site='.$_GET['site_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&status=1&cPath='.
-                              $HTTP_GET_VARS['cPath'].'&site_id='.$faq_category['site_id'].$c_page)
-                          .'\', \''.$ocertify->npermission.'\')">'.'&nbsp;'.
-                            tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif',
-                              '') .'</a> <a class="faq_status_link"
-                            href="javascript:viod(0);" onclick ="change_status(\''.
-                          tep_href_link(FILENAME_FAQ,'action=toggle&cID='.
-                              $faq_category['info_id'].'&show_site='.$_GET['site_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&status=0&cPath='.  $HTTP_GET_VARS['cPath'].'&site_id='.$faq_category['site_id'].$c_page) .'\', \''.$ocertify->npermission.'\')">'.'&nbsp;'.  tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', '') .'</a>'
+                            'text'   => '<a class="faq_status_link" href="javascript:viod(0);" onclick ="change_status(\''.  tep_href_link(FILENAME_FAQ,'action=toggle&cID='.  $faq_category['info_id'].'&show_site='.$_GET['site_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'status=1&cPath='.  $HTTP_GET_VARS['cPath'].'&site_id='.$faq_category['site_id'].$c_page) .'\', \''.$ocertify->npermission.'\')">'. tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', '') .'</a> <a class="faq_status_link" href="javascript:viod(0);" onclick ="change_status(\''.  tep_href_link(FILENAME_FAQ,'action=toggle&cID='.  $faq_category['info_id'].'&show_site='.$_GET['site_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'status=0&cPath='.  $HTTP_GET_VARS['cPath'].'&site_id='.$faq_category['site_id'].$c_page) .'\', \''.$ocertify->npermission.'\')">'.'&nbsp;'.  tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', '') .'</a>'
                             );
                       }
                     }
@@ -1170,7 +1158,7 @@ require("includes/note_js.php");
                         'text'   => $faq_qid_checkbox 
                         );
                     if((isset($qInfo)&&is_object($qInfo))&& ($faq_category['info_id'] == $qInfo->info_id)){
-                       $onclick_qid_ask = 'onclick="document.location.herf=\''.tep_href_link(FILENAME_FAQ,'cPath='.$_GET['cPath'].  '&site_id='.$_GET['site_id'].'&qID='.$_GET['qID'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&page='.$_GET['page'].'&s_id='.$faq_category['id']) . '\'"';
+                       $onclick_qid_ask = 'onclick="document.location.herf=\''.  tep_href_link(FILENAME_FAQ,'cPath='.$_GET['cPath'].  '&site_id='.$_GET['site_id'].'&qID='.$_GET['qID'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&page='.$_GET['page'].'&s_id='.$faq_category['id']) . '\'"';
                     }else{
                        $onclick_qid_ask = 'onclick="document.location.href=\''.tep_href_link(FILENAME_FAQ,'cPath='.$_GET['cPath'].  '&site_id='.$_GET['site_id'].'&qID='.$_GET['qID'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&page='.$_GET['page'].'&s_id='.$faq_category['id']) . '\'"';
                     }
@@ -1186,24 +1174,24 @@ require("includes/note_js.php");
                     if(!in_array($faq_category['site_id'],$site_array)){
                     $faq_qid_info[] = array(
                         'params' => 'align="left" ',
-                        'text'   => '&nbsp;'.  tep_image(DIR_WS_IMAGES .  'icon_status_green.gif', '') .'&nbsp;&nbsp;'.  tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', '') 
+                        'text'   => tep_image(DIR_WS_IMAGES .  'icon_status_green.gif', '') .'&nbsp;&nbsp;'.  tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', '') 
                         ); 
                     }else{
                     $faq_qid_info[] = array(
                         'params' => 'align="left" ',
-                        'text'   => '<a class="faq_status_link" href="javascript:viod(0);" onclick ="change_status(\''.  tep_href_link(FILENAME_FAQ,'action=setflag&qID='.  $faq_category['info_id'].'&flag=1&cPath='.  $cPath.'&site_id='.$faq_category['site_id'].$c_page.'&show_site='.$_GET['site_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type']) .'\', \''.$ocertify->npermission.'\')">'.'&nbsp;'.  tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', '') .'</a> <a class="faq_status_link" href="javascript:viod(0);" onclick ="change_status(\''.  tep_href_link(FILENAME_FAQ,'action=setflag&qID='.  $faq_category['info_id'].'&flag=0&cPath='.  $cPath.'&site_id='.$faq_category['site_id'].$c_page.'&show_site='.$_GET['site_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type']) .'\', \''.$ocertify->npermission.'\')">'.'&nbsp;'.  tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', '') .'</a>'
+                        'text'   => '<a class="faq_status_link" href="javascript:viod(0);" onclick ="change_status(\''.  tep_href_link(FILENAME_FAQ,'action=setflag&qID='.  $faq_category['info_id'].'&flag=1&cPath='.  $cPath.'&site_id='.$faq_category['site_id'].$c_page.'&show_site='.$_GET['site_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type']) .'\', \''.$ocertify->npermission.'\')">'.tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', '') .'</a> <a class="faq_status_link" href="javascript:viod(0);" onclick ="change_status(\''.  tep_href_link(FILENAME_FAQ,'action=setflag&qID='.  $faq_category['info_id'].'&flag=0&cPath='.  $cPath.'&site_id='.$faq_category['site_id'].$c_page.'&show_site='.$_GET['site_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type']) .'\', \''.$ocertify->npermission.'\')">'.'&nbsp;'.  tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', '') .'</a>'
                         );
                     }
                       }else{
                     if(!in_array($faq_category['site_id'],$site_array)){
                     $faq_info[] = array(
                         'params' => 'align="left" ',
-                        'text'   => '&nbsp;'.  tep_image(DIR_WS_IMAGES .  'icon_status_green_light.gif', '') .'&nbsp;&nbsp;'.  tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', '') 
+                        'text'   => tep_image(DIR_WS_IMAGES .  'icon_status_green_light.gif', '') .'&nbsp;&nbsp;'.  tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', '') 
                       );
                     }else{
                     $faq_qid_info[] = array(
                         'params' => 'align="left" ',
-                        'text'   => '<a class="faq_status_link" href="javascript:viod(0);" onclick ="change_status(\''.  tep_href_link(FILENAME_FAQ,'action=setflag&qID='.  $faq_category['info_id'].'&show_site='.$_GET['site_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&flag=1&cPath='.  $cPath.'&site_id='.$faq_category['site_id']).'\', \''.$ocertify->npermission.'\')">'.'&nbsp;'.  tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', '') .'</a>&nbsp;<a class="faq_status_link" href="javascript:viod(0);" onclick ="change_status(\''.  tep_href_link(FILENAME_FAQ,'action=setflag&qID='.  $faq_category['info_id'].'&flag=0&cPath='.  $cPath.'&show_site='.$_GET['site_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&site_id='.$faq_category['site_id'].$c_page) .'\', \''.$ocertify->npermission.'\')">'.'&nbsp;'.  tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', '') .'</a>'
+                        'text'   => '<a class="faq_status_link" href="javascript:viod(0);" onclick ="change_status(\''.  tep_href_link(FILENAME_FAQ,'action=setflag&qID='.  $faq_category['info_id'].'&show_site='.$_GET['site_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&flag=1&cPath='.  $cPath.'&site_id='.$faq_category['site_id']).'\', \''.$ocertify->npermission.'\')">'. tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', '') .'</a>&nbsp;<a class="faq_status_link" href="javascript:viod(0);" onclick ="change_status(\''.  tep_href_link(FILENAME_FAQ,'action=setflag&qID='.  $faq_category['info_id'].'&flag=0&cPath='.  $cPath.'&show_site='.$_GET['site_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&site_id='.$faq_category['site_id'].$c_page) .'\', \''.$ocertify->npermission.'\')">'.'&nbsp;'.  tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', '') .'</a>'
                         );
                     }
                       }
@@ -1270,6 +1258,20 @@ require("includes/note_js.php");
     $cPath_back = isset($cPath_back) && $cPath_back ? 'cPath=' . $cPath_back : '';
                   // new faq category and new faq button
 		 echo '<div class="td_box">';
+                  if(isset($_GET['cPath']) && $_GET['cPath'] != ''){
+                      $cPath =explode('_',$_GET['cPath']);      
+                      array_pop($cPath);
+                       $parent_id = '';
+                       for($i = 0; $i < count($cPath);$i ++){
+                         if($i == 0){
+                          $parent_id .= $cPath[$i];
+                         }else{
+                          $parent_id .= '_'.$cPath[$i];
+                         }
+                       }
+                      echo '<a href="'.tep_href_link(FILENAME_FAQ,'cPath='.$parent_id.'&site_id='.$_GET['site_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&page='.$_GET['page']).'">'.tep_html_element_button(IMAGE_BACK).'</a>&nbsp;';
+                  }
+
                    if((($site_array[0] != '' && $site_array[0] != 0) || $site_array[1] != '') &&!(isset($_GET['search'])&&$_GET['search']!='') ){     
                    if(isset($_GET['cPath']) && $_GET['cPath'] != ''){
                     $faq_site_id =  tep_db_fetch_array(tep_db_query("select * from ".TABLE_FAQ_CATEGORIES_DESCRIPTION." where faq_category_id = '".$current_category_id."'"));
