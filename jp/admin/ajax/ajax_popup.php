@@ -6523,10 +6523,15 @@ if($_GET['qID'] != -1 && $_GET['cID'] != -1){
                     $faq_type = 'desc';
                     }
                 }
-     $faq_query_raw = "select * from faq_sort where parent_id = '".$current_category_id."' and title like '%".$_GET['search']."%' and ".$sql_site_where." order by ".$faq_str;
-                  $faq_split = new splitPageResults($_GET['page'],MAX_DISPLAY_FAQ_ADMIN,
-                  $faq_query_raw,$faq_query_number);
-                  $_faq_query = tep_db_query($faq_query_raw);
+                if(isset($_GET['search'])&&$_GET['search']!=''){
+                    $sql_search_where = " and search_text like '%".$_GET['search']."%' ";
+                    $faq_category_query_raw = "select * from faq_sort where 1 ".  $sql_search_where." and ".$sql_site_where." and parent_id = '".$current_category_id."' order by info_type asc,".$faq_str;
+                 }else{
+                    $faq_category_query_raw = "select * from faq_sort where parent_id = '".$current_category_id."' and ".$sql_site_where." order by info_type asc,".$faq_str;
+                 }
+                 // $faq_query_raw = "select * from faq_sort where parent_id = '".$current_category_id."' and title like '%".$_GET['search']."%' and ".$sql_site_where." order by ".$faq_str;
+                  $faq_split = new splitPageResults($_GET['page'],MAX_DISPLAY_FAQ_ADMIN,$faq_category_query_raw,$faq_query_number);
+                  $_faq_query = tep_db_query($faq_category_query_raw);
                   $qid_array = array();
                   while($_faq_info = tep_db_fetch_array($_faq_query)){
                     $id_array[] = $_faq_info['id'];
@@ -6555,12 +6560,20 @@ if($_GET['qID'] != -1 && $_GET['cID'] != -1){
     if ($q_key > 0) {
       $qid_site_id = tep_db_query("select * from `faq_sort` where id = '".$id_array[$q_key-1]."'");
       $qid_site_id_row = tep_db_fetch_array($qid_site_id); 
-      $page_str .= '<a onclick=\'show_faq("","",'.$id_array[$q_key-1].','.$_GET['page'].','.$qid_site_id_row['site_id'].','.$qid_site_id_row['id'].','.$qid_site_id_row['info_type'].')\' href="javascript:void(0);" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+      if($qid_site_id_row['info_type'] == 'c'){
+      $page_str .= '<a onclick="show_faq(\'\','.$qid_site_id_row['info_id'].',\'\','.$_GET['page'].','.$qid_site_id_row['site_id'].','.$id_array[$q_key-1].',\''.$qid_site_id_row['info_type'].'\')" href="javascript:void(0);" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+      }else{
+      $page_str .= '<a onclick="show_faq(\'\',\'\','.$qid_site_id_row['info_id'].','.$_GET['page'].','.$qid_site_id_row['site_id'].','.$id_array[$q_key-1].',\''.$qid_site_id_row['info_type'].'\')" href="javascript:void(0);" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+      }
     }
     if ($q_key < (count($id_array) - 1)) {
       $qid_site_id = tep_db_query(" select * from `faq_sort` where id  = '".$id_array[$q_key+1]."'");
       $qid_site_id_row = tep_db_fetch_array($qid_site_id); 
-      $page_str .= '<a onclick=\'show_faq("","",'.$id_array[$q_key+1].','.$_GET['page'].','.$qid_site_id_row['site_id'].','.$qid_site_id_row['id'].','.$qid_site_id_row['info_type'].')\' href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
+      if($qid_site_id_row['info_type'] == 'c'){
+      $page_str .= '<a onclick="show_faq(\'\','.$qid_site_id_row['info_id'].',\'\','.$_GET['page'].','.$qid_site_id_row['site_id'].','.$id_array[$q_key+1].',\''.$qid_site_id_row['info_type'].'\')" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
+      }else{
+      $page_str .= '<a onclick="show_faq(\'\',\'\','.$qid_site_id_row['info_id'].','.$_GET['page'].','.$qid_site_id_row['site_id'].','.$id_array[$q_key+1].',\''.$qid_site_id_row['info_type'].'\')" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
+      }
     }else{
       $page_str .= '<font color="#000000">'.IMAGE_NEXT.'></font>'; 
     }
@@ -6569,9 +6582,11 @@ if($_GET['qID'] != -1 && $_GET['cID'] != -1){
     $heading[] = array('align' => 'left', 'text' => TEXT_INFO_HEADING_EDIT_FAQ_QUESTION);
     $heading[] = array('align' => 'right', 'text' => $page_str);
     if($qInfo->info_type == 'q'){
-    $form_str = tep_draw_form('newfaqcategory',FILENAME_FAQ,'action=update_faq_question&cPath='.$_GET['cPath'].  '&site_id='.$_GET['site_id'].'&qID='.$_GET['qID'],'post');
+    $url_str = '&cPath='.$_GET['cPath'].  '&site_id='.$_GET['site_id'].'&qID='.$_GET['qID'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&page='.$_GET['page'];
+    $form_str = tep_draw_form('newfaqcategory',FILENAME_FAQ,'action=update_faq_question'.$url_str,'post');
     }else if($qInfo->info_type == 'c'){
-    $form_str = tep_draw_form('newfaqcategory',FILENAME_FAQ,'action=update_faq_category&cPath='.$_GET['cPath'].  '&site_id='.$_GET['site_id'].'&cID='.$_GET['cID'],'post');
+    $url_str = '&cPath='.$_GET['cPath'].  '&site_id='.$_GET['site_id'].'&cID='.$_GET['cID'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&page='.$_GET['page'];
+    $form_str = tep_draw_form('newfaqcategory',FILENAME_FAQ,'action=update_faq_category'.$url_str,'post');
     }
     $dc_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
     $contents = array();
@@ -6726,7 +6741,8 @@ if($_GET['cID'] == -1){
     $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
     $heading[] = array('align' => 'left', 'text' => TEXT_INFO_HEADING_NEW_FAQ_CATEGORY);
     $heading[] = array('align' => 'right', 'text' => $page_str);
-    $form_str = tep_draw_form('newfaqcategory',FILENAME_FAQ,'action=insert_faq_category&cPath='.$_GET['cPath'].'&site_id='.$_GET['site_id'], 'post');
+    $url_str = '&cPath='.$_GET['cPath'].  '&site_id='.$_GET['site_id'].'&cID='.$_GET['cID'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&page='.$_GET['page'];
+    $form_str = tep_draw_form('newfaqcategory',FILENAME_FAQ,'action=insert_faq_category&'.$url_str, 'post');
     $dc_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
     $faq_site_arr = array_intersect($show_site_arr,$site_array);
     if(isset($_GET['cPath']) && $_GET['cPath'] != ''){
@@ -6795,7 +6811,8 @@ if($_GET['qID'] == -1){
     $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
     $heading[] = array('align' => 'left', 'text' => TEXT_INFO_HEADING_NEW_FAQ_QUESTION);
     $heading[] = array('align' => 'right', 'text' => $page_str);
-    $form_str = tep_draw_form('newfaqcategory',FILENAME_FAQ,'action=insert_faq_question&cPath='.$_GET['cPath'].  '&site_id='.$_GET['site_id'].'&qID='.$_GET['qID'],'post');
+    $url_str = '&cPath='.$_GET['cPath'].  '&site_id='.$_GET['site_id'].'&qID='.$_GET['qID'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&page='.$_GET['page'];
+    $form_str = tep_draw_form('newfaqcategory',FILENAME_FAQ,'action=insert_faq_question'.$url_str,'post');
     $dc_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
     if(isset($_GET['cPath']) && $_GET['cPath'] != ''){
       $site_id_name = "<select id='faq_site_id' name='site_id' $disabled>";

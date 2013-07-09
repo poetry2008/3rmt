@@ -7522,10 +7522,9 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
  ------------------------------------ */
   function tep_remove_faq_category($category_id) {
     tep_db_query("delete from " . TABLE_FAQ_CATEGORIES . " where id = '" . tep_db_input($category_id) . "'");
-    tep_db_query("delete from " . TABLE_FAQ_CATEGORIES_DESCRIPTION . " where
-        faq_category_id = '" . tep_db_input($category_id) . "'");
-    tep_db_query("delete from " . TABLE_FAQ_QUESTION_TO_CATEGORIES . " where
-        faq_category_id = '" . tep_db_input($category_id) . "'");
+    tep_db_query("delete from " . TABLE_FAQ_CATEGORIES_DESCRIPTION . " where faq_category_id = '" . tep_db_input($category_id) . "'");
+    tep_db_query("delete from " . TABLE_FAQ_QUESTION_TO_CATEGORIES . " where faq_category_id = '" . tep_db_input($category_id) . "'");
+    tep_db_query("delete from `faq_sort` where info_id = '" .  tep_db_input($category_id) . "' and info_type = 'c'");
   }
 
 /* -------------------------------------
@@ -7535,10 +7534,9 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
  ------------------------------------ */
   function tep_remove_faq_question($product_id) {
     tep_db_query("delete from " . TABLE_FAQ_QUESTION . " where id = '" . tep_db_input($product_id) . "'");
-    tep_db_query("delete from " . TABLE_FAQ_QUESTION_TO_CATEGORIES . " where
-        faq_question_id = '" . tep_db_input($product_id) . "'");
-    tep_db_query("delete from " . TABLE_FAQ_QUESTION_DESCRIPTION . " where 
-        faq_question_id = '" . tep_db_input($product_id) . "'");
+    tep_db_query("delete from " . TABLE_FAQ_QUESTION_TO_CATEGORIES . " where faq_question_id = '" . tep_db_input($product_id) . "'");
+    tep_db_query("delete from " . TABLE_FAQ_QUESTION_DESCRIPTION . " where faq_question_id = '" . tep_db_input($product_id) . "'");
+    tep_db_query("delete from `faq_sort` where info_id = '" .  tep_db_input($product_id) . "' and info_type = 'q'");
   }
 
 /* -------------------------------------
