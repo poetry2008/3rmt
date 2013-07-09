@@ -529,6 +529,10 @@ function faq_c_is_set_romaji(pid,cid,site_id){
   var flag = true;
   var cromaji = $("#cromaji").val();
   cromaji = replace_romaji(cromaji);
+  var new_site_id = $('#faq_site_id').val();
+  if(new_site_id && site_id != new_site_id){
+    site_id = new_site_id;
+  }
   $.ajax({
     url: 'ajax_orders.php?action=faq_c_is_set_romaji',
     type: 'POST',
@@ -568,6 +572,10 @@ function faq_q_is_set_romaji(cid,qid,site_id){
   var flag = true;
   var qromaji = $("#qromaji").val();
   qromaji = replace_romaji(qromaji);
+  var new_site_id = $('#faq_site_id').val();
+  if(new_site_id && site_id != new_site_id){
+    site_id = new_site_id;
+  }
   $.ajax({
     url: 'ajax_orders.php?action=faq_q_is_set_romaji',
     type: 'POST',
