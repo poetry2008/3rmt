@@ -135,6 +135,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('FILENAME_PERSONAL_SETTING','personal_setting.php');
   define('FILENAME_ALERT_LOG','alert_log.php');
   define('FILENAME_BUSINESS_MEMO','business_memo.php');
+  define('FILENAME_MAIL_TEMPLATES','mail_templates.php');
 
 // define the database table names used in the project
   define('TABLE_CUSTOMERS_BASKET_OPTIONS', 'customers_basket_options');
@@ -270,6 +271,7 @@ define('TABLE_PERMISSIONS','permissions');
   define('TABLE_CALENDAR_DATE','calendar_date');
   define('TABLE_SHOW_SITE','show_site');
   define('TABLE_BUSINESS_MEMO','business_memo');
+  define('TABLE_MAIL_TEMPLATES','mail_templates');
 // customization for the design layout
   define('BOX_WIDTH', 160); // how wide the boxes should be in pixels (default: 125)
 

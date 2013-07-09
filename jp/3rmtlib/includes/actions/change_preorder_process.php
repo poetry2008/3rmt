@@ -323,7 +323,7 @@ if($address_error == false){
                           'torihiki_date' => $torihikihouhou_date_str, 
                           'site_id' => SITE_ID
       );
-  tep_db_perform(TABLE_ORDERS_PRODUCTS, $sql_data_array); 
+  tep_db_perform(TABLE_ORDERS_PRODUCTS, $sql_data_array);
   $order_products_id = tep_db_insert_id();
 
   
@@ -502,7 +502,7 @@ $mailoption['ORDER_ID']         = $orders_id;
 $mailoption['ORDER_DATE']       = tep_date_long(time())  ;
 $mailoption['USER_NAME']        = $preorder['customers_name'];
 $mailoption['USER_MAILACCOUNT'] = $preorder['customers_email_address'];
-$mailoption['ORDER_TOTAL']      = $currencies->format(abs($preorder_total_print_num));
+$mailoption['ORDER_TOTAL']      = $currencies->format(abs($preorder_total_print_num+$_SESSION['preorders_code_fee']));
 
 $mailoption['TORIHIKIHOUHOU']   = $_SESSION['preorder_info_tori'];
 $mailoption['ORDER_PAYMENT']    = $preorder['payment_method'];
@@ -583,103 +583,104 @@ if(!empty($add_list)){
   $email_order_text = str_replace($email_address,$email_address_str,$email_order_text);
 }
 
+//订单邮件
+$orders_mail_templates = tep_get_mail_templates('MODULE_PAYMENT_'.strtoupper($cpayment_code).'_MAILSTRING',SITE_ID);
 if ($seal_user_row['is_send_mail'] != '1') {
   //是否给该顾客发送邮件 
-  tep_mail($preorder['customers_name'], $preorder['customers_email_address'], EMAIL_TEXT_SUBJECT, $email_order_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
+  tep_mail($preorder['customers_name'], $preorder['customers_email_address'], $orders_mail_templates['title'], $email_order_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
 }
   
 if (SENTMAIL_ADDRESS != '') {
   //给管理者发送邮件   
-  tep_mail('', SENTMAIL_ADDRESS, EMAIL_TEXT_SUBJECT2, $email_order_text, $preorder['customers_name'], $preorder['customers_email_address'], '');
+  tep_mail('', SENTMAIL_ADDRESS, $orders_mail_templates['title'], $email_order_text, $preorder['customers_name'], $preorder['customers_email_address'], '');
 }
 
-$email_printing_order = '';
-$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-$email_printing_order .= 'サイト名　　　　：' . STORE_NAME . "\n";
-$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-$email_printing_order .= 'お届け日時　　　　：' .  str_string($_SESSION['preorder_info_date']) . $_SESSION['preorder_info_start_hour'] . '時' .  $_SESSION['preorder_info_start_min'] . '分から'. $_SESSION['preorder_info_end_hour'] .'時'. $_SESSION['preorder_info_end_min'] .'分　（24時間表記）' . "\n";
-$email_printing_order .= 'オプション　　　：' . $_SESSION['preorder_info_tori'] . "\n";
-$email_printing_order .=
-'------------------------------------------------------------------------' . "\n";
-$email_printing_order .= '日時変更　　　　：' . date('Y') . ' 年  月  日  時  分' .
-"\n";
-$email_printing_order .= '日時変更　　　　：' . date('Y') . ' 年  月  日  時  分' .
-"\n";
-$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-$email_printing_order .= '注文者名　　　　：' .
-$preorder['customers_name'] . '様'
-. "\n";
-$email_printing_order .= '注文番号　　　　：' . $orders_id . "\n";
-$email_printing_order .= '注文日　　　　　：' . tep_date_long(time()) . "\n";
-$email_printing_order .= 'メールアドレス　：' . $preorder['customers_email_address'] .
-"\n";
-$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-
+//打印邮件
+$orders_print_mail_templates = tep_get_mail_templates('MODULE_PAYMENT_'.strtoupper($cpayment_code).'_PRINT_MAILSTRING',SITE_ID);
+$payment_mode = array(
+                        '${USER_NAME}',
+                        '${SITE_NAME}',
+                        '${YEAR}',
+                        '${ORDER_ID}',
+                        '${ORDER_DATE}',
+                        '${USER_MAILACCOUNT}',
+                        '${BUYING_INFO}',
+                        '${POINT}',
+                        '${SHIPPING_FEE}',
+                        '${MAILFEE}',
+                        '${ORDER_TOTAL}',
+                        '${ORDER_PRODUCTS}',
+                        '${ORDER_TTIME}',
+                        '${ORDER_COMMENT}',
+                        '${ADD_INFO}',
+                        '${CUSTOMER_INFO}',
+                        '${CREDIT_RESEARCH}',
+                        '${ORDER_HISTORY}',
+                        '${TOTAL}',
+                      );
 if (isset($_SESSION['preorder_campaign_fee'])) {
   if (abs($_SESSION['preorder_campaign_fee']) > 0) {
-      $email_printing_order .= '割引　　　　　　：' .  abs($_SESSION['preorder_campaign_fee']). '円' . "\n";
+      $print_point = abs($_SESSION['preorder_campaign_fee']);
   }
 } else {
   if ($preorder_point > 0) {
-      $email_printing_order .= '割引　　　　　　：' . (int)$preorder_point . '円' . "\n";
+      $print_point = (int)$preorder_point;
+  }else{
+      $print_point = 0;
   }
 }
 
 if (!empty($option_info_array['fee'])) {
-  $email_printing_order .= '手数料　　　　　：'.$option_info_array['fee'].'円'."\n";
+  $print_handle_fee = $option_info_array['fee'];
 } else {
   if (!empty($_SESSION['preorders_code_fee'])) {
-    $email_printing_order .= '手数料　　　　　：'.$_SESSION['preorders_code_fee'].'円'."\n";
+    $print_handle_fee = $_SESSION['preorders_code_fee'];
   }
 }
+//customer info
+$customer_printing_order .= SENDMAIL_TEXT_IP_ADDRESS . $_SERVER["REMOTE_ADDR"] . "\n";
+$customer_printing_order .= SENDMAIL_TEXT_HOST . @gethostbyaddr($_SERVER["REMOTE_ADDR"]) . "\n";
+$customer_printing_order .= SENDMAIL_TEXT_USER_AGENT . $_SERVER["HTTP_USER_AGENT"] . "\n";
 
-$email_printing_order .= $totals_print_email_str;
-
-$email_printing_order .= 'お支払金額　　　：' .  $currencies->format(abs($preorder_total_print_num)) . "\n";
-
-$email_printing_order .= 'お支払方法　　　：' . $preorder['payment_method'] . "\n";
-  
-
-$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-$email_printing_order .= $products_ordered_text;
-
-$email_printing_order .= '備考　　　　　　：' . "\n";
-
-if (!empty($order_comment_str)) {
-  $email_printing_order .= $order_comment_str . "\n";
-}
-$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-$email_printing_order .= 'IPアドレス　　　　　　：' . $_SERVER["REMOTE_ADDR"] .
-"\n";
-$email_printing_order .= 'ホスト名　　　　　　　：' .
-@gethostbyaddr($_SERVER["REMOTE_ADDR"]) . "\n";
-$email_printing_order .= 'ユーザーエージェント　：' . $_SERVER["HTTP_USER_AGENT"] .
-"\n";
-$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-$email_printing_order .= '信用調査' . "\n";
-
+//credit inquiry
 $credit_inquiry_query = tep_db_query("select customers_fax, customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_id = '" . $preorder_cus_id . "'");
 $credit_inquiry       = tep_db_fetch_array($credit_inquiry_query);
-$email_printing_order .= $credit_inquiry['customers_fax'] . "\n";
-$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-$email_printing_order .= '注文履歴　　　　　　　：';
 
-if ($credit_inquiry['customers_guest_chk'] == '1') { $email_printing_order .= 'ゲスト'; } else { $email_printing_order .= '会員'; }
-    
-  $email_printing_order .= "\n";
-    
+//orders history
+$email_orders_history = "";
+if ($credit_inquiry['customers_guest_chk'] == '1') { 
+  $email_orders_history .= TABLE_HEADING_MEMBER_TYPE_GUEST."\n"; 
+} else { 
+  $email_orders_history .= TEXT_MEMBER."\n"; 
+}
+     
   $order_history_query_raw = "select o.orders_id, o.customers_name, o.customers_id, o.date_purchased, s.orders_status_name, ot.value as order_total_value from " .  TABLE_ORDERS . " o left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s where o.customers_id = '" .  tep_db_input($preorder_cus_id) . "' and o.orders_status = s.orders_status_id and s.language_id = '" . $languages_id . "' and ot.class = 'ot_total' order by o.date_purchased DESC limit 0,5";  
     $order_history_query = tep_db_query($order_history_query_raw);
     while ($order_history = tep_db_fetch_array($order_history_query)) {
-        $email_printing_order .= $order_history['date_purchased'] . '　　' .  tep_output_string_protected($order_history['customers_name']) . '　　' .  abs(intval($order_history['order_total_value'])) . '円　　' .  $order_history['orders_status_name'] . "\n";
+        $email_orders_history .= $order_history['date_purchased'] . '　　' .  tep_output_string_protected($order_history['customers_name']) . '　　' .  abs(intval($order_history['order_total_value'])) . JPMONEY_UNIT_TEXT .'　　' .  $order_history['orders_status_name'] . "\n";
     }
-
-$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n\n\n";
-
-$cpayment_class = $payment_modules->getModule($cpayment_code);
-if (method_exists($cpayment_class,'getMailString')){
-  $email_printing_order .= $cpayment_class->getMailString($preorder_total_print_num);
-}
+$payment_replace = array(
+                        $preorder['customers_name'],
+                        STORE_NAME, 
+                        date('Y'),
+                        $orders_id,  
+                        tep_date_long(time()),
+                        $preorder['customers_email_address'],
+                        '',
+                        $print_point,
+                        $shipping_fee_value,
+                        $print_handle_fee,
+                        str_replace(JPMONEY_UNIT_TEXT,"",$currencies->format(abs($preorder_total_print_num+$_SESSION['preorders_code_fee']))),
+                        $products_ordered_text,
+                        tep_date_long($_SESSION['preorder_info_date']) . $_SESSION['preorder_info_start_hour'] . SENDMAIL_TEXT_HOUR . $_SESSION['preorder_info_start_min'] . SENDMAIL_TEXT_MIN.SENDMAIL_TEXT_TIME_LINK. $_SESSION['preorder_info_end_hour'] .SENDMAIL_TEXT_HOUR. $_SESSION['preorder_info_end_min'] .SENDMAIL_TEXT_MIN.SENDMAIL_TEXT_TWENTY_FOUR_HOUR,
+                        $order_comment_str,
+                        '',
+                        $customer_printing_order,
+                        $credit_inquiry['customers_fax'],
+                        $email_orders_history,
+                        abs($preorder_total_print_num+$_SESSION['preorders_code_fee'])
+                      );
+$email_printing_order = str_replace($payment_mode,$payment_replace,$orders_print_mail_templates['contents']);
 
 if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
   //发送打印邮件 

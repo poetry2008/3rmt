@@ -293,7 +293,9 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       }
       
       if (tep_session_is_registered('customer_id')) {
-          $preorder_email_text = PREORDER_MAIL_CONTENT; 
+          //预约完成邮件认证
+          $preorders_mail_array = tep_get_mail_templates('PREORDER_MAIL_CONTENT',SITE_ID);
+          $preorder_email_text = $preorders_mail_array['contents']; 
           
           $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}'); 
         
@@ -304,7 +306,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
           
           $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
           
-          $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, PREORDER_MAIL_SUBJECT); 
+          $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, $preorders_mail_array['title']); 
           if ($account_values['is_send_mail'] != '1') {
             tep_mail(tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']), $account_values['customers_email_address'], $preorder_email_subject, $preorder_email_text, STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS); 
             tep_mail('', SENTMAIL_ADDRESS, $preorder_email_subject, $preorder_email_text, tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']), $account_values['customers_email_address']); 
@@ -325,14 +327,17 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
                 STORE_NAME,
                 HTTP_SERVER
                 ); 
-            
-            $preorder_email_text = str_replace($old_str_array, $new_str_array, PREORDER_MAIL_ACTIVE_CONTENT); 
-            $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, PREORDER_MAIL_ACTIVE_SUBJECT); 
+            //预约邮件认证
+            $preorder_mail_array = tep_get_mail_templates('PREORDER_MAIL_ACTIVE_CONTENT',SITE_ID); 
+            $preorder_email_text = str_replace($old_str_array, $new_str_array, $preorder_mail_array['contents']); 
+            $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, $preorder_mail_array['title']); 
             $unactive_customers_single = true; 
             $send_to_owner = true;  
             tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$encode_param_str."' where customers_id = '".$exists_customer_res['customers_id']."'");  
           } else {
-            $preorder_email_text = PREORDER_MAIL_CONTENT; 
+            //预约完成邮件认证
+            $preorders_mail_array = tep_get_mail_templates('PREORDER_MAIL_CONTENT',SITE_ID);
+            $preorder_email_text = $preorders_mail_array['contents']; 
             
             $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}'); 
             
@@ -343,7 +348,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
             
             $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
             
-            $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, PREORDER_MAIL_SUBJECT); 
+            $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, $preorders_mail_array['title']); 
             $exists_email_single = true;     
           
             if ($exists_customer_res['is_send_mail'] == '1') {
@@ -364,8 +369,10 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
               STORE_NAME,
               HTTP_SERVER
               ); 
-          $preorder_email_text = str_replace($old_str_array, $new_str_array, PREORDER_MAIL_ACTIVE_CONTENT); 
-          $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, PREORDER_MAIL_ACTIVE_SUBJECT); 
+          //预约邮件认证
+          $preorder_mail_array = tep_get_mail_templates('PREORDER_MAIL_ACTIVE_CONTENT',SITE_ID);
+          $preorder_email_text = str_replace($old_str_array, $new_str_array, $preorder_mail_array['contents']); 
+          $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, $preorder_mail_array['title']); 
           tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$encode_param_str."' where customers_id = '".$tmp_customer_id."'");  
         }
         

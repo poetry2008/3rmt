@@ -232,9 +232,6 @@ class fetch_good extends basePayment  implements paymentInterface {
                  'MODULE_PAYMENT_FETCH_GOOD_PREORDER_STATUS_ID',
                  'MODULE_PAYMENT_FETCH_GOOD_SORT_ORDER',
                  'MODULE_PAYMENT_FETCH_GOOD_MONEY_LIMIT',
-                 'MODULE_PAYMENT_FETCH_GOOD_MAILSTRING',
-                 'MODULE_PAYMENT_FETCH_GOOD_PRINT_MAILSTRING_TITLE',
-                 'MODULE_PAYMENT_FETCH_GOOD_PRINT_MAILSTRING',
                  );
   }
 /*----------------------------

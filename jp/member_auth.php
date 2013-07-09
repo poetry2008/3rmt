@@ -48,8 +48,10 @@
             STORE_NAME,
             HTTP_SERVER
             ); 
-        $email_text .= str_replace($old_str_array, $new_str_array, ACTIVE_ACCOUNT_EMAIL_CONTENT);  
-        $ac_email_text = str_replace('${SITE_NAME}', STORE_NAME, ACTIVE_ACCOUNT_EMAIL_TITLE);  
+        //会员邮件认证
+        $users_mail_array = tep_get_mail_templates('ACTIVE_ACCOUNT_EMAIL_CONTENT',SITE_ID);
+        $email_text .= str_replace($old_str_array, $new_str_array, $users_mail_array['contents']);  
+        $ac_email_text = str_replace('${SITE_NAME}', STORE_NAME, $users_mail_array['title']);  
        
         if ($customers_res['is_send_mail'] != '1') {
           tep_mail($mail_name, $_POST['cemail'], $ac_email_text, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);

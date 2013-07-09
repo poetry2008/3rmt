@@ -114,6 +114,7 @@ define('BOX_TOOLS_DEFINE_LANGUAGE', '语言文件管理');
 define('BOX_TOOLS_FILE_MANAGER', '文件管理');
 define('BOX_TOOLS_MAIL', '发送邮件');
 define('BOX_TOOLS_NEWSLETTER_MANAGER', '邮件杂志管理');
+define('BOX_TOOLS_MAIL_TEMPLATES', '邮件模板管理');
 define('BOX_TOOLS_SERVER_INFO', '服务器信息');
 define('BOX_TOOLS_WHOS_ONLINE', '在线用户');
 define('BOX_TOOLS_PRESENT','赠品功能');

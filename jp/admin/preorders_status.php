@@ -4,6 +4,7 @@
 */
 
   require('includes/application_top.php');
+  include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .  '/default.php');
   if (isset($_GET['action'])) 
   switch ($_GET['action']) {
 /* -----------------------------------------------------
@@ -45,6 +46,8 @@
                                    );
           $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
           tep_db_perform(TABLE_PREORDERS_STATUS, $sql_data_array);
+          //同步对应的邮件模板
+          tep_db_query("insert into ". TABLE_MAIL_TEMPLATES ." values(NULL,'PREORDERS_STATUS_MAIL_TEMPLATES_".$orders_status_id."','0','".tep_db_prepare_input($orders_status_name_array[$language_id]).TEXT_PREORDERS_STATUS_MAIL_TITLE."','".TEXT_PREORDERS_STATUS_MAIL_USE_DESCRIPTION."','','','".TEXT_PREORDERS_STATUS_MAIL_DESCRIPTION."','1','".$_POST['user_added']."',now(),'','')");
         } elseif ($_GET['action'] == 'save') {
           tep_db_perform(TABLE_PREORDERS_STATUS, $sql_data_array, 'update', "orders_status_id = '" . tep_db_input($orders_status_id) . "' and language_id = '" . $language_id . "'");
         }
@@ -59,44 +62,6 @@
         }
       }
     
-    //mail正文 add
-    if ($_GET['action'] == 'insert') {
-      $sql_os_array = array('orders_status_id' => $orders_status_id,
-                            'language_id' => $languages_id,
-                            'orders_status_title' => tep_db_prepare_input($os_title),
-                            'orders_status_mail' => tep_db_prepare_input($os_mail),
-                            'site_id' => $site_id
-                            );
-      tep_db_perform(TABLE_PREORDERS_MAIL, $sql_os_array);
-    
-    } elseif ($_GET['action'] == 'save') {    
-    
-    $om_check_query = tep_db_query("
-        select count(*) 
-        from ".TABLE_PREORDERS_MAIL." 
-        where orders_status_id = " . tep_db_input($orders_status_id) . " 
-          and site_id = '".$site_id."'
-          and language_id = " . $languages_id);
-    $om_check_result = tep_db_fetch_array($om_check_query);
-    $om_count = $om_check_result['count(*)'];
-    
-    if($om_count == 0){
-      $sql_os_array = array('orders_status_id' => $orders_status_id,
-                            'language_id' => $languages_id,
-                            'orders_status_title' => tep_db_prepare_input($os_title),
-                            'orders_status_mail' => tep_db_prepare_input($os_mail), 
-                            'site_id' => $site_id
-                            );
-          tep_db_perform(TABLE_PREORDERS_MAIL, $sql_os_array);
-    }else{
-      $sql_os_array = array('orders_status_mail' => tep_db_prepare_input($os_mail),
-                            'orders_status_title' => tep_db_prepare_input($os_title));
-      tep_db_perform(TABLE_PREORDERS_MAIL, $sql_os_array, 'update', "orders_status_id = '" . tep_db_input($orders_status_id) . "' and language_id = '" . $languages_id . "' and site_id = '".$site_id."'");
-      }
-    
-    }
-    //mail本文 add end
-
       if ($_POST['default'] == 'on') {
         tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . tep_db_input($orders_status_id) . "' where configuration_key = 'DEFAULT_PREORDERS_STATUS_ID'");
       }
@@ -113,7 +78,8 @@
       }
 
       tep_db_query("delete from " . TABLE_PREORDERS_STATUS . " where orders_status_id = '" . tep_db_input($oID) . "'");
-      tep_db_query("delete from " . TABLE_PREORDERS_MAIL . " where orders_status_id = '" . tep_db_input($oID) . "'");
+      //删除对应的邮件模板
+      tep_db_query("delete from ". TABLE_MAIL_TEMPLATES ." where flag='PREORDERS_STATUS_MAIL_TEMPLATES_".tep_db_input($oID)."'");
       
       tep_redirect(tep_href_link(FILENAME_PREORDERS_STATUS, 'page=' . $_GET['page']));
       break;
@@ -328,14 +294,6 @@ require("includes/note_js.php");
         $orders_status_inputs_string .= '<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('orders_status_name[' . $languages[$i]['id'] . ']');
       }
     
-    //mail标题 add
-    $orders_status_inputs_string .= '<br><br>' . TEXT_INFO_ORDERS_STATUS_TITLE . '<br>' . tep_draw_input_field('os_title');
-    //mail标题 add end
-    
-    //mail正文 add
-    $orders_status_inputs_string .= '<br><br>' . TEXT_INFO_ORDERS_STATUS_MAIL . '<br>' . tep_draw_textarea_field('os_mail', 'soft', '25', '5').'<br>'.$explanation ;
-    //mail正文 add end
-
       $contents[] = array('text' => '<br>' . TEXT_INFO_ORDERS_STATUS_NAME . $orders_status_inputs_string);
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('default') . ' ' . TEXT_SET_DEFAULT);
       
@@ -360,27 +318,9 @@ require("includes/note_js.php");
         $orders_status_inputs_string .= '<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .  tep_draw_input_field('orders_status_name[' . $languages[$i]['id'] . ']', tep_get_preorders_status_name($oInfo->orders_status_id, $languages[$i]['id']));
       }
     
-    $site_id = isset($_GET['site_id']) ? (int) $_GET['site_id']: 0;
-    $os_query = tep_db_query("
-        select * 
-        from ".TABLE_PREORDERS_MAIL." 
-        where orders_status_id = '".$oID."' 
-          and language_id = '".$languages_id."'
-          and site_id = '".$site_id."'
-    ");
-    $os_result = tep_db_fetch_array($os_query);
-    $os_mail = $os_result['orders_status_mail'];
-    $os_title = $os_result['orders_status_title'];
+    $site_id = isset($_GET['site_id']) ? (int) $_GET['site_id']: 0; 
     $contents[] = array('text' => '<input type="hidden" name="site_id" value="'.($os_result?$os_result['site_id']:$site_id).'">');
     
-    //mail标题 add
-    $orders_status_inputs_string .= '<br><br>' . TEXT_INFO_ORDERS_STATUS_TITLE . '<br>' . tep_draw_input_field('os_title', $os_title);
-    //mail标题 add end
-
-    //mail正文 add
-    $orders_status_inputs_string .= '<br><br>' . TEXT_INFO_ORDERS_STATUS_MAIL . '<br>' . tep_draw_textarea_field('os_mail', 'soft', '25', '5', $os_mail) . '<br>' . $explanation;
-    //mail正文 add end
-
       $contents[] = array('text' => '<br>' . TEXT_INFO_ORDERS_STATUS_NAME . $orders_status_inputs_string);
       if (DEFAULT_PREORDERS_STATUS_ID != $oInfo->orders_status_id) $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('default') . ' ' . TEXT_SET_DEFAULT);
       

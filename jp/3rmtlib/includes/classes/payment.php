@@ -534,8 +534,9 @@ class payment {
   返回值：电子邮件的字符串(array)
  ---------------------*/
   function getOrderMailString($payment,$option){
-    
-    $mailstring = get_configuration_by_site_id_or_default("MODULE_PAYMENT_".strtoupper($payment)."_MAILSTRING",$this->site_id);
+
+    //订单邮件
+    $orders_mail_templates = tep_get_mail_templates('MODULE_PAYMENT_'.strtoupper($payment).'_MAILSTRING',$this->site_id);     $mailstring = $orders_mail_templates['contents'];
     foreach ($option as $key=>$value){
       $mailstring = str_replace('${'.strtoupper($key).'}',$value,$mailstring);
     }

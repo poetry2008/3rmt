@@ -198,6 +198,7 @@ if ($pdo_con) {
   define('TABLE_ADDRESS_BOOK', 'address_book');
   define('TABLE_TAGS', 'tags');
   define('TABLE_PRODUCTS_TO_TAGS', 'products_to_tags');
+  define('TABLE_MAIL_TEMPLATES', 'mail_templates');
   define('TABLE_ADDRESS_FORMAT', 'address_format');
   define('TABLE_BANNERS', 'banners');
   define('TABLE_BANNERS_HISTORY', 'banners_history');

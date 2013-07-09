@@ -2,9 +2,9 @@
 <?php 
 set_time_limit(0);
 //file patch
-define('ROOT_DIR','/home/.sites/28/site1/web/admin');
+//define('ROOT_DIR','/home/.sites/28/site1/web/admin');
 //define('ROOT_DIR','/home/.sites/22/site13/vhosts/jp/admin');
-//define('ROOT_DIR','/home/szn/project/3rmt/jp/admin');
+define('ROOT_DIR','/home/hm1001/osc_3rmt/jp/admin');
 require(ROOT_DIR.'/includes/configure.php');
 // default sleep second
 define('SLEEP_SECOND',3);//以秒为单位设置
@@ -72,9 +72,12 @@ $template_sql = "select * from point_mail";
 $template_query = mysql_query($template_sql);
 $template_arr = array();
 while($template_row = mysql_fetch_array($template_query)){
+  $point_mail_query = mysql_query("select title,contents from mail_templates where flag='POINT_NOTIFY_MAIL_TEMPLATES_".$template_row['id']."'");
+  $point_mail_array = mysql_fetch_array($point_mail_query);
+  mysql_free_result($point_mail_query);
   $template_arr[] = array('mail_date' => $template_row['mail_date'],
-      'mail_title' =>  $template_row['mail_title'],
-      'template' => $template_row['description']);
+      'mail_title' =>  $point_mail_array['title'],
+      'template' => $point_mail_array['contents']);
 
 }
 

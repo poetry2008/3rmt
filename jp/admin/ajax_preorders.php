@@ -910,14 +910,14 @@ if (isset($_POST['orders_id']) && isset($_POST['orders_comment'])) {
     echo 0; 
   }
 } else if (isset($_GET['action']) && $_GET['action'] == 'get_mail') {
-  $preorder_status_raw = tep_db_query("select * from ".TABLE_PREORDERS_MAIL." where orders_status_id = '".$_POST['sid']."'");
+  $preorder_status_raw = tep_db_query("select * from ".TABLE_MAIL_TEMPLATES." where flag = 'PREORDERS_STATUS_MAIL_TEMPLATES_".$_POST['sid']."'");
   $preorder_status = tep_db_fetch_array($preorder_status_raw);
   if ($preorder_status) {
     if ($_POST['type']) {
-      echo $preorder_status['orders_status_title']; 
+      echo $preorder_status['title']; 
     } else {
       $replace_str = date('Y年n月j日',strtotime(tep_get_pay_day()));
-      echo str_replace('${PAY_DATE}', $replace_str, $preorder_status['orders_status_mail']); 
+      echo str_replace('${PAY_DATE}', $replace_str, $preorder_status['contents']); 
     }
   } else {
     echo ''; 
