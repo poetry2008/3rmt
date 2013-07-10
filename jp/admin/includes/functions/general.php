@@ -10896,9 +10896,9 @@ function tep_update_faq_sort($fid,$site_id,$type,$action='update'){
       $title = $q_row['ask'];
       $sort_order = $q_row['sort_order'];
       $is_show = $q_row['is_show'];
-      $parent_id = $q_row['parent_id'];
+      $parent_id = $q_row['faq_category_id'];
       $info_id = $q_row['faq_question_id'];
-      $updated_at = $c_row['updated_at'];
+      $updated_at = $q_row['updated_at'];
     }
   }
   if($action=='update'){
