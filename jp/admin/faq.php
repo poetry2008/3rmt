@@ -1084,14 +1084,10 @@ require("includes/note_js.php");
                         'params' => 'class="dataTableContent"'.$onclick,
                         'text'   => get_romaji_by_site_id($faq_category['site_id'])
                         );
-                    if(in_array($faq_category['site_id'],$site_array)){
-                      $faq_file = '<a href="'.tep_href_link(FILENAME_FAQ, tep_get_faq_path($faq_category['info_id']).'&site_id='.$_GET['site_id']). '">' .  tep_image(DIR_WS_ICONS.'folder.gif',ICON_FOLDER) .'</a>';
-                    }else{
-                      $faq_file = tep_image(DIR_WS_ICONS.'folder.gif',ICON_FOLDER,'','','disabled="disabled"');
-                    }
+                    $faq_file = '<a href="'.tep_href_link(FILENAME_FAQ, tep_get_faq_path($faq_category['info_id']).'&site_id='.$_GET['site_id']). '">' .  tep_image(DIR_WS_ICONS.'folder.gif',ICON_FOLDER) .'</a>';
                     $faq_info[] = array(
                         'params' => 'class="dataTableContent"'.$onclick,
-                        'text'   => $faq_file.'&nbsp; '.$faq_category['title']
+                        'text'   => $faq_file.'&nbsp;'.$faq_category['title']
                         );
                     //faq category is show 
                     if($faq_category['is_show']=='1'){
@@ -1195,7 +1191,7 @@ require("includes/note_js.php");
                     }
                       }else{
                     if(!in_array($faq_category['site_id'],$site_array)){
-                    $faq_info[] = array(
+                    $faq_qid_info[] = array(
                         'params' => 'align="left" ',
                         'text'   => tep_image(DIR_WS_IMAGES .  'icon_status_green_light.gif', '') .'&nbsp;&nbsp;'.  tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', '') 
                       );
