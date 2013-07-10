@@ -28,7 +28,6 @@ define('TEXT_CATEGORIES','种类');
 define('TEXT_HOW_TO_COPY','复制方法');
 define('TEXT_COPY_AS_LINK','复制链接（到其他的种类）');
 define('TEXT_COPY_AS_DUPLICATE','重复复制（可以是同一种类）');
-define('TEXT_INFO_HEADING_EDIT_FAQ_QUESTION','FAQ');
 define('TEXT_NEW_FAQ_QUESTION_INFO','请输入新FAQ的内容');
 define('TEXT_NEW_FAQ_QUESTION_ASK','问题');
 define('TEXT_NEW_FAQ_QUESTION_KEYWORDS','关键字');

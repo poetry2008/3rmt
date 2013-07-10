@@ -28,7 +28,6 @@ define('TEXT_CATEGORIES','カテゴリー');
 define('TEXT_HOW_TO_COPY','コピー方法');
 define('TEXT_COPY_AS_LINK','リンクコピー（他カテゴリーへ）');
 define('TEXT_COPY_AS_DUPLICATE','重複コピー（同一カテゴリー可）');
-define('TEXT_INFO_HEADING_EDIT_FAQ_QUESTION','FAQ');
 define('TEXT_NEW_FAQ_QUESTION_INFO','新しいFAQの内容を入力してください');
 define('TEXT_NEW_FAQ_QUESTION_ASK','質問');
 define('TEXT_NEW_FAQ_QUESTION_KEYWORDS','キーワード');
