@@ -165,7 +165,7 @@ function show_head_notice(no_type)
           var notice_new_flag = true;
           if($("#notice_id_str").val()){
             var notice_id_str = $("#notice_id_str").val();
-            var notice_id_array = new Array(); 
+            var notice_id_array = new Array();
             notice_id_array = notice_id_str.split(",");
             for(x in notice_id_array){
 
@@ -210,7 +210,7 @@ function show_head_notice(no_type)
           }
         }
         
-        if (no_type == 1) {   
+        if (no_type == 1) { 
           if((alert_update_id != data_info[2] && notice_new_flag == true) || (data_info[6] > update_time_id)){
             $("#show_all_notice").hide();
             $('#alert_buttons').css('background-color','darkred');
@@ -431,7 +431,7 @@ echo "<a href=".tep_href_link($cur_page,tep_get_all_get_params(array('language')
     "language=".'ja')."><font size=3px><b>JP</b></font></a>&nbsp;";
 echo "<a href=".tep_href_link($cur_page,tep_get_all_get_params(array('language')).
     "language=".'ch')."><font size=3px><b>CH</b></font></a>&nbsp;";
-echo '<a href="' . tep_href_link('help.php', 'info_romaji='.urlencode(str_replace('/admin/','',$current_page_tp)), 'NONSSL') . '" class="headerLink"  target="_blank"><img src="images/menu_icon/icon_help_info.gif" alt="img"></a>';
+echo '<a href="' . tep_href_link('help.php', 'info_roman='.urlencode(str_replace('/admin/','',$current_page_tp)), 'NONSSL') . '" class="headerLink"  target="_blank"><img src="images/menu_icon/icon_help_info.gif" alt="img"></a>';
 ?>
 </div>
 
