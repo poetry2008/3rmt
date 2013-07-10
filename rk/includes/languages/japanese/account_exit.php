@@ -12,6 +12,5 @@ define('TEXT_ACCOUNT_EXIT_COMMENT_REGISTER','※ 退会手続きが完了しま�
 define('TEXT_ACCOUNT_EXIT_COMMENT_EXIT','※ 退会手続きをされたタイミングによっては、退会後に数回案内メールが届く場合がありますのでご了承ください。');
 define('TEXT_ACCOUNT_EXIT_COMMENT_CONTACT','※ 退会手続き後、1週間経過しても案内メールが届く場合は、お問い合わせよりご連絡をお願いします。');
 define('TEXT_ACCOUNT_EXIT_SUCCESS_COMMENT','長らくのご愛顧ありがとうございました。');
-define('TEXT_ACCOUNT_EXIT_CONFIRM','本当に退会しますか？');
 define('TEXT_ACCOUNT_EXIT_CANCEL','退会を考え直す');
 ?>
