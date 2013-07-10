@@ -387,7 +387,7 @@ $site_id = isset($_GET['site_id']) ? $_GET['site_id']:0;
   }else if(isset($_GET['cPath']) && $_GET['cPath']!=""){
 $faq_query = tep_db_query("select title from ".TABLE_FAQ_CATEGORIES_DESCRIPTION." where faq_category_id='".$_GET['cPath']."'");
  $faq_array = tep_db_fetch_array($faq_query);
-  echo HEADING_TITLE.$faq_array['title']; 
+  echo HEADING_TITLE.'&nbsp;'.$faq_array['title']; 
   }else{
  echo   HEADING_TITLE;
   }
@@ -1069,7 +1069,7 @@ require("includes/note_js.php");
                     if(in_array($faq_category['site_id'],$site_array)){
                     $faq_checkbox = '<input type="checkbox" name="cID[]" value="'.$faq_category['info_id'].'">';
                     }else{
-                    $faq_checkbox = '<input type="checkbox" disabled="disabled" name="cID[]" value="'.$faq_category['info_id'].'">';
+                    $faq_checkbox = '<input type="checkbox" disabled="disabled">';
                     }
                     $faq_info[] = array(
                         'params' => 'class="dataTableContent"',
@@ -1084,14 +1084,10 @@ require("includes/note_js.php");
                         'params' => 'class="dataTableContent"'.$onclick,
                         'text'   => get_romaji_by_site_id($faq_category['site_id'])
                         );
-                    if(in_array($faq_category['site_id'],$site_array)){
-                      $faq_file = '<a href="'.tep_href_link(FILENAME_FAQ, tep_get_faq_path($faq_category['info_id']).'&site_id='.$_GET['site_id']). '">' .  tep_image(DIR_WS_ICONS.'folder.gif',ICON_FOLDER) .'</a>';
-                    }else{
-                      $faq_file = tep_image(DIR_WS_ICONS.'folder.gif',ICON_FOLDER,'','','disabled="disabled"');
-                    }
+                    $faq_file = '<a href="'.tep_href_link(FILENAME_FAQ, tep_get_faq_path($faq_category['info_id']).'&site_id='.$_GET['site_id']). '">' .  tep_image(DIR_WS_ICONS.'folder.gif',ICON_FOLDER) .'</a>';
                     $faq_info[] = array(
                         'params' => 'class="dataTableContent"'.$onclick,
-                        'text'   => $faq_file.'&nbsp; '.$faq_category['title']
+                        'text'   => $faq_file.'&nbsp;'.$faq_category['title']
                         );
                     //faq category is show 
                     if($faq_category['is_show']=='1'){
@@ -1162,7 +1158,7 @@ require("includes/note_js.php");
                     if(in_array($faq_category['site_id'],$site_array)){
                         $faq_qid_checkbox =  '<input type="checkbox" name="qID[]" value="'.$faq_category['info_id'].'">';
                     }else{
-                        $faq_qid_checkbox =  '<input type="checkbox" disabled="disabled" name="qID[]" value="'.$faq_category['info_id'].'">';
+                        $faq_qid_checkbox =  '<input type="checkbox" disabled="disabled">';
                     }
                     $faq_qid_info[] = array(
                         'params' => 'class="dataTableContent"',
@@ -1195,7 +1191,7 @@ require("includes/note_js.php");
                     }
                       }else{
                     if(!in_array($faq_category['site_id'],$site_array)){
-                    $faq_info[] = array(
+                    $faq_qid_info[] = array(
                         'params' => 'align="left" ',
                         'text'   => tep_image(DIR_WS_IMAGES .  'icon_status_green_light.gif', '') .'&nbsp;&nbsp;'.  tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', '') 
                       );
@@ -1293,9 +1289,15 @@ require("includes/note_js.php");
                    if(($site_array[0] != '' && $site_array[0] != 0) || $site_array[1] != '')  {     
                    if(isset($_GET['cPath']) && $_GET['cPath'] != ''){
                     $faq_site_id =  tep_db_fetch_array(tep_db_query("select * from ".TABLE_FAQ_CATEGORIES_DESCRIPTION." where faq_category_id = '".$current_category_id."'"));
+                    if(!in_array($faq_site_id['site_id'],$site_array)){
+                    echo tep_html_element_button(IMAGE_NEW_FAQ_CATEGORY,'disabled="disabled"');
+                    echo '&nbsp;';
+                    echo tep_html_element_button(IMAGE_NEW_FAQ,'disabled="disabled"');
+                    }else{
                     echo '<a href="javascript:void(0)" onclick="show_faq(this,-1,\'\','.$_GET['page'].','.$faq_site_id['site_id'].')">'.tep_html_element_button(IMAGE_NEW_FAQ_CATEGORY).'</a>';
                     echo '&nbsp;';
                     echo '<a href="javascript:void(0)" onclick="show_faq(this,\'\',-1,'.$_GET['page'].','.$faq_site_id['site_id'].')">'.tep_html_element_button(IMAGE_NEW_FAQ).'</a>';
+                    }
                     }else{
                     echo '<a href="javascript:void(0)" onclick="show_faq(this,-1,\'\','.$_GET['page'].',-1)">'.tep_html_element_button(IMAGE_NEW_FAQ_CATEGORY).'</a>';
                     echo '&nbsp;';
