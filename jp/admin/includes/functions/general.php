@@ -1444,10 +1444,9 @@ function tep_cfg_pull_down_zone_list($zone_id,$empty_params = '',$params = '') {
     功能: 生成税率的下拉列表  
     参数: $tax_class_id(int) 税率id 
     参数: $key(string) 下拉列表的名字
-    参数: $params(string) 参数设置
     返回值: 税率的下拉列表(string)
  ------------------------------------ */
-function tep_cfg_pull_down_tax_classes($tax_class_id, $key = '', $params = '') {
+function tep_cfg_pull_down_tax_classes($tax_class_id, $key = '') {
   $name = (($key) ? 'configuration[' . $key . ']' : 'configuration_value');
 
   $tax_class_array = array(array('id' => '0', 'text' => TEXT_NONE));
@@ -1457,7 +1456,7 @@ function tep_cfg_pull_down_tax_classes($tax_class_id, $key = '', $params = '') {
         'text' => $tax_class['tax_class_title']);
   }
 
-  return tep_draw_pull_down_menu($name, $tax_class_array, $tax_class_id, $params);
+  return tep_draw_pull_down_menu($name, $tax_class_array, $tax_class_id);
 }
 
 /* -------------------------------------
@@ -2222,10 +2221,9 @@ function tep_cfg_pull_down_zone_classes($zone_class_id, $key = '') {
     功能: 获取订单状态的下拉列表 
     参数: $order_status_id(int) 订单状态id 
     参数: $key(string) 列表名 
-    参数: $params(string) 参数设置
     返回值: 订单状态的下拉列表(string) 
  ------------------------------------ */
-function tep_cfg_pull_down_order_statuses($order_status_id, $key = '', $params = '') {
+function tep_cfg_pull_down_order_statuses($order_status_id, $key = '') {
   global $languages_id;
 
   $name = (($key) ? 'configuration[' . $key . ']' : 'configuration_value');
@@ -2237,7 +2235,7 @@ function tep_cfg_pull_down_order_statuses($order_status_id, $key = '', $params =
         'text' => $statuses['orders_status_name']);
   }
 
-  return tep_draw_pull_down_menu($name, $statuses_array, $order_status_id, $params);
+  return tep_draw_pull_down_menu($name, $statuses_array, $order_status_id);
 }
 
 /* -------------------------------------
@@ -10770,20 +10768,6 @@ function tep_get_beforday_orders($limit_time_info){
     return $order_arr;
 }
 /*------------------------------
-  功能: 获取相应的邮件模板 
-  参数: $mail_flag(string) 邮件模板标识
-  参数: $site_id(int) 所属网站
-  返回: 邮件模板的标题、内容 
-  -----------------------------*/
-function tep_get_mail_templates($mail_flag,$site_id){
-
-  $mail_query = tep_db_query("select title,contents from ". TABLE_MAIL_TEMPLATES ." where flag='".$mail_flag."' and site_id='".$site_id."'");
-  $mail_array = tep_db_fetch_array($mail_query);
-  tep_db_free_result($mail_query);
-
-  return array('title'=>$mail_array['title'],'contents'=>$mail_array['contents']);
-}
-/*------------------------------
   功能: 获得用户支付方法组ID
   参数: orders_id(int) 订单ID
   参数: customer_id(int) 客户ID
@@ -10898,7 +10882,7 @@ function tep_update_faq_sort($fid,$site_id,$type,$action='update'){
       $is_show = $q_row['is_show'];
       $parent_id = $q_row['parent_id'];
       $info_id = $q_row['faq_question_id'];
-      $updated_at = $c_row['updated_at'];
+      $updated_at = $q_row['updated_at'];
     }
   }
   if($action=='update'){
