@@ -207,11 +207,7 @@ if(isset($_GET['action']) && $_GET['action']=="quit_success"){
 }else{
 ?>
               <td align="center"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_CUSTOMERS_EXIT,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'"') . '</a>'; ?></td>
-              <td align="center"><?php echo '<a href="' .
-              tep_href_link(FILENAME_ACCOUNT_EXIT, 'action=quit_success&check_flag='.time(), 'SSL') . '" onclick="return confirm(\''.TEXT_ACCOUNT_EXIT_CONFIRM.'\');">' .
-              tep_image_button('button_exit.gif',
-                  IMAGE_BUTTON_NOTIFICATIONS,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_exit.gif\'"
-                  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_exit_hover.gif\'"') . '</a>'; ?></td>
+              <td align="center"><?php echo '<a href="' .  tep_href_link(FILENAME_ACCOUNT_EXIT, 'action=quit_success&check_flag='.time(), 'SSL') . '">' .  tep_image_button('button_exit.gif', IMAGE_BUTTON_NOTIFICATIONS,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_exit.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_exit_hover.gif\'"') . '</a>'; ?></td>
              <td align="center"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . tep_image_button('button_cancel.gif', TEXT_ACCOUNT_EXIT_CANCEL,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_cancel.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_cancel_hover.gif\'"') . '</a>'; ?></td> 
 <?php
 }
