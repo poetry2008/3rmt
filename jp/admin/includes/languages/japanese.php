@@ -289,7 +289,7 @@ define('TEXT_DISPLAY_NUMBER_OF_CATEGORIES', '<b>%d</b> &sim; <b>%d</b> 番目を
 define('TEXT_DISPLAY_NUMBER_OF_BANNERS', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> のバナーのうち)');
 define('TEXT_DISPLAY_NUMBER_OF_COUNTRIES', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> の国のうち)');
 define('TEXT_DISPLAY_NUMBER_OF_CUSTOMERS', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> の顧客のうち)');
-define('TEXT_DISPLAY_NUMBER_OF_FAQ', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> のカテゴリ/のFAQのうち)');
+define('TEXT_DISPLAY_NUMBER_OF_FAQ', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> のカテゴリ/FAQのうち)');
 define('TEXT_DISPLAY_NUMBER_OF_CURRENCIES', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> の通貨のうち)');
 define('TEXT_DISPLAY_NUMBER_OF_LANGUAGES', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> の言語のうち)');
 define('TEXT_DISPLAY_NUMBER_OF_MANUFACTURERS', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> のメーカーのうち)');

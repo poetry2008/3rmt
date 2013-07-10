@@ -2541,7 +2541,7 @@ echo json_encode($json_array);
   }
 } else if ($_GET['action'] == 'generate_onetime_pwd') {
 /*-----------------------------------------
- 功能: 生成一次性密码口
+ 功能: 生成一次性密码
  参数: $letter_info 字符的值 
  参数: $rule_info 规则的值 
  ----------------------------------------*/

@@ -6864,7 +6864,11 @@ if($_GET['qID'] != -1 && $_GET['cID'] != -1){
     }
     $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
     $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-    $heading[] = array('align' => 'left', 'text' => TEXT_INFO_HEADING_EDIT_FAQ_QUESTION);
+    if($qInfo->info_type == 'q'){
+    $heading[] = array('align' => 'left', 'text' => $faq_q_raw['ask']);
+    }else if($qInfo->info_type == 'c'){
+    $heading[] = array('align' => 'left', 'text' => $faq_c_raw['title']);
+    }
     $heading[] = array('align' => 'right', 'text' => $page_str);
     if($qInfo->info_type == 'q'){
     $url_str = '&cPath='.$_GET['cPath'].  '&site_id='.$_GET['site_id'].'&qID='.$_GET['qID'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&page='.$_GET['page'];
