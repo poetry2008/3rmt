@@ -907,7 +907,7 @@ require("includes/note_js.php");
                 if($faq_type == ''){
                       $faq_type = 'asc';
                 }
-                if($_GET['sort'] == 'site_roman'){
+                if($_GET['sort'] == 'site_short_name'){
                   if($_GET['type'] == 'desc'){
                     $faq_str = 'site_id desc';
                     $faq_type = 'asc';
@@ -940,11 +940,11 @@ require("includes/note_js.php");
                     $faq_type = 'desc';
                     }
                 }
-                if($_GET['sort'] == 'site_roman'){
+                if($_GET['sort'] == 'site_short_name'){
                   if($_GET['type'] == 'desc'){
-                     $faq_site_roman = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+                     $faq_site_short_name = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
                    }else{
-                     $faq_site_roman = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+                     $faq_site_short_name = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
                    }
                 } 
                 if($_GET['sort'] == 'title'){
@@ -973,10 +973,10 @@ require("includes/note_js.php");
                 $faq_table_row = array();
                 $faq_title_row = array();
                 $faq_title_row[] = array('params' => 'class="dataTableHeadingContent"','text' => '<input type="checkbox" name="all_check" onclick="all_select_faq(\'cID[]\',\'qID[]\');">');
-                if(isset($_GET['sort']) && $_GET['sort'] == 'site_roman'){
-                $faq_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_FAQ,'sort=site_roman&search='.$_GET['search'].'&cPath='.$_GET['cPath'].'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&cID='.$_GET['cID'].'&type='.$faq_type).'">'.TABLE_FAQ_SITE.$faq_site_roman.'</a>');
+                if(isset($_GET['sort']) && $_GET['sort'] == 'site_short_name'){
+                $faq_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_FAQ,'sort=site_short_name&search='.$_GET['search'].'&cPath='.$_GET['cPath'].'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&cID='.$_GET['cID'].'&type='.$faq_type).'">'.TABLE_FAQ_SITE.$faq_site_short_name.'</a>');
                 }else{
-                $faq_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_FAQ,'sort=site_roman&search='.$_GET['search'].'&cPath='.$_GET['cPath'].'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&cID='.$_GET['cID'].'&type=desc').'">'.TABLE_FAQ_SITE.$faq_site_roman.'</a>');
+                $faq_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_FAQ,'sort=site_short_name&search='.$_GET['search'].'&cPath='.$_GET['cPath'].'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&cID='.$_GET['cID'].'&type=desc').'">'.TABLE_FAQ_SITE.$faq_site_short_name.'</a>');
                 }
                 if(isset($_GET['sort']) && $_GET['sort'] == 'title'){
                 $faq_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_FAQ,'sort=title&search='.$_GET['search'].'&cPath='.$_GET['cPath'].'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&cID='.$_GET['cID'].'&type='.$faq_type).'">'.TABLE_FAQ_CATEGORY_TITLE.$faq_title.'</a>');

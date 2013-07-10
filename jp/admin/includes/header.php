@@ -431,7 +431,7 @@ echo "<a href=".tep_href_link($cur_page,tep_get_all_get_params(array('language')
     "language=".'ja')."><font size=3px><b>JP</b></font></a>&nbsp;";
 echo "<a href=".tep_href_link($cur_page,tep_get_all_get_params(array('language')).
     "language=".'ch')."><font size=3px><b>CH</b></font></a>&nbsp;";
-echo '<a href="' . tep_href_link('help.php', 'info_roman='.urlencode(str_replace('/admin/','',$current_page_tp)), 'NONSSL') . '" class="headerLink"  target="_blank"><img src="images/menu_icon/icon_help_info.gif" alt="img"></a>';
+echo '<a href="' . tep_href_link('help.php', 'help_page_name='.urlencode(str_replace('/admin/','',$current_page_tp)), 'NONSSL') . '" class="headerLink"  target="_blank"><img src="images/menu_icon/icon_help_info.gif" alt="img"></a>';
 ?>
 </div>
 

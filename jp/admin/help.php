@@ -18,11 +18,11 @@ if ($_GET['action'] == 'save_content') {
   //更新内容 
   $help_romaji = urldecode($_POST['h_romaji']); 
   tep_db_query("update `help_info` set `content` = '".addslashes($_POST['help_content'])."', `title` = '".addslashes($_POST['help_title'])."' where romaji = '".$help_romaji."'"); 
-  tep_redirect(tep_href_link('help.php', 'info_roman='.urlencode($help_romaji))); 
+  tep_redirect(tep_href_link('help.php', 'help_page_name='.urlencode($help_romaji))); 
 }
 
-if (isset($_GET['info_roman']) && $_GET['info_roman']) {
-  $romaji = $_GET['info_roman'];
+if (isset($_GET['help_page_name']) && $_GET['help_page_name']) {
+  $romaji = $_GET['help_page_name'];
   $info_sql = "select * from help_info where romaji='".$romaji."'";
   $info_query = tep_db_query($info_sql);
   $info_array = tep_db_fetch_array($info_query);
@@ -59,7 +59,7 @@ if (isset($_GET['keyword']) && $_GET['keyword']!="") {
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title>
 <?php 
-if (isset($_GET['info_roman']) && $_GET['info_roman']) {
+if (isset($_GET['help_page_name']) && $_GET['help_page_name']) {
   echo $info_array['title']=="" ? HELP_INFO_NO_INFO : stripslashes($info_array['title']);
 } elseif (isset($_GET['keyword']) && $_GET['keyword']!="") {
   echo $keyword.HELP_INFO_SEARCH;
@@ -221,7 +221,7 @@ echo tep_draw_form('m_form', 'help.php', 'action=save_content');
           <td align="right" id="button_width">
             <input type="hidden" name="h_romaji" value="<?php echo urlencode($info_array['romaji']);?>">   
             <input type="submit" value="<?php echo IMAGE_SAVE;?>">
-            <a href="<?php echo tep_href_link('help.php', 'info_roman='.urlencode($info_array['romaji']));?>"><?php echo tep_html_element_button(IMAGE_BACK);?></a> 
+            <a href="<?php echo tep_href_link('help.php', 'help_page_name='.urlencode($info_array['romaji']));?>"><?php echo tep_html_element_button(IMAGE_BACK);?></a> 
           </td>
         </tr>
       </table>
@@ -232,7 +232,7 @@ echo tep_draw_form('m_form', 'help.php', 'action=save_content');
 </form>
 <?php
 } else {
-if (isset($_GET['info_roman']) && $_GET['info_roman']) {
+if (isset($_GET['help_page_name']) && $_GET['help_page_name']) {
   if (empty($info_array)) {
 ?>
 <table border="0" width="100%" cellpadding="0" cellspacing="0">
@@ -275,8 +275,7 @@ echo '<div class="content_table">';
 echo '<table width="100%" cellpadding="2" cellspacing="0" border="0">
 <tr>
 <td  align="left"><img alt="img" src="images/menu_icon/icon_help_info.gif" class="help_pic">&nbsp;'.stripslashes($info_array['title']);
-echo '&nbsp;&nbsp;<a href="'.tep_href_link('help.php',
-     'action=modify_content&info_roman='.urlencode($_GET['info_roman'])).'">'.tep_html_element_button(IMAGE_EDIT).'</a>';
+echo '&nbsp;&nbsp;<a href="'.tep_href_link('help.php', 'action=modify_content&help_page_name='.urlencode($_GET['help_page_name'])).'">'.tep_html_element_button(IMAGE_EDIT).'</a>';
 echo '</td>
 <td align="right">
 <form action="help.php" method="get" >
@@ -329,9 +328,9 @@ if(isset($_GET['keyword']) && $_GET['keyword']){
     } else {
       while($info_array = tep_db_fetch_array($info_query)){
         echo '<div class="content">';
-        echo '<a href="'.tep_href_link("help.php","info_roman=".urlencode($info_array['romaji'])).'"><h2><img alt="img" src="images/menu_icon/icon_help_info.gif" class="help_pic">&nbsp;'.stripslashes($info_array['title']).'</h2></a></div>'; 
+        echo '<a href="'.tep_href_link("help.php","help_page_name=".urlencode($info_array['romaji'])).'"><h2><img alt="img" src="images/menu_icon/icon_help_info.gif" class="help_pic">&nbsp;'.stripslashes($info_array['title']).'</h2></a></div>'; 
         echo '<div class="box_info">';
-        echo '<a href="'.tep_href_link("help.php","info_roman=".urlencode($info_array['romaji'])).'">'.mb_substr(strip_tags(stripslashes($info_array['content'])),0,300,'utf-8').'......</a></div>';
+        echo '<a href="'.tep_href_link("help.php","help_page_name=".urlencode($info_array['romaji'])).'">'.mb_substr(strip_tags(stripslashes($info_array['content'])),0,300,'utf-8').'......</a></div>';
       }
     }
     ?>
