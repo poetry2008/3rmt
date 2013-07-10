@@ -10860,7 +10860,11 @@ function tep_get_payment_flag($payment,$cid='',$site_id=0,$orders_id='',$flag=tr
 }
 function tep_update_faq_sort($fid,$site_id,$type,$action='update'){
   if($type=='c'){
+    if($action=='update'){
     $c_sql = "SELECT * FROM `faq_categories` c, `faq_categories_description` cd WHERE c.id = cd.faq_category_id and cd.faq_category_id='".$fid."' and site_id = '".$site_id."' limit 1";
+    }else{
+    $c_sql = "SELECT * FROM `faq_categories` c, `faq_categories_description` cd WHERE c.id = cd.faq_category_id and cd.id='".$fid."' and site_id = '".$site_id."' limit 1";
+    }
     $c_query = tep_db_query($c_sql);
     if($c_row = tep_db_fetch_array($c_query)){
       $search_text = $c_row['romaji'].'>>>'.$c_row['title'].'>>>'.$c_row['keywords'].'>>>'.$c_row['description'];
@@ -10880,8 +10884,12 @@ function tep_update_faq_sort($fid,$site_id,$type,$action='update'){
       `faq_question_description` qd, `faq_question` q,
       `faq_question_to_categories` q2c
       WHERE q.id = qd.`faq_question_id`
-      and qd.`faq_question_id` = q2c.`faq_question_id` 
-      and qd.faq_question_id = '".$fid."' and site_id = '".$site_id."' limit 1";
+      and qd.`faq_question_id` = q2c.`faq_question_id` ";
+    if($action=='update'){
+      $q_sql .= "and qd.faq_question_id = '".$fid."' and site_id = '".$site_id."' limit 1";
+    }else{
+      $q_sql .= "and qd.id = '".$fid."' and site_id = '".$site_id."' limit 1";
+    }
     $q_query = tep_db_query($q_sql);
     if($q_row = tep_db_fetch_array($q_query)){
       $search_text = $q_row['romaji'].'>>>'.$q_row['ask'].'>>>'.$q_row['keyworeds'].'>>>'.$q_row['answer'];

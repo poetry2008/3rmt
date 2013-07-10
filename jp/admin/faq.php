@@ -1003,9 +1003,7 @@ require("includes/note_js.php");
                   $sql_search_where = '';
                   if(isset($_GET['search'])&&$_GET['search']!=''){
                     $sql_search_where = " and search_text like '%".$_GET['search']."%' ";
-                    $faq_category_query_raw = "select * from faq_sort where 1 ".
-                      $sql_search_where." and ".$sql_site_where."  and parent_id =
-                      '".$current_category_id."' order by "; 
+                    $faq_category_query_raw = "select * from faq_sort where 1 ".  $sql_search_where." and ".$sql_site_where." order by "; 
                     if($faq_str){
                       $faq_category_query_raw .= $faq_str; 
                     }else{
@@ -1117,7 +1115,17 @@ require("includes/note_js.php");
                       }else{
                         $faq_info[] = array(
                             'params' => 'align="left"',
-                            'text'   => '<a class="faq_status_link" href="javascript:viod(0);" onclick ="change_status(\''.  tep_href_link(FILENAME_FAQ,'action=toggle&cID='.  $faq_category['info_id'].'&show_site='.$_GET['site_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'status=1&cPath='.  $HTTP_GET_VARS['cPath'].'&site_id='.$faq_category['site_id'].$c_page) .'\', \''.$ocertify->npermission.'\')">'. tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', '') .'</a> <a class="faq_status_link" href="javascript:viod(0);" onclick ="change_status(\''.  tep_href_link(FILENAME_FAQ,'action=toggle&cID='.  $faq_category['info_id'].'&show_site='.$_GET['site_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'status=0&cPath='.  $HTTP_GET_VARS['cPath'].'&site_id='.$faq_category['site_id'].$c_page) .'\', \''.$ocertify->npermission.'\')">'.'&nbsp;'.  tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', '') .'</a>'
+                            'text'   => '<a class="faq_status_link"
+                            href="javascript:viod(0);" onclick ="change_status(\''.
+                          tep_href_link(FILENAME_FAQ,'action=toggle&cID='.
+                              $faq_category['info_id'].'&show_site='.$_GET['site_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&status=1&cPath='.
+                              $HTTP_GET_VARS['cPath'].'&site_id='.$faq_category['site_id'].$c_page)
+                          .'\', \''.$ocertify->npermission.'\')">'.
+                            tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif',
+                              '') .'</a> <a class="faq_status_link"
+                            href="javascript:viod(0);" onclick ="change_status(\''.
+                          tep_href_link(FILENAME_FAQ,'action=toggle&cID='.
+                              $faq_category['info_id'].'&show_site='.$_GET['site_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&status=0&cPath='.  $HTTP_GET_VARS['cPath'].'&site_id='.$faq_category['site_id'].$c_page) .'\', \''.$ocertify->npermission.'\')">'.'&nbsp;'.  tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', '') .'</a>'
                             );
                       }
                     }
@@ -1194,7 +1202,7 @@ require("includes/note_js.php");
                     }else{
                     $faq_qid_info[] = array(
                         'params' => 'align="left" ',
-                        'text'   => '<a class="faq_status_link" href="javascript:viod(0);" onclick ="change_status(\''.  tep_href_link(FILENAME_FAQ,'action=setflag&qID='.  $faq_category['info_id'].'&show_site='.$_GET['site_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&flag=1&cPath='.  $cPath.'&site_id='.$faq_category['site_id']).'\', \''.$ocertify->npermission.'\')">'. tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', '') .'</a>&nbsp;<a class="faq_status_link" href="javascript:viod(0);" onclick ="change_status(\''.  tep_href_link(FILENAME_FAQ,'action=setflag&qID='.  $faq_category['info_id'].'&flag=0&cPath='.  $cPath.'&show_site='.$_GET['site_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&site_id='.$faq_category['site_id'].$c_page) .'\', \''.$ocertify->npermission.'\')">'.'&nbsp;'.  tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', '') .'</a>'
+                        'text'   => '<a class="faq_status_link" href="javascript:viod(0);" onclick ="change_status(\''.  tep_href_link(FILENAME_FAQ,'action=setflag&qID='.  $faq_category['info_id'].'&show_site='.$_GET['site_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&flag=1&cPath='.  $cPath.'&site_id='.$faq_category['site_id']).$c_page.'\', \''.$ocertify->npermission.'\')">'. tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', '') .'</a>&nbsp;<a class="faq_status_link" href="javascript:viod(0);" onclick ="change_status(\''.  tep_href_link(FILENAME_FAQ,'action=setflag&qID='.  $faq_category['info_id'].'&flag=0&cPath='.  $cPath.'&show_site='.$_GET['site_id'].'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&site_id='.$faq_category['site_id'].$c_page) .'\', \''.$ocertify->npermission.'\')">'.'&nbsp;'.  tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', '') .'</a>'
                         );
                     }
                       }
