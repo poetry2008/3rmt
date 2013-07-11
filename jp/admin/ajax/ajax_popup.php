@@ -7002,7 +7002,7 @@ if($_GET['qID'] != -1 && $_GET['cID'] != -1){
       if($disabled){
         $faq_qid_del  = tep_html_element_button(IMAGE_DELETE,$disabled);
       }else{
-        $faq_qid_del  = '<a href="javascript:void(0)" onclick="save_del()">'.tep_html_element_button(IMAGE_DELETE).'</a>';
+        $faq_qid_del = '<a href="javascript:void(0);" onclick="delete_fix_faq_category(\'q\',\''.urlencode('site_id='.$faq_q_raw['site_id'].'&cPath=' . $cPath .  '&cID=' .  $faq_q_raw['faq_question_id']).'\');">'.tep_html_element_button(IMAGE_DELETE).'</a>';
       }
     }
    $button[] = $faq_qid_save.$faq_qid_del;
@@ -7016,7 +7016,7 @@ if($_GET['qID'] != -1 && $_GET['cID'] != -1){
          if($disabled){
             $faq_del =tep_html_element_button(IMAGE_DELETE,$disabled);
          }else{
-            $faq_del = '<a href="javascript:void(0);" onclick="delete_fix_faq_category(\''.urlencode('cPath=' . $cPath .  '&cID=' .  $faq_c_raw['faq_category_id']).'\');">'.tep_html_element_button(IMAGE_DELETE).'</a>';
+            $faq_del = '<a href="javascript:void(0);" onclick="delete_fix_faq_category(\'c\',\''.urlencode('site_id='.$faq_c_raw['site_id'].'&cPath=' . $cPath .  '&cID=' .  $faq_c_raw['faq_category_id']).'\');">'.tep_html_element_button(IMAGE_DELETE).'</a>';
          }
      } 
     $button[] = $faq_save.$faq_del;

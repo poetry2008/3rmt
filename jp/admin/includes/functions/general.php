@@ -7488,7 +7488,8 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
     参数: $include_itself(boolean) 是否包含自己 
     返回值: 分类树(array) 
  ------------------------------------ */
-  function tep_get_faq_category_tree($parent_id = '0', $spacing = '', $exclude = '', $category_tree_array = '', $include_itself = false) {
+  function tep_get_faq_category_tree($parent_id = '0', $spacing = '', $exclude = '',
+      $category_tree_array = '', $site_id='',$include_itself = false) {
     global $languages_id;
 
     if (!is_array($category_tree_array)) $category_tree_array = array();
@@ -7496,7 +7497,8 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
 
     if ($include_itself) {
       $category_query = tep_db_query("select cd.title from " .
-          TABLE_FAQ_CATEGORIES_DESCRIPTION . " cd where cd.faq_category_id = '" . $parent_id . "' and cd.site_id='0'");
+          TABLE_FAQ_CATEGORIES_DESCRIPTION . " cd where cd.faq_category_id = '" .
+          $parent_id . "' and cd.site_id='".$site_id."'");
       $category = tep_db_fetch_array($category_query);
       $category_tree_array[] = array('id' => $parent_id, 'text' => $category['title']);
     }
@@ -7504,11 +7506,11 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
     $categories_query = tep_db_query("select c.id, cd.title, c.parent_id from " .
         TABLE_FAQ_CATEGORIES . " c, " . TABLE_FAQ_CATEGORIES_DESCRIPTION . " cd 
         where c.id = cd.faq_category_id and  c.parent_id = '" . $parent_id . "'
-        and site_id ='0' order by c.sort_order, cd.title");
+        and site_id ='".$site_id."' order by c.sort_order, cd.title");
     while ($categories = tep_db_fetch_array($categories_query)) {
       if ($exclude != $categories['id']) $category_tree_array[] = array('id' =>
           $categories['id'], 'text' => $spacing . $categories['title']);
-      $category_tree_array = tep_get_faq_category_tree($categories['id'], $spacing . '&nbsp;&nbsp;&nbsp;', $exclude, $category_tree_array);
+      $category_tree_array = tep_get_faq_category_tree($categories['id'], $spacing .  '&nbsp;&nbsp;&nbsp;', $exclude, $category_tree_array,$site_id);
     }
 
     return $category_tree_array;
@@ -7518,25 +7520,27 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
 /* -------------------------------------
     功能: 删除指定faq分类及其相关信息 
     参数: $category_id(int) 分类id 
+    参数: $site_id(int) 网站id 
     返回值: 无 
  ------------------------------------ */
-  function tep_remove_faq_category($category_id) {
+  function tep_remove_faq_category($category_id,$site_id) {
     tep_db_query("delete from " . TABLE_FAQ_CATEGORIES . " where id = '" . tep_db_input($category_id) . "'");
-    tep_db_query("delete from " . TABLE_FAQ_CATEGORIES_DESCRIPTION . " where faq_category_id = '" . tep_db_input($category_id) . "'");
+    tep_db_query("delete from " . TABLE_FAQ_CATEGORIES_DESCRIPTION . " where faq_category_id = '" . tep_db_input($category_id) . "' and site_id='".$site_id."'");
     tep_db_query("delete from " . TABLE_FAQ_QUESTION_TO_CATEGORIES . " where faq_category_id = '" . tep_db_input($category_id) . "'");
-    tep_db_query("delete from `faq_sort` where info_id = '" .  tep_db_input($category_id) . "' and info_type = 'c'");
+    tep_db_query("delete from `faq_sort` where info_id = '" .  tep_db_input($category_id) . "' and info_type = 'c' and site_id='".$site_id."'");
   }
 
 /* -------------------------------------
     功能: 删除指定faq问题及其相关信息 
     参数: $product_id(int) 问题id 
+    参数: $site_id(int) 网站id 
     返回值: 无 
  ------------------------------------ */
-  function tep_remove_faq_question($product_id) {
+  function tep_remove_faq_question($product_id,$site_id) {
     tep_db_query("delete from " . TABLE_FAQ_QUESTION . " where id = '" . tep_db_input($product_id) . "'");
     tep_db_query("delete from " . TABLE_FAQ_QUESTION_TO_CATEGORIES . " where faq_question_id = '" . tep_db_input($product_id) . "'");
-    tep_db_query("delete from " . TABLE_FAQ_QUESTION_DESCRIPTION . " where faq_question_id = '" . tep_db_input($product_id) . "'");
-    tep_db_query("delete from `faq_sort` where info_id = '" .  tep_db_input($product_id) . "' and info_type = 'q'");
+    tep_db_query("delete from " . TABLE_FAQ_QUESTION_DESCRIPTION . " where faq_question_id = '" . tep_db_input($product_id) . "' and site_id='".$site_id."'");
+    tep_db_query("delete from `faq_sort` where info_id = '" .  tep_db_input($product_id) . "' and info_type = 'q' and site_id='".$site_id."'");
   }
 
 /* -------------------------------------
@@ -10907,32 +10911,23 @@ function tep_update_faq_sort($fid,$site_id,$type,$action='update'){
       $updated_at = $q_row['updated_at'];
     }
   }
+  $sql_data_array = array(
+      'site_id' => $site_id,
+      'title' => $title,
+      'sort_order' => $sort_order,
+      'is_show' => $is_show,
+      'parent_id' => $parent_id,
+      'info_id' => $info_id,
+      'info_type' => $type,
+      'updated_at' => $updated_at,
+      'search_text' => $search_text
+      );  
   if($action=='update'){
-    $sql_fs = "UPDATE ".TABLE_FAQ_SORT." SET 
-      `title`='".tep_db_input($title)."',
-      `sort_order`='".$sort_order."',
-      `is_show`='".$is_show."',
-      `parent_id`='".$parent_id."',
-      `info_id`='".$info_id."',
-      `info_type`='".$type."',
-      `updated_at`='".$updated_at."',
-      `search_text`='".tep_db_input($search_text)."' 
-        WHERE `info_id`='".$info_id."' 
+    $where_str =" `info_id`='".$info_id."' 
         and `site_id`='".$site_id."'
         and `info_type`='".$type."'";
-    tep_db_query($sql_fs);
+    tep_db_perform(TABLE_FAQ_SORT, $sql_data_array,'update',$where_str); 
   }else if($action=='insert'){
-    $sql_data_array = array(
-        'site_id' => $site_id,
-        'title' => $title,
-        'sort_order' => $sort_order,
-        'is_show' => $is_show,
-        'parent_id' => $parent_id,
-        'info_id' => $info_id,
-        'info_type' => $type,
-        'updated_at' => $updated_at,
-        'search_text' => $search_text
-        );  
     tep_db_perform(TABLE_FAQ_SORT, $sql_data_array); 
   }
 }
