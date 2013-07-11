@@ -6664,7 +6664,7 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
    
   //编辑mail templates项目   
   $category_info_row[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_MAIL_NAME.'<input type="hidden" name="mail_id" value="'.$mail_array['id'].'"><input type="hidden" name="param_str" value="'.$param_str.'"><input type="hidden" name="url" value="'.$url.'">'), 
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_MAIL_NAME.'<input type="hidden" name="mail_id" value="'.$mail_array['id'].'"><input type="hidden" name="param_str" value="'.$param_str.'"><input type="hidden" name="url" value="'.$url.'"><input type="hidden" name="valid" value="'.($mail_array['valid'] == 1 ?  0 : 1).'">'), 
        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<input type="text" class="option_input" name="templates_title" value="'.$mail_array['templates_title'].'"><span id="mail_name_error">'.TEXT_FIELD_REQUIRED.'</span>')
      );
 
@@ -6730,7 +6730,16 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
   //底部内容
   $buttons = array();
 
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="edit_mail_check(\''.$ocertify->npermission.'\');"'.($site_permission_flag == false  ? 'disabled="disabled"' : '')).'</a>'; 
+   if($mail_array['site_id'] == 0){
+     $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="edit_mail_check(\''.$ocertify->npermission.'\');"'.($site_permission_flag == false  ? 'disabled="disabled"' : '')).'</a>'; 
+   }else{
+     if($mail_array['valid'] == 0){
+       $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_MAIL_VALID, 'id="button_valid" onclick="valid_mail_check(\''.$ocertify->npermission.'\');"'.($site_permission_flag == false  ? 'disabled="disabled"' : '')).'</a>';
+     }else{
+       $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="edit_mail_check(\''.$ocertify->npermission.'\');"'.($site_permission_flag == false  ? 'disabled="disabled"' : '')).'</a>';  
+       $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_MAIL_INVALID, 'id="button_valid" onclick="valid_mail_check(\''.$ocertify->npermission.'\');"'.($site_permission_flag == false  ? 'disabled="disabled"' : '')).'</a>'; 
+     }
+   }
  
   if (!empty($button)) {
     $buttons = array('align' => 'center', 'button' => $button); 

@@ -11,4 +11,6 @@ define('TEXT_SORT_DESC','▼');
 define('TEXT_MAIL_MUST_INPUT','必须项目');
 define('TEXT_MAIL_SEARCH_READ_TITLE', '※搜索对象：「名称」「标题」「内容」');
 define('TEXT_MAIL_EDIT_SELECT','请选择');
+define('TEXT_MAIL_VALID', '有效');
+define('TEXT_MAIL_INVALID', '无效');
 ?>
