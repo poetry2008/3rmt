@@ -3984,7 +3984,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     } elseif ($TotalDetails["Class"] == "ot_point") {
       $shipping_fee_point = $TotalDetails["Price"];
       $point_session_id = isset($_SESSION['orders_update_products'][$_GET['oID']]['point']) ? $_SESSION['orders_update_products'][$_GET['oID']]['point'] : $TotalDetails["Price"];
-      if ($customer_guest['customers_guest_chk'] == 0 || $order->info['is_gray'] == '1') { //会員
+      if ($customer_guest['customers_guest_chk'] == 0 || $order->info['is_gray'] == '1') { //member
         $current_point = $customer_point['point'] + $TotalDetails["Price"];
         echo '  <tr>' . "\n" .
           '    <td align="left" class="' . $TotalStyle . '">'.TEXT_CUSTOMER_INPUT.'<font color="red">'.TEXT_REMAINING . $customer_point['point'] . TEXT_SUBTOTAL . $current_point . TEXT_RIGHT_BRACKETS.'</font>'.TEXT_INPUT_POSITIVE_NUM.'</td>' . 
