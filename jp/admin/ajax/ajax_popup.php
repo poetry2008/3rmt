@@ -6680,6 +6680,7 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
 
    //格式化邮件模板说明
    $mail_templates_array = preg_split('/<br>|<\/br>/',$mail_array['contents_description']);
+   $mail_templates_array = array_filter($mail_templates_array);
    $mail_templates_start_array = '';
    $mail_templates_end_array = '';
    $mail_templates_start_str = '';
@@ -6688,10 +6689,14 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
    foreach($mail_templates_array as $mail_value){
 
      if($i % 2 == 0){
-   
-       $mail_templates_end_array[] = $mail_value;
+
+       if(trim($mail_value) != ''){ 
+         $mail_templates_end_array[] = $mail_value;
+       }
      }else{
-       $mail_templates_start_array[] = $mail_value;
+       if(trim($mail_value) != ''){
+         $mail_templates_start_array[] = $mail_value;
+       }
      }
      $i++;
    }

@@ -9,9 +9,24 @@
   
   $error_single = false; 
   $success_single = false; 
-  $subject = STORE_NAME;
+  //测试邮件
+  $mail_array = tep_get_mail_templates('TEXT_BODY_TEXT',SITE_ID);
+  $subject = $mail_array['title'];
   $body_text = '';
-  $body_text = TEXT_BODY_TEXT;
+  $body_text = $mail_array['contents'];
+  $mode_array = array(
+                      '${STORE_NAME}', 
+                      '${COMPANY_NAME}',
+                      '${HTTP_SERVER}',
+                      '${STORE_OWNER_EMAIL_ADDRESS}'
+                    );
+  $replace_array = array(
+                      STORE_NAME, 
+                      COMPANY_NAME,
+                      HTTP_SERVER,
+                      STORE_OWNER_EMAIL_ADDRESS
+                    );
+  $body_text = str_replace($mode_array,$replace_array,$body_text);
   
   if (isset($_POST['email_address'])) {
     if (empty($_POST['email_address'])) {
