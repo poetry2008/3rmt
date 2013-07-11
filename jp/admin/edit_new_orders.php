@@ -3297,7 +3297,7 @@ a.dpicker {
       $payment_negative_array = array_unique($payment_negative_array);       
       $payment_positive_array = array_unique($payment_positive_array); 
       if($products_money_total != 0){
-          $orders_payment_query = tep_db_query("select payment_method,orders_id from ". TABLE_ORDERS ." where customers_email_address='". $email_address_flag ."' and site_id='".$site_id_flag."' order by orders_id desc"); 
+          $orders_payment_query = tep_db_query("select payment_method,orders_id from ". TABLE_ORDERS ." where customers_email_address='".  $email_address_flag ."' and site_id='".$site_id_flag."' and is_gray != '1' order by orders_id desc"); 
           while($orders_payment_array = tep_db_fetch_array($orders_payment_query)){
 
             if($orders_payment_array['payment_method'] != ''){
