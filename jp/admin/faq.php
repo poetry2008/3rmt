@@ -64,136 +64,30 @@
         tep_redirect(tep_href_link(FILENAME_FAQ, 'cPath='.$_GET['cPath'].$c_page.'&search='.$_GET['search'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&site_id='.$_GET['show_site']));
         break;
       case 'delete_faq_confirm':
-      if((isset($_GET['cID']) && $_GET['cID']) || (isset($_POST['cID']) && $_POST['cID'])){
-         if($_GET['cID']){
-            tep_db_query("delete from `faq_sort` where info_id = '" . $_GET['cID'] . "' and info_type = 'c'");
-         }
-         if(isset($_POST['cID']) && !empty($_POST['cID'])){
-          foreach($_POST['cID'] as $ge_key => $ge_value){
-            tep_db_query("delete from `faq_sort` where info_id = '" . $ge_value . "' and info_type = 'c'");
-          }
-         }
-         if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];
-         else $site_arr="";
-         forward401Unless(editPermission($site_arr, $site_id));
-         $dc_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
-         $dc_site = (isset($_POST['site_id']))?'&site_id='.$_POST['site_id']:'';
-         if(isset($_POST['cID']) && !empty($_POST['cID'])){
-            foreach($_POST['cID'] as $ge_key => $ge_value){         
-          $categories = tep_get_faq_category_tree($ge_value, '', '0', '', true);
-          $questions = array();
-          $questions_delete = array();
+        $page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
+        $site_id = $_GET['site_id'];
+        if(isset($_SESSION['site_permission'])){
+          $site_arr=$_SESSION['site_permission'];
+        } else {
+          $site_arr="";
+        }
+        forward401Unless(editPermission($site_arr, $site_id));
+       if((isset($_GET['cID']) && $_GET['cID']) || (isset($_POST['cID']) && $_POST['cID'])){
 
-          for ($i = 0, $n = sizeof($categories); $i < $n; $i++) {
-            $question_ids_query = tep_db_query("select faq_category_id from " .  TABLE_FAQ_QUESTION_TO_CATEGORIES . " where faq_category_id = '" . $categories[$i]['id'] . "'");
-            while ($question_ids = tep_db_fetch_array($question_ids_query)) {
-              $questions[$question_ids['faq_category_id']]['categories'][] = $categories[$i]['id'];
-            }
+          if(isset($_GET['type'])&&$_GET['type']=='c'){
+             $faq_c_tree = tep_get_faq_category_tree($_GET['cID'],'','0',array(),$site_id,true);
+             foreach($faq_c_tree as $category){
+               $faq_q_list = tep_get_link_question_id_by_category_id($category['id']);
+               foreach($faq_q_list as $q_id){
+                 tep_remove_faq_question($q_id,$site_id);
+               }
+               tep_remove_faq_category($category['id'],$site_id);
+             }
+          }else if(isset($_GET['type'])&&$_GET['type']=='q'){
+            tep_remove_faq_question($_GET['cID'],$site_id);
           }
-          reset($questions);
-          while (list($key, $value) = each($questions)) {
-            $category_ids = ''; for ($i = 0, $n = sizeof($value['categories']); $i < $n; $i++) {
-              $category_ids .= '\'' . $value['categories'][$i] . '\', ';
-            }
-            $category_ids = substr($category_ids, 0, -2);
-
-            $check_query = tep_db_query("select count(*) as total from " .  TABLE_FAQ_QUESTION_TO_CATEGORIES . " where faq_question_id = '" .  $key . "' and faq_category_id not in (" . $category_ids . ")");
-            $check = tep_db_fetch_array($check_query);
-            if ($check['total'] < '1') {
-              $questions_delete[$key] = $key;
-            }
-          }
-          for ($i = 0, $n = sizeof($categories); $i < $n; $i++) {
-            tep_remove_faq_category($categories[$i]['id']);
-          }
-
-          reset($questions_delete);
-          while (list($key) = each($questions_delete)) {
-            tep_remove_faq_question($key);
-          }
-            }
-         } 
-         if ($_GET['cID']) {
-          $faq_category_id = tep_db_prepare_input($_GET['cID']);
-          tep_set_time_limit(0);
-          $categories = tep_get_faq_category_tree($faq_category_id, '', '0', '', true);
-          $questions = array();
-          $questions_delete = array();
-
-          for ($i = 0, $n = sizeof($categories); $i < $n; $i++) {
-            $question_ids_query = tep_db_query("select faq_category_id from " .  TABLE_FAQ_QUESTION_TO_CATEGORIES . " where faq_category_id = '" . $categories[$i]['id'] . "'");
-            while ($question_ids = tep_db_fetch_array($question_ids_query)) {
-              $questions[$question_ids['faq_category_id']]['categories'][] = $categories[$i]['id'];
-            }
-          }
-          reset($questions);
-          while (list($key, $value) = each($questions)) {
-            $category_ids = '';
-            for ($i = 0, $n = sizeof($value['categories']); $i < $n; $i++) {
-              $category_ids .= '\'' . $value['categories'][$i] . '\', ';
-            }
-            $category_ids = substr($category_ids, 0, -2);
-
-            $check_query = tep_db_query("select count(*) as total from " .  TABLE_FAQ_QUESTION_TO_CATEGORIES . " where faq_question_id = '" .  $key . "' and faq_category_id not in (" . $category_ids . ")");
-            $check = tep_db_fetch_array($check_query);
-            if ($check['total'] < '1') {
-              $questions_delete[$key] = $key;
-            }
-          }
-          for ($i = 0, $n = sizeof($categories); $i < $n; $i++) {
-            tep_remove_faq_category($categories[$i]['id']);
-          }
-
-          reset($questions_delete);
-          while (list($key) = each($questions_delete)) {
-            tep_remove_faq_question($key);
-          }
-         }
-      }
-       if((isset($_POST['faq_question_id']) && $_POST['faq_question_id']) || (isset($_POST['qID']) && $_POST['qID'])){
-         if($_POST['faq_question_id']){
-            tep_db_query("delete from `faq_sort` where info_id = '" .  $_POST['faq_question_id'] . "' and info_type = 'q' and site_id ='".$_POST['site_id']."'");
-         }
-         if(isset($_POST['qID']) && !empty($_POST['qID'])){
-          foreach($_POST['qID'] as $ge_key => $ge_value){
-            tep_db_query("delete from `faq_sort` where info_id = '" . $ge_value . "' and info_type = 'q'");
-          }
-         }
-         if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];
-         else $site_arr="";
-         forward401Unless(editPermission($site_arr, $site_id));
-         $d_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
-         $d_site = (isset($_POST['site_id']))?'&site_id='.$_POST['site_id']:'';
-         if(isset($_POST['qID']) && !empty($_POST['qID'])){
-           foreach($_POST['qID'] as $ge_key => $ge_value){    
-           $faq_question_id = tep_db_prepare_input($ge_value);
-            tep_db_query("delete from " .  TABLE_FAQ_QUESTION_TO_CATEGORIES . " where faq_question_id = '" . tep_db_input($faq_question_id) . "'");
-           $question_categories_query = tep_db_query("select count(*) as total from " .  TABLE_FAQ_QUESTION_TO_CATEGORIES .  " where faq_question_id = '" . tep_db_input($faq_question_id) . "'");
-           $question_categories = tep_db_fetch_array($question_categories_query);
-           if ($question_categories['total'] == '0') {
-             tep_remove_faq_question($faq_question_id);
-           } 
-           }
-         }
-         if(($_POST['faq_question_id']) && (is_array($_POST['question_categories']))){
-           $faq_question_id = tep_db_prepare_input($_POST['faq_question_id']);
-           $question_categories = $_POST['question_categories'];
-           for ($i = 0, $n = sizeof($question_categories); $i < $n; $i++) {
-            tep_db_query("delete from " . 
-                TABLE_FAQ_QUESTION_TO_CATEGORIES . " 
-                where faq_question_id = '" . tep_db_input($faq_question_id) . "' 
-                and faq_category_id = '" . tep_db_input($question_categories[$i]) . "'");
-           }
-           $question_categories_query = tep_db_query("select count(*) as total from " .
-               TABLE_FAQ_QUESTION_TO_CATEGORIES . 
-               " where faq_question_id = '" . tep_db_input($faq_question_id) . "'");
-           $question_categories = tep_db_fetch_array($question_categories_query);
-           if ($question_categories['total'] == '0') {
-             tep_remove_faq_question($faq_question_id);
-           }
-         }
-      } 
-         tep_redirect(tep_href_link(FILENAME_FAQ, 'cPath=' . $cPath.$d_page));
+       }
+      tep_redirect(tep_href_link(FILENAME_FAQ, 'cPath=' . $_GET['cPath'].$page));
          break;
       case 'insert_faq_question':
       case 'update_faq_question':
@@ -439,7 +333,7 @@ $(document).ready(function() {
 });
 
 <?php //删除分类?>
-function delete_fix_faq_category(param_str)
+function delete_fix_faq_category(type,param_str)
 {
   param_str = decodeURIComponent(param_str);
   
@@ -456,14 +350,15 @@ function delete_fix_faq_category(param_str)
       if ($ocertify->npermission > 15) {
       ?>
       if (confirm('<?php echo TEXT_DEL_NEWS;?>')) {
-        window.location.href = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_FAQ;?>'+'?action=delete_faq_confirm'+'&'+param_str;  
+        window.location.href = '<?php echo
+        HTTP_SERVER.DIR_WS_ADMIN.FILENAME_FAQ;?>'+'?type='+type+'&action=delete_faq_confirm'+'&'+param_str;  
       }
       <?php
       } else {
       ?>
       if (confirm('<?php echo TEXT_DEL_NEWS;?>')) {
         if (tmp_msg_arr[0] == '0') {
-          window.location.href = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_FAQ;?>'+'?action=delete_faq_confirm'+'&'+param_str;  
+          window.location.href = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_FAQ;?>'+'?type='+type+'&action=delete_faq_confirm'+'&'+param_str;  
         } else {
           var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
           if (in_array(input_pwd_str, pwd_list_array)) {
@@ -471,10 +366,10 @@ function delete_fix_faq_category(param_str)
               url: 'ajax_orders.php?action=record_pwd_log',   
               type: 'POST',
               dataType: 'text',
-              data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent('<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_FAQ;?>'+'?action=delete_faq_confirm&'+param_str),
+              data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent('<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_FAQ;?>'+'?type='+type+'&action=delete_faq_confirm&'+param_str),
               async: false,
               success: function(msg_info) {
-                window.location.href = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_FAQ;?>'+'?action=delete_faq_confirm'+'&'+param_str;  
+                window.location.href = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_FAQ;?>'+'?type='+type+'&action=delete_faq_confirm'+'&'+param_str;  
               }
             }); 
           } else {
