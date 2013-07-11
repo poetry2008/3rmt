@@ -219,6 +219,7 @@
         tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET . " where customers_id = '" .$ge_value . "'");
         tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET_OPTIONS . " where customers_id = '" . $ge_value . "'");
         tep_db_query("delete from " . TABLE_WHOS_ONLINE . " where customer_id = '" . $ge_value. "'");
+        tep_db_query("delete from " . TABLE_CUSTOMERS_EXIT_HISTORY . " where customers_id = '" . $ge_value. "'");
           }
         }
         $customers_id = tep_db_prepare_input($_GET['cID']);
@@ -239,6 +240,7 @@
         tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET . " where customers_id = '" . tep_db_input($customers_id) . "'");
         tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET_OPTIONS . " where customers_id = '" . tep_db_input($customers_id) . "'");
         tep_db_query("delete from " . TABLE_WHOS_ONLINE . " where customer_id = '" . tep_db_input($customers_id) . "'");
+        tep_db_query("delete from " . TABLE_CUSTOMERS_EXIT_HISTORY . " where customers_id = '" . tep_db_input($customers_id) . "'");
 
         tep_redirect(tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action')))); 
         break;
