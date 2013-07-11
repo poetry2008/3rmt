@@ -39,6 +39,8 @@
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr> 
               <td><?php
+  $customer_info_raw = tep_db_query("select * from ".TABLE_CUSTOMERS_INFO." where customers_info_id = '".$customer_id."'"); 
+  $customer_info = tep_db_fetch_array($customer_info_raw); 
   $history_query_raw = "
         select o.orders_id, 
                 o.date_purchased, 
