@@ -58,3 +58,4 @@ define('TEXT_SORT_ASC','▲');
 define('TEXT_SORT_DESC','▼');
 define('TEXT_PRODUCTS', 'FAQ数:');
 define('TEXT_CATEGORIES_FAQ','カテゴリー');
+define('TEXT_MUST','<font color=\'red\'>&nbsp;*必須</font>');
