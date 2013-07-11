@@ -10909,26 +10909,30 @@ function tep_update_faq_sort($fid,$site_id,$type,$action='update'){
   }
   if($action=='update'){
     $sql_fs = "UPDATE ".TABLE_FAQ_SORT." SET 
-      `title`='".$title."',
+      `title`='".tep_db_input($title)."',
       `sort_order`='".$sort_order."',
       `is_show`='".$is_show."',
       `parent_id`='".$parent_id."',
       `info_id`='".$info_id."',
       `info_type`='".$type."',
       `updated_at`='".$updated_at."',
-      `search_text`='".$search_text."' 
+      `search_text`='".tep_db_input($search_text)."' 
         WHERE `info_id`='".$info_id."' 
         and `site_id`='".$site_id."'
         and `info_type`='".$type."'";
+    tep_db_query($sql_fs);
   }else if($action=='insert'){
-    $sql_fs = "INSERT INTO ".TABLE_FAQ_SORT." 
-      (`id` , `site_id` , `title` , `sort_order` ,
-       `is_show` , `parent_id` , `info_id` , `info_type`,
-       `updated_at`,`search_text`)  VALUES
-      ( NULL , '".$site_id."', '".$title."',
-      '".$sort_order."', '".$is_show."',
-      '".$parent_id."', '".$info_id."',
-      '".$type."','".$updated_at."','".$search_text."')";
+    $sql_data_array = array(
+        'site_id' => $site_id,
+        'title' => $title,
+        'sort_order' => $sort_order,
+        'is_show' => $is_show,
+        'parent_id' => $parent_id,
+        'info_id' => $info_id,
+        'info_type' => $type,
+        'updated_at' => $updated_at,
+        'search_text' => $search_text
+        );  
+    tep_db_perform(TABLE_FAQ_SORT, $sql_data_array); 
   }
-  tep_db_query($sql_fs);
 }
