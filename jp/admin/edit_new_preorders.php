@@ -1468,7 +1468,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       $payment_positive_array = array_unique($payment_positive_array); 
       $products_money_total = $_SESSION['create_preorder']['orders_total']['ot_total']['value'];
       if($products_money_total != 0){
-          $orders_payment_query = tep_db_query("select payment_method,orders_id from ". TABLE_PREORDERS ." where customers_email_address='". $_SESSION['create_preorder']['orders']['customers_email_address'] ."' and site_id='". $_SESSION['create_preorder']['orders']['site_id'] ."' order by orders_id desc"); 
+          $orders_payment_query = tep_db_query("select payment_method,orders_id from ". TABLE_PREORDERS ." where customers_email_address='".  $_SESSION['create_preorder']['orders']['customers_email_address'] ."' and site_id='". $_SESSION['create_preorder']['orders']['site_id'] ."' and is_gray = '1' order by orders_id desc"); 
           while($orders_payment_array = tep_db_fetch_array($orders_payment_query)){
 
             if($orders_payment_array['payment_method'] != ''){
