@@ -6690,9 +6690,15 @@ function tep_get_radices($pid){
   -----------------------------*/
 function tep_get_mail_templates($mail_flag,$site_id){
 
-  $mail_query = tep_db_query("select title,contents from ". TABLE_MAIL_TEMPLATES ." where flag='".$mail_flag."' and site_id='".$site_id."'");
+  $mail_query = tep_db_query("select title,contents,valid from ". TABLE_MAIL_TEMPLATES ." where flag='".$mail_flag."' and site_id='".$site_id."'");
   $mail_array = tep_db_fetch_array($mail_query);
   tep_db_free_result($mail_query);
+
+  if($mail_array['valid'] == 0){
+    $mail_query = tep_db_query("select title,contents from ". TABLE_MAIL_TEMPLATES ." where flag='".$mail_flag."' and site_id='0'");
+    $mail_array = tep_db_fetch_array($mail_query);
+    tep_db_free_result($mail_query); 
+  }
 
   return array('title'=>$mail_array['title'],'contents'=>$mail_array['contents']);
 }

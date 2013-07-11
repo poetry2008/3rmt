@@ -11,4 +11,6 @@ define('TEXT_SORT_DESC','▼');
 define('TEXT_MAIL_MUST_INPUT','必須項目');
 define('TEXT_MAIL_SEARCH_READ_TITLE', '※検索対象：「タイトル」「メールタイトル」「メール本文」');
 define('TEXT_MAIL_EDIT_SELECT','選択したものを');
+define('TEXT_MAIL_VALID', '有効');
+define('TEXT_MAIL_INVALID', '無効');
 ?>
