@@ -491,6 +491,9 @@ function pass_hidd(CI){
     if(tep_db_num_rows($check_cid)) {
       # Member & 第二次以上  //==============================================
     $check = tep_db_fetch_array($check_cid);
+    if ($check['is_quited'] == '1') {
+      tep_db_query("delete from  ".TABLE_USER_LOGIN." where account = '".tep_db_input($email_address)."' and site_id = '".SITE_ID."'"); 
+    }
     $NewPass = $password;
       
     $sql_data_array = array('customers_firstname' => $firstname,
