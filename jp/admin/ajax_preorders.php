@@ -300,14 +300,10 @@ if (isset($_POST['orders_id']) && isset($_POST['orders_comment'])) {
 					. 'oID='.$orders['orders_id']);?>';">
                                                                                                                         <a href="<?php echo tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $orders['orders_id'] . '&action=edit');?>"><?php echo tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW);?></a>&nbsp;
     <a href="<?php echo tep_href_link('preorders.php', 'cEmail=' .  tep_output_string_protected($orders['customers_email_address']));?>"><?php echo tep_image(DIR_WS_ICONS . 'search.gif', BEFORE_ORDER_TEXT);?></a>
-                                                                                                                                                                                                           
-<?php if (false) {?>
-                                                                                                                                                                                                           &nbsp;<a href="<?php echo tep_href_link('customers.php', 'page=1&cID=' .  tep_output_string_protected($orders['customers_id']) .  '&action=edit');?>"><?php echo tep_image(DIR_WS_ICONS .  'arrow_r_red.gif', CUSTOMER_INFO_TEXT);?></a>&nbsp;&nbsp;
-                                                                                                                                                                                                           <?php }?>
                                                                                                                                                                                                            <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
                                                                                                                                                                                                            <font color="#999">
       <?php }?>
-      <a style="text-decoration:underline;" href="<?php echo tep_href_link('customers.php', 'page=1&cID='.tep_output_string_protected($orders['customers_id']).'&action=edit');?>"><?php echo tep_output_string_protected($orders['customers_name']);?></a>
+      <a style="text-decoration:underline;" href="<?php echo tep_href_link('customers.php', 'search='.tep_output_string_protected($orders['customers_id']));?>"><?php echo tep_output_string_protected($orders['customers_name']);?></a>
                     <?php 
                     $customers_info_raw = tep_db_query("select pic_icon from ".TABLE_CUSTOMERS." where customers_id = '".$orders['customers_id']."'"); 
                     $customers_info_res = tep_db_fetch_array($customers_info_raw);

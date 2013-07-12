@@ -9,19 +9,24 @@
   
   $error_single = false; 
   $success_single = false; 
-  $subject = STORE_NAME;
+  //测试邮件
+  $mail_array = tep_get_mail_templates('TEXT_BODY_TEXT',SITE_ID);
+  $subject = $mail_array['title'];
   $body_text = '';
-  $body_text = STORE_NAME.'が、会員登録をご利用予定のメールアドレスへ、'."\n".
-  '受信確認のためにお送りしています。'."\n\n".
-  'このメールを、無事に受信ボックスで確認できましたら、'."\n".
-  'こちらのメールアドレスは'.STORE_NAME.'で問題なくご利用いただけます。'."\n\n".
-  '以下のURLにアクセスして会員登録を行ってください。'."\n".
-  HTTPS_SERVER.'/create_account.php' ."\n\n".
-  'ご不明な点がありましたら、'.STORE_NAME.'までお問い合わせください。'."\n\n\n".
-  '[ご連絡・お問い合わせ先]━━━━━━━━━━━━'."\n".
-  COMPANY_NAME."\n".
-  HTTP_SERVER."\n".  
-  STORE_OWNER_EMAIL_ADDRESS."\n"."━━━━━━━━━━━━━━━━━━━━━━━";
+  $body_text = $mail_array['contents'];
+  $mode_array = array(
+                      '${STORE_NAME}', 
+                      '${COMPANY_NAME}',
+                      '${HTTP_SERVER}',
+                      '${STORE_OWNER_EMAIL_ADDRESS}'
+                    );
+  $replace_array = array(
+                      STORE_NAME, 
+                      COMPANY_NAME,
+                      HTTP_SERVER,
+                      STORE_OWNER_EMAIL_ADDRESS
+                    );
+  $body_text = str_replace($mode_array,$replace_array,$body_text);
   
   if (isset($_POST['email_address'])) {
     if (empty($_POST['email_address'])) {
