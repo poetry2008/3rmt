@@ -109,8 +109,8 @@ echo TEXT_ORDERS_EMPTY_COMMENT;
     }
   }
     $orders_id = date('Ymd').'-'.date('His').tep_get_order_end_num(); 
-  $payment_modules = payment::getInstance($preorder['site_id']);   
   $cpayment_code = payment::changeRomaji($preorder['payment_method'], PAYMENT_RETURN_TYPE_CODE);   
+  $payment_modules = payment::getInstance($preorder['site_id'],$cpayment_code,'preorder');   
   
   $option_info_array = get_preorder_total_info($cpayment_code, $preorder['orders_id'], $preorder_option_info);
   $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>");
@@ -763,7 +763,7 @@ $email_printing_order = str_replace($payment_mode,$payment_replace,$orders_print
 
 if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
   //发送打印邮件 
-  tep_mail('', PRINT_EMAIL_ADDRESS, STORE_NAME, $email_printing_order, $preorder['customers_name'], $preorder['customers_email_address'], '');
+  tep_mail('', PRINT_EMAIL_ADDRESS, str_replace('${SITE_NAME}',STORE_NAME,$orders_print_mail_templates['title']), $email_printing_order, $preorder['customers_name'], $preorder['customers_email_address'], '');
 }
 
 if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {

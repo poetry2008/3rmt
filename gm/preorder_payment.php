@@ -87,7 +87,7 @@ echo TEXT_ORDERS_EMPTY_COMMENT;
   }
 
   require(DIR_WS_CLASSES. 'payment.php'); 
-  $payment_modules = payment::getInstance(SITE_ID);
+  $payment_modules = payment::getInstance(SITE_ID,'','preorder');
   if (tep_session_is_registered('customer_id')) {
     $account = tep_db_query("
         select customers_firstname, 

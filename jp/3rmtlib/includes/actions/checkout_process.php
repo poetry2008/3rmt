@@ -858,7 +858,7 @@ $email_printing_order = str_replace($payment_mode,$payment_replace,$orders_print
 # ------------------------------------------
 if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
   //发送打印邮件 
-  tep_mail('', PRINT_EMAIL_ADDRESS, STORE_NAME, $email_printing_order, tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], '');
+  tep_mail('', PRINT_EMAIL_ADDRESS, str_replace('${SITE_NAME}',STORE_NAME,$orders_print_mail_templates['title']), $email_printing_order, tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], '');
 }
 
 // load the after_process function from the payment modules
