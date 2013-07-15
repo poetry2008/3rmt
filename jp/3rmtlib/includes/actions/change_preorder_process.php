@@ -763,7 +763,7 @@ $email_printing_order = str_replace($payment_mode,$payment_replace,$orders_print
 
 if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
   //发送打印邮件 
-  tep_mail('', PRINT_EMAIL_ADDRESS, STORE_NAME, $email_printing_order, $preorder['customers_name'], $preorder['customers_email_address'], '');
+  tep_mail('', PRINT_EMAIL_ADDRESS, str_replace('${SITE_NAME}',STORE_NAME,$orders_print_mail_templates['title']), $email_printing_order, $preorder['customers_name'], $preorder['customers_email_address'], '');
 }
 
 if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {

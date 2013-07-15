@@ -6425,8 +6425,7 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
     );
     $contents[]['text'] = array(
           array('text' => TEXT_ALT),
-          array('text' =>
-            tep_draw_input_field('manufacturers_alt',$mInfo->manufacturers_alt,'onfocus="o_submit_single = false;"onblur="o_submit_single = true;"'.(isset($is_u_disabled) && $is_u_disabled?'disabled="disabled"':'')))
+          array('text' => tep_draw_input_field('manufacturers_alt',$mInfo->manufacturers_alt,'onfocus="o_submit_single = false;"onblur="o_submit_single = true;"'.(isset($is_u_disabled) && $is_u_disabled?'disabled="disabled"':'')))
     );
     $contents[]['text'] = array(
           array('text' => TEXT_PRODUCTS),
@@ -6712,15 +6711,14 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
    $mail_templates_end_str = implode('<br>',$mail_templates_end_array);
    $category_info_row[]['text'] = array(
        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_MAIL_CONTENTS), 
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<textarea name="contents" rows="15" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize:vertical; width:100%;">'.$mail_array['contents'].'</textarea>'),
+       array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<textarea name="contents" rows="15" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize:vertical; width:100%;">'.$mail_array['contents'].'</textarea>'),
       array('align' => 'left', 'params' => 'valign="top" nowrap="nowrap"', 'text' => '<span id="mail_contents_error">'.TEXT_FIELD_REQUIRED.'</span>')
      );
   $category_info_row[]['text'] = array(
        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => ''), 
-       array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $mail_templates_start_str),
-       array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $mail_templates_end_str)
+       array('align' => 'left', 'params' => 'colspan="2"', 'text' => '<table width="100%" cellspacing="0" cellpadding="2" border="0"><tr><td>'.$mail_templates_start_str.'</td><td>'.$mail_templates_end_str.'</td></tr></table>'),
      );
-
+  
   //作成者，作成时间，更新者，更新时间 
   $category_info_row[]['text'] = array(
        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_USER_ADDED).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($mail_array['user_added'])?$mail_array['user_added']:TEXT_UNSET_DATA))),

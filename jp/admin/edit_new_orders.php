@@ -1178,11 +1178,10 @@ if($address_error == false){
 
             $selected_module = payment::changeRomaji($order->info['payment_method'],
                 PAYMENT_RETURN_TYPE_CODE);
-
-            $email =get_configuration_by_site_id("MODULE_PAYMENT_".strtoupper($selected_module)."_MAILSTRING",$order->info['site_id']);
-            if($email === false){
-              $email =get_configuration_by_site_id("MODULE_PAYMENT_".strtoupper($selected_module)."_MAILSTRING",0);
-            }
+            //订单邮件
+            $orders_mail_templates = tep_get_mail_templates("MODULE_PAYMENT_".strtoupper($selected_module)."_MAILSTRING",$order->info['site_id']);
+            $email = $orders_mail_templates['contents'];
+            
             foreach ($mailoption as $key=>$value){
               $email = str_replace('${'.strtoupper($key).'}',$value,$email);
               }
@@ -1225,8 +1224,8 @@ if($address_error == false){
               tep_db_free_result($search_products_name_query);
               $search_products_name_list[] = $search_products_name_array['products_name'];
             }
-            tep_mail($check_status['customers_name'], $check_status['customers_email_address'], SENDMAIL_TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', str_replace($mode_products_name_list,$search_products_name_list,$email), get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
-            tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), SENDMAIL_TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
+            tep_mail($check_status['customers_name'], $check_status['customers_email_address'], str_replace('${SITE_NAME}',get_configuration_by_site_id('STORE_NAME',$order->info['site_id']),$orders_mail_templates['title']), str_replace($mode_products_name_list,$search_products_name_list,$email), get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
+            tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), str_replace('${SITE_NAME}',get_configuration_by_site_id('STORE_NAME',$order->info['site_id']),$orders_mail_templates['title']), $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
           }
           $customer_notified = '1';
           
