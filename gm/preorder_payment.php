@@ -501,7 +501,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
     <?php
       $selection = $payment_modules->selection(1); 
         if ($payment_error == true) {
-          if (sizeof($selection) > 1) { 
+          if (sizeof($selection) > 0) { 
             if (isset($payment_error_str)) {
               echo '<div class="box_waring">'; 
               echo TEXT_PAYMENT_ERROR_TOP;
@@ -516,7 +516,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
           }
           echo "<br>";
         }
-    if (sizeof($selection) > 1) { 
+    if (sizeof($selection) > 0) { 
       ?>
       <?php
         foreach ($selection as $key => $singleSelection) { 
