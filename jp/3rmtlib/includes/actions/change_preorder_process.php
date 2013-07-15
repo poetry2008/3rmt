@@ -109,8 +109,8 @@ echo TEXT_ORDERS_EMPTY_COMMENT;
     }
   }
     $orders_id = date('Ymd').'-'.date('His').tep_get_order_end_num(); 
-  $payment_modules = payment::getInstance($preorder['site_id']);   
   $cpayment_code = payment::changeRomaji($preorder['payment_method'], PAYMENT_RETURN_TYPE_CODE);   
+  $payment_modules = payment::getInstance($preorder['site_id'],$cpayment_code,'preorder');   
   
   $option_info_array = get_preorder_total_info($cpayment_code, $preorder['orders_id'], $preorder_option_info);
   $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>");

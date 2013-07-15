@@ -13,8 +13,8 @@
     //判断该预约订单是否存在 
     forward404(); 
   } 
-  $payment_modules = payment::getInstance(SITE_ID); 
   $con_payment_code = payment::changeRomaji($preorder_res['payment_method'],PAYMENT_RETURN_TYPE_CODE);
+  $payment_modules = payment::getInstance(SITE_ID,$con_payment_code,'preorder'); 
  
   $is_guest_single = 0;
   $link_customer_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".$preorder_res['customers_id']."'");

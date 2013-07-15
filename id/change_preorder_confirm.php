@@ -617,7 +617,8 @@ foreach($all_show_option_id as $t_item_id){
                   <?php
                       } else {
                         //获取相应的手续费
-                        $payment_handle = payment::getInstance($preorder_res['site_id']);
+                        $payment_method_code = payment::changeRomaji($preorder_res['payment_method'],PAYMENT_RETURN_TYPE_CODE);
+                        $payment_handle = payment::getInstance($preorder_res['site_id'],$payment_method_code,'preorder');
                         if (isset($preorder_total_info_array['subtotal'])) {
                           $handle_fee = $payment_handle->handle_calc_fee(payment::changeRomaji($preorder_res['payment_method'],PAYMENT_RETURN_TYPE_CODE),$preorder_total_info_array['subtotal']-$_POST['preorder_point']+$preorder_customer_value+$shipping_fee);
                         } else {
