@@ -23,6 +23,7 @@ class HM_Option_Item_Select extends HM_Option_Item_Basic
      $ed_pos = strpos($_SERVER['PHP_SELF'], 'admin/edit_orders.php');
      $pro_pos = strpos($_SERVER['PHP_SELF'], 'product_info.php');
      $cp_pos = strpos($_SERVER['PHP_SELF'], 'change_preorder.php');
+     $back_pos = strpos($_SERVER['PHP_SELF'], 'admin/');
      
      if (strlen($this->front_title)) {
        if ($ptype) {
@@ -97,13 +98,31 @@ class HM_Option_Item_Select extends HM_Option_Item_Basic
        }
      
      if ($cp_pos !== false) {
-         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+       if ($_SERVER['REQUEST_METHOD'] == 'GET') {
          if (isset($_SESSION['preorder_information'][$pre_item_str.'op_'.$this->formname])) {
            $default_value = $_SESSION['preorder_information'][$pre_item_str.'op_'.$this->formname]; 
-         }
+         } else {
+           $preorder_raw = tep_db_query("select * from ".TABLE_PREORDERS." where check_preorder_str = '".$_GET['pid']."' and site_id = '".SITE_ID."' and is_active = '1'"); 
+           $preorder_res = tep_db_fetch_array($preorder_raw); 
+           if ($preorder_res) {
+             $customers_info_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".$preorder_res['customers_id']."'"); 
+             $customers_info = tep_db_fetch_array($customers_info_raw); 
+             if ($customers_info['customers_guest_chk'] == '0') {
+               $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$preorder_res['orders_id']."'"); 
+               $preorder_product_res = tep_db_fetch_array($preorder_product_raw); 
+               if ($preorder_product_res) {
+                 $o_attributes_raw = tep_db_query("select opa.* from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." opa, ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where op.orders_id = o.orders_id and o.customers_id = '".(int)$preorder_res['customers_id']."' and opa.option_group_id = '".$this->group_id."' and opa.option_item_id = '".$this->id."' and op.orders_products_id = opa.orders_products_id and op.products_id = '".(int)$preorder_product_res['products_id']."' and o.is_gray != '1' order by opa.orders_id desc limit 1"); 
+                 $o_attributes_res = tep_db_fetch_array($o_attributes_raw); 
+                 if ($o_attributes_res) {
+                   $old_option_info = @unserialize(stripslashes($o_attributes_res['option_info']));  
+                   $default_value = $old_option_info['value']; 
+                 }
+               }
+             }
+           }
          }
        }
-     
+     }
      $default_value = stripslashes($default_value); 
      echo '<td>'; 
      echo '<div class="option_info_text">'; 
@@ -117,7 +136,27 @@ class HM_Option_Item_Select extends HM_Option_Item_Basic
          echo '<option value="'.$value.'"'.(($default_value == stripslashes($value))?'selected ':'').'>'.stripslashes($value).'</option>'; 
          $i++; 
        }
-       echo '</select>'; 
+       echo '</select>';
+       
+       if (strlen($this->sedefault)) {
+         if ($back_pos !== false) {
+           if (!isset($option_error_array[$pre_item_str.$this->formname])) {
+             if (isset($_POST['cstep'])) {
+               if ($pro_pos !== false) {
+                 echo '<font color="#ff0000" style="float:left; line-height:20px;">&nbsp;'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
+               } else {
+                 echo '<font color="#ff0000">&nbsp;'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
+               }
+             }
+           } 
+         } else {
+           if (!isset($option_error_array[$pre_item_str.$this->formname])) {
+             if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+               echo '<font color="#ff0000" style="float:left; line-height:20px;">&nbsp;'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
+             }
+           }
+         }
+       }
      }
      
      echo '</div>'; 
@@ -126,7 +165,7 @@ class HM_Option_Item_Select extends HM_Option_Item_Basic
      }
      echo '<span id="'.$pre_item_str.'error_'.$this->formname.'" class="option_error">';
      if (isset($option_error_array[$pre_item_str.$this->formname])) {
-       echo '<br>'.$option_error_array[$pre_item_str.$this->formname]; 
+       echo $option_error_array[$pre_item_str.$this->formname]; 
      }
      echo '</span>'; 
      if ($pro_pos !== false) {

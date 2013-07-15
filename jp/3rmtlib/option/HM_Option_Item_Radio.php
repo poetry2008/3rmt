@@ -133,12 +133,31 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
          }
      }
      if ($cp_pos !== false) {
-         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+       if ($_SERVER['REQUEST_METHOD'] == 'GET') {
          if (isset($_SESSION['preorder_information'][$pre_item_str.'op_'.$this->formname])) {
            $default_value = $_SESSION['preorder_information'][$pre_item_str.'op_'.$this->formname]; 
            $a_old_single = true;
          }
+       } else {
+         $preorder_raw = tep_db_query("select * from ".TABLE_PREORDERS." where check_preorder_str = '".$_GET['pid']."' and site_id = '".SITE_ID."' and is_active = '1'"); 
+         $preorder_res = tep_db_fetch_array($preorder_raw); 
+         if ($preorder_res) {
+           $customers_info_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".$preorder_res['customers_id']."'"); 
+           $customers_info = tep_db_fetch_array($customers_info_raw); 
+           if ($customers_info['customers_guest_chk'] == '0') {
+             $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$preorder_res['orders_id']."'"); 
+             $preorder_product_res = tep_db_fetch_array($preorder_product_raw); 
+             if ($preorder_product_res) {
+               $o_attributes_raw = tep_db_query("select opa.* from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." opa, ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where op.orders_id = o.orders_id and o.customers_id = '".(int)$preorder_res['customers_id']."' and opa.option_group_id = '".$this->group_id."' and opa.option_item_id = '".$this->id."' and op.orders_products_id = opa.orders_products_id and op.products_id = '".(int)$preorder_product_res['products_id']."' and o.is_gray != '1' order by opa.orders_id desc limit 1"); 
+               $o_attributes_res = tep_db_fetch_array($o_attributes_raw); 
+               if ($o_attributes_res) {
+                 $old_option_info = @unserialize(stripslashes($o_attributes_res['option_info']));  
+                 $default_value = $old_option_info['value']; 
+               }
+             }
+           }
          }
+       }
      }
      $default_value = stripslashes($default_value);
      
