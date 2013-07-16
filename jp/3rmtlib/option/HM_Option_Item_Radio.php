@@ -152,10 +152,10 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
                  if ($o_attributes_res) {
                    $old_option_info = @unserialize(stripslashes($o_attributes_res['option_info']));  
                    if (!empty($this->radio_image)) {
-                     foreach ($this->radio_image as $cer_key => $cer_value) {
-                       if (trim(str_replace($replace_arr, '', nl2br($cer_value['title']))) == trim(str_replace($replace_arr, '', nl2br($old_option_info['value'])))) {
+                     foreach ($this->radio_image as $cpr_key => $cpr_value) {
+                       if (trim(str_replace($replace_arr, '', nl2br($cpr_value['title']))) == trim(str_replace($replace_arr, '', nl2br($old_option_info['value'])))) {
                          $a_old_single = true;
-                         $default_value = new_nl2br($cer_value['title']);
+                         $default_value = new_nl2br($cpr_value['title']);
                          break;
                        }
                      }
