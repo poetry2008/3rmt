@@ -165,37 +165,6 @@ class buyingpoint extends basePayment  implements paymentInterface  {
         'MODULE_PAYMENT_BUYINGPOINT_MONEY_LIMIT',
         );
   }
-/*----------------------------
- 功能：获取邮件的字符串
- 参数：$option(string) 选项
- 返回值：邮件字符串(string)
- ---------------------------*/
- function getMailString($option=''){
-    $email_printing_order ='';
-    $email_printing_order .= '★★★★★★★★★★★★この注文は【買取】です。★★★★★★★★★★★★' . "\n";
-    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-    $email_printing_order .= '備考の有無　　　　　：□ 無　　｜　　□ 有　→　□ 返答済' . "\n";
-    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-    $email_printing_order .= 'キャラクターの有無　：□ 有　　｜　　□ 無　→　新規作成してお客様へ連絡' . "\n";
-    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-    $email_printing_order .= '受領　※注意※　　●：＿＿月＿＿日' . "\n";
-    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-    $email_printing_order .= '残量入力→誤差有無　：□ 無　　｜　　□ 有　→　□ 報告' . "\n";
-    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-    $email_printing_order .= '受領メール送信　　　：□ 済' . "\n";
-    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-    $email_printing_order .= '支払　　　　　　　　：＿＿月＿＿日　※総額5,000円未満は168円引く※' . "\n";
-    $email_printing_order .= '　　　　　　　　　　　□ JNB　　□ eBank　　□ ゆうちょ' . "\n";
-    $email_printing_order .= '　　　　　　　　　　　入金予定日＿＿月＿＿日　受付番号＿＿＿＿＿＿＿＿＿' . "\n";
-    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-    $email_printing_order .= '支払完了メール送信　：□ 済　　　※追加文章がないか確認しましたか？※' . "\n";
-    $email_printing_order .=
-    '------------------------------------------------------------------------' . "\n";
-    $email_printing_order .= '最終確認　　　　　　：確認者名＿＿＿＿' . "\n";
-    $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-      
-    return $email_printing_order;
-  }
 /*------------------------------
  功能：获取后台点数
  参数：$point_value(string) 点值

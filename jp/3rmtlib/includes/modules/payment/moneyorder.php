@@ -227,54 +227,6 @@ class moneyorder extends basePayment implements paymentInterface {
                    'MODULE_PAYMENT_MONEYORDER_MONEY_LIMIT',
                    );
     }
-/*----------------------------
- 功能：获取邮件的字符串
- 参数：$option(string) 选项
- 返回值：邮件字符串(string)
- ---------------------------*/
-  function getMailString($option=''){
-    $email_printing_order .= 'この注文は【販売】です。' . "\n";
-    $email_printing_order .=
-      '------------------------------------------------------------------------'
-      . "\n";
-    $email_printing_order .= '備考の有無　　　　　：□ 無　　｜　　□ 有　→　□
-      返答済' . "\n";
-    $email_printing_order .=
-      '------------------------------------------------------------------------'
-      . "\n";
-    $email_printing_order .= '在庫確認　　　　　　：□ 有　　｜　　□
-      無　→　入金確認後仕入' . "\n";
-    $email_printing_order .=
-      '------------------------------------------------------------------------'
-      . "\n";
-    $email_printing_order .=
-      '入金確認　　　　　●：＿＿月＿＿日　→　金額は' .
-      abs($option) . '円ですか？　□ はい' . "\n";
-    $email_printing_order .=
-      '------------------------------------------------------------------------'
-      . "\n";
-    $email_printing_order .= '入金確認メール送信　：□ 済' . "\n";
-    $email_printing_order .=
-      '------------------------------------------------------------------------'
-      . "\n";
-    $email_printing_order .=
-      '発送　　　　　　　　：＿＿月＿＿日' . "\n";
-    $email_printing_order .=
-      '------------------------------------------------------------------------'
-      . "\n";
-    $email_printing_order .= '残量入力→誤差有無　：□
-      無　　｜　　□ 有　→　報告　□' . "\n";
-    $email_printing_order .=
-      '------------------------------------------------------------------------'
-      . "\n";
-    $email_printing_order .= '発送完了メール送信　：□
-      済' . "\n";    
-    $email_printing_order .=
-      '------------------------------------------------------------------------' . "\n";
-    $email_printing_order .= '最終確認　　　　　　：確認者名＿＿＿＿' . "\n";
-    $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-    return $email_printing_order;
-  }
 /*-------------------------------
  功能：获取电子邮件的配置
  参数：$site_id(string) SITE_ID值
