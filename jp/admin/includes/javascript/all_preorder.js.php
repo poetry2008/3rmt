@@ -604,7 +604,7 @@ function copyToClipboard(txt) {
     try {   
       netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");   
     } catch (e) {   
-      alert("<?php echo JS_TEXT_ALL_ORDERS_BROWER_REJECTED;?>");   
+      alert("<?php echo JS_TEXT_ALL_PREORDER_BROWER_REJECTED;?>");   
     }   
     var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);   
     if (!clip)   
