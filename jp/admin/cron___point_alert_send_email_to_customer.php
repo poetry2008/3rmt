@@ -198,7 +198,10 @@ o.customers_name AS customer_name,
           $log_str .= "==============================================";
           $log_str .= "\n";
           if($send_row == 1){
-            $to = '"=?UTF-8?B?'.base64_encode($customer_info['customer_name']).'?=" <iimy34jp@yahoo.co.jp>'. "\r\n";
+            $point_mail_address_query = mysql_query("select configuration_value from configuration where configuration_key='POINT_NOTIFY_EMAIL_ADDRESS' and site_id='0'");
+            $point_mail_address_array = mysql_fetch_array($point_mail_address_query);
+            mysql_free_result($point_mail_address_query);
+            $to = '"=?UTF-8?B?'.base64_encode($customer_info['customer_name']).'?=" <'.$point_mail_address_array['configuration_value'].'>'. "\r\n";
             mail($to, $subject, $message, $headers,$parameter);
           }
         }
