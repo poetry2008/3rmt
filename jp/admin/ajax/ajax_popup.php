@@ -5131,7 +5131,7 @@ if($_GET['cID'] != -1){
       } else {
         $tmp_ex_array = array('cID', 'action');
       }
-     $customers_del =  ' <a class = "new_product_reset" href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="toggle_customers_action(\''.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params($tmp_ex_array) . 'cID=' .  $cInfo->customers_id .  '&action=deleteconfirm').'\', \''.$ocertify->npermission.'\');"').'</a>';
+     $customers_del =  ' <a class = "new_product_reset" href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if (confirm(\''.TEXT_DEL_NEWS.'\')) toggle_customers_action(\''.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params($tmp_ex_array) . 'cID=' .  $cInfo->customers_id .  '&action=deleteconfirm').'\', \''.$ocertify->npermission.'\');"').'</a>';
      if ($cInfo->is_active == '1') {
        if ($ocertify->npermission >= 15) {
          $customers_orders = ' <a href="' .  tep_href_link(FILENAME_ORDERS, 'cID=' .  $cInfo->customers_id) . '">' .  tep_html_element_button(IMAGE_ORDERS) .  '</a>';
