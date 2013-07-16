@@ -151,7 +151,15 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
                  $o_attributes_res = tep_db_fetch_array($o_attributes_raw); 
                  if ($o_attributes_res) {
                    $old_option_info = @unserialize(stripslashes($o_attributes_res['option_info']));  
-                   $default_value = $old_option_info['value']; 
+                   if (!empty($this->radio_image)) {
+                     foreach ($this->radio_image as $cer_key => $cer_value) {
+                       if (trim(str_replace($replace_arr, '', nl2br($cer_value['title']))) == trim(str_replace($replace_arr, '', nl2br($old_option_info['value'])))) {
+                         $a_old_single = true;
+                         $default_value = new_nl2br($cer_value['title']);
+                         break;
+                       }
+                     }
+                   }
                  }
                }
              }
