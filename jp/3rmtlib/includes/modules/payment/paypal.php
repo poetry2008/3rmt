@@ -174,27 +174,12 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
     if(isset($_SESSION['h_shipping_fee'])){
       $total += $_SESSION['h_shipping_fee']; 
     }
-    #mail送信
-    $mail_body = '仮クレジットカード注文です。'."\n\n";
-    
-    # 用户信息----------------------------
-    $mail_body .= '━━━━━━━━━━━━━━━━━━━━━'."\n";
-    $mail_body .= '▼注文日　　　　　：' . tep_date_long(time())."\n";
-    $mail_body .= '▼お名前　　　　　：' . $order->customer["lastname"] . ' ' . $order->customer["firstname"]."\n";
-    $mail_body .= '▼メールアドレス　：' . $order->customer["email_address"]."\n";
-    $mail_body .= '━━━━━━━━━━━━━━━━━━━━━'."\n";
-    $mail_body .= '▼お支払金額　　　：' . $currencies->format($total) . "\n";
-    $mail_body .= '▼お支払方法　　　：ペイパル決済'."\n";
-    
-    # 商品内容----------------------------
-    $mail_body .= '▼注文商品'."\n";
-    $mail_body .= "\t" . '------------------------------------------'."\n";
 
       $products = $cart->get_products();
     
+    $order_product_list = '';    
     for ($i=0, $n=sizeof($products); $i<$n; $i++) {
       $char_id = $products[$i]['id'];
-    $mail_body .= '・' . $products[$i]['name'] . '×' . $products[$i]['quantity'] . "\n";
       $attributes_exist = ((isset($products[$i]['op_attributes'])) ? 1 : 0);
        
        if ($attributes_exist == 1) {
@@ -203,7 +188,7 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
             $option_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$op_key_array[1]."' and id = '".$op_key_array[3]."'"); 
             $option_res = tep_db_fetch_array($option_query);
             if ($option_res) {
-              $mail_body .= '└' . $option_res['front_title'] . ' ' .  str_replace(array("<BR>", "<br>"), "\n", $op_value) . "\n";
+            $order_product_list .= '└' . $option_res['front_title'] . ' ' .  str_replace(array("<BR>", "<br>"), "\n", $op_value) . "\n";
             }
           }
         }
@@ -214,26 +199,42 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
            $c_option_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$c_op_array[0]."' and id = '".$c_op_array[2]."'"); 
            $c_option_res = tep_db_fetch_array($c_option_query);
            if ($c_option_res) {
-             $mail_body .= '└' . $c_option_res['front_title'] . ' ' .  str_replace(array("<BR>", "<br>"), "\n", $c_op_value) . "\n";
+             $order_product_list .= '└' . $c_option_res['front_title'] . ' ' .  str_replace(array("<BR>", "<br>"), "\n", $c_op_value) . "\n";
            }
          }
        }
     }
 
+    $mail_mode = array(
+        '${C_NAME}',
+        '${C_EMAIL}',
+        '${O_DATE}',
+        '${ORDER_TOTAL}',
+        '${ORDER_PRODUCT_LIST}',
+        '${PO_DATE}',
+        '${PO_TIME}',
+        '${C_IP}',
+        '${C_ANGET}',
+        '${C_HOST}',
+        '${PAYMENT_METHOD}'
+        );
+    $mail_value = array(
+        $order->customer["lastname"] . ' '. $order->customer["firstname"],
+        $order->customer["email_address"],
+        tep_date_long(time()),
+        $currencies->format($total),
+        $order_product_list,
+        $_SESSION["insert_torihiki_date"],
+        $_SESSION["torihikihouhou"],
+        $_SERVER["REMOTE_ADDR"],
+        @gethostbyaddr($_SERVER["REMOTE_ADDR"]),
+        $_SERVER["HTTP_USER_AGENT"],
+        payment::changeRomaji($this->code,PAYMENT_RETURN_TYPE_TITLE)
+        );
     
-    $mail_body .= "\t" . '------------------------------------------'."\n";
-    
-    # 交易时间----------------------------
-    $mail_body .= '▼お届け日時　　　　：' . $_SESSION["insert_torihiki_date"] . "\n";
-    $mail_body .= '　　　　　　　　　：' . $_SESSION["torihikihouhou"] . "\n";
-    
-    # 用户代理等----------------------------
-    $mail_body .= "\n\n";
-    $mail_body .= '■IPアドレス　　　　　　：' . $_SERVER["REMOTE_ADDR"] . "\n";
-    $mail_body .= '■ホスト名　　　　　　　：' . @gethostbyaddr($_SERVER["REMOTE_ADDR"]) . "\n";
-    $mail_body .= '■ユーザーエージェント　：' . $_SERVER["HTTP_USER_AGENT"] . "\n";
-    
-    tep_mail('管理者', SENTMAIL_ADDRESS, '仮クレカ注文', $mail_body, '', '');
+    $process_button_template = tep_get_mail_templates('MODULE_PAYMENT_CARD_CONFRIMTION_EMAIL_CONTENT',SITE_ID);
+    $mail_body = str_replace($mail_mode,$mail_value,$process_button_template['contents']);
+    tep_mail('TS_MODULE_PAYMENT_PAYPAL_MAIL_TO_NAME', SENTMAIL_ADDRESS, $process_button_template['title'], $mail_body, '', '');
     
     $today = date("YmdHis");
 
@@ -597,28 +598,16 @@ function getpreexpress($pre_value, $pre_pid){
     $preorder_info_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$pid."'");
     $preorder_info = tep_db_fetch_array($preorder_info_raw);
     
-    
-    $mail_body = '仮クレジットカード注文です。'."\n\n";
-    $mail_body .= '━━━━━━━━━━━━━━━━━━━━━'."\n";
-
-    $mail_body .= '▼注文日　　　　　：' . tep_date_long(time())."\n";
-    $mail_body .= '▼お名前　　　　　：' . $preorder_info['customers_name']."\n";
-    $mail_body .= '▼メールアドレス　：' . $preorder_info['customers_email_address']."\n";
-    $mail_body .= '━━━━━━━━━━━━━━━━━━━━━'."\n";
-    $mail_body .= '▼お支払金額　　　：' . $currencies->format($preorder_total) . "\n";
-    $mail_body .= '▼お支払方法　　　：ペイパル決済'."\n";
-    $mail_body .= '▼注文商品'."\n";
-    $mail_body .= "\t" . '------------------------------------------'."\n";
-   
+    $preorder_product_list = '';    
     $preorder_products_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$pid."'");
     $preorder_products_res = tep_db_fetch_array($preorder_products_raw); 
     if ($preorder_products_res) {
-      $mail_body .= '・' . $preorder_products_res['products_name'] . '×' .  $preorder_products_res['products_quantity'] . "\n";
-   
+      $preorder_product_list .= '・' . $preorder_products_res['products_name'] . '×' .  $preorder_products_res['products_quantity'] . "\n";
+
       $old_attr_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$pid."'");
       while ($old_attr_res = tep_db_fetch_array($old_attr_raw)) {
         $old_attr_info = @unserialize(stripslashes($old_attr_res['option_info']));
-        $mail_body .= '└' . $old_attr_info['title'] . ' ' .  str_replace(array("<BR>", "<br>"), "\n", $old_attr_info['value']) . "\n";
+        $preorder_product_list .= '└' . $old_attr_info['title'] . ' ' .  str_replace(array("<BR>", "<br>"), "\n", $old_attr_info['value']) . "\n";
       }
       
       if (isset($_SESSION['preorder_option_info'])) {
@@ -627,23 +616,43 @@ function getpreexpress($pre_value, $pre_pid){
           $option_item_raw = tep_db_query("select front_title from ".TABLE_OPTION_ITEM." where name = '".$i_option[1]."' and id = '".$i_option[3]."'");
           $option_item = tep_db_fetch_array($option_item_raw); 
           if ($option_item) {
-            $mail_body .= '└' . $option_item['front_title'] . ' ' .  str_replace(array("<BR>", "<br>"), "\n", $value) . "\n";
+            $preorder_product_list .= '└' . $option_item['front_title'] . ' ' .  str_replace(array("<BR>", "<br>"), "\n", $value) . "\n";
           }
         }
       }
-      
     }
+    
+    $mail_mode = array(
+        '${C_NAME}',
+        '${C_EMAIL}',
+        '${O_DATE}',
+        '${ORDER_TOTAL}',
+        '${ORDER_PRODUCT_LIST}',
+        '${PO_DATE}',
+        '${PO_TIME}',
+        '${C_IP}',
+        '${C_ANGET}',
+        '${C_HOST}',
+        '${PAYMENT_METHOD}'
+        );
+    $mail_value = array(
+        $preorder_info['customers_name'],
+        $preorder_info['customers_email_address'],
+        tep_date_long(time()),
+        $currencies->format($preorder_total),
+        $preorder_product_list,
+        $_SESSION["preorder_info_date"].' '.$_SESSION["preorder_info_hour"].':'.$_SESSION["preroder_info_min"] .":00",
+        $_SESSION["preorder_info_tori"],
+        $_SERVER["REMOTE_ADDR"],
+        @gethostbyaddr($_SERVER["REMOTE_ADDR"]),
+        $_SERVER["HTTP_USER_AGENT"],
+        payment::changeRomaji($this->code,PAYMENT_RETURN_TYPE_TITLE)
+        );
+   
 
-    $mail_body .= "\t" . '------------------------------------------'."\n";
-    
-    $mail_body .= '▼お届け日時　　　　：' .  $_SESSION["preorder_info_date"].$_SESSION["preorder_info_hour"].':'.$_SESSION["preroder_info_min"] .":00". "\n";
-    $mail_body .= '　　　　　　　　　：' . $_SESSION["preorder_info_tori"] . "\n";
-    
-    $mail_body .= "\n\n";
-    $mail_body .= '■IPアドレス　　　　　　：' . $_SERVER["REMOTE_ADDR"] . "\n";
-    $mail_body .= '■ホスト名　　　　　　　：' . @gethostbyaddr($_SERVER["REMOTE_ADDR"]) . "\n";
-    $mail_body .= '■ユーザーエージェント　：' . $_SERVER["HTTP_USER_AGENT"] . "\n";
-    tep_mail('管理者', SENTMAIL_ADDRESS, '仮クレカ注文', $mail_body, '', '');
+    $process_button_template = tep_get_mail_templates('MODULE_PAYMENT_CARD_CONFRIMTION_EMAIL_CONTENT',SITE_ID);
+    $mail_body = str_replace($mail_mode,$mail_value,$process_button_template['contents']);
+    tep_mail('TS_MODULE_PAYMENT_PAYPAL_MAIL_TO_NAME', SENTMAIL_ADDRESS,$process_button_template['title'], $mail_body, '', '');
     
     $hidden_param_str = ''; 
     $hidden_param_str .= tep_draw_hidden_field('cpre_type', '1');
