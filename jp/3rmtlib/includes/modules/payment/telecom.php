@@ -514,7 +514,7 @@ class telecom  extends basePayment  implements paymentInterface  {
         get_url_by_site_id($order->info['site_id'])
         );
     $email_credit = str_replace($email_key,$email_value,$email_template['contents']);
-    return $email_credit;
+    return array($email_credit, $email_template['title']);
   }
 /*-------------------------
  功能：获取支付标志值

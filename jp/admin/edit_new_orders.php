@@ -1230,15 +1230,13 @@ if($address_error == false){
           $customer_notified = '1';
           
           // 支付方法是信用卡的话，发送决算URL
-          $email_credit =  $payment_modules->admin_process_pay_email(
-                  payment::changeRomaji($payment_method,PAYMENT_RETURN_TYPE_CODE),
-                $order,$total_price_mail);
-          $email_credit = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$email_credit);
+          $email_credit_info =  $payment_modules->admin_process_pay_email( payment::changeRomaji($payment_method,PAYMENT_RETURN_TYPE_CODE), $order,$total_price_mail);
+          $email_credit = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$email_credit_info[0]);
           if($email_credit){
             if ($customer_guest['is_send_mail'] != '1'){
-                tep_mail($check_status['customers_name'], $check_status['customers_email_address'], SENDMAIL_TEXT_CARD_PAYMENT . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email_credit, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']), $order->info['site_id']);
+                tep_mail($check_status['customers_name'], $check_status['customers_email_address'], str_replace(' ${STORE_NAME}', get_configuration_by_site_id('STORE_NAME',$order->info['site_id']), $email_credit_info[1]) , $email_credit, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']), $order->info['site_id']);
             }
-              tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), SENDMAIL_TEXT_SEND_MAIL_CARD_PAYMENT . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email_credit, $check_status['customers_name'], $check_status['customers_email_address'], $order->info['site_id']);
+              tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), str_replace(' ${STORE_NAME}', get_configuration_by_site_id('STORE_NAME',$order->info['site_id']), $email_credit_info[1]), $email_credit, $check_status['customers_name'], $check_status['customers_email_address'], $order->info['site_id']);
           }
           }
           $order_updated_2 = true;
