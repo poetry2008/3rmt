@@ -138,17 +138,17 @@ class telecom  extends basePayment  implements paymentInterface  {
     }
     
     $mail_mode = array(
-        '${C_NAME}',
-        '${C_EMAIL}',
-        '${O_DATE}',
-        '${ORDER_TOTAL}',
+        '${NAME}',
+        '${MAIL}',
+        '${ORDER_D}',
+        '${ORDER_M}',
         '${ORDER_PRODUCT_LIST}',
-        '${PO_DATE}',
-        '${PO_TIME}',
-        '${C_IP}',
-        '${C_ANGET}',
-        '${C_HOST}',
-        '${PAYMENT_METHOD}'
+        '${SHIPPING_DATE}',
+        '${SHIPPING_TIME}',
+        '${IP}',
+        '${ANGET}',
+        '${HOST}',
+        '${PAY}'
         );
     $mail_value = array(
         $order->customer["lastname"] . ' '. $order->customer["firstname"],
@@ -419,17 +419,17 @@ class telecom  extends basePayment  implements paymentInterface  {
     }
     
     $mail_mode = array(
-        '${C_NAME}',
-        '${C_EMAIL}',
-        '${O_DATE}',
-        '${ORDER_TOTAL}',
+        '${NAME}',
+        '${MAIL}',
+        '${ORDER_D}',
+        '${ORDER_M}',
         '${ORDER_PRODUCT_LIST}',
-        '${PO_DATE}',
-        '${PO_TIME}',
-        '${C_IP}',
-        '${C_ANGET}',
-        '${C_HOST}',
-        '${PAYMENT_METHOD}'
+        '${SHIPPING_DATE}',
+        '${SHIPPING_TIME}',
+        '${IP}',
+        '${ANGET}',
+        '${HOST}',
+        '${PAY}'
         );
     $mail_value = array(
         $preorder_info['customers_name'],
@@ -491,16 +491,16 @@ class telecom  extends basePayment  implements paymentInterface  {
  参数：$total_price_mail(string) 总价邮件
  返回值：返回处理之后的电子邮件(string) 
  ----------------------------*/
-  function admin_process_pay_email($order,$total_price_mail){
-    $email_template = tep_get_mail_templates('PAYMENT_ADMIN_CREDIT_EMAIL_CONTENT',SITE_ID);
+  function admin_process_pay_email($order,$total_price_mail,$site_id=0){
+    $email_template = tep_get_mail_templates('PAYMENT_ADMIN_CREDIT_EMAIL_CONTENT',$site_id);
     $email_key = array(
-        '${C_NAME}',
-        '${STORE_NAME}',
+        '${NAME}',
+        '${SITE_NAME}',
         '${ORDER_ID}',
-        '${C_EMAIL}',
-        '${O_TOTAL}',
+        '${MAIL}',
+        '${ORDER_M}',
         '${COMPANY_NAME}',
-        '${SUPPORT_EMAIL_ADDRESS}',
+        '${SUPPORT_EMAIL}',
         '${SITE_URL}',
         );
     $email_value = array(

@@ -360,11 +360,11 @@ class payment {
  参数：$total_price_mail(string) 总价邮件
  返回值：判断管理支付的电子邮件(string/boolean)
  -----------------------*/ 
-  function admin_process_pay_email($payment,$order,$total_price_mail) {
+  function admin_process_pay_email($payment,$order,$total_price_mail,$site_id=0) {
     $module = $this->getModule($payment);
     if ($module) {
       if (method_exists($module, 'admin_process_pay_email')) {
-        return $module->admin_process_pay_email($order,$total_price_mail); 
+        return $module->admin_process_pay_email($order,$total_price_mail,$site_id); 
       }
     }
     return false;

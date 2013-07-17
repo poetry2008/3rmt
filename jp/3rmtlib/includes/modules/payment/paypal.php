@@ -180,6 +180,7 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
     $order_product_list = '';    
     for ($i=0, $n=sizeof($products); $i<$n; $i++) {
       $char_id = $products[$i]['id'];
+      $order_product_list .= '・' . $products[$i]['name'] . '×' . $products[$i]['quantity'] . "\n";
       $attributes_exist = ((isset($products[$i]['op_attributes'])) ? 1 : 0);
        
        if ($attributes_exist == 1) {
@@ -206,17 +207,17 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
     }
 
     $mail_mode = array(
-        '${C_NAME}',
-        '${C_EMAIL}',
-        '${O_DATE}',
-        '${ORDER_TOTAL}',
+        '${NAME}',
+        '${MAIL}',
+        '${ORDER_D}',
+        '${ORDER_M}',
         '${ORDER_PRODUCT_LIST}',
-        '${PO_DATE}',
-        '${PO_TIME}',
-        '${C_IP}',
-        '${C_ANGET}',
-        '${C_HOST}',
-        '${PAYMENT_METHOD}'
+        '${SHIPPING_DATE}',
+        '${SHIPPING_TIME}',
+        '${IP}',
+        '${ANGET}',
+        '${HOST}',
+        '${PAY}'
         );
     $mail_value = array(
         $order->customer["lastname"] . ' '. $order->customer["firstname"],
@@ -623,17 +624,17 @@ function getpreexpress($pre_value, $pre_pid){
     }
     
     $mail_mode = array(
-        '${C_NAME}',
-        '${C_EMAIL}',
-        '${O_DATE}',
-        '${ORDER_TOTAL}',
+        '${NAME}',
+        '${MAIL}',
+        '${ORDER_D}',
+        '${ORDER_M}',
         '${ORDER_PRODUCT_LIST}',
-        '${PO_DATE}',
-        '${PO_TIME}',
-        '${C_IP}',
-        '${C_ANGET}',
-        '${C_HOST}',
-        '${PAYMENT_METHOD}'
+        '${SHIPPING_DATE}',
+        '${SHIPPING_TIME}',
+        '${IP}',
+        '${ANGET}',
+        '${HOST}',
+        '${PAY}'
         );
     $mail_value = array(
         $preorder_info['customers_name'],
