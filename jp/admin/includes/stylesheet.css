@@ -2083,7 +2083,6 @@ google hack
 }
 .td_box{
 	overflow:hidden;
-	margin-right:4px;
 }
 @media all and (-webkit-min-device-pixel-ratio:0){
 .td_box{
@@ -2091,12 +2090,12 @@ google hack
 	overflow:hidden;
 }}
 .td_box input{
-	margin:0 2px 0 0;
+	margin:0 -1px 0 0;
 	padding:0;
 }
 @media all and (-webkit-min-device-pixel-ratio:0){
 .td_box input{
-	margin:0 5px 0 0;
+	margin:0 3px 0 0;
 	padding:0;
 }}
 .right_space{
