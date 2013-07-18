@@ -29,7 +29,16 @@
         $valid = tep_db_prepare_input($_POST['valid']);
         $param_str = tep_db_prepare_input($_POST['url']);
 
-        tep_db_query("update " . TABLE_MAIL_TEMPLATES . " set valid='".$valid."',user_update='".$_SESSION['user_name']."',date_update=now() where id = '" . tep_db_input($mail_id) . "'");
+        //邮件模板无效时、有效时的处理
+        if($valid == 0){
+          tep_db_query("update " . TABLE_MAIL_TEMPLATES . " set title='',contents='',valid='".$valid."',user_update='".$_SESSION['user_name']."',date_update=now() where id = '" . tep_db_input($mail_id) . "'");
+        }else{
+
+          $templates_title = tep_db_prepare_input($_POST['templates_title']);
+          $title = tep_db_prepare_input($_POST['title']);
+          $contents = tep_db_prepare_input($_POST['contents']);
+          tep_db_query("update " . TABLE_MAIL_TEMPLATES . " set templates_title='".$templates_title."',title='".$title."',contents='".$contents."',valid='".$valid."',user_update='".$_SESSION['user_name']."',date_update=now() where id = '" . tep_db_input($mail_id) . "'");
+        }
 
         tep_redirect(tep_href_link(FILENAME_MAIL_TEMPLATES, $param_str));
         break;

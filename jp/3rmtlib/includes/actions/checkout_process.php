@@ -719,6 +719,9 @@ $mailoption['ORDER_ID']         = $insert_id;
 $mailoption['ORDER_DATE']       = tep_date_long(time())  ;
 $mailoption['USER_NAME']        = tep_get_fullname($order->customer['firstname'],$order->customer['lastname'])  ;
 $mailoption['USER_MAILACCOUNT'] = $order->customer['email_address'];
+//配送料
+$shipping_fee_value = isset($_SESSION['h_shipping_fee']) ? $_SESSION['h_shipping_fee'] : 0; 
+$mailoption['SHIPPING_FEE']      = $currencies->format(abs($shipping_fee_value));
 $mailoption['ORDER_TOTAL']      = $currencies->format(abs($ot['value']));
 @$payment_class = $payment_modules->getModule($payment);
 
@@ -753,13 +756,6 @@ $mailoption['MAILFEE']          = str_replace('円','',$total_mail_fee);
 $email_order = '';
 $email_order = $payment_modules->getOrderMailString($payment,$mailoption);
 
-$shipping_fee_value = isset($_SESSION['h_shipping_fee']) ? $_SESSION['h_shipping_fee'] : 0; 
-$email_temp = '▼ポイント割引';
-$email_temp_str = '▼ ポイント割引';
-$email_shipping_fee = '▼配送料　　　　　：'.$shipping_fee_value.'円
-'.$email_temp;
-$email_order = str_replace($email_temp,$email_shipping_fee,$email_order);
-$email_order = str_replace($email_temp_str,$email_shipping_fee,$email_order);
 $email_address = '▼注文商品';
 
 if(isset($_SESSION['options']) && !empty($_SESSION['options'])){
