@@ -581,6 +581,8 @@ $mailoption['ORDER_ID']         = $orders_id;
 $mailoption['ORDER_DATE']       = tep_date_long(time())  ;
 $mailoption['USER_NAME']        = $preorder['customers_name'];
 $mailoption['USER_MAILACCOUNT'] = $preorder['customers_email_address'];
+$shipping_fee_value = !empty($_SESSION['preorder_shipping_fee']) ? $_SESSION['preorder_shipping_fee'] : 0; 
+$mailoption['SHIPPING_FEE']      = $currencies->format(abs($shipping_fee_value));
 $mailoption['ORDER_TOTAL']      = $currencies->format(abs($preorder_total_print_num+$_SESSION['preorders_code_fee']));
 
 $mailoption['TORIHIKIHOUHOU']   = $_SESSION['preorder_info_tori'];
@@ -627,13 +629,6 @@ if (isset($payment_modules->modules[strtoupper($cpayment_code)]->show_add_commen
 $mailoption['ADD_INFO'] = '';
 
 $email_order_text = $payment_modules->getOrderMailString($cpayment_code, $mailoption); 
-$shipping_fee_value = !empty($_SESSION['preorder_shipping_fee']) ? $_SESSION['preorder_shipping_fee'] : 0; 
-$email_temp = '▼ポイント割引';
-$email_temp_str = '▼ ポイント割引';
-$email_shipping_fee = '▼配送料　　　　　：'.$shipping_fee_value.'円
-'.$email_temp;
-$email_order_text = str_replace($email_temp,$email_shipping_fee,$email_order_text);
-$email_order_text = str_replace($email_temp_str,$email_shipping_fee,$email_order_text);
 //totals custom email
 $total_email_temp = '▼お支払金額';
 $total_email_temp_str = '▼ お支払金額';

@@ -6547,6 +6547,13 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
   $mail_query = tep_db_query("select * from ". TABLE_MAIL_TEMPLATES ." where id='".$mail_id."'"); 
   $mail_array = tep_db_fetch_array($mail_query);
   tep_db_free_result($mail_query);
+  //邮件模板无效时的处理
+  if($mail_array['valid'] == 0){
+
+    $mail_templates_str = tep_get_mail_templates($mail_array['flag'],0);
+    $mail_array['title'] = $mail_templates_str['title'];
+    $mail_array['contents'] = $mail_templates_str['contents'];
+  }
 
   $site_romaji_str = '';
   $field_str = '*';
