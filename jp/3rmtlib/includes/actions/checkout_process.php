@@ -770,7 +770,7 @@ if(isset($_SESSION['options']) && !empty($_SESSION['options'])){
 }else{
   $email_order = str_replace("\n".'${ADDRESS_INFO}','',$email_order); 
 }
-$email_order = str_replace("\n".'${CUSTOMER_FEE}','',$email_order);
+$email_order = str_replace("\n".'${CUSTOMIZED_FEE}','',$email_order);
 //订单邮件
 $orders_mail_templates = tep_get_mail_templates('MODULE_PAYMENT_'.strtoupper($payment).'_MAILSTRING',SITE_ID);
 if ($customers_referer_array['is_send_mail'] != '1') {

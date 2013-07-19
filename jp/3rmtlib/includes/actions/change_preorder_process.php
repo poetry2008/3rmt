@@ -588,7 +588,7 @@ $mailoption['ORDER_DATE']       = tep_date_long(time())  ;
 $mailoption['USER_NAME']        = $preorder['customers_name'];
 $mailoption['USER_MAILACCOUNT'] = $preorder['customers_email_address'];
 if($totals_email_str != ''){
-  $mailoption['CUSTOMER_FEE'] = $totals_email_str;
+  $mailoption['CUSTOMIZED_FEE'] = $totals_email_str;
 }
 $shipping_fee_value = !empty($_SESSION['preorder_shipping_fee']) ? $_SESSION['preorder_shipping_fee'] : 0; 
 $mailoption['SHIPPING_FEE']      = $currencies->format(abs($shipping_fee_value));
@@ -661,7 +661,7 @@ if(!empty($add_list)){
   $email_order_text = str_replace("\n".'${ADDRESS_INFO}','',$email_order_text);
 }
 if($totals_email_str == ''){
-  $email_order_text = str_replace("\n".'${CUSTOMER_FEE}','',$email_order_text);
+  $email_order_text = str_replace("\n".'${CUSTOMIZED_FEE}','',$email_order_text);
 }
 
 //订单邮件
