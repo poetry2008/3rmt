@@ -414,7 +414,13 @@ require("includes/note_js.php");
     tep_db_free_result($show_site_query);
     $site_id_array = explode('-',$show_site_array['site']);
     $site_id_str = implode(',',$site_id_array);
-    $site_id_array = array_filter($site_id_array);
+    foreach($site_id_array as $site_key=>$site_value){
+
+      if(trim($site_value) == ''){
+
+        unset($site_id_array[$site_key]); 
+      }
+    }
     if(!empty($site_id_array)){
       $site_id_str = ' where site_id in ('.$site_id_str.')';
     }else{
