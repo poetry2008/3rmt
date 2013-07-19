@@ -108,9 +108,9 @@ echo TEXT_ORDERS_EMPTY_COMMENT;
       exit;
     }
   }
-    $orders_id = date('Ymd').'-'.date('His').tep_get_order_end_num(); 
+  $orders_id = date('Ymd').'-'.date('His').tep_get_order_end_num(); 
+  $payment_modules = payment::getInstance($preorder['site_id']);   
   $cpayment_code = payment::changeRomaji($preorder['payment_method'], PAYMENT_RETURN_TYPE_CODE);   
-  $payment_modules = payment::getInstance($preorder['site_id'],$cpayment_code,'preorder');   
   
   $option_info_array = get_preorder_total_info($cpayment_code, $preorder['orders_id'], $preorder_option_info);
   $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>");
@@ -359,9 +359,15 @@ if($address_error == false){
     }
   }
 
+  $customer_i = 0;
   foreach($totals_custom_array as $totals_custom_value){
 
-    $totals_email_str .= '▼'.$totals_custom_value['title'].'：'.$currencies->format($totals_custom_value['value'])."\n";
+    if(count($totals_custom_array)-1 != $customer_i){
+      $totals_email_str .= TEXT_ORDERS_CUSTOMER_STRING.$totals_custom_value['title'].'：'.$currencies->format($totals_custom_value['value'])."\n";
+    }else{
+      $totals_email_str .= TEXT_ORDERS_CUSTOMER_STRING.$totals_custom_value['title'].'：'.$currencies->format($totals_custom_value['value']); 
+    }
+    $customer_i++;
   }
   foreach($totals_custom_array as $totals_print_custom_value){
 
@@ -436,7 +442,7 @@ if($cl_max_len < 4) {
 }
   
   $show_products_name = tep_get_products_name($preorder_product_res['products_id']); 
-  $products_ordered_text .= '注文商品'.str_repeat('　', intval(($cl_max_len-mb_strlen('注文商品','utf-8')))).'：'.(tep_not_null($show_products_name) ? $show_products_name : $preorder_product_res['products_name']);
+  $products_ordered_text .= TEXT_ORDERS_PRODUCTS.str_repeat('　', intval(($cl_max_len-mb_strlen(TEXT_ORDERS_PRODUCTS,'utf-8')))).'：'.(tep_not_null($show_products_name) ? $show_products_name : $preorder_product_res['products_name']);
   if (tep_not_null($preorder_product_res['products_model'])) {
     $products_ordered_text .= ' ('.$preorder_product_res['products_model'].')'; 
   }
@@ -563,17 +569,17 @@ while ($preorder_oa_res = tep_db_fetch_array($preorder_oa_raw)) {
 
 $products_ordered_text .= $products_ordered_attributes;
 
-$products_ordered_text .= "\n".'個数'.str_repeat('　', intval(($cl_max_len-mb_strlen('個数','utf-8')))).'：' .  $preorder_product_res['products_quantity'] . '個' .  tep_get_full_count2($preorder_product_res['products_quantity'], $preorder_product_res['products_id'])."\n";
-$products_ordered_text .= '単価'.str_repeat('　', intval(($cl_max_len-mb_strlen('単価','utf-8')))).'：' .  $currencies->display_price(isset($option_info_array['final_price'])?$option_info_array['final_price']:$preorder_product_res['final_price'], $preorder_product_res['products_tax']) . "\n";
-$products_ordered_text .= '小計'.str_repeat('　', intval(($cl_max_len-mb_strlen('小計','utf-8')))).'：' .  $currencies->display_price(isset($option_info_array['final_price'])?$option_info_array['final_price']:$preorder_product_res['final_price'], $preorder_product_res['products_tax'], $preorder_product_res['products_quantity']) . "\n";
+$products_ordered_text .= "\n".TEXT_ORDERS_PRODUCTS_NUMBER.str_repeat('　', intval(($cl_max_len-mb_strlen(TEXT_ORDERS_PRODUCTS_NUMBER,'utf-8')))).'：' .  $preorder_product_res['products_quantity'] . NUM_UNIT_TEXT .  tep_get_full_count2($preorder_product_res['products_quantity'], $preorder_product_res['products_id'])."\n";
+$products_ordered_text .= TEXT_ORDERS_PRODUCTS_PRICE.str_repeat('　', intval(($cl_max_len-mb_strlen(TEXT_ORDERS_PRODUCTS_PRICE,'utf-8')))).'：' .  $currencies->display_price(isset($option_info_array['final_price'])?$option_info_array['final_price']:$preorder_product_res['final_price'], $preorder_product_res['products_tax']) . "\n";
+$products_ordered_text .= TEXT_ORDERS_PRODUCTS_SUBTOTAL.str_repeat('　', intval(($cl_max_len-mb_strlen(TEXT_ORDERS_PRODUCTS_SUBTOTAL,'utf-8')))).'：' .  $currencies->display_price(isset($option_info_array['final_price'])?$option_info_array['final_price']:$preorder_product_res['final_price'], $preorder_product_res['products_tax'], $preorder_product_res['products_quantity']) . "\n";
 
 
-$products_ordered_text .= "------------------------------------------\n";
+$products_ordered_text .= TEXT_ORDERS_PRODUCTS_LINE;
 if (tep_get_cflag_by_product_id($preorder_prodct_res['products_id'])) {
   if (tep_get_bflag_by_product_id($preorder_prodct_res['products_id'])) {
-    $products_ordered_text .= "※ 当社キャラクター名は、お取引10分前までに電子メールにてお知らせいたします。\n\n";
+    $products_ordered_text .= TEXT_ORDERS_PRODUCTS_ORDERED;
   } else {
-    $products_ordered_text .= "※ 当社キャラクター名は、お支払い確認後に電子メールにてお知らせいたします。\n\n";
+    $products_ordered_text .= TEXT_ORDERS_PRODUCTS_ORDERED_TEXT;
   }
 }
 
@@ -581,13 +587,16 @@ $mailoption['ORDER_ID']         = $orders_id;
 $mailoption['ORDER_DATE']       = tep_date_long(time())  ;
 $mailoption['USER_NAME']        = $preorder['customers_name'];
 $mailoption['USER_MAILACCOUNT'] = $preorder['customers_email_address'];
+if($totals_email_str != ''){
+  $mailoption['CUSTOMER_FEE'] = $totals_email_str;
+}
 $shipping_fee_value = !empty($_SESSION['preorder_shipping_fee']) ? $_SESSION['preorder_shipping_fee'] : 0; 
 $mailoption['SHIPPING_FEE']      = $currencies->format(abs($shipping_fee_value));
 $mailoption['ORDER_TOTAL']      = $currencies->format(abs($preorder_total_print_num+$_SESSION['preorders_code_fee']));
 
 $mailoption['TORIHIKIHOUHOU']   = $_SESSION['preorder_info_tori'];
 $mailoption['ORDER_PAYMENT']    = $preorder['payment_method'];
-$mailoption['ORDER_TTIME']      =  str_string($_SESSION['preorder_info_date']) .  $_SESSION['preorder_info_start_hour'] . '時' . $_SESSION['preorder_info_start_min'] .  '分から'. $_SESSION['preorder_info_end_hour'].'時'. $_SESSION['preorder_info_end_min'].'分　（24時間表記）';
+$mailoption['ORDER_TTIME']      =  str_string($_SESSION['preorder_info_date']) .  $_SESSION['preorder_info_start_hour'] . TIME_HOUR_TEXT . $_SESSION['preorder_info_start_min'] .  TEXT_ORDERS_PRODUCTS_LINK. $_SESSION['preorder_info_end_hour'].TIME_HOUR_TEXT. $_SESSION['preorder_info_end_min'].TEXT_ORDERS_PRODUCTS_TWENTY_HOUR;
 
 $mailoption['EXTRA_COMMENT']   = '';
 $mailoption['ORDER_PRODUCTS']   = $products_ordered_text;
@@ -604,17 +613,17 @@ $mailoption['ORDER_LTOTAL'] = number_format((isset($option_info_array['final_pri
 
 $mailoption['ORDER_ACTORNAME'] = '';
 if ($preorder_point){
-  $mailoption['POINT']            = str_replace('円', '', $currencies->format(abs($preorder_point)));
+  $mailoption['POINT']            = str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format(abs($preorder_point)));
 }else {
     $mailoption['POINT']            = 0;
 }
 
 if (isset($_SESSION['preorder_campaign_fee'])) {
-  $mailoption['POINT']          = str_replace('円', '', $currencies->format(abs($_SESSION['preorder_campaign_fee'])));
+  $mailoption['POINT']          = str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format(abs($_SESSION['preorder_campaign_fee'])));
 }
 
 if (!empty($_SESSION['preorders_code_fee'])) {
-  $mailoption['MAILFEE']          = str_replace('円', '', $currencies->format(isset($option_info_array['fee'])?abs($option_info_array['fee']):abs($_SESSION['preorders_code_fee'])));
+  $mailoption['MAILFEE']          = str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format(isset($option_info_array['fee'])?abs($option_info_array['fee']):abs($_SESSION['preorders_code_fee'])));
 } else {
   $mailoption['MAILFEE']          = '0';
 }
@@ -629,13 +638,6 @@ if (isset($payment_modules->modules[strtoupper($cpayment_code)]->show_add_commen
 $mailoption['ADD_INFO'] = '';
 
 $email_order_text = $payment_modules->getOrderMailString($cpayment_code, $mailoption); 
-//totals custom email
-$total_email_temp = '▼お支払金額';
-$total_email_temp_str = '▼ お支払金額';
-$total_email_custom = $totals_email_str.$total_email_temp;
-$email_order_text = str_replace($total_email_temp,$total_email_custom,$email_order_text);
-$email_order_text = str_replace($total_email_temp_str,$total_email_custom,$email_order_text);
-$email_address = '▼注文商品';
 
 if(!empty($add_list)){
   $address_len_array = array();
@@ -644,17 +646,22 @@ if(!empty($add_list)){
     $address_len_array[] = strlen($address_value[0]);
   }
   $maxlen = max($address_len_array);
-  $email_address_str = '▼住所情報'."\n";
-  $email_address_str .= '------------------------------------------'."\n";
+  $email_address_str = TEXT_ORDERS_PRODUCTS_ADDRESS_INFO."\n";
+  $email_address_str .= TEXT_ORDERS_PRODUCTS_LINE;
   $maxlen = 9;
   foreach($add_list as $ad_value){
     $ad_len = mb_strlen($ad_value[0],'utf8');
     $temp_str = str_repeat('　',$maxlen-$ad_len);
     $email_address_str .= $ad_value[0].$temp_str.'：'.$ad_value[1]."\n";
   }
-  $email_address_str .= '------------------------------------------'."\n";
+  $email_address_str .= TEXT_ORDERS_PRODUCTS_LINE;
   $email_address_str .= $email_address;
-  $email_order_text = str_replace($email_address,$email_address_str,$email_order_text);
+  $email_order_text = str_replace('${ADDRESS_INFO}',$email_address_str,$email_order_text);
+}else{
+  $email_order_text = str_replace("\n".'${ADDRESS_INFO}','',$email_order_text);
+}
+if($totals_email_str == ''){
+  $email_order_text = str_replace("\n".'${CUSTOMER_FEE}','',$email_order_text);
 }
 
 //订单邮件

@@ -649,7 +649,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
   $total_tax += tep_calculate_tax($total_products_price, $products_tax) * $order->products[$i]['qty'];
   $total_cost += $total_products_price;
 
-  $products_ordered .= '注文商品'.str_repeat('　',intval(($attribute_max_len-mb_strlen('注文商品', 'utf-8')))).'：' . $order->products[$i]['name'];
+  $products_ordered .= TEXT_ORDERS_PRODUCTS.str_repeat('　',intval(($attribute_max_len-mb_strlen(TEXT_ORDERS_PRODUCTS, 'utf-8')))).'：' . $order->products[$i]['name'];
   if(tep_not_null($order->products[$i]['model'])) {
     $products_ordered .= ' (' . $order->products[$i]['model'] . ')';
   }
@@ -657,15 +657,15 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
     $products_ordered .= ' ('.$currencies->display_price($order->products[$i]['price'], $order->products[$i]['tax']).')'; 
   }
   $products_ordered .= $products_ordered_attributes . "\n";
-  $products_ordered .= '個数'.str_repeat('　',intval(($attribute_max_len-mb_strlen('個数', 'utf-8')))).'：' . $order->products[$i]['qty'] . '個' .  tep_get_full_count2($order->products[$i]['qty'], (int)$order->products[$i]['id']) . "\n";
-  $products_ordered .= '単価'.str_repeat('　',intval(($attribute_max_len-mb_strlen('単価', 'utf-8')))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
-  $products_ordered .= '小計'.str_repeat('　',intval(($attribute_max_len-mb_strlen('小計', 'utf-8')))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
-  $products_ordered .= "------------------------------------------\n";
+  $products_ordered .= TEXT_ORDERS_PRODUCTS_NUMBER.str_repeat('　',intval(($attribute_max_len-mb_strlen(TEXT_ORDERS_PRODUCTS_NUMBER, 'utf-8')))).'：' . $order->products[$i]['qty'] . NUM_UNIT_TEXT .  tep_get_full_count2($order->products[$i]['qty'], (int)$order->products[$i]['id']) . "\n";
+  $products_ordered .= TEXT_ORDERS_PRODUCTS_PRICE.str_repeat('　',intval(($attribute_max_len-mb_strlen(TEXT_ORDERS_PRODUCTS_PRICE, 'utf-8')))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
+  $products_ordered .= TEXT_ORDERS_PRODUCTS_SUBTOTAL.str_repeat('　',intval(($attribute_max_len-mb_strlen(TEXT_ORDERS_PRODUCTS_SUBTOTAL, 'utf-8')))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
+  $products_ordered .= TEXT_ORDERS_PRODUCTS_LINE;
   if (tep_get_cflag_by_product_id((int)$order->products[$i]['id'])) {
     if (tep_get_bflag_by_product_id((int)$order->products[$i]['id'])) {
-      $products_ordered .= "※ 当社キャラクター名は、お取引10分前までに電子メールにてお知らせいたします。\n\n";
+      $products_ordered .= TEXT_ORDERS_PRODUCTS_ORDERED;
     } else {
-      $products_ordered .= "※ 当社キャラクター名は、お支払い確認後に電子メールにてお知らせいたします。\n\n";
+      $products_ordered .= TEXT_ORDERS_PRODUCTS_ORDERED_TEXT;
     }
   }
 }
@@ -679,24 +679,17 @@ $otq = tep_db_query("select * from ".TABLE_ORDERS_TOTAL." where class = 'ot_tota
 $ot = tep_db_fetch_array($otq);
 
 // mail oprion like mailprint
-// CUSTOMER_INFO
-$email_customer_info = '';
-$email_customer_info .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-$email_customer_info .= 'IPアドレス　　　　　　：' . $_SERVER["REMOTE_ADDR"] . "\n";
-$email_customer_info .= 'ホスト名　　　　　　　：' . @gethostbyaddr($_SERVER["REMOTE_ADDR"]) . "\n";
-$email_customer_info .= 'ユーザーエージェント　：' . $_SERVER["HTTP_USER_AGENT"] . "\n";
-$email_customer_info .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
 $email_credit_research = ''; 
 $credit_inquiry_query = tep_db_query("select customers_fax, customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "'");
 $credit_inquiry       = tep_db_fetch_array($credit_inquiry_query);
 $email_credit_research .= $credit_inquiry['customers_fax'] . "\n";
-$email_credit_research .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+$email_credit_research .= TEXT_ORDERS_PRODUCTS_THICK;
 $email_orders_history = '';
   
 if ($credit_inquiry['customers_guest_chk'] == '1') { 
-  $email_orders_history .= 'ゲスト'; 
+  $email_orders_history .= TABLE_HEADING_MEMBER_TYPE_GUEST; 
 } else { 
-  $email_orders_history .= '会員'; 
+  $email_orders_history .= TEXT_MEMBER; 
 }
   
 $email_orders_history .= "\n";
@@ -707,10 +700,10 @@ $order_history_query = tep_db_query($order_history_query_raw);
 while ($order_history = tep_db_fetch_array($order_history_query)) {
   $email_orders_history .= $order_history['date_purchased'] . '　　' .
     tep_output_string_protected($order_history['customers_name']) . '　　' .
-    abs(intval($order_history['order_total_value'])) . '円　　' . $order_history['orders_status_name'] . "\n";
+    abs(intval($order_history['order_total_value'])) . JPMONEY_UNIT_TEXT.'　　' . $order_history['orders_status_name'] . "\n";
 }
   
-$email_orders_history .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n\n\n";
+$email_orders_history .= TEXT_ORDERS_PRODUCTS_THICK . "\n\n";
 
 # 邮件正文调整 --------------------------------------{
 
@@ -727,7 +720,7 @@ $mailoption['ORDER_TOTAL']      = $currencies->format(abs($ot['value']));
 
 $mailoption['TORIHIKIHOUHOU']   = $torihikihouhou;
 $mailoption['ORDER_PAYMENT']    = $payment_class->title ;
-$mailoption['ORDER_TTIME']      =  str_string($date) . $start_hour . '時' . $start_min . '分から'. $end_hour .'時'. $end_min .'分　（24時間表記）' ;
+$mailoption['ORDER_TTIME']      =  str_string($date) . $start_hour . TIME_HOUR_TEXT . $start_min . TEXT_ORDERS_PRODUCTS_LINK. $end_hour .TIME_HOUR_TEXT. $end_min .TEXT_ORDERS_PRODUCTS_TWENTY_HOUR ;
 $mailoption['ORDER_COMMENT']    = $_SESSION['mailcomments'];//
 unset($_SESSION['comments']);
 $mailoption['ADD_INFO']    = str_replace("\n".$mailoption['ORDER_COMMENT'],'',trim($order->info['comments']));
@@ -739,24 +732,22 @@ $mailoption['SITE_URL']         = HTTP_SERVER ;
 $payment_modules->deal_mailoption($mailoption, $payment);
 
 if ($point){
-  $mailoption['POINT']            = str_replace('円', '', $currencies->format(abs($point)));
+  $mailoption['POINT']            = str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format(abs($point)));
 }else {
   $mailoption['POINT']            = 0;
 }
 if (isset($_SESSION['campaign_fee'])) {
-  $mailoption['POINT']            = str_replace('円', '', $currencies->format(abs($_SESSION['campaign_fee'])));
+  $mailoption['POINT']            = str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format(abs($_SESSION['campaign_fee'])));
 }
 if(!isset($_SESSION['mailfee'])){
   $total_mail_fee =0;
 }else{
-  $total_mail_fee = str_replace('円','',$_SESSION['mailfee']);
+  $total_mail_fee = str_replace(JPMONEY_UNIT_TEXT,'',$_SESSION['mailfee']);
 }
 
-$mailoption['MAILFEE']          = str_replace('円','',$total_mail_fee);
+$mailoption['MAILFEE']          = str_replace(JPMONEY_UNIT_TEXT,'',$total_mail_fee);
 $email_order = '';
 $email_order = $payment_modules->getOrderMailString($payment,$mailoption);
-
-$email_address = '▼注文商品';
 
 if(isset($_SESSION['options']) && !empty($_SESSION['options'])){
   $address_len_array = array();
@@ -765,18 +756,21 @@ if(isset($_SESSION['options']) && !empty($_SESSION['options'])){
     $address_len_array[] = strlen($address_value[0]);
   }
   $maxlen = max($address_len_array);
-  $email_address_str = '▼住所情報'."\n";
-  $email_address_str .= '------------------------------------------'."\n";
+  $email_address_str = TEXT_ORDERS_PRODUCTS_ADDRESS_INFO."\n";
+  $email_address_str .= TEXT_ORDERS_PRODUCTS_LINE;
   $maxlen = 9;
   foreach($_SESSION['options'] as $ad_value){
     $ad_len = mb_strlen($ad_value[0],'utf8');
     $temp_str = str_repeat('　',$maxlen-$ad_len);
     $email_address_str .= $ad_value[0].$temp_str.'：'.$ad_value[1]."\n";
   }
-  $email_address_str .= '------------------------------------------'."\n";
+  $email_address_str .= TEXT_ORDERS_PRODUCTS_LINE;
   $email_address_str .= $email_address;
-  $email_order = str_replace($email_address,$email_address_str,$email_order);
+  $email_order = str_replace('${ADDRESS_INFO}',$email_address_str,$email_order);
+}else{
+  $email_order = str_replace("\n".'${ADDRESS_INFO}','',$email_order); 
 }
+$email_order = str_replace("\n".'${CUSTOMER_FEE}','',$email_order);
 //订单邮件
 $orders_mail_templates = tep_get_mail_templates('MODULE_PAYMENT_'.strtoupper($payment).'_MAILSTRING',SITE_ID);
 if ($customers_referer_array['is_send_mail'] != '1') {
