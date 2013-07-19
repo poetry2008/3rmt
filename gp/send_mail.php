@@ -11,7 +11,7 @@
   $success_single = false; 
   //测试邮件
   $mail_array = tep_get_mail_templates('TEXT_BODY_TEXT',SITE_ID);
-  $subject = $mail_array['title'];
+  $subject = str_replace('${SITE_NAME}',STORE_NAME,$mail_array['title']);
   $body_text = '';
   $body_text = $mail_array['contents'];
   $mode_array = array(
