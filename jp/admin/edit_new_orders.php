@@ -1098,10 +1098,29 @@ if($address_error == false){
               $total_price_mail = round($totals['value']);
             } else {
               $total_details_mail .= '▼' . $totals['title'] . str_repeat('　', intval((16 -
-                      strlen($totals['title']))/2)) . '：' . $currencies->format($totals['value']) . "\n";
+                strlen($totals['title']))/2)) . '：' . $currencies->format($totals['value']) . "\n";
             }
           }
+          $totals_email_i = 0;
+          foreach($update_totals as $update_total_key=>$update_total_value){
 
+              if($update_total_value['class'] == 'ot_custom' && trim($update_total_value['title']) != '' && trim($update_total_value['value']) != ''){
+                $totals_email_i = $update_total_key;
+              }
+          }
+          $totals_email_str = '';
+          foreach($update_totals as $update_totals_key=>$update_totals_value){
+
+              if($update_totals_value['class'] == 'ot_custom' && trim($update_totals_value['title']) != '' && trim($update_totals_value['value']) != ''){
+                if($totals_email_i != $update_totals_key){
+                  $totals_email_str .= '▼'.$update_totals_value['title'].str_repeat('　', intval((16 -
+                      strlen($update_totals_value['title']))/2)).'：'.$currencies->format($update_totals_value['value'])."\n";
+                }else{
+                  $totals_email_str .= '▼'.$update_totals_value['title'].str_repeat('　', intval((16 -
+                      strlen($update_totals_value['title']))/2)).'：'.$currencies->format($update_totals_value['value']); 
+                }
+              }
+            }
 
 
           if ($customer_guest['is_send_mail'] != '1')
@@ -1112,6 +1131,12 @@ if($address_error == false){
             $mailoption['ORDER_DATE']       = tep_date_long(time())  ;       
             $mailoption['USER_NAME']        =  $order->customer['name'] ;
             $mailoption['USER_MAILACCOUNT'] = $order->customer['email_address']; 
+            //自定义费用
+            if($totals_email_str != ''){
+              $mailoption['CUSTOMIZED_FEE']      = $totals_email_str;
+            }
+            //配送费
+            $mailoption['SHIPPING_FEE']      = $currencies->format($shipping_fee); 
             $mailoption['ORDER_TOTAL']      = $currencies->format($mailtotal);
             @$payment_class = $$payment; 
 
@@ -1135,7 +1160,6 @@ if($address_error == false){
             $payment_modules->admin_deal_mailoption($mailoption, $oID, payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE)); 
             $mailoption['ADD_INFO'] = isset($_SESSION['payment_bank_info'][$oID]['add_info'])?$_SESSION['payment_bank_info'][$oID]['add_info']:'';
             unset($_SESSION['orderinfo_mail_use']);
-            $totals_email_str = '';
             $print_totals_email_str = '';
             $totals_email_i = 0;
             foreach($update_totals as $update_total_key=>$update_total_value){
@@ -1144,16 +1168,7 @@ if($address_error == false){
                 $totals_email_i = $update_total_key;
               }
             }
-            foreach($update_totals as $update_totals_key=>$update_totals_value){
-
-              if($update_totals_value['class'] == 'ot_custom' && trim($update_totals_value['title']) != '' && trim($update_totals_value['value']) != ''){
-                if($totals_email_i != $update_totals_key){
-                  $totals_email_str .= '▼'.$update_totals_value['title'].'：'.$currencies->format($update_totals_value['value'])."\n";
-                }else{
-                  $totals_email_str .= '▼'.$update_totals_value['title'].'：'.str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($update_totals_value['value'])); 
-                }
-              }
-            }
+            
             foreach($update_totals as $update_totals_key=>$update_totals_value){
 
               if($update_totals_value['class'] == 'ot_custom' && trim($update_totals_value['title']) != '' && trim($update_totals_value['value']) != ''){
@@ -1166,9 +1181,9 @@ if($address_error == false){
             }
             $point = $mailpoint;
             if ($point){
-              $mailoption['POINT']            = $point.($totals_email_i != 0 ? TEXT_MONEY_SYMBOL."\n".$totals_email_str : '');
+              $mailoption['POINT']            = $point;
             }else {
-              $mailoption['POINT']            = '0'.($totals_email_i != 0 ? TEXT_MONEY_SYMBOL."\n".$totals_email_str : '');
+              $mailoption['POINT']            = '0';
             }
             $total_mail_fee = $handle_fee;	    
             if(!isset($total_mail_fee)){
@@ -1186,12 +1201,6 @@ if($address_error == false){
               $email = str_replace('${'.strtoupper($key).'}',$value,$email);
               }
             
-            $email_temp = SENDMAIL_TEXT_POINT_DISCOUNT;
-            $email_temp_str = SENDMAIL_TEXT_POINT_DISCOUNT_ONE;
-            $email_shipping_fee = SENDMAIL_TEXT_SHIPPING_FEE_ONE.$shipping_fee.SENDMAIL_EDIT_ORDERS_PRICE_UNIT."\n".$email_temp;
-            $email = str_replace($email_temp,$email_shipping_fee,$email);
-            $email = str_replace($email_temp_str,$email_shipping_fee,$email);
-            $email_address = SENDMAIL_ORDERS_PRODUCTS_ONE;
             //address
             if(isset($options_info_array) && !empty($options_info_array)){
               $address_len_array = array();
@@ -1213,8 +1222,14 @@ if($address_error == false){
               }
               $email_address_str .= '------------------------------------------'."\n";
               $email_address_str .= $email_address;
-              $email = str_replace($email_address,$email_address_str,$email);
-          }
+              $email = str_replace('${ADDRESS_INFO}',$email_address_str,$email);
+            }else{
+              $email = str_replace("\n".'${ADDRESS_INFO}','',$email); 
+            }
+            if($totals_email_str == ''){
+
+              $email = str_replace("\n".'${CUSTOMIZED_FEE}','',$email);
+            }
   // new send mail 
             $email = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$email); 
             $search_products_name_list = array();
