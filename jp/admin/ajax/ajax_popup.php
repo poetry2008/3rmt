@@ -6601,11 +6601,30 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
     $site_id_array = explode('-',$site_id);
     $site_id_str = implode(',',$site_id_array);
     $site_id_str = ' where site_id in ('.$site_id_str.')';
+  }else{
+    
+    $show_site_query = tep_db_query("select site from ". TABLE_SHOW_SITE ." where page='".FILENAME_MAIL_TEMPLATES."'"); 
+    $show_site_array = tep_db_fetch_array($show_site_query);
+    tep_db_free_result($show_site_query);
+    $site_id_array = explode('-',$show_site_array['site']);
+    $site_id_str = implode(',',$site_id_array);
+    foreach($site_id_array as $site_key=>$site_value){
+
+      if(trim($site_value) == ''){
+
+        unset($site_id_array[$site_key]); 
+      }
+    }
+    if(!empty($site_id_array)){
+      $site_id_str = ' where site_id in ('.$site_id_str.')';
+    }else{
+      $site_id_str = ''; 
+    }
   } 
 
   if($keyword != ''){
 
-    if($site_id != ''){
+    if($site_id_str != ''){
 
       $keyword_str = " and (templates_title like '%".$keyword."%' or title like '%".$keyword."%' or contents like '%".$keyword."%')";
     }else{

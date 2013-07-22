@@ -655,7 +655,6 @@ if(!empty($add_list)){
     $email_address_str .= $ad_value[0].$temp_str.'：'.$ad_value[1]."\n";
   }
   $email_address_str .= TEXT_ORDERS_PRODUCTS_LINE;
-  $email_address_str .= $email_address;
   $email_order_text = str_replace('${ADDRESS_INFO}',$email_address_str,$email_order_text);
 }else{
   $email_order_text = str_replace("\n".'${ADDRESS_INFO}','',$email_order_text);
@@ -762,6 +761,16 @@ $payment_replace = array(
                         abs($preorder_total_print_num+$_SESSION['preorders_code_fee'])
                       );
 $email_printing_order = str_replace($payment_mode,$payment_replace,$orders_print_mail_templates['contents']);
+if($totals_email_str == ''){
+  $email_printing_order = str_replace("\n".'${CUSTOMIZED_FEE}','',$email_printing_order);
+}else{
+  $email_printing_order = str_replace('${CUSTOMIZED_FEE}',str_replace(TEXT_ORDERS_CUSTOMER_STRING,'',$totals_email_str),$email_printing_order);
+}
+if($email_address_str != ''){
+  $email_printing_order = str_replace('${ADDRESS_INFO}',str_replace(TEXT_ORDERS_CUSTOMER_STRING,'',$email_address_str),$email_printing_order);
+}else{
+  $email_printing_order = str_replace("\n".'${ADDRESS_INFO}','',$email_printing_order);
+}
 
 if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
   //发送打印邮件 
