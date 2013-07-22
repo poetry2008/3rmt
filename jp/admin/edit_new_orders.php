@@ -1221,7 +1221,6 @@ if($address_error == false){
                 $email_address_str .= $ad_name_array['name'].$temp_str.'：'.$ad_value."\n";
               }
               $email_address_str .= '------------------------------------------'."\n";
-              $email_address_str .= $email_address;
               $email = str_replace('${ADDRESS_INFO}',$email_address_str,$email);
             }else{
               $email = str_replace("\n".'${ADDRESS_INFO}','',$email); 
@@ -1369,12 +1368,15 @@ if($address_error == false){
 
   $payment_mode = array(
                         '${USER_NAME}',
+                        '${YEAR}',
                         '${SITE_NAME}',
                         '${ORDER_ID}',
                         '${ORDER_DATE}',
                         '${USER_MAILACCOUNT}',
                         '${BUYING_INFO}',
                         '${POINT}',
+                        '${SHIPPING_FEE}',
+                        '${TOTAL}',
                         '${MAILFEE}',
                         '${ORDER_TOTAL}',
                         '${ORDER_PRODUCTS}',
@@ -1481,15 +1483,17 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
       }
   $orders_comments = $pay_type_array[0] == $payment_method || $pay_type_array[2] == $payment_method ? $comment_arr['comment'] : $comments_text;  
   $point = !isset($point) ? 0 : $point;
-  $point = $point.($totals_email_i != 0 ? TEXT_MONEY_SYMBOL."\n".$print_totals_email_str : '');
   $payment_replace = array(
                           tep_db_input(stripslashes($update_customer_name)),
+                          date('Y'),
                           $orders_site_name_array['name'],
                           $oID,
                           tep_date_long(time()),
                           tep_db_input($update_customer_email_address), 
                           $comment_arr['comment'],
                           $point,  
+                          str_replace(SENDMAIL_TEXT_MONEY_SYMBOL,"",$currencies->format($shipping_fee)),
+                          str_replace(SENDMAIL_TEXT_MONEY_SYMBOL,"",$currencies->format($mailtotal)),
                           $handle_fee, 
                           str_replace(SENDMAIL_TEXT_MONEY_SYMBOL,"",$currencies->format(abs($newtotal))),
                           $products_ordered_mail,
@@ -1503,6 +1507,18 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
   $payment_name_string = str_replace($payment_mode,$payment_replace,$payment_name_string);  
   $email_printing_order = $payment_name_string; 
   $email_printing_order_title = str_replace('${SITE_NAME}',$orders_site_name_array['name'],$payment_name_string_title);
+  //自定义费用
+  if($totals_email_str != ''){
+    $email_printing_order = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $email_printing_order);
+  }else{
+    $email_printing_order = str_replace("\n".'${CUSTOMIZED_FEE}','', $email_printing_order); 
+  }
+  //住所
+  if($email_address_str != ''){
+    $email_printing_order = str_replace('${ADDRESS_INFO}',str_replace('▼','',$email_address_str), $email_printing_order);
+  }else{
+    $email_printing_order = str_replace("\n".'${ADDRESS_INFO}','', $email_printing_order); 
+  } 
   $email_printing_order = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL, $email_printing_order); 
   # ------------------------------------------
   tep_mail('',
