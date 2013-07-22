@@ -761,11 +761,13 @@ $payment_replace = array(
                         abs($preorder_total_print_num+$_SESSION['preorders_code_fee'])
                       );
 $email_printing_order = str_replace($payment_mode,$payment_replace,$orders_print_mail_templates['contents']);
+//自定义费用
 if($totals_email_str == ''){
   $email_printing_order = str_replace("\n".'${CUSTOMIZED_FEE}','',$email_printing_order);
 }else{
   $email_printing_order = str_replace('${CUSTOMIZED_FEE}',str_replace(TEXT_ORDERS_CUSTOMER_STRING,'',$totals_email_str),$email_printing_order);
 }
+//住所
 if($email_address_str != ''){
   $email_printing_order = str_replace('${ADDRESS_INFO}',str_replace(TEXT_ORDERS_CUSTOMER_STRING,'',$email_address_str),$email_printing_order);
 }else{
