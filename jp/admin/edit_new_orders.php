@@ -1145,7 +1145,7 @@ if($address_error == false){
             $trade_time = str_replace($oarr, $newarr,date('Y'.SENDMAIL_TEXT_DATE_YEAR.'m'.SENDMAIL_TEXT_DATE_MONTH.'d'.SENDMAIL_TEXT_DATE_DAY.'（l）H'.SENDMAIL_TEXT_HOUR.'i'.SENDMAIL_TEXT_MIN, strtotime($_POST['date_orders'].' '.$_POST['start_hour'].':'.$_POST['start_min'].$_POST['start_min_1'].':00'))); 
             $trade_time_1 = date('H'.SENDMAIL_TEXT_HOUR.'i'.SENDMAIL_TEXT_MIN,strtotime($_POST['date_orders'].' '.$_POST['end_hour'].':'.$_POST['end_min'].$_POST['end_min_1'].':00'));
             $mailoption['ORDER_TTIME']      = $trade_time . SENDMAIL_TEXT_TIME_LINK . $trade_time_1 .SENDMAIL_TEXT_TWENTY_FOUR_HOUR;
-            $mailoption['ORDER_COMMENT']    = isset($comment_arr['payment_bank_info']['add_info'])?$comment_arr['comment']:$_POST['comments_text'];// = $comments;
+            $mailoption['ORDER_COMMENT']    = $_POST['comments_text'];// = $comments;
             $mailoption['ORDER_PRODUCTS']   = $products_ordered_mail;
             $mailoption['ORDER_TMETHOD']    = $insert_torihiki_date;
             $mailoption['SITE_NAME']        = get_configuration_by_site_id('STORE_NAME',$order->info['site_id']);
@@ -1158,7 +1158,7 @@ if($address_error == false){
             }
 
             $payment_modules->admin_deal_mailoption($mailoption, $oID, payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE)); 
-            $mailoption['ADD_INFO'] = isset($_SESSION['payment_bank_info'][$oID]['add_info'])?$_SESSION['payment_bank_info'][$oID]['add_info']:'';
+            $mailoption['ADD_INFO'] = isset($_SESSION['payment_bank_info'][$oID]['add_info'])?$_SESSION['payment_bank_info'][$oID]['add_info']:(isset($comment_arr['payment_bank_info']['add_info']) ? $comment_arr['payment_bank_info']['add_info']: '');
             unset($_SESSION['orderinfo_mail_use']);
             $print_totals_email_str = '';
             $totals_email_i = 0;

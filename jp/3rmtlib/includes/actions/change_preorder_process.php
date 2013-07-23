@@ -630,12 +630,8 @@ if (!empty($_SESSION['preorders_code_fee'])) {
 
 $email_order_text = '';
 
-if (isset($payment_modules->modules[strtoupper($cpayment_code)]->show_add_comment)) {
-  $mailoption['ORDER_COMMENT']    = trim($preorder['comment_msg']);
-} else {
-  $mailoption['ORDER_COMMENT']    = trim($order_comment_str);
-}
-$mailoption['ADD_INFO'] = '';
+$mailoption['ORDER_COMMENT']    = trim($preorder['comment_msg']);
+$mailoption['ADD_INFO'] = trim(str_replace($preorder['comment_msg'],'',$order_comment_str));
 
 $email_order_text = $payment_modules->getOrderMailString($cpayment_code, $mailoption); 
 
@@ -662,7 +658,6 @@ if(!empty($add_list)){
 if($totals_email_str == ''){
   $email_order_text = str_replace("\n".'${CUSTOMIZED_FEE}','',$email_order_text);
 }
-
 //订单邮件
 $orders_mail_templates = tep_get_mail_templates('MODULE_PAYMENT_'.strtoupper($cpayment_code).'_MAILSTRING',SITE_ID);
 if ($seal_user_row['is_send_mail'] != '1') {
