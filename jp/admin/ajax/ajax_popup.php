@@ -6669,6 +6669,7 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
 
   $mail_id_prev = $mail_id_page_array[$mail_id_num - 1];
   $mail_id_next = $mail_id_page_array[$mail_id_num + 1];
+  $mail_id_page_array = array_filter($mail_id_page_array);
   if ($mail_id_num > 0) {
     $page_str .= '<a id="mail_prev" onclick="show_link_mail_info(\''.$mail_id_prev.'\',\''.$param_str.'\')" href="javascript:void(0);" ><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
   }
