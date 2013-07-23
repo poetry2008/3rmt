@@ -72,15 +72,24 @@ document.onclick=function(e){
         "));
 
   if ($order) {
-    if (isset($_POST['hour'])){
-      $date   = tep_db_prepare_input($_POST['date']);
-      $hour   = tep_db_prepare_input($_POST['hour']);
-      $minute = tep_db_prepare_input($_POST['min']);
-      $start_hour = tep_db_prepare_input($_POST['start_hour']);
-      $start_min = tep_db_prepare_input($_POST['start_min']);
-      $end_hour = tep_db_prepare_input($_POST['end_hour']);
-      $end_min = tep_db_prepare_input($_POST['end_min']);
-      
+    if (isset($_POST['hour']) || $_POST['no_change'] == '1'){
+      if (isset($_POST['hour'])) {
+        $date   = tep_db_prepare_input($_POST['date']);
+        $hour   = tep_db_prepare_input($_POST['hour']);
+        $minute = tep_db_prepare_input($_POST['min']);
+        $start_hour = tep_db_prepare_input($_POST['start_hour']);
+        $start_min = tep_db_prepare_input($_POST['start_min']);
+        $end_hour = tep_db_prepare_input($_POST['end_hour']);
+        $end_min = tep_db_prepare_input($_POST['end_min']);
+      } else {
+        $date   = tep_db_prepare_input(date('Y-m-d', strtotime($order['torihiki_date'])));
+        $hour   = tep_db_prepare_input(date('H', strtotime($order['torihiki_date'])));
+        $minute = tep_db_prepare_input(date('i', strtotime($order['torihiki_date'])));
+        $start_hour = tep_db_prepare_input(date('H', strtotime($order['torihiki_date'])));
+        $start_min = tep_db_prepare_input(date('i', strtotime($order['torihiki_date'])));
+        $end_hour = tep_db_prepare_input(date('H', strtotime($order['torihiki_date_end'])));
+        $end_min = tep_db_prepare_input(date('i', strtotime($order['torihiki_date_end'])));
+      }
       $comment = tep_db_prepare_input($_POST['comment']);
 
       $datetime = $date.' '.$start_hour.':'.$start_min;
@@ -328,6 +337,7 @@ document.onclick=function(e){
       <form action="reorder.php" method="post" name="order">
         <input type='hidden' name='order_id' value='<?php echo $order['orders_id']?>' >
         <input type='hidden' name='email' value='<?php echo $order['customers_email_address']?>' >
+        <input type='hidden' name='no_change' id='no_change' value='0'>
         <div id="form_error" style="display:none">
         </div>
         <table class="box_des" summary="table" width="100%">
@@ -781,7 +791,7 @@ document.onclick=function(e){
       <div id='confirm_content' style='text-align:left;'>
       </div>
       <input type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="確定" title="確定" onClick="document.order.submit()" >
-      <input type='image' src="includes/languages/japanese/images/buttons/button_back.gif" alt="前に戻る" title="前に戻る" onClick="document.getElementById('confirm').style.display='none';document.getElementById('form').style.display='block'" >
+      <input type='image' src="includes/languages/japanese/images/buttons/button_back.gif" alt="前に戻る" title="前に戻る" onClick="document.getElementById('confirm').style.display='none';document.getElementById('form').style.display='block';document.getElementById('no_change').value='0';" >
     </div>
 <script type="text/javascript">
 <!---
@@ -855,8 +865,10 @@ function orderConfirmPage(){
   if(dateChanged){
     newTime = document.getElementById('new_date').options[document.getElementById('new_date').selectedIndex].innerHTML + " " +document.getElementById('start_hour').value + ":" + document.getElementById('start_min').value + "<?php echo TEXT_TIME_LINK;?>" +document.getElementById('end_hour').value + ":" + document.getElementById('end_min').value;
     text += newTime.replace(/(\s*)/g, "")  + "</td></tr></table><br >\n";
+    document.getElementById('no_change').value = '0'; 
   } else {
     text += oldTime.replace(/(\s*)/g, "")  + "</td></tr></table><br >\n";
+    document.getElementById('no_change').value = '1'; 
   }
   
   text += "<table class='box_des' summary='table'>\n"
