@@ -3481,7 +3481,7 @@ a.dpicker {
           echo '$(document).ready(function(){'."\n";
 
           if($payment_code!=''){
-          $cpayment->admin_show_payment_list($payment_code,$pay_info_array,$_SESSION['sites_id_flag'],$c_chk);
+          $cpayment->admin_show_payment_list($payment_code,$pay_info_array,$_SESSION['sites_id_flag'],$c_chk,'order',$_SESSION['email_address']);
           }
           
           echo '});'."\n";
@@ -4799,7 +4799,7 @@ if($orders_exit_flag == true){
           $customer_notified = isset($customer_notified) ? $customer_notified : true;
           $customer_notified = $select_status == 31 ? 0 : $customer_notified;
           $customer_notified = isset($_SESSION['orders_update_products'][$_GET['oID']]['notify']) ? $_SESSION['orders_update_products'][$_GET['oID']]['notify'] : $customer_notified;
-          $select_status = isset($_SESSION['orders_update_products'][$_GET['oID']]['s_status']) ? $_SESSION['orders_update_products'][$_GET['oID']]['s_status'] : $select_status;
+          $select_status = isset($_SESSION['orders_update_products'][$_GET['oID']]['s_status']) ?  $_SESSION['orders_update_products'][$_GET['oID']]['s_status'] : get_configuration_by_site_id('DEFAULT_ORDERS_STATUS_ID');
           
 ?>
             <td class="main" width="82" style="min-width:45px;"><?php echo ENTRY_STATUS; ?></td>

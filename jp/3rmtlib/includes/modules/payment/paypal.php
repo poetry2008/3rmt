@@ -674,11 +674,11 @@ function getpreexpress($pre_value, $pre_pid){
   }
 /*---------------------
  功能：显示支付方法目录
- 参数：$payment(string) 支付方法
  参数：$pay_info_array(string) 支付信息的数组
+ 参数：$default_email_info(string) 默认邮件地址
  返回值：支付方法的目录(string)
  --------------------*/
-  function admin_show_payment_list($pay_info_array){
+  function admin_show_payment_list($pay_info_array, $default_email_info){
 
    global $_POST;
    global $_GET;
@@ -711,7 +711,7 @@ function getpreexpress($pre_value, $pre_pid){
    $con_email = explode(":",trim($pay_array[0]));
    $con_email[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['con_email']) ? $_SESSION['orders_update_products'][$_GET['oID']]['con_email'] : $con_email[1];
    $con_email[1] = isset($_POST['con_email']) ? $_POST['con_email'] : $con_email[1];
-   echo 'document.getElementsByName("con_email")[0].value = "'.$con_email[1].'";'."\n";
+   echo 'document.getElementsByName("con_email")[0].value = "'.(!empty($con_email[1])?$con_email[1]:$default_email_info).'";'."\n";
    $pay_array = explode("\n",trim($pay_info_array[2]));
    $rak_tel = explode(":",trim($pay_array[0]));
    $rak_tel[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['rak_tel']) ? $_SESSION['orders_update_products'][$_GET['oID']]['rak_tel'] : $rak_tel[1];

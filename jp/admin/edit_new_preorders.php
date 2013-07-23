@@ -1609,7 +1609,7 @@ if (($action == 'edit') && ($order_exists == true)) {
           echo "\n".'<script language="javascript">'."\n"; 
           echo '$(document).ready(function(){'."\n";
 
-          $cpayment->admin_show_payment_list($payment_code,$pay_info_array,$_SESSION['create_preorder']['orders']['site_id'],$c_chk,'preorder');
+          $cpayment->admin_show_payment_list($payment_code,$pay_info_array,$_SESSION['create_preorder']['orders']['site_id'],$c_chk,'preorder',$order['customers_email_address']);
           
           echo '});'."\n";
           echo '</script>'."\n";
@@ -2094,7 +2094,7 @@ if (($action == 'edit') && ($order_exists == true)) {
           <?php
           $is_select_query = tep_db_query(" select orders_status_id, orders_status_name from " . TABLE_PREORDERS_STATUS . " where language_id = '" . (int)$languages_id . "' limit 1");
           $is_select_res = tep_db_fetch_array($is_select_query); 
-          $sel_status_id = DEFAULT_PREORDERS_STATUS_ID; 
+          $sel_status_id = get_configuration_by_site_id('DEFAULT_PREORDERS_STATUS_ID'); 
           $customer_notified = isset($_SESSION['orders_update_products'][$_GET['oID']]['notify']) ? $_SESSION['orders_update_products'][$_GET['oID']]['notify'] : $customer_notified;
           $sel_status_id = isset($_SESSION['orders_update_products'][$_GET['oID']]['s_status']) ? $_SESSION['orders_update_products'][$_GET['oID']]['s_status'] : $sel_status_id;
           echo tep_draw_pull_down_menu('status', $orders_statuses, $sel_status_id, 'id="status" onchange="check_prestatus();" style="width:80px;"'); 
