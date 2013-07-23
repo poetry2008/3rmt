@@ -10396,19 +10396,23 @@ function tep_get_setting_site_info($current_page)
 function tep_get_quantity($pid,$v_quantity=false){
   if($v_quantity){
     $sql = "SELECT products_attention_1_3,
-      (`products_real_quantity`/`products_attention_1_3`) 
-      + `products_virtual_quantity`  as quantity FROM 
+      `products_real_quantity` ,
+      `products_virtual_quantity` FROM 
       " .TABLE_PRODUCTS." WHERE products_id = '".$pid."' limit 1";
   }else{
     $sql = "SELECT products_attention_1_3,
-      (`products_real_quantity`/`products_attention_1_3`) as quantity
+      `products_real_quantity` 
       FROM 
       " .TABLE_PRODUCTS." WHERE products_id = '".$pid."' limit 1";
   }
   $query = tep_db_query($sql);
   if($row = tep_db_fetch_array($query)){
     if($row['products_attention_1_3']!=''&&$row['products_attention_1_3']!=0){
-      return (int)($row['quantity']);
+      if($v_quantity){
+        return floor($row['products_real_quantity']/$row['products_attention_1_3'])+$row['products_virtual_quantity'];
+      }else{
+        return floor($row['products_real_quantity']/$row['products_attention_1_3']);
+      }
     }else{
       $sql = "SELECT products_attention_1_3,
       `products_real_quantity` as quantity FROM 
