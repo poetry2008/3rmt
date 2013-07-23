@@ -658,6 +658,7 @@ if(!empty($add_list)){
 if($totals_email_str == ''){
   $email_order_text = str_replace("\n".'${CUSTOMIZED_FEE}','',$email_order_text);
 }
+
 //订单邮件
 $orders_mail_templates = tep_get_mail_templates('MODULE_PAYMENT_'.strtoupper($cpayment_code).'_MAILSTRING',SITE_ID);
 if ($seal_user_row['is_send_mail'] != '1') {
