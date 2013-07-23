@@ -830,7 +830,7 @@ $payment_replace = array(
                         $order->customer['email_address'],
                         $bbbank,
                         $print_point,
-                        $_SESSION['h_shipping_fee'],
+                        isset($_SESSION['h_shipping_fee']) ? $_SESSION['h_shipping_fee'] : 0,
                         $total_mail_fee,
                         str_replace(JPMONEY_UNIT_TEXT,"",$currencies->format(abs($ot['value']))),
                         $products_ordered,
